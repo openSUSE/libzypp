@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May  8 18:09:01 CEST 2006 - dmacvicar@suse.de
+
+- serialize the full URL to avoid missing password and other
+  url settings (#148108)
+- rev 3353-10.1
+
+-------------------------------------------------------------------
 Thu May  4 15:15:37 CEST 2006 - kkaempf@suse.de
 
 - re-fetch also .asc and .key files before checking signature

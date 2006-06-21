@@ -73,7 +73,7 @@ namespace zypp
         virtual void createResolvables(Source_Ref source_r);
 
 	/** Provide only resolvables of a certain kind. */
-        virtual ResStore provideResolvables(Source_Ref source_r, zypp::Resolvable::Kind kind);
+        virtual ResStore provideResolvablesByKind(Source_Ref source_r, zypp::Resolvable::Kind kind);
 
         virtual std::string type(void) const
         { return typeString(); }
@@ -162,7 +162,7 @@ namespace zypp
 	void provideProducts(Source_Ref source_r, ResStore& store);
 	void providePackages(Source_Ref source_r, ResStore& store);
 	void provideSelections(Source_Ref source_r, ResStore& store);
-        void provideSelection(Source_Ref source_r, ResStore& store);
+        //void provideSelection(Source_Ref source_r, ResStore& store);
 	void providePatterns(Source_Ref source_r, ResStore& store);
 
          /**

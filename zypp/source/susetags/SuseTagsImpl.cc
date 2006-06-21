@@ -431,7 +431,7 @@ namespace zypp
         return paths;
       }
 
-      ResStore SuseTagsImpl::provideResolvables(Source_Ref source_r, Resolvable::Kind kind)
+      ResStore SuseTagsImpl::provideResolvablesByKind(Source_Ref source_r, Resolvable::Kind kind)
       {
         callback::SendReport<CreateSourceReport> report;
         report->startData( url() );

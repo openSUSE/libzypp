@@ -3,6 +3,7 @@ Wed Jun 21 15:47:39 CEST 2006 - ma@suse.de
 
 - Strip self provides without edition in Resolvable ctor.
   (#186079)
+- revision 3673
 
 -------------------------------------------------------------------
 Wed Jun 21 15:26:49 CEST 2006 - dmacvicar@suse.de

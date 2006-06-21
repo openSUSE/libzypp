@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun 21 15:26:49 CEST 2006 - dmacvicar@suse.de
+
+- Source::provideResolvables not implemented in yum source type.
+  Product not set for packages that are available from update source
+  (#186920)
+- r3670 
+
+-------------------------------------------------------------------
 Wed Jun 21 12:41:00 CEST 2006 - kkaempf@suse.de
 
 - Hook modalias() supplements without package to "kernel" (#184840)

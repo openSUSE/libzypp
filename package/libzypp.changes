@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 21 10:12:50 CEST 2006 - kkaempf@suse.de
+
+- Allow on-demand SourceManager::restore() (#186678)
+- rev 3667
+
+-------------------------------------------------------------------
 Mon Jun 19 15:17:17 CEST 2006 - mt@suse.de
 
 - Fix adding resolving of path names for mount points (#181606)

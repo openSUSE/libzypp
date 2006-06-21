@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 21 12:41:00 CEST 2006 - kkaempf@suse.de
+
+- Keep modalias() supplements without package in place (#184840)
+- rev 3668
+
+-------------------------------------------------------------------
 Wed Jun 21 10:12:50 CEST 2006 - kkaempf@suse.de
 
 - Allow on-demand SourceManager::restore() (#186678)

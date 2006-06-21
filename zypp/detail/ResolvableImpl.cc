@@ -50,11 +50,9 @@ namespace zypp
     struct FilterExtraDependency
     {
       Dependencies & deps;
-      Dep _origin;
 
-      FilterExtraDependency( Dependencies & d, const Dep & origin )
+      FilterExtraDependency( Dependencies & d )
 	: deps( d )
-	, _origin( origin )
       { }
 
       bool operator()( const Capability & cap_r ) const
@@ -62,23 +60,21 @@ namespace zypp
 	if ( isKind<capability::ModaliasCap>(cap_r) )
           {
             // in case cap provides a packagename, inject a SUPPLEMENTS.
+	    // if modalias does not provide a packagename, default to "kernel" (#184840)
+
             intrusive_ptr<const capability::ModaliasCap> cap( capability::asKind<capability::ModaliasCap>(cap_r) );
-	    bool moved = false;
             if ( cap ) {
-	      if (!cap->pkgname().empty() ) {
-                deps[Dep::SUPPLEMENTS].insert( CapFactory().parse( ResTraits<Package>::kind, cap->pkgname() ) );
-                deps[Dep::FRESHENS].insert(cap_r);
-		moved = true;
+	      std::string pkgname( cap->pkgname() );
+	      if ( pkgname.empty() ) {
+		pkgname = "kernel";		// every kernel provides "kernel", so this triggers always
 	      }
-	      else if (_origin == Dep::PROVIDES) {
-                deps[Dep::SUPPLEMENTS].insert(cap_r);
-		moved = true;
-	      }
+              deps[Dep::SUPPLEMENTS].insert( CapFactory().parse( ResTraits<Package>::kind, pkgname ) );
+              deps[Dep::FRESHENS].insert(cap_r);
 	    }
-            return moved;	// strip from origin, if moved
+            return true;	// strip from original deps, we just splitted it to supplements/freshens
           }
 
-	if ( isKind<capability::HalCap>(cap_r) && _origin == Dep::PROVIDES )
+	if ( isKind<capability::HalCap>(cap_r) )
           {
 	    deps[Dep::SUPPLEMENTS].insert( cap_r );
             return true;	// strip from provides
@@ -114,7 +110,7 @@ namespace zypp
     void filterExtraProvides( const Dependencies & from, Dependencies & to )
     {
       CapSet provides;
-      FilterExtraDependency flp( to, Dep::PROVIDES );
+      FilterExtraDependency flp( to );
 
       std::remove_copy_if( from[Dep::PROVIDES].begin(), from[Dep::PROVIDES].end(),
                            std::inserter( provides, provides.end() ),
@@ -127,7 +123,7 @@ namespace zypp
       CapSet supplements;
       to[Dep::SUPPLEMENTS].clear();
       
-      FilterExtraDependency flp( to, Dep::SUPPLEMENTS );
+      FilterExtraDependency flp( to );
 
       std::remove_copy_if( from[Dep::SUPPLEMENTS].begin(), from[Dep::SUPPLEMENTS].end(),
                            std::inserter( supplements, supplements.end() ),

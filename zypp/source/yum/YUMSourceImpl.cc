@@ -642,6 +642,8 @@ namespace zypp
 
         report->startData( url() );
 
+        readRepomd();
+        
         if ( kind == ResTraits<Product>::kind )
           provideProducts ( selfSourceRef(), store );
         else if ( kind == ResTraits<Package>::kind )

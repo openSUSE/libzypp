@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 22 16:01:15 CEST 2006 - ma@suse.de
+
+- Fixed installation of SP or Add-On product switching to media 2
+  too early. (#186607)
+
+-------------------------------------------------------------------
 Wed Jun 21 15:47:39 CEST 2006 - ma@suse.de
 
 - Strip self provides without edition in Resolvable ctor.

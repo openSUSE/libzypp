@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 23 15:20:21 CEST 2006 - dmacvicar@suse.de
+
+- autorefresh not implemented (#186115)
+
+-------------------------------------------------------------------
 Fri Jun 23 13:41:18 CEST 2006 - ma@suse.de
 
 - Set default permission for logfiles to 0640. (#187044)

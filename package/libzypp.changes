@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 23 13:41:18 CEST 2006 - ma@suse.de
+
+- Set default permission for logfiles to 0640. (#187044)
+- revision 3694
+
+-------------------------------------------------------------------
 Thu Jun 22 16:01:15 CEST 2006 - ma@suse.de
 
 - Fixed installation of SP or Add-On product switching to media 2

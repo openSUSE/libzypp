@@ -397,7 +397,7 @@ namespace zypp
 	  SourceId id = 0;
   
 	  try {
-	    id = addSource( SourceFactory().createFrom(it->type, it->url, it->product_dir, it->alias, it->cache_dir) );
+            id = addSource( SourceFactory().createFrom(it->type, it->url, it->product_dir, it->alias, it->cache_dir, false, it->autorefresh) );
 	  }
 	  catch (const Exception &expt )
 	  {
@@ -419,7 +419,7 @@ namespace zypp
 	              DBG << "CD/DVD devices changed - try again without a devices list"
 	                  << std::endl;
   
-	              id = addSource( SourceFactory().createFrom(url2, it->product_dir, it->alias, it->cache_dir) );
+                      id = addSource( SourceFactory().createFrom(url2, it->product_dir, it->alias, it->cache_dir, false) );
   
 	              // This worked ... update it->url ?
 	              //it->url = url2.asCompleteString();
@@ -453,7 +453,6 @@ namespace zypp
 	      DBG << "disable source" << endl;
 	      src.disable();
 	  }
-	  src.setAutorefresh ( it->autorefresh );
     }
 
     if( !report.empty() )

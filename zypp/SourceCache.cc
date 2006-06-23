@@ -93,7 +93,7 @@ namespace zypp
       getline(data, path);
       getline(data, alias);
 
-      Source_Ref newsrc( SourceFactory().createFrom(url, path, alias, cache_dir) );
+      Source_Ref newsrc( SourceFactory().createFrom(url, path, alias, cache_dir, false) );
       SourceManager::sourceManager()->addSource(newsrc);
     }
   }

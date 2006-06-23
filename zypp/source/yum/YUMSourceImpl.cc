@@ -241,6 +241,8 @@ namespace zypp
         if ( cache )
         {
           DBG << "Cached metadata found in [" << _cache_dir << "]." << endl;
+          if ( autorefresh() )
+            storeMetadata(_cache_dir);
         }
         else
         {

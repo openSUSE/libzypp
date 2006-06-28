@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 28 14:34:15 CEST 2006 - ma@suse.de
+
+- Let ZYpp and Resolver use common code to determine the system
+  architecture.
+- revision 3728
+
+-------------------------------------------------------------------
 Fri Jun 23 15:20:21 CEST 2006 - dmacvicar@suse.de
 
 - autorefresh not implemented (#186115)

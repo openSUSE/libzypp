@@ -1,6 +1,9 @@
 #
 # patches_to_test --arch=<arch> [--output=<output.xml>] /patch/to/update/repo
 #
+# Example
+# ruby packages_to_xml.rb /mounts/machcd2/CDs/SLED-10-DVD-x86_64-Build_1360/DVD1/suse/setup/descr/packages > SLED-x86_64-packages.xml
+# ruby patches_to_test.rb --arch=x86_64 --base=SLED-x86_64-packages.xml /mounts/mirror/SuSE/zypp-patches.suse.de/x86_64/update/SUSE-SLED/10 > SLED-x86_64-test.xml
 require 'getoptlong'
 
 class Options

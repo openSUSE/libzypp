@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul  3 14:22:08 CEST 2006 - kk@suse.de
+
+- Don't treat installed but incomplete resolvable as present
+  (#189270)
+- rev 3757 
+
+-------------------------------------------------------------------
 Wed Jun 28 14:34:15 CEST 2006 - ma@suse.de
 
 - Let ZYpp and Resolver use common code to determine the system

@@ -629,7 +629,7 @@ ResolverContext::isPresent (PoolItem_Ref item, bool *unneeded)
 {
     ResStatus status = getStatus(item);
 
-    bool res = (status.staysInstalled()
+    bool res = ((status.staysInstalled() && !status.isIncomplete())
 		|| (status.isToBeInstalled() && !status.isNeeded())
 		|| status.isUnneeded()
 		|| status.isSatisfied());

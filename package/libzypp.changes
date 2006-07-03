@@ -3,13 +3,15 @@ Mon Jul  3 17:27:48 CEST 2006 - kkaempf@suse.de
 
 - Add "ATI Technologies Inc." and "Nvidia" to trusted vendors
   (#189573)
-- rev 3759
+- rev 3760
 
 -------------------------------------------------------------------
 Mon Jul  3 14:22:08 CEST 2006 - kk@suse.de
 
 - Don't treat installed but incomplete resolvable as present
   (#189270)
+- Improve MediaManager comments (mt@suse.de).
+- Testsuite improvements.
 - rev 3757 
 
 -------------------------------------------------------------------
@@ -23,6 +25,7 @@ Wed Jun 28 14:34:15 CEST 2006 - ma@suse.de
 Fri Jun 23 15:20:21 CEST 2006 - dmacvicar@suse.de
 
 - autorefresh not implemented (#186115)
+- rev 3700
 
 -------------------------------------------------------------------
 Fri Jun 23 13:41:18 CEST 2006 - ma@suse.de

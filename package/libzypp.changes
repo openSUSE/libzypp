@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul  3 17:27:48 CEST 2006 - kkaempf@suse.de
+
+- Add "ATI Technologies Inc." and "Nvidia" to trusted vendors
+  (#189573)
+- rev 3759
+
+-------------------------------------------------------------------
 Mon Jul  3 14:22:08 CEST 2006 - kk@suse.de
 
 - Don't treat installed but incomplete resolvable as present

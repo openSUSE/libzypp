@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul  5 15:12:08 CEST 2006 - kkaempf@suse.de
+
+- If a patch is to-be-uninstalled, schedule all its atoms
+  for uninstall (#189270)
+- rev 3764
+
+-------------------------------------------------------------------
 Wed Jul  5 11:40:43 CEST 2006 - kkaempf@suse.de
 
 - Update atom status if its requirements cannot be fulfilled.

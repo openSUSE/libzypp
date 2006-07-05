@@ -239,7 +239,11 @@ QueueItemEstablish::process (ResolverContext_Ptr context, QueueItemList & qil)
 	    }
 	    else if (status.staysUninstalled())			// not installed -> schedule for installation
 	    {
-		if (_item->kind() != ResTraits<Atom>::kind) {	// bug #184714
+		if (_item->kind() == ResTraits<Atom>::kind) {	// Bug 190272
+		    _XDEBUG("Atom " << _item << " has unfulfilled requirement " << *iter << " -> incomplete");
+		    context->incomplete( _item, _other_penalty );
+		}
+		else {	// bug #184714
 		// This is probably plain wrong.
 		// It installs a resolvable if its freshens/supplements triggers and
 		// some of its requirements are unfulfilled.

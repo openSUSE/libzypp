@@ -3,6 +3,7 @@ Wed Jul 12 12:15:21 CEST 2006 - schubi@suse.de
 
 - Do not blame the user if a soft installation has unfullfilled requirements.
   Simply do not install it. (#191483)
+- rev 3783
 
 -------------------------------------------------------------------
 Wed Jul 12 11:23:47 CEST 2006 - kkaempf@suse.de

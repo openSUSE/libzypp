@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 12 11:23:47 CEST 2006 - kkaempf@suse.de
+
+- Install on supplements only for the best resolvable (#191483)
+- rev 3782
+
+-------------------------------------------------------------------
 Wed Jul  5 15:12:08 CEST 2006 - kkaempf@suse.de
 
 - If a patch is to-be-uninstalled, schedule all its atoms

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 13 13:29:20 CEST 2006 - ma@suse.de
+
+- Fixed parsing of PatchRpm and DeltaRpm related data. (req. to fix #168844)
+- revision 3790
+-------------------------------------------------------------------
 Thu Jul 13 12:52:58 CEST 2006 - dmacvicar@suse.de
 
 - fix for stalle tmpfile (#191311)
@@ -45,7 +50,7 @@ Mon Jul  3 14:22:08 CEST 2006 - kk@suse.de
   (#189270)
 - Improve MediaManager comments (mt@suse.de).
 - Testsuite improvements.
-- rev 3757 
+- rev 3757
 
 -------------------------------------------------------------------
 Wed Jun 28 14:34:15 CEST 2006 - ma@suse.de

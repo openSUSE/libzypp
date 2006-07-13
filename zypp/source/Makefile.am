@@ -13,6 +13,7 @@ sourceincludedir = $(pkgincludedir)/source
 sourceinclude_HEADERS =	\
 	SourceImpl.h	\
 	Builtin.h	\
+	OnMediaLocation.h	\
 	PackageDelta.h	\
 	MediaSet.h
 
@@ -22,6 +23,7 @@ noinst_LTLIBRARIES =	lib@PACKAGE@_source.la
 
 lib@PACKAGE@_source_la_SOURCES = \
 	SourceImpl.cc	\
+	OnMediaLocation.cc	\
 	PackageDelta.cc	\
 	MediaSet.cc
 

@@ -11,6 +11,7 @@ AM_CXXFLAGS = -DZYPP_BASE_LOGGER_LOGGROUP=\"zypp\"
 pkginclude_HEADERS = NeedAType.h \
 	Arch.h		\
 	Atom.h		\
+	AutoDispose.h	\
 	Bit.h		\
 	ByteCount.h	\
 	CapAndItem.h	\
@@ -149,6 +150,7 @@ lib@PACKAGE@_la_SOURCES = \
 	ExternalProgram.cc\
 	PathInfo.cc	\
 	Digest.cc	\
+	CheckSum.cc	\
 	Url.cc		\
 	TmpPath.cc	\
 	DiskUsage.cc	\

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 13 12:52:58 CEST 2006 - dmacvicar@suse.de
+
+- fix for stalle tmpfile (#191311)
+- rev 3786
+
+-------------------------------------------------------------------
 Wed Jul 12 12:15:21 CEST 2006 - schubi@suse.de
 
 - Do not blame the user if a soft installation has unfullfilled requirements.

@@ -801,7 +801,7 @@ namespace zypp
                                                   bvit->edition.epoch ) );
                 }
 
-              patch_rpm.buildtime( str::strtonum<Date::ValueType>( it->downloadsize ) );
+              patch_rpm.buildtime( str::strtonum<Date::ValueType>( it->buildtime ) );
 
              impl->_patch_rpms.push_back( patch_rpm );
             }
@@ -829,7 +829,7 @@ namespace zypp
                                      .sequenceinfo( ybv.sequence_info )
                                      );
 
-              delta_rpm.buildtime( str::strtonum<Date::ValueType>( it->downloadsize ) );
+              delta_rpm.buildtime( str::strtonum<Date::ValueType>( it->buildtime ) );
 
               impl->_delta_rpms.push_back( delta_rpm );
             }

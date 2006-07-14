@@ -35,6 +35,8 @@ namespace zypp
    * \b not apply to the stored \c _Tp object. If the stored \c _Tp object
    * should be immutable, you should use <tt>AutoDispose\<const _Tp\><\tt>.
    *
+   * Pass a filename to the application and provide the appropriate
+   * code to be exectued when the file is no longer needed:
    * <code>
    * struct FileCache
    * {
@@ -69,6 +71,20 @@ namespace zypp
    *       // will do nothing.
    *       return AutoDispose<const Pathname>();
    *     }
+   * }
+   * <\code>
+   *
+   * Exception safe handling of temporary files:
+   * <code>
+   * void provideFileAt( const Pathname & destination )
+   * {
+   *   AuoDispose<const Pathname> guard( destination, unlink );
+   *
+   *   // Any exception here will lead to 'unlink( destination )'
+   *   // ...
+   *
+   *   // On success: reset the dispose function to NOOP.
+   *   guard.resetDispose();
    * }
    * <\code>
   */
@@ -123,13 +139,30 @@ namespace zypp
       value_type * operator->() const
       { return & _pimpl->_value; }
 
-      /** */
+      /** Reset to default Ctor values. */
       void reset()
       { AutoDispose().swap( *this ); }
 
       /** Exchange the contents of two AutoDispose objects. */
       void swap( AutoDispose & rhs )
       { _pimpl.swap( rhs._pimpl ); }
+
+    public:
+      /** Return the current dispose function. */
+      const Dispose & getDispose() const
+      { return _pimpl->_dispose; }
+
+      /** Set a new dispose function. */
+      void setDispose( const Dispose & dispose_r )
+      { _pimpl->_dispose = dispose_r; }
+
+      /** Set \ref nodispose function. */
+      void resetDispose()
+      { setDispose( nodispose ); }
+
+      /** Exchange the dispose function. +*/
+      void swapDispose( Dispose & dispose_r )
+      { _pimpl>_dispose.swap( dispose_r ); }
 
     private:
       struct Impl : private base::NonCopyable

@@ -32,6 +32,21 @@ namespace zypp
 
       const Pathname applydeltarpm_prog( "/usr/bin/applydeltarpm" );
 
+      /******************************************************************
+       **
+       **	FUNCTION NAME : applydeltarpm
+       **	FUNCTION TYPE : bool
+      */
+      bool applydeltarpm( const char *const argv_r[] )
+      {
+        ExternalProgram prog( argv_r, ExternalProgram::Stderr_To_Stdout );
+        for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
+          {
+            DBG << "Applydeltarpm : " << line;
+        }
+        return( prog.close() == 0 );
+      }
+
       /////////////////////////////////////////////////////////////////
     } // namespace
     ///////////////////////////////////////////////////////////////////
@@ -70,28 +85,34 @@ namespace zypp
       if ( ! haveApplydeltarpm() )
         return false;
 
-      if ( sequenceinfo_r.empty() )
-        {
-          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> empty sequenceinfo" << endl;
-          return false;
-        }
-
-      const char* argv[] = {
+      const char *const argv[] = {
         "/usr/bin/applydeltarpm",
         ( quick_r ? "-C" : "-c" ),
         "-s", sequenceinfo_r.c_str(),
         NULL
       };
 
-      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
-      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-        {
-          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << ": " << line;
-        }
-      int exit_code = prog.close();
+      return( applydeltarpm( argv ) );
+    }
 
-      DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> " << exit_code << endl;
-      return( exit_code == 0 );
+    /******************************************************************
+     **
+     **	FUNCTION NAME : check
+     **	FUNCTION TYPE : bool
+    */
+    bool check( const Pathname & delta_r, bool quick_r )
+    {
+      if ( ! haveApplydeltarpm() )
+        return false;
+
+      const char *const argv[] = {
+        "/usr/bin/applydeltarpm",
+        ( quick_r ? "-C" : "-c" ),
+        delta_r.asString().c_str(),
+        NULL
+      };
+
+      return( applydeltarpm( argv ) );
     }
 
     /******************************************************************
@@ -107,26 +128,46 @@ namespace zypp
       if ( ! haveApplydeltarpm() )
         return false;
 
-      const char* argv[] = {
+      const char *const argv[] = {
         "/usr/bin/applydeltarpm",
         "-p",
-        "-v",
         delta_r.asString().c_str(),
         new_r.asString().c_str(),
         NULL
       };
 
-      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
-      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-        {
-          DBG << "Applydeltarpm: " << line;
-        }
-
-      int exit_code = prog.close();
-      DBG << "Applydeltarpm -> " << exit_code << endl;
-      if ( exit_code != 0 )
+      if ( ! applydeltarpm( argv ) )
         return false;
 
+      guard.resetDispose(); // no cleanup on success
+      return true;
+    }
+
+    /******************************************************************
+     **
+     **	FUNCTION NAME : provide
+     **	FUNCTION TYPE : bool
+    */
+    bool provide( const Pathname & old_r, const Pathname & delta_r,
+                  const Pathname & new_r )
+    {
+      // cleanup on error
+      AutoDispose<const Pathname> guard( new_r, filesystem::unlink );
+
+      if ( ! haveApplydeltarpm() )
+        return false;
+
+      const char *const argv[] = {
+        "/usr/bin/applydeltarpm",
+        "-p",
+        "-r", old_r.asString().c_str(),
+        delta_r.asString().c_str(),
+        new_r.asString().c_str(),
+        NULL
+      };
+
+      if ( ! applydeltarpm( argv ) )
+        return false;
 
       guard.resetDispose(); // no cleanup on success
       return true;

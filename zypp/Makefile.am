@@ -60,6 +60,7 @@ pkginclude_HEADERS = NeedAType.h \
 	SourceFeed.h	\
 	SrcPackage.h	\
 	Target.h	\
+	TriBool.h	\
 	Selection.h	\
 	Pattern.h	\
 	Message.h	\

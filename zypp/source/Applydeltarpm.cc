@@ -10,11 +10,13 @@
  *
 */
 #include <iostream>
-#include "zypp/base/Logger.h"
 
+#include "zypp/base/Logger.h"
 #include "zypp/source/Applydeltarpm.h"
 #include "zypp/ExternalProgram.h"
+#include "zypp/AutoDispose.h"
 #include "zypp/PathInfo.h"
+#include "zypp/TriBool.h"
 
 using std::endl;
 
@@ -34,14 +36,23 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
+    /******************************************************************
+     **
+     **	FUNCTION NAME : haveApplydeltarpm
+     **	FUNCTION TYPE : bool
+    */
     bool haveApplydeltarpm()
     {
-      static bool _last = false;
-
+      // To track changes in availability of applydeltarpm.
+      static TriBool _last = indeterminate;
       PathInfo prog( applydeltarpm_prog );
-      if ( _last !=  prog.isX() )
+      bool have = prog.isX();
+      if ( _last == have )
+        ; // TriBool! 'else' is not '_last != have'
+      else
         {
-          if ( (_last = !_last) )
+          // _last is 'indeterminate' or '!have'
+          if ( (_last = have) )
             MIL << "Found executable " << prog << endl;
           else
             WAR << "No executable " << prog << endl;
@@ -49,14 +60,76 @@ namespace zypp
       return _last;
     }
 
+    /******************************************************************
+     **
+     **	FUNCTION NAME : check
+     **	FUNCTION TYPE : bool
+    */
     bool check( const std::string & sequenceinfo_r, bool quick_r )
     {
-      return false;
+      if ( ! haveApplydeltarpm() )
+        return false;
+
+      if ( sequenceinfo_r.empty() )
+        {
+          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> empty sequenceinfo" << endl;
+          return false;
+        }
+
+      const char* argv[] = {
+        "/usr/bin/applydeltarpm",
+        ( quick_r ? "-C" : "-c" ),
+        "-s", sequenceinfo_r.c_str(),
+        NULL
+      };
+
+      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
+      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
+        {
+          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << ": " << line;
+        }
+      int exit_code = prog.close();
+
+      DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> " << exit_code << endl;
+      return( exit_code == 0 );
     }
 
+    /******************************************************************
+     **
+     **	FUNCTION NAME : provide
+     **	FUNCTION TYPE : bool
+    */
     bool provide( const Pathname & delta_r, const Pathname & new_r )
     {
-      return false;
+      // cleanup on error
+      AutoDispose<const Pathname> guard( new_r, filesystem::unlink );
+
+      if ( ! haveApplydeltarpm() )
+        return false;
+
+      const char* argv[] = {
+        "/usr/bin/applydeltarpm",
+        "-p",
+        "-v",
+        delta_r.asString().c_str(),
+        new_r.asString().c_str(),
+        NULL
+      };
+
+      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
+      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
+        {
+          DBG << "Applydeltarpm: " << line;
+        }
+
+      int exit_code = prog.close();
+      DBG << "Applydeltarpm -> " << exit_code << endl;
+      if ( exit_code != 0 )
+        return false;
+
+
+      guard.resetDispose(); // no cleanup on success
+      return true;
     }
 
     /////////////////////////////////////////////////////////////////

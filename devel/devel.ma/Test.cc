@@ -8,6 +8,7 @@
 #include "zypp/Source.h"
 #include "zypp/Package.h"
 #include "zypp/source/PackageDelta.h"
+#include "zypp/source/Applydeltarpm.h"
 #include "zypp/detail/ImplConnect.h"
 #include "zypp/ExternalProgram.h"
 #include "zypp/AutoDispose.h"
@@ -74,62 +75,6 @@ namespace zypp
 
 
 
-  struct Applydeltarpm
-  {
-    static bool quickcheck( const std::string & sequenceinfo_r )
-    { return check( sequenceinfo_r, true ); }
-
-    static bool check( const std::string & sequenceinfo_r, bool quick_r = false )
-    {
-      if ( sequenceinfo_r.empty() )
-        {
-          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> empty sequenceinfo" << endl;
-          return false;
-        }
-
-      const char* argv[] = {
-        "/usr/bin/applydeltarpm",
-        ( quick_r ? "-C" : "-c" ),
-        "-s", sequenceinfo_r.c_str(),
-        NULL
-      };
-
-      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
-      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-        {
-          DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << ": " << line;
-        }
-
-      int exit_code = prog.close();
-      DBG << "Applydeltarpm " << (quick_r?"quickcheck":"check") << " -> " << exit_code << endl;
-      return( exit_code == 0 );
-    }
-
-    static bool provide( const Pathname & delta_r, const Pathname & new_r )
-    {
-      const char* argv[] = {
-        "/usr/bin/applydeltarpm",
-        "-p",
-        "-v",
-        delta_r.asString().c_str(),
-        new_r.asString().c_str(),
-        NULL
-      };
-
-      ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout );
-      for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-        {
-          DBG << "Applydeltarpm: " << line;
-        }
-
-      int exit_code = prog.close();
-      if ( exit_code != 0 )
-        filesystem::unlink( new_r );
-      DBG << "Applydeltarpm -> " << exit_code << endl;
-      return( exit_code == 0 );
-    }
-  };
-
   class PackageProvider
   {
     typedef detail::ResImplTraits<Package::Impl>::constPtr PackageImpl_constPtr;
@@ -166,7 +111,7 @@ namespace zypp
 
   private:
     bool considerDeltas() const
-    { return true; }
+    { return applydeltarpm::haveApplydeltarpm(); }
 
     bool considerPatches() const
     { return true; }
@@ -224,23 +169,21 @@ namespace zypp
 
     ManagedFile tryDelta( const DeltaRpm & delta_r ) const
     {
-      if ( ! Applydeltarpm::quickcheck( delta_r.baseversion().sequenceinfo() ) )
+      if ( ! applydeltarpm::quickcheck( delta_r.baseversion().sequenceinfo() ) )
         return ManagedFile();
 
       ManagedFile delta( sourceProvideFile( _package->source(), delta_r.location() ) );
       if ( delta->empty() )
         return ManagedFile();
 
-      if ( ! Applydeltarpm::check( delta_r.baseversion().sequenceinfo() ) )
+      if ( ! applydeltarpm::check( delta_r.baseversion().sequenceinfo() ) )
         return ManagedFile();
 
-      ManagedFile ret( "/tmp/delta.rpm",
-                       filesystem::unlink );
-
-      if ( ! Applydeltarpm::provide( delta, ret ) )
+      Pathname destination( "/tmp/delta.rpm" );
+      if ( ! applydeltarpm::provide( delta, destination ) )
         return ManagedFile();
 
-      return ret;
+      return ManagedFile( destination, filesystem::unlink );
     }
 
     ManagedFile tryPatch( const PatchRpm & patch_r ) const
@@ -358,6 +301,12 @@ int main( int argc, char * argv[] )
 {
   //zypp::base::LogControl::instance().logfile( "log.restrict" );
   INT << "===[START]==========================================" << endl;
+  MIL << Date() << endl;
+  MIL << Date(1) << endl;
+  MIL << Date(60) << endl;
+  MIL << Date(1145752218) << endl;
+
+  //return 0;
   if ( 0 ) {
     ManagedFile f;
     {

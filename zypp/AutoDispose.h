@@ -78,7 +78,7 @@ namespace zypp
    * <code>
    * void provideFileAt( const Pathname & destination )
    * {
-   *   AuoDispose<const Pathname> guard( destination, unlink );
+   *   AutoDispose<const Pathname> guard( destination, unlink );
    *
    *   // Any exception here will lead to 'unlink( destination )'
    *   // ...
@@ -162,7 +162,7 @@ namespace zypp
 
       /** Exchange the dispose function. +*/
       void swapDispose( Dispose & dispose_r )
-      { _pimpl>_dispose.swap( dispose_r ); }
+      { _pimpl->_dispose.swap( dispose_r ); }
 
     private:
       struct Impl : private base::NonCopyable

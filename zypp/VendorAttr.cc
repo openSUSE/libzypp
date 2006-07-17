@@ -83,6 +83,7 @@ namespace zypp
     char * vendors[] = {
       "jpackage project",
       "novell",
+      "opensuse",
       "sgi",
       "silicon graphics",
       "suse",

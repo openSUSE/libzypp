@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Jul 17 17:17:21 CEST 2006 - kkaempf@suse.de
+
+- rewrite "kernel(xxx) = yyy" dependencies to contain the flavor
+  as in "kernel(flavor:xxx) = yyy". This ensures kmp (driver rpm)
+  dependencies match the right flavor. Future kernel (resp. kmp)
+  rpms will have this fix included. The fix in libzypp is a work-
+  around for already released kernels. (#190163)
+  Set /etc/sysconfig/zypp:REWRITE_KERNEL_DEPS = yes to enable this
+  behaviour.
+- rev 3810
+
+-------------------------------------------------------------------
 Mon Jul 17 12:54:39 CEST 2006 - ma@suse.de
 
 - Add "openSUSE" to trusted vendors

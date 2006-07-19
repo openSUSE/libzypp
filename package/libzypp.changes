@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 19 17:32:48 CEST 2006 - schubi@suse.de
+
+- new callback for the UI: problemDescription which reports more
+  information about failed dependencies. bug 186585 
+
+-------------------------------------------------------------------
 Mon Jul 17 17:17:21 CEST 2006 - kkaempf@suse.de
 
 - rewrite "kernel(xxx) = yyy" dependencies to contain the flavor

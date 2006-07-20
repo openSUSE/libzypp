@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "zypp/base/Logger.h"
+#include "zypp/base/String.h"
 #include "zypp/source/Applydeltarpm.h"
 #include "zypp/ExternalProgram.h"
 #include "zypp/AutoDispose.h"
@@ -30,19 +31,27 @@ namespace zypp
     namespace
     { /////////////////////////////////////////////////////////////////
 
-      const Pathname applydeltarpm_prog( "/usr/bin/applydeltarpm" );
+      const Pathname   applydeltarpm_prog( "/usr/bin/applydeltarpm" );
+      const str::regex applydeltarpm_tick ( "([0-9]+) percent finished" );
 
       /******************************************************************
        **
        **	FUNCTION NAME : applydeltarpm
        **	FUNCTION TYPE : bool
       */
-      bool applydeltarpm( const char *const argv_r[] )
+      bool applydeltarpm( const char *const argv_r[],
+                          const Progress & report_r  = Progress() )
       {
         ExternalProgram prog( argv_r, ExternalProgram::Stderr_To_Stdout );
+        str::smatch what;
         for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
           {
-            DBG << "Applydeltarpm : " << line;
+            if ( report_r && str::regex_search( line, what, applydeltarpm_tick ) )
+              {
+                report_r( str::strtonum<unsigned>( what[1] ) );
+              }
+            else
+              DBG << "Applydeltarpm : " << line;
         }
         return( prog.close() == 0 );
       }
@@ -120,7 +129,8 @@ namespace zypp
      **	FUNCTION NAME : provide
      **	FUNCTION TYPE : bool
     */
-    bool provide( const Pathname & delta_r, const Pathname & new_r )
+    bool provide( const Pathname & delta_r, const Pathname & new_r,
+                  const Progress & report_r )
     {
       // cleanup on error
       AutoDispose<const Pathname> guard( new_r, filesystem::unlink );
@@ -130,13 +140,13 @@ namespace zypp
 
       const char *const argv[] = {
         "/usr/bin/applydeltarpm",
-        "-p",
+        "-p", "-p", // twice to get percent output one per line
         delta_r.asString().c_str(),
         new_r.asString().c_str(),
         NULL
       };
 
-      if ( ! applydeltarpm( argv ) )
+      if ( ! applydeltarpm( argv, report_r ) )
         return false;
 
       guard.resetDispose(); // no cleanup on success
@@ -149,7 +159,8 @@ namespace zypp
      **	FUNCTION TYPE : bool
     */
     bool provide( const Pathname & old_r, const Pathname & delta_r,
-                  const Pathname & new_r )
+                  const Pathname & new_r,
+                  const Progress & report_r )
     {
       // cleanup on error
       AutoDispose<const Pathname> guard( new_r, filesystem::unlink );
@@ -159,14 +170,14 @@ namespace zypp
 
       const char *const argv[] = {
         "/usr/bin/applydeltarpm",
-        "-p",
+        "-p", "-p", // twice to get percent output one per line
         "-r", old_r.asString().c_str(),
         delta_r.asString().c_str(),
         new_r.asString().c_str(),
         NULL
       };
 
-      if ( ! applydeltarpm( argv ) )
+      if ( ! applydeltarpm( argv, report_r ) )
         return false;
 
       guard.resetDispose(); // no cleanup on success

@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/base/PtrTypes.h"
+#include "zypp/base/Function.h"
 #include "zypp/Pathname.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -57,16 +57,21 @@ namespace zypp
      * \see <tt>man applydeltarpm<\tt>
     */
     //@{
+    /** progress reporting */
+    typedef function<void( unsigned )> Progress;
+
     /** Apply a binary delta to on-disk data to re-create a new rpm.
      * \see <tt>applydeltarpm deltarpm newrpm<\tt>
     */
-    bool provide( const Pathname & delta_r, const Pathname & new_r );
+    bool provide( const Pathname & delta_r, const Pathname & new_r,
+                  const Progress & report_r = Progress() );
 
     /** Apply a binary delta to an old rpm to re-create a new rpm.
      * \see <tt>applydeltarpm -r oldrpm deltarpm newrpm<\tt>
     */
     bool provide( const Pathname & old_r, const Pathname & delta_r,
-                  const Pathname & new_r );
+                  const Pathname & new_r,
+                  const Progress & report_r = Progress() );
     //@}
 
     /////////////////////////////////////////////////////////////////

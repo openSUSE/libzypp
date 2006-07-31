@@ -9,6 +9,7 @@
 #include <zypp/base/Logger.h>
 
 #include "zypp/base/Function.h"
+#include "zypp/base/Functional.h"
 #include "zypp/ZYppCallbacks.h"
 #include "zypp/Source.h"
 #include "zypp/Package.h"
@@ -47,6 +48,15 @@ namespace zypp
     : _failOnChecksumError( false )
     {}
 
+  public:
+
+    bool progress( int value ) const
+    {
+      INT << "hack" << endl;
+      return true;
+    }
+
+  public:
     SourceProvideFilePolicy & failOnChecksumError( bool yesno_r )
     { _failOnChecksumError = yesno_r ; return *this; }
 
@@ -57,6 +67,17 @@ namespace zypp
     bool _failOnChecksumError;
   };
 
+  struct DownloadFileReportHack : public callback::ReceiveReport<source::DownloadFileReport>
+  {
+    virtual bool progress( int value, Url )
+    {
+      INT << "hack" << endl;
+      if ( _redirect )
+        return _redirect( value );
+      return true;
+    }
+    function<bool ( int )> _redirect;
+  };
 
   typedef AutoDispose<const Pathname> ManagedFile;
 
@@ -66,8 +87,16 @@ namespace zypp
                                  const SourceProvideFilePolicy & policy_r = SourceProvideFilePolicy() )
   {
     INT << "sourceProvideFile " << loc_r << endl;
+    DownloadFileReportHack dumb;
+    dumb._redirect = bind( mem_fun_ref( &SourceProvideFilePolicy::progress ),
+                           ref( policy_r ), _1 );
+    callback::TempConnect<source::DownloadFileReport> temp( dumb );
+
     ManagedFile ret( source_r.provideFile( loc_r.filename(), loc_r.medianr() ),
                      boost::bind( &Source_Ref::releaseFile, source_r, _1, loc_r.medianr() ) );
+
+    callback::SendReport<source::DownloadFileReport> report;
+    report->progress( 55, Url() );
 
     if ( loc_r.checksum().empty() )
       {
@@ -105,19 +134,6 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
-
-  struct ActionLog
-  {
-    ActionLog()
-    {}
-    ~ActionLog()
-    {}
-    :
-  };
-
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
   class PackageProvider
   {
     typedef shared_ptr<void>                                       ScopedGuard;
@@ -149,18 +165,16 @@ namespace zypp
       //callback::TempConnect<source::DownloadFileReport> temp( dumb );
 
 
-      try
+      report()->start( _package, _package->source().url() );
+      ManagedFile ret;
+      try  // ELIMINATE try/catch by providing a log-guard
         {
-          return doProvidePackage()
+          ret = doProvidePackage();
         }
-
-      ManagedFile ret( doProvidePackage() );
-
-      if ( ret->empty() )
+      catch ( const Exception & excpt )
         {
           ERR << "Failed to provide Package " << _package << endl;
-#warning THROW ON ERROR
-          return ManagedFile();
+          ZYPP_RETHROW( excpt );
         }
 
       MIL << "provided Package " << _package << " at " << ret << endl;
@@ -169,10 +183,16 @@ namespace zypp
 
   private:
     bool considerDeltas() const
-    { return applydeltarpm::haveApplydeltarpm(); }
+    {
+      // add downloading media
+      return applydeltarpm::haveApplydeltarpm();
+    }
 
     bool considerPatches() const
-    { return true; }
+    {
+      // add downloading media and have installed edition
+      return _installedEdition != Edition::noedition;
+    }
 
     ManagedFile doProvidePackage() const
     {
@@ -212,34 +232,48 @@ namespace zypp
 
       INT << "Need whole package download!" << endl;
 
-      source::OnMediaLocation().medianr( _package->sourceMediaNr() )
-                               .filename( _package->location() )
-                               .checksum( _package->checksum() )
-                               .downloadsize( _package->archivesize() );
+      source::OnMediaLocation loc;
+      loc.medianr( _package->sourceMediaNr() )
+         .filename( _package->location() )
+         .checksum( _package->checksum() )
+         .downloadsize( _package->archivesize() );
 
-      ManagedFile ret( sourceProvideFile( _package->source(),
-                                          source::OnMediaLocation()
-                                          .medianr( _package->sourceMediaNr() )
-                                          .filename( _package->location() )
-                                          .checksum( _package->checksum() ) ) );
+      ManagedFile ret( sourceProvideFile( _package->source(), loc ) );
       return ret;
     }
 
     ManagedFile tryDelta( const DeltaRpm & delta_r ) const
     {
-      if ( ! applydeltarpm::quickcheck( delta_r.baseversion().sequenceinfo() ) )
+      if ( 0&&! applydeltarpm::quickcheck( delta_r.baseversion().sequenceinfo() ) )
         return ManagedFile();
 
-      ManagedFile delta( sourceProvideFile( _package->source(), delta_r.location() ) );
-      if ( delta->empty() )
-        return ManagedFile();
+      report()->startDeltaDownload( delta_r.location().filename(),
+                                    delta_r.location().downloadsize() );
+      ManagedFile delta;
+      try
+        {
+          delta = sourceProvideFile( _package->source(), delta_r.location() );
+        }
+      catch ( const Exception & excpt )
+        {
+          report()->problemDeltaDownload( excpt.asUserString() );
+          return ManagedFile();
+        }
 
+      report()->startDeltaApply( delta );
       if ( ! applydeltarpm::check( delta_r.baseversion().sequenceinfo() ) )
-        return ManagedFile();
+        {
+          report()->problemDeltaApply( "applydeltarpm failed." );
+          return ManagedFile();
+        }
 
+#warning FIX FIX PATHNAME
       Pathname destination( "/tmp/delta.rpm" );
       if ( ! applydeltarpm::provide( delta, destination ) )
-        return ManagedFile();
+        {
+          report()->problemDeltaApply( "applydeltarpm failed." );
+          return ManagedFile();
+        }
 
       return ManagedFile( destination, filesystem::unlink );
     }
@@ -270,10 +304,19 @@ namespace zypp
                                      ref(_report) ) );
     }
 
+    Report & report() const
+    {
+      if ( ! _report )
+        {
+          ZYPP_THROW( Exception( "noreport" )  );
+        }
+      return *_report; }
+
   private:
-    Package::constPtr    _package;
-    PackageImpl_constPtr _implPtr;
-    mutable shared_ptr<Report>   _report;
+    Package::constPtr          _package;
+    PackageImpl_constPtr       _implPtr;
+    Edition                    _installedEdition;
+    mutable shared_ptr<Report> _report;
   };
 
   Pathname testProvidePackage( Package::constPtr package )
@@ -283,8 +326,17 @@ namespace zypp
 
     PackageProvider pkgProvider( package );
 
-    ManagedFile r = pkgProvider.get();
-INT << "got" << endl;
+    try
+      {
+        ManagedFile r = pkgProvider.get();
+      }
+    catch ( const Exception & excpt )
+      {
+        ERR << "Failed to provide Package " << package << endl;
+        ZYPP_RETHROW( excpt );
+      }
+
+    INT << "got" << endl;
     return Pathname();
   }
 }
@@ -329,7 +381,7 @@ namespace zypp
 
   template<class _Tp>
     std::ostream & operator<<( std::ostream & str, const Encl<_Tp> & obj )
-    { return str << ' ' << obj << ' '; }
+    { return str << ' ' << obj._v << ' '; }
 
   template<class _Tp>
     Encl<_Tp> encl( const _Tp & v )
@@ -348,50 +400,50 @@ namespace zypp
     { _SEC("REPORT") << encl(resolvable_ptr) << encl(url) << endl; }
 
     virtual void startDeltaDownload( const Pathname & filename, const ByteCount & downloadsize )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(filename) << encl(downloadsize) << endl; }
 
     virtual bool progressDeltaDownload( int value )
-    {  _SEC("REPORT") << " " << endl; return true; }
+    {  _SEC("REPORT") << encl(value) << endl; return true; }
 
     virtual void problemDeltaDownload( std::string description )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(description) << endl; }
 
     // Apply delta rpm:
     // - local path of downloaded delta
     // - aplpy is not interruptable
     // - problems are just informal
     virtual void startDeltaApply( const Pathname & filename )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(filename) << endl; }
 
     virtual void progressDeltaApply( int value )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(value) << endl; }
 
     virtual void problemDeltaApply( std::string description )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(description) << endl; }
 
     // Dowmload patch rpm:
     // - path below url reported on start()
     // - expected download size (0 if unknown)
     // - download is interruptable
     virtual void startPatchDownload( const Pathname & filename, const ByteCount & downloadsize )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(filename) << encl(downloadsize) << endl; }
 
     virtual bool progressPatchDownload( int value )
-    {  _SEC("REPORT") << " " << endl; return true; }
+    {  _SEC("REPORT") << encl(value) << endl; return true; }
 
     virtual void problemPatchDownload( std::string description )
-    { _SEC("REPORT") << " " << endl; }
+    { _SEC("REPORT") << encl(description) << endl; }
 
 
 
     virtual bool progress(int value, Resolvable::constPtr resolvable_ptr)
-    {  _SEC("REPORT") << " " << endl; return true; }
+    {  _SEC("REPORT") << encl(value) << endl; return true; }
 
     virtual Action problem( Resolvable::constPtr resolvable_ptr
                             , Error error
                             , std::string description
                             )
-    {  _SEC("REPORT") << " " << endl; return ABORT; }
+    {  _SEC("REPORT") <<  encl(error) << encl(description) << endl; return ABORT; }
 
     virtual void finish(Resolvable::constPtr resolvable_ptr
                          , Error error
@@ -408,10 +460,10 @@ void test( const ResObject::constPtr & res )
   if ( ! isKind<Package>( res ) )
     return;
 
-  SEC << "Test " << res << endl;
-
   if ( ! res->source() )
     return;
+
+  SEC << "Test " << res << endl;
 
   try
     {

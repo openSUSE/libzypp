@@ -2,14 +2,12 @@
 #include <fstream>
 #include <sstream>
 
-#include "boost/functional.hpp"
-
 #include "zypp/base/LogControl.h"
 #include "zypp/base/LogTools.h"
 #include <zypp/base/Logger.h>
 
-#include "zypp/base/Function.h"
-#include "zypp/base/Functional.h"
+#include <zypp/source/SourceProvideFile.h>
+
 #include "zypp/ZYppCallbacks.h"
 #include "zypp/Source.h"
 #include "zypp/Package.h"
@@ -17,134 +15,18 @@
 #include "zypp/source/Applydeltarpm.h"
 #include "zypp/detail/ImplConnect.h"
 #include "zypp/ExternalProgram.h"
-#include "zypp/AutoDispose.h"
 
 using std::endl;
 //using namespace std;
 using namespace zypp;
 
-bool dt()
-{
-  const char *const argv[] = { "find", "/", NULL };
-  ExternalProgram prog( argv, ExternalProgram::Stderr_To_Stdout, false );
-  for ( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-    {
-      DBG << "Applydeltarpm : " << line << endl;
-    }
-  return( prog.close() == 0 );
-}
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 namespace zypp
 {
 
-  class SourceProvideFilePolicy
-  {
-    // source::DownloadFileReport
-    //
-  public:
-    SourceProvideFilePolicy()
-    {}
-
-  public:
-    typedef function<bool ( int )> ProgressCB;
-
-    SourceProvideFilePolicy & progressCB( ProgressCB progressCB_r )
-    { _progressCB = progressCB_r; return *this; }
-
-    bool progress( int value ) const
-    {
-      if ( _progressCB )
-        return _progressCB( value );
-      return true;
-    }
-
-  public:
-    typedef function<bool ()> FailOnChecksumErrorCB;
-
-    SourceProvideFilePolicy & failOnChecksumErrorCB( bool yesno_r )
-    { _failOnChecksumErrorCB = (yesno_r ? &yes : &no); return *this; }
-
-    SourceProvideFilePolicy & failOnChecksumErrorCB( FailOnChecksumErrorCB failOnChecksumErrorCB_r )
-    { _failOnChecksumErrorCB = failOnChecksumErrorCB_r; return *this; }
-
-    bool failOnChecksumError() const
-    {
-      if ( _failOnChecksumErrorCB )
-        return _failOnChecksumErrorCB();
-      return true;
-    }
-
-  private:
-    static bool yes() { return true; }
-    static bool no()  { return false; }
-
-  private:
-    FailOnChecksumErrorCB _failOnChecksumErrorCB;
-    ProgressCB            _progressCB;
-  };
-
-  struct DownloadFileReportHack : public callback::ReceiveReport<source::DownloadFileReport>
-  {
-    virtual bool progress( int value, Url )
-    {
-      INT << "hack" << endl;
-      if ( _redirect )
-        return _redirect( value );
-      return true;
-    }
-    function<bool ( int )> _redirect;
-  };
-
-  typedef AutoDispose<const Pathname> ManagedFile;
-
-  /////////////////////////////////////////////////////////////////
-  ManagedFile sourceProvideFile( Source_Ref source_r,
-                                 const source::OnMediaLocation & loc_r,
-                                 const SourceProvideFilePolicy & policy_r = SourceProvideFilePolicy() )
-  {
-    INT << "sourceProvideFile " << loc_r << endl;
-    DownloadFileReportHack dumb;
-    dumb._redirect = bind( mem_fun_ref( &SourceProvideFilePolicy::progress ),
-                           ref( policy_r ), _1 );
-    callback::TempConnect<source::DownloadFileReport> temp( dumb );
-
-    ManagedFile ret( source_r.provideFile( loc_r.filename(), loc_r.medianr() ),
-                     boost::bind( &Source_Ref::releaseFile, source_r, _1, loc_r.medianr() ) );
-
-    if ( loc_r.checksum().empty() )
-      {
-        // no checksum in metadata
-        WAR << "No checksum in metadata " << loc_r << endl;
-      }
-    else
-      {
-        std::ifstream input( ret->asString().c_str() );
-        CheckSum retChecksum( loc_r.checksum().type(), input );
-        input.close();
-
-        if ( loc_r.checksum() != retChecksum )
-          {
-            // failed integity check
-            std::ostringstream err;
-            err << "File " << ret << " fails integrity check. Expected: [" << loc_r.checksum() << "] Got: [";
-            if ( retChecksum.empty() )
-                err << "Failed to compute checksum";
-            else
-                err << retChecksum;
-            err << "]";
-
-            if ( policy_r.failOnChecksumError() )
-              ZYPP_THROW( Exception( err.str() ) );
-            else
-              WAR << "NO failOnChecksumError: " << err.str() << endl;
-          }
-      }
-
-    INT << "Return:  " << ret << endl;
-    return ret;
-  }
+  using source::ManagedFile;
 
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
@@ -171,9 +53,9 @@ namespace zypp
 
   public:
 
-    ManagedFile get() const
+    ManagedFile providePackage() const
     {
-      DBG << "provide Package " << _package << endl;
+      MIL << "provide Package " << _package << endl;
       ScopedGuard guardReport( newReport() );
 
       //callback::ReceiveReport<source::DownloadFileReport> dumb;
@@ -192,8 +74,8 @@ namespace zypp
           ZYPP_RETHROW( excpt );
         }
 
-      MIL << "provided Package " << _package << " at " << ret << endl;
       report()->finish( _package, source::DownloadResolvableReport::NO_ERROR, std::string() );
+      MIL << "provided Package " << _package << " at " << ret << endl;
       return ret;
     }
 
@@ -206,7 +88,7 @@ namespace zypp
 
     bool considerPatches() const
     {
-      // add downloading media and have installed edition
+      // add downloading media
       return _installedEdition != Edition::noedition;
     }
 
@@ -246,7 +128,6 @@ namespace zypp
             }
         }
 
-      INT << "Need whole package download!" << endl;
       ManagedFile ret;
       source::OnMediaLocation loc;
       loc.medianr( _package->sourceMediaNr() )
@@ -254,12 +135,11 @@ namespace zypp
          .checksum( _package->checksum() )
          .downloadsize( _package->archivesize() );
 
-      SourceProvideFilePolicy policy;
+      source::ProvideFilePolicy policy;
       policy.progressCB( bind( &PackageProvider::progressPackageDownload, this, _1 ) );
       policy.failOnChecksumErrorCB( bind( &PackageProvider::failOnChecksumError, this ) );
-      //policy.failOnChecksumErrorCB( bind( &PackageProvider::failOnChecksumError, this ) );
 
-      return sourceProvideFile( _package->source(), loc, policy );
+      return source::provideFile( _package->source(), loc, policy );
     }
 
     ManagedFile tryDelta( const DeltaRpm & delta_r ) const
@@ -272,9 +152,9 @@ namespace zypp
       ManagedFile delta;
       try
         {
-          SourceProvideFilePolicy policy;
+          source::ProvideFilePolicy policy;
           policy.progressCB( bind( &PackageProvider::progressDeltaDownload, this, _1 ) );
-          delta = sourceProvideFile( _package->source(), delta_r.location(), policy );
+          delta = source::provideFile( _package->source(), delta_r.location(), policy );
         }
       catch ( const Exception & excpt )
         {
@@ -289,7 +169,7 @@ namespace zypp
           return ManagedFile();
         }
 
-#warning FIX FIX PATHNAME
+#warning FIX FIX PATHNAME AND ADD PROGRESS
       Pathname destination( "/tmp/delta.rpm" );
       if ( ! applydeltarpm::provide( delta, destination ) )
         {
@@ -304,7 +184,8 @@ namespace zypp
     {
       // installed edition is in baseversions?
       const PatchRpm::BaseVersions & baseversions( patch_r.baseversions() );
-      if ( std::find( baseversions.begin(), baseversions.end(), _installedEdition ) == baseversions.end() )
+      if ( std::find( baseversions.begin(), baseversions.end(),
+                      _installedEdition ) == baseversions.end() )
         return ManagedFile();
 
       report()->startPatchDownload( patch_r.location().filename(),
@@ -312,9 +193,9 @@ namespace zypp
       ManagedFile patch;
       try
         {
-          SourceProvideFilePolicy policy;
-          policy.progressCB( boost::bind( &PackageProvider::progressPatchDownload, this, _1 ) );
-          patch = sourceProvideFile( _package->source(), patch_r.location(), policy );
+          source::ProvideFilePolicy policy;
+          policy.progressCB( bind( &PackageProvider::progressPatchDownload, this, _1 ) );
+          patch = source::provideFile( _package->source(), patch_r.location(), policy );
         }
       catch ( const Exception & excpt )
         {
@@ -350,6 +231,7 @@ namespace zypp
 
     bool failOnChecksumError() const
     {
+#warning REDIRECT TO REPORT
       INT << "XXXXX" << endl;
       return true;
     }
@@ -360,6 +242,7 @@ namespace zypp
     Edition                    _installedEdition;
     mutable shared_ptr<Report> _report;
   };
+  /////////////////////////////////////////////////////////////////
 
   Pathname testProvidePackage( Package::constPtr package )
   {
@@ -370,7 +253,7 @@ namespace zypp
 
     try
       {
-        ManagedFile r = pkgProvider.get();
+        ManagedFile r = pkgProvider.providePackage();
       }
     catch ( const Exception & excpt )
       {

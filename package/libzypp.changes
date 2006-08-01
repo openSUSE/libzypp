@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Aug  1 11:48:30 CEST 2006 - dmacvicar@suse.de
+
+- rev 3786 fix to stalle tmpfiles broke patches.
+  SLES was released with this broken. 10.1 has a blocked
+  zypp update because this.
+- Attempt to fix this. (#192535) 
+- rev 3844
+
+-------------------------------------------------------------------
 Wed Jul 19 17:32:48 CEST 2006 - schubi@suse.de
 
 - new callback for the UI: problemDescription which reports more

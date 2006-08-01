@@ -145,9 +145,10 @@ namespace zypp
           return ManagedFile();
         }
 
-#warning FIX FIX PATHNAME AND ADD PROGRESS
+#warning FIX FIX PATHNAME
       Pathname destination( "/tmp/delta.rpm" );
-      if ( ! applydeltarpm::provide( delta, destination ) )
+      if ( ! applydeltarpm::provide( delta, destination,
+                                     bind( &PackageProvider::progressDeltaApply, this, _1 ) ) )
         {
           report()->problemDeltaApply( "applydeltarpm failed." );
           return ManagedFile();
@@ -197,6 +198,9 @@ namespace zypp
 
     bool PackageProvider::progressDeltaDownload( int value ) const
     { return report()->progressDeltaDownload( value ); }
+
+    void PackageProvider::progressDeltaApply( int value ) const
+    { return report()->progressDeltaApply( value ); }
 
     bool PackageProvider::progressPatchDownload( int value ) const
     { return report()->progressPatchDownload( value ); }

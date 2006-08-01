@@ -67,6 +67,7 @@ namespace zypp
       ScopedGuard newReport() const;
       Report & report() const;
       bool progressDeltaDownload( int value ) const;
+      void progressDeltaApply( int value ) const;
       bool progressPatchDownload( int value ) const;
       bool progressPackageDownload( int value ) const;
       bool failOnChecksumError() const;

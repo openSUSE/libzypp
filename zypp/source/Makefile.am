@@ -14,7 +14,9 @@ sourceinclude_HEADERS =	\
 	SourceImpl.h	\
 	Builtin.h	\
 	OnMediaLocation.h	\
+	ManagedFile.h	\
 	SourceProvideFile.h	\
+	PackageProvider.h	\
 	PackageDelta.h	\
 	Applydeltarpm.h	\
 	MediaSet.h
@@ -27,6 +29,7 @@ lib@PACKAGE@_source_la_SOURCES = \
 	SourceImpl.cc		\
 	OnMediaLocation.cc	\
 	SourceProvideFile.cc	\
+	PackageProvider.cc	\
 	PackageDelta.cc		\
 	Applydeltarpm.cc	\
 	MediaSet.cc

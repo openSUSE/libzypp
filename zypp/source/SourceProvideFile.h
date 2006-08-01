@@ -17,8 +17,7 @@
 #include "zypp/base/Function.h"
 #include "zypp/base/Functional.h"
 #include "zypp/Source.h"
-#include "zypp/Pathname.h"
-#include "zypp/AutoDispose.h"
+#include "zypp/source/ManagedFile.h"
 #include "zypp/source/OnMediaLocation.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -76,8 +75,6 @@ namespace zypp
     //	provideFile
     //
     ///////////////////////////////////////////////////////////////////
-
-    typedef AutoDispose<const Pathname> ManagedFile;
 
     /** Provide a file from a Source.
      * Let \a source_r provide the file described by \a loc_r. In case

@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Aug  3 12:43:55 CEST 2006 - dmacvicar@suse.de
+
+- backport from trunk:
+- vendor() of the source is the vendor of the product,
+  not the media readed one
+- Don't read the stream character wise but reading blocks,
+  as advised by matz profiling.
+- parse product metadata parser regexp only once
+- reduce factory parsing from 30 sec to about 25 using 
+  different string find function
+- from 8.3 seconds to 7 seconds constructing objects in rpm target
+- rev 3870 
+
+-------------------------------------------------------------------
 Tue Aug  1 11:48:30 CEST 2006 - dmacvicar@suse.de
 
 - rev 3786 fix to stalle tmpfiles broke patches.

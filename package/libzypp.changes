@@ -10,6 +10,7 @@ Thu Aug  3 12:43:55 CEST 2006 - dmacvicar@suse.de
 - reduce factory parsing from 30 sec to about 25 using 
   different string find function
 - from 8.3 seconds to 7 seconds constructing objects in rpm target
+- all are simple speedups for (#176568)
 - rev 3870 
 
 -------------------------------------------------------------------

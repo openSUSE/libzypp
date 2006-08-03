@@ -10,7 +10,8 @@
  *
 */
 
-
+#include <sys/types.h>
+#include <regex.h>
 
 #include <zypp/parser/yum/YUMFileListParser.h>
 #include <istream>
@@ -24,13 +25,18 @@
 #include <iostream>
 #include <zypp/base/Logger.h>
 #include <zypp/ZYppFactory.h>
-
+#include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 namespace zypp {
   namespace parser {
     namespace yum {
 
+static boost::regex filenameRegex("^.*(/bin/|/sbin/|/lib/|/lib64/|/etc/|/usr/share/dict/words/|/usr/games/|/usr/share/magic\\.mime|/opt/gnome/games).*$"); 
+	static regex_t filenameRegexT;
+	static bool filenameRegexOk = false;
+	static bool useboost;
 
       YUMFileListParser::YUMFileListParser(istream &is, const string& baseUrl)
       : XMLNodeIterator<YUMFileListData_Ptr>(is, baseUrl,FILELISTSCHEMA)
@@ -105,18 +111,19 @@ namespace zypp {
 		}
 		else if (name == "file") {
 		    string filename = _helper.content( child );
-		    if (filename.find("/bin/") != string::npos
-			|| filename.find("/sbin/") != string::npos
-			|| filename.find("/lib/") != string::npos
-			|| filename.find("/lib64/") != string::npos
-			|| filename.find("/etc/") != string::npos
-			|| filename.find("/usr/games/") != string::npos
-			|| filename.find("/usr/share/dict/words") != string::npos
-			|| filename.find("/usr/share/magic.mime") != string::npos
-			|| filename.find("/opt/gnome/games") != string::npos)
+		    if (!filenameRegexOk)
 		    {
-			dataPtr->files.push_back( FileData( filename, _helper.attribute( child, "type" ) ) );
+			const char * filenameRegexPattern = "/(s?bin|lib(64)?|etc)/|^/usr/(games/|share/(dict/words|magic\\.mime)$)|^/opt/gnome/games/";
+			int r = regcomp (&filenameRegexT, filenameRegexPattern, REG_EXTENDED | REG_NOSUB);
+			//MIL << "regcomp " << r;
+			filenameRegexOk = true;
 		    }
+
+		    bool match;
+		    match = !regexec (&filenameRegexT, filename.c_str(), 0 /*nmatch*/, NULL /*pmatch*/, 0 /*flags*/);
+		    
+		    if (match)
+			dataPtr->files.push_back( FileData( filename, _helper.attribute( child, "type" ) ) );
 		}
 		else {
 		   WAR << "YUM <filelists> contains the unknown element <" << name << "> "
@@ -124,6 +131,7 @@ namespace zypp {
 		}
 	    }
 	}
+        //std::cout << dataPtr->files.size() << std::endl;
 	return dataPtr;
       }
 

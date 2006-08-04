@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl ==================================================
 m4_include([VERSION])
-AC_INIT([zypp], [LIBZYPP_CURRENT.LIBZYPP_REVISION.LIBZYPP_AGE])
+AC_INIT([zypp], [LIBZYPP_CURRENT.LIBZYPP_AGE.LIBZYPP_REVISION])
 dnl ==================================================
 AC_CONFIG_SRCDIR(zypp/Makefile.am)
 
@@ -30,7 +30,7 @@ AC_SUBST(ZYPP_CFLAGS)
 
 dnl ==================================================
 
-CXXFLAGS="${CXXFLAGS} -g -O2 -Wall -Wformat"
+CXXFLAGS="${CXXFLAGS} -g -O3 -Wall -Wformat"
 AC_SYS_LARGEFILE
 if test "$enable_largefile" != no ; then
 	enable_largefile=yes

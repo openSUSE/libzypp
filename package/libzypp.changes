@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Aug  4 20:22:22 CEST 2006 - ma@suse.de
+
+- Prefer to use available DeltaRpm or PatchRpm instead of downloading
+  full packages. (#168844)
+- rev 3885
+- version 2.0.0
+
+-------------------------------------------------------------------
 Thu Aug  3 12:43:55 CEST 2006 - dmacvicar@suse.de
 
 - backport from trunk:
@@ -7,11 +15,11 @@ Thu Aug  3 12:43:55 CEST 2006 - dmacvicar@suse.de
 - Don't read the stream character wise but reading blocks,
   as advised by matz profiling.
 - parse product metadata parser regexp only once
-- reduce factory parsing from 30 sec to about 25 using 
+- reduce factory parsing from 30 sec to about 25 using
   different string find function
 - from 8.3 seconds to 7 seconds constructing objects in rpm target
 - all are simple speedups for (#176568)
-- rev 3870 
+- rev 3870
 
 -------------------------------------------------------------------
 Tue Aug  1 11:48:30 CEST 2006 - dmacvicar@suse.de
@@ -19,14 +27,14 @@ Tue Aug  1 11:48:30 CEST 2006 - dmacvicar@suse.de
 - rev 3786 fix to stalle tmpfiles broke patches.
   SLES was released with this broken. 10.1 has a blocked
   zypp update because this.
-- Attempt to fix this. (#192535) 
+- Attempt to fix this. (#192535)
 - rev 3844
 
 -------------------------------------------------------------------
 Wed Jul 19 17:32:48 CEST 2006 - schubi@suse.de
 
 - new callback for the UI: problemDescription which reports more
-  information about failed dependencies. bug 186585 
+  information about failed dependencies. bug 186585
 
 -------------------------------------------------------------------
 Mon Jul 17 17:17:21 CEST 2006 - kkaempf@suse.de

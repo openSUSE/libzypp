@@ -283,13 +283,20 @@ print_sep (void)
     cout << endl << "------------------------------------------------" << endl << endl;
 }
 
-
 static void
 print_important (const string & str)
 {
     RESULT << str.c_str() << endl;
 }
 
+static void
+print_items (StringList & items)
+{
+    items.sort();
+    for (StringList::const_iterator iter = items.begin(); iter != items.end(); iter++) {
+        RESULT << (*iter).c_str() << endl;
+    }
+}
 
 /** Order on PoolItem_Ref.
  * \li kind
@@ -1115,7 +1122,11 @@ foreach_system_upgrade (solver::detail::Resolver_Ptr resolver)
 static void
 print_marked_cb (PoolItem_Ref poolItem, const ResStatus & status, void *data)
 {
-    RESULT; printRes (cout, poolItem.resolvable()); cout << " " << status << endl;
+    StringList *slist = (StringList *)data;
+    ostringstream s;
+    printRes (s, poolItem.resolvable()); s << " " << status << endl;    
+
+    slist->push_back (s.str());    
     return;
 }
 
@@ -1305,7 +1316,10 @@ parse_xml_trial (XmlNode_Ptr node, const ResPool & pool)
 	    }
 	    else {
 		RESULT << "Established context" << endl;
-		resolver->context()->foreachMarked (print_marked_cb, NULL);
+                StringList items;
+                
+		resolver->context()->foreachMarked (print_marked_cb, &items);
+                print_items (items);
 //		print_pool( MARKER, false );
 		if (!freshen.empty()) {
 		    RESULT << "Freshening ..." << endl;
@@ -1322,7 +1336,10 @@ parse_xml_trial (XmlNode_Ptr node, const ResPool & pool)
 	    }
 	    else {
 		RESULT << "Freshened context" << endl;
-		resolver->context()->foreachMarked (print_marked_cb, NULL);
+                StringList items;                    
+                
+		resolver->context()->foreachMarked (print_marked_cb, &items);
+                print_items (items);
 	    }
 
 	} else if (node->equals ("instorder")) {

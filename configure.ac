@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl ==================================================
 m4_include([VERSION])
-AC_INIT([zypp], [LIBZYPP_MAJOR.LIBZYPP_MINOR.LIBZYPP_PATCH])
+AC_INIT([zypp], [LIBZYPP_CURRENT.LIBZYPP_AGE.LIBZYPP_REVISION])
 dnl ==================================================
 AC_CONFIG_SRCDIR(zypp/Makefile.am)
 
@@ -13,14 +13,10 @@ AM_INIT_AUTOMAKE(foreign dist-bzip2 no-dist-gzip tar-ustar)
 AM_CONFIG_HEADER(config.h)
 
 dnl ==================================================
-dnl The calculations below allows us to include the minor version
-dnl in soname without to break the compatibility (soname) flags of
-dnl the library by default. (Thanx to Marius)
-dnl See VERSION file for further details.
-LIBZYPP_CURRENT=$((LIBZYPP_MAJOR * 100 + LIBZYPP_MINOR))
-LIBZYPP_AGE=$((LIBZYPP_MINOR - LIBZYPP_COMPATMINOR))
-LIBZYPP_VERSION_INFO="-version-info $LIBZYPP_CURRENT:LIBZYPP_PATCH:$LIBZYPP_AGE"
+
+LIBZYPP_VERSION_INFO="-version-info LIBZYPP_CURRENT:LIBZYPP_REVISION:LIBZYPP_AGE"
 AC_SUBST(LIBZYPP_VERSION_INFO)
+
 dnl ==================================================
 
 # libzypp compile time features/option tags,
@@ -269,7 +265,6 @@ Configuration:
 
   PACKAGE:              ${PACKAGE}
   VERSION:              ${VERSION}
-  LIBZYPP_VERSION_INFO  ${LIBZYPP_VERSION_INFO}
 
   FEATURES:             ${ZYPP_FEATURES}
 

@@ -31,7 +31,7 @@ dnl    set age to 0.
 dnl
 dnl ==================================================
 
-m4_define([LIBZYPP_CURRENT], 	[1])
-m4_define([LIBZYPP_REVISION],	[3])
-m4_define([LIBZYPP_AGE],	[1])
+m4_define([LIBZYPP_CURRENT], 	[4])
+m4_define([LIBZYPP_REVISION],	[1])
+m4_define([LIBZYPP_AGE],	[3])
 dnl ==================================================

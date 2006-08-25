@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl ==================================================
 m4_include([VERSION])
-AC_INIT([zypp], [LIBZYPP_CURRENT.LIBZYPP_REVISION.LIBZYPP_AGE])
+AC_INIT([zypp], [1.3.1])
 dnl ==================================================
 AC_CONFIG_SRCDIR(zypp/Makefile.am)
 

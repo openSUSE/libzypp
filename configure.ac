@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl ==================================================
 m4_include([VERSION])
-AC_INIT([zypp], [1.3.1])
+AC_INIT([zypp], [1.3.2])
 dnl ==================================================
 AC_CONFIG_SRCDIR(zypp/Makefile.am)
 

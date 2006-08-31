@@ -32,6 +32,6 @@ dnl
 dnl ==================================================
 
 m4_define([LIBZYPP_CURRENT], 	[4])
-m4_define([LIBZYPP_REVISION],	[1])
+m4_define([LIBZYPP_REVISION],	[2])
 m4_define([LIBZYPP_AGE],	[3])
 dnl ==================================================

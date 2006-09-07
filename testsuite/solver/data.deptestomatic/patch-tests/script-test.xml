@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+   load patch data from you.suse.de and run a script
+-->
+<test>
+<setup>
+  <system file="glibc-i586-package.xml"/>
+  <channel file="patch-fetchmsttfonts.sh-1829.xml" name="you"/>
+</setup>
+<trial>
+  <establish/>
+  <install channel="you" kind="patch" name="fetchmsttfonts.sh"/>
+</trial>
+</test>

@@ -1,0 +1,9 @@
+>!> Establishing state ...
+>!> Established context
+>!> patch:fetchmsttfonts.sh-1829-0".noarch[you] UI_s_
+>!> script:fetchmsttfonts.sh-patch-fetchmsttfonts.sh-2-1829-1.noarch[you] US_s_
+>!> Installing fetchmsttfonts.sh from channel you
+>!> Solution #1:
+>!> install patch:fetchmsttfonts.sh-1829-0".noarch[you]
+>!> install script:fetchmsttfonts.sh-patch-fetchmsttfonts.sh-2-1829-1.noarch[you]
+>!> installs=2, upgrades=0, uninstalls=0

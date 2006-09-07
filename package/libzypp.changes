@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep  7 16:32:22 CEST 2006 - schubi@suse.de
+
+- Do not regarding SATISFIED (regarding UNNEEDED) in isPresent if it is
+  a package/script/message
+  Bug: 192535 
+
+-------------------------------------------------------------------
 Thu Aug 31 16:24:09 CEST 2006 - ma@suse.de
 
 - PackageProvider: Fixed broken retry. (#202163)

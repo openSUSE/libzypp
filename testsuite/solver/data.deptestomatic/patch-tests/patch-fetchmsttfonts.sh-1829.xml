@@ -2,7 +2,7 @@
 <patch>
   <name>fetchmsttfonts.sh</name>
   <version>1829</version>
-  <release>0"</release>
+  <release>0</release>
   <requires>
     <dep kind="script" name="fetchmsttfonts.sh-patch-fetchmsttfonts.sh-2" version="1829" release="1" op="="/>
   </requires>

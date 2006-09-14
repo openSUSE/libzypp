@@ -444,8 +444,28 @@ QueueItemInstall::process (ResolverContext_Ptr context, QueueItemList & qil)
 
 	    const Capability cap = *iter;
 	    _XDEBUG("this requires " << cap);
+	    bool fulfilled = false;
+           
+	    if (_item->kind() != ResTraits<Package>::kind
+                || _item->kind() != ResTraits<Script>::kind
+                || _item->kind() != ResTraits<Message>::kind)
+	    {
+		bool unneeded, installed;
+		fulfilled = context->requirementIsMet (cap, false,
+						       &unneeded, &installed);
+		if (!fulfilled
+		    || (!unneeded
+			&& !installed)) {
+		    fulfilled = false;
+		    _XDEBUG("Requirement is not unneeded and not installed.");              
+		    // "low" level resolvables will be installed if they are not unneeded
+		    // Bug 192535/204913
+		}
+	    }else {
+		fulfilled = context->requirementIsMet (cap);
+	    }
 
-	    if (!context->requirementIsMet (cap)) {
+	    if (!fulfilled) {
 		_XDEBUG("this requirement is still unfulfilled");
 		QueueItemRequire_Ptr req_item = new QueueItemRequire (pool(), cap );
 		req_item->addPoolItem (_item);

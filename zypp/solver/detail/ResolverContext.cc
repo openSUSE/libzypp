@@ -622,25 +622,22 @@ ResolverContext::incomplete (PoolItem_Ref item, int other_penalty)
 
 //---------------------------------------------------------------------------
 
-// is it installed (after transaction) ?
+// is it installed (after transaction) , is unneeded or satisfied?
 // if yes, install/requires requests are considered done
 
 bool
-ResolverContext::isPresent (PoolItem_Ref item, bool *unneeded)
+ResolverContext::isPresent (PoolItem_Ref item, bool *unneeded, bool *installed)
 {
     ResStatus status = getStatus(item);
 
     bool res = ((status.staysInstalled() && !status.isIncomplete())
 		|| (status.isToBeInstalled() && !status.isNeeded())
 		|| status.isUnneeded()
-		|| (status.isSatisfied()
-		    // regarding only resolvables where the status is useful Bug:192535
-		    && item->kind() != ResTraits<Package>::kind
-		    && item->kind() != ResTraits<Script>::kind
-		    && item->kind() != ResTraits<Message>::kind)
+		|| status.isSatisfied()
 		);
 
    if (unneeded) *unneeded = status.isUnneeded();
+   if (installed) *installed = status.staysInstalled() || status.isToBeInstalled();   
 
 _XDEBUG("ResolverContext::itemIsPresent(<" << status << ">" << item << ") " << (res?"Y":"N"));
 
@@ -1429,12 +1426,14 @@ struct RequirementMet
     const Capability capability;
     bool flag;
     bool unneeded;
+    bool *installed;
 
-    RequirementMet (ResolverContext_Ptr ctx, const Capability & c)
+    RequirementMet (ResolverContext_Ptr ctx, const Capability & c, bool *inst)
 	: context (ctx)
 	, capability (c)
 	, flag (false)
 	, unneeded( false )
+	, installed( inst )
     { }
 
 
@@ -1447,7 +1446,7 @@ struct RequirementMet
 	bool my_unneeded = false;
 	if ((capability == Capability::noCap
 	     || capability == match)
-	    && context->isPresent( provider, &my_unneeded ))
+	    && context->isPresent( provider, &my_unneeded, installed ))
 	{
 	    unneeded = my_unneeded;
 	    flag = true;
@@ -1455,16 +1454,21 @@ struct RequirementMet
 
 //	ERR << "RequirementMet(" <<  provider << ", " << match << ") [capability " <<
 //	  capability << "] -> " <<  (flag ? "true" : "false") << endl;
-
+	
+	if ( installed // Checking as long as we have found an installed item
+	     && !*installed )
+	    return true;
+	
 	return ! flag;
     }
 };
 
 
 bool
-ResolverContext::requirementIsMet (const Capability & capability, bool is_child, bool *unneeded)
+ResolverContext::requirementIsMet (const Capability & capability, bool is_child,
+				   bool *unneeded, bool *installed)
 {
-    RequirementMet info (this, is_child ? capability : Capability::noCap);
+    RequirementMet info (this, is_child ? capability : Capability::noCap, installed);
 
     //    world()->foreachProviding (capability, requirement_met_cb, (void *)&info);
 

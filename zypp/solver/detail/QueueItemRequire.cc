@@ -409,7 +409,30 @@ QueueItemRequire::process (ResolverContext_Ptr context, QueueItemList & new_item
 {
     _XDEBUG("QueueItemRequire::process(" << *this << ")");
 
-    if (context->requirementIsMet (_capability, _is_child)) {
+    bool fulfilled = false;
+           
+    if (_requiring_item 
+	&& (_requiring_item->kind() != ResTraits<Package>::kind
+	    || _requiring_item->kind() != ResTraits<Script>::kind
+	    || _requiring_item->kind() != ResTraits<Message>::kind)
+	)
+    {
+	bool unneeded, installed;
+	fulfilled = context->requirementIsMet (_capability, _is_child, &unneeded, &installed);
+	if (!fulfilled
+	    || (!unneeded
+		&& !installed)) {
+	    fulfilled = false;
+	    _XDEBUG("Requirement is not unneeded and not installed.");
+	    // "low" level resolvables will be installed if they are not unneeded
+	    // Bug 192535/204913
+	}
+    } else {
+	fulfilled = context->requirementIsMet (_capability, _is_child);
+    }
+
+    
+    if (fulfilled) {
 	_XDEBUG("requirement is already met in current context");
 	return true;
     }

@@ -4,7 +4,7 @@ Thu Sep 14 09:50:58 CEST 2006 - schubi@suse.de
 - Removed fix of Bug 192535 in isPresent.
   Regarding not installed package/script/message in QueueItemRequire
   and QueueItemInstall although they are "isPresent" 
-
+  Revision 4142
 -------------------------------------------------------------------
 Thu Sep  7 16:32:22 CEST 2006 - schubi@suse.de
 

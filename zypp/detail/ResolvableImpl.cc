@@ -245,7 +245,6 @@ namespace zypp
     // check for kernel(xxx) and rewrite them to kernel(flavor:xxx)
     if ( _kind == ResTraits<Package>::kind )
       {
-	dumpOn( DBG << "rewriteKernelDeps()" ) << std::endl;
 	rewriteKernelDeps( _deps );   
       }
 

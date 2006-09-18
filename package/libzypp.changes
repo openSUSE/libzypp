@@ -2,7 +2,7 @@
 Mon Sep 18 12:00:46 CEST 2006 - kkaempf@suse.de
 
 - reduce logging in ResolvableImpl.cc
-- rev 4156
+- rev 4157
 
 -------------------------------------------------------------------
 Thu Sep 14 09:50:58 CEST 2006 - schubi@suse.de

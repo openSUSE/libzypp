@@ -184,8 +184,6 @@ namespace zypp
       // cset == CapSet to be rewritten (provides for kernel, requires for kmp)
       // dep == deps to be set in 'to'
 
-      DBG << "flavor '" << flavor << "'" << std::endl;
-
       flavor.append( ":" );
       CapFactory factory;
       deps[dep].clear();

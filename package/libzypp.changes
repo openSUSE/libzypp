@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct  6 13:22:34 CEST 2006 - schubi@suse.de
+
+- select the best solution: prefering the total amount of install/update
+  packages BEFORE source preferences. Bug 208784 
+
+-------------------------------------------------------------------
 Mon Sep 18 12:00:46 CEST 2006 - kkaempf@suse.de
 
 - reduce logging in ResolvableImpl.cc

@@ -807,9 +807,13 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     }
 
     if ( ret != 0 ) {
+      ERR << "curl error: " << ret << ": " << _curlError
+          << ", temp file size " << PathInfo(destNew).size()
+	  << " byte." << endl;
+
       ::fclose( file );
       filesystem::unlink( destNew );
-      ERR << "curl error: " << ret << ": " << _curlError << endl;
+
       std::string err;
       try {
        bool err_file_not_found = false;
@@ -957,6 +961,7 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
       ERR << "Rename failed" << endl;
       ZYPP_THROW(MediaWriteException(dest));
     }
+    DBG << "done: " << PathInfo(dest) << endl;
 }
 
 

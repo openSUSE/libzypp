@@ -77,6 +77,32 @@ namespace
   {
     zypp::thread::callOnce(g_InitOnceFlag, _do_init_once);
   }
+
+  int log_curl(CURL *curl, curl_infotype info,
+               char *ptr, size_t len, void *max_lvl)
+  {
+    std::string pfx(" ");
+    long        lvl = 0;
+    switch( info)
+    {
+      case CURLINFO_TEXT:       lvl = 1; pfx = "*"; break;
+      case CURLINFO_HEADER_IN:  lvl = 2; pfx = "<"; break;
+      case CURLINFO_HEADER_OUT: lvl = 2; pfx = ">"; break;
+      default:                                      break;
+    }
+    if( lvl > 0 && max_lvl != NULL && lvl <= *((long *)max_lvl))
+    {
+      std::string                            msg(ptr, len);
+      std::list<std::string>                 lines;
+      std::list<std::string>::const_iterator line;
+      zypp::str::split(msg, std::back_inserter(lines), "\r\n");
+      for(line = lines.begin(); line != lines.end(); ++line)
+      {
+        DBG << pfx << " " << *line << endl;
+      }
+    }
+    return 0;
+  }
 }
 
 namespace zypp {
@@ -144,6 +170,7 @@ MediaCurl::MediaCurl( const Url &      url_r,
       _curl( NULL )
 {
   _curlError[0] = '\0';
+  _curlDebug = 0L;
 
   MIL << "MediaCurl::MediaCurl(" << url_r << ", " << attach_point_hint_r << ")" << endl;
 
@@ -227,6 +254,17 @@ void MediaCurl::attachTo (bool next)
   _curl = curl_easy_init();
   if ( !_curl ) {
     ZYPP_THROW(MediaCurlInitException(_url));
+  }
+
+  {
+    char *ptr = getenv("ZYPP_MEDIA_CURL_DEBUG");
+    _curlDebug = (ptr && *ptr) ? str::strtonum<long>( ptr) : 0L;
+    if( _curlDebug > 0)
+    {
+      curl_easy_setopt( _curl, CURLOPT_VERBOSE, 1);
+      curl_easy_setopt( _curl, CURLOPT_DEBUGFUNCTION, log_curl);
+      curl_easy_setopt( _curl, CURLOPT_DEBUGDATA, &_curlDebug);
+    }
   }
 
   CURLcode ret = curl_easy_setopt( _curl, CURLOPT_ERRORBUFFER, _curlError );

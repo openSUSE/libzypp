@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Nov  9 16:23:54 CET 2006 - mt@suse.de
+
+- Fixed target/hal - removed dbus_connection_disconnect calls, because
+  the connections are shared; unref the shared handle only (#216035).
+- rev 4542
+
+-------------------------------------------------------------------
+Wed Oct 25 15:11:14 CEST 2006 - mt@suse.de
+
+- Added logging of curl debug messages to the zypp log.
+  The env var ZYPP_MEDIA_CURL_DEBUG=1 logs curl infos,
+  ZYPP_MEDIA_CURL_DEBUG=2 logs the in/out headers too.
+  (Debugging help for Bug #204739)
+
+-------------------------------------------------------------------
 Fri Oct  6 13:22:34 CEST 2006 - schubi@suse.de
 
 - select the best solution: prefering the total amount of install/update

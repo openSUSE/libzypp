@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Nov 29 19:23:40 CET 2006 - dmacvicar@suse.de
+
+- dont serialize interactive, as it is
+  calculated now.
+  (it was already fixed as we don't reimplement
+  the method, but we still serialized, parsed)
+  (#224192) comment #4
+- r4711 
+
+-------------------------------------------------------------------
 Tue Nov 28 11:44:52 CET 2006 - schubi@suse.de
 
 - Avoid duplicate pool entries; Bug 223750; second part of the fix

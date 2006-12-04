@@ -60,6 +60,7 @@ pkginclude_HEADERS = NeedAType.h \
 	SourceCache.h	\
 	SourceFeed.h	\
 	SrcPackage.h	\
+	SysContent.h	\
 	Target.h	\
 	TriBool.h	\
 	Selection.h	\
@@ -145,6 +146,7 @@ lib@PACKAGE@_la_SOURCES = \
 	SourceCache.cc	\
 	SourceFeed.cc	\
 	SrcPackage.cc	\
+	SysContent.cc	\
 	Target.cc	\
 	Selection.cc	\
 	Pattern.cc	\

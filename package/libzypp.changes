@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Dec  4 15:30:54 CET 2006 - ma@suse.de
+
+- Extended YaST packages file parser to read package vendor from
+  '=Vnd:' entry if present (else source vendor). (#210480)
+- revision 4735
+- version 2.9.2
+
+-------------------------------------------------------------------
 Wed Nov 29 19:23:40 CET 2006 - dmacvicar@suse.de
 
 - dont serialize interactive, as it is

@@ -30,6 +30,7 @@ extern "C"
 #include "zypp/xml/Reader.h"
 
 #include "zypp/ZYppFactory.h"
+#include "zypp/SysContent.h"
 
 
 using namespace std;
@@ -166,9 +167,13 @@ template<class _OutputIterator>
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+  namespace syscontent
+  { /////////////////////////////////////////////////////////////////
 
-
-
+    /////////////////////////////////////////////////////////////////
+  } // namespace syscontent
+  ///////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
@@ -193,10 +198,31 @@ int main( int argc, char * argv[] )
 
   ResPool pool( getZYpp()->pool() );
   USR << pool << endl;
+  dumpRange( MIL << "Languages",
+             pool.byKindBegin<Language>(), pool.byKindEnd<Language>() );
 
+  {
+    syscontent::Writer contentW;
+    contentW.name( "mycollection" )
+            .edition( Edition( "1.0" ) )
+            .description( "All the cool stuff..." );
+    for_each( pool.begin(), pool.end(),
+              bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
+    USR << contentW << endl;
+  }
 
+  typeof(pool.byKindBegin<Language>()) it = pool.byKindBegin<Language>();
+  it->status().setTransact( true, ResStatus::USER );
+  ++it;
+  it->status().setTransact( true, ResStatus::SOLVER );
+  pool.byNameBegin( "SUSE-Linux-SLES-x86_64" )->status().setTransact( true, ResStatus::USER );
 
-
+  {
+    syscontent::Writer contentW;
+    for_each( pool.begin(), pool.end(),
+              bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
+    USR << contentW << endl;
+  }
 
 
   INT << "===[END]============================================" << endl << endl;

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Dec  4 23:33:54 CET 2006 - ma@suse.de
+
+- Added syscontent::Writer: Collect and serialize a set of ResObjects.
+  (for F300729)
+- revision 4742
+- version 2.9.3
+
+-------------------------------------------------------------------
 Mon Dec  4 15:30:54 CET 2006 - ma@suse.de
 
 - Extended YaST packages file parser to read package vendor from

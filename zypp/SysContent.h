@@ -102,7 +102,7 @@ namespace zypp
        *
        * std::ifstream my_file( "some_file" );
        * my_file << contentW;
-       * my_file.close;
+       * my_file.close();
        * \endcode
       */
       //@{

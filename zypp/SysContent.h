@@ -79,13 +79,13 @@ namespace zypp
       Writer & edition( const Edition & val_r )
       { _edition = val_r; return *this; }
 
-      /** Get description.*/
-      Writer & description( const std::string & val_r )
-      { _description = val_r; return *this; }
-
-      /** set description. */
+      /** Get description. */
       const std::string & description() const
       { return _description; }
+
+      /** Set description.*/
+      Writer & description( const std::string & val_r )
+      { _description = val_r; return *this; }
       //@}
 
     public:
@@ -100,7 +100,7 @@ namespace zypp
        * for_each( pool.begin(), pool.end(),
        *           bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
        *
-       * std::ifstream my_file( "some_file" );
+       * std::ofstream my_file( "some_file" );
        * my_file << contentW;
        * my_file.close();
        * \endcode

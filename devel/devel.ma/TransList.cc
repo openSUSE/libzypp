@@ -171,6 +171,99 @@ namespace zypp
   namespace syscontent
   { /////////////////////////////////////////////////////////////////
 
+    class Reader
+    {
+    public:
+      struct Entry
+      {
+        std::string _kind;
+        std::string _name;
+        Edition     _edition;
+        Arch        _arch;
+      };
+
+    private:
+      typedef std::list<Entry> StorageT;
+
+    public:
+      typedef StorageT::value_type     value_type;
+      typedef StorageT::size_type      size_type;
+      typedef StorageT::iterator       iterator;
+      typedef StorageT::const_iterator const_iterator;
+
+    public:
+      Reader()
+      {}
+
+      Reader( std::istream & input_r );
+
+    public:
+      /** \name Identification.
+       * User provided optional data to identify the collection.
+      */
+      //@{
+      /** Get name. */
+      const std::string & name() const
+      { return _name; }
+
+      /** Get edition. */
+      const Edition & edition() const
+      { return _edition; }
+
+      /** Get description. */
+      const std::string & description() const
+      { return _description; }
+
+      /** Get creation date. */
+      const Date & ctime() const
+      { return _created; }
+
+    public:
+      /** \name Collected data. */
+      //@{
+      /** Whether no data collected so far. */
+      bool empty() const
+      { return _content.empty(); }
+
+      /** Number of items collected. */
+      size_type size() const
+      { return _content.size(); }
+
+      /** Iterator to the begin of collected data. */
+      const_iterator begin() const
+      { return _content.begin(); }
+
+      /** Iterator to the end of collected data. */
+      const_iterator end() const
+      { return _content.end(); }
+      //@}
+
+    private:
+      std::string _name;
+      Edition     _edition;
+      std::string _description;
+      Date        _created;
+
+      std::list<Entry> _content;
+    };
+
+    /** \relates Reader Stream output */
+    inline std::ostream & operator<<( std::ostream & str, const Reader & obj )
+    {
+      return str << "syscontent(" << obj.name() << "-" << obj.edition()
+                 << ", " << obj.size() << " entries, "
+                 << " created " << obj.ctime() << ")";
+    }
+
+    Reader::Reader( std::istream & input_r )
+    {
+      xml::Reader reader( input_r );
+      for ( ; ! reader.atEnd(); reader.nextNodeOrAttribute() )
+        {
+          dumpNode( reader );
+        }
+    }
+
     /////////////////////////////////////////////////////////////////
   } // namespace syscontent
   ///////////////////////////////////////////////////////////////////
@@ -190,40 +283,56 @@ int main( int argc, char * argv[] )
 {
   INT << "===[START]==========================================" << endl;
 
-  if ( 1 )
+  if ( 0 )
     {
       zypp::base::LogControl::TmpLineWriter shutUp;
       getZYpp()->initTarget( sysRoot );
+      ZYpp::LocaleSet lset;
+      lset.insert( Locale("de") );
+      getZYpp()->setRequestedLocales( lset );
     }
 
   ResPool pool( getZYpp()->pool() );
   USR << pool << endl;
-  dumpRange( MIL << "Languages",
-             pool.byKindBegin<Language>(), pool.byKindEnd<Language>() );
 
-  {
-    syscontent::Writer contentW;
-    contentW.name( "mycollection" )
-            .edition( Edition( "1.0" ) )
-            .description( "All the cool stuff..." );
-    for_each( pool.begin(), pool.end(),
-              bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
-    USR << contentW << endl;
-  }
+  if ( 0 )
+    {
+      if ( 0 )
+        {
+          typeof(pool.byKindBegin<Language>()) it = pool.byKindBegin<Language>();
+          it->status().setTransact( true, ResStatus::USER );
+          ++it;
+          it->status().setTransact( true, ResStatus::SOLVER );
+          pool.byNameBegin( "SUSE-Linux-SLES-x86_64" )->status().setTransact( true, ResStatus::USER );
+        }
 
-  typeof(pool.byKindBegin<Language>()) it = pool.byKindBegin<Language>();
-  it->status().setTransact( true, ResStatus::USER );
-  ++it;
-  it->status().setTransact( true, ResStatus::SOLVER );
-  pool.byNameBegin( "SUSE-Linux-SLES-x86_64" )->status().setTransact( true, ResStatus::USER );
+      syscontent::Writer contentW;
+      contentW.name( "mycollection" )
+      .edition( Edition( "1.0" ) )
+      .description( "All the cool stuff..." );
+      for_each( pool.begin(), pool.end(),
+                bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
 
-  {
-    syscontent::Writer contentW;
-    for_each( pool.begin(), pool.end(),
-              bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
-    USR << contentW << endl;
-  }
+      ofstream s( "mycollection.xml" );
+      s << contentW;
+    }
 
+  if ( 1 )
+    {
+      syscontent::Reader contentR;
+      try
+        {
+          std::ifstream input( "mycollection.xml" );
+          DBG << input << endl;
+          contentR = syscontent::Reader( input );
+        }
+      catch( const Exception & excpt_r )
+        {
+          ERR << excpt_r << endl;
+        }
+
+      MIL << contentR << endl;
+    }
 
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();

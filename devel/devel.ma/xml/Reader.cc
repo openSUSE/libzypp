@@ -90,8 +90,8 @@ namespace zypp
                                stream_r.path().asString().c_str(), "utf-8", XML_PARSE_PEDANTIC ) )
     , _node( _reader )
     {
-      if ( ! _reader )
-        ZYPP_THROW( Exception( "Not open" ) );
+      if ( ! _reader || ! stream_r.stream().good() )
+        ZYPP_THROW( Exception( "Bad input stream" ) );
       // set error handler
       xmlTextReaderSetStructuredErrorHandler( _reader, structuredErrorFunc, NULL );
       // TODO: set validation

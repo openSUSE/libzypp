@@ -293,11 +293,20 @@ ResolverContext::upgrade (PoolItem_Ref item, PoolItem_Ref old_item, bool is_soft
     _XDEBUG( "ResolverContext[" << this << "]::upgrade(" << item << " upgrades " << old_item << ")" );
 
     status = getStatus(item);
-
-    if (status.isToBeUninstalled()
-	|| status.isImpossible())
-	return false;
     
+    if (status.isToBeUninstalled()) {
+	ResolverInfo_Ptr misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_INSTALL_TO_BE_UNINSTALLED,
+							   item, RESOLVER_INFO_PRIORITY_VERBOSE);
+	addError (misc_info);
+        return false;
+    }
+    if (status.isImpossible()) {
+	ResolverInfo_Ptr misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_UNINSTALLABLE,
+							   item, RESOLVER_INFO_PRIORITY_VERBOSE);
+	addError (misc_info);
+	return false;
+    }
+
     if (status.isToBeInstalled())
 	return true;
 

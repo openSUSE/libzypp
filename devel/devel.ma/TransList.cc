@@ -1,10 +1,5 @@
 #include "Tools.h"
 
-extern "C"
-{
-#include <libxml/xmlreader.h>
-#include <libxml/xmlerror.h>
-}
 #include <iostream>
 #include <fstream>
 #include <list>
@@ -27,7 +22,7 @@ extern "C"
 #include <zypp/Date.h>
 #include <zypp/Rel.h>
 
-#include "zypp/xml/Reader.h"
+#include "zypp/parser/xml/Reader.h"
 
 #include "zypp/ZYppFactory.h"
 #include "zypp/SysContent.h"
@@ -171,99 +166,6 @@ namespace zypp
   namespace syscontent
   { /////////////////////////////////////////////////////////////////
 
-    class Reader
-    {
-    public:
-      struct Entry
-      {
-        std::string _kind;
-        std::string _name;
-        Edition     _edition;
-        Arch        _arch;
-      };
-
-    private:
-      typedef std::list<Entry> StorageT;
-
-    public:
-      typedef StorageT::value_type     value_type;
-      typedef StorageT::size_type      size_type;
-      typedef StorageT::iterator       iterator;
-      typedef StorageT::const_iterator const_iterator;
-
-    public:
-      Reader()
-      {}
-
-      Reader( std::istream & input_r );
-
-    public:
-      /** \name Identification.
-       * User provided optional data to identify the collection.
-      */
-      //@{
-      /** Get name. */
-      const std::string & name() const
-      { return _name; }
-
-      /** Get edition. */
-      const Edition & edition() const
-      { return _edition; }
-
-      /** Get description. */
-      const std::string & description() const
-      { return _description; }
-
-      /** Get creation date. */
-      const Date & ctime() const
-      { return _created; }
-
-    public:
-      /** \name Collected data. */
-      //@{
-      /** Whether no data collected so far. */
-      bool empty() const
-      { return _content.empty(); }
-
-      /** Number of items collected. */
-      size_type size() const
-      { return _content.size(); }
-
-      /** Iterator to the begin of collected data. */
-      const_iterator begin() const
-      { return _content.begin(); }
-
-      /** Iterator to the end of collected data. */
-      const_iterator end() const
-      { return _content.end(); }
-      //@}
-
-    private:
-      std::string _name;
-      Edition     _edition;
-      std::string _description;
-      Date        _created;
-
-      std::list<Entry> _content;
-    };
-
-    /** \relates Reader Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const Reader & obj )
-    {
-      return str << "syscontent(" << obj.name() << "-" << obj.edition()
-                 << ", " << obj.size() << " entries, "
-                 << " created " << obj.ctime() << ")";
-    }
-
-    Reader::Reader( std::istream & input_r )
-    {
-      xml::Reader reader( input_r );
-      for ( ; ! reader.atEnd(); reader.nextNodeOrAttribute() )
-        {
-          dumpNode( reader );
-        }
-    }
-
     /////////////////////////////////////////////////////////////////
   } // namespace syscontent
   ///////////////////////////////////////////////////////////////////
@@ -282,30 +184,23 @@ namespace zypp
 int main( int argc, char * argv[] )
 {
   INT << "===[START]==========================================" << endl;
+  bool write = false;
+  bool read = true;
 
-  if ( 0 )
+  if ( write )
     {
       zypp::base::LogControl::TmpLineWriter shutUp;
       getZYpp()->initTarget( sysRoot );
       ZYpp::LocaleSet lset;
-      lset.insert( Locale("de") );
+      lset.insert( Locale("gr") );
       getZYpp()->setRequestedLocales( lset );
     }
 
   ResPool pool( getZYpp()->pool() );
   USR << pool << endl;
 
-  if ( 0 )
+  if ( write )
     {
-      if ( 0 )
-        {
-          typeof(pool.byKindBegin<Language>()) it = pool.byKindBegin<Language>();
-          it->status().setTransact( true, ResStatus::USER );
-          ++it;
-          it->status().setTransact( true, ResStatus::SOLVER );
-          pool.byNameBegin( "SUSE-Linux-SLES-x86_64" )->status().setTransact( true, ResStatus::USER );
-        }
-
       syscontent::Writer contentW;
       contentW.name( "mycollection" )
       .edition( Edition( "1.0" ) )
@@ -317,7 +212,7 @@ int main( int argc, char * argv[] )
       s << contentW;
     }
 
-  if ( 1 )
+  if ( read )
     {
       syscontent::Reader contentR;
       try

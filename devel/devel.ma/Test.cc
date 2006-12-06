@@ -12,7 +12,7 @@
 
 #include "Measure.h"
 
-#include "zypp/xml/Reader.h"
+#include "zypp/parser/xml/Reader.h"
 
 using namespace std;
 using namespace zypp;

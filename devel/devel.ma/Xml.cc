@@ -27,7 +27,7 @@ extern "C"
 #include <zypp/Date.h>
 #include <zypp/Rel.h>
 
-#include "zypp/xml/Reader.h"
+#include "zypp/parser/xml/Reader.h"
 
 using namespace std;
 using namespace zypp;

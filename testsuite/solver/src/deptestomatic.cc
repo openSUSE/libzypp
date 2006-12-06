@@ -1518,11 +1518,12 @@ parse_xml_trial (XmlNode_Ptr node, const ResPool & pool)
 	} else if (node->equals ("addRequire")) {
 	    addDependencies (node->getProp ("kind") , node->getProp ("name"), REQUIRE, pool);
 	} else if (node->equals ("reportproblems")) {
-	    if (resolver->resolvePool() == true) {
+	    if (resolver->resolvePool() == true
+                && node->getProp ("ignoreValidSolution").empty()) {
 		RESULT << "No problems so far" << endl;
 	    }
 	    else {
-		ResolverProblemList problems = resolver->problems ();
+		ResolverProblemList problems = resolver->problems (true);
 		problems.sort(compare_problems());
 		RESULT << problems.size() << " problems found:" << endl;
 		for (ResolverProblemList::iterator iter = problems.begin(); iter != problems.end(); ++iter) {

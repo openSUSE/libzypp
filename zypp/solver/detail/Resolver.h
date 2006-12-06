@@ -214,7 +214,7 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     PoolItemList problematicUpdateItems( void ) const { return _update_items; }
 
 
-    ResolverProblemList problems (void) const;
+    ResolverProblemList problems (const bool ignoreValidSolution = false) const;
     void applySolutions (const ProblemSolutionList &solutions);
     // returns a string list of ResolverInfo of the LAST not valid solution
     std::list<std::string> problemDescription( void ) const;

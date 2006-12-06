@@ -203,11 +203,11 @@ struct AllRequires
 
 
 ResolverProblemList
-Resolver::problems (void) const
+Resolver::problems (const bool ignoreValidSolution) const
 {
     ResolverProblemList problems;
 
-    if (_best_context) {
+    if (_best_context && !ignoreValidSolution) {
 	MIL << "Valid solution found, no problems" << endl;
 	return problems;
     }

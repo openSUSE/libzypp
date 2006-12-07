@@ -40,6 +40,9 @@ namespace zypp
     class DefaultIntegral
     {
     public:
+      typedef _Tp value_type;
+
+    public:
       DefaultIntegral( _Tp val_r = _Initial )
       : _val( val_r )
       { BOOST_STATIC_ASSERT(boost::is_integral<_Tp>::value); }

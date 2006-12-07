@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec  7 10:41:56 CET 2006 - mt@suse.de
+
+- Improved realpath() wrapper in media handler class (#222521).
+- revision 4760
+
+-------------------------------------------------------------------
 Mon Dec  4 23:33:54 CET 2006 - ma@suse.de
 
 - Added syscontent::Writer: Collect and serialize a set of ResObjects.

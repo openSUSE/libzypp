@@ -240,10 +240,23 @@ ResolverContext::install (PoolItem_Ref item, bool is_soft, int other_penalty)
     }
 
     if (isParallelInstall( item )) {
-	ResolverInfoMisc_Ptr misc_info = new ResolverInfoMisc( RESOLVER_INFO_TYPE_INSTALL_PARALLEL, item, RESOLVER_INFO_PRIORITY_VERBOSE );
-	misc_info->setOtherPoolItem( getParallelInstall( item ) );
-	addError( misc_info );
-	return false;
+	ResolverInfoMisc_Ptr misc_info = new ResolverInfoMisc( RESOLVER_INFO_TYPE_INSTALL_PARALLEL,
+							       item, RESOLVER_INFO_PRIORITY_VERBOSE );
+	PoolItem_Ref otherItem = getParallelInstall ( item );
+	ResStatus statusOtherItem = getStatus (otherItem);
+	misc_info->setOtherPoolItem (otherItem);
+	if (NVRA(item.resolvable()) == NVRA(otherItem.resolvable())
+	    && status.isBySolver() && statusOtherItem.isBySolver()) {
+	    // If there has already been selected another item by the solver (e.g. from another source)
+	    // we will take that.
+	    // Bug 224698
+	    addInfo( misc_info );
+	    return true;
+	}
+	else {
+	    addError( misc_info );
+	    return false;
+	}
     }
 
     if (is_soft)
@@ -312,9 +325,21 @@ ResolverContext::upgrade (PoolItem_Ref item, PoolItem_Ref old_item, bool is_soft
 
     if (isParallelInstall( item )) {
 	ResolverInfoMisc_Ptr misc_info = new ResolverInfoMisc( RESOLVER_INFO_TYPE_INSTALL_PARALLEL, item, RESOLVER_INFO_PRIORITY_VERBOSE );
-	misc_info->setOtherPoolItem( getParallelInstall( item ) );
-	addError( misc_info );
-	return false;
+	PoolItem_Ref otherItem = getParallelInstall ( item );
+	ResStatus statusOtherItem = getStatus (otherItem);
+	misc_info->setOtherPoolItem (otherItem);
+	if (NVRA(item.resolvable()) == NVRA(otherItem.resolvable())
+	    && status.isBySolver() && statusOtherItem.isBySolver()) {
+	    // If there has already been selected another item by the solver (e.g. from another source)
+	    // we will take that.
+	    // Bug 224698	    
+	    addInfo( misc_info );
+	    return true;
+	}
+	else {
+	    addError( misc_info );
+	    return false;
+	}
     }
 
     ResStatus::TransactByValue by = ResStatus::SOLVER;

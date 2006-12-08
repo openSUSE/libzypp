@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec  8 15:34:57 CET 2006 - schubi@suse.de
+
+- Conflicting items: The resolvable will be obsoleted by another. So it is useless finding an
+  update candidate and evaluate additional branches. Revision 4763
+
+-------------------------------------------------------------------
 Thu Dec  7 10:41:56 CET 2006 - mt@suse.de
 
 - Improved realpath() wrapper in media handler class (#222521).

@@ -225,12 +225,14 @@ struct ConflictProcess
 	    // pool->foreachProvidingResItem (maybe_upgrade_dep, upgrade_candidates_cb, (void *)&upgrade_info);
 	    Dep dep( Dep::PROVIDES );
 
-	    invokeOnEach( pool.byCapabilityIndexBegin( maybe_upgrade_cap.index(), dep ),
-			  pool.byCapabilityIndexEnd( maybe_upgrade_cap.index(), dep ),
-			  resfilter::ByCapMatch( maybe_upgrade_cap ),
-			  functor::functorRef<bool,CapAndItem>(upgrade_info) );
+	    if (!actually_an_obsolete) { // The resolvable will be obsoleted by another. So it is useless finding an update candidate.
+		invokeOnEach( pool.byCapabilityIndexBegin( maybe_upgrade_cap.index(), dep ),
+			      pool.byCapabilityIndexEnd( maybe_upgrade_cap.index(), dep ),
+			      resfilter::ByCapMatch( maybe_upgrade_cap ),
+			      functor::functorRef<bool,CapAndItem>(upgrade_info) );
 
-	    _XDEBUG("found " << upgrade_info.upgrades.size() << " upgrade candidates");
+		_XDEBUG("found " << upgrade_info.upgrades.size() << " upgrade candidates");
+	    }
 #endif
 
 	    QueueItemUninstall_Ptr uninstall = new QueueItemUninstall (pool, provider, actually_an_obsolete ? QueueItemUninstall::OBSOLETE : QueueItemUninstall::CONFLICT);

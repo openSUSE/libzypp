@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Dec  8 15:45:44 CET 2006 - schubi@suse.de
+
+- In order to handle conflicting resolvable we try to update the
+  conflicting item. While evaluating these canditates an already selected
+  candidate will not be regarded. So it could be that an older package
+  will be selected for update although a newer has already been selected. Revision 4765
+
+-------------------------------------------------------------------
 Fri Dec  8 15:34:57 CET 2006 - schubi@suse.de
 
 - Conflicting items: The resolvable will be obsoleted by another. So it is useless finding an

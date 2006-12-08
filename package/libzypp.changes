@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Dec  8 16:03:51 CET 2006 - schubi@suse.de
+
+- If there has already been selected another item by the solver (e.g. from
+  another source) we will take thatone in order to avoid parallel
+  installation and there concerning error messages.
+  Bug 224698               
+
+  rev 4767 
+
+-------------------------------------------------------------------
 Fri Dec  8 15:45:44 CET 2006 - schubi@suse.de
 
 - In order to handle conflicting resolvable we try to update the

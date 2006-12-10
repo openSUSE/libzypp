@@ -16,10 +16,7 @@ LDADD =	      -L$(top_srcdir)/zypp/.libs -lzypp -lboost_regex
 
 ## ##################################################
 
-ADD_SOURCES = 	xml/Node.cc		xml/Node.h	\
-		xml/Reader.cc		xml/Reader.h	\
-		xml/XmlString.cc	xml/XmlString.h	\
-		xml/libxmlfwd.cc	xml/libxmlfwd.h
+ADD_SOURCES =
 
 #		debug/Debug.cc
 

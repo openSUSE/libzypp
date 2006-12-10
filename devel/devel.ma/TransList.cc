@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <list>
 #include <map>
 #include <set>
@@ -21,8 +22,11 @@
 #include <zypp/CheckSum.h>
 #include <zypp/Date.h>
 #include <zypp/Rel.h>
+#include <zypp/Bit.h>
 
 #include "zypp/parser/xml/Reader.h"
+#include "zypp/parser/xml/ParseDef.h"
+#include "zypp/parser/xml/ParseDefConsume.h"
 
 #include "zypp/ZYppFactory.h"
 #include "zypp/SysContent.h"
@@ -163,17 +167,36 @@ template<class _OutputIterator>
 namespace zypp
 { /////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
-  namespace syscontent
+  namespace xml
   { /////////////////////////////////////////////////////////////////
 
+
     /////////////////////////////////////////////////////////////////
-  } // namespace syscontent
+  } // namespace xml
   ///////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 
-
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{ /////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+  namespace syscontent
+  { /////////////////////////////////////////////////////////////////
+    std::ostream & operator<<( std::ostream & str, const Reader::Entry & obj )
+    {
+      str << "[" << obj.kind() << "]"
+          << " " << obj.name()
+          << "-" << obj.edition()
+          << "." << obj.arch();
+      return str;
+    }
+    /////////////////////////////////////////////////////////////////
+  } // namespace syscontent
+  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+} // namespace zypp
 ///////////////////////////////////////////////////////////////////
 
 /******************************************************************
@@ -184,13 +207,17 @@ namespace zypp
 int main( int argc, char * argv[] )
 {
   INT << "===[START]==========================================" << endl;
+
   bool write = false;
   bool read = true;
 
-  if ( write )
+  if ( 1 )
     {
       zypp::base::LogControl::TmpLineWriter shutUp;
       getZYpp()->initTarget( sysRoot );
+    }
+  if ( write )
+    {
       ZYpp::LocaleSet lset;
       lset.insert( Locale("gr") );
       getZYpp()->setRequestedLocales( lset );
@@ -203,8 +230,8 @@ int main( int argc, char * argv[] )
     {
       syscontent::Writer contentW;
       contentW.name( "mycollection" )
-      .edition( Edition( "1.0" ) )
-      .description( "All the cool stuff..." );
+              .edition( Edition( "1.0" ) )
+              .description( "All the cool stuff..." );
       for_each( pool.begin(), pool.end(),
                 bind( &syscontent::Writer::addIf, ref(contentW), _1 ) );
 
@@ -214,11 +241,11 @@ int main( int argc, char * argv[] )
 
   if ( read )
     {
+      Measure x( "Parse" );
+      std::ifstream input( "mycollection.xml" );
       syscontent::Reader contentR;
       try
         {
-          std::ifstream input( "mycollection.xml" );
-          DBG << input << endl;
           contentR = syscontent::Reader( input );
         }
       catch( const Exception & excpt_r )
@@ -227,6 +254,8 @@ int main( int argc, char * argv[] )
         }
 
       MIL << contentR << endl;
+
+      for_each( contentR.begin(), contentR.end(), Print() );
     }
 
   INT << "===[END]============================================" << endl << endl;

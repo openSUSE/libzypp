@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Dec 11 11:01:37 CET 2006 - schubi@suse.de
+
+- Item could has already been selected to soft uninstall (e.G. remove
+  pattern which recommend this item ). Do not throw an exception anymore.
+  bug#225278 
+- revision 4776
+
+-------------------------------------------------------------------
 Mon Dec 11 01:33:13 CET 2006 - ma@suse.de
 
 - Added syscontent::Reader: Parse serialized set of ResObjects.

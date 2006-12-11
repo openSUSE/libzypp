@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Mon Dec 11 16:05:56 CET 2006 - schubi@suse.de
+
+- Enable system resolvables in Helix parser (Revision 4787)
+- deptestomatic:
+  Resetting transaction with the correct call;
+  bugfix; Added kind in keep state (Revision 4788)
+- Wrong behaviour in soft install/uninstall. --> Setting Transact with
+  soft (Revision 4789)
+- New call added: maySetToBeUninstalledSoft (Revision 4789)
+  Both are only functions for the solver (Revision 4789)
+- Resetting "by causer" in order to distinguish from state
+  "keep by user". ( function setLock in order to remove lock)
+  (Revision 4789)
+- Better fix for Bug 217574: Checking if the resolveable CAN be deleted soft
+  in QueueItemUninstall.cc (Revision 4790)
+- Regarding "keep state by user". So avoiding "reselecting" by
+  other requirements. 
+  Give a corresponding problem solution if a resolvable satisfy
+  a dependency, but has been set to keep by the user.
+  Bug : 222531 (Revision 4791)
+
+-------------------------------------------------------------------
 Mon Dec 11 13:52:54 CET 2006 - ma@suse.de
 
 - Allow to disable autoprotection of foreign vendor items. Required

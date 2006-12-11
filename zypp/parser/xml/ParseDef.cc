@@ -443,7 +443,7 @@ namespace zypp
     { _pimpl->_callback.cancelRedirect(); }
 
     shared_ptr<ParseDefConsume> ParseDef::getConsumer() const
-    { _pimpl->_callback.getRedirect(); }
+    { return _pimpl->_callback.getRedirect(); }
 
 
     void ParseDef::take( Reader & reader_r )

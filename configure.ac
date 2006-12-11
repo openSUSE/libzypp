@@ -139,7 +139,7 @@ AC_SUBST(CURL_LIBS)
 dnl ==================================================
 dnl sqlite
 AM_CONDITIONAL(BUILD_ZMD, true)
-PKG_CHECK_MODULES(SQLITEZMD, sqlitezmd3, pkg_sqlitezmd=yes, pkg_sqlitezmd=no)
+PKG_CHECK_MODULES(SQLITE, sqlitezmd3, pkg_sqlitezmd=yes, pkg_sqlitezmd=no)
 if test $pkg_sqlitezmd = no; then
   AC_MSG_RESULT([sqlite-zmd not found.. trying normal sqlite])
   PKG_CHECK_MODULES(SQLITE, sqlite3, pkg_sqlite=yes, pkg_sqlite=no)

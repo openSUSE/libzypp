@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 11 17:39:24 CET 2006 - dmacvicar@suse.de
+
+- fix return call in new xml parser
+- r4793 
+
+-------------------------------------------------------------------
 Mon Dec 11 16:05:56 CET 2006 - schubi@suse.de
 
 - Enable system resolvables in Helix parser (Revision 4787)

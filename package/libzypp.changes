@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 11 11:48:09 CET 2006 - dmacvicar@suse.de
+
+- use sqlite-zmd if using > 10.2 in spec. Use the one available
+  durin compile.
+- r4780 
+
+-------------------------------------------------------------------
 Mon Dec 11 11:01:37 CET 2006 - schubi@suse.de
 
 - Item could has already been selected to soft uninstall (e.G. remove

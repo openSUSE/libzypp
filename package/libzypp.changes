@@ -1,16 +1,24 @@
 -------------------------------------------------------------------
+Mon Dec 11 13:52:54 CET 2006 - ma@suse.de
+
+- Allow to disable autoprotection of foreign vendor items. Required
+  in zmd-backend. (F301735).
+- revision 4785
+- version 2.10.1
+
+-------------------------------------------------------------------
 Mon Dec 11 11:48:09 CET 2006 - dmacvicar@suse.de
 
 - use sqlite-zmd if using > 10.2 in spec. Use the one available
   durin compile.
-- r4780 
+- r4780
 
 -------------------------------------------------------------------
 Mon Dec 11 11:01:37 CET 2006 - schubi@suse.de
 
 - Item could has already been selected to soft uninstall (e.G. remove
   pattern which recommend this item ). Do not throw an exception anymore.
-  bug#225278 
+  bug#225278
 - revision 4776
 
 -------------------------------------------------------------------

@@ -1,12 +1,20 @@
 -------------------------------------------------------------------
+Mon Dec 11 01:33:13 CET 2006 - ma@suse.de
+
+- Added syscontent::Reader: Parse serialized set of ResObjects.
+  (for F300729)
+- revision 4770
+- version 2.10.0
+
+-------------------------------------------------------------------
 Fri Dec  8 16:03:51 CET 2006 - schubi@suse.de
 
 - If there has already been selected another item by the solver (e.g. from
   another source) we will take thatone in order to avoid parallel
   installation and there concerning error messages.
-  Bug 224698               
+  Bug 224698
 
-  rev 4767 
+  rev 4767
 
 -------------------------------------------------------------------
 Fri Dec  8 15:45:44 CET 2006 - schubi@suse.de

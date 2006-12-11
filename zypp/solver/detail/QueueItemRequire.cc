@@ -205,8 +205,10 @@ struct RequireProcess
 	if (! (status.isToBeUninstalled() || status.isImpossible())
 	    && ! _context->isParallelInstall( provider )
 	    && _context->itemIsPossible( provider )
-	    && ! provider.status().isLocked() 
-	) {
+	    && ! provider.status().isLocked()
+	    && ! (provider.status().isKept()
+		  &&provider.status().isByUser())
+	    ) {
 
 	    // if we found a to-be-installed provider, choose this and drop all others
 	    if (status.isToBeInstalled()			// scheduled for install
@@ -291,6 +293,9 @@ struct NoInstallableProviders
 	} else if (provider.status().isLocked()) {
 	    misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_LOCKED_PROVIDER, requirer, RESOLVER_INFO_PRIORITY_VERBOSE, match);
 	    misc_info->setOtherPoolItem (provider);
+	} else if (provider.status().isKept() && provider.status().isByUser()) {
+	    misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_KEEP_PROVIDER, requirer, RESOLVER_INFO_PRIORITY_VERBOSE, match);
+	    misc_info->setOtherPoolItem (provider);	    
  	} else	if (provider->arch().compatibleWith( context->architecture() )) {
 	    misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_OTHER_ARCH_PROVIDER,
 								   requirer, RESOLVER_INFO_PRIORITY_VERBOSE, match);

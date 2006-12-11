@@ -298,14 +298,14 @@ struct ConflictProcess
 	    context->addInfo (misc_info);
 
 	}
-	else if ((status.isToBeUninstalled() && !status.isToBeUninstalledDueToUnlink())
+	else if (status.isToBeUninstalled()
 		|| status.isImpossible()
 		|| status.isToBeUninstalledDueToObsolete()) {
 
 	    /* This is the easy case -- we do nothing. */
 	}
 	else {
-	    ZYPP_THROW (Exception ("Unhandled status in ConflictProcess"));
+	    ERR << "Unhandled status in ConflictProcess; item: " << provider << " : " << status << endl;
 	}
 
 	return true;

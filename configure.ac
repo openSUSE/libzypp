@@ -139,10 +139,14 @@ AC_SUBST(CURL_LIBS)
 dnl ==================================================
 dnl sqlite
 AM_CONDITIONAL(BUILD_ZMD, true)
-PKG_CHECK_MODULES(SQLITE, sqlite3, pkg_sqlite=yes, pkg_sqlite=no)
-if test $pkg_sqlite = no; then
-  echo
-  AC_MSG_ERROR([Could not find sqlite3 library, please install sqlite-devel])
+PKG_CHECK_MODULES(SQLITEZMD, sqlitezmd3, pkg_sqlitezmd=yes, pkg_sqlitezmd=no)
+if test $pkg_sqlitezmd = no; then
+  AC_MSG_RESULT([sqlite-zmd not found.. trying normal sqlite])
+  PKG_CHECK_MODULES(SQLITE, sqlite3, pkg_sqlite=yes, pkg_sqlite=no)
+  if test $pkg_sqlite = no; then
+    echo
+    AC_MSG_ERROR([Could not find sqlite-zmd or sqlite library, please install sqlite-zmd-devel (10.2 and stable) or sqlite-devel (SLES10)])
+  fi
 fi
 
 dnl ==================================================

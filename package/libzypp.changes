@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Dec 13 18:03:26 CET 2006 - dmacvicar@suse.de
+
+- feature #301369
+  Import listed GPG Keys from an trusted installation source
+- r4803
+- libzypp 2.11.0
+
+-------------------------------------------------------------------
 Mon Dec 11 17:39:24 CET 2006 - dmacvicar@suse.de
 
 - fix return call in new xml parser

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 18 16:10:59 CET 2006 - schubi@suse.de
+
+- verifySystem: Do only regard items which will be on the system after the
+  commit. Fate 301178
+
+-------------------------------------------------------------------
 Wed Dec 13 18:03:26 CET 2006 - dmacvicar@suse.de
 
 - feature #301369

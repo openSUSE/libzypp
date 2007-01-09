@@ -315,10 +315,12 @@ typedef map<string, PoolItem_Ref> UpgradesMap;
 struct LookForUpgrades
 {
     PoolItem_Ref installed;
+    ResolverContext_Ptr _context;    
     UpgradesMap upgrades;
 
-    LookForUpgrades (PoolItem_Ref i)
+    LookForUpgrades (PoolItem_Ref i, ResolverContext_Ptr ctx)
 	: installed (i)
+	, _context (ctx)	
     { }
 
     bool operator()( PoolItem_Ref provider )
@@ -327,7 +329,8 @@ struct LookForUpgrades
 
 	if (it != upgrades.end()) {				// provider with same name found
 	    int cmp = it->second->arch().compare( provider->arch() );
-	    if (cmp < 0) {						// new provider has better arch
+	    if (_context->upgradeMode()					// only in upgrade mode
+		&& cmp < 0) {						// new provider has better arch
 		it->second = provider;
 	    }
 	    else if (cmp == 0) {					// new provider has equal arch
@@ -672,7 +675,7 @@ provider_done:;
 	    && _requiring_item)
 	{
 
-	    LookForUpgrades info (_requiring_item);
+	    LookForUpgrades info (_requiring_item, context);
 
 //	    pool()->foreachUpgrade (_requiring_item, new Channel(CHANNEL_TYPE_ANY), look_for_upgrades_cb, (void *)&upgrade_list);
 

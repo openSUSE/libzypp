@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan  9 18:02:55 CET 2007 - schubi@suse.de
+
+- update packages: changing architecture is only valid while an
+  system update and NOT while an update via a patch.
+  Bug 230685 - x86_64 MozillaFirefox binaries in security update repository
+
+-------------------------------------------------------------------
 Mon Dec 18 16:10:59 CET 2006 - schubi@suse.de
 
 - verifySystem: Do only regard items which will be on the system after the

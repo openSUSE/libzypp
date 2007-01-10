@@ -35,6 +35,7 @@
 #include "zypp/target/CommitLog.h"
 #include "zypp/target/TargetImpl.h"
 #include "zypp/target/TargetCallbackReceiver.h"
+#include "zypp/target/rpm/librpmDb.h"
 
 #include "zypp/pool/GetResolvablesToInsDel.h"
 #include "zypp/solver/detail/Helper.h"
@@ -203,11 +204,20 @@ namespace zypp
           : _rpmdb( rpmdb_r )
       {}
 
-      bool operator()( const std::string & name_r, const Edition & ed_r ) const
+      bool operator()( const std::string & name_r,
+                       const Edition &     ed_r,
+                       const Arch &        arch_r ) const
       {
-        if ( ed_r == Edition::noedition )
-          return _rpmdb.hasPackage( name_r );
-        return _rpmdb.hasPackage( name_r, ed_r );
+        rpm::librpmDb::db_const_iterator it;
+        for ( it.findByName( name_r ); *it; ++it )
+          {
+            if ( arch_r == it->tag_arch()
+                 && ( ed_r == Edition::noedition || ed_r == it->tag_edition() ) )
+              {
+                return true;
+              }
+          }
+        return false;
       }
     private:
       rpm::RpmDb & _rpmdb;

@@ -37,14 +37,16 @@ namespace zypp
     {
     public:
       /** Get installed Editions callback signature. */
-      typedef function<bool ( const std::string &, const Edition & )> QueryInstalledCB;
+      typedef function<bool ( const std::string &, const Edition &, const Arch & )> QueryInstalledCB;
 
       /** Set callback. */
       PackageProviderPolicy & queryInstalledCB( QueryInstalledCB queryInstalledCB_r )
       { _queryInstalledCB = queryInstalledCB_r; return *this; }
 
       /** Evaluate callback. */
-      bool queryInstalled( const std::string & name_r, const Edition & ed_r = Edition() ) const;
+      bool queryInstalled( const std::string & name_r,
+                           const Edition &     ed_r,
+                           const Arch &        arch_r ) const;
 
     private:
       QueryInstalledCB _queryInstalledCB;

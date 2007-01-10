@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jan 10 16:53:09 CET 2007 - ma@suse.de
+
+- Don't consider patch/delta rpms if package architecture changes.
+  (#231254)
+- version 2.11.2
+- revision 4843
+
+-------------------------------------------------------------------
 Tue Jan  9 18:02:55 CET 2007 - schubi@suse.de
 
 - update packages: changing architecture is only valid while an
@@ -23,7 +31,7 @@ Wed Dec 13 18:03:26 CET 2006 - dmacvicar@suse.de
 Mon Dec 11 17:39:24 CET 2006 - dmacvicar@suse.de
 
 - fix return call in new xml parser
-- r4793 
+- r4793
 
 -------------------------------------------------------------------
 Mon Dec 11 16:05:56 CET 2006 - schubi@suse.de
@@ -42,7 +50,7 @@ Mon Dec 11 16:05:56 CET 2006 - schubi@suse.de
 - Better fix for Bug 217574: Checking if the resolveable CAN be deleted soft
   in QueueItemUninstall.cc (Revision 4790)
 - Regarding "keep state by user". So avoiding "reselecting" by
-  other requirements. 
+  other requirements.
   Give a corresponding problem solution if a resolvable satisfy
   a dependency, but has been set to keep by the user.
   Bug : 222531 (Revision 4791)

@@ -5,6 +5,7 @@
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Exception.h>
 #include <zypp/base/ProvideNumericId.h>
+#include <zypp/base/DefaultIntegral.h>
 
 using namespace zypp;
 #include "FakePool.h"
@@ -13,6 +14,7 @@ using namespace zypp;
 #include "zypp/ResPoolProxy.h"
 #include <zypp/SourceManager.h>
 #include <zypp/SourceFactory.h>
+#include <zypp/VendorAttr.h>
 
 #include "zypp/NVRAD.h"
 #include "zypp/ResTraits.h"
@@ -37,15 +39,6 @@ using namespace zypp::target::rpm;
 ///////////////////////////////////////////////////////////////////
 
 static const Pathname sysRoot( "/Local/ROOT" );
-
-///////////////////////////////////////////////////////////////////
-
-struct Print
-{
-  template<class _Tp>
-    bool operator()( const _Tp & val_r ) const
-    { USR << val_r << endl; return true; }
-};
 
 ///////////////////////////////////////////////////////////////////
 
@@ -79,7 +72,12 @@ struct SetTransactValue
   ResStatus::TransactByValue _causer;
 
   bool operator()( const PoolItem & pi ) const
-  { return pi.status().setTransactValue( _newVal, _causer ); }
+  {
+    bool ret = pi.status().setTransactValue( _newVal, _causer );
+    if ( ! ret )
+      ERR << _newVal <<  _causer << " " << pi << endl;
+    return ret;
+  }
 };
 
 struct StatusReset : public SetTransactValue
@@ -89,6 +87,12 @@ struct StatusReset : public SetTransactValue
   {}
 };
 
+struct StatusInstall : public SetTransactValue
+{
+  StatusInstall()
+  : SetTransactValue( ResStatus::TRANSACT, ResStatus::USER )
+  {}
+};
 
 inline bool selectForTransact( const NameKindProxy & nkp, Arch arch = Arch() )
 {
@@ -200,6 +204,144 @@ bool solve( bool establish = false )
         const PoolItem               _byPoolitem;
       };
 
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+struct IMediaKey
+{
+  IMediaKey()
+  {}
+
+  IMediaKey( const Source_Ref & source_r, unsigned mediaNr_r )
+  : _source( source_r )
+  , _mediaNr( mediaNr_r )
+  {}
+
+  bool operator==( const IMediaKey & rhs ) const
+  { return( _source == rhs._source && _mediaNr == rhs._mediaNr ); }
+
+  bool operator!=( const IMediaKey & rhs ) const
+  { return ! operator==( rhs ); }
+
+  bool operator<( const IMediaKey & rhs ) const
+  {
+    return( _source.numericId() < rhs._source.numericId()
+            || ( _source.numericId() == rhs._source.numericId()
+                 && _mediaNr < rhs._mediaNr ) );
+  }
+
+  Source_Ref                  _source;
+  DefaultIntegral<unsigned,0> _mediaNr;
+};
+
+std::ostream & operator<<( std::ostream & str, const IMediaKey & obj )
+{
+  return str << "[" << obj._source.numericId() << "|" << obj._mediaNr << "]"
+             << " " << obj._source.alias();
+}
+
+///////////////////////////////////////////////////////////////////
+
+struct IMediaValue
+{
+  void add( const PoolItem & pi_r )
+  {
+    ++_count;
+    _size += pi_r->archivesize();
+  }
+
+  DefaultIntegral<unsigned,0> _count;
+  ByteCount                   _size;
+};
+
+std::ostream & operator<<( std::ostream & str, const IMediaValue & obj )
+{
+  return str << "[" <<  str::numstring(obj._count,3) << "|" << obj._size.asString(6) << "]";
+}
+
+///////////////////////////////////////////////////////////////////
+
+struct IMedia
+{
+  typedef std::pair<IMediaKey,IMediaValue>            IMediaElem;
+  typedef std::list<IMediaElem>                       IMediaSequence;
+
+  typedef std::pair<IMediaElem,IMediaValue>           ICacheElem;
+  typedef std::list<IMediaElem>                       ICacheSequence;
+
+  void add( const PoolItem & pi )
+  {
+    if ( ! onInteractiveMedia( pi ) )
+      return;
+
+    IMediaKey current( pi->source(), pi->sourceMediaNr() );
+
+    if ( current != _lastInteractive )
+      {
+
+        if ( !_iMediaSequence.empty() )
+          WAR << "After " << _iMediaSequence.back().second._count << endl;
+
+        INT << "Change from " << _lastInteractive << endl;
+        INT << "         to " << current << endl;
+
+        _lastInteractive = current;
+        _iMediaSequence.push_back( std::pair<IMediaKey,IMediaValue>
+                                   ( _lastInteractive, IMediaValue() ) );
+      }
+
+    _iMediaSequence.back().second.add( pi );
+    DBG << "After " << _iMediaSequence.back().second._count << " - " << pi << endl;
+  }
+
+  void done()
+  {
+    if ( !_iMediaSequence.empty() )
+      WAR << "Final " << _iMediaSequence.back().second._count << endl;
+  }
+
+  bool onInteractiveMedia( const PoolItem & pi ) const
+  {
+    if ( pi->sourceMediaNr() == 0 ) // no media access at all
+      return false;
+    std::string scheme( pi->source().url().getScheme() );
+    return true || ( scheme == "dvd" || scheme == "cd" );
+  }
+
+  void ComputeCache()
+  {
+
+    for ( IMediaSequence::const_iterator it = _iMediaSequence.begin();
+          it != _iMediaSequence.end(); ++it )
+      {
+
+      }
+  }
+
+  IMediaKey      _lastInteractive;
+  IMediaSequence _iMediaSequence;
+};
+
+std::ostream & operator<<( std::ostream & str, const IMedia & obj )
+{
+  str << "Sequence:" << endl;
+  for ( IMedia::IMediaSequence::const_iterator it = obj._iMediaSequence.begin();
+        it != obj._iMediaSequence.end(); ++it )
+    {
+      str << "   " << it->first << "\t" << it->second << endl;
+    }
+
+
+
+  return str;
+}
+
+
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
 /******************************************************************
 **
 **      FUNCTION NAME : main
@@ -209,86 +351,82 @@ int main( int argc, char * argv[] )
 {
   //zypp::base::LogControl::instance().logfile( "log.restrict" );
   INT << "===[START]==========================================" << endl;
-
-  const char * data2[] = {
-     "@ product"
-    ,"@ installed"
-    ,"- prodold 1 1 x86_64"
-    ,"@ provides"
-    ,"prodfoo"
-    ,"@ available"
-    ,"- prodnew 1 1 x86_64"
-    ,"@ obsoletes"
-    ,"prodfoo"
-    ,"- prodnew2 1 1 x86_64"
-    ,"@ obsoletes"
-    ,"prodold"
-    ,"prodfoo"
-    ,"@ fin"
-  };
-  const char * data[] = {
-     "@ product"
-    ,"@ installed"
-    ,"- test 1 1 x86_64"
-    ,"- moretest 1 1 x86_64"
-    ,"@ provides"
-    ,"test"
-    ,"@ available"
-    ,"- nomoretest 1 1 x86_64"
-    ,"@ obsoletes"
-    ,"test"
-    ,"moretest"
-    ,"nomoretest"
-    ,"@ obsoletes package"
-    ,"xxxxx"
-    ,"- moretest 1 1 x86_64"
-    ,"@ provides"
-    ,"test"
-    ,"@ package"
-    ,"- xxxxx 1 1 x86_64"
-    ,"@ fin"
-  };
-  addPool( data, data + ( sizeof(data) / sizeof(const char *) ) );
-
-
   ResPool pool( getZYpp()->pool() );
-  poolRequire<Product>( "nomoretest" );
-  //poolRequire<Product>( "prodnew" );
-  //poolRequire<Product>( "prodnew2" );
-  WAR << getZYpp()->pool().additionalRequire()[ResStatus::USER] << endl;
+
+  if ( 1 )
+    {
+      zypp::base::LogControl::TmpLineWriter shutUp;
+      getZYpp()->initTarget( sysRoot );
+    }
+  MIL << "Added target: " << pool << endl;
+
+  if ( 1 )
+    {
+      zypp::base::LogControl::TmpLineWriter shutUp;
+      Source_Ref src;
+      src = createSource( "dir:/Local/SUSE-Linux-10.1-Build_830-i386/CD1",
+                          "Build_830" );
+      getZYpp()->addResolvables( src.resolvables() );
+      src = createSource( "dir:/Local/SUSE-Linux-10.1-Build_830-Addon-BiArch/CD1",
+                          "Addon-BiArch" );
+      getZYpp()->addResolvables( src.resolvables() );
+    }
+  MIL << "Added sources: " << pool << endl;
+
+  // select...
+  for_each( pool.byKindBegin<Product>(), pool.byKindEnd<Product>(), StatusInstall() );
+#define selt(K,N) selectForTransact( nameKindProxy<K>( pool, #N ) )
+  selt( Selection, default );
+  selt( Package, RealPlayer );
+  selt( Package, acroread );
+  selt( Package, flash-player );
+#undef selt
 
 
   solve();
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-
-  PoolItem pi;
-
-  //pi = *pool.byNameBegin("test");
-  //SEC << pi << endl;
-  //forEachPoolItemMatching( pool, Dep::OBSOLETES, pi, Print() );
-
-
-  //pi = *pool.byNameBegin("test");
-  //SEC << pi << endl;
-  //forEachPoolItemMatching( pool, Dep::OBSOLETES, pi, Print() );
-
-
-  pi = *pool.byNameBegin("nomoretest");
-  SEC << pi << endl;
-
-  forEachPoolItemMatchedBy( pool, pi, Dep::OBSOLETES,
-                            OncePerPoolItem( StorageRemoveObsoleted(pi) ) );
-
-  INT << "===[END]============================================" << endl << endl;
-  zypp::base::LogControl::instance().logNothing();
-  return 0;
-
+  //vdumpPoolStats( USR << "Transacting:"<< endl,
+  //                make_filter_begin<resfilter::ByTransact>(pool),
+  //                make_filter_end<resfilter::ByTransact>(pool) ) << endl;
 
   pool::GetResolvablesToInsDel collect( pool, pool::GetResolvablesToInsDel::ORDER_BY_MEDIANR );
   typedef pool::GetResolvablesToInsDel::PoolItemList PoolItemList;
   MIL << "GetResolvablesToInsDel:" << endl << collect << endl;
+
+  {
+    const PoolItemList & items_r( collect._toInstall );
+
+
+    unsigned snr = 0;
+
+    for ( PoolItemList::const_iterator it = items_r.begin(); it != items_r.end(); it++ )
+      {
+        if (isKind<Package>(it->resolvable()))
+          {
+            Package::constPtr p = asKind<Package>(it->resolvable());
+            if (it->status().isToBeInstalled())
+              {
+                DBG << "[" << snr << "] " << p << endl;
+                ++snr;
+              }
+          }
+
+
+      }
+
+
+
+
+
+    IMedia m;
+    for_each( collect._toInstall.begin(), collect._toInstall.end(),
+              bind( &IMedia::add, ref(m), _1 ) );
+    m.done();
+    MIL << m << endl;
+    INT << "===" << endl;
+  }
+  INT << "===[END]============================================" << endl << endl;
+  zypp::base::LogControl::instance().logNothing();
+  return 0;
 
   if ( 1 )
     {
@@ -317,7 +455,6 @@ int main( int argc, char * argv[] )
                  fst, collect._toInstall.end() ) << endl;
       dumpRange( ERR << "toDelete: " << endl,
                  collect._toDelete.begin(), collect._toDelete.end() ) << endl;
-      for_each( collect._toInstall.begin(), fst, GetObsoletes() );
     }
   else
     {

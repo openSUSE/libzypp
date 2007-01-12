@@ -331,9 +331,9 @@ struct VerifySystem : public resfilter::PoolItemFilterFunctor
 
 
 bool
-Resolver::verifySystem (void)
+Resolver::verifySystem (bool considerNewHardware)
 {
-    _DEBUG( "Resolver::verifySystem()" );
+    _DEBUG ("Resolver::verifySystem() " << (considerNewHardware ? "consider new hardware":""));
 
     VerifySystem info (*this);
 
@@ -345,7 +345,12 @@ Resolver::verifySystem (void)
 
     _verifying = true;
 
-    return resolveDependencies ();
+    if (considerNewHardware) {
+	return freshenPool(); // evaluate all Freshens/Supplements and solve
+    }
+    else {
+	return resolveDependencies (); // do solve only
+    }
 }
 
 

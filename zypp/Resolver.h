@@ -49,9 +49,11 @@ namespace zypp
      * Resolve package dependencies:
      *
      * Verify consistency of system
+     * considerNewHardware = install packages which depends on
+     * new hardware
      *
      **/
-    bool verifySystem (void);
+    bool verifySystem (bool considerNewHardware = false);
 
     /**
      * Establish state of 'higher level' Resolvables in Pool

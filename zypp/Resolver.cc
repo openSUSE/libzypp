@@ -57,8 +57,8 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  bool Resolver::verifySystem ()
-  { return _pimpl->verifySystem(); }
+  bool Resolver::verifySystem (bool considerNewHardware)
+  { return _pimpl->verifySystem(considerNewHardware); }
   bool Resolver::establishPool ()
   { return _pimpl->establishPool(); }
   bool Resolver::freshenPool ()

@@ -196,7 +196,7 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     void setForceResolve (const bool force) { _forceResolve = force; }
     const bool forceResolve() { return _forceResolve; }
 
-    bool verifySystem (void);
+    bool verifySystem (bool considerNewHardware = false);
     void establishState (ResolverContext_Ptr context = NULL);
     bool establishPool (void);
     void freshenState( ResolverContext_Ptr context = NULL );

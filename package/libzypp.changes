@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 12 14:01:04 CET 2007 - jsrain@suse.cz
+
+- merged texts from proofread
+
+-------------------------------------------------------------------
 Wed Jan 10 16:53:09 CET 2007 - ma@suse.de
 
 - Don't consider patch/delta rpms if package architecture changes.

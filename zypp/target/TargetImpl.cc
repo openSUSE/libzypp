@@ -702,7 +702,7 @@ namespace zypp
       }
 
       if ( abort )
-        ZYPP_THROW( TargetAbortedException( N_("Target commit aborted by user.") ) );
+        ZYPP_THROW( TargetAbortedException( N_("Installation has been aborted as directed.") ) );
 
       return remaining;
     }

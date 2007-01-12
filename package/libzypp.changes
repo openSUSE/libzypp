@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jan 12 17:49:59 CET 2007 - schubi@suse.de
+
+- Resolver::verifySystem checks for new hardware now by calling 
+  freshenPool. This is configureable. Fate #301224
+- version 2.11.9
+- revision 4857
+
+-------------------------------------------------------------------
 Fri Jan 12 14:01:04 CET 2007 - jsrain@suse.cz
 
 - merged texts from proofread

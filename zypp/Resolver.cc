@@ -56,7 +56,8 @@ namespace zypp
   //	Resolver interface forwarded to implementation
   //
   ///////////////////////////////////////////////////////////////////
-
+  bool Resolver::verifySystem ()
+  { return _pimpl->verifySystem(false); }
   bool Resolver::verifySystem (bool considerNewHardware)
   { return _pimpl->verifySystem(considerNewHardware); }
   bool Resolver::establishPool ()

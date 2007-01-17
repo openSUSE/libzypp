@@ -471,7 +471,7 @@ namespace zypp
           Package::constPtr p = asKind<Package>(it->resolvable());
           if (it->status().isToBeInstalled())
           {
-            source::ManagedFile localfile;
+            ManagedFile localfile;
             try
             {
               source::PackageProvider pkgProvider( p, packageProviderPolicy );

@@ -29,6 +29,7 @@ pkginclude_HEADERS = NeedAType.h \
 	Language.h	\
 	LanguageCode.h	\
 	Locale.h	\
+	ManagedFile.h	\
 	NVR.h		\
 	NVRA.h		\
 	NVRAD.h		\

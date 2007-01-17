@@ -19,7 +19,7 @@
 #include "zypp/ZYppCallbacks.h"
 #include "zypp/Source.h"
 #include "zypp/Package.h"
-#include "zypp/source/ManagedFile.h"
+#include "zypp/ManagedFile.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

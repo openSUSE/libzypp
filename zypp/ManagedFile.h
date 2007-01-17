@@ -6,11 +6,11 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/source/ManagedFile.h
+/** \file	zypp/ManagedFile.h
  *
 */
-#ifndef ZYPP_SOURCE_MANAGEDFILE_H
-#define ZYPP_SOURCE_MANAGEDFILE_H
+#ifndef ZYPP_MANAGEDFILE_H
+#define ZYPP_MANAGEDFILE_H
 
 #include <iosfwd>
 
@@ -20,16 +20,13 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace source
-  { /////////////////////////////////////////////////////////////////
 
-    typedef AutoDispose<const Pathname> ManagedFile;
+  /** A Pathname plus associated cleanup code to be executed when
+   *  path is no longer needed.
+   */
+  typedef AutoDispose<const Pathname> ManagedFile;
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace source
-  ///////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_SOURCE_MANAGEDFILE_H
+#endif // ZYPP_MANAGEDFILE_H

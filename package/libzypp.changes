@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Jan 18 23:54:54 CET 2007 - ma@suse.de
+
+- Prepare package read ahead/caching of packages in commit. Adatped the
+  workflow. Caching details are now hidden inside CommitPackageCache.
+  The current implementation still performs no read ahead. (for F100182)
+- version 2.12.3
+- revision 4870
+
+-------------------------------------------------------------------
 Thu Jan 18 15:39:37 CET 2007 - ma@suse.de
 
 - Skip invalid or broken rpm database entries. (#231211)

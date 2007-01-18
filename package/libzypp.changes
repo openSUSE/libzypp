@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jan 18 11:00:17 CET 2007 - schubi@suse.de
+
+- verifySystem: check if the solution is valid after calling freshenPool()
+  Bug: 235761 
+
+-------------------------------------------------------------------
 Mon Jan 15 13:52:56 CET 2007 - schubi@suse.de
 - Added own call for Resolver::verifySystem with additional 
   hardware/language check in order to keep binary compatibility

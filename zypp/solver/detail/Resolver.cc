@@ -346,7 +346,8 @@ Resolver::verifySystem (bool considerNewHardware)
     _verifying = true;
 
     if (considerNewHardware) {
-	return freshenPool(); // evaluate all Freshens/Supplements and solve
+	// evaluate all Freshens/Supplements and solve
+	return freshenPool() && bestContext() && bestContext()->isValid(); 
     }
     else {
 	return resolveDependencies (); // do solve only

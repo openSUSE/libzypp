@@ -36,6 +36,7 @@
 #include "zypp/target/TargetImpl.h"
 #include "zypp/target/TargetCallbackReceiver.h"
 #include "zypp/target/rpm/librpmDb.h"
+#include "zypp/target/CommitPackageCache.h"
 
 #include "zypp/pool/GetResolvablesToInsDel.h"
 #include "zypp/solver/detail/Helper.h"
@@ -200,10 +201,6 @@ namespace zypp
     /** Helper for PackageProvider queries during commit. */
     struct QueryInstalledEditionHelper
     {
-      QueryInstalledEditionHelper( rpm::RpmDb & rpmdb_r )
-          : _rpmdb( rpmdb_r )
-      {}
-
       bool operator()( const std::string & name_r,
                        const Edition &     ed_r,
                        const Arch &        arch_r ) const
@@ -219,9 +216,23 @@ namespace zypp
           }
         return false;
       }
-    private:
-      rpm::RpmDb & _rpmdb;
     };
+
+    /** Let the Source provide the package.
+    */
+    static ManagedFile sourceProvidePackage( const PoolItem & pi )
+    {
+      // Redirect PackageProvider queries for installed editions
+      // (in case of patch/delta rpm processing) to rpmDb.
+      source::PackageProviderPolicy packageProviderPolicy;
+      packageProviderPolicy.queryInstalledCB( QueryInstalledEditionHelper() );
+
+      Package::constPtr p = asKind<Package>(pi.resolvable());
+      source::PackageProvider pkgProvider( p, packageProviderPolicy );
+      return pkgProvider.providePackage();
+    }
+
+    ///////////////////////////////////////////////////////////////////
 
     IMPL_PTR_TYPE(TargetImpl);
 
@@ -234,7 +245,6 @@ namespace zypp
         _nullimpl = new TargetImpl;
       return _nullimpl;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -365,7 +375,6 @@ namespace zypp
 
       MIL << "TargetImpl::commit(<pool>, " << policy_r << ")" << endl;
       ZYppCommitResult result;
-#warning Commit does not provide ZYppCommitResult::_errors
 
       TargetImpl::PoolItemList to_uninstall;
       TargetImpl::PoolItemList to_install;
@@ -458,11 +467,9 @@ namespace zypp
       // remember the last used source (if any)
       Source_Ref lastUsedSource;
 
-      // Redirect PackageProvider queries for installed editions
-      // (in case of patch/delta rpm processing) to rpmDb.
-      source::PackageProviderPolicy packageProviderPolicy;
-      packageProviderPolicy.queryInstalledCB( QueryInstalledEditionHelper(_rpm) );
-
+      // prepare the package cache.
+      CommitPackageCache packageCache( items_r.begin(), items_r.end(),
+                                       "", sourceProvidePackage );
 
       for (TargetImpl::PoolItemList::const_iterator it = items_r.begin(); it != items_r.end(); it++)
       {
@@ -474,8 +481,7 @@ namespace zypp
             ManagedFile localfile;
             try
             {
-              source::PackageProvider pkgProvider( p, packageProviderPolicy );
-              localfile = pkgProvider.providePackage();
+              localfile = packageCache.get( it );
             }
             catch ( const source::SkipRequestedException & e )
             {

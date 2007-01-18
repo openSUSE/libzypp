@@ -1256,9 +1256,13 @@ namespace zypp
                 // of 'gpg-pubkey-VERS-REL'.
                 continue;
               }
-            Date installtime = iter->tag_installtime();
 
             Package::Ptr pptr = makePackageFromHeader( *iter, &_filerequires, location, Source_Ref() );
+            if ( ! pptr )
+              {
+                WAR << "Failed to make package from database header '" << name << "'" << endl;
+                continue;
+              }
 
             _packages._list.push_back( pptr );
           }

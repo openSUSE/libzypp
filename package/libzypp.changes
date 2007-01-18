@@ -1,16 +1,23 @@
 -------------------------------------------------------------------
+Thu Jan 18 15:39:37 CET 2007 - ma@suse.de
+
+- Skip invalid or broken rpm database entries. (#231211)
+- version 2.12.2
+- revision 4868
+
+-------------------------------------------------------------------
 Thu Jan 18 11:00:17 CET 2007 - schubi@suse.de
 
 - verifySystem: check if the solution is valid after calling freshenPool()
-  Bug: 235761 
+  Bug: 235761
 
 -------------------------------------------------------------------
 Mon Jan 15 13:52:56 CET 2007 - schubi@suse.de
-- Added own call for Resolver::verifySystem with additional 
+- Added own call for Resolver::verifySystem with additional
   hardware/language check in order to keep binary compatibility
   Fate #301224
 - version 2.12.1
-- revision 4862 
+- revision 4862
 
 -------------------------------------------------------------------
 Mon Jan 15 13:30:41 CET 2007 - ma@suse.de

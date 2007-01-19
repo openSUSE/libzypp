@@ -61,7 +61,7 @@ namespace zypp
 
     protected:
       /** Let the Source provide the package. */
-      ManagedFile sourceProvidePackage( const PoolItem & pi )
+      ManagedFile sourceProvidePackage( const PoolItem & pi ) const
       {
         if ( ! _packageProvider )
           {

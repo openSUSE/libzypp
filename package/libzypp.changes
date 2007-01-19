@@ -1,9 +1,18 @@
 -------------------------------------------------------------------
+Fri Jan 19 19:25:24 CET 2007 - ma@suse.de
+
+- Enable package read ahead/caching in commit per default to reduce
+  interactive media changes. If the environment variable
+  ZYPP_COMMIT_NO_PACKAGE_CACHE is set, caching will be disabled. (F100182)
+- version 2.13.0
+- revision 4878
+
+-------------------------------------------------------------------
 Fri Jan 19 17:18:14 CET 2007 - schubi@suse.de
 
 - added parameter not to reset resolver results while calling
   freshen pool Bug: 235761
-- Revision 4875 
+- Revision 4875
 
 -------------------------------------------------------------------
 Thu Jan 18 23:54:54 CET 2007 - ma@suse.de

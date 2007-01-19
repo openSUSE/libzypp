@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 19 17:18:14 CET 2007 - schubi@suse.de
+
+- added parameter not to reset resolver results while calling
+  freshen pool Bug: 235761
+- Revision 4875 
+
+-------------------------------------------------------------------
 Thu Jan 18 23:54:54 CET 2007 - ma@suse.de
 
 - Prepare package read ahead/caching of packages in commit. Adatped the

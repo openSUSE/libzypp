@@ -199,8 +199,8 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     bool verifySystem (bool considerNewHardware = false);
     void establishState (ResolverContext_Ptr context = NULL);
     bool establishPool (void);
-    void freshenState( ResolverContext_Ptr context = NULL );
-    bool freshenPool( void );
+    void freshenState( ResolverContext_Ptr context = NULL, bool resetAfterSolve = true );
+    bool freshenPool( bool resetAfterSolve = true );
     bool resolveDependencies (const ResolverContext_Ptr context = NULL);
     bool resolvePool (void);
 

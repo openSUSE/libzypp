@@ -469,7 +469,7 @@ namespace zypp
 
       // prepare the package cache.
       CommitPackageCache packageCache( items_r.begin(), items_r.end(),
-                                       "", sourceProvidePackage );
+                                       root() / "tmp", sourceProvidePackage );
 
       for (TargetImpl::PoolItemList::const_iterator it = items_r.begin(); it != items_r.end(); it++)
       {

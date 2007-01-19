@@ -37,12 +37,14 @@ namespace zypp
     */
     class CommitPackageCache
     {
+      friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
+
     public:
       typedef std::list<PoolItem>::const_iterator          const_iterator;
       typedef function<ManagedFile( const PoolItem & pi )> PackageProvider;
 
     public:
-      /** Default ctor */
+      /** Ctor */
       CommitPackageCache( const_iterator          begin_r,
                           const_iterator          end_r,
                           const Pathname &        rootDir_r,
@@ -52,15 +54,16 @@ namespace zypp
       ~CommitPackageCache();
 
     public:
-      /** Provide a package.
-      */
+      /** Provide a package. */
       ManagedFile get( const_iterator citem_r );
 
     public:
+      /** Implementation. */
       class Impl;
-      friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
+      /** Ctor taking an implementation. */
+      explicit CommitPackageCache( Impl * pimpl_r );
     private:
-      /** Pointer to implementation */
+      /** Pointer to implementation. */
       RW_pointer<Impl> _pimpl;
     };
     ///////////////////////////////////////////////////////////////////

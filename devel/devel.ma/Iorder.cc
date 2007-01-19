@@ -1,5 +1,6 @@
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include "Tools.h"
 
 #include <zypp/base/PtrTypes.h>
@@ -26,14 +27,17 @@ using namespace zypp;
 #include "zypp/Language.h"
 #include "zypp/NameKindProxy.h"
 #include "zypp/pool/GetResolvablesToInsDel.h"
+#include "zypp/source/PackageProvider.h"
 #include "zypp/target/rpm/RpmDb.h"
-
+#include "zypp/TmpPath.h"
+#include "zypp/target/CommitPackageCache.h"
 
 using namespace std;
 using namespace zypp;
 using namespace zypp::ui;
 using namespace zypp::functor;
 using namespace zypp::debug;
+using namespace zypp::target;
 using namespace zypp::target::rpm;
 
 ///////////////////////////////////////////////////////////////////
@@ -205,142 +209,25 @@ bool solve( bool establish = false )
       };
 
 ///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
 
-struct IMediaKey
+/** Let the Source provide the package.
+*/
+static ManagedFile globalSourceProvidePackage( const PoolItem & pi )
 {
-  IMediaKey()
-  {}
+  Package::constPtr p( asKind<Package>(pi.resolvable()) );
+  string fakename( p->name() + "-" + p->edition().asString() + "." + p->arch().asString() + ".rpm" );
+  Pathname fake( "/tmp/FAKEPKG/" + fakename );
 
-  IMediaKey( const Source_Ref & source_r, unsigned mediaNr_r )
-  : _source( source_r )
-  , _mediaNr( mediaNr_r )
-  {}
-
-  bool operator==( const IMediaKey & rhs ) const
-  { return( _source == rhs._source && _mediaNr == rhs._mediaNr ); }
-
-  bool operator!=( const IMediaKey & rhs ) const
-  { return ! operator==( rhs ); }
-
-  bool operator<( const IMediaKey & rhs ) const
-  {
-    return( _source.numericId() < rhs._source.numericId()
-            || ( _source.numericId() == rhs._source.numericId()
-                 && _mediaNr < rhs._mediaNr ) );
-  }
-
-  Source_Ref                  _source;
-  DefaultIntegral<unsigned,0> _mediaNr;
-};
-
-std::ostream & operator<<( std::ostream & str, const IMediaKey & obj )
-{
-  return str << "[" << obj._source.numericId() << "|" << obj._mediaNr << "]"
-             << " " << obj._source.alias();
-}
-
-///////////////////////////////////////////////////////////////////
-
-struct IMediaValue
-{
-  void add( const PoolItem & pi_r )
-  {
-    ++_count;
-    _size += pi_r->archivesize();
-  }
-
-  DefaultIntegral<unsigned,0> _count;
-  ByteCount                   _size;
-};
-
-std::ostream & operator<<( std::ostream & str, const IMediaValue & obj )
-{
-  return str << "[" <<  str::numstring(obj._count,3) << "|" << obj._size.asString(6) << "]";
-}
-
-///////////////////////////////////////////////////////////////////
-
-struct IMedia
-{
-  typedef std::pair<IMediaKey,IMediaValue>            IMediaElem;
-  typedef std::list<IMediaElem>                       IMediaSequence;
-
-  typedef std::pair<IMediaElem,IMediaValue>           ICacheElem;
-  typedef std::list<IMediaElem>                       ICacheSequence;
-
-  void add( const PoolItem & pi )
-  {
-    if ( ! onInteractiveMedia( pi ) )
-      return;
-
-    IMediaKey current( pi->source(), pi->sourceMediaNr() );
-
-    if ( current != _lastInteractive )
-      {
-
-        if ( !_iMediaSequence.empty() )
-          WAR << "After " << _iMediaSequence.back().second._count << endl;
-
-        INT << "Change from " << _lastInteractive << endl;
-        INT << "         to " << current << endl;
-
-        _lastInteractive = current;
-        _iMediaSequence.push_back( std::pair<IMediaKey,IMediaValue>
-                                   ( _lastInteractive, IMediaValue() ) );
-      }
-
-    _iMediaSequence.back().second.add( pi );
-    DBG << "After " << _iMediaSequence.back().second._count << " - " << pi << endl;
-  }
-
-  void done()
-  {
-    if ( !_iMediaSequence.empty() )
-      WAR << "Final " << _iMediaSequence.back().second._count << endl;
-  }
-
-  bool onInteractiveMedia( const PoolItem & pi ) const
-  {
-    if ( pi->sourceMediaNr() == 0 ) // no media access at all
-      return false;
-    std::string scheme( pi->source().url().getScheme() );
-    return true || ( scheme == "dvd" || scheme == "cd" );
-  }
-
-  void ComputeCache()
-  {
-
-    for ( IMediaSequence::const_iterator it = _iMediaSequence.begin();
-          it != _iMediaSequence.end(); ++it )
-      {
-
-      }
-  }
-
-  IMediaKey      _lastInteractive;
-  IMediaSequence _iMediaSequence;
-};
-
-std::ostream & operator<<( std::ostream & str, const IMedia & obj )
-{
-  str << "Sequence:" << endl;
-  for ( IMedia::IMediaSequence::const_iterator it = obj._iMediaSequence.begin();
-        it != obj._iMediaSequence.end(); ++it )
+  if ( 0 )
     {
-      str << "   " << it->first << "\t" << it->second << endl;
+      std::ofstream x( fake.c_str() );
+      x << p << endl;
+      WAR << "GEN package " << x << endl;
     }
 
-
-
-  return str;
+  DBG << "SOURCE PACKAGE PROVIDE " << fake << endl;
+  return fake;
 }
-
-
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
 
 /******************************************************************
 **
@@ -351,6 +238,7 @@ int main( int argc, char * argv[] )
 {
   //zypp::base::LogControl::instance().logfile( "log.restrict" );
   INT << "===[START]==========================================" << endl;
+
   ResPool pool( getZYpp()->pool() );
 
   if ( 1 )
@@ -387,15 +275,20 @@ int main( int argc, char * argv[] )
   //vdumpPoolStats( USR << "Transacting:"<< endl,
   //                make_filter_begin<resfilter::ByTransact>(pool),
   //                make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-
   pool::GetResolvablesToInsDel collect( pool, pool::GetResolvablesToInsDel::ORDER_BY_MEDIANR );
-  typedef pool::GetResolvablesToInsDel::PoolItemList PoolItemList;
   MIL << "GetResolvablesToInsDel:" << endl << collect << endl;
+
+  typedef pool::GetResolvablesToInsDel::PoolItemList PoolItemList;
+
+
 
   {
     const PoolItemList & items_r( collect._toInstall );
-
-
+    // prepare the package cache.
+    CommitPackageCache packageCache( items_r.begin(),
+                                     items_r.end(),
+                                     "/tmp",
+                                     globalSourceProvidePackage );
     unsigned snr = 0;
 
     for ( PoolItemList::const_iterator it = items_r.begin(); it != items_r.end(); it++ )
@@ -405,24 +298,28 @@ int main( int argc, char * argv[] )
             Package::constPtr p = asKind<Package>(it->resolvable());
             if (it->status().isToBeInstalled())
               {
-                DBG << "[" << snr << "] " << p << endl;
-                ++snr;
+                ManagedFile localfile;
+                try
+                  {
+                    localfile = packageCache.get( it );
+                  }
+                catch ( const source::SkipRequestedException & e )
+                  {
+                    ZYPP_CAUGHT( e );
+                    WAR << "Skipping package " << p << " in commit" << endl;
+                    continue;
+                  }
+
+                PathInfo chk( localfile.value() );
+                if ( ! chk.isFile() )
+                  {
+                    ERR << "No File: " << chk << endl;
+                    ZYPP_THROW(Exception("No File in commit"));
+                  }
               }
           }
-
-
       }
 
-
-
-
-
-    IMedia m;
-    for_each( collect._toInstall.begin(), collect._toInstall.end(),
-              bind( &IMedia::add, ref(m), _1 ) );
-    m.done();
-    MIL << m << endl;
-    INT << "===" << endl;
   }
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();

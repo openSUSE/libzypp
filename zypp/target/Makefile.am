@@ -13,6 +13,7 @@ targetinclude_HEADERS =			\
 	TargetImpl.h			\
 	CommitPackageCache.h		\
 	CommitPackageCacheImpl.h	\
+	CommitPackageCacheReadAhead.h	\
 	TargetCallbackReceiver.h	\
 	TargetException.h		\
 	CommitLog.h
@@ -27,6 +28,7 @@ lib@PACKAGE@_target_la_SOURCES =	\
 	TargetImpl.cc			\
 	CommitPackageCache.cc		\
 	CommitPackageCacheImpl.cc	\
+	CommitPackageCacheReadAhead.cc	\
 	TargetCallbackReceiver.cc	\
 	TargetException.cc		\
 	CommitLog.cc

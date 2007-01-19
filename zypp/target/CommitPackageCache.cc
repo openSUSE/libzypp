@@ -15,6 +15,7 @@
 
 #include "zypp/target/CommitPackageCache.h"
 #include "zypp/target/CommitPackageCacheImpl.h"
+#include "zypp/target/CommitPackageCacheReadAhead.h"
 
 using std::endl;
 
@@ -38,7 +39,9 @@ namespace zypp
     //
     CommitPackageCache::CommitPackageCache( Impl * pimpl_r )
     : _pimpl( pimpl_r )
-    { assert( pimpl_r ); }
+    {
+      assert( _pimpl );
+    }
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -49,9 +52,18 @@ namespace zypp
                                             const_iterator          end_r,
                                             const Pathname &        rootDir_r,
                                             const PackageProvider & packageProvider_r )
-    : _pimpl( new Impl( packageProvider_r ) )
     {
-      // here install the "real" cache.
+      if ( getenv("ZYPP_COMMIT_NO_PACKAGE_CACHE") )
+        {
+          MIL << "$ZYPP_COMMIT_NO_PACKAGE_CACHE is set." << endl;
+          _pimpl.reset( new Impl( packageProvider_r ) ); // no cache
+        }
+      else
+        {
+          _pimpl.reset( new CommitPackageCacheReadAhead( begin_r, end_r,
+                                                         rootDir_r, packageProvider_r ) );
+        }
+      assert( _pimpl );
     }
 
     ///////////////////////////////////////////////////////////////////

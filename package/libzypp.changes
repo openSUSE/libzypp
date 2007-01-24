@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jan 24 14:20:28 CET 2007 - dmacvicar@suse.de
+
+- Corrupt download cannot be skipped
+  (#217425 and #224216)
+- version 2.13.1
+- r4902
+
+-------------------------------------------------------------------
 Fri Jan 19 19:25:24 CET 2007 - ma@suse.de
 
 - Enable package read ahead/caching in commit per default to reduce

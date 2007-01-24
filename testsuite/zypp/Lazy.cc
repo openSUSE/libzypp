@@ -6,7 +6,7 @@
 
 #include "zypp/base/Logger.h"
 #include "zypp/base/Exception.h"
-#include "zypp2/LazzyText.h"
+#include "zypp2/Lazy.h"
 #include "zypp/TmpPath.h"
 
 #include <boost/test/unit_test.hpp>
@@ -210,22 +210,18 @@ void lazzy_test()
   str.flush();
   str.close();
  
-  zypp::LazzyText lazzy_text( file.path(), 1415, 16);
+  zypp::Lazy<std::string> lazzy_text(lazyTextFromFile( file.path(), 1415, 16));
   
-  BOOST_CHECK_EQUAL( lazzy_text.text(), "3D Studio Binary" );
+  BOOST_CHECK_EQUAL( lazzy_text.value(), "3D Studio Binary" );
   
-  zypp::LazzyText not_that_lazzy_text( "Not that lazzy" );
-  
-  BOOST_CHECK_EQUAL( not_that_lazzy_text.text(), "Not that lazzy" );
-  
-  zypp::LazzyText nofile_text( Pathname("notexists"), 0, 10);
-  BOOST_CHECK_THROW( nofile_text.text(), Exception );
+  zypp::Lazy<std::string> nofile_text(lazyTextFromFile( Pathname("notexists"), 0, 10));
+  BOOST_CHECK_THROW( nofile_text.value(), Exception );
 }
 
 test_suite*
 init_unit_test_suite( int argc, char* argv[] )
 {
-    test_suite* test= BOOST_TEST_SUITE( "LazzyTextTest" );
+    test_suite* test= BOOST_TEST_SUITE( "LazyTextTest" );
     test->add( BOOST_TEST_CASE( &lazzy_test ), 0 /* expected zero error */ );
     return test;
 }

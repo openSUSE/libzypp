@@ -211,9 +211,9 @@ namespace zypp
    * to compensate this if neccessary.
   */
   inline int forEachPoolItemMatching( const ResPool &  pool_r,
-                                       const Dep &      pooldep_r,
-                                       const PoolItem & poolitem_r,
-                                       function<bool(const CapAndItem &)> action_r )
+                                      const Dep &      pooldep_r,
+                                      const PoolItem & poolitem_r,
+                                      function<bool(const CapAndItem &)> action_r )
   {
     return invokeOnEach( poolitem_r->dep(Dep::PROVIDES).begin(),
                          poolitem_r->dep(Dep::PROVIDES).end(),

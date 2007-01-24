@@ -14,6 +14,7 @@
 #include "zypp/base/Logger.h"
 #include "zypp/base/Gettext.h"
 
+#include "zypp/Source.h"
 #include "zypp/source/PackageProvider.h"
 #include "zypp/source/SourceProvideFile.h"
 #include "zypp/source/Applydeltarpm.h"
@@ -281,6 +282,9 @@ namespace zypp
         {
         case source::DownloadResolvableReport::RETRY:
           _retry = true;
+          break;
+          case source::DownloadResolvableReport::IGNORE:
+          ZYPP_THROW(source::SkipRequestedException("User requested skip of corrupted file"));
           break;
         default:
           break;

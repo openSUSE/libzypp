@@ -104,6 +104,9 @@ class ResolverContext : public base::ReferenceCounted, private base::NonCopyable
                         // have unfulfilled requirements.
                         // This behaviour is favourited by ZMD    
     bool _upgradeMode;  // Resolver has been called with doUpgrade
+
+    bool _preferHighestVersion; // Prefer the result with the newest version
+                               //if there are more solver results. 
     
     // In order reducing solver time we are reducing the branches
     // by skipping resolvables which have worse architecture,edition
@@ -113,7 +116,6 @@ class ResolverContext : public base::ReferenceCounted, private base::NonCopyable
     bool _tryAllPossibilities; // Try ALL alternatives
     bool _skippedPossibilities;// Flag that there are other possibilities
                                // which we are currently ignore
-    
     
   public:
     ResolverContext (const ResPool & pool, const Arch & arch, ResolverContext_Ptr parent = NULL);
@@ -173,6 +175,9 @@ class ResolverContext : public base::ReferenceCounted, private base::NonCopyable
     
     void setForceResolve (const bool force) { _forceResolve = force; }
     const bool forceResolve() { return _forceResolve; }
+
+    void setPreferHighestVersion (const bool highestVersion) { _preferHighestVersion = highestVersion; }
+    const bool preferHighestVersion() { return _preferHighestVersion; }  
 
     void setUpgradeMode (const bool upgrade) { _upgradeMode = upgrade; }
     const bool upgradeMode() { return _upgradeMode; }    

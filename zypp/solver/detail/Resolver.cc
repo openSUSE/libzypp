@@ -106,6 +106,8 @@ Resolver::Resolver (const ResPool & pool)
     , _architecture( zypp_detail::defaultArchitecture() )
     , _forceResolve (false)
     , _upgradeMode (false)
+    , _preferHighestVersion (true)
+      
 {}
 
 
@@ -440,6 +442,7 @@ Resolver::establishState( ResolverContext_Ptr context )
 				    _ignoreInstalledItem,
 				    _ignoreArchitectureItem);
     context->setForceResolve( _forceResolve );
+    context->setPreferHighestVersion ( _preferHighestVersion );
     context->setUpgradeMode( _upgradeMode );
 
     for (KindList::const_iterator iter = ordered.begin(); iter != ordered.end(); iter++) {
@@ -562,6 +565,7 @@ Resolver::freshenState( ResolverContext_Ptr context,
 				    _ignoreInstalledItem,
 				    _ignoreArchitectureItem );
     context->setForceResolve( _forceResolve );
+    context->setPreferHighestVersion( _preferHighestVersion );
     context->setUpgradeMode( _upgradeMode );
 
     FreshenState info;
@@ -684,6 +688,7 @@ Resolver::resolveDependencies (const ResolverContext_Ptr context)
 						     _ignoreInstalledItem,
 						     _ignoreArchitectureItem);
     initial_queue->context()->setForceResolve( _forceResolve );
+    initial_queue->context()->setPreferHighestVersion( _preferHighestVersion );
     initial_queue->context()->setUpgradeMode( _upgradeMode );
     initial_queue->context()->setTryAllPossibilities( _tryAllPossibilities );
     initial_queue->context()->setScippedPossibilities( _skippedPossibilities );

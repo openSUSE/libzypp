@@ -125,7 +125,9 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     bool _forceResolve; // remove items which are conflicts with others or
                         // have unfulfilled requirements.
                         // This behaviour is favourited by ZMD
-    bool _upgradeMode;  // Resolver has been called with doUpgrade    
+    bool _upgradeMode;  // Resolver has been called with doUpgrade
+    bool _preferHighestVersion; // Prefer the result with the newest version
+                                //if there are more solver results. 
 
     // helpers
     bool doesObsoleteCapability (PoolItem_Ref candidate, const Capability & cap);
@@ -195,6 +197,8 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
 
     void setForceResolve (const bool force) { _forceResolve = force; }
     const bool forceResolve() { return _forceResolve; }
+    void setPreferHighestVersion (const bool highestVersion) { _preferHighestVersion = highestVersion; }
+    const bool preferHighestVersion() { return _preferHighestVersion; }  
 
     bool verifySystem (bool considerNewHardware = false);
     void establishState (ResolverContext_Ptr context = NULL);

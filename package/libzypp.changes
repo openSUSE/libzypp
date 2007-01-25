@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Thu Jan 25 13:52:09 CET 2007 - schubi@suse.de
+
+- Added solver parameter:
+   tryAllPossibilities: regarding every solver branch ( not only 
+                        branches with e.G. best architectures
+   preferHighestVersion: Prefer solver results which have a higher
+                         version number.
+  Bug #238087 
+- Revision 4911
+- version 2.14.9
+
+-------------------------------------------------------------------
+Thu Jan 25 13:46:41 CET 2007 - schubi@suse.de
+
+- update packages: changing architecture is only valid while an
+  system update and NOT while an update via a patch.
+  Bug 230685 - x86_64 MozillaFirefox binaries in security update
+  repository
+  Fix of version 2.11.2 has not worked if the first founded item 
+  had had another architecture.
+- Revision 4910   
+
+-------------------------------------------------------------------
 Wed Jan 24 14:20:28 CET 2007 - dmacvicar@suse.de
 
 - Corrupt download cannot be skipped

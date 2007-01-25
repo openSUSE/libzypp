@@ -99,13 +99,17 @@ namespace zypp
      *
      * Try to execute all pending transactions (there may be more than
      * one!).
+     * If tryAllPossibilities is false, restrict searches for matching
+     *  requirements to best architecture, highest version.
+     * If tryAllPossibilities is true, evaluate all possible matches
+     *  for a requirement.
      *
      * Returns "true" on success (i.e., if there were no problems that
      * need user interaction) and "false" if there were problems.  In
      * the latter case, use problems() and later applySolutions()
      * below.
      **/
-    bool resolvePool (void);
+    bool resolvePool( bool tryAllPossibilities = false );
 
     /*
      * Undo solver changes done in resolvePool()

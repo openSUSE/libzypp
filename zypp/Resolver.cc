@@ -64,8 +64,8 @@ namespace zypp
   { return _pimpl->establishPool(); }
   bool Resolver::freshenPool ()
   { return _pimpl->freshenPool(); }
-  bool Resolver::resolvePool ()
-  { return _pimpl->resolvePool (); }
+  bool Resolver::resolvePool( bool tryAllPossibilities )
+  { return _pimpl->resolvePool( tryAllPossibilities ); }
   void Resolver::undo()
   { _pimpl->undo(); }
   solver::detail::ResolverContext_Ptr Resolver::context (void) const

@@ -202,7 +202,7 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     void freshenState( ResolverContext_Ptr context = NULL, bool resetAfterSolve = true );
     bool freshenPool( bool resetAfterSolve = true );
     bool resolveDependencies (const ResolverContext_Ptr context = NULL);
-    bool resolvePool (void);
+    bool resolvePool( bool tryAllPossibilities = false );
 
     bool transactResObject( ResObject::constPtr robj,
 			    bool install = true,

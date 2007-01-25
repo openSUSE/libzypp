@@ -1033,13 +1033,20 @@ show_pool( ResPool pool )
 
 
 bool
-Resolver::resolvePool ()
+Resolver::resolvePool( bool tryAllPossibilities )
 {
+    ResolverContext_Ptr context = NULL;
 
     CollectTransact info (*this);
 
     // cleanup before next run
     reset();
+
+    if (tryAllPossibilities) {
+	_tryAllPossibilities = tryAllPossibilities;
+	context = new ResolverContext( _pool, _architecture );
+	context->setTryAllPossibilities( true );
+    }
 
 #if 1
 
@@ -1052,7 +1059,7 @@ Resolver::resolvePool ()
 		   resfilter::ByTransact( ),			// collect transacts from Pool to resolver queue
 		   functor::functorRef<bool,PoolItem>(info) );
 
-    bool have_solution = resolveDependencies ();		// resolve !
+    bool have_solution = resolveDependencies( context );	// resolve !
 
     if (have_solution) {					// copy solution back to pool
 	MIL << "Have solution, copying back to pool" << endl;

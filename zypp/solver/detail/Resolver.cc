@@ -99,7 +99,7 @@ Resolver::Resolver (const ResPool & pool)
     , _verifying (false)
     , _testing (false)
     , _tryAllPossibilities (false)
-    , _scippedPossibilities (false)
+    , _skippedPossibilities (false)
     , _valid_solution_count (0)
     , _best_context (NULL)
     , _timed_out (false)
@@ -148,7 +148,7 @@ Resolver::reset (void)
     _timed_out = false;
     
     _tryAllPossibilities = false;
-    _scippedPossibilities = false;
+    _skippedPossibilities = false;
     
 }
 
@@ -686,7 +686,7 @@ Resolver::resolveDependencies (const ResolverContext_Ptr context)
     initial_queue->context()->setForceResolve( _forceResolve );
     initial_queue->context()->setUpgradeMode( _upgradeMode );
     initial_queue->context()->setTryAllPossibilities( _tryAllPossibilities );
-    initial_queue->context()->setScippedPossibilities( _scippedPossibilities );
+    initial_queue->context()->setScippedPossibilities( _skippedPossibilities );
 
     /* If this is a verify, we do a "soft resolution" */
 
@@ -879,13 +879,13 @@ Resolver::resolveDependencies (const ResolverContext_Ptr context)
 	     iter != _invalid_queues.end(); iter++) {
 	    // evaluate if there are other possibilities which have not been regarded
 	    ResolverQueue_Ptr invalid =	*iter;    	    
-	    if (invalid->context()->scippedPossibilities()) {
-		_scippedPossibilities = true;
+	    if (invalid->context()->skippedPossibilities()) {
+		_skippedPossibilities = true;
 		break;
 	    }
 	}
 	
-	if (_scippedPossibilities) { // possible other solutions scipped	 
+	if (_skippedPossibilities) { // possible other solutions skipped	 
 	    // lets try a second run with ALL possibilities
 	    _tryAllPossibilities = true;
 	    MIL << "================================================================"

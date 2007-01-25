@@ -111,7 +111,7 @@ class ResolverContext : public base::ReferenceCounted, private base::NonCopyable
     // BUT if there is no valid solution we will regard the "other"
     // resolvables in a second solver run too.
     bool _tryAllPossibilities; // Try ALL alternatives
-    bool _scippedPossibilities;// Flag that there are other possibilities
+    bool _skippedPossibilities;// Flag that there are other possibilities
                                // which we are currently ignore
     
     
@@ -142,8 +142,8 @@ class ResolverContext : public base::ReferenceCounted, private base::NonCopyable
     bool tryAllPossibilities (void) const { return _tryAllPossibilities; }
     void setTryAllPossibilities (bool tryAllPossibilities) { _tryAllPossibilities = tryAllPossibilities; }
     
-    bool scippedPossibilities (void) const { return _scippedPossibilities; }
-    void setScippedPossibilities (bool scippedPossibilities) { _scippedPossibilities = scippedPossibilities; }
+    bool skippedPossibilities (void) const { return _skippedPossibilities; }
+    void setScippedPossibilities (bool skippedPossibilities) { _skippedPossibilities = skippedPossibilities; }
 
     bool establishing (void) const { return _establishing; }
     void setEstablishing (bool establishing) { _establishing = establishing; }

@@ -74,7 +74,7 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
     // BUT if there is no valid solution we will regard the "other"
     // resolvables in a second solver run too.
     bool _tryAllPossibilities; // Try ALL alternatives
-    bool _scippedPossibilities;// Flag that there are other possibilities
+    bool _skippedPossibilities;// Flag that there are other possibilities
                                // which we are currently ignore
 
     // list populated by calls to addPoolItemTo*()

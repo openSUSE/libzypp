@@ -328,18 +328,26 @@ struct LookForUpgrades
 	UpgradesMap::iterator it = upgrades.find( provider->name() );
 
 	if (it != upgrades.end()) {				// provider with same name found
-	    int cmp = it->second->arch().compare( provider->arch() );
-	    if (_context->upgradeMode()					// only in upgrade mode
-		&& cmp < 0) {						// new provider has better arch
+	    if (!_context->upgradeMode()
+		&& it->second->arch() != installed->arch()
+		&& provider->arch() == installed->arch()) {
+		// prefering the same architecture as the installed item
+		// NOT in upgrade mode
 		it->second = provider;
-	    }
-	    else if (cmp == 0) {					// new provider has equal arch
-		if (it->second->edition().compare( provider->edition() ) < 0) {
-		    it->second = provider;				// new provider has better edition
+	    } else {
+		int cmp = it->second->arch().compare( provider->arch() );
+		if ((_context->upgradeMode()  					// only in upgrade mode
+		     || it->second->arch() != installed->arch())                // or have not found the same arch as installed item
+		    && cmp < 0) {						// new provider has better arch
+		    it->second = provider;
+		}
+		else if (cmp == 0) {					// new provider has equal arch
+		    if (it->second->edition().compare( provider->edition() ) < 0) {
+			it->second = provider;				// new provider has better edition
+		    }
 		}
 	    }
-	}
-	else {
+	} else {
 	    upgrades[provider->name()] = provider;
 	}
 	return true;

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jan 25 18:21:36 CET 2007 - dmacvicar@suse.de
+
+- Download only English and Local translation
+  (#208457)
+- version 2.14.1
+- r4921
+
+-------------------------------------------------------------------
 Thu Jan 25 13:52:09 CET 2007 - schubi@suse.de
 
 - Added solver parameter:
@@ -8,7 +16,7 @@ Thu Jan 25 13:52:09 CET 2007 - schubi@suse.de
                          version number.
   Bug #238087 
 - Revision 4911
-- version 2.14.9
+- version 2.14.0
 
 -------------------------------------------------------------------
 Thu Jan 25 13:46:41 CET 2007 - schubi@suse.de

@@ -502,15 +502,19 @@ QueueItemRequire::process (ResolverContext_Ptr context, QueueItemList & new_item
 		PoolItem first( *it++ );
 		PoolItem second( *it );
 
-		int cmp = first->arch().compare( second->arch() );
-		if (cmp < 0) {		// second is better
-		    --it;
-		}
+		if (NVRA(first.resolvable()) == NVRA(second.resolvable()))
+		{
+		    // regarding items with the same NVRA only. Bug238284 
+		    int cmp = first->arch().compare( second->arch() );
+		    if (cmp < 0) {		// second is better
+			--it;
+		    }
 
-		if (cmp != 0) {
-		    info.providers.erase( it );		// erase one of both
-		    num_providers = 1;
-		    goto provider_done;
+		    if (cmp != 0) {
+			info.providers.erase( it );		// erase one of both
+			num_providers = 1;
+			goto provider_done;
+		    }
 		}
 	    }
 #endif

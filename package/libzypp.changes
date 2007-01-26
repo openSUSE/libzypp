@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Fri Jan 26 13:26:49 CET 2007 - schubi@suse.de
+
+- update packages: changing architecture is only valid while an
+  system update and NOT while an update via a patch. Last fix does
+  not fit for every case.
+  Bug 230685 
+- Patch has selected not the concerning package for update but
+  a package which has provided the required dependencies too.
+  Algorithmus: If there are exactly two providers which differ in architecture
+	       prefer the better arch. 
+  Fix: Regarding NVRA too. ( only if equal )
+  Bug 238284
+
+- version 2.14.2
+- Revision 4922
+
+-------------------------------------------------------------------
 Thu Jan 25 18:21:36 CET 2007 - dmacvicar@suse.de
 
 - Download only English and Local translation

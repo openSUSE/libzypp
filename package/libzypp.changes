@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 31 10:44:48 CET 2007 - schubi@suse.de
+
+- verifySystem: Regarding patterns too. Bug 239750
+  Revision 4937 
+
+-------------------------------------------------------------------
 Fri Jan 26 13:26:49 CET 2007 - schubi@suse.de
 
 - update packages: changing architecture is only valid while an

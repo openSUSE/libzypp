@@ -344,6 +344,11 @@ Resolver::verifySystem (bool considerNewHardware)
 		  resfilter::ByInstalled ( ),
 		  functor::functorRef<bool,PoolItem>(info) );
 
+    invokeOnEach( pool().byKindBegin( ResTraits<Pattern>::kind ),
+		  pool().byKindEnd( ResTraits<Pattern>::kind ),
+		  resfilter::ByInstalled ( ),
+		  functor::functorRef<bool,PoolItem>(info) );    
+
 
     _verifying = true;
 

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb  5 17:49:32 CET 2007 - dmacvicar@suse.de
+
+- yast2 reports invalid URL as 'unknown source type'
+  (#209961)
+- r4975 
+
+-------------------------------------------------------------------
 Mon Feb  5 17:17:54 CET 2007 - schubi@suse.de
 
 - verifySystem: The result will be set to APPL_HIGH, so it will be not

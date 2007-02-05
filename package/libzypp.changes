@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Feb  5 17:17:54 CET 2007 - schubi@suse.de
+
+- verifySystem: The result will be set to APPL_HIGH, so it will be not
+  reset by a second "normal" solver run. #239281 
+- Revision 4970  
+- Version 2.14.3
+
+-------------------------------------------------------------------
 Wed Jan 31 10:44:48 CET 2007 - schubi@suse.de
 
 - verifySystem: Regarding patterns too. Bug 239750

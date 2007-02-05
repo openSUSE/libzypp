@@ -316,6 +316,36 @@ Resolver::addIgnoreArchitectureItem (const PoolItem_Ref item)
 
 //---------------------------------------------------------------------------
 
+struct UndoTransact : public resfilter::PoolItemFilterFunctor
+{
+    ResStatus::TransactByValue resStatus;
+    UndoTransact ( const ResStatus::TransactByValue &status)
+	:resStatus(status)
+    { }
+
+    bool operator()( PoolItem_Ref item )		// only transacts() items go here
+    {
+	item.status().resetTransact( resStatus );// clear any solver/establish transactions
+	return true;
+    }
+};
+
+
+struct DoTransact : public resfilter::PoolItemFilterFunctor
+{
+    ResStatus::TransactByValue resStatus;
+    DoTransact ( const ResStatus::TransactByValue &status)
+	:resStatus(status)
+    { }
+
+    bool operator()( PoolItem_Ref item )		// only transacts() items go here
+    {
+	item.status().setTransact( true, resStatus );
+	return true;
+    }
+};
+
+
 struct VerifySystem : public resfilter::PoolItemFilterFunctor
 {
     Resolver & resolver;
@@ -331,11 +361,16 @@ struct VerifySystem : public resfilter::PoolItemFilterFunctor
     }
 };
 
-
 bool
 Resolver::verifySystem (bool considerNewHardware)
 {
+    UndoTransact resetting (ResStatus::APPL_HIGH);
+    
     _DEBUG ("Resolver::verifySystem() " << (considerNewHardware ? "consider new hardware":""));
+
+    invokeOnEach ( _pool.begin(), _pool.end(),
+		   resfilter::ByTransact( ),			// Resetting all transcations
+		   functor::functorRef<bool,PoolItem>(resetting) );
 
     VerifySystem info (*this);
 
@@ -352,13 +387,23 @@ Resolver::verifySystem (bool considerNewHardware)
 
     _verifying = true;
 
+    bool success = false;
+
     if (considerNewHardware) {
 	// evaluate all Freshens/Supplements and solve
-	return freshenPool(false) && bestContext() && bestContext()->isValid();
+	success = freshenPool(false) && bestContext() && bestContext()->isValid();
     }
     else {
-	return resolveDependencies (); // do solve only
+	success = resolveDependencies (); // do solve only
     }
+
+    DoTransact setting (ResStatus::APPL_HIGH);
+
+    invokeOnEach ( _pool.begin(), _pool.end(),
+		   resfilter::ByTransact( ),			
+		   functor::functorRef<bool,PoolItem>(setting) );    
+    
+    return success;
 }
 
 
@@ -926,22 +971,11 @@ Resolver::resolveDependencies (const ResolverContext_Ptr context)
 //----------------------------------------------------------------------------
 // undo
 
-struct UndoTransact : public resfilter::PoolItemFilterFunctor
-{
-    UndoTransact ()
-    { }
-
-    bool operator()( PoolItem_Ref item )		// only transacts() items go here
-    {
-	item.status().resetTransact( ResStatus::APPL_LOW );// clear any solver/establish transactions
-	return true;
-    }
-};
 
 void
 Resolver::undo(void)
 {
-    UndoTransact info;
+    UndoTransact info(ResStatus::APPL_LOW);
     MIL << "*** undo ***" << endl;
     invokeOnEach ( _pool.begin(), _pool.end(),
 		   resfilter::ByTransact( ),			// collect transacts from Pool to resolver queue

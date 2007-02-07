@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb  7 15:50:58 CET 2007 - jkupec@suse.cz
+
+- MediaCurlException::dumpOn() adjusted for ncurses dialogue
+  (#222602)
+- r4983
+
+-------------------------------------------------------------------
 Mon Feb  5 17:49:32 CET 2007 - dmacvicar@suse.de
 
 - yast2 reports invalid URL as 'unknown source type'

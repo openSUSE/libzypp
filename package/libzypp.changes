@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Feb  8 16:27:25 CET 2007 - schubi@suse.de
+
+- Added freshen language dependency in supplemements too if there is no
+  entry in supplements.
+  #240617;IPA fonts are not installed even if select Japanese
+  language
+- Revision 4992
+-------------------------------------------------------------------
 Wed Feb  7 15:50:58 CET 2007 - jkupec@suse.cz
 
 - MediaCurlException::dumpOn() adjusted for ncurses dialogue

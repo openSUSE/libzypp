@@ -6,6 +6,7 @@ Fri Feb  9 15:03:23 CET 2007 - jkupec@suse.cz
 - fixed gettext and rpath problems in configure.ac and Makefile.cvs
   (mvidner)
 - r4996
+- Version 2.14.4
 
 -------------------------------------------------------------------
 Thu Feb  8 16:27:25 CET 2007 - schubi@suse.de

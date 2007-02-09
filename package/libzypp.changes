@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Feb  9 15:03:23 CET 2007 - jkupec@suse.cz
+
+- Setting allowed authentication methods to "basic,digest" if none
+  provided in URL (#243006)
+- fixed gettext and rpath problems in configure.ac and Makefile.cvs
+  (mvidner)
+- r4996
+
+-------------------------------------------------------------------
 Thu Feb  8 16:27:25 CET 2007 - schubi@suse.de
 
 - Added freshen language dependency in supplemements too if there is no

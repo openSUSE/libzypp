@@ -1,0 +1,59 @@
+<channel><subchannel>
+<package>
+	<name>ghostscript-library</name>
+	<history>
+	<update>
+		<arch>x86_64</arch>
+		<version>8.15.3</version><release>36</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='ghostscript_any' kind="package" />
+	</provides>
+	<requires>
+		<dep name='/usr/bin/hpijs' kind="package" />
+	</requires>
+</package>
+
+<package>
+	<name>hpijs-standalone</name>
+	<history>
+	<update>
+		<arch>x86_64</arch>
+		<version>1.7.1</version><release>3</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='/usr/bin/hpijs' kind="package" />
+		<dep name='hpijs-standalone' op='==' version='1.7.1' release='3' kind="package" />
+	</provides>
+	<conflicts>
+		<dep name='hplip-hpijs' kind="package" />
+	</conflicts>
+	<supplements>
+		<dep name='ghostscript_any' kind="package" />
+	</supplements>
+</package>
+
+<package>
+	<name>hplip-hpijs</name>
+	<history>
+	<update>
+		<arch>x86_64</arch>
+		<version>1.7.1</version><release>5</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='/usr/bin/hpijs' kind="package" />
+		<dep name='hplip-hpijs' op='==' version='1.7.1' release='5' kind="package" />
+		<dep name='libhpip.so.0()(64bit)' kind="package" />
+	</provides>
+	<conflicts>
+		<dep name='hpijs-standalone' kind="package" />
+	</conflicts>
+	<supplements>
+		<dep name='ghostscript_any' kind="package" />
+	</supplements>
+</package>
+
+</subchannel></channel>

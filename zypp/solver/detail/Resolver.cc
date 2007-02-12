@@ -58,6 +58,7 @@ using namespace std;
 IMPL_PTR_TYPE(Resolver);
 
 static const unsigned MAX_SECOND_RUNS( 3 );
+static const unsigned MAX_VALID_SOLUTIONS( 50 );	
 static const unsigned TIMOUT_SECOND_RUN( 30 );
 
 //---------------------------------------------------------------------------
@@ -861,7 +862,14 @@ Resolver::resolveDependencies (const ResolverContext_Ptr context)
 		    << " ) reached -> exit" << endl;
 		break;
 	    }
-	}		    
+	}
+
+	if (_best_context != NULL
+	    && _complete_queues.size() >= MAX_VALID_SOLUTIONS) {
+		MIL << "Max VALID solver runs ( " << MAX_VALID_SOLUTIONS
+		    << " ) reached -> exit" << endl;
+		break;
+	}
 	      
 	ResolverQueue_Ptr queue = _pending_queues.front();
 	_pending_queues.pop_front();

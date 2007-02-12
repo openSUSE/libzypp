@@ -141,6 +141,24 @@ namespace zypp
   }
   ///////////////////////////////////////////////////////////////////
 
+  namespace capmatch_detail {
+    struct AlwaysFalse
+    {
+      bool operator()( const Capability &, const Capability & ) const
+      { return false; }
+    };
+  }
+
+  /** Return \c true if the CapSets contain at least one pair of
+   *  Capabilities that match.
+  */
+  inline bool hasMatches( const CapSet & lhs_r, const CapSet & rhs_r )
+  {
+    return( forEachMatchIn( lhs_r, rhs_r, capmatch_detail::AlwaysFalse() ) < 0 );
+  }
+
+  ///////////////////////////////////////////////////////////////////
+
 
   /** Functor invoking \c action_r on each matching \ref Capability
    *  in a \ref ResPool.

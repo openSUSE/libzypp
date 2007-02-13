@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 13 12:42:19 CET 2007 - schubi@suse.de
+
+- Simultaneouqusly establishing of items which are conflicting eachother is
+  useless. So only one will be established. Fixed in QueueItemInstall.cc 
+  Bug 243595
+- Revision 5018
+
+-------------------------------------------------------------------
 Mon Feb 12 13:41:47 CET 2007 - schubi@suse.de
 
 - Stopping after 50 valid solver results. Anymore would be useless. Bug

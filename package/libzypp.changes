@@ -1,8 +1,16 @@
 -------------------------------------------------------------------
+Wed Feb 14 14:34:12 CET 2007 - ma@suse.de
+
+- Added new upgrade options to fine tune version and patch handling.
+  (F301990)
+- version 2.15.0
+- revision 5023
+
+-------------------------------------------------------------------
 Tue Feb 13 12:42:19 CET 2007 - schubi@suse.de
 
 - Simultaneouqusly establishing of items which are conflicting eachother is
-  useless. So only one will be established. Fixed in QueueItemInstall.cc 
+  useless. So only one will be established. Fixed in QueueItemInstall.cc
   Bug 243595
 - Revision 5018
 
@@ -10,7 +18,7 @@ Tue Feb 13 12:42:19 CET 2007 - schubi@suse.de
 Mon Feb 12 13:41:47 CET 2007 - schubi@suse.de
 
 - Stopping after 50 valid solver results. Anymore would be useless. Bug
-  243595 
+  243595
 - Revision 5004
 - Version 2.14.5
 
@@ -44,21 +52,21 @@ Mon Feb  5 17:49:32 CET 2007 - dmacvicar@suse.de
 
 - yast2 reports invalid URL as 'unknown source type'
   (#209961)
-- r4975 
+- r4975
 
 -------------------------------------------------------------------
 Mon Feb  5 17:17:54 CET 2007 - schubi@suse.de
 
 - verifySystem: The result will be set to APPL_HIGH, so it will be not
-  reset by a second "normal" solver run. #239281 
-- Revision 4970  
+  reset by a second "normal" solver run. #239281
+- Revision 4970
 - Version 2.14.3
 
 -------------------------------------------------------------------
 Wed Jan 31 10:44:48 CET 2007 - schubi@suse.de
 
 - verifySystem: Regarding patterns too. Bug 239750
-  Revision 4937 
+  Revision 4937
 
 -------------------------------------------------------------------
 Fri Jan 26 13:26:49 CET 2007 - schubi@suse.de
@@ -66,11 +74,11 @@ Fri Jan 26 13:26:49 CET 2007 - schubi@suse.de
 - update packages: changing architecture is only valid while an
   system update and NOT while an update via a patch. Last fix does
   not fit for every case.
-  Bug 230685 
+  Bug 230685
 - Patch has selected not the concerning package for update but
   a package which has provided the required dependencies too.
   Algorithmus: If there are exactly two providers which differ in architecture
-	       prefer the better arch. 
+	       prefer the better arch.
   Fix: Regarding NVRA too. ( only if equal )
   Bug 238284
 
@@ -89,11 +97,11 @@ Thu Jan 25 18:21:36 CET 2007 - dmacvicar@suse.de
 Thu Jan 25 13:52:09 CET 2007 - schubi@suse.de
 
 - Added solver parameter:
-   tryAllPossibilities: regarding every solver branch ( not only 
+   tryAllPossibilities: regarding every solver branch ( not only
                         branches with e.G. best architectures
    preferHighestVersion: Prefer solver results which have a higher
                          version number.
-  Bug #238087 
+  Bug #238087
 - Revision 4911
 - version 2.14.0
 
@@ -104,9 +112,9 @@ Thu Jan 25 13:46:41 CET 2007 - schubi@suse.de
   system update and NOT while an update via a patch.
   Bug 230685 - x86_64 MozillaFirefox binaries in security update
   repository
-  Fix of version 2.11.2 has not worked if the first founded item 
+  Fix of version 2.11.2 has not worked if the first founded item
   had had another architecture.
-- Revision 4910   
+- Revision 4910
 
 -------------------------------------------------------------------
 Wed Jan 24 14:20:28 CET 2007 - dmacvicar@suse.de

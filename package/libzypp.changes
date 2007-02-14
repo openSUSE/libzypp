@@ -6,6 +6,7 @@ Wed Feb 14 15:40:25 CET 2007 - schubi@suse.de
   any solver run anymore.
   bug 191810 ( A broken patch will not be installed again) 
 - revision 5026
+- version 2.15.1
 
 -------------------------------------------------------------------
 Wed Feb 14 14:34:12 CET 2007 - ma@suse.de

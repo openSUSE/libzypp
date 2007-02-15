@@ -1,0 +1,50 @@
+<channel>
+  <subchannel>
+    <package>
+      <name>B</name>
+      <summary>B fake summary</summary>
+      <description>B fake description</description>
+      <section>misc</section>
+      <history>
+        <update>
+          <hid>12345</hid>
+          <version>2.0</version>
+          <release>1</release>
+          <filename>foo2.rpm</filename>
+          <filesize>123</filesize>
+          <installedsize>456</installedsize>
+          <md5sum>0f55f36a3240858038a281911605024e</md5sum>
+        </update>
+      </history>
+      <obsoletes>
+        <dep name='A'/>
+      </obsoletes>
+      <provides>
+        <dep name='A'/>
+      </provides>
+    </package>
+    <package>
+      <name>C</name>
+      <summary>C fake summary</summary>
+      <description>C fake description</description>
+      <section>misc</section>
+      <history>
+        <update>
+          <hid>12345</hid>
+          <version>2.0</version>
+          <release>1</release>
+          <filename>foo2.rpm</filename>
+          <filesize>123</filesize>
+          <installedsize>456</installedsize>
+          <md5sum>0f55f36a3240858038a281911605024e</md5sum>
+        </update>
+      </history>
+      <obsoletes>
+        <dep name='A'/>
+      </obsoletes>
+      <provides>
+        <dep name='A'/>
+      </provides>
+    </package>
+  </subchannel>
+</channel>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<test>
+<setup>
+  <system file="exercise-15simple-system.xml"/>
+  <channel name="test" file="exercise-15simple-packages.xml"/>
+</setup>
+
+<!-- 
+Installing B AND C which obsoletes A both
+ -->
+<trial>
+  <install channel="test" package="B"/>
+  <install channel="test" package="C"/>
+  <reportproblems/>
+</trial>
+
+</test>

@@ -3,6 +3,8 @@ Mon Feb 19 13:26:04 CET 2007 - jsrain@suse.cz
 
 - Set YUM product category (base vs. add-on) according to metadata
   (needed for proper update to SP1) (#245401)
+- revision 5049
+- version 2.15.2
 
 -------------------------------------------------------------------
 Fri Feb 16 11:45:08 CET 2007 - schubi@suse.de

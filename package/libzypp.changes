@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Feb 22 17:18:32 CET 2007 - dmacvicar@suse.de
+
+- (#247459) ftp probing
+  denied == dont exists in ftp
+- r 5075  
+- version 2.15.3
+
+-------------------------------------------------------------------
 Mon Feb 19 13:26:04 CET 2007 - jsrain@suse.cz
 
 - Set YUM product category (base vs. add-on) according to metadata

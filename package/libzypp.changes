@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 27 17:03:30 CET 2007 - schubi@suse.de
+
+- latest translations added 
+
+-------------------------------------------------------------------
 Fri Feb 23 17:17:20 CET 2007 - jkupec@suse.cz
 
 - adding sotf,timeo=X nfs mount options by default (#235211)

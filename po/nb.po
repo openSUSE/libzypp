@@ -10,8 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2006-02-21 23:12+0100\n"
-"Last-Translator: Olav Pettershagen <olav.pet@online.no>\n"
-"Language-Team:  <nb@li.org>\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,132 +21,117 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Adressestrategi tillater ikke %s"
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Ugyldig %1-adressekomponentdata '%2'"
+msgstr "Ugyldig %s komponent %s"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Ugyldig komponentadresse: "
+msgstr "Ugyldig %s komponent"
 
 #: ../zypp/url/UrlBase.cc:724
-#, fuzzy
 msgid "Path parameter parsing not supported for this URL"
-msgstr "Analyse av filstiparameter støttes ikke for denne adressen"
+msgstr "Analyse av baneparameter støttes ikke for denne URL-en"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
-#, fuzzy
 msgid "Query string parsing not supported for this URL"
-msgstr "Analyse av forespørselsstreng støttes ikke for denne adressen"
+msgstr "Analyse av spørringsstreng støttes ikke for denne URL-en"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
 msgstr "Adressestrategi er en obligatorisk komponent"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Ugyldig adressestrategi '%1'"
+msgstr "Ugyldig adressestrategi %s"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Kan ikke analysere adresseautoritetskomponenter"
+msgstr "Kan ikke analysere URL-instans."
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Adressestrategi tillater ikke brukernavn"
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Adressestrategi tillater ikke passord"
 
 #: ../zypp/url/UrlBase.cc:1005
-#, fuzzy
 msgid "Url scheme requires a host component"
-msgstr "Adressestrategi er en obligatorisk komponent"
+msgstr "Adressestrategi krever en vertskomponent"
 
 #: ../zypp/url/UrlBase.cc:1015
-#, fuzzy
 msgid "Url scheme does not allow a host component"
-msgstr "Adressestrategi er en obligatorisk komponent"
+msgstr "Adressestrategi tillater ikke en vertskomponent"
 
 #: ../zypp/url/UrlBase.cc:1042
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid host component '%s'"
-msgstr "Ugyldig adressekomponentdata '%1' for vertsnavn"
+msgstr "Ugyldig vertskomponent %s"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "Adressestrategi tillater ikke port"
 
 #: ../zypp/url/UrlBase.cc:1074
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid port component '%s'"
-msgstr "Ugyldig %1-adressekomponentdata '%2'"
+msgstr "Ugyldig portkomponent %s"
 
 #: ../zypp/url/UrlBase.cc:1091
-#, fuzzy
 msgid "Url scheme requires path name"
-msgstr "Adressestrategien krever et stinavn"
+msgstr "Adressestrategi krever banenavn"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
 msgstr "Relativ sti ikke tillatt hvis autoritet finnes"
 
 #: ../zypp/url/UrlBase.cc:1179
-#, fuzzy
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "Analyse av filstiparameter støttes ikke for denne adressen"
+msgstr "Analyse av baneparameter støttes ikke for denne URL-en"
 
 #: ../zypp/url/UrlUtils.cc:111
-#, fuzzy
 msgid "Encoded string contains a NUL byte"
-msgstr "Adressekodet streng inneholder en NUL-byte"
+msgstr "Kodet streng inneholder nullbyte"
 
 #: ../zypp/url/UrlUtils.cc:173
-#, fuzzy
 msgid "Invalid parameter array split separator character"
-msgstr "Ugyldig koblingsseparatortegn for parameterkart"
+msgstr "Ugyldig skilletegn for deling av parametermatrise"
 
 #: ../zypp/url/UrlUtils.cc:213
-#, fuzzy
 msgid "Invalid parameter map split separator character"
-msgstr "Ugyldig koblingsseparatortegn for parameterkart"
+msgstr "Ugyldig skilletegn for deling av parametertilordning"
 
 #: ../zypp/url/UrlUtils.cc:283
-#, fuzzy
 msgid "Invalid parameter array join separator character"
-msgstr "Ugyldig koblingsseparatortegn for parameterkart"
+msgstr "Ugyldig skilletegn for sammenføyning av parametermatrise"
 
 #: ../zypp/Url.cc:110
-#, fuzzy
 msgid "Invalid LDAP URL query string"
-msgstr "Ugyldig forespørselsparameter '%1' for LDAP-adresse"
+msgstr "Ugyldig LDAP URL-spørringsstreng"
 
 #: ../zypp/Url.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Ugyldig forespørselsparameter '%1' for LDAP-adresse"
+msgstr "Ugyldig LDAP URL-spørringsparameter %s"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Kan ikke løse ut mediet."
+msgstr "Kan ikke klone URL-objekt"
 
 #: ../zypp/Url.cc:303
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Ugyldig referanse til tom adresse"
+msgstr "Ugyldig referanse til tomt URL-objekt"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Kan ikke analysere hovedadressekomponenter"
+msgstr "Kan ikke analysere URL-komponenter"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -155,9 +140,8 @@ msgstr "Ukjent språk: "
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "noCode"
+msgstr "Ingen kode"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -234,7 +218,6 @@ msgstr "Aleutisk"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
 msgstr "Algonquianske språk"
 
@@ -255,7 +238,6 @@ msgstr "Engelsk, gammelengelsk (ca. 450-1100)"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "Apache-språk"
 
@@ -313,13 +295,11 @@ msgstr "Asturiansk"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
 msgstr "Athapascanske språk"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "Australske språk"
 
@@ -359,7 +339,6 @@ msgstr "Banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
 msgstr "Bamileke-språk"
 
@@ -576,7 +555,6 @@ msgstr "Mari"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
 msgstr "Chinook-sjargong"
 
@@ -612,7 +590,6 @@ msgstr "Cheyenne"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "Chamiske språk"
 
@@ -633,19 +610,16 @@ msgstr "Korsikansk"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
 msgstr "Kreolsk og pidgin, engelskbasert (annet)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
 msgstr "Kreolsk og pidgin, franskbasert (annet)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
 msgstr "Kreolsk og pidgin, portugisiskbasert (annet)"
 
@@ -661,7 +635,6 @@ msgstr "Krim-tatar"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
 msgstr "Kreolsk og pidgin (annet)"
 
@@ -1161,7 +1134,6 @@ msgstr "Iransk (annet)"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
 msgstr "Irokesiske språk"
 
@@ -1461,7 +1433,6 @@ msgstr "Luo (Kenya og Tanzania)"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
 msgstr "Lushai"
 
@@ -1566,7 +1537,6 @@ msgstr "Minangkabau"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
 msgstr "Diverse språk"
 
@@ -1597,7 +1567,6 @@ msgstr "Manipuri"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "Manobo-språk"
 
@@ -1623,7 +1592,6 @@ msgstr "Mossi"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
 msgstr "Flere språk"
 
@@ -1651,7 +1619,6 @@ msgstr "Marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
 msgstr "Maya-språk"
 
@@ -1765,7 +1732,6 @@ msgstr "Sotho, nordlig"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "Nubiske språk"
 
@@ -1838,7 +1804,6 @@ msgstr "Tyrkisk, ottomansk (1500-1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
 msgstr "Otomianske språk"
 
@@ -1919,7 +1884,6 @@ msgstr "Portugisisk"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
 msgstr "Prakrit-språk"
 
@@ -2007,7 +1971,6 @@ msgstr "Søramerikansk indiansk (annet)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
 msgstr "Salisjanske språk"
 
@@ -2088,7 +2051,6 @@ msgstr "Sinhala"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "Siouanske språk"
 
@@ -2124,7 +2086,6 @@ msgstr "Nordsamisk"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
 msgstr "Samiske språk (annet)"
 
@@ -2389,7 +2350,6 @@ msgstr "Tumbuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "Tupi-språk"
 
@@ -2486,7 +2446,6 @@ msgstr "Votisk"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
 msgstr "Wakasjanske språk"
 
@@ -2512,7 +2471,6 @@ msgstr "Walisisk"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
 msgstr "Sorbianske språk"
 
@@ -2560,7 +2518,6 @@ msgstr "Yoruba"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
 msgstr "Yupik-språk"
 
@@ -2599,56 +2556,49 @@ msgid "Unable to restore all sources."
 msgstr "Kan ikke gjenopprette alle kilder."
 
 #: ../zypp/SourceManager.h:68
-#, fuzzy
 msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Minst én kilde er allerede registrert. En eksisterende kilde kan ikke gjenopprettes."
+msgstr "Minst én kilde er allerede registrert. Lagrede kilder kan ikke gjenopprettes."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "En nisse kjører allerede"
+msgstr "Programvareadministrasjon kjører allerede."
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext ikke tilkoblet"
 
 #: ../zypp/target/hal/HalContext.cc:106
-#, fuzzy
 msgid "HalDrive not initialized"
-msgstr "Malen er ikke Initialisert."
+msgstr "HalDrive ikke initialisert"
 
 #: ../zypp/target/hal/HalContext.cc:116
-#, fuzzy
 msgid "HalVolume not initialized"
-msgstr "Malen er ikke Initialisert."
+msgstr "HalVolume ikke initialisert"
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "kanal til kanal-forbindelse"
+msgstr "Kan ikke opprette dbus-tilkobling"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: Kan ikke opprette libhal-kontekst"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: Kan ikke angi dbus-tilkobling"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "Kan ikke initialisere HAL-kontekst, kjører ikke hald?"
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "Ingen CD-ROM-stasjoner funnet."
+msgstr "Ikke en CD-ROM-stasjon"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Kryptering"
+msgstr "Hal-unntak"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -2735,11 +2685,11 @@ msgstr "opprettet sikkerhetskopi %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "Kan ikke opprette en fil som kreves for å oppdatere installasjonen."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Installasjonen er avbrutt som angitt."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2896,9 +2846,9 @@ msgstr "%s er ikke installert, og er merket som ikke installerbar"
 
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:388
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot install %s due to dependency problems"
-msgstr "Kan ikke installere %s på grunn av konflikter"
+msgstr "Kan ikke installere %s på grunn av problemer med nødvendige pakker"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:426
@@ -2914,15 +2864,15 @@ msgstr "slett %s"
 #: ../zypp/solver/detail/Resolver_problems.cc:439
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
-#, fuzzy, c-format
+#, c-format
 msgid "do not install %s"
-msgstr "Kan ikke installere %s"
+msgstr "Ikke installer %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:452
-#, fuzzy, c-format
+#, c-format
 msgid "%s has unfulfilled requirements"
-msgstr "%s har krav som ikke er oppfylt"
+msgstr "%s har ressurskrav som ikke er oppfylt"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:490
@@ -2932,7 +2882,7 @@ msgstr "%s mangler nødvendige pakker"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:537
-#, fuzzy, c-format
+#, c-format
 msgid "%s cannot be installed due to missing dependencies"
 msgstr "%s kan ikke installeres på grunn av manglende nødvendige pakker"
 
@@ -2944,9 +2894,9 @@ msgstr "%s kreves av %s, men vil bli avinstallert"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
-#, fuzzy, c-format
+#, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s kreves av %s, men vil bli avinstallert"
+msgstr "%s oppfyller krav om nødvendige pakker for %s men beholdes på systemet"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -2986,7 +2936,7 @@ msgstr "Kan ikke installere %s fordi den skaper en konflikt"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:734
-#, fuzzy, c-format
+#, c-format
 msgid "%s is uninstallable due to conflicts with %s"
 msgstr "%s kan ikke avinstalleres på grunn av konflikter med %s"
 
@@ -3019,9 +2969,9 @@ msgstr "Ignorerer denne konflikten for %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore the obsolete %s in %s"
-msgstr "Ignorerer denne konflikten for %s"
+msgstr "Ignorer foreldet %s i %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
@@ -3030,9 +2980,8 @@ msgid "Ignore that %s is already set to install"
 msgstr "Ignorer at %s allerede er valgt for installasjon"
 
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-#, fuzzy
 msgid "Do not install or delete concerning resolvables"
-msgstr "Fjern nødvendige pakker på grunn av konflikt"
+msgstr "Ikke installer eller slett berørte nødvendige ressurser"
 
 #. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
 #: ../zypp/solver/detail/QueueItemRequire.cc:701
@@ -3276,15 +3225,15 @@ msgstr "%s inneholder %s, men den er beskyttet."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s inneholder %s, men er merket for avinstallasjon."
+msgstr "%s inneholder %s, men er markert for å beholdes."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s, but has another architecture."
-msgstr "%s inneholder %s, men den er beskyttet."
+msgstr "%s inneholder %s, men har en annen arkitektur."
 
 #. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:469
@@ -3373,9 +3322,8 @@ msgid "keep %s"
 msgstr "behold %s"
 
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-#, fuzzy
 msgid "Keep resolvables"
-msgstr "Behold manglende nødvendige pakker"
+msgstr "Behold nødvendige ressurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
@@ -3440,9 +3388,8 @@ msgid "Reading index files"
 msgstr "Leser indeksfiler"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
-#, fuzzy
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Signaturkontroll mislyktes for signert repomd.xml-fil"
+msgstr "Den signerte filen repomd.xml bestod ikke signaturkontrollen."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3510,7 +3457,7 @@ msgstr "Leser pakkeoppgradering %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Skriptfilen bestod ikke kontrollsumtesten."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3529,23 +3476,23 @@ msgstr "Leser oversettelse: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "applydeltarpm-kontroll mislyktes"
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm mislyktes"
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
+msgstr "Pakken %s består ikke integritetskontrollen. Vil du prøve å laste den ned på nytt?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr ""
+msgstr "Pakken %s består ikke integritetskontrollen. Vil du prøve å laste den ned på nytt, eller avbryte installasjonen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3558,42 +3505,41 @@ msgstr " kontrollsum kunne ikke bekreftes."
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Laster ned pakkelister"
+msgstr "Laster ned %s"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "Lastet ned %s fra %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Ingen pakker inneholder %s"
+msgstr "Får ikke %s fra %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Kan ikke initialisere muteksattributter"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Kan ikke angi rekursive muteksattributter"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Kan ikke initialisere rekursiv muteks"
 
 #: ../zypp/thread/Mutex.cc:77
-#, fuzzy
 msgid "Can't acquire the mutex lock"
-msgstr "Kan ikke opprette zypp-låsing."
+msgstr "Kan ikke oppnå mutekslås"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Kan ikke frigi mutekslås"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3813,9 +3759,8 @@ msgstr "Kongo"
 # fuzzy
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
-msgstr "Den sentralafrikanske republikk"
+msgstr "Den sentralafrikanske republikken"
 
 #. :COG:178:
 #: ../zypp/CountryCode.cc:258
@@ -4883,6 +4828,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Filen %s er ikke signert.\n"
+"Vil du bruke den likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -4891,6 +4838,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s er signert med en ukjent nøkkel:\n"
+"%s|%s|%s\n"
+" Vil du bruke filen likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4899,6 +4849,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"Upålitelig nøkkel funnet:\n"
+"%s|%s|%s\n"
+" Skal nøkkelen klareres likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -4907,6 +4860,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s bestod ikke integritetskontroll med følgende nøkkel:\n"
+"%s|%s|%s\n"
+" Vil du bruke filen likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -4914,6 +4870,8 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har ingen kontrollsum.\n"
+"Vil du bruke filen likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
@@ -4921,6 +4879,8 @@ msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har en ukjent kontrollsum %s.\n"
+"Vil du bruke filen likevel?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -4929,6 +4889,8 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Ugyldig kontrollsum i filen %s. Forventet kontrollsum var %s, men %s ble returnert.\n"
+" Vil du bruke filen likevel?"
 
 #~ msgid "Ok"
 #~ msgstr "OK"

@@ -12,8 +12,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2006-06-07 12:21+0200\n"
-"Last-Translator: Klara Cihlarova <koty@seznam.cz>\n"
-"Language-Team: cs_CZ <cs@li.org>\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,132 +23,117 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Schéma URL nepovoluje %s"
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Neplatná %1 data '%2' složky url"
+msgstr "Neplatná %s součást %s"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Neplatná URI komponenty:"
+msgstr "Neplatná %s součást"
 
 #: ../zypp/url/UrlBase.cc:724
-#, fuzzy
 msgid "Path parameter parsing not supported for this URL"
-msgstr "Analýza parametru cesty není pro toto url podporována"
+msgstr "Pro toto URL není podporována analýza parametru cesty."
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
-#, fuzzy
 msgid "Query string parsing not supported for this URL"
-msgstr "Analýza řetězce požadavku není pro toto url podporována"
+msgstr "Pro toto URL není podporována analýza řetězce dotazu."
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
 msgstr "URL schéma je vyžadovanou součástí"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Neplatné schéma url '%1'"
+msgstr "Neplatné schéma URL %s"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Nelze analyzovat součásti url autority"
+msgstr "Nelze analyzovat autoritu URL."
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Schéma URL nepovoluje uživatelské jméno."
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Schéma URL nepovoluje heslo."
 
 #: ../zypp/url/UrlBase.cc:1005
-#, fuzzy
 msgid "Url scheme requires a host component"
-msgstr "URL schéma je vyžadovanou součástí"
+msgstr "Schéma URL vyžaduje součást hostitele."
 
 #: ../zypp/url/UrlBase.cc:1015
-#, fuzzy
 msgid "Url scheme does not allow a host component"
-msgstr "URL schéma je vyžadovanou součástí"
+msgstr "Schéma URL nepovoluje součást hostitele."
 
 #: ../zypp/url/UrlBase.cc:1042
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid host component '%s'"
-msgstr "Neplatná data komponenty url počítače '%1'"
+msgstr "Neplatná součást hostitele %s"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "Schéma URL nepovoluje port."
 
 #: ../zypp/url/UrlBase.cc:1074
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid port component '%s'"
-msgstr "Neplatná %1 data '%2' složky url"
+msgstr "Neplatná součást portu %s"
 
 #: ../zypp/url/UrlBase.cc:1091
-#, fuzzy
 msgid "Url scheme requires path name"
-msgstr "Schéma url vyžaduje jméno cesty"
+msgstr "Schéma URL vyžaduje název cesty."
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
 msgstr "Relativní cesta není povolena, pokud existuje autorita"
 
 #: ../zypp/url/UrlBase.cc:1179
-#, fuzzy
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "Analýza parametrů cesty není pro toto url podporována"
+msgstr "Pro toto URL není podporována analýza parametru cesty."
 
 #: ../zypp/url/UrlUtils.cc:111
-#, fuzzy
 msgid "Encoded string contains a NUL byte"
-msgstr "URL-kódovaný řetězec obsahuje nulový bajt"
+msgstr "Zakódovaný řetězec obsahuje bajt NUL."
 
 #: ../zypp/url/UrlUtils.cc:173
-#, fuzzy
 msgid "Invalid parameter array split separator character"
-msgstr "Invalid parameter map join separator character"
+msgstr "Neplatný oddělovací znak pole parametrů"
 
 #: ../zypp/url/UrlUtils.cc:213
-#, fuzzy
 msgid "Invalid parameter map split separator character"
-msgstr "Invalid parameter map join separator character"
+msgstr "Neplatný oddělovací znak mapy parametrů"
 
 #: ../zypp/url/UrlUtils.cc:283
-#, fuzzy
 msgid "Invalid parameter array join separator character"
-msgstr "Invalid parameter map join separator character"
+msgstr "Neplatný oddělovací znak spojení pole parametrů"
 
 #: ../zypp/Url.cc:110
-#, fuzzy
 msgid "Invalid LDAP URL query string"
-msgstr "Neplatný parametr LDAP URL dotazu '%1'"
+msgstr "Neplatný řetězec dotazu LDAP URL"
 
 #: ../zypp/Url.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Neplatný parametr LDAP URL dotazu '%1'"
+msgstr "Neplatný parametr dotazu LDAP URL %s"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Nelze vysunout médium."
+msgstr "Nelze zkopírovat objekt URL."
 
 #: ../zypp/Url.cc:303
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Invalid empty url implementation reference"
+msgstr "Neplatný odkaz na objekt prázdného URL"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Nelze analyzovat hlavní součásti url"
+msgstr "Nelze analyzovat součásti URL."
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -157,9 +142,8 @@ msgstr "Neznámý jazyk: "
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "žádný kód"
+msgstr "Žádný kód"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -233,9 +217,8 @@ msgstr "Aleutština"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
-msgstr "Algonkinské jazyky"
+msgstr "Algonquianské jazyky"
 
 #. language code: alt
 #: ../zypp/LanguageCode.cc:270
@@ -254,7 +237,6 @@ msgstr "Angličtina, stará (cca 450-1100)"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "Apačské jazyky"
 
@@ -312,13 +294,11 @@ msgstr "Asturian"
 # modules/inst_language.ycp:93
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
-msgstr "Athabaské jazyky"
+msgstr "Athapascanské jazyky"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "Australské jazyky"
 
@@ -356,9 +336,8 @@ msgstr "Banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
-msgstr "Bamilekské jazyky"
+msgstr "Jazyky Bamileke"
 
 #. language code: bak ba
 #: ../zypp/LanguageCode.cc:318
@@ -575,9 +554,8 @@ msgstr "Marijština"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
-msgstr "Činúcký žargon"
+msgstr "Slang Chinook"
 
 #. language code: cho
 #: ../zypp/LanguageCode.cc:410
@@ -611,9 +589,8 @@ msgstr "Čejenština"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
-msgstr "Čamské jazyky"
+msgstr "Chamicské jazyky"
 
 #. language code: cop
 #: ../zypp/LanguageCode.cc:424
@@ -632,21 +609,18 @@ msgstr "Korsičtina"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr "Kreolské jazyky a pidžiny, anglické (jiné)"
+msgstr "Creole a Pidgin, založené na angličtině (jiné)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr "Kreolské jazyky a pidžiny, francouzské (jiné)"
+msgstr "Creole a Pidgin, založené na francouzštině (jiné)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "Kreolské jazyky a pidžiny, portugalské (jiné)"
+msgstr "Creole a Pidgin, založené na portugalštině (jiné)"
 
 #. language code: cre cr
 #: ../zypp/LanguageCode.cc:436
@@ -660,9 +634,8 @@ msgstr "Crimean Tatar"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
-msgstr "Kreolské jazyky a pidžiny (jiné)"
+msgstr "Creole a Pidgin (jiné)"
 
 #. language code: csb
 #: ../zypp/LanguageCode.cc:442
@@ -1163,9 +1136,8 @@ msgstr "Íránské (jiné)"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
-msgstr "Irokézština"
+msgstr "Irokézské jazyky"
 
 #. language code: ita it
 #: ../zypp/LanguageCode.cc:654
@@ -1466,7 +1438,6 @@ msgstr "Luoština"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
 msgstr "Lushai"
 
@@ -1571,7 +1542,6 @@ msgstr "Minangkabauština"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
 msgstr "Různé jazyky"
 
@@ -1605,9 +1575,8 @@ msgstr "Manipurština"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
-msgstr "Manobo"
+msgstr "Jazyky Manobo"
 
 #. language code: moh
 #: ../zypp/LanguageCode.cc:830
@@ -1632,7 +1601,6 @@ msgstr "Mossi"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
 msgstr "Více jazyků"
 
@@ -1660,9 +1628,8 @@ msgstr "Marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
-msgstr "Mayština"
+msgstr "Mayské jazyky"
 
 # SY
 # fuzzy
@@ -1759,7 +1726,7 @@ msgstr "Nynorsk"
 #. language code: nob nb
 #: ../zypp/LanguageCode.cc:882
 msgid "Norwegian Bokmal"
-msgstr "Bokmål"
+msgstr "Bokmĺl"
 
 # TO
 #. language code: nog
@@ -1784,9 +1751,8 @@ msgstr "Severní sotho"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
-msgstr "Nubijština"
+msgstr "Núbijské jazyky"
 
 #. language code: nwc
 #: ../zypp/LanguageCode.cc:894
@@ -1861,9 +1827,8 @@ msgstr "Osmanská turečtina (1500-1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
-msgstr "Otomi"
+msgstr "Otomianské jazyky"
 
 #. language code: paa
 #: ../zypp/LanguageCode.cc:922
@@ -1942,9 +1907,8 @@ msgstr "Portugalské"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
-msgstr "Prákrity"
+msgstr "Prakritské jazyky"
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
@@ -2031,9 +1995,8 @@ msgstr "Jihoamerické indiánské (jiné)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
-msgstr "Saliština"
+msgstr "Salishanské jazyky"
 
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
@@ -2113,9 +2076,8 @@ msgstr "Sinhalština"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
-msgstr "Siouské jazyky"
+msgstr "Siouanské jazyky"
 
 #. language code: sit
 #: ../zypp/LanguageCode.cc:1028
@@ -2149,9 +2111,8 @@ msgstr "Severní Sami"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
-msgstr "Laponské (jiné)"
+msgstr "Jazyky Sami (jiné)"
 
 #. language code: smj
 #: ../zypp/LanguageCode.cc:1044
@@ -2415,9 +2376,8 @@ msgstr "Tumbuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
-msgstr "Tupi"
+msgstr "Jazyky Tupi"
 
 #. language code: tur tr
 #: ../zypp/LanguageCode.cc:1148
@@ -2513,9 +2473,8 @@ msgstr "Votština"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
-msgstr "Wakašské jazyky"
+msgstr "Wakashanské jazyky"
 
 #. language code: wal
 #: ../zypp/LanguageCode.cc:1186
@@ -2539,7 +2498,6 @@ msgstr "Welština"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
 msgstr "Srbské jazyky"
 
@@ -2586,9 +2544,8 @@ msgstr "Jarubština"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
-msgstr "Yupické jazyky"
+msgstr "Jazyky Yupik"
 
 #. language code: zap
 #: ../zypp/LanguageCode.cc:1216
@@ -2626,56 +2583,50 @@ msgid "Unable to restore all sources."
 msgstr "Nelze obnovit všechny zdroje."
 
 #: ../zypp/SourceManager.h:68
-#, fuzzy
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Alespoň jeden zdroj je stále registrován. Nelze obnovit zdroje z trvalého uložení."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr "Již je registrován nejméně jeden zdroj, uložené zdroje nelze obnovit."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "Démon již běží"
+msgstr "Správa softwaru již je spuštěna."
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "Kontext HAL není připojen."
 
 #: ../zypp/target/hal/HalContext.cc:106
-#, fuzzy
 msgid "HalDrive not initialized"
-msgstr "šablona není inicializována"
+msgstr "Jednotka HAL není inicializována."
 
 #: ../zypp/target/hal/HalContext.cc:116
-#, fuzzy
 msgid "HalVolume not initialized"
-msgstr "šablona není inicializována"
+msgstr "Svazek HAL není inicializován."
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "Spojení kanál kanál"
+msgstr "Nelze vytvořit připojení dbus."
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: Nelze vytvořit kontext libhal."
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: Nelze nastavit připojení dbus."
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "Nelze inicializovat kontext HAL - je spuštěna služba hald?"
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "nebyla nalezena žádná CD mechanika."
+msgstr "Není jednotka CDROM"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Šifrování"
+msgstr "Výjimka HAL"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -2763,13 +2714,12 @@ msgstr "vytvořena záloha %s"
 #: ../zypp/target/store/XMLFilesBackend.cc:1016
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
-#, fuzzy
 msgid "Cannot create a file needed to perform update installation."
-msgstr "SUSE Linux Professional řídící soubor potřebný pro instalaci."
+msgstr "Nelze vytvořit soubor potřebný k provedení instalace aktualizace."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Instalace byla zrušena podle příkazu."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2909,8 +2859,11 @@ msgstr ""
 "Požadavky nelze uspokojit z žádného zdroje."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Kvůli problémům níže toto řešení nevyřeší všechny problémy se závislostmi"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Kvůli problémům níže toto řešení nevyřeší všechny problémy se závislostmi"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2974,9 +2927,9 @@ msgstr "%s bude kvůli závislosti s %s oddinstalován"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
-#, fuzzy, c-format
+#, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s bude kvůli závislosti s %s oddinstalován"
+msgstr "%s splňuje závislosti %s, ale zůstane ponechán v systému."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -3037,7 +2990,9 @@ msgstr "Instalovat %s i přes změnu architektury"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
 msgstr "%s obsahuje závislosti, ale změní architekturu nainstalované položky"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
@@ -3149,14 +3104,19 @@ msgstr "Nastavuje se %s jako neinstalovatelný"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s čeká na instalaci, ale nelze ho nainstalovat kvůli problémům se závislostmi."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s čeká na instalaci, ale nelze ho nainstalovat kvůli problémům se "
+"závislostmi."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
 msgstr "Nelze nainstalovat %s, je již označen k odinstalování"
 
 #. Translator: %s = name of patch
@@ -3178,7 +3138,8 @@ msgstr "Nelze nainstalovat %s, protože nelze aplikovat na systém."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Nelze nainstalovat %s, protože %s již označen jako potřebný k instalaci"
+msgstr ""
+"Nelze nainstalovat %s, protože %s již označen jako potřebný k instalaci"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3294,8 +3255,12 @@ msgstr "%s poskytuje %s, ale je již nainstalována jiná verze %s."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s poskytuje %s, ale je neinstalovatelný. Více informací získáte při ruční instalaci."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s poskytuje %s, ale je neinstalovatelný. Více informací získáte při ruční "
+"instalaci."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3305,9 +3270,9 @@ msgstr "%s poskytuje %s, ale je uzamčen."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s poskytuje %s, ale čeká na odinstalování."
+msgstr "%s poskytuje %s, ale je naplánováno, že bude ponechán."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
@@ -3330,7 +3295,8 @@ msgstr "Nelze splnit požadavky %s pro %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
 msgstr "%s je požadován jinými instalovanými závislostmi a nelze odlinkovat."
 
 #. affected() = provider of cap
@@ -3469,9 +3435,8 @@ msgid "Reading index files"
 msgstr "Čtou se soubory indexu"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
-#, fuzzy
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Kontrola podpisu souboru repomd.xml selhala"
+msgstr "Nezdařila se kontrola podpisu podepsaného souboru repomd.xml."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3540,7 +3505,7 @@ msgstr "Čte se oprava %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Kontrolní součet souboru skriptu je chybný."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3559,23 +3524,27 @@ msgstr "Čte se překlad: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "Kontrola aplikování delta RPM se nezdařila."
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "Aplikování delta RPM se nezdařilo."
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
+msgstr "Kontrola integrity balíčku %s se nezdařila. Chcete jej stáhnout znovu?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
 msgstr ""
+"Kontrola integrity balíčku %s se nezdařila. Chcete jej stáhnout znovu nebo "
+"zrušit instalaci?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3588,42 +3557,41 @@ msgstr " selhala kontrola kontrolního součtu."
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Stahuje se seznam balíčků"
+msgstr "Stahuje se %s"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "Staženo %s z %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Žádný balíček neposkytuje %s"
+msgstr "Nelze poskytnout %s ze %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Nelze inicializovat atributy mutex."
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Nelze nastavit rekurzivní atribut mutex."
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Nelze inicializovat rekurzivní mutex."
 
 #: ../zypp/thread/Mutex.cc:77
-#, fuzzy
 msgid "Can't acquire the mutex lock"
-msgstr "Nelze získat zypp zámek."
+msgstr "Nelze získat zámek mutex."
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Nelze uvolnit zámek mutex."
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3851,7 +3819,6 @@ msgstr "Congo"
 # CF
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "Středoafrická republika"
 
@@ -4965,6 +4932,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Soubor %s není podepsán.\n"
+"Chcete jej přesto použít?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -4973,6 +4942,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Soubor %s je podepsán neznámým klíčem:\n"
+"%s|%s|%s\n"
+" Chcete soubor přesto použít?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4981,6 +4953,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"Byl nalezen nedůvěryhodný klíč:\n"
+"%s|%s|%s\n"
+" Chcete mu důvěřovat?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -4989,6 +4964,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Nezdařila se kontrola integrity souboru %s s následujícím klíčem:\n"
+"%s|%s|%s\n"
+" Chcete soubor přesto použít?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -4996,6 +4974,8 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Soubor %s nemá kontrolní součet.\n"
+"Chcete soubor přesto použít?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
@@ -5003,6 +4983,8 @@ msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"Soubor %s má neznámý kontrolní součet %s.\n"
+"Chcete soubor přesto použít?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -5011,6 +4993,9 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Soubor %s má neplatný kontrolní součet.\n"
+"Očekáváno %s, nalezeno %s\n"
+"Chcete soubor přesto použít?"
 
 #~ msgid "Cannot aquire zypp lock."
 #~ msgstr "Nelze získat zypp zámek."

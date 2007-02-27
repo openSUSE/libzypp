@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
-"PO-Revision-Date: 2006-06-12 23:19+0100\n"
-"Last-Translator: Marek Stepien <marcoos@aviary.pl>\n"
+"PO-Revision-Date: 2007-02-12 20:18+0100\n"
+"Last-Translator: wadim dziedzic <nikdo@aviary.pl>\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,132 +22,117 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Schemat URL nie zezwala na %s"
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Nieprawidłowe dane komponentu %1 URL: '%2'"
+msgstr "Nieprawidłowe %s komponentu '%s'"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Nieprawidłowy adres URI komponentu:"
+msgstr "Nieprawidłowe %s komponentu"
 
 #: ../zypp/url/UrlBase.cc:724
-#, fuzzy
 msgid "Path parameter parsing not supported for this URL"
-msgstr "Analiza parametru ścieżki nie jest obsługiwana dla tego adresu url"
+msgstr "Analiza parametru ścieżki nie jest obsługiwana dla tego adresu URL"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
-#, fuzzy
 msgid "Query string parsing not supported for this URL"
-msgstr "Analiza zapytania nie jest obsługiwana dla tego adresu url"
+msgstr "Analiza zapytania nie jest obsługiwana dla tego adresu URL"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
-msgstr "Schemat url jest wymaganym komponentem"
+msgstr "Schemat URL to wymagany komponent"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Nieprawidłowy schemat URL '%1'"
+msgstr "Nieprawidłowy schemat URL '%s'"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Analiza nadrzędnego adresu URL komponentów nie powiodła się"
+msgstr "Analiza nadrzędnego adresu URL nie powiodła się"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Schemat URL nie zezwala na nazwę użytkownika"
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Schemat URL nie zezwala na hasło"
 
 #: ../zypp/url/UrlBase.cc:1005
-#, fuzzy
 msgid "Url scheme requires a host component"
-msgstr "Schemat url jest wymaganym komponentem"
+msgstr "Schemat URL wymaga komponentu hosta"
 
 #: ../zypp/url/UrlBase.cc:1015
-#, fuzzy
 msgid "Url scheme does not allow a host component"
-msgstr "Schemat url jest wymaganym komponentem"
+msgstr "Schemat URL nie zezwala na komponent hosta"
 
 #: ../zypp/url/UrlBase.cc:1042
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid host component '%s'"
-msgstr "Nieprawidłowe dane komponentu adresu hosta URL '%1'"
+msgstr "Nieprawidłowy komponent hosta '%s'"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "Schemat URL nie zezwala na port"
 
 #: ../zypp/url/UrlBase.cc:1074
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid port component '%s'"
-msgstr "Nieprawidłowe dane komponentu %1 URL: '%2'"
+msgstr "Nieprawidłowy komponent portu '%s'"
 
 #: ../zypp/url/UrlBase.cc:1091
-#, fuzzy
 msgid "Url scheme requires path name"
-msgstr "Schemat url wymaga ścieżki"
+msgstr "Schemat URL wymaga ścieżki"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
 msgstr "Względna ścieżka nie jest dozwolona, jeśli usługa istnieje"
 
 #: ../zypp/url/UrlBase.cc:1179
-#, fuzzy
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "Analiza parametru ścieżki nie jest obsługiwana dla tego adresu url"
+msgstr "Analiza parametru ścieżki nie jest obsługiwana dla tego URL"
 
 #: ../zypp/url/UrlUtils.cc:111
-#, fuzzy
 msgid "Encoded string contains a NUL byte"
-msgstr "Kodowanie łańcucha URL zawiera bit NUL"
+msgstr "Zakodowany łańcuch znaków zawiera bajt NUL"
 
 #: ../zypp/url/UrlUtils.cc:173
-#, fuzzy
 msgid "Invalid parameter array split separator character"
-msgstr "Nieprawodłowwy parametr map join znaku separatora"
+msgstr "Nieprawidłowy znak parametru podziału tablicy"
 
 #: ../zypp/url/UrlUtils.cc:213
-#, fuzzy
 msgid "Invalid parameter map split separator character"
-msgstr "Nieprawodłowwy parametr map join znaku separatora"
+msgstr "Nieprawidłowy znak parametru podziału mapy"
 
 #: ../zypp/url/UrlUtils.cc:283
-#, fuzzy
 msgid "Invalid parameter array join separator character"
-msgstr "Nieprawodłowwy parametr map join znaku separatora"
+msgstr "Nieprawidłowy znak parametru połączenia tablicy"
 
 #: ../zypp/Url.cc:110
-#, fuzzy
 msgid "Invalid LDAP URL query string"
-msgstr "Nieprawidłowy parametr zapytania LDAP URL '%1'"
+msgstr "Nieprawidłowy parametr zapytania LDAP URL"
 
 #: ../zypp/Url.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Nieprawidłowy parametr zapytania LDAP URL '%1'"
+msgstr "Nieprawidłowy parametr zapytania LDAP URL '%s'"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Nie można wysunąć nośnika."
+msgstr "Nie można sklonować obiektu URL"
 
 #: ../zypp/Url.cc:303
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Nieprawidłowe odwołanie implementacji pustego adresu URL"
+msgstr "Nieprawidłowe odwołanie pustego adresu URL"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Analiza głównego adresu URL komponentów nie powiodła się"
+msgstr "Analiza komponentów URL nie powiodła się"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -156,9 +141,8 @@ msgstr "Nieznany język:"
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "noCode"
+msgstr "Bez kodu"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -232,7 +216,6 @@ msgstr "aleucki"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
 msgstr "języki algonkińskie"
 
@@ -253,7 +236,6 @@ msgstr "staroangielski (ok. 450 - 1100)"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "języki apaczańskie"
 
@@ -311,13 +293,11 @@ msgstr "asturyjski"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
-msgstr "języki athapaskańskie"
+msgstr "języki atapaskańskie"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "języki australijskie"
 
@@ -355,7 +335,6 @@ msgstr "banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
 msgstr "języki bamileke"
 
@@ -574,9 +553,8 @@ msgstr "maryjski"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
-msgstr "czinucki"
+msgstr "Dialekt czinucki"
 
 #. language code: cho
 #: ../zypp/LanguageCode.cc:410
@@ -610,7 +588,6 @@ msgstr "czejeński"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "języki chamickie"
 
@@ -631,21 +608,18 @@ msgstr "korsykański"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr "kreolskie i pidżyny oparte na angielskim (inne)"
+msgstr "Kreolskie i pidżyny oparte na angielskim (inne)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr "kreolskie i pidżyny oparte na francuskim (inne)"
+msgstr "Kreolskie i pidżyny oparte na francuskim (inne)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "kreolskie i pidżyny oparte na portugalskim (inne)"
+msgstr "Kreolskie i pidżyny oparte na portugalskim (inne)"
 
 #. language code: cre cr
 #: ../zypp/LanguageCode.cc:436
@@ -659,9 +633,8 @@ msgstr "tatarski (krymski)"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
-msgstr "kreolskie i pidżyny różne"
+msgstr "Kreolskie i pidżyny różne"
 
 #. language code: csb
 #: ../zypp/LanguageCode.cc:442
@@ -1155,9 +1128,8 @@ msgstr "irańskie (inne)"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
-msgstr "irokeskie"
+msgstr "języki irokeskie"
 
 #. language code: ita it
 #: ../zypp/LanguageCode.cc:654
@@ -1453,9 +1425,8 @@ msgstr "luo (Kenia i Tanzania)"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
-msgstr "lushai"
+msgstr "Lushai"
 
 #. language code: mac mkd mk
 #: ../zypp/LanguageCode.cc:772 ../zypp/LanguageCode.cc:774
@@ -1554,7 +1525,6 @@ msgstr "minangkabau"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
 msgstr "języki różne"
 
@@ -1586,7 +1556,6 @@ msgstr "manipuri"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "języki manobo"
 
@@ -1612,9 +1581,8 @@ msgstr "mossi"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
-msgstr "wielojęzyczność"
+msgstr "Wielojęzyczność"
 
 #. language code: mun
 #: ../zypp/LanguageCode.cc:840
@@ -1639,9 +1607,8 @@ msgstr "marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
-msgstr "języki majańskie"
+msgstr "języki majskie"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1752,7 +1719,6 @@ msgstr "sotho północny"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "języki nubijskie"
 
@@ -1824,9 +1790,8 @@ msgstr "turecki, osmańskie (1500 - 1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
-msgstr "języki otomang"
+msgstr "języki otomiańskie"
 
 #. language code: paa
 #: ../zypp/LanguageCode.cc:922
@@ -1905,9 +1870,8 @@ msgstr "portugalski"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
-msgstr "prakryty"
+msgstr "Prakryty"
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
@@ -1991,9 +1955,8 @@ msgstr "Indian południowoamerykańskich (inne)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
-msgstr "saliskie"
+msgstr "języki saliskie"
 
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
@@ -2072,7 +2035,6 @@ msgstr "syngaleski"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "języki Siuksów"
 
@@ -2108,9 +2070,8 @@ msgstr "lapoński północny"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
-msgstr "języki lapońskie (inne)"
+msgstr "języki sami (inne)"
 
 #. language code: smj
 #: ../zypp/LanguageCode.cc:1044
@@ -2372,7 +2333,6 @@ msgstr "tubuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "języki tupi"
 
@@ -2469,7 +2429,6 @@ msgstr "wotski"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
 msgstr "języki wakasz"
 
@@ -2495,7 +2454,6 @@ msgstr "walijski"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
 msgstr "języki łużyckie"
 
@@ -2542,7 +2500,6 @@ msgstr "joruba"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
 msgstr "języki yupik"
 
@@ -2582,56 +2539,49 @@ msgid "Unable to restore all sources."
 msgstr "Nie udało się odtworzyć wszystkich źródeł."
 
 #: ../zypp/SourceManager.h:68
-#, fuzzy
 msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Przynajmniej jedno źródło jest już zarejestrowane, nie można odtworzyć źródeł z trwałego zasobu."
+msgstr "Przynajmniej jedno źródło jest już zarejestrowane, nie można odtworzyć przechowywanych źródeł."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "Demon jest już uruchomiony"
+msgstr "Demon zarządzania oprogramowaniem jest już uruchomiony"
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext nie połączony"
 
 #: ../zypp/target/hal/HalContext.cc:106
-#, fuzzy
 msgid "HalDrive not initialized"
-msgstr "Szablon nie został zainicjowany."
+msgstr "HalDrive: niezainicjowany."
 
 #: ../zypp/target/hal/HalContext.cc:116
-#, fuzzy
 msgid "HalVolume not initialized"
-msgstr "Szablon nie został zainicjowany."
+msgstr "HalVolume:  niezainicjowany."
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "połączenie 'channel to channel'"
+msgstr "Nie można utworzyć połączenia dbus"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: nie można utworzyć kontekstu libhal"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: nie można ustanowić połączenia dbus"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "Nie można zainicjować kontekstu HAL -- demon hald nie jest uruchomiony?"
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "Nie znaleziono napędów CD."
+msgstr "Nie jest to napęd CDROM"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Szyfrowanie"
+msgstr "Wyjątek Hal"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -2718,11 +2668,11 @@ msgstr "utworzono zapasowy %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "Nie można utworzyć pliku wymaganego do instalacji uaktualnienia."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Instalacja przerwana zgodnie z życzeniem."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2927,9 +2877,9 @@ msgstr "%s spełnia zależności %s, ale zostanie odinstalowany"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
-#, fuzzy, c-format
+#, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s spełnia zależności %s, ale zostanie odinstalowany"
+msgstr "%s spełnia zależności %s, ale zostanie pozostawiony"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -3147,7 +3097,7 @@ msgstr "To unieważniłoby %s."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:214
 #, c-format
 msgid "Establishing %s"
-msgstr "Nawiązywanie %s"
+msgstr "Ustalanie %s"
 
 #. affected() = resolvable to be installed
 #. _capability =
@@ -3258,9 +3208,9 @@ msgstr "%s dostarcza %s, ale jest zablokowany."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s dostarcza %s, ale jest zaplanowany do usunięcia."
+msgstr "%s dostarcza %s, ale jest zaplanowany do pozostawienia"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
@@ -3337,7 +3287,7 @@ msgstr "Oznaczanie %s jako nie do usunięcia z powodu konfliktów dotyczących %
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:569
 #, c-format
 msgid "from %s"
-msgstr "od %s"
+msgstr "z %s"
 
 #: ../zypp/solver/detail/ResolverInfo.cc:191
 msgid " Error!"
@@ -3421,9 +3371,8 @@ msgid "Reading index files"
 msgstr "Wczytywanie plików indeksu"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
-#, fuzzy
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Podpisany plik repomd.xml nie przechodzi weryfikacji podpisu."
+msgstr "Weryfikacja podpisu pliku repomd.xml zakończona niepowodzeniem."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3491,7 +3440,7 @@ msgstr "Wczytywanie poprawki %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Niepoprawna suma kontrolna pliku skryptu."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3510,23 +3459,23 @@ msgstr "Wczytywanie tłumaczenia: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "Sprawdzenie applydeltarpm zakończone niepowodzeniem."
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm zakończone niepowodzeniem."
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
+msgstr "Pakiet %s jest niekompletny. Czy pobrać go ponownie?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr ""
+msgstr "Pakiet %s jest niekompletny. Pobrać go ponownie, czy przerwać instalację?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3539,42 +3488,41 @@ msgstr "Weryfikacja sumy kontrolnej zakończona niepowodzeniem."
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Pobieranie list pakietów"
+msgstr "Pobieranie %s"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "Pobrano %s z %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Żaden nie dostarcza %s"
+msgstr "Plik %s nie dostarcza %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Nie można zainicjować atrybutów muteksu"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Nie można ustawić atrybutu rekurencyjności muteksu"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Nie można zainicjować rekursyjnego muteksu"
 
 #: ../zypp/thread/Mutex.cc:77
-#, fuzzy
 msgid "Can't acquire the mutex lock"
-msgstr "Nie można pobrać blokady zypp."
+msgstr "Nie można pobrać blokady muteksu."
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Nie można zwolnic blokacy muteksu."
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3787,7 +3735,6 @@ msgstr "Kongo"
 # CF
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "Republika Środkowoafrykańska"
 
@@ -3946,7 +3893,7 @@ msgstr "Falklandy (Malwiny)"
 #. :FLK:238:
 #: ../zypp/CountryCode.cc:288
 msgid "Federated States of Micronesia"
-msgstr "Sfederowane Stany Mikronezji"
+msgstr "Mikronezja"
 
 #. :FSM:583:
 #: ../zypp/CountryCode.cc:289
@@ -4821,6 +4768,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Plik %s nie jest podpisany.\n"
+"Czy użyć go mimo to?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -4829,6 +4778,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Plik %s jest podpisany nieznanym kluczem:\n"
+"%s|%s|%s\n"
+"Czy użyć go mimo to?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4837,6 +4789,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"Napotkano niezaufany klucz:\n"
+"%s|%s|%s\n"
+"Dodać go do listy zaufanych?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -4845,6 +4800,8 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Test integralności pliku %s nie powiódł się z kluczem:%s|%s|%s\n"
+"Użyć pliku mimo wszystko?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -4852,6 +4809,8 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Plik %s nie posiada sumy kontrolnej.\n"
+"Użyć pliku mimo wszystko?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
@@ -4859,6 +4818,8 @@ msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"Plik %s posiada nieznaną sumę kontrolną %s.\n"
+"Użyć pliku mimo wszystko?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -4867,6 +4828,9 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Plik %s posiada nieprawidłową sumę kontrolną.\n"
+"Oczekiwano %s, napotkano %s\n"
+"Użyć pliku mimo wszystko?"
 
 #~ msgid "Cannot aquire zypp lock."
 #~ msgstr "Nie można pobrać blokady zypp."

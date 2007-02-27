@@ -11,8 +11,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2002-01-04 13:30+0100\n"
-"Last-Translator: Mattias Newzella <newzella@linux.nu>\n"
-"Language-Team: Swedish <i18n@suse.de>\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,120 +21,117 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "URL-schemat tillåter inte %s"
 
 #: ../zypp/url/UrlBase.cc:170
 #, c-format
 msgid "Invalid %s component '%s'"
-msgstr ""
+msgstr "%s-komponenten %s är ogiltig"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Ogiltig information"
+msgstr "Ogiltig %s-komponent"
 
 #: ../zypp/url/UrlBase.cc:724
 msgid "Path parameter parsing not supported for this URL"
-msgstr ""
+msgstr "Analysering av sökvägsparameter stöds inte för den här URL-adressen"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
 msgid "Query string parsing not supported for this URL"
-msgstr ""
+msgstr "Analysering av frågesträng stöds inte för den här URL-adressen"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
-msgstr ""
+msgstr "URL-schemat är en obligatorisk komponent"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Ogiltigt användarnamn"
+msgstr "URL-schemat %s är ogiltigt"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Kunde inte återställa alla källor."
+msgstr "Det går inte att analysera URL-behörigheten"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "URL-schemat tillåter inte något användarnamn"
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "URL-schemat tillåter inte något lösenord"
 
 #: ../zypp/url/UrlBase.cc:1005
 msgid "Url scheme requires a host component"
-msgstr ""
+msgstr "Det måste finnas en värdkomponent i URL-schemat"
 
 #: ../zypp/url/UrlBase.cc:1015
 msgid "Url scheme does not allow a host component"
-msgstr ""
+msgstr "Det får inte finnas någon värdkomponent i URL-schemat"
 
 #: ../zypp/url/UrlBase.cc:1042
 #, c-format
 msgid "Invalid host component '%s'"
-msgstr ""
+msgstr "Värdkomponenten %s är ogiltig"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "URL-schemat tillåter inte någon port"
 
 #: ../zypp/url/UrlBase.cc:1074
 #, c-format
 msgid "Invalid port component '%s'"
-msgstr ""
+msgstr "Portkomponenten %s är ogiltig"
 
 #: ../zypp/url/UrlBase.cc:1091
 msgid "Url scheme requires path name"
-msgstr ""
+msgstr "Det måste finnas ett sökvägsnamn för URL-schemat"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
-msgstr ""
+msgstr "Relativa sökvägar tillåts inte om det finns behörighet"
 
 #: ../zypp/url/UrlBase.cc:1179
 msgid "Path Parameter parsing not supported for this URL"
-msgstr ""
+msgstr "Analysering av sökvägsparameter stöds inte för den här URL-adressen"
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
-msgstr ""
+msgstr "Den kodade strängen innehåller ett NULL-byte"
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
-msgstr ""
+msgstr "Ogiltigt ///array split-avgränsningstecken för parameter///"
 
 #: ../zypp/url/UrlUtils.cc:213
 msgid "Invalid parameter map split separator character"
-msgstr ""
+msgstr "Ogiltigt ///map split-avgränsningstecken för parameter///"
 
 #: ../zypp/url/UrlUtils.cc:283
 msgid "Invalid parameter array join separator character"
-msgstr ""
+msgstr "Ogiltigt ///array join avgränsningstecken för parameter///"
 
 #: ../zypp/Url.cc:110
 msgid "Invalid LDAP URL query string"
-msgstr ""
+msgstr "Ogiltig LDAP URL-frågesträng"
 
 #: ../zypp/Url.cc:149
 #, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr ""
+msgstr "Ogiltig LDAP URL-frågeparameter %s"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Kunde inte återställa alla källor."
+msgstr "Det går inte att klona URL-objektet"
 
 #: ../zypp/Url.cc:303
 msgid "Invalid empty Url object reference"
-msgstr ""
+msgstr "Den tomma URL-objektreferensen är ogiltig"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Kunde inte återställa alla källor."
+msgstr "Det går inte att analysera URL-komponenterna"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -143,9 +140,8 @@ msgstr "Okänt språk: "
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "Kod"
+msgstr "Ingen kod"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -175,9 +171,8 @@ msgstr "Adangme"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
-#, fuzzy
 msgid "Adyghe"
-msgstr "Adangme"
+msgstr "Adygeiska"
 
 #. language code: afa
 #: ../zypp/LanguageCode.cc:250
@@ -196,9 +191,8 @@ msgstr "Afrikaans"
 
 #. language code: ain
 #: ../zypp/LanguageCode.cc:256
-#, fuzzy
 msgid "Ainu"
-msgstr "Linux"
+msgstr "Ainu"
 
 #. language code: aka ak
 #: ../zypp/LanguageCode.cc:258
@@ -222,15 +216,13 @@ msgstr "Aleutiska"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
 msgstr "Algonkinska språk"
 
 #. language code: alt
 #: ../zypp/LanguageCode.cc:270
-#, fuzzy
 msgid "Southern Altai"
-msgstr "Sydsamiska"
+msgstr "Sydaltaiska"
 
 #. language code: amh am
 #: ../zypp/LanguageCode.cc:272
@@ -244,7 +236,6 @@ msgstr "Fornengelska (ca 450-1100)"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "Apachiska språk"
 
@@ -296,19 +287,16 @@ msgstr "Assamesiska"
 
 #. language code: ast
 #: ../zypp/LanguageCode.cc:298
-#, fuzzy
 msgid "Asturian"
-msgstr "Österrike"
+msgstr "Asturiska"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
-msgstr "Athapaskiskt språk"
+msgstr "Athapaskiska språk"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "Australiska språk"
 
@@ -344,7 +332,6 @@ msgstr "Banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
 msgstr "Bamilekespråk"
 
@@ -490,9 +477,8 @@ msgstr "Burmanska"
 # Libris har med parentesen
 #. language code: byn
 #: ../zypp/LanguageCode.cc:376
-#, fuzzy
 msgid "Blin"
-msgstr "Edo (bini)"
+msgstr "Blin"
 
 #. language code: cad
 #: ../zypp/LanguageCode.cc:378
@@ -557,9 +543,8 @@ msgstr "Kinesiska"
 # Libris vill ha det så.
 #. language code: chk
 #: ../zypp/LanguageCode.cc:404
-#, fuzzy
 msgid "Chuukese"
-msgstr "Truk"
+msgstr "Tjuktjiska"
 
 # Alternativt tjeremissiska enligt Libris.
 #. language code: chm
@@ -569,7 +554,6 @@ msgstr "Mariska"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
 msgstr "Chinook"
 
@@ -606,7 +590,6 @@ msgstr "Cheyenne"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "Chamicspråk"
 
@@ -627,21 +610,18 @@ msgstr "Korsikanska"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr "Kreol- och pidginspråk (övriga)"
+msgstr "Kreol- och pidginspråk, baserade på engelska (övriga)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr "Kreol- och pidginspråk (övriga)"
+msgstr "Kreol- och pidginspråk, baserade på franska (övriga)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "Kreol- och pidginspråk (övriga)"
+msgstr "Kreol- och pidginspråk, baserade på portugisiska (övriga)"
 
 #. language code: cre cr
 #: ../zypp/LanguageCode.cc:436
@@ -650,13 +630,11 @@ msgstr "Cree"
 
 #. language code: crh
 #: ../zypp/LanguageCode.cc:438
-#, fuzzy
 msgid "Crimean Tatar"
-msgstr "Tid och datum"
+msgstr "Krimtatariska"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
 msgstr "Kreol- och pidginspråk (övriga)"
 
@@ -695,9 +673,8 @@ msgstr "Dargwa"
 
 #. language code: day
 #: ../zypp/LanguageCode.cc:456
-#, fuzzy
 msgid "Dayak"
-msgstr "Dag:"
+msgstr "Dajakiska"
 
 #. language code: del
 #: ../zypp/LanguageCode.cc:458
@@ -746,7 +723,6 @@ msgstr "Duala"
 
 #. language code: dum
 #: ../zypp/LanguageCode.cc:476
-#, fuzzy
 msgid "Dutch, Middle (ca.1050-1350)"
 msgstr "Medelnederländska (ca 1050-1350)"
 
@@ -839,9 +815,8 @@ msgstr "Fijianska"
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
-#, fuzzy
 msgid "Filipino"
-msgstr "Filippinerna"
+msgstr "Filippinska"
 
 #. language code: fin fi
 #: ../zypp/LanguageCode.cc:516
@@ -931,9 +906,8 @@ msgstr "Gilbertesiska"
 
 #. language code: gla gd
 #: ../zypp/LanguageCode.cc:556
-#, fuzzy
 msgid "Gaelic"
-msgstr "Pali"
+msgstr "Gaeliska"
 
 #. language code: gle ga
 #: ../zypp/LanguageCode.cc:558
@@ -942,9 +916,8 @@ msgstr "Iriska"
 
 #. language code: glg gl
 #: ../zypp/LanguageCode.cc:560
-#, fuzzy
 msgid "Galician"
-msgstr "Gwichin"
+msgstr "Galiciska"
 
 #. language code: glv gv
 #: ../zypp/LanguageCode.cc:562
@@ -1003,7 +976,6 @@ msgstr "Gujarati"
 
 #. language code: gwi
 #: ../zypp/LanguageCode.cc:586
-#, fuzzy
 msgid "Gwich'in"
 msgstr "Gwichin"
 
@@ -1015,9 +987,8 @@ msgstr "Haida"
 # HT
 #. language code: hat ht
 #: ../zypp/LanguageCode.cc:590
-#, fuzzy
 msgid "Haitian"
-msgstr "Haiti"
+msgstr "Haitiska"
 
 #. language code: hau ha
 #: ../zypp/LanguageCode.cc:592
@@ -1070,7 +1041,6 @@ msgstr "Hmongspråk"
 # Libris vill ha det så.
 #. language code: hmo ho
 #: ../zypp/LanguageCode.cc:610
-#, fuzzy
 msgid "Hiri Motu"
 msgstr "Hirimotu"
 
@@ -1172,7 +1142,6 @@ msgstr "Iranska språk (övriga)"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
 msgstr "Irokesiska språk"
 
@@ -1272,7 +1241,6 @@ msgstr "Kabardinska (östtjerkessiska)"
 
 #. language code: kha
 #: ../zypp/LanguageCode.cc:690
-#, fuzzy
 msgid "Khasi"
 msgstr "Khasi"
 
@@ -1419,9 +1387,8 @@ msgstr "Lezginska"
 
 #. language code: lim li
 #: ../zypp/LanguageCode.cc:746
-#, fuzzy
 msgid "Limburgan"
-msgstr "Limburgisch"
+msgstr "Limburgiska"
 
 #. language code: lin ln
 #: ../zypp/LanguageCode.cc:748
@@ -1482,9 +1449,8 @@ msgstr "Luo (Kenya och Tanzania)"
 # Libris vill ha det så.
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
-msgstr "Mizo (lushai)"
+msgstr "Lushai"
 
 #. language code: mac mkd mk
 #: ../zypp/LanguageCode.cc:772 ../zypp/LanguageCode.cc:774
@@ -1579,7 +1545,6 @@ msgstr "Medeliriska (900-1200)"
 
 #. language code: mic
 #: ../zypp/LanguageCode.cc:812
-#, fuzzy
 msgid "Mi'kmaq"
 msgstr "Mic-mac"
 
@@ -1590,9 +1555,8 @@ msgstr "Minangkabau"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
-msgstr "Övriga språk"
+msgstr "Diverse språk"
 
 #. language code: mkh
 #: ../zypp/LanguageCode.cc:818
@@ -1618,13 +1582,11 @@ msgstr "Manchu"
 
 #. language code: mni
 #: ../zypp/LanguageCode.cc:826
-#, fuzzy
 msgid "Manipuri"
-msgstr "Kanuri"
+msgstr "Manipuri"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "Manobospråk"
 
@@ -1651,9 +1613,8 @@ msgstr "Mossi"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
-msgstr "Flerspråkigt"
+msgstr "Flera språk"
 
 #. language code: mun
 #: ../zypp/LanguageCode.cc:840
@@ -1669,9 +1630,8 @@ msgstr "Muskogee"
 # Även madura.
 #. language code: mwl
 #: ../zypp/LanguageCode.cc:844
-#, fuzzy
 msgid "Mirandese"
-msgstr "Madurese"
+msgstr "Mirandesiska"
 
 #. language code: mwr
 #: ../zypp/LanguageCode.cc:846
@@ -1680,7 +1640,6 @@ msgstr "Marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
 msgstr "Mayaspråk"
 
@@ -1697,9 +1656,8 @@ msgstr "Nahuatl"
 
 #. language code: nai
 #: ../zypp/LanguageCode.cc:854
-#, fuzzy
 msgid "North American Indian"
-msgstr "Nordamerikanska indianspråk (övriga)"
+msgstr "Nordamerikanska indianspråk"
 
 # Libris vill ha det så.
 #. language code: nap
@@ -1735,9 +1693,8 @@ msgstr "Ndonga"
 
 #. language code: nds
 #: ../zypp/LanguageCode.cc:868
-#, fuzzy
 msgid "Low German"
-msgstr "Tysk"
+msgstr "Lågtyska"
 
 #. language code: nep ne
 #: ../zypp/LanguageCode.cc:870
@@ -1747,9 +1704,8 @@ msgstr "Nepali"
 # NP
 #. language code: new
 #: ../zypp/LanguageCode.cc:872
-#, fuzzy
 msgid "Nepal Bhasa"
-msgstr "Nepal"
+msgstr "Nepalesisk bhasa"
 
 #. language code: nia
 #: ../zypp/LanguageCode.cc:874
@@ -1794,34 +1750,29 @@ msgstr "Norsk"
 
 #. language code: nso
 #: ../zypp/LanguageCode.cc:890
-#, fuzzy
 msgid "Northern Sotho"
-msgstr "Nordsamiska"
+msgstr "Nordsotho"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "Nubiska språk"
 
 # Osäker
 #. language code: nwc
 #: ../zypp/LanguageCode.cc:894
-#, fuzzy
 msgid "Classical Newari"
-msgstr "Klassisk newari; fornnewari"
+msgstr "Klassisk newariska"
 
 #. language code: nya ny
 #: ../zypp/LanguageCode.cc:896
-#, fuzzy
 msgid "Chichewa"
-msgstr "Chibcha"
+msgstr "Chichewa"
 
 #. language code: nym
 #: ../zypp/LanguageCode.cc:898
-#, fuzzy
 msgid "Nyamwezi"
-msgstr "Namn"
+msgstr "Nyamwezi"
 
 #. language code: nyn
 #: ../zypp/LanguageCode.cc:900
@@ -1878,7 +1829,6 @@ msgstr "Ottomanska (1500-1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
 msgstr "Otomispråk"
 
@@ -1962,15 +1912,13 @@ msgstr "Portugisisk"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
 msgstr "Prakritspråk"
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
-#, fuzzy
 msgid "Provencal, Old (to 1500)"
-msgstr "Fornprovensalska (-1500)"
+msgstr "Fornprovensalska (till och med 1500)"
 
 #. language code: pus ps
 #: ../zypp/LanguageCode.cc:958
@@ -2049,9 +1997,8 @@ msgstr "Sydamerikanska indianspråk (övriga)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
-msgstr "Saliska språk"
+msgstr "Salisiska språk"
 
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
@@ -2080,9 +2027,8 @@ msgstr "Serbiska"
 
 #. language code: scn
 #: ../zypp/LanguageCode.cc:1004
-#, fuzzy
 msgid "Sicilian"
-msgstr "Friuliska"
+msgstr "Sicilianska"
 
 #. language code: sco
 #: ../zypp/LanguageCode.cc:1006
@@ -2111,7 +2057,6 @@ msgstr "Forniriska (-900)"
 
 #. language code: sgn
 #: ../zypp/LanguageCode.cc:1018
-#, fuzzy
 msgid "Sign Languages"
 msgstr "Teckenspråk"
 
@@ -2127,13 +2072,11 @@ msgstr "Sidami"
 
 #. language code: sin si
 #: ../zypp/LanguageCode.cc:1024
-#, fuzzy
 msgid "Sinhala"
 msgstr "Singalesiska"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "Siouxspråk"
 
@@ -2169,7 +2112,6 @@ msgstr "Nordsamiska"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
 msgstr "Samiska språk (övriga)"
 
@@ -2374,13 +2316,11 @@ msgstr "Tokelau"
 
 #. language code: tlh
 #: ../zypp/LanguageCode.cc:1124
-#, fuzzy
 msgid "Klingon"
-msgstr "Kikongo"
+msgstr "Klingonska"
 
 #. language code: tli
 #: ../zypp/LanguageCode.cc:1126
-#, fuzzy
 msgid "Tlingit"
 msgstr "Tlingit"
 
@@ -2432,7 +2372,6 @@ msgstr "Tumbuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "Tupíspråk"
 
@@ -2465,9 +2404,8 @@ msgstr "Tuvinska"
 
 #. language code: udm
 #: ../zypp/LanguageCode.cc:1158
-#, fuzzy
 msgid "Udmurt"
-msgstr "Urdu"
+msgstr "Udmurtiska"
 
 #. language code: uga
 #: ../zypp/LanguageCode.cc:1160
@@ -2531,7 +2469,6 @@ msgstr "Votiska"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
 msgstr "Wakusjiska språk"
 
@@ -2558,9 +2495,8 @@ msgstr "Kymriska"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
-msgstr "Sorbiska (vendiska) språk"
+msgstr "Sorbiska språk"
 
 #. language code: wln wa
 #: ../zypp/LanguageCode.cc:1198
@@ -2605,9 +2541,8 @@ msgstr "Yoruba"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
-msgstr "Eskimåspråk (yupikspråk)"
+msgstr "Yupiska språk"
 
 #. language code: zap
 #: ../zypp/LanguageCode.cc:1216
@@ -2646,65 +2581,61 @@ msgstr "Kunde inte återställa alla källor."
 
 #: ../zypp/SourceManager.h:68
 msgid "At least one source already registered, stored sources cannot be restored."
-msgstr ""
+msgstr "Minst en källa har redan registrerats. Det går inte att återställa lagrade källor."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "En demon körs redan"
+msgstr "Programvaruhantering körs redan."
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext har inte anslutits"
 
 #: ../zypp/target/hal/HalContext.cc:106
 msgid "HalDrive not initialized"
-msgstr ""
+msgstr "HalDrive har inte initierats"
 
 #: ../zypp/target/hal/HalContext.cc:116
 msgid "HalVolume not initialized"
-msgstr ""
+msgstr "HalVolume har inte initierats"
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "kanal till kanalanslutning"
+msgstr "Det gick inte att skapa dbus-anslutningen"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: Det gick inte att skapa libhal-kontext"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: Det gick inte att ange dbus-anslutningen"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "Det gick inte att initiera HAL-kontext - hald körs inte?"
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "Inga cd-rom-enheter hittades."
+msgstr "Inte en cd-rom-enhet"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Kryptering"
+msgstr "Hal-undantag"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
 #: ../zypp/target/rpm/RpmDb.cc:1725
-#, fuzzy, c-format
+#, c-format
 msgid "Changed configuration files for %s:"
-msgstr "Spara inställningsfiler"
+msgstr "Inställningsfiler har ändrats för %s:"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm sparade %s som %s men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2713,12 +2644,14 @@ msgid ""
 "rpm saved %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm sparade %s som %s.\n"
+"Här visas de första 25 raderna med skillnader:\n"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm skapade %s som %s men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2727,37 +2660,37 @@ msgid ""
 "rpm created %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm skapade %s som %s.\n"
+"Här visas de första 25 raderna med skillnader:\n"
 
 #. %s = filename of rpm package
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:1899
-#, fuzzy, c-format
+#, c-format
 msgid "%s install failed"
-msgstr "Installationen misslyckades."
+msgstr "Det gick inte att installera %s"
 
 #: ../zypp/target/rpm/RpmDb.cc:1900 ../zypp/target/rpm/RpmDb.cc:2018
-#, fuzzy
 msgid "rpm output:"
-msgstr "Programutmatning:\n"
+msgstr "rpm-utmatning:"
 
 #. %s = filename of rpm package
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:1906
-#, fuzzy, c-format
+#, c-format
 msgid "%s installed ok"
-msgstr "Inte installerad (%1)"
+msgstr "%s har installerats"
 
 #: ../zypp/target/rpm/RpmDb.cc:1909 ../zypp/target/rpm/RpmDb.cc:2026
-#, fuzzy
 msgid "Additional rpm output:"
-msgstr "Ytterligare gruppinställningar"
+msgstr "Ytterligare rpm-utmatning:"
 
 #. %s = name of rpm package
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:2017
-#, fuzzy, c-format
+#, c-format
 msgid "%s remove failed"
-msgstr "rpm misslyckades."
+msgstr "Det gick inte att ta bort %s"
 
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:2023
@@ -2767,20 +2700,20 @@ msgstr "%s borttagen OK"
 
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:2168
-#, fuzzy, c-format
+#, c-format
 msgid "created backup %s"
-msgstr "Skapa säker&hetskopia"
+msgstr "skapade säkerhetskopian %s"
 
 #: ../zypp/target/store/XMLFilesBackend.cc:1009
 #: ../zypp/target/store/XMLFilesBackend.cc:1016
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "Det går inte att skapa en fil som behövs när uppdateringen ska installeras."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Installationen har avbrutits enligt instruktionerna."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2803,7 +2736,7 @@ msgstr "Ogiltig information"
 #: ../zypp/solver/detail/Resolver_problems.cc:268
 #, c-format
 msgid "%s is needed by other resolvables"
-msgstr ""
+msgstr "%s behövs av andra resurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #. Translator: all.%s = name of package,patch,...
@@ -2824,9 +2757,9 @@ msgstr ""
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:279
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with other resolvables"
-msgstr "%1 är i konflikt med %2"
+msgstr "%s är i konflikt med andra resurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #. Translator: all.%s = name of package, patch,...
@@ -2835,22 +2768,24 @@ msgstr "%1 är i konflikt med %2"
 #: ../zypp/solver/detail/Resolver_problems.cc:282
 #: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:55
 #: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:70
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "%1 är i konflikt med %2"
+msgstr "%s är i konflikt med %s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s conflicts with:\n"
 "%s"
-msgstr "%1 är i konflikt med %2"
+msgstr ""
+"%s är i konflikt med:\n"
+"%s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:306
 #, c-format
 msgid "%s obsoletes other resolvables"
-msgstr ""
+msgstr "%s gör andra resurser inaktuella"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:309
@@ -2869,12 +2804,14 @@ msgid ""
 "\n"
 "These resolvables will be deleted from the system."
 msgstr ""
+"\n"
+"Dessa resurser tas bort från systemet."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:319
 #, c-format
 msgid "%s depends on other resolvables"
-msgstr ""
+msgstr "%s beror på andra resurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:323
@@ -2897,9 +2834,9 @@ msgstr "Barn till"
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:338
 #: ../zypp/solver/detail/Resolver_problems.cc:418
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot install %s"
-msgstr "Installera på:"
+msgstr "Det går inte att installera %s"
 
 #. TranslatorExplanation %s = capability
 #: ../zypp/solver/detail/Resolver_problems.cc:340
@@ -2917,7 +2854,7 @@ msgstr ""
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
 msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr ""
+msgstr "På grund av problemen som beskrivs ovan/nedan löser inte den här resursen alla beroenden"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2927,9 +2864,9 @@ msgstr "Kan inte installera %s eftersom den är i konflikt med %s"
 
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:377
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not installed and has been marked as uninstallable"
-msgstr "Det här paketet är inte installerat och kommer inte att installeras."
+msgstr "%s har inte installerats och har markerats som avinstallerbar"
 
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:388
@@ -2942,18 +2879,18 @@ msgstr "Kan inte installera %s på grund av beroendeproblem"
 #: ../zypp/solver/detail/Resolver_problems.cc:436
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
-#, fuzzy, c-format
+#, c-format
 msgid "delete %s"
-msgstr "Ta bort %1"
+msgstr "ta bort %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:429
 #: ../zypp/solver/detail/Resolver_problems.cc:439
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
-#, fuzzy, c-format
+#, c-format
 msgid "do not install %s"
-msgstr "Installera på:"
+msgstr "installera inte %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:452
@@ -2963,45 +2900,45 @@ msgstr "%s har ouppfyllda krav"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:490
-#, fuzzy, c-format
+#, c-format
 msgid "%s has missing dependencies"
-msgstr "Olösta beroenden:"
+msgstr "%s har beroenden som saknas"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:537
-#, fuzzy, c-format
+#, c-format
 msgid "%s cannot be installed due to missing dependencies"
-msgstr "Olösta beroenden:"
+msgstr "%s kan inte installeras på grund av att beroenden saknas"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:585
 #, c-format
 msgid "%s fulfil dependencies of %s but will be uninstalled"
-msgstr ""
+msgstr "%s uppfyller beroenden för %s men avinstalleras"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr ""
+msgstr "%s uppfyller beroenden för %s men lämnas kvar på systemet"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
-#, fuzzy, c-format
+#, c-format
 msgid "No need to install %s"
-msgstr "måste ominstalleras"
+msgstr "%s behöver inte installeras"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:613
 #, c-format
 msgid "Cannot install %s to fulfil the dependencies of %s"
-msgstr ""
+msgstr "Det går inte att installera %s så att beroendena för %s uppfylls"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:628
 #, c-format
 msgid "Cannot be install %s to fulfil the dependencies of %s"
-msgstr ""
+msgstr "Det går inte att installera %s så att beroendena för %s uppfylls"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:665
@@ -3014,7 +2951,7 @@ msgstr "%s kommer inte att avinstalleras eftersom den fortfarande krävs"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr ""
+msgstr "%s gör %s inaktuellt. Det går dock inte att ta bort %s eftersom det är låst."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -3023,19 +2960,17 @@ msgstr "Kan inte installera %s eftersom det är i konflikt"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:734
-#, fuzzy, c-format
+#, c-format
 msgid "%s is uninstallable due to conflicts with %s"
-msgstr "%1 är i konflikt med %2"
+msgstr "%s är avinstallerbart på grund av konflikter med %s"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
-#, fuzzy
 msgid "Ignore this requirement just here"
-msgstr "har olösta krav..."
+msgstr "Ignorera det här kravet här"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
-#, fuzzy
 msgid "Ignore this requirement generally"
-msgstr "har olösta krav..."
+msgstr "Ignorera det här kravet generellt"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
@@ -3047,37 +2982,36 @@ msgstr "Installera %s trots att det kommer att ändra arkitekturen"
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
 msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr ""
+msgstr "%s tillhandahåller detta beroende men skulle förändra arkitekturen för det installerade objektet"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore this conflict of %s"
-msgstr "%1 är i konflikt med %2"
+msgstr "Ignorera den här konflikten för %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore the obsolete %s in %s"
-msgstr "%1 är i konflikt med %2"
+msgstr "Ignorera det inaktuella %s i %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore that %s is already set to install"
-msgstr "Katalogen %1 finns redan i listan."
+msgstr "Ignorera att %s redan har angetts för installation"
 
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-#, fuzzy
 msgid "Do not install or delete concerning resolvables"
-msgstr "%1 är i konflikt med %2"
+msgstr "Installera inte och ta inte bort resurser som berörs"
 
 #. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
 #: ../zypp/solver/detail/QueueItemRequire.cc:701
 #, c-format
 msgid "for requiring %s for %s when upgrading %s"
-msgstr ""
+msgstr "för krav av %s för %s när %s uppgraderas"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
 #: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
@@ -3086,9 +3020,8 @@ msgid "%s is missing the requirement %s"
 msgstr "%s saknar kravet %s"
 
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:56
-#, fuzzy
 msgid ", Action: "
-msgstr "Åtgärd"
+msgstr ", Åtgärd:"
 
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:58
 msgid ", Trigger: "
@@ -3142,7 +3075,7 @@ msgstr "system"
 #. Translator: Generic term for an item with dependencies, please leave untranslated for now
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:126
 msgid "Resolvable"
-msgstr ""
+msgstr "Resurs"
 
 #. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:144
@@ -3154,7 +3087,7 @@ msgstr "Markerar det här lösningsförsöket som ogiltigt."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:151
 #, c-format
 msgid "Marking resolvable %s as uninstallable"
-msgstr ""
+msgstr "Resursen %s markeras som avinstallerbar"
 
 #. Translator: %s = name of packages,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
@@ -3168,7 +3101,7 @@ msgstr "%s är schemalagd för installation, men det är inte möjligt på grund
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
 msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr ""
+msgstr "Det går inte att installera %s eftersom det redan har markerats som att vara i behov av avinstallation"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3189,13 +3122,13 @@ msgstr "Kan inte installera %s eftersom det inte är tillämpligt för det här 
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr ""
+msgstr "Det går inte att installera %s, eftersom %s redan har markerats som att vara i behov av installation"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
 #, c-format
 msgid "This would invalidate %s."
-msgstr ""
+msgstr "Detta skulle göra %s ogiltigt."
 
 #. Translator: %s = name of patch, pattern, ...
 #. TranslatorExplanation: Establishing is the process of computing which patches are needed
@@ -3203,9 +3136,9 @@ msgstr ""
 #. TranslatorExplanation: It is also used for other types of resolvables in order to verify
 #. TranslatorExplanation: the completeness of their dependencies
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:214
-#, fuzzy, c-format
+#, c-format
 msgid "Establishing %s"
-msgstr "Installera på:"
+msgstr "Etablerar %s"
 
 #. affected() = resolvable to be installed
 #. _capability =
@@ -3216,9 +3149,9 @@ msgstr "Installera på:"
 #. TranslatorExplanation: Just a progress indicator that something is scheduled for installation
 #. Translator: %s = packagename
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:235
-#, fuzzy, c-format
+#, c-format
 msgid "Installing %s"
-msgstr "Installera på:"
+msgstr "Installerar %s"
 
 #. affected() = updated resolvable
 #. _capability =
@@ -3240,9 +3173,9 @@ msgstr "Uppdaterar %s till %s"
 #. TranslatorExample: Skipping foo: already installed
 #. TranslatorExplanation: An installation request for foo is skipped since foo is already installed
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:270
-#, fuzzy, c-format
+#, c-format
 msgid "Skipping %s: already installed"
-msgstr "Kontrollerar redan installerade bildläsare"
+msgstr "Hoppar över %s: det har redan installerats"
 
 #. affected() = is set
 #. _capability = is set
@@ -3280,7 +3213,7 @@ msgstr "för %s"
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:317
 #, c-format
 msgid "There are no installable providers of %s"
-msgstr ""
+msgstr "Det finns inga installerbara leverantörer för %s"
 
 #. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
 #. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
@@ -3300,13 +3233,13 @@ msgstr "%s tillhandahåller %s, men är schemalagd för avinstallation."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr ""
+msgstr "%s tillhandahåller %s, men en annan version av detta %s har redan installerats."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
 msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr ""
+msgstr "%s tillhandahåller %s, men är avinstallerbart.  Försök installera det ensamt om du vill ha mer information."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3316,9 +3249,9 @@ msgstr "%s tillhandahåller %s, men är låst."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s tillhandahåller %s, men är schemalagd för avinstallation."
+msgstr "%s tillhandahåller %s, men har schemalagts för att behållas."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
@@ -3342,7 +3275,7 @@ msgstr "Kan inte tillfredsställa krav %s för %s"
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
 msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr ""
+msgstr "%s krävs av en annan resurs som ska installeras, så länken tas inte bort."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3354,7 +3287,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr ""
+msgstr "%s krävs av en annan installerad resurs, så länken tas inte bort."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3364,9 +3297,9 @@ msgstr ""
 #. TranslatorExample: foo is locked and cannot be uninstalled.
 #. TranslatorExplanation: foo is to-be-uninstalled but it is locked
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:524
-#, fuzzy, c-format
+#, c-format
 msgid "%s is locked and cannot be uninstalled."
-msgstr "Det här paketet är inte installerat och kommer inte att installeras."
+msgstr "%s är låst och kan inte avinstalleras."
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3377,7 +3310,7 @@ msgstr "Det här paketet är inte installerat och kommer inte att installeras."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr ""
+msgstr "En konflikt över %s (%s) kräver att %s som ska installeras tas bort"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3388,7 +3321,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:561
 #, c-format
 msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr ""
+msgstr "%s markeras som avinstallerbart på grund av konflikter över %s"
 
 #. Translator: %s = name of package,patch
 #. TranslatorExample: from abc
@@ -3398,14 +3331,12 @@ msgid "from %s"
 msgstr "från %s"
 
 #: ../zypp/solver/detail/ResolverInfo.cc:191
-#, fuzzy
 msgid " Error!"
-msgstr "Fel"
+msgstr "Fel!"
 
 #: ../zypp/solver/detail/ResolverInfo.cc:192
-#, fuzzy
 msgid " Important!"
-msgstr "Importera data"
+msgstr "Viktigt!"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
@@ -3415,21 +3346,19 @@ msgid "keep %s"
 msgstr "behåll %s"
 
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-#, fuzzy
 msgid "Keep resolvables"
-msgstr "Installera saknade paket"
+msgstr "Behåll resurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
-#, fuzzy, c-format
+#, c-format
 msgid "install %s"
-msgstr "Installera %1"
+msgstr "installera %s"
 
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
-#, fuzzy
 msgid "Install missing resolvables"
-msgstr "Installera saknade paket"
+msgstr "Installera resurser som saknas"
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
@@ -3461,20 +3390,18 @@ msgid "%s part of %s"
 msgstr "%s del av %s"
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
-#, fuzzy
 msgid "unlock all resolvables"
-msgstr "%1 är i konflikt med %2"
+msgstr "lås upp alla resurser"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
-#, fuzzy, c-format
+#, c-format
 msgid "unlock %s"
-msgstr "Klockor"
+msgstr "lås upp %s"
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
-#, fuzzy
 msgid "Unlock these resolvables"
-msgstr "%1 är i konflikt med %2"
+msgstr "Lås upp dessa resurser"
 
 #. end of single patch parsing
 #. end of patches file parsing
@@ -3486,7 +3413,7 @@ msgstr "Läser indexfiler"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
 msgid "The signed repomd.xml file failed the signature check."
-msgstr ""
+msgstr "Signaturkontrollen misslyckades för den signerade filen repomd.xml."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3554,7 +3481,7 @@ msgstr "Läser programfix %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Kontrollsummetestet misslyckades för skriptfilen."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3573,23 +3500,23 @@ msgstr "Läser översättning: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "applydeltarpm-kontrollen misslyckades."
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm misslyckades."
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
+msgstr "Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det på nytt?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr ""
+msgstr "Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det på nytt, eller avbryta installationen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3597,46 +3524,46 @@ msgstr " saknar kontrollsumma."
 
 #: ../zypp/source/SourceImpl.cc:400
 msgid " fails checksum verification."
-msgstr ""
+msgstr "misslyckades med verifiering av kontrollsumman."
 
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Laddar ner paketlista"
+msgstr "Hämtar %s"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "%s har hämtats från %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Ingen tillhandahåller %s"
+msgstr "Det går inte att leverera %s från %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Det går inte att initiera mutex-attribut"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Det går inte att ange rekursiva mutex-attribut"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Det går inte att initiera rekursivt mutex"
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
-msgstr ""
+msgstr "Det går inte att hämta mutex-låset"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Det går inte att släppa mutex-låset"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3861,7 +3788,6 @@ msgstr "Kongo"
 # CF
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "Centralafrikanska republiken"
 
@@ -4938,6 +4864,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Filen %s har inte signerats.\n"
+"Vill du använda den ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -4946,6 +4874,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har signerats med en okänd nyckel:\n"
+"%s|%s|%s\n"
+" Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4954,6 +4885,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"En osäker nyckel hittades:\n"
+"%s|%s|%s\n"
+" Vill du lita på nyckeln?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -4962,6 +4896,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Integritetskontrollen för filen %s misslyckades med följande nyckel:\n"
+"%s|%s|%s\n"
+" Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -4969,6 +4906,8 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har inte någon kontrollsumma.\n"
+"Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
@@ -4976,6 +4915,8 @@ msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har en okänd kontrollsumma.%s.\n"
+"Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -4984,6 +4925,9 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Filen %s har en ogiltig kontrollsumma.\n"
+"%s förväntades, men %s hittades\n"
+" Vill du använda filen ändå?"
 
 #~ msgid "Ok"
 #~ msgstr "OK"

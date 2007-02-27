@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2006-05-22 10:30+0300\n"
-"Last-Translator: Jyri Palokangas <jmp@netti.fi>\n"
-"Language-Team: Suomi <yast-trans-fi@kotoistaminen.novell.fi>\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,132 +25,118 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Ei sallittu URL-mallissa: %s"
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Epäkelpo %1 URL-komponenttidata '%2'"
+msgstr "Virheellinen %s-komponentti '%s'"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Virheellinen verkko-osoite: "
+msgstr "Virheellinen %s-komponentti"
 
 #: ../zypp/url/UrlBase.cc:724
-#, fuzzy
 msgid "Path parameter parsing not supported for this URL"
-msgstr "Polkumääreen koostaminen ei ole tuettua tälle URL:lle"
+msgstr "Polkuparametrin jäsentämistä ei tueta tälle URL-osoitteelle"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
-#, fuzzy
 msgid "Query string parsing not supported for this URL"
-msgstr "Kyselymerkkijonon koostaminen ei ole tuettua tälle URL:lle"
+msgstr "Kyselymerkkijonon jäsentämistä ei tueta tälle URL-osoitteelle"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
 msgstr "Url-malli on pakollinen komponentti"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Epäkelpo Url-malli '%1'"
+msgstr "Virheellinen URL-malli '%s'"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Ei voitu koostaa Url-auktoriteetti -komponentteja"
+msgstr "URL-myöntäjää ei voi jäsentää"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "URL-malli ei salli käyttäjänimeä"
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "URL-malli ei salli salasanaa"
 
 #: ../zypp/url/UrlBase.cc:1005
-#, fuzzy
 msgid "Url scheme requires a host component"
-msgstr "Url-malli on pakollinen komponentti"
+msgstr "Url-malli edellyttää pääkonekomponentin"
 
 #: ../zypp/url/UrlBase.cc:1015
-#, fuzzy
 msgid "Url scheme does not allow a host component"
-msgstr "Url-malli on pakollinen komponentti"
+msgstr "URL-malli ei salli pääkonekomponenttia"
 
 #: ../zypp/url/UrlBase.cc:1042
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid host component '%s'"
-msgstr "Epäkelpo konenimi (hostname) Url-komponenttitieto '%1'"
+msgstr "Virheellinen pääkonekomponentti '%s'"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "URL-malli ei salli porttia"
 
 #: ../zypp/url/UrlBase.cc:1074
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid port component '%s'"
-msgstr "Epäkelpo %1 URL-komponenttidata '%2'"
+msgstr "Virheellinen porttikomponentti '%s'"
 
 #: ../zypp/url/UrlBase.cc:1091
-#, fuzzy
 msgid "Url scheme requires path name"
-msgstr "Url-malli vaatii polkunimen"
+msgstr "URL-malli edellyttää polun nimeä"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
-msgstr "Suhteellinen (relative) polku ei ole sallittu, jos auktoriteetti on olemassa"
+msgstr ""
+"Suhteellinen (relative) polku ei ole sallittu, jos auktoriteetti on olemassa"
 
 #: ../zypp/url/UrlBase.cc:1179
-#, fuzzy
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "Polku -parametrin koostaminen ei ole tuettua tälle URL:lle"
+msgstr "Polkuparametrin jäsentämistä ei tueta tälle URL-osoitteelle"
 
 #: ../zypp/url/UrlUtils.cc:111
-#, fuzzy
 msgid "Encoded string contains a NUL byte"
-msgstr "Url-koodattu merkkijono sisältää NUL-tavun"
+msgstr "Koodattu merkkijono sisältää NUL-tavun"
 
 #: ../zypp/url/UrlUtils.cc:173
-#, fuzzy
 msgid "Invalid parameter array split separator character"
-msgstr "Epäkelpo parametri: kartoita liitos (map join) -erotinmerkki"
+msgstr "Virheellinen parametritaulukon jaon erotinmerkki"
 
 #: ../zypp/url/UrlUtils.cc:213
-#, fuzzy
 msgid "Invalid parameter map split separator character"
-msgstr "Epäkelpo parametri: kartoita liitos (map join) -erotinmerkki"
+msgstr "Virheellinen parametrikartan jaon erotinmerkki"
 
 #: ../zypp/url/UrlUtils.cc:283
-#, fuzzy
 msgid "Invalid parameter array join separator character"
-msgstr "Epäkelpo parametri: kartoita liitos (map join) -erotinmerkki"
+msgstr "Virheellinen parametritaulukon liitoksen erotinmerkki"
 
 #: ../zypp/Url.cc:110
-#, fuzzy
 msgid "Invalid LDAP URL query string"
-msgstr "Epäkelpo LDAP URL kyselyparametri '%1'"
+msgstr "Virheellinen LDAP URL -kyselymerkkijono"
 
 #: ../zypp/Url.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Epäkelpo LDAP URL kyselyparametri '%1'"
+msgstr "Virheellinen LDAP URL -kyselyparametri '%s'"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Median poistaminen ei onnistu."
+msgstr "URL-objektia ei voi kloonata"
 
 #: ../zypp/Url.cc:303
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Epäkelpo tyhjä URL-toteutuksen viittaus"
+msgstr "Virheellinen tyhjän URL-objektin viite"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Ei voitu koostaa pää-URL -komponentteja"
+msgstr "URL-komponentteja ei voi jäsentää"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -159,9 +145,8 @@ msgstr "Tuntematon kieli: "
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "eikoodia"
+msgstr "Ei koodia"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -235,7 +220,6 @@ msgstr "aleutti"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
 msgstr "algonkin-kielet"
 
@@ -257,7 +241,6 @@ msgstr "muinaisenglanti"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "apaššikielet"
 
@@ -315,13 +298,11 @@ msgstr "asturia"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
 msgstr "athabasca-kielet"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "australialaiset kielet"
 
@@ -361,7 +342,6 @@ msgstr "banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
 msgstr "bamileke-kielet"
 
@@ -589,7 +569,6 @@ msgstr "mari"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
 msgstr "chinook-jargon"
 
@@ -625,7 +604,6 @@ msgstr "cheyenne"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "cham-kielet"
 
@@ -646,19 +624,16 @@ msgstr "korsika"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
 msgstr "muut englantiin perustuvat kreolit ja pidginit"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
 msgstr "muut ranskaan perustuvat kreolit ja pidginit"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
 msgstr "muut portugaliin perustuvat kreolit ja pidginit"
 
@@ -674,7 +649,6 @@ msgstr "krimintataari"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
 msgstr "muut kreolit ja pidginit"
 
@@ -1185,7 +1159,6 @@ msgstr "muut iranilaiset kielet"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
 msgstr "irokeesikielet"
 
@@ -1490,7 +1463,6 @@ msgstr "luo"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
 msgstr "lushai"
 
@@ -1604,7 +1576,6 @@ msgstr "minangkabau"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
 msgstr "luokittelemattomat kielet"
 
@@ -1641,7 +1612,6 @@ msgstr "manipuri"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "manobo-kielet"
 
@@ -1667,7 +1637,6 @@ msgstr "mossi"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
 msgstr "monia kieliä"
 
@@ -1697,7 +1666,6 @@ msgstr "marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
 msgstr "maya-kielet"
 
@@ -1816,7 +1784,6 @@ msgstr "sotho, pohjois-"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "nubialaiset kielet"
 
@@ -1889,7 +1856,6 @@ msgstr "osmani"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
 msgstr "otomi-kielet"
 
@@ -1978,7 +1944,6 @@ msgstr "portugali"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
 msgstr "prakrit-kielet"
 
@@ -2074,7 +2039,6 @@ msgstr "muut Etelä-Amerikan intiaanikielet"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
 msgstr "sališilaiset kielet"
 
@@ -2155,7 +2119,6 @@ msgstr "sinhali"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "sioux-kielet"
 
@@ -2191,7 +2154,6 @@ msgstr "saame, pohjois-"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
 msgstr "muut saamelaiskielet"
 
@@ -2475,7 +2437,6 @@ msgstr "tumbuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "tupi-kielet"
 
@@ -2575,7 +2536,6 @@ msgstr "vatja"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
 msgstr "wakash-kielet"
 
@@ -2601,7 +2561,6 @@ msgstr "kymri"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
 msgstr "sorbin kielet"
 
@@ -2649,7 +2608,6 @@ msgstr "joruba"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
 msgstr "jupikkikielet"
 
@@ -2690,56 +2648,52 @@ msgid "Unable to restore all sources."
 msgstr "Kaikkia lähteitä ei voida palauttaa."
 
 #: ../zypp/SourceManager.h:68
-#, fuzzy
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Ainakin yksi lähde on jo rekisteröity, lähteiden palauttaminen pysyvästä varastosta ei onnistu."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Ainakin yksi lähde on jo rekisteröity, tallennettuja lähteitä ei voi "
+"palauttaa."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "Taustaprosessi on jo käynnissä"
+msgstr "Ohjelmistonhallinta on jo käynnissä."
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext ei yhdistetty"
 
 #: ../zypp/target/hal/HalContext.cc:106
-#, fuzzy
 msgid "HalDrive not initialized"
-msgstr "Mallia ei ole alustettu."
+msgstr "HalDrive ei alustettu"
 
 #: ../zypp/target/hal/HalContext.cc:116
-#, fuzzy
 msgid "HalVolume not initialized"
-msgstr "Mallia ei ole alustettu."
+msgstr "HalVolume ei alustettu"
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "kanavasta kanavaan yhteys"
+msgstr "dbus-yhteyttä ei voi luoda"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: libhal-kontekstia ei voi luoda"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: dbus-yhteyttä ei voi asettaa"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "HAL-kontekstia ei voi alustaa. Varmista että hald on käynnissä."
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "CD-ROM-asemaa ei löytynyt."
+msgstr "Kohde ei ole CD-asema"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Salaustapa"
+msgstr "Hal-poikkeus"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -2752,7 +2706,9 @@ msgstr "Muuttuneet määritystiedostot paketille %s:"
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "rpm tallensi tiedoston %s tiedostona %s, mutta erojen selvittäminen on mahdotonta"
+msgstr ""
+"rpm tallensi tiedoston %s tiedostona %s, mutta erojen selvittäminen on "
+"mahdotonta"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2768,7 +2724,8 @@ msgstr ""
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "rpm loi tiedoston %s tiedostona %s, mutta erojen selivttäminen on mahdotonta"
+msgstr ""
+"rpm loi tiedoston %s tiedostona %s, mutta erojen selivttäminen on mahdotonta"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2826,11 +2783,11 @@ msgstr "luotiin varmuuskopio %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "Päivitysasennuksen suorittamiseen tarvittavaa tiedostoa ei voi luoda."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Asennus on keskeytetty ohjeiden mukaan."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2970,8 +2927,12 @@ msgstr ""
 "Ei ole saatavilla osaa, joka täyttäisi tämän vaatimuksen."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Yllä tai alla kuvattujen ongelmien takia tämä ehdotus ei ratkaise kaikkia riippuvuuksia"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Yllä tai alla kuvattujen ongelmien takia tämä ehdotus ei ratkaise kaikkia "
+"riippuvuuksia"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -3035,9 +2996,10 @@ msgstr "Osa %s täyttää osan %s riippuvuudet, mutta se poistetaan"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
-#, fuzzy, c-format
+#, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "Osa %s täyttää osan %s riippuvuudet, mutta se poistetaan"
+msgstr ""
+"Osa %s täyttää osan %s riippuvuudet, mutta se säilytetään järjestelmässä"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -3098,8 +3060,11 @@ msgstr "Asenna %s vaikka se muuttaisi arkkitehtuurin"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s tarjoaa tämän riippuvuuden mutta vaihtaa asennetun kohteen arkkitehtuurin"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s tarjoaa tämän riippuvuuden mutta vaihtaa asennetun kohteen arkkitehtuurin"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3210,14 +3175,19 @@ msgstr "Merkitään osa %s ei asennettavissa olevaksi"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s on tarkoitus asentaa, mutta se ei ole mahdollista riippuvuusongelmien vuoksi."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s on tarkoitus asentaa, mutta se ei ole mahdollista riippuvuusongelmien "
+"vuoksi."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
 msgstr "Ei voida asentaa osaa %s, koska se on jo merkitty poistetttavaksi"
 
 #. Translator: %s = name of patch
@@ -3239,7 +3209,8 @@ msgstr "Ei voida asentaa osaa %s, koska sitä ei käytetä tässä järjestelmä
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Ei voida asentaa osaa %s, koska %s on jo merkitty tarvitaan asennettavaksi"
+msgstr ""
+"Ei voida asentaa osaa %s, koska %s on jo merkitty tarvitaan asennettavaksi"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3355,8 +3326,12 @@ msgstr "Osa %s tarjoaa osan %s, mutta toinen versio %s on jo asennettu."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "Osa %s tarjoaa osan %s, mutta sitä ei voida poistaa. Yritä asentaa se yksinään saadaksesi lisätietoja."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"Osa %s tarjoaa osan %s, mutta sitä ei voida poistaa. Yritä asentaa se "
+"yksinään saadaksesi lisätietoja."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3366,9 +3341,9 @@ msgstr "Osa %s tarjoaa osan %s, mutta se on lukittu."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "Osa %s tarjoaa osan %s, mutta se on tarkoitus poistaa."
+msgstr "Osa %s tarjoaa osan %s,  mutta se on ajoitettu säilytettäväksi."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
@@ -3391,8 +3366,10 @@ msgstr "Ei voida tyydyttää vaatimusta %s osalle %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "Muut asennettavat osat vaativat osan %s, joten sen linkitystä ei pureta."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"Muut asennettavat osat vaativat osan %s, joten sen linkitystä ei pureta."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3427,7 +3404,8 @@ msgstr "%s on lukittu ja sitä ei voida poistaa."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "Ristiriita osasta %s (%s) vaatii asennettavaksi päätetyn %s poistamista"
+msgstr ""
+"Ristiriita osasta %s (%s) vaatii asennettavaksi päätetyn %s poistamista"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3438,7 +3416,8 @@ msgstr "Ristiriita osasta %s (%s) vaatii asennettavaksi päätetyn %s poistamist
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:561
 #, c-format
 msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr "Merkitään %s ei asennettavissa olevaksi osasta %s olevan ristiriidan takia"
+msgstr ""
+"Merkitään %s ei asennettavissa olevaksi osasta %s olevan ristiriidan takia"
 
 #. Translator: %s = name of package,patch
 #. TranslatorExample: from abc
@@ -3529,9 +3508,9 @@ msgid "Reading index files"
 msgstr "Luetaan indeksitiedostot"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
-#, fuzzy
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Allekirjoitetun repomd.xml tiedoston allekirjoituksen tarkistus epäonnistui"
+msgstr ""
+"Allekirjoitettu repomd.xml-tiedoston allekirjoituksen tarkistus epäonnistui."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3599,7 +3578,7 @@ msgstr "Luetaan korjaukset tiedostosta %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Komentojonotiedoston tarkistussumman testaaminen epäonnistui."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3618,23 +3597,29 @@ msgstr "Luetaan käännös: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "applydeltarpm-tarkistus epäonnistui."
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm epäonnistui."
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
 msgstr ""
+"Paketin %s yhtenäisyystarkistus epäonnistui. Haluatko yrittää ladata sen "
+"uudelleen?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
 msgstr ""
+"Paketin %s yhtenäisyystarkistus epäonnistui. Haluatko yrittää ladata sen "
+"uudelleen vai haluat keskeyttää asennuksen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3647,42 +3632,41 @@ msgstr "tarkistussumman varmistaminen epäonnistui."
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Ladataan listaa paketeista"
+msgstr "Ladataan tiedostoa %s"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "Tiedosto %s ladattiin kohteesta %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Mikään ei tarjoa %s"
+msgstr "Tiedostoa %s ei voi tarjota lähteestä %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Mutex-määritetteitä ei voi alustaa"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Rekursiivisten mutex-määritteiden asetus ei onnistu"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Rekursiivisten mutex-määritteiden alustus ei onnistu"
 
 #: ../zypp/thread/Mutex.cc:77
-#, fuzzy
 msgid "Can't acquire the mutex lock"
-msgstr "zypp lukon hankkiminen ei onnistu."
+msgstr "Mutex-lukitusta ei voi hankkia"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Mutex-lukitusta ei voi vapauttaa"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3915,7 +3899,6 @@ msgstr "Kongo"
 # fuzzy
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "Keski-Afrikan tasavalta"
 
@@ -5083,6 +5066,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Tiedostoa %s ei ole allekirjoitettu.\n"
+"Haluatko silti käyttää sitä?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -5091,6 +5076,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Tiedosto %s on allekirjoitettu tuntemattomalla avaimella:\n"
+"%s|%s|%s\n"
+" Haluatko käyttää tiedostoa kuitenkin?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -5099,6 +5087,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"Löydetty avain ei ole luotettu:\n"
+"%s|%s|%s\n"
+" Haluatko määrittää avaimen luotetuksi?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -5107,6 +5098,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Tiedoston %s yhtenäisyystarkistus epäonnistui seuraavalla avaimella:\n"
+"%s|%s|%s\n"
+" Haluatko silti käyttää tiedostoa?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -5114,6 +5108,8 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Tiedostolla %s ei ole tarkistussummaa.\n"
+"Haluatko silti käyttää tiedostoa?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
@@ -5121,6 +5117,8 @@ msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"Tiedostolla %s on tuntematon tarkistussumma %s.\n"
+"Haluatko silti käyttää tiedostoa?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -5129,6 +5127,9 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Tiedoston %s tarkistussumma on virheellinen.\n"
+"Odotettiin arvoa %s, löydettiin %s\n"
+" Haluatko silti käyttää tiedostoa?"
 
 #~ msgid "Cannot aquire zypp lock."
 #~ msgstr "zypp lukon hankkiminen ei onnistu"

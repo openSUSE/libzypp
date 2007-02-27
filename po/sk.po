@@ -1514,7 +1514,7 @@ msgstr "Lingala"
 #. language code: lit lt
 #: ../zypp/LanguageCode.cc:750
 msgid "Lithuanian"
-msgstr "Lotyšská"
+msgstr "Litevská"
 
 # CG
 #. language code: lol
@@ -4545,7 +4545,7 @@ msgstr "Lesotho"
 #. :LSO:426:
 #: ../zypp/CountryCode.cc:346
 msgid "Lithuania"
-msgstr "Lotyšsko"
+msgstr "Litva"
 
 #. :LTU:440:
 #: ../zypp/CountryCode.cc:347
@@ -4555,7 +4555,7 @@ msgstr "Luxemburgsko"
 #. :LUX:442:
 #: ../zypp/CountryCode.cc:348
 msgid "Latvia"
-msgstr "Litva"
+msgstr "Lotyšsko"
 
 # LY
 # fuzzy

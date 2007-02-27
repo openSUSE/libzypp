@@ -16,8 +16,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2006-01-29 17:57+0100\n"
-"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
-"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,132 +27,117 @@ msgstr ""
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "%s is niet toegestaan in URL-schema "
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Ongeldige %1 URL-componentgegevens '%2'"
+msgstr "Ongeldige %s component '%s'"
 
 #: ../zypp/url/UrlBase.cc:177
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component"
-msgstr "Ongeldig component-URI:"
+msgstr "Ongeldige %s component"
 
 #: ../zypp/url/UrlBase.cc:724
-#, fuzzy
 msgid "Path parameter parsing not supported for this URL"
-msgstr "het ontleden van de pad-parameter wordt niet ondersteund voor dit URL"
+msgstr "Parseren van padparameter wordt niet ondersteund voor deze URL"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
-#, fuzzy
 msgid "Query string parsing not supported for this URL"
-msgstr "Ontleden van querystring wordt niet ondersteund voor dit URL"
+msgstr "Parseren van queryreeks wordt niet ondersteund voor deze URL"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
 msgstr "URL-schema is een vereist component"
 
 #: ../zypp/url/UrlBase.cc:823
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Ongeldig URL-schema '%1'"
+msgstr "Ongeldig URL-schema '%s'"
 
 #: ../zypp/url/UrlBase.cc:854
-#, fuzzy
 msgid "Unable to parse Url authority"
-msgstr "Kon URL-authority-componenten niet ontleden"
+msgstr "Kan URL-autoriteit niet parseren"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Gebruikersnaam is niet toegestaan in URL-schema "
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Wachtwoord is niet toegestaan in URL-schema "
 
 #: ../zypp/url/UrlBase.cc:1005
-#, fuzzy
 msgid "Url scheme requires a host component"
-msgstr "URL-schema is een vereist component"
+msgstr "URL-schema vereist hostcomponent"
 
 #: ../zypp/url/UrlBase.cc:1015
-#, fuzzy
 msgid "Url scheme does not allow a host component"
-msgstr "URL-schema is een vereist component"
+msgstr "Hostcomponent is niet toegestaan in URL-schema "
 
 #: ../zypp/url/UrlBase.cc:1042
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid host component '%s'"
-msgstr "Ongeldige hostnaam-URL-componentgegevens '%1'"
+msgstr "Ongeldige hostcomponent '%s'"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "Poort is niet toegestaan in URL-schema "
 
 #: ../zypp/url/UrlBase.cc:1074
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid port component '%s'"
-msgstr "Ongeldige %1 URL-componentgegevens '%2'"
+msgstr "Ongeldige poortcomponent '%s'"
 
 #: ../zypp/url/UrlBase.cc:1091
-#, fuzzy
 msgid "Url scheme requires path name"
-msgstr "Het URL-schema vereist een padnaam"
+msgstr "URL-schema vereist padnaam"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
 msgstr "Relatief pad is niet toegestaan als authority bestaat"
 
 #: ../zypp/url/UrlBase.cc:1179
-#, fuzzy
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "Ontleden van pad-parameter wordt niet ondersteund voor dit URL"
+msgstr "Parseren van padparameter wordt niet ondersteund voor deze URL"
 
 #: ../zypp/url/UrlUtils.cc:111
-#, fuzzy
 msgid "Encoded string contains a NUL byte"
-msgstr "URL-gedoceerde string bevat een NUL-byte"
+msgstr "Gecodeerde reeks bevat een NUL byte"
 
 #: ../zypp/url/UrlUtils.cc:173
-#, fuzzy
 msgid "Invalid parameter array split separator character"
-msgstr "Ongeldige parameter map join scheidingsteken"
+msgstr "Ongeldig scheidingsteken voor splitsen parametermatrix"
 
 #: ../zypp/url/UrlUtils.cc:213
-#, fuzzy
 msgid "Invalid parameter map split separator character"
-msgstr "Ongeldige parameter map join scheidingsteken"
+msgstr "Ongeldig scheidingsteken voor splitsen parametertoewijzing"
 
 #: ../zypp/url/UrlUtils.cc:283
-#, fuzzy
 msgid "Invalid parameter array join separator character"
-msgstr "Ongeldige parameter map join scheidingsteken"
+msgstr "Ongeldig scheidingsteken voor samenvoegen parametermatrix"
 
 #: ../zypp/Url.cc:110
-#, fuzzy
 msgid "Invalid LDAP URL query string"
-msgstr "Ongeldige LDAP-URL queryparameter '%1'"
+msgstr "Ongeldige LDAP URL-queryreeks"
 
 #: ../zypp/Url.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Ongeldige LDAP-URL queryparameter '%1'"
+msgstr "Ongeldige LDAP URL-queryparameter '%s'"
 
 #: ../zypp/Url.cc:290
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "De schijf kon niet worden uitgeworpen."
+msgstr "Kan URL-object niet klonen"
 
 #: ../zypp/Url.cc:303
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Ongeldige lege-URL-implementatie-referentie"
+msgstr "Ongeldige lege URL-objectverwijzing"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Kon hoofd-URL-componenten niet ontleden"
+msgstr "Kan URL-componenten niet parseren"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -161,9 +146,8 @@ msgstr "Onbekende taal: "
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
-msgstr "Code"
+msgstr "Geen code"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -192,9 +176,8 @@ msgstr "Adangme"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
-#, fuzzy
 msgid "Adyghe"
-msgstr "Adangme"
+msgstr "Adyghe"
 
 #. language code: afa
 #: ../zypp/LanguageCode.cc:250
@@ -213,9 +196,8 @@ msgstr "Afrikaans"
 
 #. language code: ain
 #: ../zypp/LanguageCode.cc:256
-#, fuzzy
 msgid "Ainu"
-msgstr "Linux"
+msgstr "Ainu"
 
 #. language code: aka ak
 #: ../zypp/LanguageCode.cc:258
@@ -239,15 +221,13 @@ msgstr "Aleuts"
 
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
-msgstr "Algonquiaanse talen"
+msgstr "Algonquian-talen"
 
 #. language code: alt
 #: ../zypp/LanguageCode.cc:270
-#, fuzzy
 msgid "Southern Altai"
-msgstr "Zuid-Sami"
+msgstr "Zuid-Altai"
 
 #. language code: amh am
 #: ../zypp/LanguageCode.cc:272
@@ -261,7 +241,6 @@ msgstr "Engels, Oud (ca.450-1100)"
 
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "Apache-talen"
 
@@ -312,19 +291,16 @@ msgstr "Assamees, Assami"
 
 #. language code: ast
 #: ../zypp/LanguageCode.cc:298
-#, fuzzy
 msgid "Asturian"
-msgstr "Oostenrijk"
+msgstr "Asturisch"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
-msgstr "Athapascaanse talen"
+msgstr "Athapascan-talen"
 
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "Australische talen"
 
@@ -360,9 +336,8 @@ msgstr "Banda"
 
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
-msgstr "Bamileek-talen"
+msgstr "Bamileke-talen"
 
 #. language code: bak ba
 #: ../zypp/LanguageCode.cc:318
@@ -501,9 +476,8 @@ msgstr "Burmees"
 
 #. language code: byn
 #: ../zypp/LanguageCode.cc:376
-#, fuzzy
 msgid "Blin"
-msgstr "Bini"
+msgstr "Blin"
 
 #. language code: cad
 #: ../zypp/LanguageCode.cc:378
@@ -567,9 +541,8 @@ msgstr "Chinees"
 
 #. language code: chk
 #: ../zypp/LanguageCode.cc:404
-#, fuzzy
 msgid "Chuukese"
-msgstr "Tsjoekees"
+msgstr "Chuukese"
 
 #. language code: chm
 #: ../zypp/LanguageCode.cc:406
@@ -578,7 +551,6 @@ msgstr "Mari"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
-#, fuzzy
 msgid "Chinook Jargon"
 msgstr "Chinook-jargon"
 
@@ -614,7 +586,6 @@ msgstr "Cheyenne"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "Chamische talen"
 
@@ -635,21 +606,18 @@ msgstr "Corsicaans"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
-#, fuzzy
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr "Kreools en pidgins (Overige)"
+msgstr "Creools en Pidgin, op basis van Engels (overig)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
-#, fuzzy
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr "Kreools en pidgins (Overige)"
+msgstr "Creools en Pidgin, op basis van Frans (overig)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
-#, fuzzy
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "Kreools en pidgins (Overige)"
+msgstr "Creools en Pidgin, op basis van Portugees (overig)"
 
 #. language code: cre cr
 #: ../zypp/LanguageCode.cc:436
@@ -660,15 +628,13 @@ msgstr "Cree"
 # /usr/lib/YaST2/clients/lan_dns.ycp:87
 #. language code: crh
 #: ../zypp/LanguageCode.cc:438
-#, fuzzy
 msgid "Crimean Tatar"
-msgstr "Datum en tijd"
+msgstr "Krim-Tataars"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
-#, fuzzy
 msgid "Creoles and Pidgins (Other)"
-msgstr "Kreools en pidgins (Overige)"
+msgstr "Creools en Pidgin (overig)"
 
 #. language code: csb
 #: ../zypp/LanguageCode.cc:442
@@ -702,9 +668,8 @@ msgstr "Dargwa"
 
 #. language code: day
 #: ../zypp/LanguageCode.cc:456
-#, fuzzy
 msgid "Dayak"
-msgstr "Dag"
+msgstr "Dayak"
 
 #. language code: del
 #: ../zypp/LanguageCode.cc:458
@@ -753,9 +718,8 @@ msgstr "Duala"
 
 #. language code: dum
 #: ../zypp/LanguageCode.cc:476
-#, fuzzy
 msgid "Dutch, Middle (ca.1050-1350)"
-msgstr "Nederlands, Middel (ca. 1050-1350)"
+msgstr "Nederlands, middel (ca.1050-1350)"
 
 #. language code: dut nld nl
 #: ../zypp/LanguageCode.cc:478 ../zypp/LanguageCode.cc:480
@@ -844,9 +808,8 @@ msgstr "Fijisch"
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
-#, fuzzy
 msgid "Filipino"
-msgstr "Filippijnen"
+msgstr "Filipino"
 
 #. language code: fin fi
 #: ../zypp/LanguageCode.cc:516
@@ -935,9 +898,8 @@ msgstr "Gilbertees"
 
 #. language code: gla gd
 #: ../zypp/LanguageCode.cc:556
-#, fuzzy
 msgid "Gaelic"
-msgstr "Pali"
+msgstr "Gaelic"
 
 #. language code: gle ga
 #: ../zypp/LanguageCode.cc:558
@@ -946,9 +908,8 @@ msgstr "Iers"
 
 #. language code: glg gl
 #: ../zypp/LanguageCode.cc:560
-#, fuzzy
 msgid "Galician"
-msgstr "Gwitsjin"
+msgstr "Galicisch"
 
 #. language code: glv gv
 #: ../zypp/LanguageCode.cc:562
@@ -1007,9 +968,8 @@ msgstr "Gujarati"
 
 #. language code: gwi
 #: ../zypp/LanguageCode.cc:586
-#, fuzzy
 msgid "Gwich'in"
-msgstr "Gwitsjin"
+msgstr "Gwich'in"
 
 #. language code: hai
 #: ../zypp/LanguageCode.cc:588
@@ -1018,9 +978,8 @@ msgstr "Haida"
 
 #. language code: hat ht
 #: ../zypp/LanguageCode.cc:590
-#, fuzzy
 msgid "Haitian"
-msgstr "Haïti"
+msgstr "Haïtiaans"
 
 #. language code: hau ha
 #: ../zypp/LanguageCode.cc:592
@@ -1069,9 +1028,8 @@ msgstr "Hmong"
 
 #. language code: hmo ho
 #: ../zypp/LanguageCode.cc:610
-#, fuzzy
 msgid "Hiri Motu"
-msgstr "Hiri"
+msgstr "Hiri Motu"
 
 #. language code: hsb
 #: ../zypp/LanguageCode.cc:612
@@ -1170,9 +1128,8 @@ msgstr "Iraans (Overige)"
 
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
-msgstr "Iroquoiaanse talen"
+msgstr "Iroquoian-talen"
 
 #. language code: ita it
 #: ../zypp/LanguageCode.cc:654
@@ -1266,9 +1223,8 @@ msgstr "Kabardisch, Tsjerkessisch"
 
 #. language code: kha
 #: ../zypp/LanguageCode.cc:690
-#, fuzzy
 msgid "Khasi"
-msgstr "Khazi"
+msgstr "Khasi"
 
 #. language code: khi
 #: ../zypp/LanguageCode.cc:692
@@ -1407,9 +1363,8 @@ msgstr "Lezghiaans"
 
 #. language code: lim li
 #: ../zypp/LanguageCode.cc:746
-#, fuzzy
 msgid "Limburgan"
-msgstr "Limburgs"
+msgstr "Limburgan"
 
 #. language code: lin ln
 #: ../zypp/LanguageCode.cc:748
@@ -1468,7 +1423,6 @@ msgstr "Luo (Kenia en Tanzania)"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
 msgstr "Lushai"
 
@@ -1559,9 +1513,8 @@ msgstr "Iers, Middel (900-1200)"
 
 #. language code: mic
 #: ../zypp/LanguageCode.cc:812
-#, fuzzy
 msgid "Mi'kmaq"
-msgstr "Mi'kmaq; Micmac"
+msgstr "Mi'kmaq"
 
 #. language code: min
 #: ../zypp/LanguageCode.cc:814
@@ -1570,9 +1523,8 @@ msgstr "Minangkabau"
 
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
-msgstr "Verschillende talen"
+msgstr "Diverse talen"
 
 #. language code: mkh
 #: ../zypp/LanguageCode.cc:818
@@ -1596,13 +1548,11 @@ msgstr "Manchu"
 
 #. language code: mni
 #: ../zypp/LanguageCode.cc:826
-#, fuzzy
 msgid "Manipuri"
-msgstr "Kanuri"
+msgstr "Manipuri"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "Manobo-talen"
 
@@ -1628,7 +1578,6 @@ msgstr "Mossisch"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
 msgstr "Meerdere talen"
 
@@ -1654,9 +1603,8 @@ msgstr "Marwari"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
-msgstr "Maja-talen"
+msgstr "Maya-talen"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1670,9 +1618,8 @@ msgstr "Nahuatl"
 
 #. language code: nai
 #: ../zypp/LanguageCode.cc:854
-#, fuzzy
 msgid "North American Indian"
-msgstr "Noord-Amerikaans Indiaans (Overige)"
+msgstr "Noord-Amerikaans Indiaans"
 
 #. language code: nap
 #: ../zypp/LanguageCode.cc:856
@@ -1707,9 +1654,8 @@ msgstr "Ndonga"
 
 #. language code: nds
 #: ../zypp/LanguageCode.cc:868
-#, fuzzy
 msgid "Low German"
-msgstr "Duits"
+msgstr "Zuid-Duits"
 
 #. language code: nep ne
 #: ../zypp/LanguageCode.cc:870
@@ -1718,9 +1664,8 @@ msgstr "Nepalees"
 
 #. language code: new
 #: ../zypp/LanguageCode.cc:872
-#, fuzzy
 msgid "Nepal Bhasa"
-msgstr "Nepal"
+msgstr "Nepal Bhasa"
 
 #. language code: nia
 #: ../zypp/LanguageCode.cc:874
@@ -1764,27 +1709,23 @@ msgstr "Noors"
 
 #. language code: nso
 #: ../zypp/LanguageCode.cc:890
-#, fuzzy
 msgid "Northern Sotho"
-msgstr "Noord-Sami"
+msgstr "Noord Sotho"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "Nubische talen"
 
 #. language code: nwc
 #: ../zypp/LanguageCode.cc:894
-#, fuzzy
 msgid "Classical Newari"
-msgstr "Klassiek Newari; Oud Newari"
+msgstr "Klassiek Newari"
 
 #. language code: nya ny
 #: ../zypp/LanguageCode.cc:896
-#, fuzzy
 msgid "Chichewa"
-msgstr "Tsjibtsja"
+msgstr "Chichewa"
 
 #. language code: nym
 #: ../zypp/LanguageCode.cc:898
@@ -1843,9 +1784,8 @@ msgstr "Turks, Ottomaans (1500-1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
-msgstr "Otomiaanse talen"
+msgstr "Otomi-talen"
 
 #. language code: paa
 #: ../zypp/LanguageCode.cc:922
@@ -1924,15 +1864,13 @@ msgstr "Portugees"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
 msgstr "Prakrit-talen"
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
-#, fuzzy
 msgid "Provencal, Old (to 1500)"
-msgstr "Provençaals, Oud (tot 1500)"
+msgstr "Provençaals, oud (tot 1500)"
 
 #. language code: pus ps
 #: ../zypp/LanguageCode.cc:958
@@ -2011,9 +1949,8 @@ msgstr "Zuid-Amerikaans Indiaans (Overige)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
-msgstr "Salisjische talen"
+msgstr "Salishan-talen"
 
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
@@ -2072,7 +2009,6 @@ msgstr "Iers, Oud (tot 900)"
 
 #. language code: sgn
 #: ../zypp/LanguageCode.cc:1018
-#, fuzzy
 msgid "Sign Languages"
 msgstr "Gebarentalen"
 
@@ -2088,13 +2024,11 @@ msgstr "Sidamo"
 
 #. language code: sin si
 #: ../zypp/LanguageCode.cc:1024
-#, fuzzy
 msgid "Sinhala"
-msgstr "Lingala"
+msgstr "Sinhala"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "Siouaanse talen"
 
@@ -2130,9 +2064,8 @@ msgstr "Noord-Sami"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
-msgstr "Sami-talen (Overige)"
+msgstr "Sami-talen (overig)"
 
 #. language code: smj
 #: ../zypp/LanguageCode.cc:1044
@@ -2332,15 +2265,13 @@ msgstr "Tokelau"
 
 #. language code: tlh
 #: ../zypp/LanguageCode.cc:1124
-#, fuzzy
 msgid "Klingon"
-msgstr "Kongo"
+msgstr "Klingon"
 
 #. language code: tli
 #: ../zypp/LanguageCode.cc:1126
-#, fuzzy
 msgid "Tlingit"
-msgstr "Tlinglit"
+msgstr "Tlingit"
 
 #. language code: tmh
 #: ../zypp/LanguageCode.cc:1128
@@ -2389,7 +2320,6 @@ msgstr "Tumbuka"
 
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "Tupi-talen"
 
@@ -2486,9 +2416,8 @@ msgstr "Votisch"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
-msgstr "Wakasjaanse talen"
+msgstr "Wakashan-talen"
 
 #. language code: wal
 #: ../zypp/LanguageCode.cc:1186
@@ -2512,9 +2441,8 @@ msgstr "Welsh"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
-msgstr "Sorbiaanse talen"
+msgstr "Sorbische talen"
 
 #. language code: wln wa
 #: ../zypp/LanguageCode.cc:1198
@@ -2558,9 +2486,8 @@ msgstr "Yoruba"
 
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
-msgstr "Joepikse talen"
+msgstr "Yupik-talen"
 
 #. language code: zap
 #: ../zypp/LanguageCode.cc:1216
@@ -2597,56 +2524,49 @@ msgid "Unable to restore all sources."
 msgstr "Niet alle bronnen konden worden hersteld."
 
 #: ../zypp/SourceManager.h:68
-#, fuzzy
 msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Tenminste één bron is al geregistreerd, herstellen van bronnen uit permanente opslag niet mogelijk."
+msgstr "Er is ten minste al één bron geregistreerd, opgeslagen bronnen kunnen niet worden hersteld."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-#, fuzzy
 msgid "Software management is already running."
-msgstr "Er draait reeds een daemon"
+msgstr "Softwarebeheer is al actief."
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext is niet verbonden"
 
 #: ../zypp/target/hal/HalContext.cc:106
-#, fuzzy
 msgid "HalDrive not initialized"
-msgstr "sjabloon is niet geïnitialiseerd"
+msgstr "HalDrive is niet geïnitialiseerd"
 
 #: ../zypp/target/hal/HalContext.cc:116
-#, fuzzy
 msgid "HalVolume not initialized"
-msgstr "sjabloon is niet geïnitialiseerd"
+msgstr "HalVolume is niet geïnitialiseerd"
 
 #: ../zypp/target/hal/HalContext.cc:208
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "kanaal tot kanaal verbinding"
+msgstr "Kan de dbus-verbinding niet maken"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: Kan libhal-context niet maken"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: Kan dbus-verbinding niet instellen"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "Kan HAL-context niet initialiseren, is hald niet actief?"
 
 #: ../zypp/target/hal/HalContext.cc:843
-#, fuzzy
 msgid "Not a CDROM drive"
-msgstr "Geen CD-ROM stations gevonden."
+msgstr "Geen cd-rom-station"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
-#, fuzzy
 msgid "Hal Exception"
-msgstr "Versleuteling"
+msgstr "Hal-uitzondering"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -2734,11 +2654,11 @@ msgstr "reservekopie %s aangemaakt"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "Kan het bestand dat nodig is voor het installeren van de update niet maken."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "Installatie is afgebroken volgens de instructies."
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
@@ -2749,9 +2669,9 @@ msgstr "%s is vervangen door %s"
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is replaced by others
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaced by %s"
-msgstr "%s is vervangen door %s"
+msgstr "%s vervangen door  %s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:261
 msgid "Invalid information"
@@ -2895,45 +2815,45 @@ msgstr "%s is niet geïnstalleerd en is gemarkeerd als deïnstalleerbaar"
 
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:388
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot install %s due to dependency problems"
-msgstr "Kan %s niet installeren vanwege afhankelijkheidsproblemen"
+msgstr "%s kan niet worden geïnstalleerd vanwege afhankelijkheidsproblemen"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:426
 #: ../zypp/solver/detail/Resolver_problems.cc:436
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
-#, fuzzy, c-format
+#, c-format
 msgid "delete %s"
-msgstr "%1 verwijderen"
+msgstr "%s verwijderen"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:429
 #: ../zypp/solver/detail/Resolver_problems.cc:439
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
-#, fuzzy, c-format
+#, c-format
 msgid "do not install %s"
-msgstr "Kan %s niet installeren"
+msgstr "%s niet installeren"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:452
-#, fuzzy, c-format
+#, c-format
 msgid "%s has unfulfilled requirements"
-msgstr "%s heeft onopgeloste afhankelijkheden"
+msgstr "er is niet voldaan aan de vereisten voor %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:490
-#, fuzzy, c-format
+#, c-format
 msgid "%s has missing dependencies"
-msgstr "%s kan niet worden geïnstalleerd vanwege ontbrekende afhankelijkheden"
+msgstr "afhankelijkheden voor %s ontbreken"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:537
-#, fuzzy, c-format
+#, c-format
 msgid "%s cannot be installed due to missing dependencies"
-msgstr "%s kan niet worden geïnstalleerd vanwege ontbrekende afhankelijkheden"
+msgstr "%s kan niet worden geïnstalleerd omdat afhankelijkheden ontbreken"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:585
@@ -2943,9 +2863,9 @@ msgstr "%s lost de afhankelijkheden van %s op, maar zal worden gedeïnstalleerd.
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
-#, fuzzy, c-format
+#, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s lost de afhankelijkheden van %s op, maar zal worden gedeïnstalleerd."
+msgstr "%s voldoet aan afhankelijkheden van %s maar blijft op het systeem staan"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -2985,19 +2905,17 @@ msgstr "Kan %s niet installeren omdat het conflicten geeft"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:734
-#, fuzzy, c-format
+#, c-format
 msgid "%s is uninstallable due to conflicts with %s"
-msgstr "%s kan niet worden gedeïnstalleerd worden vanwege conflicten met %s"
+msgstr "%s kan niet worden geïnstalleerd vanwege conflicten met %s"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
-#, fuzzy
 msgid "Ignore this requirement just here"
-msgstr "Deze vereiste wordt genegeerd"
+msgstr "Negeer deze vereiste hier"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
-#, fuzzy
 msgid "Ignore this requirement generally"
-msgstr "Deze vereiste wordt genegeerd"
+msgstr "Negeer deze vereiste overal"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
@@ -3014,26 +2932,25 @@ msgstr "%s levert deze afhankelijkheid maar zou de architectuur van het geïnsta
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore this conflict of %s"
-msgstr "Conflict van %s wordt genegeerd"
+msgstr "Negeer dit conflict van %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore the obsolete %s in %s"
-msgstr "Conflict van %s wordt genegeerd"
+msgstr "Negeer oude %s in %s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore that %s is already set to install"
-msgstr "Directory '%1' staat al in de lijst."
+msgstr "Negeer dat %s al is ingesteld op installeren"
 
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-#, fuzzy
 msgid "Do not install or delete concerning resolvables"
-msgstr "Verwijdert conflicterende oplosbare pakketten"
+msgstr "Installeer of verwijder de desbetreffende oplosbare pakketten niet"
 
 #. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
 #: ../zypp/solver/detail/QueueItemRequire.cc:701
@@ -3148,9 +3065,9 @@ msgstr "Kan %s niet installeren omdat deze niet van toepassing is op dit systeem
 #. other_capability() =
 #. Translator: %s = name of package,patch,...
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
-#, fuzzy, c-format
+#, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Kan %s niet installeren omdat deze al is gemarkeerd als 'moet worden gedeïnstalleerd'"
+msgstr "Kan %s niet installeren omdat %s al is gemarkeerd voor installatie"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3277,15 +3194,15 @@ msgstr "%s levert %s, maar is vergrendeld."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s levert %s, maar is aangemerkt voor deïnstallatie."
+msgstr "%s levert %s, maar blijft staan volgens planning."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
-#, fuzzy, c-format
+#, c-format
 msgid "%s provides %s, but has another architecture."
-msgstr "%s levert %s, maar is vergrendeld."
+msgstr "%s levert %s, maar heeft een andere architectuur."
 
 #. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:469
@@ -3374,21 +3291,19 @@ msgid "keep %s"
 msgstr "%s behouden"
 
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-#, fuzzy
 msgid "Keep resolvables"
-msgstr "Installeert ontbrekende oplosbare pakketten"
+msgstr "Oplosbare pakketten behouden"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
-#, fuzzy, c-format
+#, c-format
 msgid "install %s"
-msgstr "%1 installeren"
+msgstr "%s installeren"
 
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
-#, fuzzy
 msgid "Install missing resolvables"
-msgstr "Installeert ontbrekende oplosbare pakketten"
+msgstr "Ontbrekende oplosbare pakketten installeren"
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
@@ -3399,16 +3314,16 @@ msgstr "%s is afhankelijk van %s"
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is dependent on list of names
 #: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
-#, fuzzy, c-format
+#, c-format
 msgid "%s dependend on %s"
-msgstr "%s is afhankelijk van %s"
+msgstr "%s is afhankelijk van  %s"
 
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is needed by multiple others
 #: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
-#, fuzzy, c-format
+#, c-format
 msgid "%s needed by %s"
-msgstr "%s is nodig voor %s"
+msgstr "%s vereist door %s"
 
 #. Translator all.%s = name of packages,patches,....
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
@@ -3425,14 +3340,13 @@ msgstr "alle oplosbare pakketten ontgrendelen"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
-#, fuzzy, c-format
+#, c-format
 msgid "unlock %s"
-msgstr "Ontgrendeld %s"
+msgstr "%s ontgrendelen"
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
-#, fuzzy
 msgid "Unlock these resolvables"
-msgstr "Ontgrendeld deze oplosbare pakketten"
+msgstr "Deze oplosbare pakketten ontgrendelen"
 
 #. end of single patch parsing
 #. end of patches file parsing
@@ -3443,9 +3357,8 @@ msgid "Reading index files"
 msgstr "Indexbestanden lezen"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
-#, fuzzy
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Ondertekend repomd.xml-bestand komt niet door de ondertekeningcontrole"
+msgstr "Het ondertekende bestand repomd.xml voldoet niet aan de handtekeningcontrole."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3513,7 +3426,7 @@ msgstr "Patch %s lezen"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "Het scriptbestand voldoet niet aan de checksumtest."
 
 # workflow: "Software-Auswahl"
 # -ke-
@@ -3534,23 +3447,23 @@ msgstr "Vertaling lezen: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "controle van applydeltarpm is mislukt."
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm mislukt."
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
+msgstr "Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen te downloaden?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr ""
+msgstr "Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen te downloaden of de installatie afbreken?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -3563,42 +3476,41 @@ msgstr " komt niet door de controlesomverificatie."
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %s"
-msgstr "Pakketlijsten downloaden"
+msgstr "%s downloaden "
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "%s gedownload van %s"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
-#, fuzzy, c-format
+#, c-format
 msgid "Can't provide %s from %s"
-msgstr "Niemand levert %s"
+msgstr "Kan %s niet leveren van %s"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "Kan mutex-kenmerk niet initialiseren"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "Kan recursief mutex-kenmerk niet instellen"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "Kan recursieve mutex niet initialiseren"
 
 #: ../zypp/thread/Mutex.cc:77
-#, fuzzy
 msgid "Can't acquire the mutex lock"
-msgstr "Kan geen zypp-vergendeling verkrijgen."
+msgstr "Kan mutex-vergrendeling niet verkrijgen"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "Kan mutex-vergrendeling niet ontgrendelen"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -3802,7 +3714,6 @@ msgstr "Kongo"
 
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "Centraal Afrikaanse Republiek"
 
@@ -4799,6 +4710,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"Bestand %s is niet ondertekend.\n"
+"Wilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -4807,6 +4720,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Bestand %s is ondertekend met een onbekende sleutel:\n"
+"%s|%s|%s\n"
+" Wilt u het bestand toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4815,6 +4731,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"Niet-vertrouwde sleutel gevonden:\n"
+"%s|%s|%s\n"
+" Sleutel vertrouwen?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -4823,6 +4742,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"Bestand %s voldoet niet aan integriteitscontrole door de volgende sleutel:\n"
+"%s|%s|%s\n"
+" Wilt u het bestand toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -4830,13 +4752,15 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"Bestand %s bevat geen checksum.\n"
+"Wilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
 msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
-msgstr ""
+msgstr "Bestand %s heeft een onbekende checksum.%sWilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -4845,6 +4769,9 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
+"Bestand %s heeft een ongeldige checksum.\n"
+"%s verwacht, %s gevonden\n"
+"Wilt u het toch gebruiken?"
 
 #~ msgid "Ok"
 #~ msgstr "OK"

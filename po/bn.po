@@ -1,688 +1,634 @@
-# Bengali message file for YaST2 (@memory@).
-# Copyright (C) 2005 SUSE Linux Products GmbH.
-# Copyright (C) 2004 SuSE Linux AG.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-12 17:37+0100\n"
 "PO-Revision-Date: 2004-08-09 10:24+0200\n"
-"Last-Translator: xxx <yyy@example.org>\n"
-"Language-Team: Bengali <i18n@suse.de>\n"
+"Last-Translator: Priyavert Sharma<priyavert.sharma@agreeya.com>\n"
+"Language-Team: AgreeYa Solutions<linux_team@agreeya.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Url যোজনা %s এর অনুমতি দেয় না"
 
 #: ../zypp/url/UrlBase.cc:170
 #, c-format
 msgid "Invalid %s component '%s'"
-msgstr ""
+msgstr "অবৈধ %s কম্পোনেন্ট %s"
 
 #: ../zypp/url/UrlBase.cc:177
 #, c-format
 msgid "Invalid %s component"
-msgstr ""
+msgstr "অবৈধ %s কম্পোনেন্ট"
 
 #: ../zypp/url/UrlBase.cc:724
 msgid "Path parameter parsing not supported for this URL"
-msgstr ""
+msgstr "এই URL এর জন্যে পথ প্যারামিটার পার্সিং সমর্থিত নয়"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
 msgid "Query string parsing not supported for this URL"
-msgstr ""
+msgstr "এই URL এর জন্যে স্ট্রিং পার্সিং সমর্থিত নয়"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
-msgstr ""
+msgstr "Url যোজনা একটি আবশ্যিক কম্পোনেন্ট"
 
 #: ../zypp/url/UrlBase.cc:823
 #, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr ""
+msgstr "অবৈধ Url যোজনা %s"
 
 #: ../zypp/url/UrlBase.cc:854
 msgid "Unable to parse Url authority"
-msgstr ""
+msgstr "Url অথরিটি পার্স করতে অক্ষম"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Url যোজনা ব্যবহারকারীর নামের অনুমতি দেয় না"
 
 #: ../zypp/url/UrlBase.cc:976
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Url যোজনা পাসওয়ার্ডের অনুমতি দেয় না"
 
 #: ../zypp/url/UrlBase.cc:1005
 msgid "Url scheme requires a host component"
-msgstr ""
+msgstr "Url যোজনার জন্য হোস্ট কম্পোনেন্ট"
 
 #: ../zypp/url/UrlBase.cc:1015
 msgid "Url scheme does not allow a host component"
-msgstr ""
+msgstr "Url যোজনা হোস্ট কম্পোনেন্ট-এর অনুমতি দেয় না"
 
 #: ../zypp/url/UrlBase.cc:1042
 #, c-format
 msgid "Invalid host component '%s'"
-msgstr ""
+msgstr "অবৈধ হোস্ট কম্পোনেন্ট '%s'"
 
 #: ../zypp/url/UrlBase.cc:1063
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "Url যোজনা পোর্টের অনুমতি দেয় না"
 
 #: ../zypp/url/UrlBase.cc:1074
 #, c-format
 msgid "Invalid port component '%s'"
-msgstr ""
+msgstr "অবৈধ পোর্ট কম্পোনেন্ট '%s' "
 
 #: ../zypp/url/UrlBase.cc:1091
 msgid "Url scheme requires path name"
-msgstr ""
+msgstr "Url যোজনার জন্য পথের নাম দরকার"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
-msgstr ""
+msgstr "অথরিটি বিদ্যমান থাকলে রিলেটিভ পথের অনুমতি নেই"
 
 #: ../zypp/url/UrlBase.cc:1179
 msgid "Path Parameter parsing not supported for this URL"
-msgstr ""
+msgstr "এই URL এর জন্যে পথ প্যারামিটার পার্সিং সমর্থিত নয়"
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
-msgstr ""
+msgstr "এনকোডেড স্ট্রিংয়ে NUL বাইট আছে"
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
-msgstr ""
+msgstr "অবৈধ প্যারামিটার এরে স্প্লিট সেপারেটর ক্যারেক্টার"
 
 #: ../zypp/url/UrlUtils.cc:213
 msgid "Invalid parameter map split separator character"
-msgstr ""
+msgstr "অবৈধ প্যারামিটার ম্যাপ স্প্লিট সেপারেটর ক্যারেক্টার"
 
 #: ../zypp/url/UrlUtils.cc:283
 msgid "Invalid parameter array join separator character"
-msgstr ""
+msgstr "অবৈধ প্যারামিটার এরে জয়েন সেপারেটর ক্যারেক্টার"
 
 #: ../zypp/Url.cc:110
 msgid "Invalid LDAP URL query string"
-msgstr ""
+msgstr "অবৈধ LDAP URL অনুসন্ধান স্ট্রিং"
 
 #: ../zypp/Url.cc:149
 #, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr ""
+msgstr "অবৈধ LDAP URL অনুসন্ধান প্যারামিটার '%s'"
 
 #: ../zypp/Url.cc:290
 msgid "Unable to clone Url object"
-msgstr ""
+msgstr "Url অনজেক্ট ক্লোন করতে অক্ষম"
 
 #: ../zypp/Url.cc:303
 msgid "Invalid empty Url object reference"
-msgstr ""
+msgstr "অবৈধ খালি Url অবজেক্ট রেফারেন্স"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
 msgid "Unable to parse Url components"
-msgstr ""
+msgstr "Url কম্পোনেন্ট পার্স করতে অক্ষম"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
-msgstr ""
+msgstr "অজ্ঞাত ভাষা: "
 
-#  this is a heading
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
 #: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-#, fuzzy
 msgid "No Code"
 msgstr "কোড"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
 msgid "Afar"
-msgstr ""
+msgstr "আফার"
 
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
-#, fuzzy
 msgid "Abkhazian"
 msgstr "আলবেনিয়া"
 
 #. language code: ace
 #: ../zypp/LanguageCode.cc:242
-#, fuzzy
 msgid "Achinese"
 msgstr "ক্রিয়া (&c)"
 
 #. language code: ach
 #: ../zypp/LanguageCode.cc:244
 msgid "Acoli"
-msgstr ""
+msgstr "আকোলি"
 
-# দুরত্ব/ পরিসর/ সীমা/ 
 #. language code: ada
 #: ../zypp/LanguageCode.cc:246
-#, fuzzy
 msgid "Adangme"
 msgstr "পরিসীমা"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
 msgid "Adyghe"
-msgstr ""
+msgstr "এডাইগ"
 
 #. language code: afa
 #: ../zypp/LanguageCode.cc:250
 msgid "Afro-Asiatic (Other)"
-msgstr ""
+msgstr "আফ্রো-এশিয়াটিক (অন্যান্য)"
 
 #. language code: afh
 #: ../zypp/LanguageCode.cc:252
 msgid "Afrihili"
-msgstr ""
+msgstr "আফ্রিহিলি"
 
 #. language code: afr af
 #: ../zypp/LanguageCode.cc:254
 msgid "Afrikaans"
-msgstr ""
+msgstr "আফ্রিকান্স"
 
 #. language code: ain
 #: ../zypp/LanguageCode.cc:256
 msgid "Ainu"
-msgstr ""
+msgstr "আইনু"
 
 #. language code: aka ak
 #: ../zypp/LanguageCode.cc:258
 msgid "Akan"
-msgstr ""
+msgstr "আকান"
 
 #. language code: akk
 #: ../zypp/LanguageCode.cc:260
 msgid "Akkadian"
-msgstr ""
+msgstr "আক্কাডিয়ান"
 
 #. language code: alb sqi sq
 #: ../zypp/LanguageCode.cc:262 ../zypp/LanguageCode.cc:264
-#, fuzzy
 msgid "Albanian"
 msgstr "আলবেনিয়া"
 
 #. language code: ale
 #: ../zypp/LanguageCode.cc:266
 msgid "Aleut"
-msgstr ""
+msgstr "আলিউট"
 
-#  menue label text
 #. language code: alg
 #: ../zypp/LanguageCode.cc:268
-#, fuzzy
 msgid "Algonquian Languages"
 msgstr "প্রাথমিক ভাষা (&L)"
 
 #. language code: alt
 #: ../zypp/LanguageCode.cc:270
-#, fuzzy
 msgid "Southern Altai"
 msgstr "দক্ষিন আফ্রিকা"
 
 #. language code: amh am
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
-msgstr ""
+msgstr "আমহারিক"
 
 #. language code: ang
 #: ../zypp/LanguageCode.cc:274
 msgid "English, Old (ca.450-1100)"
-msgstr ""
+msgstr "ইংরেজী, পুরাতন (ca.450-1100)"
 
-#  label text
 #. language code: apa
 #: ../zypp/LanguageCode.cc:276
-#, fuzzy
 msgid "Apache Languages"
 msgstr "ভাষাসমূহ"
 
 #. language code: ara ar
 #: ../zypp/LanguageCode.cc:278
 msgid "Arabic"
-msgstr ""
+msgstr "আরবী"
 
 #. language code: arc
 #: ../zypp/LanguageCode.cc:280
 msgid "Aramaic"
-msgstr ""
+msgstr "আরামাইক"
 
 #. language code: arg an
 #: ../zypp/LanguageCode.cc:282
 msgid "Aragonese"
-msgstr ""
+msgstr "আরাগোনিজ"
 
 #. language code: arm hye hy
 #: ../zypp/LanguageCode.cc:284 ../zypp/LanguageCode.cc:286
-#, fuzzy
 msgid "Armenian"
 msgstr "আর্জেন্টিনা"
 
 #. language code: arn
 #: ../zypp/LanguageCode.cc:288
-#, fuzzy
 msgid "Araucanian"
 msgstr "ইউক্রেনীয়"
 
 #. language code: arp
 #: ../zypp/LanguageCode.cc:290
 msgid "Arapaho"
-msgstr ""
+msgstr "আরাপাহো"
 
 #. language code: art
 #: ../zypp/LanguageCode.cc:292
 msgid "Artificial (Other)"
-msgstr ""
+msgstr "নকল (অন্যান্য)"
 
 #. language code: arw
 #: ../zypp/LanguageCode.cc:294
 msgid "Arawak"
-msgstr ""
+msgstr "আরাওয়াক"
 
 #. language code: asm as
 #: ../zypp/LanguageCode.cc:296
-#, fuzzy
 msgid "Assamese"
 msgstr "একই"
 
 #. language code: ast
 #: ../zypp/LanguageCode.cc:298
-#, fuzzy
 msgid "Asturian"
 msgstr "অস্ট্রিয়া"
 
 #. language code: ath
 #: ../zypp/LanguageCode.cc:300
-#, fuzzy
 msgid "Athapascan Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
-#  progress stages
-# করা হচ্ছে
 #. language code: aus
 #: ../zypp/LanguageCode.cc:302
-#, fuzzy
 msgid "Australian Languages"
 msgstr "ইনস্টলকৃত ভাষা"
 
 #. language code: ava av
 #: ../zypp/LanguageCode.cc:304
 msgid "Avaric"
-msgstr ""
+msgstr "আভারিক"
 
 #. language code: ave ae
 #: ../zypp/LanguageCode.cc:306
 msgid "Avestan"
-msgstr ""
+msgstr "আভেস্তান"
 
 #. language code: awa
 #: ../zypp/LanguageCode.cc:308
 msgid "Awadhi"
-msgstr ""
+msgstr "অবধী"
 
 #. language code: aym ay
 #: ../zypp/LanguageCode.cc:310
 msgid "Aymara"
-msgstr ""
+msgstr "আয়মারা"
 
 #. language code: aze az
 #: ../zypp/LanguageCode.cc:312
 msgid "Azerbaijani"
-msgstr ""
+msgstr "আজারবাইজানি"
 
 #. language code: bad
 #: ../zypp/LanguageCode.cc:314
-#, fuzzy
 msgid "Banda"
 msgstr "কানাডা"
 
-#  progress stages
-# করা হচ্ছে
 #. language code: bai
 #: ../zypp/LanguageCode.cc:316
-#, fuzzy
 msgid "Bamileke Languages"
 msgstr "ইনস্টলকৃত ভাষা"
 
 #. language code: bak ba
 #: ../zypp/LanguageCode.cc:318
-#, fuzzy
 msgid "Bashkir"
 msgstr "ব্রাজিল"
 
 #. language code: bal
 #: ../zypp/LanguageCode.cc:320
 msgid "Baluchi"
-msgstr ""
+msgstr "বালুচি"
 
 #. language code: bam bm
 #: ../zypp/LanguageCode.cc:322
-#, fuzzy
 msgid "Bambara"
 msgstr "ক্যামেরা"
 
 #. language code: ban
 #: ../zypp/LanguageCode.cc:324
-#, fuzzy
 msgid "Balinese"
 msgstr "জাপানী"
 
 #. language code: baq eus eu
 #: ../zypp/LanguageCode.cc:326 ../zypp/LanguageCode.cc:328
 msgid "Basque"
-msgstr ""
+msgstr "বাস্ক"
 
 #. language code: bas
 #: ../zypp/LanguageCode.cc:330
-#, fuzzy
 msgid "Basa"
 msgstr "ব্রাজিল"
 
 #. language code: bat
 #: ../zypp/LanguageCode.cc:332
 msgid "Baltic (Other)"
-msgstr ""
+msgstr "বালটিক (অন্যান্য)"
 
 #. language code: bej
 #: ../zypp/LanguageCode.cc:334
 msgid "Beja"
-msgstr ""
+msgstr "বেজা"
 
 #. language code: bel be
 #: ../zypp/LanguageCode.cc:336
-#, fuzzy
 msgid "Belarusian"
 msgstr "বেলারুস"
 
 #. language code: bem
 #: ../zypp/LanguageCode.cc:338
 msgid "Bemba"
-msgstr ""
+msgstr "বেম্বা"
 
 #. language code: ben bn
 #: ../zypp/LanguageCode.cc:340
 msgid "Bengali"
-msgstr ""
+msgstr "বাংলা"
 
 #. language code: ber
 #: ../zypp/LanguageCode.cc:342
 msgid "Berber (Other)"
-msgstr ""
+msgstr "বার্বার (অন্যান্য)"
 
 #. language code: bho
 #: ../zypp/LanguageCode.cc:344
 msgid "Bhojpuri"
-msgstr ""
+msgstr "ভোজপুরি"
 
 #. language code: bih bh
 #: ../zypp/LanguageCode.cc:346
-#, fuzzy
 msgid "Bihari"
 msgstr "বাহরাইন"
 
 #. language code: bik
 #: ../zypp/LanguageCode.cc:348
 msgid "Bikol"
-msgstr ""
+msgstr "বিকোল"
 
 #. language code: bin
 #: ../zypp/LanguageCode.cc:350
 msgid "Bini"
-msgstr ""
+msgstr "বিনি"
 
 #. language code: bis bi
 #: ../zypp/LanguageCode.cc:352
 msgid "Bislama"
-msgstr ""
+msgstr "বিসলামা"
 
 #. language code: bla
 #: ../zypp/LanguageCode.cc:354
 msgid "Siksika"
-msgstr ""
+msgstr "সিকসিকা"
 
 #. language code: bnt
 #: ../zypp/LanguageCode.cc:356
 msgid "Bantu (Other)"
-msgstr ""
+msgstr "বানটু (অন্যান্য)"
 
 #. language code: bos bs
 #: ../zypp/LanguageCode.cc:358
-#, fuzzy
 msgid "Bosnian"
 msgstr "বোটসোয়ানা"
 
 #. language code: bra
 #: ../zypp/LanguageCode.cc:360
-#, fuzzy
 msgid "Braj"
 msgstr "ব্রাজিল"
 
 #. language code: bre br
 #: ../zypp/LanguageCode.cc:362
-#, fuzzy
 msgid "Breton"
 msgstr "বাহরাইন"
 
 #. language code: btk
 #: ../zypp/LanguageCode.cc:364
-#, fuzzy
 msgid "Batak (Indonesia)"
 msgstr "ইন্দোনেশিয়া"
 
 #. language code: bua
 #: ../zypp/LanguageCode.cc:366
-#, fuzzy
 msgid "Buriat"
 msgstr "বুলগেরিয়া"
 
 #. language code: bug
 #: ../zypp/LanguageCode.cc:368
 msgid "Buginese"
-msgstr ""
+msgstr "বুগিনিজ"
 
 #. language code: bul bg
 #: ../zypp/LanguageCode.cc:370
-#, fuzzy
 msgid "Bulgarian"
 msgstr "বুলগেরিয়া"
 
-# সিরিয়াল মাউস 
 #. language code: bur mya my
 #: ../zypp/LanguageCode.cc:372 ../zypp/LanguageCode.cc:374
-#, fuzzy
 msgid "Burmese"
 msgstr "বাস মাউস "
 
 #. language code: byn
 #: ../zypp/LanguageCode.cc:376
-#, fuzzy
 msgid "Blin"
 msgstr "বেলজিয়ান"
 
 #. language code: cad
 #: ../zypp/LanguageCode.cc:378
 msgid "Caddo"
-msgstr ""
+msgstr "কাড্ডো"
 
 #. language code: cai
 #: ../zypp/LanguageCode.cc:380
 msgid "Central American Indian (Other)"
-msgstr ""
+msgstr "মধ্য আমেরিকান ইন্ডিয়ান (অন্যান্য)"
 
 #. language code: car
 #: ../zypp/LanguageCode.cc:382
 msgid "Carib"
-msgstr ""
+msgstr "ক্যারিব"
 
 #. language code: cat ca
 #: ../zypp/LanguageCode.cc:384
-#, fuzzy
 msgid "Catalan"
 msgstr "ক্যাটালোনিয়া"
 
 #. language code: cau
 #: ../zypp/LanguageCode.cc:386
 msgid "Caucasian (Other)"
-msgstr ""
+msgstr "ককেশীয় (অন্যান্য)"
 
 #. language code: ceb
 #: ../zypp/LanguageCode.cc:388
-#, fuzzy
 msgid "Cebuano"
 msgstr "লেবানন"
 
 #. language code: cel
 #: ../zypp/LanguageCode.cc:390
 msgid "Celtic (Other)"
-msgstr ""
+msgstr "সেল্টিক (অন্যান্য)"
 
 #. language code: cha ch
 #: ../zypp/LanguageCode.cc:392
 msgid "Chamorro"
-msgstr ""
+msgstr "চামোরো"
 
 #. language code: chb
 #: ../zypp/LanguageCode.cc:394
 msgid "Chibcha"
-msgstr ""
+msgstr "চিবচা"
 
 #. language code: che ce
 #: ../zypp/LanguageCode.cc:396
-#, fuzzy
 msgid "Chechen"
 msgstr "ক্যাশ"
 
 #. language code: chg
 #: ../zypp/LanguageCode.cc:398
 msgid "Chagatai"
-msgstr ""
+msgstr "চাগাতাই"
 
 #. language code: chi zho zh
 #: ../zypp/LanguageCode.cc:400 ../zypp/LanguageCode.cc:402
-#, fuzzy
 msgid "Chinese"
 msgstr "চিলি"
 
 #. language code: chk
 #: ../zypp/LanguageCode.cc:404
 msgid "Chuukese"
-msgstr ""
+msgstr "চুকেসে"
 
 #. language code: chm
 #: ../zypp/LanguageCode.cc:406
-#, fuzzy
 msgid "Mari"
 msgstr "প্রধান"
 
 #. language code: chn
 #: ../zypp/LanguageCode.cc:408
 msgid "Chinook Jargon"
-msgstr ""
+msgstr "চিনুক জার্গন"
 
 #. language code: cho
 #: ../zypp/LanguageCode.cc:410
 msgid "Choctaw"
-msgstr ""
+msgstr "চোকটাও"
 
 #. language code: chp
 #: ../zypp/LanguageCode.cc:412
 msgid "Chipewyan"
-msgstr ""
+msgstr "চিপেওয়ান"
 
 #. language code: chr
 #: ../zypp/LanguageCode.cc:414
 msgid "Cherokee"
-msgstr ""
+msgstr "চেরোকি"
 
 #. language code: chu cu
 #: ../zypp/LanguageCode.cc:416
 msgid "Church Slavic"
-msgstr ""
+msgstr "চার্চ স্লেভিক"
 
 #. language code: chv cv
 #: ../zypp/LanguageCode.cc:418
 msgid "Chuvash"
-msgstr ""
+msgstr "চুভাশ"
 
 #. language code: chy
 #: ../zypp/LanguageCode.cc:420
 msgid "Cheyenne"
-msgstr ""
+msgstr "চেয়েন"
 
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
-#, fuzzy
 msgid "Chamic Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: cop
 #: ../zypp/LanguageCode.cc:424
-#, fuzzy
 msgid "Coptic"
 msgstr "কোস্টারিকা"
 
 #. language code: cor kw
 #: ../zypp/LanguageCode.cc:426
-#, fuzzy
 msgid "Cornish"
 msgstr "ধারন করে"
 
 #. language code: cos co
 #: ../zypp/LanguageCode.cc:428
-#, fuzzy
 msgid "Corsican"
 msgstr "কোস্টারিকা"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr ""
+msgstr "ক্রেওলস ও ইংরেজী, ইংরেজী-ভিত্তিক (অন্যান্য)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr ""
+msgstr "ক্রেওলস ও পিজিনস ফরাসি-ভিত্তিক (অন্যান্য)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr ""
+msgstr "ক্রেওলস ও পিজিনস পর্তুগিজ-ভিত্তিক (অন্যান্য)"
 
 #. language code: cre cr
 #: ../zypp/LanguageCode.cc:436
-#, fuzzy
 msgid "Cree"
 msgstr "খালি"
 
 #. language code: crh
 #: ../zypp/LanguageCode.cc:438
 msgid "Crimean Tatar"
-msgstr ""
+msgstr "ক্রিমিয়ান তাতার"
 
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
 msgid "Creoles and Pidgins (Other)"
-msgstr ""
+msgstr "ক্রেওলস ও পিজিনস (অন্যান্য)"
 
 #. language code: csb
 #: ../zypp/LanguageCode.cc:442
 msgid "Kashubian"
-msgstr ""
+msgstr "কাশুবিয়ান"
 
 #. language code: cus
 #: ../zypp/LanguageCode.cc:444
 msgid "Cushitic (Other)"
-msgstr ""
+msgstr "কাসিটিক (অন্যান্য)"
 
 #. language code: cze ces cs
 #: ../zypp/LanguageCode.cc:446 ../zypp/LanguageCode.cc:448
@@ -692,7 +638,7 @@ msgstr "চেক"
 #. language code: dak
 #: ../zypp/LanguageCode.cc:450
 msgid "Dakota"
-msgstr ""
+msgstr "ডাকোটা"
 
 #. language code: dan da
 #: ../zypp/LanguageCode.cc:452
@@ -702,69 +648,62 @@ msgstr "ড্যানিশ"
 #. language code: dar
 #: ../zypp/LanguageCode.cc:454
 msgid "Dargwa"
-msgstr ""
+msgstr "ডারগোয়া"
 
 #. language code: day
 #: ../zypp/LanguageCode.cc:456
 msgid "Dayak"
-msgstr ""
+msgstr "ডায়াক"
 
-# সনাক্ত 
-# হার্ডওয়্যার তথ্য
 #. language code: del
 #: ../zypp/LanguageCode.cc:458
-#, fuzzy
 msgid "Delaware"
 msgstr "হার্ডওয়্যার সনাক্ত করো"
 
 #. language code: den
 #: ../zypp/LanguageCode.cc:460
 msgid "Slave (Athapascan)"
-msgstr ""
+msgstr "স্লেভ (আথাপাস্কান)"
 
 #. language code: dgr
 #: ../zypp/LanguageCode.cc:462
 msgid "Dogrib"
-msgstr ""
+msgstr "ডোগরিব"
 
 #. language code: din
 #: ../zypp/LanguageCode.cc:464
-#, fuzzy
 msgid "Dinka"
 msgstr "ডিস্ক"
 
-# ড্রাইভার
 #. language code: div dv
 #: ../zypp/LanguageCode.cc:466
-#, fuzzy
 msgid "Divehi"
 msgstr "ড্রাইভার"
 
 #. language code: doi
 #: ../zypp/LanguageCode.cc:468
 msgid "Dogri"
-msgstr ""
+msgstr "ডোগরি"
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
-msgstr ""
+msgstr "দ্রাবিঢ়ীয় (অন্যান্য)"
 
 #. language code: dsb
 #: ../zypp/LanguageCode.cc:472
 msgid "Lower Sorbian"
-msgstr ""
+msgstr "লোয়ার সরবিয়ান"
 
 #. language code: dua
 #: ../zypp/LanguageCode.cc:474
-#, fuzzy
 msgid "Duala"
 msgstr "মালটা"
 
 #. language code: dum
 #: ../zypp/LanguageCode.cc:476
 msgid "Dutch, Middle (ca.1050-1350)"
-msgstr ""
+msgstr "ডাচ, মধ্য (ca.1050-1350)"
 
 #. language code: dut nld nl
 #: ../zypp/LanguageCode.cc:478 ../zypp/LanguageCode.cc:480
@@ -774,47 +713,45 @@ msgstr "ডাচ্"
 #. language code: dyu
 #: ../zypp/LanguageCode.cc:482
 msgid "Dyula"
-msgstr ""
+msgstr "ডিউলা"
 
 #. language code: dzo dz
 #: ../zypp/LanguageCode.cc:484
 msgid "Dzongkha"
-msgstr ""
+msgstr "জোংখা"
 
 #. language code: efi
 #: ../zypp/LanguageCode.cc:486
 msgid "Efik"
-msgstr ""
+msgstr "এফিক"
 
 #. language code: egy
 #: ../zypp/LanguageCode.cc:488
 msgid "Egyptian (Ancient)"
-msgstr ""
+msgstr "ইজিপশিয়ান (প্রাচীন)"
 
 #. language code: eka
 #: ../zypp/LanguageCode.cc:490
 msgid "Ekajuk"
-msgstr ""
+msgstr "একাজুক"
 
 #. language code: elx
 #: ../zypp/LanguageCode.cc:492
 msgid "Elamite"
-msgstr ""
+msgstr "এলামাইট"
 
 #. language code: eng en
 #: ../zypp/LanguageCode.cc:494
-#, fuzzy
 msgid "English"
 msgstr "ইংরেজি (UK)"
 
 #. language code: enm
 #: ../zypp/LanguageCode.cc:496
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "ইংরেজী, মধ্য (1100-1500)"
 
 #. language code: epo eo
 #: ../zypp/LanguageCode.cc:498
-#, fuzzy
 msgid "Esperanto"
 msgstr "অভিজ্ঞ (&E)"
 
@@ -826,40 +763,35 @@ msgstr "এস্টোনীয়"
 #. language code: ewe ee
 #: ../zypp/LanguageCode.cc:502
 msgid "Ewe"
-msgstr ""
+msgstr "ইউয়ি"
 
 #. language code: ewo
 #: ../zypp/LanguageCode.cc:504
 msgid "Ewondo"
-msgstr ""
+msgstr "এওন্ডো"
 
-# দুরত্ব/ পরিসর/ সীমা/ 
 #. language code: fan
 #: ../zypp/LanguageCode.cc:506
-#, fuzzy
 msgid "Fang"
 msgstr "পরিসীমা"
 
 #. language code: fao fo
 #: ../zypp/LanguageCode.cc:508
-#, fuzzy
 msgid "Faroese"
 msgstr "খালি"
 
 #. language code: fat
 #: ../zypp/LanguageCode.cc:510
 msgid "Fanti"
-msgstr ""
+msgstr "ফান্টি"
 
 #. language code: fij fj
 #: ../zypp/LanguageCode.cc:512
-#, fuzzy
 msgid "Fijian"
 msgstr "ফিনল্যান্ড"
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
-#, fuzzy
 msgid "Filipino"
 msgstr "ফিলিপাইন"
 
@@ -871,12 +803,12 @@ msgstr "ফিনিশ"
 #. language code: fiu
 #: ../zypp/LanguageCode.cc:518
 msgid "Finno-Ugrian (Other)"
-msgstr ""
+msgstr "ফিনো-উগ্রিয়ান (অন্যান্য)"
 
 #. language code: fon
 #: ../zypp/LanguageCode.cc:520
 msgid "Fon"
-msgstr ""
+msgstr "ফন"
 
 #. language code: fre fra fr
 #: ../zypp/LanguageCode.cc:522 ../zypp/LanguageCode.cc:524
@@ -886,56 +818,50 @@ msgstr "ফ্রেঞ্চ"
 #. language code: frm
 #: ../zypp/LanguageCode.cc:526
 msgid "French, Middle (ca.1400-1600)"
-msgstr ""
+msgstr "ফরাসি, মধ্য (ca.1400-1600)"
 
 #. language code: fro
 #: ../zypp/LanguageCode.cc:528
 msgid "French, Old (842-ca.1400)"
-msgstr ""
+msgstr "ফরাসি, পুরাতন (842-ca.1400)"
 
 #. language code: fry fy
 #: ../zypp/LanguageCode.cc:530
-#, fuzzy
 msgid "Frisian"
 msgstr "শেষ করা হচ্ছে"
 
-# নিশান/ ফ্ল্যাগ 
 #. language code: ful ff
 #: ../zypp/LanguageCode.cc:532
-#, fuzzy
 msgid "Fulah"
 msgstr "সঙ্কেত"
 
 #. language code: fur
 #: ../zypp/LanguageCode.cc:534
-#, fuzzy
 msgid "Friulian"
 msgstr "ফিনল্যান্ড"
 
 #. language code: gaa
 #: ../zypp/LanguageCode.cc:536
 msgid "Ga"
-msgstr ""
+msgstr "গা"
 
 #. language code: gay
 #: ../zypp/LanguageCode.cc:538
 msgid "Gayo"
-msgstr ""
+msgstr "গায়ো"
 
 #. language code: gba
 #: ../zypp/LanguageCode.cc:540
 msgid "Gbaya"
-msgstr ""
+msgstr "গবায়া"
 
 #. language code: gem
 #: ../zypp/LanguageCode.cc:542
-#, fuzzy
 msgid "Germanic (Other)"
 msgstr "জার্মান (deadkeys সহ)"
 
 #. language code: geo kat ka
 #: ../zypp/LanguageCode.cc:544 ../zypp/LanguageCode.cc:546
-#, fuzzy
 msgid "Georgian"
 msgstr "জর্জিয়া"
 
@@ -946,162 +872,153 @@ msgstr "জার্মান"
 
 #. language code: gez
 #: ../zypp/LanguageCode.cc:552
-#, fuzzy
 msgid "Geez"
 msgstr "গ্রীক"
 
 #. language code: gil
 #: ../zypp/LanguageCode.cc:554
 msgid "Gilbertese"
-msgstr ""
+msgstr "গিলবার্টিজ"
 
 #. language code: gla gd
 #: ../zypp/LanguageCode.cc:556
 msgid "Gaelic"
-msgstr ""
+msgstr "গেলিক"
 
 #. language code: gle ga
 #: ../zypp/LanguageCode.cc:558
-#, fuzzy
 msgid "Irish"
 msgstr "তুর্কী"
 
 #. language code: glg gl
 #: ../zypp/LanguageCode.cc:560
-#, fuzzy
 msgid "Galician"
 msgstr "ইতালীয়"
 
 #. language code: glv gv
 #: ../zypp/LanguageCode.cc:562
 msgid "Manx"
-msgstr ""
+msgstr "ম্যাংক্স"
 
 #. language code: gmh
 #: ../zypp/LanguageCode.cc:564
 msgid "German, Middle High (ca.1050-1500)"
-msgstr ""
+msgstr "জার্মান, মধ্য উচ্চ (ca.1050-1500)"
 
 #. language code: goh
 #: ../zypp/LanguageCode.cc:566
 msgid "German, Old High (ca.750-1050)"
-msgstr ""
+msgstr "জার্মান, পুরাতন উচ্চ (ca.750-1050)"
 
 #. language code: gon
 #: ../zypp/LanguageCode.cc:568
-#, fuzzy
 msgid "Gondi"
 msgstr "শব্দ"
 
 #. language code: gor
 #: ../zypp/LanguageCode.cc:570
 msgid "Gorontalo"
-msgstr ""
+msgstr "গরোন্টালো"
 
 #. language code: got
 #: ../zypp/LanguageCode.cc:572
 msgid "Gothic"
-msgstr ""
+msgstr "গথিক"
 
 #. language code: grb
 #: ../zypp/LanguageCode.cc:574
-#, fuzzy
 msgid "Grebo"
 msgstr "গ্রুপ"
 
 #. language code: grc
 #: ../zypp/LanguageCode.cc:576
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "গ্রীক, প্রাচীন (1453 অবধি)"
 
 #. language code: gre ell el
 #: ../zypp/LanguageCode.cc:578 ../zypp/LanguageCode.cc:580
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "গ্রীক, আধুনিক (1453-)"
 
 #. language code: grn gn
 #: ../zypp/LanguageCode.cc:582
-#, fuzzy
 msgid "Guarani"
 msgstr "হাঙ্গেরীয়"
 
 #. language code: guj gu
 #: ../zypp/LanguageCode.cc:584
 msgid "Gujarati"
-msgstr ""
+msgstr "গুজরাটি"
 
 #. language code: gwi
 #: ../zypp/LanguageCode.cc:586
 msgid "Gwich'in"
-msgstr ""
+msgstr "গুইচ'ইন"
 
 #. language code: hai
 #: ../zypp/LanguageCode.cc:588
 msgid "Haida"
-msgstr ""
+msgstr "হাইদা"
 
 #. language code: hat ht
 #: ../zypp/LanguageCode.cc:590
-#, fuzzy
 msgid "Haitian"
 msgstr "পাকিস্তান"
 
 #. language code: hau ha
 #: ../zypp/LanguageCode.cc:592
 msgid "Hausa"
-msgstr ""
+msgstr "হাউসা"
 
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
-msgstr ""
+msgstr "হাওয়াইয়ান"
 
 #. language code: heb he
 #: ../zypp/LanguageCode.cc:596
 msgid "Hebrew"
-msgstr ""
+msgstr "হিব্রু"
 
 #. language code: her hz
 #: ../zypp/LanguageCode.cc:598
-#, fuzzy
 msgid "Herero"
 msgstr "সমস্যা"
 
 #. language code: hil
 #: ../zypp/LanguageCode.cc:600
 msgid "Hiligaynon"
-msgstr ""
+msgstr "হিলগেনন"
 
 #. language code: him
 #: ../zypp/LanguageCode.cc:602
 msgid "Himachali"
-msgstr ""
+msgstr "হিমাচলি"
 
 #. language code: hin hi
 #: ../zypp/LanguageCode.cc:604
-#, fuzzy
 msgid "Hindi"
 msgstr "ধরন"
 
 #. language code: hit
 #: ../zypp/LanguageCode.cc:606
 msgid "Hittite"
-msgstr ""
+msgstr "হিটাইট"
 
 #. language code: hmn
 #: ../zypp/LanguageCode.cc:608
 msgid "Hmong"
-msgstr ""
+msgstr "হমং"
 
 #. language code: hmo ho
 #: ../zypp/LanguageCode.cc:610
 msgid "Hiri Motu"
-msgstr ""
+msgstr "হিরি মটু"
 
 #. language code: hsb
 #: ../zypp/LanguageCode.cc:612
 msgid "Upper Sorbian"
-msgstr ""
+msgstr "আপার সার্বিয়ান"
 
 #. language code: hun hu
 #: ../zypp/LanguageCode.cc:614
@@ -1111,17 +1028,17 @@ msgstr "হাঙ্গেরীয়"
 #. language code: hup
 #: ../zypp/LanguageCode.cc:616
 msgid "Hupa"
-msgstr ""
+msgstr "হুপা"
 
 #. language code: iba
 #: ../zypp/LanguageCode.cc:618
 msgid "Iban"
-msgstr ""
+msgstr "ইবন"
 
 #. language code: ibo ig
 #: ../zypp/LanguageCode.cc:620
 msgid "Igbo"
-msgstr ""
+msgstr "ইগবো"
 
 #. language code: ice isl is
 #: ../zypp/LanguageCode.cc:622 ../zypp/LanguageCode.cc:624
@@ -1131,76 +1048,70 @@ msgstr "আইসল্যান্ডীয়"
 #. language code: ido io
 #: ../zypp/LanguageCode.cc:626
 msgid "Ido"
-msgstr ""
+msgstr "ইদো"
 
 #. language code: iii ii
 #: ../zypp/LanguageCode.cc:628
-#, fuzzy
 msgid "Sichuan Yi"
 msgstr "লিথুয়েনিয়া"
 
 #. language code: ijo
 #: ../zypp/LanguageCode.cc:630
 msgid "Ijo"
-msgstr ""
+msgstr "ইজো"
 
 #. language code: iku iu
 #: ../zypp/LanguageCode.cc:632
 msgid "Inuktitut"
-msgstr ""
+msgstr "ইনাখটিটাট"
 
 #. language code: ile ie
 #: ../zypp/LanguageCode.cc:634
-#, fuzzy
 msgid "Interlingue"
 msgstr "আভ্যন্তরীণ এলাকা"
 
 #. language code: ilo
 #: ../zypp/LanguageCode.cc:636
 msgid "Iloko"
-msgstr ""
+msgstr "ইলোকো"
 
 #. language code: ina ia
 #: ../zypp/LanguageCode.cc:638
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "ইন্টারলিঙ্গুয়া (ইন্টারন্যাশনাল অকজিলিয়ারি ল্যাংগুয়েজ অ্যাসোশিয়েশন)"
 
 #. language code: inc
 #: ../zypp/LanguageCode.cc:640
 msgid "Indic (Other)"
-msgstr ""
+msgstr "ইন্ডিক (অন্যান্য)"
 
 #. language code: ind id
 #: ../zypp/LanguageCode.cc:642
-#, fuzzy
 msgid "Indonesian"
 msgstr "ইন্দোনেশিয়া"
 
 #. language code: ine
 #: ../zypp/LanguageCode.cc:644
 msgid "Indo-European (Other)"
-msgstr ""
+msgstr "ইন্দো-ইউরোপিয়ান (অন্যান্য)"
 
 #. language code: inh
 #: ../zypp/LanguageCode.cc:646
 msgid "Ingush"
-msgstr ""
+msgstr "ইঙ্গুশ"
 
 #. language code: ipk ik
 #: ../zypp/LanguageCode.cc:648
-#, fuzzy
 msgid "Inupiaq"
 msgstr "ভারত"
 
 #. language code: ira
 #: ../zypp/LanguageCode.cc:650
 msgid "Iranian (Other)"
-msgstr ""
+msgstr "ইরানি (অন্যান্য)"
 
-#  menue label text
 #. language code: iro
 #: ../zypp/LanguageCode.cc:652
-#, fuzzy
 msgid "Iroquoian Languages"
 msgstr "প্রাথমিক ভাষা (&L)"
 
@@ -1211,13 +1122,11 @@ msgstr "ইতালীয়"
 
 #. language code: jav jv
 #: ../zypp/LanguageCode.cc:656
-#, fuzzy
 msgid "Javanese"
 msgstr "জাপানী"
 
 #. language code: jbo
 #: ../zypp/LanguageCode.cc:658
-#, fuzzy
 msgid "Lojban"
 msgstr "লেবানন"
 
@@ -1229,247 +1138,222 @@ msgstr "জাপানী"
 #. language code: jpr
 #: ../zypp/LanguageCode.cc:662
 msgid "Judeo-Persian"
-msgstr ""
+msgstr "জুডেও-পার্সিয়ান"
 
 #. language code: jrb
 #: ../zypp/LanguageCode.cc:664
 msgid "Judeo-Arabic"
-msgstr ""
+msgstr "জুডেও-আরবী"
 
 #. language code: kaa
 #: ../zypp/LanguageCode.cc:666
 msgid "Kara-Kalpak"
-msgstr ""
+msgstr "কারা-কালপাক"
 
 #. language code: kab
 #: ../zypp/LanguageCode.cc:668
-#, fuzzy
 msgid "Kabyle"
 msgstr "সক্রিয় হয়েছে"
 
 #. language code: kac
 #: ../zypp/LanguageCode.cc:670
-#, fuzzy
 msgid "Kachin"
 msgstr "খোঁজো"
 
 #. language code: kal kl
 #: ../zypp/LanguageCode.cc:672
 msgid "Kalaallisut"
-msgstr ""
+msgstr "কলাল্লিসুট"
 
 #. language code: kam
 #: ../zypp/LanguageCode.cc:674
-#, fuzzy
 msgid "Kamba"
 msgstr "&সাম্বা"
 
 #. language code: kan kn
 #: ../zypp/LanguageCode.cc:676
-#, fuzzy
 msgid "Kannada"
 msgstr "কানাডা"
 
 #. language code: kar
 #: ../zypp/LanguageCode.cc:678
-#, fuzzy
 msgid "Karen"
 msgstr "বাহরাইন"
 
 #. language code: kas ks
 #: ../zypp/LanguageCode.cc:680
 msgid "Kashmiri"
-msgstr ""
+msgstr "কাশ্মীরি"
 
 #. language code: kau kr
 #: ../zypp/LanguageCode.cc:682
 msgid "Kanuri"
-msgstr ""
+msgstr "কানুরি"
 
 #. language code: kaw
 #: ../zypp/LanguageCode.cc:684
-#, fuzzy
 msgid "Kawi"
 msgstr "কুয়েত"
 
 #. language code: kaz kk
 #: ../zypp/LanguageCode.cc:686
 msgid "Kazakh"
-msgstr ""
+msgstr "কাজাখ"
 
 #. language code: kbd
 #: ../zypp/LanguageCode.cc:688
 msgid "Kabardian"
-msgstr ""
+msgstr "কাবারডিয়ান"
 
 #. language code: kha
 #: ../zypp/LanguageCode.cc:690
 msgid "Khasi"
-msgstr ""
+msgstr "খাসি"
 
 #. language code: khi
 #: ../zypp/LanguageCode.cc:692
 msgid "Khoisan (Other)"
-msgstr ""
+msgstr "খয়সান (অন্যান্য)"
 
-# ?
 #. language code: khm km
 #: ../zypp/LanguageCode.cc:694
-#, fuzzy
 msgid "Khmer"
 msgstr "ঘড়ি"
 
 #. language code: kho
 #: ../zypp/LanguageCode.cc:696
 msgid "Khotanese"
-msgstr ""
+msgstr "খোটানিজ"
 
 #. language code: kik ki
 #: ../zypp/LanguageCode.cc:698
 msgid "Kikuyu"
-msgstr ""
+msgstr "কিকুয়ু"
 
 #. language code: kin rw
 #: ../zypp/LanguageCode.cc:700
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "কিনয়ারোয়ান্ডা"
 
 #. language code: kir ky
 #: ../zypp/LanguageCode.cc:702
 msgid "Kirghiz"
-msgstr ""
+msgstr "কিরগিজ"
 
 #. language code: kmb
 #: ../zypp/LanguageCode.cc:704
-#, fuzzy
 msgid "Kimbundu"
 msgstr "ধরন"
 
 #. language code: kok
 #: ../zypp/LanguageCode.cc:706
 msgid "Konkani"
-msgstr ""
+msgstr "কোঙ্কনী"
 
 #. language code: kom kv
 #: ../zypp/LanguageCode.cc:708
 msgid "Komi"
-msgstr ""
+msgstr "কোমি"
 
 #. language code: kon kg
 #: ../zypp/LanguageCode.cc:710
 msgid "Kongo"
-msgstr ""
+msgstr "কঙ্গো"
 
 #. language code: kor ko
 #: ../zypp/LanguageCode.cc:712
-#, fuzzy
 msgid "Korean"
 msgstr "জর্ডান"
 
 #. language code: kos
 #: ../zypp/LanguageCode.cc:714
 msgid "Kosraean"
-msgstr ""
+msgstr "কোসরিয়ান"
 
 #. language code: kpe
 #: ../zypp/LanguageCode.cc:716
-#, fuzzy
 msgid "Kpelle"
 msgstr "একই রাখো"
 
 #. language code: krc
 #: ../zypp/LanguageCode.cc:718
 msgid "Karachay-Balkar"
-msgstr ""
+msgstr "কারাচে-বালকার"
 
 #. language code: kro
 #: ../zypp/LanguageCode.cc:720
 msgid "Kru"
-msgstr ""
+msgstr "ক্রু"
 
 #. language code: kru
 #: ../zypp/LanguageCode.cc:722
-#, fuzzy
 msgid "Kurukh"
 msgstr "তুর্কী"
 
 #. language code: kua kj
 #: ../zypp/LanguageCode.cc:724
-#, fuzzy
 msgid "Kuanyama"
 msgstr "পানামা"
 
-#  this is a heading
 #. language code: kum
 #: ../zypp/LanguageCode.cc:726
-#, fuzzy
 msgid "Kumyk"
 msgstr "নকল"
 
 #. language code: kur ku
 #: ../zypp/LanguageCode.cc:728
-#, fuzzy
 msgid "Kurdish"
 msgstr "তুর্কী"
 
 #. language code: kut
 #: ../zypp/LanguageCode.cc:730
-#, fuzzy
 msgid "Kutenai"
 msgstr "কুয়েত"
 
 #. language code: lad
 #: ../zypp/LanguageCode.cc:732
-#, fuzzy
 msgid "Ladino"
 msgstr "লোড করা হচ্ছে..."
 
 #. language code: lah
 #: ../zypp/LanguageCode.cc:734
-#, fuzzy
 msgid "Lahnda"
 msgstr "কানাডা"
 
 #. language code: lam
 #: ../zypp/LanguageCode.cc:736
-#, fuzzy
 msgid "Lamba"
 msgstr "&সাম্বা"
 
 #. language code: lao lo
 #: ../zypp/LanguageCode.cc:738
-#, fuzzy
 msgid "Lao"
 msgstr "লগ"
 
 #. language code: lat la
 #: ../zypp/LanguageCode.cc:740
-#, fuzzy
 msgid "Latin"
 msgstr "লাতভিয়া"
 
 #. language code: lav lv
 #: ../zypp/LanguageCode.cc:742
-#, fuzzy
 msgid "Latvian"
 msgstr "লাতভিয়া"
 
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
-#, fuzzy
 msgid "Lezghian"
 msgstr "বেলজিয়ান"
 
 #. language code: lim li
 #: ../zypp/LanguageCode.cc:746
-#, fuzzy
 msgid "Limburgan"
 msgstr "লাক্সেমবার্গ"
 
 #. language code: lin ln
 #: ../zypp/LanguageCode.cc:748
 msgid "Lingala"
-msgstr ""
+msgstr "লিঙ্গালা"
 
 #. language code: lit lt
 #: ../zypp/LanguageCode.cc:750
@@ -1478,366 +1362,329 @@ msgstr "লিথুয়েনিয়ান"
 
 #. language code: lol
 #: ../zypp/LanguageCode.cc:752
-#, fuzzy
 msgid "Mongo"
 msgstr "মনিটর"
 
 #. language code: loz
 #: ../zypp/LanguageCode.cc:754
 msgid "Lozi"
-msgstr ""
+msgstr "লোজি"
 
 #. language code: ltz lb
 #: ../zypp/LanguageCode.cc:756
-#, fuzzy
 msgid "Luxembourgish"
 msgstr "লাক্সেমবার্গ"
 
 #. language code: lua
 #: ../zypp/LanguageCode.cc:758
 msgid "Luba-Lulua"
-msgstr ""
+msgstr "লুবা-লুলুয়া"
 
 #. language code: lub lu
 #: ../zypp/LanguageCode.cc:760
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "লুবা-কাটাঙ্গা"
 
 #. language code: lug lg
 #: ../zypp/LanguageCode.cc:762
-#, fuzzy
 msgid "Ganda"
 msgstr "কানাডা"
 
 #. language code: lui
 #: ../zypp/LanguageCode.cc:764
 msgid "Luiseno"
-msgstr ""
+msgstr "লুইসেনো"
 
 #. language code: lun
 #: ../zypp/LanguageCode.cc:766
-#, fuzzy
 msgid "Lunda"
 msgstr "শব্দ"
 
 #. language code: luo
 #: ../zypp/LanguageCode.cc:768
 msgid "Luo (Kenya and Tanzania)"
-msgstr ""
+msgstr "লুও (কেনিয়া ও তানজানিয়া)"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
-#, fuzzy
 msgid "Lushai"
 msgstr "থাইল্যান্ড"
 
 #. language code: mac mkd mk
 #: ../zypp/LanguageCode.cc:772 ../zypp/LanguageCode.cc:774
-#, fuzzy
 msgid "Macedonian"
 msgstr "ম্যাসেডোনিয়া"
 
-# মডিউল
 #. language code: mad
 #: ../zypp/LanguageCode.cc:776
-#, fuzzy
 msgid "Madurese"
 msgstr "মডিউলসমূহ"
 
 #. language code: mag
 #: ../zypp/LanguageCode.cc:778
 msgid "Magahi"
-msgstr ""
+msgstr "মাগাহি"
 
 #. language code: mah mh
 #: ../zypp/LanguageCode.cc:780
 msgid "Marshallese"
-msgstr ""
+msgstr "মারশালিজ"
 
 #. language code: mai
 #: ../zypp/LanguageCode.cc:782
 msgid "Maithili"
-msgstr ""
+msgstr "মৈথিলি"
 
 #. language code: mak
 #: ../zypp/LanguageCode.cc:784
-#, fuzzy
 msgid "Makasar"
 msgstr "মালয়শিয়া"
 
 #. language code: mal ml
 #: ../zypp/LanguageCode.cc:786
-#, fuzzy
 msgid "Malayalam"
 msgstr "মালয়শিয়া"
 
 #. language code: man
 #: ../zypp/LanguageCode.cc:788
-#, fuzzy
 msgid "Mandingo"
 msgstr "সতর্কবাণী"
 
 #. language code: mao mri mi
 #: ../zypp/LanguageCode.cc:790 ../zypp/LanguageCode.cc:792
-#, fuzzy
 msgid "Maori"
 msgstr "প্রধান"
 
 #. language code: map
 #: ../zypp/LanguageCode.cc:794
 msgid "Austronesian (Other)"
-msgstr ""
+msgstr "অস্ট্রোনেশিয়ান (অন্যান্য)"
 
 #. language code: mar mr
 #: ../zypp/LanguageCode.cc:796
 msgid "Marathi"
-msgstr ""
+msgstr "মারাঠি"
 
 #. language code: mas
 #: ../zypp/LanguageCode.cc:798
-#, fuzzy
 msgid "Masai"
 msgstr "মালয়শিয়া"
 
 #. language code: may msa ms
 #: ../zypp/LanguageCode.cc:800 ../zypp/LanguageCode.cc:802
-#, fuzzy
 msgid "Malay"
 msgstr "মালটা"
 
 #. language code: mdf
 #: ../zypp/LanguageCode.cc:804
 msgid "Moksha"
-msgstr ""
+msgstr "মোক্ষ"
 
 #. language code: mdr
 #: ../zypp/LanguageCode.cc:806
-#, fuzzy
 msgid "Mandar"
 msgstr "কানাডা"
 
-#  this is a heading
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
-#, fuzzy
 msgid "Mende"
 msgstr "মোড"
 
 #. language code: mga
 #: ../zypp/LanguageCode.cc:810
 msgid "Irish, Middle (900-1200)"
-msgstr ""
+msgstr "আইরিশ, মধ্য (900-1200) "
 
 #. language code: mic
 #: ../zypp/LanguageCode.cc:812
 msgid "Mi'kmaq"
-msgstr ""
+msgstr "মি'কমাক"
 
 #. language code: min
 #: ../zypp/LanguageCode.cc:814
 msgid "Minangkabau"
-msgstr ""
+msgstr "মিনাংকাবাউ"
 
-#  label text
 #. language code: mis
 #: ../zypp/LanguageCode.cc:816
-#, fuzzy
 msgid "Miscellaneous Languages"
 msgstr "আপনার ভাষা নির্বাচন করুন:"
 
 #. language code: mkh
 #: ../zypp/LanguageCode.cc:818
 msgid "Mon-Khmer (Other)"
-msgstr ""
+msgstr "মন-খমের (অন্যান্য)"
 
 #. language code: mlg mg
 #: ../zypp/LanguageCode.cc:820
-#, fuzzy
 msgid "Malagasy"
 msgstr "মালয়শিয়া"
 
 #. language code: mlt mt
 #: ../zypp/LanguageCode.cc:822
-#, fuzzy
 msgid "Maltese"
 msgstr "মালটা"
 
 #. language code: mnc
 #: ../zypp/LanguageCode.cc:824
-#, fuzzy
 msgid "Manchu"
 msgstr "চালু করো (&চ)"
 
 #. language code: mni
 #: ../zypp/LanguageCode.cc:826
 msgid "Manipuri"
-msgstr ""
+msgstr "মণিপুরী"
 
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
-#, fuzzy
 msgid "Manobo Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: moh
 #: ../zypp/LanguageCode.cc:830
 msgid "Mohawk"
-msgstr ""
+msgstr "মোহক"
 
 #. language code: mol mo
 #: ../zypp/LanguageCode.cc:832
-#, fuzzy
 msgid "Moldavian"
 msgstr "যুগোস্লাভিয়া"
 
 #. language code: mon mn
 #: ../zypp/LanguageCode.cc:834
 msgid "Mongolian"
-msgstr ""
+msgstr "মঙ্গোলিয়ান"
 
-#  label text
 #. language code: mos
 #: ../zypp/LanguageCode.cc:836
-#, fuzzy
 msgid "Mossi"
 msgstr "মাউস"
 
-#  progress stages
-# করা হচ্ছে
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
-#, fuzzy
 msgid "Multiple Languages"
 msgstr "ইনস্টলকৃত ভাষা"
 
-#  label text
 #. language code: mun
 #: ../zypp/LanguageCode.cc:840
-#, fuzzy
 msgid "Munda languages"
 msgstr "ভাষাসমূহ"
 
 #. language code: mus
 #: ../zypp/LanguageCode.cc:842
-#, fuzzy
 msgid "Creek"
 msgstr "গ্রীক"
 
 #. language code: mwl
 #: ../zypp/LanguageCode.cc:844
 msgid "Mirandese"
-msgstr ""
+msgstr "মিরান্ডিজ"
 
 #. language code: mwr
 #: ../zypp/LanguageCode.cc:846
-#, fuzzy
 msgid "Marwari"
 msgstr "হার্ডওয়্যার তথ্য"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
-#, fuzzy
 msgid "Mayan Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
 msgid "Erzya"
-msgstr ""
+msgstr "ইরজিয়া"
 
 #. language code: nah
 #: ../zypp/LanguageCode.cc:852
 msgid "Nahuatl"
-msgstr ""
+msgstr "নাহুয়াটি"
 
 #. language code: nai
 #: ../zypp/LanguageCode.cc:854
 msgid "North American Indian"
-msgstr ""
+msgstr "নর্থ আমেরিঅকন ইন্ডিয়ান"
 
 #. language code: nap
 #: ../zypp/LanguageCode.cc:856
 msgid "Neapolitan"
-msgstr ""
+msgstr "নিয়াপলিটান"
 
 #. language code: nau na
 #. :NPL:524:
 #: ../zypp/LanguageCode.cc:858 ../zypp/CountryCode.cc:380
 msgid "Nauru"
-msgstr ""
+msgstr "নাউরু"
 
 #. language code: nav nv
 #: ../zypp/LanguageCode.cc:860
 msgid "Navajo"
-msgstr ""
+msgstr "নাভাজো"
 
 #. language code: nbl nr
 #: ../zypp/LanguageCode.cc:862
 msgid "Ndebele, South"
-msgstr ""
+msgstr "এনডেবেলে, দক্ষিণ"
 
 #. language code: nde nd
 #: ../zypp/LanguageCode.cc:864
 msgid "Ndebele, North"
-msgstr ""
+msgstr "এনডেবেলে, উত্তর"
 
 #. language code: ndo ng
 #: ../zypp/LanguageCode.cc:866
 msgid "Ndonga"
-msgstr ""
+msgstr "এনডোংগা"
 
 #. language code: nds
 #: ../zypp/LanguageCode.cc:868
-#, fuzzy
 msgid "Low German"
 msgstr "জার্মান"
 
 #. language code: nep ne
 #: ../zypp/LanguageCode.cc:870
 msgid "Nepali"
-msgstr ""
+msgstr "নেপালী"
 
 #. language code: new
 #: ../zypp/LanguageCode.cc:872
 msgid "Nepal Bhasa"
-msgstr ""
+msgstr "নেপাল ভাষা"
 
 #. language code: nia
 #: ../zypp/LanguageCode.cc:874
 msgid "Nias"
-msgstr ""
+msgstr "নিয়াস"
 
 #. language code: nic
 #: ../zypp/LanguageCode.cc:876
 msgid "Niger-Kordofanian (Other)"
-msgstr ""
+msgstr "নাইজার-কর্ডোফালিয়ান (অন্যান্য)"
 
 #. language code: niu
 #: ../zypp/LanguageCode.cc:878
 msgid "Niuean"
-msgstr ""
+msgstr "নিউয়ান"
 
 #. language code: nno nn
 #: ../zypp/LanguageCode.cc:880
-#, fuzzy
 msgid "Norwegian Nynorsk"
 msgstr "নরওয়েজিয়ান"
 
 #. language code: nob nb
 #: ../zypp/LanguageCode.cc:882
-#, fuzzy
 msgid "Norwegian Bokmal"
 msgstr "নরওয়েজিয়ান"
 
 #. language code: nog
 #: ../zypp/LanguageCode.cc:884
 msgid "Nogai"
-msgstr ""
+msgstr "নগাই"
 
 #. language code: non
 #: ../zypp/LanguageCode.cc:886
 msgid "Norse, Old"
-msgstr ""
+msgstr "নরসে, পুরাতন"
 
 #. language code: nor no
 #: ../zypp/LanguageCode.cc:888
@@ -1847,153 +1694,140 @@ msgstr "নরওয়েজিয়ান"
 #. language code: nso
 #: ../zypp/LanguageCode.cc:890
 msgid "Northern Sotho"
-msgstr ""
+msgstr "নর্দার্ন সোথো"
 
 #. language code: nub
 #: ../zypp/LanguageCode.cc:892
-#, fuzzy
 msgid "Nubian Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: nwc
 #: ../zypp/LanguageCode.cc:894
 msgid "Classical Newari"
-msgstr ""
+msgstr "ক্লাসিকাল নেওয়ারি"
 
 #. language code: nya ny
 #: ../zypp/LanguageCode.cc:896
-#, fuzzy
 msgid "Chichewa"
 msgstr "চিলি"
 
 #. language code: nym
 #: ../zypp/LanguageCode.cc:898
-#, fuzzy
 msgid "Nyamwezi"
 msgstr "নাম"
 
 #. language code: nyn
 #: ../zypp/LanguageCode.cc:900
 msgid "Nyankole"
-msgstr ""
+msgstr "নিয়ানকোলে"
 
 #. language code: nyo
 #: ../zypp/LanguageCode.cc:902
 msgid "Nyoro"
-msgstr ""
+msgstr "নিয়োরো"
 
 #. language code: nzi
 #: ../zypp/LanguageCode.cc:904
 msgid "Nzima"
-msgstr ""
+msgstr "এনজিমা"
 
 #. language code: oci oc
 #: ../zypp/LanguageCode.cc:906
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "অক্কিটান 1500 পরবর্তী)"
 
 #. language code: oji oj
 #: ../zypp/LanguageCode.cc:908
 msgid "Ojibwa"
-msgstr ""
+msgstr "অজিবোয়া"
 
 #. language code: ori or
 #: ../zypp/LanguageCode.cc:910
 msgid "Oriya"
-msgstr ""
+msgstr "ওড়িয়া"
 
 #. language code: orm om
 #: ../zypp/LanguageCode.cc:912
 msgid "Oromo"
-msgstr ""
+msgstr "ওরোমো"
 
 #. language code: osa
 #: ../zypp/LanguageCode.cc:914
-#, fuzzy
 msgid "Osage"
 msgstr "একই"
 
 #. language code: oss os
 #: ../zypp/LanguageCode.cc:916
-#, fuzzy
 msgid "Ossetian"
 msgstr "রাশিয়ান"
 
 #. language code: ota
 #: ../zypp/LanguageCode.cc:918
 msgid "Turkish, Ottoman (1500-1928)"
-msgstr ""
+msgstr "তুর্কী, অটোমান (1500-1928)"
 
 #. language code: oto
 #: ../zypp/LanguageCode.cc:920
-#, fuzzy
 msgid "Otomian Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: paa
 #: ../zypp/LanguageCode.cc:922
 msgid "Papuan (Other)"
-msgstr ""
+msgstr "পাপুয়ান (অন্যান্য)"
 
 #. language code: pag
 #: ../zypp/LanguageCode.cc:924
-#, fuzzy
 msgid "Pangasinan"
 msgstr "হাঙ্গেরীয়"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
 msgid "Pahlavi"
-msgstr ""
+msgstr "পহলাভি"
 
 #. language code: pam
 #: ../zypp/LanguageCode.cc:928
-#, fuzzy
 msgid "Pampanga"
 msgstr "প্যারাগুয়ে"
 
 #. language code: pan pa
 #: ../zypp/LanguageCode.cc:930
-#, fuzzy
 msgid "Panjabi"
 msgstr "পানামা"
 
 #. language code: pap
 #: ../zypp/LanguageCode.cc:932
 msgid "Papiamento"
-msgstr ""
+msgstr "পাপিয়ামেন্টো"
 
 #. language code: pau
 #: ../zypp/LanguageCode.cc:934
-#, fuzzy
 msgid "Palauan"
 msgstr "প্যারাগুয়ে"
 
 #. language code: peo
 #: ../zypp/LanguageCode.cc:936
 msgid "Persian, Old (ca.600-400 B.C.)"
-msgstr ""
+msgstr "পার্সিয়ান, পুরাতন (ca.600-400 B.C.)"
 
 #. language code: per fas fa
 #: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
-#, fuzzy
 msgid "Persian"
 msgstr "ভার্সন    "
 
 #. language code: phi
 #: ../zypp/LanguageCode.cc:942
-#, fuzzy
 msgid "Philippine (Other)"
 msgstr "ফিলিপাইন"
 
 #. language code: phn
 #: ../zypp/LanguageCode.cc:944
 msgid "Phoenician"
-msgstr ""
+msgstr "ফোনিসিয়ান"
 
 #. language code: pli pi
 #: ../zypp/LanguageCode.cc:946
-#, fuzzy
 msgid "Pali"
 msgstr "পোলিশ"
 
@@ -2005,79 +1839,70 @@ msgstr "পোলিশ"
 #. language code: pon
 #: ../zypp/LanguageCode.cc:950
 msgid "Pohnpeian"
-msgstr ""
+msgstr " ফোন্পিয়ান "
 
 #. language code: por pt
 #: ../zypp/LanguageCode.cc:952
 msgid "Portuguese"
 msgstr "পর্তুগীজ"
 
-#  menue label text
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
-#, fuzzy
 msgid "Prakrit Languages"
 msgstr "প্রাথমিক ভাষা (&L)"
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
-msgstr ""
+msgstr "প্রভিন্সাল, পুরাতন (1500 অবধি)"
 
 #. language code: pus ps
 #: ../zypp/LanguageCode.cc:958
 msgid "Pushto"
-msgstr ""
+msgstr "পুশতো"
 
 #. language code: que qu
 #: ../zypp/LanguageCode.cc:960
 msgid "Quechua"
-msgstr ""
+msgstr "কোয়েচুয়া"
 
 #. language code: raj
 #: ../zypp/LanguageCode.cc:962
-#, fuzzy
 msgid "Rajasthani"
 msgstr "তাজিকিস্তান"
 
 #. language code: rap
 #: ../zypp/LanguageCode.cc:964
-#, fuzzy
 msgid "Rapanui"
 msgstr "জাপান"
 
 #. language code: rar
 #: ../zypp/LanguageCode.cc:966
 msgid "Rarotongan"
-msgstr ""
+msgstr "রারোটোংগান"
 
 #. language code: roa
 #: ../zypp/LanguageCode.cc:968
 msgid "Romance (Other)"
-msgstr ""
+msgstr "রোমান্স (অন্যান্য)"
 
 #. language code: roh rm
 #: ../zypp/LanguageCode.cc:970
 msgid "Raeto-Romance"
-msgstr ""
+msgstr "রেটো-রোমান্স"
 
 #. language code: rom
 #: ../zypp/LanguageCode.cc:972
-#, fuzzy
 msgid "Romany"
 msgstr "রোমানিয়া"
 
 #. language code: rum ron ro
 #: ../zypp/LanguageCode.cc:974 ../zypp/LanguageCode.cc:976
-#, fuzzy
 msgid "Romanian"
 msgstr "রোমানিয়া"
 
-#  table header. is a service running?
-# চালানো হচ্ছে
 #. language code: run rn
 #: ../zypp/LanguageCode.cc:978
-#, fuzzy
 msgid "Rundi"
 msgstr "চলছে"
 
@@ -2088,68 +1913,61 @@ msgstr "রাশিয়ান"
 
 #. language code: sad
 #: ../zypp/LanguageCode.cc:982
-#, fuzzy
 msgid "Sandawe"
 msgstr "কানাডা"
 
-# দুরত্ব/ পরিসর/ সীমা/ 
 #. language code: sag sg
 #: ../zypp/LanguageCode.cc:984
-#, fuzzy
 msgid "Sango"
 msgstr "পরিসীমা"
 
 #. language code: sah
 #: ../zypp/LanguageCode.cc:986
 msgid "Yakut"
-msgstr ""
+msgstr "ইয়াকুট"
 
 #. language code: sai
 #: ../zypp/LanguageCode.cc:988
 msgid "South American Indian (Other)"
-msgstr ""
+msgstr "দক্ষিণ আমেরিকান ইন্ডিয়ান (অন্যান্য)"
 
 #. language code: sal
 #: ../zypp/LanguageCode.cc:990
-#, fuzzy
 msgid "Salishan Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
 msgid "Samaritan Aramaic"
-msgstr ""
+msgstr "সামারিটান আরামাইক"
 
 #. language code: san sa
 #: ../zypp/LanguageCode.cc:994
 msgid "Sanskrit"
-msgstr ""
+msgstr "সংস্কৃত"
 
 #. language code: sas
 #: ../zypp/LanguageCode.cc:996
 msgid "Sasak"
-msgstr ""
+msgstr "সাসাক"
 
 #. language code: sat
 #: ../zypp/LanguageCode.cc:998
-#, fuzzy
 msgid "Santali"
 msgstr "ক্যাটালোনিয়া"
 
 #. language code: scc srp sr
 #: ../zypp/LanguageCode.cc:1000 ../zypp/LanguageCode.cc:1002
-#, fuzzy
 msgid "Serbian"
 msgstr "খোঁজো"
 
 #. language code: scn
 #: ../zypp/LanguageCode.cc:1004
 msgid "Sicilian"
-msgstr ""
+msgstr "সিসিলিয়ান"
 
 #. language code: sco
 #: ../zypp/LanguageCode.cc:1006
-#, fuzzy
 msgid "Scots"
 msgstr "স্তর"
 
@@ -2160,58 +1978,53 @@ msgstr "ক্রোয়েশীয়"
 
 #. language code: sel
 #: ../zypp/LanguageCode.cc:1012
-#, fuzzy
 msgid "Selkup"
 msgstr "সাহায্য"
 
 #. language code: sem
 #: ../zypp/LanguageCode.cc:1014
 msgid "Semitic (Other)"
-msgstr ""
+msgstr "সেমিটিক (অন্যান্য)"
 
 #. language code: sga
 #: ../zypp/LanguageCode.cc:1016
 msgid "Irish, Old (to 900)"
-msgstr ""
+msgstr "আইরিশ, পুরাতন (900 অবধি)"
 
-#  label text
 #. language code: sgn
 #: ../zypp/LanguageCode.cc:1018
-#, fuzzy
 msgid "Sign Languages"
 msgstr "ভাষাসমূহ"
 
 #. language code: shn
 #: ../zypp/LanguageCode.cc:1020
-#, fuzzy
 msgid "Shan"
 msgstr "সুদান"
 
 #. language code: sid
 #: ../zypp/LanguageCode.cc:1022
 msgid "Sidamo"
-msgstr ""
+msgstr "সিডামো"
 
 #. language code: sin si
 #: ../zypp/LanguageCode.cc:1024
 msgid "Sinhala"
-msgstr ""
+msgstr "সিংহল"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
-#, fuzzy
 msgid "Siouan Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: sit
 #: ../zypp/LanguageCode.cc:1028
 msgid "Sino-Tibetan (Other)"
-msgstr ""
+msgstr "সাইনো-টিবেটান (অন্যান্য)"
 
 #. language code: sla
 #: ../zypp/LanguageCode.cc:1030
 msgid "Slavic (Other)"
-msgstr ""
+msgstr "স্লেভিক (অন্যান্য)"
 
 #. language code: slo slk sk
 #: ../zypp/LanguageCode.cc:1032 ../zypp/LanguageCode.cc:1034
@@ -2220,86 +2033,78 @@ msgstr "স্লোভাক"
 
 #. language code: slv sl
 #: ../zypp/LanguageCode.cc:1036
-#, fuzzy
 msgid "Slovenian"
 msgstr "স্লোভেনিয়া"
 
 #. language code: sma
 #: ../zypp/LanguageCode.cc:1038
 msgid "Southern Sami"
-msgstr ""
+msgstr "দক্ষিণী সামি"
 
 #. language code: sme se
 #: ../zypp/LanguageCode.cc:1040
 msgid "Northern Sami"
-msgstr ""
+msgstr "উত্তরীয় সামি"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
-#, fuzzy
 msgid "Sami Languages (Other)"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: smj
 #: ../zypp/LanguageCode.cc:1044
 msgid "Lule Sami"
-msgstr ""
+msgstr "লুলে সামি"
 
 #. language code: smn
 #: ../zypp/LanguageCode.cc:1046
 msgid "Inari Sami"
-msgstr ""
+msgstr "ইনারি সামি"
 
 #. language code: smo sm
 #: ../zypp/LanguageCode.cc:1048
-#, fuzzy
 msgid "Samoan"
 msgstr "&সাম্বা"
 
 #. language code: sms
 #: ../zypp/LanguageCode.cc:1050
 msgid "Skolt Sami"
-msgstr ""
+msgstr "স্কল্ট সামি"
 
 #. language code: sna sn
 #: ../zypp/LanguageCode.cc:1052
-#, fuzzy
 msgid "Shona"
 msgstr "স্লোভেনিয়া"
 
 #. language code: snd sd
 #: ../zypp/LanguageCode.cc:1054
-#, fuzzy
 msgid "Sindhi"
 msgstr "ধরন"
 
 #. language code: snk
 #: ../zypp/LanguageCode.cc:1056
-#, fuzzy
 msgid "Soninke"
 msgstr "চালিয়ে যাও (&চ)"
 
 #. language code: sog
 #: ../zypp/LanguageCode.cc:1058
-#, fuzzy
 msgid "Sogdian"
 msgstr "সুদান"
 
 #. language code: som so
 #: ../zypp/LanguageCode.cc:1060
-#, fuzzy
 msgid "Somali"
 msgstr "রোমানিয়া"
 
 #. language code: son
 #: ../zypp/LanguageCode.cc:1062
 msgid "Songhai"
-msgstr ""
+msgstr "সংহাই"
 
 #. language code: sot st
 #: ../zypp/LanguageCode.cc:1064
 msgid "Sotho, Southern"
-msgstr ""
+msgstr "সোথো, দক্ষিণী"
 
 #. language code: spa es
 #: ../zypp/LanguageCode.cc:1066
@@ -2308,227 +2113,197 @@ msgstr "স্প্যানিশ"
 
 #. language code: srd sc
 #: ../zypp/LanguageCode.cc:1068
-#, fuzzy
 msgid "Sardinian"
 msgstr "ইউক্রেনীয়"
 
-#  table header
 #. language code: srr
 #: ../zypp/LanguageCode.cc:1070
-#, fuzzy
 msgid "Serer"
 msgstr "সার্ভিস"
 
 #. language code: ssa
 #: ../zypp/LanguageCode.cc:1072
 msgid "Nilo-Saharan (Other)"
-msgstr ""
+msgstr "নাইলো-সাহারান (অন্যান্য)"
 
 #. language code: ssw ss
 #: ../zypp/LanguageCode.cc:1074
-#, fuzzy
 msgid "Swati"
 msgstr "স্পেন"
 
 #. language code: suk
 #: ../zypp/LanguageCode.cc:1076
-#, fuzzy
 msgid "Sukuma"
 msgstr "সারসংক্ষেপ"
 
 #. language code: sun su
 #: ../zypp/LanguageCode.cc:1078
-#, fuzzy
 msgid "Sundanese"
 msgstr "সুদান"
 
 #. language code: sus
 #: ../zypp/LanguageCode.cc:1080
-#, fuzzy
 msgid "Susu"
 msgstr "SMBus"
 
 #. language code: sux
 #: ../zypp/LanguageCode.cc:1082
-#, fuzzy
 msgid "Sumerian"
 msgstr "সুদান"
 
 #. language code: swa sw
 #: ../zypp/LanguageCode.cc:1084
 msgid "Swahili"
-msgstr ""
+msgstr "সোয়াহিলি"
 
 #. language code: swe sv
 #: ../zypp/LanguageCode.cc:1086
 msgid "Swedish"
 msgstr "সুইডিশ"
 
-#  table header
 #. language code: syr
 #: ../zypp/LanguageCode.cc:1088
-#, fuzzy
 msgid "Syriac"
 msgstr "সার্ভিস"
 
 #. language code: tah ty
 #: ../zypp/LanguageCode.cc:1090
-#, fuzzy
 msgid "Tahitian"
 msgstr "তাইওয়ান"
 
 #. language code: tai
 #: ../zypp/LanguageCode.cc:1092
 msgid "Tai (Other)"
-msgstr ""
+msgstr "তাই (অন্যান্য)"
 
 #. language code: tam ta
 #: ../zypp/LanguageCode.cc:1094
-#, fuzzy
 msgid "Tamil"
 msgstr "পরিবার"
 
 #. language code: tat tt
 #: ../zypp/LanguageCode.cc:1096
-#, fuzzy
 msgid "Tatar"
 msgstr "কাতার"
 
 #. language code: tel te
 #: ../zypp/LanguageCode.cc:1098
-#, fuzzy
 msgid "Telugu"
 msgstr "বেলজিয়াম"
 
-#  label text
 #. language code: tem
 #: ../zypp/LanguageCode.cc:1100
-#, fuzzy
 msgid "Timne"
 msgstr "সময়"
 
 #. language code: ter
 #: ../zypp/LanguageCode.cc:1102
-#, fuzzy
 msgid "Tereno"
 msgstr "ট্রী"
 
 #. language code: tet
 #: ../zypp/LanguageCode.cc:1104
-#, fuzzy
 msgid "Tetum"
 msgstr "Pentium"
 
 #. language code: tgk tg
 #: ../zypp/LanguageCode.cc:1106
-#, fuzzy
 msgid "Tajik"
 msgstr "তাজিকিস্তান"
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
 msgid "Tagalog"
-msgstr ""
+msgstr "টাগালগ"
 
 #. language code: tha th
 #: ../zypp/LanguageCode.cc:1110
-#, fuzzy
 msgid "Thai"
 msgstr "থাইল্যান্ড"
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
-#, fuzzy
 msgid "Tibetan"
 msgstr "তাইওয়ান"
 
 #. language code: tig
 #: ../zypp/LanguageCode.cc:1116
-#, fuzzy
 msgid "Tigre"
 msgstr "ট্রী"
 
 #. language code: tir ti
 #: ../zypp/LanguageCode.cc:1118
 msgid "Tigrinya"
-msgstr ""
+msgstr "টাইগ্রিনিয়া"
 
 #. language code: tiv
 #: ../zypp/LanguageCode.cc:1120
 msgid "Tiv"
-msgstr ""
+msgstr "টিভ"
 
 #. language code: tkl
 #. :TJK:762:
 #: ../zypp/LanguageCode.cc:1122 ../zypp/CountryCode.cc:428
 msgid "Tokelau"
-msgstr ""
+msgstr "টকেলাউ"
 
 #. language code: tlh
 #: ../zypp/LanguageCode.cc:1124
 msgid "Klingon"
-msgstr ""
+msgstr "ক্লিংগন"
 
 #. language code: tli
 #: ../zypp/LanguageCode.cc:1126
 msgid "Tlingit"
-msgstr ""
+msgstr "ট্লিংগিট"
 
 #. language code: tmh
 #: ../zypp/LanguageCode.cc:1128
 msgid "Tamashek"
-msgstr ""
+msgstr "টামাশেক"
 
 #. language code: tog
 #: ../zypp/LanguageCode.cc:1130
 msgid "Tonga (Nyasa)"
-msgstr ""
+msgstr "টোংগা (নায়াসা)"
 
 #. language code: ton to
 #: ../zypp/LanguageCode.cc:1132
 msgid "Tonga (Tonga Islands)"
-msgstr ""
+msgstr "টোংগা (টোংগা দ্বীপ)"
 
-# why not "token ring"?
 #. language code: tpi
 #: ../zypp/LanguageCode.cc:1134
-#, fuzzy
 msgid "Tok Pisin"
 msgstr "টোকেন রিং"
 
 #. language code: tsi
 #: ../zypp/LanguageCode.cc:1136
-#, fuzzy
 msgid "Tsimshian"
 msgstr "রাশিয়ান"
 
 #. language code: tsn tn
 #: ../zypp/LanguageCode.cc:1138
-#, fuzzy
 msgid "Tswana"
 msgstr "বোটসোয়ানা"
 
 #. language code: tso ts
 #: ../zypp/LanguageCode.cc:1140
-#, fuzzy
 msgid "Tsonga"
 msgstr "এস্টোনিয়া"
 
 #. language code: tuk tk
 #: ../zypp/LanguageCode.cc:1142
-#, fuzzy
 msgid "Turkmen"
 msgstr "তুর্কী"
 
 #. language code: tum
 #: ../zypp/LanguageCode.cc:1144
 msgid "Tumbuka"
-msgstr ""
+msgstr "টুমবুকা"
 
-#  label text
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
-#, fuzzy
 msgid "Tupi Languages"
 msgstr "ভাষাসমূহ"
 
@@ -2540,39 +2315,38 @@ msgstr "তুর্কী"
 #. language code: tut
 #: ../zypp/LanguageCode.cc:1150
 msgid "Altaic (Other)"
-msgstr ""
+msgstr "অল্টেইক (অন্যান্য)"
 
 #. language code: tvl
 #. :TTO:780:
 #: ../zypp/LanguageCode.cc:1152 ../zypp/CountryCode.cc:435
 msgid "Tuvalu"
-msgstr ""
+msgstr "টুভালু"
 
 #. language code: twi tw
 #: ../zypp/LanguageCode.cc:1154
 msgid "Twi"
-msgstr ""
+msgstr "টুই"
 
 #. language code: tyv
 #: ../zypp/LanguageCode.cc:1156
-#, fuzzy
 msgid "Tuvinian"
 msgstr "তিউনিশিয়া"
 
 #. language code: udm
 #: ../zypp/LanguageCode.cc:1158
 msgid "Udmurt"
-msgstr ""
+msgstr "উডমুর্ট"
 
 #. language code: uga
 #: ../zypp/LanguageCode.cc:1160
 msgid "Ugaritic"
-msgstr ""
+msgstr "উগারিটিক"
 
 #. language code: uig ug
 #: ../zypp/LanguageCode.cc:1162
 msgid "Uighur"
-msgstr ""
+msgstr "উইগুর"
 
 #. language code: ukr uk
 #: ../zypp/LanguageCode.cc:1164
@@ -2582,218 +2356,203 @@ msgstr "ইউক্রেনীয়"
 #. language code: umb
 #: ../zypp/LanguageCode.cc:1166
 msgid "Umbundu"
-msgstr ""
+msgstr "উমবুন্ডু"
 
 #. language code: und
 #: ../zypp/LanguageCode.cc:1168
 msgid "Undetermined"
-msgstr ""
+msgstr "অনির্ধারিত"
 
 #. language code: urd ur
 #: ../zypp/LanguageCode.cc:1170
 msgid "Urdu"
-msgstr ""
+msgstr "উর্দু"
 
 #. language code: uzb uz
 #: ../zypp/LanguageCode.cc:1172
-#, fuzzy
 msgid "Uzbek"
 msgstr "উজবেকিস্থান"
 
 #. language code: vai
 #: ../zypp/LanguageCode.cc:1174
 msgid "Vai"
-msgstr ""
+msgstr "ভাই"
 
 #. language code: ven ve
 #: ../zypp/LanguageCode.cc:1176
-#, fuzzy
 msgid "Venda"
 msgstr "বিক্রেতা"
 
-# ডিভাইস
 #. language code: vie vi
 #: ../zypp/LanguageCode.cc:1178
-#, fuzzy
 msgid "Vietnamese"
 msgstr "ফাইলের নাম"
 
 #. language code: vol vo
 #: ../zypp/LanguageCode.cc:1180
 msgid "Volapuk"
-msgstr ""
+msgstr "ভোলাপুক"
 
 #. language code: vot
 #: ../zypp/LanguageCode.cc:1182
-#, fuzzy
 msgid "Votic"
 msgstr "জয়স্টিক"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
-#, fuzzy
 msgid "Wakashan Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: wal
 #: ../zypp/LanguageCode.cc:1186
 msgid "Walamo"
-msgstr ""
+msgstr "ওয়ালামো"
 
 #. language code: war
 #: ../zypp/LanguageCode.cc:1188
-#, fuzzy
 msgid "Waray"
 msgstr "প্যারাগুয়ে"
 
 #. language code: was
 #: ../zypp/LanguageCode.cc:1190
 msgid "Washo"
-msgstr ""
+msgstr "ওয়াশো"
 
 #. language code: wel cym cy
 #: ../zypp/LanguageCode.cc:1192 ../zypp/LanguageCode.cc:1194
 msgid "Welsh"
-msgstr ""
+msgstr "ওয়েলশ"
 
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
-#, fuzzy
 msgid "Sorbian Languages"
 msgstr "ভাষা সংরক্ষন করা হচ্ছে..."
 
 #. language code: wln wa
 #: ../zypp/LanguageCode.cc:1198
 msgid "Walloon"
-msgstr ""
+msgstr "ওয়ালুন"
 
 #. language code: wol wo
 #: ../zypp/LanguageCode.cc:1200
 msgid "Wolof"
-msgstr ""
+msgstr "উওলফ"
 
 #. language code: xal
 #: ../zypp/LanguageCode.cc:1202
 msgid "Kalmyk"
-msgstr ""
+msgstr "কালমাইক"
 
 #. language code: xho xh
 #: ../zypp/LanguageCode.cc:1204
 msgid "Xhosa"
-msgstr ""
+msgstr "জোসা"
 
 #. language code: yao
 #: ../zypp/LanguageCode.cc:1206
 msgid "Yao"
-msgstr ""
+msgstr "ইয়াও"
 
 #. language code: yap
 #: ../zypp/LanguageCode.cc:1208
-#, fuzzy
 msgid "Yapese"
 msgstr "জাপানী"
 
 #. language code: yid yi
 #: ../zypp/LanguageCode.cc:1210
 msgid "Yiddish"
-msgstr ""
+msgstr "ইদ্দিশ"
 
 #. language code: yor yo
 #: ../zypp/LanguageCode.cc:1212
 msgid "Yoruba"
-msgstr ""
+msgstr "ইওরুবা"
 
-#  label text
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
-#, fuzzy
 msgid "Yupik Languages"
 msgstr "ভাষাসমূহ"
 
 #. language code: zap
 #: ../zypp/LanguageCode.cc:1216
 msgid "Zapotec"
-msgstr ""
+msgstr "জ্যাপোটেক"
 
 #. language code: zen
 #: ../zypp/LanguageCode.cc:1218
 msgid "Zenaga"
-msgstr ""
+msgstr "জেনাগা"
 
-#  table header. has the service state changed?
 #. language code: zha za
 #: ../zypp/LanguageCode.cc:1220
-#, fuzzy
 msgid "Zhuang"
 msgstr "পরিবর্তিত"
 
-# দুরত্ব/ পরিসর/ সীমা/ 
 #. language code: znd
 #: ../zypp/LanguageCode.cc:1222
-#, fuzzy
 msgid "Zande"
 msgstr "পরিসীমা"
 
 #. language code: zul zu
 #: ../zypp/LanguageCode.cc:1224
 msgid "Zulu"
-msgstr ""
+msgstr "জুলু"
 
 #. language code: zun
 #: ../zypp/LanguageCode.cc:1226
 msgid "Zuni"
-msgstr ""
+msgstr "জুনি"
 
 #: ../zypp/SourceManager.h:42
 msgid "Unable to restore all sources."
-msgstr ""
+msgstr "সকল উত্‍সগুলি পুনরুদ্ধার করতে অক্ষম।"
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr ""
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr "কমপক্ষে একটি উত্‍স ইতোমধ্যেই নথিবদ্ধ আছে, সঞ্চিত উত্‍সটি পুনরুদ্ধার করা যায় না।"
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
-msgstr ""
+msgstr "সফ্টওয়্যার ম্যানেজমেন্ট ইতোমধ্যেই চলছে।"
 
 #: ../zypp/target/hal/HalContext.cc:96
 msgid "HalContext not connected"
-msgstr ""
+msgstr "HalContext সংযুক্ত নয়"
 
 #: ../zypp/target/hal/HalContext.cc:106
 msgid "HalDrive not initialized"
-msgstr ""
+msgstr "HalDrive চালু নেই"
 
 #: ../zypp/target/hal/HalContext.cc:116
 msgid "HalVolume not initialized"
-msgstr ""
+msgstr "HalVolume চালু নেই"
 
 #: ../zypp/target/hal/HalContext.cc:208
 msgid "Unable to create dbus connection"
-msgstr ""
+msgstr "dbus সংযোগ তৈরি করতে অক্ষম"
 
 #: ../zypp/target/hal/HalContext.cc:224
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr ""
+msgstr "libhal_ctx_new: libhal কনটেক্সট তৈরি করতে পারে না"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr ""
+msgstr "libhal_set_dbus_connection: dbus সংযোগ নির্দিষ্ট করতে পারে না"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
+msgstr "HAL কনটেক্সট চালু করতে পারে না -- hald চলছে না?"
 
 #: ../zypp/target/hal/HalContext.cc:843
 msgid "Not a CDROM drive"
-msgstr ""
+msgstr "CDROM ড্রাইভ নয়"
 
 #: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
 msgid "Hal Exception"
-msgstr ""
+msgstr "Hal ব্যতিক্রম"
 
-#  progress stage title
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
 #: ../zypp/target/rpm/RpmDb.cc:1725
@@ -2805,7 +2564,7 @@ msgstr "ইনস্টলকৃত সিস্টেমে কনফিগা�
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm %s কে %sরূপে সংরক্ষণ করেছিল ,কিন্তু পার্থক্য নিরূপণ করা অসম্ভব হয়েছিল "
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2814,12 +2573,14 @@ msgid ""
 "rpm saved %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm %s কে %sরূপে সংরক্ষণ করেছিল।\n"
+"এখানে পার্থক্যের প্রথম ২৫ টি লাইন দেওয়া আছে:\n"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm %s কে %sরূপে সংরক্ষণ করেছিল ,কিন্তু পার্থক্য নিরূপণ করা  অসম্ভব হয়েছিল "
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2828,6 +2589,8 @@ msgid ""
 "rpm created %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm %s কে %sরূপে তৈরি করেছিল।\n"
+"এখানে পার্থক্যের প্রথম ২৫ টি লাইন দেওয়া আছে:\n"
 
 #. %s = filename of rpm package
 #. timestamp
@@ -2838,9 +2601,8 @@ msgstr "ইনস্টলেশন ব্যর্থ।"
 
 #: ../zypp/target/rpm/RpmDb.cc:1900 ../zypp/target/rpm/RpmDb.cc:2018
 msgid "rpm output:"
-msgstr ""
+msgstr "rpm  আউটপুট"
 
-# ইনস্টলকৃত 
 #. %s = filename of rpm package
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:1906
@@ -2849,7 +2611,6 @@ msgid "%s installed ok"
 msgstr "ইনস্টলকৃত সাইজ:"
 
 #: ../zypp/target/rpm/RpmDb.cc:1909 ../zypp/target/rpm/RpmDb.cc:2026
-#, fuzzy
 msgid "Additional rpm output:"
 msgstr "অতিরিক্ত তথ্য"
 
@@ -2864,9 +2625,8 @@ msgstr "rpm ব্যর্থ।"
 #: ../zypp/target/rpm/RpmDb.cc:2023
 #, c-format
 msgid "%s remove ok"
-msgstr ""
+msgstr "%s অপসারণ ঠিক আছে"
 
-#  Proposal for backup during update
 #. timestamp
 #: ../zypp/target/rpm/RpmDb.cc:2168
 #, fuzzy, c-format
@@ -2878,34 +2638,34 @@ msgstr "কোন ব্যাকআপ তৈরী করবে না"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
+msgstr "আপডেট স্থাপনা সম্পাদনের জন্যে প্রয়োজনীয় ফাইল তৈরি করতে পারে না।"
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "নির্দেশমত স্থাপনা বাতিল করা হয়েছে।"
 
 #. Translator: all.%s = name of package,patch,....
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
 #, c-format
 msgid "%s is replaced by %s"
-msgstr ""
+msgstr "%s প্রতিস্থাপিত হয়েছে %s দ্বারা"
 
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is replaced by others
 #: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
 #, c-format
 msgid "%s replaced by %s"
-msgstr ""
+msgstr "%s প্রতিস্থাপিত হয়েছে %s দ্বারা"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:261
 msgid "Invalid information"
-msgstr ""
+msgstr "অবৈধ তথ্য"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:268
 #, c-format
 msgid "%s is needed by other resolvables"
-msgstr ""
+msgstr "অন্যান্য রিজলভেবলের %s প্রয়োজন"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #. Translator: all.%s = name of package,patch,...
@@ -2913,7 +2673,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoNeededBy.cc:56
 #, c-format
 msgid "%s is needed by %s"
-msgstr ""
+msgstr "%s এর %s দরকার"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:272
 #, c-format
@@ -2921,15 +2681,15 @@ msgid ""
 "%s is needed by:\n"
 "%s"
 msgstr ""
+"এর %s দরকার:\n"
+"%s"
 
-# দ্বন্দ্ব
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:279
 #, fuzzy, c-format
 msgid "%s conflicts with other resolvables"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
-# দ্বন্দ্ব
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #. Translator: all.%s = name of package, patch,...
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
@@ -2941,7 +2701,6 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 msgid "%s conflicts with %s"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
-# দ্বন্দ্ব
 #: ../zypp/solver/detail/Resolver_problems.cc:283
 #, fuzzy, c-format
 msgid ""
@@ -2953,48 +2712,50 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 #: ../zypp/solver/detail/Resolver_problems.cc:306
 #, c-format
 msgid "%s obsoletes other resolvables"
-msgstr ""
+msgstr "%s অন্যান্য রিজলভেবলগুলিকে প্রাচীন করে দিয়েছে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:309
 #, c-format
 msgid "%s obsoletes %s"
-msgstr ""
+msgstr "%s %sকে প্রাচীন করে দিয়েছে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:311
 #, c-format
 msgid "%s obsoletes:%s"
-msgstr ""
+msgstr "%s প্রাচীন করে দিয়েছে: %sকে"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:312
 msgid ""
 "\n"
 "These resolvables will be deleted from the system."
 msgstr ""
+"\n"
+"এই রিজলভেবলগুলি সিস্টেম থেকে মুছে দেওয়া হবে।"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:319
 #, c-format
 msgid "%s depends on other resolvables"
-msgstr ""
+msgstr "%s অন্য রিজলভেবলগুলির উপরে নির্ভর করে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:323
 #, c-format
 msgid "%s depends on %s"
-msgstr ""
+msgstr "%s নির্ভর করে %s এর উপরে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:326
 #, c-format
 msgid "%s depends on:%s"
-msgstr ""
+msgstr "%s নির্ভর করে এর উপরে: %s"
 
 #. TranslatorExplanation: currently it is unused.
 #: ../zypp/solver/detail/Resolver_problems.cc:332
 msgid "Child of"
-msgstr ""
+msgstr "এর সন্তান"
 
 #. TranslatorExplanation %s = dependency
 #. TranslatorExplanation %s = name of package,patch,...
@@ -3008,25 +2769,28 @@ msgstr "ইনস্টল করা হচ্ছে %s: \"%s\" "
 #: ../zypp/solver/detail/Resolver_problems.cc:340
 #, c-format
 msgid "None provides %s"
-msgstr ""
+msgstr "কোনওটাই %s প্রদান করে না"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:341
 msgid ""
 "\n"
 "There is no resource available which support this requirement."
 msgstr ""
+"\n"
+"এমন কোনও সংস্থান উপলব্ধ নেই যা এই প্রয়োজনটিকে সমর্থন করে"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr ""
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr "এই রেজলিউশনের উপরে/নিচে বর্ণিত সমস্যাগুলি সমস্ত নির্ভরতাগুলির সমাধান করবে না"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
 #, c-format
 msgid "Cannot install %s because it is conflicting with %s"
-msgstr ""
+msgstr "%s স্থাপন করতে পারে না কারণ এটা %s এর সাথে বিবাদ তৈরি করছে"
 
-# প্যাকেজ
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:377
 #, fuzzy, c-format
@@ -3037,7 +2801,7 @@ msgstr "প্যাকেজটি ইনস্টলকৃত নয় এবং
 #: ../zypp/solver/detail/Resolver_problems.cc:388
 #, c-format
 msgid "Cannot install %s due to dependency problems"
-msgstr ""
+msgstr "নির্ভরতা সমস্যাগুলির কারণে %s স্থাপন করতে পারে না"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:426
@@ -3061,16 +2825,14 @@ msgstr "ইনস্টল করা হচ্ছে %s: \"%s\" "
 #: ../zypp/solver/detail/Resolver_problems.cc:452
 #, c-format
 msgid "%s has unfulfilled requirements"
-msgstr ""
+msgstr "%s এর অপূর্ণ প্রয়োজন আছে"
 
-# নির্ভরতা
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:490
 #, fuzzy, c-format
 msgid "%s has missing dependencies"
 msgstr "নির্ভরতা পরীক্ষা করা হচ্ছে..."
 
-# নির্ভরতা
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:537
 #, fuzzy, c-format
@@ -3081,13 +2843,13 @@ msgstr "নির্ভরতা পরীক্ষা করা হচ্ছে
 #: ../zypp/solver/detail/Resolver_problems.cc:585
 #, c-format
 msgid "%s fulfil dependencies of %s but will be uninstalled"
-msgstr ""
+msgstr "%s %s এর নির্ভরতাগুলি পূরণ করে কিন্তু বিস্থাপিত হবে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr ""
+msgstr "%s %s এর নির্ভরতাগুলি পূরণ করে কিন্তু একে আপনার সিস্টেমে রাখা হবে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -3099,33 +2861,33 @@ msgstr "আবারো ইনস্টল করা প্রয়োজন"
 #: ../zypp/solver/detail/Resolver_problems.cc:613
 #, c-format
 msgid "Cannot install %s to fulfil the dependencies of %s"
-msgstr ""
+msgstr "%s এর নির্ভরতাগুলি পূরণ করার জন্যে %s স্থাপন করতে পারে না"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:628
 #, c-format
 msgid "Cannot be install %s to fulfil the dependencies of %s"
-msgstr ""
+msgstr "%s এর নির্ভরতাগুলি পূরণ করার জন্যে %s স্থাপন করা যায় না"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:665
 #: ../zypp/solver/detail/Resolver_problems.cc:673
 #, c-format
 msgid "%s will not be uninstalled cause it is still required"
-msgstr ""
+msgstr "%s বিস্থাপিত হবে না কারণ এটার এখনও প্রয়োজন আছে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
 msgstr ""
+"%s %s কে প্রাচীন করে দিয়েছে। কিন্তু %s মুছে দেওয়া যায় না কারণ এটা লক হয়ে আছে।"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
 msgid "Cannot install %s because it is conflicting"
-msgstr ""
+msgstr "%s স্থাপন করতে পারে না কারণ এটা বিবাদ তৈরি করছে"
 
-# দ্বন্দ্ব
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:734
 #, fuzzy, c-format
@@ -3133,12 +2895,10 @@ msgid "%s is uninstallable due to conflicts with %s"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
-#, fuzzy
 msgid "Ignore this requirement just here"
 msgstr "কিছু অমীমাংসিত আবশ্যকতা আছে..."
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
-#, fuzzy
 msgid "Ignore this requirement generally"
 msgstr "কিছু অমীমাংসিত আবশ্যকতা আছে..."
 
@@ -3146,15 +2906,16 @@ msgstr "কিছু অমীমাংসিত আবশ্যকতা আছ
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
 #, c-format
 msgid "Install %s although it would change the architecture"
-msgstr ""
+msgstr "%s স্থাপন করুন যদিও এটা আর্কিটেকচার পালটে দেবে"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr ""
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr "%s এই নির্ভরতা প্রদান করে কিন্তু স্থাপিত আইটেমের আর্কিটেকচার  পালটে দেবে "
 
-# দ্বন্দ্ব
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
@@ -3162,7 +2923,6 @@ msgstr ""
 msgid "Ignore this conflict of %s"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
-# দ্বন্দ্ব
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
 #, fuzzy, c-format
@@ -3173,11 +2933,9 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
 #, c-format
 msgid "Ignore that %s is already set to install"
-msgstr ""
+msgstr "%s ইতোমধ্যেই স্থাপিত হওয়া নির্দিষ্ট রয়েছে, এই বিষয়টি উপেক্ষা করুন"
 
-# দ্বন্দ্ব
 #: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-#, fuzzy
 msgid "Do not install or delete concerning resolvables"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
@@ -3185,99 +2943,103 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 #: ../zypp/solver/detail/QueueItemRequire.cc:701
 #, c-format
 msgid "for requiring %s for %s when upgrading %s"
-msgstr ""
+msgstr "%s উন্নীত করার সময়ে %s এর জন্যে %s এর প্রয়োজনের জন্যে"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
 #: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
 #, c-format
 msgid "%s is missing the requirement %s"
-msgstr ""
+msgstr "%s %s প্রয়োজন হারিয়ে ফেলছে"
 
-# সাম:
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:56
-#, fuzzy
 msgid ", Action: "
 msgstr "ক্রিয়া (&A)"
 
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:58
 msgid ", Trigger: "
-msgstr ""
+msgstr ", ট্রিগার:"
 
 #. Translator: Notation for (RPM) package
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:90
 msgid "package"
-msgstr ""
+msgstr "প্যাকেজ"
 
 #. Translator: Notation for SuSE package selection (set of packages)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:94
 msgid "selection"
-msgstr ""
+msgstr "নির্বাচন"
 
 #. Translator: Notation for SuSE installation pattern (set of packages, describing use of system)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:98
 msgid "pattern"
-msgstr ""
+msgstr "ধাঁচ"
 
 #. Translator: Notation for product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:102
 msgid "product"
-msgstr ""
+msgstr "পণ্য"
 
 #. Translator: Notation for patch
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:106
 msgid "patch"
-msgstr ""
+msgstr "প্যাচ"
 
 #. Translator: Notation for script (part of a patch)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:110
 msgid "script"
-msgstr ""
+msgstr "স্ক্রিপ্ট"
 
 #. Translator: Notation for message (part of a patch)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:114
 msgid "message"
-msgstr ""
+msgstr "বার্তা"
 
 #. Translator: Notation for atom (part of a patch)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:118
 msgid "atom"
-msgstr ""
+msgstr "অণু"
 
 #. Translator: Notation for computer system
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:122
 msgid "system"
-msgstr ""
+msgstr "ব্যবস্থা"
 
 #. Translator: Generic term for an item with dependencies, please leave untranslated for now
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:126
 msgid "Resolvable"
-msgstr ""
+msgstr "রিজলভেবল"
 
 #. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:144
 msgid "Marking this resolution attempt as invalid."
-msgstr ""
+msgstr "এই রেজলিউশন প্রচেষ্টাকে অবৈধ রূপে চিহ্নিত করা হচ্ছে।"
 
 #. Translator: %s = name of packages,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:151
 #, c-format
 msgid "Marking resolvable %s as uninstallable"
-msgstr ""
+msgstr "%s রিজলভেবলকে বিস্থাপনের অযোগ্য রূপে চিহ্নিত করা হচ্ছে"
 
 #. Translator: %s = name of packages,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
 msgstr ""
+"%s স্থাপিত হওয়ার পরিকল্পনা আছে, কিন্তু নির্ভরতা সমস্যার কারণে এটা সম্ভব হচ্ছে না।"
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
 msgstr ""
+"%s স্থাপন করতে পারে না যেহেতু এটা ইতোমধ্যেই বিস্থাপিত হওয়া প্রয়োজন বলে চিহ্নিত "
+"হয়েছে"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3288,7 +3050,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:179
 #, c-format
 msgid "Can't install %s since it is does not apply to this system."
-msgstr ""
+msgstr "%s স্থাপন করতে পারে না যেহেতু এটা এই ব্যবস্থার প্রতি প্রযোজ্য নয়।"
 
 #. affected() = item 1 which has to be installed
 #. _capability =
@@ -3299,12 +3061,13 @@ msgstr ""
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
 msgstr ""
+"%s স্থাপন করতে পারে না যেহেতু %s ইতোমধ্যেই স্থাপিত হওয়া প্রয়োজন বলে  চিহ্নিত হয়েছে "
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
 #, c-format
 msgid "This would invalidate %s."
-msgstr ""
+msgstr "এটা %s কে অবৈধ করে দেবে।"
 
 #. Translator: %s = name of patch, pattern, ...
 #. TranslatorExplanation: Establishing is the process of computing which patches are needed
@@ -3339,9 +3102,8 @@ msgstr "ইনস্টল করা হচ্ছে %s: \"%s\" "
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:252
 #, c-format
 msgid "Updating %s to %s"
-msgstr ""
+msgstr "%sকে %s এ উন্নীত করছে"
 
-# প্যাকেজ
 #. affected() =
 #. _capability =
 #. other() =
@@ -3367,7 +3129,7 @@ msgstr "এই প্যাকেজটি আগে থেকেই ইনস�
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:292
 #, c-format
 msgid "There are no alternative installed providers of %s"
-msgstr ""
+msgstr "%s এর কোনও বিকল্প স্থাপিত প্রদানকারী নেই"
 
 #. Translator: 1.%s = name of package,patch....
 #. TranslatorExample: for bar
@@ -3376,7 +3138,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:323
 #, c-format
 msgid "for %s"
-msgstr ""
+msgstr "%s এর জন্য"
 
 #. affected() =
 #. _capability =
@@ -3390,7 +3152,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:317
 #, c-format
 msgid "There are no installable providers of %s"
-msgstr ""
+msgstr "%s এর কোনও বিকল্প স্থাপনযোগ্য প্রদানকারী নেই"
 
 #. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
 #. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
@@ -3398,49 +3160,53 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:341
 #, c-format
 msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr ""
+msgstr "%s অপসারণ এড়ানোর জন্যে %s এ উন্নীত হওয়া সম্ভব নয়।"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:359
 #, c-format
 msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr ""
+msgstr "%s %s প্রদান করে, কিন্তু এটা বিস্থাপিত হওয়ার সূচী আছে।"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr ""
+msgstr "%s %s প্রদান করে, কিন্তু এই %s এর অপর একটি ভার্সন ইতোমধ্যেই স্থাপিত আছে।"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
 msgstr ""
+"%s %s প্রদান করে, কিন্তু এটা বিস্থাপনযোগ্য নয়। আরও বিবরণের জন্যে এটাকে নিজে থেকে "
+"স্থাপনের চেষ্টা করুন। "
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
 #, c-format
 msgid "%s provides %s, but it is locked."
-msgstr ""
+msgstr "%s %s প্রদান করে, কিন্তু এটা লক হয়ে আছে।"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
 #, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr ""
+msgstr "%s %s প্রদান করে, কিন্তু এটা রক্ষিত হওয়ার সূচী আছে।"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
 #, c-format
 msgid "%s provides %s, but has another architecture."
-msgstr ""
+msgstr "%s %s প্রদান করে, কিন্তু এটার অন্য একটা আর্কিটেকচার আছে।"
 
 #. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:469
 #, c-format
 msgid "Can't satisfy requirement %s for %s"
-msgstr ""
+msgstr "%s এর জন্য %s এর প্রয়োজন পূরণ করতে পারে না"
 
 #. affected() = to-be-installed resolvable which was scheduled to be uninstalled
 #. _capability =
@@ -3451,8 +3217,10 @@ msgstr ""
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
 msgstr ""
+"অন্যান্য স্থাপিত হতে চলা রিজলভেবলের জন্য %s দরকার, তাই এটা আনলিঙ্কড হবে না। "
 
 #. affected() = provider of cap
 #. _capability =
@@ -3464,9 +3232,8 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr ""
+msgstr "অন্যান্য স্থাপিত রিজলভেবলের জন্য %s দরকার, তাই এটা আনলিঙ্কড  হবে না। "
 
-# প্যাকেজ
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
 #. other() =
@@ -3488,7 +3255,7 @@ msgstr "প্যাকেজটি ইনস্টলকৃত নয় এবং
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr ""
+msgstr "%s (%s) নিয়ে বিবাদের জন্যে অন্যান্য স্থাপিত হতে চলা %s অপসারণের প্রয়োজন"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3499,38 +3266,34 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:561
 #, c-format
 msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr ""
+msgstr "%s নিয়ে বিবাদের কারণে %s কে বিস্থাপনের অযোগ্য রূপে চিহ্নিত করা হচ্ছে"
 
 #. Translator: %s = name of package,patch
 #. TranslatorExample: from abc
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:569
 #, c-format
 msgid "from %s"
-msgstr ""
+msgstr "%s থেকে"
 
 #: ../zypp/solver/detail/ResolverInfo.cc:191
-#, fuzzy
 msgid " Error!"
 msgstr "ত্রুটি"
 
 #: ../zypp/solver/detail/ResolverInfo.cc:192
 msgid " Important!"
-msgstr ""
+msgstr "জরুরি!"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:55
 #, c-format
 msgid "keep %s"
-msgstr ""
+msgstr "%s রাখুন"
 
-#  VENDOR: dialog heading
 #: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-#, fuzzy
 msgid "Keep resolvables"
 msgstr "ড্রাইভার ইনস্টল করা হচ্ছে..."
 
-# ইনস্টল
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
@@ -3538,9 +3301,7 @@ msgstr "ড্রাইভার ইনস্টল করা হচ্ছে...
 msgid "install %s"
 msgstr "%1 ইনস্টল করো"
 
-#  VENDOR: dialog heading
 #: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
-#, fuzzy
 msgid "Install missing resolvables"
 msgstr "ড্রাইভার ইনস্টল করা হচ্ছে..."
 
@@ -3548,21 +3309,21 @@ msgstr "ড্রাইভার ইনস্টল করা হচ্ছে...
 #: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
 #, c-format
 msgid "%s depended on %s"
-msgstr ""
+msgstr "%s নির্ভর করে %s এর উপরে"
 
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is dependent on list of names
 #: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
 #, c-format
 msgid "%s dependend on %s"
-msgstr ""
+msgstr "%s নির্ভর করে %s এর উপরে"
 
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
 #. TranslatorExplanation: 1.%s is needed by multiple others
 #: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
 #, c-format
 msgid "%s needed by %s"
-msgstr ""
+msgstr "%s এর প্রয়োজন %s"
 
 #. Translator all.%s = name of packages,patches,....
 #. TranslatorExplanation: 1.%s name of package, 2.%s list of names
@@ -3571,11 +3332,9 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoChildOf.cc:71
 #, c-format
 msgid "%s part of %s"
-msgstr ""
+msgstr "%s, %s এর অঙ্গ"
 
-# দ্বন্দ্ব
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
-#, fuzzy
 msgid "unlock all resolvables"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
@@ -3583,11 +3342,9 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
 #, c-format
 msgid "unlock %s"
-msgstr ""
+msgstr "%s আনলক করে"
 
-# দ্বন্দ্ব
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
-#, fuzzy
 msgid "Unlock these resolvables"
 msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 
@@ -3597,11 +3354,11 @@ msgstr "%1 এর দ্বন্দ্ব %2 এর সাথে"
 #: ../zypp/source/yum/YUMSourceImpl.cc:216
 #: ../zypp/source/yum/YUMSourceImpl.cc:241
 msgid "Reading index files"
-msgstr ""
+msgstr "সূচীপত্র ফাইল পড়ছে"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
 msgid "The signed repomd.xml file failed the signature check."
-msgstr ""
+msgstr "স্বাক্ষরিত repomd.xml ফাইল স্বাক্ষর যাচাইয়ে ব্যর্থ হয়েছে।"
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3610,7 +3367,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:490
 #, c-format
 msgid "Reading product from %s"
-msgstr ""
+msgstr "%s থেকে পণ্য পড়ছে"
 
 #. TranslatorExplanation %s = package file list
 #: ../zypp/source/yum/YUMSourceImpl.cc:520
@@ -3619,7 +3376,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:549
 #, c-format
 msgid "Reading filelist from %s"
-msgstr ""
+msgstr "%s থেকে ফাইলতালিকা পড়ছে"
 
 #. TranslatorExplanation %s = packages file
 #: ../zypp/source/yum/YUMSourceImpl.cc:565
@@ -3628,7 +3385,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:619
 #, c-format
 msgid "Reading packages from %s"
-msgstr ""
+msgstr "%s থেকে প্যাকেজ পড়ছে"
 
 #. TranslatorExplanation %s = selection metadata file
 #: ../zypp/source/yum/YUMSourceImpl.cc:643
@@ -3637,7 +3394,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:669
 #, c-format
 msgid "Reading selection from %s"
-msgstr ""
+msgstr "%s থেকে নির্বাচন পড়ছে"
 
 #. TranslatorExplanation %s = pattern metadata file
 #: ../zypp/source/yum/YUMSourceImpl.cc:693
@@ -3646,7 +3403,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:719
 #, c-format
 msgid "Reading pattern from %s"
-msgstr ""
+msgstr "%s থেকে প্যাটার্ন পড়ছে"
 
 #. TranslatorExplanation %s = patches index file
 #: ../zypp/source/yum/YUMSourceImpl.cc:746
@@ -3655,7 +3412,7 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:772
 #, c-format
 msgid "Reading patches index %s"
-msgstr ""
+msgstr "%s প্যাচ ইনডেক্স পড়ছে"
 
 #. TranslatorExplanation %s = patch metadata file
 #: ../zypp/source/yum/YUMSourceImpl.cc:795
@@ -3664,18 +3421,18 @@ msgstr ""
 #: ../zypp/source/yum/YUMSourceImpl.cc:827
 #, c-format
 msgid "Reading patch %s"
-msgstr ""
+msgstr "%s প্যাচ পড়ছে"
 
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr ""
+msgstr "স্ক্রিপ্ট ফাইল চেকসাম পরীক্ষায় ব্যর্থ হয়েছে"
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
 #: ../zypp/source/susetags/SuseTagsImpl.cc:660
 msgid "Reading packages file"
-msgstr ""
+msgstr "প্যাকেজ ফাইল পড়ছে"
 
 #. TranslatorExplanation %s = language name
 #: ../zypp/source/susetags/SuseTagsImpl.cc:710
@@ -3683,81 +3440,86 @@ msgstr ""
 #: ../zypp/source/susetags/SuseTagsImpl.cc:728
 #, c-format
 msgid "Reading translation: %s"
-msgstr ""
+msgstr "অনুবাদ পড়ছে: %s"
 
 #: ../zypp/source/PackageProvider.cc:200
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "applydeltarpm যাচাই ব্যর্থ হয়েছে।"
 
 #: ../zypp/source/PackageProvider.cc:213
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm ব্যর্থ হয়েছে।"
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
 msgstr ""
+"%s প্যাকেজের শুদ্ধতা যাচাই ব্যর্থ হয়েছে। আপনি কি এটাকে পুনরায় ডাউনলোড করার চেষ্টা "
+"করতে  চান?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
 msgstr ""
+"%s প্যাকেজের শুদ্ধতা যাচাই ব্যর্থ হয়েছে। আপনি কি এটাকে পুনরায় ডাউনলোড করার চেষ্টা "
+"করতে চান,  নাকি স্থাপনা বাতিল করবেন?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
-msgstr ""
+msgstr " অবুপস্থিত চেকসাম।"
 
 #: ../zypp/source/SourceImpl.cc:400
 msgid " fails checksum verification."
-msgstr ""
+msgstr "চেকসাম এর শুদ্ধতা যাচাই ব্যর্থ হয়েছে"
 
 #. TranslatorExplanation %s = file being downloaded
 #: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "%s ডাউনলোড করছে"
 
 #: ../zypp/source/SourceImpl.cc:445
 #, c-format
 msgid "Downloaded %s from %s"
-msgstr ""
+msgstr "%s থেকে %s ডাউনলোড করেছে"
 
 #. TranslatorExplanation %s = file that was not able to download
 #: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
 #: ../zypp/source/SourceImpl.cc:459
 #, c-format
 msgid "Can't provide %s from %s"
-msgstr ""
+msgstr "%s থেকে %s প্রদান করতে পারে না"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr ""
+msgstr "মিউটেক্স বৈশিষ্ট্য চালু করতে পারে না"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr ""
+msgstr "রিকার্সিভ মিউটেক্স বৈশিষ্ট্য নির্দিষ্ট করতে পারে না"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr ""
+msgstr "রিকার্সিভ মিউটেক্স চালু করতে পারে না"
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
-msgstr ""
+msgstr "মিউটেক্স লক অর্জন করতে পারে না"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr ""
+msgstr "মিউটেক্স লক মুক্ত করতে পারে না"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
-msgstr ""
+msgstr "অজানা দেশ: "
 
 #: ../zypp/CountryCode.cc:217
-#, fuzzy
 msgid "Andorra"
 msgstr "বিক্রেতা"
 
@@ -3768,19 +3530,18 @@ msgstr "সংযুক্ত আরব আমিরাত"
 
 #. :ARE:784:
 #: ../zypp/CountryCode.cc:219
-#, fuzzy
 msgid "Afghanistan"
 msgstr "পাকিস্তান"
 
 #. :AFG:004:
 #: ../zypp/CountryCode.cc:220
 msgid "Antigua and Barbuda"
-msgstr ""
+msgstr "এন্টিগা ও বারবুডা"
 
 #. :ATG:028:
 #: ../zypp/CountryCode.cc:221
 msgid "Anguilla"
-msgstr ""
+msgstr "এংগুইলা"
 
 #. :AIA:660:
 #: ../zypp/CountryCode.cc:222
@@ -3789,25 +3550,23 @@ msgstr "আলবেনিয়া"
 
 #. :ALB:008:
 #: ../zypp/CountryCode.cc:223
-#, fuzzy
 msgid "Armenia"
 msgstr "আর্জেন্টিনা"
 
 #. :ARM:051:
 #: ../zypp/CountryCode.cc:224
-#, fuzzy
 msgid "Netherlands Antilles"
 msgstr "নেদারল্যান্ড"
 
 #. :ANT:530:
 #: ../zypp/CountryCode.cc:225
 msgid "Angola"
-msgstr ""
+msgstr "এংগোলা"
 
 #. :AGO:024:
 #: ../zypp/CountryCode.cc:226
 msgid "Antarctica"
-msgstr ""
+msgstr "এন্টার্কটিকা"
 
 #. :ATA:010:
 #: ../zypp/CountryCode.cc:227
@@ -3817,7 +3576,7 @@ msgstr "আর্জেন্টিনা"
 #. :ARG:032:
 #: ../zypp/CountryCode.cc:228
 msgid "American Samoa"
-msgstr ""
+msgstr "আমেরিকান সামোয়া"
 
 #. :ASM:016:
 #: ../zypp/CountryCode.cc:229
@@ -3832,29 +3591,27 @@ msgstr "অস্ট্রেলিয়া"
 #. :AUS:036:
 #: ../zypp/CountryCode.cc:231
 msgid "Aruba"
-msgstr ""
+msgstr "আরুবা"
 
 #. :ABW:533:
 #: ../zypp/CountryCode.cc:232
-#, fuzzy
 msgid "Aland Islands"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
 #. :ALA:248:
 #: ../zypp/CountryCode.cc:233
 msgid "Azerbaijan"
-msgstr ""
+msgstr "আজারবাইজান"
 
 #. :AZE:031:
 #: ../zypp/CountryCode.cc:234
-#, fuzzy
 msgid "Bosnia and Herzegovina"
 msgstr "বসনিয়া এবং হারজেগোভিনা"
 
 #. :BIH:070:
 #: ../zypp/CountryCode.cc:235
 msgid "Barbados"
-msgstr ""
+msgstr "বার্বাডোজ"
 
 #. :BRB:052:
 #: ../zypp/CountryCode.cc:236
@@ -3869,7 +3626,7 @@ msgstr "বেলজিয়াম"
 #. :BEL:056:
 #: ../zypp/CountryCode.cc:238
 msgid "Burkina Faso"
-msgstr ""
+msgstr "বারকিনা ফাসো"
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:239
@@ -3878,31 +3635,28 @@ msgstr "বুলগেরিয়া"
 
 #. :BGR:100:
 #: ../zypp/CountryCode.cc:240
-#, fuzzy
 msgid "Bahrain"
 msgstr "বাহরাইন"
 
 #. :BHR:048:
 #: ../zypp/CountryCode.cc:241
 msgid "Burundi"
-msgstr ""
+msgstr "বুরুন্ডি"
 
 #. :BDI:108:
 #: ../zypp/CountryCode.cc:242
-#, fuzzy
 msgid "Benin"
 msgstr "বাহরাইন"
 
 #. :BEN:204:
 #: ../zypp/CountryCode.cc:243
-#, fuzzy
 msgid "Bermuda"
 msgstr "জার্মান"
 
 #. :BMU:060:
 #: ../zypp/CountryCode.cc:244
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "ব্রুনেই দারুসসালাম"
 
 #. :BRN:096:
 #: ../zypp/CountryCode.cc:245
@@ -3911,24 +3665,21 @@ msgstr "বলিভিয়া"
 
 #. :BOL:068:
 #: ../zypp/CountryCode.cc:246
-#, fuzzy
 msgid "Brazil"
 msgstr "ব্রাজিল"
 
 #. :BRA:076:
 #: ../zypp/CountryCode.cc:247
-#, fuzzy
 msgid "Bahamas"
 msgstr "পানামা"
 
 #. :BHS:044:
 #: ../zypp/CountryCode.cc:248
 msgid "Bhutan"
-msgstr ""
+msgstr "ভুটান"
 
 #. :BTN:064:
 #: ../zypp/CountryCode.cc:249
-#, fuzzy
 msgid "Bouvet Island"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
@@ -3944,7 +3695,6 @@ msgstr "বেলারুস"
 
 #. :BLR:112:
 #: ../zypp/CountryCode.cc:252
-#, fuzzy
 msgid "Belize"
 msgstr "বেলজিয়ান"
 
@@ -3956,18 +3706,16 @@ msgstr "কানাডা"
 #. :CAN:124:
 #: ../zypp/CountryCode.cc:254
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "কোকোস (কিলিং) দ্বীপপুঞ্জ"
 
 #. :CCK:166:
 #. :CAF:140:
 #: ../zypp/CountryCode.cc:255 ../zypp/CountryCode.cc:257
-#, fuzzy
 msgid "Congo"
 msgstr "কনসোল"
 
 #. :COD:180:
 #: ../zypp/CountryCode.cc:256
-#, fuzzy
 msgid "Central African Republic"
 msgstr "সিরিয়ান আরব প্রজাতন্ত্র"
 
@@ -3979,11 +3727,10 @@ msgstr "সুইজারল্যান্ড"
 #. :CHE:756:
 #: ../zypp/CountryCode.cc:259
 msgid "Cote D'Ivoire"
-msgstr ""
+msgstr "কোট ডি'ইভোয়ার"
 
 #. :CIV:384:
 #: ../zypp/CountryCode.cc:260
-#, fuzzy
 msgid "Cook Islands"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
@@ -3994,13 +3741,11 @@ msgstr "চিলি"
 
 #. :CHL:152:
 #: ../zypp/CountryCode.cc:262
-#, fuzzy
 msgid "Cameroon"
 msgstr "ক্যামেরা"
 
 #. :CMR:120:
 #: ../zypp/CountryCode.cc:263
-#, fuzzy
 msgid "China"
 msgstr "চিলি"
 
@@ -4017,27 +3762,27 @@ msgstr "কোস্টারিকা"
 #. :CRI:188:
 #: ../zypp/CountryCode.cc:266
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "সার্বিয়া ও মন্টেনেগ্রো"
 
 #. :SCG:891:
 #: ../zypp/CountryCode.cc:267
 msgid "Cuba"
-msgstr ""
+msgstr "কিউবা"
 
 #. :CUB:192:
 #: ../zypp/CountryCode.cc:268
 msgid "Cape Verde"
-msgstr ""
+msgstr "কেপ ভার্দে"
 
 #. :CPV:132:
 #: ../zypp/CountryCode.cc:269
 msgid "Christmas Island"
-msgstr ""
+msgstr "ক্রিসমাষ আইল্যান্ড"
 
 #. :CXR:162:
 #: ../zypp/CountryCode.cc:270
 msgid "Cyprus"
-msgstr ""
+msgstr "সাইপ্রাস"
 
 #. :CYP:196:
 #: ../zypp/CountryCode.cc:271
@@ -4052,7 +3797,7 @@ msgstr "জার্মানি"
 #. :DEU:276:
 #: ../zypp/CountryCode.cc:273
 msgid "Djibouti"
-msgstr ""
+msgstr "জিবৌটি"
 
 #. :DJI:262:
 #: ../zypp/CountryCode.cc:274
@@ -4061,7 +3806,6 @@ msgstr "ডেনমার্ক"
 
 #. :DNK:208:
 #: ../zypp/CountryCode.cc:275
-#, fuzzy
 msgid "Dominica"
 msgstr "রোমানিয়া"
 
@@ -4093,12 +3837,12 @@ msgstr "মিশর"
 #. :EGY:818:
 #: ../zypp/CountryCode.cc:281
 msgid "Western Sahara"
-msgstr ""
+msgstr "পশ্চিমী সাহারা"
 
 #. :ESH:732:
 #: ../zypp/CountryCode.cc:282
 msgid "Eritrea"
-msgstr ""
+msgstr "ইরিট্রিয়া"
 
 #. :ERI:232:
 #: ../zypp/CountryCode.cc:283
@@ -4107,7 +3851,6 @@ msgstr "স্পেন"
 
 #. :ESP:724:
 #: ../zypp/CountryCode.cc:284
-#, fuzzy
 msgid "Ethiopia"
 msgstr "এস্টোনিয়া"
 
@@ -4119,17 +3862,17 @@ msgstr "ফিনল্যান্ড"
 #. :FIN:246:
 #: ../zypp/CountryCode.cc:286
 msgid "Fiji"
-msgstr ""
+msgstr "ফিজি"
 
 #. :FJI:242:
 #: ../zypp/CountryCode.cc:287
 msgid "Falkland Islands (Malvinas)"
-msgstr ""
+msgstr "ফকল্যান্ড আইল্যান্ডস (মালভিনাস)"
 
 #. :FLK:238:
 #: ../zypp/CountryCode.cc:288
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "ফেডারেটেড স্টেটস অফ মাইক্রোনেশিয়া"
 
 #. :FSM:583:
 #: ../zypp/CountryCode.cc:289
@@ -4144,22 +3887,20 @@ msgstr "ফ্রান্স"
 #. :FRA:250:
 #: ../zypp/CountryCode.cc:291
 msgid "Metropolitan France"
-msgstr ""
+msgstr "মেট্রোপলিটান ফ্রান্স"
 
 #. :FXX:249:
 #: ../zypp/CountryCode.cc:292
-#, fuzzy
 msgid "Gabon"
 msgstr "নিষিদ্ধ"
 
 #. :GAB:266:
 #: ../zypp/CountryCode.cc:293
 msgid "United Kingdom"
-msgstr ""
+msgstr "যুক্তরাজ্য"
 
 #. :GBR:826:
 #: ../zypp/CountryCode.cc:294
-#, fuzzy
 msgid "Grenada"
 msgstr "গ্রীনল্যান্ড"
 
@@ -4170,19 +3911,18 @@ msgstr "জর্জিয়া"
 
 #. :GEO:268:
 #: ../zypp/CountryCode.cc:296
-#, fuzzy
 msgid "French Guiana"
 msgstr "ফ্রেঞ্চ (কানাডীয়)"
 
 #. :GUF:254:
 #: ../zypp/CountryCode.cc:297
 msgid "Ghana"
-msgstr ""
+msgstr "ঘানা"
 
 #. :GHA:288:
 #: ../zypp/CountryCode.cc:298
 msgid "Gibraltar"
-msgstr ""
+msgstr "জিব্রাল্টার"
 
 #. :GIB:292:
 #: ../zypp/CountryCode.cc:299
@@ -4191,24 +3931,23 @@ msgstr "গ্রীনল্যান্ড"
 
 #. :GRL:304:
 #: ../zypp/CountryCode.cc:300
-#, fuzzy
 msgid "Gambia"
 msgstr "&সাম্বা"
 
 #. :GMB:270:
 #: ../zypp/CountryCode.cc:301
 msgid "Guinea"
-msgstr ""
+msgstr "গিনি"
 
 #. :GIN:324:
 #: ../zypp/CountryCode.cc:302
 msgid "Guadeloupe"
-msgstr ""
+msgstr "গুয়াদেলুপ"
 
 #. :GLP:312:
 #: ../zypp/CountryCode.cc:303
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "ইকোয়েটেরিয়াল গিনি"
 
 #. :GNQ:226:
 #: ../zypp/CountryCode.cc:304
@@ -4218,7 +3957,7 @@ msgstr "গ্রীস"
 #. :GRC:300:
 #: ../zypp/CountryCode.cc:305
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "সাউথ জর্জিয়া ও সাউথ স্যান্ডউইচ আইল্যান্ড"
 
 #. :SGS:239:
 #: ../zypp/CountryCode.cc:306
@@ -4227,19 +3966,18 @@ msgstr "গুয়াতেমালা"
 
 #. :GTM:320:
 #: ../zypp/CountryCode.cc:307
-#, fuzzy
 msgid "Guam"
 msgstr "গুয়াতেমালা"
 
 #. :GUM:316:
 #: ../zypp/CountryCode.cc:308
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "গিনি-বিসাউ"
 
 #. :GNB:624:
 #: ../zypp/CountryCode.cc:309
 msgid "Guyana"
-msgstr ""
+msgstr "গায়ানা"
 
 #. :GUY:328:
 #: ../zypp/CountryCode.cc:310
@@ -4249,7 +3987,7 @@ msgstr "হংকং"
 #. :HKG:344:
 #: ../zypp/CountryCode.cc:311
 msgid "Heard Island and McDonald Islands"
-msgstr ""
+msgstr "হার্ড আইল্যান্ড ও ম্যাকডোনাল্ড আইল্যান্ডস"
 
 #. :HMD:334:
 #: ../zypp/CountryCode.cc:312
@@ -4264,7 +4002,7 @@ msgstr "ক্রোয়েশিয়া"
 #. :HRV:191:
 #: ../zypp/CountryCode.cc:314
 msgid "Haiti"
-msgstr ""
+msgstr "হাইতি"
 
 #. :HTI:332:
 #: ../zypp/CountryCode.cc:315
@@ -4294,7 +4032,7 @@ msgstr "ভারত"
 #. :IND:356:
 #: ../zypp/CountryCode.cc:320
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "ব্রিটিশ ইন্ডিয়ান ওসান টেরিটরি"
 
 #. :IOT:086:
 #: ../zypp/CountryCode.cc:321
@@ -4303,7 +4041,6 @@ msgstr "ইরাক"
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:322
-#, fuzzy
 msgid "Iran"
 msgstr "ইরাক"
 
@@ -4320,7 +4057,7 @@ msgstr "ইটালী"
 #. :ITA:380:
 #: ../zypp/CountryCode.cc:325
 msgid "Jamaica"
-msgstr ""
+msgstr "জামাইকা"
 
 #. :JAM:388:
 #: ../zypp/CountryCode.cc:326
@@ -4334,44 +4071,41 @@ msgstr "জাপান"
 
 #. :JPN:392:
 #: ../zypp/CountryCode.cc:328
-#, fuzzy
 msgid "Kenya"
 msgstr "কীবোর্ড"
 
 #. :KEN:404:
 #: ../zypp/CountryCode.cc:329
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "কিরগিজস্তান"
 
 #. :KGZ:417:
 #: ../zypp/CountryCode.cc:330
-#, fuzzy
 msgid "Cambodia"
 msgstr "কলম্বিয়া"
 
 #. :KHM:116:
 #: ../zypp/CountryCode.cc:331
 msgid "Kiribati"
-msgstr ""
+msgstr "কিরিবাটি"
 
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:332
 msgid "Comoros"
-msgstr ""
+msgstr "কমোরোস"
 
 #. :COM:174:
 #: ../zypp/CountryCode.cc:333
 msgid "Saint Kitts and Nevis"
-msgstr ""
+msgstr "সেন্ট কিটস ও নেভিস"
 
 #. :KNA:659:
 #: ../zypp/CountryCode.cc:334
 msgid "North Korea"
-msgstr ""
+msgstr "উত্তর কোরিয়া"
 
 #. :PRK:408:
 #: ../zypp/CountryCode.cc:335
-#, fuzzy
 msgid "South Korea"
 msgstr "দক্ষিন আফ্রিকা"
 
@@ -4382,20 +4116,18 @@ msgstr "কুয়েত"
 
 #. :KWT:414:
 #: ../zypp/CountryCode.cc:337
-#, fuzzy
 msgid "Cayman Islands"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
 #. :CYM:136:
 #: ../zypp/CountryCode.cc:338
-#, fuzzy
 msgid "Kazakhstan"
 msgstr "পাকিস্তান"
 
 #. :KAZ:398:
 #: ../zypp/CountryCode.cc:339
 msgid "Lao People's Democratic Republic"
-msgstr ""
+msgstr "লাও পিপলস ডেমোক্রেটিক রিপাব্লিক"
 
 #. :LAO:418:
 #: ../zypp/CountryCode.cc:340
@@ -4405,28 +4137,27 @@ msgstr "লেবানন"
 #. :LBN:422:
 #: ../zypp/CountryCode.cc:341
 msgid "Saint Lucia"
-msgstr ""
+msgstr "সষেন্ট লুসিয়া"
 
 #. :LCA:662:
 #: ../zypp/CountryCode.cc:342
-#, fuzzy
 msgid "Liechtenstein"
 msgstr "লাইসেন্স"
 
 #. :LIE:438:
 #: ../zypp/CountryCode.cc:343
 msgid "Sri Lanka"
-msgstr ""
+msgstr "শ্রীলঙ্কা"
 
 #. :LKA:144:
 #: ../zypp/CountryCode.cc:344
 msgid "Liberia"
-msgstr ""
+msgstr "লাইবেরিয়া"
 
 #. :LBR:430:
 #: ../zypp/CountryCode.cc:345
 msgid "Lesotho"
-msgstr ""
+msgstr "লেসোথো"
 
 #. :LSO:426:
 #: ../zypp/CountryCode.cc:346
@@ -4435,7 +4166,6 @@ msgstr "লিথুয়েনিয়া"
 
 #. :LTU:440:
 #: ../zypp/CountryCode.cc:347
-#, fuzzy
 msgid "Luxembourg"
 msgstr "লাক্সেমবার্গ"
 
@@ -4447,7 +4177,7 @@ msgstr "লাতভিয়া"
 #. :LVA:428:
 #: ../zypp/CountryCode.cc:349
 msgid "Libya"
-msgstr ""
+msgstr "লিবিয়া"
 
 #. :LBY:434:
 #: ../zypp/CountryCode.cc:350
@@ -4456,24 +4186,21 @@ msgstr "মরোক্কো"
 
 #. :MAR:504:
 #: ../zypp/CountryCode.cc:351
-#, fuzzy
 msgid "Monaco"
 msgstr "মরোক্কো"
 
 #. :MCO:492:
 #: ../zypp/CountryCode.cc:352
-#, fuzzy
 msgid "Moldova"
 msgstr "স্লোভাক"
 
 #. :MDA:498:
 #: ../zypp/CountryCode.cc:353
 msgid "Madagascar"
-msgstr ""
+msgstr "মাদাগাস্কার"
 
 #. :MDG:450:
 #: ../zypp/CountryCode.cc:354
-#, fuzzy
 msgid "Marshall Islands"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
@@ -4484,47 +4211,43 @@ msgstr "ম্যাসেডোনিয়া"
 
 #. :MKD:807:
 #: ../zypp/CountryCode.cc:356
-#, fuzzy
 msgid "Mali"
 msgstr "মালয়শিয়া"
 
 #. :MLI:466:
 #: ../zypp/CountryCode.cc:357
-#, fuzzy
 msgid "Myanmar"
 msgstr "পানামা"
 
 #. :MMR:104:
 #: ../zypp/CountryCode.cc:358
 msgid "Mongolia"
-msgstr ""
+msgstr "মঙ্গোলিয়া"
 
 #. :MNG:496:
 #: ../zypp/CountryCode.cc:359
-#, fuzzy
 msgid "Macao"
 msgstr "প্রধান"
 
 #. :MAC:446:
 #: ../zypp/CountryCode.cc:360
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "নর্দার্ন মারিয়ানা আইল্যান্ডস"
 
 #. :MNP:580:
 #: ../zypp/CountryCode.cc:361
 msgid "Martinique"
-msgstr ""
+msgstr "মার্টিনিক"
 
 #. :MTQ:474:
 #: ../zypp/CountryCode.cc:362
-#, fuzzy
 msgid "Mauritania"
 msgstr "লিথুয়েনিয়া"
 
 #. :MRT:478:
 #: ../zypp/CountryCode.cc:363
 msgid "Montserrat"
-msgstr ""
+msgstr "মন্টসেরাট"
 
 #. :MSR:500:
 #: ../zypp/CountryCode.cc:364
@@ -4534,16 +4257,15 @@ msgstr "মালটা"
 #. :MLT:470:
 #: ../zypp/CountryCode.cc:365
 msgid "Mauritius"
-msgstr ""
+msgstr "মরিশাস"
 
 #. :MUS:480:
 #: ../zypp/CountryCode.cc:366
 msgid "Maldives"
-msgstr ""
+msgstr "মালদ্বীপ"
 
 #. :MDV:462:
 #: ../zypp/CountryCode.cc:367
-#, fuzzy
 msgid "Malawi"
 msgstr "মালটা"
 
@@ -4560,36 +4282,30 @@ msgstr "মালয়শিয়া"
 #. :MYS:458:
 #: ../zypp/CountryCode.cc:370
 msgid "Mozambique"
-msgstr ""
+msgstr "মোজাম্বিক"
 
 #. :MOZ:508:
 #: ../zypp/CountryCode.cc:371
-#, fuzzy
 msgid "Namibia"
 msgstr "&সাম্বা"
 
 #. :NAM:516:
 #: ../zypp/CountryCode.cc:372
-#, fuzzy
 msgid "New Caledonia"
 msgstr "ম্যাসেডোনিয়া"
 
-# ?
 #. :NCL:540:
 #: ../zypp/CountryCode.cc:373
-#, fuzzy
 msgid "Niger"
 msgstr "ঘড়ি"
 
 #. :NER:562:
 #: ../zypp/CountryCode.cc:374
-#, fuzzy
 msgid "Norfolk Island"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
 #. :NFK:574:
 #: ../zypp/CountryCode.cc:375
-#, fuzzy
 msgid "Nigeria"
 msgstr "আলজেরিয়া"
 
@@ -4611,12 +4327,12 @@ msgstr "নরওয়ে"
 #. :NOR:578:
 #: ../zypp/CountryCode.cc:379
 msgid "Nepal"
-msgstr ""
+msgstr "নেপাল"
 
 #. :NRU:520:
 #: ../zypp/CountryCode.cc:381
 msgid "Niue"
-msgstr ""
+msgstr "নিউ"
 
 #. :NIU:570:
 #: ../zypp/CountryCode.cc:382
@@ -4640,14 +4356,13 @@ msgstr "পেরু"
 
 #. :PER:604:
 #: ../zypp/CountryCode.cc:386
-#, fuzzy
 msgid "French Polynesia"
 msgstr "ফ্রেঞ্চ (কানাডীয়)"
 
 #. :PYF:258:
 #: ../zypp/CountryCode.cc:387
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "পাপুয়া নিউ গিনি"
 
 #. :PNG:598:
 #: ../zypp/CountryCode.cc:388
@@ -4667,11 +4382,10 @@ msgstr "পোল্যান্ড"
 #. :POL:616:
 #: ../zypp/CountryCode.cc:391
 msgid "Saint Pierre and Miquelon"
-msgstr ""
+msgstr "সেন্ট পিয়ের ও মিকেলন"
 
 #. :SPM:666:
 #: ../zypp/CountryCode.cc:392
-#, fuzzy
 msgid "Pitcairn"
 msgstr "পাকিস্তান"
 
@@ -4683,7 +4397,7 @@ msgstr "পোর্টোরিকো"
 #. :PRI:630:
 #: ../zypp/CountryCode.cc:394
 msgid "Palestinian Territory"
-msgstr ""
+msgstr "প্যালেস্টিনিয়ান টেরিটরি"
 
 #. :PSE:275:
 #: ../zypp/CountryCode.cc:395
@@ -4692,7 +4406,6 @@ msgstr "পর্তুগাল"
 
 #. :PRT:620:
 #: ../zypp/CountryCode.cc:396
-#, fuzzy
 msgid "Palau"
 msgstr "প্যারাগুয়ে"
 
@@ -4708,7 +4421,6 @@ msgstr "কাতার"
 
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:399
-#, fuzzy
 msgid "Reunion"
 msgstr "এলাকা (&R)"
 
@@ -4720,11 +4432,10 @@ msgstr "রোমানিয়া"
 #. :ROU:642:
 #: ../zypp/CountryCode.cc:401
 msgid "Russian Federation"
-msgstr ""
+msgstr "রাশিয়ান ফেডারেশন"
 
 #. :RUS:643:
 #: ../zypp/CountryCode.cc:402
-#, fuzzy
 msgid "Rwanda"
 msgstr "কানাডা"
 
@@ -4735,14 +4446,13 @@ msgstr "সৌদী আরব"
 
 #. :SAU:682:
 #: ../zypp/CountryCode.cc:404
-#, fuzzy
 msgid "Solomon Islands"
 msgstr "ফারো দ্বীপপূঞ্জ"
 
 #. :SLB:090:
 #: ../zypp/CountryCode.cc:405
 msgid "Seychelles"
-msgstr ""
+msgstr "সেশেলস"
 
 #. :SYC:690:
 #: ../zypp/CountryCode.cc:406
@@ -4762,7 +4472,7 @@ msgstr "সিঙ্গাপুর"
 #. :SGP:702:
 #: ../zypp/CountryCode.cc:409
 msgid "Saint Helena"
-msgstr ""
+msgstr "সেন্ট হেলেনা"
 
 #. :SHN:654:
 #: ../zypp/CountryCode.cc:410
@@ -4772,7 +4482,7 @@ msgstr "স্লোভেনিয়া"
 #. :SVN:705:
 #: ../zypp/CountryCode.cc:411
 msgid "Svalbard and Jan Mayen"
-msgstr ""
+msgstr "সভালবার্ড ও জান মায়েন"
 
 #. :SJM:744:
 #: ../zypp/CountryCode.cc:412
@@ -4782,35 +4492,32 @@ msgstr "স্লোভাকিয়া"
 #. :SVK:703:
 #: ../zypp/CountryCode.cc:413
 msgid "Sierra Leone"
-msgstr ""
+msgstr "সিয়েরা লিওন"
 
 #. :SLE:694:
 #: ../zypp/CountryCode.cc:414
 msgid "San Marino"
-msgstr ""
+msgstr "সাম মারিনো"
 
 #. :SMR:674:
 #: ../zypp/CountryCode.cc:415
 msgid "Senegal"
-msgstr ""
+msgstr "সেনেগাল"
 
 #. :SEN:686:
 #: ../zypp/CountryCode.cc:416
-#, fuzzy
 msgid "Somalia"
 msgstr "রোমানিয়া"
 
-#  text entry
 #. :SOM:706:
 #: ../zypp/CountryCode.cc:417
-#, fuzzy
 msgid "Suriname"
 msgstr "সার্ভিসের নাম (&n)"
 
 #. :SUR:740:
 #: ../zypp/CountryCode.cc:418
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "সাও টোম ও প্রিন্সিপ"
 
 #. :STP:678:
 #: ../zypp/CountryCode.cc:419
@@ -4820,34 +4527,30 @@ msgstr "এল সালভাদর"
 #. :SLV:222:
 #: ../zypp/CountryCode.cc:420
 msgid "Syria"
-msgstr ""
+msgstr "সিরিয়া"
 
 #. :SYR:760:
 #: ../zypp/CountryCode.cc:421
-#, fuzzy
 msgid "Swaziland"
 msgstr "থাইল্যান্ড"
 
 #. :SWZ:748:
 #: ../zypp/CountryCode.cc:422
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "টার্কস ও কাইকোস আইল্যান্ড"
 
-#  table header. has the service state changed?
 #. :TCA:796:
 #: ../zypp/CountryCode.cc:423
-#, fuzzy
 msgid "Chad"
 msgstr "পরিবর্তিত"
 
 #. :TCD:148:
 #: ../zypp/CountryCode.cc:424
 msgid "French Southern Territories"
-msgstr ""
+msgstr "ফ্রেঞ্চ সাউদার্ন টেরিটোরিজ"
 
 #. :ATF:260:
 #: ../zypp/CountryCode.cc:425
-#, fuzzy
 msgid "Togo"
 msgstr "নিষিদ্ধ"
 
@@ -4863,7 +4566,6 @@ msgstr "তাজিকিস্তান"
 
 #. :TKL:772:
 #: ../zypp/CountryCode.cc:429
-#, fuzzy
 msgid "Turkmenistan"
 msgstr "তাজিকিস্তান"
 
@@ -4874,14 +4576,13 @@ msgstr "তিউনিশিয়া"
 
 #. :TUN:788:
 #: ../zypp/CountryCode.cc:431
-#, fuzzy
 msgid "Tonga"
 msgstr "মোট"
 
 #. :TON:776:
 #: ../zypp/CountryCode.cc:432
 msgid "East Timor"
-msgstr ""
+msgstr "ইষ্ট টিমর"
 
 #. :TLS:626:
 #: ../zypp/CountryCode.cc:433
@@ -4891,7 +4592,7 @@ msgstr "তুর্কী"
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:434
 msgid "Trinidad and Tobago"
-msgstr ""
+msgstr "ত্রিনিদাদ ও টোবাগো"
 
 #. :TUV:798:
 #: ../zypp/CountryCode.cc:436
@@ -4901,7 +4602,7 @@ msgstr "তাইওয়ান"
 #. :TWN:158:
 #: ../zypp/CountryCode.cc:437
 msgid "Tanzania"
-msgstr ""
+msgstr "তানজানিয়া"
 
 #. :TZA:834:
 #: ../zypp/CountryCode.cc:438
@@ -4910,18 +4611,16 @@ msgstr "ইউক্রেন"
 
 #. :UKR:804:
 #: ../zypp/CountryCode.cc:439
-#, fuzzy
 msgid "Uganda"
 msgstr "কানাডা"
 
 #. :UGA:800:
 #: ../zypp/CountryCode.cc:440
 msgid "United States Minor Outlying Islands"
-msgstr ""
+msgstr "ইউনাইটেড স্টেটস মাইনর আউটলায়িং আইল্যান্ডস"
 
 #. :UMI:581:
 #: ../zypp/CountryCode.cc:441
-#, fuzzy
 msgid "United States"
 msgstr "সংযুক্ত আরব আমিরাত"
 
@@ -4938,12 +4637,12 @@ msgstr "উজবেকিস্থান"
 #. :UZB:860:
 #: ../zypp/CountryCode.cc:444
 msgid "Holy See (Vatican City State)"
-msgstr ""
+msgstr "হোলি সি (ভ্যাটিকান সিটি স্টেট)"
 
 #. :VAT:336:
 #: ../zypp/CountryCode.cc:445
 msgid "Saint Vincent and the Grenadines"
-msgstr ""
+msgstr "সেন্ট ভিনসেন্ট ও গ্রেনাডাইন্স"
 
 #. :VCT:670:
 #: ../zypp/CountryCode.cc:446
@@ -4953,33 +4652,30 @@ msgstr "ভেনিজুয়েলা"
 #. :VEN:862:
 #: ../zypp/CountryCode.cc:447
 msgid "British Virgin Islands"
-msgstr ""
+msgstr "ব্রিটিশ ভার্জিন আইল্যান্ডস"
 
 #. :VGB:092:
 #: ../zypp/CountryCode.cc:448
 msgid "Virgin Islands, U.S."
-msgstr ""
+msgstr "ভার্জিন আইল্যান্ডস, ইউ এস"
 
-# ডিভাইস
 #. :VIR:850:
 #: ../zypp/CountryCode.cc:449
-#, fuzzy
 msgid "Vietnam"
 msgstr "ফাইলের নাম"
 
 #. :VNM:704:
 #: ../zypp/CountryCode.cc:450
 msgid "Vanuatu"
-msgstr ""
+msgstr "ভানুয়াতু"
 
 #. :VUT:548:
 #: ../zypp/CountryCode.cc:451
 msgid "Wallis and Futuna"
-msgstr ""
+msgstr "ওয়ালিস ও ফুটুনা"
 
 #. :WLF:876:
 #: ../zypp/CountryCode.cc:452
-#, fuzzy
 msgid "Samoa"
 msgstr "&সাম্বা"
 
@@ -4991,7 +4687,7 @@ msgstr "ইয়েমেন"
 #. :YEM:887:
 #: ../zypp/CountryCode.cc:454
 msgid "Mayotte"
-msgstr ""
+msgstr "মেয়ট"
 
 #. :MYT:175:
 #: ../zypp/CountryCode.cc:455
@@ -5000,7 +4696,6 @@ msgstr "দক্ষিন আফ্রিকা"
 
 #. :ZAF:710:
 #: ../zypp/CountryCode.cc:456
-#, fuzzy
 msgid "Zambia"
 msgstr "&সাম্বা"
 
@@ -5015,6 +4710,8 @@ msgid ""
 "File %s is not signed.\n"
 "Use it anyway?"
 msgstr ""
+"%s স্বাক্ষরিত নয়।\n"
+"তবুও ব্যবহার করতে চান?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
@@ -5023,6 +4720,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"ফাইল %s একটি অজ্ঞাত কি দ্বারা স্বাক্ষরিত:\n"
+"%s|%s|%s\n"
+"তবুও ফাইলটি ব্যবহার করতে চান?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -5031,6 +4731,9 @@ msgid ""
 "%s|%s|%s\n"
 "Trust key?"
 msgstr ""
+"অবিশ্বস্ত কি পাওয়া গেছে:\n"
+"%s|%s|%s\n"
+"কি-য়ের উপরে বিশ্বাস করবেন?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
@@ -5039,6 +4742,9 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
+"নিচের কি দ্বারা %s ফাইলের শুদ্ধতা যাচাই ব্যর্থ হয়েছে:\n"
+"%s|%s|%s\n"
+"তবুও ফাইলটি ব্যবহার করতে চান?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
@@ -5046,13 +4752,17 @@ msgid ""
 "File %s does not have a checksum.\n"
 "Use the file anyway?"
 msgstr ""
+"%s ফাইলের কোনও চেকসাম নেই।\n"
+"তবুও ফাইলটি ব্যবহার করতে চান?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
 msgstr ""
+"%s ফাইলের একটি অজ্ঞাত চেকসাম আছে।\n"
+"তবুও ফাইলটি ব্যবহার করতে চান?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
@@ -5061,53 +4771,5 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Ok"
-#~ msgstr "ঠিক আছে\n"
-
-#, fuzzy
-#~ msgid "The package file has incorrect MD5 sum"
-#~ msgstr "RPM এ ভুল স্বাক্ষর আছে।"
-
-#, fuzzy
-#~ msgid "The package is not signed"
-#~ msgstr "প্যাকেজের তালিকা (&P)"
-
-#, fuzzy
-#~ msgid "The package has incorrect signature"
-#~ msgstr "RPM এ ভুল স্বাক্ষর আছে।"
-
-#, fuzzy
-#~ msgid "The package archive has incorrect MD5 sum"
-#~ msgstr "RPM এ ভুল স্বাক্ষর আছে।"
-
-#  button label
-#, fuzzy
-#~ msgid "Default"
-#~ msgstr "ডিফল্ট (&e)"
-
-#  architecture = স্থাপত্য in commonwords.po, but does not sound right here.
-#, fuzzy
-#~ msgid "ignore architecture"
-#~ msgstr "বুট স্থাপত্য"
-
-#~ msgid "unknown"
-#~ msgstr "অজানা"
-
-# ইনস্টল
-#, fuzzy
-#~ msgid "installed"
-#~ msgstr "ইনস্টল করো"
-
-#, fuzzy
-#~ msgid "uninstalled"
-#~ msgstr "স্বয়ংক্রীয় ইনস্টল"
-
-#, fuzzy
-#~ msgid "to be installed (soft)"
-#~ msgstr "আবারো ইনস্টল করা প্রয়োজন"
-
-#, fuzzy
-#~ msgid "to be uninstalled"
-#~ msgstr "আবারো ইনস্টল করা প্রয়োজন"
+"%s ফাইলের একটি অবৈধ চেকসাম আছে।\n"
+"%s প্রত্যাশিত ছিল, পাওয়া গেছে %sতবুও ফাইলটি ব্যবহার করতে চান?"

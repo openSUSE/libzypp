@@ -103,6 +103,14 @@ YUMProductParser::process(const xmlTextReaderPtr reader)
         productPtr->ver = _helper.attribute(child,"ver");
         productPtr->rel = _helper.attribute(child,"rel");
       }
+      else if (name == "distribution-name")
+      {
+        productPtr->distribution_name = _helper.content(child);
+      }
+      else if (name == "distribution-edition")
+      {
+        productPtr->distribution_edition = _helper.content(child);
+      }
       else if (name == "provides")
       {
         prim.parseDependencyEntries(& productPtr->provides, child);

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar  2 15:02:36 CET 2007 - dmacvicar@suse.de
+
+- libzypp does not parse distribution-[name|edition] in YUM
+  product.xml
+  (#250599)
+- r5157
+
+-------------------------------------------------------------------
 Tue Feb 27 17:03:30 CET 2007 - schubi@suse.de
 
 - latest translations added 

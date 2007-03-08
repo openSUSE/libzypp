@@ -30,6 +30,7 @@
 
 #include "zypp/ZYppFactory.h"
 #include "zypp/SysContent.h"
+#include "zypp/NameKindProxy.h"
 
 
 using namespace std;
@@ -199,6 +200,54 @@ namespace zypp
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 
+class SyscontentEntriesToPool
+{
+  public:
+    struct Suggest
+    {
+      Suggest( const ResPool & pool_r,
+               const syscontent::Reader::Entry & entry_r );
+
+      syscontent::Reader::Entry _entry;
+      NameKindProxy             _items;
+    };
+
+  public:
+    SyscontentEntriesToPool( const ResPool & pool_r )
+    : _pool( pool_r )
+    {}
+
+    void suggest( const syscontent::Reader::Entry & entry_r )
+    {
+      _suggest.push_back( Suggest( _pool, entry_r ) );
+      DBG << _suggest.back()._items << endl;
+    }
+
+    std::list<Suggest> _suggest;
+
+  private:
+    ResPool _pool;
+};
+
+SyscontentEntriesToPool::Suggest::Suggest( const ResPool & pool_r,
+                                           const syscontent::Reader::Entry & entry_r )
+: _entry( entry_r )
+, _items( pool_r, _entry.name(), Resolvable::Kind( _entry.kind() ) )
+{
+  if ( ! _items.installedEmpty() )
+    {
+      // installed
+      if ( (*_items.installedBegin())->edition() >= entry_r.edition() )
+        {
+          // keep
+        }
+      else
+        {
+          // 
+        }
+    }
+}
+
 /******************************************************************
 **
 **      FUNCTION NAME : main
@@ -254,8 +303,29 @@ int main( int argc, char * argv[] )
         }
 
       MIL << contentR << endl;
-
-      for_each( contentR.begin(), contentR.end(), Print() );
+      x.start( "Sugest" );
+      for ( syscontent::Reader::const_iterator it = contentR.begin();
+            it != contentR.end(); ++ it )
+        {
+          NameKindProxy items( pool, 
+                               it->.name(), Resolvable::Kind( it->kind() ) );
+          if ( items.installedEmpty() )
+            {
+              // not installed
+              if ( ! items.availableEmpty() )
+                {
+                  availableBegin()->status().
+                }
+              else
+                {
+                  // missing and not available
+                }
+            }
+        }
+      
+      SyscontentEntriesToPool todo( pool );
+      for_each( contentR.begin(), contentR.end(),
+                bind( &SyscontentEntriesToPool::suggest, ref(todo), _1 ) );
     }
 
   INT << "===[END]============================================" << endl << endl;

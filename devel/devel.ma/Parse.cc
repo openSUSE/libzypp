@@ -203,6 +203,11 @@ int main( int argc, char * argv[] )
 
   ResPool pool( getZYpp()->pool() );
 
+  getZYpp()->initTarget( sysRoot );
+  USR << "Added target: " << pool << endl;
+  zypp::base::LogControl::instance().logNothing();
+  return 0;
+
   if ( 1 )
     {
       zypp::base::LogControl::TmpLineWriter shutUp;

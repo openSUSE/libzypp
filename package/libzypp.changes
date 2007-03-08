@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar  9 00:08:38 CET 2007 - ma@suse.de
+
+- Allow configuration of trusted vendors via
+  /var/lib/zypp/db/trustedVendors. (#186636)
+- revision
+- version 2.15.4
+
+-------------------------------------------------------------------
 Fri Mar  2 15:02:36 CET 2007 - dmacvicar@suse.de
 
 - libzypp does not parse distribution-[name|edition] in YUM
@@ -9,7 +17,7 @@ Fri Mar  2 15:02:36 CET 2007 - dmacvicar@suse.de
 -------------------------------------------------------------------
 Tue Feb 27 17:03:30 CET 2007 - schubi@suse.de
 
-- latest translations added 
+- latest translations added
 
 -------------------------------------------------------------------
 Fri Feb 23 17:17:20 CET 2007 - jkupec@suse.cz
@@ -22,7 +30,7 @@ Thu Feb 22 17:18:32 CET 2007 - dmacvicar@suse.de
 
 - (#247459) ftp probing
   denied == dont exists in ftp
-- r 5075  
+- r 5075
 - version 2.15.3
 
 -------------------------------------------------------------------
@@ -36,7 +44,7 @@ Mon Feb 19 13:26:04 CET 2007 - jsrain@suse.cz
 -------------------------------------------------------------------
 Fri Feb 16 11:45:08 CET 2007 - schubi@suse.de
 
-- Added new translations 
+- Added new translations
 
 -------------------------------------------------------------------
 Wed Feb 14 15:40:25 CET 2007 - schubi@suse.de
@@ -44,7 +52,7 @@ Wed Feb 14 15:40:25 CET 2007 - schubi@suse.de
 - The context of establishPool will be stored in Resolver and will be
   regarded for the next solver run everytime. So it will be not reset by
   any solver run anymore.
-  bug 191810 ( A broken patch will not be installed again) 
+  bug 191810 ( A broken patch will not be installed again)
 - revision 5026
 - version 2.15.1
 

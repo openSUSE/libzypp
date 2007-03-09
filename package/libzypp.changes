@@ -3,7 +3,7 @@ Fri Mar  9 00:08:38 CET 2007 - ma@suse.de
 
 - Allow configuration of trusted vendors via
   /var/lib/zypp/db/trustedVendors. (#186636)
-- revision
+- revision 5191
 - version 2.15.4
 
 -------------------------------------------------------------------

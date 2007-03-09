@@ -52,7 +52,7 @@ msgstr "URL-schemat %s är ogiltigt"
 
 #: ../zypp/url/UrlBase.cc:854
 msgid "Unable to parse Url authority"
-msgstr "Det går inte att analysera URL-behörigheten"
+msgstr "Det gick inte att analysera URL-behörigheten"
 
 #: ../zypp/url/UrlBase.cc:942
 msgid "Url scheme does not allow a username"
@@ -102,15 +102,15 @@ msgstr "Den kodade strängen innehåller ett NULL-byte"
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
-msgstr "Ogiltigt ///array split-avgränsningstecken för parameter///"
+msgstr "Ogiltigt avgränsningstecken för delning av parametermatris"
 
 #: ../zypp/url/UrlUtils.cc:213
 msgid "Invalid parameter map split separator character"
-msgstr "Ogiltigt ///map split-avgränsningstecken för parameter///"
+msgstr "Ogiltigt avgränsningstecken för delning av parametermappning"
 
 #: ../zypp/url/UrlUtils.cc:283
 msgid "Invalid parameter array join separator character"
-msgstr "Ogiltigt ///array join avgränsningstecken för parameter///"
+msgstr "Ogiltigt avgränsningstecken för koppling av parametermatris"
 
 #: ../zypp/Url.cc:110
 msgid "Invalid LDAP URL query string"
@@ -131,7 +131,7 @@ msgstr "Den tomma URL-objektreferensen är ogiltig"
 
 #: ../zypp/Url.cc:316 ../zypp/Url.cc:330
 msgid "Unable to parse Url components"
-msgstr "Det går inte att analysera URL-komponenterna"
+msgstr "Det gick inte att analysera URL-komponenterna"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -2580,8 +2580,11 @@ msgid "Unable to restore all sources."
 msgstr "Kunde inte återställa alla källor."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Minst en källa har redan registrerats. Det går inte att återställa lagrade källor."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Minst en källa har redan registrerats. Det går inte att återställa lagrade "
+"källor."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2709,7 +2712,8 @@ msgstr "skapade säkerhetskopian %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "Det går inte att skapa en fil som behövs när uppdateringen ska installeras."
+msgstr ""
+"Det går inte att skapa en fil som behövs när uppdateringen ska installeras."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2853,8 +2857,12 @@ msgstr ""
 "Det finns ingen resurs tillgänglig vilken stödjer det här kravet."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "På grund av problemen som beskrivs ovan/nedan löser inte den här resursen alla beroenden"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"På grund av problemen som beskrivs ovan/nedan löser inte den här resursen "
+"alla beroenden"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2951,7 +2959,8 @@ msgstr "%s kommer inte att avinstalleras eftersom den fortfarande krävs"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s gör %s inaktuellt. Det går dock inte att ta bort %s eftersom det är låst."
+msgstr ""
+"%s gör %s inaktuellt. Det går dock inte att ta bort %s eftersom det är låst."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -2981,8 +2990,12 @@ msgstr "Installera %s trots att det kommer att ändra arkitekturen"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s tillhandahåller detta beroende men skulle förändra arkitekturen för det installerade objektet"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s tillhandahåller detta beroende men skulle förändra arkitekturen för det "
+"installerade objektet"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3093,15 +3106,22 @@ msgstr "Resursen %s markeras som avinstallerbar"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s är schemalagd för installation, men det är inte möjligt på grund av beroendeproblem."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s är schemalagd för installation, men det är inte möjligt på grund av "
+"beroendeproblem."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "Det går inte att installera %s eftersom det redan har markerats som att vara i behov av avinstallation"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"Det går inte att installera %s eftersom det redan har markerats som att vara "
+"i behov av avinstallation"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3112,7 +3132,8 @@ msgstr "Det går inte att installera %s eftersom det redan har markerats som att
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:179
 #, c-format
 msgid "Can't install %s since it is does not apply to this system."
-msgstr "Kan inte installera %s eftersom det inte är tillämpligt för det här systemet."
+msgstr ""
+"Kan inte installera %s eftersom det inte är tillämpligt för det här systemet."
 
 #. affected() = item 1 which has to be installed
 #. _capability =
@@ -3122,7 +3143,9 @@ msgstr "Kan inte installera %s eftersom det inte är tillämpligt för det här 
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Det går inte att installera %s, eftersom %s redan har markerats som att vara i behov av installation"
+msgstr ""
+"Det går inte att installera %s, eftersom %s redan har markerats som att vara "
+"i behov av installation"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3233,13 +3256,19 @@ msgstr "%s tillhandahåller %s, men är schemalagd för avinstallation."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr "%s tillhandahåller %s, men en annan version av detta %s har redan installerats."
+msgstr ""
+"%s tillhandahåller %s, men en annan version av detta %s har redan "
+"installerats."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s tillhandahåller %s, men är avinstallerbart.  Försök installera det ensamt om du vill ha mer information."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s tillhandahåller %s, men är avinstallerbart. Försök installera det ensamt "
+"om du vill ha mer information."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3274,8 +3303,10 @@ msgstr "Kan inte tillfredsställa krav %s för %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s krävs av en annan resurs som ska installeras, så länken tas inte bort."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s krävs av en annan resurs som ska installeras, så länken tas inte bort."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3510,13 +3541,19 @@ msgstr "applydeltarpm misslyckades."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det på nytt?"
+msgstr ""
+"Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det "
+"på nytt?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det på nytt, eller avbryta installationen?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"Integritetskontrollen misslyckades för paketet %s. Vill du försöka hämta det "
+"på nytt, eller avbryta installationen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."

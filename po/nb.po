@@ -3227,7 +3227,7 @@ msgstr "%s inneholder %s, men den er beskyttet."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:432
 #, c-format
 msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s inneholder %s, men er markert for å beholdes."
+msgstr "%s inneholder %s, men er merket for å beholdes."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:451
@@ -4889,7 +4889,8 @@ msgid ""
 "Expected %s, found %s\n"
 "Use the file anyway?"
 msgstr ""
-"Ugyldig kontrollsum i filen %s. Forventet kontrollsum var %s, men %s ble returnert.\n"
+"Filen %s har en ukjent kontrollsum \n"
+".Forventet %s, men finner %s\n"
 " Vil du bruke filen likevel?"
 
 #~ msgid "Ok"

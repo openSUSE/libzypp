@@ -2590,10 +2590,8 @@ msgid "Unable to restore all sources."
 msgstr "Kan ikke gendanne alle kilder."
 
 #: ../zypp/SourceManager.h:68
-msgid ""
-"At least one source already registered, stored sources cannot be restored."
-msgstr ""
-"Mindst én kilde er allerede registreret. Lagrede kilder kan ikke gendannes."
+msgid "At least one source already registered, stored sources cannot be restored."
+msgstr "Mindst én kilde er allerede registreret. Lagrede kilder kan ikke gendannes."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2722,9 +2720,7 @@ msgstr "backup %s blev oprettet"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr ""
-"En fil, der er nødvendig for at foretage en opdateringsinstallation, kunne "
-"ikke oprettes."
+msgstr "En fil, der er nødvendig for at foretage en opdateringsinstallation, kunne ikke oprettes."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2868,12 +2864,8 @@ msgstr ""
 "Der er ingen tilgængelige ressourcer, der understøtter dette krav."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid ""
-"Due problems which are described above/below this resolution will not solve "
-"all dependencies"
-msgstr ""
-"Grundet problemerne beskrevet ovenfor/nedenunder vil denne beslutning ikke "
-"løse alle afhængigheder"
+msgid "Due problems which are described above/below this resolution will not solve all dependencies"
+msgstr "Grundet problemerne beskrevet ovenfor/nedenunder vil denne beslutning ikke løse alle afhængigheder"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -3002,12 +2994,8 @@ msgstr "Installér %s selvom det ændrer arkitekturen"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid ""
-"%s provides this dependency but would changed the architecture of the "
-"installed item"
-msgstr ""
-"%s giver denne afhængighed, men ændrer arkitekturen i det installerede "
-"element"
+msgid "%s provides this dependency but would changed the architecture of the installed item"
+msgstr "%s giver denne afhængighed, men ændrer arkitekturen i det installerede element"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3119,22 +3107,15 @@ msgstr "Markerer ændringen %s som ikke-installérbar"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid ""
-"%s is scheduled to be installed, but this is not possible because of "
-"dependency problems."
-msgstr ""
-"%s er planlagt til installation. Grundet afhængighedsproblemer er dette "
-"imidlertid ikke muligt."
+msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
+msgstr "%s er planlagt til installation. Grundet afhængighedsproblemer er dette imidlertid ikke muligt."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid ""
-"Can't install %s since it is already marked as needing to be uninstalled"
-msgstr ""
-"Kan ikke installere %s, da det allerede er markeret som nødvendigt at "
-"afinstallere"
+msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgstr "Kan ikke installere %s, da det allerede er markeret som nødvendigt at afinstallere"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3155,9 +3136,7 @@ msgstr "Kan ikke installere %s, da det ikke kan anvendes på dette system."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr ""
-"Kan ikke installere %s, siden %s allerede er markeret som nødvendigt at "
-"installere"
+msgstr "Kan ikke installere %s, siden %s allerede er markeret som nødvendigt at installere"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3268,18 +3247,13 @@ msgstr "%s tilbyder %s, men er planlagt til afinstallation."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr ""
-"%s tilbyder %s, men en anden version af denne %s er allerede installeret."
+msgstr "%s tilbyder %s, men en anden version af denne %s er allerede installeret."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid ""
-"%s provides %s, but it is uninstallable.  Try installing it on its own for "
-"more details."
-msgstr ""
-"%s tilbyder %s, men kan ikke installeres.  Prøv at installere den alene for "
-"at få flere detaljer."
+msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
+msgstr "%s tilbyder %s, men kan ikke installeres.  Prøv at installere den alene for at få flere detaljer."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3314,11 +3288,8 @@ msgstr "Kan ikke tilfredsstille kravet %s for %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid ""
-"%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr ""
-"%s er krævet af en anden ændring, der bliver installeret, så den bliver ikke "
-"af-linket."
+msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr "%s er krævet af en anden ændring, der bliver installeret, så den bliver ikke af-linket."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3330,8 +3301,7 @@ msgstr ""
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr ""
-"%s er krævet af anden installeret ændring, så den bliver ikke linket fra."
+msgstr "%s er krævet af anden installeret ændring, så den bliver ikke linket fra."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3354,9 +3324,7 @@ msgstr "%s er låst og kan ikke afinstalleres."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr ""
-"En konflikt over %s (%s) kræver at %s, der er sat til installering, bliver "
-"fjernet."
+msgstr "En konflikt over %s (%s) kræver at %s, der er sat til installering, bliver fjernet."
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3559,19 +3527,13 @@ msgstr "applydeltarpm mislykkedes."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
-"Pakken %s bestod ikke integritetskontrollen. Vil du prøve at downloade den "
-"igen?"
+msgstr "Pakken %s bestod ikke integritetskontrollen. Vil du prøve at downloade den igen?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid ""
-"Package %s fails integrity check. Do you want to retry downloading it, or "
-"abort installation?"
-msgstr ""
-"Pakken %s bestod ikke integritetskontrollen. Vil du prøve at downloade den "
-"igen eller afbryde installationen?"
+msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgstr "Pakken %s bestod ikke integritetskontrollen. Vil du prøve at downloade den igen eller afbryde installationen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."

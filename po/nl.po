@@ -2524,8 +2524,11 @@ msgid "Unable to restore all sources."
 msgstr "Niet alle bronnen konden worden hersteld."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Er is ten minste al één bron geregistreerd, opgeslagen bronnen kunnen niet worden hersteld."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Er is ten minste al één bron geregistreerd, opgeslagen bronnen kunnen niet "
+"worden hersteld."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2579,7 +2582,9 @@ msgstr "Configuratiebestanden gewijzigd voor %s:"
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "rpm sloeg %s op als %s, maar het was niet mogelijk om het verschil te achterhalen"
+msgstr ""
+"rpm sloeg %s op als %s, maar het was niet mogelijk om het verschil te "
+"achterhalen"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2595,7 +2600,9 @@ msgstr ""
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "rpm maakt %s aan als %s, maar het was niet mogelijk om het verschil te achterhalen"
+msgstr ""
+"rpm maakt %s aan als %s, maar het was niet mogelijk om het verschil te "
+"achterhalen"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2654,7 +2661,8 @@ msgstr "reservekopie %s aangemaakt"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "Kan het bestand dat nodig is voor het installeren van de update niet maken."
+msgstr ""
+"Kan het bestand dat nodig is voor het installeren van de update niet maken."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2798,8 +2806,12 @@ msgstr ""
 "Er momenteel geen gegevensbron beschikbaar die deze vereiste aanlevert."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Vanwege bovenstaande/onderstaande problemen zal deze oplossing niet alle afhankelijkheden verhelpen."
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Vanwege bovenstaande/onderstaande problemen zal deze oplossing niet alle "
+"afhankelijkheden verhelpen."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2859,13 +2871,15 @@ msgstr "%s kan niet worden geïnstalleerd omdat afhankelijkheden ontbreken"
 #: ../zypp/solver/detail/Resolver_problems.cc:585
 #, c-format
 msgid "%s fulfil dependencies of %s but will be uninstalled"
-msgstr "%s lost de afhankelijkheden van %s op, maar zal worden gedeïnstalleerd."
+msgstr ""
+"%s lost de afhankelijkheden van %s op, maar zal worden gedeïnstalleerd."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s voldoet aan afhankelijkheden van %s maar blijft op het systeem staan"
+msgstr ""
+"%s voldoet aan afhankelijkheden van %s maar blijft op het systeem staan"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -2896,7 +2910,8 @@ msgstr "%s zal niet worden gedeïnstalleerd omdat het nog steeds vereist wordt"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s vervangt %s. Maar %s kan niet worden verwijderd omdat het is vergrendeld."
+msgstr ""
+"%s vervangt %s. Maar %s kan niet worden verwijderd omdat het is vergrendeld."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -2926,8 +2941,12 @@ msgstr "%s installeren alhoewel het de architectuur zal wijzigen"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s levert deze afhankelijkheid maar zou de architectuur van het geïnstalleerde item wijzigen."
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s levert deze afhankelijkheid maar zou de architectuur van het "
+"geïnstalleerde item wijzigen."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3038,15 +3057,22 @@ msgstr "Oplosbare %s wordt als niet-installeerbaar gemarkeerd"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s is aangemerkt voor installatie, maar dit is niet mogelijk vanwege afhankelijkheidsproblemen."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s is aangemerkt voor installatie, maar dit is niet mogelijk vanwege "
+"afhankelijkheidsproblemen."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "Kan %s niet installeren omdat deze al is gemarkeerd als 'moet worden gedeïnstalleerd'"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"Kan %s niet installeren omdat deze al is gemarkeerd als 'moet worden "
+"gedeïnstalleerd'"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3057,7 +3083,8 @@ msgstr "Kan %s niet installeren omdat deze al is gemarkeerd als 'moet worden ged
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:179
 #, c-format
 msgid "Can't install %s since it is does not apply to this system."
-msgstr "Kan %s niet installeren omdat deze niet van toepassing is op dit systeem."
+msgstr ""
+"Kan %s niet installeren omdat deze niet van toepassing is op dit systeem."
 
 #. affected() = item 1 which has to be installed
 #. _capability =
@@ -3166,7 +3193,8 @@ msgstr "Er zijn geen installeerbare aanbieders van %s"
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:341
 #, c-format
 msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr "Upgraden naar %s om het verwijderen van %s te vermijden is niet mogelijk."
+msgstr ""
+"Upgraden naar %s om het verwijderen van %s te vermijden is niet mogelijk."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:359
@@ -3183,8 +3211,12 @@ msgstr "%s levert %s, maar een andere versie van %s is al geïnstalleerd."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s levert %s, maar is niet-installeerbaar. Voor meer informatie, probeer het pakket/de patch zelfstandig te installeren."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s levert %s, maar is niet-installeerbaar. Voor meer informatie, probeer het "
+"pakket/de patch zelfstandig te installeren."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3219,8 +3251,11 @@ msgstr "Aan de vereiste %s voor %s kan niet worden voldaan"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s is nodig voor een andere te installeren oplosbare, dus de koppeling wordt niet ongedaan gemaakt."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s is nodig voor een andere te installeren oplosbare, dus de koppeling wordt "
+"niet ongedaan gemaakt."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3232,7 +3267,9 @@ msgstr "%s is nodig voor een andere te installeren oplosbare, dus de koppeling w
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s is nodig voor andere geïnstalleerde oplosbare, dus de koppeling wordt niet ongedaan gemaakt."
+msgstr ""
+"%s is nodig voor andere geïnstalleerde oplosbare, dus de koppeling wordt "
+"niet ongedaan gemaakt."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3255,7 +3292,8 @@ msgstr "%s is vergrendeld en kan niet worden gedeïnstalleerd."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "Een conflict over %s (%s) vereist het verwijderen van te installeren %s"
+msgstr ""
+"Een conflict over %s (%s) vereist het verwijderen van te installeren %s"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3358,7 +3396,8 @@ msgstr "Indexbestanden lezen"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Het ondertekende bestand repomd.xml voldoet niet aan de handtekeningcontrole."
+msgstr ""
+"Het ondertekende bestand repomd.xml voldoet niet aan de handtekeningcontrole."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3457,13 +3496,19 @@ msgstr "applydeltarpm mislukt."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen te downloaden?"
+msgstr ""
+"Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen "
+"te downloaden?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen te downloaden of de installatie afbreken?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen "
+"te downloaden of de installatie afbreken?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4820,8 +4865,13 @@ msgstr ""
 #~ msgid "Deleting %s"
 #~ msgstr "Verwijdert %s"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
-#~ msgstr "Kan %s niet installeren omdat er een oplosbare met dezelfde naam als is gemarkeerd als 'moet worden geïnstalleerd'."
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
+#~ msgstr ""
+#~ "Kan %s niet installeren omdat er een oplosbare met dezelfde naam als is "
+#~ "gemarkeerd als 'moet worden geïnstalleerd'."
 
 #~ msgid "%s cannot be uninstalled due missing dependencies"
-#~ msgstr "%s kan niet worden gedeïnstalleerd vanwege ontbrekende afhankelijkheden"
+#~ msgstr ""
+#~ "%s kan niet worden gedeïnstalleerd vanwege ontbrekende afhankelijkheden"

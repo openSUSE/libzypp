@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 14 14:23:02 CET 2007 - schubi@suse.de
+
+- reducing logging (error -> debug)  bug #252921
+  find resolvable for atom which has >= edition 
+  Revision 5215
+
+-------------------------------------------------------------------
 Fri Mar  9 12:36:13 CET 2007 - schubi@suse.de
 
 - new translations added

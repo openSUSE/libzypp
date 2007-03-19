@@ -98,7 +98,7 @@ msgstr "تحليل معلمة المسار غير مدعوم لعنوان URL ه
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
-msgstr "تحتوي السلسلة المرمزة على وحدة بايت NUL"
+msgstr "تحتوي السلسلة المُرمَّزة على وحدة بايت NUL"
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
@@ -3197,7 +3197,7 @@ msgstr "%s يوفر %s، لكن له هيكل آخر."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:469
 #, c-format
 msgid "Can't satisfy requirement %s for %s"
-msgstr "تعذر استيقاء متطلب %s لـ %s"
+msgstr "تعذر استيفاء متطلب %s لـ %s"
 
 #. affected() = to-be-installed resolvable which was scheduled to be uninstalled
 #. _capability =
@@ -3562,7 +3562,7 @@ msgstr "الأرجنتين"
 #. :ARG:032:
 #: ../zypp/CountryCode.cc:228
 msgid "American Samoa"
-msgstr "ساموا الأميركية"
+msgstr "ساموا الأمريكية"
 
 #. :ASM:016:
 #: ../zypp/CountryCode.cc:229
@@ -4453,7 +4453,7 @@ msgstr "السويد"
 #. :SWE:752:
 #: ../zypp/CountryCode.cc:408
 msgid "Singapore"
-msgstr "سنغفورا"
+msgstr "سنغافورا"
 
 #. :SGP:702:
 #: ../zypp/CountryCode.cc:409
@@ -4711,7 +4711,7 @@ msgid ""
 "Untrusted key found:\n"
 "%s|%s|%s\n"
 "Trust key?"
-msgstr "تم العثور على مفتاح غير موثوق:\n%s|%s|%s\n هلى تريد الوثوق بالمفتاح؟"
+msgstr "تم العثور على مفتاح غير موثوق:\n%s|%s|%s\n هل تريد الوثوق بالمفتاح؟"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format

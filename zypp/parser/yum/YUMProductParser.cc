@@ -12,6 +12,8 @@
 
 #include <istream>
 #include <string>
+#include "zypp/ZYppFactory.h"
+#include "zypp/ZYpp.h"
 #include "zypp/parser/xml_parser_assert.h"
 #include <libxml/xmlreader.h>
 #include <libxml/tree.h>
@@ -34,15 +36,18 @@ YUMProductParser::~YUMProductParser()
 
 YUMProductParser::YUMProductParser(std::istream &is, const std::string& baseUrl, parser::ParserProgress::Ptr progress )
     : XMLNodeIterator<YUMProductData_Ptr>(is, baseUrl,PRODUCTSCHEMA, progress)
+      , _zypp_architecture( getZYpp()->architecture() )
 {
   fetchNext();
 }
 
 YUMProductParser::YUMProductParser()
+  : _zypp_architecture( getZYpp()->architecture() )
 { }
 
 YUMProductParser::YUMProductParser(YUMProductData_Ptr& entry)
     : XMLNodeIterator<YUMProductData_Ptr>(entry)
+      , _zypp_architecture( getZYpp()->architecture() )
 { }
 
 
@@ -76,6 +81,25 @@ YUMProductParser::process(const xmlTextReaderPtr reader)
       if (name == "name")
       {
         productPtr->name = _helper.content(child);
+      }
+      else if (name == "arch")
+      {
+        productPtr->arch = _helper.content(child);
+        try
+        {
+          if (!Arch(productPtr->arch).compatibleWith( _zypp_architecture ))
+          {
+            productPtr = NULL;			// skip <package>, incompatible architecture
+            break;
+          }
+        }
+        catch ( const Exception & excpt_r )
+        {
+          ZYPP_CAUGHT( excpt_r );
+          DBG << "Skipping malformed " << productPtr->arch << endl;
+          productPtr = NULL;
+          break;
+        }
       }
       else if (name == "vendor")
       {

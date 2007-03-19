@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 19 10:25:24 CET 2007 - schubi@suse.de
+
+- translations added
+- r 5230
+- version 2.15.6
+
+-------------------------------------------------------------------
 Wed Mar 14 14:23:02 CET 2007 - schubi@suse.de
 
 - reducing logging (error -> debug)  bug #252921

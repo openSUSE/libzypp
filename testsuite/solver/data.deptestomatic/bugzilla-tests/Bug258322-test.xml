@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- Upgrade: Bug 258322 - YaST2 removes packages without warning on conflicts -->
+<test>
+<setup arch="i686">
+	<system file="Bug258322-system.xml.gz"/>
+	<channel file="Bug258322-1-package.xml.gz" name="1" />
+</setup>
+<trial>
+<distupgrade delete_unmaintained="false"/>
+<reportproblems/>
+</trial>
+</test>

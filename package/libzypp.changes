@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Mar 29 14:18:40 CEST 2007 - schubi@suse.de
+
+- Upgrade: Do NOT delete packages which have unresolved dependencies -->
+  Ask the user. Bug 258322
+- r5273
+- version 2.15.7
+
+-------------------------------------------------------------------
 Mon Mar 19 17:44:50 CET 2007 - dmacvicar@suse.de
 
 - parse product arch (#254838)

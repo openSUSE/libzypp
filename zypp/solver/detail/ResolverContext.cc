@@ -432,13 +432,13 @@ ResolverContext::uninstall (PoolItem_Ref item, bool part_of_upgrade, bool due_to
 
     assert (! (due_to_obsolete && due_to_unlink));
 
-    if ( ( (forceResolve() // This is the behaviour of ZMD
-	    || upgradeMode())
+    if ( ( forceResolve() // This is the behaviour of ZMD
+//	    || upgradeMode())
 	  && (status.isToBeInstalledNotSoft()             // \ The resolvable will be installed
 	      || item.status().isToBeInstalledNotSoft())) // / explicit. (And not by WEAK dependencies like supplements)
 	 
-	 || ( (!forceResolve() // This is the bahaviour of YaST
-	       && !upgradeMode())
+	 || ( !forceResolve() // This is the bahaviour of YaST
+//	       && !upgradeMode())
 	      && ((status.staysInstalled() || status.isToBeInstalledNotSoft())                   //   \ We will have the resolvable
 		  && (item.status().staysInstalled() || item.status().isToBeInstalledNotSoft())  //   / available.
 		  || status.isToBeInstalledNotSoft())                                            //   is to be installed e.g. due solver requirement
@@ -446,6 +446,7 @@ ResolverContext::uninstall (PoolItem_Ref item, bool part_of_upgrade, bool due_to
 	      && !part_of_upgrade
 	      && !due_to_obsolete
 	      && !due_to_unlink)) {
+
 	// We have a resolvable which should be kept on the system or is set to be installed explicit.
 	// So we are not allowed deleting it. The reason WHY this resolvable has to be deleted here
 	// is not show. We go back to the ResolverInfo to evaluate the reason. This reason (marked as an info)

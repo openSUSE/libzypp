@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr  4 13:23:30 CEST 2007 - schubi@suse.de
+
+- New translations added 
+
+-------------------------------------------------------------------
 Thu Mar 29 14:18:40 CEST 2007 - schubi@suse.de
 
 - Upgrade: Do NOT delete packages which have unresolved dependencies -->

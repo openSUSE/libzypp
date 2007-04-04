@@ -103,11 +103,13 @@ msgstr "La chaîne codée contient un octet NUL"
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
-msgstr "Caractère séparateur de division non valide pour l'ensemble de paramètres"
+msgstr ""
+"Caractère séparateur de division non valide pour l'ensemble de paramètres"
 
 #: ../zypp/url/UrlUtils.cc:213
 msgid "Invalid parameter map split separator character"
-msgstr "Caractère séparateur de division non valide pour le mappage de paramètres"
+msgstr ""
+"Caractère séparateur de division non valide pour le mappage de paramètres"
 
 #: ../zypp/url/UrlUtils.cc:283
 msgid "Invalid parameter array join separator character"
@@ -2518,8 +2520,11 @@ msgid "Unable to restore all sources."
 msgstr "Impossible de restaurer toutes les sources."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Au moins une source est déjà enregistrée ; les sources stockées ne peuvent pas être restaurées."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Au moins une source est déjà enregistrée ; les sources stockées ne peuvent "
+"pas être restaurées."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2575,7 +2580,9 @@ msgstr "Fichiers de configuration modifiés pour %s :"
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "rpm a enregistré %s sous le nom de %s mais il a été impossible de déterminer la différence"
+msgstr ""
+"rpm a enregistré %s sous le nom de %s mais il a été impossible de déterminer "
+"la différence"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2591,7 +2598,9 @@ msgstr ""
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "rpm a créé %s sous le nom de %s mais il a été impossible de déterminer la différence"
+msgstr ""
+"rpm a créé %s sous le nom de %s mais il a été impossible de déterminer la "
+"différence"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2655,7 +2664,8 @@ msgstr "- sauvegarde %s créée"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "Impossible de créer un fichier nécessaire pour installer la mise à jour."
+msgstr ""
+"Impossible de créer un fichier nécessaire pour installer la mise à jour."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2800,8 +2810,12 @@ msgstr ""
 "Aucune ressource disponible qui prenne en charge cette exigence."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Étant donné les problèmes décrits ci-dessus/dessous, cette solution ne résoudra pas toutes les dépendances"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Étant donné les problèmes décrits ci-dessus/dessous, cette solution ne "
+"résoudra pas toutes les dépendances"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2870,7 +2884,8 @@ msgstr "%s satisfait les dépendances de %s mais sera désinstallé"
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s satisfait les dépendances de %s mais sera conservé sur votre système"
+msgstr ""
+"%s satisfait les dépendances de %s mais sera conservé sur votre système"
 
 # TLABEL online_update_2002_01_04_0147__92
 #. TranslatorExplanation %s = name of package, patch, selection ...
@@ -2902,7 +2917,8 @@ msgstr "%s ne sera pas désinstallé car il est toujours requis"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s %s obsolètes. Mais il est impossible de supprimer %s qui est verrouillé."
+msgstr ""
+"%s %s obsolètes. Mais il est impossible de supprimer %s qui est verrouillé."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -2932,8 +2948,12 @@ msgstr "Installer %s bien que cela modifie l'architecture"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s offre cette dépendance, mais changerait l'architecture de l'élément installé"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s offre cette dépendance, mais changerait l'architecture de l'élément "
+"installé"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3046,15 +3066,22 @@ msgstr "Marquage du correctif %s comme étant non installable"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "L'installation de %s est planifiée mais elle est impossible en raison de problèmes de dépendance."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"L'installation de %s est planifiée mais elle est impossible en raison de "
+"problèmes de dépendance."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "Impossible de mettre en place %s car le fichier est déjà marqué comme étant à désinstaller"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"Impossible de mettre en place %s car le fichier est déjà marqué comme étant "
+"à désinstaller"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3075,7 +3102,8 @@ msgstr "Impossible d'installer %s parce qu'il ne s'applique pas à ce système."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Impossible d'installer %s car %s est déjà marqué comme étant à installer"
+msgstr ""
+"Impossible d'installer %s car %s est déjà marqué comme étant à installer"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3177,13 +3205,16 @@ msgstr "Aucun fournisseur de %s définissable"
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:341
 #, c-format
 msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr "Impossible de procéder à une mise à niveau vers %s pour éviter de retirer %s."
+msgstr ""
+"Impossible de procéder à une mise à niveau vers %s pour éviter de retirer %s."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:359
 #, c-format
 msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr "%s fournit %s mais un problème lié à la planification de la désinstallation se pose."
+msgstr ""
+"%s fournit %s mais un problème lié à la planification de la désinstallation "
+"se pose."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
@@ -3194,8 +3225,12 @@ msgstr "%s fournit %s, mais une autre version de %s est déjà installée."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s fournit %s mais un problème d'installation se pose. Pour identifier le problème, tentez de l'installer indépendamment."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s fournit %s mais un problème d'installation se pose. Pour identifier le "
+"problème, tentez de l'installer indépendamment."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3230,8 +3265,11 @@ msgstr "Impossible de satisfaire l'exigence %s pour %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s est requis par un autre correctif à installer, donc sa liaison ne sera pas supprimée."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s est requis par un autre correctif à installer, donc sa liaison ne sera "
+"pas supprimée."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3243,7 +3281,9 @@ msgstr "%s est requis par un autre correctif à installer, donc sa liaison ne se
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s est nécessaire à un autre correctif installé pour éviter l'absence de liaison."
+msgstr ""
+"%s est nécessaire à un autre correctif installé pour éviter l'absence de "
+"liaison."
 
 # TLABEL autoinst_2002_08_07_0216__335
 #. affected() = to-be-uninstalled resolvable which is locked
@@ -3447,7 +3487,8 @@ msgstr "Lecture du correctif %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:89
 #: ../zypp/source/yum/YUMScriptImpl.cc:123
 msgid "The script file failed the checksum test."
-msgstr "Échec du fichier de script lors du test relatif à la somme de contrôle."
+msgstr ""
+"Échec du fichier de script lors du test relatif à la somme de contrôle."
 
 #: ../zypp/source/susetags/SuseTagsImpl.cc:647
 #: ../zypp/source/susetags/SuseTagsImpl.cc:657
@@ -3476,13 +3517,19 @@ msgstr "applydeltarpm a échoué."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Échec de la vérification de l'intégrité du paquetage %s. Souhaitez-vous tenter de le télécharger de nouveau ?"
+msgstr ""
+"Échec de la vérification de l'intégrité du paquetage %s. Souhaitez-vous "
+"tenter de le télécharger de nouveau ?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Échec de la vérification de l'intégrité du paquetage %s. Souhaitez-vous tenter de le télécharger de nouveau, ou voulez-vous annuler l'installation ?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"Échec de la vérification de l'intégrité du paquetage %s. Souhaitez-vous "
+"tenter de le télécharger de nouveau, ou voulez-vous annuler l'installation ?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4758,7 +4805,8 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
-"Échec de la vérification de l'intégrité du fichier %s avec la clé suivante :\n"
+"Échec de la vérification de l'intégrité du fichier %s avec la clé "
+"suivante :\n"
 "%s|%s|%s\n"
 " Voulez-vous utiliser le fichier malgré tout ?"
 
@@ -4832,10 +4880,12 @@ msgstr ""
 #~ msgstr "a échoué à la recherche de contrôles de cohérence."
 
 #~ msgid "Failed check for the metadata file check sum"
-#~ msgstr "Échec de la recherche de contrôles de cohérence du fichier de métadonnées"
+#~ msgstr ""
+#~ "Échec de la recherche de contrôles de cohérence du fichier de métadonnées"
 
 #~ msgid "Failed check for the script file check sum"
-#~ msgstr "Échec de la recherche de contrôles de cohérence du fichier de script"
+#~ msgstr ""
+#~ "Échec de la recherche de contrôles de cohérence du fichier de script"
 
 #~ msgid "Default"
 #~ msgstr "Par défaut"
@@ -4853,7 +4903,9 @@ msgstr ""
 #~ msgstr "Suppression de %s"
 
 #~ msgid "Marking %s as uninstallable due to conflicts over %s (%s) from %s"
-#~ msgstr "Marquage de %s comme étant non installable en raison de conflits sur %s (%s) de %s"
+#~ msgstr ""
+#~ "Marquage de %s comme étant non installable en raison de conflits sur %s (%"
+#~ "s) de %s"
 
 #~ msgid "There are no alternative installed providers of %s for %s"
 #~ msgstr "Aucun autre fournisseur de %s n'est défini pour %s"
@@ -4881,5 +4933,9 @@ msgstr ""
 #~ msgid "to be uninstalled"
 #~ msgstr "à désinstaller"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
-#~ msgstr "Impossible de mettre en place %s car un correctif du même nom est déjà marqué comme étant à installer"
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
+#~ msgstr ""
+#~ "Impossible de mettre en place %s car un correctif du même nom est déjà "
+#~ "marqué comme étant à installer"

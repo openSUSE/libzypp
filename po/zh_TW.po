@@ -2514,7 +2514,8 @@ msgid "Unable to restore all sources."
 msgstr "無法還原所有的來源。"
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
 msgstr "至少已經註冊一個來源，已儲存的來源無法還原。"
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
@@ -2787,7 +2788,9 @@ msgstr ""
 "沒有支援此需求的可用資源。"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
 msgstr "因為上/下所描述的問題，導致此解析無法解決所有相依性。"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
@@ -2915,7 +2918,9 @@ msgstr "安裝 %s，即使它會變更架構"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
 msgstr "%s 可提供這項相依性，但是它會變更已安裝項目的架構"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
@@ -3027,14 +3032,17 @@ msgstr "將可解析 %s 標示為不可安裝"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
 msgstr "無法安裝排定的 %s，發生相依性問題。"
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
 msgstr "無法安裝 %s，已經標示為待解除安裝"
 
 #. Translator: %s = name of patch
@@ -3172,7 +3180,9 @@ msgstr "%s 會提供 %s，但已安裝 %s 的其他版本。"
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
 msgstr "無法安裝 %s 提供的 %s。 嘗試自行安裝，瞭解更多的資訊。"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
@@ -3208,7 +3218,8 @@ msgstr "無法滿足對 %s的 %s 需求"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
 msgstr "其他準備安裝的可解析檔需要 %s，因此不會解除它的連結。"
 
 #. affected() = provider of cap
@@ -3449,7 +3460,9 @@ msgstr "套件 %s 完整性檢查失敗。 您要重試下載嗎？"
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
 msgstr "套件 %s 完整性檢查失敗。 您要重試下載或中止安裝嗎？"
 
 #: ../zypp/source/SourceImpl.cc:394
@@ -4840,5 +4853,7 @@ msgstr ""
 #~ msgid "to be uninstalled"
 #~ msgstr "待解除安裝"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
 #~ msgstr "無法安裝 %s，可解析同名已經標示為待安裝"

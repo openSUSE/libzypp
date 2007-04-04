@@ -38,7 +38,8 @@ msgstr "Die Analyse von Pfadparametern wird für diese URL nicht unterstützt"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
 msgid "Query string parsing not supported for this URL"
-msgstr "Die Analyse von Abfragezeichenketten wird für diese URL nicht unterstützt"
+msgstr ""
+"Die Analyse von Abfragezeichenketten wird für diese URL nicht unterstützt"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
@@ -89,7 +90,9 @@ msgstr "Für das URL-Schema ist ein Pfadname erforderlich"
 
 #: ../zypp/url/UrlBase.cc:1112 ../zypp/url/UrlBase.cc:1126
 msgid "Relative path not allowed if authority exists"
-msgstr "Die Angabe des relativen Pfads ist nicht erlaubt, wenn die Zertifizierungsstelle vorhanden ist"
+msgstr ""
+"Die Angabe des relativen Pfads ist nicht erlaubt, wenn die "
+"Zertifizierungsstelle vorhanden ist"
 
 #: ../zypp/url/UrlBase.cc:1179
 msgid "Path Parameter parsing not supported for this URL"
@@ -2515,8 +2518,11 @@ msgid "Unable to restore all sources."
 msgstr "Es können nicht alle Quellen wiederhergestellt werden."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Mindestens eine Quelle bereits registriert, gespeicherte Quellen können nicht wiederhergestellt werden."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Mindestens eine Quelle bereits registriert, gespeicherte Quellen können "
+"nicht wiederhergestellt werden."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2544,11 +2550,13 @@ msgstr "libhal_ctx_new: Erstellen des libhal-Kontexts nicht möglich"
 
 #: ../zypp/target/hal/HalContext.cc:239
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr "libhal_set_dbus_connection: Festlegen der dbus-Verbindung nicht möglich"
+msgstr ""
+"libhal_set_dbus_connection: Festlegen der dbus-Verbindung nicht möglich"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "HAL-Kontext kann nicht initialisiert werden -- Wird hald nicht ausgeführt?"
+msgstr ""
+"HAL-Kontext kann nicht initialisiert werden -- Wird hald nicht ausgeführt?"
 
 #: ../zypp/target/hal/HalContext.cc:843
 msgid "Not a CDROM drive"
@@ -2570,7 +2578,9 @@ msgstr "Geänderte Konfigurationsdateien für %s:"
 #: ../zypp/target/rpm/RpmDb.cc:1886
 #, c-format
 msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "rpm hat %s als %s gespeichert, der Unterschied konnte jedoch nicht ermittelt werden"
+msgstr ""
+"rpm hat %s als %s gespeichert, der Unterschied konnte jedoch nicht ermittelt "
+"werden"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1888
@@ -2586,7 +2596,9 @@ msgstr ""
 #: ../zypp/target/rpm/RpmDb.cc:1891
 #, c-format
 msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "rpm hat %s als %s erstellt, der Unterschied konnte jedoch nicht ermittelt werden"
+msgstr ""
+"rpm hat %s als %s erstellt, der Unterschied konnte jedoch nicht ermittelt "
+"werden"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1893
@@ -2644,7 +2656,9 @@ msgstr "Sicherung %s erstellt"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "Eine zur Durchführung der Aktualisierungsinstallation benötigte Datei kann nicht erstellt werden."
+msgstr ""
+"Eine zur Durchführung der Aktualisierungsinstallation benötigte Datei kann "
+"nicht erstellt werden."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2788,8 +2802,12 @@ msgstr ""
 "Es ist keine Ressource verfügbar, die diese Anforderung unterstützt."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Aufgrund der oben/unten beschriebenen Problemen löst diese Auflösung nicht alle Abhängigkeiten"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Aufgrund der oben/unten beschriebenen Problemen löst diese Auflösung nicht "
+"alle Abhängigkeiten"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2855,7 +2873,8 @@ msgstr "%s erfüllt die Abhängigkeiten von %s, wird jedoch deinstalliert"
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s erfüllt die Abhängigkeiten von %s, wird jedoch in Ihrem System beibehalten"
+msgstr ""
+"%s erfüllt die Abhängigkeiten von %s, wird jedoch in Ihrem System beibehalten"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -2867,13 +2886,15 @@ msgstr "%s muss nicht installiert werden"
 #: ../zypp/solver/detail/Resolver_problems.cc:613
 #, c-format
 msgid "Cannot install %s to fulfil the dependencies of %s"
-msgstr "Installation von %s zur Erfüllung der Abhängigkeiten von %s nicht möglich"
+msgstr ""
+"Installation von %s zur Erfüllung der Abhängigkeiten von %s nicht möglich"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:628
 #, c-format
 msgid "Cannot be install %s to fulfil the dependencies of %s"
-msgstr "Installation von %s zur Erfüllung der Abhängigkeiten von %s nicht möglich"
+msgstr ""
+"Installation von %s zur Erfüllung der Abhängigkeiten von %s nicht möglich"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:665
@@ -2916,8 +2937,12 @@ msgstr "%s installieren, auch wenn sich die Architektur dadurch ändert"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s stellt diese Abhängigkeit zur Verfügung, ändert aber die Architektur des installierten Elements"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s stellt diese Abhängigkeit zur Verfügung, ändert aber die Architektur des "
+"installierten Elements"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3028,15 +3053,21 @@ msgstr "Auflösbares Objekt %s wird als nicht installierbar gekennzeichnet"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "Installation von %s ist geplant, jedoch aufgrund von Abhängigkeitsproblemen nicht möglich."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"Installation von %s ist geplant, jedoch aufgrund von Abhängigkeitsproblemen "
+"nicht möglich."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "%s kann nicht installiert werden, da schon für Deinstallation gekennzeichnet"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"%s kann nicht installiert werden, da schon für Deinstallation gekennzeichnet"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3057,7 +3088,9 @@ msgstr "Installation von %s nicht möglich; gilt nicht für dieses System."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "%s kann nicht installiert werden, da %s bereits für die Installation gekennzeichnet ist"
+msgstr ""
+"%s kann nicht installiert werden, da %s bereits für die Installation "
+"gekennzeichnet ist"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3156,25 +3189,34 @@ msgstr "Es sind keine installierbaren Anbieter von %s verfügbar"
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:341
 #, c-format
 msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr "Es ist nicht möglich, auf %s aufzurüsten, um das Entfernen von %s zu vermeiden."
+msgstr ""
+"Es ist nicht möglich, auf %s aufzurüsten, um das Entfernen von %s zu "
+"vermeiden."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:359
 #, c-format
 msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr "%s stellt %s zur Verfügung, soll jedoch planmäßig deinstalliert werden."
+msgstr ""
+"%s stellt %s zur Verfügung, soll jedoch planmäßig deinstalliert werden."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr "%s stellt %s zur Verfügung; es ist jedoch bereits eine andere Version des entsprechenden %s installiert."
+msgstr ""
+"%s stellt %s zur Verfügung; es ist jedoch bereits eine andere Version des "
+"entsprechenden %s installiert."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s stellt %s zur Verfügung, ist aber nicht installierbar.  Versuchen Sie das Objekt separat zu installieren, um weitere Details zu erhalten."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s stellt %s zur Verfügung, ist aber nicht installierbar.  Versuchen Sie das "
+"Objekt separat zu installieren, um weitere Details zu erhalten."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3209,8 +3251,11 @@ msgstr "Anforderung %s für %s kann nicht erfüllt werden"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s wird von anderem zu installierenden auflösbaren Objekt benötigt. Demzufolge wird Verbindung nicht aufgehoben."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s wird von anderem zu installierenden auflösbaren Objekt benötigt. "
+"Demzufolge wird Verbindung nicht aufgehoben."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3222,7 +3267,9 @@ msgstr "%s wird von anderem zu installierenden auflösbaren Objekt benötigt. De
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s wird von anderem installierten auflösbaren Objekt benötigt. Demzufolge wird Verbindung nicht aufgehoben."
+msgstr ""
+"%s wird von anderem installierten auflösbaren Objekt benötigt. Demzufolge "
+"wird Verbindung nicht aufgehoben."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3245,7 +3292,9 @@ msgstr "%s ist gesperrt und kann nicht deinstalliert werden."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "Aufgrund eines Konflikts mit %s (%s) muss das zu installierende %s entfernt werden"
+msgstr ""
+"Aufgrund eines Konflikts mit %s (%s) muss das zu installierende %s entfernt "
+"werden"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3256,7 +3305,8 @@ msgstr "Aufgrund eines Konflikts mit %s (%s) muss das zu installierende %s entfe
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:561
 #, c-format
 msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr "%s wird aufgrund von Konflikten mit %s als nicht installierbar gekennzeichnet"
+msgstr ""
+"%s wird aufgrund von Konflikten mit %s als nicht installierbar gekennzeichnet"
 
 #. Translator: %s = name of package,patch
 #. TranslatorExample: from abc
@@ -3349,7 +3399,8 @@ msgstr "Lesen der Indexdateien"
 
 #: ../zypp/source/yum/YUMSourceImpl.cc:247
 msgid "The signed repomd.xml file failed the signature check."
-msgstr "Die signierte Datei repomd.xml hat die Signaturprüfung nicht bestanden."
+msgstr ""
+"Die signierte Datei repomd.xml hat die Signaturprüfung nicht bestanden."
 
 #. TranslatorExplanation %s = product file
 #: ../zypp/source/yum/YUMSourceImpl.cc:464
@@ -3447,13 +3498,19 @@ msgstr "Fehler bei applydeltarpm"
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Paket %s besteht Integritätsprüfung nicht. Soll ein erneuter Download-Versuch gestartet werden?"
+msgstr ""
+"Paket %s besteht Integritätsprüfung nicht. Soll ein erneuter Download-"
+"Versuch gestartet werden?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Paket %s besteht Integritätsprüfung nicht. Soll ein erneuter Download-Versuch gestartet werden oder möchten Sie die Installation abbrechen?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"Paket %s besteht Integritätsprüfung nicht. Soll ein erneuter Download-"
+"Versuch gestartet werden oder möchten Sie die Installation abbrechen?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4748,7 +4805,8 @@ msgstr ""
 msgid ""
 "File %s has an unknown checksum %s.\n"
 "Use the file anyway?"
-msgstr "Datei %s weist eine unbekannte Prüfsumme auf.%sDatei trotzdem verwenden?"
+msgstr ""
+"Datei %s weist eine unbekannte Prüfsumme auf.%sDatei trotzdem verwenden?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format

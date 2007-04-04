@@ -37,11 +37,13 @@ msgstr "Componente %s incorrecto"
 
 #: ../zypp/url/UrlBase.cc:724
 msgid "Path parameter parsing not supported for this URL"
-msgstr "El análisis de parámetros de vía no es compatible con esta dirección URL"
+msgstr ""
+"El análisis de parámetros de vía no es compatible con esta dirección URL"
 
 #: ../zypp/url/UrlBase.cc:779 ../zypp/url/UrlBase.cc:1224
 msgid "Query string parsing not supported for this URL"
-msgstr "El análisis de cadenas de consulta no es compatible con esta dirección URL"
+msgstr ""
+"El análisis de cadenas de consulta no es compatible con esta dirección URL"
 
 #: ../zypp/url/UrlBase.cc:817
 msgid "Url scheme is a required component"
@@ -96,7 +98,8 @@ msgstr "No se permiten vías relativas si existe una autoridad"
 
 #: ../zypp/url/UrlBase.cc:1179
 msgid "Path Parameter parsing not supported for this URL"
-msgstr "El análisis de parámetros de vía no es compatible con esta dirección URL"
+msgstr ""
+"El análisis de parámetros de vía no es compatible con esta dirección URL"
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
@@ -2521,8 +2524,11 @@ msgid "Unable to restore all sources."
 msgstr "No ha sido posible restaurar todos los orígenes."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Ya hay al menos un origen registrado; los orígenes almacenados no pueden restaurarse."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Ya hay al menos un origen registrado; los orígenes almacenados no pueden "
+"restaurarse."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2554,7 +2560,9 @@ msgstr "libhal_set_dbus_connection: no es posible establecer la conexión dbus"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "No es posible iniciar el contexto HAL -- ¿Es posible que hald no se esté ejecutando?"
+msgstr ""
+"No es posible iniciar el contexto HAL -- ¿Es posible que hald no se esté "
+"ejecutando?"
 
 #: ../zypp/target/hal/HalContext.cc:843
 msgid "Not a CDROM drive"
@@ -2662,7 +2670,9 @@ msgstr "creada copia de seguridad %s"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "No es posible crear uno de los archivos necesarios para llevar a cabo la instalación de la actualización."
+msgstr ""
+"No es posible crear uno de los archivos necesarios para llevar a cabo la "
+"instalación de la actualización."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2809,8 +2819,12 @@ msgstr ""
 "No hay ningún recurso disponible que cumpla este requisito."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Debido a los problemas descritos a continuación o anteriormente, esta resolución no resolverá todas las dependencias"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Debido a los problemas descritos a continuación o anteriormente, esta "
+"resolución no resolverá todas las dependencias"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2911,7 +2925,8 @@ msgstr "%s no se desinstalará porque aún es necesario"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s deja obsoleto a %s. Pero no se puede suprimir %s porque está bloqueado."
+msgstr ""
+"%s deja obsoleto a %s. Pero no se puede suprimir %s porque está bloqueado."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -2941,8 +2956,12 @@ msgstr "Instalar %s aunque cambie la arquitectura"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s proporciona esta dependencia, pero cambiará la arquitectura del elemento instalado"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s proporciona esta dependencia, pero cambiará la arquitectura del elemento "
+"instalado"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3056,15 +3075,22 @@ msgstr "Marcando la resolución %s como no instalable"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s está programado para instalarse, pero no es posible debido a problemas de dependencias."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s está programado para instalarse, pero no es posible debido a problemas de "
+"dependencias."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "No es posible instalar %s, dado que su desinstalación está marcada como necesaria"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"No es posible instalar %s, dado que su desinstalación está marcada como "
+"necesaria"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3085,7 +3111,9 @@ msgstr "No es posible instalar %s, dado que no es aplicable al sistema."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "No es posible instalar %s, dado que %s ya está marcado como instalación necesaria"
+msgstr ""
+"No es posible instalar %s, dado que %s ya está marcado como instalación "
+"necesaria"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3210,8 +3238,12 @@ msgstr "%s proporciona %s, pero ya hay otra versión de ese %s instalada."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s proporciona %s, pero no se puede instalar. Intente instalarlo por separado para obtener más detalles."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s proporciona %s, pero no se puede instalar. Intente instalarlo por "
+"separado para obtener más detalles."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3246,8 +3278,11 @@ msgstr "No es posible cumplir el requisito %s para %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "Otra resolución que se instalará requiere %s, por lo que no se anulará el enlace."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"Otra resolución que se instalará requiere %s, por lo que no se anulará el "
+"enlace."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3259,7 +3294,8 @@ msgstr "Otra resolución que se instalará requiere %s, por lo que no se anular�
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "Otra resolución instalada requiere %s, por lo que no se anulará el enlace."
+msgstr ""
+"Otra resolución instalada requiere %s, por lo que no se anulará el enlace."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3282,7 +3318,9 @@ msgstr "%s está bloqueado y no es posible desinstalarlo."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "Un conflicto en %s (%s) requiere eliminar la resolución %s incluida para la instalación"
+msgstr ""
+"Un conflicto en %s (%s) requiere eliminar la resolución %s incluida para la "
+"instalación"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3490,13 +3528,19 @@ msgstr "Error de applydeltarpm."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "El paquete %s no ha superado la comprobación de integridad. ¿Desea volver a intentar descargarlo?"
+msgstr ""
+"El paquete %s no ha superado la comprobación de integridad. ¿Desea volver a "
+"intentar descargarlo?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "El paquete %s no ha superado la comprobación de integridad. ¿Desea volver a intentar descargarlo o cancelar la instalación?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"El paquete %s no ha superado la comprobación de integridad. ¿Desea volver a "
+"intentar descargarlo o cancelar la instalación?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4772,7 +4816,8 @@ msgid ""
 "%s|%s|%s\n"
 "Use the file anyway?"
 msgstr ""
-"El archivo %s no ha superado la comprobación de integridad con la siguiente clave:\n"
+"El archivo %s no ha superado la comprobación de integridad con la siguiente "
+"clave:\n"
 "%s|%s|%s\n"
 " ¿Desea utilizar el archivo de todos modos?"
 
@@ -4833,7 +4878,8 @@ msgstr ""
 #~ msgstr "La suma MD5 del archivo de paquete no es correcta"
 
 #~ msgid "rpm failed for unkown reason, see log file"
-#~ msgstr "Error de rpm por motivos desconocidos, consulte el archivo de registro"
+#~ msgstr ""
+#~ "Error de rpm por motivos desconocidos, consulte el archivo de registro"
 
 #~ msgid "Target commit aborted by user."
 #~ msgstr "Asignación de destino cancelada por el usuario."
@@ -4842,10 +4888,13 @@ msgstr ""
 #~ msgstr "error en la comprobación de la suma de comprobación."
 
 #~ msgid "Failed check for the metadata file check sum"
-#~ msgstr "Error en la comprobación de la suma de comprobación del archivo de metadatos"
+#~ msgstr ""
+#~ "Error en la comprobación de la suma de comprobación del archivo de "
+#~ "metadatos"
 
 #~ msgid "Failed check for the script file check sum"
-#~ msgstr "Error en la comprobación de la suma de comprobación del archivo de guión"
+#~ msgstr ""
+#~ "Error en la comprobación de la suma de comprobación del archivo de guión"
 
 #~ msgid "Default"
 #~ msgstr "Por defecto"
@@ -4857,7 +4906,8 @@ msgstr ""
 #~ msgstr "Otras resoluciones necesitan %s"
 
 #~ msgid "%s cannot be uninstalled due missing dependencies"
-#~ msgstr "%s no se puede desinstalar debido a dependencias que no están presentes"
+#~ msgstr ""
+#~ "%s no se puede desinstalar debido a dependencias que no están presentes"
 
 #~ msgid "Deleting %s"
 #~ msgstr "Suprimiendo %s"
@@ -4888,5 +4938,9 @@ msgstr ""
 #~ msgid "to be uninstalled"
 #~ msgstr "para desinstalar"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
-#~ msgstr "No es posible instalar %s, dado que una resolución con el mismo nombre ya está marcada como instalación necesaria"
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
+#~ msgstr ""
+#~ "No es posible instalar %s, dado que una resolución con el mismo nombre ya "
+#~ "está marcada como instalación necesaria"

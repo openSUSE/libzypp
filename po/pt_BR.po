@@ -1086,7 +1086,9 @@ msgstr "Ilocano"
 #. language code: ina ia
 #: ../zypp/LanguageCode.cc:638
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr "Interlíngua (International Auxiliary Language Association, Associação de Línguas Internacionais Auxiliares)"
+msgstr ""
+"Interlíngua (International Auxiliary Language Association, Associação de "
+"Línguas Internacionais Auxiliares)"
 
 #. language code: inc
 #: ../zypp/LanguageCode.cc:640
@@ -2516,8 +2518,11 @@ msgid "Unable to restore all sources."
 msgstr "Não é possível restaurar todas as fontes."
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Pelo menos uma fonte já registrada, as fontes armazenadas não podem ser restauradas."
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"Pelo menos uma fonte já registrada, as fontes armazenadas não podem ser "
+"restauradas."
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2645,7 +2650,9 @@ msgstr "backup %s criado"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "Impossível criar um arquivo necessário para executar a atualização da instalação."
+msgstr ""
+"Impossível criar um arquivo necessário para executar a atualização da "
+"instalação."
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2789,8 +2796,12 @@ msgstr ""
 "Não há nenhum recurso disponível que atenda a esse requisito."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Devido aos problemas descritos acima/abaixo, essa solução não resolverá todas as dependências"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
+msgstr ""
+"Devido aos problemas descritos acima/abaixo, essa solução não resolverá "
+"todas as dependências"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
 #: ../zypp/solver/detail/Resolver_problems.cc:711
@@ -2887,7 +2898,8 @@ msgstr "%s não será desinstalado porque ainda é necessário"
 #: ../zypp/solver/detail/Resolver_problems.cc:684
 #, c-format
 msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s torna %s obsoleto. Mas %s não pode ser apagado porque está bloqueado."
+msgstr ""
+"%s torna %s obsoleto. Mas %s não pode ser apagado porque está bloqueado."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:715
 #, c-format
@@ -2917,8 +2929,11 @@ msgstr "Instalar %s apesar de ele mudar a arquitetura"
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s fornece esta dependência, porém mudaria a arquitetura do item instalado"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s fornece esta dependência, porém mudaria a arquitetura do item instalado"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3029,15 +3044,22 @@ msgstr "Marcando o resolvível %s como impossível de ser instalado"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s está programado para ser instalado, mas isso não é possível devido a problemas de dependência."
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s está programado para ser instalado, mas isso não é possível devido a "
+"problemas de dependência."
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "Impossível instalar %s porque sua desinstalação já está marcada como necessária"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"Impossível instalar %s porque sua desinstalação já está marcada como "
+"necessária"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3058,7 +3080,9 @@ msgstr "Não é possível instalar %s, pois ele não se aplica a este sistema."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Não é possível instalar %s, pois sua %s instalação já está marcada como necessária."
+msgstr ""
+"Não é possível instalar %s, pois sua %s instalação já está marcada como "
+"necessária."
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3174,8 +3198,12 @@ msgstr "%s fornece %s, mas já há outra versão desse %s instalada."
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s fornece %s, mas não pode ser instalado.  Experimente instalá-lo sozinho para obter mais detalhes."
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s fornece %s, mas não pode ser instalado.  Experimente instalá-lo sozinho "
+"para obter mais detalhes."
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3210,8 +3238,11 @@ msgstr "Não é possível atender ao requisito %s para %s"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s é necessário a outro resolvível a ser instalado; por isso, não será desvinculado."
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s é necessário a outro resolvível a ser instalado; por isso, não será "
+"desvinculado."
 
 #. affected() = provider of cap
 #. _capability =
@@ -3223,7 +3254,8 @@ msgstr "%s é necessário a outro resolvível a ser instalado; por isso, não se
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s é exigido por outro resolvível instalado, para não ficar desvinculado."
+msgstr ""
+"%s é exigido por outro resolvível instalado, para não ficar desvinculado."
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3246,7 +3278,8 @@ msgstr "%s está bloqueado e não pode ser desinstalado."
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "Um conflito por causa de %s (%s) requer a remoção do %s a ser instalado"
+msgstr ""
+"Um conflito por causa de %s (%s) requer a remoção do %s a ser instalado"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3446,13 +3479,18 @@ msgstr "Falha de applydeltarpm."
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Falha na verificação de integridade do pacote %s. Deseja repetir o download?"
+msgstr ""
+"Falha na verificação de integridade do pacote %s. Deseja repetir o download?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Falha na verificação de integridade do pacote %s. Deseja repetir o download ou interromper a instalação?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"Falha na verificação de integridade do pacote %s. Deseja repetir o download "
+"ou interromper a instalação?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4789,7 +4827,8 @@ msgstr ""
 #~ msgstr "O arquivo do pacote tem soma de MD5 incorreta "
 
 #~ msgid "rpm failed for unkown reason, see log file"
-#~ msgstr "Houve falha do rpm por motivo desconhecido, consulte o arquivo de registro"
+#~ msgstr ""
+#~ "Houve falha do rpm por motivo desconhecido, consulte o arquivo de registro"
 
 #~ msgid "Target commit aborted by user."
 #~ msgstr "Compromisso de destino interrompido pelo usuário."
@@ -4819,7 +4858,9 @@ msgstr ""
 #~ msgstr "Apagando %s"
 
 #~ msgid "Marking %s as uninstallable due to conflicts over %s (%s) from %s"
-#~ msgstr "Marcação de %s como impossível de instalar devido a conflitos sobre %s (%s) de %s"
+#~ msgstr ""
+#~ "Marcação de %s como impossível de instalar devido a conflitos sobre %s (%"
+#~ "s) de %s"
 
 #~ msgid "There are no alternative installed providers of %s for %s"
 #~ msgstr "Não há provedores alternativos instalados de %s para %s"
@@ -4842,5 +4883,9 @@ msgstr ""
 #~ msgid "to be uninstalled"
 #~ msgstr "a ser desinstalado"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
-#~ msgstr "Impossível instalar %s porque a instalação de um resolvível de mesmo nome já está marcada como necessária"
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
+#~ msgstr ""
+#~ "Impossível instalar %s porque a instalação de um resolvível de mesmo nome "
+#~ "já está marcada como necessária"

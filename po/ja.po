@@ -2515,8 +2515,10 @@ msgid "Unable to restore all sources."
 msgstr "すべてのソースを復元できません。"
 
 #: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "1つ以上のソースがすでに登録されています。保存されたソースを復元できません。"
+msgid ""
+"At least one source already registered, stored sources cannot be restored."
+msgstr ""
+"1つ以上のソースがすでに登録されています。保存されたソースを復元できません。"
 
 #: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
 msgid "Software management is already running."
@@ -2548,7 +2550,8 @@ msgstr "libhal_set_dbus_connection: dbus接続を設定できません"
 
 #: ../zypp/target/hal/HalContext.cc:254
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "HALコンテキストを初期化できません -- haldが動作していない可能性があります。"
+msgstr ""
+"HALコンテキストを初期化できません -- haldが動作していない可能性があります。"
 
 #: ../zypp/target/hal/HalContext.cc:843
 msgid "Not a CDROM drive"
@@ -2644,7 +2647,8 @@ msgstr "バックアップ %s が作成されました"
 #: ../zypp/source/yum/YUMScriptImpl.cc:78
 #: ../zypp/source/yum/YUMScriptImpl.cc:112
 msgid "Cannot create a file needed to perform update installation."
-msgstr "アップデートインストールを実行するために必要なファイルを作成できません。"
+msgstr ""
+"アップデートインストールを実行するために必要なファイルを作成できません。"
 
 #: ../zypp/target/TargetImpl.cc:705
 msgid "Installation has been aborted as directed."
@@ -2788,7 +2792,9 @@ msgstr ""
 "この要求をサポートしている使用可能なリソースがありません。"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
+msgid ""
+"Due problems which are described above/below this resolution will not solve "
+"all dependencies"
 msgstr "上記/下記の問題により、この試みではすべての依存関係が解決されません。"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:360
@@ -2801,7 +2807,8 @@ msgstr "%s は %s と競合しているので、インストールできませ�
 #: ../zypp/solver/detail/Resolver_problems.cc:377
 #, c-format
 msgid "%s is not installed and has been marked as uninstallable"
-msgstr "%s がインストールされておらず、アンインストール不可能とマークされています"
+msgstr ""
+"%s がインストールされておらず、アンインストール不可能とマークされています"
 
 #. TranslatorExplanation %s = name of package,patch,...
 #: ../zypp/solver/detail/Resolver_problems.cc:388
@@ -2855,7 +2862,8 @@ msgstr "%s は %s の依存関係を満たしていますが、アンインス�
 #: ../zypp/solver/detail/Resolver_problems.cc:595
 #, c-format
 msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s は、%s の依存関係を満たしていますが、ご利用のシステムに保持されます。"
+msgstr ""
+"%s は、%s の依存関係を満たしていますが、ご利用のシステムに保持されます。"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:605
@@ -2916,8 +2924,12 @@ msgstr "アーキテクチャが変更されますが、%s をインストール
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
 #, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s はこの依存関係を与えますが、インストールしたアイテムのアーキテクチャは変更されます"
+msgid ""
+"%s provides this dependency but would changed the architecture of the "
+"installed item"
+msgstr ""
+"%s はこの依存関係を与えますが、インストールしたアイテムのアーキテクチャは変更"
+"されます"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
@@ -3028,15 +3040,22 @@ msgstr "resolvable %s をアンインストール不可にマークします"
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:159
 #, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s のインストールがスケジュールされていますが、依存関係の問題のためインストール不可能です。"
+msgid ""
+"%s is scheduled to be installed, but this is not possible because of "
+"dependency problems."
+msgstr ""
+"%s のインストールがスケジュールされていますが、依存関係の問題のためインストー"
+"ル不可能です。"
 
 #. Translator: %s = name of package,patch,...
 #. TranslatorExplanation: Additional information to dependency solver result.
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:167
 #, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "アンインストールが必要であるとマークされているので、%s をインストールできません。"
+msgid ""
+"Can't install %s since it is already marked as needing to be uninstalled"
+msgstr ""
+"アンインストールが必要であるとマークされているので、%s をインストールできませ"
+"ん。"
 
 #. Translator: %s = name of patch
 #. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
@@ -3057,7 +3076,9 @@ msgstr "%s はこのシステムに適用しため、インストールできま
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:190
 #, c-format
 msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "%s はインストールが必要であるとマークされているので、%s をインストールできません。"
+msgstr ""
+"%s はインストールが必要であるとマークされているので、%s をインストールできま"
+"せん。"
 
 #. Translator: %s = name of patch,product
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:198
@@ -3162,19 +3183,27 @@ msgstr "%s へアップグレードして %s の削除を回避することは�
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:359
 #, c-format
 msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr "%s は %s を提供しますが、アンインストールされるようにスケジュールされています。"
+msgstr ""
+"%s は %s を提供しますが、アンインストールされるようにスケジュールされていま"
+"す。"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:377
 #, c-format
 msgid "%s provides %s, but another version of that %s is already installed."
-msgstr "%s は %s を提供しますが、その %s の他のバージョンがすでにインストールされています。"
+msgstr ""
+"%s は %s を提供しますが、その %s の他のバージョンがすでにインストールされてい"
+"ます。"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:396
 #, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s は %s を提供しますが、アンインストール不可能です。詳細については、単独インストールを試みてください。"
+msgid ""
+"%s provides %s, but it is uninstallable.  Try installing it on its own for "
+"more details."
+msgstr ""
+"%s は %s を提供しますが、アンインストール不可能です。詳細については、単独イン"
+"ストールを試みてください。"
 
 #. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:414
@@ -3209,8 +3238,11 @@ msgstr "%s の要求 %s を満たすことができません"
 #. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:490
 #, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s はインストール予定の他のresolvableが必要とするものなので、アンリンクできません。"
+msgid ""
+"%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr ""
+"%s はインストール予定の他のresolvableが必要とするものなので、アンリンクできま"
+"せん。"
 
 #. affected() = provider of cap
 #. _capability =
@@ -3222,7 +3254,9 @@ msgstr "%s はインストール予定の他のresolvableが必要とするも�
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:507
 #, c-format
 msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s はインストールされた他のresolvableが必要とするものなので、アンリンクできません。"
+msgstr ""
+"%s はインストールされた他のresolvableが必要とするものなので、アンリンクできま"
+"せん。"
 
 #. affected() = to-be-uninstalled resolvable which is locked
 #. _capability =
@@ -3245,7 +3279,8 @@ msgstr "%s はロックされており、アンインストールできません
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:543
 #, c-format
 msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "%s (%s)に関する競合により、インストール予定の %s を削除する必要があります"
+msgstr ""
+"%s (%s)に関する競合により、インストール予定の %s を削除する必要があります"
 
 #. affected() = provider of capability
 #. _capability = provided by provider
@@ -3445,13 +3480,18 @@ msgstr "applydeltarpmが失敗しました。"
 #: ../zypp/source/PackageProvider.cc:280
 #, c-format
 msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "パッケージ %s の整合性チェックに失敗しました。 ダウンロードを再試行しますか?"
+msgstr ""
+"パッケージ %s の整合性チェックに失敗しました。 ダウンロードを再試行しますか?"
 
 #. TranslatorExplanation %s = package
 #: ../zypp/source/SourceImpl.cc:339
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "パッケージ %s の整合性チェックに失敗しました。 ダウンロードを再試行しますか、それともインストールを中止しますか?"
+msgid ""
+"Package %s fails integrity check. Do you want to retry downloading it, or "
+"abort installation?"
+msgstr ""
+"パッケージ %s の整合性チェックに失敗しました。 ダウンロードを再試行しますか、"
+"それともインストールを中止しますか?"
 
 #: ../zypp/source/SourceImpl.cc:394
 msgid " miss checksum."
@@ -4841,5 +4881,9 @@ msgstr ""
 #~ msgid "to be uninstalled"
 #~ msgstr "アンインストール予定"
 
-#~ msgid "Can't install %s, since a resolvable of the same name is already marked as needing to be installed"
-#~ msgstr "同名のresolvableがすでにアンインストールが必要であるとマークされているので、%s をインストールできません。"
+#~ msgid ""
+#~ "Can't install %s, since a resolvable of the same name is already marked "
+#~ "as needing to be installed"
+#~ msgstr ""
+#~ "同名のresolvableがすでにアンインストールが必要であるとマークされているの"
+#~ "で、%s をインストールできません。"

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:17:53 CEST 2007 - dmacvicar@suse.de
+
+- additional fields in zypp-query-pool for bootloader use
+  (#265819). No library changes
+- 5426 
+
+-------------------------------------------------------------------
 Wed Apr  4 13:23:30 CEST 2007 - schubi@suse.de
 
 - New translations added 

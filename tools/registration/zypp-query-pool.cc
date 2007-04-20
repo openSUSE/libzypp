@@ -48,6 +48,9 @@ public:
           Product::constPtr p( asKind<Product>( item ) );
           cout << "|" << p->distributionName();
           cout << "|" << p->distributionEdition();
+          cout << "|" << p->category();
+          cout << "|" << p->shortName();
+          cout << "|" << p->summary();
         }
       cout << endl;
     }

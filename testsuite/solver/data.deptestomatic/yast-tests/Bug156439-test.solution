@@ -4014,7 +4014,7 @@
 >!>       
 >!> Problem:
 >!> Cannot install mono-data-1.1.13.4-2.i586[sl10_packages] because it is conflicting with mono-core
->!> A conflict over mono-data == 1.1.13.4-2 (mono-data > 1.1.8.3-6) requires the removal of to-be-installed mono-data-1.1.13.4-2.i586[sl10_packages]
+>!> A conflict over mono-data == 1.1.13.4 (mono-data > 1.1.8.3-6) requires the removal of to-be-installed mono-data-1.1.13.4-2.i586[sl10_packages]
 >!>    Solution:
 >!>       do not install mono-data
 >!>       do not install mono-data-1.1.13.4-2.i586[sl10_packages]
@@ -4078,7 +4078,7 @@
 >!>       
 >!> Problem:
 >!> Cannot install mono-data-1.1.13.4-2.i586[sl10_packages] because it is conflicting with mono-core
->!> A conflict over mono-data == 1.1.13.4-2 (mono-data > 1.1.8.3-6) requires the removal of to-be-installed mono-data-1.1.13.4-2.i586[sl10_packages]
+>!> A conflict over mono-data == 1.1.13.4 (mono-data > 1.1.8.3-6) requires the removal of to-be-installed mono-data-1.1.13.4-2.i586[sl10_packages]
 >!>    Solution:
 >!>       do not install mono-data
 >!>       do not install mono-data-1.1.13.4-2.i586[sl10_packages]

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- testcase for bug 255011 - NCS dependent KO's for Xen Kernel not being installed. -->
+<test>
+<setup arch="i686">
+	<channel file="bug255011-1-package.xml" name="1" />
+	<channel file="bug255011-3-package.xml" name="3" />
+</setup>
+<trial>
+<showpool all="yes"/>
+<install channel="1" kind="product" name="SUSE_SLES_SP1"/>
+<install channel="3" kind="product" name="Open_Enterprise_Server"/>
+<install channel="1" kind="pattern" name="base"/>
+<install channel="1" kind="pattern" name="gnome"/>
+<install channel="1" kind="pattern" name="print_server"/>
+<install channel="1" kind="pattern" name="apparmor"/>
+<install channel="1" kind="pattern" name="x11"/>
+<install channel="1" kind="package" name="kernel-default"/>
+<install channel="1" kind="package" name="kernel-xen"/>
+<install channel="1" kind="package" name="yast2-trans-en_US"/>
+<install channel="3" kind="pattern" name="novell-nss"/>
+<install channel="3" kind="pattern" name="novell-vix"/>
+</trial>
+</test>

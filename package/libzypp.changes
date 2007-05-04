@@ -2,7 +2,8 @@
 Fri May  4 10:48:41 CEST 2007 - kkaempf@suse.de
 
 - Dont check for architecture changes in atoms (#266178)
-- rev 5478
+- ver 2.15.10
+- rev 5479
 
 -------------------------------------------------------------------
 Wed Apr 25 17:30:40 CEST 2007 - schubi@suse.de

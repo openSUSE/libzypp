@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May  4 10:48:41 CEST 2007 - kkaempf@suse.de
+
+- Dont check for architecture changes in atoms (#266178)
+- rev 5478
+
+-------------------------------------------------------------------
 Wed Apr 25 17:30:40 CEST 2007 - schubi@suse.de
 
 - Required kmp packges FOR EACH installed/to_be_installed kernel will be installed.

@@ -1,0 +1,35 @@
+<channel><subchannel>
+
+<package>
+	<name>ghostscript-x11</name>
+	<history>
+	<update>
+		<arch>i586</arch>
+		<version>8.15.2rc1</version><release>20.4</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='ghostscript_x11' kind="package" />
+	</provides>
+	<requires>
+		<dep name='ghostscript-library' kind="package" />
+	</requires>
+</package>
+<package>
+	<name>ghostscript-library</name>
+	<history>
+	<update>
+		<arch>i586</arch>
+		<version>8.15.3</version><release>18.2</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='ghostscript-serv' kind="package" />
+		<dep name='ghostscript-library' op='==' version='8.15.3' release='18.2' kind="package" />
+	</provides>
+	<obsoletes>
+		<dep name='ghostscript-serv' kind="package" />
+	</obsoletes>
+</package>
+
+</subchannel></channel>

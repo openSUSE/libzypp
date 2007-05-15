@@ -1,0 +1,34 @@
+<channel><subchannel>
+<package>
+	<name>ghostscript-x11</name>
+	<history>
+	<update>
+		<arch>i586</arch>
+		<version>7.07.1rc1</version><release>195.8</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='ghostscript_x11' kind="package" />
+	</provides>
+	<conflicts>
+		<dep name='ghostscript-serv' kind="package" />
+	</conflicts>
+	<requires>
+		<dep name='ghostscript-library' kind="package" />
+		<dep name='xshared' kind="package" />
+	</requires>
+</package>
+
+<package>
+	<name>ghostscript-library</name>
+	<history>
+	<update>
+		<arch>i586</arch>
+		<version>7.07.1rc1</version><release>195.8</release>
+	</update>
+	</history>
+	<provides>
+		<dep name='ghostscript-library' op='==' version='7.07.1rc1' release='195.8' kind="package" />
+	</provides>
+</package>
+</subchannel></channel>

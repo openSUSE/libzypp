@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- bug 273918 -->
+<test>
+<setup arch="i686">
+	<system file="Bug273918-system.xml"/>
+	<channel file="Bug273918-1-package.xml" name="1" />
+</setup>
+<trial>
+<showpool all="yes"/>
+<install channel="1" kind="package" name="ghostscript-library"/>
+<install channel="1" kind="package" name="ghostscript-x11"/>
+<reportproblems/>
+</trial>
+</test>

@@ -57,6 +57,14 @@ namespace zypp
       return "hal()";
     }
 
+    std::string HalCap::indexname() const
+    {
+      std::string ret( "hal(" );
+      ret += _name;
+      ret += ")";
+      return ret;
+    }
+
     bool HalCap::isEvalCmd() const
     { return _name.empty(); }
 

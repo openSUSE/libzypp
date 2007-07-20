@@ -21,11 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
+#include <iostream>
 
 #include "zypp/solver/detail/Pending.h"
 
 /////////////////////////////////////////////////////////////////////////
-namespace zypp 
+namespace zypp
 { ///////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////
   namespace solver
@@ -33,54 +34,54 @@ namespace zypp
     /////////////////////////////////////////////////////////////////////
     namespace detail
     { ///////////////////////////////////////////////////////////////////
-      
+
       using namespace std;
-      
+
       IMPL_PTR_TYPE(Pending);
-      
+
       //---------------------------------------------------------------------------
-      
+
       string
       Pending::asString ( void ) const
       {
           return toString (*this);
       }
-      
-      
+
+
       string
       Pending::toString ( const Pending & pending )
       {
           return "<pending/>";
       }
-      
-      
+
+
       ostream &
       Pending::dumpOn (ostream & str) const
       {
           str << asString();
           return str;
       }
-      
-      
+
+
       ostream &
       operator<< (ostream & os, const Pending & pending)
       {
           return os << pending.asString();
       }
-      
+
       //---------------------------------------------------------------------------
-      
+
       Pending::Pending (const char *description)
       {
       }
-      
-      
+
+
       Pending::~Pending()
       {
       }
-      
+
       //---------------------------------------------------------------------------
-      
+
       ///////////////////////////////////////////////////////////////////
     };// namespace detail
     /////////////////////////////////////////////////////////////////////

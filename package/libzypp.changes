@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 20 12:43:16 CEST 2007 - ma@suse.de
+
+- Expose capabitly name (required for #288422)
+- version 2.16.0
+
+-------------------------------------------------------------------
 Fri May  4 10:48:41 CEST 2007 - kkaempf@suse.de
 
 - Dont check for architecture changes in atoms (#266178)
@@ -11,24 +17,24 @@ Wed Apr 25 17:30:40 CEST 2007 - schubi@suse.de
 - Required kmp packges FOR EACH installed/to_be_installed kernel will be installed.
   New dependency "packageand(foo:bar)" which provides an AND dependency by
   injecting a supplement/freshen.
-  e.G. package novell-cluster-services-kmp-smp 
+  e.G. package novell-cluster-services-kmp-smp
   supplements: packageand(kernel-smp:novell-cluster-services-kmp)
   Bug 255011
 
 - revision 5448
-- version 2.15.9 
+- version 2.15.9
 
 -------------------------------------------------------------------
 Fri Apr 20 15:17:53 CEST 2007 - dmacvicar@suse.de
 
 - additional fields in zypp-query-pool for bootloader use
   (#265819). No library changes
-- 5426 
+- 5426
 
 -------------------------------------------------------------------
 Wed Apr  4 13:23:30 CEST 2007 - schubi@suse.de
 
-- New translations added 
+- New translations added
 - r5294
 - version 2.15.8
 
@@ -44,7 +50,7 @@ Thu Mar 29 14:18:40 CEST 2007 - schubi@suse.de
 Mon Mar 19 17:44:50 CET 2007 - dmacvicar@suse.de
 
 - parse product arch (#254838)
-- r5232 
+- r5232
 
 -------------------------------------------------------------------
 Mon Mar 19 10:25:24 CET 2007 - schubi@suse.de
@@ -57,7 +63,7 @@ Mon Mar 19 10:25:24 CET 2007 - schubi@suse.de
 Wed Mar 14 14:23:02 CET 2007 - schubi@suse.de
 
 - reducing logging (error -> debug)  bug #252921
-  find resolvable for atom which has >= edition 
+  find resolvable for atom which has >= edition
 - new translations added
 - Revision 5215
 - version 2.15.5
@@ -66,7 +72,7 @@ Wed Mar 14 14:23:02 CET 2007 - schubi@suse.de
 Fri Mar  9 12:36:13 CET 2007 - schubi@suse.de
 
 - new translations added
-  Revision 5197 
+  Revision 5197
 
 -------------------------------------------------------------------
 Fri Mar  9 00:08:38 CET 2007 - ma@suse.de

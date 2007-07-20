@@ -79,6 +79,9 @@ namespace zypp
       */
       virtual std::string index() const
       { return encode(); }
+      /** \deprecated String representation without edition range. */
+     virtual std::string indexname() const
+      { return index(); }
       /** \deprecated, defaults to Rel::NONE */
       virtual Rel op() const
       { return Rel::NONE; }

@@ -95,6 +95,19 @@ namespace zypp
       return "modalias()";
     }
 
+    std::string ModaliasCap::indexname() const
+    {
+      std::string ret( "modalias(" );
+      if ( !_pkgname.empty() )
+        {
+          ret += _pkgname;
+          ret += ":";
+        }
+      ret += _name;
+      ret += ")";
+      return ret;
+    }
+
     bool ModaliasCap::isEvalCmd() const
     { return _name.empty(); }
 

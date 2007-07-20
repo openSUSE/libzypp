@@ -66,6 +66,9 @@ namespace zypp
       /** <tt>modalias()</tt> */
       virtual std::string index() const;
 
+      /** <tt>modalias(name)</tt> */
+      virtual std::string indexname() const;
+
     public:
       const std::string & pkgname() const
       { return _pkgname; }

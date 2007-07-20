@@ -71,8 +71,11 @@ namespace zypp
       /** <tt>hal(name) [op value]</tt> */
       virtual std::string encode() const;
 
-      /** <tt>hal(name)</tt> */
+      /** <tt>hal()</tt> */
       virtual std::string index() const;
+
+      /** <tt>hal(name)</tt> */
+      virtual std::string indexname() const;
 
     private:
       /** Empty HalCap <tt>hal()</tt> */

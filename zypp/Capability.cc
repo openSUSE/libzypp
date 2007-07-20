@@ -67,6 +67,9 @@ namespace zypp
   std::string Capability::index() const
   { return _pimpl->index(); }
 
+  std::string Capability::name() const
+  { return _pimpl->indexname(); }
+
   Rel Capability::op() const
   { return _pimpl->op(); }
 

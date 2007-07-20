@@ -116,8 +116,10 @@ namespace zypp
     std::string asString() const;
 
     /** accessors needed by solver/zmd  */
-    /** Deprecated */
+    /** Deprecated:  */
     std::string index() const;
+    /** Deprecated: string representation without \c op and \c edition. */
+    std::string name() const;
     /** Deprecated, defaults to Rel::NONE */
     Rel op() const;
     /** Deprecated, defaults to Edition::noedition */

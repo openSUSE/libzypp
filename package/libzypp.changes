@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 10 14:41:51 CEST 2007 - jkupec@suse.cz
+
+- Fix restoring of Sources if root prefix is used. (#238165)
+- revision 6578
+- version 2.16.1
+
+-------------------------------------------------------------------
 Fri Jul 20 12:43:16 CEST 2007 - ma@suse.de
 
 - Expose capabitly name (required for #288422)

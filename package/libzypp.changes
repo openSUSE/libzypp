@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep  7 17:42:55 CEST 2007 - jkupec@suse.cz
+
+- Require gpg (#308235)
+- revision 7154
+- version 2.16.2
+
+-------------------------------------------------------------------
 Fri Aug 10 14:41:51 CEST 2007 - jkupec@suse.cz
 
 - Fix restoring of Sources if root prefix is used. (#238165)

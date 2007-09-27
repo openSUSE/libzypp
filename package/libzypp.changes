@@ -1,11 +1,18 @@
 -------------------------------------------------------------------
+Thu Sep 27 17:13:14 CEST 2007 - ma@suse.de
+
+- Fixed pattern parser SEGV on broken pattern files. (#328546)
+- version 3.26.3
+- revision 7401
+
+-------------------------------------------------------------------
 Tue Sep 25 18:50:37 CEST 2007 - schubi@suse.de
 
-- QueuItemRequire: Filter out all provider which have worser architecture, 
+- QueuItemRequire: Filter out all provider which have worser architecture,
   are NOT noarch and have not the same name as the requirement. The
   last one is needed for updating packages via patch/atoms.
   Bug 328081
-- Revert changes of r 7340 
+- Revert changes of r 7340
 - r 7379
 - version 3.26.2
 

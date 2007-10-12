@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct 12 12:36:49 CEST 2007 - ma@suse.de
+
+- SMBIOS DMI modalias matching added (#333152)
+- version 2.16.3
+- revision 7485
+
+-------------------------------------------------------------------
 Fri Sep  7 17:42:55 CEST 2007 - jkupec@suse.cz
 
 - Require gpg (#308235)

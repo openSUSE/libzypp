@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct 12 15:42:25 CEST 2007 - ma@suse.de
+
+- SMBIOS DMI modalias matching added (#333152)
+- version 3.26.4
+- revision 7493
+
+-------------------------------------------------------------------
 Thu Sep 27 17:13:14 CEST 2007 - ma@suse.de
 
 - Fixed pattern parser SEGV on broken pattern files. (#328546)

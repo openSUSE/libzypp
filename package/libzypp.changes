@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 26 15:33:01 CEST 2007 - aschnell@suse.de
+
+- fixed retrieval of epoch from rpmdb (bug #246680)
+
+-------------------------------------------------------------------
 Fri Oct 12 12:36:49 CEST 2007 - ma@suse.de
 
 - SMBIOS DMI modalias matching added (#333152)

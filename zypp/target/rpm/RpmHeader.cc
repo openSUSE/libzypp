@@ -12,6 +12,7 @@
 #include "librpm.h"
 
 #include <iostream>
+#include <sstream>
 #include <map>
 #include <set>
 #include <vector>
@@ -171,7 +172,12 @@ namespace zypp {
       //
       string RpmHeader::tag_epoch() const
       {
-	return string_val ( RPMTAG_EPOCH );
+	int epoch = int_val ( RPMTAG_EPOCH );
+	if (epoch == 0)
+	  return "";
+	std::ostringstream tmp;
+	tmp << epoch;
+	return tmp.str();
       }
 
       ///////////////////////////////////////////////////////////////////

@@ -63,6 +63,7 @@ namespace zypp
       ZYppGlobalLock()
       : _clean_lock(false)
       , _zypp_lockfile(0)
+      , _locker_pid(0)
     {}
 
     ~ZYppGlobalLock()
@@ -89,10 +90,13 @@ namespace zypp
       catch(...) {} // let no exception escape.
     }
 
+    pid_t locker_pid() const { return _locker_pid; }
+
     bool _clean_lock;
 
     private:
     FILE *_zypp_lockfile;
+    pid_t _locker_pid;
 
     void openLockFile(const char *mode)
     {
@@ -173,13 +177,13 @@ namespace zypp
     pid_t lockerPid()
     {
       pid_t curr_pid = getpid();
-      pid_t locked_pid = 0;
+      pid_t locker_pid = 0;
       long readpid = 0;
 
       fscanf(_zypp_lockfile, "%ld", &readpid);
       MIL << "read: Lockfile " << ZYPP_LOCK_FILE << " has pid " << readpid << " (our pid: " << curr_pid << ") "<< std::endl;
-      locked_pid = (pid_t) readpid;
-      return locked_pid;
+      locker_pid = (pid_t) readpid;
+      return locker_pid;
     }
 
   public:
@@ -196,7 +200,8 @@ namespace zypp
         shLockFile();
 
         pid_t locker_pid = lockerPid();
-        if ( locker_pid == curr_pid )
+        _locker_pid = locker_pid;
+	if ( locker_pid == curr_pid )
         {
         // alles ok, we are requesting the instance again
           //MIL << "Lockfile found, but it is myself. Assuming same process getting zypp instance again." << std::endl;
@@ -276,7 +281,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   ZYppFactoryException::ZYppFactoryException( const std::string & msg_r )
-  : Exception(N_("Software management is already running."))
+    : Exception(msg_r)
   {}
 
   ///////////////////////////////////////////////////////////////////
@@ -331,7 +336,10 @@ namespace zypp
       /*--------------------------------------------------*/
       if ( globalLock.zyppLocked() )
       {
-        ZYPP_THROW( ZYppFactoryException(N_("Software management is already running.")) );
+	string t = str::form(N_("System management is locked by the application with pid %d. "
+				"Please close this application before trying again."), 
+			     globalLock.locker_pid());
+	ZYPP_THROW(ZYppFactoryException(t));
       }
       else
       {

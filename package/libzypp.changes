@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 29 17:31:45 CET 2007 - aschnell@suse.de
+
+- extended message of ZYppFactoryException (bug #191147)
+
+-------------------------------------------------------------------
 Fri Oct 26 15:33:01 CEST 2007 - aschnell@suse.de
 
 - fixed retrieval of epoch from rpmdb (bug #246680)

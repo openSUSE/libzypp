@@ -97,25 +97,46 @@ namespace zypp
     /**  */
     using boost::dynamic_pointer_cast;
 
-    /** \relates shared_ptr Stream output. */
-    template<class _D>
-      inline std::ostream &
-      operator<<( std::ostream & str, const shared_ptr<_D> & obj )
-      {
-        if ( obj )
-          return str << *obj;
-        return str << std::string("NULL");
-      }
+  /////////////////////////////////////////////////////////////////
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace std
+{ /////////////////////////////////////////////////////////////////
 
-    /** \relates intrusive_ptr Stream output. */
-    template<class _D>
-      inline std::ostream &
-      operator<<( std::ostream & str, const intrusive_ptr<_D> & obj )
-      {
-        if ( obj )
-          return str << *obj;
-        return str << std::string("NULL");
-      }
+  // namespace sub {
+  //    class Foo;
+  //    typedef zypp::intrusive_ptr<Foo> Foo_Ptr; // see DEFINE_PTR_TYPE(NAME) macro below
+  // }
+
+  // Defined in namespace std g++ finds the output operator (König-Lookup),
+  // even if we typedef the pointer in a different namespace than ::zypp.
+  // Otherwise we had to define an output operator always in the same namespace
+  // as the typedef (else g++ will just print the pointer value).
+
+  /** \relates zypp::shared_ptr Stream output. */
+  template<class _D>
+  inline std::ostream & operator<<( std::ostream & str, const zypp::shared_ptr<_D> & obj )
+  {
+    if ( obj )
+      return str << *obj;
+    return str << std::string("NULL");
+  }
+
+  /** \relates zypp::intrusive_ptr Stream output. */
+  template<class _D>
+  inline std::ostream & operator<<( std::ostream & str, const zypp::intrusive_ptr<_D> & obj )
+  {
+    if ( obj )
+      return str << *obj;
+    return str << std::string("NULL");
+  }
+  /////////////////////////////////////////////////////////////////
+} // namespace std
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{ /////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -162,7 +183,25 @@ namespace zypp
           long use_count( const _Ptr & ptr_r ) const
           { return ptr_r ? ptr_r->refCount() : 0; }
         };
-    }
+
+       template<class _D>
+        struct Scoped
+        {
+          typedef scoped_ptr<_D>       _Ptr;
+          typedef scoped_ptr<const _D> _constPtr;
+          /** Check whether pointer is not shared. */
+          bool unique( const _constPtr & ptr_r )
+          { return true; }
+          bool unique( const _Ptr & ptr_r )
+          { return true; }
+          /** Return number of references. */
+          long use_count( const _constPtr & ptr_r ) const
+          { return ptr_r ? 1 : 0; }
+          long use_count( const _Ptr & ptr_r ) const
+          { return ptr_r ? 1 : 0; }
+        };
+
+   }
     ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
@@ -288,6 +327,22 @@ namespace zypp
         return str << std::string("NULL");
       }
 
+    /** \relates RW_pointer */
+    template<class _D, class _Ptr>
+      inline bool
+      operator==( const RW_pointer<_D, _Ptr> & lhs, const RW_pointer<_D, _Ptr> & rhs )
+      {
+        return( lhs.get() == rhs.get() );
+      }
+
+    /** \relates RW_pointer */
+    template<class _D, class _Ptr>
+      inline bool
+      operator!=( const RW_pointer<_D, _Ptr> & lhs, const RW_pointer<_D, _Ptr> & rhs )
+      {
+        return ! ( lhs == rhs );
+      }
+
     ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
@@ -402,10 +457,25 @@ namespace zypp
         return str << std::string("NULL");
       }
 
+    /** \relates RWCOW_pointer */
+    template<class _D, class _Ptr>
+      inline bool
+      operator==( const RWCOW_pointer<_D, _Ptr> & lhs, const RWCOW_pointer<_D, _Ptr> & rhs )
+      {
+        return( lhs.get() == rhs.get() );
+      }
+
+    /** \relates RWCOW_pointer */
+    template<class _D, class _Ptr>
+      inline bool
+      operator!=( const RWCOW_pointer<_D, _Ptr> & lhs, const RWCOW_pointer<_D, _Ptr> & rhs )
+      {
+        return ! ( lhs == rhs );
+      }
+
     ///////////////////////////////////////////////////////////////////
 
     /*@}*/
-
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

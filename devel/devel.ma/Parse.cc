@@ -22,6 +22,7 @@
 #include "zypp/NameKindProxy.h"
 #include "zypp/pool/GetResolvablesToInsDel.h"
 
+#include "zypp/ZConfig.h"
 
 using namespace std;
 using namespace zypp;
@@ -30,7 +31,7 @@ using namespace zypp::functor;
 
 ///////////////////////////////////////////////////////////////////
 
-static const Pathname sysRoot( "/Local/ROOT" );
+static const Pathname sysRoot( "/Local/TEST" );
 
 ///////////////////////////////////////////////////////////////////
 
@@ -195,84 +196,41 @@ int main( int argc, char * argv[] )
 {
   //zypp::base::LogControl::instance().logfile( "log.restrict" );
   INT << "===[START]==========================================" << endl;
-
   ConvertDbReceive cr;
   cr.connect();
   MediaChangeReceive mr;
   mr.connect();
 
-  ResPool pool( getZYpp()->pool() );
-
-  getZYpp()->initTarget( sysRoot );
-  USR << "Added target: " << pool << endl;
-  zypp::base::LogControl::instance().logNothing();
+  USR << ZConfig::instance().download_use_patchrpm() << endl;
+  USR << ZConfig::instance().download_use_deltarpm() << endl;
   return 0;
 
   if ( 1 )
-    {
-      zypp::base::LogControl::TmpLineWriter shutUp;
-      Source_Ref src( createSource( "dir:/Local/SLES10" ) );
-      getZYpp()->addResolvables( src.resolvables() );
-    }
-  MIL << pool << endl;
-
-  PoolItem prod( *pool.byKindBegin<Product>() );
-  showProd( prod );
-  PoolItem pac( *pool.byNameBegin("java-1_4_2-sun-plugin") );
-
-  if ( 1 )
-    {
-      zypp::base::LogControl::TmpLineWriter shutUp;
-      getZYpp()->initTarget( sysRoot );
-      USR << "Added target: " << pool << endl;
-    }
-
-  prod.status().setTransact( true, ResStatus::USER );
-  pac.status().setTransact( true, ResStatus::USER );
-  ZYppCommitPolicy policy;
-  policy.rpmNoSignature();
-  ZYppCommitResult res( getZYpp()->commit( policy ) );
-
-  SEC << res << endl;
-
-  zypp::base::LogControl::instance().logNothing();
-  return 0;
-
-
-
-  if ( 1 )
-    {
-#define selt(K,N) selectForTransact( nameKindProxy<K>( pool, #N ) )
-      selt( Script, fetchmsttfonts.sh-patch-fetchmsttfonts.sh-2 );
-#undef selt
-    }
-
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-
-  if ( 1 ) {
-    bool eres, rres;
-    {
-      //zypp::base::LogControl::TmpLineWriter shutUp;
-      //zypp::base::LogControl::instance().logfile( "SOLVER" );
-      eres = getZYpp()->resolver()->establishPool();
-      rres = getZYpp()->resolver()->resolvePool();
-    }
-    MIL << "est " << eres << " slv " << rres << endl;
+  {
+    zypp::base::LogControl::TmpLineWriter shutUp;
+    Source_Ref src( createSource( "dir:/mounts/mirror/SuSE/ftp.suse.com/pub/suse/i386/update/10.2" ) );
+    getZYpp()->addResolvables( src.resolvables() );
   }
 
-  dumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-
-
   if ( 1 )
-    {
-       ZYppCommitPolicy policy;
-       policy.rpmNoSignature();
-       ZYppCommitResult res( getZYpp()->commit( policy ) );
-    }
+  {
+    zypp::base::LogControl::TmpLineWriter shutUp;
+    getZYpp()->initTarget( sysRoot );
+  }
+
+  ResPool pool( getZYpp()->pool() );
+  MIL << pool << endl;
+
+  // zypper 0.6.15 0.1
+  PoolItem pi( getPi<Package>( "zypper", Edition( "0.6.15", "0.1" ) ) );
+  if ( pi )
+  {
+    pi.status().setTransactValue( ResStatus::TRANSACT, ResStatus::USER );
+    USR << pi << endl;
+  }
+
+  USR << getZYpp()->commit( ZYppCommitPolicy().dryRun( true ).syncPoolAfterCommit( false ) ) << endl;
+  return true;
 
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();

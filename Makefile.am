@@ -17,7 +17,7 @@ pkgconfig_DATA = libzypp.pc
 sysconfdir=/etc/zypp
 sysconf_DATA = zypp.conf
 
-EXTRA_DIST = mkinstalldirs
+EXTRA_DIST = mkinstalldirs zypp.conf
 #config.rpath
 
 ## ##################################################

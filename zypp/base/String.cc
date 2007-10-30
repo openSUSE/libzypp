@@ -52,6 +52,36 @@ namespace zypp
 
     /******************************************************************
      **
+     **      FUNCTION NAME : strToTrue
+     **      FUNCTION TYPE : bool
+    */
+    bool strToTrue( const std::string & str )
+    {
+      std::string t( toLower( str ) );
+      return(    t == "1"
+              || t == "yes"
+              || t == "true"
+              || t == "on"
+            );
+    }
+
+    /******************************************************************
+     **
+     **      FUNCTION NAME : strToFalse
+     **      FUNCTION TYPE : bool
+    */
+    bool strToFalse( const std::string & str )
+    {
+      std::string t( toLower( str ) );
+      return ! (    t == "0"
+                 || t == "no"
+                 || t == "false"
+                 || t == "off"
+               );
+    }
+
+    /******************************************************************
+     **
      **      FUNCTION NAME : toLower
      **      FUNCTION TYPE : std::string
     */

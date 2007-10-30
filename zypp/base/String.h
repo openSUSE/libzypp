@@ -206,6 +206,24 @@ namespace zypp
     //@}
 
     ///////////////////////////////////////////////////////////////////
+    /** Parsing boolean from string.
+    */
+    //@{
+    /** Return \c true if str is <tt>1, true, yes, on</tt>. */
+    bool strToTrue( const std::string & str );
+
+    /** Return \c false if str is <tt>0, false, no, off</tt>. */
+    bool strToFalse( const std::string & str );
+
+    /** Parse \c str into a bool depending on the default value.
+     * If the \c default is true, look for a legal \c false string.
+     * If the \c default is false, look for a legal \c true string.
+    */
+    inline bool strToBool( const std::string & str, bool default_r )
+    { return( default_r ? strToFalse( str ) : strToTrue( str ) ); }
+    //@}
+
+    ///////////////////////////////////////////////////////////////////
     /** \name Split. */
     //@{
     /** Split \a line_r into words.

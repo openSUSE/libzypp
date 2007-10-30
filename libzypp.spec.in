@@ -101,6 +101,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %files -f zypp.lang
 %defattr(-,root,root)
+%dir               /etc/zypp
+%config(noreplace) /etc/zypp/zypp.conf
 %{prefix}/lib/zypp
 %{prefix}/lib/zypp/*
 %dir %{_libdir}/libzypp*so.*

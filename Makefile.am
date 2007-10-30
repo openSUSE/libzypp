@@ -14,6 +14,9 @@ ACLOCAL_AMFLAGS =
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libzypp.pc
 
+sysconfdir=/etc/zypp
+sysconf_DATA = zypp.conf
+
 EXTRA_DIST = mkinstalldirs
 #config.rpath
 

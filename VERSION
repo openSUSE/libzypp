@@ -43,9 +43,21 @@ dnl
 dnl 6) If any interfaces have been removed since the last public release, then
 dnl    set COMPATMINOR to MINOR. (binary incompatible change)
 dnl
+dnl
+dnl
+dnl
+dnl
+dnl    **************************************************
+dnl
+dnl    CAUTION: SuSE-SLE-10-SP2-Branch starts with 2.30.0. 
+dnl
+dnl    KEEP  LIBZYPP_MINOR  BELOW  30  !!!
+dnl    
+dnl    **************************************************
 dnl ==================================================
 m4_define([LIBZYPP_MAJOR], 	 [2])
 dnl ==================================================
+dnl  KEEP  LIBZYPP_MINOR  BELOW   30  !!!
 m4_define([LIBZYPP_MINOR],	 [16])
 m4_define([LIBZYPP_COMPATMINOR], [15])
 dnl ==================================================

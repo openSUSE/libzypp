@@ -85,6 +85,7 @@ pkginclude_HEADERS = NeedAType.h \
 	VendorAttr.h	\
 	UpgradeStatistics.h	\
 	TranslatedText.h \
+	ZConfig.h	\
 	ZYpp.h		\
 	ZYppCommit.h		\
 	ZYppCommitPolicy.h	\
@@ -165,6 +166,7 @@ lib@PACKAGE@_la_SOURCES = \
 	DiskUsageCounter.cc	\
 	VendorAttr.cc	\
 	UpgradeStatistics.cc	\
+	ZConfig.cc	\
 	ZYpp.cc		\
 	ZYppCommitPolicy.cc	\
 	ZYppCommitResult.cc	\

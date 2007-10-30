@@ -14,6 +14,7 @@
 #include "zypp/base/Logger.h"
 #include "zypp/base/Gettext.h"
 
+#include "zypp/ZConfig.h"
 #include "zypp/Source.h"
 #include "zypp/source/PackageProvider.h"
 #include "zypp/source/SourceProvideFile.h"
@@ -107,8 +108,17 @@ namespace zypp
       // check whether to process patch/delta rpms
       if ( _package->source().remote() )
         {
-          std::list<DeltaRpm> deltaRpms( _implPtr->deltaRpms() );
-          std::list<PatchRpm> patchRpms( _implPtr->patchRpms() );
+          std::list<DeltaRpm> deltaRpms;
+          if ( ZConfig::instance().download_use_deltarpm() )
+          {
+            _implPtr->deltaRpms().swap( deltaRpms );
+          }
+
+          std::list<PatchRpm> patchRpms;
+          if ( ZConfig::instance().download_use_patchrpm() )
+          {
+            _implPtr->patchRpms().swap( patchRpms );
+          }
 
           if ( ! ( deltaRpms.empty() && patchRpms.empty() )
                && queryInstalled() )
@@ -141,7 +151,12 @@ namespace zypp
       else
         {
           // allow patch rpm from local source
-          std::list<PatchRpm> patchRpms( _implPtr->patchRpms() );
+          std::list<PatchRpm> patchRpms;
+          if ( ZConfig::instance().download_use_patchrpm() )
+          {
+            _implPtr->patchRpms().swap( patchRpms );
+          }
+
           if ( ! patchRpms.empty() && queryInstalled() )
             {
               for( std::list<PatchRpm>::const_iterator it = patchRpms.begin();

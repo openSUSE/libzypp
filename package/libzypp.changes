@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Oct 30 17:47:26 CET 2007 - ma@suse.de
+
+- Introduced /etc/zypp/zypp.conf, configuration file for software 
+  management. Added zypp.conf options download.use_patchrpm and 
+  download.use_deltarpm (both true per default). They define whether 
+  to consider using a .patch.rpm or .delta.rpm when downloading a 
+  package. See the commented sample zypp.conf for details. (FATE 302544)
+- version 2.50.0
+- revision 7713
+
+-------------------------------------------------------------------
 Mon Oct 29 17:31:45 CET 2007 - aschnell@suse.de
 
 - extended message of ZYppFactoryException (bug #191147)

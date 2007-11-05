@@ -35,6 +35,17 @@ static const Pathname sysRoot( "/Local/TEST" );
 
 ///////////////////////////////////////////////////////////////////
 
+struct Xprint
+{
+  bool operator()( const PoolItem & obj_r )
+  {
+    SEC << obj_r << endl;
+    return true;
+  }
+};
+
+///////////////////////////////////////////////////////////////////
+
 struct ConvertDbReceive : public callback::ReceiveReport<target::ScriptResolvableReport>
 {
   virtual void start( const Resolvable::constPtr & script_r,
@@ -201,10 +212,6 @@ int main( int argc, char * argv[] )
   MediaChangeReceive mr;
   mr.connect();
 
-  USR << ZConfig::instance().download_use_patchrpm() << endl;
-  USR << ZConfig::instance().download_use_deltarpm() << endl;
-  return 0;
-
   if ( 1 )
   {
     zypp::base::LogControl::TmpLineWriter shutUp;
@@ -221,16 +228,33 @@ int main( int argc, char * argv[] )
   ResPool pool( getZYpp()->pool() );
   MIL << pool << endl;
 
-  // zypper 0.6.15 0.1
-  PoolItem pi( getPi<Package>( "zypper", Edition( "0.6.15", "0.1" ) ) );
-  if ( pi )
-  {
-    pi.status().setTransactValue( ResStatus::TRANSACT, ResStatus::USER );
-    USR << pi << endl;
-  }
+  std::for_each( pool.byKindBegin<Script>(),
+                 pool.byKindEnd<Script>(),
+                 Print() );
 
-  USR << getZYpp()->commit( ZYppCommitPolicy().dryRun( true ).syncPoolAfterCommit( false ) ) << endl;
-  return true;
+  //PoolItem pi( getPi<Patch>( "fetchmsttfonts.sh" ) );
+  PoolItem pi( getPi<Script>( "fetchmsttfonts.sh-2333-patch-fetchmsttfonts.sh-2" ) );
+  if ( 0 && pi && pi.status().isUninstalled() )
+  {
+    if ( pi.status().setTransactValue( ResStatus::TRANSACT, ResStatus::USER ) )
+    {
+      USR << pi << endl;
+      USR << "Solve: " << getZYpp()->resolver()->resolvePool() << endl;
+      vdumpPoolStats( USR << "Transacting:"<< endl,
+                      make_filter_begin<resfilter::ByTransact>(pool),
+                      make_filter_end<resfilter::ByTransact>(pool) ) << endl;
+
+
+      USR << getZYpp()->commit( ZYppCommitPolicy().syncPoolAfterCommit( true ) ) << endl;
+    }
+  }
+  USR << "Solve: " << getZYpp()->resolver()->establishPool() << endl;
+  //pi = getPi<Patch>( "fetchmsttfonts.sh" );
+  pi = getPi<Script>( "fetchmsttfonts.sh-2333-patch-fetchmsttfonts.sh-2" );
+  vdumpPoolStats( INT << "Installed:"<< endl,
+                  make_filter_begin<resfilter::ByInstalled>(pool),
+                  make_filter_end<resfilter::ByInstalled>(pool) ) << endl;
+  INT << pi << endl;
 
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();

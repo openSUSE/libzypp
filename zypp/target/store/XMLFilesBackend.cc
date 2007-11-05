@@ -75,7 +75,7 @@ namespace storage
 
 /**
  * the following hardcoded table fixes a bug where Product was
- *  serialized to the store using distproduct and distversion 
+ *  serialized to the store using distproduct and distversion
  *  in the name/version fields.
  *  Those products have missing distversion.
  *  The trick is to see the version of the xml format, if it is
@@ -94,8 +94,8 @@ typedef struct
 } PRODUCT_TABLE_ENTRY;
 
 /**
- * create the map on demand so we 
- * create it once and only when 
+ * create the map on demand so we
+ * create it once and only when
  * needed
  */
 PRODUCT_TABLE_ENTRY* products_table()
@@ -132,7 +132,7 @@ PRODUCT_TABLE_ENTRY* products_table()
     { "SUSE-Linux-Enterprise-RT", "10-0", "SLE RT", "10" },
     { 0L, 0L, 0L, 0L }
   };
-  
+
   return products;
 }
 
@@ -182,7 +182,7 @@ XMLFilesBackend::XMLFilesBackend(const Pathname &root) : Backend(root)
   d->kinds_flags.insert(ResTraits<zypp::Package>::kind);
   d->kinds_flags.insert(ResTraits<zypp::Patch>::kind);
   //d->kinds.insert(ResTraits<zypp::Message>::kind);
-  //d->kinds.insert(ResTraits<zypp::Script>::kind);
+  d->kinds_flags.insert(ResTraits<zypp::Script>::kind);
   d->kinds_flags.insert(ResTraits<zypp::Selection>::kind);
   d->kinds_flags.insert(ResTraits<zypp::Product>::kind);
   d->kinds_flags.insert(ResTraits<zypp::Pattern>::kind);
@@ -800,7 +800,7 @@ XMLFilesBackend::storedObjects(const Resolvable::Kind kind) const
 
   list<string> files;
   filesystem::readdir( files, dir_path, false /* ignore hidden .name files */ );
-  
+
   for ( list<string>::const_iterator it = files.begin(); it != files.end(); ++it )
   {
     Pathname curr_file = dir_path + (*it);
@@ -810,7 +810,7 @@ XMLFilesBackend::storedObjects(const Resolvable::Kind kind) const
     for ( std::list<ResObject::Ptr>::iterator it = objects_for_file.begin(); it != objects_for_file.end(); ++it)
       objects.push_back(*it);
   }
-  
+
   MIL << "done reading " <<  objects.size() << " stored objects for file of kind " << resolvableKindToString(kind) << std::endl;
   return objects;
 }
@@ -901,7 +901,12 @@ XMLFilesBackend::createPatch( const zypp::parser::xmlstore::XMLPatchData & parse
         {
           XMLPatchScriptData_Ptr script_data = dynamic_pointer_cast<XMLPatchScriptData>(*it);
           atom = createScript(*script_data);
-          impl->_atoms.push_back(atom);
+          if ( doesObjectHasFlag( atom, "SCRIPT_EXEC_FAILED" ) )
+          {
+            WAR << "Patch script not yet successfully executed: " << atom << endl;
+          } else {
+            impl->_atoms.push_back(atom);
+          }
           break;
         }
         default:
@@ -1074,9 +1079,9 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
   try
   {
     detail::ResImplTraits<XMLProductImpl>::Ptr impl(new XMLProductImpl());
-    
+
     Edition parser_edition = ( parsed.parser_version.empty() ? Edition::noedition : Edition(parsed.parser_version) );
-    
+
     impl->_summary = parsed.summary;
     impl->_description = parsed.summary;
 
@@ -1111,7 +1116,7 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
       catch ( const Exception &e )
       {
         ZYPP_THROW(Exception("Error parsing update url: " + e.msg()));
-      }      
+      }
     }
 
     // extra_urls
@@ -1126,9 +1131,9 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
       catch ( const Exception &e )
       {
         ZYPP_THROW(Exception("Error parsing extra url: " + e.msg()));
-      }      
+      }
     }
-    
+
     // extra_urls
     list<string> optional_urls = parsed.optional_urls;
     for ( list<string>::const_iterator it = optional_urls.begin(); it != optional_urls.end(); ++it )
@@ -1141,9 +1146,9 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
       catch ( const Exception &e )
       {
         ZYPP_THROW(Exception("Error parsing optional url: " + e.msg()));
-      }      
+      }
     }
-    
+
     impl->_flags = parsed.flags;
 
     Arch arch;
@@ -1165,19 +1170,19 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
         if ( ( parsed.name == all_products->dist_name ) && ( prod_edition.asString() == all_products->dist_version ) )
         {
           MIL << "[ATTENTION] Detected bug #205392. Product " << parsed.name << " " << prod_edition << " will be changed to " << all_products->product_name << " " << all_products->product_version << std::endl;
-          
+
           // save pathname of the old wrong product
           Pathname wrong_product = Pathname(dirForResolvableKind(ResTraits<zypp::Product>::kind)) + fileNameForNVR( NVR( parsed.name, prod_edition) );
-          
+
           // ok, potentially this is a wrong product, well, IT IS!
           // overwrte those here as they are used in dataCollect
           prod_name = string(all_products->product_name);
           prod_edition = Edition(all_products->product_version);
-          
+
           // those were already set, so reset them.
           impl->_dist_name = all_products->dist_name;
           impl->_dist_version = Edition(all_products->dist_version);
-          
+
           // ok, now mark for save this product and delete the old one
           deleteFileObject( wrong_product );
           MIL << "Fix for bug #205392 Old product deleted." << std::endl;
@@ -1186,22 +1191,22 @@ XMLFilesBackend::createProduct( const zypp::parser::xmlstore::XMLProductData & p
         }
         ++all_products;
       }
-      
+
     }
-    
+
     // replace spaces to underscores
     std::replace(prod_name.begin(), prod_name.end(), ' ', '_');
-    
+
     // Collect basic Resolvable data
     NVRAD dataCollect( prod_name, prod_edition, arch, createDependencies(parsed, ResTraits<Product>::kind) );
     Product::Ptr product = detail::makeResolvableFromImpl( dataCollect, impl );
-    
+
     if ( save_new_product_again_workaround )
     {
       const_cast<XMLFilesBackend *>(this)->storeObject(product);
       MIL << "Fixed Product saved. Fix for bug #205392. complete" << std::endl;
     }
-    
+
     return product;
   }
   catch (const Exception & excpt_r)

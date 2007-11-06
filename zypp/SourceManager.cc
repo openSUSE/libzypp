@@ -105,8 +105,20 @@ namespace zypp
       if ( source_r.numericId() )
       {
         MIL << "SourceManager add " << source_r << endl;
-        _sources[source_r.numericId()] = source_r;
-
+        if ( _sources[source_r.numericId()] != source_r )
+        {
+          // Not yet added: check and throw if alias is already in use.
+          for ( SourceMap::iterator it = _sources.begin(); it != _sources.end(); ++it )
+          {
+            if ( it->second.alias() == source_r.alias() )
+            {
+              ERR << "Alias '" << source_r.alias() << "' already in use: " << it->second << endl;
+              ZYPP_THROW( Exception( str::form( _("Source alias '%s' is already in use."),
+                                                source_r.alias().c_str() ) ) );
+            }
+          }
+          _sources[source_r.numericId()] = source_r;
+        }
         dumpSourceTableOn( DBG );
       }
       else

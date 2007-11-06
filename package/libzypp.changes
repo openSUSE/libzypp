@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Nov  6 14:43:54 CET 2007 - ma@suse.de
+
+- Throw an exception when adding a new source with an already
+  existing alias. (#276546)
+- version 2.30.2
+- revision 7746
+
+-------------------------------------------------------------------
 Mon Nov  5 15:22:33 CET 2007 - ma@suse.de
 
 - Don't mark failed patch scripts as installed. (#327523)

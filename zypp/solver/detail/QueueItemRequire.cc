@@ -21,6 +21,8 @@
 
 #include <sstream>
 
+#include "zypp/CapFactory.h"
+#include "zypp/CapMatch.h"
 #include "zypp/CapSet.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/String.h"
@@ -642,6 +644,46 @@ QueueItemRequire::process (ResolverContext_Ptr context, QueueItemList & new_item
 		    it = next;
 		}
 	    }
+	    }
+
+	    if (!context->tryAllPossibilities()) {
+		// Evaluate the best architecture of the providers
+		Arch bestArch = Arch(); // is noarch
+		PoolItemList::iterator it;
+		for (it = info.providers.begin();
+		     it != info.providers.end(); it++) {
+		    if (bestArch.compare( (*it)->arch() ) < 0) {	// better arch
+			bestArch = (*it)->arch();
+		    }	
+		}
+		
+		// filter out all resolvables which have worser architecture, are NOT noarch
+		// and have not the same name as the requirement. The last one is needed
+		// for updating packages via patch/atoms.
+		PoolItemList::iterator next;	    
+		for (it = info.providers.begin();
+		     it != info.providers.end();) {
+
+		    bool nameFit = false;
+		    CapFactory factory;		    
+		    if (isKind<capability::NamedCap>( _capability ) ) {
+			Capability capTest =  factory.parse ( (*it)->kind(), (*it)->name(), Rel::ANY, Edition::noedition );
+			if (capTest.matches (_capability) == CapMatch::yes) {
+			    nameFit = true;
+			    _XDEBUG("Required Capability " << _capability << " has the same name as the provider:" << *it);
+			    _XDEBUG("    --> do not trow away althout it could have the wrong architecture");
+			}
+		    }
+		    
+		    next = it; ++next;
+		    if ((*it)->arch() != bestArch
+			&& (*it)->arch() != Arch_noarch
+			&& !nameFit) {
+			_XDEBUG("Kicking " << *it << " due best architecture " << bestArch);
+			info.providers.erase( it );
+		    }
+		    it = next;
+		}
 	    }
 
 	    num_providers = info.providers.size();

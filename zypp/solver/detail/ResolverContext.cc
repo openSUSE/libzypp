@@ -693,7 +693,9 @@ ResolverContext::isPresent (PoolItem_Ref item, bool *unneeded, bool *installed)
 
     bool res = false;
     if (item->kind() == ResTraits<Atom>::kind
-	||item->kind() == ResTraits<Patch>::kind) {    
+	|| item->kind() == ResTraits<Patch>::kind
+	|| item->kind() == ResTraits<Script>::kind
+	|| item->kind() == ResTraits<Message>::kind) {    
 	res = ((status.staysInstalled() && !status.isIncomplete())
 		|| (status.isToBeInstalled() && !status.isNeeded())
 		|| status.isUnneeded()

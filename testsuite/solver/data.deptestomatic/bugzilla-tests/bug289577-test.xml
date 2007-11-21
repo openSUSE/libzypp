@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- testcase for bug289577 -->
+<test>
+<setup arch="i686">
+	<system file="bug289577-system.xml"/>
+	<channel file="bug289577-1-package.xml" name="1" />
+</setup>
+<trial>
+<showpool all="yes"/>
+<establish/>
+<showpool all="true" prefix=">!> ESTABLISHED:"/>
+<install channel="1" kind="product" name="SUSE_SLES_SP1"/>
+</trial>
+</test>

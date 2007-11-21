@@ -691,11 +691,18 @@ ResolverContext::isPresent (PoolItem_Ref item, bool *unneeded, bool *installed)
 {
     ResStatus status = getStatus(item);
 
-    bool res = ((status.staysInstalled() && !status.isIncomplete())
+    bool res = false;
+    if (item->kind() == ResTraits<Atom>::kind
+	||item->kind() == ResTraits<Patch>::kind) {    
+	res = ((status.staysInstalled() && !status.isIncomplete())
 		|| (status.isToBeInstalled() && !status.isNeeded())
 		|| status.isUnneeded()
 		|| status.isSatisfied()
 		);
+    } else {
+	// packages, patterns are present although they are incomplete or unneeded (Bug289577)
+	res = (status.staysInstalled() || status.isToBeInstalled());
+    }
 
    if (unneeded) *unneeded = status.isUnneeded();
    if (installed) *installed = status.staysInstalled() || status.isToBeInstalled();

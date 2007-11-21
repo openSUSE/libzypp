@@ -12,7 +12,7 @@ Wed Nov 21 13:23:37 CET 2007 - schubi@suse.de
 - QueuItemRequire: Filter out all provider which have worser architecture, 
 are NOT noarch and have not the same name as the requirement. The
 last one is needed for updating packages via patch/atoms.
-Testcase of AJ added to testsuite.
+Bug 328081
 - r7878 
 
 -------------------------------------------------------------------

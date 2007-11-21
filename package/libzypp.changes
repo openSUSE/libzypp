@@ -1,8 +1,9 @@
 -------------------------------------------------------------------
 Wed Nov 21 14:02:46 CET 2007 - schubi@suse.de
 
-- Patterns are "present" although they are incomplete. So patterns 
+- Patterns, Packages are "present" although they are incomplete. So patterns 
   behave the same way like packages do. Bug 289577
+  This change fixes Bug 331798 too.
 - r7883
 
 -------------------------------------------------------------------

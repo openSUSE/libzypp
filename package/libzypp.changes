@@ -3,7 +3,7 @@ Wed Nov 21 14:02:46 CET 2007 - schubi@suse.de
 
 - Patterns are "present" although they are incomplete. So patterns 
   behave the same way like packages do. Bug 289577
-- r7881 
+- r7883
 
 -------------------------------------------------------------------
 Wed Nov 21 13:23:37 CET 2007 - schubi@suse.de

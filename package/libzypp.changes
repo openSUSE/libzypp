@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Nov 22 14:12:38 CET 2007 - schubi@suse.de
+
+- If a to be remove resolvable is a kmp package ( includes modaliases in the FRESHENS/SUPPLEMENTS ) and the
+  removed resolvable will be updated by a new, the solver checks, if
+  old kmp modaliases are not supported by the new package anymore AND
+  these old modaliases are still needed by the system. --> report a problem if it is still needed
+- r7893
+
+-------------------------------------------------------------------
 Wed Nov 21 14:02:46 CET 2007 - schubi@suse.de
 
 - Patterns, Packages are "present" although they are incomplete. So patterns 

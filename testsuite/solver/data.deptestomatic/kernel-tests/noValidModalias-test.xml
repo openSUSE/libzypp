@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<test>
+<setup>
+  <system file="noValidModalias-system.xml"/>
+  <channel name="packages" file="noValidModalias-packages.xml"/>
+  <hardwareInfo path="kernel-hardware"/>
+</setup>
+
+<!--    update nvidia packagen which does not provides old modaliases 
+        anymore.  report problem.
+-->
+
+<trial>
+ <install channel="packages" kind="package" name="nvidia-gfx-kmp-default"/>
+  <reportproblems/>
+</trial>
+
+</test>

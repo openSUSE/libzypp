@@ -38,6 +38,7 @@
 #include "zypp/solver/detail/ResolverContext.h"
 #include "zypp/solver/detail/ResolverInfoMisc.h"
 #include "zypp/solver/detail/ResolverInfoMissingReq.h"
+#include "zypp/capability/ModaliasCap.h"
 
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -50,6 +51,7 @@ namespace zypp
     { ///////////////////////////////////////////////////////////////////
 
 using namespace std;
+using namespace zypp::capability;	
 
 IMPL_PTR_TYPE(QueueItemUninstall);
 
@@ -318,6 +320,37 @@ QueueItemUninstall::process (ResolverContext_Ptr context, QueueItemList & qil)
     ResStatus status = context->getStatus(_item);
 
     _XDEBUG("QueueItemUninstall::process(<" << status << ">" << _item << ( _unlink ? "[unlink]" : ""));
+
+    // If a to be remove resolvable is a kmp package ( includes modaliases in the FRESHENS/SUPPLEMENTS ) and the
+    // removed resolvable will be updated by a new, the solver checks, if
+    // old kmp modaliases are not supported by the new package anymore AND
+    // these old modaliases are still needed by the system.
+    if (_upgraded_to
+	&& _upgraded_to->kind() == ResTraits<Package>::kind
+	&& _item->kind() == ResTraits<Package>::kind) {
+	
+	CapSet supplementsDel = _item->dep(Dep::FRESHENS);
+	CapSet supplementsInst = _upgraded_to->dep(Dep::FRESHENS);	
+
+	for (CapSet::const_iterator iter = supplementsDel.begin(); iter != supplementsDel.end(); iter++) {
+	    DBG << "Checking if " << *iter << " is still supported." << endl;
+	    if (isKind<ModaliasCap>(*iter)
+		&& supplementsInst.find (*iter) == supplementsInst.end()) {
+		// Old modalias is not available in the new package anymore
+		// --> check, if it is still needed by system
+		DBG << *iter << " will not be supported by " << _upgraded_to << " anymore." << endl;		
+		if (context->requirementIsMet (*iter)) {
+		    // it is still provided by the system-resolvable
+		    ERR << *iter << " will not be supported by " << _upgraded_to << " anymore." << endl;
+		    ERR << _item << " still supports it." << endl;
+		    ResolverInfo_Ptr misc_info = new ResolverInfoMisc (RESOLVER_INFO_TYPE_REJECT_INSTALL,
+								       _upgraded_to, RESOLVER_INFO_PRIORITY_VERBOSE);
+		    context->addError (misc_info, true); // true = asking the user
+		    goto finished;
+		}
+	    }
+	}
+    }
 
     /* In the case of an unlink, we only want to uninstall the item if it is
        being used by something else.  We can't really determine this with 100%

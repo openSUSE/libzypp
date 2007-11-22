@@ -1,0 +1,9 @@
+>!> setting HardwareInfo to: ./kernel-hardware
+>!> Installing nvidia-gfx-kmp-default from channel packages
+>!> 1 problems found:
+>!> Problem:
+>!> Cannot install nvidia-gfx-kmp-default-2.0-1.i586[packages] due to dependency problems
+>!> nvidia-gfx-kmp-default-2.0-1.i586[packages] is scheduled to be installed, but this is not possible because of dependency problems.
+>!>    Solution:
+>!>       do not install nvidia-gfx-kmp-default
+>!>       do not install nvidia-gfx-kmp-default-2.0-1.i586[packages]

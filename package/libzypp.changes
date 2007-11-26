@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 26 13:19:34 CET 2007 - ma@suse.de
+
+- Fix missing packages in patch content list. (#340896)
+- version 3.26.5
+- revision 7926
+
+-------------------------------------------------------------------
 Fri Oct 12 15:42:25 CEST 2007 - ma@suse.de
 
 - SMBIOS DMI modalias matching added (#333152)

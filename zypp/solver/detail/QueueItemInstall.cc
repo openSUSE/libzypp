@@ -286,7 +286,7 @@ struct UninstallConflicting
 //---------------------------------------------------------------------------------------
 
 bool
-QueueItemInstall::process (ResolverContext_Ptr context, QueueItemList & qil)
+QueueItemInstall::process (const QueueItemList & mainQueue, ResolverContext_Ptr context, QueueItemList & qil)
 {
     ResStatus status = context->getStatus(_item);
 

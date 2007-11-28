@@ -1,0 +1,1090 @@
+>!> Requesting locale de_DE
+>!> Requesting locale de
+>!> Requesting locale en
+>!> Requesting locale en_US
+>!> Installing flash-player.i586 from channel 1
+>!> Installing kdebase3-nsplugin.i586 from channel 1
+>!> Installing RealPlayer.i586 from channel 1
+>!> Installing master-boot-code.i586 from channel 1
+>!> Installing product:openSUSE-DVD5-download.x86_64 from channel 1
+>!> Installing Crystalcursors.noarch from channel 1
+>!> Installing AdobeICCProfiles.noarch from channel 1
+>!> Installing OpenOffice_org-de.noarch from channel 1
+>!> Installing OpenOffice_org-hyphen.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-de.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-cs.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-en.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-es.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-fr.noarch from channel 1
+>!> Installing OpenOffice_org-thesaurus-pl.noarch from channel 1
+>!> Installing SuSEfirewall2.noarch from channel 1
+>!> Installing agfa-fonts.noarch from channel 1
+>!> Installing apparmor-docs.noarch from channel 1
+>!> Installing apparmor-profiles.noarch from channel 1
+>!> Installing apparmor-utils.noarch from channel 1
+>!> Installing autoyast2.noarch from channel 1
+>!> Installing autoyast2-installation.noarch from channel 1
+>!> Installing dejavu.noarch from channel 1
+>!> Installing desktop-data-SuSE.noarch from channel 1
+>!> Installing desktop-translations.noarch from channel 1
+>!> Installing efont-unicode.noarch from channel 1
+>!> Installing fonts-config.noarch from channel 1
+>!> Installing gimp-help.noarch from channel 1
+>!> Installing gnome-icon-theme.noarch from channel 1
+>!> Installing ifnteuro.noarch from channel 1
+>!> Installing info2html.noarch from channel 1
+>!> Installing inst-source-utils.noarch from channel 1
+>!> Installing intlfnts.noarch from channel 1
+>!> Installing kde3-i18n-de.noarch from channel 1
+>!> Installing koffice-i18n-de.noarch from channel 1
+>!> Installing koffice-i18n-de-doc.noarch from channel 1
+>!> Installing man-pages.noarch from channel 1
+>!> Installing manufacturer-PPDs.noarch from channel 1
+>!> Installing myspell-american.noarch from channel 1
+>!> Installing netcfg.noarch from channel 1
+>!> Installing opensuse-manual_de.noarch from channel 1
+>!> Installing opensuse-manual_en.noarch from channel 1
+>!> Installing pciutils-ids.noarch from channel 1
+>!> Installing providers.noarch from channel 1
+>!> Installing qlogic-firmware.noarch from channel 1
+>!> Installing release-notes.noarch from channel 1
+>!> Installing sgml-skel.noarch from channel 1
+>!> Installing siga.noarch from channel 1
+>!> Installing suse-build-key.noarch from channel 1
+>!> Installing suseRegister.noarch from channel 1
+>!> Installing susehelp.noarch from channel 1
+>!> Installing susehelp_de.noarch from channel 1
+>!> Installing susehelp_en.noarch from channel 1
+>!> Installing ulimit.noarch from channel 1
+>!> Installing update-alternatives.noarch from channel 1
+>!> Installing words.noarch from channel 1
+>!> Installing xdg-utils.noarch from channel 1
+>!> Installing xgl-hardware-list.noarch from channel 1
+>!> Installing xkeyboard-config.noarch from channel 1
+>!> Installing xorg-x11-fonts.noarch from channel 1
+>!> Installing xorg-x11-fonts-core.noarch from channel 1
+>!> Installing yast2-add-on.noarch from channel 1
+>!> Installing yast2-apparmor.noarch from channel 1
+>!> Installing yast2-backup.noarch from channel 1
+>!> Installing yast2-bluetooth.noarch from channel 1
+>!> Installing yast2-inetd.noarch from channel 1
+>!> Installing yast2-firewall.noarch from channel 1
+>!> Installing yast2-installation.noarch from channel 1
+>!> Installing yast2-irda.noarch from channel 1
+>!> Installing yast2-iscsi-client.noarch from channel 1
+>!> Installing yast2-kerberos-client.noarch from channel 1
+>!> Installing yast2-ldap-client.noarch from channel 1
+>!> Installing yast2-mail.noarch from channel 1
+>!> Installing yast2-nfs-client.noarch from channel 1
+>!> Installing yast2-repair.noarch from channel 1
+>!> Installing yast2-ntp-client.noarch from channel 1
+>!> Installing yast2-online-update.noarch from channel 1
+>!> Installing yast2-pam.noarch from channel 1
+>!> Installing yast2-online-update-frontend.noarch from channel 1
+>!> Installing yast2-registration.noarch from channel 1
+>!> Installing yast2-schema.noarch from channel 1
+>!> Installing yast2-restore.noarch from channel 1
+>!> Installing yast2-runlevel.noarch from channel 1
+>!> Installing yast2-samba-client.noarch from channel 1
+>!> Installing yast2-samba-server.noarch from channel 1
+>!> Installing yast2-security.noarch from channel 1
+>!> Installing yast2-scanner.noarch from channel 1
+>!> Installing yast2-sudo.noarch from channel 1
+>!> Installing yast2-support.noarch from channel 1
+>!> Installing yast2-sysconfig.noarch from channel 1
+>!> Installing yast2-theme-openSUSE.noarch from channel 1
+>!> Installing yast2-trans-de.noarch from channel 1
+>!> Installing yast2-trans-en_US.noarch from channel 1
+>!> Installing yast2-trans-stats.noarch from channel 1
+>!> Installing yast2-tv.noarch from channel 1
+>!> Installing yast2-x11.noarch from channel 1
+>!> Installing 3ddiag.x86_64 from channel 1
+>!> Installing 915resolution.x86_64 from channel 1
+>!> Installing CheckHardware.x86_64 from channel 1
+>!> Installing GraphicsMagick.x86_64 from channel 1
+>!> Installing ImageMagick.x86_64 from channel 1
+>!> Installing Mesa-32bit.x86_64 from channel 1
+>!> Installing Mesa.x86_64 from channel 1
+>!> Installing MozillaFirefox.x86_64 from channel 1
+>!> Installing MozillaFirefox-translations.x86_64 from channel 1
+>!> Installing SDL_image.x86_64 from channel 1
+>!> Installing NetworkManager.x86_64 from channel 1
+>!> Installing NetworkManager-kde.x86_64 from channel 1
+>!> Installing OpenEXR.x86_64 from channel 1
+>!> Installing OpenEXR-32bit.x86_64 from channel 1
+>!> Installing OpenOffice_org.x86_64 from channel 1
+>!> Installing OpenOffice_org-kde.x86_64 from channel 1
+>!> Installing PolicyKit.x86_64 from channel 1
+>!> Installing SDL.x86_64 from channel 1
+>!> Installing SDL_net.x86_64 from channel 1
+>!> Installing OpenOffice_org-Quickstarter.x86_64 from channel 1
+>!> Installing SDL_Pango.x86_64 from channel 1
+>!> Installing SDL_mixer.x86_64 from channel 1
+>!> Installing SDL_perl.x86_64 from channel 1
+>!> Installing SDL_ttf.x86_64 from channel 1
+>!> Installing a2ps.x86_64 from channel 1
+>!> Installing aaa_base.x86_64 from channel 1
+>!> Installing aaa_skel.x86_64 from channel 1
+>!> Installing aalib.x86_64 from channel 1
+>!> Installing acl.x86_64 from channel 1
+>!> Installing acpid.x86_64 from channel 1
+>!> Installing alsa.x86_64 from channel 1
+>!> Installing amarok.x86_64 from channel 1
+>!> Installing amarok-libvisual.x86_64 from channel 1
+>!> Installing amarok-xine.x86_64 from channel 1
+>!> Installing apparmor-parser.x86_64 from channel 1
+>!> Installing arts.x86_64 from channel 1
+>!> Installing ash.x86_64 from channel 1
+>!> Installing aspell.x86_64 from channel 1
+>!> Installing aspell-32bit.x86_64 from channel 1
+>!> Installing aspell-de.x86_64 from channel 1
+>!> Installing aspell-en.x86_64 from channel 1
+>!> Installing at.x86_64 from channel 1
+>!> Installing atk.x86_64 from channel 1
+>!> Installing atk-32bit.x86_64 from channel 1
+>!> Installing attr.x86_64 from channel 1
+>!> Installing audiofile.x86_64 from channel 1
+>!> Installing audit.x86_64 from channel 1
+>!> Installing audit-libs.x86_64 from channel 1
+>!> Installing audit-libs-32bit.x86_64 from channel 1
+>!> Installing autofs.x86_64 from channel 1
+>!> Installing avahi-compat-mDNSResponder.x86_64 from channel 1
+>!> Installing bash.x86_64 from channel 1
+>!> Installing bash-doc.x86_64 from channel 1
+>!> Installing bc.x86_64 from channel 1
+>!> Installing beagle.x86_64 from channel 1
+>!> Installing beagle-firefox.x86_64 from channel 1
+>!> Installing beagle-index.x86_64 from channel 1
+>!> Installing bind-libs.x86_64 from channel 1
+>!> Installing bind-utils.x86_64 from channel 1
+>!> Installing binutils.x86_64 from channel 1
+>!> Installing blocxx.x86_64 from channel 1
+>!> Installing bluez-libs.x86_64 from channel 1
+>!> Installing bluez-utils.x86_64 from channel 1
+>!> Installing boost.x86_64 from channel 1
+>!> Installing bootsplash.x86_64 from channel 1
+>!> Installing bootsplash-theme-SuSE.x86_64 from channel 1
+>!> Installing bzip2.x86_64 from channel 1
+>!> Installing cairo.x86_64 from channel 1
+>!> Installing cabextract.x86_64 from channel 1
+>!> Installing cairo-32bit.x86_64 from channel 1
+>!> Installing cdparanoia.x86_64 from channel 1
+>!> Installing cdrdao.x86_64 from channel 1
+>!> Installing cdrkit-cdrtools-compat.x86_64 from channel 1
+>!> Installing chromium.x86_64 from channel 1
+>!> Installing classpath.x86_64 from channel 1
+>!> Installing compiz.x86_64 from channel 1
+>!> Installing cracklib-32bit.x86_64 from channel 1
+>!> Installing compat-libstdc++.x86_64 from channel 1
+>!> Installing compat-openssl097g.x86_64 from channel 1
+>!> Installing cracklib.x86_64 from channel 1
+>!> Installing coreutils.x86_64 from channel 1
+>!> Installing cpio.x86_64 from channel 1
+>!> Installing cpp.x86_64 from channel 1
+>!> Installing cpufrequtils.x86_64 from channel 1
+>!> Installing cracklib-dict-full.x86_64 from channel 1
+>!> Installing cron.x86_64 from channel 1
+>!> Installing cryptsetup.x86_64 from channel 1
+>!> Installing cups.x86_64 from channel 1
+>!> Installing cups-client.x86_64 from channel 1
+>!> Installing cups-drivers.x86_64 from channel 1
+>!> Installing cups-libs-32bit.x86_64 from channel 1
+>!> Installing cups-libs.x86_64 from channel 1
+>!> Installing curl.x86_64 from channel 1
+>!> Installing cyrus-sasl.x86_64 from channel 1
+>!> Installing cyrus-sasl-32bit.x86_64 from channel 1
+>!> Installing cyrus-sasl-crammd5.x86_64 from channel 1
+>!> Installing cyrus-sasl-saslauthd.x86_64 from channel 1
+>!> Installing cyrus-sasl-digestmd5.x86_64 from channel 1
+>!> Installing cyrus-sasl-plain.x86_64 from channel 1
+>!> Installing db-utils.x86_64 from channel 1
+>!> Installing dbus-1.x86_64 from channel 1
+>!> Installing dbus-1-32bit.x86_64 from channel 1
+>!> Installing dbus-1-glib.x86_64 from channel 1
+>!> Installing dbus-1-glib-32bit.x86_64 from channel 1
+>!> Installing dbus-1-mono.x86_64 from channel 1
+>!> Installing dbus-1-qt3.x86_64 from channel 1
+>!> Installing dbus-1-x11.x86_64 from channel 1
+>!> Installing dcraw.x86_64 from channel 1
+>!> Installing deltarpm.x86_64 from channel 1
+>!> Installing desktop-file-utils.x86_64 from channel 1
+>!> Installing device-mapper.x86_64 from channel 1
+>!> Installing dhcdbd.x86_64 from channel 1
+>!> Installing dhcp.x86_64 from channel 1
+>!> Installing dhcp-client.x86_64 from channel 1
+>!> Installing dhcpcd.x86_64 from channel 1
+>!> Installing digikam.x86_64 from channel 1
+>!> Installing dialog.x86_64 from channel 1
+>!> Installing diffutils.x86_64 from channel 1
+>!> Installing digikamimageplugins.x86_64 from channel 1
+>!> Installing dirmngr.x86_64 from channel 1
+>!> Installing dmraid.x86_64 from channel 1
+>!> Installing dos2unix.x86_64 from channel 1
+>!> Installing dosfstools.x86_64 from channel 1
+>!> Installing dvd+rw-tools.x86_64 from channel 1
+>!> Installing e2fsprogs.x86_64 from channel 1
+>!> Installing ed.x86_64 from channel 1
+>!> Installing eject.x86_64 from channel 1
+>!> Installing enscript.x86_64 from channel 1
+>!> Installing esound.x86_64 from channel 1
+>!> Installing ethtool.x86_64 from channel 1
+>!> Installing evms.x86_64 from channel 1
+>!> Installing evms-gui.x86_64 from channel 1
+>!> Installing expat.x86_64 from channel 1
+>!> Installing exiftool.x86_64 from channel 1
+>!> Installing fam.x86_64 from channel 1
+>!> Installing fam-32bit.x86_64 from channel 1
+>!> Installing fbset.x86_64 from channel 1
+>!> Installing fftw3.x86_64 from channel 1
+>!> Installing file.x86_64 from channel 1
+>!> Installing filesystem.x86_64 from channel 1
+>!> Installing fillup.x86_64 from channel 1
+>!> Installing fileshareset.x86_64 from channel 1
+>!> Installing findutils.x86_64 from channel 1
+>!> Installing flac.x86_64 from channel 1
+>!> Installing fontconfig.x86_64 from channel 1
+>!> Installing fontconfig-32bit.x86_64 from channel 1
+>!> Installing foomatic-filters.x86_64 from channel 1
+>!> Installing freealut.x86_64 from channel 1
+>!> Installing freeciv.x86_64 from channel 1
+>!> Installing freeglut.x86_64 from channel 1
+>!> Installing freetype.x86_64 from channel 1
+>!> Installing freetype2.x86_64 from channel 1
+>!> Installing freetype2-32bit.x86_64 from channel 1
+>!> Installing fribidi.x86_64 from channel 1
+>!> Installing frozen-bubble.x86_64 from channel 1
+>!> Installing ft2demos.x86_64 from channel 1
+>!> Installing ftgl.x86_64 from channel 1
+>!> Installing fvwm2.x86_64 from channel 1
+>!> Installing gail.x86_64 from channel 1
+>!> Installing gawk.x86_64 from channel 1
+>!> Installing gcc-gij.x86_64 from channel 1
+>!> Installing gconf2.x86_64 from channel 1
+>!> Installing gconf2-32bit.x86_64 from channel 1
+>!> Installing gdb.x86_64 from channel 1
+>!> Installing gdbm.x86_64 from channel 1
+>!> Installing gdbm-32bit.x86_64 from channel 1
+>!> Installing gettext.x86_64 from channel 1
+>!> Installing ghostscript-fonts-std.x86_64 from channel 1
+>!> Installing ghostscript-library.x86_64 from channel 1
+>!> Installing ghostscript-fonts-other.x86_64 from channel 1
+>!> Installing ghostscript-x11.x86_64 from channel 1
+>!> Installing gimp.x86_64 from channel 1
+>!> Installing giflib.x86_64 from channel 1
+>!> Installing glib.x86_64 from channel 1
+>!> Installing gle.x86_64 from channel 1
+>!> Installing glib-sharp2.x86_64 from channel 1
+>!> Installing glib2.x86_64 from channel 1
+>!> Installing glib2-32bit.x86_64 from channel 1
+>!> Installing glibc.x86_64 from channel 1
+>!> Installing glibc-32bit.x86_64 from channel 1
+>!> Installing glibc-i18ndata.x86_64 from channel 1
+>!> Installing glibc-locale.x86_64 from channel 1
+>!> Installing glibc-locale-32bit.x86_64 from channel 1
+>!> Installing glitz-32bit.x86_64 from channel 1
+>!> Installing gmime.x86_64 from channel 1
+>!> Installing gmp.x86_64 from channel 1
+>!> Installing glitz.x86_64 from channel 1
+>!> Installing gnokii.x86_64 from channel 1
+>!> Installing gnome-keyring.x86_64 from channel 1
+>!> Installing gnome-vfs2.x86_64 from channel 1
+>!> Installing gnome-vfs2-32bit.x86_64 from channel 1
+>!> Installing gnutls.x86_64 from channel 1
+>!> Installing gpart.x86_64 from channel 1
+>!> Installing gpg2.x86_64 from channel 1
+>!> Installing gpgme.x86_64 from channel 1
+>!> Installing gpm.x86_64 from channel 1
+>!> Installing grep.x86_64 from channel 1
+>!> Installing groff.x86_64 from channel 1
+>!> Installing grub.x86_64 from channel 1
+>!> Installing gsf-sharp.x86_64 from channel 1
+>!> Installing gtk.x86_64 from channel 1
+>!> Installing gtk-sharp2.x86_64 from channel 1
+>!> Installing gtk2.x86_64 from channel 1
+>!> Installing gtk2-32bit.x86_64 from channel 1
+>!> Installing gtk2-engines-32bit.x86_64 from channel 1
+>!> Installing gtksourceview.x86_64 from channel 1
+>!> Installing hal-32bit.x86_64 from channel 1
+>!> Installing gutenprint.x86_64 from channel 1
+>!> Installing gwenview.x86_64 from channel 1
+>!> Installing hplip-hpijs.x86_64 from channel 1
+>!> Installing gzip.x86_64 from channel 1
+>!> Installing hal.x86_64 from channel 1
+>!> Installing hal-resmgr.x86_64 from channel 1
+>!> Installing hdparm.x86_64 from channel 1
+>!> Installing hfsutils.x86_64 from channel 1
+>!> Installing hplip.x86_64 from channel 1
+>!> Installing htdig.x86_64 from channel 1
+>!> Installing hwinfo.x86_64 from channel 1
+>!> Installing iptables.x86_64 from channel 1
+>!> Installing id3lib.x86_64 from channel 1
+>!> Installing ifplugd.x86_64 from channel 1
+>!> Installing imlib.x86_64 from channel 1
+>!> Installing imlib2.x86_64 from channel 1
+>!> Installing imlib2-loaders.x86_64 from channel 1
+>!> Installing info.x86_64 from channel 1
+>!> Installing initviocons.x86_64 from channel 1
+>!> Installing insserv.x86_64 from channel 1
+>!> Installing iproute2.x86_64 from channel 1
+>!> Installing iputils.x86_64 from channel 1
+>!> Installing irqbalance.x86_64 from channel 1
+>!> Installing ispell.x86_64 from channel 1
+>!> Installing ispell-american.x86_64 from channel 1
+>!> Installing ispell-german.x86_64 from channel 1
+>!> Installing ispell-ngerman.x86_64 from channel 1
+>!> Installing jfsutils.x86_64 from channel 1
+>!> Installing jack.x86_64 from channel 1
+>!> Installing java-1_5_0-sun.x86_64 from channel 1
+>!> Installing jpeg.x86_64 from channel 1
+>!> Installing joe.x86_64 from channel 1
+>!> Installing jpackage-utils.x86_64 from channel 1
+>!> Installing k3b.x86_64 from channel 1
+>!> Installing kaffeine.x86_64 from channel 1
+>!> Installing kbd.x86_64 from channel 1
+>!> Installing kcm_gtk.x86_64 from channel 1
+>!> Installing kdeaddons3-kicker.x86_64 from channel 1
+>!> Installing kdeaddons3-konqueror.x86_64 from channel 1
+>!> Installing kdeartwork3-xscreensaver.x86_64 from channel 1
+>!> Installing kdeartwork3-kscreensaver.x86_64 from channel 1
+>!> Installing kdebase3.x86_64 from channel 1
+>!> Installing kdebase3-kdm.x86_64 from channel 1
+>!> Installing kdebase3-ksysguardd.x86_64 from channel 1
+>!> Installing kdebase3-samba.x86_64 from channel 1
+>!> Installing kdebase3-SuSE.x86_64 from channel 1
+>!> Installing kdebase3-beagle.x86_64 from channel 1
+>!> Installing kdebase3-session.x86_64 from channel 1
+>!> Installing kdegames3.x86_64 from channel 1
+>!> Installing kdebluetooth.x86_64 from channel 1
+>!> Installing kdegames3-card.x86_64 from channel 1
+>!> Installing kdegraphics3.x86_64 from channel 1
+>!> Installing kdegraphics3-kamera.x86_64 from channel 1
+>!> Installing kdegraphics3-pdf.x86_64 from channel 1
+>!> Installing kdegraphics3-postscript.x86_64 from channel 1
+>!> Installing kdegraphics3-scan.x86_64 from channel 1
+>!> Installing kdelibs3.x86_64 from channel 1
+>!> Installing kdelibs3-32bit.x86_64 from channel 1
+>!> Installing kdelibs3-default-style.x86_64 from channel 1
+>!> Installing kdemultimedia3-mixer.x86_64 from channel 1
+>!> Installing kdelibs3-doc.x86_64 from channel 1
+>!> Installing kdemultimedia3.x86_64 from channel 1
+>!> Installing kdemultimedia3-CD.x86_64 from channel 1
+>!> Installing kdenetwork3.x86_64 from channel 1
+>!> Installing kdenetwork3-InstantMessenger.x86_64 from channel 1
+>!> Installing kdenetwork3-news.x86_64 from channel 1
+>!> Installing kdenetwork3-vnc.x86_64 from channel 1
+>!> Installing kdepim3.x86_64 from channel 1
+>!> Installing kdepim3-kpilot.x86_64 from channel 1
+>!> Installing kdepim3-notes.x86_64 from channel 1
+>!> Installing kdetv.x86_64 from channel 1
+>!> Installing kdeutils3.x86_64 from channel 1
+>!> Installing kernel-default.x86_64 from channel 1
+>!> Installing kerry.x86_64 from channel 1
+>!> Installing kio_beagle.x86_64 from channel 1
+>!> Installing kio_ipodslave.x86_64 from channel 1
+>!> Installing kio_iso.x86_64 from channel 1
+>!> Installing kio_slp.x86_64 from channel 1
+>!> Installing kio_sysinfo.x86_64 from channel 1
+>!> Installing kipi-plugins.x86_64 from channel 1
+>!> Installing kitchensync.x86_64 from channel 1
+>!> Installing klogd.x86_64 from channel 1
+>!> Installing knights.x86_64 from channel 1
+>!> Installing koffice.x86_64 from channel 1
+>!> Installing koffice-illustration.x86_64 from channel 1
+>!> Installing konversation.x86_64 from channel 1
+>!> Installing kpowersave.x86_64 from channel 1
+>!> Installing krb5.x86_64 from channel 1
+>!> Installing krb5-32bit.x86_64 from channel 1
+>!> Installing krecord.x86_64 from channel 1
+>!> Installing ksh.x86_64 from channel 1
+>!> Installing ksudoku.x86_64 from channel 1
+>!> Installing ksymoops.x86_64 from channel 1
+>!> Installing kwin-decor-suse2.x86_64 from channel 1
+>!> Installing ktorrent.x86_64 from channel 1
+>!> Installing lbreakout.x86_64 from channel 1
+>!> Installing ldapcpplib.x86_64 from channel 1
+>!> Installing less.x86_64 from channel 1
+>!> Installing libMagick++10.x86_64 from channel 1
+>!> Installing libacl.x86_64 from channel 1
+>!> Installing libao.x86_64 from channel 1
+>!> Installing libacl-32bit.x86_64 from channel 1
+>!> Installing libakode.x86_64 from channel 1
+>!> Installing libapparmor-devel.x86_64 from channel 1
+>!> Installing libapparmor1.x86_64 from channel 1
+>!> Installing libattr.x86_64 from channel 1
+>!> Installing libart_lgpl.x86_64 from channel 1
+>!> Installing libart_lgpl-32bit.x86_64 from channel 1
+>!> Installing libbeagle.x86_64 from channel 1
+>!> Installing libasound2-32bit.x86_64 from channel 1
+>!> Installing libattr-32bit.x86_64 from channel 1
+>!> Installing libbonobo.x86_64 from channel 1
+>!> Installing libbonoboui.x86_64 from channel 1
+>!> Installing libcap.x86_64 from channel 1
+>!> Installing libcom_err2.x86_64 from channel 1
+>!> Installing libcroco.x86_64 from channel 1
+>!> Installing libcroco-32bit.x86_64 from channel 1
+>!> Installing libdb-4_5.x86_64 from channel 1
+>!> Installing libdrm.x86_64 from channel 1
+>!> Installing libdrm-32bit.x86_64 from channel 1
+>!> Installing libexif.x86_64 from channel 1
+>!> Installing libevent.x86_64 from channel 1
+>!> Installing libexpat1-32bit.x86_64 from channel 1
+>!> Installing libgcc42-32bit.x86_64 from channel 1
+>!> Installing libgcc42.x86_64 from channel 1
+>!> Installing libgcrypt.x86_64 from channel 1
+>!> Installing libgcrypt-32bit.x86_64 from channel 1
+>!> Installing libgimpprint.x86_64 from channel 1
+>!> Installing libglade2.x86_64 from channel 1
+>!> Installing libgnome.x86_64 from channel 1
+>!> Installing libgnomecanvas.x86_64 from channel 1
+>!> Installing libgnomecups.x86_64 from channel 1
+>!> Installing libgnomeprint.x86_64 from channel 1
+>!> Installing libgnomeprintui.x86_64 from channel 1
+>!> Installing libgnomesu.x86_64 from channel 1
+>!> Installing libgnomeui.x86_64 from channel 1
+>!> Installing libgpg-error.x86_64 from channel 1
+>!> Installing libgpg-error-32bit.x86_64 from channel 1
+>!> Installing libgphoto2.x86_64 from channel 1
+>!> Installing libgsf.x86_64 from channel 1
+>!> Installing libgpod2.x86_64 from channel 1
+>!> Installing libgsf-32bit.x86_64 from channel 1
+>!> Installing libgsf-gnome.x86_64 from channel 1
+>!> Installing libgssapi.x86_64 from channel 1
+>!> Installing libgtkhtml.x86_64 from channel 1
+>!> Installing libical.x86_64 from channel 1
+>!> Installing libicu.x86_64 from channel 1
+>!> Installing libidl.x86_64 from channel 1
+>!> Installing libidn.x86_64 from channel 1
+>!> Installing libidl-32bit.x86_64 from channel 1
+>!> Installing libidn-32bit.x86_64 from channel 1
+>!> Installing libieee1284.x86_64 from channel 1
+>!> Installing libjasper.x86_64 from channel 1
+>!> Installing libjasper-32bit.x86_64 from channel 1
+>!> Installing libjpeg-32bit.x86_64 from channel 1
+>!> Installing libjpeg.x86_64 from channel 1
+>!> Installing libkipi.x86_64 from channel 1
+>!> Installing libksba.x86_64 from channel 1
+>!> Installing liblazy.x86_64 from channel 1
+>!> Installing liblcms.x86_64 from channel 1
+>!> Installing liblcms-32bit.x86_64 from channel 1
+>!> Installing libltdl-3.x86_64 from channel 1
+>!> Installing libmal.x86_64 from channel 1
+>!> Installing libmikmod.x86_64 from channel 1
+>!> Installing libmng.x86_64 from channel 1
+>!> Installing libmng-32bit.x86_64 from channel 1
+>!> Installing libmpcdec5.x86_64 from channel 1
+>!> Installing libmtp.x86_64 from channel 1
+>!> Installing libmusicbrainz4.x86_64 from channel 1
+>!> Installing libnetpbm10.x86_64 from channel 1
+>!> Installing libnjb.x86_64 from channel 1
+>!> Installing libnl.x86_64 from channel 1
+>!> Installing libnscd-32bit.x86_64 from channel 1
+>!> Installing libnscd.x86_64 from channel 1
+>!> Installing libofa.x86_64 from channel 1
+>!> Installing libopensync-plugin-gpe.x86_64 from channel 1
+>!> Installing libogg.x86_64 from channel 1
+>!> Installing libopencdk.x86_64 from channel 1
+>!> Installing libopensync.x86_64 from channel 1
+>!> Installing libopensync-plugin-file.x86_64 from channel 1
+>!> Installing libopensync-plugin-gnokii.x86_64 from channel 1
+>!> Installing libopensync-plugin-irmc.x86_64 from channel 1
+>!> Installing libopensync-plugin-kdepim.x86_64 from channel 1
+>!> Installing libopensync-plugin-opie.x86_64 from channel 1
+>!> Installing libopensync-plugin-palm.x86_64 from channel 1
+>!> Installing libopensync-plugin-syncml.x86_64 from channel 1
+>!> Installing libopensync-plugin-sunbird.x86_64 from channel 1
+>!> Installing libopensync-tools.x86_64 from channel 1
+>!> Installing libsmbclient.x86_64 from channel 1
+>!> Installing libpcap.x86_64 from channel 1
+>!> Installing libpng.x86_64 from channel 1
+>!> Installing libpng-32bit.x86_64 from channel 1
+>!> Installing libqt4.x86_64 from channel 1
+>!> Installing libqt4-dbus-1.x86_64 from channel 1
+>!> Installing libqt4-qt3support.x86_64 from channel 1
+>!> Installing libqt4-sql.x86_64 from channel 1
+>!> Installing libqt4-x11.x86_64 from channel 1
+>!> Installing libqtpod.x86_64 from channel 1
+>!> Installing libreadline5.x86_64 from channel 1
+>!> Installing librpcsecgss.x86_64 from channel 1
+>!> Installing librsvg.x86_64 from channel 1
+>!> Installing librsvg-32bit.x86_64 from channel 1
+>!> Installing libsamplerate.x86_64 from channel 1
+>!> Installing libsndfile.x86_64 from channel 1
+>!> Installing libsmbclient-32bit.x86_64 from channel 1
+>!> Installing libsoup.x86_64 from channel 1
+>!> Installing libstdc++42-32bit.x86_64 from channel 1
+>!> Installing libstdc++42.x86_64 from channel 1
+>!> Installing libstroke.x86_64 from channel 1
+>!> Installing libsyncml0.x86_64 from channel 1
+>!> Installing libtheora0.x86_64 from channel 1
+>!> Installing libtiff3.x86_64 from channel 1
+>!> Installing libtunepimp.x86_64 from channel 1
+>!> Installing libusb.x86_64 from channel 1
+>!> Installing libusb-32bit.x86_64 from channel 1
+>!> Installing libvisual.x86_64 from channel 1
+>!> Installing libvolume_id.x86_64 from channel 1
+>!> Installing libvorbis.x86_64 from channel 1
+>!> Installing libwmf.x86_64 from channel 1
+>!> Installing libwnck.x86_64 from channel 1
+>!> Installing libxcrypt.x86_64 from channel 1
+>!> Installing libxcrypt-32bit.x86_64 from channel 1
+>!> Installing libxslt.x86_64 from channel 1
+>!> Installing libxml2.x86_64 from channel 1
+>!> Installing libxml2-32bit.x86_64 from channel 1
+>!> Installing libxslt-32bit.x86_64 from channel 1
+>!> Installing liby2util.x86_64 from channel 1
+>!> Installing libzio.x86_64 from channel 1
+>!> Installing libzypp.x86_64 from channel 1
+>!> Installing limal.x86_64 from channel 1
+>!> Installing limal-perl.x86_64 from channel 1
+>!> Installing linux32.x86_64 from channel 1
+>!> Installing logrotate.x86_64 from channel 1
+>!> Installing lsb.x86_64 from channel 1
+>!> Installing lua-libs.x86_64 from channel 1
+>!> Installing lukemftp.x86_64 from channel 1
+>!> Installing lsof.x86_64 from channel 1
+>!> Installing lzo.x86_64 from channel 1
+>!> Installing lvm2.x86_64 from channel 1
+>!> Installing mailx.x86_64 from channel 1
+>!> Installing m4.x86_64 from channel 1
+>!> Installing make.x86_64 from channel 1
+>!> Installing man.x86_64 from channel 1
+>!> Installing mcelog.x86_64 from channel 1
+>!> Installing mdadm.x86_64 from channel 1
+>!> Installing metacity.x86_64 from channel 1
+>!> Installing microcode_ctl.x86_64 from channel 1
+>!> Installing mingetty.x86_64 from channel 1
+>!> Installing mkinitrd.x86_64 from channel 1
+>!> Installing mono-data-sqlite.x86_64 from channel 1
+>!> Installing mktemp.x86_64 from channel 1
+>!> Installing module-init-tools.x86_64 from channel 1
+>!> Installing mono-core.x86_64 from channel 1
+>!> Installing mono-data.x86_64 from channel 1
+>!> Installing mozilla-xulrunner181.x86_64 from channel 1
+>!> Installing mono-web.x86_64 from channel 1
+>!> Installing mozilla-nspr.x86_64 from channel 1
+>!> Installing mozilla-nss.x86_64 from channel 1
+>!> Installing multipath-tools.x86_64 from channel 1
+>!> Installing neon.x86_64 from channel 1
+>!> Installing ncurses-32bit.x86_64 from channel 1
+>!> Installing ncurses.x86_64 from channel 1
+>!> Installing net-snmp.x86_64 from channel 1
+>!> Installing net-tools.x86_64 from channel 1
+>!> Installing netcat.x86_64 from channel 1
+>!> Installing netpbm.x86_64 from channel 1
+>!> Installing nfs-client.x86_64 from channel 1
+>!> Installing nfs-kernel-server.x86_64 from channel 1
+>!> Installing nfsidmap.x86_64 from channel 1
+>!> Installing nscd.x86_64 from channel 1
+>!> Installing ntfsprogs.x86_64 from channel 1
+>!> Installing numlockx.x86_64 from channel 1
+>!> Installing numactl.x86_64 from channel 1
+>!> Installing openslp.x86_64 from channel 1
+>!> Installing ocrad.x86_64 from channel 1
+>!> Installing openSUSE-release.x86_64 from channel 1
+>!> Installing openal.x86_64 from channel 1
+>!> Installing openct.x86_64 from channel 1
+>!> Installing openldap2-client.x86_64 from channel 1
+>!> Installing openldap2-client-32bit.x86_64 from channel 1
+>!> Installing opensc.x86_64 from channel 1
+>!> Installing openobex.x86_64 from channel 1
+>!> Installing openssh.x86_64 from channel 1
+>!> Installing openssh-askpass.x86_64 from channel 1
+>!> Installing openssl.x86_64 from channel 1
+>!> Installing opensuse-updater-kde.x86_64 from channel 1
+>!> Installing orbit2.x86_64 from channel 1
+>!> Installing orbit2-32bit.x86_64 from channel 1
+>!> Installing pam.x86_64 from channel 1
+>!> Installing pam-32bit.x86_64 from channel 1
+>!> Installing pam-modules.x86_64 from channel 1
+>!> Installing pam-config.x86_64 from channel 1
+>!> Installing pango.x86_64 from channel 1
+>!> Installing pango-32bit.x86_64 from channel 1
+>!> Installing parted.x86_64 from channel 1
+>!> Installing patch.x86_64 from channel 1
+>!> Installing pax.x86_64 from channel 1
+>!> Installing pciutils.x86_64 from channel 1
+>!> Installing pcre-32bit.x86_64 from channel 1
+>!> Installing pcre.x86_64 from channel 1
+>!> Installing pcsc-lite.x86_64 from channel 1
+>!> Installing perl.x86_64 from channel 1
+>!> Installing perl-Archive-Tar.x86_64 from channel 1
+>!> Installing perl-Bootloader.x86_64 from channel 1
+>!> Installing perl-Config-Crontab.x86_64 from channel 1
+>!> Installing perl-Compress-Zlib.x86_64 from channel 1
+>!> Installing perl-Crypt-SSLeay.x86_64 from channel 1
+>!> Installing perl-Crypt-SmbHash.x86_64 from channel 1
+>!> Installing perl-Digest-MD4.x86_64 from channel 1
+>!> Installing perl-DBD-SQLite.x86_64 from channel 1
+>!> Installing perl-DBI.x86_64 from channel 1
+>!> Installing perl-Digest-HMAC.x86_64 from channel 1
+>!> Installing perl-Digest-SHA1.x86_64 from channel 1
+>!> Installing perl-File-Tail.x86_64 from channel 1
+>!> Installing perl-HTML-Parser.x86_64 from channel 1
+>!> Installing perl-HTML-Tagset.x86_64 from channel 1
+>!> Installing perl-IO-Socket-SSL.x86_64 from channel 1
+>!> Installing perl-IO-Zlib.x86_64 from channel 1
+>!> Installing perl-Net-DNS.x86_64 from channel 1
+>!> Installing perl-Net-Daemon.x86_64 from channel 1
+>!> Installing perl-Net-IP.x86_64 from channel 1
+>!> Installing perl-Net_SSLeay.x86_64 from channel 1
+>!> Installing perl-PlRPC.x86_64 from channel 1
+>!> Installing perl-TermReadKey.x86_64 from channel 1
+>!> Installing perl-TimeDate.x86_64 from channel 1
+>!> Installing perl-URI.x86_64 from channel 1
+>!> Installing perl-XML-Parser.x86_64 from channel 1
+>!> Installing perl-XML-Writer.x86_64 from channel 1
+>!> Installing perl-gettext.x86_64 from channel 1
+>!> Installing perl-libwww-perl.x86_64 from channel 1
+>!> Installing phalanx.x86_64 from channel 1
+>!> Installing perl-spamassassin.x86_64 from channel 1
+>!> Installing permissions.x86_64 from channel 1
+>!> Installing pilot-link.x86_64 from channel 1
+>!> Installing pinentry.x86_64 from channel 1
+>!> Installing pkg-config.x86_64 from channel 1
+>!> Installing pm-utils.x86_64 from channel 1
+>!> Installing pmtools.x86_64 from channel 1
+>!> Installing poppler.x86_64 from channel 1
+>!> Installing poppler-qt.x86_64 from channel 1
+>!> Installing popt.x86_64 from channel 1
+>!> Installing portmap.x86_64 from channel 1
+>!> Installing postfix.x86_64 from channel 1
+>!> Installing ppp.x86_64 from channel 1
+>!> Installing powersave.x86_64 from channel 1
+>!> Installing powersave-libs.x86_64 from channel 1
+>!> Installing pptp.x86_64 from channel 1
+>!> Installing preload.x86_64 from channel 1
+>!> Installing procinfo.x86_64 from channel 1
+>!> Installing procmail.x86_64 from channel 1
+>!> Installing procps.x86_64 from channel 1
+>!> Installing psmisc.x86_64 from channel 1
+>!> Installing pwdutils.x86_64 from channel 1
+>!> Installing python.x86_64 from channel 1
+>!> Installing python-qt.x86_64 from channel 1
+>!> Installing python-xml.x86_64 from channel 1
+>!> Installing qca.x86_64 from channel 1
+>!> Installing qt3.x86_64 from channel 1
+>!> Installing qt3-32bit.x86_64 from channel 1
+>!> Installing qtcurve-gtk2.x86_64 from channel 1
+>!> Installing qtcurve-gtk2-32bit.x86_64 from channel 1
+>!> Installing rdesktop.x86_64 from channel 1
+>!> Installing readline-doc.x86_64 from channel 1
+>!> Installing recode.x86_64 from channel 1
+>!> Installing reiserfs.x86_64 from channel 1
+>!> Installing resmgr.x86_64 from channel 1
+>!> Installing resmgr-32bit.x86_64 from channel 1
+>!> Installing rpm.x86_64 from channel 1
+>!> Installing rrdtool.x86_64 from channel 1
+>!> Installing rsync.x86_64 from channel 1
+>!> Installing ruby.x86_64 from channel 1
+>!> Installing sane-backends.x86_64 from channel 1
+>!> Installing sane-frontends.x86_64 from channel 1
+>!> Installing sash.x86_64 from channel 1
+>!> Installing sax2.x86_64 from channel 1
+>!> Installing sax2-gui.x86_64 from channel 1
+>!> Installing sax2-ident.x86_64 from channel 1
+>!> Installing sax2-libsax.x86_64 from channel 1
+>!> Installing sax2-libsax-perl.x86_64 from channel 1
+>!> Installing sax2-tools.x86_64 from channel 1
+>!> Installing scpm.x86_64 from channel 1
+>!> Installing screen.x86_64 from channel 1
+>!> Installing scsi.x86_64 from channel 1
+>!> Installing sed.x86_64 from channel 1
+>!> Installing sensors.x86_64 from channel 1
+>!> Installing shared-mime-info.x86_64 from channel 1
+>!> Installing sharutils.x86_64 from channel 1
+>!> Installing speex.x86_64 from channel 1
+>!> Installing smpppd.x86_64 from channel 1
+>!> Installing smartmontools.x86_64 from channel 1
+>!> Installing spamassassin.x86_64 from channel 1
+>!> Installing sudo.x86_64 from channel 1
+>!> Installing sqlite.x86_64 from channel 1
+>!> Installing sqlite2.x86_64 from channel 1
+>!> Installing startup-notification.x86_64 from channel 1
+>!> Installing strace.x86_64 from channel 1
+>!> Installing supertux.x86_64 from channel 1
+>!> Installing suspend.x86_64 from channel 1
+>!> Installing sysconfig.x86_64 from channel 1
+>!> Installing sysfsutils.x86_64 from channel 1
+>!> Installing syslog-ng.x86_64 from channel 1
+>!> Installing sysvinit.x86_64 from channel 1
+>!> Installing taglib.x86_64 from channel 1
+>!> Installing tar.x86_64 from channel 1
+>!> Installing tcl.x86_64 from channel 1
+>!> Installing tcpd.x86_64 from channel 1
+>!> Installing tcpdump.x86_64 from channel 1
+>!> Installing tcsh.x86_64 from channel 1
+>!> Installing telnet.x86_64 from channel 1
+>!> Installing terminfo.x86_64 from channel 1
+>!> Installing utempter.x86_64 from channel 1
+>!> Installing tightvnc.x86_64 from channel 1
+>!> Installing timezone.x86_64 from channel 1
+>!> Installing tk.x86_64 from channel 1
+>!> Installing udev.x86_64 from channel 1
+>!> Installing ufraw.x86_64 from channel 1
+>!> Installing ufraw-gimp.x86_64 from channel 1
+>!> Installing unclutter.x86_64 from channel 1
+>!> Installing unzip.x86_64 from channel 1
+>!> Installing usbutils.x86_64 from channel 1
+>!> Installing util-linux.x86_64 from channel 1
+>!> Installing v4l-conf.x86_64 from channel 1
+>!> Installing vim.x86_64 from channel 1
+>!> Installing w3m.x86_64 from channel 1
+>!> Installing wbxml2.x86_64 from channel 1
+>!> Installing wdiff.x86_64 from channel 1
+>!> Installing wget.x86_64 from channel 1
+>!> Installing wireless-tools.x86_64 from channel 1
+>!> Installing wodim.x86_64 from channel 1
+>!> Installing wpa_supplicant.x86_64 from channel 1
+>!> Installing wv.x86_64 from channel 1
+>!> Installing wvdial.x86_64 from channel 1
+>!> Installing wvstreams.x86_64 from channel 1
+>!> Installing x11-input-synaptics.x86_64 from channel 1
+>!> Installing x11-input-wacom.x86_64 from channel 1
+>!> Installing x11-tools.x86_64 from channel 1
+>!> Installing xaw3d.x86_64 from channel 1
+>!> Installing xdmbgrd.x86_64 from channel 1
+>!> Installing xdg-menu.x86_64 from channel 1
+>!> Installing xorg-x11-libICE-32bit.x86_64 from channel 1
+>!> Installing xfsprogs.x86_64 from channel 1
+>!> Installing xgl.x86_64 from channel 1
+>!> Installing xine-lib.x86_64 from channel 1
+>!> Installing xinetd.x86_64 from channel 1
+>!> Installing xmoto.x86_64 from channel 1
+>!> Installing xli.x86_64 from channel 1
+>!> Installing xlockmore.x86_64 from channel 1
+>!> Installing xntp.x86_64 from channel 1
+>!> Installing xorg-x11.x86_64 from channel 1
+>!> Installing xorg-x11-Xvnc.x86_64 from channel 1
+>!> Installing xorg-x11-driver-input.x86_64 from channel 1
+>!> Installing xorg-x11-driver-video.x86_64 from channel 1
+>!> Installing xorg-x11-libICE.x86_64 from channel 1
+>!> Installing xorg-x11-libSM-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libSM.x86_64 from channel 1
+>!> Installing xorg-x11-libX11-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libX11.x86_64 from channel 1
+>!> Installing xorg-x11-libX11-ccache.x86_64 from channel 1
+>!> Installing xorg-x11-libXau-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXau.x86_64 from channel 1
+>!> Installing xorg-x11-libXdmcp.x86_64 from channel 1
+>!> Installing xorg-x11-libXext-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXext.x86_64 from channel 1
+>!> Installing xorg-x11-libXfixes-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXfixes.x86_64 from channel 1
+>!> Installing xorg-x11-libXmu-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXmu.x86_64 from channel 1
+>!> Installing xorg-x11-libXp-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXp.x86_64 from channel 1
+>!> Installing xorg-x11-libXpm-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXprintUtil-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXpm.x86_64 from channel 1
+>!> Installing xorg-x11-libXprintUtil.x86_64 from channel 1
+>!> Installing xorg-x11-libXrender-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXrender.x86_64 from channel 1
+>!> Installing xorg-x11-libXt-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXt.x86_64 from channel 1
+>!> Installing xorg-x11-libXv-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libXv.x86_64 from channel 1
+>!> Installing xorg-x11-libfontenc-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libfontenc.x86_64 from channel 1
+>!> Installing xorg-x11-libs-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libs.x86_64 from channel 1
+>!> Installing xorg-x11-libxkbfile-32bit.x86_64 from channel 1
+>!> Installing xorg-x11-libxkbfile.x86_64 from channel 1
+>!> Installing xorg-x11-server.x86_64 from channel 1
+>!> Installing xorg-x11-server-extra.x86_64 from channel 1
+>!> Installing xpdf-tools.x86_64 from channel 1
+>!> Installing xscreensaver.x86_64 from channel 1
+>!> Installing xterm.x86_64 from channel 1
+>!> Installing xtermset.x86_64 from channel 1
+>!> Installing yast2.x86_64 from channel 1
+>!> Installing yast2-bootloader.x86_64 from channel 1
+>!> Installing yast2-control-center.x86_64 from channel 1
+>!> Installing yast2-country.x86_64 from channel 1
+>!> Installing yast2-control-center-qt.x86_64 from channel 1
+>!> Installing yast2-core.x86_64 from channel 1
+>!> Installing yast2-mouse.x86_64 from channel 1
+>!> Installing yast2-hardware-detection.x86_64 from channel 1
+>!> Installing yast2-ldap.x86_64 from channel 1
+>!> Installing yast2-ncurses.x86_64 from channel 1
+>!> Installing yast2-transfer.x86_64 from channel 1
+>!> Installing yast2-network.x86_64 from channel 1
+>!> Installing yast2-nis-client.x86_64 from channel 1
+>!> Installing yast2-packager.x86_64 from channel 1
+>!> Installing yast2-qt.x86_64 from channel 1
+>!> Installing yast2-perl-bindings.x86_64 from channel 1
+>!> Installing yast2-pkg-bindings.x86_64 from channel 1
+>!> Installing yast2-printer.x86_64 from channel 1
+>!> Installing yast2-profile-manager.x86_64 from channel 1
+>!> Installing yast2-slp.x86_64 from channel 1
+>!> Installing yast2-sound.x86_64 from channel 1
+>!> Installing yast2-storage.x86_64 from channel 1
+>!> Installing zypper.x86_64 from channel 1
+>!> Installing yast2-storage-evms.x86_64 from channel 1
+>!> Installing yast2-storage-lib.x86_64 from channel 1
+>!> Installing yast2-tune.x86_64 from channel 1
+>!> Installing yast2-update.x86_64 from channel 1
+>!> Installing yast2-users.x86_64 from channel 1
+>!> Installing yast2-xml.x86_64 from channel 1
+>!> Installing yp-tools.x86_64 from channel 1
+>!> Installing ypbind.x86_64 from channel 1
+>!> Installing zip.x86_64 from channel 1
+>!> Installing zisofs-tools.x86_64 from channel 1
+>!> Installing zlib.x86_64 from channel 1
+>!> Installing zlib-32bit.x86_64 from channel 1
+>!> Installing zsh.x86_64 from channel 1
+>!> Installing zvbi.x86_64 from channel 1
+>!> Installing pattern:apparmor.x86_64 from channel 1
+>!> Installing pattern:base.x86_64 from channel 1
+>!> Installing pattern:fonts.x86_64 from channel 1
+>!> Installing pattern:games.x86_64 from channel 1
+>!> Installing pattern:imaging.x86_64 from channel 1
+>!> Installing pattern:kde.x86_64 from channel 1
+>!> Installing pattern:kde_basis.x86_64 from channel 1
+>!> Installing pattern:kde_games.x86_64 from channel 1
+>!> Installing pattern:kde_imaging.x86_64 from channel 1
+>!> Installing pattern:non_oss.x86_64 from channel 1
+>!> Installing pattern:non_oss_java.x86_64 from channel 1
+>!> Installing pattern:sw_management.x86_64 from channel 1
+>!> Installing pattern:sw_management_kde.x86_64 from channel 1
+>!> Installing pattern:x11.x86_64 from channel 1
+>!> Installing pattern:xgl.x86_64 from channel 1
+>!> Installing pattern:yast2_basis.x86_64 from channel 1
+>!> Uninstalling sw_management_x11
+>!> Uninstalling zmd
+>!> Uninstalling compat
+>!> Uninstalling audiofile-32bit
+>!> Uninstalling libgcc41-32bit
+>!> Uninstalling pkgconfig
+>!> Uninstalling popt-32bit
+>!> Uninstalling xorg-x11-libXdmcp-32bit
+>!> Uninstalling gcc41-gij-32bit
+>!> Uninstalling rug
+>!> Uninstalling file-32bit
+>!> Uninstalling libvorbis-32bit
+>!> Uninstalling bzip2-32bit
+>!> Uninstalling libapparmor
+>!> Uninstalling libbonobo-32bit
+>!> Uninstalling gnome-mime-data
+>!> Uninstalling checkmedia
+>!> Uninstalling yast2-power-management
+>!> Uninstalling sqlite-32bit
+>!> Uninstalling samba-32bit
+>!> Uninstalling opensuse-quickstart_en
+>!> Uninstalling sqlite-zmd
+>!> Uninstalling cpp41
+>!> Uninstalling libgcc41
+>!> Uninstalling mDNSResponder-lib-32bit
+>!> Uninstalling libcom_err-32bit
+>!> Uninstalling libogg-32bit
+>!> Uninstalling libmusicbrainz
+>!> Uninstalling libtiff
+>!> Uninstalling gstreamer010-32bit
+>!> Uninstalling flac-32bit
+>!> Uninstalling libmpcdec
+>!> Uninstalling startup-notification-32bit
+>!> Uninstalling libtheora
+>!> Uninstalling yast2-mail-aliases
+>!> Uninstalling libkexif
+>!> Uninstalling liblazy-32bit
+>!> Uninstalling sane
+>!> Uninstalling gpg
+>!> Uninstalling gstreamer010-plugins-base-32bit
+>!> Uninstalling bind-libs-32bit
+>!> Uninstalling ImageMagick-Magick++
+>!> Uninstalling zmd
+>!> Uninstalling opensuse-updater
+>!> Uninstalling openssl-32bit
+>!> Uninstalling neon-32bit
+>!> Uninstalling yast2-bootfloppy
+>!> Uninstalling libltdl
+>!> Uninstalling alsa-32bit
+>!> Uninstalling readline
+>!> Uninstalling libstdc++41
+>!> Uninstalling cdparanoia-32bit
+>!> Uninstalling libtheora-32bit
+>!> Uninstalling mozilla-nss-32bit
+>!> Uninstalling readline-32bit
+>!> Uninstalling db-32bit
+>!> Uninstalling gnome-filesystem
+>!> Uninstalling libsyncml
+>!> Uninstalling kdepim3-networkstatus
+>!> Uninstalling libgcj41
+>!> Uninstalling liboil-32bit
+>!> Uninstalling kdebase3-32bit
+>!> Uninstalling nfs-utils
+>!> Uninstalling libstdc++41-32bit
+>!> Uninstalling expat-32bit
+>!> Uninstalling mozilla-nspr-32bit
+>!> Uninstalling myspell-german
+>!> Uninstalling libcom_err
+>!> Uninstalling libtiff-32bit
+>!> Uninstalling qscintilla
+>!> Uninstalling libgcj41-32bit
+>!> Uninstalling libzypp-zmd-backend
+>!> Uninstalling java-1_4_2-gcj-compat-32bit
+>!> Uninstalling gcc41-gij
+>!> Uninstalling zen-updater
+>!> Uninstalling yast2-powertweak
+>!> Uninstalling mDNSResponder-lib
+>!> Uninstalling opensuse-quickstart_de
+>!> Uninstalling esound-32bit
+>!> Uninstalling curl-32bit
+>!> Uninstalling libnetpbm
+>!> Uninstalling libsndfile-32bit
+>!> Uninstalling mkisofs
+>!> Uninstalling libgnome-32bit
+>!> Uninstalling limal-bootloader
+>!> Uninstalling libgpod
+>!> Uninstalling dbus-1-qt3-32bit
+>!> Uninstalling python-32bit
+>!> 10 problems found:
+>!> Problem:
+>!> MozillaFirefox-2.0.0.6-20.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of /usr/lib/libaoss.so for MozillaFirefox-2.0.0.6-20.x86_64[1]
+>!>    Solution:
+>!>       keep alsa-32bit
+>!>       keep alsa-32bit-1.0.13-22.x86_64
+>!>    Solution:
+>!>       do not install MozillaFirefox
+>!>       do not install MozillaFirefox-2.0.0.6-20.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> OpenOffice_org-de-2.3.0.1.2-2.noarch[1] has missing dependencies
+>!> There are no alternative installed providers of myspell-german-dictionary for OpenOffice_org-de-2.3.0.1.2-2.noarch[1]
+>!>    Solution:
+>!>       keep myspell-german
+>!>       keep myspell-german-20060125-9.noarch
+>!>    Solution:
+>!>       do not install OpenOffice_org-de
+>!>       do not install OpenOffice_org-de-2.3.0.1.2-2.noarch[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> cups-libs-32bit-1.2.12-18.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libtiff.so.3 for cups-libs-32bit-1.2.12-18.x86_64[1]
+>!>    Solution:
+>!>       keep libtiff-32bit
+>!>       keep libtiff-32bit-3.8.2-25.x86_64
+>!>    Solution:
+>!>       do not install cups-libs-32bit
+>!>       do not install cups-libs-32bit-1.2.12-18.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> gnome-vfs2-32bit-2.19.91-8.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libssl.so.0.9.8 for gnome-vfs2-32bit-2.19.91-8.x86_64[1]
+>!>    Solution:
+>!>       keep openssl-32bit
+>!>       keep openssl-32bit-0.9.8d-23.1.x86_64
+>!>    Solution:
+>!>       do not install gnome-vfs2-32bit
+>!>       do not install gnome-vfs2-32bit-2.19.91-8.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> gtk2-32bit-2.11.6-26.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libtiff.so.3 for gtk2-32bit-2.11.6-26.x86_64[1]
+>!>    Solution:
+>!>       keep libtiff-32bit
+>!>       keep libtiff-32bit-3.8.2-25.x86_64
+>!>    Solution:
+>!>       do not install gtk2-32bit
+>!>       do not install gtk2-32bit-2.11.6-26.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> kdelibs3-32bit-3.5.7-67.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libtiff.so.3 for kdelibs3-32bit-3.5.7-67.x86_64[1]
+>!>    Solution:
+>!>       keep libtiff-32bit
+>!>       keep libtiff-32bit-3.8.2-25.x86_64
+>!>    Solution:
+>!>       do not install kdelibs3-32bit
+>!>       do not install kdelibs3-32bit-3.5.7-67.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> krb5-32bit-1.6.2-20.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libcom_err.so.2 for krb5-32bit-1.6.2-20.x86_64[1]
+>!>    Solution:
+>!>       keep libcom_err-32bit
+>!>       keep libcom_err-32bit-1.39-21.x86_64
+>!>    Solution:
+>!>       do not install krb5-32bit
+>!>       do not install krb5-32bit-1.6.2-20.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> libgsf-32bit-1.14.5-20.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libbz2.so.1 for libgsf-32bit-1.14.5-20.x86_64[1]
+>!>    Solution:
+>!>       keep bzip2-32bit
+>!>       keep bzip2-32bit-1.0.3-36.x86_64
+>!>    Solution:
+>!>       do not install libgsf-32bit
+>!>       do not install libgsf-32bit-1.14.5-20.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> libsmbclient-32bit-3.0.25c-8.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libcom_err.so.2 for libsmbclient-32bit-3.0.25c-8.x86_64[1]
+>!>    Solution:
+>!>       keep libcom_err-32bit
+>!>       keep libcom_err-32bit-1.39-21.x86_64
+>!>    Solution:
+>!>       do not install libsmbclient-32bit
+>!>       do not install libsmbclient-32bit-3.0.25c-8.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       
+>!> Problem:
+>!> openldap2-client-32bit-2.3.37-17.x86_64[1] has missing dependencies
+>!> There are no alternative installed providers of libssl.so.0.9.8 for openldap2-client-32bit-2.3.37-17.x86_64[1]
+>!>    Solution:
+>!>       keep openssl-32bit
+>!>       keep openssl-32bit-0.9.8d-23.1.x86_64
+>!>    Solution:
+>!>       do not install openldap2-client-32bit
+>!>       do not install openldap2-client-32bit-2.3.37-17.x86_64[1]
+>!>    Solution:
+>!>       Ignore this requirement just here
+>!>       
+>!>    Solution:
+>!>       Ignore this requirement generally
+>!>       

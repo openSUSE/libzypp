@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec 18 22:07:40 CET 2007 - ma@suse.de
+
+- Don't mark failed patch scripts as installed. (#327523)
+- version 3.26.6
+- revision 8129
+
+-------------------------------------------------------------------
 Mon Nov 26 13:19:34 CET 2007 - ma@suse.de
 
 - Fix missing packages in patch content list. (#340896)

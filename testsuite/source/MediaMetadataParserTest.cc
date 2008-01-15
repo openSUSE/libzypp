@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "zypp/source/susetags/MediaMetadataParser.h"
 #include "zypp/source/susetags/MediaPatchesMetadataParser.h"
 #include "zypp/base/Logger.h"

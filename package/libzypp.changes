@@ -3,6 +3,7 @@ Wed Jan 16 16:09:56 CET 2008 - jkupec@suse.cz
 
 - Saner NFS timeo default (#350309)
 - r8304
+- version 2.30.5
 
 -------------------------------------------------------------------
 Wed Nov 28 12:13:48 CET 2007 - schubi@suse.de

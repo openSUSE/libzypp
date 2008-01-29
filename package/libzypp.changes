@@ -1,8 +1,8 @@
 -------------------------------------------------------------------
 Tue Jan 29 11:21:33 CET 2008 - jkupec@suse.cz
 
-- read .curlrc more robustly to obtain user-proxy (#330351,
-  #331038)
+- read .curlrc more robustly to obtain user-proxy (bnc #330351,
+  bnc #331038)
 - version 3.26.7
 - revision 8383
 

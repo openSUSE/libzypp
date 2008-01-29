@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 29 11:21:33 CET 2008 - jkupec@suse.cz
+
+- read .curlrc more robustly to obtain user-proxy (#330351,
+  #331038)
+- version 3.26.7
+- revision 8383
+
+-------------------------------------------------------------------
 Tue Dec 18 22:07:40 CET 2007 - ma@suse.de
 
 - Don't mark failed patch scripts as installed. (#327523)

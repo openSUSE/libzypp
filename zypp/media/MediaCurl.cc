@@ -16,6 +16,7 @@
 #include "zypp/base/Logger.h"
 #include "zypp/ExternalProgram.h"
 #include "zypp/base/String.h"
+#include "zypp/base/Gettext.h"
 #include "zypp/base/Sysconfig.h"
 
 #include "zypp/media/MediaCurl.h"
@@ -873,6 +874,19 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
               err = " Login failed";
             }
             else
+            if ( httpReturnCode == 403)
+            {
+               string msg403;
+               if (url.asString().find("novell.com") != string::npos)
+                 msg403 = str::form(_(
+                   "Permission to access '%s' denied.\n\n"
+                   "Visit the Novell Customer Center to check whether"
+                   " your registration is valid and not expired."),
+                   url.asString().c_str());
+
+               ZYPP_THROW(MediaForbiddenException(url, msg403));
+            }
+            else
             if ( httpReturnCode == 404)
             {
                err_file_not_found = true;
@@ -1078,6 +1092,19 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
               if ( httpReturnCode == 401 )
               {
                 err = " Login failed";
+              }
+              else
+              if ( httpReturnCode == 403)
+              {
+                 string msg403;
+                 if (url.asString().find("novell.com") != string::npos)
+                   msg403 = str::form(_(
+                     "Permission to access '%s' denied.\n\n"
+                     "Visit the Novell Customer Center to check whether"
+                     " your registration is valid and not expired."),
+                     url.asString().c_str());
+
+                 ZYPP_THROW(MediaForbiddenException(url, msg403));
               }
               else
               if ( httpReturnCode == 404)

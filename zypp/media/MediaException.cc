@@ -44,65 +44,75 @@ namespace zypp
 
     std::ostream & MediaBadFilenameException::dumpOn( std::ostream & str ) const
     {
-      return str << "Bad file name " << _filename << endl;
+      return str << form(_("Bad file name: %s"), _filename.c_str()) << endl;
     }
 
     std::ostream & MediaNotOpenException::dumpOn( std::ostream & str ) const
     {
-      return str << "Media not opened while performing action " << _action << endl;
+      return str << form(
+        _("Medium not opened when trying to perform action '%s'."), _action.c_str())
+       << endl;
     }
 
     std::ostream & MediaFileNotFoundException::dumpOn( std::ostream & str) const
     {
-      return str << "File " << _filename
-	<< " not found on media: " << _url << endl;
+      return str << form(
+        _("File '%s' not found on medium '%s'"),
+        _filename.c_str(), _url.c_str())
+        << endl;
     }
 
     std::ostream & MediaWriteException::dumpOn( std::ostream & str) const
     {
-      return str << "Cannot write file " << _filename << endl;
+      return str << form(_("Cannot write file '%s'."), _filename.c_str()) << endl;
     }
 
     std::ostream & MediaNotAttachedException::dumpOn( std::ostream & str) const
     {
-      return str << "Media not attached: " << _url << endl;
+      return str << _("Medium not attached") << ": " << _url << endl;
     }
 
     std::ostream & MediaBadAttachPointException::dumpOn( std::ostream & str) const
     {
-      return str << "Bad media attach point: " << _url << endl;
+      return str << _("Bad media attach point") << ": " << _url << endl;
     }
 
     std::ostream & MediaCurlInitException::dumpOn( std::ostream & str) const
     {
-      return str << "Curl init failed for: " << _url << endl;
+      return str << form(
+        // TranslatorExplanation: curl is the name of a library, don't translate
+        _("Download (curl) initialization failed for '%s'"), _url.c_str())
+        << endl;
     }
 
     std::ostream & MediaSystemException::dumpOn( std::ostream & str) const
     {
-      return str << "System exception: " << _message
-	<< " on media: " << _url << endl;
+      return str << form(
+        _("System exception '%s' on medium '%s'."),
+        _message.c_str(), _url.c_str()) << endl;
     }
 
     std::ostream & MediaNotAFileException::dumpOn( std::ostream & str) const
     {
-      return str << "Path " << _path
-	<< " on media: " << _url
-        << " is not a file." << endl;
+      return str << form(
+        _("Path '%s' on medium '%s' is not a file."),
+        _path.c_str(), _url.c_str())
+        << endl;
     }
 
     std::ostream & MediaNotADirException::dumpOn( std::ostream & str) const
     {
-      return str << "Path " << _path
-	<< " on media: " << _url
-        << " is not a directory." << endl;
+      return str << form(
+        _("Path '%s' on medium '%s' is not a directory."),
+        _path.c_str(), _url.c_str())
+        << endl;
     }
 
     std::ostream & MediaBadUrlException::dumpOn( std::ostream & str) const
     {
       if( _msg.empty())
       {
-      	return str << "Malformed URL: " << _url << endl;
+      	return str << _("Malformed URI") << ": " << _url << endl;
       }
       else
       {
@@ -112,51 +122,58 @@ namespace zypp
 
     std::ostream & MediaBadUrlEmptyHostException::dumpOn( std::ostream & str) const
     {
-      return str << "Empty host name in URL: " << _url << endl;
+      return str << _("Empty host name in URI") << ": " << _url << endl;
     }
 
     std::ostream & MediaBadUrlEmptyFilesystemException::dumpOn( std::ostream & str) const
     {
-      return str << "Empty filesystem in URL: " << _url << endl;
+      return str << _("Empty filesystem in URI") << ": " << _url << endl;
     }
 
     std::ostream & MediaBadUrlEmptyDestinationException::dumpOn( std::ostream & str) const
     {
-      return str << "Empty destination in URL: " << _url << endl;
+      return str << _("Empty destination in URI") << ": " << _url << endl;
     }
 
     std::ostream & MediaUnsupportedUrlSchemeException::dumpOn( std::ostream & str) const
     {
-      return str << "Unsupported URL scheme in URL: " << _url << endl;
+      return str << form(_("Unsupported URI scheme in '%s'."), _url.c_str()) << endl;
     }
 
     std::ostream & MediaNotSupportedException::dumpOn( std::ostream & str) const
     {
-      return str << "Operation not supported by media: " << _url << endl;
+      return str << _("Operation not supported by medium") << ": " << _url << endl;
     }
 
     std::ostream & MediaCurlException::dumpOn( std::ostream & str) const
     {
+      // TranslatorExplanation: curl is the name of a library, don't translate
       return str << form(_(
-        "Curl error for '%s':\n"
+        "Download (curl) error for '%s':\n"
         "Error code: %s\n"
         "Error message: %s\n"), _url.c_str(), _err.c_str(), _msg.c_str());
     }
 
     std::ostream & MediaCurlSetOptException::dumpOn( std::ostream & str) const
     {
-      return str << "Error occurred while setting CURL options for " << _url
-	<< ": " << _msg << endl;
+      return str << form(
+        // TranslatorExplanation: curl is the name of a library, don't translate
+        _("Error occurred while setting download (curl) options for '%s':"),
+        _url.c_str())
+       << endl << _msg << endl;
     }
 
     std::ostream & MediaNotDesiredException::dumpOn( std::ostream & str ) const
     {
-      return str << "Media source " << _url << " does not contain the desired media" << endl;
+      return str << form(
+        _("Media source '%s' does not contain the desired medium"), _url.c_str())
+        << endl;
     }
 
     std::ostream & MediaIsSharedException::dumpOn( std::ostream & str ) const
     {
-      return str << "Media " << _name << " is in use by another instance" << endl;
+      return str << form(_("Medium '%s' is in use by another instance"), _name.c_str())
+                 << endl;
     }
 
     std::ostream & MediaNotEjectedException::dumpOn( std::ostream & str ) const

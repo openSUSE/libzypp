@@ -10,12 +10,15 @@
  *
 */
 
-#include <string>
 #include <iostream>
+
+#include "zypp/base/String.h"
+#include "zypp/base/Gettext.h"
 
 #include "zypp/media/MediaException.h"
 
 using namespace std;
+using zypp::str::form;
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -25,7 +28,7 @@ namespace zypp
 
     std::ostream & MediaMountException::dumpOn( std::ostream & str ) const
     {
-      str << "Failed to mount " << _source << " on " << _target;
+      str << form(_("Failed to mount %s on %s"), _source.c_str(), _target.c_str());
       if( !_cmdout.empty())
 	str << ": " << _error << " (" << _cmdout << ")" << endl;
       else
@@ -35,7 +38,7 @@ namespace zypp
 
     std::ostream & MediaUnmountException::dumpOn( std::ostream & str ) const
     {
-      return str << "Failed to unmount " << _path
+      return str << form(_("Failed to unmount %s"), _path.c_str())
 	<< " : " << _error << endl;
     }
 
@@ -134,9 +137,10 @@ namespace zypp
 
     std::ostream & MediaCurlException::dumpOn( std::ostream & str) const
     {
-      return str << "Curl error for '" << _url << "':" << endl
-        << "Error code: " << _err << endl
-        << "Error message: " << _msg << endl;
+      return str << form(_(
+        "Curl error for '%s':\n"
+        "Error code: %s\n"
+        "Error message: %s\n"), _url.c_str(), _err.c_str(), _msg.c_str());
     }
 
     std::ostream & MediaCurlSetOptException::dumpOn( std::ostream & str) const
@@ -158,9 +162,16 @@ namespace zypp
     std::ostream & MediaNotEjectedException::dumpOn( std::ostream & str ) const
     {
       if( _name.empty())
-	return str << "Can't eject any media" << endl;
+	return str << _("Can't eject any media") << endl;
       else
-	return str << "Can't eject media " << _name << endl;
+	return str << form(_("Can't eject media '%s'"), _name.c_str()) << endl;
+    }
+
+    std::ostream & MediaForbiddenException::dumpOn( std::ostream & str ) const
+    {
+      if (_msg.empty())
+        return str << form(_("Permission to access '%s' denied."), _url.c_str()) << endl;
+      return str << _msg << endl;
     }
 
   /////////////////////////////////////////////////////////////////

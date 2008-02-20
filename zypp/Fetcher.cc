@@ -108,7 +108,6 @@ namespace zypp
   void Fetcher::Impl::reset()
   {
     _resources.clear();
-    _caches.clear();
   }
 
   void Fetcher::Impl::addCachePath( const Pathname &cache_dir )

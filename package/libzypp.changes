@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb 20 18:15:11 CET 2008 - dmacvicar@suse.de
+
+- Fetcher::reset() should not reset cache directories.
+  (bnc #348050)
+- version 3.26.8
+
+-------------------------------------------------------------------
 Tue Jan 29 11:21:33 CET 2008 - jkupec@suse.cz
 
 - read .curlrc more robustly to obtain user-proxy (bnc #330351,

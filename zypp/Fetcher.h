@@ -105,7 +105,8 @@ namespace zypp
     void addCachePath( const Pathname &cache_dir );
     
     /**
-    * Reset the transfer list and cache list
+    * Reset the transfer list
+    * \note cache list is not reset
     */
     void reset();
     

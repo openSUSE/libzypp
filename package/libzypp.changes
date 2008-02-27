@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Feb 27 16:10:00 CET 2008 - ma@suse.de
+ 
+- Fixed computation of install order. Take requirements of
+  an installed packages uninstall scripts into account, if
+  the package is updated. (#258682,bnc #270514)
+- version  2.30.7
+- revision 8934
+
+-------------------------------------------------------------------
 Thu Feb 14 10:37:19 CET 2008 - jkupec@suse.cz
 
 - show special 'registration expired' message in HTTP response 403

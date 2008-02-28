@@ -179,9 +179,9 @@ namespace zypp
     std::ostream & MediaNotEjectedException::dumpOn( std::ostream & str ) const
     {
       if( _name.empty())
-	return str << _("Can't eject any media") << endl;
+	return str << _("Cannot eject any media") << endl;
       else
-	return str << form(_("Can't eject media '%s'"), _name.c_str()) << endl;
+	return str << form(_("Cannot eject media '%s'"), _name.c_str()) << endl;
     }
 
     std::ostream & MediaForbiddenException::dumpOn( std::ostream & str ) const

@@ -12,6 +12,8 @@
 
 #include "zypp/base/Logger.h"
 #include "zypp/base/String.h"
+#include "zypp/base/Gettext.h"
+#include "zypp/base/Exception.h"
 
 #include "zypp/CheckSum.h"
 #include "zypp/Digest.h"
@@ -91,8 +93,26 @@ namespace zypp
         break;
       }
 
+      
     // dubious
     WAR << "Dubious type '" << _type << "' for " << checksum.size() << " byte checksum '" << _checksum << "'" << endl;
+// dubious
+
+    // dubious: Throw on malformed known types, otherwise log a warning.
+    /*
+    std::string msg = str::form ( _("Dubious type '%s' for %u byte checksum '%s'"), _type.c_str(), checksum.size(), _checksum.c_str() );
+      if (  _type == md5Type()
+         || _type == shaType()
+         || _type == sha1Type()
+         || _type == sha256Type() )
+      {
+        ZYPP_THROW( Exception( msg ) );
+      }
+      else
+      {
+        WAR << msg << endl;
+      }
+     */
   }
 
   CheckSum::CheckSum( const std::string & type_r, std::istream & input_r )

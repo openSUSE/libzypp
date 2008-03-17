@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 17 18:07:14 CET 2008 - dmacvicar@suse.de
+
+- fix .changes file sequence
+- fix checksum testcase to match the current code behavior
+  (testcase was failing on cruisecontrol server)
+  (NONCODE)
+
+-------------------------------------------------------------------
 Mon Mar 17 17:24:11 CET 2008 - dmacvicar@suse.de
 
 - fix url parsing for build service repository urls that

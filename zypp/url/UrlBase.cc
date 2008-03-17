@@ -12,7 +12,6 @@
 #include <zypp/url/UrlBase.h>
 #include <zypp/base/String.h>
 #include <zypp/base/Gettext.h>
- 
 #include <stdexcept>
 #include <climits>
 #include <errno.h>
@@ -27,9 +26,6 @@
 **
 ** host      = hostname | IPv4 | "[" IPv6-IP "]" | "[v...]"
 */
-#define RX_SPLIT_AUTHORITY \
-        "^(([^:@]*)([:]([^@]*))?@)?(\\[[^]]+\\]|[^:]+)?([:](.*))?"
-
 #define RX_VALID_SCHEME    "^[a-zA-Z][a-zA-Z0-9\\.+-]*$"
 
 #define RX_VALID_PORT      "^[0-9]{1,5}$"
@@ -830,30 +826,32 @@ namespace zypp
     void
     UrlBase::setAuthority(const std::string &authority)
     {
-      str::smatch out;
-      bool        ret = false;
+      std::string s = authority;
+      std::string::size_type p,q;
 
-      try
+      std::string username, password, host, port;
+
+      if ((p=s.find('@')) != std::string::npos)
       {
-        str::regex  rex(RX_SPLIT_AUTHORITY);
-        ret = str::regex_match(authority, out, rex);
+        q = s.find(':');
+        if (q != std::string::npos && q < p)
+        {
+          setUsername(s.substr(0, q), zypp::url::E_ENCODED);
+          setPassword(s.substr(q+1, p-q-1), zypp::url::E_ENCODED);
+        }
+        else
+          setUsername(s.substr(0, p), zypp::url::E_ENCODED);
+        s = s.substr(p+1);
       }
-      catch( ... )
-      {}
-
-      if( ret && out.size() == 8)
+      q = s.rfind(']');
+      if ((p = s.rfind(':')) != std::string::npos && p > q+1)
       {
-        setUsername(out[2].str(), zypp::url::E_ENCODED);
-        setPassword(out[4].str(), zypp::url::E_ENCODED);
-        setHost(out[5].str());
-        setPort(out[7].str());
+
+        setHost(s.substr(0, p));
+        setPort(s.substr(p+1));
       }
       else
-      {
-        ZYPP_THROW(UrlParsingException(
-          _("Unable to parse Url authority")
-        ));
-      }
+        setHost(s);
     }
 
     // ---------------------------------------------------------------

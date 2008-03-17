@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 17 17:24:11 CET 2008 - dmacvicar@suse.de
+
+- fix url parsing for build service repository urls that
+  contain : in the path (bnc #257689)
+- version 2.30.8
+
+-------------------------------------------------------------------
 Wed Feb 27 16:10:00 CET 2008 - ma@suse.de
  
 - Fixed computation of install order. Take requirements of

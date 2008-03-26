@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 26 12:43:08 CET 2008 - jkupec@suse.cz
+
+- fixed location of RPMs in subdirs when parsing plaindir repo
+  recursively (bnc #368218)
+- revision 9274
+- version 2.30.9
+
+-------------------------------------------------------------------
 Mon Mar 17 18:07:14 CET 2008 - dmacvicar@suse.de
 
 - fix .changes file sequence

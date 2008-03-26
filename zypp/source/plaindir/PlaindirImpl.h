@@ -63,7 +63,7 @@ namespace zypp
         virtual void factoryInit();
         virtual void createResolvables(Source_Ref source_r);
 
-        int extract_packages_from_directory (ResStore & store, const Pathname & path, Source_Ref source, bool recursive);
+        int extract_packages_from_directory (ResStore & store, const Pathname & rootpath, const Pathname & subdir, Source_Ref source, bool recursive);
 
       };
       ///////////////////////////////////////////////////////////////////

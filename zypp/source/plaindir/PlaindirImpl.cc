@@ -53,18 +53,20 @@ void PlaindirImpl::createResolvables(Source_Ref source_r)
   Pathname thePath = Pathname(url().getPathName()) + path();
   MIL << "Going to read dir " << thePath << std::endl;
 
-  extract_packages_from_directory( _store, thePath, selfSourceRef(), true );
+  extract_packages_from_directory( _store, thePath, Pathname(), selfSourceRef(), true );
 }
 
-int PlaindirImpl::extract_packages_from_directory (ResStore & store, const Pathname & path, Source_Ref source, bool recursive)
+int PlaindirImpl::extract_packages_from_directory (ResStore & store, const Pathname & rootpath, const Pathname & subdir, Source_Ref source, bool recursive)
 {
   using target::rpm::RpmHeader;
+
+  Pathname path = rootpath / subdir;
 
   Pathname filename;
   PathInfo magic;
   bool distro_magic, pkginfo_magic;
 
-  DBG << "extract_packages_from_directory(.., " << path << ", " << source.alias() << ", " << recursive << ")" << endl;
+  DBG << "extract_packages_from_directory(.., " << rootpath << ", " << subdir << ", " << source.alias() << ", " << recursive << ")" << endl;
 
     /*
         Check for magic files that indicate how to treat the
@@ -101,12 +103,13 @@ int PlaindirImpl::extract_packages_from_directory (ResStore & store, const Pathn
       PathInfo file_info( file_path );
       if (recursive && file_info.isDir()) {
 
-        extract_packages_from_directory( store, file_path, source, recursive );
+        extract_packages_from_directory( store, rootpath, subdir / *it, source, recursive );
 
       } else if (file_info.isFile() && file_path.extension() == ".rpm" ) {
         RpmHeader::constPtr header = RpmHeader::readPackage( file_path, RpmHeader::NOSIGNATURE );
 #warning FIX creation of Package from src.rpm header
-        Package::Ptr package = target::rpm::RpmDb::makePackageFromHeader( header, NULL, *it, source );
+        // make up proper location relative to rootpath (bnc #368218)
+        Package::Ptr package = target::rpm::RpmDb::makePackageFromHeader( header, NULL, subdir / *it, source );
         if (package != NULL) {
           DBG << "Adding package " << *package << endl;
           store.insert( package );

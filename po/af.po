@@ -5,13 +5,1125 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-26 09:41+0200\n"
-"PO-Revision-Date: 2006-11-03 12:03\n"
+"POT-Creation-Date: 2008-02-28 16:39+0100\n"
+"PO-Revision-Date: 2008-03-27 17:44\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../devel/devel.mvidner/installation_sources.cc:56
+#, c-format
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "Lêer %s is nie geteken nie.\nGebruik dit in elk geval?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:65
+#, c-format
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Lêer %s word geteken met ’n onbekende sleutel:\n%s|%s|%s\n Gebruik die lêer in elk geval?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:75
+#, c-format
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "Onbetroubare sleutel gevind:\n%s|%s|%s\n Vertrou sleutel?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:85
+#, c-format
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Lêer %s het nie integriteitsnagaan geslaag met die volgende sleutel nie:\n%s|%s|%s\n Gebruik die lêer in elk geval?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:99
+#, c-format
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "Lêer %s het nie ’n nagaansom nie. \nGebruik die lêer in elk geval?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:108
+#, c-format
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
+msgstr "Lêer %s het ’n onbekende nagaansom %s. \nGebruik die lêer in elk geval?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:117
+#, c-format
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "Lêer %s het ’n ongeldige nagaansom. \nVerwag %s, kry %s\n Gebruik die lêer in elk geval?"
+
+#: ../zypp/thread/Mutex.cc:33
+msgid "Can't initialize mutex attributes"
+msgstr "Kan mutex-eienskappe nie inisialiseer nie"
+
+#: ../zypp/thread/Mutex.cc:40
+msgid "Can't set recursive mutex attribute"
+msgstr "Kan terugkerende mutex-eienskappe nie stel nie"
+
+#: ../zypp/thread/Mutex.cc:47
+msgid "Can't initialize recursive mutex"
+msgstr "Kan terugkerende mutex nie inisialiseer nie"
+
+#: ../zypp/thread/Mutex.cc:77
+msgid "Can't acquire the mutex lock"
+msgstr "Kan die mutex-slot nie verkry nie"
+
+#: ../zypp/thread/Mutex.cc:87
+msgid "Can't release the mutex lock"
+msgstr "Kan die mutex-slot nie ontsluit nie"
+
+#: ../zypp/media/MediaException.cc:31
+#, c-format
+msgid "Failed to mount %s on %s"
+msgstr "Misluk om %s op %s te monteer"
+
+#: ../zypp/media/MediaException.cc:41
+#, c-format
+msgid "Failed to unmount %s"
+msgstr "Misluk om %s te ontheg"
+
+#: ../zypp/media/MediaException.cc:47
+#, c-format
+msgid "Bad file name: %s"
+msgstr "Slegte lêernaam: %s"
+
+#: ../zypp/media/MediaException.cc:53
+#, c-format
+msgid "Medium not opened when trying to perform action '%s'."
+msgstr "Medium nie oopgemaak wanneer probeer is om aksie '%s' uit te voer nie."
+
+#: ../zypp/media/MediaException.cc:60
+#, c-format
+msgid "File '%s' not found on medium '%s'"
+msgstr "Lêer '%s' nie op medium '%s' gevind nie"
+
+#: ../zypp/media/MediaException.cc:67
+#, c-format
+msgid "Cannot write file '%s'."
+msgstr "Kan lêer '%s' nie skryf nie."
+
+#: ../zypp/media/MediaException.cc:72
+msgid "Medium not attached"
+msgstr "Medium nie aangeheg nie"
+
+#: ../zypp/media/MediaException.cc:77
+msgid "Bad media attach point"
+msgstr "Slegte media-aanhegpunt"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:84
+#, c-format
+msgid "Download (curl) initialization failed for '%s'"
+msgstr "Aflaai- (curl-) inisialisering het misluk vir '%s'"
+
+#: ../zypp/media/MediaException.cc:91
+#, c-format
+msgid "System exception '%s' on medium '%s'."
+msgstr "Stelsel-uitsondering '%s' op medium '%s'."
+
+#: ../zypp/media/MediaException.cc:98
+#, c-format
+msgid "Path '%s' on medium '%s' is not a file."
+msgstr "Pad '%s' op medium '%s' is nie ’n lêer nie."
+
+#: ../zypp/media/MediaException.cc:106
+#, c-format
+msgid "Path '%s' on medium '%s' is not a directory."
+msgstr "Pad '%s' op medium '%s' is nie ’n gids nie."
+
+#: ../zypp/media/MediaException.cc:115
+msgid "Malformed URI"
+msgstr "Wangevormde URI"
+
+#: ../zypp/media/MediaException.cc:125
+msgid "Empty host name in URI"
+msgstr "Leë gasheernaam in URI"
+
+#: ../zypp/media/MediaException.cc:130
+msgid "Empty filesystem in URI"
+msgstr "Leë lêerstelsel in URI"
+
+#: ../zypp/media/MediaException.cc:135
+msgid "Empty destination in URI"
+msgstr "Leë bestemming in URI"
+
+#: ../zypp/media/MediaException.cc:140
+#, c-format
+msgid "Unsupported URI scheme in '%s'."
+msgstr "Ongesteunde URI-skema in '%s'."
+
+#: ../zypp/media/MediaException.cc:145
+msgid "Operation not supported by medium"
+msgstr "Bewerking nie deur medium gesteun nie"
+
+#: ../zypp/media/MediaException.cc:152
+#, c-format
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr "Aflaai- (curl-) fout vir '%s':\nFoutkode: %s\nFoutboodskap: %s\n"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:161
+#, c-format
+msgid "Error occurred while setting download (curl) options for '%s':"
+msgstr "Fout het voorgekom tydens stel van aflaai- (curl-) opsies vir '%s':"
+
+#: ../zypp/media/MediaException.cc:169
+#, c-format
+msgid "Media source '%s' does not contain the desired medium"
+msgstr "Mediabron '%s' bevat nie die verlangde medium nie"
+
+#: ../zypp/media/MediaException.cc:175
+#, c-format
+msgid "Medium '%s' is in use by another instance"
+msgstr "Medium '%s' is in gebruik deur ’n ander instansie"
+
+#: ../zypp/media/MediaException.cc:182
+msgid "Cannot eject any media"
+msgstr "Kan geen media uitskiet nie"
+
+#: ../zypp/media/MediaException.cc:184
+#, c-format
+msgid "Cannot eject media '%s'"
+msgstr "Kan media '%s' nie uitskiet nie"
+
+#: ../zypp/media/MediaException.cc:190
+#, c-format
+msgid "Permission to access '%s' denied."
+msgstr "Toestemming om toegang tot '%s' te verkry, geweier."
+
+#: ../zypp/media/MediaCurl.cc:882 ../zypp/media/MediaCurl.cc:1102
+#, c-format
+msgid "Permission to access '%s' denied.\n\nVisit the Novell Customer Center to check whether your registration is valid and has not expired."
+msgstr "Toestemming om toegang tot '%s' te verkry, geweier.\n\nBesoek die Novell-kliëntesentrum om na te gaan of u registrasie geldig is en nie verval het nie."
+
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
+msgid "unlock all resolvables"
+msgstr "ontsluit alle oplossings"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
+#, c-format
+msgid "unlock %s"
+msgstr "ontsluit %s"
+
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
+msgid "Unlock these resolvables"
+msgstr "Ontsluit hierdie oplossings"
+
+#: ../zypp/solver/detail/ResolverInfo.cc:191
+msgid " Error!"
+msgstr "Fout!"
+
+#: ../zypp/solver/detail/ResolverInfo.cc:192
+msgid " Important!"
+msgstr "Belangrik!"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
+#: ../zypp/solver/detail/Resolver_problems.cc:426
+#: ../zypp/solver/detail/Resolver_problems.cc:436
+#, c-format
+msgid "delete %s"
+msgstr "skrap %s?"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
+#: ../zypp/solver/detail/Resolver_problems.cc:429
+#: ../zypp/solver/detail/Resolver_problems.cc:439
+#, c-format
+msgid "do not install %s"
+msgstr "moenie %s installeer nie"
+
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
+msgid "Do not install or delete concerning resolvables"
+msgstr "Moenie waar oplossings ter sprake is, installeer of skrap nie"
+
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:56
+msgid ", Action: "
+msgstr ", Aksie:"
+
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:58
+msgid ", Trigger: "
+msgstr ", Sneller:"
+
+#. Translator: Notation for (RPM) package
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:90
+msgid "package"
+msgstr "pakket"
+
+#. Translator: Notation for SuSE package selection (set of packages)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:94
+msgid "selection"
+msgstr "keuse"
+
+#. Translator: Notation for SuSE installation pattern (set of packages, describing use of system)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:98
+msgid "pattern"
+msgstr "patroon"
+
+#. Translator: Notation for product
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:102
+msgid "product"
+msgstr "produk"
+
+#. Translator: Notation for patch
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:106
+msgid "patch"
+msgstr "regstelling"
+
+#. Translator: Notation for script (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:110
+msgid "script"
+msgstr "skrip"
+
+#. Translator: Notation for message (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:114
+msgid "message"
+msgstr "boodskap"
+
+#. Translator: Notation for atom (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:118
+msgid "atom"
+msgstr "atoom"
+
+#. Translator: Notation for computer system
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:122
+msgid "system"
+msgstr "stelsel"
+
+#. Translator: Generic term for an item with dependencies, please leave untranslated for now
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:126
+msgid "Resolvable"
+msgstr "Oplossings"
+
+#. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:144
+msgid "Marking this resolution attempt as invalid."
+msgstr "Merk van hierdie resolusiepoging as ongeldig."
+
+#. Translator: %s = name of packages,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:151
+#, c-format
+msgid "Marking resolvable %s as uninstallable"
+msgstr "Merk van oplossing %s as oninstalleerbaar"
+
+#. Translator: %s = name of packages,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:159
+#, c-format
+msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
+msgstr "%s word geskeduleer om geïnstalleer te word, maar dit is vanweë afhanklikheidsprobleme nie moontlik nie."
+
+#. Translator: %s = name of package,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:167
+#, c-format
+msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgstr "Kan %s nie installeer nie, aangesien dit reeds gemerk is om ongeïnstalleer te word"
+
+#. Translator: %s = name of patch
+#. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
+#. TranslatorExplanation: Patches contain updates (bug fixes) to packages. Such fixes
+#. TranslatorExplanation: do only apply if the package to-be-fixed is actually installed.
+#. TranslatorExplanation: Here a patch was selected for installation but the to-be-fixed
+#. TranslatorExplanation: package is not installed.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:179
+#, c-format
+msgid "Can't install %s since it is does not apply to this system."
+msgstr "Kan %s nie installeer nie, aangesien dit nie op hierdie stelsel van toepassing is nie."
+
+#. affected() = item 1 which has to be installed
+#. _capability =
+#. other() = item 2 which has to be installed
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:190
+#, c-format
+msgid "Can't install %s, since %s is already marked as needing to be installed"
+msgstr "Kan %s nie installeer nie, aangesien %s reeds gemerk is om geïnstalleer te word"
+
+#. Translator: %s = name of patch,product
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:198
+#, c-format
+msgid "This would invalidate %s."
+msgstr "Dit sal %s ongeldig maak."
+
+#. Translator: %s = name of patch, pattern, ...
+#. TranslatorExplanation: Establishing is the process of computing which patches are needed
+#. TranslatorExplanation: This is just a progress indicator
+#. TranslatorExplanation: It is also used for other types of resolvables in order to verify
+#. TranslatorExplanation: the completeness of their dependencies
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:214
+#, c-format
+msgid "Establishing %s"
+msgstr "Vestig van %s"
+
+#. affected() = resolvable to be installed
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: Installing foo
+#. TranslatorExplanation: Just a progress indicator that something is scheduled for installation
+#. Translator: %s = packagename
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:235
+#, c-format
+msgid "Installing %s"
+msgstr "Installeer van %s"
+
+#. affected() = updated resolvable
+#. _capability =
+#. other() = currently installed, being updated resolvable
+#. other_capability() =
+#. Translator: 1.%s and 2.%s = name of package
+#. TranslatorExample: Updating foo-1.1 to foo-1.2
+#. TranslatorExplanation: Just a progress indicator that something is scheduled for upgrade
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:252
+#, c-format
+msgid "Updating %s to %s"
+msgstr "Bywerk van %s na %s"
+
+#. affected() =
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: Skipping foo: already installed
+#. TranslatorExplanation: An installation request for foo is skipped since foo is already installed
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:270
+#, c-format
+msgid "Skipping %s: already installed"
+msgstr "Oorslaan van %s: reeds geïnstalleer"
+
+#. affected() = is set
+#. _capability = is set
+#. other() =
+#. other_capability() =
+#. Translator: 1.%s = dependency
+#. TranslatorExample: There are no alternative installed providers of foo
+#. TranslatorExplanation: A resolvable is to be uninstalled. It provides 'foo' which is needed by others
+#. TranslatorExplanation: We just found out that 'foo' is not provided by anything else (an alternative)
+#. TranslatorExplanation: removal of this resolvable would therefore break dependency
+#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be uninstalled
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:292
+#, c-format
+msgid "There are no alternative installed providers of %s"
+msgstr "Daar is geen alternatief-geïnstalleerde verskaffers van %s nie"
+
+#. Translator: 1.%s = name of package,patch....
+#. TranslatorExample: for bar
+#. TranslatorExplanation: extension to previous message if we know what the resolvable is
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:298
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:323
+#, c-format
+msgid "for %s"
+msgstr "vir %s nie"
+
+#. affected() =
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: 1.%s = dependency
+#. TranslatorExample: There are no installable providers of foo
+#. TranslatorExplanation: A resolvable is to be installed which requires foo
+#. TranslatorExplanation: But there is nothing available to fulfill this requirement
+#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be installed
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:317
+#, c-format
+msgid "There are no installable providers of %s"
+msgstr "Daar is geen installeerbare verskaffers van %s nie"
+
+#. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
+#. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
+#. TranslatorExplanation: bar requires something from foo
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:341
+#, c-format
+msgid "Upgrade to %s to avoid removing %s is not possible."
+msgstr "Bywerking na %s om verwyder van %s te verhoed, is nie moontlik nie."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:359
+#, c-format
+msgid "%s provides %s, but is scheduled to be uninstalled."
+msgstr "%s voorsien %s, maar word geskeduleer om ongeïnstalleer te word."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:377
+#, c-format
+msgid "%s provides %s, but another version of that %s is already installed."
+msgstr "%s voorsien %s, maar ’n ander weergawe van daardie %s is reeds geïnstalleer."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:396
+#, c-format
+msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
+msgstr "%s voorsien %s, maar dit is oninstalleerbaar.  Probeer om dit alleen te installeer vir meer besonderhede."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:414
+#, c-format
+msgid "%s provides %s, but it is locked."
+msgstr "%s voorsien %s, maar dit is gesluit."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:432
+#, c-format
+msgid "%s provides %s,  but is scheduled to be kept."
+msgstr "%s voorsien %s, maar word geskeduleer om gehou te word."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:451
+#, c-format
+msgid "%s provides %s, but has another architecture."
+msgstr "%s voorsien %s, maar dit het ’n ander argitektuur."
+
+#. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:469
+#, c-format
+msgid "Can't satisfy requirement %s for %s"
+msgstr "Kan nie aan vereiste %s vir %s voldoen nie"
+
+#. affected() = to-be-installed resolvable which was scheduled to be uninstalled
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is required by other to-be-installed resolvable, so it won't be unlinked.
+#. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:490
+#, c-format
+msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr "%s word vereis deur ’n ander om-geïnstalleer-te-word-oplossing; gevolglik sal dit nie ontkoppel word nie."
+
+#. affected() = provider of cap
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is required by other installed resolvable, so it won't be unlinked.
+#. TranslatorExplanation: Cant uninstall foo since it is required by an installed resolvable
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:507
+#, c-format
+msgid "%s is required by other installed resolvable, so it won't be unlinked."
+msgstr "%s word vereis deur ’n ander geïnstalleerde oplossing; gevolglik sal dit nie ontkoppel word nie."
+
+#. affected() = to-be-uninstalled resolvable which is locked
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is locked and cannot be uninstalled.
+#. TranslatorExplanation: foo is to-be-uninstalled but it is locked
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:524
+#, c-format
+msgid "%s is locked and cannot be uninstalled."
+msgstr "%s is gesluit en kan nie ongeïnstalleer word nie."
+
+#. affected() = provider of capability
+#. _capability = provided by provider
+#. other() = conflict issuer
+#. other_capability() = conflict capability
+#. Translator: 1.%s and 2.%s = Dependency; 4.%s = name of package,patch,...
+#. TranslatorExample: A conflict over foo (bar) requires the removal of to-be-installed xyz
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:543
+#, c-format
+msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
+msgstr "’n Konflik oor %s (%s) vereis die verwydering van om-geïnstalleer-te-word-%s"
+
+#. affected() = provider of capability
+#. _capability = provided by provider
+#. other() = conflict issuer
+#. other_capability() = conflict capability from issuer
+#. Translator: 1.%s = name of package,patch,...; 3.%s and 4.%s = Dependency;
+#. TranslatorExample: Marking xyz as uninstallable due to conflicts over foo (bar)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:561
+#, c-format
+msgid "Marking %s as uninstallable due to conflicts over %s"
+msgstr "Merk van %s as oninstalleerbaar vanweë konflikte oor %s"
+
+#. Translator: %s = name of package,patch
+#. TranslatorExample: from abc
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:569
+#, c-format
+msgid "from %s"
+msgstr "vanaf %s"
+
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
+msgid "Ignore this requirement just here"
+msgstr "Ignoreer dié vereiste net hier"
+
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
+msgid "Ignore this requirement generally"
+msgstr "Ignoreer hierdie vereiste oor die algemeen"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
+#, c-format
+msgid "Install %s although it would change the architecture"
+msgstr "Installeer %s, hoewel dit die argitektuur kan verander"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
+#, c-format
+msgid "%s provides this dependency but would changed the architecture of the installed item"
+msgstr "%s voorsien hierdie afhanklikheid, maar sal die argitektuur van die geïnstalleerde item wysig"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
+#, c-format
+msgid "Ignore this conflict of %s"
+msgstr "Ignoreer hierdie konflik van %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
+#, c-format
+msgid "Ignore the obsolete %s in %s"
+msgstr "Ignoreer die uitgediende %s in %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
+#, c-format
+msgid "Ignore that %s is already set to install"
+msgstr "Ignoreer dat %s reeds gestel is om te installeer"
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
+#: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
+#, c-format
+msgid "%s is missing the requirement %s"
+msgstr "%s het nie die vereiste %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:55
+#, c-format
+msgid "keep %s"
+msgstr "hou %s"
+
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
+msgid "Keep resolvables"
+msgstr "Hou oplossings"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:261
+msgid "Invalid information"
+msgstr "Ongeldige inligting"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:268
+#, c-format
+msgid "%s is needed by other resolvables"
+msgstr "%s word deur ander oplossings benodig"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#. Translator: all.%s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:271
+#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:56
+#, c-format
+msgid "%s is needed by %s"
+msgstr "%s word benodig deur %s"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:272
+#, c-format
+msgid "%s is needed by:\n%s"
+msgstr "%s word benodig deur:\n%s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:279
+#, c-format
+msgid "%s conflicts with other resolvables"
+msgstr "%s verkeer in konflik met ander oplossings"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#. Translator: all.%s = name of package, patch,...
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is conflicting with multiple others
+#: ../zypp/solver/detail/Resolver_problems.cc:282
+#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:55
+#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:70
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s verkeer in konflik met %s"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:283
+#, c-format
+msgid "%s conflicts with:\n%s"
+msgstr "%s verkeer in konflik met:\n%s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:306
+#, c-format
+msgid "%s obsoletes other resolvables"
+msgstr "%s maak ander oplossings uitgedien"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:309
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s uitgediendes %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:311
+#, c-format
+msgid "%s obsoletes:%s"
+msgstr "%s uitgediendes:%s"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:312
+msgid "\nThese resolvables will be deleted from the system."
+msgstr "\nHierdie oplossings sal uit die stelsel geskrap word."
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:319
+#, c-format
+msgid "%s depends on other resolvables"
+msgstr "%s hang van ander oplossings af"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:323
+#, c-format
+msgid "%s depends on %s"
+msgstr "%s hang af van %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:326
+#, c-format
+msgid "%s depends on:%s"
+msgstr "%s hang af van:%s"
+
+#. TranslatorExplanation: currently it is unused.
+#: ../zypp/solver/detail/Resolver_problems.cc:332
+msgid "Child of"
+msgstr "Kind van"
+
+#. TranslatorExplanation %s = dependency
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:338
+#: ../zypp/solver/detail/Resolver_problems.cc:418
+#, c-format
+msgid "Cannot install %s"
+msgstr "Kan %s nie installeer nie"
+
+#. TranslatorExplanation %s = capability
+#: ../zypp/solver/detail/Resolver_problems.cc:340
+#, c-format
+msgid "None provides %s"
+msgstr "Geen voorsiening %s nie"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:341
+msgid "\nThere is no resource available which support this requirement."
+msgstr "\nDaar is geen hulpbron wat hierdie vereiste ondersteun, beskikbaar nie."
+
+#: ../zypp/solver/detail/Resolver_problems.cc:349
+msgid "Due problems which are described above/below this resolution will not solve all dependencies"
+msgstr "Toekomstige probleme wat bo/onder hierdie resolusie beskryf word, sal nie alle afhanklikhede oplos nie"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:360
+#: ../zypp/solver/detail/Resolver_problems.cc:711
+#, c-format
+msgid "Cannot install %s because it is conflicting with %s"
+msgstr "Kan %s nie installeer nie, omdat dit in konflik verkeer met %s"
+
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:377
+#, c-format
+msgid "%s is not installed and has been marked as uninstallable"
+msgstr "%s word nie geïnstalleer nie en is as oninstalleerbaar gemerk"
+
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:388
+#, c-format
+msgid "Cannot install %s due to dependency problems"
+msgstr "Kan %s nie installeer nie vanweë afhanklikheidsprobleme"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:452
+#, c-format
+msgid "%s has unfulfilled requirements"
+msgstr "%s het vereistes waaraan nie voldoen is nie"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:490
+#, c-format
+msgid "%s has missing dependencies"
+msgstr "%s het afhanklikhede wat ontbreek"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:537
+#, c-format
+msgid "%s cannot be installed due to missing dependencies"
+msgstr "%s kan nie geïnstalleer word nie vanweë ontbrekende afhanklikhede"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:585
+#, c-format
+msgid "%s fulfil dependencies of %s but will be uninstalled"
+msgstr "%s vervul afhanklikhede van %s, maar sal ongeïnstalleer word"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:595
+#, c-format
+msgid "%s fulfil dependencies of %s but will be kept on your system"
+msgstr "%s vervul afhanklikhede van %s, maar sal op u stelsel gehou word"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:605
+#, c-format
+msgid "No need to install %s"
+msgstr "Geen nodigheid om %s te installeer nie"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:613
+#, c-format
+msgid "Cannot install %s to fulfil the dependencies of %s"
+msgstr "Kan %s nie installeer om die afhanklikhede van %s te vervul nie"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:628
+#, c-format
+msgid "Cannot be install %s to fulfil the dependencies of %s"
+msgstr "Kan %s nie installeer om die afhanklikhede van %s te vervul nie"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:665
+#: ../zypp/solver/detail/Resolver_problems.cc:673
+#, c-format
+msgid "%s will not be uninstalled cause it is still required"
+msgstr "%s sal nie ongeïnstalleer word nie, want dit word steeds vereis"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:684
+#, c-format
+msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
+msgstr "%s uitgediendes %s. Maar %s kan nie geskrap word nie, want dit is gesluit."
+
+#: ../zypp/solver/detail/Resolver_problems.cc:715
+#, c-format
+msgid "Cannot install %s because it is conflicting"
+msgstr "Kan %s nie installeer nie, want dit verkeer in konflik"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:734
+#, c-format
+msgid "%s is uninstallable due to conflicts with %s"
+msgstr "%s is oninstalleerbaar vanweë konflikte met %s"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is needed by multiple others
+#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
+#, c-format
+msgid "%s needed by %s"
+msgstr "%s benodig deur %s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
+#, c-format
+msgid "install %s"
+msgstr "installeer %s"
+
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
+msgid "Install missing resolvables"
+msgstr "Installeer ontbrekende oplossings"
+
+#. Translator: all.%s = name of package,patch,....
+#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
+#, c-format
+msgid "%s is replaced by %s"
+msgstr "%s word vervang deur %s"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is replaced by others
+#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
+#, c-format
+msgid "%s replaced by %s"
+msgstr "%s vervang deur %s"
+
+#. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
+#: ../zypp/solver/detail/QueueItemRequire.cc:768
+#, c-format
+msgid "for requiring %s for %s when upgrading %s"
+msgstr "om %s vir %s te vereis tydens bywerk van %s"
+
+#. Translator all.%s = name of packages,patches,....
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is part of 'bundles', the bundles are listed in 2.%s
+#: ../zypp/solver/detail/ResolverInfoChildOf.cc:56
+#: ../zypp/solver/detail/ResolverInfoChildOf.cc:71
+#, c-format
+msgid "%s part of %s"
+msgstr "%s deel van %s"
+
+#. Translator: all.%s = name of package,patch,....
+#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
+#, c-format
+msgid "%s depended on %s"
+msgstr "%s afgehang van %s"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is dependent on list of names
+#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
+#, c-format
+msgid "%s dependend on %s"
+msgstr "%s afhanklik van %s"
+
+#: ../zypp/target/store/XMLFilesBackend.cc:1014
+#: ../zypp/target/store/XMLFilesBackend.cc:1021
+#: ../zypp/source/yum/YUMScriptImpl.cc:78
+#: ../zypp/source/yum/YUMScriptImpl.cc:112
+msgid "Cannot create a file needed to perform update installation."
+msgstr "Kan nie ’n lêer wat benodig word om bywerkinstallasie uit te voer, skep nie."
+
+#. Translator: %s = name of an rpm package. A list of diffs follows
+#. this message.
+#: ../zypp/target/rpm/RpmDb.cc:1745
+#, c-format
+msgid "Changed configuration files for %s:"
+msgstr "Gewysigde konfigurasielêers vir %s:"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1909
+#, c-format
+msgid "rpm saved %s as %s but it was impossible to determine the difference"
+msgstr "rpm geberg %s as %s, maar dit was onmoontlik om die verskil te bepaal"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1911
+#, c-format
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm geberg %s as %s.\nHier is die eerste 25 rëels van verskil:\n"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1914
+#, c-format
+msgid "rpm created %s as %s but it was impossible to determine the difference"
+msgstr "rpm geskep %s as %s, maar dit was onmoontlik om die verskil te bepaal"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1916
+#, c-format
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm geskep %s as %s.\nHier is die eerste 25 rëels van verskil:\n"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:1922
+#, c-format
+msgid "%s install failed"
+msgstr "%s installasie misluk"
+
+#: ../zypp/target/rpm/RpmDb.cc:1923 ../zypp/target/rpm/RpmDb.cc:2041
+msgid "rpm output:"
+msgstr "rpm-uitset:"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:1929
+#, c-format
+msgid "%s installed ok"
+msgstr "%s geïnstalleer is goed"
+
+#: ../zypp/target/rpm/RpmDb.cc:1932 ../zypp/target/rpm/RpmDb.cc:2049
+msgid "Additional rpm output:"
+msgstr "Bykomende rpm-uitset:"
+
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2040
+#, c-format
+msgid "%s remove failed"
+msgstr "%s verwyder het misluk"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2046
+#, c-format
+msgid "%s remove ok"
+msgstr "%s verwyder is goed"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2191
+#, c-format
+msgid "created backup %s"
+msgstr "geskepte rugsteun %s"
+
+#: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
+#: ../zypp/target/hal/HalException.h:64
+msgid "Hal Exception"
+msgstr "Hal-uitsondering"
+
+#: ../zypp/target/hal/HalContext.cc:96
+msgid "HalContext not connected"
+msgstr "HalContext nie verbind nie"
+
+#: ../zypp/target/hal/HalContext.cc:106
+msgid "HalDrive not initialized"
+msgstr "HalDrive nie geïnisialiseer nie"
+
+#: ../zypp/target/hal/HalContext.cc:116
+msgid "HalVolume not initialized"
+msgstr "HalVolume nie geïnisialiseer nie"
+
+#: ../zypp/target/hal/HalContext.cc:208
+msgid "Unable to create dbus connection"
+msgstr "Kan dbus-verbinding nie skep nie"
+
+#: ../zypp/target/hal/HalContext.cc:224
+msgid "libhal_ctx_new: Can't create libhal context"
+msgstr "libhal_ctx_new: Kan libhal-konteks nie skep nie"
+
+#: ../zypp/target/hal/HalContext.cc:239
+msgid "libhal_set_dbus_connection: Can't set dbus connection"
+msgstr "libhal_set_dbus_connection: Kan dbus-verbinding nie stel nie"
+
+#: ../zypp/target/hal/HalContext.cc:254
+msgid "Unable to initalize HAL context -- hald not running?"
+msgstr "Kan HAL-konteks nie inisialiseer nie -- hald loop nie?"
+
+#: ../zypp/target/hal/HalContext.cc:843
+msgid "Not a CDROM drive"
+msgstr "Nie ’n CDROM-aandrywer nie"
+
+#: ../zypp/target/TargetImpl.cc:719
+msgid "Installation has been aborted as directed."
+msgstr "Installasie is gestaak soos gelas."
+
+#: ../zypp/source/susetags/SuseTagsImpl.cc:737
+#: ../zypp/source/susetags/SuseTagsImpl.cc:747
+#: ../zypp/source/susetags/SuseTagsImpl.cc:750
+msgid "Reading packages file"
+msgstr "Lees van pakkettelêer"
+
+#. TranslatorExplanation %s = language name
+#: ../zypp/source/susetags/SuseTagsImpl.cc:800
+#: ../zypp/source/susetags/SuseTagsImpl.cc:804
+#: ../zypp/source/susetags/SuseTagsImpl.cc:818
+#, c-format
+msgid "Reading translation: %s"
+msgstr "Lees van vertaling: %s"
+
+#. end of single patch parsing
+#. end of patches file parsing
+#. end of copying
+#: ../zypp/source/yum/YUMSourceImpl.cc:216
+#: ../zypp/source/yum/YUMSourceImpl.cc:241
+msgid "Reading index files"
+msgstr "Lees van indekslêers"
+
+#: ../zypp/source/yum/YUMSourceImpl.cc:247
+msgid "The signed repomd.xml file failed the signature check."
+msgstr "Die getekende repomd.xml-lêer het nie die handtekeningnagaan geslaag nie."
+
+#. TranslatorExplanation %s = product file
+#: ../zypp/source/yum/YUMSourceImpl.cc:464
+#: ../zypp/source/yum/YUMSourceImpl.cc:476
+#: ../zypp/source/yum/YUMSourceImpl.cc:482
+#: ../zypp/source/yum/YUMSourceImpl.cc:490
+#, c-format
+msgid "Reading product from %s"
+msgstr "Lees van produk vanaf %s"
+
+#. TranslatorExplanation %s = package file list
+#: ../zypp/source/yum/YUMSourceImpl.cc:520
+#: ../zypp/source/yum/YUMSourceImpl.cc:535
+#: ../zypp/source/yum/YUMSourceImpl.cc:541
+#: ../zypp/source/yum/YUMSourceImpl.cc:549
+#, c-format
+msgid "Reading filelist from %s"
+msgstr "Lees van lêerlys vanaf %s"
+
+#. TranslatorExplanation %s = packages file
+#: ../zypp/source/yum/YUMSourceImpl.cc:565
+#: ../zypp/source/yum/YUMSourceImpl.cc:605
+#: ../zypp/source/yum/YUMSourceImpl.cc:611
+#: ../zypp/source/yum/YUMSourceImpl.cc:619
+#, c-format
+msgid "Reading packages from %s"
+msgstr "Lees van pakkette vanaf %s"
+
+#. TranslatorExplanation %s = selection metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:643
+#: ../zypp/source/yum/YUMSourceImpl.cc:655
+#: ../zypp/source/yum/YUMSourceImpl.cc:661
+#: ../zypp/source/yum/YUMSourceImpl.cc:669
+#, c-format
+msgid "Reading selection from %s"
+msgstr "Lees van keuse vanaf %s"
+
+#. TranslatorExplanation %s = pattern metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:693
+#: ../zypp/source/yum/YUMSourceImpl.cc:705
+#: ../zypp/source/yum/YUMSourceImpl.cc:711
+#: ../zypp/source/yum/YUMSourceImpl.cc:719
+#, c-format
+msgid "Reading pattern from %s"
+msgstr "Lees van patroon vanaf %s"
+
+#. TranslatorExplanation %s = patches index file
+#: ../zypp/source/yum/YUMSourceImpl.cc:746
+#: ../zypp/source/yum/YUMSourceImpl.cc:758
+#: ../zypp/source/yum/YUMSourceImpl.cc:764
+#: ../zypp/source/yum/YUMSourceImpl.cc:772
+#, c-format
+msgid "Reading patches index %s"
+msgstr "Lees van regstellingsindeks %s"
+
+#. TranslatorExplanation %s = patch metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:795
+#: ../zypp/source/yum/YUMSourceImpl.cc:812
+#: ../zypp/source/yum/YUMSourceImpl.cc:818
+#: ../zypp/source/yum/YUMSourceImpl.cc:827
+#, c-format
+msgid "Reading patch %s"
+msgstr "Lees van regstelling %s"
+
+#: ../zypp/source/yum/YUMScriptImpl.cc:89
+#: ../zypp/source/yum/YUMScriptImpl.cc:123
+msgid "The script file failed the checksum test."
+msgstr "Die skriplêer het nie die nagaansomtoets geslaag nie."
+
+#: ../zypp/source/PackageProvider.cc:216
+msgid "applydeltarpm check failed."
+msgstr "applydeltarpm-nagaan het misluk."
+
+#: ../zypp/source/PackageProvider.cc:229
+msgid "applydeltarpm failed."
+msgstr "applydeltarpm het misluk."
+
+#. TranslatorExplanation %s = package being checked for integrity
+#: ../zypp/source/PackageProvider.cc:296
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry downloading it?"
+msgstr "Pakket %s se integriteitsnagaan misluk. Wil u dit weer probeer aflaai?"
+
+#. TranslatorExplanation %s = package
+#: ../zypp/source/SourceImpl.cc:339
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgstr "Pakket %s se integriteitsnagaan misluk. Wil u dit weer probeer aflaai, of die installasie staak?"
+
+#: ../zypp/source/SourceImpl.cc:394
+msgid " miss checksum."
+msgstr "nagaansom ontbreek."
+
+#: ../zypp/source/SourceImpl.cc:400
+msgid " fails checksum verification."
+msgstr "slaag nie nagaansom-bevestiging nie."
+
+#. TranslatorExplanation %s = file being downloaded
+#: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
+#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
+#, c-format
+msgid "Downloading %s"
+msgstr "Aflaai van %s"
+
+#: ../zypp/source/SourceImpl.cc:445
+#, c-format
+msgid "Downloaded %s from %s"
+msgstr "%s afgelaai vanaf %s"
+
+#. TranslatorExplanation %s = file that was not able to download
+#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
+#: ../zypp/source/SourceImpl.cc:459
+#, c-format
+msgid "Can't provide %s from %s"
+msgstr "Kan %s vanaf %s nie voorsien nie"
 
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
@@ -107,6 +1219,24 @@ msgstr "Ongeldige parameterbindingsplyt-skeierkarakter"
 msgid "Invalid parameter array join separator character"
 msgstr "Ongeldige parametermatrysaansluit-skeierkarakter"
 
+#: ../zypp/ZYppFactory.cc:339
+#, c-format
+msgid "System management is locked by the application with pid %d. Please close this application before trying again."
+msgstr "Stelselbestuur is gesluit deur die toepassing met pid %d. Maak hierdie toepassing asseblief toe voordat u weer probeer."
+
+#: ../zypp/SourceManager.cc:116
+#, c-format
+msgid "Source alias '%s' is already in use."
+msgstr "Bron-alias '%s' is reeds in gebruik."
+
+#: ../zypp/SourceManager.h:42
+msgid "Unable to restore all sources."
+msgstr "Kan nie alle bronne terugstel nie."
+
+#: ../zypp/SourceManager.h:68
+msgid "At least one source already registered, stored sources cannot be restored."
+msgstr "Ten minste een bron reeds geregistreer, gebergde bronne kan nie teruggestel word nie."
+
 #: ../zypp/Url.cc:110
 msgid "Invalid LDAP URL query string"
 msgstr "Ongeldige LDAP URL-navraagstring"
@@ -128,15 +1258,1222 @@ msgstr "Ongeldige leë Url-voorwerpverwysing"
 msgid "Unable to parse Url components"
 msgstr "Kan Url-komponente nie ontleed nie"
 
+#: ../zypp/CountryCode.cc:135
+msgid "Unknown country: "
+msgstr "Onbekende land:"
+
+#. Defined CountryCode constants
+#. Defined LanguageCode constants
+#: ../zypp/CountryCode.cc:215 ../zypp/LanguageCode.cc:225
+msgid "No Code"
+msgstr "Geen kode nie"
+
+#: ../zypp/CountryCode.cc:217
+msgid "Andorra"
+msgstr "Andorra"
+
+#. :AND:020:
+#: ../zypp/CountryCode.cc:218
+msgid "United Arab Emirates"
+msgstr "Verenigde Arabiese Emirate"
+
+#. :ARE:784:
+#: ../zypp/CountryCode.cc:219
+msgid "Afghanistan"
+msgstr "Afghanistan"
+
+#. :AFG:004:
+#: ../zypp/CountryCode.cc:220
+msgid "Antigua and Barbuda"
+msgstr "Antigua en Barbuda"
+
+#. :ATG:028:
+#: ../zypp/CountryCode.cc:221
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#. :AIA:660:
+#: ../zypp/CountryCode.cc:222
+msgid "Albania"
+msgstr "Albanië"
+
+#. :ALB:008:
+#: ../zypp/CountryCode.cc:223
+msgid "Armenia"
+msgstr "Armenië"
+
+#. :ARM:051:
+#: ../zypp/CountryCode.cc:224
+msgid "Netherlands Antilles"
+msgstr "Nederlands-Antille"
+
+#. :ANT:530:
+#: ../zypp/CountryCode.cc:225
+msgid "Angola"
+msgstr "Angola"
+
+#. :AGO:024:
+#: ../zypp/CountryCode.cc:226
+msgid "Antarctica"
+msgstr "Antarktika"
+
+#. :ATA:010:
+#: ../zypp/CountryCode.cc:227
+msgid "Argentina"
+msgstr "Argentinië"
+
+#. :ARG:032:
+#: ../zypp/CountryCode.cc:228
+msgid "American Samoa"
+msgstr "Amerikaanse Samoa"
+
+#. :ASM:016:
+#: ../zypp/CountryCode.cc:229
+msgid "Austria"
+msgstr "Oostenryk"
+
+#. :AUT:040:
+#: ../zypp/CountryCode.cc:230
+msgid "Australia"
+msgstr "Australië"
+
+#. :AUS:036:
+#: ../zypp/CountryCode.cc:231
+msgid "Aruba"
+msgstr "Aruba"
+
+#. :ABW:533:
+#: ../zypp/CountryCode.cc:232
+msgid "Aland Islands"
+msgstr "Aland-eilande"
+
+#. :ALA:248:
+#: ../zypp/CountryCode.cc:233
+msgid "Azerbaijan"
+msgstr "Azerbaijan"
+
+#. :AZE:031:
+#: ../zypp/CountryCode.cc:234
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnië en Herzegowina"
+
+#. :BIH:070:
+#: ../zypp/CountryCode.cc:235
+msgid "Barbados"
+msgstr "Barbados"
+
+#. :BRB:052:
+#: ../zypp/CountryCode.cc:236
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#. :BGD:050:
+#: ../zypp/CountryCode.cc:237
+msgid "Belgium"
+msgstr "België"
+
+#. :BEL:056:
+#: ../zypp/CountryCode.cc:238
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#. :BFA:854:
+#: ../zypp/CountryCode.cc:239
+msgid "Bulgaria"
+msgstr "Bulgarye"
+
+#. :BGR:100:
+#: ../zypp/CountryCode.cc:240
+msgid "Bahrain"
+msgstr "Bahrein"
+
+#. :BHR:048:
+#: ../zypp/CountryCode.cc:241
+msgid "Burundi"
+msgstr "Burundi"
+
+#. :BDI:108:
+#: ../zypp/CountryCode.cc:242
+msgid "Benin"
+msgstr "Benin"
+
+#. :BEN:204:
+#: ../zypp/CountryCode.cc:243
+msgid "Bermuda"
+msgstr "Bermuda"
+
+#. :BMU:060:
+#: ../zypp/CountryCode.cc:244
+msgid "Brunei Darussalam"
+msgstr "Broenei Darussalam"
+
+#. :BRN:096:
+#: ../zypp/CountryCode.cc:245
+msgid "Bolivia"
+msgstr "Bolivië"
+
+#. :BOL:068:
+#: ../zypp/CountryCode.cc:246
+msgid "Brazil"
+msgstr "Brasilië"
+
+#. :BRA:076:
+#: ../zypp/CountryCode.cc:247
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#. :BHS:044:
+#: ../zypp/CountryCode.cc:248
+msgid "Bhutan"
+msgstr "Bhoetan"
+
+#. :BTN:064:
+#: ../zypp/CountryCode.cc:249
+msgid "Bouvet Island"
+msgstr "Bouvet-eiland"
+
+#. :BVT:074:
+#: ../zypp/CountryCode.cc:250
+msgid "Botswana"
+msgstr "Botswana"
+
+#. :BWA:072:
+#: ../zypp/CountryCode.cc:251
+msgid "Belarus"
+msgstr "Belo-Rusland"
+
+#. :BLR:112:
+#: ../zypp/CountryCode.cc:252
+msgid "Belize"
+msgstr "Belize"
+
+#. :BLZ:084:
+#: ../zypp/CountryCode.cc:253
+msgid "Canada"
+msgstr "Kanada"
+
+#. :CAN:124:
+#: ../zypp/CountryCode.cc:254
+msgid "Cocos (Keeling) Islands"
+msgstr "Cocos- (Keeling-) eilande"
+
+#. :CCK:166:
+#. :CAF:140:
+#: ../zypp/CountryCode.cc:255 ../zypp/CountryCode.cc:257
+msgid "Congo"
+msgstr "Kongo"
+
+#. :COD:180:
+#: ../zypp/CountryCode.cc:256
+msgid "Central African Republic"
+msgstr "Republiek van Sentraal-Afrika"
+
+#. :COG:178:
+#: ../zypp/CountryCode.cc:258
+msgid "Switzerland"
+msgstr "Switserland"
+
+#. :CHE:756:
+#: ../zypp/CountryCode.cc:259
+msgid "Cote D'Ivoire"
+msgstr "Ivoorkus"
+
+#. :CIV:384:
+#: ../zypp/CountryCode.cc:260
+msgid "Cook Islands"
+msgstr "Cook-eilande"
+
+#. :COK:184:
+#: ../zypp/CountryCode.cc:261
+msgid "Chile"
+msgstr "Chile"
+
+#. :CHL:152:
+#: ../zypp/CountryCode.cc:262
+msgid "Cameroon"
+msgstr "Kameroen"
+
+#. :CMR:120:
+#: ../zypp/CountryCode.cc:263
+msgid "China"
+msgstr "Sjina"
+
+#. :CHN:156:
+#: ../zypp/CountryCode.cc:264
+msgid "Colombia"
+msgstr "Colombia"
+
+#. :COL:170:
+#: ../zypp/CountryCode.cc:265
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#. :CRI:188:
+#: ../zypp/CountryCode.cc:266
+msgid "Serbia and Montenegro"
+msgstr "Serwië en Montenegro"
+
+#. :SCG:891:
+#: ../zypp/CountryCode.cc:267
+msgid "Cuba"
+msgstr "Kuba"
+
+#. :CUB:192:
+#: ../zypp/CountryCode.cc:268
+msgid "Cape Verde"
+msgstr "Kaap Verde"
+
+#. :CPV:132:
+#: ../zypp/CountryCode.cc:269
+msgid "Christmas Island"
+msgstr "Kersfees-eiland"
+
+#. :CXR:162:
+#: ../zypp/CountryCode.cc:270
+msgid "Cyprus"
+msgstr "Siprus"
+
+#. :CYP:196:
+#: ../zypp/CountryCode.cc:271
+msgid "Czech Republic"
+msgstr "Tseggiese Republiek"
+
+#. :CZE:203:
+#: ../zypp/CountryCode.cc:272
+msgid "Germany"
+msgstr "Duitsland"
+
+#. :DEU:276:
+#: ../zypp/CountryCode.cc:273
+msgid "Djibouti"
+msgstr "Djiboeti"
+
+#. :DJI:262:
+#: ../zypp/CountryCode.cc:274
+msgid "Denmark"
+msgstr "Denemarke"
+
+#. :DNK:208:
+#: ../zypp/CountryCode.cc:275
+msgid "Dominica"
+msgstr "Dominika"
+
+#. :DMA:212:
+#: ../zypp/CountryCode.cc:276
+msgid "Dominican Republic"
+msgstr "Dominikaanse Republiek"
+
+#. :DOM:214:
+#: ../zypp/CountryCode.cc:277
+msgid "Algeria"
+msgstr "Algerië"
+
+#. :DZA:012:
+#: ../zypp/CountryCode.cc:278
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#. :ECU:218:
+#: ../zypp/CountryCode.cc:279
+msgid "Estonia"
+msgstr "Estonië"
+
+#. :EST:233:
+#: ../zypp/CountryCode.cc:280
+msgid "Egypt"
+msgstr "Egipte"
+
+#. :EGY:818:
+#: ../zypp/CountryCode.cc:281
+msgid "Western Sahara"
+msgstr "Wes-Sahara"
+
+#. :ESH:732:
+#: ../zypp/CountryCode.cc:282
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#. :ERI:232:
+#: ../zypp/CountryCode.cc:283
+msgid "Spain"
+msgstr "Spanje"
+
+#. :ESP:724:
+#: ../zypp/CountryCode.cc:284
+msgid "Ethiopia"
+msgstr "Ethiopië"
+
+#. :ETH:231:
+#: ../zypp/CountryCode.cc:285
+msgid "Finland"
+msgstr "Finland"
+
+#. :FIN:246:
+#: ../zypp/CountryCode.cc:286
+msgid "Fiji"
+msgstr "Fiji"
+
+#. :FJI:242:
+#: ../zypp/CountryCode.cc:287
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falkland-eilande (Malvinas)"
+
+#. :FLK:238:
+#: ../zypp/CountryCode.cc:288
+msgid "Federated States of Micronesia"
+msgstr "Federasie van Mikronesië"
+
+#. :FSM:583:
+#: ../zypp/CountryCode.cc:289
+msgid "Faroe Islands"
+msgstr "Faroë-eilande"
+
+#. :FRO:234:
+#: ../zypp/CountryCode.cc:290
+msgid "France"
+msgstr "Frankryk"
+
+#. :FRA:250:
+#: ../zypp/CountryCode.cc:291
+msgid "Metropolitan France"
+msgstr "Metropolitaanse Frankryk"
+
+#. :FXX:249:
+#: ../zypp/CountryCode.cc:292
+msgid "Gabon"
+msgstr "Gaboen"
+
+#. :GAB:266:
+#: ../zypp/CountryCode.cc:293
+msgid "United Kingdom"
+msgstr "Verenigde Koninkryk"
+
+#. :GBR:826:
+#: ../zypp/CountryCode.cc:294
+msgid "Grenada"
+msgstr "Grenada"
+
+#. :GRD:308:
+#: ../zypp/CountryCode.cc:295
+msgid "Georgia"
+msgstr "Georgië"
+
+#. :GEO:268:
+#: ../zypp/CountryCode.cc:296
+msgid "French Guiana"
+msgstr "Frans-Guyana"
+
+#. :GUF:254:
+#: ../zypp/CountryCode.cc:297
+msgid "Ghana"
+msgstr "Ghana"
+
+#. :GHA:288:
+#: ../zypp/CountryCode.cc:298
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#. :GIB:292:
+#: ../zypp/CountryCode.cc:299
+msgid "Greenland"
+msgstr "Groenland"
+
+#. :GRL:304:
+#: ../zypp/CountryCode.cc:300
+msgid "Gambia"
+msgstr "Gambië"
+
+#. :GMB:270:
+#: ../zypp/CountryCode.cc:301
+msgid "Guinea"
+msgstr "Guinee"
+
+#. :GIN:324:
+#: ../zypp/CountryCode.cc:302
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#. :GLP:312:
+#: ../zypp/CountryCode.cc:303
+msgid "Equatorial Guinea"
+msgstr "Ekwatoriaal-Guinee"
+
+#. :GNQ:226:
+#: ../zypp/CountryCode.cc:304
+msgid "Greece"
+msgstr "Griekeland"
+
+#. :GRC:300:
+#: ../zypp/CountryCode.cc:305
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Suid-Georgia en die Suid-Sandwich-eilande"
+
+#. :SGS:239:
+#: ../zypp/CountryCode.cc:306
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#. :GTM:320:
+#: ../zypp/CountryCode.cc:307
+msgid "Guam"
+msgstr "Guam"
+
+#. :GUM:316:
+#: ../zypp/CountryCode.cc:308
+msgid "Guinea-Bissau"
+msgstr "Guinee-Bissau"
+
+#. :GNB:624:
+#: ../zypp/CountryCode.cc:309
+msgid "Guyana"
+msgstr "Guyana"
+
+#. :GUY:328:
+#: ../zypp/CountryCode.cc:310
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+#. :HKG:344:
+#: ../zypp/CountryCode.cc:311
+msgid "Heard Island and McDonald Islands"
+msgstr "Heard-eiland en McDonald-eilande"
+
+#. :HMD:334:
+#: ../zypp/CountryCode.cc:312
+msgid "Honduras"
+msgstr "Honduras"
+
+#. :HND:340:
+#: ../zypp/CountryCode.cc:313
+msgid "Croatia"
+msgstr "Kroasië"
+
+#. :HRV:191:
+#: ../zypp/CountryCode.cc:314
+msgid "Haiti"
+msgstr "Haïti"
+
+#. :HTI:332:
+#: ../zypp/CountryCode.cc:315
+msgid "Hungary"
+msgstr "Hongarye"
+
+#. :HUN:348:
+#: ../zypp/CountryCode.cc:316
+msgid "Indonesia"
+msgstr "Indonesië"
+
+#. :IDN:360:
+#: ../zypp/CountryCode.cc:317
+msgid "Ireland"
+msgstr "Ierland"
+
+#. :IRL:372:
+#: ../zypp/CountryCode.cc:318
+msgid "Israel"
+msgstr "Israel"
+
+#. :ISR:376:
+#: ../zypp/CountryCode.cc:319
+msgid "India"
+msgstr "Indië"
+
+#. :IND:356:
+#: ../zypp/CountryCode.cc:320
+msgid "British Indian Ocean Territory"
+msgstr "Brits-Indiese Oseaangebied"
+
+#. :IOT:086:
+#: ../zypp/CountryCode.cc:321
+msgid "Iraq"
+msgstr "Irak"
+
+#. :IRQ:368:
+#: ../zypp/CountryCode.cc:322
+msgid "Iran"
+msgstr "Iran"
+
+#. :IRN:364:
+#: ../zypp/CountryCode.cc:323
+msgid "Iceland"
+msgstr "Ysland"
+
+#. :ISL:352:
+#: ../zypp/CountryCode.cc:324
+msgid "Italy"
+msgstr "Italië"
+
+#. :ITA:380:
+#: ../zypp/CountryCode.cc:325
+msgid "Jamaica"
+msgstr "Jamaika"
+
+#. :JAM:388:
+#: ../zypp/CountryCode.cc:326
+msgid "Jordan"
+msgstr "Jordanië"
+
+#. :JOR:400:
+#: ../zypp/CountryCode.cc:327
+msgid "Japan"
+msgstr "Japan"
+
+#. :JPN:392:
+#: ../zypp/CountryCode.cc:328
+msgid "Kenya"
+msgstr "Kenia"
+
+#. :KEN:404:
+#: ../zypp/CountryCode.cc:329
+msgid "Kyrgyzstan"
+msgstr "Kirgisië"
+
+#. :KGZ:417:
+#: ../zypp/CountryCode.cc:330
+msgid "Cambodia"
+msgstr "Kambodja"
+
+#. :KHM:116:
+#: ../zypp/CountryCode.cc:331
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#. :KIR:296:
+#: ../zypp/CountryCode.cc:332
+msgid "Comoros"
+msgstr "Comore"
+
+#. :COM:174:
+#: ../zypp/CountryCode.cc:333
+msgid "Saint Kitts and Nevis"
+msgstr "St. Kitts en Nevis"
+
+#. :KNA:659:
+#: ../zypp/CountryCode.cc:334
+msgid "North Korea"
+msgstr "Noord-Korea"
+
+#. :PRK:408:
+#: ../zypp/CountryCode.cc:335
+msgid "South Korea"
+msgstr "Suid-Korea"
+
+#. :KOR:410:
+#: ../zypp/CountryCode.cc:336
+msgid "Kuwait"
+msgstr "Koeweit"
+
+#. :KWT:414:
+#: ../zypp/CountryCode.cc:337
+msgid "Cayman Islands"
+msgstr "Kaaimanseilande"
+
+#. :CYM:136:
+#: ../zypp/CountryCode.cc:338
+msgid "Kazakhstan"
+msgstr "Kazakstan"
+
+#. :KAZ:398:
+#: ../zypp/CountryCode.cc:339
+msgid "Lao People's Democratic Republic"
+msgstr "Lao Demokratiese Republiek"
+
+#. :LAO:418:
+#: ../zypp/CountryCode.cc:340
+msgid "Lebanon"
+msgstr "Lebanon"
+
+#. :LBN:422:
+#: ../zypp/CountryCode.cc:341
+msgid "Saint Lucia"
+msgstr "St. Lucia"
+
+#. :LCA:662:
+#: ../zypp/CountryCode.cc:342
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#. :LIE:438:
+#: ../zypp/CountryCode.cc:343
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#. :LKA:144:
+#: ../zypp/CountryCode.cc:344
+msgid "Liberia"
+msgstr "Liberië"
+
+#. :LBR:430:
+#: ../zypp/CountryCode.cc:345
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#. :LSO:426:
+#: ../zypp/CountryCode.cc:346
+msgid "Lithuania"
+msgstr "Litoue"
+
+#. :LTU:440:
+#: ../zypp/CountryCode.cc:347
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+#. :LUX:442:
+#: ../zypp/CountryCode.cc:348
+msgid "Latvia"
+msgstr "Letland"
+
+#. :LVA:428:
+#: ../zypp/CountryCode.cc:349
+msgid "Libya"
+msgstr "Libië"
+
+#. :LBY:434:
+#: ../zypp/CountryCode.cc:350
+msgid "Morocco"
+msgstr "Marokko"
+
+#. :MAR:504:
+#: ../zypp/CountryCode.cc:351
+msgid "Monaco"
+msgstr "Monaco"
+
+#. :MCO:492:
+#: ../zypp/CountryCode.cc:352
+msgid "Moldova"
+msgstr "Moldowa"
+
+#. :MDA:498:
+#: ../zypp/CountryCode.cc:353
+msgid "Madagascar"
+msgstr "Madagaskar"
+
+#. :MDG:450:
+#: ../zypp/CountryCode.cc:354
+msgid "Marshall Islands"
+msgstr "Marshall-eilande"
+
+#. :MHL:584:
+#: ../zypp/CountryCode.cc:355
+msgid "Macedonia"
+msgstr "Masedonië"
+
+#. :MKD:807:
+#: ../zypp/CountryCode.cc:356
+msgid "Mali"
+msgstr "Mali"
+
+#. :MLI:466:
+#: ../zypp/CountryCode.cc:357
+msgid "Myanmar"
+msgstr "Mianmar"
+
+#. :MMR:104:
+#: ../zypp/CountryCode.cc:358
+msgid "Mongolia"
+msgstr "Mongolië"
+
+#. :MNG:496:
+#: ../zypp/CountryCode.cc:359
+msgid "Macao"
+msgstr "Macao"
+
+#. :MAC:446:
+#: ../zypp/CountryCode.cc:360
+msgid "Northern Mariana Islands"
+msgstr "Noord-Mariana-eilande"
+
+#. :MNP:580:
+#: ../zypp/CountryCode.cc:361
+msgid "Martinique"
+msgstr "Martinique"
+
+#. :MTQ:474:
+#: ../zypp/CountryCode.cc:362
+msgid "Mauritania"
+msgstr "Mauritanië"
+
+#. :MRT:478:
+#: ../zypp/CountryCode.cc:363
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#. :MSR:500:
+#: ../zypp/CountryCode.cc:364
+msgid "Malta"
+msgstr "Malta"
+
+#. :MLT:470:
+#: ../zypp/CountryCode.cc:365
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#. :MUS:480:
+#: ../zypp/CountryCode.cc:366
+msgid "Maldives"
+msgstr "Maledive"
+
+#. :MDV:462:
+#: ../zypp/CountryCode.cc:367
+msgid "Malawi"
+msgstr "Malawi"
+
+#. :MWI:454:
+#: ../zypp/CountryCode.cc:368
+msgid "Mexico"
+msgstr "Meksiko"
+
+#. :MEX:484:
+#: ../zypp/CountryCode.cc:369
+msgid "Malaysia"
+msgstr "Maleisië"
+
+#. :MYS:458:
+#: ../zypp/CountryCode.cc:370
+msgid "Mozambique"
+msgstr "Mosambiek"
+
+#. :MOZ:508:
+#: ../zypp/CountryCode.cc:371
+msgid "Namibia"
+msgstr "Namibië"
+
+#. :NAM:516:
+#: ../zypp/CountryCode.cc:372
+msgid "New Caledonia"
+msgstr "Nieu-Kaledonië"
+
+#. :NCL:540:
+#: ../zypp/CountryCode.cc:373
+msgid "Niger"
+msgstr "Niger"
+
+#. :NER:562:
+#: ../zypp/CountryCode.cc:374
+msgid "Norfolk Island"
+msgstr "Norfolk-eilande"
+
+#. :NFK:574:
+#: ../zypp/CountryCode.cc:375
+msgid "Nigeria"
+msgstr "Nigerië"
+
+#. :NGA:566:
+#: ../zypp/CountryCode.cc:376
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#. :NIC:558:
+#: ../zypp/CountryCode.cc:377
+msgid "Netherlands"
+msgstr "Nederland"
+
+#. :NLD:528:
+#: ../zypp/CountryCode.cc:378
+msgid "Norway"
+msgstr "Noorweë"
+
+#. :NOR:578:
+#: ../zypp/CountryCode.cc:379
+msgid "Nepal"
+msgstr "Nepal"
+
+#. :NPL:524:
+#. language code: nau na
+#: ../zypp/CountryCode.cc:380 ../zypp/LanguageCode.cc:858
+msgid "Nauru"
+msgstr "Nauroe"
+
+#. :NRU:520:
+#: ../zypp/CountryCode.cc:381
+msgid "Niue"
+msgstr "Niue"
+
+#. :NIU:570:
+#: ../zypp/CountryCode.cc:382
+msgid "New Zealand"
+msgstr "Nieu-Seeland"
+
+#. :NZL:554:
+#: ../zypp/CountryCode.cc:383
+msgid "Oman"
+msgstr "Oman"
+
+#. :OMN:512:
+#: ../zypp/CountryCode.cc:384
+msgid "Panama"
+msgstr "Panama"
+
+#. :PAN:591:
+#: ../zypp/CountryCode.cc:385
+msgid "Peru"
+msgstr "Peru"
+
+#. :PER:604:
+#: ../zypp/CountryCode.cc:386
+msgid "French Polynesia"
+msgstr "Frans-Polinesië"
+
+#. :PYF:258:
+#: ../zypp/CountryCode.cc:387
+msgid "Papua New Guinea"
+msgstr "Papoea-Nieu-Guinee"
+
+#. :PNG:598:
+#: ../zypp/CountryCode.cc:388
+msgid "Philippines"
+msgstr "Philippyne"
+
+#. :PHL:608:
+#: ../zypp/CountryCode.cc:389
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#. :PAK:586:
+#: ../zypp/CountryCode.cc:390
+msgid "Poland"
+msgstr "Pole"
+
+#. :POL:616:
+#: ../zypp/CountryCode.cc:391
+msgid "Saint Pierre and Miquelon"
+msgstr "St. Pierre en Miquelon"
+
+#. :SPM:666:
+#: ../zypp/CountryCode.cc:392
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#. :PCN:612:
+#: ../zypp/CountryCode.cc:393
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#. :PRI:630:
+#: ../zypp/CountryCode.cc:394
+msgid "Palestinian Territory"
+msgstr "Palestynse Gebied"
+
+#. :PSE:275:
+#: ../zypp/CountryCode.cc:395
+msgid "Portugal"
+msgstr "Portugal"
+
+#. :PRT:620:
+#: ../zypp/CountryCode.cc:396
+msgid "Palau"
+msgstr "Palaoe"
+
+#. :PLW:585:
+#: ../zypp/CountryCode.cc:397
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#. :PRY:600:
+#: ../zypp/CountryCode.cc:398
+msgid "Qatar"
+msgstr "Qatar"
+
+#. :QAT:634:
+#: ../zypp/CountryCode.cc:399
+msgid "Reunion"
+msgstr "Réunion"
+
+#. :REU:638:
+#: ../zypp/CountryCode.cc:400
+msgid "Romania"
+msgstr "Roemenië"
+
+#. :ROU:642:
+#: ../zypp/CountryCode.cc:401
+msgid "Russian Federation"
+msgstr "Russiese Federasie"
+
+#. :RUS:643:
+#: ../zypp/CountryCode.cc:402
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#. :RWA:646:
+#: ../zypp/CountryCode.cc:403
+msgid "Saudi Arabia"
+msgstr "Saudi-Arabië"
+
+#. :SAU:682:
+#: ../zypp/CountryCode.cc:404
+msgid "Solomon Islands"
+msgstr "Solomon-eilande"
+
+#. :SLB:090:
+#: ../zypp/CountryCode.cc:405
+msgid "Seychelles"
+msgstr "Seychelle"
+
+#. :SYC:690:
+#: ../zypp/CountryCode.cc:406
+msgid "Sudan"
+msgstr "Soedan"
+
+#. :SDN:736:
+#: ../zypp/CountryCode.cc:407
+msgid "Sweden"
+msgstr "Swede"
+
+#. :SWE:752:
+#: ../zypp/CountryCode.cc:408
+msgid "Singapore"
+msgstr "Singapoer"
+
+#. :SGP:702:
+#: ../zypp/CountryCode.cc:409
+msgid "Saint Helena"
+msgstr "St. Helena"
+
+#. :SHN:654:
+#: ../zypp/CountryCode.cc:410
+msgid "Slovenia"
+msgstr "Slowenië"
+
+#. :SVN:705:
+#: ../zypp/CountryCode.cc:411
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard en Jan Mayen"
+
+#. :SJM:744:
+#: ../zypp/CountryCode.cc:412
+msgid "Slovakia"
+msgstr "Slowakye"
+
+#. :SVK:703:
+#: ../zypp/CountryCode.cc:413
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#. :SLE:694:
+#: ../zypp/CountryCode.cc:414
+msgid "San Marino"
+msgstr "San Marino"
+
+#. :SMR:674:
+#: ../zypp/CountryCode.cc:415
+msgid "Senegal"
+msgstr "Senegal"
+
+#. :SEN:686:
+#: ../zypp/CountryCode.cc:416
+msgid "Somalia"
+msgstr "Somalië"
+
+#. :SOM:706:
+#: ../zypp/CountryCode.cc:417
+msgid "Suriname"
+msgstr "Suriname"
+
+#. :SUR:740:
+#: ../zypp/CountryCode.cc:418
+msgid "Sao Tome and Principe"
+msgstr "Sao Tomé en Principe"
+
+#. :STP:678:
+#: ../zypp/CountryCode.cc:419
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#. :SLV:222:
+#: ../zypp/CountryCode.cc:420
+msgid "Syria"
+msgstr "Sirië"
+
+#. :SYR:760:
+#: ../zypp/CountryCode.cc:421
+msgid "Swaziland"
+msgstr "Swaziland"
+
+#. :SWZ:748:
+#: ../zypp/CountryCode.cc:422
+msgid "Turks and Caicos Islands"
+msgstr "Turks- en Caicos-eiland"
+
+#. :TCA:796:
+#: ../zypp/CountryCode.cc:423
+msgid "Chad"
+msgstr "Tsjad"
+
+#. :TCD:148:
+#: ../zypp/CountryCode.cc:424
+msgid "French Southern Territories"
+msgstr "Franse Suidelike Gebiede"
+
+#. :ATF:260:
+#: ../zypp/CountryCode.cc:425
+msgid "Togo"
+msgstr "Togo"
+
+#. :TGO:768:
+#: ../zypp/CountryCode.cc:426
+msgid "Thailand"
+msgstr "Thailand"
+
+#. :THA:764:
+#: ../zypp/CountryCode.cc:427
+msgid "Tajikistan"
+msgstr "Tajikistan"
+
+#. :TJK:762:
+#. language code: tkl
+#: ../zypp/CountryCode.cc:428 ../zypp/LanguageCode.cc:1122
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#. :TKL:772:
+#: ../zypp/CountryCode.cc:429
+msgid "Turkmenistan"
+msgstr "Toerkmenië"
+
+#. :TKM:795:
+#: ../zypp/CountryCode.cc:430
+msgid "Tunisia"
+msgstr "Tunisië"
+
+#. :TUN:788:
+#: ../zypp/CountryCode.cc:431
+msgid "Tonga"
+msgstr "Tonga"
+
+#. :TON:776:
+#: ../zypp/CountryCode.cc:432
+msgid "East Timor"
+msgstr "Oos-Timor"
+
+#. :TLS:626:
+#: ../zypp/CountryCode.cc:433
+msgid "Turkey"
+msgstr "Turkye"
+
+#. :TUR:792:
+#: ../zypp/CountryCode.cc:434
+msgid "Trinidad and Tobago"
+msgstr "Trinidad en Tobago"
+
+#. :TTO:780:
+#. language code: tvl
+#: ../zypp/CountryCode.cc:435 ../zypp/LanguageCode.cc:1152
+msgid "Tuvalu"
+msgstr "Toewaloe"
+
+#. :TUV:798:
+#: ../zypp/CountryCode.cc:436
+msgid "Taiwan"
+msgstr "Taiwan"
+
+#. :TWN:158:
+#: ../zypp/CountryCode.cc:437
+msgid "Tanzania"
+msgstr "Tanzanië"
+
+#. :TZA:834:
+#: ../zypp/CountryCode.cc:438
+msgid "Ukraine"
+msgstr "Oekraïne"
+
+#. :UKR:804:
+#: ../zypp/CountryCode.cc:439
+msgid "Uganda"
+msgstr "Uganda"
+
+#. :UGA:800:
+#: ../zypp/CountryCode.cc:440
+msgid "United States Minor Outlying Islands"
+msgstr "Verenigde State van Kleiner Buite-eilande"
+
+#. :UMI:581:
+#: ../zypp/CountryCode.cc:441
+msgid "United States"
+msgstr "Verenigde State"
+
+#. :USA:840:
+#: ../zypp/CountryCode.cc:442
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#. :URY:858:
+#: ../zypp/CountryCode.cc:443
+msgid "Uzbekistan"
+msgstr "Oesbekistan"
+
+#. :UZB:860:
+#: ../zypp/CountryCode.cc:444
+msgid "Holy See (Vatican City State)"
+msgstr "Vatikaanstad"
+
+#. :VAT:336:
+#: ../zypp/CountryCode.cc:445
+msgid "Saint Vincent and the Grenadines"
+msgstr "St. Vincent en die Grenadine"
+
+#. :VCT:670:
+#: ../zypp/CountryCode.cc:446
+msgid "Venezuela"
+msgstr "Venezuela"
+
+#. :VEN:862:
+#: ../zypp/CountryCode.cc:447
+msgid "British Virgin Islands"
+msgstr "Britse Maagde-eilande"
+
+#. :VGB:092:
+#: ../zypp/CountryCode.cc:448
+msgid "Virgin Islands, U.S."
+msgstr "Maagde-eilande, .V.S.A."
+
+#. :VIR:850:
+#: ../zypp/CountryCode.cc:449
+msgid "Vietnam"
+msgstr "Viëtnam"
+
+#. :VNM:704:
+#: ../zypp/CountryCode.cc:450
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#. :VUT:548:
+#: ../zypp/CountryCode.cc:451
+msgid "Wallis and Futuna"
+msgstr "Wallis en Futuna"
+
+#. :WLF:876:
+#: ../zypp/CountryCode.cc:452
+msgid "Samoa"
+msgstr "Samoa"
+
+#. :WSM:882:
+#: ../zypp/CountryCode.cc:453
+msgid "Yemen"
+msgstr "Jemen"
+
+#. :YEM:887:
+#: ../zypp/CountryCode.cc:454
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#. :MYT:175:
+#: ../zypp/CountryCode.cc:455
+msgid "South Africa"
+msgstr "Suid-Afrika"
+
+#. :ZAF:710:
+#: ../zypp/CountryCode.cc:456
+msgid "Zambia"
+msgstr "Zambië"
+
+#. :ZMB:894:
+#: ../zypp/CountryCode.cc:457
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
 msgstr "Onbekende taal:"
-
-#. Defined LanguageCode constants
-#. Defined CountryCode constants
-#: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-msgid "No Code"
-msgstr "Geen kode nie"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -1613,12 +3950,6 @@ msgstr "Noord-Amerikaanse Indiaans"
 msgid "Neapolitan"
 msgstr "Neapolitaans"
 
-#. language code: nau na
-#. :NPL:524:
-#: ../zypp/LanguageCode.cc:858 ../zypp/CountryCode.cc:380
-msgid "Nauru"
-msgstr "Nauroe"
-
 #. language code: nav nv
 #: ../zypp/LanguageCode.cc:860
 msgid "Navajo"
@@ -2244,12 +4575,6 @@ msgstr "Tigrinies"
 msgid "Tiv"
 msgstr "Tiv"
 
-#. language code: tkl
-#. :TJK:762:
-#: ../zypp/LanguageCode.cc:1122 ../zypp/CountryCode.cc:428
-msgid "Tokelau"
-msgstr "Tokelau"
-
 #. language code: tlh
 #: ../zypp/LanguageCode.cc:1124
 msgid "Klingon"
@@ -2319,12 +4644,6 @@ msgstr "Turks"
 #: ../zypp/LanguageCode.cc:1150
 msgid "Altaic (Other)"
 msgstr "Altaïes (ander)"
-
-#. language code: tvl
-#. :TTO:780:
-#: ../zypp/LanguageCode.cc:1152 ../zypp/CountryCode.cc:435
-msgid "Tuvalu"
-msgstr "Toewaloe"
 
 #. language code: twi tw
 #: ../zypp/LanguageCode.cc:1154
@@ -2505,2223 +4824,4 @@ msgstr "Zulu"
 #: ../zypp/LanguageCode.cc:1226
 msgid "Zuni"
 msgstr "Zuni"
-
-#: ../zypp/SourceManager.h:42
-msgid "Unable to restore all sources."
-msgstr "Kan nie alle bronne terugstel nie."
-
-#: ../zypp/SourceManager.h:68
-msgid "At least one source already registered, stored sources cannot be restored."
-msgstr "Ten minste een bron reeds geregistreer, gebergde bronne kan nie teruggestel word nie."
-
-#: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-msgid "Software management is already running."
-msgstr "Sagtewarebestuur loop reeds."
-
-#: ../zypp/target/hal/HalContext.cc:96
-msgid "HalContext not connected"
-msgstr "HalContext nie verbind nie"
-
-#: ../zypp/target/hal/HalContext.cc:106
-msgid "HalDrive not initialized"
-msgstr "HalDrive nie geïnisialiseer nie"
-
-#: ../zypp/target/hal/HalContext.cc:116
-msgid "HalVolume not initialized"
-msgstr "HalVolume nie geïnisialiseer nie"
-
-#: ../zypp/target/hal/HalContext.cc:208
-msgid "Unable to create dbus connection"
-msgstr "Kan dbus-verbinding nie skep nie"
-
-#: ../zypp/target/hal/HalContext.cc:224
-msgid "libhal_ctx_new: Can't create libhal context"
-msgstr "libhal_ctx_new: Kan libhal-konteks nie skep nie"
-
-#: ../zypp/target/hal/HalContext.cc:239
-msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr "libhal_set_dbus_connection: Kan dbus-verbinding nie stel nie"
-
-#: ../zypp/target/hal/HalContext.cc:254
-msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "Kan HAL-konteks nie inisialiseer nie -- hald loop nie?"
-
-#: ../zypp/target/hal/HalContext.cc:843
-msgid "Not a CDROM drive"
-msgstr "Nie ’n CDROM-aandrywer nie"
-
-#: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
-#: ../zypp/target/hal/HalException.h:64
-msgid "Hal Exception"
-msgstr "Hal-uitsondering"
-
-#. Translator: %s = name of an rpm package. A list of diffs follows
-#. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1725
-#, c-format
-msgid "Changed configuration files for %s:"
-msgstr "Gewysigde konfigurasielêers vir %s:"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1886
-#, c-format
-msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "rpm geberg %s as %s, maar dit was onmoontlik om die verskil te bepaal"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1888
-#, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr "rpm geberg %s as %s.\nHier is die eerste 25 rëels van verskil:\n"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1891
-#, c-format
-msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "rpm geskep %s as %s, maar dit was onmoontlik om die verskil te bepaal"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1893
-#, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr "rpm geskep %s as %s.\nHier is die eerste 25 rëels van verskil:\n"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:1899
-#, c-format
-msgid "%s install failed"
-msgstr "%s installasie misluk"
-
-#: ../zypp/target/rpm/RpmDb.cc:1900 ../zypp/target/rpm/RpmDb.cc:2018
-msgid "rpm output:"
-msgstr "rpm-uitset:"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:1906
-#, c-format
-msgid "%s installed ok"
-msgstr "%s geïnstalleer is goed"
-
-#: ../zypp/target/rpm/RpmDb.cc:1909 ../zypp/target/rpm/RpmDb.cc:2026
-msgid "Additional rpm output:"
-msgstr "Bykomende rpm-uitset:"
-
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2017
-#, c-format
-msgid "%s remove failed"
-msgstr "%s verwyder het misluk"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2023
-#, c-format
-msgid "%s remove ok"
-msgstr "%s verwyder is goed"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2168
-#, c-format
-msgid "created backup %s"
-msgstr "geskepte rugsteun %s"
-
-#: ../zypp/target/store/XMLFilesBackend.cc:1009
-#: ../zypp/target/store/XMLFilesBackend.cc:1016
-#: ../zypp/source/yum/YUMScriptImpl.cc:78
-#: ../zypp/source/yum/YUMScriptImpl.cc:112
-msgid "Cannot create a file needed to perform update installation."
-msgstr "Kan nie ’n lêer wat benodig word om bywerkinstallasie uit te voer, skep nie."
-
-#: ../zypp/target/TargetImpl.cc:705
-msgid "Installation has been aborted as directed."
-msgstr "Installasie is gestaak soos gelas."
-
-#. Translator: all.%s = name of package,patch,....
-#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
-#, c-format
-msgid "%s is replaced by %s"
-msgstr "%s word vervang deur %s"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is replaced by others
-#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
-#, c-format
-msgid "%s replaced by %s"
-msgstr "%s vervang deur %s"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:261
-msgid "Invalid information"
-msgstr "Ongeldige inligting"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:268
-#, c-format
-msgid "%s is needed by other resolvables"
-msgstr "%s word deur ander oplossings benodig"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#. Translator: all.%s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:271
-#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:56
-#, c-format
-msgid "%s is needed by %s"
-msgstr "%s word benodig deur %s"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:272
-#, c-format
-msgid ""
-"%s is needed by:\n"
-"%s"
-msgstr "%s word benodig deur:\n%s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:279
-#, c-format
-msgid "%s conflicts with other resolvables"
-msgstr "%s verkeer in konflik met ander oplossings"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#. Translator: all.%s = name of package, patch,...
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is conflicting with multiple others
-#: ../zypp/solver/detail/Resolver_problems.cc:282
-#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:55
-#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:70
-#, c-format
-msgid "%s conflicts with %s"
-msgstr "%s verkeer in konflik met %s"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:283
-#, c-format
-msgid ""
-"%s conflicts with:\n"
-"%s"
-msgstr "%s verkeer in konflik met:\n%s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:306
-#, c-format
-msgid "%s obsoletes other resolvables"
-msgstr "%s maak ander oplossings uitgedien"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:309
-#, c-format
-msgid "%s obsoletes %s"
-msgstr "%s uitgediendes %s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:311
-#, c-format
-msgid "%s obsoletes:%s"
-msgstr "%s uitgediendes:%s"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:312
-msgid ""
-"\n"
-"These resolvables will be deleted from the system."
-msgstr "\nHierdie oplossings sal uit die stelsel geskrap word."
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:319
-#, c-format
-msgid "%s depends on other resolvables"
-msgstr "%s hang van ander oplossings af"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:323
-#, c-format
-msgid "%s depends on %s"
-msgstr "%s hang af van %s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:326
-#, c-format
-msgid "%s depends on:%s"
-msgstr "%s hang af van:%s"
-
-#. TranslatorExplanation: currently it is unused.
-#: ../zypp/solver/detail/Resolver_problems.cc:332
-msgid "Child of"
-msgstr "Kind van"
-
-#. TranslatorExplanation %s = dependency
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:338
-#: ../zypp/solver/detail/Resolver_problems.cc:418
-#, c-format
-msgid "Cannot install %s"
-msgstr "Kan %s nie installeer nie"
-
-#. TranslatorExplanation %s = capability
-#: ../zypp/solver/detail/Resolver_problems.cc:340
-#, c-format
-msgid "None provides %s"
-msgstr "Geen voorsiening %s nie"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:341
-msgid ""
-"\n"
-"There is no resource available which support this requirement."
-msgstr "\nDaar is geen hulpbron wat hierdie vereiste ondersteun, beskikbaar nie."
-
-#: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid "Due problems which are described above/below this resolution will not solve all dependencies"
-msgstr "Toekomstige probleme wat bo/onder hierdie resolusie beskryf word, sal nie alle afhanklikhede oplos nie"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:360
-#: ../zypp/solver/detail/Resolver_problems.cc:711
-#, c-format
-msgid "Cannot install %s because it is conflicting with %s"
-msgstr "Kan %s nie installeer nie, omdat dit in konflik verkeer met %s"
-
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:377
-#, c-format
-msgid "%s is not installed and has been marked as uninstallable"
-msgstr "%s word nie geïnstalleer nie en is as oninstalleerbaar gemerk"
-
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:388
-#, c-format
-msgid "Cannot install %s due to dependency problems"
-msgstr "Kan %s nie installeer nie vanweë afhanklikheidsprobleme"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:426
-#: ../zypp/solver/detail/Resolver_problems.cc:436
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
-#, c-format
-msgid "delete %s"
-msgstr "skrap %s?"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:429
-#: ../zypp/solver/detail/Resolver_problems.cc:439
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
-#, c-format
-msgid "do not install %s"
-msgstr "moenie %s installeer nie"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:452
-#, c-format
-msgid "%s has unfulfilled requirements"
-msgstr "%s het vereistes waaraan nie voldoen is nie"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:490
-#, c-format
-msgid "%s has missing dependencies"
-msgstr "%s het afhanklikhede wat ontbreek"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:537
-#, c-format
-msgid "%s cannot be installed due to missing dependencies"
-msgstr "%s kan nie geïnstalleer word nie vanweë ontbrekende afhanklikhede"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:585
-#, c-format
-msgid "%s fulfil dependencies of %s but will be uninstalled"
-msgstr "%s vervul afhanklikhede van %s, maar sal ongeïnstalleer word"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:595
-#, c-format
-msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s vervul afhanklikhede van %s, maar sal op u stelsel gehou word"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:605
-#, c-format
-msgid "No need to install %s"
-msgstr "Geen nodigheid om %s te installeer nie"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:613
-#, c-format
-msgid "Cannot install %s to fulfil the dependencies of %s"
-msgstr "Kan %s nie installeer om die afhanklikhede van %s te vervul nie"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:628
-#, c-format
-msgid "Cannot be install %s to fulfil the dependencies of %s"
-msgstr "Kan %s nie installeer om die afhanklikhede van %s te vervul nie"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:665
-#: ../zypp/solver/detail/Resolver_problems.cc:673
-#, c-format
-msgid "%s will not be uninstalled cause it is still required"
-msgstr "%s sal nie ongeïnstalleer word nie, want dit word steeds vereis"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:684
-#, c-format
-msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr "%s uitgediendes %s. Maar %s kan nie geskrap word nie, want dit is gesluit."
-
-#: ../zypp/solver/detail/Resolver_problems.cc:715
-#, c-format
-msgid "Cannot install %s because it is conflicting"
-msgstr "Kan %s nie installeer nie, want dit verkeer in konflik"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:734
-#, c-format
-msgid "%s is uninstallable due to conflicts with %s"
-msgstr "%s is oninstalleerbaar vanweë konflikte met %s"
-
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
-msgid "Ignore this requirement just here"
-msgstr "Ignoreer dié vereiste net hier"
-
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
-msgid "Ignore this requirement generally"
-msgstr "Ignoreer hierdie vereiste oor die algemeen"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
-#, c-format
-msgid "Install %s although it would change the architecture"
-msgstr "Installeer %s, hoewel dit die argitektuur kan verander"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
-#, c-format
-msgid "%s provides this dependency but would changed the architecture of the installed item"
-msgstr "%s voorsien hierdie afhanklikheid, maar sal die argitektuur van die geïnstalleerde item wysig"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
-#, c-format
-msgid "Ignore this conflict of %s"
-msgstr "Ignoreer hierdie konflik van %s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
-#, c-format
-msgid "Ignore the obsolete %s in %s"
-msgstr "Ignoreer die uitgediende %s in %s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
-#, c-format
-msgid "Ignore that %s is already set to install"
-msgstr "Ignoreer dat %s reeds gestel is om te installeer"
-
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-msgid "Do not install or delete concerning resolvables"
-msgstr "Moenie waar oplossings ter sprake is, installeer of skrap nie"
-
-#. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
-#: ../zypp/solver/detail/QueueItemRequire.cc:701
-#, c-format
-msgid "for requiring %s for %s when upgrading %s"
-msgstr "om %s vir %s te vereis tydens bywerk van %s"
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
-#: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
-#, c-format
-msgid "%s is missing the requirement %s"
-msgstr "%s het nie die vereiste %s"
-
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:56
-msgid ", Action: "
-msgstr ", Aksie:"
-
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:58
-msgid ", Trigger: "
-msgstr ", Sneller:"
-
-#. Translator: Notation for (RPM) package
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:90
-msgid "package"
-msgstr "pakket"
-
-#. Translator: Notation for SuSE package selection (set of packages)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:94
-msgid "selection"
-msgstr "keuse"
-
-#. Translator: Notation for SuSE installation pattern (set of packages, describing use of system)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:98
-msgid "pattern"
-msgstr "patroon"
-
-#. Translator: Notation for product
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:102
-msgid "product"
-msgstr "produk"
-
-#. Translator: Notation for patch
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:106
-msgid "patch"
-msgstr "regstelling"
-
-#. Translator: Notation for script (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:110
-msgid "script"
-msgstr "skrip"
-
-#. Translator: Notation for message (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:114
-msgid "message"
-msgstr "boodskap"
-
-#. Translator: Notation for atom (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:118
-msgid "atom"
-msgstr "atoom"
-
-#. Translator: Notation for computer system
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:122
-msgid "system"
-msgstr "stelsel"
-
-#. Translator: Generic term for an item with dependencies, please leave untranslated for now
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:126
-msgid "Resolvable"
-msgstr "Oplossings"
-
-#. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:144
-msgid "Marking this resolution attempt as invalid."
-msgstr "Merk van hierdie resolusiepoging as ongeldig."
-
-#. Translator: %s = name of packages,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:151
-#, c-format
-msgid "Marking resolvable %s as uninstallable"
-msgstr "Merk van oplossing %s as oninstalleerbaar"
-
-#. Translator: %s = name of packages,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:159
-#, c-format
-msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
-msgstr "%s word geskeduleer om geïnstalleer te word, maar dit is vanweë afhanklikheidsprobleme nie moontlik nie."
-
-#. Translator: %s = name of package,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:167
-#, c-format
-msgid "Can't install %s since it is already marked as needing to be uninstalled"
-msgstr "Kan %s nie installeer nie, aangesien dit reeds gemerk is om ongeïnstalleer te word"
-
-#. Translator: %s = name of patch
-#. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
-#. TranslatorExplanation: Patches contain updates (bug fixes) to packages. Such fixes
-#. TranslatorExplanation: do only apply if the package to-be-fixed is actually installed.
-#. TranslatorExplanation: Here a patch was selected for installation but the to-be-fixed
-#. TranslatorExplanation: package is not installed.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:179
-#, c-format
-msgid "Can't install %s since it is does not apply to this system."
-msgstr "Kan %s nie installeer nie, aangesien dit nie op hierdie stelsel van toepassing is nie."
-
-#. affected() = item 1 which has to be installed
-#. _capability =
-#. other() = item 2 which has to be installed
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:190
-#, c-format
-msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr "Kan %s nie installeer nie, aangesien %s reeds gemerk is om geïnstalleer te word"
-
-#. Translator: %s = name of patch,product
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:198
-#, c-format
-msgid "This would invalidate %s."
-msgstr "Dit sal %s ongeldig maak."
-
-#. Translator: %s = name of patch, pattern, ...
-#. TranslatorExplanation: Establishing is the process of computing which patches are needed
-#. TranslatorExplanation: This is just a progress indicator
-#. TranslatorExplanation: It is also used for other types of resolvables in order to verify
-#. TranslatorExplanation: the completeness of their dependencies
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:214
-#, c-format
-msgid "Establishing %s"
-msgstr "Vestig van %s"
-
-#. affected() = resolvable to be installed
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: Installing foo
-#. TranslatorExplanation: Just a progress indicator that something is scheduled for installation
-#. Translator: %s = packagename
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:235
-#, c-format
-msgid "Installing %s"
-msgstr "Installeer van %s"
-
-#. affected() = updated resolvable
-#. _capability =
-#. other() = currently installed, being updated resolvable
-#. other_capability() =
-#. Translator: 1.%s and 2.%s = name of package
-#. TranslatorExample: Updating foo-1.1 to foo-1.2
-#. TranslatorExplanation: Just a progress indicator that something is scheduled for upgrade
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:252
-#, c-format
-msgid "Updating %s to %s"
-msgstr "Bywerk van %s na %s"
-
-#. affected() =
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: Skipping foo: already installed
-#. TranslatorExplanation: An installation request for foo is skipped since foo is already installed
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:270
-#, c-format
-msgid "Skipping %s: already installed"
-msgstr "Oorslaan van %s: reeds geïnstalleer"
-
-#. affected() = is set
-#. _capability = is set
-#. other() =
-#. other_capability() =
-#. Translator: 1.%s = dependency
-#. TranslatorExample: There are no alternative installed providers of foo
-#. TranslatorExplanation: A resolvable is to be uninstalled. It provides 'foo' which is needed by others
-#. TranslatorExplanation: We just found out that 'foo' is not provided by anything else (an alternative)
-#. TranslatorExplanation: removal of this resolvable would therefore break dependency
-#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be uninstalled
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:292
-#, c-format
-msgid "There are no alternative installed providers of %s"
-msgstr "Daar is geen alternatief-geïnstalleerde verskaffers van %s nie"
-
-#. Translator: 1.%s = name of package,patch....
-#. TranslatorExample: for bar
-#. TranslatorExplanation: extension to previous message if we know what the resolvable is
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:298
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:323
-#, c-format
-msgid "for %s"
-msgstr "vir %s nie"
-
-#. affected() =
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: 1.%s = dependency
-#. TranslatorExample: There are no installable providers of foo
-#. TranslatorExplanation: A resolvable is to be installed which requires foo
-#. TranslatorExplanation: But there is nothing available to fulfill this requirement
-#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be installed
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:317
-#, c-format
-msgid "There are no installable providers of %s"
-msgstr "Daar is geen installeerbare verskaffers van %s nie"
-
-#. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
-#. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
-#. TranslatorExplanation: bar requires something from foo
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:341
-#, c-format
-msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr "Bywerking na %s om verwyder van %s te verhoed, is nie moontlik nie."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:359
-#, c-format
-msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr "%s voorsien %s, maar word geskeduleer om ongeïnstalleer te word."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:377
-#, c-format
-msgid "%s provides %s, but another version of that %s is already installed."
-msgstr "%s voorsien %s, maar ’n ander weergawe van daardie %s is reeds geïnstalleer."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:396
-#, c-format
-msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
-msgstr "%s voorsien %s, maar dit is oninstalleerbaar.  Probeer om dit alleen te installeer vir meer besonderhede."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:414
-#, c-format
-msgid "%s provides %s, but it is locked."
-msgstr "%s voorsien %s, maar dit is gesluit."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, c-format
-msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s voorsien %s, maar word geskeduleer om gehou te word."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:451
-#, c-format
-msgid "%s provides %s, but has another architecture."
-msgstr "%s voorsien %s, maar dit het ’n ander argitektuur."
-
-#. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:469
-#, c-format
-msgid "Can't satisfy requirement %s for %s"
-msgstr "Kan nie aan vereiste %s vir %s voldoen nie"
-
-#. affected() = to-be-installed resolvable which was scheduled to be uninstalled
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is required by other to-be-installed resolvable, so it won't be unlinked.
-#. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:490
-#, c-format
-msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr "%s word vereis deur ’n ander om-geïnstalleer-te-word-oplossing; gevolglik sal dit nie ontkoppel word nie."
-
-#. affected() = provider of cap
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is required by other installed resolvable, so it won't be unlinked.
-#. TranslatorExplanation: Cant uninstall foo since it is required by an installed resolvable
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:507
-#, c-format
-msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr "%s word vereis deur ’n ander geïnstalleerde oplossing; gevolglik sal dit nie ontkoppel word nie."
-
-#. affected() = to-be-uninstalled resolvable which is locked
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is locked and cannot be uninstalled.
-#. TranslatorExplanation: foo is to-be-uninstalled but it is locked
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:524
-#, c-format
-msgid "%s is locked and cannot be uninstalled."
-msgstr "%s is gesluit en kan nie ongeïnstalleer word nie."
-
-#. affected() = provider of capability
-#. _capability = provided by provider
-#. other() = conflict issuer
-#. other_capability() = conflict capability
-#. Translator: 1.%s and 2.%s = Dependency; 4.%s = name of package,patch,...
-#. TranslatorExample: A conflict over foo (bar) requires the removal of to-be-installed xyz
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:543
-#, c-format
-msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "’n Konflik oor %s (%s) vereis die verwydering van om-geïnstalleer-te-word-%s"
-
-#. affected() = provider of capability
-#. _capability = provided by provider
-#. other() = conflict issuer
-#. other_capability() = conflict capability from issuer
-#. Translator: 1.%s = name of package,patch,...; 3.%s and 4.%s = Dependency;
-#. TranslatorExample: Marking xyz as uninstallable due to conflicts over foo (bar)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:561
-#, c-format
-msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr "Merk van %s as oninstalleerbaar vanweë konflikte oor %s"
-
-#. Translator: %s = name of package,patch
-#. TranslatorExample: from abc
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:569
-#, c-format
-msgid "from %s"
-msgstr "vanaf %s"
-
-#: ../zypp/solver/detail/ResolverInfo.cc:191
-msgid " Error!"
-msgstr "Fout!"
-
-#: ../zypp/solver/detail/ResolverInfo.cc:192
-msgid " Important!"
-msgstr "Belangrik!"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:55
-#, c-format
-msgid "keep %s"
-msgstr "hou %s"
-
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-msgid "Keep resolvables"
-msgstr "Hou oplossings"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
-#, c-format
-msgid "install %s"
-msgstr "installeer %s"
-
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
-msgid "Install missing resolvables"
-msgstr "Installeer ontbrekende oplossings"
-
-#. Translator: all.%s = name of package,patch,....
-#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
-#, c-format
-msgid "%s depended on %s"
-msgstr "%s afgehang van %s"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is dependent on list of names
-#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
-#, c-format
-msgid "%s dependend on %s"
-msgstr "%s afhanklik van %s"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is needed by multiple others
-#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
-#, c-format
-msgid "%s needed by %s"
-msgstr "%s benodig deur %s"
-
-#. Translator all.%s = name of packages,patches,....
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is part of 'bundles', the bundles are listed in 2.%s
-#: ../zypp/solver/detail/ResolverInfoChildOf.cc:56
-#: ../zypp/solver/detail/ResolverInfoChildOf.cc:71
-#, c-format
-msgid "%s part of %s"
-msgstr "%s deel van %s"
-
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
-msgid "unlock all resolvables"
-msgstr "ontsluit alle oplossings"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
-#, c-format
-msgid "unlock %s"
-msgstr "ontsluit %s"
-
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
-msgid "Unlock these resolvables"
-msgstr "Ontsluit hierdie oplossings"
-
-#. end of single patch parsing
-#. end of patches file parsing
-#. end of copying
-#: ../zypp/source/yum/YUMSourceImpl.cc:216
-#: ../zypp/source/yum/YUMSourceImpl.cc:241
-msgid "Reading index files"
-msgstr "Lees van indekslêers"
-
-#: ../zypp/source/yum/YUMSourceImpl.cc:247
-msgid "The signed repomd.xml file failed the signature check."
-msgstr "Die getekende repomd.xml-lêer het nie die handtekeningnagaan geslaag nie."
-
-#. TranslatorExplanation %s = product file
-#: ../zypp/source/yum/YUMSourceImpl.cc:464
-#: ../zypp/source/yum/YUMSourceImpl.cc:476
-#: ../zypp/source/yum/YUMSourceImpl.cc:482
-#: ../zypp/source/yum/YUMSourceImpl.cc:490
-#, c-format
-msgid "Reading product from %s"
-msgstr "Lees van produk vanaf %s"
-
-#. TranslatorExplanation %s = package file list
-#: ../zypp/source/yum/YUMSourceImpl.cc:520
-#: ../zypp/source/yum/YUMSourceImpl.cc:535
-#: ../zypp/source/yum/YUMSourceImpl.cc:541
-#: ../zypp/source/yum/YUMSourceImpl.cc:549
-#, c-format
-msgid "Reading filelist from %s"
-msgstr "Lees van lêerlys vanaf %s"
-
-#. TranslatorExplanation %s = packages file
-#: ../zypp/source/yum/YUMSourceImpl.cc:565
-#: ../zypp/source/yum/YUMSourceImpl.cc:605
-#: ../zypp/source/yum/YUMSourceImpl.cc:611
-#: ../zypp/source/yum/YUMSourceImpl.cc:619
-#, c-format
-msgid "Reading packages from %s"
-msgstr "Lees van pakkette vanaf %s"
-
-#. TranslatorExplanation %s = selection metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:643
-#: ../zypp/source/yum/YUMSourceImpl.cc:655
-#: ../zypp/source/yum/YUMSourceImpl.cc:661
-#: ../zypp/source/yum/YUMSourceImpl.cc:669
-#, c-format
-msgid "Reading selection from %s"
-msgstr "Lees van keuse vanaf %s"
-
-#. TranslatorExplanation %s = pattern metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:693
-#: ../zypp/source/yum/YUMSourceImpl.cc:705
-#: ../zypp/source/yum/YUMSourceImpl.cc:711
-#: ../zypp/source/yum/YUMSourceImpl.cc:719
-#, c-format
-msgid "Reading pattern from %s"
-msgstr "Lees van patroon vanaf %s"
-
-#. TranslatorExplanation %s = patches index file
-#: ../zypp/source/yum/YUMSourceImpl.cc:746
-#: ../zypp/source/yum/YUMSourceImpl.cc:758
-#: ../zypp/source/yum/YUMSourceImpl.cc:764
-#: ../zypp/source/yum/YUMSourceImpl.cc:772
-#, c-format
-msgid "Reading patches index %s"
-msgstr "Lees van regstellingsindeks %s"
-
-#. TranslatorExplanation %s = patch metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:795
-#: ../zypp/source/yum/YUMSourceImpl.cc:812
-#: ../zypp/source/yum/YUMSourceImpl.cc:818
-#: ../zypp/source/yum/YUMSourceImpl.cc:827
-#, c-format
-msgid "Reading patch %s"
-msgstr "Lees van regstelling %s"
-
-#: ../zypp/source/yum/YUMScriptImpl.cc:89
-#: ../zypp/source/yum/YUMScriptImpl.cc:123
-msgid "The script file failed the checksum test."
-msgstr "Die skriplêer het nie die nagaansomtoets geslaag nie."
-
-#: ../zypp/source/susetags/SuseTagsImpl.cc:647
-#: ../zypp/source/susetags/SuseTagsImpl.cc:657
-#: ../zypp/source/susetags/SuseTagsImpl.cc:660
-msgid "Reading packages file"
-msgstr "Lees van pakkettelêer"
-
-#. TranslatorExplanation %s = language name
-#: ../zypp/source/susetags/SuseTagsImpl.cc:710
-#: ../zypp/source/susetags/SuseTagsImpl.cc:714
-#: ../zypp/source/susetags/SuseTagsImpl.cc:728
-#, c-format
-msgid "Reading translation: %s"
-msgstr "Lees van vertaling: %s"
-
-#: ../zypp/source/PackageProvider.cc:200
-msgid "applydeltarpm check failed."
-msgstr "applydeltarpm-nagaan het misluk."
-
-#: ../zypp/source/PackageProvider.cc:213
-msgid "applydeltarpm failed."
-msgstr "applydeltarpm het misluk."
-
-#. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/source/PackageProvider.cc:280
-#, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr "Pakket %s se integriteitsnagaan misluk. Wil u dit weer probeer aflaai?"
-
-#. TranslatorExplanation %s = package
-#: ../zypp/source/SourceImpl.cc:339
-#, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
-msgstr "Pakket %s se integriteitsnagaan misluk. Wil u dit weer probeer aflaai, of die installasie staak?"
-
-#: ../zypp/source/SourceImpl.cc:394
-msgid " miss checksum."
-msgstr "nagaansom ontbreek."
-
-#: ../zypp/source/SourceImpl.cc:400
-msgid " fails checksum verification."
-msgstr "slaag nie nagaansom-bevestiging nie."
-
-#. TranslatorExplanation %s = file being downloaded
-#: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
-#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, c-format
-msgid "Downloading %s"
-msgstr "Aflaai van %s"
-
-#: ../zypp/source/SourceImpl.cc:445
-#, c-format
-msgid "Downloaded %s from %s"
-msgstr "%s afgelaai vanaf %s"
-
-#. TranslatorExplanation %s = file that was not able to download
-#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
-#: ../zypp/source/SourceImpl.cc:459
-#, c-format
-msgid "Can't provide %s from %s"
-msgstr "Kan %s vanaf %s nie voorsien nie"
-
-#: ../zypp/thread/Mutex.cc:33
-msgid "Can't initialize mutex attributes"
-msgstr "Kan mutex-eienskappe nie inisialiseer nie"
-
-#: ../zypp/thread/Mutex.cc:40
-msgid "Can't set recursive mutex attribute"
-msgstr "Kan terugkerende mutex-eienskappe nie stel nie"
-
-#: ../zypp/thread/Mutex.cc:47
-msgid "Can't initialize recursive mutex"
-msgstr "Kan terugkerende mutex nie inisialiseer nie"
-
-#: ../zypp/thread/Mutex.cc:77
-msgid "Can't acquire the mutex lock"
-msgstr "Kan die mutex-slot nie verkry nie"
-
-#: ../zypp/thread/Mutex.cc:87
-msgid "Can't release the mutex lock"
-msgstr "Kan die mutex-slot nie ontsluit nie"
-
-#: ../zypp/CountryCode.cc:135
-msgid "Unknown country: "
-msgstr "Onbekende land:"
-
-#: ../zypp/CountryCode.cc:217
-msgid "Andorra"
-msgstr "Andorra"
-
-#. :AND:020:
-#: ../zypp/CountryCode.cc:218
-msgid "United Arab Emirates"
-msgstr "Verenigde Arabiese Emirate"
-
-#. :ARE:784:
-#: ../zypp/CountryCode.cc:219
-msgid "Afghanistan"
-msgstr "Afghanistan"
-
-#. :AFG:004:
-#: ../zypp/CountryCode.cc:220
-msgid "Antigua and Barbuda"
-msgstr "Antigua en Barbuda"
-
-#. :ATG:028:
-#: ../zypp/CountryCode.cc:221
-msgid "Anguilla"
-msgstr "Anguilla"
-
-#. :AIA:660:
-#: ../zypp/CountryCode.cc:222
-msgid "Albania"
-msgstr "Albanië"
-
-#. :ALB:008:
-#: ../zypp/CountryCode.cc:223
-msgid "Armenia"
-msgstr "Armenië"
-
-#. :ARM:051:
-#: ../zypp/CountryCode.cc:224
-msgid "Netherlands Antilles"
-msgstr "Nederlands-Antille"
-
-#. :ANT:530:
-#: ../zypp/CountryCode.cc:225
-msgid "Angola"
-msgstr "Angola"
-
-#. :AGO:024:
-#: ../zypp/CountryCode.cc:226
-msgid "Antarctica"
-msgstr "Antarktika"
-
-#. :ATA:010:
-#: ../zypp/CountryCode.cc:227
-msgid "Argentina"
-msgstr "Argentinië"
-
-#. :ARG:032:
-#: ../zypp/CountryCode.cc:228
-msgid "American Samoa"
-msgstr "Amerikaanse Samoa"
-
-#. :ASM:016:
-#: ../zypp/CountryCode.cc:229
-msgid "Austria"
-msgstr "Oostenryk"
-
-#. :AUT:040:
-#: ../zypp/CountryCode.cc:230
-msgid "Australia"
-msgstr "Australië"
-
-#. :AUS:036:
-#: ../zypp/CountryCode.cc:231
-msgid "Aruba"
-msgstr "Aruba"
-
-#. :ABW:533:
-#: ../zypp/CountryCode.cc:232
-msgid "Aland Islands"
-msgstr "Aland-eilande"
-
-#. :ALA:248:
-#: ../zypp/CountryCode.cc:233
-msgid "Azerbaijan"
-msgstr "Azerbaijan"
-
-#. :AZE:031:
-#: ../zypp/CountryCode.cc:234
-msgid "Bosnia and Herzegovina"
-msgstr "Bosnië en Herzegowina"
-
-#. :BIH:070:
-#: ../zypp/CountryCode.cc:235
-msgid "Barbados"
-msgstr "Barbados"
-
-#. :BRB:052:
-#: ../zypp/CountryCode.cc:236
-msgid "Bangladesh"
-msgstr "Bangladesh"
-
-#. :BGD:050:
-#: ../zypp/CountryCode.cc:237
-msgid "Belgium"
-msgstr "België"
-
-#. :BEL:056:
-#: ../zypp/CountryCode.cc:238
-msgid "Burkina Faso"
-msgstr "Burkina Faso"
-
-#. :BFA:854:
-#: ../zypp/CountryCode.cc:239
-msgid "Bulgaria"
-msgstr "Bulgarye"
-
-#. :BGR:100:
-#: ../zypp/CountryCode.cc:240
-msgid "Bahrain"
-msgstr "Bahrein"
-
-#. :BHR:048:
-#: ../zypp/CountryCode.cc:241
-msgid "Burundi"
-msgstr "Burundi"
-
-#. :BDI:108:
-#: ../zypp/CountryCode.cc:242
-msgid "Benin"
-msgstr "Benin"
-
-#. :BEN:204:
-#: ../zypp/CountryCode.cc:243
-msgid "Bermuda"
-msgstr "Bermuda"
-
-#. :BMU:060:
-#: ../zypp/CountryCode.cc:244
-msgid "Brunei Darussalam"
-msgstr "Broenei Darussalam"
-
-#. :BRN:096:
-#: ../zypp/CountryCode.cc:245
-msgid "Bolivia"
-msgstr "Bolivië"
-
-#. :BOL:068:
-#: ../zypp/CountryCode.cc:246
-msgid "Brazil"
-msgstr "Brasilië"
-
-#. :BRA:076:
-#: ../zypp/CountryCode.cc:247
-msgid "Bahamas"
-msgstr "Bahamas"
-
-#. :BHS:044:
-#: ../zypp/CountryCode.cc:248
-msgid "Bhutan"
-msgstr "Bhoetan"
-
-#. :BTN:064:
-#: ../zypp/CountryCode.cc:249
-msgid "Bouvet Island"
-msgstr "Bouvet-eiland"
-
-#. :BVT:074:
-#: ../zypp/CountryCode.cc:250
-msgid "Botswana"
-msgstr "Botswana"
-
-#. :BWA:072:
-#: ../zypp/CountryCode.cc:251
-msgid "Belarus"
-msgstr "Belo-Rusland"
-
-#. :BLR:112:
-#: ../zypp/CountryCode.cc:252
-msgid "Belize"
-msgstr "Belize"
-
-#. :BLZ:084:
-#: ../zypp/CountryCode.cc:253
-msgid "Canada"
-msgstr "Kanada"
-
-#. :CAN:124:
-#: ../zypp/CountryCode.cc:254
-msgid "Cocos (Keeling) Islands"
-msgstr "Cocos- (Keeling-) eilande"
-
-#. :CCK:166:
-#. :CAF:140:
-#: ../zypp/CountryCode.cc:255 ../zypp/CountryCode.cc:257
-msgid "Congo"
-msgstr "Kongo"
-
-#. :COD:180:
-#: ../zypp/CountryCode.cc:256
-msgid "Central African Republic"
-msgstr "Republiek van Sentraal-Afrika"
-
-#. :COG:178:
-#: ../zypp/CountryCode.cc:258
-msgid "Switzerland"
-msgstr "Switserland"
-
-#. :CHE:756:
-#: ../zypp/CountryCode.cc:259
-msgid "Cote D'Ivoire"
-msgstr "Ivoorkus"
-
-#. :CIV:384:
-#: ../zypp/CountryCode.cc:260
-msgid "Cook Islands"
-msgstr "Cook-eilande"
-
-#. :COK:184:
-#: ../zypp/CountryCode.cc:261
-msgid "Chile"
-msgstr "Chile"
-
-#. :CHL:152:
-#: ../zypp/CountryCode.cc:262
-msgid "Cameroon"
-msgstr "Kameroen"
-
-#. :CMR:120:
-#: ../zypp/CountryCode.cc:263
-msgid "China"
-msgstr "Sjina"
-
-#. :CHN:156:
-#: ../zypp/CountryCode.cc:264
-msgid "Colombia"
-msgstr "Colombia"
-
-#. :COL:170:
-#: ../zypp/CountryCode.cc:265
-msgid "Costa Rica"
-msgstr "Costa Rica"
-
-#. :CRI:188:
-#: ../zypp/CountryCode.cc:266
-msgid "Serbia and Montenegro"
-msgstr "Serwië en Montenegro"
-
-#. :SCG:891:
-#: ../zypp/CountryCode.cc:267
-msgid "Cuba"
-msgstr "Kuba"
-
-#. :CUB:192:
-#: ../zypp/CountryCode.cc:268
-msgid "Cape Verde"
-msgstr "Kaap Verde"
-
-#. :CPV:132:
-#: ../zypp/CountryCode.cc:269
-msgid "Christmas Island"
-msgstr "Kersfees-eiland"
-
-#. :CXR:162:
-#: ../zypp/CountryCode.cc:270
-msgid "Cyprus"
-msgstr "Siprus"
-
-#. :CYP:196:
-#: ../zypp/CountryCode.cc:271
-msgid "Czech Republic"
-msgstr "Tseggiese Republiek"
-
-#. :CZE:203:
-#: ../zypp/CountryCode.cc:272
-msgid "Germany"
-msgstr "Duitsland"
-
-#. :DEU:276:
-#: ../zypp/CountryCode.cc:273
-msgid "Djibouti"
-msgstr "Djiboeti"
-
-#. :DJI:262:
-#: ../zypp/CountryCode.cc:274
-msgid "Denmark"
-msgstr "Denemarke"
-
-#. :DNK:208:
-#: ../zypp/CountryCode.cc:275
-msgid "Dominica"
-msgstr "Dominika"
-
-#. :DMA:212:
-#: ../zypp/CountryCode.cc:276
-msgid "Dominican Republic"
-msgstr "Dominikaanse Republiek"
-
-#. :DOM:214:
-#: ../zypp/CountryCode.cc:277
-msgid "Algeria"
-msgstr "Algerië"
-
-#. :DZA:012:
-#: ../zypp/CountryCode.cc:278
-msgid "Ecuador"
-msgstr "Ecuador"
-
-#. :ECU:218:
-#: ../zypp/CountryCode.cc:279
-msgid "Estonia"
-msgstr "Estonië"
-
-#. :EST:233:
-#: ../zypp/CountryCode.cc:280
-msgid "Egypt"
-msgstr "Egipte"
-
-#. :EGY:818:
-#: ../zypp/CountryCode.cc:281
-msgid "Western Sahara"
-msgstr "Wes-Sahara"
-
-#. :ESH:732:
-#: ../zypp/CountryCode.cc:282
-msgid "Eritrea"
-msgstr "Eritrea"
-
-#. :ERI:232:
-#: ../zypp/CountryCode.cc:283
-msgid "Spain"
-msgstr "Spanje"
-
-#. :ESP:724:
-#: ../zypp/CountryCode.cc:284
-msgid "Ethiopia"
-msgstr "Ethiopië"
-
-#. :ETH:231:
-#: ../zypp/CountryCode.cc:285
-msgid "Finland"
-msgstr "Finland"
-
-#. :FIN:246:
-#: ../zypp/CountryCode.cc:286
-msgid "Fiji"
-msgstr "Fiji"
-
-#. :FJI:242:
-#: ../zypp/CountryCode.cc:287
-msgid "Falkland Islands (Malvinas)"
-msgstr "Falkland-eilande (Malvinas)"
-
-#. :FLK:238:
-#: ../zypp/CountryCode.cc:288
-msgid "Federated States of Micronesia"
-msgstr "Federasie van Mikronesië"
-
-#. :FSM:583:
-#: ../zypp/CountryCode.cc:289
-msgid "Faroe Islands"
-msgstr "Faroë-eilande"
-
-#. :FRO:234:
-#: ../zypp/CountryCode.cc:290
-msgid "France"
-msgstr "Frankryk"
-
-#. :FRA:250:
-#: ../zypp/CountryCode.cc:291
-msgid "Metropolitan France"
-msgstr "Metropolitaanse Frankryk"
-
-#. :FXX:249:
-#: ../zypp/CountryCode.cc:292
-msgid "Gabon"
-msgstr "Gaboen"
-
-#. :GAB:266:
-#: ../zypp/CountryCode.cc:293
-msgid "United Kingdom"
-msgstr "Verenigde Koninkryk"
-
-#. :GBR:826:
-#: ../zypp/CountryCode.cc:294
-msgid "Grenada"
-msgstr "Grenada"
-
-#. :GRD:308:
-#: ../zypp/CountryCode.cc:295
-msgid "Georgia"
-msgstr "Georgië"
-
-#. :GEO:268:
-#: ../zypp/CountryCode.cc:296
-msgid "French Guiana"
-msgstr "Frans-Guyana"
-
-#. :GUF:254:
-#: ../zypp/CountryCode.cc:297
-msgid "Ghana"
-msgstr "Ghana"
-
-#. :GHA:288:
-#: ../zypp/CountryCode.cc:298
-msgid "Gibraltar"
-msgstr "Gibraltar"
-
-#. :GIB:292:
-#: ../zypp/CountryCode.cc:299
-msgid "Greenland"
-msgstr "Groenland"
-
-#. :GRL:304:
-#: ../zypp/CountryCode.cc:300
-msgid "Gambia"
-msgstr "Gambië"
-
-#. :GMB:270:
-#: ../zypp/CountryCode.cc:301
-msgid "Guinea"
-msgstr "Guinee"
-
-#. :GIN:324:
-#: ../zypp/CountryCode.cc:302
-msgid "Guadeloupe"
-msgstr "Guadeloupe"
-
-#. :GLP:312:
-#: ../zypp/CountryCode.cc:303
-msgid "Equatorial Guinea"
-msgstr "Ekwatoriaal-Guinee"
-
-#. :GNQ:226:
-#: ../zypp/CountryCode.cc:304
-msgid "Greece"
-msgstr "Griekeland"
-
-#. :GRC:300:
-#: ../zypp/CountryCode.cc:305
-msgid "South Georgia and the South Sandwich Islands"
-msgstr "Suid-Georgia en die Suid-Sandwich-eilande"
-
-#. :SGS:239:
-#: ../zypp/CountryCode.cc:306
-msgid "Guatemala"
-msgstr "Guatemala"
-
-#. :GTM:320:
-#: ../zypp/CountryCode.cc:307
-msgid "Guam"
-msgstr "Guam"
-
-#. :GUM:316:
-#: ../zypp/CountryCode.cc:308
-msgid "Guinea-Bissau"
-msgstr "Guinee-Bissau"
-
-#. :GNB:624:
-#: ../zypp/CountryCode.cc:309
-msgid "Guyana"
-msgstr "Guyana"
-
-#. :GUY:328:
-#: ../zypp/CountryCode.cc:310
-msgid "Hong Kong"
-msgstr "Hongkong"
-
-#. :HKG:344:
-#: ../zypp/CountryCode.cc:311
-msgid "Heard Island and McDonald Islands"
-msgstr "Heard-eiland en McDonald-eilande"
-
-#. :HMD:334:
-#: ../zypp/CountryCode.cc:312
-msgid "Honduras"
-msgstr "Honduras"
-
-#. :HND:340:
-#: ../zypp/CountryCode.cc:313
-msgid "Croatia"
-msgstr "Kroasië"
-
-#. :HRV:191:
-#: ../zypp/CountryCode.cc:314
-msgid "Haiti"
-msgstr "Haïti"
-
-#. :HTI:332:
-#: ../zypp/CountryCode.cc:315
-msgid "Hungary"
-msgstr "Hongarye"
-
-#. :HUN:348:
-#: ../zypp/CountryCode.cc:316
-msgid "Indonesia"
-msgstr "Indonesië"
-
-#. :IDN:360:
-#: ../zypp/CountryCode.cc:317
-msgid "Ireland"
-msgstr "Ierland"
-
-#. :IRL:372:
-#: ../zypp/CountryCode.cc:318
-msgid "Israel"
-msgstr "Israel"
-
-#. :ISR:376:
-#: ../zypp/CountryCode.cc:319
-msgid "India"
-msgstr "Indië"
-
-#. :IND:356:
-#: ../zypp/CountryCode.cc:320
-msgid "British Indian Ocean Territory"
-msgstr "Brits-Indiese Oseaangebied"
-
-#. :IOT:086:
-#: ../zypp/CountryCode.cc:321
-msgid "Iraq"
-msgstr "Irak"
-
-#. :IRQ:368:
-#: ../zypp/CountryCode.cc:322
-msgid "Iran"
-msgstr "Iran"
-
-#. :IRN:364:
-#: ../zypp/CountryCode.cc:323
-msgid "Iceland"
-msgstr "Ysland"
-
-#. :ISL:352:
-#: ../zypp/CountryCode.cc:324
-msgid "Italy"
-msgstr "Italië"
-
-#. :ITA:380:
-#: ../zypp/CountryCode.cc:325
-msgid "Jamaica"
-msgstr "Jamaika"
-
-#. :JAM:388:
-#: ../zypp/CountryCode.cc:326
-msgid "Jordan"
-msgstr "Jordanië"
-
-#. :JOR:400:
-#: ../zypp/CountryCode.cc:327
-msgid "Japan"
-msgstr "Japan"
-
-#. :JPN:392:
-#: ../zypp/CountryCode.cc:328
-msgid "Kenya"
-msgstr "Kenia"
-
-#. :KEN:404:
-#: ../zypp/CountryCode.cc:329
-msgid "Kyrgyzstan"
-msgstr "Kirgisië"
-
-#. :KGZ:417:
-#: ../zypp/CountryCode.cc:330
-msgid "Cambodia"
-msgstr "Kambodja"
-
-#. :KHM:116:
-#: ../zypp/CountryCode.cc:331
-msgid "Kiribati"
-msgstr "Kiribati"
-
-#. :KIR:296:
-#: ../zypp/CountryCode.cc:332
-msgid "Comoros"
-msgstr "Comore"
-
-#. :COM:174:
-#: ../zypp/CountryCode.cc:333
-msgid "Saint Kitts and Nevis"
-msgstr "St. Kitts en Nevis"
-
-#. :KNA:659:
-#: ../zypp/CountryCode.cc:334
-msgid "North Korea"
-msgstr "Noord-Korea"
-
-#. :PRK:408:
-#: ../zypp/CountryCode.cc:335
-msgid "South Korea"
-msgstr "Suid-Korea"
-
-#. :KOR:410:
-#: ../zypp/CountryCode.cc:336
-msgid "Kuwait"
-msgstr "Koeweit"
-
-#. :KWT:414:
-#: ../zypp/CountryCode.cc:337
-msgid "Cayman Islands"
-msgstr "Kaaimanseilande"
-
-#. :CYM:136:
-#: ../zypp/CountryCode.cc:338
-msgid "Kazakhstan"
-msgstr "Kazakstan"
-
-#. :KAZ:398:
-#: ../zypp/CountryCode.cc:339
-msgid "Lao People's Democratic Republic"
-msgstr "Lao Demokratiese Republiek"
-
-#. :LAO:418:
-#: ../zypp/CountryCode.cc:340
-msgid "Lebanon"
-msgstr "Lebanon"
-
-#. :LBN:422:
-#: ../zypp/CountryCode.cc:341
-msgid "Saint Lucia"
-msgstr "St. Lucia"
-
-#. :LCA:662:
-#: ../zypp/CountryCode.cc:342
-msgid "Liechtenstein"
-msgstr "Liechtenstein"
-
-#. :LIE:438:
-#: ../zypp/CountryCode.cc:343
-msgid "Sri Lanka"
-msgstr "Sri Lanka"
-
-#. :LKA:144:
-#: ../zypp/CountryCode.cc:344
-msgid "Liberia"
-msgstr "Liberië"
-
-#. :LBR:430:
-#: ../zypp/CountryCode.cc:345
-msgid "Lesotho"
-msgstr "Lesotho"
-
-#. :LSO:426:
-#: ../zypp/CountryCode.cc:346
-msgid "Lithuania"
-msgstr "Litoue"
-
-#. :LTU:440:
-#: ../zypp/CountryCode.cc:347
-msgid "Luxembourg"
-msgstr "Luxemburg"
-
-#. :LUX:442:
-#: ../zypp/CountryCode.cc:348
-msgid "Latvia"
-msgstr "Letland"
-
-#. :LVA:428:
-#: ../zypp/CountryCode.cc:349
-msgid "Libya"
-msgstr "Libië"
-
-#. :LBY:434:
-#: ../zypp/CountryCode.cc:350
-msgid "Morocco"
-msgstr "Marokko"
-
-#. :MAR:504:
-#: ../zypp/CountryCode.cc:351
-msgid "Monaco"
-msgstr "Monaco"
-
-#. :MCO:492:
-#: ../zypp/CountryCode.cc:352
-msgid "Moldova"
-msgstr "Moldowa"
-
-#. :MDA:498:
-#: ../zypp/CountryCode.cc:353
-msgid "Madagascar"
-msgstr "Madagaskar"
-
-#. :MDG:450:
-#: ../zypp/CountryCode.cc:354
-msgid "Marshall Islands"
-msgstr "Marshall-eilande"
-
-#. :MHL:584:
-#: ../zypp/CountryCode.cc:355
-msgid "Macedonia"
-msgstr "Masedonië"
-
-#. :MKD:807:
-#: ../zypp/CountryCode.cc:356
-msgid "Mali"
-msgstr "Mali"
-
-#. :MLI:466:
-#: ../zypp/CountryCode.cc:357
-msgid "Myanmar"
-msgstr "Mianmar"
-
-#. :MMR:104:
-#: ../zypp/CountryCode.cc:358
-msgid "Mongolia"
-msgstr "Mongolië"
-
-#. :MNG:496:
-#: ../zypp/CountryCode.cc:359
-msgid "Macao"
-msgstr "Macao"
-
-#. :MAC:446:
-#: ../zypp/CountryCode.cc:360
-msgid "Northern Mariana Islands"
-msgstr "Noord-Mariana-eilande"
-
-#. :MNP:580:
-#: ../zypp/CountryCode.cc:361
-msgid "Martinique"
-msgstr "Martinique"
-
-#. :MTQ:474:
-#: ../zypp/CountryCode.cc:362
-msgid "Mauritania"
-msgstr "Mauritanië"
-
-#. :MRT:478:
-#: ../zypp/CountryCode.cc:363
-msgid "Montserrat"
-msgstr "Montserrat"
-
-#. :MSR:500:
-#: ../zypp/CountryCode.cc:364
-msgid "Malta"
-msgstr "Malta"
-
-#. :MLT:470:
-#: ../zypp/CountryCode.cc:365
-msgid "Mauritius"
-msgstr "Mauritius"
-
-#. :MUS:480:
-#: ../zypp/CountryCode.cc:366
-msgid "Maldives"
-msgstr "Maledive"
-
-#. :MDV:462:
-#: ../zypp/CountryCode.cc:367
-msgid "Malawi"
-msgstr "Malawi"
-
-#. :MWI:454:
-#: ../zypp/CountryCode.cc:368
-msgid "Mexico"
-msgstr "Meksiko"
-
-#. :MEX:484:
-#: ../zypp/CountryCode.cc:369
-msgid "Malaysia"
-msgstr "Maleisië"
-
-#. :MYS:458:
-#: ../zypp/CountryCode.cc:370
-msgid "Mozambique"
-msgstr "Mosambiek"
-
-#. :MOZ:508:
-#: ../zypp/CountryCode.cc:371
-msgid "Namibia"
-msgstr "Namibië"
-
-#. :NAM:516:
-#: ../zypp/CountryCode.cc:372
-msgid "New Caledonia"
-msgstr "Nieu-Kaledonië"
-
-#. :NCL:540:
-#: ../zypp/CountryCode.cc:373
-msgid "Niger"
-msgstr "Niger"
-
-#. :NER:562:
-#: ../zypp/CountryCode.cc:374
-msgid "Norfolk Island"
-msgstr "Norfolk-eilande"
-
-#. :NFK:574:
-#: ../zypp/CountryCode.cc:375
-msgid "Nigeria"
-msgstr "Nigerië"
-
-#. :NGA:566:
-#: ../zypp/CountryCode.cc:376
-msgid "Nicaragua"
-msgstr "Nicaragua"
-
-#. :NIC:558:
-#: ../zypp/CountryCode.cc:377
-msgid "Netherlands"
-msgstr "Nederland"
-
-#. :NLD:528:
-#: ../zypp/CountryCode.cc:378
-msgid "Norway"
-msgstr "Noorweë"
-
-#. :NOR:578:
-#: ../zypp/CountryCode.cc:379
-msgid "Nepal"
-msgstr "Nepal"
-
-#. :NRU:520:
-#: ../zypp/CountryCode.cc:381
-msgid "Niue"
-msgstr "Niue"
-
-#. :NIU:570:
-#: ../zypp/CountryCode.cc:382
-msgid "New Zealand"
-msgstr "Nieu-Seeland"
-
-#. :NZL:554:
-#: ../zypp/CountryCode.cc:383
-msgid "Oman"
-msgstr "Oman"
-
-#. :OMN:512:
-#: ../zypp/CountryCode.cc:384
-msgid "Panama"
-msgstr "Panama"
-
-#. :PAN:591:
-#: ../zypp/CountryCode.cc:385
-msgid "Peru"
-msgstr "Peru"
-
-#. :PER:604:
-#: ../zypp/CountryCode.cc:386
-msgid "French Polynesia"
-msgstr "Frans-Polinesië"
-
-#. :PYF:258:
-#: ../zypp/CountryCode.cc:387
-msgid "Papua New Guinea"
-msgstr "Papoea-Nieu-Guinee"
-
-#. :PNG:598:
-#: ../zypp/CountryCode.cc:388
-msgid "Philippines"
-msgstr "Philippyne"
-
-#. :PHL:608:
-#: ../zypp/CountryCode.cc:389
-msgid "Pakistan"
-msgstr "Pakistan"
-
-#. :PAK:586:
-#: ../zypp/CountryCode.cc:390
-msgid "Poland"
-msgstr "Pole"
-
-#. :POL:616:
-#: ../zypp/CountryCode.cc:391
-msgid "Saint Pierre and Miquelon"
-msgstr "St. Pierre en Miquelon"
-
-#. :SPM:666:
-#: ../zypp/CountryCode.cc:392
-msgid "Pitcairn"
-msgstr "Pitcairn"
-
-#. :PCN:612:
-#: ../zypp/CountryCode.cc:393
-msgid "Puerto Rico"
-msgstr "Puerto Rico"
-
-#. :PRI:630:
-#: ../zypp/CountryCode.cc:394
-msgid "Palestinian Territory"
-msgstr "Palestynse Gebied"
-
-#. :PSE:275:
-#: ../zypp/CountryCode.cc:395
-msgid "Portugal"
-msgstr "Portugal"
-
-#. :PRT:620:
-#: ../zypp/CountryCode.cc:396
-msgid "Palau"
-msgstr "Palaoe"
-
-#. :PLW:585:
-#: ../zypp/CountryCode.cc:397
-msgid "Paraguay"
-msgstr "Paraguay"
-
-#. :PRY:600:
-#: ../zypp/CountryCode.cc:398
-msgid "Qatar"
-msgstr "Qatar"
-
-#. :QAT:634:
-#: ../zypp/CountryCode.cc:399
-msgid "Reunion"
-msgstr "Réunion"
-
-#. :REU:638:
-#: ../zypp/CountryCode.cc:400
-msgid "Romania"
-msgstr "Roemenië"
-
-#. :ROU:642:
-#: ../zypp/CountryCode.cc:401
-msgid "Russian Federation"
-msgstr "Russiese Federasie"
-
-#. :RUS:643:
-#: ../zypp/CountryCode.cc:402
-msgid "Rwanda"
-msgstr "Rwanda"
-
-#. :RWA:646:
-#: ../zypp/CountryCode.cc:403
-msgid "Saudi Arabia"
-msgstr "Saudi-Arabië"
-
-#. :SAU:682:
-#: ../zypp/CountryCode.cc:404
-msgid "Solomon Islands"
-msgstr "Solomon-eilande"
-
-#. :SLB:090:
-#: ../zypp/CountryCode.cc:405
-msgid "Seychelles"
-msgstr "Seychelle"
-
-#. :SYC:690:
-#: ../zypp/CountryCode.cc:406
-msgid "Sudan"
-msgstr "Soedan"
-
-#. :SDN:736:
-#: ../zypp/CountryCode.cc:407
-msgid "Sweden"
-msgstr "Swede"
-
-#. :SWE:752:
-#: ../zypp/CountryCode.cc:408
-msgid "Singapore"
-msgstr "Singapoer"
-
-#. :SGP:702:
-#: ../zypp/CountryCode.cc:409
-msgid "Saint Helena"
-msgstr "St. Helena"
-
-#. :SHN:654:
-#: ../zypp/CountryCode.cc:410
-msgid "Slovenia"
-msgstr "Slowenië"
-
-#. :SVN:705:
-#: ../zypp/CountryCode.cc:411
-msgid "Svalbard and Jan Mayen"
-msgstr "Svalbard en Jan Mayen"
-
-#. :SJM:744:
-#: ../zypp/CountryCode.cc:412
-msgid "Slovakia"
-msgstr "Slowakye"
-
-#. :SVK:703:
-#: ../zypp/CountryCode.cc:413
-msgid "Sierra Leone"
-msgstr "Sierra Leone"
-
-#. :SLE:694:
-#: ../zypp/CountryCode.cc:414
-msgid "San Marino"
-msgstr "San Marino"
-
-#. :SMR:674:
-#: ../zypp/CountryCode.cc:415
-msgid "Senegal"
-msgstr "Senegal"
-
-#. :SEN:686:
-#: ../zypp/CountryCode.cc:416
-msgid "Somalia"
-msgstr "Somalië"
-
-#. :SOM:706:
-#: ../zypp/CountryCode.cc:417
-msgid "Suriname"
-msgstr "Suriname"
-
-#. :SUR:740:
-#: ../zypp/CountryCode.cc:418
-msgid "Sao Tome and Principe"
-msgstr "Sao Tomé en Principe"
-
-#. :STP:678:
-#: ../zypp/CountryCode.cc:419
-msgid "El Salvador"
-msgstr "El Salvador"
-
-#. :SLV:222:
-#: ../zypp/CountryCode.cc:420
-msgid "Syria"
-msgstr "Sirië"
-
-#. :SYR:760:
-#: ../zypp/CountryCode.cc:421
-msgid "Swaziland"
-msgstr "Swaziland"
-
-#. :SWZ:748:
-#: ../zypp/CountryCode.cc:422
-msgid "Turks and Caicos Islands"
-msgstr "Turks- en Caicos-eiland"
-
-#. :TCA:796:
-#: ../zypp/CountryCode.cc:423
-msgid "Chad"
-msgstr "Tsjad"
-
-#. :TCD:148:
-#: ../zypp/CountryCode.cc:424
-msgid "French Southern Territories"
-msgstr "Franse Suidelike Gebiede"
-
-#. :ATF:260:
-#: ../zypp/CountryCode.cc:425
-msgid "Togo"
-msgstr "Togo"
-
-#. :TGO:768:
-#: ../zypp/CountryCode.cc:426
-msgid "Thailand"
-msgstr "Thailand"
-
-#. :THA:764:
-#: ../zypp/CountryCode.cc:427
-msgid "Tajikistan"
-msgstr "Tajikistan"
-
-#. :TKL:772:
-#: ../zypp/CountryCode.cc:429
-msgid "Turkmenistan"
-msgstr "Toerkmenië"
-
-#. :TKM:795:
-#: ../zypp/CountryCode.cc:430
-msgid "Tunisia"
-msgstr "Tunisië"
-
-#. :TUN:788:
-#: ../zypp/CountryCode.cc:431
-msgid "Tonga"
-msgstr "Tonga"
-
-#. :TON:776:
-#: ../zypp/CountryCode.cc:432
-msgid "East Timor"
-msgstr "Oos-Timor"
-
-#. :TLS:626:
-#: ../zypp/CountryCode.cc:433
-msgid "Turkey"
-msgstr "Turkye"
-
-#. :TUR:792:
-#: ../zypp/CountryCode.cc:434
-msgid "Trinidad and Tobago"
-msgstr "Trinidad en Tobago"
-
-#. :TUV:798:
-#: ../zypp/CountryCode.cc:436
-msgid "Taiwan"
-msgstr "Taiwan"
-
-#. :TWN:158:
-#: ../zypp/CountryCode.cc:437
-msgid "Tanzania"
-msgstr "Tanzanië"
-
-#. :TZA:834:
-#: ../zypp/CountryCode.cc:438
-msgid "Ukraine"
-msgstr "Oekraïne"
-
-#. :UKR:804:
-#: ../zypp/CountryCode.cc:439
-msgid "Uganda"
-msgstr "Uganda"
-
-#. :UGA:800:
-#: ../zypp/CountryCode.cc:440
-msgid "United States Minor Outlying Islands"
-msgstr "Verenigde State van Kleiner Buite-eilande"
-
-#. :UMI:581:
-#: ../zypp/CountryCode.cc:441
-msgid "United States"
-msgstr "Verenigde State"
-
-#. :USA:840:
-#: ../zypp/CountryCode.cc:442
-msgid "Uruguay"
-msgstr "Uruguay"
-
-#. :URY:858:
-#: ../zypp/CountryCode.cc:443
-msgid "Uzbekistan"
-msgstr "Oesbekistan"
-
-#. :UZB:860:
-#: ../zypp/CountryCode.cc:444
-msgid "Holy See (Vatican City State)"
-msgstr "Vatikaanstad"
-
-#. :VAT:336:
-#: ../zypp/CountryCode.cc:445
-msgid "Saint Vincent and the Grenadines"
-msgstr "St. Vincent en die Grenadine"
-
-#. :VCT:670:
-#: ../zypp/CountryCode.cc:446
-msgid "Venezuela"
-msgstr "Venezuela"
-
-#. :VEN:862:
-#: ../zypp/CountryCode.cc:447
-msgid "British Virgin Islands"
-msgstr "Britse Maagde-eilande"
-
-#. :VGB:092:
-#: ../zypp/CountryCode.cc:448
-msgid "Virgin Islands, U.S."
-msgstr "Maagde-eilande, .V.S.A."
-
-#. :VIR:850:
-#: ../zypp/CountryCode.cc:449
-msgid "Vietnam"
-msgstr "Viëtnam"
-
-#. :VNM:704:
-#: ../zypp/CountryCode.cc:450
-msgid "Vanuatu"
-msgstr "Vanuatu"
-
-#. :VUT:548:
-#: ../zypp/CountryCode.cc:451
-msgid "Wallis and Futuna"
-msgstr "Wallis en Futuna"
-
-#. :WLF:876:
-#: ../zypp/CountryCode.cc:452
-msgid "Samoa"
-msgstr "Samoa"
-
-#. :WSM:882:
-#: ../zypp/CountryCode.cc:453
-msgid "Yemen"
-msgstr "Jemen"
-
-#. :YEM:887:
-#: ../zypp/CountryCode.cc:454
-msgid "Mayotte"
-msgstr "Mayotte"
-
-#. :MYT:175:
-#: ../zypp/CountryCode.cc:455
-msgid "South Africa"
-msgstr "Suid-Afrika"
-
-#. :ZAF:710:
-#: ../zypp/CountryCode.cc:456
-msgid "Zambia"
-msgstr "Zambië"
-
-#. :ZMB:894:
-#: ../zypp/CountryCode.cc:457
-msgid "Zimbabwe"
-msgstr "Zimbabwe"
-
-#: ../devel/devel.mvidner/installation_sources.cc:56
-#, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr "Lêer %s is nie geteken nie.\nGebruik dit in elk geval?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:65
-#, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr "Lêer %s word geteken met ’n onbekende sleutel:\n%s|%s|%s\n Gebruik die lêer in elk geval?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:75
-#, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr "Onbetroubare sleutel gevind:\n%s|%s|%s\n Vertrou sleutel?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:85
-#, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr "Lêer %s het nie integriteitsnagaan geslaag met die volgende sleutel nie:\n%s|%s|%s\n Gebruik die lêer in elk geval?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:99
-#, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr "Lêer %s het nie ’n nagaansom nie. \nGebruik die lêer in elk geval?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:108
-#, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
-msgstr "Lêer %s het ’n onbekende nagaansom %s. \nGebruik die lêer in elk geval?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:117
-#, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr "Lêer %s het ’n ongeldige nagaansom. \nVerwag %s, kry %s\n Gebruik die lêer in elk geval?"
 

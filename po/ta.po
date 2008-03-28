@@ -1,15 +1,1129 @@
+# Copyright (C) 2006 SuSE Linux Products GmbH, Nuernberg
+# This file is distributed under the same license as the package.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: NetworkManager-vpnc\n"
+"Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-12 17:37+0100\n"
-"PO-Revision-Date: 2006-01-26 15:19+0100\n"
-"Last-Translator: Priyavert Sharma <priyavert.sharma@agreeya.com>\n"
-"Language-Team: AgreeYa Solutions <www.agreeya.com>\n"
+"POT-Creation-Date: 2008-02-28 16:39+0100\n"
+"PO-Revision-Date: 2008-03-27 18:11\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../devel/devel.mvidner/installation_sources.cc:56
+#, c-format
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "%s கோப்பு கையொப்பமிடப்படவில்லை.\nஅவ்வாறிருந்தும் அதனை பயன்படுத்தலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:65
+#, c-format
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "%s கோப்பு அறிந்திராத ஒரு கீயினால் கையொப்பமிடப்பட்டுள்ளது:\n%s|%s|%s\nஅவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:75
+#, c-format
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "நம்பகத்தன்மையற்ற கீ கண்டுபிடிக்கப்பட்டுள்ளது:\n%s|%s|%s\nகீயை நம்பலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:85
+#, c-format
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "%s கோப்பு, பின்வரும் கீயுடன் நேர்மை சோதனையில் தோல்வியுற்றது:\n%s|%s|%s\nஅவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:99
+#, c-format
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "%s கோப்பிற்கு செக்சம் இல்லை.\nஅவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:108
+#, c-format
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
+msgstr "%s கோப்பிற்கு அறியப்படாத ஒரு செக்சம் உள்ளது %s.\nஅவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
+
+#: ../devel/devel.mvidner/installation_sources.cc:117
+#, c-format
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "%s கோப்பிற்கு செல்லாத ஒரு செக்சம் உள்ளது.\nஎதிர்பார்த்தது %s, கண்டது %s\nஅவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
+
+#: ../zypp/thread/Mutex.cc:33
+msgid "Can't initialize mutex attributes"
+msgstr "மியூடெக்ஸ் பண்புகளை துவக்க இயலாது"
+
+#: ../zypp/thread/Mutex.cc:40
+msgid "Can't set recursive mutex attribute"
+msgstr "எதிர்ப்புத்தன்மையுள்ள மியூடெக்ஸ் பண்மப அமைக்க இயலாது"
+
+#: ../zypp/thread/Mutex.cc:47
+msgid "Can't initialize recursive mutex"
+msgstr "எதிர்ப்புத்தன்மையுள்ள மியூடெக்ஸை துவக்க இயலாது"
+
+#: ../zypp/thread/Mutex.cc:77
+msgid "Can't acquire the mutex lock"
+msgstr "மியூடெக்ஸ் பூட்டை பெற இயலாது"
+
+#: ../zypp/thread/Mutex.cc:87
+msgid "Can't release the mutex lock"
+msgstr "மியூடெக்ஸ் பூட்டை திறக்க இயலாது"
+
+#: ../zypp/media/MediaException.cc:31
+#, c-format
+msgid "Failed to mount %s on %s"
+msgstr "%sஐ %sல் ஏற்றுவது தோல்வியுற்றது"
+
+#: ../zypp/media/MediaException.cc:41
+#, c-format
+msgid "Failed to unmount %s"
+msgstr "%sயை இறக்க முடியவில்லை"
+
+#: ../zypp/media/MediaException.cc:47
+#, c-format
+msgid "Bad file name: %s"
+msgstr "மோசமான கோப்புப் பெயர்: %s"
+
+#: ../zypp/media/MediaException.cc:53
+#, c-format
+msgid "Medium not opened when trying to perform action '%s'."
+msgstr "'%s' செயல்பாட்டை மேற்கொள்ள முயற்சிக்கும்போது ஊடகம் திறக்கப்படவில்லை."
+
+#: ../zypp/media/MediaException.cc:60
+#, c-format
+msgid "File '%s' not found on medium '%s'"
+msgstr "கோப்பு '%s'  ஊடகம் '%s'ல் காணப்படவில்லை"
+
+#: ../zypp/media/MediaException.cc:67
+#, c-format
+msgid "Cannot write file '%s'."
+msgstr "'%s' கோப்பை எழுத முடியவில்லை. "
+
+#: ../zypp/media/MediaException.cc:72
+msgid "Medium not attached"
+msgstr "ஊடகம் இணைக்கப்படவில்லை"
+
+#: ../zypp/media/MediaException.cc:77
+msgid "Bad media attach point"
+msgstr "மோசமான ஊடக இணைப்பிடம்"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:84
+#, c-format
+msgid "Download (curl) initialization failed for '%s'"
+msgstr "'%s'க்கான தகவலிறக்கத் (curl) தோல்வியுற்றது "
+
+#: ../zypp/media/MediaException.cc:91
+#, c-format
+msgid "System exception '%s' on medium '%s'."
+msgstr "ஊடகம் '%s'ல் சாதன விதிவிலக்கு '%s'"
+
+#: ../zypp/media/MediaException.cc:98
+#, c-format
+msgid "Path '%s' on medium '%s' is not a file."
+msgstr "'%s' ஊடகத்திலுள்ள '%s' பாதை ஒரு கோப்பு அல்ல."
+
+#: ../zypp/media/MediaException.cc:106
+#, c-format
+msgid "Path '%s' on medium '%s' is not a directory."
+msgstr "'%s' ஊடகத்திலுள்ள '%s' பாதை ஓர் அடைவு அல்ல."
+
+#: ../zypp/media/MediaException.cc:115
+msgid "Malformed URI"
+msgstr "சரியாக உருவாக்கப்படாத URI"
+
+#: ../zypp/media/MediaException.cc:125
+msgid "Empty host name in URI"
+msgstr "URIல் காலி புரவலன் பெயர்"
+
+#: ../zypp/media/MediaException.cc:130
+msgid "Empty filesystem in URI"
+msgstr "URIல் காலி கோப்பு அமைப்பு"
+
+#: ../zypp/media/MediaException.cc:135
+msgid "Empty destination in URI"
+msgstr "URIல் காலி சேரிடம்"
+
+#: ../zypp/media/MediaException.cc:140
+#, c-format
+msgid "Unsupported URI scheme in '%s'."
+msgstr " '%s'ல் ஆதரவளிக்கப்படாத URI  திட்டம்."
+
+#: ../zypp/media/MediaException.cc:145
+msgid "Operation not supported by medium"
+msgstr "செயல்பாடானது ஊடகத்தால் ஆதரவளிக்கப்படவில்லை"
+
+#: ../zypp/media/MediaException.cc:152
+#, c-format
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr " '%s'க்கான தகவலிறக்க (curl) பிழை:\nபிழை குறியீடு: %s\nபிழைத் தகவல்: %s\n"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:161
+#, c-format
+msgid "Error occurred while setting download (curl) options for '%s':"
+msgstr "'%s'க்கான தகவலிறக்க (curl) விருப்பத்தேர்வுகளை அமைக்கும்போது பிழை தோன்றியது:"
+
+#: ../zypp/media/MediaException.cc:169
+#, c-format
+msgid "Media source '%s' does not contain the desired medium"
+msgstr "ஊடக ஆதாரம் '%s' விருப்பத்திற்குரிய ஊடகத்தைக் கொண்டிருக்கவில்லை"
+
+#: ../zypp/media/MediaException.cc:175
+#, c-format
+msgid "Medium '%s' is in use by another instance"
+msgstr "வேறொரு நிலையில் ஊடகம்  '%s' பயன்பாட்டில் உள்ளது"
+
+#: ../zypp/media/MediaException.cc:182
+msgid "Cannot eject any media"
+msgstr "எந்த ஊடகத்தையும் வெளித்தள்ள முடியவில்லை"
+
+#: ../zypp/media/MediaException.cc:184
+#, c-format
+msgid "Cannot eject media '%s'"
+msgstr "ஊடகம்  '%s' ஐ வெளித்தள்ள முடியவில்லை"
+
+#: ../zypp/media/MediaException.cc:190
+#, c-format
+msgid "Permission to access '%s' denied."
+msgstr " '%s' ன் அணுக்கத்திற்கான அனுமதி மறுக்கப்படுகிறது."
+
+#: ../zypp/media/MediaCurl.cc:882 ../zypp/media/MediaCurl.cc:1102
+#, c-format
+msgid "Permission to access '%s' denied.\n\nVisit the Novell Customer Center to check whether your registration is valid and has not expired."
+msgstr " '%s' ன் அணுக்கத்திற்கான அனுமதி மறுக்கப்படுகிறது.\n\nஉங்கள் பதிவு செல்லத்தக்கதா மற்றும் காலாவதியாகவில்லையா என்பதை சரிபார்ப்பதற்கு நோவெல் வாடிக்கையாளர் மையத்திற்கு விஜயம் செய்யவும். "
+
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
+msgid "unlock all resolvables"
+msgstr "­ò¾¡Ä¢Âý"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
+#, c-format
+msgid "unlock %s"
+msgstr "%sஐ திறக்கவும்"
+
+#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
+msgid "Unlock these resolvables"
+msgstr "இத்தீர்வுகளைத் திறக்கவும்"
+
+#: ../zypp/solver/detail/ResolverInfo.cc:191
+msgid " Error!"
+msgstr "பிழை!"
+
+#: ../zypp/solver/detail/ResolverInfo.cc:192
+msgid " Important!"
+msgstr "முக்கியம்!"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
+#: ../zypp/solver/detail/Resolver_problems.cc:426
+#: ../zypp/solver/detail/Resolver_problems.cc:436
+#, c-format
+msgid "delete %s"
+msgstr "%s ஐ நீக்கவும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
+#: ../zypp/solver/detail/Resolver_problems.cc:429
+#: ../zypp/solver/detail/Resolver_problems.cc:439
+#, c-format
+msgid "do not install %s"
+msgstr "%sஐ நிறுவ வேண்டாம்"
+
+#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
+msgid "Do not install or delete concerning resolvables"
+msgstr "தொடர்புள்ள தீர்வுகளை நிறுவவோ அல்லது நீக்கவோ வேண்டாம்"
+
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:56
+msgid ", Action: "
+msgstr ", செயல்பாடு:"
+
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:58
+msgid ", Trigger: "
+msgstr ", தூண்டுதல்:"
+
+#. Translator: Notation for (RPM) package
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:90
+msgid "package"
+msgstr "பேக்கேஜ்"
+
+#. Translator: Notation for SuSE package selection (set of packages)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:94
+msgid "selection"
+msgstr "தேர்வு"
+
+#. Translator: Notation for SuSE installation pattern (set of packages, describing use of system)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:98
+msgid "pattern"
+msgstr "வடிவம்"
+
+#. Translator: Notation for product
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:102
+msgid "product"
+msgstr "பொருள்"
+
+#. Translator: Notation for patch
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:106
+msgid "patch"
+msgstr "பாட்ச்"
+
+#. Translator: Notation for script (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:110
+msgid "script"
+msgstr "உரை"
+
+#. Translator: Notation for message (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:114
+msgid "message"
+msgstr "தகவல்"
+
+#. Translator: Notation for atom (part of a patch)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:118
+msgid "atom"
+msgstr "அணு"
+
+#. Translator: Notation for computer system
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:122
+msgid "system"
+msgstr "சாதனம்"
+
+#. Translator: Generic term for an item with dependencies, please leave untranslated for now
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:126
+msgid "Resolvable"
+msgstr "தீர்வு"
+
+#. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:144
+msgid "Marking this resolution attempt as invalid."
+msgstr "இத்தீர்வு முயற்சி செல்லாததாக குறிக்கப்படுகிறது"
+
+#. Translator: %s = name of packages,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:151
+#, c-format
+msgid "Marking resolvable %s as uninstallable"
+msgstr "இத்தீர்வு %s நிறுவக்கூடியதல்ல என்று குறிக்கப்படுகிறது"
+
+#. Translator: %s = name of packages,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:159
+#, c-format
+msgid "%s is scheduled to be installed, but this is not possible because of dependency problems."
+msgstr "%s நிறுவப்படுவதற்காக திட்டமிடப்பட்டுள்ளது, ஆனால் சார்புத்தன்மை பிரச்னைகள் காரணமாக இது சாத்தியமில்லை."
+
+#. Translator: %s = name of package,patch,...
+#. TranslatorExplanation: Additional information to dependency solver result.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:167
+#, c-format
+msgid "Can't install %s since it is already marked as needing to be uninstalled"
+msgstr "நிறுவுதல் நீக்கப்பட வேண்டியது என்று ஏற்கனவே குறிக்கப்பட்டிருப்பதால், %sஐ நிறுவஇயலவில்லை"
+
+#. Translator: %s = name of patch
+#. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
+#. TranslatorExplanation: Patches contain updates (bug fixes) to packages. Such fixes
+#. TranslatorExplanation: do only apply if the package to-be-fixed is actually installed.
+#. TranslatorExplanation: Here a patch was selected for installation but the to-be-fixed
+#. TranslatorExplanation: package is not installed.
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:179
+#, c-format
+msgid "Can't install %s since it is does not apply to this system."
+msgstr "இந்த சாதனத்திற்கு பொருந்தாமல் இருப்பதால், %sஐ நிறுவ இயலவில்லை"
+
+#. affected() = item 1 which has to be installed
+#. _capability =
+#. other() = item 2 which has to be installed
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:190
+#, c-format
+msgid "Can't install %s, since %s is already marked as needing to be installed"
+msgstr "நிறுவுப்பட வேண்டியது என்று %s  ஏற்கனவே குறிக்கப்பட்டிருப்பதால், %s ஐ நிறுவ இயலவில்லை"
+
+#. Translator: %s = name of patch,product
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:198
+#, c-format
+msgid "This would invalidate %s."
+msgstr "இது, %sஐ செல்லாததாக்கிவிடும்."
+
+#. Translator: %s = name of patch, pattern, ...
+#. TranslatorExplanation: Establishing is the process of computing which patches are needed
+#. TranslatorExplanation: This is just a progress indicator
+#. TranslatorExplanation: It is also used for other types of resolvables in order to verify
+#. TranslatorExplanation: the completeness of their dependencies
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:214
+#, c-format
+msgid "Establishing %s"
+msgstr "%s அமைக்கப்படுகிறது"
+
+#. affected() = resolvable to be installed
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: Installing foo
+#. TranslatorExplanation: Just a progress indicator that something is scheduled for installation
+#. Translator: %s = packagename
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:235
+#, c-format
+msgid "Installing %s"
+msgstr "%s நிறுவப்படுகிறது"
+
+#. affected() = updated resolvable
+#. _capability =
+#. other() = currently installed, being updated resolvable
+#. other_capability() =
+#. Translator: 1.%s and 2.%s = name of package
+#. TranslatorExample: Updating foo-1.1 to foo-1.2
+#. TranslatorExplanation: Just a progress indicator that something is scheduled for upgrade
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:252
+#, c-format
+msgid "Updating %s to %s"
+msgstr "%s லிருந்து %sக்கு புதுப்பித்தல்"
+
+#. affected() =
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: Skipping foo: already installed
+#. TranslatorExplanation: An installation request for foo is skipped since foo is already installed
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:270
+#, c-format
+msgid "Skipping %s: already installed"
+msgstr "%s விடப்படுகிறது: ஏற்கவே நிறுவப்பட்டுவிட்டது"
+
+#. affected() = is set
+#. _capability = is set
+#. other() =
+#. other_capability() =
+#. Translator: 1.%s = dependency
+#. TranslatorExample: There are no alternative installed providers of foo
+#. TranslatorExplanation: A resolvable is to be uninstalled. It provides 'foo' which is needed by others
+#. TranslatorExplanation: We just found out that 'foo' is not provided by anything else (an alternative)
+#. TranslatorExplanation: removal of this resolvable would therefore break dependency
+#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be uninstalled
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:292
+#, c-format
+msgid "There are no alternative installed providers of %s"
+msgstr "%sக்கான நிறுவப்பட்ட மாற்று அளிப்பவர்கள் இல்லை"
+
+#. Translator: 1.%s = name of package,patch....
+#. TranslatorExample: for bar
+#. TranslatorExplanation: extension to previous message if we know what the resolvable is
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:298
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:323
+#, c-format
+msgid "for %s"
+msgstr "%sக்காக"
+
+#. affected() =
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: 1.%s = dependency
+#. TranslatorExample: There are no installable providers of foo
+#. TranslatorExplanation: A resolvable is to be installed which requires foo
+#. TranslatorExplanation: But there is nothing available to fulfill this requirement
+#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be installed
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:317
+#, c-format
+msgid "There are no installable providers of %s"
+msgstr "%sக்கு நிறுவக்கூடிய அளிப்பவர்கள் இல்லை"
+
+#. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
+#. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
+#. TranslatorExplanation: bar requires something from foo
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:341
+#, c-format
+msgid "Upgrade to %s to avoid removing %s is not possible."
+msgstr "%sக்கு மேம்படுத்திக் கொள்ளவும், %sஐ நீக்குதல் இயலாது"
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:359
+#, c-format
+msgid "%s provides %s, but is scheduled to be uninstalled."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது நிறுவுதல் நீக்கப்படுவதற்கு திட்டமிடப்பட்டுள்ளது"
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:377
+#, c-format
+msgid "%s provides %s, but another version of that %s is already installed."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால், %sன் மற்றொரு வடிவம் ஏற்கனவே நிறுவப்பட்டுவிட்டது"
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:396
+#, c-format
+msgid "%s provides %s, but it is uninstallable.  Try installing it on its own for more details."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால், அதன் நிறுவுதலை நீக்க இயலாது. கூடுதல் விவரங்களுக்கு, அதனைத் தானாகவே நிறுவம முயற்சிக்கவும்."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:414
+#, c-format
+msgid "%s provides %s, but it is locked."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது பூட்டப்பட்டுள்ளது."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:432
+#, c-format
+msgid "%s provides %s,  but is scheduled to be kept."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது வைக்கப்படுவதற்கு திட்டமிடப்பட்டுள்ளது."
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:451
+#, c-format
+msgid "%s provides %s, but has another architecture."
+msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அதற்கு வேறொரு கட்டமைப்பு உள்ளது."
+
+#. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:469
+#, c-format
+msgid "Can't satisfy requirement %s for %s"
+msgstr "%s க்கான %sன் தேவையைப் பூர்த்தி செய்ய இயலாது"
+
+#. affected() = to-be-installed resolvable which was scheduled to be uninstalled
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is required by other to-be-installed resolvable, so it won't be unlinked.
+#. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:490
+#, c-format
+msgid "%s is required by other to-be-installed resolvable, so it won't be unlinked."
+msgstr "மற்றொரு நிறுவப்படப்போகும் தீர்வுக்கு %s தேவைப்படுகிறது, எனவே அதன் இணைப்பு நீக்கப்பட மாட்டாது."
+
+#. affected() = provider of cap
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is required by other installed resolvable, so it won't be unlinked.
+#. TranslatorExplanation: Cant uninstall foo since it is required by an installed resolvable
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:507
+#, c-format
+msgid "%s is required by other installed resolvable, so it won't be unlinked."
+msgstr "மற்றொரு நிறுவப்பட்டுள்ள தீர்வுக்கு %s தேவைப்படுகிறது, எனவே அதன இணைப்பு நீக்கப்பட மாட்டாது."
+
+#. affected() = to-be-uninstalled resolvable which is locked
+#. _capability =
+#. other() =
+#. other_capability() =
+#. Translator: %s = name of package,patch,...
+#. TranslatorExample: foo is locked and cannot be uninstalled.
+#. TranslatorExplanation: foo is to-be-uninstalled but it is locked
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:524
+#, c-format
+msgid "%s is locked and cannot be uninstalled."
+msgstr "%s பூட்டப்பட்டுள்ளது மற்றும் அதன் நிறுவுதலை நீக்க இயலாது."
+
+#. affected() = provider of capability
+#. _capability = provided by provider
+#. other() = conflict issuer
+#. other_capability() = conflict capability
+#. Translator: 1.%s and 2.%s = Dependency; 4.%s = name of package,patch,...
+#. TranslatorExample: A conflict over foo (bar) requires the removal of to-be-installed xyz
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:543
+#, c-format
+msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
+msgstr "%s (%s) மீதான ஒரு முரண்பாட்டிற்கு, நிறுவப்படப்போகும் %sன் நீக்கம் தேவைப்படுகிறது."
+
+#. affected() = provider of capability
+#. _capability = provided by provider
+#. other() = conflict issuer
+#. other_capability() = conflict capability from issuer
+#. Translator: 1.%s = name of package,patch,...; 3.%s and 4.%s = Dependency;
+#. TranslatorExample: Marking xyz as uninstallable due to conflicts over foo (bar)
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:561
+#, c-format
+msgid "Marking %s as uninstallable due to conflicts over %s"
+msgstr "%s மீதான ஒரு முரண்பாடு காரணமாக %s நிறுவப்பட முடியாததாக குறிக்கப்பட்டுள்ளது"
+
+#. Translator: %s = name of package,patch
+#. TranslatorExample: from abc
+#: ../zypp/solver/detail/ResolverInfoMisc.cc:569
+#, c-format
+msgid "from %s"
+msgstr "%sலிருந்து"
+
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
+msgid "Ignore this requirement just here"
+msgstr "இத்தேவையை இங்கேயே புறக்கணிக்கவும்"
+
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
+msgid "Ignore this requirement generally"
+msgstr "இத்தேவையை பொதுவாக புறக்கணிக்கவும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
+#, c-format
+msgid "Install %s although it would change the architecture"
+msgstr "அது கட்டமைப்பை மாற்றக்கூடுமென்றாலும் %sஐ நிறுவவும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
+#, c-format
+msgid "%s provides this dependency but would changed the architecture of the installed item"
+msgstr "இச்சார்புத்தன்மையை %s அளிக்கிறது ஆனால், நிறுவப்பட்டுள்ள பொருளின் கட்டமைப்பை மாற்றிவிடும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
+#, c-format
+msgid "Ignore this conflict of %s"
+msgstr "%sன் முரண்பாட்டை புறக்கணிக்கவும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
+#, c-format
+msgid "Ignore the obsolete %s in %s"
+msgstr "%sல் உள்ள வழக்கில் இல்லாத %sஐ புறக்கணிக்கவும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
+#, c-format
+msgid "Ignore that %s is already set to install"
+msgstr "‍‍ஏற்கனவே நிறுவுவதற்காக அமைக்கப்பட்டுள்ள %sஐ புறக்கணிக்கவும்"
+
+#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
+#: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
+#, c-format
+msgid "%s is missing the requirement %s"
+msgstr "%s க்கான தேவையை %s இழந்துள்ளது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:55
+#, c-format
+msgid "keep %s"
+msgstr "%sஐ வைத்துக் கொள்ளவும்"
+
+#: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
+msgid "Keep resolvables"
+msgstr "தீர்வுகளை வைத்துக் கொள்ளவும்"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:261
+msgid "Invalid information"
+msgstr "செல்லாத தகவல்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:268
+#, c-format
+msgid "%s is needed by other resolvables"
+msgstr "மற்ற தீர்வுகளுக்கு %s தேவைப்படுகிறது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#. Translator: all.%s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:271
+#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:56
+#, c-format
+msgid "%s is needed by %s"
+msgstr "%s, %sக்கு தேவைப்படுகிறது"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:272
+#, c-format
+msgid "%s is needed by:\n%s"
+msgstr "%sக்கு தேவைப்படுவது:\n%s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:279
+#, c-format
+msgid "%s conflicts with other resolvables"
+msgstr "%s மற்ற தீர்வுகளுடன் முரண்படுகிறது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#. Translator: all.%s = name of package, patch,...
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is conflicting with multiple others
+#: ../zypp/solver/detail/Resolver_problems.cc:282
+#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:55
+#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:70
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s %sஉடன் முரண்படுகிறது"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:283
+#, c-format
+msgid "%s conflicts with:\n%s"
+msgstr "%sஉடன் முரண்படுவது:\n%s"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:306
+#, c-format
+msgid "%s obsoletes other resolvables"
+msgstr "%s மற்ற தீர்வுகளை வழக்கற்றதாக்குகிறது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:309
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s %sஐ வழக்கற்றதாக்குகிறது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:311
+#, c-format
+msgid "%s obsoletes:%s"
+msgstr "%s %sஐ வழக்கற்றதாக்குகிறது:"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:312
+msgid "\nThese resolvables will be deleted from the system."
+msgstr "\nஇத்தீர்வுகள் அமைப்பிலிருந்து நீக்கப்படும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:319
+#, c-format
+msgid "%s depends on other resolvables"
+msgstr "%s மற்ற தீர்வுகளை சார்ந்துள்ளது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:323
+#, c-format
+msgid "%s depends on %s"
+msgstr "%s %sஐ சார்ந்துள்ளது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:326
+#, c-format
+msgid "%s depends on:%s"
+msgstr "%s %sஐ சார்ந்துள்ளது:"
+
+#. TranslatorExplanation: currently it is unused.
+#: ../zypp/solver/detail/Resolver_problems.cc:332
+msgid "Child of"
+msgstr "இதன் உருவாக்கம்"
+
+#. TranslatorExplanation %s = dependency
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:338
+#: ../zypp/solver/detail/Resolver_problems.cc:418
+#, c-format
+msgid "Cannot install %s"
+msgstr "%sஐ நிறுவ முடியவில்லை"
+
+#. TranslatorExplanation %s = capability
+#: ../zypp/solver/detail/Resolver_problems.cc:340
+#, c-format
+msgid "None provides %s"
+msgstr "%s யாரும் அளிப்பதில்லை"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:341
+msgid "\nThere is no resource available which support this requirement."
+msgstr "\nஇத்தேவையை பூர்த்தி செய்யும் ஆதாரம் எதுவும் இல்லை"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:349
+msgid "Due problems which are described above/below this resolution will not solve all dependencies"
+msgstr "இத்தீர்வின் மேலே மற்றும் கீழே விளக்கப்பட்டுள்ள பிரச்னைகள், அனைத்து சார்புத்தன்மைகளையும் தீர்க்கக்கூடியவை அல்ல"
+
+#: ../zypp/solver/detail/Resolver_problems.cc:360
+#: ../zypp/solver/detail/Resolver_problems.cc:711
+#, c-format
+msgid "Cannot install %s because it is conflicting with %s"
+msgstr "%s ஐ நிறுவ இயலவில்லை ஏனெனில் அது %s உடன் முரண்படுகிறது"
+
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:377
+#, c-format
+msgid "%s is not installed and has been marked as uninstallable"
+msgstr "%s நிறுவப்படவில்லை மற்றும் அது நிறுவ இயலாததாக குறிக்கப்பட்டுள்ளது"
+
+#. TranslatorExplanation %s = name of package,patch,...
+#: ../zypp/solver/detail/Resolver_problems.cc:388
+#, c-format
+msgid "Cannot install %s due to dependency problems"
+msgstr "சார்புத்தன்மை பிரச்னைகள் காரணமாக %s ஐ நிறுவ இயலவில்லை"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:452
+#, c-format
+msgid "%s has unfulfilled requirements"
+msgstr "%s தீர்க்கப்படாத தேவைகளைக் கொண்டுள்ளது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:490
+#, c-format
+msgid "%s has missing dependencies"
+msgstr "%s காணப்படாத சார்புத்தன்மைகளைக் கொண்டுள்ளது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:537
+#, c-format
+msgid "%s cannot be installed due to missing dependencies"
+msgstr "காணப்படாத சார்புத்தன்மைகள் %sஐ காரணமாக நிறுவ இயலாது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:585
+#, c-format
+msgid "%s fulfil dependencies of %s but will be uninstalled"
+msgstr "%s சார்புத்தன்மைகளை %s பூர்த்தி செய்யும் ஆனால் நிறுவுதல் நீக்கப்பட்டுவிடும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:595
+#, c-format
+msgid "%s fulfil dependencies of %s but will be kept on your system"
+msgstr "%s சார்புத்தன்மைகளை %s பூர்த்தி செய்யும் ஆனால் உங்கள் அமைப்பில் வைக்கப்படும்"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:605
+#, c-format
+msgid "No need to install %s"
+msgstr "%sஐ நிறுவத் தேவையில்லை"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:613
+#, c-format
+msgid "Cannot install %s to fulfil the dependencies of %s"
+msgstr "%sன் சார்புத்தன்மைகளை பூர்த்தி செய்வதற்கு %sஐ நிறுவ இயலவில்லை"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:628
+#, c-format
+msgid "Cannot be install %s to fulfil the dependencies of %s"
+msgstr "%sன் சார்புத்தன்மைகளை பூர்த்தி செய்வதற்கு %s நிறுவப்படுவதற்கு இயலவில்லை"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:665
+#: ../zypp/solver/detail/Resolver_problems.cc:673
+#, c-format
+msgid "%s will not be uninstalled cause it is still required"
+msgstr "அது இன்னமும் தேவைப்படுவதால், %s நீக்கப்பட மாட்டாது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:684
+#, c-format
+msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
+msgstr "%sஐ %s வழக்கற்றதாக்கிவிடும். ஆனால் %sஐ நீக்க முடியாது ஏனெனில் அது பூட்டப்பட்டுள்ளது."
+
+#: ../zypp/solver/detail/Resolver_problems.cc:715
+#, c-format
+msgid "Cannot install %s because it is conflicting"
+msgstr "%sஐ நிறுவ முடியாது ஏனெனில் அது முரணானது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/Resolver_problems.cc:734
+#, c-format
+msgid "%s is uninstallable due to conflicts with %s"
+msgstr "%s உடன் உள்ள முரண்பாடு காரணமாக %sன் நிறுவுதலை நீக்க முடியாது"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is needed by multiple others
+#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
+#, c-format
+msgid "%s needed by %s"
+msgstr "%sக்கு %s தேவைப்படுகிறது"
+
+#. TranslatorExplanation %s = name of package, patch, selection ...
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
+#, c-format
+msgid "install %s"
+msgstr "%sஐ நிறுவவும்"
+
+#: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
+msgid "Install missing resolvables"
+msgstr "­ò¾¡Ä¢Âý"
+
+#. Translator: all.%s = name of package,patch,....
+#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
+#, c-format
+msgid "%s is replaced by %s"
+msgstr "%s %sஆல் மாற்றியமைக்கப்பட்டது"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is replaced by others
+#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
+#, c-format
+msgid "%s replaced by %s"
+msgstr "%s %sஆல் மாற்றியமைக்கப்பட்டது"
+
+#. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
+#: ../zypp/solver/detail/QueueItemRequire.cc:768
+#, c-format
+msgid "for requiring %s for %s when upgrading %s"
+msgstr "%sஐ புதுப்பிக்கும்போது %sக்காக %s தேவைப்‍படும்போது"
+
+#. Translator all.%s = name of packages,patches,....
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is part of 'bundles', the bundles are listed in 2.%s
+#: ../zypp/solver/detail/ResolverInfoChildOf.cc:56
+#: ../zypp/solver/detail/ResolverInfoChildOf.cc:71
+#, c-format
+msgid "%s part of %s"
+msgstr "%s, %sன் ஒரு பகுதியாகும்"
+
+#. Translator: all.%s = name of package,patch,....
+#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
+#, c-format
+msgid "%s depended on %s"
+msgstr "%s, %sஐ சார்ந்துள்ளது"
+
+#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
+#. TranslatorExplanation: 1.%s is dependent on list of names
+#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
+#, c-format
+msgid "%s dependend on %s"
+msgstr "%s, %sஐ சார்ந்துள்ளது"
+
+#: ../zypp/target/store/XMLFilesBackend.cc:1014
+#: ../zypp/target/store/XMLFilesBackend.cc:1021
+#: ../zypp/source/yum/YUMScriptImpl.cc:78
+#: ../zypp/source/yum/YUMScriptImpl.cc:112
+msgid "Cannot create a file needed to perform update installation."
+msgstr " புதுப்பிக்கப்பட்ட நிறுவுதலை மேற்கொள்வதற்கு தேவைப்படும் கோப்பை உருவாக்க இயலவில்லை."
+
+#. Translator: %s = name of an rpm package. A list of diffs follows
+#. this message.
+#: ../zypp/target/rpm/RpmDb.cc:1745
+#, c-format
+msgid "Changed configuration files for %s:"
+msgstr "%s:க்காக உள்ளமைத்தல் கோப்புகள் மாற்றப்பட்டுள்ளன"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1909
+#, c-format
+msgid "rpm saved %s as %s but it was impossible to determine the difference"
+msgstr "%s ஆக ஆர்பிஎம் %s  சேமிக்கப்பட்டுள்ளது, ஆனால் வேறுபாட்டை நிர்ணயிக்க முடியவில்லை"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1911
+#, c-format
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "%s ஆக ஆர்பிஎம் %s சேமிக்கப்பட்டுள்ளது.\nவேறுபாடுகளின் முதல் 25 வரிகள் இங்குள்ளன:\n"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1914
+#, c-format
+msgid "rpm created %s as %s but it was impossible to determine the difference"
+msgstr "%s ஆக ஆர்பிஎம் %s  உருவாக்கப்பட்டுள்ளது ஆனால் வேறுபாட்டை நிர்ணயிக்க முடியவில்லை"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:1916
+#, c-format
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "%s ஆக ஆர்பிஎம் %s  உருவாக்கப்பட்டுள்ளது.\nவேறுபாடுகளின் முதல் 25 வரிகள் இங்குள்ளன:\n"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:1922
+#, c-format
+msgid "%s install failed"
+msgstr "%s நிறுவுதல் தோல்வியுற்றது"
+
+#: ../zypp/target/rpm/RpmDb.cc:1923 ../zypp/target/rpm/RpmDb.cc:2041
+msgid "rpm output:"
+msgstr "ஆர்பிஎம் அவுட்புட்:"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:1929
+#, c-format
+msgid "%s installed ok"
+msgstr "%s நிறுவுதல் சரியானது"
+
+#: ../zypp/target/rpm/RpmDb.cc:1932 ../zypp/target/rpm/RpmDb.cc:2049
+msgid "Additional rpm output:"
+msgstr "கூடுதல் ஆர்பிஎம் அவுட்புட்:"
+
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2040
+#, c-format
+msgid "%s remove failed"
+msgstr "%s நீக்குதல் தோல்வியுற்றது"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2046
+#, c-format
+msgid "%s remove ok"
+msgstr "%s நீக்குதல் சரியானது"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2191
+#, c-format
+msgid "created backup %s"
+msgstr "%s மறுபிரதி உருவாக்கப்பட்டது"
+
+#: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
+#: ../zypp/target/hal/HalException.h:64
+msgid "Hal Exception"
+msgstr "ஹால் விதிவிலக்கு"
+
+#: ../zypp/target/hal/HalContext.cc:96
+msgid "HalContext not connected"
+msgstr "ஹால்கான்டெக்ஸ்ட் இணைக்கப்படவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:106
+msgid "HalDrive not initialized"
+msgstr "ஹால்டிரைவ் துவக்கப்படவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:116
+msgid "HalVolume not initialized"
+msgstr "ஹால்வால்யூம் துவக்கப்படவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:208
+msgid "Unable to create dbus connection"
+msgstr "டிபஸ் இணைப்பை உருவாக்க இயலவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:224
+msgid "libhal_ctx_new: Can't create libhal context"
+msgstr "libhal_ctx_new: ஆல் லைபால் உள்ளடக்கத்தை உருவாக்க இயலவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:239
+msgid "libhal_set_dbus_connection: Can't set dbus connection"
+msgstr "libhal_set_dbus_connection: ஆல் டிபஸ் இணைப்பை அமைக்க இயலவில்லை"
+
+#: ../zypp/target/hal/HalContext.cc:254
+msgid "Unable to initalize HAL context -- hald not running?"
+msgstr "HAL உள்ளடக்கத்தை துவக்க இயலவில்லை -- ஹால்ட் இயக்கத்தில் இல்லையா?"
+
+#: ../zypp/target/hal/HalContext.cc:843
+msgid "Not a CDROM drive"
+msgstr "சிடிரோம் டிரைவ் அல்ல"
+
+#: ../zypp/target/TargetImpl.cc:719
+msgid "Installation has been aborted as directed."
+msgstr "குறிப்பிட்டுள்ளபடி நிறுவுதல் இடையில் நிறுத்தப்பட்டது."
+
+#: ../zypp/source/susetags/SuseTagsImpl.cc:737
+#: ../zypp/source/susetags/SuseTagsImpl.cc:747
+#: ../zypp/source/susetags/SuseTagsImpl.cc:750
+msgid "Reading packages file"
+msgstr "பேக்கேஜ்கள் கோப்பு படிக்கப்படுகிறது"
+
+#. TranslatorExplanation %s = language name
+#: ../zypp/source/susetags/SuseTagsImpl.cc:800
+#: ../zypp/source/susetags/SuseTagsImpl.cc:804
+#: ../zypp/source/susetags/SuseTagsImpl.cc:818
+#, c-format
+msgid "Reading translation: %s"
+msgstr "மொழிபெயர்ப்பு படிக்கப்படுகிறது: %s"
+
+#. end of single patch parsing
+#. end of patches file parsing
+#. end of copying
+#: ../zypp/source/yum/YUMSourceImpl.cc:216
+#: ../zypp/source/yum/YUMSourceImpl.cc:241
+msgid "Reading index files"
+msgstr "உள்ளடக்க கோப்புகள் படிக்கப்படுகின்றன"
+
+#: ../zypp/source/yum/YUMSourceImpl.cc:247
+msgid "The signed repomd.xml file failed the signature check."
+msgstr "கையாப்பமிடப்பட்ட repomd.xml கோப்பு, கையொப்ப சோதனையில் தோல்வியுற்றது."
+
+#. TranslatorExplanation %s = product file
+#: ../zypp/source/yum/YUMSourceImpl.cc:464
+#: ../zypp/source/yum/YUMSourceImpl.cc:476
+#: ../zypp/source/yum/YUMSourceImpl.cc:482
+#: ../zypp/source/yum/YUMSourceImpl.cc:490
+#, c-format
+msgid "Reading product from %s"
+msgstr "%sலிருந்து பொருள் படிக்கப்படுகிறது"
+
+#. TranslatorExplanation %s = package file list
+#: ../zypp/source/yum/YUMSourceImpl.cc:520
+#: ../zypp/source/yum/YUMSourceImpl.cc:535
+#: ../zypp/source/yum/YUMSourceImpl.cc:541
+#: ../zypp/source/yum/YUMSourceImpl.cc:549
+#, c-format
+msgid "Reading filelist from %s"
+msgstr "%sலிருந்து கோப்புப்பட்டியல் படிக்கப்படுகிறது"
+
+#. TranslatorExplanation %s = packages file
+#: ../zypp/source/yum/YUMSourceImpl.cc:565
+#: ../zypp/source/yum/YUMSourceImpl.cc:605
+#: ../zypp/source/yum/YUMSourceImpl.cc:611
+#: ../zypp/source/yum/YUMSourceImpl.cc:619
+#, c-format
+msgid "Reading packages from %s"
+msgstr "%sலிருந்து பேக்கேஜ்கள் படிக்கப்படுகின்றன"
+
+#. TranslatorExplanation %s = selection metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:643
+#: ../zypp/source/yum/YUMSourceImpl.cc:655
+#: ../zypp/source/yum/YUMSourceImpl.cc:661
+#: ../zypp/source/yum/YUMSourceImpl.cc:669
+#, c-format
+msgid "Reading selection from %s"
+msgstr "%sலிருந்து தேர்வுகள் படிக்கப்படுகின்றன"
+
+#. TranslatorExplanation %s = pattern metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:693
+#: ../zypp/source/yum/YUMSourceImpl.cc:705
+#: ../zypp/source/yum/YUMSourceImpl.cc:711
+#: ../zypp/source/yum/YUMSourceImpl.cc:719
+#, c-format
+msgid "Reading pattern from %s"
+msgstr "%sலிருந்து வடிவம் படிக்கப்படுகிறது"
+
+#. TranslatorExplanation %s = patches index file
+#: ../zypp/source/yum/YUMSourceImpl.cc:746
+#: ../zypp/source/yum/YUMSourceImpl.cc:758
+#: ../zypp/source/yum/YUMSourceImpl.cc:764
+#: ../zypp/source/yum/YUMSourceImpl.cc:772
+#, c-format
+msgid "Reading patches index %s"
+msgstr "பாட்ச்களின் உள்ளடக்கம் %s படிக்கப்படுகிறது"
+
+#. TranslatorExplanation %s = patch metadata file
+#: ../zypp/source/yum/YUMSourceImpl.cc:795
+#: ../zypp/source/yum/YUMSourceImpl.cc:812
+#: ../zypp/source/yum/YUMSourceImpl.cc:818
+#: ../zypp/source/yum/YUMSourceImpl.cc:827
+#, c-format
+msgid "Reading patch %s"
+msgstr "பாட்ச் %s படிக்கப்படுகிறது"
+
+#: ../zypp/source/yum/YUMScriptImpl.cc:89
+#: ../zypp/source/yum/YUMScriptImpl.cc:123
+msgid "The script file failed the checksum test."
+msgstr "சோதனைத் தேர்வில் உரை கோப்பு தோல்வியுற்றது"
+
+#: ../zypp/source/PackageProvider.cc:216
+msgid "applydeltarpm check failed."
+msgstr "அப்ளைடெல்டாஆர்பிஎம் சோதனை தோல்வியுற்றது"
+
+#: ../zypp/source/PackageProvider.cc:229
+msgid "applydeltarpm failed."
+msgstr "அப்ளைடெல்டாஆர்பிஎம் தோல்வியுற்றது."
+
+#. TranslatorExplanation %s = package being checked for integrity
+#: ../zypp/source/PackageProvider.cc:296
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry downloading it?"
+msgstr "நேர்மை சோதனையில் %s பேக்கேஜ் தோல்வியுற்றது. அதனை தகவலிறக்கம் செய்வதற்கு நீங்கள் மீண்டும் முயற்சிக்கப் போகிறீர்களா?"
+
+#. TranslatorExplanation %s = package
+#: ../zypp/source/SourceImpl.cc:339
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry downloading it, or abort installation?"
+msgstr "நேர்மை சோதனையில் %s பேக்கேஜ் தோல்வியுற்றது. அதனை தகவலிறக்கம் செய்வதற்குநீங்கள் மீண்டும் முயற்சிக்கப் போகிறீர்களா அல்லது நிறுவுதலை நிறுத்திவிடப் போகிறீர்களா?"
+
+#: ../zypp/source/SourceImpl.cc:394
+msgid " miss checksum."
+msgstr "செக்சம் தவறியது."
+
+#: ../zypp/source/SourceImpl.cc:400
+msgid " fails checksum verification."
+msgstr "செக்சம் சரிபார்ப்பில் தோல்வியுற்றது."
+
+#. TranslatorExplanation %s = file being downloaded
+#: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
+#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
+#, c-format
+msgid "Downloading %s"
+msgstr "%s தகவலிறக்கம் செய்யப்படுகிறது"
+
+#: ../zypp/source/SourceImpl.cc:445
+#, c-format
+msgid "Downloaded %s from %s"
+msgstr "%sலிருந்து %s தகவலிறக்கம் செய்யப்பட்டது"
+
+#. TranslatorExplanation %s = file that was not able to download
+#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
+#: ../zypp/source/SourceImpl.cc:459
+#, c-format
+msgid "Can't provide %s from %s"
+msgstr "%sலிருந்து %sஐ அளிக்க இயலாது"
 
 #: ../zypp/url/UrlBase.cc:151
 #, c-format
@@ -17,9 +1131,9 @@ msgid "Url scheme does not allow a %s"
 msgstr "யூஆர்எல் திட்டம் %sக்கு அனுமதிப்பதில்லை"
 
 #: ../zypp/url/UrlBase.cc:170
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid %s component '%s'"
-msgstr "'%s' செல்லாத உறுப்பு"
+msgstr "செல்லாத %s உறுப்பு '%s' "
 
 #: ../zypp/url/UrlBase.cc:177
 #, c-format
@@ -105,6 +1219,24 @@ msgstr "செல்லாத அளவீட்டு வரைவு பிள
 msgid "Invalid parameter array join separator character"
 msgstr "செல்லாத அளவீட்டு அடுக்கு இணைப்பை பிரிக்கும் வடிவம்"
 
+#: ../zypp/ZYppFactory.cc:339
+#, c-format
+msgid "System management is locked by the application with pid %d. Please close this application before trying again."
+msgstr "அமைப்பு நிர்வாகம் pid %dல் உள்ள பயன்பாட்டினால் பூட்டப்பட்டுள்ளது. மீண்டும் முயற்சிப்பதற்குமுன் தயவுசெய்து இப்பயன்பாட்டை மூடவும். "
+
+#: ../zypp/SourceManager.cc:116
+#, c-format
+msgid "Source alias '%s' is already in use."
+msgstr "'%s' எனப்படும் ஆதாரம் ஏற்கனவே பயன்பாட்டில் உள்ளது. "
+
+#: ../zypp/SourceManager.h:42
+msgid "Unable to restore all sources."
+msgstr "அனைத்து ஆதாரங்களையும் மீட்க முடியவில்லை"
+
+#: ../zypp/SourceManager.h:68
+msgid "At least one source already registered, stored sources cannot be restored."
+msgstr "ஒரு ஆதாரமேனும் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது, சேமிக்கப்பட்ட ஆதாரங்களைமீட்க இயலாது."
+
 #: ../zypp/Url.cc:110
 msgid "Invalid LDAP URL query string"
 msgstr "செல்லாத எல்டிஏபி யூஆர்எல் வினா வரிசை"
@@ -126,15 +1258,1222 @@ msgstr "செல்லாத காலி யூஆர்எல் பொர
 msgid "Unable to parse Url components"
 msgstr "யூஆர்எல் உறுப்புகளை விளக்க இயலவில்லை"
 
+#: ../zypp/CountryCode.cc:135
+msgid "Unknown country: "
+msgstr "அறிந்திராத நாடு:"
+
+#. Defined CountryCode constants
+#. Defined LanguageCode constants
+#: ../zypp/CountryCode.cc:215 ../zypp/LanguageCode.cc:225
+msgid "No Code"
+msgstr "குறியீடு இல்லை"
+
+#: ../zypp/CountryCode.cc:217
+msgid "Andorra"
+msgstr "அன்டோரா"
+
+#. :AND:020:
+#: ../zypp/CountryCode.cc:218
+msgid "United Arab Emirates"
+msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
+
+#. :ARE:784:
+#: ../zypp/CountryCode.cc:219
+msgid "Afghanistan"
+msgstr "ஆப்கானிஸ்தான்"
+
+#. :AFG:004:
+#: ../zypp/CountryCode.cc:220
+msgid "Antigua and Barbuda"
+msgstr "¬ýÊÌÅ¡ & À¡÷Ò¼¡"
+
+#. :ATG:028:
+#: ../zypp/CountryCode.cc:221
+msgid "Anguilla"
+msgstr "அங்வில்லா"
+
+#. :AIA:660:
+#: ../zypp/CountryCode.cc:222
+msgid "Albania"
+msgstr "அல்பேனியா"
+
+#. :ALB:008:
+#: ../zypp/CountryCode.cc:223
+msgid "Armenia"
+msgstr "¬÷¦ºýÊÉ¡"
+
+#. :ARM:051:
+#: ../zypp/CountryCode.cc:224
+msgid "Netherlands Antilles"
+msgstr "¦¿¾÷Ä¡óÐ"
+
+#. :ANT:530:
+#: ../zypp/CountryCode.cc:225
+msgid "Angola"
+msgstr "அங்கோலா"
+
+#. :AGO:024:
+#: ../zypp/CountryCode.cc:226
+msgid "Antarctica"
+msgstr "¬ôÃ¢ì¸¡"
+
+#. :ATA:010:
+#: ../zypp/CountryCode.cc:227
+msgid "Argentina"
+msgstr "¬÷¦ºýÊÉ¡"
+
+#. :ARG:032:
+#: ../zypp/CountryCode.cc:228
+msgid "American Samoa"
+msgstr "«¦ÁÃ¢ì¸¡, Å¼"
+
+#. :ASM:016:
+#: ../zypp/CountryCode.cc:229
+msgid "Austria"
+msgstr "¬Íò¾¢Ã¢Â¡"
+
+#. :AUT:040:
+#: ../zypp/CountryCode.cc:230
+msgid "Australia"
+msgstr "¬Íò¾¢§ÃÄ¢Â¡"
+
+#. :AUS:036:
+#: ../zypp/CountryCode.cc:231
+msgid "Aruba"
+msgstr "¦¸¡ÄõÀ¢Â¡"
+
+#. :ABW:533:
+#: ../zypp/CountryCode.cc:232
+msgid "Aland Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :ALA:248:
+#: ../zypp/CountryCode.cc:233
+msgid "Azerbaijan"
+msgstr "«º÷¨Àº¡ý"
+
+#. :AZE:031:
+#: ../zypp/CountryCode.cc:234
+msgid "Bosnia and Herzegovina"
+msgstr "பாஸ்னியா மற்றும் ஹெர்சகோவினா"
+
+#. :BIH:070:
+#: ../zypp/CountryCode.cc:235
+msgid "Barbados"
+msgstr "À¡÷§À¼¡Í"
+
+#. :BRB:052:
+#: ../zypp/CountryCode.cc:236
+msgid "Bangladesh"
+msgstr "Àí¸Ç¡§¾Í"
+
+#. :BGD:050:
+#: ../zypp/CountryCode.cc:237
+msgid "Belgium"
+msgstr "¦Àøº¢Âõ"
+
+#. :BEL:056:
+#: ../zypp/CountryCode.cc:238
+msgid "Burkina Faso"
+msgstr "பர்கினா ஃபாஸோ"
+
+#. :BFA:854:
+#: ../zypp/CountryCode.cc:239
+msgid "Bulgaria"
+msgstr "Àø§¸Ã¢Â¡"
+
+#. :BGR:100:
+#: ../zypp/CountryCode.cc:240
+msgid "Bahrain"
+msgstr "À¢§Ãº¢ø"
+
+#. :BHR:048:
+#: ../zypp/CountryCode.cc:241
+msgid "Burundi"
+msgstr "புருண்டி"
+
+#. :BDI:108:
+#: ../zypp/CountryCode.cc:242
+msgid "Benin"
+msgstr "பெனின்"
+
+#. :BEN:204:
+#: ../zypp/CountryCode.cc:243
+msgid "Bermuda"
+msgstr "§º÷Áý"
+
+#. :BMU:060:
+#: ../zypp/CountryCode.cc:244
+msgid "Brunei Darussalam"
+msgstr "புரூனய் தாருசலாம்"
+
+#. :BRN:096:
+#: ../zypp/CountryCode.cc:245
+msgid "Bolivia"
+msgstr "¦À¡Ä¢Å¢Â¡"
+
+#. :BOL:068:
+#: ../zypp/CountryCode.cc:246
+msgid "Brazil"
+msgstr "À¢§Ãº¢ø"
+
+#. :BRA:076:
+#: ../zypp/CountryCode.cc:247
+msgid "Bahamas"
+msgstr "ÀÉ¡Á¡"
+
+#. :BHS:044:
+#: ../zypp/CountryCode.cc:248
+msgid "Bhutan"
+msgstr "À¢§Ãº¢ø"
+
+#. :BTN:064:
+#: ../zypp/CountryCode.cc:249
+msgid "Bouvet Island"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :BVT:074:
+#: ../zypp/CountryCode.cc:250
+msgid "Botswana"
+msgstr "பாட்ஸ்வானா"
+
+#. :BWA:072:
+#: ../zypp/CountryCode.cc:251
+msgid "Belarus"
+msgstr "¦ÀÄ¡åÍ"
+
+#. :BLR:112:
+#: ../zypp/CountryCode.cc:252
+msgid "Belize"
+msgstr "¦Àøº¢Âõ"
+
+#. :BLZ:084:
+#: ../zypp/CountryCode.cc:253
+msgid "Canada"
+msgstr "¸É¼¡"
+
+#. :CAN:124:
+#: ../zypp/CountryCode.cc:254
+msgid "Cocos (Keeling) Islands"
+msgstr "கோகோஸ் (கீலிங்) தீவுகள்"
+
+#. :CCK:166:
+#. :CAF:140:
+#: ../zypp/CountryCode.cc:255 ../zypp/CountryCode.cc:257
+msgid "Congo"
+msgstr "காங்கோ"
+
+#. :COD:180:
+#: ../zypp/CountryCode.cc:256
+msgid "Central African Republic"
+msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+
+#. :COG:178:
+#: ../zypp/CountryCode.cc:258
+msgid "Switzerland"
+msgstr "ÍÅ¢ðº÷Ä¡óÐ"
+
+#. :CHE:756:
+#: ../zypp/CountryCode.cc:259
+msgid "Cote D'Ivoire"
+msgstr "கோடே த’ஐவரி"
+
+#. :CIV:384:
+#: ../zypp/CountryCode.cc:260
+msgid "Cook Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :COK:184:
+#: ../zypp/CountryCode.cc:261
+msgid "Chile"
+msgstr "º¢Ä¢"
+
+#. :CHL:152:
+#: ../zypp/CountryCode.cc:262
+msgid "Cameroon"
+msgstr "கேமரூன்"
+
+#. :CMR:120:
+#: ../zypp/CountryCode.cc:263
+msgid "China"
+msgstr "º£É¡"
+
+#. :CHN:156:
+#: ../zypp/CountryCode.cc:264
+msgid "Colombia"
+msgstr "¦¸¡ÄõÀ¢Â¡"
+
+#. :COL:170:
+#: ../zypp/CountryCode.cc:265
+msgid "Costa Rica"
+msgstr "காஸ்டா ரிகா"
+
+#. :CRI:188:
+#: ../zypp/CountryCode.cc:266
+msgid "Serbia and Montenegro"
+msgstr "செர்பியா மற்றும் மான்டநெக்ரோ"
+
+#. :SCG:891:
+#: ../zypp/CountryCode.cc:267
+msgid "Cuba"
+msgstr "¦¸¡ÄõÀ¢Â¡"
+
+#. :CUB:192:
+#: ../zypp/CountryCode.cc:268
+msgid "Cape Verde"
+msgstr "கேப் வெர்ட்"
+
+#. :CPV:132:
+#: ../zypp/CountryCode.cc:269
+msgid "Christmas Island"
+msgstr "கிறிஸ்துமஸ் தீவு"
+
+#. :CXR:162:
+#: ../zypp/CountryCode.cc:270
+msgid "Cyprus"
+msgstr "சைப்ரஸ்"
+
+#. :CYP:196:
+#: ../zypp/CountryCode.cc:271
+msgid "Czech Republic"
+msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+
+#. :CZE:203:
+#: ../zypp/CountryCode.cc:272
+msgid "Germany"
+msgstr "§º÷ÁÉ¢"
+
+#. :DEU:276:
+#: ../zypp/CountryCode.cc:273
+msgid "Djibouti"
+msgstr "ஜிபெளட்டி"
+
+#. :DJI:262:
+#: ../zypp/CountryCode.cc:274
+msgid "Denmark"
+msgstr "¦¼ýÁ¡÷ì"
+
+#. :DNK:208:
+#: ../zypp/CountryCode.cc:275
+msgid "Dominica"
+msgstr "Õ§ÁÉ¢Â¡"
+
+#. :DMA:212:
+#: ../zypp/CountryCode.cc:276
+msgid "Dominican Republic"
+msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+
+#. :DOM:214:
+#: ../zypp/CountryCode.cc:277
+msgid "Algeria"
+msgstr "Àø§¸Ã¢Â¡"
+
+#. :DZA:012:
+#: ../zypp/CountryCode.cc:278
+msgid "Ecuador"
+msgstr "®ì¦Å§¼¡÷"
+
+#. :ECU:218:
+#: ../zypp/CountryCode.cc:279
+msgid "Estonia"
+msgstr "±Í§¼¡É¢Â¡"
+
+#. :EST:233:
+#: ../zypp/CountryCode.cc:280
+msgid "Egypt"
+msgstr "±¸¢ôÐ"
+
+#. :EGY:818:
+#: ../zypp/CountryCode.cc:281
+msgid "Western Sahara"
+msgstr "மேற்கு சஹாரா"
+
+#. :ESH:732:
+#: ../zypp/CountryCode.cc:282
+msgid "Eritrea"
+msgstr "எரிட்ரியா"
+
+#. :ERI:232:
+#: ../zypp/CountryCode.cc:283
+msgid "Spain"
+msgstr "Í¦ÀÂ¢ý"
+
+#. :ESP:724:
+#: ../zypp/CountryCode.cc:284
+msgid "Ethiopia"
+msgstr "±Í§¼¡É¢Â¡"
+
+#. :ETH:231:
+#: ../zypp/CountryCode.cc:285
+msgid "Finland"
+msgstr "À¢ýÄ¡óÐ"
+
+#. :FIN:246:
+#: ../zypp/CountryCode.cc:286
+msgid "Fiji"
+msgstr "ஃபிஜி"
+
+#. :FJI:242:
+#: ../zypp/CountryCode.cc:287
+msgid "Falkland Islands (Malvinas)"
+msgstr "ஃபால்க்லாந்து தீவுகள் (மால்வினாஸ்)"
+
+#. :FLK:238:
+#: ../zypp/CountryCode.cc:288
+msgid "Federated States of Micronesia"
+msgstr "மைக்ரோனேசிய நாடுகளின் கூட்டமைப்பு"
+
+#. :FSM:583:
+#: ../zypp/CountryCode.cc:289
+msgid "Faroe Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :FRO:234:
+#: ../zypp/CountryCode.cc:290
+msgid "France"
+msgstr "À¢Ã¡ýÍ"
+
+#. :FRA:250:
+#: ../zypp/CountryCode.cc:291
+msgid "Metropolitan France"
+msgstr "பிரான்ஸ் மாநகர்"
+
+#. :FXX:249:
+#: ../zypp/CountryCode.cc:292
+msgid "Gabon"
+msgstr "º£É¡"
+
+#. :GAB:266:
+#: ../zypp/CountryCode.cc:293
+msgid "United Kingdom"
+msgstr "யுனைடெட் கிங்டம்"
+
+#. :GBR:826:
+#: ../zypp/CountryCode.cc:294
+msgid "Grenada"
+msgstr "¸¢¦ÃÉ¼¡"
+
+#. :GRD:308:
+#: ../zypp/CountryCode.cc:295
+msgid "Georgia"
+msgstr "¦º÷À¢Â¡"
+
+#. :GEO:268:
+#: ../zypp/CountryCode.cc:296
+msgid "French Guiana"
+msgstr "À¢¦Ãýî "
+
+#. :GUF:254:
+#: ../zypp/CountryCode.cc:297
+msgid "Ghana"
+msgstr "º£É¡"
+
+#. :GHA:288:
+#: ../zypp/CountryCode.cc:298
+msgid "Gibraltar"
+msgstr "ஜிப்ரால்டர்"
+
+#. :GIB:292:
+#: ../zypp/CountryCode.cc:299
+msgid "Greenland"
+msgstr "¸¢¦ÃÉ¼¡"
+
+#. :GRL:304:
+#: ../zypp/CountryCode.cc:300
+msgid "Gambia"
+msgstr "º¦Áöì¸¡"
+
+#. :GMB:270:
+#: ../zypp/CountryCode.cc:301
+msgid "Guinea"
+msgstr "ÌÅ¡ò¾Á¡Ä¡"
+
+#. :GIN:324:
+#: ../zypp/CountryCode.cc:302
+msgid "Guadeloupe"
+msgstr "காடேலூப்"
+
+#. :GLP:312:
+#: ../zypp/CountryCode.cc:303
+msgid "Equatorial Guinea"
+msgstr "ஈக்வடோரியல் கினியா"
+
+#. :GNQ:226:
+#: ../zypp/CountryCode.cc:304
+msgid "Greece"
+msgstr "¸¢Ã£Í"
+
+#. :GRC:300:
+#: ../zypp/CountryCode.cc:305
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "தென் ஜியார்ஜியா மற்றும் தென் சான்ட்விச் தீவுகள்"
+
+#. :SGS:239:
+#: ../zypp/CountryCode.cc:306
+msgid "Guatemala"
+msgstr "ÌÅ¡ò¾Á¡Ä¡"
+
+#. :GTM:320:
+#: ../zypp/CountryCode.cc:307
+msgid "Guam"
+msgstr "ÌÅ¡ò¾Á¡Ä¡"
+
+#. :GUM:316:
+#: ../zypp/CountryCode.cc:308
+msgid "Guinea-Bissau"
+msgstr "கினியா-பிசாவ்"
+
+#. :GNB:624:
+#: ../zypp/CountryCode.cc:309
+msgid "Guyana"
+msgstr "º£É¡"
+
+#. :GUY:328:
+#: ../zypp/CountryCode.cc:310
+msgid "Hong Kong"
+msgstr "ஹாங் காங்"
+
+#. :HKG:344:
+#: ../zypp/CountryCode.cc:311
+msgid "Heard Island and McDonald Islands"
+msgstr "ஹேர்ட் தீவு மற்றும் மெக்டொனால்ட் தீவுகள்"
+
+#. :HMD:334:
+#: ../zypp/CountryCode.cc:312
+msgid "Honduras"
+msgstr "¬ñÎÃ¡Í"
+
+#. :HND:340:
+#: ../zypp/CountryCode.cc:313
+msgid "Croatia"
+msgstr "Ì¦Ã¡§Åº¢Â¡"
+
+#. :HRV:191:
+#: ../zypp/CountryCode.cc:314
+msgid "Haiti"
+msgstr "ஹைட்டி"
+
+#. :HTI:332:
+#: ../zypp/CountryCode.cc:315
+msgid "Hungary"
+msgstr "¬í§¸Ã¢"
+
+#. :HUN:348:
+#: ../zypp/CountryCode.cc:316
+msgid "Indonesia"
+msgstr "­ó§¾¡É£º¢Â¡"
+
+#. :IDN:360:
+#: ../zypp/CountryCode.cc:317
+msgid "Ireland"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :IRL:372:
+#: ../zypp/CountryCode.cc:318
+msgid "Israel"
+msgstr "­Í§Ãø"
+
+#. :ISR:376:
+#: ../zypp/CountryCode.cc:319
+msgid "India"
+msgstr "­ó¾¢Â¡"
+
+#. :IND:356:
+#: ../zypp/CountryCode.cc:320
+msgid "British Indian Ocean Territory"
+msgstr "பிரிட்டிஷ் இந்துமாக் கடல் எல்லை"
+
+#. :IOT:086:
+#: ../zypp/CountryCode.cc:321
+msgid "Iraq"
+msgstr "®Ã¡ì"
+
+#. :IRQ:368:
+#: ../zypp/CountryCode.cc:322
+msgid "Iran"
+msgstr "®Ã¡ì"
+
+#. :IRN:364:
+#: ../zypp/CountryCode.cc:323
+msgid "Iceland"
+msgstr "³ÍÄ¡óÐ"
+
+#. :ISL:352:
+#: ../zypp/CountryCode.cc:324
+msgid "Italy"
+msgstr "­ò¾¡Ä¢"
+
+#. :ITA:380:
+#: ../zypp/CountryCode.cc:325
+msgid "Jamaica"
+msgstr "º¦Áöì¸¡"
+
+#. :JAM:388:
+#: ../zypp/CountryCode.cc:326
+msgid "Jordan"
+msgstr "§Â¡÷¾¡ý"
+
+#. :JOR:400:
+#: ../zypp/CountryCode.cc:327
+msgid "Japan"
+msgstr "ºôÀ¡ý"
+
+#. :JPN:392:
+#: ../zypp/CountryCode.cc:328
+msgid "Kenya"
+msgstr "கென்யா"
+
+#. :KEN:404:
+#: ../zypp/CountryCode.cc:329
+msgid "Kyrgyzstan"
+msgstr "¾¡öÅ¡ý"
+
+#. :KGZ:417:
+#: ../zypp/CountryCode.cc:330
+msgid "Cambodia"
+msgstr "¦¸¡ÄõÀ¢Â¡"
+
+#. :KHM:116:
+#: ../zypp/CountryCode.cc:331
+msgid "Kiribati"
+msgstr "கிரிபாட்டி"
+
+#. :KIR:296:
+#: ../zypp/CountryCode.cc:332
+msgid "Comoros"
+msgstr "கோமரோஸ்"
+
+#. :COM:174:
+#: ../zypp/CountryCode.cc:333
+msgid "Saint Kitts and Nevis"
+msgstr "¦ºÂ¢ýð ¸¢ðÍ & ¦¿Å¢Í"
+
+#. :KNA:659:
+#: ../zypp/CountryCode.cc:334
+msgid "North Korea"
+msgstr "வட கொரியா"
+
+#. :PRK:408:
+#: ../zypp/CountryCode.cc:335
+msgid "South Korea"
+msgstr "¦¾ý ¬ôÃ¢ì¸¡"
+
+#. :KOR:410:
+#: ../zypp/CountryCode.cc:336
+msgid "Kuwait"
+msgstr "குவைத்"
+
+#. :KWT:414:
+#: ../zypp/CountryCode.cc:337
+msgid "Cayman Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :CYM:136:
+#: ../zypp/CountryCode.cc:338
+msgid "Kazakhstan"
+msgstr "¾¡öÅ¡ý"
+
+#. :KAZ:398:
+#: ../zypp/CountryCode.cc:339
+msgid "Lao People's Democratic Republic"
+msgstr "லாவோ மக்கள் ஜனநாயக குடியரசு"
+
+#. :LAO:418:
+#: ../zypp/CountryCode.cc:340
+msgid "Lebanon"
+msgstr "லெபனான்"
+
+#. :LBN:422:
+#: ../zypp/CountryCode.cc:341
+msgid "Saint Lucia"
+msgstr "¦ºýð æº¢Â¡"
+
+#. :LCA:662:
+#: ../zypp/CountryCode.cc:342
+msgid "Liechtenstein"
+msgstr "லிச்சன்ஸ்டெயின்"
+
+#. :LIE:438:
+#: ../zypp/CountryCode.cc:343
+msgid "Sri Lanka"
+msgstr "¦º÷À¢Âý"
+
+#. :LKA:144:
+#: ../zypp/CountryCode.cc:344
+msgid "Liberia"
+msgstr "¦º÷À¢Â¡"
+
+#. :LBR:430:
+#: ../zypp/CountryCode.cc:345
+msgid "Lesotho"
+msgstr "லெசோத்தோ"
+
+#. :LSO:426:
+#: ../zypp/CountryCode.cc:346
+msgid "Lithuania"
+msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+
+#. :LTU:440:
+#: ../zypp/CountryCode.cc:347
+msgid "Luxembourg"
+msgstr "Äìºõ§À¡÷ì"
+
+#. :LUX:442:
+#: ../zypp/CountryCode.cc:348
+msgid "Latvia"
+msgstr "ÄðÅ¢Â¡"
+
+#. :LVA:428:
+#: ../zypp/CountryCode.cc:349
+msgid "Libya"
+msgstr "¦º÷À¢Â¡"
+
+#. :LBY:434:
+#: ../zypp/CountryCode.cc:350
+msgid "Morocco"
+msgstr "மொராக்கோ"
+
+#. :MAR:504:
+#: ../zypp/CountryCode.cc:351
+msgid "Monaco"
+msgstr "Á¡ø¼¡"
+
+#. :MCO:492:
+#: ../zypp/CountryCode.cc:352
+msgid "Moldova"
+msgstr "Í§Ä¡Å¡ì"
+
+#. :MDA:498:
+#: ../zypp/CountryCode.cc:353
+msgid "Madagascar"
+msgstr "மடகாஸ்கர்"
+
+#. :MDG:450:
+#: ../zypp/CountryCode.cc:354
+msgid "Marshall Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :MHL:584:
+#: ../zypp/CountryCode.cc:355
+msgid "Macedonia"
+msgstr "Á¡º¢§¼¡É¢Â¡"
+
+#. :MKD:807:
+#: ../zypp/CountryCode.cc:356
+msgid "Mali"
+msgstr "Á¡ø¼¡"
+
+#. :MLI:466:
+#: ../zypp/CountryCode.cc:357
+msgid "Myanmar"
+msgstr "ÀÉ¡Á¡"
+
+#. :MMR:104:
+#: ../zypp/CountryCode.cc:358
+msgid "Mongolia"
+msgstr "மங்கோலியா"
+
+#. :MNG:496:
+#: ../zypp/CountryCode.cc:359
+msgid "Macao"
+msgstr "Á¡ø¼¡"
+
+#. :MAC:446:
+#: ../zypp/CountryCode.cc:360
+msgid "Northern Mariana Islands"
+msgstr "வட மாரியானா தீவுகள்"
+
+#. :MNP:580:
+#: ../zypp/CountryCode.cc:361
+msgid "Martinique"
+msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+
+#. :MTQ:474:
+#: ../zypp/CountryCode.cc:362
+msgid "Mauritania"
+msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+
+#. :MRT:478:
+#: ../zypp/CountryCode.cc:363
+msgid "Montserrat"
+msgstr "மான்ட்செர்ரட்"
+
+#. :MSR:500:
+#: ../zypp/CountryCode.cc:364
+msgid "Malta"
+msgstr "Á¡ø¼¡"
+
+#. :MLT:470:
+#: ../zypp/CountryCode.cc:365
+msgid "Mauritius"
+msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+
+#. :MUS:480:
+#: ../zypp/CountryCode.cc:366
+msgid "Maldives"
+msgstr "Á¡ø¼¡"
+
+#. :MDV:462:
+#: ../zypp/CountryCode.cc:367
+msgid "Malawi"
+msgstr "Á¡ø¼¡"
+
+#. :MWI:454:
+#: ../zypp/CountryCode.cc:368
+msgid "Mexico"
+msgstr "¦Áìº¢§¸¡"
+
+#. :MEX:484:
+#: ../zypp/CountryCode.cc:369
+msgid "Malaysia"
+msgstr "Á¡ø¼¡"
+
+#. :MYS:458:
+#: ../zypp/CountryCode.cc:370
+msgid "Mozambique"
+msgstr "மொசாம்பிக்"
+
+#. :MOZ:508:
+#: ../zypp/CountryCode.cc:371
+msgid "Namibia"
+msgstr "º¦Áöì¸¡"
+
+#. :NAM:516:
+#: ../zypp/CountryCode.cc:372
+msgid "New Caledonia"
+msgstr "Á¡º¢§¼¡É¢Â¡"
+
+#. :NCL:540:
+#: ../zypp/CountryCode.cc:373
+msgid "Niger"
+msgstr "¦º÷À¢Â¡"
+
+#. :NER:562:
+#: ../zypp/CountryCode.cc:374
+msgid "Norfolk Island"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :NFK:574:
+#: ../zypp/CountryCode.cc:375
+msgid "Nigeria"
+msgstr "¦º÷À¢Â¡"
+
+#. :NGA:566:
+#: ../zypp/CountryCode.cc:376
+msgid "Nicaragua"
+msgstr "ÀÃ¡Ì§Å"
+
+#. :NIC:558:
+#: ../zypp/CountryCode.cc:377
+msgid "Netherlands"
+msgstr "¦¿¾÷Ä¡óÐ"
+
+#. :NLD:528:
+#: ../zypp/CountryCode.cc:378
+msgid "Norway"
+msgstr "¿¡÷§Å"
+
+#. :NOR:578:
+#: ../zypp/CountryCode.cc:379
+msgid "Nepal"
+msgstr "நேபாளம்"
+
+#. :NPL:524:
+#. language code: nau na
+#: ../zypp/CountryCode.cc:380 ../zypp/LanguageCode.cc:858
+msgid "Nauru"
+msgstr "நவ்ரு"
+
+#. :NRU:520:
+#: ../zypp/CountryCode.cc:381
+msgid "Niue"
+msgstr "நியூ"
+
+#. :NIU:570:
+#: ../zypp/CountryCode.cc:382
+msgid "New Zealand"
+msgstr "¿¢äº¢Ä¡óÐ"
+
+#. :NZL:554:
+#: ../zypp/CountryCode.cc:383
+msgid "Oman"
+msgstr "§º÷Áý"
+
+#. :OMN:512:
+#: ../zypp/CountryCode.cc:384
+msgid "Panama"
+msgstr "ÀÉ¡Á¡"
+
+#. :PAN:591:
+#: ../zypp/CountryCode.cc:385
+msgid "Peru"
+msgstr "¦ÀÕ"
+
+#. :PER:604:
+#: ../zypp/CountryCode.cc:386
+msgid "French Polynesia"
+msgstr "பிரெஞ்சு பாலினேசியா"
+
+#. :PYF:258:
+#: ../zypp/CountryCode.cc:387
+msgid "Papua New Guinea"
+msgstr "பாப்புவா நியூ கினியா"
+
+#. :PNG:598:
+#: ../zypp/CountryCode.cc:388
+msgid "Philippines"
+msgstr "ஃபிலிப்பைன்ஸ்"
+
+#. :PHL:608:
+#: ../zypp/CountryCode.cc:389
+msgid "Pakistan"
+msgstr "¾¡öÅ¡ý"
+
+#. :PAK:586:
+#: ../zypp/CountryCode.cc:390
+msgid "Poland"
+msgstr "§À¡Ä¡óÐ"
+
+#. :POL:616:
+#: ../zypp/CountryCode.cc:391
+msgid "Saint Pierre and Miquelon"
+msgstr "செயின்ட் பியரி மற்றும் மிக்வலான்"
+
+#. :SPM:666:
+#: ../zypp/CountryCode.cc:392
+msgid "Pitcairn"
+msgstr "பிட்கெய்ர்ன்"
+
+#. :PCN:612:
+#: ../zypp/CountryCode.cc:393
+msgid "Puerto Rico"
+msgstr "பியூர்டோ ரிகோ"
+
+#. :PRI:630:
+#: ../zypp/CountryCode.cc:394
+msgid "Palestinian Territory"
+msgstr "பாலஸ்தீனிய எல்லை"
+
+#. :PSE:275:
+#: ../zypp/CountryCode.cc:395
+msgid "Portugal"
+msgstr "§À¡÷òÐ¸ø"
+
+#. :PRT:620:
+#: ../zypp/CountryCode.cc:396
+msgid "Palau"
+msgstr "ÀÃ¡Ì§Å"
+
+#. :PLW:585:
+#: ../zypp/CountryCode.cc:397
+msgid "Paraguay"
+msgstr "ÀÃ¡Ì§Å"
+
+#. :PRY:600:
+#: ../zypp/CountryCode.cc:398
+msgid "Qatar"
+msgstr "Á¡ø¼¡"
+
+#. :QAT:634:
+#: ../zypp/CountryCode.cc:399
+msgid "Reunion"
+msgstr "ரீயூனியன்"
+
+#. :REU:638:
+#: ../zypp/CountryCode.cc:400
+msgid "Romania"
+msgstr "Õ§ÁÉ¢Â¡"
+
+#. :ROU:642:
+#: ../zypp/CountryCode.cc:401
+msgid "Russian Federation"
+msgstr "ரஷ்ய கூட்டரசு"
+
+#. :RUS:643:
+#: ../zypp/CountryCode.cc:402
+msgid "Rwanda"
+msgstr "¸É¼¡"
+
+#. :RWA:646:
+#: ../zypp/CountryCode.cc:403
+msgid "Saudi Arabia"
+msgstr "சவூதி அரேபியா"
+
+#. :SAU:682:
+#: ../zypp/CountryCode.cc:404
+msgid "Solomon Islands"
+msgstr "«Â÷Ä¡óÐ"
+
+#. :SLB:090:
+#: ../zypp/CountryCode.cc:405
+msgid "Seychelles"
+msgstr "செய்செலஸ்"
+
+#. :SYC:690:
+#: ../zypp/CountryCode.cc:406
+msgid "Sudan"
+msgstr "Ý¼¡ý"
+
+#. :SDN:736:
+#: ../zypp/CountryCode.cc:407
+msgid "Sweden"
+msgstr "ÍÅ£¼ý"
+
+#. :SWE:752:
+#: ../zypp/CountryCode.cc:408
+msgid "Singapore"
+msgstr "சிங்கப்பூர்"
+
+#. :SGP:702:
+#: ../zypp/CountryCode.cc:409
+msgid "Saint Helena"
+msgstr "செயின்ட் ஹெலனா"
+
+#. :SHN:654:
+#: ../zypp/CountryCode.cc:410
+msgid "Slovenia"
+msgstr "Í§Ä¡Å¢É¢Â¡"
+
+#. :SVN:705:
+#: ../zypp/CountryCode.cc:411
+msgid "Svalbard and Jan Mayen"
+msgstr "ஸ்வால்பார்ட் மற்றும் ஜான் மேயன்"
+
+#. :SJM:744:
+#: ../zypp/CountryCode.cc:412
+msgid "Slovakia"
+msgstr "Í§Ä¡Å¡ì¸¢Â"
+
+#. :SVK:703:
+#: ../zypp/CountryCode.cc:413
+msgid "Sierra Leone"
+msgstr "ஸியரா லியோன்"
+
+#. :SLE:694:
+#: ../zypp/CountryCode.cc:414
+msgid "San Marino"
+msgstr "சான் மரினோ"
+
+#. :SMR:674:
+#: ../zypp/CountryCode.cc:415
+msgid "Senegal"
+msgstr "செனகல்"
+
+#. :SEN:686:
+#: ../zypp/CountryCode.cc:416
+msgid "Somalia"
+msgstr "Õ§ÁÉ¢Â¡"
+
+#. :SOM:706:
+#: ../zypp/CountryCode.cc:417
+msgid "Suriname"
+msgstr "¦º÷À¢Â¡"
+
+#. :SUR:740:
+#: ../zypp/CountryCode.cc:418
+msgid "Sao Tome and Principe"
+msgstr "சாவோ டோம் மற்றும் பரின்சிபே"
+
+#. :STP:678:
+#: ../zypp/CountryCode.cc:419
+msgid "El Salvador"
+msgstr "±ø º¡øÅ§¼¡÷"
+
+#. :SLV:222:
+#: ../zypp/CountryCode.cc:420
+msgid "Syria"
+msgstr "¦º÷À¢Â¡"
+
+#. :SYR:760:
+#: ../zypp/CountryCode.cc:421
+msgid "Swaziland"
+msgstr "¾¡öÄ¡óÐ"
+
+#. :SWZ:748:
+#: ../zypp/CountryCode.cc:422
+msgid "Turks and Caicos Islands"
+msgstr "டர்க்ஸ் மற்றும் கெய்கோஸ் தீவுகள்"
+
+#. :TCA:796:
+#: ../zypp/CountryCode.cc:423
+msgid "Chad"
+msgstr "º£É¡"
+
+#. :TCD:148:
+#: ../zypp/CountryCode.cc:424
+msgid "French Southern Territories"
+msgstr "பிரெஞ்சு தென் எல்லைகள்"
+
+#. :ATF:260:
+#: ../zypp/CountryCode.cc:425
+msgid "Togo"
+msgstr "டோகோ"
+
+#. :TGO:768:
+#: ../zypp/CountryCode.cc:426
+msgid "Thailand"
+msgstr "¾¡öÄ¡óÐ"
+
+#. :THA:764:
+#: ../zypp/CountryCode.cc:427
+msgid "Tajikistan"
+msgstr "¾¡öÅ¡ý"
+
+#. :TJK:762:
+#. language code: tkl
+#: ../zypp/CountryCode.cc:428 ../zypp/LanguageCode.cc:1122
+msgid "Tokelau"
+msgstr "டோகேலாவ்"
+
+#. :TKL:772:
+#: ../zypp/CountryCode.cc:429
+msgid "Turkmenistan"
+msgstr "¾¡öÅ¡ý"
+
+#. :TKM:795:
+#: ../zypp/CountryCode.cc:430
+msgid "Tunisia"
+msgstr "Ãº¢Â¡"
+
+#. :TUN:788:
+#: ../zypp/CountryCode.cc:431
+msgid "Tonga"
+msgstr "டோங்கா"
+
+#. :TON:776:
+#: ../zypp/CountryCode.cc:432
+msgid "East Timor"
+msgstr "கிழக்கு தைமூர்"
+
+#. :TLS:626:
+#: ../zypp/CountryCode.cc:433
+msgid "Turkey"
+msgstr "ÐÕì¸¢"
+
+#. :TUR:792:
+#: ../zypp/CountryCode.cc:434
+msgid "Trinidad and Tobago"
+msgstr "ðÃ¢É¢¼¡ð & ¦¼¡À¡§¸¡"
+
+#. :TTO:780:
+#. language code: tvl
+#: ../zypp/CountryCode.cc:435 ../zypp/LanguageCode.cc:1152
+msgid "Tuvalu"
+msgstr "Ýæ"
+
+#. :TUV:798:
+#: ../zypp/CountryCode.cc:436
+msgid "Taiwan"
+msgstr "¾¡öÅ¡ý"
+
+#. :TWN:158:
+#: ../zypp/CountryCode.cc:437
+msgid "Tanzania"
+msgstr "டான்சானியா"
+
+#. :TZA:834:
+#: ../zypp/CountryCode.cc:438
+msgid "Ukraine"
+msgstr "¯ì¦Ãöý"
+
+#. :UKR:804:
+#: ../zypp/CountryCode.cc:439
+msgid "Uganda"
+msgstr "¸É¼¡"
+
+#. :UGA:800:
+#: ../zypp/CountryCode.cc:440
+msgid "United States Minor Outlying Islands"
+msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
+
+#. :UMI:581:
+#: ../zypp/CountryCode.cc:441
+msgid "United States"
+msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
+
+#. :USA:840:
+#: ../zypp/CountryCode.cc:442
+msgid "Uruguay"
+msgstr "¯ÕÌ§Å"
+
+#. :URY:858:
+#: ../zypp/CountryCode.cc:443
+msgid "Uzbekistan"
+msgstr "¾¡öÅ¡ý"
+
+#. :UZB:860:
+#: ../zypp/CountryCode.cc:444
+msgid "Holy See (Vatican City State)"
+msgstr "ஹோலி ஸீ (வாடிகன் நகர மாகாணம்)"
+
+#. :VAT:336:
+#: ../zypp/CountryCode.cc:445
+msgid "Saint Vincent and the Grenadines"
+msgstr "¦ºÂ¢ýð Å¢ý¦ºýð & ¸¢¦ÃÉËý¸û"
+
+#. :VCT:670:
+#: ../zypp/CountryCode.cc:446
+msgid "Venezuela"
+msgstr "¦ÅÉ¢ÍÅÄ¡"
+
+#. :VEN:862:
+#: ../zypp/CountryCode.cc:447
+msgid "British Virgin Islands"
+msgstr "À¢ýÄ¡óÐ"
+
+#. :VGB:092:
+#: ../zypp/CountryCode.cc:448
+msgid "Virgin Islands, U.S."
+msgstr "À¢ýÄ¡óÐ"
+
+#. :VIR:850:
+#: ../zypp/CountryCode.cc:449
+msgid "Vietnam"
+msgstr "Vietnam"
+
+#. :VNM:704:
+#: ../zypp/CountryCode.cc:450
+msgid "Vanuatu"
+msgstr "வானுவாடூ"
+
+#. :VUT:548:
+#: ../zypp/CountryCode.cc:451
+msgid "Wallis and Futuna"
+msgstr "வாலிஸ் மற்றும் ஃபுடூனா"
+
+#. :WLF:876:
+#: ../zypp/CountryCode.cc:452
+msgid "Samoa"
+msgstr "¦¸¡ÄõÀ¢Â¡"
+
+#. :WSM:882:
+#: ../zypp/CountryCode.cc:453
+msgid "Yemen"
+msgstr "யேமன்"
+
+#. :YEM:887:
+#: ../zypp/CountryCode.cc:454
+msgid "Mayotte"
+msgstr "மயோட்"
+
+#. :MYT:175:
+#: ../zypp/CountryCode.cc:455
+msgid "South Africa"
+msgstr "¦¾ý ¬ôÃ¢ì¸¡"
+
+#. :ZAF:710:
+#: ../zypp/CountryCode.cc:456
+msgid "Zambia"
+msgstr "º¦Áöì¸¡"
+
+#. :ZMB:894:
+#: ../zypp/CountryCode.cc:457
+msgid "Zimbabwe"
+msgstr "ஜிம்பாப்வே"
+
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
 msgstr "அறியப்படாத மொழி: "
-
-#. Defined LanguageCode constants
-#. Defined CountryCode constants
-#: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
-msgid "No Code"
-msgstr "குறியீடு இல்லை"
 
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
@@ -1611,12 +3950,6 @@ msgstr "வட அமெரிக்க இந்திய"
 msgid "Neapolitan"
 msgstr "நியபாலிட்டன்"
 
-#. language code: nau na
-#. :NPL:524:
-#: ../zypp/LanguageCode.cc:858 ../zypp/CountryCode.cc:380
-msgid "Nauru"
-msgstr "நவ்ரு"
-
 #. language code: nav nv
 #: ../zypp/LanguageCode.cc:860
 msgid "Navajo"
@@ -2242,12 +4575,6 @@ msgstr "¦º÷À¢Â¡"
 msgid "Tiv"
 msgstr "டைவ்"
 
-#. language code: tkl
-#. :TJK:762:
-#: ../zypp/LanguageCode.cc:1122 ../zypp/CountryCode.cc:428
-msgid "Tokelau"
-msgstr "டோகேலாவ்"
-
 #. language code: tlh
 #: ../zypp/LanguageCode.cc:1124
 msgid "Klingon"
@@ -2317,12 +4644,6 @@ msgstr "ÐÕì¸¢Â"
 #: ../zypp/LanguageCode.cc:1150
 msgid "Altaic (Other)"
 msgstr "அல்டெய்க் (மற்றவை)"
-
-#. language code: tvl
-#. :TTO:780:
-#: ../zypp/LanguageCode.cc:1152 ../zypp/CountryCode.cc:435
-msgid "Tuvalu"
-msgstr "Ýæ"
 
 #. language code: twi tw
 #: ../zypp/LanguageCode.cc:1154
@@ -2504,2285 +4825,3 @@ msgstr "Ýæ"
 msgid "Zuni"
 msgstr "சுனி"
 
-#: ../zypp/SourceManager.h:42
-msgid "Unable to restore all sources."
-msgstr "அனைத்து ஆதாரங்களையும் மீட்க முடியவில்லை"
-
-#: ../zypp/SourceManager.h:68
-msgid ""
-"At least one source already registered, stored sources cannot be restored."
-msgstr ""
-"ஒரு ஆதாரமேனும் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது, சேமிக்கப்பட்ட ஆதாரங்களைமீட்க இயலாது."
-
-#: ../zypp/ZYppFactory.cc:279 ../zypp/ZYppFactory.cc:334
-msgid "Software management is already running."
-msgstr "மென்பொருள் நிர்வாகம் ஏற்கனவே இயக்கத்திலுள்ளது."
-
-#: ../zypp/target/hal/HalContext.cc:96
-msgid "HalContext not connected"
-msgstr "ஹால்கான்டெக்ஸ்ட் இணைக்கப்படவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:106
-msgid "HalDrive not initialized"
-msgstr "ஹால்டிரைவ் துவக்கப்படவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:116
-msgid "HalVolume not initialized"
-msgstr "ஹால்வால்யூம் துவக்கப்படவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:208
-msgid "Unable to create dbus connection"
-msgstr "டிபஸ் இணைப்பை உருவாக்க இயலவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:224
-msgid "libhal_ctx_new: Can't create libhal context"
-msgstr "libhal_ctx_new: ஆல் லைபால் உள்ளடக்கத்தை உருவாக்க இயலவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:239
-msgid "libhal_set_dbus_connection: Can't set dbus connection"
-msgstr "libhal_set_dbus_connection: ஆல் டிபஸ் இணைப்பை அமைக்க இயலவில்லை"
-
-#: ../zypp/target/hal/HalContext.cc:254
-msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "HAL உள்ளடக்கத்தை துவக்க இயலவில்லை -- ஹால்ட் இயக்கத்தில் இல்லையா?"
-
-#: ../zypp/target/hal/HalContext.cc:843
-msgid "Not a CDROM drive"
-msgstr "சிடிரோம் டிரைவ் அல்ல"
-
-#: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
-#: ../zypp/target/hal/HalException.h:64
-msgid "Hal Exception"
-msgstr "ஹால் விதிவிலக்கு"
-
-#. Translator: %s = name of an rpm package. A list of diffs follows
-#. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1725
-#, c-format
-msgid "Changed configuration files for %s:"
-msgstr "%s:க்காக உள்ளமைத்தல் கோப்புகள் மாற்றப்பட்டுள்ளன"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1886
-#, fuzzy, c-format
-msgid "rpm saved %s as %s but it was impossible to determine the difference"
-msgstr "%s ஆக ஆர்பிஎம் சேமிக்கப்பட்டுள்ளது, ஆனால் வேறுபாட்டை நிர்ணயிக்க முடியவில்லை"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1888
-#, fuzzy, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"%s ஆக ஆர்பிஎம் சேமிக்கப்பட்டுள்ளது.\n"
-"வேறுபாடுகளின் முதல் 25 வரிகள் இங்குள்ளன:\n"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1891
-#, fuzzy, c-format
-msgid "rpm created %s as %s but it was impossible to determine the difference"
-msgstr "%s ஆக ஆர்பிஎம் உருவாக்கப்பட்டுள்ளது, ஆனால் வேறுபாட்டை நிர்ணயிக்க முடியவில்லை"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:1893
-#, fuzzy, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"%s ஆக ஆர்பிஎம் உருவாக்கப்பட்டுள்ளது.\n"
-"வேறுபாடுகளின் முதல் 25 வரிகள் இங்குள்ளன:\n"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:1899
-#, c-format
-msgid "%s install failed"
-msgstr "%s நிறுவுதல் தோல்வியுற்றது"
-
-#: ../zypp/target/rpm/RpmDb.cc:1900 ../zypp/target/rpm/RpmDb.cc:2018
-msgid "rpm output:"
-msgstr "ஆர்பிஎம் அவுட்புட்:"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:1906
-#, c-format
-msgid "%s installed ok"
-msgstr "%s நிறுவுதல் சரியானது"
-
-#: ../zypp/target/rpm/RpmDb.cc:1909 ../zypp/target/rpm/RpmDb.cc:2026
-msgid "Additional rpm output:"
-msgstr "கூடுதல் ஆர்பிஎம் அவுட்புட்:"
-
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2017
-#, c-format
-msgid "%s remove failed"
-msgstr "%s நீக்குதல் தோல்வியுற்றது"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2023
-#, c-format
-msgid "%s remove ok"
-msgstr "%s நீக்குதல் சரியானது"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2168
-#, fuzzy, c-format
-msgid "created backup %s"
-msgstr "மறுபிரதி உருவாக்கப்பட்டது"
-
-#: ../zypp/target/store/XMLFilesBackend.cc:1009
-#: ../zypp/target/store/XMLFilesBackend.cc:1016
-#: ../zypp/source/yum/YUMScriptImpl.cc:78
-#: ../zypp/source/yum/YUMScriptImpl.cc:112
-msgid "Cannot create a file needed to perform update installation."
-msgstr ""
-" புதுப்பிக்கப்பட்ட நிறுவுதலை மேற்கொள்வதற்கு தேவைப்படும் கோப்பை உருவாக்க இயலவில்லை."
-
-#: ../zypp/target/TargetImpl.cc:705
-msgid "Installation has been aborted as directed."
-msgstr "குறிப்பிட்டுள்ளபடி நிறுவுதல் இடையில் நிறுத்தப்பட்டது."
-
-#. Translator: all.%s = name of package,patch,....
-#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:55
-#, c-format
-msgid "%s is replaced by %s"
-msgstr "%s %sஆல் மாற்றியமைக்கப்பட்டது"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is replaced by others
-#: ../zypp/solver/detail/ResolverInfoObsoletes.cc:69
-#, c-format
-msgid "%s replaced by %s"
-msgstr "%s %sஆல் மாற்றியமைக்கப்பட்டது"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:261
-msgid "Invalid information"
-msgstr "செல்லாத தகவல்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:268
-#, c-format
-msgid "%s is needed by other resolvables"
-msgstr "மற்ற தீர்வுகளுக்கு %s தேவைப்படுகிறது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#. Translator: all.%s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:271
-#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:56
-#, c-format
-msgid "%s is needed by %s"
-msgstr "%s, %sக்கு தேவைப்படுகிறது"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:272
-#, c-format
-msgid ""
-"%s is needed by:\n"
-"%s"
-msgstr ""
-"%sக்கு தேவைப்படுவது:\n"
-"%s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:279
-#, c-format
-msgid "%s conflicts with other resolvables"
-msgstr "%s மற்ற தீர்வுகளுடன் முரண்படுகிறது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#. Translator: all.%s = name of package, patch,...
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is conflicting with multiple others
-#: ../zypp/solver/detail/Resolver_problems.cc:282
-#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:55
-#: ../zypp/solver/detail/ResolverInfoConflictsWith.cc:70
-#, c-format
-msgid "%s conflicts with %s"
-msgstr "%s %sஉடன் முரண்படுகிறது"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:283
-#, c-format
-msgid ""
-"%s conflicts with:\n"
-"%s"
-msgstr ""
-"%sஉடன் முரண்படுவது:\n"
-"%s"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:306
-#, c-format
-msgid "%s obsoletes other resolvables"
-msgstr "%s மற்ற தீர்வுகளை வழக்கற்றதாக்குகிறது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:309
-#, c-format
-msgid "%s obsoletes %s"
-msgstr "%s %sஐ வழக்கற்றதாக்குகிறது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:311
-#, c-format
-msgid "%s obsoletes:%s"
-msgstr "%s %sஐ வழக்கற்றதாக்குகிறது:"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:312
-msgid ""
-"\n"
-"These resolvables will be deleted from the system."
-msgstr ""
-"\n"
-"இத்தீர்வுகள் அமைப்பிலிருந்து நீக்கப்படும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:319
-#, c-format
-msgid "%s depends on other resolvables"
-msgstr "%s மற்ற தீர்வுகளை சார்ந்துள்ளது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:323
-#, c-format
-msgid "%s depends on %s"
-msgstr "%s %sஐ சார்ந்துள்ளது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:326
-#, c-format
-msgid "%s depends on:%s"
-msgstr "%s %sஐ சார்ந்துள்ளது:"
-
-#. TranslatorExplanation: currently it is unused.
-#: ../zypp/solver/detail/Resolver_problems.cc:332
-msgid "Child of"
-msgstr "இதன் உருவாக்கம்"
-
-#. TranslatorExplanation %s = dependency
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:338
-#: ../zypp/solver/detail/Resolver_problems.cc:418
-#, fuzzy, c-format
-msgid "Cannot install %s"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. TranslatorExplanation %s = capability
-#: ../zypp/solver/detail/Resolver_problems.cc:340
-#, c-format
-msgid "None provides %s"
-msgstr "%s யாரும் அளிப்பதில்லை"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:341
-msgid ""
-"\n"
-"There is no resource available which support this requirement."
-msgstr ""
-"\n"
-"இத்தேவையை பூர்த்தி செய்யும் ஆதாரம் எதுவும் இல்லை"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:349
-msgid ""
-"Due problems which are described above/below this resolution will not solve "
-"all dependencies"
-msgstr ""
-"இத்தீர்வின் மேலே மற்றும் கீழே விளக்கப்பட்டுள்ள பிரச்னைகள், அனைத்து சார்புத்தன்மைகளையும் "
-"தீர்க்கக்கூடியவை அல்ல"
-
-#: ../zypp/solver/detail/Resolver_problems.cc:360
-#: ../zypp/solver/detail/Resolver_problems.cc:711
-#, c-format
-msgid "Cannot install %s because it is conflicting with %s"
-msgstr "%s ஐ நிறுவ இயலவில்லை ஏனெனில் அது %s உடன் முரண்படுகிறது"
-
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:377
-#, c-format
-msgid "%s is not installed and has been marked as uninstallable"
-msgstr "%s நிறுவப்படவில்லை மற்றும் அது நிறுவ இயலாததாக குறிக்கப்பட்டுள்ளது"
-
-#. TranslatorExplanation %s = name of package,patch,...
-#: ../zypp/solver/detail/Resolver_problems.cc:388
-#, c-format
-msgid "Cannot install %s due to dependency problems"
-msgstr "சார்புத்தன்மை பிரச்னைகள் காரணமாக %s ஐ நிறுவ இயலவில்லை"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:426
-#: ../zypp/solver/detail/Resolver_problems.cc:436
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:64
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:66
-#, c-format
-msgid "delete %s"
-msgstr "%s ஐ நீக்கவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:429
-#: ../zypp/solver/detail/Resolver_problems.cc:439
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:69
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:71
-#, fuzzy, c-format
-msgid "do not install %s"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:452
-#, c-format
-msgid "%s has unfulfilled requirements"
-msgstr "%s தீர்க்கப்படாத தேவைகளைக் கொண்டுள்ளது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:490
-#, c-format
-msgid "%s has missing dependencies"
-msgstr "%s காணப்படாத சார்புத்தன்மைகளைக் கொண்டுள்ளது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:537
-#, c-format
-msgid "%s cannot be installed due to missing dependencies"
-msgstr "காணப்படாத சார்புத்தன்மைகள் %sஐ காரணமாக நிறுவ இயலாது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:585
-#, c-format
-msgid "%s fulfil dependencies of %s but will be uninstalled"
-msgstr "%s சார்புத்தன்மைகளை %s பூர்த்தி செய்யும் ஆனால் நிறுவுதல் நீக்கப்பட்டுவிடும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:595
-#, c-format
-msgid "%s fulfil dependencies of %s but will be kept on your system"
-msgstr "%s சார்புத்தன்மைகளை %s பூர்த்தி செய்யும் ஆனால் உங்கள் அமைப்பில் வைக்கப்படும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:605
-#, c-format
-msgid "No need to install %s"
-msgstr "%sஐ நிறுவத் தேவையில்லை"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:613
-#, c-format
-msgid "Cannot install %s to fulfil the dependencies of %s"
-msgstr "%sன் சார்புத்தன்மைகளை பூர்த்தி செய்வதற்கு %sஐ நிறுவ இயலவில்லை"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:628
-#, c-format
-msgid "Cannot be install %s to fulfil the dependencies of %s"
-msgstr "%sன் சார்புத்தன்மைகளை பூர்த்தி செய்வதற்கு %s நிறுவப்படுவதற்கு இயலவில்லை"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:665
-#: ../zypp/solver/detail/Resolver_problems.cc:673
-#, c-format
-msgid "%s will not be uninstalled cause it is still required"
-msgstr "அது இன்னமும் தேவைப்படுவதால், %s நீக்கப்பட மாட்டாது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:684
-#, c-format
-msgid "%s obsoletes %s. But %s cannot be deleted because it is locked."
-msgstr ""
-"%sஐ %s வழக்கற்றதாக்கிவிடும். ஆனால் %sஐ நீக்க முடியாது ஏனெனில் அது பூட்டப்பட்டுள்ளது."
-
-#: ../zypp/solver/detail/Resolver_problems.cc:715
-#, c-format
-msgid "Cannot install %s because it is conflicting"
-msgstr "%sஐ நிறுவ முடியாது ஏனெனில் அது முரணானது"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/Resolver_problems.cc:734
-#, c-format
-msgid "%s is uninstallable due to conflicts with %s"
-msgstr "%s உடன் உள்ள முரண்பாடு காரணமாக %sன் நிறுவுதலை நீக்க முடியாது"
-
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:54
-msgid "Ignore this requirement just here"
-msgstr "இத்தேவையை இங்கேயே புறக்கணிக்கவும்"
-
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:63
-msgid "Ignore this requirement generally"
-msgstr "இத்தேவையை பொதுவாக புறக்கணிக்கவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:75
-#, c-format
-msgid "Install %s although it would change the architecture"
-msgstr "அது கட்டமைப்பை மாற்றக்கூடுமென்றாலும் %sஐ நிறுவவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:78
-#, c-format
-msgid ""
-"%s provides this dependency but would changed the architecture of the "
-"installed item"
-msgstr ""
-"இச்சார்புத்தன்மையை %s அளிக்கிறது ஆனால், நிறுவப்பட்டுள்ள பொருளின் கட்டமைப்பை மாற்றிவிடும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:90
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:102
-#, c-format
-msgid "Ignore this conflict of %s"
-msgstr "%sன் முரண்பாட்டை புறக்கணிக்கவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:117
-#, c-format
-msgid "Ignore the obsolete %s in %s"
-msgstr "%sல் உள்ள வழக்கில் இல்லாத %sஐ புறக்கணிக்கவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionIgnore.cc:130
-#, c-format
-msgid "Ignore that %s is already set to install"
-msgstr "‍‍ஏற்கனவே நிறுவுவதற்காக அமைக்கப்பட்டுள்ள %sஐ புறக்கணிக்கவும்"
-
-#: ../zypp/solver/detail/ProblemSolutionUninstall.cc:81
-msgid "Do not install or delete concerning resolvables"
-msgstr "தொடர்புள்ள தீர்வுகளை நிறுவவோ அல்லது நீக்கவோ வேண்டாம்"
-
-#. Translator: 1.%s = dependency; 2.%s and 3.%s = name of package,patch,...
-#: ../zypp/solver/detail/QueueItemRequire.cc:701
-#, c-format
-msgid "for requiring %s for %s when upgrading %s"
-msgstr "%sஐ புதுப்பிக்கும்போது %sக்காக %s தேவைப்‍படும்போது"
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency
-#: ../zypp/solver/detail/ResolverInfoMissingReq.cc:64
-#, c-format
-msgid "%s is missing the requirement %s"
-msgstr "%s க்கான தேவையை %s இழந்துள்ளது"
-
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:56
-msgid ", Action: "
-msgstr ", செயல்பாடு:"
-
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:58
-msgid ", Trigger: "
-msgstr ", தூண்டுதல்:"
-
-#. Translator: Notation for (RPM) package
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:90
-msgid "package"
-msgstr "பேக்கேஜ்"
-
-#. Translator: Notation for SuSE package selection (set of packages)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:94
-msgid "selection"
-msgstr "தேர்வு"
-
-#. Translator: Notation for SuSE installation pattern (set of packages, describing use of system)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:98
-msgid "pattern"
-msgstr "வடிவம்"
-
-#. Translator: Notation for product
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:102
-msgid "product"
-msgstr "பொருள்"
-
-#. Translator: Notation for patch
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:106
-msgid "patch"
-msgstr "பாட்ச்"
-
-#. Translator: Notation for script (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:110
-msgid "script"
-msgstr "உரை"
-
-#. Translator: Notation for message (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:114
-msgid "message"
-msgstr "தகவல்"
-
-#. Translator: Notation for atom (part of a patch)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:118
-msgid "atom"
-msgstr "அணு"
-
-#. Translator: Notation for computer system
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:122
-msgid "system"
-msgstr "சாதனம்"
-
-#. Translator: Generic term for an item with dependencies, please leave untranslated for now
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:126
-msgid "Resolvable"
-msgstr "தீர்வு"
-
-#. TranslatorExplanation: Additional information to dependency solver result, no solution could be found
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:144
-msgid "Marking this resolution attempt as invalid."
-msgstr "இத்தீர்வு முயற்சி செல்லாததாக குறிக்கப்படுகிறது"
-
-#. Translator: %s = name of packages,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:151
-#, fuzzy, c-format
-msgid "Marking resolvable %s as uninstallable"
-msgstr "இத்தீர்வு நிறுவக்கூடியதல்ல என்று குறிக்கப்படுகிறது"
-
-#. Translator: %s = name of packages,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:159
-#, c-format
-msgid ""
-"%s is scheduled to be installed, but this is not possible because of "
-"dependency problems."
-msgstr ""
-"%s நிறுவப்படுவதற்காக திட்டமிடப்பட்டுள்ளது, ஆனால் சார்புத்தன்மை பிரச்னைகள் காரணமாக இது "
-"சாத்தியமில்லை."
-
-#. Translator: %s = name of package,patch,...
-#. TranslatorExplanation: Additional information to dependency solver result.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:167
-#, c-format
-msgid ""
-"Can't install %s since it is already marked as needing to be uninstalled"
-msgstr ""
-"நிறுவுதல் நீக்கப்பட வேண்டியது என்று ஏற்கனவே குறிக்கப்பட்டிருப்பதால், %sஐ நிறுவஇயலவில்லை"
-
-#. Translator: %s = name of patch
-#. TranslatorExplanation: A patch which is not needed (does not apply) cant be installed
-#. TranslatorExplanation: Patches contain updates (bug fixes) to packages. Such fixes
-#. TranslatorExplanation: do only apply if the package to-be-fixed is actually installed.
-#. TranslatorExplanation: Here a patch was selected for installation but the to-be-fixed
-#. TranslatorExplanation: package is not installed.
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:179
-#, c-format
-msgid "Can't install %s since it is does not apply to this system."
-msgstr "இந்த சாதனத்திற்கு பொருந்தாமல் இருப்பதால், %sஐ நிறுவ இயலவில்லை"
-
-#. affected() = item 1 which has to be installed
-#. _capability =
-#. other() = item 2 which has to be installed
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:190
-#, fuzzy, c-format
-msgid "Can't install %s, since %s is already marked as needing to be installed"
-msgstr ""
-"நிறுவுப்பட வேண்டியது என்று ஏற்கனவே குறிக்கப்பட்டிருப்பதால், %s ஐ நிறுவ \n"
-"இயலவில்லை"
-
-#. Translator: %s = name of patch,product
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:198
-#, c-format
-msgid "This would invalidate %s."
-msgstr "இது, %sஐ செல்லாததாக்கிவிடும்."
-
-#. Translator: %s = name of patch, pattern, ...
-#. TranslatorExplanation: Establishing is the process of computing which patches are needed
-#. TranslatorExplanation: This is just a progress indicator
-#. TranslatorExplanation: It is also used for other types of resolvables in order to verify
-#. TranslatorExplanation: the completeness of their dependencies
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:214
-#, fuzzy, c-format
-msgid "Establishing %s"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. affected() = resolvable to be installed
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: Installing foo
-#. TranslatorExplanation: Just a progress indicator that something is scheduled for installation
-#. Translator: %s = packagename
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:235
-#, fuzzy, c-format
-msgid "Installing %s"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. affected() = updated resolvable
-#. _capability =
-#. other() = currently installed, being updated resolvable
-#. other_capability() =
-#. Translator: 1.%s and 2.%s = name of package
-#. TranslatorExample: Updating foo-1.1 to foo-1.2
-#. TranslatorExplanation: Just a progress indicator that something is scheduled for upgrade
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:252
-#, c-format
-msgid "Updating %s to %s"
-msgstr "%s லிருந்து %sக்கு புதுப்பித்தல்"
-
-#. affected() =
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: Skipping foo: already installed
-#. TranslatorExplanation: An installation request for foo is skipped since foo is already installed
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:270
-#, c-format
-msgid "Skipping %s: already installed"
-msgstr "%s விடப்படுகிறது: ஏற்கவே நிறுவப்பட்டுவிட்டது"
-
-#. affected() = is set
-#. _capability = is set
-#. other() =
-#. other_capability() =
-#. Translator: 1.%s = dependency
-#. TranslatorExample: There are no alternative installed providers of foo
-#. TranslatorExplanation: A resolvable is to be uninstalled. It provides 'foo' which is needed by others
-#. TranslatorExplanation: We just found out that 'foo' is not provided by anything else (an alternative)
-#. TranslatorExplanation: removal of this resolvable would therefore break dependency
-#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be uninstalled
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:292
-#, c-format
-msgid "There are no alternative installed providers of %s"
-msgstr "%sக்கான நிறுவப்பட்ட மாற்று அளிப்பவர்கள் இல்லை"
-
-#. Translator: 1.%s = name of package,patch....
-#. TranslatorExample: for bar
-#. TranslatorExplanation: extension to previous message if we know what the resolvable is
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:298
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:323
-#, c-format
-msgid "for %s"
-msgstr "%sக்காக"
-
-#. affected() =
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: 1.%s = dependency
-#. TranslatorExample: There are no installable providers of foo
-#. TranslatorExplanation: A resolvable is to be installed which requires foo
-#. TranslatorExplanation: But there is nothing available to fulfill this requirement
-#. TranslatorExplanation: This is an error message explaining that the resolvable cannot be installed
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:317
-#, c-format
-msgid "There are no installable providers of %s"
-msgstr "%sக்கு நிறுவக்கூடிய அளிப்பவர்கள் இல்லை"
-
-#. Translator: 1.%s = name of package,patch,..., 2.%s = name of package,patch,...
-#. TranslatorExample: Upgrade to foo to avoid removing bar is not possible
-#. TranslatorExplanation: bar requires something from foo
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:341
-#, c-format
-msgid "Upgrade to %s to avoid removing %s is not possible."
-msgstr "%sக்கு மேம்படுத்திக் கொள்ளவும், %sஐ நீக்குதல் இயலாது"
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:359
-#, c-format
-msgid "%s provides %s, but is scheduled to be uninstalled."
-msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது நிறுவுதல் நீக்கப்படுவதற்கு திட்டமிடப்பட்டுள்ளது"
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency; 3.%s type (package, patch, ...)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:377
-#, c-format
-msgid "%s provides %s, but another version of that %s is already installed."
-msgstr "%s, %sஐ அளிக்கிறது, ஆனால், %sன் மற்றொரு வடிவம் ஏற்கனவே நிறுவப்பட்டுவிட்டது"
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:396
-#, c-format
-msgid ""
-"%s provides %s, but it is uninstallable.  Try installing it on its own for "
-"more details."
-msgstr ""
-"%s, %sஐ அளிக்கிறது, ஆனால், அதன் நிறுவுதலை நீக்க இயலாது. கூடுதல் விவரங்களுக்கு, அதனைத் "
-"தானாகவே நிறுவம முயற்சிக்கவும்."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:414
-#, c-format
-msgid "%s provides %s, but it is locked."
-msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது பூட்டப்பட்டுள்ளது."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:432
-#, c-format
-msgid "%s provides %s,  but is scheduled to be kept."
-msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அது வைக்கப்படுவதற்கு திட்டமிடப்பட்டுள்ளது."
-
-#. Translator: 1.%s = name of package,patch,...; 2.%s = dependency;
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:451
-#, c-format
-msgid "%s provides %s, but has another architecture."
-msgstr "%s, %sஐ அளிக்கிறது, ஆனால் அதற்கு வேறொரு கட்டமைப்பு உள்ளது."
-
-#. Translator: 1.%s = dependency. 2.%s name of package, patch, ...
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:469
-#, c-format
-msgid "Can't satisfy requirement %s for %s"
-msgstr "%s க்கான %sன் தேவையைப் பூர்த்தி செய்ய இயலாது"
-
-#. affected() = to-be-installed resolvable which was scheduled to be uninstalled
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is required by other to-be-installed resolvable, so it won't be unlinked.
-#. TranslatorExplanation: Cant uninstall foo since it is required by an to-be-installed resolvable
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:490
-#, c-format
-msgid ""
-"%s is required by other to-be-installed resolvable, so it won't be unlinked."
-msgstr ""
-"மற்றொரு நிறுவப்படப்போகும் தீர்வுக்கு %s தேவைப்படுகிறது, எனவே அதன் இணைப்பு நீக்கப்பட "
-"மாட்டாது."
-
-#. affected() = provider of cap
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is required by other installed resolvable, so it won't be unlinked.
-#. TranslatorExplanation: Cant uninstall foo since it is required by an installed resolvable
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:507
-#, c-format
-msgid "%s is required by other installed resolvable, so it won't be unlinked."
-msgstr ""
-"மற்றொரு நிறுவப்பட்டுள்ள தீர்வுக்கு %s தேவைப்படுகிறது, எனவே அதன இணைப்பு நீக்கப்பட "
-"மாட்டாது."
-
-#. affected() = to-be-uninstalled resolvable which is locked
-#. _capability =
-#. other() =
-#. other_capability() =
-#. Translator: %s = name of package,patch,...
-#. TranslatorExample: foo is locked and cannot be uninstalled.
-#. TranslatorExplanation: foo is to-be-uninstalled but it is locked
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:524
-#, c-format
-msgid "%s is locked and cannot be uninstalled."
-msgstr "%s பூட்டப்பட்டுள்ளது மற்றும் அதன் நிறுவுதலை நீக்க இயலாது."
-
-#. affected() = provider of capability
-#. _capability = provided by provider
-#. other() = conflict issuer
-#. other_capability() = conflict capability
-#. Translator: 1.%s and 2.%s = Dependency; 4.%s = name of package,patch,...
-#. TranslatorExample: A conflict over foo (bar) requires the removal of to-be-installed xyz
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:543
-#, c-format
-msgid "A conflict over %s (%s) requires the removal of to-be-installed %s"
-msgstr "%s (%s) மீதான ஒரு முரண்பாட்டிற்கு, நிறுவப்படப்போகும் %sன் நீக்கம் தேவைப்படுகிறது."
-
-#. affected() = provider of capability
-#. _capability = provided by provider
-#. other() = conflict issuer
-#. other_capability() = conflict capability from issuer
-#. Translator: 1.%s = name of package,patch,...; 3.%s and 4.%s = Dependency;
-#. TranslatorExample: Marking xyz as uninstallable due to conflicts over foo (bar)
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:561
-#, c-format
-msgid "Marking %s as uninstallable due to conflicts over %s"
-msgstr "%s மீதான ஒரு முரண்பாடு காரணமாக %s நிறுவப்பட முடியாததாக குறிக்கப்பட்டுள்ளது"
-
-#. Translator: %s = name of package,patch
-#. TranslatorExample: from abc
-#: ../zypp/solver/detail/ResolverInfoMisc.cc:569
-#, c-format
-msgid "from %s"
-msgstr "%sலிருந்து"
-
-#: ../zypp/solver/detail/ResolverInfo.cc:191
-msgid " Error!"
-msgstr "பிழை!"
-
-#: ../zypp/solver/detail/ResolverInfo.cc:192
-msgid " Important!"
-msgstr "முக்கியம்!"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:53
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:55
-#, c-format
-msgid "keep %s"
-msgstr "%sஐ வைத்துக் கொள்ளவும்"
-
-#: ../zypp/solver/detail/ProblemSolutionKeep.cc:65
-msgid "Keep resolvables"
-msgstr "தீர்வுகளை வைத்துக் கொள்ளவும்"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:54
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:56
-#, fuzzy, c-format
-msgid "install %s"
-msgstr "­ò¾¡Ä¢Âý"
-
-#: ../zypp/solver/detail/ProblemSolutionInstall.cc:66
-msgid "Install missing resolvables"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. Translator: all.%s = name of package,patch,....
-#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:55
-#, c-format
-msgid "%s depended on %s"
-msgstr "%s, %sஐ சார்ந்துள்ளது"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is dependent on list of names
-#: ../zypp/solver/detail/ResolverInfoDependsOn.cc:69
-#, c-format
-msgid "%s dependend on %s"
-msgstr "%s, %sஐ சார்ந்துள்ளது"
-
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is needed by multiple others
-#: ../zypp/solver/detail/ResolverInfoNeededBy.cc:70
-#, c-format
-msgid "%s needed by %s"
-msgstr "%sக்கு %s தேவைப்படுகிறது"
-
-#. Translator all.%s = name of packages,patches,....
-#. TranslatorExplanation: 1.%s name of package, 2.%s list of names
-#. TranslatorExplanation: 1.%s is part of 'bundles', the bundles are listed in 2.%s
-#: ../zypp/solver/detail/ResolverInfoChildOf.cc:56
-#: ../zypp/solver/detail/ResolverInfoChildOf.cc:71
-#, c-format
-msgid "%s part of %s"
-msgstr "%s, %sன் ஒரு பகுதியாகும்"
-
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
-msgid "unlock all resolvables"
-msgstr "­ò¾¡Ä¢Âý"
-
-#. TranslatorExplanation %s = name of package, patch, selection ...
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:83
-#, c-format
-msgid "unlock %s"
-msgstr "%sஐ திறக்கவும்"
-
-#: ../zypp/solver/detail/ProblemSolutionUnlock.cc:92
-msgid "Unlock these resolvables"
-msgstr "இத்தீர்வுகளைத் திறக்கவும்"
-
-#. end of single patch parsing
-#. end of patches file parsing
-#. end of copying
-#: ../zypp/source/yum/YUMSourceImpl.cc:216
-#: ../zypp/source/yum/YUMSourceImpl.cc:241
-msgid "Reading index files"
-msgstr "உள்ளடக்க கோப்புகள் படிக்கப்படுகின்றன"
-
-#: ../zypp/source/yum/YUMSourceImpl.cc:247
-msgid "The signed repomd.xml file failed the signature check."
-msgstr "கையாப்பமிடப்பட்ட repomd.xml கோப்பு, கையொப்ப சோதனையில் தோல்வியுற்றது."
-
-#. TranslatorExplanation %s = product file
-#: ../zypp/source/yum/YUMSourceImpl.cc:464
-#: ../zypp/source/yum/YUMSourceImpl.cc:476
-#: ../zypp/source/yum/YUMSourceImpl.cc:482
-#: ../zypp/source/yum/YUMSourceImpl.cc:490
-#, c-format
-msgid "Reading product from %s"
-msgstr "%sலிருந்து பொருள் படிக்கப்படுகிறது"
-
-#. TranslatorExplanation %s = package file list
-#: ../zypp/source/yum/YUMSourceImpl.cc:520
-#: ../zypp/source/yum/YUMSourceImpl.cc:535
-#: ../zypp/source/yum/YUMSourceImpl.cc:541
-#: ../zypp/source/yum/YUMSourceImpl.cc:549
-#, c-format
-msgid "Reading filelist from %s"
-msgstr "%sலிருந்து கோப்புப்பட்டியல் படிக்கப்படுகிறது"
-
-#. TranslatorExplanation %s = packages file
-#: ../zypp/source/yum/YUMSourceImpl.cc:565
-#: ../zypp/source/yum/YUMSourceImpl.cc:605
-#: ../zypp/source/yum/YUMSourceImpl.cc:611
-#: ../zypp/source/yum/YUMSourceImpl.cc:619
-#, c-format
-msgid "Reading packages from %s"
-msgstr "%sலிருந்து பேக்கேஜ்கள் படிக்கப்படுகின்றன"
-
-#. TranslatorExplanation %s = selection metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:643
-#: ../zypp/source/yum/YUMSourceImpl.cc:655
-#: ../zypp/source/yum/YUMSourceImpl.cc:661
-#: ../zypp/source/yum/YUMSourceImpl.cc:669
-#, c-format
-msgid "Reading selection from %s"
-msgstr "%sலிருந்து தேர்வுகள் படிக்கப்படுகின்றன"
-
-#. TranslatorExplanation %s = pattern metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:693
-#: ../zypp/source/yum/YUMSourceImpl.cc:705
-#: ../zypp/source/yum/YUMSourceImpl.cc:711
-#: ../zypp/source/yum/YUMSourceImpl.cc:719
-#, c-format
-msgid "Reading pattern from %s"
-msgstr "%sலிருந்து வடிவம் படிக்கப்படுகிறது"
-
-#. TranslatorExplanation %s = patches index file
-#: ../zypp/source/yum/YUMSourceImpl.cc:746
-#: ../zypp/source/yum/YUMSourceImpl.cc:758
-#: ../zypp/source/yum/YUMSourceImpl.cc:764
-#: ../zypp/source/yum/YUMSourceImpl.cc:772
-#, c-format
-msgid "Reading patches index %s"
-msgstr "பாட்ச்களின் உள்ளடக்கம் %s படிக்கப்படுகிறது"
-
-#. TranslatorExplanation %s = patch metadata file
-#: ../zypp/source/yum/YUMSourceImpl.cc:795
-#: ../zypp/source/yum/YUMSourceImpl.cc:812
-#: ../zypp/source/yum/YUMSourceImpl.cc:818
-#: ../zypp/source/yum/YUMSourceImpl.cc:827
-#, c-format
-msgid "Reading patch %s"
-msgstr "பாட்ச் %s படிக்கப்படுகிறது"
-
-#: ../zypp/source/yum/YUMScriptImpl.cc:89
-#: ../zypp/source/yum/YUMScriptImpl.cc:123
-msgid "The script file failed the checksum test."
-msgstr "சோதனைத் தேர்வில் உரை கோப்பு தோல்வியுற்றது"
-
-#: ../zypp/source/susetags/SuseTagsImpl.cc:647
-#: ../zypp/source/susetags/SuseTagsImpl.cc:657
-#: ../zypp/source/susetags/SuseTagsImpl.cc:660
-msgid "Reading packages file"
-msgstr "பேக்கேஜ்கள் கோப்பு படிக்கப்படுகிறது"
-
-#. TranslatorExplanation %s = language name
-#: ../zypp/source/susetags/SuseTagsImpl.cc:710
-#: ../zypp/source/susetags/SuseTagsImpl.cc:714
-#: ../zypp/source/susetags/SuseTagsImpl.cc:728
-#, c-format
-msgid "Reading translation: %s"
-msgstr "மொழிபெயர்ப்பு படிக்கப்படுகிறது: %s"
-
-#: ../zypp/source/PackageProvider.cc:200
-msgid "applydeltarpm check failed."
-msgstr "அப்ளைடெல்டாஆர்பிஎம் சோதனை தோல்வியுற்றது"
-
-#: ../zypp/source/PackageProvider.cc:213
-msgid "applydeltarpm failed."
-msgstr "அப்ளைடெல்டாஆர்பிஎம் தோல்வியுற்றது."
-
-#. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/source/PackageProvider.cc:280
-#, c-format
-msgid "Package %s fails integrity check. Do you want to retry downloading it?"
-msgstr ""
-"நேர்மை சோதனையில் %s பேக்கேஜ் தோல்வியுற்றது. அதனை தகவலிறக்கம் செய்வதற்கு நீங்கள் மீண்டும் "
-"முயற்சிக்கப் போகிறீர்களா?"
-
-#. TranslatorExplanation %s = package
-#: ../zypp/source/SourceImpl.cc:339
-#, c-format
-msgid ""
-"Package %s fails integrity check. Do you want to retry downloading it, or "
-"abort installation?"
-msgstr ""
-"நேர்மை சோதனையில் %s பேக்கேஜ் தோல்வியுற்றது. அதனை தகவலிறக்கம் செய்வதற்குநீங்கள் மீண்டும் "
-"முயற்சிக்கப் போகிறீர்களா அல்லது நிறுவுதலை நிறுத்திவிடப் போகிறீர்களா?"
-
-#: ../zypp/source/SourceImpl.cc:394
-msgid " miss checksum."
-msgstr "செக்சம் தவறியது."
-
-#: ../zypp/source/SourceImpl.cc:400
-msgid " fails checksum verification."
-msgstr "செக்சம் சரிபார்ப்பில் தோல்வியுற்றது."
-
-#. TranslatorExplanation %s = file being downloaded
-#: ../zypp/source/SourceImpl.cc:441 ../zypp/source/SourceImpl.cc:445
-#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:459
-#, c-format
-msgid "Downloading %s"
-msgstr "%s தகவலிறக்கம் செய்யப்படுகிறது"
-
-#: ../zypp/source/SourceImpl.cc:445
-#, c-format
-msgid "Downloaded %s from %s"
-msgstr "%sலிருந்து %s தகவலிறக்கம் செய்யப்பட்டது"
-
-#. TranslatorExplanation %s = file that was not able to download
-#: ../zypp/source/SourceImpl.cc:451 ../zypp/source/SourceImpl.cc:457
-#: ../zypp/source/SourceImpl.cc:459
-#, c-format
-msgid "Can't provide %s from %s"
-msgstr "%sலிருந்து %sஐ அளிக்க இயலாது"
-
-#: ../zypp/thread/Mutex.cc:33
-msgid "Can't initialize mutex attributes"
-msgstr "மியூடெக்ஸ் பண்புகளை துவக்க இயலாது"
-
-#: ../zypp/thread/Mutex.cc:40
-msgid "Can't set recursive mutex attribute"
-msgstr "எதிர்ப்புத்தன்மையுள்ள மியூடெக்ஸ் பண்மப அமைக்க இயலாது"
-
-#: ../zypp/thread/Mutex.cc:47
-msgid "Can't initialize recursive mutex"
-msgstr "எதிர்ப்புத்தன்மையுள்ள மியூடெக்ஸை துவக்க இயலாது"
-
-#: ../zypp/thread/Mutex.cc:77
-msgid "Can't acquire the mutex lock"
-msgstr "மியூடெக்ஸ் பூட்டை பெற இயலாது"
-
-#: ../zypp/thread/Mutex.cc:87
-msgid "Can't release the mutex lock"
-msgstr "மியூடெக்ஸ் பூட்டை திறக்க இயலாது"
-
-#: ../zypp/CountryCode.cc:135
-msgid "Unknown country: "
-msgstr "அறிந்திராத நாடு:"
-
-#: ../zypp/CountryCode.cc:217
-msgid "Andorra"
-msgstr "அன்டோரா"
-
-#. :AND:020:
-#: ../zypp/CountryCode.cc:218
-msgid "United Arab Emirates"
-msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
-
-#. :ARE:784:
-#: ../zypp/CountryCode.cc:219
-msgid "Afghanistan"
-msgstr "ஆப்கானிஸ்தான்"
-
-#. :AFG:004:
-#: ../zypp/CountryCode.cc:220
-msgid "Antigua and Barbuda"
-msgstr "¬ýÊÌÅ¡ & À¡÷Ò¼¡"
-
-#. :ATG:028:
-#: ../zypp/CountryCode.cc:221
-msgid "Anguilla"
-msgstr "அங்வில்லா"
-
-#. :AIA:660:
-#: ../zypp/CountryCode.cc:222
-msgid "Albania"
-msgstr "அல்பேனியா"
-
-#. :ALB:008:
-#: ../zypp/CountryCode.cc:223
-msgid "Armenia"
-msgstr "¬÷¦ºýÊÉ¡"
-
-#. :ARM:051:
-#: ../zypp/CountryCode.cc:224
-msgid "Netherlands Antilles"
-msgstr "¦¿¾÷Ä¡óÐ"
-
-#. :ANT:530:
-#: ../zypp/CountryCode.cc:225
-msgid "Angola"
-msgstr "அங்கோலா"
-
-#. :AGO:024:
-#: ../zypp/CountryCode.cc:226
-msgid "Antarctica"
-msgstr "¬ôÃ¢ì¸¡"
-
-#. :ATA:010:
-#: ../zypp/CountryCode.cc:227
-msgid "Argentina"
-msgstr "¬÷¦ºýÊÉ¡"
-
-#. :ARG:032:
-#: ../zypp/CountryCode.cc:228
-msgid "American Samoa"
-msgstr "«¦ÁÃ¢ì¸¡, Å¼"
-
-#. :ASM:016:
-#: ../zypp/CountryCode.cc:229
-msgid "Austria"
-msgstr "¬Íò¾¢Ã¢Â¡"
-
-#. :AUT:040:
-#: ../zypp/CountryCode.cc:230
-msgid "Australia"
-msgstr "¬Íò¾¢§ÃÄ¢Â¡"
-
-#. :AUS:036:
-#: ../zypp/CountryCode.cc:231
-msgid "Aruba"
-msgstr "¦¸¡ÄõÀ¢Â¡"
-
-#. :ABW:533:
-#: ../zypp/CountryCode.cc:232
-msgid "Aland Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :ALA:248:
-#: ../zypp/CountryCode.cc:233
-msgid "Azerbaijan"
-msgstr "«º÷¨Àº¡ý"
-
-#. :AZE:031:
-#: ../zypp/CountryCode.cc:234
-msgid "Bosnia and Herzegovina"
-msgstr "பாஸ்னியா மற்றும் ஹெர்சகோவினா"
-
-#. :BIH:070:
-#: ../zypp/CountryCode.cc:235
-msgid "Barbados"
-msgstr "À¡÷§À¼¡Í"
-
-#. :BRB:052:
-#: ../zypp/CountryCode.cc:236
-msgid "Bangladesh"
-msgstr "Àí¸Ç¡§¾Í"
-
-#. :BGD:050:
-#: ../zypp/CountryCode.cc:237
-msgid "Belgium"
-msgstr "¦Àøº¢Âõ"
-
-#. :BEL:056:
-#: ../zypp/CountryCode.cc:238
-msgid "Burkina Faso"
-msgstr "பர்கினா ஃபாஸோ"
-
-#. :BFA:854:
-#: ../zypp/CountryCode.cc:239
-msgid "Bulgaria"
-msgstr "Àø§¸Ã¢Â¡"
-
-#. :BGR:100:
-#: ../zypp/CountryCode.cc:240
-msgid "Bahrain"
-msgstr "À¢§Ãº¢ø"
-
-#. :BHR:048:
-#: ../zypp/CountryCode.cc:241
-msgid "Burundi"
-msgstr "புருண்டி"
-
-#. :BDI:108:
-#: ../zypp/CountryCode.cc:242
-msgid "Benin"
-msgstr "பெனின்"
-
-#. :BEN:204:
-#: ../zypp/CountryCode.cc:243
-msgid "Bermuda"
-msgstr "§º÷Áý"
-
-#. :BMU:060:
-#: ../zypp/CountryCode.cc:244
-msgid "Brunei Darussalam"
-msgstr "புரூனய் தாருசலாம்"
-
-#. :BRN:096:
-#: ../zypp/CountryCode.cc:245
-msgid "Bolivia"
-msgstr "¦À¡Ä¢Å¢Â¡"
-
-#. :BOL:068:
-#: ../zypp/CountryCode.cc:246
-msgid "Brazil"
-msgstr "À¢§Ãº¢ø"
-
-#. :BRA:076:
-#: ../zypp/CountryCode.cc:247
-msgid "Bahamas"
-msgstr "ÀÉ¡Á¡"
-
-#. :BHS:044:
-#: ../zypp/CountryCode.cc:248
-msgid "Bhutan"
-msgstr "À¢§Ãº¢ø"
-
-#. :BTN:064:
-#: ../zypp/CountryCode.cc:249
-msgid "Bouvet Island"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :BVT:074:
-#: ../zypp/CountryCode.cc:250
-msgid "Botswana"
-msgstr "பாட்ஸ்வானா"
-
-#. :BWA:072:
-#: ../zypp/CountryCode.cc:251
-msgid "Belarus"
-msgstr "¦ÀÄ¡åÍ"
-
-#. :BLR:112:
-#: ../zypp/CountryCode.cc:252
-msgid "Belize"
-msgstr "¦Àøº¢Âõ"
-
-#. :BLZ:084:
-#: ../zypp/CountryCode.cc:253
-msgid "Canada"
-msgstr "¸É¼¡"
-
-#. :CAN:124:
-#: ../zypp/CountryCode.cc:254
-msgid "Cocos (Keeling) Islands"
-msgstr "கோகோஸ் (கீலிங்) தீவுகள்"
-
-#. :CCK:166:
-#. :CAF:140:
-#: ../zypp/CountryCode.cc:255 ../zypp/CountryCode.cc:257
-msgid "Congo"
-msgstr "காங்கோ"
-
-#. :COD:180:
-#: ../zypp/CountryCode.cc:256
-msgid "Central African Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
-
-#. :COG:178:
-#: ../zypp/CountryCode.cc:258
-msgid "Switzerland"
-msgstr "ÍÅ¢ðº÷Ä¡óÐ"
-
-#. :CHE:756:
-#: ../zypp/CountryCode.cc:259
-msgid "Cote D'Ivoire"
-msgstr "கோடே த’ஐவரி"
-
-#. :CIV:384:
-#: ../zypp/CountryCode.cc:260
-msgid "Cook Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :COK:184:
-#: ../zypp/CountryCode.cc:261
-msgid "Chile"
-msgstr "º¢Ä¢"
-
-#. :CHL:152:
-#: ../zypp/CountryCode.cc:262
-msgid "Cameroon"
-msgstr "கேமரூன்"
-
-#. :CMR:120:
-#: ../zypp/CountryCode.cc:263
-msgid "China"
-msgstr "º£É¡"
-
-#. :CHN:156:
-#: ../zypp/CountryCode.cc:264
-msgid "Colombia"
-msgstr "¦¸¡ÄõÀ¢Â¡"
-
-#. :COL:170:
-#: ../zypp/CountryCode.cc:265
-msgid "Costa Rica"
-msgstr "காஸ்டா ரிகா"
-
-#. :CRI:188:
-#: ../zypp/CountryCode.cc:266
-msgid "Serbia and Montenegro"
-msgstr "செர்பியா மற்றும் மான்டநெக்ரோ"
-
-#. :SCG:891:
-#: ../zypp/CountryCode.cc:267
-msgid "Cuba"
-msgstr "¦¸¡ÄõÀ¢Â¡"
-
-#. :CUB:192:
-#: ../zypp/CountryCode.cc:268
-msgid "Cape Verde"
-msgstr "கேப் வெர்ட்"
-
-#. :CPV:132:
-#: ../zypp/CountryCode.cc:269
-msgid "Christmas Island"
-msgstr "கிறிஸ்துமஸ் தீவு"
-
-#. :CXR:162:
-#: ../zypp/CountryCode.cc:270
-msgid "Cyprus"
-msgstr "சைப்ரஸ்"
-
-#. :CYP:196:
-#: ../zypp/CountryCode.cc:271
-msgid "Czech Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
-
-#. :CZE:203:
-#: ../zypp/CountryCode.cc:272
-msgid "Germany"
-msgstr "§º÷ÁÉ¢"
-
-#. :DEU:276:
-#: ../zypp/CountryCode.cc:273
-msgid "Djibouti"
-msgstr "ஜிபெளட்டி"
-
-#. :DJI:262:
-#: ../zypp/CountryCode.cc:274
-msgid "Denmark"
-msgstr "¦¼ýÁ¡÷ì"
-
-#. :DNK:208:
-#: ../zypp/CountryCode.cc:275
-msgid "Dominica"
-msgstr "Õ§ÁÉ¢Â¡"
-
-#. :DMA:212:
-#: ../zypp/CountryCode.cc:276
-msgid "Dominican Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
-
-#. :DOM:214:
-#: ../zypp/CountryCode.cc:277
-msgid "Algeria"
-msgstr "Àø§¸Ã¢Â¡"
-
-#. :DZA:012:
-#: ../zypp/CountryCode.cc:278
-msgid "Ecuador"
-msgstr "®ì¦Å§¼¡÷"
-
-#. :ECU:218:
-#: ../zypp/CountryCode.cc:279
-msgid "Estonia"
-msgstr "±Í§¼¡É¢Â¡"
-
-#. :EST:233:
-#: ../zypp/CountryCode.cc:280
-msgid "Egypt"
-msgstr "±¸¢ôÐ"
-
-#. :EGY:818:
-#: ../zypp/CountryCode.cc:281
-msgid "Western Sahara"
-msgstr "மேற்கு சஹாரா"
-
-#. :ESH:732:
-#: ../zypp/CountryCode.cc:282
-msgid "Eritrea"
-msgstr "எரிட்ரியா"
-
-#. :ERI:232:
-#: ../zypp/CountryCode.cc:283
-msgid "Spain"
-msgstr "Í¦ÀÂ¢ý"
-
-#. :ESP:724:
-#: ../zypp/CountryCode.cc:284
-msgid "Ethiopia"
-msgstr "±Í§¼¡É¢Â¡"
-
-#. :ETH:231:
-#: ../zypp/CountryCode.cc:285
-msgid "Finland"
-msgstr "À¢ýÄ¡óÐ"
-
-#. :FIN:246:
-#: ../zypp/CountryCode.cc:286
-msgid "Fiji"
-msgstr "ஃபிஜி"
-
-#. :FJI:242:
-#: ../zypp/CountryCode.cc:287
-msgid "Falkland Islands (Malvinas)"
-msgstr "ஃபால்க்லாந்து தீவுகள் (மால்வினாஸ்)"
-
-#. :FLK:238:
-#: ../zypp/CountryCode.cc:288
-msgid "Federated States of Micronesia"
-msgstr "மைக்ரோனேசிய நாடுகளின் கூட்டமைப்பு"
-
-#. :FSM:583:
-#: ../zypp/CountryCode.cc:289
-msgid "Faroe Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :FRO:234:
-#: ../zypp/CountryCode.cc:290
-msgid "France"
-msgstr "À¢Ã¡ýÍ"
-
-#. :FRA:250:
-#: ../zypp/CountryCode.cc:291
-msgid "Metropolitan France"
-msgstr "பிரான்ஸ் மாநகர்"
-
-#. :FXX:249:
-#: ../zypp/CountryCode.cc:292
-msgid "Gabon"
-msgstr "º£É¡"
-
-#. :GAB:266:
-#: ../zypp/CountryCode.cc:293
-msgid "United Kingdom"
-msgstr "யுனைடெட் கிங்டம்"
-
-#. :GBR:826:
-#: ../zypp/CountryCode.cc:294
-msgid "Grenada"
-msgstr "¸¢¦ÃÉ¼¡"
-
-#. :GRD:308:
-#: ../zypp/CountryCode.cc:295
-msgid "Georgia"
-msgstr "¦º÷À¢Â¡"
-
-#. :GEO:268:
-#: ../zypp/CountryCode.cc:296
-msgid "French Guiana"
-msgstr "À¢¦Ãýî "
-
-#. :GUF:254:
-#: ../zypp/CountryCode.cc:297
-msgid "Ghana"
-msgstr "º£É¡"
-
-#. :GHA:288:
-#: ../zypp/CountryCode.cc:298
-msgid "Gibraltar"
-msgstr "ஜிப்ரால்டர்"
-
-#. :GIB:292:
-#: ../zypp/CountryCode.cc:299
-msgid "Greenland"
-msgstr "¸¢¦ÃÉ¼¡"
-
-#. :GRL:304:
-#: ../zypp/CountryCode.cc:300
-msgid "Gambia"
-msgstr "º¦Áöì¸¡"
-
-#. :GMB:270:
-#: ../zypp/CountryCode.cc:301
-msgid "Guinea"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
-
-#. :GIN:324:
-#: ../zypp/CountryCode.cc:302
-msgid "Guadeloupe"
-msgstr "காடேலூப்"
-
-#. :GLP:312:
-#: ../zypp/CountryCode.cc:303
-msgid "Equatorial Guinea"
-msgstr "ஈக்வடோரியல் கினியா"
-
-#. :GNQ:226:
-#: ../zypp/CountryCode.cc:304
-msgid "Greece"
-msgstr "¸¢Ã£Í"
-
-#. :GRC:300:
-#: ../zypp/CountryCode.cc:305
-msgid "South Georgia and the South Sandwich Islands"
-msgstr "தென் ஜியார்ஜியா மற்றும் தென் சான்ட்விச் தீவுகள்"
-
-#. :SGS:239:
-#: ../zypp/CountryCode.cc:306
-msgid "Guatemala"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
-
-#. :GTM:320:
-#: ../zypp/CountryCode.cc:307
-msgid "Guam"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
-
-#. :GUM:316:
-#: ../zypp/CountryCode.cc:308
-msgid "Guinea-Bissau"
-msgstr "கினியா-பிசாவ்"
-
-#. :GNB:624:
-#: ../zypp/CountryCode.cc:309
-msgid "Guyana"
-msgstr "º£É¡"
-
-#. :GUY:328:
-#: ../zypp/CountryCode.cc:310
-msgid "Hong Kong"
-msgstr "ஹாங் காங்"
-
-#. :HKG:344:
-#: ../zypp/CountryCode.cc:311
-msgid "Heard Island and McDonald Islands"
-msgstr "ஹேர்ட் தீவு மற்றும் மெக்டொனால்ட் தீவுகள்"
-
-#. :HMD:334:
-#: ../zypp/CountryCode.cc:312
-msgid "Honduras"
-msgstr "¬ñÎÃ¡Í"
-
-#. :HND:340:
-#: ../zypp/CountryCode.cc:313
-msgid "Croatia"
-msgstr "Ì¦Ã¡§Åº¢Â¡"
-
-#. :HRV:191:
-#: ../zypp/CountryCode.cc:314
-msgid "Haiti"
-msgstr "ஹைட்டி"
-
-#. :HTI:332:
-#: ../zypp/CountryCode.cc:315
-msgid "Hungary"
-msgstr "¬í§¸Ã¢"
-
-#. :HUN:348:
-#: ../zypp/CountryCode.cc:316
-msgid "Indonesia"
-msgstr "­ó§¾¡É£º¢Â¡"
-
-#. :IDN:360:
-#: ../zypp/CountryCode.cc:317
-msgid "Ireland"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :IRL:372:
-#: ../zypp/CountryCode.cc:318
-msgid "Israel"
-msgstr "­Í§Ãø"
-
-#. :ISR:376:
-#: ../zypp/CountryCode.cc:319
-msgid "India"
-msgstr "­ó¾¢Â¡"
-
-#. :IND:356:
-#: ../zypp/CountryCode.cc:320
-msgid "British Indian Ocean Territory"
-msgstr "பிரிட்டிஷ் இந்துமாக் கடல் எல்லை"
-
-#. :IOT:086:
-#: ../zypp/CountryCode.cc:321
-msgid "Iraq"
-msgstr "®Ã¡ì"
-
-#. :IRQ:368:
-#: ../zypp/CountryCode.cc:322
-msgid "Iran"
-msgstr "®Ã¡ì"
-
-#. :IRN:364:
-#: ../zypp/CountryCode.cc:323
-msgid "Iceland"
-msgstr "³ÍÄ¡óÐ"
-
-#. :ISL:352:
-#: ../zypp/CountryCode.cc:324
-msgid "Italy"
-msgstr "­ò¾¡Ä¢"
-
-#. :ITA:380:
-#: ../zypp/CountryCode.cc:325
-msgid "Jamaica"
-msgstr "º¦Áöì¸¡"
-
-#. :JAM:388:
-#: ../zypp/CountryCode.cc:326
-msgid "Jordan"
-msgstr "§Â¡÷¾¡ý"
-
-#. :JOR:400:
-#: ../zypp/CountryCode.cc:327
-msgid "Japan"
-msgstr "ºôÀ¡ý"
-
-#. :JPN:392:
-#: ../zypp/CountryCode.cc:328
-msgid "Kenya"
-msgstr "கென்யா"
-
-#. :KEN:404:
-#: ../zypp/CountryCode.cc:329
-msgid "Kyrgyzstan"
-msgstr "¾¡öÅ¡ý"
-
-#. :KGZ:417:
-#: ../zypp/CountryCode.cc:330
-msgid "Cambodia"
-msgstr "¦¸¡ÄõÀ¢Â¡"
-
-#. :KHM:116:
-#: ../zypp/CountryCode.cc:331
-msgid "Kiribati"
-msgstr "கிரிபாட்டி"
-
-#. :KIR:296:
-#: ../zypp/CountryCode.cc:332
-msgid "Comoros"
-msgstr "கோமரோஸ்"
-
-#. :COM:174:
-#: ../zypp/CountryCode.cc:333
-msgid "Saint Kitts and Nevis"
-msgstr "¦ºÂ¢ýð ¸¢ðÍ & ¦¿Å¢Í"
-
-#. :KNA:659:
-#: ../zypp/CountryCode.cc:334
-msgid "North Korea"
-msgstr "வட கொரியா"
-
-#. :PRK:408:
-#: ../zypp/CountryCode.cc:335
-msgid "South Korea"
-msgstr "¦¾ý ¬ôÃ¢ì¸¡"
-
-#. :KOR:410:
-#: ../zypp/CountryCode.cc:336
-msgid "Kuwait"
-msgstr "குவைத்"
-
-#. :KWT:414:
-#: ../zypp/CountryCode.cc:337
-msgid "Cayman Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :CYM:136:
-#: ../zypp/CountryCode.cc:338
-msgid "Kazakhstan"
-msgstr "¾¡öÅ¡ý"
-
-#. :KAZ:398:
-#: ../zypp/CountryCode.cc:339
-msgid "Lao People's Democratic Republic"
-msgstr "லாவோ மக்கள் ஜனநாயக குடியரசு"
-
-#. :LAO:418:
-#: ../zypp/CountryCode.cc:340
-msgid "Lebanon"
-msgstr "லெபனான்"
-
-#. :LBN:422:
-#: ../zypp/CountryCode.cc:341
-msgid "Saint Lucia"
-msgstr "¦ºýð æº¢Â¡"
-
-#. :LCA:662:
-#: ../zypp/CountryCode.cc:342
-msgid "Liechtenstein"
-msgstr "லிச்சன்ஸ்டெயின்"
-
-#. :LIE:438:
-#: ../zypp/CountryCode.cc:343
-msgid "Sri Lanka"
-msgstr "¦º÷À¢Âý"
-
-#. :LKA:144:
-#: ../zypp/CountryCode.cc:344
-msgid "Liberia"
-msgstr "¦º÷À¢Â¡"
-
-#. :LBR:430:
-#: ../zypp/CountryCode.cc:345
-msgid "Lesotho"
-msgstr "லெசோத்தோ"
-
-#. :LSO:426:
-#: ../zypp/CountryCode.cc:346
-msgid "Lithuania"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
-
-#. :LTU:440:
-#: ../zypp/CountryCode.cc:347
-msgid "Luxembourg"
-msgstr "Äìºõ§À¡÷ì"
-
-#. :LUX:442:
-#: ../zypp/CountryCode.cc:348
-msgid "Latvia"
-msgstr "ÄðÅ¢Â¡"
-
-#. :LVA:428:
-#: ../zypp/CountryCode.cc:349
-msgid "Libya"
-msgstr "¦º÷À¢Â¡"
-
-#. :LBY:434:
-#: ../zypp/CountryCode.cc:350
-msgid "Morocco"
-msgstr "மொராக்கோ"
-
-#. :MAR:504:
-#: ../zypp/CountryCode.cc:351
-msgid "Monaco"
-msgstr "Á¡ø¼¡"
-
-#. :MCO:492:
-#: ../zypp/CountryCode.cc:352
-msgid "Moldova"
-msgstr "Í§Ä¡Å¡ì"
-
-#. :MDA:498:
-#: ../zypp/CountryCode.cc:353
-msgid "Madagascar"
-msgstr "மடகாஸ்கர்"
-
-#. :MDG:450:
-#: ../zypp/CountryCode.cc:354
-msgid "Marshall Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :MHL:584:
-#: ../zypp/CountryCode.cc:355
-msgid "Macedonia"
-msgstr "Á¡º¢§¼¡É¢Â¡"
-
-#. :MKD:807:
-#: ../zypp/CountryCode.cc:356
-msgid "Mali"
-msgstr "Á¡ø¼¡"
-
-#. :MLI:466:
-#: ../zypp/CountryCode.cc:357
-msgid "Myanmar"
-msgstr "ÀÉ¡Á¡"
-
-#. :MMR:104:
-#: ../zypp/CountryCode.cc:358
-msgid "Mongolia"
-msgstr "மங்கோலியா"
-
-#. :MNG:496:
-#: ../zypp/CountryCode.cc:359
-msgid "Macao"
-msgstr "Á¡ø¼¡"
-
-#. :MAC:446:
-#: ../zypp/CountryCode.cc:360
-msgid "Northern Mariana Islands"
-msgstr "வட மாரியானா தீவுகள்"
-
-#. :MNP:580:
-#: ../zypp/CountryCode.cc:361
-msgid "Martinique"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
-
-#. :MTQ:474:
-#: ../zypp/CountryCode.cc:362
-msgid "Mauritania"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
-
-#. :MRT:478:
-#: ../zypp/CountryCode.cc:363
-msgid "Montserrat"
-msgstr "மான்ட்செர்ரட்"
-
-#. :MSR:500:
-#: ../zypp/CountryCode.cc:364
-msgid "Malta"
-msgstr "Á¡ø¼¡"
-
-#. :MLT:470:
-#: ../zypp/CountryCode.cc:365
-msgid "Mauritius"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
-
-#. :MUS:480:
-#: ../zypp/CountryCode.cc:366
-msgid "Maldives"
-msgstr "Á¡ø¼¡"
-
-#. :MDV:462:
-#: ../zypp/CountryCode.cc:367
-msgid "Malawi"
-msgstr "Á¡ø¼¡"
-
-#. :MWI:454:
-#: ../zypp/CountryCode.cc:368
-msgid "Mexico"
-msgstr "¦Áìº¢§¸¡"
-
-#. :MEX:484:
-#: ../zypp/CountryCode.cc:369
-msgid "Malaysia"
-msgstr "Á¡ø¼¡"
-
-#. :MYS:458:
-#: ../zypp/CountryCode.cc:370
-msgid "Mozambique"
-msgstr "மொசாம்பிக்"
-
-#. :MOZ:508:
-#: ../zypp/CountryCode.cc:371
-msgid "Namibia"
-msgstr "º¦Áöì¸¡"
-
-#. :NAM:516:
-#: ../zypp/CountryCode.cc:372
-msgid "New Caledonia"
-msgstr "Á¡º¢§¼¡É¢Â¡"
-
-#. :NCL:540:
-#: ../zypp/CountryCode.cc:373
-msgid "Niger"
-msgstr "¦º÷À¢Â¡"
-
-#. :NER:562:
-#: ../zypp/CountryCode.cc:374
-msgid "Norfolk Island"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :NFK:574:
-#: ../zypp/CountryCode.cc:375
-msgid "Nigeria"
-msgstr "¦º÷À¢Â¡"
-
-#. :NGA:566:
-#: ../zypp/CountryCode.cc:376
-msgid "Nicaragua"
-msgstr "ÀÃ¡Ì§Å"
-
-#. :NIC:558:
-#: ../zypp/CountryCode.cc:377
-msgid "Netherlands"
-msgstr "¦¿¾÷Ä¡óÐ"
-
-#. :NLD:528:
-#: ../zypp/CountryCode.cc:378
-msgid "Norway"
-msgstr "¿¡÷§Å"
-
-#. :NOR:578:
-#: ../zypp/CountryCode.cc:379
-msgid "Nepal"
-msgstr "நேபாளம்"
-
-#. :NRU:520:
-#: ../zypp/CountryCode.cc:381
-msgid "Niue"
-msgstr "நியூ"
-
-#. :NIU:570:
-#: ../zypp/CountryCode.cc:382
-msgid "New Zealand"
-msgstr "¿¢äº¢Ä¡óÐ"
-
-#. :NZL:554:
-#: ../zypp/CountryCode.cc:383
-msgid "Oman"
-msgstr "§º÷Áý"
-
-#. :OMN:512:
-#: ../zypp/CountryCode.cc:384
-msgid "Panama"
-msgstr "ÀÉ¡Á¡"
-
-#. :PAN:591:
-#: ../zypp/CountryCode.cc:385
-msgid "Peru"
-msgstr "¦ÀÕ"
-
-#. :PER:604:
-#: ../zypp/CountryCode.cc:386
-msgid "French Polynesia"
-msgstr "பிரெஞ்சு பாலினேசியா"
-
-#. :PYF:258:
-#: ../zypp/CountryCode.cc:387
-msgid "Papua New Guinea"
-msgstr "பாப்புவா நியூ கினியா"
-
-#. :PNG:598:
-#: ../zypp/CountryCode.cc:388
-msgid "Philippines"
-msgstr "ஃபிலிப்பைன்ஸ்"
-
-#. :PHL:608:
-#: ../zypp/CountryCode.cc:389
-msgid "Pakistan"
-msgstr "¾¡öÅ¡ý"
-
-#. :PAK:586:
-#: ../zypp/CountryCode.cc:390
-msgid "Poland"
-msgstr "§À¡Ä¡óÐ"
-
-#. :POL:616:
-#: ../zypp/CountryCode.cc:391
-msgid "Saint Pierre and Miquelon"
-msgstr "செயின்ட் பியரி மற்றும் மிக்வலான்"
-
-#. :SPM:666:
-#: ../zypp/CountryCode.cc:392
-msgid "Pitcairn"
-msgstr "பிட்கெய்ர்ன்"
-
-#. :PCN:612:
-#: ../zypp/CountryCode.cc:393
-msgid "Puerto Rico"
-msgstr "பியூர்டோ ரிகோ"
-
-#. :PRI:630:
-#: ../zypp/CountryCode.cc:394
-msgid "Palestinian Territory"
-msgstr "பாலஸ்தீனிய எல்லை"
-
-#. :PSE:275:
-#: ../zypp/CountryCode.cc:395
-msgid "Portugal"
-msgstr "§À¡÷òÐ¸ø"
-
-#. :PRT:620:
-#: ../zypp/CountryCode.cc:396
-msgid "Palau"
-msgstr "ÀÃ¡Ì§Å"
-
-#. :PLW:585:
-#: ../zypp/CountryCode.cc:397
-msgid "Paraguay"
-msgstr "ÀÃ¡Ì§Å"
-
-#. :PRY:600:
-#: ../zypp/CountryCode.cc:398
-msgid "Qatar"
-msgstr "Á¡ø¼¡"
-
-#. :QAT:634:
-#: ../zypp/CountryCode.cc:399
-msgid "Reunion"
-msgstr "ரீயூனியன்"
-
-#. :REU:638:
-#: ../zypp/CountryCode.cc:400
-msgid "Romania"
-msgstr "Õ§ÁÉ¢Â¡"
-
-#. :ROU:642:
-#: ../zypp/CountryCode.cc:401
-msgid "Russian Federation"
-msgstr "ரஷ்ய கூட்டரசு"
-
-#. :RUS:643:
-#: ../zypp/CountryCode.cc:402
-msgid "Rwanda"
-msgstr "¸É¼¡"
-
-#. :RWA:646:
-#: ../zypp/CountryCode.cc:403
-msgid "Saudi Arabia"
-msgstr "சவூதி அரேபியா"
-
-#. :SAU:682:
-#: ../zypp/CountryCode.cc:404
-msgid "Solomon Islands"
-msgstr "«Â÷Ä¡óÐ"
-
-#. :SLB:090:
-#: ../zypp/CountryCode.cc:405
-msgid "Seychelles"
-msgstr "செய்செலஸ்"
-
-#. :SYC:690:
-#: ../zypp/CountryCode.cc:406
-msgid "Sudan"
-msgstr "Ý¼¡ý"
-
-#. :SDN:736:
-#: ../zypp/CountryCode.cc:407
-msgid "Sweden"
-msgstr "ÍÅ£¼ý"
-
-#. :SWE:752:
-#: ../zypp/CountryCode.cc:408
-msgid "Singapore"
-msgstr "சிங்கப்பூர்"
-
-#. :SGP:702:
-#: ../zypp/CountryCode.cc:409
-msgid "Saint Helena"
-msgstr "செயின்ட் ஹெலனா"
-
-#. :SHN:654:
-#: ../zypp/CountryCode.cc:410
-msgid "Slovenia"
-msgstr "Í§Ä¡Å¢É¢Â¡"
-
-#. :SVN:705:
-#: ../zypp/CountryCode.cc:411
-msgid "Svalbard and Jan Mayen"
-msgstr "ஸ்வால்பார்ட் மற்றும் ஜான் மேயன்"
-
-#. :SJM:744:
-#: ../zypp/CountryCode.cc:412
-msgid "Slovakia"
-msgstr "Í§Ä¡Å¡ì¸¢Â"
-
-#. :SVK:703:
-#: ../zypp/CountryCode.cc:413
-msgid "Sierra Leone"
-msgstr "ஸியரா லியோன்"
-
-#. :SLE:694:
-#: ../zypp/CountryCode.cc:414
-msgid "San Marino"
-msgstr "சான் மரினோ"
-
-#. :SMR:674:
-#: ../zypp/CountryCode.cc:415
-msgid "Senegal"
-msgstr "செனகல்"
-
-#. :SEN:686:
-#: ../zypp/CountryCode.cc:416
-msgid "Somalia"
-msgstr "Õ§ÁÉ¢Â¡"
-
-#. :SOM:706:
-#: ../zypp/CountryCode.cc:417
-msgid "Suriname"
-msgstr "¦º÷À¢Â¡"
-
-#. :SUR:740:
-#: ../zypp/CountryCode.cc:418
-msgid "Sao Tome and Principe"
-msgstr "சாவோ டோம் மற்றும் பரின்சிபே"
-
-#. :STP:678:
-#: ../zypp/CountryCode.cc:419
-msgid "El Salvador"
-msgstr "±ø º¡øÅ§¼¡÷"
-
-#. :SLV:222:
-#: ../zypp/CountryCode.cc:420
-msgid "Syria"
-msgstr "¦º÷À¢Â¡"
-
-#. :SYR:760:
-#: ../zypp/CountryCode.cc:421
-msgid "Swaziland"
-msgstr "¾¡öÄ¡óÐ"
-
-#. :SWZ:748:
-#: ../zypp/CountryCode.cc:422
-msgid "Turks and Caicos Islands"
-msgstr "டர்க்ஸ் மற்றும் கெய்கோஸ் தீவுகள்"
-
-#. :TCA:796:
-#: ../zypp/CountryCode.cc:423
-msgid "Chad"
-msgstr "º£É¡"
-
-#. :TCD:148:
-#: ../zypp/CountryCode.cc:424
-msgid "French Southern Territories"
-msgstr "பிரெஞ்சு தென் எல்லைகள்"
-
-#. :ATF:260:
-#: ../zypp/CountryCode.cc:425
-msgid "Togo"
-msgstr "டோகோ"
-
-#. :TGO:768:
-#: ../zypp/CountryCode.cc:426
-msgid "Thailand"
-msgstr "¾¡öÄ¡óÐ"
-
-#. :THA:764:
-#: ../zypp/CountryCode.cc:427
-msgid "Tajikistan"
-msgstr "¾¡öÅ¡ý"
-
-#. :TKL:772:
-#: ../zypp/CountryCode.cc:429
-msgid "Turkmenistan"
-msgstr "¾¡öÅ¡ý"
-
-#. :TKM:795:
-#: ../zypp/CountryCode.cc:430
-msgid "Tunisia"
-msgstr "Ãº¢Â¡"
-
-#. :TUN:788:
-#: ../zypp/CountryCode.cc:431
-msgid "Tonga"
-msgstr "டோங்கா"
-
-#. :TON:776:
-#: ../zypp/CountryCode.cc:432
-msgid "East Timor"
-msgstr "கிழக்கு தைமூர்"
-
-#. :TLS:626:
-#: ../zypp/CountryCode.cc:433
-msgid "Turkey"
-msgstr "ÐÕì¸¢"
-
-#. :TUR:792:
-#: ../zypp/CountryCode.cc:434
-msgid "Trinidad and Tobago"
-msgstr "ðÃ¢É¢¼¡ð & ¦¼¡À¡§¸¡"
-
-#. :TUV:798:
-#: ../zypp/CountryCode.cc:436
-msgid "Taiwan"
-msgstr "¾¡öÅ¡ý"
-
-#. :TWN:158:
-#: ../zypp/CountryCode.cc:437
-msgid "Tanzania"
-msgstr "டான்சானியா"
-
-#. :TZA:834:
-#: ../zypp/CountryCode.cc:438
-msgid "Ukraine"
-msgstr "¯ì¦Ãöý"
-
-#. :UKR:804:
-#: ../zypp/CountryCode.cc:439
-msgid "Uganda"
-msgstr "¸É¼¡"
-
-#. :UGA:800:
-#: ../zypp/CountryCode.cc:440
-msgid "United States Minor Outlying Islands"
-msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
-
-#. :UMI:581:
-#: ../zypp/CountryCode.cc:441
-msgid "United States"
-msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
-
-#. :USA:840:
-#: ../zypp/CountryCode.cc:442
-msgid "Uruguay"
-msgstr "¯ÕÌ§Å"
-
-#. :URY:858:
-#: ../zypp/CountryCode.cc:443
-msgid "Uzbekistan"
-msgstr "¾¡öÅ¡ý"
-
-#. :UZB:860:
-#: ../zypp/CountryCode.cc:444
-msgid "Holy See (Vatican City State)"
-msgstr "ஹோலி ஸீ (வாடிகன் நகர மாகாணம்)"
-
-#. :VAT:336:
-#: ../zypp/CountryCode.cc:445
-msgid "Saint Vincent and the Grenadines"
-msgstr "¦ºÂ¢ýð Å¢ý¦ºýð & ¸¢¦ÃÉËý¸û"
-
-#. :VCT:670:
-#: ../zypp/CountryCode.cc:446
-msgid "Venezuela"
-msgstr "¦ÅÉ¢ÍÅÄ¡"
-
-#. :VEN:862:
-#: ../zypp/CountryCode.cc:447
-msgid "British Virgin Islands"
-msgstr "À¢ýÄ¡óÐ"
-
-#. :VGB:092:
-#: ../zypp/CountryCode.cc:448
-msgid "Virgin Islands, U.S."
-msgstr "À¢ýÄ¡óÐ"
-
-#. :VIR:850:
-#: ../zypp/CountryCode.cc:449
-msgid "Vietnam"
-msgstr "Vietnam"
-
-#. :VNM:704:
-#: ../zypp/CountryCode.cc:450
-msgid "Vanuatu"
-msgstr "வானுவாடூ"
-
-#. :VUT:548:
-#: ../zypp/CountryCode.cc:451
-msgid "Wallis and Futuna"
-msgstr "வாலிஸ் மற்றும் ஃபுடூனா"
-
-#. :WLF:876:
-#: ../zypp/CountryCode.cc:452
-msgid "Samoa"
-msgstr "¦¸¡ÄõÀ¢Â¡"
-
-#. :WSM:882:
-#: ../zypp/CountryCode.cc:453
-msgid "Yemen"
-msgstr "யேமன்"
-
-#. :YEM:887:
-#: ../zypp/CountryCode.cc:454
-msgid "Mayotte"
-msgstr "மயோட்"
-
-#. :MYT:175:
-#: ../zypp/CountryCode.cc:455
-msgid "South Africa"
-msgstr "¦¾ý ¬ôÃ¢ì¸¡"
-
-#. :ZAF:710:
-#: ../zypp/CountryCode.cc:456
-msgid "Zambia"
-msgstr "º¦Áöì¸¡"
-
-#. :ZMB:894:
-#: ../zypp/CountryCode.cc:457
-msgid "Zimbabwe"
-msgstr "ஜிம்பாப்வே"
-
-#: ../devel/devel.mvidner/installation_sources.cc:56
-#, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr ""
-"%s கோப்பு கையொப்பமிடப்படவில்லை.\n"
-"அவ்வாறிருந்தும் அதனை பயன்படுத்தலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:65
-#, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"%s கோப்பு அறிந்திராத ஒரு கீயினால் கையொப்பமிடப்பட்டுள்ளது:\n"
-"%s|%s|%s\n"
-"அவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:75
-#, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr ""
-"நம்பகத்தன்மையற்ற கீ கண்டுபிடிக்கப்பட்டுள்ளது:\n"
-"%s|%s|%s\n"
-"கீயை நம்பலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:85
-#, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"%s கோப்பு, பின்வரும் கீயுடன் நேர்மை சோதனையில் தோல்வியுற்றது:\n"
-"%s|%s|%s\n"
-"அவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:99
-#, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr ""
-"%s கோப்பிற்கு செக்சம் இல்லை.\n"
-"அவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:108
-#, fuzzy, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
-msgstr ""
-"%s கோப்பிற்கு அறியப்படாத ஒரு செக்சம் உள்ளது.\n"
-"அவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"
-
-#: ../devel/devel.mvidner/installation_sources.cc:117
-#, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr ""
-"%s கோப்பிற்கு செல்லாத ஒரு செக்சம் உள்ளது.\n"
-"எதிர்பார்த்தது %s, கண்டது %s\n"
-"அவ்வாறிருந்தும் அக்கோப்பை பயன்படுத்தலாமா?"

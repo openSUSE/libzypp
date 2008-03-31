@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 31 09:04:07 CEST 2008 - schubi@suse.de
+
+- Added new translations
+- version 2.30.10 
+
+-------------------------------------------------------------------
 Wed Mar 26 12:43:08 CET 2008 - jkupec@suse.cz
 
 - fixed location of RPMs in subdirs when parsing plaindir repo

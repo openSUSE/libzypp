@@ -90,6 +90,7 @@ YUMProductParser::process(const xmlTextReaderPtr reader)
           if (!Arch(productPtr->arch).compatibleWith( _zypp_architecture ))
           {
             productPtr = NULL;			// skip <package>, incompatible architecture
+            ERR << "Skipping incompatible architecture product. " << endl;
             break;
           }
         }

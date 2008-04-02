@@ -466,6 +466,12 @@ void YUMSourceImpl::provideProducts(Source_Ref source_r, ResStore& store)
       YUMProductParser product(st, "", progress);
       for (; !product.atEnd(); ++product)
       {
+          if ( ! *product )
+          {
+              ERR << "skipping invalid product from " << filename << endl;
+              continue;
+          }
+          
         Product::Ptr p = createProduct( source_r, **product );
         store.insert (p);
       }

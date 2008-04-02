@@ -107,12 +107,15 @@ int PlaindirImpl::extract_packages_from_directory (ResStore & store, const Pathn
 
       } else if (file_info.isFile() && file_path.extension() == ".rpm" ) {
         RpmHeader::constPtr header = RpmHeader::readPackage( file_path, RpmHeader::NOSIGNATURE );
-#warning FIX creation of Package from src.rpm header
-        // make up proper location relative to rootpath (bnc #368218)
-        Package::Ptr package = target::rpm::RpmDb::makePackageFromHeader( header, NULL, subdir / *it, source );
-        if (package != NULL) {
-          DBG << "Adding package " << *package << endl;
-          store.insert( package );
+
+        if ( ! ( header->isPatchRpm() || header->isDeltaRpm() ) )
+        {
+            // make up proper location relative to rootpath (bnc #368218)
+            Package::Ptr package = target::rpm::RpmDb::makePackageFromHeader( header, NULL, subdir / *it, source );
+            if (package != NULL) {
+                DBG << "Adding package " << *package << endl;
+                store.insert( package );
+            }
         }
       }
     }

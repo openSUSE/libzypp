@@ -149,6 +149,16 @@ namespace zypp {
         return has_tag( RPMTAG_SOURCEPACKAGE );
       }
 
+      bool RpmHeader::isPatchRpm() const
+      {
+        return stringList_val(RPMTAG_PATCHESNAME).size() > 0;  
+      }
+
+      bool RpmHeader::isDeltaRpm() const
+      {
+        return string_val( RPMTAG_PAYLOADFORMAT ) == "drpm";     
+      }
+        
       ///////////////////////////////////////////////////////////////////
       //
       //

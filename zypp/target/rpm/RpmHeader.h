@@ -79,7 +79,18 @@ namespace zypp {
 
 	  virtual ~RpmHeader();
 
+    /**
+     * True if the rpm header is from a source rpm
+     */
 	  bool isSrc() const;
+    /**
+     * True if the rpm header is from a patch rpm
+     */
+    bool isPatchRpm() const;
+    /**
+     * True if the rpm header is from a delta rpm
+     */
+    bool isDeltaRpm() const;
 
 	public:
 

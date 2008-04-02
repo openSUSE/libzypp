@@ -6,6 +6,11 @@ Wed Apr  2 15:45:48 CEST 2008 - dmacvicar@suse.de
 - version 2.31.0
 
 -------------------------------------------------------------------
+Wed Apr  2 02:21:11 CEST 2008 - mauro@suse.de
+
+- Added bnc-239408.patch and yast-sw_single.png to fix bnc#239408.
+
+-------------------------------------------------------------------
 Mon Mar 31 09:04:07 CEST 2008 - schubi@suse.de
 
 - Added new translations

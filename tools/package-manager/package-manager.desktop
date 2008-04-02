@@ -1,9 +1,9 @@
 [Desktop Entry]
 X-SuSE-translate=true
 Encoding=UTF-8
-Name=Install Software
+Name=Advanced Software Installation
 Exec=package-manager %F
-Icon=package-manager-icon
+Icon=yast-sw_single
 Terminal=false
 Type=Application
 Categories=PackageManager;

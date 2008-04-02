@@ -1,7 +1,7 @@
 dist_bin_SCRIPTS = package-manager
 
 icondir = $(datadir)/pixmaps
-icon_DATA = package-manager-icon.png
+icon_DATA = package-manager-icon.png yast-sw_single.png
 
 desktopdir = $(datadir)/applications
 desktop_DATA = package-manager.desktop

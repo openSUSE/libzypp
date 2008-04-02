@@ -109,6 +109,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %dir %{prefix}/share/zypp
 %{prefix}/share/zypp/*
 %{prefix}/share/pixmaps/package-manager-icon.png
+%{prefix}/share/pixmaps/yast-sw_single.png
 %{prefix}/share/applications/package-manager.desktop
 %{prefix}/bin/package-manager
 

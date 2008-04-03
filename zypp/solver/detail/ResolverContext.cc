@@ -795,9 +795,11 @@ install_item_cb (PoolItem_Ref item, const ResStatus & status, void *data)
 {
     InstallInfo *info = (InstallInfo *)data;
 
+    Package::constPtr p = asKind<Package>(item.resolvable());
+
     if (status.isToBeInstalled()
 	&& !item.status().isInstalled()
-	&& !Helper::findInstalledItem( info->pool, item))
+	&& ( !Helper::findInstalledItem( info->pool, item)) || ( p && p->installOnly()) )
     {
 	if (info->fn) info->fn (item, status, info->rl);
 	++info->count;

@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Apr  3 14:55:31 CEST 2008 - dmacvicar@suse.de
+
+- if a package is installOnly, then we dont care if a older
+  version is selected for installation when installing it
+  fixed in solver. testsuite shows no regressions.
+- (bnc #373563)
+- version 2.31.2
+
+-------------------------------------------------------------------
 Wed Apr  2 22:53:39 CEST 2008 - dmacvicar@suse.de
 
 - don't crash with incompatible products (bnc #292658)

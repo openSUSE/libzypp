@@ -1942,8 +1942,11 @@ namespace zypp
       //
       void RpmDb::removePackage( Package::constPtr package, unsigned flags )
       {
+	// clear epoch, see bnc #372323
+	Edition tmp(package->edition().version(), package->edition().release(), Edition::noepoch); 
+
         return removePackage( package->name()
-                              + "-" + package->edition().asString()
+                              + "-" + tmp.asString()
                               + "." + package->arch().asString(), flags );
       }
 

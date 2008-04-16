@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 16 12:15:16 CEST 2008 - dmacvicar@suse.de
+
+- add patch by aschnell. fix removing rpms with epoch 
+  (bnc #372323)
+- version 2.31.3
+
+-------------------------------------------------------------------
 Thu Apr  3 14:55:31 CEST 2008 - dmacvicar@suse.de
 
 - if a package is installOnly, then we dont care if a older

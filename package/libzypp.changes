@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 18 18:54:50 CEST 2008 - schubi@suse.de
+
+- added translations 
+- version 2.31.4
+
+-------------------------------------------------------------------
 Wed Apr 16 12:15:16 CEST 2008 - dmacvicar@suse.de
 
 - add patch by aschnell. fix removing rpms with epoch 

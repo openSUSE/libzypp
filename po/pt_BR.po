@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-28 16:39+0100\n"
-"PO-Revision-Date: 2008-03-27 15:07\n"
+"PO-Revision-Date: 2008-04-17 15:59\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
@@ -15,74 +15,38 @@ msgstr ""
 
 #: ../devel/devel.mvidner/installation_sources.cc:56
 #, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr ""
-"O arquivo %s não está assinado.\n"
-"Deseja usá-lo mesmo assim?"
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "O arquivo %s não está assinado.\nDeseja usá-lo mesmo assim?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"O arquivo %s está assinado com uma chave desconhecida:\n"
-"%s|%s|%s\n"
-" Deseja usar o arquivo mesmo assim?"
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "O arquivo %s está assinado com uma chave desconhecida:\n%s|%s|%s\n Deseja usar o arquivo mesmo assim?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr ""
-"Chave não confiável encontrada:\n"
-"%s|%s|%s\n"
-" Deseja confiar na chave?"
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "Chave não confiável encontrada:\n%s|%s|%s\n Deseja confiar na chave?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Falha na verificação de integridade do arquivo %s usando a seguinte chave:\n"
-"%s|%s|%s\n"
-" Deseja usar o arquivo mesmo assim?"
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Falha na verificação de integridade do arquivo %s usando a seguinte chave:\n%s|%s|%s\n Deseja usar o arquivo mesmo assim?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr ""
-"O arquivo %s não tem um checksum.\n"
-"Deseja usar o arquivo mesmo assim?"
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "O arquivo %s não tem um checksum.\nDeseja usar o arquivo mesmo assim?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
-msgstr ""
-"O arquivo %s tem um checksum desconhecido %s.\n"
-"Deseja usar o arquivo mesmo assim?"
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
+msgstr "O arquivo %s tem um checksum desconhecido %s.\nDeseja usar o arquivo mesmo assim?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr ""
-"O arquivo %s tem um checksum inválido.\n"
-"Era esperado %s, foi encontrado %s\n"
-" Deseja usar o arquivo mesmo assim?"
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "O arquivo %s tem um checksum inválido.\nEra esperado %s, foi encontrado %s\n Deseja usar o arquivo mesmo assim?"
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -190,14 +154,8 @@ msgstr "Operação não suportada pelo meio"
 
 #: ../zypp/media/MediaException.cc:152
 #, c-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-"Erro de download (curl) para '%s':\n"
-"Código de erro: %s\n"
-"Mensagem de erro: %s\n"
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr "Erro de download (curl) para '%s':\nCódigo de erro: %s\nMensagem de erro: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:161
@@ -231,14 +189,8 @@ msgstr "Permissão negada para acessar '%s'."
 
 #: ../zypp/media/MediaCurl.cc:882 ../zypp/media/MediaCurl.cc:1102
 #, c-format
-msgid ""
-"Permission to access '%s' denied.\n"
-"\n"
-"Visit the Novell Customer Center to check whether your registration is valid and has not expired."
-msgstr ""
-"Permissão negada para acessar '%s'.\n"
-"\n"
-"Visite o Novell Customer Center para verificar se o seu registro é válido e não expirou."
+msgid "Permission to access '%s' denied.\n\nVisit the Novell Customer Center to check whether your registration is valid and has not expired."
+msgstr "Permissão negada para acessar '%s'.\n\nVisite o Novell Customer Center para verificar se o seu registro é válido e não expirou."
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
 msgid "unlock all resolvables"
@@ -671,12 +623,8 @@ msgstr "%s é necessário a %s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:272
 #, c-format
-msgid ""
-"%s is needed by:\n"
-"%s"
-msgstr ""
-"%s é necessário a:\n"
-"%s"
+msgid "%s is needed by:\n%s"
+msgstr "%s é necessário a:\n%s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:279
@@ -697,12 +645,8 @@ msgstr "%s conflitos com %s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:283
 #, c-format
-msgid ""
-"%s conflicts with:\n"
-"%s"
-msgstr ""
-"%s está em conflito com:\n"
-"%s"
+msgid "%s conflicts with:\n%s"
+msgstr "%s está em conflito com:\n%s"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:306
@@ -723,12 +667,8 @@ msgid "%s obsoletes:%s"
 msgstr "%s torna obsoleto:%s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:312
-msgid ""
-"\n"
-"These resolvables will be deleted from the system."
-msgstr ""
-"\n"
-"Esses resolvíveis serão apagados do sistema."
+msgid "\nThese resolvables will be deleted from the system."
+msgstr "\nEsses resolvíveis serão apagados do sistema."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/Resolver_problems.cc:319
@@ -768,12 +708,8 @@ msgid "None provides %s"
 msgstr "Nenhum fornece %s"
 
 #: ../zypp/solver/detail/Resolver_problems.cc:341
-msgid ""
-"\n"
-"There is no resource available which support this requirement."
-msgstr ""
-"\n"
-"Não há nenhum recurso disponível que atenda a esse requisito."
+msgid "\nThere is no resource available which support this requirement."
+msgstr "\nNão há nenhum recurso disponível que atenda a esse requisito."
 
 #: ../zypp/solver/detail/Resolver_problems.cc:349
 msgid "Due problems which are described above/below this resolution will not solve all dependencies"
@@ -951,12 +887,8 @@ msgstr "rpm gravou %s como %s, mas não foi possível determinar a diferença"
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1911
 #, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm gravou %s como %s.\n"
-"Aqui estão as 25 primeiras linhas de diferença:\n"
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm gravou %s como %s.\nAqui estão as 25 primeiras linhas de diferença:\n"
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1914
@@ -967,12 +899,8 @@ msgstr "rpm criou %s como %s, mas não foi possível determinar a diferença"
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:1916
 #, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm criou %s como %s.\n"
-"Aqui estão as 25 primeiras linhas de diferença:\n"
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm criou %s como %s.\nAqui estão as 25 primeiras linhas de diferença:\n"
 
 #. %s = filename of rpm package
 #. timestamp
@@ -4896,3 +4824,4 @@ msgstr "Zulu"
 #: ../zypp/LanguageCode.cc:1226
 msgid "Zuni"
 msgstr "Zunhi"
+

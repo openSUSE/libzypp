@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-28 16:39+0100\n"
-"PO-Revision-Date: 2008-03-27 18:02\n"
+"PO-Revision-Date: 2008-04-17 14:14\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
@@ -287,7 +287,7 @@ msgstr "अणू (अटम)"
 #. Translator: Notation for computer system
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:122
 msgid "system"
-msgstr "प्रणाली"
+msgstr "सिस्टीम"
 
 #. Translator: Generic term for an item with dependencies, please leave untranslated for now
 #: ../zypp/solver/detail/ResolverInfoMisc.cc:126
@@ -1335,7 +1335,7 @@ msgstr "ऑस्ट्रिया"
 #. :AUT:040:
 #: ../zypp/CountryCode.cc:230
 msgid "Australia"
-msgstr "आस्ट्रेलिया"
+msgstr "ऑस्ट्रेलिया"
 
 #. :AUS:036:
 #: ../zypp/CountryCode.cc:231

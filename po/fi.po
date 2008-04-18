@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-28 16:39+0100\n"
-"PO-Revision-Date: 2008-03-27 16:53\n"
+"PO-Revision-Date: 2008-04-17 11:09\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
@@ -71,126 +71,126 @@ msgstr "Mutex-lukitusta ei voi vapauttaa"
 #: ../zypp/media/MediaException.cc:31
 #, c-format
 msgid "Failed to mount %s on %s"
-msgstr ""
+msgstr "Kohteen %s käyttöönotto sijainnissa %s epäonnistui"
 
 #: ../zypp/media/MediaException.cc:41
 #, c-format
 msgid "Failed to unmount %s"
-msgstr "Ei voida irroittaa %s"
+msgstr "Kohdetta %s ei voi irrottaa"
 
 #: ../zypp/media/MediaException.cc:47
 #, c-format
 msgid "Bad file name: %s"
-msgstr ""
+msgstr "Virheellinen tiedoston nimi: %s"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
+msgstr "Tallennusvälinettä ei avattu yritettäessä toiminnon '%s' suorittamista."
 
 #: ../zypp/media/MediaException.cc:60
 #, c-format
 msgid "File '%s' not found on medium '%s'"
-msgstr ""
+msgstr "Tiedostoa '%s' ei löytynyt tallennusvälineestä '%s'"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
 msgid "Cannot write file '%s'."
-msgstr "Tiedostoa ei voida kirjoittaa '%s'."
+msgstr "Tiedostoa '%s' ei voi kirjoittaa."
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr ""
+msgstr "Tallennusvälinettä ei ole liitetty"
 
 #: ../zypp/media/MediaException.cc:77
 msgid "Bad media attach point"
-msgstr ""
+msgstr "Virheellinen tallennusvälineen liitoskohta"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
 #, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr ""
+msgstr "Latauksen (curl) alustus epäonnistui kohteelle '%s'"
 
 #: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr ""
+msgstr "Järjestelmän poikkeus '%s' tallennusvälineessä '%s'."
 
 #: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr ""
+msgstr "Polku '%s' tallennusvälineessä '%s' ei ole tiedosto."
 
 #: ../zypp/media/MediaException.cc:106
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr ""
+msgstr "Polku '%s' tallennusvälineessä '%s' ei ole hakemisto."
 
 #: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
-msgstr ""
+msgstr "Väärin muodostettu URI"
 
 #: ../zypp/media/MediaException.cc:125
 msgid "Empty host name in URI"
-msgstr ""
+msgstr "Tyhjä isäntänimi URI-osoitteessa"
 
 #: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
-msgstr ""
+msgstr "Tyhjä tiedostojärjestelmä URI-osoitteessa"
 
 #: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
-msgstr ""
+msgstr "Tyhjä kohde URI-osoitteessa"
 
 #: ../zypp/media/MediaException.cc:140
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr ""
+msgstr "URI-skeemaa ei tueta kohteessa '%s'."
 
 #: ../zypp/media/MediaException.cc:145
 msgid "Operation not supported by medium"
-msgstr ""
+msgstr "Toimintoa ei tueta tallennusvälineessä"
 
 #: ../zypp/media/MediaException.cc:152
 #, c-format
 msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
-msgstr ""
+msgstr "Latauksen (curl) virhe kohteelle '%s':\nVirhekoodi: %s\nVirheviesti: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
+msgstr "Virhe määritettäessä latauksen (curl) asetuksia kohteelle '%s':"
 
 #: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
+msgstr "Tallennusvälinelähde '%s' ei sisällä haluttua tallennusvälinettä"
 
 #: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr ""
+msgstr "Tallennusväline '%s' on toisen esiintymän käytössä"
 
 #: ../zypp/media/MediaException.cc:182
 msgid "Cannot eject any media"
-msgstr ""
+msgstr "Mitään tallennusvälinettä ei voi irrottaa"
 
 #: ../zypp/media/MediaException.cc:184
 #, c-format
 msgid "Cannot eject media '%s'"
-msgstr ""
+msgstr "Tallennusvälinettä '%s' ei voi irrottaa"
 
 #: ../zypp/media/MediaException.cc:190
 #, c-format
 msgid "Permission to access '%s' denied."
-msgstr ""
+msgstr "Kohteen '%s' käyttö on estetty."
 
 #: ../zypp/media/MediaCurl.cc:882 ../zypp/media/MediaCurl.cc:1102
 #, c-format
 msgid "Permission to access '%s' denied.\n\nVisit the Novell Customer Center to check whether your registration is valid and has not expired."
-msgstr ""
+msgstr "Kohteen '%s' käyttö on estetty.\n\nNovell Customer Center -palvelussa on tietoa siitä, ovatko rekisteröintisi kelvollisia vai vanhentuneita."
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
 msgid "unlock all resolvables"
@@ -1222,12 +1222,12 @@ msgstr "Virheellinen parametritaulukon liitoksen erotinmerkki"
 #: ../zypp/ZYppFactory.cc:339
 #, c-format
 msgid "System management is locked by the application with pid %d. Please close this application before trying again."
-msgstr ""
+msgstr "Sovellus, jonka pid on %d, on lukinnut järjestelmänhallinnan. Sulje tämä sovellus, ennen kuin yrität uudelleen."
 
 #: ../zypp/SourceManager.cc:116
 #, c-format
 msgid "Source alias '%s' is already in use."
-msgstr ""
+msgstr "Lähteen alias '%s' on jo käytössä."
 
 #: ../zypp/SourceManager.h:42
 msgid "Unable to restore all sources."

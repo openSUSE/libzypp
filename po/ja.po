@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-28 16:39+0100\n"
-"PO-Revision-Date: 2008-03-27 16:51\n"
+"PO-Revision-Date: 2008-04-17 12:00\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
@@ -71,126 +71,126 @@ msgstr "ミューテックスロックを解放できません"
 #: ../zypp/media/MediaException.cc:31
 #, c-format
 msgid "Failed to mount %s on %s"
-msgstr ""
+msgstr "%s を %s にマウントできませんでした"
 
 #: ../zypp/media/MediaException.cc:41
 #, c-format
 msgid "Failed to unmount %s"
-msgstr "%sをアンマウントできませんでした"
+msgstr "%s をアンマウントできませんでした"
 
 #: ../zypp/media/MediaException.cc:47
 #, c-format
 msgid "Bad file name: %s"
-msgstr ""
+msgstr "不正なファイル名: %s"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
+msgstr "アクション「%s」を実行しようとした際にメディアが開きませんでした"
 
 #: ../zypp/media/MediaException.cc:60
 #, c-format
 msgid "File '%s' not found on medium '%s'"
-msgstr ""
+msgstr "ファイル「%s」がメディア「%s」に見つかりません"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
 msgid "Cannot write file '%s'."
-msgstr "ファイル '%s' を書き込めません。"
+msgstr "ファイル「%s」を書き込めません。"
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr ""
+msgstr "メディアが接続されていません"
 
 #: ../zypp/media/MediaException.cc:77
 msgid "Bad media attach point"
-msgstr ""
+msgstr "不正なメディアの接続点"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
 #, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr ""
+msgstr "「%s」のダウンロード(curl)初期化が失敗しました"
 
 #: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr ""
+msgstr "システム例外「%s」がメディア「%s」にあります。"
 
 #: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr ""
+msgstr "パス「%s」(メディア「%s」上)がファイルではありません。"
 
 #: ../zypp/media/MediaException.cc:106
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr ""
+msgstr "パス「%s」(メディア「%s」上)はディレクトリではありません。"
 
 #: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
-msgstr ""
+msgstr "不正な形式のURI"
 
 #: ../zypp/media/MediaException.cc:125
 msgid "Empty host name in URI"
-msgstr ""
+msgstr "URIのホスト名が空です"
 
 #: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
-msgstr ""
+msgstr "URIのファイルシステムが空です"
 
 #: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
-msgstr ""
+msgstr "URIの宛先が空です"
 
 #: ../zypp/media/MediaException.cc:140
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr ""
+msgstr "「%s」のURIスキーマがサポートされていません。"
 
 #: ../zypp/media/MediaException.cc:145
 msgid "Operation not supported by medium"
-msgstr ""
+msgstr "メディアでサポートされていない操作です"
 
 #: ../zypp/media/MediaException.cc:152
 #, c-format
 msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
-msgstr ""
+msgstr "「%s」のダウンロード(curl)エラー:\nエラーコード: %s\nエラーメッセージ: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
+msgstr "「%s」のダウンロード(curl)オプションの設定中にエラーが発生しました:"
 
 #: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
+msgstr "メディアソース「%s」に目的のメディアが含まれていません"
 
 #: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr ""
+msgstr "メディア「%s」は別のインスタンスによって使用されています"
 
 #: ../zypp/media/MediaException.cc:182
 msgid "Cannot eject any media"
-msgstr ""
+msgstr "メディアを取り出せません"
 
 #: ../zypp/media/MediaException.cc:184
 #, c-format
 msgid "Cannot eject media '%s'"
-msgstr ""
+msgstr "メディア「%s」を取り出せません"
 
 #: ../zypp/media/MediaException.cc:190
 #, c-format
 msgid "Permission to access '%s' denied."
-msgstr ""
+msgstr "「%s」にアクセスするパーミッションが拒否されました。"
 
 #: ../zypp/media/MediaCurl.cc:882 ../zypp/media/MediaCurl.cc:1102
 #, c-format
 msgid "Permission to access '%s' denied.\n\nVisit the Novell Customer Center to check whether your registration is valid and has not expired."
-msgstr ""
+msgstr "「%s」にアクセスするパーミッションが拒否されました。\n\nノベルカスタマセンターにアクセスして、登録が有効で期限切れではないことを確認してください。"
 
 #: ../zypp/solver/detail/ProblemSolutionUnlock.cc:70
 msgid "unlock all resolvables"
@@ -1222,12 +1222,12 @@ msgstr "無効なパラメータ配列結合セパレータ文字"
 #: ../zypp/ZYppFactory.cc:339
 #, c-format
 msgid "System management is locked by the application with pid %d. Please close this application before trying again."
-msgstr ""
+msgstr "システム管理がPID %d のアプリケーションによってロックされています。このアプリケーションを閉じてから、もう一度試してください。"
 
 #: ../zypp/SourceManager.cc:116
 #, c-format
 msgid "Source alias '%s' is already in use."
-msgstr ""
+msgstr "ソースエイリアス「%s」はすでに使用されています。"
 
 #: ../zypp/SourceManager.h:42
 msgid "Unable to restore all sources."

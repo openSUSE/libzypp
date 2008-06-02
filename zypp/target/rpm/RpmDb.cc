@@ -1001,21 +1001,34 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
   // check if the key is already in the rpm database and just
   // return if it does.
   set<Edition> rpm_keys = pubkeyEditions();
+  string keyshortid = pubkey_r.id().substr(8,8);
+  MIL << "Comparing '" << keyshortid << "' to: ";
   for ( set<Edition>::const_iterator it = rpm_keys.begin(); it != rpm_keys.end(); ++it)
   {
     string id = str::toUpper( (*it).version() );
-    string keyshortid = pubkey_r.id().substr(8,8);
-    MIL << "Comparing '" << id << "' to '" << keyshortid << "'" << endl;
+    MIL <<  ", '" << id << "'";
     if ( id == keyshortid )
     {
-      // they match id
-      // FIXME id is not sufficient?
-      MIL << "Key " << pubkey_r << " is already in the rpm trusted keyring." << endl;
-      return;
+        // they match id
+        // now check if timestamp is different
+        Date date = Date(str::strtonum<Date::ValueType>("0x" + (*it).release()));
+        if (  date == pubkey_r.created() )
+        {
+                
+            MIL << endl << "Key " << pubkey_r << " is already in the rpm trusted keyring." << endl;
+            return;
+        }
+        else
+        {
+            MIL << endl << "Key " << pubkey_r << " has another version in keyring. ( " << date << " & " << pubkey_r.created() << ")" << endl;
+
+        }
+            
     }
   }
   // key does not exists, lets import it
-
+  MIL <<  endl;
+    
   RpmArgVec opts;
   opts.push_back ( "--import" );
   opts.push_back ( "--" );

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jun  2 17:37:02 CEST 2008 - dmacvicar@suse.de
+
+- import newer keys if a trusted key is updated
+  (bnc#393160)
+- add message attribute to patches. 
+- 4.26.0
+
+-------------------------------------------------------------------
 Sun Jun  1 23:14:34 CEST 2008 - - ma@suse.de
 
 - Revert inappropriate Selectable cleanup. Fix Selectable

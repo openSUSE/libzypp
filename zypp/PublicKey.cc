@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <vector>
 
 //#include "zypp/base/Logger.h"
 
@@ -117,8 +118,7 @@ namespace zypp
       
      void readFromFile( const Pathname &keyfile)
      {
-       static str::regex rxColons("^([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):\n$");
-       
+
        PathInfo info(keyfile);
        MIL << "Reading pubkey from " << keyfile << " of size " << info.size() << " and sha1 " << filesystem::checksum(keyfile, "sha1")<< endl; 
        if ( !info.isExist() )
@@ -133,7 +133,9 @@ namespace zypp
         const char* argv[] =
         {
           "gpg",
+          "-v",
           "--no-default-keyring",
+          "--fixed-list-mode",
           "--homedir",
           dir.path().asString().c_str(),
           "--with-fingerprint",
@@ -152,32 +154,45 @@ namespace zypp
   
         std::string line;
         int count = 0;
-  
+        int sig_count = 0;
+
       // pub:-:1024:17:A84EDAE89C800ACA:2000-10-19:2008-06-21::-:SuSE Package Signing Key <build@suse.de>:
   
         for(line = prog.receiveLine(), count=0; !line.empty(); line = prog.receiveLine(), count++ )
         {
-        //MIL << "[" << line << "]" << std::endl;
-          str::smatch what;
-          if(str::regex_match(line, what, rxColons))
+           std::vector<std::string> words;
+           str::splitFields( line, std::back_inserter(words), ":" );
+           
+           //MIL << "words size: " << words.size() << endl;
+           
+
+           if( ! words.size() > 0 )
+               continue;
+           
+          if ( words[0] == "pub" )
           {
-            if ( what[1] == "pub" )
-            {
-              _id = what[5];
-              _name = what[10];
+              _id = words[4];
+              _name = words[9];
               //replace all escaped semicolon with real
               str::replace_all(_name,"\\x3a",":");
-
-	      _created = createDate(what[6]);
-	      _expires = createDate(what[7]);
-            //return key;
-            }
-            else if ( what[1] == "fpr" )
-            {
-                _fingerprint = what[10];
-            }
-          //dumpRegexpResults(what);
+              
+	      //_expires = createDate(what[7]);
+              //return key;
           }
+          else if ( words[0] == "fpr" )
+          {
+              _fingerprint = words[9];
+          }
+          else if ( words[0] == "sig" && sig_count == 0 && words[10] == "[selfsig]" )
+          {
+              //MIL << "accept: " << line << endl;
+              
+                //sig:::17:A84EDAE89C800ACA:1087899198:::::[selfsig]::13x:
+              _created = Date(str::strtonum<Date::ValueType>(words[5]));
+              sig_count++;
+          }
+          
+          //dumpRegexpResults(what);
         }
         prog.close();
         

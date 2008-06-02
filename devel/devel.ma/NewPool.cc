@@ -561,20 +561,16 @@ try {
 
   SEC << zypp::getZYpp()->diskUsage() << endl;
 
-  for_( it, pool.begin(), pool.end() )
+  for_( it, pool.byKindBegin<SrcPackage>(), pool.byKindEnd<SrcPackage>() )
   {
-    //MIL << *it << endl;
-    //DBG << (*it)->diskusage() << endl;
+    MIL << *it << endl;
   }
 
-  PoolItem pu ( getPi<Package>("amarok") );
-  PoolItem pi ( getPi<Package>("amarok",Edition("1.4.7-37")) );
+  for_( it, pool.byIdentBegin( ResKind::srcpackage, "zypper" ), pool.byIdentEnd( ResKind::srcpackage, "zypper" ) )
+  {
+    WAR << *it << endl;
+  }
 
-  pi.status().setTransact( true, ResStatus::USER );
-  SEC << zypp::getZYpp()->diskUsage() << endl;
-
-  pu.status().setTransact( true, ResStatus::USER );
-  SEC << zypp::getZYpp()->diskUsage() << endl;
 
 
   ///////////////////////////////////////////////////////////////////

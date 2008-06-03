@@ -249,6 +249,7 @@ bool solve()
   bool rres = false;
   {
     //zypp::base::LogControl::TmpLineWriter shutUp;
+    getZYpp()->resolver()->setIgnoreAlreadyRecommended( true );
     rres = getZYpp()->resolver()->resolvePool();
   }
   if ( ! rres )
@@ -533,7 +534,7 @@ try {
     }
   }
 
-  if ( 1 )
+  if ( 0 )
   {
     Measure x( "INIT TARGET" );
     {
@@ -558,21 +559,47 @@ try {
   }
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
+  MIL << (*pool.byKindBegin<SrcPackage>())->provides() << endl;
 
+  MIL << (Capability( "srcpackage:foo == 1.0" ).detail()) << endl;
+  MIL << (Capability( "foo == 1.0", ResKind::srcpackage ).detail()) << endl;
+  MIL << (Capability( "foo.src == 1.0" ).detail()) << endl;
+  MIL << (Capability( "foo.i386 == 1.0" ).detail()) << endl;
+
+  MIL << (Capability( "srcpackage:foo == 1.0" )) << endl;
+  MIL << (Capability( "foo == 1.0", ResKind::srcpackage )) << endl;
+  MIL << (Capability( "foo.src == 1.0" )) << endl;
+  MIL << (Capability( "foo.i386 == 1.0" )) << endl;
+
+  SEC << sat::WhatProvides( Capability( "srcpackage:zypper" ) ) << endl;;
+  SEC << sat::WhatProvides( Capability( "zypper", ResKind::srcpackage  ) ) << endl;;
+  SEC << sat::WhatProvides( Capability( "zypper.src" ) ) << endl;;
+
+  ///////////////////////////////////////////////////////////////////
+  INT << "===[END]============================================" << endl << endl;
+  zypp::base::LogControl::instance().logNothing();
+  return 0;
   SEC << zypp::getZYpp()->diskUsage() << endl;
 
-  for_( it, pool.byKindBegin<SrcPackage>(), pool.byKindEnd<SrcPackage>() )
+//   for_( it, pool.byKindBegin<SrcPackage>(), pool.byKindEnd<SrcPackage>() )
   {
-    MIL << *it << endl;
+//     MIL << *it << endl;
   }
 
-  for_( it, pool.byIdentBegin( ResKind::srcpackage, "zypper" ), pool.byIdentEnd( ResKind::srcpackage, "zypper" ) )
+//   for_( it, pool.byIdentBegin( ResKind::srcpackage, "zypper" ), pool.byIdentEnd( ResKind::srcpackage, "zypper" ) )
   {
-    WAR << *it << endl;
+//     WAR << *it << endl;
   }
 
 
-
+  ui::Selectable::Ptr srcp( zypp::getZYpp()->poolProxy().lookup( ResKind::srcpackage, "zypper" ) );
+  MIL << srcp << endl;
+  MIL << srcp->setStatus( S_Install ) << endl;
+  MIL << srcp << endl;
+  solve();
+  vdumpPoolStats( USR << "Transacting:"<< endl,
+                  make_filter_begin<resfilter::ByTransact>(pool),
+                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
   ///////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();

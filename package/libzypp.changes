@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun  4 13:50:13 CEST 2008 - ma@suse.de
+
+- Fix memory corruption in curl media handler (bnc #396979) 
+- version 4.26.2
+- revision 10336
+
+-------------------------------------------------------------------
 Tue Jun  3 19:44:59 CEST 2008 - ma@suse.de
 
 - Take care satsolver recognizes 'Capability( "srcpackage:zypper" )'

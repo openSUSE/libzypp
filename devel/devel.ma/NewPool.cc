@@ -559,6 +559,15 @@ try {
   }
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
+
+  for_( it, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() )
+  {
+    it->status().setTransact( true, ResStatus::USER );
+  }
+
+  SEC << zypp::getZYpp()->diskUsage() << endl;
+
+
   MIL << (*pool.byKindBegin<SrcPackage>())->provides() << endl;
 
   MIL << (Capability( "srcpackage:foo == 1.0" ).detail()) << endl;

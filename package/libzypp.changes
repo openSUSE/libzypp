@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
 Thu Jun  5 18:00:20 CEST 2008 - jkupec@suse.cz
 
-- X-SuSE-ControlCenter-System category added (bnc #302324)
+- X-SuSE-ControlCenter-System category added
+  to package-manager.desktop (bnc #302324)
 - revision 10354
 
 -------------------------------------------------------------------

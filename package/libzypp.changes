@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun  6 13:48:23 CEST 2008 - ma@suse.de
+
+- Handle application/x-redhat-package-manager in package-manager.desktop
+  (bnc #391183)
+- version 4.26.4
+- revision 10362
+
+-------------------------------------------------------------------
 Thu Jun  5 18:00:20 CEST 2008 - jkupec@suse.cz
 
 - X-SuSE-ControlCenter-System category added

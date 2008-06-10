@@ -560,29 +560,12 @@ try {
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
-  for_( it, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() )
+  for_( it, pool.byKindBegin<Pattern>(), pool.byKindEnd<Pattern>() )
   {
-    it->status().setTransact( true, ResStatus::USER );
+    MIL << *it << endl;
+    //it->status().setTransact( true, ResStatus::USER );
   }
 
-  SEC << zypp::getZYpp()->diskUsage() << endl;
-
-
-  MIL << (*pool.byKindBegin<SrcPackage>())->provides() << endl;
-
-  MIL << (Capability( "srcpackage:foo == 1.0" ).detail()) << endl;
-  MIL << (Capability( "foo == 1.0", ResKind::srcpackage ).detail()) << endl;
-  MIL << (Capability( "foo.src == 1.0" ).detail()) << endl;
-  MIL << (Capability( "foo.i386 == 1.0" ).detail()) << endl;
-
-  MIL << (Capability( "srcpackage:foo == 1.0" )) << endl;
-  MIL << (Capability( "foo == 1.0", ResKind::srcpackage )) << endl;
-  MIL << (Capability( "foo.src == 1.0" )) << endl;
-  MIL << (Capability( "foo.i386 == 1.0" )) << endl;
-
-  SEC << sat::WhatProvides( Capability( "srcpackage:zypper" ) ) << endl;;
-  SEC << sat::WhatProvides( Capability( "zypper", ResKind::srcpackage  ) ) << endl;;
-  SEC << sat::WhatProvides( Capability( "zypper.src" ) ) << endl;;
 
   ///////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;

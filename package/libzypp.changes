@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 10 15:55:31 CEST 2008 - ma@suse.de
+
+- Allow to abort commit during package deletion. (bnc #389238) 
+- revision 10367
+
+-------------------------------------------------------------------
 Fri Jun  6 13:48:23 CEST 2008 - ma@suse.de
 
 - Handle application/x-redhat-package-manager in package-manager.desktop

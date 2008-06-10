@@ -700,6 +700,15 @@ namespace zypp
             try
             {
               rpm().removePackage( p, flags );
+
+              if ( progress.aborted() )
+              {
+                WAR << "commit aborted by the user" << endl;
+                progress.disconnect();
+                success = false;
+                abort = true;
+                break;
+              }
             }
             catch (Exception & excpt_r)
             {

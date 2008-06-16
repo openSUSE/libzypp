@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jun 16 13:23:01 CEST 2008 - ma@suse.de
+
+- Fix bug introduced in version 2.31.2: Rug tries to install
+  all available kernel updates, not just the one given on the 
+  commandline. (bnc #399320)
+- version 2.31.335
+- revision 10378
+
+-------------------------------------------------------------------
 Fri Apr 18 18:54:50 CEST 2008 - schubi@suse.de
 
 - added translations 

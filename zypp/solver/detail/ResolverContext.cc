@@ -799,7 +799,7 @@ install_item_cb (PoolItem_Ref item, const ResStatus & status, void *data)
 
     if (status.isToBeInstalled()
 	&& !item.status().isInstalled()
-	&& ( !Helper::findInstalledItem( info->pool, item)) || ( p && p->installOnly()) )
+	&& ( !Helper::findInstalledItem( info->pool, item) || ( p && p->installOnly() ) ) )
     {
 	if (info->fn) info->fn (item, status, info->rl);
 	++info->count;

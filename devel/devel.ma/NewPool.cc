@@ -255,6 +255,7 @@ bool solve()
   if ( ! rres )
   {
     ERR << "resolve " << rres << endl;
+    getZYpp()->resolver()->problems();
     return false;
   }
   MIL << "resolve " << rres << endl;
@@ -369,6 +370,19 @@ struct MediaChangeReceive : public callback::ReceiveReport<media::MediaChangeRep
   }
 };
 
+ struct PatchMessageReceive : public callback::ReceiveReport<target::PatchMessageReport>
+{
+  PatchMessageReceive()
+  { connect(); }
+
+  virtual bool show( Patch::constPtr patch )
+  {
+    DBG << patch->message() << endl;
+    //return patch->name() != "libsatsolver";
+    return callback::ReceiveReport<target::PatchMessageReport>::show( patch );
+  }
+};
+
 ///////////////////////////////////////////////////////////////////
 
 namespace container
@@ -471,6 +485,7 @@ try {
   ++argv;
   zypp::base::LogControl::instance().logToStdErr();
   INT << "===[START]==========================================" << endl;
+  PatchMessageReceive r;
   ZConfig::instance();
 
   ResPool   pool( ResPool::instance() );
@@ -534,7 +549,7 @@ try {
     }
   }
 
-  if ( 0 )
+  if ( 1 )
   {
     Measure x( "INIT TARGET" );
     {
@@ -560,17 +575,33 @@ try {
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
-  for_( it, pool.byKindBegin<Pattern>(), pool.byKindEnd<Pattern>() )
+  for_( it, pool.byKindBegin<Patch>(), pool.byKindEnd<Patch>() )
   {
     MIL << *it << endl;
-    //it->status().setTransact( true, ResStatus::USER );
+    Patch::constPtr patch( asKind<Patch>(it->resolvable()) );
+    if ( ! patch->message().empty() )
+      DBG << patch->message() << endl;
+    it->status().setTransact( true, ResStatus::USER );
   }
 
+  PoolItem pix ( getPi<Package>("amarok",Edition("1.4.9.1-4"),Arch("i586")) );
+  MIL << pix << endl;
+  if ( pix )
+  {
+    pix.status().setTransact( true, ResStatus::USER );
+  }
+
+  solve();
+  vdumpPoolStats( USR << "Transacting:"<< endl,
+                  make_filter_begin<resfilter::ByTransact>(pool),
+                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
+  install();
 
   ///////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;
   zypp::base::LogControl::instance().logNothing();
   return 0;
+
   SEC << zypp::getZYpp()->diskUsage() << endl;
 
 //   for_( it, pool.byKindBegin<SrcPackage>(), pool.byKindEnd<SrcPackage>() )

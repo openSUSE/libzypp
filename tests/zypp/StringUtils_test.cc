@@ -12,6 +12,7 @@ using boost::unit_test::test_case;
 using namespace std;
 using namespace zypp;
 
+#undef DBG
 #define DBG cout
 
 void chk_splitFields( const std::string & line, unsigned num )

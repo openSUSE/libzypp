@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 20 15:31:57 CEST 2008 - ma@suse.de
+
+- Fix permanent duplication of gpg keys in the rpm database. Also 
+  retrieve correct creation and expire dates. (bnc #401259)
+- version 4.26.5
+- revision 10432
+
+-------------------------------------------------------------------
 Thu Jun 19 17:46:04 CEST 2008 - ma@suse.de
 
 - Handle new patch messages and scripts in commit. Provide callbacks

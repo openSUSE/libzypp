@@ -470,9 +470,6 @@ void testCMP( const L & lhs, const R & rhs )
 #undef OUTS
 }
 
-namespace zypp
-{
-}
 
 /******************************************************************
 **
@@ -491,7 +488,7 @@ try {
   ResPool   pool( ResPool::instance() );
   sat::Pool satpool( sat::Pool::instance() );
 
-  if ( 1 )
+  if ( 0 )
   {
     RepoManager repoManager( makeRepoManager( sysRoot ) );
     RepoInfoList repos = repoManager.knownRepositories();
@@ -575,27 +572,15 @@ try {
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
-  for_( it, pool.byKindBegin<Patch>(), pool.byKindEnd<Patch>() )
+  KeyRing_Ptr p( getZYpp()->keyRing() );
+  list<PublicKey> publicKeys( p->publicKeys() );
+  list<PublicKey> trustedPublicKeys( p->trustedPublicKeys() );
+
+  for_( it, trustedPublicKeys.begin(), trustedPublicKeys.end() )
   {
-    MIL << *it << endl;
-    Patch::constPtr patch( asKind<Patch>(it->resolvable()) );
-    if ( ! patch->message().empty() )
-      DBG << patch->message() << endl;
-    it->status().setTransact( true, ResStatus::USER );
+    MIL << dump(*it) << endl;
   }
 
-  PoolItem pix ( getPi<Package>("amarok",Edition("1.4.9.1-4"),Arch("i586")) );
-  MIL << pix << endl;
-  if ( pix )
-  {
-    pix.status().setTransact( true, ResStatus::USER );
-  }
-
-  solve();
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-  install();
 
   ///////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;

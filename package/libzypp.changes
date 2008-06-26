@@ -1,8 +1,16 @@
 -------------------------------------------------------------------
+Thu Jun 26 12:26:11 CEST 2008 - ma@suse.de
+
+- Import newer gpg keys if a trusted key is updated
+  (bnc#393160)
+- revision 10466
+- version 2.32.0
+
+-------------------------------------------------------------------
 Mon Jun 16 13:23:01 CEST 2008 - ma@suse.de
 
 - Fix bug introduced in version 2.31.2: Rug tries to install
-  all available kernel updates, not just the one given on the 
+  all available kernel updates, not just the one given on the
   commandline. (bnc #399320)
 - version 2.31.335
 - revision 10378
@@ -10,13 +18,13 @@ Mon Jun 16 13:23:01 CEST 2008 - ma@suse.de
 -------------------------------------------------------------------
 Fri Apr 18 18:54:50 CEST 2008 - schubi@suse.de
 
-- added translations 
+- added translations
 - version 2.31.334 (was a fault in the last commit)
 
 -------------------------------------------------------------------
 Wed Apr 16 12:15:16 CEST 2008 - dmacvicar@suse.de
 
-- add patch by aschnell. fix removing rpms with epoch 
+- add patch by aschnell. fix removing rpms with epoch
   (bnc #372323)
 - version 2.31.3
 
@@ -51,7 +59,7 @@ Wed Apr  2 02:21:11 CEST 2008 - mauro@suse.de
 Mon Mar 31 09:04:07 CEST 2008 - schubi@suse.de
 
 - Added new translations
-- version 2.30.10 
+- version 2.30.10
 
 -------------------------------------------------------------------
 Wed Mar 26 12:43:08 CET 2008 - jkupec@suse.cz
@@ -78,7 +86,7 @@ Mon Mar 17 17:24:11 CET 2008 - dmacvicar@suse.de
 
 -------------------------------------------------------------------
 Wed Feb 27 16:10:00 CET 2008 - ma@suse.de
- 
+
 - Fixed computation of install order. Take requirements of
   an installed packages uninstall scripts into account, if
   the package is updated. (#258682,bnc #270514)
@@ -104,16 +112,16 @@ Wed Jan 16 16:09:56 CET 2008 - jkupec@suse.cz
 Wed Nov 28 12:13:48 CET 2007 - schubi@suse.de
 
 - Checking the queue if an item will be deleted. If yes, the requirements
-  are not needed anymore. Bug 326384 
+  are not needed anymore. Bug 326384
 - r 7952
 
 -------------------------------------------------------------------
 Thu Nov 22 14:12:38 CET 2007 - schubi@suse.de
 
-- If a to be remove resolvable is a kmp package ( includes modaliases 
-  in the FRESHENS/SUPPLEMENTS ) and the removed resolvable will be 
-  updated by a new, the solver checks, if old kmp modaliases are not 
-  supported by the new package anymore AND these old modaliases are 
+- If a to be remove resolvable is a kmp package ( includes modaliases
+  in the FRESHENS/SUPPLEMENTS ) and the removed resolvable will be
+  updated by a new, the solver checks, if old kmp modaliases are not
+  supported by the new package anymore AND these old modaliases are
   still needed by the system. --> report a problem if it is still needed
 - r7893
 - version 2.30.3
@@ -121,7 +129,7 @@ Thu Nov 22 14:12:38 CET 2007 - schubi@suse.de
 -------------------------------------------------------------------
 Wed Nov 21 14:02:46 CET 2007 - schubi@suse.de
 
-- Patterns, Packages are "present" although they are incomplete. So patterns 
+- Patterns, Packages are "present" although they are incomplete. So patterns
   behave the same way like packages do. Bug 289577
   This change fixes Bug 331798 too.
 - r7883
@@ -129,11 +137,11 @@ Wed Nov 21 14:02:46 CET 2007 - schubi@suse.de
 -------------------------------------------------------------------
 Wed Nov 21 13:23:37 CET 2007 - schubi@suse.de
 
-- QueuItemRequire: Filter out all provider which have worser architecture, 
+- QueuItemRequire: Filter out all provider which have worser architecture,
 are NOT noarch and have not the same name as the requirement. The
 last one is needed for updating packages via patch/atoms.
 Bug 328081
-- r7878 
+- r7878
 
 -------------------------------------------------------------------
 Mon Nov 19 16:42:01 CET 2007 - ma@suse.de

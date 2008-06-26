@@ -220,7 +220,15 @@ namespace zypp
          **/
         void importPubkey( const Pathname & pubkey_r );
 
-        /**
+         /**
+         * Import ascii armored public key in file pubkey_r.
+         *
+         * \throws RpmException
+         *
+         **/
+        void importPubkey( const PublicKey & pubkey_r );
+
+       /**
          * Return the long ids of all installed public keys.
          **/
         std::list<PublicKey> pubkeys() const;

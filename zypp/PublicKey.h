@@ -25,7 +25,7 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  
+
   /**
    * Exception thrown when the supplied key is
    * not a valid gpg key
@@ -39,10 +39,10 @@ namespace zypp
       BadKeyException()
       : Exception( "Bad Key Exception" )
       {}
-      
+
       Pathname keyFile() const
       { return _keyfile; }
-      
+
       /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
        */
@@ -54,13 +54,16 @@ namespace zypp
     private:
       Pathname _keyfile;
   };
-  
-  
+
+
+  // forward declaration of class Date
+  class Date;
+
   ///////////////////////////////////////////////////////////////////
   //
   //	CLASS NAME : PublicKey
   //
-  /** 
+  /**
    * Class that represent a GPG Public Key
    */
   class PublicKey
@@ -73,26 +76,38 @@ namespace zypp
 
   public:
     PublicKey();
-   /** Ctor 
+   /** Ctor
     * \throws when data does not make a key
     */
     PublicKey(const Pathname &file);
-    
+
     ~PublicKey();
-   
+
     bool isValid() const
     { return ( ! id().empty() && ! fingerprint().empty() && !path().empty() ); }
-    
+
     std::string asString() const;
     std::string armoredData() const;
     std::string id() const;
     std::string name() const;
     std::string fingerprint() const;
-    Pathname path() const; 
-    
+
+    /**
+     * Date when the key was created (time is 00:00:00)
+     */
+    Date created() const;
+
+    /**
+     * Date when the key expires (time is 00:00:00)
+     * If the key never expires the date is Date() (i.e. 0 seconds since the epoch (1.1.1970))
+     */
+    Date expires() const;
+
+    Pathname path() const;
+
     bool operator==( PublicKey b ) const;
     bool operator==( std::string sid ) const;
-    
+
   private:
     /** Pointer to implementation */
     RWCOW_pointer<Impl> _pimpl;
@@ -103,7 +118,10 @@ namespace zypp
   inline std::ostream & operator<<( std::ostream & str, const PublicKey & obj )
   { return str << obj.asString(); }
 
-  /////////////////////////////////////////////////////////////////
+  /** \relates PublicKey Detailed stream output */
+  std::ostream & dumpOn( std::ostream & str, const PublicKey & obj );
+
+ /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_PUBLICKEY_H

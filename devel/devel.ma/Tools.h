@@ -109,7 +109,7 @@ inline RepoManager makeRepoManager( const Pathname & mgrdir_r )
   RepoManagerOptions mgropt;
   mgropt.repoCachePath    = mgrdir_r/"cache";
   mgropt.repoRawCachePath = mgrdir_r/"raw_cache";
-  mgropt.knownReposPath   = mgrdir_r;
+  mgropt.knownReposPath   = mgrdir_r/"repos.d";
 
   return RepoManager( mgropt );
 }

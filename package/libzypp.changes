@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jun 26 15:31:24 CEST 2008 - ma@suse.de
+
+- Import newer gpg keys if a trusted key is updated
+  (bnc#393160)
+- version 3.27.0
+- revision 10473
+
+-------------------------------------------------------------------
 Wed Feb 20 18:15:11 CET 2008 - dmacvicar@suse.de
 
 - Fetcher::reset() should not reset cache directories.

@@ -52,7 +52,6 @@ namespace zypp
         return _nullimpl;
       }
 
-#warning FIX asString ====================================================================================
     std::string asString() const
     {
       return "[" + id() + "-" + str::hexstring(created(),8).substr(2) + "] [" + name() + "] [" + fingerprint() + "]";

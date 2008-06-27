@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 27 16:16:50 CEST 2008 - ma@suse.de
+
+- Invoke gpg with --homdir, otherwise command fails if executed 
+  within a wrapper. (bnc #401259)
+- version 4.26.6
+- revision 10480
+
+-------------------------------------------------------------------
 Fri Jun 20 15:31:57 CEST 2008 - ma@suse.de
 
 - Fix permanent duplication of gpg keys in the rpm database. Also 

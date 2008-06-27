@@ -23,6 +23,7 @@
 #include "zypp/base/Exception.h"
 #include "zypp/base/Logger.h"
 #include "zypp/Date.h"
+#include "zypp/TmpPath.h"
 
 #include <ctime>
 
@@ -57,7 +58,7 @@ namespace zypp
 
     std::string asString() const
     {
-      return "[" + id() + "] [" + name() + "] [" + fingerprint() + "]";
+      return "[" + id() + "-" + str::hexstring(created(),8).substr(2) + "] [" + name() + "] [" + fingerprint() + "]";
     }
 
     std::string armoredData() const
@@ -97,6 +98,7 @@ namespace zypp
        if ( copy( keyfile, _data_file.path() ) != 0 )
          ZYPP_THROW(Exception("Can't copy public key data from " + keyfile.asString() + " to " +  _data_file.path().asString() ));
 
+        filesystem::TmpDir dir;
         const char* argv[] =
         {
           "gpg",
@@ -105,6 +107,8 @@ namespace zypp
           "--fixed-list-mode",
           "--with-fingerprint",
           "--with-colons",
+          "--homedir",
+          dir.path().asString().c_str(),
           "--quiet",
           "--no-tty",
           "--no-greeting",

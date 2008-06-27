@@ -61,5 +61,5 @@ dnl  KEEP  LLIBZYPP_MINOR  BELOW   30  !!!
 m4_define([LIBZYPP_MINOR],	 [17])
 m4_define([LIBZYPP_COMPATMINOR], [15])
 dnl ==================================================
-m4_define([LIBZYPP_PATCH],	 [0])
+m4_define([LIBZYPP_PATCH],	 [1])
 dnl ==================================================

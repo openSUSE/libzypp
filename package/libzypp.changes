@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 27 16:16:50 CEST 2008 - ma@suse.de
+
+- Invoke gpg with --homdir, otherwise command fails if executed
+  within a wrapper. (bnc #401259)
+- version 2.17.1
+- revision 10483
+
+-------------------------------------------------------------------
 Fri Jun 27 11:29:09 CEST 2008 - ma@suse.de
 
 - Import newer gpg keys if a trusted key is updated

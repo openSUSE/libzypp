@@ -21,8 +21,7 @@
 #include "zypp/TmpPath.h"
 #include "zypp/PathInfo.h"
 #include "zypp/Date.h"
-
-//#include <ctime>
+#include "zypp/TmpPath.h"
 
 using std::endl;
 
@@ -95,6 +94,7 @@ namespace zypp
        if ( copy( keyfile, _data_file.path() ) != 0 )
          ZYPP_THROW(Exception("Can't copy public key data from " + keyfile.asString() + " to " +  _data_file.path().asString() ));
 
+        filesystem::TmpDir dir;
         const char* argv[] =
         {
           "gpg",
@@ -103,6 +103,8 @@ namespace zypp
           "--fixed-list-mode",
           "--with-fingerprint",
           "--with-colons",
+          "--homedir",
+          dir.path().asString().c_str(),
           "--quiet",
           "--no-tty",
           "--no-greeting",

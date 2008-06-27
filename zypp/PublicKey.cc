@@ -260,7 +260,9 @@ namespace zypp
 
   bool PublicKey::operator==( PublicKey b ) const
   {
-    return (b.id() == id()) && (b.fingerprint() == fingerprint() );
+    return (   b.id() == id()
+            && b.fingerprint() == fingerprint()
+            && b.created() == created() );
   }
 
   bool PublicKey::operator==( std::string sid ) const

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 27 11:29:09 CEST 2008 - ma@suse.de
+
+- Import newer gpg keys if a trusted key is updated
+  (bnc#393160)
+- version 2.17.0
+- revision 10476
+
+-------------------------------------------------------------------
 Fri Oct 12 12:36:49 CEST 2007 - ma@suse.de
 
 - SMBIOS DMI modalias matching added (#333152)

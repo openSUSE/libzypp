@@ -204,6 +204,23 @@ namespace zypp
       inline _It strtonum( const std::string & str, _It & i )
       { return i = strtonum<_It>( str ); }
     //@}
+    ///////////////////////////////////////////////////////////////////
+
+    /**
+     * Looks for text in string and replaces it in place
+     *
+     * \note It only performs substtution in one pass
+     */
+    inline std::string & replace_all( std::string & str, const std::string & from, const std::string & to )
+    {
+      std::string::size_type pos = 0;
+      while( pos < str.length() && (pos = str.find( from, pos )) != std::string::npos )
+      {
+        str.replace( pos, from.size(), to );
+        pos += to.size();
+      }
+      return str;
+    }
 
     ///////////////////////////////////////////////////////////////////
     /** \name Split. */
@@ -238,6 +255,57 @@ namespace zypp
             // skip sepchars
             while ( sepchars_r.find( *cur ) != std::string::npos )
               ++cur;
+          }
+        return ret;
+      }
+
+    /** Split \a line_r into fields.
+    * Any single character in \a sepchars_r is treated as a
+    * field separator. The words are passed to OutputIterator
+    * \a result_r.
+    * \code
+    * ""        -> words 0
+    * ":"       -> words 2  |||
+    * "a"       -> words 1  |a|
+    * ":a"      -> words 2  ||a|
+    * "a:"      -> words 2  |a||
+    * ":a:"     -> words 3  ||a||
+    *
+    * \endcode
+    *
+    * \code
+    * std::vector<std::string> words;
+    * str::split( "some line", std::back_inserter(words) )
+    * \endcode
+    *
+    */
+    template<class _OutputIterator>
+      unsigned splitFields( const std::string &   line_r,
+                            _OutputIterator       result_r,
+                            const std::string &   sepchars_r = ":" )
+      {
+        const char * beg = line_r.c_str();
+        const char * cur = beg;
+        unsigned ret = 0;
+        for ( beg = cur; *beg; beg = cur, ++result_r )
+          {
+            // skip non sepchars
+            while( *cur && !::strchr( sepchars_r.c_str(), *cur ) )
+              ++cur;
+            // build string
+            *result_r = std::string( beg, cur-beg );
+            ++ret;
+            // skip sepchar
+            if ( *cur )
+            {
+              ++cur;
+              if ( ! *cur )                // ending with sepchar
+              {
+                *result_r = std::string(); // add final empty field
+                ++ret;
+                break;
+              }
+            }
           }
         return ret;
       }

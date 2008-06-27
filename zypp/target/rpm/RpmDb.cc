@@ -87,15 +87,23 @@ namespace zypp
           disconnect();
         }
 
-        virtual void trustedKeyAdded( const KeyRing &keyring, const PublicKey &key )
+        virtual void trustedKeyAdded( const KeyRing &, const PublicKey &key )
         {
-          MIL << "trusted key added to zypp Keyring. Syncronizing keys with rpm keyring" << std::endl;
-          _rpmdb.importZyppKeyRingTrustedKeys();
-          _rpmdb.exportTrustedKeysInZyppKeyRing();
+          MIL << "Trusted key added to zypp Keyring. Importing" << endl;
+          // now import the key in rpm
+          try
+          {
+            _rpmdb.importPubkey( key );
+          }
+          catch (RpmException &e)
+          {
+            ERR << "Could not import key " << key.id() << " (" << key.name() << " from " << key.path() << " in rpm database" << endl;
+          }
         }
 
-        virtual void trustedKeyRemoved( const KeyRing &keyring, const PublicKey &key  )
+        virtual void trustedKeyRemoved( const KeyRing &, const PublicKey &key  )
         {
+          ERR << "Can't remove key " << key << " from rpm database." << endl;
         }
 
         RpmDb &_rpmdb;
@@ -957,7 +965,7 @@ namespace zypp
                 // now import the key in rpm
                 try
                   {
-                    importPubkey((*it).path());
+                    importPubkey(*it);
                     MIL << "Trusted key " << (*it).id() << " (" << (*it).name() << ") imported in rpm database." << std::endl;
                   }
                 catch (RpmException &e)
@@ -975,13 +983,47 @@ namespace zypp
       //	METHOD TYPE : PMError
       //
       void RpmDb::importPubkey( const Pathname & pubkey_r )
+      { importPubkey( PublicKey(pubkey_r) ); }
+
+      void RpmDb::importPubkey( const PublicKey & pubkey_r )
       {
         FAILIFNOTINITIALIZED;
+
+        // check if the key is already in the rpm database and just
+        // return if it does.
+        set<Edition> rpm_keys = pubkeyEditions();
+        string keyshortid = pubkey_r.id().substr(8,8);
+        MIL << "Comparing '" << keyshortid << "' to: ";
+        for ( set<Edition>::const_iterator it = rpm_keys.begin(); it != rpm_keys.end(); ++it)
+        {
+          string id = str::toUpper( (*it).version() );
+          MIL <<  ", '" << id << "'";
+          if ( id == keyshortid )
+          {
+              // they match id
+              // now check if timestamp is different
+              Date date = Date(str::strtonum<Date::ValueType>("0x" + (*it).release()));
+              if (  date == pubkey_r.created() )
+              {
+
+                  MIL << endl << "Key " << pubkey_r << " is already in the rpm trusted keyring." << endl;
+                  return;
+              }
+              else
+              {
+                  MIL << endl << "Key " << pubkey_r << " has another version in keyring. ( " << date << " & " << pubkey_r.created() << ")" << endl;
+
+              }
+
+          }
+        }
+        // key does not exists, lets import it
+        MIL <<  endl;
 
         RpmArgVec opts;
         opts.push_back ( "--import" );
         opts.push_back ( "--" );
-        opts.push_back ( pubkey_r.asString().c_str() );
+        opts.push_back ( pubkey_r.path().asString().c_str() );
 
         // don't call modifyDatabase because it would remove the old
         // rpm3 database, if the current database is a temporary one.
@@ -1006,11 +1048,11 @@ namespace zypp
 
         if ( rpm_status != 0 )
           {
-            ZYPP_THROW(RpmSubprocessException(string("Failed to import public key from file ") + pubkey_r.asString() + string(": rpm returned  ") + str::numstring(rpm_status)));
+            ZYPP_THROW(RpmSubprocessException(string("Failed to import public key from file ") + pubkey_r.path().asString() + string(": rpm returned  ") + str::numstring(rpm_status)));
           }
         else
           {
-            MIL << "Imported public key from file " << pubkey_r << endl;
+            MIL << "Imported public key from file " << pubkey_r.path() << endl;
           }
       }
 

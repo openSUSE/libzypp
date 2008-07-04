@@ -311,7 +311,10 @@ namespace zypp
       if ( publicKeyExists( id, generalKeyRing() ) )
       {
         PublicKey untkey = exportKey( id, generalKeyRing() );
-        if ( untkey.created() > key.created() )
+        // bnc #393160: Comment #30: Compare at least the fingerprint
+        // in case an attacker created a key the the same id.
+        if ( untkey.fingerprint() == key.fingerprint()
+             && untkey.created() > key.created() )
         {
           MIL << "Key " << key << " was updated. Saving new version into trusted keyring." << endl;
           importKey( untkey, true );

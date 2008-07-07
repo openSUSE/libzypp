@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Mon Jul  7 12:38:04 CEST 2008 - ma@suse.de
 
-- Let libzypp-devel package requirelibzypp by version. (bnc #405032)
+- Let libzypp-devel package require libzypp by version. (bnc #405032)
 - version 2.32.3
 - revision 10501
 

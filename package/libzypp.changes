@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 14 12:11:06 CEST 2008 - schubi@suse.de
+
+- corrected logging onf solver settings
+- regard locking while doUpdate (bnc #405427)
+- revision 10568 
+
+-------------------------------------------------------------------
 Mon Jul  7 13:58:16 CEST 2008 - schubi@suse.de
 
 - Do not update an already updated package Bug 400422

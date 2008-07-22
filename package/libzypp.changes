@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 22 15:23:22 CEST 2008 - ma@suse.de
+
+- Provide Package::url() if available in solv file. (bnc #402434)
+- version 4.27.0
+- revision 10642
+
+-------------------------------------------------------------------
 Mon Jul 14 12:11:06 CEST 2008 - schubi@suse.de
 
 - corrected logging onf solver settings
@@ -8,7 +15,7 @@ Mon Jul 14 12:11:06 CEST 2008 - schubi@suse.de
 -------------------------------------------------------------------
 Mon Jul  7 13:58:16 CEST 2008 - schubi@suse.de
 
-- Do not update an already updated package Bug 400422
+- Do not update an already updated package (bnc #400422)
 - Revision 10506 
 
 -------------------------------------------------------------------

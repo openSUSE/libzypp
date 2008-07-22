@@ -2,6 +2,7 @@
 Tue Jul 22 15:23:22 CEST 2008 - ma@suse.de
 
 - Provide Package::url() if available in solv file. (bnc #402434)
+- Reduce satsolver loging (bnc #404715)
 - version 4.27.0
 - revision 10642
 

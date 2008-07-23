@@ -122,6 +122,7 @@ SATResolver::dumpOn( std::ostream & os ) const
     } else {
 	os << "<NULL>";
     }
+    return os;
 }
 
 //---------------------------------------------------------------------------

@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(attributes)
             //solvable:url: http://www.openssl.org/
             //solvable:buildtime: 1165493634
             //solvable:installsize: 3845
-            BOOST_CHECK_EQUAL(p->installSize(), ByteCount(3845, ByteCount::K));
+            BOOST_CHECK_EQUAL(p->installsize(), ByteCount(3845, ByteCount::K));
             //solvable:downloadsize: 909
             BOOST_CHECK_EQUAL(p->downloadSize(), ByteCount(909, ByteCount::K));
             //solvable:mediadir: rpm/i586

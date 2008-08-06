@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug  6 16:15:25 CEST 2008 ma@suse.de
+
+- Don't let exception escape MediaSetAccess dtor (bnc #415017)
+- revision 10762
+- version 4.27.1
+
+-------------------------------------------------------------------
 Tue Jul 22 15:23:22 CEST 2008 - ma@suse.de
 
 - Provide Package::url() if available in solv file. (bnc #402434)

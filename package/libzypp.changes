@@ -4,13 +4,13 @@ Wed Aug  6 18:21:30 CEST 2008 ma@suse.de
 - Detect correct download path even if repository type 
   is not set. (bnc #386386)
 - revision 10768
+- version 4.27.1
 
 -------------------------------------------------------------------
 Wed Aug  6 16:15:25 CEST 2008 ma@suse.de
 
 - Don't let exception escape MediaSetAccess dtor (bnc #415017)
 - revision 10762
-- version 4.27.1
 
 -------------------------------------------------------------------
 Tue Jul 22 15:23:22 CEST 2008 - ma@suse.de

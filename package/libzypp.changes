@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug  8 14:11:03 CEST 2008 - ma@suse.de
+
+- Don't pass epoch to 'rpm -e', it does not support it.
+- revision 10801
+
+-------------------------------------------------------------------
 Wed Aug  6 18:21:30 CEST 2008 - ma@suse.de
 
 - Detect correct download path even if repository type 

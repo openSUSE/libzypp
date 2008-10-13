@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Oct 13 12:31:52 CEST 2008 - ma@suse.de
+
+- Fix package-manager script to properly quote arguments. 
+  (bnc #30903,#420046)
+- Follow solver policy and make repository priority the highest
+  key, when ordering packages. Then architecture, and edition last.
+- revision 11312
+- version 4.27.2
+
+-------------------------------------------------------------------
 Fri Aug  8 14:11:03 CEST 2008 - ma@suse.de
 
 - Don't pass epoch to 'rpm -e', it does not support it.

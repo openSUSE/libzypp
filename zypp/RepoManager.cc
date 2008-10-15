@@ -780,14 +780,14 @@ namespace zypp
         std::string toFile( str::gsub(solvfile.asString(),"\"","\\\"") );
         if ( repokind.toEnum() == RepoType::RPMPLAINDIR_e )
         {
-          cmd << str::form( "repo2solv.sh \"%s\" > \"%s\"",
-                            str::gsub( info.baseUrlsBegin()->getPathName(),"\"","\\\"" ).c_str(),
+          cmd << str::form( "repo2solv.sh '%s' > '%s'",
+                            info.baseUrlsBegin()->getPathName().c_str(),
                             toFile.c_str() );
         }
         else
         {
-          cmd << str::form( "repo2solv.sh \"%s\" > \"%s\"",
-                            str::gsub( rawpath.asString(),"\"","\\\"" ).c_str(),
+          cmd << str::form( "repo2solv.sh '%s' > '%s'",
+                            rawpath.asString().c_str(),
                             toFile.c_str() );
         }
         MIL << "Executing: " << cmd.str() << endl;

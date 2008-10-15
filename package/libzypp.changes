@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 15 15:31:40 CEST 2008 - ma@suse.de
+
+- Fix quoting of arguments passed in repo2solv.sh calls (bnc #420046)
+- revision 11362
+- version 4.27.3
+
+-------------------------------------------------------------------
 Mon Oct 13 12:31:52 CEST 2008 - ma@suse.de
 
 - Fix package-manager script to properly quote arguments. 

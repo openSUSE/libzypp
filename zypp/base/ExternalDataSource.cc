@@ -20,7 +20,8 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <iostream>
-
+#include <cstring>
+#include <cstdlib>
 #include <string>
 
 #include "zypp/base/Logger.h"

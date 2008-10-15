@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 15 14:33:01 CEST 2008 - ma@suse.de
+
+- Fix package-manager script to properly quote arguments. 
+  (bnc #30903,#420046)
+- revision 11355
+- version 3.27.3
+
+-------------------------------------------------------------------
 Fri Jul  4 17:19:24 CEST 2008 - ma@suse.de
 
 - Also check if the fingerprint matches before importing updated keys.

@@ -18,7 +18,7 @@
 #include <map>
 #include <algorithm>
 #include "zypp/base/InputStream.h"
-#include "zypp/base/Logger.h"
+#include "zypp/base/LogTools.h"
 #include "zypp/base/Gettext.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/Regex.h"
@@ -772,38 +772,42 @@ namespace zypp
       case RepoType::RPMMD_e :
       case RepoType::YAST2_e :
       case RepoType::RPMPLAINDIR_e :
-      {
+       {
         // Take care we unlink the solvfile on exception
         ManagedFile guard( solvfile, filesystem::unlink );
 
-        ostringstream cmd;
-        std::string toFile( str::gsub(solvfile.asString(),"\"","\\\"") );
-        if ( repokind.toEnum() == RepoType::RPMPLAINDIR_e )
-        {
-          cmd << str::form( "repo2solv.sh '%s' > '%s'",
-                            info.baseUrlsBegin()->getPathName().c_str(),
-                            toFile.c_str() );
-        }
+        std::string inputpath;
+        if ( repokind == RepoType::RPMPLAINDIR )
+          // FIXME this does only work form dir: URLs
+          inputpath = info.baseUrlsBegin()->getPathName();
         else
-        {
-          cmd << str::form( "repo2solv.sh '%s' > '%s'",
-                            rawpath.asString().c_str(),
-                            toFile.c_str() );
-        }
-        MIL << "Executing: " << cmd.str() << endl;
-        ExternalProgram prog( cmd.str(), ExternalProgram::Stderr_To_Stdout );
+          inputpath = rawpath.asString();
 
-        cmd << endl;
-        for ( string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
+        const char * cmd[] = {
+          "repo2solv.sh",
+          "-o", // repo2solv expects -o as 1st arg!
+          solvfile.asString().c_str(),
+          inputpath.c_str(),
+          NULL
+        };
+
+        ExternalProgram prog( cmd, ExternalProgram::Stderr_To_Stdout );
+        std::string errdetail;
+
+        for ( std::string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
           WAR << "  " << output;
-          cmd << "     " << output;
+          if ( errdetail.empty() ) {
+            errdetail = prog.command();
+            errdetail += '\n';
+          }
+          errdetail += output;
         }
 
         int ret = prog.close();
         if ( ret != 0 )
         {
           RepoException ex(str::form("Failed to cache repo (%d).", ret));
-          ex.remember( cmd.str() );
+          ex.remember( errdetail );
           ZYPP_THROW(ex);
         }
 

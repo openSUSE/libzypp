@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Oct 27 14:51:59 CET 2008 - ma@suse.de
+
+- Rewrote repo2solv.sh call to use execv, getting rid of any need 
+  for argument quoting. (#439058)
+- revision 11505
+- version 4.27.4
+
+-------------------------------------------------------------------
 Wed Oct 15 15:31:40 CEST 2008 - ma@suse.de
 
 - Fix quoting of arguments passed in repo2solv.sh calls (bnc #420046)

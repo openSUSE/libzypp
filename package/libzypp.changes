@@ -1,8 +1,16 @@
 -------------------------------------------------------------------
+Fri Dec  5 17:38:30 CET 2008 - ma@suse.de
+
+- Prune soft locks to prevent installation but not update of 
+  already installed packages. (bnc #425054, et al.)
+- revision 11898
+- version 4.27.5
+
+-------------------------------------------------------------------
 Mon Oct 27 14:51:59 CET 2008 - ma@suse.de
 
 - Rewrote repo2solv.sh call to use execv, getting rid of any need 
-  for argument quoting. (#439058)
+  for argument quoting. (bnc #439058)
 - revision 11505
 - version 4.27.4
 

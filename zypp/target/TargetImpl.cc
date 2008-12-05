@@ -450,9 +450,14 @@ namespace zypp
         }
       }
       {
-        const SoftLocksFile::Data & softLocks( _softLocksFile.data() );
+        SoftLocksFile::Data softLocks( _softLocksFile.data() );
         if ( ! softLocks.empty() )
         {
+          // Don't soft lock any installed item.
+          for_( it, system.solvablesBegin(), system.solvablesEnd() )
+          {
+            softLocks.erase( it->ident() );
+          }
           ResPool::instance().setAutoSoftLocks( softLocks );
         }
       }

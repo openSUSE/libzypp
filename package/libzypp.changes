@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec  8 10:47:33 CET 2008 - schubi@suse.de
+
+- Make the solver reset function public (bnc #439373)
+- Revision 11906 
+
+-------------------------------------------------------------------
 Fri Dec  5 17:38:30 CET 2008 - ma@suse.de
 
 - Prune soft locks to prevent installation but not update of 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 10 10:43:29 CET 2008 - dmacvicar@suse.de
+
+- bump version due to new public method
+- 4.28.0
+
+-------------------------------------------------------------------
 Mon Dec  8 10:47:33 CET 2008 - schubi@suse.de
 
 - Make the solver reset function public (bnc #439373)

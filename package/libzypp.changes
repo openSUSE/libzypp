@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Dec 17 13:11:48 CET 2008 - ma@suse.de
 
-- Compile with -fPIC
+- Compile with -fPIC (bnc #459675)
 - revision 11942
 - 4.28.1
 

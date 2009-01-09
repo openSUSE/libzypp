@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan  9 16:43:40 CET 2009 - schubi@suse.de
+
+- update translations
+- version 5.25.1 
+
+-------------------------------------------------------------------
 Thu Dec 18 22:26:18 CET 2008 - ma@suse.de
 
 - Fixed lost user request to abort during commit. (bnc #388810, bnc #450273)

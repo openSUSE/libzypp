@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-21 09:10+0100\n"
-"PO-Revision-Date: 2008-10-27 15:08+0100\n"
+"PO-Revision-Date: 2008-12-23 00:37+0100\n"
 "Last-Translator: Andrea Florio <andrea@opensuse.org>\n"
 "Language-Team: italian <opensuse-translation@opensuse.org>\n"
 "MIME-Version: 1.0\n"
@@ -1828,7 +1828,7 @@ msgstr "Igbo"
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:52
 #, c-format
 msgid "Ignore some dependencies of %s"
-msgstr "iignora alcune dipendenze di %s"
+msgstr "ignora alcune dipendenze di %s"
 
 #. language code: ijo
 #: ../zypp/LanguageCode.cc:630
@@ -4468,3 +4468,4 @@ msgstr "sconosciuto"
 #: ../zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
 msgstr "non supportato"
+

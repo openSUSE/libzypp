@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-21 09:10+0100\n"
+"POT-Creation-Date: 2008-04-21 18:58+0200\n"
 "PO-Revision-Date: 2007-08-23 19:28+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Panjabi <punjabi-l10n@lists.sf.net>\n"
@@ -20,48 +20,60 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:993
+#: ../zypp/solver/detail/SATResolver.cc:933
 msgid ""
 "\n"
 "uninstallable providers: "
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:266
+#: ../zypp/media/MediaException.cc:214
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr ""
 
-#: ../zypp/target/TargetImpl.cc:88
-#, fuzzy
-msgid " executed"
-msgstr "ਚਲਾਓ"
-
-# %s is either BOOTP or DHCP
-#: ../zypp/target/TargetImpl.cc:110
-#, fuzzy
-msgid " execution failed"
-msgstr "DBI ਚਲਾਉਣਾ ਫੇਲ੍ਹ: %s"
-
-#: ../zypp/target/TargetImpl.cc:196
-msgid " execution skipped while aborting"
-msgstr ""
-
-#: ../zypp/solver/detail/SATResolver.cc:940
+#: ../zypp/solver/detail/SATResolver.cc:880
 #, fuzzy, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s ਦਾ %s ਨਾਲ ਅਪਵਾਦ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:926
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2054
+#, c-format
+msgid "%s install failed"
+msgstr "%s ਇੰਸਟਾਲ ਫੇਲ੍ਹ ਹੈ"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2063
+#, c-format
+msgid "%s installed ok"
+msgstr "%s ਇੰਸਟਾਲ ਹੋਇਆ"
+
+#: ../zypp/solver/detail/SATResolver.cc:866
 #, fuzzy, c-format
 msgid "%s is not installable"
 msgstr "ਇੰਸਟਾਲ ਨਹੀਂ ਹਨ"
 
-#: ../zypp/solver/detail/SATResolver.cc:945
+#: ../zypp/solver/detail/SATResolver.cc:885
 #, fuzzy, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%s %s ਰਾਹੀਂ ਚਾਹੀਦਾ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:981
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2174
+#, c-format
+msgid "%s remove failed"
+msgstr "%s ਹਟਾਉਣਾ ਫੇਲ੍ਹ"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2182
+#, c-format
+msgid "%s remove ok"
+msgstr "%s ਹਟਾਇਆ"
+
+#: ../zypp/solver/detail/SATResolver.cc:921
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr ""
@@ -86,14 +98,14 @@ msgstr "ਅਕੋਲੀ"
 msgid "Adangme"
 msgstr "ਅਡਾਨਗਮੀ"
 
-#: ../zypp/RepoManager.cc:1198
+#: ../zypp/RepoManager.cc:1007
 #, c-format
 msgid "Adding repository '%s'"
 msgstr "ਰਿਪੋਜ਼ਟਰੀ '%s' ਸ਼ਾਮਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: ../zypp/VendorSupportOptions.cc:29
-msgid "Additional Customer Contract Necessary"
-msgstr ""
+#: ../zypp/target/rpm/RpmDb.cc:2066 ../zypp/target/rpm/RpmDb.cc:2185
+msgid "Additional rpm output:"
+msgstr "ਹੋਰ rpm ਆਉਟਪੁੱਟ:"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -184,10 +196,6 @@ msgstr "ਅਮਰੀਕੀ ਸਮੋਨਾ"
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
 msgstr "ਅਮਹਾਰਿਕ"
-
-#: ../zypp/VendorSupportOptions.cc:54
-msgid "An additional customer contract is necessary for getting support."
-msgstr ""
 
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
@@ -308,8 +316,7 @@ msgstr "ਆਸਟਰੀਆ"
 msgid "Austronesian (Other)"
 msgstr ""
 
-#. !\todo add comma to the message for the next release
-#: ../zypp/media/MediaCurl.cc:1702
+#: ../zypp/media/MediaCurl.cc:761 ../zypp/media/MediaCurl.cc:829
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "'%s' ਲਈ ਪਰਮਾਣਿਕਤ ਲੋੜੀਦੀ ਹੈ"
@@ -573,7 +580,7 @@ msgstr "ਬਰੂਨਈ ਡੇਰੂਸਲਾਮ"
 msgid "Buginese"
 msgstr "ਬੁਗੀਨੀਆ"
 
-#: ../zypp/RepoManager.cc:966
+#: ../zypp/RepoManager.cc:719
 #, c-format
 msgid "Building repository '%s' cache"
 msgstr "ਰਿਪੋਜ਼ਟਰੀ '%s' ਕੈਚੇ ਬਿਲਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
@@ -623,7 +630,7 @@ msgstr "ਕੰਬੋਡੀਆ"
 msgid "Cameroon"
 msgstr "ਕੈਮਰੂਨ"
 
-#: ../zypp/sat/detail/PoolImpl.cc:156
+#: ../zypp/sat/detail/PoolImpl.cc:147
 #, fuzzy
 msgid "Can not create sat-pool."
 msgstr "ਫਾਇਲ ਨਹੀਂ ਬਣਾਈ ਜਾ ਸਕਦੀ ਹੈ।"
@@ -632,23 +639,23 @@ msgstr "ਫਾਇਲ ਨਹੀਂ ਬਣਾਈ ਜਾ ਸਕਦੀ ਹੈ।"
 msgid "Can't acquire the mutex lock"
 msgstr "mutex ਲਾਕ ਲਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: ../zypp/ExternalProgram.cc:301
+#: ../zypp/ExternalProgram.cc:245
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:294
+#: ../zypp/ExternalProgram.cc:238
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr ""
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:315
+#: ../zypp/ExternalProgram.cc:259
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:323
+#: ../zypp/ExternalProgram.cc:267
 #, fuzzy, c-format
 msgid "Can't fork (%s)."
 msgstr "%s ਨਹੀਂ ਲੱਭਿਆ।"
@@ -666,12 +673,12 @@ msgstr ""
 msgid "Can't open lock file: %s"
 msgstr "ਫਾਇਲ %1 ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ।"
 
-#: ../zypp/ExternalProgram.cc:230
+#: ../zypp/ExternalProgram.cc:174
 #, fuzzy, c-format
 msgid "Can't open pipe (%s)."
 msgstr "ਫਾਇਲ %1 ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ।"
 
-#: ../zypp/ExternalProgram.cc:219
+#: ../zypp/ExternalProgram.cc:163
 #, fuzzy, c-format
 msgid "Can't open pty (%s)."
 msgstr "ਫਾਇਲ ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕੀ: %s."
@@ -694,25 +701,20 @@ msgstr ""
 msgid "Canada"
 msgstr "ਕੇਨੈਡਾ"
 
-#: ../zypp/KeyRing.cc:275
+#: ../zypp/KeyRing.cc:276
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:234
+#: ../zypp/media/MediaException.cc:182
 #, fuzzy
 msgid "Cannot eject any media"
 msgstr "ਕੋਈ ਸਕੀਮ ਨਹੀਂ ਲੱਭੀ ਹੈ।"
 
-#: ../zypp/media/MediaException.cc:236
+#: ../zypp/media/MediaException.cc:184
 #, fuzzy, c-format
 msgid "Cannot eject media '%s'"
 msgstr "ਡੈਸਕਟਾਪ ਆਈਟਮ '%s' ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ"
-
-#: ../zypp/media/MediaException.cc:273
-#, c-format
-msgid "Cannot find available loop device to mount the image file from '%s'"
-msgstr ""
 
 #: ../zypp/media/MediaException.cc:67
 #, fuzzy, c-format
@@ -786,7 +788,7 @@ msgstr "ਚਾਮੋਰੋ"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1896
+#: ../zypp/target/rpm/RpmDb.cc:1877
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "%s ਲਈ ਸੰਰਚਨਾ ਫਾਇਲਾਂ ਬਦਲੀਆਂ:"
@@ -881,17 +883,17 @@ msgstr "ਕੋਕੋਸ (ਕਿੱਲਿੰਗ) ਟਾਪੂ"
 msgid "Colombia"
 msgstr "ਕੋਲੰਬੀਆ"
 
-#: ../zypp/ExternalProgram.cc:402
+#: ../zypp/ExternalProgram.cc:346
 #, c-format
 msgid "Command exited with status %d."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:427
+#: ../zypp/ExternalProgram.cc:371
 #, fuzzy
 msgid "Command exited with unknown error."
 msgstr "ਕੁਨੈਕਟ ਕਰਨ ਦੌਰਾਨ ਚੱਲਦੀ ਕਮਾਂਡ"
 
-#: ../zypp/ExternalProgram.cc:422
+#: ../zypp/ExternalProgram.cc:366
 #, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr ""
@@ -1072,13 +1074,7 @@ msgstr "ਡੋਮੀਨੀਆ"
 msgid "Dominican Republic"
 msgstr "ਡੋਮੀਨੀਆਨ ਗਣਰਾਜ਼"
 
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
-#, c-format
-msgid "Download (Metalink curl) initialization failed for '%s'"
-msgstr ""
-
-#: ../zypp/media/MediaException.cc:168
+#: ../zypp/media/MediaException.cc:152
 #, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -1092,14 +1088,6 @@ msgstr ""
 msgid "Download (curl) initialization failed for '%s'"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
-#, c-format
-msgid ""
-"Download (metalink curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
@@ -1111,7 +1099,7 @@ msgid "Duala"
 msgstr "ਡੁਆਲਾ"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:98
+#: ../zypp/CheckSum.cc:97
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr ""
@@ -1176,15 +1164,15 @@ msgstr "ਈਲ ਸਾਲੇਵਡੋਰ"
 msgid "Elamite"
 msgstr "ਅਲਾਮਿਟੀ"
 
-#: ../zypp/media/MediaException.cc:151
+#: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:146
+#: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:141
+#: ../zypp/media/MediaException.cc:125
 #, fuzzy
 msgid "Empty host name in URI"
 msgstr "ਖਾਲੀ CA ਨਾਂ ਹੈ।"
@@ -1219,15 +1207,9 @@ msgid "Eritrea"
 msgstr "ਈਰਟੀਰਆ"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:177
+#: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
-
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
-#, c-format
-msgid "Error occurred while setting download (metalink curl) options for '%s':"
 msgstr ""
 
 #. language code: myv
@@ -1265,12 +1247,12 @@ msgstr "ਈਵੀ"
 msgid "Ewondo"
 msgstr "ਈਵੋਨਡੋ"
 
-#: ../zypp/KeyRing.cc:577
+#: ../zypp/KeyRing.cc:558
 #, fuzzy
 msgid "Failed to delete key."
 msgstr "VM ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ।"
 
-#: ../zypp/target/rpm/RpmDb.cc:1064
+#: ../zypp/target/rpm/RpmDb.cc:1045
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr ""
@@ -1280,7 +1262,7 @@ msgstr ""
 msgid "Failed to mount %s on %s"
 msgstr "ਪਾਰਸ ਕਰਨ ਦੌਰਾਨ ਫੇਲ੍ਹ: %s।"
 
-#: ../zypp/target/rpm/RpmDb.cc:1141
+#: ../zypp/target/rpm/RpmDb.cc:1122
 #, fuzzy, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "ਪਬਲਿਕ ਕੁੰਜੀ ਲੈਣ ਲਈ ਅਸਮਰੱਥ ਹੈ।"
@@ -1415,7 +1397,7 @@ msgstr "ਫੈਨਿਸ਼"
 msgid "Finno-Ugrian (Other)"
 msgstr ""
 
-#: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
+#: ../zypp/solver/detail/ProblemSolutionCombi.cc:73
 #, fuzzy
 msgid "Following actions will be done:"
 msgstr "ਹੇਠ ਦਿੱਤੇ ਪੈਕੇਜ ਅੱਪਡੇਟ ਕੀਤੇ ਜਾਣਗੇ:\n"
@@ -1702,10 +1684,6 @@ msgstr "HalVolume ਸ਼ੁਰੂ ਨਹੀਂ ਕੀਤਾ"
 msgid "Hausa"
 msgstr "ਹਾਉਸਾ"
 
-#: ../zypp/solver/detail/SATResolver.cc:922
-msgid "Have you enabled all requested repositories?"
-msgstr ""
-
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
@@ -1867,7 +1845,7 @@ msgstr "ਇੰਡੋਨੇਸ਼ੀਅਨ"
 msgid "Ingush"
 msgstr "ਈਂਗੁਸ਼"
 
-#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
+#: ../zypp/target/TargetImpl.cc:762
 msgid "Installation has been aborted as directed."
 msgstr "ਇੰਸਟਾਲੇਸ਼ਨ ਹਦਾਇਤਾਂ ਮੁਤਾਬਕ ਅਧੂਰੀ ਛੱਡੀ ਗਈ ਹੈ।"
 
@@ -1941,10 +1919,14 @@ msgstr ""
 msgid "Invalid port component '%s'"
 msgstr "ਗਲਤ ਪੋਰਟ ਭਾਗ '%s'"
 
-#: ../zypp/PoolQuery.cc:440
+#: ../zypp/PoolQuery.cc:419
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
+
+#: ../zypp/media/MediaCurl.cc:758 ../zypp/media/MediaCurl.cc:826
+msgid "Invalid user name or password."
+msgstr "ਗਲਤ ਯੂਜ਼ਰ ਨਾਂ ਜਾਂ ਪਾਸਵਰਡ ਹੈ।"
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2291,18 +2273,6 @@ msgstr "ਲੀਬਨਾਨ"
 msgid "Lesotho"
 msgstr "ਲੀਸੋਥੋ"
 
-#: ../zypp/VendorSupportOptions.cc:20
-msgid "Level 1"
-msgstr ""
-
-#: ../zypp/VendorSupportOptions.cc:23
-msgid "Level 2"
-msgstr ""
-
-#: ../zypp/VendorSupportOptions.cc:26
-msgid "Level 3"
-msgstr ""
-
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
@@ -2478,7 +2448,7 @@ msgstr "ਮਲੇਸ਼ੀਆ"
 msgid "Maldives"
 msgstr "ਮਾਲਦੀਵ"
 
-#: ../zypp/media/MediaException.cc:131
+#: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
 msgstr ""
 
@@ -2587,12 +2557,12 @@ msgstr "ਮਾਯਾਨ ਭਾਸ਼ਾਵਾਂ"
 msgid "Mayotte"
 msgstr "ਮਿਯੋਟੀ"
 
-#: ../zypp/media/MediaException.cc:221
+#: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:227
+#: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr ""
@@ -2951,12 +2921,7 @@ msgstr "ਉਜੀਬਵਾ"
 msgid "Oman"
 msgstr "ਓਮਾਨ"
 
-#: ../zypp/parser/RepoindexFileReader.cc:116
-#, c-format
-msgid "One or both of '%s' or '%s' attributes is required."
-msgstr ""
-
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:145
 #, fuzzy
 msgid "Operation not supported by medium"
 msgstr "ਪਰੋਫਾਇਲ ਵਰਜਨ ਅੱਪਾਰਮੋਰ ਮੋਡੀਊਲ ਵਲੋਂ ਸਹਾਇਕ ਨਹੀਂ ਹੈ\n"
@@ -2987,9 +2952,9 @@ msgid "Otomian Languages"
 msgstr "ਓਟਾਮੀਆਈ ਭਾਸ਼ਾਵਾਂ"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:247
-#, fuzzy, c-format
-msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
+#: ../zypp/repo/PackageProvider.cc:314
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry?"
 msgstr "ਪੈਕੇਜ %s ਐਂਟੀਗਰੇਟੀ ਚੈਕ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ। ਕੀ ਤੁਸੀਂ ਮੁੜ-ਕੋਸ਼ਿਸ਼ ਕਰਨੀ ਚਾਹੁੰਦੇ ਹੋ?"
 
 #. language code: pal
@@ -3062,17 +3027,17 @@ msgstr "ਪਾਪੁਆਨ (ਹੋਰ)"
 msgid "Paraguay"
 msgstr "ਪੇਰੂਗਵੇ"
 
-#: ../zypp/media/MediaException.cc:122
+#: ../zypp/media/MediaException.cc:106
 #, fuzzy, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "%1 ਡਾਇਰੈਕਟਰੀ ਨਹੀਂ ਹੈ।"
 
-#: ../zypp/media/MediaException.cc:114
+#: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:252
+#: ../zypp/media/MediaException.cc:200
 #, fuzzy, c-format
 msgid "Permission to access '%s' denied."
 msgstr "ਅਧਿਕਾਰ ਪਾਬੰਦੀ ਹੈ"
@@ -3142,18 +3107,6 @@ msgstr "ਪੁਰਤਗਾਲੀ"
 msgid "Prakrit Languages"
 msgstr "ਪਰਾਕਰਿਟ ਭਾਸ਼ਾਵਾਂ"
 
-#: ../zypp/VendorSupportOptions.cc:45
-msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
-msgstr ""
-
-#: ../zypp/VendorSupportOptions.cc:48
-msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
-msgstr ""
-
-#: ../zypp/VendorSupportOptions.cc:51
-msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
-msgstr ""
-
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
@@ -3184,9 +3137,8 @@ msgid "Query string parsing not supported for this URL"
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
-#. TranslatorExplanation the colon is followed by an error message
-#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
-#: ../zypp/target/rpm/RpmDb.cc:2220
+#: ../zypp/target/rpm/RpmDb.cc:888 ../zypp/target/rpm/RpmDb.cc:2057
+#: ../zypp/target/rpm/RpmDb.cc:2177
 #, fuzzy
 msgid "RPM failed: "
 msgstr "ਫੇਲ੍ਹ"
@@ -3215,14 +3167,13 @@ msgstr "ਰਾਰੋਤੋਨਗੀ"
 msgid "Relative path not allowed if authority exists"
 msgstr ""
 
-#: ../zypp/RepoManager.cc:1328
+#: ../zypp/RepoManager.cc:1114
 #, c-format
 msgid "Removing repository '%s'"
 msgstr "ਰਿਪੋਜ਼ਟਰੀ '%s' ਹਟਾਈ ਜਾ ਰਹੀ ਹੈ।"
 
-#: ../zypp/parser/RepoindexFileReader.cc:128
-#, fuzzy, c-format
-msgid "Required attribute '%s' is missing."
+#: ../zypp/parser/susetags/RepoParser.cc:232
+msgid "Required file is missing: "
 msgstr "ਲੋੜੀ ਫਾਇਲ ਗੁੰਮ ਹੈ: "
 
 #. :QAT:634:
@@ -3440,7 +3391,7 @@ msgstr "ਲਿੱਰ ਲੀਓਨ"
 msgid "Sign Languages"
 msgstr "ਸਾਇਨ ਭਾਸ਼ਾਵਾਂ"
 
-#: ../zypp/KeyRing.cc:587
+#: ../zypp/KeyRing.cc:568
 #, fuzzy, c-format
 msgid "Signature file %s not found"
 msgstr "ਸੋਰਸ ਪੈਕੇਜ '%s' ਨਹੀਂ ਲੱਭਿਆ।"
@@ -3520,7 +3471,7 @@ msgstr "ਸੋਗਡੀਆਈ"
 msgid "Solomon Islands"
 msgstr "ਸੋਲੋਮੋਨ ਟਾਪੂ"
 
-#: ../zypp/solver/detail/SATResolver.cc:949
+#: ../zypp/solver/detail/SATResolver.cc:889
 #, fuzzy, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "%s ਦਾ %s ਨਾਲ ਅਪਵਾਦ ਹੈ"
@@ -3675,16 +3626,14 @@ msgstr "ਸੀਰੀਆ"
 msgid "Syriac"
 msgstr "ਸਅਰਿਕ"
 
-#: ../zypp/media/MediaException.cc:107
+#: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
 msgstr ""
 
-#: ../zypp/ZYppFactory.cc:361
+#: ../zypp/ZYppFactory.cc:354
 #, c-format
-msgid ""
-"System management is locked by the application with pid %d (%s).\n"
-"Close this application before trying again."
+msgid "System management is locked by the application with pid %d. Please close this application before trying again."
 msgstr ""
 
 #. language code: tgl tl
@@ -3762,24 +3711,9 @@ msgstr "ਥਾਈ"
 msgid "Thailand"
 msgstr "ਥਾਈਲੈਂਡ"
 
-#: ../zypp/VendorSupportOptions.cc:39
-msgid "The level of support is unspecified"
-msgstr ""
-
-#: ../zypp/VendorSupportOptions.cc:42
-#, fuzzy
-msgid "The vendor does not provide support."
-msgstr "ਡਿਸਕ ਮੌਜੂਦ ਨਹੀਂ ਹੈ।"
-
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
 msgstr ""
-
-#: ../zypp/solver/detail/SATResolver.cc:1130
-#: ../zypp/solver/detail/SATResolver.cc:1148
-#, fuzzy
-msgid "This request will break your system!"
-msgstr "ਮੰਗ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ।"
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3796,7 +3730,7 @@ msgstr "ਤੀਗਰਿ"
 msgid "Tigrinya"
 msgstr "ਟੀਗਰੀਨਯਾ"
 
-#: ../zypp/media/MediaException.cc:259
+#: ../zypp/media/MediaException.cc:207
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr ""
@@ -3847,7 +3781,7 @@ msgstr "ਤਾਂਗਾ (ਨਆਸਾ)"
 msgid "Tonga (Tonga Islands)"
 msgstr "ਤਾਂਗਾ (ਤਾਂਗਾ ਟਾਪੂ)"
 
-#: ../zypp/KeyRing.cc:526
+#: ../zypp/KeyRing.cc:507
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
 msgstr ""
@@ -4009,11 +3943,6 @@ msgstr "ਸੰਯੁਕਤ ਰਾਜ"
 msgid "United States Minor Outlying Islands"
 msgstr "ਸੰਯੁਕਤ ਰਾਜ ਮੀਨੋਰ ਆਉਟਲੇ ਟਾਪੂ"
 
-#: ../zypp/target/TargetImpl.cc:997
-#, fuzzy
-msgid "Unknown Distribution"
-msgstr "ਅਣਜਾਣ ਲਿਸਟ ਚੋਣ"
-
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
 msgstr "ਅਣਜਾਣ ਦੇਸ਼: "
@@ -4022,16 +3951,12 @@ msgstr "ਅਣਜਾਣ ਦੇਸ਼: "
 msgid "Unknown language: "
 msgstr "ਅਣਜਾਣ ਭਾਸ਼ਾ: "
 
-#: ../zypp/VendorSupportOptions.cc:56
-msgid "Unknown support option. Description not available"
-msgstr ""
-
-#: ../zypp/media/MediaUserAuth.cc:123
+#: ../zypp/media/MediaUserAuth.cc:97
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:156
+#: ../zypp/media/MediaException.cc:140
 #, fuzzy, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "ਗਲਤ URL ਸਕੀਮ '%1' ਹੈ।"
@@ -4111,7 +4036,7 @@ msgid "Vai"
 msgstr "ਵਾਈ"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:778
+#: ../zypp/RepoManager.cc:526
 msgid "Valid metadata not found at specified URL(s)"
 msgstr ""
 
@@ -4280,87 +4205,83 @@ msgstr "ਜ਼ੂਲੂ"
 msgid "Zuni"
 msgstr "ਜੁਨੀ"
 
-#: ../zypp/repo/PackageProvider.cc:195
+#: ../zypp/repo/PackageProvider.cc:233
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm ਚੈੱਕ ਫੇਲ੍ਹ ਹੈ।"
 
-#: ../zypp/repo/PackageProvider.cc:212
+#: ../zypp/repo/PackageProvider.cc:247
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm ਫੇਲ੍ਹ ਹੋਇਆ।"
 
-#: ../zypp/solver/detail/SATResolver.cc:1219
+#: ../zypp/solver/detail/SATResolver.cc:1129
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:875
 #, fuzzy, c-format
 msgid "cannot install both %s and %s"
 msgstr "%s ਇੰਸਟਾਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: ../zypp/solver/detail/SATResolver.cc:915
+#: ../zypp/solver/detail/SATResolver.cc:859
 #, fuzzy
 msgid "conflicting requests"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਮੰਗ:"
 
-#: ../zypp/target/rpm/RpmDb.cc:2372
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2327
 #, c-format
 msgid "created backup %s"
 msgstr "%s ਦਾ ਬੈਕਅੱਪ ਬਣਿਆ"
 
 # %s is either BOOTP or DHCP
-#: ../zypp/solver/detail/SATResolver.cc:1247
+#: ../zypp/solver/detail/SATResolver.cc:1156
 #, fuzzy, c-format
 msgid "deinstallation of %s"
 msgstr "%s ਦੀ ਇੰਸਟਾਲੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਈ:"
 
-#: ../zypp/solver/detail/SATResolver.cc:983
+#: ../zypp/solver/detail/SATResolver.cc:923
 #, fuzzy
 msgid "deleted providers: "
 msgstr "%s ਕੋਈ ਨਹੀਂ ਦਿੰਦਾ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:1151
+#: ../zypp/solver/detail/SATResolver.cc:1077
 #, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:1133
+#: ../zypp/solver/detail/SATResolver.cc:1062
 #, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:1078
+#: ../zypp/solver/detail/SATResolver.cc:1015
 #, fuzzy, c-format
 msgid "do not forbid installation of %s"
 msgstr "%s ਨੂੰ ਨਾ ਹਟਾਓ"
 
-#: ../zypp/solver/detail/SATResolver.cc:1057
-#: ../zypp/solver/detail/SATResolver.cc:1095
+#: ../zypp/solver/detail/SATResolver.cc:994
+#: ../zypp/solver/detail/SATResolver.cc:1033
 #, c-format
 msgid "do not install %s"
 msgstr "%s ਨੂੰ ਨਾ ਹਟਾਓ"
 
-#: ../zypp/solver/detail/SATResolver.cc:1164
+#: ../zypp/solver/detail/SATResolver.cc:1089
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:1052
+#: ../zypp/solver/detail/SATResolver.cc:989
 #, fuzzy, c-format
 msgid "do not keep %s installed"
 msgstr "ਇੰਸਟਾਲ ਨਹੀਂ ਹਨ"
 
-#: ../zypp/solver/detail/SATResolver.cc:1211
+#: ../zypp/solver/detail/SATResolver.cc:1122
 #, fuzzy, c-format
 msgid "downgrade of %s to %s"
 msgstr "%s ਨੂੰ %s ਲਈ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:1131
-#: ../zypp/solver/detail/SATResolver.cc:1149
-msgid "ignore the warning of a broken system"
-msgstr ""
-
-#: ../zypp/solver/detail/SATResolver.cc:1227
+#: ../zypp/solver/detail/SATResolver.cc:1136
 #, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4369,14 +4290,8 @@ msgid ""
 "  %s"
 msgstr ""
 
-#: ../zypp/VendorSupportOptions.cc:31
-msgid "invalid"
-msgstr ""
-
-#. for solver reason: NOT weak lock.
-#: ../zypp/solver/detail/SATResolver.cc:1073
-#: ../zypp/solver/detail/SATResolver.cc:1116
-#: ../zypp/solver/detail/SATResolver.cc:1193
+#: ../zypp/solver/detail/SATResolver.cc:1010
+#: ../zypp/solver/detail/SATResolver.cc:1047
 #, c-format
 msgid "keep %s"
 msgstr "%s ਰੱਖੋ"
@@ -4389,93 +4304,62 @@ msgstr ""
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: dbus ਕੁਨੈਕਸ਼ਨ ਸੈੱਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: ../zypp/solver/detail/SATResolver.cc:930
+#: ../zypp/solver/detail/SATResolver.cc:870
 #, fuzzy, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "%s %s ਰਾਹੀਂ ਚਾਹੀਦਾ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:862
 #, fuzzy, c-format
 msgid "nothing provides requested %s"
 msgstr "%s ਕੋਈ ਨਹੀਂ ਦਿੰਦਾ ਹੈ"
 
-#: ../zypp/solver/detail/SATResolver.cc:912
+#: ../zypp/solver/detail/SATResolver.cc:856
 #, fuzzy, c-format
 msgid "problem with installed package %s"
 msgstr "ਸੋਰਸ ਪੈਕੇਜ %s-%s ਇੰਸਟਾਲ ਕਰਨ ਦੌਰਾਨ ਸਮੱਸਿਆ:"
 
-#: ../zypp/solver/detail/SATResolver.cc:1235
+#: ../zypp/solver/detail/SATResolver.cc:1144
 #, c-format
 msgid "replacement of %s with %s"
 msgstr ""
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2070
+#: ../zypp/target/rpm/RpmDb.cc:2046
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr ""
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2072
+#: ../zypp/target/rpm/RpmDb.cc:2048
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
 
+#: ../zypp/target/rpm/RpmDb.cc:2055 ../zypp/target/rpm/RpmDb.cc:2175
+msgid "rpm output:"
+msgstr "rpm ਆਉਟਪੁੱਟ:"
+
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2065
+#: ../zypp/target/rpm/RpmDb.cc:2041
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2067
+#: ../zypp/target/rpm/RpmDb.cc:2043
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:918
-#, fuzzy
-msgid "some dependency problem"
-msgstr "ਨਿਰਭਰਤਾ ਸਮੱਸਿਆਵਾਂ ਕਰਕੇ %s ਇੰਸਟਾਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
-
-#: ../zypp/solver/detail/SATResolver.cc:995
+#: ../zypp/solver/detail/SATResolver.cc:935
 #, fuzzy
 msgid "uninstallable providers: "
 msgstr "ਉਪਲੱਬਧ ਪਰੋਫਾਇਲ"
-
-#: ../zypp/VendorSupportOptions.cc:14
-msgid "unknown"
-msgstr "ਅਣਜਾਣ"
-
-#: ../zypp/VendorSupportOptions.cc:17
-#, fuzzy
-msgid "unsupported"
-msgstr " - ਸਹਾਇਕ ਨਹੀਂ"
-
-#~ msgid "%s remove failed"
-#~ msgstr "%s ਹਟਾਉਣਾ ਫੇਲ੍ਹ"
-
-#~ msgid "Additional rpm output:"
-#~ msgstr "ਹੋਰ rpm ਆਉਟਪੁੱਟ:"
-
-#~ msgid "Invalid user name or password."
-#~ msgstr "ਗਲਤ ਯੂਜ਼ਰ ਨਾਂ ਜਾਂ ਪਾਸਵਰਡ ਹੈ।"
-
-#~ msgid "rpm output:"
-#~ msgstr "rpm ਆਉਟਪੁੱਟ:"
-
-#~ msgid "%s install failed"
-#~ msgstr "%s ਇੰਸਟਾਲ ਫੇਲ੍ਹ ਹੈ"
-
-#~ msgid "%s installed ok"
-#~ msgstr "%s ਇੰਸਟਾਲ ਹੋਇਆ"
-
-#~ msgid "%s remove ok"
-#~ msgstr "%s ਹਟਾਇਆ"
 
 #~ msgid "Ignore that %s is already set to install"
 #~ msgstr "ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਸੈੱਟ ਕੀਤੇ ਉਸ %s ਨੂੰ ਅਣਡਿੱਠਾ ਕਰੋ"
@@ -4590,6 +4474,9 @@ msgstr " - ਸਹਾਇਕ ਨਹੀਂ"
 
 #~ msgid "%s is not installed and has been marked as uninstallable"
 #~ msgstr "%s ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ ਅਤੇ ਅਣ-ਇੰਸਟਾਲਯੋਗ ਮਾਰਕ ਕੀਤਾ ਗਿਆ"
+
+#~ msgid "Cannot install %s due to dependency problems"
+#~ msgstr "ਨਿਰਭਰਤਾ ਸਮੱਸਿਆਵਾਂ ਕਰਕੇ %s ਇੰਸਟਾਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
 
 #~ msgid "%s has missing dependencies"
 #~ msgstr "%s ਲਈ ਨਿਰਭਰਤਾ ਅਧੂਰੀ ਹੈ"

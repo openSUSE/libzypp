@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-21 18:58+0200\n"
-"PO-Revision-Date: 2008-04-23 20:07+0900\n"
+"POT-Creation-Date: 2008-11-21 09:10+0100\n"
+"PO-Revision-Date: 2008-11-05 21:21+0900\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <opensuse-ja@opensuse.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:933
+#: ../zypp/solver/detail/SATResolver.cc:993
 msgid ""
 "\n"
 "uninstallable providers: "
@@ -28,54 +28,39 @@ msgstr ""
 "\n"
 "インストール不可能なプロバイダ: "
 
-#: ../zypp/media/MediaException.cc:214
+#: ../zypp/media/MediaException.cc:266
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " SSL 証明書に問題があります。 '%s' について証明機関に問題がないかどうか確認してください。"
 
-#: ../zypp/solver/detail/SATResolver.cc:880
+#: ../zypp/target/TargetImpl.cc:88
+msgid " executed"
+msgstr " 実行"
+
+#: ../zypp/target/TargetImpl.cc:110
+msgid " execution failed"
+msgstr " 実行失敗"
+
+#: ../zypp/target/TargetImpl.cc:196
+msgid " execution skipped while aborting"
+msgstr " 中止しているため実行をスキップ"
+
+#: ../zypp/solver/detail/SATResolver.cc:940
 #, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%1$s は %2$s から提供されている %3$s と競合します"
 
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2054
-#, c-format
-msgid "%s install failed"
-msgstr "%s のインストールが失敗しました"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2063
-#, c-format
-msgid "%s installed ok"
-msgstr "%s は問題なくインストールされました"
-
-#: ../zypp/solver/detail/SATResolver.cc:866
+#: ../zypp/solver/detail/SATResolver.cc:926
 #, c-format
 msgid "%s is not installable"
 msgstr "%s はインストールできません"
 
-#: ../zypp/solver/detail/SATResolver.cc:885
+#: ../zypp/solver/detail/SATResolver.cc:945
 #, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%1$s は %3$s から提供されている %2$s を古いものとして廃棄します"
 
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2174
-#, c-format
-msgid "%s remove failed"
-msgstr "%s の削除に失敗しました"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2182
-#, c-format
-msgid "%s remove ok"
-msgstr "%s は問題なく削除されました"
-
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:981
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr "%s は %s を必要としていますが、この要求を解決する方法がありません"
@@ -100,14 +85,14 @@ msgstr "アチョリ語"
 msgid "Adangme"
 msgstr "アダングメ語"
 
-#: ../zypp/RepoManager.cc:1007
+#: ../zypp/RepoManager.cc:1198
 #, c-format
 msgid "Adding repository '%s'"
 msgstr "リポジトリ '%s' を追加しています"
 
-#: ../zypp/target/rpm/RpmDb.cc:2066 ../zypp/target/rpm/RpmDb.cc:2185
-msgid "Additional rpm output:"
-msgstr "追加の rpm 出力:"
+#: ../zypp/VendorSupportOptions.cc:29
+msgid "Additional Customer Contract Necessary"
+msgstr "追加の顧客契約が必要"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -198,6 +183,10 @@ msgstr "アメリカ領サモア"
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
 msgstr "アムハラ語"
+
+#: ../zypp/VendorSupportOptions.cc:54
+msgid "An additional customer contract is necessary for getting support."
+msgstr "サポートを得るには、追加の顧客契約が必要です。"
 
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
@@ -318,7 +307,8 @@ msgstr "オーストリア"
 msgid "Austronesian (Other)"
 msgstr "アウストロネシア語 (その他)"
 
-#: ../zypp/media/MediaCurl.cc:761 ../zypp/media/MediaCurl.cc:829
+#. !\todo add comma to the message for the next release
+#: ../zypp/media/MediaCurl.cc:1702
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "'%s' にアクセスするにはユーザ認証が必要です"
@@ -582,10 +572,10 @@ msgstr "ブルネイダルサラーム国"
 msgid "Buginese"
 msgstr "ブギス語"
 
-#: ../zypp/RepoManager.cc:719
+#: ../zypp/RepoManager.cc:966
 #, c-format
 msgid "Building repository '%s' cache"
-msgstr "リポジトリ '%s' のキャッシュを構築中"
+msgstr "リポジトリ '%s' のキャッシュを構築しています"
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:246
@@ -632,7 +622,7 @@ msgstr "カンボジア"
 msgid "Cameroon"
 msgstr "カメルーン"
 
-#: ../zypp/sat/detail/PoolImpl.cc:147
+#: ../zypp/sat/detail/PoolImpl.cc:156
 msgid "Can not create sat-pool."
 msgstr "sat-pool を作成できません。"
 
@@ -640,23 +630,23 @@ msgstr "sat-pool を作成できません。"
 msgid "Can't acquire the mutex lock"
 msgstr "相互排他機能の権利を取得できません"
 
-#: ../zypp/ExternalProgram.cc:245
+#: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr "chroot (%s) 環境下で '/' にディレクトリ移動できません。"
 
-#: ../zypp/ExternalProgram.cc:238
+#: ../zypp/ExternalProgram.cc:294
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr "'%s' (%s) に chroot することができません。"
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:259
+#: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr "'%s' (%s) を実行することができません。"
 
-#: ../zypp/ExternalProgram.cc:267
+#: ../zypp/ExternalProgram.cc:323
 #, c-format
 msgid "Can't fork (%s)."
 msgstr "fork (%s) することができません。"
@@ -674,12 +664,12 @@ msgstr "再帰相互排他機能を初期化できません"
 msgid "Can't open lock file: %s"
 msgstr "ロックファイルを開けません: %s"
 
-#: ../zypp/ExternalProgram.cc:174
+#: ../zypp/ExternalProgram.cc:230
 #, c-format
 msgid "Can't open pipe (%s)."
 msgstr "パイプ (%s) を開くことができません。"
 
-#: ../zypp/ExternalProgram.cc:163
+#: ../zypp/ExternalProgram.cc:219
 #, c-format
 msgid "Can't open pty (%s)."
 msgstr "議事端末 (%s) を開くことができません。"
@@ -702,19 +692,24 @@ msgstr "再帰相互排他機能の属性を設定できません"
 msgid "Canada"
 msgstr "カナダ"
 
-#: ../zypp/KeyRing.cc:276
+#: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr "鍵リング %2$s から公開鍵 %1$s をファイル %3$s に作成することができません"
 
-#: ../zypp/media/MediaException.cc:182
+#: ../zypp/media/MediaException.cc:234
 msgid "Cannot eject any media"
 msgstr "メディアを取り出すことができません"
 
-#: ../zypp/media/MediaException.cc:184
+#: ../zypp/media/MediaException.cc:236
 #, c-format
 msgid "Cannot eject media '%s'"
 msgstr "メディア '%s' を取り出すことができません"
+
+#: ../zypp/media/MediaException.cc:273
+#, c-format
+msgid "Cannot find available loop device to mount the image file from '%s'"
+msgstr "'%s' のイメージファイルをマウントするのに必要なループデバイスの空きが見つかりません"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
@@ -788,7 +783,7 @@ msgstr "チャモロ語"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1877
+#: ../zypp/target/rpm/RpmDb.cc:1896
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "%s 向けに変更された設定ファイル:"
@@ -883,16 +878,16 @@ msgstr "ココス (キーリング) 諸島"
 msgid "Colombia"
 msgstr "コロンビア"
 
-#: ../zypp/ExternalProgram.cc:346
+#: ../zypp/ExternalProgram.cc:402
 #, c-format
 msgid "Command exited with status %d."
 msgstr "コマンドは状態 %d で終了しました。"
 
-#: ../zypp/ExternalProgram.cc:371
+#: ../zypp/ExternalProgram.cc:427
 msgid "Command exited with unknown error."
 msgstr "コマンドは不明なエラーで終了しました。"
 
-#: ../zypp/ExternalProgram.cc:366
+#: ../zypp/ExternalProgram.cc:422
 #, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr "コマンドはシグナル %d (%s) で終了しました。"
@@ -1073,7 +1068,13 @@ msgstr "ドミニカ"
 msgid "Dominican Republic"
 msgstr "ドミニカ共和国"
 
-#: ../zypp/media/MediaException.cc:152
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#, c-format
+msgid "Download (Metalink curl) initialization failed for '%s'"
+msgstr "'%s' のダウンロード (Metalink curl) の準備に失敗しました"
+
+#: ../zypp/media/MediaException.cc:168
 #, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -1090,6 +1091,17 @@ msgstr ""
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "'%s' のダウンロード (curl) の初期化に失敗しました"
 
+#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
+#, c-format
+msgid ""
+"Download (metalink curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr ""
+"'%s' のダウンロード (metalink curl) がエラー終了しました:\n"
+"エラーコード: %s\n"
+"エラーメッセージ: %s\n"
+
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
@@ -1101,7 +1113,7 @@ msgid "Duala"
 msgstr "ドゥアーラ語"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:97
+#: ../zypp/CheckSum.cc:98
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr "%2$u バイトのチェックサム '%3$s' は疑わしい種類 '%1$s' です"
@@ -1166,15 +1178,15 @@ msgstr "エルサルバドル"
 msgid "Elamite"
 msgstr "エラム語"
 
-#: ../zypp/media/MediaException.cc:135
+#: ../zypp/media/MediaException.cc:151
 msgid "Empty destination in URI"
 msgstr "URI に宛先が指定されていません"
 
-#: ../zypp/media/MediaException.cc:130
+#: ../zypp/media/MediaException.cc:146
 msgid "Empty filesystem in URI"
 msgstr "URI にファイルシステムが指定されていません"
 
-#: ../zypp/media/MediaException.cc:125
+#: ../zypp/media/MediaException.cc:141
 msgid "Empty host name in URI"
 msgstr "URI にホスト名が含まれていません"
 
@@ -1208,10 +1220,16 @@ msgid "Eritrea"
 msgstr "エリトリア"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:177
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "'%s' のダウンロード (curl) オプションを設定する際にエラーが発生しました:"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
+#, c-format
+msgid "Error occurred while setting download (metalink curl) options for '%s':"
+msgstr "'%s' のダウンロード (metalink curl) オプションを設定する際にエラーが発生しました:"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1248,11 +1266,11 @@ msgstr "エウェ語"
 msgid "Ewondo"
 msgstr "エウォンド語"
 
-#: ../zypp/KeyRing.cc:558
+#: ../zypp/KeyRing.cc:577
 msgid "Failed to delete key."
 msgstr "キーの削除に失敗しました。"
 
-#: ../zypp/target/rpm/RpmDb.cc:1045
+#: ../zypp/target/rpm/RpmDb.cc:1064
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "公開鍵をファイル %s からインポートすることができませんでした: %s"
@@ -1262,7 +1280,7 @@ msgstr "公開鍵をファイル %s からインポートすることができ�
 msgid "Failed to mount %s on %s"
 msgstr "%s を %s にマウントすることができませんでした"
 
-#: ../zypp/target/rpm/RpmDb.cc:1122
+#: ../zypp/target/rpm/RpmDb.cc:1141
 #, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "公開鍵 %s を削除することができませんでした: %s"
@@ -1397,7 +1415,7 @@ msgstr "フィンランド語"
 msgid "Finno-Ugrian (Other)"
 msgstr "フィン-ウゴル語 (その他)"
 
-#: ../zypp/solver/detail/ProblemSolutionCombi.cc:73
+#: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
 msgid "Following actions will be done:"
 msgstr "以下の動作を実行します:"
 
@@ -1682,6 +1700,10 @@ msgstr "HalVolume が初期化されていません"
 msgid "Hausa"
 msgstr "ハウサ語"
 
+#: ../zypp/solver/detail/SATResolver.cc:922
+msgid "Have you enabled all requested repositories?"
+msgstr "すべての必要なリポジトリを有効化しましたか？"
+
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
@@ -1843,7 +1865,7 @@ msgstr "インドネシア語"
 msgid "Ingush"
 msgstr "イングーシ語"
 
-#: ../zypp/target/TargetImpl.cc:762
+#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
 msgid "Installation has been aborted as directed."
 msgstr "指示通りにインストールが中止されました。"
 
@@ -1917,14 +1939,10 @@ msgstr "無効なパラメータマップ区切り文字"
 msgid "Invalid port component '%s'"
 msgstr "無効なポート部分 '%s'"
 
-#: ../zypp/PoolQuery.cc:419
+#: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr "正規表現 '%s' が正しくありません。 regcomp は %d を返しました"
-
-#: ../zypp/media/MediaCurl.cc:758 ../zypp/media/MediaCurl.cc:826
-msgid "Invalid user name or password."
-msgstr "ユーザ名かパスワードが誤っています。"
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2271,6 +2289,18 @@ msgstr "レバノン"
 msgid "Lesotho"
 msgstr "レソト"
 
+#: ../zypp/VendorSupportOptions.cc:20
+msgid "Level 1"
+msgstr "Level 1"
+
+#: ../zypp/VendorSupportOptions.cc:23
+msgid "Level 2"
+msgstr "Level 2"
+
+#: ../zypp/VendorSupportOptions.cc:26
+msgid "Level 3"
+msgstr "Level 3"
+
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
@@ -2424,7 +2454,7 @@ msgstr "マダガスカル語"
 #. :MDV:462:
 #: ../zypp/CountryCode.cc:374
 msgid "Malawi"
-msgstr "マラウィ"
+msgstr "マラウイ"
 
 #. language code: may msa ms
 #: ../zypp/LanguageCode.cc:800 ../zypp/LanguageCode.cc:802
@@ -2444,9 +2474,9 @@ msgstr "マレーシア"
 #. :MUS:480:
 #: ../zypp/CountryCode.cc:373
 msgid "Maldives"
-msgstr "モルディヴ"
+msgstr "モルディブ"
 
-#: ../zypp/media/MediaException.cc:115
+#: ../zypp/media/MediaException.cc:131
 msgid "Malformed URI"
 msgstr "不正な URI"
 
@@ -2555,12 +2585,12 @@ msgstr "マヤ語"
 msgid "Mayotte"
 msgstr "マヨット"
 
-#: ../zypp/media/MediaException.cc:169
+#: ../zypp/media/MediaException.cc:221
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "メディアソース '%s' には必要なメディアがありません"
 
-#: ../zypp/media/MediaException.cc:175
+#: ../zypp/media/MediaException.cc:227
 #, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "メディア '%s' は他のプログラムによって使用されています"
@@ -2627,7 +2657,7 @@ msgstr "モルダヴィア語"
 #. :MCO:492:
 #: ../zypp/CountryCode.cc:359
 msgid "Moldova"
-msgstr "モルドヴァ"
+msgstr "モルドバ"
 
 #. language code: mkh
 #: ../zypp/LanguageCode.cc:818
@@ -2919,7 +2949,12 @@ msgstr "オジブウェー語"
 msgid "Oman"
 msgstr "オマーン"
 
-#: ../zypp/media/MediaException.cc:145
+#: ../zypp/parser/RepoindexFileReader.cc:116
+#, c-format
+msgid "One or both of '%s' or '%s' attributes is required."
+msgstr "'%s' または '%s' (もしくはその両方) の属性が必要です。"
+
+#: ../zypp/media/MediaException.cc:161
 msgid "Operation not supported by medium"
 msgstr "操作は指定したメディアには対応していません"
 
@@ -2949,10 +2984,10 @@ msgid "Otomian Languages"
 msgstr "オトミ語"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:314
+#: ../zypp/repo/PackageProvider.cc:247
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry?"
-msgstr "パッケージ %s の整合性チェックに失敗しました。もう一度ダウンロードしますか?"
+msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
+msgstr "パッケージ %s は転送時に壊れてしまったようです。もう一度ダウンロードしますか?"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3024,17 +3059,17 @@ msgstr "パプア語 (その他)"
 msgid "Paraguay"
 msgstr "パラグアイ"
 
-#: ../zypp/media/MediaException.cc:106
+#: ../zypp/media/MediaException.cc:122
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "メディア '%2$s' 上のパス '%1$s' はディレクトリではありません。"
 
-#: ../zypp/media/MediaException.cc:98
+#: ../zypp/media/MediaException.cc:114
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "メディア '%2$s' 上のパス '%1$s' はファイルではありません。"
 
-#: ../zypp/media/MediaException.cc:200
+#: ../zypp/media/MediaException.cc:252
 #, c-format
 msgid "Permission to access '%s' denied."
 msgstr "'%s' へのアクセス許可がありません。"
@@ -3104,6 +3139,18 @@ msgstr "ポルトガル語"
 msgid "Prakrit Languages"
 msgstr "プラークリット諸語"
 
+#: ../zypp/VendorSupportOptions.cc:45
+msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
+msgstr "問題の決定、それは互換性に関する情報やインストール支援、使用方法の対応や進行中の保守、基本的なトラブルシューティングなどの技術サポートを指します。 Level 1 サポートは、製品の欠陥によるエラーを修正しようとするものではありません。"
+
+#: ../zypp/VendorSupportOptions.cc:48
+msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
+msgstr "問題の切り分け、それは顧客内での問題を共有し領域を切り分け、 Level 1 サポートでは解決されていない問題について解決方法を提供する技術サポートを指します。"
+
+#: ../zypp/VendorSupportOptions.cc:51
+msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
+msgstr "問題の解決、それは複雑な問題に対して技術者を従事させ、 Level 2 サポートで認識されていない製品の欠陥を解決する技術サポートを指します。"
+
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
@@ -3134,8 +3181,9 @@ msgid "Query string parsing not supported for this URL"
 msgstr "この URL に対するクエリ文字列解釈はサポートされていません"
 
 #. TranslatorExplanation after semicolon is error message
-#: ../zypp/target/rpm/RpmDb.cc:888 ../zypp/target/rpm/RpmDb.cc:2057
-#: ../zypp/target/rpm/RpmDb.cc:2177
+#. TranslatorExplanation the colon is followed by an error message
+#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
+#: ../zypp/target/rpm/RpmDb.cc:2220
 msgid "RPM failed: "
 msgstr "RPM の失敗: "
 
@@ -3163,14 +3211,15 @@ msgstr "ラロトンガ語"
 msgid "Relative path not allowed if authority exists"
 msgstr "権限部分が存在する場合相対パスは許可されません。 "
 
-#: ../zypp/RepoManager.cc:1114
+#: ../zypp/RepoManager.cc:1328
 #, c-format
 msgid "Removing repository '%s'"
 msgstr "リポジトリ '%s' を削除しています"
 
-#: ../zypp/parser/susetags/RepoParser.cc:232
-msgid "Required file is missing: "
-msgstr "必要なファイルがありません: "
+#: ../zypp/parser/RepoindexFileReader.cc:128
+#, c-format
+msgid "Required attribute '%s' is missing."
+msgstr "必要な属性 '%s' がありません。"
 
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:406
@@ -3387,7 +3436,7 @@ msgstr "シエラレオーネ"
 msgid "Sign Languages"
 msgstr "手話言語"
 
-#: ../zypp/KeyRing.cc:568
+#: ../zypp/KeyRing.cc:587
 #, c-format
 msgid "Signature file %s not found"
 msgstr "署名ファイル %s が見つかりません。"
@@ -3467,7 +3516,7 @@ msgstr "ソグディアナ語"
 msgid "Solomon Islands"
 msgstr "ソロモン諸島"
 
-#: ../zypp/solver/detail/SATResolver.cc:889
+#: ../zypp/solver/detail/SATResolver.cc:949
 #, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "解決方法 %s は自分自身で提供している %s と競合しています"
@@ -3622,15 +3671,19 @@ msgstr "シリア"
 msgid "Syriac"
 msgstr "シリア語"
 
-#: ../zypp/media/MediaException.cc:91
+#: ../zypp/media/MediaException.cc:107
 #, c-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "システム例外 '%s' がメディア '%s' 上で発生しました。"
 
-#: ../zypp/ZYppFactory.cc:354
+#: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid "System management is locked by the application with pid %d. Please close this application before trying again."
-msgstr "システム管理はプロセス ID %d によってロックされています。再試行する前にこのアプリケーションを終了してください。"
+msgid ""
+"System management is locked by the application with pid %d (%s).\n"
+"Close this application before trying again."
+msgstr ""
+"システム管理はプロセス ID %d (%s) によってロックされています。\n"
+"再試行する前にこのアプリケーションを終了してください。"
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3707,9 +3760,22 @@ msgstr "タイ語"
 msgid "Thailand"
 msgstr "タイ"
 
+#: ../zypp/VendorSupportOptions.cc:39
+msgid "The level of support is unspecified"
+msgstr "サポートのレベルが指定されていません。"
+
+#: ../zypp/VendorSupportOptions.cc:42
+msgid "The vendor does not provide support."
+msgstr "製造元はサポートを提供していません。"
+
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
 msgstr "この作業は既に他のプログラムで実行されています。"
+
+#: ../zypp/solver/detail/SATResolver.cc:1130
+#: ../zypp/solver/detail/SATResolver.cc:1148
+msgid "This request will break your system!"
+msgstr "この要求はシステムを壊してしまいます！"
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3726,7 +3792,7 @@ msgstr "ティグレ語"
 msgid "Tigrinya"
 msgstr "ティグリニャ語"
 
-#: ../zypp/media/MediaException.cc:207
+#: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr "'%s' にアクセスする際に時間切れになりました。"
@@ -3777,7 +3843,7 @@ msgstr "トンガ語 (ニアサ)"
 msgid "Tonga (Tonga Islands)"
 msgstr "トンガ語 (トンガ諸島)"
 
-#: ../zypp/KeyRing.cc:507
+#: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
 msgstr "新しい鍵 %s を鍵リング %s にインポートしようとしました"
@@ -3939,6 +4005,10 @@ msgstr "アメリカ合衆国"
 msgid "United States Minor Outlying Islands"
 msgstr "合衆国小離島"
 
+#: ../zypp/target/TargetImpl.cc:997
+msgid "Unknown Distribution"
+msgstr "不明なディストリビューション"
+
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
 msgstr "不明な国: "
@@ -3947,12 +4017,16 @@ msgstr "不明な国: "
 msgid "Unknown language: "
 msgstr "不明な言語: "
 
-#: ../zypp/media/MediaUserAuth.cc:97
+#: ../zypp/VendorSupportOptions.cc:56
+msgid "Unknown support option. Description not available"
+msgstr "不明なサポートオプションです。説明は利用できません"
+
+#: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "未対応の HTTP 認証方式です '%s'"
 
-#: ../zypp/media/MediaException.cc:140
+#: ../zypp/media/MediaException.cc:156
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "未対応の URI スキーマが '%s' にあります。"
@@ -4032,7 +4106,7 @@ msgid "Vai"
 msgstr "ヴァイ語"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:526
+#: ../zypp/RepoManager.cc:778
 msgid "Valid metadata not found at specified URL(s)"
 msgstr "指定した URL には有効なメタデータがありません"
 
@@ -4201,80 +4275,84 @@ msgstr "ズールー語"
 msgid "Zuni"
 msgstr "ズーニー語"
 
-#: ../zypp/repo/PackageProvider.cc:233
+#: ../zypp/repo/PackageProvider.cc:195
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm のチェックに失敗しました。"
 
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:212
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm が失敗しました。"
 
-#: ../zypp/solver/detail/SATResolver.cc:1129
+#: ../zypp/solver/detail/SATResolver.cc:1219
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr "アーキテクチャを %s から %s に変更"
 
-#: ../zypp/solver/detail/SATResolver.cc:875
+#: ../zypp/solver/detail/SATResolver.cc:935
 #, c-format
 msgid "cannot install both %s and %s"
 msgstr "%s と %s の両方ともインストールすることができません"
 
-#: ../zypp/solver/detail/SATResolver.cc:859
+#: ../zypp/solver/detail/SATResolver.cc:915
 msgid "conflicting requests"
 msgstr "要求が矛盾しています"
 
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2327
+#: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
 msgstr "バックアップ %s が作成されました"
 
-#: ../zypp/solver/detail/SATResolver.cc:1156
+#: ../zypp/solver/detail/SATResolver.cc:1247
 #, c-format
 msgid "deinstallation of %s"
 msgstr "%s のアンインストール"
 
-#: ../zypp/solver/detail/SATResolver.cc:923
+#: ../zypp/solver/detail/SATResolver.cc:983
 msgid "deleted providers: "
 msgstr "削除したプロバイダ: "
 
-#: ../zypp/solver/detail/SATResolver.cc:1077
+#: ../zypp/solver/detail/SATResolver.cc:1151
 #, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "%s で提供される解決方法の削除について問い合わせない"
 
-#: ../zypp/solver/detail/SATResolver.cc:1062
+#: ../zypp/solver/detail/SATResolver.cc:1133
 #, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "%s で提供される解決方法のインストールについて問い合わせない"
 
-#: ../zypp/solver/detail/SATResolver.cc:1015
+#: ../zypp/solver/detail/SATResolver.cc:1078
 #, c-format
 msgid "do not forbid installation of %s"
 msgstr "%s のインストールを禁止しない"
 
-#: ../zypp/solver/detail/SATResolver.cc:994
-#: ../zypp/solver/detail/SATResolver.cc:1033
+#: ../zypp/solver/detail/SATResolver.cc:1057
+#: ../zypp/solver/detail/SATResolver.cc:1095
 #, c-format
 msgid "do not install %s"
 msgstr "%s をインストールしない"
 
-#: ../zypp/solver/detail/SATResolver.cc:1089
+#: ../zypp/solver/detail/SATResolver.cc:1164
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr "%s の最新バージョンをインストールしない"
 
-#: ../zypp/solver/detail/SATResolver.cc:989
+#: ../zypp/solver/detail/SATResolver.cc:1052
 #, c-format
 msgid "do not keep %s installed"
 msgstr "%s のインストールを保持しない"
 
-#: ../zypp/solver/detail/SATResolver.cc:1122
+#: ../zypp/solver/detail/SATResolver.cc:1211
 #, c-format
 msgid "downgrade of %s to %s"
 msgstr "%s を %s にダウングレードする"
 
-#: ../zypp/solver/detail/SATResolver.cc:1136
+#: ../zypp/solver/detail/SATResolver.cc:1131
+#: ../zypp/solver/detail/SATResolver.cc:1149
+msgid "ignore the warning of a broken system"
+msgstr "システムが破壊される警告を無視します"
+
+#: ../zypp/solver/detail/SATResolver.cc:1227
 #, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4287,8 +4365,14 @@ msgstr ""
 "-->\n"
 "  %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1010
-#: ../zypp/solver/detail/SATResolver.cc:1047
+#: ../zypp/VendorSupportOptions.cc:31
+msgid "invalid"
+msgstr "無効"
+
+#. for solver reason: NOT weak lock.
+#: ../zypp/solver/detail/SATResolver.cc:1073
+#: ../zypp/solver/detail/SATResolver.cc:1116
+#: ../zypp/solver/detail/SATResolver.cc:1193
 #, c-format
 msgid "keep %s"
 msgstr "%s を維持"
@@ -4301,34 +4385,34 @@ msgstr "libhal_ctx_new: libhal コンテキストを作成できません"
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: dbus 接続を設定できません"
 
-#: ../zypp/solver/detail/SATResolver.cc:870
+#: ../zypp/solver/detail/SATResolver.cc:930
 #, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "%2$s で必要としている %1$s はどこからも提供されていません"
 
-#: ../zypp/solver/detail/SATResolver.cc:862
+#: ../zypp/solver/detail/SATResolver.cc:921
 #, c-format
 msgid "nothing provides requested %s"
 msgstr "要求した %s はどこからも提供されていません"
 
-#: ../zypp/solver/detail/SATResolver.cc:856
+#: ../zypp/solver/detail/SATResolver.cc:912
 #, c-format
 msgid "problem with installed package %s"
 msgstr "インストール済みのパッケージ %s に問題が発生しました。"
 
-#: ../zypp/solver/detail/SATResolver.cc:1144
+#: ../zypp/solver/detail/SATResolver.cc:1235
 #, c-format
 msgid "replacement of %s with %s"
 msgstr "%s を %s で置き換える"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2046
+#: ../zypp/target/rpm/RpmDb.cc:2070
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm は %s を %s として作成しましたが、差異を判別できませんでした"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2048
+#: ../zypp/target/rpm/RpmDb.cc:2072
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4337,18 +4421,14 @@ msgstr ""
 "rpmは %s を %s として作成しました。\n"
 "以下は差異のある最初の25行です。\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:2055 ../zypp/target/rpm/RpmDb.cc:2175
-msgid "rpm output:"
-msgstr "rpm 出力:"
-
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2041
+#: ../zypp/target/rpm/RpmDb.cc:2065
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm は %s を %s として保存しましたが、差異を判別できませんでした"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2043
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4357,7 +4437,18 @@ msgstr ""
 "rpm は %s を %s として保存しました。\n"
 "以下は差異のある最初の25行です。\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:918
+msgid "some dependency problem"
+msgstr "何らかの依存関係の問題"
+
+#: ../zypp/solver/detail/SATResolver.cc:995
 msgid "uninstallable providers: "
 msgstr "インストール不可能なプロバイダ: "
 
+#: ../zypp/VendorSupportOptions.cc:14
+msgid "unknown"
+msgstr "不明"
+
+#: ../zypp/VendorSupportOptions.cc:17
+msgid "unsupported"
+msgstr "未対応"

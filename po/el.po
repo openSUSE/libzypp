@@ -1,4 +1,4 @@
-# translation of zypp.el.po to Hellenic
+# translation of zypp.el.po to Ελληνικά
 # Greek message file for YaST2 (@memory@).
 # Copyright (C) 2005 SUSE Linux Products GmbH.
 # Copyright (C) 2002 SuSE Linux AG.
@@ -12,71 +12,59 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-21 18:58+0200\n"
-"PO-Revision-Date: 2008-03-31 11:20+0100\n"
+"POT-Creation-Date: 2008-11-21 09:10+0100\n"
+"PO-Revision-Date: 2008-06-06 01:05+0100\n"
 "Last-Translator: Vasileios Giannakopoulos <billg@billg.gr>\n"
-"Language-Team: Hellenic <billg@billg.gr>\n"
+"Language-Team: Ελληνικά <billg@billg.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:933
+#: ../zypp/solver/detail/SATResolver.cc:993
 #, fuzzy
 msgid ""
 "\n"
 "uninstallable providers: "
 msgstr "Δεν υπάρχουν εγκατεστημένοι πάροχοι του %s"
 
-#: ../zypp/media/MediaException.cc:214
-#, c-format
+#: ../zypp/media/MediaException.cc:266
+#, fuzzy, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
+msgstr "SSL Εντάξει."
+
+#: ../zypp/target/TargetImpl.cc:88
+#, fuzzy
+msgid " executed"
+msgstr "Εκτέλεση"
+
+# %s is either BOOTP or DHCP
+#: ../zypp/target/TargetImpl.cc:110
+#, fuzzy
+msgid " execution failed"
+msgstr "Η εκτέλεση DBI απέτυχε: %s"
+
+#: ../zypp/target/TargetImpl.cc:196
+msgid " execution skipped while aborting"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:880
+#: ../zypp/solver/detail/SATResolver.cc:940
 #, fuzzy, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "Το %s συγκρούεται με %s"
 
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2054
-#, c-format
-msgid "%s install failed"
-msgstr "%s εγκατάσταση απέτυχε"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2063
-#, c-format
-msgid "%s installed ok"
-msgstr "%s εγκατάσταση ok"
-
-#: ../zypp/solver/detail/SATResolver.cc:866
+#: ../zypp/solver/detail/SATResolver.cc:926
 #, fuzzy, c-format
 msgid "%s is not installable"
 msgstr "μη εγκατεστημένο"
 
-#: ../zypp/solver/detail/SATResolver.cc:885
+#: ../zypp/solver/detail/SATResolver.cc:945
 #, fuzzy, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "Το %s πεπαλαιώνει %s"
 
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2174
-#, c-format
-msgid "%s remove failed"
-msgstr "%s αφαίρεση απέτυχε"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2182
-#, c-format
-msgid "%s remove ok"
-msgstr "%s αφαίρεση ok"
-
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:981
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr ""
@@ -102,14 +90,14 @@ msgstr "Acoli"
 msgid "Adangme"
 msgstr "Adangme"
 
-#: ../zypp/RepoManager.cc:1007
+#: ../zypp/RepoManager.cc:1198
 #, fuzzy, c-format
 msgid "Adding repository '%s'"
 msgstr "Προσθήκη πηγής εγκατάστασης '%s'."
 
-#: ../zypp/target/rpm/RpmDb.cc:2066 ../zypp/target/rpm/RpmDb.cc:2185
-msgid "Additional rpm output:"
-msgstr "Επιπρόσθετο αποτέλεσμα rpm:"
+#: ../zypp/VendorSupportOptions.cc:29
+msgid "Additional Customer Contract Necessary"
+msgstr ""
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -200,6 +188,10 @@ msgstr "Αμερικανική Σαμόα"
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
 msgstr "Amharic"
+
+#: ../zypp/VendorSupportOptions.cc:54
+msgid "An additional customer contract is necessary for getting support."
+msgstr ""
 
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
@@ -320,7 +312,8 @@ msgstr "Αυστρία"
 msgid "Austronesian (Other)"
 msgstr "Austronesian (Other)"
 
-#: ../zypp/media/MediaCurl.cc:761 ../zypp/media/MediaCurl.cc:829
+#. !\todo add comma to the message for the next release
+#: ../zypp/media/MediaCurl.cc:1702
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "Απαιτείται πιστοποίηση για '%s'"
@@ -585,7 +578,7 @@ msgstr "Μπρουνέι Νταρουσαλάμ"
 msgid "Buginese"
 msgstr "Buginese"
 
-#: ../zypp/RepoManager.cc:719
+#: ../zypp/RepoManager.cc:966
 #, fuzzy, c-format
 msgid "Building repository '%s' cache"
 msgstr "Προσθήκη πηγής εγκατάστασης '%s'."
@@ -635,7 +628,7 @@ msgstr "Καμπότζη"
 msgid "Cameroon"
 msgstr "Καμερούν"
 
-#: ../zypp/sat/detail/PoolImpl.cc:147
+#: ../zypp/sat/detail/PoolImpl.cc:156
 #, fuzzy
 msgid "Can not create sat-pool."
 msgstr "Αδυναμία δημιουργίας του αρχείου."
@@ -644,23 +637,23 @@ msgstr "Αδυναμία δημιουργίας του αρχείου."
 msgid "Can't acquire the mutex lock"
 msgstr "Αδυναμία λήψης κλειδαριάς mutex"
 
-#: ../zypp/ExternalProgram.cc:245
+#: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:238
+#: ../zypp/ExternalProgram.cc:294
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr ""
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:259
+#: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:267
+#: ../zypp/ExternalProgram.cc:323
 #, fuzzy, c-format
 msgid "Can't fork (%s)."
 msgstr "Αδυναμία εύρεσης %s."
@@ -678,12 +671,12 @@ msgstr "Αδυναμία αρχικοποίησης παλινδρομικής m
 msgid "Can't open lock file: %s"
 msgstr "Αδυναμία ανοίγματος αρχείου %1."
 
-#: ../zypp/ExternalProgram.cc:174
+#: ../zypp/ExternalProgram.cc:230
 #, fuzzy, c-format
 msgid "Can't open pipe (%s)."
 msgstr "Αδυναμία ανοίγματος αρχείου %1."
 
-#: ../zypp/ExternalProgram.cc:163
+#: ../zypp/ExternalProgram.cc:219
 #, fuzzy, c-format
 msgid "Can't open pty (%s)."
 msgstr "Αδυναμία ανοίγματος αρχείου: %s."
@@ -706,20 +699,25 @@ msgstr "Αδυναμία ορισμού παλινδρομικής ιδιότη�
 msgid "Canada"
 msgstr "Καναδάς"
 
-#: ../zypp/KeyRing.cc:276
+#: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:182
+#: ../zypp/media/MediaException.cc:234
 #, fuzzy
 msgid "Cannot eject any media"
 msgstr "μέσο"
 
-#: ../zypp/media/MediaException.cc:184
+#: ../zypp/media/MediaException.cc:236
 #, fuzzy, c-format
 msgid "Cannot eject media '%s'"
 msgstr "Αδυναμία ανοίγματος αντικειμένου επιφάνειας εργασίας '%s'"
+
+#: ../zypp/media/MediaException.cc:273
+#, c-format
+msgid "Cannot find available loop device to mount the image file from '%s'"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:67
 #, fuzzy, c-format
@@ -793,7 +791,7 @@ msgstr "Chamorro"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1877
+#: ../zypp/target/rpm/RpmDb.cc:1896
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "Αλλαγή αρχείων ρύθμισης για %s:"
@@ -888,17 +886,17 @@ msgstr "Νήσοι Κόκος (Κήλινγκ)"
 msgid "Colombia"
 msgstr "Κολομβία"
 
-#: ../zypp/ExternalProgram.cc:346
+#: ../zypp/ExternalProgram.cc:402
 #, fuzzy, c-format
 msgid "Command exited with status %d."
 msgstr "Εντολή."
 
-#: ../zypp/ExternalProgram.cc:371
+#: ../zypp/ExternalProgram.cc:427
 #, fuzzy
 msgid "Command exited with unknown error."
 msgstr "Εντολή προς εκτέλεση κατά την σύνδεση"
 
-#: ../zypp/ExternalProgram.cc:366
+#: ../zypp/ExternalProgram.cc:422
 #, fuzzy, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr "Εντολή."
@@ -1079,7 +1077,13 @@ msgstr "Dominica"
 msgid "Dominican Republic"
 msgstr "Δομινικανή Δημοκρατία"
 
-#: ../zypp/media/MediaException.cc:152
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#, fuzzy, c-format
+msgid "Download (Metalink curl) initialization failed for '%s'"
+msgstr "απέτυχε"
+
+#: ../zypp/media/MediaException.cc:168
 #, fuzzy, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -1093,6 +1097,14 @@ msgstr "σφάλμα"
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "απέτυχε"
 
+#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
+#, fuzzy, c-format
+msgid ""
+"Download (metalink curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr "σφάλμα"
+
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
@@ -1104,7 +1116,7 @@ msgid "Duala"
 msgstr "Duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:97
+#: ../zypp/CheckSum.cc:98
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr ""
@@ -1169,17 +1181,17 @@ msgstr "Ελ Σαλβαδόρ"
 msgid "Elamite"
 msgstr "Elamite"
 
-#: ../zypp/media/MediaException.cc:135
+#: ../zypp/media/MediaException.cc:151
 #, fuzzy
 msgid "Empty destination in URI"
 msgstr "Κενό URI"
 
-#: ../zypp/media/MediaException.cc:130
+#: ../zypp/media/MediaException.cc:146
 #, fuzzy
 msgid "Empty filesystem in URI"
 msgstr "Κενό URI"
 
-#: ../zypp/media/MediaException.cc:125
+#: ../zypp/media/MediaException.cc:141
 #, fuzzy
 msgid "Empty host name in URI"
 msgstr "Κενό όνομα CA."
@@ -1214,9 +1226,15 @@ msgid "Eritrea"
 msgstr "Ερυθραία"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:177
 #, fuzzy, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
+msgstr "Σφάλμα:"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
+#, fuzzy, c-format
+msgid "Error occurred while setting download (metalink curl) options for '%s':"
 msgstr "Σφάλμα:"
 
 #. language code: myv
@@ -1254,12 +1272,12 @@ msgstr "Ewe"
 msgid "Ewondo"
 msgstr "Ewondo"
 
-#: ../zypp/KeyRing.cc:558
+#: ../zypp/KeyRing.cc:577
 #, fuzzy
 msgid "Failed to delete key."
 msgstr "Αποτυχία εκκίνησης της VM."
 
-#: ../zypp/target/rpm/RpmDb.cc:1045
+#: ../zypp/target/rpm/RpmDb.cc:1064
 #, fuzzy, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "Απέτυχε"
@@ -1269,7 +1287,7 @@ msgstr "Απέτυχε"
 msgid "Failed to mount %s on %s"
 msgstr "Αδυναμία ανοίγματος %s - %s\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:1122
+#: ../zypp/target/rpm/RpmDb.cc:1141
 #, fuzzy, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "Αδυναμία λήψης του δημοσίου κλειδιού."
@@ -1404,7 +1422,7 @@ msgstr "Φινλανδικά"
 msgid "Finno-Ugrian (Other)"
 msgstr "Φινο-Ουγγρικά (Άλλο)"
 
-#: ../zypp/solver/detail/ProblemSolutionCombi.cc:73
+#: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
 #, fuzzy
 msgid "Following actions will be done:"
 msgstr "έγινε:"
@@ -1692,6 +1710,10 @@ msgstr "Το HalVolume δεν είναι αρχικοποιημένο"
 msgid "Hausa"
 msgstr "Hausa"
 
+#: ../zypp/solver/detail/SATResolver.cc:922
+msgid "Have you enabled all requested repositories?"
+msgstr ""
+
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
@@ -1854,7 +1876,7 @@ msgstr "Ινδονησιακά"
 msgid "Ingush"
 msgstr "Ingush"
 
-#: ../zypp/target/TargetImpl.cc:762
+#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
 msgid "Installation has been aborted as directed."
 msgstr "Η εγκατάσταση ακυρώθηκε όπως διατάχθηκε."
 
@@ -1928,14 +1950,10 @@ msgstr "Λανθασμένος διαχωριστικός χαρακτήρας �
 msgid "Invalid port component '%s'"
 msgstr "Λανθασμένο συστατικό θύρας '%s'"
 
-#: ../zypp/PoolQuery.cc:419
+#: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
-
-#: ../zypp/media/MediaCurl.cc:758 ../zypp/media/MediaCurl.cc:826
-msgid "Invalid user name or password."
-msgstr "Λανθασμένο όνομα χρήστη ή συνθηματικό."
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2282,6 +2300,18 @@ msgstr "Λίβανος"
 msgid "Lesotho"
 msgstr "Λεσότο"
 
+#: ../zypp/VendorSupportOptions.cc:20
+msgid "Level 1"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:23
+msgid "Level 2"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:26
+msgid "Level 3"
+msgstr ""
+
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
@@ -2457,7 +2487,7 @@ msgstr "Μαλαισία"
 msgid "Maldives"
 msgstr "Μαλβίδες"
 
-#: ../zypp/media/MediaException.cc:115
+#: ../zypp/media/MediaException.cc:131
 #, fuzzy
 msgid "Malformed URI"
 msgstr "URI"
@@ -2567,12 +2597,12 @@ msgstr "Γλώσσες Μάγια"
 msgid "Mayotte"
 msgstr "Μαγιοτ"
 
-#: ../zypp/media/MediaException.cc:169
+#: ../zypp/media/MediaException.cc:221
 #, fuzzy, c-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "Μέσο"
 
-#: ../zypp/media/MediaException.cc:175
+#: ../zypp/media/MediaException.cc:227
 #, fuzzy, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "Μέσο"
@@ -2933,7 +2963,12 @@ msgstr "Ojibwa"
 msgid "Oman"
 msgstr "Ομάν"
 
-#: ../zypp/media/MediaException.cc:145
+#: ../zypp/parser/RepoindexFileReader.cc:116
+#, c-format
+msgid "One or both of '%s' or '%s' attributes is required."
+msgstr ""
+
+#: ../zypp/media/MediaException.cc:161
 #, fuzzy
 msgid "Operation not supported by medium"
 msgstr "Η έκδοση προφίλ δεν υποστηρίζεται από την μονάδα Apparmor\n"
@@ -2964,9 +2999,9 @@ msgid "Otomian Languages"
 msgstr "Γλώσσες Otomian"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:314
-#, c-format
-msgid "Package %s fails integrity check. Do you want to retry?"
+#: ../zypp/repo/PackageProvider.cc:247
+#, fuzzy, c-format
+msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
 msgstr "Το πακέτο %s απέτυχε στον έλεγχο ακεραιότητας. Θέλετε να συνεχίσετε;"
 
 #. language code: pal
@@ -3039,17 +3074,17 @@ msgstr "Papuan (Other)"
 msgid "Paraguay"
 msgstr "Παραγουάη"
 
-#: ../zypp/media/MediaException.cc:106
+#: ../zypp/media/MediaException.cc:122
 #, fuzzy, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "Το %1 δεν είναι κατάλογος."
 
-#: ../zypp/media/MediaException.cc:98
+#: ../zypp/media/MediaException.cc:114
 #, fuzzy, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "Διαδρομή."
 
-#: ../zypp/media/MediaException.cc:200
+#: ../zypp/media/MediaException.cc:252
 #, fuzzy, c-format
 msgid "Permission to access '%s' denied."
 msgstr "Απαγορεύονται Δικαιώματα"
@@ -3119,6 +3154,18 @@ msgstr "Πορτογαλική γλώσσα"
 msgid "Prakrit Languages"
 msgstr "Γλώσσες Prakit"
 
+#: ../zypp/VendorSupportOptions.cc:45
+msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:48
+msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:51
+msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
+msgstr ""
+
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
@@ -3149,8 +3196,9 @@ msgid "Query string parsing not supported for this URL"
 msgstr "Η ανάλυση γραμμής αναζήτησης δεν υποστηρίζεται από αυτό το URL"
 
 #. TranslatorExplanation after semicolon is error message
-#: ../zypp/target/rpm/RpmDb.cc:888 ../zypp/target/rpm/RpmDb.cc:2057
-#: ../zypp/target/rpm/RpmDb.cc:2177
+#. TranslatorExplanation the colon is followed by an error message
+#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
+#: ../zypp/target/rpm/RpmDb.cc:2220
 #, fuzzy
 msgid "RPM failed: "
 msgstr "απέτυχε"
@@ -3179,13 +3227,14 @@ msgstr "Rarotongan"
 msgid "Relative path not allowed if authority exists"
 msgstr "Σχετική διαδρομή δεν επιτρέπεται εαν υπάρχει αρχή"
 
-#: ../zypp/RepoManager.cc:1114
+#: ../zypp/RepoManager.cc:1328
 #, fuzzy, c-format
 msgid "Removing repository '%s'"
 msgstr "Προσθήκη πηγής εγκατάστασης '%s'."
 
-#: ../zypp/parser/susetags/RepoParser.cc:232
-msgid "Required file is missing: "
+#: ../zypp/parser/RepoindexFileReader.cc:128
+#, c-format
+msgid "Required attribute '%s' is missing."
 msgstr ""
 
 #. :QAT:634:
@@ -3403,7 +3452,7 @@ msgstr "Σιέρρα Λεόνε"
 msgid "Sign Languages"
 msgstr "Γλώσσες Συμβόλων"
 
-#: ../zypp/KeyRing.cc:568
+#: ../zypp/KeyRing.cc:587
 #, fuzzy, c-format
 msgid "Signature file %s not found"
 msgstr "Η καταχώρηση δε βρέθηκε."
@@ -3483,7 +3532,7 @@ msgstr "Sogdian"
 msgid "Solomon Islands"
 msgstr "Νήσοι Σολομώντος"
 
-#: ../zypp/solver/detail/SATResolver.cc:889
+#: ../zypp/solver/detail/SATResolver.cc:949
 #, fuzzy, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "Το %s συγκρούεται με %s"
@@ -3638,14 +3687,16 @@ msgstr "Συρία"
 msgid "Syriac"
 msgstr "Συριακά"
 
-#: ../zypp/media/MediaException.cc:91
+#: ../zypp/media/MediaException.cc:107
 #, fuzzy, c-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "Σύστημα."
 
-#: ../zypp/ZYppFactory.cc:354
+#: ../zypp/ZYppFactory.cc:361
 #, fuzzy, c-format
-msgid "System management is locked by the application with pid %d. Please close this application before trying again."
+msgid ""
+"System management is locked by the application with pid %d (%s).\n"
+"Close this application before trying again."
 msgstr "Σύστημα."
 
 #. language code: tgl tl
@@ -3723,9 +3774,24 @@ msgstr "Thai"
 msgid "Thailand"
 msgstr "Ταϊλάνδη"
 
+#: ../zypp/VendorSupportOptions.cc:39
+msgid "The level of support is unspecified"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:42
+#, fuzzy
+msgid "The vendor does not provide support."
+msgstr "Ο δίσκος δεν υπάρχει."
+
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
 msgstr ""
+
+#: ../zypp/solver/detail/SATResolver.cc:1130
+#: ../zypp/solver/detail/SATResolver.cc:1148
+#, fuzzy
+msgid "This request will break your system!"
+msgstr "Η αίτηση υπάρχει ήδη."
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3742,7 +3808,7 @@ msgstr "Tigre"
 msgid "Tigrinya"
 msgstr "Tigrinya"
 
-#: ../zypp/media/MediaException.cc:207
+#: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr ""
@@ -3793,7 +3859,7 @@ msgstr "Tonga (Nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "Tonga (Tonga Islands)"
 
-#: ../zypp/KeyRing.cc:507
+#: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
 msgstr ""
@@ -3955,6 +4021,11 @@ msgstr "Ηνωμένες Πολιτείες της Αμερικής"
 msgid "United States Minor Outlying Islands"
 msgstr "Μικρά απομονωμένα νησιά Ηνωμένων Πολιτειών"
 
+#: ../zypp/target/TargetImpl.cc:997
+#, fuzzy
+msgid "Unknown Distribution"
+msgstr "Άγνωστη επιλογή της list"
+
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
 msgstr "Άγνωστη χώρα: "
@@ -3963,12 +4034,16 @@ msgstr "Άγνωστη χώρα: "
 msgid "Unknown language: "
 msgstr "Άγνωστη γλώσσα: "
 
-#: ../zypp/media/MediaUserAuth.cc:97
+#: ../zypp/VendorSupportOptions.cc:56
+msgid "Unknown support option. Description not available"
+msgstr ""
+
+#: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Μη υποστηριζόμενη μέθοδος πιστοποίησης HTTP '%s'"
 
-#: ../zypp/media/MediaException.cc:140
+#: ../zypp/media/MediaException.cc:156
 #, fuzzy, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "Λανθασμένο σχήμα URL '%1'."
@@ -4048,7 +4123,7 @@ msgid "Vai"
 msgstr "Vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:526
+#: ../zypp/RepoManager.cc:778
 #, fuzzy
 msgid "Valid metadata not found at specified URL(s)"
 msgstr "Έγκυρο URL"
@@ -4220,82 +4295,86 @@ msgstr "Zulu"
 msgid "Zuni"
 msgstr "Zuni"
 
-#: ../zypp/repo/PackageProvider.cc:233
+#: ../zypp/repo/PackageProvider.cc:195
 msgid "applydeltarpm check failed."
 msgstr "Έλεγχος applydeltarpm απέτυχε."
 
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:212
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm απέτυχε."
 
-#: ../zypp/solver/detail/SATResolver.cc:1129
+#: ../zypp/solver/detail/SATResolver.cc:1219
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:875
+#: ../zypp/solver/detail/SATResolver.cc:935
 #, fuzzy, c-format
 msgid "cannot install both %s and %s"
 msgstr "Αδυναμία εγκατάστασης %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:859
+#: ../zypp/solver/detail/SATResolver.cc:915
 #, fuzzy
 msgid "conflicting requests"
 msgstr "Αίτηση σύνδεσης σε: "
 
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2327
+#: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
 msgstr "δημιουργία αντιγράφου ασφαλείας %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1156
+#: ../zypp/solver/detail/SATResolver.cc:1247
 #, fuzzy, c-format
 msgid "deinstallation of %s"
 msgstr "Εγκατάσταση"
 
-#: ../zypp/solver/detail/SATResolver.cc:923
+#: ../zypp/solver/detail/SATResolver.cc:983
 #, fuzzy
 msgid "deleted providers: "
 msgstr "Κανένας δεν παρέχει το %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1077
+#: ../zypp/solver/detail/SATResolver.cc:1151
 #, fuzzy, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "Να μην γίνει εγκατάσταση ή διαγραφή που αφορά επιλύσιμα"
 
-#: ../zypp/solver/detail/SATResolver.cc:1062
+#: ../zypp/solver/detail/SATResolver.cc:1133
 #, fuzzy, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "Δεν υπάρχουν εγκατεστημένοι πάροχοι του %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1015
+#: ../zypp/solver/detail/SATResolver.cc:1078
 #, fuzzy, c-format
 msgid "do not forbid installation of %s"
 msgstr "να μην εγκατασταθεί το %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:994
-#: ../zypp/solver/detail/SATResolver.cc:1033
+#: ../zypp/solver/detail/SATResolver.cc:1057
+#: ../zypp/solver/detail/SATResolver.cc:1095
 #, c-format
 msgid "do not install %s"
 msgstr "να μην εγκατασταθεί το %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1089
+#: ../zypp/solver/detail/SATResolver.cc:1164
 #, fuzzy, c-format
 msgid "do not install most recent version of %s"
 msgstr "εγκατάσταση"
 
-#: ../zypp/solver/detail/SATResolver.cc:989
+#: ../zypp/solver/detail/SATResolver.cc:1052
 #, fuzzy, c-format
 msgid "do not keep %s installed"
 msgstr "μη εγκατεστημένο"
 
-#: ../zypp/solver/detail/SATResolver.cc:1122
+#: ../zypp/solver/detail/SATResolver.cc:1211
 #, fuzzy, c-format
 msgid "downgrade of %s to %s"
 msgstr "Μεταφορτωμένο %s από %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1136
+#: ../zypp/solver/detail/SATResolver.cc:1131
+#: ../zypp/solver/detail/SATResolver.cc:1149
+msgid "ignore the warning of a broken system"
+msgstr ""
+
+#: ../zypp/solver/detail/SATResolver.cc:1227
 #, fuzzy, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4306,8 +4385,14 @@ msgstr ""
 "εγκατάσταση\n"
 "\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:1010
-#: ../zypp/solver/detail/SATResolver.cc:1047
+#: ../zypp/VendorSupportOptions.cc:31
+msgid "invalid"
+msgstr ""
+
+#. for solver reason: NOT weak lock.
+#: ../zypp/solver/detail/SATResolver.cc:1073
+#: ../zypp/solver/detail/SATResolver.cc:1116
+#: ../zypp/solver/detail/SATResolver.cc:1193
 #, c-format
 msgid "keep %s"
 msgstr "κράτα το %s"
@@ -4320,34 +4405,34 @@ msgstr "libhal_ctx_new: Αδυναμία δημιουργίας περιεχομ
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: Αδυναμία ορισμού σύνδεσης dbus"
 
-#: ../zypp/solver/detail/SATResolver.cc:870
+#: ../zypp/solver/detail/SATResolver.cc:930
 #, fuzzy, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "Το %s χρειάζεται από %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:862
+#: ../zypp/solver/detail/SATResolver.cc:921
 #, fuzzy, c-format
 msgid "nothing provides requested %s"
 msgstr "Κανένας δεν παρέχει το %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:856
+#: ../zypp/solver/detail/SATResolver.cc:912
 #, fuzzy, c-format
 msgid "problem with installed package %s"
 msgstr "εντολή για απεγκατάσταση πακέτων"
 
-#: ../zypp/solver/detail/SATResolver.cc:1144
+#: ../zypp/solver/detail/SATResolver.cc:1235
 #, c-format
 msgid "replacement of %s with %s"
 msgstr ""
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2046
+#: ../zypp/target/rpm/RpmDb.cc:2070
 #, fuzzy, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "Το rpm αποθηκεύτηκε %s ως %s αλλά ήταν αδύνατο να διαφανεί η διαφορά"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2048
+#: ../zypp/target/rpm/RpmDb.cc:2072
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4356,18 +4441,14 @@ msgstr ""
 "To rpm δημιουργήθηκε %s ως %s.\n"
 "Εδώ είναι οι πρώτες 25 σειρές της διαφοράς:\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:2055 ../zypp/target/rpm/RpmDb.cc:2175
-msgid "rpm output:"
-msgstr "αποτέλεσμα rpm:"
-
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2041
+#: ../zypp/target/rpm/RpmDb.cc:2065
 #, fuzzy, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "Το rpm αποθηκεύτηκε %s ως %s αλλά ήταν αδύνατο να διαφανεί η διαφορά"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2043
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4376,73 +4457,41 @@ msgstr ""
 "Το rpm αποθηκεύτηκε %s ως %s.\n"
 "Εδώ είναι οι πρώτες 25 γραμμές της διαφοράς:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:918
+#, fuzzy
+msgid "some dependency problem"
+msgstr "Αδυναμία εγκατάστασης %s εξαιτίας προβλημάτων εξαρτήσεων"
+
+#: ../zypp/solver/detail/SATResolver.cc:995
 #, fuzzy
 msgid "uninstallable providers: "
 msgstr "Δεν υπάρχουν εγκατεστημένοι πάροχοι του %s"
 
-#, fuzzy
-#~ msgid "%s provides this dependency, but would change the architecture of the installed item"
-#~ msgstr "Το %s παρέχει αυτή την εξάρτηση αλλά θα αλλάξει την αρχιτεκτονική του εγκατεστημένου αντικειμένου"
+#: ../zypp/VendorSupportOptions.cc:14
+msgid "unknown"
+msgstr "άγνωστη"
 
-#, fuzzy
-#~ msgid "%s provides this dependency, but would change the vendor of the installed item"
-#~ msgstr "Το %s παρέχει αυτή την εξάρτηση αλλά θα αλλάξει την αρχιτεκτονική του εγκατεστημένου αντικειμένου"
+#: ../zypp/VendorSupportOptions.cc:17
+msgid "unsupported"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Do not install or delete the resolvables concerned"
-#~ msgstr "Να μην γίνει εγκατάσταση ή διαγραφή που αφορά επιλύσιμα"
+#~ msgid "%s remove failed"
+#~ msgstr "%s αφαίρεση απέτυχε"
 
-#~ msgid "Ignore that %s is already set to install"
-#~ msgstr "Αγνόηση οτι το %s είναι ήδη έτοιμο για εγκατάσταση"
+#~ msgid "Additional rpm output:"
+#~ msgstr "Επιπρόσθετο αποτέλεσμα rpm:"
 
-#~ msgid "Ignore the obsolete %s in %s"
-#~ msgstr "Αγνόηση του πεπαλαιωμένου %s στο %s"
+#~ msgid "Invalid user name or password."
+#~ msgstr "Λανθασμένο όνομα χρήστη ή συνθηματικό."
 
-#~ msgid "Ignore this conflict of %s"
-#~ msgstr "Αγνόηση αυτής της σύγκρουσης του %s"
+#~ msgid "rpm output:"
+#~ msgstr "αποτέλεσμα rpm:"
 
-#~ msgid "Ignore this requirement just here"
-#~ msgstr "Αγνόηση αυτής της απαίτησης μόνο εδώ"
+#~ msgid "%s install failed"
+#~ msgstr "%s εγκατάσταση απέτυχε"
 
-#~ msgid "Install %s although it would change the architecture"
-#~ msgstr "Εγκατάσταση %s παρόλο που θα αλλάξει την αρχιτεκτονική"
+#~ msgid "%s installed ok"
+#~ msgstr "%s εγκατάσταση ok"
 
-#, fuzzy
-#~ msgid "Install %s although it would change the vendor"
-#~ msgstr "Εγκατάσταση %s παρόλο που θα αλλάξει την αρχιτεκτονική"
-
-#~ msgid "Install missing resolvables"
-#~ msgstr "Εγκατέστησε τα χαμένα επιλύσιμα"
-
-#~ msgid "Keep resolvables"
-#~ msgstr "Κράτα επιλύσιμα"
-
-#~ msgid "Unlock these resolvables"
-#~ msgstr "Ξεκλείδωμα αυτών των επιλύσιμων"
-
-#~ msgid "delete %s"
-#~ msgstr "διαγραφή %s"
-
-#~ msgid "install %s"
-#~ msgstr "εγκατέστησε το %s"
-
-#~ msgid "unlock %s"
-#~ msgstr "ξεκλείδωμα %s"
-
-#~ msgid "unlock all resolvables"
-#~ msgstr "Ξεκλείδωμα όλων των επιλύσιμων"
-
-#, fuzzy
-#~ msgid "Can't open solv-file: "
-#~ msgstr "Αδυναμία ανοίγματος αρχείου %1."
-
-#, fuzzy
-#~ msgid "Error reading solv-file: "
-#~ msgstr "Σφάλμα κατά την ανάγνωση του τομέα %u."
-
-#~ msgid "Path Parameter parsing not supported for this URL"
-#~ msgstr "Η ανάλυση Παραμέτρου Διαδρομής δεν υποστηρίζεται από αυτό το URL"
-
-#~ msgid "Path parameter parsing not supported for this URL"
-#~ msgstr "Η ανάλυση παραμέτρου διαδρομής δεν υποστηρίζεται από αυτό το URL"
+#~ msgid "%s remove ok"
+#~ msgstr "%s αφαίρεση ok"

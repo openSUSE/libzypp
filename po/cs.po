@@ -9,21 +9,24 @@
 # Klara Cihlarova <koty@seznam.cz>, 2006.
 # Jakub Hegenbart <jhegenbart@suse.cz>, 2007.
 # Marek Stopka <marekstopka@gmail.com>, 2008.
+# Klára Cihlářová <koty@seznam.cz>, 2008.
+# Vojtěch Zeisek <vojta.sc@seznam.cz>, 2008.
+# Marek Stopka <mstopka@opensuse.org>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-21 18:58+0200\n"
-"PO-Revision-Date: 2008-04-21 21:36+0200\n"
-"Last-Translator: Marek Stopka <marekstopka@gmail.com>\n"
+"POT-Creation-Date: 2008-11-21 09:10+0100\n"
+"PO-Revision-Date: 2008-12-02 17:51+0100\n"
+"Last-Translator: Josef Reidinger <jreidinger@suse.cz>\n"
 "Language-Team: czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:933
+#: ../zypp/solver/detail/SATResolver.cc:993
 msgid ""
 "\n"
 "uninstallable providers: "
@@ -31,55 +34,39 @@ msgstr ""
 "\n"
 "neodinstalovatelní poskytovatelé: "
 
-#: ../zypp/media/MediaException.cc:214
+#: ../zypp/media/MediaException.cc:266
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr "Problém s SSL certifikátem, ověřte, že je certifikát certifikační autority pro '%s' v pořádku "
+msgstr "Problém s SSL certifikátem, ověřte, že je certifikát certifikační autority pro '%s' v pořádku."
 
-#: ../zypp/solver/detail/SATResolver.cc:880
+#: ../zypp/target/TargetImpl.cc:88
+msgid " executed"
+msgstr " provedeno"
+
+#: ../zypp/target/TargetImpl.cc:110
+msgid " execution failed"
+msgstr " provádění selhalo"
+
+#: ../zypp/target/TargetImpl.cc:196
+msgid " execution skipped while aborting"
+msgstr " provádění přeskočeno během ukončování"
+
+#: ../zypp/solver/detail/SATResolver.cc:940
 #, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s koliduje s %s, který poskytuje %s"
 
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2054
-#, c-format
-msgid "%s install failed"
-msgstr "Instalace %s selhala"
-
-#
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2063
-#, c-format
-msgid "%s installed ok"
-msgstr "%s nainstalován ok"
-
-#: ../zypp/solver/detail/SATResolver.cc:866
+#: ../zypp/solver/detail/SATResolver.cc:926
 #, c-format
 msgid "%s is not installable"
 msgstr "%s nelze nainstalovat"
 
-#: ../zypp/solver/detail/SATResolver.cc:885
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:945
+#, c-format
 msgid "%s obsoletes %s provided by %s"
-msgstr "%s je novější než %s"
+msgstr "%s zastaralý %s poskytovaný %s"
 
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2174
-#, c-format
-msgid "%s remove failed"
-msgstr "Odstranění %s se nezdařilo"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2182
-#, c-format
-msgid "%s remove ok"
-msgstr "%s odstranění ok"
-
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:981
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr "%s vyžaduje %s, ale tento požadavek nemůže být splněn"
@@ -104,14 +91,14 @@ msgstr "Acoli"
 msgid "Adangme"
 msgstr "Adangme"
 
-#: ../zypp/RepoManager.cc:1007
+#: ../zypp/RepoManager.cc:1198
 #, c-format
 msgid "Adding repository '%s'"
 msgstr "Přidává se repozitář '%s'"
 
-#: ../zypp/target/rpm/RpmDb.cc:2066 ../zypp/target/rpm/RpmDb.cc:2185
-msgid "Additional rpm output:"
-msgstr "Další výstup programu rpm:"
+#: ../zypp/VendorSupportOptions.cc:29
+msgid "Additional Customer Contract Necessary"
+msgstr "Je nezbytný další zákaznický kontakt"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -127,7 +114,7 @@ msgstr "Afarština"
 #. :ARE:784:
 #: ../zypp/CountryCode.cc:226
 msgid "Afghanistan"
-msgstr "Afghanistan"
+msgstr "Afghánistán"
 
 #. language code: afh
 #: ../zypp/LanguageCode.cc:252
@@ -171,7 +158,8 @@ msgid "Albania"
 msgstr "Albánie"
 
 #. language code: alb sqi sq
-#: ../zypp/LanguageCode.cc:262 ../zypp/LanguageCode.cc:264
+#: ../zypp/LanguageCode.cc:262
+#: ../zypp/LanguageCode.cc:264
 msgid "Albanian"
 msgstr "Albánština"
 
@@ -205,6 +193,10 @@ msgstr "Americká Samoa"
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
 msgstr "Amharština"
+
+#: ../zypp/VendorSupportOptions.cc:54
+msgid "An additional customer contract is necessary for getting support."
+msgstr "Další zákaznický kontakt je nezbytný pro získání podpory-"
 
 # AD
 #: ../zypp/CountryCode.cc:224
@@ -279,11 +271,12 @@ msgstr "Argentina"
 #. :ALB:008:
 #: ../zypp/CountryCode.cc:230
 msgid "Armenia"
-msgstr "Armenia"
+msgstr "Arménie"
 
 # AM
 #. language code: arm hye hy
-#: ../zypp/LanguageCode.cc:284 ../zypp/LanguageCode.cc:286
+#: ../zypp/LanguageCode.cc:284
+#: ../zypp/LanguageCode.cc:286
 msgid "Armenian"
 msgstr "Arménština"
 
@@ -334,7 +327,8 @@ msgstr "Rakousko"
 msgid "Austronesian (Other)"
 msgstr "Austronéské (jiné)"
 
-#: ../zypp/media/MediaCurl.cc:761 ../zypp/media/MediaCurl.cc:829
+#. !\todo add comma to the message for the next release
+#: ../zypp/media/MediaCurl.cc:1702
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "Pro '%s' je vyžadováno ověřování"
@@ -359,13 +353,13 @@ msgstr "Avadhí"
 #. language code: aym ay
 #: ../zypp/LanguageCode.cc:310
 msgid "Aymara"
-msgstr "Ajmarština"
+msgstr "Aymarština"
 
 # AZ
 #. :ALA:248:
 #: ../zypp/CountryCode.cc:240
 msgid "Azerbaijan"
-msgstr "Azerbaijan"
+msgstr "Azerbajdžán"
 
 #. language code: aze az
 #: ../zypp/LanguageCode.cc:312
@@ -385,7 +379,7 @@ msgstr "Špatný bod připojení média"
 #. :BRA:076:
 #: ../zypp/CountryCode.cc:254
 msgid "Bahamas"
-msgstr "Bahamas"
+msgstr "Bahamy"
 
 #. :BGR:100:
 #: ../zypp/CountryCode.cc:247
@@ -448,7 +442,8 @@ msgid "Bashkir"
 msgstr "Baškirština"
 
 #. language code: baq eus eu
-#: ../zypp/LanguageCode.cc:326 ../zypp/LanguageCode.cc:328
+#: ../zypp/LanguageCode.cc:326
+#: ../zypp/LanguageCode.cc:328
 msgid "Basque"
 msgstr "Baskičtina"
 
@@ -518,7 +513,7 @@ msgstr "Bhodžpuri"
 #. :BHS:044:
 #: ../zypp/CountryCode.cc:255
 msgid "Bhutan"
-msgstr "Bhutan"
+msgstr "Bhútán"
 
 #. language code: bih bh
 #: ../zypp/LanguageCode.cc:346
@@ -554,7 +549,7 @@ msgstr "Bolívie"
 #. :AZE:031:
 #: ../zypp/CountryCode.cc:241
 msgid "Bosnia and Herzegovina"
-msgstr "Bosnia and Herzegovina"
+msgstr "Bosna a Hercegovina"
 
 # BJ
 #. language code: bos bs
@@ -583,7 +578,7 @@ msgstr "Braj"
 #. :BOL:068:
 #: ../zypp/CountryCode.cc:253
 msgid "Brazil"
-msgstr "Brazil"
+msgstr "Brazílie"
 
 #. language code: bre br
 #: ../zypp/LanguageCode.cc:362
@@ -594,27 +589,27 @@ msgstr "Bretonština"
 #. :IND:356:
 #: ../zypp/CountryCode.cc:327
 msgid "British Indian Ocean Territory"
-msgstr "British Indian Ocean Territory"
+msgstr "Britské indické oceánské teritorium"
 
 # VI
 # fuzzy
 #. :VEN:862:
 #: ../zypp/CountryCode.cc:454
 msgid "British Virgin Islands"
-msgstr "Britské Panenské ostr. "
+msgstr "Britské Panenské ostrovy"
 
 # BN
 #. :BMU:060:
 #: ../zypp/CountryCode.cc:251
 msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
+msgstr "Brunej Darussalam"
 
 #. language code: bug
 #: ../zypp/LanguageCode.cc:368
 msgid "Buginese"
 msgstr "Bugiština"
 
-#: ../zypp/RepoManager.cc:719
+#: ../zypp/RepoManager.cc:966
 #, c-format
 msgid "Building repository '%s' cache"
 msgstr "Vytváří se vyrovnávací paměť repozitáře '%s'"
@@ -641,7 +636,8 @@ msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
 #. language code: bur mya my
-#: ../zypp/LanguageCode.cc:372 ../zypp/LanguageCode.cc:374
+#: ../zypp/LanguageCode.cc:372
+#: ../zypp/LanguageCode.cc:374
 msgid "Burmese"
 msgstr "Barmština"
 
@@ -654,48 +650,48 @@ msgstr "Burundi"
 #. language code: cad
 #: ../zypp/LanguageCode.cc:378
 msgid "Caddo"
-msgstr "Kaddo"
+msgstr "Kado"
 
 # KH
 #. :KGZ:417:
 #: ../zypp/CountryCode.cc:337
 msgid "Cambodia"
-msgstr "Cambodia"
+msgstr "Kambodže"
 
 # CM
 #. :CHL:152:
 #: ../zypp/CountryCode.cc:269
 msgid "Cameroon"
-msgstr "Cameroon"
+msgstr "Kamerun"
 
-#: ../zypp/sat/detail/PoolImpl.cc:147
+#: ../zypp/sat/detail/PoolImpl.cc:156
 msgid "Can not create sat-pool."
-msgstr ""
+msgstr "Nemohu vytvořit sat-pool."
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
 msgstr "Nelze získat zámek mutex."
 
-#: ../zypp/ExternalProgram.cc:245
+#: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr "Nemůžu změnit adresář na '/' uvnitř chrootu (%s)."
 
-#: ../zypp/ExternalProgram.cc:238
+#: ../zypp/ExternalProgram.cc:294
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr "Nemůžu změnit kořenový adresář na '%s' (%s)."
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:259
+#: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr "Nemůžu spustit '%s' (%s)."
 
-#: ../zypp/ExternalProgram.cc:267
-#, fuzzy, c-format
+#: ../zypp/ExternalProgram.cc:323
+#, c-format
 msgid "Can't fork (%s)."
-msgstr "Nelze nalézt %s."
+msgstr "Nelze forknout (%s)."
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -710,15 +706,15 @@ msgstr "Nelze inicializovat rekurzivní mutex."
 msgid "Can't open lock file: %s"
 msgstr "Nelze otevřít soubor zámku: %s"
 
-#: ../zypp/ExternalProgram.cc:174
-#, fuzzy, c-format
+#: ../zypp/ExternalProgram.cc:230
+#, c-format
 msgid "Can't open pipe (%s)."
-msgstr "Nelze otevřít soubor: %1."
+msgstr "Nelze otevřít rouru (%s)."
 
-#: ../zypp/ExternalProgram.cc:163
-#, fuzzy, c-format
+#: ../zypp/ExternalProgram.cc:219
+#, c-format
 msgid "Can't open pty (%s)."
-msgstr "Nelze otevřít soubor: %s."
+msgstr "Nelze otevřít pty (%s)."
 
 #: ../zypp/repo/RepoProvideFile.cc:216
 #, c-format
@@ -727,30 +723,35 @@ msgstr "Nelze poskytnout soubor '%s' z repozitáře '%s'"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr "Nelze uvolnit zámek mutex."
+msgstr "Nelze uvolnit zámek mutex"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr "Nelze nastavit rekurzivní atribut mutex."
+msgstr "Nelze nastavit rekurzivní atribut mutex"
 
 #. :BLZ:084:
 #: ../zypp/CountryCode.cc:260
 msgid "Canada"
 msgstr "Kanada"
 
-#: ../zypp/KeyRing.cc:276
+#: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr "Nemůžu vytvořit veřejný klíč %s z klíčenky %s do souboru %s"
 
-#: ../zypp/media/MediaException.cc:182
+#: ../zypp/media/MediaException.cc:234
 msgid "Cannot eject any media"
 msgstr "Nemůžu vysunout žádné médium"
 
-#: ../zypp/media/MediaException.cc:184
+#: ../zypp/media/MediaException.cc:236
 #, c-format
 msgid "Cannot eject media '%s'"
 msgstr "Nemůžu vysunout médium '%s'"
+
+#: ../zypp/media/MediaException.cc:273
+#, c-format
+msgid "Cannot find available loop device to mount the image file from '%s'"
+msgstr "Nelze najít dostupné zařízení loop pro připojení souboru obrazu z '%s'"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
@@ -761,7 +762,7 @@ msgstr "Nemůžu zapsat do souboru '%s'."
 #. :CUB:192:
 #: ../zypp/CountryCode.cc:275
 msgid "Cape Verde"
-msgstr "Cape Verde"
+msgstr "Zelený mys"
 
 #. language code: car
 #: ../zypp/LanguageCode.cc:382
@@ -782,7 +783,7 @@ msgstr "Kavkazské (jiné)"
 #. :KWT:414:
 #: ../zypp/CountryCode.cc:344
 msgid "Cayman Islands"
-msgstr "Cayman Islands"
+msgstr "Kajmanské ostrovy"
 
 #. language code: ceb
 #: ../zypp/LanguageCode.cc:388
@@ -809,7 +810,7 @@ msgstr "Středoamerické indiánské (jiné)"
 #. :TCA:796:
 #: ../zypp/CountryCode.cc:430
 msgid "Chad"
-msgstr "Chad"
+msgstr "Čad"
 
 #. language code: chg
 #: ../zypp/LanguageCode.cc:398
@@ -819,7 +820,7 @@ msgstr "Čagatajské jazyky"
 #. language code: cmc
 #: ../zypp/LanguageCode.cc:422
 msgid "Chamic Languages"
-msgstr "Chamicské jazyky"
+msgstr "Čamicské jazyky"
 
 # KM
 #. language code: cha ch
@@ -829,7 +830,7 @@ msgstr "Čamorština"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1877
+#: ../zypp/target/rpm/RpmDb.cc:1896
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "Změněné konfigurační soubory pro %s:"
@@ -862,7 +863,7 @@ msgstr "Čičeva"
 #. :COK:184:
 #: ../zypp/CountryCode.cc:268
 msgid "Chile"
-msgstr "Chile"
+msgstr "Čile"
 
 #. :CMR:120:
 #: ../zypp/CountryCode.cc:270
@@ -870,7 +871,8 @@ msgid "China"
 msgstr "Čína"
 
 #. language code: chi zho zh
-#: ../zypp/LanguageCode.cc:400 ../zypp/LanguageCode.cc:402
+#: ../zypp/LanguageCode.cc:400
+#: ../zypp/LanguageCode.cc:402
 msgid "Chinese"
 msgstr "Čínština"
 
@@ -893,7 +895,7 @@ msgstr "Choctawština"
 #. :CPV:132:
 #: ../zypp/CountryCode.cc:276
 msgid "Christmas Island"
-msgstr "Christmas Island"
+msgstr "Vánoční ostrov"
 
 #. language code: chu cu
 #: ../zypp/LanguageCode.cc:416
@@ -919,23 +921,23 @@ msgstr "Newarština"
 #. :CAN:124:
 #: ../zypp/CountryCode.cc:261
 msgid "Cocos (Keeling) Islands"
-msgstr "Cocos (Keeling) Islands"
+msgstr "Kokosový ostrov"
 
 #. :CHN:156:
 #: ../zypp/CountryCode.cc:271
 msgid "Colombia"
 msgstr "Kolumbie"
 
-#: ../zypp/ExternalProgram.cc:346
+#: ../zypp/ExternalProgram.cc:402
 #, c-format
 msgid "Command exited with status %d."
-msgstr ""
+msgstr "Příkaz byl ukončen s kódem %d."
 
-#: ../zypp/ExternalProgram.cc:371
+#: ../zypp/ExternalProgram.cc:427
 msgid "Command exited with unknown error."
 msgstr "Příkaz byl ukončen s neznámou chybou."
 
-#: ../zypp/ExternalProgram.cc:366
+#: ../zypp/ExternalProgram.cc:422
 #, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr "Příkaz byl zabit signálem %d (%s)."
@@ -944,20 +946,21 @@ msgstr "Příkaz byl zabit signálem %d (%s)."
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:339
 msgid "Comoros"
-msgstr "Comoros"
+msgstr "Komory"
 
 # CG
 #. :CCK:166:
 #. :CAF:140:
-#: ../zypp/CountryCode.cc:262 ../zypp/CountryCode.cc:264
+#: ../zypp/CountryCode.cc:262
+#: ../zypp/CountryCode.cc:264
 msgid "Congo"
-msgstr "Congo"
+msgstr "Kongo"
 
 # CK
 #. :CIV:384:
 #: ../zypp/CountryCode.cc:267
 msgid "Cook Islands"
-msgstr "Cook Islands"
+msgstr "Cookovy ostrovy"
 
 #. language code: cop
 #: ../zypp/LanguageCode.cc:424
@@ -999,22 +1002,22 @@ msgstr "Krík"
 #. language code: crp
 #: ../zypp/LanguageCode.cc:440
 msgid "Creoles and Pidgins (Other)"
-msgstr "Creole a Pidgin (jiné)"
+msgstr "Kreole a pidgin (jiné)"
 
 #. language code: cpe
 #: ../zypp/LanguageCode.cc:430
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr "Creole a Pidgin, založené na angličtině (jiné)"
+msgstr "Kreole a pidgin, založené na angličtině (jiné)"
 
 #. language code: cpf
 #: ../zypp/LanguageCode.cc:432
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr "Creole a Pidgin, založené na francouzštině (jiné)"
+msgstr "Kreole a pidgin, založené na francouzštině (jiné)"
 
 #. language code: cpp
 #: ../zypp/LanguageCode.cc:434
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "Creole a Pidgin, založené na portugalštině (jiné)"
+msgstr "Kreole a pidgin, založené na portugalštině (jiné)"
 
 #. language code: crh
 #: ../zypp/LanguageCode.cc:438
@@ -1027,7 +1030,8 @@ msgid "Croatia"
 msgstr "Chorvatsko"
 
 #. language code: scr hrv hr
-#: ../zypp/LanguageCode.cc:1008 ../zypp/LanguageCode.cc:1010
+#: ../zypp/LanguageCode.cc:1008
+#: ../zypp/LanguageCode.cc:1010
 msgid "Croatian"
 msgstr "Chorvatské"
 
@@ -1035,7 +1039,7 @@ msgstr "Chorvatské"
 #. :SCG:891:
 #: ../zypp/CountryCode.cc:274
 msgid "Cuba"
-msgstr "Cuba"
+msgstr "Kuba"
 
 #. language code: cus
 #: ../zypp/LanguageCode.cc:444
@@ -1046,10 +1050,11 @@ msgstr "Kušitské jazyky (jiné)"
 #. :CXR:162:
 #: ../zypp/CountryCode.cc:277
 msgid "Cyprus"
-msgstr "Cyprus"
+msgstr "Kypr"
 
 #. language code: cze ces cs
-#: ../zypp/LanguageCode.cc:446 ../zypp/LanguageCode.cc:448
+#: ../zypp/LanguageCode.cc:446
+#: ../zypp/LanguageCode.cc:448
 msgid "Czech"
 msgstr "České"
 
@@ -1076,7 +1081,7 @@ msgstr "Dargwa"
 #. language code: day
 #: ../zypp/LanguageCode.cc:456
 msgid "Dayak"
-msgstr "Dayak"
+msgstr "Daják"
 
 #. language code: del
 #: ../zypp/LanguageCode.cc:458
@@ -1123,19 +1128,41 @@ msgstr "Dominika"
 msgid "Dominican Republic"
 msgstr "Dominikánská republika"
 
-#: ../zypp/media/MediaException.cc:152
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:92
+#: ../zypp/media/MediaException.cc:100
+#, c-format
+msgid "Download (Metalink curl) initialization failed for '%s'"
+msgstr "Inicializace stažení (Metalink curl) selhala na '%s'"
+
+#: ../zypp/media/MediaException.cc:168
 #, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 "Error message: %s\n"
 msgstr ""
+"Stažení (curl) '%s' selhalo:\n"
+"Chybový kód: %s\n"
+"Chybová zpráva: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
-#, fuzzy, c-format
+#, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr "Inicializace cíle selhala:"
+msgstr "Inicializace stažení (curl) '%s' selhala"
+
+#: ../zypp/media/MediaException.cc:186
+#: ../zypp/media/MediaException.cc:204
+#, c-format
+msgid ""
+"Download (metalink curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr ""
+"Stažení (Metalink curl) selhalo pro '%s':\n"
+"Chybový kód: %s\n"
+"Chybová zpráva: %s\n"
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
@@ -1148,13 +1175,14 @@ msgid "Duala"
 msgstr "Duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:97
+#: ../zypp/CheckSum.cc:98
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
+msgstr "Pochybný typ '%s' pro %u kontrolní součet bytů'%s'"
 
 #. language code: dut nld nl
-#: ../zypp/LanguageCode.cc:478 ../zypp/LanguageCode.cc:480
+#: ../zypp/LanguageCode.cc:478
+#: ../zypp/LanguageCode.cc:480
 msgid "Dutch"
 msgstr "Nizozemské"
 
@@ -1214,15 +1242,15 @@ msgstr "Salvador"
 msgid "Elamite"
 msgstr "Elamština"
 
-#: ../zypp/media/MediaException.cc:135
+#: ../zypp/media/MediaException.cc:151
 msgid "Empty destination in URI"
 msgstr "Chybí cíl v URI"
 
-#: ../zypp/media/MediaException.cc:130
+#: ../zypp/media/MediaException.cc:146
 msgid "Empty filesystem in URI"
 msgstr "Prázdný souborový systém v URI"
 
-#: ../zypp/media/MediaException.cc:125
+#: ../zypp/media/MediaException.cc:141
 msgid "Empty host name in URI"
 msgstr "Není vyplněno hostname v URI"
 
@@ -1258,10 +1286,17 @@ msgid "Eritrea"
 msgstr "Eritrea"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:177
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
+msgstr "Během stahování nastavení pro  '%s' došlo chybě:"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:195
+#: ../zypp/media/MediaException.cc:213
+#, c-format
+msgid "Error occurred while setting download (metalink curl) options for '%s':"
+msgstr "Během zakládání stahování (metalink curl) došlo v chybě v nastavení pro '%s':"
 
 # SY
 # fuzzy
@@ -1301,11 +1336,11 @@ msgstr "Ewe"
 msgid "Ewondo"
 msgstr "Ewondo"
 
-#: ../zypp/KeyRing.cc:558
+#: ../zypp/KeyRing.cc:577
 msgid "Failed to delete key."
 msgstr "Nepodařilo se smazat klíč."
 
-#: ../zypp/target/rpm/RpmDb.cc:1045
+#: ../zypp/target/rpm/RpmDb.cc:1064
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "Nepodařilo se importovat klíč ze souboru %s: %s"
@@ -1315,7 +1350,7 @@ msgstr "Nepodařilo se importovat klíč ze souboru %s: %s"
 msgid "Failed to mount %s on %s"
 msgstr "Nepodařilo se připojit %s do %s"
 
-#: ../zypp/target/rpm/RpmDb.cc:1122
+#: ../zypp/target/rpm/RpmDb.cc:1141
 #, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "Nepodařilo se smazat veřejný klíč %s: %s"
@@ -1451,7 +1486,7 @@ msgstr "Finské"
 msgid "Finno-Ugrian (Other)"
 msgstr "Ugrofinské (jiné)"
 
-#: ../zypp/solver/detail/ProblemSolutionCombi.cc:73
+#: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
 msgid "Following actions will be done:"
 msgstr "Budou provedeny následující akce:"
 
@@ -1466,7 +1501,8 @@ msgid "France"
 msgstr "Francie"
 
 #. language code: fre fra fr
-#: ../zypp/LanguageCode.cc:522 ../zypp/LanguageCode.cc:524
+#: ../zypp/LanguageCode.cc:522
+#: ../zypp/LanguageCode.cc:524
 msgid "French"
 msgstr "Francouzské"
 
@@ -1475,13 +1511,13 @@ msgstr "Francouzské"
 #. :GEO:268:
 #: ../zypp/CountryCode.cc:303
 msgid "French Guiana"
-msgstr "French Guiana"
+msgstr "Francouzská Guajána"
 
 # PF
 #. :PER:604:
 #: ../zypp/CountryCode.cc:393
 msgid "French Polynesia"
-msgstr "French Polynesia"
+msgstr "Francouzská Polynésie"
 
 # TF
 # fuzzy
@@ -1540,7 +1576,7 @@ msgstr "Galicijština"
 #. :GRL:304:
 #: ../zypp/CountryCode.cc:307
 msgid "Gambia"
-msgstr "Gambia"
+msgstr "Gambie"
 
 # GH
 #. language code: lug lg
@@ -1565,9 +1601,8 @@ msgid "Geez"
 msgstr "Giiz"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:61
-#, fuzzy
 msgid "Generally ignore of some dependecies"
-msgstr "Obecně ignorovat tento požadavek"
+msgstr "Obecně ignorovat některé závislosti"
 
 #. :GRD:308:
 #: ../zypp/CountryCode.cc:302
@@ -1575,12 +1610,14 @@ msgid "Georgia"
 msgstr "Gruzie"
 
 #. language code: geo kat ka
-#: ../zypp/LanguageCode.cc:544 ../zypp/LanguageCode.cc:546
+#: ../zypp/LanguageCode.cc:544
+#: ../zypp/LanguageCode.cc:546
 msgid "Georgian"
 msgstr "Gruzínština"
 
 #. language code: ger deu de
-#: ../zypp/LanguageCode.cc:548 ../zypp/LanguageCode.cc:550
+#: ../zypp/LanguageCode.cc:548
+#: ../zypp/LanguageCode.cc:550
 msgid "German"
 msgstr "Německé"
 
@@ -1651,7 +1688,8 @@ msgid "Greek, Ancient (to 1453)"
 msgstr "Starořečtina (do 1453)"
 
 #. language code: gre ell el
-#: ../zypp/LanguageCode.cc:578 ../zypp/LanguageCode.cc:580
+#: ../zypp/LanguageCode.cc:578
+#: ../zypp/LanguageCode.cc:580
 msgid "Greek, Modern (1453-)"
 msgstr "Novořečtina (od 1453)"
 
@@ -1730,32 +1768,37 @@ msgstr "Haiti"
 msgid "Haitian"
 msgstr "Haitština"
 
-#: ../zypp/target/hal/HalException.h:46 ../zypp/target/hal/HalException.h:55
+#: ../zypp/target/hal/HalException.h:46
+#: ../zypp/target/hal/HalException.h:55
 #: ../zypp/target/hal/HalException.h:64
 msgid "Hal Exception"
 msgstr "Výjimka HAL"
 
 #: ../zypp/target/hal/HalContext.cc:94
 msgid "HalContext not connected"
-msgstr "Kontext HAL není připojen."
+msgstr "Kontext HAL není připojen"
 
 #: ../zypp/target/hal/HalContext.cc:104
 msgid "HalDrive not initialized"
-msgstr "Jednotka HAL není inicializována."
+msgstr "Jednotka HAL není inicializována"
 
 #: ../zypp/target/hal/HalContext.cc:114
 msgid "HalVolume not initialized"
-msgstr "Svazek HAL není inicializován."
+msgstr "Svazek HAL není inicializován"
 
 #. language code: hau ha
 #: ../zypp/LanguageCode.cc:592
 msgid "Hausa"
 msgstr "Hausa"
 
+#: ../zypp/solver/detail/SATResolver.cc:922
+msgid "Have you enabled all requested repositories?"
+msgstr "Máte povoleny všechny vyžadované repozitáře?"
+
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
-msgstr "Havajština"
+msgstr "Havajská tahitština"
 
 # HM
 # fuzzy
@@ -1816,7 +1859,7 @@ msgstr "Hmong"
 #. :UZB:860:
 #: ../zypp/CountryCode.cc:451
 msgid "Holy See (Vatican City State)"
-msgstr "Vatican City State (Holy See)"
+msgstr "Vatikán"
 
 #. :HMD:334:
 #: ../zypp/CountryCode.cc:319
@@ -1856,7 +1899,8 @@ msgid "Iceland"
 msgstr "Island"
 
 #. language code: ice isl is
-#: ../zypp/LanguageCode.cc:622 ../zypp/LanguageCode.cc:624
+#: ../zypp/LanguageCode.cc:622
+#: ../zypp/LanguageCode.cc:624
 msgid "Icelandic"
 msgstr "Islandština"
 
@@ -1872,9 +1916,9 @@ msgstr "Igbo"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:52
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore some dependencies of %s"
-msgstr "závislosti nelze vyřešit"
+msgstr "Ignorovat některé závislosti %s"
 
 #. language code: ijo
 #: ../zypp/LanguageCode.cc:630
@@ -1914,14 +1958,15 @@ msgstr "Indonésie"
 #. language code: ind id
 #: ../zypp/LanguageCode.cc:642
 msgid "Indonesian"
-msgstr "Indonézština"
+msgstr "Indonéština"
 
 #. language code: inh
 #: ../zypp/LanguageCode.cc:646
 msgid "Ingush"
 msgstr "Ingush"
 
-#: ../zypp/target/TargetImpl.cc:762
+#: ../zypp/target/TargetImpl.cc:692
+#: ../zypp/target/TargetImpl.cc:963
 msgid "Installation has been aborted as directed."
 msgstr "Instalace byla zrušena podle příkazu."
 
@@ -1995,21 +2040,17 @@ msgstr "Neplatný oddělovací znak mapy parametrů"
 msgid "Invalid port component '%s'"
 msgstr "Neplatná součást portu %s"
 
-#: ../zypp/PoolQuery.cc:419
+#: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr "Chybný regulární výraz '%s': regcomp vrátil %d"
-
-#: ../zypp/media/MediaCurl.cc:758 ../zypp/media/MediaCurl.cc:826
-msgid "Invalid user name or password."
-msgstr "Neplatné uživatelské jméno nebo heslo."
 
 # IR
 # fuzzy
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
 msgid "Iran"
-msgstr "Iraq"
+msgstr "Írán"
 
 #. language code: ira
 #: ../zypp/LanguageCode.cc:650
@@ -2178,13 +2219,13 @@ msgstr "Kazaština"
 #. :CYM:136:
 #: ../zypp/CountryCode.cc:345
 msgid "Kazakhstan"
-msgstr "Kazakhstan"
+msgstr "Kazachstán"
 
 # KE
 #. :JPN:392:
 #: ../zypp/CountryCode.cc:335
 msgid "Kenya"
-msgstr "Kenya"
+msgstr "Keňa"
 
 #. language code: kha
 #: ../zypp/LanguageCode.cc:690
@@ -2194,12 +2235,12 @@ msgstr "Khasi"
 #. language code: khm km
 #: ../zypp/LanguageCode.cc:694
 msgid "Khmer"
-msgstr "Kmérština"
+msgstr "Khmérština"
 
 #. language code: khi
 #: ../zypp/LanguageCode.cc:692
 msgid "Khoisan (Other)"
-msgstr "Khosianské (jiné)"
+msgstr "Khoisanské (jiné)"
 
 #. language code: kho
 #: ../zypp/LanguageCode.cc:696
@@ -2309,7 +2350,7 @@ msgstr "Kuvajt"
 #. :KEN:404:
 #: ../zypp/CountryCode.cc:336
 msgid "Kyrgyzstan"
-msgstr "Kyrgyzstan"
+msgstr "Kyrgyzstán"
 
 #. language code: lad
 #: ../zypp/LanguageCode.cc:732
@@ -2351,7 +2392,7 @@ msgstr "Lotyšsko"
 #. language code: lav lv
 #: ../zypp/LanguageCode.cc:742
 msgid "Latvian"
-msgstr "Lotyšština"
+msgstr "Lotyština"
 
 #. :LAO:418:
 #: ../zypp/CountryCode.cc:347
@@ -2364,6 +2405,18 @@ msgstr "Libanon"
 msgid "Lesotho"
 msgstr "Lesotho"
 
+#: ../zypp/VendorSupportOptions.cc:20
+msgid "Level 1"
+msgstr "Úroveň 1"
+
+#: ../zypp/VendorSupportOptions.cc:23
+msgid "Level 2"
+msgstr "Úroveň 2"
+
+#: ../zypp/VendorSupportOptions.cc:26
+msgid "Level 3"
+msgstr "Úroveň 3"
+
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
@@ -2373,14 +2426,14 @@ msgstr "Lezghian"
 #. :LKA:144:
 #: ../zypp/CountryCode.cc:351
 msgid "Liberia"
-msgstr "Liberia"
+msgstr "Libérie"
 
 # LY
 # fuzzy
 #. :LVA:428:
 #: ../zypp/CountryCode.cc:356
 msgid "Libya"
-msgstr "Liberia"
+msgstr "Lýbie"
 
 #. :LCA:662:
 #: ../zypp/CountryCode.cc:349
@@ -2406,7 +2459,7 @@ msgstr "Litva"
 #. language code: lit lt
 #: ../zypp/LanguageCode.cc:750
 msgid "Lithuanian"
-msgstr "Litva"
+msgstr "Litevština"
 
 #. language code: jbo
 #: ../zypp/LanguageCode.cc:658
@@ -2431,12 +2484,12 @@ msgstr "Lozi"
 #. language code: lub lu
 #: ../zypp/LanguageCode.cc:760
 msgid "Luba-Katanga"
-msgstr "Luba Katanga"
+msgstr "Luba-Katanga"
 
 #. language code: lua
 #: ../zypp/LanguageCode.cc:758
 msgid "Luba-Lulua"
-msgstr "Luba lulua"
+msgstr "Luba-lulua"
 
 #. language code: lui
 #: ../zypp/LanguageCode.cc:764
@@ -2456,7 +2509,7 @@ msgstr "Lunda"
 #. language code: luo
 #: ../zypp/LanguageCode.cc:768
 msgid "Luo (Kenya and Tanzania)"
-msgstr "Luoština"
+msgstr "Luoština (Keňa a Tanzanie)"
 
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
@@ -2484,7 +2537,8 @@ msgid "Macedonia"
 msgstr "Makedonie"
 
 #. language code: mac mkd mk
-#: ../zypp/LanguageCode.cc:772 ../zypp/LanguageCode.cc:774
+#: ../zypp/LanguageCode.cc:772
+#: ../zypp/LanguageCode.cc:774
 msgid "Macedonian"
 msgstr "Makedonština"
 
@@ -2492,7 +2546,7 @@ msgstr "Makedonština"
 #. :MDA:498:
 #: ../zypp/CountryCode.cc:360
 msgid "Madagascar"
-msgstr "Madagascar"
+msgstr "Madagaskar"
 
 #. language code: mad
 #: ../zypp/LanguageCode.cc:776
@@ -2519,7 +2573,7 @@ msgstr "Makasarština"
 #. language code: mlg mg
 #: ../zypp/LanguageCode.cc:820
 msgid "Malagasy"
-msgstr "Malgašština"
+msgstr "Malgaština"
 
 # MW
 #. :MDV:462:
@@ -2528,7 +2582,8 @@ msgid "Malawi"
 msgstr "Malawi"
 
 #. language code: may msa ms
-#: ../zypp/LanguageCode.cc:800 ../zypp/LanguageCode.cc:802
+#: ../zypp/LanguageCode.cc:800
+#: ../zypp/LanguageCode.cc:802
 msgid "Malay"
 msgstr "Malajština"
 
@@ -2549,9 +2604,9 @@ msgstr "Malajsie"
 msgid "Maldives"
 msgstr "Mali"
 
-#: ../zypp/media/MediaException.cc:115
+#: ../zypp/media/MediaException.cc:131
 msgid "Malformed URI"
-msgstr ""
+msgstr "Zdeformované URI"
 
 # ML
 #. :MKD:807:
@@ -2574,7 +2629,7 @@ msgstr "Maltština"
 #. language code: mnc
 #: ../zypp/LanguageCode.cc:824
 msgid "Manchu"
-msgstr "Manchu"
+msgstr "Manču"
 
 # MM
 #. language code: mdr
@@ -2595,7 +2650,7 @@ msgstr "Manipurština"
 #. language code: mno
 #: ../zypp/LanguageCode.cc:828
 msgid "Manobo Languages"
-msgstr "Jazyky Manobo"
+msgstr "Jazyky manobo"
 
 #. language code: glv gv
 #: ../zypp/LanguageCode.cc:562
@@ -2603,7 +2658,8 @@ msgid "Manx"
 msgstr "Manština"
 
 #. language code: mao mri mi
-#: ../zypp/LanguageCode.cc:790 ../zypp/LanguageCode.cc:792
+#: ../zypp/LanguageCode.cc:790
+#: ../zypp/LanguageCode.cc:792
 msgid "Maori"
 msgstr "Maorština"
 
@@ -2621,7 +2677,7 @@ msgstr "Marijština"
 #. :MDG:450:
 #: ../zypp/CountryCode.cc:361
 msgid "Marshall Islands"
-msgstr "Marshall Islands"
+msgstr "Marshallovy ostrovy"
 
 # MH
 #. language code: mah mh
@@ -2643,20 +2699,20 @@ msgstr "Marwari"
 #. language code: mas
 #: ../zypp/LanguageCode.cc:798
 msgid "Masai"
-msgstr "Masajština"
+msgstr "Malajština"
 
 # MR
 #. :MTQ:474:
 #: ../zypp/CountryCode.cc:369
 msgid "Mauritania"
-msgstr "Mauritania"
+msgstr "Mauritánie"
 
 # MU
 # fuzzy
 #. :MLT:470:
 #: ../zypp/CountryCode.cc:372
 msgid "Mauritius"
-msgstr "Mauritius"
+msgstr "Mauricius"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
@@ -2669,24 +2725,24 @@ msgstr "Mayské jazyky"
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: ../zypp/media/MediaException.cc:169
+#: ../zypp/media/MediaException.cc:221
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
+msgstr "Zdroj média \"%s\" neobsahuje požadované médium"
 
-#: ../zypp/media/MediaException.cc:175
+#: ../zypp/media/MediaException.cc:227
 #, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "Médium '%s' je používáno jinou instancí"
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr ""
+msgstr "Médium není připojeno"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
+msgstr "Medium nebylo otevřeno během pokusu o spuštění akcí '%s'."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -2748,7 +2804,7 @@ msgstr "Moldávie"
 #. language code: mkh
 #: ../zypp/LanguageCode.cc:818
 msgid "Mon-Khmer (Other)"
-msgstr "Mon-khmerské (Other)"
+msgstr "Mon-khmérské (jiné)"
 
 #. :MAR:504:
 #: ../zypp/CountryCode.cc:358
@@ -2765,7 +2821,7 @@ msgstr "Mongo"
 #. :MMR:104:
 #: ../zypp/CountryCode.cc:365
 msgid "Mongolia"
-msgstr "Mongolia"
+msgstr "Mongolsko"
 
 # MN
 #. language code: mon mn
@@ -2793,7 +2849,7 @@ msgstr "Mossi"
 #. :MYS:458:
 #: ../zypp/CountryCode.cc:377
 msgid "Mozambique"
-msgstr "Mozambique"
+msgstr "Mozambik"
 
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
@@ -2809,7 +2865,7 @@ msgstr "Mundské jazyky"
 #. :MLI:466:
 #: ../zypp/CountryCode.cc:364
 msgid "Myanmar"
-msgstr "Myanmar"
+msgstr "Myanmar (Barma)"
 
 #. language code: nah
 #: ../zypp/LanguageCode.cc:852
@@ -2820,18 +2876,19 @@ msgstr "Nahuatl"
 #. :MOZ:508:
 #: ../zypp/CountryCode.cc:378
 msgid "Namibia"
-msgstr "Namibia"
+msgstr "Namibie"
 
 #. language code: nau na
 #. :NPL:524:
-#: ../zypp/LanguageCode.cc:858 ../zypp/CountryCode.cc:387
+#: ../zypp/LanguageCode.cc:858
+#: ../zypp/CountryCode.cc:387
 msgid "Nauru"
 msgstr "Nauru"
 
 #. language code: nav nv
 #: ../zypp/LanguageCode.cc:860
 msgid "Navajo"
-msgstr "Navajo"
+msgstr "Navaho"
 
 #. language code: nde nd
 #: ../zypp/LanguageCode.cc:864
@@ -2859,13 +2916,13 @@ msgstr "Neapolština"
 #. :NOR:578:
 #: ../zypp/CountryCode.cc:386
 msgid "Nepal"
-msgstr "Nepal"
+msgstr "Nepál"
 
 # NP
 #. language code: new
 #: ../zypp/LanguageCode.cc:872
 msgid "Nepal Bhasa"
-msgstr "Nepal Bhasa"
+msgstr "Nepál Bhasa"
 
 # NP
 #. language code: nep ne
@@ -2888,7 +2945,7 @@ msgstr "Nizozemské Antily"
 #. :NAM:516:
 #: ../zypp/CountryCode.cc:379
 msgid "New Caledonia"
-msgstr "New Caledonia"
+msgstr "Nové Kaledonie"
 
 #. :NIU:570:
 #: ../zypp/CountryCode.cc:389
@@ -2924,7 +2981,7 @@ msgstr "Nigero-kordofánské (jiné)"
 #. :NFK:574:
 #: ../zypp/CountryCode.cc:382
 msgid "Nigeria"
-msgstr "Nigeria"
+msgstr "Nigérie"
 
 #. language code: ssa
 #: ../zypp/LanguageCode.cc:1072
@@ -2945,7 +3002,8 @@ msgstr "Niuečtina"
 
 #. Defined LanguageCode constants
 #. Defined CountryCode constants
-#: ../zypp/LanguageCode.cc:225 ../zypp/CountryCode.cc:215
+#: ../zypp/LanguageCode.cc:225
+#: ../zypp/CountryCode.cc:215
 msgid "No Code"
 msgstr "Žádný kód"
 
@@ -2963,7 +3021,7 @@ msgstr "Nogai"
 #. :NER:562:
 #: ../zypp/CountryCode.cc:381
 msgid "Norfolk Island"
-msgstr "Norfolk Island"
+msgstr "Ostrov Norfolk"
 
 #. language code: non
 #: ../zypp/LanguageCode.cc:886
@@ -2984,7 +3042,7 @@ msgstr "Severní Korea"
 #. :MAC:446:
 #: ../zypp/CountryCode.cc:367
 msgid "Northern Mariana Islands"
-msgstr "Northern Mariana Islands"
+msgstr "Severní Mariany"
 
 #. language code: sme se
 #: ../zypp/LanguageCode.cc:1040
@@ -2994,7 +3052,7 @@ msgstr "Severní Sami"
 #. language code: nso
 #: ../zypp/LanguageCode.cc:890
 msgid "Northern Sotho"
-msgstr "Severní sotho"
+msgstr "Severní Sotho"
 
 #. :NLD:528:
 #: ../zypp/CountryCode.cc:385
@@ -3009,12 +3067,12 @@ msgstr "Norské"
 #. language code: nob nb
 #: ../zypp/LanguageCode.cc:882
 msgid "Norwegian Bokmal"
-msgstr "Bokmĺl"
+msgstr "Norština (Bokmal)"
 
 #. language code: nno nn
 #: ../zypp/LanguageCode.cc:880
 msgid "Norwegian Nynorsk"
-msgstr "Nynorsk"
+msgstr "Norština (Nynorsk)"
 
 #: ../zypp/target/hal/HalContext.cc:828
 msgid "Not a CDROM drive"
@@ -3052,7 +3110,7 @@ msgstr "Nzima"
 #. language code: oci oc
 #: ../zypp/LanguageCode.cc:906
 msgid "Occitan (post 1500)"
-msgstr "Okcitánština"
+msgstr "Okcitánština (po 1500)"
 
 #. language code: oji oj
 #: ../zypp/LanguageCode.cc:908
@@ -3064,7 +3122,12 @@ msgstr "Ojibwa"
 msgid "Oman"
 msgstr "Omán"
 
-#: ../zypp/media/MediaException.cc:145
+#: ../zypp/parser/RepoindexFileReader.cc:116
+#, c-format
+msgid "One or both of '%s' or '%s' attributes is required."
+msgstr "Jeden nebo oba atributy '%s' nebo '%s' jsou vyžadovány."
+
+#: ../zypp/media/MediaException.cc:161
 msgid "Operation not supported by medium"
 msgstr "Operace není médiem podporována"
 
@@ -3096,10 +3159,10 @@ msgid "Otomian Languages"
 msgstr "Osmanské jazyky"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:314
+#: ../zypp/repo/PackageProvider.cc:247
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry?"
-msgstr "Kontrola integrity balíčku %s se nezdařila. Chcete pokus opakovat?"
+msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
+msgstr "Balíček %s se zřejmě poškodil během přenosu. Chcete pokus opakovat?"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3161,35 +3224,36 @@ msgstr "Papiamento"
 #. :PYF:258:
 #: ../zypp/CountryCode.cc:394
 msgid "Papua New Guinea"
-msgstr "Papua New Guinea"
+msgstr "Papua Nová Guinea"
 
 #. language code: paa
 #: ../zypp/LanguageCode.cc:922
 msgid "Papuan (Other)"
-msgstr "Papuánština"
+msgstr "Papuánština (jiné)"
 
 #. :PLW:585:
 #: ../zypp/CountryCode.cc:404
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: ../zypp/media/MediaException.cc:106
+#: ../zypp/media/MediaException.cc:122
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "Cesta '%s' na médiu '%s' není adresářem."
 
-#: ../zypp/media/MediaException.cc:98
+#: ../zypp/media/MediaException.cc:114
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "Cesta '%s' na médiu '%s' není souborem."
 
-#: ../zypp/media/MediaException.cc:200
+#: ../zypp/media/MediaException.cc:252
 #, c-format
 msgid "Permission to access '%s' denied."
 msgstr "Přístup k '%s' byl zamítnut."
 
 #. language code: per fas fa
-#: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
+#: ../zypp/LanguageCode.cc:938
+#: ../zypp/LanguageCode.cc:940
 msgid "Persian"
 msgstr "Perština"
 
@@ -3236,7 +3300,7 @@ msgstr "Polsko"
 #. language code: pol pl
 #: ../zypp/LanguageCode.cc:948
 msgid "Polish"
-msgstr "Polské"
+msgstr "Polština"
 
 #. :PSE:275:
 #: ../zypp/CountryCode.cc:402
@@ -3246,12 +3310,24 @@ msgstr "Portugalsko"
 #. language code: por pt
 #: ../zypp/LanguageCode.cc:952
 msgid "Portuguese"
-msgstr "Portugalské"
+msgstr "Portugalština"
 
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
 msgid "Prakrit Languages"
 msgstr "Prakritské jazyky"
+
+#: ../zypp/VendorSupportOptions.cc:45
+msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
+msgstr "Detekce problému, tedy technická podpora zajišťuje informaci o slučitelnosti produktů, asistenci při instalaci a používání, následnou údržbu a základní řešení problémů. První úroveň podpory neslouží k opravám chyb v produktu."
+
+#: ../zypp/VendorSupportOptions.cc:48
+msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
+msgstr "Izolace problému, tedy podporu při zreplikování zákazníkova problému, specifikace problematického místa a poskytuje řešení problémů, které neřeší první úroveň."
+
+#: ../zypp/VendorSupportOptions.cc:51
+msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
+msgstr "Vyřešení problému, tedy technická podpora pro vyřešení složitého problému zajištěním prostředků pro vyřešení problému zjištěného v podpoře druhé úrovně."
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
@@ -3276,58 +3352,63 @@ msgstr "Katar"
 #. language code: que qu
 #: ../zypp/LanguageCode.cc:960
 msgid "Quechua"
-msgstr "Jazyk kmene Quechua"
+msgstr "Kečua (Inkové)"
 
-#: ../zypp/url/UrlBase.cc:782 ../zypp/url/UrlBase.cc:1229
+#: ../zypp/url/UrlBase.cc:782
+#: ../zypp/url/UrlBase.cc:1229
 msgid "Query string parsing not supported for this URL"
 msgstr "Pro toto URL není podporována analýza řetězce dotazu."
 
 #. TranslatorExplanation after semicolon is error message
-#: ../zypp/target/rpm/RpmDb.cc:888 ../zypp/target/rpm/RpmDb.cc:2057
-#: ../zypp/target/rpm/RpmDb.cc:2177
+#. TranslatorExplanation the colon is followed by an error message
+#: ../zypp/target/rpm/RpmDb.cc:893
+#: ../zypp/target/rpm/RpmDb.cc:2084
+#: ../zypp/target/rpm/RpmDb.cc:2220
 msgid "RPM failed: "
 msgstr "RPM selhalo: "
 
 #. language code: roh rm
 #: ../zypp/LanguageCode.cc:970
 msgid "Raeto-Romance"
-msgstr "Retorománština"
+msgstr "Rétorománština"
 
 # KZ
 # fuzzy
 #. language code: raj
 #: ../zypp/LanguageCode.cc:962
 msgid "Rajasthani"
-msgstr "Rádžasthánština"
+msgstr "Rádžáshánština"
 
 #. language code: rap
 #: ../zypp/LanguageCode.cc:964
 msgid "Rapanui"
-msgstr "Rapanuiština"
+msgstr "Rapanuiština (tahitština Velikonočního ostrova - Rapa-Nui)"
 
 #. language code: rar
 #: ../zypp/LanguageCode.cc:966
 msgid "Rarotongan"
-msgstr "Rarotongánština"
+msgstr "Rarotongánština (tahitština Velikonočního ostrova - Rapa-Nui)"
 
-#: ../zypp/url/UrlBase.cc:1117 ../zypp/url/UrlBase.cc:1131
+#: ../zypp/url/UrlBase.cc:1117
+#: ../zypp/url/UrlBase.cc:1131
 msgid "Relative path not allowed if authority exists"
 msgstr "Relativní cesta není povolena, pokud existuje autorita"
 
-#: ../zypp/RepoManager.cc:1114
+#: ../zypp/RepoManager.cc:1328
 #, c-format
 msgid "Removing repository '%s'"
 msgstr "Odebírá se repozitář '%s'"
 
-#: ../zypp/parser/susetags/RepoParser.cc:232
-msgid "Required file is missing: "
-msgstr "Chybí vyžadovaný soubor: "
+#: ../zypp/parser/RepoindexFileReader.cc:128
+#, c-format
+msgid "Required attribute '%s' is missing."
+msgstr "Chybí vyžadovaný atribut '%s'."
 
 # RE
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:406
 msgid "Reunion"
-msgstr "Reunion"
+msgstr "Réunion"
 
 #. language code: roa
 #: ../zypp/LanguageCode.cc:968
@@ -3340,7 +3421,8 @@ msgid "Romania"
 msgstr "Rumunsko"
 
 #. language code: rum ron ro
-#: ../zypp/LanguageCode.cc:974 ../zypp/LanguageCode.cc:976
+#: ../zypp/LanguageCode.cc:974
+#: ../zypp/LanguageCode.cc:976
 msgid "Romanian"
 msgstr "Rumunština"
 
@@ -3358,7 +3440,7 @@ msgstr "Rundština"
 #. language code: rus ru
 #: ../zypp/LanguageCode.cc:980
 msgid "Russian"
-msgstr "Ruské"
+msgstr "Ruština"
 
 # RU
 #. :ROU:642:
@@ -3376,7 +3458,7 @@ msgstr "Rwanda"
 #. :SGP:702:
 #: ../zypp/CountryCode.cc:416
 msgid "Saint Helena"
-msgstr "Saint Helena"
+msgstr "Svatá Helena"
 
 # KN
 # fuzzy
@@ -3414,7 +3496,7 @@ msgstr "Salishanské jazyky"
 #. language code: sam
 #: ../zypp/LanguageCode.cc:992
 msgid "Samaritan Aramaic"
-msgstr "Aramejština"
+msgstr "Samaritská Aramejština"
 
 #. language code: smi
 #: ../zypp/LanguageCode.cc:1042
@@ -3505,7 +3587,8 @@ msgid "Serbia and Montenegro"
 msgstr "Srbsko a Černá Hora"
 
 #. language code: scc srp sr
-#: ../zypp/LanguageCode.cc:1000 ../zypp/LanguageCode.cc:1002
+#: ../zypp/LanguageCode.cc:1000
+#: ../zypp/LanguageCode.cc:1002
 msgid "Serbian"
 msgstr "Srbština"
 
@@ -3518,7 +3601,7 @@ msgstr "Sererština"
 #. :SLB:090:
 #: ../zypp/CountryCode.cc:412
 msgid "Seychelles"
-msgstr "Seychelles"
+msgstr "Sejšely"
 
 #. language code: shn
 #: ../zypp/LanguageCode.cc:1020
@@ -3556,7 +3639,7 @@ msgstr "Sierra Leone"
 msgid "Sign Languages"
 msgstr "Znakové řeči"
 
-#: ../zypp/KeyRing.cc:568
+#: ../zypp/KeyRing.cc:587
 #, c-format
 msgid "Signature file %s not found"
 msgstr "Soubor s podpisem %s nebyl nalezen"
@@ -3608,9 +3691,10 @@ msgid "Slavic (Other)"
 msgstr "Slovanské (jiné)"
 
 #. language code: slo slk sk
-#: ../zypp/LanguageCode.cc:1032 ../zypp/LanguageCode.cc:1034
+#: ../zypp/LanguageCode.cc:1032
+#: ../zypp/LanguageCode.cc:1034
 msgid "Slovak"
-msgstr "Slovenské"
+msgstr "Slovenština"
 
 #. :SJM:744:
 #: ../zypp/CountryCode.cc:419
@@ -3636,12 +3720,12 @@ msgstr "Soghdština"
 #. :SAU:682:
 #: ../zypp/CountryCode.cc:411
 msgid "Solomon Islands"
-msgstr "Solomon Islands"
+msgstr "Šalamounovy ostrovy"
 
-#: ../zypp/solver/detail/SATResolver.cc:889
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:949
+#, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
-msgstr "%s koliduje s %s, který poskytuje %s"
+msgstr "%s koliduje s %s"
 
 # SO
 #. language code: som so
@@ -3653,7 +3737,7 @@ msgstr "Somálština"
 #. :SEN:686:
 #: ../zypp/CountryCode.cc:423
 msgid "Somalia"
-msgstr "Somalia"
+msgstr "Somálsko"
 
 #. language code: son
 #: ../zypp/LanguageCode.cc:1062
@@ -3668,7 +3752,7 @@ msgstr "Soninke"
 #. language code: wen
 #: ../zypp/LanguageCode.cc:1196
 msgid "Sorbian Languages"
-msgstr "Srbské jazyky"
+msgstr "Sorbské jazyky"
 
 #. language code: sot st
 #: ../zypp/LanguageCode.cc:1064
@@ -3690,7 +3774,7 @@ msgstr "Jihoamerické indiánské (jiné)"
 #. :GRC:300:
 #: ../zypp/CountryCode.cc:312
 msgid "South Georgia and the South Sandwich Islands"
-msgstr "South Georgia and the South Sandwich Island"
+msgstr "Jazyky Jižní Georgie a Jižních Sandwichových ostrovů"
 
 #. :PRK:408:
 #: ../zypp/CountryCode.cc:342
@@ -3715,13 +3799,13 @@ msgstr "Španělsko"
 #. language code: spa es
 #: ../zypp/LanguageCode.cc:1066
 msgid "Spanish"
-msgstr "Španělské"
+msgstr "Španělština"
 
 # LK
 #. :LIE:438:
 #: ../zypp/CountryCode.cc:350
 msgid "Sri Lanka"
-msgstr "Sri Lanka"
+msgstr "Srí Lanka"
 
 #. :SYC:690:
 #: ../zypp/CountryCode.cc:413
@@ -3747,7 +3831,7 @@ msgstr "Sundánština"
 #. :SOM:706:
 #: ../zypp/CountryCode.cc:424
 msgid "Suriname"
-msgstr "Suriname"
+msgstr "Surinam"
 
 #. language code: sus
 #: ../zypp/LanguageCode.cc:1080
@@ -3759,7 +3843,7 @@ msgstr "Susu"
 #. :SVN:705:
 #: ../zypp/CountryCode.cc:418
 msgid "Svalbard and Jan Mayen"
-msgstr "Svalbard and Jan Mayen Islands"
+msgstr "Ostrovy Svalbard a Jan Mayen"
 
 # SZ
 #. language code: swa sw
@@ -3777,7 +3861,7 @@ msgstr "Swati"
 #. :SYR:760:
 #: ../zypp/CountryCode.cc:428
 msgid "Swaziland"
-msgstr "Swaziland"
+msgstr "Svazijsko"
 
 #. :SDN:736:
 #: ../zypp/CountryCode.cc:414
@@ -3787,7 +3871,7 @@ msgstr "Švédsko"
 #. language code: swe sv
 #: ../zypp/LanguageCode.cc:1086
 msgid "Swedish"
-msgstr "Švédské"
+msgstr "Švédština"
 
 #. :COG:178:
 #: ../zypp/CountryCode.cc:265
@@ -3808,15 +3892,19 @@ msgstr "Sýrie"
 msgid "Syriac"
 msgstr "Syrština"
 
-#: ../zypp/media/MediaException.cc:91
+#: ../zypp/media/MediaException.cc:107
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr "Systémová vyjímka '%s' na médiu '%s'."
+msgstr "Systémová výjimka '%s' na médiu '%s'."
 
-#: ../zypp/ZYppFactory.cc:354
+#: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid "System management is locked by the application with pid %d. Please close this application before trying again."
-msgstr "Systémová správa je zamknut aplikací, která má pid %d. Prosím uzavřete tuto aplikaci, než se budete znovu pokoušet o práci se systémovou správou."
+msgid ""
+"System management is locked by the application with pid %d (%s).\n"
+"Close this application before trying again."
+msgstr ""
+"Systémová správa je zamknut aplikací, která má pid %d (%s).\n"
+"Prosím uzavřete tuto aplikaci, než se budete znovu pokoušet o práci se systémovou správou."
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3846,7 +3934,7 @@ msgstr "Tádžičtina"
 #. :THA:764:
 #: ../zypp/CountryCode.cc:434
 msgid "Tajikistan"
-msgstr "Tadžikistán"
+msgstr "Tádžikistán"
 
 #. language code: tmh
 #: ../zypp/LanguageCode.cc:1128
@@ -3861,7 +3949,7 @@ msgstr "Tamilština"
 #. :TWN:158:
 #: ../zypp/CountryCode.cc:444
 msgid "Tanzania"
-msgstr "Tanzánie"
+msgstr "Tanzanie"
 
 #. language code: tat tt
 #: ../zypp/LanguageCode.cc:1096
@@ -3893,12 +3981,26 @@ msgstr "Thajština"
 msgid "Thailand"
 msgstr "Thajsko"
 
+#: ../zypp/VendorSupportOptions.cc:39
+msgid "The level of support is unspecified"
+msgstr "Tato úroveň podpory není specifikována."
+
+#: ../zypp/VendorSupportOptions.cc:42
+msgid "The vendor does not provide support."
+msgstr "Poskytovatel neposkytuje podporu."
+
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
-msgstr ""
+msgstr "Tato akce je právě spuštěna jiným programem."
+
+#: ../zypp/solver/detail/SATResolver.cc:1130
+#: ../zypp/solver/detail/SATResolver.cc:1148
+msgid "This request will break your system!"
+msgstr "Tento požadavek poškodí váš systém!"
 
 #. language code: tib bod bo
-#: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
+#: ../zypp/LanguageCode.cc:1112
+#: ../zypp/LanguageCode.cc:1114
 msgid "Tibetan"
 msgstr "Tibetština"
 
@@ -3913,10 +4015,10 @@ msgstr "Tigre"
 msgid "Tigrinya"
 msgstr "Tigriňňa"
 
-#: ../zypp/media/MediaException.cc:207
+#: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
-msgstr ""
+msgstr "Během přístupu k '%s' byl dosažen časový limit."
 
 #. language code: tem
 #: ../zypp/LanguageCode.cc:1100
@@ -3947,7 +4049,8 @@ msgstr "Tok Pisin"
 # TK
 #. language code: tkl
 #. :TJK:762:
-#: ../zypp/LanguageCode.cc:1122 ../zypp/CountryCode.cc:435
+#: ../zypp/LanguageCode.cc:1122
+#: ../zypp/CountryCode.cc:435
 msgid "Tokelau"
 msgstr "Tokelau"
 
@@ -3968,16 +4071,16 @@ msgstr "Tongánština (Nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "Tongánština (Tonga)"
 
-#: ../zypp/KeyRing.cc:507
+#: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
-msgstr ""
+msgstr "Pokus o import neexistujícího klíče %s mezi klíče %s"
 
 # TT
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:441
 msgid "Trinidad and Tobago"
-msgstr "Trinidad and Tobago"
+msgstr "Trinidad a Tobago"
 
 #. language code: tsi
 #: ../zypp/LanguageCode.cc:1136
@@ -4008,7 +4111,7 @@ msgstr "Tunis"
 #. language code: tup
 #: ../zypp/LanguageCode.cc:1146
 msgid "Tupi Languages"
-msgstr "Jazyky Tupi"
+msgstr "Jazyky tupi"
 
 #. :TLS:626:
 #: ../zypp/CountryCode.cc:440
@@ -4018,7 +4121,7 @@ msgstr "Turecko"
 #. language code: tur tr
 #: ../zypp/LanguageCode.cc:1148
 msgid "Turkish"
-msgstr "Turecké"
+msgstr "Turečtina"
 
 #. language code: ota
 #: ../zypp/LanguageCode.cc:918
@@ -4028,13 +4131,13 @@ msgstr "Osmanská turečtina (1500-1928)"
 #. language code: tuk tk
 #: ../zypp/LanguageCode.cc:1142
 msgid "Turkmen"
-msgstr "Turkménština"
+msgstr "Turkmenština"
 
 # TM
 #. :TKL:772:
 #: ../zypp/CountryCode.cc:436
 msgid "Turkmenistan"
-msgstr "Turkmenistan"
+msgstr "Turkmenistán"
 
 # TC
 # fuzzy
@@ -4046,7 +4149,8 @@ msgstr "Turks a Caicos"
 # TV
 #. language code: tvl
 #. :TTO:780:
-#: ../zypp/LanguageCode.cc:1152 ../zypp/CountryCode.cc:442
+#: ../zypp/LanguageCode.cc:1152
+#: ../zypp/CountryCode.cc:442
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
@@ -4089,7 +4193,7 @@ msgstr "Ukrajina"
 #. language code: ukr uk
 #: ../zypp/LanguageCode.cc:1164
 msgid "Ukrainian"
-msgstr "Ukrajinské"
+msgstr "Ukrajinština"
 
 #. language code: umb
 #: ../zypp/LanguageCode.cc:1166
@@ -4108,7 +4212,8 @@ msgstr "Nelze vytvořit připojení dbus."
 msgid "Unable to initalize HAL context -- hald not running?"
 msgstr "Nelze inicializovat kontext HAL - je spuštěna služba hald?"
 
-#: ../zypp/Url.cc:322 ../zypp/Url.cc:336
+#: ../zypp/Url.cc:322
+#: ../zypp/Url.cc:336
 msgid "Unable to parse Url components"
 msgstr "Nelze analyzovat součásti URL."
 
@@ -4131,13 +4236,17 @@ msgstr "Velká Británie"
 #. :UMI:581:
 #: ../zypp/CountryCode.cc:448
 msgid "United States"
-msgstr "United States"
+msgstr "Spojené státy"
 
 # UM
 #. :UGA:800:
 #: ../zypp/CountryCode.cc:447
 msgid "United States Minor Outlying Islands"
-msgstr "United States Minor Outlying Islands"
+msgstr "Menší odlehlé ostrovy Spojených států"
+
+#: ../zypp/target/TargetImpl.cc:997
+msgid "Unknown Distribution"
+msgstr "Neznámá distribuce"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -4147,12 +4256,16 @@ msgstr "Neznámá země: "
 msgid "Unknown language: "
 msgstr "Neznámý jazyk: "
 
-#: ../zypp/media/MediaUserAuth.cc:97
+#: ../zypp/VendorSupportOptions.cc:56
+msgid "Unknown support option. Description not available"
+msgstr "Neznámá volba podpory. Popis není dostupný"
+
+#: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Nepodporovaná HTTP ověřovací metoda '%s'"
 
-#: ../zypp/media/MediaException.cc:140
+#: ../zypp/media/MediaException.cc:156
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "Nepodporované URI ve schématu '%s'."
@@ -4232,7 +4345,7 @@ msgid "Vai"
 msgstr "Vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:526
+#: ../zypp/RepoManager.cc:778
 msgid "Valid metadata not found at specified URL(s)"
 msgstr "Na zadané adrese nebo adresách URL nebyla nalezena platná metadata"
 
@@ -4245,7 +4358,7 @@ msgstr "Vanuatu"
 #. language code: ven ve
 #: ../zypp/LanguageCode.cc:1176
 msgid "Venda"
-msgstr "venda"
+msgstr "Venda"
 
 #. :VCT:670:
 #: ../zypp/CountryCode.cc:453
@@ -4257,7 +4370,7 @@ msgstr "Venezuela"
 #. :VIR:850:
 #: ../zypp/CountryCode.cc:456
 msgid "Vietnam"
-msgstr "Viet Nam"
+msgstr "Vietnam"
 
 #. language code: vie vi
 #: ../zypp/LanguageCode.cc:1178
@@ -4269,7 +4382,7 @@ msgstr "Vietnamština"
 #. :VGB:092:
 #: ../zypp/CountryCode.cc:455
 msgid "Virgin Islands, U.S."
-msgstr "Virgin Islands (U.S.)"
+msgstr "Panenské ostrovy (U.S.)"
 
 #. language code: vol vo
 #: ../zypp/LanguageCode.cc:1180
@@ -4279,7 +4392,7 @@ msgstr "Volapük"
 #. language code: vot
 #: ../zypp/LanguageCode.cc:1182
 msgid "Votic"
-msgstr "Votština"
+msgstr "Voština"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
@@ -4296,12 +4409,12 @@ msgstr "Walamo"
 #. :VUT:548:
 #: ../zypp/CountryCode.cc:458
 msgid "Wallis and Futuna"
-msgstr "Wallis and Futuna Islands"
+msgstr "Ostrovy Wallis a Futuna"
 
 #. language code: wln wa
 #: ../zypp/LanguageCode.cc:1198
 msgid "Walloon"
-msgstr "Walloon"
+msgstr "Valonština"
 
 #. language code: war
 #: ../zypp/LanguageCode.cc:1188
@@ -4314,7 +4427,8 @@ msgid "Washo"
 msgstr "Washo"
 
 #. language code: wel cym cy
-#: ../zypp/LanguageCode.cc:1192 ../zypp/LanguageCode.cc:1194
+#: ../zypp/LanguageCode.cc:1192
+#: ../zypp/LanguageCode.cc:1194
 msgid "Welsh"
 msgstr "Welština"
 
@@ -4322,7 +4436,7 @@ msgstr "Welština"
 #. :EGY:818:
 #: ../zypp/CountryCode.cc:288
 msgid "Western Sahara"
-msgstr "Western Sahara"
+msgstr "Západní Sahara"
 
 #. language code: wol wo
 #: ../zypp/LanguageCode.cc:1200
@@ -4368,13 +4482,13 @@ msgstr "Jarubština"
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
 msgid "Yupik Languages"
-msgstr "Jazyky Yupik"
+msgstr "Jazyky yupik"
 
 # ZM
 #. :ZAF:710:
 #: ../zypp/CountryCode.cc:463
 msgid "Zambia"
-msgstr "Zambia"
+msgstr "Zambie"
 
 #. language code: znd
 #: ../zypp/LanguageCode.cc:1222
@@ -4412,80 +4526,84 @@ msgstr "Zulu"
 msgid "Zuni"
 msgstr "Zuni"
 
-#: ../zypp/repo/PackageProvider.cc:233
+#: ../zypp/repo/PackageProvider.cc:195
 msgid "applydeltarpm check failed."
 msgstr "Kontrola aplikování delta RPM se nezdařila."
 
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:212
 msgid "applydeltarpm failed."
 msgstr "Aplikování delta RPM se nezdařilo."
 
-#: ../zypp/solver/detail/SATResolver.cc:1129
+#: ../zypp/solver/detail/SATResolver.cc:1219
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr "změna architektury z %s na %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:875
+#: ../zypp/solver/detail/SATResolver.cc:935
 #, c-format
 msgid "cannot install both %s and %s"
 msgstr "Nelze nainstalovat %s a zároveň %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:859
+#: ../zypp/solver/detail/SATResolver.cc:915
 msgid "conflicting requests"
 msgstr "protichůdné požadavky"
 
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2327
+#: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
 msgstr "vytvořena záloha %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1156
+#: ../zypp/solver/detail/SATResolver.cc:1247
 #, c-format
 msgid "deinstallation of %s"
 msgstr "odstraňování %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:923
+#: ../zypp/solver/detail/SATResolver.cc:983
 msgid "deleted providers: "
 msgstr "odstranění poskytovatelé:"
 
-#: ../zypp/solver/detail/SATResolver.cc:1077
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1151
+#, c-format
 msgid "do not ask to delete all solvables providing %s"
-msgstr "Neinstalovat a nemazat příslušné závislosti"
+msgstr "neptat se na smazání všech balíčků poskytujících %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1062
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1133
+#, c-format
 msgid "do not ask to install a solvable providing %s"
-msgstr "K dispozici není žádný balíček obsahující %s"
+msgstr "neptat se na instalaci všech balíčků poskytujících %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1015
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1078
+#, c-format
 msgid "do not forbid installation of %s"
-msgstr "neinstalovat %s"
+msgstr "nezakazovat instalaci %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:994
-#: ../zypp/solver/detail/SATResolver.cc:1033
+#: ../zypp/solver/detail/SATResolver.cc:1057
+#: ../zypp/solver/detail/SATResolver.cc:1095
 #, c-format
 msgid "do not install %s"
 msgstr "neinstalovat %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1089
+#: ../zypp/solver/detail/SATResolver.cc:1164
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr "neinstalovat moc novou verzi %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:989
+#: ../zypp/solver/detail/SATResolver.cc:1052
 #, c-format
 msgid "do not keep %s installed"
 msgstr "neudržovat %s nainstalován"
 
-#: ../zypp/solver/detail/SATResolver.cc:1122
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1211
+#, c-format
 msgid "downgrade of %s to %s"
-msgstr "Aktualizace %s na %s"
+msgstr "downgrade %s na %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1136
+#: ../zypp/solver/detail/SATResolver.cc:1131
+#: ../zypp/solver/detail/SATResolver.cc:1149
+msgid "ignore the warning of a broken system"
+msgstr "ignorovat varování poškozeného systému"
+
+#: ../zypp/solver/detail/SATResolver.cc:1227
 #, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4498,8 +4616,14 @@ msgstr ""
 "-->\n"
 "  %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1010
-#: ../zypp/solver/detail/SATResolver.cc:1047
+#: ../zypp/VendorSupportOptions.cc:31
+msgid "invalid"
+msgstr "neplatné"
+
+#. for solver reason: NOT weak lock.
+#: ../zypp/solver/detail/SATResolver.cc:1073
+#: ../zypp/solver/detail/SATResolver.cc:1116
+#: ../zypp/solver/detail/SATResolver.cc:1193
 #, c-format
 msgid "keep %s"
 msgstr "ponechat %s"
@@ -4512,34 +4636,34 @@ msgstr "libhal_ctx_new: Nelze vytvořit kontext libhal."
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: Nelze nastavit připojení dbus."
 
-#: ../zypp/solver/detail/SATResolver.cc:870
+#: ../zypp/solver/detail/SATResolver.cc:930
 #, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "nic neposkytuje %s, který je požadován %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:862
+#: ../zypp/solver/detail/SATResolver.cc:921
 #, c-format
 msgid "nothing provides requested %s"
 msgstr "nic neposkytuje vyžádaný %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:856
+#: ../zypp/solver/detail/SATResolver.cc:912
 #, c-format
 msgid "problem with installed package %s"
 msgstr "problém s nainstalovaným balíčkem %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1144
+#: ../zypp/solver/detail/SATResolver.cc:1235
 #, c-format
 msgid "replacement of %s with %s"
-msgstr ""
+msgstr "nahrazení %s %s"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2046
+#: ../zypp/target/rpm/RpmDb.cc:2070
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "Program rpm vytvořil %s jako %s, ale nebylo možné zjistit rozdíl"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2048
+#: ../zypp/target/rpm/RpmDb.cc:2072
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4548,18 +4672,14 @@ msgstr ""
 "Program rpm vytvořil %s jako %s.\n"
 "Prvních odlišných 25 řádek:\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:2055 ../zypp/target/rpm/RpmDb.cc:2175
-msgid "rpm output:"
-msgstr "Výstup programu rpm:"
-
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2041
+#: ../zypp/target/rpm/RpmDb.cc:2065
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "Program rpm uložil %s jako %s, ale nebylo možné zjistit rozdíl"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2043
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4568,54 +4688,19 @@ msgstr ""
 "Program rpm uložil %s jako %s.\n"
 "Prvních 25 řádek rozdílů:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:918
+msgid "some dependency problem"
+msgstr "nějaký problém se závislostmi"
+
+#: ../zypp/solver/detail/SATResolver.cc:995
 msgid "uninstallable providers: "
 msgstr "neodinstalovatelní poskytovatelé:"
 
-#~ msgid "%s provides this dependency, but would change the architecture of the installed item"
-#~ msgstr "%s poskytuje tuto závislost, ale změní architekturu nainstalované položky"
+#: ../zypp/VendorSupportOptions.cc:14
+msgid "unknown"
+msgstr "neznámý"
 
-#~ msgid "%s provides this dependency, but would change the vendor of the installed item"
-#~ msgstr "%s poskytuje tuto závislost, ale změní dodavatele nainstalované položky"
+#: ../zypp/VendorSupportOptions.cc:17
+msgid "unsupported"
+msgstr "nepodporováno"
 
-#~ msgid "Do not install or delete the resolvables concerned"
-#~ msgstr "Neinstalovat a nemazat příslušné závislosti"
-
-#~ msgid "Ignore that %s is already set to install"
-#~ msgstr "Ignorovat nastavení %s k instalaci"
-
-#~ msgid "Ignore the obsolete %s in %s"
-#~ msgstr "Ignorovat zastaralé %s v %s"
-
-#~ msgid "Ignore this conflict of %s"
-#~ msgstr "Ignorovat konflikt %s"
-
-#~ msgid "Ignore this requirement just here"
-#~ msgstr "Ignorovat požadavky pouze nyní"
-
-#~ msgid "Install %s although it would change the architecture"
-#~ msgstr "Instalovat %s i přes změnu architektury"
-
-#~ msgid "Install %s although it would change the vendor"
-#~ msgstr "Instalovat %s i přes změnu dodavatele"
-
-#~ msgid "Install missing resolvables"
-#~ msgstr "Nainstalovat chybějící závislosti"
-
-#~ msgid "Keep resolvables"
-#~ msgstr "Ponechat"
-
-#~ msgid "Unlock these resolvables"
-#~ msgstr "Odemknout"
-
-#~ msgid "delete %s"
-#~ msgstr "smazat %s"
-
-#~ msgid "install %s"
-#~ msgstr "instalovat %s"
-
-#~ msgid "unlock %s"
-#~ msgstr "odemknout %s"
-
-#~ msgid "unlock all resolvables"
-#~ msgstr "odemknout všechny závisející balíčky"

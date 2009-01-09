@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-21 18:58+0200\n"
+"POT-Creation-Date: 2008-11-21 09:10+0100\n"
 "PO-Revision-Date: 2006-11-03 12:03\n"
 "Last-Translator: Novell Language <language@novell.com>\n"
 "Language-Team: Novell Language <language@novell.com>\n"
@@ -13,61 +13,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:933
+#: ../zypp/solver/detail/SATResolver.cc:993
 #, fuzzy
 msgid ""
 "\n"
 "uninstallable providers: "
 msgstr "Akukho baboneleli bahlohliweyo baka%s"
 
-#: ../zypp/media/MediaException.cc:214
+#: ../zypp/media/MediaException.cc:266
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:880
+#: ../zypp/target/TargetImpl.cc:88
+#, fuzzy
+msgid " executed"
+msgstr "Phumeza"
+
+#: ../zypp/target/TargetImpl.cc:110
+#, fuzzy
+msgid " execution failed"
+msgstr "DBI Execution failed: %s"
+
+#: ../zypp/target/TargetImpl.cc:196
+msgid " execution skipped while aborting"
+msgstr ""
+
+#: ../zypp/solver/detail/SATResolver.cc:940
 #, fuzzy, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s iimpixano ne %s"
 
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2054
-#, c-format
-msgid "%s install failed"
-msgstr "%s ukuhlohla kusilele"
-
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2063
-#, c-format
-msgid "%s installed ok"
-msgstr "%s ukuhlohla kulungile"
-
-#: ../zypp/solver/detail/SATResolver.cc:866
+#: ../zypp/solver/detail/SATResolver.cc:926
 #, fuzzy, c-format
 msgid "%s is not installable"
 msgstr "ayihlohlwanga"
 
-#: ../zypp/solver/detail/SATResolver.cc:885
+#: ../zypp/solver/detail/SATResolver.cc:945
 #, fuzzy, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%s ziphelelwe lixehsa %s"
 
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2174
-#, c-format
-msgid "%s remove failed"
-msgstr "%s ukushenxisa kusilele"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2182
-#, c-format
-msgid "%s remove ok"
-msgstr "%s ukushenxisa kulungile"
-
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:981
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr ""
@@ -92,14 +79,14 @@ msgstr "isi-Acoli"
 msgid "Adangme"
 msgstr "isi-Adangme"
 
-#: ../zypp/RepoManager.cc:1007
+#: ../zypp/RepoManager.cc:1198
 #, c-format
 msgid "Adding repository '%s'"
 msgstr ""
 
-#: ../zypp/target/rpm/RpmDb.cc:2066 ../zypp/target/rpm/RpmDb.cc:2185
-msgid "Additional rpm output:"
-msgstr "Isivelisi se-rpm Esongezelelweyo:"
+#: ../zypp/VendorSupportOptions.cc:29
+msgid "Additional Customer Contract Necessary"
+msgstr ""
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -190,6 +177,10 @@ msgstr "i-American Samoa"
 #: ../zypp/LanguageCode.cc:272
 msgid "Amharic"
 msgstr "isi-Amharic"
+
+#: ../zypp/VendorSupportOptions.cc:54
+msgid "An additional customer contract is necessary for getting support."
+msgstr ""
 
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
@@ -310,7 +301,8 @@ msgstr "i-Austria"
 msgid "Austronesian (Other)"
 msgstr "isi-Austronesian (Esinye)"
 
-#: ../zypp/media/MediaCurl.cc:761 ../zypp/media/MediaCurl.cc:829
+#. !\todo add comma to the message for the next release
+#: ../zypp/media/MediaCurl.cc:1702
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr ""
@@ -574,7 +566,7 @@ msgstr "i-Brunei Darussalam"
 msgid "Buginese"
 msgstr "isi-Buginese"
 
-#: ../zypp/RepoManager.cc:719
+#: ../zypp/RepoManager.cc:966
 #, c-format
 msgid "Building repository '%s' cache"
 msgstr ""
@@ -624,7 +616,7 @@ msgstr "i-Cambodia"
 msgid "Cameroon"
 msgstr "i-Cameroon"
 
-#: ../zypp/sat/detail/PoolImpl.cc:147
+#: ../zypp/sat/detail/PoolImpl.cc:156
 #, fuzzy
 msgid "Can not create sat-pool."
 msgstr "Ayikwazi kudaleka ifayili."
@@ -633,23 +625,23 @@ msgstr "Ayikwazi kudaleka ifayili."
 msgid "Can't acquire the mutex lock"
 msgstr "Ayikwazi kufumana isitshixo se-mutex"
 
-#: ../zypp/ExternalProgram.cc:245
+#: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:238
+#: ../zypp/ExternalProgram.cc:294
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr ""
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:259
+#: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:267
+#: ../zypp/ExternalProgram.cc:323
 #, fuzzy, c-format
 msgid "Can't fork (%s)."
 msgstr "Ayikwazi kufumana %s."
@@ -667,12 +659,12 @@ msgstr "Ayikwazi kundulula i-mutex yokugoba"
 msgid "Can't open lock file: %s"
 msgstr "Ayikwazi kuvuleka ifayili %1."
 
-#: ../zypp/ExternalProgram.cc:174
+#: ../zypp/ExternalProgram.cc:230
 #, fuzzy, c-format
 msgid "Can't open pipe (%s)."
 msgstr "Ayikwazi kuvuleka ifayili %1."
 
-#: ../zypp/ExternalProgram.cc:163
+#: ../zypp/ExternalProgram.cc:219
 #, fuzzy, c-format
 msgid "Can't open pty (%s)."
 msgstr "Couldn't open file: %s."
@@ -695,19 +687,24 @@ msgstr "Ayikwazi kumisela ulwabelo lokugoba i-mutex "
 msgid "Canada"
 msgstr "i-Canada"
 
-#: ../zypp/KeyRing.cc:276
+#: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:182
+#: ../zypp/media/MediaException.cc:234
 msgid "Cannot eject any media"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:184
+#: ../zypp/media/MediaException.cc:236
 #, fuzzy, c-format
 msgid "Cannot eject media '%s'"
 msgstr "Ayikwazi kuvuleka into yolwazi olusesikrinini '%s'"
+
+#: ../zypp/media/MediaException.cc:273
+#, c-format
+msgid "Cannot find available loop device to mount the image file from '%s'"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:67
 #, fuzzy, c-format
@@ -781,7 +778,7 @@ msgstr "isi-Chamorro"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1877
+#: ../zypp/target/rpm/RpmDb.cc:1896
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "Iifayili zobumbeko ezitshintshileyo zika%s:"
@@ -876,17 +873,17 @@ msgstr "i-Cocos (Keeling) Islands"
 msgid "Colombia"
 msgstr "i-Colombia"
 
-#: ../zypp/ExternalProgram.cc:346
+#: ../zypp/ExternalProgram.cc:402
 #, c-format
 msgid "Command exited with status %d."
 msgstr ""
 
-#: ../zypp/ExternalProgram.cc:371
+#: ../zypp/ExternalProgram.cc:427
 #, fuzzy
 msgid "Command exited with unknown error."
 msgstr "Umyalelo okhutshwa xa kudityaniswa"
 
-#: ../zypp/ExternalProgram.cc:366
+#: ../zypp/ExternalProgram.cc:422
 #, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr ""
@@ -1067,7 +1064,13 @@ msgstr "i-Dominica"
 msgid "Dominican Republic"
 msgstr "i-Dominican Republic"
 
-#: ../zypp/media/MediaException.cc:152
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#, c-format
+msgid "Download (Metalink curl) initialization failed for '%s'"
+msgstr ""
+
+#: ../zypp/media/MediaException.cc:168
 #, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -1081,6 +1084,14 @@ msgstr ""
 msgid "Download (curl) initialization failed for '%s'"
 msgstr ""
 
+#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
+#, c-format
+msgid ""
+"Download (metalink curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr ""
+
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
@@ -1092,7 +1103,7 @@ msgid "Duala"
 msgstr "isi-Duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:97
+#: ../zypp/CheckSum.cc:98
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr ""
@@ -1157,15 +1168,15 @@ msgstr "i-El Salvador"
 msgid "Elamite"
 msgstr "isi-Elamite"
 
-#: ../zypp/media/MediaException.cc:135
+#: ../zypp/media/MediaException.cc:151
 msgid "Empty destination in URI"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:130
+#: ../zypp/media/MediaException.cc:146
 msgid "Empty filesystem in URI"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:125
+#: ../zypp/media/MediaException.cc:141
 #, fuzzy
 msgid "Empty host name in URI"
 msgstr "Igama le-CA elikhamte."
@@ -1200,9 +1211,15 @@ msgid "Eritrea"
 msgstr "i-Ertrea"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:177
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
+msgstr ""
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
+#, c-format
+msgid "Error occurred while setting download (metalink curl) options for '%s':"
 msgstr ""
 
 #. language code: myv
@@ -1240,12 +1257,12 @@ msgstr "isi-Ewe"
 msgid "Ewondo"
 msgstr "isi-Ewondo"
 
-#: ../zypp/KeyRing.cc:558
+#: ../zypp/KeyRing.cc:577
 #, fuzzy
 msgid "Failed to delete key."
 msgstr "Isilele ukuqalisa i-VM."
 
-#: ../zypp/target/rpm/RpmDb.cc:1045
+#: ../zypp/target/rpm/RpmDb.cc:1064
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr ""
@@ -1255,7 +1272,7 @@ msgstr ""
 msgid "Failed to mount %s on %s"
 msgstr "Ayikwazanga kuvuleka i-%s - %s\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:1122
+#: ../zypp/target/rpm/RpmDb.cc:1141
 #, fuzzy, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "Akukwazeki ukufumana iqhosha likawonkewonke."
@@ -1390,7 +1407,7 @@ msgstr "isiFinnish"
 msgid "Finno-Ugrian (Other)"
 msgstr "isi-Finno-Ugrian (Esinye)"
 
-#: ../zypp/solver/detail/ProblemSolutionCombi.cc:73
+#: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
 msgid "Following actions will be done:"
 msgstr ""
 
@@ -1676,6 +1693,10 @@ msgstr "Isixa se-Hal asindululwanga"
 msgid "Hausa"
 msgstr "isi-Hausa"
 
+#: ../zypp/solver/detail/SATResolver.cc:922
+msgid "Have you enabled all requested repositories?"
+msgstr ""
+
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
@@ -1837,7 +1858,7 @@ msgstr "isi-Indonesian"
 msgid "Ingush"
 msgstr "isi-Ingush"
 
-#: ../zypp/target/TargetImpl.cc:762
+#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
 msgid "Installation has been aborted as directed."
 msgstr "Ukuhlohla kuye kwalahlwa njengoko bekuyalelwe."
 
@@ -1911,15 +1932,10 @@ msgstr "Uphawu oluthatha isithuba somhlukanisi oqhekezayo woludwe lomda wenkcaze
 msgid "Invalid port component '%s'"
 msgstr "Ayisebenziseki inxalenye yesiqhagamshelanisi se-'%s'"
 
-#: ../zypp/PoolQuery.cc:419
+#: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
-
-#: ../zypp/media/MediaCurl.cc:758 ../zypp/media/MediaCurl.cc:826
-#, fuzzy
-msgid "Invalid user name or password."
-msgstr "Guqula igama lokugqithisa lakho"
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2266,6 +2282,18 @@ msgstr "i-Lebanon"
 msgid "Lesotho"
 msgstr "i-Lesotho"
 
+#: ../zypp/VendorSupportOptions.cc:20
+msgid "Level 1"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:23
+msgid "Level 2"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:26
+msgid "Level 3"
+msgstr ""
+
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
@@ -2441,7 +2469,7 @@ msgstr "i-Malaysia"
 msgid "Maldives"
 msgstr "i-Maldives"
 
-#: ../zypp/media/MediaException.cc:115
+#: ../zypp/media/MediaException.cc:131
 msgid "Malformed URI"
 msgstr ""
 
@@ -2550,12 +2578,12 @@ msgstr "Iilwimi zesi-Mayan"
 msgid "Mayotte"
 msgstr "i-Mayotte"
 
-#: ../zypp/media/MediaException.cc:169
+#: ../zypp/media/MediaException.cc:221
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:175
+#: ../zypp/media/MediaException.cc:227
 #, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr ""
@@ -2915,7 +2943,12 @@ msgstr "isi-Ojibwa"
 msgid "Oman"
 msgstr "i-Oman"
 
-#: ../zypp/media/MediaException.cc:145
+#: ../zypp/parser/RepoindexFileReader.cc:116
+#, c-format
+msgid "One or both of '%s' or '%s' attributes is required."
+msgstr ""
+
+#: ../zypp/media/MediaException.cc:161
 msgid "Operation not supported by medium"
 msgstr ""
 
@@ -2945,9 +2978,9 @@ msgid "Otomian Languages"
 msgstr "Iilwimi zesi-Otomian"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:314
+#: ../zypp/repo/PackageProvider.cc:247
 #, fuzzy, c-format
-msgid "Package %s fails integrity check. Do you want to retry?"
+msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
 msgstr "Umbekelo%s usilele ukukhangela imfezekiso. Ingaba usafuna ukuzama kwakhona ukuyikhuphela?"
 
 #. language code: pal
@@ -3020,17 +3053,17 @@ msgstr "isi-Papuan (Esinye)"
 msgid "Paraguay"
 msgstr "i-Paraguay"
 
-#: ../zypp/media/MediaException.cc:106
+#: ../zypp/media/MediaException.cc:122
 #, fuzzy, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "%1 asingovimba weefayili."
 
-#: ../zypp/media/MediaException.cc:98
+#: ../zypp/media/MediaException.cc:114
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:200
+#: ../zypp/media/MediaException.cc:252
 #, fuzzy, c-format
 msgid "Permission to access '%s' denied."
 msgstr "Iimvume zaliwe"
@@ -3100,6 +3133,18 @@ msgstr "isiPhuthukezi"
 msgid "Prakrit Languages"
 msgstr "Iilwimi zesi-Prakrit"
 
+#: ../zypp/VendorSupportOptions.cc:45
+msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:48
+msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:51
+msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
+msgstr ""
+
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
@@ -3130,8 +3175,9 @@ msgid "Query string parsing not supported for this URL"
 msgstr "Ukwahlulwa komtya wokubuzisa awuxhaswa malunga nale-URL"
 
 #. TranslatorExplanation after semicolon is error message
-#: ../zypp/target/rpm/RpmDb.cc:888 ../zypp/target/rpm/RpmDb.cc:2057
-#: ../zypp/target/rpm/RpmDb.cc:2177
+#. TranslatorExplanation the colon is followed by an error message
+#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
+#: ../zypp/target/rpm/RpmDb.cc:2220
 #, fuzzy
 msgid "RPM failed: "
 msgstr "isilele"
@@ -3160,13 +3206,14 @@ msgstr "isi-Ratongan"
 msgid "Relative path not allowed if authority exists"
 msgstr "Indlela yothungelwano ethelekisekayo ayivunyelwa xa lukhona ugunyaziso"
 
-#: ../zypp/RepoManager.cc:1114
+#: ../zypp/RepoManager.cc:1328
 #, fuzzy, c-format
 msgid "Removing repository '%s'"
 msgstr "Ibuyisela oovimba"
 
-#: ../zypp/parser/susetags/RepoParser.cc:232
-msgid "Required file is missing: "
+#: ../zypp/parser/RepoindexFileReader.cc:128
+#, c-format
+msgid "Required attribute '%s' is missing."
 msgstr ""
 
 #. :QAT:634:
@@ -3384,7 +3431,7 @@ msgstr "i-Sierra Leone"
 msgid "Sign Languages"
 msgstr "Iilwimi zeMiqondiso"
 
-#: ../zypp/KeyRing.cc:568
+#: ../zypp/KeyRing.cc:587
 #, fuzzy, c-format
 msgid "Signature file %s not found"
 msgstr "Ukungenisa akufunyenwanga."
@@ -3464,7 +3511,7 @@ msgstr "isi-Sogdian"
 msgid "Solomon Islands"
 msgstr "i-Solomon Islands"
 
-#: ../zypp/solver/detail/SATResolver.cc:889
+#: ../zypp/solver/detail/SATResolver.cc:949
 #, fuzzy, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "%s iimpixano ne %s"
@@ -3619,14 +3666,16 @@ msgstr "i-Syria"
 msgid "Syriac"
 msgstr "isi-Syriac"
 
-#: ../zypp/media/MediaException.cc:91
+#: ../zypp/media/MediaException.cc:107
 #, c-format
 msgid "System exception '%s' on medium '%s'."
 msgstr ""
 
-#: ../zypp/ZYppFactory.cc:354
+#: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid "System management is locked by the application with pid %d. Please close this application before trying again."
+msgid ""
+"System management is locked by the application with pid %d (%s).\n"
+"Close this application before trying again."
 msgstr ""
 
 #. language code: tgl tl
@@ -3704,9 +3753,24 @@ msgstr "isi-Thai"
 msgid "Thailand"
 msgstr "i-Thailand"
 
+#: ../zypp/VendorSupportOptions.cc:39
+msgid "The level of support is unspecified"
+msgstr ""
+
+#: ../zypp/VendorSupportOptions.cc:42
+#, fuzzy
+msgid "The vendor does not provide support."
+msgstr "Idiski ayikho."
+
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
 msgstr ""
+
+#: ../zypp/solver/detail/SATResolver.cc:1130
+#: ../zypp/solver/detail/SATResolver.cc:1148
+#, fuzzy
+msgid "This request will break your system!"
+msgstr "Isicelo sesikhona kakade."
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3723,7 +3787,7 @@ msgstr "isi-Tigre"
 msgid "Tigrinya"
 msgstr "isi-Tigrinya"
 
-#: ../zypp/media/MediaException.cc:207
+#: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr ""
@@ -3774,7 +3838,7 @@ msgstr "isiTonga (Nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "isi-Tonga (Tonga Islands)"
 
-#: ../zypp/KeyRing.cc:507
+#: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
 msgstr ""
@@ -3936,6 +4000,11 @@ msgstr "i-United States"
 msgid "United States Minor Outlying Islands"
 msgstr "i-United States Minor Outlying Islands"
 
+#: ../zypp/target/TargetImpl.cc:997
+#, fuzzy
+msgid "Unknown Distribution"
+msgstr "Isikhethwa soluhlu esingaziwa"
+
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
 msgstr "Ilizwe elingaziwa:"
@@ -3944,12 +4013,16 @@ msgstr "Ilizwe elingaziwa:"
 msgid "Unknown language: "
 msgstr "Ulwimi Olungaziwayo:"
 
-#: ../zypp/media/MediaUserAuth.cc:97
+#: ../zypp/VendorSupportOptions.cc:56
+msgid "Unknown support option. Description not available"
+msgstr ""
+
+#: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr ""
 
-#: ../zypp/media/MediaException.cc:140
+#: ../zypp/media/MediaException.cc:156
 #, fuzzy, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "Isicwangciso se-Url asisebenziseki '%1'"
@@ -4029,7 +4102,7 @@ msgid "Vai"
 msgstr "isi-Vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:526
+#: ../zypp/RepoManager.cc:778
 msgid "Valid metadata not found at specified URL(s)"
 msgstr ""
 
@@ -4198,82 +4271,86 @@ msgstr "IsiZulu"
 msgid "Zuni"
 msgstr "isiZuni"
 
-#: ../zypp/repo/PackageProvider.cc:233
+#: ../zypp/repo/PackageProvider.cc:195
 msgid "applydeltarpm check failed."
 msgstr "kusilele ukukhangela ukusetyenziswa kwe-deltarpm. "
 
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:212
 msgid "applydeltarpm failed."
 msgstr "kusilele ukusetyenziswa kwe-deltarpm."
 
-#: ../zypp/solver/detail/SATResolver.cc:1129
+#: ../zypp/solver/detail/SATResolver.cc:1219
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:875
+#: ../zypp/solver/detail/SATResolver.cc:935
 #, fuzzy, c-format
 msgid "cannot install both %s and %s"
 msgstr "Ayikwazi kuhlohla%s "
 
-#: ../zypp/solver/detail/SATResolver.cc:859
+#: ../zypp/solver/detail/SATResolver.cc:915
 #, fuzzy
 msgid "conflicting requests"
 msgstr "Uqhagamshelo lucela uku:"
 
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2327
+#: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
 msgstr "idale ugcino olukhuselekileyo %s "
 
-#: ../zypp/solver/detail/SATResolver.cc:1156
+#: ../zypp/solver/detail/SATResolver.cc:1247
 #, fuzzy, c-format
 msgid "deinstallation of %s"
 msgstr "Ukuhlohla"
 
-#: ../zypp/solver/detail/SATResolver.cc:923
+#: ../zypp/solver/detail/SATResolver.cc:983
 #, fuzzy
 msgid "deleted providers: "
 msgstr "Akukho nanye ebonelela ngo%s "
 
-#: ../zypp/solver/detail/SATResolver.cc:1077
+#: ../zypp/solver/detail/SATResolver.cc:1151
 #, fuzzy, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "Ungahlohli okanye cima izicombululi ezinxulumeneyo"
 
-#: ../zypp/solver/detail/SATResolver.cc:1062
+#: ../zypp/solver/detail/SATResolver.cc:1133
 #, fuzzy, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "Akukho baboneleli bahlohliweyo baka%s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1015
+#: ../zypp/solver/detail/SATResolver.cc:1078
 #, fuzzy, c-format
 msgid "do not forbid installation of %s"
 msgstr "ungahlohli %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:994
-#: ../zypp/solver/detail/SATResolver.cc:1033
+#: ../zypp/solver/detail/SATResolver.cc:1057
+#: ../zypp/solver/detail/SATResolver.cc:1095
 #, c-format
 msgid "do not install %s"
 msgstr "ungahlohli %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1089
+#: ../zypp/solver/detail/SATResolver.cc:1164
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:989
+#: ../zypp/solver/detail/SATResolver.cc:1052
 #, fuzzy, c-format
 msgid "do not keep %s installed"
 msgstr "ayihlohlwanga"
 
-#: ../zypp/solver/detail/SATResolver.cc:1122
+#: ../zypp/solver/detail/SATResolver.cc:1211
 #, fuzzy, c-format
 msgid "downgrade of %s to %s"
 msgstr "Ikhuphele%s ukusuka ku%s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1136
+#: ../zypp/solver/detail/SATResolver.cc:1131
+#: ../zypp/solver/detail/SATResolver.cc:1149
+msgid "ignore the warning of a broken system"
+msgstr ""
+
+#: ../zypp/solver/detail/SATResolver.cc:1227
 #, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4282,8 +4359,14 @@ msgid ""
 "  %s"
 msgstr ""
 
-#: ../zypp/solver/detail/SATResolver.cc:1010
-#: ../zypp/solver/detail/SATResolver.cc:1047
+#: ../zypp/VendorSupportOptions.cc:31
+msgid "invalid"
+msgstr ""
+
+#. for solver reason: NOT weak lock.
+#: ../zypp/solver/detail/SATResolver.cc:1073
+#: ../zypp/solver/detail/SATResolver.cc:1116
+#: ../zypp/solver/detail/SATResolver.cc:1193
 #, c-format
 msgid "keep %s"
 msgstr "Gcina%s"
@@ -4296,34 +4379,34 @@ msgstr "i-libhal_ctx_entsha: Ayikwazu kudala imeko ye-libhal"
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "i-libhal_imisela_uqhagamshelo_lwe-dbus: Ayikwazi kumesela uqhagamshelo lwe-dbus "
 
-#: ../zypp/solver/detail/SATResolver.cc:870
+#: ../zypp/solver/detail/SATResolver.cc:930
 #, fuzzy, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "%s ifunwa ngu %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:862
+#: ../zypp/solver/detail/SATResolver.cc:921
 #, fuzzy, c-format
 msgid "nothing provides requested %s"
 msgstr "Akukho nanye ebonelela ngo%s "
 
-#: ../zypp/solver/detail/SATResolver.cc:856
+#: ../zypp/solver/detail/SATResolver.cc:912
 #, fuzzy, c-format
 msgid "problem with installed package %s"
 msgstr "umyalelo wokuyeka ukuhlohla imibekelelo"
 
-#: ../zypp/solver/detail/SATResolver.cc:1144
+#: ../zypp/solver/detail/SATResolver.cc:1235
 #, c-format
 msgid "replacement of %s with %s"
 msgstr ""
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2046
+#: ../zypp/target/rpm/RpmDb.cc:2070
 #, fuzzy, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "i-rpm idalwe %s njenge %s kodwa kwakungenzeki ukumisela umahluko"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2048
+#: ../zypp/target/rpm/RpmDb.cc:2072
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4332,18 +4415,14 @@ msgstr ""
 "i-rpm idalwe %s njenge %s.\n"
 "Nantsi imigca eyi-25 yokuqala yomahluko:\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:2055 ../zypp/target/rpm/RpmDb.cc:2175
-msgid "rpm output:"
-msgstr "isivelisi se-rpm:"
-
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2041
+#: ../zypp/target/rpm/RpmDb.cc:2065
 #, fuzzy, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "i-rpm igcine %s njenge %s kodwa kwakungenzeki ukumisela umahluko"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2043
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4352,10 +4431,45 @@ msgstr ""
 "i-rpm igcinwe %s njenge %s.\n"
 "Nantsi imigca eyi-25 yokuqala yomahluko:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:918
+#, fuzzy
+msgid "some dependency problem"
+msgstr "Ayikwazi kuhlohla%s ngenxa yeengxaki zoxhomekeko"
+
+#: ../zypp/solver/detail/SATResolver.cc:995
 #, fuzzy
 msgid "uninstallable providers: "
 msgstr "Akukho baboneleli bahlohliweyo baka%s"
+
+#: ../zypp/VendorSupportOptions.cc:14
+msgid "unknown"
+msgstr "akwaziwa"
+
+#: ../zypp/VendorSupportOptions.cc:17
+msgid "unsupported"
+msgstr ""
+
+#~ msgid "%s remove failed"
+#~ msgstr "%s ukushenxisa kusilele"
+
+#~ msgid "Additional rpm output:"
+#~ msgstr "Isivelisi se-rpm Esongezelelweyo:"
+
+#, fuzzy
+#~ msgid "Invalid user name or password."
+#~ msgstr "Guqula igama lokugqithisa lakho"
+
+#~ msgid "rpm output:"
+#~ msgstr "isivelisi se-rpm:"
+
+#~ msgid "%s install failed"
+#~ msgstr "%s ukuhlohla kusilele"
+
+#~ msgid "%s installed ok"
+#~ msgstr "%s ukuhlohla kulungile"
+
+#~ msgid "%s remove ok"
+#~ msgstr "%s ukushenxisa kulungile"
 
 #, fuzzy
 #~ msgid "%s provides this dependency, but would change the architecture of the installed item"
@@ -4508,9 +4622,6 @@ msgstr "Akukho baboneleli bahlohliweyo baka%s"
 
 #~ msgid "%s is not installed and has been marked as uninstallable"
 #~ msgstr "%s ayihlohlwanga kwaye iphawulwe njengengahlohleki"
-
-#~ msgid "Cannot install %s due to dependency problems"
-#~ msgstr "Ayikwazi kuhlohla%s ngenxa yeengxaki zoxhomekeko"
 
 #~ msgid "%s has unfulfilled requirements"
 #~ msgstr "%s inemfuneko ezingazalisekiswanga"

@@ -1083,7 +1083,15 @@ bool MediaCurl::doGetDoesFileExist( const Pathname & filename ) const
             else
             if ( httpReturnCode == 403) // access denied
             {
-               ZYPP_THROW(MediaForbiddenException(url));
+               string msg403;
+               if (url.asString().find("novell.com") != string::npos)
+                 msg403 = str::form(_(
+                   "Permission to access '%s' denied.\n\n"
+                   "Visit the Novell Customer Center to check whether"
+                   " your registration is valid and has not expired."),
+                   url.asString().c_str());
+
+               ZYPP_THROW(MediaForbiddenException(url, msg403));
             }
             else
             if ( httpReturnCode == 404) // not found
@@ -1320,7 +1328,15 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
               else
               if ( httpReturnCode == 403)
               {
-                 ZYPP_THROW(MediaForbiddenException(url));
+                 string msg403;
+                 if (url.asString().find("novell.com") != string::npos)
+                   msg403 = str::form(_(
+                     "Permission to access '%s' denied.\n\n"
+                     "Visit the Novell Customer Center to check whether"
+                     " your registration is valid and has not expired."),
+                     url.asString().c_str());
+
+                 ZYPP_THROW(MediaForbiddenException(url, msg403));
               }
               else
               if ( httpReturnCode == 404)

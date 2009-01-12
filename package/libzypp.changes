@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 12 10:09:55 CET 2009 - jkupec@suse.cz
+
+- Advice users to contact NCC if access to a 'novell.com'
+  repository is denied (bnc #464586).
+- version 5.25.2
+
+-------------------------------------------------------------------
 Fri Jan  9 16:43:40 CET 2009 - schubi@suse.de
 
 - update translations

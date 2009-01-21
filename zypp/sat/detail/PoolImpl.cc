@@ -134,7 +134,6 @@ namespace zypp
           case NAMESPACE_PRODUCTBUDDY:
           {
             PoolItem pi( (Solvable(rhs)) );
-            INT << "NAMESPACE_PRODUCTBUDDY " << pi << " ==> " << Solvable( pi ? pi.buddy().id() : noId ) << endl;
             return( pi ? pi.buddy().id() : noId );
           }
 

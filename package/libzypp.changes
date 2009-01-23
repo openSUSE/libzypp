@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 23 12:23:16 CET 2009 - ma@suse.de
+
+- Fix handling of plaindir repos on mounted devices (e.g. USB) (bnc #464778)
+- Fix plaindir checksum computation not to to follow symlinks (bnc #464778)
+- version 5.26.0 (23)
+
+-------------------------------------------------------------------
 Wed Jan 21 16:29:13 CET 2009 - ma@suse.de
 
 - Tell satsolver about product buddies (bnc #466565)

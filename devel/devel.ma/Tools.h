@@ -165,7 +165,7 @@ ui::Selectable::Ptr getSel( const std::string & name_r )
 
 
 template<class _Res>
-PoolItem getPi( const std::string & alias_r, const std::string & name_r, const Edition & ed_r, const Arch & arch_r )
+PoolItem getPi( const std::string & alias_r, const std::string & name_r, const Edition & ed_r=Edition(), const Arch & arch_r=Arch_empty )
 {
   PoolItem ret;
   ResPool pool( getZYpp()->pool() );

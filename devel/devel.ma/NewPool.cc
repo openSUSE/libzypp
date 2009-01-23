@@ -243,16 +243,24 @@ inline bool g( const NameKindProxy & nkp, Arch arch = Arch() )
 
 ///////////////////////////////////////////////////////////////////
 
+void testcase()
+{
+  getZYpp()->resolver()->createSolverTestcase( "./solverTestcase" );
+}
+
 bool solve()
 {
   bool rres = false;
   {
     //zypp::base::LogControl::TmpLineWriter shutUp;
+    getZYpp()->resolver()->setIgnoreAlreadyRecommended( true );
     rres = getZYpp()->resolver()->resolvePool();
   }
   if ( ! rres )
   {
     ERR << "resolve " << rres << endl;
+    getZYpp()->resolver()->problems();
+    testcase();
     return false;
   }
   MIL << "resolve " << rres << endl;
@@ -266,11 +274,6 @@ bool install()
   pol.rpmInstFlags( pol.rpmInstFlags().setFlag( target::rpm::RPMINST_JUSTDB ) );
   SEC << getZYpp()->commit( pol ) << endl;
   return true;
-}
-
-void testcase()
-{
-  getZYpp()->resolver()->createSolverTestcase( "./solverTestcase" );
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -449,7 +452,7 @@ try {
     Measure x( "INIT TARGET" );
     {
       {
-        //zypp::base::LogControl::TmpLineWriter shutUp;
+        zypp::base::LogControl::TmpLineWriter shutUp;
         getZYpp()->initializeTarget( sysRoot );
       }
       getZYpp()->target()->load();
@@ -550,27 +553,21 @@ try {
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
-  if ( 0 )
-  {
-    PoolItem pi ( getPi<Patch>("xorg-x11-Xvnc") );
-    MIL << pi << endl;
-    if ( pi )
-    {
-      Patch::constPtr p( pi->asKind<Patch>() );
-      INT << p->contents() << endl;
-    }
-  }
+  dumpRange( MIL, pool.byKindBegin<Product>(), pool.byKindEnd<Product>() ) << endl;
+  //getZYpp()->resolver()->addConflict( Capability("product:openSUSE.i586") );
+  //getZYpp()->resolver()->addConflict( Capability("openSUSE-release") );
 
-  SEC << "baseproduct:               " << getZYpp()->target()->baseProduct() << endl;
+  getZYpp()->resolver()->addRequire( Capability("product:openSUSE.i586") );
+  //getZYpp()->resolver()->addRequire( Capability("openSUSE-release") );
 
-
-#if 0
-  getZYpp()->resolver()->addRequire( Capability("amarok") );
+  vdumpPoolStats( USR << "Transacting:"<< endl,
+                  make_filter_begin<resfilter::ByTransact>(pool),
+                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
   solve();
   vdumpPoolStats( USR << "Transacting:"<< endl,
                   make_filter_begin<resfilter::ByTransact>(pool),
                   make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-#endif
+
 
   //////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;
@@ -583,5 +580,3 @@ catch ( const Exception & exp )
 }
 catch (...)
 {}
-
-

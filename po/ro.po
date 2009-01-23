@@ -1,16 +1,18 @@
+
 # Andrei Cipu <traduceri@strainu.ro>, 2008
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenSUSE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-21 09:10+0100\n"
-"PO-Revision-Date: 2008-10-09 13:33+0200\n"
-"Last-Translator: Andrei Cipu <traduceri@strainu.ro>\n"
+"PO-Revision-Date: 2008-10-28 12:36-0700\n"
+"Last-Translator: strainu <strainu@suseromania.ro>\n"
 "Language-Team: Romanian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2;\n"
+"Plural-Forms:  nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
 "X-Generator: Narro 0.9.2 on http://narro.i18n.ro\n"
 
 #: ../zypp/solver/detail/SATResolver.cc:993
@@ -18,45 +20,43 @@ msgid ""
 "\n"
 "uninstallable providers: "
 msgstr ""
-"\n"
-"furnizori ce pot fi dezinstalați: "
 
 #: ../zypp/media/MediaException.cc:266
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr "Problemă de certificat SSL, verificați dacă certificatul autorității de certificare este OK pentru '%s'."
+msgstr ""
 
 #: ../zypp/target/TargetImpl.cc:88
 msgid " executed"
-msgstr " executat"
+msgstr ""
 
 #: ../zypp/target/TargetImpl.cc:110
 msgid " execution failed"
-msgstr " execuție eșuată"
+msgstr ""
 
 #: ../zypp/target/TargetImpl.cc:196
 msgid " execution skipped while aborting"
-msgstr ""
+msgstr " execuție sărită în timpul anulării"
 
 #: ../zypp/solver/detail/SATResolver.cc:940
 #, c-format
 msgid "%s conflicts with %s provided by %s"
-msgstr "%s intră în conflict cu %s pus la dispoziție de %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:926
 #, c-format
 msgid "%s is not installable"
-msgstr "%s nu este instalabil"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:945
 #, c-format
 msgid "%s obsoletes %s provided by %s"
-msgstr "%s înlocuiește %s oferit de %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:981
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
-msgstr "%s cere %s, dar această cerință nu poate fi furnizată"
+msgstr ""
 
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
@@ -81,7 +81,7 @@ msgstr "Adangme"
 #: ../zypp/RepoManager.cc:1198
 #, c-format
 msgid "Adding repository '%s'"
-msgstr "Adaug sursa de instalare '%s'"
+msgstr ""
 
 #: ../zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
@@ -304,7 +304,7 @@ msgstr "Austroneziană (alta)"
 #: ../zypp/media/MediaCurl.cc:1702
 #, c-format
 msgid "Authentication required for '%s'"
-msgstr "Pentru '%s' este necesară autentificarea"
+msgstr ""
 
 #. language code: ava av
 #: ../zypp/LanguageCode.cc:304
@@ -568,7 +568,7 @@ msgstr "Buginese"
 #: ../zypp/RepoManager.cc:966
 #, c-format
 msgid "Building repository '%s' cache"
-msgstr "Construirea cache-ului sursei '% s'"
+msgstr ""
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:246
@@ -617,7 +617,7 @@ msgstr "Camerun"
 
 #: ../zypp/sat/detail/PoolImpl.cc:156
 msgid "Can not create sat-pool."
-msgstr "Nu pot crea sat-pool."
+msgstr ""
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
@@ -626,7 +626,7 @@ msgstr "Nu pot obține zăvorul mutex-ului"
 #: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
-msgstr "Nu pot efectua chdir spre '/' în chroot (%s)."
+msgstr ""
 
 #: ../zypp/ExternalProgram.cc:294
 #, c-format
@@ -637,12 +637,12 @@ msgstr ""
 #: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
-msgstr "Nu pot executa '%s' (%s)."
+msgstr ""
 
 #: ../zypp/ExternalProgram.cc:323
 #, c-format
 msgid "Can't fork (%s)."
-msgstr "Nu pot crea un proces nou (%s)."
+msgstr ""
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -660,12 +660,12 @@ msgstr "Nu pot deschide fișierul zăvor: %s"
 #: ../zypp/ExternalProgram.cc:230
 #, c-format
 msgid "Can't open pipe (%s)."
-msgstr "Nu pot deschide pipe-ul (%s)."
+msgstr ""
 
 #: ../zypp/ExternalProgram.cc:219
 #, c-format
 msgid "Can't open pty (%s)."
-msgstr "Nu pot deschide pty (%s)."
+msgstr ""
 
 #: ../zypp/repo/RepoProvideFile.cc:216
 #, c-format
@@ -688,16 +688,16 @@ msgstr "Canada"
 #: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
-msgstr "Nu pot crea cheia publică %s din keyring-ul %s pe fișierul %s"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:234
 msgid "Cannot eject any media"
-msgstr "Nu pot ejecta nici un mediu"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:236
 #, c-format
 msgid "Cannot eject media '%s'"
-msgstr "Nu pot ejecta mediul '%s'"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:273
 #, c-format
@@ -874,16 +874,16 @@ msgstr "Columbia"
 #: ../zypp/ExternalProgram.cc:402
 #, c-format
 msgid "Command exited with status %d."
-msgstr "Comandă finalizată cu starea %d."
+msgstr ""
 
 #: ../zypp/ExternalProgram.cc:427
 msgid "Command exited with unknown error."
-msgstr "Comandă finalizată cu eroare necunoscută."
+msgstr ""
 
 #: ../zypp/ExternalProgram.cc:422
 #, c-format
 msgid "Command was killed by signal %d (%s)."
-msgstr "Comanda a fost oprită de semnalul %d(%s)."
+msgstr ""
 
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:339
@@ -1063,9 +1063,9 @@ msgstr "Republica Dominicană"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
-#, fuzzy, c-format
+#, c-format
 msgid "Download (Metalink curl) initialization failed for '%s'"
-msgstr "Inițializarea download-ului (curl) a eșuat pentru '%s'"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:168
 #, c-format
@@ -1074,9 +1074,6 @@ msgid ""
 "Error code: %s\n"
 "Error message: %s\n"
 msgstr ""
-"Eroare de descărcare (curl) pentru '%s':\n"
-"Cod eroare: %s\n"
-"Mesaj eroare: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
@@ -1085,15 +1082,12 @@ msgid "Download (curl) initialization failed for '%s'"
 msgstr "Inițializarea download-ului (curl) a eșuat pentru '%s'"
 
 #: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Download (metalink curl) error for '%s':\n"
 "Error code: %s\n"
 "Error message: %s\n"
 msgstr ""
-"Eroare de descărcare (curl) pentru '%s':\n"
-"Cod eroare: %s\n"
-"Mesaj eroare: %s\n"
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
@@ -1173,15 +1167,15 @@ msgstr "Elamită"
 
 #: ../zypp/media/MediaException.cc:151
 msgid "Empty destination in URI"
-msgstr "Destinație vidă în URI"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:146
 msgid "Empty filesystem in URI"
-msgstr "Sistem de fișiere vid în URI"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:141
 msgid "Empty host name in URI"
-msgstr "Nume de gazdă vid în URI"
+msgstr ""
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
@@ -1216,13 +1210,13 @@ msgstr "Eritreea"
 #: ../zypp/media/MediaException.cc:177
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr "A apărut o eroare la setarea opțiunilor de download (curl) pentru '%s':"
+msgstr ""
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
-#, fuzzy, c-format
+#, c-format
 msgid "Error occurred while setting download (metalink curl) options for '%s':"
-msgstr "A apărut o eroare la setarea opțiunilor de download (curl) pentru '%s':"
+msgstr ""
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1261,7 +1255,7 @@ msgstr "Ewondo"
 
 #: ../zypp/KeyRing.cc:577
 msgid "Failed to delete key."
-msgstr "Ștergerea cheii a eșuat."
+msgstr ""
 
 #: ../zypp/target/rpm/RpmDb.cc:1064
 #, c-format
@@ -1281,7 +1275,7 @@ msgstr "Îndepărtarea cheii publice %s a eșuat: %s"
 #: ../zypp/media/MediaException.cc:41
 #, c-format
 msgid "Failed to unmount %s"
-msgstr "Demontarea %s a eșuat"
+msgstr ""
 
 #. :FJI:242:
 #: ../zypp/CountryCode.cc:294
@@ -1514,7 +1508,7 @@ msgstr "Geez"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:61
 msgid "Generally ignore of some dependecies"
-msgstr ""
+msgstr "În general ignoră anumite dependențe"
 
 #. :GRD:308:
 #: ../zypp/CountryCode.cc:302
@@ -1695,7 +1689,7 @@ msgstr "Hausa"
 
 #: ../zypp/solver/detail/SATResolver.cc:922
 msgid "Have you enabled all requested repositories?"
-msgstr "Ați activat toate sursele cerute?"
+msgstr ""
 
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
@@ -1935,7 +1929,7 @@ msgstr "Componentă port invalidă '%s'"
 #: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
-msgstr "'%s' este o expresie regulată invalidă: regcomp a întors %d"
+msgstr ""
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2317,7 +2311,7 @@ msgstr "Liechtenstein"
 #. language code: lim li
 #: ../zypp/LanguageCode.cc:746
 msgid "Limburgan"
-msgstr ""
+msgstr "Limburgheză"
 
 #. language code: lin ln
 #: ../zypp/LanguageCode.cc:748
@@ -2457,7 +2451,7 @@ msgstr "Malaeziană"
 #. language code: mal ml
 #: ../zypp/LanguageCode.cc:786
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #. :MEX:484:
 #: ../zypp/CountryCode.cc:376
@@ -2471,7 +2465,7 @@ msgstr "Maldive"
 
 #: ../zypp/media/MediaException.cc:131
 msgid "Malformed URI"
-msgstr "URI Invalid"
+msgstr ""
 
 #. :MKD:807:
 #: ../zypp/CountryCode.cc:363
@@ -2581,21 +2575,22 @@ msgstr "Mayotte"
 #: ../zypp/media/MediaException.cc:221
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr "Sursa '%s' nu conține mediul dorit"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:227
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr "Mediul '%s' este utilizat momentan de o altă instanță"
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr ""
+msgstr "Mediu neatașat"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
 msgstr ""
+"Mediul nu a fost deschis în timp ce se încerca efectuarea acțiunii '%s'."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -2949,7 +2944,7 @@ msgstr "Unul sau ambele din atributele '%s' și '%s' sunt necesare."
 
 #: ../zypp/media/MediaException.cc:161
 msgid "Operation not supported by medium"
-msgstr "Operația nu este suportată de mediu"
+msgstr ""
 
 #. language code: ori or
 #: ../zypp/LanguageCode.cc:910
@@ -2978,9 +2973,11 @@ msgstr "Limbi otomiene"
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: ../zypp/repo/PackageProvider.cc:247
-#, fuzzy, c-format
-msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
-msgstr "Pachetul %s a așuat la verificarea integrității. Doriți să încercați din nou?"
+#, c-format
+msgid ""
+"Package %s seems to be corrupted during transfer. Do you want to retry "
+"retrieval?"
+msgstr ""
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3025,7 +3022,7 @@ msgstr "Panama"
 #. language code: pag
 #: ../zypp/LanguageCode.cc:924
 msgid "Pangasinan"
-msgstr ""
+msgstr "Pangasinan"
 
 #. language code: pan pa
 #: ../zypp/LanguageCode.cc:930
@@ -3055,17 +3052,17 @@ msgstr "Paraguay"
 #: ../zypp/media/MediaException.cc:122
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "Calea '%s' de pe mediul '%s' nu este un director."
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:114
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr "Calea '%s' de pe mediul '%s' nu este un fișier."
+msgstr ""
 
 #: ../zypp/media/MediaException.cc:252
 #, c-format
 msgid "Permission to access '%s' denied."
-msgstr "Accesul la '%s' a fost interzis."
+msgstr ""
 
 #. language code: per fas fa
 #: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
@@ -3133,15 +3130,32 @@ msgid "Prakrit Languages"
 msgstr "Limbi prakrite"
 
 #: ../zypp/VendorSupportOptions.cc:45
-msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
-msgstr "Determinarea problemei, ceea ce înseamnă suport tehnic menit să ofere informații de compatibilitate, asistență la instalare, suport la utilizare, mentenanță curentă și rezolvarea problemelor simple. Suportul de nivel 1 nu este menit să corecteze erori ale produsului."
+msgid ""
+"Problem determination, which means technical support designed to provide "
+"compatibility information, installation assistance, usage support, on-going "
+"maintenance and basic troubleshooting. Level 1 Support is not intended to "
+"correct product defect errors."
+msgstr ""
+"Determinarea problemei, ceea ce înseamnă suport tehnic menit să ofere "
+"informații de compatibilitate, asistență la instalare, suport la utilizare, "
+"mentenanță curentă și rezolvarea problemelor simple. Suportul de nivel 1 nu "
+"este menit să corecteze erori ale produsului."
 
 #: ../zypp/VendorSupportOptions.cc:48
-msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
-msgstr "Izolarea problemei, ceea ce înseamnă suport tehnic menit să reproducă problemele clienților, să izoleze zona cu probleme și să ofere soluții pentru probleme nerezolvate de suportul de nivel 1."
+msgid ""
+"Problem isolation, which means technical support designed to duplicate "
+"customer problems, isolate problem area and provide resolution for problems "
+"not resolved by Level 1 Support."
+msgstr ""
+"Izolarea problemei, ceea ce înseamnă suport tehnic menit să reproducă "
+"problemele clienților, să izoleze zona cu probleme și să ofere soluții pentru "
+"probleme nerezolvate de suportul de nivel 1."
 
 #: ../zypp/VendorSupportOptions.cc:51
-msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
+msgid ""
+"Problem resolution, which means technical support designed to resolve complex "
+"problems by engaging engineering in resolution of product defects which have "
+"been identified by Level 2 Support."
 msgstr ""
 
 #. language code: pro
@@ -3178,7 +3192,7 @@ msgstr "Pentru acest URL nu este suportată parcurgerea unui șir de interogare"
 #: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
 #: ../zypp/target/rpm/RpmDb.cc:2220
 msgid "RPM failed: "
-msgstr "RPM a eșuat:"
+msgstr ""
 
 #. language code: roh rm
 #: ../zypp/LanguageCode.cc:970
@@ -3207,12 +3221,12 @@ msgstr "Calea relativă nu este permisă dacă autoritatea există"
 #: ../zypp/RepoManager.cc:1328
 #, c-format
 msgid "Removing repository '%s'"
-msgstr "Îndepărtez sursa de instalare '%s'"
+msgstr ""
 
 #: ../zypp/parser/RepoindexFileReader.cc:128
 #, c-format
 msgid "Required attribute '%s' is missing."
-msgstr "Atributul necesar '%s' lipsește."
+msgstr ""
 
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:406
@@ -3432,7 +3446,7 @@ msgstr "Limbajul semnelor"
 #: ../zypp/KeyRing.cc:587
 #, c-format
 msgid "Signature file %s not found"
-msgstr "Fișierul semnătură %s nu a fost găsit"
+msgstr ""
 
 #. language code: bla
 #: ../zypp/LanguageCode.cc:354
@@ -3667,16 +3681,14 @@ msgstr "Siriacă"
 #: ../zypp/media/MediaException.cc:107
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr "Excepție sistem '%s' pe mediul '%s'."
+msgstr ""
 
 #: ../zypp/ZYppFactory.cc:361
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
 "Close this application before trying again."
 msgstr ""
-"Managementul sistemului este blocat de aplicația cu pid-ul %d (%s).\n"
-"Vă rugăm să închideți această aplicație înainte de a reîncerca."
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3759,7 +3771,7 @@ msgstr "Nivelul de suport este nespecificat"
 
 #: ../zypp/VendorSupportOptions.cc:42
 msgid "The vendor does not provide support."
-msgstr "Vânzătorul nu oferă suport."
+msgstr ""
 
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
@@ -3768,7 +3780,7 @@ msgstr "Această acțiune este rulată deja de alt program."
 #: ../zypp/solver/detail/SATResolver.cc:1130
 #: ../zypp/solver/detail/SATResolver.cc:1148
 msgid "This request will break your system!"
-msgstr "Această cerere vă va afecta sistemul!"
+msgstr ""
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3788,7 +3800,7 @@ msgstr "Tigrinya"
 #: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
-msgstr "Timp de așteptare depășit la accesarea '%s'."
+msgstr ""
 
 #. language code: tem
 #: ../zypp/LanguageCode.cc:1100
@@ -3839,7 +3851,7 @@ msgstr "Tonga (Insulele Tonga)"
 #: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
-msgstr "Am încercat să import cheia inexistentă %s în colecția de chei %s"
+msgstr ""
 
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:441
@@ -4000,7 +4012,7 @@ msgstr "Insulele minore din afara Statelor Unite"
 
 #: ../zypp/target/TargetImpl.cc:997
 msgid "Unknown Distribution"
-msgstr "Distribuție necunoscută"
+msgstr ""
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -4022,7 +4034,7 @@ msgstr "Metodă de autentificare HTTP nesuportată '%s'"
 #: ../zypp/media/MediaException.cc:156
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr "Schemă URI nesuportată în '%s'."
+msgstr ""
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
@@ -4101,7 +4113,7 @@ msgstr "Vai"
 #. we will throw this later if no URL checks out fine
 #: ../zypp/RepoManager.cc:778
 msgid "Valid metadata not found at specified URL(s)"
-msgstr "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
+msgstr ""
 
 #. :VNM:704:
 #: ../zypp/CountryCode.cc:457
@@ -4270,39 +4282,39 @@ msgstr "Zuni"
 
 #: ../zypp/repo/PackageProvider.cc:195
 msgid "applydeltarpm check failed."
-msgstr "verificarea applydeltarpm a eșuat."
+msgstr ""
 
 #: ../zypp/repo/PackageProvider.cc:212
 msgid "applydeltarpm failed."
-msgstr "applydeltarpm a eșuat."
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1219
 #, c-format
 msgid "architecture change of %s to %s"
-msgstr "modificare de arhitectură a %s în %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:935
 #, c-format
 msgid "cannot install both %s and %s"
-msgstr "nu pot instala %s și %s împreună"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:915
 msgid "conflicting requests"
-msgstr "cereri ce intră în conflict"
+msgstr ""
 
 #: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
-msgstr "backup %s creat"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1247
 #, c-format
 msgid "deinstallation of %s"
-msgstr "deinstalarea %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:983
 msgid "deleted providers: "
-msgstr "furnizori șterși: "
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1151
 #, c-format
@@ -4317,33 +4329,33 @@ msgstr ""
 #: ../zypp/solver/detail/SATResolver.cc:1078
 #, c-format
 msgid "do not forbid installation of %s"
-msgstr "nu interzice instalarea %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1057
 #: ../zypp/solver/detail/SATResolver.cc:1095
 #, c-format
 msgid "do not install %s"
-msgstr "nu instala %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1164
 #, c-format
 msgid "do not install most recent version of %s"
-msgstr "nu instala cea mai recentă versiune a %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1052
 #, c-format
 msgid "do not keep %s installed"
-msgstr "nu păstra %s instalat"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1211
 #, c-format
 msgid "downgrade of %s to %s"
-msgstr "downgrade %s la %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1131
 #: ../zypp/solver/detail/SATResolver.cc:1149
 msgid "ignore the warning of a broken system"
-msgstr "ignoră avertismentul privitor la stricarea sistemului"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1227
 #, c-format
@@ -4353,10 +4365,6 @@ msgid ""
 "-->\n"
 "  %s"
 msgstr ""
-"instalează %s (cu modificarea vânzătorului)\n"
-" %s\n"
-"-->\n"
-" %s"
 
 #: ../zypp/VendorSupportOptions.cc:31
 msgid "invalid"
@@ -4368,7 +4376,7 @@ msgstr "invalid"
 #: ../zypp/solver/detail/SATResolver.cc:1193
 #, c-format
 msgid "keep %s"
-msgstr "păstrează %s"
+msgstr ""
 
 #: ../zypp/target/hal/HalContext.cc:219
 msgid "libhal_ctx_new: Can't create libhal context"
@@ -4381,22 +4389,22 @@ msgstr "libhal_set_dbus_connection: Nu pot seta conexiunea dbus"
 #: ../zypp/solver/detail/SATResolver.cc:930
 #, c-format
 msgid "nothing provides %s needed by %s"
-msgstr "Nimic nu oferă %s necesar pentru %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:921
 #, c-format
 msgid "nothing provides requested %s"
-msgstr "nimic nu oferă %s necesar"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:912
 #, c-format
 msgid "problem with installed package %s"
-msgstr "problemă cu pachetul instalat %s"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:1235
 #, c-format
 msgid "replacement of %s with %s"
-msgstr "înlocuirea %s cu %s"
+msgstr ""
 
 #. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:2070
@@ -4432,11 +4440,11 @@ msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:918
 msgid "some dependency problem"
-msgstr "o problemă de dependențe"
+msgstr ""
 
 #: ../zypp/solver/detail/SATResolver.cc:995
 msgid "uninstallable providers: "
-msgstr "furnizori dezinstalabili: "
+msgstr ""
 
 #: ../zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4444,16 +4452,4 @@ msgstr "necunoscut"
 
 #: ../zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
-msgstr "nesuportat"
-
-#~ msgid "%s remove failed"
-#~ msgstr "Îndepărtarea %s a eșuat"
-
-#~ msgid "Additional rpm output:"
-#~ msgstr "Ieșiri rpm adiționale:"
-
-#~ msgid "Invalid user name or password."
-#~ msgstr "Nume de utilizator sau parolă invalidă."
-
-#~ msgid "rpm output:"
-#~ msgstr "ieșiri rpm:"
+msgstr ""

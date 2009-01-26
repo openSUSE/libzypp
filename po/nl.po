@@ -1,74 +1,88 @@
-# translation of zypp.nl.po to Dutch
-# Dutch message file for YaST 2 (@memory@).
-# Copyright (C) 2005 SUSE Linux Products GmbH.
-# Copyright (C) 2002 SuSE Linux AG.
-# Copyright (C) 1999, 2000, 2001 SuSE GmbH.
+# Copyright (C) 2006 SuSE Linux Products GmbH, Nuernberg
+# This file is distributed under the same license as the package.
 #
-# A.S. Kerkmeester <ask_murphy@bigfoot.com>, 1999, 2000, 2001.
-# FAX-Translations <all@fax-translations.com>, 2000.
-# Karl Eichwalder <ke@suse.de>, 1999, 2000.
-# Martin Lohner <ml@suse.de>, 2000.
-# peter@sybex.nl, 2000.
-# Rinse de Vries <rinsedevries@kde.nl>, 2006, 2007, 2008.
-# Freek de Kruijf <freek@opensuse.org>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: zypp.nl\n"
+"Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-21 09:10+0100\n"
-"PO-Revision-Date: 2008-10-25 00:14+0200\n"
-"Last-Translator: Freek de Kruijf <freek@opensuse.org>\n"
-"Language-Team: Dutch <Yast-nl-l10n@lists.sf.kovoks.nl>\n"
+"POT-Creation-Date: 2008-09-22 16:02+0200\n"
+"PO-Revision-Date: 2009-01-22 09:04\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=n != 1;\n"
-"X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:993
-msgid ""
-"\n"
-"uninstallable providers: "
-msgstr ""
-"\n"
-"geen installeerbare aanbieders: "
+#: ../zypp/solver/detail/SATResolver.cc:981
+msgid "\nuninstallable providers: "
+msgstr "\ngeen installeerbare aanbieders: "
 
-#: ../zypp/media/MediaException.cc:266
+#: ../zypp/media/MediaException.cc:214
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " SSL-certificaatprobleem, controleer of de CA-cert OK is voor '%s'."
 
-#: ../zypp/target/TargetImpl.cc:88
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:85
 msgid " executed"
 msgstr " uitgevoerd"
 
-#: ../zypp/target/TargetImpl.cc:110
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:106
 msgid " execution failed"
 msgstr " uitvoeren is mislukt"
 
-#: ../zypp/target/TargetImpl.cc:196
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:190
 msgid " execution skipped while aborting"
 msgstr " uitvoeren is overgeslagen tijdens afbreken"
 
-#: ../zypp/solver/detail/SATResolver.cc:940
+#: ../zypp/solver/detail/SATResolver.cc:928
 #, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s is in conflict met %s die geleverd is door %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:926
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2075
+#, c-format
+msgid "%s install failed"
+msgstr "Installeren van %s is mislukt"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2084
+#, c-format
+msgid "%s installed ok"
+msgstr "%s is met succes geïnstalleerd"
+
+#: ../zypp/solver/detail/SATResolver.cc:914
 #, c-format
 msgid "%s is not installable"
 msgstr "%s is niet geïnstalleerd"
 
-#: ../zypp/solver/detail/SATResolver.cc:945
+#: ../zypp/solver/detail/SATResolver.cc:933
 #, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%s maakt %s verouderd en is geleverd door %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:981
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2209
+#, c-format
+msgid "%s remove failed"
+msgstr "Verwijderen van %s is mislukt"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2217
+#, c-format
+msgid "%s remove ok"
+msgstr "%s is met succes verwijderd"
+
+#: ../zypp/solver/detail/SATResolver.cc:969
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
-msgstr "%s vereist %s, Maar aan deze eis kan niet voldaan worden"
+msgstr "%s vereist %s, maar aan deze eis kan niet voldaan worden"
 
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
@@ -90,14 +104,18 @@ msgstr "Acholi"
 msgid "Adangme"
 msgstr "Adangme"
 
-#: ../zypp/RepoManager.cc:1198
+#: ../zypp/RepoManager.cc:1182
 #, c-format
 msgid "Adding repository '%s'"
-msgstr "Bron '%s' toevoegen"
+msgstr "Opslagruimte '%s' toevoegen"
 
 #: ../zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
 msgstr "Aanvullend gebruikerscontract noodzakelijk"
+
+#: ../zypp/target/rpm/RpmDb.cc:2087 ../zypp/target/rpm/RpmDb.cc:2220
+msgid "Additional rpm output:"
+msgstr "Aanvullende rpm-uitvoer:"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -207,7 +225,6 @@ msgstr "Angola"
 msgid "Anguilla"
 msgstr "Anguilla"
 
-# /usr/lib/YaST2/clients/dialup_dev_cfg.ycp:80
 #. :AGO:024:
 #: ../zypp/CountryCode.cc:233
 msgid "Antarctica"
@@ -313,11 +330,10 @@ msgstr "Oostenrijk"
 msgid "Austronesian (Other)"
 msgstr "Austronesisch (Overige)"
 
-#. !\todo add comma to the message for the next release
-#: ../zypp/media/MediaCurl.cc:1702
+#: ../zypp/media/MediaCurl.cc:1615
 #, c-format
 msgid "Authentication required for '%s'"
-msgstr "Authenticatie vereist voor '%s'"
+msgstr "Verificatie vereist voor '%s'"
 
 #. language code: ava av
 #: ../zypp/LanguageCode.cc:304
@@ -352,11 +368,11 @@ msgstr "Azeri, Azerbeidzjaans"
 #: ../zypp/media/MediaException.cc:47
 #, c-format
 msgid "Bad file name: %s"
-msgstr "Verkeerde bestandsnaam: %s"
+msgstr "Onjuiste bestandsnaam: %s"
 
 #: ../zypp/media/MediaException.cc:77
 msgid "Bad media attach point"
-msgstr "Verkeerd koppelpunt voor medium"
+msgstr "Beschadigd koppelpunt van medium"
 
 #. :BRA:076:
 #: ../zypp/CountryCode.cc:254
@@ -578,10 +594,10 @@ msgstr "Brunei Darussalam"
 msgid "Buginese"
 msgstr "Buginees"
 
-#: ../zypp/RepoManager.cc:966
+#: ../zypp/RepoManager.cc:977
 #, c-format
 msgid "Building repository '%s' cache"
-msgstr "Cache van bron '%s' bouwen"
+msgstr "Cache van opslagruimte '%s' bouwen"
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:246
@@ -611,7 +627,7 @@ msgstr "Burmees"
 #. :BHR:048:
 #: ../zypp/CountryCode.cc:248
 msgid "Burundi"
-msgstr "Burundi"
+msgstr "Boeroendi"
 
 #. language code: cad
 #: ../zypp/LanguageCode.cc:378
@@ -628,34 +644,34 @@ msgstr "Cambodja"
 msgid "Cameroon"
 msgstr "Kameroen"
 
-#: ../zypp/sat/detail/PoolImpl.cc:156
+#: ../zypp/sat/detail/PoolImpl.cc:148
 msgid "Can not create sat-pool."
-msgstr "Kan sat-pool niet aanmaken."
+msgstr "Kan sat-pool niet maken."
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
 msgstr "Kan mutex-vergrendeling niet verkrijgen"
 
-#: ../zypp/ExternalProgram.cc:301
+#: ../zypp/ExternalProgram.cc:245
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr "Kan geen chdir naar '/' doen binnen chroot (%s)."
 
-#: ../zypp/ExternalProgram.cc:294
+#: ../zypp/ExternalProgram.cc:238
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr "Kan geen chroot doen naar '%s' (%s)."
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:315
+#: ../zypp/ExternalProgram.cc:259
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr "Kan '%s' niet uitvoeren (%s)."
 
-#: ../zypp/ExternalProgram.cc:323
+#: ../zypp/ExternalProgram.cc:267
 #, c-format
 msgid "Can't fork (%s)."
-msgstr "Kan geen fork  doen (%s)."
+msgstr "Kan geen fork (%s) uitvoeren."
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -670,20 +686,20 @@ msgstr "Kan recursieve mutex niet initialiseren"
 msgid "Can't open lock file: %s"
 msgstr "Kan het blokkeringsbestand niet openen: %s"
 
-#: ../zypp/ExternalProgram.cc:230
+#: ../zypp/ExternalProgram.cc:174
 #, c-format
 msgid "Can't open pipe (%s)."
 msgstr "Kan pipe (%s) niet openen."
 
-#: ../zypp/ExternalProgram.cc:219
+#: ../zypp/ExternalProgram.cc:163
 #, c-format
 msgid "Can't open pty (%s)."
-msgstr "Kon pty (%s) niet openen."
+msgstr "Kan pty (%s) niet openen."
 
 #: ../zypp/repo/RepoProvideFile.cc:216
 #, c-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr "Kan bestand '%s' niet leveren uit installatiebron '%s'"
+msgstr "Kan bestand '%s' niet leveren uit opslagruimte '%s'"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
@@ -698,29 +714,24 @@ msgstr "Kan recursief mutex-kenmerk niet instellen"
 msgid "Canada"
 msgstr "Canada"
 
-#: ../zypp/KeyRing.cc:275
+#: ../zypp/KeyRing.cc:285
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
-msgstr "Kan geen publieke sleutel %s uit %s sleutelring aanmaken naar bestand %s"
+msgstr "Kan geen publieke sleutel %s uit %s sleutelring maken naar bestand %s"
 
-#: ../zypp/media/MediaException.cc:234
+#: ../zypp/media/MediaException.cc:182
 msgid "Cannot eject any media"
-msgstr "Kan geen medium uitwerpen"
+msgstr "Kan geen media uitwerpen"
 
-#: ../zypp/media/MediaException.cc:236
+#: ../zypp/media/MediaException.cc:184
 #, c-format
 msgid "Cannot eject media '%s'"
 msgstr "Kan medium '%s' niet uitwerpen"
 
-#: ../zypp/media/MediaException.cc:273
-#, c-format
-msgid "Cannot find available loop device to mount the image file from '%s'"
-msgstr "Kan geen beschikbaar loop-apparaat vinden om het image-bestand van '%s'op te koppelen"
-
 #: ../zypp/media/MediaException.cc:67
 #, c-format
 msgid "Cannot write file '%s'."
-msgstr "Kan niet naar bestand '%s' schrijven."
+msgstr "Kan bestand '%s' niet opslaan."
 
 #. :CUB:192:
 #: ../zypp/CountryCode.cc:275
@@ -789,7 +800,7 @@ msgstr "Chamorro"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1896
+#: ../zypp/target/rpm/RpmDb.cc:1898
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "Configuratiebestanden gewijzigd voor %s:"
@@ -884,19 +895,19 @@ msgstr "Cocos (Keeling) Islands"
 msgid "Colombia"
 msgstr "Colombia"
 
-#: ../zypp/ExternalProgram.cc:402
+#: ../zypp/ExternalProgram.cc:346
 #, c-format
 msgid "Command exited with status %d."
-msgstr "Commando beëindigd met status %d."
+msgstr "Opdracht beëindigd met status %d."
 
-#: ../zypp/ExternalProgram.cc:427
+#: ../zypp/ExternalProgram.cc:371
 msgid "Command exited with unknown error."
-msgstr "Commando beëindigd met onbekende fout."
+msgstr "Opdracht beëindigd met onbekende fout."
 
-#: ../zypp/ExternalProgram.cc:422
+#: ../zypp/ExternalProgram.cc:366
 #, c-format
 msgid "Command was killed by signal %d (%s)."
-msgstr "Commando is gestopt door signaal %d (%s)."
+msgstr "Opdracht is gestopt door signaal %d (%s)."
 
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:339
@@ -969,8 +980,6 @@ msgstr "Creools en Pidgin, op basis van Frans (overig)"
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
 msgstr "Creools en Pidgin, op basis van Portugees (overig)"
 
-# /usr/lib/YaST2/clients/lan_dns.ycp:87
-# /usr/lib/YaST2/clients/lan_dns.ycp:87
 #. language code: crh
 #: ../zypp/LanguageCode.cc:438
 msgid "Crimean Tatar"
@@ -1076,39 +1085,16 @@ msgstr "Dominica"
 msgid "Dominican Republic"
 msgstr "Dominicaanse Republiek"
 
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#: ../zypp/media/MediaException.cc:152
 #, c-format
-msgid "Download (Metalink curl) initialization failed for '%s'"
-msgstr "Download (Metalink curl) initialisatie mislukt voor '%s'"
-
-#: ../zypp/media/MediaException.cc:168
-#, c-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-"Download (curl) fout voor '%s':\n"
-"Foutcode: %s\n"
-"Foutboodschap: %s\n"
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr "Fout bij downloaden (curl) '%s':\nFoutcode: %s\nFoutbericht: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
 #, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr "Download (curl) initialisatie mislukt voor '%s'"
-
-#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
-#, c-format
-msgid ""
-"Download (metalink curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-"Download (metalink curl) fout voor '%s':\n"
-"Foutcode: %s\n"
-"Foutboodschap: %s\n"
+msgstr "Initialiseren van downloaden (curl) is mislukt voor '%s'"
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
@@ -1121,7 +1107,7 @@ msgid "Duala"
 msgstr "Duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:98
+#: ../zypp/CheckSum.cc:97
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr "Twijfelachtig type '%s' voor %u bytes checksum '%s'"
@@ -1186,15 +1172,15 @@ msgstr "El Salvador"
 msgid "Elamite"
 msgstr "Elamitisch"
 
-#: ../zypp/media/MediaException.cc:151
+#: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
 msgstr "Lege bestemming in URI"
 
-#: ../zypp/media/MediaException.cc:146
+#: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
 msgstr "Leeg bestandssysteem in URI"
 
-#: ../zypp/media/MediaException.cc:141
+#: ../zypp/media/MediaException.cc:125
 msgid "Empty host name in URI"
 msgstr "Lege hostnaam in URI"
 
@@ -1228,16 +1214,10 @@ msgid "Eritrea"
 msgstr "Eritrea"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:177
+#: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr "Fout bij het instellen downloadopties (curl) voor '%s':"
-
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
-#, c-format
-msgid "Error occurred while setting download (metalink curl) options for '%s':"
-msgstr "Fout bij het instellen downloadopties (metalink curl) voor '%s':"
+msgstr "Er is een fout opgetreden bij het instellen van downloadopties (curl) voor '%s':"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1274,11 +1254,11 @@ msgstr "Ewe"
 msgid "Ewondo"
 msgstr "Ewondo"
 
-#: ../zypp/KeyRing.cc:577
+#: ../zypp/KeyRing.cc:587
 msgid "Failed to delete key."
 msgstr "Verwijderen van sleutel is mislukt."
 
-#: ../zypp/target/rpm/RpmDb.cc:1064
+#: ../zypp/target/rpm/RpmDb.cc:1066
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "Importeren van publieke sleutel uit bestand %s is mislukt: %s"
@@ -1286,9 +1266,9 @@ msgstr "Importeren van publieke sleutel uit bestand %s is mislukt: %s"
 #: ../zypp/media/MediaException.cc:31
 #, c-format
 msgid "Failed to mount %s on %s"
-msgstr "Aankoppelen van %s op %s is mislukt"
+msgstr "Kan %s niet koppelen aan %s"
 
-#: ../zypp/target/rpm/RpmDb.cc:1141
+#: ../zypp/target/rpm/RpmDb.cc:1143
 #, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "Verwijderen van publieke sleutel %s is mislukt: %s"
@@ -1296,7 +1276,7 @@ msgstr "Verwijderen van publieke sleutel %s is mislukt: %s"
 #: ../zypp/media/MediaException.cc:41
 #, c-format
 msgid "Failed to unmount %s"
-msgstr "Afkoppelen van %s is mislukt"
+msgstr "Ontkoppelen van %s is mislukt"
 
 #. :FJI:242:
 #: ../zypp/CountryCode.cc:294
@@ -1340,66 +1320,38 @@ msgstr "Fijisch"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr ""
-"Bestand %s bevat geen checksum.\n"
-"Wilt u het toch gebruiken?"
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "Bestand %s bevat geen checksum.\nWilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Bestand %s voldoet niet aan integriteitscontrole door de volgende sleutel:\n"
-"%s|%s|%s\n"
-" Wilt u het bestand toch gebruiken?"
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Bestand %s voldoet niet aan integriteitscontrole door de volgende sleutel:\n%s|%s|%s\n Wilt u het bestand toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr ""
-"Bestand %s heeft een ongeldige checksum.\n"
-"%s verwacht, %s gevonden\n"
-"Wilt u het toch gebruiken?"
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "Bestand %s heeft een ongeldige checksum.\n%s verwacht, %s gevonden\nWilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
 msgstr "Bestand %s heeft een onbekende checksum.%sWilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:56
 #, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr ""
-"Bestand %s is niet ondertekend.\n"
-"Wilt u het toch gebruiken?"
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "Bestand %s is niet ondertekend.\nWilt u het toch gebruiken?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Bestand %s is ondertekend met een onbekende sleutel:\n"
-"%s|%s|%s\n"
-" Wilt u het bestand toch gebruiken?"
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Bestand %s is ondertekend met een onbekende sleutel:\n%s|%s|%s\n Wilt u het bestand toch gebruiken?"
 
 #: ../zypp/media/MediaException.cc:60
 #, c-format
 msgid "File '%s' not found on medium '%s'"
-msgstr "Bestand '%s' niet gevonden op medium '%s'"
+msgstr "Bestand '%s' is niet gevonden op medium '%s'"
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
@@ -1706,9 +1658,9 @@ msgstr "HalVolume is niet geïnitialiseerd"
 msgid "Hausa"
 msgstr "Hausa"
 
-#: ../zypp/solver/detail/SATResolver.cc:922
+#: ../zypp/solver/detail/SATResolver.cc:910
 msgid "Have you enabled all requested repositories?"
-msgstr "Hebt u alle vereiste installatiebronnen ingeschakeld?"
+msgstr "Hebt u alle vereiste opslagruimten ingeschakeld?"
 
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
@@ -1871,7 +1823,7 @@ msgstr "Indonesisch"
 msgid "Ingush"
 msgstr "Ingoesjetisch"
 
-#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
+#: ../zypp/target/TargetImpl.cc:601 ../zypp/target/TargetImpl.cc:839
 msgid "Installation has been aborted as directed."
 msgstr "Installatie is afgebroken volgens de instructies."
 
@@ -1908,11 +1860,11 @@ msgstr "Ongeldige %s component '%s'"
 #: ../zypp/Url.cc:152
 #, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Ongeldige LDAP-URL-queryparameter '%s'"
+msgstr "Ongeldige LDAP URL-queryparameter '%s'"
 
 #: ../zypp/Url.cc:113
 msgid "Invalid LDAP URL query string"
-msgstr "Ongeldige LDAP-URL-queryreeks"
+msgstr "Ongeldige LDAP URL-queryreeks"
 
 #: ../zypp/url/UrlBase.cc:826
 #, c-format
@@ -1945,10 +1897,14 @@ msgstr "Ongeldig scheidingsteken voor splitsen parametertoewijzing"
 msgid "Invalid port component '%s'"
 msgstr "Ongeldige poortcomponent '%s'"
 
-#: ../zypp/PoolQuery.cc:440
+#: ../zypp/PoolQuery.cc:443
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
-msgstr "Ongeldige reguliere expressie '%s': regcomp returned %d"
+msgstr "Ongeldige reguliere expressie '%s': regcomp heeft %d geretourneerd"
+
+#: ../zypp/media/MediaCurl.cc:1612
+msgid "Invalid user name or password."
+msgstr "Ongeldige gebruikersnaam of ongeldig wachtwoord."
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2317,7 +2273,6 @@ msgstr "Lezghiaans"
 msgid "Liberia"
 msgstr "Liberia"
 
-# ../../db/printers.ycp.noloc:1400
 #. :LVA:428:
 #: ../zypp/CountryCode.cc:356
 msgid "Libya"
@@ -2483,9 +2438,9 @@ msgstr "Maleisië"
 msgid "Maldives"
 msgstr "Malediven"
 
-#: ../zypp/media/MediaException.cc:131
+#: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
-msgstr "Verkeerd gevormde URI"
+msgstr "Onjuiste URI"
 
 #. :MKD:807:
 #: ../zypp/CountryCode.cc:363
@@ -2592,24 +2547,24 @@ msgstr "Maya-talen"
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: ../zypp/media/MediaException.cc:221
+#: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr "Mediumbron '%s' bevat niet het gewenste medium"
+msgstr "Mediumbron '%s'  bevat het gewenste medium niet"
 
-#: ../zypp/media/MediaException.cc:227
+#: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr "Medium '%s' is in gebruik door iets anders"
+msgstr "Medium '%s' wordt door een andere instantie gebruikt"
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr "Medium niet aangesloten"
+msgstr "Medium is niet gekoppeld"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr "Medium is niet geopend terwijl een poging gedaan wordt de actie '%s' uit te voeren."
+msgstr "Medium kan niet worden geopend wanneer '%s' wordt uitgevoerd."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -2850,7 +2805,7 @@ msgstr "Geen code"
 
 #: ../zypp/repo/RepoProvideFile.cc:222
 msgid "No url in repository."
-msgstr "Geen url in bron."
+msgstr "Geen url in opslagruimte."
 
 #. language code: nog
 #: ../zypp/LanguageCode.cc:884
@@ -2961,9 +2916,9 @@ msgstr "Oman"
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "Een of beide van '%s' of '%s' attributen zijn vereist."
 
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:145
 msgid "Operation not supported by medium"
-msgstr "Operatie niet ondersteund door medium"
+msgstr "Bewerking niet ondersteund door medium"
 
 #. language code: ori or
 #: ../zypp/LanguageCode.cc:910
@@ -2991,10 +2946,10 @@ msgid "Otomian Languages"
 msgstr "Otomi-talen"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:320
 #, c-format
-msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
-msgstr "Pakket %s lijkt te zijn verminkt bij de overdracht. Wilt u het ophalen opnieuw proberen?"
+msgid "Package %s fails integrity check. Do you want to retry?"
+msgstr "Pakket %s voldoet niet aan integriteitscontrole. Wilt u het opnieuw proberen?"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3066,20 +3021,20 @@ msgstr "Papuaans (Overige)"
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: ../zypp/media/MediaException.cc:122
+#: ../zypp/media/MediaException.cc:106
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "Pad '%s' op medium '%s' is geen map."
+msgstr "Pad '%s' op medium '%s' is geen directory."
 
-#: ../zypp/media/MediaException.cc:114
+#: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr "Patd '%s' op medium '%s' is geen bestand."
+msgstr "Pad '%s' op medium '%s' is geen bestand."
 
-#: ../zypp/media/MediaException.cc:252
+#: ../zypp/media/MediaException.cc:200
 #, c-format
 msgid "Permission to access '%s' denied."
-msgstr "Toegang tot '%s' geweigerd."
+msgstr "Toestemming voor toegang tot '%s' is geweigerd."
 
 #. language code: per fas fa
 #: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
@@ -3148,7 +3103,7 @@ msgstr "Prakrit-talen"
 
 #: ../zypp/VendorSupportOptions.cc:45
 msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
-msgstr "Probleem bepaling, wat technische ondersteuning betekent dat ontworpen is voor het leveren van informatie over compatibiliteit, hulp bij installatie, ondersteuning bij gebruik, voortdurend onderhoud en basis foutzoeken. Niveau 1 ondersteuning is niet bedoeld om fouten in producten te verbeteren."
+msgstr "Probleembepaling, wat technische ondersteuning betekent die is ontworpen voor het leveren van informatie over compatibiliteit, hulp bij installatie, ondersteuning bij gebruik, constant onderhoud en algemene probleemoplossing.. Niveau 1 ondersteuning is niet bedoeld om fouten in producten te verbeteren."
 
 #: ../zypp/VendorSupportOptions.cc:48
 msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
@@ -3188,9 +3143,8 @@ msgid "Query string parsing not supported for this URL"
 msgstr "Parseren van queryreeks wordt niet ondersteund voor deze URL"
 
 #. TranslatorExplanation after semicolon is error message
-#. TranslatorExplanation the colon is followed by an error message
-#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
-#: ../zypp/target/rpm/RpmDb.cc:2220
+#: ../zypp/target/rpm/RpmDb.cc:892 ../zypp/target/rpm/RpmDb.cc:2078
+#: ../zypp/target/rpm/RpmDb.cc:2212
 msgid "RPM failed: "
 msgstr "RPM is mislukt: "
 
@@ -3218,10 +3172,10 @@ msgstr "Rarotongaans"
 msgid "Relative path not allowed if authority exists"
 msgstr "Relatief pad is niet toegestaan als authority bestaat"
 
-#: ../zypp/RepoManager.cc:1328
+#: ../zypp/RepoManager.cc:1304
 #, c-format
 msgid "Removing repository '%s'"
-msgstr "Bron '%s' verwijderen"
+msgstr "Opslagruimte '%s' verwijderen"
 
 #: ../zypp/parser/RepoindexFileReader.cc:128
 #, c-format
@@ -3356,7 +3310,7 @@ msgstr "Sao Tome en Principe"
 #. language code: srd sc
 #: ../zypp/LanguageCode.cc:1068
 msgid "Sardinian"
-msgstr "Sardijns"
+msgstr "Sardinisch"
 
 #. language code: sas
 #: ../zypp/LanguageCode.cc:996
@@ -3443,10 +3397,10 @@ msgstr "Sierra Leone"
 msgid "Sign Languages"
 msgstr "Gebarentalen"
 
-#: ../zypp/KeyRing.cc:587
+#: ../zypp/KeyRing.cc:597
 #, c-format
 msgid "Signature file %s not found"
-msgstr "Ondertekeningsbestand %s niet gevonden"
+msgstr "Handtekeningbestand %s niet gevonden"
 
 #. language code: bla
 #: ../zypp/LanguageCode.cc:354
@@ -3523,7 +3477,7 @@ msgstr "Sogdiaans"
 msgid "Solomon Islands"
 msgstr "Solomon Eilanden"
 
-#: ../zypp/solver/detail/SATResolver.cc:949
+#: ../zypp/solver/detail/SATResolver.cc:937
 #, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "Oplosser %s is in conflict met %s die geleverd is door zichzelf"
@@ -3678,19 +3632,15 @@ msgstr "Syrië"
 msgid "Syriac"
 msgstr "Syrisch"
 
-#: ../zypp/media/MediaException.cc:107
+#: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr "Systeem-uitzondering '%s' op medium '%s'."
+msgstr "Systeemuitzondering '%s' op medium '%s'."
 
 #: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid ""
-"System management is locked by the application with pid %d (%s).\n"
-"Close this application before trying again."
-msgstr ""
-"Systeembeheer is geblokkeerd door de applicatie met pid %d (%s).\n"
-"Deze applicatie afsluiten alvorens opnieuw te proberen."
+msgid "System management is locked by the application with pid %d (%s).\nPlease close this application before trying again."
+msgstr "Systeembeheer is geblokkeerd door de toepassing met pid %d (%s).\nSluit deze toepassing voordat u het opnieuw probeert."
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3769,7 +3719,7 @@ msgstr "Thailand"
 
 #: ../zypp/VendorSupportOptions.cc:39
 msgid "The level of support is unspecified"
-msgstr "Het ondersteuningsniveau is niet gedefiniëerd."
+msgstr "Het ondersteuningsniveau is niet gedefinieerd."
 
 #: ../zypp/VendorSupportOptions.cc:42
 msgid "The vendor does not provide support."
@@ -3779,10 +3729,10 @@ msgstr "De verkoper levert geen ondersteuning."
 msgid "This action is being run by another program already."
 msgstr "Deze actie is al bezig vanuit een ander programma."
 
-#: ../zypp/solver/detail/SATResolver.cc:1130
-#: ../zypp/solver/detail/SATResolver.cc:1148
+#: ../zypp/solver/detail/SATResolver.cc:1118
+#: ../zypp/solver/detail/SATResolver.cc:1136
 msgid "This request will break your system!"
-msgstr "Dit verzoek zal uw systeem breken!"
+msgstr "Dit verzoek zal het systeem laten crashen."
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3799,7 +3749,7 @@ msgstr "Tigre"
 msgid "Tigrinya"
 msgstr "Tigrinya"
 
-#: ../zypp/media/MediaException.cc:259
+#: ../zypp/media/MediaException.cc:207
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr "Tijdslimiet overschreden bij toegang tot '%s'."
@@ -3850,10 +3800,10 @@ msgstr "Tonga (Nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "Tonga (Tonga-eilanden)"
 
-#: ../zypp/KeyRing.cc:526
+#: ../zypp/KeyRing.cc:536
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
-msgstr "Er is een poging gedaan om een niet bestaande sleutel %s te importeren in sleutelring %s"
+msgstr "Er is een poging gedaan om een niet-bestaande sleutel %s te importeren in sleutelring %s"
 
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:441
@@ -3985,7 +3935,7 @@ msgstr "Kan HAL-context niet initialiseren, is hald niet actief?"
 
 #: ../zypp/Url.cc:322 ../zypp/Url.cc:336
 msgid "Unable to parse Url components"
-msgstr "Kan URL-componenten niet analyseren"
+msgstr "Kan URL-componenten niet parseren"
 
 #. language code: und
 #: ../zypp/LanguageCode.cc:1168
@@ -4012,7 +3962,7 @@ msgstr "Verenigde Staten"
 msgid "United States Minor Outlying Islands"
 msgstr "United States Minor Outlying Islands"
 
-#: ../zypp/target/TargetImpl.cc:997
+#: ../zypp/target/TargetImpl.cc:879
 msgid "Unknown Distribution"
 msgstr "Onbekende distributie"
 
@@ -4031,23 +3981,17 @@ msgstr "Onbekende ondersteuningsoptie. Beschrijving niet beschikbaar"
 #: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
-msgstr "Niet-ondersteunde HTTP-authenticatiemethode '%s'"
+msgstr "Niet-ondersteunde HTTP-verificatiemethode '%s'"
 
-#: ../zypp/media/MediaException.cc:156
+#: ../zypp/media/MediaException.cc:140
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr "Niet ondersteund URI-schema in '%s'."
+msgstr "Niet-ondersteund URI-schema in '%s'."
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr ""
-"Niet-vertrouwde sleutel gevonden:\n"
-"%s|%s|%s\n"
-" Sleutel vertrouwen?"
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "Niet-vertrouwde sleutel gevonden:\n%s|%s|%s\n Sleutel vertrouwen?"
 
 #. language code: hsb
 #: ../zypp/LanguageCode.cc:612
@@ -4113,11 +4057,10 @@ msgid "Vai"
 msgstr "Vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:778
+#: ../zypp/RepoManager.cc:790
 msgid "Valid metadata not found at specified URL(s)"
-msgstr "Geen geldige metadata gevonden op opgeven URL('s)"
+msgstr "Geen geldige metagegevens gevonden op opgeven URL('s)"
 
-# /usr/lib/YaST2/clients/dialup_dev_cfg.ycp:82
 #. :VNM:704:
 #: ../zypp/CountryCode.cc:457
 msgid "Vanuatu"
@@ -4283,104 +4226,95 @@ msgstr "Zulu"
 msgid "Zuni"
 msgstr "Zuni"
 
-#: ../zypp/repo/PackageProvider.cc:195
+#: ../zypp/repo/PackageProvider.cc:239
 msgid "applydeltarpm check failed."
 msgstr "controle van applydeltarpm is mislukt."
 
-#: ../zypp/repo/PackageProvider.cc:212
+#: ../zypp/repo/PackageProvider.cc:253
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm mislukt."
 
-#: ../zypp/solver/detail/SATResolver.cc:1219
+#: ../zypp/solver/detail/SATResolver.cc:1194
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr "architectuurverandering van %s naar %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:923
 #, c-format
 msgid "cannot install both %s and %s"
-msgstr "kan %s end %s niet beide installeren"
+msgstr "kan %s en %s niet beide installeren"
 
-#: ../zypp/solver/detail/SATResolver.cc:915
+#: ../zypp/solver/detail/SATResolver.cc:903
 msgid "conflicting requests"
 msgstr "conflicterende verzoeken"
 
-#: ../zypp/target/rpm/RpmDb.cc:2372
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2362
 #, c-format
 msgid "created backup %s"
 msgstr "reservekopie %s aangemaakt"
 
-#: ../zypp/solver/detail/SATResolver.cc:1247
+#: ../zypp/solver/detail/SATResolver.cc:1222
 #, c-format
 msgid "deinstallation of %s"
-msgstr "deïnstallatie van %s"
+msgstr "verwijderen van %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:983
+#: ../zypp/solver/detail/SATResolver.cc:971
 msgid "deleted providers: "
-msgstr "verwijderde leveranciers: "
+msgstr "verwijderde providers: "
 
-#: ../zypp/solver/detail/SATResolver.cc:1151
+#: ../zypp/solver/detail/SATResolver.cc:1139
 #, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "vraag niet om alle oplossingspakketten die %s leveren te verwijderen"
 
-#: ../zypp/solver/detail/SATResolver.cc:1133
+#: ../zypp/solver/detail/SATResolver.cc:1121
 #, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "vraag niet om een oplossingspakket die %s levert te installeren"
 
-#: ../zypp/solver/detail/SATResolver.cc:1078
+#: ../zypp/solver/detail/SATResolver.cc:1066
 #, c-format
 msgid "do not forbid installation of %s"
 msgstr "verbied de installatie van %s niet"
 
-#: ../zypp/solver/detail/SATResolver.cc:1057
-#: ../zypp/solver/detail/SATResolver.cc:1095
+#: ../zypp/solver/detail/SATResolver.cc:1045
+#: ../zypp/solver/detail/SATResolver.cc:1083
 #, c-format
 msgid "do not install %s"
 msgstr "%s niet installeren"
 
-#: ../zypp/solver/detail/SATResolver.cc:1164
+#: ../zypp/solver/detail/SATResolver.cc:1152
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr "installeer de meest recente versie van %s niet"
 
-#: ../zypp/solver/detail/SATResolver.cc:1052
+#: ../zypp/solver/detail/SATResolver.cc:1040
 #, c-format
 msgid "do not keep %s installed"
 msgstr "houd %s niet geïnstalleerd"
 
-#: ../zypp/solver/detail/SATResolver.cc:1211
+#: ../zypp/solver/detail/SATResolver.cc:1186
 #, c-format
 msgid "downgrade of %s to %s"
-msgstr "waardeer %s af tot %s"
+msgstr "%s downgraden naar %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1131
-#: ../zypp/solver/detail/SATResolver.cc:1149
+#: ../zypp/solver/detail/SATResolver.cc:1119
+#: ../zypp/solver/detail/SATResolver.cc:1137
 msgid "ignore the warning of a broken system"
 msgstr "sla geen acht op de waarschuwing voor een gebroken systeem"
 
-#: ../zypp/solver/detail/SATResolver.cc:1227
+#: ../zypp/solver/detail/SATResolver.cc:1202
 #, c-format
-msgid ""
-"install %s (with vendor change)\n"
-"  %s\n"
-"-->\n"
-"  %s"
-msgstr ""
-"installeer %s (met wijziging door leverancier)\n"
-"  %s\n"
-"-->\n"
-"  %s"
+msgid "install %s (with vendor change)\n  %s\n-->\n  %s"
+msgstr "installeer %s (met wijziging door vendor)\n  %s\n-->\n  %s"
 
 #: ../zypp/VendorSupportOptions.cc:31
 msgid "invalid"
 msgstr "ongeldig"
 
-#. for solver reason: NOT weak lock.
-#: ../zypp/solver/detail/SATResolver.cc:1073
-#: ../zypp/solver/detail/SATResolver.cc:1116
-#: ../zypp/solver/detail/SATResolver.cc:1193
+#: ../zypp/solver/detail/SATResolver.cc:1061
+#: ../zypp/solver/detail/SATResolver.cc:1104
 #, c-format
 msgid "keep %s"
 msgstr "%s behouden"
@@ -4393,65 +4327,61 @@ msgstr "libhal_ctx_new: Kan libhal-context niet maken"
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: Kan dbus-verbinding niet instellen"
 
-#: ../zypp/solver/detail/SATResolver.cc:930
+#: ../zypp/solver/detail/SATResolver.cc:918
 #, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "niets levert %s nodig door %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:909
 #, c-format
 msgid "nothing provides requested %s"
 msgstr "Niets levert het gevraagde %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:912
+#: ../zypp/solver/detail/SATResolver.cc:900
 #, c-format
 msgid "problem with installed package %s"
 msgstr "probleem met geïnstalleerd pakket %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1235
+#: ../zypp/solver/detail/SATResolver.cc:1210
 #, c-format
 msgid "replacement of %s with %s"
 msgstr "vervanging van %s door %s"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2070
-#, c-format
-msgid "rpm created %s as %s, but it was impossible to determine the difference"
-msgstr "rpm maakte %s aan als %s, maar het was niet mogelijk om het verschil te achterhalen"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2072
-#, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm maakt %s aan als %s.\n"
-"Dit zijn de eerste 25 regels die verschillen:\n"
-
-#. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2065
-#, c-format
-msgid "rpm saved %s as %s, but it was impossible to determine the difference"
-msgstr "rpm sloeg %s op als %s, maar het was niet mogelijk om het verschil te achterhalen"
-
-#. %s = filenames
 #: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm sloeg %s op als %s.\n"
-"Dit zijn de eerste 25 regels die verschillend zijn:\n"
+msgid "rpm created %s as %s, but it was impossible to determine the difference"
+msgstr "rpm heeft %s gemaakt als %s, maar het was niet mogelijk om het verschil te bepalen"
 
-#: ../zypp/solver/detail/SATResolver.cc:918
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:2069
+#, c-format
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm maakt %s aan als %s.\nDit zijn de eerste 25 regels die verschillen:\n"
+
+#: ../zypp/target/rpm/RpmDb.cc:2076 ../zypp/target/rpm/RpmDb.cc:2210
+msgid "rpm output:"
+msgstr "rpm-uitvoer:"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:2062
+#, c-format
+msgid "rpm saved %s as %s, but it was impossible to determine the difference"
+msgstr "rpm heeft %s opgeslagen als %s, maar het was niet mogelijk om het verschil te bepalen"
+
+#. %s = filenames
+#: ../zypp/target/rpm/RpmDb.cc:2064
+#, c-format
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm sloeg %s op als %s.\nDit zijn de eerste 25 regels die verschillend zijn:\n"
+
+#: ../zypp/solver/detail/SATResolver.cc:906
 msgid "some dependency problem"
-msgstr "enige afhankelijkheidsproblemen"
+msgstr "een afhankelijkheidsprobleem"
 
-#: ../zypp/solver/detail/SATResolver.cc:995
+#: ../zypp/solver/detail/SATResolver.cc:983
 msgid "uninstallable providers: "
-msgstr "niet-installeerbare aanbieders: "
+msgstr "niet-installeerbare providers: "
 
 #: ../zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4460,3 +4390,4 @@ msgstr "onbekend"
 #: ../zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
 msgstr "niet ondersteund"
+

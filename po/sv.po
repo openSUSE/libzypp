@@ -1,79 +1,94 @@
-# translation of zypp.sv.po to Swedish
-# translation of zypp.po to
-# Swedish message file for YaST2 (@memory@).
-# Copyright (C) 2005 SUSE Linux Products GmbH.
-# Copyright (C) 2002 SuSE Linux AG.
-# Copyright (C) 2001 SuSE GmbH.
+# Copyright (C) 2006 SuSE Linux Products GmbH, Nuernberg
+# This file is distributed under the same license as the package.
 #
-# Mattias Newzella <newzella@linux.nu>, 2001.
-# Gudmund Areskoug <fta@algonet.se>, 2001.
-# Mattias Newzella <newzella@linux.se>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: zypp.sv\n"
+"Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-21 09:10+0100\n"
-"PO-Revision-Date: 2008-11-06 22:12+0100\n"
-"Last-Translator: \n"
-"Language-Team: Swedish <sv@li.org>\n"
+"POT-Creation-Date: 2008-09-22 16:02+0200\n"
+"PO-Revision-Date: 2009-01-21 14:32\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.11.4\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:993
-msgid ""
-"\n"
-"uninstallable providers: "
-msgstr ""
-"\n"
-"oinstallerbar leverantör: "
+#: ../zypp/solver/detail/SATResolver.cc:981
+msgid "\nuninstallable providers: "
+msgstr "\nleverantörer som inte går att installera: "
 
-#: ../zypp/media/MediaException.cc:266
+#: ../zypp/media/MediaException.cc:214
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr "SSL-certifikatsproblem, kontrollera att CA-certifikatet för '%s' är OK."
+msgstr " SSL-certifikatproblem, verifiera att CA-certifikatet är ok för %s."
 
-#: ../zypp/target/TargetImpl.cc:88
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:85
 msgid " executed"
-msgstr " kördes"
+msgstr " körd"
 
-# %s is either BOOTP or DHCP
-#: ../zypp/target/TargetImpl.cc:110
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:106
 msgid " execution failed"
 msgstr " körningen misslyckades"
 
-#: ../zypp/target/TargetImpl.cc:196
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:190
 msgid " execution skipped while aborting"
-msgstr " körning hoppades över under avbrytning"
+msgstr " körningen hoppades över vid avbrottet"
 
-#: ../zypp/solver/detail/SATResolver.cc:940
+#: ../zypp/solver/detail/SATResolver.cc:928
 #, c-format
 msgid "%s conflicts with %s provided by %s"
-msgstr "%s är i konflikt med %s som tillhandahålls av %s"
+msgstr "%s är i konflikt med %s som kommer från %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:926
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2075
+#, c-format
+msgid "%s install failed"
+msgstr "Det gick inte att installera %s"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2084
+#, c-format
+msgid "%s installed ok"
+msgstr "%s har installerats"
+
+#: ../zypp/solver/detail/SATResolver.cc:914
 #, c-format
 msgid "%s is not installable"
-msgstr "%s är inte installerbar"
+msgstr "%s går inte att installera"
 
-#: ../zypp/solver/detail/SATResolver.cc:945
+#: ../zypp/solver/detail/SATResolver.cc:933
 #, c-format
 msgid "%s obsoletes %s provided by %s"
-msgstr "%s gör %s tillhandahållen av %s inaktuell"
+msgstr "%s gör %s inaktuell som kommer från %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:981
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2209
+#, c-format
+msgid "%s remove failed"
+msgstr "Det gick inte att ta bort %s"
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2217
+#, c-format
+msgid "%s remove ok"
+msgstr "%s borttagen OK"
+
+#: ../zypp/solver/detail/SATResolver.cc:969
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
-msgstr "%s behöver %s, men det behovet kan inte uppfyllas"
+msgstr "Till %s behövs %s, men kravet kan inte uppfyllas"
 
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
 msgid "Abkhazian"
 msgstr "Abchaziska"
 
-# Libris vill ha achinese här.
 #. language code: ace
 #: ../zypp/LanguageCode.cc:242
 msgid "Achinese"
@@ -89,14 +104,18 @@ msgstr "Acoli"
 msgid "Adangme"
 msgstr "Adangme"
 
-#: ../zypp/RepoManager.cc:1198
+#: ../zypp/RepoManager.cc:1182
 #, c-format
 msgid "Adding repository '%s'"
-msgstr "Lägger till förrådet \"%s\""
+msgstr "Arkivet %s läggs till"
 
 #: ../zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
-msgstr "Ytterligare kundkontrakt nödvändigt"
+msgstr "Ytterligare kundavtal behövs"
+
+#: ../zypp/target/rpm/RpmDb.cc:2087 ../zypp/target/rpm/RpmDb.cc:2220
+msgid "Additional rpm output:"
+msgstr "Ytterligare rpm-utmatning:"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -108,7 +127,6 @@ msgstr "Adygeiska"
 msgid "Afar"
 msgstr "Afar"
 
-# AF
 #. :ARE:784:
 #: ../zypp/CountryCode.cc:226
 msgid "Afghanistan"
@@ -144,7 +162,6 @@ msgstr "Akan"
 msgid "Akkadian"
 msgstr "Akkadiska"
 
-# KY
 #. :ABW:533:
 #: ../zypp/CountryCode.cc:239
 msgid "Aland Islands"
@@ -180,7 +197,6 @@ msgstr "Algonkinska språk"
 msgid "Altaic (Other)"
 msgstr "Altaiska språk (övriga)"
 
-# AS
 #. :ARG:032:
 #: ../zypp/CountryCode.cc:235
 msgid "American Samoa"
@@ -193,32 +209,27 @@ msgstr "Amhariska"
 
 #: ../zypp/VendorSupportOptions.cc:54
 msgid "An additional customer contract is necessary for getting support."
-msgstr "Ytterligare ett kundkontrakt behövs för att få support"
+msgstr "Ytterligare ett kundavtal behövs för att kunna ge support."
 
-# AD
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
 msgstr "Andorra"
 
-# AO
 #. :ANT:530:
 #: ../zypp/CountryCode.cc:232
 msgid "Angola"
 msgstr "Angola"
 
-# AI
 #. :ATG:028:
 #: ../zypp/CountryCode.cc:228
 msgid "Anguilla"
 msgstr "Anguilla"
 
-# AQ
 #. :AGO:024:
 #: ../zypp/CountryCode.cc:233
 msgid "Antarctica"
 msgstr "Antarktis"
 
-# AG
 #. :AFG:004:
 #: ../zypp/CountryCode.cc:227
 msgid "Antigua and Barbuda"
@@ -234,7 +245,6 @@ msgstr "Apachiska språk"
 msgid "Arabic"
 msgstr "Arabiska"
 
-# Libris vill ha "aragonsk spanska"
 #. language code: arg an
 #: ../zypp/LanguageCode.cc:282
 msgid "Aragonese"
@@ -265,7 +275,6 @@ msgstr "Arawakiska"
 msgid "Argentina"
 msgstr "Argentina"
 
-# AM
 #. :ALB:008:
 #: ../zypp/CountryCode.cc:230
 msgid "Armenia"
@@ -281,7 +290,6 @@ msgstr "Armeniska"
 msgid "Artificial (Other)"
 msgstr "Konstgjorda språk (övriga)"
 
-# AW
 #. :AUS:036:
 #: ../zypp/CountryCode.cc:238
 msgid "Aruba"
@@ -322,11 +330,10 @@ msgstr "Österrike"
 msgid "Austronesian (Other)"
 msgstr "Austronesiska språk (övriga)"
 
-#. !\todo add comma to the message for the next release
-#: ../zypp/media/MediaCurl.cc:1702
+#: ../zypp/media/MediaCurl.cc:1615
 #, c-format
 msgid "Authentication required for '%s'"
-msgstr "Autentisering krävs för \"%s\""
+msgstr "Autentisering krävs för %s"
 
 #. language code: ava av
 #: ../zypp/LanguageCode.cc:304
@@ -348,7 +355,6 @@ msgstr "Awadhi"
 msgid "Aymara"
 msgstr "Aymara"
 
-# AZ
 #. :ALA:248:
 #: ../zypp/CountryCode.cc:240
 msgid "Azerbaijan"
@@ -366,9 +372,8 @@ msgstr "Ogiltigt filnamn: %s"
 
 #: ../zypp/media/MediaException.cc:77
 msgid "Bad media attach point"
-msgstr "Ogiltigt media på anslutningspunkten"
+msgstr "Felaktig anslutningspunkt för media"
 
-# BS
 #. :BRA:076:
 #: ../zypp/CountryCode.cc:254
 msgid "Bahamas"
@@ -424,7 +429,6 @@ msgstr "Bantuspråk (övriga)"
 msgid "Barbados"
 msgstr "Barbados"
 
-# Libris har med den där parentesen
 #. language code: bas
 #: ../zypp/LanguageCode.cc:330
 msgid "Basa"
@@ -465,7 +469,6 @@ msgstr "Vitryska"
 msgid "Belgium"
 msgstr "Belgien"
 
-# BZ
 #. :BLR:112:
 #: ../zypp/CountryCode.cc:259
 msgid "Belize"
@@ -481,7 +484,6 @@ msgstr "Bemba"
 msgid "Bengali"
 msgstr "Bengaliska"
 
-# BJ
 #. :BDI:108:
 #: ../zypp/CountryCode.cc:249
 msgid "Benin"
@@ -502,7 +504,6 @@ msgstr "Bermuda"
 msgid "Bhojpuri"
 msgstr "Bhojpuri"
 
-# BT
 #. :BHS:044:
 #: ../zypp/CountryCode.cc:255
 msgid "Bhutan"
@@ -518,7 +519,6 @@ msgstr "Bihari"
 msgid "Bikol"
 msgstr "Bikol"
 
-# Libris har med parentesen
 #. language code: bin
 #: ../zypp/LanguageCode.cc:350
 msgid "Bini"
@@ -529,7 +529,6 @@ msgstr "Edo (bini)"
 msgid "Bislama"
 msgstr "Bislama"
 
-# Libris har med parentesen
 #. language code: byn
 #: ../zypp/LanguageCode.cc:376
 msgid "Blin"
@@ -540,7 +539,6 @@ msgstr "Blin"
 msgid "Bolivia"
 msgstr "Bolivia"
 
-# BA
 #. :AZE:031:
 #: ../zypp/CountryCode.cc:241
 msgid "Bosnia and Herzegovina"
@@ -566,7 +564,6 @@ msgstr "Bouvetön"
 msgid "Braj"
 msgstr "Braj"
 
-# BR
 #. :BOL:068:
 #: ../zypp/CountryCode.cc:253
 msgid "Brazil"
@@ -597,10 +594,10 @@ msgstr "Brunei"
 msgid "Buginese"
 msgstr "Buginesiska"
 
-#: ../zypp/RepoManager.cc:966
+#: ../zypp/RepoManager.cc:977
 #, c-format
 msgid "Building repository '%s' cache"
-msgstr "Bygger cache för förrådet \"%s\""
+msgstr "Cache för arkivet %s byggs"
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:246
@@ -617,19 +614,16 @@ msgstr "Bulgariska"
 msgid "Buriat"
 msgstr "Burjatiska"
 
-# BF
 #. :BEL:056:
 #: ../zypp/CountryCode.cc:245
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-# Libris vill ha det så.
 #. language code: bur mya my
 #: ../zypp/LanguageCode.cc:372 ../zypp/LanguageCode.cc:374
 msgid "Burmese"
 msgstr "Burmanska"
 
-# BI
 #. :BHR:048:
 #: ../zypp/CountryCode.cc:248
 msgid "Burundi"
@@ -640,46 +634,44 @@ msgstr "Burundi"
 msgid "Caddo"
 msgstr "Caddo"
 
-# KH
 #. :KGZ:417:
 #: ../zypp/CountryCode.cc:337
 msgid "Cambodia"
 msgstr "Kambodja"
 
-# CM
 #. :CHL:152:
 #: ../zypp/CountryCode.cc:269
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: ../zypp/sat/detail/PoolImpl.cc:156
+#: ../zypp/sat/detail/PoolImpl.cc:148
 msgid "Can not create sat-pool."
-msgstr "Kan inte skapa sat-pool"
+msgstr "Det gick inte att skapa sat-pool."
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
 msgstr "Det går inte att hämta mutex-låset"
 
-#: ../zypp/ExternalProgram.cc:301
+#: ../zypp/ExternalProgram.cc:245
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
-msgstr "Kan inte chdir till '/' i en chroot (%s)."
+msgstr "Det går inte att ändra katalogen (chdir) till / i chroot (%s)."
 
-#: ../zypp/ExternalProgram.cc:294
+#: ../zypp/ExternalProgram.cc:238
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
-msgstr "Kan inte chroot till '%s' (%s)"
+msgstr "Det går inte att ändra roten (chroot) till %s (%s)."
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:315
+#: ../zypp/ExternalProgram.cc:259
 #, c-format
 msgid "Can't exec '%s' (%s)."
-msgstr "Kan inte köra '%s' (%s)."
+msgstr "Det går inte att köra %s (%s)."
 
-#: ../zypp/ExternalProgram.cc:323
+#: ../zypp/ExternalProgram.cc:267
 #, c-format
 msgid "Can't fork (%s)."
-msgstr "Kan inte dela upp (%s)."
+msgstr "Det går inte att dela filen (%s)."
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -692,22 +684,22 @@ msgstr "Det går inte att initiera rekursivt mutex"
 #: ../zypp/base/InterProcessMutex.cc:79
 #, c-format
 msgid "Can't open lock file: %s"
-msgstr "Kan inte öppna låsfilen: %s"
+msgstr "Det gick inte att öppna låsfilen: %s."
 
-#: ../zypp/ExternalProgram.cc:230
+#: ../zypp/ExternalProgram.cc:174
 #, c-format
 msgid "Can't open pipe (%s)."
-msgstr "Det går inte att öppna rörledningen (%s)."
+msgstr "Det går inte att öppna röret (%s)."
 
-#: ../zypp/ExternalProgram.cc:219
+#: ../zypp/ExternalProgram.cc:163
 #, c-format
 msgid "Can't open pty (%s)."
-msgstr "Kan inte öppna PTY (%s)"
+msgstr "Det går inte att öppna pty (%s)."
 
 #: ../zypp/repo/RepoProvideFile.cc:216
 #, c-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr "Kan inte tillhandahålla filen %s från förrådet '%s'"
+msgstr "Det går inte att hämta filen %s från arkivet %s"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
@@ -722,31 +714,25 @@ msgstr "Det går inte att ange rekursiva mutex-attribut"
 msgid "Canada"
 msgstr "Kanada"
 
-#: ../zypp/KeyRing.cc:275
+#: ../zypp/KeyRing.cc:285
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
-msgstr "Kan inte skapa publik nyckel %s från %s nyckelring till filen %s"
+msgstr "Det går inte att skapa den offentliga nyckeln %s av %s-nyckelringen för filen %s"
 
-#: ../zypp/media/MediaException.cc:234
+#: ../zypp/media/MediaException.cc:182
 msgid "Cannot eject any media"
-msgstr "Kan inte mata ut media"
+msgstr "Det gick inte att mata ut något medium"
 
-#: ../zypp/media/MediaException.cc:236
+#: ../zypp/media/MediaException.cc:184
 #, c-format
 msgid "Cannot eject media '%s'"
-msgstr "Kan inte mata ut media '%s'"
-
-#: ../zypp/media/MediaException.cc:273
-#, c-format
-msgid "Cannot find available loop device to mount the image file from '%s'"
-msgstr ""
+msgstr "Det gick inte att mata ut mediet %s"
 
 #: ../zypp/media/MediaException.cc:67
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot write file '%s'."
-msgstr "Det går inte att skriva till filen %1."
+msgstr "Det gick inte att skriva filen %s."
 
-# CV
 #. :CUB:192:
 #: ../zypp/CountryCode.cc:275
 msgid "Cape Verde"
@@ -767,7 +753,6 @@ msgstr "Katalanska"
 msgid "Caucasian (Other)"
 msgstr "Kaukasiska språk (övriga)"
 
-# KY
 #. :KWT:414:
 #: ../zypp/CountryCode.cc:344
 msgid "Cayman Islands"
@@ -783,7 +768,6 @@ msgstr "Cebuano"
 msgid "Celtic (Other)"
 msgstr "Keltiska språk (övriga)"
 
-# CF
 #. :COD:180:
 #: ../zypp/CountryCode.cc:263
 msgid "Central African Republic"
@@ -794,7 +778,6 @@ msgstr "Centralafrikanska republiken"
 msgid "Central American Indian (Other)"
 msgstr "Centralamerikanska indianspråk (övriga)"
 
-# TD
 #. :TCA:796:
 #: ../zypp/CountryCode.cc:430
 msgid "Chad"
@@ -817,7 +800,7 @@ msgstr "Chamorro"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1896
+#: ../zypp/target/rpm/RpmDb.cc:1898
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "Inställningsfiler har ändrats för %s:"
@@ -827,7 +810,6 @@ msgstr "Inställningsfiler har ändrats för %s:"
 msgid "Chechen"
 msgstr "Tjetjenska"
 
-# Libris vill ha det så.
 #. language code: chr
 #: ../zypp/LanguageCode.cc:414
 msgid "Cherokee"
@@ -888,7 +870,6 @@ msgstr "Julön"
 msgid "Church Slavic"
 msgstr "Fornkyrkoslaviska"
 
-# Libris vill ha det så.
 #. language code: chk
 #: ../zypp/LanguageCode.cc:404
 msgid "Chuukese"
@@ -899,7 +880,6 @@ msgstr "Tjuktjiska"
 msgid "Chuvash"
 msgstr "Tjuvasjiska"
 
-# Osäker
 #. language code: nwc
 #: ../zypp/LanguageCode.cc:894
 msgid "Classical Newari"
@@ -915,28 +895,25 @@ msgstr "Kokosöarna"
 msgid "Colombia"
 msgstr "Colombia"
 
-#: ../zypp/ExternalProgram.cc:402
+#: ../zypp/ExternalProgram.cc:346
 #, c-format
 msgid "Command exited with status %d."
-msgstr ""
+msgstr "Kommandot avslutades med statusen %d."
 
-#: ../zypp/ExternalProgram.cc:427
-#, fuzzy
+#: ../zypp/ExternalProgram.cc:371
 msgid "Command exited with unknown error."
-msgstr "Kommando som körs vid anslutning"
+msgstr "Kommandot avslutades med ett okänt fel."
 
-#: ../zypp/ExternalProgram.cc:422
+#: ../zypp/ExternalProgram.cc:366
 #, c-format
 msgid "Command was killed by signal %d (%s)."
-msgstr ""
+msgstr "Kommandot avbröts av signalen %d (%s)."
 
-# KM
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:339
 msgid "Comoros"
 msgstr "Comorerna"
 
-# CG
 #. :CCK:166:
 #. :CAF:140:
 #: ../zypp/CountryCode.cc:262 ../zypp/CountryCode.cc:264
@@ -1018,7 +995,6 @@ msgstr "Kroatien"
 msgid "Croatian"
 msgstr "Kroatiska"
 
-# CU
 #. :SCG:891:
 #: ../zypp/CountryCode.cc:274
 msgid "Cuba"
@@ -1029,7 +1005,6 @@ msgstr "Kuba"
 msgid "Cushitic (Other)"
 msgstr "Kusjitiska språk (övriga)"
 
-# CY
 #. :CXR:162:
 #: ../zypp/CountryCode.cc:277
 msgid "Cyprus"
@@ -1055,7 +1030,6 @@ msgstr "Dakota"
 msgid "Danish"
 msgstr "Danska"
 
-# Libris vill ha "Darginska (Dargwa)". Jag antar att Dargwa är vanligare.
 #. language code: dar
 #: ../zypp/LanguageCode.cc:454
 msgid "Dargwa"
@@ -1111,33 +1085,16 @@ msgstr "Dominica"
 msgid "Dominican Republic"
 msgstr "Dominikanska republiken"
 
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#: ../zypp/media/MediaException.cc:152
 #, c-format
-msgid "Download (Metalink curl) initialization failed for '%s'"
-msgstr ""
-
-#: ../zypp/media/MediaException.cc:168
-#, c-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr "Ett hämtningsfel (curl) uppstod för %s.\nFelkod: %s\nFelmeddelande: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
 #, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr ""
-
-#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
-#, c-format
-msgid ""
-"Download (metalink curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
+msgstr "Initieringen av hämtningen (curl) misslyckades för %s"
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
@@ -1150,10 +1107,10 @@ msgid "Duala"
 msgstr "Duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:98
+#: ../zypp/CheckSum.cc:97
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
+msgstr "Den tvivelaktiga typen %s för %u-bytekontrollsumma %s"
 
 #. language code: dut nld nl
 #: ../zypp/LanguageCode.cc:478 ../zypp/LanguageCode.cc:480
@@ -1170,7 +1127,6 @@ msgstr "Medelnederländska (ca 1050-1350)"
 msgid "Dyula"
 msgstr "Dyula"
 
-# Libris vill ha med parentesen.
 #. language code: dzo dz
 #: ../zypp/LanguageCode.cc:484
 msgid "Dzongkha"
@@ -1216,18 +1172,17 @@ msgstr "El Salvador"
 msgid "Elamite"
 msgstr "Elamitiska"
 
-#: ../zypp/media/MediaException.cc:151
+#: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
-msgstr ""
+msgstr "Tomt mål i URI"
 
-#: ../zypp/media/MediaException.cc:146
+#: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
-msgstr ""
+msgstr "Tomt filsystem i URI"
 
-#: ../zypp/media/MediaException.cc:141
-#, fuzzy
+#: ../zypp/media/MediaException.cc:125
 msgid "Empty host name in URI"
-msgstr "CA-namnet är tomt."
+msgstr "Tomt värdnamn i URI"
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
@@ -1248,31 +1203,22 @@ msgstr "Medelengelska (1100-1500)"
 msgid "English, Old (ca.450-1100)"
 msgstr "Fornengelska (ca 450-1100)"
 
-# GQ
 #. :GLP:312:
 #: ../zypp/CountryCode.cc:310
 msgid "Equatorial Guinea"
 msgstr "Ekvatorialguinea"
 
-# ER
 #. :ESH:732:
 #: ../zypp/CountryCode.cc:289
 msgid "Eritrea"
 msgstr "Eritrea"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:177
+#: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
+msgstr "Ett fel uppstod när alternativ för hämtning (curl) skulle anges för %s."
 
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
-#, c-format
-msgid "Error occurred while setting download (metalink curl) options for '%s':"
-msgstr ""
-
-# http://www.geocities.com/forfader/samerna/uraliska.html
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
 msgid "Erzya"
@@ -1291,9 +1237,8 @@ msgstr "Estland"
 #. language code: est et
 #: ../zypp/LanguageCode.cc:500
 msgid "Estonian"
-msgstr "Estländska"
+msgstr "Estniska"
 
-# ET
 #. :ESP:724:
 #: ../zypp/CountryCode.cc:291
 msgid "Ethiopia"
@@ -1309,32 +1254,30 @@ msgstr "Ewe"
 msgid "Ewondo"
 msgstr "Ewondo"
 
-#: ../zypp/KeyRing.cc:577
-#, fuzzy
+#: ../zypp/KeyRing.cc:587
 msgid "Failed to delete key."
-msgstr "Det gick inte att starta VM."
+msgstr "Det gick inte att ta bort nyckeln."
 
-#: ../zypp/target/rpm/RpmDb.cc:1064
+#: ../zypp/target/rpm/RpmDb.cc:1066
 #, c-format
 msgid "Failed to import public key from file %s: %s"
-msgstr ""
+msgstr "Det gick inte att importera den offentliga nyckeln från filen %s: %s"
 
 #: ../zypp/media/MediaException.cc:31
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to mount %s on %s"
-msgstr "Kunde inte öppna %s - %s\n"
+msgstr "Det gick inte att montera %s på %s"
 
-#: ../zypp/target/rpm/RpmDb.cc:1141
-#, fuzzy, c-format
+#: ../zypp/target/rpm/RpmDb.cc:1143
+#, c-format
 msgid "Failed to remove public key %s: %s"
-msgstr "Det gick inte att hämta den allmänna nyckeln."
+msgstr "Det gick inte att ta bort den offentliga nyckeln %s: %s"
 
 #: ../zypp/media/MediaException.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to unmount %s"
-msgstr "Misslyckades med att ladda modulen \"%s\"."
+msgstr "Det gick inte att avmontera %s"
 
-# FK
 #. :FJI:242:
 #: ../zypp/CountryCode.cc:294
 msgid "Falkland Islands (Malvinas)"
@@ -1360,7 +1303,6 @@ msgstr "Färöarna"
 msgid "Faroese"
 msgstr "Färöiska"
 
-# official_name for FSM
 #. :FLK:238:
 #: ../zypp/CountryCode.cc:295
 msgid "Federated States of Micronesia"
@@ -1371,7 +1313,6 @@ msgstr "Federala staterna Mikronesien"
 msgid "Fiji"
 msgstr "Fiji"
 
-# SAOL vill ha utan d, Libris med d. Jag kör på SAOL:s variant.
 #. language code: fij fj
 #: ../zypp/LanguageCode.cc:512
 msgid "Fijian"
@@ -1379,68 +1320,38 @@ msgstr "Fijianska"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr ""
-"Filen %s har inte någon kontrollsumma.\n"
-"Vill du använda filen ändå?"
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "Filen %s har inte någon kontrollsumma.\nVill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Integritetskontrollen för filen %s misslyckades med följande nyckel:\n"
-"%s|%s|%s\n"
-"Vill du använda filen ändå?"
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Integritetskontrollen för filen %s misslyckades med följande nyckel:\n%s|%s|%s\n Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr ""
-"Filen %s har en ogiltig kontrollsumma.\n"
-"%s förväntades, men %s hittades\n"
-" Vill du använda filen ändå?"
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "Filen %s har en ogiltig kontrollsumma.\n%s förväntades, men %s hittades\n Vill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
-msgstr ""
-"Filen %s har en okänd kontrollsumma.%s.\n"
-"Vill du använda filen ändå?"
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
+msgstr "Filen %s har en okänd kontrollsumma.%s.\nVill du använda filen ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:56
 #, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr ""
-"Filen %s har inte signerats.\n"
-"Vill du använda den ändå?"
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "Filen %s har inte signerats.\nVill du använda den ändå?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Filen %s har signerats med en okänd nyckel:\n"
-"%s|%s|%s\n"
-"Vill du använda filen ändå?"
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Filen %s har signerats med en okänd nyckel:\n%s|%s|%s\n Vill du använda filen ändå?"
 
 #: ../zypp/media/MediaException.cc:60
-#, fuzzy, c-format
+#, c-format
 msgid "File '%s' not found on medium '%s'"
-msgstr "Det gick inte att hitta filen %1 i arkivet."
+msgstr "Det gick inte att hitta filen %s på mediet %s"
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
@@ -1463,9 +1374,8 @@ msgid "Finno-Ugrian (Other)"
 msgstr "Finsk-ugriska språk (övriga)"
 
 #: ../zypp/solver/detail/ProblemSolutionCombi.cc:85
-#, fuzzy
 msgid "Following actions will be done:"
-msgstr "Följande paket kommer att uppdateras:\n"
+msgstr "Följande åtgärder utförs:"
 
 #. language code: fon
 #: ../zypp/LanguageCode.cc:520
@@ -1482,13 +1392,11 @@ msgstr "Frankrike"
 msgid "French"
 msgstr "Franska"
 
-# GF
 #. :GEO:268:
 #: ../zypp/CountryCode.cc:303
 msgid "French Guiana"
 msgstr "Franska Guiana"
 
-# PF
 #. :PER:604:
 #: ../zypp/CountryCode.cc:393
 msgid "French Polynesia"
@@ -1529,7 +1437,6 @@ msgstr "Fulani"
 msgid "Ga"
 msgstr "Ga"
 
-# GA
 #. :FXX:249:
 #: ../zypp/CountryCode.cc:299
 msgid "Gabon"
@@ -1545,7 +1452,6 @@ msgstr "Gaeliska"
 msgid "Galician"
 msgstr "Galiciska"
 
-# GM
 #. :GRL:304:
 #: ../zypp/CountryCode.cc:307
 msgid "Gambia"
@@ -1566,16 +1472,14 @@ msgstr "Gayo"
 msgid "Gbaya"
 msgstr "Gbaya"
 
-# Libris vill ha det så.
 #. language code: gez
 #: ../zypp/LanguageCode.cc:552
 msgid "Geez"
 msgstr "Fornetiopiska (Geez)"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:61
-#, fuzzy
 msgid "Generally ignore of some dependecies"
-msgstr "Ignorera allmänt det här kravet"
+msgstr "Vissa beroenden som i allmänhet lämnas utan avseende"
 
 #. :GRD:308:
 #: ../zypp/CountryCode.cc:302
@@ -1612,7 +1516,6 @@ msgstr "Germanska språk (övriga)"
 msgid "Germany"
 msgstr "Tyskland"
 
-# GH
 #. :GUF:254:
 #: ../zypp/CountryCode.cc:304
 msgid "Ghana"
@@ -1693,13 +1596,11 @@ msgstr "Guarani"
 msgid "Guatemala"
 msgstr "Guatemala"
 
-# GN
 #. :GMB:270:
 #: ../zypp/CountryCode.cc:308
 msgid "Guinea"
 msgstr "Guinea"
 
-# GW
 #. :GUM:316:
 #: ../zypp/CountryCode.cc:315
 msgid "Guinea-Bissau"
@@ -1710,7 +1611,6 @@ msgstr "Guinea-Bissau"
 msgid "Gujarati"
 msgstr "Gujarati"
 
-# GY
 #. :GNB:624:
 #: ../zypp/CountryCode.cc:316
 msgid "Guyana"
@@ -1726,13 +1626,11 @@ msgstr "Gwichin"
 msgid "Haida"
 msgstr "Haida"
 
-# HT
 #. :HRV:191:
 #: ../zypp/CountryCode.cc:321
 msgid "Haiti"
 msgstr "Haiti"
 
-# HT
 #. language code: hat ht
 #: ../zypp/LanguageCode.cc:590
 msgid "Haitian"
@@ -1760,16 +1658,15 @@ msgstr "HalVolume har inte initierats"
 msgid "Hausa"
 msgstr "Haussa"
 
-#: ../zypp/solver/detail/SATResolver.cc:922
+#: ../zypp/solver/detail/SATResolver.cc:910
 msgid "Have you enabled all requested repositories?"
-msgstr ""
+msgstr "Har du aktiverat alla begärda arkiv?"
 
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
 msgid "Hawaiian"
 msgstr "Hawaiiska"
 
-# HM
 #. :HKG:344:
 #: ../zypp/CountryCode.cc:318
 msgid "Heard Island and McDonald Islands"
@@ -1790,7 +1687,6 @@ msgstr "Herero"
 msgid "Hiligaynon"
 msgstr "Hiligaynon"
 
-# Libris vill ha det så.
 #. language code: him
 #: ../zypp/LanguageCode.cc:602
 msgid "Himachali"
@@ -1801,7 +1697,6 @@ msgstr "Pahari (himachali)"
 msgid "Hindi"
 msgstr "Hindi"
 
-# Libris vill ha det så.
 #. language code: hmo ho
 #: ../zypp/LanguageCode.cc:610
 msgid "Hiri Motu"
@@ -1812,19 +1707,16 @@ msgstr "Hirimotu"
 msgid "History:"
 msgstr "Historik:"
 
-# Libris vill ha det så.
 #. language code: hit
 #: ../zypp/LanguageCode.cc:606
 msgid "Hittite"
 msgstr "Hettitiska språk"
 
-# Libris vill ha det så.
 #. language code: hmn
 #: ../zypp/LanguageCode.cc:608
 msgid "Hmong"
 msgstr "Hmongspråk"
 
-# VA
 #. :UZB:860:
 #: ../zypp/CountryCode.cc:451
 msgid "Holy See (Vatican City State)"
@@ -1875,7 +1767,6 @@ msgstr "Isländsk"
 msgid "Ido"
 msgstr "Ido"
 
-# Libris vill ha det så.
 #. language code: ibo ig
 #: ../zypp/LanguageCode.cc:620
 msgid "Igbo"
@@ -1883,9 +1774,9 @@ msgstr "Ibo (Igbo)"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:52
-#, fuzzy, c-format
+#, c-format
 msgid "Ignore some dependencies of %s"
-msgstr "det gick inte att lösa beroenden"
+msgstr "Ignorera vissa beroenden av %s"
 
 #. language code: ijo
 #: ../zypp/LanguageCode.cc:630
@@ -1932,7 +1823,7 @@ msgstr "Indonesiska"
 msgid "Ingush"
 msgstr "Ingusj"
 
-#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
+#: ../zypp/target/TargetImpl.cc:601 ../zypp/target/TargetImpl.cc:839
 msgid "Installation has been aborted as directed."
 msgstr "Installationen har avbrutits enligt instruktionerna."
 
@@ -1969,7 +1860,7 @@ msgstr "%s-komponenten %s är ogiltig"
 #: ../zypp/Url.cc:152
 #, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Ogiltig LDAP URL-frågeparameter \"%s\""
+msgstr "Ogiltig LDAP URL-frågeparameter %s"
 
 #: ../zypp/Url.cc:113
 msgid "Invalid LDAP URL query string"
@@ -2006,10 +1897,14 @@ msgstr "Ogiltigt avgränsningstecken för delning av parametermappning"
 msgid "Invalid port component '%s'"
 msgstr "Portkomponenten %s är ogiltig"
 
-#: ../zypp/PoolQuery.cc:440
+#: ../zypp/PoolQuery.cc:443
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
-msgstr ""
+msgstr "Ogiltigt reguljärt uttryck %s: regcomp returnerade %d"
+
+#: ../zypp/media/MediaCurl.cc:1612
+msgid "Invalid user name or password."
+msgstr "Användarnamnet eller lösenordet är ogiltigt."
 
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
@@ -2081,7 +1976,6 @@ msgstr "Japan"
 msgid "Japanese"
 msgstr "Japanska"
 
-# Libris vill ha det så.
 #. language code: jav jv
 #: ../zypp/LanguageCode.cc:656
 msgid "Javanese"
@@ -2102,7 +1996,6 @@ msgstr "Judearabiska"
 msgid "Judeo-Persian"
 msgstr "Judepersiska"
 
-# Libris vill ha det så.
 #. language code: kbd
 #: ../zypp/LanguageCode.cc:688
 msgid "Kabardian"
@@ -2123,7 +2016,6 @@ msgstr "Kachin"
 msgid "Kalaallisut"
 msgstr "Grönländska (Kalaallisut)"
 
-# Libris vill ha det så.
 #. language code: xal
 #: ../zypp/LanguageCode.cc:1202
 msgid "Kalmyk"
@@ -2134,7 +2026,6 @@ msgstr "Kalmuckiska"
 msgid "Kamba"
 msgstr "Kamba"
 
-# Även kanaresiska (äldre form)
 #. language code: kan kn
 #: ../zypp/LanguageCode.cc:676
 msgid "Kannada"
@@ -2150,8 +2041,6 @@ msgstr "Kanuri"
 msgid "Kara-Kalpak"
 msgstr "Karakalpakiska"
 
-# Osäker
-# Ej verifierat
 #. language code: krc
 #: ../zypp/LanguageCode.cc:718
 msgid "Karachay-Balkar"
@@ -2167,14 +2056,11 @@ msgstr "Karen"
 msgid "Kashmiri"
 msgstr "Kashmiri"
 
-# Osäker
-# Ej verifierat
 #. language code: csb
 #: ../zypp/LanguageCode.cc:442
 msgid "Kashubian"
 msgstr "Kasjubianska"
 
-# Libris vill ha det så.
 #. language code: kaw
 #: ../zypp/LanguageCode.cc:684
 msgid "Kawi"
@@ -2185,13 +2071,11 @@ msgstr "Fornjavanska (kawi)"
 msgid "Kazakh"
 msgstr "Kazakiska"
 
-# KZ
 #. :CYM:136:
 #: ../zypp/CountryCode.cc:345
 msgid "Kazakhstan"
 msgstr "Kazakstan"
 
-# KE
 #. :JPN:392:
 #: ../zypp/CountryCode.cc:335
 msgid "Kenya"
@@ -2212,7 +2096,6 @@ msgstr "Kambodjanska (khmer)"
 msgid "Khoisan (Other)"
 msgstr "Khoisanspråk (övriga)"
 
-# Libris vill ha det så.
 #. language code: kho
 #: ../zypp/LanguageCode.cc:696
 msgid "Khotanese"
@@ -2223,7 +2106,6 @@ msgstr "Sakiska (khotanesiska)"
 msgid "Kikuyu"
 msgstr "Kikuyu"
 
-# Libris vill ha det så.
 #. language code: kmb
 #: ../zypp/LanguageCode.cc:704
 msgid "Kimbundu"
@@ -2239,7 +2121,6 @@ msgstr "Rwanda"
 msgid "Kirghiz"
 msgstr "Kirgisiska"
 
-# KI
 #. :KHM:116:
 #: ../zypp/CountryCode.cc:338
 msgid "Kiribati"
@@ -2285,7 +2166,6 @@ msgstr "Kpelle"
 msgid "Kru"
 msgstr "Kruspråk"
 
-# Libris vill ha det så.
 #. language code: kua kj
 #: ../zypp/LanguageCode.cc:724
 msgid "Kuanyama"
@@ -2316,13 +2196,11 @@ msgstr "Kutenai"
 msgid "Kuwait"
 msgstr "Kuwait"
 
-# KG
 #. :KEN:404:
 #: ../zypp/CountryCode.cc:336
 msgid "Kyrgyzstan"
 msgstr "Kirgisistan"
 
-# Libris vill ha det så.
 #. language code: lad
 #: ../zypp/LanguageCode.cc:732
 msgid "Ladino"
@@ -2343,7 +2221,6 @@ msgstr "Lamba"
 msgid "Lao"
 msgstr "Laotiska"
 
-# CD
 #. :KAZ:398:
 #: ../zypp/CountryCode.cc:346
 msgid "Lao People's Democratic Republic"
@@ -2369,7 +2246,6 @@ msgstr "Lettiska"
 msgid "Lebanon"
 msgstr "Libanon"
 
-# LS
 #. :LBR:430:
 #: ../zypp/CountryCode.cc:352
 msgid "Lesotho"
@@ -2377,28 +2253,26 @@ msgstr "Lesotho"
 
 #: ../zypp/VendorSupportOptions.cc:20
 msgid "Level 1"
-msgstr ""
+msgstr "Nivå 1"
 
 #: ../zypp/VendorSupportOptions.cc:23
 msgid "Level 2"
-msgstr ""
+msgstr "Nivå 2"
 
 #: ../zypp/VendorSupportOptions.cc:26
 msgid "Level 3"
-msgstr ""
+msgstr "Nivå 3"
 
 #. language code: lez
 #: ../zypp/LanguageCode.cc:744
 msgid "Lezghian"
 msgstr "Lezginska"
 
-# LR
 #. :LKA:144:
 #: ../zypp/CountryCode.cc:351
 msgid "Liberia"
 msgstr "Liberia"
 
-# LR
 #. :LVA:428:
 #: ../zypp/CountryCode.cc:356
 msgid "Libya"
@@ -2479,7 +2353,6 @@ msgstr "Lunda"
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Luo (Kenya och Tanzania)"
 
-# Libris vill ha det så.
 #. language code: lus
 #: ../zypp/LanguageCode.cc:770
 msgid "Lushai"
@@ -2510,14 +2383,11 @@ msgstr "Makedonien"
 msgid "Macedonian"
 msgstr "Makedonska"
 
-# MG
 #. :MDA:498:
 #: ../zypp/CountryCode.cc:360
 msgid "Madagascar"
 msgstr "Madagaskar"
 
-# Libris vill ha det så.
-# Även madura.
 #. language code: mad
 #: ../zypp/LanguageCode.cc:776
 msgid "Madurese"
@@ -2538,13 +2408,11 @@ msgstr "Maithili"
 msgid "Makasar"
 msgstr "Makasar"
 
-# Libris vill ha det så.
 #. language code: mlg mg
 #: ../zypp/LanguageCode.cc:820
 msgid "Malagasy"
 msgstr "Malagasy"
 
-# MW
 #. :MDV:462:
 #: ../zypp/CountryCode.cc:374
 msgid "Malawi"
@@ -2565,17 +2433,15 @@ msgstr "Malayalam"
 msgid "Malaysia"
 msgstr "Malaysia"
 
-# MV
 #. :MUS:480:
 #: ../zypp/CountryCode.cc:373
 msgid "Maldives"
 msgstr "Maldiverna"
 
-#: ../zypp/media/MediaException.cc:131
+#: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
-msgstr ""
+msgstr "Felaktigt format för URI"
 
-# ML
 #. :MKD:807:
 #: ../zypp/CountryCode.cc:363
 msgid "Mali"
@@ -2591,7 +2457,6 @@ msgstr "Malta"
 msgid "Maltese"
 msgstr "Maltesiska"
 
-# Även mandju.
 #. language code: mnc
 #: ../zypp/LanguageCode.cc:824
 msgid "Manchu"
@@ -2602,8 +2467,6 @@ msgstr "Manchu"
 msgid "Mandar"
 msgstr "Mandar"
 
-# Libris vill ha det så.
-# Även malinke.
 #. language code: man
 #: ../zypp/LanguageCode.cc:788
 msgid "Mandingo"
@@ -2634,13 +2497,11 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
-# Alternativt tjeremissiska enligt Libris.
 #. language code: chm
 #: ../zypp/LanguageCode.cc:406
 msgid "Mari"
 msgstr "Mariska"
 
-# MH
 #. :MDG:450:
 #: ../zypp/CountryCode.cc:361
 msgid "Marshall Islands"
@@ -2666,13 +2527,11 @@ msgstr "Marwari"
 msgid "Masai"
 msgstr "Massajiska"
 
-# MR
 #. :MTQ:474:
 #: ../zypp/CountryCode.cc:369
 msgid "Mauritania"
 msgstr "Mauretanien"
 
-# MU
 #. :MLT:470:
 #: ../zypp/CountryCode.cc:372
 msgid "Mauritius"
@@ -2688,24 +2547,24 @@ msgstr "Mayaspråk"
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: ../zypp/media/MediaException.cc:221
+#: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
+msgstr "Mediekällan %s innehåller inte önskat medium"
 
-#: ../zypp/media/MediaException.cc:227
+#: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr ""
+msgstr "Mediet %s används av en annan instans"
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr ""
+msgstr "Mediet har inte anslutits"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
+msgstr "Mediet öppnades inte när åtgärden %s skulle utföras."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -2732,8 +2591,6 @@ msgstr "Mic-mac"
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-# Libris vill ha det så.
-# Även madura.
 #. language code: mwl
 #: ../zypp/LanguageCode.cc:844
 msgid "Mirandese"
@@ -2749,8 +2606,6 @@ msgstr "Diverse språk"
 msgid "Mohawk"
 msgstr "Mohawk"
 
-# Osäker
-# Ej verifierat
 #. language code: mdf
 #: ../zypp/LanguageCode.cc:804
 msgid "Moksha"
@@ -2776,25 +2631,21 @@ msgstr "Mon-khmerspråk (övriga)"
 msgid "Monaco"
 msgstr "Monaco"
 
-# Libris vill ha det så.
 #. language code: lol
 #: ../zypp/LanguageCode.cc:752
 msgid "Mongo"
 msgstr "Lolo (mongo)"
 
-# MN
 #. :MMR:104:
 #: ../zypp/CountryCode.cc:365
 msgid "Mongolia"
 msgstr "Mongoliet"
 
-# Libris vill ha det så.
 #. language code: mon mn
 #: ../zypp/LanguageCode.cc:834
 msgid "Mongolian"
 msgstr "Mongoliska språk"
 
-# MS
 #. :MRT:478:
 #: ../zypp/CountryCode.cc:370
 msgid "Montserrat"
@@ -2810,7 +2661,6 @@ msgstr "Marocko"
 msgid "Mossi"
 msgstr "Mossi"
 
-# MZ
 #. :MYS:458:
 #: ../zypp/CountryCode.cc:377
 msgid "Mozambique"
@@ -2826,7 +2676,6 @@ msgstr "Flera språk"
 msgid "Munda languages"
 msgstr "Mundaspråk"
 
-# MM
 #. :MLI:466:
 #: ../zypp/CountryCode.cc:364
 msgid "Myanmar"
@@ -2837,7 +2686,6 @@ msgstr "Myanmar"
 msgid "Nahuatl"
 msgstr "Nahuatl"
 
-# NA
 #. :MOZ:508:
 #: ../zypp/CountryCode.cc:378
 msgid "Namibia"
@@ -2869,19 +2717,16 @@ msgstr "Ndebele, syd"
 msgid "Ndonga"
 msgstr "Ndonga"
 
-# Libris vill ha det så.
 #. language code: nap
 #: ../zypp/LanguageCode.cc:856
 msgid "Neapolitan"
 msgstr "Neapolitansk italienska"
 
-# NP
 #. :NOR:578:
 #: ../zypp/CountryCode.cc:386
 msgid "Nepal"
 msgstr "Nepal"
 
-# NP
 #. language code: new
 #: ../zypp/LanguageCode.cc:872
 msgid "Nepal Bhasa"
@@ -2897,13 +2742,11 @@ msgstr "Nepali"
 msgid "Netherlands"
 msgstr "Nederländerna"
 
-# AN
 #. :ARM:051:
 #: ../zypp/CountryCode.cc:231
 msgid "Netherlands Antilles"
 msgstr "Nederländska Antillerna"
 
-# NC
 #. :NAM:516:
 #: ../zypp/CountryCode.cc:379
 msgid "New Caledonia"
@@ -2924,7 +2767,6 @@ msgstr "Nias"
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-# NE
 #. :NCL:540:
 #: ../zypp/CountryCode.cc:380
 msgid "Niger"
@@ -2935,7 +2777,6 @@ msgstr "Niger"
 msgid "Niger-Kordofanian (Other)"
 msgstr "Niger-/Kongospråk (övriga)"
 
-# NG
 #. :NFK:574:
 #: ../zypp/CountryCode.cc:382
 msgid "Nigeria"
@@ -2946,7 +2787,6 @@ msgstr "Nigeria"
 msgid "Nilo-Saharan (Other)"
 msgstr "Nilo-sahariska språk (övriga)"
 
-# NU
 #. :NRU:520:
 #: ../zypp/CountryCode.cc:388
 msgid "Niue"
@@ -2965,9 +2805,8 @@ msgstr "Ingen kod"
 
 #: ../zypp/repo/RepoProvideFile.cc:222
 msgid "No url in repository."
-msgstr "Ingen URL i förrådet"
+msgstr "Det finns ingen URL i arkivet."
 
-# Libris vill ha det så
 #. language code: nog
 #: ../zypp/LanguageCode.cc:884
 msgid "Nogai"
@@ -2993,7 +2832,6 @@ msgstr "Nordamerikanska indianspråk"
 msgid "North Korea"
 msgstr "Nordkorea"
 
-# MP
 #. :MAC:446:
 #: ../zypp/CountryCode.cc:367
 msgid "Northern Mariana Islands"
@@ -3058,13 +2896,11 @@ msgstr "Nyoro"
 msgid "Nzima"
 msgstr "Nzima"
 
-# Libris vill ha det så.
 #. language code: oci oc
 #: ../zypp/LanguageCode.cc:906
 msgid "Occitan (post 1500)"
 msgstr "Langue d'oc (1500-)"
 
-# Libris vill ha det så.
 #. language code: oji oj
 #: ../zypp/LanguageCode.cc:908
 msgid "Ojibwa"
@@ -3078,19 +2914,17 @@ msgstr "Oman"
 #: ../zypp/parser/RepoindexFileReader.cc:116
 #, c-format
 msgid "One or both of '%s' or '%s' attributes is required."
-msgstr ""
+msgstr "Ett eller båda attributen %s och %s behövs."
 
-#: ../zypp/media/MediaException.cc:161
-#, fuzzy
+#: ../zypp/media/MediaException.cc:145
 msgid "Operation not supported by medium"
-msgstr "Profilversion stöds inte av Apparmor-modul\n"
+msgstr "Det finns inte stöd för åtgärden för mediet"
 
 #. language code: ori or
 #: ../zypp/LanguageCode.cc:910
 msgid "Oriya"
 msgstr "Oriya"
 
-# Libris vill ha det så.
 #. language code: orm om
 #: ../zypp/LanguageCode.cc:912
 msgid "Oromo"
@@ -3112,12 +2946,11 @@ msgid "Otomian Languages"
 msgstr "Otomispråk"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:247
-#, fuzzy, c-format
-msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
-msgstr "Integritetskontroll misslyckades för paket %s. Vill du försöka igen?"
+#: ../zypp/repo/PackageProvider.cc:320
+#, c-format
+msgid "Package %s fails integrity check. Do you want to retry?"
+msgstr "Integritetskontrollen misslyckades för paketet %s. Vill du försöka igen?"
 
-# Libris vill ha det så.
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
 msgid "Pahlavi"
@@ -3138,7 +2971,6 @@ msgstr "Palau"
 msgid "Palauan"
 msgstr "Palauan"
 
-# official_name for PSE
 #. :PRI:630:
 #: ../zypp/CountryCode.cc:401
 msgid "Palestinian Territory"
@@ -3164,7 +2996,6 @@ msgstr "Panama"
 msgid "Pangasinan"
 msgstr "Pangasinan"
 
-# Även panjabi.
 #. language code: pan pa
 #: ../zypp/LanguageCode.cc:930
 msgid "Panjabi"
@@ -3175,7 +3006,6 @@ msgstr "Punjabi"
 msgid "Papiamento"
 msgstr "Papiamento"
 
-# PG
 #. :PYF:258:
 #: ../zypp/CountryCode.cc:394
 msgid "Papua New Guinea"
@@ -3191,20 +3021,20 @@ msgstr "Papuanska språk (övriga)"
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: ../zypp/media/MediaException.cc:122
-#, fuzzy, c-format
+#: ../zypp/media/MediaException.cc:106
+#, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "%1 är inte en katalog."
+msgstr "Sökvägen %s på mediet %s är inte en katalog."
 
-#: ../zypp/media/MediaException.cc:114
+#: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr ""
+msgstr "Sökvägen %s på mediet %s är inte en fil."
 
-#: ../zypp/media/MediaException.cc:252
-#, fuzzy, c-format
+#: ../zypp/media/MediaException.cc:200
+#, c-format
 msgid "Permission to access '%s' denied."
-msgstr "Åtkomst nekas"
+msgstr "Behörigheten för åtkomst till %s nekades."
 
 #. language code: per fas fa
 #: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
@@ -3241,7 +3071,6 @@ msgstr "Feniciska"
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-# Libris vill ha det så.
 #. language code: pon
 #: ../zypp/LanguageCode.cc:950
 msgid "Pohnpeian"
@@ -3274,15 +3103,15 @@ msgstr "Prakritspråk"
 
 #: ../zypp/VendorSupportOptions.cc:45
 msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
-msgstr ""
+msgstr "Problembestämning – innebär teknisk support som ska kunna ge kompatibilitetsinformation, installationshjälp, användningssupport, underhåll och grundläggande felsökning. Support på nivå 1 är inte avsedd att korrigera produktfel."
 
 #: ../zypp/VendorSupportOptions.cc:48
 msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
-msgstr ""
+msgstr "Problemisolering – innebär teknisk support som ska kunna återskapa kundproblemen, isolera problemområdet och ge lösningar på problem som inte åtgärdas av supporten på nivå 1."
 
 #: ../zypp/VendorSupportOptions.cc:51
 msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
-msgstr ""
+msgstr "Problemlösning – innebär teknisk support som ska kunna lösa komplexa problem som har identifierats i supporten på nivå 2 med hjälp av tekniker."
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
@@ -3314,12 +3143,10 @@ msgid "Query string parsing not supported for this URL"
 msgstr "Analysering av frågesträng stöds inte för den här URL-adressen"
 
 #. TranslatorExplanation after semicolon is error message
-#. TranslatorExplanation the colon is followed by an error message
-#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
-#: ../zypp/target/rpm/RpmDb.cc:2220
-#, fuzzy
+#: ../zypp/target/rpm/RpmDb.cc:892 ../zypp/target/rpm/RpmDb.cc:2078
+#: ../zypp/target/rpm/RpmDb.cc:2212
 msgid "RPM failed: "
-msgstr "misslyckades"
+msgstr "RPM misslyckades: "
 
 #. language code: roh rm
 #: ../zypp/LanguageCode.cc:970
@@ -3345,15 +3172,15 @@ msgstr "Rarotongan"
 msgid "Relative path not allowed if authority exists"
 msgstr "Relativa sökvägar tillåts inte om det finns behörighet"
 
-#: ../zypp/RepoManager.cc:1328
+#: ../zypp/RepoManager.cc:1304
 #, c-format
 msgid "Removing repository '%s'"
-msgstr "Tar bort förrådet \"%s\""
+msgstr "Arkivet %s tas bort"
 
 #: ../zypp/parser/RepoindexFileReader.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "Required attribute '%s' is missing."
-msgstr "Fil som krävs saknas: "
+msgstr "Det nödvändiga attributet %s saknas."
 
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:406
@@ -3395,37 +3222,31 @@ msgstr "Ryska"
 msgid "Russian Federation"
 msgstr "Ryska federationen"
 
-# RW
 #. :RUS:643:
 #: ../zypp/CountryCode.cc:409
 msgid "Rwanda"
 msgstr "Rwanda"
 
-# SH
 #. :SGP:702:
 #: ../zypp/CountryCode.cc:416
 msgid "Saint Helena"
 msgstr "Sankt Helena"
 
-# KN
 #. :COM:174:
 #: ../zypp/CountryCode.cc:340
 msgid "Saint Kitts and Nevis"
 msgstr "Sankt Kitts och Nevis"
 
-# LC
 #. :LBN:422:
 #: ../zypp/CountryCode.cc:348
 msgid "Saint Lucia"
 msgstr "Sankt Lucia"
 
-# PM
 #. :POL:616:
 #: ../zypp/CountryCode.cc:398
 msgid "Saint Pierre and Miquelon"
 msgstr "Sankt Pierre och Miquelon"
 
-# VC
 #. :VAT:336:
 #: ../zypp/CountryCode.cc:452
 msgid "Saint Vincent and the Grenadines"
@@ -3456,7 +3277,6 @@ msgstr "Samoa"
 msgid "Samoan"
 msgstr "Samoanska"
 
-# SM
 #. :SLE:694:
 #: ../zypp/CountryCode.cc:421
 msgid "San Marino"
@@ -3482,7 +3302,6 @@ msgstr "Sanskrit"
 msgid "Santali"
 msgstr "Santali"
 
-# ST
 #. :SUR:740:
 #: ../zypp/CountryCode.cc:425
 msgid "Sao Tome and Principe"
@@ -3518,13 +3337,11 @@ msgstr "Selkup"
 msgid "Semitic (Other)"
 msgstr "Semitiska språk (övriga)"
 
-# SN
 #. :SMR:674:
 #: ../zypp/CountryCode.cc:422
 msgid "Senegal"
 msgstr "Senegal"
 
-# name for SCG
 #. :CRI:188:
 #: ../zypp/CountryCode.cc:273
 msgid "Serbia and Montenegro"
@@ -3540,7 +3357,6 @@ msgstr "Serbiska"
 msgid "Serer"
 msgstr "Serer"
 
-# SC
 #. :SLB:090:
 #: ../zypp/CountryCode.cc:412
 msgid "Seychelles"
@@ -3571,7 +3387,6 @@ msgstr "Sicilianska"
 msgid "Sidamo"
 msgstr "Sidami"
 
-# SL
 #. :SVK:703:
 #: ../zypp/CountryCode.cc:420
 msgid "Sierra Leone"
@@ -3582,12 +3397,11 @@ msgstr "Sierra Leone"
 msgid "Sign Languages"
 msgstr "Teckenspråk"
 
-#: ../zypp/KeyRing.cc:587
-#, fuzzy, c-format
+#: ../zypp/KeyRing.cc:597
+#, c-format
 msgid "Signature file %s not found"
-msgstr "Det gick inte att hitta källpaketet \"%s\"."
+msgstr "Det gick inte att hitta signaturfilen %s"
 
-# Länge leve Libris!
 #. language code: bla
 #: ../zypp/LanguageCode.cc:354
 msgid "Siksika"
@@ -3658,24 +3472,21 @@ msgstr "Slovenska"
 msgid "Sogdian"
 msgstr "Sogdiska"
 
-# SB
 #. :SAU:682:
 #: ../zypp/CountryCode.cc:411
 msgid "Solomon Islands"
 msgstr "Salomonöarna"
 
-#: ../zypp/solver/detail/SATResolver.cc:949
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:937
+#, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
-msgstr "%s är i konflikt med %s"
+msgstr "Lösbara %s-konflikter med %s som uppstår automatiskt"
 
-# Libris vill ha det så.
 #. language code: som so
 #: ../zypp/LanguageCode.cc:1060
 msgid "Somali"
 msgstr "Somali"
 
-# SO
 #. :SEN:686:
 #: ../zypp/CountryCode.cc:423
 msgid "Somalia"
@@ -3711,7 +3522,6 @@ msgstr "Sydafrika"
 msgid "South American Indian (Other)"
 msgstr "Sydamerikanska indianspråk (övriga)"
 
-# GS
 #. :GRC:300:
 #: ../zypp/CountryCode.cc:312
 msgid "South Georgia and the South Sandwich Islands"
@@ -3742,7 +3552,6 @@ msgstr "Spanien"
 msgid "Spanish"
 msgstr "Spanska"
 
-# LK
 #. :LIE:438:
 #: ../zypp/CountryCode.cc:350
 msgid "Sri Lanka"
@@ -3768,7 +3577,6 @@ msgstr "Sumeriska"
 msgid "Sundanese"
 msgstr "Sundanesiska"
 
-# SR
 #. :SOM:706:
 #: ../zypp/CountryCode.cc:424
 msgid "Suriname"
@@ -3779,7 +3587,6 @@ msgstr "Surinam"
 msgid "Susu"
 msgstr "Susu"
 
-# SJ
 #. :SVN:705:
 #: ../zypp/CountryCode.cc:418
 msgid "Svalbard and Jan Mayen"
@@ -3790,13 +3597,11 @@ msgstr "Svalbard och Jan Mayen"
 msgid "Swahili"
 msgstr "Swahili"
 
-# Libris vill ha det så.
 #. language code: ssw ss
 #: ../zypp/LanguageCode.cc:1074
 msgid "Swati"
 msgstr "Swazi"
 
-# SZ
 #. :SYR:760:
 #: ../zypp/CountryCode.cc:428
 msgid "Swaziland"
@@ -3817,29 +3622,25 @@ msgstr "Svenska"
 msgid "Switzerland"
 msgstr "Schweiz"
 
-# Libris vill ha det så.
 #. :SLV:222:
 #: ../zypp/CountryCode.cc:427
 msgid "Syria"
 msgstr "Syrien"
 
-# Libris vill ha det så.
 #. language code: syr
 #: ../zypp/LanguageCode.cc:1088
 msgid "Syriac"
 msgstr "Syriska"
 
-#: ../zypp/media/MediaException.cc:107
+#: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr ""
+msgstr "Systemundantaget %s uppstod för mediet %s."
 
 #: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid ""
-"System management is locked by the application with pid %d (%s).\n"
-"Close this application before trying again."
-msgstr ""
+msgid "System management is locked by the application with pid %d (%s).\nPlease close this application before trying again."
+msgstr "Systemhanteringen har låsts av programmet med PID %d (%s).\nStäng programmet och försök igen."
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3918,22 +3719,20 @@ msgstr "Thailand"
 
 #: ../zypp/VendorSupportOptions.cc:39
 msgid "The level of support is unspecified"
-msgstr ""
+msgstr "Supportnivån har inte angetts"
 
 #: ../zypp/VendorSupportOptions.cc:42
-#, fuzzy
 msgid "The vendor does not provide support."
-msgstr "Disken finns inte."
+msgstr "Leverantören tillhandahåller inte support."
 
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
-msgstr ""
+msgstr "Åtgärden körs redan av ett annat program."
 
-#: ../zypp/solver/detail/SATResolver.cc:1130
-#: ../zypp/solver/detail/SATResolver.cc:1148
-#, fuzzy
+#: ../zypp/solver/detail/SATResolver.cc:1118
+#: ../zypp/solver/detail/SATResolver.cc:1136
 msgid "This request will break your system!"
-msgstr "Begäran finns redan."
+msgstr "Begäran kommer att knäcka systemet!"
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3950,10 +3749,10 @@ msgstr "Tigré"
 msgid "Tigrinya"
 msgstr "Tigrinja"
 
-#: ../zypp/media/MediaException.cc:259
+#: ../zypp/media/MediaException.cc:207
 #, c-format
 msgid "Timeout exceed when access '%s'."
-msgstr ""
+msgstr "Tidsgränsen överskreds när %s öppnades."
 
 #. language code: tem
 #: ../zypp/LanguageCode.cc:1100
@@ -3970,7 +3769,6 @@ msgstr "Tivi"
 msgid "Tlingit"
 msgstr "Tlingit"
 
-# TG
 #. :ATF:260:
 #: ../zypp/CountryCode.cc:432
 msgid "Togo"
@@ -3987,7 +3785,6 @@ msgstr "Tok Pisin"
 msgid "Tokelau"
 msgstr "Tokelau"
 
-# TO
 #. :TUN:788:
 #: ../zypp/CountryCode.cc:438
 msgid "Tonga"
@@ -4003,18 +3800,16 @@ msgstr "Tonga (nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "Tonga (Tongaöarna)"
 
-#: ../zypp/KeyRing.cc:526
+#: ../zypp/KeyRing.cc:536
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
-msgstr ""
+msgstr "Ett försök att importera den obefintliga nyckeln %s till nyckelringen %s har gjorts"
 
-# TT
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:441
 msgid "Trinidad and Tobago"
 msgstr "Trinidad och Tobago"
 
-# Libris vill ha det så.
 #. language code: tsi
 #: ../zypp/LanguageCode.cc:1136
 msgid "Tsimshian"
@@ -4065,7 +3860,6 @@ msgstr "Ottomanska (1500-1928)"
 msgid "Turkmen"
 msgstr "Turkmeniska"
 
-# TM
 #. :TKL:772:
 #: ../zypp/CountryCode.cc:436
 msgid "Turkmenistan"
@@ -4076,7 +3870,6 @@ msgstr "Turkmenistan"
 msgid "Turks and Caicos Islands"
 msgstr "Turks- och Caicosöarna"
 
-# Libris vill ha det så.
 #. language code: tvl
 #. :TTO:780:
 #: ../zypp/LanguageCode.cc:1152 ../zypp/CountryCode.cc:442
@@ -4098,7 +3891,6 @@ msgstr "Twi"
 msgid "Udmurt"
 msgstr "Udmurtiska"
 
-# UG
 #. :UKR:804:
 #: ../zypp/CountryCode.cc:446
 msgid "Uganda"
@@ -4160,7 +3952,6 @@ msgstr "Förenade Arabemiraten"
 msgid "United Kingdom"
 msgstr "Storbritannien"
 
-# US
 #. :UMI:581:
 #: ../zypp/CountryCode.cc:448
 msgid "United States"
@@ -4171,10 +3962,9 @@ msgstr "USA"
 msgid "United States Minor Outlying Islands"
 msgstr "USA:s avlägsna mindre öar"
 
-#: ../zypp/target/TargetImpl.cc:997
-#, fuzzy
+#: ../zypp/target/TargetImpl.cc:879
 msgid "Unknown Distribution"
-msgstr "Okänt alternativ för list"
+msgstr "Okänd distribution"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -4186,28 +3976,22 @@ msgstr "Okänt språk: "
 
 #: ../zypp/VendorSupportOptions.cc:56
 msgid "Unknown support option. Description not available"
-msgstr ""
+msgstr "Okänt supportalternativ. Beskrivningen är inte tillgänglig"
 
 #: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
-msgstr "HTTP-autentiseringsmetod \"%s\" stöds inte"
+msgstr "Det finns inte stöd för HTTP-autentiseringsmetoden %s"
 
-#: ../zypp/media/MediaException.cc:156
-#, fuzzy, c-format
+#: ../zypp/media/MediaException.cc:140
+#, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr "Ogiltigt URL-schema %1."
+msgstr "Det finns inte stöd för URI-schemat i %s."
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr ""
-"En osäker nyckel hittades:\n"
-"%s|%s|%s\n"
-"Vill du lita på nyckeln?"
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "En osäker nyckel hittades:\n%s|%s|%s\n Vill du lita på nyckeln?"
 
 #. language code: hsb
 #: ../zypp/LanguageCode.cc:612
@@ -4273,11 +4057,10 @@ msgid "Vai"
 msgstr "Vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:778
+#: ../zypp/RepoManager.cc:790
 msgid "Valid metadata not found at specified URL(s)"
-msgstr "Giltig metadata hittades inte på specificerad URL"
+msgstr "Det gick inte att hitta giltiga metadata på den angivna URL-adressen"
 
-# VU
 #. :VNM:704:
 #: ../zypp/CountryCode.cc:457
 msgid "Vanuatu"
@@ -4303,7 +4086,6 @@ msgstr "Vietnam"
 msgid "Vietnamese"
 msgstr "Vietnamesiska"
 
-# VI
 #. :VGB:092:
 #: ../zypp/CountryCode.cc:455
 msgid "Virgin Islands, U.S."
@@ -4329,7 +4111,6 @@ msgstr "Wakusjiska språk"
 msgid "Walamo"
 msgstr "Walamo"
 
-# WF
 #. :VUT:548:
 #: ../zypp/CountryCode.cc:458
 msgid "Wallis and Futuna"
@@ -4350,7 +4131,6 @@ msgstr "Waray"
 msgid "Washo"
 msgstr "Washo"
 
-# Libris vill ha det så.
 #. language code: wel cym cy
 #: ../zypp/LanguageCode.cc:1192 ../zypp/LanguageCode.cc:1194
 msgid "Welsh"
@@ -4406,7 +4186,6 @@ msgstr "Yoruba"
 msgid "Yupik Languages"
 msgstr "Yupiska språk"
 
-# ZM
 #. :ZAF:710:
 #: ../zypp/CountryCode.cc:463
 msgid "Zambia"
@@ -4427,7 +4206,6 @@ msgstr "Zapotek"
 msgid "Zenaga"
 msgstr "Zenaga"
 
-# BT
 #. language code: zha za
 #: ../zypp/LanguageCode.cc:1220
 msgid "Zhuang"
@@ -4448,102 +4226,95 @@ msgstr "Zulu"
 msgid "Zuni"
 msgstr "Zuni"
 
-#: ../zypp/repo/PackageProvider.cc:195
+#: ../zypp/repo/PackageProvider.cc:239
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm-kontrollen misslyckades."
 
-#: ../zypp/repo/PackageProvider.cc:212
+#: ../zypp/repo/PackageProvider.cc:253
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm misslyckades."
 
-#: ../zypp/solver/detail/SATResolver.cc:1219
+#: ../zypp/solver/detail/SATResolver.cc:1194
 #, c-format
 msgid "architecture change of %s to %s"
-msgstr ""
+msgstr "arkitekturändring av %s till %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:923
+#, c-format
 msgid "cannot install both %s and %s"
-msgstr "Det går inte att installera %s"
+msgstr "det går inte att installera både %s och %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:915
-#, fuzzy
+#: ../zypp/solver/detail/SATResolver.cc:903
 msgid "conflicting requests"
-msgstr "Anslutningsbegäran till"
+msgstr "begäranden i konflikt"
 
-#: ../zypp/target/rpm/RpmDb.cc:2372
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2362
 #, c-format
 msgid "created backup %s"
 msgstr "skapade säkerhetskopian %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1247
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1222
+#, c-format
 msgid "deinstallation of %s"
-msgstr "Det gick inte att installera %s:"
+msgstr "avinstallation av %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:983
-#, fuzzy
+#: ../zypp/solver/detail/SATResolver.cc:971
 msgid "deleted providers: "
-msgstr "Ingen tillhandahåller %s"
+msgstr "borttagna leverantörer:"
 
-#: ../zypp/solver/detail/SATResolver.cc:1151
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1139
+#, c-format
 msgid "do not ask to delete all solvables providing %s"
-msgstr "Installera inte och ta inte bort resurser som berörs"
+msgstr "fråga inte om att ta bort alla lösbara med %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1133
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1121
+#, c-format
 msgid "do not ask to install a solvable providing %s"
-msgstr "Det finns inga installerbara leverantörer för %s"
+msgstr "fråga inte om att installera en lösbar med %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1078
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:1066
+#, c-format
 msgid "do not forbid installation of %s"
-msgstr "installera inte %s"
+msgstr "förbjud inte installation av %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1057
-#: ../zypp/solver/detail/SATResolver.cc:1095
+#: ../zypp/solver/detail/SATResolver.cc:1045
+#: ../zypp/solver/detail/SATResolver.cc:1083
 #, c-format
 msgid "do not install %s"
 msgstr "installera inte %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1164
+#: ../zypp/solver/detail/SATResolver.cc:1152
 #, c-format
 msgid "do not install most recent version of %s"
-msgstr ""
+msgstr "installera inte den senaste versionen av %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1052
-#, fuzzy, c-format
-msgid "do not keep %s installed"
-msgstr "inte installerad."
-
-#: ../zypp/solver/detail/SATResolver.cc:1211
-#, fuzzy, c-format
-msgid "downgrade of %s to %s"
-msgstr "Uppdaterar %s till %s"
-
-#: ../zypp/solver/detail/SATResolver.cc:1131
-#: ../zypp/solver/detail/SATResolver.cc:1149
-msgid "ignore the warning of a broken system"
-msgstr ""
-
-#: ../zypp/solver/detail/SATResolver.cc:1227
+#: ../zypp/solver/detail/SATResolver.cc:1040
 #, c-format
-msgid ""
-"install %s (with vendor change)\n"
-"  %s\n"
-"-->\n"
-"  %s"
-msgstr ""
+msgid "do not keep %s installed"
+msgstr "behåll inte %s installerad"
+
+#: ../zypp/solver/detail/SATResolver.cc:1186
+#, c-format
+msgid "downgrade of %s to %s"
+msgstr "nedgradera %s till %s"
+
+#: ../zypp/solver/detail/SATResolver.cc:1119
+#: ../zypp/solver/detail/SATResolver.cc:1137
+msgid "ignore the warning of a broken system"
+msgstr "ignorera varningen om ett trasigt system"
+
+#: ../zypp/solver/detail/SATResolver.cc:1202
+#, c-format
+msgid "install %s (with vendor change)\n  %s\n-->\n  %s"
+msgstr "installera %s (när leverantören ändras)\n  %s\n-->\n  %s"
 
 #: ../zypp/VendorSupportOptions.cc:31
 msgid "invalid"
-msgstr ""
+msgstr "Ogiltig"
 
-#. for solver reason: NOT weak lock.
-#: ../zypp/solver/detail/SATResolver.cc:1073
-#: ../zypp/solver/detail/SATResolver.cc:1116
-#: ../zypp/solver/detail/SATResolver.cc:1193
+#: ../zypp/solver/detail/SATResolver.cc:1061
+#: ../zypp/solver/detail/SATResolver.cc:1104
 #, c-format
 msgid "keep %s"
 msgstr "behåll %s"
@@ -4556,73 +4327,67 @@ msgstr "libhal_ctx_new: Det gick inte att skapa libhal-kontext"
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: Det gick inte att ange dbus-anslutningen"
 
-#: ../zypp/solver/detail/SATResolver.cc:930
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:918
+#, c-format
 msgid "nothing provides %s needed by %s"
-msgstr "%s behövs av %s"
+msgstr "inget tillhandahåller %s som behövs i %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:921
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:909
+#, c-format
 msgid "nothing provides requested %s"
-msgstr "Ingen tillhandahåller %s"
+msgstr "inget tillhandahåller begärda %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:912
-#, fuzzy, c-format
+#: ../zypp/solver/detail/SATResolver.cc:900
+#, c-format
 msgid "problem with installed package %s"
-msgstr "Problem med att installera källpaket %s-%s:"
+msgstr "problem med det installerade paketet %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1235
+#: ../zypp/solver/detail/SATResolver.cc:1210
 #, c-format
 msgid "replacement of %s with %s"
-msgstr ""
+msgstr "ersätt %s med %s"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2070
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm skapade %s som %s, men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2072
+#: ../zypp/target/rpm/RpmDb.cc:2069
 #, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm skapade %s som %s.\n"
-"Här visas de första 25 raderna med skillnader:\n"
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm skapade %s som %s.\nHär visas de första 25 raderna med skillnader:\n"
+
+#: ../zypp/target/rpm/RpmDb.cc:2076 ../zypp/target/rpm/RpmDb.cc:2210
+msgid "rpm output:"
+msgstr "rpm-utmatning:"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2065
+#: ../zypp/target/rpm/RpmDb.cc:2062
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm sparade %s som %s, men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2067
+#: ../zypp/target/rpm/RpmDb.cc:2064
 #, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm sparade %s som %s.\n"
-"Här visas de första 25 raderna med skillnader:\n"
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm sparade %s som %s.\nHär visas de första 25 raderna med skillnader:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:918
-#, fuzzy
+#: ../zypp/solver/detail/SATResolver.cc:906
 msgid "some dependency problem"
-msgstr "Kan inte installera %s på grund av beroendeproblem"
+msgstr "vissa beroendeproblem"
 
-#: ../zypp/solver/detail/SATResolver.cc:995
-#, fuzzy
+#: ../zypp/solver/detail/SATResolver.cc:983
 msgid "uninstallable providers: "
-msgstr "Det finns inga installerbara leverantörer för %s"
+msgstr "oinstallerbara leverantörer:"
 
 #: ../zypp/VendorSupportOptions.cc:14
 msgid "unknown"
-msgstr "okänd"
+msgstr "Okänd"
 
 #: ../zypp/VendorSupportOptions.cc:17
-#, fuzzy
 msgid "unsupported"
-msgstr " - stöds inte"
+msgstr "går inte att använda"
+

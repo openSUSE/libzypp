@@ -1,73 +1,89 @@
-# Translation of zypp.po to russian
-# Copyright (C) 2005, 2006 SUSE Linux Products GmbH.
-# Copyright (C) 2002 SuSE Linux AG.
-# Copyright (C) 1999, 2000, 2001 SuSE GmbH.
+# Copyright (C) 2006 SuSE Linux Products GmbH, Nuernberg
+# This file is distributed under the same license as the package.
 #
-# Aleksey Novodvorksy <aen@logic.ru>, 2000.
-# Eugene Osintsev <osgene@omskelecom.ru>, 1999, 2000.
-# Aleksey Osipov <aliks-os@yandex.ru>, 2005, 2006, 2007, 2008.
-# Nikolay Derkach <nderkach@gmail.com>, 2007, 2008.
-# Alexander Melentiev <alex239@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: zypp.ru\n"
+"Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-21 09:10+0100\n"
-"PO-Revision-Date: 2008-12-29 21:01+0300\n"
-"Last-Translator: Alexander Melentiev <alex239@gmail.com>\n"
-"Language-Team: Russian <opensuse-translation-ru@opensuse.org>\n"
+"POT-Creation-Date: 2008-09-22 16:02+0200\n"
+"PO-Revision-Date: 2009-01-22 18:03\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 0.2\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:993
-msgid ""
-"\n"
-"uninstallable providers: "
-msgstr ""
-"\n"
-"неустанавливаемые поставщики: "
+#: ../zypp/solver/detail/SATResolver.cc:981
+msgid "\nuninstallable providers: "
+msgstr "\nпоставщики, не подлежащие установке: "
 
-#: ../zypp/media/MediaException.cc:266
+#: ../zypp/media/MediaException.cc:214
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr "Проблема с сертификатом SSL, проверьте, всё ли в порядке с удостоверяющим центром сертификата '%s'."
+msgstr " Проблема сертификатов SSL, проверьте, всё ли в порядке с удостоверяющим центром сертификата '%s'."
 
-#: ../zypp/target/TargetImpl.cc:88
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:85
 msgid " executed"
-msgstr "выполнено"
+msgstr " выполнено"
 
-#: ../zypp/target/TargetImpl.cc:110
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:106
 msgid " execution failed"
-msgstr "сбой выполнения"
+msgstr " сбой при выполнении"
 
-#: ../zypp/target/TargetImpl.cc:196
+#. timestamp
+#: ../zypp/target/TargetImpl.cc:190
 msgid " execution skipped while aborting"
-msgstr "выполнение пропущено при прерывании"
+msgstr " выполнение пропущено во время прерывания работы"
 
-#: ../zypp/solver/detail/SATResolver.cc:940
+#: ../zypp/solver/detail/SATResolver.cc:928
 #, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s конфликтует с %s, который предоставляется %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:926
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2075
+#, c-format
+msgid "%s install failed"
+msgstr "сбой при установке %s"
+
+#. %s = filename of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2084
+#, c-format
+msgid "%s installed ok"
+msgstr "%s установлен успешно"
+
+#: ../zypp/solver/detail/SATResolver.cc:914
 #, c-format
 msgid "%s is not installable"
 msgstr "%s недоступен для установки"
 
-#: ../zypp/solver/detail/SATResolver.cc:945
+#: ../zypp/solver/detail/SATResolver.cc:933
 #, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%s делает устаревшим %s, предоставляемый %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:981
+#. %s = name of rpm package
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2209
+#, c-format
+msgid "%s remove failed"
+msgstr "сбой при удалении %s "
+
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2217
+#, c-format
+msgid "%s remove ok"
+msgstr "%s удален, ok"
+
+#: ../zypp/solver/detail/SATResolver.cc:969
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
 msgstr "%s требует %s, но это требование не может быть удовлетворено"
 
-# AZ
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
 msgid "Abkhazian"
@@ -88,14 +104,18 @@ msgstr "Ачоли"
 msgid "Adangme"
 msgstr "Адангме"
 
-#: ../zypp/RepoManager.cc:1198
+#: ../zypp/RepoManager.cc:1182
 #, c-format
 msgid "Adding repository '%s'"
-msgstr "Добавление репозитория '%s'"
+msgstr "Добавляется репозитарий '%s'"
 
 #: ../zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
-msgstr "Необходимо дополнительное клиентское соглашение"
+msgstr "Необходим дополнительный контакт с заказчиком"
+
+#: ../zypp/target/rpm/RpmDb.cc:2087 ../zypp/target/rpm/RpmDb.cc:2220
+msgid "Additional rpm output:"
+msgstr "Дополнительный выход rpm:"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -105,7 +125,7 @@ msgstr "Адыгейский"
 #. language code: aar aa
 #: ../zypp/LanguageCode.cc:238
 msgid "Afar"
-msgstr "Афарский"
+msgstr "Афар"
 
 #. :ARE:784:
 #: ../zypp/CountryCode.cc:226
@@ -125,7 +145,7 @@ msgstr "Африкаанс"
 #. language code: afa
 #: ../zypp/LanguageCode.cc:250
 msgid "Afro-Asiatic (Other)"
-msgstr "Афро-азиатский (другие)"
+msgstr "Афразийские (другие)"
 
 #. language code: ain
 #: ../zypp/LanguageCode.cc:256
@@ -135,7 +155,7 @@ msgstr "Айнский"
 #. language code: aka ak
 #: ../zypp/LanguageCode.cc:258
 msgid "Akan"
-msgstr "Аканский"
+msgstr "Акан"
 
 #. language code: akk
 #: ../zypp/LanguageCode.cc:260
@@ -180,7 +200,7 @@ msgstr "Алтайские (другие)"
 #. :ARG:032:
 #: ../zypp/CountryCode.cc:235
 msgid "American Samoa"
-msgstr "Американское Самоа"
+msgstr "Северная Америка"
 
 #. language code: amh am
 #: ../zypp/LanguageCode.cc:272
@@ -189,7 +209,7 @@ msgstr "Амхарский (амаринья)"
 
 #: ../zypp/VendorSupportOptions.cc:54
 msgid "An additional customer contract is necessary for getting support."
-msgstr "Для получения поддержки необходимо дополнительное клиентское соглашение."
+msgstr "Для получения поддержки необходим дополнительный контакт с заказчиком."
 
 #: ../zypp/CountryCode.cc:224
 msgid "Andorra"
@@ -258,7 +278,7 @@ msgstr "Аргентина"
 #. :ALB:008:
 #: ../zypp/CountryCode.cc:230
 msgid "Armenia"
-msgstr "Армения"
+msgstr "Аргентина"
 
 #. language code: arm hye hy
 #: ../zypp/LanguageCode.cc:284 ../zypp/LanguageCode.cc:286
@@ -310,8 +330,7 @@ msgstr "Австрия"
 msgid "Austronesian (Other)"
 msgstr "Австронезийские (другие)"
 
-#. !\todo add comma to the message for the next release
-#: ../zypp/media/MediaCurl.cc:1702
+#: ../zypp/media/MediaCurl.cc:1615
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "Необходима аутентификация для '%s'"
@@ -339,7 +358,7 @@ msgstr "Аймара"
 #. :ALA:248:
 #: ../zypp/CountryCode.cc:240
 msgid "Azerbaijan"
-msgstr "Азербайджан"
+msgstr "Азербайджанский"
 
 #. language code: aze az
 #: ../zypp/LanguageCode.cc:312
@@ -349,16 +368,16 @@ msgstr "Азербайджанский"
 #: ../zypp/media/MediaException.cc:47
 #, c-format
 msgid "Bad file name: %s"
-msgstr "Некорректное имя файла: %s"
+msgstr "Неверное имя файла: %s"
 
 #: ../zypp/media/MediaException.cc:77
 msgid "Bad media attach point"
-msgstr "Некорректная точка присоединения носителя"
+msgstr "Неверная точка присоединения носителя"
 
 #. :BRA:076:
 #: ../zypp/CountryCode.cc:254
 msgid "Bahamas"
-msgstr "Багамы"
+msgstr "Панама"
 
 #. :BGR:100:
 #: ../zypp/CountryCode.cc:247
@@ -398,7 +417,7 @@ msgstr "Банда"
 #. :BRB:052:
 #: ../zypp/CountryCode.cc:243
 msgid "Bangladesh"
-msgstr "Бангладеш"
+msgstr "Английский"
 
 #. language code: bnt
 #: ../zypp/LanguageCode.cc:356
@@ -438,7 +457,7 @@ msgstr "Беджа"
 #. :BWA:072:
 #: ../zypp/CountryCode.cc:258
 msgid "Belarus"
-msgstr "Беларусь"
+msgstr "Беларуссия"
 
 #. language code: bel be
 #: ../zypp/LanguageCode.cc:336
@@ -453,7 +472,7 @@ msgstr "Бельгия"
 #. :BLR:112:
 #: ../zypp/CountryCode.cc:259
 msgid "Belize"
-msgstr "Белиз"
+msgstr "Бельгия"
 
 #. language code: bem
 #: ../zypp/LanguageCode.cc:338
@@ -575,10 +594,10 @@ msgstr "Бруней-Даруссалам"
 msgid "Buginese"
 msgstr "Бугийский"
 
-#: ../zypp/RepoManager.cc:966
+#: ../zypp/RepoManager.cc:977
 #, c-format
 msgid "Building repository '%s' cache"
-msgstr "Сбор кэша репозитория '%s'"
+msgstr "Собирается кэш репозитария '%s'"
 
 #. :BFA:854:
 #: ../zypp/CountryCode.cc:246
@@ -618,61 +637,61 @@ msgstr "Каддо"
 #. :KGZ:417:
 #: ../zypp/CountryCode.cc:337
 msgid "Cambodia"
-msgstr "Камбоджа"
+msgstr "Колумбия"
 
 #. :CHL:152:
 #: ../zypp/CountryCode.cc:269
 msgid "Cameroon"
 msgstr "Камерун"
 
-#: ../zypp/sat/detail/PoolImpl.cc:156
+#: ../zypp/sat/detail/PoolImpl.cc:148
 msgid "Can not create sat-pool."
-msgstr "Невозможно создать sat-pool."
+msgstr "Не удаётся создать пул SAT."
 
 #: ../zypp/thread/Mutex.cc:77
 msgid "Can't acquire the mutex lock"
-msgstr "Невозможно получить блокировку взаимного исключения"
+msgstr "Не удается получить блокировку взаимоисключения"
 
-#: ../zypp/ExternalProgram.cc:301
+#: ../zypp/ExternalProgram.cc:245
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr "Не удаётся выполнить chdir в '/' внутри среды chroot (%s)."
 
-#: ../zypp/ExternalProgram.cc:294
+#: ../zypp/ExternalProgram.cc:238
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr "Не удаётся выполнить chroot в '%s' (%s)."
 
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:315
+#: ../zypp/ExternalProgram.cc:259
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr "Не удаётся выполнить exec '%s' (%s)."
 
-#: ../zypp/ExternalProgram.cc:323
+#: ../zypp/ExternalProgram.cc:267
 #, c-format
 msgid "Can't fork (%s)."
 msgstr "Не удаётся выполнить fork (%s)."
 
 #: ../zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
-msgstr "Не удаётся инициализировать атрибуты взаимного исключения"
+msgstr "Не удается инициализировать атрибуты взаимоисключения"
 
 #: ../zypp/thread/Mutex.cc:47
 msgid "Can't initialize recursive mutex"
-msgstr "Не удаётся инициализировать рекурсивное взаимное исключение"
+msgstr "Не удается инициализировать рекурсивное взаимоисключение"
 
 #: ../zypp/base/InterProcessMutex.cc:79
 #, c-format
 msgid "Can't open lock file: %s"
 msgstr "Не удаётся открыть файл блокировки: %s"
 
-#: ../zypp/ExternalProgram.cc:230
+#: ../zypp/ExternalProgram.cc:174
 #, c-format
 msgid "Can't open pipe (%s)."
 msgstr "Не удаётся открыть канал (%s)."
 
-#: ../zypp/ExternalProgram.cc:219
+#: ../zypp/ExternalProgram.cc:163
 #, c-format
 msgid "Can't open pty (%s)."
 msgstr "Не удаётся открыть псевдо-терминал (%s)."
@@ -680,49 +699,44 @@ msgstr "Не удаётся открыть псевдо-терминал (%s)."
 #: ../zypp/repo/RepoProvideFile.cc:216
 #, c-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr "Не удаётся доставить файл '%s' из репозитория '%s'"
+msgstr "Не удаётся доставить файл '%s' из репозитария '%s'"
 
 #: ../zypp/thread/Mutex.cc:87
 msgid "Can't release the mutex lock"
-msgstr "Не удаётся освободить блокировку взаимного исключения"
+msgstr "Не удается освободить блокировку взаимоисключения"
 
 #: ../zypp/thread/Mutex.cc:40
 msgid "Can't set recursive mutex attribute"
-msgstr "Не удаётся установить атрибут рекурсивного взаимного исключения"
+msgstr "Не удается установить атрибут рекурсивного взаимоисключения"
 
 #. :BLZ:084:
 #: ../zypp/CountryCode.cc:260
 msgid "Canada"
 msgstr "Канада"
 
-#: ../zypp/KeyRing.cc:275
+#: ../zypp/KeyRing.cc:285
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
 msgstr "Невозможно записать публичный ключ %s из хранилища %s в файл %s"
 
-#: ../zypp/media/MediaException.cc:234
+#: ../zypp/media/MediaException.cc:182
 msgid "Cannot eject any media"
-msgstr "Не удаётся извлечь ни один носитель"
+msgstr "Невозможно выгрузить носитель"
 
-#: ../zypp/media/MediaException.cc:236
+#: ../zypp/media/MediaException.cc:184
 #, c-format
 msgid "Cannot eject media '%s'"
-msgstr "Не удаётся извлечь носитель '%s'"
-
-#: ../zypp/media/MediaException.cc:273
-#, c-format
-msgid "Cannot find available loop device to mount the image file from '%s'"
-msgstr "Невозможно найти доступное loop-устройство для монтирования файла образа из '%s'"
+msgstr "Невозможно выгрузить носитель \"%s\"'"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
 msgid "Cannot write file '%s'."
-msgstr "Не удаётся записать файл '%s'."
+msgstr "Невозможно записать файл \"%s\"."
 
 #. :CUB:192:
 #: ../zypp/CountryCode.cc:275
 msgid "Cape Verde"
-msgstr "Кабо-Верде"
+msgstr "Капе Верде"
 
 #. language code: car
 #: ../zypp/LanguageCode.cc:382
@@ -767,7 +781,7 @@ msgstr "Индейцев Центральной Америки (Другой)"
 #. :TCA:796:
 #: ../zypp/CountryCode.cc:430
 msgid "Chad"
-msgstr "Чад"
+msgstr "Китай"
 
 #. language code: chg
 #: ../zypp/LanguageCode.cc:398
@@ -786,10 +800,10 @@ msgstr "Чаморро"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1896
+#: ../zypp/target/rpm/RpmDb.cc:1898
 #, c-format
 msgid "Changed configuration files for %s:"
-msgstr "Изменённые файлы настройки для %s:"
+msgstr "Измененные файлы конфигурации для %s:"
 
 #. language code: che ce
 #: ../zypp/LanguageCode.cc:396
@@ -874,26 +888,26 @@ msgstr "Классический неварский"
 #. :CAN:124:
 #: ../zypp/CountryCode.cc:261
 msgid "Cocos (Keeling) Islands"
-msgstr "Кокосовые острова (Килинг)"
+msgstr "Кокосовые острова"
 
 #. :CHN:156:
 #: ../zypp/CountryCode.cc:271
 msgid "Colombia"
 msgstr "Колумбия"
 
-#: ../zypp/ExternalProgram.cc:402
+#: ../zypp/ExternalProgram.cc:346
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Команда завершилась с кодом %d."
 
-#: ../zypp/ExternalProgram.cc:427
+#: ../zypp/ExternalProgram.cc:371
 msgid "Command exited with unknown error."
 msgstr "Команда завершилась с неизвестной ошибкой."
 
-#: ../zypp/ExternalProgram.cc:422
+#: ../zypp/ExternalProgram.cc:366
 #, c-format
 msgid "Command was killed by signal %d (%s)."
-msgstr "Команда была убита сигналом %d (%s)."
+msgstr "Команда была прекращена сигналом %d (%s)."
 
 #. :KIR:296:
 #: ../zypp/CountryCode.cc:339
@@ -984,7 +998,7 @@ msgstr "Хорватский"
 #. :SCG:891:
 #: ../zypp/CountryCode.cc:274
 msgid "Cuba"
-msgstr "Куба"
+msgstr "Колумбия"
 
 #. language code: cus
 #: ../zypp/LanguageCode.cc:444
@@ -1034,7 +1048,7 @@ msgstr "Делаварский"
 #. :DJI:262:
 #: ../zypp/CountryCode.cc:281
 msgid "Denmark"
-msgstr "Дания"
+msgstr "Голандия"
 
 #. language code: din
 #: ../zypp/LanguageCode.cc:464
@@ -1071,39 +1085,16 @@ msgstr "Доминика"
 msgid "Dominican Republic"
 msgstr "Доминиканская республика"
 
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#: ../zypp/media/MediaException.cc:152
 #, c-format
-msgid "Download (Metalink curl) initialization failed for '%s'"
-msgstr "Сбой инициализации загрузки (Metalink curl) для '%s'"
-
-#: ../zypp/media/MediaException.cc:168
-#, c-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-"Ошибка загрузки (curl) '%s':\n"
-"Код ошибки: %s\n"
-"Сообщение ошибки: %s\n"
+msgid "Download (curl) error for '%s':\nError code: %s\nError message: %s\n"
+msgstr "Ошибка загрузки (закрутки) для \"%s\"\nКод ошибки: %s\nСообщение об ошибке: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: ../zypp/media/MediaException.cc:84
 #, c-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr "Сбой инициализации загрузки (curl) для '%s'"
-
-#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
-#, c-format
-msgid ""
-"Download (metalink curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-"Ошибка загрузки (metalink curl) для '%s':\n"
-"Код ошибки: %s\n"
-"Сообщение ошибки: %s\n"
+msgstr "Ошибка при инициализации загрузки (закрутки) для \"%s\""
 
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
@@ -1116,7 +1107,7 @@ msgid "Duala"
 msgstr "Дуала"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:98
+#: ../zypp/CheckSum.cc:97
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr "Подозрительный тип '%s' байта номер %u контрольной суммы '%s'"
@@ -1159,7 +1150,7 @@ msgstr "Эфик"
 #. :EST:233:
 #: ../zypp/CountryCode.cc:287
 msgid "Egypt"
-msgstr "Египет"
+msgstr "Египт"
 
 #. language code: egy
 #: ../zypp/LanguageCode.cc:488
@@ -1181,21 +1172,21 @@ msgstr "Сальвадор"
 msgid "Elamite"
 msgstr "Эламский"
 
-#: ../zypp/media/MediaException.cc:151
+#: ../zypp/media/MediaException.cc:135
 msgid "Empty destination in URI"
-msgstr "Пустой пункт назначения в URI-адресе"
+msgstr "Пустое место назначения в URI"
 
-#: ../zypp/media/MediaException.cc:146
+#: ../zypp/media/MediaException.cc:130
 msgid "Empty filesystem in URI"
-msgstr "Пустая файловая система в URI-адресе"
+msgstr "Пустая файловая система в URI"
 
-#: ../zypp/media/MediaException.cc:141
+#: ../zypp/media/MediaException.cc:125
 msgid "Empty host name in URI"
-msgstr "Пустое имя узла в URI-адресе"
+msgstr "Пустое имя хоста в URI"
 
 #: ../zypp/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
-msgstr "Зашифрованная строка содержит байт со значением NULL"
+msgstr "Зашифрованная строка содержит байты со значением NULL"
 
 #. language code: eng en
 #: ../zypp/LanguageCode.cc:494
@@ -1223,16 +1214,10 @@ msgid "Eritrea"
 msgstr "Эритрея"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:177
+#: ../zypp/media/MediaException.cc:161
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr "Произошла ошибка при установке параметров загрузки (curl) для '%s':"
-
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
-#, c-format
-msgid "Error occurred while setting download (metalink curl) options for '%s':"
-msgstr "Произошла ошибка при установке параметров загрузки (metalink curl) для '%s':"
+msgstr "Ошибка при настройке загрузки (закрутки) для \"%s\":"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1257,7 +1242,7 @@ msgstr "Эстонский"
 #. :ESP:724:
 #: ../zypp/CountryCode.cc:291
 msgid "Ethiopia"
-msgstr "Эфиопия"
+msgstr "Эстония"
 
 #. language code: ewe ee
 #: ../zypp/LanguageCode.cc:502
@@ -1269,11 +1254,11 @@ msgstr "Эве"
 msgid "Ewondo"
 msgstr "Эвондо"
 
-#: ../zypp/KeyRing.cc:577
+#: ../zypp/KeyRing.cc:587
 msgid "Failed to delete key."
 msgstr "Не удалось удалить ключ."
 
-#: ../zypp/target/rpm/RpmDb.cc:1064
+#: ../zypp/target/rpm/RpmDb.cc:1066
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "Не удалось импортировать публичный ключ из файла %s: %s"
@@ -1281,9 +1266,9 @@ msgstr "Не удалось импортировать публичный клю
 #: ../zypp/media/MediaException.cc:31
 #, c-format
 msgid "Failed to mount %s on %s"
-msgstr "Не удалось смонтировать %s в %s"
+msgstr "Не удалось смонтировать %s на %s"
 
-#: ../zypp/target/rpm/RpmDb.cc:1141
+#: ../zypp/target/rpm/RpmDb.cc:1143
 #, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "Не удалось удалить публичный ключ %s: %s"
@@ -1291,12 +1276,12 @@ msgstr "Не удалось удалить публичный ключ %s: %s"
 #: ../zypp/media/MediaException.cc:41
 #, c-format
 msgid "Failed to unmount %s"
-msgstr "Не удалось отмонтировать %s"
+msgstr "Не удалось отсоединить %s"
 
 #. :FJI:242:
 #: ../zypp/CountryCode.cc:294
 msgid "Falkland Islands (Malvinas)"
-msgstr "Фолклендские острова (Мальвинские)"
+msgstr "Фанклендские острова (Мальвины)"
 
 #. language code: fan
 #: ../zypp/LanguageCode.cc:506
@@ -1311,7 +1296,7 @@ msgstr "Фанти"
 #. :FSM:583:
 #: ../zypp/CountryCode.cc:296
 msgid "Faroe Islands"
-msgstr "Фарерские Острова"
+msgstr "Фароские Острова"
 
 #. language code: fao fo
 #: ../zypp/LanguageCode.cc:508
@@ -1321,7 +1306,7 @@ msgstr "Фарерский"
 #. :FLK:238:
 #: ../zypp/CountryCode.cc:295
 msgid "Federated States of Micronesia"
-msgstr "Федеративные Штаты Микронезии"
+msgstr "Федеральные Штаты Микронезии"
 
 #. :FIN:246:
 #: ../zypp/CountryCode.cc:293
@@ -1335,68 +1320,38 @@ msgstr "Фиджи"
 
 #: ../devel/devel.mvidner/installation_sources.cc:99
 #, c-format
-msgid ""
-"File %s does not have a checksum.\n"
-"Use the file anyway?"
-msgstr ""
-"Файл %s не имеет контрольной суммы.\n"
-"Всё равно использовать файл?"
+msgid "File %s does not have a checksum.\nUse the file anyway?"
+msgstr "Файл %s не имеет контрольной суммы.\nВсе равно использовать файл?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:85
 #, c-format
-msgid ""
-"File %s failed integrity check with the folowing key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Сбой при проверке целостности файла %s с использованием следующего ключа:\n"
-"%s|%s|%s\n"
-"Всё равно использовать файл?"
+msgid "File %s failed integrity check with the folowing key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Сбой при проверке целостности файла %s с использованием следующего ключа:\n%s|%s|%s\n Все равно использовать файл?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:117
 #, c-format
-msgid ""
-"File %s has an invalid checksum.\n"
-"Expected %s, found %s\n"
-"Use the file anyway?"
-msgstr ""
-"Файл %s имеет неверную контрольную сумму.\n"
-"Ожидаемая - %s, фактическая - %s\n"
-"Всё равно использовать файл?"
+msgid "File %s has an invalid checksum.\nExpected %s, found %s\nUse the file anyway?"
+msgstr "Файл %s: неверная контрольная сумма.\nОжидаемая - %s, фактическая - %s\n Все равно использовать файл?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:108
 #, c-format
-msgid ""
-"File %s has an unknown checksum %s.\n"
-"Use the file anyway?"
-msgstr ""
-"Файл %s имеет неизвестную контрольную сумму %s.\n"
-"Всё равно использовать файл?"
+msgid "File %s has an unknown checksum %s.\nUse the file anyway?"
+msgstr "Файл %s: неизвестная контрольная сумма %s.\nВсе равно использовать файл?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:56
 #, c-format
-msgid ""
-"File %s is not signed.\n"
-"Use it anyway?"
-msgstr ""
-"Файл %s не подписан.\n"
-"Всё равно использовать его?"
+msgid "File %s is not signed.\nUse it anyway?"
+msgstr "Файл %s не подписан.\nВсе равно его использовать?"
 
 #: ../devel/devel.mvidner/installation_sources.cc:65
 #, c-format
-msgid ""
-"File %s is signed with an unknown key:\n"
-"%s|%s|%s\n"
-"Use the file anyway?"
-msgstr ""
-"Файл %s подписан неизвестным ключом:\n"
-"%s|%s|%s\n"
-"Всё равно использовать файл?"
+msgid "File %s is signed with an unknown key:\n%s|%s|%s\nUse the file anyway?"
+msgstr "Файл %s подписан неизвестным ключом:\n%s|%s|%s\n Все равно использовать файл?"
 
 #: ../zypp/media/MediaException.cc:60
 #, c-format
 msgid "File '%s' not found on medium '%s'"
-msgstr "Файл '%s' не найден на носителе '%s'"
+msgstr "Файл \"%s\" не найден на носителе \"%s\""
 
 #. language code: fil
 #: ../zypp/LanguageCode.cc:514
@@ -1450,7 +1405,7 @@ msgstr "Французская Полинезия"
 #. :TCD:148:
 #: ../zypp/CountryCode.cc:431
 msgid "French Southern Territories"
-msgstr "Французские Южные Территории"
+msgstr "Французские южные территории"
 
 #. language code: frm
 #: ../zypp/LanguageCode.cc:526
@@ -1500,7 +1455,7 @@ msgstr "Галисийский"
 #. :GRL:304:
 #: ../zypp/CountryCode.cc:307
 msgid "Gambia"
-msgstr "Гамбия"
+msgstr "Ямайка"
 
 #. language code: lug lg
 #: ../zypp/LanguageCode.cc:762
@@ -1524,7 +1479,7 @@ msgstr "Геэз"
 
 #: ../zypp/solver/detail/ProblemSolutionIgnore.cc:61
 msgid "Generally ignore of some dependecies"
-msgstr "Игнорировать некоторые зависимости везде"
+msgstr "Постоянно игнорировать некоторые зависимости"
 
 #. :GRD:308:
 #: ../zypp/CountryCode.cc:302
@@ -1564,7 +1519,7 @@ msgstr "Германия"
 #. :GUF:254:
 #: ../zypp/CountryCode.cc:304
 msgid "Ghana"
-msgstr "Гана"
+msgstr "Китай"
 
 #. :GHA:288:
 #: ../zypp/CountryCode.cc:305
@@ -1614,7 +1569,7 @@ msgstr "Греческий, Современный (1453-)"
 #. :GIB:292:
 #: ../zypp/CountryCode.cc:306
 msgid "Greenland"
-msgstr "Гренландия"
+msgstr "Гринландия"
 
 #. :GBR:826:
 #: ../zypp/CountryCode.cc:301
@@ -1688,7 +1643,7 @@ msgstr "Исключение Hal"
 
 #: ../zypp/target/hal/HalContext.cc:94
 msgid "HalContext not connected"
-msgstr "HalContext не подключён"
+msgstr "HalContext не подключен"
 
 #: ../zypp/target/hal/HalContext.cc:104
 msgid "HalDrive not initialized"
@@ -1703,9 +1658,9 @@ msgstr "HalVolume не инициализирован"
 msgid "Hausa"
 msgstr "Хауса"
 
-#: ../zypp/solver/detail/SATResolver.cc:922
+#: ../zypp/solver/detail/SATResolver.cc:910
 msgid "Have you enabled all requested repositories?"
-msgstr "Включили ли вы все требуемые репозитории?"
+msgstr "Включены все необходимые репозитарии?"
 
 #. language code: haw
 #: ../zypp/LanguageCode.cc:594
@@ -1775,7 +1730,7 @@ msgstr "Гондурас"
 #. :GUY:328:
 #: ../zypp/CountryCode.cc:317
 msgid "Hong Kong"
-msgstr "Гонг-Конг"
+msgstr "Гонконг"
 
 #. language code: hun hu
 #: ../zypp/LanguageCode.cc:614
@@ -1868,14 +1823,14 @@ msgstr "Индонезийский"
 msgid "Ingush"
 msgstr "Ингушский"
 
-#: ../zypp/target/TargetImpl.cc:692 ../zypp/target/TargetImpl.cc:963
+#: ../zypp/target/TargetImpl.cc:601 ../zypp/target/TargetImpl.cc:839
 msgid "Installation has been aborted as directed."
-msgstr "Установка прервана согласно указаниям."
+msgstr "Установка прервана согласно инструкции."
 
 #. language code: ina ia
 #: ../zypp/LanguageCode.cc:638
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr "Интерлингва (Международная Ассоциация Вспомогательного Языка)"
+msgstr "Интерлингва"
 
 #. language code: ile ie
 #: ../zypp/LanguageCode.cc:634
@@ -1895,21 +1850,21 @@ msgstr "Инупиак"
 #: ../zypp/url/UrlBase.cc:180
 #, c-format
 msgid "Invalid %s component"
-msgstr "Неверный компонент: %s"
+msgstr "Недопустимый компонент %s"
 
 #: ../zypp/url/UrlBase.cc:173
 #, c-format
 msgid "Invalid %s component '%s'"
-msgstr "Неверный компонент %s: '%s'"
+msgstr "Недопустимый компонент %s: '%s'"
 
 #: ../zypp/Url.cc:152
 #, c-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "Неверный параметр запроса LDAP в URL-адресе: '%s'"
+msgstr "Недопустимый параметр запроса LDAP в URL-адресе: '%s'"
 
 #: ../zypp/Url.cc:113
 msgid "Invalid LDAP URL query string"
-msgstr "Неверная строка запроса LDAP в URL-адресе"
+msgstr "Недопустимая строка запроса LDAP в URL-адресе"
 
 #: ../zypp/url/UrlBase.cc:826
 #, c-format
@@ -1918,12 +1873,12 @@ msgstr "Неверная схема URL-адреса '%s'"
 
 #: ../zypp/Url.cc:309
 msgid "Invalid empty Url object reference"
-msgstr "Неверная ссылка на пустой объект URL"
+msgstr "Недопустимая ссылка на пустой объект URL"
 
 #: ../zypp/url/UrlBase.cc:1047
 #, c-format
 msgid "Invalid host component '%s'"
-msgstr "Неверный компонент узла '%s'"
+msgstr "Неверный компонент хоста '%s'"
 
 #: ../zypp/url/UrlUtils.cc:283
 msgid "Invalid parameter array join separator character"
@@ -1942,15 +1897,19 @@ msgstr "Неверный символ разделителя для разбие
 msgid "Invalid port component '%s'"
 msgstr "Неверный компонент порта '%s'"
 
-#: ../zypp/PoolQuery.cc:440
+#: ../zypp/PoolQuery.cc:443
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr "Неверное регулярное выражение '%s': regcomp вернул %d"
 
+#: ../zypp/media/MediaCurl.cc:1612
+msgid "Invalid user name or password."
+msgstr "Неверное имя пользователя или пароль."
+
 #. :IRQ:368:
 #: ../zypp/CountryCode.cc:329
 msgid "Iran"
-msgstr "Иран"
+msgstr "Израиль"
 
 #. language code: ira
 #: ../zypp/LanguageCode.cc:650
@@ -2115,7 +2074,7 @@ msgstr "Казахский"
 #. :CYM:136:
 #: ../zypp/CountryCode.cc:345
 msgid "Kazakhstan"
-msgstr "Казахстан"
+msgstr "Тайвань"
 
 #. :JPN:392:
 #: ../zypp/CountryCode.cc:335
@@ -2285,7 +2244,7 @@ msgstr "Латышский"
 #. :LAO:418:
 #: ../zypp/CountryCode.cc:347
 msgid "Lebanon"
-msgstr "Ливан"
+msgstr "Лебанон"
 
 #. :LBR:430:
 #: ../zypp/CountryCode.cc:352
@@ -2312,7 +2271,7 @@ msgstr "Лезгинский"
 #. :LKA:144:
 #: ../zypp/CountryCode.cc:351
 msgid "Liberia"
-msgstr "Либерия"
+msgstr "Сербия"
 
 #. :LVA:428:
 #: ../zypp/CountryCode.cc:356
@@ -2457,7 +2416,7 @@ msgstr "Малагасийский"
 #. :MDV:462:
 #: ../zypp/CountryCode.cc:374
 msgid "Malawi"
-msgstr "Малави"
+msgstr "Мальта"
 
 #. language code: may msa ms
 #: ../zypp/LanguageCode.cc:800 ../zypp/LanguageCode.cc:802
@@ -2472,21 +2431,21 @@ msgstr "Малаялам"
 #. :MEX:484:
 #: ../zypp/CountryCode.cc:376
 msgid "Malaysia"
-msgstr "Малайзия"
+msgstr "Малазия"
 
 #. :MUS:480:
 #: ../zypp/CountryCode.cc:373
 msgid "Maldives"
-msgstr "Мальдивы"
+msgstr "Мальта"
 
-#: ../zypp/media/MediaException.cc:131
+#: ../zypp/media/MediaException.cc:115
 msgid "Malformed URI"
-msgstr "Неправильно сформированный URI-адрес"
+msgstr "Неверная форма URI"
 
 #. :MKD:807:
 #: ../zypp/CountryCode.cc:363
 msgid "Mali"
-msgstr "Мали"
+msgstr "Мальта"
 
 #. :MSR:500:
 #: ../zypp/CountryCode.cc:371
@@ -2571,12 +2530,12 @@ msgstr "Масаи"
 #. :MTQ:474:
 #: ../zypp/CountryCode.cc:369
 msgid "Mauritania"
-msgstr "Мавритания"
+msgstr "Литва"
 
 #. :MLT:470:
 #: ../zypp/CountryCode.cc:372
 msgid "Mauritius"
-msgstr "Маврикий"
+msgstr "Литва"
 
 #. language code: myn
 #: ../zypp/LanguageCode.cc:848
@@ -2588,24 +2547,24 @@ msgstr "Майя языки"
 msgid "Mayotte"
 msgstr "Майотта"
 
-#: ../zypp/media/MediaException.cc:221
+#: ../zypp/media/MediaException.cc:169
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr "Источник носителей '%s' не содержит желаемого носителя"
+msgstr "В источнике носителей \"%s\" не содержится требуемый носитель"
 
-#: ../zypp/media/MediaException.cc:227
+#: ../zypp/media/MediaException.cc:175
 #, c-format
 msgid "Medium '%s' is in use by another instance"
-msgstr "Носитель'%s' используется другим экземпляром"
+msgstr "Носитель \"%s\" используется другим экземпляром"
 
 #: ../zypp/media/MediaException.cc:72
 msgid "Medium not attached"
-msgstr "Носитель не присоединён"
+msgstr "Носитель не присоединен"
 
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr "При попытке произведения действия '%s' не был открыт носитель."
+msgstr "Носитель не открывался при попытке выполнить действие \"%s\"."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -2615,7 +2574,7 @@ msgstr "Менде"
 #. :FRA:250:
 #: ../zypp/CountryCode.cc:298
 msgid "Metropolitan France"
-msgstr "Столичная Франция"
+msgstr "Франция"
 
 #. :MWI:454:
 #: ../zypp/CountryCode.cc:375
@@ -2690,7 +2649,7 @@ msgstr "Монгольский"
 #. :MRT:478:
 #: ../zypp/CountryCode.cc:370
 msgid "Montserrat"
-msgstr "Монтсеррат"
+msgstr "Мносерат"
 
 #. :LBY:434:
 #: ../zypp/CountryCode.cc:357
@@ -2710,7 +2669,7 @@ msgstr "Мозамбик"
 #. language code: mul
 #: ../zypp/LanguageCode.cc:838
 msgid "Multiple Languages"
-msgstr "Языки разных семей"
+msgstr "Разных семей языки"
 
 #. language code: mun
 #: ../zypp/LanguageCode.cc:840
@@ -2720,7 +2679,7 @@ msgstr "Мунда языки"
 #. :MLI:466:
 #: ../zypp/CountryCode.cc:364
 msgid "Myanmar"
-msgstr "Мьянма"
+msgstr "Панама"
 
 #. language code: nah
 #: ../zypp/LanguageCode.cc:852
@@ -2786,12 +2745,12 @@ msgstr "Нидерланды"
 #. :ARM:051:
 #: ../zypp/CountryCode.cc:231
 msgid "Netherlands Antilles"
-msgstr "Нидерландские Антильские острова "
+msgstr "Нидерланды"
 
 #. :NAM:516:
 #: ../zypp/CountryCode.cc:379
 msgid "New Caledonia"
-msgstr "Новая Калифорния"
+msgstr "Македония"
 
 #. :NIU:570:
 #: ../zypp/CountryCode.cc:389
@@ -2821,7 +2780,7 @@ msgstr "Нигер-кордофанские (другие)"
 #. :NFK:574:
 #: ../zypp/CountryCode.cc:382
 msgid "Nigeria"
-msgstr "Нигерия"
+msgstr "Сербия"
 
 #. language code: ssa
 #: ../zypp/LanguageCode.cc:1072
@@ -2846,7 +2805,7 @@ msgstr "Нет кода"
 
 #: ../zypp/repo/RepoProvideFile.cc:222
 msgid "No url in repository."
-msgstr "В репозитории нет URL-адреса."
+msgstr "В репозитарии нет URL-адреса."
 
 #. language code: nog
 #: ../zypp/LanguageCode.cc:884
@@ -2886,7 +2845,7 @@ msgstr "Северо-саамский"
 #. language code: nso
 #: ../zypp/LanguageCode.cc:890
 msgid "Northern Sotho"
-msgstr "Северный Сото"
+msgstr "Сото Северный"
 
 #. :NLD:528:
 #: ../zypp/CountryCode.cc:385
@@ -2955,9 +2914,9 @@ msgstr "Оман"
 #: ../zypp/parser/RepoindexFileReader.cc:116
 #, c-format
 msgid "One or both of '%s' or '%s' attributes is required."
-msgstr "Требуются один или оба атрибута '%s' или '%s'."
+msgstr "Необходим один или оба атрибута '%s' или '%s'."
 
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:145
 msgid "Operation not supported by medium"
 msgstr "Операция не поддерживается носителем"
 
@@ -2987,10 +2946,10 @@ msgid "Otomian Languages"
 msgstr "Отомангские языки"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:247
+#: ../zypp/repo/PackageProvider.cc:320
 #, c-format
-msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
-msgstr "Похоже, что пакет %s повреждён при передаче. Попробовать получить ещё раз?"
+msgid "Package %s fails integrity check. Do you want to retry?"
+msgstr "Сбой при проверке целостности пакета %s. Попробовать заново?"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3015,7 +2974,7 @@ msgstr "Палау"
 #. :PRI:630:
 #: ../zypp/CountryCode.cc:401
 msgid "Palestinian Territory"
-msgstr "Палестинские Территории"
+msgstr "Паллестина"
 
 #. language code: pli pi
 #: ../zypp/LanguageCode.cc:946
@@ -3062,20 +3021,20 @@ msgstr "Папуасские (другие)"
 msgid "Paraguay"
 msgstr "Парагвай"
 
-#: ../zypp/media/MediaException.cc:122
+#: ../zypp/media/MediaException.cc:106
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "Путь '%s' на носителе '%s' не является каталогом."
+msgstr "Путь \"%s\" на носителе \"%s\" не представляет каталог."
 
-#: ../zypp/media/MediaException.cc:114
+#: ../zypp/media/MediaException.cc:98
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr "Путь '%s' на носителе '%s' не является файлом."
+msgstr "Путь \"%s\" на носителе \"%s\" не представляет файл."
 
-#: ../zypp/media/MediaException.cc:252
+#: ../zypp/media/MediaException.cc:200
 #, c-format
 msgid "Permission to access '%s' denied."
-msgstr "Доступ к '%s' запрещён."
+msgstr "Доступ к \"%s\" запрещен."
 
 #. language code: per fas fa
 #: ../zypp/LanguageCode.cc:938 ../zypp/LanguageCode.cc:940
@@ -3085,7 +3044,7 @@ msgstr "Персидский"
 #. language code: peo
 #: ../zypp/LanguageCode.cc:936
 msgid "Persian, Old (ca.600-400 B.C.)"
-msgstr "Персидский, Старый (ca.600-400 до н.э.)"
+msgstr "Староперсидский"
 
 #. :PAN:591:
 #: ../zypp/CountryCode.cc:392
@@ -3140,25 +3099,24 @@ msgstr "Португальский"
 #. language code: pra
 #: ../zypp/LanguageCode.cc:954
 msgid "Prakrit Languages"
-msgstr "Языки пракрит"
+msgstr "Пракриты языки"
 
 #: ../zypp/VendorSupportOptions.cc:45
 msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
-msgstr ""
-"Определение проблемы, т.е. техподдержка должна предоставлять информацию о совместимости, помощь при установке, поддержку использования, обслуживание и базовое выявление неисправностей. Поддержка первого уровня не подразумевает исправление дефектов продукта."
+msgstr "Определение проблемы, что означает: техническая поддержка предусматривает предоставление текущего сопровождения, помощи при установке, поддержки при эксплуатации, сведений о совместимости, а также устранение основных неполадок. Поддержка на уровне 1 не предусматривает исправления ошибок в продукте."
 
 #: ../zypp/VendorSupportOptions.cc:48
 msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
-msgstr "Изоляция проблемы, т.е. техподдержка должна воспроизводить проблему клиента, изолировать проблемную область и предоставлять решения проблем, не решённых поддержкой первого уровня."
+msgstr "Локализация проблемы, что означает: техническая поддержка предусматривает воспроизведение проблем заказчика, уточнение проблемной области и предоставление решения проблемы, не предусмотренное поддержкой на уровне 1."
 
 #: ../zypp/VendorSupportOptions.cc:51
 msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
-msgstr "Решение проблемы, т.е. техподдержка должна решать сложные проблемы с привлечением инженеров для исправления дефектов продукта, обнаруженных поддержкой второго уровня."
+msgstr "Решение проблемы, что означает: техническая поддержка предусматривает решение комплексных проблем за счет инженерного устранения дефектов продукта, выявленных поддержкой на уровне 2."
 
 #. language code: pro
 #: ../zypp/LanguageCode.cc:956
 msgid "Provencal, Old (to 1500)"
-msgstr "Провансальский, Старый (до 1500)"
+msgstr "Старопровансальский"
 
 #. :PCN:612:
 #: ../zypp/CountryCode.cc:400
@@ -3173,7 +3131,7 @@ msgstr "Пушту"
 #. :PRY:600:
 #: ../zypp/CountryCode.cc:405
 msgid "Qatar"
-msgstr "Катар"
+msgstr "Кватар"
 
 #. language code: que qu
 #: ../zypp/LanguageCode.cc:960
@@ -3182,19 +3140,18 @@ msgstr "Кечуа"
 
 #: ../zypp/url/UrlBase.cc:782 ../zypp/url/UrlBase.cc:1229
 msgid "Query string parsing not supported for this URL"
-msgstr "Для данного URL-адреса анализ строки запроса не поддерживается"
+msgstr "Для данного URL-адреса разбор строки запроса не поддерживается"
 
 #. TranslatorExplanation after semicolon is error message
-#. TranslatorExplanation the colon is followed by an error message
-#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
-#: ../zypp/target/rpm/RpmDb.cc:2220
+#: ../zypp/target/rpm/RpmDb.cc:892 ../zypp/target/rpm/RpmDb.cc:2078
+#: ../zypp/target/rpm/RpmDb.cc:2212
 msgid "RPM failed: "
 msgstr "Сбой RPM: "
 
 #. language code: roh rm
 #: ../zypp/LanguageCode.cc:970
 msgid "Raeto-Romance"
-msgstr "Рето-Романский"
+msgstr "Ретороманский"
 
 #. language code: raj
 #: ../zypp/LanguageCode.cc:962
@@ -3215,20 +3172,20 @@ msgstr "Раротонга"
 msgid "Relative path not allowed if authority exists"
 msgstr "При наличии компонентов авторизации относительные пути указывать нельзя"
 
-#: ../zypp/RepoManager.cc:1328
+#: ../zypp/RepoManager.cc:1304
 #, c-format
 msgid "Removing repository '%s'"
-msgstr "Удаление репозитория '%s'"
+msgstr "Удаляется репозитарий '%s'"
 
 #: ../zypp/parser/RepoindexFileReader.cc:128
 #, c-format
 msgid "Required attribute '%s' is missing."
-msgstr "Необходимый атрибут '%s' отсутствует."
+msgstr "Отсутствует обязательный атрибут '%s'."
 
 #. :QAT:634:
 #: ../zypp/CountryCode.cc:406
 msgid "Reunion"
-msgstr "Реюньон"
+msgstr "Реюнион"
 
 #. language code: roa
 #: ../zypp/LanguageCode.cc:968
@@ -3268,12 +3225,12 @@ msgstr "Российская Федерация"
 #. :RUS:643:
 #: ../zypp/CountryCode.cc:409
 msgid "Rwanda"
-msgstr "Руанда"
+msgstr "Канада"
 
 #. :SGP:702:
 #: ../zypp/CountryCode.cc:416
 msgid "Saint Helena"
-msgstr "Остров Святой Елены"
+msgstr "о.Святой Елены"
 
 #. :COM:174:
 #: ../zypp/CountryCode.cc:340
@@ -3323,7 +3280,7 @@ msgstr "Самоанский"
 #. :SLE:694:
 #: ../zypp/CountryCode.cc:421
 msgid "San Marino"
-msgstr "Сан-Марино"
+msgstr "Сан марино"
 
 #. language code: sad
 #: ../zypp/LanguageCode.cc:982
@@ -3403,7 +3360,7 @@ msgstr "Серер"
 #. :SLB:090:
 #: ../zypp/CountryCode.cc:412
 msgid "Seychelles"
-msgstr "Сейшеллы"
+msgstr "Сейшельские острова"
 
 #. language code: shn
 #: ../zypp/LanguageCode.cc:1020
@@ -3440,7 +3397,7 @@ msgstr "Сьерра-Леоне"
 msgid "Sign Languages"
 msgstr "Языки жестов"
 
-#: ../zypp/KeyRing.cc:587
+#: ../zypp/KeyRing.cc:597
 #, c-format
 msgid "Signature file %s not found"
 msgstr "Не найден файл подписи %s"
@@ -3468,12 +3425,12 @@ msgstr "Сингальский"
 #. language code: sit
 #: ../zypp/LanguageCode.cc:1028
 msgid "Sino-Tibetan (Other)"
-msgstr "Сино-Тибетские (другие)"
+msgstr "Синотибетские (другие)"
 
 #. language code: sio
 #: ../zypp/LanguageCode.cc:1026
 msgid "Siouan Languages"
-msgstr "Языки Сиу"
+msgstr "Сиу языки"
 
 #. language code: sms
 #: ../zypp/LanguageCode.cc:1050
@@ -3493,7 +3450,7 @@ msgstr "Славянские (другие)"
 #. language code: slo slk sk
 #: ../zypp/LanguageCode.cc:1032 ../zypp/LanguageCode.cc:1034
 msgid "Slovak"
-msgstr "Словацкий"
+msgstr "Словакский"
 
 #. :SJM:744:
 #: ../zypp/CountryCode.cc:419
@@ -3520,7 +3477,7 @@ msgstr "Согдийский"
 msgid "Solomon Islands"
 msgstr "Соломоновы острова"
 
-#: ../zypp/solver/detail/SATResolver.cc:949
+#: ../zypp/solver/detail/SATResolver.cc:937
 #, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "Объект разрешения зависимостей %s конфликтует с %s, который предоставляется им самим"
@@ -3533,7 +3490,7 @@ msgstr "Сомали"
 #. :SEN:686:
 #: ../zypp/CountryCode.cc:423
 msgid "Somalia"
-msgstr "Сомали"
+msgstr "Румыния"
 
 #. language code: son
 #: ../zypp/LanguageCode.cc:1062
@@ -3563,7 +3520,7 @@ msgstr "ЮАР"
 #. language code: sai
 #: ../zypp/LanguageCode.cc:988
 msgid "South American Indian (Other)"
-msgstr "Индейцев Южной Америки (другие)"
+msgstr "Южной Америки индейцев (другие)"
 
 #. :GRC:300:
 #: ../zypp/CountryCode.cc:312
@@ -3648,7 +3605,7 @@ msgstr "Свати"
 #. :SYR:760:
 #: ../zypp/CountryCode.cc:428
 msgid "Swaziland"
-msgstr "Свазиленд"
+msgstr "Таиланд"
 
 #. :SDN:736:
 #: ../zypp/CountryCode.cc:414
@@ -3668,26 +3625,22 @@ msgstr "Швейцария"
 #. :SLV:222:
 #: ../zypp/CountryCode.cc:427
 msgid "Syria"
-msgstr "Сирия"
+msgstr "Сербия"
 
 #. language code: syr
 #: ../zypp/LanguageCode.cc:1088
 msgid "Syriac"
 msgstr "Сирийский"
 
-#: ../zypp/media/MediaException.cc:107
+#: ../zypp/media/MediaException.cc:91
 #, c-format
 msgid "System exception '%s' on medium '%s'."
-msgstr "Системное исключение '%s' на носителе '%s'."
+msgstr "Системное исключение \"%s\" на носителе \"%s\"."
 
 #: ../zypp/ZYppFactory.cc:361
 #, c-format
-msgid ""
-"System management is locked by the application with pid %d (%s).\n"
-"Close this application before trying again."
-msgstr ""
-"Управление системой заблокировано приложением с pid %d (%s).\n"
-"Закройте это приложение перед следующей попыткой."
+msgid "System management is locked by the application with pid %d (%s).\nPlease close this application before trying again."
+msgstr "Управление системой заблокировано приложением с кодом pid %d (%s). Закройте это приложение и повторите попытку."
 
 #. language code: tgl tl
 #: ../zypp/LanguageCode.cc:1108
@@ -3766,20 +3719,20 @@ msgstr "Тайланд"
 
 #: ../zypp/VendorSupportOptions.cc:39
 msgid "The level of support is unspecified"
-msgstr "Уровень поддержки не определён"
+msgstr "Не указан уровень поддержки"
 
 #: ../zypp/VendorSupportOptions.cc:42
 msgid "The vendor does not provide support."
-msgstr "Производитель не предоставляет поддержку."
+msgstr "Производитель не обеспечивает поддержку."
 
 #: ../zypp/base/InterProcessMutex.cc:139
 msgid "This action is being run by another program already."
 msgstr "Это действие уже выполняется другой программой."
 
-#: ../zypp/solver/detail/SATResolver.cc:1130
-#: ../zypp/solver/detail/SATResolver.cc:1148
+#: ../zypp/solver/detail/SATResolver.cc:1118
+#: ../zypp/solver/detail/SATResolver.cc:1136
 msgid "This request will break your system!"
-msgstr "Этот запрос повредит вашу систему!"
+msgstr "Этот запрос нарушит работу системы!"
 
 #. language code: tib bod bo
 #: ../zypp/LanguageCode.cc:1112 ../zypp/LanguageCode.cc:1114
@@ -3796,7 +3749,7 @@ msgstr "Тигре"
 msgid "Tigrinya"
 msgstr "Тигринья"
 
-#: ../zypp/media/MediaException.cc:259
+#: ../zypp/media/MediaException.cc:207
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr "Превышено время ожидания при попытке доступа к '%s'."
@@ -3847,12 +3800,11 @@ msgstr "Тонга (Ньяса)"
 msgid "Tonga (Tonga Islands)"
 msgstr "Тонга (Тонга Исландский)"
 
-#: ../zypp/KeyRing.cc:526
+#: ../zypp/KeyRing.cc:536
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
-msgstr "Попытка импорта несуществующего ключа %s в хранилище ключей %s"
+msgstr "Была произведена попытка импортировать существующий ключ %s в хранилище ключей %s"
 
-# TT
 #. :TUR:792:
 #: ../zypp/CountryCode.cc:441
 msgid "Trinidad and Tobago"
@@ -3916,7 +3868,7 @@ msgstr "Туркменистан"
 #. :SWZ:748:
 #: ../zypp/CountryCode.cc:429
 msgid "Turks and Caicos Islands"
-msgstr "Тёркс и Кайкос"
+msgstr "Терк и Кайкос"
 
 #. language code: tvl
 #. :TTO:780:
@@ -3942,7 +3894,7 @@ msgstr "Удмуртский"
 #. :UKR:804:
 #: ../zypp/CountryCode.cc:446
 msgid "Uganda"
-msgstr "Уганда"
+msgstr "Канада"
 
 #. language code: uga
 #: ../zypp/LanguageCode.cc:1160
@@ -3971,24 +3923,24 @@ msgstr "Умбунду"
 
 #: ../zypp/Url.cc:296
 msgid "Unable to clone Url object"
-msgstr "Не удалось создать клон объекта URL"
+msgstr "Не удается создать клон объекта URL"
 
 #: ../zypp/target/hal/HalContext.cc:206
 msgid "Unable to create dbus connection"
-msgstr "Не удалось создать подключение dbus"
+msgstr "Не удалось создать подключение к dbus"
 
 #: ../zypp/target/hal/HalContext.cc:249
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr "Не удалось инициализировать контекст HAL -- не запущен hald?"
+msgstr "Не удалось инициализировать контекст HAL -- hald не запущен?"
 
 #: ../zypp/Url.cc:322 ../zypp/Url.cc:336
 msgid "Unable to parse Url components"
-msgstr "Не удалось выполнить анализ компонентов URL-адреса"
+msgstr "Не удалось выполнить анализ URL-компонентов"
 
 #. language code: und
 #: ../zypp/LanguageCode.cc:1168
 msgid "Undetermined"
-msgstr "Неопределённый"
+msgstr "Неидентифицированный"
 
 #. :AND:020:
 #: ../zypp/CountryCode.cc:225
@@ -3998,7 +3950,7 @@ msgstr "Объединенные Арабские Эмираты"
 #. :GAB:266:
 #: ../zypp/CountryCode.cc:300
 msgid "United Kingdom"
-msgstr "Соединенное Королевство"
+msgstr "Великобритания"
 
 #. :UMI:581:
 #: ../zypp/CountryCode.cc:448
@@ -4008,11 +3960,11 @@ msgstr "США"
 #. :UGA:800:
 #: ../zypp/CountryCode.cc:447
 msgid "United States Minor Outlying Islands"
-msgstr "Внешние малые острова США"
+msgstr "США"
 
-#: ../zypp/target/TargetImpl.cc:997
+#: ../zypp/target/TargetImpl.cc:879
 msgid "Unknown Distribution"
-msgstr "Неизвестный дистрибутив"
+msgstr "Неизвестная рассылка"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
@@ -4024,28 +3976,22 @@ msgstr "Неизвестный язык: "
 
 #: ../zypp/VendorSupportOptions.cc:56
 msgid "Unknown support option. Description not available"
-msgstr "Неизвестный вариант поддержки. Описание недоступно."
+msgstr "Неизвестный параметр поддержки. Описание недоступно"
 
 #: ../zypp/media/MediaUserAuth.cc:123
 #, c-format
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Неподдерживаемый метод HTTP-аутенфикации '%s'"
 
-#: ../zypp/media/MediaException.cc:156
+#: ../zypp/media/MediaException.cc:140
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr "Неподдерживаемая схема URI-адреса в '%s'."
+msgstr "Неподдерживаемая схема URI в \"%s\"."
 
 #: ../devel/devel.mvidner/installation_sources.cc:75
 #, c-format
-msgid ""
-"Untrusted key found:\n"
-"%s|%s|%s\n"
-"Trust key?"
-msgstr ""
-"Найден недоверенный ключ:\n"
-"%s|%s|%s\n"
-"Доверять ему?"
+msgid "Untrusted key found:\n%s|%s|%s\nTrust key?"
+msgstr "Найден незащищенный ключ:\n%s|%s|%s\n Доверять ему?"
 
 #. language code: hsb
 #: ../zypp/LanguageCode.cc:612
@@ -4064,7 +4010,7 @@ msgstr "Схема URL-адреса не позволяет использова
 
 #: ../zypp/url/UrlBase.cc:1020
 msgid "Url scheme does not allow a host component"
-msgstr "Схема URL-адреса не позволяет использовать компонент узла"
+msgstr "Схема URL-адреса не позволяет использовать компонент хоста"
 
 #: ../zypp/url/UrlBase.cc:981
 msgid "Url scheme does not allow a password"
@@ -4080,11 +4026,11 @@ msgstr "Схема URL-адреса не позволяет использова
 
 #: ../zypp/url/UrlBase.cc:820
 msgid "Url scheme is a required component"
-msgstr "Схема URL адреса является необходимым компонентом"
+msgstr "Url схемы это требуемый компонент"
 
 #: ../zypp/url/UrlBase.cc:1010
 msgid "Url scheme requires a host component"
-msgstr "Схема URL-адреса требует указания компонента узла"
+msgstr "Схема URL-адреса требует указания компонента хоста"
 
 #: ../zypp/url/UrlBase.cc:1096
 msgid "Url scheme requires path name"
@@ -4111,7 +4057,7 @@ msgid "Vai"
 msgstr "Ваи"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:778
+#: ../zypp/RepoManager.cc:790
 msgid "Valid metadata not found at specified URL(s)"
 msgstr "По указанным URL-адресам не найдено действительных метаданных"
 
@@ -4133,7 +4079,7 @@ msgstr "Венесуэлла"
 #. :VIR:850:
 #: ../zypp/CountryCode.cc:456
 msgid "Vietnam"
-msgstr "Вьетнам"
+msgstr "Вьетнамский"
 
 #. language code: vie vi
 #: ../zypp/LanguageCode.cc:1178
@@ -4143,7 +4089,7 @@ msgstr "Вьетнамский"
 #. :VGB:092:
 #: ../zypp/CountryCode.cc:455
 msgid "Virgin Islands, U.S."
-msgstr "Виргинские острова, США"
+msgstr "Финляндия"
 
 #. language code: vol vo
 #: ../zypp/LanguageCode.cc:1180
@@ -4153,7 +4099,7 @@ msgstr "Волапюк"
 #. language code: vot
 #: ../zypp/LanguageCode.cc:1182
 msgid "Votic"
-msgstr "Водский"
+msgstr "Удмуртский"
 
 #. language code: wak
 #: ../zypp/LanguageCode.cc:1184
@@ -4203,7 +4149,7 @@ msgstr "Волоф"
 #. language code: xho xh
 #: ../zypp/LanguageCode.cc:1204
 msgid "Xhosa"
-msgstr "Кхоса"
+msgstr "Xhosa"
 
 #. language code: sah
 #: ../zypp/LanguageCode.cc:986
@@ -4238,12 +4184,12 @@ msgstr "Йоруба"
 #. language code: ypk
 #: ../zypp/LanguageCode.cc:1214
 msgid "Yupik Languages"
-msgstr "Языки группы Юпик"
+msgstr "Языки группы юпик"
 
 #. :ZAF:710:
 #: ../zypp/CountryCode.cc:463
 msgid "Zambia"
-msgstr "Замбия"
+msgstr "Ямайка"
 
 #. language code: znd
 #: ../zypp/LanguageCode.cc:1222
@@ -4273,187 +4219,175 @@ msgstr "Зимбабве"
 #. language code: zul zu
 #: ../zypp/LanguageCode.cc:1224
 msgid "Zulu"
-msgstr "Зулусский"
+msgstr "Среднее время по Гринвичу (Zulu)"
 
 #. language code: zun
 #: ../zypp/LanguageCode.cc:1226
 msgid "Zuni"
-msgstr "Зунийский"
+msgstr "Зуньи"
 
-#: ../zypp/repo/PackageProvider.cc:195
+#: ../zypp/repo/PackageProvider.cc:239
 msgid "applydeltarpm check failed."
 msgstr "сбой при проверке applydeltarpm."
 
-#: ../zypp/repo/PackageProvider.cc:212
+#: ../zypp/repo/PackageProvider.cc:253
 msgid "applydeltarpm failed."
 msgstr "сбой в applydeltarpm."
 
-#: ../zypp/solver/detail/SATResolver.cc:1219
+#: ../zypp/solver/detail/SATResolver.cc:1194
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr "изменение архитектуры %s на %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:935
+#: ../zypp/solver/detail/SATResolver.cc:923
 #, c-format
 msgid "cannot install both %s and %s"
-msgstr "Не удаётся установить оба %s и %s"
+msgstr "не удаётся установить оба %s и %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:915
+#: ../zypp/solver/detail/SATResolver.cc:903
 msgid "conflicting requests"
 msgstr "конфликтующие запросы"
 
-#: ../zypp/target/rpm/RpmDb.cc:2372
+#. timestamp
+#: ../zypp/target/rpm/RpmDb.cc:2362
 #, c-format
 msgid "created backup %s"
-msgstr "создана резервная копия %s"
+msgstr "созданная резервная копия %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1247
+#: ../zypp/solver/detail/SATResolver.cc:1222
 #, c-format
 msgid "deinstallation of %s"
 msgstr "удаление %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:983
+#: ../zypp/solver/detail/SATResolver.cc:971
 msgid "deleted providers: "
 msgstr "удалённые поставщики: "
 
-#: ../zypp/solver/detail/SATResolver.cc:1151
+#: ../zypp/solver/detail/SATResolver.cc:1139
 #, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "не просить удалить все объекты разрешения зависимостей, предоставляющие %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1133
+#: ../zypp/solver/detail/SATResolver.cc:1121
 #, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "не просить установить объект разрешения зависимостей, предоставляющий %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1078
+#: ../zypp/solver/detail/SATResolver.cc:1066
 #, c-format
 msgid "do not forbid installation of %s"
 msgstr "не препятствовать установке %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1057
-#: ../zypp/solver/detail/SATResolver.cc:1095
+#: ../zypp/solver/detail/SATResolver.cc:1045
+#: ../zypp/solver/detail/SATResolver.cc:1083
 #, c-format
 msgid "do not install %s"
 msgstr "не устанавливать %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1164
+#: ../zypp/solver/detail/SATResolver.cc:1152
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr "не устанавливать самую последнюю версию %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1052
+#: ../zypp/solver/detail/SATResolver.cc:1040
 #, c-format
 msgid "do not keep %s installed"
 msgstr "не оставлять установленным %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1211
+#: ../zypp/solver/detail/SATResolver.cc:1186
 #, c-format
 msgid "downgrade of %s to %s"
 msgstr "обновить %s до более старой версии %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1131
-#: ../zypp/solver/detail/SATResolver.cc:1149
+#: ../zypp/solver/detail/SATResolver.cc:1119
+#: ../zypp/solver/detail/SATResolver.cc:1137
 msgid "ignore the warning of a broken system"
-msgstr "игнорировать предупреждение о повреждении системы"
+msgstr "игнорировать предупреждение о нарушении работы системы"
 
-#: ../zypp/solver/detail/SATResolver.cc:1227
+#: ../zypp/solver/detail/SATResolver.cc:1202
 #, c-format
-msgid ""
-"install %s (with vendor change)\n"
-"  %s\n"
-"-->\n"
-"  %s"
-msgstr ""
-"Установить %s (со сменой поставщика)\n"
-"  %s\n"
-"-->\n"
-"  %s"
+msgid "install %s (with vendor change)\n  %s\n-->\n  %s"
+msgstr "Установить %s (со сменой поставщика)\n  %s\n-->\n  %s"
 
 #: ../zypp/VendorSupportOptions.cc:31
 msgid "invalid"
-msgstr "неверно"
+msgstr "недействительно"
 
-#. for solver reason: NOT weak lock.
-#: ../zypp/solver/detail/SATResolver.cc:1073
-#: ../zypp/solver/detail/SATResolver.cc:1116
-#: ../zypp/solver/detail/SATResolver.cc:1193
+#: ../zypp/solver/detail/SATResolver.cc:1061
+#: ../zypp/solver/detail/SATResolver.cc:1104
 #, c-format
 msgid "keep %s"
 msgstr "оставить %s"
 
 #: ../zypp/target/hal/HalContext.cc:219
 msgid "libhal_ctx_new: Can't create libhal context"
-msgstr "libhal_ctx_new: Не удаётся создать контекст libhal"
+msgstr "libhal_ctx_new: Не удается создать контекст libhal"
 
 #: ../zypp/target/hal/HalContext.cc:234
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: не удалось установить подключение к dbus"
 
-#: ../zypp/solver/detail/SATResolver.cc:930
+#: ../zypp/solver/detail/SATResolver.cc:918
 #, c-format
 msgid "nothing provides %s needed by %s"
 msgstr "ничто не предоставляет %s, необходимый для %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:921
+#: ../zypp/solver/detail/SATResolver.cc:909
 #, c-format
 msgid "nothing provides requested %s"
 msgstr "ничто не предоставляет запрошенный %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:912
+#: ../zypp/solver/detail/SATResolver.cc:900
 #, c-format
 msgid "problem with installed package %s"
 msgstr "проблема в установленном пакете %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1235
+#: ../zypp/solver/detail/SATResolver.cc:1210
 #, c-format
 msgid "replacement of %s with %s"
 msgstr "замена %s на %s"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2070
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm создал %s как %s, но было невозможно определить различия"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2072
+#: ../zypp/target/rpm/RpmDb.cc:2069
 #, c-format
-msgid ""
-"rpm created %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm создал %s как %s.\n"
-"Первые 25 строк различий:\n"
+msgid "rpm created %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm создано%s как %s.\nЗдесь первые 25 строк различий:\n"
+
+#: ../zypp/target/rpm/RpmDb.cc:2076 ../zypp/target/rpm/RpmDb.cc:2210
+msgid "rpm output:"
+msgstr "выход rpm:"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2065
+#: ../zypp/target/rpm/RpmDb.cc:2062
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm сохранил %s как %s, но было невозможно определить различия"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2067
+#: ../zypp/target/rpm/RpmDb.cc:2064
 #, c-format
-msgid ""
-"rpm saved %s as %s.\n"
-"Here are the first 25 lines of difference:\n"
-msgstr ""
-"rpm сохранил %s как %s.\n"
-"Первые 25 строк различий:\n"
+msgid "rpm saved %s as %s.\nHere are the first 25 lines of difference:\n"
+msgstr "rpm создано%s как %s.\nЗдесь первые 25 строк различий:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:918
+#: ../zypp/solver/detail/SATResolver.cc:906
 msgid "some dependency problem"
-msgstr "проблема с некоторыми зависимостями"
+msgstr "некоторые проблемы зависимости"
 
-#: ../zypp/solver/detail/SATResolver.cc:995
+#: ../zypp/solver/detail/SATResolver.cc:983
 msgid "uninstallable providers: "
-msgstr "неустанавливаемые поставщики:"
+msgstr "поставщики, не подлежащие установке: "
 
 #: ../zypp/VendorSupportOptions.cc:14
 msgid "unknown"
-msgstr "неизвестно"
+msgstr "неизвестный"
 
 #: ../zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
 msgstr "не поддерживается"
+

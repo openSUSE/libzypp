@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 26 17:56:40 CET 2009 - schubi@suse.de
+
+- Taking ALL translations for generating GMO files (bnc #458739)
+
+-------------------------------------------------------------------
 Mon Jan 26 11:47:27 CET 2009 - ma@suse.de
 
 - Let vendor checks per default differ between 'openSUSE Build Service' 

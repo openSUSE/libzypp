@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 27 16:43:57 CET 2009 - jkupec@suse.cz
+
+- Fixed missing newline at the end of some history log entries.
+
+-------------------------------------------------------------------
 Tue Jan 27 14:09:52 CET 2009 - jkupec@suse.cz
 
 - Enabled CredentialManager for MediaSMB (bnc #460970).

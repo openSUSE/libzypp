@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 14:09:52 CET 2009 - jkupec@suse.cz
+
+- Enabled CredentialManager for MediaSMB (bnc #460970).
+- Ignore URL's username, password, and query string in AuthData
+  comparator in CredentialManager.
+
+-------------------------------------------------------------------
 Mon Jan 26 17:56:40 CET 2009 - schubi@suse.de
 
 - Taking ALL translations for generating GMO files (bnc #458739)

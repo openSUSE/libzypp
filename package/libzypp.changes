@@ -4,6 +4,12 @@ Tue Jan 27 14:09:52 CET 2009 - jkupec@suse.cz
 - Enabled CredentialManager for MediaSMB (bnc #460970).
 - Ignore URL's username, password, and query string in AuthData
   comparator in CredentialManager.
+- version 5.27.1 (23)
+
+-------------------------------------------------------------------
+Tue Jan 27 13:18:17 CET 2009 - ma@suse.de
+
+- Respect content-file DATDIR when downloading packages. (bnc #468612)
 
 -------------------------------------------------------------------
 Mon Jan 26 17:56:40 CET 2009 - schubi@suse.de

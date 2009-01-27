@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 13:18:17 CET 2009 - ma@suse.de
+
+- Respect content-file DATDIR when downloading packages. (bnc #468612)
+- version 5.27.1 (23)
+
+-------------------------------------------------------------------
 Mon Jan 26 17:56:40 CET 2009 - schubi@suse.de
 
 - Taking ALL translations for generating GMO files (bnc #458739)

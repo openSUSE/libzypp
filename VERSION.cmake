@@ -45,24 +45,14 @@
 # ==================================================
 
 #=======
-# - Update version according to your changes,
-#   but based on 'LAST RELEASED:' below. I.e
-#   there's no need to increase LIBZYPP_MINOR
-#   if it already differs from 'LAST RELEASED:'.
-#
-# - MOST IMPORTANT:
-#   Before you submitt to autobuild, rmember the
-#   new version in 'LAST RELEASED:', and add a
-#   note in the changes file.
-#
-# - Consider calling ./mkChangelog to edit the
-#   changes file. See './mkChangelog -h' for help.
+# - Update version according to your changes.
+#   On a maintainance branch each submission might get published.
 #
 SET(LIBZYPP_MAJOR "5")
 SET(LIBZYPP_COMPATMINOR "23")
 SET(LIBZYPP_MINOR "27")
-SET(LIBZYPP_PATCH "2")
+SET(LIBZYPP_PATCH "3")
 #
-# LAST RELEASED: 5.27.1 (23)
+# LAST RELEASED: 5.27.3 (23)
 # (The number in parenthesis is LIBZYPP_COMPATMINOR)
 #=======

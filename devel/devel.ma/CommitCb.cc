@@ -37,28 +37,17 @@ struct IRR : public zypp::callback::ReceiveReport<zypp::target::rpm::InstallReso
   virtual void reportend()
   { SEC << endl; }
 
-  virtual void start(Resolvable::constPtr /*resolvable*/)
-  { INT << endl; }
+  virtual void start( Resolvable::constPtr resolvable )
+  { INT << "START " << resolvable << endl; }
 
-  virtual bool progress(int /*value*/, Resolvable::constPtr /*resolvable*/)
-  {
-    static int i = 4;
-    if ( --i <= 0 )
-    {
-      INT << "return abort" << endl;
-      return false;
-    }
-    return true;
-  }
+  virtual bool progress(int value, Resolvable::constPtr /*resolvable*/)
+  { INT << "..... " << value << "%" << endl; return true; }
 
-  virtual Action problem(Resolvable::constPtr /*resolvable*/, Error /*error*/, const std::string &/*description*/, RpmLevel /*level*/)
-  {
-    INT << "return abort" << endl;
-    return ABORT;
-  }
+  virtual Action problem(Resolvable::constPtr /*resolvable*/, Error error, const std::string & description, RpmLevel /*level*/)
+  { INT << "ERROR " << error << ": " << description << endl; return IGNORE; }
 
-  virtual void finish(Resolvable::constPtr /*resolvable*/, Error /*error*/, const std::string &/*reason*/, RpmLevel /*level*/)
-  { INT << endl; }
+  virtual void finish(Resolvable::constPtr /*resolvable*/, Error error, const std::string & reason, RpmLevel /*level*/)
+  { INT << "DONE  " << error << ": " << reason << endl; }
 };
 
 struct RRR : public zypp::callback::ReceiveReport<zypp::target::rpm::RemoveResolvableReport>
@@ -85,17 +74,17 @@ struct RRR : public zypp::callback::ReceiveReport<zypp::target::rpm::RemoveResol
   virtual void reportend()
   { SEC << endl; }
 
-  virtual void start( Resolvable::constPtr /*resolvable*/ )
-  { INT << endl; }
+  virtual void start( Resolvable::constPtr resolvable )
+  { INT << "START " << resolvable << endl; }
 
-  virtual bool progress(int /*value*/, Resolvable::constPtr /*resolvable*/)
-  { INT << endl; return true; }
+  virtual bool progress(int value, Resolvable::constPtr /*resolvable*/)
+  { INT << "..... " << value << "%" << endl; return true; }
 
-  virtual Action problem( Resolvable::constPtr /*resolvable*/ , Error /*error*/ , const std::string &/*description*/ )
-  { INT << endl; return ABORT; }
+  virtual Action problem( Resolvable::constPtr /*resolvable*/, Error error, const std::string & description )
+  { INT << "ERROR " << error << ": " << description << endl; return ABORT; }
 
-  virtual void finish( Resolvable::constPtr /*resolvable*/ , Error /*error*/ , const std::string &/*reason*/ )
-  { INT << endl; }
+  virtual void finish( Resolvable::constPtr /*resolvable*/ , Error error, const std::string & reason )
+  { INT << "DONE  " << error << ": " << reason << endl; }
 };
 
 bool solve()
@@ -119,7 +108,8 @@ bool solve()
 bool install()
 {
   ZYppCommitPolicy pol;
-//pol.dryRun(true);
+  //pol.dryRun(true);
+  pol.rpmNoSignature( true );
   pol.rpmInstFlags( pol.rpmInstFlags().setFlag( target::rpm::RPMINST_JUSTDB ) );
   SEC << "START commit..." << endl;
   SEC << getZYpp()->commit( pol ) << endl;

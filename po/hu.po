@@ -11,14 +11,14 @@
 # Sári Gábor <saga@tux.hu>, 2000.
 # Steve Varadi <svaradi@usa.com>, 2000.
 # Zoltán Levárdy <pogacsa@programmer.net>, 1999.
-# Kalman Kemenczy <kkemenczy@novell.com>, 2006, 2007, 2008.
+# Kalman Kemenczy <kkemenczy@novell.com>, 2006, 2007, 2008, 2009.
 # Ervin Novak <enovak@novell.com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: zypp.hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 16:02+0200\n"
-"PO-Revision-Date: 2008-12-05 14:03+0100\n"
+"POT-Creation-Date: 2009-02-02 14:08+0100\n"
+"PO-Revision-Date: 2009-02-02 18:33+0100\n"
 "Last-Translator: Kalman Kemenczy <kkemenczy@novell.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:981
+#: ../zypp/solver/detail/SATResolver.cc:1018
 msgid ""
 "\n"
 "uninstallable providers: "
@@ -35,77 +35,45 @@ msgstr ""
 "\n"
 "nem telepíthető szolgáltatók: "
 
-#: ../zypp/media/MediaException.cc:214
+#: ../zypp/media/MediaException.cc:266
 #, c-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr ""
 " hiba az SSL-tanúsítvánnyal, ellenőrizze, hogy megfelelő-e a CA tanúsítványa "
 "a következőhöz: '%s'."
 
-#. timestamp
-#: ../zypp/target/TargetImpl.cc:85
+#: ../zypp/target/TargetImpl.cc:88
 msgid " executed"
 msgstr " végrehajtva"
 
-#. timestamp
-#: ../zypp/target/TargetImpl.cc:106
+#: ../zypp/target/TargetImpl.cc:110
 msgid " execution failed"
 msgstr " végrehajtás sikertelen"
 
-#. timestamp
-#: ../zypp/target/TargetImpl.cc:190
+#: ../zypp/target/TargetImpl.cc:196
 msgid " execution skipped while aborting"
 msgstr " megszakítás közben a végrehajtás átugorva"
 
-#: ../zypp/solver/detail/SATResolver.cc:928
+#: ../zypp/solver/detail/SATResolver.cc:965
 #, c-format
 msgid "%s conflicts with %s provided by %s"
 msgstr "%s ütközik a(z) %s csomaggal, amit a(z) %s csomag biztosít"
 
 # modules/inst_target_part.ycp:676
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2075
-#, c-format
-msgid "%s install failed"
-msgstr "A(z) %s csomag nem telepíthető"
-
-# modules/inst_target_part.ycp:676
-#. %s = filename of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2084
-#, c-format
-msgid "%s installed ok"
-msgstr "A(z) %s csomag telepítése sikeres"
-
-# modules/inst_target_part.ycp:676
-#: ../zypp/solver/detail/SATResolver.cc:914
+#: ../zypp/solver/detail/SATResolver.cc:951
 #, c-format
 msgid "%s is not installable"
 msgstr "%s nem telepíthető"
 
-#: ../zypp/solver/detail/SATResolver.cc:933
+#: ../zypp/solver/detail/SATResolver.cc:970
 #, c-format
 msgid "%s obsoletes %s provided by %s"
 msgstr "%s elavulttá teszi a(z) %s csomagot, amit a(z) %s csomag biztosít"
 
-#. %s = name of rpm package
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2209
-#, c-format
-msgid "%s remove failed"
-msgstr "A(z) %s csomag eltávolítása sikertelen"
-
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2217
-#, c-format
-msgid "%s remove ok"
-msgstr "A(z) %s csomag eltávolítása sikeres"
-
-#: ../zypp/solver/detail/SATResolver.cc:969
+#: ../zypp/solver/detail/SATResolver.cc:1006
 #, c-format
 msgid "%s requires %s, but this requirement cannot be provided"
-msgstr "%s csomagnak a következőre van szüksége:%s, de ez nem teljesíthető"
+msgstr "%s csomagnak a következőre van szüksége: %s, de ez nem teljesíthető"
 
 #. language code: abk ab
 #: ../zypp/LanguageCode.cc:240
@@ -127,7 +95,7 @@ msgstr "acsoli"
 msgid "Adangme"
 msgstr "adangme"
 
-#: ../zypp/RepoManager.cc:1182
+#: ../zypp/RepoManager.cc:1280
 #, c-format
 msgid "Adding repository '%s'"
 msgstr "A(z) '%s' telepítési forrás hozzáadása"
@@ -135,10 +103,6 @@ msgstr "A(z) '%s' telepítési forrás hozzáadása"
 #: ../zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
 msgstr "További Ügyfélszerződés szükséges"
-
-#: ../zypp/target/rpm/RpmDb.cc:2087 ../zypp/target/rpm/RpmDb.cc:2220
-msgid "Additional rpm output:"
-msgstr "További rpm kimenet:"
 
 #. language code: ady
 #: ../zypp/LanguageCode.cc:248
@@ -372,7 +336,8 @@ msgstr "Ausztria"
 msgid "Austronesian (Other)"
 msgstr "ausztronéziai (egyéb)"
 
-#: ../zypp/media/MediaCurl.cc:1615
+#. !\todo add comma to the message for the next release
+#: ../zypp/media/MediaCurl.cc:1718 ../zypp/media/MediaSMB.cc:432
 #, c-format
 msgid "Authentication required for '%s'"
 msgstr "Felhasználóhitelesítés szükséges ehhez: '%s'"
@@ -659,7 +624,7 @@ msgstr "Brunei Darussalam"
 msgid "Buginese"
 msgstr "buginéz"
 
-#: ../zypp/RepoManager.cc:977
+#: ../zypp/RepoManager.cc:1030
 #, c-format
 msgid "Building repository '%s' cache"
 msgstr "A(z) '%s' telepítési forrás gyorsítótárának felépítése"
@@ -714,7 +679,7 @@ msgstr "Kambodzsa"
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: ../zypp/sat/detail/PoolImpl.cc:148
+#: ../zypp/sat/detail/PoolImpl.cc:169
 msgid "Can not create sat-pool."
 msgstr "Nem hozható létre sat-pool."
 
@@ -722,23 +687,37 @@ msgstr "Nem hozható létre sat-pool."
 msgid "Can't acquire the mutex lock"
 msgstr "A mutex zárolás sikertelen"
 
-#: ../zypp/ExternalProgram.cc:245
+#: ../zypp/ExternalProgram.cc:301
 #, c-format
 msgid "Can't chdir to '/' inside chroot (%s)."
 msgstr "A könyvtár '/'-ra váltása a chroot-ban sikertelen (%s)."
 
-#: ../zypp/ExternalProgram.cc:238
+#: ../zypp/ExternalProgram.cc:294
 #, c-format
 msgid "Can't chroot to '%s' (%s)."
 msgstr "A chroot sikertelen ide: '%s' (%s)."
 
+#. TranslatorExplanation '%s' is a filename
+#: ../zypp/RepoManager.cc:1449 ../zypp/RepoManager.cc:1682
+#, c-format
+msgid "Can't delete '%s'"
+msgstr "A(z) '%s' nem törölhető"
+
 #. don't want to get here
-#: ../zypp/ExternalProgram.cc:259
+#: ../zypp/ExternalProgram.cc:315
 #, c-format
 msgid "Can't exec '%s' (%s)."
 msgstr "'%s' végrehajtása sikertelen (%s)."
 
-#: ../zypp/ExternalProgram.cc:267
+#: ../zypp/RepoManager.cc:1437 ../zypp/RepoManager.cc:1516
+msgid "Can't figure out where the repo is stored."
+msgstr "Nem deríthető ki a telepítési forrás helye."
+
+#: ../zypp/RepoManager.cc:1670 ../zypp/RepoManager.cc:1927
+msgid "Can't figure out where the service is stored."
+msgstr "Nem deríthető ki a szolgáltatás helye."
+
+#: ../zypp/ExternalProgram.cc:323
 #, c-format
 msgid "Can't fork (%s)."
 msgstr "A forkolás sikertelen (%s)."
@@ -751,17 +730,26 @@ msgstr "A mutex attributum inicializációja sikertelen"
 msgid "Can't initialize recursive mutex"
 msgstr "Rekurzív mutex attributum inicializációja sikertelen"
 
-#: ../zypp/base/InterProcessMutex.cc:79
+#. TranslatorExplanation '%s' is a filename
+#: ../zypp/RepoManager.cc:448 ../zypp/RepoManager.cc:928
+#: ../zypp/RepoManager.cc:1319 ../zypp/RepoManager.cc:1392
+#: ../zypp/RepoManager.cc:1467 ../zypp/RepoManager.cc:1535
+#: ../zypp/RepoManager.cc:1694
+#, c-format
+msgid "Can't open file '%s' for writing."
+msgstr "A(z) '%s' fájl írásra nem nyitható meg."
+
+#: ../zypp/base/InterProcessMutex.cc:83
 #, c-format
 msgid "Can't open lock file: %s"
 msgstr "A zárolt fájl nem nyitható meg: %s"
 
-#: ../zypp/ExternalProgram.cc:174
+#: ../zypp/ExternalProgram.cc:230
 #, c-format
 msgid "Can't open pipe (%s)."
 msgstr "A cső nem nyitható meg (%s)."
 
-#: ../zypp/ExternalProgram.cc:163
+#: ../zypp/ExternalProgram.cc:219
 #, c-format
 msgid "Can't open pty (%s)."
 msgstr "A pty nem nyitható meg (%s)."
@@ -784,20 +772,24 @@ msgstr "Rekurzív mutex attributum nem állítható be"
 msgid "Canada"
 msgstr "Kanada"
 
-#: ../zypp/KeyRing.cc:285
+#: ../zypp/KeyRing.cc:275
 #, c-format
 msgid "Cannot create public key %s from %s keyring to file %s"
-msgstr ""
-"A(z) %s publikus kulcs elkészítése %s kulcstartóból %s fájlba sikertelen"
+msgstr "A(z) %s publikus kulcs elkészítése %s kulcstartóból %s fájlba sikertelen"
 
-#: ../zypp/media/MediaException.cc:182
+#: ../zypp/media/MediaException.cc:234
 msgid "Cannot eject any media"
 msgstr "Nincs kiadható adathordozó"
 
-#: ../zypp/media/MediaException.cc:184
+#: ../zypp/media/MediaException.cc:236
 #, c-format
 msgid "Cannot eject media '%s'"
 msgstr "A(z) '%s' adathordozó kiadása sikertelen"
+
+#: ../zypp/media/MediaException.cc:273
+#, c-format
+msgid "Cannot find available loop device to mount the image file from '%s'"
+msgstr "Nem található szabad hurokeszköz a lemezkép felcsatolására innen: '%s'"
 
 #: ../zypp/media/MediaException.cc:67
 #, c-format
@@ -880,7 +872,7 @@ msgstr "csamorro"
 # menuentries/menuentry_lan_sendmail.ycp:14
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: ../zypp/target/rpm/RpmDb.cc:1898
+#: ../zypp/target/rpm/RpmDb.cc:1896
 #, c-format
 msgid "Changed configuration files for %s:"
 msgstr "%s módosított konfigurációs fájljai:"
@@ -979,16 +971,16 @@ msgstr "Cocos (Keeling) -szigetek"
 msgid "Colombia"
 msgstr "Kolumbia"
 
-#: ../zypp/ExternalProgram.cc:346
+#: ../zypp/ExternalProgram.cc:402
 #, c-format
 msgid "Command exited with status %d."
 msgstr "A parancs visszatérési értéke %d."
 
-#: ../zypp/ExternalProgram.cc:371
+#: ../zypp/ExternalProgram.cc:427
 msgid "Command exited with unknown error."
 msgstr "A parancs végrehajtása ismeretlen hibával leállt."
 
-#: ../zypp/ExternalProgram.cc:366
+#: ../zypp/ExternalProgram.cc:422
 #, c-format
 msgid "Command was killed by signal %d (%s)."
 msgstr "A parancs végrehajtását a(z) %d szignál megszakította (%s)."
@@ -1180,7 +1172,13 @@ msgstr "Dominika"
 msgid "Dominican Republic"
 msgstr "Dominikai Köztársaság"
 
-#: ../zypp/media/MediaException.cc:152
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:92 ../zypp/media/MediaException.cc:100
+#, c-format
+msgid "Download (Metalink curl) initialization failed for '%s'"
+msgstr "A letöltés (Metalink curl) előkészítése meghiúsult a következőhöz: '%s'"
+
+#: ../zypp/media/MediaException.cc:168
 #, c-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -1197,6 +1195,17 @@ msgstr ""
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "A letöltés (curl) inicializálása meghiúsult: '%s'"
 
+#: ../zypp/media/MediaException.cc:186 ../zypp/media/MediaException.cc:204
+#, c-format
+msgid ""
+"Download (metalink curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr ""
+"Letöltési (metalink curl) hiba: '%s'\n"
+"Hibakód: %s\n"
+"Hibaüzenet: %s\n"
+
 #. language code: dra
 #: ../zypp/LanguageCode.cc:470
 msgid "Dravidian (Other)"
@@ -1208,7 +1217,7 @@ msgid "Duala"
 msgstr "duala"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
-#: ../zypp/CheckSum.cc:97
+#: ../zypp/CheckSum.cc:98
 #, c-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr "'%s' bizonytalan típus %u byte, ellenőrzőösszeg '%s'"
@@ -1274,15 +1283,15 @@ msgstr "Salvador"
 msgid "Elamite"
 msgstr "elamit"
 
-#: ../zypp/media/MediaException.cc:135
+#: ../zypp/media/MediaException.cc:151
 msgid "Empty destination in URI"
 msgstr "Üres cél a hivatkozásban"
 
-#: ../zypp/media/MediaException.cc:130
+#: ../zypp/media/MediaException.cc:146
 msgid "Empty filesystem in URI"
 msgstr "Üres fájlrendszer a hivatkozásban"
 
-#: ../zypp/media/MediaException.cc:125
+#: ../zypp/media/MediaException.cc:141
 msgid "Empty host name in URI"
 msgstr "Üres hosztnév a hivatkozásban"
 
@@ -1319,10 +1328,27 @@ msgid "Eritrea"
 msgstr "Eritrea"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: ../zypp/media/MediaException.cc:161
+#: ../zypp/media/MediaException.cc:177
 #, c-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "Hiba történt a '%s' letöltési (curl) beállításainak beállítása közben:"
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: ../zypp/media/MediaException.cc:195 ../zypp/media/MediaException.cc:213
+#, c-format
+msgid "Error occurred while setting download (metalink curl) options for '%s':"
+msgstr "Hiba történt a(z) '%s' letöltés (metalink curl) beállításai közben:"
+
+#. prepare exception to be thrown if the type could not be determined
+#. due to a media exception. We can't throw right away, because of some
+#. problems with proxy servers returning an incorrect error
+#. on ftp file-not-found(bnc #335906). Instead we'll check another types
+#. before throwing.
+#. TranslatorExplanation '%s' is an URL
+#: ../zypp/RepoManager.cc:1143 ../zypp/RepoManager.cc:1986
+#, c-format
+msgid "Error trying to read from '%s'"
+msgstr "Nem sikerült olvasni innen: '%s'"
 
 #. language code: myv
 #: ../zypp/LanguageCode.cc:850
@@ -1362,11 +1388,16 @@ msgstr "ewe"
 msgid "Ewondo"
 msgstr "evondo"
 
-#: ../zypp/KeyRing.cc:587
+#: ../zypp/RepoManager.cc:1103
+#, c-format
+msgid "Failed to cache repo (%d)."
+msgstr "A telepítési forrás beolvasása gyorsítótárba sikertelen (%d)."
+
+#: ../zypp/KeyRing.cc:577
 msgid "Failed to delete key."
 msgstr "A kulcs törlése sikertelen."
 
-#: ../zypp/target/rpm/RpmDb.cc:1066
+#: ../zypp/target/rpm/RpmDb.cc:1064
 #, c-format
 msgid "Failed to import public key from file %s: %s"
 msgstr "Nem sikerült a(z) %s fájlból importálni a publikus kulcsot: %s"
@@ -1376,7 +1407,19 @@ msgstr "Nem sikerült a(z) %s fájlból importálni a publikus kulcsot: %s"
 msgid "Failed to mount %s on %s"
 msgstr "Nem sikerült a(z) %s felcsatolása ide: %s"
 
-#: ../zypp/target/rpm/RpmDb.cc:1143
+#. TranslatorExplanation %s = name of the package being processed.
+#: ../zypp/repo/PackageProvider.cc:124
+#, c-format
+msgid "Failed to provide Package %s. Do you want to retry retrieval?"
+msgstr "A(z) %s csomagot nem siekrült elérni. Megpróbálja újra?"
+
+#. TranslatorExplanation '%s' is a pathname
+#: ../zypp/RepoManager.cc:247 ../zypp/RepoManager.cc:523
+#, c-format
+msgid "Failed to read directory '%s'"
+msgstr "A(z) '%s' könyvtár beolvasása sikertelen"
+
+#: ../zypp/target/rpm/RpmDb.cc:1141
 #, c-format
 msgid "Failed to remove public key %s: %s"
 msgstr "A(z) %s publikus kulcs eltávolítása sikertelen: %s"
@@ -1828,7 +1871,7 @@ msgstr "A HalVolume inicializálása sikertelen"
 msgid "Hausa"
 msgstr "hausza"
 
-#: ../zypp/solver/detail/SATResolver.cc:910
+#: ../zypp/solver/detail/SATResolver.cc:947
 msgid "Have you enabled all requested repositories?"
 msgstr "Minden szükséges telepítési forrást engedélyezett?"
 
@@ -1876,7 +1919,7 @@ msgid "Hiri Motu"
 msgstr "hiri motu"
 
 #. TranslatorExplanation followed by the list of error messages that lead to this exception
-#: ../zypp/base/Exception.cc:89
+#: ../zypp/base/Exception.cc:103
 msgid "History:"
 msgstr "Előzmények:"
 
@@ -2003,7 +2046,7 @@ msgstr "indonéz"
 msgid "Ingush"
 msgstr "ingus"
 
-#: ../zypp/target/TargetImpl.cc:601 ../zypp/target/TargetImpl.cc:839
+#: ../zypp/target/TargetImpl.cc:702 ../zypp/target/TargetImpl.cc:997
 msgid "Installation has been aborted as directed."
 msgstr "A kérésnek megfelelően a telepítés megszakad."
 
@@ -2067,27 +2110,27 @@ msgstr "Érvénytelen tömbösszefűzés-elválasztó (array join separator) kar
 
 #: ../zypp/url/UrlUtils.cc:173
 msgid "Invalid parameter array split separator character"
-msgstr ""
-"Érvénytelen tömbszétválasztás-elválasztó (array split separator) karakter"
+msgstr "Érvénytelen tömbszétválasztás-elválasztó (array split separator) karakter"
 
 #: ../zypp/url/UrlUtils.cc:213
 msgid "Invalid parameter map split separator character"
-msgstr ""
-"Érvénytelen leképezésszétválasztás-elválasztó (map split separator) karakter"
+msgstr "Érvénytelen leképezésszétválasztás-elválasztó (map split separator) karakter"
 
 #: ../zypp/url/UrlBase.cc:1079
 #, c-format
 msgid "Invalid port component '%s'"
 msgstr "Érvénytelen port komponens: '%s'"
 
-#: ../zypp/PoolQuery.cc:443
+#: ../zypp/PoolQuery.cc:440
 #, c-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr "Érvénytelen reguláris kifejezés '%s': regcomp visszatérési értéke: %d"
 
-#: ../zypp/media/MediaCurl.cc:1612
-msgid "Invalid user name or password."
-msgstr "Érvénytelen felhasználói név vagy jelszó."
+#. TranslatorExplanation '%s' is an URL
+#: ../zypp/RepoManager.cc:1378
+#, c-format
+msgid "Invalid repo file name at '%s'"
+msgstr "A(z) '%s' telepítési forrás fájlja érvénytelen"
 
 # IR
 # fuzzy
@@ -2654,7 +2697,7 @@ msgstr "Malajzia"
 msgid "Maldives"
 msgstr "Maldív Szigetek"
 
-#: ../zypp/media/MediaException.cc:115
+#: ../zypp/media/MediaException.cc:131
 msgid "Malformed URI"
 msgstr "Hibás URI"
 
@@ -2776,12 +2819,12 @@ msgstr "maja nyelvek"
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: ../zypp/media/MediaException.cc:169
+#: ../zypp/media/MediaException.cc:221
 #, c-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "A '%s' adathordozó forrása nem tartalmazza a kívánt adathordozót"
 
-#: ../zypp/media/MediaException.cc:175
+#: ../zypp/media/MediaException.cc:227
 #, c-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "Jelenleg egy másik folyamat használja a(z) '%s' adathordozót"
@@ -2793,8 +2836,7 @@ msgstr "Az adathordozó nincs csatlakoztatva"
 #: ../zypp/media/MediaException.cc:53
 #, c-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
-"Az adathordozó elérése a(z) '%s' művelet végrehajtása közben nem sikerült."
+msgstr "Az adathordozó elérése a(z) '%s' művelet végrehajtása közben nem sikerült."
 
 #. language code: men
 #: ../zypp/LanguageCode.cc:808
@@ -3170,7 +3212,7 @@ msgstr "Omán"
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "Legalább az egyik szükséges a '%s' és '%s' paraméterekből."
 
-#: ../zypp/media/MediaException.cc:145
+#: ../zypp/media/MediaException.cc:161
 msgid "Operation not supported by medium"
 msgstr "Az adathordozó nem támogatja ezt a műveletet"
 
@@ -3200,10 +3242,12 @@ msgid "Otomian Languages"
 msgstr "otomi nyelvek"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: ../zypp/repo/PackageProvider.cc:320
+#: ../zypp/repo/PackageProvider.cc:277
 #, c-format
-msgid "Package %s fails integrity check. Do you want to retry?"
-msgstr "A(z) %s csomag integritásvizsgálata sikertelen. Megpróbálja újra?"
+msgid ""
+"Package %s seems to be corrupted during transfer. Do you want to retry "
+"retrieval?"
+msgstr "A(z) %s csomag valószínűleg a letöltés közben hibás lett. Megpróbálja újra?"
 
 #. language code: pal
 #: ../zypp/LanguageCode.cc:926
@@ -3278,20 +3322,33 @@ msgstr "pápua (egyéb)"
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: ../zypp/media/MediaException.cc:106
+#: ../zypp/media/MediaException.cc:122
 #, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "A(z) '%s' elérési út a(z) '%s' adathordozón nem könyvtár."
 
-#: ../zypp/media/MediaException.cc:98
+#: ../zypp/media/MediaException.cc:114
 #, c-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "A(z) '%s' elérési út a(z) '%s' adathordozón nem fájl."
 
-#: ../zypp/media/MediaException.cc:200
+#: ../zypp/media/MediaException.cc:252
 #, c-format
 msgid "Permission to access '%s' denied."
 msgstr "Hozzáférés megtagadva: '%s'."
+
+#: ../zypp/media/MediaCurl.cc:1089 ../zypp/media/MediaCurl.cc:1334
+#, c-format
+msgid ""
+"Permission to access '%s' denied.\n"
+"\n"
+"Visit the Novell Customer Center to check whether your registration is valid "
+"and has not expired."
+msgstr ""
+"A(z) '%s' elérése nem engedélyezett.\n"
+"\n"
+"Látogasson el a Novell Customer Center oldalára és ellenőrizze, "
+"hogy a regisztrációja érvényes vagy nem járt-e le."
 
 # clients/inst_sw_single.ycp:1320 clients/inst_sw_single.ycp:1971
 #. language code: per fas fa
@@ -3421,8 +3478,9 @@ msgid "Query string parsing not supported for this URL"
 msgstr "A lekérdezés feldolgozása ehhez az URL-hez nem támogatott"
 
 #. TranslatorExplanation after semicolon is error message
-#: ../zypp/target/rpm/RpmDb.cc:892 ../zypp/target/rpm/RpmDb.cc:2078
-#: ../zypp/target/rpm/RpmDb.cc:2212
+#. TranslatorExplanation the colon is followed by an error message
+#: ../zypp/target/rpm/RpmDb.cc:893 ../zypp/target/rpm/RpmDb.cc:2084
+#: ../zypp/target/rpm/RpmDb.cc:2220
 msgid "RPM failed: "
 msgstr "RPM sikertelen: "
 
@@ -3451,10 +3509,9 @@ msgstr "rarotongai"
 
 #: ../zypp/url/UrlBase.cc:1117 ../zypp/url/UrlBase.cc:1131
 msgid "Relative path not allowed if authority exists"
-msgstr ""
-"Megadott hitelesítő esetén a relatív elérési útvonal megadása nem támogatott"
+msgstr "Megadott hitelesítő esetén a relatív elérési útvonal megadása nem támogatott"
 
-#: ../zypp/RepoManager.cc:1304
+#: ../zypp/RepoManager.cc:1418
 #, c-format
 msgid "Removing repository '%s'"
 msgstr "A(z) '%s' telepítési forrás eltávolítása"
@@ -3701,7 +3758,7 @@ msgstr "Sierra Leone"
 msgid "Sign Languages"
 msgstr "jelnyelvek"
 
-#: ../zypp/KeyRing.cc:597
+#: ../zypp/KeyRing.cc:587
 #, c-format
 msgid "Signature file %s not found"
 msgstr "A(z) %s aláírás-fájl nem található"
@@ -3783,7 +3840,7 @@ msgstr "szogdiai"
 msgid "Solomon Islands"
 msgstr "Salamon-szigetek"
 
-#: ../zypp/solver/detail/SATResolver.cc:937
+#: ../zypp/solver/detail/SATResolver.cc:974
 #, c-format
 msgid "Solvable %s conflicts with %s provided by itself"
 msgstr "%s ütközik a(z) %s csomaggal, amit saját maga biztosít"
@@ -3954,7 +4011,7 @@ msgstr "Szíria"
 msgid "Syriac"
 msgstr "szír"
 
-#: ../zypp/media/MediaException.cc:91
+#: ../zypp/media/MediaException.cc:107
 #, c-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "%s rendszerkivétel történt a(z) '%s' adathordozón."
@@ -3963,7 +4020,7 @@ msgstr "%s rendszerkivétel történt a(z) '%s' adathordozón."
 #, c-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
-"Please close this application before trying again."
+"Close this application before trying again."
 msgstr ""
 "A rendszerkezelőt a %d (%s) pid-del rendelkező folyamat zárolta.\n"
 "Kérem, zárja be az alkalmazást, majd próbálja újra."
@@ -4053,12 +4110,12 @@ msgstr "Nincs meghatározva a támogatás szintje"
 msgid "The vendor does not provide support."
 msgstr "A gyártó nem biztosít támogatást."
 
-#: ../zypp/base/InterProcessMutex.cc:139
+#: ../zypp/base/InterProcessMutex.cc:143
 msgid "This action is being run by another program already."
 msgstr "Ezt a folyamatot már elindította egy másik program."
 
-#: ../zypp/solver/detail/SATResolver.cc:1118
-#: ../zypp/solver/detail/SATResolver.cc:1136
+#: ../zypp/solver/detail/SATResolver.cc:1155
+#: ../zypp/solver/detail/SATResolver.cc:1173
 msgid "This request will break your system!"
 msgstr "A kért módosítás a rendszer meghibásodásához vezet!"
 
@@ -4078,7 +4135,7 @@ msgstr "tigre"
 msgid "Tigrinya"
 msgstr "tigrinja"
 
-#: ../zypp/media/MediaException.cc:207
+#: ../zypp/media/MediaException.cc:259
 #, c-format
 msgid "Timeout exceed when access '%s'."
 msgstr "Időtúllépés a '%s' elérése közben."
@@ -4133,7 +4190,7 @@ msgstr "tonga (Nyasa)"
 msgid "Tonga (Tonga Islands)"
 msgstr "tongai (Tonga-szigetek)"
 
-#: ../zypp/KeyRing.cc:536
+#: ../zypp/KeyRing.cc:526
 #, c-format
 msgid "Tried to import not existant key %s into keyring %s"
 msgstr "Nem létező kulcsot (%s) próbált a %s kulcstartóba importálni"
@@ -4271,8 +4328,7 @@ msgstr "A dbus kapcsolat létrehozása sikertelen"
 
 #: ../zypp/target/hal/HalContext.cc:249
 msgid "Unable to initalize HAL context -- hald not running?"
-msgstr ""
-"A HAL kontextus inicializálása sikertelen -- lehetséges, hogy a hald nem fut?"
+msgstr "A HAL kontextus inicializálása sikertelen -- lehetséges, hogy a hald nem fut?"
 
 #: ../zypp/Url.cc:322 ../zypp/Url.cc:336
 msgid "Unable to parse Url components"
@@ -4283,6 +4339,10 @@ msgstr "Az URL komponens feldolgozása sikertelen"
 #: ../zypp/LanguageCode.cc:1168
 msgid "Undetermined"
 msgstr "meghatározatlan"
+
+#: ../zypp/RepoManager.cc:1113
+msgid "Unhandled repository type"
+msgstr "Nem kezelt telepítési forrás típus"
 
 #. :AND:020:
 #: ../zypp/CountryCode.cc:225
@@ -4306,13 +4366,19 @@ msgstr "Amerikai Egyesült Államok"
 msgid "United States Minor Outlying Islands"
 msgstr "Amerikai Egyesült Államok - kisebb külső szigetek"
 
-#: ../zypp/target/TargetImpl.cc:879
+#: ../zypp/target/TargetImpl.cc:1031
 msgid "Unknown Distribution"
 msgstr "Ismeretlen disztribúció"
 
 #: ../zypp/CountryCode.cc:135
 msgid "Unknown country: "
 msgstr "Ismeretlen ország: "
+
+#. TranslatorExplanation '%s' is an URL
+#: ../zypp/RepoManager.cc:1196 ../zypp/RepoManager.cc:1994
+#, c-format
+msgid "Unknown error reading from '%s'"
+msgstr "ismeretlen hiba lépett fel a(z) '%s' beolvasása közben"
 
 #: ../zypp/LanguageCode.cc:145
 msgid "Unknown language: "
@@ -4327,7 +4393,7 @@ msgstr "Ismeretlen támogatási opció. Leírás nem található"
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Nem támogatott HTTP hitelesítési metódus: '%s'"
 
-#: ../zypp/media/MediaException.cc:140
+#: ../zypp/media/MediaException.cc:156
 #, c-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "Érvénytelen URI séma: '%s'."
@@ -4408,7 +4474,7 @@ msgid "Vai"
 msgstr "vai"
 
 #. we will throw this later if no URL checks out fine
-#: ../zypp/RepoManager.cc:790
+#: ../zypp/RepoManager.cc:839
 msgid "Valid metadata not found at specified URL(s)"
 msgstr "A megadokt URL nem tartalmaz érvényes metaadatot"
 
@@ -4593,89 +4659,88 @@ msgstr "zulu"
 msgid "Zuni"
 msgstr "zuni"
 
-#: ../zypp/repo/PackageProvider.cc:239
+#: ../zypp/repo/PackageProvider.cc:225
 msgid "applydeltarpm check failed."
 msgstr "az applydeltarpm ellenőrzés sikertelen."
 
-#: ../zypp/repo/PackageProvider.cc:253
+#: ../zypp/repo/PackageProvider.cc:242
 msgid "applydeltarpm failed."
 msgstr "az applydeltarpm futtatása sikertelen."
 
-#: ../zypp/solver/detail/SATResolver.cc:1194
+#: ../zypp/solver/detail/SATResolver.cc:1244
 #, c-format
 msgid "architecture change of %s to %s"
 msgstr "A(z) %s csomag helyett a(z) %s architektúrájú csomag telepítése"
 
 # modules/inst_target_part.ycp:676
-#: ../zypp/solver/detail/SATResolver.cc:923
+#: ../zypp/solver/detail/SATResolver.cc:960
 #, c-format
 msgid "cannot install both %s and %s"
 msgstr "nem telepíthető %s és %s is"
 
-#: ../zypp/solver/detail/SATResolver.cc:903
+#: ../zypp/solver/detail/SATResolver.cc:940
 msgid "conflicting requests"
 msgstr "ütköző kérelmek"
 
-#. timestamp
-#: ../zypp/target/rpm/RpmDb.cc:2362
+#: ../zypp/target/rpm/RpmDb.cc:2372
 #, c-format
 msgid "created backup %s"
 msgstr "%s másolata létrehozva"
 
-#: ../zypp/solver/detail/SATResolver.cc:1222
+#: ../zypp/solver/detail/SATResolver.cc:1272
 #, c-format
 msgid "deinstallation of %s"
 msgstr "%s eltávolítása"
 
-#: ../zypp/solver/detail/SATResolver.cc:971
+#: ../zypp/solver/detail/SATResolver.cc:1008
 msgid "deleted providers: "
 msgstr "törölt csomagok: "
 
-#: ../zypp/solver/detail/SATResolver.cc:1139
+#: ../zypp/solver/detail/SATResolver.cc:1176
 #, c-format
 msgid "do not ask to delete all solvables providing %s"
 msgstr "ne kérdezzen rá a %s-t biztosító feloldhatók eltávolítására"
 
-#: ../zypp/solver/detail/SATResolver.cc:1121
+#: ../zypp/solver/detail/SATResolver.cc:1158
 #, c-format
 msgid "do not ask to install a solvable providing %s"
 msgstr "ne kérdezzen rá a %s-t biztosító feloldható telepítésére"
 
 # modules/inst_target_part.ycp:676
-#: ../zypp/solver/detail/SATResolver.cc:1066
+#: ../zypp/solver/detail/SATResolver.cc:1103
 #, c-format
 msgid "do not forbid installation of %s"
 msgstr "A(z) %s csomag telepítése"
 
 # modules/inst_target_part.ycp:676
-#: ../zypp/solver/detail/SATResolver.cc:1045
-#: ../zypp/solver/detail/SATResolver.cc:1083
+#: ../zypp/solver/detail/SATResolver.cc:1082
+#: ../zypp/solver/detail/SATResolver.cc:1120
 #, c-format
 msgid "do not install %s"
 msgstr "Ne telepítse a(z) %s csomagot"
 
-#: ../zypp/solver/detail/SATResolver.cc:1152
+#: ../zypp/solver/detail/SATResolver.cc:1189
 #, c-format
 msgid "do not install most recent version of %s"
 msgstr "Ne telepítse a(z) %s csomag legújabb verzióját"
 
 # modules/inst_target_part.ycp:676
-#: ../zypp/solver/detail/SATResolver.cc:1040
+#: ../zypp/solver/detail/SATResolver.cc:1077
 #, c-format
 msgid "do not keep %s installed"
 msgstr "A(z) %s csomag eltávolítása"
 
-#: ../zypp/solver/detail/SATResolver.cc:1186
+#: ../zypp/solver/detail/SATResolver.cc:1236
 #, c-format
 msgid "downgrade of %s to %s"
-msgstr "A(z) %s csomag viszzafejlesztése a(z) %s csomagra"
+msgstr "A(z) %s csomag visszafejlesztése a(z) %s csomagra"
 
-#: ../zypp/solver/detail/SATResolver.cc:1119
-#: ../zypp/solver/detail/SATResolver.cc:1137
+#: ../zypp/solver/detail/SATResolver.cc:1156
+#: ../zypp/solver/detail/SATResolver.cc:1174
 msgid "ignore the warning of a broken system"
 msgstr "a hibás rendszer figyelmeztetésének figyelmen kívül hagyása"
 
-#: ../zypp/solver/detail/SATResolver.cc:1202
+#: ../zypp/solver/detail/SATResolver.cc:1252
 #, c-format
 msgid ""
 "install %s (with vendor change)\n"
@@ -4692,8 +4757,10 @@ msgstr ""
 msgid "invalid"
 msgstr "érvénytelen"
 
-#: ../zypp/solver/detail/SATResolver.cc:1061
-#: ../zypp/solver/detail/SATResolver.cc:1104
+#. for solver reason: NOT weak lock.
+#: ../zypp/solver/detail/SATResolver.cc:1098
+#: ../zypp/solver/detail/SATResolver.cc:1141
+#: ../zypp/solver/detail/SATResolver.cc:1218
 #, c-format
 msgid "keep %s"
 msgstr "%s megtartása"
@@ -4706,37 +4773,36 @@ msgstr "libhal_ctx_new: A libhal kontextus létrehozása sikertelen"
 msgid "libhal_set_dbus_connection: Can't set dbus connection"
 msgstr "libhal_set_dbus_connection: A dbus kapcsolat beállítása sikertelen"
 
-#: ../zypp/solver/detail/SATResolver.cc:918
+#: ../zypp/solver/detail/SATResolver.cc:955
 #, c-format
 msgid "nothing provides %s needed by %s"
 msgstr ""
 "semmi sem biztosítja a(z) %s csomagot, amely szükséges a(z) %s csomag "
 "telepítéséhez"
 
-#: ../zypp/solver/detail/SATResolver.cc:909
+#: ../zypp/solver/detail/SATResolver.cc:946
 #, c-format
 msgid "nothing provides requested %s"
 msgstr "semmi nem biztosítja a(z) %s csomagot"
 
-#: ../zypp/solver/detail/SATResolver.cc:900
+#: ../zypp/solver/detail/SATResolver.cc:937
 #, c-format
 msgid "problem with installed package %s"
 msgstr "probléma a telepített csomaggal: %s"
 
-#: ../zypp/solver/detail/SATResolver.cc:1210
+#: ../zypp/solver/detail/SATResolver.cc:1260
 #, c-format
 msgid "replacement of %s with %s"
 msgstr "%s cseréje erre: %s"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2067
+#: ../zypp/target/rpm/RpmDb.cc:2070
 #, c-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
-msgstr ""
-"Az rpm létrehozta %s-t, mint %s, de nem sikerült megállapítani a különbséget"
+msgstr "Az rpm létrehozta %s-t, mint %s, de nem sikerült megállapítani a különbséget"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2069
+#: ../zypp/target/rpm/RpmDb.cc:2072
 #, c-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4745,19 +4811,14 @@ msgstr ""
 "Az rpm létrehozta %s-t, mint %s.\n"
 "A különbség első 25 sora:\n"
 
-#: ../zypp/target/rpm/RpmDb.cc:2076 ../zypp/target/rpm/RpmDb.cc:2210
-msgid "rpm output:"
-msgstr "rpm kimenete:"
-
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2062
+#: ../zypp/target/rpm/RpmDb.cc:2065
 #, c-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
-msgstr ""
-"Az rpm elmentette %s-t, mint %s, de nem sikerült megállapítani a különbséget"
+msgstr "Az rpm elmentette %s-t, mint %s, de nem sikerült megállapítani a különbséget"
 
 #. %s = filenames
-#: ../zypp/target/rpm/RpmDb.cc:2064
+#: ../zypp/target/rpm/RpmDb.cc:2067
 #, c-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4766,11 +4827,11 @@ msgstr ""
 "Az rpm elmentette %s-t, mint %s.\n"
 "A különbség első 25 sora:\n"
 
-#: ../zypp/solver/detail/SATResolver.cc:906
+#: ../zypp/solver/detail/SATResolver.cc:943
 msgid "some dependency problem"
 msgstr "bizonyos függőségi probléma"
 
-#: ../zypp/solver/detail/SATResolver.cc:983
+#: ../zypp/solver/detail/SATResolver.cc:1020
 msgid "uninstallable providers: "
 msgstr "nem telepíthető csomagok: "
 
@@ -4781,3 +4842,4 @@ msgstr "ismeretlen"
 #: ../zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
 msgstr "nem támogatott"
+

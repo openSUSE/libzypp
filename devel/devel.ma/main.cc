@@ -1,23 +1,10 @@
 #include "Tools.h"
 #include "zypp/pool/GetResolvablesToInsDel.h"
 
-static TestSetup test( Arch_x86_64 );  // use x86_64 as system arch
+#include "zypp/parser/plaindir/RepoParser.h"
 
-bool solve()
-{
-  bool rres = false;
-  {
-    //zypp::base::LogControl::TmpLineWriter shutUp;
-    rres = test.resolver().resolvePool();
-  }
-  if ( ! rres )
-  {
-    ERR << "resolve " << rres << endl;
-    return false;
-  }
-  MIL << "resolve " << rres << endl;
-  return true;
-}
+static TestSetup test( "/tmp/ToolScanRepos", Arch_x86_64 );  // use x86_64 as system arch
+//static TestSetup test( Arch_x86_64 );  // use x86_64 as system arch
 
 int main( int argc, char * argv[] )
 try {
@@ -26,22 +13,21 @@ try {
   zypp::base::LogControl::instance().logToStdErr();
   INT << "===[START]==========================================" << endl;
 
-  test.loadTarget(); // initialize and load target
-  test.loadRepo( Url("iso:/?iso=/mounts/dist/install/openSUSE-11.1-Beta2-DONTUSE/kiwi.out.dvd-i586.iso") );
+  test.loadRepos();
+  ResPool pool( test.pool() );
 
-  ResPool    pool( test.pool() );
-  Resolver & resolver( test.resolver() );
+  static const sat::SolvAttr susetagsDatadir( "susetags:datadir" );
+  sat::LookupRepoAttr q( susetagsDatadir );
+  dumpRange(SEC << q << " ", q.begin(), q.end() ) << endl;
 
-  resolver.addRequire( Capability("glibc") );
-  resolver.addRequire( Capability("zlib") );
-  resolver.addRequire( Capability("lsb-buildenv") );
-  solve();
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
+  for_( it, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() )
+  {
+    ManagedFile p( providePkg( *it ) );
+    PathInfo pi( p );
+    (pi.isFile() ? USR : INT) << pi << endl;
+    break;
+  }
 
-  pool::GetResolvablesToInsDel collect( pool, pool::GetResolvablesToInsDel::ORDER_BY_MEDIANR );
-  MIL << "GetResolvablesToInsDel:" << endl << collect << endl;
 
   ///////////////////////////////////////////////////////////////////
   INT << "===[END]============================================" << endl << endl;

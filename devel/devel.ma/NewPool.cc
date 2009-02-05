@@ -54,7 +54,7 @@ using namespace zypp::ui;
 
 ///////////////////////////////////////////////////////////////////
 
-static const Pathname sysRoot( getenv("SYSROOT") ? getenv("SYSROOT") : "/Local/ROOT" );
+static const Pathname sysRoot( getenv("SYSROOT") ? getenv("SYSROOT") : "/Loacl/ROOT" );
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -553,20 +553,10 @@ try {
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
-  dumpRange( MIL, pool.byKindBegin<Product>(), pool.byKindEnd<Product>() ) << endl;
-  //getZYpp()->resolver()->addConflict( Capability("product:openSUSE.i586") );
-  //getZYpp()->resolver()->addConflict( Capability("openSUSE-release") );
+  dumpRange( MIL, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() ) << endl;
 
-  getZYpp()->resolver()->addRequire( Capability("product:openSUSE.i586") );
-  //getZYpp()->resolver()->addRequire( Capability("openSUSE-release") );
-
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-  solve();
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
+  ManagedFile f( repoProvidePackage( *pool.byKindBegin<Package>() ) );
+  USR <<  f << endl;
 
 
   //////////////////////////////////////////////////////////////////

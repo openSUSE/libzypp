@@ -9,10 +9,6 @@
 
 #include "zypp/TmpPath.h"
 
-#include "zypp/RepoManager.h"
-#include "zypp/RepoInfo.h"
-#include "zypp/repo/PackageProvider.h"
-
 #include "zypp/ResPoolProxy.h"
 
 using std::endl;
@@ -38,20 +34,6 @@ bool solve()
   }
   MIL << "resolve " << rres << endl;
   return true;
-}
-
-ManagedFile providePkg( const PoolItem & pi )
-{
-  Package::constPtr p = asKind<Package>( pi.resolvable() );
-  if ( ! pi )
-    return ManagedFile();
-
-  repo::RepoMediaAccess access;
-  std::list<Repository> repos;
-  repo::DeltaCandidates deltas( repos );
-  repo::PackageProvider pkgProvider( access, p, deltas );
-
-  return pkgProvider.providePackage();
 }
 
 /******************************************************************

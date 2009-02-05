@@ -30,7 +30,8 @@
 #include "zypp/ui/Selectable.h"
 #include <zypp/Repository.h>
 #include <zypp/RepoManager.h>
-
+#include "zypp/RepoInfo.h"
+#include "zypp/repo/PackageProvider.h"
 
 using namespace zypp;
 using zypp::debug::Measure;
@@ -146,6 +147,20 @@ inline RepoManager makeRepoManager( const Pathname & mgrdir_r )
 {
   // set via zypp.conf
   return RepoManager();
+}
+
+ManagedFile providePkg( const PoolItem & pi )
+{
+  Package::constPtr p = asKind<Package>( pi.resolvable() );
+  if ( ! pi )
+    return ManagedFile();
+
+  repo::RepoMediaAccess access;
+  std::list<Repository> repos;
+  repo::DeltaCandidates deltas( repos );
+  repo::PackageProvider pkgProvider( access, p, deltas );
+
+  return pkgProvider.providePackage();
 }
 
 ///////////////////////////////////////////////////////////////////

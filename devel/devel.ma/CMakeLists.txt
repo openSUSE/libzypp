@@ -24,7 +24,7 @@ ADD_CUSTOM_TARGET( ma_test
 
 ## ############################################################
 
-FOREACH( loop_var MaTest NewPool DumpSolv Iorder Xml Ex Main FakePool AOUT Parse Test Basic Sat TransList)
+FOREACH( loop_var MaTest NewPool CommitCb DumpSolv Iorder Xml Ex main Main FakePool AOUT Parse Test Basic Sat TransList)
    ADD_EXECUTABLE( ${loop_var}
       ${loop_var}.cc
    )

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  9 13:08:37 CET 2009 - ma@suse.de
+
+- Fix installation prompting for the wrong CD/DVD. (bnc #472892)
+- version 5.27.5 (23)
+
+-------------------------------------------------------------------
 Fri Feb  6 11:38:00 CET 2009 - schubi@suse.de
 
 - updated translations 

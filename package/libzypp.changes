@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 17 13:13:26 CET 2009 - jkupec@suse.cz
+
+- Fixed FTP authentication (bnc #472879)
+
+-------------------------------------------------------------------
 Mon Feb  9 13:08:37 CET 2009 - ma@suse.de
 
 - Fix installation prompting for the wrong CD/DVD. (bnc #472892)

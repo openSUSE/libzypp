@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 17 17:56:17 CET 2009 - ma@suse.de
+
+- Compute obsoletes based on names only (not considering provides) (bnc #471023)
+- version 5.28.0 (23)
+
+-------------------------------------------------------------------
 Tue Feb 17 13:13:26 CET 2009 - jkupec@suse.cz
 
 - Fixed FTP authentication (bnc #472879)

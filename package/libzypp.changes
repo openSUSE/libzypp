@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 18 13:20:09 CET 2009 - ma@suse.de
+
+- Neither lose packages with empty name, nor SEGV when processing them. (bnc #470011)
+- version 5.28.1 (23)
+
+-------------------------------------------------------------------
 Tue Feb 17 17:56:17 CET 2009 - ma@suse.de
 
 - Compute obsoletes based on names only (not considering provides) (bnc #471023)

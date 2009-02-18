@@ -2,44 +2,13 @@
 #include <zypp/ResObjects.h>
 
 #include <zypp/sat/LookupAttr.h>
+#include <zypp/sat/WhatProvides.h>
+#include <zypp/sat/WhatObsoletes.h>
+
 #include <zypp/PoolQuery.h>
+#include <zypp/ui/Selectable.h>
 
-static std::string pidAndAppname()
-{
-  static std::string _val;
-  if ( _val.empty() )
-  {
-    pid_t mypid = getpid();
-    Pathname p( "/proc/"+str::numstring(mypid)+"/exe" );
-    Pathname myname( filesystem::readlink( p ) );
-
-    _val += str::numstring(mypid);
-    _val += ":";
-    _val += myname.basename();
-  }
-  return _val;
-}
-
-bool solve()
-{
-  static unsigned run = 0;
-  USR << "Solve " << run++ << endl;
-  bool rres = false;
-  {
-    zypp::base::LogControl::TmpLineWriter shutUp;
-    rres = getZYpp()->resolver()->resolvePool();
-  }
-  if ( ! rres )
-  {
-    ERR << "resolve " << rres << endl;
-    getZYpp()->resolver()->problems();
-    return false;
-  }
-
-  return true;
-}
-
-typedef sat::ArrayAttr<std::string,std::string> FileList;
+using namespace zypp;
 
 /******************************************************************
 **
@@ -48,63 +17,27 @@ typedef sat::ArrayAttr<std::string,std::string> FileList;
 */
 int main( int argc, char * argv[] )
 {
+  std::string appname( Pathname::basename( argv[0] ) ); --argc, ++argv;
   INT << "===[START]==========================================" << endl;
 
-  Pathname mroot( "/tmp/ToolScanRepos" );
-  TestSetup test( mroot, Arch_x86_64 );
-  test.loadRepo("/Local/ROOT/cache/solv/@System/solv");
+  TestSetup test( "/tmp/"+appname, Arch_x86_64, TSO_CLEANROOT );
+  test.loadRepo( "http://download.opensuse.org/repositories/Banshee/openSUSE_11.1", "banshee-1.4" );
 
   ResPool pool( test.pool() );
+  ResPoolProxy poolProxy( test.poolProxy() );
+  //dumpRange( MIL, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() ) << endl;
+  for_( it, pool.byKindBegin<Pattern>(), pool.byKindEnd<Pattern>() )
   {
-    Measure x("filelist");
-    unsigned p = 0;
-    unsigned f = 0;
-    std::string a;
-    for_( it, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() )
-    {
-      ++p;
-      f += (*it)->asKind<Package>()->filelist().size();
-      for_( i, (*it)->asKind<Package>()->filelist().begin(), (*it)->asKind<Package>()->filelist().end() )
-        a = *i;
-    }
-    SEC << p << " : " << f << endl;
+    MIL << *it << endl;
+    DBG << ui::Selectable::get( *it ) << endl;
   }
+  for_( it, poolProxy.byKindBegin<Pattern>(), poolProxy.byKindEnd<Pattern>() )
   {
-    Measure x("filenames");
-    unsigned p = 0;
-    unsigned f = 0;
-    std::string a;
-    for_( it, pool.byKindBegin<Package>(), pool.byKindEnd<Package>() )
-    {
-      ++p;
-      std::list<std::string> l( (*it)->asKind<Package>()->filenames() );
-      f += l.size();
-      for_( i, l.begin(), l.end() )
-        a = *i;
-    }
-    SEC << p << " : " << f << endl;
+    MIL << *it << endl;
   }
 
   INT << "===[END]============================================" << endl << endl;
-  return 0;
-
-
-
-  //ui::Selectable::Ptr getSel( const std::string & name_r )
-  getSel<Package>( "gcompris" )->setToInstall();
-
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-                  make_filter_begin<resfilter::ByTransact>(pool),
-                  make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-
-  if ( solve() )
-  {
-    vdumpPoolStats( USR << "Transacting:"<< endl,
-                    make_filter_begin<resfilter::ByTransact>(pool),
-                    make_filter_end<resfilter::ByTransact>(pool) ) << endl;
-    SEC << getSel<Package>( "librsvg" ) << endl;
-  }
-  INT << "===[END]============================================" << endl << endl;
+  zypp::base::LogControl::TmpLineWriter shutUp;
   return 0;
 }
 

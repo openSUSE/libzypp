@@ -544,7 +544,8 @@ namespace zypp
   { return _pimpl->solver_onlyRequires; }
 
   Pathname ZConfig::solver_checkSystemFile() const
-  { return _pimpl->solver_checkSystemFile; }
+  { return ( _pimpl->solver_checkSystemFile.empty() ?
+      ? (configPath()/"systemCheck") : _pimpl->solver_checkSystemFile ); }
 
 
   std::set<IdString> ZConfig::multiversion() const

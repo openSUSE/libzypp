@@ -1,5 +1,11 @@
 -------------------------------------------------------------------
-Thu Feb 26 01:08:50 CET 2009 - ma@km13.de
+Thu Feb 26 11:16:26 CET 2009 - ma@suse.de
+
+- Use correct default foe zconfig(solver.checkSystemFile) (bnc# 475144)
+- version 5.29.1 (23)
+
+-------------------------------------------------------------------
+Thu Feb 26 01:08:50 CET 2009 - ma@suse.de
 
 - Prevent ResStatus from overriding user locks. (bnc #475230)
 - version 5.29.0 (23)

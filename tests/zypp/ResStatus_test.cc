@@ -203,7 +203,7 @@ void evaluateSetLock( ResStatus::TransactValue fromState, ResStatus::TransactByV
 
 BOOST_AUTO_TEST_CASE(transition)
 {
-  base::LogControl::TmpLineWriter shutUp( new log::FileLineWriter( "-" ) );
+  //base::LogControl::TmpLineWriter shutUp( new log::FileLineWriter( "-" ) );
   MIL << endl;
   testTable( &ResStatus::setTransact,		&evaluateSetTransact );
   testTable( &ResStatus::setSoftTransact,	&evaluateSetSoftTransact );

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  3 13:11:37 CET 2009 - ma@suse.de
+
+- Adapt to changed satsolver API. (bnc #480303)
+- version 5.29.2 (23)
+
+-------------------------------------------------------------------
 Thu Feb 26 11:16:26 CET 2009 - ma@suse.de
 
 - Use correct default for zconfig(solver.checkSystemFile) (bnc# 475144)

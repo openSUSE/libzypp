@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar  5 14:58:52 CET 2009 - ma@suse.de
+
+- Remove a lock if the locking process is in zombie state. (bnc #481577)
+- version 5.29.3 (23)
+
+-------------------------------------------------------------------
 Tue Mar  3 13:11:37 CET 2009 - ma@suse.de
 
 - Adapt to changed satsolver API. (bnc #480303)

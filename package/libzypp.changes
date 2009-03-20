@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 20 17:42:08 CET 2009 - ma@suse.de
+
+- Fix Patch::categoryEnum.
+- version 5.29.4 (23)
+
+-------------------------------------------------------------------
 Thu Mar  5 14:58:52 CET 2009 - ma@suse.de
 
 - Remove a lock if the locking process is in zombie state. (bnc #481577)

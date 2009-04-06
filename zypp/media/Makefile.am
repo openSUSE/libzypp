@@ -27,7 +27,8 @@ mediainclude_HEADERS = 		\
 	ProxyInfo.h		\
 	MediaCurl.h		\
 	MediaISO.h		\
-	MediaManager.h		
+	MediaManager.h		\
+	CurlConfig.h
 
 
 noinst_LTLIBRARIES =	lib@PACKAGE@_media.la
@@ -48,7 +49,8 @@ lib@PACKAGE@_media_la_SOURCES = \
 	ProxyInfo.cc		\
 	MediaCurl.cc		\
 	MediaISO.cc		\
-	MediaManager.cc		
+	MediaManager.cc		\
+	CurlConfig.cc
 
 
 lib@PACKAGE@_media_la_LIBADD =	proxyinfo/lib@PACKAGE@_media_proxyinfo.la \

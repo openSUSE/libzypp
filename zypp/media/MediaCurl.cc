@@ -22,6 +22,7 @@
 #include "zypp/media/MediaCurl.h"
 #include "zypp/media/proxyinfo/ProxyInfos.h"
 #include "zypp/media/ProxyInfo.h"
+#include "zypp/media/CurlConfig.h"
 #include "zypp/thread/Once.h"
 #include <cstdlib>
 #include <sys/types.h>
@@ -219,6 +220,9 @@ void MediaCurl::attachTo (bool next)
 
   if ( !_url.isValid() )
     ZYPP_THROW(MediaBadUrlException(_url));
+
+  CurlConfig curlconf;
+  CurlConfig::parseConfig(curlconf); // parse ~/.curlrc
 
   curl_version_info_data *curl_info = NULL;
   curl_info = curl_version_info(CURLVERSION_NOW);
@@ -590,35 +594,17 @@ void MediaCurl::attachTo (bool next)
     _proxyuserpwd = _url.getQueryParam( "proxyuser" );
 
     if ( ! _proxyuserpwd.empty() ) {
-
       string proxypassword( _url.getQueryParam( "proxypassword" ) );
       if ( ! proxypassword.empty() ) {
         _proxyuserpwd += ":" + proxypassword;
       }
-
     } else {
-      char *home = getenv("HOME");
-      if( home && *home)
+      if (curlconf.proxyuserpwd.empty())
+        DBG << "~/.curlrc does not contain the proxy-user option" << endl;
+      else
       {
-              Pathname curlrcFile = string( home ) + string( "/.curlrc" );
-
-        PathInfo h_info(string(home), PathInfo::LSTAT);
-        PathInfo c_info(curlrcFile,   PathInfo::LSTAT);
-
-        if( h_info.isDir()  && h_info.owner() == getuid() &&
-            c_info.isFile() && c_info.owner() == getuid())
-        {
-                map<string,string> rc_data = base::sysconfig::read( curlrcFile );
-
-                map<string,string>::const_iterator it = rc_data.find("proxy-user");
-                if (it != rc_data.end())
-            _proxyuserpwd = it->second;
-        }
-        else
-        {
-          WAR << "Not allowed to parse '" << curlrcFile
-              << "': bad file owner" << std::endl;
-        }
+        _proxyuserpwd = curlconf.proxyuserpwd;
+        DBG << "using proxy-user from ~/.curlrc" << endl;
       }
     }
 
@@ -744,7 +730,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
 
   if(_url.getHost().empty())
     ZYPP_THROW(MediaBadUrlEmptyHostException(_url));
-  
+
   string path = _url.getPathName();
   if ( !path.empty() && path != "/" && *path.rbegin() == '/' &&
         filename.absolute() ) {
@@ -776,7 +762,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
   curlUrl.setPathParams( "" );
   curlUrl.setQueryString( "" );
   curlUrl.setFragment( "" );
-  
+
   //
     // See also Bug #154197 and ftp url definition in RFC 1738:
     // The url "ftp://user@host/foo/bar/file" contains a path,
@@ -791,22 +777,22 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
   if ( ret != 0 ) {
     ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
   }
-  
+
   // set no data, because we only want to check if the file exists
   //ret = curl_easy_setopt( _curl, CURLOPT_NOBODY, 1 );
   //if ( ret != 0 ) {
   //    ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
-  //}    
-  
-  // instead of returning no data with NOBODY, we return 
+  //}
+
+  // instead of returning no data with NOBODY, we return
   // little data, that works with broken servers, and
   // works for ftp as well, because retrieving only headers
   // ftp will return always OK code ?
   ret = curl_easy_setopt( _curl, CURLOPT_RANGE, "0-1" );
   if ( ret != 0 ) {
       ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
-  }    
-  
+  }
+
   FILE *file = ::fopen( "/dev/null", "w" );
   if ( !file ) {
       ::fclose(file);
@@ -844,11 +830,11 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
   {
     ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
   }
-  
+
   if ( ok != 0 )
   {
     ::fclose( file );
-    
+
     std::string err;
     try
     {
@@ -856,7 +842,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
       switch ( ok )
       {
       case CURLE_FTP_COULDNT_RETR_FILE:
-      case CURLE_FTP_ACCESS_DENIED: 
+      case CURLE_FTP_ACCESS_DENIED:
         err_file_not_found = true;
         break;
       case CURLE_HTTP_RETURNED_ERROR:
@@ -924,7 +910,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
           err = "Unrecognized error";
         break;
       }
-      
+
       if( err_file_not_found)
       {
         // file does not exists
@@ -940,14 +926,14 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
     {
       ZYPP_RETHROW(excpt_r);
     }
-  } 
-  
+  }
+
   // exists
   return ( ok == CURLE_OK );
   //if ( curl_easy_setopt( _curl, CURLOPT_PROGRESSDATA, NULL ) != 0 ) {
   //  WAR << "Can't unset CURLOPT_PROGRESSDATA: " << _curlError << endl;;
   //}
-}    
+}
 
 void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & target, callback::SendReport<DownloadProgressReport> & report) const
 {

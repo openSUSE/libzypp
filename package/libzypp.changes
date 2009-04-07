@@ -2,7 +2,7 @@
 Mon Apr  6 19:24:03 CEST 2009 - jkupec@suse.cz
 
 - Read .curlrc more robustly (bnc #410750, bnc #330351, bnc #331038)
-- version 2.33.0
+- version 2.100.0
 
 -------------------------------------------------------------------
 Mon Jul  7 12:38:04 CEST 2008 - ma@suse.de

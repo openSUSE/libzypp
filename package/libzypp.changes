@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 16 12:58:48 CEST 2009 - ma@suse.de
+
+- Soft lock packages deleted on behalf of a user request.
+- version 5.29.6 (23)
+
+-------------------------------------------------------------------
 Wed Apr  1 17:32:25 CEST 2009 - ma@suse.de
 
 - Don't link unneeded libraries. (bnc #490895)

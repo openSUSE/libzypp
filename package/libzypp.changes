@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 27 15:38:36 CEST 2009 - ma@suse.de
+
+- In update repos providing multiple release package versions for 
+  the same product, link a product to the latest version. (bnc #497696)
+- version 5.29.7 (23)
+
+-------------------------------------------------------------------
 Thu Apr 16 12:58:48 CEST 2009 - ma@suse.de
 
 - Soft lock packages deleted on behalf of a user request.

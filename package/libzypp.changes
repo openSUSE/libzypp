@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 28 15:41:31 CEST 2009 - ma@suse.de
+
+- Fix detection of aria2c binary. (bnc #492071)
+- version 5.29.8 (23)
+
+-------------------------------------------------------------------
 Mon Apr 27 15:38:36 CEST 2009 - ma@suse.de
 
 - In update repos providing multiple release package versions for 

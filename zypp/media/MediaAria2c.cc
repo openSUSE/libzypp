@@ -623,7 +623,7 @@ Pathname MediaAria2c::whereisAria2c()
     if( pos != string::npos )
     {
         aria2cPathr = ariaResponse;
-        string::size_type pose = ariaResponse.find(' ', pos + 1 );
+        string::size_type pose = ariaResponse.find_first_of(" \t\n\r", pos + 1 );
         aria2cPathr = ariaResponse.substr( pos , pose - pos );
         MIL << "We will use aria2c located here:  " << ariaResponse.substr( pos , pose - pos) << endl;
     }

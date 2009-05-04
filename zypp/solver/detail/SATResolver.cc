@@ -1151,11 +1151,14 @@ SATResolver::problems ()
 				    resolverProblem->setDetails( resolverProblem->description() + "\n" + resolverProblem->details() );
 				    resolverProblem->setDescription(_("This request will break your system!"));
 				    description = _("ignore the warning of a broken system");
+                                    description += string(" (requires:")+dep2str(pool, what)+")";
+                                    MIL << description << endl;
+                                    problemSolution->addFrontDescription (description);
 				} else {
 				    description = str::form (_("do not ask to install a solvable providing %s"), dep2str(pool, what));
+                                    MIL << description << endl;
+                                    problemSolution->addDescription (description);
 				}
-				MIL << description << endl;
-				problemSolution->addDescription (description);
 				}
 				break;
 			    case SOLVER_ERASE_SOLVABLE_PROVIDES:
@@ -1169,11 +1172,15 @@ SATResolver::problems ()
 				    resolverProblem->setDetails( resolverProblem->description() + "\n" + resolverProblem->details() );
 				    resolverProblem->setDescription(_("This request will break your system!"));
 				    description = _("ignore the warning of a broken system");
+                                    description += string(" (conflicts:")+dep2str(pool, what)+")";
+                                    MIL << description << endl;
+                                    problemSolution->addFrontDescription (description);
+
 				} else {
 				    description = str::form (_("do not ask to delete all solvables providing %s"), dep2str(pool, what));
+                                    MIL << description << endl;
+                                    problemSolution->addDescription (description);
 				}
-				MIL << description << endl;
-				problemSolution->addDescription (description);
 				}
 				break;
 			    case SOLVER_INSTALL_SOLVABLE_UPDATE:

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May  5 13:49:41 CEST 2009 - ma@suse.de
+
+- Detect and compile with rpm 4.7 (bnc #444211)
+- version 5.30.1 (23)
+
+-------------------------------------------------------------------
 Mon May  4 16:00:53 CEST 2009 - ma@suse.de
 
 - Improve problem report on broken systemCheck rule (bnc #475144)

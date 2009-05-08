@@ -1884,6 +1884,7 @@ namespace zypp
         // ==> an exising repo to check
         bool oldRepoModified = false;
 
+        // changed enable?
         if ( beEnabled )
         {
           if ( ! oldRepo->enabled() )
@@ -1901,8 +1902,13 @@ namespace zypp
           }
         }
 
-#warning also check changed URL due to PATH/URL change in service, but ignore ?credentials param!
-// ma@: task for modifyRepository?
+        // changed url?
+        // service repo can contain only one URL now, so no need to iterate.
+        if ( oldRepo->url() != it->url() )
+        {
+          oldRepo->setBaseUrl( it->url() );
+          oldRepoModified = true;
+        }
 
         // save if modified:
         if ( oldRepoModified )

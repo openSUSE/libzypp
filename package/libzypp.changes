@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May  8 16:47:15 CEST 2009 - ma@suse.de
+
+- Allow service refresh to change a repositories url (bnc #502157)
+- version 5.30.2 (23)
+
+-------------------------------------------------------------------
 Tue May  5 13:49:41 CEST 2009 - ma@suse.de
 
 - Detect and compile with rpm 4.7 (bnc #444211)

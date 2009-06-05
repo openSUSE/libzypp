@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun  5 16:11:06 CEST 2009 - ma@suse.de
+
+- Don't reject modalias dependencies with "op edition" part. (bnc #505627)
+- version 2.100.1
+
+-------------------------------------------------------------------
 Mon Apr  6 19:24:03 CEST 2009 - jkupec@suse.cz
 
 - Read .curlrc more robustly (bnc #410750, bnc #330351, bnc #331038)

@@ -344,11 +344,6 @@ namespace zypp
                                               Rel op_r = Rel::ANY,
                                               const std::string & value_r = std::string() )
     {
-      if ( op_r != Rel::ANY )
-	{
-	  ZYPP_THROW( Exception("Unsupported kind of Modalias Capability  '" + op_r.asString() + "'") );
-	}
-
       //split:   modalias(name) [op string]
       static const str::regex  rx( "modalias\\(([^)]*)\\)" );
       str::smatch what;
@@ -357,7 +352,7 @@ namespace zypp
 	  // Modalias always refers to 'System' kind of Resolvable.
 	  return usetInsert
 	  ( new capability::ModaliasCap( ResTraits<SystemResObject>::kind,
-                                         what[1].str() ) );
+                                         what[1].str(), op_r, value_r ) );
 	}
       // otherwise
       ZYPP_THROW( Exception("Unsupported kind of Modalias Capability'" + name_r + "'") );

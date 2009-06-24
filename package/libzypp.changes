@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 24 12:15:26 CEST 2009 - ma@suse.de
+
+- Support hexencoded modalias strings (bnc #456695, bnc #515858)
+- version 2.100.2
+
+-------------------------------------------------------------------
 Fri Jun  5 16:11:06 CEST 2009 - ma@suse.de
 
 - Don't reject modalias dependencies with "op edition" part. (bnc #505627)

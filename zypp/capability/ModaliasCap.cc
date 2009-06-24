@@ -11,6 +11,7 @@
 */
 #include <iostream>
 #include "zypp/base/Logger.h"
+#include "zypp/base/String.h"
 
 #include "zypp/capability/ModaliasCap.h"
 #include "zypp/target/modalias/Modalias.h"
@@ -113,7 +114,7 @@ namespace zypp
 
     bool ModaliasCap::evaluate() const
     {
-      return target::modalias::Modalias::instance().query( _name, _op, _value );
+      return target::modalias::Modalias::instance().query( str::hexdecode(_name), _op, _value );
     }
 
     /////////////////////////////////////////////////////////////////

@@ -207,7 +207,7 @@ namespace zypp
 
     ///////////////////////////////////////////////////////////////////
     /** Parsing boolean from string.
-    */
+     */
     //@{
     /** Return \c true if str is <tt>1, true, yes, on</tt>. */
     bool strToTrue( const std::string & str );
@@ -354,6 +354,20 @@ namespace zypp
       { return join( cont_r.begin(), cont_r.end(), sep_r ); }
     //@}
 
+    ///////////////////////////////////////////////////////////////////
+    /** \name Hexencode.
+     * Encode all characters other than [a-zA-Z0-9] as %XX.
+     * This includes the % character itself, which becomes %25.
+     */
+    //@{
+    /** Encode all characters other than [a-zA-Z0-9] as %XX.
+     * This includes the % character itself, which becomes %25.
+     */
+    std::string hexencode( const std::string & str_r );
+    /** Decode hexencoded %XX sequences. */
+    std::string hexdecode( const std::string & str_r );
+    //@}
+    ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
     /** \name Case conversion. */

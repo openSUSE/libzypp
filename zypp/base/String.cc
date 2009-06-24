@@ -80,7 +80,79 @@ namespace zypp
                );
     }
 
-    /******************************************************************
+    ///////////////////////////////////////////////////////////////////
+    // Hexencode
+    ///////////////////////////////////////////////////////////////////
+    namespace {
+      /** What's not decoded. */
+      inline bool heIsAlNum( char ch )
+      {
+        return ( ( 'a' <= ch && ch <= 'z' )
+               ||( 'A' <= ch && ch <= 'Z' )
+               ||( '0' <= ch && ch <= '9' ) );
+      }
+      /** Hex-digit to number or -1. */
+      inline int heDecodeCh( char ch )
+      {
+        if ( '0' <= ch && ch <= '9' )
+          return( ch - '0' );
+        if ( 'A' <= ch && ch <= 'F' )
+          return( ch - 'A' + 10 );
+        if ( 'a' <= ch && ch <= 'f' )
+          return( ch - 'A' + 10 );
+        return -1;
+      }
+    }
+
+    std::string hexencode( const std::string & str_r )
+    {
+      static const char *const hdig = "0123456789ABCDEF";
+      std::string res;
+      res.reserve( str_r.size() );
+      for ( const char * it = str_r.c_str(); *it; ++it )
+      {
+        if ( heIsAlNum( *it ) )
+        {
+          res += *it;
+        }
+        else
+        {
+          res += '%';
+          res += hdig[(unsigned char)(*it)/16];
+          res += hdig[(unsigned char)(*it)%16];
+        }
+      }
+      return res;
+    }
+
+    std::string hexdecode( const std::string & str_r )
+    {
+      std::string res;
+      res.reserve( str_r.size() );
+      for ( const char * it = str_r.c_str(); *it; ++it )
+      {
+        if ( *it == '%' )
+        {
+          int d1 = heDecodeCh( *(it+1) );
+          if ( d1 != -1 )
+          {
+            int d2 = heDecodeCh( *(it+2) );
+            if ( d2 != -1 )
+            {
+              res += (d1<<4)|d2;
+              it += 2;
+              continue;
+            }
+          }
+        }
+        // verbatim if no %XX:
+        res += *it;
+      }
+      return res;
+    }
+    ///////////////////////////////////////////////////////////////////
+
+   /******************************************************************
      **
      **      FUNCTION NAME : toLower
      **      FUNCTION TYPE : std::string
@@ -161,13 +233,13 @@ namespace zypp
     {
       if ( ltrim_first )
         line = ltrim( line );
-    
+
       if ( line.empty() )
         return line;
-    
+
       std::string ret;
       std::string::size_type p = line.find_first_of( " \t" );
-    
+
       if ( p == std::string::npos ) {
         // no ws on line
         ret = line;
@@ -204,15 +276,15 @@ namespace zypp
         str.getline( tmpBuff, tmpBuffLen ); // always writes '\0' terminated
         ret += tmpBuff;
       } while( str.rdstate() == std::ios::failbit );
-    
+
       return trim( ret, trim_r );
     }
-    
+
     std::string getline( std::istream & str, const Trim trim_r )
     {
       return _getline(str, trim_r);
     }
-    
+
     std::string getline( std::istream & str, bool trim )
     {
       return _getline(str, trim?TRIM:NO_TRIM);

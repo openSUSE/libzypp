@@ -6,6 +6,8 @@ Makefile
 *.lo
 *.a
 *.la
+*.gmo
+*~
 aclocal.m4
 autom4te.cache/
 config.guess
@@ -27,3 +29,5 @@ libzypp.spec
 devel/genclass
 doc/autodoc/Doxyfile
 po/POTFILES
+po/zypp.pot
+package/zypp-*.tar.bz2

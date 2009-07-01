@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul  1 13:55:05 CEST 2009 - ma@suse.de
+
+- Running as non-root user use a temporary @System solvfile in case the
+  global one is outdated and needed refresh. (bnc #517183)
+- version 5.30.6 (23)
+
+-------------------------------------------------------------------
 Mon Jun 15 12:17:40 CEST 2009 - ma@suse.de
 
 - Use rpm variables in specfile. (bnc #512466)

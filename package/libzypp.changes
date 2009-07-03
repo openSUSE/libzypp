@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jul  3 09:33:11 CEST 2009 - ma@suse.de
+
+- When unmounting ISO images, don't mix up exceptions thrown by the 
+  loop mounted ISO and those thrown by the media containing it.
+  (bnc #517856)
+- version 5.30.7 (23)
+
+-------------------------------------------------------------------
 Wed Jul  1 13:55:05 CEST 2009 - ma@suse.de
 
 - Running as non-root user use a temporary @System solvfile in case the

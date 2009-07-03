@@ -1,9 +1,10 @@
 -------------------------------------------------------------------
-Fri Jul  3 09:33:11 CEST 2009 - ma@suse.de
+Fri Jul  3 13:10:56 CEST 2009 - ma@suse.de
 
 - When unmounting ISO images, don't mix up exceptions thrown by the 
   loop mounted ISO and those thrown by the media containing it.
   (bnc #517856)
+- Fix parsing of rpm.install.excludedocs option (bnc #518883)
 - version 5.30.7 (23)
 
 -------------------------------------------------------------------

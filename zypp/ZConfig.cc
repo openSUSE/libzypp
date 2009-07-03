@@ -288,7 +288,8 @@ namespace zypp
                 }
                 else if ( entry == "rpm.install.excludedocs" )
                 {
-                  rpmInstallFlags.setFlag( target::rpm::RPMINST_EXCLUDEDOCS );
+                  rpmInstallFlags.setFlag( target::rpm::RPMINST_EXCLUDEDOCS,
+                                           str::strToBool( value, false ) );
                 }
                 else if ( entry == "history.logfile" )
                 {
@@ -309,7 +310,7 @@ namespace zypp
         else
         {
           MIL << _parsedZyppConf << " not found, using defaults instead." << endl;
-          _parsedZyppConf.extend( " (NOT FOUND)" );
+          _parsedZyppConf = _parsedZyppConf.extend( " (NOT FOUND)" );
         }
 
         // legacy:
@@ -399,7 +400,7 @@ namespace zypp
   ZConfig::ZConfig()
   : _pimpl( new Impl )
   {
-    about( MIL);
+    about( MIL );
   }
 
   ///////////////////////////////////////////////////////////////////

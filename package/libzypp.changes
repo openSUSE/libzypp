@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  7 12:15:26 CEST 2009 - jkupec@suse.cz
+
+- Probe for both repository types before failing (bnc #335906).
+- versin 2.100.3
+
+-------------------------------------------------------------------
 Wed Jun 24 12:15:26 CEST 2009 - ma@suse.de
 
 - Support hexencoded modalias strings (bnc #456695, bnc #515858)

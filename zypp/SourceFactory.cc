@@ -226,30 +226,37 @@ namespace zypp
     report->start(url_r);
     try
     {
-      if ( (probeYUM = probeSource<yum::YUMSourceImpl>( url_r, path_r, id, "YUM", report )) )
-      {
-        // nothing
+      // probeYUM
+      try {
+        probeYUM = probeSource<yum::YUMSourceImpl>( url_r, path_r, id, "YUM", report );
       }
-      else if ( (probeYaST = probeSource<susetags::SuseTagsImpl>( url_r, path_r, id, "YaST", report )) )
-      {
-        // nohing
+      catch ( const media::MediaException & e ) {
+        ZYPP_CAUGHT(e); // ignore while probing
       }
-      report->finish(url_r, ProbeSourceReport::NO_ERROR, "");
-  
       if ( probeYUM )
       {
+        report->finish(url_r, ProbeSourceReport::NO_ERROR, "");
         Source_Ref source(createSourceImplWorkflow<source::yum::YUMSourceImpl>( id, context ));
         return source;
       }
-      else if ( probeYaST )
+
+      // probeYaST
+      try {
+        probeYaST = probeSource<susetags::SuseTagsImpl>( url_r, path_r, id, "YaST", report );
+      }
+      catch ( const media::MediaException & e ) {
+        ZYPP_CAUGHT(e); // ignore while probing
+      }
+      if ( probeYaST )
       {
+        report->finish(url_r, ProbeSourceReport::NO_ERROR, "");
         Source_Ref source(createSourceImplWorkflow<susetags::SuseTagsImpl>( id, context ));
         return source;
       }
-      else
-      {
-        ZYPP_THROW( SourceUnknownTypeException("Unknown source type for " + url_r.asString() ) );
-      }
+
+      // probing failed:
+      report->finish(url_r, ProbeSourceReport::NO_ERROR, "");
+      ZYPP_THROW( SourceUnknownTypeException("Unknown source type for " + url_r.asString() ) );
     }
     catch ( const Exception &e )
     {

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 29 13:49:57 CEST 2009 - ma@suse.de
+
+- Avoid deadlock after fork and failed exec. (bnc 493152)
+- version 5.30.8 (23)
+
+-------------------------------------------------------------------
 Fri Jul  3 13:10:56 CEST 2009 - ma@suse.de
 
 - When unmounting ISO images, don't mix up exceptions thrown by the 

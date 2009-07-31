@@ -1253,9 +1253,12 @@ SATResolver::problems ()
 				if (!_solv->allowvendorchange && s.get()->name == sd.get()->name && s.get()->vendor != sd.get()->vendor
 				    && policy_illegal_vendorchange(_solv, s.get(), sd.get()))
 				{
-				    string description = str::form (_("install %s (with vendor change)\n  %s\n-->\n  %s") ,
-								    solvable2str(pool, sd.get()) , id2str(pool, s.get()->vendor),
-								    string(sd.get()->vendor ?  id2str(pool, sd.get()->vendor) : " (no vendor) ").c_str() );
+                                    IdString s_vendor( s.vendor() );
+                                    IdString sd_vendor( sd.vendor() );
+				    string description = str::form (_("install %s (with vendor change)\n  %s  -->  %s") ,
+								    solvable2str(pool, sd.get()),
+                                                                    ( s_vendor ? s_vendor.c_str() : " (no vendor) " ),
+                                                                    ( sd_vendor ? sd_vendor.c_str() : " (no vendor) " ) );
 				    MIL << description << endl;
 				    problemSolution->addDescription (description);
 				    gotone = 1;

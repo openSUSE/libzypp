@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
-Fri Jul 31 16:08:43 CEST 2009 - ma@suse.de
+Fri Jul 31 18:14:04 CEST 2009 - ma@suse.de
 
+- Removing a package lock was not counted as state change (bnc #501850)
 - Remove confusing newlines in vendor change info (bnc #503859)
 - version 5.30.9 (23)
 

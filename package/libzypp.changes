@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 31 16:08:43 CEST 2009 - ma@suse.de
+
+- Remove confusing newlines in vendor change info (bnc #503859)
+- version 5.30.9 (23)
+
+-------------------------------------------------------------------
 Wed Jul 29 13:49:57 CEST 2009 - ma@suse.de
 
 - Avoid deadlock after fork and failed exec. (bnc 493152)

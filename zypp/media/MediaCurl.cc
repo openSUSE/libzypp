@@ -111,6 +111,41 @@ namespace
     }
     return 0;
   }
+
+  static size_t
+  log_redirects_curl(
+      void *ptr, size_t size, size_t nmemb, void *stream)
+  {
+    // INT << "got header: " << string((char *)ptr, ((char*)ptr) + size*nmemb) << endl;
+
+    char * lstart = (char *)ptr, * lend = (char *)ptr;
+    size_t pos = 0;
+    size_t max = size * nmemb;
+    while (pos + 1 < max)
+    {
+      // get line
+      for (lstart = lend; *lend != '\n' && pos < max; ++lend, ++pos);
+
+      // look for "Location"
+      string line(lstart, lend);
+      if (line.find("Location") != string::npos)
+      {
+        DBG << "redirecting to " << line << endl;
+        return max;
+      }
+
+      // continue with the next line
+      if (pos + 1 < max)
+      {
+        ++lend;
+        ++pos;
+      }
+      else
+        break;
+    }
+
+    return max;
+  }
 }
 
 namespace zypp {
@@ -346,6 +381,8 @@ void MediaCurl::attachTo (bool next)
       curl_easy_setopt( _curl, CURLOPT_DEBUGDATA, &_curlDebug);
     }
   }
+
+  curl_easy_setopt(_curl, CURLOPT_HEADERFUNCTION, log_redirects_curl);
 
   CURLcode ret = curl_easy_setopt( _curl, CURLOPT_ERRORBUFFER, _curlError );
   if ( ret != 0 ) {

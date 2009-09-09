@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep  9 15:29:30 CEST 2009 - ma@suse.de
+
+- Add Capability::guessPackageSpec; parser also supporting "name-ver-rel.arch"
+  formats for building Capabilities(originally "name.arch=ver-rel").
+- version 5.30.11 (23)
+
+-------------------------------------------------------------------
 Thu Aug 27 13:16:00 CEST 2009 - ma@suse.de
 
 - Log redirections when cURL media backend is used (fate #305320, bnc #522260)

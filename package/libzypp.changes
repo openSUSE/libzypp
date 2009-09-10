@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 10 11:51:28 CEST 2009 - ma@suse.de
+
+- ProxyInfoSysconfig: take care variables get initialized.
+
+-------------------------------------------------------------------
 Wed Sep  9 15:29:30 CEST 2009 - ma@suse.de
 
 - Add Capability::guessPackageSpec; parser also supporting "name-ver-rel.arch"

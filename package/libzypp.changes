@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Sep 22 20:52:23 CEST 2009 - ma@suse.de
+
+- Add Selectable::updateCandidateObj returning the candidate for 
+  update, if there is one. The updateCandidate must not violate 
+  any active solver policy.
+- version 5.30.12 (23)
+
+-------------------------------------------------------------------
 Thu Sep 10 11:51:28 CEST 2009 - ma@suse.de
 
 - ProxyInfoSysconfig: take care variables get initialized.

@@ -252,7 +252,7 @@ namespace zypp
             {
               if ( (*iit)->arch() == (*it)->arch() )
               {
-                if ( VendorAttr::instance().equivalent( (*iit), (*it) ) )
+                if ( VendorAttr::instance().equivalent( (*iit)->vendor(), (*it)->vendor() ) )
                   return *it;
                 else if ( ! sameArch ) // remember best same arch in case no same vendor found
                   sameArch = *it;

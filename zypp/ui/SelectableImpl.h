@@ -246,14 +246,20 @@ namespace zypp
           for ( installed_const_iterator iit = installedBegin();
                 iit != installedEnd(); ++iit )
           {
+            PoolItem sameArch; // in case there's no same vendor at least stay with same arch
             for ( available_const_iterator it = availableBegin();
                   it != availableEnd(); ++it )
             {
               if ( (*iit)->arch() == (*it)->arch() )
               {
-                return (*it);
+                if ( VendorAttr::instance().equivalent( (*iit), (*it) ) )
+                  return *it;
+                else if ( ! sameArch ) // remember best same arch in case no same vendor found
+                  sameArch = *it;
               }
             }
+            if ( sameArch )
+              return sameArch;
           }
         }
         if ( _availableItems.empty() )

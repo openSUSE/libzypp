@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 29 18:28:25 CEST 2009 - ma@suse.de
+
+- Avoid SEGV if trying to access data of installed packages, that were
+  deleted behind our back (bnc #530595)
+- version 5.30.13 (23)
+
+-------------------------------------------------------------------
 Tue Sep 22 20:52:23 CEST 2009 - ma@suse.de
 
 - Add Selectable::updateCandidateObj returning the candidate for 

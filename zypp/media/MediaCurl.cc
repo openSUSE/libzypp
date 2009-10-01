@@ -527,52 +527,10 @@ void MediaCurl::attachTo (bool next)
       _proxy += ":" + proxyport;
     }
   } else {
-
     ProxyInfo proxy_info (ProxyInfo::ImplPtr(new ProxyInfoSysconfig("proxy")));
-
-    if ( proxy_info.enabled())
-    {
-      bool useproxy = true;
-
-      std::list<std::string> nope = proxy_info.noProxy();
-      for (ProxyInfo::NoProxyIterator it = proxy_info.noProxyBegin();
-           it != proxy_info.noProxyEnd();
-           it++)
-      {
-        std::string host( str::toLower(_url.getHost()));
-        std::string temp( str::toLower(*it));
-
-        // no proxy if it points to a suffix
-        // preceeded by a '.', that maches
-        // the trailing portion of the host.
-        if( temp.size() > 1 && temp.at(0) == '.')
-        {
-          if(host.size() > temp.size() &&
-             host.compare(host.size() - temp.size(), temp.size(), temp) == 0)
-          {
-            DBG << "NO_PROXY: '" << *it  << "' matches host '"
-                                 << host << "'" << endl;
-            useproxy = false;
-            break;
-          }
-        }
-        else
-        // no proxy if we have an exact match
-        if( host == temp)
-        {
-          DBG << "NO_PROXY: '" << *it  << "' matches host '"
-                               << host << "'" << endl;
-          useproxy = false;
-          break;
-        }
-      }
-
-      if ( useproxy ) {
-        _proxy = proxy_info.proxy(_url.getScheme());
-      }
-    }
+    if ( proxy_info.useProxyFor( url ) )
+      _proxy = proxy_info.proxy( _url.getScheme() );
   }
-
 
   DBG << "Proxy: " << (_proxy.empty() ? "-none-" : _proxy) << endl;
 

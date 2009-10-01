@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct  1 14:43:11 CEST 2009 - ma@suse.de
+
+- Fix evaluation of no_proxy entries (bnc #543337)
+- version 5.30.14 (23)
+
+-------------------------------------------------------------------
 Tue Sep 29 18:28:25 CEST 2009 - ma@suse.de
 
 - Avoid SEGV if trying to access data of installed packages, that were

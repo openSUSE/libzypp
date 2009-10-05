@@ -613,7 +613,7 @@ void MediaCurl::attachTo (bool next)
     }
   } else {
     ProxyInfo proxy_info (ProxyInfo::ImplPtr(new ProxyInfoSysconfig("proxy")));
-    if ( proxy_info.useProxyFor( url ) )
+    if ( proxy_info.useProxyFor( _url ) )
       _proxy = proxy_info.proxy( _url.getScheme() );
   }
 

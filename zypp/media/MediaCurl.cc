@@ -426,31 +426,30 @@ void MediaCurl::attachTo (bool next)
     ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
   }
 
-  if ( _url.getScheme() == "http" ) {
-    // follow any Location: header that the server sends as part of
-    // an HTTP header (#113275)
-    ret = curl_easy_setopt ( _curl, CURLOPT_FOLLOWLOCATION, true );
-    if ( ret != 0) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
-    ret = curl_easy_setopt ( _curl, CURLOPT_MAXREDIRS, 3L );
-    if ( ret != 0) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
+  // follow any Location: header that the server sends as part of
+  // an HTTP header (#113275)
+  ret = curl_easy_setopt ( _curl, CURLOPT_FOLLOWLOCATION, true );
+  if ( ret != 0) {
+    disconnectFrom();
+    ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
+  }
 
-    ret = curl_easy_setopt ( _curl, CURLOPT_USERAGENT, agentString() );
-
-
-    if ( ret != 0) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
+  // 3 redirects seem to be too few in some cases (bnc #465532)
+  ret = curl_easy_setopt ( _curl, CURLOPT_MAXREDIRS, 6L );
+  if ( ret != 0) {
+    disconnectFrom();
+    ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
   }
 
   if ( _url.getScheme() == "https" )
   {
+    // restrict following of redirections from https to https only
+    ret = curl_easy_setopt ( _curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+    if ( ret != 0) {
+      disconnectFrom();
+      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
+    }
+
     bool verify_peer = false;
     bool verify_host = false;
 
@@ -522,13 +521,12 @@ void MediaCurl::attachTo (bool next)
       disconnectFrom();
       ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
     }
+  }
 
-    ret = curl_easy_setopt ( _curl, CURLOPT_USERAGENT, agentString() );
-    if ( ret != 0) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
-
+  ret = curl_easy_setopt ( _curl, CURLOPT_USERAGENT, agentString() );
+  if ( ret != 0) {
+    disconnectFrom();
+    ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
   }
 
 

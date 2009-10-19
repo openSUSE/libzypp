@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 19 14:36:37 CEST 2009 - ma@suse.de
+
+- Repository::setInfo: Propagate priority changes to the solver to
+  avoid reloading the whole repo (bnc #498266).
+- version 5.30.15 (23)
+
+-------------------------------------------------------------------
 Thu Oct  1 14:43:11 CEST 2009 - ma@suse.de
 
 - Fix evaluation of no_proxy entries (bnc #543337)

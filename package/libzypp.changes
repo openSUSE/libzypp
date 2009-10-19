@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct  9 15:38:13 CEST 2009 - jkupec@suse.cz
+
+- following redirections also for https (bnc #545722).
+- raised the limit of redirections from 3 to 6 (bnc #465532)
+- version 5.30.15 (23)
+
+-------------------------------------------------------------------
 Thu Oct  1 14:43:11 CEST 2009 - ma@suse.de
 
 - Fix evaluation of no_proxy entries (bnc #543337)

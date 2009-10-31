@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sat Oct 31 11:56:21 CET 2009 - ma@suse.de
+
+- Fixed password handling in URLs (bnc #347273, bnc #551646)
+- 3.27.4
+
+-------------------------------------------------------------------
 Wed Oct 15 14:33:01 CEST 2008 - ma@suse.de
 
 - Fix package-manager script to properly quote arguments. 

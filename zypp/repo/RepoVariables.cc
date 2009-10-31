@@ -21,7 +21,7 @@ namespace zypp
 {
 namespace repo
 {
-  
+
 RepoVariablesStringReplacer::RepoVariablesStringReplacer()
 {}
 
@@ -31,19 +31,19 @@ RepoVariablesStringReplacer::~RepoVariablesStringReplacer()
 std::string RepoVariablesStringReplacer::operator()( const std::string &value ) const
 {
   string newvalue(value);
-  
+
   // $arch
   newvalue = str::gsub( newvalue,
                         "$arch",
                         ZConfig::instance().systemArchitecture().asString() );
   // $basearch
-  
+
   Arch::CompatSet cset( Arch::compatSet( ZConfig::instance().systemArchitecture() ) );
   Arch::CompatSet::const_iterator it = cset.end();
   --it;
   // now at noarch
   --it;
-  
+
   Arch basearch = *it;
   if ( basearch == Arch_noarch )
   {
@@ -67,18 +67,11 @@ RepoVariablesUrlReplacer::~RepoVariablesUrlReplacer()
 
 Url RepoVariablesUrlReplacer::operator()( const Url &value ) const
 {
+  Url newurl( value );
   RepoVariablesStringReplacer replacer;
-  string transformed = replacer(value.asString());
-  Url newurl;
-  try {
-    newurl = Url(transformed);
-  }
-  catch ( const Exception &e )
-  {
-    ZYPP_CAUGHT(e);
-    // just return what we got
-    return value;
-  }
+  newurl.setPathData(replacer(value.getPathData()));
+  newurl.setQueryString(replacer(value.getQueryString()));
+
   return newurl;
 }
 

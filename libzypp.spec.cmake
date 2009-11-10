@@ -26,7 +26,7 @@ Obsoletes:      yast2-packagemanager
 Recommends:     logrotate
 BuildRequires:  cmake
 BuildRequires:  libsatsolver-devel >= 0.13.0 openssl-devel
-BuildRequires:  boost-devel curl-devel dejagnu doxygen gcc-c++ gettext-devel graphviz hal-devel libxml2-devel
+BuildRequires:  boost-devel dejagnu doxygen gcc-c++ gettext-devel graphviz hal-devel libxml2-devel
 
 %if 0%{?suse_version}
 BuildRequires:  libexpat-devel
@@ -50,14 +50,18 @@ BuildRequires:  librpm-devel
 Requires: e2fsprogs
 %endif
 
-
-
 %if 0%{?suse_version}
 Requires:       gpg2
 %else
 Requires:       gnupg
 %endif
+
 %requires_eq    satsolver-tools
+
+# need CURLOPT_REDIR_PROTOCOLS:
+%min_curl_version 7.19.4
+Requires:	libcurl4   >= %{min_curl_version}
+BuildRequires:	curl-devel >= %{min_curl_version}
 
 %description
 Package, Patch, Pattern, and Product Management
@@ -75,9 +79,10 @@ Authors:
 
 %package devel
 Requires:       libzypp == %{version}
-Requires:       libxml2-devel curl-devel openssl-devel rpm-devel glibc-devel zlib-devel
+Requires:       libxml2-devel openssl-devel rpm-devel glibc-devel zlib-devel
 Requires:       bzip2 popt-devel dbus-1-devel glib2-devel hal-devel boost-devel libstdc++-devel
 Requires:       cmake libsatsolver-devel >= 0.13.0
+Requires:	curl-devel >= %{min_curl_version}
 Summary:        Package, Patch, Pattern, and Product Management - developers files
 Group:          System/Packages
 Provides:       yast2-packagemanager-devel

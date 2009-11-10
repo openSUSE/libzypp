@@ -5,7 +5,7 @@ Tue Nov 10 14:06:50 CET 2009 - ma@suse.de
 - version 5.30.17 (23)
 
 -------------------------------------------------------------------
-Fri Oct  9 15:38:13 CEST 2009 - jkupec@suse.cz
+Fri Oct 23 02:39:00 CEST 2009 - jkupec@suse.cz
 
 - following redirections also for https (bnc #545722).
 - raised the limit of redirections from 3 to 6 (bnc #465532)
@@ -34,8 +34,8 @@ Tue Sep 29 18:28:25 CEST 2009 - ma@suse.de
 -------------------------------------------------------------------
 Tue Sep 22 20:52:23 CEST 2009 - ma@suse.de
 
-- Add Selectable::updateCandidateObj returning the candidate for 
-  update, if there is one. The updateCandidate must not violate 
+- Add Selectable::updateCandidateObj returning the candidate for
+  update, if there is one. The updateCandidate must not violate
   any active solver policy.
 - version 5.30.12 (23)
 
@@ -73,7 +73,7 @@ Wed Jul 29 13:49:57 CEST 2009 - ma@suse.de
 -------------------------------------------------------------------
 Fri Jul  3 13:10:56 CEST 2009 - ma@suse.de
 
-- When unmounting ISO images, don't mix up exceptions thrown by the 
+- When unmounting ISO images, don't mix up exceptions thrown by the
   loop mounted ISO and those thrown by the media containing it.
   (bnc #517856)
 - Fix parsing of rpm.install.excludedocs option (bnc #518883)
@@ -132,7 +132,7 @@ Tue Apr 28 15:41:31 CEST 2009 - ma@suse.de
 -------------------------------------------------------------------
 Mon Apr 27 15:38:36 CEST 2009 - ma@suse.de
 
-- In update repos providing multiple release package versions for 
+- In update repos providing multiple release package versions for
   the same product, link a product to the latest version. (bnc #497696)
 - version 5.29.7 (23)
 

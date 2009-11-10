@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 10 14:06:50 CET 2009 - ma@suse.de
+
+- Following https redirections requires at least libcurl4-7.19.4. (bnc #553895)
+- version 5.30.17 (23)
+
+-------------------------------------------------------------------
 Fri Oct  9 15:38:13 CEST 2009 - jkupec@suse.cz
 
 - following redirections also for https (bnc #545722).

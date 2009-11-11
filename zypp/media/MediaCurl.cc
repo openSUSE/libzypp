@@ -446,8 +446,20 @@ void MediaCurl::attachTo (bool next)
     // restrict following of redirections from https to https only
     ret = curl_easy_setopt ( _curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
     if ( ret != 0) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
+      // bnc #553895
+      // Actually libzypp had to reqire the specific libcurl4 version that
+      // introduced CURLOPT_REDIR_PROTOCOLS (officially 7.19.4; in code11
+      // introduced by a security backport in 7.19.0-11.22(SLE), -11.3(openSUSE))
+      //
+      // Autobuild faces the problem that the release numbers for SLE11 and
+      // openSUSE-11.1 are not in sync (-11.22 vs. -11.3), but on the other
+      // hand they don't allow us to test whether a package is built for
+      // SLES-11 or openSUSE-11.
+      //
+      // If we can't require the correct version, we must ignore the return value.
+      SEC << "Set CURLOPT_REDIR_PROTOCOLS failed: You should update to the latest libcurl4 version." << endl;
+      //disconnectFrom();
+      //ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
     }
 
     bool verify_peer = false;

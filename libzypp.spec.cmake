@@ -58,8 +58,8 @@ Requires:       gnupg
 
 %requires_eq    satsolver-tools
 
-# need CURLOPT_REDIR_PROTOCOLS:
-%min_curl_version 7.19.4
+# need CURLOPT_REDIR_PROTOCOLS: oficially 7.19.4, code 11 backport 7.19.0-11.3 (-11.22 SLES)
+%define min_curl_version 7.19.0-11.3
 Requires:	libcurl4   >= %{min_curl_version}
 BuildRequires:	curl-devel >= %{min_curl_version}
 

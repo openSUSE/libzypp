@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
-Tue Nov 10 14:06:50 CET 2009 - ma@suse.de
+Wed Nov 11 10:51:57 CET 2009 - ma@suse.de
 
-- Following https redirections requires at least libcurl4-7.19.4. (bnc #553895)
+- Following https redirections requires the libcurl4 update providing
+  CURLOPT_REDIR_PROTOCOLS to be installed. (bnc #553895)
 - version 5.30.17 (23)
 
 -------------------------------------------------------------------

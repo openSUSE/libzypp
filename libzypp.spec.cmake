@@ -61,7 +61,7 @@ Requires:       gnupg
 # need CURLOPT_REDIR_PROTOCOLS: oficially 7.19.4, code 11 backport 7.19.0-11.3 (-11.22 SLES)
 %define min_curl_version 7.19.0-11.3
 Requires:	libcurl4   >= %{min_curl_version}
-BuildRequires:	curl-devel >= %{min_curl_version}
+BuildRequires:	libcurl-devel >= %{min_curl_version}
 
 %description
 Package, Patch, Pattern, and Product Management
@@ -82,7 +82,7 @@ Requires:       libzypp == %{version}
 Requires:       libxml2-devel openssl-devel rpm-devel glibc-devel zlib-devel
 Requires:       bzip2 popt-devel dbus-1-devel glib2-devel hal-devel boost-devel libstdc++-devel
 Requires:       cmake libsatsolver-devel >= 0.13.0
-Requires:	curl-devel >= %{min_curl_version}
+Requires:	libcurl-devel >= %{min_curl_version}
 Summary:        Package, Patch, Pattern, and Product Management - developers files
 Group:          System/Packages
 Provides:       yast2-packagemanager-devel

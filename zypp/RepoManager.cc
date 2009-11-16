@@ -1336,6 +1336,15 @@ namespace zypp
 
     tosave.dumpAsIniOn(file);
     tosave.setFilepath(repofile);
+    tosave.setMetadataPath( metadataPath( tosave ) );
+    tosave.setPackagesPath( packagesPath( tosave ) );
+    {
+      // We chould fix the API as we must injet those paths
+      // into the repoinfo in order to keep it usable.
+      RepoInfo & oinfo( const_cast<RepoInfo &>(info) );
+      oinfo.setMetadataPath( metadataPath( tosave ) );
+      oinfo.setPackagesPath( packagesPath( tosave ) );
+    }
     _pimpl->repos.insert(tosave);
 
     progress.set(90);

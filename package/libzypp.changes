@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 17 11:16:00 CET 2009 - ma@suse.de
+
+- Fix unneeded refresh of plaindir repositories in presence of productdir. (bnc #553712)
+- version 5.30.19 (23)
+
+-------------------------------------------------------------------
 Mon Nov 16 16:56:36 CET 2009 - ma@suse.de
 
 - Fix repository probing and building in presence of productdir. (bnc #553712)

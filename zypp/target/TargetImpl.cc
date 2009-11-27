@@ -83,7 +83,7 @@ namespace zypp
                                                                  const Pathname & script_r,
                                                                  callback::SendReport<PatchScriptReport> & report_r )
       {
-        MIL << "Execute script " << PathInfo(script_r) << endl;
+        MIL << "Execute script " << PathInfo(Pathname::assertprefix( root_r,script_r)) << endl;
 
         HistoryLog historylog;
         historylog.comment(script_r.asString() + _(" executed"), /*timestamp*/true);
@@ -180,21 +180,28 @@ namespace zypp
         bool abort = false;
         for_( it, checkPackages_r.begin(), checkPackages_r.end() )
         {
-          std::string prefix( str::form( "%s-%s-", it->name().c_str(), it->edition().c_str() ) );
+          std::string prefix( str::form( "%s-%s", it->name().c_str(), it->edition().c_str() ) );
           for_( sit, scripts.begin(), scripts.end() )
           {
             if ( ! str::hasPrefix( *sit, prefix ) )
               continue;
 
+            if ( (*sit)[prefix.size()] != '\0' && (*sit)[prefix.size()] != '-' )
+              continue; // if not exact match it had to continue with '-'
+
             PathInfo script( scriptsDir / *sit );
             if ( ! script.isFile() )
               continue;
 
+            // Assert it's set executable
+            filesystem::addmod( script.path(), 0500 );
+
+            Pathname localPath( scriptsPath_r/(*sit) ); // without root prefix
             if ( abort || aborting_r )
             {
               WAR << "Aborting: Skip patch script " << *sit << endl;
               HistoryLog().comment(
-                  script.path().asString() + _(" execution skipped while aborting"),
+                  localPath.asString() + _(" execution skipped while aborting"),
                   /*timestamp*/true);
             }
             else
@@ -203,7 +210,7 @@ namespace zypp
               callback::SendReport<PatchScriptReport> report;
               report->start( make<Package>( *it ), script.path() );
 
-              if ( ! executeScript( root_r, script.path(), report ) )
+              if ( ! executeScript( root_r, localPath, report ) ) // script path without root prefix!
                 abort = true; // requested abort.
             }
           }

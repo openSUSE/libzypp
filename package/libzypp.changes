@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 27 11:17:15 CET 2009 - ma@suse.de
+
+- Fix chroot execution of update scripts. (bnc #558813)
+- version 5.30.20 (23)
+
+-------------------------------------------------------------------
 Tue Nov 17 11:16:00 CET 2009 - ma@suse.de
 
 - Fix unneeded refresh of plaindir repositories in presence of productdir. (bnc #553712)

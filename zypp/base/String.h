@@ -16,6 +16,8 @@
 #include <string>
 #include <boost/regex.hpp>
 
+#include "zypp/base/Easy.h"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -423,6 +425,18 @@ namespace zypp
     /** Strip a \a prefix_r from \a str_r and return the resulting string. */
     inline std::string stripPrefix( const std::string & str_r, const std::string & prefix_r )
     { return( hasPrefix( str_r, prefix_r ) ? str_r.substr( prefix_r.size() ) : str_r ); }
+
+    /** Return whether \a str_r has suffix \a suffix_r. */
+    inline bool hasSuffix( const std::string & str_r, const std::string & suffix_r )
+    { return( str_r.size() >= suffix_r.size() && ::strncmp( str_r.c_str() + str_r.size() - suffix_r.size() , suffix_r.c_str(), suffix_r.size() ) == 0 ); }
+
+    /** Strip a \a suffix_r from \a str_r and return the resulting string. */
+    inline std::string stripSuffix( const std::string & str_r, const std::string & suffix_r )
+    {
+      if ( hasSuffix( str_r, suffix_r ) )
+        return std::string( str_r.c_str(), str_r.size() - suffix_r.size() );
+      return str_r;
+    }
     //@}
 
     /////////////////////////////////////////////////////////////////

@@ -12,6 +12,7 @@ baseincludedir = $(pkgincludedir)/base
 
 baseinclude_HEADERS =	\
 	Debug.h		\
+	Easy.h		\
 	Measure.h	\
 	\
 	Deprecated.h	\

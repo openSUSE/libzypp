@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 19 15:03:05 CET 2010 - ma@suse.de
+
+- Evaluate SolvAttr::repositoryToolVersion to prevent loading 
+  outdated solv files. (bnc #570623)
+- version 5.30.22 (23)
+
+-------------------------------------------------------------------
 Mon Nov 30 18:00:39 CET 2009 - ma@suse.de
 
 - Also parse <product> tag from .prod files <upgrade> section.

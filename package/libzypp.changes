@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb  3 16:06:53 CET 2010 - ma@suse.de
+
+- Remember the enabled state of removed service repositories. This 
+  way we are able to restore service repositories correctly after a 
+  subscrition expired and gets renewed. (bnc #572634)
+- version 5.30.23 (23)
+
+-------------------------------------------------------------------
 Tue Jan 19 15:03:05 CET 2010 - ma@suse.de
 
 - Evaluate SolvAttr::repositoryToolVersion to prevent loading 

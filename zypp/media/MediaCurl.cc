@@ -676,12 +676,17 @@ void MediaCurl::attachTo (bool next)
 
   _currentCookieFile = _cookieFile.asString();
 
-  ret = curl_easy_setopt( _curl, CURLOPT_COOKIEFILE,
-                          _currentCookieFile.c_str() );
-  if ( ret != 0 ) {
-    disconnectFrom();
-    ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
+  if ( str::strToBool( _url.getQueryParam( "cookies" ), true ) )
+  {
+    ret = curl_easy_setopt( _curl, CURLOPT_COOKIEFILE,
+                            _currentCookieFile.c_str() );
+    if ( ret != 0 ) {
+      disconnectFrom();
+      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
+    }
   }
+  else
+    MIL << "No cookies requested" << endl;
 
   ret = curl_easy_setopt( _curl, CURLOPT_COOKIEJAR,
                           _currentCookieFile.c_str() );

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb 22 13:30:12 CET 2010 - ma@suse.de
+
+- Turn off cookies when retrieving services repoindex.xml (bnc #573897)
+- Consider pending disable requests when removing service repositories. (bnc #572634)
+- version 5.30.24 (23)
+
+-------------------------------------------------------------------
 Wed Feb  3 16:06:53 CET 2010 - ma@suse.de
 
 - Remember the enabled state of removed service repositories. This 

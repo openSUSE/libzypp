@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 23 18:48:37 CET 2010 - jkupec@suse.cz
+
+- Avoiding use of 'guest' if 'credentials' is used when moutning
+  a CIFS share. This caused 'permission denied' error with certain
+  server configurations (bnc #560496).
+- version 2.100.5
+
+-------------------------------------------------------------------
 Thu Oct  1 14:51:05 CEST 2009 - ma@suse.de
 
 - Fix evaluation of no_proxy entries (bnc #543337)

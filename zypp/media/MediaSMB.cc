@@ -159,8 +159,6 @@ namespace zypp {
       string username = _url.getUsername();
       string password = _url.getPassword();
     
-      options["guest"]; // prevent smbmount from asking for password
-    
       if ( ! options.has( "rw" ) ) {
         options["ro"];
       }
@@ -223,6 +221,11 @@ namespace zypp {
           credentials = tmp;
           options["credentials"] = credentials.path().asString();
         }
+      else
+        // prevent smbmount from asking for password
+        // only add this option if 'credentials' is not used (bnc #560496)
+        options["guest"]; // prevent smbmount from asking for password
+
       //
       //////////////////////////////////////////////////////
     

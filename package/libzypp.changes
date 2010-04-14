@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 14 16:23:42 CEST 2010 - ma@suse.de
+
+- Fix parsing port from IPv6 URL (bnc#593385)
+
+-------------------------------------------------------------------
 Mon Feb 22 13:30:12 CET 2010 - ma@suse.de
 
 - Turn off cookies when retrieving services repoindex.xml (bnc #573897)

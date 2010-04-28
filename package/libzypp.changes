@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 28 14:27:47 CEST 2010 - ma@suse.de
+
+- Selectable: Classify broken but locked patch as isUnwanted (bnc#577118)
+- version 6.32.0 (31)
+
+-------------------------------------------------------------------
 Mon Apr 26 11:44:01 CEST 2010 - ma@suse.de
 
 - Support URLs and ISOs ending on 'Media1', 'Media2', etc., when 

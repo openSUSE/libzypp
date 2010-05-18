@@ -779,7 +779,7 @@ namespace zypp
         {
 	  if ( diff < 0 )
 	  {
-	    WAR << << "Repository '" << info.alias() << "' was refreshed in the future!" << endl;
+	    WAR << "Repository '" << info.alias() << "' was refreshed in the future!" << endl;
 	  }
 	  else
 	  {

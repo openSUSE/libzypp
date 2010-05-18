@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 18 16:15:31 CEST 2010 - ma@suse.de
+
+- RepoManager: Always refresh a repository if last refresh has a 
+  date in the future. (bnc#593617)
+- Arch: add armv7, sparcv9v and sparc64v
+- version 6.33.0 (31)
+
+-------------------------------------------------------------------
 Tue May  4 01:14:17 CEST 2010 - ma@suse.de
 
 - Update translations.

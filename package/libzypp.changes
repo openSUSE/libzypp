@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun  1 14:48:30 CEST 2010 - ma@suse.de
+
+- Relax content file parser to allow multiple spaces between 
+  key and value (bnc#600515)
+- version 2.100.6
+
+-------------------------------------------------------------------
 Tue Feb 23 18:48:37 CET 2010 - jkupec@suse.cz
 
 - Avoiding use of 'guest' if 'credentials' is used when moutning

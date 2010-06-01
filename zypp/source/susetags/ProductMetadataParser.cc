@@ -77,7 +77,7 @@ void ProductMetadataParser::parse( const Pathname & file_r, Source_Ref source_r 
 
   std::string buffer;
   volatile_content = false;
-  boost::regex e("^(([A-Z]+)(\\.([_A-Z0-9a-z]+)){0,1}) (.+)$");
+  boost::regex e("^(([A-Z]+)(\\.([_A-Z0-9a-z]+)){0,1})[ \t]+(.+)$");
   while (file && !file.eof())
   {
     getline(file, buffer);
@@ -309,7 +309,7 @@ void ProductMetadataParser::parse( const Pathname & file_r, Source_Ref source_r 
                       Edition( prodImpl->_dist_version ) ) );
 
     NVRAD dataCollect( prodImpl->_name, Edition( prodImpl->_version ), prodarch, prodImpl->_deps );
-    
+
     result = detail::makeResolvableFromImpl( dataCollect, prodImpl );
   }
   catch (const Exception & excpt_r)

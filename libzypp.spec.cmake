@@ -48,7 +48,7 @@ BuildRequires:  expat-devel
 
 %if 0%{?suse_version}
 BuildRequires:  hicolor-icon-theme update-desktop-files rpm-devel
-Requires: uuid-runtime
+Requires: /usr/bin/uuidgen
 %endif
 
 %if 0%{?fedora_version}

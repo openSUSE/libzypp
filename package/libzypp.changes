@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Aug  1 01:14:12 CEST 2010 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Tue Jul 27 16:12:40 CEST 2010 - ma@suse.de
 
 - Fix bug in PoolQuery::addDependency

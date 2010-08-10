@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 10 13:40:54 CEST 2010 - ma@suse.de
+
+- MediaDISK: Use blkid to verify disk volumes. (bnc#623226)
+- version 7.9.2 (6)
+
+-------------------------------------------------------------------
 Sun Aug  8 01:14:17 CEST 2010 - ma@suse.de
 
 - Update zypp-po.tar.bz2

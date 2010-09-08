@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep  8 12:05:16 CEST 2010 - ma@suse.de
+
+- Fix to maintain binary compatibility. (bnc#637759)
+- version 7.9.3 (6)
+
+-------------------------------------------------------------------
 Sun Aug 22 01:13:59 CEST 2010 - ma@suse.de
 
 - Update zypp-po.tar.bz2

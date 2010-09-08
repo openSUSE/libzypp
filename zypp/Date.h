@@ -104,8 +104,7 @@ namespace zypp
      *
      * \return An empty string on illegal format.
      **/
-    std::string form( const std::string & format_r ) const
-    { return form( format_r, TB_LOCALTIME ); }
+    std::string form( const std::string & format_r ) const;
     /** \overload with explicitly given \ref TimeBase. */
     std::string form( const std::string & format_r, TimeBase base_r ) const;
 

@@ -85,6 +85,9 @@ namespace zypp
   //	METHOD NAME : Date::form
   //	METHOD TYPE : std::string
   //
+  std::string Date::form( const std::string & format_r ) const
+  { return form( format_r, TB_LOCALTIME ); }
+
   std::string Date::form( const std::string & format_r, Date::TimeBase base_r ) const
   {
     static char buf[1024];

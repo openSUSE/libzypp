@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 10 13:06:36 CEST 2010 - ma@suse.de
+
+- Report download failures in commit result (bnc#431854)
+- Fix Solvable::onSystemByUser returning true for uninstalled solvables.
+- Fix download-only not to omit source packages (bnc#635596)
+- version 7.9.4 (6)
+
+-------------------------------------------------------------------
 Wed Sep  8 12:05:16 CEST 2010 - ma@suse.de
 
 - Fix to maintain binary compatibility. (bnc#637759)

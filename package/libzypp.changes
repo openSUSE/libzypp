@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 10 13:19:22 CEST 2010 - ma@suse.de
+
+- Report download failures in commit result (bnc#431854)
+- Fix download-only not to omit source packages (bnc#635596)
+- version 6.33.4 (31)
+
+-------------------------------------------------------------------
 Mon Jul  5 14:13:53 CEST 2010 - ma@suse.de
 
 - Fix requirement to /usr/bin/uuidgen (bnc#613304)

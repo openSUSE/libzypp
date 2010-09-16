@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 16 07:46:56 UTC 2010 - dmacvicar@suse.de
+
+- reapply lost fix: libzypp blocking when waiting for
+  rpm output (bnc#639643)
+- version 2.100.7 
+
+-------------------------------------------------------------------
 Tue Jun  1 14:48:30 CEST 2010 - ma@suse.de
 
 - Relax content file parser to allow multiple spaces between 

@@ -1690,15 +1690,65 @@ namespace zypp
         if ( process == NULL )
           return false;
 
-        line = process->receiveLine();
+        if ( process->inputFile() )
+        {
+          process->setBlocking( false );
+          FILE * inputfile = process->inputFile();
+          int    inputfileFd = ::fileno( inputfile );
+          do
+          {
+            /* Watch inputFile to see when it has input. */
+            fd_set rfds;
+            FD_ZERO( &rfds );
+            FD_SET( inputfileFd, &rfds );
+            
+            /* Wait up to 5 seconds. */
+            struct timeval tv;
+            tv.tv_sec = 5;
+            tv.tv_usec = 0;
 
-        if (line.length() == 0)
-          return false;
+            int retval = select( inputfileFd+1, &rfds, NULL, NULL, &tv );
 
-        if (line[line.length() - 1] == '\n')
-          line.erase(line.length() - 1);
+            if ( retval == -1 )
+            {
+              ERR << "select error: " << strerror(errno) << endl;
+              if ( errno != EINTR )
+                return false;
+            }
+            else if ( retval )
+            {
+              // Data is available now.
+              static size_t linebuffer_size = 0;	// static because getline allocs
+              static char * linebuffer = 0; 		// and reallocs if buffer is too small
+              ssize_t nread = getline( &linebuffer, &linebuffer_size, inputfile );
+              if ( nread == -1 )
+              {
+                if ( ::feof( inputfile ) )
+                  return line.size(); // in case of pending output
+              }
+              else
+              {
+                if ( nread > 0 )
+                {
+                  if ( linebuffer[nread-1] == '\n' )
+                    --nread;
+                  line += string( linebuffer, nread );
+                }
 
-        return true;
+                if ( ! ::ferror( inputfile ) || ::feof( inputfile ) )
+                  return true; // complete line
+              }
+              clearerr( inputfile );
+            }
+            else
+            {
+              // No data within time.
+                if ( ! process->running() )
+                  return false;
+            }
+          } while ( true );
+        }
+        return false;
       }
 
       /*--------------------------------------------------------------*/

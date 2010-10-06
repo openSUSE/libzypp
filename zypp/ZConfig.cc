@@ -229,10 +229,11 @@ namespace zypp
         , commit_downloadMode		( DownloadDefault )
         , solver_onlyRequires		( false )
         , solver_allowVendorChange	( false )
+        , solver_cleandepsOnRemove	( false )
         , solver_upgradeTestcasesToKeep	( 2 )
         , solverUpgradeRemoveDroppedPackages( true )
         , apply_locks_file		( true )
-
+        , pluginsPath			( "/usr/lib/zypp/plugins" )
       {
         MIL << "libzypp: " << VERSION << " built " << __DATE__ << " " <<  __TIME__ << endl;
         // override_r has higest prio
@@ -493,6 +494,8 @@ namespace zypp
     Pathname history_log_path;
     Pathname credentials_global_dir_path;
     Pathname credentials_global_file_path;
+
+    Option<Pathname> pluginsPath;
   };
   ///////////////////////////////////////////////////////////////////
 
@@ -776,6 +779,11 @@ namespace zypp
 
   std::string ZConfig::distroverpkg() const
   { return "redhat-release"; }
+
+  ///////////////////////////////////////////////////////////////////
+
+  Pathname ZConfig::pluginsPath() const
+  { return _pimpl->pluginsPath.get(); }
 
   ///////////////////////////////////////////////////////////////////
 

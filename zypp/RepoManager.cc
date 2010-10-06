@@ -38,10 +38,11 @@
 
 #include "zypp/parser/RepoFileReader.h"
 #include "zypp/parser/ServiceFileReader.h"
-#include "zypp/parser/RepoindexFileReader.h"
+#include "zypp/repo/ServiceRepos.h"
 #include "zypp/repo/yum/Downloader.h"
 #include "zypp/repo/susetags/Downloader.h"
 #include "zypp/parser/plaindir/RepoParser.h"
+#include "zypp/repo/PluginServices.h"
 
 #include "zypp/Target.h" // for Target::targetDistribution() for repo index services
 #include "zypp/ZYppFactory.h" // to get the Target from ZYpp instance
@@ -144,6 +145,7 @@ namespace zypp
     repoPackagesCachePath = Pathname::assertprefix( root_r, ZConfig::instance().repoPackagesPath() );
     knownReposPath        = Pathname::assertprefix( root_r, ZConfig::instance().knownReposPath() );
     knownServicesPath     = Pathname::assertprefix( root_r, ZConfig::instance().knownServicesPath() );
+    pluginsPath           = Pathname::assertprefix( root_r, ZConfig::instance().pluginsPath() );
     probe                 = ZConfig::instance().repo_add_probe();
 
     rootDir = root_r;
@@ -158,6 +160,7 @@ namespace zypp
     ret.repoPackagesCachePath = root_r/"packages";
     ret.knownReposPath        = root_r/"repos.d";
     ret.knownServicesPath     = root_r/"services.d";
+    ret.pluginsPath     = root_r/"plugins";
     ret.rootDir = root_r;
     return ret;
   }
@@ -539,6 +542,8 @@ namespace zypp
         parser::ServiceFileReader(*it, ServiceCollector(services));
       }
     }
+
+    repo::PluginServices(options.pluginsPath/"services", ServiceCollector(services));    
   }
 
   void RepoManager::Impl::init_knownRepositories()
@@ -1885,17 +1890,6 @@ namespace zypp
       }
     }
 
-    // repoindex.xml must be fetched always without using cookies (bnc #573897)
-    Url serviceUrl( service.url() );
-    serviceUrl.setQueryParam( "cookies", "0" );
-
-    // download the repo index file
-    media::MediaManager mediamanager;
-    media::MediaAccessId mid = mediamanager.open( serviceUrl );
-    mediamanager.attach( mid );
-    mediamanager.provideFile( mid, "repo/repoindex.xml" );
-    Pathname path = mediamanager.localPath(mid, "repo/repoindex.xml" );
-
     // get target distro identifier
     std::string servicesTargetDistro = _pimpl->options.servicesTargetDistro;
     if ( servicesTargetDistro.empty() && getZYpp()->getTarget() )
@@ -1904,11 +1898,8 @@ namespace zypp
 
     // parse it
     RepoCollector collector(servicesTargetDistro);
-    parser::RepoindexFileReader reader( path, bind( &RepoCollector::collect, &collector, _1 ) );
-    mediamanager.release( mid );
-    mediamanager.close( mid );
-
-
+    ServiceRepos repos(service, bind( &RepoCollector::collect, &collector, _1 ));
+    
     // set service alias and base url for all collected repositories
     for_( it, collector.repos.begin(), collector.repos.end() )
     {
@@ -1974,9 +1965,14 @@ namespace zypp
       // Service explicitly requests the repo being enabled?
       // Service explicitly requests the repo being disabled?
       // And hopefully not both ;) If so, enable wins.
-      bool beEnabled = service.repoToEnableFind( it->alias() );
+      bool beEnabled = service.repoToEnableFind( it->alias() );        
       bool beDisabled = service.repoToDisableFind( it->alias() );
 
+      // Make sure the service repo is created with the
+      // appropriate enable
+      if ( beEnabled ) it->setEnabled(true);
+      if ( beDisabled ) it->setEnabled(false);
+      
       if ( beEnabled )
       {
         // Remove from enable request list.
@@ -1989,17 +1985,12 @@ namespace zypp
       RepoInfoList::iterator oldRepo( findAlias( it->alias(), oldRepos ) );
       if ( oldRepo == oldRepos.end() )
       {
-        // Not found in oldRepos ==> a new repo to add
-
-        // Make sure the service repo is created with the
-        // appropriate enable and autorefresh true.
-        it->setEnabled( beEnabled );
-        it->setAutorefresh( true );
-
+        // Not found in oldRepos ==> a new repo to add        
+        
         // At that point check whether a repo with the same alias
         // exists outside this service. Maybe forcefully re-alias
         // the existing repo?
-        DBG << "Service adds repo " << it->alias() << " " << (beEnabled?"enabled":"disabled") << endl;
+        DBG << "Service adds repo " << it->alias() << " " << (it->enabled()?"enabled":"disabled") << endl;
         addRepository( *it );
 
         // save repo credentials
@@ -2068,7 +2059,7 @@ namespace zypp
 
     ////////////////////////////////////////////////////////////////////////////
     // save service if modified:
-    if ( serviceModified )
+    if ( serviceModified && service.type() != ServiceType::PLUGIN )
     {
       // write out modified service file.
       modifyService( service.alias(), service );

@@ -34,6 +34,7 @@ public:
         , _verify_host(false)
         , _verify_peer(false)
         , _ca_path("/etc/ssl/certs")
+        , _head_requests_allowed(true)
     {}
 
     virtual ~Impl()
@@ -61,6 +62,7 @@ public:
     string _proxy;
     string _proxy_username;
     string _proxy_password;
+    string _authtype;
     long _timeout;
     long _connect_timeout;
     Url _url;
@@ -74,6 +76,9 @@ public:
     bool _verify_host;
     bool _verify_peer;
     Pathname _ca_path;
+ 
+    // workarounds
+    bool _head_requests_allowed;
 };
     
 TransferSettings::TransferSettings()
@@ -288,6 +293,25 @@ void TransferSettings::setCertificateAuthoritiesPath( const zypp::Pathname &path
     _impl->_ca_path = path;
 }
 
+void TransferSettings::setAuthType( const std::string &authtype)
+{
+    _impl->_authtype = authtype;
+}
+
+std::string TransferSettings::authType() const
+{
+    return _impl->_authtype;
+}
+
+void TransferSettings::setHeadRequestsAllowed(bool allowed)
+{
+    _impl->_head_requests_allowed = allowed;    
+}    
+
+bool TransferSettings::headRequestsAllowed() const
+{
+    return _impl->_head_requests_allowed;    
+} 
 
 } // ns media
 } // ns zypp

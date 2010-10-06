@@ -31,7 +31,6 @@
 #include "zypp/media/MediaCIFS.h"
 #include "zypp/media/MediaCurl.h"
 #include "zypp/media/MediaAria2c.h"
-#include "zypp/media/MediaMultiCurl.h"
 #include "zypp/media/MediaISO.h"
 #include "zypp/media/MediaPlugin.h"
 #include "zypp/media/UrlResolverPlugin.h"
@@ -174,9 +173,7 @@ MediaAccess::open (const Url& o_url, const Pathname & preferred_attach_point)
 
         if ( use_aria )
             curl = new MediaAria2c (url,preferred_attach_point);        
-        else if ( use_multicurl )                     
-            curl = new MediaMultiCurl (url,preferred_attach_point); 
-	else
+	      else
             curl = new MediaCurl (url,preferred_attach_point);
         
         UrlResolverPlugin::HeaderList::const_iterator it;

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct  7 09:20:26 CEST 2010 - jkupec@suse.cz
+
+- Don't use aria2c for FTP (bnc #641328)
+- version 7.9.5 (6)
+
+-------------------------------------------------------------------
 Fri Sep 10 13:06:36 CEST 2010 - ma@suse.de
 
 - Report download failures in commit result (bnc#431854)

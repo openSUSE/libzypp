@@ -40,6 +40,10 @@ class MediaCurl : public MediaHandler
         OPTION_RANGE = 0x1,
         /** only issue a HEAD (or equivalent) request */
         OPTION_HEAD = 0x02,
+        /** to not add a IFMODSINCE header if target exists */
+        OPTION_NO_IFMODSINCE = 0x04,
+        /** do not send a start ProgressReport */
+        OPTION_NO_REPORT_START = 0x08,
     };
     ZYPP_DECLARE_FLAGS(RequestOptions,RequestOption);
 

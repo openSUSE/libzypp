@@ -271,7 +271,6 @@ SET( zypp_media_SRCS
   media/MediaCIFS.cc
   media/ProxyInfo.cc
   media/MediaCurl.cc
-  media/MediaMultiCurl.cc
   media/MediaAria2c.cc
   media/MediaISO.cc
   media/MediaPlugin.cc
@@ -283,9 +282,6 @@ SET( zypp_media_SRCS
   media/CurlConfig.cc
   media/TransferSettings.cc
   media/MediaPriority.cc
-  media/MetaLinkParser.cc
-  media/ZsyncParser.cc
-  media/MediaBlockList.cc
   media/UrlResolverPlugin.cc
 )
 
@@ -294,7 +290,6 @@ SET( zypp_media_HEADERS
   media/MediaCD.h
   media/MediaCIFS.h
   media/MediaCurl.h
-  media/MediaMultiCurl.h
   media/MediaAria2c.h
   media/MediaDIR.h
   media/MediaDISK.h
@@ -313,9 +308,6 @@ SET( zypp_media_HEADERS
   media/CurlConfig.h
   media/TransferSettings.h
   media/MediaPriority.h
-  media/MetaLinkParser.h
-  media/ZsyncParser.h
-  media/MediaBlockList.h
   media/UrlResolverPlugin.h
 )
 

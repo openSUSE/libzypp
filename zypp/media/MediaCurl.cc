@@ -285,13 +285,39 @@ void fillSettingsFromUrl( const Url &url, TransferSettings &s )
     string proxy = url.getQueryParam( "proxy" );
     if ( ! proxy.empty() )
     {
-        string proxyport( url.getQueryParam( "proxyport" ) );
-        if ( ! proxyport.empty() ) {
-            proxy += ":" + proxyport;
+        if ( proxy == "_none_" ) {
+            s.setProxyEnabled(false);
         }
-        s.setProxy(proxy);
-        s.setProxyEnabled(true);
+        else {
+            string proxyport( url.getQueryParam( "proxyport" ) );
+            if ( ! proxyport.empty() ) {
+                proxy += ":" + proxyport;
+            }
+            s.setProxy(proxy);
+            s.setProxyEnabled(true);
+        }        
     }
+
+    // HTTP authentication type
+    string use_auth = url.getQueryParam("auth");
+    if (!use_auth.empty() && (url.getScheme() == "http" || url.getScheme() == "https"))
+    {
+        try
+        {
+	    CurlAuthData::auth_type_str2long(use_auth);	// check if we know it
+        }
+        catch (MediaException & ex_r)
+	{
+	    DBG << "Rethrowing as MediaUnauthorizedException.";
+	    ZYPP_THROW(MediaUnauthorizedException(url, ex_r.msg(), "", ""));
+	}
+        s.setAuthType(use_auth);
+    }
+
+    // workarounds
+    std::string head_requests( url.getQueryParam("head_requests"));
+    if( !head_requests.empty() && head_requests == "no")
+        s.setHeadRequestsAllowed(false);
 }
 
 /**
@@ -367,13 +393,17 @@ static const char *const agentString()
 
 // we use this define to unbloat code as this C setting option
 // and catching exception is done frequently.
+/** \todo deprecate SET_OPTION and use the typed versions below. */
 #define SET_OPTION(opt,val) do { \
     ret = curl_easy_setopt ( _curl, opt, val ); \
     if ( ret != 0) { \
-      disconnectFrom(); \
       ZYPP_THROW(MediaCurlSetOptException(_url, _curlError)); \
     } \
   } while ( false )
+
+#define SET_OPTION_OFFT(opt,val) SET_OPTION(opt,(curl_off_t)val)
+#define SET_OPTION_LONG(opt,val) SET_OPTION(opt,(long)val)
+#define SET_OPTION_VOID(opt,val) SET_OPTION(opt,(void*)val)
 
 MediaCurl::MediaCurl( const Url &      url_r,
                       const Pathname & attach_point_hint_r )
@@ -512,7 +542,7 @@ void MediaCurl::setupEasy()
 
   // follow any Location: header that the server sends as part of
   // an HTTP header (#113275)
-  SET_OPTION(CURLOPT_FOLLOWLOCATION, true);
+  SET_OPTION(CURLOPT_FOLLOWLOCATION, 1L);
   // 3 redirects seem to be too few in some cases (bnc #465532)
   SET_OPTION(CURLOPT_MAXREDIRS, 6L);
 
@@ -542,40 +572,16 @@ void MediaCurl::setupEasy()
 
   if ( _settings.userPassword().size() )
   {
-    SET_OPTION(CURLOPT_USERPWD, unEscape(_settings.userPassword()).c_str());
-
-    //FIXME, we leave this here for now, as it does not make sense yet
-    // to refactor it to the fill settings from url function
-
-    // HTTP authentication type
-    if(_url.getScheme() == "http" || _url.getScheme() == "https")
+    SET_OPTION(CURLOPT_USERPWD, _settings.userPassword().c_str());
+    string use_auth = _settings.authType();
+    if (use_auth.empty())
+      use_auth = "digest,basic";	// our default
+    long auth = CurlAuthData::auth_type_str2long(use_auth);
+    if( auth != CURLAUTH_NONE)
     {
-      string use_auth = _url.getQueryParam("auth");
-      if( use_auth.empty())
-        use_auth = "digest,basic";
-
-      try
-      {
-        long auth = CurlAuthData::auth_type_str2long(use_auth);
-        if( auth != CURLAUTH_NONE)
-        {
-          DBG << "Enabling HTTP authentication methods: " << use_auth
-              << " (CURLOPT_HTTPAUTH=" << auth << ")" << std::endl;
-
-          SET_OPTION(CURLOPT_HTTPAUTH, auth);
-        }
-      }
-      catch (MediaException & ex_r)
-      {
-        string auth_hint = getAuthHint();
-
-        DBG << "Rethrowing as MediaUnauthorizedException. auth hint: '"
-            << auth_hint << "'" << endl;
-
-        ZYPP_THROW(MediaUnauthorizedException(
-          _url, ex_r.msg(), _curlError, auth_hint
-        ));
-      }
+      DBG << "Enabling HTTP authentication methods: " << use_auth
+	  << " (CURLOPT_HTTPAUTH=" << auth << ")" << std::endl;
+      SET_OPTION(CURLOPT_HTTPAUTH, auth);
     }
   }
 
@@ -595,6 +601,8 @@ void MediaCurl::setupEasy()
 
       if ( proxyuserpwd.empty() )
       {
+        CurlConfig curlconf;
+        CurlConfig::parseConfig(curlconf); // parse ~/.curlrc
         if (curlconf.proxyuserpwd.empty())
           DBG << "~/.curlrc does not contain the proxy-user option" << endl;
         else
@@ -727,10 +735,10 @@ void MediaCurl::releaseFrom( const std::string & ejectDev )
   disconnect();
 }
 
-static Url getFileUrl(const Url & url, const Pathname & filename)
+Url MediaCurl::getFileUrl(const Pathname & filename) const
 {
-  Url newurl(url);
-  string path = url.getPathName();
+  Url newurl(_url);
+  string path = _url.getPathName();
   if ( !path.empty() && path != "/" && *path.rbegin() == '/' &&
        filename.absolute() )
   {
@@ -770,7 +778,7 @@ void MediaCurl::getFileCopy( const Pathname & filename , const Pathname & target
 {
   callback::SendReport<DownloadProgressReport> report;
 
-  Url fileurl(getFileUrl(_url, filename));
+  Url fileurl(getFileUrl(filename));
 
   bool retry = false;
 
@@ -842,10 +850,13 @@ void MediaCurl::evaluateCurlCode( const Pathname &filename,
                                   CURLcode code,
                                   bool timeout_reached ) const
 {
-  Url url(getFileUrl(_url, filename));
-
   if ( code != 0 )
   {
+    Url url;
+    if (filename.empty())
+      url = _url;
+    else
+      url = getFileUrl(filename);
     std::string err;
     try
     {
@@ -964,14 +975,14 @@ void MediaCurl::evaluateCurlCode( const Pathname &filename,
 bool MediaCurl::doGetDoesFileExist( const Pathname & filename ) const
 {
   DBG << filename.asString() << endl;
-
+  
   if(!_url.isValid())
     ZYPP_THROW(MediaBadUrlException(_url));
 
   if(_url.getHost().empty())
     ZYPP_THROW(MediaBadUrlEmptyHostException(_url));
 
-  Url url(getFileUrl(_url, filename));
+  Url url(getFileUrl(filename));
 
   DBG << "URL: " << url.asString() << endl;
     // Use URL without options and without username and passwd
@@ -1116,7 +1127,164 @@ bool MediaCurl::doGetDoesFileExist( const Pathname & filename ) const
 
 ///////////////////////////////////////////////////////////////////
 
+
+#if DETECT_DIR_INDEX
+bool MediaCurl::detectDirIndex() const
+{
+  if(_url.getScheme() != "http" && _url.getScheme() != "https")
+    return false;
+  //
+  // try to check the effective url and set the not_a_file flag
+  // if the url path ends with a "/", what usually means, that
+  // we've received a directory index (index.html content).
+  //
+  // Note: This may be dangerous and break file retrieving in
+  //       case of some server redirections ... ?
+  //
+  bool      not_a_file = false;
+  char     *ptr = NULL;
+  CURLcode  ret = curl_easy_getinfo( _curl,
+				     CURLINFO_EFFECTIVE_URL,
+				     &ptr);
+  if ( ret == CURLE_OK && ptr != NULL)
+  {
+    try
+    {
+      Url         eurl( ptr);
+      std::string path( eurl.getPathName());
+      if( !path.empty() && path != "/" && *path.rbegin() == '/')
+      {
+	DBG << "Effective url ("
+	    << eurl
+	    << ") seems to provide the index of a directory"
+	    << endl;
+	not_a_file = true;
+      }
+    }
+    catch( ... )
+    {}
+  }
+  return not_a_file;
+}
+#endif
+
+///////////////////////////////////////////////////////////////////
+
 void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & target, callback::SendReport<DownloadProgressReport> & report, RequestOptions options ) const
+{
+    Pathname dest = target.absolutename();
+    if( assert_dir( dest.dirname() ) )
+    {
+      DBG << "assert_dir " << dest.dirname() << " failed" << endl;
+      Url url(getFileUrl(filename));
+      ZYPP_THROW( MediaSystemException(url, "System error on " + dest.dirname().asString()) );
+    }
+    string destNew = target.asString() + ".new.zypp.XXXXXX";
+    char *buf = ::strdup( destNew.c_str());
+    if( !buf)
+    {
+      ERR << "out of memory for temp file name" << endl;
+      Url url(getFileUrl(filename));
+      ZYPP_THROW(MediaSystemException(url, "out of memory for temp file name"));
+    }
+
+    int tmp_fd = ::mkstemp( buf );
+    if( tmp_fd == -1)
+    {
+      free( buf);
+      ERR << "mkstemp failed for file '" << destNew << "'" << endl;
+      ZYPP_THROW(MediaWriteException(destNew));
+    }
+    destNew = buf;
+    free( buf);
+
+    FILE *file = ::fdopen( tmp_fd, "w" );
+    if ( !file ) {
+      ::close( tmp_fd);
+      filesystem::unlink( destNew );
+      ERR << "fopen failed for file '" << destNew << "'" << endl;
+      ZYPP_THROW(MediaWriteException(destNew));
+    }
+
+    DBG << "dest: " << dest << endl;
+    DBG << "temp: " << destNew << endl;
+
+    // set IFMODSINCE time condition (no download if not modified)
+    if( PathInfo(target).isExist() && !(options & OPTION_NO_IFMODSINCE) )
+    {
+      curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, (long)PathInfo(target).mtime());
+    }
+    else
+    {
+      curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_NONE);
+      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, 0L);
+    }
+    try
+    {
+      doGetFileCopyFile(filename, dest, file, report, options);
+    }
+    catch (Exception &e)
+    {
+      ::fclose( file );
+      filesystem::unlink( destNew );
+      curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_NONE);
+      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, 0L);
+      ZYPP_RETHROW(e);
+    }
+
+    long httpReturnCode = 0;
+    CURLcode infoRet = curl_easy_getinfo(_curl,
+                                         CURLINFO_RESPONSE_CODE,
+                                         &httpReturnCode);
+    bool modified = true;
+    if (infoRet == CURLE_OK)
+    {
+      DBG << "HTTP response: " + str::numstring(httpReturnCode);
+      if ( httpReturnCode == 304
+           || ( httpReturnCode == 213 && _url.getScheme() == "ftp" ) ) // not modified
+      {
+        DBG << " Not modified.";
+        modified = false;
+      }
+      DBG << endl;
+    }
+    else
+    {
+      WAR << "Could not get the reponse code." << endl;
+    }
+
+    if (modified || infoRet != CURLE_OK)
+    {
+      // apply umask
+      if ( ::fchmod( ::fileno(file), filesystem::applyUmaskTo( 0644 ) ) )
+      {
+        ERR << "Failed to chmod file " << destNew << endl;
+      }
+      if (::fclose( file ))
+      {
+        ERR << "Fclose failed for file '" << destNew << "'" << endl;
+        ZYPP_THROW(MediaWriteException(destNew));
+      }
+      // move the temp file into dest
+      if ( rename( destNew, dest ) != 0 ) {
+        ERR << "Rename failed" << endl;
+        ZYPP_THROW(MediaWriteException(dest));
+      }
+    }
+    else
+    {
+      // close and remove the temp file
+      ::fclose( file );
+      filesystem::unlink( destNew );
+    }
+
+    DBG << "done: " << PathInfo(dest) << endl;
+}
+
+///////////////////////////////////////////////////////////////////
+
+void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & dest, FILE *file, callback::SendReport<DownloadProgressReport> & report, RequestOptions options ) const
 {
     DBG << filename.asString() << endl;
 
@@ -1126,14 +1294,7 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     if(_url.getHost().empty())
       ZYPP_THROW(MediaBadUrlEmptyHostException(_url));
 
-    Url url(getFileUrl(_url, filename));
-
-    Pathname dest = target.absolutename();
-    if( assert_dir( dest.dirname() ) )
-    {
-      DBG << "assert_dir " << dest.dirname() << " failed" << endl;
-      ZYPP_THROW( MediaSystemException(url, "System error on " + dest.dirname().asString()) );
-    }
+    Url url(getFileUrl(filename));
 
     DBG << "URL: " << url.asString() << endl;
     // Use URL without options and without username and passwd
@@ -1164,59 +1325,15 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
       ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
     }
 
-    // set IFMODSINCE time condition (no download if not modified)
-    if( PathInfo(target).isExist() )
-    {
-      curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, PathInfo(target).mtime());
-    }
-    else
-    {
-      curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_NONE);
-      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, 0);
-    }
-
-    string destNew = target.asString() + ".new.zypp.XXXXXX";
-    char *buf = ::strdup( destNew.c_str());
-    if( !buf)
-    {
-      ERR << "out of memory for temp file name" << endl;
-      ZYPP_THROW(MediaSystemException(
-        url, "out of memory for temp file name"
-      ));
-    }
-
-    int tmp_fd = ::mkstemp( buf );
-    if( tmp_fd == -1)
-    {
-      free( buf);
-      ERR << "mkstemp failed for file '" << destNew << "'" << endl;
-      ZYPP_THROW(MediaWriteException(destNew));
-    }
-    destNew = buf;
-    free( buf);
-
-    FILE *file = ::fdopen( tmp_fd, "w" );
-    if ( !file ) {
-      ::close( tmp_fd);
-      filesystem::unlink( destNew );
-      ERR << "fopen failed for file '" << destNew << "'" << endl;
-      ZYPP_THROW(MediaWriteException(destNew));
-    }
-
-    DBG << "dest: " << dest << endl;
-    DBG << "temp: " << destNew << endl;
-
     ret = curl_easy_setopt( _curl, CURLOPT_WRITEDATA, file );
     if ( ret != 0 ) {
-      ::fclose( file );
-      filesystem::unlink( destNew );
       ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
     }
 
     // Set callback and perform.
     ProgressData progressData(_settings.timeout(), url, &report);
-    report->start(url, dest);
+    if (!(options & OPTION_NO_REPORT_START))
+      report->start(url, dest);
     if ( curl_easy_setopt( _curl, CURLOPT_PROGRESSDATA, &progressData ) != 0 ) {
       WAR << "Can't set CURLOPT_PROGRESSDATA: " << _curlError << endl;;
     }
@@ -1230,11 +1347,8 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     if ( ret != 0 )
     {
       ERR << "curl error: " << ret << ": " << _curlError
-          << ", temp file size " << PathInfo(destNew).size()
-          << " byte." << endl;
-
-      ::fclose( file );
-      filesystem::unlink( destNew );
+          << ", temp file size " << ftell(file)
+          << " bytes." << endl;
 
       // the timeout is determined by the progress data object
       // which holds wheter the timeout was reached or not,
@@ -1249,95 +1363,11 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     }
 
 #if DETECT_DIR_INDEX
-    else
-    if(curlUrl.getScheme() == "http" ||
-       curlUrl.getScheme() == "https")
-    {
-      //
-      // try to check the effective url and set the not_a_file flag
-      // if the url path ends with a "/", what usually means, that
-      // we've received a directory index (index.html content).
-      //
-      // Note: This may be dangerous and break file retrieving in
-      //       case of some server redirections ... ?
-      //
-      bool      not_a_file = false;
-      char     *ptr = NULL;
-      CURLcode  ret = curl_easy_getinfo( _curl,
-                                         CURLINFO_EFFECTIVE_URL,
-                                         &ptr);
-      if ( ret == CURLE_OK && ptr != NULL)
+    if (!ret && detectDirIndex())
       {
-        try
-        {
-          Url         eurl( ptr);
-          std::string path( eurl.getPathName());
-          if( !path.empty() && path != "/" && *path.rbegin() == '/')
-          {
-            DBG << "Effective url ("
-                << eurl
-                << ") seems to provide the index of a directory"
-                << endl;
-            not_a_file = true;
-          }
-        }
-        catch( ... )
-        {}
+	ZYPP_THROW(MediaNotAFileException(_url, filename));
       }
-
-      if( not_a_file)
-      {
-        ::fclose( file );
-        filesystem::unlink( destNew );
-        ZYPP_THROW(MediaNotAFileException(_url, filename));
-      }
-    }
 #endif // DETECT_DIR_INDEX
-
-    long httpReturnCode = 0;
-    CURLcode infoRet = curl_easy_getinfo(_curl,
-                                         CURLINFO_RESPONSE_CODE,
-                                         &httpReturnCode);
-    bool modified = true;
-    if (infoRet == CURLE_OK)
-    {
-      DBG << "HTTP response: " + str::numstring(httpReturnCode);
-      if ( httpReturnCode == 304
-           || ( httpReturnCode == 213 && _url.getScheme() == "ftp" ) ) // not modified
-      {
-        DBG << " Not modified.";
-        modified = false;
-      }
-      DBG << endl;
-    }
-    else
-    {
-      WAR << "Could not get the reponse code." << endl;
-    }
-
-    if (modified || infoRet != CURLE_OK)
-    {
-      // apply umask
-      if ( ::fchmod( ::fileno(file), filesystem::applyUmaskTo( 0644 ) ) )
-      {
-        ERR << "Failed to chmod file " << destNew << endl;
-      }
-      ::fclose( file );
-
-      // move the temp file into dest
-      if ( rename( destNew, dest ) != 0 ) {
-        ERR << "Rename failed" << endl;
-        ZYPP_THROW(MediaWriteException(dest));
-      }
-    }
-    else
-    {
-      // close and remove the temp file
-      ::fclose( file );
-      filesystem::unlink( destNew );
-    }
-
-    DBG << "done: " << PathInfo(dest) << endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1438,7 +1468,7 @@ int MediaCurl::progressCallback( void *clientp,
     // send progress report first, abort transfer if requested
     if( pdata->report)
     {
-      if (!(*(pdata->report))->progress(int( dlnow * 100 / dltotal ),
+      if (!(*(pdata->report))->progress(int( dltotal ? dlnow * 100 / dltotal : 0 ),
 	                                pdata->url,
 	                                pdata->drate_avg,
 	                                pdata->drate_period))
@@ -1581,9 +1611,11 @@ bool MediaCurl::authenticate(const string & availAuthTypes, bool firstTry) const
     if (credentials->authType() == CURLAUTH_NONE)
       credentials->setAuthType(availAuthTypes);
 
-    // set auth type (seems this must be set _after_ setting the userpwd
+    // set auth type (seems this must be set _after_ setting the userpwd)
     if (credentials->authType() != CURLAUTH_NONE)
     {
+      // FIXME: only overwrite if not empty?
+      const_cast<MediaCurl*>(this)->_settings.setAuthType(credentials->authTypeAsString());
       ret = curl_easy_setopt(_curl, CURLOPT_HTTPAUTH, credentials->authType());
       if ( ret != 0 ) ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
     }

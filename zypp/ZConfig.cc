@@ -229,7 +229,6 @@ namespace zypp
         , commit_downloadMode		( DownloadDefault )
         , solver_onlyRequires		( false )
         , solver_allowVendorChange	( false )
-        , solver_cleandepsOnRemove	( false )
         , solver_upgradeTestcasesToKeep	( 2 )
         , solverUpgradeRemoveDroppedPackages( true )
         , apply_locks_file		( true )

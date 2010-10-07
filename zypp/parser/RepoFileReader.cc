@@ -12,6 +12,7 @@
 #include <iostream>
 #include "zypp/base/Logger.h"
 #include "zypp/base/String.h"
+#include "zypp/base/Regex.h"
 #include "zypp/base/InputStream.h"
 #include "zypp/base/UserRequestException.h"
 
@@ -32,11 +33,10 @@ namespace zypp
    * \short List of RepoInfo's from a file.
    * \param file pathname of the file to read.
    */
-    static void repositories_in_file( const Pathname &file,
-                                      const RepoFileReader::ProcessRepo &callback,
-                                      const ProgressData::ReceiverFnc &progress )
+    static void repositories_in_stream( const InputStream &is,
+                                        const RepoFileReader::ProcessRepo &callback,
+                                        const ProgressData::ReceiverFnc &progress )
     {
-      InputStream is(file);
       parser::IniDict dict(is);
       for ( parser::IniDict::section_const_iterator its = dict.sectionsBegin();
             its != dict.sectionsEnd();
@@ -44,6 +44,7 @@ namespace zypp
       {
         RepoInfo info;
         info.setAlias(*its);
+        Url url;
 
         for ( IniDict::entry_const_iterator it = dict.entriesBegin(*its);
               it != dict.entriesEnd(*its);
@@ -57,7 +58,7 @@ namespace zypp
           else if ( it->first == "priority" )
             info.setPriority( str::strtonum<unsigned>( it->second ) );
           else if ( it->first == "baseurl" && !it->second.empty())
-            info.addBaseUrl( Url(it->second) );
+            url = it->second;
           else if ( it->first == "path" )
             info.setPath( Pathname(it->second) );
           else if ( it->first == "type" )
@@ -74,10 +75,23 @@ namespace zypp
 	    info.setKeepPackages( str::strToTrue( it->second ) );
 	  else if ( it->first == "service" )
 	    info.setService( it->second );
-          else
+          else if ( it->first == "proxy" )
+          {
+	    if (it->second != "_none_" )
+            { 
+              str::regex ex("^(.*):([0-9]+)$");
+              str::smatch what;
+              if(str::regex_match(it->second, what, ex)){
+               url.setQueryParam("proxy", what[1]);
+               url.setQueryParam("proxyport", what[2]);
+              }
+            }
+          } else
             ERR << "Unknown attribute in [" << *its << "]: " << it->second << " ignored" << endl;
         }
-        info.setFilepath(file);
+        if (url.isValid())
+            info.addBaseUrl(url);
+        info.setFilepath(is.path());
         MIL << info << endl;
         // add it to the list.
         callback(info);
@@ -97,12 +111,20 @@ namespace zypp
                                     const ProgressData::ReceiverFnc &progress )
       : _callback(callback)
     {
-      repositories_in_file(repo_file, _callback, progress);
-      //MIL << "Done" << endl;
+      repositories_in_stream(InputStream(repo_file), _callback, progress);
+    }
+
+    RepoFileReader::RepoFileReader( const InputStream &is,
+                                    const ProcessRepo & callback,
+                                    const ProgressData::ReceiverFnc &progress )
+      : _callback(callback)
+    {
+      repositories_in_stream(is, _callback, progress);
     }
 
     RepoFileReader::~RepoFileReader()
     {}
+
 
     std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj )
     {

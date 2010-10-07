@@ -143,6 +143,13 @@ MediaAccess::open (const Url& url, const Pathname & preferred_attach_point)
             use_aria = false;
         }
 
+        // no aria2c for ftp (bnc #641328)
+        if ( use_aria && url.getScheme() == "ftp" )
+        {
+          WAR << "won't use aria2c for FTP, falling back to curl" << endl;
+          use_aria = false;
+        }
+
         if ( use_aria )
             _handler = new MediaAria2c (url,preferred_attach_point);
         else

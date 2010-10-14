@@ -81,7 +81,6 @@ namespace zypp
     Pathname repoPackagesCachePath;
     Pathname knownReposPath;
     Pathname knownServicesPath;
-    Pathname pluginsPath;
     bool probe;
     /**
      * Target distro ID to be used when refreshing repo index services.
@@ -97,6 +96,7 @@ namespace zypp
 
     /** remembers root_r value for later use */
     Pathname rootDir;
+    Pathname pluginsPath;
   };
 
 

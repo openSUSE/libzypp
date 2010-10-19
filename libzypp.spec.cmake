@@ -176,12 +176,17 @@ rm -rf "$RPM_BUILD_ROOT"
 cd build
 make install DESTDIR=$RPM_BUILD_ROOT
 make -C doc/autodoc install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/etc/zypp/repos.d
-mkdir -p $RPM_BUILD_ROOT/etc/zypp/services.d
-mkdir -p $RPM_BUILD_ROOT/%{_usr}/lib/zypp
-mkdir -p $RPM_BUILD_ROOT/%{_var}/lib/zypp
-mkdir -p $RPM_BUILD_ROOT/%{_var}/log/zypp
-mkdir -p $RPM_BUILD_ROOT/%{_var}/cache/zypp
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/repos.d
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/services.d
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/commit
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/services
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/system
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
+mkdir -p $RPM_BUILD_ROOT%{_var}/lib/zypp
+mkdir -p $RPM_BUILD_ROOT%{_var}/log/zypp
+mkdir -p $RPM_BUILD_ROOT%{_var}/cache/zypp
 
 %if 0%{?suse_version}
 %suse_update_desktop_file -G "" -C "" package-manager

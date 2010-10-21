@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 21 18:36:48 CEST 2010 - ma@suse.de
+
+- Feed the ProvideFilePolicy progress callback in addition to any
+  connected media::DownloadProgressReport (bnc#545106)
+- version 7.9.6 (6)
+
+-------------------------------------------------------------------
 Thu Oct  7 09:20:26 CEST 2010 - jkupec@suse.cz
 
 - Don't use aria2c for FTP (bnc #641328)

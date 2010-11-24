@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 24 12:10:36 CET 2010 - ma@suse.de
+
+- Properly handle FTP response 550. (bnc#645747)
+- version 7.9.7 (6)
+
+-------------------------------------------------------------------
 Thu Oct 21 18:36:48 CEST 2010 - ma@suse.de
 
 - Feed the ProvideFilePolicy progress callback in addition to any

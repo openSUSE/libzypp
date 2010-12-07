@@ -459,6 +459,15 @@ namespace zypp
 	  << "] cache_dir:[" << it->cacheDir()
 	  << "] auto_refresh:[ " << it->autorefresh() << "]" << endl;
 
+      if ( it->cacheDir().empty() )
+      {
+	WAR << "Empty cachedir: Going to assign some..." << endl;
+        filesystem::TmpDir newCache( root_r /  ZYPP_METADATA_PREFIX, "Source." );
+	it->setCacheDir( ZYPP_METADATA_PREFIX + newCache.path().basename() );
+        filesystem::assert_dir ( root_r.asString() + it->cacheDir() );
+	store.storeSource( *it );
+      }
+
       SourceId id = 0;
 
       try

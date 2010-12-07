@@ -382,7 +382,7 @@ namespace zypp
         catch (const Exception &excp)
         {
           WAR << "Creating local metadata cache failed, not using cache" << endl;
-          descr.setCacheDir("");
+	  filesystem::clean_dir( root_r.asString() + descr.cacheDir() );
         }
       }
 

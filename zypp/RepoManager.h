@@ -48,6 +48,8 @@ namespace zypp
   /**
    * Repo manager settings.
    * Settings default to ZYpp global settings.
+   * \note: This struct can not be extended without breaking
+   * ABI, so extend by adding methods only.
    */
   struct RepoManagerOptions
   {
@@ -96,7 +98,11 @@ namespace zypp
 
     /** remembers root_r value for later use */
     Pathname rootDir;
-    Pathname pluginsPath;
+
+    // NOTE: This struct can not be extended without breaking
+    //       ABI, so extend by adding methods only:
+
+    Pathname pluginsPath() const;
   };
 
 

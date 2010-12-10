@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Nov 29 15:26:37 CET 2010 - ma@suse.de
+
+- Prevent against daemons launched in rpm %post, that do not close
+  their filedescriptors. Original fix was accidentally reverted. 
+  (bnc#174548)
+- Handle patch category 'feature' (same as 'optional').
+- version 6.33.5 (31)
+
+-------------------------------------------------------------------
 Fri Sep 10 13:19:22 CEST 2010 - ma@suse.de
 
 - Report download failures in commit result (bnc#431854)

@@ -68,10 +68,13 @@ BOOST_AUTO_TEST_CASE(pluginservices_test)
   RepoManagerOptions opts( RepoManagerOptions::makeTestSetup( tmpCachePath ) ) ;
 
   filesystem::assert_dir( opts.knownReposPath );
-  filesystem::assert_dir( opts.pluginsPath / "services");
+  filesystem::assert_dir( opts.pluginsPath() / "services");
 
-  opts.pluginsPath = DATADIR + "/plugin-service-lib-1";
-  BOOST_CHECK(PathInfo(opts.pluginsPath / "services/service").isExist());
+  // on SLE branch opts.pluginsPath is a method (adding a variable breaks ABI)
+  // thus we can not change the path but we need to copty the scripts instead.
+  // opts.pluginsPath = DATADIR + "/plugin-service-lib-1";
+  filesystem::copy( DATADIR + "/plugin-service-lib-1/services/service", opts.pluginsPath() / "services/service" );
+  BOOST_CHECK(PathInfo(opts.pluginsPath() / "services/service").isExist());
 
   {
     RepoManager manager(opts);
@@ -80,7 +83,8 @@ BOOST_AUTO_TEST_CASE(pluginservices_test)
 
     ServiceInfo service(*manager.serviceBegin());
     BOOST_CHECK_EQUAL("service", service.alias());
-    BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-1/services/service", service.url().asString());
+    // BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-1/services/service", service.url().asString());
+    BOOST_CHECK_EQUAL( "file:" + opts.pluginsPath().asString() + "/services/service", service.url().asString());
 
     // now refresh the service
     manager.refreshServices();
@@ -92,14 +96,18 @@ BOOST_AUTO_TEST_CASE(pluginservices_test)
   }
 
   // Now simulate the service changed
-  opts.pluginsPath = DATADIR + "/plugin-service-lib-2";
+  // on SLE branch opts.pluginsPath is a method (adding a variable breaks ABI)
+  // thus we can not change the path but we need to copty the scripts instead.
+  // opts.pluginsPath = DATADIR + "/plugin-service-lib-2";
+  filesystem::copy( DATADIR + "/plugin-service-lib-2/services/service", opts.pluginsPath() / "services/service" );
   {
     RepoManager manager(opts);
     BOOST_REQUIRE_EQUAL(1, manager.serviceSize());
 
     ServiceInfo service(*manager.serviceBegin());
     BOOST_CHECK_EQUAL("service", service.alias());
-    BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-2/services/service", service.url().asString());
+    // BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-2/services/service", service.url().asString());
+    BOOST_CHECK_EQUAL( "file:" + opts.pluginsPath().asString() + "/services/service", service.url().asString());
     // now refresh the service
     manager.refreshServices();
     BOOST_CHECK_EQUAL((unsigned) 1, manager.repoSize());

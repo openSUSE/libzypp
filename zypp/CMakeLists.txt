@@ -22,6 +22,10 @@ SET( zypp_SRCS
   DownloadMode.cc
   Edition.cc
   ExternalProgram.cc
+  PluginFrame.cc
+  PluginFrameException.cc
+  PluginScript.cc
+  PluginScriptException.cc
   Fetcher.cc
   FileChecker.cc
   Glob.cc
@@ -104,6 +108,10 @@ SET( zypp_HEADERS
   DownloadMode.h
   Edition.h
   ExternalProgram.h
+  PluginFrame.h
+  PluginFrameException.h
+  PluginScript.h
+  PluginScriptException.h
   Fetcher.h
   FileChecker.h
   Glob.h
@@ -207,6 +215,7 @@ SET( zypp_base_HEADERS
   base/Collector.h
   base/SerialNumber.h
   base/Easy.h
+  base/Errno.h
   base/Random.h
   base/Algorithm.h
   base/Counter.h
@@ -236,6 +245,7 @@ SET( zypp_base_HEADERS
   base/PtrTypes.h
   base/ReferenceCounted.h
   base/SafeBool.h
+  base/Signal.h
   base/String.h
   base/Regex.h
   base/Sysconfig.h
@@ -263,6 +273,7 @@ SET( zypp_media_SRCS
   media/MediaCurl.cc
   media/MediaAria2c.cc
   media/MediaISO.cc
+  media/MediaPlugin.cc
   media/MediaSource.cc
   media/MediaManager.cc
   media/MediaUserAuth.cc
@@ -271,6 +282,7 @@ SET( zypp_media_SRCS
   media/CurlConfig.cc
   media/TransferSettings.cc
   media/MediaPriority.cc
+  media/UrlResolverPlugin.cc
 )
 
 SET( zypp_media_HEADERS
@@ -284,6 +296,7 @@ SET( zypp_media_HEADERS
   media/MediaException.h
   media/MediaHandler.h
   media/MediaISO.h
+  media/MediaPlugin.h
   media/MediaManager.h
   media/MediaNFS.h
   media/MediaSource.h
@@ -295,6 +308,7 @@ SET( zypp_media_HEADERS
   media/CurlConfig.h
   media/TransferSettings.h
   media/MediaPriority.h
+  media/UrlResolverPlugin.h
 )
 
 INSTALL(  FILES
@@ -707,6 +721,8 @@ SET( zypp_repo_SRCS
   repo/Downloader.cc
   repo/RepoVariables.cc
   repo/RepoInfoBase.cc
+  repo/PluginServices.cc
+  repo/ServiceRepos.cc
 )
 
 SET( zypp_repo_HEADERS
@@ -725,6 +741,8 @@ SET( zypp_repo_HEADERS
   repo/RepoVariables.h
   repo/RepoInfoBase.h
   repo/RepoInfoBaseImpl.h
+  repo/PluginServices.h
+  repo/ServiceRepos.h
 )
 
 INSTALL( FILES

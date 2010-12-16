@@ -56,6 +56,8 @@
 
 #include "zypp/sat/Pool.h"
 
+#include "zypp/PluginScript.h"
+
 using namespace std;
 
 
@@ -819,6 +821,29 @@ namespace zypp
 
         // We keep it.
         guard.resetDispose();
+
+	// Finally send notification to plugins
+	// NOTE: quick hack looking for spacewalk plugin only
+	{
+	  Pathname script( Pathname::assertprefix( _root, ZConfig::instance().pluginsPath()/"system/spacewalk" ) );
+	  if ( PathInfo( script ).isX() )
+	    try {
+	      PluginScript spacewalk( script );
+	      spacewalk.open();
+
+	      PluginFrame notify( "PACKAGESETCHANGED" );
+	      spacewalk.send( notify );
+
+	      PluginFrame ret( spacewalk.receive() );
+	      MIL << ret << endl;
+	      if ( ret.command() == "ERROR" )
+		ret.writeTo( WAR ) << endl;
+	    }
+	    catch ( const Exception & excpt )
+	    {
+	      WAR << excpt.asUserHistory() << endl;
+	    }
+	}
       }
     }
 

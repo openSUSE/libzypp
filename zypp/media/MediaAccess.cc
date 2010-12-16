@@ -13,8 +13,11 @@
 #include <ctype.h>
 
 #include <iostream>
+#include <map>
 
 #include "zypp/base/Logger.h"
+#include "zypp/ZConfig.h"
+#include "zypp/PluginScript.h"
 #include "zypp/ExternalProgram.h"
 
 #include "zypp/media/MediaException.h"
@@ -29,6 +32,8 @@
 #include "zypp/media/MediaCurl.h"
 #include "zypp/media/MediaAria2c.h"
 #include "zypp/media/MediaISO.h"
+#include "zypp/media/MediaPlugin.h"
+#include "zypp/media/UrlResolverPlugin.h"
 
 using namespace std;
 
@@ -96,18 +101,21 @@ MediaAccess::dependsOnParent(MediaAccessId parentId,
 
 // open URL
 void
-MediaAccess::open (const Url& url, const Pathname & preferred_attach_point)
+MediaAccess::open (const Url& o_url, const Pathname & preferred_attach_point)
 {
-    if(!url.isValid()) {
+    if(!o_url.isValid()) {
 	MIL << "Url is not valid" << endl;
-        ZYPP_THROW(MediaBadUrlException(url));
+        ZYPP_THROW(MediaBadUrlException(o_url));
     }
 
     close();
 
+    UrlResolverPlugin::HeaderList custom_headers;
+    Url url = UrlResolverPlugin::resolveUrl(o_url, custom_headers);
+    
     std::string scheme = url.getScheme();
-
     MIL << "Trying scheme '" << scheme << "'" << endl;
+
     /*
     ** WARNING: Don't forget to update MediaAccess::downloads(url)
     **          if you are adding a new url scheme / handler!
@@ -127,14 +135,32 @@ MediaAccess::open (const Url& url, const Pathname & preferred_attach_point)
     else if (scheme == "ftp" || scheme == "http" || scheme == "https")
     {
         // Another good idea would be activate MediaAria2c handler via external var
-        bool use_aria = true;
+        bool use_aria = false;
+        bool use_multicurl = true;
         const char *ariaenv = getenv( "ZYPP_ARIA2C" );
+        const char *multicurlenv = getenv( "ZYPP_MULTICURL" );
         // if user disabled it manually
-        if ( ariaenv && ( strcmp(ariaenv, "0" ) == 0 ) )
+        if ( use_multicurl && multicurlenv && ( strcmp(multicurlenv, "0" ) == 0 ) )
+        {
+            WAR << "multicurl manually disabled." << endl;
+            use_multicurl = false;
+        }
+        else if ( !use_multicurl && multicurlenv && ( strcmp(multicurlenv, "1" ) == 0 ) )
+	{
+            WAR << "multicurl manually enabled." << endl;
+            use_multicurl = true;
+	}
+        // if user disabled it manually
+        if ( use_aria && ariaenv && ( strcmp(ariaenv, "0" ) == 0 ) )
         {
             WAR << "aria2c manually disabled. Falling back to curl" << endl;
             use_aria = false;
         }
+        else if ( !use_aria && ariaenv && ( strcmp(ariaenv, "1" ) == 0 ) )
+	{
+            WAR << "aria2c manually enabled." << endl;
+            use_aria = true;
+	}
 
         // disable if it does not exist
         if ( use_aria && ! MediaAria2c::existsAria2cmd() )
@@ -143,11 +169,25 @@ MediaAccess::open (const Url& url, const Pathname & preferred_attach_point)
             use_aria = false;
         }
 
+        MediaCurl *curl;        
+
         if ( use_aria )
-            _handler = new MediaAria2c (url,preferred_attach_point);
-        else
-            _handler = new MediaCurl (url,preferred_attach_point);
+            curl = new MediaAria2c (url,preferred_attach_point);        
+	      else
+            curl = new MediaCurl (url,preferred_attach_point);
+        
+        UrlResolverPlugin::HeaderList::const_iterator it;
+        for (it = custom_headers.begin();
+             it != custom_headers.end();
+             ++it) {
+            std::string header = it->first + ": " + it->second;            
+            MIL << "Added custom header -> " << header << endl;
+            curl->settings().addHeader(header);
+        }
+        _handler = curl;        
     }
+    else if (scheme == "plugin" )
+	_handler = new MediaPlugin (url,preferred_attach_point);
     else
     {
 	ZYPP_THROW(MediaUnsupportedUrlSchemeException(url));

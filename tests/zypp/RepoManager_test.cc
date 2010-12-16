@@ -62,11 +62,94 @@ BOOST_AUTO_TEST_CASE(refresh_addon_in_subdir)
     BOOST_CHECK( r.info().hasLicense() );
 }
 
+BOOST_AUTO_TEST_CASE(pluginservices_test)
+{
+  TmpDir tmpCachePath;
+  RepoManagerOptions opts( RepoManagerOptions::makeTestSetup( tmpCachePath ) ) ;
+
+  filesystem::assert_dir( opts.knownReposPath );
+  filesystem::assert_dir( opts.pluginsPath() / "services");
+
+  // on SLE branch opts.pluginsPath is a method (adding a variable breaks ABI)
+  // thus we can not change the path but we need to copty the scripts instead.
+  // opts.pluginsPath = DATADIR + "/plugin-service-lib-1";
+  filesystem::copy( DATADIR + "/plugin-service-lib-1/services/service", opts.pluginsPath() / "services/service" );
+  BOOST_CHECK(PathInfo(opts.pluginsPath() / "services/service").isExist());
+
+  {
+    RepoManager manager(opts);
+    BOOST_REQUIRE_EQUAL(1, manager.serviceSize());
+    BOOST_CHECK(manager.repoEmpty());
+
+    ServiceInfo service(*manager.serviceBegin());
+    BOOST_CHECK_EQUAL("service", service.alias());
+    // BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-1/services/service", service.url().asString());
+    BOOST_CHECK_EQUAL( "file:" + opts.pluginsPath().asString() + "/services/service", service.url().asString());
+
+    // now refresh the service
+    manager.refreshServices();
+    BOOST_CHECK_EQUAL((unsigned) 2, manager.repoSize());
+    //std::list<RepoInfo> infos;
+    //manager.getRepositoriesInService("test",
+    //  insert_iterator<std::list<RepoInfo> >(infos,infos.begin()));
+    //BOOST_CHECK_EQUAL(infos.size(), 2); // 2 from new repoindex
+  }
+
+  // Now simulate the service changed
+  // on SLE branch opts.pluginsPath is a method (adding a variable breaks ABI)
+  // thus we can not change the path but we need to copty the scripts instead.
+  // opts.pluginsPath = DATADIR + "/plugin-service-lib-2";
+  filesystem::copy( DATADIR + "/plugin-service-lib-2/services/service", opts.pluginsPath() / "services/service" );
+  {
+    RepoManager manager(opts);
+    BOOST_REQUIRE_EQUAL(1, manager.serviceSize());
+
+    ServiceInfo service(*manager.serviceBegin());
+    BOOST_CHECK_EQUAL("service", service.alias());
+    // BOOST_CHECK_EQUAL( "file:" + DATADIR.asString() + "/plugin-service-lib-2/services/service", service.url().asString());
+    BOOST_CHECK_EQUAL( "file:" + opts.pluginsPath().asString() + "/services/service", service.url().asString());
+    // now refresh the service
+    manager.refreshServices();
+    BOOST_CHECK_EQUAL((unsigned) 1, manager.repoSize());
+  }
+}
+
+// regression test for services bug
+// if you modify a service that you just
+// added and saved, the service was not associated with its
+// file internally
+BOOST_AUTO_TEST_CASE(service_file_link_bug)
+{
+  TmpDir tmpCachePath;
+  RepoManagerOptions opts( RepoManagerOptions::makeTestSetup( tmpCachePath ) ) ;
+
+  filesystem::mkdir( opts.knownReposPath );
+  filesystem::mkdir( opts.knownServicesPath );
+  RepoManager manager(opts);
+
+  //test service
+  Url urlS;
+  urlS.setPathName(DATADIR.asString());
+  urlS.setScheme("dir");
+  ServiceInfo service("test", urlS);
+  service.setEnabled(true);
+
+  manager.addService(service);
+  // now internally, service is associated with the file
+  // where it was saved
+
+  // the following line reset the file association with the bug
+  manager.modifyService(service.alias(), service);
+  // and the following modifyService fails because there is no
+  // association
+  manager.modifyService(service.alias(), service);
+}
 
 BOOST_AUTO_TEST_CASE(repomanager_test)
 {
   TmpDir tmpCachePath;
   RepoManagerOptions opts( RepoManagerOptions::makeTestSetup( tmpCachePath ) ) ;
+  opts.servicesTargetDistro = "sles-10-i586"; // usually determined by the Target
 
   filesystem::mkdir( opts.knownReposPath );
   filesystem::mkdir( opts.knownServicesPath );

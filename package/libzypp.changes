@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Dec  7 13:54:48 CET 2010 - ma@suse.de
+
+- Register an empty cache dir, even if downloading source metadata 
+  failed. Otherwise any attepmpt to later refresh the source will 
+  fail. (bnc#627080)
+- version 2.100.8
+
+-------------------------------------------------------------------
 Thu Sep 16 07:46:56 UTC 2010 - dmacvicar@suse.de
 
 - reapply lost fix: libzypp blocking when waiting for

@@ -382,7 +382,7 @@ namespace zypp
         catch (const Exception &excp)
         {
           WAR << "Creating local metadata cache failed, not using cache" << endl;
-          descr.setCacheDir("");
+	  filesystem::clean_dir( root_r.asString() + descr.cacheDir() );
         }
       }
 
@@ -458,6 +458,15 @@ namespace zypp
 	  << "] alias:[" << it->alias()
 	  << "] cache_dir:[" << it->cacheDir()
 	  << "] auto_refresh:[ " << it->autorefresh() << "]" << endl;
+
+      if ( it->cacheDir().empty() )
+      {
+	WAR << "Empty cachedir: Going to assign some..." << endl;
+        filesystem::TmpDir newCache( root_r /  ZYPP_METADATA_PREFIX, "Source." );
+	it->setCacheDir( ZYPP_METADATA_PREFIX + newCache.path().basename() );
+        filesystem::assert_dir ( root_r.asString() + it->cacheDir() );
+	store.storeSource( *it );
+      }
 
       SourceId id = 0;
 

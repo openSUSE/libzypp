@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 17 12:59:46 CET 2011 - ma@suse.de
+
+- Throw ServicePluginInformalException if service plugin failure 
+  should be reported but ignored by zypper.
+- version 6.35.0 (31)
+
+-------------------------------------------------------------------
 Thu Dec 16 17:03:02 CET 2010 - ma@suse.de
 
 - Backport libzypp plugin infrastructure.

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 27 10:25:59 UTC 2011 - glin@novell.com
+
+- Add a fallback gnome-packagekit updater in package-manager
+  (bnc#667504)
+- version 6.35.1 (31)
+
+-------------------------------------------------------------------
 Mon Jan 17 12:59:46 CET 2011 - ma@suse.de
 
 - Throw ServicePluginInformalException if service plugin failure 

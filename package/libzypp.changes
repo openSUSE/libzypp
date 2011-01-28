@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 28 15:03:08 CET 2011 - ma@suse.de
+
+- Actually ignore ServicePluginInformalException and treat the 
+  service as being empty.
+- version 6.35.2 (31)
+
+-------------------------------------------------------------------
 Thu Jan 27 10:25:59 UTC 2011 - glin@novell.com
 
 - Add a fallback gnome-packagekit updater in package-manager

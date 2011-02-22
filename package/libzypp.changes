@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 22 16:53:23 CET 2011 - ma@suse.de
+
+- Set proper defaults for service repos (bnc#673943)
+- version 6.35.3 (31)
+
+-------------------------------------------------------------------
 Fri Jan 28 15:03:08 CET 2011 - ma@suse.de
 
 - Actually ignore ServicePluginInformalException and treat the 

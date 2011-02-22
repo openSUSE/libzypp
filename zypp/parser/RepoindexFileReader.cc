@@ -102,6 +102,11 @@ namespace zypp
 
         RepoInfo info;
 
+        // enabled or disabled is controlled by the
+        // reposToEnable/Disable list, unless the
+        // enabled attribute is set
+        info.setEnabled(false);
+
         // url and/or path
         string url_s;
         s = reader_r->getAttribute("url");
@@ -143,7 +148,22 @@ namespace zypp
         if (s.get())
           info.setTargetDistribution(s.asString());
 
+        // optional priority
+        s = reader_r->getAttribute("priority");
+        if (s.get()) {
+          info.setPriority(str::strtonum<unsigned>(s.asString()));
+        }
+
+        // optional enabled
+        s = reader_r->getAttribute("enabled");
+        if (s.get()) {
+          info.setEnabled(str::strToTrue(s.asString()));
+        }
+
         DBG << info << endl;
+
+        // Set some defaults that are not contained in the repo information
+        info.setAutorefresh( true );
 
         // ignore the rest
         _callback(info);

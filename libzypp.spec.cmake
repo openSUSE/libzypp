@@ -70,7 +70,7 @@ Requires:       gnupg2
 
 %define min_aria_version 1.1.2
 # ---------------------------------------------------------------
-%if 0%{?suse_version} == 1110
+%if 0%{?suse_version} == 1110 || 0%{?suse_version} == 1010
 # (almost) common codebase, but on SLES11-SP1 (according to Rudi
 # suse_version == 1110) we have a patched libcurl-7.19.0-11.22,
 # and no aria2. Furthermore SLE may use it's own set of .po files

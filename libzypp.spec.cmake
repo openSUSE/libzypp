@@ -100,7 +100,11 @@ Requires:       libcurl4   >= %{min_curl_version}
 %else
 Requires:       libcurl   >= %{min_curl_version}
 %endif
+%if 0%{?suse_version} != 1010
 BuildRequires:  libcurl-devel >= %{min_curl_version}
+%else
+BuildRequires:  libcurl-devel
+%endif
 
 %description
 Package, Patch, Pattern, and Product Management

@@ -47,7 +47,10 @@ BuildRequires:  expat-devel
 %endif
 
 %if 0%{?suse_version}
-BuildRequires:  hicolor-icon-theme update-desktop-files rpm-devel
+BuildRequires:  update-desktop-files rpm-devel
+%if 0%{?suse_version} != 1010
+BuildRequires:  hicolor-icon-theme
+%endif
 Requires: /usr/bin/uuidgen
 %endif
 

@@ -96,14 +96,18 @@ BuildRequires: aria2 >= %{min_aria_version}
 # ---------------------------------------------------------------
 
 %if 0%{?suse_version}
+%if 0%{?suse_version} != 1010
+# Code11+
+BuildRequires:  libcurl-devel >= %{min_curl_version}
 Requires:       libcurl4   >= %{min_curl_version}
 %else
-Requires:       libcurl   >= %{min_curl_version}
-%endif
-%if 0%{?suse_version} != 1010
-BuildRequires:  libcurl-devel >= %{min_curl_version}
-%else
+# Code10
 BuildRequires:  curl-devel
+%endif
+%else
+# Other distros (Fedora)
+BuildRequires:  libcurl-devel >= %{min_curl_version}
+Requires:       libcurl   >= %{min_curl_version}
 %endif
 
 %description

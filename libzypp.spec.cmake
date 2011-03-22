@@ -103,7 +103,7 @@ Requires:       libcurl   >= %{min_curl_version}
 %if 0%{?suse_version} != 1010
 BuildRequires:  libcurl-devel >= %{min_curl_version}
 %else
-BuildRequires:  libcurl-devel
+BuildRequires:  curl-devel
 %endif
 
 %description

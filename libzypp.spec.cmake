@@ -195,6 +195,13 @@ mkdir -p $RPM_BUILD_ROOT%{_var}/lib/zypp
 mkdir -p $RPM_BUILD_ROOT%{_var}/log/zypp
 mkdir -p $RPM_BUILD_ROOT%{_var}/cache/zypp
 
+# Code10 only looks for icons in /usr/share/pixmaps
+%if 0%{?suse_version} < 1100
+mkdir -p %{buildroot}%{_prefix}/share/pixmaps
+cp %{buildroot}%{_prefix}/share/icons/hicolor/48x48/apps/package-manager-icon.png %{buildroot}%{_prefix}/share/pixmaps
+rm -rf %{buildroot}%{_prefix}/share/icons
+%endif
+
 %if 0%{?suse_version}
 %suse_update_desktop_file -G "" -C "" package-manager
 %endif
@@ -290,12 +297,16 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir               %{prefix}/lib/zypp
 %{prefix}/share/zypp
 %{prefix}/share/applications/package-manager.desktop
+%if 0%{?suse_version} < 1100
+%{prefix}/share/pixmaps/package-manager-icon.png
+%else
 %{prefix}/share/icons/hicolor/scalable/apps/package-manager-icon.svg
 %{prefix}/share/icons/hicolor/16x16/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/22x22/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/24x24/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/32x32/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/48x48/apps/package-manager-icon.png
+%endif
 %{prefix}/bin/*
 %{_libdir}/libzypp*so.*
 %doc %_mandir/man5/locks.5.*

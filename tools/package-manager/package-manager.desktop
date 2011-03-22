@@ -1,5 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
+GenericName=Install Software
 Name=Install Software
 Exec=package-manager --install %F
 Icon=package-manager-icon

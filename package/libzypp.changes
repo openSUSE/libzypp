@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 15 22:29:26 CEST 2011 - ma@suse.de
+
+- Enhance PoolItem interface to assist patch classification. (bnc#627316)
+- version 6.36.0 (31)
+
+-------------------------------------------------------------------
 Tue Feb 22 16:53:23 CET 2011 - ma@suse.de
 
 - Set proper defaults for service repos (bnc#673943)

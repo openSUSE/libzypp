@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr 29 16:05:44 CEST 2011 - mls@suse.de
+
+- also look at the file content to detect metalink files (bnc#649925)
+
+-------------------------------------------------------------------
 Fri Apr 29 15:32:10 CEST 2011 - dheidler@suse.de
 
 - Fix max_concurrent_connections option in MultiCurl (bnc#596089)

@@ -48,7 +48,7 @@ BuildRequires:  expat-devel
 
 %if 0%{?suse_version}
 BuildRequires:  update-desktop-files rpm-devel
-%if 0%{?suse_version} != 1010
+%if 0%{?suse_version} > 1020
 BuildRequires:  hicolor-icon-theme
 %endif
 Requires: /usr/bin/uuidgen
@@ -89,7 +89,7 @@ Requires:       gnupg2
 Conflicts:	aria2 < %{min_aria_version}
 %else
 # Code10 still has this define
-%if 0%{?sle_version}
+%if 0%{?sles_version}
 %define use_translation_set sle-zypp
 %endif
 %endif

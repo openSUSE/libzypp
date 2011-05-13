@@ -73,25 +73,20 @@ Requires:       gnupg2
 
 %define min_aria_version 1.1.2
 # ---------------------------------------------------------------
-%if 0%{?suse_version} == 1110 || 0%{?suse_version} == 1010
+%if 0%{?suse_version} >= 1110
 # (almost) common codebase, but on SLES11-SP1 (according to Rudi
 # suse_version == 1110) we have a patched libcurl-7.19.0-11.22,
 # and no aria2. Furthermore SLE may use it's own set of .po files
 # from po/sle-zypp-po.tar.bz2.
+
+# this check should use 7.19.0 if SLE and 7.19.4 if not (backported
+# CURLOPT_REDIR_PROTOCOLS)
 %define min_curl_version 7.19.0-11.22
+#%define min_curl_version 7.19.4
 %define use_translation_set sle-zypp
 # No requirement, but as we'd use it in case it is present,
 # check for a sufficient version:
 Conflicts:	aria2 < %{min_aria_version}
-# ---------------------------------------------------------------
-%else
-# ---------------------------------------------------------------
-# This is 11.2 (better not sles11-sp1)
-# need CURLOPT_REDIR_PROTOCOLS:
-%define min_curl_version 7.19.4
-# want aria2:
-Requires:      aria2 >= %{min_aria_version}
-BuildRequires: aria2 >= %{min_aria_version}
 %endif
 # ---------------------------------------------------------------
 

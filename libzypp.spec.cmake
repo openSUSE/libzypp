@@ -87,7 +87,13 @@ Requires:       gnupg2
 # No requirement, but as we'd use it in case it is present,
 # check for a sufficient version:
 Conflicts:	aria2 < %{min_aria_version}
+%else
+# Code10 still has this define
+%if 0%{?sle_version}
+%define use_translation_set sle-zypp
 %endif
+%endif
+
 # ---------------------------------------------------------------
 
 %if 0%{?suse_version}

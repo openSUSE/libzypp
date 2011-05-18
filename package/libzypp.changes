@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 18 08:46:22 CEST 2011 - ma@suse.de
+
+- Apply patch adding missing entries for Arch_armv7(n)hl.
+- version 8.12.3 (10)
+
+-------------------------------------------------------------------
 Fri Apr 29 16:05:44 CEST 2011 - mls@suse.de
 
 - also look at the file content to detect metalink files (bnc#649925)

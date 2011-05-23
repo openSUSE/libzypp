@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 23 16:17:28 CEST 2011 - dheidler@suse.de
+
+- respect patch content license when determinating interactive status
+- version 7.9.8 (6)
+
+-------------------------------------------------------------------
 Wed Nov 24 12:10:36 CET 2010 - ma@suse.de
 
 - Properly handle FTP response 550. (bnc#645747)

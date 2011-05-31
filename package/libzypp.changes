@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 31 09:03:04 CEST 2011 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Fri Apr 15 22:29:26 CEST 2011 - ma@suse.de
 
 - Enhance PoolItem interface to assist patch classification. (bnc#627316)

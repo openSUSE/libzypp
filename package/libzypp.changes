@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 31 10:29:37 CEST 2011 - ma@suse.de
+
+- Recommend 'lsof' (for zypper ps) (bnc#694427, bnc#684466)
+- version 8.12.5 (10)
+
+-------------------------------------------------------------------
 Mon May 23 16:15:51 CEST 2011 - dheidler@suse.de
 
 - respect patch content license when determinating interactive status

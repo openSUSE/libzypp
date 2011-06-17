@@ -1,12 +1,12 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 <!--
   Code10 to Code11 conversion of product data.
 
     Code10: /var/lib/zypp/db/products/
     Code11: /etc/products.d
 
-  use: xsltproc convert.xsl $OLDFILE | xmllint --format - >$NEWFILE
+  use: xsltproc convert.xsl $OLDFILE >$NEWFILE
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:zypp="http://www.novell.com/metadata/zypp/xml-store">
 
   <xsl:output omit-xml-declaration="yes" indent="yes"/>

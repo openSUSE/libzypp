@@ -23,6 +23,10 @@ Source1:        %{name}-rpmlintrc
 Prefix:         /usr
 Provides:       yast2-packagemanager
 Obsoletes:      yast2-packagemanager
+
+# Features we provide (update doc/autoinclude/FeatureTest.doc):
+Provides:       libzypp(code10) = 0
+
 %if 0%{?suse_version}
 Recommends:     logrotate
 %endif

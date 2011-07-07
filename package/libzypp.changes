@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul  7 16:18:48 CEST 2011 - ma@suse.de
+
+- Fix tests for available libcurl version.
+- version 6.36.1 (31)
+
+-------------------------------------------------------------------
 Fri Apr 15 22:29:26 CEST 2011 - ma@suse.de
 
 - Enhance PoolItem interface to assist patch classification. (bnc#627316)

@@ -92,7 +92,6 @@ Requires:       gnupg2
 # this check should use 7.19.0 if SLE and 7.19.4 if not (backported
 # CURLOPT_REDIR_PROTOCOLS)
 %define min_curl_version 7.19.0-11.22
-#%define min_curl_version 7.19.4
 %define use_translation_set sle-zypp
 # No requirement, but as we'd use it in case it is present,
 # check for a sufficient version:

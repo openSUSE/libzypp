@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 22 12:21:52 CEST 2011 - ma@suse.de
+
+- Support building on SLE10.
+- version 6.36.2 (31)
+
+-------------------------------------------------------------------
 Thu Jul  7 16:18:48 CEST 2011 - ma@suse.de
 
 - Fix tests for available libcurl version.

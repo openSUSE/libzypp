@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul  7 16:18:48 CEST 2011 - ma@suse.de
+
+- Fix tests for available libcurl version.
+- version 6.36.1 (31)
+
+-------------------------------------------------------------------
 Mon Jul  4 11:56:04 CEST 2011 - ma@suse.de
 
 - Update docs and feature provides.

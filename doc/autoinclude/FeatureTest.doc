@@ -43,6 +43,11 @@ Packages requiring a feature may use the corresponding \c Requires: in their .sp
   <DD><DL>
     <DT>version 0</DT>
     <DD>\see \ref plugin-url-resolver </DD>
+
+  <DT>code10</DT>
+  <DD><DL>
+    <DT>version 0</DT>
+    <DD>Package provides some tools for metadata conversion on Code10 Systems. For example \c /usr/share/zypp/migrate/10-11.migrate.products.sh to migrate Code10 to Code11 product metadata.</DD>
   </DL></DD>
 
 </DL>

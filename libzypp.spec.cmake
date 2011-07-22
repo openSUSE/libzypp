@@ -29,6 +29,7 @@ Provides:       libzypp(plugin) = 0
 Provides:       libzypp(plugin:services) = 0
 Provides:       libzypp(plugin:system) = 0
 Provides:       libzypp(plugin:urlresolver) = 0
+Provides:       libzypp(code10) = 0
 
 %if 0%{?suse_version}
 Recommends:     logrotate
@@ -40,7 +41,7 @@ BuildRequires:  openssl-devel
 BuildRequires:  boost-devel dejagnu doxygen gcc-c++ gettext-devel graphviz hal-devel libxml2-devel
 
 BuildRequires:  libsatsolver-devel >= 0.14.13
-%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1100
 %requires_eq    satsolver-tools
 %else
 Requires:	satsolver-tools
@@ -56,7 +57,10 @@ BuildRequires:  expat-devel
 %endif
 
 %if 0%{?suse_version}
-BuildRequires:  hicolor-icon-theme update-desktop-files rpm-devel
+BuildRequires:  update-desktop-files rpm-devel
+%if 0%{?suse_version} > 1020
+BuildRequires:  hicolor-icon-theme
+%endif
 Requires: /usr/bin/uuidgen
 %endif
 
@@ -79,34 +83,43 @@ Requires:       gnupg2
 
 %define min_aria_version 1.1.2
 # ---------------------------------------------------------------
-%if 0%{?suse_version} == 1110
+%if 0%{?suse_version} >= 1110
 # (almost) common codebase, but on SLES11-SP1 (according to Rudi
 # suse_version == 1110) we have a patched libcurl-7.19.0-11.22,
 # and no aria2. Furthermore SLE may use it's own set of .po files
 # from po/sle-zypp-po.tar.bz2.
+
+# this check should use 7.19.0 if SLE and 7.19.4 if not (backported
+# CURLOPT_REDIR_PROTOCOLS)
 %define min_curl_version 7.19.0-11.22
+#%define min_curl_version 7.19.4
 %define use_translation_set sle-zypp
 # No requirement, but as we'd use it in case it is present,
 # check for a sufficient version:
 Conflicts:	aria2 < %{min_aria_version}
-# ---------------------------------------------------------------
 %else
-# ---------------------------------------------------------------
-# This is 11.2 (better not sles11-sp1)
-# need CURLOPT_REDIR_PROTOCOLS:
-%define min_curl_version 7.19.4
-# want aria2:
-Requires:      aria2 >= %{min_aria_version}
-BuildRequires: aria2 >= %{min_aria_version}
+# Code10 still has this define
+%if 0%{?sles_version}
+%define use_translation_set sle-zypp
 %endif
+%endif
+
 # ---------------------------------------------------------------
 
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1100
+# Code11+
+BuildRequires:  libcurl-devel >= %{min_curl_version}
 Requires:       libcurl4   >= %{min_curl_version}
 %else
+# Code10
+BuildRequires:  curl-devel
+%endif
+%else
+# Other distros (Fedora)
+BuildRequires:  libcurl-devel >= %{min_curl_version}
 Requires:       libcurl   >= %{min_curl_version}
 %endif
-BuildRequires:  libcurl-devel >= %{min_curl_version}
 
 %description
 Package, Patch, Pattern, and Product Management
@@ -127,8 +140,19 @@ Requires:       libzypp == %{version}
 Requires:       libxml2-devel openssl-devel rpm-devel glibc-devel zlib-devel
 Requires:       bzip2 popt-devel dbus-1-devel glib2-devel hal-devel boost-devel libstdc++-devel
 Requires:       cmake
-Requires:       libcurl-devel >= %{min_curl_version}
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1100
+# Code11+
+Requires:  libcurl-devel >= %{min_curl_version}
+%else
+# Code10
+Requires:  curl-devel
+%endif
+%else
+# Other distros (Fedora)
+Requires:  libcurl-devel >= %{min_curl_version}
+%endif
+%if 0%{?suse_version} >= 1100
 %requires_ge    libsatsolver-devel
 %else
 Requires:	libsatsolver-devel
@@ -196,6 +220,13 @@ mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 mkdir -p $RPM_BUILD_ROOT%{_var}/lib/zypp
 mkdir -p $RPM_BUILD_ROOT%{_var}/log/zypp
 mkdir -p $RPM_BUILD_ROOT%{_var}/cache/zypp
+
+# Code10 only looks for icons in /usr/share/pixmaps
+%if 0%{?suse_version} < 1100
+mkdir -p %{buildroot}%{_prefix}/share/pixmaps
+cp %{buildroot}%{_prefix}/share/icons/hicolor/48x48/apps/package-manager-icon.png %{buildroot}%{_prefix}/share/pixmaps
+rm -rf %{buildroot}%{_prefix}/share/icons
+%endif
 
 %if 0%{?suse_version}
 %suse_update_desktop_file -G "" -C "" package-manager
@@ -292,12 +323,16 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir               %{prefix}/lib/zypp
 %{prefix}/share/zypp
 %{prefix}/share/applications/package-manager.desktop
+%if 0%{?suse_version} < 1100
+%{prefix}/share/pixmaps/package-manager-icon.png
+%else
 %{prefix}/share/icons/hicolor/scalable/apps/package-manager-icon.svg
 %{prefix}/share/icons/hicolor/16x16/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/22x22/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/24x24/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/32x32/apps/package-manager-icon.png
 %{prefix}/share/icons/hicolor/48x48/apps/package-manager-icon.png
+%endif
 %{prefix}/bin/*
 %{_libdir}/libzypp*so.*
 %doc %_mandir/man5/locks.5.*

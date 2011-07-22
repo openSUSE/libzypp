@@ -1,5 +1,6 @@
 
 ADD_SUBDIRECTORY( package-manager )
+ADD_SUBDIRECTORY( migrate )
 
 INSTALL( FILES notify-message DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/zypp" )
 

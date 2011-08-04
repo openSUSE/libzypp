@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug  4 15:23:06 CEST 2011 - ma@suse.de
+
+- Allow to turn Resolvers upgrade mode on and off (bnc#709480)
+- version 6.37.0 (31)
+
+-------------------------------------------------------------------
 Fri Jul 22 12:21:52 CEST 2011 - ma@suse.de
 
 - Support building on SLE10.

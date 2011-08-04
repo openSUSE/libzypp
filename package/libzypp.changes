@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug  4 15:20:48 CEST 2011 - ma@suse.de
+
+- Allow to turn Resolvers upgrade mode on and off (bnc#709480)
+- version 8.13.0 (10)
+
+-------------------------------------------------------------------
 Thu Jul 28 14:15:44 CEST 2011 - ma@suse.de
 
 - Evaluate CURLINFO_CONDITION_UNMET on zero sized successful transfers,

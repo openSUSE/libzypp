@@ -37,7 +37,19 @@ xmlns:zypp="http://www.novell.com/metadata/zypp/xml-store">
             <xsl:when test="contains(/zypp:product/zypp:version/@ver, '11')"><xsl:text>11</xsl:text></xsl:when>
           </xsl:choose>
           <xsl:text>-</xsl:text>
-          <xsl:value-of select="/zypp:product/zypp:arch"/>
+          <xsl:choose>
+            <xsl:when test="/zypp:product/zypp:arch='i585'"><xsl:text>i585</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i685'"><xsl:text>i585</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i485'"><xsl:text>i585</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i385'"><xsl:text>i585</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='x86_64'"><xsl:text>x86_64</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='ia64'"><xsl:text>ia64</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='s390'"><xsl:text>s390</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='s390x'"><xsl:text>s390x</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='ppc'"><xsl:text>ppc</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='ppc64'"><xsl:text>ppc</xsl:text></xsl:when>
+            <xsl:otherwise><xsl:value-of select="/zypp:product/zypp:arch"/></xsl:otherwise>
+          </xsl:choose>
   </xsl:variable>
 
   <!-- copy all elements without the namespace -->

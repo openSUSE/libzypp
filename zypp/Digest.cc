@@ -153,12 +153,12 @@ namespace zypp {
     std::string Digest::digest()
     {
       if(!_dp->maybeInit())
-    	return false;
+    	return std::string();
 
       if(!_dp->finalized)
       {
     	if(!EVP_DigestFinal_ex(&_dp->mdctx, _dp->md_value, &_dp->md_len))
-    	    return false;
+    	    return std::string();
 
     	_dp->finalized = true;
       }

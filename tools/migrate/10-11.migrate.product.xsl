@@ -38,10 +38,10 @@ xmlns:zypp="http://www.novell.com/metadata/zypp/xml-store">
           </xsl:choose>
           <xsl:text>-</xsl:text>
           <xsl:choose>
-            <xsl:when test="/zypp:product/zypp:arch='i585'"><xsl:text>i585</xsl:text></xsl:when>
-            <xsl:when test="/zypp:product/zypp:arch='i685'"><xsl:text>i585</xsl:text></xsl:when>
-            <xsl:when test="/zypp:product/zypp:arch='i485'"><xsl:text>i585</xsl:text></xsl:when>
-            <xsl:when test="/zypp:product/zypp:arch='i385'"><xsl:text>i585</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i586'"><xsl:text>i586</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i686'"><xsl:text>i586</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i486'"><xsl:text>i586</xsl:text></xsl:when>
+            <xsl:when test="/zypp:product/zypp:arch='i386'"><xsl:text>i586</xsl:text></xsl:when>
             <xsl:when test="/zypp:product/zypp:arch='x86_64'"><xsl:text>x86_64</xsl:text></xsl:when>
             <xsl:when test="/zypp:product/zypp:arch='ia64'"><xsl:text>ia64</xsl:text></xsl:when>
             <xsl:when test="/zypp:product/zypp:arch='s390'"><xsl:text>s390</xsl:text></xsl:when>

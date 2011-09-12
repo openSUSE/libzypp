@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 12 11:38:58 CEST 2011 - ma@suse.de
+
+- Fix arch name typo in code10 to code11 conversion (bnc#711429)
+- version 6.37.2 (31)
+
+-------------------------------------------------------------------
 Thu Aug 25 14:38:36 CEST 2011 - ma@suse.de
 
 - Fix code10 to code11 conversion of product metadata (bnc#711429)

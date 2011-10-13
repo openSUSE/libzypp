@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 13 12:24:07 CEST 2011 - ma@suse.de
+
+- Must not differ between type nfs and nfs4 when checking the mount 
+  table (bnc#710269)
+- version 6.37.3 (31)
+
+-------------------------------------------------------------------
 Mon Sep 12 11:38:58 CEST 2011 - ma@suse.de
 
 - Fix arch name typo in code10 to code11 conversion (bnc#711429)

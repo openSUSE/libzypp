@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 13 12:21:19 CEST 2011 - ma@suse.de
+
+- Must not differ between type nfs and nfs4 when checking the mount 
+  table (bnc#710269)
+- version 8.13.1 (10)
+
+-------------------------------------------------------------------
 Thu Aug  4 15:20:48 CEST 2011 - ma@suse.de
 
 - Allow to turn Resolvers upgrade mode on and off (bnc#709480)

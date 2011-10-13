@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 13 13:39:33 CEST 2011 - ma@suse.de
+
+- Must not differ between type nfs and nfs4 when checking the mount 
+  table (bnc#710269)
+- version 7.9.10 (6)
+
+-------------------------------------------------------------------
 Sun Jun 12 01:14:51 CEST 2011 - ma@suse.de
 
 - Update zypp-po.tar.bz2

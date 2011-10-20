@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar  7 12:11:26 CET 2012 - ma@suse.de
+
+- Set CURLOPT_PROXYAUTH to enable NTLM authentication (fate#305546)
+- version 6.37.7 (31)
+
+-------------------------------------------------------------------
 Thu Mar  1 16:08:46 CET 2012 - ma@suse.de
 
 - Apply soft locks by name and not per package (bnc#749418)

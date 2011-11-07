@@ -49,6 +49,7 @@ BuildRequires:  gettext-devel
 BuildRequires:  graphviz
 BuildRequires:  libxml2-devel
 BuildRequires:  libproxy-devel
+BuildRequires:  pkg-config
 
 BuildRequires:  libsatsolver-devel >= 0.14.17
 %if 0%{?suse_version} >= 1100

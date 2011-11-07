@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov  7 13:49:44 UTC 2011 - dimstar@opensuse.org
+
+- Add pkg-config BuildRequires: We fail to detect libproxy due to
+  the missing pkg-config. Additionally, we have a .pc file
+  ourselfes, which we do not get the provides for [bnc#696805]
+
+-------------------------------------------------------------------
 Sun Nov  6 01:17:50 CET 2011 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

@@ -376,10 +376,10 @@ namespace zypp
     }
 
     // print if non empty value
-    auto strif( [&] ( const std::string & tag_r, const std::string & value_r ) {
-      if ( ! value_r.empty() )
-	str << tag_r << value_r << std::endl;
-    });
+#define strif( tag_r, value ) {			\
+      const std::string & value_r( value );	\
+      if ( ! value_r.empty() )			\
+	str << tag_r << value_r << std::endl; }
 
     strif( "- mirrorlist  : ", _pimpl->getmirrorListUrl().asString() );
     strif( "- path        : ", path().asString() );

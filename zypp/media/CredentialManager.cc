@@ -39,16 +39,16 @@ namespace zypp
   //
   //////////////////////////////////////////////////////////////////////
 
-  const url::ViewOption AuthDataComparator::vopt =
-    url::ViewOption::DEFAULTS
-    - url::ViewOption::WITH_USERNAME
-    - url::ViewOption::WITH_PASSWORD
-    - url::ViewOption::WITH_QUERY_STR;
-
   bool
   AuthDataComparator::operator()(
       const AuthData_Ptr & lhs, const AuthData_Ptr & rhs)
   {
+    static const url::ViewOption vopt =
+        url::ViewOption::DEFAULTS
+        - url::ViewOption::WITH_USERNAME
+        - url::ViewOption::WITH_PASSWORD
+        - url::ViewOption::WITH_QUERY_STR;
+
     if (lhs->username() != rhs->username())
       return true;
 
@@ -348,6 +348,8 @@ namespace zypp
       _pimpl->_credsUser.insert(c_ptr);
       _pimpl->_userDirty = true;
     }
+
+    DBG << "creduser size" << _pimpl->_credsUser.size() << endl;
   }
 
 

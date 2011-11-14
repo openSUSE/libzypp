@@ -218,7 +218,7 @@ namespace zypp
     {
       std::vector<std::string> words;
       str::split( devices, std::back_inserter(words), "," );
-      for_( it, words )
+      for_each_( it, words )
       {
 	const std::string & device( *it );
 	if ( device.empty() )
@@ -372,7 +372,7 @@ namespace zypp
 	}
 	else
 	{
-	  for_( it, detected )
+	  for_each_( it, detected )
 	  {
 	    // /dev/cdrom or /dev/dvd to the front
 	    if ( media.equals( *it ) )
@@ -455,7 +455,7 @@ namespace zypp
 	if ( detected.empty() )
 	  valid = true;	// better try this than nothing
 	else
-	  for_( it, detected )
+	  for_each_( it, detected )
 	  {
 	    if ( temp.equals( *it ) )
 	    {
@@ -819,7 +819,7 @@ namespace zypp
       // This also fills the _devices list on demand
       detectDevices( _url.getScheme() == "dvd" ? true : false );
 
-    for_( it, _devices )
+    for_each_( it, _devices )
       devices.push_back( (*it).name );
 
     index = ( _lastdev >= 0  ? (unsigned)_lastdev : 0 );

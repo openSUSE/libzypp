@@ -24,6 +24,35 @@ namespace zypp
   namespace filesystem
   { /////////////////////////////////////////////////////////////////
 
+    //////////////////////////////////////////////////////////////////
+    namespace
+    {
+      // Lambda handling the "/.." case:
+      // []      + "/.."  ==> []
+      // [.]     + "/.."  ==> [./..]
+      // [foo]   is always [./foo] due to init above
+      // [*/..]  + "/.."  ==> [*/../..]
+      // [*/foo] + "/.."  ==> [*]
+      inline void goParent_fnc( string & name_t )
+      {
+	if ( name_t.empty() )
+	  /*NOOP*/;
+	else if ( name_t.size() == 1 ) // content is '.'
+	  name_t += "/..";
+	else
+	{
+	  std::string::size_type pos = name_t.rfind( "/" );
+	  if ( pos == name_t.size() - 3 && name_t[pos+1] == '.' && name_t[pos+2] == '.' )
+	    name_t += "/..";
+	  else
+	    name_t.erase( pos );
+	}
+      };
+
+    } // namespace
+    //////////////////////////////////////////////////////////////////
+
+
     ///////////////////////////////////////////////////////////////////
     //
     //	METHOD NAME : Pathname::_assign
@@ -59,23 +88,12 @@ namespace zypp
       // [foo]   is always [./foo] due to init above
       // [*/..]  + "/.."  ==> [*/../..]
       // [*/foo] + "/.."  ==> [*]
-      auto goParent_f =  [&](){
-	if ( name_t.empty() )
-	  /*NOOP*/;
-	else if ( name_t.size() == 1 ) // content is '.'
-	  name_t += "/..";
-	else
-	{
-	  std::string::size_type pos = name_t.rfind( "/" );
-	  if ( pos == name_t.size() - 3 && name_t[pos+1] == '.' && name_t[pos+2] == '.' )
-	    name_t += "/..";
-	  else
-	    name_t.erase( pos );
-	}
-      };
+#define goParent_f() goParent_fnc( name_t )
 
-      for ( auto ch : name_tv )
+      for_each_( it, name_tv )
       {
+	const char ch( *it );
+
 	switch ( ch )
 	{
 	  case '/':

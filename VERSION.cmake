@@ -45,8 +45,18 @@
 # ==================================================
 
 #=======
-# - Update version according to your changes.
-#   On a maintainance branch each submission might get published.
+# - MOST IMPORTANT:
+#   - Before you submitt to git:
+#     - Remember the new version in 'LAST RELEASED:'
+#     - State the new version in the changes file by adding a line
+#       "- version MAJOR.MINOR.PATCH (COMPATMINOR)"
+#     - Commit changes and version files together in a separate
+#       commit using -m 'changes MAJOR.MINOR.PATCH (COMPATMINOR)'
+#     - Tag the above commit with 'MAJOR.MINOR.PATCH' using
+#       -m "tagging MAJOR.
+#
+# - Consider calling ./mkChangelog to assist you.
+#   See './mkChangelog -h' for help.
 #
 SET(LIBZYPP_MAJOR "5")
 SET(LIBZYPP_COMPATMINOR "23")

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 29 14:49:00 CET 2011 - ma@suse.de
+
+- Fix and optimize Pathname ctor and provide testcases (bnc#721128)
+- version 6.37.4 (31)
+
+-------------------------------------------------------------------
 Thu Oct 13 12:24:07 CEST 2011 - ma@suse.de
 
 - Must not differ between type nfs and nfs4 when checking the mount 

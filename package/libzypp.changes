@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 29 12:52:13 CET 2011 - ma@suse.de
+
+- Fix and optimize Pathname ctor and provide testcases (bnc#721128)
+- version 9.11.4 (8)
+
+-------------------------------------------------------------------
 Mon Nov 14 10:53:49 CET 2011 - ma@suse.de
 
 - Try to find and use some CD/DVD device even if HAL/UDEV detection 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec  8 11:29:36 CET 2011 - ma@suse.de
+
+- Set min_curl_version 7.19.4 (bnc#735284)
+- version 9.11.5 (8)
+
+-------------------------------------------------------------------
 Tue Nov 29 12:52:13 CET 2011 - ma@suse.de
 
 - Fix and optimize Pathname ctor and provide testcases (bnc#721128)

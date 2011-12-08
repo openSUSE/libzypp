@@ -1,17 +1,23 @@
 #
 # spec file for package libzypp
 #
-# Copyright (c) 2007 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# Copyright (c) 2005-2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
 # norootforbuild
 
 Name:           @PACKAGE@
-License:        GPLv2
+License:        GPLv2+
 Group:          System/Packages
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Summary:        Package, Patch, Pattern, and Product Management
@@ -67,7 +73,7 @@ BuildRequires:  libexpat-devel
 BuildRequires:  expat-devel
 %endif
 
-Requires:	rpm
+Requires:       rpm
 
 %if 0%{?suse_version}
 BuildRequires:  rpm-devel
@@ -96,21 +102,7 @@ Requires:       gpg2
 Requires:       gnupg2
 %endif
 
-%define min_aria_version 1.1.2
-# ---------------------------------------------------------------
-%if 0%{?suse_version} >= 1110
-# (almost) common codebase, but on SLES11-SP1 (according to Rudi
-# suse_version == 1110) we have a patched libcurl-7.19.0-11.22,
-# and no aria2. Furthermore SLE may use it's own set of .po files
-# from po/sle-zypp-po.tar.bz2.
-
-# this check should use 7.19.0 if SLE and 7.19.4 if not (backported
-# CURLOPT_REDIR_PROTOCOLS)
-%define min_curl_version 7.19.0-11.22
-%endif
-
-# ---------------------------------------------------------------
-
+%define min_curl_version 7.19.4
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1100
 # Code11+
@@ -141,6 +133,7 @@ Authors:
     Ladislav Slezak <lslezak@suse.cz>
 
 %package devel
+License:        GPLv2+
 Requires:       libzypp = %{version}
 Requires:       libxml2-devel
 Requires:       openssl-devel
@@ -160,14 +153,14 @@ Requires:       cmake
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1100
 # Code11+
-Requires:  libcurl-devel >= %{min_curl_version}
+Requires:       libcurl-devel >= %{min_curl_version}
 %else
 # Code10
-Requires:  curl-devel
+Requires:       curl-devel
 %endif
 %else
 # Other distros (Fedora)
-Requires:  libcurl-devel >= %{min_curl_version}
+Requires:       libcurl-devel >= %{min_curl_version}
 %endif
 %if 0%{?suse_version} >= 1100
 %requires_ge    libsatsolver-devel

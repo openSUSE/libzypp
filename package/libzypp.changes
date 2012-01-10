@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 10 18:46:33 CET 2012 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Tue Nov 29 14:49:00 CET 2011 - ma@suse.de
 
 - Fix and optimize Pathname ctor and provide testcases (bnc#721128)

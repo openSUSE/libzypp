@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 10 18:43:35 CET 2012 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Thu Oct 13 13:39:33 CEST 2011 - ma@suse.de
 
 - Must not differ between type nfs and nfs4 when checking the mount 

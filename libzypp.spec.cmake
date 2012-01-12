@@ -40,7 +40,7 @@ BuildRequires:  cmake
 BuildRequires:  openssl-devel
 BuildRequires:  boost-devel dejagnu doxygen gcc-c++ gettext-devel graphviz hal-devel libxml2-devel
 
-BuildRequires:  libsatsolver-devel >= 0.14.13
+BuildRequires:  libsatsolver-devel >= 0.14.19
 %if 0%{?suse_version} >= 1100
 %requires_eq    satsolver-tools
 %else

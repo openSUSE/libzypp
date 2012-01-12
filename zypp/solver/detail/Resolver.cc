@@ -270,7 +270,7 @@ void Resolver::solverInit()
     _satResolver->setAllowuninstall		( forceResolve() );
     _satResolver->setUpdatesystem		(false);
     _satResolver->setNoupdateprovide		(false);
-    _satResolver->setDosplitprovides		(false);
+    _satResolver->setDosplitprovides		(true);
     _satResolver->setSolveSrcPackages		( solveSrcPackages() );
 
     _satResolver->setDistupgrade		(_upgradeMode);
@@ -281,7 +281,6 @@ void Resolver::solverInit()
       _satResolver->setAllowdowngrade			(true);
       _satResolver->setAllowarchchange			(true);
       _satResolver->setAllowvendorchange		(true);
-      _satResolver->setDosplitprovides			(true);
     }
 
     // Resetting additional solver information

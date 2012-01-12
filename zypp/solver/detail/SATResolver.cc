@@ -820,7 +820,7 @@ void SATResolver::doUpdate()
     _solv->allowuninstall = _allowuninstall;
     _solv->allowarchchange = _allowarchchange;
     _solv->allowvendorchange = _allowvendorchange;
-    _solv->dosplitprovides = true;
+    _solv->dosplitprovides = _dosplitprovides;
     _solv->noupdateprovide = _noupdateprovide;
     _solv->dontinstallrecommended = _onlyRequires;
     _solv->distupgrade = _distupgrade;

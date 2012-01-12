@@ -57,7 +57,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libproxy-devel
 BuildRequires:  pkg-config
 
-BuildRequires:  libsatsolver-devel >= 0.14.17
+BuildRequires:  libsatsolver-devel >= 0.17.4
 %if 0%{?suse_version} >= 1100
 %requires_eq    satsolver-tools
 %else

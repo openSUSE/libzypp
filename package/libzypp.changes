@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 12 13:01:45 CET 2012 - ma@suse.de
+
+- change splitprovides so that they only work on packages that are 
+  to be updated (bnc#740982)
+- version 6.37.5 (31)
+
+-------------------------------------------------------------------
 Tue Jan 10 19:01:03 CET 2012 - ma@suse.de
 
 - Update zypp-po.tar.bz2

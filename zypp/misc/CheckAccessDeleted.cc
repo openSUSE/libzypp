@@ -10,10 +10,9 @@
  *
 */
 #include <iostream>
-#include <unordered_map>
-#include <unordered_set>
 #include "zypp/base/LogTools.h"
 #include "zypp/base/String.h"
+#include "zypp/base/Tr1hash.h"
 #include "zypp/base/Exception.h"
 
 #include "zypp/PathInfo.h"
@@ -43,7 +42,7 @@ namespace zypp
     /////////////////////////////////////////////////////////////////
 
     /** lsof output line + files extracted so far for this PID */
-    typedef std::pair<std::string,std::unordered_set<std::string>> CacheEntry;
+    typedef std::pair<std::string,std::tr1::unordered_set<std::string> > CacheEntry;
 
     /** Add \c cache to \c data if the process is accessing deleted files.
      * \c pid string in \c cache is the proc line \c (pcuLR), \c iles
@@ -51,7 +50,7 @@ namespace zypp
     */
     inline void addDataIf( std::vector<CheckAccessDeleted::ProcInfo> & data_r, const CacheEntry & cache_r )
     {
-      const auto & filelist( cache_r.second );
+      const std::tr1::unordered_set<std::string> & filelist( cache_r.second );
 
       if ( filelist.empty() )
         return;
@@ -208,9 +207,9 @@ namespace zypp
     }
 
     std::vector<ProcInfo> data;
-    for ( const auto & cached : cachemap )
+    for ( it, cachemap.begin(), cachemap.end() )
     {
-      addDataIf( data, cached.second );
+      addDataIf( data, (*it).second );
     }
     _data.swap( data );
     return _data.size();

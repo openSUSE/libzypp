@@ -207,7 +207,7 @@ namespace zypp
     }
 
     std::vector<ProcInfo> data;
-    for ( it, cachemap.begin(), cachemap.end() )
+    for_( it, cachemap.begin(), cachemap.end() )
     {
       addDataIf( data, (*it).second );
     }

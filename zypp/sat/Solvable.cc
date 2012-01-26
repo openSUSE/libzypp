@@ -222,7 +222,6 @@ namespace zypp
               repository().info().setProbedType( repo::RepoType::YAST2_e );
               path = datadir.begin().asString();
             }
-            path = datadir.empty() ? "suse" : datadir.begin().c_str();
           }
           break;
 

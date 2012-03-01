@@ -1401,7 +1401,7 @@ void SATResolver::setLocks()
     for (PoolItemList::const_iterator iter = _items_to_keep.begin(); iter != _items_to_keep.end(); ++iter) {
 	if (iter->status().isInstalled()) {
 	    MIL << "Keep installed item " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_INSTALL_SOLVABLE | SOLVER_WEAK );
+	    queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE | SOLVER_WEAK );
 	    queue_push( &(_jobQueue), (*iter)->satSolvable().id() );
 	} else {
 	    IdString ident( (*iter)->satSolvable().ident() );

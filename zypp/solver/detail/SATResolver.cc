@@ -626,7 +626,7 @@ SATResolver::solverInit(const PoolItemList & weakItems)
     // Add rules for parallel installable resolvables with different versions
     for_( it, sat::Pool::instance().multiversionBegin(), sat::Pool::instance().multiversionEnd() )
     {
-      queue_push( &(_jobQueue), SOLVER_NOOBSOLETES | SOLVABLE_NAME );
+      queue_push( &(_jobQueue), SOLVER_NOOBSOLETES | SOLVER_SOLVABLE_NAME );
       queue_push( &(_jobQueue), it->id() );
     }
 
@@ -1404,7 +1404,7 @@ void SATResolver::setLocks()
 	    MIL << "Keep NOT installed name " << ident << " (" << *iter << ")" << endl;
 	    if ( unifiedByName.insert( ident ).second )
 	    {
-	      queue_push( &(_jobQueue), SOLVER_ERASE_SOLVABLE | SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
+	      queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
 	      queue_push( &(_jobQueue), ident.id() );
 	    }
 	}
@@ -1439,7 +1439,7 @@ void SATResolver::setSystemRequirements()
         if ( (*it)->isSystem() )
         {
           Capability archrule( (*it)->arch(), rpm.c_str(), Capability::PARSED );
-          queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVABLE_NAME | SOLVER_ESSENTIAL );
+          queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_ESSENTIAL );
           queue_push( &(_jobQueue), archrule.id() );
 
         }

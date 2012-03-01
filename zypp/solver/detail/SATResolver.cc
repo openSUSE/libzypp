@@ -1390,7 +1390,7 @@ void SATResolver::setLocks()
 	    MIL << "Keep NOT installed name " << ident << " (" << *iter << ")" << endl;
 	    if ( unifiedByName.insert( ident ).second )
 	    {
-	      queue_push( &(_jobQueue), SOLVER_ERASE_SOLVABLE | SOLVABLE_NAME | SOLVER_WEAK );
+	      queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK );
 	      queue_push( &(_jobQueue), ident.id() );
 	    }
 	}
@@ -1425,7 +1425,7 @@ void SATResolver::setSystemRequirements()
         if ( (*it)->isSystem() )
         {
           Capability archrule( (*it)->arch(), rpm.c_str(), Capability::PARSED );
-          queue_push( &(_jobQueue), SOLVER_INSTALL|SOLVABLE_NAME|SOLVER_ESSENTIAL );
+          queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_ESSENTIAL );
           queue_push( &(_jobQueue), archrule.id() );
 
         }

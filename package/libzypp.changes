@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar  1 18:31:03 CET 2012 - ma@suse.de
+
+- Apply soft locks by name and not per package (bnc#749418)
+- version 8.13.3 (10)
+
+-------------------------------------------------------------------
 Mon Jan 16 16:28:21 CET 2012 - ma@suse.de
 
 - CheckAccessDeleted: avoid duplicate entries for the same PID (bnc#716972)

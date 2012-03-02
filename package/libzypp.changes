@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar  2 09:40:23 CET 2012 - ma@suse.de
+
+- Apply soft locks by name and not per package (bnc#749418)
+- version 7.9.11 (6)
+
+-------------------------------------------------------------------
 Tue Jan 10 18:43:35 CET 2012 - ma@suse.de
 
 - Update zypp-po.tar.bz2

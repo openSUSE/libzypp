@@ -594,6 +594,7 @@ void MediaCurl::setupEasy()
     if ( ! _settings.proxy().empty() )
     {
       SET_OPTION(CURLOPT_PROXY, _settings.proxy().c_str());
+      SET_OPTION(CURLOPT_PROXYAUTH, CURLAUTH_BASIC|CURLAUTH_DIGEST|CURLAUTH_NTLM );
       /*---------------------------------------------------------------*
         CURLOPT_PROXYUSERPWD: [user name]:[password]
 

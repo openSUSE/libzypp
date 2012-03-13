@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 13 12:23:28 CET 2012 - ma@suse.de
+
+- Force libproxy into using "/etc/sysconfig/proxy" if it exists (bnc#679322)
+- Correctly use user:pass directly embedded in a proxy url (bnc#740764)
+- version 8.13.4 (10)
+
+-------------------------------------------------------------------
 Thu Mar  1 18:31:03 CET 2012 - ma@suse.de
 
 - Apply soft locks by name and not per package (bnc#749418)

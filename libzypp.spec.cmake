@@ -200,8 +200,8 @@ unset EXTRA_CMAKE_OPTIONS
 %if 0%{?suse_version} == 1110
 if [ -f ../po/sle-zypp-po.tar.bz ]; then
   export TRANSLATION_SET=sle-zypp
-  export EXTRA_CMAKE_OPTIONS="-DDISABLE_LIBPROXY=ON"
 fi
+export EXTRA_CMAKE_OPTIONS="-DDISABLE_LIBPROXY=ON"
 %endif
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       -DDOC_INSTALL_DIR=%{_docdir} \

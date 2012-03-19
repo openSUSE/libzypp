@@ -54,7 +54,10 @@ BuildRequires:  gcc-c++
 BuildRequires:  gettext-devel
 BuildRequires:  graphviz
 BuildRequires:  libxml2-devel
+%if 0%{?suse_version} != 1110
+# No libproxy on SLES
 BuildRequires:  libproxy-devel
+%endif
 BuildRequires:  pkg-config
 
 BuildRequires:  libsatsolver-devel >= 0.17.4

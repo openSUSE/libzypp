@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 20 10:35:53 CET 2012 - ma@suse.de
+
+- Parse proxy user/pass from url (bnc#752497)
+- version 10.3.10 (3)
+
+-------------------------------------------------------------------
 Tue Mar 13 12:45:59 CET 2012 - ma@suse.de
 
 - Force libproxy into using "/etc/sysconfig/proxy" if it exists (bnc#679322)

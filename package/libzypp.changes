@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 14:19:57 CET 2012 - ma@suse.de
+
+- Show max support status if package is in multiple repos (bnc#735841)
+- version 9.11.13 (8)
+
+-------------------------------------------------------------------
 Tue Mar 20 10:32:09 CET 2012 - ma@suse.de
 
 - Parse proxy user/pass from url (bnc#752497)

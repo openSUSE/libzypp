@@ -52,14 +52,20 @@ namespace zypp
 
     VendorSupportOption ret( VendorSupportUnknown );
     // max over all identical packages
-    for ( const auto & solv : sat::WhatProvides( (Capability(ident().id())) ) )
+    sat::WhatProvides pkgs( (Capability(ident().id())) );
+    for_( it, pkgs.begin(), pkgs.end() )
     {
+      sat::Solvable solv( *it );
+
       if ( solv.edition() == edition()
 	&& solv.ident() == ident()
 	&& identical( solv ) )
       {
-	for ( PackageKeyword kw : Keywords( sat::SolvAttr::keywords, solv ) )
+	Keywords kwds( sat::SolvAttr::keywords, solv );
+	for_( kit, kwds.begin(), kwds.end() )
 	{
+	  PackageKeyword kw( *kit );
+
 	  switch ( ret )
 	  {
 	    case VendorSupportUnknown:

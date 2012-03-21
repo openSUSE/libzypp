@@ -1,6 +1,7 @@
 //
 // tests for Flags
 //
+#include <iostream>
 #include <boost/test/auto_unit_test.hpp>
 #include "zypp/base/Logger.h"
 #include "zypp/base/Flags.h"

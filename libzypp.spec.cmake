@@ -156,6 +156,7 @@ Authors:
 %setup -q
 
 %build
+%define use_translation_set sle-zypp
 mkdir build
 cd build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -312,6 +313,11 @@ rm -rf "$RPM_BUILD_ROOT"
 %{prefix}/bin/*
 %{_libdir}/libzypp*so.*
 %doc %_mandir/man5/locks.5.*
+%if 0%{?suse_version} < 1100
+# building on Code10: add locale directories _NOT_ owned by Code10 filesystem
+%dir %{prefix}/share/locale/si
+%dir %{prefix}/share/locale/si/LC_MESSAGES
+%endif
 
 %files devel
 %defattr(-,root,root)

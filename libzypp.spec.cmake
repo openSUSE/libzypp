@@ -156,7 +156,6 @@ Authors:
 %setup -q
 
 %build
-%define use_translation_set sle-zypp
 mkdir build
 cd build
 export CFLAGS="$RPM_OPT_FLAGS"

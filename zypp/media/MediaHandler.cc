@@ -398,7 +398,7 @@ MediaHandler::createAttachPoint(const Pathname &attach_root) const
     DBG << "Look for orphaned attach points in " << adir << std::endl;
     std::list<std::string> entries;
     filesystem::readdir( entries, attach_root, false );
-    for_each( it, entries )
+    for_each_( it, entries )
     {
       const std::string & entry( *it );
 

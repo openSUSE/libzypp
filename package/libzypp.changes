@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 28 10:54:48 CEST 2012 - ma@suse.de
+
+- Don't cache defaultCandidate as it depends on solver::allowVendorChange flag (bnc#754286)
+- Cleanup orphaned media attach points (bnc#751221)
+- version 9.12.0 (8)
+
+-------------------------------------------------------------------
 Wed Mar 21 14:19:57 CET 2012 - ma@suse.de
 
 - Show max support status if package is in multiple repos (bnc#735841)

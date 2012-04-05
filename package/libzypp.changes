@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr  5 16:44:19 CEST 2012 - ma@suse.de
+
+- Support (source)package download by non-root user (bnc#755239)
+- Fix buddy handling in solver results
+- version 10.4.1 (3)
+
+-------------------------------------------------------------------
 Thu Apr  5 10:02:05 CEST 2012 - ma@suse.de
 
 - Update zypp-po.tar.bz2

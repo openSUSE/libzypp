@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr  5 10:02:05 CEST 2012 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Wed Mar 28 10:58:33 CEST 2012 - ma@suse.de
 
 - Don't cache defaultCandidate as it depends on solver::allowVendorChange flag (bnc#754286)

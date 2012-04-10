@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 10 12:04:52 CEST 2012 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Thu Apr  5 16:44:19 CEST 2012 - ma@suse.de
 
 - Support (source)package download by non-root user (bnc#755239)

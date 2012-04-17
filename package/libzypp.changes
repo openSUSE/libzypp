@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Apr 17 17:57:34 CEST 2012 - ma@suse.de
+
+- Try to create a missing destination dir before switching to tmp 
+  space (bnc#755239)
+- version 10.4.2 (3)
+
+-------------------------------------------------------------------
 Tue Apr 10 12:04:52 CEST 2012 - ma@suse.de
 
 - Update zypp-po.tar.bz2

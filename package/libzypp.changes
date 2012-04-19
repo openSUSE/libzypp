@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 19 10:26:56 CEST 2012 - ma@suse.de
+
+- Always consider (block) devices passed as url option (bnc#755815)
+- version 10.4.3 (3)
+
+-------------------------------------------------------------------
 Tue Apr 17 17:57:34 CEST 2012 - ma@suse.de
 
 - Try to create a missing destination dir before switching to tmp 

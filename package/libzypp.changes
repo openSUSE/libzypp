@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 19 10:41:09 CEST 2012 - ma@suse.de
+
+- Always consider (block) devices passed as url option (bnc#755815)
+- Fix buddy handling in solver results
+- version 9.12.1 (8)
+
+-------------------------------------------------------------------
 Wed Mar 28 10:54:48 CEST 2012 - ma@suse.de
 
 - Don't cache defaultCandidate as it depends on solver::allowVendorChange flag (bnc#754286)

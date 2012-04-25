@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 25 21:27:36 CEST 2012 - ma@suse.de
+
+- Fix lost device info when changeing CD/DVD (bnc#755815)
+- version 9.12.2 (8)
+
+-------------------------------------------------------------------
 Thu Apr 19 10:41:09 CEST 2012 - ma@suse.de
 
 - Always consider (block) devices passed as url option (bnc#755815)

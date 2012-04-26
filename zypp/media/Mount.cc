@@ -315,6 +315,16 @@ Mount::getEntries(const std::string &mtab)
             ent.mnt_freq,   ent.mnt_passno
           );
 
+	  // Attempt quick fix for bnc#710269:
+	  // MountEntry is "//dist/install/ on /var/adm/mount/AP_0x00000001 type cifs (ro,relatime,unc=\dist\install,username=,domain=suse.de"
+	  // but looking for "Looking for media(cifs<//dist/install>)attached(*/var/adm/mount/AP_0x00000001)"
+	  // Kick the trailing '/' in "//dist/install/"
+	  // TODO: Check and fix comparison in MediaHandler::checkAttached instead.
+	  if ( entry.src.size() > 1	// not for "/"
+	       && entry.src[entry.src.size()-1] == '/' )
+	  {
+	    entry.src.erase( entry.src.size()-1 );
+	  }
           entries.push_back(entry);
 
           memset(buf,  0, sizeof(buf));

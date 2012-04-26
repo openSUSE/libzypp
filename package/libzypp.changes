@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 26 09:29:48 CEST 2012 - ma@suse.de
+
+- Fix mount entry comparison (bnc#710269)
+- version 8.13.5 (10)
+
+-------------------------------------------------------------------
 Tue Mar 13 12:23:28 CET 2012 - ma@suse.de
 
 - Force libproxy into using "/etc/sysconfig/proxy" if it exists (bnc#679322)

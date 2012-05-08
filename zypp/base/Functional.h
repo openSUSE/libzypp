@@ -13,7 +13,6 @@
 #define ZYPP_BASE_FUNCTIONAL_H
 
 #include <boost/functional.hpp>
-
 #include "zypp/base/Function.h"
 
 ///////////////////////////////////////////////////////////////////

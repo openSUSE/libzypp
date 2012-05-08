@@ -20,11 +20,12 @@ Permission is granted to anyone to use this software for any purpose, including 
 #define IOBIND_XML_ESCAPE_PARSER_HPP
 
 #include<string>
+#include "zypp/macros.h"
 
 namespace iobind{
 namespace parser{
 
-	struct xml_escape_parser
+	struct ZYPP_EXPORT xml_escape_parser
 	{
 		std::string escape( std::string const&) const;
 		std::string unescape( std::string const&) const;

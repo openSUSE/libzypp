@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/parser/xml/libxmlfwd.h"
@@ -37,7 +38,7 @@ namespace zypp
      * be freed. If the wraped <tt>xmlChar *</tt> needs to be freed by
      * calling \c xmlFree, pass \c FREE as 2nd argument to the ctor.
      **/
-    class XmlString
+    class ZYPP_EXPORT XmlString
     {
       /** shared_ptr custom deleter calling \c xmlFree. */
       struct Deleter
@@ -107,7 +108,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates XmlString Stream output. */
-    std::ostream & operator<<( std::ostream & str, const XmlString & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const XmlString & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace xml

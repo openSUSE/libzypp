@@ -16,6 +16,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/Deprecated.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
@@ -55,7 +56,7 @@ namespace zypp
    * \ingroup ZyppConfig
    * \ingroup Singleton
   */
-  class ZConfig : private base::NonCopyable
+  class ZYPP_EXPORT ZConfig : private base::NonCopyable
   {
     public:
 

@@ -15,6 +15,7 @@
 #include <string>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 
 namespace zypp {
@@ -26,7 +27,7 @@ namespace zypp {
     ///////////////////////////////////////////////////////////////////
     //
     //	CLASS NAME : ProxyInfo
-    class ProxyInfo
+    class ZYPP_EXPORT ProxyInfo
     {
     public:
       typedef intrusive_ptr<ProxyInfo> Ptr;

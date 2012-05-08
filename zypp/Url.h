@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_H
 #define   ZYPP_URL_H
 
+#include "zypp/macros.h"
 #include "zypp/url/UrlBase.h"
 #include "zypp/url/UrlUtils.h"
 
@@ -84,7 +85,7 @@ namespace zypp
    * \endcode
    *
    */
-  class Url
+  class ZYPP_EXPORT Url
   {
   public:
     /**
@@ -819,20 +820,20 @@ namespace zypp
     url::UrlRef m_impl;
   };
 
-  std::ostream & operator<<( std::ostream & str, const Url & url );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Url & url );
 
   /**
    * needed for std::set
    */
-  bool operator<( const Url &lhs, const Url &rhs );
+  ZYPP_EXPORT bool operator<( const Url &lhs, const Url &rhs );
 
   /**
    * needed for find
    */
-  bool operator==( const Url &lhs, const Url &rhs );
+  ZYPP_EXPORT bool operator==( const Url &lhs, const Url &rhs );
 
 
-  bool operator!=( const Url &lhs, const Url &rhs );
+  ZYPP_EXPORT bool operator!=( const Url &lhs, const Url &rhs );
 
   ////////////////////////////////////////////////////////////////////
 } // namespace zypp

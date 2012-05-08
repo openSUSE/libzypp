@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/base/PtrTypes.h"
 
@@ -36,7 +37,7 @@ namespace zypp {
      *
      * Principally serves as base class, but standalone usable.
      **/
-    class TmpPath
+    class ZYPP_EXPORT TmpPath
     {
       public:
         /**
@@ -123,7 +124,7 @@ namespace zypp {
      * TmpFile provides the Pathname of the temporary file, or an empty
      * path in case of any error.
      **/
-    class TmpFile : public TmpPath
+    class ZYPP_EXPORT TmpFile : public TmpPath
     {
       public:
         /**
@@ -167,7 +168,7 @@ namespace zypp {
      * TmpDir provides the Pathname of the temporary directory , or an empty
      * path in case of any error.
      **/
-    class TmpDir : public TmpPath
+    class ZYPP_EXPORT TmpDir : public TmpPath
     {
       public:
         /**

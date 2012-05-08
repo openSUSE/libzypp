@@ -1,6 +1,7 @@
 #ifndef ZYPP_MEDIA_CURLRCONFIG_H_
 #define ZYPP_MEDIA_CURLRCONFIG_H_
 
+#include "zypp/macros.h"
 //#include "zypp/base/NonCopyable.h"
 #include "zypp/base/String.h"
 
@@ -13,7 +14,7 @@ namespace zypp
   /**
    * Structure holding values of curlrc options.
    */
-  struct CurlConfig
+  struct ZYPP_EXPORT CurlConfig
   {
   public:
     /**

@@ -16,6 +16,7 @@
 #include <string>
 #include <functional>
 
+#include "zypp/macros.h"
 #include "zypp/IdStringType.h"
 #include "zypp/RelCompare.h"
 #include "zypp/Range.h"
@@ -57,7 +58,7 @@ namespace zypp
    *
    * \ingroup g_BackendSpecific
   */
-  class Edition : public IdStringType<Edition>
+  class ZYPP_EXPORT Edition : public IdStringType<Edition>
   {
     public:
       /** Type of an epoch. */

@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/Iterator.h"
@@ -57,7 +58,7 @@ namespace zypp
    *
    * \todo Support arbitrary Predicates.
    */
-  class PoolItemBest
+  class ZYPP_EXPORT PoolItemBest
   {
       typedef std::tr1::unordered_map<IdString,PoolItem> Container;
     public:
@@ -147,7 +148,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates PoolItemBest Stream output */
-  std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

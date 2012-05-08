@@ -12,6 +12,7 @@
 #ifndef zypp_source_yum_RepoindexFileReader_H
 #define zypp_source_yum_RepoindexFileReader_H
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/Function.h"
@@ -40,7 +41,7 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1) );
    * \endcode
    */
-  class RepoindexFileReader : private base::NonCopyable
+  class ZYPP_EXPORT RepoindexFileReader : private base::NonCopyable
   {
   public:
    /**

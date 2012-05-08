@@ -18,6 +18,7 @@ struct _Dataiterator;
 }
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/DefaultIntegral.h"
 
@@ -108,7 +109,7 @@ namespace zypp
      *  }
      * \endcode
      */
-    class LookupAttr
+    class ZYPP_EXPORT LookupAttr
     {
       public:
         typedef MatchException Exception;
@@ -579,7 +580,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr::iterator Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
 
     ///////////////////////////////////////////////////////////////////
 

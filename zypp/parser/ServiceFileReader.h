@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProgressData.h"
 #include "zypp/Pathname.h"
@@ -40,7 +41,7 @@ namespace zypp
      *                bind( &SomeClass::callbackfunc, &SomeClassInstance, _1 ) );
      * \endcode
      */
-    class ServiceFileReader
+    class ZYPP_EXPORT ServiceFileReader
     {
       friend std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
     public:
@@ -79,7 +80,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates ServiceFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace parser

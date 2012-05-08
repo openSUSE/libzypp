@@ -13,6 +13,7 @@
 #define ZYPP_MEDIA_MEDIAPRIORITY_H
 
 #include <string>
+#include "zypp/macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -40,7 +41,7 @@ namespace zypp
      *
      * \todo Maybe introduce a static tribool, to allow overwriting zypp.conf(download.media_preference) default.
     */
-    class MediaPriority
+    class ZYPP_EXPORT MediaPriority
     {
       public:
 	typedef int value_type;

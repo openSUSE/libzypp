@@ -13,7 +13,7 @@
 #define   ZYPP_THREAD_ONCE_H
 
 #include <pthread.h>
-
+#include "zypp/macros.h"
 
 //////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -45,7 +45,7 @@ namespace zypp
      * to indicate that the function has been run.
      * Subsequent calls with the same once flag does nothing.
      */
-    void callOnce(OnceFlag& flag, void (*func)());
+    ZYPP_EXPORT void callOnce(OnceFlag& flag, void (*func)());
 
     inline void callOnce(OnceFlag& flag, void (*func)())
     {

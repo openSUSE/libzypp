@@ -17,6 +17,7 @@
 #include <list>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/base/Tr1hash.h"
 
@@ -37,7 +38,7 @@ namespace zypp
     class PoolImpl;
 
     /** Pool internal filter skiping invalid/unwanted PoolItems. */
-    struct ByPoolItem
+    struct ZYPP_EXPORT ByPoolItem
     {
       bool operator()( const PoolItem & pi ) const
       { return pi; }
@@ -62,7 +63,7 @@ namespace zypp
     //	CLASS NAME : PoolTraits
     //
     /** */
-    struct PoolTraits
+    struct ZYPP_EXPORT PoolTraits
     {
     public:
       typedef sat::detail::SolvableIdType		SolvableIdType;

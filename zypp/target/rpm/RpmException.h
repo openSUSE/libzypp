@@ -16,6 +16,7 @@
 
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 #include "zypp/Url.h"
@@ -34,7 +35,7 @@ namespace rpm
 /** Just inherits Exception to separate media exceptions
  *
  **/
-class RpmException : public Exception
+class ZYPP_EXPORT RpmException : public Exception
 {
 public:
   /** Ctor taking message.

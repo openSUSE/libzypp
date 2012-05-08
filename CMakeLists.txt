@@ -29,8 +29,8 @@ include(CheckCXXCompilerFlag)
 CHECK_C_COMPILER_FLAG("-Werror=format-security" CC_FORMAT_SECURITY)
 CHECK_CXX_COMPILER_FLAG("-Werror=format-security" CXX_FORMAT_SECURITY)
 
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden -fno-strict-aliasing -fPIC -g -Wall -Woverloaded-virtual -Wnon-virtual-dtor -Wl,-as-needed -std=c++0x" )
-SET( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fno-strict-aliasing -fPIC -g -Wall -Wl,-as-needed" )
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden -fno-strict-aliasing -fPIC -g -Wall -Woverloaded-virtual -Wnon-virtual-dtor -Wl,-as-needed -std=c++0x" )
+SET( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -fvisibility=hidden -fno-strict-aliasing -fPIC -g -Wall -Wl,-as-needed" )
 
 set( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O3" )
 set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3" )
@@ -55,8 +55,6 @@ SET( LIBZYPP_VERSION_INFO "${LIBZYPP_SO_FIRST}.${LIBZYPP_AGE}.${LIBZYPP_PATCH}" 
 SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )
 
 GENERATE_PACKAGING(${PACKAGE} ${VERSION})
-
-INCLUDE(CPack)
 
 MACRO(ADD_TESTS)
   FOREACH( loop_var ${ARGV} )

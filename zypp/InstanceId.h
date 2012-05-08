@@ -14,6 +14,7 @@
 
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/PoolItem.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -43,7 +44,7 @@ namespace zypp
    *   }
    * \endcode
    */
-  class InstanceId
+  class ZYPP_EXPORT InstanceId
   {
     public:
       /** Default ctor empty empty namespace */

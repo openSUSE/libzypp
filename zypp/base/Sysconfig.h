@@ -14,13 +14,14 @@
 
 #include <string>
 #include <map>
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 
 namespace zypp {
   namespace base {
     namespace sysconfig {
 
-      std::map<std::string,std::string> read( const Pathname & _path );
+      ZYPP_EXPORT std::map<std::string,std::string> read( const Pathname & _path );
 
     } // namespace sysconfig
   } // namespace base

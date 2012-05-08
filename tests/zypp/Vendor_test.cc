@@ -18,14 +18,14 @@ using namespace zypp;
 
 namespace zypp
 {
-  void reconfigureZConfig( const Pathname & );
+  void __reconfigureZConfig__( const Pathname & );
 }
 
 #define DATADIR (Pathname(TESTS_SRC_DIR) + "/zypp/data/Vendor")
 
 BOOST_AUTO_TEST_CASE(vendor_test1)
 {
-  reconfigureZConfig( DATADIR / "zypp1.conf" );
+  __reconfigureZConfig__( DATADIR / "zypp1.conf" );
   // No vendor definition files has been read. So only suse,opensuse vendors are
   // equivalent
   BOOST_REQUIRE( VendorAttr::instance().equivalent("suse", "suse") );

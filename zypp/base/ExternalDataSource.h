@@ -18,6 +18,7 @@
 #include <stdio.h>
 
 #include <string>
+#include "zypp/macros.h"
 
 namespace zypp {
   namespace externalprogram {
@@ -25,7 +26,7 @@ namespace zypp {
     /**
      * @short Bidirectional stream to external data
      */
-    class ExternalDataSource
+    class ZYPP_EXPORT ExternalDataSource
     {
     protected:
       FILE *inputfile;

@@ -13,7 +13,7 @@
 #define REPOINFOBASEIMPL_H_
 
 #include <string>
-
+#include "zypp/macros.h"
 #include "zypp/TriBool.h"
 #include "zypp/Pathname.h"
 
@@ -28,7 +28,7 @@ namespace zypp
   //
   //    CLASS NAME : RepoInfoBase::Impl
   //
-  struct RepoInfoBase::Impl
+  struct ZYPP_LOCAL RepoInfoBase::Impl
   {
     Impl()
       : enabled (indeterminate)

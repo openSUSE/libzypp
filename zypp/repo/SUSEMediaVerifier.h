@@ -10,6 +10,7 @@
 #ifndef ZYPP_SUSE_MEDIAVERIFIER_H
 #define ZYPP_SUSE_MEDIAVERIFIER_H
 
+#include "zypp/macros.h"
 #include "zypp/media/MediaManager.h"
 #include "zypp/media/MediaAccess.h"
 
@@ -21,7 +22,7 @@ namespace zypp
     /**
      * \short Implementation of the traditional SUSE media verifier
      */
-    class SUSEMediaVerifier : public zypp::media::MediaVerifierBase
+    class ZYPP_EXPORT SUSEMediaVerifier : public zypp::media::MediaVerifierBase
     {
       public:
       /**

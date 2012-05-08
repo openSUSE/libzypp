@@ -1,11 +1,12 @@
 #ifndef KEYCONTEXT_H_
 #define KEYCONTEXT_H_
 
+#include "zypp/macros.h"
 #include "zypp/RepoInfo.h"
 
 namespace zypp {
 
-  struct KeyContext
+  struct ZYPP_EXPORT KeyContext
   {
   public:
     /** Is the context unknown? */

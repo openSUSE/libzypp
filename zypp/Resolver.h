@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <functional>
 
+#include "zypp/macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/PtrTypes.h"
 
@@ -44,7 +45,7 @@ namespace zypp
    * the changes directly on the \ref PoolItem status objects,
    * call the \ref resolvePool() method.
    */
-  class Resolver : public base::ReferenceCounted, private base::NonCopyable
+  class ZYPP_EXPORT Resolver : public base::ReferenceCounted, private base::NonCopyable
   {
   public:
 
@@ -388,7 +389,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Resolver Stream output */
-  std::ostream & operator<<( std::ostream & str, const Resolver & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Resolver & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

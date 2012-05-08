@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/target/rpm/BinHeader.h"
 
 #include "zypp/Package.h"
@@ -30,7 +31,7 @@ namespace target
 namespace rpm
 {
 
-struct FileInfo
+struct ZYPP_EXPORT FileInfo
 {
   Pathname    filename;
   ByteCount   size;
@@ -58,7 +59,7 @@ struct FileInfo
  *
  * <B>NEVER create <code>RpmHeader</code> from a NULL <code>Header</code>! </B>
  **/
-class RpmHeader : public BinHeader
+class ZYPP_EXPORT RpmHeader : public BinHeader
 {
 public:
   typedef intrusive_ptr<RpmHeader> Ptr;

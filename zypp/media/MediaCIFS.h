@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIACIFS_H
 #define ZYPP_MEDIA_MEDIACIFS_H
 
+#include "zypp/macros.h"
 #include "zypp/media/MediaHandler.h"
 
 namespace zypp {
@@ -29,7 +30,7 @@ namespace zypp {
      * but passes "cifs" to the mount command in any case.
      * @see MediaHandler
      **/
-    class MediaCIFS : public MediaHandler {
+    class ZYPP_EXPORT MediaCIFS : public MediaHandler {
 
     protected:
 

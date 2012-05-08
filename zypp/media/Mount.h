@@ -19,7 +19,7 @@
 #include <map>
 #include <string>
 #include <iosfwd>
-
+#include "zypp/macros.h"
 #include "zypp/ExternalProgram.h"
 #include "zypp/KVMap.h"
 
@@ -31,7 +31,7 @@ namespace zypp {
      * A "struct mntent" like mount entry structure,
      * but using std::strings.
      */
-    struct MountEntry
+    struct ZYPP_EXPORT MountEntry
     {
         MountEntry(const std::string &source,
                    const std::string &target,
@@ -61,12 +61,12 @@ namespace zypp {
     typedef std::vector<MountEntry> MountEntries;
 
     /** \relates MountEntry Stream output */
-    std::ostream & operator<<( std::ostream & str, const MountEntry & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const MountEntry & obj );
 
     /**
      * @short Interface to the mount program
      */
-    class Mount
+    class ZYPP_EXPORT Mount
     {
     public:
 

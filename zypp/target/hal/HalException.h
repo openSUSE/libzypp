@@ -13,6 +13,7 @@
 #ifndef ZYPP_TARGET_HAL_HALEXCEPTION_H
 #define ZYPP_TARGET_HAL_HALEXCEPTION_H
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/Gettext.h"
 #include "zypp/base/String.h"
@@ -36,7 +37,7 @@ namespace zypp
       /** Hardware abstaction layer exception.
        * Just inherits Exception to separate hal exceptions.
        */
-      class HalException: public zypp::Exception
+      class ZYPP_EXPORT HalException: public zypp::Exception
       {
       public:
         /** Default constructor.

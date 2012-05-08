@@ -16,6 +16,7 @@
 #include <list>
 #include <map>
 
+#include "zypp/macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
@@ -45,7 +46,7 @@ namespace zypp
        * File and Checksum definitions required by Downloader and Parser.
        * (Do not confuse with NU's repoindex.xml)
       */
-      class RepoIndex : public base::ReferenceCounted, private base::NonCopyable
+      class ZYPP_EXPORT RepoIndex : public base::ReferenceCounted, private base::NonCopyable
       {
         friend class ContentFileReader;
 	public:

@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/PathInfo.h"
 #include "zypp/Vendor.h"
 
@@ -40,7 +41,7 @@ namespace zypp {
  *
  * \see \ref pg_zypp-solv-vendorchange
 */
-class VendorAttr
+class ZYPP_EXPORT VendorAttr
 {
   public:
     typedef std::vector<std::string> VendorList;
@@ -84,7 +85,7 @@ class VendorAttr
 };
 
 /** \relates VendorAttr Stream output */
-std::ostream & operator<<( std::ostream & str, const VendorAttr & obj );
+ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const VendorAttr & obj );
 
 ///////////////////////////////////////////////////////////////////
 }; // namespace zypp

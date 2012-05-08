@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 #include "zypp/Url.h"
@@ -31,7 +32,7 @@ namespace zypp
     /** Just inherits Exception to separate media exceptions
      *
      **/
-    class MediaException : public Exception
+    class ZYPP_EXPORT MediaException : public Exception
     {
     public:
       /** Ctor taking message.
@@ -50,7 +51,7 @@ namespace zypp
       virtual ~MediaException() throw() {};
     };
 
-    class MediaMountException : public MediaException
+    class ZYPP_EXPORT MediaMountException : public MediaException
     {
     public:
       MediaMountException()
@@ -91,7 +92,7 @@ namespace zypp
       std::string _cmdout;
     };
 
-    class MediaUnmountException : public MediaException
+    class ZYPP_EXPORT MediaUnmountException : public MediaException
     {
     public:
       /** Ctor taking message.
@@ -112,7 +113,7 @@ namespace zypp
       std::string _path;
     };
 
-    class MediaBadFilenameException : public MediaException
+    class ZYPP_EXPORT MediaBadFilenameException : public MediaException
     {
     public:
       MediaBadFilenameException(const std::string & filename_r)
@@ -127,7 +128,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaNotOpenException : public MediaException
+    class ZYPP_EXPORT MediaNotOpenException : public MediaException
     {
     public:
       MediaNotOpenException(const std::string & action_r)
@@ -141,7 +142,7 @@ namespace zypp
       std::string _action;
     };
 
-    class MediaFileNotFoundException : public MediaException
+    class ZYPP_EXPORT MediaFileNotFoundException : public MediaException
     {
     public:
       MediaFileNotFoundException(const Url & url_r,
@@ -158,7 +159,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaWriteException : public MediaException
+    class ZYPP_EXPORT MediaWriteException : public MediaException
     {
     public:
       MediaWriteException(const Pathname & filename_r)
@@ -172,7 +173,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaNotAttachedException : public MediaException
+    class ZYPP_EXPORT MediaNotAttachedException : public MediaException
     {
     public:
       MediaNotAttachedException(const Url & url_r)
@@ -186,7 +187,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaBadAttachPointException : public MediaException
+    class ZYPP_EXPORT MediaBadAttachPointException : public MediaException
     {
     public:
       MediaBadAttachPointException(const Url & url_r)
@@ -200,7 +201,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaCurlInitException : public MediaException
+    class ZYPP_EXPORT MediaCurlInitException : public MediaException
     {
     public:
       MediaCurlInitException(const Url & url_r)
@@ -214,7 +215,7 @@ namespace zypp
       std::string _url;
     };
 
-class MediaMetalinkInitException : public MediaException
+class ZYPP_EXPORT MediaMetalinkInitException : public MediaException
     {
     public:
       MediaMetalinkInitException(const Url & url_r)
@@ -228,7 +229,7 @@ class MediaMetalinkInitException : public MediaException
       std::string _url;
     };
 
-class MediaAria2cInitException : public MediaException
+    class ZYPP_EXPORT MediaAria2cInitException : public MediaException
     {
     public:
       MediaAria2cInitException(const Url & url_r)
@@ -242,7 +243,7 @@ class MediaAria2cInitException : public MediaException
       std::string _url;
     };
 
-    class MediaSystemException : public MediaException
+    class ZYPP_EXPORT MediaSystemException : public MediaException
     {
     public:
       MediaSystemException(const Url & url_r,
@@ -259,7 +260,7 @@ class MediaAria2cInitException : public MediaException
       std::string _message;
     };
 
-    class MediaNotAFileException : public MediaException
+    class ZYPP_EXPORT MediaNotAFileException : public MediaException
     {
     public:
       MediaNotAFileException(const Url & url_r,
@@ -276,7 +277,7 @@ class MediaAria2cInitException : public MediaException
       std::string _path;
     };
 
-    class MediaNotADirException : public MediaException
+    class ZYPP_EXPORT MediaNotADirException : public MediaException
     {
     public:
       MediaNotADirException(const Url & url_r,
@@ -293,7 +294,7 @@ class MediaAria2cInitException : public MediaException
       std::string _path;
     };
 
-    class MediaBadUrlException : public MediaException
+    class ZYPP_EXPORT MediaBadUrlException : public MediaException
     {
     public:
       MediaBadUrlException(const Url & url_r,
@@ -309,7 +310,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaBadUrlEmptyHostException : public MediaBadUrlException
+    class ZYPP_EXPORT MediaBadUrlEmptyHostException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyHostException(const Url & url_r)
@@ -320,7 +321,7 @@ class MediaAria2cInitException : public MediaException
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaBadUrlEmptyFilesystemException : public MediaBadUrlException
+    class ZYPP_EXPORT MediaBadUrlEmptyFilesystemException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyFilesystemException(const Url & url_r)
@@ -331,7 +332,7 @@ class MediaAria2cInitException : public MediaException
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaBadUrlEmptyDestinationException : public MediaBadUrlException
+    class ZYPP_EXPORT MediaBadUrlEmptyDestinationException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyDestinationException(const Url & url_r)
@@ -342,7 +343,7 @@ class MediaAria2cInitException : public MediaException
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaUnsupportedUrlSchemeException : public MediaBadUrlException
+    class ZYPP_EXPORT MediaUnsupportedUrlSchemeException : public MediaBadUrlException
     {
     public:
       MediaUnsupportedUrlSchemeException(const Url & url_r)
@@ -353,7 +354,7 @@ class MediaAria2cInitException : public MediaException
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaNotSupportedException : public MediaException
+    class ZYPP_EXPORT MediaNotSupportedException : public MediaException
     {
     public:
       MediaNotSupportedException(const Url & url_r)
@@ -366,7 +367,7 @@ class MediaAria2cInitException : public MediaException
       std::string _url;
     };
 
-    class MediaCurlException : public MediaException
+    class ZYPP_EXPORT MediaCurlException : public MediaException
     {
     public:
       MediaCurlException(const Url & url_r,
@@ -386,7 +387,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaCurlSetOptException : public MediaException
+    class ZYPP_EXPORT MediaCurlSetOptException : public MediaException
     {
     public:
       MediaCurlSetOptException(const Url & url_r, const std::string & msg_r)
@@ -401,7 +402,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaMetalinkException : public MediaException
+    class ZYPP_EXPORT MediaMetalinkException : public MediaException
     {
     public:
       MediaMetalinkException(const Url & url_r,
@@ -420,7 +421,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaMetalinkSetOptException : public MediaException
+    class ZYPP_EXPORT MediaMetalinkSetOptException : public MediaException
     {
     public:
       MediaMetalinkSetOptException(const Url & url_r, const std::string & msg_r)
@@ -435,7 +436,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaAria2cException : public MediaException
+    class ZYPP_EXPORT MediaAria2cException : public MediaException
     {
     public:
       MediaAria2cException(const Url & url_r,
@@ -454,7 +455,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaAria2cSetOptException : public MediaException
+    class ZYPP_EXPORT MediaAria2cSetOptException : public MediaException
     {
     public:
       MediaAria2cSetOptException(const Url & url_r, const std::string & msg_r)
@@ -469,7 +470,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaNotDesiredException : public MediaException
+    class ZYPP_EXPORT MediaNotDesiredException : public MediaException
     {
     public:
       MediaNotDesiredException(const Url & url_r)
@@ -483,7 +484,7 @@ class MediaAria2cInitException : public MediaException
       std::string  _url;
     };
 
-    class MediaIsSharedException : public MediaException
+    class ZYPP_EXPORT MediaIsSharedException : public MediaException
     {
     public:
       /**
@@ -500,7 +501,7 @@ class MediaAria2cInitException : public MediaException
       std::string _name;
     };
 
-    class MediaNotEjectedException: public MediaException
+    class ZYPP_EXPORT MediaNotEjectedException: public MediaException
     {
     public:
       MediaNotEjectedException()
@@ -519,7 +520,7 @@ class MediaAria2cInitException : public MediaException
       std::string _name;
     };
 
-    class MediaUnauthorizedException: public MediaException
+    class ZYPP_EXPORT MediaUnauthorizedException: public MediaException
     {
     public:
       MediaUnauthorizedException()
@@ -554,7 +555,7 @@ class MediaAria2cInitException : public MediaException
       std::string _hint;
     };
 
-    class MediaForbiddenException : public MediaException
+    class ZYPP_EXPORT MediaForbiddenException : public MediaException
     {
     public:
       MediaForbiddenException(const Url & url_r, const std::string & msg = "")
@@ -568,7 +569,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaTimeoutException : public MediaException
+    class ZYPP_EXPORT MediaTimeoutException : public MediaException
     {
     public:
       MediaTimeoutException(const Url & url_r, const std::string & msg = "")
@@ -583,7 +584,7 @@ class MediaAria2cInitException : public MediaException
     };
 
     /** For HTTP 503 and similar. */
-    class MediaTemporaryProblemException : public MediaException
+    class ZYPP_EXPORT MediaTemporaryProblemException : public MediaException
     {
     public:
       MediaTemporaryProblemException(const Url & url_r, const std::string & msg = "")
@@ -597,7 +598,7 @@ class MediaAria2cInitException : public MediaException
       std::string _msg;
     };
 
-    class MediaBadCAException : public MediaException
+    class ZYPP_EXPORT MediaBadCAException : public MediaException
     {
     public:
       MediaBadCAException(const Url & url_r, const std::string & msg = "")
@@ -620,7 +621,7 @@ class MediaAria2cInitException : public MediaException
      *
      * \see MediaISO
      */
-    class MediaNoLoopDeviceException : public MediaException
+    class ZYPP_EXPORT MediaNoLoopDeviceException : public MediaException
     {
     public:
       MediaNoLoopDeviceException(const Url & url_r, const std::string & msg = "")

@@ -1,6 +1,7 @@
 #ifndef ZYPP_LOCKS_H
 #define ZYPP_LOCKS_H
 
+#include "zypp/macros.h"
 #include "zypp/ResPool.h"
 #include "zypp/Pathname.h"
 #include "zypp/PoolQuery.h"
@@ -15,7 +16,7 @@ namespace zypp
    * for user information about locksfile and its format see 
    * <a>http://en.opensuse.org/Libzypp/Locksfile</a>
    */
-  class Locks
+  class ZYPP_EXPORT Locks
   {
   public:
     typedef std::list<PoolQuery> LockList;

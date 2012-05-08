@@ -12,6 +12,7 @@
 #ifndef ZYPP_BASE_FD_H
 #define ZYPP_BASE_FD_H
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ namespace zypp
      * \todo It's dumb. Openflags and more related functions (read/write..)
      * could be added.
     */
-    class Fd
+    class ZYPP_EXPORT Fd
     {
     public:
       /** Ctor opens file.

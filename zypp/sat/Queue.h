@@ -17,6 +17,7 @@ extern "C"
 }
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/sat/detail/PoolMember.h"
 
@@ -29,7 +30,7 @@ namespace zypp
 
     /** Libsolv Id queue wrapper.
      */
-    class Queue : private base::NonCopyable
+    class ZYPP_EXPORT Queue : private base::NonCopyable
     {
       public:
 	typedef unsigned size_type;
@@ -99,13 +100,13 @@ namespace zypp
     };
 
     /** \relates Queue Stream output */
-    std::ostream & operator<<( std::ostream & str, const Queue & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Queue & obj );
 
     /** \relates Queue Verbose stream output */
-    std::ostream & dumpOn( std::ostream & str, const Queue & obj );
+    ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const Queue & obj );
 
     /** \relates Queue */
-    bool operator==( const Queue & lhs, const Queue & rhs );
+    ZYPP_EXPORT bool operator==( const Queue & lhs, const Queue & rhs );
 
     /** \relates Queue */
     inline bool operator!=( const Queue & lhs, const Queue & rhs )

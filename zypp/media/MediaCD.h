@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIACD_H
 #define ZYPP_MEDIA_MEDIACD_H
 
+#include "zypp/macros.h"
 #include "zypp/media/MediaHandler.h"
 #include "zypp/media/MediaManager.h"
 
@@ -25,7 +26,7 @@ namespace zypp {
      * @short Implementation class for CD/DVD MediaHandler
      * @see MediaHandler
      **/
-    class MediaCD : public MediaHandler {
+    class ZYPP_EXPORT MediaCD : public MediaHandler {
 
       private:
         typedef std::list<MediaSource> DeviceList;

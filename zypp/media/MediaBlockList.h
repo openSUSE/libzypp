@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/Digest.h"
 
 namespace zypp {
@@ -23,7 +24,7 @@ namespace zypp {
 /**
  * a single block from the blocklist, consisting of an offset and a size
  **/
-struct MediaBlock {
+struct ZYPP_EXPORT MediaBlock {
   MediaBlock( off_t off_r, size_t size_r )
   : off( off_r )
   , size( size_r )
@@ -32,7 +33,7 @@ struct MediaBlock {
   size_t size;
 };
 
-class MediaBlockList {
+class ZYPP_EXPORT MediaBlockList {
 public:
   MediaBlockList(off_t filesize=off_t(-1));
 

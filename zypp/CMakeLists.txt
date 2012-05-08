@@ -89,6 +89,7 @@ SET( zypp_EARLY_SRCS
 )
 
 SET( zypp_HEADERS
+  macros.h
   Arch.h
   AutoDispose.h
   Bit.h

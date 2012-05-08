@@ -16,6 +16,7 @@
 #include <vector>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/PoolItem.h"
 #include "zypp/sat/Transaction.h"
 #include "zypp/base/DefaultIntegral.h"
@@ -30,7 +31,7 @@ namespace zypp
   }
 
   /** Pair of \ref sat::Solvable and \ref Pathname. */
-  class UpdateNotificationFile
+  class ZYPP_EXPORT UpdateNotificationFile
   {
     public:
       UpdateNotificationFile( sat::Solvable solvable_r, const Pathname & file_r )
@@ -59,7 +60,7 @@ namespace zypp
    *
    * \see \ref ZYpp::commit
    */
-  class ZYppCommitResult
+  class ZYPP_EXPORT ZYppCommitResult
   {
     public:
       typedef std::vector<sat::Transaction::Step> TransactionStepList;
@@ -199,7 +200,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ZYppCommitResult Stream output. */
-  std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ namespace zypp
    * In fact the class will not prevent to use a non iso language code.
    * Just a warning will appear in the log.
   */
-  class LanguageCode
+  class ZYPP_EXPORT LanguageCode
   {
     friend std::ostream & operator<<( std::ostream & str, const LanguageCode & obj );
 

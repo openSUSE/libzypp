@@ -18,6 +18,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
@@ -35,7 +36,7 @@ namespace zypp
    * Exception thrown when the supplied key is
    * not a valid gpg key
    */
-  class BadKeyException : public Exception
+  class ZYPP_EXPORT BadKeyException : public Exception
   {
     public:
       /** Ctor taking message.
@@ -73,7 +74,7 @@ namespace zypp
    *
    *
    */
-  class PublicKey
+  class ZYPP_EXPORT PublicKey
   {
     friend std::ostream & operator<<( std::ostream & str, const PublicKey & obj );
 
@@ -194,7 +195,7 @@ namespace zypp
   { return str << obj.asString(); }
 
   /** \relates PublicKey Detailed stream output */
-  std::ostream & dumpOn( std::ostream & str, const PublicKey & obj );
+  ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const PublicKey & obj );
 
  /////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -14,6 +14,7 @@
 
 #include <boost/function.hpp>
 
+#include "zypp/macros.h"
 #include "zypp/base/Functional.h"
 #include "zypp/Filter.h"
 #include "zypp/Resolvable.h"
@@ -159,7 +160,7 @@ namespace zypp
       { return filter::ByKind( ResTraits<_Res>::kind ); }
 
     /** Select ResObject by name. */
-    struct ByName : public ResObjectFilterFunctor
+    struct ZYPP_EXPORT ByName : public ResObjectFilterFunctor
     {
       ByName( const std::string & name_r )
       : _name( name_r )
@@ -174,7 +175,7 @@ namespace zypp
     };
 
     /** Select ResObject by repository or repository alias. */
-    struct ByRepository : public ResObjectFilterFunctor
+    struct ZYPP_EXPORT ByRepository : public ResObjectFilterFunctor
     {
       ByRepository( Repository repository_r )
       : _alias( repository_r.info().alias() )

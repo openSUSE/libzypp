@@ -13,6 +13,7 @@
 #define ZYPP_SAT_REPOSITORY_H
 
 #include <iosfwd>
+#include "zypp/macros.h"
 #include "zypp/base/SafeBool.h"
 #include "zypp/Pathname.h"
 #include "zypp/sat/detail/PoolMember.h"
@@ -35,7 +36,7 @@ namespace zypp
     //	CLASS NAME : Repository
     //
     /** */
-    class Repository : protected sat::detail::PoolMember,
+    class ZYPP_EXPORT Repository : protected sat::detail::PoolMember,
                        private base::SafeBool<Repository>
     {
     public:
@@ -284,7 +285,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Repository Stream output */
-    std::ostream & operator<<( std::ostream & str, const Repository & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Repository & obj );
 
     /** \relates Repository */
     inline bool operator==( const Repository & lhs, const Repository & rhs )
@@ -396,7 +397,7 @@ namespace zypp
       //	CLASS NAME : RepositoryIterator
       //
       /** */
-      class RepositoryIterator : public boost::iterator_adaptor<
+      class ZYPP_EXPORT RepositoryIterator : public boost::iterator_adaptor<
 	    RepositoryIterator                            // Derived
 			   , ::_Repo **                   // Base
                            , Repository                   // Value

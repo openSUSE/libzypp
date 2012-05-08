@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/Deprecated.h"
 #include "zypp/base/Iterator.h"
 
@@ -45,7 +46,7 @@ namespace zypp
    *
    * \include n_ResPool_nomorenameiter
   */
-  class ResPool
+  class ZYPP_EXPORT ResPool
   {
     friend std::ostream & operator<<( std::ostream & str, const ResPool & obj );
 
@@ -396,7 +397,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ResPool Stream output */
-  std::ostream & operator<<( std::ostream & str, const ResPool & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ResPool & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIADISK_H
 #define ZYPP_MEDIA_MEDIADISK_H
 
+#include "zypp/macros.h"
 #include "zypp/media/MediaHandler.h"
 
 namespace zypp {
@@ -24,7 +25,7 @@ namespace zypp {
      * @short Implementation class for DISK MediaHandler
      * @see MediaHandler
      **/
-    class MediaDISK : public MediaHandler {
+    class ZYPP_EXPORT MediaDISK : public MediaHandler {
 
       private:
 

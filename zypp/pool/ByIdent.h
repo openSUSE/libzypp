@@ -12,6 +12,7 @@
 #ifndef ZYPP_POOL_BYIDENT_H
 #define ZYPP_POOL_BYIDENT_H
 
+#include "zypp/macros.h"
 #include "zypp/PoolItem.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ namespace zypp
 
     /** Main filter selecting PoolItems by \c name and \c kind.
      */
-    class ByIdent
+    class ZYPP_LOCAL ByIdent
     {
       public:
         ByIdent()

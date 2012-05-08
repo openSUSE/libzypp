@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/base/ExternalDataSource.h"
 #include "zypp/Pathname.h"
 
@@ -55,7 +56,7 @@ namespace zypp {
      *
      * \endcode
      */
-    class ExternalProgram : public zypp::externalprogram::ExternalDataSource
+    class ZYPP_EXPORT ExternalProgram : public zypp::externalprogram::ExternalDataSource
     {
 
     public:
@@ -249,7 +250,7 @@ namespace zypp {
   /** ExternalProgram extended to offer reading programs stderr.
    * \see \ref ExternalProgram
    */
-  class ExternalProgramWithStderr : private _ExternalProgram::EarlyPipe, public ExternalProgram
+  class ZYPP_EXPORT ExternalProgramWithStderr : private _ExternalProgram::EarlyPipe, public ExternalProgram
   {
     public:
       ExternalProgramWithStderr( const Arguments & argv_r )

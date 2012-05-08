@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/sat/detail/PoolMember.h"
 #include "zypp/sat/Solvable.h"
@@ -84,7 +85,7 @@ namespace zypp
      * }
      * \endcode
      */
-    class WhatProvides : public SolvIterMixin<WhatProvides,detail::WhatProvidesIterator>,
+    class ZYPP_EXPORT WhatProvides : public SolvIterMixin<WhatProvides,detail::WhatProvidesIterator>,
                          protected detail::PoolMember
     {
       public:
@@ -130,7 +131,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates WhatProvides Stream output */
-    std::ostream & operator<<( std::ostream & str, const WhatProvides & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const WhatProvides & obj );
 
     namespace detail
     {

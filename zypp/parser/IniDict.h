@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/InputStream.h"
 #include "zypp/base/Iterator.h"
@@ -37,7 +38,7 @@ namespace zypp
      * dictionary.
      * 
      */
-    class IniDict : public IniParser
+    class ZYPP_EXPORT IniDict : public IniParser
     {
       friend std::ostream & operator<<( std::ostream & str, const IniDict & obj );
     public:
@@ -158,7 +159,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates IniDict Stream output */
-    std::ostream & operator<<( std::ostream & str, const IniDict & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const IniDict & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace parser

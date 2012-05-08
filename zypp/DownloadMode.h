@@ -13,13 +13,14 @@
 #define ZYPP_DOWNLOADMODE_H
 
 #include <iosfwd>
+#include "zypp/macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   /** Supported commit download policies. */
-  enum DownloadMode
+  enum ZYPP_EXPORT DownloadMode
   {
     DownloadDefault, //!< libzypp will decide what to do.
     DownloadOnly,	//!< Just download all packages to the local cache.
@@ -53,7 +54,7 @@ namespace zypp
   }
 
   /** \relates DownloadMode Stream output. */
-  std::ostream & operator<<( std::ostream & str, DownloadMode obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, DownloadMode obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

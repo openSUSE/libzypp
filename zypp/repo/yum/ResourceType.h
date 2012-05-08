@@ -11,7 +11,8 @@
 #define YUMRESOURCETYPE_H_
 
 #include <iosfwd>
-#include<string>
+#include <string>
+#include "zypp/macros.h"
 
 namespace zypp
 {
@@ -24,7 +25,7 @@ namespace zypp
   /**
    *
    */
-  struct ResourceType
+  struct ZYPP_EXPORT ResourceType
   {
     static const ResourceType NONE; // unknown
     static const ResourceType REPOMD;

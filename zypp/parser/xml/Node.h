@@ -14,8 +14,8 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/SafeBool.h"
-
 #include "zypp/parser/xml/XmlString.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ namespace zypp
      * the readers position in the file. Mostly access to the
      * nodes attributes.
      **/
-    class Node : private base::SafeBool<Node>
+    class ZYPP_EXPORT Node : private base::SafeBool<Node>
     {
     public:
       /** Default ctor. */
@@ -167,7 +167,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Node Stream output. */
-    std::ostream & operator<<( std::ostream & str, const Node & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Node & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace xml

@@ -13,6 +13,7 @@
 #ifndef ZYPP_PARSER_HISTORYLOGREADER_H_
 #define ZYPP_PARSER_HISTORYLOGREADER_H_
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProgressData.h"
 #include "zypp/Pathname.h"
@@ -70,7 +71,7 @@ namespace zypp
    *
    * \see http://en.opensuse.org/Libzypp/Package_History
    */
-  class HistoryLogReader
+  class ZYPP_EXPORT HistoryLogReader
   {
   public:
     typedef function< bool( const HistoryItem::Ptr & )> ProcessItem;

@@ -15,6 +15,7 @@
 #include <string>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/Date.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -27,7 +28,7 @@ namespace zypp
   //
   /** Single entry in a change log
   */
-  class ChangelogEntry
+  class ZYPP_EXPORT ChangelogEntry
   {
   public:
     /** Default ctor */
@@ -53,7 +54,7 @@ namespace zypp
   typedef std::list<ChangelogEntry> Changelog;
 
   /** \relates ChangelogEntry */
-  std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj );
 
   ///////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -10,6 +10,7 @@
 #ifndef ZYPP_SOURCE_YUM_DOWNLOADER
 #define ZYPP_SOURCE_YUM_DOWNLOADER
 
+#include "zypp/macros.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
 #include "zypp/Fetcher.h"
@@ -38,7 +39,7 @@ namespace zypp
       * yum.download( media, "localdir");
       * \endcode
       */
-      class Downloader : public repo::Downloader
+      class ZYPP_EXPORT Downloader : public repo::Downloader
       {
       public:
          

@@ -12,6 +12,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/Functional.h"
 
@@ -26,7 +27,7 @@ namespace zypp
     * behaviour on checksum failure. Provides default
     * implementations if no callback is set.
     */
-  class ProvideFilePolicy
+  class ZYPP_EXPORT ProvideFilePolicy
   {
   public:
     /** Progress callback signature. */

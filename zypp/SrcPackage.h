@@ -12,6 +12,7 @@
 #ifndef ZYPP_SRCPACKAGE_H
 #define ZYPP_SRCPACKAGE_H
 
+#include "zypp/macros.h"
 #include "zypp/ResObject.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -26,7 +27,7 @@ namespace zypp
   //
   /** SrcPackage interface.
   */
-  class SrcPackage : public ResObject
+  class ZYPP_EXPORT SrcPackage : public ResObject
   {
 
   public:

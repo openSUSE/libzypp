@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_URLEXCEPTION_H
 #define   ZYPP_URL_URLEXCEPTION_H
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 
 
@@ -28,7 +29,7 @@ namespace zypp
     /**
      * Base class for all URL exceptions.
      */
-    class UrlException: public zypp::Exception
+    class ZYPP_EXPORT UrlException: public zypp::Exception
     {
     public:
       UrlException()
@@ -46,7 +47,7 @@ namespace zypp
     /**
      * Thrown if the encoded string contains a NUL byte (%00).
      */
-    class UrlDecodingException: public UrlException
+    class ZYPP_EXPORT UrlDecodingException: public UrlException
     {
     public:
       UrlDecodingException()
@@ -64,7 +65,7 @@ namespace zypp
     /**
      * Thrown if the url or a component can't be parsed at all.
      */
-    class UrlParsingException: public UrlException
+    class ZYPP_EXPORT UrlParsingException: public UrlException
     {
     public:
       UrlParsingException()
@@ -82,7 +83,7 @@ namespace zypp
     /**
      * Thrown if a url component is invalid.
      */
-    class UrlBadComponentException: public UrlException
+    class ZYPP_EXPORT UrlBadComponentException: public UrlException
     {
     public:
       UrlBadComponentException()
@@ -101,7 +102,7 @@ namespace zypp
     /**
      * Thrown if scheme does not allow a component.
      */
-    class UrlNotAllowedException: public UrlException
+    class ZYPP_EXPORT UrlNotAllowedException: public UrlException
     {
     public:
       UrlNotAllowedException()
@@ -121,7 +122,7 @@ namespace zypp
      * Thrown if a feature e.g. parsing of a component
      * is not supported for the url/scheme.
      */
-    class UrlNotSupportedException: public UrlException
+    class ZYPP_EXPORT UrlNotSupportedException: public UrlException
     {
     public:
       UrlNotSupportedException()

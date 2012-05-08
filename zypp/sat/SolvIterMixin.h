@@ -46,7 +46,7 @@ namespace zypp
        * used in \ref SolvIterMixin when mapping a  Solvable iterator
        * to a Selectable iterator.
       */
-      struct UnifyByIdent
+      struct ZYPP_EXPORT UnifyByIdent
       {
         bool operator()( const Solvable & solv_r ) const;
 

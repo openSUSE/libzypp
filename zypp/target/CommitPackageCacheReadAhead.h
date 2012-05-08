@@ -14,6 +14,7 @@
 
 #include <map>
 
+#include "zypp/macros.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/DefaultIntegral.h"
@@ -33,7 +34,7 @@ namespace zypp
     //	CLASS NAME : IMediaKey
     //
     /** Helper storing a source id and media number. */
-    struct IMediaKey
+    struct ZYPP_LOCAL IMediaKey
     {
       IMediaKey()
       {}
@@ -73,14 +74,14 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    std::ostream & operator<<( std::ostream & str, const IMediaKey & obj );
+    ZYPP_LOCAL std::ostream & operator<<( std::ostream & str, const IMediaKey & obj );
 
     ///////////////////////////////////////////////////////////////////
     //
     //	CLASS NAME : CommitPackageCacheReadAhead
     //
     /** */
-    class CommitPackageCacheReadAhead : public CommitPackageCache::Impl
+    class ZYPP_LOCAL CommitPackageCacheReadAhead : public CommitPackageCache::Impl
     {
       typedef std::map<PoolItem,ManagedFile>     CacheMap;
 

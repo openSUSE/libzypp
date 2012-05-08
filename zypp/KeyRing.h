@@ -18,6 +18,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/Flags.h"
 #include "zypp/Callback.h"
@@ -41,7 +42,7 @@ namespace zypp
    * \endcode
    * \see \ref KeyRing
   */
-  struct KeyRingReport : public callback::ReportBase
+  struct ZYPP_EXPORT KeyRingReport : public callback::ReportBase
   {
     /**
      * User reply options for the askUserToTrustKey callback.
@@ -95,7 +96,7 @@ namespace zypp
 
   };
 
-  struct KeyRingSignals : public callback::ReportBase
+  struct ZYPP_EXPORT KeyRingSignals : public callback::ReportBase
   {
     virtual void trustedKeyAdded( const PublicKey &/*key*/ )
     {}
@@ -103,7 +104,7 @@ namespace zypp
     {}
   };
 
-  class KeyRingException : public Exception
+  class ZYPP_EXPORT KeyRingException : public Exception
    {
      public:
        /** Ctor taking message.
@@ -129,7 +130,7 @@ namespace zypp
   /** Gpg key handling.
    *
   */
-  class KeyRing : public base::ReferenceCounted, private base::NonCopyable
+  class ZYPP_EXPORT KeyRing : public base::ReferenceCounted, private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const KeyRing & obj );
 

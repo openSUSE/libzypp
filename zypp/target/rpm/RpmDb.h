@@ -20,6 +20,7 @@
 #include <vector>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/ExternalProgram.h"
 
@@ -44,7 +45,7 @@ namespace rpm
 /**
  * @short Interface to the rpm program
  **/
-class RpmDb : public base::ReferenceCounted, private base::NonCopyable
+class ZYPP_EXPORT RpmDb : public base::ReferenceCounted, private base::NonCopyable
 {
 public:
 

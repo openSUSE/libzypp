@@ -12,6 +12,8 @@
 #ifndef ZYPP_BASE_SAFEBOOL_H
 #define ZYPP_BASE_SAFEBOOL_H
 
+#include "zypp/macros.h"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -21,7 +23,7 @@ namespace zypp
 
     namespace safebool_detail
     {
-      class SafeBoolBase
+      class ZYPP_EXPORT SafeBoolBase
       {
       protected:
         typedef void (SafeBoolBase::*bool_type)() const;

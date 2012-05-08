@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/PathInfo.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ namespace zypp
    * }
    * \endcode
   */
-  class WatchFile
+  class ZYPP_EXPORT WatchFile
   {
     public:
       enum Initial { NO_INIT, INIT };

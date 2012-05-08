@@ -18,6 +18,7 @@ extern "C"
 #include <iosfwd>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@ namespace zypp
     /// \Note Requested sizes are filled up to the next multiple of eight.
     /// Libsolv bitmaps are not shrinkable.
     ///////////////////////////////////////////////////////////////////
-    class Map
+    class ZYPP_EXPORT Map
     {
     public:
       typedef unsigned long size_type;
@@ -102,7 +103,7 @@ namespace zypp
     { return str << obj.asString(); }
 
     /** \relates Map */
-    bool operator==( const Map & lhs, const Map & rhs );
+    ZYPP_EXPORT bool operator==( const Map & lhs, const Map & rhs );
 
     /** \relates Map */
     inline bool operator!=( const Map & lhs, const Map & rhs )

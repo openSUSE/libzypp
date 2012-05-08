@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/base/String.h"
 #include "zypp/base/PtrTypes.h"
@@ -33,7 +34,7 @@ namespace zypp {
     /**
      * Media source internally used by MediaManager and MediaHandler.
      */
-    class MediaSource
+    class ZYPP_EXPORT MediaSource
     {
     public:
       MediaSource(const std::string &_type,  const std::string &_name,
@@ -102,7 +103,7 @@ namespace zypp {
     /**
      * Attach point of a media source.
      */
-    class AttachPoint
+    class ZYPP_EXPORT AttachPoint
     {
     public:
       AttachPoint(const Pathname &_path=Pathname(),
@@ -130,7 +131,7 @@ namespace zypp {
      * A simple structure containing references
      * to a media source and its attach point.
      */
-    struct AttachedMedia
+    struct ZYPP_EXPORT AttachedMedia
     {
       AttachedMedia()
       {}

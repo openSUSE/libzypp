@@ -10,6 +10,7 @@
 #ifndef ZYPP_SOURCE_SUSETAGS_DOWNLOADER
 #define ZYPP_SOURCE_SUSETAGS_DOWNLOADER
 
+#include "zypp/macros.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
 #include "zypp/ProgressData.h"
@@ -31,7 +32,7 @@ namespace zypp
        * Encapsulates all the knowledge of which files have
        * to be downloaded to the local disk.
        */
-      class Downloader : public repo::Downloader
+      class ZYPP_EXPORT Downloader : public repo::Downloader
       {
       public:
         /**

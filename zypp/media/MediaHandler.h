@@ -17,6 +17,7 @@
 #include <string>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/PathInfo.h"
 #include "zypp/base/PtrTypes.h"
@@ -42,7 +43,7 @@ namespace zypp {
  * logging. For the real action they call virtual methods overloaded by the
  * concrete handler.
  **/
-class MediaHandler {
+class ZYPP_EXPORT MediaHandler {
     friend std::ostream & operator<<( std::ostream & str, const MediaHandler & obj );
 
     public:

@@ -15,6 +15,7 @@
 #include <set>
 #include <vector>
 
+#include "zypp/macros.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/PoolItem.h"
 #include "zypp/pool/ByIdent.h"
@@ -31,7 +32,7 @@ namespace zypp
     //	CLASS NAME : SelectableTraits
     //
     /** */
-    struct SelectableTraits
+    struct ZYPP_EXPORT SelectableTraits
     {
       /** Oder on AvailableItemSet.
        * \li repository priority

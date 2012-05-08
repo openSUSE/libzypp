@@ -11,6 +11,7 @@
 #define ZYPP_REPO_MIRRORLIST_H_
 
 #include <vector>
+#include "zypp/macros.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
 
@@ -18,7 +19,7 @@ namespace zypp
 {
   namespace repo
   {
-    class RepoMirrorList
+    class ZYPP_EXPORT RepoMirrorList
     {
       public:
         RepoMirrorList( const Url &url );

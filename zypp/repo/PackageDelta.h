@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/macros.h"
 #include "zypp/OnMediaLocation.h"
 #include "zypp/Edition.h"
 #include "zypp/Arch.h"
@@ -32,7 +33,7 @@ namespace zypp
 
 
     /** \todo cheap copy! (switch to RWCOW) */
-    class DeltaRpm
+    class ZYPP_EXPORT DeltaRpm
     {
       public:
         class BaseVersion
@@ -86,7 +87,7 @@ namespace zypp
     };
 
     /** \relates DeltaRpm Stream output. */
-    std::ostream & operator<<( std::ostream & str, const DeltaRpm & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const DeltaRpm & obj );
 
     ///////////////////////////////////////////////////////////////////
 

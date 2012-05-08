@@ -11,6 +11,7 @@
 #ifndef   ZYPP_THREAD_MUTEX_H
 #define   ZYPP_THREAD_MUTEX_H
 
+#include "zypp/macros.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/thread/MutexException.h"
 #include <pthread.h>
@@ -32,7 +33,7 @@ namespace zypp
     //
     /** A recursive Mutex.
      */
-    class Mutex: public zypp::base::NonCopyable
+    class ZYPP_EXPORT Mutex: public zypp::base::NonCopyable
     {
     public:
       /** Create a new recursive Mutex object.

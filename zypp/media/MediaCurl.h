@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIACURL_H
 #define ZYPP_MEDIA_MEDIACURL_H
 
+#include "zypp/macros.h"
 #include "zypp/base/Flags.h"
 #include "zypp/media/TransferSettings.h"
 #include "zypp/media/MediaHandler.h"
@@ -29,7 +30,7 @@ namespace zypp {
  * @short Implementation class for FTP, HTTP and HTTPS MediaHandler
  * @see MediaHandler
  **/
-class MediaCurl : public MediaHandler
+class ZYPP_EXPORT MediaCurl : public MediaHandler
 {
   public:
     enum RequestOption

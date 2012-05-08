@@ -19,6 +19,7 @@ extern "C"
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/Easy.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/Iterator.h"
@@ -54,7 +55,7 @@ namespace zypp
      * \endcode
      * \see Manual page glob(3)
      */
-    class Glob : private base::NonCopyable
+    class ZYPP_EXPORT Glob : private base::NonCopyable
     {
       public:
         typedef size_t size_type;
@@ -252,7 +253,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Glob Stream output */
-    std::ostream & operator<<( std::ostream & str, const Glob & obj );
+    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Glob & obj );
 
     /** \relates Glob::const_iterator Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Glob::const_iterator & obj )

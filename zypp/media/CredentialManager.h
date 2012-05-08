@@ -14,6 +14,7 @@
 
 #include <set>
 
+#include "zypp/macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/media/MediaUserAuth.h"
 
@@ -35,7 +36,7 @@ namespace zypp
   /**
    * \todo configurable cred file locations
    */
-  struct CredManagerOptions
+  struct ZYPP_EXPORT CredManagerOptions
   {
     CredManagerOptions(const Pathname & rootdir = "");
 
@@ -46,7 +47,7 @@ namespace zypp
   //////////////////////////////////////////////////////////////////////
 
   // comparator for CredentialSet
-  struct AuthDataComparator
+  struct ZYPP_EXPORT AuthDataComparator
   {
     bool operator()(const AuthData_Ptr & lhs, const AuthData_Ptr & rhs);
   };
@@ -59,7 +60,7 @@ namespace zypp
    * \todo better method names
    * \todo delete(AuthData) method
    */
-  class CredentialManager
+  class ZYPP_EXPORT CredentialManager
   {
   public:
     typedef std::set<AuthData_Ptr, AuthDataComparator> CredentialSet;

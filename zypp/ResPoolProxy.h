@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/ResPool.h"
@@ -31,7 +32,7 @@ namespace zypp
   /** ResPool::instance().proxy();
    * \todo integrate it into ResPool
   */
-  class ResPoolProxy
+  class ZYPP_EXPORT ResPoolProxy
   {
     friend std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
     friend std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );
@@ -221,10 +222,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ResPoolProxy Stream output */
-  std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
 
   /** \relates ResPoolProxy Verbose stream output */
-  std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );
+  ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

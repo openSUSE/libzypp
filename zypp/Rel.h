@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <string>
+#include "zypp/macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -40,7 +41,7 @@ namespace zypp
    *
    * \ingroup g_EnumerationClass
   */
-  struct Rel
+  struct ZYPP_EXPORT Rel
   {
     /** \name Relational operators
      * These are the \em real relational operator contants to

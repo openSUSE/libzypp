@@ -12,6 +12,7 @@
 #ifndef ZYPP_PATTERN_H
 #define ZYPP_PATTERN_H
 
+#include "zypp/macros.h"
 #include "zypp/ResObject.h"
 #include "zypp/Pathname.h"
 
@@ -27,7 +28,7 @@ namespace zypp
   //
   /** Pattern interface.
   */
-  class Pattern : public ResObject
+  class ZYPP_EXPORT Pattern : public ResObject
   {
     public:
       typedef Pattern                  Self;

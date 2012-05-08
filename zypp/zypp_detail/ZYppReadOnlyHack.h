@@ -14,6 +14,7 @@
 #define ZYPP_ZYPP_DETAIL_ZYPPREADONLYHACK_H
 #warning ZYPP_ZYPP_DETAIL_ZYPPREADONLYHACK_H
 
+#include "zypp/macros.h"
 #include "zypp/base/Deprecated.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ namespace zypp
   namespace zypp_readonly_hack
   { /////////////////////////////////////////////////////////////////
 
-    void IWantIt() ZYPP_DEPRECATED;
+    ZYPP_EXPORT void IWantIt() ZYPP_DEPRECATED;
 
     /////////////////////////////////////////////////////////////////
   } // namespace zypp_readonly_hack

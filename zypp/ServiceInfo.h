@@ -15,6 +15,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/Url.h"
 
 #include "zypp/repo/ServiceType.h"
@@ -30,7 +31,7 @@ namespace zypp
   //	CLASS NAME : ServiceInfo
   //
   /** */
-  class ServiceInfo : public repo::RepoInfoBase
+  class ZYPP_EXPORT ServiceInfo : public repo::RepoInfoBase
   {
   public:
     /** Default ctor creates \ref noService.*/
@@ -175,7 +176,7 @@ namespace zypp
   typedef std::list<ServiceInfo> ServiceInfoList;
 
   /** \relates ServiceInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
+  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
 
 
     /////////////////////////////////////////////////////////////////

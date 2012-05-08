@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 
@@ -34,7 +35,7 @@ namespace zypp
     //
     /** Target::commit helper optimizing package provision.
     */
-    class CommitPackageCache
+    class ZYPP_EXPORT CommitPackageCache
     {
       friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
 

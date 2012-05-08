@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <string>
+#include "zypp/macros.h"
 #include "zypp/base/LogControl.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ namespace zypp
   namespace base
   { /////////////////////////////////////////////////////////////////
 
-    struct ProfilingFormater : public LogControl::LineFormater
+    struct ZYPP_EXPORT ProfilingFormater : public LogControl::LineFormater
     {
       virtual std::string format( const std::string & /*group_r*/,
                                   logger::LogLevel    /*level_r*/,

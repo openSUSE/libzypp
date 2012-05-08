@@ -12,6 +12,7 @@
 
 #include <iosfwd>
 #include <string>
+#include "zypp/macros.h"
 
 namespace zypp
 {
@@ -24,7 +25,7 @@ namespace zypp
    * Repositories can be from varous types
    * ...
    */
-  struct RepoType
+  struct ZYPP_EXPORT RepoType
   {
     static const RepoType RPMMD;
     static const RepoType YAST2;

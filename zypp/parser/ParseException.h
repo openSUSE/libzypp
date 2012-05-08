@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/UserRequestException.h"
 
@@ -30,7 +31,7 @@ namespace zypp
     //	CLASS NAME : ParseException
     //
     /** */
-    class ParseException : public Exception
+    class ZYPP_EXPORT ParseException : public Exception
     {
     public:
       /** Default ctor */

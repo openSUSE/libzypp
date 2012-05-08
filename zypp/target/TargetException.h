@@ -16,6 +16,7 @@
 
 #include <string>
 
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 
@@ -29,7 +30,7 @@ namespace zypp
     /** Just inherits Exception to separate target exceptions
      *
      **/
-    class TargetException : public Exception
+    class ZYPP_EXPORT TargetException : public Exception
     {
     public:
       /** Ctor taking message.

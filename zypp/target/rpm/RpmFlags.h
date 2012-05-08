@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/macros.h"
 #include "zypp/base/Flags.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ namespace zypp
        *
        * @see RpmDb::installPackage(), RpmDb::removePackage(),
        */
-      enum RpmInstFlag
+      enum ZYPP_EXPORT RpmInstFlag
       {
         RPMINST_NONE       = 0x0000,
         RPMINST_EXCLUDEDOCS= 0x0001,

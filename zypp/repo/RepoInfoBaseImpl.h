@@ -13,7 +13,7 @@
 #define REPOINFOBASEIMPL_H_
 
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/TriBool.h"
 #include "zypp/Pathname.h"
 

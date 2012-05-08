@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/media/MediaBlockList.h"
@@ -23,7 +23,7 @@
 namespace zypp {
   namespace media {
 
-class ZYPP_EXPORT ZsyncParser : private zypp::base::NonCopyable {
+class ZYPP_API ZsyncParser : private zypp::base::NonCopyable {
 public:
   ZsyncParser();
 

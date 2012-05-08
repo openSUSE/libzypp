@@ -16,7 +16,7 @@
 #include <string>
 #include <map>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/SafeBool.h"
 
@@ -39,7 +39,7 @@ namespace zypp
    *
    * \see PluginScript
    */
-  class ZYPP_EXPORT PluginFrame : private base::SafeBool<PluginFrame>
+  class ZYPP_API PluginFrame : private base::SafeBool<PluginFrame>
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
     friend bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
@@ -233,7 +233,7 @@ namespace zypp
   };
 
   /** \relates PluginFrame Stream output for logging */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
 
   /** \relates PluginFrame Stream output sending all data */
   inline std::ostream & dumpOn( std::ostream & str, const PluginFrame & obj )
@@ -244,7 +244,7 @@ namespace zypp
   { return PluginFrame::readFrom( str, obj ); }
 
   /** \relates PluginFrame Comparison based on content. */
-  ZYPP_EXPORT bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
+  ZYPP_API bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
 
   /** \relates PluginFrame Comparison based on content. */
   inline bool operator!=( const PluginFrame & lhs, const PluginFrame & rhs )

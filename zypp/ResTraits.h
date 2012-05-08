@@ -74,7 +74,7 @@ namespace zypp
 
   /** ResTraits. Defines common types and the ResKind value. */
   template<typename _Res>
-    struct ZYPP_EXPORT ResTraits
+    struct ZYPP_API ResTraits
     {
       typedef ResKind                   KindType;
       typedef intrusive_ptr<_Res>       PtrType;

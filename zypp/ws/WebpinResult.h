@@ -15,10 +15,9 @@
 #include <iosfwd>
 #include <list>
 #include <set>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Iterator.h"
-#include "zypp/base/Deprecated.h"
 
 #include "zypp/CheckSum.h"
 #include "zypp/Edition.h"
@@ -37,7 +36,7 @@ namespace ws
    * web service
    *
    */
-  class ZYPP_EXPORT WebpinResult
+  class ZYPP_API WebpinResult
   {
     friend std::ostream & operator<<( std::ostream & str, const WebpinResult & obj );
 
@@ -139,7 +138,7 @@ namespace ws
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoInfo Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const WebpinResult & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const WebpinResult & obj );
 
 } // namespace ws
 } // namespace zypp

@@ -13,7 +13,7 @@
 #define ZYPP_PARSER_XML_PARSEDEFEXCEPTION_H
 
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ namespace zypp
     //	CLASS NAME : ParseDefException
     //
     /** Common base class for \ref ParseDef exceptions. */
-    struct ZYPP_EXPORT ParseDefException : public Exception
+    struct ZYPP_API ParseDefException : public Exception
     {
       ParseDefException( const std::string & what_r );
     };

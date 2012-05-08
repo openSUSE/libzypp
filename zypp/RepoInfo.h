@@ -15,9 +15,8 @@
 #include <list>
 #include <set>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Iterator.h"
-#include "zypp/base/Deprecated.h"
 
 #include "zypp/Url.h"
 #include "zypp/Locale.h"
@@ -64,7 +63,7 @@ namespace zypp
    * \note A RepoInfo is a hint about how
    * to create a Repository.
    */
-  class ZYPP_EXPORT RepoInfo : public repo::RepoInfoBase
+  class ZYPP_API RepoInfo : public repo::RepoInfoBase
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
@@ -368,7 +367,7 @@ namespace zypp
   typedef std::list<RepoInfo> RepoInfoList;
 
   /** \relates RepoInfo Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
 
   /////////////////////////////////////////////////////////////////

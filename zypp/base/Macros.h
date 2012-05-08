@@ -6,9 +6,45 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/base/Deprecated.h
- *  \brief	Provides the ZYPP_DEPRECATED macro.
+/** \file   zypp/Macros.h
+ *  \brief  Provides API related macros.
  */
+#ifndef ZYPP_MACROS_H
+#define ZYPP_MACROS_H
+
+#include "zypp/base/Easy.h" // some macros used almost everywhere
+
+/**
+ * Generic helper definitions for shared library support.
+ *
+ * \see e.g. http://gcc.gnu.org/wiki/Visibility
+ * \code
+ *   extern "C" ZYPP_API void function(int a);
+ *   class ZYPP_API SomeClass
+ *   {
+ *      int c;
+ *      ZYPP_LOCAL void privateMethod();  // Only for use within this DSO
+ *   public:
+ *      Person(int _c) : c(_c) { }
+ *      static void foo(int a);
+ *   };
+ * \endcode
+};*/
+#if __GNUC__ >= 4
+  #define ZYPP_HELPER_DLL_EXPORT __attribute__ ((visibility ("default")))
+  #define ZYPP_HELPER_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+#else
+  #define ZYPP_HELPER_DLL_EXPORT
+  #define ZYPP_HELPER_DLL_LOCAL
+#endif
+
+#ifdef ZYPP_DLL //defined if zypp is compiled as DLL
+  #define ZYPP_API  ZYPP_HELPER_DLL_EXPORT
+  #define ZYPP_LOCAL ZYPP_HELPER_DLL_LOCAL
+#else
+  #define ZYPP_API
+  #define ZYPP_LOCAL
+#endif
 
 /**
  * The ZYPP_DEPRECATED macro can be used to trigger compile-time warnings
@@ -42,12 +78,13 @@
  *
  */
 #if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
-#ifndef ZYPP_DEPRECATED
-#define ZYPP_DEPRECATED __attribute__ ((deprecated))
-#endif
+  #ifndef ZYPP_DEPRECATED
+  #define ZYPP_DEPRECATED __attribute__ ((deprecated))
+  #endif
 #else
-#ifndef ZYPP_DEPRECATED
-#define ZYPP_DEPRECATED
-#endif
+  #ifndef ZYPP_DEPRECATED
+  #define ZYPP_DEPRECATED
+  #endif
 #endif
 
+#endif //ZYPP_MACROS_H

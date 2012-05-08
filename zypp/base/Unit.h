@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -40,7 +40,7 @@ namespace zypp
      * static const Unit T( 1099511627776, "T", 3 );
      * \endcode
     */
-      class ZYPP_EXPORT Unit
+      class ZYPP_API Unit
       {
       public:
         typedef long long ValueType;

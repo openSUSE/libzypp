@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <vector>
 #include <string>
- #include "zypp/macros.h"
+ #include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -32,7 +32,7 @@ namespace zypp
    * or libraries is collected and provided as a \ref ProcInfo
    * container.
    */
-  class ZYPP_EXPORT CheckAccessDeleted
+  class ZYPP_API CheckAccessDeleted
   {
 
     public:

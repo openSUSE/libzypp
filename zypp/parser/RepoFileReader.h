@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/InputStream.h"
 #include "zypp/RepoInfo.h"
@@ -40,7 +40,7 @@ namespace zypp
      *                bind( &SomeClass::callbackfunc, &SomeClassInstance, _1, _2 ) );
      * \endcode
      */
-    class ZYPP_EXPORT RepoFileReader
+    class ZYPP_API RepoFileReader
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
     public:
@@ -99,7 +99,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates RepoFileReader Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace parser

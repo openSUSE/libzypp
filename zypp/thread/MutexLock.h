@@ -12,7 +12,7 @@
 #ifndef   ZYPP_THREAD_MUTEXLOCK_H
 #define   ZYPP_THREAD_MUTEXLOCK_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/thread/Mutex.h"
 #include <cassert>
 
@@ -26,7 +26,7 @@ namespace zypp
 
 
     // -------------------------------------------------------------
-    class ZYPP_EXPORT MutexLock
+    class ZYPP_API MutexLock
     {
     public:
       explicit MutexLock(Mutex &mutex, bool init_locked=true)

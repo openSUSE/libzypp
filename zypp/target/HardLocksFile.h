@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/Pathname.h"
@@ -34,7 +34,7 @@ namespace zypp
     //
     /** Save and restore hardlocks.
      */
-    class ZYPP_EXPORT HardLocksFile
+    class ZYPP_API HardLocksFile
     {
       friend std::ostream & operator<<( std::ostream & str, const HardLocksFile & obj );
       public:

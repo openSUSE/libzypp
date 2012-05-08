@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Unit.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ namespace zypp
   /** Store and operate with byte count.
    *
   */
-  class ZYPP_EXPORT ByteCount
+  class ZYPP_API ByteCount
   {
     friend std::ostream & operator<<( std::ostream & str, const ByteCount & obj );
 

@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
@@ -49,7 +49,7 @@ namespace zypp
      * Installed objects are sorted according the installation date, newer install
      * time first.
     */
-    class ZYPP_EXPORT Selectable : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API Selectable : public base::ReferenceCounted, private base::NonCopyable
     {
       friend std::ostream & operator<<( std::ostream & str, const Selectable & obj );
       friend std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
@@ -509,16 +509,16 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Selectable Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Selectable & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Selectable & obj );
 
     /** \relates Selectable More verbose stream output */
-    ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
+    ZYPP_API std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
 
     /** Solvable to Selectable transform functor.
      * \relates Selectable
      * \relates sat::SolvIterMixin
      */
-    struct ZYPP_EXPORT asSelectable
+    struct ZYPP_API asSelectable
     {
       typedef Selectable_Ptr result_type;
 

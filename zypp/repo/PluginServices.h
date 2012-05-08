@@ -12,7 +12,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProgressData.h"
 #include "zypp/Pathname.h"
@@ -26,7 +26,7 @@ namespace zypp
   namespace repo
   { /////////////////////////////////////////////////////////////////
 
-    class ZYPP_EXPORT PluginServices
+    class ZYPP_API PluginServices
     {
       friend std::ostream & operator<<( std::ostream & str, const PluginServices& obj );
     public:
@@ -55,7 +55,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates ServiceFileReader Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const PluginServices & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const PluginServices & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace repo

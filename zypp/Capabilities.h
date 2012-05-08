@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/DefaultIntegral.h"
 #include "zypp/sat/detail/PoolMember.h"
 #include "zypp/Capability.h"
@@ -33,7 +33,7 @@ namespace zypp
    * which must be skipped on iteration or size calculation
    * (\see \ref detail::isDepMarkerId).
    */
-  class ZYPP_EXPORT Capabilities
+  class ZYPP_API Capabilities
   {
     public:
       typedef Capability value_type;

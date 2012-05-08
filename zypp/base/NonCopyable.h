@@ -12,7 +12,7 @@
 #define ZYPP_BASE_NONCOPYABLE_H
 
 #include <boost/noncopyable.hpp>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

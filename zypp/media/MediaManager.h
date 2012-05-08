@@ -12,10 +12,9 @@
 #ifndef ZYPP_MEDIA_MEDIAMANAGER_H
 #define ZYPP_MEDIA_MEDIAMANAGER_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaAccess.h"
 
-#include "zypp/base/Deprecated.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
@@ -53,7 +52,7 @@ namespace zypp
     /**
      * Interface to implement a media verifier.
      */
-    class ZYPP_EXPORT MediaVerifierBase //: private zypp::NonCopyable
+    class ZYPP_API MediaVerifierBase //: private zypp::NonCopyable
     {
     public:
       MediaVerifierBase()
@@ -86,7 +85,7 @@ namespace zypp
     /**
      * Dummy default media verifier, which is always happy.
      */
-    class ZYPP_EXPORT NoVerifier : public MediaVerifierBase
+    class ZYPP_API NoVerifier : public MediaVerifierBase
     {
     public:
       NoVerifier(): MediaVerifierBase()
@@ -464,7 +463,7 @@ namespace zypp
      *   - \c script<->libzypp communication:
      *     - \TODO to be documented.
      */
-    class ZYPP_EXPORT MediaManager: private zypp::base::NonCopyable
+    class ZYPP_API MediaManager: private zypp::base::NonCopyable
     {
     public:
       /**

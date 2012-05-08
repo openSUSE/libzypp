@@ -14,9 +14,8 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/SafeBool.h"
-#include "zypp/base/Deprecated.h"
 
 #include "zypp/sat/detail/PoolMember.h"
 
@@ -59,7 +58,7 @@ namespace zypp
    * Capability( "package:foo", ResKind::pattern ) ==> 'foo'
    * \endcode
    */
-  class ZYPP_EXPORT Capability: protected sat::detail::PoolMember,
+  class ZYPP_API Capability: protected sat::detail::PoolMember,
                     private base::SafeBool<Capability>
   {
     public:
@@ -261,10 +260,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Capability Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Capability & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Capability & obj );
 
   /** \relates Capability Detailed stream output */
-  ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const Capability & obj );
+  ZYPP_API std::ostream & dumpOn( std::ostream & str, const Capability & obj );
 
   /** \relates Capability */
   inline bool operator==( const Capability & lhs, const Capability & rhs )
@@ -295,7 +294,7 @@ namespace zypp
    *   with op := AND|OR|WITH|NAMESPACE
    * \endcode
    */
-  class ZYPP_EXPORT CapDetail: protected sat::detail::PoolMember
+  class ZYPP_API CapDetail: protected sat::detail::PoolMember
   {
     public:
       enum Kind
@@ -366,13 +365,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates CapDetail Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const CapDetail & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CapDetail & obj );
 
   /** \relates CapDetail Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, CapDetail::Kind obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, CapDetail::Kind obj );
 
   /** \relates CapDetail Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj );
 
   ///////////////////////////////////////////////////////////////////
 

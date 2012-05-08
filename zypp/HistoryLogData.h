@@ -15,7 +15,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Date.h"
 #include "zypp/Edition.h"
 #include "zypp/Arch.h"
@@ -37,7 +37,7 @@ namespace zypp
    *
    * \ingroup g_EnumerationClass
    */
-  struct ZYPP_EXPORT HistoryActionID
+  struct ZYPP_API HistoryActionID
   {
     static const HistoryActionID NONE;
 
@@ -85,7 +85,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItem
   //
-  class ZYPP_EXPORT HistoryItem
+  class ZYPP_API HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItem> Ptr;
@@ -109,7 +109,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemInstall
   //
-  class ZYPP_EXPORT HistoryItemInstall : public HistoryItem
+  class ZYPP_API HistoryItemInstall : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemInstall> Ptr;
@@ -135,7 +135,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemRemove
   //
-  class ZYPP_EXPORT HistoryItemRemove : public HistoryItem
+  class ZYPP_API HistoryItemRemove : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemRemove> Ptr;
@@ -159,7 +159,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemRepoAdd
   //
-  class ZYPP_EXPORT HistoryItemRepoAdd : public HistoryItem
+  class ZYPP_API HistoryItemRepoAdd : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemRepoAdd> Ptr;
@@ -181,7 +181,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemRepoRemove
   //
-  class ZYPP_EXPORT HistoryItemRepoRemove : public HistoryItem
+  class ZYPP_API HistoryItemRepoRemove : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemRepoRemove> Ptr;
@@ -202,7 +202,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemRepoAliasChange
   //
-  class ZYPP_EXPORT HistoryItemRepoAliasChange : public HistoryItem
+  class ZYPP_API HistoryItemRepoAliasChange : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemRepoAliasChange> Ptr;
@@ -224,7 +224,7 @@ namespace zypp
   //
   // CLASS NAME: HistoryItemRepoUrlChange
   //
-  class ZYPP_EXPORT HistoryItemRepoUrlChange : public HistoryItem
+  class ZYPP_API HistoryItemRepoUrlChange : public HistoryItem
   {
   public:
     typedef shared_ptr<HistoryItemRepoUrlChange> Ptr;
@@ -241,7 +241,7 @@ namespace zypp
   };
   /////////////////////////////////////////////////////////////////////
 
-  ZYPP_EXPORT std::ostream & operator<<(std::ostream & str, const HistoryItem & obj);
+  ZYPP_API std::ostream & operator<<(std::ostream & str, const HistoryItem & obj);
 
 }
 

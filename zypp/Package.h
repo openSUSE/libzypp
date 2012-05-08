@@ -12,7 +12,7 @@
 #ifndef ZYPP_PACKAGE_H
 #define ZYPP_PACKAGE_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/ResObject.h"
 #include "zypp/PackageKeyword.h"
 #include "zypp/Changelog.h"
@@ -30,7 +30,7 @@ namespace zypp
   //
   /** Package interface.
   */
-  class ZYPP_EXPORT Package : public ResObject
+  class ZYPP_API Package : public ResObject
   {
   public:
     typedef Package                  Self;

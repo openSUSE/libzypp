@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -43,7 +43,7 @@ namespace zypp
      * \todo Review. Maybe use COW pimpl, check storage.
      * \todo remove prfx_i
     */
-    class ZYPP_EXPORT Pathname
+    class ZYPP_API Pathname
     {
     public:
       /** Default ctor: an empty path. */

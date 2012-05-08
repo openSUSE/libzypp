@@ -12,7 +12,7 @@
 #ifndef ZYPP_CALLBACK_H
 #define ZYPP_CALLBACK_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/NonCopyable.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     /**  */
-    struct ZYPP_EXPORT ReportBase
+    struct ZYPP_API ReportBase
     {
       virtual ~ReportBase()
       {}

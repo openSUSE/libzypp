@@ -16,7 +16,7 @@
 #include <map>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Url.h"
 #include "zypp/PathInfo.h"
@@ -31,7 +31,7 @@ namespace zypp
     /** 
      *
      */
-    class ZYPP_EXPORT UrlResolverPlugin
+    class ZYPP_API UrlResolverPlugin
     {
       friend std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
 
@@ -65,7 +65,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates UrlResolverPlugin Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace media

@@ -15,7 +15,7 @@
 #include <list>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/ResObject.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ namespace zypp
   //
   /** Product interface.
   */
-  class ZYPP_EXPORT Product : public ResObject
+  class ZYPP_API Product : public ResObject
   {
   public:
     typedef Product                  Self;
@@ -208,7 +208,7 @@ namespace zypp
   };
 
   /** \relates Product::UrlList Stream output. */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Product::UrlList & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Product::UrlList & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

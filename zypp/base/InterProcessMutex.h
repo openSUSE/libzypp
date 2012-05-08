@@ -3,7 +3,7 @@
 #define ZYPP_BASE_INTER_PROCESS_MUTEX_H
 
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Fd.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/NonCopyable.h"
@@ -14,7 +14,7 @@ namespace zypp
 namespace base
 {
 
-class ZYPP_EXPORT ZYppLockedException : public Exception
+class ZYPP_API ZYppLockedException : public Exception
 {
 public:
     ZYppLockedException( const std::string & msg_r,
@@ -41,7 +41,7 @@ private:
  * currently a writer.
  *
  */
-class ZYPP_EXPORT InterProcessMutex : private base::NonCopyable
+class ZYPP_API InterProcessMutex : private base::NonCopyable
 {
 public:
    /**

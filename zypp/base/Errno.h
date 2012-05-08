@@ -15,7 +15,7 @@
 #include <cerrno>
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/String.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   /** Convenience \c errno wrapper. */
-  class ZYPP_EXPORT Errno
+  class ZYPP_API Errno
   {
     public:
       /** Default ctor: \c errno */

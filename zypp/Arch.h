@@ -17,7 +17,7 @@
 #include <set>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 #include "zypp/base/String.h"
 #include "zypp/base/Iterator.h"
@@ -35,7 +35,7 @@ namespace zypp
   //
   /** Architecture.
   */
-  class ZYPP_EXPORT Arch
+  class ZYPP_API Arch
   {
   public:
     /** Default ctor \ref Arc_noarch. */
@@ -161,100 +161,100 @@ namespace zypp
    * confuse this with \ref Arch_noarch, which is in fact an
    * architecture.
   */
-  extern ZYPP_EXPORT const Arch Arch_empty;
+  extern ZYPP_API const Arch Arch_empty;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_noarch;
+  extern ZYPP_API const Arch Arch_noarch;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_pentium4;
+  extern ZYPP_API const Arch Arch_pentium4;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_pentium3;
+  extern ZYPP_API const Arch Arch_pentium3;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_x86_64;
+  extern ZYPP_API const Arch Arch_x86_64;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_athlon;
+  extern ZYPP_API const Arch Arch_athlon;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_i686;
+  extern ZYPP_API const Arch Arch_i686;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_i586;
+  extern ZYPP_API const Arch Arch_i586;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_i486;
+  extern ZYPP_API const Arch Arch_i486;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_i386;
+  extern ZYPP_API const Arch Arch_i386;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_s390x;
+  extern ZYPP_API const Arch Arch_s390x;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_s390;
+  extern ZYPP_API const Arch Arch_s390;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_ppc64;
+  extern ZYPP_API const Arch Arch_ppc64;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_ppc;
+  extern ZYPP_API const Arch Arch_ppc;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_ia64;
+  extern ZYPP_API const Arch Arch_ia64;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alphaev67;
+  extern ZYPP_API const Arch Arch_alphaev67;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alphaev6;
+  extern ZYPP_API const Arch Arch_alphaev6;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alphapca56;
+  extern ZYPP_API const Arch Arch_alphapca56;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alphaev56;
+  extern ZYPP_API const Arch Arch_alphaev56;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alphaev5;
+  extern ZYPP_API const Arch Arch_alphaev5;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_alpha;
-
-   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparc64v;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparc64;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparcv9v;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparcv9;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparcv8;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sparc;
-
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv7tnhl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv7thl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv7nhl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv7hl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv7l;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv6l;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv5tejl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv5tel;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv5l;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv4tl;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv4l;
-  /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_armv3l;
+  extern ZYPP_API const Arch Arch_alpha;
 
    /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sh3;
+  extern ZYPP_API const Arch Arch_sparc64v;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sparc64;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sparcv9v;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sparcv9;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sparcv8;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sparc;
 
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sh4;
+  extern ZYPP_API const Arch Arch_armv7tnhl;
   /** \relates Arch */
-  extern ZYPP_EXPORT const Arch Arch_sh4a;
+  extern ZYPP_API const Arch Arch_armv7thl;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv7nhl;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv7hl;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv7l;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv6l;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv5tejl;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv5tel;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv5l;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv4tl;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv4l;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_armv3l;
+
+   /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sh3;
+
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sh4;
+  /** \relates Arch */
+  extern ZYPP_API const Arch Arch_sh4a;
   //@}
 
   ///////////////////////////////////////////////////////////////////
@@ -295,7 +295,7 @@ namespace zypp
   /** Functor finding compatible architectures.
    * \see Arch::compatibleWith
   */
-  struct ZYPP_EXPORT ArchCompatibleWith : public std::unary_function<Arch,bool>
+  struct ZYPP_API ArchCompatibleWith : public std::unary_function<Arch,bool>
   {
     /** The target architecture */
     Arch _targetArch;

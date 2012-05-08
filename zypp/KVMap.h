@@ -25,7 +25,7 @@
 #include <vector>
 #include <map>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/String.h"
 
 namespace zypp {
@@ -49,7 +49,7 @@ namespace zypp {
      * TODO: Maybe options for exact _fsplit handling and timming of values.
      *
      **/
-    struct ZYPP_EXPORT KVMapPolicy {
+    struct ZYPP_API KVMapPolicy {
       std::string _kvsplit;
       std::string _fsplit;
       std::string _kvjoin;
@@ -82,7 +82,7 @@ namespace zypp {
     /**
      * @short Base class for KVMaps, (key,value) pairs
      **/
-    struct ZYPP_EXPORT KVMapBase : public std::map<std::string,std::string> {
+    struct ZYPP_API KVMapBase : public std::map<std::string,std::string> {
     
       /**
        * (key,value) map type

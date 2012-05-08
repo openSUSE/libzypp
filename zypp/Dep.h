@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -28,7 +28,7 @@ namespace zypp
   /** Enumeration class of dependency types.
    * \ingroup g_EnumerationClass
   */
-  struct ZYPP_EXPORT Dep
+  struct ZYPP_API Dep
   {
     friend bool operator==( const Dep & lhs, const Dep & rhs );
     friend bool operator!=( const Dep & lhs, const Dep & rhs );

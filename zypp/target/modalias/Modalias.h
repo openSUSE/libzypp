@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/IdString.h"
 
@@ -32,7 +32,7 @@ namespace zypp
     //
     /** Hardware abstaction layer singleton.
      */
-    class ZYPP_EXPORT Modalias
+    class ZYPP_API Modalias
     {
       friend std::ostream & operator<<( std::ostream & str, const Modalias & obj );
 

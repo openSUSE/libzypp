@@ -19,14 +19,14 @@
 #include <iosfwd>
 #include <vector>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Callback.h"
 #include "zypp/Pathname.h"
 
 namespace zypp {
 
 
-  struct ZYPP_EXPORT DigestReport : public callback::ReportBase
+  struct ZYPP_API DigestReport : public callback::ReportBase
   {
     virtual bool askUserToAcceptNoDigest( const zypp::Pathname &file );
     virtual bool askUserToAccepUnknownDigest( const Pathname &file, const std::string &name );
@@ -43,7 +43,7 @@ namespace zypp {
      * deliverd, a call to digest() finalizes the computation and returns the
      * result
      * */
-    class ZYPP_EXPORT Digest
+    class ZYPP_API Digest
     {
       private:
     	class P;

@@ -28,7 +28,7 @@ namespace zypp
 
     // Obsoletes may either match against provides, or names.
     // Configuration depends on the behaviour of rpm.
-    ZYPP_EXPORT bool __obsoleteUsesProvides__ = false;
+    ZYPP_API bool __obsoleteUsesProvides__ = false;
 
     ///////////////////////////////////////////////////////////////////
     namespace

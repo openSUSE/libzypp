@@ -21,7 +21,7 @@ extern "C"
 }
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Tr1hash.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/SerialNumber.h"

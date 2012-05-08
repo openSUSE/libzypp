@@ -14,8 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
-#include "zypp/base/Deprecated.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/ByteCount.h"
 #include "zypp/CheckSum.h"
@@ -37,7 +36,7 @@ namespace zypp
    *
    * \todo Implement cheap copy via COW.
   */
-  class ZYPP_EXPORT OnMediaLocation
+  class ZYPP_API OnMediaLocation
   {
     friend std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj );
 
@@ -162,7 +161,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates OnMediaLocation Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

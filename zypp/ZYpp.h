@@ -14,11 +14,10 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
-#include "zypp/base/Deprecated.h"
 
 #include "zypp/ZConfig.h"
 
@@ -52,7 +51,7 @@ namespace zypp
    * \todo define Exceptions
    * ZYpp API main interface
    */
-  class ZYPP_EXPORT ZYpp : public base::ReferenceCounted, private base::NonCopyable
+  class ZYPP_API ZYpp : public base::ReferenceCounted, private base::NonCopyable
   {
   public:
 

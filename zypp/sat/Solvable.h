@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/SafeBool.h"
 
 #include "zypp/sat/detail/PoolMember.h"
@@ -55,7 +55,7 @@ namespace zypp
      * packages as an own kind of solvable and map their arch to
      * \ref Arch_noarch.
      */
-    class ZYPP_EXPORT Solvable : protected detail::PoolMember,
+    class ZYPP_API Solvable : protected detail::PoolMember,
                      private base::SafeBool<Solvable>
     {
       public:
@@ -307,10 +307,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Solvable Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Solvable & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Solvable & obj );
 
     /** \relates Solvable More verbose stream output including dependencies */
-    ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const Solvable & obj );
+    ZYPP_API std::ostream & dumpOn( std::ostream & str, const Solvable & obj );
 
     /** \relates Solvable */
     inline bool operator==( const Solvable & lhs, const Solvable & rhs )
@@ -398,7 +398,7 @@ namespace zypp
      * \relates Solvable
      * \relates sat::SolvIterMixin
      */
-    struct ZYPP_EXPORT asSolvable
+    struct ZYPP_API asSolvable
     {
       typedef Solvable result_type;
 

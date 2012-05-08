@@ -19,10 +19,10 @@
 #include <set>
 #include <map>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Tr1hash.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/Iterator.h"
-#include "zypp/base/Deprecated.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

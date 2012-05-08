@@ -16,7 +16,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ namespace zypp
   //
   /** Store and operate on date (time_t).
   */
-  class ZYPP_EXPORT Date
+  class ZYPP_API Date
   {
     friend std::ostream & operator<<( std::ostream & str, const Date & obj );
 
@@ -135,7 +135,7 @@ namespace zypp
   inline std::ostream & operator<<( std::ostream & str, const Date & obj )
   { return str << obj.asString(); }
 
-  class ZYPP_EXPORT DateFormatException : public Exception
+  class ZYPP_API DateFormatException : public Exception
   {
   public:
     DateFormatException( const std::string & msg ) : Exception( msg )

@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <boost/io/ios_state.hpp>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/SafeBool.h"
@@ -44,7 +44,7 @@ namespace zypp
      *
      * \see \ref forEachLine
      */
-    ZYPP_EXPORT std::string getline( std::istream & str );
+    ZYPP_API std::string getline( std::istream & str );
 
     /** Copy istream to ostream.
      * \return reference to the ostream.
@@ -110,7 +110,7 @@ namespace zypp
      * }
      * \endcode
      */
-    class ZYPP_EXPORT EachLine : private base::SafeBool<EachLine>, private base::NonCopyable
+    class ZYPP_API EachLine : private base::SafeBool<EachLine>, private base::NonCopyable
     {
       typedef base::SafeBool<EachLine> SafeBool;
 
@@ -190,10 +190,10 @@ namespace zypp
      *
      * \return Number if lines consumed (negative if aborted by callback).
      */
-     ZYPP_EXPORT int forEachLine( std::istream & str_r, function<bool(int, std::string)> consume_r );
+     ZYPP_API int forEachLine( std::istream & str_r, function<bool(int, std::string)> consume_r );
 
      /** \ref simpleParseFile modifications before consuming a line. */
-     enum ZYPP_EXPORT ParseFlag
+     enum ZYPP_API ParseFlag
      {
        PF_LTRIM			= 1 << 0,		//< left trim whitespace
        PF_RTRIM			= 1 << 1,		//< right trim whitespace
@@ -205,7 +205,7 @@ namespace zypp
      ZYPP_DECLARE_OPERATORS_FOR_FLAGS( ParseFlags );
 
      /** Simple lineparser optionally trimming and skipping comments. */
-     ZYPP_EXPORT int simpleParseFile( std::istream & str_r, ParseFlags flags_r, function<bool(int, std::string)> consume_r );
+     ZYPP_API int simpleParseFile( std::istream & str_r, ParseFlags flags_r, function<bool(int, std::string)> consume_r );
 
      /** \overload trimming lines, skipping '#'-comments and empty lines. */
      inline int simpleParseFile( std::istream & str_r, function<bool(int, std::string)> consume_r )

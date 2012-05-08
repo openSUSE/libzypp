@@ -17,7 +17,7 @@
 
 #include <set>
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 namespace zypp
 {
@@ -38,7 +38,7 @@ namespace zypp
 	 * - Pkg is part of a pattern that is required by a pattern the
 	 *   user wanted to transact
 	 **/
-	ZYPP_EXPORT std::set<std::string> userWantedPackageNames();
+	ZYPP_API std::set<std::string> userWantedPackageNames();
 
     } // namespace ui
 } // namespace zypp

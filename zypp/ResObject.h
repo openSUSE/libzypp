@@ -12,8 +12,7 @@
 #ifndef ZYPP_RESOBJECT_H
 #define ZYPP_RESOBJECT_H
 
-#include "zypp/macros.h"
-#include "zypp/base/Deprecated.h"
+#include "zypp/base/Macros.h"
 
 #include "zypp/Resolvable.h"
 #include "zypp/Date.h"
@@ -42,7 +41,7 @@ namespace zypp
    *
    * \see \ref makeResObject for how to construct ResObjects.
   */
-  class ZYPP_EXPORT ResObject : public Resolvable
+  class ZYPP_API ResObject : public Resolvable
   {
   public:
     typedef ResObject                Self;
@@ -220,7 +219,7 @@ namespace zypp
    * Package::Ptr   pkg( make<Package>( s ) );
    * \endcode
   */
-  ZYPP_EXPORT ResObject::Ptr makeResObject( const sat::Solvable & solvable_r );
+  ZYPP_API ResObject::Ptr makeResObject( const sat::Solvable & solvable_r );
 
   /** Directly create a certain kind of ResObject from \ref sat::Solvable.
    *

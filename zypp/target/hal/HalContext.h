@@ -13,7 +13,7 @@
 #ifndef ZYPP_TARGET_HAL_HALCONTEXT_H
 #define ZYPP_TARGET_HAL_HALCONTEXT_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/target/hal/HalException.h"
 #include "zypp/base/PtrTypes.h"
 #include <string>
@@ -55,7 +55,7 @@ namespace zypp
        *
        * @todo: wrap more functions.
        */
-      class ZYPP_EXPORT HalContext
+      class ZYPP_API HalContext
       {
       public:
         typedef
@@ -175,7 +175,7 @@ namespace zypp
        *
        * @todo: wrap more functions.
        */
-      class ZYPP_EXPORT HalDrive
+      class ZYPP_API HalDrive
       {
       public:
         typedef
@@ -258,7 +258,7 @@ namespace zypp
        *
        * @todo: wrap more functions.
        */
-      class ZYPP_EXPORT HalVolume
+      class ZYPP_API HalVolume
       {
       public:
         typedef

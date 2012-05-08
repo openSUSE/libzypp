@@ -15,9 +15,8 @@
 #include <iosfwd>
 #include <list>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/ResPool.h"
-#include "zypp/base/Deprecated.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

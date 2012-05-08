@@ -25,7 +25,7 @@
 #include <streambuf>
 #include <vector>
 #include <zlib.h>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -41,7 +41,7 @@ namespace zypp
     /**
      * @short Helper class to ship zlib errors.
      **/
-    struct ZYPP_EXPORT ZlibError
+    struct ZYPP_API ZlibError
     {
       /**
        * The zlib error code

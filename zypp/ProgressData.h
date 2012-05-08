@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/ProvideNumericId.h"
@@ -133,7 +133,7 @@ namespace zypp
    * the id and name might be helpfull, and maybe tell whether task
    * is abortable or not; i.e extend the ReceiverFnc signature.
    */
-  class ZYPP_EXPORT ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
+  class ZYPP_API ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
   {
     public:
       typedef long long value_type;
@@ -343,13 +343,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ProgressData Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ProgressData & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const ProgressData & obj );
 
   ///////////////////////////////////////////////////////////////////
 
   class InputStream;
   /** \relates ProgressData Setup from \ref InputStream. */
-  ZYPP_EXPORT ProgressData makeProgressData( const InputStream & input_r );
+  ZYPP_API ProgressData makeProgressData( const InputStream & input_r );
 
   ///////////////////////////////////////////////////////////////////
 
@@ -385,7 +385,7 @@ namespace zypp
    *
    * \endcode
    */
-  class ZYPP_EXPORT CombinedProgressData
+  class ZYPP_API CombinedProgressData
   {
   public:
     /**

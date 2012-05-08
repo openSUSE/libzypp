@@ -12,7 +12,7 @@
 #ifndef ZYPP_BASE_FLAGS_H
 #define ZYPP_BASE_FLAGS_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/String.h"
 
 ///////////////////////////////////////////////////////////////////

@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 #include <string>
- #include "zypp/macros.h"
+ #include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -32,7 +32,7 @@ namespace zypp
      *
      * \todo make it an EnumerationClass
     */
-    enum ZYPP_EXPORT Status
+    enum ZYPP_API Status
     {
       S_Protected,           // Keep this unmodified ( have installedObj && S_Protected )
       S_Taboo,               // Keep this unmodified ( have no installedObj && S_Taboo)
@@ -52,7 +52,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Status Enum value as string. */
-    ZYPP_EXPORT std::string asString( const Status & obj );
+    ZYPP_API std::string asString( const Status & obj );
 
     ///////////////////////////////////////////////////////////////////
 

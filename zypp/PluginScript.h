@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
 
@@ -60,7 +60,7 @@ namespace zypp
    *
    * \see http://stomp.codehaus.org/
    */
-  class ZYPP_EXPORT PluginScript
+  class ZYPP_API PluginScript
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginScript & obj );
 
@@ -190,7 +190,7 @@ namespace zypp
   };
 
   /** \relates PluginScript Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const PluginScript & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PluginScript & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

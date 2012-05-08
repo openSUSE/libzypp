@@ -12,7 +12,7 @@
 
 #include "boost/shared_ptr.hpp"
 #include "boost/function.hpp"
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -20,7 +20,7 @@ namespace zypp
 namespace parser
 { /////////////////////////////////////////////////////////////////
 
-  class ZYPP_EXPORT ParserProgress
+  class ZYPP_API ParserProgress
   {
     public:
       typedef boost::shared_ptr<ParserProgress> Ptr;

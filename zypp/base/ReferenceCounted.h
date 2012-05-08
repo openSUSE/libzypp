@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ namespace zypp
     /** Base class for reference counted objects.
      * \todo Make counter thread safe.
     */
-    class ZYPP_EXPORT ReferenceCounted
+    class ZYPP_API ReferenceCounted
     {
       /** Stream output via dumpOn. */
       friend std::ostream & operator<<( std::ostream & str, const ReferenceCounted & obj );

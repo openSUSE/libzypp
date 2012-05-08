@@ -19,7 +19,7 @@ extern "C"
 }
 
 #include <iosfwd>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -34,7 +34,7 @@ namespace zypp
 
     typedef xmlReaderTypes NodeType;
     /** \relates NodeType Stream output. */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const NodeType & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const NodeType & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace xml

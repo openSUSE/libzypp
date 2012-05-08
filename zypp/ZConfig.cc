@@ -596,7 +596,7 @@ namespace zypp
 
   // Backdoor to redirect ZConfig from within the running
   // TEST-application. HANDLE WITH CARE!
-  ZYPP_EXPORT void __reconfigureZConfig__( const Pathname & override_r )
+  ZYPP_API void __reconfigureZConfig__( const Pathname & override_r )
   {
     // ctor puts itself unter smart pointer control.
     new ZConfig::Impl( override_r );

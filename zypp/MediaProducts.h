@@ -16,7 +16,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/ZConfig.h"
 #include "zypp/base/Logger.h"
 #include "zypp/media/MediaManager.h"
@@ -29,7 +29,7 @@ namespace zypp
   /**
    * \short Represents an available product in media
    */
-  struct ZYPP_EXPORT MediaProductEntry
+  struct ZYPP_API MediaProductEntry
   {
     Pathname    _dir;
     std::string _name;

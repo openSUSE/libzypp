@@ -12,7 +12,7 @@
 #include <list>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProblemSolution.h"
@@ -22,7 +22,7 @@ namespace zypp
 { ///////////////////////////////////////////////////////////////////////
 
 
-    class ZYPP_EXPORT ResolverProblem : public base::ReferenceCounted
+    class ZYPP_API ResolverProblem : public base::ReferenceCounted
     {
     private:
 

@@ -12,7 +12,7 @@
 #ifndef zypp_source_yum_PatchesFileReader_H
 #define zypp_source_yum_PatchesFileReader_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/Function.h"
@@ -38,7 +38,7 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &object, _1, _2 ) );
    * \endcode
    */
-  class ZYPP_EXPORT PatchesFileReader : private base::NonCopyable
+  class ZYPP_API PatchesFileReader : private base::NonCopyable
   {
   public:
 

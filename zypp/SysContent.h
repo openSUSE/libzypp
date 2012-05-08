@@ -16,7 +16,7 @@
 #include <string>
 #include <set>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/PoolItem.h"
@@ -53,7 +53,7 @@ namespace zypp
      * \endcode
      * \see Reader
     */
-    class ZYPP_EXPORT Writer
+    class ZYPP_API Writer
     {
       typedef std::set<ResObject::constPtr> StorageT;
     public:
@@ -160,7 +160,7 @@ namespace zypp
     /** Retrieve \ref ResObject data serialized by \ref Writer.
      * \see Writer
     */
-    class ZYPP_EXPORT Reader
+    class ZYPP_API Reader
     {
     public:
       /** Restored \ref ResObject data. */
@@ -223,7 +223,7 @@ namespace zypp
     };
 
     /** \relates Reader Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Reader & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Reader & obj );
 
     ///////////////////////////////////////////////////////////////////
 
@@ -232,7 +232,7 @@ namespace zypp
     //	CLASS NAME : Reader::Entry
     //
     /** Restored \ref ResObject data. */
-    class ZYPP_EXPORT Reader::Entry
+    class ZYPP_API Reader::Entry
     {
     public:
       Entry();

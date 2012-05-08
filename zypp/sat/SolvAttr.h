@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/String.h"
 #include "zypp/IdStringType.h"
 
@@ -38,7 +38,7 @@ namespace sat
    *
    * \see \ref LookupAttr
    */
-  class ZYPP_EXPORT SolvAttr : public IdStringType<SolvAttr>
+  class ZYPP_API SolvAttr : public IdStringType<SolvAttr>
   {
     public:
       /** \name Some builtin SolvAttr constants. */

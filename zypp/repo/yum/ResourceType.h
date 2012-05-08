@@ -12,7 +12,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 namespace zypp
 {
@@ -25,7 +25,7 @@ namespace zypp
   /**
    *
    */
-  struct ZYPP_EXPORT ResourceType
+  struct ZYPP_API ResourceType
   {
     static const ResourceType NONE; // unknown
     static const ResourceType REPOMD;

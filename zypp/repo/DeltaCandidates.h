@@ -13,7 +13,7 @@
 #include <iosfwd>
 #include <list>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/repo/PackageDelta.h"
@@ -34,7 +34,7 @@ namespace zypp
      * gets all patches and deltas from them for a given
      * package.
      */
-    class ZYPP_EXPORT DeltaCandidates
+    class ZYPP_API DeltaCandidates
     {
       friend std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
 
@@ -61,7 +61,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates DeltaCandidates Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
 
     ///////////////////////////////////////////////////////////////////
 

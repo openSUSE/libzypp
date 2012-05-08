@@ -13,13 +13,13 @@
 #define ZYPP_VendorSupportOptions_H
 
 #include <string>
- #include "zypp/macros.h"
+ #include "zypp/base/Macros.h"
 #include "zypp/base/Flags.h"
 
 namespace zypp
 {
 
-    enum ZYPP_EXPORT VendorSupportOption
+    enum ZYPP_API VendorSupportOption
     {
       /**
        * The support for this package is unknown
@@ -72,7 +72,7 @@ namespace zypp
      * Note the description is based in the way Novell defines the support
      * levels, and the semantics may be different for other vendors.
      */
-    ZYPP_EXPORT std::string asUserString( VendorSupportOption );
+    ZYPP_API std::string asUserString( VendorSupportOption );
 
     /**
      * converts the support option to a description intended to be printed
@@ -81,7 +81,7 @@ namespace zypp
      * Note the description is based in the way Novell defines the support
      * levels, and the semantics may be different for other vendors.
      */
-    ZYPP_EXPORT std::string asUserStringDescription( VendorSupportOption );
+    ZYPP_API std::string asUserStringDescription( VendorSupportOption );
 
 }
 

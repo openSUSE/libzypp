@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Pathname.h"
 
 namespace zypp
@@ -57,7 +57,7 @@ namespace zypp
    * Use shared_ptr instead of handcrafted ref/unref. Manage multiple
    * logs at different locations.
    */
-  class ZYPP_EXPORT HistoryLog
+  class ZYPP_API HistoryLog
   {
     HistoryLog( const HistoryLog & );
     HistoryLog & operator=( const HistoryLog & );

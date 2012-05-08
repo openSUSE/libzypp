@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <list>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/Function.h"
 #include "zypp/PathInfo.h"
@@ -37,7 +37,7 @@ namespace zypp
    */
   typedef function<void ( const Pathname &file )> FileChecker;
 
-  class ZYPP_EXPORT FileCheckException : public Exception
+  class ZYPP_API FileCheckException : public Exception
   {
   public:
     FileCheckException(const std::string &msg)
@@ -62,7 +62,7 @@ namespace zypp
   /**
    * \short Checks for a valid checksum and interacts with the user.
    */
-   class ZYPP_EXPORT ChecksumFileChecker
+   class ZYPP_API ChecksumFileChecker
    {
    public:
      /**
@@ -84,7 +84,7 @@ namespace zypp
    /**
     * \short Checks for the validity of a signature
     */
-   class ZYPP_EXPORT SignatureFileChecker
+   class ZYPP_API SignatureFileChecker
    {
      public:
       /**
@@ -134,7 +134,7 @@ namespace zypp
    * \short Checks for nothing
    * Used as the default checker
    */
-   class ZYPP_EXPORT NullFileChecker
+   class ZYPP_API NullFileChecker
    {
    public:
      void operator()( const Pathname &file )  const;
@@ -154,7 +154,7 @@ namespace zypp
     * fetcher.enqueue(location, com);
     * \endcode
     */
-   class ZYPP_EXPORT CompositeFileChecker
+   class ZYPP_API CompositeFileChecker
    {
    public:
      void add( const FileChecker &checker );

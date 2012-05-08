@@ -13,7 +13,7 @@
 #define ZYPP2_REPOSTATUS_H
 
 #include <iosfwd>
- #include "zypp/macros.h"
+ #include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/CheckSum.h"
 #include "zypp/Date.h"
@@ -35,7 +35,7 @@ namespace zypp
    * files, like the timestamp of the downloaded
    * metadata, and its checksum.
    */
-  class ZYPP_EXPORT RepoStatus
+  class ZYPP_API RepoStatus
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
 
@@ -129,13 +129,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoStatus Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
 
   /**
    * combines 2 repostatus with a checksum based on both
    * checksums and the newest timestamp
    */
-  ZYPP_EXPORT RepoStatus operator&&( const RepoStatus &lhs, const RepoStatus &rhs );
+  ZYPP_API RepoStatus operator&&( const RepoStatus &lhs, const RepoStatus &rhs );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

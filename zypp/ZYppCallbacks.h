@@ -12,7 +12,7 @@
 #ifndef ZYPP_ZYPPCALLBACKS_H
 #define ZYPP_ZYPPCALLBACKS_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Callback.h"
 #include "zypp/Resolvable.h"
 #include "zypp/RepoInfo.h"
@@ -27,7 +27,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  struct ZYPP_EXPORT ProgressReport : public callback::ReportBase
+  struct ZYPP_API ProgressReport : public callback::ReportBase
   {
     virtual void start( const ProgressData &/*task*/ )
     {}
@@ -46,7 +46,7 @@ namespace zypp
 
   };
 
-  struct ZYPP_EXPORT ProgressReportAdaptor
+  struct ZYPP_API ProgressReportAdaptor
   {
 
     ProgressReportAdaptor( const ProgressData::ReceiverFnc &fnc,
@@ -88,7 +88,7 @@ namespace zypp
   namespace repo
   {
     // progress for downloading a resolvable
-    struct ZYPP_EXPORT DownloadResolvableReport : public callback::ReportBase
+    struct ZYPP_API DownloadResolvableReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -176,7 +176,7 @@ namespace zypp
     };
 
     // progress for probing a source
-    struct ZYPP_EXPORT ProbeRepoReport : public callback::ReportBase
+    struct ZYPP_API ProbeRepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -202,7 +202,7 @@ namespace zypp
       virtual Action problem( const Url &/*url*/, Error /*error*/, const std::string &/*description*/ ) { return ABORT; }
     };
 
-    struct ZYPP_EXPORT RepoCreateReport : public callback::ReportBase
+    struct ZYPP_API RepoCreateReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -236,7 +236,7 @@ namespace zypp
       {}
     };
 
-    struct ZYPP_EXPORT RepoReport : public callback::ReportBase
+    struct ZYPP_API RepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -278,7 +278,7 @@ namespace zypp
   namespace media
   {
     // media change request callback
-    struct ZYPP_EXPORT MediaChangeReport : public callback::ReportBase
+    struct ZYPP_API MediaChangeReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -323,7 +323,7 @@ namespace zypp
     };
 
     // progress for downloading a file
-    struct ZYPP_EXPORT DownloadProgressReport : public callback::ReportBase
+    struct ZYPP_API DownloadProgressReport : public callback::ReportBase
     {
         enum Action {
           ABORT,  // abort and return error
@@ -368,7 +368,7 @@ namespace zypp
     };
 
     // authentication issues report
-    struct ZYPP_EXPORT AuthenticationReport : public callback::ReportBase
+    struct ZYPP_API AuthenticationReport : public callback::ReportBase
     {
       /**
        * Prompt for authentication data.
@@ -400,7 +400,7 @@ namespace zypp
   namespace target
   {
     /** Request to display the pre commit message of a patch. */
-    struct ZYPP_EXPORT PatchMessageReport : public callback::ReportBase
+    struct ZYPP_API PatchMessageReport : public callback::ReportBase
     {
       /** Display \c patch->message().
        * Return \c true to continue, \c false to abort commit.
@@ -413,7 +413,7 @@ namespace zypp
      * \c %post script shipped by a package and to be executed
      * after the package was installed.
     */
-    struct ZYPP_EXPORT PatchScriptReport : public callback::ReportBase
+    struct ZYPP_API PatchScriptReport : public callback::ReportBase
     {
       enum Notify { OUTPUT, PING };
       enum Action {
@@ -447,7 +447,7 @@ namespace zypp
     {
 
       // progress for installing a resolvable
-      struct ZYPP_EXPORT InstallResolvableReport : public callback::ReportBase
+      struct ZYPP_API InstallResolvableReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -493,7 +493,7 @@ namespace zypp
       };
 
       // progress for removing a resolvable
-      struct ZYPP_EXPORT RemoveResolvableReport : public callback::ReportBase
+      struct ZYPP_API RemoveResolvableReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -529,7 +529,7 @@ namespace zypp
       };
 
       // progress for rebuilding the database
-      struct ZYPP_EXPORT RebuildDBReport : public callback::ReportBase
+      struct ZYPP_API RebuildDBReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -561,7 +561,7 @@ namespace zypp
       };
 
       // progress for converting the database
-      struct ZYPP_EXPORT ConvertDBReport : public callback::ReportBase
+      struct ZYPP_API ConvertDBReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -610,7 +610,7 @@ namespace zypp
    * Callback for cleaning locks which doesn't lock anything in pool.
    */
 
-  struct ZYPP_EXPORT CleanEmptyLocksReport : public callback::ReportBase
+  struct ZYPP_API CleanEmptyLocksReport : public callback::ReportBase
   {
     /**
      * action performed by cleaning api to specific lock
@@ -662,7 +662,7 @@ namespace zypp
   /**
    * this callback handles merging old locks with newly added or removed
    */
-  struct ZYPP_EXPORT SavingLocksReport : public callback::ReportBase
+  struct ZYPP_API SavingLocksReport : public callback::ReportBase
   {
     /**
      * action for old lock which is in conflict

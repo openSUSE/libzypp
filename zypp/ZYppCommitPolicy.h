@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/DownloadMode.h"
@@ -31,7 +31,7 @@ namespace zypp
   /** Options and policies for ZYpp::commit.
    * \see \ref ZYpp::commit
    */
-  class ZYPP_EXPORT ZYppCommitPolicy
+  class ZYPP_API ZYppCommitPolicy
   {
     public:
 
@@ -101,7 +101,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ZYppCommitPolicy Stream output. */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Tr1hash.h"
 
@@ -36,7 +36,7 @@ namespace zypp
   /**
    * \todo migrate to IdString
   */
-  class ZYPP_EXPORT Locale
+  class ZYPP_API Locale
   {
     friend std::ostream & operator<<( std::ostream & str, const Locale & obj );
 

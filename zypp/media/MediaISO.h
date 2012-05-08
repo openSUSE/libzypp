@@ -12,7 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIAISO_H
 #define ZYPP_MEDIA_MEDIAISO_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaHandler.h"
 #include "zypp/media/MediaManager.h"
 
@@ -33,7 +33,7 @@ namespace zypp
      * @short Implementation class for ISO MediaHandler
      * @see MediaHandler
      **/
-    class ZYPP_EXPORT MediaISO : public MediaHandler
+    class ZYPP_API MediaISO : public MediaHandler
     {
       private:
         Pathname      _isofile;

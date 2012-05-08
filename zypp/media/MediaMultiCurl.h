@@ -17,7 +17,7 @@
 #include <list>
 #include <set>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaHandler.h"
 #include "zypp/media/MediaCurl.h"
 #include "zypp/media/MediaBlockList.h"
@@ -38,7 +38,7 @@ namespace zypp {
 class multifetchrequest;
 class multifetchworker;
 
-class ZYPP_EXPORT MediaMultiCurl : public MediaCurl {
+class ZYPP_API MediaMultiCurl : public MediaCurl {
 public:
   friend class multifetchrequest;
   friend class multifetchworker;

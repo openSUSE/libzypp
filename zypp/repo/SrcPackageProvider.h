@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
 
@@ -36,7 +36,7 @@ namespace zypp
     //	CLASS NAME : SrcPackageProvider
     //
     /** */
-    class ZYPP_EXPORT SrcPackageProvider : private base::NonCopyable
+    class ZYPP_API SrcPackageProvider : private base::NonCopyable
     {
     public:
       /** Ctor */

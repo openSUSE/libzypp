@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/ZYpp.h"
 
@@ -22,7 +22,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class ZYPP_EXPORT ZYppFactoryException : public Exception
+  class ZYPP_API ZYppFactoryException : public Exception
   {
   public:
     ZYppFactoryException( const std::string & msg_r, pid_t lockerPid_r, const std::string & lockerName_r );
@@ -43,7 +43,7 @@ namespace zypp
   //
   /** ZYpp factory class (Singleton)
   */
-  class ZYPP_EXPORT ZYppFactory
+  class ZYPP_API ZYppFactory
   {
     friend std::ostream & operator<<( std::ostream & str, const ZYppFactory & obj );
 
@@ -69,7 +69,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ZYppFactory Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const ZYppFactory & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const ZYppFactory & obj );
 
   /** \relates ZYppFactory Convenience to get the Pointer
    * to the ZYpp instance.

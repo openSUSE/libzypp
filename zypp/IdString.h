@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/SafeBool.h"
 
 #include "zypp/sat/detail/PoolMember.h"
@@ -39,7 +39,7 @@ namespace zypp
    * While comparison differs between \ref IdString::Null and \ref IdString::Empty
    * ( \c NULL and \c "" ), both are represented by an empty string \c "".
    */
-  class ZYPP_EXPORT IdString : protected sat::detail::PoolMember,
+  class ZYPP_API IdString : protected sat::detail::PoolMember,
                    private base::SafeBool<IdString>
   {
     public:
@@ -117,10 +117,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates IdString Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const IdString & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const IdString & obj );
 
   /** \relates IdString Stream output */
-  ZYPP_EXPORT std::ostream & dumpOn( std::ostream & str, const IdString & obj );
+  ZYPP_API std::ostream & dumpOn( std::ostream & str, const IdString & obj );
 
   /** \relates IdString Equal */
   inline bool operator==( const IdString & lhs, const IdString & rhs )

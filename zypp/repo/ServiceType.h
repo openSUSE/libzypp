@@ -12,7 +12,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 namespace zypp
 {
@@ -24,7 +24,7 @@ namespace zypp
    *
    * Currently we have only RIS service, but more can come later.
    */
-  struct ZYPP_EXPORT ServiceType
+  struct ZYPP_API ServiceType
   {
     /**
      * Repository Index Service (RIS)

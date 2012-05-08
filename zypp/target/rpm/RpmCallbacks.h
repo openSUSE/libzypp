@@ -15,7 +15,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Url.h"
 #include "zypp/Callback.h"
 #include "zypp/base/Exception.h"
@@ -31,7 +31,7 @@ namespace rpm
 ///////////////////////////////////////////////////////////////////
 // Reporting progress of package removing
 ///////////////////////////////////////////////////////////////////
-struct ZYPP_EXPORT RpmRemoveReport : public callback::ReportBase
+struct ZYPP_API RpmRemoveReport : public callback::ReportBase
 {
 
   enum Action {
@@ -68,7 +68,7 @@ struct ZYPP_EXPORT RpmRemoveReport : public callback::ReportBase
 ///////////////////////////////////////////////////////////////////
 // Reporting progress of package installation
 ///////////////////////////////////////////////////////////////////
-struct ZYPP_EXPORT RpmInstallReport : public callback::ReportBase
+struct ZYPP_API RpmInstallReport : public callback::ReportBase
 {
 
   enum Action {

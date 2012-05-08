@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 
@@ -23,14 +23,14 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  struct ZYPP_EXPORT CheckSumException : public Exception
+  struct ZYPP_API CheckSumException : public Exception
   {
     CheckSumException( const std::string & msg )
       : Exception( msg )
     {}
   };
 
-  class ZYPP_EXPORT CheckSum
+  class ZYPP_API CheckSum
   {
   public:
     /** Default Ctor: empty checksum. */
@@ -88,13 +88,13 @@ namespace zypp
   };
 
   /** \relates CheckSum Stream output. */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const CheckSum & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CheckSum & obj );
 
   /** \relates CheckSum */
-  ZYPP_EXPORT bool operator==( const CheckSum & lhs, const CheckSum & rhs );
+  ZYPP_API bool operator==( const CheckSum & lhs, const CheckSum & rhs );
 
   /** \relates CheckSum */
-  ZYPP_EXPORT bool operator!=( const CheckSum & lhs, const CheckSum & rhs );
+  ZYPP_API bool operator!=( const CheckSum & lhs, const CheckSum & rhs );
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

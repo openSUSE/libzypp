@@ -12,7 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIADIR_H
 #define ZYPP_MEDIA_MEDIADIR_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaHandler.h"
 
 namespace zypp {
@@ -26,7 +26,7 @@ namespace zypp {
      * @short Implementation class for DIR MediaHandler
      * @see MediaHandler
      **/
-    class ZYPP_EXPORT MediaDIR : public MediaHandler {
+    class ZYPP_API MediaDIR : public MediaHandler {
 
       protected:
 

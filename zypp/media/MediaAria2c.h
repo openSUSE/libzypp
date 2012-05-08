@@ -12,7 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIAARIA2C_H
 #define ZYPP_MEDIA_MEDIAARIA2C_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaHandler.h"
 #include "zypp/media/MediaCurl.h"
 #include "zypp/media/TransferSettings.h"
@@ -29,7 +29,7 @@ namespace zypp {
  *
  * @see MediaHandler
  **/
-class ZYPP_EXPORT MediaAria2c : public MediaCurl {
+class ZYPP_API MediaAria2c : public MediaCurl {
 
   public:
    /**

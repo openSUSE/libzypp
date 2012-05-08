@@ -11,7 +11,7 @@
 #define ZYPP_REPO_VARIABLES_H_
 
 #include <string>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/Url.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ namespace zypp
      * http://site.net/?basearch=$basearch -> http://site.net/?basearch=i386
      * \endcode
      */
-    struct ZYPP_EXPORT RepoVariablesStringReplacer : public std::unary_function<const std::string &, std::string>
+    struct ZYPP_API RepoVariablesStringReplacer : public std::unary_function<const std::string &, std::string>
     {
       std::string operator()( const std::string & value_r ) const;
     };
@@ -43,7 +43,7 @@ namespace zypp
      * Replaces repository variables in the path and query part of the URL.
      * \see RepoVariablesStringReplacer
      */
-    struct ZYPP_EXPORT RepoVariablesUrlReplacer : public std::unary_function<const Url &, Url>
+    struct ZYPP_API RepoVariablesUrlReplacer : public std::unary_function<const Url &, Url>
     {
       Url operator()( const Url & url_r ) const;
     };

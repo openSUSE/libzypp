@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/SafeBool.h"
 #include "zypp/base/Exception.h"
@@ -31,7 +31,7 @@ namespace zypp
   /// Match mode( Match::GLOB | Match::NOCASE );
   /// \endcode
   ///////////////////////////////////////////////////////////////////
-  class ZYPP_EXPORT Match : private base::SafeBool<Match>
+  class ZYPP_API Match : private base::SafeBool<Match>
   {
   private:
     static const int _modemask;
@@ -241,16 +241,16 @@ namespace zypp
   { return Match(lhs) -= rhs; }
 
   /** \relates Match::Mode Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, Match::Mode obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, Match::Mode obj );
 
   /** \relates Match Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const Match & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Match & obj );
 
   ///////////////////////////////////////////////////////////////////
   /// \class MatchException
   /// \brief Exceptions thrown from attribute matching.
   ///////////////////////////////////////////////////////////////////
-  struct ZYPP_EXPORT MatchException : public Exception
+  struct ZYPP_API MatchException : public Exception
   {
     /** Supplied message. */
     explicit MatchException( const std::string & msg_r ) : Exception( msg_r ) {}
@@ -260,7 +260,7 @@ namespace zypp
   /// \class MatchUnknownModeException
   /// \brief Unknown match mode.
   ///////////////////////////////////////////////////////////////////
-  struct ZYPP_EXPORT MatchUnknownModeException : public MatchException
+  struct ZYPP_API MatchUnknownModeException : public MatchException
   {
     /** Supplied message. */
     explicit MatchUnknownModeException( const std::string & msg_r ) : MatchException( msg_r ) {}
@@ -273,7 +273,7 @@ namespace zypp
   /// \class MatchInvalidRegexException
   /// \brief Invalid regular expression (failed ::regcomp).
   ///////////////////////////////////////////////////////////////////
-  struct ZYPP_EXPORT MatchInvalidRegexException : public MatchException
+  struct ZYPP_API MatchInvalidRegexException : public MatchException
   {
     /** Supplied message. */
     explicit MatchInvalidRegexException( const std::string & msg_r ) : MatchException( msg_r ) {}
@@ -300,7 +300,7 @@ namespace zypp
   ///
   /// \Note Those flags are always set: <tt>REG_EXTENDED | REG_NOSUB | REG_NEWLINE</tt>
   ///////////////////////////////////////////////////////////////////
-  class ZYPP_EXPORT StrMatcher : private base::SafeBool<StrMatcher>
+  class ZYPP_API StrMatcher : private base::SafeBool<StrMatcher>
   {
     friend std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
@@ -393,17 +393,17 @@ namespace zypp
   };
 
   /** \relates StrMatcher Stream output */
-  ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
   /** \relates StrMatcher */
-  ZYPP_EXPORT bool operator==( const StrMatcher & lhs, const StrMatcher & rhs );
+  ZYPP_API bool operator==( const StrMatcher & lhs, const StrMatcher & rhs );
 
   /** \relates StrMatcher */
   inline bool operator!=( const StrMatcher & lhs, const StrMatcher & rhs )
   { return !( lhs == rhs ); }
 
   /** \relates StrMatcher Arbitrary order for std::container. */
-  ZYPP_EXPORT bool operator<( const StrMatcher & lhs, const StrMatcher & rhs );
+  ZYPP_API bool operator<( const StrMatcher & lhs, const StrMatcher & rhs );
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

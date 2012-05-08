@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/Function.h"
@@ -43,7 +43,7 @@ namespace zypp
       /** Parse repoindex part from a \c content file.
        * This is all the downloader needs.
       */
-      class ZYPP_EXPORT ContentFileReader : private base::NonCopyable
+      class ZYPP_API ContentFileReader : private base::NonCopyable
       {
 	public:
 	  typedef function<void(const RepoIndex_Ptr &)> RepoIndexConsumer;

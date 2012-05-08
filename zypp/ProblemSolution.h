@@ -12,7 +12,7 @@
 #include <list>
 #include <string>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/solver/detail/Resolver.h"
@@ -40,7 +40,7 @@ namespace zypp
      *    - Ignore: Inject artificial "provides" for a missing requirement
      *	(pretend that requirement is satisfied)
      **/
-    class ZYPP_EXPORT ProblemSolution : public base::ReferenceCounted
+    class ZYPP_API ProblemSolution : public base::ReferenceCounted
     {
     protected:
 	    

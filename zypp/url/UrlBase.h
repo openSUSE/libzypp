@@ -12,7 +12,7 @@
 #ifndef   ZYPP_URL_URLBASE_H
 #define   ZYPP_URL_URLBASE_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/url/UrlUtils.h"
 #include "zypp/base/PtrTypes.h"
 
@@ -37,7 +37,7 @@ namespace zypp
      * to modify a view option combination and a ViewOption::has()
      * method, to check if a specified option is enabled or not.
      */
-    struct ZYPP_EXPORT ViewOption
+    struct ZYPP_API ViewOption
     {
       /** @{ */
       /**
@@ -267,7 +267,7 @@ namespace zypp
      * specialized URL's for the Url class.
      *
      */
-    class ZYPP_EXPORT UrlBase
+    class ZYPP_API UrlBase
     {
     public:
 

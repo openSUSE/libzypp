@@ -17,7 +17,7 @@ extern "C"
 
 #include <iosfwd>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/SafeBool.h"
@@ -53,7 +53,7 @@ namespace zypp
      *       do not cause/require any specific action. To skip those informal steps
      *       when iterating, use the \ref actionBegin /\ref actionEnd methods.
      */
-    class ZYPP_EXPORT Transaction : public SolvIterMixin<Transaction, detail::Transaction_const_iterator>
+    class ZYPP_API Transaction : public SolvIterMixin<Transaction, detail::Transaction_const_iterator>
 		      , protected base::SafeBool<Transaction>
     {
       friend std::ostream & operator<<( std::ostream & str, const Transaction & obj );
@@ -357,7 +357,7 @@ namespace zypp
     { return find( pi_r.satSolvable() ); }
 
 
-    struct ZYPP_EXPORT Transaction::FilterAction
+    struct ZYPP_API Transaction::FilterAction
     {
       FilterAction() {}
       FilterAction( StepStages filter_r ) : _filter( filter_r ) {}

@@ -13,7 +13,7 @@
 #define ZYPP_BASE_DTORRESET_H
 
 #include "zypp/base/PtrTypes.h"
- #include "zypp/macros.h"
+ #include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -47,7 +47,7 @@ namespace zypp
    * \todo Check if using call_traits enables 'DtorReset(std::string,"value")',
    * as this currently would require assignment of 'char[]'.
    */
-  class ZYPP_EXPORT DtorReset
+  class ZYPP_API DtorReset
   {
   public:
     template<class _Var>

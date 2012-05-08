@@ -2,7 +2,7 @@
 # SOURCES                                                          #
 ####################################################################
 
-ADD_DEFINITIONS(-DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" )
+ADD_DEFINITIONS(-DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 #FILE(WRITE filename "message to write"... )
@@ -89,7 +89,6 @@ SET( zypp_EARLY_SRCS
 )
 
 SET( zypp_HEADERS
-  macros.h
   Arch.h
   AutoDispose.h
   Bit.h
@@ -224,7 +223,6 @@ SET( zypp_base_HEADERS
   base/Counter.h
   base/Debug.h
   base/DefaultIntegral.h
-  base/Deprecated.h
   base/DtorReset.h
   base/Exception.h
   base/UserRequestException.h
@@ -241,6 +239,7 @@ SET( zypp_base_HEADERS
   base/LogControl.h
   base/LogTools.h
   base/Logger.h
+  base/Macros.h
   base/Measure.h
   base/NonCopyable.h
   base/ProfilingFormater.h
@@ -368,7 +367,6 @@ SET( zypp_parser_HEADERS
   parser/HistoryLogReader.h
   parser/ParserProgress.h
   parser/RepoFileReader.h
-  parser/xml_escape_parser.hpp
   parser/RepoindexFileReader.h
   parser/ServiceFileReader.h
   parser/ProductFileReader.h
@@ -413,9 +411,9 @@ SET( zypp_parser_xml_SRCS
   parser/xml/ParseDefConsume.cc
   parser/xml/ParseDefException.cc
   parser/xml/Reader.cc
+  parser/xml/XmlEscape.cc
   parser/xml/XmlString.cc
   parser/xml/libxmlfwd.cc
-  parser/xml/xml_escape_parser.cpp
 )
 
 SET( zypp_parser_xml_HEADERS
@@ -429,7 +427,6 @@ SET( zypp_parser_xml_HEADERS
   parser/xml/XmlEscape.h
   parser/xml/XmlString.h
   parser/xml/libxmlfwd.h
-  parser/xml/xml_escape_parser.hpp
 )
 
 INSTALL(  FILES
@@ -922,6 +919,7 @@ SET_LOGGROUP( "libsolv" ${zypp_sat_SRCS} )
 ADD_LIBRARY(zypp SHARED ${zypp_lib_SRCS})
 SET_TARGET_PROPERTIES( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES( zypp PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
+SET (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map")
 ADD_DEPENDENCIES(zypp schema_header)
 # System libraries
 SET(UTIL_LIBRARY util)

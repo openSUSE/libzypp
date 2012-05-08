@@ -14,7 +14,7 @@
 
 #include <csignal>
 #include <iosfwd>
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -23,7 +23,7 @@ namespace zypp
   /** Exception safe signal handler save/restore.
    * \ingroup g_RAII
    */
-  class ZYPP_EXPORT SignalSaver
+  class ZYPP_API SignalSaver
   {
     public:
       SignalSaver( int signum_r, sighandler_t handler_r )
@@ -39,7 +39,7 @@ namespace zypp
   /** Exception safe sigprocmask save/restore.
    * \ingroup g_RAII
    */
-  class ZYPP_EXPORT SigprocmaskSaver
+  class ZYPP_API SigprocmaskSaver
   {
     public:
       /** Ctor saving the original sigprocmask. */

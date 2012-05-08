@@ -12,7 +12,7 @@
 #ifndef ZYPP_BASE_PROVIDENUMERICID_H
 #define ZYPP_BASE_PROVIDENUMERICID_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

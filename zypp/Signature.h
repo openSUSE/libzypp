@@ -11,13 +11,13 @@
 #ifndef ZYPP_Signature_H
 #define ZYPP_Signature_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
   
-  class ZYPP_EXPORT Signature
+  class ZYPP_API Signature
   {
     public:
     Signature();

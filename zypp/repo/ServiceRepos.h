@@ -10,7 +10,7 @@
 #ifndef ZYPP_REPO_SERVICE_REPOS
 #define ZYPP_REPO_SERVICE_REPOS
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/ProgressData.h"
 #include "zypp/ServiceInfo.h"
@@ -24,7 +24,7 @@ namespace zypp
      * Retrieval of repository list for
      * a service
      */
-    class ZYPP_EXPORT ServiceRepos : private base::NonCopyable
+    class ZYPP_API ServiceRepos : private base::NonCopyable
     {
     public:
 

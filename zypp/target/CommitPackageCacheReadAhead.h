@@ -14,7 +14,7 @@
 
 #include <map>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/DefaultIntegral.h"

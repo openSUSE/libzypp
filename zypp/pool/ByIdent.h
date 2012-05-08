@@ -12,7 +12,7 @@
 #ifndef ZYPP_POOL_BYIDENT_H
 #define ZYPP_POOL_BYIDENT_H
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/PoolItem.h"
 
 ///////////////////////////////////////////////////////////////////

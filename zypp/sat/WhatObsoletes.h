@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <vector>
 
-#include "zypp/macros.h"
+#include "zypp/base/Macros.h"
 #include "zypp/sat/WhatProvides.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ namespace zypp
      *
      * \todo Publish obsoleteUsesProvides config option.
      */
-    class ZYPP_EXPORT WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
+    class ZYPP_API WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
                           protected detail::PoolMember
     {
       public:
@@ -101,7 +101,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates WhatObsoletes Stream output */
-    ZYPP_EXPORT std::ostream & operator<<( std::ostream & str, const WhatObsoletes & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const WhatObsoletes & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace sat

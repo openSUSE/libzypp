@@ -10,6 +10,7 @@
 #ifndef ZYPP_REPO_DOWNLOADER
 #define ZYPP_REPO_DOWNLOADER
 
+#include "zypp/base/Macros.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
 #include "zypp/ProgressData.h"
@@ -29,7 +30,7 @@ namespace zypp
       * which files have to be downloaded to the local disk.
       *
       */
-    class Downloader : public Fetcher
+    class ZYPP_API Downloader : public Fetcher
     {
       public:
       /**

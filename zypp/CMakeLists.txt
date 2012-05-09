@@ -89,7 +89,6 @@ SET( zypp_EARLY_SRCS
 )
 
 SET( zypp_HEADERS
-  APIConfig.h
   Arch.h
   AutoDispose.h
   Bit.h
@@ -240,6 +239,7 @@ SET( zypp_base_HEADERS
   base/LogControl.h
   base/LogTools.h
   base/Logger.h
+  base/Macros.h
   base/Measure.h
   base/NonCopyable.h
   base/ProfilingFormater.h

@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/parser/xml/ParseDefTraits.h"
 
@@ -125,7 +126,7 @@ namespace zypp
      * use a \ref xml::ParseDefConsumeCallback, and redirect the
      * \c start call to some arbitrary function or method.
     */
-    class ParseDef
+    class ZYPP_API ParseDef
     {
       typedef ParseDefTraits Traits;
 
@@ -231,10 +232,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates ParseDef ParseDef::Mode stream output. */
-    std::ostream & operator<<( std::ostream & str, ParseDef::Mode obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, ParseDef::Mode obj );
 
     /** \relates ParseDef Stream output. */
-    std::ostream & operator<<( std::ostream & str, const ParseDef & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const ParseDef & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace xml

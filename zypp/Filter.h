@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Functional.h"
 #include "zypp/base/Function.h"
 // #include "zypp/ResFilters.h"  included at the end!
@@ -59,7 +60,7 @@ namespace zypp
     //
     /** Filter solvables according to their locale support.
     */
-    class ByLocaleSupport
+    class ZYPP_API ByLocaleSupport
     {
       private:
         typedef bool (sat::Solvable::*LS1) (const Locale &) const;
@@ -102,7 +103,7 @@ namespace zypp
     //
     /** Filter solvables according to their kind.
     */
-    class ByKind
+    class ZYPP_API ByKind
     {
       public:
         ByKind( const ResKind & kind_r )
@@ -135,7 +136,7 @@ namespace zypp
     //
     /** Filter solvables according to their status.
     */
-    class ByStatus
+    class ZYPP_API ByStatus
     {
       public:
         typedef bool (ResStatus::*Predicate)() const;
@@ -169,7 +170,7 @@ namespace zypp
      * This is usually used to find available packages
      * that matche an insytalled one.
     */
-    class SameItemAs
+    class ZYPP_API SameItemAs
     {
       public:
         SameItemAs( const sat::Solvable & solv_r )

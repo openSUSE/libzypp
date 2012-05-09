@@ -14,6 +14,7 @@
 
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/InputStream.h"
@@ -25,7 +26,7 @@ namespace zypp {
 
 struct ml_parsedata;
 
-class MetaLinkParser : private zypp::base::NonCopyable {
+class ZYPP_API MetaLinkParser : private zypp::base::NonCopyable {
 public:
   MetaLinkParser();
   ~MetaLinkParser();

@@ -13,7 +13,7 @@
 #define ZYPP_PARSER_XML_XMLESCAPE_H
 
 #include <string>
-#include "zypp/APIConfig.h"
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

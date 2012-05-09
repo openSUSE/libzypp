@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/Pathname.h"
@@ -33,7 +34,7 @@ namespace zypp
      * \short Base class implementing common features of \ref RepoInfo and
      *        \ref ServiceInfo.
      */
-    class RepoInfoBase
+    class ZYPP_API RepoInfoBase
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
@@ -171,7 +172,7 @@ namespace zypp
     { return lhs.alias() < rhs.alias(); }
 
     /** \relates RepoInfoBase Stream output */
-    std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     /** \relates RepoInfoBase */
     typedef shared_ptr<RepoInfoBase> RepoInfoBase_Ptr;

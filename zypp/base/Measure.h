@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ namespace zypp
      * // MEASURE(Parse)  0 (u 0.17 s 0.02 c 0.00) [ 0 (u 0.00 s 0.00 c 0.00)]
      * \endcode
     */
-    class Measure
+    class ZYPP_API Measure
     {
     public:
       /** Default Ctor does nothing. */

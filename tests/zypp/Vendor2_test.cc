@@ -18,7 +18,7 @@ using namespace zypp;
 
 namespace zypp
 {
-  void reconfigureZConfig( const Pathname & );
+  void __reconfigureZConfig__( const Pathname & );
 }
 
 #define DATADIR (Pathname(TESTS_BUILD_DIR) + "/zypp/data/Vendor")
@@ -26,7 +26,7 @@ namespace zypp
 
 BOOST_AUTO_TEST_CASE(vendor2_test)
 {
-  reconfigureZConfig( DATADIR / "zypp2.conf" );
+  __reconfigureZConfig__( DATADIR / "zypp2.conf" );
 
   BOOST_REQUIRE( VendorAttr::instance().equivalent("suse", "suse") );
   BOOST_REQUIRE( VendorAttr::instance().equivalent("equal", "equal") );

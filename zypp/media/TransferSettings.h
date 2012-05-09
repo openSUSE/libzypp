@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include "zypp/base/Macros.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
@@ -17,7 +18,7 @@ namespace media
 /**
  * Holds transfer setting
  */
-class TransferSettings
+class ZYPP_API TransferSettings
 {
 public:
   /**

@@ -12,6 +12,7 @@
 #ifndef ZYPP_PARSER_XML_PARSEDEFCONSUME_H
 #define ZYPP_PARSER_XML_PARSEDEFCONSUME_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/Tr1hash.h"
@@ -57,7 +58,7 @@ namespace zypp
      * \note Allocated <tt>ParseDefConsume *</tt> passed are
      *       immediately wraped into a shared_ptr.
     */
-    class ParseDefConsumeRedirect : public ParseDefConsume
+    class ZYPP_API ParseDefConsumeRedirect : public ParseDefConsume
     {
     public:
       ParseDefConsumeRedirect();
@@ -94,7 +95,7 @@ namespace zypp
     //
     /** ParseDef consumer that invokes callbacks.
     */
-    class ParseDefConsumeCallback : public ParseDefConsume
+    class ZYPP_API ParseDefConsumeCallback : public ParseDefConsume
     {
     public:
       typedef function<void(const Node &)> Callback;
@@ -210,7 +211,7 @@ namespace zypp
        *                                                 ( "attr", data.attr ) )
        * \endcode
        */
-      struct Consumer : public ParseDefConsume
+      struct ZYPP_API Consumer : public ParseDefConsume
       {
         /** Extend \ref Consumer. */
         void add( const AssignerRef & assigner_r )
@@ -278,7 +279,7 @@ namespace zypp
        *
        * \note Use and see \ref xml::parseDefAssign convenience constructor.
       */
-      struct Builder
+      struct ZYPP_API Builder
       {
         /** Contruct \ref Consumer. */
         Builder()

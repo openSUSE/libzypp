@@ -22,6 +22,7 @@ extern "C"
 #include <vector>
 #include <list>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
@@ -39,7 +40,7 @@ namespace rpm
 /**
  *
  **/
-class BinHeader : public base::ReferenceCounted, private base::NonCopyable
+class ZYPP_API BinHeader : public base::ReferenceCounted, private base::NonCopyable
 {
 
 public:

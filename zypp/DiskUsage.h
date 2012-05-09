@@ -15,11 +15,13 @@
 #include <set>
 #include <string>
 
+#include "zypp/base/Macros.h"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class DiskUsage {
+  class ZYPP_API DiskUsage {
   public:
     /**
     * @short Holds data about how much space will be needed per directory.

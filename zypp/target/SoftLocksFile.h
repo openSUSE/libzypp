@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/IdString.h"
@@ -32,7 +33,7 @@ namespace zypp
     //
     /** Save and restore soft locks.
      */
-    class SoftLocksFile
+    class ZYPP_API SoftLocksFile
     {
       friend std::ostream & operator<<( std::ostream & str, const SoftLocksFile & obj );
       public:

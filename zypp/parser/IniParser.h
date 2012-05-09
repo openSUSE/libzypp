@@ -16,6 +16,7 @@
 #include <string>
 #include <list>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/InputStream.h"
@@ -35,7 +36,7 @@ namespace parser
 /** Basic SUSEtags parser.
  * Will replace parser/tagfile/ and  parser/taggedfile/ stuff.
 */
-class IniParser : private base::NonCopyable
+class ZYPP_API IniParser : private base::NonCopyable
 {
 public:
   /** Default ctor */

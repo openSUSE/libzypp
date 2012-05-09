@@ -12,6 +12,7 @@
 #ifndef ZYPP_DISKUSAGE_COUNTER_H
 #define ZYPP_DISKUSAGE_COUNTER_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/ResPool.h"
 
 #include <set>
@@ -22,7 +23,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class DiskUsageCounter
+  class ZYPP_API DiskUsageCounter
   {
 
   public:

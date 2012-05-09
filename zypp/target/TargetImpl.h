@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <set>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
@@ -49,7 +50,7 @@ namespace zypp
      * Constructed by \ref TargetFactory. Public access via \ref Target
      * interface.
     */
-    class TargetImpl : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_LOCAL TargetImpl : public base::ReferenceCounted, private base::NonCopyable
     {
       friend std::ostream & operator<<( std::ostream & str, const TargetImpl & obj );
 

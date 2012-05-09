@@ -14,7 +14,8 @@
 
 #include <iosfwd>
 #include <cstring>
-
+#include "zypp/base/Macros.h"
+ 
 /** \defgroup ZYPP_BASE_LOGGER_MACROS ZYPP_BASE_LOGGER_MACROS
  *  Convenience macros for logging.
  *
@@ -83,7 +84,7 @@ namespace zypp
        *
        * @see getStream
       */
-      enum LogLevel {
+      enum ZYPP_API LogLevel {
         E_XXX = 999, /**< Excessive logging. */
         E_DBG = 0,   /**< Debug or verbose. */
         E_MIL,       /**< Milestone. */
@@ -104,12 +105,12 @@ namespace zypp
        * @note You won't call @ref getStream directly, but use the
        * @ref ZYPP_BASE_LOGGER_MACROS.
       */
-      extern std::ostream & getStream( const char * group_r,
+      extern ZYPP_API std::ostream & getStream( const char * group_r,
                                        LogLevel     level_r,
                                        const char * file_r,
                                        const char * func_r,
                                        const int    line_r );
-      extern bool isExcessive();
+      extern ZYPP_API bool isExcessive();
 
       /////////////////////////////////////////////////////////////////
     } // namespace logger

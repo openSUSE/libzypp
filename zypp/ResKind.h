@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/APIConfig.h"
+#include "zypp/base/Macros.h"
 #include "zypp/base/String.h"
 #include "zypp/IdStringType.h"
 
@@ -32,7 +32,7 @@ namespace zypp
    * Comparison against string values is always case
    * insensitive.
    */
-  class ResKind : public IdStringType<ResKind>
+  class ZYPP_API ResKind : public IdStringType<ResKind>
   {
     public:
       /** \name Some builtin ResKind constants. */

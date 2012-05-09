@@ -13,7 +13,8 @@
 #define ZYPP_BASE_EASY_H
 
 #include <cstdio>
-
+#include "zypp/base/Macros.h"
+ 
 /** Convenient for-loops using iterator.
  * \code
  *  std::set<std::string>; _store;

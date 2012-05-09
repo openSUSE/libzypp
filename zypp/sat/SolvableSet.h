@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Tr1hash.h"
 #include "zypp/sat/Solvable.h"
@@ -32,7 +33,7 @@ namespace zypp
     //
     /** Solvable set wrapper to allow adding additioanal convenience iterators.
      */
-    class SolvableSet : public SolvIterMixin<SolvableSet,std::tr1::unordered_set<Solvable>::const_iterator>
+    class ZYPP_API SolvableSet : public SolvIterMixin<SolvableSet,std::tr1::unordered_set<Solvable>::const_iterator>
     {
       friend std::ostream & operator<<( std::ostream & str, const SolvableSet & obj );
 

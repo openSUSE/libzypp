@@ -14,10 +14,10 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Easy.h"
 #include "zypp/base/LogTools.h"
 #include "zypp/base/SerialNumber.h"
-#include "zypp/APIConfig.h"
 
 #include "zypp/pool/PoolTraits.h"
 #include "zypp/ResPoolProxy.h"
@@ -39,7 +39,7 @@ namespace zypp
      * initial lock status usually derived from /etc/zypp/locks. So
      * we are able to detect changes we have to write back on commit.
     */
-    struct UserLockQueryManip
+    struct ZYPP_LOCAL UserLockQueryManip
     {
       /** Set lock and UserLockQuery bit according to \c yesno_r. */
       static void setLock( ResStatus & status_r, bool yesno_r )
@@ -113,7 +113,7 @@ namespace zypp
     //	CLASS NAME : PoolImpl
     //
     /** */
-    class PoolImpl
+    class ZYPP_LOCAL PoolImpl
     {
       friend std::ostream & operator<<( std::ostream & str, const PoolImpl & obj );
 

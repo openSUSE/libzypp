@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/UserRequestException.h"
 #include "zypp/RepoInfo.h"
@@ -34,7 +35,7 @@ namespace zypp
     /**
      * \short Exception for repository handling.
      */
-    class RepoException : public Exception
+    class ZYPP_API RepoException : public Exception
     {
       public:
         RepoException();
@@ -62,7 +63,7 @@ namespace zypp
      * so you can't create the repostories from
      * the cache.
      */
-    class RepoNotCachedException : public RepoException
+    class ZYPP_API RepoNotCachedException : public RepoException
     {
       public:
         RepoNotCachedException();
@@ -75,7 +76,7 @@ namespace zypp
      * thrown when it was impossible to
      * determine one url for this repo.
      */
-    class RepoNoUrlException : public RepoException
+    class ZYPP_API RepoNoUrlException : public RepoException
     {
       public:
         RepoNoUrlException();
@@ -88,7 +89,7 @@ namespace zypp
      * thrown when it was impossible to
      * determine an alias for this repo.
      */
-    class RepoNoAliasException : public RepoException
+    class ZYPP_API RepoNoAliasException : public RepoException
     {
       public:
         RepoNoAliasException();
@@ -100,7 +101,7 @@ namespace zypp
     /**
      * Thrown when the repo alias is found to be invalid.
      */
-    class RepoInvalidAliasException : public RepoException
+    class ZYPP_API RepoInvalidAliasException : public RepoException
     {
     public:
       RepoInvalidAliasException();
@@ -113,7 +114,7 @@ namespace zypp
      * thrown when it was impossible to
      * match a repository
      */
-    class RepoNotFoundException : public RepoException
+    class ZYPP_API RepoNotFoundException : public RepoException
     {
       public:
         RepoNotFoundException();
@@ -126,7 +127,7 @@ namespace zypp
      * Repository already exists and some unique
      * attribute can't be duplicated.
      */
-    class RepoAlreadyExistsException : public RepoException
+    class ZYPP_API RepoAlreadyExistsException : public RepoException
     {
       public:
         RepoAlreadyExistsException();
@@ -139,7 +140,7 @@ namespace zypp
      * thrown when it was impossible to
      * determine this repo type.
      */
-    class RepoUnknownTypeException : public RepoException
+    class ZYPP_API RepoUnknownTypeException : public RepoException
     {
       public:
         RepoUnknownTypeException();
@@ -152,7 +153,7 @@ namespace zypp
      * thrown when it was impossible to
      * use the raw metadata for this repo.
      */
-    class RepoMetadataException : public RepoException
+    class ZYPP_API RepoMetadataException : public RepoException
     {
       public:
         RepoMetadataException();
@@ -172,7 +173,7 @@ namespace zypp
 
     /** Base Exception for service handling.
      */
-    class ServiceException : public Exception
+    class ZYPP_API ServiceException : public Exception
     {
       public:
         ServiceException();
@@ -197,7 +198,7 @@ namespace zypp
 
     /** Service without alias was used in an operation.
      */
-    class ServiceNoAliasException : public ServiceException
+    class ZYPP_API ServiceNoAliasException : public ServiceException
     {
       public:
         ServiceNoAliasException();
@@ -209,7 +210,7 @@ namespace zypp
     /**
      * Thrown when the repo alias is found to be invalid.
      */
-    class ServiceInvalidAliasException : public ServiceException
+    class ZYPP_API ServiceInvalidAliasException : public ServiceException
     {
     public:
       ServiceInvalidAliasException();
@@ -220,7 +221,7 @@ namespace zypp
 
     /** Service already exists and some unique attribute can't be duplicated.
      */
-    class ServiceAlreadyExistsException : public ServiceException
+    class ZYPP_API ServiceAlreadyExistsException : public ServiceException
     {
       public:
         ServiceAlreadyExistsException();
@@ -231,7 +232,7 @@ namespace zypp
 
     /** Service has no or invalid url defined.
      */
-    class ServiceNoUrlException : public ServiceException
+    class ZYPP_API ServiceNoUrlException : public ServiceException
     {
       public:
         ServiceNoUrlException();
@@ -242,7 +243,7 @@ namespace zypp
 
     /** Service plugin has trouble providing the metadata but this should not be treated as error.
      */
-    class ServicePluginInformalException : public ServiceException
+    class ZYPP_API ServicePluginInformalException : public ServiceException
     {
       public:
         ServicePluginInformalException();

@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/InputStream.h"
 #include "zypp/base/Function.h"
@@ -34,7 +35,7 @@ namespace zypp
     /** xmlTextReader document validation.
      * \todo Implement RelaxNG and W3C XSD
      **/
-    struct Validate
+    struct ZYPP_API Validate
     {
       static Validate none()
       { return Validate(); }
@@ -92,7 +93,7 @@ namespace zypp
      * }
      * \endcode
      **/
-    class Reader : private zypp::base::NonCopyable
+    class ZYPP_API Reader : private zypp::base::NonCopyable
     {
     public:
       /** Ctor. Setup xmlTextReader and advance to the 1st Node. */

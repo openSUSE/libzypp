@@ -14,6 +14,7 @@
 
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Functional.h"
 #include "zypp/ui/Selectable.h"
 
@@ -30,7 +31,7 @@ namespace zypp
       typedef std::unary_function<Selectable::constPtr,bool> SelectableFilterFunctor;
 
       /** */
-      struct ByKind : public SelectableFilterFunctor
+      struct ZYPP_API ByKind : public SelectableFilterFunctor
       {
         ByKind( const ResObject::Kind & kind_r )
         : _kind( kind_r )
@@ -45,7 +46,7 @@ namespace zypp
       };
 
       /** */
-      struct ByName : public SelectableFilterFunctor
+      struct ZYPP_API ByName : public SelectableFilterFunctor
       {
         ByName( const std::string & name_r )
         : _name( name_r )
@@ -58,20 +59,20 @@ namespace zypp
       };
 
       /** */
-      struct ByHasInstalledObj : public SelectableFilterFunctor
+      struct ZYPP_API ByHasInstalledObj : public SelectableFilterFunctor
       {
         bool operator()( const ui::Selectable::constPtr & obj ) const
         { return obj && !obj->installedEmpty(); }
       };
 
       /** */
-      struct ByHasCandidateObj : public SelectableFilterFunctor
+      struct ZYPP_API ByHasCandidateObj : public SelectableFilterFunctor
       {
         bool operator()( const ui::Selectable::constPtr & obj ) const
         { return obj && obj->hasCandidateObj(); }
       };
 
-      struct ByStatus : public SelectableFilterFunctor
+      struct ZYPP_API ByStatus : public SelectableFilterFunctor
       /** */
       {
         ByStatus( Status status_r )

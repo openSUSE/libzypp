@@ -12,6 +12,7 @@
 #ifndef   ZYPP_THREAD_MUTEXEXCEPTION_H
 #define   ZYPP_THREAD_MUTEXEXCEPTION_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 
 
@@ -30,7 +31,7 @@ namespace zypp
     //
     /** Exception type thrown on mutex errors.
      */
-    class MutexException: public zypp::Exception
+    class ZYPP_API MutexException: public zypp::Exception
     {
     public:
       MutexException()

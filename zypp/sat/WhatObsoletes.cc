@@ -28,7 +28,7 @@ namespace zypp
 
     // Obsoletes may either match against provides, or names.
     // Configuration depends on the behaviour of rpm.
-    bool obsoleteUsesProvides = false;
+    ZYPP_API bool __obsoleteUsesProvides__ = false;
 
     ///////////////////////////////////////////////////////////////////
     namespace
@@ -90,7 +90,7 @@ namespace zypp
       if ( item_r.multiversionInstall() )
         return; // multiversion (rpm -i) does not evaluate any obsoletes
 
-      if ( obsoleteUsesProvides )
+      if ( __obsoleteUsesProvides__ )
       {
         WhatProvides obsoleted( item_r.obsoletes() );
         if ( obsoleted.empty() )

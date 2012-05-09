@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <functional>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ResObject.h"
 #include "zypp/ResStatus.h"
@@ -47,7 +48,7 @@ namespace zypp
    * (i.e. the status) is always mutable.
    *
   */
-  class PoolItem
+  class ZYPP_API PoolItem
   {
     friend std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
 
@@ -165,7 +166,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates PoolItem Stream output */
-  std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
 
   /** \relates PoolItem */
   inline bool operator==( const PoolItem & lhs, const PoolItem & rhs )
@@ -222,7 +223,7 @@ namespace zypp
    * \relates PoolItem
    * \relates sat::SolvIterMixin
    */
-  struct asPoolItem
+  struct ZYPP_API asPoolItem
   {
     typedef PoolItem result_type;
 

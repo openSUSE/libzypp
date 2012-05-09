@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ namespace zypp
    * In fact the class will not prevent to use a non iso country code.
    * Just a warning will appear in the log.
   */
-  class CountryCode
+  class ZYPP_API CountryCode
   {
     friend std::ostream & operator<<( std::ostream & str, const CountryCode & obj );
 

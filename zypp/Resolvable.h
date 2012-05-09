@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include "zypp/APIConfig.h"
+#include "zypp/base/Macros.h"
 
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
@@ -36,7 +36,7 @@ namespace zypp
   /** Interface base for resolvable objects (identification and dependencies).
    * \todo Merge with ResObject
   */
-  class Resolvable : protected zypp::sat::Solvable,	// Note: gcc bug #52841 prohibits using just sat::Solvable
+  class ZYPP_API Resolvable : protected zypp::sat::Solvable,	// Note: gcc bug #52841 prohibits using just sat::Solvable
                      public base::ReferenceCounted, private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const Resolvable & obj );

@@ -17,10 +17,10 @@
 #include <list>
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
-#include "zypp/APIConfig.h"
 
 #include "zypp/Pathname.h"
 #include "zypp/PathInfo.h"
@@ -47,7 +47,7 @@ namespace zypp {
      * The inteface here basically checks whether the handler exists,
      * then forwards the request to @ref MediaHandler.
      **/
-    class MediaAccess : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API MediaAccess : public base::ReferenceCounted, private base::NonCopyable
     {
     public:
 	typedef intrusive_ptr<MediaAccess> Ptr;
@@ -442,7 +442,7 @@ namespace zypp {
       };
     };
 
-    std::ostream & operator<<( std::ostream & str, const MediaAccess & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const MediaAccess & obj );
 
 ///////////////////////////////////////////////////////////////////
 

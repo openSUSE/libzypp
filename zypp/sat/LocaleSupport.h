@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/sat/detail/PoolMember.h"
 #include "zypp/sat/SolvIterMixin.h"
 #include "zypp/Locale.h"
@@ -56,7 +57,7 @@ namespace zypp
      *
      * \todo If iterator is too slow install a proxy watching the Pool::serial.
      */
-    class LocaleSupport : public SolvIterMixin<LocaleSupport,filter_iterator<filter::ByLocaleSupport,Pool::SolvableIterator> >
+    class ZYPP_API LocaleSupport : public SolvIterMixin<LocaleSupport,filter_iterator<filter::ByLocaleSupport,Pool::SolvableIterator> >
                         , protected detail::PoolMember
     {
       public:
@@ -103,10 +104,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LocaleSupport Stream output */
-    std::ostream & operator<<( std::ostream & str, const LocaleSupport & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const LocaleSupport & obj );
 
     /** \relates LocaleSupport More verbose stream output including dependencies */
-    std::ostream & dumpOn( std::ostream & str, const LocaleSupport & obj );
+    ZYPP_API std::ostream & dumpOn( std::ostream & str, const LocaleSupport & obj );
 
     /** \relates LocaleSupport */
     inline bool operator==( const LocaleSupport & lhs, const LocaleSupport & rhs )

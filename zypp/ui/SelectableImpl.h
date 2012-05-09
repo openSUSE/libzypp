@@ -39,7 +39,7 @@ namespace zypp
      * \note Implementation is based in PoolItem, just the Selectable
      * inteface restricts them to ResObject::constPtr.
     */
-    struct Selectable::Impl
+    struct ZYPP_LOCAL Selectable::Impl
     {
     public:
 

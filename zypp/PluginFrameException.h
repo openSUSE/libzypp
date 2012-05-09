@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 
@@ -26,7 +27,7 @@ namespace zypp
   //	CLASS NAME : PluginFrameException
   //
   /** Base class for \ref PluginFrame \ref Exception. */
-  class PluginFrameException : public Exception
+  class ZYPP_API PluginFrameException : public Exception
   {
     public:
       PluginFrameException();

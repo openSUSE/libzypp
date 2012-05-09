@@ -14,6 +14,8 @@
 
 #include <iosfwd>
 
+
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProgressData.h"
 #include "zypp/Pathname.h"
@@ -43,7 +45,7 @@ namespace zypp
      *     bind( &SomeClass::callbackfunc, &SomeClassInstance, _1, _2 ) );
      * \endcode
      */
-    class WebpinResultFileReader
+    class ZYPP_API WebpinResultFileReader
     {
         friend std::ostream & operator<<( std::ostream & str, const WebpinResultFileReader & obj );
     public:
@@ -84,7 +86,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates WebpinResultFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const WebpinResultFileReader & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const WebpinResultFileReader & obj );
 
    } //namespace ws
     /////////////////////////////////////////////////////////////////

@@ -27,6 +27,7 @@ extern "C"
 #include <set>
 #include <map>
 
+#include "zypp/base/Macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/CheckSum.h"
 #include "zypp/ByteCount.h"
@@ -52,7 +53,7 @@ namespace zypp
     /** File type information.
      * \todo Think about an \ref g_EnumerationClass
     */
-    enum FileType
+    enum ZYPP_API FileType
       {
         FT_NOT_AVAIL = 0x00, // no typeinfo available
         FT_NOT_EXIST = 0x01, // file does not exist
@@ -67,7 +68,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates FileType Stram output. */
-    extern std::ostream & operator<<( std::ostream & str, FileType obj );
+    extern ZYPP_API std::ostream & operator<<( std::ostream & str, FileType obj );
 
     ///////////////////////////////////////////////////////////////////
 
@@ -77,7 +78,7 @@ namespace zypp
     /**
      * @short Wrapper class for mode_t values as derived from ::stat
      **/
-    class StatMode
+    class ZYPP_API StatMode
     {
       friend std::ostream & operator<<( std::ostream & str, const StatMode & obj );
 
@@ -165,7 +166,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates StatMode Stream output. */
-    extern std::ostream & operator<<( std::ostream & str, const StatMode & obj );
+    extern ZYPP_API std::ostream & operator<<( std::ostream & str, const StatMode & obj );
 
     ///////////////////////////////////////////////////////////////////
 
@@ -184,7 +185,7 @@ namespace zypp
      *     }
      * \endcode
      **/
-    class DevInoCache
+    class ZYPP_API DevInoCache
     {
     public:
       /** Ctor */
@@ -217,7 +218,7 @@ namespace zypp
      *
      * \note For convenience PathInfo is available as zypp::PathInfo too.
      **/
-    class PathInfo
+    class ZYPP_API PathInfo
     {
       friend std::ostream & operator<<( std::ostream & str, const PathInfo & obj );
 
@@ -386,7 +387,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates PathInfo Stream output. */
-    extern std::ostream & operator<<( std::ostream & str, const PathInfo & obj );
+    extern ZYPP_API std::ostream & operator<<( std::ostream & str, const PathInfo & obj );
 
     ///////////////////////////////////////////////////////////////////
 
@@ -400,7 +401,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure
      **/
-    int mkdir( const Pathname & path, unsigned mode = 0755 );
+    ZYPP_API int mkdir( const Pathname & path, unsigned mode = 0755 );
 
     /**
      * Like 'mkdir -p'. No error if directory exists. Make parent directories
@@ -409,14 +410,14 @@ namespace zypp
      *
      * @return 0 on success, errno on failure
      **/
-    int assert_dir( const Pathname & path, unsigned mode = 0755 );
+    ZYPP_API int assert_dir( const Pathname & path, unsigned mode = 0755 );
 
     /**
      * Like '::rmdir'. Delete a directory, which must be empty.
      *
      * @return 0 on success, errno on failure
      **/
-    int rmdir( const Pathname & path );
+    ZYPP_API int rmdir( const Pathname & path );
 
     /**
      * Like 'rm -r DIR'. Delete a directory, recursively removing its contents.
@@ -424,7 +425,7 @@ namespace zypp
      * @return 0 on success, ENOTDIR if path is not a directory, otherwise the
      * commands return value.
      **/
-    int recursive_rmdir( const Pathname & path );
+    ZYPP_API int recursive_rmdir( const Pathname & path );
 
     /**
      * Like 'rm -r DIR/ *'. Delete directory contents, but keep the directory itself.
@@ -432,7 +433,7 @@ namespace zypp
      * @return 0 on success, ENOTDIR if path is not a directory, otherwise the
      * commands return value.
      **/
-    int clean_dir( const Pathname & path );
+    ZYPP_API int clean_dir( const Pathname & path );
 
     /**
      * Like 'cp -a srcpath destpath'. Copy directory tree. srcpath/destpath must be
@@ -441,7 +442,7 @@ namespace zypp
      * @return 0 on success, ENOTDIR if srcpath/destpath is not a directory, EEXIST if
      * 'basename srcpath' exists in destpath, otherwise the commands return value.
      **/
-    int copy_dir( const Pathname & srcpath, const Pathname & destpath );
+    ZYPP_API int copy_dir( const Pathname & srcpath, const Pathname & destpath );
 
     /**
      * Like 'cp -a srcpath/. destpath'. Copy the content of srcpath recursively
@@ -451,13 +452,13 @@ namespace zypp
      * EEXIST if srcpath and destpath are equal, otherwise the commands
      * return value.
      */
-    int copy_dir_content( const Pathname & srcpath, const Pathname & destpath);
+    ZYPP_API int copy_dir_content( const Pathname & srcpath, const Pathname & destpath);
 
     /**
      * Convenience returning <tt>StrMatcher( "[^.]*", Match::GLOB )</tt>
      * \see \ref dirForEach
      */
-    const StrMatcher & matchNoDots();
+    ZYPP_API const StrMatcher & matchNoDots();
 
     /**
      * Invoke callback function \a fnc_r for each entry in directory \a dir_r.
@@ -471,7 +472,7 @@ namespace zypp
      *
      * @return 0 on success, -1 if aborted by callback, errno > 0 on ::readdir failure.
      */
-    int dirForEach( const Pathname & dir_r, function<bool(const Pathname &, const char *const)> fnc_r );
+    ZYPP_API int dirForEach( const Pathname & dir_r, function<bool(const Pathname &, const char *const)> fnc_r );
 
     /**
      * \overload taking a \ref StrMatcher to filter the entries for which \a fnc_r is invoked.
@@ -496,7 +497,7 @@ namespace zypp
      *                           });
      * \endcode
      */
-    int dirForEach( const Pathname & dir_r, const StrMatcher & matcher_r, function<bool(const Pathname &, const char *const)> fnc_r );
+    ZYPP_API int dirForEach( const Pathname & dir_r, const StrMatcher & matcher_r, function<bool(const Pathname &, const char *const)> fnc_r );
 
     /**
      * Return content of directory via retlist. If dots is false
@@ -510,7 +511,7 @@ namespace zypp
      * \todo provide some readdirIterator.
      **/
 
-    int readdir( std::list<std::string> & retlist,
+    ZYPP_API int readdir( std::list<std::string> & retlist,
                  const Pathname & path, bool dots = true );
 
     /**
@@ -525,11 +526,11 @@ namespace zypp
      * \todo provide some readdirIterator.
      **/
 
-    int readdir( std::list<Pathname> & retlist,
+    ZYPP_API int readdir( std::list<Pathname> & retlist,
                  const Pathname & path, bool dots = true );
 
     /** Listentry returned by readdir. */
-    struct DirEntry {
+    struct ZYPP_API DirEntry {
       std::string name;
       FileType    type;
       DirEntry( const std::string & name_r = std::string(), FileType type_r = FT_NOT_AVAIL )
@@ -553,7 +554,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure.
      **/
-    int readdir( DirContent & retlist, const Pathname & path,
+    ZYPP_API int readdir( DirContent & retlist, const Pathname & path,
                  bool dots = true, PathInfo::Mode statmode = PathInfo::STAT );
 
     /**
@@ -561,7 +562,7 @@ namespace zypp
      * \param path The path of the directory to check.
      * \return 0 if directory is empty, -1 if not, errno > 0 on failure.
      */
-    int is_empty_dir(const Pathname & path);
+    ZYPP_API int is_empty_dir(const Pathname & path);
 
     //@}
 
@@ -575,7 +576,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure
      **/
-    int assert_file( const Pathname & path, unsigned mode = 0644 );
+    ZYPP_API int assert_file( const Pathname & path, unsigned mode = 0644 );
 
     /**
      * Change file's modification and access times.
@@ -583,21 +584,21 @@ namespace zypp
      * \return 0 on success, errno on failure
      * \see man utime
      */
-    int touch (const Pathname & path);
+    ZYPP_API int touch (const Pathname & path);
 
     /**
      * Like '::unlink'. Delete a file (symbolic link, socket, fifo or device).
      *
      * @return 0 on success, errno on failure
      **/
-    int unlink( const Pathname & path );
+    ZYPP_API int unlink( const Pathname & path );
 
     /**
      * Like '::rename'. Renames a file, moving it between directories if required.
      *
      * @return 0 on success, errno on failure
      **/
-    int rename( const Pathname & oldpath, const Pathname & newpath );
+    ZYPP_API int rename( const Pathname & oldpath, const Pathname & newpath );
 
     /** Exchanges two files or directories.
      *
@@ -625,7 +626,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure
      */
-    int exchange( const Pathname & lpath, const Pathname & rpath );
+    ZYPP_API int exchange( const Pathname & lpath, const Pathname & rpath );
 
     /**
      * Like 'cp file dest'. Copy file to destination file.
@@ -633,7 +634,7 @@ namespace zypp
      * @return 0 on success, EINVAL if file is not a file, EISDIR if
      * destiantion is a directory, otherwise the commands return value.
      **/
-    int copy( const Pathname & file, const Pathname & dest );
+    ZYPP_API int copy( const Pathname & file, const Pathname & dest );
 
     /**
      * Like '::symlink'. Creates a symbolic link named newpath which contains
@@ -641,7 +642,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure.
      **/
-    int symlink( const Pathname & oldpath, const Pathname & newpath );
+    ZYPP_API int symlink( const Pathname & oldpath, const Pathname & newpath );
 
     /**
      * Like '::link'. Creates a hard link named newpath to an existing file
@@ -649,14 +650,14 @@ namespace zypp
      *
      * @return 0 on success, errno on failure.
      **/
-    int hardlink( const Pathname & oldpath, const Pathname & newpath );
+    ZYPP_API int hardlink( const Pathname & oldpath, const Pathname & newpath );
 
     /**
      * Create \a newpath as hardlink or copy of \a oldpath.
      *
      * @return 0 on success, errno on failure.
      */
-    int hardlinkCopy( const Pathname & oldpath, const Pathname & newpath );
+    ZYPP_API int hardlinkCopy( const Pathname & oldpath, const Pathname & newpath );
 
     /**
      * Like '::readlink'. Return the contents of the symbolic link
@@ -664,7 +665,7 @@ namespace zypp
      *
      * @return 0 on success, errno on failure.
      */
-    int readlink( const Pathname & symlink_r, Pathname & target_r );
+    ZYPP_API int readlink( const Pathname & symlink_r, Pathname & target_r );
     /** \overload Return an empty Pathname on error. */
     inline Pathname readlink( const Pathname & symlink_r )
     {
@@ -685,7 +686,7 @@ namespace zypp
      *   it is returned. If \a path_r is a broken or a cyclic link, an empty
      *   Pathname is returned and the event logged.
      */
-    Pathname expandlink( const Pathname & path_r );
+    ZYPP_API Pathname expandlink( const Pathname & path_r );
 
     /**
      * Like 'cp file dest'. Copy file to dest dir.
@@ -693,7 +694,7 @@ namespace zypp
      * @return 0 on success, EINVAL if file is not a file, ENOTDIR if dest
      * is no directory, otherwise the commands return value.
      **/
-    int copy_file2dir( const Pathname & file, const Pathname & dest );
+    ZYPP_API int copy_file2dir( const Pathname & file, const Pathname & dest );
     //@}
 
     ///////////////////////////////////////////////////////////////////
@@ -706,14 +707,14 @@ namespace zypp
      *
      * @return the files md5sum on success, otherwise an empty string..
      **/
-    std::string md5sum( const Pathname & file );
+    ZYPP_API std::string md5sum( const Pathname & file );
 
     /**
      * Compute a files sha1sum.
      *
      * @return the files sha1sum on success, otherwise an empty string..
      **/
-    std::string sha1sum( const Pathname & file );
+    ZYPP_API std::string sha1sum( const Pathname & file );
     //@}
 
     /**
@@ -721,14 +722,14 @@ namespace zypp
      *
      * @return the files checksum on success, otherwise an empty string..
      **/
-    std::string checksum( const Pathname & file, const std::string &algorithm );
+    ZYPP_API std::string checksum( const Pathname & file, const std::string &algorithm );
 
     /**
      * check files checksum
      *
      * @return true if the checksum matchs
      **/
-    bool is_checksum( const Pathname & file, const CheckSum &checksum );
+    ZYPP_API bool is_checksum( const Pathname & file, const CheckSum &checksum );
 
     ///////////////////////////////////////////////////////////////////
     /** \name Changing permissions. */
@@ -738,21 +739,21 @@ namespace zypp
      *
      * @return 0 on success, errno on failure
      **/
-    int chmod( const Pathname & path, mode_t mode );
+    ZYPP_API int chmod( const Pathname & path, mode_t mode );
 
     /**
      * Add the \c mode bits to the file given by path.
      *
      * @return 0 on success, errno on failure
      */
-    int addmod( const Pathname & path, mode_t mode );
+    ZYPP_API int addmod( const Pathname & path, mode_t mode );
 
     /**
      * Remove the \c mode bits from the file given by path.
      *
      * @return 0 on success, errno on failure
      */
-    int delmod( const Pathname & path, mode_t mode );
+    ZYPP_API int delmod( const Pathname & path, mode_t mode );
     //@}
 
     ///////////////////////////////////////////////////////////////////
@@ -763,9 +764,9 @@ namespace zypp
      *
      * @return ZT_GZ, ZT_BZ2 if file is compressed, otherwise ZT_NONE.
      **/
-    enum ZIP_TYPE { ZT_NONE, ZT_GZ, ZT_BZ2 };
+    enum ZYPP_API ZIP_TYPE { ZT_NONE, ZT_GZ, ZT_BZ2 };
 
-    ZIP_TYPE zipType( const Pathname & file );
+    ZYPP_API ZIP_TYPE zipType( const Pathname & file );
 
     /**
      * Erase whatever happens to be located at path (file or directory).
@@ -774,7 +775,7 @@ namespace zypp
      *
      * \todo check cooperation with zypp::TmpFile and zypp::TmpDir
      **/
-    int erase( const Pathname & path );
+    ZYPP_API int erase( const Pathname & path );
 
     /**
      * Report free disk space on a mounted file system.
@@ -783,14 +784,14 @@ namespace zypp
      *
      * @return Free disk space or -1 on error.
      **/
-    ByteCount df( const Pathname & path );
+    ZYPP_API ByteCount df( const Pathname & path );
 
     /**
      * Get the current umask (file mode creation mask)
      *
      * @return The current umask
      **/
-    mode_t getUmask();
+    ZYPP_API mode_t getUmask();
 
      /**
      * Modify \c mode_r according to the current umask

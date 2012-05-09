@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/Pathname.h"
@@ -32,7 +33,7 @@ namespace zypp
     //
     /** Save and restore locale set from file.
      */
-    class RequestedLocalesFile
+    class ZYPP_API RequestedLocalesFile
     {
       friend std::ostream & operator<<( std::ostream & str, const RequestedLocalesFile & obj );
 

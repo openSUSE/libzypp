@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ namespace zypp
    * sno.serial();             // SERIAL(2)
    * \endcode
    */
-  class SerialNumber
+  class ZYPP_API SerialNumber
   {
     friend std::ostream & operator<<( std::ostream & str, const SerialNumber & obj );
 
@@ -79,7 +80,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates SerialNumber Stream output */
-  std::ostream & operator<<( std::ostream & str, const SerialNumber & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const SerialNumber & obj );
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -119,7 +120,7 @@ namespace zypp
    *   check();          // "Serial number changed."
    * \endcode
    */
-  class SerialNumberWatcher
+  class ZYPP_API SerialNumberWatcher
   {
     friend std::ostream & operator<<( std::ostream & str, const SerialNumberWatcher & obj );
 

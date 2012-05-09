@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Function.h"
 #include "zypp/Pathname.h"
 
@@ -28,7 +29,7 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     /** Test whether an execuatble applydeltarpm program is available. */
-    bool haveApplydeltarpm();
+    ZYPP_API bool haveApplydeltarpm();
 
     /** \name Check if reconstruction of rpm is possible.
      * \see <tt>man applydeltarpm</tt>
@@ -37,12 +38,12 @@ namespace zypp
     /** Check via sequence info.
      * \see <tt>applydeltarpm [-c|-C] -s sequence</tt>
     */
-    bool check( const std::string & sequenceinfo_r, bool quick_r = false );
+    ZYPP_API bool check( const std::string & sequenceinfo_r, bool quick_r = false );
 
     /** Check via deltarpm.
      * \see <tt>applydeltarpm [-c|-C] deltarpm</tt>
     */
-    bool check( const Pathname & delta_r, bool quick_r = false );
+    ZYPP_API bool check( const Pathname & delta_r, bool quick_r = false );
 
     /** Quick via check sequence info.*/
     inline bool quickcheck( const std::string & sequenceinfo_r )
@@ -63,13 +64,13 @@ namespace zypp
     /** Apply a binary delta to on-disk data to re-create a new rpm.
      * \see <tt>applydeltarpm deltarpm newrpm</tt>
     */
-    bool provide( const Pathname & delta_r, const Pathname & new_r,
+    ZYPP_API bool provide( const Pathname & delta_r, const Pathname & new_r,
                   const Progress & report_r = Progress() );
 
     /** Apply a binary delta to an old rpm to re-create a new rpm.
      * \see <tt>applydeltarpm -r oldrpm deltarpm newrpm</tt>
     */
-    bool provide( const Pathname & old_r, const Pathname & delta_r,
+    ZYPP_API bool provide( const Pathname & old_r, const Pathname & delta_r,
                   const Pathname & new_r,
                   const Progress & report_r = Progress() );
     //@}

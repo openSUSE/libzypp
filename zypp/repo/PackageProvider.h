@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/NonCopyable.h"
 
 #include "zypp/ZYppCallbacks.h"
@@ -34,7 +35,7 @@ namespace zypp
     //	CLASS NAME : PackageProviderPolicy
     //
     /** */
-    class PackageProviderPolicy
+    class ZYPP_API PackageProviderPolicy
     {
     public:
       /** Get installed Editions callback signature. */
@@ -61,7 +62,7 @@ namespace zypp
     /** Provide a package from a Source.
      * Use available deltarpm if apropriate.
     */
-    class PackageProvider : private base::NonCopyable
+    class ZYPP_API PackageProvider : private base::NonCopyable
     {
       typedef shared_ptr<void>                                       ScopedGuard;
       typedef callback::SendReport<repo::DownloadResolvableReport> Report;

@@ -10,6 +10,7 @@
 #ifndef ZYPP_PARSER_PLAINDIR_REPOPARSER_H
 #define ZYPP_PARSER_PLAINDIR_REPOPARSER_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/RepoStatus.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -25,7 +26,7 @@ namespace zypp
       /**
        * \short Gives a cookie for a dir
        */
-      RepoStatus dirStatus( const Pathname &dir );
+      ZYPP_API RepoStatus dirStatus( const Pathname &dir );
 
       /////////////////////////////////////////////////////////////////
     } // namespace plaindir

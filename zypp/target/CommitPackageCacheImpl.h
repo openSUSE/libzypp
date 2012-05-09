@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/Exception.h"
 
@@ -36,7 +37,7 @@ namespace zypp
      * PackageProvider passed to the ctor. The PackageProvider is expected
      * to throw or return an empty ManagedFile if the package can't be provided.
     */
-    class CommitPackageCache::Impl
+    class ZYPP_LOCAL CommitPackageCache::Impl
     {
     public:
       typedef CommitPackageCache::PackageProvider  PackageProvider;

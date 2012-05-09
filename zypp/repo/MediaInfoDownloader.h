@@ -10,6 +10,7 @@
 #ifndef ZYPP_REPO_MEDIAINFO_DOWNLOADER
 #define ZYPP_REPO_MEDIAINFO_DOWNLOADER
 
+#include "zypp/base/Macros.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
 #include "zypp/Fetcher.h"
@@ -30,7 +31,7 @@ namespace zypp
      *
      * \throws Exception on error
      */
-    void downloadMediaInfo( const Pathname &dest_dir,
+    ZYPP_API void downloadMediaInfo( const Pathname &dest_dir,
                             MediaSetAccess &media,
                             const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
   } // ns repo

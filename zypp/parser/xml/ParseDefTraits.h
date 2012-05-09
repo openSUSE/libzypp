@@ -12,6 +12,7 @@
 #ifndef ZYPP_PARSER_XML_PARSEDEFTRAITS_H
 #define ZYPP_PARSER_XML_PARSEDEFTRAITS_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/Bit.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -26,7 +27,7 @@ namespace zypp
     //	CLASS NAME : ParseDefTraits
     //
     /** */
-    struct ParseDefTraits
+    struct ZYPP_API ParseDefTraits
     {
       typedef unsigned char                              ModeBitsType;
       typedef bit::BitField<ModeBitsType>                ModeBits;

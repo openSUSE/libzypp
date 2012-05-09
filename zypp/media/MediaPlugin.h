@@ -26,7 +26,7 @@ namespace zypp
      *
      * @see MediaHandler
      */
-    class MediaPlugin : public MediaHandler
+    class ZYPP_API MediaPlugin : public MediaHandler
     {
       public:
 	MediaPlugin( const Url & url_r, const Pathname & attach_point_hint_r );

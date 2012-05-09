@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <map>
+#include "zypp/macros.h"
 #include "zypp/base/Exception.h"
 #include "ResourceType.h"
 

@@ -12,6 +12,7 @@
 #ifndef ZYPP_TARGET_TARGETCALLBACKRECEIVER_H
 #define ZYPP_TARGET_TARGETCALLBACKRECEIVER_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/ZYppCallbacks.h"
 #include "zypp/target/rpm/RpmCallbacks.h"
 
@@ -22,7 +23,7 @@ namespace zypp
   namespace target
   { /////////////////////////////////////////////////////////////////
 
-    class RpmInstallPackageReceiver
+    class ZYPP_API RpmInstallPackageReceiver
 	: public callback::ReceiveReport<rpm::RpmInstallReport>
     {
 	callback::SendReport <rpm::InstallResolvableReport> _report;
@@ -66,7 +67,7 @@ namespace zypp
         virtual void finish( Exception & excpt_r );
     };
 
-    class RpmRemovePackageReceiver
+    class ZYPP_API RpmRemovePackageReceiver
 	: public callback::ReceiveReport<rpm::RpmRemoveReport>
     {
 	callback::SendReport <rpm::RemoveResolvableReport> _report;

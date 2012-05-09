@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/Pathname.h"
 #include "zypp/base/Flags.h"
 
@@ -30,7 +31,7 @@ namespace zypp
      * Use \ref LoadSystemFlags as a type-safe way of
      * storing OR-combinations.
      */
-    enum LoadSystemFlag
+    enum ZYPP_API LoadSystemFlag
     {
       LS_READONLY	= (1 << 0),	//!< // Create readonly ZYpp instance.
       LS_NOREFRESH	= (1 << 1)	//!< // Don't refresh existing repos.
@@ -48,7 +49,7 @@ namespace zypp
      *
      * \todo properly handle service refreshs
      */
-    void defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() );
+    void ZYPP_API defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() );
 
     /** \overload */
     inline void defaultLoadSystem( LoadSystemFlags flags_r )

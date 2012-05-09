@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/DefaultIntegral.h"
 #include "zypp/Pathname.h"
@@ -53,7 +54,7 @@ namespace zypp
    *                     "my stream's name" ) );
    * \endcode
   */
-  class InputStream
+  class ZYPP_API InputStream
   {
   public:
     /** Default ctor providing \c std::cin. */
@@ -136,7 +137,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates InputStream Stream output */
-  std::ostream & operator<<( std::ostream & str, const InputStream & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const InputStream & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

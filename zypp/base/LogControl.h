@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
@@ -31,7 +32,7 @@ namespace zypp
      * Expect \a formated_r to be a formated log line without trailing \c NL.
      * Ready to be written to the log.
      */
-    struct LineWriter
+    struct ZYPP_API LineWriter
     {
       virtual void writeOut( const std::string & /*formated_r*/ )
       {}
@@ -40,7 +41,7 @@ namespace zypp
     };
 
     /** Base class for ostream based \ref LineWriter */
-    struct StreamLineWriter : public LineWriter
+    struct ZYPP_API StreamLineWriter : public LineWriter
     {
       StreamLineWriter( std::ostream & str_r ) : _str( &str_r ) {}
 
@@ -53,13 +54,13 @@ namespace zypp
     };
 
     /** \ref LineWriter to stdout. */
-    struct StdoutLineWriter : public StreamLineWriter
+    struct ZYPP_API StdoutLineWriter : public StreamLineWriter
     {
       StdoutLineWriter();
     };
 
     /** \ref LineWriter to stderr. */
-    struct StderrLineWriter : public StreamLineWriter
+    struct ZYPP_API StderrLineWriter : public StreamLineWriter
     {
       StderrLineWriter();
     };
@@ -68,7 +69,7 @@ namespace zypp
      * If \c mode_r is not \c 0, \c file_r persissions are changed
      * accordingly. \c "-" logs to \c cerr.
     */
-    struct FileLineWriter : public StreamLineWriter
+    struct ZYPP_API FileLineWriter : public StreamLineWriter
     {
       FileLineWriter( const Pathname & file_r, mode_t mode_r = 0 );
       protected:
@@ -92,7 +93,7 @@ namespace zypp
      * \note A Singleton using a Singleton implementation class,
      * that's why there is no _pimpl like in other classes.
     */
-    class LogControl
+    class ZYPP_API LogControl
     {
       friend std::ostream & operator<<( std::ostream & str, const LogControl & obj );
 
@@ -110,7 +111,7 @@ namespace zypp
        * Return a formated logline without trailing \c NL.
        * Ready to be written to the log.
       */
-      struct LineFormater
+      struct ZYPP_API LineFormater
       {
         virtual std::string format( const std::string & /*group_r*/,
                                     logger::LogLevel    /*level_r*/,
@@ -197,7 +198,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LogControl Stream output */
-    std::ostream & operator<<( std::ostream & str, const LogControl & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const LogControl & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace base

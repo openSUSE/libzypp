@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Exception.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -61,7 +62,7 @@ namespace zypp
    * }
    * \endcode
   */
-  class UserRequestException : public Exception
+  class ZYPP_API UserRequestException : public Exception
   {
     public:
       enum Kind { UNSPECIFIED, IGNORE, SKIP, RETRY, ABORT };

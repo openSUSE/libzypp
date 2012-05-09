@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_CREDENTIALFILEREADER_H
 #define ZYPP_MEDIA_CREDENTIALFILEREADER_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Function.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
@@ -30,7 +31,7 @@ namespace zypp
   //
   // CLASS NAME : CredentialFileReader 
   //
-  class CredentialFileReader
+  class ZYPP_API CredentialFileReader
   {
   public:
     /**

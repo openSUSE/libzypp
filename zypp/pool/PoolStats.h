@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/base/Functional.h"
 #include "zypp/base/Counter.h"
@@ -41,7 +42,7 @@ namespace zypp
      *   system:       1
      * \endcode
     */
-    struct PoolStats : public std::unary_function<ResObject::constPtr, void>
+    struct ZYPP_API PoolStats : public std::unary_function<ResObject::constPtr, void>
     {
       void operator()( ResObject::constPtr ptr )
       {
@@ -56,7 +57,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates PoolStats Stream output */
-    std::ostream & operator<<( std::ostream & str, const PoolStats & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const PoolStats & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace pool

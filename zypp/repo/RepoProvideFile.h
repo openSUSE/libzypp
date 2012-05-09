@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/Functional.h"
@@ -43,7 +44,7 @@ namespace zypp
      *
      * \throws Exception
     */
-    ManagedFile provideFile( RepoInfo repo_r,
+    ZYPP_API ManagedFile provideFile( RepoInfo repo_r,
                              const OnMediaLocation & loc_r,
                              const ProvideFilePolicy & policy_r = ProvideFilePolicy() );
 
@@ -57,7 +58,7 @@ namespace zypp
      * files from different repositories in different order
      * without opening and closing medias all the time
      */
-    class RepoMediaAccess
+    class ZYPP_API RepoMediaAccess
     {
     public:
       /** Ctor taking the default \ref ProvideFilePolicy. */

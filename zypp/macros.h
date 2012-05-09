@@ -6,13 +6,13 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/APIConfig.h
- *  \brief	Provides API related macros.
+/** \file   zypp/Macros.h
+ *  \brief  Provides API related macros.
  */
-#ifndef ZYPP_APICONFIG_H
-#define ZYPP_APICONFIG_H
+#ifndef ZYPP_MACROS_H
+#define ZYPP_MACROS_H
 
-#include "zypp/base/Easy.h"	// some macros used almost everywhere
+#include "zypp/base/Easy.h" // some macros used almost everywhere
 
 /**
  * Generic helper definitions for shared library support.
@@ -38,9 +38,9 @@
   #define ZYPP_HELPER_DLL_LOCAL
 #endif
 
-#ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
-  #define ZYPP_API	ZYPP_HELPER_DLL_EXPORT
-  #define ZYPP_LOCAL	ZYPP_HELPER_DLL_LOCAL
+#ifdef ZYPP_DLL //defined if zypp is compiled as DLL
+  #define ZYPP_API  ZYPP_HELPER_DLL_EXPORT
+  #define ZYPP_LOCAL ZYPP_HELPER_DLL_LOCAL
 #else
   #define ZYPP_API
   #define ZYPP_LOCAL
@@ -87,4 +87,4 @@
   #endif
 #endif
 
-#endif //ZYPP_APICONFIG_H
+#endif //ZYPP_MACROS_H

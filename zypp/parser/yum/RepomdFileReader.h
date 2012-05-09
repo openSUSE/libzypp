@@ -12,6 +12,7 @@
 #ifndef zypp_source_yum_RepomdFileReader_H
 #define zypp_source_yum_RepomdFileReader_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/Function.h"
@@ -43,7 +44,7 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1, _2 ) );
    * \endcode
    */
-  class RepomdFileReader : private base::NonCopyable
+  class ZYPP_API RepomdFileReader : private base::NonCopyable
   {
   public:
    /**

@@ -13,6 +13,7 @@
 #define ZYPP_CAPMATCH_H
 
 #include <iosfwd>
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -34,7 +35,7 @@ namespace zypp
    *   ( !CapMatch::irrelevant )     == CapMatch::irrelevant // true
    * \endcode
   */
-  class CapMatch
+  class ZYPP_API CapMatch
   {
     enum Result { NOMATCH, MATCH, IRRELEVANT };
 
@@ -93,7 +94,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates CapMatch Stream output */
-  std::ostream & operator<<( std::ostream & str, const CapMatch & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CapMatch & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

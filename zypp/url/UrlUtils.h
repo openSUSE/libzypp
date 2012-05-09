@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_URLUTILS_H
 #define   ZYPP_URL_URLUTILS_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/url/UrlException.h"
 
 #include <string>
@@ -81,7 +82,7 @@ namespace zypp
      * \param eflag    If to detect and skip already encoded substrings.
      * \return A percent encoded string.
      */
-    std::string
+    ZYPP_API std::string
     encode(const std::string &str, const std::string &safe = "",
                                    EEncoding         eflag = E_DECODED);
 
@@ -102,7 +103,7 @@ namespace zypp
      * \throws UrlDecodingException if \p allowNUL is false and
      *         a encoded NUL byte (\c "%00") was found in \p str.
      */
-    std::string
+    ZYPP_API std::string
     decode(const std::string &str, bool allowNUL = false);
 
 
@@ -116,7 +117,7 @@ namespace zypp
      * \return A percent encoded representation of the character,
      *         e.g. %20 for a ' ' (space).
      */
-    std::string
+    ZYPP_API std::string
     encode_octet(const unsigned char c);
 
 
@@ -139,7 +140,7 @@ namespace zypp
      * \return The value (0-255) encoded in the \p hex characters or -1
      *         if \p hex does not point to two hexadecimal characters.
      */
-    int
+    ZYPP_API int
     decode_octet(const char *hex);
 
 
@@ -157,7 +158,7 @@ namespace zypp
      * \param psep    Parameter separator character to split at.
      * \throws UrlNotSupportedException if \p psep separator is empty.
      */
-    void
+    ZYPP_API void
     split(ParamVec          &pvec,
           const std::string &pstr,
           const std::string &psep);
@@ -191,7 +192,7 @@ namespace zypp
      * \throws UrlNotSupportedException if \p psep or \p vsep separator
      *         is empty.
      */
-    void
+    ZYPP_API void
     split(ParamMap          &pmap,
           const std::string &pstr,
           const std::string &psep,
@@ -213,7 +214,7 @@ namespace zypp
      * \param psep    Parameter separator character to use.
      * \return A parameter string.
      */
-    std::string
+    ZYPP_API std::string
     join(const ParamVec     &pvec,
          const std::string  &psep);
 
@@ -240,7 +241,7 @@ namespace zypp
      * \throws UrlNotSupportedException if \p psep or \p vsep separator
      *         is empty.
      */
-    std::string
+    ZYPP_API std::string
     join(const ParamMap     &pmap,
          const std::string  &psep,
          const std::string  &vsep,

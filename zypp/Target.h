@@ -14,10 +14,10 @@
 
 #include <iosfwd>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
-#include "zypp/APIConfig.h"
 
 #include "zypp/Product.h"
 #include "zypp/Pathname.h"
@@ -46,7 +46,7 @@ namespace zypp
   //
   /**
   */
-  class Target : public base::ReferenceCounted, public base::NonCopyable
+  class ZYPP_API Target : public base::ReferenceCounted, public base::NonCopyable
   {
   public:
     typedef target::TargetImpl  Impl;
@@ -228,7 +228,7 @@ namespace zypp
    * shortName=BN
    * \endcode
    */
-  std::ostream & operator<<( std::ostream & str, const Target::DistributionLabel & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Target::DistributionLabel & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

@@ -14,6 +14,8 @@
 #ifndef ZYPP_BASE_GETTEXT_H
 #define ZYPP_BASE_GETTEXT_H
 
+#include "zypp/base/Macros.h"
+
 /** Just tag text for translation. */
 #define N_(MSG) MSG
 
@@ -31,10 +33,10 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     /** Return translated text. */
-    const char * dgettext( const char * msgid );
+    ZYPP_API const char * dgettext( const char * msgid );
 
     /** Return translated text (plural form). */
-    const char * dngettext( const char * msgid1, const char * msgid2,
+    ZYPP_API const char * dngettext( const char * msgid1, const char * msgid2,
                             unsigned long n );
 
     /////////////////////////////////////////////////////////////////

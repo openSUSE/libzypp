@@ -19,6 +19,7 @@
 #include <string>
 #include <sstream>
 
+#include "zypp/base/Macros.h"
 #include "zypp/base/Easy.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
@@ -65,7 +66,7 @@ namespace zypp
    * { return( ::strncmp( str_r, prefix_r, prefix_r.size() ) == 0 ); }
    * \endcode
    */
-  class C_Str
+  class ZYPP_API C_Str
   {
     public:
       typedef std::string::size_type size_type;
@@ -95,7 +96,7 @@ namespace zypp
   };
 
   /** \relates C_Str Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const C_Str & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const C_Str & obj )
   { return str << obj.c_str(); }
 
   ///////////////////////////////////////////////////////////////////
@@ -109,10 +110,10 @@ namespace zypp
     /**
      * Global asString() that works with std::string too
      */
-    inline std::string asString( const std::string &t )
+    inline ZYPP_API std::string asString( const std::string &t )
     { return t; }
 
-    inline std::string asString( const char * t )
+    inline ZYPP_API std::string asString( const char * t )
     { return t; }
 
     template<class _T>
@@ -133,7 +134,7 @@ namespace zypp
 
     ///////////////////////////////////////////////////////////////////
     /** Printf style construction of std::string. */
-    std::string form( const char * format, ... )
+    ZYPP_API std::string form( const char * format, ... )
     __attribute__ ((format (printf, 1, 2)));
 
     ///////////////////////////////////////////////////////////////////
@@ -141,7 +142,7 @@ namespace zypp
      * Like ::strerror, but the numerical value is included in
      * the string as well.
     */
-    std::string strerror( int errno_r );
+    ZYPP_API std::string strerror( int errno_r );
 
     ///////////////////////////////////////////////////////////////////
     /** Assert \c free called for allocated <tt>char *</tt>.
@@ -154,7 +155,7 @@ namespace zypp
      *
      * \ingroup g_RAII
     */
-    struct SafeBuf
+    struct ZYPP_API SafeBuf
     {
       char * _buf;
       SafeBuf() : _buf( 0 ) {}
@@ -174,7 +175,7 @@ namespace zypp
      *  std::string txt( str::Str() << 45 );
      * \endcode
     */
-    struct Str
+    struct ZYPP_API Str
     {
       template<class _Tp>
       Str & operator<<( const _Tp & val )
@@ -317,10 +318,10 @@ namespace zypp
     */
     //@{
     /** Return \c true if str is <tt>1, true, yes, on</tt> (or a nonzero number). */
-    bool strToTrue( const C_Str & str );
+    ZYPP_API bool strToTrue( const C_Str & str );
 
     /** Return \c false if str is <tt>0, false, no, off</tt>. */
-    bool strToFalse( const C_Str & str );
+    ZYPP_API bool strToFalse( const C_Str & str );
 
     /** Parse \c str into a bool depending on the default value.
      * If the \c default is true, look for a legal \c false string.
@@ -345,21 +346,21 @@ namespace zypp
     /**
      * \short Return a string with all occurrences of \c from_r replaced with \c to_r.
      */
-    std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r );
+    ZYPP_API std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r );
 
     /** \overload A function is called on demand to compute each replacement value.
      */
-    std::string gsubFun( const std::string & str_r, const std::string & from_r, function<std::string()> to_r );
+    ZYPP_API std::string gsubFun( const std::string & str_r, const std::string & from_r, function<std::string()> to_r );
 
     /**
      * \short Replace all occurrences of \c from_r with \c to_r in \c str_r (inplace).
      * A reference to \c str_r is also returned for convenience.
      */
-    std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r );
+    ZYPP_API std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r );
 
     /** \overload A function is called on demand to compute each replacement value.
      */
-    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, function<std::string()> to_r );
+    ZYPP_API std::string & replaceAllFun( std::string & str_r, const std::string & from_r, function<std::string()> to_r );
 
 
     ///////////////////////////////////////////////////////////////////
@@ -691,7 +692,7 @@ namespace zypp
        *
        * \todo shoud not be documented in doxy-group 'Join'
        */
-      std::string escape( const C_Str & str_r, const char c = ' ' );
+      ZYPP_API std::string escape( const C_Str & str_r, const char c = ' ' );
 
       /** Escape \a next_r and append it to \a str_r using separator \a sep_r. */
       inline void appendEscaped( std::string & str_r, const C_Str & next_r, const char sep_r = ' ' )
@@ -717,9 +718,9 @@ namespace zypp
     /** Encode all characters other than [a-zA-Z0-9] as %XX.
      * This includes the % character itself, which becomes %25.
      */
-    std::string hexencode( const C_Str & str_r );
+    ZYPP_API std::string hexencode( const C_Str & str_r );
     /** Decode hexencoded %XX sequences. */
-    std::string hexdecode( const C_Str & str_r );
+    ZYPP_API std::string hexdecode( const C_Str & str_r );
     //@}
     ///////////////////////////////////////////////////////////////////
 
@@ -728,7 +729,7 @@ namespace zypp
     /** Return lowercase version of \a s
      * \todo improve
     */
-    std::string toLower( const std::string & s );
+    ZYPP_API std::string toLower( const std::string & s );
     /** \overload */
     inline std::string toLower( const char * s )
     { return( s ? toLower( std::string(s) ) : std::string() ); }
@@ -736,7 +737,7 @@ namespace zypp
     /** Return uppercase version of \a s
      * \todo improve
     */
-    std::string toUpper( const std::string & s );
+    ZYPP_API std::string toUpper( const std::string & s );
     /** \overload */
     inline std::string toUpper( const char * s )
     { return( s ? toUpper( std::string(s) ) : std::string() ); }
@@ -765,14 +766,14 @@ namespace zypp
     */
     //@{
     /** To define how to trim. */
-    enum Trim {
+    enum ZYPP_API Trim {
       NO_TRIM = 0x00,
       L_TRIM  = 0x01,
       R_TRIM  = 0x02,
       TRIM    = (L_TRIM|R_TRIM)
     };
 
-    std::string trim( const std::string & s, const Trim trim_r = TRIM );
+    ZYPP_API std::string trim( const std::string & s, const Trim trim_r = TRIM );
 
     inline std::string ltrim( const std::string & s )
     { return trim( s, L_TRIM ); }
@@ -781,19 +782,19 @@ namespace zypp
     { return trim( s, R_TRIM ); }
     //@}
 
-    std::string stripFirstWord( std::string & line, const bool ltrim_first );
+    ZYPP_API std::string stripFirstWord( std::string & line, const bool ltrim_first );
 
-    std::string stripLastWord( std::string & line, const bool rtrim_first );
-
-    /** Return stream content up to (but not returning) the next newline.
-     * \see \ref receiveUpTo
-     */
-    std::string getline( std::istream & str, bool trim = false );
+    ZYPP_API std::string stripLastWord( std::string & line, const bool rtrim_first );
 
     /** Return stream content up to (but not returning) the next newline.
      * \see \ref receiveUpTo
      */
-    std::string getline( std::istream & str, const Trim trim_r );
+    ZYPP_API std::string getline( std::istream & str, bool trim = false );
+
+    /** Return stream content up to (but not returning) the next newline.
+     * \see \ref receiveUpTo
+     */
+    ZYPP_API std::string getline( std::istream & str, const Trim trim_r );
 
     /** Return stream content up to the next ocurrence of \c delim_r or EOF
      * \c delim_r, if found, is always read from the stream. Whether it is
@@ -802,7 +803,7 @@ namespace zypp
      * If we reached EOF while looking for \c delim_r, \c eof is set; and
      * also \c fail, if we did not read any data before.
      */
-    std::string receiveUpTo( std::istream & str, const char delim_r, bool returnDelim_r = false );
+    ZYPP_API std::string receiveUpTo( std::istream & str, const char delim_r, bool returnDelim_r = false );
 
     ///////////////////////////////////////////////////////////////////
 

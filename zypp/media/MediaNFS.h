@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_MEDIANFS_H
 #define ZYPP_MEDIA_MEDIANFS_H
 
+#include "zypp/base/Macros.h"
 #include "zypp/media/MediaHandler.h"
 
 /**
@@ -33,7 +34,7 @@ namespace zypp {
      * @short Implementation class for NFS MediaHandler
      * @see MediaHandler
      **/
-    class MediaNFS : public MediaHandler {
+    class ZYPP_API MediaNFS : public MediaHandler {
 
       protected:
 

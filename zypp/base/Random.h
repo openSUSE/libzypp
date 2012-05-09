@@ -11,6 +11,7 @@
 #define ZYPP_BASE_Random_H
 
 #include <string>
+#include "zypp/base/Macros.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -19,9 +20,9 @@ namespace zypp
   namespace base
   { ///////////////////////////
     // Taken from KApplication
-    int random_int();
+    ZYPP_API int random_int();
     // Taken from KApplication
-    std::string random_string(int length);
+    ZYPP_API std::string random_string(int length);
 
 
     /** Return a random number from <tt>[0,RAND_MAX[</tt>. */

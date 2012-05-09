@@ -17,6 +17,7 @@
 #include <iosfwd>
 //#include <sstream>
 //#include <string>
+ #include "zypp/base/Macros.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/String.h"
 #include "zypp/ExternalProgram.h"
@@ -63,7 +64,7 @@ namespace zypp
     /** Base for a simple tracer. Provides an enum indicating which
      * traced functions were called.
     */
-    struct TraceCADBase
+    struct ZYPP_API TraceCADBase
     {
       enum What { CTOR, COPYCTOR, ASSIGN, DTOR, PING };
       std::string _ident;

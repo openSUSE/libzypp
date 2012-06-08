@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun  8 16:24:46 CEST 2012 - ma@suse.de
+
+- Fix processing of weak locks (bnc#749418, bnc#765164)
+- Fix typos in zypp.conf (bnc#761985)
+- version 9.12.3 (8)
+
+-------------------------------------------------------------------
 Wed Apr 25 21:27:36 CEST 2012 - ma@suse.de
 
 - Fix lost device info when changeing CD/DVD (bnc#755815)

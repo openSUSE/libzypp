@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun  8 16:04:54 CEST 2012 - ma@suse.de
+
+- Fix processing of weak locks (bnc#749418, bnc#765164)
+- Fix typos in zypp.conf (bnc#761985)
+- version 8.13.6 (10)
+
+-------------------------------------------------------------------
 Thu Apr 26 09:29:48 CEST 2012 - ma@suse.de
 
 - Fix mount entry comparison (bnc#710269)

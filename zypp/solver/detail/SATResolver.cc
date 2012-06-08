@@ -1391,7 +1391,7 @@ void SATResolver::setLocks()
 	if ( ! ui::Selectable::get( *iter )->hasInstalledObj() )
 	{
 	  MIL << "Keep NOT installed name " << ident << " (" << *iter << ")" << endl;
-	  queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
+	  queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK );
 	  queue_push( &(_jobQueue), ident.id() );
 	}
       }

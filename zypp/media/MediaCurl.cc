@@ -44,6 +44,8 @@
 #define  TRANSFER_TIMEOUT       60 * 3
 #define  TRANSFER_TIMEOUT_MAX   60 * 60
 
+#define EXPLICITLY_NO_PROXY "_none_"
+
 #undef CURLVERSION_AT_LEAST
 #define CURLVERSION_AT_LEAST(M,N,O) LIBCURL_VERSION_NUM >= ((((M)<<8)+(N))<<8)+(O)
 
@@ -287,7 +289,12 @@ void fillSettingsFromUrl( const Url &url, TransferSettings &s )
     string proxy = url.getQueryParam( "proxy" );
     if ( ! proxy.empty() )
     {
-        if ( proxy == "_none_" ) {
+        if ( proxy == EXPLICITLY_NO_PROXY ) {
+	    // Workaround TransferSettings shortcoming: With an
+	    // empty proxy string, code will continue to look for
+	    // valid proxy settings. So set proxy to some non-empty
+	    // string, to indicate it has been explicitly disabled.
+	    s.setProxy(EXPLICITLY_NO_PROXY);
             s.setProxyEnabled(false);
         }
         else {
@@ -527,15 +534,12 @@ void MediaCurl::setupEasy()
       disconnectFrom();
       ZYPP_RETHROW(e);
   }
-
-  // if the proxy was not set by url, then look
+  // if the proxy was not set (or explicitly unset) by url, then look...
   if ( _settings.proxy().empty() )
   {
-      // at the system proxy settings
+      // ...at the system proxy settings
       fillSettingsSystemProxy(_url, _settings);
   }
-
-  DBG << "Proxy: " << (_settings.proxy().empty() ? "-none-" : _settings.proxy()) << endl;
 
  /**
   * Connect timeout
@@ -591,6 +595,7 @@ void MediaCurl::setupEasy()
 
   if ( _settings.proxyEnabled() )
   {
+    DBG << "Proxy: '" << _settings.proxy() << "'" << endl;
     if ( ! _settings.proxy().empty() )
     {
       SET_OPTION(CURLOPT_PROXY, _settings.proxy().c_str());
@@ -622,11 +627,19 @@ void MediaCurl::setupEasy()
         SET_OPTION(CURLOPT_PROXYUSERPWD, proxyuserpwd.c_str());
     }
   }
+#if CURLVERSION_AT_LEAST(7,19,4)
+  else if ( _settings.proxy() == EXPLICITLY_NO_PROXY )
+  {
+    // Explicitly disabled in URL (see fillSettingsFromUrl()).
+    // This should also prevent libcurl from looking into the environment.
+    DBG << "Proxy: explicitly NOPROXY" << endl;
+    SET_OPTION(CURLOPT_NOPROXY, "*");
+  }
+#endif
   else
   {
-#if CURLVERSION_AT_LEAST(7,19,4)
-      SET_OPTION(CURLOPT_NOPROXY, "*");
-#endif
+    // libcurl may look into the enviroanment
+    DBG << "Proxy: not explicitly set" << endl;
   }
 
   /** Speed limits */

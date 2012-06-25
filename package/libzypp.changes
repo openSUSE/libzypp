@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 12:52:19 CEST 2012 - ma@suse.de
+
+- allow libcurl to take proxy from environment iff proxy is not 
+  configured or disallowed (bnc#745404)
+- version 6.37.9 (31)
+
+-------------------------------------------------------------------
 Fri Jun  8 16:30:13 CEST 2012 - ma@suse.de
 
 - Fix processing of weak locks (bnc#749418, bnc#765164)

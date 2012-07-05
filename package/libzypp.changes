@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul  5 14:09:27 CEST 2012 - ma@suse.de
+
+- fix possibly reporting timeout as "aborted by user" (bnc#665327)
+- version 10.4.7 (3)
+
+-------------------------------------------------------------------
 Mon Jun 25 12:58:32 CEST 2012 - ma@suse.de
 
 - allow libcurl to take proxy from environment iff proxy is not

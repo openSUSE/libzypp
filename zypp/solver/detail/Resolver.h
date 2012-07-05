@@ -193,6 +193,7 @@ class Resolver : public base::ReferenceCounted, private base::NonCopyable {
 
     bool doUpgrade();
     PoolItemList problematicUpdateItems() const;
+    PoolItemList itemsToKeep() const;
 
     /** \name Solver flags */
     //@{

@@ -122,6 +122,9 @@ namespace zypp
   std::list<PoolItem> Resolver::problematicUpdateItems() const
   { return _pimpl->problematicUpdateItems(); }
 
+  std::list<PoolItem> Resolver::itemsToKeep() const
+  { return _pimpl->itemsToKeep(); }
+    
   bool Resolver::createSolverTestcase( const std::string & dumpPath, bool runSolver )
   {
     solver::detail::Testcase testcase (dumpPath);

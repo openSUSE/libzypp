@@ -148,6 +148,12 @@ namespace zypp
     std::list<PoolItem> problematicUpdateItems() const;
 
     /**
+     * Packages to keep, i.e. packages which are locked for any reason.
+     * Return the list of items to keep
+     **/
+    std::list<PoolItem> itemsToKeep() const;
+ 
+    /**
      * Return the dependency problems found by the last call to
      * resolveDependencies(). If there were no problems, the returned
      * list will be empty.

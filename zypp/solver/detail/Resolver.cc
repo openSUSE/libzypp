@@ -156,6 +156,9 @@ void Resolver::doUpdate()
 PoolItemList Resolver::problematicUpdateItems() const
 { return _satResolver->problematicUpdateItems(); }
 
+PoolItemList Resolver::itemsToKeep() const
+{ return _satResolver->itemsToKeep(); }
+	
 void Resolver::addExtraRequire( const Capability & capability )
 { _extra_requires.insert (capability); }
 

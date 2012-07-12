@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 12 18:27:50 CEST 2012 - ma@suse.de
+
+- filter zero sized devices in disk usage counter(bnc#769819)
+- version 6.37.11 (31)
+
+-------------------------------------------------------------------
 Thu Jul  5 14:07:12 CEST 2012 - ma@suse.de
 
 - fix possibly reporting timeout as "aborted by user" (bnc#665327)

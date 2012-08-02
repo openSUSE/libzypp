@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug  2 11:32:13 CEST 2012 - ma@suse.de
+
+- set $ZYPP_IS_RUNNING during commit
+- version 11.8.0 (6)
+
+-------------------------------------------------------------------
 Fri Jun  8 15:57:22 CEST 2012 - ma@suse.de
 
 - Adjust weaklock fix

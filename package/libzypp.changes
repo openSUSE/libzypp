@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  3 11:10:51 CEST 2012 - ma@suse.de
+
+- Fixed typo (bnc#773467)
+
+-------------------------------------------------------------------
 Thu Aug  2 13:42:24 CEST 2012 - ma@suse.de
 
 - filter zero sized devices in disk usage counter(bnc#769819)

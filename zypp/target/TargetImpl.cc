@@ -968,25 +968,15 @@ namespace zypp
       // Providing an empty system repo, unload any old content
       Repository system( sat::Pool::instance().findSystemRepo() );
 
-      if ( force )
+      if ( system && ! system.solvablesEmpty() )
       {
-        if ( system && ! system.solvablesEmpty() )
+        if ( newCache || force )
         {
           system.eraseFromPool(); // invalidates system
         }
-      }
-      else      // reload only if necessary
-      {
-        if ( system && ! system.solvablesEmpty() )
+        else
         {
-          if ( newCache )
-          {
-            system.eraseFromPool(); // invalidates system
-          }
-          else
-          {
-            return;     // nothing to do
-          }
+          return;     // nothing to do
         }
       }
       

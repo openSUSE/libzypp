@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 10 11:45:13 CET 2012 - ma@suse.de
+
+- Configure curl to "not fix the BEAST attack" (bnc#779177)
+- version 9.31.2 (8)
+
+-------------------------------------------------------------------
 Wed Dec  5 12:46:51 CET 2012 - ma@suse.de
 
 - set $ZYPP_IS_RUNNING during commit

@@ -11,12 +11,12 @@
 */
 #include <iostream>
 #include "zypp/base/LogTools.h"
-#include "zypp/base/StrMatcher.h"
 
 #include "zypp/Product.h"
 #include "zypp/Url.h"
 
 #include "zypp/sat/LookupAttr.h"
+#include "zypp/sat/AttrMatcher.h"
 #include "zypp/sat/WhatProvides.h"
 #include "zypp/sat/WhatObsoletes.h"
 #include "zypp/PoolItem.h"
@@ -104,8 +104,8 @@ namespace zypp
       std::string refFile( referenceFilename() );
       if ( ! refFile.empty() )
       {
-	StrMatcher matcher( referenceFilename() );
-	q.setStrMatcher( matcher );
+	sat::AttrMatcher matcher( referenceFilename() );
+	q.setAttrMatcher( matcher );
 	if ( ! q.empty() )
 	  found = q.begin().inSolvable();
       }

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 15 14:44:24 CEST 2012 - ma@suse.de
+
+- For installed products also filelists when trying to find the 
+  buddy (bnc#784900)
+- version 9.12.8 (8)
+
+-------------------------------------------------------------------
 Fri Sep 28 14:23:27 CEST 2012 - ma@suse.de
 
 - PathInfo::hardlinkCopy: fix handling cross-device links (bnc#782736)

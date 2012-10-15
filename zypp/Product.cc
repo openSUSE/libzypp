@@ -11,6 +11,7 @@
 */
 #include <iostream>
 #include "zypp/base/LogTools.h"
+#include "zypp/base/StrMatcher.h"
 
 #include "zypp/Product.h"
 #include "zypp/Url.h"
@@ -94,6 +95,24 @@ namespace zypp
           found = *it;
       }
     }
+
+    if ( ! found && isSystem() )
+    {
+      // bnc#784900: for installed products check whether the file is owned by
+      // some package. If so, ust this as buddy.
+      sat::LookupAttr q( sat::SolvAttr::filelist, repository() );
+      std::string refFile( referenceFilename() );
+      if ( ! refFile.empty() )
+      {
+	StrMatcher matcher( referenceFilename() );
+	q.setStrMatcher( matcher );
+	if ( ! q.empty() )
+	  found = q.begin().inSolvable();
+      }
+      else
+	INT << "Product referenceFilename unexpectedly empty!" << endl;
+    }
+
     if ( ! found )
       WAR << *this << ": no reference package found: " << identCap << endl;
     return found;

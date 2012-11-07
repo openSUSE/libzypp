@@ -535,6 +535,8 @@ namespace zypp
     Pathname credentials_global_dir_path;
     Pathname credentials_global_file_path;
 
+    std::string userData;
+
     Option<Pathname> pluginsPath;
   };
   ///////////////////////////////////////////////////////////////////
@@ -631,6 +633,31 @@ namespace zypp
 #warning prefer signal
       sat::Pool::instance().setTextLocale( locale_r );
     }
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // user data
+  ///////////////////////////////////////////////////////////////////
+
+  bool ZConfig::hasUserData() const
+  { return !_pimpl->userData.empty(); }
+
+  std::string ZConfig::userData() const
+  { return _pimpl->userData; }
+
+  bool ZConfig::setUserData( const std::string & str_r )
+  {
+    for_( ch, str_r.begin(), str_r.end() )
+    {
+      if ( *ch < ' ' && *ch != '\t' )
+      {
+	ERR << "New user data string rejectded: char " << (int)*ch << " at position " <<  (ch - str_r.begin()) << endl;
+	return false;
+      }
+    }
+    MIL << "Set user data string to '" << str_r << "'" << endl;
+    _pimpl->userData = str_r;
+    return true;
   }
 
   ///////////////////////////////////////////////////////////////////

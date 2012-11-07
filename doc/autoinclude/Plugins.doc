@@ -35,8 +35,6 @@ by an empty line and terminated by NUL.
 ^@
 \endverbatim
 
-The frame starts with a \c COMMAND name followed by <tt>'<key>:<value>'</tt>  headers. A blank line indicates the end of headers and beginning of the body. The frame body ends with \c ^@.
-
 \note ^@ is a null (control-@ in ASCII) byte.
 
 <HR><!-- ====================================================================== -->

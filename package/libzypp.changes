@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov 23 18:08:41 CET 2012 - ma@suse.de
+
+- Write userdata string to history log (fate#312521)
+- Relax history reader to accept entries with additional fields
+- version 9.30.1 (8)
+
+-------------------------------------------------------------------
 Thu Nov  8 12:44:53 CET 2012 - ma@suse.de
 
 - Forward userdata string to commit plugins in BEGINPLUGIN (fate#312521)

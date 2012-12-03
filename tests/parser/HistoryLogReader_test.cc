@@ -32,24 +32,28 @@ BOOST_AUTO_TEST_CASE(OldApi_basic)
 
 namespace
 {
-  bool ProcessData( const HistoryLogData::Ptr & ptr )
+  struct ProcessData
   {
-    DBG << ptr->date() << " | " << ptr << endl;
+    ProcessData( std::vector<HistoryLogData::Ptr> & history_r )
+    : _history( &history_r )
+    {}
 
-    return true;
-  }
+    bool operator()( HistoryLogData::Ptr ptr ) const
+    {
+      _history->push_back( ptr );
+      return true;
+    }
+
+    std::vector<HistoryLogData::Ptr> * _history;
+  };
 }
-
 
 BOOST_AUTO_TEST_CASE(basic)
 {
   std::vector<HistoryLogData::Ptr> history;
   parser::HistoryLogReader parser( TESTS_SRC_DIR "/parser/HistoryLogReader_test.dat",
 				   parser::HistoryLogReader::Options(),
-    [&history]( HistoryLogData::Ptr ptr )->bool {
-      history.push_back( ptr );
-      return true;
-    } );
+				   ProcessData( history ) );
 
   BOOST_CHECK_EQUAL( parser.ignoreInvalidItems(), false );
   BOOST_CHECK_THROW( parser.readAll(), parser::ParseException );

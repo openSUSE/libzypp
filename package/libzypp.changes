@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Dec  3 14:47:09 CET 2012 - ma@suse.de
+
+- HistoryLogReader: new HistoryLogData based API for parsing the new 
+  history file entries (fate#312521)
+  The old HistoryItem based API is deprecated but will still be available
+  for a while if you compile with -DWITH_DEPRECATED_HISTORYITEM_API.
+- version 9.31.0 (8)
+
+-------------------------------------------------------------------
 Fri Nov 23 18:08:41 CET 2012 - ma@suse.de
 
 - Write userdata string to history log (fate#312521)

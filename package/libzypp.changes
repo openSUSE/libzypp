@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec  5 12:46:51 CET 2012 - ma@suse.de
+
+- set $ZYPP_IS_RUNNING during commit
+- version 9.31.1 (8)
+
+-------------------------------------------------------------------
 Mon Dec  3 14:47:09 CET 2012 - ma@suse.de
 
 - HistoryLogReader: new HistoryLogData based API for parsing the new 

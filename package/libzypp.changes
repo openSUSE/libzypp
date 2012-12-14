@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Dec 14 20:50:18 CET 2012 - ma@suse.de
+
+- Fix static initialization problems
+- Add arch armv7tnhl and armv7thl
+- version 9.32.0 (8)
+
+-------------------------------------------------------------------
 Mon Dec 10 11:45:13 CET 2012 - ma@suse.de
 
 - Configure curl to "not fix the BEAST attack" (bnc#779177)

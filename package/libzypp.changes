@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 17 08:46:52 CET 2012 - ma@suse.de
+
+- Enable zypper to remove zypp locks without evaluating the 
+  query (bnc#792901)
+- version 9.12.10 (8)
+
+-------------------------------------------------------------------
 Mon Dec 10 11:48:24 CET 2012 - ma@suse.de
 
 - Configure curl to "not fix the BEAST attack" (bnc#779177)

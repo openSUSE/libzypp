@@ -610,10 +610,7 @@ void MediaCurl::setupEasy()
 #ifdef CURLSSLOPT_ALLOW_BEAST
     // see bnc#779177
     ret = curl_easy_setopt( _curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_ALLOW_BEAST );
-    if ( ret != 0 ) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
+    // if ( ret != 0 ): We don't mind if the runtime lib does not support it.
 #endif
     SET_OPTION(CURLOPT_SSL_VERIFYPEER, _settings.verifyPeerEnabled() ? 1L : 0L);
     SET_OPTION(CURLOPT_SSL_VERIFYHOST, _settings.verifyHostEnabled() ? 2L : 0L);

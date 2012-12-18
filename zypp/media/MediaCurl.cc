@@ -401,10 +401,7 @@ void MediaCurl::attachTo (bool next)
 #ifdef CURLSSLOPT_ALLOW_BEAST
     // see bnc#779177
     ret = curl_easy_setopt( _curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_ALLOW_BEAST );
-    if ( ret != 0 ) {
-      disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
-    }
+    // if ( ret != 0 ): We don't mind if the runtime lib does not support it.
 #endif
     ret = curl_easy_setopt( _curl, CURLOPT_SSL_VERIFYPEER, verify_peer ? 1L : 0L);
     if ( ret != 0 ) {

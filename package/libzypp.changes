@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 18 10:35:01 CET 2012 - ma@suse.de
+
+- Don't mind if runtime libcurl does not support CURLSSLOPT_ALLOW_BEAST. 
+- version 2.100.10
+
+-------------------------------------------------------------------
 Tue Oct  2 15:48:43 CEST 2012 - ma@suse.de
 
 - Configure curl to "not fix the BEAST attack" (bnc#779177)

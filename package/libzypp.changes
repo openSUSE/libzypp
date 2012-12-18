@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 18 10:39:08 CET 2012 - ma@suse.de
+
+- Don't mind if runtime libcurl does not support CURLSSLOPT_ALLOW_BEAST.
+- version 9.12.11 (8)
+
+-------------------------------------------------------------------
 Mon Dec 17 08:46:52 CET 2012 - ma@suse.de
 
 - Enable zypper to remove zypp locks without evaluating the 

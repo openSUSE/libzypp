@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan  7 13:12:14 CET 2013 - ma@suse.de
+
+- Cleanup orphaned media attach points (bnc#751221)
+- version 2.101.0
+
+-------------------------------------------------------------------
 Tue Dec 18 10:35:01 CET 2012 - ma@suse.de
 
 - Don't mind if runtime libcurl does not support CURLSSLOPT_ALLOW_BEAST. 

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  7 01:18:32 CET 2013 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Thu Jul 12 18:27:00 CEST 2012 - ma@suse.de
 
 - filter zero sized devices in disk usage counter(bnc#769819)

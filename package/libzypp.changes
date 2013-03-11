@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Mar 11 10:35:32 CET 2013 - ma@suse.de
+
+- Unify update-scripts with same content(md5sum) (bnc#773575)
+- Implement $ZYPP_LOCK_TIMEOUT: number of seconds to wait for a 
+  zypplock becoming available (bnc#772965)
+- set $ZYPP_IS_RUNNING during commit
+- version 9.12.12 (8)
+
+-------------------------------------------------------------------
 Tue Dec 18 10:39:08 CET 2012 - ma@suse.de
 
 - Don't mind if runtime libcurl does not support CURLSSLOPT_ALLOW_BEAST.

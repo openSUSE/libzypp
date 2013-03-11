@@ -87,7 +87,7 @@ namespace zypp
 	  // Exception safe access to the lockfile.
 	  ScopedGuard closeOnReturn( accessLockFile() );
 	  {
-	    scoped_lock<file_lock> flock( _zyppLockFileLock );	// aquire write lock
+	    scoped_lock<file_lock> flock( *_zyppLockFileLockPtr );	// aquire write lock
 	    // Truncate the file rather than deleting it. Other processes may
 	    // still use it to synchronsize.
 	    ftruncate( fileno(_zyppLockFile), 0 );
@@ -109,7 +109,7 @@ namespace zypp
 
   private:
     Pathname	_zyppLockFilePath;
-    file_lock	_zyppLockFileLock;
+    scoped_ptr<file_lock>	_zyppLockFileLockPtr;
     FILE *	_zyppLockFile;
 
     pid_t	_lockerPid;
@@ -142,7 +142,7 @@ namespace zypp
       _zyppLockFile = fopen( _zyppLockFilePath.c_str(), "a+" );
       if ( _zyppLockFile == NULL )
 	ZYPP_THROW( Exception( "Cant open " + _zyppLockFilePath.asString() ) );
-      _zyppLockFileLock = _zyppLockFilePath.c_str();
+      _zyppLockFileLockPtr.reset( new file_lock( _zyppLockFilePath.c_str() ) );
       MIL << "Open lockfile " << _zyppLockFilePath << endl;
     }
 
@@ -158,7 +158,7 @@ namespace zypp
       // If you are using a std::fstream/native file handle to write to the file
       // while using file locks on that file, don't close the file before releasing
       // all the locks of the file.
-      _zyppLockFileLock = file_lock();
+      _zyppLockFileLockPtr.reset();
       fclose( _zyppLockFile );
       _zyppLockFile = NULL;
       MIL << "Close lockfile " << _zyppLockFilePath << endl;
@@ -226,7 +226,7 @@ namespace zypp
       // Exception safe access to the lockfile.
       ScopedGuard closeOnReturn( accessLockFile() );
       {
-	scoped_lock<file_lock> flock( _zyppLockFileLock );	// aquire write lock
+	scoped_lock<file_lock> flock( *_zyppLockFileLockPtr );	// aquire write lock
 
 	_lockerPid = readLockFile();
 	if ( _lockerPid == 0 )

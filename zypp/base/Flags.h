@@ -98,8 +98,8 @@ namespace zypp
         Flags & unsetFlag( Flags flag_r )     { _val &= ~flag_r; return *this; }
         Flags & unsetFlag( Enum flag_r )      { _val &= ~flag_r; return *this; }
 
-        bool testFlag( Flags flag_r ) const   { return ( _val & flag_r ) == flag_r; }
-        bool testFlag( Enum flag_r ) const    { return ( _val & flag_r ) == flag_r; }
+        bool testFlag( Flags flag_r ) const   { return unsigned( _val & flag_r ) == unsigned(flag_r); }
+        bool testFlag( Enum flag_r ) const    { return unsigned( _val & flag_r ) == unsigned(flag_r); }
 
       private:
         unsigned _val;

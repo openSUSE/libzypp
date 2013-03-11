@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 11 10:30:33 CET 2013 - ma@suse.de
+
+- Unify update-scripts with same content(md5sum) (bnc#773575)
+- Implement $ZYPP_LOCK_TIMEOUT: number of seconds to wait for a 
+  zypplock becoming available (bnc#772965)
+- version 9.33.1 (8)
+
+-------------------------------------------------------------------
 Thu Mar  7 11:19:48 CET 2013 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

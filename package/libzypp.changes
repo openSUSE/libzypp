@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Mar 25 14:17:58 CET 2013 - ma@suse.de
+
+- Implement $ZYPP_LOCK_TIMEOUT: number of seconds to wait for a 
+  zypplock becoming available (bnc#772965)
+- Fix unnecessary creation of temporary Resolavbles
+- Relax evaluation of patch category tags (case insensitive)
+- Fixed typo (bnc#773467)
+- Erase any old repo instance from pool when (re)loading from cache
+- version 11.9.0 (6)
+
+-------------------------------------------------------------------
 Thu Mar  7 01:15:34 CET 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

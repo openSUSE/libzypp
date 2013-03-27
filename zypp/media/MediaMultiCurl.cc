@@ -1453,7 +1453,7 @@ void MediaMultiCurl::multifetch(const Pathname & filename, FILE *fp, std::vector
       try
 	{
 	  string scheme = urliter->getScheme();
-	  if (scheme == "http" || scheme == "https" || scheme == "ftp")
+	  if (scheme == "http" || scheme == "https" || scheme == "ftp" || scheme == "tftp")
 	    {
 	      checkProtocol(*urliter);
 	      myurllist.push_back(*urliter);

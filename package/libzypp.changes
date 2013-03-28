@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 28 01:14:45 CET 2013 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Mon Mar 11 10:30:33 CET 2013 - ma@suse.de
 
 - Unify update-scripts with same content(md5sum) (bnc#773575)

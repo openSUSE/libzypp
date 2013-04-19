@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:02:22 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+  Maximum time in seconds that you allow a transfer operation to take. 
+- version 9.34.0 (8)
+
+-------------------------------------------------------------------
 Sun Mar 31 01:14:55 CET 2013 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

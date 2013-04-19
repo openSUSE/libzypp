@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:06:46 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+  Maximum time in seconds that you allow a transfer operation to take.
+- Relax evaluation of patch category tags (case insensitive)
+- version 6.38.0 (31)
+
+-------------------------------------------------------------------
 Thu Jul 12 18:27:50 CEST 2012 - ma@suse.de
 
 - filter zero sized devices in disk usage counter(bnc#769819)

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:11:44 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+  Maximum time in seconds that you allow a transfer operation to take.
+- Relax evaluation of patch category tags (case insensitive)
+- version 10.5.0 (3)
+
+-------------------------------------------------------------------
 Thu Mar  7 01:18:32 CET 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

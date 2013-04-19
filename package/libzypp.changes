@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:10:15 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+  Maximum time in seconds that you allow a transfer operation to take.
+- version 11.10.0 (6)
+
+-------------------------------------------------------------------
 Mon Mar 25 14:17:58 CET 2013 - ma@suse.de
 
 - Implement $ZYPP_LOCK_TIMEOUT: number of seconds to wait for a 

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:04:20 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+  Maximum time in seconds that you allow a transfer operation to take.
+- version 9.13.0 (8)
+
+-------------------------------------------------------------------
 Mon Mar 11 10:35:32 CET 2013 - ma@suse.de
 
 - Unify update-scripts with same content(md5sum) (bnc#773575)

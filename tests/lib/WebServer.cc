@@ -16,13 +16,7 @@ using namespace std;
 
 static inline string hostname()
 {
-    static char buf[256];
-    string result;
-    if (!::gethostname(buf, 255))
-        result += string(buf);
-    else
-        return "localhost";
-    return result;
+  return "localhost";
 }
 
 #define WEBRICK 0
@@ -32,19 +26,19 @@ class WebServer::Impl
 public:
     Impl()
     {}
-    
+
     virtual ~Impl()
     {}
-    
+
     virtual string log() const
     { return string(); }
-            
+
     virtual void start()
     {}
 
     virtual void stop()
     {}
-    
+
     virtual void worker_thread()
     {}
 
@@ -52,15 +46,15 @@ public:
     {
         return 0;
     }
-    
 
-    
+
+
 private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
     /** clone for RWCOW_pointer */
     Impl * clone() const
     { return new Impl( *this ); }
-};    
+};
 
 class WebServerWebrickImpl : public WebServer::Impl
 {
@@ -69,7 +63,7 @@ public:
         : _docroot(root), _port(port), _stop(false), _stopped(true)
     {
     }
-    
+
     ~WebServerWebrickImpl()
     {
         if ( ! _stopped )
@@ -81,15 +75,15 @@ public:
         return _port;
     }
 
-    
+
     virtual void worker_thread()
     {
         _log.clear();
-            
+
         stringstream strlog(_log);
 
         string webrick_code = str::form("require \"webrick\"; s = WEBrick::HTTPServer.new(:Port => %d, :DocumentRoot    => \"%s\"); trap(\"INT\"){ s.shutdown }; trap(\"SIGKILL\") { s.shutdown }; s.start;", _port, _docroot.c_str());
-    
+
         const char* argv[] =
         {
             "/usr/bin/ruby",
@@ -100,18 +94,18 @@ public:
 
         ExternalProgram prog(argv,ExternalProgram::Discard_Stderr, false, -1, true);
         string line;
-    
+
         _stopped = false;
-    
+
         while ( ! _stop );
-        
+
         MIL << "Thread end requested" << endl;
         //prog.close();
         if ( prog.running() )
             prog.kill();
         MIL << "Thread about to finish" << endl;
     }
-    
+
     virtual string log() const
     {
         return _log;
@@ -126,12 +120,12 @@ public:
         _thrd.reset();
         _stopped = true;
     }
-    
+
     virtual void start()
     {
         _thrd.reset( new boost::thread( boost::bind(&WebServerWebrickImpl::worker_thread, this) ) );
     }
-    
+
     zypp::Pathname _docroot;
     unsigned int _port;
     zypp::shared_ptr<boost::thread> _thrd;
@@ -149,15 +143,15 @@ public:
         , _stopped(true)
     {
     }
-    
+
     ~WebServerMongooseImpl()
     {
         MIL << "Destroying web server" << endl;
-        
+
         if ( ! _stopped )
             stop();
     }
-    
+
     virtual void start()
     {
         if ( ! _stopped )
@@ -165,7 +159,7 @@ public:
             MIL << "mongoose server already running, stopping." << endl;
             stop();
         }
-        
+
         MIL << "Starting shttpd (mongoose)" << endl;
         _log.clear();
         _ctx = mg_start();
@@ -174,7 +168,7 @@ public:
         ret = mg_set_option(_ctx, "ports", str::form("%d", _port).c_str());
         if (  ret != 1 )
             ZYPP_THROW(Exception(str::form("Failed to set port: %d", ret)));
-        
+
         MIL << "Setting root directory to : '" << _docroot << "'" << endl;
         ret = mg_set_option(_ctx, "root", _docroot.c_str());
         if (  ret != 1 )
@@ -188,12 +182,12 @@ public:
         return _port;
     }
 
-   
+
     virtual string log() const
     {
         return _log;
     }
-    
+
     virtual void stop()
     {
         MIL << "Stopping shttpd" << endl;
@@ -202,7 +196,7 @@ public:
         _ctx = 0;
         _stopped = true;
     }
-    
+
     mg_context *_ctx;
     zypp::Pathname _docroot;
     unsigned int _port;
@@ -217,7 +211,7 @@ WebServer::WebServer(const Pathname &root, unsigned int port)
 #else
     : _pimpl(new WebServerMongooseImpl(root, port))
 #endif
-{    
+{
 }
 
 void WebServer::start()

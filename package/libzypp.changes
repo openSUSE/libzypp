@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 26 14:14:52 CEST 2013 - ma@suse.de
+
+- New zypp.conf option 'download.transfer_timeout = 180'
+- Fix $ZYPP_MEDIA_CURL_DEBUG documentation
+- version 12.12.0 (0)
+
+-------------------------------------------------------------------
 Fri Apr  5 14:26:35 CEST 2013 - ma@suse.de
 
 - added new fuction zypp::ZYpp::provideSrcPackage

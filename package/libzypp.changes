@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun May  5 01:16:31 CEST 2013 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Fri Apr 19 14:02:22 CEST 2013 - ma@suse.de
 
 - New zypp.conf option 'download.transfer_timeout = 180'

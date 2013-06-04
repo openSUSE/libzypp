@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun  4 13:18:36 CEST 2013 - ma@suse.de
+
+- added tftp-support (bnc#803316)
+- version 11.11.0 (6)
+
+-------------------------------------------------------------------
 Fri Apr 19 14:10:15 CEST 2013 - ma@suse.de
 
 - New zypp.conf option 'download.transfer_timeout = 180'

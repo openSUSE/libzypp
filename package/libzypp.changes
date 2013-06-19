@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 19 13:32:11 CEST 2013 - ma@suse.de
+
+- Set logfile permission upon file creation only (bnc#825490)
+- fix changes (Speedup scanning for modaliases fixes bnc#824110)
+- version 9.15.1 (8)
+
+-------------------------------------------------------------------
 Tue Jun 11 11:50:48 CEST 2013 - ma@suse.de
 
 - Speedup scanning for modaliases (bnc#824110)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 19 13:33:26 CEST 2013 - ma@suse.de
+
+- Set logfile permission upon file creation only (bnc#825490)
+- version 12.12.1 (0)
+
+-------------------------------------------------------------------
 Fri Apr 26 14:14:52 CEST 2013 - ma@suse.de
 
 - New zypp.conf option 'download.transfer_timeout = 180'

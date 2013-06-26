@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 26 17:57:16 CEST 2013 - ma@suse.de
+
+- Add modalias and multiversion spec to testcase
+- version 9.15.2 (8)
+
+-------------------------------------------------------------------
 Wed Jun 19 13:32:11 CEST 2013 - ma@suse.de
 
 - Set logfile permission upon file creation only (bnc#825490)

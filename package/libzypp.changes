@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  2 16:34:23 CEST 2013 - ma@suse.de
+
+- Speedup scanning for modaliases (bnc#823917)
+- version 12.13.0 (0)
+
+-------------------------------------------------------------------
 Tue Jul  2 15:52:53 CEST 2013 - ma@suse.de
 
 - Fix file probing via tftp:// (bnc#803316)

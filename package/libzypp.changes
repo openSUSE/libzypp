@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  2 15:51:25 CEST 2013 - ma@suse.de
+
+- Fix file probing via tftp:// (bnc#803316)
+- version 9.36.3 (8)
+
+-------------------------------------------------------------------
 Wed Jun 26 17:56:28 CEST 2013 - ma@suse.de
 
 - Add modalias and multiversion spec to testcase

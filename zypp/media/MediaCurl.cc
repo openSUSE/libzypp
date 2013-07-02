@@ -992,6 +992,7 @@ void MediaCurl::evaluateCurlCode( const Pathname &filename,
       case CURLE_REMOTE_FILE_NOT_FOUND:
 #endif
       case CURLE_FTP_ACCESS_DENIED:
+      case CURLE_TFTP_NOTFOUND:
         err = "File not found";
         ZYPP_THROW(MediaFileNotFoundException(_url, filename));
         break;

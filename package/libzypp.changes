@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul  4 14:03:42 CEST 2013 - ma@suse.de
+
+- Workaround bnc#819354 by executing rpm in /. (bnc#827609)
+- version 12.13.1 (0)
+
+-------------------------------------------------------------------
 Tue Jul  2 16:34:23 CEST 2013 - ma@suse.de
 
 - Speedup scanning for modaliases (bnc#823917)

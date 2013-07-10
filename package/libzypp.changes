@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 11 01:14:56 CEST 2013 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Wed Jul 10 19:00:00 CEST 2013 - ma@suse.de
 
 - fix logfile truncation introduced by previous fix for (bnc#825490)

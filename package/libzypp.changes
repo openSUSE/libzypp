@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 10 19:00:00 CEST 2013 - ma@suse.de
+
+- fix logfile truncation introduced by previous fix for (bnc#825490)
+- version 12.13.2 (0)
+
+-------------------------------------------------------------------
 Thu Jul  4 14:03:42 CEST 2013 - ma@suse.de
 
 - Workaround bnc#819354 by executing rpm in /. (bnc#827609)

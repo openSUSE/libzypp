@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 10 19:01:09 CEST 2013 - ma@suse.de
+
+- fix logfile truncation introduced by previous fix for (bnc#825490)
+- version 9.36.4 (8)
+
+-------------------------------------------------------------------
 Tue Jul  2 15:51:25 CEST 2013 - ma@suse.de
 
 - Fix file probing via tftp:// (bnc#803316)

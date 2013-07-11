@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jul 11 12:26:35 CEST 2013 - ma@suse.de
+
+- Fix multiversion update candidate to respect an installed objects
+  arch and vendor (bnc#820444)
+- version 12.13.3 (0)
+
+-------------------------------------------------------------------
 Thu Jul 11 01:14:56 CEST 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

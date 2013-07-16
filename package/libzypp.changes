@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 16 15:28:14 CEST 2013 - ma@suse.de
+
+- fix ASCII armored PublicKey parsing (bnc#828672)
+- version 11.11.2 (6)
+
+-------------------------------------------------------------------
 Tue Jul  2 15:50:43 CEST 2013 - ma@suse.de
 
 - Fix file probing via tftp:// (bnc#803316)

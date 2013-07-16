@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 16 15:24:45 CEST 2013 - ma@suse.de
+
+- fix ASCII armored PublicKey parsing (bnc#828672)
+- version 9.15.5 (8)
+
+-------------------------------------------------------------------
 Wed Jul 10 19:00:41 CEST 2013 - ma@suse.de
 
 - fix logfile truncation introduced by previous fix for (bnc#825490)

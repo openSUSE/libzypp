@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 18 01:14:36 CEST 2013 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Tue Jul 16 15:26:16 CEST 2013 - ma@suse.de
 
 - fix ASCII armored PublicKey parsing (bnc#828672)

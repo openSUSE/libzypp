@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 31 16:04:23 CEST 2013 - ma@suse.de
+
+- No rpmdb key import in readony mode (bnc#828672)
+- Fix rpmdb key import/export (bnc#828672)
+- version 9.37.0 (8)
+
+-------------------------------------------------------------------
 Tue Jul 16 15:24:04 CEST 2013 - ma@suse.de
 
 - fix ASCII armored PublicKey parsing (bnc#828672)

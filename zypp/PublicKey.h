@@ -20,6 +20,7 @@
 
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Exception.h"
+#include "zypp/base/SafeBool.h"
 #include "zypp/Pathname.h"
 #include "zypp/Date.h"
 
@@ -71,7 +72,7 @@ namespace zypp
   /// armored version of the key placed in a tempfile. In this
   /// case use \ref PublicKey.
   ///////////////////////////////////////////////////////////////////
-  class PublicKeyData
+  class PublicKeyData : private base::SafeBool<PublicKeyData>
   {
   public:
     /** Default constructed: empty data. */
@@ -82,8 +83,10 @@ namespace zypp
     /** Scan data from 'gpg --with-colons' key listings. */
     friend class PublicKeyScanner;
 
+#ifndef SWIG // Swig treats it as syntax error
     /** Whether this contains valid data (not default constructed). */
-    explicit operator bool() const;
+    using base::SafeBool<PublicKeyData>::operator bool_type;
+#endif
 
   public:
     /** Key ID. */
@@ -138,6 +141,12 @@ namespace zypp
      * \endcode
      */
     std::string asString() const;
+
+  private:
+#ifndef SWIG // Swig treats it as syntax error
+    friend base::SafeBool<PublicKeyData>::operator bool_type() const;
+#endif
+    bool boolTest() const;
 
   private:
     class Impl;

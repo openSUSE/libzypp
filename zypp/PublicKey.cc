@@ -73,7 +73,7 @@ namespace zypp
   PublicKeyData::~PublicKeyData()
   {}
 
-  PublicKeyData::operator bool() const
+  bool PublicKeyData::boolTest() const
   { return !_pimpl->_fingerprint.empty(); }
 
   std::string PublicKeyData::id() const

@@ -124,13 +124,12 @@ namespace zypp
 	  const char* argv[] =
 	  {
 	    GPG_BINARY,
-	    "--list-public-keys",
+	    "--list-sigs",
 	    "--homedir", keyring_r.c_str(),
 	    "--no-default-keyring",
 	    "--quiet",
 	    "--with-colons",
 	    "--with-fingerprint",
-	    "--with-sig-list",
 	    "--no-tty",
 	    "--no-greeting",
 	    "--batch",

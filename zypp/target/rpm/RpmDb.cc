@@ -833,74 +833,75 @@ void RpmDb::doRebuildDatabase(callback::SendReport<RebuildDBReport> & report)
 ///////////////////////////////////////////////////////////////////
 namespace
 {
+  ///////////////////////////////////////////////////////////////////
+  // Remember latest release and where it ocurred
+  struct Key
+  {
+    Key()
+    : _inRpmKeys( nullptr )
+    , _inZyppKeys( nullptr )
+    {}
+
+    void updateIf( const Edition & rpmKey_r )
+    {
+      std::string keyRelease( rpmKey_r.release() );
+      int comp = _release.compare( keyRelease );
+      if ( comp < 0 )
+      {
+	// update to newer release
+	_release.swap( keyRelease );
+	_inRpmKeys  = &rpmKey_r;
+	_inZyppKeys = nullptr;
+	if ( !keyRelease.empty() )
+	  DBG << "Old key in R: gpg-pubkey-" << rpmKey_r.version() << "-" <<  keyRelease << endl;
+      }
+      else if ( comp == 0 )
+      {
+	// stay with this release
+	if ( ! _inRpmKeys )
+	  _inRpmKeys = &rpmKey_r;
+      }
+      // else: this is an old release
+      else
+	DBG << "Old key in R: gpg-pubkey-" << rpmKey_r.version() << "-" <<  keyRelease << endl;
+    }
+
+    void updateIf( const PublicKeyData & zyppKey_r )
+    {
+      std::string keyRelease( zyppKey_r.gpgPubkeyRelease() );
+      int comp = _release.compare( keyRelease );
+      if ( comp < 0 )
+      {
+	// update to newer release
+	_release.swap( keyRelease );
+	_inRpmKeys  = nullptr;
+	_inZyppKeys = &zyppKey_r;
+	if ( !keyRelease.empty() )
+	  DBG << "Old key in Z: gpg-pubkey-" << zyppKey_r.gpgPubkeyVersion() << "-" << keyRelease << endl;
+      }
+      else if ( comp == 0 )
+      {
+	// stay with this release
+	if ( ! _inZyppKeys )
+	  _inZyppKeys = &zyppKey_r;
+      }
+      // else: this is an old release
+      else
+	DBG << "Old key in Z: gpg-pubkey-" << zyppKey_r.gpgPubkeyVersion() << "-" << keyRelease << endl;
+    }
+
+    std::string _release;
+    const Edition * _inRpmKeys;
+    const PublicKeyData * _inZyppKeys;
+  };
+  ///////////////////////////////////////////////////////////////////
+
   /** \ref RpmDb::syncTrustedKeys helper
    * Compute which keys need to be exprted to / imported from the zypp keyring.
    * Return result via argument list.
    */
   void computeKeyRingSync( std::set<Edition> & rpmKeys_r, std::list<PublicKeyData> & zyppKeys_r )
   {
-    ///////////////////////////////////////////////////////////////////
-    // Remember latest release and where it ocurred
-    struct Key
-    {
-      Key()
-	: _inRpmKeys( nullptr )
-	, _inZyppKeys( nullptr )
-      {}
-
-      void updateIf( const Edition & rpmKey_r )
-      {
-	std::string keyRelease( rpmKey_r.release() );
-	int comp = _release.compare( keyRelease );
-	if ( comp < 0 )
-	{
-	  // update to newer release
-	  _release.swap( keyRelease );
-	  _inRpmKeys  = &rpmKey_r;
-	  _inZyppKeys = nullptr;
-	  if ( !keyRelease.empty() )
-	    DBG << "Old key in R: gpg-pubkey-" << rpmKey_r.version() << "-" <<  keyRelease << endl;
-	}
-	else if ( comp == 0 )
-	{
-	  // stay with this release
-	  if ( ! _inRpmKeys )
-	    _inRpmKeys = &rpmKey_r;
-	}
-	// else: this is an old release
-	else
-	  DBG << "Old key in R: gpg-pubkey-" << rpmKey_r.version() << "-" <<  keyRelease << endl;
-      }
-
-      void updateIf( const PublicKeyData & zyppKey_r )
-      {
-	std::string keyRelease( zyppKey_r.gpgPubkeyRelease() );
-	int comp = _release.compare( keyRelease );
-	if ( comp < 0 )
-	{
-	  // update to newer release
-	  _release.swap( keyRelease );
-	  _inRpmKeys  = nullptr;
-	  _inZyppKeys = &zyppKey_r;
-	  if ( !keyRelease.empty() )
-	    DBG << "Old key in Z: gpg-pubkey-" << zyppKey_r.gpgPubkeyVersion() << "-" << keyRelease << endl;
-	}
-	else if ( comp == 0 )
-	{
-	  // stay with this release
-	  if ( ! _inZyppKeys )
-	    _inZyppKeys = &zyppKey_r;
-	}
-	// else: this is an old release
-	else
-	  DBG << "Old key in Z: gpg-pubkey-" << zyppKey_r.gpgPubkeyVersion() << "-" << keyRelease << endl;
-      }
-
-      std::string _release;
-      const Edition * _inRpmKeys;
-      const PublicKeyData * _inZyppKeys;
-    };
-    ///////////////////////////////////////////////////////////////////
 
     // collect keys by ID(version) and latest creation(release)
     std::map<std::string,Key> _keymap;

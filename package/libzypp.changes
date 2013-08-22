@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 22 13:55:48 CEST 2013 - mls@suse.de
+
+- fix key expiry date parsing (bnc#828672)
+- version 9.16.1 (8)
+
+-------------------------------------------------------------------
 Thu Aug  1 12:03:22 CEST 2013 - ma@suse.de
 
 - No rpmdb key import in readony mode (bnc#828672)

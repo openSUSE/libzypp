@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Aug 27 18:30:35 CEST 2013 - ma@suse.de
+
+- fix key expiry date parsing (bnc#828672)
+- Provide additional keys data in case the ASCII armored blob
+  containes multiple keys
+- version 12.15.0 (0)
+
+-------------------------------------------------------------------
 Thu Aug  8 01:14:19 CEST 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

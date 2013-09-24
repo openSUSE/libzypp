@@ -410,6 +410,7 @@ namespace zypp
       "--no-default-keyring",
       "--quiet",
       "--list-public-keys",
+      "--fixed-list-mode",
       "--with-colons",
       "--with-fingerprint",
       "--no-tty",

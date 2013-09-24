@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Sep 24 18:58:08 CEST 2013 - ma@suse.de
+
+- Avoid parsing gpg subkeys
+- fix key expiry date parsing (bnc#828672)
+- No rpmdb key import in readony mode (bnc#828672)
+- fix ASCII armored PublicKey parsing (bnc#828672)
+- version 6.39.0 (31)
+
+-------------------------------------------------------------------
 Fri Apr 19 14:06:46 CEST 2013 - ma@suse.de
 
 - New zypp.conf option 'download.transfer_timeout = 180'

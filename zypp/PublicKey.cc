@@ -194,14 +194,22 @@ namespace zypp
         // sub:-:2048:16:197448E88495160C:971961490:1214043258::: [expires: 2008-06-21]
         // sig:::17:A84EDAE89C800ACA:1087899258:::::[keybind]::18x:
 	KeyData keyData;
-        std::string line;
 	std::vector<std::string> words;
 	enum { pNONE, pPUB, pSIG, pFPR, pUID } parseEntry;
 	bool sawSig = false;
-        for ( line = prog.receiveLine(); !line.empty(); line = prog.receiveLine() )
+	bool sawSub = false;
+        for ( std::string line = prog.receiveLine(); !line.empty(); line = prog.receiveLine() )
         {
           if ( line.empty() )
             continue;
+
+	  if ( sawSub )
+	  {
+	    if ( line[0] == 'p' && line[1] == 'u' && line[2] == 'b' && line[3] == ':' )
+	      sawSub = false;	// parse next key
+	    else
+	      continue;		// don't parse in subkeys
+	  }
 
 	  // quick check for interesting entries
 	  parseEntry = pNONE;
@@ -215,7 +223,11 @@ namespace zypp
 #undef DOTEST
 	  }
 	  if ( parseEntry == pNONE )
+	  {
+	    if ( line[0] == 's' && line[1] == 'u' && line[2] == 'b' && line[3] == ':' )
+	      sawSub = true;	// don't parse in subkeys
 	    continue;
+	  }
 
           if ( line[line.size()-1] == '\n' )
             line.erase( line.size()-1 );

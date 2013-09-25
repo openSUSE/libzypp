@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep 25 15:07:21 CEST 2013 - ma@suse.de
+
+- fix ASCII armored PublicKey parsing (bnc#828672)
+- fix key expiry date parsing (bnc#828672)
+- version 2.101.1
+
+-------------------------------------------------------------------
 Mon Jan  7 13:12:14 CET 2013 - ma@suse.de
 
 - Cleanup orphaned media attach points (bnc#751221)

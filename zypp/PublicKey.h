@@ -87,7 +87,7 @@ namespace zypp
     { return ( ! id().empty() && ! fingerprint().empty() && !path().empty() ); }
 
     std::string asString() const;
-    std::string armoredData() const;
+    std::string armoredData() const;	//!< \deprecated noop
     std::string id() const;
     std::string name() const;
     std::string fingerprint() const;

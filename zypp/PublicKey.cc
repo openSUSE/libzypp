@@ -210,7 +210,7 @@ namespace zypp
 	  ZYPP_THROW( BadKeyException( "File " + _data_file.path().asString() + " doesn't contain public key data" , _data_file.path() ) );
 
         //replace all escaped semicolon with real ':'
-        str::replace_all( _name, "\\x3a", ":" );
+        str::replace_all( keyData._name, "\\x3a", ":" );
 
 	_keyData = keyData;
      }

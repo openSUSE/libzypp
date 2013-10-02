@@ -212,6 +212,7 @@ SET( zypp_base_SRCS
   base/Sysconfig.cc
   base/ProfilingFormater.cc
   base/LogControl.cc
+  base/WatchPath.cc
 )
 
 SET( zypp_base_HEADERS
@@ -256,7 +257,7 @@ SET( zypp_base_HEADERS
   base/Sysconfig.h
   base/Tr1hash.h
   base/Unit.h
-  base/WatchFile.h
+  base/WatchPath.h
 )
 
 INSTALL(  FILES

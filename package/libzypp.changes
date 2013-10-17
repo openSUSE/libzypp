@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 17 17:35:11 CEST 2013 - ma@suse.de
+
+- Add Package isCached and cachedLocation methods
+- fix handling symlinks in export pathname on NFSv4 (bnc#804544)
+- version 13.8.0 (6)
+
+-------------------------------------------------------------------
 Thu Oct 17 01:13:34 CEST 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

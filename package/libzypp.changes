@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 17 17:36:23 CEST 2013 - ma@suse.de
+
+- Add Package isCached and cachedLocation methods
+- Fix string hexdecoding
+- version 12.16.0 (0)
+
+-------------------------------------------------------------------
 Thu Oct 10 01:15:00 CEST 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

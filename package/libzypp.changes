@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Oct 20 01:14:45 CEST 2013 - ma@suse.de
+
+- Update zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Thu Oct 17 17:36:23 CEST 2013 - ma@suse.de
 
 - Add Package isCached and cachedLocation methods

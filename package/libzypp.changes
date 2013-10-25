@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 25 15:59:21 CEST 2013 - ma@suse.de
+
+- Always properly initialize pool storage (bnc#846565)
+- version 9.37.2 (8)
+
+-------------------------------------------------------------------
 Thu Aug 22 13:55:48 CEST 2013 - mls@suse.de
 
 - fix key expiry date parsing (bnc#828672)

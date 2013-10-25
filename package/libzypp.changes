@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 25 16:01:57 CEST 2013 - ma@suse.de
+
+- Always properly initialize pool storage (bnc#846565)
+- version 10.5.1 (3)
+
+-------------------------------------------------------------------
 Fri Apr 19 14:11:44 CEST 2013 - ma@suse.de
 
 - New zypp.conf option 'download.transfer_timeout = 180'

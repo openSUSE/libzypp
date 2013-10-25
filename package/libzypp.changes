@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 25 16:02:46 CEST 2013 - ma@suse.de
+
+- Always properly initialize pool storage (bnc#846565)
+- version 11.13.1 (6)
+
+-------------------------------------------------------------------
 Thu Sep  5 01:15:21 CEST 2013 - ma@suse.de
 
 - Update zypp-po.tar.bz2

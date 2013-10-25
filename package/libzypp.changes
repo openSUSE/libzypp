@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 25 15:23:34 CEST 2013 - ma@suse.de
+
+- Always properly initialize pool storage (bnc#846565)
+- version 6.39.1 (31)
+
+-------------------------------------------------------------------
 Tue Sep 24 18:58:08 CEST 2013 - ma@suse.de
 
 - Avoid parsing gpg subkeys

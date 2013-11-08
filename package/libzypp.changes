@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov  8 18:06:58 CET 2013 - ma@suse.de
+
+- Re-evaluate dropped packages list on upgrade, even if product 
+  remains unchanged (bnc#849251).
+- version 13.8.2 (6)
+
+-------------------------------------------------------------------
 Fri Oct 25 14:34:49 CEST 2013 - ma@suse.de
 
 - Always properly initialize pool storage (bnc#846565)

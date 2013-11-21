@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 21 09:19:23 CET 2013 - ma@suse.de
+
+- Filter control chars illegal in XML1.0 (bnc#850907)
+- version 13.8.3 (6)
+
+-------------------------------------------------------------------
 Fri Nov  8 18:06:58 CET 2013 - ma@suse.de
 
 - Re-evaluate dropped packages list on upgrade, even if product 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 21 09:48:06 CET 2013 - ma@suse.de
+
+- Filter control chars illegal in XML1.0 (bnc#850907)
+- version 9.37.3 (8)
+
+-------------------------------------------------------------------
 Fri Oct 25 15:59:21 CEST 2013 - ma@suse.de
 
 - Always properly initialize pool storage (bnc#846565)

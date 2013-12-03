@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec  3 17:57:20 CET 2013 - ma@suse.de
+
+- Cleanup orphaned raw and solv caches (bnc#853065)
+- Clean packages cache on repo delete (bnc#853065)
+- version 13.8.4 (6)
+
+-------------------------------------------------------------------
 Thu Nov 21 09:19:23 CET 2013 - ma@suse.de
 
 - Filter control chars illegal in XML1.0 (bnc#850907)

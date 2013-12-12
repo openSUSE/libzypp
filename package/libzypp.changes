@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 12 18:04:48 CET 2013 - ma@suse.de
+
+- Fix disk usage computation for single packages (bnc#852943)
+- version 13.8.5 (6)
+
+-------------------------------------------------------------------
 Tue Dec  3 17:57:20 CET 2013 - ma@suse.de
 
 - Cleanup orphaned raw and solv caches (bnc#853065)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 12 18:05:44 CET 2013 - ma@suse.de
+
+- Fix disk usage computation for single packages (bnc#852943)
+- version 9.16.4 (8)
+
+-------------------------------------------------------------------
 Thu Nov 21 09:47:44 CET 2013 - ma@suse.de
 
 - Filter control chars illegal in XML1.0 (bnc#850907)

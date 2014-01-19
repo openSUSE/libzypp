@@ -442,6 +442,7 @@ namespace zypp
     if (type() != repo::RepoType::NONE)
       str << " type=\"" << type().asString() << "\"";
     str
+      << " priority=\"" << priority() << "\""
       << " enabled=\"" << enabled() << "\""
       << " autorefresh=\"" << autorefresh() << "\""
       << " gpgcheck=\"" << gpgCheck() << "\"";

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sun Jan 19 16:04:37 CET 2014 - ma@suse.de
+
+- Fix missing priority in RepoInfo::dumpAsXML (bnc#855845)
+- Define nullptr for old g++ versions
+- version 6.39.4 (31)
+
+-------------------------------------------------------------------
 Thu Dec 12 18:05:18 CET 2013 - ma@suse.de
 
 - Fix disk usage computation for single packages (bnc#852943)

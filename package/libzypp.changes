@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sun Jan 19 16:05:17 CET 2014 - ma@suse.de
+
+- Fix missing priority in RepoInfo::dumpAsXML (bnc#855845)
+- Add support for repo authentication using SSL client certificates (bnc#683914)
+- version 12.16.4 (0)
+
+-------------------------------------------------------------------
 Thu Jan  9 01:14:47 CET 2014 - ma@suse.de
 
 - Update zypp-po.tar.bz2

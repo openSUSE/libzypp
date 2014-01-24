@@ -25,6 +25,19 @@
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
+{
+  /** Request a human readable (translated) string representation of _Tp [_Tp.asUserString()]
+   * Classes may implement a default as member function.
+   */
+  template <class _Tp>
+  std::string asUserString( const _Tp & val_r )
+  { return val_r.asUserString(); }
+
+}// namespace zypp
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////
+namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   /** Convenience \c char* constructible from \c std::string and \c char*,

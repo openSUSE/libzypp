@@ -145,6 +145,7 @@ namespace sat
       static const SolvAttr productDistversion;
       static const SolvAttr productType;
       static const SolvAttr productFlags;
+      static const SolvAttr productEndOfLife;
       static const SolvAttr productRegisterTarget;
       static const SolvAttr productRegisterRelease;
       static const SolvAttr productUrl;

@@ -197,6 +197,9 @@ namespace zypp
     return ret;
   }
 
+  Date Product::endOfLife() const
+  { return Date( lookupNumAttribute( sat::SolvAttr::productEndOfLife ) );}
+
   bool Product::isTargetDistribution() const
   { return isSystem() && lookupStrAttribute( sat::SolvAttr::productType ) == "base"; }
 

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 31 10:24:32 CEST 2014 - ma@suse.de
+
+- Use dummy licenses in test data (bnc#862471)
+- Install zypp-NameReqPrv helper for evaluating testcases.
+- version 9.16.7 (8)
+
+-------------------------------------------------------------------
 Thu Feb  6 19:22:52 CET 2014 - ma@suse.de
 
 - Remove license text from test data (bnc#862471)

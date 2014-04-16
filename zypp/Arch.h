@@ -267,6 +267,10 @@ namespace zypp
   inline std::ostream & operator<<( std::ostream & str, const Arch & obj )
   { return str << obj.asString(); }
 
+  /** \relates Arch XML output. */
+  inline std::ostream & dumpAsXmlOn( std::ostream & str, const Arch & obj )
+  { return str << "<arch>" << obj <<  "</arch>"; }
+
   /** \name Equality based on string value. */
   //@{
   /** \relates Arch */

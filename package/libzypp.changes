@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 12 17:14:38 CEST 2014 - ma@suse.de
+
+- Fix computation of update candidate (bnc#834858)
+- Install zypp-NameReqPrv helper for evaluating testcases.
+- version 11.13.5 (6)
+
+-------------------------------------------------------------------
 Sun Jan 19 16:05:42 CET 2014 - ma@suse.de
 
 - Fix missing priority in RepoInfo::dumpAsXML (bnc#855845)

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 12 17:17:58 CEST 2014 - ma@suse.de
+
+- Fix computation of update candidate (bnc#834858)
+- Install zypp-NameReqPrv helper for evaluating testcases.
+- version 12.16.5 (0)
+
+-------------------------------------------------------------------
 Sun Feb  2 01:15:49 CET 2014 - ma@suse.de
 
 - Update zypp-po.tar.bz2

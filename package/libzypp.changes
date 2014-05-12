@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 12 17:14:16 CEST 2014 - ma@suse.de
+
+- Fix computation of update candidate (bnc#834858)
+- version 13.10.1 (6)
+
+-------------------------------------------------------------------
 Wed Apr 16 13:19:11 CEST 2014 - ma@suse.de
 
 - Factor out CommitPackageCache for standalone usage. (Fate#317077)

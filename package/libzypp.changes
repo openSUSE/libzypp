@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 13:18:11 CEST 2014 - ma@suse.de
+
+- Adjust transfer timeout settings (bnc#877405)
+- version 13.10.2 (6)
+
+-------------------------------------------------------------------
 Mon May 12 17:14:16 CEST 2014 - ma@suse.de
 
 - Fix computation of update candidate (bnc#834858)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 17 15:03:49 CEST 2014 - ma@suse.de
+
+- fix wrong '//' when extending URLs with an empty path (bnc#885254)
+- version 13.10.3 (6)
+
+-------------------------------------------------------------------
 Sun Jul 13 01:17:11 CEST 2014 - ma@suse.de
 
 - Update zypp-po.tar.bz2

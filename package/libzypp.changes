@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 17 15:04:18 CEST 2014 - ma@suse.de
+
+- fix wrong '//' when extending URLs with an empty path (bnc#885254)
+- version 6.39.5 (31)
+
+-------------------------------------------------------------------
 Sun Jan 19 16:04:37 CET 2014 - ma@suse.de
 
 - Fix missing priority in RepoInfo::dumpAsXML (bnc#855845)

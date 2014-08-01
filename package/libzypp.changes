@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug  1 10:54:56 CEST 2014 - ma@suse.de
+
+- Remove orphaned package caches on refresh (bnc#888919)
+- Fix gpg key creation/modification date computation.
+- version 13.10.4 (6)
+
+-------------------------------------------------------------------
 Thu Jul 17 15:03:49 CEST 2014 - ma@suse.de
 
 - fix wrong '//' when extending URLs with an empty path (bnc#885254)

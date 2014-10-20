@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 20 14:07:49 CEST 2014 - ma@suse.de
+
+- MediaCurl: Fix URL path concatenation (bnc#901590)
+- version 9.37.9 (8)
+
+-------------------------------------------------------------------
 Thu Jul 17 15:05:04 CEST 2014 - ma@suse.de
 
 - fix wrong '//' when extending URLs with an empty path (bnc#885254)

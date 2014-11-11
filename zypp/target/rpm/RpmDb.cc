@@ -1849,6 +1849,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, cal
     opts.push_back("-U");
 
   opts.push_back("--percent");
+  opts.push_back("--noglob");
 
   // ZConfig defines cross-arch installation
   if ( ! ZConfig::instance().systemArchitecture().compatibleWith( ZConfig::instance().defaultSystemArchitecture() ) )

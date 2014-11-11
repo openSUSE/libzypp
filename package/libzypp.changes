@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 11 16:25:50 CET 2014 - ma@suse.de
+
+- Call rpm with '--noglob' (bnc#892431)
+- version 9.37.10 (8)
+
+-------------------------------------------------------------------
 Mon Oct 20 14:07:49 CEST 2014 - ma@suse.de
 
 - MediaCurl: Fix URL path concatenation (bnc#901590)

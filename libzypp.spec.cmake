@@ -60,7 +60,7 @@ BuildRequires:  libproxy-devel
 %endif
 BuildRequires:  pkg-config
 
-BuildRequires:  libsatsolver-devel >= 0.17.4
+BuildRequires:  libsatsolver-devel >= 0.17.9
 %if 0%{?suse_version} >= 1100
 %requires_eq    satsolver-tools
 %else

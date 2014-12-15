@@ -121,6 +121,10 @@ namespace zypp
     std::string asSeconds() const
     { return form( "%s" ); }
 
+    /** Convenience for printing the date only [<tt>'2014-02-07'</tt>] */
+    std::string printDate() const
+    { return form( "%Y-%m-%d" ); }
+
   private:
     /** Calendar time.
      * The number of seconds elapsed since 00:00:00 on January 1, 1970,

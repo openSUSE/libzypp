@@ -146,6 +146,15 @@ namespace zypp
       ::setlocale( LC_TIME, locale.c_str() );
   }
 
+  /// Backport from 13.2/SLE12: \ref Date xml output with time_t and ISO format
+  std::ostream & dumpAsXmlOn( std::ostream & str, const Date & obj, const std::string & name_r )
+  {
+    // <endoflife time_t="1420070400" text="2015-01-01T01:00:00+01"/>
+    return str << "<" << name_r
+               << " time_t=\"" << Date::ValueType(obj)
+	       << "\" text=\"" << obj.form( "%Y-%m-%dT%H:%M:%S%z", Date::TB_LOCALTIME )
+	       << "\"/>";
+  }
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -1107,7 +1107,7 @@ SATResolver::problems ()
 				if (poolItem) {
 				    if (_solv->installed && s.get()->repo == _solv->installed) {
 					problemSolution->addSingleAction (poolItem, REMOVE);
-					string description = str::form (_("do not keep %s installed"),  s.asString().c_str() );
+					string description = str::form (_("remove lock to allow removal of %s"),  s.asString().c_str() );
 					MIL << description << endl;
 					problemSolution->addDescription (description);
 				    } else {
@@ -1132,7 +1132,7 @@ SATResolver::problems ()
 					problemSolution->addDescription (description);
 				    } else {
 					problemSolution->addSingleAction (poolItem, UNLOCK);
-					string description = str::form (_("do not forbid installation of %s"), itemToString( poolItem ).c_str());
+					string description = str::form (_("remove lock to allow installation of %s"), itemToString( poolItem ).c_str());
 					MIL << description << endl;
 					problemSolution->addDescription (description);
 				    }

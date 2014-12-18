@@ -13,7 +13,7 @@ Wed Dec 17 16:16:25 CET 2014 - ma@suse.de
 -------------------------------------------------------------------
 Mon Dec 15 12:06:01 CET 2014 - ma@suse.de
 
-- Add Product::endOfLife attribute (Fate#316172)
+- Add Product::endOfLife attribute (Fate#316172,Fate#300591)
 - version 9.38.0 (8)
 
 -------------------------------------------------------------------

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar  5 14:02:08 CET 2015 - ma@suse.de
+
+- Easy.h: Use __typeof__ rather than typeof (g++ extension) in header. 
+- version 9.38.3 (8)
+
+-------------------------------------------------------------------
 Thu Dec 18 17:12:54 CET 2014 - ma@suse.de
 
 - Provide boost/format for zypper

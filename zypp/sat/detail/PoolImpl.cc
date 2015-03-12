@@ -193,6 +193,8 @@ namespace zypp
         // set namespace callback
         _pool->nscallback = &nsCallback;
         _pool->nscallbackdata = (void*)this;
+	if ( getenv("ZYPP_LIBSAT_ALLOWSELFCONFLICTS") )	// bnc#921997
+	  _pool->allowselfconflicts = 1;
       }
 
       ///////////////////////////////////////////////////////////////////

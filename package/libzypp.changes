@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 12 14:20:28 CET 2015 - ma@suse.de
+
+- Allow to set allowselfconflicts in libzypp (bnc#921997)
+- version 9.38.4 (8)
+
+-------------------------------------------------------------------
 Thu Mar  5 14:02:08 CET 2015 - ma@suse.de
 
 - Easy.h: Use __typeof__ rather than typeof (g++ extension) in header. 

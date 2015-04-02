@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr  2 19:22:23 CEST 2015 - ma@suse.de
+
+- POODLE: libzypp should only talk TLS (bnc#903405)
+- Cleanup orpahned cache dirs only at zypp.conf default locations
+  (bnc#891515)
+- version 13.10.5 (6)
+
+-------------------------------------------------------------------
 Fri Aug  1 10:54:56 CEST 2014 - ma@suse.de
 
 - Remove orphaned package caches on refresh (bnc#888919)

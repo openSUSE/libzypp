@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr  2 19:21:07 CEST 2015 - ma@suse.de
+
+- POODLE: libzypp should only talk TLS (bnc#903405)
+- version 14.38.2 (30)
+
+-------------------------------------------------------------------
 Thu Mar 19 16:44:39 CET 2015 - ma@suse.de
 
 - Suppress MediaChangeReport while testing multiple baseurls (bnc#899510)

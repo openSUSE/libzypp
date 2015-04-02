@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr  2 19:21:56 CEST 2015 - ma@suse.de
+
+- POODLE: libzypp should only talk TLS (bnc#903405)
+- version 9.38.5 (8)
+
+-------------------------------------------------------------------
 Thu Mar 12 14:20:28 CET 2015 - ma@suse.de
 
 - Allow to set allowselfconflicts in libzypp (bnc#921997)

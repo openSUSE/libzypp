@@ -33,8 +33,16 @@
 
 using namespace std;
 
+#define BNC925501 1
+
 namespace zypp {
   namespace media {
+#if ( BNC925501 )
+    namespace
+    {
+      bool bnc925501ExtraDebug = false;
+    }
+#endif
 
     std::ostream & operator<<( std::ostream & str, const MountEntry & obj )
     {
@@ -135,6 +143,12 @@ void Mount::mount( const std::string & source,
 	       err = "Unable to find directory on the media";
 	    }
 	}
+#if ( BNC925501 )
+	else if ( value.find ( "already mounted or" ) )
+	{
+	  bnc925501ExtraDebug = true;
+	}
+#endif
 
 	output = process->receiveLine();
     }
@@ -153,6 +167,12 @@ void Mount::mount( const std::string & source,
 
     if ( err != "" ) {
       WAR << "mount " << source << " " << target << ": " << err << endl;
+#if ( BNC925501 )
+      if ( bnc925501ExtraDebug )
+      {
+	Mount::getEntries();
+      }
+#endif
       ZYPP_THROW(MediaMountException(err, source, target, value));
     } else {
       MIL << "mounted " << source << " " << target << endl;
@@ -277,6 +297,9 @@ Mount::getEntries(const std::string &mtab)
   MountEntries             entries;
   std::vector<std::string> mtabs;
   bool                     verbose = false;
+#if ( BNC925501 )
+  verbose = bnc925501ExtraDebug;
+#endif
 
   if( mtab.empty())
   {
@@ -335,10 +358,22 @@ Mount::getEntries(const std::string &mtab)
 	    entry.src.erase( entry.src.size()-1 );
 	  }
           entries.push_back(entry);
-
-          memset(buf,  0, sizeof(buf));
-          memset(&ent, 0, sizeof(ent));
+#if ( BNC925501 )
+	  if ( bnc925501ExtraDebug )
+	    DBG << "Add MountEntry " << entry << endl;
+#endif
         }
+        else
+	{
+	  WAR << "Suspicious MountEntry |"
+	      << ( ent.mnt_fsname ? ent.mnt_fsname : "NULL" ) << "|"
+	      << ( ent.mnt_dir ? ent.mnt_dir : "NULL" ) << "|"
+	      << ( ent.mnt_type ? ent.mnt_type : "NULL" ) << "|"
+	      << ( ent.mnt_opts ? ent.mnt_opts : "NULL" ) << "|"
+	      << endl;
+	}
+        memset(buf,  0, sizeof(buf));
+	memset(&ent, 0, sizeof(ent));
       }
       endmntent(fp);
 

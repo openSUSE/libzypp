@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May  5 14:29:27 CEST 2015 - ma@suse.de
+
+- Fix SEGV when dumping rpm header with epoch (bnc#929483)
+- version 9.38.6 (8)
+
+-------------------------------------------------------------------
 Thu Apr  2 19:21:56 CEST 2015 - ma@suse.de
 
 - POODLE: libzypp should only talk TLS (bnc#903405)

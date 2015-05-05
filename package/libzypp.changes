@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May  5 14:29:01 CEST 2015 - ma@suse.de
+
+- Fix SEGV when dumping rpm header with epoch (bnc#929483)
+- version 9.16.9 (8)
+
+-------------------------------------------------------------------
 Thu Jul 17 15:04:41 CEST 2014 - ma@suse.de
 
 - fix wrong '//' when extending URLs with an empty path (bnc#885254)

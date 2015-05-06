@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May  6 14:25:34 CEST 2015 - ma@suse.de
+
+- Fix repo alias containing ']' not handled correctly (bnc#929528)
+- version 9.38.7 (8)
+
+-------------------------------------------------------------------
 Tue May  5 14:29:27 CEST 2015 - ma@suse.de
 
 - Fix SEGV when dumping rpm header with epoch (bnc#929483)

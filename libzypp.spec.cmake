@@ -201,7 +201,7 @@ unset TRANSLATION_SET
 unset EXTRA_CMAKE_OPTIONS
 # SLE11-* might want its own translation set:
 %if 0%{?suse_version} == 1110
-if [ -f ../po/sle-zypp-po.tar.bz ]; then
+if [ -f ../po/sle-zypp-po.tar.bz2 ]; then
   export TRANSLATION_SET=sle-zypp
 fi
 export EXTRA_CMAKE_OPTIONS="-DDISABLE_LIBPROXY=ON"

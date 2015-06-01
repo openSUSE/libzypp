@@ -90,6 +90,9 @@ namespace zypp
       const std::string & asString() const
       { return _name; }
 
+      /** String with Shell-meta-characters escaped */
+      std::string shellEscape() const;
+
       /** String representation as "(root)/path" */
       static std::string showRoot( const Pathname & root_r, const Pathname & path_r );
 

@@ -77,6 +77,7 @@ public:
     bool _verify_peer;
     Pathname _ca_path;
     Pathname _client_cert_path;
+    Pathname _client_key_path;
 
     // workarounds
     bool _head_requests_allowed;
@@ -286,6 +287,16 @@ Pathname TransferSettings::clientCertificatePath() const
 void TransferSettings::setClientCertificatePath( const zypp::Pathname &path )
 {
     _impl->_client_cert_path = path;
+}
+
+Pathname TransferSettings::clientKeyPath() const
+{
+    return _impl->_client_key_path;
+}
+
+void TransferSettings::setClientKeyPath( const zypp::Pathname &path )
+{
+    _impl->_client_key_path = path;
 }
 
 

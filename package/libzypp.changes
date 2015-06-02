@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun  2 16:56:13 CEST 2015 - ma@suse.de
+
+- Fix SSL client certificate authentication via URL option 
+  ssl_clientcert/ssl_clientkey (bnc#932393)
+- version 14.38.6 (30)
+
+-------------------------------------------------------------------
 Mon Jun  1 16:14:04 CEST 2015 - ma@suse.de
 
 - FindFileConflicts: avoid nested exception on user abort (bnc#931601)

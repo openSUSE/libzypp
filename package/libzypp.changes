@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun  2 16:57:02 CEST 2015 - ma@suse.de
+
+- Fix SSL client certificate authentication via URL option 
+  ssl_clientcert/ssl_clientkey (bnc#932393)
+- version 13.10.6 (6)
+
+-------------------------------------------------------------------
 Thu Apr  2 19:22:23 CEST 2015 - ma@suse.de
 
 - POODLE: libzypp should only talk TLS (bnc#903405)

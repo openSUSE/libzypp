@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <sstream>
 
 #include "zypp/base/String.h"
 #include "zypp/Pathname.h"
@@ -161,6 +162,21 @@ namespace zypp
       }
 
       return ret_t;
+    }
+
+    std::string Pathname::shellEscape() const
+    {
+      std::ostringstream out;
+      out << "'";
+      for(const char *p=_name.c_str(); *p; p++)
+      {
+        if(*p == '\'')
+          out << "'\\''";
+        else
+          out << *p;
+      }
+      out << "'";
+      return out.str();
     }
 
     ///////////////////////////////////////////////////////////////////

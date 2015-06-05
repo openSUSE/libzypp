@@ -448,7 +448,7 @@ namespace zypp
         return _Log_Result( ENOTDIR );
       }
 
-      string cmd( str::form( "cd '%s' && rm -rf --preserve-root -- *", path.asString().c_str() ) );
+      string cmd( str::form( "cd %s && rm -rf --preserve-root -- *", path.shellEscape().c_str() ) );
       ExternalProgram prog( cmd, ExternalProgram::Stderr_To_Stdout );
       for ( string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
         MIL << "  " << output;

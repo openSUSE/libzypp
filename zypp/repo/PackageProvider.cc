@@ -26,6 +26,11 @@
 #include "zypp/RepoInfo.h"
 #include "zypp/RepoManager.h"
 
+#include "zypp/ZYppFactory.h"
+#include "zypp/Target.h"
+#include "zypp/target/rpm/RpmDb.h"
+#include "zypp/FileChecker.h"
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,6 +59,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     class PackageProvider::Impl : private base::NonCopyable
     {
+      typedef callback::UserData UserData;
     public:
       /** Ctor taking the Package to provide. */
       Impl( RepoMediaAccess & access_r,
@@ -165,6 +171,54 @@ namespace zypp
 	return true; // anyway a failure
       }
 
+      typedef target::rpm::RpmDb RpmDb;
+
+      RpmDb::CheckPackageResult packageSigCheck( const Pathname & path_r, UserData & userData ) const
+      {
+	if ( !_target )
+	  _target = getZYpp()->getTarget();
+
+	RpmDb::CheckPackageResult ret = RpmDb::CHK_ERROR;
+	RpmDb::CheckPackageDetail detail;
+	if ( _target )
+	  ret = _target->rpmDb().checkPackage( path_r, detail );
+	else
+	  detail.push_back( RpmDb::CheckPackageDetail::value_type( ret, "OOps. Target is not initialized!" ) );
+
+	userData.set( "CheckPackageResult", ret );
+	userData.set( "CheckPackageDetail", std::move(detail) );
+	return ret;
+      }
+
+      /** React on signature verrification error user action */
+      void resolveSignatureErrorAction( repo::DownloadResolvableReport::Action action_r ) const
+      {
+	// TranslatorExplanation %s = package being checked for integrity
+	switch ( action_r )
+	{
+	  case repo::DownloadResolvableReport::RETRY:
+	    _retry = true;
+	    break;
+	  case repo::DownloadResolvableReport::IGNORE:
+	    WAR << _package->asUserString() << ": " << "User requested skip of insecure file" << endl;
+	    break;
+	  default:
+	  case repo::DownloadResolvableReport::ABORT:
+	    ZYPP_THROW(AbortRequestException("User requested to abort"));
+	    break;
+	}
+      }
+
+      /** Default signature verrification error handling. */
+      void defaultReportSignatureError( RpmDb::CheckPackageResult ret, const std::string & detail_r = std::string() ) const
+      {
+	str::Str msg;
+	msg << _package->asUserString() << ": " << _("Signature verification failed") << " " << ret;
+	if ( ! detail_r.empty() )
+	  msg << "\n" << detail_r;
+	resolveSignatureErrorAction( report()->problem( _package, repo::DownloadResolvableReport::INVALID, msg.str() ) );
+      }
+
     protected:
       PackageProviderPolicy	_policy;
       Package::constPtr		_package;
@@ -187,6 +241,7 @@ namespace zypp
 
       mutable bool               _retry;
       mutable shared_ptr<Report> _report;
+      mutable Target_Ptr         _target;
     };
     ///////////////////////////////////////////////////////////////////
 
@@ -260,10 +315,55 @@ namespace zypp
       Url url = * info.baseUrlsBegin();
       do {
         _retry = false;
+	if ( ! ret->empty() )
+	{
+	  ret.setDispose( filesystem::unlink );
+	  ret.reset();
+	}
         report()->start( _package, url );
-        try  // ELIMINATE try/catch by providing a log-guard
+        try
           {
             ret = doProvidePackage();
+
+	    if ( info.pkgGpgCheck() )
+	    {
+	      UserData userData( "pkgGpgCheck" );
+	      userData.set( "Package", _package );
+	      userData.set( "Localpath", ret.value() );
+	      RpmDb::CheckPackageResult res = packageSigCheck( ret, userData );
+	      // publish the checkresult, even if it is OK. Apps may want to report something...
+	      report()->pkgGpgCheck( userData );
+
+	      if ( res != RpmDb::CHK_OK )
+	      {
+		if ( userData.hasvalue( "Action" ) )	// pkgGpgCheck report provided an user error action
+		{
+		  resolveSignatureErrorAction( userData.get( "Action", repo::DownloadResolvableReport::ABORT ) );
+		}
+		else if ( userData.haskey( "Action" ) )	// pkgGpgCheck requests the default problem report (wo. details)
+		{
+		  defaultReportSignatureError( res );
+		}
+		else					// no advice from user => usedefaults
+		{
+		  switch ( res )
+		  {
+		    case RpmDb::CHK_OK:		// Signature is OK
+		      break;
+
+		    case RpmDb::CHK_NOKEY:	// Public key is unavailable
+		    case RpmDb::CHK_NOTFOUND:	// Signature is unknown type
+		    case RpmDb::CHK_FAIL:	// Signature does not verify
+		    case RpmDb::CHK_NOTTRUSTED:	// Signature is OK, but key is not trusted
+		    case RpmDb::CHK_ERROR:	// File does not exist or can't be opened
+		    default:
+		      // report problem (w. details), throw if to abort, else retry/ignore
+		      defaultReportSignatureError( res, str::Str() << userData.get<RpmDb::CheckPackageDetail>( "CheckPackageDetail" ) );
+		      break;
+		  }
+		}
+	      }
+	    }
           }
         catch ( const UserRequestException & excpt )
           {

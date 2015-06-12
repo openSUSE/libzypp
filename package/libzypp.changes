@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Jun 12 12:40:36 CEST 2015 - ma@suse.de
+
+- zypp.conf: Add config values for gpgcheck, repo_gpgcheck 
+  and pkg_gpgcheck. The default behavior 'gpgcheck=On' will
+  automatically turn on the gpg signature check for packages 
+  downloaded from repository with unsigned metadata. If the
+  repo metadata are signed, a faster comparison via checksums
+  is done. By explicitly setting repo_gpgcheck or pkg_gpgcheck
+  you can enforce the signature check of repository metadata
+  or downloaded packages to be always performed. Those defaults 
+  can be overwritten per repository. (FATE#314603) 
+- Downloader: Accept unsigned repository if pkgGpgCheck is ON.
+- version 14.39.0 (39)
+
+-------------------------------------------------------------------
 Tue Jun  2 16:56:13 CEST 2015 - ma@suse.de
 
 - Fix SSL client certificate authentication via URL option 

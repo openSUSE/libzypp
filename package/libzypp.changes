@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul  3 15:24:15 CEST 2015 - ma@suse.de
+
+- Resolver allow tuning DUP mode solver flags (FATE#319128)
+- version 14.40.0 (39)
+
+-------------------------------------------------------------------
 Fri Jun 12 12:40:36 CEST 2015 - ma@suse.de
 
 - zypp.conf: Add config values for gpgcheck, repo_gpgcheck 

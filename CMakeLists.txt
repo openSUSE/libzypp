@@ -1,8 +1,13 @@
+cmake_minimum_required(VERSION 2.6)
+
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
+endif ()
+
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-SET( CMAKE_MODULE_PATH ${LIBZYPP_SOURCE_DIR}/cmake/modules )
-cmake_minimum_required(VERSION 2.6)
+LIST(APPEND CMAKE_MODULE_PATH ${LIBZYPP_SOURCE_DIR}/cmake/modules )
 
 OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
@@ -10,6 +15,7 @@ OPTION (ENABLE_BUILD_TESTS "Build and run test suite by default?" OFF)
 
 OPTION (DISABLE_LIBPROXY "Build without libproxy support even if package is installed?" OFF)
 OPTION (DISABLE_AUTODOCS "Do not require doxygen being installed (required to build autodocs)?" OFF)
+OPTION( BUILD_SHARED_LIBS "shared/static" ON)
 
 #--------------------------------------------------------------------------------
 SET (have_system x)
@@ -78,8 +84,6 @@ SET( LIBZYPP_VERSION_INFO "${LIBZYPP_SO_FIRST}.${LIBZYPP_AGE}.${LIBZYPP_PATCH}" 
 SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )
 
 GENERATE_PACKAGING(${PACKAGE} ${VERSION})
-
-INCLUDE(CPack)
 
 MACRO(ADD_TESTS)
   FOREACH( loop_var ${ARGV} )
@@ -212,9 +216,10 @@ MESSAGE(STATUS "Writing pkg-config file...")
 CONFIGURE_FILE(${LIBZYPP_SOURCE_DIR}/libzypp.pc.cmake ${LIBZYPP_BINARY_DIR}/libzypp.pc @ONLY)
 INSTALL( FILES ${LIBZYPP_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
 
-MESSAGE(STATUS "FindZypp.cmake will be installed in ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules")
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/FindZypp.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules )
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules )
+MESSAGE(STATUS "CMake configuration files will be installed in ${LIB_INSTALL_DIR}/cmake/zypp")
+CONFIGURE_FILE(${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake.in ${CMAKE_BINARY_DIR}/ZyppConfig.cmake @ONLY)
+INSTALL( FILES ${CMAKE_BINARY_DIR}/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/zypp)
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/zypp)
 
 ####################################################################
 # config templates

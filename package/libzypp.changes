@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 12 18:09:22 CEST 2015 - ma@suse.de
+
+- Fix setting dup_allow* solver options (bnc#941463)
+- version 14.40.2 (39)
+
+-------------------------------------------------------------------
 Wed Aug 12 15:49:49 CEST 2015 - ma@suse.de
 
 - Don't make zypper encode {} around repo vars (bnc#941453)

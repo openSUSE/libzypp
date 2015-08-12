@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 12 15:49:49 CEST 2015 - ma@suse.de
+
+- Don't make zypper encode {} around repo vars (bnc#941453)
+- Support for MIPS architectures
+- version 14.40.1 (39)
+
+-------------------------------------------------------------------
 Sun Aug  2 01:14:24 CEST 2015 - ma@suse.de
 
 - Update zypp-po.tar.bz2

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 26 18:40:04 CEST 2015 - shundhammer@suse.de
+
+- Removed function that always returns null pointer (bsc#941398)
+- version 15.14.0 (14) 
+
+-------------------------------------------------------------------
 Thu Aug 20 01:13:09 CEST 2015 - ma@suse.de
 
 - Update zypp-po.tar.bz2

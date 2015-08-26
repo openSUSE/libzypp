@@ -71,12 +71,6 @@ namespace zypp
 
 
     /**
-     * Return the parent dependency problem.
-     **/
-    ResolverProblem_Ptr problem() const { return nullptr; }
-
-
-    /**
      * Set description of the problem.
      **/
     void setDescription( std::string description );

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 25 10:54:20 CEST 2015 - ma@suse.de
+
+- Avoid URL rewrite if probing local cache directories (bsc#946129)
+- version 14.41.1 (39)
+
+-------------------------------------------------------------------
 Mon Sep  7 09:41:44 CEST 2015 - ma@suse.de
 
 - Don't cache repo releasever (bnc#943563)

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 29 18:40:05 CEST 2015 - ma@suse.de
+
+- ZYppCommitResult: add attemptToModify to indicate an attempt to
+  actually install/remove was made (bsc#946750, FATE#319467)
+- version 14.42.0 (39)
+
+-------------------------------------------------------------------
 Fri Sep 25 10:54:20 CEST 2015 - ma@suse.de
 
 - Avoid URL rewrite if probing local cache directories (bsc#946129)
@@ -57,22 +64,22 @@ Fri Jul  3 15:24:15 CEST 2015 - ma@suse.de
 -------------------------------------------------------------------
 Fri Jun 12 12:40:36 CEST 2015 - ma@suse.de
 
-- zypp.conf: Add config values for gpgcheck, repo_gpgcheck 
+- zypp.conf: Add config values for gpgcheck, repo_gpgcheck
   and pkg_gpgcheck. The default behavior 'gpgcheck=On' will
-  automatically turn on the gpg signature check for packages 
+  automatically turn on the gpg signature check for packages
   downloaded from repository with unsigned metadata. If the
   repo metadata are signed, a faster comparison via checksums
   is done. By explicitly setting repo_gpgcheck or pkg_gpgcheck
   you can enforce the signature check of repository metadata
-  or downloaded packages to be always performed. Those defaults 
-  can be overwritten per repository. (FATE#314603) 
+  or downloaded packages to be always performed. Those defaults
+  can be overwritten per repository. (FATE#314603)
 - Downloader: Accept unsigned repository if pkgGpgCheck is ON.
 - version 14.39.0 (39)
 
 -------------------------------------------------------------------
 Tue Jun  2 16:56:13 CEST 2015 - ma@suse.de
 
-- Fix SSL client certificate authentication via URL option 
+- Fix SSL client certificate authentication via URL option
   ssl_clientcert/ssl_clientkey (bnc#932393)
 - version 14.38.6 (30)
 
@@ -115,13 +122,13 @@ Mon Mar 16 14:05:28 CET 2015 - ma@suse.de
 -------------------------------------------------------------------
 Wed Mar 11 09:22:46 CET 2015 - ma@suse.de
 
-- New RepoVarExpand: Functor expanding repo variables in a 
+- New RepoVarExpand: Functor expanding repo variables in a
   string . Supports bash style default ${v:-w}' and alternate ${v:+w}
   values (FATE#318354)
 - Easy.h: Use __typeof__ rather than typeof in header
 - Support repo variable replacement in service url
 - Support repo variable replacement in gpg url
-- Gettext.h: Fallback to ::gettext if accidentally included 
+- Gettext.h: Fallback to ::gettext if accidentally included
   outside libzypp
 - version 14.37.0 (30)
 
@@ -148,10 +155,10 @@ Thu Feb 12 01:13:34 CET 2015 - ma@suse.de
 -------------------------------------------------------------------
 Mon Feb  9 16:05:38 CET 2015 - ma@suse.de
 
-- Don't execute scripts in /tmp or /var/tmp, as they could be 
+- Don't execute scripts in /tmp or /var/tmp, as they could be
   mounted noexec for security reasons (bnc#915928)
 - zypp/PublicKey.cc: Use GPG_BINARY from KeyRing
-- Support $releasever_major/$releasever_minor repo variables 
+- Support $releasever_major/$releasever_minor repo variables
   (FATE#318354)
 - version 14.36.0 (30)
 
@@ -201,7 +208,7 @@ Thu Jan 15 01:13:12 CET 2015 - ma@suse.de
 Mon Jan 12 15:04:17 CET 2015 - ma@suse.de
 
 - Properly propagate repo variables in service refresh.
-- Let $ZYPP_REPO_RELEASEVER overwrite $releasever in .repo files 
+- Let $ZYPP_REPO_RELEASEVER overwrite $releasever in .repo files
   (bnc#911658)
 - Call pool_set_rootdir to properly check for file conflicts.
 - Use xgettext --boost to support boost-format (%N%)

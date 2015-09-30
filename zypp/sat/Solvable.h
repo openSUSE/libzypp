@@ -283,7 +283,7 @@ namespace zypp
 
       public:
         /** Expert backdoor. */
-        ::_Solvable * get() const;
+        detail::CSolvable * get() const;
         /** Expert backdoor. */
         IdType id() const { return _id; }
 
@@ -362,7 +362,7 @@ namespace zypp
       /** */
       class SolvableIterator : public boost::iterator_adaptor<
           SolvableIterator                   // Derived
-          , ::_Solvable*                     // Base
+          , detail::CSolvable*               // Base
           , const Solvable                   // Value
           , boost::forward_traversal_tag     // CategoryOrTraversal
           , const Solvable                   // Reference

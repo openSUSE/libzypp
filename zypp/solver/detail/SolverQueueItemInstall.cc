@@ -69,7 +69,7 @@ SolverQueueItemInstall::~SolverQueueItemInstall()
 
 //---------------------------------------------------------------------------
 
-bool SolverQueueItemInstall::addRule (_Queue & q)
+bool SolverQueueItemInstall::addRule (sat::detail::CQueue & q)
 {
     ::Id id = IdString(_name).id();
     if (_soft) {

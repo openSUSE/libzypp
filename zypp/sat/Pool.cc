@@ -33,7 +33,7 @@ namespace zypp
     const std::string & Pool::systemRepoAlias()
     { return detail::PoolImpl::systemRepoAlias(); }
 
-    ::_Pool * Pool::get() const
+    detail::CPool * Pool::get() const
     { return myPool().getPool(); }
 
     Pool::size_type Pool::capacity() const

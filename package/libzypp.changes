@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct  8 01:17:27 CEST 2015 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Tue Sep 29 18:40:05 CEST 2015 - ma@suse.de
 
 - ZYppCommitResult: add attemptToModify to indicate an attempt to

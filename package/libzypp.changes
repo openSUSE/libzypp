@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 15 10:44:14 CEST 2015 - ma@suse.de
+
+- make Solvable::asUserString more readable (bnc#949957)
+- version 14.42.1 (39)
+
+-------------------------------------------------------------------
 Thu Oct 15 01:14:55 CEST 2015 - ma@suse.de
 
 - Update zypp-po.tar.bz2

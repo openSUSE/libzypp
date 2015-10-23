@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 23 17:15:37 CEST 2015 - ma@suse.de
+
+- Fix broken product: <-> -release package relation (bnc#951782)
+- version 14.42.3 (39)
+
+-------------------------------------------------------------------
 Thu Oct 22 10:27:41 CEST 2015 - ma@suse.de
 
 - fix Plugin-services not updating repo GPGCheck settings (bnc#951402)

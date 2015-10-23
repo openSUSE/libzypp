@@ -91,7 +91,7 @@ namespace zypp
     {
       if ( it->repository() == repository() && it->arch() == arch() )
       {
-	bool fitsBuildtime = ( it->buildtime() == buildtime() );
+	bool fitsBuildtime = ( PoolItem(*it)->buildtime() == buildtime() );
 	if ( found )
 	{
 	  bool lowerEdition = ( it->edition() <= found.edition() );

@@ -51,6 +51,7 @@ namespace zypp
       // hint bits:
       bool readonly:1;			///< hint for readonly partitions
       bool growonly:1;			///< hint for growonly partitions (e.g. snapshotting btrfs)
+      bool nestedVolume:1;		//< hint for non-root btrfs-style volumes
 
 
       /** HinFlags for ctor */
@@ -59,6 +60,7 @@ namespace zypp
 	NoHint		= 0,
 	Hint_readonly	= (1<<0),	///< readonly partitions
 	Hint_growonly	= (1<<1),	///< growonly partitions (e.g. snapshotting btrfs)
+	Hint_nestedVolume = (1<<2),	///< non-root btrfs-style volumes
       };
       ZYPP_DECLARE_FLAGS(HintFlags,Hint);
 
@@ -71,6 +73,7 @@ namespace zypp
 	, block_size(bs), total_size(total), used_size(used), pkg_size(pkg)
 	, readonly(hints.testFlag(Hint_readonly))
 	, growonly(hints.testFlag(Hint_growonly))
+	, nestedVolume(hints.testFlag(Hint_nestedVolume))
       {}
        /** \overload <tt>const char *</tt> to allow e.g. initiailzer lists
        * \code

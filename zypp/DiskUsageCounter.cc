@@ -249,11 +249,28 @@ namespace zypp
 	      continue;
 	    }
 
-	    //
-	    // check for snapshotting btrfs
-	    //
 	    if ( words[2] == "btrfs" )
 	    {
+	      //
+	      // Check whether is a btrfs nested subvolume
+	      //
+	      for ( unsigned i = 0; i < flags.size(); ++i ) {
+	        if ( flags[i].substr(0,8) == "subvolid" ) {
+	          // btrfs uses 5 (0 is a valid alias) for top-level volumes
+		  if ( flags[i] != "subvolid=5" && flags[i] != "subvolid=0" ) {
+	            hints |= MountPoint::Hint_nestedVolume;
+		  }
+	          break;
+	        }
+	      }
+	      if ( hints.testFlag( MountPoint::Hint_nestedVolume ) ) {
+	        DBG << "Filter nested volume mount point : " << l << std::endl;
+	        continue;
+	      }
+
+	      //
+	      // check for snapshotting btrfs
+	      //
 	      if ( geteuid() != 0 )
 	      {
 		DBG << "Assume snapshots on " << words[1] << ": non-root user can't check" << std::endl;
@@ -316,7 +333,8 @@ namespace zypp
         << " ts: " << obj.totalSize()
         << " us: " << obj.usedSize()
         << " (+-: " << obj.commitDiff()
-        << ")" << (obj.readonly?"r":"") << (obj.growonly?"g":"") << " " << obj.fstype << "]";
+        << ")" << (obj.readonly?"r":"") << (obj.growonly?"g":"") << (obj.nestedVolume?"n":"")
+	<< " " << obj.fstype << "]";
     return str;
   }
 

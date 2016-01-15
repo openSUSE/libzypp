@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 15 09:06:52 UTC 2016 - ancor@suse.com
+
+- Added Hint_nestedVolume flag to DiskUsageCounter::MountPoint
+
+-------------------------------------------------------------------
 Thu Jan 14 01:13:17 CET 2016 - ma@suse.de
 
 - Update zypp-po.tar.bz2

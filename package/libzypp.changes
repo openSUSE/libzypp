@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  1 12:33:36 CET 2016 - ma@suse.de
+
+- media: Send stats header to download.opensuse.org only (bsc#955801)
+- version 14.42.4 (39)
+
+-------------------------------------------------------------------
 Fri Oct 23 17:15:37 CEST 2015 - ma@suse.de
 
 - Fix broken product: <-> -release package relation (bnc#951782)

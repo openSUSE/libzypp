@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 15 14:37:39 CET 2016 - ma@suse.de
+
+- BuildRequires:  libsolv-devel >= 0.6.19 (bnc#971018)
+- version 14.42.5 (39)
+
+-------------------------------------------------------------------
 Tue Mar  1 12:33:36 CET 2016 - ma@suse.de
 
 - media: Send stats header to download.opensuse.org only (bsc#955801)

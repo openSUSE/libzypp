@@ -29,6 +29,7 @@ SET( zypp_SRCS
   PluginFrameException.cc
   PluginScript.cc
   PluginScriptException.cc
+  PluginExecutor.cc
   Fetcher.cc
   FileChecker.cc
   Glob.cc
@@ -115,6 +116,7 @@ SET( zypp_HEADERS
   PluginFrameException.h
   PluginScript.h
   PluginScriptException.h
+  PluginExecutor.h
   Fetcher.h
   FileChecker.h
   Glob.h

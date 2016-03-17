@@ -32,7 +32,7 @@ Obsoletes:      yast2-packagemanager
 Provides:       libzypp(plugin) = 0
 Provides:       libzypp(plugin:commit) = 0
 Provides:       libzypp(plugin:services) = 0
-Provides:       libzypp(plugin:system) = 0
+Provides:       libzypp(plugin:system) = 1
 Provides:       libzypp(plugin:urlresolver) = 0
 
 %if 0%{?suse_version}

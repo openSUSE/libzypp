@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 11 12:47:27 CEST 2016 - ma@suse.de
+
+- Use PluginExecutor for commit- and system-hooks (bnc#971637)
+- version 14.42.6 (39)
+
+-------------------------------------------------------------------
 Tue Mar 15 14:37:39 CET 2016 - ma@suse.de
 
 - BuildRequires:  libsolv-devel >= 0.6.19 (bnc#971018)

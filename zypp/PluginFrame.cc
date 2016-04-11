@@ -234,6 +234,12 @@ namespace zypp
     return _val;
   }
 
+  const std::string & PluginFrame::enomethodCommand()
+  {
+    static std::string _val( "_ENOMETHOD" );
+    return _val;
+  }
+
   PluginFrame::PluginFrame()
     : _pimpl( Impl::nullimpl() )
   {}

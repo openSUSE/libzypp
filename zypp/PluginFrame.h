@@ -48,6 +48,8 @@ namespace zypp
       static const std::string & ackCommand();
       /** "ERROR" command. */
       static const std::string & errorCommand();
+      /** "_ENOMETHOD" command. */
+      static const std::string & enomethodCommand();
 
     public:
       /** Default exception type */
@@ -95,6 +97,10 @@ namespace zypp
       /** Convenience to identify an ERROR command. */
       bool isErrorCommand() const
       {return command() == errorCommand(); }
+
+      /** Convenience to identify an _ENOMETHOD command. */
+      bool isEnomethodCommand() const
+      {return command() == enomethodCommand(); }
 
       /** Return the frame body. */
       const std::string & body() const;

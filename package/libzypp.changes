@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 12 14:25:20 CEST 2016 - ma@suse.de
+
+- Use PluginExecutor for commit- and system-hooks (bnc#971637)
+- version 9.39.0 (8)
+
+-------------------------------------------------------------------
 Sun May 17 01:15:27 CEST 2015 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

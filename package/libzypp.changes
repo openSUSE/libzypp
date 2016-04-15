@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 15 11:28:42 CEST 2016 - ma@suse.de
+
+- DiskUsageCounter: Limit estimated waste per file (bsc#974275)
+- Filter unwanted btrfs subvolumes (fixes #54, closes #55, bnc#949945)
+- version 14.42.7 (39)
+
+-------------------------------------------------------------------
 Mon Apr 11 12:47:27 CEST 2016 - ma@suse.de
 
 - Use PluginExecutor for commit- and system-hooks (bnc#971637)

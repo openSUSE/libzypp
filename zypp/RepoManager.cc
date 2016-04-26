@@ -2011,34 +2011,42 @@ namespace zypp
     // set service alias and base url for all collected repositories
     for_( it, collector.repos.begin(), collector.repos.end() )
     {
-      // if the repo url was not set by the repoindex parser, set service's url
-      Url url;
+      // First of all: Prepend service alias:
+      it->setAlias( str::form( "%s:%s", service.alias().c_str(), it->alias().c_str() ) );
+      // set reference to the parent service
+      it->setService( service.alias() );
 
-      if ( it->baseUrlsEmpty() )
-        url = service.url();
-      else
-      {
-        // service repo can contain only one URL now, so no need to iterate.
-        url = *it->baseUrlsBegin();
-      }
-
-      // libzypp currently has problem with separate url + path handling
-      // so just append the path to the baseurl
+      // - If the repo url was not set by the repoindex parser, set service's url.
+      // - Libzypp currently has problem with separate url + path handling so just
+      //   append a path, if set, to the baseurls
+      // - Credentials in the url authority will be extracted later, either if the
+      //   repository is added or if we check for changed urls.
+      Pathname path;
       if ( !it->path().empty() )
       {
-        Pathname path(url.getPathName());
-        path /= it->path();
-        url.setPathName( path.asString() );
-        it->setPath("");
+	if ( it->path() != "/" )
+	  path = it->path();
+	it->setPath("");
       }
 
-      // Prepend service alias:
-      it->setAlias( str::form( "%s:%s", service.alias().c_str(), it->alias().c_str() ) );
-
-      // save the url
-      it->setBaseUrl( url );
-      // set refrence to the parent service
-      it->setService( service.alias() );
+      if ( it->baseUrlsEmpty() )
+      {
+	Url url( service.url() );
+	if ( !path.empty() )
+	  url.setPathName( url.getPathName() / path );
+	it->setBaseUrl( url );
+      }
+      else if ( !path.empty() )
+      {
+	RepoInfo::url_set urls;
+	for_( urlit, it->baseUrlsBegin(), it->baseUrlsEnd() )
+	{
+	  Url url( *urlit );
+	  url.setPathName( url.getPathName() / path );
+	  urls.insert( url );
+	}
+	it->setBaseUrls( urls );
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2067,7 +2075,8 @@ namespace zypp
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // create missing repositories and modify exising ones if needed...
+    // create missing repositories and modify existing ones if needed...
+    UrlCredentialExtractor urlCredentialExtractor( _pimpl->options.rootDir );	// To collect any credentials stored in repo URLs
     for_( it, collector.repos.begin(), collector.repos.end() )
     {
       // Service explicitly requests the repo being enabled?
@@ -2142,13 +2151,22 @@ namespace zypp
         }
 
         // changed url?
-        // service repo can contain only one URL now, so no need to iterate.
-        if ( oldRepo->url() != it->url() )
         {
-          DBG << "Service repo " << it->alias() << " gets new URL " << it->url() << endl;
-          oldRepo->setBaseUrl( it->url() );
-          oldRepoModified = true;
-        }
+	  RepoInfo::url_set newUrls;
+	  for_( urlit, it->baseUrlsBegin(), it->baseUrlsEnd() )
+	  {
+	    Url url( *urlit );
+	    urlCredentialExtractor.extract( url );	// Extract! to prevent passwds from disturbing the comparison below
+	    newUrls.insert( url );
+	  }
+
+	  if ( oldRepo->baseUrls() != newUrls )
+	  {
+	    DBG << "Service repo " << it->alias() << " gets new URLs " << newUrls << endl;
+	    oldRepo->setBaseUrls( newUrls );
+	    oldRepoModified = true;
+	  }
+	}
 
         // save if modified:
         if ( oldRepoModified )

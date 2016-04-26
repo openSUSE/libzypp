@@ -39,23 +39,17 @@ namespace zypp
   //
   //////////////////////////////////////////////////////////////////////
 
-  const url::ViewOption AuthDataComparator::vopt =
-    url::ViewOption::DEFAULTS
-    - url::ViewOption::WITH_USERNAME
-    - url::ViewOption::WITH_PASSWORD
-    - url::ViewOption::WITH_QUERY_STR;
-
-  bool
-  AuthDataComparator::operator()(
-      const AuthData_Ptr & lhs, const AuthData_Ptr & rhs)
+  bool AuthDataComparator::operator()( const AuthData_Ptr & lhs, const AuthData_Ptr & rhs )
   {
-    if (lhs->username() != rhs->username())
-      return true;
-
-    if (lhs->url().asString(vopt) != rhs->url().asString(vopt))
-      return true;
-
-    return false;
+    static const url::ViewOption vopt = url::ViewOption::DEFAULTS
+				      - url::ViewOption::WITH_USERNAME
+				      - url::ViewOption::WITH_PASSWORD
+				      - url::ViewOption::WITH_QUERY_STR;
+    // std::less semantic!
+    int cmp = lhs->url().asString(vopt).compare( rhs->url().asString(vopt) );
+    if ( ! cmp )
+      cmp = lhs->username().compare( rhs->username() );
+    return( cmp < 0 );
   }
 
   //////////////////////////////////////////////////////////////////////

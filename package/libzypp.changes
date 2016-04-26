@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Apr 26 18:39:48 CEST 2016 - ma@suse.de
+
+- Provide 'libzypp(plugin:services) = 1' after fixing bsc#933760
+- Fix credential file parser losing entries with known URL but
+  different user name (bsc#933760)
+- RepoManager: allow extraction of multiple baseurls for service
+  repos (bsc#964932)
+- addRepository: fix to use the correct history file for logging
+- specfile: add /etc/zypp/credentials.d to the file list
+- version 9.40.0 (8)
+
+-------------------------------------------------------------------
 Tue Apr 12 14:25:20 CEST 2016 - ma@suse.de
 
 - Use PluginExecutor for commit- and system-hooks (bnc#971637)

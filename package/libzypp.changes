@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun May  1 01:14:29 CEST 2016 - ma@suse.de
+
+- Update sle-zypp-po.tar.bz2
+
+-------------------------------------------------------------------
 Tue Apr 26 18:39:48 CEST 2016 - ma@suse.de
 
 - Provide 'libzypp(plugin:services) = 1' after fixing bsc#933760

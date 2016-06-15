@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun 15 12:41:17 CEST 2016 - ma@suse.de
+
+- Fix bug in removeRepository which may keep an empty .repo file
+  rather than deleting it (bsc#984494)
+- Provide 'libzypp(plugin:services) = 1' after fixing bsc#933760
+- version 15.22.1 (19)
+
+-------------------------------------------------------------------
 Thu Apr 28 14:17:09 CEST 2016 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

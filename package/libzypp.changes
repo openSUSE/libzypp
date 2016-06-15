@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 15 12:44:18 CEST 2016 - ma@suse.de
+
+- Fix bug in removeRepository which may keep an empty .repo file
+  rather than deleting it (bsc#984494)
+- version 9.40.1 (8)
+
+-------------------------------------------------------------------
 Sun May  1 01:14:29 CEST 2016 - ma@suse.de
 
 - Update sle-zypp-po.tar.bz2

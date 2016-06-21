@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 21 11:06:56 CEST 2016 - ma@suse.de
+
+- Filter duplicate resolver solutions (bsc#985674)
+- version 15.22.2 (19)
+
+-------------------------------------------------------------------
 Wed Jun 15 12:41:17 CEST 2016 - ma@suse.de
 
 - Fix bug in removeRepository which may keep an empty .repo file

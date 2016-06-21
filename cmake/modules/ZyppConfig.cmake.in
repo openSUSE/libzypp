@@ -1,0 +1,18 @@
+@PACKAGE_INIT@
+
+set ( ZYPP_FOUND 1 )
+set ( ZYPP_USE_FILE   "@PACKAGE_ZYPP_USE_FILE@" )
+
+set ( ZYPP_DEFINITIONS  "@ZYPP_DEFINITIONS@" )
+set ( ZYPP_INCLUDE_DIR        "@INCLUDE_INSTALL_DIR@" )
+set ( ZYPP_INCLUDE_DIRS ${ZYPP_INCLUDE_DIR} )
+set ( ZYPP_LIBRARY      "zypp" )
+set ( ZYPP_LIBRARIES    "@ZYPP_LIBRARIES@" )
+set ( ZYPP_LIBRARY_DIRS "@PACKAGE_ZYPP_LIBRARY_DIRS@" )
+set ( ZYPP_ROOT_DIR   "@PACKAGE_ZYPP_ROOT_DIR@" )
+
+set ( ZYPP_VERSION_STRING "@VERSION@" )
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("${CMAKE_CURRENT_LIST_DIR}/Zypp-Targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/ZyppCommon.cmake")

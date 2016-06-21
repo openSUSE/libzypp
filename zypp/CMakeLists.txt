@@ -919,7 +919,7 @@ SET_LOGGROUP( "libsolv" ${zypp_sat_SRCS} )
 #SET_LOGGROUP( "group" ${zypp_pool_SRCS} )
 
 
-ADD_LIBRARY(zypp SHARED ${zypp_lib_SRCS})
+ADD_LIBRARY(zypp ${zypp_lib_SRCS})
 SET_TARGET_PROPERTIES( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES( zypp PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 SET (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map")
@@ -946,7 +946,19 @@ ENDIF ( UDEV_FOUND )
 
 TARGET_LINK_LIBRARIES(zypp ${LIBPROXY_LIBRARIES} )
 
-INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
+INSTALL(TARGETS zypp
+        EXPORT  Zypp-Targets
+        RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+        ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+        LIBRARY DESTINATION ${LIB_INSTALL_DIR})
+
+# Add targets to the build-tree export set
+EXPORT(TARGETS zypp FILE "${PROJECT_BINARY_DIR}/Zypp-Targets.cmake")
+
+# Install the export set for use with the install-tree
+INSTALL(EXPORT Zypp-Targets DESTINATION ${LIB_INSTALL_DIR}/cmake/zypp COMPONENT Development)
+
+
 
 # install XML schemas
 FILE( GLOB YUM_SCHEMA_FILES ${LIBZYPP_SOURCE_DIR}/zypp/parser/yum/schema/*.rng )

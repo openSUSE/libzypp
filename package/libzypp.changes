@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 10 12:20:10 CEST 2016 - ma@suse.de
+
+- Report numeric curl error if code is unrecognized (bsc#992302)
+- version 15.22.3 (19)
+
+-------------------------------------------------------------------
 Tue Jun 21 11:06:56 CEST 2016 - ma@suse.de
 
 - Filter duplicate resolver solutions (bsc#985674)

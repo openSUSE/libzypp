@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 10 12:20:40 CEST 2016 - ma@suse.de
+
+- Report numeric curl error if code is unrecognized (bsc#992302)
+- version 14.43.2 (39)
+
+-------------------------------------------------------------------
 Wed Jun 15 12:43:39 CEST 2016 - ma@suse.de
 
 - Fix bug in removeRepository which may keep an empty .repo file

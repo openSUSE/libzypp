@@ -29,12 +29,16 @@ namespace parser
 { /////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
-//
-//	CLASS NAME : IniParser
-//
-/** Basic SUSEtags parser.
- * Will replace parser/tagfile/ and  parser/taggedfile/ stuff.
-*/
+/// \class IniParser
+/// \brief Simple INI-file parser
+///
+/// Lines staring with \c ; or \c # are treated as comment. Section
+/// names are enclosed by <tt>[]</tt>. Key and value are separated by \c =.
+///
+/// Lines without \c = or with a key containing any of <tt>":/?|,\\"</tt>
+/// are reported as value with an empty key (maybe multiline entries).
+/// Section lines without closing \c ] are considered garbage.
+///
 class IniParser : private base::NonCopyable
 {
 public:
@@ -58,6 +62,7 @@ public:
   virtual void consume( const std::string &section, const std::string &key, const std::string &value );
   /** Called when the parse is done. */
   virtual void endParse();
+
 public:
   /** Name of the current InputStream. */
   const std::string & inputname() const

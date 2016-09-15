@@ -30,6 +30,14 @@ namespace zypp
 namespace parser
 { /////////////////////////////////////////////////////////////////
 
+  namespace {
+    inline const std::string & keyGarbage()
+    {
+      static const std::string & _val( ",|/\\" );
+      return _val;
+    }
+  } //namespace
+
 ///////////////////////////////////////////////////////////////////
 //
 //	METHOD NAME : IniParser::IniParser
@@ -84,28 +92,34 @@ void IniParser::parse( const InputStream & input_r, const ProgressData::Receiver
 
     if (trimmed[0] == '[')
     {
-      std::string section = trimmed.substr(1, trimmed.rfind(']')-1);
-      consume(section);
-      section.swap(_current_section);
+      std::string::size_type pos = trimmed.rfind(']');
+      if ( pos != std::string::npos )
+      {
+	std::string section = trimmed.substr(1, pos-1);
+	consume(section);
+	section.swap(_current_section);
+      }
+      else
+      {
+	_line_nr = line.lineNo();
+	std::string msg = str::form("%s: Section [%s]: Line %d contains garbage (no '=' or '%s' in key)",
+				    _inputname.c_str(), _current_section.c_str(), _line_nr, keyGarbage().c_str());
+	ZYPP_THROW(ParseException(msg));
+      }
       continue;
     }
 
     std::string::size_type pos = trimmed.find('=');
-
-    if (pos != std::string::npos)
+    if ( pos == std::string::npos || trimmed.find_first_of( keyGarbage() ) < pos )
     {
-      std::string key = str::rtrim(trimmed.substr(0, pos));
-      if(key.find_first_of(" \t") != std::string::npos) {
-	std::string msg = str::form("%s: Key in line %d contains whitespace", _inputname.c_str(), line.lineNo());
-	ZYPP_THROW(ParseException(msg));
-      }
-      std::string value = str::ltrim(trimmed.substr(pos+1));
-      consume( _current_section, key, value);
+      _line_nr = line.lineNo();
+      consume( _current_section, std::string(), trimmed);
     }
     else
     {
-      std::string msg = str::form("%s: Line %d is missing '=' sign", _inputname.c_str(), line.lineNo());
-      ZYPP_THROW(ParseException(msg));
+      std::string key = str::rtrim(trimmed.substr(0, pos));
+      std::string value = str::ltrim(trimmed.substr(pos+1));
+      consume( _current_section, key, value);
     }
 
     // set progress and allow cancel

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 16 12:58:46 CEST 2016 - ma@suse.de
+
+- guessPackageSpec: Don't break globbing (fixes openSUSE/zypper#97)
+- version 14.43.4 (39)
+
+-------------------------------------------------------------------
 Thu Sep 15 15:29:40 CEST 2016 - ma@suse.de
 
 - RepoFileReader: fix parsing of multiline url entries (bsc#964932)

@@ -409,11 +409,13 @@ namespace zypp
     if ( _pimpl->baseurl2dump() )
     {
       str << "baseurl=";
+      std::string indent;
       for ( url_set::const_iterator it = _pimpl->baseUrls().begin();
             it != _pimpl->baseUrls().end();
             ++it )
       {
-        str << *it << endl;
+        str << indent << *it << endl;
+	if ( indent.empty() ) indent = "        ";	// "baseurl="
       }
     }
 

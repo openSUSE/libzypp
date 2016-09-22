@@ -1201,6 +1201,9 @@ namespace zypp
         // cause of the problem of the first URL remembered
         if (it == info.baseUrlsBegin())
           rexception.remember(e);
+	else
+	  rexception.addHistory(  e.asUserString() );
+
       }
     } // for every url
     ERR << "No more urls..." << endl;

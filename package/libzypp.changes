@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Sep 29 17:01:17 CEST 2016 - ma@suse.de
+
+- Suppress MediaChangeReport while testing multiple baseurls (bnc#899510)
+- Support parsing multiple baseurls from a repo file (bnc#899510)
+- RepoFileReader: fix parsing of multiline url entries (bsc#964932)
+- version 9.40.2 (8)
+
+-------------------------------------------------------------------
 Wed Jun 15 12:44:18 CEST 2016 - ma@suse.de
 
 - Fix bug in removeRepository which may keep an empty .repo file

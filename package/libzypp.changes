@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Sep 29 17:36:24 CEST 2016 - ma@suse.de
+
+- Suppress MediaChangeReport while testing multiple baseurls (bnc#899510)
+- Support parsing multiple baseurls from a repo file (bnc#899510)
+- RepoFileReader: fix parsing of multiline url entries (bsc#964932)
+- Fix repo alias containing ']' not handled correctly (bnc#929528)
+- version 9.16.11 (8)
+
+-------------------------------------------------------------------
 Tue Apr 26 19:07:10 CEST 2016 - ma@suse.de
 
 - Provide 'libzypp(plugin:services) = 1' after fixing bsc#933760

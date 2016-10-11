@@ -1136,7 +1136,7 @@ namespace zypp
       ///////////////////////////////////////////////////////////////////
       // Write out a testcase if we're in dist upgrade mode.
       ///////////////////////////////////////////////////////////////////
-      if ( getZYpp()->resolver()->upgradeMode() )
+      if ( pool_r.resolver().upgradeMode() || pool_r.resolver().upgradingRepos() )
       {
         if ( ! policy_r.dryRun() )
         {

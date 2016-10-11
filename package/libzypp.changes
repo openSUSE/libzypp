@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 11 18:09:52 CEST 2016 - ma@suse.de
+
+- Let 'dup --from' leave an updateTestcase-<DATE> in /var/log (bsc#1004096)
+- version 9.40.3 (8)
+
+-------------------------------------------------------------------
 Thu Sep 29 17:01:17 CEST 2016 - ma@suse.de
 
 - Suppress MediaChangeReport while testing multiple baseurls (bnc#899510)

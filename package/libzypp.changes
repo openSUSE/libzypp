@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Dec 14 12:34:22 CET 2016 - ma@suse.de
+
+- Don't raise FileCheckException if user accepted a package with wrong
+  digest (bsc#1014265)
+- Add some more details to pattern documentation
+- version 14.44.2 (39)
+
+-------------------------------------------------------------------
 Tue Oct 11 18:07:13 CEST 2016 - ma@suse.de
 
 - Let 'dup --from' leave an updateTestcase-<DATE> in /var/log (bsc#1004096)

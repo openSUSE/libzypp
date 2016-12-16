@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 16 11:27:36 CET 2016 - ma@suse.de
+
+- Merge branch 'bsc#985390' for zypper
+- version 14.45.0 (39)
+
+-------------------------------------------------------------------
 Wed Dec 14 12:34:22 CET 2016 - ma@suse.de
 
 - Don't raise FileCheckException if user accepted a package with wrong

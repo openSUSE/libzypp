@@ -321,6 +321,37 @@ namespace zypp
     inline bool sameNVRA( Solvable lhs, Solvable rhs )
     { return lhs.sameNVRA( rhs ); }
 
+
+    /** \relates Solvable Compare according to \a kind and \a name. */
+    inline int compareByN( const Solvable & lhs, const Solvable & rhs )
+    {
+      int res = 0;
+      if ( lhs != rhs )
+      {
+       if ( (res = lhs.kind().compare( rhs.kind() )) == 0 )
+         res = lhs.name().compare( rhs.name() );
+      }
+      return res;
+    }
+
+    /** \relates Solvable Compare according to \a kind, \a name and \a edition. */
+    inline int compareByNVR( const Solvable & lhs, const Solvable & rhs )
+    {
+      int res = compareByN( lhs, rhs );
+      if ( res == 0 )
+       res = lhs.edition().compare( rhs.edition() );
+      return res;
+    }
+
+    /** \relates Solvable Compare according to \a kind, \a name, \a edition and \a arch. */
+    inline int compareByNVRA( const Solvable & lhs, const Solvable & rhs )
+    {
+      int res = compareByNVR( lhs, rhs );
+      if ( res == 0 )
+       res = lhs.arch().compare( rhs.arch() );
+      return res;
+    }
+
     ///////////////////////////////////////////////////////////////////
     namespace detail
     { /////////////////////////////////////////////////////////////////

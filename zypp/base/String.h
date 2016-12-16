@@ -30,24 +30,6 @@ namespace zypp { typedef boost::logic::tribool TriBool; }
 ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
-namespace boost
-{
-  /** A formater with (N)o (A)rgument (C)heck.
-   * It won't complain about missing or excess arguments. Sometimes
-   * usefull when dealing with translations or classes providing a
-   * default formater.
-   */
-  inline format formatNAC( const std::string & string_r ) {
-    using namespace boost::io;
-    format fmter( string_r );
-    fmter.exceptions( all_error_bits ^ ( too_many_args_bit | too_few_args_bit ) );
-    return fmter;
-  }
-} // namespace boost
-namespace zypp { using boost::formatNAC; }
-///////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////
 namespace zypp
 {
   /** Request a human readable (translated) string representation of _Tp [_Tp.asUserString()]
@@ -220,40 +202,98 @@ namespace zypp
     };
 
     ///////////////////////////////////////////////////////////////////
-    /** Convenient building of std::string via std::ostream::operator<<.
-     * Basically this is an \ref ostringstream which is autocenvertible
-     * into a \ref string.
-     * \code
-     *  void fnc( const std::string & txt_r );
-     *  fnc( str::Str() << "Hello " << 13 );
-     *
-     *  std::string txt( str::Str() << 45 );
-     * \endcode
-    */
+    /// \class Str
+    /// \brief Convenient building of std::string via \ref std::ostringstream
+    /// Basically a \ref std::ostringstream autoconvertible to \ref std::string
+    /// for building string arguments.
+    /// \code
+    ///   void fnc( const std::string & txt_r );
+    ///   fnc( str::Str() << "Hello " << 13 );
+    ///
+    ///   std::string txt( str::Str() << 45 );
+    /// \endcode
+    ///////////////////////////////////////////////////////////////////
     struct Str
     {
-      template<class _Tp>
-      Str & operator<<( const _Tp & val )
+      template<class Tp>
+      Str & operator<<( const Tp & val )
       { _str << val; return *this; }
 
-      operator std::string() const
-      { return _str.str(); }
+      Str & operator<<( std::ostream& (*iomanip)( std::ostream& ) )
+      { _str << iomanip; return *this; }
 
-      std::string str() const
-      { return _str.str(); }
+      operator std::string() const		{ return _str.str(); }
+      std::string asString() const		{ return _str.str(); }
+      std::string str() const			{ return _str.str(); }
 
-      std::ostream & stream()
-      { return _str; }
+      const std::ostream & stream() const	{ return _str; }
+      std::ostream & stream()			{ return _str; }
 
-      void clear()
-      { _str.str( std::string() ); }
+      void clear()				{ _str.str( std::string() ); }
 
+    private:
       std::ostringstream _str;
     };
 
+    /** \relates Str Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Str & obj )
-    { return str << (std::string)obj; }
+    { return str << obj.str(); }
 
+    ///////////////////////////////////////////////////////////////////
+    /// \class Format
+    /// \brief Convenient building of std::string with \ref boost::format.
+    /// Basically a \ref boost::format autoconvertible to \ref std::string
+    /// for building string arguments.
+    /// \code
+    ///   void fnc( const std::string & txt_r );
+    ///   fnc( str::Format("Hello %1%") % 13 );
+    ///
+    ///   std::string txt( str::Format("Hello %1%") % 13 );
+    /// \endcode
+    ///////////////////////////////////////////////////////////////////
+    struct Format
+    {
+      Format() {}
+      Format( const std::string & format_r ) : _fmter( format_r ) {}
+
+      template<class Tp>
+      Format & operator%( Tp && arg )
+      { _fmter % std::forward<Tp>(arg); return *this; }
+
+      operator std::string() const		{ return _fmter.str(); }
+      std::string asString() const		{ return _fmter.str(); }
+      std::string str() const			{ return _fmter.str(); }
+
+      const boost::format & fmter() const	{ return _fmter; }
+      boost::format & fmter()			{ return _fmter; }
+
+    protected:
+      boost::format _fmter;
+    };
+
+    /** \relates Format Stream output */
+    inline std::ostream & operator<<( std::ostream & str, const Format & obj )
+    { return str << obj.fmter(); }
+
+    ///////////////////////////////////////////////////////////////////
+    /// \class FormatNAC
+    /// \brief \ref Format with (N)o (A)rgument (C)heck.
+    /// It won't complain about missing or excess arguments. Sometimes
+    /// usefull when dealing with translations or classes providing a
+    /// default formater.
+    ///////////////////////////////////////////////////////////////////
+    struct FormatNAC : public Format
+    {
+      FormatNAC() { relax(); }
+      FormatNAC( const std::string & format_r ) : Format( format_r ) { relax(); }
+
+    private:
+      void relax()
+      {
+	using namespace boost::io;
+	_fmter.exceptions( all_error_bits ^ ( too_many_args_bit | too_few_args_bit ) );
+      }
+    };
     ///////////////////////////////////////////////////////////////////
     /** \name String representation of number.
      *

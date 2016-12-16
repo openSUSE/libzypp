@@ -294,7 +294,7 @@ namespace zypp
       bool nonroot( geteuid() != 0 );
       if ( nonroot && ! PathInfo(dir).userMayRX() )
       {
-	JobReport::warning( formatNAC(_("Cannot read repo directory '%1%': Permission denied")) % dir );
+	JobReport::warning( str::FormatNAC(_("Cannot read repo directory '%1%': Permission denied")) % dir );
       }
       else
       {
@@ -312,7 +312,7 @@ namespace zypp
 	  {
 	    if ( nonroot && ! PathInfo(*it).userMayR() )
 	    {
-	      JobReport::warning( formatNAC(_("Cannot read repo file '%1%': Permission denied")) % *it );
+	      JobReport::warning( str::FormatNAC(_("Cannot read repo file '%1%': Permission denied")) % *it );
 	    }
 	    else
 	    {
@@ -846,7 +846,7 @@ namespace zypp
 	  // translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 	  //   %1% = service name
 	  //   %2% = repository name
-	  JobReport::warning( formatNAC(_("Unknown service '%1%': Removing orphaned service repository '%2%'" ))
+	  JobReport::warning( str::FormatNAC(_("Unknown service '%1%': Removing orphaned service repository '%2%'"))
 			      % repoInfo.service()
 			      % repoInfo.alias() );
 	  try {

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 14 12:10:49 CET 2017 - ma@suse.de
+
+- dumpAsXmlOnL: xml escape node content (bsc#1024909)
+- version 15.23.3 (19)
+
+-------------------------------------------------------------------
 Wed Dec 14 12:32:22 CET 2016 - ma@suse.de
 
 - Don't raise FileCheckException if user accepted a package with wrong

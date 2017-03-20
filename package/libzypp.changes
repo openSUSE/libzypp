@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 20 13:00:17 CET 2017 - ma@suse.de
+
+- PublicKey: Create tmpdirs inside ZYpp::tmpPath (bsc#926844)
+- version 15.24.0 (19)
+
+-------------------------------------------------------------------
 Tue Feb 14 12:10:49 CET 2017 - ma@suse.de
 
 - dumpAsXmlOnL: xml escape node content (bsc#1024909)

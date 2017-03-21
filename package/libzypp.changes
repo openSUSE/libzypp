@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 21 13:39:55 CET 2017 - ma@suse.de
+
+- MediaCurl: Treat http response 410(Gone) like 404(Not Found)
+  (bsc#1030136)
+- version 15.24.1 (19)
+
+-------------------------------------------------------------------
 Mon Mar 20 13:00:17 CET 2017 - ma@suse.de
 
 - PublicKey: Create tmpdirs inside ZYpp::tmpPath (bsc#926844)

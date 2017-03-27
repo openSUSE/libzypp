@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 27 09:43:31 CEST 2017 - ma@suse.de
+
+- Fix X-libcurl-Empty-Header-Workaround (bsc#1030919)
+- version 9.40.4 (8)
+
+-------------------------------------------------------------------
 Tue Oct 11 18:09:52 CEST 2016 - ma@suse.de
 
 - Let 'dup --from' leave an updateTestcase-<DATE> in /var/log (bsc#1004096)

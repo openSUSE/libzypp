@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 27 09:36:32 CEST 2017 - ma@suse.de
+
+- Fix X-libcurl-Empty-Header-Workaround (bsc#1030919)
+- version 15.24.2 (19)
+
+-------------------------------------------------------------------
 Tue Mar 21 13:39:55 CET 2017 - ma@suse.de
 
 - MediaCurl: Treat http response 410(Gone) like 404(Not Found)

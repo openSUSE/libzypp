@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Mar 27 16:28:07 CEST 2017 - ma@suse.de
+
+- Add support for repo authentication using SSL client certificates
+  (bnc#683914)
+- Fix SSL client certificate authentication via URL option 
+  ssl_clientcert/ssl_clientkey (bnc#932393, bnc#1030012)
+- version 9.40.5 (8)
+
+-------------------------------------------------------------------
 Mon Mar 27 09:43:31 CEST 2017 - ma@suse.de
 
 - Fix X-libcurl-Empty-Header-Workaround (bsc#1030919)

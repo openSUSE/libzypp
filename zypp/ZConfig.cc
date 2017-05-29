@@ -328,6 +328,7 @@ namespace zypp
 	, pkgGpgCheck			( indeterminate )
         , solver_onlyRequires		( false )
         , solver_allowVendorChange	( false )
+	, snapshot_version ( "current" )
 	, solver_dupAllowDowngrade	( true )
 	, solver_dupAllowNameChange	( true )
 	, solver_dupAllowArchChange	( true )
@@ -489,6 +490,10 @@ namespace zypp
                 else if ( entry == "multiversiondir" )
                 {
                   cfg_multiversion_path = Pathname(value);
+                }
+                else if ( entry == "snapshotVersion" )
+                {
+                    snapshot_version.set(value);
                 }
                 else if ( entry == "solver.onlyRequires" )
                 {
@@ -654,6 +659,8 @@ namespace zypp
     Option<bool>	gpgCheck;
     Option<TriBool>	repoGpgCheck;
     Option<TriBool>	pkgGpgCheck;
+
+    DefaultOption<std::string> snapshot_version;
 
     Option<bool>	solver_onlyRequires;
     Option<bool>	solver_allowVendorChange;
@@ -1008,6 +1015,12 @@ namespace zypp
 
   TriBool ZConfig::pkgGpgCheck() const
   { return _pimpl->pkgGpgCheck; }
+
+  std::string ZConfig::snapshotVersion() const
+  { return _pimpl->snapshot_version; }
+
+  void ZConfig::setSnapshotVersion( const std::string & val_r )
+  { _pimpl->snapshot_version.set(val_r); }
 
   bool ZConfig::solver_onlyRequires() const
   { return _pimpl->solver_onlyRequires; }

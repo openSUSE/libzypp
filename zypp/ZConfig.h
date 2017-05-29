@@ -74,7 +74,16 @@ namespace zypp
       Pathname systemRoot() const;
 
     public:
+      static std::string defaultSnapshotVersion();
 
+      std::string snapshotVersion() const;
+
+      void setSnapshotVersion( const std::string & version_r );
+
+      void resetSnapshotVersion()
+      { setSnapshotVersion( defaultSnapshotVersion() ); }
+
+    public:
       /** The autodetected system architecture. */
       static Arch defaultSystemArchitecture();
 

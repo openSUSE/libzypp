@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 31 12:47:52 CEST 2017 - ma@suse.de
+
+- Testcase: add missing solver flags (bsc#1041889)
+- version 14.45.4 (39)
+
+-------------------------------------------------------------------
 Mon Mar 27 09:36:53 CEST 2017 - ma@suse.de
 
 - Fix X-libcurl-Empty-Header-Workaround (bsc#1030919)

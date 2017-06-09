@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun  9 11:24:27 CEST 2017 - ma@suse.de
+
+- Fix potential crash if repo has no baseurl (bnc#1043218)
+- version 15.25.1 (19)
+
+-------------------------------------------------------------------
 Wed May 31 12:21:52 CEST 2017 - ma@suse.de
 
 - Testcase: add missing solver flags (bsc#1041889)

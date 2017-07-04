@@ -30,4 +30,7 @@ The variable expander also supports shell like definition of default and alterna
 \li \c $releasever_major -
 	\c $releasever_major will be set to the leading portion up to (but not including) the 1st dot; \c $releasever_minor to the trailing portion after the 1st dot. If there's no dot in \c $releasever, \c $releasever_major is the same as \c $releasever and \c $releasever_minor is empty.
 
+\li \c $snapshot_version -
+	Tumbleweed snapshot version to target.
+
 */

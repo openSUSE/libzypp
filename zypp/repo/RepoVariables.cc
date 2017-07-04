@@ -443,6 +443,12 @@ namespace zypp
 	  return _releaseverMinor;
 	}
 
+	const std::string & snapshotVersion() const
+	{
+	  assertSnapshotVersionStr();
+	  return _snapshotVersion;
+	}
+
       private:
 	void assertArchStr() const
 	{
@@ -475,12 +481,21 @@ namespace zypp
 	    }
 	  }
 	}
+
+	void assertSnapshotVersionStr() const
+	{
+		if ( _snapshotVersion.empty() )
+		{
+			_snapshotVersion = ZConfig::instance().snapshotVersion();
+		}
+	}
       private:
 	mutable std::string _arch;
 	mutable std::string _basearch;
 	mutable std::string _releasever;
 	mutable std::string _releaseverMajor;
 	mutable std::string _releaseverMinor;
+	mutable std::string _snapshotVersion;
       };
 
       /** \brief */
@@ -494,7 +509,8 @@ namespace zypp
 	  case  8:	ASSIGN_IF( "basearch",		&RepoVars::basearch );		break;
 	  case 10:	ASSIGN_IF( "releasever",	&RepoVars::releasever );	break;
 	  case 16:	ASSIGN_IF( "releasever_major",	&RepoVars::releaseverMajor );
-	      else	ASSIGN_IF( "releasever_minor",	&RepoVars::releaseverMinor );	break;
+	      else	ASSIGN_IF( "releasever_minor",	&RepoVars::releaseverMinor );
+	      else	ASSIGN_IF( "snapshot_version",	&RepoVars::snapshotVersion );	break;
 #undef ASSIGN_IF
 	}
 

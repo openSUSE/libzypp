@@ -202,6 +202,8 @@ BOOST_AUTO_TEST_CASE(replace_text)
   BOOST_CHECK_EQUAL( replacer1("${releasever_major}"),	"13" );
   BOOST_CHECK_EQUAL( replacer1("${releasever_minor}"),	"2" );
 
+  BOOST_CHECK_EQUAL( replacer1("${snapshot_version}"),	"current" );
+
   BOOST_CHECK_EQUAL(replacer1("http://foo/$arch/bar"), "http://foo/i686/bar");
 
   /* check RepoVariablesUrlReplacer */

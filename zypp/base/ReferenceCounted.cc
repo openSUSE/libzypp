@@ -30,7 +30,7 @@ namespace zypp
     : _counter( 0 )
     {}
 
-    ReferenceCounted::~ReferenceCounted()
+    ReferenceCounted::~ReferenceCounted() noexcept(false)
     {
       if ( _counter )
         {

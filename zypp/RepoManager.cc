@@ -952,7 +952,7 @@ namespace zypp
     assert_alias(info);
     try
     {
-      MIL << "Going to try to check whether refresh is needed for " << url << endl;
+      MIL << "Going to try to check whether refresh is needed for " << url << " (" << info.type() << ")" << endl;
 
       // first check old (cached) metadata
       Pathname mediarootpath = rawcache_path_for_repoinfo( _options, info );
@@ -1050,7 +1050,7 @@ namespace zypp
 	  refresh = true;
 	}
       }
-      else
+      else // includes newstatus.empty() if e.g. repo format changed
       {
 	MIL << "repo has changed, going to refresh" << endl;
 	refresh = true;
@@ -1085,7 +1085,6 @@ namespace zypp
 
     // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
     media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
-
     // try urls one by one
     for ( RepoInfo::urls_const_iterator it = info.baseUrlsBegin(); it != info.baseUrlsEnd(); ++it )
     {
@@ -1100,16 +1099,15 @@ namespace zypp
 
         MIL << "Going to refresh metadata from " << url << endl;
 
+	// bsc#1048315: Always re-probe in case of repo format change.
+	// TODO: Would be sufficient to verify the type and re-probe
+	// if verification failed (or type is RepoType::NONE)
         repo::RepoType repokind = info.type();
-
-        // if the type is unknown, try probing.
-	if ( repokind == RepoType::NONE )
 	{
-	  // unknown, probe it
-	  repokind = probe( *it, info.path() );
-
-	  if (repokind.toEnum() != RepoType::NONE_e)
+	  repo::RepoType probed = probe( *it, info.path() );
+	  if ( repokind != probed )
 	  {
+	    repokind = probed;
 	    // Adjust the probed type in RepoInfo
 	    info.setProbedType( repokind ); // lazy init!
 	    //save probed type only for repos in system

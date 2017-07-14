@@ -30,12 +30,11 @@ namespace zypp
     : _counter( 0 )
     {}
 
-    ReferenceCounted::~ReferenceCounted() noexcept(false)
+    ReferenceCounted::~ReferenceCounted()
     {
       if ( _counter )
         {
           INT << "~ReferenceCounted: nonzero reference count" << std::endl;
-          throw std::out_of_range( "~ReferenceCounted: nonzero reference count" );
         }
     }
 

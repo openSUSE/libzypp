@@ -16,10 +16,6 @@ extern "C"
 #undef RPM_NULL_TYPE
 #define RPM_NULL_TYPE rpmTagType(0)
 typedef rpmuint32_t rpm_count_t;
-#else
-#ifdef _RPM_4_4
-typedef int32_t rpm_count_t;
-#endif
 #endif
 }
 

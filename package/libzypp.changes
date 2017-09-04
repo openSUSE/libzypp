@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Sep  4 11:43:22 CEST 2017 - ma@suse.de
+
+- verifyFileSignature: Support signing with subkeys (bsc#1008325)
+- Fix gpg-pubkey relase (creation time) computation (bsc#1036659)
+- More specific exception message if GPG binary is missing (bsc#637791)
+- version 14.45.6 (39)
+
+-------------------------------------------------------------------
 Fri Jun  9 11:25:00 CEST 2017 - ma@suse.de
 
 - Fix potential crash if repo has no baseurl (bnc#1043218)

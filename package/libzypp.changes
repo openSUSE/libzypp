@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep  4 11:09:33 CEST 2017 - ma@suse.de
+
+- verifyFileSignature: Support signing with subkeys (bsc#1008325)
+- Fix gpg-pubkey relase (creation time) computation (bsc#1036659)
+- version 15.25.2 (19)
+
+-------------------------------------------------------------------
 Fri Jun  9 11:24:27 CEST 2017 - ma@suse.de
 
 - Fix potential crash if repo has no baseurl (bnc#1043218)

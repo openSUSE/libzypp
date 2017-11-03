@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov  3 12:19:23 CET 2017 - ma@suse.de
+
+- Locale: Fix possible segfault (bsc#1064999)
+- version 16.17.4 (0)
+
+-------------------------------------------------------------------
 Thu Oct 12 18:04:38 CEST 2017 - ma@suse.de
 
 - Fix media handling in presence of a repo path prefix (bsc#1062561)

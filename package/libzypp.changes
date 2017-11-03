@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov  3 12:19:58 CET 2017 - ma@suse.de
+
+- Locale: Fix possible segfault (bsc#1064999)
+- version 15.25.3 (19)
+
+-------------------------------------------------------------------
 Mon Sep  4 11:09:33 CEST 2017 - ma@suse.de
 
 - verifyFileSignature: Support signing with subkeys (bsc#1008325)

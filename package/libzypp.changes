@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Nov 21 09:21:23 CET 2017 - amajer@suse.de
+
+- Use split boost packages instead of monolithic boost-devel
+  (bsc#1062782)
+- version 17.0.2 (0)
+
+-------------------------------------------------------------------
 Fri Nov 10 15:25:20 CET 2017 - ma@suse.de
 
 - Solvable: fix inconsistent retrieval of mediaNr (bsc#1065677)

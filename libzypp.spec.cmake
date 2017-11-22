@@ -52,7 +52,12 @@ BuildRequires:  pkgconfig(libudev)
 %else
 BuildRequires:  hal-devel
 %endif
+%if 0%{?suse_version} >= 1330
+BuildRequires:  libboost_program_options-devel
+BuildRequires:  libboost_test-devel
+%else
 BuildRequires:  boost-devel
+%endif
 BuildRequires:  dejagnu
 BuildRequires:  doxygen
 %if 0%{?force_gcc_46}

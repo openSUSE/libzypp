@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 23 12:43:26 CET 2017 - ma@suse.de
+
+- Don't filter procs with a different mnt namespace (bsc#1068708)
+- version 15.25.4 (19)
+
+-------------------------------------------------------------------
 Fri Nov  3 12:19:58 CET 2017 - ma@suse.de
 
 - Locale: Fix possible segfault (bsc#1064999)

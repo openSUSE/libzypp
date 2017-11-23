@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 23 12:43:57 CET 2017 - ma@suse.de
+
+- Don't filter procs with a different mnt namespace (bsc#1068708)
+- version 14.45.7 (39)
+
+-------------------------------------------------------------------
 Mon Sep  4 11:43:22 CEST 2017 - ma@suse.de
 
 - verifyFileSignature: Support signing with subkeys (bsc#1008325)

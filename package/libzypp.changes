@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec  6 13:18:53 CET 2017 - ma@suse.de
+
+- Fix default for solver.allowNameChange (bsc#1071466)
+- version 16.17.6 (0)
+
+-------------------------------------------------------------------
 Thu Nov 23 12:39:51 CET 2017 - ma@suse.de
 
 - Don't filter procs with a different mnt namespace (bsc#1068708)

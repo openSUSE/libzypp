@@ -115,7 +115,7 @@ Resolver::~Resolver()
 
 // NOTE: ZVARDEFAULT must be in sync with SATResolver ctor
 ZOLV_FLAG_TRIBOOL( setAllowDowngrade,		allowDowngrade,		_allowdowngrade,	false )
-ZOLV_FLAG_TRIBOOL( setAllowNameChange,		allowNameChange,	_allownamechange,	false )
+ZOLV_FLAG_TRIBOOL( setAllowNameChange,		allowNameChange,	_allownamechange,	true )	// bsc#1071466
 ZOLV_FLAG_TRIBOOL( setAllowArchChange,		allowArchChange,	_allowarchchange,	false )
 ZOLV_FLAG_TRIBOOL( setAllowVendorChange,	allowVendorChange,	_allowvendorchange,	ZConfig::instance().solver_allowVendorChange() )
 

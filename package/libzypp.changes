@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 11 16:43:41 CET 2017 - ma@suse.de
+
+- Locks: Don't store duplicate locks (bsc#969569)
+- version 15.25.6 (19)
+
+-------------------------------------------------------------------
 Wed Dec  6 13:24:01 CET 2017 - ma@suse.de
 
 - Fix default for solver.allowNameChange (bsc#1071466)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jan  4 17:51:56 CET 2018 - ma@suse.de
+
+- plugin: don't reject header values containing a ':' (bsc#1074687)
+- version 14.45.8 (39)
+
+-------------------------------------------------------------------
 Thu Nov 23 12:43:57 CET 2017 - ma@suse.de
 
 - Don't filter procs with a different mnt namespace (bsc#1068708)

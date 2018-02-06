@@ -1,0 +1,14 @@
+language: cpp
+compiler: 
+  - gcc
+  - clang
+os:
+  - linux
+
+before_install:
+   - sudo apt-get update -qq;
+install:
+   - sudo apt-get install -qq popt-devel rpm-devel dbus-1-devel dbus-1-glib-devel hal-devel doxygen graphviz libxml2-devel boost boost-devel gettext-devel dejagnu zlib-devel libicu glib2-devel readline-devel curl-devel e2fsprogs-devel libidn-devel openssl-devel libsatsolver-devel;
+
+before_script: cmake . -Bbuild
+script: cd build && make && make test

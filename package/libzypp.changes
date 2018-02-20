@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 20 19:01:49 CET 2018 - ma@suse.de
+
+- Adapt loop mounting of iso images (bsc#1038132, bsc#1033236)
+- version 14.45.10 (39)
+
+-------------------------------------------------------------------
 Tue Feb 20 18:43:33 CET 2018 - ma@suse.de
 
 - RpmDb::checkPackage: fix parsing localized rpm output (bsc#1076415)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 20 18:43:33 CET 2018 - ma@suse.de
+
+- RpmDb::checkPackage: fix parsing localized rpm output (bsc#1076415)
+- version 14.45.9 (39)
+
+-------------------------------------------------------------------
 Thu Jan  4 17:51:56 CET 2018 - ma@suse.de
 
 - plugin: don't reject header values containing a ':' (bsc#1074687)

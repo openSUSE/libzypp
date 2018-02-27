@@ -28,13 +28,13 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-    DEFINE_PTR_TYPE(MediaSetAccess);
+DEFINE_PTR_TYPE( MediaSetAccess );
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : MediaSetAccess
-    //
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : MediaSetAccess
+//
+/**
      * Media access layer responsible for handling files distributed on a set
      * of media with media change and abort/retry/ingore user callback handling.
      *
@@ -76,51 +76,51 @@ namespace zypp
      *
      * \endcode
      */
-    class MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
-    {
-      friend std::ostream & operator<<( std::ostream & str, const MediaSetAccess & obj );
+class MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const MediaSetAccess &obj );
 
-    public:
-      /**
+public:
+  /**
        * Creates a callback enabled media access for specified \a url.
        *
        * \param url
        * \param prefered_attach_point Prefered attach (mount) point. Use, if
        *        you want to mount the media to a specific directory.
        */
-      MediaSetAccess( const Url &url, const Pathname & prefered_attach_point = "" );
-      /** \overload Also taking a \ref label. */
-      MediaSetAccess( const std::string & label_r, const Url &url, const Pathname & prefered_attach_point = "" );
-      ~MediaSetAccess();
+  MediaSetAccess( const Url &url, const Pathname &prefered_attach_point = "" );
+  /** \overload Also taking a \ref label. */
+  MediaSetAccess( const std::string &label_r, const Url &url,
+    const Pathname &prefered_attach_point = "" );
+  ~MediaSetAccess();
 
-      /**
+  /**
        * Sets a \ref MediaVerifier verifier for given media number.
        */
-      void setVerifier( unsigned media_nr, media::MediaVerifierRef verifier );
+  void setVerifier( unsigned media_nr, media::MediaVerifierRef verifier );
 
-      /**
+  /**
        * The label identifing this media set and to be sent in a media change request.
        */
-      const std::string & label() const
-      { return _label; }
+  const std::string &label() const { return _label; }
 
-      /**
+  /**
        * Set the label identifing this media set and to be sent in a media change request.
        */
-      void setLabel( const std::string & label_r )
-      { _label = label_r; }
+  void setLabel( const std::string &label_r ) { _label = label_r; }
 
-      enum ProvideFileOption
-      {
-        /**
+  enum ProvideFileOption
+  {
+    /**
          * The user is not asked anything, and the error
          * exception is just propagated */
-        PROVIDE_DEFAULT = 0x0,
-        PROVIDE_NON_INTERACTIVE = 0x1
-      };
-      ZYPP_DECLARE_FLAGS(ProvideFileOptions,ProvideFileOption);
+    PROVIDE_DEFAULT = 0x0,
+    PROVIDE_NON_INTERACTIVE = 0x1
+  };
+  ZYPP_DECLARE_FLAGS( ProvideFileOptions, ProvideFileOption );
 
-      /**
+  /**
        * Provides a file from a media location.
        *
        * \param resource location of the file on media
@@ -147,9 +147,11 @@ namespace zypp
        *
        * \see zypp::media::MediaManager::provideFile()
        */
-      Pathname provideFile( const OnMediaLocation & resource, ProvideFileOptions options = PROVIDE_DEFAULT, const Pathname &deltafile = Pathname() );
+  Pathname provideFile( const OnMediaLocation &resource,
+    ProvideFileOptions options = PROVIDE_DEFAULT,
+    const Pathname &deltafile = Pathname() );
 
-      /**
+  /**
        * Provides \a file from media \a media_nr.
        *
        * \param file path to the file relative to media URL
@@ -169,36 +171,36 @@ namespace zypp
        *         with the next one, if possible.
        * \see zypp::media::MediaManager::provideFile()
        */
-      Pathname provideFile(const Pathname & file, unsigned media_nr = 1, ProvideFileOptions options = PROVIDE_DEFAULT );
+  Pathname provideFile( const Pathname &file, unsigned media_nr = 1,
+    ProvideFileOptions options = PROVIDE_DEFAULT );
 
-      /**
+  /**
        * Provides an optional \a file from media \a media_nr.
        *
        * Like \ref provideFile (NON_INTERACTIVE), but return an empty \ref Pathname
        * rather than throwing a \ref MediaException if the file is not present on
        * the media.
        */
-      Pathname provideOptionalFile( const Pathname & file, unsigned media_nr = 1 );
+  Pathname provideOptionalFile( const Pathname &file, unsigned media_nr = 1 );
 
-      /**
+  /**
        * Release file from media.
        * This signal that file is not needed anymore.
        *
        * \param resource location of the file on media
        */
-      void releaseFile( const OnMediaLocation &resource );
+  void releaseFile( const OnMediaLocation &resource );
 
-
-      /**
+  /**
        * Release file from media.
        * This signal that file is not needed anymore.
        *
        * \param file path to the file relative to media URL
        * \param media_nr the media number in the media set
        */
-      void releaseFile(const Pathname & file, unsigned media_nr = 1 );
+  void releaseFile( const Pathname &file, unsigned media_nr = 1 );
 
-      /**
+  /**
        * Provides direcotry \a dir from media number \a media_nr.
        *
        * \param dir path to the directory relative to media URL
@@ -215,9 +217,10 @@ namespace zypp
        * \see zypp::media::MediaManager::provideDir()
        * \see zypp::media::MediaManager::provideDirTree()
        */
-      Pathname provideDir(const Pathname & dir, bool recursive, unsigned media_nr = 1, ProvideFileOptions options = PROVIDE_DEFAULT );
+  Pathname provideDir( const Pathname &dir, bool recursive,
+    unsigned media_nr = 1, ProvideFileOptions options = PROVIDE_DEFAULT );
 
-      /**
+  /**
        * Checks if a file exists on the specified media, with user callbacks.
        *
        * \param file file to check
@@ -231,22 +234,22 @@ namespace zypp
        *         with the next one, if possible.
        * \see zypp::media::MediaManager::doesFileExist(MediaAccessId,const Pathname&)
        */
-      bool doesFileExist(const Pathname & file, unsigned media_nr = 1 );
+  bool doesFileExist( const Pathname &file, unsigned media_nr = 1 );
 
-      /**
+  /**
        * Fills \ref retlist with directory information.
        */
-      void dirInfo( filesystem::DirContent &retlist, const Pathname &dirname,
-                    bool dots = true, unsigned media_nr = 1 );
+  void dirInfo( filesystem::DirContent &retlist, const Pathname &dirname,
+    bool dots = true, unsigned media_nr = 1 );
 
-      /**
+  /**
        * Release all attached media of this set.
        *
        * \throws MediaNotOpenException for invalid access IDs.
        */
-      void release();
+  void release();
 
-      /**
+  /**
        * Replaces media number in specified url with given \a medianr.
        *
        * Media number in the URL is searched for with regex
@@ -260,10 +263,10 @@ namespace zypp
        * \param medianr requested media number
        * \return        rewritten URL if applicable, the original URL otherwise
        */
-      static Url rewriteUrl (const Url & url_r, const media::MediaNr medianr);
+  static Url rewriteUrl( const Url &url_r, const media::MediaNr medianr );
 
-    protected:
-      /**
+protected:
+  /**
        * Provides the \a file from medium number \a media_nr and returns its
        * local path.
        *
@@ -278,44 +281,48 @@ namespace zypp
        *         to skip the current operation. The calling code should continue
        *         with the next one, if possible.
        */
-      Pathname provideFileInternal( const OnMediaLocation &resource, ProvideFileOptions options );
+  Pathname provideFileInternal(
+    const OnMediaLocation &resource, ProvideFileOptions options );
 
-      typedef function<void( media::MediaAccessId, const Pathname & )> ProvideOperation;
+  typedef function<void( media::MediaAccessId, const Pathname & )>
+    ProvideOperation;
 
-      void provide( ProvideOperation op, const OnMediaLocation &resource, ProvideFileOptions options, const Pathname &deltafile );
+  void provide( ProvideOperation op, const OnMediaLocation &resource,
+    ProvideFileOptions options, const Pathname &deltafile );
 
-      media::MediaAccessId getMediaAccessId (media::MediaNr medianr);
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+  media::MediaAccessId getMediaAccessId( media::MediaNr medianr );
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-    private:
-      /** Media or media set URL */
-      Url _url;
+private:
+  /** Media or media set URL */
+  Url _url;
 
-      /**
+  /**
        * Prefered mount point.
        *
        * \see MediaManager::open(Url,Pathname)
        * \see MediaHandler::_attachPoint
        */
-      Pathname _prefAttachPoint;
+  Pathname _prefAttachPoint;
 
-      std::string _label;
+  std::string _label;
 
-      typedef std::map<media::MediaNr, media::MediaAccessId> MediaMap;
-      typedef std::map<media::MediaNr, media::MediaVerifierRef > VerifierMap;
+  typedef std::map<media::MediaNr, media::MediaAccessId> MediaMap;
+  typedef std::map<media::MediaNr, media::MediaVerifierRef> VerifierMap;
 
-      /** Mapping between media number and Media Access ID */
-      MediaMap _medias;
-      /** Mapping between media number and corespondent verifier */
-      VerifierMap _verifiers;
-    };
-    ///////////////////////////////////////////////////////////////////
-    ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaSetAccess::ProvideFileOptions);
+  /** Mapping between media number and Media Access ID */
+  MediaMap _medias;
+  /** Mapping between media number and corespondent verifier */
+  VerifierMap _verifiers;
+};
+///////////////////////////////////////////////////////////////////
+ZYPP_DECLARE_OPERATORS_FOR_FLAGS( MediaSetAccess::ProvideFileOptions );
 
-    /** \relates MediaSetAccess Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const MediaSetAccess & obj )
-    { return obj.dumpOn( str ); }
-
+/** \relates MediaSetAccess Stream output */
+inline std::ostream &operator<<( std::ostream &str, const MediaSetAccess &obj )
+{
+  return obj.dumpOn( str );
+}
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -23,267 +23,269 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace repo
+{ /////////////////////////////////////////////////////////////////
 
-    /** \name Repository related exceptions.
+/** \name Repository related exceptions.
     */
-    //@{
+//@{
 
-    /**
+/**
      * \short Exception for repository handling.
      */
-    class RepoException : public Exception
-    {
-      public:
-        RepoException();
-        RepoException( const std::string & msg_r );
-        RepoException( const RepoInfo & info );
-        RepoException( const RepoInfo & info, const std::string & msg_r );
-        virtual ~RepoException() throw();
+class RepoException : public Exception
+{
+public:
+  RepoException();
+  RepoException( const std::string &msg_r );
+  RepoException( const RepoInfo &info );
+  RepoException( const RepoInfo &info, const std::string &msg_r );
+  virtual ~RepoException() throw();
 
-        RepoInfo info()
-        { return _info; }
+  RepoInfo info() { return _info; }
 
-        std::string alias()
-        { return info().alias(); }
+  std::string alias() { return info().alias(); }
 
-      protected:
-        virtual std::ostream & dumpOn( std::ostream & str ) const;
+protected:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-      private:
-        RepoInfo _info;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  RepoInfo _info;
+};
+///////////////////////////////////////////////////////////////////
 
-    /**
+/**
      * The repository cache is not built yet
      * so you can't create the repostories from
      * the cache.
      */
-    class RepoNotCachedException : public RepoException
-    {
-      public:
-        RepoNotCachedException();
-        RepoNotCachedException( const std::string & msg_r );
-        RepoNotCachedException( const RepoInfo & info );
-        RepoNotCachedException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoNotCachedException : public RepoException
+{
+public:
+  RepoNotCachedException();
+  RepoNotCachedException( const std::string &msg_r );
+  RepoNotCachedException( const RepoInfo &info );
+  RepoNotCachedException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * thrown when it was impossible to
      * determine one url for this repo.
      */
-    class RepoNoUrlException : public RepoException
-    {
-      public:
-        RepoNoUrlException();
-        RepoNoUrlException( const std::string & msg_r );
-        RepoNoUrlException( const RepoInfo & info );
-        RepoNoUrlException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoNoUrlException : public RepoException
+{
+public:
+  RepoNoUrlException();
+  RepoNoUrlException( const std::string &msg_r );
+  RepoNoUrlException( const RepoInfo &info );
+  RepoNoUrlException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * thrown when it was impossible to
      * determine an alias for this repo.
      */
-    class RepoNoAliasException : public RepoException
-    {
-      public:
-        RepoNoAliasException();
-        RepoNoAliasException( const std::string & msg_r );
-        RepoNoAliasException( const RepoInfo & info );
-        RepoNoAliasException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoNoAliasException : public RepoException
+{
+public:
+  RepoNoAliasException();
+  RepoNoAliasException( const std::string &msg_r );
+  RepoNoAliasException( const RepoInfo &info );
+  RepoNoAliasException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * Thrown when the repo alias is found to be invalid.
      */
-    class RepoInvalidAliasException : public RepoException
-    {
-    public:
-      RepoInvalidAliasException();
-      RepoInvalidAliasException( const std::string & msg_r );
-      RepoInvalidAliasException( const RepoInfo & info );
-      RepoInvalidAliasException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoInvalidAliasException : public RepoException
+{
+public:
+  RepoInvalidAliasException();
+  RepoInvalidAliasException( const std::string &msg_r );
+  RepoInvalidAliasException( const RepoInfo &info );
+  RepoInvalidAliasException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * thrown when it was impossible to
      * match a repository
      */
-    class RepoNotFoundException : public RepoException
-    {
-      public:
-        RepoNotFoundException();
-        RepoNotFoundException( const std::string & msg_r );
-        RepoNotFoundException( const RepoInfo & info );
-        RepoNotFoundException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoNotFoundException : public RepoException
+{
+public:
+  RepoNotFoundException();
+  RepoNotFoundException( const std::string &msg_r );
+  RepoNotFoundException( const RepoInfo &info );
+  RepoNotFoundException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * Repository already exists and some unique
      * attribute can't be duplicated.
      */
-    class RepoAlreadyExistsException : public RepoException
-    {
-      public:
-        RepoAlreadyExistsException();
-        RepoAlreadyExistsException( const std::string & msg_r );
-        RepoAlreadyExistsException( const RepoInfo & info );
-        RepoAlreadyExistsException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoAlreadyExistsException : public RepoException
+{
+public:
+  RepoAlreadyExistsException();
+  RepoAlreadyExistsException( const std::string &msg_r );
+  RepoAlreadyExistsException( const RepoInfo &info );
+  RepoAlreadyExistsException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * thrown when it was impossible to
      * determine this repo type.
      */
-    class RepoUnknownTypeException : public RepoException
-    {
-      public:
-        RepoUnknownTypeException();
-        RepoUnknownTypeException( const std::string & msg_r );
-        RepoUnknownTypeException( const RepoInfo & info );
-        RepoUnknownTypeException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoUnknownTypeException : public RepoException
+{
+public:
+  RepoUnknownTypeException();
+  RepoUnknownTypeException( const std::string &msg_r );
+  RepoUnknownTypeException( const RepoInfo &info );
+  RepoUnknownTypeException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    /**
+/**
      * thrown when it was impossible to
      * use the raw metadata for this repo.
      */
-    class RepoMetadataException : public RepoException
-    {
-      public:
-        RepoMetadataException();
-        RepoMetadataException( const std::string & msg_r );
-        RepoMetadataException( const RepoInfo & info );
-        RepoMetadataException( const RepoInfo & info, const std::string & msg_r );
-    };
+class RepoMetadataException : public RepoException
+{
+public:
+  RepoMetadataException();
+  RepoMetadataException( const std::string &msg_r );
+  RepoMetadataException( const RepoInfo &info );
+  RepoMetadataException( const RepoInfo &info, const std::string &msg_r );
+};
 
-    //@}
-    ///////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////
+//@}
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-    /** \name Service related exceptions.
+/** \name Service related exceptions.
     */
-    //@{
+//@{
 
-    /** Base Exception for service handling.
+/** Base Exception for service handling.
      */
-    class ServiceException : public Exception
-    {
-      public:
-        ServiceException();
-        ServiceException( const std::string & msg_r );
-        ServiceException( const ServiceInfo & service_r );
-        ServiceException( const ServiceInfo & service_r, const std::string & msg_r );
-        virtual ~ServiceException() throw();
+class ServiceException : public Exception
+{
+public:
+  ServiceException();
+  ServiceException( const std::string &msg_r );
+  ServiceException( const ServiceInfo &service_r );
+  ServiceException( const ServiceInfo &service_r, const std::string &msg_r );
+  virtual ~ServiceException() throw();
 
-        ServiceInfo service()
-        { return _service; }
+  ServiceInfo service() { return _service; }
 
-        std::string alias()
-        { return service().alias(); }
+  std::string alias() { return service().alias(); }
 
-     protected:
-        virtual std::ostream & dumpOn( std::ostream & str ) const;
+protected:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-      private:
-        ServiceInfo _service;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  ServiceInfo _service;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** Service without alias was used in an operation.
+/** Service without alias was used in an operation.
      */
-    class ServiceNoAliasException : public ServiceException
-    {
-      public:
-        ServiceNoAliasException();
-        ServiceNoAliasException( const std::string & msg_r );
-        ServiceNoAliasException( const ServiceInfo & service_r );
-        ServiceNoAliasException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
+class ServiceNoAliasException : public ServiceException
+{
+public:
+  ServiceNoAliasException();
+  ServiceNoAliasException( const std::string &msg_r );
+  ServiceNoAliasException( const ServiceInfo &service_r );
+  ServiceNoAliasException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
 
-    /**
+/**
      * Thrown when the repo alias is found to be invalid.
      */
-    class ServiceInvalidAliasException : public ServiceException
-    {
-    public:
-      ServiceInvalidAliasException();
-      ServiceInvalidAliasException( const std::string & msg_r );
-      ServiceInvalidAliasException( const ServiceInfo & info );
-      ServiceInvalidAliasException( const ServiceInfo & info, const std::string & msg_r );
-    };
+class ServiceInvalidAliasException : public ServiceException
+{
+public:
+  ServiceInvalidAliasException();
+  ServiceInvalidAliasException( const std::string &msg_r );
+  ServiceInvalidAliasException( const ServiceInfo &info );
+  ServiceInvalidAliasException(
+    const ServiceInfo &info, const std::string &msg_r );
+};
 
-    /** Service already exists and some unique attribute can't be duplicated.
+/** Service already exists and some unique attribute can't be duplicated.
      */
-    class ServiceAlreadyExistsException : public ServiceException
-    {
-      public:
-        ServiceAlreadyExistsException();
-        ServiceAlreadyExistsException( const std::string & msg_r );
-        ServiceAlreadyExistsException( const ServiceInfo & service_r );
-        ServiceAlreadyExistsException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
+class ServiceAlreadyExistsException : public ServiceException
+{
+public:
+  ServiceAlreadyExistsException();
+  ServiceAlreadyExistsException( const std::string &msg_r );
+  ServiceAlreadyExistsException( const ServiceInfo &service_r );
+  ServiceAlreadyExistsException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
 
-    /** Service has no or invalid url defined.
+/** Service has no or invalid url defined.
      */
-    class ServiceNoUrlException : public ServiceException
-    {
-      public:
-        ServiceNoUrlException();
-        ServiceNoUrlException( const std::string & msg_r );
-        ServiceNoUrlException( const ServiceInfo & service_r );
-        ServiceNoUrlException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
-    //@}
+class ServiceNoUrlException : public ServiceException
+{
+public:
+  ServiceNoUrlException();
+  ServiceNoUrlException( const std::string &msg_r );
+  ServiceNoUrlException( const ServiceInfo &service_r );
+  ServiceNoUrlException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
+//@}
 
-
-    /** \name PLUGIN Service related exceptions.
+/** \name PLUGIN Service related exceptions.
     */
-    //@{
+//@{
 
-    /** PLUGIN Service related exceptions
+/** PLUGIN Service related exceptions
      */
-    class ServicePluginException : public ServiceException
-    {
-      public:
-        ServicePluginException();
-        ServicePluginException( const std::string & msg_r );
-        ServicePluginException( const ServiceInfo & service_r );
-        ServicePluginException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
+class ServicePluginException : public ServiceException
+{
+public:
+  ServicePluginException();
+  ServicePluginException( const std::string &msg_r );
+  ServicePluginException( const ServiceInfo &service_r );
+  ServicePluginException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
 
-    /** Service plugin has trouble providing the metadata but this should not be treated as error.
+/** Service plugin has trouble providing the metadata but this should not be treated as error.
      */
-    class ServicePluginInformalException : public ServicePluginException
-    {
-      public:
-        ServicePluginInformalException();
-        ServicePluginInformalException( const std::string & msg_r );
-        ServicePluginInformalException( const ServiceInfo & service_r );
-        ServicePluginInformalException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
+class ServicePluginInformalException : public ServicePluginException
+{
+public:
+  ServicePluginInformalException();
+  ServicePluginInformalException( const std::string &msg_r );
+  ServicePluginInformalException( const ServiceInfo &service_r );
+  ServicePluginInformalException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
 
-    /** Service plugin is immutable.
+/** Service plugin is immutable.
      */
-    class ServicePluginImmutableException : public ServicePluginException
-    {
-      public:
-        ServicePluginImmutableException();
-        ServicePluginImmutableException( const std::string & msg_r );
-        ServicePluginImmutableException( const ServiceInfo & service_r );
-        ServicePluginImmutableException( const ServiceInfo & service_r, const std::string & msg_r );
-    };
-    //@}
+class ServicePluginImmutableException : public ServicePluginException
+{
+public:
+  ServicePluginImmutableException();
+  ServicePluginImmutableException( const std::string &msg_r );
+  ServicePluginImmutableException( const ServiceInfo &service_r );
+  ServicePluginImmutableException(
+    const ServiceInfo &service_r, const std::string &msg_r );
+};
+//@}
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_PARSER_TAGFILE_PARSEEXCEPTION_H

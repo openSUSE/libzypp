@@ -20,141 +20,150 @@
 namespace zypp
 {
 
-  ///////////////////////////////////////////////////////////////////
-  /// \class NamedValue
-  /// \brief Simple value<>name mapping supporting aliases.
-  /// \code
-  ///   enum Commands {
-  ///     CMD_1,
-  ///     CMD_2
-  ///   };
-  ///   NamedValue<Commands> clist;
-  ///   //     Value   | Name   | Alias...
-  ///   clist( CMD_1 ) | "cmd1";
-  ///   clist( CMD_2 ) | "cmd2" | "second";
-  ///
-  ///   std::string name( clist.getName( CMD_1 ) );
-  ///   Commands    cmd( clist.getValue( "second" ) );
-  /// \endcode
-  ///////////////////////////////////////////////////////////////////
-  template< class Tp, const bool _tWithAlias = true >
-  class NamedValue
+///////////////////////////////////////////////////////////////////
+/// \class NamedValue
+/// \brief Simple value<>name mapping supporting aliases.
+/// \code
+///   enum Commands {
+///     CMD_1,
+///     CMD_2
+///   };
+///   NamedValue<Commands> clist;
+///   //     Value   | Name   | Alias...
+///   clist( CMD_1 ) | "cmd1";
+///   clist( CMD_2 ) | "cmd2" | "second";
+///
+///   std::string name( clist.getName( CMD_1 ) );
+///   Commands    cmd( clist.getValue( "second" ) );
+/// \endcode
+///////////////////////////////////////////////////////////////////
+template <class Tp, const bool _tWithAlias = true>
+class NamedValue
+{
+  typedef std::map<std::string, Tp> NameMap;
+  typedef std::map<Tp, std::string> ValueMap;
+
+public:
+  /** Whether not initialized (no (name,value) pair remembered) */
+  bool empty() const { return ( _nameMap.empty() && _valueMap.empty() ); }
+
+public:
+  /** \name Get value for name or alias. */
+  //@{
+  /** Whether there is a \c value mapped for \a name_r.
+       */
+  bool haveValue( const std::string &name_r ) const
   {
-    typedef std::map< std::string, Tp > NameMap;
-    typedef std::map< Tp, std::string > ValueMap;
+    typename NameMap::const_iterator it( _nameMap.find( name_r ) );
+    return ( it != _nameMap.end() );
+  }
 
-  public:
-    /** Whether not initialized (no (name,value) pair remembered) */
-    bool empty() const
-    { return( _nameMap.empty() && _valueMap.empty() ); }
-
-  public:
-    /** \name Get value for name or alias. */
-    //@{
-      /** Whether there is a \c value mapped for \a name_r.
-       */
-      bool haveValue( const std::string & name_r ) const
-      {
-	typename NameMap::const_iterator it( _nameMap.find( name_r ) );
-	return( it != _nameMap.end() );
-      }
-
-      /** Get value mapped for name or alias.
+  /** Get value mapped for name or alias.
        * \return \c true if name or alias was found.
        */
-      bool getValue( const std::string & name_r, Tp & value_r ) const
-      {
-	typename NameMap::const_iterator it( _nameMap.find( name_r ) );
-	if ( it == _nameMap.end() )
-	  return false;
-	value_r = it->second;
-	return true;
-      }
-      /** \overload \throws std::out_of_range exception if \a name_r was not found. */
-      const Tp & getValue( const std::string & name_r ) const
-      { return _nameMap.at( name_r ); }
-    //@}
+  bool getValue( const std::string &name_r, Tp &value_r ) const
+  {
+    typename NameMap::const_iterator it( _nameMap.find( name_r ) );
+    if ( it == _nameMap.end() )
+      return false;
+    value_r = it->second;
+    return true;
+  }
+  /** \overload \throws std::out_of_range exception if \a name_r was not found. */
+  const Tp &getValue( const std::string &name_r ) const
+  {
+    return _nameMap.at( name_r );
+  }
+  //@}
 
-
-    /** \name Get name for value. */
-    //@{
-      /** Whether there is a \c name mapped for \a value_r.
+  /** \name Get name for value. */
+  //@{
+  /** Whether there is a \c name mapped for \a value_r.
        */
-      bool haveName( const std::string & value_r ) const
-      {
-	typename ValueMap::const_iterator it( _valueMap.find( value_r ) );
-	return( it != _valueMap.end() );
-      }
+  bool haveName( const std::string &value_r ) const
+  {
+    typename ValueMap::const_iterator it( _valueMap.find( value_r ) );
+    return ( it != _valueMap.end() );
+  }
 
-      /** Get name of value.
+  /** Get name of value.
        * \return \c true if name or alias was found.
        */
-      bool getName( const Tp & value_r, std::string & name_r ) const
-      {
-	typename ValueMap::const_iterator it( _valueMap.find( value_r ) );
-	if ( it == _valueMap.end() )
-	  return false;
-	value_r = it->second;
-	return true;
-      }
-      /** \overload \throws std::out_of_range exception if \a value_r was not found. */
-      const std::string & getName( const Tp & value_r ) const
-      { return _valueMap.at( value_r ); }
-    //@}
+  bool getName( const Tp &value_r, std::string &name_r ) const
+  {
+    typename ValueMap::const_iterator it( _valueMap.find( value_r ) );
+    if ( it == _valueMap.end() )
+      return false;
+    value_r = it->second;
+    return true;
+  }
+  /** \overload \throws std::out_of_range exception if \a value_r was not found. */
+  const std::string &getName( const Tp &value_r ) const
+  {
+    return _valueMap.at( value_r );
+  }
+  //@}
 
-  public:
-    /** \name Inserter
+public:
+  /** \name Inserter
      */
-    //@{
-      class TInserter
-      {
-      public:
-	TInserter( NamedValue & parent_r, const Tp & value_r )
-	: _parent( &parent_r )
-	, _value( value_r )
-	{}
-	TInserter & operator|( const std::string & name_r )
-	{ _parent->insert( _value, name_r ); return *this; }
-      private:
-	NamedValue * _parent;
-	Tp _value;
-      };
+  //@{
+  class TInserter
+  {
+  public:
+    TInserter( NamedValue &parent_r, const Tp &value_r )
+      : _parent( &parent_r )
+      , _value( value_r )
+    {
+    }
+    TInserter &operator|( const std::string &name_r )
+    {
+      _parent->insert( _value, name_r );
+      return *this;
+    }
 
-      TInserter operator()( const Tp & value_r )
-      { return TInserter( *this, value_r ); }
-    //@}
+  private:
+    NamedValue *_parent;
+    Tp _value;
+  };
 
-    /** Remember name (1st call) or alias (subsequent calls).
+  TInserter operator()( const Tp &value_r )
+  {
+    return TInserter( *this, value_r );
+  }
+  //@}
+
+  /** Remember name (1st call) or alias (subsequent calls).
      * \return \C true if this is the 1st call for \a value_r.
      * \throws std::logic_error if \a name_r is already used as name or alias.
      * \throws std::logic_error if \c _tWithAlias is \c false and a name for \a value_r is already defined.
      */
-    bool insert( const Tp & value_r, const std::string & name_r )
+  bool insert( const Tp &value_r, const std::string &name_r )
+  {
+    typename NameMap::const_iterator nit( _nameMap.find( name_r ) );
+    if ( nit != _nameMap.end() ) // duplicate name
+      throw std::logic_error( "NamedValue::insert name" );
+
+    typename ValueMap::const_iterator tit( _valueMap.find( value_r ) );
+    if ( tit != _valueMap.end() ) // duplicate value, i.e. an alias
     {
-      typename NameMap::const_iterator nit( _nameMap.find( name_r ) );
-      if ( nit != _nameMap.end() )	// duplicate name
-	throw std::logic_error( "NamedValue::insert name" );
+      if ( !_tWithAlias )
+        throw std::logic_error( "NamedValue::insert alias" );
 
-      typename ValueMap::const_iterator tit( _valueMap.find( value_r ) );
-      if ( tit != _valueMap.end() )	// duplicate value, i.e. an alias
-      {
-	if ( !_tWithAlias )
-	  throw std::logic_error( "NamedValue::insert alias" );
-
-	_nameMap[name_r] = value_r;
-	return false;
-      }
-      // here: 1st entry for value_r
-      _nameMap[name_r] = value_r;
-      _valueMap[value_r] = name_r;
-      return true;
+      _nameMap[ name_r ] = value_r;
+      return false;
     }
+    // here: 1st entry for value_r
+    _nameMap[ name_r ] = value_r;
+    _valueMap[ value_r ] = name_r;
+    return true;
+  }
 
-  private:
-    NameMap _nameMap;
-    ValueMap _valueMap;
-  };
-  ///////////////////////////////////////////////////////////////////
+private:
+  NameMap _nameMap;
+  ValueMap _valueMap;
+};
+///////////////////////////////////////////////////////////////////
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -12,8 +12,7 @@
 #ifndef ZYPP_TARGET_RPM_BINHEADER_H
 #define ZYPP_TARGET_RPM_BINHEADER_H
 
-extern "C"
-{
+extern "C" {
 #include <stdint.h>
 }
 
@@ -43,7 +42,6 @@ class BinHeader : public base::ReferenceCounted, private base::NonCopyable
 {
 
 public:
-
   typedef intrusive_ptr<BinHeader> Ptr;
 
   typedef intrusive_ptr<const BinHeader> constPtr;
@@ -55,47 +53,39 @@ public:
   class stringList;
 
 private:
-
   Header _h;
 
   bool assertHeader();
 
 public:
-
   BinHeader( Header h_r = 0 );
 
   /**
    * <B>Dangerous!<\B> This one takes the header out of rhs
    * and leaves rhs empty.
    **/
-  BinHeader( BinHeader::Ptr & rhs );
+  BinHeader( BinHeader::Ptr &rhs );
 
   virtual ~BinHeader();
 
 public:
-
-  bool empty() const
-  {
-    return( _h == NULL );
-  }
+  bool empty() const { return ( _h == NULL ); }
 
   bool has_tag( tag tag_r ) const;
 
-  unsigned int_list( tag tag_r, intList & lst_r ) const;
+  unsigned int_list( tag tag_r, intList &lst_r ) const;
 
-  unsigned string_list( tag tag_r, stringList & lst_r ) const;
+  unsigned string_list( tag tag_r, stringList &lst_r ) const;
 
   int int_val( tag tag_r ) const;
 
   std::string string_val( tag tag_r ) const;
 
 public:
-
   std::list<std::string> stringList_val( tag tag_r ) const;
 
 public:
-
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -108,27 +98,28 @@ public:
  **/
 class BinHeader::intList : private base::NonCopyable
 {
-  public:
-    intList()
-      : _type( RPM_NULL_TYPE )
-    {}
+public:
+  intList()
+    : _type( RPM_NULL_TYPE )
+  {
+  }
 
-    bool empty() const
-    { return _data.empty(); }
+  bool empty() const { return _data.empty(); }
 
-    unsigned size() const
-    { return _data.size(); }
+  unsigned size() const { return _data.size(); }
 
-    long operator[]( const unsigned idx_r ) const
-    { return idx_r < _data.size() ? _data[idx_r] : 0; }
+  long operator[]( const unsigned idx_r ) const
+  {
+    return idx_r < _data.size() ? _data[ idx_r ] : 0;
+  }
 
-  private:
-    friend class BinHeader;
-    unsigned set( void * val_r, unsigned cnt_r, rpmTagType type_r );
+private:
+  friend class BinHeader;
+  unsigned set( void *val_r, unsigned cnt_r, rpmTagType type_r );
 
-  private:
-    std::vector<long> _data;
-    rpmTagType _type;
+private:
+  std::vector<long> _data;
+  rpmTagType _type;
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -141,22 +132,22 @@ class BinHeader::intList : private base::NonCopyable
  **/
 class BinHeader::stringList : private base::NonCopyable
 {
-  public:
-    bool empty() const
-    { return _data.empty(); }
+public:
+  bool empty() const { return _data.empty(); }
 
-    unsigned size() const
-    { return _data.size(); }
+  unsigned size() const { return _data.size(); }
 
-    std::string operator[]( const unsigned idx_r ) const
-    { return idx_r < _data.size() ? _data[idx_r] : std::string(); }
+  std::string operator[]( const unsigned idx_r ) const
+  {
+    return idx_r < _data.size() ? _data[ idx_r ] : std::string();
+  }
 
-  private:
-    friend class BinHeader;
-    unsigned set( char ** val_r, unsigned cnt_r );
+private:
+  friend class BinHeader;
+  unsigned set( char **val_r, unsigned cnt_r );
 
-  private:
-    std::vector<std::string> _data;
+private:
+  std::vector<std::string> _data;
 };
 
 ///////////////////////////////////////////////////////////////////

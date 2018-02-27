@@ -21,13 +21,12 @@
 
 namespace zypp
 {
-  namespace parser
-  {
-    namespace yum
-    {
+namespace parser
+{
+namespace yum
+{
 
-
-  /**
+/**
    * Reads through a repomd.xml file and collects type, location, checksum and
    * other data about metadata files to be processed.
    *
@@ -43,16 +42,20 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1, _2 ) );
    * \endcode
    */
-  class RepomdFileReader : private base::NonCopyable
-  {
-  public:
-   /** Callbacl taking \ref OnMediaLocation and \ref repo::yum::ResourceType */
-    typedef function< bool( const OnMediaLocation &, const repo::yum::ResourceType & )> ProcessResource;
+class RepomdFileReader : private base::NonCopyable
+{
+public:
+  /** Callbacl taking \ref OnMediaLocation and \ref repo::yum::ResourceType */
+  typedef function<bool(
+    const OnMediaLocation &, const repo::yum::ResourceType & )>
+    ProcessResource;
 
-    /** Alternate callback also receiving the ResourceType as string. */
-    typedef function< bool( const OnMediaLocation &, const repo::yum::ResourceType &, const std::string & )> ProcessResource2;
+  /** Alternate callback also receiving the ResourceType as string. */
+  typedef function<bool( const OnMediaLocation &,
+    const repo::yum::ResourceType &, const std::string & )>
+    ProcessResource2;
 
-   /**
+  /**
     * CTOR. Creates also \ref xml::Reader and starts reading.
     * 
     * \param repomd_file is the repomd.xml file you want to read
@@ -60,21 +63,22 @@ namespace zypp
     *
     * \see RepomdFileReader::ProcessResource
     */
-    RepomdFileReader( const Pathname & repomd_file, const ProcessResource & callback );
-    /** \overload taking ProcessResource2 callback */
-    RepomdFileReader( const Pathname & repomd_file, const ProcessResource2 & callback );
+  RepomdFileReader(
+    const Pathname &repomd_file, const ProcessResource &callback );
+  /** \overload taking ProcessResource2 callback */
+  RepomdFileReader(
+    const Pathname &repomd_file, const ProcessResource2 &callback );
 
-    /** DTOR */
-    ~RepomdFileReader();
+  /** DTOR */
+  ~RepomdFileReader();
 
-  private:
-    class Impl;
-    RW_pointer<Impl,rw_pointer::Scoped<Impl> > _pimpl;
-  };
+private:
+  class Impl;
+  RW_pointer<Impl, rw_pointer::Scoped<Impl>> _pimpl;
+};
 
-
-    } // namespace yum
-  } // namespace parser
+} // namespace yum
+} // namespace parser
 } // namespace zypp
 
 #endif // zypp_source_yum_RepomdFileReader_H

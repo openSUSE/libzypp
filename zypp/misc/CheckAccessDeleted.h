@@ -20,7 +20,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /**
+/**
    * Check for running processes which access deleted executables or libraries.
    *
    * Executed after commit, this gives a hint which processes/services
@@ -31,44 +31,48 @@ namespace zypp
    * or libraries is collected and provided as a \ref ProcInfo
    * container.
    */
-  class CheckAccessDeleted
-  {
+class CheckAccessDeleted
+{
 
-    public:
-      /**
+public:
+  /**
        * Data about one running process accessing deleted files.
        */
-      struct ProcInfo
-      {
-        std::string pid;		//!< process ID
-        std::string ppid;		//!< parent process ID
-        std::string puid;		//!< process user ID
-        std::string login;		//!< process login name
-        std::string command;		//!< process command name
-        std::vector<std::string> files;	//!< list of deleted executables or libraries accessed
+  struct ProcInfo
+  {
+    std::string pid;     //!< process ID
+    std::string ppid;    //!< parent process ID
+    std::string puid;    //!< process user ID
+    std::string login;   //!< process login name
+    std::string command; //!< process command name
+    std::vector<std::string>
+      files; //!< list of deleted executables or libraries accessed
 
-        /** Guess if command was started by a systemd service script.
+    /** Guess if command was started by a systemd service script.
          * The service name  might be used to restart the service.
          * \warning This is just a guess.
         */
-        std::string service() const;
-      };
+    std::string service() const;
+  };
 
-      typedef size_t					size_type;
-      typedef ProcInfo					value_type;
-      typedef std::vector<ProcInfo>::const_iterator	const_iterator;
+  typedef size_t size_type;
+  typedef ProcInfo value_type;
+  typedef std::vector<ProcInfo>::const_iterator const_iterator;
 
-    public:
-      /** Default ctor performs check immediately.
+public:
+  /** Default ctor performs check immediately.
        * Pass \c false and the initial check is omitted.
        * \throws Exception if \ref check throws.
        * \see \ref check.
        */
-      CheckAccessDeleted( bool doCheck_r = true )
-      { if ( doCheck_r ) check(); }
+  CheckAccessDeleted( bool doCheck_r = true )
+  {
+    if ( doCheck_r )
+      check();
+  }
 
-    public:
-      /** Check for running processes which access deleted executables or libraries.
+public:
+  /** Check for running processes which access deleted executables or libraries.
        *
        * Per default \ref check will try guess and collect executables and
        * libraries only by looking at the files path and name. (e.g named
@@ -80,32 +84,33 @@ namespace zypp
        * \return the number of processes found.
        * \throws Exception On error collecting the data (e.g. no lsof installed)
        */
-      size_type check( bool verbose_r = false );
+  size_type check( bool verbose_r = false );
 
-      bool empty() const		{ return _data.empty(); }
-      size_type size() const		{ return _data.size(); }
-      const_iterator begin() const	{ return _data.begin(); }
-      const_iterator end() const	{ return _data.end(); }
+  bool empty() const { return _data.empty(); }
+  size_type size() const { return _data.size(); }
+  const_iterator begin() const { return _data.begin(); }
+  const_iterator end() const { return _data.end(); }
 
-    public:
-      /** Guess if pid was started by a systemd service script.
+public:
+  /** Guess if pid was started by a systemd service script.
        * The service name  might be used to restart the service.
        * \warning This is just a guess.
        */
-      static std::string findService( pid_t pid_r );
+  static std::string findService( pid_t pid_r );
 
-    private:
-      std::vector<ProcInfo> _data;
-  };
-  ///////////////////////////////////////////////////////////////////
+private:
+  std::vector<ProcInfo> _data;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates CheckAccessDeleted Stream output */
-  std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted & obj );
+/** \relates CheckAccessDeleted Stream output */
+std::ostream &operator<<( std::ostream &str, const CheckAccessDeleted &obj );
 
-  /** \relates CheckAccessDeleted::ProcInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted::ProcInfo & obj );
+/** \relates CheckAccessDeleted::ProcInfo Stream output */
+std::ostream &operator<<(
+  std::ostream &str, const CheckAccessDeleted::ProcInfo &obj );
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_MISC_CHECKACCESSDELETED_H

@@ -6,7 +6,7 @@
 /////////////////////////////////////////////////////////////////////////////
 static TestSetup test( Arch_x86_64 );
 
-BOOST_AUTO_TEST_CASE(pool_query_init)
+BOOST_AUTO_TEST_CASE( pool_query_init )
 {
   // Abuse;) vbox as System repo:
   test.loadTargetRepo( TESTS_SRC_DIR "/data/obs_virtualbox_11_1" );
@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(pool_query_init)
 
 /////////////////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(default_constructed)
+BOOST_AUTO_TEST_CASE( default_constructed )
 {
   InstanceId instanceId;
   BOOST_CHECK_EQUAL( instanceId.getNamespace(), std::string() );
@@ -24,11 +24,11 @@ BOOST_AUTO_TEST_CASE(default_constructed)
   BOOST_CHECK_EQUAL( instanceId.isSystemId( "System" ), false );
   BOOST_CHECK_EQUAL( instanceId.isSystemId( "@System" ), true );
 
-  BOOST_CHECK_EQUAL( instanceId(""), PoolItem() );
-  BOOST_CHECK_EQUAL( instanceId(PoolItem()), "" );
+  BOOST_CHECK_EQUAL( instanceId( "" ), PoolItem() );
+  BOOST_CHECK_EQUAL( instanceId( PoolItem() ), "" );
 }
 
-BOOST_AUTO_TEST_CASE(convert)
+BOOST_AUTO_TEST_CASE( convert )
 {
   InstanceId instanceId;
   instanceId.setNamespace( "SUSE" );
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(convert)
   ResPool pool( ResPool::instance() );
   for_( it, pool.begin(), pool.end() )
   {
-    std::cout << instanceId(*it) << endl;
-    BOOST_CHECK_EQUAL( instanceId(instanceId(*it)), *it );
+    std::cout << instanceId( *it ) << endl;
+    BOOST_CHECK_EQUAL( instanceId( instanceId( *it ) ), *it );
   }
 }

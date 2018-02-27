@@ -30,55 +30,58 @@
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : SolverQueueItemUpdate
 
-class SolverQueueItemUpdate : public SolverQueueItem {
-    
-  private:
+class SolverQueueItemUpdate : public SolverQueueItem
+{
 
-    PoolItem _item;  	// the item to-be-updated
-    bool _soft;         // if triggered by a soft requirement (a recommends)
+private:
+  PoolItem _item; // the item to-be-updated
+  bool _soft;     // if triggered by a soft requirement (a recommends)
 
-  public:
+public:
+  SolverQueueItemUpdate(
+    const ResPool &pool, const PoolItem &item, bool soft = false );
+  virtual ~SolverQueueItemUpdate();
 
-    SolverQueueItemUpdate (const ResPool & pool, const PoolItem & item, bool soft = false);
-    virtual ~SolverQueueItemUpdate();
-    
-    // ---------------------------------- I/O
+  // ---------------------------------- I/O
 
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-    friend std::ostream& operator<<(std::ostream & str, const SolverQueueItemUpdate & obj)
-    { return obj.dumpOn (str); }
+  friend std::ostream &operator<<(
+    std::ostream &str, const SolverQueueItemUpdate &obj )
+  {
+    return obj.dumpOn( str );
+  }
 
-    // ---------------------------------- accessors
+  // ---------------------------------- accessors
 
-    bool isSoft (void) const { return _soft; }    
+  bool isSoft( void ) const { return _soft; }
 
-    // ---------------------------------- methods
-    
-    virtual bool addRule (sat::detail::CQueue & q);
-    virtual SolverQueueItem_Ptr copy (void) const;
-    virtual int cmp (SolverQueueItem_constPtr item) const;
+  // ---------------------------------- methods
+
+  virtual bool addRule( sat::detail::CQueue &q );
+  virtual SolverQueueItem_Ptr copy( void ) const;
+  virtual int cmp( SolverQueueItem_constPtr item ) const;
 };
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////
 
 #endif // ZYPP_SOLVER_DETAIL_QUEUEITEMUPDATE_H

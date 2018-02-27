@@ -23,7 +23,7 @@ bool solve()
     //getZYpp()->resolver()->setOnlyRequires( true );
     rres = getZYpp()->resolver()->resolvePool();
   }
-  if ( ! rres )
+  if ( !rres )
   {
     ERR << "resolve " << rres << endl;
     getZYpp()->resolver()->problems();
@@ -41,7 +41,7 @@ bool upgrade()
     Measure x( "Upgrade" );
     rres = getZYpp()->resolver()->doUpgrade();
   }
-  if ( ! rres )
+  if ( !rres )
   {
     Measure x( "Upgrade Error" );
     ERR << "upgrade " << rres << endl;
@@ -54,28 +54,31 @@ bool upgrade()
 
 namespace zypp
 {
-  namespace target
-  {
-    void writeUpgradeTestcase();
-  }
+namespace target
+{
+void writeUpgradeTestcase();
+}
 }
 
-std::ostream & operator<<( std::ostream & str, const sat::Solvable::SplitIdent & obj )
+std::ostream &operator<<(
+  std::ostream &str, const sat::Solvable::SplitIdent &obj )
 {
-  str << "{" << obj.ident() << "}{" << obj.kind() << "}{" << obj.name () << "}" << endl;
+  str << "{" << obj.ident() << "}{" << obj.kind() << "}{" << obj.name() << "}"
+      << endl;
   return str;
 }
 
-namespace zypp {
-std::ostream & dumpOn( std::ostream & str, const Url & obj )
+namespace zypp
+{
+std::ostream &dumpOn( std::ostream &str, const Url &obj )
 {
   str << "{" << obj.getHost() << "}{" << obj.getPort() << "}";
   return str;
 }
 }
 
-int main( int argc, char * argv[] )
-try {
+int main( int argc, char *argv[] ) try
+{
   --argc;
   ++argv;
   zypp::base::LogControl::instance().logToStdErr();
@@ -83,10 +86,12 @@ try {
   ///////////////////////////////////////////////////////////////////
   if ( sysRoot == "/" )
     ::unsetenv( "ZYPP_CONF" );
-  ResPool   pool( ResPool::instance() );
+  ResPool pool( ResPool::instance() );
   sat::Pool satpool( sat::Pool::instance() );
   ///////////////////////////////////////////////////////////////////
-  dumpRange( WAR << "satpool.multiversion " , satpool.multiversion().begin(), satpool.multiversion().end() ) << endl;
+  dumpRange( WAR << "satpool.multiversion ", satpool.multiversion().begin(),
+    satpool.multiversion().end() )
+    << endl;
   TestSetup::LoadSystemAt( sysRoot, Arch_i586 );
   ///////////////////////////////////////////////////////////////////
 
@@ -103,10 +108,10 @@ try {
   zypp::base::LogControl::instance().logNothing();
   return 0;
 }
-catch ( const Exception & exp )
+catch ( const Exception &exp )
 {
   INT << exp << endl << exp.historyAsString();
 }
-catch (...)
-{}
-
+catch ( ... )
+{
+}

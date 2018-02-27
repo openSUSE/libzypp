@@ -22,51 +22,56 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  namespace target {
-    ///////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : TargetException
-    /** Just inherits Exception to separate target exceptions
+namespace target
+{
+///////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : TargetException
+/** Just inherits Exception to separate target exceptions
      *
      **/
-    class TargetException : public Exception
-    {
-    public:
-      /** Ctor taking message.
+class TargetException : public Exception
+{
+public:
+  /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
       */
-      TargetException()
-      : Exception( "Target Exception" )
-      {}
-      /** Ctor taking message.
+  TargetException()
+    : Exception( "Target Exception" )
+  {
+  }
+  /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
       */
-      TargetException( const std::string & msg_r )
-      : Exception( msg_r )
-      {}
-      /** Dtor. */
-      virtual ~TargetException() throw() {};
-    };
+  TargetException( const std::string &msg_r )
+    : Exception( msg_r )
+  {
+  }
+  /** Dtor. */
+  virtual ~TargetException() throw(){};
+};
 
-    class TargetAbortedException : public TargetException
-    {
-    public:
-      /** Ctor taking message.
+class TargetAbortedException : public TargetException
+{
+public:
+  /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
       */
-      TargetAbortedException( const std::string & msg_r )
-      : TargetException( msg_r )
-      {}
-      /** Dtor. */
-      virtual ~TargetAbortedException() throw() {};
-    protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
-    private:
-    };
+  TargetAbortedException( const std::string &msg_r )
+    : TargetException( msg_r )
+  {
+  }
+  /** Dtor. */
+  virtual ~TargetAbortedException() throw(){};
 
+protected:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-  /////////////////////////////////////////////////////////////////
-  } // namespace target
+private:
+};
+
+/////////////////////////////////////////////////////////////////
+} // namespace target
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_TARGET_TARGETEXCEPTION_H

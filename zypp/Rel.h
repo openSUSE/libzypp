@@ -19,11 +19,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : Rel
-  //
-  /** Relational operators.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Rel
+//
+/** Relational operators.
    * Yes, it could as well be simply an \c enum.<BR>
    * Yes, you can use the relational operators as if it was an \c enum.<BR>
    * Except for use in a \c switch statement; see \ref inSwitch for this.
@@ -40,45 +40,47 @@ namespace zypp
    *
    * \ingroup g_EnumerationClass
   */
-  struct Rel
-  {
-    /** \name Relational operators
+struct Rel
+{
+  /** \name Relational operators
      * These are the \em real relational operator contants to
      * use. Don't mind that it's not an enum. See also: \ref zypp::Rel::inSwitch
     */
-    //@{
-    static const Rel EQ;
-    static const Rel NE;
-    static const Rel LT;
-    static const Rel LE;
-    static const Rel GT;
-    static const Rel GE;
-    static const Rel ANY;
-    static const Rel NONE;
-    //@}
+  //@{
+  static const Rel EQ;
+  static const Rel NE;
+  static const Rel LT;
+  static const Rel LE;
+  static const Rel GT;
+  static const Rel GE;
+  static const Rel ANY;
+  static const Rel NONE;
+  //@}
 
-    /** Enumarators provided \b only for use \ref inSwitch statement.
+  /** Enumarators provided \b only for use \ref inSwitch statement.
      * \see inSwitch
      * \note Enumarator values also correspond to the values libsolv
      * uses to encode these relations.
     */
-    enum for_use_in_switch {
-      NONE_e = 0U,
-      GT_e   = 1U,
-      EQ_e   = 2U,
-      LT_e   = 4U,
-      GE_e   = GT_e|EQ_e,
-      LE_e   = LT_e|EQ_e,
-      NE_e   = GT_e|LT_e,
-      ANY_e  = GT_e|EQ_e|LT_e,
-    };
+  enum for_use_in_switch
+  {
+    NONE_e = 0U,
+    GT_e = 1U,
+    EQ_e = 2U,
+    LT_e = 4U,
+    GE_e = GT_e | EQ_e,
+    LE_e = LT_e | EQ_e,
+    NE_e = GT_e | LT_e,
+    ANY_e = GT_e | EQ_e | LT_e,
+  };
 
-    /** DefaultCtor ANY. */
-    Rel()
+  /** DefaultCtor ANY. */
+  Rel()
     : _op( ANY_e )
-    {}
+  {
+  }
 
-    /** Ctor from string.
+  /** Ctor from string.
      * Legal values for \a strval_r are: "==", "!=", "<", "<=", ">", ">=",<BR>
      * as well as "EQ", "NE", "LT", "LE", "GT", "GE", "ANY", "NONE"<BR>
      * and "" (empty string resolves to ANY).
@@ -88,38 +90,35 @@ namespace zypp
      * \throw PARSE if \a strval_r is not legal.
      * \todo refine exceptions and check throw.
      */
-    explicit
-    Rel( const std::string & strval_r );
+  explicit Rel( const std::string &strval_r );
 
-    /** Ctor from string (non-throwing).
+  /** Ctor from string (non-throwing).
      * Illegal string values resolve to \c default_r
      */
-    Rel( const std::string & strval_r, const Rel & default_r );
+  Rel( const std::string &strval_r, const Rel &default_r );
 
-    /** Assign from string IFF it contains a legal value.
+  /** Assign from string IFF it contains a legal value.
      * \return Whether \a strval_r contained a legal value.
     */
-    bool parseFrom( const std::string & strval_r );
+  bool parseFrom( const std::string &strval_r );
 
-    /** Ctor from bits. */
-    explicit
-    Rel( unsigned bits_r )
-    : _op( for_use_in_switch(bits_r & ANY_e) )
-    {}
+  /** Ctor from bits. */
+  explicit Rel( unsigned bits_r )
+    : _op( for_use_in_switch( bits_r & ANY_e ) )
+  {
+  }
 
-    /** Test whether \a bits_r is a valid \ref Rel (no extra bits set). */
-    static bool isRel( unsigned bits_r )
-    { return (bits_r & ANY_e) == bits_r; }
+  /** Test whether \a bits_r is a valid \ref Rel (no extra bits set). */
+  static bool isRel( unsigned bits_r ) { return ( bits_r & ANY_e ) == bits_r; }
 
-    /** String representation of relational operator.
+  /** String representation of relational operator.
      * \return "==", "!=", "<", "<=", ">", ">=", "ANY" or "NONE"
     */
-    const std::string & asString() const;
-    /** \overload */
-    const char * c_str() const
-    { return asString().c_str(); }
+  const std::string &asString() const;
+  /** \overload */
+  const char *c_str() const { return asString().c_str(); }
 
-    /** Enumarator provided for use in \c switch statement.
+  /** Enumarator provided for use in \c switch statement.
      * The sole reason for providing enum \ref for_use_in_switch is,
      * that we may want to use the relational operators in a \c switch
      * statement. Tht's the only case where you should have to use the
@@ -138,38 +137,43 @@ namespace zypp
      *     }
      * \endcode
     */
-    for_use_in_switch inSwitch() const
-    { return _op; }
+  for_use_in_switch inSwitch() const { return _op; }
 
-    /** Enumarator values suitable for libsolv. */
-    unsigned bits() const
-    { return _op; }
+  /** Enumarator values suitable for libsolv. */
+  unsigned bits() const { return _op; }
 
-  private:
-    /** Ctor to initialize the relational operator contants. */
-    Rel( for_use_in_switch op_r )
+private:
+  /** Ctor to initialize the relational operator contants. */
+  Rel( for_use_in_switch op_r )
     : _op( op_r )
-    {}
-    /** The operator. */
-    for_use_in_switch _op;
-  };
-  ///////////////////////////////////////////////////////////////////
+  {
+  }
+  /** The operator. */
+  for_use_in_switch _op;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates Rel Stream output. */
-  inline std::ostream & operator<<( std::ostream & str, const Rel & obj )
-  { return str << obj.asString(); }
+/** \relates Rel Stream output. */
+inline std::ostream &operator<<( std::ostream &str, const Rel &obj )
+{
+  return str << obj.asString();
+}
 
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-  /** \relates Rel */
-  inline bool operator==( const Rel & lhs, const Rel & rhs )
-  { return lhs.inSwitch() == rhs.inSwitch(); }
+/** \relates Rel */
+inline bool operator==( const Rel &lhs, const Rel &rhs )
+{
+  return lhs.inSwitch() == rhs.inSwitch();
+}
 
-  /** \relates Rel */
-  inline bool operator!=( const Rel & lhs, const Rel & rhs )
-  { return ! ( lhs == rhs ); }
+/** \relates Rel */
+inline bool operator!=( const Rel &lhs, const Rel &rhs )
+{
+  return !( lhs == rhs );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_REL_H

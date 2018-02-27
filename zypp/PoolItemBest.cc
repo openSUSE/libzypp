@@ -21,60 +21,63 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : PoolItemBest::Impl
-  //
-  /** PoolItemBest implementation. */
-  struct PoolItemBest::Impl
-  {
-    Container _container;
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : PoolItemBest::Impl
+//
+/** PoolItemBest implementation. */
+struct PoolItemBest::Impl
+{
+  Container _container;
 
-    private:
-      friend Impl * rwcowClone<Impl>( const Impl * rhs );
-      /** clone for RWCOW_pointer */
-      Impl * clone() const
-      { return new Impl( *this ); }
-  };
-  ///////////////////////////////////////////////////////////////////
+private:
+  friend Impl *rwcowClone<Impl>( const Impl *rhs );
+  /** clone for RWCOW_pointer */
+  Impl *clone() const { return new Impl( *this ); }
+};
+///////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : PoolItemBest
-  //
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : PoolItemBest
+//
+///////////////////////////////////////////////////////////////////
 
-  void PoolItemBest::_ctor_init()
-  { _dont_use_this_use_pimpl.reset( new RWCOW_pointer<Impl>(new Impl) ); }
+void PoolItemBest::_ctor_init()
+{
+  _dont_use_this_use_pimpl.reset( new RWCOW_pointer<Impl>( new Impl ) );
+}
 
-  const PoolItemBest::Container & PoolItemBest::container() const
-  { return pimpl()->_container; }
+const PoolItemBest::Container &PoolItemBest::container() const
+{
+  return pimpl()->_container;
+}
 
-  void PoolItemBest::add( const PoolItem & pi_r )
-  {
-    Container & container( pimpl()->_container );
-    PoolItem & ccand( container[pi_r.satSolvable().ident()] );
-    if ( ! ccand || ui::SelectableTraits::AVOrder()( pi_r, ccand ) )
-      ccand = pi_r;
-  }
+void PoolItemBest::add( const PoolItem &pi_r )
+{
+  Container &container( pimpl()->_container );
+  PoolItem &ccand( container[ pi_r.satSolvable().ident() ] );
+  if ( !ccand || ui::SelectableTraits::AVOrder()( pi_r, ccand ) )
+    ccand = pi_r;
+}
 
-  PoolItem PoolItemBest::find( IdString ident_r ) const
-  {
-    const Container & container( pimpl()->_container );
-    Container::const_iterator it( container.find( ident_r ) );
-    return it != container.end() ? it->second : PoolItem();
-  }
+PoolItem PoolItemBest::find( IdString ident_r ) const
+{
+  const Container &container( pimpl()->_container );
+  Container::const_iterator it( container.find( ident_r ) );
+  return it != container.end() ? it->second : PoolItem();
+}
 
-  /******************************************************************
+/******************************************************************
   **
   **	FUNCTION NAME : operator<<
   **	FUNCTION TYPE : std::ostream &
   */
-  std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj )
-  {
-    return dumpRange( str << "(" << obj.size() << ") ", obj.begin(), obj.end() );
-  }
+std::ostream &operator<<( std::ostream &str, const PoolItemBest &obj )
+{
+  return dumpRange( str << "(" << obj.size() << ") ", obj.begin(), obj.end() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

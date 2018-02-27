@@ -20,80 +20,89 @@ using namespace zypp::filesystem;
 class SimpleVerifier : public media::MediaVerifierBase
 {
 public:
+  SimpleVerifier( const std::string &id ) { _media_id = id; }
 
-  SimpleVerifier( const std::string &id )
+  virtual bool isDesiredMedia( const media::MediaAccessRef &ref )
   {
-    _media_id = id;
-  }
-
-  virtual bool isDesiredMedia(const media::MediaAccessRef &ref)
-  {
-    return ref->doesFileExist(Pathname("/x." + _media_id ));
+    return ref->doesFileExist( Pathname( "/x." + _media_id ) );
   }
 
 private:
   std::string _media_id;
 };
 
-bool check_file_exists(const Pathname &path)
+bool check_file_exists( const Pathname &path )
 {
   FILE *file;
 
-  if ((file = fopen(path.asString().c_str(), "r")) == NULL) return false;
+  if ( ( file = fopen( path.asString().c_str(), "r" ) ) == NULL )
+    return false;
 
-  fclose(file);
+  fclose( file );
   return true;
 }
 
 /*
  * Check how MediaSetAccess::rewriteUrl() works.
  */
-BOOST_AUTO_TEST_CASE(msa_url_rewrite)
+BOOST_AUTO_TEST_CASE( msa_url_rewrite )
 {
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/CD1.iso"), 1).asString(),
-    Url("iso:/?iso=/path/to/CD1.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/CD1.iso" ), 1 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/CD1.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/CD1.iso"), 2).asString(),
-    Url("iso:/?iso=/path/to/CD2.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/CD1.iso" ), 2 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/CD2.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/CD1.iso"), 13).asString(),
-    Url("iso:/?iso=/path/to/CD13.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/CD1.iso" ), 13 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/CD13.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/cd1.iso"), 2).asString(),
-    Url("iso:/?iso=/path/to/cd2.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/cd1.iso" ), 2 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/cd2.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/cd2.iso"), 1).asString(),
-    Url("iso:/?iso=/path/to/cd1.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/cd2.iso" ), 1 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/cd1.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("iso:/?iso=/path/to/dvd1.iso"), 2).asString(),
-    Url("iso:/?iso=/path/to/dvd2.iso").asString());
+    MediaSetAccess::rewriteUrl( Url( "iso:/?iso=/path/to/dvd1.iso" ), 2 )
+      .asString(),
+    Url( "iso:/?iso=/path/to/dvd2.iso" ).asString() );
 
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("dir:/path/to/CD1"), 2).asString(),
-    Url("dir:/path/to/CD2").asString());
+    MediaSetAccess::rewriteUrl( Url( "dir:/path/to/CD1" ), 2 ).asString(),
+    Url( "dir:/path/to/CD2" ).asString() );
 
   // trailing slash check
   BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("dir:/path/to/CD1/"), 2).asString(),
-    Url("dir:/path/to/CD2/").asString());
+    MediaSetAccess::rewriteUrl( Url( "dir:/path/to/CD1/" ), 2 ).asString(),
+    Url( "dir:/path/to/CD2/" ).asString() );
 
-  BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("nfs://nfs-server/exported/path/to/dvd1"), 2).asString(),
-    Url("nfs://nfs-server/exported/path/to/dvd2").asString());
+  BOOST_CHECK_EQUAL( MediaSetAccess::rewriteUrl(
+                       Url( "nfs://nfs-server/exported/path/to/dvd1" ), 2 )
+                       .asString(),
+    Url( "nfs://nfs-server/exported/path/to/dvd2" ).asString() );
 
   // single media check  shouldn't this fail somehow??
-  BOOST_CHECK_EQUAL(
-    MediaSetAccess::rewriteUrl(Url("http://ftp.opensuse.org/pub/opensuse/distribution/SL-OSS-factory/inst-source"), 2).asString(),
-    Url("http://ftp.opensuse.org/pub/opensuse/distribution/SL-OSS-factory/inst-source").asString());
+  BOOST_CHECK_EQUAL( MediaSetAccess::rewriteUrl(
+                       Url( "http://ftp.opensuse.org/pub/opensuse/distribution/"
+                            "SL-OSS-factory/inst-source" ),
+                       2 )
+                       .asString(),
+    Url( "http://ftp.opensuse.org/pub/opensuse/distribution/SL-OSS-factory/"
+         "inst-source" )
+      .asString() );
 }
 
-#define DATADIR (Pathname(TESTS_SRC_DIR) / "/zypp/data/mediasetaccess")
+#define DATADIR ( Pathname( TESTS_SRC_DIR ) / "/zypp/data/mediasetaccess" )
 
 /*
  *
@@ -120,86 +129,90 @@ BOOST_AUTO_TEST_CASE(msa_url_rewrite)
 /*
  * Provide files from set without verifiers.
  */
-BOOST_AUTO_TEST_CASE(msa_provide_files_set)
+BOOST_AUTO_TEST_CASE( msa_provide_files_set )
 {
-  Url url = (DATADIR + "/src1/cd1").asUrl();
-  MediaSetAccess setaccess(url);
+  Url url = ( DATADIR + "/src1/cd1" ).asUrl();
+  MediaSetAccess setaccess( url );
 
-  Pathname file1 = setaccess.provideFile("/test.txt", 1);
-  BOOST_CHECK(check_file_exists(file1) == true);
+  Pathname file1 = setaccess.provideFile( "/test.txt", 1 );
+  BOOST_CHECK( check_file_exists( file1 ) == true );
 
-  Pathname file2 = setaccess.provideFile("/test.txt", 2);
-  BOOST_CHECK(check_file_exists(file2) == true);
+  Pathname file2 = setaccess.provideFile( "/test.txt", 2 );
+  BOOST_CHECK( check_file_exists( file2 ) == true );
 
-  Pathname file3 = setaccess.provideFile("/test.txt", 3);
-  BOOST_CHECK(check_file_exists(file3) == true);
+  Pathname file3 = setaccess.provideFile( "/test.txt", 3 );
+  BOOST_CHECK( check_file_exists( file3 ) == true );
 }
 
 /*
  * Provide files from set with verifiers.
  */
-BOOST_AUTO_TEST_CASE(msa_provide_files_set_verified)
+BOOST_AUTO_TEST_CASE( msa_provide_files_set_verified )
 {
-  Url url = (DATADIR + "/src1/cd1").asUrl();
-  MediaSetAccess setaccess(url);
+  Url url = ( DATADIR + "/src1/cd1" ).asUrl();
+  MediaSetAccess setaccess( url );
 
-  setaccess.setVerifier(1, media::MediaVerifierRef(new SimpleVerifier("media1")));
-  setaccess.setVerifier(2, media::MediaVerifierRef(new SimpleVerifier("media2")));
-  setaccess.setVerifier(3, media::MediaVerifierRef(new SimpleVerifier("media3")));
+  setaccess.setVerifier(
+    1, media::MediaVerifierRef( new SimpleVerifier( "media1" ) ) );
+  setaccess.setVerifier(
+    2, media::MediaVerifierRef( new SimpleVerifier( "media2" ) ) );
+  setaccess.setVerifier(
+    3, media::MediaVerifierRef( new SimpleVerifier( "media3" ) ) );
 
   // provide file from media1
-  Pathname file1 = setaccess.provideFile("/test.txt", 1);
-  BOOST_CHECK(check_file_exists(file1) == true);
+  Pathname file1 = setaccess.provideFile( "/test.txt", 1 );
+  BOOST_CHECK( check_file_exists( file1 ) == true );
 
   // provide file from invalid media
-  BOOST_CHECK_THROW(setaccess.provideFile("/test.txt", 2),
-                    media::MediaNotDesiredException);
+  BOOST_CHECK_THROW(
+    setaccess.provideFile( "/test.txt", 2 ), media::MediaNotDesiredException );
 
   // provide file from media3
-  Pathname file3 = setaccess.provideFile("/test.txt", 3);
-  BOOST_CHECK(check_file_exists(file3) == true);
+  Pathname file3 = setaccess.provideFile( "/test.txt", 3 );
+  BOOST_CHECK( check_file_exists( file3 ) == true );
 }
 
 /*
  * Provide file from single media with verifier.
  */
-BOOST_AUTO_TEST_CASE(msa_provide_files_single)
+BOOST_AUTO_TEST_CASE( msa_provide_files_single )
 {
-  Url url = (DATADIR + "/src2").asUrl();
-  MediaSetAccess setaccess(url);
-  setaccess.setVerifier(1, media::MediaVerifierRef(new SimpleVerifier("media")));
+  Url url = ( DATADIR + "/src2" ).asUrl();
+  MediaSetAccess setaccess( url );
+  setaccess.setVerifier(
+    1, media::MediaVerifierRef( new SimpleVerifier( "media" ) ) );
 
   // provide file from media
-  Pathname file = setaccess.provideFile("/test.txt", 1);
-  BOOST_CHECK(check_file_exists(file) == true);
+  Pathname file = setaccess.provideFile( "/test.txt", 1 );
+  BOOST_CHECK( check_file_exists( file ) == true );
 
   // provide non-existent file
   // (default answer from callback should be ABORT)
-  BOOST_CHECK_THROW(setaccess.provideFile("/imnothere", 2),
-                    media::MediaFileNotFoundException);
+  BOOST_CHECK_THROW( setaccess.provideFile( "/imnothere", 2 ),
+    media::MediaFileNotFoundException );
 }
 
 /*
  * Provide directory from src/cd1.
  */
-BOOST_AUTO_TEST_CASE(msa_provide_dir)
+BOOST_AUTO_TEST_CASE( msa_provide_dir )
 {
-  Url url = (DATADIR + "/src1/cd1").asUrl();
+  Url url = ( DATADIR + "/src1/cd1" ).asUrl();
 
-  MediaSetAccess setaccess(url);
+  MediaSetAccess setaccess( url );
 
-  Pathname dir = setaccess.provideDir("/dir", false, 1);
+  Pathname dir = setaccess.provideDir( "/dir", false, 1 );
 
   Pathname file1 = dir + "/file1";
-  BOOST_CHECK(check_file_exists(file1) == true);
+  BOOST_CHECK( check_file_exists( file1 ) == true );
 
   Pathname file2 = dir + "/file2";
-  BOOST_CHECK(check_file_exists(file2) == true);
+  BOOST_CHECK( check_file_exists( file2 ) == true );
 
   // provide non-existent dir
   // (default answer from callback should be ABORT)
-  BOOST_CHECK_THROW(setaccess.provideDir("/imnothere", 2),
-                    media::MediaFileNotFoundException);
+  BOOST_CHECK_THROW( setaccess.provideDir( "/imnothere", 2 ),
+    media::MediaFileNotFoundException );
 
   // This can't be properly tested with 'dir' schema, probably only curl
   // schemas (http, ftp) where download is actually needed.
@@ -209,59 +222,59 @@ BOOST_AUTO_TEST_CASE(msa_provide_dir)
   // BOOST_CHECK(check_file_exists(dir + "/subdir") == false);
 }
 
-
 /*
  * Provide directory from src/cd1 (recursively).
  */
-BOOST_AUTO_TEST_CASE(msa_provide_dirtree)
+BOOST_AUTO_TEST_CASE( msa_provide_dirtree )
 {
-  Url url = (DATADIR + "/src1/cd1").asUrl();
-  MediaSetAccess setaccess(url);
+  Url url = ( DATADIR + "/src1/cd1" ).asUrl();
+  MediaSetAccess setaccess( url );
 
-  Pathname dir = setaccess.provideDir("/dir", true, 1);
+  Pathname dir = setaccess.provideDir( "/dir", true, 1 );
 
   Pathname file1 = dir + "/file1";
-  BOOST_CHECK(check_file_exists(file1) == true);
+  BOOST_CHECK( check_file_exists( file1 ) == true );
 
   Pathname file2 = dir + "/file2";
-  BOOST_CHECK(check_file_exists(file2) == true);
+  BOOST_CHECK( check_file_exists( file2 ) == true );
 
   Pathname file3 = dir + "/subdir/file";
-  BOOST_CHECK(check_file_exists(file3) == true);
+  BOOST_CHECK( check_file_exists( file3 ) == true );
 }
 
 /*
  * file exists local
  */
-BOOST_AUTO_TEST_CASE(msa_file_exist_local)
+BOOST_AUTO_TEST_CASE( msa_file_exist_local )
 {
-  Url url = (DATADIR + "/src1/cd1").asUrl();
-  MediaSetAccess setaccess(url);
+  Url url = ( DATADIR + "/src1/cd1" ).asUrl();
+  MediaSetAccess setaccess( url );
 
-  BOOST_CHECK(setaccess.doesFileExist("/test.txt"));
-  BOOST_CHECK(!setaccess.doesFileExist("/testBADNAME.txt"));
+  BOOST_CHECK( setaccess.doesFileExist( "/test.txt" ) );
+  BOOST_CHECK( !setaccess.doesFileExist( "/testBADNAME.txt" ) );
 }
 
 /*
  * file exists remote
  */
-BOOST_AUTO_TEST_CASE(msa_remote_tests)
+BOOST_AUTO_TEST_CASE( msa_remote_tests )
 {
   WebServer web( DATADIR / "/src1/cd1", 10002 );
   web.start();
   MediaSetAccess setaccess( web.url(), "/" );
 
-  BOOST_CHECK(!setaccess.doesFileExist("/testBADNAME.txt"));
-  BOOST_CHECK(setaccess.doesFileExist("/test.txt"));
+  BOOST_CHECK( !setaccess.doesFileExist( "/testBADNAME.txt" ) );
+  BOOST_CHECK( setaccess.doesFileExist( "/test.txt" ) );
 
   // check providing a file via http works
-  Pathname local = setaccess.provideFile("/test.txt");
-  BOOST_CHECK(CheckSum::sha1(sha1sum(local)) == CheckSum::sha1("2616e23301d7fcf7ac3324142f8c748cd0b6692b"));
+  Pathname local = setaccess.provideFile( "/test.txt" );
+  BOOST_CHECK( CheckSum::sha1( sha1sum( local ) ) ==
+               CheckSum::sha1( "2616e23301d7fcf7ac3324142f8c748cd0b6692b" ) );
 
   // providing a file which does not exist should throw
-  BOOST_CHECK_THROW(setaccess.provideFile("/testBADNAME.txt"), media::MediaFileNotFoundException);
+  BOOST_CHECK_THROW( setaccess.provideFile( "/testBADNAME.txt" ),
+    media::MediaFileNotFoundException );
   web.stop();
 }
-
 
 // vim: set ts=2 sts=2 sw=2 ai et:

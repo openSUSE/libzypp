@@ -23,15 +23,12 @@ namespace zypp
 namespace repo
 {
 
-Downloader::Downloader()
+Downloader::Downloader() {}
+Downloader::Downloader( const RepoInfo &repoinfo )
+  : _repoinfo( repoinfo )
 {
 }
-Downloader::Downloader(const RepoInfo & repoinfo) : _repoinfo(repoinfo)
-{
-}
-Downloader::~Downloader()
-{
-}
+Downloader::~Downloader() {}
 
 RepoStatus Downloader::status( MediaSetAccess &media )
 {
@@ -39,14 +36,14 @@ RepoStatus Downloader::status( MediaSetAccess &media )
   return RepoStatus();
 }
 
-void Downloader::download( MediaSetAccess &media,
-                           const Pathname &dest_dir,
-                           const ProgressData::ReceiverFnc & progress )
+void Downloader::download( MediaSetAccess &media, const Pathname &dest_dir,
+  const ProgressData::ReceiverFnc &progress )
 {
   WAR << "Non implemented" << endl;
 }
 
-void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pathname & destdir_r, const Pathname & masterIndex_r )
+void Downloader::defaultDownloadMasterIndex( MediaSetAccess &media_r,
+  const Pathname &destdir_r, const Pathname &masterIndex_r )
 {
   Pathname sigpath = masterIndex_r.extend( ".asc" );
   Pathname keypath = masterIndex_r.extend( ".key" );
@@ -57,9 +54,9 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
   start( destdir_r, media_r );
   reset();
 
-  FileChecker checker;	// set to sigchecker if appropriate, else Null.
+  FileChecker checker; // set to sigchecker if appropriate, else Null.
   SignatureFileChecker sigchecker;
-  bool isSigned = PathInfo(destdir_r / sigpath).isExist();
+  bool isSigned = PathInfo( destdir_r / sigpath ).isExist();
 
   if ( repoInfo().repoGpgCheck() )
   {
@@ -67,31 +64,36 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
     {
       // only add the signature if it exists
       if ( isSigned )
-	sigchecker = SignatureFileChecker( destdir_r / sigpath );
+        sigchecker = SignatureFileChecker( destdir_r / sigpath );
 
       KeyContext context;
       context.setRepoInfo( repoInfo() );
       // only add the key if it exists
-      if ( PathInfo(destdir_r / keypath).isExist() )
-	sigchecker.addPublicKey( destdir_r / keypath, context );
+      if ( PathInfo( destdir_r / keypath ).isExist() )
+        sigchecker.addPublicKey( destdir_r / keypath, context );
       else
-	// set the checker context even if the key is not known (unsigned repo, key
-	// file missing; bnc #495977)
-	sigchecker.setKeyContext( context );
+        // set the checker context even if the key is not known (unsigned repo, key
+        // file missing; bnc #495977)
+        sigchecker.setKeyContext( context );
 
-      checker = FileChecker( ref(sigchecker) );	// ref() to the local sigchecker is important as we want back fileValidated!
+      checker = FileChecker( ref(
+        sigchecker ) ); // ref() to the local sigchecker is important as we want back fileValidated!
     }
     else
     {
-      WAR << "Accept unsigned repository because repoGpgCheck is not mandatory for " << repoInfo().alias() << endl;
+      WAR << "Accept unsigned repository because repoGpgCheck is not mandatory "
+             "for "
+          << repoInfo().alias() << endl;
     }
   }
   else
   {
-    WAR << "Signature checking disabled in config of repository " << repoInfo().alias() << endl;
+    WAR << "Signature checking disabled in config of repository "
+        << repoInfo().alias() << endl;
   }
 
-  enqueue( OnMediaLocation( masterIndex_r, 1 ), checker ? checker : FileChecker(NullFileChecker()) );
+  enqueue( OnMediaLocation( masterIndex_r, 1 ),
+    checker ? checker : FileChecker( NullFileChecker() ) );
   start( destdir_r, media_r );
   reset();
 
@@ -103,9 +105,5 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
     _repoinfo.setValidRepoSignature( indeterminate );
 }
 
-
-}// ns repo
+} // ns repo
 } // ns zypp
-
-
-

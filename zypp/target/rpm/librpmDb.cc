@@ -35,62 +35,66 @@ namespace rpm
  **/
 class librpmDb::D
 {
-  D & operator=( const D & ); // NO ASSIGNMENT!
-  D ( const D & );            // NO COPY!
+  D &operator=( const D & ); // NO ASSIGNMENT!
+  D( const D & );            // NO COPY!
 public:
-
   const Pathname _root;   // root directory for all operations
   const Pathname _dbPath; // directory (below root) that contains the rpmdb
   rpmts _ts;              // transaction handle, includes database
-  shared_ptr<RpmException> _error;  // database error
+  shared_ptr<RpmException> _error; // database error
 
-  friend ostream & operator<<( ostream & str, const D & obj )
+  friend ostream &operator<<( ostream &str, const D &obj )
   {
-    str << "{" << obj._error  << "(" << obj._root << ")" << obj._dbPath << "}";
+    str << "{" << obj._error << "(" << obj._root << ")" << obj._dbPath << "}";
     return str;
   }
 
-  D( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r )
-      : _root  ( root_r )
-      , _dbPath( dbPath_r )
-      , _ts    ( 0 )
+  D( const Pathname &root_r, const Pathname &dbPath_r, bool readonly_r )
+    : _root( root_r )
+    , _dbPath( dbPath_r )
+    , _ts( 0 )
   {
     _error.reset();
     // set %_dbpath macro
-    ::addMacro( NULL, "_dbpath", NULL, _dbPath.asString().c_str(), RMIL_CMDLINE );
+    ::addMacro(
+      NULL, "_dbpath", NULL, _dbPath.asString().c_str(), RMIL_CMDLINE );
 
     _ts = ::rpmtsCreate();
     ::rpmtsSetRootDir( _ts, _root.c_str() );
 
     // check whether to create a new db
     PathInfo master( _root + _dbPath + "Packages" );
-    if ( ! master.isFile() )
+    if ( !master.isFile() )
     {
       // init database
-      if ( filesystem::assert_dir(_root + _dbPath) != 0 )
+      if ( filesystem::assert_dir( _root + _dbPath ) != 0 )
       {
-        ERR << "Could not create dbpath " << (_root + _dbPath).asString() << endl;
-        _error = shared_ptr<RpmInitException>(new RpmInitException(_root, _dbPath));
-        ZYPP_THROW(*_error);
+        ERR << "Could not create dbpath " << ( _root + _dbPath ).asString()
+            << endl;
+        _error = shared_ptr<RpmInitException>(
+          new RpmInitException( _root, _dbPath ) );
+        ZYPP_THROW( *_error );
       }
       int res = ::rpmtsInitDB( _ts, 0644 );
       if ( res )
       {
         ERR << "rpmdbInit error(" << res << "): " << *this << endl;
-        _error = shared_ptr<RpmInitException>(new RpmInitException(_root, _dbPath));
-	rpmtsFree(_ts);
-        ZYPP_THROW(*_error);
+        _error = shared_ptr<RpmInitException>(
+          new RpmInitException( _root, _dbPath ) );
+        rpmtsFree( _ts );
+        ZYPP_THROW( *_error );
       }
     }
 
     // open database
-    int res = ::rpmtsOpenDB( _ts, (readonly_r ? O_RDONLY : O_RDWR ));
+    int res = ::rpmtsOpenDB( _ts, ( readonly_r ? O_RDONLY : O_RDWR ) );
     if ( res )
     {
       ERR << "rpmdbOpen error(" << res << "): " << *this << endl;
-      _error = shared_ptr<RpmDbOpenException>(new RpmDbOpenException(_root, _dbPath));
-      rpmtsFree(_ts);
-      ZYPP_THROW(*_error);
+      _error = shared_ptr<RpmDbOpenException>(
+        new RpmDbOpenException( _root, _dbPath ) );
+      rpmtsFree( _ts );
+      ZYPP_THROW( *_error );
       return;
     }
 
@@ -101,7 +105,7 @@ public:
   {
     if ( _ts )
     {
-      ::rpmtsFree(_ts);
+      ::rpmtsFree( _ts );
     }
   }
 };
@@ -114,10 +118,10 @@ public:
 //
 ///////////////////////////////////////////////////////////////////
 
-Pathname         librpmDb::_defaultRoot  ( "/" );
-Pathname         librpmDb::_defaultDbPath( "/var/lib/rpm" );
+Pathname librpmDb::_defaultRoot( "/" );
+Pathname librpmDb::_defaultDbPath( "/var/lib/rpm" );
 librpmDb::constPtr librpmDb::_defaultDb;
-bool             librpmDb::_dbBlocked    ( true );
+bool librpmDb::_dbBlocked( true );
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -141,11 +145,8 @@ bool librpmDb::globalInit()
 
   initialized = true; // Necessary to be able to use exand().
 
-#define OUTVAL(n) << " (" #n ":" << expand( "%{" #n "}" ) << ")"
-  MIL << "librpm init done:"
-  OUTVAL(_target)
-  OUTVAL(_dbpath)
-  << endl;
+#define OUTVAL( n ) << " (" #n ":" << expand( "%{" #n "}" ) << ")"
+  MIL << "librpm init done:" OUTVAL( _target ) OUTVAL( _dbpath ) << endl;
 #undef OUTVAL
   return initialized;
 }
@@ -156,12 +157,12 @@ bool librpmDb::globalInit()
 //	METHOD NAME : librpmDb::expand
 //	METHOD TYPE : std::string
 //
-std::string librpmDb::expand( const std::string & macro_r )
+std::string librpmDb::expand( const std::string &macro_r )
 {
-  if ( ! globalInit() )
-    return macro_r;  // unexpanded
+  if ( !globalInit() )
+    return macro_r; // unexpanded
 
-  char * val = ::rpmExpand( macro_r.c_str(), NULL );
+  char *val = ::rpmExpand( macro_r.c_str(), NULL );
   if ( !val )
     return "";
 
@@ -176,32 +177,33 @@ std::string librpmDb::expand( const std::string & macro_r )
 //	METHOD NAME : librpmDb::newLibrpmDb
 //	METHOD TYPE : librpmDb *
 //
-librpmDb * librpmDb::newLibrpmDb( Pathname root_r, Pathname dbPath_r, bool readonly_r )
+librpmDb *librpmDb::newLibrpmDb(
+  Pathname root_r, Pathname dbPath_r, bool readonly_r )
 {
   // check arguments
-  if ( ! (root_r.absolute() && dbPath_r.absolute()) )
+  if ( !( root_r.absolute() && dbPath_r.absolute() ) )
   {
-    ZYPP_THROW(RpmInvalidRootException(root_r, dbPath_r));
+    ZYPP_THROW( RpmInvalidRootException( root_r, dbPath_r ) );
   }
 
   // initialize librpm
-  if ( ! globalInit() )
+  if ( !globalInit() )
   {
-    ZYPP_THROW(GlobalRpmInitException());
+    ZYPP_THROW( GlobalRpmInitException() );
   }
 
   // open rpmdb
-  librpmDb * ret = 0;
+  librpmDb *ret = 0;
   try
   {
     ret = new librpmDb( root_r, dbPath_r, readonly_r );
   }
-  catch (const RpmException & excpt_r)
+  catch ( const RpmException &excpt_r )
   {
-    ZYPP_CAUGHT(excpt_r);
+    ZYPP_CAUGHT( excpt_r );
     delete ret;
     ret = 0;
-    ZYPP_RETHROW(excpt_r);
+    ZYPP_RETHROW( excpt_r );
   }
   return ret;
 }
@@ -212,12 +214,12 @@ librpmDb * librpmDb::newLibrpmDb( Pathname root_r, Pathname dbPath_r, bool reado
 //	METHOD NAME : librpmDb::dbAccess
 //	METHOD TYPE : PMError
 //
-void librpmDb::dbAccess( const Pathname & root_r, const Pathname & dbPath_r )
+void librpmDb::dbAccess( const Pathname &root_r, const Pathname &dbPath_r )
 {
   // check arguments
-  if ( ! (root_r.absolute() && dbPath_r.absolute()) )
+  if ( !( root_r.absolute() && dbPath_r.absolute() ) )
   {
-    ZYPP_THROW(RpmInvalidRootException(root_r, dbPath_r));
+    ZYPP_THROW( RpmInvalidRootException( root_r, dbPath_r ) );
   }
 
   if ( _defaultDb )
@@ -227,14 +229,16 @@ void librpmDb::dbAccess( const Pathname & root_r, const Pathname & dbPath_r )
       return;
     else
     {
-      ZYPP_THROW(RpmDbAlreadyOpenException(_defaultRoot, _defaultDbPath, root_r, dbPath_r));
+      ZYPP_THROW( RpmDbAlreadyOpenException(
+        _defaultRoot, _defaultDbPath, root_r, dbPath_r ) );
     }
   }
 
   // got no database: we could switch to a new one (even if blocked!)
   _defaultRoot = root_r;
   _defaultDbPath = dbPath_r;
-  MIL << "Set new database location: " << stringPath( _defaultRoot, _defaultDbPath ) << endl;
+  MIL << "Set new database location: "
+      << stringPath( _defaultRoot, _defaultDbPath ) << endl;
 
   return dbAccess();
 }
@@ -249,13 +253,13 @@ void librpmDb::dbAccess()
 {
   if ( _dbBlocked )
   {
-    ZYPP_THROW(RpmAccessBlockedException(_defaultRoot, _defaultDbPath));
+    ZYPP_THROW( RpmAccessBlockedException( _defaultRoot, _defaultDbPath ) );
   }
 
   if ( !_defaultDb )
   {
     // get access
-    _defaultDb = newLibrpmDb( _defaultRoot, _defaultDbPath, /*readonly*/true );
+    _defaultDb = newLibrpmDb( _defaultRoot, _defaultDbPath, /*readonly*/ true );
   }
 }
 
@@ -265,17 +269,17 @@ void librpmDb::dbAccess()
 //	METHOD NAME : librpmDb::dbAccess
 //	METHOD TYPE : PMError
 //
-void librpmDb::dbAccess( librpmDb::constPtr & ptr_r )
+void librpmDb::dbAccess( librpmDb::constPtr &ptr_r )
 {
   try
   {
     dbAccess();
   }
-  catch (const RpmException & excpt_r)
+  catch ( const RpmException &excpt_r )
   {
-    ZYPP_CAUGHT(excpt_r);
+    ZYPP_CAUGHT( excpt_r );
     ptr_r = 0;
-    ZYPP_RETHROW(excpt_r);
+    ZYPP_RETHROW( excpt_r );
   }
   ptr_r = _defaultDb;
 }
@@ -297,21 +301,24 @@ unsigned librpmDb::dbRelease( bool force_r )
 
   switch ( outstanding )
   {
-  default:
-    if ( !force_r )
-    {
-      DBG << "dbRelease: keep access, outstanding " << outstanding << endl;
-      break;
-    }
+    default:
+      if ( !force_r )
+      {
+        DBG << "dbRelease: keep access, outstanding " << outstanding << endl;
+        break;
+      }
     // else fall through:
-  case 0:
-    DBG << "dbRelease: release" << (force_r && outstanding ? "(forced)" : "")
-    << ", outstanding " << outstanding << endl;
+    case 0:
+      DBG << "dbRelease: release"
+          << ( force_r && outstanding ? "(forced)" : "" ) << ", outstanding "
+          << outstanding << endl;
 
-    _defaultDb->_d._error = shared_ptr<RpmAccessBlockedException>(new RpmAccessBlockedException(_defaultDb->_d._root, _defaultDb->_d._dbPath));
-    // tag handle invalid
-    _defaultDb = 0;
-    break;
+      _defaultDb->_d._error =
+        shared_ptr<RpmAccessBlockedException>( new RpmAccessBlockedException(
+          _defaultDb->_d._root, _defaultDb->_d._dbPath ) );
+      // tag handle invalid
+      _defaultDb = 0;
+      break;
   }
 
   return outstanding;
@@ -327,7 +334,7 @@ unsigned librpmDb::blockAccess()
 {
   MIL << "Block access" << endl;
   _dbBlocked = true;
-  return dbRelease( /*force*/true );
+  return dbRelease( /*force*/ true );
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -348,11 +355,12 @@ void librpmDb::unblockAccess()
 //	METHOD NAME : librpmDb::dumpState
 //	METHOD TYPE : ostream &
 //
-ostream & librpmDb::dumpState( ostream & str )
+ostream &librpmDb::dumpState( ostream &str )
 {
   if ( !_defaultDb )
   {
-    return str << "[librpmDb " << (_dbBlocked?"BLOCKED":"CLOSED") << " " << stringPath( _defaultRoot, _defaultDbPath ) << "]";
+    return str << "[librpmDb " << ( _dbBlocked ? "BLOCKED" : "CLOSED" ) << " "
+               << stringPath( _defaultRoot, _defaultDbPath ) << "]";
   }
   return str << "[" << _defaultDb << "]";
 }
@@ -371,9 +379,11 @@ ostream & librpmDb::dumpState( ostream & str )
 //
 //	DESCRIPTION :
 //
-librpmDb::librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r )
-    : _d( * new D( root_r, dbPath_r, readonly_r ) )
-{}
+librpmDb::librpmDb(
+  const Pathname &root_r, const Pathname &dbPath_r, bool readonly_r )
+  : _d( *new D( root_r, dbPath_r, readonly_r ) )
+{
+}
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -383,10 +393,7 @@ librpmDb::librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool rea
 //
 //	DESCRIPTION :
 //
-librpmDb::~librpmDb()
-{
-  delete &_d;
-}
+librpmDb::~librpmDb() { delete &_d; }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -408,10 +415,7 @@ void librpmDb::unref_to( unsigned refCount_r ) const
 //	METHOD NAME : librpmDb::root
 //	METHOD TYPE : const Pathname &
 //
-const Pathname & librpmDb::root() const
-{
-  return _d._root;
-}
+const Pathname &librpmDb::root() const { return _d._root; }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -419,10 +423,7 @@ const Pathname & librpmDb::root() const
 //	METHOD NAME : librpmDb::dbPath
 //	METHOD TYPE : const Pathname &
 //
-const Pathname & librpmDb::dbPath() const
-{
-  return _d._dbPath;
-}
+const Pathname &librpmDb::dbPath() const { return _d._dbPath; }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -430,10 +431,7 @@ const Pathname & librpmDb::dbPath() const
 //	METHOD NAME : librpmDb::error
 //	METHOD TYPE : PMError
 //
-shared_ptr<RpmException> librpmDb::error() const
-{
-  return _d._error;
-}
+shared_ptr<RpmException> librpmDb::error() const { return _d._error; }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -443,7 +441,7 @@ shared_ptr<RpmException> librpmDb::error() const
 //
 bool librpmDb::empty() const
 {
-  return( valid() && ! *db_const_iterator( this ) );
+  return ( valid() && !*db_const_iterator( this ) );
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -470,10 +468,7 @@ unsigned librpmDb::size() const
 //	METHOD NAME : librpmDb::dont_call_it
 //	METHOD TYPE : void *
 //
-void * librpmDb::dont_call_it() const
-{
-  return rpmtsGetRdb(_d._ts);
-}
+void *librpmDb::dont_call_it() const { return rpmtsGetRdb( _d._ts ); }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -483,7 +478,7 @@ void * librpmDb::dont_call_it() const
 //
 //	DESCRIPTION :
 //
-ostream & librpmDb::dumpOn( ostream & str ) const
+ostream &librpmDb::dumpOn( ostream &str ) const
 {
   ReferenceCounted::dumpOn( str ) << _d;
   return str;
@@ -501,20 +496,22 @@ ostream & librpmDb::dumpOn( ostream & str ) const
 //	METHOD NAME : librpmDb::DbDirInfo::DbDirInfo
 //	METHOD TYPE : Constructor
 //
-librpmDb::DbDirInfo::DbDirInfo( const Pathname & root_r, const Pathname & dbPath_r )
-    : _root( root_r )
-    , _dbPath( dbPath_r )
+librpmDb::DbDirInfo::DbDirInfo(
+  const Pathname &root_r, const Pathname &dbPath_r )
+  : _root( root_r )
+  , _dbPath( dbPath_r )
 {
   // check and adjust arguments
-  if ( ! (root_r.absolute() && dbPath_r.absolute()) )
+  if ( !( root_r.absolute() && dbPath_r.absolute() ) )
   {
-    ERR << "Relative path for root(" << _root << ") or dbPath(" << _dbPath << ")" << endl;
+    ERR << "Relative path for root(" << _root << ") or dbPath(" << _dbPath
+        << ")" << endl;
   }
   else
   {
-    _dbDir   ( _root + _dbPath );
-    _dbV4    ( _dbDir.path() + "Packages" );
-    _dbV3    ( _dbDir.path() + "packages.rpm" );
+    _dbDir( _root + _dbPath );
+    _dbV4( _dbDir.path() + "Packages" );
+    _dbV3( _dbDir.path() + "packages.rpm" );
     _dbV3ToV4( _dbDir.path() + "packages.rpm3" );
     DBG << *this << endl;
   }
@@ -541,7 +538,7 @@ void librpmDb::DbDirInfo::restat()
 **	FUNCTION NAME : operator<<
 **	FUNCTION TYPE : std::ostream &
 */
-std::ostream & operator<<( std::ostream & str, const librpmDb::DbDirInfo & obj )
+std::ostream &operator<<( std::ostream &str, const librpmDb::DbDirInfo &obj )
 {
   if ( obj.illegalArgs() )
   {
@@ -566,19 +563,18 @@ std::ostream & operator<<( std::ostream & str, const librpmDb::DbDirInfo & obj )
  **/
 class librpmDb::db_const_iterator::D
 {
-  D & operator=( const D & ); // NO ASSIGNMENT!
-  D ( const D & );            // NO COPY!
+  D &operator=( const D & ); // NO ASSIGNMENT!
+  D( const D & );            // NO COPY!
 public:
-
-  librpmDb::constPtr     _dbptr;
+  librpmDb::constPtr _dbptr;
   shared_ptr<RpmException> _dberr;
 
   RpmHeader::constPtr _hptr;
-  rpmdbMatchIterator   _mi;
+  rpmdbMatchIterator _mi;
 
   D( librpmDb::constPtr dbptr_r )
-      : _dbptr( dbptr_r )
-      , _mi( 0 )
+    : _dbptr( dbptr_r )
+    , _mi( 0 )
   {
     if ( !_dbptr )
     {
@@ -586,9 +582,9 @@ public:
       {
         librpmDb::dbAccess( _dbptr );
       }
-      catch (const RpmException & excpt_r)
+      catch ( const RpmException &excpt_r )
       {
-        ZYPP_CAUGHT(excpt_r);
+        ZYPP_CAUGHT( excpt_r );
       }
       if ( !_dbptr )
       {
@@ -613,12 +609,12 @@ public:
    * Let iterator access a dbindex file. Call @ref advance to access the
    * 1st element (if present).
    **/
-  bool create( int rpmtag, const void * keyp = NULL, size_t keylen = 0 )
+  bool create( int rpmtag, const void *keyp = NULL, size_t keylen = 0 )
   {
     destroy();
-    if ( ! _dbptr )
+    if ( !_dbptr )
       return false;
-    _mi = ::rpmtsInitIterator( _dbptr->_d._ts, rpmTag(rpmtag), keyp, keylen );
+    _mi = ::rpmtsInitIterator( _dbptr->_d._ts, rpmTag( rpmtag ), keyp, keylen );
     return _mi;
   }
 
@@ -651,7 +647,7 @@ public:
     if ( !_mi )
       return false;
     Header h = ::rpmdbNextIterator( _mi );
-    if ( ! h )
+    if ( !h )
     {
       destroy();
       return false;
@@ -663,9 +659,9 @@ public:
   /**
    * Access a dbindex file and advance to the 1st header.
    **/
-  bool init( int rpmtag, const void * keyp = NULL, size_t keylen = 0 )
+  bool init( int rpmtag, const void *keyp = NULL, size_t keylen = 0 )
   {
-    if ( ! create( rpmtag, keyp, keylen ) )
+    if ( !create( rpmtag, keyp, keylen ) )
       return false;
     return advance();
   }
@@ -676,10 +672,10 @@ public:
    **/
   bool set( int off_r )
   {
-    if ( ! create( RPMDBI_PACKAGES ) )
+    if ( !create( RPMDBI_PACKAGES ) )
       return false;
 #warning TESTCASE: rpmdbAppendIterator and (non)sequential access?
-#ifdef RPMFILEITERMAX	// since rpm.4.12
+#ifdef RPMFILEITERMAX // since rpm.4.12
     ::rpmdbAppendIterator( _mi, (const unsigned *)&off_r, 1 );
 #else
     ::rpmdbAppendIterator( _mi, &off_r, 1 );
@@ -687,10 +683,7 @@ public:
     return advance();
   }
 
-  unsigned offset()
-  {
-    return( _mi ? ::rpmdbGetIteratorOffset( _mi ) : 0 );
-  }
+  unsigned offset() { return ( _mi ? ::rpmdbGetIteratorOffset( _mi ) : 0 ); }
 
   int size()
   {
@@ -698,7 +691,7 @@ public:
       return 0;
     int ret = ::rpmdbGetIteratorCount( _mi );
 #warning TESTCASE: rpmdbGetIteratorCount returns 0 on sequential access?
-    return( ret ? ret : -1 ); // -1: sequential access
+    return ( ret ? ret : -1 ); // -1: sequential access
   }
 };
 
@@ -717,7 +710,7 @@ public:
 //	METHOD TYPE : Constructor
 //
 librpmDb::db_const_iterator::db_const_iterator( librpmDb::constPtr dbptr_r )
-    : _d( * new D( dbptr_r ) )
+  : _d( *new D( dbptr_r ) )
 {
   findAll();
 }
@@ -728,10 +721,7 @@ librpmDb::db_const_iterator::db_const_iterator( librpmDb::constPtr dbptr_r )
 //	METHOD NAME : librpmDb::db_const_iterator::~db_const_iterator
 //	METHOD TYPE : Destructor
 //
-librpmDb::db_const_iterator::~db_const_iterator()
-{
-  delete &_d;
-}
+librpmDb::db_const_iterator::~db_const_iterator() { delete &_d; }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -739,10 +729,7 @@ librpmDb::db_const_iterator::~db_const_iterator()
 //	METHOD NAME : librpmDb::db_const_iterator::operator++
 //	METHOD TYPE : void
 //
-void librpmDb::db_const_iterator::operator++()
-{
-  _d.advance();
-}
+void librpmDb::db_const_iterator::operator++() { _d.advance(); }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -750,10 +737,7 @@ void librpmDb::db_const_iterator::operator++()
 //	METHOD NAME : librpmDb::db_const_iterator::dbHdrNum
 //	METHOD TYPE : unsigned
 //
-unsigned librpmDb::db_const_iterator::dbHdrNum() const
-{
-  return _d.offset();
-}
+unsigned librpmDb::db_const_iterator::dbHdrNum() const { return _d.offset(); }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -761,7 +745,7 @@ unsigned librpmDb::db_const_iterator::dbHdrNum() const
 //	METHOD NAME : librpmDb::db_const_iterator::operator*
 //	METHOD TYPE : const RpmHeader::constPtr &
 //
-const RpmHeader::constPtr & librpmDb::db_const_iterator::operator*() const
+const RpmHeader::constPtr &librpmDb::db_const_iterator::operator*() const
 {
   return _d._hptr;
 }
@@ -786,12 +770,10 @@ shared_ptr<RpmException> librpmDb::db_const_iterator::dbError() const
 **	FUNCTION NAME : operator<<
 **	FUNCTION TYPE : ostream &
 */
-ostream & operator<<( ostream & str, const librpmDb::db_const_iterator & obj )
+ostream &operator<<( ostream &str, const librpmDb::db_const_iterator &obj )
 {
-  str << "db_const_iterator(" << obj._d._dbptr
-  << " Size:" << obj._d.size()
-  << " HdrNum:" << obj._d.offset()
-  << ")";
+  str << "db_const_iterator(" << obj._d._dbptr << " Size:" << obj._d.size()
+      << " HdrNum:" << obj._d.offset() << ")";
   return str;
 }
 
@@ -812,7 +794,7 @@ bool librpmDb::db_const_iterator::findAll()
 //	METHOD NAME : librpmDb::db_const_iterator::findByFile
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findByFile( const std::string & file_r )
+bool librpmDb::db_const_iterator::findByFile( const std::string &file_r )
 {
   return _d.init( RPMTAG_BASENAMES, file_r.c_str() );
 }
@@ -823,7 +805,7 @@ bool librpmDb::db_const_iterator::findByFile( const std::string & file_r )
 //	METHOD NAME : librpmDb::db_const_iterator::findByProvides
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findByProvides( const std::string & tag_r )
+bool librpmDb::db_const_iterator::findByProvides( const std::string &tag_r )
 {
   return _d.init( RPMTAG_PROVIDENAME, tag_r.c_str() );
 }
@@ -834,7 +816,7 @@ bool librpmDb::db_const_iterator::findByProvides( const std::string & tag_r )
 //	METHOD NAME : librpmDb::db_const_iterator::findByRequiredBy
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findByRequiredBy( const std::string & tag_r )
+bool librpmDb::db_const_iterator::findByRequiredBy( const std::string &tag_r )
 {
   return _d.init( RPMTAG_REQUIRENAME, tag_r.c_str() );
 }
@@ -845,7 +827,7 @@ bool librpmDb::db_const_iterator::findByRequiredBy( const std::string & tag_r )
 //	METHOD NAME : librpmDb::db_const_iterator::findByConflicts
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findByConflicts( const std::string & tag_r )
+bool librpmDb::db_const_iterator::findByConflicts( const std::string &tag_r )
 {
   return _d.init( RPMTAG_CONFLICTNAME, tag_r.c_str() );
 }
@@ -856,7 +838,7 @@ bool librpmDb::db_const_iterator::findByConflicts( const std::string & tag_r )
 //	METHOD NAME : librpmDb::findByName
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findByName( const string & name_r )
+bool librpmDb::db_const_iterator::findByName( const string &name_r )
 {
   return _d.init( RPMTAG_NAME, name_r.c_str() );
 }
@@ -867,16 +849,16 @@ bool librpmDb::db_const_iterator::findByName( const string & name_r )
 //	METHOD NAME : librpmDb::db_const_iterator::findPackage
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findPackage( const string & name_r )
+bool librpmDb::db_const_iterator::findPackage( const string &name_r )
 {
-  if ( ! _d.init( RPMTAG_NAME, name_r.c_str() ) )
+  if ( !_d.init( RPMTAG_NAME, name_r.c_str() ) )
     return false;
 
   if ( _d.size() == 1 )
     return true;
 
   // check installtime on multiple entries
-  int match    = 0;
+  int match = 0;
   time_t itime = 0;
   for ( ; operator*(); operator++() )
   {
@@ -896,9 +878,10 @@ bool librpmDb::db_const_iterator::findPackage( const string & name_r )
 //	METHOD NAME : librpmDb::db_const_iterator::findPackage
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findPackage( const std::string & name_r, const Edition & ed_r )
+bool librpmDb::db_const_iterator::findPackage(
+  const std::string &name_r, const Edition &ed_r )
 {
-  if ( ! _d.init( RPMTAG_NAME, name_r.c_str() ) )
+  if ( !_d.init( RPMTAG_NAME, name_r.c_str() ) )
     return false;
 
   for ( ; operator*(); operator++() )
@@ -919,9 +902,10 @@ bool librpmDb::db_const_iterator::findPackage( const std::string & name_r, const
 //	METHOD NAME : librpmDb::db_const_iterator::findPackage
 //	METHOD TYPE : bool
 //
-bool librpmDb::db_const_iterator::findPackage( const Package::constPtr & which_r )
+bool librpmDb::db_const_iterator::findPackage(
+  const Package::constPtr &which_r )
 {
-  if ( ! which_r )
+  if ( !which_r )
     return _d.destroy();
 
   return findPackage( which_r->name(), which_r->edition() );

@@ -20,7 +20,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /* http://www.boost.org/doc/html/function.html
+/* http://www.boost.org/doc/html/function.html
 
    The Boost.Function library contains a family of class templates
    that are function object wrappers. The notion is similar to a
@@ -39,9 +39,9 @@ namespace zypp
    designated by Boost.Function can be converted to the arguments of
    the target function object.
   */
-  using boost::function;
+using boost::function;
 
-  /* http://www.boost.org/libs/bind/bind.html
+/* http://www.boost.org/libs/bind/bind.html
 
    boost::bind is a generalization of the standard functions std::bind1st
    and std::bind2nd. It supports arbitrary function objects, functions,
@@ -51,9 +51,9 @@ namespace zypp
    in particular, it does not need the result_type, first_argument_type and
    second_argument_type  standard typedefs.
   */
-  using boost::bind;
+using boost::bind;
 
-  /* http://www.boost.org/doc/html/ref.html
+/* http://www.boost.org/doc/html/ref.html
 
    The Ref library is a small library that is useful for passing references
    to function templates (algorithms) that would usually take copies of their
@@ -70,9 +70,9 @@ namespace zypp
    conversion to T&. This usually allows the function templates to work on
    references unmodified.
   */
-  using boost::ref;
+using boost::ref;
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_FUNCTION_H

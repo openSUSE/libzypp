@@ -20,52 +20,54 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace target
-  {
-    ///////////////////////////////////////////////////////////////////
-    /// \class RpmPostTransCollector
-    /// \brief Extract and remember %posttrans scripts for later execution
-    /// \todo Maybe embedd this into the TransactionSteps.
-    ///////////////////////////////////////////////////////////////////
-    class RpmPostTransCollector
-    {
-      friend std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector & obj );
-      friend std::ostream & dumpOn( std::ostream & str, const RpmPostTransCollector & obj );
+///////////////////////////////////////////////////////////////////
+namespace target
+{
+///////////////////////////////////////////////////////////////////
+/// \class RpmPostTransCollector
+/// \brief Extract and remember %posttrans scripts for later execution
+/// \todo Maybe embedd this into the TransactionSteps.
+///////////////////////////////////////////////////////////////////
+class RpmPostTransCollector
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const RpmPostTransCollector &obj );
+  friend std::ostream &dumpOn(
+    std::ostream &str, const RpmPostTransCollector &obj );
 
-      public:
-        /** Default ctor */
-        RpmPostTransCollector( const Pathname & root_r );
+public:
+  /** Default ctor */
+  RpmPostTransCollector( const Pathname &root_r );
 
-        /** Dtor */
-        ~RpmPostTransCollector();
+  /** Dtor */
+  ~RpmPostTransCollector();
 
-      public:
-	/** Extract and remember a packages %posttrans script for later execution.
+public:
+  /** Extract and remember a packages %posttrans script for later execution.
 	 * \return whether a script was collected.
 	 */
-	bool collectScriptFromPackage( ManagedFile rpmPackage_r );
+  bool collectScriptFromPackage( ManagedFile rpmPackage_r );
 
-	/** Execute te remembered scripts. */
-	void executeScripts();
+  /** Execute te remembered scripts. */
+  void executeScripts();
 
-	/** Discard all remembered scrips. */
-	void discardScripts();
+  /** Discard all remembered scrips. */
+  void discardScripts();
 
-      public:
-        class Impl;              ///< Implementation class.
-      private:
-        RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
-    };
+public:
+  class Impl; ///< Implementation class.
+private:
+  RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
+};
 
-    /** \relates RpmPostTransCollector Stream output */
-    std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector & obj );
+/** \relates RpmPostTransCollector Stream output */
+std::ostream &operator<<( std::ostream &str, const RpmPostTransCollector &obj );
 
-    /** \relates RpmPostTransCollector Verbose stream output */
-    std::ostream & dumOn( std::ostream & str, const RpmPostTransCollector & obj );
+/** \relates RpmPostTransCollector Verbose stream output */
+std::ostream &dumOn( std::ostream &str, const RpmPostTransCollector &obj );
 
-  } // namespace target
-  ///////////////////////////////////////////////////////////////////
+} // namespace target
+///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_TARGET_RPMPOSTTRANSCOLLECTOR_H

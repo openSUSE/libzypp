@@ -23,43 +23,52 @@
  */
 #define NFS_MOUNT_TIMEOUT 300
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : MediaNFS
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : MediaNFS
+/**
      * @short Implementation class for NFS MediaHandler
      * @see MediaHandler
      **/
-    class MediaNFS : public MediaHandler {
+class MediaNFS : public MediaHandler
+{
 
-      protected:
+protected:
+  virtual void attachTo( bool next = false );
 
-	virtual void attachTo (bool next = false);
+  virtual void releaseFrom( const std::string &ejectDev );
+  virtual void getFile( const Pathname &filename ) const;
+  virtual void getDir( const Pathname &dirname, bool recurse_r ) const;
+  virtual void getDirInfo( std::list<std::string> &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual void getDirInfo( filesystem::DirContent &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual bool getDoesFileExist( const Pathname &filename ) const;
 
-        virtual void releaseFrom( const std::string & ejectDev );
-	virtual void getFile( const Pathname & filename ) const;
-	virtual void getDir( const Pathname & dirname, bool recurse_r ) const;
-        virtual void getDirInfo( std::list<std::string> & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual void getDirInfo( filesystem::DirContent & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual bool getDoesFileExist( const Pathname & filename ) const;
+public:
+  MediaNFS( const Url &url_r, const Pathname &attach_point_hint_r );
 
-      public:
+  virtual ~MediaNFS()
+  {
+    try
+    {
+      release();
+    }
+    catch ( ... )
+    {
+    }
+  }
 
-        MediaNFS( const Url&       url_r,
-		  const Pathname & attach_point_hint_r );
+  virtual bool isAttached() const;
+};
 
-        virtual ~MediaNFS() { try { release(); } catch(...) {} }
-
-    	virtual bool isAttached() const;
-    };
-
-    ///////////////////////////////////////////////////////////////////
-  } // namespace media
+///////////////////////////////////////////////////////////////////
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_MEDIANFS_H

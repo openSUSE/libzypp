@@ -20,16 +20,16 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /******************************************************************
+/******************************************************************
   **
   **	FUNCTION NAME : operator<<
   **	FUNCTION TYPE : std::ostream &
   */
-  std::ostream & operator<<( std::ostream & str, const PoolQueryResult & obj )
-  {
-    return dumpRange( str, obj.begin(), obj.end() );
-  }
+std::ostream &operator<<( std::ostream &str, const PoolQueryResult &obj )
+{
+  return dumpRange( str, obj.begin(), obj.end() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

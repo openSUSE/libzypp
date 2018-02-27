@@ -22,113 +22,100 @@
 
 #include <list>
 
-
 //////////////////////////////////////////////////////////////////////
 namespace zypp
 { ////////////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////////////
-  namespace media
-  { //////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+namespace media
+{ //////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////
+typedef zypp::RW_pointer<MediaAccess> MediaAccessRef;
 
-    ///////////////////////////////////////////////////////////////////
-    typedef zypp::RW_pointer<MediaAccess> MediaAccessRef;
+// OBSOLETE HERE:
+typedef MediaAccessId MediaId;
+typedef unsigned int MediaNr;
 
-    // OBSOLETE HERE:
-    typedef MediaAccessId                 MediaId;
-    typedef unsigned int                  MediaNr;
+///////////////////////////////////////////////////////////////////
+// forward declaration
+class MountEntry;
+class MediaManager_Impl;
 
-
-    ///////////////////////////////////////////////////////////////////
-    // forward declaration
-    class MountEntry;
-    class MediaManager_Impl;
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    // CLASS NAME : MediaVerifierBase
-    //
-    /**
+///////////////////////////////////////////////////////////////////
+//
+// CLASS NAME : MediaVerifierBase
+//
+/**
      * Interface to implement a media verifier.
      */
-    class MediaVerifierBase //: private zypp::NonCopyable
-    {
-    public:
-      MediaVerifierBase()
-      {}
+class MediaVerifierBase //: private zypp::NonCopyable
+{
+public:
+  MediaVerifierBase() {}
 
-      virtual
-      ~MediaVerifierBase()
-      {}
+  virtual ~MediaVerifierBase() {}
 
-      /**
+  /**
        * Returns a string with some info about the verifier.
        * By default, the type info name is returned.
        */
-      virtual std::string
-      info() const;
+  virtual std::string info() const;
 
-      /*
+  /*
       ** Check if the specified attached media contains
       ** the desired media (e.g. SLES10 CD1).
       */
-      virtual bool
-      isDesiredMedia(const MediaAccessRef &ref) = 0;
-    };
+  virtual bool isDesiredMedia( const MediaAccessRef &ref ) = 0;
+};
 
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    // CLASS NAME : NoVerifier
-    //
-    /**
+///////////////////////////////////////////////////////////////////
+//
+// CLASS NAME : NoVerifier
+//
+/**
      * Dummy default media verifier, which is always happy.
      */
-    class NoVerifier : public MediaVerifierBase
-    {
-    public:
-      NoVerifier(): MediaVerifierBase()
-      {}
+class NoVerifier : public MediaVerifierBase
+{
+public:
+  NoVerifier()
+    : MediaVerifierBase()
+  {
+  }
 
-      virtual
-      ~NoVerifier()
-      {}
+  virtual ~NoVerifier() {}
 
-      /**
+  /**
        * Returns the "zypp::media::NoVerifier" string.
        */
-      virtual std::string
-      info() const;
+  virtual std::string info() const;
 
-      /*
+  /*
       ** Don't check if the specified attached media contains
       ** the desired media number. Always return true.
       */
-      virtual bool
-      isDesiredMedia(const MediaAccessRef &ref)
-      {
-        (void)ref;
-        return true;
-      }
-    };
+  virtual bool isDesiredMedia( const MediaAccessRef &ref )
+  {
+    (void)ref;
+    return true;
+  }
+};
 
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    // CLASS NAME : MediaVerifierRef
-    //
-    /**
+///////////////////////////////////////////////////////////////////
+//
+// CLASS NAME : MediaVerifierRef
+//
+/**
      * A shared reference to the MediaVerifier implementation.
      */
-    typedef zypp::RW_pointer<MediaVerifierBase> MediaVerifierRef;
+typedef zypp::RW_pointer<MediaVerifierBase> MediaVerifierRef;
 
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    // CLASS NAME : MediaManager
-    //
-    /**
+///////////////////////////////////////////////////////////////////
+//
+// CLASS NAME : MediaManager
+//
+/**
      * Manages access to the 'physical' media, e.g CDROM drives,
      * Disk volumes, directory trees, etc, using \ref MediaAccessUrl's.
      *
@@ -470,10 +457,10 @@ namespace zypp
      *   - \c script<->libzypp communication:
      *     - \TODO to be documented.
      */
-    class MediaManager: private zypp::base::NonCopyable
-    {
-    public:
-      /**
+class MediaManager : private zypp::base::NonCopyable
+{
+public:
+  /**
        * Creates a MediaManager envelope instance.
        *
        * In the case, that the inner implementation is not already
@@ -484,15 +471,15 @@ namespace zypp
        *
        * \throws std::bad_alloc
        */
-      MediaManager();
+  MediaManager();
 
-      /**
+  /**
        * Destroys MediaManager envelope instance.
        * Decreases the use counter of the inner implementation.
        */
-      ~MediaManager();
+  ~MediaManager();
 
-      /**
+  /**
        * Opens the media access for specified with the url.
        *
        * If the \p preferred_attach_point parameter does not
@@ -512,26 +499,24 @@ namespace zypp
        * \throws std::bad_alloc
        * \throws MediaException
        */
-      MediaAccessId
-      open(const Url &url, const Pathname & preferred_attach_point = "");
+  MediaAccessId open(
+    const Url &url, const Pathname &preferred_attach_point = "" );
 
-      /**
+  /**
        * Close the media access with specified id.
        * \param accessId The media access id to close.
        */
-      void
-      close(MediaAccessId accessId);
+  void close( MediaAccessId accessId );
 
-      /**
+  /**
        * Query if the media access is open / exists.
        *
        * \param accessId The media access id to query.
        * \return true, if access id is known and open.
        */
-      bool
-      isOpen(MediaAccessId accessId) const;
+  bool isOpen( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Query the protocol name used by the media access
        * handler. Similar to url().getScheme().
        *
@@ -540,29 +525,26 @@ namespace zypp
        *         handler, otherwise 'unknown'.
        * \throws MediaNotOpenException for invalid access id.
        */
-      std::string
-      protocol(MediaAccessId accessId) const;
+  std::string protocol( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Hint if files are downloaded or not.
        * \param accessId The media access id to query.
        * \return True, if provideFile downloads files.
        */
-      bool
-      downloads(MediaAccessId accessId) const;
+  bool downloads( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Returns the \ref MediaAccessUrl of the media access id.
        *
        * \param accessId The media access id to query.
        * \return The \ref MediaAccessUrl used by the media access id.
        * \throws MediaNotOpenException for invalid access id.
        */
-      Url
-      url(MediaAccessId accessId) const;
+  Url url( MediaAccessId accessId ) const;
 
-    public:
-      /**
+public:
+  /**
        * Add verifier implementation for the specified media id.
        * By default, the NoVerifier is used.
        *
@@ -570,22 +552,19 @@ namespace zypp
        * \param verifier The new verifier.
        * \throws MediaNotOpenException for invalid access id.
        */
-      void
-      addVerifier(MediaAccessId accessId,
-                  const MediaVerifierRef &verifier);
+  void addVerifier( MediaAccessId accessId, const MediaVerifierRef &verifier );
 
-      /**
+  /**
        * Remove verifier for specified media id.
        * It resets the verifier to NoVerifier.
        *
        * \param accessId A media access id.
        * \throws MediaNotOpenException for invalid access id.
        */
-      void
-      delVerifier(MediaAccessId accessId);
+  void delVerifier( MediaAccessId accessId );
 
-    public:
-      /**
+public:
+  /**
        * Set or resets the directory name, where the media manager
        * handlers create their temporary attach points (see open()
        * function).
@@ -597,10 +576,9 @@ namespace zypp
        *         parameters contains a path name, that does not
        *         point to a writable directory.
        */
-      bool
-      setAttachPrefix(const Pathname &attach_prefix);
+  bool setAttachPrefix( const Pathname &attach_prefix );
 
-      /**
+  /**
        * Attach the media using the concrete handler (checks all devices).
        *
        * Remember to release() or close() each id you've attached
@@ -609,10 +587,9 @@ namespace zypp
        * \param accessId A media access id.
        * \throws MediaNotOpenException for invalid access id.
        */
-      void
-      attach(MediaAccessId accessId);
+  void attach( MediaAccessId accessId );
 
-      /**
+  /**
        * Release the attached media and optionally eject.
        *
        * If the \p ejectDev parameter is not empty all other access
@@ -623,16 +600,14 @@ namespace zypp
        * \param ejectDev Device to eject. None if empty.
        * \throws MediaNotOpenException for invalid access id.
        */
-      void
-      release(MediaAccessId accessId, const std::string & ejectDev = "");
+  void release( MediaAccessId accessId, const std::string &ejectDev = "" );
 
-      /**
+  /**
        * Release all attached media.
        */
-      void
-      releaseAll();
+  void releaseAll();
 
-      /**
+  /**
        * Disconnect a remote media.
        *
        * This is useful for media which e.g. holds open a connection
@@ -646,20 +621,18 @@ namespace zypp
        * \param accessId A media access id.
        * \throws MediaNotOpenException for invalid access id.
        */
-      void
-      disconnect(MediaAccessId accessId);
+  void disconnect( MediaAccessId accessId );
 
-      /**
+  /**
        * Check if media is attached or not.
        *
        * \param accessId A media access id.
        * \return True if media is attached.
        * \throws MediaNotOpenException for invalid access id.
        */
-      bool
-      isAttached(MediaAccessId accessId) const;
+  bool isAttached( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Returns information if media is on a shared
        * physical device or not.
        *
@@ -667,10 +640,9 @@ namespace zypp
        * \return True if it is shared, false if not.
        * \throws MediaNotOpenException for invalid access id.
        */
-      bool
-      isSharedMedia(MediaAccessId accessId) const;
+  bool isSharedMedia( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Ask the registered verifier if the attached
        * media is the desired one or not.
        *
@@ -679,10 +651,9 @@ namespace zypp
        *         according to the actual verifier.
        * \throws MediaNotOpenException for invalid access id.
        */
-      bool
-      isDesiredMedia(MediaAccessId accessId) const;
+  bool isDesiredMedia( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Ask the specified verifier if the attached
        * media is the desired one or not.
        *
@@ -692,11 +663,10 @@ namespace zypp
        *         according to the specified verifier.
        * \throws MediaNotOpenException for invalid access id.
        */
-      bool
-      isDesiredMedia(MediaAccessId           accessId,
-                     const MediaVerifierRef &verifier) const;
+  bool isDesiredMedia(
+    MediaAccessId accessId, const MediaVerifierRef &verifier ) const;
 
-      /**
+  /**
        * Simple check, based on media's URL scheme, telling whether the
        * it is possible to physically change the media inside its drive, like
        * CDs or DVDs. Useful to decide whether to request media change from
@@ -707,10 +677,9 @@ namespace zypp
        *         <tt>true</tt> otherwise.
        * \throws MediaNotOpenException for invalid access id.
        */
-      bool
-      isChangeable(MediaAccessId accessId);
+  bool isChangeable( MediaAccessId accessId );
 
-      /**
+  /**
        * Return the local directory that corresponds to medias url,
        * no matter if media isAttached or not. Files requested will
        * be available at 'localRoot() + filename' or even better
@@ -722,10 +691,9 @@ namespace zypp
        *          media is not attached.
        * \throws MediaNotOpenException for invalid access id.
        */
-      Pathname
-      localRoot(MediaAccessId accessId) const;
+  Pathname localRoot( MediaAccessId accessId ) const;
 
-      /**
+  /**
        * Shortcut for 'localRoot() + pathname', but returns an empty
        * pathname if media is not attached.
        * Files provided will be available at 'localPath(filename)'.
@@ -737,11 +705,10 @@ namespace zypp
        *          or an empty pathname if the media is not attached.
        * \throws MediaNotOpenException for invalid access id.
        */
-      Pathname
-      localPath(MediaAccessId accessId, const Pathname & pathname) const;
+  Pathname localPath( MediaAccessId accessId, const Pathname &pathname ) const;
 
-    public:
-      /**
+public:
+  /**
        * Provide provide file denoted by relative path below of the
        * 'attach point' of the specified media and the path prefix
        * on the media.
@@ -759,70 +726,51 @@ namespace zypp
        * \throws MediaException derived exception, depending on the url (handler).
        */
 
-      void
-      provideFile(MediaAccessId   accessId,
-                  const Pathname &filename ) const;
+  void provideFile( MediaAccessId accessId, const Pathname &filename ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      provideDir(MediaAccessId   accessId,
-                 const Pathname &dirname) const;
+  void provideDir( MediaAccessId accessId, const Pathname &dirname ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      provideDirTree(MediaAccessId  accessId,
-                     const Pathname &dirname) const;
+  void provideDirTree( MediaAccessId accessId, const Pathname &dirname ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      releaseFile(MediaAccessId   accessId,
-                  const Pathname &filename) const;
+  void releaseFile( MediaAccessId accessId, const Pathname &filename ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      releaseDir(MediaAccessId   accessId,
-                 const Pathname &dirname) const;
+  void releaseDir( MediaAccessId accessId, const Pathname &dirname ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      releasePath(MediaAccessId   accessId,
-                  const Pathname &pathname) const;
+  void releasePath( MediaAccessId accessId, const Pathname &pathname ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      dirInfo(MediaAccessId           accessId,
-              std::list<std::string> &retlist,
-              const Pathname         &dirname,
-              bool                    dots = true) const;
+  void dirInfo( MediaAccessId accessId, std::list<std::string> &retlist,
+    const Pathname &dirname, bool dots = true ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      void
-      dirInfo(MediaAccessId           accessId,
-              filesystem::DirContent &retlist,
-              const Pathname         &dirname,
-              bool                   dots = true) const;
+  void dirInfo( MediaAccessId accessId, filesystem::DirContent &retlist,
+    const Pathname &dirname, bool dots = true ) const;
 
-      /**
+  /**
        * FIXME: see MediaAccess class.
        */
-      bool doesFileExist(MediaAccessId  accessId,
-                         const Pathname & filename ) const;
+  bool doesFileExist( MediaAccessId accessId, const Pathname &filename ) const;
 
-      /**
+  /**
        * Fill in a vector of detected ejectable devices and the index of the
        * currently attached device within the vector. The contents of the vector
        * are the device names (/dev/cdrom and such).
@@ -831,31 +779,25 @@ namespace zypp
        * \param devices  vector to load with the device names
        * \param index    index of the currently used device in the devices vector
        */
-      void
-      getDetectedDevices(MediaAccessId accessId,
-                         std::vector<std::string> & devices,
-                         unsigned int & index) const;
+  void getDetectedDevices( MediaAccessId accessId,
+    std::vector<std::string> &devices, unsigned int &index ) const;
 
-      void
-      setDeltafile(MediaAccessId   accessId,
-                  const Pathname &filename ) const;
+  void setDeltafile( MediaAccessId accessId, const Pathname &filename ) const;
 
-    public:
-      /**
+public:
+  /**
        * Get the modification time of the /etc/mtab file.
        * \return Modification time of the /etc/mtab file.
        */
-      static time_t
-      getMountTableMTime();
+  static time_t getMountTableMTime();
 
-      /**
+  /**
        * Get current mount entries from /etc/mtab file.
        * \return Current mount entries from /etc/mtab file.
        */
-      static std::vector<MountEntry>
-      getMountEntries();
+  static std::vector<MountEntry> getMountEntries();
 
-      /**
+  /**
        * Check if the specified \p path is useable as
        * attach point.
        *
@@ -864,14 +806,12 @@ namespace zypp
        * \return True, if it is a directory and there are
        *         no another attach points bellow of it.
        */
-      bool
-      isUseableAttachPoint(const Pathname &path,
-                           bool            mtab=true) const;
+  bool isUseableAttachPoint( const Pathname &path, bool mtab = true ) const;
 
-    private:
-      friend class MediaHandler;
+private:
+  friend class MediaHandler;
 
-      /**
+  /**
        * \internal
        * Return the attached media reference of the specified
        * media access id. Used to resolve nested attachments
@@ -880,10 +820,9 @@ namespace zypp
        * (increases reference counters on attachedMedia).
        * \param media A media access id.
        */
-      AttachedMedia
-      getAttachedMedia(MediaAccessId &accessId) const;
+  AttachedMedia getAttachedMedia( MediaAccessId &accessId ) const;
 
-      /**
+  /**
        * \internal
        * Called by media handler in while attach() to retrieve
        * attached media reference matching the specified media
@@ -892,10 +831,9 @@ namespace zypp
        * (increases reference counters on attachedMedia).
        * \param media The media source reference to search for.
        */
-      AttachedMedia
-      findAttachedMedia(const MediaSourceRef &media) const;
+  AttachedMedia findAttachedMedia( const MediaSourceRef &media ) const;
 
-      /**
+  /**
        * \internal
        * Called by media handler in case of relase(eject=true)
        * to release all access id's using the specified media.
@@ -903,22 +841,20 @@ namespace zypp
        * (increases reference counters on attachedMedia).
        * \param media The media source reference to release.
        */
-      void
-      forceReleaseShared(const MediaSourceRef &media);
+  void forceReleaseShared( const MediaSourceRef &media );
 
-    private:
-      /**
+private:
+  /**
        * Static reference to the implementation (singleton).
        */
-      static zypp::RW_pointer<MediaManager_Impl> m_impl;
-    };
+  static zypp::RW_pointer<MediaManager_Impl> m_impl;
+};
 
+//////////////////////////////////////////////////////////////////
+} // namespace media
+////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////
-  } // namespace media
-  ////////////////////////////////////////////////////////////////////
-
-  ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 } // namespace zypp
 //////////////////////////////////////////////////////////////////////
 

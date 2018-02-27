@@ -20,12 +20,15 @@
 #include "zypp/media/MediaBlockList.h"
 #include "zypp/Url.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
 struct ml_parsedata;
 
-class MetaLinkParser : private zypp::base::NonCopyable {
+class MetaLinkParser : private zypp::base::NonCopyable
+{
 public:
   MetaLinkParser();
   ~MetaLinkParser();
@@ -34,19 +37,19 @@ public:
    * parse a file consisting of metalink xml data
    * \throws Exception
    **/
-  void parse(const Pathname &filename);
+  void parse( const Pathname &filename );
 
   /**
    * parse an InputStream consisting of metalink xml data
    * \throws Exception
    **/
-  void parse(const InputStream &is);
+  void parse( const InputStream &is );
 
   /**
    * parse a chunk of a file consisting of metalink xml data.
    * \throws Exception
    **/
-  void parseBytes(const char* bytes, size_t len);
+  void parseBytes( const char *bytes, size_t len );
   /**
    * tells the parser that all chunks are now processed
    * \throws Exception
@@ -66,7 +69,7 @@ private:
   struct ml_parsedata *pd;
 };
 
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_METALINKPARSER_H

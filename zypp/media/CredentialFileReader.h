@@ -21,29 +21,31 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace media
-  {
-    //////////////////////////////////////////////////////////////////////
-    /// \class CredentialFileReader
-    /// \brief Parse credentials files and catalogs
-    class CredentialFileReader
-    {
-    public:
-      /** Callback invoked for each entry found in the file.
+///////////////////////////////////////////////////////////////////
+namespace media
+{
+//////////////////////////////////////////////////////////////////////
+/// \class CredentialFileReader
+/// \brief Parse credentials files and catalogs
+class CredentialFileReader
+{
+public:
+  /** Callback invoked for each entry found in the file.
        * Return \c false to abort parsing.
        */
-      typedef function<bool(AuthData_Ptr &)> ProcessCredentials;
+  typedef function<bool( AuthData_Ptr & )> ProcessCredentials;
 
-      CredentialFileReader( const Pathname & crfile_r, const ProcessCredentials & callback_r );
-      ~CredentialFileReader();
-    private:
-      ProcessCredentials _callback;
-    };
-    //////////////////////////////////////////////////////////////////////
+  CredentialFileReader(
+    const Pathname &crfile_r, const ProcessCredentials &callback_r );
+  ~CredentialFileReader();
 
-  } // namespace media
-  ///////////////////////////////////////////////////////////////////
+private:
+  ProcessCredentials _callback;
+};
+//////////////////////////////////////////////////////////////////////
+
+} // namespace media
+///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 

@@ -28,110 +28,104 @@ using namespace zypp::filesystem;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace zypp_detail
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace zypp_detail
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : ZYppImpl
-    //
-    /** */
-    class ZYppImpl
-    {
-      friend std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj );
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : ZYppImpl
+//
+/** */
+class ZYppImpl
+{
+  friend std::ostream &operator<<( std::ostream &str, const ZYppImpl &obj );
 
-    public:
-      /** Default ctor */
-      ZYppImpl();
-      /** Dtor */
-      ~ZYppImpl();
+public:
+  /** Default ctor */
+  ZYppImpl();
+  /** Dtor */
+  ~ZYppImpl();
 
-    public:
-      /** */
-      ResPool pool() const
-      { return ResPool::instance(); }
+public:
+  /** */
+  ResPool pool() const { return ResPool::instance(); }
 
-      ResPoolProxy poolProxy() const
-      { return ResPool::instance().proxy(); }
+  ResPoolProxy poolProxy() const { return ResPool::instance().proxy(); }
 
-      /** */
-      KeyRing_Ptr keyRing() const
-      { return _keyring; }
+  /** */
+  KeyRing_Ptr keyRing() const { return _keyring; }
 
+  Resolver_Ptr resolver() const { return _resolver; }
 
-      Resolver_Ptr resolver() const
-      { return _resolver; }
-
-    public:
-      /** \todo Signal locale change. */
-      /**
+public:
+  /** \todo Signal locale change. */
+  /**
        * \throws Exception
        */
-      Target_Ptr target() const;
+  Target_Ptr target() const;
 
-      /** Same as \ref target but returns NULL if target is not
+  /** Same as \ref target but returns NULL if target is not
        *  initialized, instead of throwing.
        */
-      Target_Ptr getTarget() const
-      { return _target; }
+  Target_Ptr getTarget() const { return _target; }
 
-      /**
+  /**
        * \throws Exception
        * true, just init the target, dont populate store or pool
        */
-      void initializeTarget( const Pathname & root, bool doRebuild_r );
+  void initializeTarget( const Pathname &root, bool doRebuild_r );
 
-      /**
+  /**
        * \throws Exception
        */
-      void finishTarget();
+  void finishTarget();
 
-      /** Commit changes and transactions. */
-      ZYppCommitResult commit( const ZYppCommitPolicy & policy_r );
+  /** Commit changes and transactions. */
+  ZYppCommitResult commit( const ZYppCommitPolicy &policy_r );
 
-      /** Install a source package on the Target. */
-      void installSrcPackage( const SrcPackage_constPtr & srcPackage_r );
+  /** Install a source package on the Target. */
+  void installSrcPackage( const SrcPackage_constPtr &srcPackage_r );
 
-      /** Install a source package on the Target. */
-      ManagedFile provideSrcPackage( const SrcPackage_constPtr & srcPackage_r );
+  /** Install a source package on the Target. */
+  ManagedFile provideSrcPackage( const SrcPackage_constPtr &srcPackage_r );
 
-    public:
-      /** Get the path where zypp related plugins store persistent data and caches   */
-      Pathname homePath() const;
+public:
+  /** Get the path where zypp related plugins store persistent data and caches   */
+  Pathname homePath() const;
 
-      /** Get the path where zypp related plugins store tmp data   */
-      Pathname tmpPath() const;
+  /** Get the path where zypp related plugins store tmp data   */
+  Pathname tmpPath() const;
 
-      /** set the home, if you need to change it */
-      void setHomePath( const Pathname & path );
+  /** set the home, if you need to change it */
+  void setHomePath( const Pathname &path );
 
-    public:
-      DiskUsageCounter::MountPointSet diskUsage();
-      void setPartitions(const DiskUsageCounter::MountPointSet &mp);
-      DiskUsageCounter::MountPointSet getPartitions() const;
+public:
+  DiskUsageCounter::MountPointSet diskUsage();
+  void setPartitions( const DiskUsageCounter::MountPointSet &mp );
+  DiskUsageCounter::MountPointSet getPartitions() const;
 
-    private:
-      /** */
-      Target_Ptr _target;
-      /** */
-      Resolver_Ptr _resolver;
+private:
+  /** */
+  Target_Ptr _target;
+  /** */
+  Resolver_Ptr _resolver;
 
-      KeyRing_Ptr _keyring;
-      /** */
-      Pathname _home_path;
-      /** defined mount points, used for disk usage counting */
-      shared_ptr<DiskUsageCounter> _disk_usage;
-    };
-    ///////////////////////////////////////////////////////////////////
+  KeyRing_Ptr _keyring;
+  /** */
+  Pathname _home_path;
+  /** defined mount points, used for disk usage counting */
+  shared_ptr<DiskUsageCounter> _disk_usage;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates ZYppImpl Stream output */
-    std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj );
+/** \relates ZYppImpl Stream output */
+std::ostream &operator<<( std::ostream &str, const ZYppImpl &obj );
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace zypp_detail
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace zypp_detail
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_ZYPP_DETAIL_ZYPPIMPL_H

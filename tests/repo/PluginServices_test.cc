@@ -20,33 +20,33 @@ using namespace zypp;
 using namespace boost::unit_test;
 using namespace zypp::repo;
 
-#define DATADIR (Pathname(TESTS_SRC_DIR) +  "/repo/yum/data")
+#define DATADIR ( Pathname( TESTS_SRC_DIR ) + "/repo/yum/data" )
 
 class ServiceCollector
 {
 public:
   typedef std::set<ServiceInfo> ServiceSet;
-    
-  ServiceCollector( ServiceSet & services_r )
-    : _services( services_r )
-  {}
 
-  bool operator()( const ServiceInfo & service_r ) const
+  ServiceCollector( ServiceSet &services_r )
+    : _services( services_r )
+  {
+  }
+
+  bool operator()( const ServiceInfo &service_r ) const
   {
     _services.insert( service_r );
     return true;
   }
 
 private:
-  ServiceSet & _services;
+  ServiceSet &_services;
 };
 
-
-BOOST_AUTO_TEST_CASE(plugin_services)
+BOOST_AUTO_TEST_CASE( plugin_services )
 {
   ServiceCollector::ServiceSet services;
-    
-  PluginServices local("/space/tmp/services", ServiceCollector(services));
+
+  PluginServices local( "/space/tmp/services", ServiceCollector( services ) );
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

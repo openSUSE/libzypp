@@ -25,15 +25,15 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace syscontent
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace syscontent
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Writer
-    //
-    /** Collect and serialize a set of \ref ResObject.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Writer
+//
+/** Collect and serialize a set of \ref ResObject.
      * \code
      * <?xml version="1.0" encoding="UTF-8"?>
      * <syscontent>
@@ -52,45 +52,46 @@ namespace zypp
      * \endcode
      * \see Reader
     */
-    class Writer
-    {
-      typedef std::set<ResObject::constPtr> StorageT;
-    public:
-      typedef StorageT::value_type     value_type;
-      typedef StorageT::size_type      size_type;
-      typedef StorageT::iterator       iterator;
-      typedef StorageT::const_iterator const_iterator;
+class Writer
+{
+  typedef std::set<ResObject::constPtr> StorageT;
 
-    public:
-      /** Default Ctor. */
-      Writer();
+public:
+  typedef StorageT::value_type value_type;
+  typedef StorageT::size_type size_type;
+  typedef StorageT::iterator iterator;
+  typedef StorageT::const_iterator const_iterator;
 
-    public:
-      /** \name Identification.
+public:
+  /** Default Ctor. */
+  Writer();
+
+public:
+  /** \name Identification.
        * User provided optional data to identify the collection.
       */
-      //@{
-      /** Get name. */
-      const std::string & name() const;
+  //@{
+  /** Get name. */
+  const std::string &name() const;
 
-      /** Set name. */
-      Writer & name( const std::string & val_r );
+  /** Set name. */
+  Writer &name( const std::string &val_r );
 
-      /** Get edition. */
-      const Edition & edition() const;
+  /** Get edition. */
+  const Edition &edition() const;
 
-      /** Set edition. */
-      Writer & edition( const Edition & val_r );
+  /** Set edition. */
+  Writer &edition( const Edition &val_r );
 
-      /** Get description. */
-      const std::string & description() const;
+  /** Get description. */
+  const std::string &description() const;
 
-      /** Set description.*/
-      Writer & description( const std::string & val_r );
-      //@}
+  /** Set description.*/
+  Writer &description( const std::string &val_r );
+  //@}
 
-    public:
-      /** \name Collecting data.
+public:
+  /** \name Collecting data.
        * \code
        * syscontent::Writer contentW;
        * contentW.name( "mycollection" )
@@ -106,151 +107,155 @@ namespace zypp
        * my_file.close();
        * \endcode
       */
-      //@{
-      /** Collect currently installed \ref PoolItem. */
-      void addInstalled( const PoolItem & obj_r );
+  //@{
+  /** Collect currently installed \ref PoolItem. */
+  void addInstalled( const PoolItem &obj_r );
 
-      /** Collect \ref PoolItem if it stays on the system.
+  /** Collect \ref PoolItem if it stays on the system.
        * I.e. it stays installed or is tagged to be installed.
        * Solver selected items are omitted.
       */
-      void addIf( const PoolItem & obj_r );
+  void addIf( const PoolItem &obj_r );
 
-      /** Unconditionally add this \ref ResObject (or \ref PoolItem). */
-      void add( const ResObject::constPtr & obj_r );
-      //@}
+  /** Unconditionally add this \ref ResObject (or \ref PoolItem). */
+  void add( const ResObject::constPtr &obj_r );
+  //@}
 
-    public:
-      /** \name Collected data. */
-      //@{
-      /** Whether no data collected so far. */
-      bool empty() const;
+public:
+  /** \name Collected data. */
+  //@{
+  /** Whether no data collected so far. */
+  bool empty() const;
 
-      /** Number of items collected. */
-      size_type size() const;
+  /** Number of items collected. */
+  size_type size() const;
 
-      /** Iterator to the begin of collected data. */
-      const_iterator begin() const;
+  /** Iterator to the begin of collected data. */
+  const_iterator begin() const;
 
-      /** Iterator to the end of collected data. */
-      const_iterator end() const;
-      //@}
+  /** Iterator to the end of collected data. */
+  const_iterator end() const;
+  //@}
 
-    public:
-      /** Write collected data as XML.
+public:
+  /** Write collected data as XML.
        * Read them back using \ref Reader.
       */
-      std::ostream & writeXml( std::ostream & str ) const;
+  std::ostream &writeXml( std::ostream &str ) const;
 
-    private:
-      class Impl;
-      RWCOW_pointer<Impl> _pimpl;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  class Impl;
+  RWCOW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates Writer Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const Writer & obj )
-    { return obj.writeXml( str ); }
+/** \relates Writer Stream output */
+inline std::ostream &operator<<( std::ostream &str, const Writer &obj )
+{
+  return obj.writeXml( str );
+}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Reader
-    //
-    /** Retrieve \ref ResObject data serialized by \ref Writer.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Reader
+//
+/** Retrieve \ref ResObject data serialized by \ref Writer.
      * \see Writer
     */
-    class Reader
-    {
-    public:
-      /** Restored \ref ResObject data. */
-      class Entry;
+class Reader
+{
+public:
+  /** Restored \ref ResObject data. */
+  class Entry;
 
-    private:
-      typedef std::list<Entry> StorageT;
+private:
+  typedef std::list<Entry> StorageT;
 
-    public:
-      typedef StorageT::value_type     value_type;
-      typedef StorageT::size_type      size_type;
-      typedef StorageT::iterator       iterator;
-      typedef StorageT::const_iterator const_iterator;
+public:
+  typedef StorageT::value_type value_type;
+  typedef StorageT::size_type size_type;
+  typedef StorageT::iterator iterator;
+  typedef StorageT::const_iterator const_iterator;
 
-    public:
-      /** Default Ctor. */
-      Reader();
+public:
+  /** Default Ctor. */
+  Reader();
 
-      /** Ctor parsing data from \a input_r.
+  /** Ctor parsing data from \a input_r.
        * \throws Exception on read or parse error.
       */
-      Reader( std::istream & input_r );
+  Reader( std::istream &input_r );
 
-    public:
-      /** \name Identification.
+public:
+  /** \name Identification.
        * User provided optional data to identify the collection.
       */
-      //@{
-      /** Get name. */
-      const std::string & name() const;
+  //@{
+  /** Get name. */
+  const std::string &name() const;
 
-      /** Get edition. */
-      const Edition & edition() const;
+  /** Get edition. */
+  const Edition &edition() const;
 
-      /** Get description. */
-      const std::string & description() const;
+  /** Get description. */
+  const std::string &description() const;
 
-      /** Get creation date. */
-      const Date & ctime() const;
+  /** Get creation date. */
+  const Date &ctime() const;
 
-    public:
-      /** \name Collected data. */
-      //@{
-      /** Whether no data collected so far. */
-      bool empty() const;
+public:
+  /** \name Collected data. */
+  //@{
+  /** Whether no data collected so far. */
+  bool empty() const;
 
-      /** Number of items collected. */
-      size_type size() const;
+  /** Number of items collected. */
+  size_type size() const;
 
-      /** Iterator to the begin of collected data. */
-      const_iterator begin() const;
+  /** Iterator to the begin of collected data. */
+  const_iterator begin() const;
 
-      /** Iterator to the end of collected data. */
-      const_iterator end() const;
-      //@}
+  /** Iterator to the end of collected data. */
+  const_iterator end() const;
+  //@}
 
-    private:
-      class Impl;
-      RWCOW_pointer<Impl> _pimpl;
-    };
+private:
+  class Impl;
+  RWCOW_pointer<Impl> _pimpl;
+};
 
-    /** \relates Reader Stream output */
-    std::ostream & operator<<( std::ostream & str, const Reader & obj );
+/** \relates Reader Stream output */
+std::ostream &operator<<( std::ostream &str, const Reader &obj );
 
-    ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Reader::Entry
-    //
-    /** Restored \ref ResObject data. */
-    class Reader::Entry
-    {
-    public:
-      Entry();
-      const std::string & kind() const;
-      const std::string & name() const;
-      const Edition & edition() const;
-      const Arch & arch() const;
-    public:
-      class Impl;
-      Entry( const shared_ptr<Impl> & pimpl_r );
-    private:
-      RW_pointer<Impl> _pimpl;
-    };
-    ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Reader::Entry
+//
+/** Restored \ref ResObject data. */
+class Reader::Entry
+{
+public:
+  Entry();
+  const std::string &kind() const;
+  const std::string &name() const;
+  const Edition &edition() const;
+  const Arch &arch() const;
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace syscontent
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+public:
+  class Impl;
+  Entry( const shared_ptr<Impl> &pimpl_r );
+
+private:
+  RW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////
+} // namespace syscontent
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_SYSCONTENT_H

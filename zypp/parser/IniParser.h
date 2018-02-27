@@ -50,7 +50,8 @@ public:
    * for each tag. \ref consume might throw other exceptions
    * as well.
   */
-  void parse( const InputStream & imput_r, const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
+  void parse( const InputStream &imput_r,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
 public:
   /** Called when start parsing. */
@@ -58,7 +59,8 @@ public:
   /** Called when a section is found. */
   virtual void consume( const std::string &section );
   /** Called when a key value is found. */
-  virtual void consume( const std::string &section, const std::string &key, const std::string &value );
+  virtual void consume( const std::string &section, const std::string &key,
+    const std::string &value );
   /** Called when the parse is done. */
   virtual void endParse();
 
@@ -71,14 +73,12 @@ public:
    *
    * Used by some parsers to accept multi-line entires.
    */
-  virtual void garbageLine( const std::string &section, const std::string &line );
+  virtual void garbageLine(
+    const std::string &section, const std::string &line );
 
 public:
   /** Name of the current InputStream. */
-  const std::string & inputname() const
-  {
-    return _inputname;
-  }
+  const std::string &inputname() const { return _inputname; }
 
 private:
   std::string _inputname;

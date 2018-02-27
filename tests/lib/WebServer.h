@@ -32,11 +32,11 @@
  */
 class WebServer
 {
- public:
+public:
   /**
    * creates a web server on \ref root and \port
    */
-  WebServer(const zypp::Pathname &root, unsigned int port=10001);
+  WebServer( const zypp::Pathname &root, unsigned int port = 10001 );
   ~WebServer();
   /**
    * Starts the webserver worker thread
@@ -63,6 +63,7 @@ class WebServer
   std::string log() const;
 
   class Impl;
+
 private:
   /** Pointer to implementation */
   zypp::RWCOW_pointer<Impl> _pimpl;

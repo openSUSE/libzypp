@@ -29,7 +29,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /**
+/**
   * This class allows to retrieve a group of files in a confortable
   * way, providing some smartness that does not belong to the
   * media layer like:
@@ -102,58 +102,57 @@ namespace zypp
   * type (md5,sha1,sha256) is auto detected by looking at the cheksums
   * length. No need to somehow encode it in the filename.
   */
-  class Fetcher
-  {
-    friend std::ostream & operator<<( std::ostream & str,
-                                      const Fetcher & obj );
-  public:
-    /** Implementation  */
-    class Impl;
-  public:
+class Fetcher
+{
+  friend std::ostream &operator<<( std::ostream &str, const Fetcher &obj );
 
-    /**
+public:
+  /** Implementation  */
+  class Impl;
+
+public:
+  /**
      * Various option flags to change behavior
      */
-    enum Option
-    {
-      /**
+  enum Option
+  {
+    /**
        * If a content file is found, it is
        * downloaded and read.
        */
-      AutoAddContentFileIndexes = 0x0001,
-      /**
+    AutoAddContentFileIndexes = 0x0001,
+    /**
        * If a CHECKSUMS file is found, it is
        * downloaded and read.
        */
-      AutoAddChecksumsIndexes = 0x0002,
-      /**
+    AutoAddChecksumsIndexes = 0x0002,
+    /**
        * If a content or CHECKSUMS file is found,
        * it is downloaded and read.
        */
-      AutoAddIndexes = AutoAddContentFileIndexes | AutoAddChecksumsIndexes,
-    };
-    ZYPP_DECLARE_FLAGS(Options, Option);
+    AutoAddIndexes = AutoAddContentFileIndexes | AutoAddChecksumsIndexes,
+  };
+  ZYPP_DECLARE_FLAGS( Options, Option );
 
-    /** Default ctor */
-    Fetcher();
-    /** Dtor */
-    virtual ~Fetcher();
+  /** Default ctor */
+  Fetcher();
+  /** Dtor */
+  virtual ~Fetcher();
 
-  public:
-
-   /**
+public:
+  /**
     * Set the Fetcher options
     * \see Fetcher::Options
     */
-    void setOptions( Options options );
+  void setOptions( Options options );
 
-   /**
+  /**
     * Get current options
     * \see Fetcher::Options
     */
-    Options options() const;
+  Options options() const;
 
-   /**
+  /**
     * Adds an index containing metadata (for example
     * checksums ) that will be retrieved and read
     * before the job processing starts.
@@ -177,17 +176,17 @@ namespace zypp
     * using adding the .key extension.
     *
     */
-    void addIndex( const OnMediaLocation &resource );
+  void addIndex( const OnMediaLocation &resource );
 
-   /**
+  /**
     * Enqueue a object for transferal, they will not
     * be transferred until \ref start() is called
     *
     */
-    void enqueue( const OnMediaLocation &resource,
-                  const FileChecker &checker = FileChecker() );
+  void enqueue( const OnMediaLocation &resource,
+    const FileChecker &checker = FileChecker() );
 
-    /**
+  /**
     * Enqueue a object for transferal, they will not
     * be transferred until \ref start() is called
     *
@@ -204,11 +203,11 @@ namespace zypp
     * Other files like rpms do not work, as the compression
     * breaks the delta algorithm.
     */
-    void enqueueDigested( const OnMediaLocation &resource,
-                          const FileChecker &checker = FileChecker(), const Pathname &deltafile = Pathname());
+  void enqueueDigested( const OnMediaLocation &resource,
+    const FileChecker &checker = FileChecker(),
+    const Pathname &deltafile = Pathname() );
 
-
-    /**
+  /**
      * Enqueue a directory
      *
      * As the files to be enqueued are not known
@@ -247,11 +246,10 @@ namespace zypp
      * not be transferred and will be ignored.
      *
      */
-    void enqueueDir( const OnMediaLocation &resource,
-                     bool recursive = false,
-                     const FileChecker &checker = FileChecker() );
+  void enqueueDir( const OnMediaLocation &resource, bool recursive = false,
+    const FileChecker &checker = FileChecker() );
 
-    /**
+  /**
      * Enqueue a directory and always check for
      * checksums.
      *
@@ -291,23 +289,22 @@ namespace zypp
      * not be transferred and will be ignored.
      *
      */
-    void enqueueDigestedDir( const OnMediaLocation &resource,
-                             bool recursive = false,
-                             const FileChecker &checker = FileChecker() );
+  void enqueueDigestedDir( const OnMediaLocation &resource,
+    bool recursive = false, const FileChecker &checker = FileChecker() );
 
-    /**
+  /**
     * adds a directory to the list of directories
     * where to look for cached files
     */
-    void addCachePath( const Pathname &cache_dir );
+  void addCachePath( const Pathname &cache_dir );
 
-    /**
+  /**
      * Reset the transfer (jobs) list
      * \note It does not reset the cache directory list
      */
-    void reset();
+  void reset();
 
-    /**
+  /**
     * start the transfer to a destination directory
     * \a dest_dir
     * You have to provde a media set access
@@ -316,21 +313,20 @@ namespace zypp
     * directory
     *
     */
-    void start( const Pathname &dest_dir,
-                MediaSetAccess &media,
-                const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
+  void start( const Pathname &dest_dir, MediaSetAccess &media,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
-  private:
-    /** Pointer to implementation */
-    RWCOW_pointer<Impl> _pimpl;
-  };
-  ///////////////////////////////////////////////////////////////////
-  ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Fetcher::Options);
+private:
+  /** Pointer to implementation */
+  RWCOW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
+ZYPP_DECLARE_OPERATORS_FOR_FLAGS( Fetcher::Options );
 
-  /** \relates Fetcher Stream output */
-  std::ostream & operator<<( std::ostream & str, const Fetcher & obj );
+/** \relates Fetcher Stream output */
+std::ostream &operator<<( std::ostream &str, const Fetcher &obj );
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_FETCHER_H

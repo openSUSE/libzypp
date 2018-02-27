@@ -22,100 +22,100 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace target
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace target
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : CommitPackageCache::Impl
-    //
-    /** Base for CommitPackageCache implementations (implements no chache).
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : CommitPackageCache::Impl
+//
+/** Base for CommitPackageCache implementations (implements no chache).
      *
      * All packages are directly retrieved from the source via the
      * PackageProvider passed to the ctor. The PackageProvider is expected
      * to throw or return an empty ManagedFile if the package can't be provided.
     */
-    class CommitPackageCache::Impl
-    {
-    public:
-      typedef CommitPackageCache::PackageProvider  PackageProvider;
+class CommitPackageCache::Impl
+{
+public:
+  typedef CommitPackageCache::PackageProvider PackageProvider;
 
-    public:
-      Impl( const PackageProvider & packageProvider_r )
-      : _packageProvider( packageProvider_r )
-      {}
+public:
+  Impl( const PackageProvider &packageProvider_r )
+    : _packageProvider( packageProvider_r )
+  {
+  }
 
-      virtual ~Impl()
-      {}
+  virtual ~Impl() {}
 
-    public:
-      /** Provide the package.
+public:
+  /** Provide the package.
        * Derived classes overload this.
       */
-      virtual ManagedFile get( const PoolItem & citem_r )
-      {
-        return sourceProvidePackage( citem_r );
-      }
+  virtual ManagedFile get( const PoolItem &citem_r )
+  {
+    return sourceProvidePackage( citem_r );
+  }
 
-      void setCommitList( std::vector<sat::Solvable> commitList_r )
-      { _commitList = commitList_r; }
+  void setCommitList( std::vector<sat::Solvable> commitList_r )
+  {
+    _commitList = commitList_r;
+  }
 
-      const std::vector<sat::Solvable> & commitList() const
-      { return _commitList; }
+  const std::vector<sat::Solvable> &commitList() const { return _commitList; }
 
-      bool preloaded() const
-      { return _preloaded; }
+  bool preloaded() const { return _preloaded; }
 
-      void preloaded( bool newval_r )
-      { _preloaded = newval_r; }
+  void preloaded( bool newval_r ) { _preloaded = newval_r; }
 
-    protected:
-      /** Let the Source provide the package. */
-      virtual ManagedFile sourceProvidePackage( const PoolItem & pi ) const
-      {
-        if ( ! _packageProvider )
-          {
-            ZYPP_THROW( Exception("No package provider configured.") );
-          }
-
-        ManagedFile ret( _packageProvider( pi, /*cached only*/false ) );
-        if ( ret.value().empty() )
-          {
-            ZYPP_THROW( Exception("Package provider failed.") );
-          }
-
-        return ret;
-      }
-
-      /** Let the Source provide an already cached package. */
-      virtual ManagedFile sourceProvideCachedPackage( const PoolItem & pi ) const
-      {
-        if ( ! _packageProvider )
-          {
-            ZYPP_THROW( Exception("No package provider configured.") );
-          }
-
-        return _packageProvider( pi, /*cached only*/true );
-      }
-
-    private:
-      std::vector<sat::Solvable> _commitList;
-      PackageProvider _packageProvider;
-      DefaultIntegral<bool,false> _preloaded;
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    /** \relates CommitPackageCache::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const CommitPackageCache::Impl & obj )
+protected:
+  /** Let the Source provide the package. */
+  virtual ManagedFile sourceProvidePackage( const PoolItem &pi ) const
+  {
+    if ( !_packageProvider )
     {
-      return str << "CommitPackageCache::Impl";
+      ZYPP_THROW( Exception( "No package provider configured." ) );
     }
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace target
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+    ManagedFile ret( _packageProvider( pi, /*cached only*/ false ) );
+    if ( ret.value().empty() )
+    {
+      ZYPP_THROW( Exception( "Package provider failed." ) );
+    }
+
+    return ret;
+  }
+
+  /** Let the Source provide an already cached package. */
+  virtual ManagedFile sourceProvideCachedPackage( const PoolItem &pi ) const
+  {
+    if ( !_packageProvider )
+    {
+      ZYPP_THROW( Exception( "No package provider configured." ) );
+    }
+
+    return _packageProvider( pi, /*cached only*/ true );
+  }
+
+private:
+  std::vector<sat::Solvable> _commitList;
+  PackageProvider _packageProvider;
+  DefaultIntegral<bool, false> _preloaded;
+};
+///////////////////////////////////////////////////////////////////
+
+/** \relates CommitPackageCache::Impl Stream output */
+inline std::ostream &operator<<(
+  std::ostream &str, const CommitPackageCache::Impl &obj )
+{
+  return str << "CommitPackageCache::Impl";
+}
+
+/////////////////////////////////////////////////////////////////
+} // namespace target
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_TARGET_COMMITPACKAGECACHEIMPL_H

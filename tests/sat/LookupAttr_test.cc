@@ -6,7 +6,7 @@
 static TestSetup test( Arch_x86_64 );
 
 // Must be the first test!
-BOOST_AUTO_TEST_CASE(bnc_435838)
+BOOST_AUTO_TEST_CASE( bnc_435838 )
 {
   // empty @system to pool
   test.satpool().systemRepo();
@@ -14,11 +14,10 @@ BOOST_AUTO_TEST_CASE(bnc_435838)
 
   // bnc_435838 crashes if iterating a just created repo.
   sat::LookupAttr q( sat::SolvAttr::name );
-  for_( it, q.begin(),q.end() )
-    ;
+  for_( it, q.begin(), q.end() );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_init)
+BOOST_AUTO_TEST_CASE( LookupAttr_init )
 {
   //test.loadTarget(); // initialize and load target
   test.loadRepo( TESTS_SRC_DIR "/data/openSUSE-11.1" );
@@ -26,7 +25,7 @@ BOOST_AUTO_TEST_CASE(LookupAttr_init)
   test.loadRepo( TESTS_SRC_DIR "/data/11.0-update" );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_defaultconstructed)
+BOOST_AUTO_TEST_CASE( LookupAttr_defaultconstructed )
 {
   sat::LookupAttr q;
   BOOST_CHECK( q.empty() );
@@ -34,37 +33,38 @@ BOOST_AUTO_TEST_CASE(LookupAttr_defaultconstructed)
   BOOST_CHECK_EQUAL( q.begin(), q.end() );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_nonexistingattr)
+BOOST_AUTO_TEST_CASE( LookupAttr_nonexistingattr )
 {
-  sat::LookupAttr q( sat::SolvAttr("nonexistingattr") );
+  sat::LookupAttr q( sat::SolvAttr( "nonexistingattr" ) );
   BOOST_CHECK( q.empty() );
   BOOST_CHECK( q.size() == 0 );
   BOOST_CHECK_EQUAL( q.begin(), q.end() );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_existingattr)
+BOOST_AUTO_TEST_CASE( LookupAttr_existingattr )
 {
   sat::LookupAttr q( sat::SolvAttr::name );
-  BOOST_CHECK( ! q.empty() );
+  BOOST_CHECK( !q.empty() );
   BOOST_CHECK( q.size() != 0 );
   BOOST_CHECK_NE( q.begin(), q.end() );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_existingattr_matcher)
+BOOST_AUTO_TEST_CASE( LookupAttr_existingattr_matcher )
 {
   sat::LookupAttr q( sat::SolvAttr::name );
 
-  BOOST_CHECK_THROW( q.setStrMatcher( StrMatcher("[]ypper",Match::REGEX) ), MatchInvalidRegexException );
-  BOOST_CHECK( ! q.strMatcher() );
-  BOOST_CHECK_NO_THROW( q.setStrMatcher( StrMatcher("[zZ]ypper",Match::REGEX) ) );
+  BOOST_CHECK_THROW( q.setStrMatcher( StrMatcher( "[]ypper", Match::REGEX ) ),
+    MatchInvalidRegexException );
+  BOOST_CHECK( !q.strMatcher() );
+  BOOST_CHECK_NO_THROW(
+    q.setStrMatcher( StrMatcher( "[zZ]ypper", Match::REGEX ) ) );
   BOOST_CHECK( q.strMatcher() );
 
   BOOST_CHECK_EQUAL( q.size(), 9 );
-  for_(it,q.begin(),q.end())
-  { cout << it << endl;}
+  for_( it, q.begin(), q.end() ) { cout << it << endl; }
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_iterate_solvables)
+BOOST_AUTO_TEST_CASE( LookupAttr_iterate_solvables )
 {
   // sat::SolvAttr::name query should visit each solvable once.
   // So query size and containersize are to be equal if we query
@@ -116,13 +116,13 @@ BOOST_AUTO_TEST_CASE(LookupAttr_iterate_solvables)
         BOOST_CHECK_EQUAL( res.inSolvable(), *it );
         BOOST_CHECK_EQUAL( res.inRepo(), res.inSolvable().repository() );
         BOOST_CHECK_EQUAL( res.inSolvAttr(), sat::SolvAttr::name );
-     }
+      }
     }
     BOOST_CHECK_EQUAL( total, satpool.solvablesSize() );
   }
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_itetate_all_attributes)
+BOOST_AUTO_TEST_CASE( LookupAttr_itetate_all_attributes )
 {
   sat::Pool satpool( test.satpool() );
 
@@ -148,37 +148,48 @@ BOOST_AUTO_TEST_CASE(LookupAttr_itetate_all_attributes)
       total += q.size();
     }
     BOOST_CHECK_EQUAL( total, all.size() );
- }
+  }
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_solvable_attribute_substructure)
+BOOST_AUTO_TEST_CASE( LookupAttr_solvable_attribute_substructure )
 {
   sat::LookupAttr q( sat::SolvAttr::updateReference );
   BOOST_CHECK_EQUAL( q.size(), 303 );
 
   for_( res, q.begin(), q.end() )
   {
-    BOOST_CHECK( ! res.subEmpty() );
+    BOOST_CHECK( !res.subEmpty() );
     BOOST_CHECK_EQUAL( res.subSize(), 4 );
 
     BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::allAttr ), res.subBegin() );
-    BOOST_CHECK_EQUAL( res.subFind( "" ),                     res.subBegin() );
+    BOOST_CHECK_EQUAL( res.subFind( "" ), res.subBegin() );
 
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReference ), res.subEnd() );
-    BOOST_CHECK_EQUAL( res.subFind( "noval" ),                        res.subEnd() );
+    BOOST_CHECK_EQUAL(
+      res.subFind( sat::SolvAttr::updateReference ), res.subEnd() );
+    BOOST_CHECK_EQUAL( res.subFind( "noval" ), res.subEnd() );
 
-    BOOST_CHECK_NE( res.subFind( sat::SolvAttr::updateReferenceType ),  res.subEnd() );
-    BOOST_CHECK_NE( res.subFind( sat::SolvAttr::updateReferenceHref ),  res.subEnd() );
-    BOOST_CHECK_NE( res.subFind( sat::SolvAttr::updateReferenceId ),    res.subEnd() );
-    BOOST_CHECK_NE( res.subFind( sat::SolvAttr::updateReferenceTitle ), res.subEnd() );
+    BOOST_CHECK_NE(
+      res.subFind( sat::SolvAttr::updateReferenceType ), res.subEnd() );
+    BOOST_CHECK_NE(
+      res.subFind( sat::SolvAttr::updateReferenceHref ), res.subEnd() );
+    BOOST_CHECK_NE(
+      res.subFind( sat::SolvAttr::updateReferenceId ), res.subEnd() );
+    BOOST_CHECK_NE(
+      res.subFind( sat::SolvAttr::updateReferenceTitle ), res.subEnd() );
 
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceType ),  res.subFind( "type" ) );
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceHref ),  res.subFind( "href" ) );
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceId ),    res.subFind( "id" ) );
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceTitle ), res.subFind( "title" ) );
+    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceType ),
+      res.subFind( "type" ) );
+    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceHref ),
+      res.subFind( "href" ) );
+    BOOST_CHECK_EQUAL(
+      res.subFind( sat::SolvAttr::updateReferenceId ), res.subFind( "id" ) );
+    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceTitle ),
+      res.subFind( "title" ) );
 
     // repeatedly calling subBegin() is ok:
-    BOOST_CHECK_EQUAL( res.subFind( sat::SolvAttr::updateReferenceType ).subBegin(),  res.subBegin() );
+    BOOST_CHECK_EQUAL(
+      res.subFind( sat::SolvAttr::updateReferenceType ).subBegin(),
+      res.subBegin() );
   }
 
   // search substructure id without parent-structure works for wellknown structures:
@@ -186,11 +197,13 @@ BOOST_AUTO_TEST_CASE(LookupAttr_solvable_attribute_substructure)
   BOOST_CHECK_EQUAL( q.size(), 303 );
 
   // search id in parent-structure:
-  q = sat::LookupAttr( sat::SolvAttr::updateReferenceId, sat::SolvAttr::updateReference );
+  q = sat::LookupAttr(
+    sat::SolvAttr::updateReferenceId, sat::SolvAttr::updateReference );
   BOOST_CHECK_EQUAL( q.size(), 303 );
 
   // search id in any parent-structure:
-  q = sat::LookupAttr( sat::SolvAttr::updateReferenceId, sat::SolvAttr::allAttr );
+  q =
+    sat::LookupAttr( sat::SolvAttr::updateReferenceId, sat::SolvAttr::allAttr );
   BOOST_CHECK_EQUAL( q.size(), 303 );
 
   // search any id in parent-structure: (4 ids per updateReference)
@@ -202,14 +215,15 @@ BOOST_AUTO_TEST_CASE(LookupAttr_solvable_attribute_substructure)
   BOOST_CHECK_EQUAL( q.size(), 10473 );
 }
 
-BOOST_AUTO_TEST_CASE(LookupAttr_repoattr)
+BOOST_AUTO_TEST_CASE( LookupAttr_repoattr )
 {
-  sat::LookupAttr q( sat::SolvAttr::repositoryAddedFileProvides, sat::LookupAttr::REPO_ATTR );
-  BOOST_CHECK( ! q.empty() );
+  sat::LookupAttr q(
+    sat::SolvAttr::repositoryAddedFileProvides, sat::LookupAttr::REPO_ATTR );
+  BOOST_CHECK( !q.empty() );
   BOOST_CHECK_EQUAL( q.size(), 264 );
 
   sat::LookupRepoAttr p( sat::SolvAttr::repositoryAddedFileProvides );
-  BOOST_CHECK( ! p.empty() );
+  BOOST_CHECK( !p.empty() );
   BOOST_REQUIRE_EQUAL( p.size(), q.size() );
 
   sat::LookupRepoAttr::iterator pit( p.begin() );

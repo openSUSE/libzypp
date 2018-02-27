@@ -23,85 +23,87 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
+///////////////////////////////////////////////////////////////////
+namespace repo
+{
+
+///////////////////////////////////////////////////////////////////
+/// \class PackageProviderPolicy
+/// \brief Policies and options for \ref PackageProvider
+///////////////////////////////////////////////////////////////////
+class PackageProviderPolicy
+{
+public:
+  /** Get installed Editions callback signature. */
+  typedef function<bool( const std::string &, const Edition &, const Arch & )>
+    QueryInstalledCB;
+
+  /** Set callback. */
+  PackageProviderPolicy &queryInstalledCB( QueryInstalledCB queryInstalledCB_r )
   {
+    _queryInstalledCB = queryInstalledCB_r;
+    return *this;
+  }
 
-    ///////////////////////////////////////////////////////////////////
-    /// \class PackageProviderPolicy
-    /// \brief Policies and options for \ref PackageProvider
-    ///////////////////////////////////////////////////////////////////
-    class PackageProviderPolicy
-    {
-    public:
-      /** Get installed Editions callback signature. */
-      typedef function<bool ( const std::string &, const Edition &, const Arch & )> QueryInstalledCB;
+  /** Evaluate callback. */
+  bool queryInstalled(
+    const std::string &name_r, const Edition &ed_r, const Arch &arch_r ) const;
 
-      /** Set callback. */
-      PackageProviderPolicy & queryInstalledCB( QueryInstalledCB queryInstalledCB_r )
-      { _queryInstalledCB = queryInstalledCB_r; return *this; }
+private:
+  QueryInstalledCB _queryInstalledCB;
+};
+///////////////////////////////////////////////////////////////////
 
-      /** Evaluate callback. */
-      bool queryInstalled( const std::string & name_r,
-                           const Edition &     ed_r,
-                           const Arch &        arch_r ) const;
-
-    private:
-      QueryInstalledCB _queryInstalledCB;
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////
-    /// \class PackageProvider
-    /// \brief Provide a package from a Repo.
-    ///
-    /// Use available deltarpm if apropriate.
-    ///////////////////////////////////////////////////////////////////
-    class PackageProvider
-    {
-    public:
-      /** Ctor taking the package to provide.
+///////////////////////////////////////////////////////////////////
+/// \class PackageProvider
+/// \brief Provide a package from a Repo.
+///
+/// Use available deltarpm if apropriate.
+///////////////////////////////////////////////////////////////////
+class PackageProvider
+{
+public:
+  /** Ctor taking the package to provide.
        * \throws Exception If pi_r refers to neither a \c Package nor a \c SrcPackage.
        */
-      PackageProvider( RepoMediaAccess & access, const PoolItem & pi_r,
-                       const PackageProviderPolicy & policy_r = PackageProviderPolicy() );
+  PackageProvider( RepoMediaAccess &access, const PoolItem &pi_r,
+    const PackageProviderPolicy &policy_r = PackageProviderPolicy() );
 
-      /** \overload Ctor taking additional hint to deltarpms (not used for SrcPackages)
+  /** \overload Ctor taking additional hint to deltarpms (not used for SrcPackages)
        * \throws Exception If pi_r refers to neither a \c Package nor a \c SrcPackage.
        */
-      PackageProvider( RepoMediaAccess & access, const PoolItem & pi_r,
-                       const DeltaCandidates & deltas,
-		       const PackageProviderPolicy & policy_r = PackageProviderPolicy() );
+  PackageProvider( RepoMediaAccess &access, const PoolItem &pi_r,
+    const DeltaCandidates &deltas,
+    const PackageProviderPolicy &policy_r = PackageProviderPolicy() );
 
-      /** Legacy Ctor taking a \c Package::constPtr to provide. */
-      PackageProvider( RepoMediaAccess & access,
-                       const Package::constPtr & package,
-                       const DeltaCandidates & deltas,
-                       const PackageProviderPolicy & policy_r = PackageProviderPolicy() );
+  /** Legacy Ctor taking a \c Package::constPtr to provide. */
+  PackageProvider( RepoMediaAccess &access, const Package::constPtr &package,
+    const DeltaCandidates &deltas,
+    const PackageProviderPolicy &policy_r = PackageProviderPolicy() );
 
-      ~PackageProvider();
+  ~PackageProvider();
 
-    public:
-      /** Provide the package.
+public:
+  /** Provide the package.
        * \throws Exception.
        */
-      ManagedFile providePackage() const;
+  ManagedFile providePackage() const;
 
-      /** Provide the package if it is cached. */
-      ManagedFile providePackageFromCache() const;
+  /** Provide the package if it is cached. */
+  ManagedFile providePackageFromCache() const;
 
-      /** Whether the package is cached. */
-      bool isCached() const;
+  /** Whether the package is cached. */
+  bool isCached() const;
 
-    public:
-      class Impl;              ///< Implementation class.
-    private:
-      RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
-    };
-    ///////////////////////////////////////////////////////////////////
+public:
+  class Impl; ///< Implementation class.
+private:
+  RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
+};
+///////////////////////////////////////////////////////////////////
 
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_SOURCE_PACKAGEPROVIDER_H

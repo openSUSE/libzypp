@@ -36,93 +36,97 @@
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
-DEFINE_PTR_TYPE(SolverQueueItem);
+DEFINE_PTR_TYPE( SolverQueueItem );
 
-DEFINE_PTR_TYPE(SolverQueueItemUpdate);
-DEFINE_PTR_TYPE(SolverQueueItemDelete);
-DEFINE_PTR_TYPE(SolverQueueItemInstall);
-DEFINE_PTR_TYPE(SolverQueueItemInstallOneOf);
-DEFINE_PTR_TYPE(SolverQueueItemLock);
-
+DEFINE_PTR_TYPE( SolverQueueItemUpdate );
+DEFINE_PTR_TYPE( SolverQueueItemDelete );
+DEFINE_PTR_TYPE( SolverQueueItemInstall );
+DEFINE_PTR_TYPE( SolverQueueItemInstallOneOf );
+DEFINE_PTR_TYPE( SolverQueueItemLock );
 
 typedef enum {
-    QUEUE_ITEM_TYPE_UNKNOWN = 0,
-    QUEUE_ITEM_TYPE_UPDATE,
-    QUEUE_ITEM_TYPE_INSTALL,
-    QUEUE_ITEM_TYPE_DELETE,
-    QUEUE_ITEM_TYPE_INSTALL_ONE_OF,
-    QUEUE_ITEM_TYPE_LOCK
+  QUEUE_ITEM_TYPE_UNKNOWN = 0,
+  QUEUE_ITEM_TYPE_UPDATE,
+  QUEUE_ITEM_TYPE_INSTALL,
+  QUEUE_ITEM_TYPE_DELETE,
+  QUEUE_ITEM_TYPE_INSTALL_ONE_OF,
+  QUEUE_ITEM_TYPE_LOCK
 } SolverQueueItemType;
-
 
 typedef std::list<SolverQueueItem_Ptr> SolverQueueItemList;
 
-#define CMP(a,b) (((a) < (b)) - ((b) < (a)))
+#define CMP( a, b ) ( ( ( a ) < ( b ) ) - ( ( b ) < ( a ) ) )
 
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : SolverQueueItem
 
-class SolverQueueItem : public base::ReferenceCounted, private base::NonCopyable {
+class SolverQueueItem : public base::ReferenceCounted, private base::NonCopyable
+{
 
-  private:
+private:
+  SolverQueueItemType _type;
+  ResPool _pool;
 
-    SolverQueueItemType _type;
-    ResPool _pool;
+protected:
+  SolverQueueItem( SolverQueueItemType type, const ResPool &pool );
 
-  protected:
+public:
+  virtual ~SolverQueueItem();
 
-    SolverQueueItem (SolverQueueItemType type, const ResPool & pool);
+  // ---------------------------------- I/O
 
-  public:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-    virtual ~SolverQueueItem();
+  friend std::ostream &operator<<(
+    std::ostream &str, const SolverQueueItem &obj )
+  {
+    return obj.dumpOn( str );
+  }
+  friend std::ostream &operator<<(
+    std::ostream &str, const SolverQueueItemList &itemlist );
 
-    // ---------------------------------- I/O
+  // ---------------------------------- accessors
 
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+  ResPool pool( void ) const { return _pool; }
 
-    friend std::ostream& operator<<(std::ostream & str, const SolverQueueItem & obj)
-    { return obj.dumpOn (str); }
-    friend std::ostream& operator<<(std::ostream & str, const SolverQueueItemList & itemlist);
+  // ---------------------------------- methods
 
-    // ---------------------------------- accessors
+  void copy( const SolverQueueItem *from );
 
-    ResPool pool (void) const { return _pool; }
+  bool isDelete( void ) const { return _type == QUEUE_ITEM_TYPE_DELETE; }
+  bool isInstall( void ) const { return _type == QUEUE_ITEM_TYPE_INSTALL; }
+  bool isUpdate( void ) const { return _type == QUEUE_ITEM_TYPE_UPDATE; }
+  bool isLock( void ) const { return _type == QUEUE_ITEM_TYPE_LOCK; }
+  bool isInstallOneOf( void ) const
+  {
+    return _type == QUEUE_ITEM_TYPE_INSTALL_ONE_OF;
+  }
 
-    // ---------------------------------- methods
-
-    void copy (const SolverQueueItem *from);
-
-    bool isDelete (void) const { return _type == QUEUE_ITEM_TYPE_DELETE; }
-    bool isInstall (void) const { return _type == QUEUE_ITEM_TYPE_INSTALL; }
-    bool isUpdate (void) const { return _type == QUEUE_ITEM_TYPE_UPDATE; }
-    bool isLock (void) const { return _type == QUEUE_ITEM_TYPE_LOCK; }
-    bool isInstallOneOf (void) const { return _type == QUEUE_ITEM_TYPE_INSTALL_ONE_OF; }
-
-
-    virtual SolverQueueItem_Ptr copy (void) const = 0;
-    virtual bool addRule (sat::detail::CQueue & q) =0 ;
-    virtual int cmp (SolverQueueItem_constPtr item) const = 0;
-    int compare (SolverQueueItem_constPtr item) const { return CMP(_type, item->_type); }
-
+  virtual SolverQueueItem_Ptr copy( void ) const = 0;
+  virtual bool addRule( sat::detail::CQueue &q ) = 0;
+  virtual int cmp( SolverQueueItem_constPtr item ) const = 0;
+  int compare( SolverQueueItem_constPtr item ) const
+  {
+    return CMP( _type, item->_type );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
-/////////////////////////////////////////////////////////////////////////
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
+   /////////////////////////////////////////////////////////////////////////
 #endif // ZYPP_USE_RESOLVER_INTERNALS
 #endif // ZYPP_SOLVER_DETAIL_QUEUEITEM_H

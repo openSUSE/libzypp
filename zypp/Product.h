@@ -21,34 +21,34 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  DEFINE_PTR_TYPE(Product);
+DEFINE_PTR_TYPE( Product );
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : Product
-  //
-  /** Product interface.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Product
+//
+/** Product interface.
   */
-  class Product : public ResObject
-  {
-  public:
-    typedef Product                  Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+class Product : public ResObject
+{
+public:
+  typedef Product Self;
+  typedef ResTraits<Self> TraitsType;
+  typedef TraitsType::PtrType Ptr;
+  typedef TraitsType::constPtrType constPtr;
 
-  public:
-    /** The reference package providing the product metadata,
+public:
+  /** The reference package providing the product metadata,
      *  if such a package exists.
      */
-    sat::Solvable referencePackage() const;
+  sat::Solvable referencePackage() const;
 
-    /** For installed products the name of the corresponding
+  /** For installed products the name of the corresponding
      * \c /etc/products.d entry.
     .*/
-    std::string referenceFilename() const;
+  std::string referenceFilename() const;
 
-    /** List of packages included in older versions of this product and now dropped.
+  /** List of packages included in older versions of this product and now dropped.
      *
      * This evaluates the \ref referencePackage \c weakremover namespace. It actually
      * returns a \ref CapabilitySet, because we support to drop specific versions or
@@ -66,188 +66,181 @@ namespace zypp
      *   }
      * \endcode
      */
-    CapabilitySet droplist() const;
+  CapabilitySet droplist() const;
 
-  public:
-    /***/
-    typedef std::vector<constPtr> ReplacedProducts;
+public:
+  /***/
+  typedef std::vector<constPtr> ReplacedProducts;
 
-    /** Array of \b installed Products that would be replaced by
+  /** Array of \b installed Products that would be replaced by
      *  installing this one.
      */
-    ReplacedProducts replacedProducts() const;
+  ReplacedProducts replacedProducts() const;
 
-    /** Vendor specific string denoting the product line. */
-    std::string productLine() const;
+  /** Vendor specific string denoting the product line. */
+  std::string productLine() const;
 
-  public:
-    /** Untranslated short name like <tt>SLES 10</tt> (fallback: name) */
-    std::string shortName() const;
+public:
+  /** Untranslated short name like <tt>SLES 10</tt> (fallback: name) */
+  std::string shortName() const;
 
-    /** The product flavor (LiveCD Demo, FTP edition,...). */
-    std::string flavor() const;
+  /** The product flavor (LiveCD Demo, FTP edition,...). */
+  std::string flavor() const;
 
-    /** Get the product type
+  /** Get the product type
      * Well, in an ideal world there is only one base product.
      * It's the installed product denoted by a symlink in
      * \c /etc/products.d.
      */
-    std::string type() const;
+  std::string type() const;
 
-    /** The product flags */
-    std::list<std::string> flags() const;
+  /** The product flags */
+  std::list<std::string> flags() const;
 
-    /** The date when this Product goes out of support as indicated by it's medadata.
+  /** The date when this Product goes out of support as indicated by it's medadata.
      * Use \ref hasEOfLife if it's important to distinguish whether the value
      * is not defined in the metadata, or defined but empty/invalid/TBD.
      */
-    Date endOfLife() const;
+  Date endOfLife() const;
 
-    /** Return whether an EndOfLife value is actually defined in the metadata.
+  /** Return whether an EndOfLife value is actually defined in the metadata.
      * A missing value (\c false) usually indicates that there will be no EOL,
      * while an empty/invalid value indicates that there will be an  EOL date,
      * but it's not yet known (FATE#320699).
      */
-    bool hasEndOfLife() const;
-    /** \overload additionally returning the date (0 if TBD)
+  bool hasEndOfLife() const;
+  /** \overload additionally returning the date (0 if TBD)
      * 	false, ( unchanged )	: no EOL
      * 	true,  ( 0 )		: EOL is still TBD
      * 	true,  ( !=0 )		: a valid EOL date
      */
-    bool hasEndOfLife( Date & value ) const;
+  bool hasEndOfLife( Date &value ) const;
 
-    /** ContentIdentifier of required update repositories. */
-    std::vector<Repository::ContentIdentifier> updateContentIdentifier() const;
+  /** ContentIdentifier of required update repositories. */
+  std::vector<Repository::ContentIdentifier> updateContentIdentifier() const;
 
-    /** Whether \a cident_r is listed as required update repository. */
-    bool hasUpdateContentIdentifier( const Repository::ContentIdentifier & cident_r ) const;
+  /** Whether \a cident_r is listed as required update repository. */
+  bool hasUpdateContentIdentifier(
+    const Repository::ContentIdentifier &cident_r ) const;
 
-    /** Whether one of the ContentIdentifier is listed as required update repository. */
-    template <class TIterator>
-    bool hasUpdateContentIdentifier( TIterator begin, TIterator end ) const
-    {
-      for_( it, begin, end )
-	if ( hasUpdateContentIdentifier( *it ) )
-	  return true;
-      return false;
-    }
+  /** Whether one of the ContentIdentifier is listed as required update repository. */
+  template <class TIterator>
+  bool hasUpdateContentIdentifier( TIterator begin, TIterator end ) const
+  {
+    for_( it, begin, end ) if ( hasUpdateContentIdentifier( *it ) ) return true;
+    return false;
+  }
 
-  public:
-    /** This is the \b installed product that is also targeted by the
+public:
+  /** This is the \b installed product that is also targeted by the
      *  \c /etc/products.d/baseproduct symlink.
     */
-    bool isTargetDistribution() const;
+  bool isTargetDistribution() const;
 
-    /** This is \c register.target attribute of a product.
+  /** This is \c register.target attribute of a product.
       * Used for registration and filtering service repos.
       */
-    std::string registerTarget() const;
+  std::string registerTarget() const;
 
-    /** This is \c register.release attribute of an \b installed product.
+  /** This is \c register.release attribute of an \b installed product.
       * Used for registration.
       */
-    std::string registerRelease() const;
+  std::string registerRelease() const;
 
-    /** This is \c register.flavor attribute of a product.
+  /** This is \c register.flavor attribute of a product.
       * Used for registration.
       */
-    std::string registerFlavor() const;
+  std::string registerFlavor() const;
 
-  public:
-    /***/
-    class UrlList;
+public:
+  /***/
+  class UrlList;
 
-    /** Retrieve URLs flagged with \c key_r for this product.
+  /** Retrieve URLs flagged with \c key_r for this product.
      *
      * This is the most common interface. There are convenience methods for
      * wellknown flags like \c "releasenotes", \c "register", \c "updateurls",
      * \c "extraurls", \c "optionalurls" and \c "smolt" below.
      */
-    UrlList urls( const std::string & key_r ) const;
+  UrlList urls( const std::string &key_r ) const;
 
-    /** The URL to download the release notes for this product. */
-    UrlList releaseNotesUrls() const;
+  /** The URL to download the release notes for this product. */
+  UrlList releaseNotesUrls() const;
 
-    /** The URL for registration. */
-    UrlList registerUrls() const;
+  /** The URL for registration. */
+  UrlList registerUrls() const;
 
-    /** The URL for SMOLT \see http://smolts.org/wiki/Main_Page. */
-    UrlList smoltUrls() const;
+  /** The URL for SMOLT \see http://smolts.org/wiki/Main_Page. */
+  UrlList smoltUrls() const;
 
-    /**
+  /**
      * Online updates for the product.
      * They are complementary, not alternatives. #163192
      */
-    UrlList updateUrls() const;
+  UrlList updateUrls() const;
 
-    /**
+  /**
      * Additional software for the product
      * They are complementary, not alternatives.
      */
-    UrlList extraUrls() const;
+  UrlList extraUrls() const;
 
-    /**
+  /**
      * Optional software for the product.
      * (for example. Non OSS repositories)
      * They are complementary, not alternatives.
      */
-    UrlList optionalUrls() const;
+  UrlList optionalUrls() const;
 
-  protected:
-    friend Ptr make<Self>( const sat::Solvable & solvable_r );
-    /** Ctor */
-    Product( const sat::Solvable & solvable_r );
-    /** Dtor */
-    virtual ~Product();
-  };
+protected:
+  friend Ptr make<Self>( const sat::Solvable &solvable_r );
+  /** Ctor */
+  Product( const sat::Solvable &solvable_r );
+  /** Dtor */
+  virtual ~Product();
+};
 
-  /** Helper to iterate a products URL lists.
+/** Helper to iterate a products URL lists.
    * \ref first is a convenience for 'lists' with just
    * one entry (e.g. releaseNotesUrls)
    */
-  class Product::UrlList
-  {
-    private:
-      /** \todo Change to directly iterate the .solv */
-      typedef std::list<Url> ListType;
+class Product::UrlList
+{
+private:
+  /** \todo Change to directly iterate the .solv */
+  typedef std::list<Url> ListType;
 
-    public:
-      typedef ListType::value_type     value_type;
-      typedef ListType::size_type      size_type;
-      typedef ListType::const_iterator const_iterator;
+public:
+  typedef ListType::value_type value_type;
+  typedef ListType::size_type size_type;
+  typedef ListType::const_iterator const_iterator;
 
-      bool empty() const
-      { return _list.empty(); }
+  bool empty() const { return _list.empty(); }
 
-      size_type size() const
-      { return _list.size(); }
+  size_type size() const { return _list.size(); }
 
-      const_iterator begin() const
-      { return _list.begin(); }
+  const_iterator begin() const { return _list.begin(); }
 
-      const_iterator end() const
-      { return _list.end(); }
+  const_iterator end() const { return _list.end(); }
 
-      /** The first Url or an empty Url. */
-      Url first() const
-      { return empty() ? value_type() : _list.front(); }
+  /** The first Url or an empty Url. */
+  Url first() const { return empty() ? value_type() : _list.front(); }
 
-    public:
-      /** The key used to retrieve this list (for debug) */
-      std::string key() const
-      { return _key; }
+public:
+  /** The key used to retrieve this list (for debug) */
+  std::string key() const { return _key; }
 
-    private:
-      friend class Product;
-      /** Change to directly iterate the .solv */
-      std::string _key;
-      ListType    _list;
-  };
+private:
+  friend class Product;
+  /** Change to directly iterate the .solv */
+  std::string _key;
+  ListType _list;
+};
 
-  /** \relates Product::UrlList Stream output. */
-  std::ostream & operator<<( std::ostream & str, const Product::UrlList & obj );
+/** \relates Product::UrlList Stream output. */
+std::ostream &operator<<( std::ostream &str, const Product::UrlList &obj );
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_PRODUCT_H

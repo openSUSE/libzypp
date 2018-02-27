@@ -9,25 +9,28 @@ using std::endl;
 using zypp::callback::UserData;
 const std::string key( "key" );
 
-#define checkIsEmpty(v)	\
-  BOOST_CHECK( !v );	\
-  BOOST_CHECK( v.empty() );	\
-  BOOST_CHECK_EQUAL( v.size(), 0 );	\
-  BOOST_CHECK_EQUAL( v.haskey( key ), false );	\
-  BOOST_CHECK_EQUAL( v.hasvalue( key ), false );	\
+#define checkIsEmpty( v )                                                      \
+  BOOST_CHECK( !v );                                                           \
+  BOOST_CHECK( v.empty() );                                                    \
+  BOOST_CHECK_EQUAL( v.size(), 0 );                                            \
+  BOOST_CHECK_EQUAL( v.haskey( key ), false );                                 \
+  BOOST_CHECK_EQUAL( v.hasvalue( key ), false );                               \
   BOOST_CHECK_EQUAL( v.getvalue( key ).empty(), true );
 
-#define checkIsNotEmpty(v,s)	\
-  BOOST_CHECK( v );	\
-  BOOST_CHECK( !v.empty() );	\
-  if ( s )	\
-  { BOOST_CHECK_EQUAL( v.size(), s ); }	\
-  else	\
-  { BOOST_CHECK( v.size() ); }	\
+#define checkIsNotEmpty( v, s )                                                \
+  BOOST_CHECK( v );                                                            \
+  BOOST_CHECK( !v.empty() );                                                   \
+  if ( s )                                                                     \
+  {                                                                            \
+    BOOST_CHECK_EQUAL( v.size(), s );                                          \
+  }                                                                            \
+  else                                                                         \
+  {                                                                            \
+    BOOST_CHECK( v.size() );                                                   \
+  }                                                                            \
   BOOST_CHECK_EQUAL( v.haskey( key ), true );
 
-
-BOOST_AUTO_TEST_CASE(useruata_default)
+BOOST_AUTO_TEST_CASE( useruata_default )
 {
   UserData v;
   checkIsEmpty( v );
@@ -39,9 +42,9 @@ BOOST_AUTO_TEST_CASE(useruata_default)
   BOOST_CHECK_EQUAL( v.getvalue( key ).empty(), true );
 
   std::string rs;
-  unsigned    ru = 0;
-  int         ri = 0;
-  char        rc = 0;
+  unsigned ru = 0;
+  int ri = 0;
+  char rc = 0;
 
   // set key with value
   v.set( key, 42 );
@@ -79,9 +82,9 @@ BOOST_AUTO_TEST_CASE(useruata_default)
   checkIsEmpty( v );
 
   // const may add but not manip non-empty values
-  const UserData & cv( v );
-  BOOST_CHECK_EQUAL( cv.reset( key ), true );	// add new key: ok
-  BOOST_CHECK_EQUAL( cv.set( key, 42 ), true );	// empty -> non-empty: ok
-  BOOST_CHECK_EQUAL( cv.set( key, 43 ), false );// change non-empty: not ok
-  BOOST_CHECK_EQUAL( cv.reset( key ), false );	// change non-empty: not ok
+  const UserData &cv( v );
+  BOOST_CHECK_EQUAL( cv.reset( key ), true );    // add new key: ok
+  BOOST_CHECK_EQUAL( cv.set( key, 42 ), true );  // empty -> non-empty: ok
+  BOOST_CHECK_EQUAL( cv.set( key, 43 ), false ); // change non-empty: not ok
+  BOOST_CHECK_EQUAL( cv.reset( key ), false );   // change non-empty: not ok
 }

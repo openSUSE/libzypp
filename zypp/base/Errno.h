@@ -21,14 +21,17 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /** Convenience \c errno wrapper. */
-  class Errno
+/** Convenience \c errno wrapper. */
+class Errno
+{
+public:
+  /** Default ctor: \c errno */
+  Errno()
+    : _errno( errno )
   {
-    public:
-      /** Default ctor: \c errno */
-      Errno() : _errno( errno ) {}
+  }
 
-      /** Ctor set to \c errno if error condition, else \c 0.
+  /** Ctor set to \c errno if error condition, else \c 0.
        * \code
        *  int ret = ::write( fd, buffer, size );
        *  DBG << "write returns: " << Errno( ret != size ) << end;
@@ -36,30 +39,41 @@ namespace zypp
        *  // on error e.g.: "write returns: [11-Resource temporarily unavailable]"
        * \endcode
        */
-      Errno( bool error_r ) : _errno( error_r ? errno : 0 ) {}
+  Errno( bool error_r )
+    : _errno( error_r ? errno : 0 )
+  {
+  }
 
-      /** Ctor taking an explicit errno value. */
-      Errno( int errno_r ) : _errno( errno_r ) {}
+  /** Ctor taking an explicit errno value. */
+  Errno( int errno_r )
+    : _errno( errno_r )
+  {
+  }
 
-    public:
-      /** Return the stored errno. */
-      int get() const { return _errno; }
+public:
+  /** Return the stored errno. */
+  int get() const { return _errno; }
 
-      /** Allow implicit conversion to \c int. */
-      operator int() const { return get(); }
+  /** Allow implicit conversion to \c int. */
+  operator int() const { return get(); }
 
-      /** Return human readable error string. */
-      std::string asString() const { return str::form( "[%d-%s]", _errno, ::strerror(_errno) ); }
+  /** Return human readable error string. */
+  std::string asString() const
+  {
+    return str::form( "[%d-%s]", _errno, ::strerror( _errno ) );
+  }
 
-    private:
-      int _errno;
-  };
+private:
+  int _errno;
+};
 
-  /** \relates Errno Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Errno & obj )
-  { return str << obj.asString(); }
+/** \relates Errno Stream output */
+inline std::ostream &operator<<( std::ostream &str, const Errno &obj )
+{
+  return str << obj.asString();
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_ERRNO_H

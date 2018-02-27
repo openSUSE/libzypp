@@ -17,8 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-extern "C"
-{
+extern "C" {
 #include <solv/solver.h>
 }
 
@@ -30,88 +29,82 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SolverQueueItemUpdate);
+IMPL_PTR_TYPE( SolverQueueItemUpdate );
 
 //---------------------------------------------------------------------------
 
-std::ostream &
-SolverQueueItemUpdate::dumpOn( std::ostream & os ) const
+std::ostream &SolverQueueItemUpdate::dumpOn( std::ostream &os ) const
 {
-    os << "[" << (_soft?"Soft":"") << "Update: " <<
-	_item << "]";
+  os << "[" << ( _soft ? "Soft" : "" ) << "Update: " << _item << "]";
 
-    return os;
-}
-
-//---------------------------------------------------------------------------
-
-SolverQueueItemUpdate::SolverQueueItemUpdate (const ResPool & pool,
-					      const PoolItem & item, bool soft)
-    : SolverQueueItem (QUEUE_ITEM_TYPE_UPDATE, pool)
-    , _item (item)
-    , _soft (soft)
-{
-}
-
-
-SolverQueueItemUpdate::~SolverQueueItemUpdate()
-{
+  return os;
 }
 
 //---------------------------------------------------------------------------
 
-bool SolverQueueItemUpdate::addRule (sat::detail::CQueue & q)
+SolverQueueItemUpdate::SolverQueueItemUpdate(
+  const ResPool &pool, const PoolItem &item, bool soft )
+  : SolverQueueItem( QUEUE_ITEM_TYPE_UPDATE, pool )
+  , _item( item )
+  , _soft( soft )
 {
-    ::Id id = _item.satSolvable().id();
-    if (id == ID_NULL) {
-	ERR << "Update explicit: " << _item << " not found" << endl;
-	return false;
-    }
-    MIL << "Update explicit " << _item << " with the SAT-Pool ID: " << id << endl;
-    queue_push( &(q), SOLVER_UPDATE | SOLVER_SOLVABLE );
-    queue_push( &(q), id );
-    return true;
 }
 
-SolverQueueItem_Ptr
-SolverQueueItemUpdate::copy (void) const
-{
-    SolverQueueItemUpdate_Ptr new_update = new SolverQueueItemUpdate (pool(), _item);
-    new_update->SolverQueueItem::copy(this);
-
-    new_update->_soft = _soft;
-    return new_update;
-}
-
-int
-SolverQueueItemUpdate::cmp (SolverQueueItem_constPtr item) const
-{
-    int cmp = this->compare (item);
-    if (cmp != 0)
-        return cmp;
-    SolverQueueItemUpdate_constPtr update = dynamic_pointer_cast<const SolverQueueItemUpdate>(item);
-    return compareByNVRA (_item, update->_item);
-}
-
+SolverQueueItemUpdate::~SolverQueueItemUpdate() {}
 
 //---------------------------------------------------------------------------
 
+bool SolverQueueItemUpdate::addRule( sat::detail::CQueue &q )
+{
+  ::Id id = _item.satSolvable().id();
+  if ( id == ID_NULL )
+  {
+    ERR << "Update explicit: " << _item << " not found" << endl;
+    return false;
+  }
+  MIL << "Update explicit " << _item << " with the SAT-Pool ID: " << id << endl;
+  queue_push( &( q ), SOLVER_UPDATE | SOLVER_SOLVABLE );
+  queue_push( &( q ), id );
+  return true;
+}
+
+SolverQueueItem_Ptr SolverQueueItemUpdate::copy( void ) const
+{
+  SolverQueueItemUpdate_Ptr new_update =
+    new SolverQueueItemUpdate( pool(), _item );
+  new_update->SolverQueueItem::copy( this );
+
+  new_update->_soft = _soft;
+  return new_update;
+}
+
+int SolverQueueItemUpdate::cmp( SolverQueueItem_constPtr item ) const
+{
+  int cmp = this->compare( item );
+  if ( cmp != 0 )
+    return cmp;
+  SolverQueueItemUpdate_constPtr update =
+    dynamic_pointer_cast<const SolverQueueItemUpdate>( item );
+  return compareByNVRA( _item, update->_item );
+}
+
+//---------------------------------------------------------------------------
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////

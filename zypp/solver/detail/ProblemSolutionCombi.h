@@ -33,65 +33,67 @@
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  {
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    {
-      /////////////////////////////////////////////////////////////////////////
-      /// \class ProblemSolutionCombi
-      /// \brief Class representing one possible solution to one problem found during resolving.
-      ///
-      /// This problem solution is a combination of different actions,
-      /// e.G. install, delete, keep different resolvables.
-      /////////////////////////////////////////////////////////////////////////
-      class ProblemSolutionCombi : public ProblemSolution
-      {
-      public:
-	/** Constructor. */
-	ProblemSolutionCombi();
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{
+/////////////////////////////////////////////////////////////////////////
+/// \class ProblemSolutionCombi
+/// \brief Class representing one possible solution to one problem found during resolving.
+///
+/// This problem solution is a combination of different actions,
+/// e.G. install, delete, keep different resolvables.
+/////////////////////////////////////////////////////////////////////////
+class ProblemSolutionCombi : public ProblemSolution
+{
+public:
+  /** Constructor. */
+  ProblemSolutionCombi();
 
-	/**
+  /**
 	 * Add a single action of an item
 	 */
-	void addSingleAction( PoolItem item, TransactionKind action );
+  void addSingleAction( PoolItem item, TransactionKind action );
 
-	/**
+  /**
 	 * Add a single action of a capability
 	 */
-	void addSingleAction( Capability capability, TransactionKind action );
+  void addSingleAction( Capability capability, TransactionKind action );
 
-	/**
+  /**
 	 * Add a single action of a SolverQueueItem
 	 */
-	void addSingleAction( SolverQueueItem_Ptr item, TransactionKind action );
+  void addSingleAction( SolverQueueItem_Ptr item, TransactionKind action );
 
-	/**
+  /**
 	 * returns the number of actions
 	 */
-	size_t actionCount()
-	{ return actions().size(); }
+  size_t actionCount() { return actions().size(); }
 
-	/**
+  /**
 	 * Set description text (append)
 	 */
-	void addDescription( std::string description )
-	{ pushDescriptionDetail( std::move(description) ); }
+  void addDescription( std::string description )
+  {
+    pushDescriptionDetail( std::move( description ) );
+  }
 
-	/**
+  /**
 	 * Set description text (prepend)
 	 */
-	void addFrontDescription( std::string description )
-	{ pushDescriptionDetail( std::move(description), /*front*/true ); }
-      };
+  void addFrontDescription( std::string description )
+  {
+    pushDescriptionDetail( std::move( description ), /*front*/ true );
+  }
+};
 
-    } // namespace detail
-    /////////////////////////////////////////////////////////////////////
-  } // namespace solver
-  ///////////////////////////////////////////////////////////////////////
+} // namespace detail
+/////////////////////////////////////////////////////////////////////
+} // namespace solver
+///////////////////////////////////////////////////////////////////////
 } // namespace zypp
-/////////////////////////////////////////////////////////////////////////
-#endif // ZYPP_USE_RESOLVER_INTERNALS
+  /////////////////////////////////////////////////////////////////////////
+#endif                                         // ZYPP_USE_RESOLVER_INTERNALS
 #endif // ZYPP_SOLVER_DETAIL_PROBLEMSOLUTIONAINSTALL_H
-

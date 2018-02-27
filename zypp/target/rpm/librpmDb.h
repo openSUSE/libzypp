@@ -40,6 +40,7 @@ class librpmDb : public base::ReferenceCounted, private base::NonCopyable
 public:
   typedef intrusive_ptr<librpmDb> Ptr;
   typedef intrusive_ptr<const librpmDb> constPtr;
+
 private:
   /**
    * <B>INTENTIONALLY UNDEFINED<\B> because of bug in Ptr classes
@@ -50,17 +51,15 @@ private:
    * \throws RpmException
    *
    **/
-  static void dbAccess( librpmDb::Ptr & ptr_r );
+  static void dbAccess( librpmDb::Ptr &ptr_r );
 
 public:
-
   ///////////////////////////////////////////////////////////////////
   //
   //	static interface
   //
   ///////////////////////////////////////////////////////////////////
 private:
-
   /**
    * Current root directory for all operations.
    * (initialy /)
@@ -90,7 +89,8 @@ private:
    * \throws RpmException
    *
    **/
-  static librpmDb * newLibrpmDb( Pathname root_r, Pathname dbPath_r, bool readonly_r );
+  static librpmDb *newLibrpmDb(
+    Pathname root_r, Pathname dbPath_r, bool readonly_r );
 
   /**
    * Access the database at the current default location. If necessary
@@ -107,7 +107,6 @@ private:
   static void dbAccess();
 
 public:
-
   /**
    * Initialize lib librpm (read configfiles etc.). It's called
    * on demand but you may call it anytime.
@@ -119,33 +118,27 @@ public:
   /**
    * @return librpm macro expansion.
    **/
-  static std::string expand( const std::string & macro_r );
+  static std::string expand( const std::string &macro_r );
 
   /**
    * @return String '(root_r)sub_r' used in debug output.
    **/
-  static std::string stringPath( const Pathname & root_r, const Pathname & sub_r )
+  static std::string stringPath( const Pathname &root_r, const Pathname &sub_r )
   {
-    return std::string( "'(" ) + root_r.asString() + ")" + sub_r.asString() + "'";
+    return std::string( "'(" ) + root_r.asString() + ")" + sub_r.asString() +
+           "'";
   }
 
 public:
-
   /**
    * @return Current root directory for all operations.
    **/
-  static const Pathname & defaultRoot()
-  {
-    return _defaultRoot;
-  }
+  static const Pathname &defaultRoot() { return _defaultRoot; }
 
   /**
    * @return Current directory (below root) that contains the rpmdb.
    **/
-  static const Pathname & defaultDbPath()
-  {
-    return _defaultDbPath;
-  }
+  static const Pathname &defaultDbPath() { return _defaultDbPath; }
 
   /**
    * Adjust access to the given database location, making it the new
@@ -161,7 +154,7 @@ public:
    * \throws RpmException
    *
    **/
-  static void dbAccess( const Pathname & root_r, const Pathname & dbPath_r );
+  static void dbAccess( const Pathname &root_r, const Pathname &dbPath_r );
 
   /**
    * Same as &ref dbAccess(), but returns the database handle if
@@ -172,7 +165,7 @@ public:
    * \throws RpmException
    *
    **/
-  static void dbAccess( librpmDb::constPtr & ptr_r );
+  static void dbAccess( librpmDb::constPtr &ptr_r );
 
   /**
    * If there are no outstanding references to the database (e.g. by @ref db_const_iterator),
@@ -212,18 +205,14 @@ public:
   /**
    * @return Whether database access is blocked.
    **/
-  static bool isBlocked()
-  {
-    return _dbBlocked;
-  }
+  static bool isBlocked() { return _dbBlocked; }
 
   /**
    * Dump debug info.
    **/
-  static std::ostream & dumpState( std::ostream & str );
+  static std::ostream &dumpState( std::ostream &str );
 
 public:
-
   /**
    * Collect info about what kind of rpmdb seems to be present by
    * looking at paths and filenames.
@@ -246,15 +235,14 @@ private:
    * Hides librpm specific data
    **/
   class D;
-  D & _d;
+  D &_d;
 
 protected:
-
   /**
    * Private constructor! librpmDb objects are to be created via
    * static interface only.
    **/
-  librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r );
+  librpmDb( const Pathname &root_r, const Pathname &dbPath_r, bool readonly_r );
 
   /**
    * Trigger from @ref Rep, after refCount was decreased.
@@ -262,7 +250,6 @@ protected:
   virtual void unref_to( unsigned refCount_r ) const;
 
 public:
-
   /**
    * Destructor. Closes rpmdb.
    **/
@@ -271,12 +258,12 @@ public:
   /**
    * @return This handles root directory for all operations.
    **/
-  const Pathname & root() const;
+  const Pathname &root() const;
 
   /**
    * @return This handles directory that contains the rpmdb.
    **/
-  const Pathname & dbPath() const;
+  const Pathname &dbPath() const;
 
   /**
    * Return any database error. Usg. if the database was
@@ -287,10 +274,7 @@ public:
   /**
    * @return Whether handle is valid.
    **/
-  bool valid() const
-  {
-    return( ! error() );
-  }
+  bool valid() const { return ( !error() ); }
 
   /**
    * @return True if handle is valid and database is empty.
@@ -303,16 +287,15 @@ public:
   unsigned size() const;
 
 public:
-
   /**
    * Dont call it ;) It's for development and testing only.
    **/
-  void * dont_call_it() const;
+  void *dont_call_it() const;
 
   /**
    * Dump debug info.
    **/
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -326,10 +309,9 @@ public:
  **/
 class librpmDb::DbDirInfo
 {
-  friend std::ostream & operator<<( std::ostream & str, const DbDirInfo & obj );
+  friend std::ostream &operator<<( std::ostream &str, const DbDirInfo &obj );
 
 private:
-
   /**
    * Root directory for all operations.
    **/
@@ -361,79 +343,54 @@ private:
   PathInfo _dbV3ToV4;
 
 public:
-
   /**
    * For Constructor arguments see @ref accessPath. On illegal
    * arguments @ref _dbDir is unset.
    **/
-  DbDirInfo( const Pathname & root_r, const Pathname & dbPath_r );
+  DbDirInfo( const Pathname &root_r, const Pathname &dbPath_r );
 
 public:
-
   /**
    * Root directory for all operations.
    **/
-  const Pathname & root() const
-  {
-    return _root;
-  }
+  const Pathname &root() const { return _root; }
 
   /**
    * Directory that contains the rpmdb.
    **/
-  const Pathname & dbPath() const
-  {
-    return _dbPath;
-  }
+  const Pathname &dbPath() const { return _dbPath; }
 
   /**
    * database directory (unset on illegal constructor arguments)
    **/
-  const PathInfo & dbDir() const
-  {
-    return _dbDir;
-  }
+  const PathInfo &dbDir() const { return _dbDir; }
 
   /**
    * rpmV4 database (_dbDir/Packages)
    **/
-  const PathInfo & dbV4() const
-  {
-    return _dbV4;
-  }
+  const PathInfo &dbV4() const { return _dbV4; }
 
   /**
    * rpmV3 database (_dbDir/packages.rpm)
    **/
-  const PathInfo & dbV3() const
-  {
-    return _dbV3;
-  }
+  const PathInfo &dbV3() const { return _dbV3; }
 
   /**
    * rpmV3 database backup created on conversion to rpmV4 (_dbDir/packages.rpm3)
    **/
-  const PathInfo & dbV3ToV4() const
-  {
-    return _dbV3ToV4;
-  }
+  const PathInfo &dbV3ToV4() const { return _dbV3ToV4; }
 
 public:
-
   /**
    * Restat all paths
    **/
   void restat();
 
 public:
-
   /**
    * Whether constructor arguments were illegal.
    **/
-  bool illegalArgs() const
-  {
-    return _dbDir.path().empty();
-  }
+  bool illegalArgs() const { return _dbDir.path().empty(); }
 
   /**
    * Whether constructor arguments were llegal and dbDir either
@@ -441,40 +398,28 @@ public:
    **/
   bool usableArgs() const
   {
-    return _dbDir.isDir() || ! ( _dbDir.path().empty() || _dbDir.isExist() );
+    return _dbDir.isDir() || !( _dbDir.path().empty() || _dbDir.isExist() );
   }
 
   /**
    * Whether dbDir directory exists.
    **/
-  bool hasDbDir() const
-  {
-    return _dbDir.isDir();
-  }
+  bool hasDbDir() const { return _dbDir.isDir(); }
 
   /**
    * Whether dbV4 file exists.
    **/
-  bool hasDbV4() const
-  {
-    return _dbV4.isFile();
-  }
+  bool hasDbV4() const { return _dbV4.isFile(); }
 
   /**
    * Whether dbV3 file exists.
    **/
-  bool hasDbV3() const
-  {
-    return _dbV3.isFile();
-  }
+  bool hasDbV3() const { return _dbV3.isFile(); }
 
   /**
    * Whether dbV3ToV4 file exists.
    **/
-  bool hasDbV3ToV4() const
-  {
-    return _dbV3ToV4.isFile();
-  }
+  bool hasDbV3ToV4() const { return _dbV3ToV4.isFile(); }
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -489,21 +434,20 @@ public:
  **/
 class librpmDb::db_const_iterator
 {
-  db_const_iterator & operator=( const db_const_iterator & ); // NO ASSIGNMENT!
-  db_const_iterator ( const db_const_iterator & );            // NO COPY!
-  friend std::ostream & operator<<( std::ostream & str, const db_const_iterator & obj );
+  db_const_iterator &operator=( const db_const_iterator & ); // NO ASSIGNMENT!
+  db_const_iterator( const db_const_iterator & );            // NO COPY!
+  friend std::ostream &operator<<(
+    std::ostream &str, const db_const_iterator &obj );
   friend class librpmDb;
 
 private:
-
   /**
    * Hides librpm specific data
    **/
   class D;
-  D & _d;
+  D &_d;
 
 public:
-
   /**
    * Constructor. Iterator is initialized to @ref findAll.
    * The default form accesses librpmDb's default database.
@@ -541,18 +485,14 @@ public:
    * Returns the current RpmHeader::constPtr or
    * NULL, if no more entries available.
    **/
-  const RpmHeader::constPtr & operator*() const;
+  const RpmHeader::constPtr &operator*() const;
 
   /**
    * Forwards to the current RpmHeader::constPtr.
    **/
-  const RpmHeader::constPtr & operator->() const
-  {
-    return operator*();
-  }
+  const RpmHeader::constPtr &operator->() const { return operator*(); }
 
 public:
-
   /**
    * Reset to iterate all packages. Returns true if iterator
    * contains at least one entry.
@@ -566,22 +506,22 @@ public:
   /**
    * Reset to iterate all packages that own a certain file.
    **/
-  bool findByFile( const std::string & file_r );
+  bool findByFile( const std::string &file_r );
 
   /**
    * Reset to iterate all packages that provide a certain tag.
    **/
-  bool findByProvides( const std::string & tag_r );
+  bool findByProvides( const std::string &tag_r );
 
   /**
    * Reset to iterate all packages that require a certain tag.
    **/
-  bool findByRequiredBy( const std::string & tag_r );
+  bool findByRequiredBy( const std::string &tag_r );
 
   /**
    * Reset to iterate all packages that conflict with a certain tag.
    **/
-  bool findByConflicts( const std::string & tag_r );
+  bool findByConflicts( const std::string &tag_r );
 
   /**
    * Reset to iterate all packages with a certain name.
@@ -593,10 +533,9 @@ public:
    * findByName is needed to retrieve pseudo packages like
    * 'gpg-pubkey', which in fact exist in multiple instances.
    **/
-  bool findByName( const std::string & name_r );
+  bool findByName( const std::string &name_r );
 
 public:
-
   /**
    * Find package by name.
    *
@@ -604,18 +543,18 @@ public:
    * are possible but not desired. If so, the last package installed
    * is returned.
    **/
-  bool findPackage( const std::string & name_r );
+  bool findPackage( const std::string &name_r );
 
   /**
    * Find package by name and edition.
    * Commonly used by PMRpmPackageDataProvider.
    **/
-  bool findPackage( const std::string & name_r, const Edition & ed_r );
+  bool findPackage( const std::string &name_r, const Edition &ed_r );
 
   /**
    * Abbr. for <code>findPackage( which_r->name(), which_r->edition() );</code>
    **/
-  bool findPackage( const Package::constPtr & which_r );
+  bool findPackage( const Package::constPtr &which_r );
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -624,4 +563,3 @@ public:
 } // namespace zypp
 
 #endif // librpmDb_h
-

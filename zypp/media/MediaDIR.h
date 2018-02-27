@@ -14,42 +14,51 @@
 
 #include "zypp/media/MediaHandler.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : MediaDIR
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : MediaDIR
 
-    /**
+/**
      * @short Implementation class for DIR MediaHandler
      * @see MediaHandler
      **/
-    class MediaDIR : public MediaHandler {
+class MediaDIR : public MediaHandler
+{
 
-      protected:
+protected:
+  virtual void attachTo( bool next = false );
+  virtual void releaseFrom( const std::string &ejectDev );
+  virtual void getFile( const Pathname &filename ) const;
+  virtual void getDir( const Pathname &dirname, bool recurse_r ) const;
+  virtual void getDirInfo( std::list<std::string> &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual void getDirInfo( filesystem::DirContent &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual bool getDoesFileExist( const Pathname &filename ) const;
 
-	virtual void attachTo (bool next = false);
-        virtual void releaseFrom( const std::string & ejectDev );
-	virtual void getFile( const Pathname & filename ) const;
-	virtual void getDir( const Pathname & dirname, bool recurse_r ) const;
-        virtual void getDirInfo( std::list<std::string> & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual void getDirInfo( filesystem::DirContent & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual bool getDoesFileExist( const Pathname & filename ) const;
+public:
+  MediaDIR( const Url &url_r, const Pathname &attach_point_hint_r );
 
-      public:
+  virtual ~MediaDIR()
+  {
+    try
+    {
+      release();
+    }
+    catch ( ... )
+    {
+    }
+  }
+};
 
-        MediaDIR( const Url &      url_r,
-		  const Pathname & attach_point_hint_r );
+///////////////////////////////////////////////////////////////////
 
-        virtual ~MediaDIR() { try { release(); } catch(...) {} }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_MEDIADIR_H

@@ -18,47 +18,46 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  DEFINE_PTR_TYPE(SrcPackage);
+DEFINE_PTR_TYPE( SrcPackage );
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : SrcPackage
-  //
-  /** SrcPackage interface.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : SrcPackage
+//
+/** SrcPackage interface.
   */
-  class SrcPackage : public ResObject
-  {
+class SrcPackage : public ResObject
+{
 
-  public:
-    typedef SrcPackage               Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+public:
+  typedef SrcPackage Self;
+  typedef ResTraits<Self> TraitsType;
+  typedef TraitsType::PtrType Ptr;
+  typedef TraitsType::constPtrType constPtr;
 
-  public:
-    /** The type of the source rpm ("src" or "nosrc"). */
-    std::string sourcePkgType() const;
+public:
+  /** The type of the source rpm ("src" or "nosrc"). */
+  std::string sourcePkgType() const;
 
-    /** location of resolvable in repo */
-    OnMediaLocation location() const;
+  /** location of resolvable in repo */
+  OnMediaLocation location() const;
 
-    /** Location of the downloaded package in cache or an empty path. */
-    Pathname cachedLocation() const;
+  /** Location of the downloaded package in cache or an empty path. */
+  Pathname cachedLocation() const;
 
-    /** Whether the package is cached. */
-    bool isCached() const
-    { return ! cachedLocation().empty(); }
+  /** Whether the package is cached. */
+  bool isCached() const { return !cachedLocation().empty(); }
 
-  protected:
-    friend Ptr make<Self>( const sat::Solvable & solvable_r );
-    /** Ctor */
-    SrcPackage( const sat::Solvable & solvable_r );
-    /** Dtor */
-    virtual ~SrcPackage();
-  };
-  ///////////////////////////////////////////////////////////////////
+protected:
+  friend Ptr make<Self>( const sat::Solvable &solvable_r );
+  /** Ctor */
+  SrcPackage( const sat::Solvable &solvable_r );
+  /** Dtor */
+  virtual ~SrcPackage();
+};
+///////////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_SRCPACKAGE_H

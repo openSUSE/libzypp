@@ -20,9 +20,9 @@
 
 namespace zypp
 {
-    namespace ui
-    {
-	/**
+namespace ui
+{
+/**
 	 * This returns a set of package names the user explicitly wanted to
 	 * transact ( to install, to update, or to delete) for any of the
 	 * following reasons:
@@ -37,9 +37,9 @@ namespace zypp
 	 * - Pkg is part of a pattern that is required by a pattern the
 	 *   user wanted to transact
 	 **/
-	std::set<std::string> userWantedPackageNames();
+std::set<std::string> userWantedPackageNames();
 
-    } // namespace ui
+} // namespace ui
 } // namespace zypp
 
 #endif // USER_WANTED_PACKAGES_H

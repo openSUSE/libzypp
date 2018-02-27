@@ -47,7 +47,6 @@ namespace rpm
 class RpmDb : public base::ReferenceCounted, private base::NonCopyable
 {
 public:
-
   /**
    * Default error class
    **/
@@ -59,30 +58,31 @@ public:
   //
   ///////////////////////////////////////////////////////////////////
 private:
-
-  enum DbStateInfoBits {
-    DbSI_NO_INIT	= 0x0000,
-    DbSI_HAVE_V4	= 0x0001,
-    DbSI_MADE_V4	= 0x0002,
-    DbSI_MODIFIED_V4	= 0x0004,
-    DbSI_HAVE_V3	= 0x0008,
-    DbSI_HAVE_V3TOV4	= 0x0010,
-    DbSI_MADE_V3TOV4	= 0x0020
+  enum DbStateInfoBits
+  {
+    DbSI_NO_INIT = 0x0000,
+    DbSI_HAVE_V4 = 0x0001,
+    DbSI_MADE_V4 = 0x0002,
+    DbSI_MODIFIED_V4 = 0x0004,
+    DbSI_HAVE_V3 = 0x0008,
+    DbSI_HAVE_V3TOV4 = 0x0010,
+    DbSI_MADE_V3TOV4 = 0x0020
   };
 
-  friend std::ostream & operator<<( std::ostream & str, const DbStateInfoBits & obj );
+  friend std::ostream &operator<<(
+    std::ostream &str, const DbStateInfoBits &obj );
 
-  void dbsi_set( DbStateInfoBits & val_r, const unsigned & bits_r ) const
+  void dbsi_set( DbStateInfoBits &val_r, const unsigned &bits_r ) const
   {
-    val_r = (DbStateInfoBits)(val_r | bits_r);
+    val_r = ( DbStateInfoBits )( val_r | bits_r );
   }
-  void dbsi_clr( DbStateInfoBits & val_r, const unsigned & bits_r ) const
+  void dbsi_clr( DbStateInfoBits &val_r, const unsigned &bits_r ) const
   {
-    val_r = (DbStateInfoBits)(val_r & ~bits_r);
+    val_r = ( DbStateInfoBits )( val_r & ~bits_r );
   }
-  bool dbsi_has( const DbStateInfoBits & val_r, const unsigned & bits_r ) const
+  bool dbsi_has( const DbStateInfoBits &val_r, const unsigned &bits_r ) const
   {
-    return( (val_r & bits_r) == bits_r );
+    return ( ( val_r & bits_r ) == bits_r );
   }
 
   /**
@@ -106,20 +106,20 @@ private:
    * \throws RpmException
    *
    **/
-  void internal_initDatabase( const Pathname & root_r, const Pathname & dbPath_r,
-                              DbStateInfoBits & info_r );
+  void internal_initDatabase(
+    const Pathname &root_r, const Pathname &dbPath_r, DbStateInfoBits &info_r );
 
   /**
    * Remove the rpm4 database in dbdir_r and optionally any backup created
    * on conversion.
    **/
-  static void removeV4( const Pathname & dbdir_r, bool v3backup_r );
+  static void removeV4( const Pathname &dbdir_r, bool v3backup_r );
 
   /**
    * Remove the rpm3 database in dbdir_r. Create a backup copy named
    * packages.rpm3 if it does not already exist.
    **/
-  static void removeV3( const Pathname & dbdir_r, bool v3backup_r );
+  static void removeV3( const Pathname &dbdir_r, bool v3backup_r );
 
   /**
    * Called before the database is modified by installPackage/removePackage.
@@ -128,7 +128,6 @@ private:
   void modifyDatabase();
 
 public:
-
   /**
    * Constructor. There's no rpmdb access until @ref initDatabase
    * was called.
@@ -148,26 +147,17 @@ public:
   /**
    * @return Root directory for all operations (empty if not initialized).
    **/
-  const Pathname & root() const
-  {
-    return _root;
-  }
+  const Pathname &root() const { return _root; }
 
   /**
    * @return Directory that contains the rpmdb (empty if not initialized).
    **/
-  const Pathname & dbPath() const
-  {
-    return _dbPath;
-  }
+  const Pathname &dbPath() const { return _dbPath; }
 
   /**
    * @return Whether we are initialized.
    **/
-  bool initialized() const
-  {
-    return( ! _root.empty() );
-  }
+  bool initialized() const { return ( !_root.empty() ); }
 
   /**
    * Prepare access to the rpm database. Optional arguments may denote the
@@ -195,8 +185,7 @@ public:
    *
    **/
   void initDatabase( Pathname root_r = Pathname(),
-                     Pathname dbPath_r = Pathname(),
-                     bool doRebuild_r = false );
+    Pathname dbPath_r = Pathname(), bool doRebuild_r = false );
 
   /**
    * Block further access to the rpm database and go back to uninitialized
@@ -222,7 +211,7 @@ public:
    * \throws RpmException
    *
    **/
-  void importPubkey( const PublicKey & pubkey_r );
+  void importPubkey( const PublicKey &pubkey_r );
 
   /**
    * Remove a public key from the rpm database
@@ -230,7 +219,7 @@ public:
    * \throws RpmException
    *
    **/
-  void removePubkey( const PublicKey & pubkey_r );
+  void removePubkey( const PublicKey &pubkey_r );
 
   /**
    * Return the long ids of all installed public keys.
@@ -248,50 +237,51 @@ public:
   //
   ///////////////////////////////////////////////////////////////////
 public:
-
   /**
    * return complete file list for installed package name_r (in FileInfo.filename)
    * if edition_r != Edition::noedition, check for exact edition
    * if full==true, fill all attributes of FileInfo
    **/
-  std::list<FileInfo> fileList( const std::string & name_r, const Edition & edition_r ) const;
+  std::list<FileInfo> fileList(
+    const std::string &name_r, const Edition &edition_r ) const;
 
   /**
    * Return true if at least one package owns a certain file (name_r empty)
    * Return true if package name_r owns file file_r (name_r nonempty).
    **/
-  bool hasFile( const std::string & file_r, const std::string & name_r = "" ) const;
+  bool hasFile(
+    const std::string &file_r, const std::string &name_r = "" ) const;
 
   /**
    * Return name of package owning file
    * or empty string if no installed package owns file
    **/
-  std::string whoOwnsFile( const std::string & file_r ) const;
+  std::string whoOwnsFile( const std::string &file_r ) const;
 
   /**
    * Return true if at least one package provides a certain tag.
    **/
-  bool hasProvides( const std::string & tag_r ) const;
+  bool hasProvides( const std::string &tag_r ) const;
 
   /**
    * Return true if at least one package requires a certain tag.
    **/
-  bool hasRequiredBy( const std::string & tag_r ) const;
+  bool hasRequiredBy( const std::string &tag_r ) const;
 
   /**
    * Return true if at least one package conflicts with a certain tag.
    **/
-  bool hasConflicts( const std::string & tag_r ) const;
+  bool hasConflicts( const std::string &tag_r ) const;
 
   /**
    * Return true if package is installed.
    **/
-  bool hasPackage( const std::string & name_r ) const;
+  bool hasPackage( const std::string &name_r ) const;
 
   /**
    * Return true if package is installed in a certain edition.
    **/
-  bool hasPackage( const std::string & name_r, const Edition & ed_r ) const;
+  bool hasPackage( const std::string &name_r, const Edition &ed_r ) const;
 
   /**
    * Get an installed packages data from rpmdb. Package is
@@ -304,8 +294,8 @@ public:
    * FIXME this and following comment
    *
    **/
-  void getData( const std::string & name_r,
-                RpmHeader::constPtr & result_r ) const;
+  void getData(
+    const std::string &name_r, RpmHeader::constPtr &result_r ) const;
 
   /**
    * Get an installed packages data from rpmdb. Package is
@@ -316,8 +306,8 @@ public:
    * \throws RpmException
    *
    **/
-  void getData( const std::string & name_r, const Edition & ed_r,
-                RpmHeader::constPtr & result_r ) const;
+  void getData( const std::string &name_r, const Edition &ed_r,
+    RpmHeader::constPtr &result_r ) const;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -326,9 +316,10 @@ public:
   /** Sync mode for \ref syncTrustedKeys */
   enum SyncTrustedKeyBits
   {
-    SYNC_TO_KEYRING	= 1<<0,	//! export rpm trusted keys into zypp trusted keyring
-    SYNC_FROM_KEYRING	= 1<<1,	//! import zypp trusted keys into rpm database.
-    SYNC_BOTH		= SYNC_TO_KEYRING | SYNC_FROM_KEYRING
+    SYNC_TO_KEYRING =
+      1 << 0, //! export rpm trusted keys into zypp trusted keyring
+    SYNC_FROM_KEYRING = 1 << 1, //! import zypp trusted keys into rpm database.
+    SYNC_BOTH = SYNC_TO_KEYRING | SYNC_FROM_KEYRING
   };
   /**
    * Sync trusted keys stored in rpm database and zypp trusted keyring.
@@ -350,7 +341,7 @@ private:
   */
   ExternalProgram *process;
 
-  typedef std::vector<const char*> RpmArgVec;
+  typedef std::vector<const char *> RpmArgVec;
 
   /**
    * Run rpm with the specified arguments and handle stderr.
@@ -361,15 +352,14 @@ private:
    * \throws RpmException
    *
    **/
-  void run_rpm( const RpmArgVec& options,
-                ExternalProgram::Stderr_Disposition stderr_disp =
-                  ExternalProgram::Stderr_To_Stdout);
-
+  void run_rpm(
+    const RpmArgVec &options, ExternalProgram::Stderr_Disposition stderr_disp =
+                                ExternalProgram::Stderr_To_Stdout );
 
   /**
    * Read a line from the general rpm query
   */
-  bool systemReadLine(std::string &line);
+  bool systemReadLine( std::string &line );
 
   /**
    * Return the exit status of the general rpm process,
@@ -411,15 +401,10 @@ private:
    * @param difffailmsg what to put into mail if diff failed, must contain two %s for the two files
    * @param diffgenmsg what to put into mail if diff succeeded, must contain two %s for the two files
    * */
-  void processConfigFiles(const std::string& line,
-                          const std::string& name,
-                          const char* typemsg,
-                          const char* difffailmsg,
-                          const char* diffgenmsg);
-
+  void processConfigFiles( const std::string &line, const std::string &name,
+    const char *typemsg, const char *difffailmsg, const char *diffgenmsg );
 
 public:
-
   typedef std::set<std::string> FileList;
 
   /**
@@ -428,21 +413,23 @@ public:
    * */
   enum CheckPackageResult
   {
-    CHK_OK            = 0, /*!< Signature is OK. */
-    CHK_NOTFOUND      = 1, /*!< Signature is unknown type. */
-    CHK_FAIL          = 2, /*!< Signature does not verify. */
-    CHK_NOTTRUSTED    = 3, /*!< Signature is OK, but key is not trusted. */
-    CHK_NOKEY         = 4, /*!< Public key is unavailable. */
-    CHK_ERROR         = 5, /*!< File does not exist or can't be opened. */
-    CHK_NOSIG         = 6, /*!< File has no gpg signature (only digests). */
+    CHK_OK = 0,         /*!< Signature is OK. */
+    CHK_NOTFOUND = 1,   /*!< Signature is unknown type. */
+    CHK_FAIL = 2,       /*!< Signature does not verify. */
+    CHK_NOTTRUSTED = 3, /*!< Signature is OK, but key is not trusted. */
+    CHK_NOKEY = 4,      /*!< Public key is unavailable. */
+    CHK_ERROR = 5,      /*!< File does not exist or can't be opened. */
+    CHK_NOSIG = 6,      /*!< File has no gpg signature (only digests). */
   };
 
   /** Detailed rpm signature check log messages
    * A single multiline message if \ref CHK_OK. Otherwise each message line
    * together with it's \ref CheckPackageResult.
    */
-  struct CheckPackageDetail : std::vector<std::pair<CheckPackageResult,std::string>>
-  {};
+  struct CheckPackageDetail
+    : std::vector<std::pair<CheckPackageResult, std::string>>
+  {
+  };
 
   /**
    * Check signature of rpm file on disk (legacy version returning CHK_OK if file is unsigned, like 'rpm -K')
@@ -454,9 +441,10 @@ public:
    *
    * \see also \ref checkPackageSignature
    */
-  CheckPackageResult checkPackage( const Pathname & path_r, CheckPackageDetail & detail_r );
+  CheckPackageResult checkPackage(
+    const Pathname &path_r, CheckPackageDetail &detail_r );
   /** \overload Ignoring the \a details_r */
-  CheckPackageResult checkPackage( const Pathname & path_r );
+  CheckPackageResult checkPackage( const Pathname &path_r );
 
   /**
    * Check signature of rpm file on disk (strict check returning CHK_NOSIG if file is unsigned).
@@ -468,7 +456,8 @@ public:
    *
    * \see also \ref checkPackage
    */
-  CheckPackageResult checkPackageSignature( const Pathname & path_r, CheckPackageDetail & detail_r );
+  CheckPackageResult checkPackageSignature(
+    const Pathname &path_r, CheckPackageDetail &detail_r );
 
   /** install rpm package
    *
@@ -480,7 +469,8 @@ public:
    * \throws RpmException
    *
    * */
-  void installPackage ( const Pathname & filename, RpmInstFlags flags = RPMINST_NONE );
+  void installPackage(
+    const Pathname &filename, RpmInstFlags flags = RPMINST_NONE );
 
   /** remove rpm package
    *
@@ -492,17 +482,16 @@ public:
    * \throws RpmException
    *
    * */
-  void removePackage( const std::string & name_r, RpmInstFlags flags = RPMINST_NONE );
-  void removePackage( Package::constPtr package, RpmInstFlags flags = RPMINST_NONE );
+  void removePackage(
+    const std::string &name_r, RpmInstFlags flags = RPMINST_NONE );
+  void removePackage(
+    Package::constPtr package, RpmInstFlags flags = RPMINST_NONE );
 
   /**
    * get backup dir for rpm config files
    *
    * */
-  Pathname getBackupPath (void)
-  {
-    return _backuppath;
-  }
+  Pathname getBackupPath( void ) { return _backuppath; }
 
   /**
    * create tar.gz of all changed files in a Package
@@ -511,7 +500,7 @@ public:
    *
    * @see setBackupPath
    * */
-  bool backupPackage(const std::string& packageName);
+  bool backupPackage( const std::string &packageName );
 
   /**
    * queries file for name and then calls above backupPackage
@@ -519,14 +508,14 @@ public:
    *
    * @param filename rpm file that is about to be installed
    * */
-  bool backupPackage(const Pathname& filename);
+  bool backupPackage( const Pathname &filename );
 
   /**
    * set path where package backups are stored
    *
    * @see backupPackage
    * */
-  void setBackupPath(const Pathname& path);
+  void setBackupPath( const Pathname &path );
 
   /**
    * whether to create package backups during install or
@@ -534,10 +523,7 @@ public:
    *
    * @param yes true or false
    * */
-  void createPackageBackups(bool yes)
-  {
-    _packagebackups = yes;
-  }
+  void createPackageBackups( bool yes ) { _packagebackups = yes; }
 
   /**
    * determine which files of an installed package have been
@@ -549,26 +535,28 @@ public:
    * @return false if package couln't be queried for some
    * reason
    * */
-  bool queryChangedFiles(FileList & fileList, const std::string& packageName);
+  bool queryChangedFiles( FileList &fileList, const std::string &packageName );
 
 public:
-
   /**
    * Dump debug info.
    **/
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
 protected:
-  void doRemovePackage( const std::string & name_r, RpmInstFlags flags, callback::SendReport<RpmRemoveReport> & report );
-  void doInstallPackage( const Pathname & filename, RpmInstFlags flags, callback::SendReport<RpmInstallReport> & report );
-  void doRebuildDatabase(callback::SendReport<RebuildDBReport> & report);
+  void doRemovePackage( const std::string &name_r, RpmInstFlags flags,
+    callback::SendReport<RpmRemoveReport> &report );
+  void doInstallPackage( const Pathname &filename, RpmInstFlags flags,
+    callback::SendReport<RpmInstallReport> &report );
+  void doRebuildDatabase( callback::SendReport<RebuildDBReport> &report );
 };
 
 /** \relates RpmDb::CheckPackageResult Stream output */
-std::ostream & operator<<( std::ostream & str, RpmDb::CheckPackageResult obj );
+std::ostream &operator<<( std::ostream &str, RpmDb::CheckPackageResult obj );
 
 /** \relates RpmDb::checkPackageDetail Stream output */
-std::ostream & operator<<( std::ostream & str, const RpmDb::CheckPackageDetail & obj );
+std::ostream &operator<<(
+  std::ostream &str, const RpmDb::CheckPackageDetail &obj );
 
 } // namespace rpm
 } // namespace target

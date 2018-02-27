@@ -10,11 +10,10 @@
  *
 */
 #include "librpm.h"
-extern "C"
-{
+extern "C" {
 #ifdef _RPM_5
 #undef RPM_NULL_TYPE
-#define RPM_NULL_TYPE rpmTagType(0)
+#define RPM_NULL_TYPE rpmTagType( 0 )
 typedef rpmuint32_t rpm_count_t;
 #endif
 }
@@ -38,49 +37,60 @@ namespace target
 namespace rpm
 {
 
-  /** Helper for header data retieval.
+/** Helper for header data retieval.
    * With \c _RPM_4 use \c ::headerGet; with \c _RPM_5
    * use the meanwhile deprecated \c ::headerGetEntry.
    * \ingroup g_RAII
    */
-  struct HeaderEntryGetter : private base::NonCopyable
-  {
-    public:
-      HeaderEntryGetter( const Header & h_r, rpmTag & tag_r );
-      ~HeaderEntryGetter();
-      rpmTagType  type();
-      rpm_count_t cnt();
-      void *      val();
-    private:
+struct HeaderEntryGetter : private base::NonCopyable
+{
+public:
+  HeaderEntryGetter( const Header &h_r, rpmTag &tag_r );
+  ~HeaderEntryGetter();
+  rpmTagType type();
+  rpm_count_t cnt();
+  void *val();
+
+private:
 #ifndef _RPM_5
-     ::rpmtd		_rpmtd;
+  ::rpmtd _rpmtd;
 #else
-      rpmTagType	_type;
-      rpm_count_t	_cnt;
-      void *		_val;
+  rpmTagType _type;
+  rpm_count_t _cnt;
+  void *_val;
 #endif //_RPM_5
- };
+};
 
 #ifndef _RPM_5
-  inline HeaderEntryGetter::HeaderEntryGetter( const Header & h_r, rpmTag & tag_r )
-    : _rpmtd( ::rpmtdNew() )
-  { ::headerGet( h_r, tag_r, _rpmtd, HEADERGET_DEFAULT ); }
-  inline HeaderEntryGetter::~HeaderEntryGetter()
-  { ::rpmtdFreeData( _rpmtd ); ::rpmtdFree( _rpmtd ); }
-  inline rpmTagType	HeaderEntryGetter::type()	{ return rpmtdType( _rpmtd ); }
-  inline rpm_count_t	HeaderEntryGetter::cnt()	{ return _rpmtd->count; }
-  inline void *		HeaderEntryGetter::val()	{ return _rpmtd->data; }
+inline HeaderEntryGetter::HeaderEntryGetter( const Header &h_r, rpmTag &tag_r )
+  : _rpmtd(::rpmtdNew() )
+{
+  ::headerGet( h_r, tag_r, _rpmtd, HEADERGET_DEFAULT );
+}
+inline HeaderEntryGetter::~HeaderEntryGetter()
+{
+  ::rpmtdFreeData( _rpmtd );
+  ::rpmtdFree( _rpmtd );
+}
+inline rpmTagType HeaderEntryGetter::type() { return rpmtdType( _rpmtd ); }
+inline rpm_count_t HeaderEntryGetter::cnt() { return _rpmtd->count; }
+inline void *HeaderEntryGetter::val() { return _rpmtd->data; }
 #else
-  inline HeaderEntryGetter::HeaderEntryGetter( const Header & h_r, rpmTag & tag_r )
-    : _type( RPM_NULL_TYPE )
-    , _cnt( 0 )
-    , _val( 0 )
-  { ::headerGetEntry( h_r, tag_r, hTYP_t(&_type), &_val, &_cnt ); }
-  inline HeaderEntryGetter::~HeaderEntryGetter()
-  { if ( _val && _type == RPM_STRING_ARRAY_TYPE ) free( _val ); }
-  inline rpmTagType	HeaderEntryGetter::type()	{ return _type; }
-  inline rpm_count_t	HeaderEntryGetter::cnt()	{ return _cnt; }
-  inline void *		HeaderEntryGetter::val()	{ return _val; }
+inline HeaderEntryGetter::HeaderEntryGetter( const Header &h_r, rpmTag &tag_r )
+  : _type( RPM_NULL_TYPE )
+  , _cnt( 0 )
+  , _val( 0 )
+{
+  ::headerGetEntry( h_r, tag_r, hTYP_t( &_type ), &_val, &_cnt );
+}
+inline HeaderEntryGetter::~HeaderEntryGetter()
+{
+  if ( _val && _type == RPM_STRING_ARRAY_TYPE )
+    free( _val );
+}
+inline rpmTagType HeaderEntryGetter::type() { return _type; }
+inline rpm_count_t HeaderEntryGetter::cnt() { return _cnt; }
+inline void *HeaderEntryGetter::val() { return _val; }
 #endif //_RPM_5
 
 ///////////////////////////////////////////////////////////////////
@@ -89,7 +99,8 @@ namespace rpm
 //
 ///////////////////////////////////////////////////////////////////
 
-unsigned BinHeader::intList::set( void * val_r, unsigned cnt_r, rpmTagType type_r )
+unsigned BinHeader::intList::set(
+  void *val_r, unsigned cnt_r, rpmTagType type_r )
 {
   _type = type_r; // remember the type!
   if ( val_r )
@@ -97,26 +108,31 @@ unsigned BinHeader::intList::set( void * val_r, unsigned cnt_r, rpmTagType type_
     {
 #if RPM_CHAR_TYPE != RPM_INT8_TYPE
       case RPM_CHAR_TYPE:
-	std::vector<long>( (char*)val_r, ((char*)val_r)+cnt_r ).swap( _data );
-	break;
+        std::vector<long>( (char *)val_r, ( (char *)val_r ) + cnt_r )
+          .swap( _data );
+        break;
 #endif
       case RPM_INT8_TYPE:
-	std::vector<long>( (int8_t*)val_r, ((int8_t*)val_r)+cnt_r ).swap( _data );
-	break;
+        std::vector<long>( (int8_t *)val_r, ( (int8_t *)val_r ) + cnt_r )
+          .swap( _data );
+        break;
       case RPM_INT16_TYPE:
-	std::vector<long>( (int16_t*)val_r, ((int16_t*)val_r)+cnt_r ).swap( _data );
-	break;
+        std::vector<long>( (int16_t *)val_r, ( (int16_t *)val_r ) + cnt_r )
+          .swap( _data );
+        break;
       case RPM_INT32_TYPE:
-	std::vector<long>( (int32_t*)val_r, ((int32_t*)val_r)+cnt_r ).swap( _data );
-	break;
+        std::vector<long>( (int32_t *)val_r, ( (int32_t *)val_r ) + cnt_r )
+          .swap( _data );
+        break;
 #ifndef _RPM_5
       case RPM_INT64_TYPE:
-	std::vector<long>( (int64_t*)val_r, ((int64_t*)val_r)+cnt_r ).swap( _data );
-	break;
+        std::vector<long>( (int64_t *)val_r, ( (int64_t *)val_r ) + cnt_r )
+          .swap( _data );
+        break;
 #endif
       default:
-	std::vector<long>( cnt_r, 0L ).swap( _data );
-	break;
+        std::vector<long>( cnt_r, 0L ).swap( _data );
+        break;
     }
   else
     _data.clear();
@@ -129,10 +145,10 @@ unsigned BinHeader::intList::set( void * val_r, unsigned cnt_r, rpmTagType type_
 //
 ///////////////////////////////////////////////////////////////////
 
-unsigned BinHeader::stringList::set( char ** val_r, unsigned cnt_r )
+unsigned BinHeader::stringList::set( char **val_r, unsigned cnt_r )
 {
   if ( val_r )
-    std::vector<std::string>( val_r, val_r+cnt_r ).swap( _data );
+    std::vector<std::string>( val_r, val_r + cnt_r ).swap( _data );
   else
     _data.clear();
   return _data.size();
@@ -151,7 +167,7 @@ unsigned BinHeader::stringList::set( char ** val_r, unsigned cnt_r )
 //        METHOD TYPE : Constructor
 //
 BinHeader::BinHeader( Header h_r )
-    : _h( h_r )
+  : _h( h_r )
 {
   if ( _h )
   {
@@ -165,16 +181,16 @@ BinHeader::BinHeader( Header h_r )
 //        METHOD NAME : BinHeader::BinHeader
 //        METHOD TYPE : Constructor
 //
-BinHeader::BinHeader( BinHeader::Ptr & rhs )
+BinHeader::BinHeader( BinHeader::Ptr &rhs )
 {
   INT << "INJECT from " << rhs;
-  if ( ! (rhs && rhs->_h) )
+  if ( !( rhs && rhs->_h ) )
   {
     _h = 0;
   }
   else
   {
-    _h = rhs->_h;  // ::headerLink already done in rhs
+    _h = rhs->_h; // ::headerLink already done in rhs
     rhs->_h = 0;
   }
   INT << ": " << *this << "   (" << rhs << ")" << endl;
@@ -224,7 +240,7 @@ bool BinHeader::assertHeader()
 //
 bool BinHeader::has_tag( tag tag_r ) const
 {
-  return( !empty() && ::headerIsEntry( _h, tag_r ) );
+  return ( !empty() && ::headerIsEntry( _h, tag_r ) );
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -235,7 +251,7 @@ bool BinHeader::has_tag( tag tag_r ) const
 //
 //        DESCRIPTION :
 //
-unsigned BinHeader::int_list( tag tag_r, intList & lst_r ) const
+unsigned BinHeader::int_list( tag tag_r, intList &lst_r ) const
 {
   if ( !empty() )
   {
@@ -245,21 +261,23 @@ unsigned BinHeader::int_list( tag tag_r, intList & lst_r ) const
     {
       switch ( headerget.type() )
       {
-      case RPM_NULL_TYPE:
-        return lst_r.set( 0, 0, headerget.type() );
+        case RPM_NULL_TYPE:
+          return lst_r.set( 0, 0, headerget.type() );
 #if RPM_CHAR_TYPE != RPM_INT8_TYPE
-      case RPM_CHAR_TYPE:
+        case RPM_CHAR_TYPE:
 #endif
-      case RPM_INT8_TYPE:
-      case RPM_INT16_TYPE:
-      case RPM_INT32_TYPE:
+        case RPM_INT8_TYPE:
+        case RPM_INT16_TYPE:
+        case RPM_INT32_TYPE:
 #ifndef _RPM_5
-      case RPM_INT64_TYPE:
+        case RPM_INT64_TYPE:
 #endif
-        return lst_r.set( headerget.val(), headerget.cnt(), headerget.type() );
+          return lst_r.set(
+            headerget.val(), headerget.cnt(), headerget.type() );
 
-      default:
-        INT << "RPM_TAG MISSMATCH: RPM_INTxx_TYPE " << tag_r << " got type " << headerget.type() << endl;
+        default:
+          INT << "RPM_TAG MISSMATCH: RPM_INTxx_TYPE " << tag_r << " got type "
+              << headerget.type() << endl;
       }
     }
   }
@@ -274,7 +292,7 @@ unsigned BinHeader::int_list( tag tag_r, intList & lst_r ) const
 //
 //        DESCRIPTION :
 //
-unsigned BinHeader::string_list( tag tag_r, stringList & lst_r ) const
+unsigned BinHeader::string_list( tag tag_r, stringList &lst_r ) const
 {
   if ( !empty() )
   {
@@ -284,13 +302,14 @@ unsigned BinHeader::string_list( tag tag_r, stringList & lst_r ) const
     {
       switch ( headerget.type() )
       {
-      case RPM_NULL_TYPE:
-        return lst_r.set( 0, 0 );
-      case RPM_STRING_ARRAY_TYPE:
-        return lst_r.set( (char**)headerget.val(), headerget.cnt() );
+        case RPM_NULL_TYPE:
+          return lst_r.set( 0, 0 );
+        case RPM_STRING_ARRAY_TYPE:
+          return lst_r.set( (char **)headerget.val(), headerget.cnt() );
 
-      default:
-        INT << "RPM_TAG MISSMATCH: RPM_STRING_ARRAY_TYPE " << tag_r << " got type " << headerget.type() << endl;
+        default:
+          INT << "RPM_TAG MISSMATCH: RPM_STRING_ARRAY_TYPE " << tag_r
+              << " got type " << headerget.type() << endl;
       }
     }
   }
@@ -315,25 +334,26 @@ int BinHeader::int_val( tag tag_r ) const
     {
       switch ( headerget.type() )
       {
-      case RPM_NULL_TYPE:
-        return 0;
+        case RPM_NULL_TYPE:
+          return 0;
 #if RPM_CHAR_TYPE != RPM_INT8_TYPE
-      case RPM_CHAR_TYPE:
-        return *((char*)headerget.val());
+        case RPM_CHAR_TYPE:
+          return *( (char *)headerget.val() );
 #endif
-      case RPM_INT8_TYPE:
-        return *((int8_t*)headerget.val());
-      case RPM_INT16_TYPE:
-        return *((int16_t*)headerget.val());
-      case RPM_INT32_TYPE:
-        return *((int32_t*)headerget.val());
+        case RPM_INT8_TYPE:
+          return *( (int8_t *)headerget.val() );
+        case RPM_INT16_TYPE:
+          return *( (int16_t *)headerget.val() );
+        case RPM_INT32_TYPE:
+          return *( (int32_t *)headerget.val() );
 #ifndef _RPM_5
-      case RPM_INT64_TYPE:
-        return *((int64_t*)headerget.val());
+        case RPM_INT64_TYPE:
+          return *( (int64_t *)headerget.val() );
 #endif
 
-      default:
-        INT << "RPM_TAG MISSMATCH: RPM_INTxx_TYPE " << tag_r << " got type " << headerget.type() << endl;
+        default:
+          INT << "RPM_TAG MISSMATCH: RPM_INTxx_TYPE " << tag_r << " got type "
+              << headerget.type() << endl;
       }
     }
   }
@@ -358,13 +378,14 @@ std::string BinHeader::string_val( tag tag_r ) const
     {
       switch ( headerget.type() )
       {
-      case RPM_NULL_TYPE:
-        return "";
-      case RPM_STRING_TYPE:
-        return (char*)headerget.val();
+        case RPM_NULL_TYPE:
+          return "";
+        case RPM_STRING_TYPE:
+          return (char *)headerget.val();
 
-     default:
-        INT << "RPM_TAG MISSMATCH: RPM_STRING_TYPE " << tag_r << " got type " << headerget.type() << endl;
+        default:
+          INT << "RPM_TAG MISSMATCH: RPM_STRING_TYPE " << tag_r << " got type "
+              << headerget.type() << endl;
       }
     }
   }
@@ -389,7 +410,7 @@ std::list<std::string> BinHeader::stringList_val( tag tag_r ) const
     unsigned count = string_list( tag_r, lines );
     for ( unsigned i = 0; i < count; ++i )
     {
-      ret.push_back( lines[i] );
+      ret.push_back( lines[ i ] );
     }
   }
   return ret;
@@ -403,10 +424,10 @@ std::list<std::string> BinHeader::stringList_val( tag tag_r ) const
 //
 //      DESCRIPTION :
 //
-ostream & BinHeader::dumpOn( ostream & str ) const
+ostream &BinHeader::dumpOn( ostream &str ) const
 {
   ReferenceCounted::dumpOn( str );
-  return str << '{' << (void*)_h << '}';
+  return str << '{' << (void *)_h << '}';
 }
 
 } // namespace rpm

@@ -21,13 +21,13 @@ using namespace std;
 using namespace zypp;
 using namespace zypp::filesystem;
 
-#define DATADIR (Pathname(TESTS_SRC_DIR) +  "/zypp/data/KeyRing")
+#define DATADIR ( Pathname( TESTS_SRC_DIR ) + "/zypp/data/KeyRing" )
 
-BOOST_AUTO_TEST_CASE(keyring_test)
+BOOST_AUTO_TEST_CASE( keyring_test )
 {
-  PublicKey key( Pathname(DATADIR) + "public.asc" );
+  PublicKey key( Pathname( DATADIR ) + "public.asc" );
 
- /** 
+  /** 
   * scenario #1
   * import a not trusted key
   * ask for accept, answer yes 'temporarily'
@@ -39,26 +39,35 @@ BOOST_AUTO_TEST_CASE(keyring_test)
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
-  
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
+
     keyring.importKey( key, false );
-    
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 1 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
-    
-    BOOST_CHECK_MESSAGE( keyring.isKeyKnown( key.id() ), "Imported untrusted key should be known");
-    BOOST_CHECK_MESSAGE( ! keyring.isKeyTrusted( key.id() ), "Imported untrusted key should be untrusted");
-    
-    keyring_callbacks.answerAcceptKey(KeyRingReport::KEY_TRUST_TEMPORARILY);
-    bool to_continue = keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc");
-  
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnknownKey(), "Should not ask for unknown key, it was known");
-    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptKey(), "Verify Signature Workflow with only 1 untrusted key should ask user wether to trust and/or import");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptVerFailed(), "The signature validates");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnsignedFile(), "It is a signed file, so dont ask the opposite");
-    
-    BOOST_CHECK_MESSAGE( to_continue, "We did not import, but we trusted and signature validates.");
+
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)1 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
+
+    BOOST_CHECK_MESSAGE( keyring.isKeyKnown( key.id() ),
+      "Imported untrusted key should be known" );
+    BOOST_CHECK_MESSAGE( !keyring.isKeyTrusted( key.id() ),
+      "Imported untrusted key should be untrusted" );
+
+    keyring_callbacks.answerAcceptKey( KeyRingReport::KEY_TRUST_TEMPORARILY );
+    bool to_continue = keyring.verifyFileSignatureWorkflow(
+      DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc" );
+
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnknownKey(),
+      "Should not ask for unknown key, it was known" );
+    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptKey(),
+      "Verify Signature Workflow with only 1 untrusted key should ask user "
+      "wether to trust and/or import" );
+    BOOST_CHECK_MESSAGE(
+      !keyring_callbacks.askedAcceptVerFailed(), "The signature validates" );
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnsignedFile(),
+      "It is a signed file, so dont ask the opposite" );
+
+    BOOST_CHECK_MESSAGE( to_continue,
+      "We did not import, but we trusted and signature validates." );
   }
 
   /** 
@@ -73,27 +82,35 @@ BOOST_AUTO_TEST_CASE(keyring_test)
     // base sandbox for playing
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
-    
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
-  
+
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
+
     keyring.importKey( key, false );
-    
-    keyring_callbacks.answerAcceptKey(KeyRingReport::KEY_TRUST_TEMPORARILY);
+
+    keyring_callbacks.answerAcceptKey( KeyRingReport::KEY_TRUST_TEMPORARILY );
 
     // now we will recheck with a corrupted file
-    bool to_continue = keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml.corrupted", "Blah Blah", DATADIR + "repomd.xml.asc");
-    
-    // check wether the user got the right questions
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnknownKey(), "Should not ask for unknown key, it was known");
-    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptKey(), "Verify Signature Workflow with only 1 untrusted key should ask user wether to trust and/or import");
-    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptVerFailed(), "The signature does not validates");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnsignedFile(), "It is a signed file, so dont ask the opposite");
+    bool to_continue =
+      keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml.corrupted",
+        "Blah Blah", DATADIR + "repomd.xml.asc" );
 
-    BOOST_CHECK_MESSAGE( ! to_continue, "We did not continue with a corrupted file");
+    // check wether the user got the right questions
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnknownKey(),
+      "Should not ask for unknown key, it was known" );
+    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptKey(),
+      "Verify Signature Workflow with only 1 untrusted key should ask user "
+      "wether to trust and/or import" );
+    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptVerFailed(),
+      "The signature does not validates" );
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnsignedFile(),
+      "It is a signed file, so dont ask the opposite" );
+
+    BOOST_CHECK_MESSAGE(
+      !to_continue, "We did not continue with a corrupted file" );
   }
-  
-   /** 
+
+  /** 
   * scenario #1.2
   * import a not trusted key
   * ask for trust, answer yes
@@ -106,23 +123,29 @@ BOOST_AUTO_TEST_CASE(keyring_test)
     // base sandbox for playing
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
-    
+
     keyring.importKey( key, false );
-    
-    keyring_callbacks.answerAcceptKey(KeyRingReport::KEY_TRUST_TEMPORARILY);
+
+    keyring_callbacks.answerAcceptKey( KeyRingReport::KEY_TRUST_TEMPORARILY );
     // now we will recheck with a unsigned file
-    bool to_continue = keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml", "Blah Blah", Pathname() );
-    
+    bool to_continue = keyring.verifyFileSignatureWorkflow(
+      DATADIR + "repomd.xml", "Blah Blah", Pathname() );
+
     // check wether the user got the right questions
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnknownKey(), "Should not ask for unknown key, it was known");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptKey(), "No signature, no key to trust");
-    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptUnsignedFile(), "Ask the user wether to accept an unsigned file");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptVerFailed(), "There is no signature to verify");
-    
-    BOOST_CHECK_MESSAGE( ! to_continue, "We did not continue with a unsigned file");
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnknownKey(),
+      "Should not ask for unknown key, it was known" );
+    BOOST_CHECK_MESSAGE(
+      !keyring_callbacks.askedAcceptKey(), "No signature, no key to trust" );
+    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptUnsignedFile(),
+      "Ask the user wether to accept an unsigned file" );
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptVerFailed(),
+      "There is no signature to verify" );
+
+    BOOST_CHECK_MESSAGE(
+      !to_continue, "We did not continue with a unsigned file" );
   }
-  
- /** scenario #2
+
+  /** scenario #2
   * empty keyring
   * should ask for unknown key
   * answer no
@@ -134,13 +157,17 @@ BOOST_AUTO_TEST_CASE(keyring_test)
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
 
-    BOOST_CHECK_MESSAGE( ! keyring.isKeyKnown( key.id() ), "empty keyring has not known keys");
+    BOOST_CHECK_MESSAGE(
+      !keyring.isKeyKnown( key.id() ), "empty keyring has not known keys" );
 
     //keyring_callbacks.answerAcceptUnknownKey(true);
-    bool to_continue = keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc");
-    BOOST_CHECK_MESSAGE(keyring_callbacks.askedAcceptUnknownKey(), "Should ask to accept unknown key, empty keyring");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptKey(), "Unknown key cant be trusted");
-    BOOST_CHECK_MESSAGE( ! to_continue, "We answered no to accept unknown key");
+    bool to_continue = keyring.verifyFileSignatureWorkflow(
+      DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc" );
+    BOOST_CHECK_MESSAGE( keyring_callbacks.askedAcceptUnknownKey(),
+      "Should ask to accept unknown key, empty keyring" );
+    BOOST_CHECK_MESSAGE(
+      !keyring_callbacks.askedAcceptKey(), "Unknown key cant be trusted" );
+    BOOST_CHECK_MESSAGE( !to_continue, "We answered no to accept unknown key" );
   }
 
   /** scenario #3
@@ -154,38 +181,46 @@ BOOST_AUTO_TEST_CASE(keyring_test)
     // base sandbox for playing
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
-    
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
-  
+
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
+
     keyring.importKey( key, true );
 
     BOOST_CHECK_EQUAL( receiver._trusted_key_added_called, true );
-    
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 1 );
-    
-    BOOST_CHECK_MESSAGE( keyring.isKeyKnown( key.id() ), "Imported trusted key should be known");
-    BOOST_CHECK_MESSAGE( keyring.isKeyTrusted( key.id() ), "Imported trusted key should be trusted");
-    
-    bool to_continue = keyring.verifyFileSignatureWorkflow( DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc");
-  
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnknownKey(), "Should not ask for unknown key, it was known");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptKey(), "Verify Signature Workflow with only 1 untrusted key should ask user wether to trust and/or import");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptVerFailed(), "The signature validates");
-    BOOST_CHECK_MESSAGE( ! keyring_callbacks.askedAcceptUnsignedFile(), "It is a signed file, so dont ask the opposite");
-    
-    BOOST_CHECK_MESSAGE( to_continue, "We did not import, but we trusted and signature validates.");
+
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)1 );
+
+    BOOST_CHECK_MESSAGE(
+      keyring.isKeyKnown( key.id() ), "Imported trusted key should be known" );
+    BOOST_CHECK_MESSAGE( keyring.isKeyTrusted( key.id() ),
+      "Imported trusted key should be trusted" );
+
+    bool to_continue = keyring.verifyFileSignatureWorkflow(
+      DATADIR + "repomd.xml", "Blah Blah", DATADIR + "repomd.xml.asc" );
+
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnknownKey(),
+      "Should not ask for unknown key, it was known" );
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptKey(),
+      "Verify Signature Workflow with only 1 untrusted key should ask user "
+      "wether to trust and/or import" );
+    BOOST_CHECK_MESSAGE(
+      !keyring_callbacks.askedAcceptVerFailed(), "The signature validates" );
+    BOOST_CHECK_MESSAGE( !keyring_callbacks.askedAcceptUnsignedFile(),
+      "It is a signed file, so dont ask the opposite" );
+
+    BOOST_CHECK_MESSAGE( to_continue,
+      "We did not import, but we trusted and signature validates." );
   }
   //keyring.importKey( key, true );
   //BOOST_CHECK_EQUAL( receiver._trusted_key_added_called, true );
   //BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), 1 );
 
   /* check signature id can be extracted */
-  
 }
 
-BOOST_AUTO_TEST_CASE(signature_test)
+BOOST_AUTO_TEST_CASE( signature_test )
 {
   PublicKey key( DATADIR + "public.asc" );
 
@@ -195,34 +230,34 @@ BOOST_AUTO_TEST_CASE(signature_test)
     // base sandbox for playing
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
-    
-    BOOST_CHECK_EQUAL( keyring.readSignatureKeyId( DATADIR + "repomd.xml.asc" ), "BD61D89BD98821BE" );
-    BOOST_CHECK_THROW( keyring.readSignatureKeyId(Pathname()), Exception );
+
+    BOOST_CHECK_EQUAL( keyring.readSignatureKeyId( DATADIR + "repomd.xml.asc" ),
+      "BD61D89BD98821BE" );
+    BOOST_CHECK_THROW( keyring.readSignatureKeyId( Pathname() ), Exception );
     TmpFile tmp;
-    BOOST_CHECK_EQUAL( keyring.readSignatureKeyId(tmp.path()), "" );
+    BOOST_CHECK_EQUAL( keyring.readSignatureKeyId( tmp.path() ), "" );
 
-    keyring.importKey(key);
+    keyring.importKey( key );
 
-    BOOST_CHECK(keyring.verifyFileSignature( DATADIR + "repomd.xml", DATADIR + "repomd.xml.asc"));
-    BOOST_CHECK( ! keyring.verifyFileSignature( DATADIR + "repomd.xml.corrupted", DATADIR + "repomd.xml.asc"));
+    BOOST_CHECK( keyring.verifyFileSignature(
+      DATADIR + "repomd.xml", DATADIR + "repomd.xml.asc" ) );
+    BOOST_CHECK( !keyring.verifyFileSignature(
+      DATADIR + "repomd.xml.corrupted", DATADIR + "repomd.xml.asc" ) );
   }
 }
 
-BOOST_AUTO_TEST_CASE(keyring_import)
+BOOST_AUTO_TEST_CASE( keyring_import )
 {
   // base sandbox for playing
   TmpDir tmp_dir;
   KeyRing keyring( tmp_dir.path() );
-  struct Receiver: public callback::ReceiveReport<KeyRingSignals>
+  struct Receiver : public callback::ReceiveReport<KeyRingSignals>
   {
-    Receiver()
-    { connect(); }
+    Receiver() { connect(); }
 
-    virtual void trustedKeyAdded( const PublicKey & key_r )
-    { ++_cbcnt; }
+    virtual void trustedKeyAdded( const PublicKey &key_r ) { ++_cbcnt; }
 
-    virtual void trustedKeyRemoved( const PublicKey & key_r )
-    { --_cbcnt; }
+    virtual void trustedKeyRemoved( const PublicKey &key_r ) { --_cbcnt; }
 
     unsigned _cbcnt = 0;
   } receiver;
@@ -239,9 +274,9 @@ BOOST_AUTO_TEST_CASE(keyring_import)
   BOOST_CHECK_EQUAL( receiver._cbcnt, keyring.trustedPublicKeys().size() );
 }
 
-BOOST_AUTO_TEST_CASE(keyring_delete)
+BOOST_AUTO_TEST_CASE( keyring_delete )
 {
-  PublicKey key( Pathname(DATADIR) + "public.asc" );
+  PublicKey key( Pathname( DATADIR ) + "public.asc" );
   /** scenario #3
   * import and delete untrusted key
   */
@@ -250,18 +285,18 @@ BOOST_AUTO_TEST_CASE(keyring_delete)
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
 
     keyring.importKey( key, false );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 1 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)1 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
 
-    keyring.deleteKey( key.id(), false);
+    keyring.deleteKey( key.id(), false );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
   }
 
   /** scenario #3.1
@@ -272,24 +307,23 @@ BOOST_AUTO_TEST_CASE(keyring_delete)
     TmpDir tmp_dir;
     KeyRing keyring( tmp_dir.path() );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
 
     keyring.importKey( key, true );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 1 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)1 );
 
     //try to delete from untrusted keyring
-    keyring.deleteKey( key.id(), false);
+    keyring.deleteKey( key.id(), false );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 1 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)1 );
 
-    keyring.deleteKey( key.id(), true);
+    keyring.deleteKey( key.id(), true );
 
-    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned) 0 );
-    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned) 0 );
+    BOOST_CHECK_EQUAL( keyring.publicKeys().size(), (unsigned)0 );
+    BOOST_CHECK_EQUAL( keyring.trustedPublicKeys().size(), (unsigned)0 );
   }
 }
-

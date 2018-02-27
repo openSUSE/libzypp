@@ -16,50 +16,47 @@ using namespace zypp::media;
 ** This one does not know anything about the product, it
 ** just checks if /media.1 (limited to 1st CD) exists...
 */
-class MyMediaVerifier: public MediaVerifierBase
+class MyMediaVerifier : public MediaVerifierBase
 {
-  private:
+private:
   // std::string _productname;
-  public:
-    MyMediaVerifier(/* std::string &productname */)
-  : MediaVerifierBase()
-    //, _productname(productname)
-    {}
+public:
+  MyMediaVerifier( /* std::string &productname */ )
+    : MediaVerifierBase()
+  //, _productname(productname)
+  {
+  }
 
-    virtual
-        ~MyMediaVerifier()
-    {}
+  virtual ~MyMediaVerifier() {}
 
-    virtual bool
-        isDesiredMedia(const MediaAccessRef &ref)
-    {
-      DBG << "isDesiredMedia(): for media nr 1 " << std::endl;
+  virtual bool isDesiredMedia( const MediaAccessRef &ref )
+  {
+    DBG << "isDesiredMedia(): for media nr 1 " << std::endl;
 
-      if( !ref)
-        DBG << "isDesiredMedia(): invalid media handle" << std::endl;
+    if ( !ref )
+      DBG << "isDesiredMedia(): invalid media handle" << std::endl;
 
-      std::list<std::string> lst;
-      Pathname               dir("/media.1");
+    std::list<std::string> lst;
+    Pathname dir( "/media.1" );
 
-      DBG << "isDesiredMedia(): checking " << dir.asString() << std::endl;
+    DBG << "isDesiredMedia(): checking " << dir.asString() << std::endl;
 
     // check the product e.g. via /media.1/products as well...
-      try
-      {
-        if( ref)
-          ref->dirInfo(lst, dir, false);
-      }
-      catch(const zypp::Exception &e)
-      {
-        ZYPP_CAUGHT(e);
-      }
-      DBG << "isDesiredMedia(): media "
-          << (lst.empty() ? "does not contain" : "contains")
-          << " the " << dir.asString() << " directory."
-          << std::endl;
-
-      return !lst.empty();
+    try
+    {
+      if ( ref )
+        ref->dirInfo( lst, dir, false );
     }
+    catch ( const zypp::Exception &e )
+    {
+      ZYPP_CAUGHT( e );
+    }
+    DBG << "isDesiredMedia(): media "
+        << ( lst.empty() ? "does not contain" : "contains" ) << " the "
+        << dir.asString() << " directory." << std::endl;
+
+    return !lst.empty();
+  }
 };
 
 #endif

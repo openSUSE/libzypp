@@ -9,7 +9,7 @@
 //
 ///////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(Match_default)
+BOOST_AUTO_TEST_CASE( Match_default )
 {
   Match m;
   BOOST_CHECK( !m ); // eval in boolean context
@@ -17,15 +17,15 @@ BOOST_AUTO_TEST_CASE(Match_default)
   BOOST_CHECK_EQUAL( m.get(), 0 );
 
   // set the mode part
-  BOOST_CHECK_EQUAL( m |= Match::STRING, 	Match::STRING );
+  BOOST_CHECK_EQUAL( m |= Match::STRING, Match::STRING );
 
   m.setModeSubstring();
-  BOOST_CHECK_EQUAL( m,			 	Match::SUBSTRING );
+  BOOST_CHECK_EQUAL( m, Match::SUBSTRING );
 
   m.setMode( Match::GLOB );
-  BOOST_CHECK_EQUAL( m, 			Match::GLOB );
+  BOOST_CHECK_EQUAL( m, Match::GLOB );
 
-  BOOST_CHECK_EQUAL( m = Match::REGEX, 		Match::REGEX );
+  BOOST_CHECK_EQUAL( m = Match::REGEX, Match::REGEX );
 
   BOOST_CHECK( m.isModeRegex() );
   m |= Match::NOCASE | Match::FILES;
@@ -35,8 +35,8 @@ BOOST_AUTO_TEST_CASE(Match_default)
   BOOST_CHECK( !m.test( Match::SUBSTRING | Match::NOCASE | Match::FILES ) );
   BOOST_CHECK( m.test( Match::REGEX | Match::NOCASE | Match::FILES ) );
   BOOST_CHECK( m.test( Match::NOCASE | Match::FILES ) );
-  BOOST_CHECK( m != (Match::NOCASE | Match::FILES) );
-  BOOST_CHECK_EQUAL( m.flags(),Match::NOCASE | Match::FILES );
+  BOOST_CHECK( m != ( Match::NOCASE | Match::FILES ) );
+  BOOST_CHECK_EQUAL( m.flags(), Match::NOCASE | Match::FILES );
 
   m -= Match::NOCASE; // remove flags
   BOOST_CHECK( m.test( Match::REGEX | Match::FILES ) );
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(Match_default)
   BOOST_CHECK_EQUAL( m, Match::FILES );
 }
 
-BOOST_AUTO_TEST_CASE(Match_operator)
+BOOST_AUTO_TEST_CASE( Match_operator )
 {
   // Test whether implicit conversions from enum Match::Mode to
   // Matcher work. There must be no difference in using mode and flag
@@ -73,11 +73,11 @@ BOOST_AUTO_TEST_CASE(Match_operator)
 //
 ///////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(StrMatcher_defaultconstructed)
+BOOST_AUTO_TEST_CASE( StrMatcher_defaultconstructed )
 {
   StrMatcher m;
   BOOST_CHECK_EQUAL( m.flags(), Match::NOTHING );
-  BOOST_CHECK( !m );	// eval in boolean context
+  BOOST_CHECK( !m ); // eval in boolean context
   BOOST_CHECK( m.searchstring().empty() );
   BOOST_CHECK_EQUAL( m.flags(), Match() );
   // matches nothing:
@@ -87,16 +87,16 @@ BOOST_AUTO_TEST_CASE(StrMatcher_defaultconstructed)
   BOOST_CHECK( !m( "default" ) );
 
   m.setSearchstring( "fau" );
-  BOOST_CHECK( m );	// eval in boolean context
+  BOOST_CHECK( m ); // eval in boolean context
 }
 
-BOOST_AUTO_TEST_CASE(StrMatcher_OTHER)
+BOOST_AUTO_TEST_CASE( StrMatcher_OTHER )
 {
   StrMatcher m( "fau", Match::OTHER );
   BOOST_CHECK_THROW( m.compile(), MatchUnknownModeException );
 }
 
-BOOST_AUTO_TEST_CASE(StrMatcher_STRING)
+BOOST_AUTO_TEST_CASE( StrMatcher_STRING )
 {
   StrMatcher m( "fau" );
   BOOST_CHECK_EQUAL( m.flags(), Match::STRING );
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(StrMatcher_STRING)
   BOOST_CHECK( !m( "default" ) );
 }
 
-BOOST_AUTO_TEST_CASE(StrMatcher_STRINGSTART)
+BOOST_AUTO_TEST_CASE( StrMatcher_STRINGSTART )
 {
   StrMatcher m( "fau", Match::STRINGSTART );
   BOOST_CHECK( !m( "" ) );
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(StrMatcher_STRINGSTART)
   BOOST_CHECK( !m( "default" ) );
 }
 
-BOOST_AUTO_TEST_CASE(StrMatcher_STRINGEND)
+BOOST_AUTO_TEST_CASE( StrMatcher_STRINGEND )
 {
   StrMatcher m( "fau", Match::STRINGEND );
   BOOST_CHECK( !m( "" ) );
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(StrMatcher_STRINGEND)
   BOOST_CHECK( !m( "default" ) );
 }
 
-BOOST_AUTO_TEST_CASE(StrMatcher_REGEX)
+BOOST_AUTO_TEST_CASE( StrMatcher_REGEX )
 {
   StrMatcher m( "fau" );
 

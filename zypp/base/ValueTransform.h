@@ -18,151 +18,157 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace base
+///////////////////////////////////////////////////////////////////
+namespace base
+{
+///////////////////////////////////////////////////////////////////
+/// \class ValueTransform
+/// \brief Helper managing raw values with transformed representation
+///
+/// This helper enforces to explicitly state whether you are using
+/// the raw or the variable replaced value. Usually you set \c raw
+/// and get \c transformed (unless writing \c raw to some config file).
+///
+/// Used e.g. vor variable replaced config strings.
+///////////////////////////////////////////////////////////////////
+template <class Tp, class TUnaryFunction>
+struct ValueTransform
+{
+  typedef Tp RawType;
+  typedef TUnaryFunction Transformator;
+  typedef typename Transformator::result_type TransformedType;
+
+public:
+  ValueTransform() {}
+
+  explicit ValueTransform( RawType raw_r )
+    : _raw( std::move( raw_r ) )
   {
-    ///////////////////////////////////////////////////////////////////
-    /// \class ValueTransform
-    /// \brief Helper managing raw values with transformed representation
-    ///
-    /// This helper enforces to explicitly state whether you are using
-    /// the raw or the variable replaced value. Usually you set \c raw
-    /// and get \c transformed (unless writing \c raw to some config file).
-    ///
-    /// Used e.g. vor variable replaced config strings.
-    ///////////////////////////////////////////////////////////////////
-    template<class Tp, class TUnaryFunction>
-    struct ValueTransform
-    {
-      typedef Tp RawType;
-      typedef TUnaryFunction Transformator;
-      typedef typename Transformator::result_type TransformedType;
+  }
 
-    public:
-      ValueTransform()
-      {}
+  ValueTransform( RawType raw_r, Transformator transform_r )
+    : _raw( std::move( raw_r ) )
+    , _transform( std::move( transform_r ) )
+  {
+  }
 
-      explicit ValueTransform( RawType raw_r )
-      : _raw( std::move(raw_r) )
-      {}
+public:
+  /** Get the raw value */
+  const RawType &raw() const { return _raw; }
 
-      ValueTransform( RawType raw_r, Transformator transform_r )
-      : _raw( std::move(raw_r) ), _transform( std::move(transform_r) )
-      {}
+  /** Set the raw value */
+  RawType &raw() { return _raw; }
 
-    public:
-      /** Get the raw value */
-      const RawType & raw() const
-      { return _raw; }
+public:
+  /** Return a transformed copy of the raw value */
+  TransformedType transformed() const { return _transform( _raw ); }
 
-      /** Set the raw value */
-      RawType & raw()
-      { return _raw; }
+  /** Return a transformed copy of an arbitrary \a RawType */
+  TransformedType transformed( const RawType &raw_r ) const
+  {
+    return _transform( raw_r );
+  }
 
-    public:
-      /** Return a transformed copy of the raw value */
-      TransformedType transformed() const
-      { return _transform( _raw ); }
+  /** Return the transformator */
+  const Transformator &transformator() const { return _transform; }
 
-      /** Return a transformed copy of an arbitrary \a RawType */
-      TransformedType transformed( const RawType & raw_r ) const
-      { return _transform( raw_r ); }
+private:
+  RawType _raw;
+  Transformator _transform;
+};
 
-      /** Return the transformator */
-      const Transformator & transformator() const
-      { return _transform; }
+///////////////////////////////////////////////////////////////////
+/// \class ContainerTransform
+/// \brief Helper managing a container of raw values with transformed representation
+///
+/// This helper enforces to explicitly state wheter you are using
+/// the raw or the variable replaced value. Usually you set \c raw
+/// and get \c transformed (uness writing \c raw to some config file).
+///
+/// Offers iterating over transformed strings in the list.
+///////////////////////////////////////////////////////////////////
+template <class TContainer, class TUnaryFunction>
+struct ContainerTransform
+{
+  typedef TContainer Container;
+  typedef TUnaryFunction Transformator;
+  typedef typename Container::size_type size_type;
+  typedef typename Container::value_type RawType;
+  typedef typename Transformator::result_type TransformedType;
 
-    private:
-      RawType _raw;
-      Transformator _transform;
-    };
+public:
+  ContainerTransform() {}
 
-    ///////////////////////////////////////////////////////////////////
-    /// \class ContainerTransform
-    /// \brief Helper managing a container of raw values with transformed representation
-    ///
-    /// This helper enforces to explicitly state wheter you are using
-    /// the raw or the variable replaced value. Usually you set \c raw
-    /// and get \c transformed (uness writing \c raw to some config file).
-    ///
-    /// Offers iterating over transformed strings in the list.
-    ///////////////////////////////////////////////////////////////////
-    template<class TContainer, class TUnaryFunction>
-    struct ContainerTransform
-    {
-      typedef TContainer Container;
-      typedef TUnaryFunction Transformator;
-      typedef typename Container::size_type size_type;
-      typedef typename Container::value_type RawType;
-      typedef typename Transformator::result_type TransformedType;
+  explicit ContainerTransform( Container raw_r )
+    : _raw( std::move( raw_r ) )
+  {
+  }
 
-    public:
-      ContainerTransform()
-      {}
+  ContainerTransform( Container raw_r, Transformator transform_r )
+    : _raw( std::move( raw_r ) )
+    , _transform( std::move( transform_r ) )
+  {
+  }
 
-      explicit ContainerTransform( Container raw_r )
-      : _raw( std::move(raw_r) )
-      {}
+public:
+  bool empty() const { return _raw.empty(); }
 
-      ContainerTransform( Container raw_r, Transformator transform_r )
-      : _raw( std::move(raw_r) ), _transform( std::move(transform_r) )
-      {}
+  size_type size() const { return _raw.size(); }
 
-    public:
-      bool empty() const
-      { return _raw.empty(); }
+  typedef typename Container::const_iterator RawConstIterator;
 
-      size_type size() const
-      { return _raw.size(); }
+  RawConstIterator rawBegin() const { return _raw.begin(); }
 
-      typedef typename Container::const_iterator RawConstIterator;
+  RawConstIterator rawEnd() const { return _raw.end(); }
 
-      RawConstIterator rawBegin() const
-      { return _raw.begin(); }
+  /** Get the raw value */
+  const Container &raw() const { return _raw; }
 
-      RawConstIterator rawEnd() const
-      { return _raw.end(); }
+  /** Set the raw value */
+  Container &raw() { return _raw; }
 
-      /** Get the raw value */
-      const Container & raw() const
-      { return _raw; }
+public:
+  typedef transform_iterator<Transformator, typename Container::const_iterator>
+    TransformedConstIterator;
 
-      /** Set the raw value */
-      Container & raw()
-      { return _raw; }
+  TransformedConstIterator transformedBegin() const
+  {
+    return make_transform_iterator( _raw.begin(), _transform );
+  }
 
-    public:
-      typedef transform_iterator<Transformator, typename Container::const_iterator> TransformedConstIterator;
+  TransformedConstIterator transformedEnd() const
+  {
+    return make_transform_iterator( _raw.end(), _transform );
+  }
 
-      TransformedConstIterator transformedBegin() const
-      { return make_transform_iterator( _raw.begin(), _transform ); }
+  /** Return copy with transformed variables (expensive) */
+  Container transformed() const
+  {
+    return Container( transformedBegin(), transformedEnd() );
+  }
 
-      TransformedConstIterator transformedEnd() const
-      { return make_transform_iterator( _raw.end(), _transform ); }
+  /** Return a transformed copy of an arbitrary \a RawType */
+  TransformedType transformed( const RawType &raw_r ) const
+  {
+    return _transform( raw_r );
+  }
 
-      /** Return copy with transformed variables (expensive) */
-      Container transformed() const
-      { return Container( transformedBegin(), transformedEnd() ); }
+  /** Return a transformed copy of a \a RawConstIterator raw value */
+  TransformedType transformed( const RawConstIterator &rawIter_r ) const
+  {
+    return _transform( *rawIter_r );
+  }
 
-      /** Return a transformed copy of an arbitrary \a RawType */
-      TransformedType transformed( const RawType & raw_r ) const
-      { return _transform( raw_r ); }
+  /** Return the transformator */
+  const Transformator &transformator() const { return _transform; }
 
-      /** Return a transformed copy of a \a RawConstIterator raw value */
-      TransformedType transformed( const RawConstIterator & rawIter_r ) const
-      { return _transform( *rawIter_r ); }
+private:
+  Container _raw;
+  Transformator _transform;
+};
 
-      /** Return the transformator */
-      const Transformator & transformator() const
-      { return _transform; }
-
-    private:
-      Container _raw;
-      Transformator _transform;
-    };
-
-  } // namespace base
-  ///////////////////////////////////////////////////////////////////
+} // namespace base
+///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_VALUETRANSFORM_H

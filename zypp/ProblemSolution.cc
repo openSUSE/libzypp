@@ -35,112 +35,125 @@ using std::endl;
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  IMPL_PTR_TYPE(ProblemSolution);
+IMPL_PTR_TYPE( ProblemSolution );
 
-  ///////////////////////////////////////////////////////////////////
-  /// \class ProblemSolution::Impl
-  /// \brief ProblemSolution implementation.
-  ///////////////////////////////////////////////////////////////////
-  struct ProblemSolution::Impl
+///////////////////////////////////////////////////////////////////
+/// \class ProblemSolution::Impl
+/// \brief ProblemSolution implementation.
+///////////////////////////////////////////////////////////////////
+struct ProblemSolution::Impl
+{
+  Impl() {}
+
+  Impl( std::string &&description )
+    : _description( std::move( description ) )
   {
-    Impl()
-    {}
+  }
 
-    Impl( std::string && description )
-    : _description( std::move(description) )
-    {}
+  Impl( std::string &&description, std::string &&details )
+    : _description( std::move( description ) )
+    , _details( std::move( details ) )
+  {
+  }
 
-     Impl( std::string && description, std::string && details )
-    : _description( std::move(description) )
-    , _details( std::move(details) )
-    {}
+  std::string _description;
+  std::string _details;
+  SolutionActionList _actions;
 
-    std::string		_description;
-    std::string		_details;
-    SolutionActionList	_actions;
+private:
+  friend Impl *rwcowClone<Impl>( const Impl *rhs );
+  /** clone for RWCOW_pointer */
+  Impl *clone() const { return new Impl( *this ); }
+};
+///////////////////////////////////////////////////////////////////
 
-  private:
-    friend Impl * rwcowClone<Impl>( const Impl * rhs );
-    /** clone for RWCOW_pointer */
-    Impl * clone() const
-    { return new Impl( *this ); }
-  };
-  ///////////////////////////////////////////////////////////////////
-
-  ProblemSolution::ProblemSolution()
+ProblemSolution::ProblemSolution()
   : _pimpl( new Impl() )
-  {}
+{
+}
 
-  ProblemSolution::ProblemSolution( std::string description )
-  : _pimpl( new Impl( std::move(description) ) )
-  {}
+ProblemSolution::ProblemSolution( std::string description )
+  : _pimpl( new Impl( std::move( description ) ) )
+{
+}
 
-  ProblemSolution::ProblemSolution( std::string description, std::string details )
-  : _pimpl( new Impl( std::move(description), std::move(details) ) )
-  {}
+ProblemSolution::ProblemSolution( std::string description, std::string details )
+  : _pimpl( new Impl( std::move( description ), std::move( details ) ) )
+{
+}
 
-  ProblemSolution::~ProblemSolution()
-  {}
+ProblemSolution::~ProblemSolution() {}
 
+const std::string &ProblemSolution::description() const
+{
+  return _pimpl->_description;
+}
 
-  const std::string & ProblemSolution::description() const
-  { return _pimpl->_description; }
+const std::string &ProblemSolution::details() const { return _pimpl->_details; }
 
-  const std::string & ProblemSolution::details() const
-  { return _pimpl->_details; }
+const ProblemSolution::SolutionActionList &ProblemSolution::actions() const
+{
+  return _pimpl->_actions;
+}
 
-  const ProblemSolution::SolutionActionList & ProblemSolution::actions() const
-  { return _pimpl->_actions; }
+void ProblemSolution::setDescription( std::string description )
+{
+  _pimpl->_description = std::move( description );
+}
 
+void ProblemSolution::setDetails( std::string details )
+{
+  _pimpl->_details += "\n";
+  _pimpl->_details += std::move( details );
+}
 
-  void ProblemSolution::setDescription( std::string description )
-  { _pimpl->_description = std::move(description); }
-
-  void ProblemSolution::setDetails( std::string details )
-  { _pimpl->_details += "\n"; _pimpl->_details += std::move(details); }
-
-  void ProblemSolution::pushDescriptionDetail( std::string description, bool front )
+void ProblemSolution::pushDescriptionDetail(
+  std::string description, bool front )
+{
+  if ( _pimpl->_details.empty() )
   {
-    if ( _pimpl->_details.empty() )
+    if ( _pimpl->_description.empty() ) // first entry
     {
-      if ( _pimpl->_description.empty() )	// first entry
-      {
-	_pimpl->_description = std::move(description);
-	return;
-      }
-      else					// second entry: form headline in _description
-      {
-	_pimpl->_description.swap( _pimpl->_details );
-	_pimpl->_description = _("Following actions will be done:");
-      }
+      _pimpl->_description = std::move( description );
+      return;
     }
-    if ( front )
-    { _pimpl->_details.swap( description ); }
-    _pimpl->_details += "\n";
-    _pimpl->_details += std::move(description);
+    else // second entry: form headline in _description
+    {
+      _pimpl->_description.swap( _pimpl->_details );
+      _pimpl->_description = _( "Following actions will be done:" );
+    }
   }
-
-  void ProblemSolution::addAction( solver::detail::SolutionAction_Ptr action )
-  { _pimpl->_actions.push_back( action ); }
-
-
-
-  std::ostream & operator<<( std::ostream & os, const ProblemSolution & obj )
+  if ( front )
   {
-    os << "Solution:" << endl;
-    os << obj.description() << endl;
-    if ( ! obj.details().empty() )
-      os << obj.details() << endl;
-    os << obj.actions();
-    return os;
+    _pimpl->_details.swap( description );
   }
+  _pimpl->_details += "\n";
+  _pimpl->_details += std::move( description );
+}
 
-  std::ostream & operator<<( std::ostream & os, const ProblemSolutionList & obj )
+void ProblemSolution::addAction( solver::detail::SolutionAction_Ptr action )
+{
+  _pimpl->_actions.push_back( action );
+}
+
+std::ostream &operator<<( std::ostream &os, const ProblemSolution &obj )
+{
+  os << "Solution:" << endl;
+  os << obj.description() << endl;
+  if ( !obj.details().empty() )
+    os << obj.details() << endl;
+  os << obj.actions();
+  return os;
+}
+
+std::ostream &operator<<( std::ostream &os, const ProblemSolutionList &obj )
+{
+  for ( const auto &ptr : obj )
   {
-    for ( const auto & ptr: obj )
-    { os << ptr; }
-    return os;
+    os << ptr;
   }
+  return os;
+}
 
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////

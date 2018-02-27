@@ -16,20 +16,21 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  IMPL_PTR_TYPE(Resolvable);
+IMPL_PTR_TYPE( Resolvable );
 
-  Resolvable::Resolvable( const sat::Solvable & solvable_r )
+Resolvable::Resolvable( const sat::Solvable &solvable_r )
   : _solvable( solvable_r )
-  {}
+{
+}
 
-  Resolvable::~Resolvable()
-  {}
+Resolvable::~Resolvable() {}
 
-  PoolItem Resolvable::poolItem() const
-  { return PoolItem( *this ); }
+PoolItem Resolvable::poolItem() const { return PoolItem( *this ); }
 
-  std::ostream & Resolvable::dumpOn( std::ostream & str ) const
-  { return str << satSolvable(); }
+std::ostream &Resolvable::dumpOn( std::ostream &str ) const
+{
+  return str << satSolvable();
+}
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

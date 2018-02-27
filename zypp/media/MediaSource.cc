@@ -12,18 +12,21 @@
 
 #include "zypp/media/MediaSource.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    std::ostream & operator<<( std::ostream & str, const AttachPoint & obj )
-    {
-      return str << (obj.temp ? "*" : "") << obj.path;
-    }
+std::ostream &operator<<( std::ostream &str, const AttachPoint &obj )
+{
+  return str << ( obj.temp ? "*" : "" ) << obj.path;
+}
 
-    std::ostream & operator<<( std::ostream & str, const AttachedMedia & obj )
-    {
-      return str << "media("  << obj.mediaSource << ")attached(" << obj.attachPoint << ")";
-    }
+std::ostream &operator<<( std::ostream &str, const AttachedMedia &obj )
+{
+  return str << "media(" << obj.mediaSource << ")attached(" << obj.attachPoint
+             << ")";
+}
 
-  } // namespace media
+} // namespace media
 } // namespace zypp

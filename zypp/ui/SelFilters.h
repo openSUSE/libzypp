@@ -20,77 +20,88 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace ui
-  { /////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////
-    namespace selfilter
-    { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace ui
+{ /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace selfilter
+{ /////////////////////////////////////////////////////////////////
 
-      typedef std::unary_function<Selectable::constPtr,bool> SelectableFilterFunctor;
+typedef std::unary_function<Selectable::constPtr, bool> SelectableFilterFunctor;
 
-      /** */
-      struct ByKind : public SelectableFilterFunctor
-      {
-        ByKind( const ResKind & kind_r )
-        : _kind( kind_r )
-        {}
+/** */
+struct ByKind : public SelectableFilterFunctor
+{
+  ByKind( const ResKind &kind_r )
+    : _kind( kind_r )
+  {
+  }
 
-        bool operator()( const Selectable::constPtr & obj ) const
-        {
-          return obj && obj->kind() == _kind;
-        }
+  bool operator()( const Selectable::constPtr &obj ) const
+  {
+    return obj && obj->kind() == _kind;
+  }
 
-        ResKind _kind;
-      };
+  ResKind _kind;
+};
 
-      /** */
-      struct ByName : public SelectableFilterFunctor
-      {
-        ByName( const std::string & name_r )
-        : _name( name_r )
-        {}
+/** */
+struct ByName : public SelectableFilterFunctor
+{
+  ByName( const std::string &name_r )
+    : _name( name_r )
+  {
+  }
 
-        bool operator()( const ui::Selectable::constPtr & obj ) const
-        { return obj && obj->name() == _name; }
+  bool operator()( const ui::Selectable::constPtr &obj ) const
+  {
+    return obj && obj->name() == _name;
+  }
 
-        std::string _name;
-      };
+  std::string _name;
+};
 
-      /** */
-      struct ByHasInstalledObj : public SelectableFilterFunctor
-      {
-        bool operator()( const ui::Selectable::constPtr & obj ) const
-        { return obj && !obj->installedEmpty(); }
-      };
+/** */
+struct ByHasInstalledObj : public SelectableFilterFunctor
+{
+  bool operator()( const ui::Selectable::constPtr &obj ) const
+  {
+    return obj && !obj->installedEmpty();
+  }
+};
 
-      /** */
-      struct ByHasCandidateObj : public SelectableFilterFunctor
-      {
-        bool operator()( const ui::Selectable::constPtr & obj ) const
-        { return obj && obj->hasCandidateObj(); }
-      };
+/** */
+struct ByHasCandidateObj : public SelectableFilterFunctor
+{
+  bool operator()( const ui::Selectable::constPtr &obj ) const
+  {
+    return obj && obj->hasCandidateObj();
+  }
+};
 
-      struct ByStatus : public SelectableFilterFunctor
-      /** */
-      {
-        ByStatus( Status status_r )
-        : _status( status_r )
-        {}
+struct ByStatus : public SelectableFilterFunctor
+/** */
+{
+  ByStatus( Status status_r )
+    : _status( status_r )
+  {
+  }
 
-        bool operator()( const ui::Selectable::constPtr & obj ) const
-        { return obj && obj->status() == _status; }
+  bool operator()( const ui::Selectable::constPtr &obj ) const
+  {
+    return obj && obj->status() == _status;
+  }
 
-        Status _status;
-      };
+  Status _status;
+};
 
-      /////////////////////////////////////////////////////////////////
-    } // namespace selfilter
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-  } // namespace ui
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace selfilter
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace ui
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_UI_SELFILTERS_H

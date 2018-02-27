@@ -20,24 +20,21 @@ using zypp::debug::Measure;
 ///////////////////////////////////////////////////////////////////
 
 /** Helper to detect an objects type. */
-template<class TCl> void ti( const TCl & c )
+template <class TCl>
+void ti( const TCl &c )
 {
   SEC << __PRETTY_FUNCTION__ << endl;
 }
 
-bool noop( xml::Reader & reader_r )
-{
-  return true;
-}
+bool noop( xml::Reader &reader_r ) { return true; }
 struct Noop
 {
-  bool operator()( xml::Reader & reader_r ) const
-  { return true; }
+  bool operator()( xml::Reader &reader_r ) const { return true; }
 };
 
 ///////////////////////////////////////////////////////////////////
 
-bool dumpNode( xml::Reader & reader_r )
+bool dumpNode( xml::Reader &reader_r )
 {
   switch ( reader_r->nodeType() )
   {
@@ -45,7 +42,8 @@ bool dumpNode( xml::Reader & reader_r )
       MIL << *reader_r << endl;
       for ( int i = 0; i < reader_r->attributeCount(); ++i )
       {
-	MIL << " attr no " << i << " '" << reader_r->getAttributeNo( i ) << "'" << endl;
+        MIL << " attr no " << i << " '" << reader_r->getAttributeNo( i ) << "'"
+            << endl;
       }
       break;
 
@@ -67,7 +65,7 @@ bool dumpNode( xml::Reader & reader_r )
 
 ///////////////////////////////////////////////////////////////////
 
-bool consume( xml::Reader & reader_r )
+bool consume( xml::Reader &reader_r )
 {
   switch ( reader_r->nodeType() )
   {
@@ -75,7 +73,8 @@ bool consume( xml::Reader & reader_r )
       MIL << *reader_r << endl;
       for ( int i = 0; i < reader_r->attributeCount(); ++i )
       {
-	MIL << " attr no " << i << " '" << reader_r->getAttributeNo( i ) << "'" << endl;
+        MIL << " attr no " << i << " '" << reader_r->getAttributeNo( i ) << "'"
+            << endl;
       }
       break;
 
@@ -100,7 +99,7 @@ bool consume( xml::Reader & reader_r )
 **      FUNCTION NAME : main
 **      FUNCTION TYPE : int
 */
-int main( int argc, char * argv[] )
+int main( int argc, char *argv[] )
 {
   --argc, ++argv;
   INT << "===[START]==========================================" << endl;
@@ -121,18 +120,19 @@ int main( int argc, char * argv[] )
     {
       input = *argv;
 
-      try {
-	Measure m( input.basename() );
-// 	zypp::base::LogControl::TmpLineWriter shutUp;
-	xml::Reader reader( input );
-	if ( verbose )
-	  reader.foreachNodeOrAttribute( consumer );
-	else
-	  reader.foreachNode( consumer );
-      }
-      catch ( const Exception & exp )
+      try
       {
-	INT << exp << endl << exp.historyAsString();
+        Measure m( input.basename() );
+        // 	zypp::base::LogControl::TmpLineWriter shutUp;
+        xml::Reader reader( input );
+        if ( verbose )
+          reader.foreachNodeOrAttribute( consumer );
+        else
+          reader.foreachNode( consumer );
+      }
+      catch ( const Exception &exp )
+      {
+        INT << exp << endl << exp.historyAsString();
       }
     }
   }

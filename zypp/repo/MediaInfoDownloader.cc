@@ -22,19 +22,15 @@ namespace zypp
 namespace repo
 {
 
-void downloadMediaInfo( const Pathname &dest_dir,
-                        MediaSetAccess &media,
-                        const ProgressData::ReceiverFnc & progressrcv )
+void downloadMediaInfo( const Pathname &dest_dir, MediaSetAccess &media,
+  const ProgressData::ReceiverFnc &progressrcv )
 {
   Fetcher fetcher;
-  fetcher.enqueue( OnMediaLocation("/media.1/media").setOptional(true) );
+  fetcher.enqueue( OnMediaLocation( "/media.1/media" ).setOptional( true ) );
   fetcher.start( dest_dir, media, progressrcv );
   // ready, go!
   fetcher.reset();
 }
 
-}// ns repo 
+} // ns repo
 } // ns zypp
-
-
-

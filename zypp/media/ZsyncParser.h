@@ -19,10 +19,13 @@
 #include "zypp/media/MediaBlockList.h"
 #include "zypp/Url.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-class ZsyncParser : private zypp::base::NonCopyable {
+class ZsyncParser : private zypp::base::NonCopyable
+{
 public:
   ZsyncParser();
 
@@ -30,7 +33,7 @@ public:
    * parse a file consisting of zlink data
    * \throws Exception
    **/
-  void parse(std::string filename);
+  void parse( std::string filename );
   /**
    * return the download urls from the parsed metalink data
    **/
@@ -50,7 +53,7 @@ private:
   std::vector<std::string> urls;
 };
 
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_ZSYNCPARSER_H

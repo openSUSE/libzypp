@@ -30,48 +30,51 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  namespace gzstream_detail
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace gzstream_detail
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : ZlibError
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : ZlibError
+/**
      * @short Helper class to ship zlib errors.
      **/
-    struct ZlibError
-    {
-      /**
+struct ZlibError
+{
+  /**
        * The zlib error code
        **/
-      int _zError;
+  int _zError;
 
-      /**
+  /**
        * errno, valid if zError is Z_ERRNO
        **/
-      int _errno;
+  int _errno;
 
-      ZlibError()
-      : _zError( 0 ), _errno( 0 )
-      {}
+  ZlibError()
+    : _zError( 0 )
+    , _errno( 0 )
+  {
+  }
 
-      /**
+  /**
        * Return string describing the zlib error code
        **/
-      std::string
-      strerror() const;
-    };
-    ///////////////////////////////////////////////////////////////////
+  std::string strerror() const;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates ZlibError Stream output. */
-    inline std::ostream & operator<<( std::ostream & str, const ZlibError & obj )
-    { return str << obj.strerror(); }
+/** \relates ZlibError Stream output. */
+inline std::ostream &operator<<( std::ostream &str, const ZlibError &obj )
+{
+  return str << obj.strerror();
+}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : fgzstreambuf
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : fgzstreambuf
+/**
      * @short Streambuffer reading or writing gzip files.
      *
      * Read and write mode are mutual exclusive. Seek is supported,
@@ -83,111 +86,92 @@ namespace zypp
      *
      * This streambuf is used in @ref ifgzstream and  @ref ofgzstream.
      **/
-    class fgzstreambuf : public std::streambuf {
+class fgzstreambuf : public std::streambuf
+{
 
-    public:
+public:
+  fgzstreambuf( unsigned bufferSize_r = 512 )
+    : _fd( -1 )
+    , _file( NULL )
+    , _mode( std::ios_base::openmode( 0 ) )
+    , _buffer( ( bufferSize_r ? bufferSize_r : 1 ), 0 )
+  {
+  }
 
-      fgzstreambuf( unsigned bufferSize_r = 512 )
-      : _fd( -1 )
-      ,_file( NULL )
-      , _mode( std::ios_base::openmode(0) )
-      , _buffer( (bufferSize_r?bufferSize_r:1), 0 )
-      {}
+  virtual ~fgzstreambuf() { close(); }
 
-      virtual
-      ~fgzstreambuf()
-      { close(); }
+  bool isOpen() const { return _file; }
 
-      bool
-      isOpen() const
-      { return _file; }
+  bool inReadMode() const { return ( _mode == std::ios_base::in ); }
 
-      bool
-      inReadMode() const
-      { return( _mode == std::ios_base::in ); }
+  bool inWriteMode() const { return ( _mode == std::ios_base::out ); }
 
-      bool
-      inWriteMode() const
-      { return( _mode == std::ios_base::out ); }
+  fgzstreambuf *open(
+    const char *name_r, std::ios_base::openmode mode_r = std::ios_base::in );
 
-      fgzstreambuf *
-      open( const char * name_r, std::ios_base::openmode mode_r = std::ios_base::in );
+  fgzstreambuf *close();
 
-        fgzstreambuf *
-        close();
+  //! Tell the file position in the compressed file.
+  //! Analogous to tell(2), complementary to gztell.
+  pos_type compressed_tell() const;
 
-	//! Tell the file position in the compressed file.
-	//! Analogous to tell(2), complementary to gztell.
-	pos_type compressed_tell() const;
-
-        /**
+  /**
          * The last error returned fron zlib.
          **/
-        ZlibError
-        zError() const
-        { return _error; }
+  ZlibError zError() const { return _error; }
 
-    protected:
+protected:
+  virtual int sync();
 
-      virtual int
-      sync();
+  virtual int_type overflow( int_type c = traits_type::eof() );
 
-      virtual int_type
-      overflow( int_type c = traits_type::eof() );
+  virtual int_type underflow();
 
-      virtual int_type
-      underflow();
+  virtual pos_type seekoff( off_type off_r, std::ios_base::seekdir way_r,
+    std::ios_base::openmode /* ignored */ )
+  {
+    return seekTo( off_r, way_r );
+  }
 
-      virtual pos_type
-      seekoff( off_type off_r, std::ios_base::seekdir way_r, std::ios_base::openmode /* ignored */ )
-      { return seekTo( off_r, way_r ); }
+  virtual pos_type seekpos(
+    pos_type pos_r, std::ios_base::openmode /* ignored */ )
+  {
+    return seekTo( off_type( pos_r ), std::ios_base::beg );
+  }
 
-      virtual pos_type
-      seekpos( pos_type pos_r, std::ios_base::openmode /* ignored */ )
-      { return seekTo( off_type(pos_r), std::ios_base::beg ); }
+private:
+  typedef std::vector<char> buffer_type;
 
-    private:
+  //! file descriptor of the compressed file
+  int _fd;
 
-      typedef std::vector<char> buffer_type;
+  gzFile _file;
 
-      //! file descriptor of the compressed file
-      int		       _fd;
+  std::ios_base::openmode _mode;
 
-      gzFile                   _file;
+  buffer_type _buffer;
 
-      std::ios_base::openmode  _mode;
+  ZlibError _error;
 
-      buffer_type              _buffer;
+private:
+  void setZError() { gzerror( _file, &_error._zError ); }
 
-      ZlibError                _error;
+  std::streamsize zReadTo( char *buffer_r, std::streamsize maxcount_r );
 
-    private:
+  bool zWriteFrom( const char *buffer_r, std::streamsize count_r );
 
-      void
-      setZError()
-      { gzerror( _file, &_error._zError ); }
+  pos_type zSeekTo( off_type off_r, std::ios_base::seekdir way_r );
 
-      std::streamsize
-      zReadTo( char * buffer_r, std::streamsize maxcount_r );
+  pos_type zTell();
 
-      bool
-      zWriteFrom( const char * buffer_r, std::streamsize count_r );
+  pos_type seekTo( off_type off_r, std::ios_base::seekdir way_r );
+};
+///////////////////////////////////////////////////////////////////
 
-      pos_type
-      zSeekTo( off_type off_r, std::ios_base::seekdir way_r );
-
-      pos_type
-      zTell();
-
-      pos_type
-      seekTo( off_type off_r, std::ios_base::seekdir way_r );
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : fXstream<class TBStr,class TSBuf>
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : fXstream<class TBStr,class TSBuf>
+/**
      * @short Common template to define ifgzstream/ofgzstream
      * reading/writing gzip files.
      *
@@ -195,91 +179,86 @@ namespace zypp
      * @ref ofgzstream. fXstream is just to avoid almost
      * duplicate code.
      **/
-    template<class TBStream,class TStreamBuf>
-      class fXstream : public TBStream
-      {
-      public:
+template <class TBStream, class TStreamBuf>
+class fXstream : public TBStream
+{
+public:
+  typedef gzstream_detail::ZlibError ZlibError;
+  typedef TBStream stream_type;
+  typedef TStreamBuf streambuf_type;
 
-        typedef gzstream_detail::ZlibError ZlibError;
-        typedef TBStream                   stream_type;
-        typedef TStreamBuf                 streambuf_type;
+  fXstream()
+    : stream_type( NULL )
+  {
+    this->init( &_streambuf );
+  }
 
-        fXstream()
-        : stream_type( NULL )
-        { this->init( &_streambuf ); }
+  explicit fXstream( const char *file_r )
+    : stream_type( NULL )
+  {
+    this->init( &_streambuf );
+    this->open( file_r );
+  }
 
-        explicit
-        fXstream( const char * file_r )
-        : stream_type( NULL )
-        { this->init( &_streambuf ); this->open( file_r ); }
+  virtual ~fXstream() {}
 
-        virtual
-        ~fXstream()
-        {}
+  bool is_open() const { return _streambuf.isOpen(); }
 
-        bool
-        is_open() const
-        { return _streambuf.isOpen(); }
+  void open( const char *file_r )
+  {
+    if ( !_streambuf.open( file_r, defMode( *this ) ) )
+      this->setstate( std::ios_base::failbit );
+    else
+      this->clear();
+  }
 
-        void
-        open( const char * file_r )
-        {
-          if ( !_streambuf.open( file_r, defMode(*this) ) )
-            this->setstate(std::ios_base::failbit);
-          else
-            this->clear();
-        }
+  void close()
+  {
+    if ( !_streambuf.close() )
+      this->setstate( std::ios_base::failbit );
+  }
 
-        void
-        close()
-        {
-          if ( !_streambuf.close() )
-            this->setstate(std::ios_base::failbit);
-        }
-
-        /**
+  /**
          * The last error returned retuned fron zlib.
          **/
-        ZlibError
-        zError() const
-        { return _streambuf.zError(); }
+  ZlibError zError() const { return _streambuf.zError(); }
 
-	//! Similar to ios::rdbuf.
-	//! But it returns our specific type, not the generic streambuf *.
-	const streambuf_type&
-        getbuf() const
-        { return _streambuf; }
+  //! Similar to ios::rdbuf.
+  //! But it returns our specific type, not the generic streambuf *.
+  const streambuf_type &getbuf() const { return _streambuf; }
 
-      private:
+private:
+  streambuf_type _streambuf;
 
-        streambuf_type _streambuf;
+  std::ios_base::openmode defMode( const std::istream &str_r )
+  {
+    return std::ios_base::in;
+  }
 
-        std::ios_base::openmode
-        defMode( const std::istream & str_r )
-        { return std::ios_base::in; }
+  std::ios_base::openmode defMode( const std::ostream &str_r )
+  {
+    return std::ios_base::out;
+  }
+};
+///////////////////////////////////////////////////////////////////
 
-        std::ios_base::openmode
-        defMode( const std::ostream & str_r )
-        { return std::ios_base::out; }
+/////////////////////////////////////////////////////////////////
+} // namespace gzstream_detail
+///////////////////////////////////////////////////////////////////
 
-      };
-    ///////////////////////////////////////////////////////////////////
-
-    /////////////////////////////////////////////////////////////////
-  } // namespace gzstream_detail
-  ///////////////////////////////////////////////////////////////////
-
-  /**
+/**
    * istream reading gzip files as well as plain files.
    **/
-  typedef gzstream_detail::fXstream<std::istream,gzstream_detail::fgzstreambuf> ifgzstream;
+typedef gzstream_detail::fXstream<std::istream, gzstream_detail::fgzstreambuf>
+  ifgzstream;
 
-  /**
+/**
    * ostream writing gzip files.
    **/
-  typedef gzstream_detail::fXstream<std::ostream,gzstream_detail::fgzstreambuf> ofgzstream;
+typedef gzstream_detail::fXstream<std::ostream, gzstream_detail::fgzstreambuf>
+  ofgzstream;
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 

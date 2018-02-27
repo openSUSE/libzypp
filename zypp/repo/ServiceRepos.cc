@@ -15,83 +15,90 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
+///////////////////////////////////////////////////////////////////
+namespace repo
+{
+struct ServiceRepos::Impl
+{
+  virtual ~Impl() {}
+};
+
+///////////////////////////////////////////////////////////////////
+
+struct RIMServiceRepos : public ServiceRepos::Impl
+{
+  RIMServiceRepos( const ServiceInfo &service,
+    const ServiceRepos::ProcessRepo &callback,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() )
   {
-    struct ServiceRepos::Impl
-    { virtual ~Impl() {} };
+    // repoindex.xml must be fetched always without using cookies (bnc #573897)
+    Url serviceUrl( service.url() );
+    serviceUrl.setQueryParam( "cookies", "0" );
 
-    ///////////////////////////////////////////////////////////////////
+    // download the repo index file
+    media::MediaManager mediamanager;
+    media::MediaAccessId mid = mediamanager.open( serviceUrl );
+    mediamanager.attach( mid );
+    mediamanager.provideFile( mid, "repo/repoindex.xml" );
+    Pathname path = mediamanager.localPath( mid, "repo/repoindex.xml" );
+    parser::RepoindexFileReader reader( path, callback );
+    service.setProbedTtl(
+      reader.ttl() ); // hack! Modifying the const Service to set parsed TTL
+    mediamanager.release( mid );
+    mediamanager.close( mid );
+  }
+};
 
-    struct RIMServiceRepos : public ServiceRepos::Impl
+///////////////////////////////////////////////////////////////////
+
+struct PluginServiceRepos : public ServiceRepos::Impl
+{
+  PluginServiceRepos( const ServiceInfo &service,
+    const ServiceRepos::ProcessRepo &callback,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() )
+  {
+    Url serviceUrl( service.url() );
+    stringstream buffer;
+
+    ExternalProgram::Arguments args;
+    args.reserve( 3 );
+    args.push_back( "/bin/sh" );
+    args.push_back( "-c" );
+    args.push_back( serviceUrl.getPathName() );
+    ExternalProgramWithStderr prog( args );
+    prog >> buffer;
+
+    if ( prog.close() != 0 )
     {
-      RIMServiceRepos( const ServiceInfo & service,
-		       const ServiceRepos::ProcessRepo & callback,
-		       const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() )
-      {
-	// repoindex.xml must be fetched always without using cookies (bnc #573897)
-	Url serviceUrl( service.url() );
-	serviceUrl.setQueryParam( "cookies", "0" );
+      // ServicePluginInformalException:
+      // Ignore this error but we'd like to report it somehow...
+      std::string errbuffer;
+      prog.stderrGetUpTo( errbuffer, '\0' );
+      ERR << "Capture plugin error:[" << endl
+          << errbuffer << endl
+          << ']' << endl;
+      ZYPP_THROW( repo::ServicePluginInformalException( service, errbuffer ) );
+    }
+    parser::RepoFileReader parser( buffer, callback );
+  }
+};
 
-	// download the repo index file
-	media::MediaManager mediamanager;
-	media::MediaAccessId mid = mediamanager.open( serviceUrl );
-	mediamanager.attach( mid );
-	mediamanager.provideFile( mid, "repo/repoindex.xml" );
-	Pathname path = mediamanager.localPath(mid, "repo/repoindex.xml" );
-	parser::RepoindexFileReader reader(path, callback);
-	service.setProbedTtl( reader.ttl() );	// hack! Modifying the const Service to set parsed TTL
-	mediamanager.release( mid );
-	mediamanager.close( mid );
-      }
-    };
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
+ServiceRepos::ServiceRepos( const ServiceInfo &service,
+  const ServiceRepos::ProcessRepo &callback,
+  const ProgressData::ReceiverFnc &progress )
+  : _impl( ( service.type() == ServiceType::PLUGIN )
+             ? static_cast<ServiceRepos::Impl *>(
+                 new PluginServiceRepos( service, callback, progress ) )
+             : static_cast<ServiceRepos::Impl *>(
+                 new RIMServiceRepos( service, callback, progress ) ) )
+{
+}
 
-    struct PluginServiceRepos : public ServiceRepos::Impl
-    {
-      PluginServiceRepos( const ServiceInfo & service,
-			  const ServiceRepos::ProcessRepo & callback,
-			  const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() )
-      {
-	Url serviceUrl( service.url() );
-	stringstream buffer;
+ServiceRepos::~ServiceRepos() {}
 
-	ExternalProgram::Arguments args;
-	args.reserve( 3 );
-	args.push_back( "/bin/sh" );
-	args.push_back( "-c" );
-	args.push_back( serviceUrl.getPathName() );
-	ExternalProgramWithStderr prog( args );
-	prog >> buffer;
-
-	if ( prog.close() != 0 )
-	{
-	  // ServicePluginInformalException:
-	  // Ignore this error but we'd like to report it somehow...
-	  std::string errbuffer;
-	  prog.stderrGetUpTo( errbuffer, '\0' );
-	  ERR << "Capture plugin error:[" << endl << errbuffer << endl << ']' << endl;
-	  ZYPP_THROW( repo::ServicePluginInformalException( service, errbuffer ) );
-	}
-	parser::RepoFileReader parser( buffer, callback );
-      }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-
-    ServiceRepos::ServiceRepos( const ServiceInfo & service,
-				const ServiceRepos::ProcessRepo & callback,
-				const ProgressData::ReceiverFnc &progress )
-    : _impl( ( service.type() == ServiceType::PLUGIN )
-	   ? static_cast<ServiceRepos::Impl*>( new PluginServiceRepos( service, callback, progress ) )
-           : static_cast<ServiceRepos::Impl*>( new RIMServiceRepos (service, callback, progress ) ) )
-    {}
-
-    ServiceRepos::~ServiceRepos()
-    {}
-
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
 } //namespace zypp
 ///////////////////////////////////////////////////////////////////

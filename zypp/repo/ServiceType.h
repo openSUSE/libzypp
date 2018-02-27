@@ -15,24 +15,24 @@
 
 namespace zypp
 {
-  namespace repo
-  {
+namespace repo
+{
 
-  /**
+/**
    * \short Service type enumeration
    *
    * Currently we have only RIS service, but more can come later.
    */
-  struct ServiceType
-  {
-    /**
+struct ServiceType
+{
+  /**
      * Repository Index Service (RIS)
      * (formerly known as 'Novell Update' (NU) service)
      */
-    static const ServiceType RIS;
-    /** No service set. */
-    static const ServiceType NONE;
-    /**
+  static const ServiceType RIS;
+  /** No service set. */
+  static const ServiceType NONE;
+  /**
      * Plugin services are scripts installed on
      * your system that provide the package manager with
      * repositories.
@@ -40,42 +40,52 @@ namespace zypp
      * The mechanism used to create this repository list
      * is completely up to the script
      */
-    static const ServiceType PLUGIN;
+  static const ServiceType PLUGIN;
 
-    enum Type
-    {
-      NONE_e,
-      RIS_e,
-      PLUGIN_e,
-    };
-
-    ServiceType() : _type(NONE_e) {}
-
-    ServiceType(Type type) : _type(type) {}
-
-    explicit ServiceType(const std::string & strval_r);
-
-    Type toEnum() const { return _type; }
-
-    ServiceType::Type parse(const std::string & strval_r);
-
-    const std::string & asString() const;
-
-    Type _type;
+  enum Type
+  {
+    NONE_e,
+    RIS_e,
+    PLUGIN_e,
   };
 
+  ServiceType()
+    : _type( NONE_e )
+  {
+  }
 
-  inline std::ostream & operator<<( std::ostream & str, const ServiceType & obj )
-  { return str << obj.asString(); }
+  ServiceType( Type type )
+    : _type( type )
+  {
+  }
 
-  inline bool operator==(const ServiceType & obj1, const ServiceType & obj2)
-  { return obj1._type == obj2._type; }
+  explicit ServiceType( const std::string &strval_r );
 
-  inline bool operator!=(const ServiceType & obj1, const ServiceType & obj2)
-  { return ! (obj1 == obj2); }
+  Type toEnum() const { return _type; }
 
+  ServiceType::Type parse( const std::string &strval_r );
 
-  } // ns repo
+  const std::string &asString() const;
+
+  Type _type;
+};
+
+inline std::ostream &operator<<( std::ostream &str, const ServiceType &obj )
+{
+  return str << obj.asString();
+}
+
+inline bool operator==( const ServiceType &obj1, const ServiceType &obj2 )
+{
+  return obj1._type == obj2._type;
+}
+
+inline bool operator!=( const ServiceType &obj1, const ServiceType &obj2 )
+{
+  return !( obj1 == obj2 );
+}
+
+} // ns repo
 } // ns zypp
 
 #endif /* ZYPP_SERVICE_TYPE_H_ */

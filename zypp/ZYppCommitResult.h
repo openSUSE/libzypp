@@ -24,33 +24,36 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  namespace sat
+namespace sat
+{
+class Transaction;
+}
+
+/** Pair of \ref sat::Solvable and \ref Pathname. */
+class UpdateNotificationFile
+{
+public:
+  UpdateNotificationFile( sat::Solvable solvable_r, const Pathname &file_r )
+    : _solvable( solvable_r )
+    , _file( file_r )
   {
-    class Transaction;
   }
 
-  /** Pair of \ref sat::Solvable and \ref Pathname. */
-  class UpdateNotificationFile
-  {
-    public:
-      UpdateNotificationFile( sat::Solvable solvable_r, const Pathname & file_r )
-      : _solvable( solvable_r ), _file( file_r )
-      {}
-    public:
-      sat::Solvable solvable() const { return _solvable; }
-      const Pathname & file() const { return _file; }
-    private:
-      sat::Solvable _solvable;
-      Pathname      _file;
-  };
+public:
+  sat::Solvable solvable() const { return _solvable; }
+  const Pathname &file() const { return _file; }
+private:
+  sat::Solvable _solvable;
+  Pathname _file;
+};
 
-  typedef std::list<UpdateNotificationFile> UpdateNotifications;
+typedef std::list<UpdateNotificationFile> UpdateNotifications;
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : ZYppCommitResult
-  //
-  /** Result returned from ZYpp::commit.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : ZYppCommitResult
+//
+/** Result returned from ZYpp::commit.
    *
    * \note Transaction data are provided and maintained during commit.
    * Though the interface does not inhibit manipulation of transaction
@@ -59,55 +62,55 @@ namespace zypp
    *
    * \see \ref ZYpp::commit
    */
-  class ZYppCommitResult
-  {
-    public:
-      typedef std::vector<sat::Transaction::Step> TransactionStepList;
+class ZYppCommitResult
+{
+public:
+  typedef std::vector<sat::Transaction::Step> TransactionStepList;
 
-    public:
-      ZYppCommitResult();
-      ZYppCommitResult( const ZYppCommitResult & lhs_r );
-      ZYppCommitResult( const Pathname & root_r );
-      ~ZYppCommitResult();
+public:
+  ZYppCommitResult();
+  ZYppCommitResult( const ZYppCommitResult &lhs_r );
+  ZYppCommitResult( const Pathname &root_r );
+  ~ZYppCommitResult();
 
-    public:
-      /** Remembered root directory of the target.
+public:
+  /** Remembered root directory of the target.
        *  \Note Pathnames within this class are relative to the
        * targets root directory.
       */
-      const Pathname & root() const;
+  const Pathname &root() const;
 
-      /** \c True if at least one attempt to actually install/remove packages was made.
+  /** \c True if at least one attempt to actually install/remove packages was made.
        * While this is false there should have been no serious modifications to the system.
        * Mainly used to detect whether commit failed while preloading the caches or within
        * the real action.
        */
-      bool attemptToModify() const;
+  bool attemptToModify() const;
 
-      /** Set \ref attemptToModify */
-      void attemptToModify( bool yesno_r );
+  /** Set \ref attemptToModify */
+  void attemptToModify( bool yesno_r );
 
-      /** The full transaction list.
+  /** The full transaction list.
        * The complete list including transaction steps that do not require
        * any action (like obsoletes or non-package actions). Depending on
        * \ref ZYppCommitPolicy::restrictToMedia only a subset of this
        * transaction might have been executed.
        * \see \ref transactionStepList.
        */
-      const sat::Transaction & transaction() const;
+  const sat::Transaction &transaction() const;
 
-      /** Manipulate \ref transaction */
-      sat::Transaction & rTransaction();
+  /** Manipulate \ref transaction */
+  sat::Transaction &rTransaction();
 
-      /** List of \ref sat::Transaction::Step to be executed by commit.
+  /** List of \ref sat::Transaction::Step to be executed by commit.
        * The list of transaction step commit actually tried to execute.
        */
-      const TransactionStepList & transactionStepList() const;
+  const TransactionStepList &transactionStepList() const;
 
-      /** Manipulate \ref transactionStepList. */
-      TransactionStepList & rTransactionStepList();
+  /** Manipulate \ref transactionStepList. */
+  TransactionStepList &rTransactionStepList();
 
-      /** List of update messages installed during this commit.
+  /** List of update messages installed during this commit.
        * \Note Pathnames are relative to the targets root directory.
        * \code
        *   ZYppCommitResult result;
@@ -134,16 +137,15 @@ namespace zypp
        *   }
        * \endcode
        */
-      const UpdateNotifications & updateMessages() const;
+  const UpdateNotifications &updateMessages() const;
 
-      /** Manipulate \ref updateMessages
+  /** Manipulate \ref updateMessages
        * \Note Pathnames are relative to the targets root directory.
        */
-      UpdateNotifications & rUpdateMessages();
+  UpdateNotifications &rUpdateMessages();
 
-    public:
-
-      /** \name Some statistics based on \ref Transaction
+public:
+  /** \name Some statistics based on \ref Transaction
        *
        * Class \ref Transaction allows to count and iterate the action steps to
        * get more detailed information about the transaction result. Here are just
@@ -163,29 +165,34 @@ namespace zypp
        * \endcode
        * \see \ref Transaction, \ref transaction()
        */
-      //@{
-	/** Whether all steps were performed successfully (none skipped or error) */
-	bool allDone() const
-	{ return transaction().actionEmpty( ~sat::Transaction::STEP_DONE ); }
+  //@{
+  /** Whether all steps were performed successfully (none skipped or error) */
+  bool allDone() const
+  {
+    return transaction().actionEmpty( ~sat::Transaction::STEP_DONE );
+  }
 
-	/** Whether an error ocurred (skipped streps are ok). */
-	bool noError() const
-	{ return transaction().actionEmpty( sat::Transaction::STEP_ERROR ); }
-      //@}
+  /** Whether an error ocurred (skipped streps are ok). */
+  bool noError() const
+  {
+    return transaction().actionEmpty( sat::Transaction::STEP_ERROR );
+  }
+  //@}
 
-    public:
-      /** Implementation  */
-      class Impl;
-    private:
-      /** Pointer to data. */
-      RWCOW_pointer<Impl> _pimpl;
-  };
-  ///////////////////////////////////////////////////////////////////
+public:
+  /** Implementation  */
+  class Impl;
 
-  /** \relates ZYppCommitResult Stream output. */
-  std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj );
+private:
+  /** Pointer to data. */
+  RWCOW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////////
+/** \relates ZYppCommitResult Stream output. */
+std::ostream &operator<<( std::ostream &str, const ZYppCommitResult &obj );
+
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_ZYPPCOMMITRESULT_H

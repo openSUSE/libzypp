@@ -15,63 +15,71 @@
 #include "zypp/media/MediaHandler.h"
 #include "zypp/media/MediaManager.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : MediaCD
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : MediaCD
+/**
      * @short Implementation class for CD/DVD MediaHandler
      * @see MediaHandler
      **/
-    class MediaCD : public MediaHandler {
+class MediaCD : public MediaHandler
+{
 
-      private:
-        typedef std::list<MediaSource> DeviceList;
-        /** list of devices to try to mount */
-        mutable DeviceList _devices;
+private:
+  typedef std::list<MediaSource> DeviceList;
+  /** list of devices to try to mount */
+  mutable DeviceList _devices;
 
-        /** number of last successful mounted device in list */
-        int        _lastdev;
-        int        _lastdev_tried;
+  /** number of last successful mounted device in list */
+  int _lastdev;
+  int _lastdev_tried;
 
-        static bool openTray( const std::string & device_r );
-        static bool closeTray( const std::string & device_r );
+  static bool openTray( const std::string &device_r );
+  static bool closeTray( const std::string &device_r );
 
-	DeviceList  detectDevices(bool supportingDVD) const;
+  DeviceList detectDevices( bool supportingDVD ) const;
 
-      protected:
+protected:
+  virtual void attachTo( bool next = false );
+  virtual void releaseFrom( const std::string &ejectDev );
+  virtual void getFile( const Pathname &filename ) const;
+  virtual void getDir( const Pathname &dirname, bool recurse_r ) const;
+  virtual void getDirInfo( std::list<std::string> &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual void getDirInfo( filesystem::DirContent &retlist,
+    const Pathname &dirname, bool dots = true ) const;
+  virtual bool getDoesFileExist( const Pathname &filename ) const;
 
-	virtual void attachTo (bool next = false);
-        virtual void releaseFrom( const std::string & ejectDev );
-	virtual void getFile( const Pathname & filename ) const;
-	virtual void getDir( const Pathname & dirname, bool recurse_r ) const;
-        virtual void getDirInfo( std::list<std::string> & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual void getDirInfo( filesystem::DirContent & retlist,
-                                 const Pathname & dirname, bool dots = true ) const;
-        virtual bool getDoesFileExist( const Pathname & filename ) const;
+  virtual void forceEject( const std::string &ejectDev );
 
-        virtual void forceEject(const std::string & ejectDev);
+  virtual bool hasMoreDevices();
 
-        virtual bool hasMoreDevices();
+  virtual void getDetectedDevices(
+    std::vector<std::string> &devices, unsigned int &index ) const;
 
-        virtual void
-        getDetectedDevices(std::vector<std::string> & devices,
-                           unsigned int & index) const;
+public:
+  MediaCD( const Url &url_r, const Pathname &attach_point_hint_r );
 
-      public:
+  virtual ~MediaCD()
+  {
+    try
+    {
+      release();
+    }
+    catch ( ... )
+    {
+    }
+  }
 
-        MediaCD( const Url &      url_r,
-		 const Pathname & attach_point_hint_r );
-
-        virtual ~MediaCD() { try { release(); } catch(...) {} }
-
-	virtual bool isAttached() const;
-    };
+  virtual bool isAttached() const;
+};
 
 ///////////////////////////////////////////////////////////////////
-  } // namespace media
+} // namespace media
 } // namespace zypp
 #endif // ZYPP_MEDIA_MEDIACD_H

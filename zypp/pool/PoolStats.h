@@ -22,15 +22,15 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace pool
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace pool
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : PoolStats
-    //
-    /** Functor counting ResObjects per Kind.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : PoolStats
+//
+/** Functor counting ResObjects per Kind.
      * \see dumpPoolStats
      * \code
      * Total: 2830
@@ -41,42 +41,43 @@ namespace zypp
      *   system:       1
      * \endcode
     */
-    struct PoolStats : public std::unary_function<ResObject::constPtr, void>
-    {
-      void operator()( ResObject::constPtr ptr )
-      {
-        ++_total;
-        ++_perKind[ptr->kind()];
-      }
-    public:
-      typedef std::map<ResKind,Counter<unsigned> > KindMap;
-      Counter<unsigned> _total;
-      KindMap           _perKind;
-    };
-    ///////////////////////////////////////////////////////////////////
+struct PoolStats : public std::unary_function<ResObject::constPtr, void>
+{
+  void operator()( ResObject::constPtr ptr )
+  {
+    ++_total;
+    ++_perKind[ ptr->kind() ];
+  }
 
-    /** \relates PoolStats Stream output */
-    std::ostream & operator<<( std::ostream & str, const PoolStats & obj );
+public:
+  typedef std::map<ResKind, Counter<unsigned>> KindMap;
+  Counter<unsigned> _total;
+  KindMap _perKind;
+};
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace pool
-  ///////////////////////////////////////////////////////////////////
+/** \relates PoolStats Stream output */
+std::ostream &operator<<( std::ostream &str, const PoolStats &obj );
 
-  /** \relates pool::PoolStats Convenience to count and print out the
+/////////////////////////////////////////////////////////////////
+} // namespace pool
+///////////////////////////////////////////////////////////////////
+
+/** \relates pool::PoolStats Convenience to count and print out the
    *  number of ResObjects per Kind in a container.
    * Fits container of ResObject::Ptr or PoolItem.
   */
-  template <class TIterator>
-    std::ostream & dumpPoolStats( std::ostream & str,
-                                  TIterator begin_r, TIterator end_r )
-    {
-      pool::PoolStats stats;
-      std::for_each( begin_r, end_r,
-                     functor::functorRef<void,ResObject::constPtr>(stats) );
-      return str << stats;
-    }
+template <class TIterator>
+std::ostream &dumpPoolStats(
+  std::ostream &str, TIterator begin_r, TIterator end_r )
+{
+  pool::PoolStats stats;
+  std::for_each(
+    begin_r, end_r, functor::functorRef<void, ResObject::constPtr>( stats ) );
+  return str << stats;
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_POOL_POOLSTATS_H

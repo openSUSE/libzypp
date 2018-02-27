@@ -6,7 +6,6 @@
 #include "zypp/base/Easy.h"
 #include "zypp/sat/Map.h"
 
-
 #define BOOST_TEST_MODULE Map
 
 using std::endl;
@@ -14,8 +13,7 @@ using std::cout;
 using namespace zypp;
 using namespace boost::unit_test;
 
-
-BOOST_AUTO_TEST_CASE(basic)
+BOOST_AUTO_TEST_CASE( basic )
 {
   sat::Map m;
   BOOST_CHECK_EQUAL( m.empty(), true );
@@ -48,7 +46,7 @@ BOOST_AUTO_TEST_CASE(basic)
 
   // COW
   m.clearAll();
-  sat::Map n(m);
+  sat::Map n( m );
   BOOST_CHECK_EQUAL( m.asString(), "0000000000000000" );
   BOOST_CHECK_EQUAL( n.asString(), "0000000000000000" );
   BOOST_CHECK_EQUAL( m, n );
@@ -62,7 +60,6 @@ BOOST_AUTO_TEST_CASE(basic)
   BOOST_CHECK_EQUAL( m.asString(), "0100000000000000" );
   BOOST_CHECK_EQUAL( n.asString(), "0100000000000000" );
   BOOST_CHECK( m == n );
-
 
   BOOST_CHECK_THROW( m.set( 99 ), std::out_of_range );
 }

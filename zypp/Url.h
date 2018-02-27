@@ -9,23 +9,23 @@
 /**
  * \file zypp/Url.h
  */
-#ifndef   ZYPP_URL_H
-#define   ZYPP_URL_H
+#ifndef ZYPP_URL_H
+#define ZYPP_URL_H
 
 #include "zypp/url/UrlBase.h"
 #include "zypp/url/UrlUtils.h"
-
 
 //////////////////////////////////////////////////////////////////////
 namespace zypp
 { ////////////////////////////////////////////////////////////////////
 
-  namespace filesystem {
-    class Pathname;
-  }
-  using filesystem::Pathname;
+namespace filesystem
+{
+class Pathname;
+}
+using filesystem::Pathname;
 
-  /**
+/**
    * \class Url
    * \brief Url manipulation class.
    *
@@ -84,24 +84,23 @@ namespace zypp
    * \endcode
    *
    */
-  class Url
-  {
-  public:
-    /**
+class Url
+{
+public:
+  /**
      * Encoding flags.
      */
-    typedef zypp::url::EEncoding    EEncoding;
+  typedef zypp::url::EEncoding EEncoding;
 
-    /**
+  /**
      * View options.
      */
-    typedef zypp::url::ViewOptions  ViewOptions;
+  typedef zypp::url::ViewOptions ViewOptions;
 
+  ~Url();
+  Url();
 
-    ~Url();
-    Url();
-
-    /**
+  /**
      * Create a new Url object as shared copy of the given one.
      *
      * Upon return, both objects will point to the same underlying
@@ -111,10 +110,9 @@ namespace zypp
      * \param url The Url object to make a copy of.
      * \throws url::UrlException if copy fails (should not happen).
      */
-    Url(const Url &url);
+  Url( const Url &url );
 
-
-    /**
+  /**
      * Create a new Url object as shared copy of the given reference.
      *
      * Upon return, both objects will point to the same underlying
@@ -124,10 +122,9 @@ namespace zypp
      * \param url The URL implementation reference to make a copy of.
      * \throws url::UrlException if reference is empty.
      */
-    Url(const zypp::url::UrlRef &url);
+  Url( const zypp::url::UrlRef &url );
 
-
-    /**
+  /**
      * \brief Construct a Url object from percent-encoded URL string.
      *
      * Parses the \p encodedUrl string using the parseUrl() method
@@ -140,11 +137,10 @@ namespace zypp
      * \throws url::UrlBadComponentException if one of the components
      *         contains an invalid character.
      */
-    Url(const std::string &encodedUrl);
+  Url( const std::string &encodedUrl );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Parse a percent-encoded URL string.
      *
      * Tries to parse the given string into generic URL components
@@ -160,12 +156,10 @@ namespace zypp
      * \throws url::UrlBadComponentException if one of the components
      *         contains an invalid character.
      */
-    static url::UrlRef
-    parseUrl(const std::string &encodedUrl);
+  static url::UrlRef parseUrl( const std::string &encodedUrl );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Assigns parsed percent-encoded URL string to the object.
      *
      * Parses \p encodedUrl string using the parseUrl() method
@@ -179,11 +173,9 @@ namespace zypp
      * \throws url::UrlBadComponentException if one of the components
      *         contains an invalid character.
      */
-    Url&
-    operator = (const std::string &encodedUrl);
+  Url &operator=( const std::string &encodedUrl );
 
-
-    /**
+  /**
      * \brief Assign a shared copy of \p url to the current object.
      *
      * Upon return, both objects will point to the same underlying
@@ -193,47 +185,38 @@ namespace zypp
      * \param url The Url object to make a copy of.
      * \return A reference to this Url object.
      */
-    Url&
-    operator = (const Url &url);
+  Url &operator=( const Url &url );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Register a scheme-specific implementation.
      *
      * \param scheme  A name of a scheme.
      * \param urlImpl A UrlBase object specialized for this scheme.
      * \return True, if the object claims to implement the scheme.
      */
-    static bool
-    registerScheme(const std::string &scheme,
-                   url::UrlRef       urlImpl);
+  static bool registerScheme( const std::string &scheme, url::UrlRef urlImpl );
 
-    /**
+  /**
      * \brief Returns all registered scheme names.
      * \return A vector with registered URL scheme names.
      */
-    static zypp::url::UrlSchemes
-    getRegisteredSchemes();
+  static zypp::url::UrlSchemes getRegisteredSchemes();
 
-    /**
+  /**
      * \brief Returns if scheme name is registered.
      * \return True, if scheme name is registered.
      */
-    static bool
-    isRegisteredScheme(const std::string &scheme);
+  static bool isRegisteredScheme( const std::string &scheme );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Returns scheme names known to this object.
      * \return A vector with scheme names known by this object.
      */
-    zypp::url::UrlSchemes
-    getKnownSchemes() const;
+  zypp::url::UrlSchemes getKnownSchemes() const;
 
-
-    /**
+  /**
      * \brief Verifies the specified scheme name.
      *
      * Verifies the generic syntax of the specified \p scheme name
@@ -247,31 +230,32 @@ namespace zypp
      * \return True, if generic scheme name syntax is valid and
      *         the scheme name is known to the current object.
      */
-    bool
-    isValidScheme(const std::string &scheme) const;
+  bool isValidScheme( const std::string &scheme ) const;
 
+  /** hd cd dvd dir file iso */
+  static bool schemeIsLocal( const std::string &scheme_r );
+  /** \overload nonstatic version */
+  bool schemeIsLocal() const { return schemeIsLocal( getScheme() ); }
 
-    /** hd cd dvd dir file iso */
-    static bool schemeIsLocal( const std::string & scheme_r );
-    /** \overload nonstatic version */
-    bool schemeIsLocal() const { return schemeIsLocal( getScheme() ); }
+  /** nfs nfs4 smb cifs http https ftp sftp tftp */
+  static bool schemeIsRemote( const std::string &scheme_r );
+  /** \overload nonstatic version */
+  bool schemeIsRemote() const { return schemeIsRemote( getScheme() ); }
 
-    /** nfs nfs4 smb cifs http https ftp sftp tftp */
-    static bool schemeIsRemote( const std::string & scheme_r );
-    /** \overload nonstatic version */
-    bool schemeIsRemote() const { return schemeIsRemote( getScheme() ); }
+  /** cd dvd */
+  static bool schemeIsVolatile( const std::string &scheme_r );
+  /** \overload nonstatic version */
+  bool schemeIsVolatile() const { return schemeIsVolatile( getScheme() ); }
 
-    /** cd dvd */
-    static bool schemeIsVolatile( const std::string & scheme_r );
-    /** \overload nonstatic version */
-    bool schemeIsVolatile() const { return schemeIsVolatile( getScheme() ); }
+  /** http https ftp sftp tftp */
+  static bool schemeIsDownloading( const std::string &scheme_r );
+  /** \overload nonstatic version */
+  bool schemeIsDownloading() const
+  {
+    return schemeIsDownloading( getScheme() );
+  }
 
-    /** http https ftp sftp tftp */
-    static bool schemeIsDownloading( const std::string & scheme_r );
-    /** \overload nonstatic version */
-    bool schemeIsDownloading() const { return schemeIsDownloading( getScheme() ); }
-
-    /**
+  /**
      * \brief Verifies the Url.
      *
      * Verifies if the current object contains a non-empty scheme
@@ -280,22 +264,19 @@ namespace zypp
      *
      * \return True, if the Url seems to be valid.
      */
-    bool
-    isValid() const;
+  bool isValid() const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns a default string representation of the Url object.
      *
      * By default, a password in the URL will be hidden.
      *
      * \return A default string representation of the Url object.
      */
-    std::string
-    asString() const;
+  std::string asString() const;
 
-    /**
+  /**
      * Returns a string representation of the Url object.
      *
      * To include a password in the resulting Url string, use:
@@ -307,10 +288,9 @@ namespace zypp
      * \param opts  A combination of view options.
      * \return A string representation of the Url object.
      */
-    std::string
-    asString(const ViewOptions &opts) const;
+  std::string asString( const ViewOptions &opts ) const;
 
-    /**
+  /**
      * Returns a complete string representation of the Url object.
      *
      * This function ignores the configuration of the view options
@@ -319,21 +299,17 @@ namespace zypp
      *
      * \return A complete string representation of the Url object.
      */
-    std::string
-    asCompleteString() const;
+  std::string asCompleteString() const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns the scheme name of the URL.
      * \return Scheme name of the current Url object.
      */
-    std::string
-    getScheme() const;
+  std::string getScheme() const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns the encoded authority component of the URL.
      *
      * The returned authority string does not contain the leading
@@ -342,36 +318,35 @@ namespace zypp
      *
      * \return The encoded authority component string.
      */
-    std::string
-    getAuthority() const;
+  std::string getAuthority() const;
 
-    /**
+  /**
      * Returns the username from the URL authority.
      * \param eflag Flag if the usename should be percent-decoded or not.
      * \return The username sub-component from the URL authority.
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getUsername(EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getUsername( EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Returns the password from the URL authority.
      * \param eflag Flag if the password should be percent-decoded or not.
      * \return The password sub-component from the URL authority.
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getPassword(EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getPassword( EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Returns \c true if username \b and password are encoded in the authority component.
      */
-    bool hasCredentialsInAuthority() const
-    { return ! ( getUsername().empty() || getPassword().empty() ); }
+  bool hasCredentialsInAuthority() const
+  {
+    return !( getUsername().empty() || getPassword().empty() );
+  }
 
-    /**
+  /**
      * Returns the hostname or IP from the URL authority.
      *
      * In case the Url contains an IP number, it may be surrounded
@@ -383,19 +358,16 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getHost(EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getHost( EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Returns the port from the URL authority.
      * \return The port sub-component from the URL authority.
      */
-    std::string
-    getPort() const;
+  std::string getPort() const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns the encoded path component of the URL.
      *
      * The path data contains the path name, optionally
@@ -404,10 +376,9 @@ namespace zypp
      *
      * \return The encoded path component of the URL.
      */
-    std::string
-    getPathData() const;
+  std::string getPathData() const;
 
-    /**
+  /**
      * Returns the path name from the URL.
      * \param eflag Flag if the path should be decoded or not.
      * \return The path name sub-component without path parameters
@@ -415,17 +386,15 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getPathName(EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getPathName( EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Returns the path parameters from the URL.
      * \return The encoded path parameters from the URL.
      */
-    std::string
-    getPathParams() const;
+  std::string getPathParams() const;
 
-    /**
+  /**
      * Returns a vector with path parameter substrings.
      *
      * The default path parameter separator is the \c ',' character.
@@ -437,10 +406,9 @@ namespace zypp
      *
      * \return The path parameters splited into a vector of substrings.
      */
-    zypp::url::ParamVec
-    getPathParamsVec() const;
+  zypp::url::ParamVec getPathParamsVec() const;
 
-    /**
+  /**
      * Returns a string map with path parameter keys and values.
      *
      * The default path parameter separator is the \c ',' character,
@@ -459,10 +427,10 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    zypp::url::ParamMap
-    getPathParamsMap(EEncoding eflag = zypp::url::E_DECODED) const;
+  zypp::url::ParamMap getPathParamsMap(
+    EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Return the value for the specified path parameter.
      *
      * For example, if the path parameters string is "foo=1,bar=2"
@@ -478,13 +446,11 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getPathParam(const std::string &param,
-                 EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getPathParam(
+    const std::string &param, EEncoding eflag = zypp::url::E_DECODED ) const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns the encoded query string component of the URL.
      *
      * The query string is returned without first "?" (separator)
@@ -493,10 +459,9 @@ namespace zypp
      *
      * \return The encoded query string component of the URL.
      */
-    std::string
-    getQueryString() const;
+  std::string getQueryString() const;
 
-    /**
+  /**
      * Returns a vector with query string parameter substrings.
      *
      * The default query string parameter separator is the \c '&'
@@ -509,10 +474,9 @@ namespace zypp
      *
      * \return The query string splited into a vector of substrings.
      */
-    zypp::url::ParamVec
-    getQueryStringVec() const;
+  zypp::url::ParamVec getQueryStringVec() const;
 
-    /**
+  /**
      * Returns a string map with query parameter and their values.
      *
      * The default query string parameter separator is the \c ','
@@ -530,10 +494,10 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    zypp::url::ParamMap
-    getQueryStringMap(EEncoding eflag = zypp::url::E_DECODED) const;
+  zypp::url::ParamMap getQueryStringMap(
+    EEncoding eflag = zypp::url::E_DECODED ) const;
 
-    /**
+  /**
      * Return the value for the specified query parameter.
      *
      * For example, if the query string is "foo=1,bar=2" the method
@@ -549,36 +513,30 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getQueryParam(const std::string &param,
-                  EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getQueryParam(
+    const std::string &param, EEncoding eflag = zypp::url::E_DECODED ) const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Returns the encoded fragment component of the URL.
      * \param eflag Flag if the fragment should be percent-decoded or not.
      * \return The encoded fragment component of the URL.
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    std::string
-    getFragment(EEncoding eflag = zypp::url::E_DECODED) const;
+  std::string getFragment( EEncoding eflag = zypp::url::E_DECODED ) const;
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Set the scheme name in the URL.
      * \param scheme The new scheme name.
      * \throws url::UrlBadComponentException if the \p scheme
      *         contains an invalid character or is empty.
      */
-    void
-    setScheme(const std::string &scheme);
+  void setScheme( const std::string &scheme );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Set the authority component in the URL.
      *
      * The \p authority string shoud contain the "user:pass@host:port"
@@ -591,10 +549,9 @@ namespace zypp
      *         contains an invalid character.
      * \throws url::UrlParsingException if \p authority parsing fails.
      */
-    void
-    setAuthority(const std::string &authority);
+  void setAuthority( const std::string &authority );
 
-    /**
+  /**
      * \brief Set the username in the URL authority.
      * \param user  The new username.
      * \param eflag If the \p username is encoded or not.
@@ -603,11 +560,10 @@ namespace zypp
      * \throws url::UrlBadComponentException if the \p user
      *         contains an invalid character.
      */
-    void
-    setUsername(const std::string &user,
-                EEncoding         eflag = zypp::url::E_DECODED);
+  void setUsername(
+    const std::string &user, EEncoding eflag = zypp::url::E_DECODED );
 
-    /**
+  /**
      * \brief Set the password in the URL authority.
      * \param pass  The new password.
      * \param eflag If the \p password is encoded or not.
@@ -616,11 +572,10 @@ namespace zypp
      * \throws url::UrlBadComponentException if the \p pass
      *         contains an invalid character.
      */
-    void
-    setPassword(const std::string &pass,
-                EEncoding         eflag = zypp::url::E_DECODED);
+  void setPassword(
+    const std::string &pass, EEncoding eflag = zypp::url::E_DECODED );
 
-    /**
+  /**
      * \brief Set the hostname or IP in the URL authority.
      *
      * The \p host parameter may contain a hostname, an IPv4 address
@@ -640,22 +595,19 @@ namespace zypp
      *         has to be empty in for the current scheme.
      * \throws url::UrlBadComponentException if the \p host is invalid.
      */
-    void
-    setHost(const std::string &host);
+  void setHost( const std::string &host );
 
-    /**
+  /**
      * \brief Set the port number in the URL authority.
      * \param port The new port number.
      * \throws url::UrlNotAllowedException if the \p port (authority)
      *         has to be empty in for the current scheme.
      * \throws url::UrlBadComponentException if the \p port is invalid.
      */
-    void
-    setPort(const std::string &port);
+  void setPort( const std::string &port );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Set the path data component in the URL.
      *
      * By default, the \p pathdata string may include path
@@ -665,61 +617,54 @@ namespace zypp
      * \throws url::UrlBadComponentException if the \p pathdata
      *         contains an invalid character.
      */
-    void
-    setPathData(const std::string &pathdata);
+  void setPathData( const std::string &pathdata );
 
-    /**
+  /**
      * \brief Set the path name.
      * \param path  The new path name.
      * \param eflag If the \p path name is encoded or not.
      * \throws url::UrlBadComponentException if the \p path name
      *         contains an invalid character.
      */
-    void
-    setPathName(const std::string &path,
-                EEncoding         eflag = zypp::url::E_DECODED);
-    /** \overload */
-    void
-    setPathName(const Pathname &path,
-                EEncoding         eflag = zypp::url::E_DECODED);
-    /** \overload */
-    void
-    setPathName(const char *path,
-                EEncoding         eflag = zypp::url::E_DECODED);
+  void setPathName(
+    const std::string &path, EEncoding eflag = zypp::url::E_DECODED );
+  /** \overload */
+  void setPathName(
+    const Pathname &path, EEncoding eflag = zypp::url::E_DECODED );
+  /** \overload */
+  void setPathName( const char *path, EEncoding eflag = zypp::url::E_DECODED );
 
-    /**
+  /**
      * \brief Extend the path name.
      */
-    void appendPathName( const Pathname & path_r, EEncoding eflag_r = zypp::url::E_DECODED );
+  void appendPathName(
+    const Pathname &path_r, EEncoding eflag_r = zypp::url::E_DECODED );
 
-    /**
+  /**
      * \brief Set the path parameters.
      * \param params The new encoded path parameter string.
      * \throws url::UrlBadComponentException if the path \p params
      *         contains an invalid character.
      */
-    void
-    setPathParams(const std::string &params);
+  void setPathParams( const std::string &params );
 
-    /**
+  /**
      * \brief Set the path parameters.
      * \param pvec The vector with encoded path parameters.
      * \throws url::UrlBadComponentException if the \p pvec
      *         contains an invalid character.
      */
-    void
-    setPathParamsVec(const zypp::url::ParamVec &pvec);
+  void setPathParamsVec( const zypp::url::ParamVec &pvec );
 
-    /**
+  /**
      * \brief Set the path parameters.
      * \param pmap The map with decoded path parameters.
      * \throws url::UrlNotSupportedException if parameter parsing
      *         is not supported for a URL (scheme).
      */
-    void
-    setPathParamsMap(const zypp::url::ParamMap &pmap);
+  void setPathParamsMap( const zypp::url::ParamMap &pmap );
 
-    /**
+  /**
      * \brief Set or add value for the specified path parameter.
      * \param param The decoded path parameter name.
      * \param value The decoded path parameter value.
@@ -728,39 +673,34 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    void
-    setPathParam(const std::string &param, const std::string &value);
+  void setPathParam( const std::string &param, const std::string &value );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Set the query string in the URL.
      * \param querystr The new encoded query string.
      * \throws url::UrlBadComponentException if the \p querystr
      *         contains an invalid character.
      */
-    void
-    setQueryString(const std::string &querystr);
+  void setQueryString( const std::string &querystr );
 
-    /**
+  /**
      * \brief Set the query parameters.
      * \param qvec The vector with encoded query parameters.
      * \throws url::UrlBadComponentException if the \p qvec
      *         contains an invalid character.
      */
-    void
-    setQueryStringVec(const zypp::url::ParamVec &qvec);
+  void setQueryStringVec( const zypp::url::ParamVec &qvec );
 
-    /**
+  /**
      * \brief Set the query parameters.
      * \param qmap The map with decoded query parameters.
      * \throws url::UrlNotSupportedException if parameter parsing
      *         is not supported for a URL (scheme).
      */
-    void
-    setQueryStringMap(const zypp::url::ParamMap &qmap);
+  void setQueryStringMap( const zypp::url::ParamMap &qmap );
 
-    /**
+  /**
      * \brief Set or add value for the specified query parameter.
      * \param param The decoded query parameter name.
      * \param value The decoded query parameter value.
@@ -769,10 +709,9 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    void
-    setQueryParam(const std::string &param, const std::string &value);
+  void setQueryParam( const std::string &param, const std::string &value );
 
-    /**
+  /**
      * \brief remove the specified query parameter.
      * \param param The decoded query parameter name.
      * \throws url::UrlNotSupportedException if parameter parsing
@@ -780,25 +719,21 @@ namespace zypp
      * \throws url::UrlDecodingException if the decoded result string
      *         would contain a '\\0' character.
      */
-    void
-    delQueryParam(const std::string &param);
+  void delQueryParam( const std::string &param );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * \brief Set the fragment string in the URL.
      * \param fragment The new fragment string.
      * \param eflag If the \p fragment is encoded or not.
      * \throws url::UrlBadComponentException if the \p fragment
      *         contains an invalid character.
      */
-    void
-    setFragment(const std::string &fragment,
-                EEncoding         eflag = zypp::url::E_DECODED);
+  void setFragment(
+    const std::string &fragment, EEncoding eflag = zypp::url::E_DECODED );
 
-
-    // -----------------
-    /**
+  // -----------------
+  /**
      * Return the view options of the current object.
      *
      * This method is used to query the view options
@@ -806,10 +741,9 @@ namespace zypp
      *
      * \return The current view option combination.
      */
-    ViewOptions
-    getViewOptions() const;
+  ViewOptions getViewOptions() const;
 
-    /**
+  /**
      * Change the view options of the current object.
      *
      * This method is used to change the view options
@@ -817,29 +751,27 @@ namespace zypp
      *
      * \param vopts New view options combination.
      */
-    void
-    setViewOptions(const ViewOptions &vopts);
+  void setViewOptions( const ViewOptions &vopts );
 
-  private:
-    url::UrlRef m_impl;
-  };
+private:
+  url::UrlRef m_impl;
+};
 
-  std::ostream & operator<<( std::ostream & str, const Url & url );
+std::ostream &operator<<( std::ostream &str, const Url &url );
 
-  /**
+/**
    * needed for std::set
    */
-  bool operator<( const Url &lhs, const Url &rhs );
+bool operator<( const Url &lhs, const Url &rhs );
 
-  /**
+/**
    * needed for find
    */
-  bool operator==( const Url &lhs, const Url &rhs );
+bool operator==( const Url &lhs, const Url &rhs );
 
+bool operator!=( const Url &lhs, const Url &rhs );
 
-  bool operator!=( const Url &lhs, const Url &rhs );
-
-  ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 } // namespace zypp
 //////////////////////////////////////////////////////////////////////
 

@@ -16,7 +16,7 @@
 #include "zypp/base/Iterator.h"
 #include "zypp/Pathname.h"
 #include "zypp/sat/detail/PoolMember.h"
-#include "zypp/sat/LookupAttr.h"     // LookupAttrTools.h included at EOF
+#include "zypp/sat/LookupAttr.h" // LookupAttrTools.h included at EOF
 #include "zypp/sat/Solvable.h"
 #include "zypp/RepoInfo.h"
 #include "zypp/Date.h"
@@ -26,53 +26,57 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-    namespace detail
-    {
-      struct ByRepository;
-    }
+namespace detail
+{
+struct ByRepository;
+}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Repository
-    //
-    /** */
-    class Repository : protected sat::detail::PoolMember
-    {
-    public:
-        typedef filter_iterator<detail::ByRepository, sat::detail::SolvableIterator> SolvableIterator;
-        typedef sat::detail::size_type size_type;
-        typedef sat::detail::RepoIdType IdType;
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Repository
+//
+/** */
+class Repository : protected sat::detail::PoolMember
+{
+public:
+  typedef filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>
+    SolvableIterator;
+  typedef sat::detail::size_type size_type;
+  typedef sat::detail::RepoIdType IdType;
 
-        typedef sat::ArrayAttr<std::string,std::string> Keywords;
+  typedef sat::ArrayAttr<std::string, std::string> Keywords;
 
-	typedef std::string ContentRevision;
-	typedef std::string ContentIdentifier;
+  typedef std::string ContentRevision;
+  typedef std::string ContentIdentifier;
 
-    public:
-        /** Default ctor creates \ref noRepository.*/
-        Repository()
-        : _id( sat::detail::noRepoId ) {}
+public:
+  /** Default ctor creates \ref noRepository.*/
+  Repository()
+    : _id( sat::detail::noRepoId )
+  {
+  }
 
-        /** \ref PoolImpl ctor. */
-        explicit Repository( IdType id_r )
-        : _id( id_r ) {}
+  /** \ref PoolImpl ctor. */
+  explicit Repository( IdType id_r )
+    : _id( id_r )
+  {
+  }
 
-    public:
-        /** Represents no \ref Repository. */
-        static const Repository noRepository;
+public:
+  /** Represents no \ref Repository. */
+  static const Repository noRepository;
 
-        /** Evaluate \ref Repository in a boolean context (\c != \c noRepository). */
-        explicit operator bool() const
-        { return get() != nullptr; }
+  /** Evaluate \ref Repository in a boolean context (\c != \c noRepository). */
+  explicit operator bool() const { return get() != nullptr; }
 
-        /** Reserved system repository alias \c @System. */
-        static const std::string & systemRepoAlias();
+  /** Reserved system repository alias \c @System. */
+  static const std::string &systemRepoAlias();
 
-        /** Return whether this is the system repository. */
-        bool isSystemRepo() const;
+  /** Return whether this is the system repository. */
+  bool isSystemRepo() const;
 
-    public:
-         /**
+public:
+  /**
           * Short unique string to identify a repo.
           * ie: openSUSE-10.3
           *
@@ -81,25 +85,24 @@ namespace zypp
           * ie: "openSUSE 10.3 Main repository"
           *
           */
-        std::string alias() const;
+  std::string alias() const;
 
-        /** Label to display for this repo. */
-        std::string name() const;
+  /** Label to display for this repo. */
+  std::string name() const;
 
-	/** Alias or name, according to \ref ZConfig::repoLabelIsAlias */
-	std::string label() const;
+  /** Alias or name, according to \ref ZConfig::repoLabelIsAlias */
+  std::string label() const;
 
-	/** User string: \ref label (alias or name) */
-	std::string asUserString() const
-	{ return label(); }
+  /** User string: \ref label (alias or name) */
+  std::string asUserString() const { return label(); }
 
-    public:
-	/** Timestamp or arbitrary user supplied string.
+public:
+  /** Timestamp or arbitrary user supplied string.
 	 * \c /repomd/revision/text() in \c repomd.xml.
 	 */
-	ContentRevision contentRevision() const;
+  ContentRevision contentRevision() const;
 
-	/** Unique string identifying a repositories content.
+  /** Unique string identifying a repositories content.
 	 * \c /repomd/tags/repo/text() in \c repomd.xml.
 	 * \code
 	 * <repomd ....>
@@ -110,12 +113,12 @@ namespace zypp
 	 * if OBS often uses the location of the project as
 	 * unique identifyer.
 	 */
-	ContentIdentifier contentIdentifier() const;
+  ContentIdentifier contentIdentifier() const;
 
-	/** Whether \a id_r matches this repos content identifier. */
-	bool hasContentIdentifier( const ContentIdentifier & id_r ) const;
+  /** Whether \a id_r matches this repos content identifier. */
+  bool hasContentIdentifier( const ContentIdentifier &id_r ) const;
 
-        /**
+  /**
          * Timestamp when this repository was generated
          *
          * Usually this value is calculated as the newer
@@ -131,9 +134,9 @@ namespace zypp
          * specify when it was generated.
          *
          */
-        Date generatedTimestamp() const;
+  Date generatedTimestamp() const;
 
-        /**
+  /**
          * Suggested expiration timestamp.
          *
          * Repositories can define an amount of time
@@ -149,17 +152,17 @@ namespace zypp
          * an expiration date.
          *
          */
-        Date suggestedExpirationTimestamp() const;
+  Date suggestedExpirationTimestamp() const;
 
-        /**
+  /**
          * repository keywords (tags)
          */
-        Keywords keywords() const;
+  Keywords keywords() const;
 
-	/** Whether \a val_r is present in keywords. */
-	bool hasKeyword( const std::string & val_r ) const;
+  /** Whether \a val_r is present in keywords. */
+  bool hasKeyword( const std::string &val_r ) const;
 
-        /**
+  /**
          * The suggested expiration date of this repository
          * already passed
          *
@@ -167,65 +170,63 @@ namespace zypp
          * expire extension tag:
          * \see http://en.opensuse.org/Standards/Rpm_Metadata#SUSE_repository_info_.28suseinfo.xml.29.2C_extensions_to_repomd.xml
          */
-        bool maybeOutdated() const;
+  bool maybeOutdated() const;
 
-        /** Hint whether the Repo may provide updates for a product.
+  /** Hint whether the Repo may provide updates for a product.
 	 *
          * Either the repository claims to update a product via a repository updates
          * tag in it's metadata or a known product lists the repositories ContentIdentifier
 	 * as required update repo.
          */
-        bool isUpdateRepo() const;
+  bool isUpdateRepo() const;
 
-        /** Hint whether the Repo may provide updates for a product identified by it's \ref CpeId
+  /** Hint whether the Repo may provide updates for a product identified by it's \ref CpeId
 	 *
          * Either the repository claims to update a product via a repository updates
          * tag in it's metadata or a known product lists the repositories ContentIdentifier
 	 * as required update repo.
 	 */
-        bool providesUpdatesFor( const CpeId & cpeid_r ) const;
+  bool providesUpdatesFor( const CpeId &cpeid_r ) const;
 
-        /** Whether \ref Repository contains solvables. */
-        bool solvablesEmpty() const;
+  /** Whether \ref Repository contains solvables. */
+  bool solvablesEmpty() const;
 
-        /** Number of solvables in \ref Repository. */
-        size_type solvablesSize() const;
+  /** Number of solvables in \ref Repository. */
+  size_type solvablesSize() const;
 
-        /** Iterator to the first \ref Solvable. */
-        SolvableIterator solvablesBegin() const;
+  /** Iterator to the first \ref Solvable. */
+  SolvableIterator solvablesBegin() const;
 
-        /** Iterator behind the last \ref Solvable. */
-        SolvableIterator solvablesEnd() const;
+  /** Iterator behind the last \ref Solvable. */
+  SolvableIterator solvablesEnd() const;
 
-	/** Iterate the repositories Solvables. */
-	Iterable<SolvableIterator> solvables() const;
+  /** Iterate the repositories Solvables. */
+  Iterable<SolvableIterator> solvables() const;
 
-    public:
+public:
+  /** Query class for Repository related products */
+  class ProductInfoIterator;
 
-      /** Query class for Repository related products */
-      class ProductInfoIterator;
-
-      /**
+  /**
        * Get an iterator to the beginning of the repository
        * compatible distros.
        * \note This is only a hint. There is no guarantee that
        * the repository is built for that product.
        * \see Repository::ProductInfoIterator
        */
-      ProductInfoIterator compatibleWithProductBegin() const;
+  ProductInfoIterator compatibleWithProductBegin() const;
 
-      /**
+  /**
        * Get an iterator to the end of the repository
        * compatible distros.
        * \see Repository::ProductInfoIterator
        */
-      ProductInfoIterator compatibleWithProductEnd() const;
+  ProductInfoIterator compatibleWithProductEnd() const;
 
-      /** Iterate the repository compatible distros. */
-      Iterable<ProductInfoIterator> compatibleWithProduct() const;
+  /** Iterate the repository compatible distros. */
+  Iterable<ProductInfoIterator> compatibleWithProduct() const;
 
-
-      /**
+  /**
        * Get an iterator to the beginning of distos the repository
        * provides upadates for.
        * \note This is only a hint within the repositories metadata.
@@ -233,115 +234,120 @@ namespace zypp
        * this repositories ContentIdentifier as required update repo.
        * \see Repository::ProductInfoIterator
        */
-      ProductInfoIterator updatesProductBegin() const;
+  ProductInfoIterator updatesProductBegin() const;
 
-      /**
+  /**
        * Get an iterator to the end of distos the repository
        * provides upadates for.
        * \see Repository::ProductInfoIterator
        */
-      ProductInfoIterator updatesProductEnd() const;
+  ProductInfoIterator updatesProductEnd() const;
 
-      /** Iterate distos the repository provides upadates for. */
-      Iterable<ProductInfoIterator> updatesProduct() const;
+  /** Iterate distos the repository provides upadates for. */
+  Iterable<ProductInfoIterator> updatesProduct() const;
 
-    public:
-        /** Return any associated \ref RepoInfo. */
-        RepoInfo info() const;
+public:
+  /** Return any associated \ref RepoInfo. */
+  RepoInfo info() const;
 
-        /** Set \ref RepoInfo for this repository.
+  /** Set \ref RepoInfo for this repository.
          * \throws Exception if this is \ref noRepository
          * \throws Exception if the \ref RepoInfo::alias
          *         does not match the \ref Repository::name.
 	 */
-        void setInfo( const RepoInfo & info_r );
+  void setInfo( const RepoInfo &info_r );
 
-	/** Remove any \ref RepoInfo set for this repository. */
-        void clearInfo();
+  /** Remove any \ref RepoInfo set for this repository. */
+  void clearInfo();
 
-    public:
-        /** Remove this \ref Repository from it's \ref Pool. */
-        void eraseFromPool();
+public:
+  /** Remove this \ref Repository from it's \ref Pool. */
+  void eraseFromPool();
 
-        /** Functor calling \ref eraseFromPool. */
-        struct EraseFromPool;
+  /** Functor calling \ref eraseFromPool. */
+  struct EraseFromPool;
 
-   public:
-        /** Return next Repository in \ref Pool (or \ref noRepository). */
-        Repository nextInPool() const;
+public:
+  /** Return next Repository in \ref Pool (or \ref noRepository). */
+  Repository nextInPool() const;
 
-   public:
-        /** \name Repository content manipulating methods.
+public:
+  /** \name Repository content manipulating methods.
          * \todo maybe a separate Repository/Solvable content manip interface
          * provided by the pool.
          */
-        //@{
-        /** Load \ref Solvables from a solv-file.
+  //@{
+  /** Load \ref Solvables from a solv-file.
          * In case of an exception the repository remains in the \ref Pool.
          * \throws Exception if this is \ref noRepository
          * \throws Exception if loading the solv-file fails.
          * \see \ref Pool::addRepoSolv and \ref Repository::EraseFromPool
          */
-        void addSolv( const Pathname & file_r );
+  void addSolv( const Pathname &file_r );
 
-         /** Load \ref Solvables from a helix-file.
+  /** Load \ref Solvables from a helix-file.
          * Supports loading of gzip compressed files (.gz). In case of an exception
          * the repository remains in the \ref Pool.
          * \throws Exception if this is \ref noRepository
          * \throws Exception if loading the helix-file fails.
          * \see \ref Pool::addRepoHelix and \ref Repository::EraseFromPool
          */
-        void addHelix( const Pathname & file_r );
+  void addHelix( const Pathname &file_r );
 
-       /** Add \c count_r new empty \ref Solvable to this \ref Repository. */
-        sat::Solvable::IdType addSolvables( unsigned count_r );
-        /** \overload Add only one new \ref Solvable. */
-        sat::Solvable::IdType addSolvable()
-	    { return addSolvables( 1 ); }
-        //@}
+  /** Add \c count_r new empty \ref Solvable to this \ref Repository. */
+  sat::Solvable::IdType addSolvables( unsigned count_r );
+  /** \overload Add only one new \ref Solvable. */
+  sat::Solvable::IdType addSolvable() { return addSolvables( 1 ); }
+  //@}
 
-    public:
-        /** Expert backdoor. */
-        sat::detail::CRepo * get() const;
-        /** Expert backdoor. */
-        IdType id() const { return _id; }
-        /** libsolv internal priorities.
+public:
+  /** Expert backdoor. */
+  sat::detail::CRepo *get() const;
+  /** Expert backdoor. */
+  IdType id() const { return _id; }
+  /** libsolv internal priorities.
          * Unlike the \ref RepoInfo priority which tries to be YUM conform
          * (H[1-99]L), this one is the solvers internal priority representation.
          * It is type \c int and as one might expect it, the higher the value
          * the higher the priority. Subpriority is currently used to express
          * media preferences (\see \ref MediaPriority).
          */
-        //@{
-        int satInternalPriority() const;
-        int satInternalSubPriority() const;
-        //@}
+  //@{
+  int satInternalPriority() const;
+  int satInternalSubPriority() const;
+  //@}
 
-    private:
-        IdType _id;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  IdType _id;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates Repository Stream output */
-    std::ostream & operator<<( std::ostream & str, const Repository & obj );
+/** \relates Repository Stream output */
+std::ostream &operator<<( std::ostream &str, const Repository &obj );
 
-    /** \relates Repository XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj );
+/** \relates Repository XML output */
+std::ostream &dumpAsXmlOn( std::ostream &str, const Repository &obj );
 
-    /** \relates Repository */
-    inline bool operator==( const Repository & lhs, const Repository & rhs )
-    { return lhs.get() == rhs.get(); }
+/** \relates Repository */
+inline bool operator==( const Repository &lhs, const Repository &rhs )
+{
+  return lhs.get() == rhs.get();
+}
 
-    /** \relates Repository */
-    inline bool operator!=( const Repository & lhs, const Repository & rhs )
-    { return lhs.get() != rhs.get(); }
+/** \relates Repository */
+inline bool operator!=( const Repository &lhs, const Repository &rhs )
+{
+  return lhs.get() != rhs.get();
+}
 
-    /** \relates Repository */
-    inline bool operator<( const Repository & lhs, const Repository & rhs )
-    { return lhs.get() < rhs.get(); }
+/** \relates Repository */
+inline bool operator<( const Repository &lhs, const Repository &rhs )
+{
+  return lhs.get() < rhs.get();
+}
 
-    ///////////////////////////////////////////////////////////////////
-    /**
+///////////////////////////////////////////////////////////////////
+/**
      * Query class for Repository related products
      *
      * Products are identified by CpeIds within the repositories metadata.
@@ -360,48 +366,58 @@ namespace zypp
      * \endcode
      *
      */
-    class Repository::ProductInfoIterator : public boost::iterator_adaptor<
-        Repository::ProductInfoIterator    // Derived
-        , sat::LookupAttr::iterator        // Base
-        , int                              // Value
-        , boost::forward_traversal_tag     // CategoryOrTraversal
-        , int                              // Reference
-    >
-    {
-      public:
-        ProductInfoIterator()
-        {}
+class Repository::ProductInfoIterator
+  : public boost::iterator_adaptor<Repository::ProductInfoIterator // Derived
+      ,
+      sat::LookupAttr::iterator // Base
+      ,
+      int // Value
+      ,
+      boost::forward_traversal_tag // CategoryOrTraversal
+      ,
+      int // Reference
+      >
+{
+public:
+  ProductInfoIterator() {}
 
-        /** Product label */
-        std::string label() const;
+  /** Product label */
+  std::string label() const;
 
-        /** The Common Platform Enumeration name for this product. */
-        CpeId cpeId() const;
+  /** The Common Platform Enumeration name for this product. */
+  CpeId cpeId() const;
 
-      private:
-        friend class Repository;
-        /** Hide ctor as just a limited set of attributes is valid. */
-        explicit ProductInfoIterator( sat::SolvAttr attr_r, Repository repo_r );
+private:
+  friend class Repository;
+  /** Hide ctor as just a limited set of attributes is valid. */
+  explicit ProductInfoIterator( sat::SolvAttr attr_r, Repository repo_r );
 
-      private:
-        friend class boost::iterator_core_access;
-        int dereference() const { return 0; }
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  friend class boost::iterator_core_access;
+  int dereference() const { return 0; }
+};
+///////////////////////////////////////////////////////////////////
 
-    /** Iterate the repository compatible distros. */
-    inline Iterable<Repository::ProductInfoIterator> Repository::compatibleWithProduct() const
-    { return makeIterable( compatibleWithProductBegin(), compatibleWithProductEnd() ); }
+/** Iterate the repository compatible distros. */
+inline Iterable<Repository::ProductInfoIterator> Repository::
+  compatibleWithProduct() const
+{
+  return makeIterable(
+    compatibleWithProductBegin(), compatibleWithProductEnd() );
+}
 
-    /** Iterate distos the repository provides upadates for. */
-    inline Iterable<Repository::ProductInfoIterator> Repository::updatesProduct() const
-    { return makeIterable( updatesProductBegin(), updatesProductEnd() ); }
+/** Iterate distos the repository provides upadates for. */
+inline Iterable<Repository::ProductInfoIterator> Repository::updatesProduct()
+  const
+{
+  return makeIterable( updatesProductBegin(), updatesProductEnd() );
+}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Repository::EraseFromPool
-    //
-    /** Functor removing \ref Repository from it's \ref Pool.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Repository::EraseFromPool
+//
+/** Functor removing \ref Repository from it's \ref Pool.
      *
      * E.g. used as dispose function in. \ref AutoDispose
      * to provide a convenient and exception safe temporary
@@ -427,74 +443,91 @@ namespace zypp
      * Leaving the block without calling <tt>tmprepo.resetDispose();</tt>
      * before, will automatically remove the \ref Repo from it's \ref Pool.
      */
-    struct Repository::EraseFromPool
-    {
-	void operator()( Repository repository_r ) const
-	    { repository_r.eraseFromPool(); }
-    };
-    ///////////////////////////////////////////////////////////////////
+struct Repository::EraseFromPool
+{
+  void operator()( Repository repository_r ) const
+  {
+    repository_r.eraseFromPool();
+  }
+};
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    namespace detail
-    { /////////////////////////////////////////////////////////////////
-      ///////////////////////////////////////////////////////////////////
-      //
-      //	CLASS NAME : RepositoryIterator
-      //
-      /** */
-      class RepositoryIterator : public boost::iterator_adaptor<
-	    RepositoryIterator                            // Derived
-			   , sat::detail::CRepo **        // Base
-                           , Repository                   // Value
-			   , boost::forward_traversal_tag // CategoryOrTraversal
-			   , Repository                   // Reference
-			     >
-      {
-        public:
-          RepositoryIterator()
-          : RepositoryIterator::iterator_adaptor_( 0 )
-          {}
+///////////////////////////////////////////////////////////////////
+namespace detail
+{ /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : RepositoryIterator
+//
+/** */
+class RepositoryIterator
+  : public boost::iterator_adaptor<RepositoryIterator // Derived
+      ,
+      sat::detail::CRepo ** // Base
+      ,
+      Repository // Value
+      ,
+      boost::forward_traversal_tag // CategoryOrTraversal
+      ,
+      Repository // Reference
+      >
+{
+public:
+  RepositoryIterator()
+    : RepositoryIterator::iterator_adaptor_( 0 )
+  {
+  }
 
-          explicit RepositoryIterator( sat::detail::CRepo ** p )
-          : RepositoryIterator::iterator_adaptor_( p )
-          {}
+  explicit RepositoryIterator( sat::detail::CRepo **p )
+    : RepositoryIterator::iterator_adaptor_( p )
+  {
+  }
 
-        private:
-          friend class boost::iterator_core_access;
+private:
+  friend class boost::iterator_core_access;
 
-          Repository dereference() const
-          { return Repository( *base() ); }
+  Repository dereference() const { return Repository( *base() ); }
 
-          void increment();
-      };
-      ///////////////////////////////////////////////////////////////////
-      ///////////////////////////////////////////////////////////////////
-      //
-      //	CLASS NAME : ByRepository
-      //
-      /** Functor filtering \ref Solvable by \ref Repository.*/
-      struct ByRepository
-      {
-        public:
-          ByRepository( const Repository & repository_r ) : _repository( repository_r ) {}
-          ByRepository( sat::detail::RepoIdType id_r ) : _repository( id_r ) {}
-          ByRepository() {}
+  void increment();
+};
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : ByRepository
+//
+/** Functor filtering \ref Solvable by \ref Repository.*/
+struct ByRepository
+{
+public:
+  ByRepository( const Repository &repository_r )
+    : _repository( repository_r )
+  {
+  }
+  ByRepository( sat::detail::RepoIdType id_r )
+    : _repository( id_r )
+  {
+  }
+  ByRepository() {}
 
-          bool operator()( const sat::Solvable & slv_r ) const
-          { return slv_r.repository() == _repository; }
+  bool operator()( const sat::Solvable &slv_r ) const
+  {
+    return slv_r.repository() == _repository;
+  }
 
-        private:
-          Repository _repository;
-      };
-      ///////////////////////////////////////////////////////////////////
-      /////////////////////////////////////////////////////////////////
-    } // namespace detail
-    ///////////////////////////////////////////////////////////////////
+private:
+  Repository _repository;
+};
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace detail
+///////////////////////////////////////////////////////////////////
 
-    inline Iterable<Repository::SolvableIterator> Repository::solvables() const
-    { return makeIterable( solvablesBegin(), solvablesEnd() ); }
+inline Iterable<Repository::SolvableIterator> Repository::solvables() const
+{
+  return makeIterable( solvablesBegin(), solvablesEnd() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 

@@ -28,221 +28,217 @@
 #include "zypp/PathInfo.h"
 
 #ifndef N_
-#define N_(STR) STR
+#define N_( STR ) STR
 #endif
 
 using namespace std;
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    std::ostream & operator<<( std::ostream & str, const MountEntry & obj )
-    {
-      str << obj.src << " on " << obj.dir << " type " << obj.type;
-      if ( ! obj.opts.empty() )
-        str << " (" << obj.opts << ")";
-      return str;
-    }
-
+std::ostream &operator<<( std::ostream &str, const MountEntry &obj )
+{
+  str << obj.src << " on " << obj.dir << " type " << obj.type;
+  if ( !obj.opts.empty() )
+    str << " (" << obj.opts << ")";
+  return str;
+}
 
 Mount::Mount()
 {
-    process = 0;
-    exit_code = -1;
+  process = 0;
+  exit_code = -1;
 }
 
 Mount::~Mount()
 {
-   MIL <<  "~Mount()" << endl;
+  MIL << "~Mount()" << endl;
 
-   if ( process )
-      delete process;
+  if ( process )
+    delete process;
 
-   process = NULL;
+  process = NULL;
 
-   MIL << "~Mount() end" << endl;
+  MIL << "~Mount() end" << endl;
 }
 
-void Mount::mount( const std::string & source,
-                   const std::string & target,
-                   const std::string & filesystem,
-                   const std::string & options,
-                   const Environment & environment )
+void Mount::mount( const std::string &source, const std::string &target,
+  const std::string &filesystem, const std::string &options,
+  const Environment &environment )
 {
-    const char *const argv[] = {
-	"/bin/mount",
-	"-t", filesystem.c_str(),
-	"-o", options.c_str(),
-	source.c_str(),
-	target.c_str(),
-	NULL
-     };
+  const char *const argv[] = {"/bin/mount", "-t", filesystem.c_str(), "-o",
+    options.c_str(), source.c_str(), target.c_str(), NULL};
 
-    std::string err;
+  std::string err;
 
-    this->run(argv, environment, ExternalProgram::Stderr_To_Stdout);
+  this->run( argv, environment, ExternalProgram::Stderr_To_Stdout );
 
-    if ( process == NULL )
+  if ( process == NULL )
+  {
+    ZYPP_THROW(
+      MediaMountException( "Mounting media failed", source, target ) );
+  }
+
+  string value;
+  string output = process->receiveLine();
+
+  // parse error messages
+  while ( output.length() > 0 )
+  {
+    string::size_type ret;
+
+    // extract \n
+    ret = output.find_first_of( "\n" );
+    if ( ret != string::npos )
     {
-      ZYPP_THROW(MediaMountException("Mounting media failed", source, target));
+      value.assign( output, 0, ret );
     }
-
-    string value;
-    string output = process->receiveLine();
-
-    // parse error messages
-    while ( output.length() > 0)
+    else
     {
-	string::size_type 	ret;
-
-	// extract \n
-	ret = output.find_first_of ( "\n" );
-	if ( ret != string::npos )
-	{
-	    value.assign ( output, 0, ret );
-	}
-	else
-	{
-	    value = output;
-	}
-
-	DBG << "stdout: " << value << endl;
-
-	if  ( value.find ( "is already mounted on" ) != string::npos )
-	{
-	    err = "Media already mounted";
-	}
-	else if  ( value.find ( "ermission denied" ) != string::npos )
-	{
-	    err = "Permission denied";
-	}
-	else if  ( value.find ( "wrong fs type" ) != string::npos )
-	{
-	    err = "Invalid filesystem on media";
-	}
-	else if  ( value.find ( "No medium found" ) != string::npos )
-	{
-	    err = "No medium found";
-	}
-	else if  ( value.find ( "Not a directory" ) != string::npos )
-	{
-	    if( filesystem == "nfs" || filesystem == "nfs4" )
-	    {
-		err = "Nfs path is not a directory";
-	    }
-	    else
-	    {
-	       err = "Unable to find directory on the media";
-	    }
-	}
-
-	output = process->receiveLine();
+      value = output;
     }
 
-    int status = Status();
+    DBG << "stdout: " << value << endl;
 
-    if ( status == 0 )
+    if ( value.find( "is already mounted on" ) != string::npos )
     {
-	// return codes overwites parsed error message
-	err = "";
+      err = "Media already mounted";
     }
-    else if ( status != 0 && err == "" )
+    else if ( value.find( "ermission denied" ) != string::npos )
     {
-        err = "Mounting media failed";
+      err = "Permission denied";
+    }
+    else if ( value.find( "wrong fs type" ) != string::npos )
+    {
+      err = "Invalid filesystem on media";
+    }
+    else if ( value.find( "No medium found" ) != string::npos )
+    {
+      err = "No medium found";
+    }
+    else if ( value.find( "Not a directory" ) != string::npos )
+    {
+      if ( filesystem == "nfs" || filesystem == "nfs4" )
+      {
+        err = "Nfs path is not a directory";
+      }
+      else
+      {
+        err = "Unable to find directory on the media";
+      }
     }
 
-    if ( err != "" ) {
-      WAR << "mount " << source << " " << target << ": " << err << endl;
-      ZYPP_THROW(MediaMountException(err, source, target, value));
-    } else {
-      MIL << "mounted " << source << " " << target << endl;
-    }
+    output = process->receiveLine();
+  }
+
+  int status = Status();
+
+  if ( status == 0 )
+  {
+    // return codes overwites parsed error message
+    err = "";
+  }
+  else if ( status != 0 && err == "" )
+  {
+    err = "Mounting media failed";
+  }
+
+  if ( err != "" )
+  {
+    WAR << "mount " << source << " " << target << ": " << err << endl;
+    ZYPP_THROW( MediaMountException( err, source, target, value ) );
+  }
+  else
+  {
+    MIL << "mounted " << source << " " << target << endl;
+  }
 }
 
-void Mount::umount( const std::string & path )
+void Mount::umount( const std::string &path )
 {
-    const char *const argv[] = {
-	"/bin/umount",
-	path.c_str(),
-	NULL
-     };
+  const char *const argv[] = {"/bin/umount", path.c_str(), NULL};
 
-    std::string err;
+  std::string err;
 
-    this->run(argv, ExternalProgram::Stderr_To_Stdout);
+  this->run( argv, ExternalProgram::Stderr_To_Stdout );
 
-    if ( process == NULL )
+  if ( process == NULL )
+  {
+    ZYPP_THROW( MediaUnmountException( "E_mount_failed", path ) );
+  }
+
+  string value;
+  string output = process->receiveLine();
+
+  // parse error messages
+  while ( output.length() > 0 )
+  {
+    string::size_type ret;
+
+    // extract \n
+    ret = output.find_first_of( "\n" );
+    if ( ret != string::npos )
     {
-        ZYPP_THROW(MediaUnmountException("E_mount_failed", path));
+      value.assign( output, 0, ret );
     }
-
-    string value;
-    string output = process->receiveLine();
-
-    // parse error messages
-    while ( output.length() > 0)
+    else
     {
-	string::size_type 	ret;
-
-	// extract \n
-	ret = output.find_first_of ( "\n" );
-	if ( ret != string::npos )
-	{
-	    value.assign ( output, 0, ret );
-	}
-	else
-	{
-	    value = output;
-	}
-
-	DBG << "stdout: " << value << endl;
-
-	// if  ( value.find ( "not mounted" ) != string::npos )
-	// {
-	//    err = Error::E_already_mounted;
-	// }
-
-	if  ( value.find ( "device is busy" ) != string::npos )
-	{
-	    err = "Device is busy";
-	}
-
-	output = process->receiveLine();
+      value = output;
     }
 
-    int status = Status();
+    DBG << "stdout: " << value << endl;
 
-    if ( status == 0 )
+    // if  ( value.find ( "not mounted" ) != string::npos )
+    // {
+    //    err = Error::E_already_mounted;
+    // }
+
+    if ( value.find( "device is busy" ) != string::npos )
     {
-	// return codes overwites parsed error message
-	err = "";
-    }
-    else if ( status != 0 && err == "" )
-    {
-	err = "Unmounting media failed";
+      err = "Device is busy";
     }
 
-    if ( err != "") {
-      WAR << "umount " << path << ": " << err << endl;
-      ZYPP_THROW(MediaUnmountException(err, path));
-    } else {
-      MIL << "unmounted " << path << endl;
-    }
+    output = process->receiveLine();
+  }
+
+  int status = Status();
+
+  if ( status == 0 )
+  {
+    // return codes overwites parsed error message
+    err = "";
+  }
+  else if ( status != 0 && err == "" )
+  {
+    err = "Unmounting media failed";
+  }
+
+  if ( err != "" )
+  {
+    WAR << "umount " << path << ": " << err << endl;
+    ZYPP_THROW( MediaUnmountException( err, path ) );
+  }
+  else
+  {
+    MIL << "unmounted " << path << endl;
+  }
 }
 
-void Mount::run( const char *const *argv, const Environment& environment,
-		 ExternalProgram::Stderr_Disposition disp )
+void Mount::run( const char *const *argv, const Environment &environment,
+  ExternalProgram::Stderr_Disposition disp )
 {
   exit_code = -1;
 
   if ( process != NULL )
   {
-     delete process;
-     process = NULL;
+    delete process;
+    process = NULL;
   }
   // Launch the program
 
-  process = new ExternalProgram(argv, environment, disp, false, -1, true);
+  process = new ExternalProgram( argv, environment, disp, false, -1, true );
 }
 
 /*--------------------------------------------------------------*/
@@ -251,36 +247,36 @@ void Mount::run( const char *const *argv, const Environment& environment,
 /*--------------------------------------------------------------*/
 int Mount::Status()
 {
-   if ( process == NULL )
-      return -1;
+  if ( process == NULL )
+    return -1;
 
-   exit_code = process->close();
-   process->kill();
-   delete process;
-   process = 0;
+  exit_code = process->close();
+  process->kill();
+  delete process;
+  process = 0;
 
-   DBG << "exit code: " << exit_code << endl;
+  DBG << "exit code: " << exit_code << endl;
 
-   return exit_code;
+  return exit_code;
 }
 
 /* Forcably kill the process */
 void Mount::Kill()
 {
-  if (process) process->kill();
+  if ( process )
+    process->kill();
 }
 
 // STATIC
-MountEntries
-Mount::getEntries(const std::string &mtab)
+MountEntries Mount::getEntries( const std::string &mtab )
 {
-  MountEntries             entries;
+  MountEntries entries;
   std::vector<std::string> mtabs;
-  bool                     verbose = false;
+  bool verbose = false;
 
-  if( mtab.empty())
+  if ( mtab.empty() )
   {
-    mtabs.push_back("/proc/mounts");
+    mtabs.push_back( "/proc/mounts" );
     // Also read /etc/mtab if it is a file (on newer sytems
     // mtab is a symlink to /proc/mounts).
     // Reason for this is the different representation of
@@ -288,84 +284,78 @@ Mount::getEntries(const std::string &mtab)
     //   /etc/mtab:    /tmp/SLES-11-SP2-MINI-ISO-x86_64-Beta2-DVD.iso on /mnt type iso9660 (ro,loop=/dev/loop0)
     //   /proc/mounts: /dev/loop0 /mnt iso9660 ro,relatime 0 0
     if ( PathInfo( "/etc/mtab", PathInfo::LSTAT ).isFile() )
-      mtabs.push_back("/etc/mtab");
+      mtabs.push_back( "/etc/mtab" );
   }
   else
   {
-    mtabs.push_back(mtab);
+    mtabs.push_back( mtab );
   }
 
   std::vector<std::string>::const_iterator t;
-  for( t=mtabs.begin(); t != mtabs.end(); ++t)
+  for ( t = mtabs.begin(); t != mtabs.end(); ++t )
   {
-    if( verbose)
+    if ( verbose )
     {
       DBG << "Reading mount table from '" << *t << "'" << std::endl;
     }
-    FILE *fp = setmntent(t->c_str(), "re");
-    if( fp)
+    FILE *fp = setmntent( t->c_str(), "re" );
+    if ( fp )
     {
-      char          buf[PATH_MAX * 4];
+      char buf[ PATH_MAX * 4 ];
       struct mntent ent;
 
-      memset(buf,  0, sizeof(buf));
-      memset(&ent, 0, sizeof(ent));
+      memset( buf, 0, sizeof( buf ) );
+      memset( &ent, 0, sizeof( ent ) );
 
-      while( getmntent_r(fp, &ent, buf, sizeof(buf)) != NULL)
+      while ( getmntent_r( fp, &ent, buf, sizeof( buf ) ) != NULL )
       {
-        if( ent.mnt_fsname && *ent.mnt_fsname &&
-            ent.mnt_dir    && *ent.mnt_dir    &&
-            ent.mnt_type   && *ent.mnt_type   &&
-            ent.mnt_opts   && *ent.mnt_opts)
+        if ( ent.mnt_fsname && *ent.mnt_fsname && ent.mnt_dir && *ent.mnt_dir &&
+             ent.mnt_type && *ent.mnt_type && ent.mnt_opts && *ent.mnt_opts )
         {
-          MountEntry entry(
-            ent.mnt_fsname, ent.mnt_dir,
-            ent.mnt_type,   ent.mnt_opts,
-            ent.mnt_freq,   ent.mnt_passno
-          );
+          MountEntry entry( ent.mnt_fsname, ent.mnt_dir, ent.mnt_type,
+            ent.mnt_opts, ent.mnt_freq, ent.mnt_passno );
 
-	  // Attempt quick fix for bnc#710269:
-	  // MountEntry is "//dist/install/ on /var/adm/mount/AP_0x00000001 type cifs (ro,relatime,unc=\dist\install,username=,domain=suse.de"
-	  // but looking for "Looking for media(cifs<//dist/install>)attached(*/var/adm/mount/AP_0x00000001)"
-	  // Kick the trailing '/' in "//dist/install/"
-	  // TODO: Check and fix comparison in MediaHandler::checkAttached instead.
-	  if ( entry.src.size() > 1	// not for "/"
-	       && entry.src[entry.src.size()-1] == '/' )
-	  {
-	    entry.src.erase( entry.src.size()-1 );
-	  }
-          entries.push_back(entry);
+          // Attempt quick fix for bnc#710269:
+          // MountEntry is "//dist/install/ on /var/adm/mount/AP_0x00000001 type cifs (ro,relatime,unc=\dist\install,username=,domain=suse.de"
+          // but looking for "Looking for media(cifs<//dist/install>)attached(*/var/adm/mount/AP_0x00000001)"
+          // Kick the trailing '/' in "//dist/install/"
+          // TODO: Check and fix comparison in MediaHandler::checkAttached instead.
+          if ( entry.src.size() > 1 // not for "/"
+               && entry.src[ entry.src.size() - 1 ] == '/' )
+          {
+            entry.src.erase( entry.src.size() - 1 );
+          }
+          entries.push_back( entry );
 
-          memset(buf,  0, sizeof(buf));
-          memset(&ent, 0, sizeof(ent));
+          memset( buf, 0, sizeof( buf ) );
+          memset( &ent, 0, sizeof( ent ) );
         }
       }
-      endmntent(fp);
+      endmntent( fp );
 
-      if( entries.empty())
+      if ( entries.empty() )
       {
         WAR << "Unable to read any entry from the mount table '" << *t << "'"
-	    << std::endl;
+            << std::endl;
       }
       else
       {
-	// OK, have a non-empty mount table.
+        // OK, have a non-empty mount table.
         t = mtabs.end();
-	break;
+        break;
       }
     }
     else
     {
       int err = errno;
       verbose = true;
-      WAR << "Failed to read the mount table '" << *t << "': "
-          << ::strerror(err)
-	  << std::endl;
+      WAR << "Failed to read the mount table '" << *t
+          << "': " << ::strerror( err ) << std::endl;
       errno = err;
     }
   }
   return entries;
 }
 
-  } // namespace media
+} // namespace media
 } // namespace zypp

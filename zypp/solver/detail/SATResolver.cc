@@ -18,8 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-extern "C"
-{
+extern "C" {
 #include <solv/repo_solv.h>
 #include <solv/poolarch.h>
 #include <solv/evr.h>
@@ -60,62 +59,69 @@ extern "C"
 
 #include "zypp/sat/detail/PoolImpl.h"
 
-#define XDEBUG(x) do { if (base::logger::isExcessive()) XXX << x << std::endl;} while (0)
+#define XDEBUG( x )                                                            \
+  do                                                                           \
+  {                                                                            \
+    if ( base::logger::isExcessive() )                                         \
+      XXX << x << std::endl;                                                   \
+  } while ( 0 )
 
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////////////////
-  namespace env
+/////////////////////////////////////////////////////////////////////////
+namespace env
+{
+inline bool HACKENV( const char *var_r, bool default_r )
+{
+  bool ret = default_r;
+  const char *val = ::getenv( var_r );
+  if ( val )
   {
-    inline bool HACKENV( const char * var_r, bool default_r )
-    {
-      bool ret = default_r;
-      const char * val = ::getenv( var_r );
-      if ( val )
-      {
-	ret = str::strToBool( val, default_r );
-	if ( ret != default_r )
-	  INT << "HACKENV " << var_r << " = " << ret << endl;
-      }
-      return ret;
-    }
-  } // namespace env
-  /////////////////////////////////////////////////////////////////////////
+    ret = str::strToBool( val, default_r );
+    if ( ret != default_r )
+      INT << "HACKENV " << var_r << " = " << ret << endl;
+  }
+  return ret;
+}
+} // namespace env
+/////////////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SATResolver);
+IMPL_PTR_TYPE( SATResolver );
 
-#define MAYBE_CLEANDEPS (cleandepsOnRemove()?SOLVER_CLEANDEPS:0)
+#define MAYBE_CLEANDEPS ( cleandepsOnRemove() ? SOLVER_CLEANDEPS : 0 )
 
 //---------------------------------------------------------------------------
 // Callbacks for SAT policies
 //---------------------------------------------------------------------------
 
-int vendorCheck( sat::detail::CPool *pool, Solvable *solvable1, Solvable *solvable2 )
+int vendorCheck(
+  sat::detail::CPool *pool, Solvable *solvable1, Solvable *solvable2 )
 {
-  return VendorAttr::instance().equivalent( IdString(solvable1->vendor),
-                                            IdString(solvable2->vendor) ) ? 0 : 1;
+  return VendorAttr::instance().equivalent(
+           IdString( solvable1->vendor ), IdString( solvable2->vendor ) )
+           ? 0
+           : 1;
 }
 
-
-inline std::string itemToString( const PoolItem & item )
+inline std::string itemToString( const PoolItem &item )
 {
   if ( !item )
     return std::string();
 
   sat::Solvable slv( item.satSolvable() );
   std::string ret( slv.asString() ); // n-v-r.a
-  if ( ! slv.isSystem() )
+  if ( !slv.isSystem() )
   {
     ret += "[";
     ret += slv.repository().alias();
@@ -126,7 +132,7 @@ inline std::string itemToString( const PoolItem & item )
 
 inline PoolItem getPoolItem( Id id_r )
 {
-  PoolItem ret( (sat::Solvable( id_r )) );
+  PoolItem ret( ( sat::Solvable( id_r ) ) );
   if ( !ret && id_r )
     INT << "id " << id_r << " not found in ZYPP pool." << endl;
   return ret;
@@ -134,117 +140,117 @@ inline PoolItem getPoolItem( Id id_r )
 
 //---------------------------------------------------------------------------
 
-std::ostream &
-SATResolver::dumpOn( std::ostream & os ) const
+std::ostream &SATResolver::dumpOn( std::ostream &os ) const
 {
-    os << "<resolver>" << endl;
-    if (_satSolver) {
-#define OUTS(X) os << "  " << #X << "\t= " << solver_get_flag(_satSolver, SOLVER_FLAG_##X) << endl
-	OUTS( ALLOW_DOWNGRADE );
-	OUTS( ALLOW_ARCHCHANGE );
-	OUTS( ALLOW_VENDORCHANGE );
-	OUTS( ALLOW_NAMECHANGE );
-	OUTS( ALLOW_UNINSTALL );
-	OUTS( NO_UPDATEPROVIDE );
-	OUTS( SPLITPROVIDES );
-	OUTS( IGNORE_RECOMMENDED );
-	OUTS( ADD_ALREADY_RECOMMENDED );
-	OUTS( NO_INFARCHCHECK );
-	OUTS( KEEP_EXPLICIT_OBSOLETES );
-	OUTS( BEST_OBEY_POLICY );
-	OUTS( NO_AUTOTARGET );
-	OUTS( DUP_ALLOW_DOWNGRADE );
-	OUTS( DUP_ALLOW_ARCHCHANGE );
-	OUTS( DUP_ALLOW_VENDORCHANGE );
-	OUTS( DUP_ALLOW_NAMECHANGE );
-	OUTS( KEEP_ORPHANS );
-	OUTS( BREAK_ORPHANS );
-	OUTS( FOCUS_INSTALLED );
-	OUTS( YUM_OBSOLETES );
+  os << "<resolver>" << endl;
+  if ( _satSolver )
+  {
+#define OUTS( X )                                                              \
+  os << "  " << #X << "\t= " << solver_get_flag( _satSolver, SOLVER_FLAG_##X ) \
+     << endl
+    OUTS( ALLOW_DOWNGRADE );
+    OUTS( ALLOW_ARCHCHANGE );
+    OUTS( ALLOW_VENDORCHANGE );
+    OUTS( ALLOW_NAMECHANGE );
+    OUTS( ALLOW_UNINSTALL );
+    OUTS( NO_UPDATEPROVIDE );
+    OUTS( SPLITPROVIDES );
+    OUTS( IGNORE_RECOMMENDED );
+    OUTS( ADD_ALREADY_RECOMMENDED );
+    OUTS( NO_INFARCHCHECK );
+    OUTS( KEEP_EXPLICIT_OBSOLETES );
+    OUTS( BEST_OBEY_POLICY );
+    OUTS( NO_AUTOTARGET );
+    OUTS( DUP_ALLOW_DOWNGRADE );
+    OUTS( DUP_ALLOW_ARCHCHANGE );
+    OUTS( DUP_ALLOW_VENDORCHANGE );
+    OUTS( DUP_ALLOW_NAMECHANGE );
+    OUTS( KEEP_ORPHANS );
+    OUTS( BREAK_ORPHANS );
+    OUTS( FOCUS_INSTALLED );
+    OUTS( YUM_OBSOLETES );
 #undef OUTS
-	os << "  distupgrade	= "	<< _distupgrade << endl;
-        os << "  distupgrade_removeunsupported	= " << _distupgrade_removeunsupported << endl;
-	os << "  solveSrcPackages	= "	<< _solveSrcPackages << endl;
-	os << "  cleandepsOnRemove	= "	<< _cleandepsOnRemove << endl;
-        os << "  fixsystem		= "	<< _fixsystem << endl;
-    } else {
-	os << "<NULL>";
-    }
-    return os << "<resolver/>" << endl;
+    os << "  distupgrade	= " << _distupgrade << endl;
+    os << "  distupgrade_removeunsupported	= "
+       << _distupgrade_removeunsupported << endl;
+    os << "  solveSrcPackages	= " << _solveSrcPackages << endl;
+    os << "  cleandepsOnRemove	= " << _cleandepsOnRemove << endl;
+    os << "  fixsystem		= " << _fixsystem << endl;
+  }
+  else
+  {
+    os << "<NULL>";
+  }
+  return os << "<resolver/>" << endl;
 }
 
 //---------------------------------------------------------------------------
 
 // NOTE: flag defaults must be in sync with ZVARDEFAULT in Resolver.cc
-SATResolver::SATResolver (const ResPool & pool, sat::detail::CPool *satPool)
-    : _pool(pool)
-    , _satPool(satPool)
-    , _satSolver(NULL)
-    , _fixsystem(false)
-    , _allowdowngrade		( false )
-    , _allownamechange		( true )	// bsc#1071466
-    , _allowarchchange		( false )
-    , _allowvendorchange	( ZConfig::instance().solver_allowVendorChange() )
-    , _allowuninstall		( false )
-    , _updatesystem(false)
-    , _noupdateprovide		( false )
-    , _dosplitprovides		( true )
-    , _onlyRequires(ZConfig::instance().solver_onlyRequires())
-    , _ignorealreadyrecommended(true)
-    , _distupgrade(false)
-    , _distupgrade_removeunsupported(false)
-    , _dup_allowdowngrade	( ZConfig::instance().solver_dupAllowDowngrade() )
-    , _dup_allownamechange	( ZConfig::instance().solver_dupAllowNameChange() )
-    , _dup_allowarchchange	( ZConfig::instance().solver_dupAllowArchChange() )
-    , _dup_allowvendorchange	( ZConfig::instance().solver_dupAllowVendorChange() )
-    , _solveSrcPackages(false)
-    , _cleandepsOnRemove(ZConfig::instance().solver_cleandepsOnRemove())
+SATResolver::SATResolver( const ResPool &pool, sat::detail::CPool *satPool )
+  : _pool( pool )
+  , _satPool( satPool )
+  , _satSolver( NULL )
+  , _fixsystem( false )
+  , _allowdowngrade( false )
+  , _allownamechange( true ) // bsc#1071466
+  , _allowarchchange( false )
+  , _allowvendorchange( ZConfig::instance().solver_allowVendorChange() )
+  , _allowuninstall( false )
+  , _updatesystem( false )
+  , _noupdateprovide( false )
+  , _dosplitprovides( true )
+  , _onlyRequires( ZConfig::instance().solver_onlyRequires() )
+  , _ignorealreadyrecommended( true )
+  , _distupgrade( false )
+  , _distupgrade_removeunsupported( false )
+  , _dup_allowdowngrade( ZConfig::instance().solver_dupAllowDowngrade() )
+  , _dup_allownamechange( ZConfig::instance().solver_dupAllowNameChange() )
+  , _dup_allowarchchange( ZConfig::instance().solver_dupAllowArchChange() )
+  , _dup_allowvendorchange( ZConfig::instance().solver_dupAllowVendorChange() )
+  , _solveSrcPackages( false )
+  , _cleandepsOnRemove( ZConfig::instance().solver_cleandepsOnRemove() )
 {
 }
 
-
-SATResolver::~SATResolver()
-{
-  solverEnd();
-}
+SATResolver::~SATResolver() { solverEnd(); }
 
 //---------------------------------------------------------------------------
 
-ResPool
-SATResolver::pool (void) const
-{
-    return _pool;
-}
+ResPool SATResolver::pool( void ) const { return _pool; }
 
 //---------------------------------------------------------------------------
 
 // copy marked item from solution back to pool
 // if data != NULL, set as APPL_LOW (from establishPool())
 
-static void
-SATSolutionToPool (PoolItem item, const ResStatus & status, const ResStatus::TransactByValue causer)
+static void SATSolutionToPool( PoolItem item, const ResStatus &status,
+  const ResStatus::TransactByValue causer )
 {
-    // resetting
-    item.status().resetTransact (causer);
-    item.status().resetWeak ();
+  // resetting
+  item.status().resetTransact( causer );
+  item.status().resetWeak();
 
-    bool r;
+  bool r;
 
-    // installation/deletion
-    if (status.isToBeInstalled()) {
-	r = item.status().setToBeInstalled (causer);
-	XDEBUG("SATSolutionToPool install returns " << item << ", " << r);
-    }
-    else if (status.isToBeUninstalledDueToUpgrade()) {
-	r = item.status().setToBeUninstalledDueToUpgrade (causer);
-	XDEBUG("SATSolutionToPool upgrade returns " << item << ", " <<  r);
-    }
-    else if (status.isToBeUninstalled()) {
-	r = item.status().setToBeUninstalled (causer);
-	XDEBUG("SATSolutionToPool remove returns " << item << ", " <<  r);
-    }
+  // installation/deletion
+  if ( status.isToBeInstalled() )
+  {
+    r = item.status().setToBeInstalled( causer );
+    XDEBUG( "SATSolutionToPool install returns " << item << ", " << r );
+  }
+  else if ( status.isToBeUninstalledDueToUpgrade() )
+  {
+    r = item.status().setToBeUninstalledDueToUpgrade( causer );
+    XDEBUG( "SATSolutionToPool upgrade returns " << item << ", " << r );
+  }
+  else if ( status.isToBeUninstalled() )
+  {
+    r = item.status().setToBeUninstalled( causer );
+    XDEBUG( "SATSolutionToPool remove returns " << item << ", " << r );
+  }
 
-    return;
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -261,16 +267,14 @@ SATSolutionToPool (PoolItem item, const ResStatus & status, const ResStatus::Tra
 /////////////////////////////////////////////////////////////////////////
 struct SATCollectTransact : public resfilter::PoolItemFilterFunctor
 {
-  SATCollectTransact( PoolItemList & items_to_install_r,
-		      PoolItemList & items_to_remove_r,
-		      PoolItemList & items_to_lock_r,
-		      PoolItemList & items_to_keep_r,
-		      bool solveSrcPackages_r )
-  : _items_to_install( items_to_install_r )
-  , _items_to_remove( items_to_remove_r )
-  , _items_to_lock( items_to_lock_r )
-  , _items_to_keep( items_to_keep_r )
-  , _solveSrcPackages( solveSrcPackages_r )
+  SATCollectTransact( PoolItemList &items_to_install_r,
+    PoolItemList &items_to_remove_r, PoolItemList &items_to_lock_r,
+    PoolItemList &items_to_keep_r, bool solveSrcPackages_r )
+    : _items_to_install( items_to_install_r )
+    , _items_to_remove( items_to_remove_r )
+    , _items_to_lock( items_to_lock_r )
+    , _items_to_keep( items_to_keep_r )
+    , _solveSrcPackages( solveSrcPackages_r )
   {
     _items_to_install.clear();
     _items_to_remove.clear();
@@ -278,17 +282,17 @@ struct SATCollectTransact : public resfilter::PoolItemFilterFunctor
     _items_to_keep.clear();
   }
 
-  bool operator()( const PoolItem & item_r )
+  bool operator()( const PoolItem &item_r )
   {
 
-    ResStatus & itemStatus( item_r.status() );
+    ResStatus &itemStatus( item_r.status() );
     bool by_solver = ( itemStatus.isBySolver() || itemStatus.isByApplLow() );
 
     if ( by_solver )
     {
       // Clear former solver/establish resultd
       itemStatus.resetTransact( ResStatus::APPL_LOW );
-      return true;	// -> back out here, don't re-queue former results
+      return true; // -> back out here, don't re-queue former results
     }
 
     if ( !_solveSrcPackages && item_r.isKind<SrcPackage>() )
@@ -300,24 +304,27 @@ struct SATCollectTransact : public resfilter::PoolItemFilterFunctor
     switch ( itemStatus.getTransactValue() )
     {
       case ResStatus::TRANSACT:
-	itemStatus.isUninstalled() ?	_items_to_install.push_back( item_r )
-	                           :	_items_to_remove.push_back( item_r );	break;
-      case ResStatus::LOCKED:		_items_to_lock.push_back( item_r );	break;
-      case ResStatus::KEEP_STATE:	_items_to_keep.push_back( item_r );	break;
+        itemStatus.isUninstalled() ? _items_to_install.push_back( item_r )
+                                   : _items_to_remove.push_back( item_r );
+        break;
+      case ResStatus::LOCKED:
+        _items_to_lock.push_back( item_r );
+        break;
+      case ResStatus::KEEP_STATE:
+        _items_to_keep.push_back( item_r );
+        break;
     }
     return true;
   }
 
 private:
-  PoolItemList & _items_to_install;
-  PoolItemList & _items_to_remove;
-  PoolItemList & _items_to_lock;
-  PoolItemList & _items_to_keep;
+  PoolItemList &_items_to_install;
+  PoolItemList &_items_to_remove;
+  PoolItemList &_items_to_lock;
+  PoolItemList &_items_to_keep;
   bool _solveSrcPackages;
-
 };
 /////////////////////////////////////////////////////////////////////////
-
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -325,584 +332,665 @@ private:
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 
-
 class CheckIfUpdate : public resfilter::PoolItemFilterFunctor
 {
-  public:
-    bool is_updated;
-    sat::Solvable _installed;
+public:
+  bool is_updated;
+  sat::Solvable _installed;
 
-    CheckIfUpdate( const sat::Solvable & installed_r )
+  CheckIfUpdate( const sat::Solvable &installed_r )
     : is_updated( false )
     , _installed( installed_r )
-    {}
+  {
+  }
 
-    // check this item will be updated
+  // check this item will be updated
 
-    bool operator()( const PoolItem & item )
+  bool operator()( const PoolItem &item )
+  {
+    if ( item.status().isToBeInstalled() )
     {
-	if ( item.status().isToBeInstalled() )
-        {
-          if ( ! item.multiversionInstall() || sameNVRA( _installed, item ) )
-          {
-            is_updated = true;
-            return false;
-          }
-	}
-	return true;
+      if ( !item.multiversionInstall() || sameNVRA( _installed, item ) )
+      {
+        is_updated = true;
+        return false;
+      }
     }
+    return true;
+  }
 };
-
 
 class CollectPseudoInstalled : public resfilter::PoolItemFilterFunctor
 {
-  public:
-    Queue *solvableQueue;
+public:
+  Queue *solvableQueue;
 
-    CollectPseudoInstalled( Queue *queue )
-	:solvableQueue (queue)
-    {}
+  CollectPseudoInstalled( Queue *queue )
+    : solvableQueue( queue )
+  {
+  }
 
-    // collecting PseudoInstalled items
-    bool operator()( PoolItem item )
-    {
-      if ( traits::isPseudoInstalled( item.satSolvable().kind() ) )
-        queue_push( solvableQueue, item.satSolvable().id() );
-      return true;
-    }
+  // collecting PseudoInstalled items
+  bool operator()( PoolItem item )
+  {
+    if ( traits::isPseudoInstalled( item.satSolvable().kind() ) )
+      queue_push( solvableQueue, item.satSolvable().id() );
+    return true;
+  }
 };
 
-bool
-SATResolver::solving(const CapabilitySet & requires_caps,
-		     const CapabilitySet & conflict_caps)
+bool SATResolver::solving(
+  const CapabilitySet &requires_caps, const CapabilitySet &conflict_caps )
 {
-    _satSolver = solver_create( _satPool );
-    ::pool_set_custom_vendorcheck( _satPool, &vendorCheck );
-    if (_fixsystem) {
-	queue_push( &(_jobQueue), SOLVER_VERIFY|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (_updatesystem) {
-	queue_push( &(_jobQueue), SOLVER_UPDATE|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (_distupgrade) {
-	queue_push( &(_jobQueue), SOLVER_DISTUPGRADE|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (_distupgrade_removeunsupported) {
-	queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    solver_set_flag(_satSolver, SOLVER_FLAG_ADD_ALREADY_RECOMMENDED, !_ignorealreadyrecommended);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_DOWNGRADE,		_allowdowngrade);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_NAMECHANGE,		_allownamechange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_ARCHCHANGE,		_allowarchchange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_VENDORCHANGE,		_allowvendorchange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_UNINSTALL,		_allowuninstall);
-    solver_set_flag(_satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE,		_noupdateprovide);
-    solver_set_flag(_satSolver, SOLVER_FLAG_SPLITPROVIDES,		_dosplitprovides);
-    solver_set_flag(_satSolver, SOLVER_FLAG_IGNORE_RECOMMENDED, _onlyRequires);
-    solver_set_flag(_satSolver, SOLVER_FLAG_DUP_ALLOW_DOWNGRADE,	_dup_allowdowngrade );
-    solver_set_flag(_satSolver, SOLVER_FLAG_DUP_ALLOW_NAMECHANGE,	_dup_allownamechange );
-    solver_set_flag(_satSolver, SOLVER_FLAG_DUP_ALLOW_ARCHCHANGE,	_dup_allowarchchange );
-    solver_set_flag(_satSolver, SOLVER_FLAG_DUP_ALLOW_VENDORCHANGE,	_dup_allowvendorchange );
+  _satSolver = solver_create( _satPool );
+  ::pool_set_custom_vendorcheck( _satPool, &vendorCheck );
+  if ( _fixsystem )
+  {
+    queue_push( &( _jobQueue ), SOLVER_VERIFY | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( _updatesystem )
+  {
+    queue_push( &( _jobQueue ), SOLVER_UPDATE | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( _distupgrade )
+  {
+    queue_push( &( _jobQueue ), SOLVER_DISTUPGRADE | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( _distupgrade_removeunsupported )
+  {
+    queue_push( &( _jobQueue ), SOLVER_DROP_ORPHANED | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  solver_set_flag( _satSolver, SOLVER_FLAG_ADD_ALREADY_RECOMMENDED,
+    !_ignorealreadyrecommended );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_DOWNGRADE, _allowdowngrade );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_NAMECHANGE, _allownamechange );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_ARCHCHANGE, _allowarchchange );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_ALLOW_VENDORCHANGE, _allowvendorchange );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_UNINSTALL, _allowuninstall );
+  solver_set_flag( _satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE, _noupdateprovide );
+  solver_set_flag( _satSolver, SOLVER_FLAG_SPLITPROVIDES, _dosplitprovides );
+  solver_set_flag( _satSolver, SOLVER_FLAG_IGNORE_RECOMMENDED, _onlyRequires );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_DUP_ALLOW_DOWNGRADE, _dup_allowdowngrade );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_DUP_ALLOW_NAMECHANGE, _dup_allownamechange );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_DUP_ALLOW_ARCHCHANGE, _dup_allowarchchange );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_DUP_ALLOW_VENDORCHANGE, _dup_allowvendorchange );
 #if 1
-#define HACKENV(X,D) solver_set_flag(_satSolver, X, env::HACKENV( #X, D ) );
-    HACKENV( SOLVER_FLAG_DUP_ALLOW_DOWNGRADE,	_dup_allowdowngrade );
-    HACKENV( SOLVER_FLAG_DUP_ALLOW_NAMECHANGE,	_dup_allownamechange );
-    HACKENV( SOLVER_FLAG_DUP_ALLOW_ARCHCHANGE,	_dup_allowarchchange );
-    HACKENV( SOLVER_FLAG_DUP_ALLOW_VENDORCHANGE,_dup_allowvendorchange );
+#define HACKENV( X, D ) solver_set_flag( _satSolver, X, env::HACKENV( #X, D ) );
+  HACKENV( SOLVER_FLAG_DUP_ALLOW_DOWNGRADE, _dup_allowdowngrade );
+  HACKENV( SOLVER_FLAG_DUP_ALLOW_NAMECHANGE, _dup_allownamechange );
+  HACKENV( SOLVER_FLAG_DUP_ALLOW_ARCHCHANGE, _dup_allowarchchange );
+  HACKENV( SOLVER_FLAG_DUP_ALLOW_VENDORCHANGE, _dup_allowvendorchange );
 #undef HACKENV
 #endif
-    sat::Pool::instance().prepare();
+  sat::Pool::instance().prepare();
 
-    // Solve !
-    MIL << "Starting solving...." << endl;
-    MIL << *this;
-    solver_solve( _satSolver, &(_jobQueue) );
-    MIL << "....Solver end" << endl;
+  // Solve !
+  MIL << "Starting solving...." << endl;
+  MIL << *this;
+  solver_solve( _satSolver, &( _jobQueue ) );
+  MIL << "....Solver end" << endl;
 
-    // copying solution back to zypp pool
-    //-----------------------------------------
-    _result_items_to_install.clear();
-    _result_items_to_remove.clear();
+  // copying solution back to zypp pool
+  //-----------------------------------------
+  _result_items_to_install.clear();
+  _result_items_to_remove.clear();
 
-    /*  solvables to be installed */
-    Queue decisionq;
-    queue_init(&decisionq);
-    solver_get_decisionqueue(_satSolver, &decisionq);
-    for ( int i = 0; i < decisionq.count; ++i )
+  /*  solvables to be installed */
+  Queue decisionq;
+  queue_init( &decisionq );
+  solver_get_decisionqueue( _satSolver, &decisionq );
+  for ( int i = 0; i < decisionq.count; ++i )
+  {
+    sat::Solvable slv( decisionq.elements[ i ] );
+    if ( !slv || slv.isSystem() )
+      continue;
+
+    PoolItem poolItem( slv );
+    SATSolutionToPool( poolItem, ResStatus::toBeInstalled, ResStatus::SOLVER );
+    _result_items_to_install.push_back( poolItem );
+  }
+  queue_free( &decisionq );
+
+  /* solvables to be erased */
+  Repository systemRepo(
+    sat::Pool::instance()
+      .findSystemRepo() ); // don't create if it does not exist
+  if ( systemRepo && !systemRepo.solvablesEmpty() )
+  {
+    bool mustCheckObsoletes = false;
+    for_( it, systemRepo.solvablesBegin(), systemRepo.solvablesEnd() )
     {
-      sat::Solvable slv( decisionq.elements[i] );
-      if ( !slv || slv.isSystem() )
-	continue;
+      if ( solver_get_decisionlevel( _satSolver, it->id() ) > 0 )
+        continue;
 
-      PoolItem poolItem( slv );
-      SATSolutionToPool (poolItem, ResStatus::toBeInstalled, ResStatus::SOLVER);
-      _result_items_to_install.push_back( poolItem );
-    }
-    queue_free(&decisionq);
+      // Check if this is an update
+      CheckIfUpdate info( *it );
+      PoolItem poolItem( *it );
+      invokeOnEach( _pool.byIdentBegin( poolItem ),
+        _pool.byIdentEnd( poolItem ),
+        resfilter::ByUninstalled(), // ByUninstalled
+        functor::functorRef<bool, PoolItem>( info ) );
 
-    /* solvables to be erased */
-    Repository systemRepo( sat::Pool::instance().findSystemRepo() ); // don't create if it does not exist
-    if ( systemRepo && ! systemRepo.solvablesEmpty() )
-    {
-      bool mustCheckObsoletes = false;
-      for_( it, systemRepo.solvablesBegin(), systemRepo.solvablesEnd() )
+      if ( info.is_updated )
       {
-	if (solver_get_decisionlevel(_satSolver, it->id()) > 0)
-	  continue;
-
-	// Check if this is an update
-	CheckIfUpdate info( *it );
-	PoolItem poolItem( *it );
-	invokeOnEach( _pool.byIdentBegin( poolItem ),
-		      _pool.byIdentEnd( poolItem ),
-		      resfilter::ByUninstalled(),			// ByUninstalled
-		      functor::functorRef<bool,PoolItem> (info) );
-
-	if (info.is_updated) {
-	  SATSolutionToPool( poolItem, ResStatus::toBeUninstalledDueToUpgrade, ResStatus::SOLVER );
-	} else {
-	  SATSolutionToPool( poolItem, ResStatus::toBeUninstalled, ResStatus::SOLVER );
-	  if ( ! mustCheckObsoletes )
-	    mustCheckObsoletes = true; // lazy check for UninstalledDueToObsolete
-	}
-	_result_items_to_remove.push_back (poolItem);
-      }
-      if ( mustCheckObsoletes )
-      {
-	sat::WhatObsoletes obsoleted( _result_items_to_install.begin(), _result_items_to_install.end() );
-	for_( it, obsoleted.poolItemBegin(), obsoleted.poolItemEnd() )
-	{
-	  ResStatus & status( it->status() );
-	  // WhatObsoletes contains installed items only!
-	  if ( status.transacts() && ! status.isToBeUninstalledDueToUpgrade() )
-	    status.setToBeUninstalledDueToObsolete();
-	}
-      }
-    }
-
-    Queue recommendations;
-    Queue suggestions;
-    Queue orphaned;
-    Queue unneeded;
-    queue_init(&recommendations);
-    queue_init(&suggestions);
-    queue_init(&orphaned);
-    queue_init(&unneeded);
-    solver_get_recommendations(_satSolver, &recommendations, &suggestions, 0);
-    solver_get_orphaned(_satSolver, &orphaned);
-    solver_get_unneeded(_satSolver, &unneeded, 1);
-    /*  solvables which are recommended */
-    for ( int i = 0; i < recommendations.count; ++i )
-    {
-      PoolItem poolItem( getPoolItem( recommendations.elements[i] ) );
-      poolItem.status().setRecommended( true );
-    }
-
-    /*  solvables which are suggested */
-    for ( int i = 0; i < suggestions.count; ++i )
-    {
-      PoolItem poolItem( getPoolItem( suggestions.elements[i] ) );
-      poolItem.status().setSuggested( true );
-    }
-
-    _problem_items.clear();
-    /*  solvables which are orphaned */
-    for ( int i = 0; i < orphaned.count; ++i )
-    {
-      PoolItem poolItem( getPoolItem( orphaned.elements[i] ) );
-      poolItem.status().setOrphaned( true );
-      _problem_items.push_back( poolItem );
-    }
-
-    /*  solvables which are unneeded */
-    for ( int i = 0; i < unneeded.count; ++i )
-    {
-      PoolItem poolItem( getPoolItem( unneeded.elements[i] ) );
-      poolItem.status().setUnneeded( true );
-    }
-
-    queue_free(&recommendations);
-    queue_free(&suggestions);
-    queue_free(&orphaned);
-    queue_free(&unneeded);
-
-    /* Write validation state back to pool */
-    Queue flags, solvableQueue;
-
-    queue_init(&flags);
-    queue_init(&solvableQueue);
-
-    CollectPseudoInstalled collectPseudoInstalled(&solvableQueue);
-    invokeOnEach( _pool.begin(),
-		  _pool.end(),
-		  functor::functorRef<bool,PoolItem> (collectPseudoInstalled) );
-    solver_trivial_installable(_satSolver, &solvableQueue, &flags );
-    for (int i = 0; i < solvableQueue.count; i++) {
-	PoolItem item = _pool.find (sat::Solvable(solvableQueue.elements[i]));
-	item.status().setUndetermined();
-
-	if (flags.elements[i] == -1) {
-	    item.status().setNonRelevant();
-	    XDEBUG("SATSolutionToPool(" << item << " ) nonRelevant !");
-	} else if (flags.elements[i] == 1) {
-	    item.status().setSatisfied();
-	    XDEBUG("SATSolutionToPool(" << item << " ) satisfied !");
-	} else if (flags.elements[i] == 0) {
-	    item.status().setBroken();
-	    XDEBUG("SATSolutionToPool(" << item << " ) broken !");
-	}
-    }
-    queue_free(&(solvableQueue));
-    queue_free(&flags);
-
-
-    // Solvables which were selected due requirements which have been made by the user will
-    // be selected by APPL_LOW. We can't use any higher level, because this setting must
-    // not serve as a request for the next solver run. APPL_LOW is reset before solving.
-    for (CapabilitySet::const_iterator iter = requires_caps.begin(); iter != requires_caps.end(); iter++) {
-	sat::WhatProvides rpmProviders(*iter);
-	for_( iter2, rpmProviders.begin(), rpmProviders.end() ) {
-	    PoolItem poolItem(*iter2);
-	    if (poolItem.status().isToBeInstalled()) {
-		MIL << "User requirement " << *iter << " sets " << poolItem << endl;
-		poolItem.status().setTransactByValue (ResStatus::APPL_LOW);
-	    }
-	}
-    }
-    for (CapabilitySet::const_iterator iter = conflict_caps.begin(); iter != conflict_caps.end(); iter++) {
-	sat::WhatProvides rpmProviders(*iter);
-	for_( iter2, rpmProviders.begin(), rpmProviders.end() ) {
-	    PoolItem poolItem(*iter2);
-	    if (poolItem.status().isToBeUninstalled()) {
-		MIL << "User conflict " << *iter << " sets " << poolItem << endl;
-		poolItem.status().setTransactByValue (ResStatus::APPL_LOW);
-	    }
-	}
-    }
-
-    if (solver_problem_count(_satSolver) > 0 )
-    {
-	ERR << "Solverrun finished with an ERROR" << endl;
-	return false;
-    }
-
-    return true;
-}
-
-
-void
-SATResolver::solverInit(const PoolItemList & weakItems)
-{
-
-    MIL << "SATResolver::solverInit()" << endl;
-
-    // remove old stuff
-    solverEnd();
-    queue_init( &_jobQueue );
-
-    // clear and rebuild: _items_to_install, _items_to_remove, _items_to_lock, _items_to_keep
-    {
-      SATCollectTransact collector( _items_to_install, _items_to_remove, _items_to_lock, _items_to_keep, solveSrcPackages() );
-      invokeOnEach ( _pool.begin(), _pool.end(), functor::functorRef<bool,PoolItem>( collector ) );
-    }
-
-    for (PoolItemList::const_iterator iter = weakItems.begin(); iter != weakItems.end(); iter++) {
-	Id id = (*iter)->satSolvable().id();
-	if (id == ID_NULL) {
-	    ERR << "Weaken: " << *iter << " not found" << endl;
-	}
-	MIL << "Weaken dependencies of " << *iter << endl;
-	queue_push( &(_jobQueue), SOLVER_WEAKENDEPS | SOLVER_SOLVABLE );
-        queue_push( &(_jobQueue), id );
-    }
-
-    // Ad rules for changed requestedLocales
-    const auto & trackedLocaleIds( myPool().trackedLocaleIds() );
-    for ( const auto & locale : trackedLocaleIds.added() )
-    {
-      queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
-      queue_push( &(_jobQueue), Capability( ResolverNamespace::language, IdString(locale) ).id() );
-    }
-
-    for ( const auto & locale : trackedLocaleIds.removed() )
-    {
-      queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES | SOLVER_CLEANDEPS );	// needs uncond. SOLVER_CLEANDEPS!
-      queue_push( &(_jobQueue), Capability( ResolverNamespace::language, IdString(locale) ).id() );
-    }
-
-    // Add rules for parallel installable resolvables with different versions
-    for ( const sat::Solvable & solv : myPool().multiversionList() )
-    {
-      queue_push( &(_jobQueue), SOLVER_NOOBSOLETES | SOLVER_SOLVABLE );
-      queue_push( &(_jobQueue), solv.id() );
-    }
-
-    ::pool_add_userinstalled_jobs(_satPool, sat::Pool::instance().autoInstalled(), &(_jobQueue), GET_USERINSTALLED_NAMES|GET_USERINSTALLED_INVERTED);
-
-    if ( _distupgrade )
-    {
-      if ( ZConfig::instance().solverUpgradeRemoveDroppedPackages() )
-      {
-        MIL << "Checking droplists ..." << endl;
-        // Dropped packages: look for 'weakremover()' provides
-        // in dup candidates of installed products.
-        ResPoolProxy proxy( ResPool::instance().proxy() );
-        for_( it, proxy.byKindBegin<Product>(), proxy.byKindEnd<Product>() )
-        {
-          if ( (*it)->onSystem() ) // (to install) or (not to delete)
-          {
-            Product::constPtr prodCand( (*it)->candidateAsKind<Product>() );
-            if ( ! prodCand )
-              continue; // product no longer available
-
-            CapabilitySet droplist( prodCand->droplist() );
-            dumpRangeLine( MIL << "Droplist for " << (*it)->candidateObj() << ": " << droplist.size() << " ", droplist.begin(), droplist.end() ) << endl;
-            for_( cap, droplist.begin(), droplist.end() )
-            {
-              queue_push( &_jobQueue, SOLVER_DROP_ORPHANED | SOLVER_SOLVABLE_NAME );
-              queue_push( &_jobQueue, cap->id() );
-            }
-          }
-        }
+        SATSolutionToPool(
+          poolItem, ResStatus::toBeUninstalledDueToUpgrade, ResStatus::SOLVER );
       }
       else
       {
-        MIL << "Droplist processing is disabled." << endl;
+        SATSolutionToPool(
+          poolItem, ResStatus::toBeUninstalled, ResStatus::SOLVER );
+        if ( !mustCheckObsoletes )
+          mustCheckObsoletes = true; // lazy check for UninstalledDueToObsolete
+      }
+      _result_items_to_remove.push_back( poolItem );
+    }
+    if ( mustCheckObsoletes )
+    {
+      sat::WhatObsoletes obsoleted(
+        _result_items_to_install.begin(), _result_items_to_install.end() );
+      for_( it, obsoleted.poolItemBegin(), obsoleted.poolItemEnd() )
+      {
+        ResStatus &status( it->status() );
+        // WhatObsoletes contains installed items only!
+        if ( status.transacts() && !status.isToBeUninstalledDueToUpgrade() )
+          status.setToBeUninstalledDueToObsolete();
       }
     }
+  }
+
+  Queue recommendations;
+  Queue suggestions;
+  Queue orphaned;
+  Queue unneeded;
+  queue_init( &recommendations );
+  queue_init( &suggestions );
+  queue_init( &orphaned );
+  queue_init( &unneeded );
+  solver_get_recommendations( _satSolver, &recommendations, &suggestions, 0 );
+  solver_get_orphaned( _satSolver, &orphaned );
+  solver_get_unneeded( _satSolver, &unneeded, 1 );
+  /*  solvables which are recommended */
+  for ( int i = 0; i < recommendations.count; ++i )
+  {
+    PoolItem poolItem( getPoolItem( recommendations.elements[ i ] ) );
+    poolItem.status().setRecommended( true );
+  }
+
+  /*  solvables which are suggested */
+  for ( int i = 0; i < suggestions.count; ++i )
+  {
+    PoolItem poolItem( getPoolItem( suggestions.elements[ i ] ) );
+    poolItem.status().setSuggested( true );
+  }
+
+  _problem_items.clear();
+  /*  solvables which are orphaned */
+  for ( int i = 0; i < orphaned.count; ++i )
+  {
+    PoolItem poolItem( getPoolItem( orphaned.elements[ i ] ) );
+    poolItem.status().setOrphaned( true );
+    _problem_items.push_back( poolItem );
+  }
+
+  /*  solvables which are unneeded */
+  for ( int i = 0; i < unneeded.count; ++i )
+  {
+    PoolItem poolItem( getPoolItem( unneeded.elements[ i ] ) );
+    poolItem.status().setUnneeded( true );
+  }
+
+  queue_free( &recommendations );
+  queue_free( &suggestions );
+  queue_free( &orphaned );
+  queue_free( &unneeded );
+
+  /* Write validation state back to pool */
+  Queue flags, solvableQueue;
+
+  queue_init( &flags );
+  queue_init( &solvableQueue );
+
+  CollectPseudoInstalled collectPseudoInstalled( &solvableQueue );
+  invokeOnEach( _pool.begin(), _pool.end(),
+    functor::functorRef<bool, PoolItem>( collectPseudoInstalled ) );
+  solver_trivial_installable( _satSolver, &solvableQueue, &flags );
+  for ( int i = 0; i < solvableQueue.count; i++ )
+  {
+    PoolItem item = _pool.find( sat::Solvable( solvableQueue.elements[ i ] ) );
+    item.status().setUndetermined();
+
+    if ( flags.elements[ i ] == -1 )
+    {
+      item.status().setNonRelevant();
+      XDEBUG( "SATSolutionToPool(" << item << " ) nonRelevant !" );
+    }
+    else if ( flags.elements[ i ] == 1 )
+    {
+      item.status().setSatisfied();
+      XDEBUG( "SATSolutionToPool(" << item << " ) satisfied !" );
+    }
+    else if ( flags.elements[ i ] == 0 )
+    {
+      item.status().setBroken();
+      XDEBUG( "SATSolutionToPool(" << item << " ) broken !" );
+    }
+  }
+  queue_free( &( solvableQueue ) );
+  queue_free( &flags );
+
+  // Solvables which were selected due requirements which have been made by the user will
+  // be selected by APPL_LOW. We can't use any higher level, because this setting must
+  // not serve as a request for the next solver run. APPL_LOW is reset before solving.
+  for ( CapabilitySet::const_iterator iter = requires_caps.begin();
+        iter != requires_caps.end(); iter++ )
+  {
+    sat::WhatProvides rpmProviders( *iter );
+    for_( iter2, rpmProviders.begin(), rpmProviders.end() )
+    {
+      PoolItem poolItem( *iter2 );
+      if ( poolItem.status().isToBeInstalled() )
+      {
+        MIL << "User requirement " << *iter << " sets " << poolItem << endl;
+        poolItem.status().setTransactByValue( ResStatus::APPL_LOW );
+      }
+    }
+  }
+  for ( CapabilitySet::const_iterator iter = conflict_caps.begin();
+        iter != conflict_caps.end(); iter++ )
+  {
+    sat::WhatProvides rpmProviders( *iter );
+    for_( iter2, rpmProviders.begin(), rpmProviders.end() )
+    {
+      PoolItem poolItem( *iter2 );
+      if ( poolItem.status().isToBeUninstalled() )
+      {
+        MIL << "User conflict " << *iter << " sets " << poolItem << endl;
+        poolItem.status().setTransactByValue( ResStatus::APPL_LOW );
+      }
+    }
+  }
+
+  if ( solver_problem_count( _satSolver ) > 0 )
+  {
+    ERR << "Solverrun finished with an ERROR" << endl;
+    return false;
+  }
+
+  return true;
 }
 
-void
-SATResolver::solverEnd()
+void SATResolver::solverInit( const PoolItemList &weakItems )
+{
+
+  MIL << "SATResolver::solverInit()" << endl;
+
+  // remove old stuff
+  solverEnd();
+  queue_init( &_jobQueue );
+
+  // clear and rebuild: _items_to_install, _items_to_remove, _items_to_lock, _items_to_keep
+  {
+    SATCollectTransact collector( _items_to_install, _items_to_remove,
+      _items_to_lock, _items_to_keep, solveSrcPackages() );
+    invokeOnEach( _pool.begin(), _pool.end(),
+      functor::functorRef<bool, PoolItem>( collector ) );
+  }
+
+  for ( PoolItemList::const_iterator iter = weakItems.begin();
+        iter != weakItems.end(); iter++ )
+  {
+    Id id = ( *iter )->satSolvable().id();
+    if ( id == ID_NULL )
+    {
+      ERR << "Weaken: " << *iter << " not found" << endl;
+    }
+    MIL << "Weaken dependencies of " << *iter << endl;
+    queue_push( &( _jobQueue ), SOLVER_WEAKENDEPS | SOLVER_SOLVABLE );
+    queue_push( &( _jobQueue ), id );
+  }
+
+  // Ad rules for changed requestedLocales
+  const auto &trackedLocaleIds( myPool().trackedLocaleIds() );
+  for ( const auto &locale : trackedLocaleIds.added() )
+  {
+    queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
+    queue_push( &( _jobQueue ),
+      Capability( ResolverNamespace::language, IdString( locale ) ).id() );
+  }
+
+  for ( const auto &locale : trackedLocaleIds.removed() )
+  {
+    queue_push(
+      &( _jobQueue ), SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES |
+                        SOLVER_CLEANDEPS ); // needs uncond. SOLVER_CLEANDEPS!
+    queue_push( &( _jobQueue ),
+      Capability( ResolverNamespace::language, IdString( locale ) ).id() );
+  }
+
+  // Add rules for parallel installable resolvables with different versions
+  for ( const sat::Solvable &solv : myPool().multiversionList() )
+  {
+    queue_push( &( _jobQueue ), SOLVER_NOOBSOLETES | SOLVER_SOLVABLE );
+    queue_push( &( _jobQueue ), solv.id() );
+  }
+
+  ::pool_add_userinstalled_jobs( _satPool,
+    sat::Pool::instance().autoInstalled(), &( _jobQueue ),
+    GET_USERINSTALLED_NAMES | GET_USERINSTALLED_INVERTED );
+
+  if ( _distupgrade )
+  {
+    if ( ZConfig::instance().solverUpgradeRemoveDroppedPackages() )
+    {
+      MIL << "Checking droplists ..." << endl;
+      // Dropped packages: look for 'weakremover()' provides
+      // in dup candidates of installed products.
+      ResPoolProxy proxy( ResPool::instance().proxy() );
+      for_( it, proxy.byKindBegin<Product>(), proxy.byKindEnd<Product>() )
+      {
+        if ( ( *it )->onSystem() ) // (to install) or (not to delete)
+        {
+          Product::constPtr prodCand( ( *it )->candidateAsKind<Product>() );
+          if ( !prodCand )
+            continue; // product no longer available
+
+          CapabilitySet droplist( prodCand->droplist() );
+          dumpRangeLine( MIL << "Droplist for " << ( *it )->candidateObj()
+                             << ": " << droplist.size() << " ",
+            droplist.begin(), droplist.end() )
+            << endl;
+          for_( cap, droplist.begin(), droplist.end() )
+          {
+            queue_push(
+              &_jobQueue, SOLVER_DROP_ORPHANED | SOLVER_SOLVABLE_NAME );
+            queue_push( &_jobQueue, cap->id() );
+          }
+        }
+      }
+    }
+    else
+    {
+      MIL << "Droplist processing is disabled." << endl;
+    }
+  }
+}
+
+void SATResolver::solverEnd()
 {
   // cleanup
   if ( _satSolver )
   {
-    solver_free(_satSolver);
+    solver_free( _satSolver );
     _satSolver = NULL;
-    queue_free( &(_jobQueue) );
+    queue_free( &( _jobQueue ) );
   }
 }
 
-
-bool
-SATResolver::resolvePool(const CapabilitySet & requires_caps,
-			 const CapabilitySet & conflict_caps,
-			 const PoolItemList & weakItems,
-                         const std::set<Repository> & upgradeRepos)
+bool SATResolver::resolvePool( const CapabilitySet &requires_caps,
+  const CapabilitySet &conflict_caps, const PoolItemList &weakItems,
+  const std::set<Repository> &upgradeRepos )
 {
-    MIL << "SATResolver::resolvePool()" << endl;
+  MIL << "SATResolver::resolvePool()" << endl;
 
-    // initialize
-    solverInit(weakItems);
+  // initialize
+  solverInit( weakItems );
 
-    for (PoolItemList::const_iterator iter = _items_to_install.begin(); iter != _items_to_install.end(); iter++) {
-	Id id = (*iter)->satSolvable().id();
-	if (id == ID_NULL) {
-	    ERR << "Install: " << *iter << " not found" << endl;
-	} else {
-	    MIL << "Install " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE );
-	    queue_push( &(_jobQueue), id );
-	}
-    }
-
-    for (PoolItemList::const_iterator iter = _items_to_remove.begin(); iter != _items_to_remove.end(); iter++) {
-	Id id = (*iter)->satSolvable().id();
-	if (id == ID_NULL) {
-	    ERR << "Delete: " << *iter << " not found" << endl;
-	} else {
-	    MIL << "Delete " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE | MAYBE_CLEANDEPS );
-	    queue_push( &(_jobQueue), id);
-	}
-    }
-
-    for_( iter, upgradeRepos.begin(), upgradeRepos.end() )
+  for ( PoolItemList::const_iterator iter = _items_to_install.begin();
+        iter != _items_to_install.end(); iter++ )
+  {
+    Id id = ( *iter )->satSolvable().id();
+    if ( id == ID_NULL )
     {
-	queue_push( &(_jobQueue), SOLVER_DISTUPGRADE | SOLVER_SOLVABLE_REPO );
-	queue_push( &(_jobQueue), iter->get()->repoid );
-        MIL << "Upgrade repo " << *iter << endl;
+      ERR << "Install: " << *iter << " not found" << endl;
     }
-
-    for (CapabilitySet::const_iterator iter = requires_caps.begin(); iter != requires_caps.end(); iter++) {
-	queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
-	queue_push( &(_jobQueue), iter->id() );
-	MIL << "Requires " << *iter << endl;
+    else
+    {
+      MIL << "Install " << *iter << endl;
+      queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE );
+      queue_push( &( _jobQueue ), id );
     }
+  }
 
-    for (CapabilitySet::const_iterator iter = conflict_caps.begin(); iter != conflict_caps.end(); iter++) {
-	queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES | MAYBE_CLEANDEPS );
-	queue_push( &(_jobQueue), iter->id() );
-	MIL << "Conflicts " << *iter << endl;
+  for ( PoolItemList::const_iterator iter = _items_to_remove.begin();
+        iter != _items_to_remove.end(); iter++ )
+  {
+    Id id = ( *iter )->satSolvable().id();
+    if ( id == ID_NULL )
+    {
+      ERR << "Delete: " << *iter << " not found" << endl;
     }
+    else
+    {
+      MIL << "Delete " << *iter << endl;
+      queue_push(
+        &( _jobQueue ), SOLVER_ERASE | SOLVER_SOLVABLE | MAYBE_CLEANDEPS );
+      queue_push( &( _jobQueue ), id );
+    }
+  }
 
-    // set requirements for a running system
-    setSystemRequirements();
+  for_( iter, upgradeRepos.begin(), upgradeRepos.end() )
+  {
+    queue_push( &( _jobQueue ), SOLVER_DISTUPGRADE | SOLVER_SOLVABLE_REPO );
+    queue_push( &( _jobQueue ), iter->get()->repoid );
+    MIL << "Upgrade repo " << *iter << endl;
+  }
 
-    // set locks for the solver
-    setLocks();
+  for ( CapabilitySet::const_iterator iter = requires_caps.begin();
+        iter != requires_caps.end(); iter++ )
+  {
+    queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
+    queue_push( &( _jobQueue ), iter->id() );
+    MIL << "Requires " << *iter << endl;
+  }
 
-    // solving
-    bool ret = solving(requires_caps, conflict_caps);
+  for ( CapabilitySet::const_iterator iter = conflict_caps.begin();
+        iter != conflict_caps.end(); iter++ )
+  {
+    queue_push( &( _jobQueue ),
+      SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES | MAYBE_CLEANDEPS );
+    queue_push( &( _jobQueue ), iter->id() );
+    MIL << "Conflicts " << *iter << endl;
+  }
 
-    (ret?MIL:WAR) << "SATResolver::resolvePool() done. Ret:" << ret <<  endl;
-    return ret;
+  // set requirements for a running system
+  setSystemRequirements();
+
+  // set locks for the solver
+  setLocks();
+
+  // solving
+  bool ret = solving( requires_caps, conflict_caps );
+
+  ( ret ? MIL : WAR ) << "SATResolver::resolvePool() done. Ret:" << ret << endl;
+  return ret;
 }
 
-
-bool
-SATResolver::resolveQueue(const SolverQueueItemList &requestQueue,
-			  const PoolItemList & weakItems)
+bool SATResolver::resolveQueue(
+  const SolverQueueItemList &requestQueue, const PoolItemList &weakItems )
 {
-    MIL << "SATResolver::resolvQueue()" << endl;
+  MIL << "SATResolver::resolvQueue()" << endl;
 
-    // initialize
-    solverInit(weakItems);
+  // initialize
+  solverInit( weakItems );
 
-    // generate solver queue
-    for (SolverQueueItemList::const_iterator iter = requestQueue.begin(); iter != requestQueue.end(); iter++) {
-	(*iter)->addRule(_jobQueue);
+  // generate solver queue
+  for ( SolverQueueItemList::const_iterator iter = requestQueue.begin();
+        iter != requestQueue.end(); iter++ )
+  {
+    ( *iter )->addRule( _jobQueue );
+  }
+
+  // Add addition item status to the resolve-queue cause these can be set by problem resolutions
+  for ( PoolItemList::const_iterator iter = _items_to_install.begin();
+        iter != _items_to_install.end(); iter++ )
+  {
+    Id id = ( *iter )->satSolvable().id();
+    if ( id == ID_NULL )
+    {
+      ERR << "Install: " << *iter << " not found" << endl;
     }
-
-    // Add addition item status to the resolve-queue cause these can be set by problem resolutions
-    for (PoolItemList::const_iterator iter = _items_to_install.begin(); iter != _items_to_install.end(); iter++) {
-	Id id = (*iter)->satSolvable().id();
-	if (id == ID_NULL) {
-	    ERR << "Install: " << *iter << " not found" << endl;
-	} else {
-	    MIL << "Install " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE );
-	    queue_push( &(_jobQueue), id );
-	}
+    else
+    {
+      MIL << "Install " << *iter << endl;
+      queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE );
+      queue_push( &( _jobQueue ), id );
     }
-    for (PoolItemList::const_iterator iter = _items_to_remove.begin(); iter != _items_to_remove.end(); iter++) {
-        sat::detail::IdType ident( (*iter)->satSolvable().ident().id() );
-	MIL << "Delete " << *iter << ident << endl;
-	queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | MAYBE_CLEANDEPS );
-	queue_push( &(_jobQueue), ident);
-    }
+  }
+  for ( PoolItemList::const_iterator iter = _items_to_remove.begin();
+        iter != _items_to_remove.end(); iter++ )
+  {
+    sat::detail::IdType ident( ( *iter )->satSolvable().ident().id() );
+    MIL << "Delete " << *iter << ident << endl;
+    queue_push(
+      &( _jobQueue ), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | MAYBE_CLEANDEPS );
+    queue_push( &( _jobQueue ), ident );
+  }
 
-    // set requirements for a running system
-    setSystemRequirements();
+  // set requirements for a running system
+  setSystemRequirements();
 
-    // set locks for the solver
-    setLocks();
+  // set locks for the solver
+  setLocks();
 
-    // solving
-    bool ret = solving();
+  // solving
+  bool ret = solving();
 
-    MIL << "SATResolver::resolveQueue() done. Ret:" << ret <<  endl;
-    return ret;
+  MIL << "SATResolver::resolveQueue() done. Ret:" << ret << endl;
+  return ret;
 }
 
 /** \todo duplicate code to be joined with \ref solving. */
 void SATResolver::doUpdate()
 {
-    MIL << "SATResolver::doUpdate()" << endl;
+  MIL << "SATResolver::doUpdate()" << endl;
 
-    // initialize
-    solverInit(PoolItemList());
+  // initialize
+  solverInit( PoolItemList() );
 
-    // set requirements for a running system
-    setSystemRequirements();
+  // set requirements for a running system
+  setSystemRequirements();
 
-    // set locks for the solver
-    setLocks();
+  // set locks for the solver
+  setLocks();
 
-    _satSolver = solver_create( _satPool );
-    ::pool_set_custom_vendorcheck( _satPool, &vendorCheck );
-    if (_fixsystem) {
-	queue_push( &(_jobQueue), SOLVER_VERIFY|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (1) {
-	queue_push( &(_jobQueue), SOLVER_UPDATE|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (_distupgrade) {
-	queue_push( &(_jobQueue), SOLVER_DISTUPGRADE|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    if (_distupgrade_removeunsupported) {
-	queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
-	queue_push( &(_jobQueue), 0 );
-    }
-    solver_set_flag(_satSolver, SOLVER_FLAG_ADD_ALREADY_RECOMMENDED, !_ignorealreadyrecommended);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_DOWNGRADE,		_allowdowngrade);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_NAMECHANGE,		_allownamechange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_ARCHCHANGE,		_allowarchchange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_VENDORCHANGE,		_allowvendorchange);
-    solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_UNINSTALL,		_allowuninstall);
-    solver_set_flag(_satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE,		_noupdateprovide);
-    solver_set_flag(_satSolver, SOLVER_FLAG_SPLITPROVIDES,		_dosplitprovides);
-    solver_set_flag(_satSolver, SOLVER_FLAG_IGNORE_RECOMMENDED, _onlyRequires);
+  _satSolver = solver_create( _satPool );
+  ::pool_set_custom_vendorcheck( _satPool, &vendorCheck );
+  if ( _fixsystem )
+  {
+    queue_push( &( _jobQueue ), SOLVER_VERIFY | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( 1 )
+  {
+    queue_push( &( _jobQueue ), SOLVER_UPDATE | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( _distupgrade )
+  {
+    queue_push( &( _jobQueue ), SOLVER_DISTUPGRADE | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  if ( _distupgrade_removeunsupported )
+  {
+    queue_push( &( _jobQueue ), SOLVER_DROP_ORPHANED | SOLVER_SOLVABLE_ALL );
+    queue_push( &( _jobQueue ), 0 );
+  }
+  solver_set_flag( _satSolver, SOLVER_FLAG_ADD_ALREADY_RECOMMENDED,
+    !_ignorealreadyrecommended );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_DOWNGRADE, _allowdowngrade );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_NAMECHANGE, _allownamechange );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_ARCHCHANGE, _allowarchchange );
+  solver_set_flag(
+    _satSolver, SOLVER_FLAG_ALLOW_VENDORCHANGE, _allowvendorchange );
+  solver_set_flag( _satSolver, SOLVER_FLAG_ALLOW_UNINSTALL, _allowuninstall );
+  solver_set_flag( _satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE, _noupdateprovide );
+  solver_set_flag( _satSolver, SOLVER_FLAG_SPLITPROVIDES, _dosplitprovides );
+  solver_set_flag( _satSolver, SOLVER_FLAG_IGNORE_RECOMMENDED, _onlyRequires );
 
-    sat::Pool::instance().prepare();
+  sat::Pool::instance().prepare();
 
-    // Solve !
-    MIL << "Starting solving for update...." << endl;
-    MIL << *this;
-    solver_solve( _satSolver, &(_jobQueue) );
-    MIL << "....Solver end" << endl;
+  // Solve !
+  MIL << "Starting solving for update...." << endl;
+  MIL << *this;
+  solver_solve( _satSolver, &( _jobQueue ) );
+  MIL << "....Solver end" << endl;
 
-    // copying solution back to zypp pool
-    //-----------------------------------------
+  // copying solution back to zypp pool
+  //-----------------------------------------
 
-    /*  solvables to be installed */
-    Queue decisionq;
-    queue_init(&decisionq);
-    solver_get_decisionqueue(_satSolver, &decisionq);
-    for (int i = 0; i < decisionq.count; i++)
+  /*  solvables to be installed */
+  Queue decisionq;
+  queue_init( &decisionq );
+  solver_get_decisionqueue( _satSolver, &decisionq );
+  for ( int i = 0; i < decisionq.count; i++ )
+  {
+    Id p;
+    p = decisionq.elements[ i ];
+    if ( p < 0 || !sat::Solvable( p ) )
+      continue;
+    if ( sat::Solvable( p ).repository().get() == _satSolver->pool->installed )
+      continue;
+
+    PoolItem poolItem = _pool.find( sat::Solvable( p ) );
+    if ( poolItem )
     {
-      Id p;
-      p = decisionq.elements[i];
-      if (p < 0 || !sat::Solvable(p))
-	continue;
-      if (sat::Solvable(p).repository().get() == _satSolver->pool->installed)
-	continue;
+      SATSolutionToPool(
+        poolItem, ResStatus::toBeInstalled, ResStatus::SOLVER );
+    }
+    else
+    {
+      ERR << "id " << p << " not found in ZYPP pool." << endl;
+    }
+  }
+  queue_free( &decisionq );
 
-      PoolItem poolItem = _pool.find (sat::Solvable(p));
-      if (poolItem) {
-	  SATSolutionToPool (poolItem, ResStatus::toBeInstalled, ResStatus::SOLVER);
-      } else {
-	  ERR << "id " << p << " not found in ZYPP pool." << endl;
+  /* solvables to be erased */
+  for ( int i = _satSolver->pool->installed->start;
+        i < _satSolver->pool->installed->start +
+              _satSolver->pool->installed->nsolvables;
+        i++ )
+  {
+    if ( solver_get_decisionlevel( _satSolver, i ) > 0 )
+      continue;
+
+    PoolItem poolItem( _pool.find( sat::Solvable( i ) ) );
+    if ( poolItem )
+    {
+      // Check if this is an update
+      CheckIfUpdate info( ( sat::Solvable( i ) ) );
+      invokeOnEach( _pool.byIdentBegin( poolItem ),
+        _pool.byIdentEnd( poolItem ),
+        resfilter::ByUninstalled(), // ByUninstalled
+        functor::functorRef<bool, PoolItem>( info ) );
+
+      if ( info.is_updated )
+      {
+        SATSolutionToPool(
+          poolItem, ResStatus::toBeUninstalledDueToUpgrade, ResStatus::SOLVER );
+      }
+      else
+      {
+        SATSolutionToPool(
+          poolItem, ResStatus::toBeUninstalled, ResStatus::SOLVER );
       }
     }
-    queue_free(&decisionq);
-
-    /* solvables to be erased */
-    for (int i = _satSolver->pool->installed->start; i < _satSolver->pool->installed->start + _satSolver->pool->installed->nsolvables; i++)
+    else
     {
-      if (solver_get_decisionlevel(_satSolver, i) > 0)
-	  continue;
-
-      PoolItem poolItem( _pool.find( sat::Solvable(i) ) );
-      if (poolItem) {
-	  // Check if this is an update
-	  CheckIfUpdate info( (sat::Solvable(i)) );
-	  invokeOnEach( _pool.byIdentBegin( poolItem ),
-			_pool.byIdentEnd( poolItem ),
-			resfilter::ByUninstalled(),			// ByUninstalled
-			functor::functorRef<bool,PoolItem> (info) );
-
-	  if (info.is_updated) {
-	      SATSolutionToPool (poolItem, ResStatus::toBeUninstalledDueToUpgrade , ResStatus::SOLVER);
-	  } else {
-	      SATSolutionToPool (poolItem, ResStatus::toBeUninstalled, ResStatus::SOLVER);
-	  }
-      } else {
-	  ERR << "id " << i << " not found in ZYPP pool." << endl;
-      }
+      ERR << "id " << i << " not found in ZYPP pool." << endl;
     }
-    MIL << "SATResolver::doUpdate() done" << endl;
+  }
+  MIL << "SATResolver::doUpdate() done" << endl;
 }
-
-
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -916,21 +1004,20 @@ void SATResolver::doUpdate()
 
 struct FindPackage : public resfilter::ResObjectFilterFunctor
 {
-    ProblemSolutionCombi *problemSolution;
-    TransactionKind action;
-    FindPackage (ProblemSolutionCombi *p, const TransactionKind act)
-       : problemSolution (p)
-       , action (act)
-	{
-	}
+  ProblemSolutionCombi *problemSolution;
+  TransactionKind action;
+  FindPackage( ProblemSolutionCombi *p, const TransactionKind act )
+    : problemSolution( p )
+    , action( act )
+  {
+  }
 
-    bool operator()( PoolItem p)
-   {
-       problemSolution->addSingleAction (p, action);
-       return true;
-   }
+  bool operator()( PoolItem p )
+  {
+    problemSolution->addSingleAction( p, action );
+    return true;
+  }
 };
-
 
 //----------------------------------------------------------------------------
 // Checking if this solvable/item has a buddy which reflect the real
@@ -940,7 +1027,7 @@ struct FindPackage : public resfilter::ResObjectFilterFunctor
 // NOT "package release-foo conflicts with package release-bar"
 // (ma: that's why we should map just packages to buddies, not vice versa)
 //----------------------------------------------------------------------------
-inline sat::Solvable mapBuddy( const PoolItem & item_r )
+inline sat::Solvable mapBuddy( const PoolItem &item_r )
 {
   if ( item_r.satSolvable().isKind<Package>() )
   {
@@ -951,15 +1038,22 @@ inline sat::Solvable mapBuddy( const PoolItem & item_r )
   return item_r.satSolvable();
 }
 inline sat::Solvable mapBuddy( sat::Solvable item_r )
-{ return mapBuddy( PoolItem( item_r ) ); }
+{
+  return mapBuddy( PoolItem( item_r ) );
+}
 
-PoolItem SATResolver::mapItem ( const PoolItem & item )
-{ return PoolItem( mapBuddy( item ) ); }
+PoolItem SATResolver::mapItem( const PoolItem &item )
+{
+  return PoolItem( mapBuddy( item ) );
+}
 
-sat::Solvable SATResolver::mapSolvable ( const Id & id )
-{ return mapBuddy( sat::Solvable(id) ); }
+sat::Solvable SATResolver::mapSolvable( const Id &id )
+{
+  return mapBuddy( sat::Solvable( id ) );
+}
 
-string SATResolver::SATprobleminfoString(Id problem, string &detail, Id &ignoreId)
+string SATResolver::SATprobleminfoString(
+  Id problem, string &detail, Id &ignoreId )
 {
   string ret;
   sat::detail::CPool *pool = _satSolver->pool;
@@ -971,498 +1065,650 @@ string SATResolver::SATprobleminfoString(Id problem, string &detail, Id &ignoreI
 
   // FIXME: solver_findallproblemrules to get all rules for this problem
   // (the 'most relevabt' one returned by solver_findproblemrule is embedded
-  probr = solver_findproblemrule(_satSolver, problem);
-  switch (solver_ruleinfo(_satSolver, probr, &source, &target, &dep))
+  probr = solver_findproblemrule( _satSolver, problem );
+  switch ( solver_ruleinfo( _satSolver, probr, &source, &target, &dep ) )
   {
-      case SOLVER_RULE_DISTUPGRADE:
-	  s = mapSolvable (source);
-	  ret = str::form (_("%s does not belong to a distupgrade repository"), s.asString().c_str());
-  	  break;
-      case SOLVER_RULE_INFARCH:
-	  s = mapSolvable (source);
-	  ret = str::form (_("%s has inferior architecture"), s.asString().c_str());
-	  break;
-      case SOLVER_RULE_UPDATE:
-	  s = mapSolvable (source);
-	  ret = str::form (_("problem with installed package %s"), s.asString().c_str());
-	  break;
-      case SOLVER_RULE_JOB:
-	  ret = _("conflicting requests");
-	  break;
-      case SOLVER_RULE_RPM:
-	  ret = _("some dependency problem");
-	  break;
-      case SOLVER_RULE_JOB_NOTHING_PROVIDES_DEP:
-	  ret = str::form (_("nothing provides requested %s"), pool_dep2str(pool, dep));
-	  detail += _("Have you enabled all requested repositories?");
-	  break;
-      case SOLVER_RULE_JOB_UNKNOWN_PACKAGE:
-	  ret = str::form (_("package %s does not exist"), pool_dep2str(pool, dep));
-	  detail += _("Have you enabled all requested repositories?");
-	  break;
-      case SOLVER_RULE_JOB_UNSUPPORTED:
-	  ret = _("unsupported request");
-	  break;
-      case SOLVER_RULE_JOB_PROVIDED_BY_SYSTEM:
-	  ret = str::form (_("%s is provided by the system and cannot be erased"), pool_dep2str(pool, dep));
-	  break;
-      case SOLVER_RULE_RPM_NOT_INSTALLABLE:
-	  s = mapSolvable (source);
-	  ret = str::form (_("%s is not installable"), s.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_NOTHING_PROVIDES_DEP:
-	  ignoreId = source; // for setting weak dependencies
-	  s = mapSolvable (source);
-	  ret = str::form (_("nothing provides %s needed by %s"), pool_dep2str(pool, dep), s.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_SAME_NAME:
-	  s = mapSolvable (source);
-	  s2 = mapSolvable (target);
-	  ret = str::form (_("cannot install both %s and %s"), s.asString().c_str(), s2.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_PACKAGE_CONFLICT:
-	  s = mapSolvable (source);
-	  s2 = mapSolvable (target);
-	  ret = str::form (_("%s conflicts with %s provided by %s"), s.asString().c_str(), pool_dep2str(pool, dep), s2.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_PACKAGE_OBSOLETES:
-	  s = mapSolvable (source);
-	  s2 = mapSolvable (target);
-	  ret = str::form (_("%s obsoletes %s provided by %s"), s.asString().c_str(), pool_dep2str(pool, dep), s2.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_INSTALLEDPKG_OBSOLETES:
-	  s = mapSolvable (source);
-	  s2 = mapSolvable (target);
-	  ret = str::form (_("installed %s obsoletes %s provided by %s"), s.asString().c_str(), pool_dep2str(pool, dep), s2.asString().c_str());
-	  break;
-      case SOLVER_RULE_RPM_SELF_CONFLICT:
-	  s = mapSolvable (source);
-	  ret = str::form (_("solvable %s conflicts with %s provided by itself"), s.asString().c_str(), pool_dep2str(pool, dep));
-          break;
-      case SOLVER_RULE_RPM_PACKAGE_REQUIRES:
-	  ignoreId = source; // for setting weak dependencies
-	  s = mapSolvable (source);
-	  Capability cap(dep);
-	  sat::WhatProvides possibleProviders(cap);
+    case SOLVER_RULE_DISTUPGRADE:
+      s = mapSolvable( source );
+      ret = str::form( _( "%s does not belong to a distupgrade repository" ),
+        s.asString().c_str() );
+      break;
+    case SOLVER_RULE_INFARCH:
+      s = mapSolvable( source );
+      ret =
+        str::form( _( "%s has inferior architecture" ), s.asString().c_str() );
+      break;
+    case SOLVER_RULE_UPDATE:
+      s = mapSolvable( source );
+      ret = str::form(
+        _( "problem with installed package %s" ), s.asString().c_str() );
+      break;
+    case SOLVER_RULE_JOB:
+      ret = _( "conflicting requests" );
+      break;
+    case SOLVER_RULE_RPM:
+      ret = _( "some dependency problem" );
+      break;
+    case SOLVER_RULE_JOB_NOTHING_PROVIDES_DEP:
+      ret = str::form(
+        _( "nothing provides requested %s" ), pool_dep2str( pool, dep ) );
+      detail += _( "Have you enabled all requested repositories?" );
+      break;
+    case SOLVER_RULE_JOB_UNKNOWN_PACKAGE:
+      ret = str::form(
+        _( "package %s does not exist" ), pool_dep2str( pool, dep ) );
+      detail += _( "Have you enabled all requested repositories?" );
+      break;
+    case SOLVER_RULE_JOB_UNSUPPORTED:
+      ret = _( "unsupported request" );
+      break;
+    case SOLVER_RULE_JOB_PROVIDED_BY_SYSTEM:
+      ret = str::form( _( "%s is provided by the system and cannot be erased" ),
+        pool_dep2str( pool, dep ) );
+      break;
+    case SOLVER_RULE_RPM_NOT_INSTALLABLE:
+      s = mapSolvable( source );
+      ret = str::form( _( "%s is not installable" ), s.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_NOTHING_PROVIDES_DEP:
+      ignoreId = source; // for setting weak dependencies
+      s = mapSolvable( source );
+      ret = str::form( _( "nothing provides %s needed by %s" ),
+        pool_dep2str( pool, dep ), s.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_SAME_NAME:
+      s = mapSolvable( source );
+      s2 = mapSolvable( target );
+      ret = str::form( _( "cannot install both %s and %s" ),
+        s.asString().c_str(), s2.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_PACKAGE_CONFLICT:
+      s = mapSolvable( source );
+      s2 = mapSolvable( target );
+      ret = str::form( _( "%s conflicts with %s provided by %s" ),
+        s.asString().c_str(), pool_dep2str( pool, dep ),
+        s2.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_PACKAGE_OBSOLETES:
+      s = mapSolvable( source );
+      s2 = mapSolvable( target );
+      ret =
+        str::form( _( "%s obsoletes %s provided by %s" ), s.asString().c_str(),
+          pool_dep2str( pool, dep ), s2.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_INSTALLEDPKG_OBSOLETES:
+      s = mapSolvable( source );
+      s2 = mapSolvable( target );
+      ret = str::form( _( "installed %s obsoletes %s provided by %s" ),
+        s.asString().c_str(), pool_dep2str( pool, dep ),
+        s2.asString().c_str() );
+      break;
+    case SOLVER_RULE_RPM_SELF_CONFLICT:
+      s = mapSolvable( source );
+      ret = str::form( _( "solvable %s conflicts with %s provided by itself" ),
+        s.asString().c_str(), pool_dep2str( pool, dep ) );
+      break;
+    case SOLVER_RULE_RPM_PACKAGE_REQUIRES:
+      ignoreId = source; // for setting weak dependencies
+      s = mapSolvable( source );
+      Capability cap( dep );
+      sat::WhatProvides possibleProviders( cap );
 
-	  // check, if a provider will be deleted
-	  typedef list<PoolItem> ProviderList;
-	  ProviderList providerlistInstalled, providerlistUninstalled;
-	  for_( iter1, possibleProviders.begin(), possibleProviders.end() ) {
-	      PoolItem provider1 = ResPool::instance().find( *iter1 );
-	      // find pair of an installed/uninstalled item with the same NVR
-	      bool found = false;
-	      for_( iter2, possibleProviders.begin(), possibleProviders.end() ) {
-		  PoolItem provider2 = ResPool::instance().find( *iter2 );
-		  if (compareByNVR (provider1,provider2) == 0
-		      && ( (provider1.status().isInstalled() && provider2.status().isUninstalled())
-			  || (provider2.status().isInstalled() && provider1.status().isUninstalled()) ))  {
-		      found = true;
-		      break;
-		  }
-	      }
-	      if (!found) {
-		  if (provider1.status().isInstalled())
-		      providerlistInstalled.push_back(provider1);
-		  else
-		      providerlistUninstalled.push_back(provider1);
-	      }
-	  }
+      // check, if a provider will be deleted
+      typedef list<PoolItem> ProviderList;
+      ProviderList providerlistInstalled, providerlistUninstalled;
+      for_( iter1, possibleProviders.begin(), possibleProviders.end() )
+      {
+        PoolItem provider1 = ResPool::instance().find( *iter1 );
+        // find pair of an installed/uninstalled item with the same NVR
+        bool found = false;
+        for_( iter2, possibleProviders.begin(), possibleProviders.end() )
+        {
+          PoolItem provider2 = ResPool::instance().find( *iter2 );
+          if ( compareByNVR( provider1, provider2 ) == 0 &&
+               ( ( provider1.status().isInstalled() &&
+                   provider2.status().isUninstalled() ) ||
+                 ( provider2.status().isInstalled() &&
+                   provider1.status().isUninstalled() ) ) )
+          {
+            found = true;
+            break;
+          }
+        }
+        if ( !found )
+        {
+          if ( provider1.status().isInstalled() )
+            providerlistInstalled.push_back( provider1 );
+          else
+            providerlistUninstalled.push_back( provider1 );
+        }
+      }
 
-	  ret = str::form (_("%s requires %s, but this requirement cannot be provided"), s.asString().c_str(), pool_dep2str(pool, dep));
-	  if (providerlistInstalled.size() > 0) {
-	      detail += _("deleted providers: ");
-	      for (ProviderList::const_iterator iter = providerlistInstalled.begin(); iter != providerlistInstalled.end(); iter++) {
-		  if (iter == providerlistInstalled.begin())
-		      detail += itemToString( *iter );
-		  else
-		      detail += "\n                   " + itemToString( mapItem(*iter) );
-	      }
-	  }
-	  if (providerlistUninstalled.size() > 0) {
-	      if (detail.size() > 0)
-		  // translators: 'uninstallable' == 'not installable'
-		  detail += _("\nuninstallable providers: ");
-	      else
-		  // translators: 'uninstallable' == 'not installable'
-		  detail = _("uninstallable providers: ");
-	      for (ProviderList::const_iterator iter = providerlistUninstalled.begin(); iter != providerlistUninstalled.end(); iter++) {
-		  if (iter == providerlistUninstalled.begin())
-		      detail += itemToString( *iter );
-		  else
-		      detail += "\n                   " + itemToString( mapItem(*iter) );
-	      }
-	  }
-	  break;
+      ret = str::form(
+        _( "%s requires %s, but this requirement cannot be provided" ),
+        s.asString().c_str(), pool_dep2str( pool, dep ) );
+      if ( providerlistInstalled.size() > 0 )
+      {
+        detail += _( "deleted providers: " );
+        for ( ProviderList::const_iterator iter = providerlistInstalled.begin();
+              iter != providerlistInstalled.end(); iter++ )
+        {
+          if ( iter == providerlistInstalled.begin() )
+            detail += itemToString( *iter );
+          else
+            detail +=
+              "\n                   " + itemToString( mapItem( *iter ) );
+        }
+      }
+      if ( providerlistUninstalled.size() > 0 )
+      {
+        if ( detail.size() > 0 )
+          // translators: 'uninstallable' == 'not installable'
+          detail += _( "\nuninstallable providers: " );
+        else
+          // translators: 'uninstallable' == 'not installable'
+          detail = _( "uninstallable providers: " );
+        for ( ProviderList::const_iterator iter =
+                providerlistUninstalled.begin();
+              iter != providerlistUninstalled.end(); iter++ )
+        {
+          if ( iter == providerlistUninstalled.begin() )
+            detail += itemToString( *iter );
+          else
+            detail +=
+              "\n                   " + itemToString( mapItem( *iter ) );
+        }
+      }
+      break;
   }
 
   return ret;
 }
 
-ResolverProblemList
-SATResolver::problems ()
+ResolverProblemList SATResolver::problems()
 {
-    ResolverProblemList resolverProblems;
-    if (_satSolver && solver_problem_count(_satSolver)) {
-	sat::detail::CPool *pool = _satSolver->pool;
-	int pcnt;
-	Id p, rp, what;
-	Id problem, solution, element;
-	sat::Solvable s, sd;
+  ResolverProblemList resolverProblems;
+  if ( _satSolver && solver_problem_count( _satSolver ) )
+  {
+    sat::detail::CPool *pool = _satSolver->pool;
+    int pcnt;
+    Id p, rp, what;
+    Id problem, solution, element;
+    sat::Solvable s, sd;
 
-	CapabilitySet system_requires = SystemCheck::instance().requiredSystemCap();
-	CapabilitySet system_conflicts = SystemCheck::instance().conflictSystemCap();
+    CapabilitySet system_requires = SystemCheck::instance().requiredSystemCap();
+    CapabilitySet system_conflicts =
+      SystemCheck::instance().conflictSystemCap();
 
-	MIL << "Encountered problems! Here are the solutions:\n" << endl;
-	pcnt = 1;
-	problem = 0;
-	while ((problem = solver_next_problem(_satSolver, problem)) != 0) {
-	    MIL << "Problem " <<  pcnt++ << ":" << endl;
-	    MIL << "====================================" << endl;
-	    string detail;
-	    Id ignoreId;
-	    string whatString = SATprobleminfoString (problem,detail,ignoreId);
-	    MIL << whatString << endl;
-	    MIL << "------------------------------------" << endl;
-	    ResolverProblem_Ptr resolverProblem = new ResolverProblem (whatString, detail);
+    MIL << "Encountered problems! Here are the solutions:\n" << endl;
+    pcnt = 1;
+    problem = 0;
+    while ( ( problem = solver_next_problem( _satSolver, problem ) ) != 0 )
+    {
+      MIL << "Problem " << pcnt++ << ":" << endl;
+      MIL << "====================================" << endl;
+      string detail;
+      Id ignoreId;
+      string whatString = SATprobleminfoString( problem, detail, ignoreId );
+      MIL << whatString << endl;
+      MIL << "------------------------------------" << endl;
+      ResolverProblem_Ptr resolverProblem =
+        new ResolverProblem( whatString, detail );
 
-	    solution = 0;
-	    while ((solution = solver_next_solution(_satSolver, problem, solution)) != 0) {
-		element = 0;
-		ProblemSolutionCombi *problemSolution = new ProblemSolutionCombi;
-		while ((element = solver_next_solutionelement(_satSolver, problem, solution, element, &p, &rp)) != 0) {
-		    if (p == SOLVER_SOLUTION_JOB) {
-			/* job, rp is index into job queue */
-			what = _jobQueue.elements[rp];
-			switch (_jobQueue.elements[rp-1]&(SOLVER_SELECTMASK|SOLVER_JOBMASK))
-			{
-			    case SOLVER_INSTALL | SOLVER_SOLVABLE: {
-				s = mapSolvable (what);
-				PoolItem poolItem = _pool.find (s);
-				if (poolItem) {
-				    if (pool->installed && s.get()->repo == pool->installed) {
-					problemSolution->addSingleAction (poolItem, REMOVE);
-					string description = str::form (_("remove lock to allow removal of %s"),  s.asString().c_str() );
-					MIL << description << endl;
-					problemSolution->addDescription (description);
-				    } else {
-					problemSolution->addSingleAction (poolItem, KEEP);
-					string description = str::form (_("do not install %s"), s.asString().c_str());
-					MIL << description << endl;
-					problemSolution->addDescription (description);
-				    }
-				} else {
-				    ERR << "SOLVER_INSTALL_SOLVABLE: No item found for " << s.asString() << endl;
-				}
-			    }
-				break;
-			    case SOLVER_ERASE | SOLVER_SOLVABLE: {
-				s = mapSolvable (what);
-				PoolItem poolItem = _pool.find (s);
-				if (poolItem) {
-				    if (pool->installed && s.get()->repo == pool->installed) {
-					problemSolution->addSingleAction (poolItem, KEEP);
-					string description = str::form (_("keep %s"), s.asString().c_str());
-					MIL << description << endl;
-					problemSolution->addDescription (description);
-				    } else {
-					problemSolution->addSingleAction (poolItem, UNLOCK);
-					string description = str::form (_("remove lock to allow installation of %s"), itemToString( poolItem ).c_str());
-					MIL << description << endl;
-					problemSolution->addDescription (description);
-				    }
-				} else {
-				    ERR << "SOLVER_ERASE_SOLVABLE: No item found for " << s.asString() << endl;
-				}
-			    }
-				break;
-			    case SOLVER_INSTALL | SOLVER_SOLVABLE_NAME:
-				{
-				IdString ident( what );
-				SolverQueueItemInstall_Ptr install =
-				    new SolverQueueItemInstall(_pool, ident.asString(), false );
-				problemSolution->addSingleAction (install, REMOVE_SOLVE_QUEUE_ITEM);
+      solution = 0;
+      while ( ( solution =
+                  solver_next_solution( _satSolver, problem, solution ) ) != 0 )
+      {
+        element = 0;
+        ProblemSolutionCombi *problemSolution = new ProblemSolutionCombi;
+        while ( ( element = solver_next_solutionelement(
+                    _satSolver, problem, solution, element, &p, &rp ) ) != 0 )
+        {
+          if ( p == SOLVER_SOLUTION_JOB )
+          {
+            /* job, rp is index into job queue */
+            what = _jobQueue.elements[ rp ];
+            switch ( _jobQueue.elements[ rp - 1 ] &
+                     ( SOLVER_SELECTMASK | SOLVER_JOBMASK ) )
+            {
+              case SOLVER_INSTALL | SOLVER_SOLVABLE:
+              {
+                s = mapSolvable( what );
+                PoolItem poolItem = _pool.find( s );
+                if ( poolItem )
+                {
+                  if ( pool->installed && s.get()->repo == pool->installed )
+                  {
+                    problemSolution->addSingleAction( poolItem, REMOVE );
+                    string description =
+                      str::form( _( "remove lock to allow removal of %s" ),
+                        s.asString().c_str() );
+                    MIL << description << endl;
+                    problemSolution->addDescription( description );
+                  }
+                  else
+                  {
+                    problemSolution->addSingleAction( poolItem, KEEP );
+                    string description = str::form(
+                      _( "do not install %s" ), s.asString().c_str() );
+                    MIL << description << endl;
+                    problemSolution->addDescription( description );
+                  }
+                }
+                else
+                {
+                  ERR << "SOLVER_INSTALL_SOLVABLE: No item found for "
+                      << s.asString() << endl;
+                }
+              }
+              break;
+              case SOLVER_ERASE | SOLVER_SOLVABLE:
+              {
+                s = mapSolvable( what );
+                PoolItem poolItem = _pool.find( s );
+                if ( poolItem )
+                {
+                  if ( pool->installed && s.get()->repo == pool->installed )
+                  {
+                    problemSolution->addSingleAction( poolItem, KEEP );
+                    string description =
+                      str::form( _( "keep %s" ), s.asString().c_str() );
+                    MIL << description << endl;
+                    problemSolution->addDescription( description );
+                  }
+                  else
+                  {
+                    problemSolution->addSingleAction( poolItem, UNLOCK );
+                    string description =
+                      str::form( _( "remove lock to allow installation of %s" ),
+                        itemToString( poolItem ).c_str() );
+                    MIL << description << endl;
+                    problemSolution->addDescription( description );
+                  }
+                }
+                else
+                {
+                  ERR << "SOLVER_ERASE_SOLVABLE: No item found for "
+                      << s.asString() << endl;
+                }
+              }
+              break;
+              case SOLVER_INSTALL | SOLVER_SOLVABLE_NAME:
+              {
+                IdString ident( what );
+                SolverQueueItemInstall_Ptr install =
+                  new SolverQueueItemInstall( _pool, ident.asString(), false );
+                problemSolution->addSingleAction(
+                  install, REMOVE_SOLVE_QUEUE_ITEM );
 
-				string description = str::form (_("do not install %s"), ident.c_str() );
-				MIL << description << endl;
-				problemSolution->addDescription (description);
-				}
-				break;
-			    case SOLVER_ERASE | SOLVER_SOLVABLE_NAME:
-				{
-				// As we do not know, if this request has come from resolvePool or
-				// resolveQueue we will have to take care for both cases.
-                                IdString ident( what );
-				FindPackage info (problemSolution, KEEP);
-				invokeOnEach( _pool.byIdentBegin( ident ),
-					      _pool.byIdentEnd( ident ),
-					      functor::chain (resfilter::ByInstalled (),			// ByInstalled
-							      resfilter::ByTransact ()),			// will be deinstalled
-					      functor::functorRef<bool,PoolItem> (info) );
+                string description =
+                  str::form( _( "do not install %s" ), ident.c_str() );
+                MIL << description << endl;
+                problemSolution->addDescription( description );
+              }
+              break;
+              case SOLVER_ERASE | SOLVER_SOLVABLE_NAME:
+              {
+                // As we do not know, if this request has come from resolvePool or
+                // resolveQueue we will have to take care for both cases.
+                IdString ident( what );
+                FindPackage info( problemSolution, KEEP );
+                invokeOnEach(
+                  _pool.byIdentBegin( ident ), _pool.byIdentEnd( ident ),
+                  functor::chain( resfilter::ByInstalled(), // ByInstalled
+                    resfilter::ByTransact() ), // will be deinstalled
+                  functor::functorRef<bool, PoolItem>( info ) );
 
-				SolverQueueItemDelete_Ptr del =
-				    new SolverQueueItemDelete(_pool, ident.asString(), false );
-				problemSolution->addSingleAction (del, REMOVE_SOLVE_QUEUE_ITEM);
+                SolverQueueItemDelete_Ptr del =
+                  new SolverQueueItemDelete( _pool, ident.asString(), false );
+                problemSolution->addSingleAction(
+                  del, REMOVE_SOLVE_QUEUE_ITEM );
 
-				string description = str::form (_("keep %s"), ident.c_str());
-				MIL << description << endl;
-				problemSolution->addDescription (description);
-				}
-				break;
-			    case SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES:
-				{
-				problemSolution->addSingleAction (Capability(what), REMOVE_EXTRA_REQUIRE);
-				string description = "";
+                string description = str::form( _( "keep %s" ), ident.c_str() );
+                MIL << description << endl;
+                problemSolution->addDescription( description );
+              }
+              break;
+              case SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES:
+              {
+                problemSolution->addSingleAction(
+                  Capability( what ), REMOVE_EXTRA_REQUIRE );
+                string description = "";
 
-				// Checking if this problem solution would break your system
-				if (system_requires.find(Capability(what)) != system_requires.end()) {
-				    // Show a better warning
-				    resolverProblem->setDetails( resolverProblem->description() + "\n" + resolverProblem->details() );
-				    resolverProblem->setDescription(_("This request will break your system!"));
-				    description = _("ignore the warning of a broken system");
-                                    description += string(" (requires:")+pool_dep2str(pool, what)+")";
-                                    MIL << description << endl;
-                                    problemSolution->addFrontDescription (description);
-				} else {
-				    description = str::form (_("do not ask to install a solvable providing %s"), pool_dep2str(pool, what));
-                                    MIL << description << endl;
-                                    problemSolution->addDescription (description);
-				}
-				}
-				break;
-			    case SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES:
-				{
-				problemSolution->addSingleAction (Capability(what), REMOVE_EXTRA_CONFLICT);
-				string description = "";
+                // Checking if this problem solution would break your system
+                if ( system_requires.find( Capability( what ) ) !=
+                     system_requires.end() )
+                {
+                  // Show a better warning
+                  resolverProblem->setDetails( resolverProblem->description() +
+                                               "\n" +
+                                               resolverProblem->details() );
+                  resolverProblem->setDescription(
+                    _( "This request will break your system!" ) );
+                  description = _( "ignore the warning of a broken system" );
+                  description +=
+                    string( " (requires:" ) + pool_dep2str( pool, what ) + ")";
+                  MIL << description << endl;
+                  problemSolution->addFrontDescription( description );
+                }
+                else
+                {
+                  description = str::form(
+                    _( "do not ask to install a solvable providing %s" ),
+                    pool_dep2str( pool, what ) );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                }
+              }
+              break;
+              case SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES:
+              {
+                problemSolution->addSingleAction(
+                  Capability( what ), REMOVE_EXTRA_CONFLICT );
+                string description = "";
 
-				// Checking if this problem solution would break your system
-				if (system_conflicts.find(Capability(what)) != system_conflicts.end()) {
-				    // Show a better warning
-				    resolverProblem->setDetails( resolverProblem->description() + "\n" + resolverProblem->details() );
-				    resolverProblem->setDescription(_("This request will break your system!"));
-				    description = _("ignore the warning of a broken system");
-                                    description += string(" (conflicts:")+pool_dep2str(pool, what)+")";
-                                    MIL << description << endl;
-                                    problemSolution->addFrontDescription (description);
+                // Checking if this problem solution would break your system
+                if ( system_conflicts.find( Capability( what ) ) !=
+                     system_conflicts.end() )
+                {
+                  // Show a better warning
+                  resolverProblem->setDetails( resolverProblem->description() +
+                                               "\n" +
+                                               resolverProblem->details() );
+                  resolverProblem->setDescription(
+                    _( "This request will break your system!" ) );
+                  description = _( "ignore the warning of a broken system" );
+                  description +=
+                    string( " (conflicts:" ) + pool_dep2str( pool, what ) + ")";
+                  MIL << description << endl;
+                  problemSolution->addFrontDescription( description );
+                }
+                else
+                {
+                  description = str::form(
+                    _( "do not ask to delete all solvables providing %s" ),
+                    pool_dep2str( pool, what ) );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                }
+              }
+              break;
+              case SOLVER_UPDATE | SOLVER_SOLVABLE:
+              {
+                s = mapSolvable( what );
+                PoolItem poolItem = _pool.find( s );
+                if ( poolItem )
+                {
+                  if ( pool->installed && s.get()->repo == pool->installed )
+                  {
+                    problemSolution->addSingleAction( poolItem, KEEP );
+                    string description = str::form(
+                      _( "do not install most recent version of %s" ),
+                      s.asString().c_str() );
+                    MIL << description << endl;
+                    problemSolution->addDescription( description );
+                  }
+                  else
+                  {
+                    ERR << "SOLVER_INSTALL_SOLVABLE_UPDATE " << poolItem
+                        << " is not selected for installation" << endl;
+                  }
+                }
+                else
+                {
+                  ERR << "SOLVER_INSTALL_SOLVABLE_UPDATE: No item found for "
+                      << s.asString() << endl;
+                }
+              }
+              break;
+              default:
+                MIL << "- do something different" << endl;
+                ERR << "No valid solution available" << endl;
+                break;
+            }
+          }
+          else if ( p == SOLVER_SOLUTION_INFARCH )
+          {
+            s = mapSolvable( rp );
+            PoolItem poolItem = _pool.find( s );
+            if ( pool->installed && s.get()->repo == pool->installed )
+            {
+              problemSolution->addSingleAction( poolItem, LOCK );
+              string description =
+                str::form( _( "keep %s despite the inferior architecture" ),
+                  s.asString().c_str() );
+              MIL << description << endl;
+              problemSolution->addDescription( description );
+            }
+            else
+            {
+              problemSolution->addSingleAction( poolItem, INSTALL );
+              string description =
+                str::form( _( "install %s despite the inferior architecture" ),
+                  s.asString().c_str() );
+              MIL << description << endl;
+              problemSolution->addDescription( description );
+            }
+          }
+          else if ( p == SOLVER_SOLUTION_DISTUPGRADE )
+          {
+            s = mapSolvable( rp );
+            PoolItem poolItem = _pool.find( s );
+            if ( pool->installed && s.get()->repo == pool->installed )
+            {
+              problemSolution->addSingleAction( poolItem, LOCK );
+              string description =
+                str::form( _( "keep obsolete %s" ), s.asString().c_str() );
+              MIL << description << endl;
+              problemSolution->addDescription( description );
+            }
+            else
+            {
+              problemSolution->addSingleAction( poolItem, INSTALL );
+              string description =
+                str::form( _( "install %s from excluded repository" ),
+                  s.asString().c_str() );
+              MIL << description << endl;
+              problemSolution->addDescription( description );
+            }
+          }
+          else
+          {
+            /* policy, replace p with rp */
+            s = mapSolvable( p );
+            PoolItem itemFrom = _pool.find( s );
+            if ( rp )
+            {
+              int gotone = 0;
 
-				} else {
-				    description = str::form (_("do not ask to delete all solvables providing %s"), pool_dep2str(pool, what));
-                                    MIL << description << endl;
-                                    problemSolution->addDescription (description);
-				}
-				}
-				break;
-			    case SOLVER_UPDATE | SOLVER_SOLVABLE:
-				{
-				s = mapSolvable (what);
-				PoolItem poolItem = _pool.find (s);
-				if (poolItem) {
-				    if (pool->installed && s.get()->repo == pool->installed) {
-					problemSolution->addSingleAction (poolItem, KEEP);
-					string description = str::form (_("do not install most recent version of %s"), s.asString().c_str());
-					MIL << description << endl;
-					problemSolution->addDescription (description);
-				    } else {
-					ERR << "SOLVER_INSTALL_SOLVABLE_UPDATE " << poolItem << " is not selected for installation" << endl;
-				    }
-				} else {
-				    ERR << "SOLVER_INSTALL_SOLVABLE_UPDATE: No item found for " << s.asString() << endl;
-				}
-				}
-				break;
-			    default:
-				MIL << "- do something different" << endl;
-				ERR << "No valid solution available" << endl;
-				break;
-			}
-		    } else if (p == SOLVER_SOLUTION_INFARCH) {
-			s = mapSolvable (rp);
-			PoolItem poolItem = _pool.find (s);
-			if (pool->installed && s.get()->repo == pool->installed) {
-			    problemSolution->addSingleAction (poolItem, LOCK);
-			    string description = str::form (_("keep %s despite the inferior architecture"), s.asString().c_str());
-			    MIL << description << endl;
-			    problemSolution->addDescription (description);
-			} else {
-			    problemSolution->addSingleAction (poolItem, INSTALL);
-			    string description = str::form (_("install %s despite the inferior architecture"), s.asString().c_str());
-			    MIL << description << endl;
-			    problemSolution->addDescription (description);
-			}
-		    } else if (p == SOLVER_SOLUTION_DISTUPGRADE) {
-			s = mapSolvable (rp);
-			PoolItem poolItem = _pool.find (s);
-			if (pool->installed && s.get()->repo == pool->installed) {
-			    problemSolution->addSingleAction (poolItem, LOCK);
-			    string description = str::form (_("keep obsolete %s"), s.asString().c_str());
-			    MIL << description << endl;
-			    problemSolution->addDescription (description);
-			} else {
-			    problemSolution->addSingleAction (poolItem, INSTALL);
-			    string description = str::form (_("install %s from excluded repository"), s.asString().c_str());
-			    MIL << description << endl;
-			    problemSolution->addDescription (description);
-			}
-		    } else {
-			/* policy, replace p with rp */
-			s = mapSolvable (p);
-			PoolItem itemFrom = _pool.find (s);
-			if (rp)
-			{
-			    int gotone = 0;
+              sd = mapSolvable( rp );
+              PoolItem itemTo = _pool.find( sd );
+              if ( itemFrom && itemTo )
+              {
+                problemSolution->addSingleAction( itemTo, INSTALL );
+                int illegal =
+                  policy_is_illegal( _satSolver, s.get(), sd.get(), 0 );
 
-			    sd = mapSolvable (rp);
-			    PoolItem itemTo = _pool.find (sd);
-			    if (itemFrom && itemTo) {
-				problemSolution->addSingleAction (itemTo, INSTALL);
-				int illegal = policy_is_illegal(_satSolver, s.get(), sd.get(), 0);
+                if ( ( illegal & POLICY_ILLEGAL_DOWNGRADE ) != 0 )
+                {
+                  string description = str::form( _( "downgrade of %s to %s" ),
+                    s.asString().c_str(), sd.asString().c_str() );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                  gotone = 1;
+                }
+                if ( ( illegal & POLICY_ILLEGAL_ARCHCHANGE ) != 0 )
+                {
+                  string description =
+                    str::form( _( "architecture change of %s to %s" ),
+                      s.asString().c_str(), sd.asString().c_str() );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                  gotone = 1;
+                }
+                if ( ( illegal & POLICY_ILLEGAL_VENDORCHANGE ) != 0 )
+                {
+                  IdString s_vendor( s.vendor() );
+                  IdString sd_vendor( sd.vendor() );
+                  string description = str::form(
+                    _( "install %s (with vendor change)\n  %s  -->  %s" ),
+                    sd.asString().c_str(),
+                    ( s_vendor ? s_vendor.c_str() : " (no vendor) " ),
+                    ( sd_vendor ? sd_vendor.c_str() : " (no vendor) " ) );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                  gotone = 1;
+                }
+                if ( !gotone )
+                {
+                  string description =
+                    str::form( _( "replacement of %s with %s" ),
+                      s.asString().c_str(), sd.asString().c_str() );
+                  MIL << description << endl;
+                  problemSolution->addDescription( description );
+                }
+              }
+              else
+              {
+                ERR << s.asString() << " or " << sd.asString() << " not found"
+                    << endl;
+              }
+            }
+            else
+            {
+              if ( itemFrom )
+              {
+                string description = str::form(
+                  _( "deinstallation of %s" ), s.asString().c_str() );
+                MIL << description << endl;
+                problemSolution->addDescription( description );
+                problemSolution->addSingleAction( itemFrom, REMOVE );
+              }
+            }
+          }
+        }
+        resolverProblem->addSolution( problemSolution,
+          problemSolution->actionCount() > 1
+            ? true
+            : false ); // Solutions with more than 1 action will be shown first.
+        MIL << "------------------------------------" << endl;
+      }
 
-				if ((illegal & POLICY_ILLEGAL_DOWNGRADE) != 0)
-				{
-				    string description = str::form (_("downgrade of %s to %s"), s.asString().c_str(), sd.asString().c_str());
-				    MIL << description << endl;
-				    problemSolution->addDescription (description);
-				    gotone = 1;
-				}
-				if ((illegal & POLICY_ILLEGAL_ARCHCHANGE) != 0)
-				{
-				    string description = str::form (_("architecture change of %s to %s"), s.asString().c_str(), sd.asString().c_str());
-				    MIL << description << endl;
-				    problemSolution->addDescription (description);
-				    gotone = 1;
-				}
-				if ((illegal & POLICY_ILLEGAL_VENDORCHANGE) != 0)
-				{
-                                    IdString s_vendor( s.vendor() );
-                                    IdString sd_vendor( sd.vendor() );
-				    string description = str::form (_("install %s (with vendor change)\n  %s  -->  %s") ,
-								    sd.asString().c_str(),
-                                                                    ( s_vendor ? s_vendor.c_str() : " (no vendor) " ),
-                                                                    ( sd_vendor ? sd_vendor.c_str() : " (no vendor) " ) );
-				    MIL << description << endl;
-				    problemSolution->addDescription (description);
-				    gotone = 1;
-				}
-				if (!gotone) {
-				    string description = str::form (_("replacement of %s with %s"), s.asString().c_str(), sd.asString().c_str());
-				    MIL << description << endl;
-				    problemSolution->addDescription (description);
-				}
-			    } else {
-				ERR << s.asString() << " or "  << sd.asString() << " not found" << endl;
-			    }
-			}
-			else
-			{
-			    if (itemFrom) {
-				string description = str::form (_("deinstallation of %s"), s.asString().c_str());
-				MIL << description << endl;
-				problemSolution->addDescription (description);
-				problemSolution->addSingleAction (itemFrom, REMOVE);
-			    }
-			}
-		    }
-		}
-		resolverProblem->addSolution (problemSolution,
-					      problemSolution->actionCount() > 1 ? true : false); // Solutions with more than 1 action will be shown first.
-		MIL << "------------------------------------" << endl;
-	    }
+      if ( ignoreId > 0 )
+      {
+        // There is a possibility to ignore this error by setting weak dependencies
+        PoolItem item = _pool.find( sat::Solvable( ignoreId ) );
+        ProblemSolutionIgnore *problemSolution =
+          new ProblemSolutionIgnore( item );
+        resolverProblem->addSolution( problemSolution,
+          false ); // Solutions will be shown at the end
+        MIL << "ignore some dependencies of " << item << endl;
+        MIL << "------------------------------------" << endl;
+      }
 
-	    if (ignoreId > 0) {
-		// There is a possibility to ignore this error by setting weak dependencies
-		PoolItem item = _pool.find (sat::Solvable(ignoreId));
-		ProblemSolutionIgnore *problemSolution = new ProblemSolutionIgnore(item);
-		resolverProblem->addSolution (problemSolution,
-					      false); // Solutions will be shown at the end
-		MIL << "ignore some dependencies of " << item << endl;
-		MIL << "------------------------------------" << endl;
-	    }
-
-	    // save problem
-	    resolverProblems.push_back (resolverProblem);
-	}
+      // save problem
+      resolverProblems.push_back( resolverProblem );
     }
-    return resolverProblems;
+  }
+  return resolverProblems;
 }
 
-void SATResolver::applySolutions( const ProblemSolutionList & solutions )
-{ Resolver( _pool ).applySolutions( solutions ); }
+void SATResolver::applySolutions( const ProblemSolutionList &solutions )
+{
+  Resolver( _pool ).applySolutions( solutions );
+}
 
 void SATResolver::setLocks()
 {
-    for (PoolItemList::const_iterator iter = _items_to_lock.begin(); iter != _items_to_lock.end(); ++iter) {
-        sat::detail::SolvableIdType ident( (*iter)->satSolvable().id() );
-	if (iter->status().isInstalled()) {
-	    MIL << "Lock installed item " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE );
-	    queue_push( &(_jobQueue), ident );
-	} else {
-	    MIL << "Lock NOT installed item " << *iter << endl;
-	    queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE | MAYBE_CLEANDEPS );
-	    queue_push( &(_jobQueue), ident );
-	}
+  for ( PoolItemList::const_iterator iter = _items_to_lock.begin();
+        iter != _items_to_lock.end(); ++iter )
+  {
+    sat::detail::SolvableIdType ident( ( *iter )->satSolvable().id() );
+    if ( iter->status().isInstalled() )
+    {
+      MIL << "Lock installed item " << *iter << endl;
+      queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE );
+      queue_push( &( _jobQueue ), ident );
     }
+    else
+    {
+      MIL << "Lock NOT installed item " << *iter << endl;
+      queue_push(
+        &( _jobQueue ), SOLVER_ERASE | SOLVER_SOLVABLE | MAYBE_CLEANDEPS );
+      queue_push( &( _jobQueue ), ident );
+    }
+  }
 
-    ///////////////////////////////////////////////////////////////////
-    // Weak locks: Ignore if an item with this name is already installed.
-    // If it's not installed try to keep it this way using a weak delete
-    ///////////////////////////////////////////////////////////////////
-    std::set<IdString> unifiedByName;
-    for (PoolItemList::const_iterator iter = _items_to_keep.begin(); iter != _items_to_keep.end(); ++iter) {
-      IdString ident( (*iter)->satSolvable().ident() );
-      if ( unifiedByName.insert( ident ).second )
+  ///////////////////////////////////////////////////////////////////
+  // Weak locks: Ignore if an item with this name is already installed.
+  // If it's not installed try to keep it this way using a weak delete
+  ///////////////////////////////////////////////////////////////////
+  std::set<IdString> unifiedByName;
+  for ( PoolItemList::const_iterator iter = _items_to_keep.begin();
+        iter != _items_to_keep.end(); ++iter )
+  {
+    IdString ident( ( *iter )->satSolvable().ident() );
+    if ( unifiedByName.insert( ident ).second )
+    {
+      if ( !ui::Selectable::get( *iter )->hasInstalledObj() )
       {
-	if ( ! ui::Selectable::get( *iter )->hasInstalledObj() )
-	{
-	  MIL << "Keep NOT installed name " << ident << " (" << *iter << ")" << endl;
-	  queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
-	  queue_push( &(_jobQueue), ident.id() );
-	}
+        MIL << "Keep NOT installed name " << ident << " (" << *iter << ")"
+            << endl;
+        queue_push( &( _jobQueue ),
+          SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
+        queue_push( &( _jobQueue ), ident.id() );
       }
     }
+  }
 }
 
 void SATResolver::setSystemRequirements()
 {
-    CapabilitySet system_requires = SystemCheck::instance().requiredSystemCap();
-    CapabilitySet system_conflicts = SystemCheck::instance().conflictSystemCap();
+  CapabilitySet system_requires = SystemCheck::instance().requiredSystemCap();
+  CapabilitySet system_conflicts = SystemCheck::instance().conflictSystemCap();
 
-    for (CapabilitySet::const_iterator iter = system_requires.begin(); iter != system_requires.end(); ++iter) {
-	queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
-	queue_push( &(_jobQueue), iter->id() );
-	MIL << "SYSTEM Requires " << *iter << endl;
-    }
+  for ( CapabilitySet::const_iterator iter = system_requires.begin();
+        iter != system_requires.end(); ++iter )
+  {
+    queue_push( &( _jobQueue ), SOLVER_INSTALL | SOLVER_SOLVABLE_PROVIDES );
+    queue_push( &( _jobQueue ), iter->id() );
+    MIL << "SYSTEM Requires " << *iter << endl;
+  }
 
-    for (CapabilitySet::const_iterator iter = system_conflicts.begin(); iter != system_conflicts.end(); ++iter) {
-	queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES | MAYBE_CLEANDEPS );
-	queue_push( &(_jobQueue), iter->id() );
-	MIL << "SYSTEM Conflicts " << *iter << endl;
-    }
+  for ( CapabilitySet::const_iterator iter = system_conflicts.begin();
+        iter != system_conflicts.end(); ++iter )
+  {
+    queue_push( &( _jobQueue ),
+      SOLVER_ERASE | SOLVER_SOLVABLE_PROVIDES | MAYBE_CLEANDEPS );
+    queue_push( &( _jobQueue ), iter->id() );
+    MIL << "SYSTEM Conflicts " << *iter << endl;
+  }
 
-    // Lock the architecture of the running systems rpm
-    // package on distupgrade.
-    if ( _distupgrade && ZConfig::instance().systemRoot() == "/" )
+  // Lock the architecture of the running systems rpm
+  // package on distupgrade.
+  if ( _distupgrade && ZConfig::instance().systemRoot() == "/" )
+  {
+    ResPool pool( ResPool::instance() );
+    IdString rpm( "rpm" );
+    for_( it, pool.byIdentBegin( rpm ), pool.byIdentEnd( rpm ) )
     {
-      ResPool pool( ResPool::instance() );
-      IdString rpm( "rpm" );
-      for_( it, pool.byIdentBegin(rpm), pool.byIdentEnd(rpm) )
+      if ( ( *it )->isSystem() )
       {
-        if ( (*it)->isSystem() )
-        {
-          Capability archrule( (*it)->arch(), rpm.c_str(), Capability::PARSED );
-          queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_ESSENTIAL );
-          queue_push( &(_jobQueue), archrule.id() );
-
-        }
+        Capability archrule( ( *it )->arch(), rpm.c_str(), Capability::PARSED );
+        queue_push( &( _jobQueue ),
+          SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_ESSENTIAL );
+        queue_push( &( _jobQueue ), archrule.id() );
       }
     }
+  }
 }
 
 sat::StringQueue SATResolver::autoInstalled() const
 {
   sat::StringQueue ret;
   if ( _satSolver )
-    ::solver_get_userinstalled( _satSolver, ret, GET_USERINSTALLED_NAMES|GET_USERINSTALLED_INVERTED );
+    ::solver_get_userinstalled(
+      _satSolver, ret, GET_USERINSTALLED_NAMES | GET_USERINSTALLED_INVERTED );
   return ret;
 }
 
@@ -1474,14 +1720,12 @@ sat::StringQueue SATResolver::userInstalled() const
   return ret;
 }
 
-
 ///////////////////////////////////////////////////////////////////
-};// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////
-

@@ -10,7 +10,7 @@
 
 #define INCLUDE_TESTSETUP_WITHOUT_BOOST
 #include "zypp/../tests/lib/TestSetup.h"
-#undef  INCLUDE_TESTSETUP_WITHOUT_BOOST
+#undef INCLUDE_TESTSETUP_WITHOUT_BOOST
 
 #include <zypp/base/Easy.h>
 #include <zypp/base/Counter.h>
@@ -28,23 +28,30 @@
 #include <zypp/Repository.h>
 #include <zypp/RepoManager.h>
 
-
 using namespace zypp;
 using zypp::debug::Measure;
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
 
-#define for_providers_(IT,CAP) for ( sat::WhatProvides::const_iterator IT = sat::WhatProvides( Capability CAP ).begin(), _for_end = sat::WhatProvides().end(); IT != _for_end; ++IT )
+#define for_providers_( IT, CAP )                                              \
+  for ( sat::WhatProvides::const_iterator                                      \
+          IT = sat::WhatProvides( Capability CAP ).begin(),                    \
+          _for_end = sat::WhatProvides().end();                                \
+        IT != _for_end; ++IT )
 
 ///////////////////////////////////////////////////////////////////
 
-template<typename T>
+template <typename T>
 void whichType( T )
-{ INT << __PRETTY_FUNCTION__ << endl; }
-template<typename T>
+{
+  INT << __PRETTY_FUNCTION__ << endl;
+}
+template <typename T>
 void whichType()
-{ INT << __PRETTY_FUNCTION__ << endl; }
+{
+  INT << __PRETTY_FUNCTION__ << endl;
+}
 
 void waitForInput()
 {
@@ -55,16 +62,17 @@ void waitForInput()
 
 ///////////////////////////////////////////////////////////////////
 
-void mksrc( const std::string & url, const std::string & alias, RepoManager & repoManager )
+void mksrc(
+  const std::string &url, const std::string &alias, RepoManager &repoManager )
 {
   RepoInfo nrepo;
   nrepo.setAlias( alias );
   nrepo.setName( alias );
   nrepo.setEnabled( true );
   nrepo.setAutorefresh( false );
-  nrepo.addBaseUrl( Url(url) );
+  nrepo.addBaseUrl( Url( url ) );
 
-  if ( ! repoManager.isCached( nrepo ) )
+  if ( !repoManager.isCached( nrepo ) )
   {
     repoManager.buildCache( nrepo );
   }
@@ -74,72 +82,74 @@ void mksrc( const std::string & url, const std::string & alias, RepoManager & re
 
 ///////////////////////////////////////////////////////////////////
 //
-template<class TCondition>
-  struct SetTrue
-  {
-    SetTrue( TCondition cond_r )
+template <class TCondition>
+struct SetTrue
+{
+  SetTrue( TCondition cond_r )
     : _cond( cond_r )
-    {}
-
-    template<class Tp>
-      bool operator()( Tp t ) const
-      {
-        _cond( t );
-        return true;
-      }
-
-    TCondition _cond;
-  };
-
-template<class TCondition>
-  inline SetTrue<TCondition> setTrue_c( TCondition cond_r )
   {
-    return SetTrue<TCondition>( cond_r );
   }
+
+  template <class Tp>
+  bool operator()( Tp t ) const
+  {
+    _cond( t );
+    return true;
+  }
+
+  TCondition _cond;
+};
+
+template <class TCondition>
+inline SetTrue<TCondition> setTrue_c( TCondition cond_r )
+{
+  return SetTrue<TCondition>( cond_r );
+}
 
 struct PrintPoolItem
 {
-  void operator()( const PoolItem & pi ) const
-  { USR << pi << endl; }
+  void operator()( const PoolItem &pi ) const { USR << pi << endl; }
 };
 
 template <class TIterator>
-  std::ostream & vdumpPoolStats( std::ostream & str,
-                                 TIterator begin_r, TIterator end_r )
-  {
-    pool::PoolStats stats;
-    std::for_each( begin_r, end_r,
+std::ostream &vdumpPoolStats(
+  std::ostream &str, TIterator begin_r, TIterator end_r )
+{
+  pool::PoolStats stats;
+  std::for_each(
+    begin_r, end_r,
 
-                   functor::chain( setTrue_c(PrintPoolItem()),
-                                   setTrue_c(functor::functorRef<void,ResObject::constPtr>(stats)) )
+    functor::chain( setTrue_c( PrintPoolItem() ),
+      setTrue_c( functor::functorRef<void, ResObject::constPtr>( stats ) ) )
 
-                 );
-    return str << stats;
-  }
+      );
+  return str << stats;
+}
 
 ///////////////////////////////////////////////////////////////////
 // rstats
 
 typedef zypp::pool::PoolStats Rstats;
 
-template<class TIterator>
-  void rstats( TIterator begin, TIterator end )
-  {
-    DBG << __PRETTY_FUNCTION__ << endl;
-    Rstats stats;
-    for_each( begin, end, functor::functorRef<void,ResObject::constPtr>(stats) );
-    MIL << stats << endl;
-  }
+template <class TIterator>
+void rstats( TIterator begin, TIterator end )
+{
+  DBG << __PRETTY_FUNCTION__ << endl;
+  Rstats stats;
+  for_each(
+    begin, end, functor::functorRef<void, ResObject::constPtr>( stats ) );
+  MIL << stats << endl;
+}
 
-template<class TContainer>
-  void rstats( const TContainer & c )
-  {
-    rstats( c.begin(), c.end() );
-  }
+template <class TContainer>
+void rstats( const TContainer &c )
+{
+  rstats( c.begin(), c.end() );
+}
 
 ///////////////////////////////////////////////////////////////////
 
-inline RepoManager makeRepoManager( const Pathname & mgrdir_r )
+inline RepoManager makeRepoManager( const Pathname &mgrdir_r )
 {
   // set via zypp.conf
   return RepoManager();
@@ -147,34 +157,33 @@ inline RepoManager makeRepoManager( const Pathname & mgrdir_r )
 
 ///////////////////////////////////////////////////////////////////
 
-template<class TRes>
-ui::Selectable::Ptr getSel( const std::string & name_r )
+template <class TRes>
+ui::Selectable::Ptr getSel( const std::string &name_r )
 {
   ResPoolProxy uipool( getZYpp()->poolProxy() );
-  for_(it, uipool.byKindBegin<TRes>(), uipool.byKindEnd<TRes>() )
+  for_( it, uipool.byKindBegin<TRes>(), uipool.byKindEnd<TRes>() )
   {
-    if ( (*it)->name() == name_r )
-      return (*it);
+    if ( ( *it )->name() == name_r )
+      return ( *it );
   }
   return 0;
 }
 
-
-
-template<class TRes>
-PoolItem getPi( const std::string & alias_r, const std::string & name_r, const Edition & ed_r, const Arch & arch_r )
+template <class TRes>
+PoolItem getPi( const std::string &alias_r, const std::string &name_r,
+  const Edition &ed_r, const Arch &arch_r )
 {
   PoolItem ret;
   ResPool pool( getZYpp()->pool() );
-  for_(it, pool.byIdentBegin<TRes>(name_r), pool.byIdentEnd<TRes>(name_r) )
+  for_( it, pool.byIdentBegin<TRes>( name_r ), pool.byIdentEnd<TRes>( name_r ) )
   {
-    if (    ( ed_r.empty()    || ed_r.match((*it)->edition()) == 0 )
-         && ( arch_r.empty()  || arch_r == (*it)->arch()  )
-         && ( alias_r.empty() || alias_r == (*it)->repository().alias() ) )
+    if ( ( ed_r.empty() || ed_r.match( ( *it )->edition() ) == 0 ) &&
+         ( arch_r.empty() || arch_r == ( *it )->arch() ) &&
+         ( alias_r.empty() || alias_r == ( *it )->repository().alias() ) )
     {
       if ( !ret || ret->repository().alias() == sat::Pool::systemRepoAlias() )
       {
-        ret = (*it);
+        ret = ( *it );
         MIL << "    ->" << *it << endl;
       }
       else
@@ -189,23 +198,24 @@ PoolItem getPi( const std::string & alias_r, const std::string & name_r, const E
   }
   return ret;
 }
-template<class TRes>
-PoolItem getPi( const std::string & name_r, const Edition & ed_r, const Arch & arch_r )
+template <class TRes>
+PoolItem getPi(
+  const std::string &name_r, const Edition &ed_r, const Arch &arch_r )
 {
   return getPi<TRes>( "", name_r, ed_r, arch_r );
 }
-template<class TRes>
-PoolItem getPi( const std::string & name_r )
+template <class TRes>
+PoolItem getPi( const std::string &name_r )
 {
   return getPi<TRes>( name_r, Edition(), Arch_empty );
 }
-template<class TRes>
-PoolItem getPi( const std::string & name_r, const Edition & ed_r )
+template <class TRes>
+PoolItem getPi( const std::string &name_r, const Edition &ed_r )
 {
   return getPi<TRes>( name_r, ed_r, Arch_empty );
 }
-template<class TRes>
-PoolItem getPi( const std::string & name_r, const Arch & arch_r )
+template <class TRes>
+PoolItem getPi( const std::string &name_r, const Arch &arch_r )
 {
   return getPi<TRes>( name_r, Edition(), arch_r );
 }

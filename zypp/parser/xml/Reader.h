@@ -23,29 +23,28 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace xml
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace xml
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Validate
-    //
-    /** xmlTextReader document validation.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Validate
+//
+/** xmlTextReader document validation.
      * \todo Implement RelaxNG and W3C XSD
      **/
-    struct Validate
-    {
-      static Validate none()
-      { return Validate(); }
-    };
-    ///////////////////////////////////////////////////////////////////
+struct Validate
+{
+  static Validate none() { return Validate(); }
+};
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Reader
-    //
-    /** xmlTextReader based interface to iterate xml streams.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Reader
+//
+/** xmlTextReader based interface to iterate xml streams.
      *
      * \code
      * // Consume a node.
@@ -92,19 +91,18 @@ namespace zypp
      * }
      * \endcode
      **/
-    class Reader : private zypp::base::NonCopyable
-    {
-    public:
-      /** Ctor. Setup xmlTextReader and advance to the 1st Node. */
-      Reader( const InputStream & stream_r,
-              const Validate & validate_r = Validate::none() );
+class Reader : private zypp::base::NonCopyable
+{
+public:
+  /** Ctor. Setup xmlTextReader and advance to the 1st Node. */
+  Reader( const InputStream &stream_r,
+    const Validate &validate_r = Validate::none() );
 
-      /** Dtor. */
-      ~Reader();
+  /** Dtor. */
+  ~Reader();
 
-    public:
-
-      /**
+public:
+  /**
        *  If the current node is not empty, advances the reader to the next
        *  node, and returns the value
        *
@@ -112,92 +110,91 @@ namespace zypp
        * and get a empty text value back. Use it only if you are sure the node
        * has no XML subtree.
        */
-      XmlString nodeText();
+  XmlString nodeText();
 
-      /** */
-      bool nextNode();
+  /** */
+  bool nextNode();
 
-      /** */
-      bool nextNodeAttribute();
+  /** */
+  bool nextNodeAttribute();
 
-      /** */
-      bool nextNodeOrAttribute()
-      { return( nextNodeAttribute() || nextNode() ); }
+  /** */
+  bool nextNodeOrAttribute() { return ( nextNodeAttribute() || nextNode() ); }
 
-      /** */
-      bool atEnd() const
-      { return( _node.readState() == XML_TEXTREADER_MODE_CLOSED ); }
+  /** */
+  bool atEnd() const
+  {
+    return ( _node.readState() == XML_TEXTREADER_MODE_CLOSED );
+  }
 
-      /** */
-      const Node & operator*() const
-      { return _node; }
+  /** */
+  const Node &operator*() const { return _node; }
 
-      /** */
-      const Node * operator->() const
-      { return &_node; }
+  /** */
+  const Node *operator->() const { return &_node; }
 
-    public:
-      /** */
-      typedef function<bool( Reader & )> ProcessNode;
+public:
+  /** */
+  typedef function<bool( Reader & )> ProcessNode;
 
-      /** */
-      bool foreachNode( ProcessNode fnc_r )
-      {
-        if ( _node.isAttribute() )
-          nextNode();
-        for ( ; ! atEnd(); nextNode() )
-          {
-            if ( ! fnc_r( *this ) )
-              return false;
-          }
-        return true;
-      }
+  /** */
+  bool foreachNode( ProcessNode fnc_r )
+  {
+    if ( _node.isAttribute() )
+      nextNode();
+    for ( ; !atEnd(); nextNode() )
+    {
+      if ( !fnc_r( *this ) )
+        return false;
+    }
+    return true;
+  }
 
-      /** */
-      bool foreachNodeAttribute( ProcessNode fnc_r )
-      {
-        if ( _node.isAttribute() && ! fnc_r( *this ) )
-          return false;
-        while( nextNodeAttribute() )
-          {
-            if ( ! fnc_r( *this ) )
-              return false;
-          }
-        return true;
-      }
+  /** */
+  bool foreachNodeAttribute( ProcessNode fnc_r )
+  {
+    if ( _node.isAttribute() && !fnc_r( *this ) )
+      return false;
+    while ( nextNodeAttribute() )
+    {
+      if ( !fnc_r( *this ) )
+        return false;
+    }
+    return true;
+  }
 
-      /** */
-      bool foreachNodeOrAttribute( ProcessNode fnc_r )
-      {
-        for ( ; ! atEnd(); nextNodeOrAttribute() )
-          {
-            if ( ! fnc_r( *this ) )
-              return false;
-          }
-        return true;
-      }
+  /** */
+  bool foreachNodeOrAttribute( ProcessNode fnc_r )
+  {
+    for ( ; !atEnd(); nextNodeOrAttribute() )
+    {
+      if ( !fnc_r( *this ) )
+        return false;
+    }
+    return true;
+  }
 
-    public:
-      /** */
-      bool seekToNode( int depth_r, const std::string & name_r );
+public:
+  /** */
+  bool seekToNode( int depth_r, const std::string &name_r );
 
-      /** */
-      bool seekToEndNode( int depth_r, const std::string & name_r );
+  /** */
+  bool seekToEndNode( int depth_r, const std::string &name_r );
 
-    private:
-      void close();
+private:
+  void close();
 
-    private:
-      InputStream      _stream;
-      xmlTextReaderPtr _reader;
-      Node             _node;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  InputStream _stream;
+  xmlTextReaderPtr _reader;
+  Node _node;
+};
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace xml
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace xml
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_PARSER_XML_READER_H

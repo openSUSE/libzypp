@@ -19,20 +19,22 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  namespace traits
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace traits
+{ /////////////////////////////////////////////////////////////////
 
-    /** Those are denoted to be installed, if the
+/** Those are denoted to be installed, if the
      *  solver verifies them as being satisfied. */
-    inline bool isPseudoInstalled( ResKind kind_r )
-    { return( kind_r == ResKind::patch ); }
+inline bool isPseudoInstalled( ResKind kind_r )
+{
+  return ( kind_r == ResKind::patch );
+}
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace traits
-  ///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace traits
+///////////////////////////////////////////////////////////////////
 
-   /** \defgroup ZYPP_RESOLVABLE_SMART_POINTER_TYPES
+/** \defgroup ZYPP_RESOLVABLE_SMART_POINTER_TYPES
    * Resolvable smart pointer types.
    *
    * Forward declaration of all Resolvable smart pointer
@@ -59,68 +61,71 @@ namespace zypp
    * put <tt>IMPL_PTR_TYPE(NewResolvable);</tt> into the \c NewResolvable.cc.
    * Also check class \ref ResKind, ResKind.cc, ResObject.cc(makeResObject)
    */
-  //@{
-  DEFINE_PTR_TYPE( Resolvable );
-  DEFINE_PTR_TYPE( ResObject );
+//@{
+DEFINE_PTR_TYPE( Resolvable );
+DEFINE_PTR_TYPE( ResObject );
 
-  DEFINE_PTR_TYPE( Package );
-  DEFINE_PTR_TYPE( SrcPackage );
-  DEFINE_PTR_TYPE( Pattern );
-  DEFINE_PTR_TYPE( Product );
-  DEFINE_PTR_TYPE( Patch );
-  DEFINE_PTR_TYPE( Application );
-  //@}
+DEFINE_PTR_TYPE( Package );
+DEFINE_PTR_TYPE( SrcPackage );
+DEFINE_PTR_TYPE( Pattern );
+DEFINE_PTR_TYPE( Product );
+DEFINE_PTR_TYPE( Patch );
+DEFINE_PTR_TYPE( Application );
+//@}
 
-  /** Frequently associated. */
-  class PoolItem;
+/** Frequently associated. */
+class PoolItem;
 
-  /** ResTraits. Defines common types and the ResKind value. */
-  template<typename TRes>
-    struct ResTraits
-    {
-      typedef ResKind                   KindType;
-      typedef intrusive_ptr<TRes>       PtrType;
-      typedef intrusive_ptr<const TRes> constPtrType;
+/** ResTraits. Defines common types and the ResKind value. */
+template <typename TRes>
+struct ResTraits
+{
+  typedef ResKind KindType;
+  typedef intrusive_ptr<TRes> PtrType;
+  typedef intrusive_ptr<const TRes> constPtrType;
 
-      static const ResKind              kind;	///< Defined in ResKind.cc
+  static const ResKind kind; ///< Defined in ResKind.cc
 
-      /** Those are denoted to be installed, if the
+  /** Those are denoted to be installed, if the
        *  solver verifies them as being satisfied. */
-      static bool isPseudoInstalled()   { return traits::isPseudoInstalled( kind ); }
-    };
+  static bool isPseudoInstalled() { return traits::isPseudoInstalled( kind ); }
+};
 
-  /** ResTraits specialisation for Resolvable.
+/** ResTraits specialisation for Resolvable.
    * Resolvable is common base and has no Kind value.
    */
-  template<>
-    struct ResTraits<Resolvable>
-    {
-      typedef ResKind                         KindType;
-      typedef intrusive_ptr<Resolvable>       PtrType;
-      typedef intrusive_ptr<const Resolvable> constPtrType;
-    };
+template <>
+struct ResTraits<Resolvable>
+{
+  typedef ResKind KindType;
+  typedef intrusive_ptr<Resolvable> PtrType;
+  typedef intrusive_ptr<const Resolvable> constPtrType;
+};
 
-  /** ResTraits specialisation for ResObject.
+/** ResTraits specialisation for ResObject.
    * ResObject is common base and has no Kind value.
    */
-  template<>
-    struct ResTraits<ResObject>
-    {
-      typedef ResKind                        KindType;
-      typedef intrusive_ptr<ResObject>       PtrType;
-      typedef intrusive_ptr<const ResObject> constPtrType;
-    };
+template <>
+struct ResTraits<ResObject>
+{
+  typedef ResKind KindType;
+  typedef intrusive_ptr<ResObject> PtrType;
+  typedef intrusive_ptr<const ResObject> constPtrType;
+};
 
-  /** Convenient access to well known ResKinds.
+/** Convenient access to well known ResKinds.
    * \code
    * ResKind packagekind = ResKind::package;
    * ResKind packagekind = resKind<Package>();
    * \endcode
   */
-  template<typename TRes>
-    inline ResKind resKind() { return ResTraits<TRes>::kind; }
+template <typename TRes>
+inline ResKind resKind()
+{
+  return ResTraits<TRes>::kind;
+}
 
-  /** Convenient test for ResKinds.
+/** Convenient test for ResKinds.
    * \code
    * ResKind value;
    * if ( ResKind::package == value )
@@ -128,20 +133,25 @@ namespace zypp
    * if ( isKind<Package>( value ) )
    * \endcode
    */
-  template<typename TRes>
-    inline bool isKind( const ResKind & val_r )
-    { return( resKind<TRes>() == val_r ); }
-  /** \overload */
-  template<typename TRes>
-    inline bool isKind( const std::string & val_r )
-    { return( resKind<TRes>() == val_r ); }
-  /** \overload */
-  template<typename TRes>
-    inline bool isKind( const char * val_r )
-    { return( resKind<TRes>() == val_r ); }
+template <typename TRes>
+inline bool isKind( const ResKind &val_r )
+{
+  return ( resKind<TRes>() == val_r );
+}
+/** \overload */
+template <typename TRes>
+inline bool isKind( const std::string &val_r )
+{
+  return ( resKind<TRes>() == val_r );
+}
+/** \overload */
+template <typename TRes>
+inline bool isKind( const char *val_r )
+{
+  return ( resKind<TRes>() == val_r );
+}
 
-
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_RESTRAITS_H

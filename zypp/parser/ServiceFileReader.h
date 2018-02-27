@@ -22,12 +22,12 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class ServiceInfo;
-  ///////////////////////////////////////////////////////////////////
-  namespace parser
-  { /////////////////////////////////////////////////////////////////
+class ServiceInfo;
+///////////////////////////////////////////////////////////////////
+namespace parser
+{ /////////////////////////////////////////////////////////////////
 
-    /**
+/**
      * \short Read service data from a .service file
      *
      * After each service is read, a \ref ServiceInfo is prepared and \ref _callback
@@ -40,25 +40,26 @@ namespace zypp
      *                bind( &SomeClass::callbackfunc, &SomeClassInstance, _1 ) );
      * \endcode
      */
-    class ServiceFileReader
-    {
-      friend std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
-    public:
-      
-     /**
+class ServiceFileReader
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const ServiceFileReader &obj );
+
+public:
+  /**
       * Callback definition.
       * First parameter is a \ref ServiceInfo object with the resource.
       *
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      typedef function< bool( const ServiceInfo & )> ProcessService;
-      
-      /** Implementation  */
-      class Impl;
+  typedef function<bool( const ServiceInfo & )> ProcessService;
 
-    public:
-     /**
+  /** Implementation  */
+  class Impl;
+
+public:
+  /**
       * \short Constructor. Creates the reader and start reading.
       *
       * \param serviceFile A valid .repo file
@@ -68,23 +69,23 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      ServiceFileReader( const Pathname & serviceFile,
-                      const ProcessService & callback);
-     
-      /**
+  ServiceFileReader(
+    const Pathname &serviceFile, const ProcessService &callback );
+
+  /**
        * Dtor
        */
-      ~ServiceFileReader();
-    };
-    ///////////////////////////////////////////////////////////////////
+  ~ServiceFileReader();
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates ServiceFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
+/** \relates ServiceFileReader Stream output */
+std::ostream &operator<<( std::ostream &str, const ServiceFileReader &obj );
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace parser
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace parser
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_REPO_SERVICEFILEREADER_H

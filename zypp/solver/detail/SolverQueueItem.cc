@@ -17,8 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-extern "C"
-{
+extern "C" {
 #include <solv/solver.h>
 }
 
@@ -30,76 +29,83 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SolverQueueItem);
+IMPL_PTR_TYPE( SolverQueueItem );
 
 //---------------------------------------------------------------------------
 
-std::ostream &
-SolverQueueItem::dumpOn( std::ostream & os ) const
+std::ostream &SolverQueueItem::dumpOn( std::ostream &os ) const
 {
-    switch (_type) {
-      case QUEUE_ITEM_TYPE_UNKNOWN       :	os << "unknown"; break;
-      case QUEUE_ITEM_TYPE_UPDATE        :	os << "update"; break;
-      case QUEUE_ITEM_TYPE_LOCK          :	os << "lock"; break;
-      case QUEUE_ITEM_TYPE_INSTALL       :	os << "install"; break;
-      case QUEUE_ITEM_TYPE_DELETE        :	os << "delete"; break;
-      case QUEUE_ITEM_TYPE_INSTALL_ONE_OF:	os << "install one of"; break;
-      default: os << "?solverqueueitem?"; break;
-    }
-    return os;
+  switch ( _type )
+  {
+    case QUEUE_ITEM_TYPE_UNKNOWN:
+      os << "unknown";
+      break;
+    case QUEUE_ITEM_TYPE_UPDATE:
+      os << "update";
+      break;
+    case QUEUE_ITEM_TYPE_LOCK:
+      os << "lock";
+      break;
+    case QUEUE_ITEM_TYPE_INSTALL:
+      os << "install";
+      break;
+    case QUEUE_ITEM_TYPE_DELETE:
+      os << "delete";
+      break;
+    case QUEUE_ITEM_TYPE_INSTALL_ONE_OF:
+      os << "install one of";
+      break;
+    default:
+      os << "?solverqueueitem?";
+      break;
+  }
+  return os;
 }
 
-
-ostream&
-operator<<( ostream & os, const SolverQueueItemList & itemlist )
+ostream &operator<<( ostream &os, const SolverQueueItemList &itemlist )
 {
-    for (SolverQueueItemList::const_iterator iter = itemlist.begin(); iter != itemlist.end(); ++iter) {
-	if (iter != itemlist.begin())
-	    os << "," << endl << "\t";
-	os << **iter;
-    }
-    return os;
+  for ( SolverQueueItemList::const_iterator iter = itemlist.begin();
+        iter != itemlist.end(); ++iter )
+  {
+    if ( iter != itemlist.begin() )
+      os << "," << endl << "\t";
+    os << **iter;
+  }
+  return os;
 }
 
 //---------------------------------------------------------------------------
 
-SolverQueueItem::SolverQueueItem (SolverQueueItemType type, const ResPool & pool)
-    : _type (type)
-    , _pool (pool)
+SolverQueueItem::SolverQueueItem(
+  SolverQueueItemType type, const ResPool &pool )
+  : _type( type )
+  , _pool( pool )
 {
 }
 
-
-SolverQueueItem::~SolverQueueItem()
-{
-}
+SolverQueueItem::~SolverQueueItem() {}
 
 //---------------------------------------------------------------------------
 
-void
-SolverQueueItem::copy (const SolverQueueItem *from)
-{
-}
-
+void SolverQueueItem::copy( const SolverQueueItem *from ) {}
 
 //---------------------------------------------------------------------------
-
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////

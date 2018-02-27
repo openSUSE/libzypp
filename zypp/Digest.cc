@@ -29,289 +29,309 @@
 #include "zypp/Digest.h"
 #include "zypp/base/PtrTypes.h"
 
-namespace zypp {
+namespace zypp
+{
 
-    bool DigestReport::askUserToAcceptNoDigest( const zypp::Pathname &file )
-    { return false; }
+bool DigestReport::askUserToAcceptNoDigest( const zypp::Pathname &file )
+{
+  return false;
+}
 
-    bool DigestReport::askUserToAccepUnknownDigest( const Pathname &file, const std::string &name )
-    { return false; }
+bool DigestReport::askUserToAccepUnknownDigest(
+  const Pathname &file, const std::string &name )
+{
+  return false;
+}
 
-    bool DigestReport::askUserToAcceptWrongDigest( const Pathname &file, const std::string &requested, const std::string &found )
-    { return false; }
+bool DigestReport::askUserToAcceptWrongDigest(
+  const Pathname &file, const std::string &requested, const std::string &found )
+{
+  return false;
+}
 
+const std::string &Digest::md5()
+{
+  static std::string _type( "md5" );
+  return _type;
+}
 
-    const std::string & Digest::md5()
-    { static std::string _type( "md5" ); return _type; }
+const std::string &Digest::sha1()
+{
+  static std::string _type( "sha1" );
+  return _type;
+}
 
-    const std::string & Digest::sha1()
-    { static std::string _type( "sha1" ); return _type; }
+const std::string &Digest::sha224()
+{
+  static std::string _type( "sha224" );
+  return _type;
+}
 
-    const std::string & Digest::sha224()
-    { static std::string _type( "sha224" ); return _type; }
+const std::string &Digest::sha256()
+{
+  static std::string _type( "sha256" );
+  return _type;
+}
 
-    const std::string & Digest::sha256()
-    { static std::string _type( "sha256" ); return _type; }
+const std::string &Digest::sha384()
+{
+  static std::string _type( "sha384" );
+  return _type;
+}
 
-    const std::string & Digest::sha384()
-    { static std::string _type( "sha384" ); return _type; }
+const std::string &Digest::sha512()
+{
+  static std::string _type( "sha512" );
+  return _type;
+}
 
-    const std::string & Digest::sha512()
-    { static std::string _type( "sha512" ); return _type; }
+// private data
+class Digest::P
+{
+  P( const P &p );
+  const P &operator=( const P &p );
 
-    // private data
-    class Digest::P
-    {
-      P(const P& p);
-      const P& operator=(const P& p);
+public:
+  typedef zypp::shared_ptr<EVP_MD_CTX> EvpDataPtr;
+  P();
+  ~P();
 
-      public:
-        typedef zypp::shared_ptr<EVP_MD_CTX> EvpDataPtr;
-        P();
-        ~P();
+  EvpDataPtr mdctx;
 
-        EvpDataPtr mdctx;
+  const EVP_MD *md;
+  unsigned char md_value[ EVP_MAX_MD_SIZE ];
+  unsigned md_len;
 
-        const EVP_MD *md;
-        unsigned char md_value[EVP_MAX_MD_SIZE];
-        unsigned md_len;
+  bool finalized : 1;
+  static bool openssl_digests_added;
 
-        bool finalized : 1;
-        static bool openssl_digests_added;
+  std::string name;
 
-        std::string name;
+  inline bool maybeInit();
+  inline void cleanup();
+};
 
-        inline bool maybeInit();
-        inline void cleanup();
-    };
+using namespace std;
 
+bool Digest::P::openssl_digests_added = false;
 
-    using namespace std;
+Digest::P::P()
+  : md( NULL )
+  , finalized( false )
+{
+}
 
-    bool Digest::P::openssl_digests_added = false;
+Digest::P::~P() { cleanup(); }
 
-    Digest::P::P() :
-      md(NULL),
-      finalized(false)
-    {
-    }
+bool Digest::P::maybeInit()
+{
+  if ( !openssl_digests_added )
+  {
+    OPENSSL_config( NULL );
+    ENGINE_load_builtin_engines();
+    ENGINE_register_all_complete();
+    OpenSSL_add_all_digests();
+    openssl_digests_added = true;
+  }
 
-    Digest::P::~P()
-    {
-      cleanup();
-    }
-
-    bool Digest::P::maybeInit()
-    {
-      if(!openssl_digests_added)
-      {
-        OPENSSL_config(NULL);
-        ENGINE_load_builtin_engines();
-        ENGINE_register_all_complete();
-        OpenSSL_add_all_digests();
-        openssl_digests_added = true;
-      }
-
-      if(!mdctx)
-      {
-        md = EVP_get_digestbyname(name.c_str());
-        if(!md)
-          return false;
+  if ( !mdctx )
+  {
+    md = EVP_get_digestbyname( name.c_str() );
+    if ( !md )
+      return false;
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
-        EvpDataPtr tmp_mdctx(EVP_MD_CTX_create(), EVP_MD_CTX_destroy);
+    EvpDataPtr tmp_mdctx( EVP_MD_CTX_create(), EVP_MD_CTX_destroy );
 #else
-        EvpDataPtr tmp_mdctx(EVP_MD_CTX_new(), EVP_MD_CTX_free);
+    EvpDataPtr tmp_mdctx( EVP_MD_CTX_new(), EVP_MD_CTX_free );
 #endif
-        if (!tmp_mdctx)
-          return false;
+    if ( !tmp_mdctx )
+      return false;
 
-        if (!EVP_DigestInit_ex(tmp_mdctx.get(), md, NULL)) {
-          return false;
-        }
-
-        md_len = 0;
-        ::memset(md_value, 0, sizeof(md_value));
-
-        mdctx.swap(tmp_mdctx);
-      }
-      return true;
+    if ( !EVP_DigestInit_ex( tmp_mdctx.get(), md, NULL ) )
+    {
+      return false;
     }
 
-    void Digest::P::cleanup()
-    {
-      mdctx.reset();
-      finalized = false;
-    }
+    md_len = 0;
+    ::memset( md_value, 0, sizeof( md_value ) );
 
-    Digest::Digest() : _dp(new P())
-    {
-    }
+    mdctx.swap( tmp_mdctx );
+  }
+  return true;
+}
 
-    Digest::~Digest()
-    {
-      delete _dp;
-    }
+void Digest::P::cleanup()
+{
+  mdctx.reset();
+  finalized = false;
+}
 
-    bool Digest::create(const std::string& name)
-    {
-      if(name.empty()) return false;
+Digest::Digest()
+  : _dp( new P() )
+{
+}
 
-      if(_dp->mdctx)
-    	_dp->cleanup();
+Digest::~Digest() { delete _dp; }
 
-      _dp->name = name;
+bool Digest::create( const std::string &name )
+{
+  if ( name.empty() )
+    return false;
 
-      return _dp->maybeInit();
-    }
+  if ( _dp->mdctx )
+    _dp->cleanup();
 
-    const std::string& Digest::name()
-    {
-      return _dp->name;
-    }
+  _dp->name = name;
 
-    bool Digest::reset()
-    {
-      if (!_dp->mdctx)
-        return false;
-      if(!_dp->finalized)
-      {
-        (void)EVP_DigestFinal_ex(_dp->mdctx.get(), _dp->md_value, &_dp->md_len);
-        _dp->finalized = true;
-      }
-      if(!EVP_DigestInit_ex(_dp->mdctx.get(), _dp->md, NULL))
-        return false;
-      _dp->finalized = false;
-      return true;
-    }
+  return _dp->maybeInit();
+}
 
-    std::string Digest::digest()
-    {
-      if(!_dp->maybeInit())
-    	return std::string();
+const std::string &Digest::name() { return _dp->name; }
 
-      if(!_dp->finalized)
-      {
-      if(!EVP_DigestFinal_ex(_dp->mdctx.get(), _dp->md_value, &_dp->md_len))
-    	    return std::string();
+bool Digest::reset()
+{
+  if ( !_dp->mdctx )
+    return false;
+  if ( !_dp->finalized )
+  {
+    (void)EVP_DigestFinal_ex( _dp->mdctx.get(), _dp->md_value, &_dp->md_len );
+    _dp->finalized = true;
+  }
+  if ( !EVP_DigestInit_ex( _dp->mdctx.get(), _dp->md, NULL ) )
+    return false;
+  _dp->finalized = false;
+  return true;
+}
 
-    	_dp->finalized = true;
-      }
+std::string Digest::digest()
+{
+  if ( !_dp->maybeInit() )
+    return std::string();
 
-      char mdtxt[_dp->md_len*2 + 1];
-      mdtxt[_dp->md_len*2] = '\0';
+  if ( !_dp->finalized )
+  {
+    if ( !EVP_DigestFinal_ex( _dp->mdctx.get(), _dp->md_value, &_dp->md_len ) )
+      return std::string();
 
-      for(unsigned i = 0; i < _dp->md_len; ++i)
-      {
-    	::snprintf(mdtxt + i*2, 3, "%02hhx", _dp->md_value[i]);
-      }
+    _dp->finalized = true;
+  }
 
-      return std::string(mdtxt);
-    }
+  char mdtxt[ _dp->md_len * 2 + 1 ];
+  mdtxt[ _dp->md_len * 2 ] = '\0';
 
-    std::vector<unsigned char> Digest::digestVector()
-    {
-      std::vector<unsigned char> r;
-      if(!_dp->maybeInit())
-        return r;
+  for ( unsigned i = 0; i < _dp->md_len; ++i )
+  {
+    ::snprintf( mdtxt + i * 2, 3, "%02hhx", _dp->md_value[ i ] );
+  }
 
-      if(!_dp->finalized)
-      {
-        if(!EVP_DigestFinal_ex(_dp->mdctx.get(), _dp->md_value, &_dp->md_len))
-            return r;
-        _dp->finalized = true;
-      }
-      r.reserve(_dp->md_len);
-      for(unsigned i = 0; i < _dp->md_len; ++i)
-	r.push_back(_dp->md_value[i]);
+  return std::string( mdtxt );
+}
+
+std::vector<unsigned char> Digest::digestVector()
+{
+  std::vector<unsigned char> r;
+  if ( !_dp->maybeInit() )
+    return r;
+
+  if ( !_dp->finalized )
+  {
+    if ( !EVP_DigestFinal_ex( _dp->mdctx.get(), _dp->md_value, &_dp->md_len ) )
       return r;
-    }
+    _dp->finalized = true;
+  }
+  r.reserve( _dp->md_len );
+  for ( unsigned i = 0; i < _dp->md_len; ++i )
+    r.push_back( _dp->md_value[ i ] );
+  return r;
+}
 
-    bool Digest::update(const char* bytes, size_t len)
-    {
-      if(!bytes)
-      {
-    	return false;
-      }
+bool Digest::update( const char *bytes, size_t len )
+{
+  if ( !bytes )
+  {
+    return false;
+  }
 
-      if(!_dp->maybeInit())
-    	return false;
+  if ( !_dp->maybeInit() )
+    return false;
 
-      if(_dp->finalized)
-      {
-    	_dp->cleanup();
-    	if(!_dp->maybeInit())
-    	    return false;
+  if ( _dp->finalized )
+  {
+    _dp->cleanup();
+    if ( !_dp->maybeInit() )
+      return false;
+  }
+  if ( !EVP_DigestUpdate( _dp->mdctx.get(),
+         reinterpret_cast<const unsigned char *>( bytes ), len ) )
+    return false;
 
-      }
-      if(!EVP_DigestUpdate(_dp->mdctx.get(), reinterpret_cast<const unsigned char*>(bytes), len))
-    	return false;
+  return true;
+}
 
-      return true;
-    }
+std::string Digest::digest(
+  const std::string &name, std::istream &is, size_t bufsize )
+{
+  if ( name.empty() || !is )
+    return string();
 
-    std::string Digest::digest(const std::string& name, std::istream& is, size_t bufsize)
-    {
-      if(name.empty() || !is)
-    	return string();
+  char buf[ bufsize ];
 
-      char buf[bufsize];
+  Digest digest;
+  if ( !digest.create( name ) )
+    return string();
 
-      Digest digest;
-      if(!digest.create(name))
-    	return string();
+  while ( is.good() )
+  {
+    int readed;
+    is.read( buf, bufsize );
+    readed = is.gcount();
+    if ( readed && !digest.update( buf, readed ) )
+      return string();
+  }
 
+  return digest.digest();
+}
 
-      while(is.good())
-      {
-        int readed;
-        is.read(buf, bufsize);
-    	readed = is.gcount();
-        if(readed && !digest.update(buf, readed))
-    	    return string();
-      }
-
-      return digest.digest();
-    }
-
-    std::string Digest::digest( const std::string & name, const std::string & input, size_t bufsize )
-    {
-      istringstream is( input );
-      return digest( name, is, bufsize );
-    }
+std::string Digest::digest(
+  const std::string &name, const std::string &input, size_t bufsize )
+{
+  istringstream is( input );
+  return digest( name, is, bufsize );
+}
 
 #ifdef DIGEST_TESTSUITE
-    int main(int argc, char *argv[])
-    {
-      bool openssl = false;
-      unsigned argpos = 1;
+int main( int argc, char *argv[] )
+{
+  bool openssl = false;
+  unsigned argpos = 1;
 
-      if(argc > 1 && string(argv[argpos]) == "--openssl")
-      {
-    	openssl = true;
-    	++argpos;
-      }
+  if ( argc > 1 && string( argv[ argpos ] ) == "--openssl" )
+  {
+    openssl = true;
+    ++argpos;
+  }
 
-      if(argc - argpos < 2)
-      {
-    	cerr << "Usage: " << argv[0] << " <DIGESTNAME> <FILE>" << endl;
-    	return 1;
-      }
+  if ( argc - argpos < 2 )
+  {
+    cerr << "Usage: " << argv[ 0 ] << " <DIGESTNAME> <FILE>" << endl;
+    return 1;
+  }
 
-      const char* digestname = argv[argpos++];
-      const char* fn = argv[argpos++];
+  const char *digestname = argv[ argpos++ ];
+  const char *fn = argv[ argpos++ ];
 
-      ifstream file(fn);
+  ifstream file( fn );
 
-      string digest = Digest::digest(digestname, file);
+  string digest = Digest::digest( digestname, file );
 
-      if(openssl)
-    	cout << digestname << "(" << fn << ")= " << digest << endl;
-      else
-    	cout << digest << "  " << fn << endl;
+  if ( openssl )
+    cout << digestname << "(" << fn << ")= " << digest << endl;
+  else
+    cout << digest << "  " << fn << endl;
 
-      return 0;
-    }
+  return 0;
+}
 #endif
 
 } // namespace zypp

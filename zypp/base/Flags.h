@@ -17,15 +17,15 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace base
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace base
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : Flags<Enum>
-    //
-    /** A type-safe way of storing OR-combinations of enum values (like QTs QFlags).
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Flags<Enum>
+//
+/** A type-safe way of storing OR-combinations of enum values (like QTs QFlags).
      * \see <a href="http://doc.trolltech.com/4.1/qflags.html">QFlags Class Reference</a>
      * \code
      *  class RpmDb
@@ -54,74 +54,166 @@ namespace zypp
      *  }
      * \endcode
      */
-    template<typename TEnum>
-    class Flags
-    {
-      public:
-        typedef TEnum Enum;	///< The underlying enum type
-        typedef typename std::underlying_type<Enum>::type Integral;	///< The underlying integral type
+template <typename TEnum>
+class Flags
+{
+public:
+  typedef TEnum Enum; ///< The underlying enum type
+  typedef typename std::underlying_type<Enum>::type
+    Integral; ///< The underlying integral type
 
-      public:
-        constexpr Flags()				: _val( 0 ) {}
-        constexpr Flags( Enum flag_r )			: _val( integral(flag_r) ) {}
-        constexpr explicit Flags( Integral flag_r )	: _val( flag_r ) {}
+public:
+  constexpr Flags()
+    : _val( 0 )
+  {
+  }
+  constexpr Flags( Enum flag_r )
+    : _val( integral( flag_r ) )
+  {
+  }
+  constexpr explicit Flags( Integral flag_r )
+    : _val( flag_r )
+  {
+  }
 
-        constexpr static Flags none()			{ return Flags( Integral(0) ); }
-        constexpr static Flags all()			{ return Flags( ~Integral(0) ); }
+  constexpr static Flags none() { return Flags( Integral( 0 ) ); }
+  constexpr static Flags all() { return Flags( ~Integral( 0 ) ); }
 
-        constexpr bool isNone() const			{ return _val == Integral(0); }
-        constexpr bool isAll() const			{ return _val == ~Integral(0); }
+  constexpr bool isNone() const { return _val == Integral( 0 ); }
+  constexpr bool isAll() const { return _val == ~Integral( 0 ); }
 
-        Flags & operator&=( Flags rhs )			{ _val &= integral(rhs); return *this; }
-        Flags & operator&=( Enum rhs )			{ _val &= integral(rhs); return *this; }
+  Flags &operator&=( Flags rhs )
+  {
+    _val &= integral( rhs );
+    return *this;
+  }
+  Flags &operator&=( Enum rhs )
+  {
+    _val &= integral( rhs );
+    return *this;
+  }
 
-        Flags & operator|=( Flags rhs )			{ _val |= integral(rhs); return *this; }
-        Flags & operator|=( Enum rhs )			{ _val |= integral(rhs); return *this; }
+  Flags &operator|=( Flags rhs )
+  {
+    _val |= integral( rhs );
+    return *this;
+  }
+  Flags &operator|=( Enum rhs )
+  {
+    _val |= integral( rhs );
+    return *this;
+  }
 
-        Flags & operator^=( Flags rhs )			{ _val ^= integral(rhs); return *this; }
-        Flags & operator^=( Enum rhs )			{ _val ^= integral(rhs); return *this; }
+  Flags &operator^=( Flags rhs )
+  {
+    _val ^= integral( rhs );
+    return *this;
+  }
+  Flags &operator^=( Enum rhs )
+  {
+    _val ^= integral( rhs );
+    return *this;
+  }
 
-      public:
-        constexpr operator Integral() const		{ return _val; }
+public:
+  constexpr operator Integral() const { return _val; }
 
-        constexpr Flags operator&( Flags rhs ) const	{ return Flags( _val & integral(rhs) ); }
-        constexpr Flags operator&( Enum rhs ) const	{ return Flags( _val & integral(rhs) ); }
+  constexpr Flags operator&( Flags rhs ) const
+  {
+    return Flags( _val & integral( rhs ) );
+  }
+  constexpr Flags operator&( Enum rhs ) const
+  {
+    return Flags( _val & integral( rhs ) );
+  }
 
-        constexpr Flags operator|( Flags rhs ) const	{ return Flags( _val | integral(rhs) ); }
-        constexpr Flags operator|( Enum rhs ) const	{ return Flags( _val | integral(rhs) ); }
+  constexpr Flags operator|( Flags rhs ) const
+  {
+    return Flags( _val | integral( rhs ) );
+  }
+  constexpr Flags operator|( Enum rhs ) const
+  {
+    return Flags( _val | integral( rhs ) );
+  }
 
-        constexpr Flags operator^( Flags rhs ) const	{ return Flags( _val ^ integral(rhs) ); }
-        constexpr Flags operator^( Enum rhs ) const	{ return Flags( _val ^ integral(rhs) ); }
+  constexpr Flags operator^( Flags rhs ) const
+  {
+    return Flags( _val ^ integral( rhs ) );
+  }
+  constexpr Flags operator^( Enum rhs ) const
+  {
+    return Flags( _val ^ integral( rhs ) );
+  }
 
-        constexpr Flags operator~() const		{ return Flags( ~_val ); }
+  constexpr Flags operator~() const { return Flags( ~_val ); }
 
-        constexpr bool operator==( Enum rhs ) const	{  return( _val == integral(rhs) ); }
-        constexpr bool operator!=( Enum rhs ) const	{  return( _val != integral(rhs) ); }
+  constexpr bool operator==( Enum rhs ) const
+  {
+    return ( _val == integral( rhs ) );
+  }
+  constexpr bool operator!=( Enum rhs ) const
+  {
+    return ( _val != integral( rhs ) );
+  }
 
-      public:
-        Flags & setFlag( Flags flag_r, bool newval_r )	{ return( newval_r ? setFlag(flag_r) : unsetFlag(flag_r) ); }
-        Flags & setFlag( Enum flag_r, bool newval_r )	{ return( newval_r ? setFlag(flag_r) : unsetFlag(flag_r) ); }
+public:
+  Flags &setFlag( Flags flag_r, bool newval_r )
+  {
+    return ( newval_r ? setFlag( flag_r ) : unsetFlag( flag_r ) );
+  }
+  Flags &setFlag( Enum flag_r, bool newval_r )
+  {
+    return ( newval_r ? setFlag( flag_r ) : unsetFlag( flag_r ) );
+  }
 
-        Flags & setFlag( Flags flag_r )			{ _val |= integral(flag_r); return *this; }
-        Flags & setFlag( Enum flag_r )			{ _val |= integral(flag_r); return *this; }
+  Flags &setFlag( Flags flag_r )
+  {
+    _val |= integral( flag_r );
+    return *this;
+  }
+  Flags &setFlag( Enum flag_r )
+  {
+    _val |= integral( flag_r );
+    return *this;
+  }
 
-        Flags & unsetFlag( Flags flag_r )		{ _val &= ~integral(flag_r); return *this; }
-        Flags & unsetFlag( Enum flag_r )		{ _val &= ~integral(flag_r); return *this; }
+  Flags &unsetFlag( Flags flag_r )
+  {
+    _val &= ~integral( flag_r );
+    return *this;
+  }
+  Flags &unsetFlag( Enum flag_r )
+  {
+    _val &= ~integral( flag_r );
+    return *this;
+  }
 
-        constexpr bool testFlag( Flags flag_r ) const	{ return testFlag( integral(flag_r) ); }
-        constexpr bool testFlag( Enum flag_r ) const	{ return testFlag( integral(flag_r) ); }
+  constexpr bool testFlag( Flags flag_r ) const
+  {
+    return testFlag( integral( flag_r ) );
+  }
+  constexpr bool testFlag( Enum flag_r ) const
+  {
+    return testFlag( integral( flag_r ) );
+  }
 
-      private:
-	constexpr bool testFlag( Integral flag )	{ return flag ? ( _val & flag ) == flag : !_val; }
+private:
+  constexpr bool testFlag( Integral flag )
+  {
+    return flag ? ( _val & flag ) == flag : !_val;
+  }
 
-	constexpr static Integral integral( Flags obj )	{ return obj._val; }
-	constexpr static Integral integral( Enum obj )	{ return static_cast<Integral>(obj); }
+  constexpr static Integral integral( Flags obj ) { return obj._val; }
+  constexpr static Integral integral( Enum obj )
+  {
+    return static_cast<Integral>( obj );
+  }
 
-        Integral _val;
-    };
-    ///////////////////////////////////////////////////////////////////
+  Integral _val;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates Flags Stringify
+/** \relates Flags Stringify
      * Build a string of OR'ed names of each flag value set in \a flag_r.
      * Remaining bits in \a flag_r are added as hexstring.
      * \code
@@ -133,67 +225,101 @@ namespace zypp
      *   // prints: 0x0007 = [A|B|0x4]
      * \endcode
      */
-    template<typename Enum>
-    std::string stringify( const Flags<Enum> & flag_r, const std::initializer_list<std::pair<Flags<Enum>,std::string> > & flaglist_r = {},
-			   std::string intro_r = "[", std::string sep_r = "|", std::string extro_r = "]" )
+template <typename Enum>
+std::string stringify( const Flags<Enum> &flag_r,
+  const std::initializer_list<std::pair<Flags<Enum>, std::string>> &flaglist_r =
+    {},
+  std::string intro_r = "[", std::string sep_r = "|",
+  std::string extro_r = "]" )
+{
+  std::string ret( std::move( intro_r ) );
+  std::string sep;
+
+  Flags<Enum> mask;
+  for ( const auto &pair : flaglist_r )
+  {
+    if ( flag_r.testFlag( pair.first ) )
     {
-      std::string ret( std::move(intro_r) );
-      std::string sep;
-
-      Flags<Enum> mask;
-      for ( const auto & pair : flaglist_r )
+      mask |= pair.first;
+      ret += sep;
+      ret += pair.second;
+      if ( sep.empty() && !sep_r.empty() )
       {
-	if ( flag_r.testFlag( pair.first ) )
-	{
-	  mask |= pair.first;
-	  ret += sep;
-	  ret += pair.second;
-	  if ( sep.empty() && !sep_r.empty() )
-	  { sep = std::move(sep_r); }
-	}
+        sep = std::move( sep_r );
       }
-      mask = flag_r & ~mask;
-      if ( mask )
-      {
-	ret += sep;
-	ret += str::hexstring( mask, 0 );
-      }
-      ret += std::move(extro_r);
-      return ret;
     }
+  }
+  mask = flag_r & ~mask;
+  if ( mask )
+  {
+    ret += sep;
+    ret += str::hexstring( mask, 0 );
+  }
+  ret += std::move( extro_r );
+  return ret;
+}
 
-    template<typename TEnum>
-    inline std::ostream & operator<<( std::ostream & str, const Flags<TEnum> & obj )
-    { return str << str::hexstring(obj); }
+template <typename TEnum>
+inline std::ostream &operator<<( std::ostream &str, const Flags<TEnum> &obj )
+{
+  return str << str::hexstring( obj );
+}
 
-    template<typename TEnum>
-    inline std::ostream & operator<<( std::ostream & str, const typename Flags<TEnum>::Enum & obj )
-    { return str << Flags<TEnum>(obj); }
+template <typename TEnum>
+inline std::ostream &operator<<(
+  std::ostream &str, const typename Flags<TEnum>::Enum &obj )
+{
+  return str << Flags<TEnum>( obj );
+}
 
-    /** \relates Flags */
-#define ZYPP_DECLARE_FLAGS(Name,Enum) typedef zypp::base::Flags<Enum> Name
+/** \relates Flags */
+#define ZYPP_DECLARE_FLAGS( Name, Enum ) typedef zypp::base::Flags<Enum> Name
 
-    /** \relates Flags */
-#define ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Name) \
-inline constexpr bool operator==( Name::Enum lhs, Name rhs )		{ return( rhs == lhs ); }	\
-inline constexpr bool operator!=(Name:: Enum lhs, Name rhs )		{ return( rhs != lhs ); }	\
-inline constexpr Name operator&( Name::Enum lhs, Name::Enum rhs )	{ return Name( lhs ) & rhs; }	\
-inline constexpr Name operator&( Name::Enum lhs, Name rhs )		{ return rhs & lhs; }		\
-inline constexpr Name operator|( Name::Enum lhs, Name::Enum rhs )	{ return Name( lhs ) | rhs; }	\
-inline constexpr Name operator|( Name::Enum lhs, Name rhs )		{ return rhs | lhs; }		\
-inline constexpr Name operator^( Name::Enum lhs, Name::Enum rhs )	{ return Name( lhs ) ^ rhs; }	\
-inline constexpr Name operator^( Name::Enum lhs, Name rhs )		{ return rhs ^ lhs; }		\
-inline constexpr Name operator~( Name::Enum lhs )			{ return ~Name( lhs ); }
+/** \relates Flags */
+#define ZYPP_DECLARE_OPERATORS_FOR_FLAGS( Name )                               \
+  inline constexpr bool operator==( Name::Enum lhs, Name rhs )                 \
+  {                                                                            \
+    return ( rhs == lhs );                                                     \
+  }                                                                            \
+  inline constexpr bool operator!=( Name::Enum lhs, Name rhs )                 \
+  {                                                                            \
+    return ( rhs != lhs );                                                     \
+  }                                                                            \
+  inline constexpr Name operator&( Name::Enum lhs, Name::Enum rhs )            \
+  {                                                                            \
+    return Name( lhs ) & rhs;                                                  \
+  }                                                                            \
+  inline constexpr Name operator&( Name::Enum lhs, Name rhs )                  \
+  {                                                                            \
+    return rhs & lhs;                                                          \
+  }                                                                            \
+  inline constexpr Name operator|( Name::Enum lhs, Name::Enum rhs )            \
+  {                                                                            \
+    return Name( lhs ) | rhs;                                                  \
+  }                                                                            \
+  inline constexpr Name operator|( Name::Enum lhs, Name rhs )                  \
+  {                                                                            \
+    return rhs | lhs;                                                          \
+  }                                                                            \
+  inline constexpr Name operator^( Name::Enum lhs, Name::Enum rhs )            \
+  {                                                                            \
+    return Name( lhs ) ^ rhs;                                                  \
+  }                                                                            \
+  inline constexpr Name operator^( Name::Enum lhs, Name rhs )                  \
+  {                                                                            \
+    return rhs ^ lhs;                                                          \
+  }                                                                            \
+  inline constexpr Name operator~( Name::Enum lhs ) { return ~Name( lhs ); }
 
-    /** \relates Flags */
-#define ZYPP_DECLARE_FLAGS_AND_OPERATORS(Name,Enum) \
-    ZYPP_DECLARE_FLAGS(Name,Enum); \
-    ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Name)
+/** \relates Flags */
+#define ZYPP_DECLARE_FLAGS_AND_OPERATORS( Name, Enum )                         \
+  ZYPP_DECLARE_FLAGS( Name, Enum );                                            \
+  ZYPP_DECLARE_OPERATORS_FOR_FLAGS( Name )
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace base
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace base
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_FLAGS_H

@@ -22,12 +22,12 @@
 #else
 namespace zypp
 {
-  namespace debug
-  {
-    void osdlog( const std::string & msg_r, unsigned level_r );	// LogControl.cc
-  }
+namespace debug
+{
+void osdlog( const std::string &msg_r, unsigned level_r ); // LogControl.cc
 }
-#define OSDLOG( MSG )    ::zypp::debug::osdlog( MSG, 0 )
+}
+#define OSDLOG( MSG ) ::zypp::debug::osdlog( MSG, 0 )
 #define OSMLOG( L, MSG ) ::zypp::debug::osdlog( MSG, L )
 #endif // ZYPP_NDEBUG
 ///////////////////////////////////////////////////////////////////
@@ -68,50 +68,54 @@ namespace zypp
 #define INT L_INT( ZYPP_BASE_LOGGER_LOGGROUP )
 #define USR L_USR( ZYPP_BASE_LOGGER_LOGGROUP )
 
-#define L_XXX(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_XXX )
-#define L_DBG(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP"++", zypp::base::logger::E_MIL )
-#define L_MIL(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_MIL )
-#define L_WAR(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_WAR )
-#define L_ERR(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_ERR )
-#define L_SEC(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_SEC )
-#define L_INT(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_INT )
-#define L_USR(GROUP) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_USR )
+#define L_XXX( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_XXX )
+#define L_DBG( GROUP )                                                         \
+  ZYPP_BASE_LOGGER_LOG( GROUP "++", zypp::base::logger::E_MIL )
+#define L_MIL( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_MIL )
+#define L_WAR( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_WAR )
+#define L_ERR( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_ERR )
+#define L_SEC( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_SEC )
+#define L_INT( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_INT )
+#define L_USR( GROUP ) ZYPP_BASE_LOGGER_LOG( GROUP, zypp::base::logger::E_USR )
 
-#define L_BASEFILE ( *__FILE__ == '/' ? strrchr( __FILE__, '/' ) + 1 : __FILE__ )
+#define L_BASEFILE                                                             \
+  ( *__FILE__ == '/' ? strrchr( __FILE__, '/' ) + 1 : __FILE__ )
 
 /** Actual call to @ref getStream. */
-#define ZYPP_BASE_LOGGER_LOG(GROUP,LEVEL) \
-        zypp::base::logger::getStream( GROUP, LEVEL, L_BASEFILE, __FUNCTION__, __LINE__ )
+#define ZYPP_BASE_LOGGER_LOG( GROUP, LEVEL )                                   \
+  zypp::base::logger::getStream(                                               \
+    GROUP, LEVEL, L_BASEFILE, __FUNCTION__, __LINE__ )
 
 /*@}*/
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace base
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace base
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    namespace logger
-    { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace logger
+{ /////////////////////////////////////////////////////////////////
 
-      /** Definition of log levels.
+/** Definition of log levels.
        *
        * @see getStream
       */
-      enum LogLevel {
-        E_XXX = 999, /**< Excessive logging. */
-        E_DBG = 0,   /**< Debug or verbose. */
-        E_MIL,       /**< Milestone. */
-        E_WAR,       /**< Warning. */
-        E_ERR,       /**< Error. */
-        E_SEC,       /**< Secutrity related. */
-        E_INT,       /**< Internal error. */
-        E_USR        /**< User log. */
-      };
+enum LogLevel
+{
+  E_XXX = 999, /**< Excessive logging. */
+  E_DBG = 0,   /**< Debug or verbose. */
+  E_MIL,       /**< Milestone. */
+  E_WAR,       /**< Warning. */
+  E_ERR,       /**< Error. */
+  E_SEC,       /**< Secutrity related. */
+  E_INT,       /**< Internal error. */
+  E_USR        /**< User log. */
+};
 
-      /** Return a log stream to write on.
+/** Return a log stream to write on.
        *
        * The returned log stream is determined by @a group_r and
        * @a level_r. The remaining arguments @a file_r, @a func_r
@@ -121,21 +125,18 @@ namespace zypp
        * @note You won't call @ref getStream directly, but use the
        * @ref ZYPP_BASE_LOGGER_MACROS.
       */
-      extern std::ostream & getStream( const char * group_r,
-                                       LogLevel     level_r,
-                                       const char * file_r,
-                                       const char * func_r,
-                                       const int    line_r );
-      extern bool isExcessive();
+extern std::ostream &getStream( const char *group_r, LogLevel level_r,
+  const char *file_r, const char *func_r, const int line_r );
+extern bool isExcessive();
 
-      /////////////////////////////////////////////////////////////////
-    } // namespace logger
-    ///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace logger
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace base
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace base
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_LOGGER_H

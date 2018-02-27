@@ -15,16 +15,11 @@ using boost::unit_test::test_case;
 using namespace std;
 using namespace zypp;
 
+void signature_test() {}
 
-void signature_test()
-{  
-}
-
-test_suite*
-init_unit_test_suite( int, char* [] )
+test_suite *init_unit_test_suite( int, char *[] )
 {
-    test_suite* test= BOOST_TEST_SUITE( "SignaureTest" );
-    test->add( BOOST_TEST_CASE( &signature_test ), 0 /* expected zero error */ );
-    return test;
+  test_suite *test = BOOST_TEST_SUITE( "SignaureTest" );
+  test->add( BOOST_TEST_CASE( &signature_test ), 0 /* expected zero error */ );
+  return test;
 }
-

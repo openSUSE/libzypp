@@ -23,59 +23,58 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : SystemCheck
-    //
-    /** Save and restore locale set from file.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : SystemCheck
+//
+/** Save and restore locale set from file.
      */
-    class SystemCheck : private base::NonCopyable
-    {
-      friend std::ostream & operator<<( std::ostream & str, const SystemCheck & obj );
+class SystemCheck : private base::NonCopyable
+{
+  friend std::ostream &operator<<( std::ostream &str, const SystemCheck &obj );
 
-      public:
+public:
+  /** Singleton */
+  static const SystemCheck &instance();
 
-	/** Singleton */
-	static const SystemCheck & instance();
+  /** Return the file path. */
+  const Pathname &file();
 
-        /** Return the file path. */
-        const Pathname & file();
+  /** Return the directory path. */
+  const Pathname &dir();
 
-        /** Return the directory path. */
-        const Pathname & dir();
-
-        /** Set configuration file of system requirements
+  /** Set configuration file of system requirements
 	 *  Should be used for testcase only   
 	 */
-        bool setFile(const Pathname & file) const;
+  bool setFile( const Pathname &file ) const;
 
-        /** Set configuration directory for files of system
+  /** Set configuration directory for files of system
 	 *  requirements.
          *  Should be used for testcase only
 	 */
-        bool setDir(const Pathname & dir) const;
+  bool setDir( const Pathname &dir ) const;
 
-        /** Returns a list of required system capabilities.
+  /** Returns a list of required system capabilities.
         */
-        const CapabilitySet & requiredSystemCap() const;
+  const CapabilitySet &requiredSystemCap() const;
 
-        /** Returns a list of conflicting system capabilities.
+  /** Returns a list of conflicting system capabilities.
         */
-        const CapabilitySet & conflictSystemCap() const;
+  const CapabilitySet &conflictSystemCap() const;
 
-      private:
-        /** Ctor taking the file to read. */
-        SystemCheck();
-        bool loadFile(Pathname &file, bool reset_caps = true) const;
-	bool loadFiles() const;
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    /** \relates SystemCheck Stream output */
-    std::ostream & operator<<( std::ostream & str, const SystemCheck & obj );
-
-  /////////////////////////////////////////////////////////////////
-} // namespace zypp
+private:
+  /** Ctor taking the file to read. */
+  SystemCheck();
+  bool loadFile( Pathname &file, bool reset_caps = true ) const;
+  bool loadFiles() const;
+};
 ///////////////////////////////////////////////////////////////////
+
+/** \relates SystemCheck Stream output */
+std::ostream &operator<<( std::ostream &str, const SystemCheck &obj );
+
+/////////////////////////////////////////////////////////////////
+} // namespace zypp
+  ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_USE_RESOLVER_INTERNALS
 #endif // ZYPP_TARGET_SYSTEMCHECK_H

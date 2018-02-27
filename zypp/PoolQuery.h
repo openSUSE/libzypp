@@ -29,16 +29,16 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  namespace detail
-  {
-    class PoolQueryIterator;
-  }
+namespace detail
+{
+class PoolQueryIterator;
+}
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //  CLASS NAME : PoolQuery
-  //
-  /**
+///////////////////////////////////////////////////////////////////
+//
+//  CLASS NAME : PoolQuery
+//
+/**
    * Meta-data query API. Returns solvables of specified kinds from specified
    * repositories with attributes matching the specified search strings.
    *
@@ -87,25 +87,26 @@ namespace zypp
    * \see tests/zypp/PoolQuery_test.cc for more examples
    * \see sat::SolvIterMixin
    */
-  class PoolQuery : public sat::SolvIterMixin<PoolQuery, detail::PoolQueryIterator>
-  {
-  public:
-    typedef std::set<ResKind>                               Kinds;
-    typedef std::set<std::string>                           StrContainer;
-    typedef std::map<sat::SolvAttr, StrContainer>           AttrRawStrMap;
+class PoolQuery
+  : public sat::SolvIterMixin<PoolQuery, detail::PoolQueryIterator>
+{
+public:
+  typedef std::set<ResKind> Kinds;
+  typedef std::set<std::string> StrContainer;
+  typedef std::map<sat::SolvAttr, StrContainer> AttrRawStrMap;
 
-    typedef detail::PoolQueryIterator                       const_iterator;
-    typedef unsigned int                                    size_type;
+  typedef detail::PoolQueryIterator const_iterator;
+  typedef unsigned int size_type;
 
-  public:
-    typedef function<bool( const sat::Solvable & )> ProcessResolvable;
+public:
+  typedef function<bool( const sat::Solvable & )> ProcessResolvable;
 
-    PoolQuery();
-    ~PoolQuery();
+  PoolQuery();
+  ~PoolQuery();
 
-    /** Query result accessers. */
-    //@{
-    /**
+  /** Query result accessers. */
+  //@{
+  /**
      * Compile the query and return an iterator to the result.
      *
      * \return An iterator (\ref detail::PoolQueryIterator) returning
@@ -117,25 +118,25 @@ namespace zypp
      *       makes PoolItem and Selectable iterators automatically available.
      * \see \ref sat::SolvIterMixin
      */
-    const_iterator begin() const;
+  const_iterator begin() const;
 
-    /** An iterator pointing to the end of the query result. */
-    const_iterator end() const;
+  /** An iterator pointing to the end of the query result. */
+  const_iterator end() const;
 
-    /** Whether the result is empty. */
-    bool empty() const;
+  /** Whether the result is empty. */
+  bool empty() const;
 
-    /** Number of solvables in the query result. */
-    size_type size() const;
-    //@}
+  /** Number of solvables in the query result. */
+  size_type size() const;
+  //@}
 
-    /**
+  /**
      * Executes the query with the current settings.
      * Results are yielded via the \a fnc callback.
      */
-    void execute(ProcessResolvable fnc);
+  void execute( ProcessResolvable fnc );
 
-    /**
+  /**
      * Filter by selectable kind.
      *
      * By default, all kinds will be returned. If addKind() is used,
@@ -150,38 +151,39 @@ namespace zypp
      *
      * Pass ResKind constants to this method, (e.g. ResKind::package).
      */
-    void addKind(const ResKind & kind);
+  void addKind( const ResKind &kind );
 
-    /**
+  /**
      * Filter by repo.
      *
      * By default, all repos will be returned. If addRepo() is used,
      * only the specified repo will be returned (multiple repos will be ORed).
      */
-    void addRepo(const std::string &repoalias);
+  void addRepo( const std::string &repoalias );
 
-    /** Installed status filter setters. */
-    //@{
+  /** Installed status filter setters. */
+  //@{
 
-    /**
+  /**
      * Filter by status (installed uninstalled)
      */
-    enum StatusFilter {
-      ALL = 0, // both install filter and uninstall filter bits are 0
-      INSTALLED_ONLY = 1,
-      UNINSTALLED_ONLY = 2
-    };
+  enum StatusFilter
+  {
+    ALL = 0, // both install filter and uninstall filter bits are 0
+    INSTALLED_ONLY = 1,
+    UNINSTALLED_ONLY = 2
+  };
 
-    /** Return only @System repo packages */
-    void setInstalledOnly();
-    /** Return only packages from repos other than @System. */
-    void setUninstalledOnly();
-    /** Set status filter directly \see StatusFilter */
-    void setStatusFilterFlags( StatusFilter flags );
+  /** Return only @System repo packages */
+  void setInstalledOnly();
+  /** Return only packages from repos other than @System. */
+  void setUninstalledOnly();
+  /** Set status filter directly \see StatusFilter */
+  void setStatusFilterFlags( StatusFilter flags );
 
-    //@}
+  //@}
 
-    /**
+  /**
      * Add a global query string. The string added via this method is applied
      * to all query attributes as if addAttribute(..., \value) was called
      * for all of them.
@@ -192,9 +194,9 @@ namespace zypp
      * of these strings will match the value. This can be changed by
      * (not yet implemented) \ref setRequireAll() method.
      */
-    void addString(const std::string & value);
+  void addString( const std::string &value );
 
-    /**
+  /**
      * Filter by the \a value of the specified \a attr attribute. This can
      * be any of the available solvable attributes.
      *
@@ -221,9 +223,9 @@ namespace zypp
      *
      * \see sat::SolvAttr
      */
-    void addAttribute( const sat::SolvAttr & attr, const std::string & value = "" );
+  void addAttribute( const sat::SolvAttr &attr, const std::string &value = "" );
 
-    /** \name Filter by dependencies matching a broken down capability <tt>name [op edition]</tt> and/or architecture.
+  /** \name Filter by dependencies matching a broken down capability <tt>name [op edition]</tt> and/or architecture.
      *
      * The capabilities \c name part may be defined as query string
      * like with \ref addAttribute. Globing and regex are supported.
@@ -282,162 +284,189 @@ namespace zypp
      *   addDependency( sat::SolvAttr::name, "kernel", Rel::GT, Edition("2.0") );
      * \endcode
      */
-    //@{
-    /** Query <tt>"name|global op edition"</tt>. */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name, const Rel & op, const Edition & edition );
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name, const Rel & op, const Edition & edition, const Arch & arch );
+  //@{
+  /** Query <tt>"name|global op edition"</tt>. */
+  void addDependency( const sat::SolvAttr &attr, const std::string &name,
+    const Rel &op, const Edition &edition );
+  /**  \overload also restricting architecture */
+  void addDependency( const sat::SolvAttr &attr, const std::string &name,
+    const Rel &op, const Edition &edition, const Arch &arch );
 
-    /** \overload Query <tt>"name|global == edition"</tt>. */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name, const Edition & edition )
-    { addDependency( attr, name, Rel::EQ, edition ); }
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name, const Edition & edition, const Arch & arch )
-    { addDependency( attr, name, Rel::EQ, edition, arch ); }
+  /** \overload Query <tt>"name|global == edition"</tt>. */
+  void addDependency(
+    const sat::SolvAttr &attr, const std::string &name, const Edition &edition )
+  {
+    addDependency( attr, name, Rel::EQ, edition );
+  }
+  /**  \overload also restricting architecture */
+  void addDependency( const sat::SolvAttr &attr, const std::string &name,
+    const Edition &edition, const Arch &arch )
+  {
+    addDependency( attr, name, Rel::EQ, edition, arch );
+  }
 
-    /** \overload Query <tt>"name|global"</tt>. */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name )
-    { addDependency( attr, name, Rel::ANY, Edition() ); }
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const std::string & name, const Arch & arch )
-    { addDependency( attr, name, Rel::ANY, Edition(), arch ); }
+  /** \overload Query <tt>"name|global"</tt>. */
+  void addDependency( const sat::SolvAttr &attr, const std::string &name )
+  {
+    addDependency( attr, name, Rel::ANY, Edition() );
+  }
+  /**  \overload also restricting architecture */
+  void addDependency(
+    const sat::SolvAttr &attr, const std::string &name, const Arch &arch )
+  {
+    addDependency( attr, name, Rel::ANY, Edition(), arch );
+  }
 
-    /** \overload Query <tt>"global op edition"</tt>.*/
-    void addDependency( const sat::SolvAttr & attr, const Rel & op, const Edition & edition )
-    { addDependency( attr, std::string(), op, edition ); }
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const Rel & op, const Edition & edition, const Arch & arch )
-    { addDependency( attr, std::string(), op, edition, arch ); }
+  /** \overload Query <tt>"global op edition"</tt>.*/
+  void addDependency(
+    const sat::SolvAttr &attr, const Rel &op, const Edition &edition )
+  {
+    addDependency( attr, std::string(), op, edition );
+  }
+  /**  \overload also restricting architecture */
+  void addDependency( const sat::SolvAttr &attr, const Rel &op,
+    const Edition &edition, const Arch &arch )
+  {
+    addDependency( attr, std::string(), op, edition, arch );
+  }
 
-    /** \overload Query <tt>"global == edition"</tt>. */
-    void addDependency( const sat::SolvAttr & attr, const Edition & edition )
-    { addDependency( attr, std::string(), Rel::EQ, edition ); }
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const Edition & edition, const Arch & arch )
-    { addDependency( attr, std::string(), Rel::EQ, edition, arch ); }
+  /** \overload Query <tt>"global == edition"</tt>. */
+  void addDependency( const sat::SolvAttr &attr, const Edition &edition )
+  {
+    addDependency( attr, std::string(), Rel::EQ, edition );
+  }
+  /**  \overload also restricting architecture */
+  void addDependency(
+    const sat::SolvAttr &attr, const Edition &edition, const Arch &arch )
+  {
+    addDependency( attr, std::string(), Rel::EQ, edition, arch );
+  }
 
-    /** \overload Query <tt>"global"</tt>. */
-    void addDependency( const sat::SolvAttr & attr )
-    { addDependency( attr, std::string(), Rel::ANY, Edition() ); }
-    /**  \overload also restricting architecture */
-    void addDependency( const sat::SolvAttr & attr, const Arch & arch )
-    { addDependency( attr, std::string(), Rel::ANY, Edition(), arch ); }
+  /** \overload Query <tt>"global"</tt>. */
+  void addDependency( const sat::SolvAttr &attr )
+  {
+    addDependency( attr, std::string(), Rel::ANY, Edition() );
+  }
+  /**  \overload also restricting architecture */
+  void addDependency( const sat::SolvAttr &attr, const Arch &arch )
+  {
+    addDependency( attr, std::string(), Rel::ANY, Edition(), arch );
+  }
 
-    /** \overload Query taking a \ref Capability (always exact name match).
+  /** \overload Query taking a \ref Capability (always exact name match).
      * \note If a non dependency attribute is passed, the \ref Capability
      * will always be matched against the Solvables \c name and \c edition.
     */
-    void addDependency( const sat::SolvAttr & attr, Capability cap_r );
-    //@}
+  void addDependency( const sat::SolvAttr &attr, Capability cap_r );
+  //@}
 
-    /**
+  /**
      * Set version condition. This will filter out solvables not matching
      * <tt>solvableEdition \a op \a edition</tt>.
      *
      * \param edition Edition to look for.
      * \param op      Found-wanted relation operator.
      */
-    void setEdition(const Edition & edition, const Rel & op = Rel::EQ);
+  void setEdition( const Edition &edition, const Rel &op = Rel::EQ );
 
-    /** \name Text Matching Options
+  /** \name Text Matching Options
      * \note The implementation treats an empty search string as
      * <it>"match always"</it>. So if you want to actually match
      * an empty value, try <tt>( "^$", setMatchRegex )</tt>.
      */
-    //@{
-    /**
+  //@{
+  /**
      * Turn case sentitivity on or off (unsets or sets \ref SEARCH_NOCASE flag).
      * PoolQuery defaults to case insensitive search unless this method
      * is used.
      *
      * \param value Whether to turn the case sensitivity on (default) or off.
      */
-    void setCaseSensitive( bool value = true );
+  void setCaseSensitive( bool value = true );
 
-    /**
+  /**
      * If set (default), look at the full path when searching in filelists.
      * Otherwise just match the the basenames.
      * \see \ref Match::FILES
      */
-    void setFilesMatchFullPath( bool value = true );
-    /** \overload */
-    void setFilesMatchBasename( bool value = true )
-    { setFilesMatchFullPath( !value ); }
+  void setFilesMatchFullPath( bool value = true );
+  /** \overload */
+  void setFilesMatchBasename( bool value = true )
+  {
+    setFilesMatchFullPath( !value );
+  }
 
-    /** Set to match exact string instead of substring.*/
-    void setMatchExact();
-    /** Set to substring (the default). */
-    void setMatchSubstring();
-    /** Set to match globs. */
-    void setMatchGlob();
-    /** Set to use the query strings as regexes */
-    void setMatchRegex();
-    /** Set to match words (uses regex) */
-    void setMatchWord();
-    //void setLocale(const Locale & locale);
-    //@}
+  /** Set to match exact string instead of substring.*/
+  void setMatchExact();
+  /** Set to substring (the default). */
+  void setMatchSubstring();
+  /** Set to match globs. */
+  void setMatchGlob();
+  /** Set to use the query strings as regexes */
+  void setMatchRegex();
+  /** Set to match words (uses regex) */
+  void setMatchWord();
+  //void setLocale(const Locale & locale);
+  //@}
 
-    /**
+  /**
      * Require that all of the values set by addString or addAttribute
      * match the values of respective attributes.
      *
      * \todo doesn't work yet, don't use this function
      */
-    void setRequireAll( bool require_all = true );
+  void setRequireAll( bool require_all = true );
 
+  /** \name getters */
+  //@{
 
-    /** \name getters */
-    //@{
-
-    /** Search strings added via addString() */
-    const StrContainer & strings() const;
-    /**
+  /** Search strings added via addString() */
+  const StrContainer &strings() const;
+  /**
      * Map (map<SolvAttr, StrContainer>) of attribute values added via
      * addAttribute(), addDep in string form */
-    const AttrRawStrMap & attributes() const;
+  const AttrRawStrMap &attributes() const;
 
-    const StrContainer & attribute(const sat::SolvAttr & attr) const;
+  const StrContainer &attribute( const sat::SolvAttr &attr ) const;
 
-    const Kinds & kinds() const;
+  const Kinds &kinds() const;
 
-    const StrContainer & repos() const;
+  const StrContainer &repos() const;
 
-    const Edition edition() const;
-    const Rel editionRel() const;
+  const Edition edition() const;
+  const Rel editionRel() const;
 
-    /**
+  /**
      * returns true if search is case sensitive
      */
-    bool caseSensitive() const;
+  bool caseSensitive() const;
 
-    /** Whether searching in filelists looks at the full path or just at the basenames. */
-    bool filesMatchFullPath() const;
-    /** \overload */
-    bool filesMatchBasename() const
-    { return !filesMatchFullPath(); }
+  /** Whether searching in filelists looks at the full path or just at the basenames. */
+  bool filesMatchFullPath() const;
+  /** \overload */
+  bool filesMatchBasename() const { return !filesMatchFullPath(); }
 
-    bool matchExact() const;
-    bool matchSubstring() const;
-    bool matchGlob() const;
-    bool matchRegex() const;
-    bool matchWord() const;
+  bool matchExact() const;
+  bool matchSubstring() const;
+  bool matchGlob() const;
+  bool matchRegex() const;
+  bool matchWord() const;
 
-    /** Returns string matching mode as enum.
+  /** Returns string matching mode as enum.
      * \see \ref Match::Mode
      */
-    Match::Mode matchMode() const
-    { return flags().mode(); }
+  Match::Mode matchMode() const { return flags().mode(); }
 
-    /**
+  /**
      * Whether all values added via addString() or addAttribute() are required
      * to match the values of the respective attributes.
      */
-    bool requireAll() const;
+  bool requireAll() const;
 
-    StatusFilter statusFilterFlags() const;
-    //@}
+  StatusFilter statusFilterFlags() const;
+  //@}
 
-    /**
+  /**
      * Reads from stream query. Attributes is sepated by delim. Query is
      * separated by two delim.
      *
@@ -447,9 +476,9 @@ namespace zypp
      *
      * \see readPoolQueriesFromFile
      */
-    bool recover( std::istream &str, char delim = '\n' );
+  bool recover( std::istream &str, char delim = '\n' );
 
-    /**
+  /**
      * Writes a machine-readable string representation of the query to stream.
      * Use \a delim as attribute delimiter.
      *
@@ -458,87 +487,95 @@ namespace zypp
      *
      * \see writePoolQueriesToFile
      */
-    void serialize( std::ostream &str, char delim = '\n' ) const;
+  void serialize( std::ostream &str, char delim = '\n' ) const;
 
-    /** Return a human-readable description of the query */
-    std::string asString() const;
+  /** Return a human-readable description of the query */
+  std::string asString() const;
 
-    bool operator<(const PoolQuery& b) const;
-    bool operator==(const PoolQuery& b) const;
-    bool operator!=(const PoolQuery& b) const { return !(*this == b ); }
+  bool operator<( const PoolQuery &b ) const;
+  bool operator==( const PoolQuery &b ) const;
+  bool operator!=( const PoolQuery &b ) const { return !( *this == b ); }
 
-    // low level API
+  // low level API
 
-    /**
+  /**
      * Free function to get libsolv repo search
      * flags.
      *
      * \see \ref Match
      */
-    Match flags() const;
+  Match flags() const;
 
-    /**
+  /**
      * Free function to set libsolv repo search
      * flags.
      *
      * \see \ref Match
      */
-    void setFlags( const Match & flags );
+  void setFlags( const Match &flags );
 
-  public:
-    class Impl;
-  private:
-    /** Pointer to implementation */
-    RW_pointer<Impl> _pimpl;
-  };
-  ///////////////////////////////////////////////////////////////////
+public:
+  class Impl;
 
-  /** \relates PoolQuery Stream output. */
-  std::ostream & operator<<( std::ostream & str, const PoolQuery & obj );
+private:
+  /** Pointer to implementation */
+  RW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolQuery Detailed stream output. */
-  std::ostream & dumpOn( std::ostream & str, const PoolQuery & obj );
+/** \relates PoolQuery Stream output. */
+std::ostream &operator<<( std::ostream &str, const PoolQuery &obj );
 
-  ///////////////////////////////////////////////////////////////////
-  namespace detail
-  { /////////////////////////////////////////////////////////////////
+/** \relates PoolQuery Detailed stream output. */
+std::ostream &dumpOn( std::ostream &str, const PoolQuery &obj );
 
-  class PoolQueryMatcher;
+///////////////////////////////////////////////////////////////////
+namespace detail
+{ /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //  CLASS NAME : PoolQuery::PoolQueryIterator
-  //
-  /** \ref PoolQuery iterator as returned by \ref PoolQuery::begin.
+class PoolQueryMatcher;
+
+///////////////////////////////////////////////////////////////////
+//
+//  CLASS NAME : PoolQuery::PoolQueryIterator
+//
+/** \ref PoolQuery iterator as returned by \ref PoolQuery::begin.
    *
    * The \ref PoolQueryIterator visits sat::Solavables that do contain matches.
    *
    * But it also provides an iterator by itself, to allow a detailed inspection of
    * the individual attribute matches within the current Solvable.
    */
-  class PoolQueryIterator : public boost::iterator_adaptor<
-    PoolQueryIterator                  // Derived
-    , sat::LookupAttr::iterator        // Base
-    , const sat::Solvable              // Value
-    , boost::forward_traversal_tag     // CategoryOrTraversal
-    , const sat::Solvable              // Reference
-  >
+class PoolQueryIterator
+  : public boost::iterator_adaptor<PoolQueryIterator // Derived
+      ,
+      sat::LookupAttr::iterator // Base
+      ,
+      const sat::Solvable // Value
+      ,
+      boost::forward_traversal_tag // CategoryOrTraversal
+      ,
+      const sat::Solvable // Reference
+      >
+{
+  typedef std::vector<sat::LookupAttr::iterator> Matches;
+
+public:
+  typedef Matches::size_type size_type;
+  typedef Matches::const_iterator matches_iterator;
+
+public:
+  /** Default ctor is also \c end.*/
+  PoolQueryIterator() {}
+
+  /** \Ref PoolQuery ctor. */
+  PoolQueryIterator( const shared_ptr<PoolQueryMatcher> &matcher_r )
+    : _matcher( matcher_r )
   {
-      typedef std::vector<sat::LookupAttr::iterator> Matches;
-    public:
-      typedef Matches::size_type size_type;
-      typedef Matches::const_iterator matches_iterator;
-    public:
-      /** Default ctor is also \c end.*/
-      PoolQueryIterator()
-      {}
+    increment();
+  }
 
-      /** \Ref PoolQuery ctor. */
-      PoolQueryIterator( const shared_ptr<PoolQueryMatcher> & matcher_r )
-      : _matcher( matcher_r )
-      { increment(); }
-
-      /** \name Detailed inspection of attribute matches within the current Solvable.
+  /** \name Detailed inspection of attribute matches within the current Solvable.
        *
        * The \ref matches_iterator visits all attribute matches within the current Solvable,
        * providing a \ref sat::LookupAttr::iterator pointing to attribute. While a
@@ -582,49 +619,53 @@ namespace zypp
        * ...
        * \endcode
        */
-      //@{
-      /** \c False unless this is the \c end iterator. */
-      bool matchesEmpty() const			{ return ! _matcher; }
-      /** Number of attribute matches. */
-      size_type matchesSize() const		{ return matches().size(); }
-      /** Begin of matches. */
-      matches_iterator matchesBegin() const	{ return matches().begin(); }
-      /** End of matches. */
-      matches_iterator matchesEnd() const	{ return matches().end(); }
-      //@}
+  //@{
+  /** \c False unless this is the \c end iterator. */
+  bool matchesEmpty() const { return !_matcher; }
+  /** Number of attribute matches. */
+  size_type matchesSize() const { return matches().size(); }
+  /** Begin of matches. */
+  matches_iterator matchesBegin() const { return matches().begin(); }
+  /** End of matches. */
+  matches_iterator matchesEnd() const { return matches().end(); }
+  //@}
 
-    private:
-      friend class boost::iterator_core_access;
+private:
+  friend class boost::iterator_core_access;
 
-      sat::Solvable dereference() const
-      { return base_reference().inSolvable(); }
+  sat::Solvable dereference() const { return base_reference().inSolvable(); }
 
-      void increment();
+  void increment();
 
-    private:
-      const Matches & matches() const;
+private:
+  const Matches &matches() const;
 
-    private:
-      shared_ptr<PoolQueryMatcher> _matcher;
-      mutable shared_ptr<Matches>  _matches;
-  };
-  ///////////////////////////////////////////////////////////////////
+private:
+  shared_ptr<PoolQueryMatcher> _matcher;
+  mutable shared_ptr<Matches> _matches;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolQueryIterator Stream output. */
-  inline std::ostream & operator<<( std::ostream & str, const PoolQueryIterator & obj )
-  { return str << obj.base(); }
+/** \relates PoolQueryIterator Stream output. */
+inline std::ostream &operator<<(
+  std::ostream &str, const PoolQueryIterator &obj )
+{
+  return str << obj.base();
+}
 
-  /** \relates PoolQueryIterator Detailed stream output. */
-  std::ostream & dumpOn( std::ostream & str, const PoolQueryIterator & obj );
+/** \relates PoolQueryIterator Detailed stream output. */
+std::ostream &dumpOn( std::ostream &str, const PoolQueryIterator &obj );
 
-  ///////////////////////////////////////////////////////////////////
-  } //namespace detail
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+} //namespace detail
+///////////////////////////////////////////////////////////////////
 
-  inline detail::PoolQueryIterator PoolQuery::end() const
-  { return detail::PoolQueryIterator(); }
+inline detail::PoolQueryIterator PoolQuery::end() const
+{
+  return detail::PoolQueryIterator();
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 

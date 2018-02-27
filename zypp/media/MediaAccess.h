@@ -30,15 +30,17 @@
 
 #include "zypp/Url.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-    class MediaHandler;
+class MediaHandler;
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : MediaAccess
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : MediaAccess
+/**
      * @short Handle access to a medium
      *
      * The concrete @ref MediaHandler for a certain url is created
@@ -47,42 +49,40 @@ namespace zypp {
      * The inteface here basically checks whether the handler exists,
      * then forwards the request to @ref MediaHandler.
      **/
-    class MediaAccess : public base::ReferenceCounted, private base::NonCopyable
-    {
-    public:
-	typedef intrusive_ptr<MediaAccess> Ptr;
-	typedef intrusive_ptr<const MediaAccess> constPtr;
+class MediaAccess : public base::ReferenceCounted, private base::NonCopyable
+{
+public:
+  typedef intrusive_ptr<MediaAccess> Ptr;
+  typedef intrusive_ptr<const MediaAccess> constPtr;
 
-    private:
+private:
+  static const Pathname _noPath;
 
-	static const Pathname _noPath;
-
-	/**
+  /**
 	 * handler for 'physical' media
 	 * == 0 if not open
 	 **/
-	MediaHandler * _handler;
+  MediaHandler *_handler;
 
-    	friend class MediaManager;
-    	friend class MediaManager_Impl;
+  friend class MediaManager;
+  friend class MediaManager_Impl;
 
-	AttachedMedia        attachedMedia() const;
+  AttachedMedia attachedMedia() const;
 
-	bool                 isSharedMedia() const;
+  bool isSharedMedia() const;
 
-	void                 resetParentId();
-	bool                 dependsOnParent() const;
+  void resetParentId();
+  bool dependsOnParent() const;
 
-	bool                 dependsOnParent(MediaAccessId parentId,
-	                                     bool exactIdMatch) const;
-    public:
+  bool dependsOnParent( MediaAccessId parentId, bool exactIdMatch ) const;
 
-       /**
+public:
+  /**
         * constructor
         **/
-	MediaAccess();
+  MediaAccess();
 
-	/**
+  /**
 	 * open url. If preferred_attach_point is given,
 	 * try to use it as attach point.
 	 *
@@ -92,40 +92,39 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void open( const Url& url, const Pathname & preferred_attach_point = "" );
+  void open( const Url &url, const Pathname &preferred_attach_point = "" );
 
-	/**
+  /**
 	 * True if media is open.
 	 **/
-	bool isOpen() const { return( _handler != 0 ); }
+  bool isOpen() const { return ( _handler != 0 ); }
 
-	/**
+  /**
 	 * Hint if files are downloaded or not.
 	 * @return True, if the files are downloaded.
 	 */
-	bool        downloads() const;
+  bool downloads() const;
 
-	/**
+  /**
 	 * Used Protocol if media is opened, otherwise 'unknown'.
 	 **/
-        std::string protocol() const;
+  std::string protocol() const;
 
-	/**
+  /**
 	 * Url if media is opened, otherwise empty.
 	 **/
-        Url url() const;
+  Url url() const;
 
-	/**
+  /**
 	 * close url
 	 *
 	 * \throws MediaException
 	 *
 	 **/
-	void close();
+  void close();
 
-    public:
-
-	/**
+public:
+  /**
 	 * Use concrete handler to attach the media.
 	 *
 	 * @param next try next available device in turn until end of device
@@ -135,19 +134,19 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void attach(bool next = false);
+  void attach( bool next = false );
 
-	/**
+  /**
 	 * True if media is attached.
 	 *
 	 * \throws MediaException
 	 *
 	 **/
-	bool isAttached() const;
+  bool isAttached() const;
 
-        bool hasMoreDevices() const;
+  bool hasMoreDevices() const;
 
-        /**
+  /**
          * Fill in a vector of detected ejectable devices and the index of the
          * currently attached device within the vector. The contents of the vector
          * are the device names (/dev/cdrom and such).
@@ -155,12 +154,10 @@ namespace zypp {
          * \param devices  vector to load with the device names
          * \param index    index of the currently used device in the devices vector
          */
-        virtual void
-        getDetectedDevices(std::vector<std::string> & devices,
-                           unsigned int & index) const;
+  virtual void getDetectedDevices(
+    std::vector<std::string> &devices, unsigned int &index ) const;
 
-
-	/**
+  /**
 	 * Return the local directory that corresponds to medias url,
 	 * no matter if media isAttached or not. Files requested will
 	 * be available at 'localRoot() + filename' or better
@@ -168,17 +165,17 @@ namespace zypp {
 	 *
 	 * If media is not open an empty pathname is returned.
 	 **/
-	Pathname localRoot() const;
+  Pathname localRoot() const;
 
-	/**
+  /**
 	 * Short for 'localRoot() + pathname', but returns an empty
 	 * pathname if media is not open.
 	 *
 	 * Files provided will be available at 'localPath(filename)'.
 	 **/
-	Pathname localPath( const Pathname & pathname ) const;
+  Pathname localPath( const Pathname &pathname ) const;
 
-        /**
+  /**
           Use concrete handler to disconnect the media.
 
           This is useful for media which e.g. holds open a connection to a
@@ -191,18 +188,18 @@ namespace zypp {
 	 * \throws MediaException
 	 *
         */
-        void disconnect();
+  void disconnect();
 
-        /**
+  /**
          * Use concrete handler to release the media.
          * @param ejectDev Device to eject. None if empty.
          *
          * \throws MediaException
          *
          **/
-        void release( const std::string & ejectDev = "" );
+  void release( const std::string &ejectDev = "" );
 
-	/**
+  /**
 	 * Use concrete handler to provide file denoted by path below
 	 * 'attach point'. Filename is interpreted relative to the
 	 * attached url and a path prefix is preserved.
@@ -219,18 +216,18 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void provideFile( const Pathname & filename ) const;
+  void provideFile( const Pathname &filename ) const;
 
-	/**
+  /**
 	 * Remove filename below attach point IFF handler downloads files
 	 * to the local filesystem. Never remove anything from media.
 	 *
 	 * \throws MediaException
 	 *
 	 **/
-	void releaseFile( const Pathname & filename ) const;
+  void releaseFile( const Pathname &filename ) const;
 
-	/**
+  /**
 	 * Use concrete handler to provide directory denoted
 	 * by path below 'attach point' (not recursive!).
 	 * 'dirname' is interpreted relative to the
@@ -239,9 +236,9 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void provideDir( const Pathname & dirname ) const;
+  void provideDir( const Pathname &dirname ) const;
 
-	/**
+  /**
 	 * Use concrete handler to provide directory tree denoted
 	 * by path below 'attach point' (recursive!!).
 	 * 'dirname' is interpreted relative to the
@@ -250,18 +247,18 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void provideDirTree( const Pathname & dirname ) const;
+  void provideDirTree( const Pathname &dirname ) const;
 
-	/**
+  /**
 	 * Remove directory tree below attach point IFF handler downloads files
 	 * to the local filesystem. Never remove anything from media.
 	 *
 	 * \throws MediaException
 	 *
 	 **/
-	void releaseDir( const Pathname & dirname ) const;
+  void releaseDir( const Pathname &dirname ) const;
 
-	/**
+  /**
 	 * Remove pathname below attach point IFF handler downloads files
 	 * to the local filesystem. Never remove anything from media.
 	 *
@@ -272,16 +269,15 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void releasePath( const Pathname & pathname ) const;
+  void releasePath( const Pathname &pathname ) const;
 
-	/**
+  /**
 	 * set a deltafile to be used in the next download
 	 */
-	void setDeltafile( const Pathname & filename ) const;
+  void setDeltafile( const Pathname &filename ) const;
 
-    public:
-
-	/**
+public:
+  /**
 	 * Return content of directory on media via retlist. If dots is false
 	 * entries starting with '.' are not reported.
 	 *
@@ -294,10 +290,10 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-        void dirInfo( std::list<std::string> & retlist,
-			 const Pathname & dirname, bool dots = true ) const;
+  void dirInfo( std::list<std::string> &retlist, const Pathname &dirname,
+    bool dots = true ) const;
 
-	/**
+  /**
 	 * Basically the same as dirInfo above. The content is returned as
 	 * filesystem::DirContent, which includes name and filetype of each directory
 	 * entry. Retrieving the filetype usg. requires an additional ::stat call for
@@ -309,10 +305,10 @@ namespace zypp {
 	 * \throws MediaException
 	 *
 	 **/
-	void dirInfo( filesystem::DirContent & retlist,
-                      const Pathname & dirname, bool dots = true ) const;
+  void dirInfo( filesystem::DirContent &retlist, const Pathname &dirname,
+    bool dots = true ) const;
 
-        /**
+  /**
          * check if a file exists
          *
          * Asserted that url is a file and not a dir.
@@ -320,19 +316,18 @@ namespace zypp {
          * \throws MediaException
          *
          **/
-        bool doesFileExist( const Pathname & filename ) const;
+  bool doesFileExist( const Pathname &filename ) const;
 
-	/**
+  /**
 	 * Destructor
 	 **/
-	virtual ~MediaAccess();
+  virtual ~MediaAccess();
 
-    public:
+public:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-	virtual std::ostream & dumpOn( std::ostream & str ) const;
-
-    public:
-        /**
+public:
+  /**
          * Get file from location at specified by URL and copy it to
          * destination.
          *
@@ -342,11 +337,10 @@ namespace zypp {
 	 * \throws MediaException
 	 *
          **/
-        void getFile( const Url &from, const Pathname &to );
+  void getFile( const Url &from, const Pathname &to );
 
-    public:
-
-      /**
+public:
+  /**
        * Helper class that provides file on construction
        * and cleans up on destruction.
        *
@@ -366,78 +360,87 @@ namespace zypp {
        * \throws MediaBadFilenameException
        * \throws MediaException
        **/
-      class FileProvider {
-	FileProvider( const FileProvider & );             // no copy
-	FileProvider & operator=( const FileProvider & ); // no assign
-	private:
-	  MediaAccess::constPtr _media;
-	  Pathname              _file;
-	  Pathname		_local_file;
-	public:
-	  /**
+  class FileProvider
+  {
+    FileProvider( const FileProvider & );            // no copy
+    FileProvider &operator=( const FileProvider & ); // no assign
+  private:
+    MediaAccess::constPtr _media;
+    Pathname _file;
+    Pathname _local_file;
+
+  public:
+    /**
            * \throws MediaException
            */
-	  FileProvider( MediaAccess::constPtr media_r, const Pathname & file_r )
-	    : _media( media_r )
-	    , _file( file_r )
-	    , _local_file( "" )
-	  {
-	    if ( _file.empty() ) {
-	      ZYPP_THROW(MediaBadFilenameException(_file.asString()));
-	    } else if ( _media ) {
-	      try {
-		_media->provideFile( _file );
-		_local_file = _media->localPath( _file );
-	      }
-	      catch (const MediaException & excpt_r)
-              {
-		ZYPP_CAUGHT(excpt_r);
-		_media = NULL;
-		ZYPP_RETHROW(excpt_r);
-	      }
-	    }
-	  }
+    FileProvider( MediaAccess::constPtr media_r, const Pathname &file_r )
+      : _media( media_r )
+      , _file( file_r )
+      , _local_file( "" )
+    {
+      if ( _file.empty() )
+      {
+        ZYPP_THROW( MediaBadFilenameException( _file.asString() ) );
+      }
+      else if ( _media )
+      {
+        try
+        {
+          _media->provideFile( _file );
+          _local_file = _media->localPath( _file );
+        }
+        catch ( const MediaException &excpt_r )
+        {
+          ZYPP_CAUGHT( excpt_r );
+          _media = NULL;
+          ZYPP_RETHROW( excpt_r );
+        }
+      }
+    }
 
-	  ~FileProvider() {
-	    if ( _media )
-	    {
-	      try {
-		_media->releaseFile( _file );
-	      }
-	      catch (const MediaException &excpt_r)
-	      {
-		ZYPP_CAUGHT(excpt_r);
-	      }
-              catch(...) {} // No exception from dtor!
-	    }
-	  }
+    ~FileProvider()
+    {
+      if ( _media )
+      {
+        try
+        {
+          _media->releaseFile( _file );
+        }
+        catch ( const MediaException &excpt_r )
+        {
+          ZYPP_CAUGHT( excpt_r );
+        }
+        catch ( ... )
+        {
+        } // No exception from dtor!
+      }
+    }
 
-	public:
-
-	  /**
+  public:
+    /**
 	   * If no error, expect operator() to return the local
 	   * Pathname of the provided file.
 	   **/
-	  Pathname localFile() const { return _local_file; }
+    Pathname localFile() const { return _local_file; }
 
-	  /**
+    /**
 	   * Return the local Pathname of the provided file or
 	   * an empty Pathname on error.
 	   **/
-	  Pathname operator()() const {
-	    if ( _media )
-	      return _media->localPath( _file );
-	    return Pathname();
-	  }
-      };
-    };
+    Pathname operator()() const
+    {
+      if ( _media )
+        return _media->localPath( _file );
+      return Pathname();
+    }
+  };
+};
 
-    std::ostream & operator<<( std::ostream & str, const MediaAccess & obj );
+std::ostream &operator<<( std::ostream &str, const MediaAccess &obj );
 
 ///////////////////////////////////////////////////////////////////
 
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_MEDIAACCESS_H
-

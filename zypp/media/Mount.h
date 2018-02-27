@@ -23,77 +23,74 @@
 #include "zypp/ExternalProgram.h"
 #include "zypp/KVMap.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
-
-    /**
+/**
      * A "struct mntent" like mount entry structure,
      * but using std::strings.
      */
-    struct MountEntry
-    {
-        MountEntry(const std::string &source,
-                   const std::string &target,
-                   const std::string &fstype,
-                   const std::string &options,
-                   const int         dumpfreq = 0,
-                   const int         passnum  = 0)
-            : src(source)
-            , dir(target)
-            , type(fstype)
-            , opts(options)
-            , freq(dumpfreq)
-            , pass(passnum)
-        {}
+struct MountEntry
+{
+  MountEntry( const std::string &source, const std::string &target,
+    const std::string &fstype, const std::string &options,
+    const int dumpfreq = 0, const int passnum = 0 )
+    : src( source )
+    , dir( target )
+    , type( fstype )
+    , opts( options )
+    , freq( dumpfreq )
+    , pass( passnum )
+  {
+  }
 
-        std::string src;  //!< name of mounted file system
-        std::string dir;  //!< file system path prefix
-        std::string type; //!< filesystem / mount type
-        std::string opts; //!< mount options
-        int         freq; //!< dump frequency in days
-        int         pass; //!< pass number on parallel fsck
-    };
+  std::string src;  //!< name of mounted file system
+  std::string dir;  //!< file system path prefix
+  std::string type; //!< filesystem / mount type
+  std::string opts; //!< mount options
+  int freq;         //!< dump frequency in days
+  int pass;         //!< pass number on parallel fsck
+};
 
-    /** \relates MountEntry
+/** \relates MountEntry
      * A vector of mount entries.
      */
-    typedef std::vector<MountEntry> MountEntries;
+typedef std::vector<MountEntry> MountEntries;
 
-    /** \relates MountEntry Stream output */
-    std::ostream & operator<<( std::ostream & str, const MountEntry & obj );
+/** \relates MountEntry Stream output */
+std::ostream &operator<<( std::ostream &str, const MountEntry &obj );
 
-    /**
+/**
      * @short Interface to the mount program
      */
-    class Mount
-    {
-    public:
-
-	/**
+class Mount
+{
+public:
+  /**
 	 * For passing additional environment variables
 	 * to mount
 	 **/
-	typedef ExternalProgram::Environment Environment;
+  typedef ExternalProgram::Environment Environment;
 
-	/**
+  /**
 	 * Mount options. 'key' or 'key=value' pairs, separated by ','
 	 **/
-	typedef KVMap<kvmap::KVMapBase::CharSep<'=',','> > Options;
+  typedef KVMap<kvmap::KVMapBase::CharSep<'=', ','>> Options;
 
-    public:
-
-	/**
+public:
+  /**
 	* Create an new instance.
 	*/
-	Mount();
+  Mount();
 
-	/**
+  /**
 	* Clean up.
 	*/
-	~Mount();
+  ~Mount();
 
-	/**
+  /**
 	* mount device
 	*
 	* @param source what to mount (e.g. /dev/hda3)
@@ -106,24 +103,21 @@ namespace zypp {
         *
 	*/
 
-	void mount ( const std::string& source,
-			const std::string& target,
-			const std::string& filesystem,
-			const std::string& options,
-			const Environment& environment = Environment() );
+  void mount( const std::string &source, const std::string &target,
+    const std::string &filesystem, const std::string &options,
+    const Environment &environment = Environment() );
 
-	/** umount device
+  /** umount device
 	 *
 	 * @param path device or mountpoint to umount
         *
         * \throws MediaException
         *
 	 * */
-	void umount (const std::string& path);
+  void umount( const std::string &path );
 
-    public:
-
-	/**
+public:
+  /**
 	* Return mount entries from /etc/mtab or /etc/fstab file.
 	*
 	* @param mtab The name of the (mounted) file system description
@@ -134,49 +128,46 @@ namespace zypp {
 	* @returns A vector with mount entries or empty vector if reading
 	*          or parsing of the mtab file(s) failed.
 	*/
-	static MountEntries
-	getEntries(const std::string &mtab = "");
+  static MountEntries getEntries( const std::string &mtab = "" );
 
-    private:
-
-	/** The connection to the mount process.
+private:
+  /** The connection to the mount process.
 	 * */
-	ExternalProgram *process;
+  ExternalProgram *process;
 
-	/**
+  /**
 	 * Run mount with the specified arguments and handle stderr.
 	 * @param argv Mount arguments
 	 * @param environment Addittional environment to set
 	 * @param stderr_disp How to handle stderr, merged with stdout by default
 	 * */
-	void run( const char *const *argv, const Environment& environment,
-		  ExternalProgram::Stderr_Disposition stderr_disp =
-		  ExternalProgram::Stderr_To_Stdout);
+  void run( const char *const *argv, const Environment &environment,
+    ExternalProgram::Stderr_Disposition stderr_disp =
+      ExternalProgram::Stderr_To_Stdout );
 
-	void run( const char *const *argv,
-		  ExternalProgram::Stderr_Disposition stderr_disp =
-		  ExternalProgram::Stderr_To_Stdout) {
-	  Environment notused;
-	  run( argv, notused, stderr_disp );
-	}
+  void run(
+    const char *const *argv, ExternalProgram::Stderr_Disposition stderr_disp =
+                               ExternalProgram::Stderr_To_Stdout )
+  {
+    Environment notused;
+    run( argv, notused, stderr_disp );
+  }
 
-	/** Return the exit status of the process, closing the connection if
+  /** Return the exit status of the process, closing the connection if
 	 * not already done.
 	 * */
-	int Status();
+  int Status();
 
-	/** Forcably kill the process
+  /** Forcably kill the process
 	 * */
-	void Kill();
+  void Kill();
 
-
-	/** The exit code of the process, or -1 if not yet known.
+  /** The exit code of the process, or -1 if not yet known.
 	 * */
-	int exit_code;
-    };
+  int exit_code;
+};
 
-
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif

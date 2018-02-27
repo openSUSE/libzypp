@@ -30,82 +30,97 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace misc
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace misc
+{ /////////////////////////////////////////////////////////////////
 
-    void defaultLoadSystem( const Pathname & sysRoot_r, LoadSystemFlags flags_r )
+void defaultLoadSystem( const Pathname &sysRoot_r, LoadSystemFlags flags_r )
+{
+  MIL << str::form( "*** Load system at '%s' (%lx)", sysRoot_r.c_str(),
+           (unsigned long)flags_r )
+      << endl;
+
+  if ( !PathInfo( sysRoot_r ).isDir() )
+    ZYPP_THROW(
+      Exception( str::form( "sysRoot_r argument needs to be a directory. (%s)",
+        sysRoot_r.c_str() ) ) );
+
+  if ( ZYppFactory::instance().haveZYpp() )
+    ZYPP_THROW( Exception(
+      "ZYpp instance is already created. (Call this method earlier.)" ) );
+
+  if ( flags_r.testFlag( LS_READONLY ) )
+    zypp_readonly_hack::IWantIt();
+
+  sat::Pool satpool( sat::Pool::instance() );
+
+  if ( 1 )
+  {
+    MIL << "*** load target '" << Repository::systemRepoAlias() << "'\t"
+        << endl;
+    getZYpp()->initializeTarget( sysRoot_r );
+    getZYpp()->target()->load();
+    MIL << satpool.systemRepo() << endl;
+  }
+
+  if ( 1 )
+  {
+    RepoManager repoManager( sysRoot_r );
+    RepoInfoList repos = repoManager.knownRepositories();
+    for_( it, repos.begin(), repos.end() )
     {
-      MIL << str::form( "*** Load system at '%s' (%lx)", sysRoot_r.c_str(), (unsigned long)flags_r ) << endl;
+      RepoInfo &nrepo( *it );
 
-      if ( ! PathInfo( sysRoot_r ).isDir() )
-        ZYPP_THROW( Exception(str::form("sysRoot_r argument needs to be a directory. (%s)", sysRoot_r.c_str())) );
+      if ( !nrepo.enabled() )
+        continue;
 
-      if ( ZYppFactory::instance().haveZYpp() )
-        ZYPP_THROW( Exception("ZYpp instance is already created. (Call this method earlier.)") );
-
-      if ( flags_r.testFlag( LS_READONLY ) )
-        zypp_readonly_hack::IWantIt ();
-
-      sat::Pool satpool( sat::Pool::instance() );
-
-      if ( 1 )
+      if ( !flags_r.testFlag( LS_NOREFRESH ) )
       {
-        MIL << "*** load target '" << Repository::systemRepoAlias() << "'\t" << endl;
-        getZYpp()->initializeTarget( sysRoot_r );
-        getZYpp()->target()->load();
-        MIL << satpool.systemRepo() << endl;
-      }
-
-      if ( 1 )
-      {
-        RepoManager repoManager( sysRoot_r );
-        RepoInfoList repos = repoManager.knownRepositories();
-        for_( it, repos.begin(), repos.end() )
+        if ( repoManager.isCached( nrepo ) &&
+             ( nrepo.type() == repo::RepoType::RPMPLAINDIR // refreshes always
+               ||
+               repoManager.checkIfToRefreshMetadata( nrepo, nrepo.url() ) ==
+                 RepoManager::REFRESH_NEEDED ) )
         {
-          RepoInfo & nrepo( *it );
-
-          if ( ! nrepo.enabled() )
-            continue;
-
-          if ( ! flags_r.testFlag( LS_NOREFRESH ) )
-          {
-            if ( repoManager.isCached( nrepo )
-               && ( nrepo.type() == repo::RepoType::RPMPLAINDIR // refreshes always
-                  || repoManager.checkIfToRefreshMetadata( nrepo, nrepo.url() ) == RepoManager::REFRESH_NEEDED ) )
-            {
-              MIL << str::form( "*** clean cache for repo '%s'\t", nrepo.name().c_str() ) << endl;
-              repoManager.cleanCache( nrepo );
-              MIL << str::form( "*** refresh repo '%s'\t", nrepo.name().c_str() ) << endl;
-              repoManager.refreshMetadata( nrepo );
-            }
-          }
-
-          if ( ! repoManager.isCached( nrepo ) )
-          {
-            MIL << str::form( "*** build cache for repo '%s'\t", nrepo.name().c_str() ) << endl;
-            repoManager.buildCache( nrepo );
-          }
-
-          MIL << str::form( "*** load repo '%s'\t", nrepo.name().c_str() ) << std::flush;
-          try
-          {
-            repoManager.loadFromCache( nrepo );
-            MIL << satpool.reposFind( nrepo.alias() ) << endl;
-          }
-          catch ( const Exception & exp )
-          {
-            ERR << "*** load repo failed: " << exp.asString() + "\n" + exp.historyAsString() << endl;
-            ZYPP_RETHROW ( exp );
-          }
+          MIL << str::form(
+                   "*** clean cache for repo '%s'\t", nrepo.name().c_str() )
+              << endl;
+          repoManager.cleanCache( nrepo );
+          MIL << str::form( "*** refresh repo '%s'\t", nrepo.name().c_str() )
+              << endl;
+          repoManager.refreshMetadata( nrepo );
         }
       }
-      MIL << str::form( "*** Read system at '%s'", sysRoot_r.c_str() ) << endl;
-    }
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace misc
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+      if ( !repoManager.isCached( nrepo ) )
+      {
+        MIL << str::form(
+                 "*** build cache for repo '%s'\t", nrepo.name().c_str() )
+            << endl;
+        repoManager.buildCache( nrepo );
+      }
+
+      MIL << str::form( "*** load repo '%s'\t", nrepo.name().c_str() )
+          << std::flush;
+      try
+      {
+        repoManager.loadFromCache( nrepo );
+        MIL << satpool.reposFind( nrepo.alias() ) << endl;
+      }
+      catch ( const Exception &exp )
+      {
+        ERR << "*** load repo failed: "
+            << exp.asString() + "\n" + exp.historyAsString() << endl;
+        ZYPP_RETHROW( exp );
+      }
+    }
+  }
+  MIL << str::form( "*** Read system at '%s'", sysRoot_r.c_str() ) << endl;
+}
+
+/////////////////////////////////////////////////////////////////
+} // namespace misc
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

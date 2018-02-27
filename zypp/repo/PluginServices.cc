@@ -25,66 +25,65 @@ using std::stringstream;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace repo
+{ /////////////////////////////////////////////////////////////////
 
-    class PluginServices::Impl
-    {
-    public:
-      static void loadServices( const Pathname &path,
-          const PluginServices::ProcessService &callback );
-    };
+class PluginServices::Impl
+{
+public:
+  static void loadServices(
+    const Pathname &path, const PluginServices::ProcessService &callback );
+};
 
-    void PluginServices::Impl::loadServices( const Pathname &path,
-                                  const PluginServices::ProcessService & callback/*,
+void PluginServices::Impl::loadServices(
+  const Pathname &path, const PluginServices::ProcessService &callback /*,
                                   const ProgressData::ReceiverFnc &progress*/ )
+{
+  std::list<Pathname> entries;
+  if ( PathInfo( path ).isExist() )
+  {
+    if ( filesystem::readdir( entries, path, false ) != 0 )
     {
-      std::list<Pathname> entries;
-      if (PathInfo(path).isExist())
-      {
-        if ( filesystem::readdir( entries, path, false ) != 0 )
-        {
-          // TranslatorExplanation '%s' is a pathname
-            ZYPP_THROW(Exception(str::form(_("Failed to read directory '%s'"), path.c_str())));
-        }
-
-        //str::regex allowedServiceExt("^\\.service(_[0-9]+)?$");
-        for_(it, entries.begin(), entries.end() )
-        {
-          ServiceInfo service_info;
-          service_info.setAlias((*it).basename());
-          Url url;
-          url.setPathName((*it).asString());
-          url.setScheme("file");
-          service_info.setUrl(url);
-          service_info.setType(ServiceType::PLUGIN);
-          service_info.setAutorefresh( true );
-	  DBG << "Plugin Service: " << service_info << endl;
-          callback(service_info);
-        }
-
-      }
+      // TranslatorExplanation '%s' is a pathname
+      ZYPP_THROW( Exception(
+        str::form( _( "Failed to read directory '%s'" ), path.c_str() ) ) );
     }
 
-    PluginServices::PluginServices( const Pathname &path,
-                                  const ProcessService & callback/*,
-                                  const ProgressData::ReceiverFnc &progress */)
+    //str::regex allowedServiceExt("^\\.service(_[0-9]+)?$");
+    for_( it, entries.begin(), entries.end() )
     {
-      Impl::loadServices(path, callback/*, progress*/);
+      ServiceInfo service_info;
+      service_info.setAlias( ( *it ).basename() );
+      Url url;
+      url.setPathName( ( *it ).asString() );
+      url.setScheme( "file" );
+      service_info.setUrl( url );
+      service_info.setType( ServiceType::PLUGIN );
+      service_info.setAutorefresh( true );
+      DBG << "Plugin Service: " << service_info << endl;
+      callback( service_info );
     }
+  }
+}
 
-    PluginServices::~PluginServices()
-    {}
+PluginServices::PluginServices(
+  const Pathname &path, const ProcessService &callback /*,
+                                  const ProgressData::ReceiverFnc &progress */ )
+{
+  Impl::loadServices( path, callback /*, progress*/ );
+}
 
-    std::ostream & operator<<( std::ostream & str, const PluginServices & obj )
-    {
-      return str;
-    }
+PluginServices::~PluginServices() {}
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+std::ostream &operator<<( std::ostream &str, const PluginServices &obj )
+{
+  return str;
+}
+
+/////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

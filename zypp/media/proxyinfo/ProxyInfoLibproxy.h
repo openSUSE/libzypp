@@ -21,37 +21,37 @@
 #include "zypp/media/ProxyInfo.h"
 #include "zypp/media/proxyinfo/ProxyInfoImpl.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
+class ProxyInfoLibproxy : public ProxyInfo::Impl
+{
+public:
+  ProxyInfoLibproxy();
+  /**  */
+  ~ProxyInfoLibproxy();
+  /**  */
+  bool enabled() const { return _enabled; }
+  /**  */
+  std::string proxy( const Url &url_r ) const;
+  /**  */
+  ProxyInfo::NoProxyList noProxy() const { return _no_proxy; }
+  /**  */
+  virtual ProxyInfo::NoProxyIterator noProxyBegin() const;
+  /**  */
+  virtual ProxyInfo::NoProxyIterator noProxyEnd() const;
 
-    class ProxyInfoLibproxy : public ProxyInfo::Impl
-    {
-    public:
-      ProxyInfoLibproxy();
-      /**  */
-      ~ProxyInfoLibproxy();
-      /**  */
-      bool enabled() const
-      { return _enabled; }
-      /**  */
-      std::string proxy(const Url & url_r) const;
-      /**  */
-      ProxyInfo::NoProxyList noProxy() const
-      { return _no_proxy; }
-      /**  */
-      virtual ProxyInfo::NoProxyIterator noProxyBegin() const;
-      /**  */
-      virtual ProxyInfo::NoProxyIterator noProxyEnd() const;
-    private:
-      DefaultIntegral<bool,false> _enabled;
-      ProxyInfo::NoProxyList _no_proxy;
-      pxProxyFactory *_factory;
-    };
+private:
+  DefaultIntegral<bool, false> _enabled;
+  ProxyInfo::NoProxyList _no_proxy;
+  pxProxyFactory *_factory;
+};
 
 ///////////////////////////////////////////////////////////////////
 
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_PROXYINFO_PROXYINFOLIBPROXY_H

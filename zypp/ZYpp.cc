@@ -23,76 +23,82 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  // class ZYpp:
-  // ctor and dtor implemented in  ZYppFactory.cc
+// class ZYpp:
+// ctor and dtor implemented in  ZYppFactory.cc
 
-  std::ostream & operator<<( std::ostream & str, const ZYpp & obj )
-  { return str << *obj._pimpl; }
+std::ostream &operator<<( std::ostream &str, const ZYpp &obj )
+{
+  return str << *obj._pimpl;
+}
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  // Forward to Impl:
-  //
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+// Forward to Impl:
+//
+///////////////////////////////////////////////////////////////////
 
-  ResPool ZYpp::pool() const
-  { return _pimpl->pool(); }
+ResPool ZYpp::pool() const { return _pimpl->pool(); }
 
-  DiskUsageCounter::MountPointSet ZYpp::diskUsage()
-  { return _pimpl->diskUsage(); }
+DiskUsageCounter::MountPointSet ZYpp::diskUsage()
+{
+  return _pimpl->diskUsage();
+}
 
-  void ZYpp::setPartitions(const DiskUsageCounter::MountPointSet &mp)
-  { return _pimpl->setPartitions(mp); }
+void ZYpp::setPartitions( const DiskUsageCounter::MountPointSet &mp )
+{
+  return _pimpl->setPartitions( mp );
+}
 
-  DiskUsageCounter::MountPointSet ZYpp::getPartitions() const
-  { return _pimpl->getPartitions(); }
+DiskUsageCounter::MountPointSet ZYpp::getPartitions() const
+{
+  return _pimpl->getPartitions();
+}
 
-  ResPoolProxy ZYpp::poolProxy() const
-  { return _pimpl->poolProxy(); }
+ResPoolProxy ZYpp::poolProxy() const { return _pimpl->poolProxy(); }
 
-  Resolver_Ptr ZYpp::resolver() const
-  { return _pimpl->resolver(); }
+Resolver_Ptr ZYpp::resolver() const { return _pimpl->resolver(); }
 
-  KeyRing_Ptr ZYpp::keyRing() const
-  { return _pimpl->keyRing(); }
+KeyRing_Ptr ZYpp::keyRing() const { return _pimpl->keyRing(); }
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  // Forward to Impl:
-  //
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+// Forward to Impl:
+//
+///////////////////////////////////////////////////////////////////
 
-  Target_Ptr ZYpp::target() const
-  { return _pimpl->target(); }
+Target_Ptr ZYpp::target() const { return _pimpl->target(); }
 
-  Target_Ptr ZYpp::getTarget() const
-  { return _pimpl->getTarget(); }
+Target_Ptr ZYpp::getTarget() const { return _pimpl->getTarget(); }
 
-  void ZYpp::initializeTarget( const Pathname & root, bool doRebuild_r )
-  { _pimpl->initializeTarget( root, doRebuild_r ); }
+void ZYpp::initializeTarget( const Pathname &root, bool doRebuild_r )
+{
+  _pimpl->initializeTarget( root, doRebuild_r );
+}
 
-  void ZYpp::finishTarget()
-  { _pimpl->finishTarget(); }
+void ZYpp::finishTarget() { _pimpl->finishTarget(); }
 
-  ZYppCommitResult ZYpp::commit( const ZYppCommitPolicy & policy_r )
-  { return _pimpl->commit( policy_r ); }
+ZYppCommitResult ZYpp::commit( const ZYppCommitPolicy &policy_r )
+{
+  return _pimpl->commit( policy_r );
+}
 
-  void ZYpp::installSrcPackage( const SrcPackage_constPtr & srcPackage_r )
-  { _pimpl->installSrcPackage( srcPackage_r ); }
+void ZYpp::installSrcPackage( const SrcPackage_constPtr &srcPackage_r )
+{
+  _pimpl->installSrcPackage( srcPackage_r );
+}
 
-  ManagedFile ZYpp::provideSrcPackage( const SrcPackage_constPtr & srcPackage_r )
-  {return _pimpl->provideSrcPackage( srcPackage_r ); }
-  ///////////////////////////////////////////////////////////////////
+ManagedFile ZYpp::provideSrcPackage( const SrcPackage_constPtr &srcPackage_r )
+{
+  return _pimpl->provideSrcPackage( srcPackage_r );
+}
+///////////////////////////////////////////////////////////////////
 
-  Pathname ZYpp::homePath() const
-  { return _pimpl->homePath(); }
+Pathname ZYpp::homePath() const { return _pimpl->homePath(); }
 
-  Pathname ZYpp::tmpPath() const
-  { return _pimpl->tmpPath(); }
+Pathname ZYpp::tmpPath() const { return _pimpl->tmpPath(); }
 
-  void ZYpp::setHomePath( const Pathname & path )
-  { _pimpl->setHomePath(path); }
+void ZYpp::setHomePath( const Pathname &path ) { _pimpl->setHomePath( path ); }
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

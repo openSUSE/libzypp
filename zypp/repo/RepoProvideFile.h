@@ -25,17 +25,17 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace repo
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	provideFile
-    //
-    ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+//	provideFile
+//
+///////////////////////////////////////////////////////////////////
 
-    /** Provide a file from a Repository.
+/** Provide a file from a Repository.
      * Let \a source_r provide the file described by \a loc_r. In case
      * \a loc_r contains a checksum, the file is verified. \a policy_r
      * provides callback hooks for download progress reporting and behaviour
@@ -43,11 +43,10 @@ namespace zypp
      *
      * \throws Exception
     */
-    ManagedFile provideFile( RepoInfo repo_r,
-                             const OnMediaLocation & loc_r,
-                             const ProvideFilePolicy & policy_r = ProvideFilePolicy() );
+ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation &loc_r,
+  const ProvideFilePolicy &policy_r = ProvideFilePolicy() );
 
-    /**
+/**
      * \short Provides files from different repos
      *
      * Class that allows to get files from repositories
@@ -57,14 +56,15 @@ namespace zypp
      * files from different repositories in different order
      * without opening and closing medias all the time
      */
-    class RepoMediaAccess
-    {
-    public:
-      /** Ctor taking the default \ref ProvideFilePolicy. */
-      RepoMediaAccess( const ProvideFilePolicy & defaultPolicy_r = ProvideFilePolicy() );
-      ~RepoMediaAccess();
+class RepoMediaAccess
+{
+public:
+  /** Ctor taking the default \ref ProvideFilePolicy. */
+  RepoMediaAccess(
+    const ProvideFilePolicy &defaultPolicy_r = ProvideFilePolicy() );
+  ~RepoMediaAccess();
 
-      /** Provide a file from a Repository.
+  /** Provide a file from a Repository.
       * Let \a source_r provide the file described by \a loc_r. In case
       * \a loc_r contains a checksum, the file is verified. \a policy_r
       * provides callback hooks for download progress reporting and behaviour
@@ -73,30 +73,31 @@ namespace zypp
       * \throws Exception
       * \todo Investigate why this needs a non-const Repository as arg.
       */
-      ManagedFile provideFile( RepoInfo repo_r,
-                               const OnMediaLocation & loc_r,
-                               const ProvideFilePolicy & policy_r );
+  ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation &loc_r,
+    const ProvideFilePolicy &policy_r );
 
-      /** \overload Using the current default \ref ProvideFilePolicy. */
-      ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation & loc_r )
-      { return provideFile( repo_r, loc_r, defaultPolicy() ); }
+  /** \overload Using the current default \ref ProvideFilePolicy. */
+  ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation &loc_r )
+  {
+    return provideFile( repo_r, loc_r, defaultPolicy() );
+  }
 
-    public:
-      /** Set a new default \ref ProvideFilePolicy. */
-      void setDefaultPolicy( const ProvideFilePolicy & policy_r );
+public:
+  /** Set a new default \ref ProvideFilePolicy. */
+  void setDefaultPolicy( const ProvideFilePolicy &policy_r );
 
-      /** Get the current default \ref ProvideFilePolicy. */
-      const ProvideFilePolicy & defaultPolicy() const;
+  /** Get the current default \ref ProvideFilePolicy. */
+  const ProvideFilePolicy &defaultPolicy() const;
 
-   private:
-      class Impl;
-       RW_pointer<Impl> _impl;
-    };
+private:
+  class Impl;
+  RW_pointer<Impl> _impl;
+};
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_REPO_REPOPROVIDEFILE_H

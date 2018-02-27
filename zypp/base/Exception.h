@@ -24,54 +24,60 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace exception_detail
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace exception_detail
+{ /////////////////////////////////////////////////////////////////
 
-    /** Keep _FILE_, _FUNCTION_ and _LINE_.
+/** Keep _FILE_, _FUNCTION_ and _LINE_.
      * Construct it using the \ref ZYPP_EX_CODELOCATION macro.
     */
-    struct CodeLocation
-    {
-      friend std::ostream & operator<<( std::ostream & str, const CodeLocation & obj );
+struct CodeLocation
+{
+  friend std::ostream &operator<<( std::ostream &str, const CodeLocation &obj );
 
-      /** Ctor */
-      CodeLocation()
-      : _line( 0 )
-      {}
+  /** Ctor */
+  CodeLocation()
+    : _line( 0 )
+  {
+  }
 
-      /** Ctor */
-      CodeLocation( const std::string & file_r,
-                    const std::string & func_r,
-                    unsigned            line_r )
-      : _file( file_r ), _func( func_r ), _line( line_r )
-      {}
+  /** Ctor */
+  CodeLocation(
+    const std::string &file_r, const std::string &func_r, unsigned line_r )
+    : _file( file_r )
+    , _func( func_r )
+    , _line( line_r )
+  {
+  }
 
-      /** Location as string */
-      std::string asString() const;
+  /** Location as string */
+  std::string asString() const;
 
-    private:
-      std::string _file;
-      std::string _func;
-      unsigned    _line;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  std::string _file;
+  std::string _func;
+  unsigned _line;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** Create CodeLocation object storing the current location. */
-    //#define ZYPP_EX_CODELOCATION ::zypp::exception_detail::CodeLocation(__FILE__,__FUNCTION__,__LINE__)
-#define ZYPP_EX_CODELOCATION ::zypp::exception_detail::CodeLocation(( *__FILE__ == '/' ? strrchr( __FILE__, '/' ) + 1 : __FILE__ ),__FUNCTION__,__LINE__)
+/** Create CodeLocation object storing the current location. */
+//#define ZYPP_EX_CODELOCATION ::zypp::exception_detail::CodeLocation(__FILE__,__FUNCTION__,__LINE__)
+#define ZYPP_EX_CODELOCATION                                                   \
+  ::zypp::exception_detail::CodeLocation(                                      \
+    ( *__FILE__ == '/' ? strrchr( __FILE__, '/' ) + 1 : __FILE__ ),            \
+    __FUNCTION__, __LINE__ )
 
-    /** \relates CodeLocation Stream output */
-    std::ostream & operator<<( std::ostream & str, const CodeLocation & obj );
+/** \relates CodeLocation Stream output */
+std::ostream &operator<<( std::ostream &str, const CodeLocation &obj );
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace exception_detail
-  ///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace exception_detail
+///////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : Exception
-  /** Base class for Exception.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Exception
+/** Base class for Exception.
    *
    * Exception offers to store a message string passed to the ctor.
    * Derived classes may provide additional information. Overload
@@ -142,118 +148,111 @@ namespace zypp
    * in the remaining code of zypp. If we can we should try to wrap
    * the blocxx macros and typedef the classes in here.
    **/
-  class Exception : public std::exception
-  {
-    friend std::ostream & operator<<( std::ostream & str, const Exception & obj );
+class Exception : public std::exception
+{
+  friend std::ostream &operator<<( std::ostream &str, const Exception &obj );
 
-  public:
-    typedef exception_detail::CodeLocation CodeLocation;
-    typedef std::list<std::string>         History;
-    typedef History::const_iterator        HistoryIterator;
-    typedef History::size_type             HistorySize;
+public:
+  typedef exception_detail::CodeLocation CodeLocation;
+  typedef std::list<std::string> History;
+  typedef History::const_iterator HistoryIterator;
+  typedef History::size_type HistorySize;
 
-    /** Default ctor.
+  /** Default ctor.
      * Use \ref ZYPP_THROW to throw exceptions.
     */
-    Exception();
+  Exception();
 
-    /** Ctor taking a message.
+  /** Ctor taking a message.
      * Use \ref ZYPP_THROW to throw exceptions.
     */
-    Exception( const std::string & msg_r );
-    /** \overload */
-    Exception( std::string && msg_r );
+  Exception( const std::string &msg_r );
+  /** \overload */
+  Exception( std::string &&msg_r );
 
-    /** Ctor taking a message and an exception to remember as history
+  /** Ctor taking a message and an exception to remember as history
      * \see \ref remember
      * Use \ref ZYPP_THROW to throw exceptions.
     */
-    Exception( const std::string & msg_r, const Exception & history_r );
-    /** \overload moving */
-    Exception( std::string && msg_r, const Exception & history_r );
-    /** \overload moving */
-    Exception( const std::string & msg_r, Exception && history_r );
-    /** \overload moving */
-    Exception( std::string && msg_r, Exception && history_r );
+  Exception( const std::string &msg_r, const Exception &history_r );
+  /** \overload moving */
+  Exception( std::string &&msg_r, const Exception &history_r );
+  /** \overload moving */
+  Exception( const std::string &msg_r, Exception &&history_r );
+  /** \overload moving */
+  Exception( std::string &&msg_r, Exception &&history_r );
 
-    /** Dtor. */
-    virtual ~Exception() throw();
+  /** Dtor. */
+  virtual ~Exception() throw();
 
-    /** Return CodeLocation. */
-    const CodeLocation & where() const
-    { return _where; }
+  /** Return CodeLocation. */
+  const CodeLocation &where() const { return _where; }
 
-    /** Exchange location on rethrow. */
-    void relocate( const CodeLocation & where_r ) const
-    { _where = where_r; }
+  /** Exchange location on rethrow. */
+  void relocate( const CodeLocation &where_r ) const { _where = where_r; }
 
-    /** Return the message string provided to the ctor.
+  /** Return the message string provided to the ctor.
      * \note This is not necessarily the complete error message.
      * The whole error message is provided by \ref asString or
      * \ref dumpOn.
     */
-    const std::string & msg() const
-    { return _msg; }
+  const std::string &msg() const { return _msg; }
 
-    /** Error message provided by \ref dumpOn as string. */
-    std::string asString() const;
+  /** Error message provided by \ref dumpOn as string. */
+  std::string asString() const;
 
-    /** Translated error message as string suitable for the user.
+  /** Translated error message as string suitable for the user.
      * \see \ref asUserStringHistory
     */
-    std::string asUserString() const;
+  std::string asUserString() const;
 
-  public:
-    /** \name History list of message strings.
+public:
+  /** \name History list of message strings.
      * Maintain a simple list of individual error messages, that lead
      * to this Exception. The Exceptions message itself is not included
      * in the history. The History list stores the most recent message
      * fist.
      */
-    //@{
+  //@{
 
-    /** Store an other Exception as history. */
-    void remember( const Exception & old_r );
-    /** \overload moving */
-    void remember( Exception && old_r );
+  /** Store an other Exception as history. */
+  void remember( const Exception &old_r );
+  /** \overload moving */
+  void remember( Exception &&old_r );
 
-    /** Add some message text to the history. */
-    void addHistory( const std::string & msg_r );
-    /** \overload moving */
-    void addHistory( std::string && msg_r );
+  /** Add some message text to the history. */
+  void addHistory( const std::string &msg_r );
+  /** \overload moving */
+  void addHistory( std::string &&msg_r );
 
-    /** \ref addHistory from string container types (oldest first) */
-    template<class TContainer>
-    void addToHistory( const TContainer & msgc_r )
-    {
-      for ( const std::string & el : msgc_r )
-	addHistory( el );
-    }
-    /** \ref addHistory from string container types (oldest first) moving */
-    template<class TContainer>
-    void moveToHistory( TContainer && msgc_r )
-    {
-      for ( std::string & el : msgc_r )
-	addHistory( std::move(el) );
-    }
+  /** \ref addHistory from string container types (oldest first) */
+  template <class TContainer>
+  void addToHistory( const TContainer &msgc_r )
+  {
+    for ( const std::string &el : msgc_r )
+      addHistory( el );
+  }
+  /** \ref addHistory from string container types (oldest first) moving */
+  template <class TContainer>
+  void moveToHistory( TContainer &&msgc_r )
+  {
+    for ( std::string &el : msgc_r )
+      addHistory( std::move( el ) );
+  }
 
-    /** Iterator pointing to the most recent message. */
-    HistoryIterator historyBegin() const
-    { return _history.begin(); }
+  /** Iterator pointing to the most recent message. */
+  HistoryIterator historyBegin() const { return _history.begin(); }
 
-    /** Iterator pointing behind the last message. */
-    HistoryIterator historyEnd() const
-    { return _history.end(); }
+  /** Iterator pointing behind the last message. */
+  HistoryIterator historyEnd() const { return _history.end(); }
 
-    /** Whether the history list is empty. */
-    bool historyEmpty() const
-    { return _history.empty(); }
+  /** Whether the history list is empty. */
+  bool historyEmpty() const { return _history.empty(); }
 
-    /** The size of the history list. */
-    HistorySize historySize() const
-    { return _history.size(); }
+  /** The size of the history list. */
+  HistorySize historySize() const { return _history.size(); }
 
-    /** The history as string. Empty if \ref historyEmpty.
+  /** The history as string. Empty if \ref historyEmpty.
      * Otherwise:
      * \code
      * History:
@@ -263,166 +262,167 @@ namespace zypp
      *  - oldest message
      * \endcode
     */
-    std::string historyAsString() const;
+  std::string historyAsString() const;
 
-    /** A single (multiline) string composed of \ref asUserString  and  \ref historyAsString. */
-    std::string asUserHistory() const;
-    //@}
+  /** A single (multiline) string composed of \ref asUserString  and  \ref historyAsString. */
+  std::string asUserHistory() const;
+  //@}
 
-  protected:
+protected:
+  /** Overload this to print a proper error message. */
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-    /** Overload this to print a proper error message. */
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+public:
+  /** Make a string from \a errno_r. */
+  static std::string strErrno( int errno_r );
+  /** Make a string from \a errno_r and \a msg_r. */
+  static std::string strErrno( int errno_r, const std::string &msg_r );
+  /** \overload moving */
+  static std::string strErrno( int errno_r, std::string &&msg_r );
 
-  public:
-     /** Make a string from \a errno_r. */
-    static std::string strErrno( int errno_r );
-     /** Make a string from \a errno_r and \a msg_r. */
-    static std::string strErrno( int errno_r, const std::string & msg_r );
-    /** \overload moving */
-    static std::string strErrno( int errno_r, std::string && msg_r );
-
-  public:
-    /** Drop a logline on throw, catch or rethrow.
+public:
+  /** Drop a logline on throw, catch or rethrow.
      * Used by \ref ZYPP_THROW macros.
     */
-    static void log( const Exception & excpt_r, const CodeLocation & where_r,
-                     const char *const prefix_r );
-    /** \overrload for not-Exception types thrown via ZYPP_THROW */
-    static void log( const char * typename_r, const CodeLocation & where_r,
-                     const char *const prefix_r );
-  private:
-    mutable CodeLocation _where;
-    std::string          _msg;
-    History              _history;
+  static void log( const Exception &excpt_r, const CodeLocation &where_r,
+    const char *const prefix_r );
+  /** \overrload for not-Exception types thrown via ZYPP_THROW */
+  static void log( const char *typename_r, const CodeLocation &where_r,
+    const char *const prefix_r );
 
-    /** Return message string. */
-    virtual const char * what() const throw()
-    { return _msg.c_str(); }
+private:
+  mutable CodeLocation _where;
+  std::string _msg;
+  History _history;
 
-    /** Called by <tt>std::ostream & operator\<\<</tt>.
+  /** Return message string. */
+  virtual const char *what() const throw() { return _msg.c_str(); }
+
+  /** Called by <tt>std::ostream & operator\<\<</tt>.
      * Prints \ref CodeLocation and the error message provided by
      * \ref dumpOn.
     */
-    std::ostream & dumpError( std::ostream & str ) const;
-  };
-  ///////////////////////////////////////////////////////////////////
+  std::ostream &dumpError( std::ostream &str ) const;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates Exception Stream output */
-  std::ostream & operator<<( std::ostream & str, const Exception & obj );
+/** \relates Exception Stream output */
+std::ostream &operator<<( std::ostream &str, const Exception &obj );
 
-  ///////////////////////////////////////////////////////////////////
-  namespace exception_detail
-  {
-    /** SFINAE: Hide template signature unless \a TExcpt is derived from \ref Exception. */
-    template<class TExcpt>
-    using EnableIfIsException = typename std::enable_if< std::is_base_of<Exception,TExcpt>::value, int>::type;
+///////////////////////////////////////////////////////////////////
+namespace exception_detail
+{
+/** SFINAE: Hide template signature unless \a TExcpt is derived from \ref Exception. */
+template <class TExcpt>
+using EnableIfIsException =
+  typename std::enable_if<std::is_base_of<Exception, TExcpt>::value, int>::type;
 
-    /** SFINAE: Hide template signature if \a TExcpt is derived from  \ref Exception. */
-    template<class TExcpt>
-    using EnableIfNotException = typename std::enable_if< !std::is_base_of<Exception,TExcpt>::value, int>::type;
+/** SFINAE: Hide template signature if \a TExcpt is derived from  \ref Exception. */
+template <class TExcpt>
+using EnableIfNotException =
+  typename std::enable_if<!std::is_base_of<Exception, TExcpt>::value,
+    int>::type;
 
+/** Helper for \ref ZYPP_THROW( Exception ). */
+template <class TExcpt, EnableIfIsException<TExcpt> = 0>
+void do_ZYPP_THROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+  __attribute__( ( noreturn ) );
+template <class TExcpt, EnableIfIsException<TExcpt> = 0>
+void do_ZYPP_THROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  excpt_r.relocate( where_r );
+  Exception::log( excpt_r, where_r, "THROW:   " );
+  throw( excpt_r );
+}
 
-    /** Helper for \ref ZYPP_THROW( Exception ). */
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    void do_ZYPP_THROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    void do_ZYPP_THROW( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      excpt_r.relocate( where_r );
-      Exception::log( excpt_r, where_r, "THROW:   " );
-      throw( excpt_r );
-    }
+/** Helper for \ref ZYPP_THROW( not Exception ). */
+template <class TExcpt, EnableIfNotException<TExcpt> = 0>
+void do_ZYPP_THROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+  __attribute__( ( noreturn ) );
+template <class TExcpt, EnableIfNotException<TExcpt> = 0>
+void do_ZYPP_THROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  Exception::log( typeid( excpt_r ).name(), where_r, "THROW:   " );
+  throw( excpt_r );
+}
 
-    /** Helper for \ref ZYPP_THROW( not Exception ). */
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    void do_ZYPP_THROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    void do_ZYPP_THROW( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( typeid(excpt_r).name(), where_r, "THROW:   " );
-      throw( excpt_r );
-    }
+/** Helper for \ref ZYPP_THROW( Exception ). */
+template <class TExcpt, EnableIfIsException<TExcpt> = 0>
+void do_ZYPP_CAUGHT( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  Exception::log( excpt_r, where_r, "CAUGHT:  " );
+}
 
+/** Helper for \ref ZYPP_THROW( not Exception ). */
+template <class TExcpt, EnableIfNotException<TExcpt> = 0>
+void do_ZYPP_CAUGHT( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  Exception::log( typeid( excpt_r ).name(), where_r, "CAUGHT:  " );
+}
 
-    /** Helper for \ref ZYPP_THROW( Exception ). */
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    void do_ZYPP_CAUGHT( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( excpt_r, where_r, "CAUGHT:  " );
-    }
+/** Helper for \ref ZYPP_THROW( Exception ). */
+template <class TExcpt, EnableIfIsException<TExcpt> = 0>
+void do_ZYPP_RETHROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+  __attribute__( ( noreturn ) );
+template <class TExcpt, EnableIfIsException<TExcpt> = 0>
+void do_ZYPP_RETHROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  Exception::log( excpt_r, where_r, "RETHROW: " );
+  excpt_r.relocate( where_r );
+  throw;
+}
 
-    /** Helper for \ref ZYPP_THROW( not Exception ). */
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    void do_ZYPP_CAUGHT( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( typeid(excpt_r).name(), where_r, "CAUGHT:  " );
-    }
+/** Helper for \ref ZYPP_THROW( not Exception ). */
+template <class TExcpt, EnableIfNotException<TExcpt> = 0>
+void do_ZYPP_RETHROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+  __attribute__( ( noreturn ) );
+template <class TExcpt, EnableIfNotException<TExcpt> = 0>
+void do_ZYPP_RETHROW( const TExcpt &excpt_r, const CodeLocation &where_r )
+{
+  Exception::log( excpt_r, where_r, "RETHROW: " );
+  throw;
+}
+} // namespace exception_detail
+///////////////////////////////////////////////////////////////////
 
-
-    /** Helper for \ref ZYPP_THROW( Exception ). */
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    void do_ZYPP_RETHROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    void do_ZYPP_RETHROW( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( excpt_r, where_r, "RETHROW: " );
-      excpt_r.relocate( where_r );
-      throw;
-    }
-
-    /** Helper for \ref ZYPP_THROW( not Exception ). */
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    void do_ZYPP_RETHROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    void do_ZYPP_RETHROW( const TExcpt & excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( excpt_r, where_r, "RETHROW: " );
-      throw;
-    }
-  } // namespace exception_detail
-  ///////////////////////////////////////////////////////////////////
-
-  /** \defgroup ZYPP_THROW ZYPP_THROW macros
+/** \defgroup ZYPP_THROW ZYPP_THROW macros
    * Macros for throwing Exception.
    * \see \ref zypp::Exception for an example.
   */
-  //@{
-  /** Drops a logline and throws the Exception. */
-#define ZYPP_THROW(EXCPT)\
+//@{
+/** Drops a logline and throws the Exception. */
+#define ZYPP_THROW( EXCPT )                                                    \
   ::zypp::exception_detail::do_ZYPP_THROW( EXCPT, ZYPP_EX_CODELOCATION )
 
-  /** Drops a logline telling the Exception was caught (in order to handle it). */
-#define ZYPP_CAUGHT(EXCPT)\
+/** Drops a logline telling the Exception was caught (in order to handle it). */
+#define ZYPP_CAUGHT( EXCPT )                                                   \
   ::zypp::exception_detail::do_ZYPP_CAUGHT( EXCPT, ZYPP_EX_CODELOCATION )
 
-  /** Drops a logline and rethrows, updating the CodeLocation. */
-#define ZYPP_RETHROW(EXCPT)\
+/** Drops a logline and rethrows, updating the CodeLocation. */
+#define ZYPP_RETHROW( EXCPT )                                                  \
   ::zypp::exception_detail::do_ZYPP_RETHROW( EXCPT, ZYPP_EX_CODELOCATION )
 
+/** Throw Exception built from a message string. */
+#define ZYPP_THROW_MSG( EXCPTTYPE, MSG ) ZYPP_THROW( EXCPTTYPE( MSG ) )
 
-  /** Throw Exception built from a message string. */
-#define ZYPP_THROW_MSG(EXCPTTYPE, MSG)\
-  ZYPP_THROW( EXCPTTYPE( MSG ) )
+/** Throw Exception built from errno. */
+#define ZYPP_THROW_ERRNO( EXCPTTYPE )                                          \
+  ZYPP_THROW( EXCPTTYPE(::zypp::Exception::strErrno( errno ) ) )
 
-  /** Throw Exception built from errno. */
-#define ZYPP_THROW_ERRNO(EXCPTTYPE)\
-  ZYPP_THROW( EXCPTTYPE( ::zypp::Exception::strErrno(errno) ) )
+/** Throw Exception built from errno provided as argument. */
+#define ZYPP_THROW_ERRNO1( EXCPTTYPE, ERRNO )                                  \
+  ZYPP_THROW( EXCPTTYPE(::zypp::Exception::strErrno( ERRNO ) ) )
 
-  /** Throw Exception built from errno provided as argument. */
-#define ZYPP_THROW_ERRNO1(EXCPTTYPE, ERRNO)\
-  ZYPP_THROW( EXCPTTYPE( ::zypp::Exception::strErrno(ERRNO) ) )
+/** Throw Exception built from errno and a message string. */
+#define ZYPP_THROW_ERRNO_MSG( EXCPTTYPE, MSG )                                 \
+  ZYPP_THROW( EXCPTTYPE(::zypp::Exception::strErrno( errno, MSG ) ) )
 
-  /** Throw Exception built from errno and a message string. */
-#define ZYPP_THROW_ERRNO_MSG(EXCPTTYPE, MSG)\
-  ZYPP_THROW( EXCPTTYPE( ::zypp::Exception::strErrno(errno,MSG) ) )
+/** Throw Exception built from errno provided as argument and a message string */
+#define ZYPP_THROW_ERRNO_MSG1( EXCPTTYPE, ERRNO, MSG )                         \
+  ZYPP_THROW( EXCPTTYPE(::zypp::Exception::strErrno( ERRNO, MSG ) ) )
+//@}
 
-  /** Throw Exception built from errno provided as argument and a message string */
-#define ZYPP_THROW_ERRNO_MSG1(EXCPTTYPE, ERRNO,MSG)\
-  ZYPP_THROW( EXCPTTYPE( ::zypp::Exception::strErrno(ERRNO,MSG) ) )
-  //@}
-
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_EXCEPTION_H

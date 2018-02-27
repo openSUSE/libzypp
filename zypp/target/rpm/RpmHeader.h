@@ -21,7 +21,6 @@
 #include "zypp/Changelog.h"
 #include "zypp/Pathname.h"
 
-
 namespace zypp
 {
 namespace target
@@ -31,14 +30,14 @@ namespace rpm
 
 struct FileInfo
 {
-  Pathname    filename;
-  ByteCount   size;
+  Pathname filename;
+  ByteCount size;
   std::string md5sum;
-  uid_t       uid;
-  gid_t       gid;
-  mode_t      mode;
-  time_t      mtime;
-  bool        ghost;
+  uid_t uid;
+  gid_t gid;
+  mode_t mode;
+  time_t mtime;
+  bool ghost;
   Pathname link_target;
 };
 
@@ -64,11 +63,10 @@ public:
   typedef intrusive_ptr<const RpmHeader> constPtr;
 
 private:
-
-  CapabilitySet PkgRelList_val( tag tag_r, bool pre, std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet PkgRelList_val(
+    tag tag_r, bool pre, std::set<std::string> *freq_r = 0 ) const;
 
 public:
-
   /**
    *
    **/
@@ -78,88 +76,87 @@ public:
    * <B>Dangerous!<\B> This one takes the header out of rhs
    * and leaves rhs empty.
    **/
-  RpmHeader( BinHeader::Ptr & rhs );
+  RpmHeader( BinHeader::Ptr &rhs );
 
   virtual ~RpmHeader();
 
-  bool isSrc() const;	//< Either 'src' or 'nosrc'
-  bool isNosrc() const;	//< Only 'nosrc'
+  bool isSrc() const;   //< Either 'src' or 'nosrc'
+  bool isNosrc() const; //< Only 'nosrc'
 
 public:
-
-  std::string      tag_name()    const;
-  Edition::epoch_t tag_epoch()   const;
-  std::string      tag_version() const;
-  std::string      tag_release() const;
-  Edition          tag_edition() const;
-  Arch             tag_arch()    const;
+  std::string tag_name() const;
+  Edition::epoch_t tag_epoch() const;
+  std::string tag_version() const;
+  std::string tag_release() const;
+  Edition tag_edition() const;
+  Arch tag_arch() const;
 
   Date tag_installtime() const;
-  Date tag_buildtime()   const;
+  Date tag_buildtime() const;
 
   /**
    * If <code>freq_r</code> is not NULL, file dependencies found are inserted.
    **/
-  CapabilitySet tag_provides ( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_provides( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_requires ( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_requires( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_prerequires ( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_prerequires( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_conflicts( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_conflicts( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_obsoletes( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_obsoletes( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_enhances( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_enhances( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_suggests( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_suggests( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_supplements( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_supplements( std::set<std::string> *freq_r = 0 ) const;
   /**
    * @see #tag_provides
    **/
-  CapabilitySet tag_recommends( std::set<std::string> * freq_r = 0 ) const;
+  CapabilitySet tag_recommends( std::set<std::string> *freq_r = 0 ) const;
 
-  ByteCount tag_size()        const;
+  ByteCount tag_size() const;
   ByteCount tag_archivesize() const;
 
-  std::string tag_summary()      const;
-  std::string tag_description()  const;
-  std::string tag_group()        const;
-  std::string tag_vendor()       const;
+  std::string tag_summary() const;
+  std::string tag_description() const;
+  std::string tag_group() const;
+  std::string tag_vendor() const;
   std::string tag_distribution() const;
-  std::string tag_license()      const;
-  std::string tag_buildhost()    const;
-  std::string tag_packager()     const;
-  std::string tag_url()          const;
-  std::string tag_os()           const;
-  std::string tag_prein()        const;
-  std::string tag_preinprog()    const;
-  std::string tag_postin()       const;
-  std::string tag_postinprog()   const;
-  std::string tag_preun()        const;
-  std::string tag_preunprog()    const;
-  std::string tag_postun()       const;
-  std::string tag_postunprog()   const;
-  std::string tag_pretrans()     const;
+  std::string tag_license() const;
+  std::string tag_buildhost() const;
+  std::string tag_packager() const;
+  std::string tag_url() const;
+  std::string tag_os() const;
+  std::string tag_prein() const;
+  std::string tag_preinprog() const;
+  std::string tag_postin() const;
+  std::string tag_postinprog() const;
+  std::string tag_preun() const;
+  std::string tag_preunprog() const;
+  std::string tag_postun() const;
+  std::string tag_postunprog() const;
+  std::string tag_pretrans() const;
   std::string tag_pretransprog() const;
-  std::string tag_posttrans()    const;
-  std::string tag_posttransprog()const;
-  std::string tag_sourcerpm()    const;
+  std::string tag_posttrans() const;
+  std::string tag_posttransprog() const;
+  std::string tag_sourcerpm() const;
 
   /** just the list of names  */
   std::list<std::string> tag_filenames() const;
@@ -173,28 +170,26 @@ public:
   Changelog tag_changelog() const;
 
 public:
-
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
 public:
-
   /**
    * Digest and signature verification flags
    **/
   enum VERIFICATION
   {
-    VERIFY       = 0x0000,
-    NODIGEST     = (1<<0),
-    NOSIGNATURE  = (1<<1),
-    NOVERIFY     = 0xffff
+    VERIFY = 0x0000,
+    NODIGEST = ( 1 << 0 ),
+    NOSIGNATURE = ( 1 << 1 ),
+    NOVERIFY = 0xffff
   };
 
   /**
    * Get an accessible packages data from disk.
    * Returns NULL on any error.
    **/
-  static RpmHeader::constPtr readPackage( const Pathname & path,
-                                          VERIFICATION verification = VERIFY );
+  static RpmHeader::constPtr readPackage(
+    const Pathname &path, VERIFICATION verification = VERIFY );
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -203,4 +198,3 @@ public:
 } // namespace zypp
 
 #endif // ZYPP_TARGET_RPM_RPMHEADER_H
-

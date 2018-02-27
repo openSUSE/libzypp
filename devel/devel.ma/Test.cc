@@ -7,7 +7,7 @@
 
 static const Pathname sysRoot( "/tmp/ToolScanRepos" );
 
-void addInstall( const std::string & pkgspec_r )
+void addInstall( const std::string &pkgspec_r )
 {
   bool rewrote( false );
   Capability pkgspec( Capability::guessPackageSpec( pkgspec_r, rewrote ) );
@@ -15,7 +15,7 @@ void addInstall( const std::string & pkgspec_r )
   ResPool::instance().resolver().addRequire( pkgspec );
 }
 
-void addConflict( const std::string & pkgspec_r )
+void addConflict( const std::string &pkgspec_r )
 {
   bool rewrote( false );
   Capability pkgspec( Capability::guessPackageSpec( pkgspec_r, rewrote ) );
@@ -31,16 +31,17 @@ bool solve()
     //ResPool::instance().resolver().setOnlyRequires( true );
     rres = ResPool::instance().resolver().resolvePool();
   }
-  if ( ! rres )
+  if ( !rres )
   {
     ERR << "resolve " << rres << endl;
     ResPool::instance().resolver().problems();
     return false;
   }
   MIL << "resolve " << rres << endl;
-  vdumpPoolStats( USR << "Transacting:"<< endl,
-		  make_filter_begin<resfilter::ByTransact>(ResPool::instance()),
-                  make_filter_end<resfilter::ByTransact>(ResPool::instance()) ) << endl;
+  vdumpPoolStats( USR << "Transacting:" << endl,
+    make_filter_begin<resfilter::ByTransact>( ResPool::instance() ),
+    make_filter_end<resfilter::ByTransact>( ResPool::instance() ) )
+    << endl;
 
   return true;
 }
@@ -54,13 +55,12 @@ bool install()
   return true;
 }
 
-
 /******************************************************************
 **
 **      FUNCTION NAME : main
 **      FUNCTION TYPE : int
 */
-int main( int argc, char * argv[] )
+int main( int argc, char *argv[] )
 {
   INT << "===[START]==========================================" << endl;
   ///////////////////////////////////////////////////////////////////
@@ -68,16 +68,15 @@ int main( int argc, char * argv[] )
     ::unsetenv( "ZYPP_CONF" );
   TestSetup::LoadSystemAt( sysRoot, Arch_x86_64 );
   ///////////////////////////////////////////////////////////////////
-  ResPool   pool( ResPool::instance() );
+  ResPool pool( ResPool::instance() );
   sat::Pool satpool( sat::Pool::instance() );
   ///////////////////////////////////////////////////////////////////
 
-//   addConflict( "kernel-default" );
-//   addConflict( "kernel-default-base" );
-  addInstall( "test");
+  //   addConflict( "kernel-default" );
+  //   addConflict( "kernel-default-base" );
+  addInstall( "test" );
   solve();
 
   INT << "===[END]============================================" << endl << endl;
   return 0;
 }
-

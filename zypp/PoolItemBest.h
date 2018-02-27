@@ -25,11 +25,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : PoolItemBest
-  //
-  /** Find the best candidates e.g. in a \ref PoolQuery result.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : PoolItemBest
+//
+/** Find the best candidates e.g. in a \ref PoolQuery result.
    *
    * The class basically maintains a \c map<IdString,PoolItem> and remembers
    * for each \c ident (\ref sat::Solvable::ident) the best \ref PoolItem that
@@ -57,99 +57,122 @@ namespace zypp
    *
    * \todo Support arbitrary Predicates.
    */
-  class PoolItemBest
+class PoolItemBest
+{
+  typedef std::unordered_map<IdString, PoolItem> Container;
+
+public:
+  /** Predicate returning \c True if \a lhs is a better choice. */
+  typedef boost::function<bool( const PoolItem &lhs, const PoolItem &rhs )>
+    Predicate;
+
+  typedef Container::size_type size_type;
+  typedef Container::value_type value_type;
+  typedef MapKVIteratorTraits<Container>::Value_const_iterator iterator;
+  typedef MapKVIteratorTraits<Container>::Key_const_iterator ident_iterator;
+
+public:
+  /** Default ctor. */
+  PoolItemBest() { _ctor_init(); }
+
+  /** Ctor feeding a \ref sat::Solvable. */
+  PoolItemBest( sat::Solvable slv_r )
   {
-      typedef std::unordered_map<IdString,PoolItem> Container;
-    public:
-      /** Predicate returning \c True if \a lhs is a better choice. */
-      typedef boost::function<bool ( const PoolItem & lhs, const PoolItem & rhs )> Predicate;
+    _ctor_init();
+    add( slv_r );
+  }
 
-      typedef Container::size_type	size_type;
-      typedef Container::value_type	value_type;
-      typedef MapKVIteratorTraits<Container>::Value_const_iterator	iterator;
-      typedef MapKVIteratorTraits<Container>::Key_const_iterator	ident_iterator;
+  /** Ctor feeding a \ref PoolItem. */
+  PoolItemBest( const PoolItem &pi_r )
+  {
+    _ctor_init();
+    add( pi_r );
+  }
 
-    public:
-      /** Default ctor. */
-      PoolItemBest()
-      { _ctor_init(); }
+  /** Ctor feeding a range of  \ref sat::Solvable or \ref PoolItem. */
+  template <class TIterator>
+  PoolItemBest( TIterator begin_r, TIterator end_r )
+  {
+    _ctor_init();
+    add( begin_r, end_r );
+  }
 
-      /** Ctor feeding a \ref sat::Solvable. */
-      PoolItemBest( sat::Solvable slv_r )
-      { _ctor_init(); add( slv_r ); }
+public:
+  /** Feed one \ref sat::Solvable. */
+  void add( sat::Solvable slv_r ) { add( PoolItem( slv_r ) ); }
 
-      /** Ctor feeding a \ref PoolItem. */
-      PoolItemBest( const PoolItem & pi_r )
-      { _ctor_init(); add( pi_r ); }
+  /** Feed one \ref PoolItem. */
+  void add( const PoolItem &pi_r );
 
-      /** Ctor feeding a range of  \ref sat::Solvable or \ref PoolItem. */
-      template<class TIterator>
-      PoolItemBest( TIterator begin_r, TIterator end_r )
-      { _ctor_init(); add( begin_r, end_r ); }
+  /** Feed a range of  \ref sat::Solvable or \ref PoolItem. */
+  template <class TIterator>
+  void add( TIterator begin_r, TIterator end_r )
+  {
+    for_( it, begin_r, end_r ) add( *it );
+  }
 
-    public:
-      /** Feed one \ref sat::Solvable. */
-      void add( sat::Solvable slv_r )
-      { add( PoolItem( slv_r ) ); }
+public:
+  /** \name Iterate the collected PoolItems. */
+  //@{
+  /** Whether PoolItems were collected. */
+  bool empty() const { return container().empty(); }
+  /** Number of PoolItems collected. */
+  size_type size() const { return container().size(); }
+  /** Pointer to the first PoolItem. */
+  iterator begin() const { return make_map_value_begin( container() ); }
+  /** Pointer behind the last PoolItem. */
+  iterator end() const { return make_map_value_end( container() ); }
 
-      /** Feed one \ref PoolItem. */
-      void add( const PoolItem & pi_r );
+  /** Return the collected \ref PoolItem with \ref sat::Solvable::ident \a ident_r. */
+  PoolItem find( IdString ident_r ) const;
+  /** \overload Use Solvables ident string. */
+  PoolItem find( sat::Solvable slv_r ) const { return find( slv_r.ident() ); }
+  /** \overload Use PoolItems ident string. */
+  PoolItem find( const PoolItem &pi_r ) const
+  {
+    return find( pi_r.satSolvable().ident() );
+  }
+  //@}
 
-      /** Feed a range of  \ref sat::Solvable or \ref PoolItem. */
-      template<class TIterator>
-      void add( TIterator begin_r, TIterator end_r )
-      {
-        for_( it, begin_r, end_r )
-          add( *it );
-      }
+  /** \name Iterate the collected PoolItems ident strings. */
+  //@{
+  /** Pointer to the first item. */
+  ident_iterator identBegin() const
+  {
+    return make_map_key_begin( container() );
+  }
+  /** Pointer behind the last item. */
+  ident_iterator identEnd() const { return make_map_key_end( container() ); }
+  //@}
 
-    public:
-      /** \name Iterate the collected PoolItems. */
-      //@{
-      /** Whether PoolItems were collected. */
-      bool empty() const	{ return container().empty(); }
-      /** Number of PoolItems collected. */
-      size_type size() const	{ return container().size(); }
-      /** Pointer to the first PoolItem. */
-      iterator begin() const	{ return make_map_value_begin( container() ); }
-      /** Pointer behind the last PoolItem. */
-      iterator end() const	{ return make_map_value_end( container() ); }
+private:
+  void _ctor_init();
+  const Container &container() const;
 
-      /** Return the collected \ref PoolItem with \ref sat::Solvable::ident \a ident_r. */
-      PoolItem find( IdString ident_r ) const;
-      /** \overload Use Solvables ident string. */
-      PoolItem find( sat::Solvable slv_r ) const	{ return find( slv_r.ident() ); }
-      /** \overload Use PoolItems ident string. */
-      PoolItem find( const PoolItem & pi_r ) const	{ return find( pi_r.satSolvable().ident() ); }
-      //@}
+private:
+  /** Implementation  */
+  class Impl;
+  /** Pointer to implementation */
+  RWCOW_pointer<Impl> &pimpl()
+  {
+    return *( reinterpret_cast<RWCOW_pointer<Impl> *>(
+      _dont_use_this_use_pimpl.get() ) );
+  }
+  /** Pointer to implementation */
+  const RWCOW_pointer<Impl> &pimpl() const
+  {
+    return *( reinterpret_cast<RWCOW_pointer<Impl> *>(
+      _dont_use_this_use_pimpl.get() ) );
+  }
+  /** Avoid need to include Impl definition when inlined ctors (due to tepmlate) are provided. */
+  shared_ptr<void> _dont_use_this_use_pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-      /** \name Iterate the collected PoolItems ident strings. */
-      //@{
-      /** Pointer to the first item. */
-      ident_iterator identBegin() const	{ return make_map_key_begin( container() ); }
-      /** Pointer behind the last item. */
-      ident_iterator identEnd() const	{ return make_map_key_end( container() ); }
-      //@}
+/** \relates PoolItemBest Stream output */
+std::ostream &operator<<( std::ostream &str, const PoolItemBest &obj );
 
-    private:
-      void _ctor_init();
-      const Container & container() const;
-    private:
-      /** Implementation  */
-      class Impl;
-      /** Pointer to implementation */
-      RWCOW_pointer<Impl> & pimpl()             { return *(reinterpret_cast<RWCOW_pointer<Impl>*>( _dont_use_this_use_pimpl.get() )); }
-      /** Pointer to implementation */
-      const RWCOW_pointer<Impl> & pimpl() const { return *(reinterpret_cast<RWCOW_pointer<Impl>*>( _dont_use_this_use_pimpl.get() )); }
-      /** Avoid need to include Impl definition when inlined ctors (due to tepmlate) are provided. */
-      shared_ptr<void> _dont_use_this_use_pimpl;
-  };
-  ///////////////////////////////////////////////////////////////////
-
-  /** \relates PoolItemBest Stream output */
-  std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj );
-
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_POOLITEMBEST_H

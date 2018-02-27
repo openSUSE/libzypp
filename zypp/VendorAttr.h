@@ -20,14 +20,15 @@
 #include "zypp/Vendor.h"
 
 ///////////////////////////////////////////////////////////////////
-namespace zypp {
+namespace zypp
+{
 //////////////////////////////////////////////////////////////////
 
-  class PoolItem;
-  namespace sat
-  {
-    class Solvable;
-  }
+class PoolItem;
+namespace sat
+{
+class Solvable;
+}
 
 /** Definition of vendor equivalence.
  *
@@ -42,49 +43,52 @@ namespace zypp {
 */
 class VendorAttr
 {
-  public:
-    typedef std::vector<std::string> VendorList;
+public:
+  typedef std::vector<std::string> VendorList;
 
-    /** Singleton */
-    static const VendorAttr & instance();
+  /** Singleton */
+  static const VendorAttr &instance();
 
-    /**
+  /**
      * Adding new equivalent vendors described in a directory
      **/
-    bool addVendorDirectory( const Pathname & dirname ) const;
+  bool addVendorDirectory( const Pathname &dirname ) const;
 
-    /**
+  /**
      * Adding new equivalent vendors described in a file
      **/
-    bool addVendorFile( const Pathname & filename ) const;
+  bool addVendorFile( const Pathname &filename ) const;
 
-    /**
+  /**
      * Adding new equivalent vendor set from list
      **/
-    template <class TIterator>
-    void addVendorList( TIterator begin, TIterator end ) const
-    { VendorList tmp( begin, end ); _addVendorList( tmp ); }
+  template <class TIterator>
+  void addVendorList( TIterator begin, TIterator end ) const
+  {
+    VendorList tmp( begin, end );
+    _addVendorList( tmp );
+  }
 
-    /** Return whether two vendor strings should be treated as the same vendor.
+  /** Return whether two vendor strings should be treated as the same vendor.
      * Usually the solver is allowed to automatically select a package of an
      * equivalent vendor when updating. Replacing a package with one of a
      * different vendor usually must be confirmed by the user.
     */
-    bool equivalent( const Vendor & lVendor, const Vendor & rVendor ) const;
-    /** \overload using \ref IdStrings */
-    bool equivalent( IdString lVendor, IdString rVendor ) const;
-    /** \overload using \ref sat::Solvable */
-    bool equivalent( sat::Solvable lVendor, sat::Solvable rVendor ) const;
-    /** \overload using \ref PoolItem */
-    bool equivalent( const PoolItem & lVendor, const PoolItem & rVendor ) const;
+  bool equivalent( const Vendor &lVendor, const Vendor &rVendor ) const;
+  /** \overload using \ref IdStrings */
+  bool equivalent( IdString lVendor, IdString rVendor ) const;
+  /** \overload using \ref sat::Solvable */
+  bool equivalent( sat::Solvable lVendor, sat::Solvable rVendor ) const;
+  /** \overload using \ref PoolItem */
+  bool equivalent( const PoolItem &lVendor, const PoolItem &rVendor ) const;
 
-  private:
-    VendorAttr();
-    void _addVendorList( VendorList & ) const;
+private:
+  VendorAttr();
+  void _addVendorList( VendorList & ) const;
 };
 
 /** \relates VendorAttr Stream output */
-std::ostream & operator<<( std::ostream & str, const VendorAttr & obj );
+std::ostream &operator<<( std::ostream &str, const VendorAttr &obj );
 
 ///////////////////////////////////////////////////////////////////
 }; // namespace zypp

@@ -18,36 +18,43 @@ using namespace zypp;
 using namespace zypp::parser;
 using namespace boost::unit_test;
 
-#define DATADIR (Pathname(TESTS_SRC_DIR) +  "/parser/inifile/data")
+#define DATADIR ( Pathname( TESTS_SRC_DIR ) + "/parser/inifile/data" )
 
 class IniTest : public IniParser
 {
-  virtual void consume( const std::string &section )
-  {
-    MIL << section << endl;
-  }
+  virtual void consume( const std::string &section ) { MIL << section << endl; }
 
-  virtual void consume( const std::string &section, const std::string &key, const std::string &value )
+  virtual void consume( const std::string &section, const std::string &key,
+    const std::string &value )
   {
-    MIL << "'" << section << "'" << " | " << "'" << key << "'" << " | " << "'" << value << "'" << endl;
-    if (section == "base" && key == "gpgcheck")
-      BOOST_CHECK_EQUAL(value, "1");
+    MIL << "'" << section << "'"
+        << " | "
+        << "'" << key << "'"
+        << " | "
+        << "'" << value << "'" << endl;
+    if ( section == "base" && key == "gpgcheck" )
+      BOOST_CHECK_EQUAL( value, "1" );
   }
 };
-
 
 class WithSpacesTest : public IniParser
 {
   virtual void consume( const std::string &section )
   {
     MIL << section << endl;
-    BOOST_CHECK(section == "base" || section == "equal" || section == "te]st");
+    BOOST_CHECK(
+      section == "base" || section == "equal" || section == "te]st" );
   }
 
-  virtual void consume( const std::string &section, const std::string &key, const std::string &value )
+  virtual void consume( const std::string &section, const std::string &key,
+    const std::string &value )
   {
-    MIL << "'" << section << "'" << " | " << "'" << key << "'" << " | " << "'" << value << "'" << endl;
-    if ( section == "base")
+    MIL << "'" << section << "'"
+        << " | "
+        << "'" << key << "'"
+        << " | "
+        << "'" << value << "'" << endl;
+    if ( section == "base" )
     {
       if ( key == "name" )
         BOOST_CHECK_EQUAL( value, "foo" );
@@ -62,23 +69,27 @@ class WithSpacesTest : public IniParser
         BOOST_CHECK_EQUAL( value, "foo=" );
       else
       {
-        cout << "'" << section << "'" << " | " << "'" << key << "'" << " | " << "'" << value << "'" << endl;
+        cout << "'" << section << "'"
+             << " | "
+             << "'" << key << "'"
+             << " | "
+             << "'" << value << "'" << endl;
         BOOST_CHECK_MESSAGE( false, "Unhandled key" );
       }
     }
   }
 };
 
-BOOST_AUTO_TEST_CASE(ini_read)
+BOOST_AUTO_TEST_CASE( ini_read )
 {
-  InputStream is((DATADIR+"/1.ini"));
+  InputStream is( ( DATADIR + "/1.ini" ) );
   IniTest parser;
-  parser.parse(is);
+  parser.parse( is );
 }
 
-BOOST_AUTO_TEST_CASE(ini_spaces_test)
+BOOST_AUTO_TEST_CASE( ini_spaces_test )
 {
-  InputStream is((DATADIR+"/2.ini"));
+  InputStream is( ( DATADIR + "/2.ini" ) );
   WithSpacesTest parser;
-  parser.parse(is);
+  parser.parse( is );
 }

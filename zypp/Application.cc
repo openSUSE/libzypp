@@ -18,14 +18,14 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  IMPL_PTR_TYPE( Application );
+IMPL_PTR_TYPE( Application );
 
-  Application::Application( const sat::Solvable & solvable_r )
-    : ResObject( solvable_r )
-  {}
+Application::Application( const sat::Solvable &solvable_r )
+  : ResObject( solvable_r )
+{
+}
 
-  Application::~Application()
-  {}
+Application::~Application() {}
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

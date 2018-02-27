@@ -3,18 +3,18 @@
 
 namespace zypp
 {
-  namespace sat
-  {
-    // Obsoletes may either match against provides, or names.
-    // Configuration depends on the behaviour of rpm.
-    extern bool obsoleteUsesProvides;
-  }
+namespace sat
+{
+// Obsoletes may either match against provides, or names.
+// Configuration depends on the behaviour of rpm.
+extern bool obsoleteUsesProvides;
+}
 }
 
-BOOST_AUTO_TEST_CASE(WhatObsoletes)
+BOOST_AUTO_TEST_CASE( WhatObsoletes )
 {
   TestSetup test( Arch_x86_64 );
-  test.loadTestcaseRepos( TESTS_SRC_DIR"/data/TCWhatObsoletes" );
+  test.loadTestcaseRepos( TESTS_SRC_DIR "/data/TCWhatObsoletes" );
 
   sat::Solvable test1( 2 );
   BOOST_REQUIRE_EQUAL( test1.name(), "test1" );

@@ -169,7 +169,7 @@ public:
   /**
    * Set maximum number of concurrent connections for a single transfer
    */
-  void setMaxConcurrentConnections(long v);
+  void setMaxConcurrentConnections( long v );
 
   /**
    * Minimum download speed (bytes per second)
@@ -181,7 +181,7 @@ public:
    * Set minimum download speed (bytes per second)
    * until the connection is dropped
    */
-  void setMinDownloadSpeed(long v);
+  void setMinDownloadSpeed( long v );
 
   /**
    * Maximum download speed (bytes per second)
@@ -191,7 +191,7 @@ public:
   /**
    * Set max download speed (bytes per second)
    */
-  void setMaxDownloadSpeed(long v);
+  void setMaxDownloadSpeed( long v );
 
   /**
    * Maximum silent retries
@@ -201,7 +201,7 @@ public:
   /**
    * Set maximum silent retries
    */
-  void setMaxSilentTries(long v);
+  void setMaxSilentTries( long v );
 
   /**
    * Whether to verify host for ssl
@@ -247,7 +247,7 @@ public:
   /**
    * set whether HEAD requests are allowed
    */
-  void setHeadRequestsAllowed(bool allowed);
+  void setHeadRequestsAllowed( bool allowed );
 
   /**
    * whether HEAD requests are allowed

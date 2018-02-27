@@ -17,22 +17,22 @@ typedef std::set<AuthData_Ptr> CredentialSet;
 
 struct CredCollector
 {
-  bool collect(AuthData_Ptr & cred)
+  bool collect( AuthData_Ptr &cred )
   {
     cout << "got: " << endl << *cred << endl;
-    creds.insert(cred);
+    creds.insert( cred );
     return true;
   }
 
   CredentialSet creds;
 };
 
-BOOST_AUTO_TEST_CASE(read_cred)
+BOOST_AUTO_TEST_CASE( read_cred )
 {
   CredCollector collector;
   Pathname credfile = TESTS_SRC_DIR "/media/data/credentials.cat";
-  CredentialFileReader reader(credfile,
-      bind( &CredCollector::collect, &collector, _1 ));
+  CredentialFileReader reader(
+    credfile, bind( &CredCollector::collect, &collector, _1 ) );
 
-  BOOST_CHECK_EQUAL(collector.creds.size(), 3);
+  BOOST_CHECK_EQUAL( collector.creds.size(), 3 );
 }

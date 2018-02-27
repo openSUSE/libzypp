@@ -13,22 +13,20 @@ using boost::signals::trackable;
 #define MIL std::cerr
 namespace boost
 {
-  template<class Tp>
-  std::ostream & operator<<( std::ostream & str, const signal<Tp> & obj )
-  {
-    return str << "Connected slots: " << obj.num_slots();
-  }
+template <class Tp>
+std::ostream &operator<<( std::ostream &str, const signal<Tp> &obj )
+{
+  return str << "Connected slots: " << obj.num_slots();
+}
 
-  namespace signals
-  {
-    std::ostream & operator<<( std::ostream & str, const connection & obj )
-    {
-      return str << "Connection: "
-          << ( obj.connected() ? '*' : '_' )
-          << ( obj.blocked()   ? 'B' : '_' )
-          ;
-    }
-  }
+namespace signals
+{
+std::ostream &operator<<( std::ostream &str, const connection &obj )
+{
+  return str << "Connection: " << ( obj.connected() ? '*' : '_' )
+             << ( obj.blocked() ? 'B' : '_' );
+}
+}
 }
 
 struct Sender
@@ -42,11 +40,11 @@ struct Sender
     _sigB();
   }
 
-  typedef signal<void(unsigned)> SigA;
-  typedef signal<void(void)>     SigB;
+  typedef signal<void( unsigned )> SigA;
+  typedef signal<void( void )> SigB;
 
-  SigA & siga() const { return _sigA; }
-  SigB & sigb() const { return _sigB; }
+  SigA &siga() const { return _sigA; }
+  SigB &sigb() const { return _sigB; }
 
   mutable SigA _sigA;
   mutable SigB _sigB;
@@ -54,37 +52,44 @@ struct Sender
 
 struct Receiver : public trackable
 {
-  Receiver() {_s=++s;}
-  Receiver( const Receiver & rhs ) : trackable( rhs ) {_s=++s;}
-  Receiver& operator=( const Receiver & rhs ) {
+  Receiver() { _s = ++s; }
+  Receiver( const Receiver &rhs )
+    : trackable( rhs )
+  {
+    _s = ++s;
+  }
+  Receiver &operator=( const Receiver &rhs )
+  {
     trackable::operator=( rhs );
     return *this;
   }
-  ~Receiver() {_s=-_s;}
+  ~Receiver() { _s = -_s; }
   static int s;
   int _s;
 
   void fpong()
   {
-    dumpOn( DBG << "Receiver " << _s << " <- "  << 13 << " (" ) << ")" << endl;
+    dumpOn( DBG << "Receiver " << _s << " <- " << 13 << " (" ) << ")" << endl;
   }
 
-  void operator()( unsigned i )
-  { pong( i ); }
+  void operator()( unsigned i ) { pong( i ); }
 
   void pong( unsigned i )
   {
-    dumpOn( DBG << "Receiver " << _s << " <- "  << i << " (" ) << ")" << endl;
+    dumpOn( DBG << "Receiver " << _s << " <- " << i << " (" ) << ")" << endl;
   }
 
-  std::ostream & dumpOn( std::ostream & str ) const
+  std::ostream &dumpOn( std::ostream &str ) const
   {
-    return str << "Receiver " << _s << " connected signals: " << _connected_signals().size();
+    return str << "Receiver " << _s
+               << " connected signals: " << _connected_signals().size();
   }
 };
 
-std::ostream & operator<<( std::ostream & str, const Receiver & obj )
-{ return obj.dumpOn( str ); }
+std::ostream &operator<<( std::ostream &str, const Receiver &obj )
+{
+  return obj.dumpOn( str );
+}
 
 int Receiver::s;
 
@@ -93,9 +98,10 @@ int Receiver::s;
 **      FUNCTION NAME : main
 **      FUNCTION TYPE : int
 */
-int main( int argc, const char * argv[] )
+int main( int argc, const char *argv[] )
 {
-  --argc; ++argv; // skip arg 0
+  --argc;
+  ++argv; // skip arg 0
 
   Sender sender;
   sender.ping();
@@ -106,7 +112,7 @@ int main( int argc, const char * argv[] )
 
   {
     Receiver recw;
-    sender.siga().connect( boost::ref(recw) );
+    sender.siga().connect( boost::ref( recw ) );
     sender.ping();
 
     Receiver recx;
@@ -117,11 +123,13 @@ int main( int argc, const char * argv[] )
     sender.ping();
 
     Receiver recy;
-    connection cy( sender.siga().connect( boost::bind( &Receiver::pong, &recy, _1 ) ) );
+    connection cy(
+      sender.siga().connect( boost::bind( &Receiver::pong, &recy, _1 ) ) );
     sender.ping();
 
     Receiver recz;
-    scoped_connection cz( sender.siga().connect( boost::bind( &Receiver::pong, &recz, _1 ) ) );
+    scoped_connection cz(
+      sender.siga().connect( boost::bind( &Receiver::pong, &recz, _1 ) ) );
     sender.ping();
 
     cy.disconnect();
@@ -130,4 +138,3 @@ int main( int argc, const char * argv[] )
   sender.ping();
   return 0;
 }
-

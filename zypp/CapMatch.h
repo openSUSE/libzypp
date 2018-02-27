@@ -18,11 +18,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : CapMatch
-  //
-  /** Tri state Capability match result.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : CapMatch
+//
+/** Tri state Capability match result.
    *
    * CapMatch::irrelevant denotes a result value that should be ignored.
    * Therfore it behaves neutral when used in <tt>! && ||</tt> expressions.
@@ -34,68 +34,78 @@ namespace zypp
    *   ( !CapMatch::irrelevant )     == CapMatch::irrelevant // true
    * \endcode
   */
-  class CapMatch
+class CapMatch
+{
+  enum Result
   {
-    enum Result { NOMATCH, MATCH, IRRELEVANT };
-
-  public:
-
-    CapMatch()
-    : _result( IRRELEVANT )
-    {}
-
-    CapMatch( bool val_r )
-    : _result( val_r ? MATCH : NOMATCH )
-    {}
-
-    static const CapMatch yes;
-    static const CapMatch no;
-    static const CapMatch irrelevant;
-
-    friend bool operator==( const CapMatch & lhs, const CapMatch & rhs )
-    { return lhs._result == rhs._result; }
-
-    friend bool operator!=( const CapMatch & lhs, const CapMatch & rhs )
-    { return lhs._result != rhs._result; }
-
-    friend CapMatch operator!( const CapMatch & lhs )
-    {
-      if ( lhs._result == CapMatch::IRRELEVANT )
-        return lhs;
-      return !(lhs._result == CapMatch::MATCH);
-    }
-
-    friend CapMatch operator&&( const CapMatch & lhs, const CapMatch & rhs )
-    {
-      if ( lhs._result == CapMatch::IRRELEVANT )
-        return rhs;
-      if ( rhs._result == CapMatch::IRRELEVANT )
-        return lhs;
-      return    (lhs._result == CapMatch::MATCH)
-             && (rhs._result == CapMatch::MATCH);
-    }
-
-    friend CapMatch operator||( const CapMatch & lhs, const CapMatch & rhs )
-    {
-      if ( lhs._result == CapMatch::IRRELEVANT )
-        return rhs;
-      if ( rhs._result == CapMatch::IRRELEVANT )
-        return lhs;
-      return    (lhs._result == CapMatch::MATCH)
-             || (rhs._result == CapMatch::MATCH);
-    }
-
-    friend std::ostream & operator<<( std::ostream & str, const CapMatch & obj );
-
-  private:
-    Result _result;
+    NOMATCH,
+    MATCH,
+    IRRELEVANT
   };
-  ///////////////////////////////////////////////////////////////////
 
-  /** \relates CapMatch Stream output */
-  std::ostream & operator<<( std::ostream & str, const CapMatch & obj );
+public:
+  CapMatch()
+    : _result( IRRELEVANT )
+  {
+  }
 
-  /////////////////////////////////////////////////////////////////
+  CapMatch( bool val_r )
+    : _result( val_r ? MATCH : NOMATCH )
+  {
+  }
+
+  static const CapMatch yes;
+  static const CapMatch no;
+  static const CapMatch irrelevant;
+
+  friend bool operator==( const CapMatch &lhs, const CapMatch &rhs )
+  {
+    return lhs._result == rhs._result;
+  }
+
+  friend bool operator!=( const CapMatch &lhs, const CapMatch &rhs )
+  {
+    return lhs._result != rhs._result;
+  }
+
+  friend CapMatch operator!( const CapMatch &lhs )
+  {
+    if ( lhs._result == CapMatch::IRRELEVANT )
+      return lhs;
+    return !( lhs._result == CapMatch::MATCH );
+  }
+
+  friend CapMatch operator&&( const CapMatch &lhs, const CapMatch &rhs )
+  {
+    if ( lhs._result == CapMatch::IRRELEVANT )
+      return rhs;
+    if ( rhs._result == CapMatch::IRRELEVANT )
+      return lhs;
+    return ( lhs._result == CapMatch::MATCH ) &&
+           ( rhs._result == CapMatch::MATCH );
+  }
+
+  friend CapMatch operator||( const CapMatch &lhs, const CapMatch &rhs )
+  {
+    if ( lhs._result == CapMatch::IRRELEVANT )
+      return rhs;
+    if ( rhs._result == CapMatch::IRRELEVANT )
+      return lhs;
+    return ( lhs._result == CapMatch::MATCH ) ||
+           ( rhs._result == CapMatch::MATCH );
+  }
+
+  friend std::ostream &operator<<( std::ostream &str, const CapMatch &obj );
+
+private:
+  Result _result;
+};
+///////////////////////////////////////////////////////////////////
+
+/** \relates CapMatch Stream output */
+std::ostream &operator<<( std::ostream &str, const CapMatch &obj );
+
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_CAPMATCH_H

@@ -24,11 +24,11 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace resfilter
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace resfilter
+{ /////////////////////////////////////////////////////////////////
 
-    /** \defgroup RESFILTERS Filter functors operating on ResObjects.
+/** \defgroup RESFILTERS Filter functors operating on ResObjects.
      * \ingroup g_Functor
      *
      * A simple filter is a function or functor matching the signature:
@@ -140,60 +140,61 @@ namespace zypp
      *
      * \todo migrate to namespace filter and enhance to support Solvables as well.
     */
-    //@{
-    ///////////////////////////////////////////////////////////////////
-    //
-    // Some ResObject attributes
-    //
-    ///////////////////////////////////////////////////////////////////
+//@{
+///////////////////////////////////////////////////////////////////
+//
+// Some ResObject attributes
+//
+///////////////////////////////////////////////////////////////////
 
-    /** */
-    typedef std::unary_function<ResObject::constPtr, bool> ResObjectFilterFunctor;
-    typedef boost::function<bool ( ResObject::constPtr )> ResFilter;
+/** */
+typedef std::unary_function<ResObject::constPtr, bool> ResObjectFilterFunctor;
+typedef boost::function<bool( ResObject::constPtr )> ResFilter;
 
-    /** */
-    template<class TRes>
-      inline filter::ByKind byKind()
-      { return filter::ByKind( ResTraits<TRes>::kind ); }
+/** */
+template <class TRes>
+inline filter::ByKind byKind()
+{
+  return filter::ByKind( ResTraits<TRes>::kind );
+}
 
-    /** Select ResObject by name. */
-    struct ByName : public ResObjectFilterFunctor
-    {
-      ByName()
-      {}
+/** Select ResObject by name. */
+struct ByName : public ResObjectFilterFunctor
+{
+  ByName() {}
 
-      ByName( const std::string & name_r )
-      : _name( name_r )
-      {}
+  ByName( const std::string &name_r )
+    : _name( name_r )
+  {
+  }
 
-      bool operator()( ResObject::constPtr p ) const
-      {
-        return p->name() == _name;
-      }
+  bool operator()( ResObject::constPtr p ) const { return p->name() == _name; }
 
-      std::string _name;
-    };
+  std::string _name;
+};
 
-    /** Select ResObject by repository or repository alias. */
-    struct ByRepository : public ResObjectFilterFunctor
-    {
-      ByRepository( Repository repository_r )
-      : _alias( repository_r.info().alias() )
-      {}
+/** Select ResObject by repository or repository alias. */
+struct ByRepository : public ResObjectFilterFunctor
+{
+  ByRepository( Repository repository_r )
+    : _alias( repository_r.info().alias() )
+  {
+  }
 
-      ByRepository( const std::string & alias_r )
-      : _alias( alias_r )
-      {}
+  ByRepository( const std::string &alias_r )
+    : _alias( alias_r )
+  {
+  }
 
-      bool operator()( ResObject::constPtr p ) const
-      {
-        return p->repoInfo().alias() == _alias;
-      }
+  bool operator()( ResObject::constPtr p ) const
+  {
+    return p->repoInfo().alias() == _alias;
+  }
 
-      std::string _alias;
-    };
+  std::string _alias;
+};
 
-    /** Select ResObject by Edition using \a TCompare functor.
+/** Select ResObject by Edition using \a TCompare functor.
      *
      * Selects ResObject if <tt>TCompare( ResObject->edition(), _edition )</tt>
      * is \c true.
@@ -205,35 +206,39 @@ namespace zypp
      * byEdition( someedition, CompareByGT<Edition>() ) //  edition >  someedition
      * \endcode
     */
-    template<class TCompare = CompareByEQ<Edition> >
-      struct ByEdition : public ResObjectFilterFunctor
-      {
-        ByEdition( const Edition & edition_r, TCompare cmp_r )
-        : _edition( edition_r )
-        , _cmp( cmp_r )
-        {}
+template <class TCompare = CompareByEQ<Edition>>
+struct ByEdition : public ResObjectFilterFunctor
+{
+  ByEdition( const Edition &edition_r, TCompare cmp_r )
+    : _edition( edition_r )
+    , _cmp( cmp_r )
+  {
+  }
 
-        bool operator()( ResObject::constPtr p ) const
-        {
-          return _cmp( p->edition(), _edition );
-        }
+  bool operator()( ResObject::constPtr p ) const
+  {
+    return _cmp( p->edition(), _edition );
+  }
 
-        Edition  _edition;
-        TCompare _cmp;
-      };
+  Edition _edition;
+  TCompare _cmp;
+};
 
-    /** */
-    template<class TCompare>
-      ByEdition<TCompare> byEdition( const Edition & edition_r, TCompare cmp_r )
-      { return ByEdition<TCompare>( edition_r, cmp_r ); }
+/** */
+template <class TCompare>
+ByEdition<TCompare> byEdition( const Edition &edition_r, TCompare cmp_r )
+{
+  return ByEdition<TCompare>( edition_r, cmp_r );
+}
 
-    /** */
-    template<class TCompare>
-      ByEdition<TCompare> byEdition( const Edition & edition_r )
-      { return byEdition( edition_r, TCompare() ); }
+/** */
+template <class TCompare>
+ByEdition<TCompare> byEdition( const Edition &edition_r )
+{
+  return byEdition( edition_r, TCompare() );
+}
 
-
-    /** Select ResObject by Arch using \a TCompare functor.
+/** Select ResObject by Arch using \a TCompare functor.
      *
      * Selects ResObject if <tt>TCompare( ResObject->arch(), _arch )</tt>
      * is \c true.
@@ -245,113 +250,108 @@ namespace zypp
      * byArch( somearch, CompareByGT<Arch>() ) //  arch >  somearch
      * \endcode
     */
-    template<class TCompare = CompareByEQ<Arch> >
-      struct ByArch : public ResObjectFilterFunctor
-      {
-        ByArch( const Arch & arch_r, TCompare cmp_r )
-        : _arch( arch_r )
-        , _cmp( cmp_r )
-        {}
+template <class TCompare = CompareByEQ<Arch>>
+struct ByArch : public ResObjectFilterFunctor
+{
+  ByArch( const Arch &arch_r, TCompare cmp_r )
+    : _arch( arch_r )
+    , _cmp( cmp_r )
+  {
+  }
 
-        bool operator()( ResObject::constPtr p ) const
-        {
-          return _cmp( p->arch(), _arch );
-        }
+  bool operator()( ResObject::constPtr p ) const
+  {
+    return _cmp( p->arch(), _arch );
+  }
 
-        Arch  _arch;
-        TCompare _cmp;
-      };
+  Arch _arch;
+  TCompare _cmp;
+};
 
-    /** */
-    template<class TCompare>
-      ByArch<TCompare> byArch( const Arch & arch_r, TCompare cmp_r )
-      { return ByArch<TCompare>( arch_r, cmp_r ); }
+/** */
+template <class TCompare>
+ByArch<TCompare> byArch( const Arch &arch_r, TCompare cmp_r )
+{
+  return ByArch<TCompare>( arch_r, cmp_r );
+}
 
-    /** */
-    template<class TCompare>
-      ByArch<TCompare> byArch( const Arch & arch_r )
-      { return byArch( arch_r, TCompare() ); }
+/** */
+template <class TCompare>
+ByArch<TCompare> byArch( const Arch &arch_r )
+{
+  return byArch( arch_r, TCompare() );
+}
 
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+//
+// Some PoolItem attributes
+//
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    // Some PoolItem attributes
-    //
-    ///////////////////////////////////////////////////////////////////
+/** */
+typedef std::unary_function<PoolItem, bool> PoolItemFilterFunctor;
 
-    /** */
-    typedef std::unary_function<PoolItem, bool> PoolItemFilterFunctor;
+/** Select PoolItem by installed. */
+struct ByInstalled : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const
+  {
+    return p.status().isInstalled();
+  }
+};
 
-    /** Select PoolItem by installed. */
-    struct ByInstalled : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isInstalled();
-      }
-    };
+/** Select PoolItem by uninstalled. */
+struct ByUninstalled : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const
+  {
+    return p.status().isUninstalled();
+  }
+};
 
-    /** Select PoolItem by uninstalled. */
-    struct ByUninstalled : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isUninstalled();
-      }
-    };
+/** Select PoolItem by transact. */
+struct ByTransact : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const { return p.status().transacts(); }
+};
 
-    /** Select PoolItem by transact. */
-    struct ByTransact : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().transacts();
-      }
-    };
+/** Select PoolItem by lock. */
+struct ByLock : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const { return p.status().isLocked(); }
+};
 
-    /** Select PoolItem by lock. */
-    struct ByLock : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isLocked();
-      }
-    };
+/** Select PoolItem by keep. */
+struct ByKeep : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const { return p.status().isKept(); }
+};
 
-    /** Select PoolItem by keep. */
-    struct ByKeep : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isKept();
-      }
-    };
+/** PoolItem which is recommended. */
+struct ByRecommended : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const
+  {
+    return p.status().isRecommended();
+  }
+};
 
-    /** PoolItem which is recommended. */
-    struct ByRecommended : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isRecommended();
-      }
-    };
+/** PoolItem which is suggested. */
+struct BySuggested : public PoolItemFilterFunctor
+{
+  bool operator()( const PoolItem &p ) const
+  {
+    return p.status().isSuggested();
+  }
+};
 
-    /** PoolItem which is suggested. */
-    struct BySuggested : public PoolItemFilterFunctor
-    {
-      bool operator()( const PoolItem & p ) const
-      {
-	return p.status().isSuggested();
-      }
-    };
-
-    //@}
-    /////////////////////////////////////////////////////////////////
-  } // namespace resfilter
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+//@}
+/////////////////////////////////////////////////////////////////
+} // namespace resfilter
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_RESFILTERS_H

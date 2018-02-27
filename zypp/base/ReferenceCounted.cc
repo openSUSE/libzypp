@@ -18,41 +18,43 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace base
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace base
+{ /////////////////////////////////////////////////////////////////
 
-    ReferenceCounted::ReferenceCounted()
-    : _counter( 0 )
-    {}
+ReferenceCounted::ReferenceCounted()
+  : _counter( 0 )
+{
+}
 
-    ReferenceCounted::ReferenceCounted( const ReferenceCounted & /*rhs*/ )
-    : _counter( 0 )
-    {}
+ReferenceCounted::ReferenceCounted( const ReferenceCounted & /*rhs*/ )
+  : _counter( 0 )
+{
+}
 
-    ReferenceCounted::~ReferenceCounted()
-    {
-      if ( _counter )
-        {
-          INT << "~ReferenceCounted: nonzero reference count" << std::endl;
-        }
-    }
+ReferenceCounted::~ReferenceCounted()
+{
+  if ( _counter )
+  {
+    INT << "~ReferenceCounted: nonzero reference count" << std::endl;
+  }
+}
 
-    void ReferenceCounted::unrefException() const
-    {
-      INT << "ReferenceCounted::unref: zero reference count" << std::endl;
-      throw std::out_of_range( "ReferenceCounted::unref: zero reference count" );
-    }
+void ReferenceCounted::unrefException() const
+{
+  INT << "ReferenceCounted::unref: zero reference count" << std::endl;
+  throw std::out_of_range( "ReferenceCounted::unref: zero reference count" );
+}
 
-    std::ostream & ReferenceCounted::dumpOn( std::ostream & str ) const
-    {
-      return str << "ReferenceCounted(@" << (const void *)this
-                 << "<=" << _counter << ")";
-    }
+std::ostream &ReferenceCounted::dumpOn( std::ostream &str ) const
+{
+  return str << "ReferenceCounted(@" << (const void *)this << "<=" << _counter
+             << ")";
+}
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace base
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace base
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

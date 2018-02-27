@@ -19,11 +19,11 @@ namespace zypp
 namespace functor
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : Collector<TOutputIterator>
-  //
-  /** Functor feeding values to an output_iterator.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : Collector<TOutputIterator>
+//
+/** Functor feeding values to an output_iterator.
    *
    * \code
    * LocaleSet locales;
@@ -33,34 +33,39 @@ namespace functor
    *
    * \see Convenience constructor \ref collector.
    */
-  template<class TOutputIterator>
-  struct Collector
+template <class TOutputIterator>
+struct Collector
+{
+  Collector( TOutputIterator iter_r )
+    : _iter( iter_r )
   {
-    Collector( TOutputIterator iter_r ) : _iter( iter_r ) {}
+  }
 
-    template<class Tp>
-    bool operator()( const Tp & value_r ) const
-    {
-      *_iter++ = value_r;
-      return true;
-    }
+  template <class Tp>
+  bool operator()( const Tp &value_r ) const
+  {
+    *_iter++ = value_r;
+    return true;
+  }
 
-    private:
-      mutable TOutputIterator _iter;
-  };
-  ///////////////////////////////////////////////////////////////////
+private:
+  mutable TOutputIterator _iter;
+};
+///////////////////////////////////////////////////////////////////
 
-  /** \relates Collector Convenience constructor. */
-  template<class TOutputIterator>
-  inline Collector<TOutputIterator> collector( TOutputIterator iter_r )
-  { return Collector<TOutputIterator>( iter_r ); }
+/** \relates Collector Convenience constructor. */
+template <class TOutputIterator>
+inline Collector<TOutputIterator> collector( TOutputIterator iter_r )
+{
+  return Collector<TOutputIterator>( iter_r );
+}
 
-  ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace functor
 ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_COLLECTOR_H

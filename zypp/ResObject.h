@@ -23,28 +23,28 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  /// \class ResObject
-  /// \brief Base for resolvable objects
-  ///
-  /// \note \ref Resolvable is a SolvableType, which provides direct
-  /// access to many of the underlying sat::Solvables properties.
-  /// Don't add common properties here, but in \ref sat::Solvable
-  /// and extend \ref sat::SolvableType.
-  ///
-  /// \see \ref makeResObject for how to construct ResObjects.
-  /// \todo Merge with Resolvable
-  ///////////////////////////////////////////////////////////////////
-  class ResObject : public Resolvable
-  {
-  public:
-    typedef ResObject                Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+///////////////////////////////////////////////////////////////////
+/// \class ResObject
+/// \brief Base for resolvable objects
+///
+/// \note \ref Resolvable is a SolvableType, which provides direct
+/// access to many of the underlying sat::Solvables properties.
+/// Don't add common properties here, but in \ref sat::Solvable
+/// and extend \ref sat::SolvableType.
+///
+/// \see \ref makeResObject for how to construct ResObjects.
+/// \todo Merge with Resolvable
+///////////////////////////////////////////////////////////////////
+class ResObject : public Resolvable
+{
+public:
+  typedef ResObject Self;
+  typedef ResTraits<Self> TraitsType;
+  typedef TraitsType::PtrType Ptr;
+  typedef TraitsType::constPtrType constPtr;
 
-  public:
-    /** Convert \c this into a Ptr of a certain Kind.
+public:
+  /** Convert \c this into a Ptr of a certain Kind.
      * This is a convenience to access type specific
      * attributes.
      * \return \c NULL if \c this is not of the specified kind.
@@ -56,35 +56,33 @@ namespace zypp
      *     DBG << pi->asKind<Package>()->keywords() << endl;
      * \endcode
      */
-    template<class TRes>
-    inline typename ResTraits<TRes>::constPtrType asKind() const;
+  template <class TRes>
+  inline typename ResTraits<TRes>::constPtrType asKind() const;
 
-    template<class TRes>
-    inline typename ResTraits<TRes>::PtrType asKind();
+  template <class TRes>
+  inline typename ResTraits<TRes>::PtrType asKind();
 
-  public:
-    /**
+public:
+  /**
      * \short Vendor
      * \deprecated Though typedef'ed to std::string, Vendor is actually an \ref IdString.
      */
-    Vendor vendor() const
-    { return Resolvable::vendor().asString(); }
+  Vendor vendor() const { return Resolvable::vendor().asString(); }
 
-  protected:
-    friend ResObject::Ptr makeResObject( const sat::Solvable & solvable_r );
-    /** Ctor */
-    ResObject( const sat::Solvable & solvable_r );
-    /** Dtor */
-    virtual ~ResObject();
-    /** Helper for stream output */
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
-    /** This is a \ref sat::SolvableType (allow implicit conversion in derived classes). */
-    operator sat::Solvable() const
-    { return satSolvable(); }
-  };
-  ///////////////////////////////////////////////////////////////////
+protected:
+  friend ResObject::Ptr makeResObject( const sat::Solvable &solvable_r );
+  /** Ctor */
+  ResObject( const sat::Solvable &solvable_r );
+  /** Dtor */
+  virtual ~ResObject();
+  /** Helper for stream output */
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
+  /** This is a \ref sat::SolvableType (allow implicit conversion in derived classes). */
+  operator sat::Solvable() const { return satSolvable(); }
+};
+///////////////////////////////////////////////////////////////////
 
-  /** Create \ref ResObject from \ref sat::Solvable.
+/** Create \ref ResObject from \ref sat::Solvable.
    *
    * This function creates the apropriate kind of ResObject
    * depending on the sat::Solvables kind, and returns a smart
@@ -100,9 +98,9 @@ namespace zypp
    * Package::Ptr   pkg( make<Package>( s ) );
    * \endcode
   */
-  ResObject::Ptr makeResObject( const sat::Solvable & solvable_r );
+ResObject::Ptr makeResObject( const sat::Solvable &solvable_r );
 
-  /** Directly create a certain kind of ResObject from \ref sat::Solvable.
+/** Directly create a certain kind of ResObject from \ref sat::Solvable.
    *
    * If the sat::Solvables kind is not appropriate, a NULL
    * pointer is returned.
@@ -115,20 +113,27 @@ namespace zypp
    * \todo make<> was a poor choice (AFAIR because gcc had some trouble with
    * asKind<>(sat::Solvable)). Remove it in favour of asKind<>(sat::Solvable)
   */
-  template<class TRes>
-  inline typename ResTraits<TRes>::PtrType make( const sat::Solvable & solvable_r )
-  { return( isKind<TRes>( solvable_r ) ? new TRes( solvable_r ) : 0 ); }
-  /** \overload Specialisation for ResObject autodetecting the kind of resolvable. */
-  template<>
-  inline ResObject::Ptr make<ResObject>( const sat::Solvable & solvable_r )
-  { return makeResObject( solvable_r ); }
+template <class TRes>
+inline typename ResTraits<TRes>::PtrType make( const sat::Solvable &solvable_r )
+{
+  return ( isKind<TRes>( solvable_r ) ? new TRes( solvable_r ) : 0 );
+}
+/** \overload Specialisation for ResObject autodetecting the kind of resolvable. */
+template <>
+inline ResObject::Ptr make<ResObject>( const sat::Solvable &solvable_r )
+{
+  return makeResObject( solvable_r );
+}
 
-  /** Directly create a certain kind of ResObject from \ref sat::Solvable. */
-  template<class TRes>
-  inline typename ResTraits<TRes>::PtrType asKind( const sat::Solvable & solvable_r )
-  { return make<TRes>( solvable_r ); }
+/** Directly create a certain kind of ResObject from \ref sat::Solvable. */
+template <class TRes>
+inline typename ResTraits<TRes>::PtrType asKind(
+  const sat::Solvable &solvable_r )
+{
+  return make<TRes>( solvable_r );
+}
 
-  /** Convert ResObject::Ptr into Ptr of a certain Kind.
+/** Convert ResObject::Ptr into Ptr of a certain Kind.
    * \return \c NULL iff \a p is \c NULL or points to a Resolvable
    * not of the specified Kind.
    * \relates ResObject
@@ -136,21 +141,30 @@ namespace zypp
    * asKind<Package>(resPtr);
    * \endcode
   */
-  template<class TRes>
-  inline typename ResTraits<TRes>::PtrType asKind( const ResObject::Ptr & p )
-  { return dynamic_pointer_cast<TRes>(p); }
+template <class TRes>
+inline typename ResTraits<TRes>::PtrType asKind( const ResObject::Ptr &p )
+{
+  return dynamic_pointer_cast<TRes>( p );
+}
 
-  template<class TRes>
-  inline typename ResTraits<TRes>::constPtrType asKind( const ResObject::constPtr & p )
-  { return dynamic_pointer_cast<const TRes>(p); }
+template <class TRes>
+inline typename ResTraits<TRes>::constPtrType asKind(
+  const ResObject::constPtr &p )
+{
+  return dynamic_pointer_cast<const TRes>( p );
+}
 
-  template<class TRes>
-  inline typename ResTraits<TRes>::constPtrType ResObject::asKind() const
-  { return dynamic_cast<const TRes *>( this ); }
+template <class TRes>
+inline typename ResTraits<TRes>::constPtrType ResObject::asKind() const
+{
+  return dynamic_cast<const TRes *>( this );
+}
 
-  template<class TRes>
-  inline typename ResTraits<TRes>::PtrType ResObject::asKind()
-  { return dynamic_cast<TRes *>( this ); }
+template <class TRes>
+inline typename ResTraits<TRes>::PtrType ResObject::asKind()
+{
+  return dynamic_cast<TRes *>( this );
+}
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

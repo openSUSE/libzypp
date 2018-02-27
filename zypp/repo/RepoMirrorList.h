@@ -16,27 +16,27 @@
 
 namespace zypp
 {
-  namespace repo
+namespace repo
+{
+class RepoMirrorList
+{
+public:
+  RepoMirrorList( const Url &url_r, const Pathname &metadatapath_r,
+    bool mirrorListForceMetalink_r );
+
+  RepoMirrorList( const Url &url_r )
+    : RepoMirrorList( url_r, Pathname(), false )
   {
-    class RepoMirrorList
-    {
-      public:
-	RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r );
+  }
 
-        RepoMirrorList( const Url & url_r )
-	: RepoMirrorList( url_r, Pathname(), false )
-	{}
+  const std::vector<Url> &getUrls() const { return _urls; }
 
-        const std::vector<Url> & getUrls() const
-        { return _urls; }
+  std::vector<Url> &getUrls() { return _urls; }
 
-        std::vector<Url> & getUrls()
-        { return _urls; }
-
-      private:
-        std::vector<Url> _urls;
-    };
-  } // ns repo
+private:
+  std::vector<Url> _urls;
+};
+} // ns repo
 } // ns zypp
 
 #endif

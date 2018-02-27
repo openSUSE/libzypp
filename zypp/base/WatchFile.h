@@ -20,11 +20,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : WatchFile
-  //
-  /** Remember a files attributes to detect content changes.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : WatchFile
+//
+/** Remember a files attributes to detect content changes.
    *
    * Repeatedly call \ref hasChanged to check whether the content has
    * changed since the last call. Creation or deletion of the file will
@@ -46,57 +46,57 @@ namespace zypp
    * }
    * \endcode
   */
-  class WatchFile
+class WatchFile
+{
+public:
+  enum Initial
   {
-    public:
-      enum Initial { NO_INIT, INIT };
-
-    public:
-      /** */
-      WatchFile( const Pathname & path_r = Pathname(),
-		 Initial mode            = INIT )
-      : _path( path_r )
-      {
-	PathInfo pi( mode == INIT ? path_r : Pathname() );
-	_size  = pi.size();
-	_mtime = pi.mtime();
-      }
-
-      const Pathname & path() const
-      { return _path; }
-
-      off_t  lastSize() const
-      { return _size;}
-
-      time_t lastMtime() const
-      { return _mtime; }
-
-      bool isDirty() const
-      {
-	PathInfo pi( _path );
-	return( _size != pi.size() || _mtime != pi.mtime() );
-      }
-
-      bool hasChanged()
-      {
-	PathInfo pi( _path );
-	if ( _size != pi.size() || _mtime != pi.mtime() )
-	{
-	  _size = pi.size();
-	  _mtime = pi.mtime();
-	  return true;
-	}
-	return false;
-      }
-
-    private:
-      Pathname _path;
-      off_t  _size;
-      time_t _mtime;
+    NO_INIT,
+    INIT
   };
-  ///////////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////////
+public:
+  /** */
+  WatchFile( const Pathname &path_r = Pathname(), Initial mode = INIT )
+    : _path( path_r )
+  {
+    PathInfo pi( mode == INIT ? path_r : Pathname() );
+    _size = pi.size();
+    _mtime = pi.mtime();
+  }
+
+  const Pathname &path() const { return _path; }
+
+  off_t lastSize() const { return _size; }
+
+  time_t lastMtime() const { return _mtime; }
+
+  bool isDirty() const
+  {
+    PathInfo pi( _path );
+    return ( _size != pi.size() || _mtime != pi.mtime() );
+  }
+
+  bool hasChanged()
+  {
+    PathInfo pi( _path );
+    if ( _size != pi.size() || _mtime != pi.mtime() )
+    {
+      _size = pi.size();
+      _mtime = pi.mtime();
+      return true;
+    }
+    return false;
+  }
+
+private:
+  Pathname _path;
+  off_t _size;
+  time_t _mtime;
+};
+///////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_WATCHFILE_H

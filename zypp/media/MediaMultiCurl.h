@@ -23,8 +23,10 @@
 #include "zypp/media/TransferSettings.h"
 #include "zypp/ZYppCallbacks.h"
 
-namespace zypp {
-  namespace media {
+namespace zypp
+{
+namespace media
+{
 
 /**
  * @short Implementation class for FTP, HTTP and HTTPS MediaHandler
@@ -37,41 +39,49 @@ namespace zypp {
 class multifetchrequest;
 class multifetchworker;
 
-class MediaMultiCurl : public MediaCurl {
+class MediaMultiCurl : public MediaCurl
+{
 public:
   friend class multifetchrequest;
   friend class multifetchworker;
 
-  MediaMultiCurl(const Url &url_r, const Pathname & attach_point_hint_r);
+  MediaMultiCurl( const Url &url_r, const Pathname &attach_point_hint_r );
   ~MediaMultiCurl();
 
-  virtual void doGetFileCopy( const Pathname & srcFilename, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const;
+  virtual void doGetFileCopy( const Pathname &srcFilename,
+    const Pathname &targetFilename,
+    callback::SendReport<DownloadProgressReport> &_report,
+    RequestOptions options = OPTION_NONE ) const;
 
-  void multifetch(const Pathname &filename, FILE *fp, std::vector<Url> *urllist, callback::SendReport<DownloadProgressReport> *report = 0, MediaBlockList *blklist = 0, off_t filesize = off_t(-1)) const;
+  void multifetch( const Pathname &filename, FILE *fp,
+    std::vector<Url> *urllist,
+    callback::SendReport<DownloadProgressReport> *report = 0,
+    MediaBlockList *blklist = 0, off_t filesize = off_t( -1 ) ) const;
 
 protected:
+  bool isDNSok( const std::string &host ) const;
+  void setDNSok( const std::string &host ) const;
 
-  bool isDNSok(const std::string &host) const;
-  void setDNSok(const std::string &host) const;
-
-  CURL *fromEasyPool(const std::string &host) const;
-  void toEasyPool(const std::string &host, CURL *easy) const;
+  CURL *fromEasyPool( const std::string &host ) const;
+  void toEasyPool( const std::string &host, CURL *easy ) const;
 
   virtual void setupEasy();
-  void checkFileDigest(Url &url, FILE *fp, MediaBlockList *blklist) const;
-  static int progressCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
+  void checkFileDigest( Url &url, FILE *fp, MediaBlockList *blklist ) const;
+  static int progressCallback(
+    void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
 
 private:
   // the custom headers from MediaCurl plus a "Accept: metalink" header
   curl_slist *_customHeadersMetalink;
-  mutable CURLM *_multi;	// reused for all fetches so we can make use of the dns cache
+  mutable CURLM
+    *_multi; // reused for all fetches so we can make use of the dns cache
   mutable std::set<std::string> _dnsok;
   mutable std::map<std::string, CURL *> _easypool;
 };
 
 ///////////////////////////////////////////////////////////////////
 
-  } // namespace media
+} // namespace media
 } // namespace zypp
 
 #endif // ZYPP_MEDIA_MEDIAMULTICURL_H

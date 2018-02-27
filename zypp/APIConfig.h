@@ -12,7 +12,7 @@
 #ifndef ZYPP_APICONFIG_H
 #define ZYPP_APICONFIG_H
 
-#include "zypp/base/Easy.h"	// some macros used almost everywhere
+#include "zypp/base/Easy.h" // some macros used almost everywhere
 
 /**
  * Generic helper definitions for shared library support.
@@ -31,19 +31,19 @@
  * \endcode
 };*/
 #if __GNUC__ >= 4
-  #define ZYPP_HELPER_DLL_EXPORT __attribute__ ((visibility ("default")))
-  #define ZYPP_HELPER_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+#define ZYPP_HELPER_DLL_EXPORT __attribute__( ( visibility( "default" ) ) )
+#define ZYPP_HELPER_DLL_LOCAL __attribute__( ( visibility( "hidden" ) ) )
 #else
-  #define ZYPP_HELPER_DLL_EXPORT
-  #define ZYPP_HELPER_DLL_LOCAL
+#define ZYPP_HELPER_DLL_EXPORT
+#define ZYPP_HELPER_DLL_LOCAL
 #endif
 
-#ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
-  #define ZYPP_API	ZYPP_HELPER_DLL_EXPORT
-  #define ZYPP_LOCAL	ZYPP_HELPER_DLL_LOCAL
+#ifdef ZYPP_DLL //defined if zypp is compiled as DLL
+#define ZYPP_API ZYPP_HELPER_DLL_EXPORT
+#define ZYPP_LOCAL ZYPP_HELPER_DLL_LOCAL
 #else
-  #define ZYPP_API
-  #define ZYPP_LOCAL
+#define ZYPP_API
+#define ZYPP_LOCAL
 #endif
 
 /**
@@ -77,14 +77,14 @@
  * also deprecate all member functions as well (which will cause warnings).
  *
  */
-#if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
-  #ifndef ZYPP_DEPRECATED
-  #define ZYPP_DEPRECATED __attribute__ ((deprecated))
-  #endif
+#if __GNUC__ - 0 > 3 || ( __GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2 )
+#ifndef ZYPP_DEPRECATED
+#define ZYPP_DEPRECATED __attribute__( ( deprecated ) )
+#endif
 #else
-  #ifndef ZYPP_DEPRECATED
-  #define ZYPP_DEPRECATED
-  #endif
+#ifndef ZYPP_DEPRECATED
+#define ZYPP_DEPRECATED
+#endif
 #endif
 
 #endif //ZYPP_APICONFIG_H

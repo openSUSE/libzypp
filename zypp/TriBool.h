@@ -20,7 +20,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /** 3-state boolean logic (\c true, \c false and \c indeterminate).
+/** 3-state boolean logic (\c true, \c false and \c indeterminate).
    * \code
    * namespace zypp
    * {
@@ -37,38 +37,43 @@ namespace zypp
    * \see http://www.boost.org/doc/html/tribool.html
    * \ingroup BOOST
   */
-  typedef boost::logic::tribool TriBool;
-  using   boost::logic::tribool;
-  using   boost::logic::indeterminate;
+typedef boost::logic::tribool TriBool;
+using boost::logic::tribool;
+using boost::logic::indeterminate;
 
-  inline std::string asString( const TriBool & val_r, const std::string & istr_r = std::string(),
-						      const std::string & tstr_r = std::string(),
-						      const std::string & fstr_r = std::string() )
-  {
-    std::string ret;
-    if (indeterminate(val_r))
-      ret = ( istr_r.empty() ? "indeterminate" : istr_r );
-    else if (val_r)
-      ret = ( tstr_r.empty() ? "true" : tstr_r );
-    else
-      ret = ( fstr_r.empty() ? "false" : fstr_r );
-    return ret;
-  }
+inline std::string asString( const TriBool &val_r,
+  const std::string &istr_r = std::string(),
+  const std::string &tstr_r = std::string(),
+  const std::string &fstr_r = std::string() )
+{
+  std::string ret;
+  if ( indeterminate( val_r ) )
+    ret = ( istr_r.empty() ? "indeterminate" : istr_r );
+  else if ( val_r )
+    ret = ( tstr_r.empty() ? "true" : tstr_r );
+  else
+    ret = ( fstr_r.empty() ? "false" : fstr_r );
+  return ret;
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 namespace boost
 {
-    namespace logic
-    {
-      /** \relates TriBool stream output */
-      inline std::ostream & operator<<(std::ostream & s, const tribool & obj)
-      { return s << zypp::asString( obj ); }
+namespace logic
+{
+/** \relates TriBool stream output */
+inline std::ostream &operator<<( std::ostream &s, const tribool &obj )
+{
+  return s << zypp::asString( obj );
+}
 
-      /** \relates TriBool whether 2 tribool have the same state (this is NOT ==) */
-      inline bool sameTriboolState( tribool lhs, tribool rhs )
-      { return( ( indeterminate(lhs) && indeterminate(rhs) ) || ( lhs == rhs ) ); }
-    }
+/** \relates TriBool whether 2 tribool have the same state (this is NOT ==) */
+inline bool sameTriboolState( tribool lhs, tribool rhs )
+{
+  return ( ( indeterminate( lhs ) && indeterminate( rhs ) ) || ( lhs == rhs ) );
+}
+}
 }
 #endif // ZYPP_TRIBOOL_H

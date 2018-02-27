@@ -19,10 +19,10 @@
 
 namespace zypp
 {
-  namespace repo
-  {
-   
-    /**
+namespace repo
+{
+
+/**
      * \short Downloads the media info (/media.1) to a local directory
      * \param dest_dir Destination directory
      * \param media \ref MediaSetAccess object to some media
@@ -30,10 +30,9 @@ namespace zypp
      *
      * \throws Exception on error
      */
-    void downloadMediaInfo( const Pathname &dest_dir,
-                            MediaSetAccess &media,
-                            const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
-  } // ns repo
+void downloadMediaInfo( const Pathname &dest_dir, MediaSetAccess &media,
+  const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
+} // ns repo
 } // ns zypp
 
 #endif

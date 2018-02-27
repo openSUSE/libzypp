@@ -22,11 +22,11 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace parser
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace parser
+{ /////////////////////////////////////////////////////////////////
 
-    /**
+/**
      * \short Read repository data from a .repo file
      *
      * After each repo is read, a \ref RepoInfo is prepared and \ref _callback
@@ -48,12 +48,13 @@ namespace zypp
      * Repeating the \c baseurl= tag on each line is also accepted, but when the
      * file has to be written, the preferred style is used.
      */
-    class RepoFileReader
-    {
-      friend std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
-    public:
+class RepoFileReader
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const RepoFileReader &obj );
 
-     /**
+public:
+  /**
       * Callback definition.
       * First parameter is a \ref RepoInfo object with the resource
       * second parameter is the resource type.
@@ -61,13 +62,13 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      typedef function< bool( const RepoInfo & )> ProcessRepo;
+  typedef function<bool( const RepoInfo & )> ProcessRepo;
 
-      /** Implementation  */
-      class Impl;
+  /** Implementation  */
+  class Impl;
 
-    public:
-     /**
+public:
+  /**
       * \short Constructor. Creates the reader and start reading.
       *
       * \param repo_file A valid .repo file
@@ -78,11 +79,10 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      RepoFileReader( const Pathname & repo_file,
-                      const ProcessRepo & callback,
-                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
+  RepoFileReader( const Pathname &repo_file, const ProcessRepo &callback,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
-     /**
+  /**
       * \short Constructor. Creates the reader and start reading.
       *
       * \param is A valid input stream
@@ -93,26 +93,26 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      RepoFileReader( const InputStream &is,
-                      const ProcessRepo & callback,
-                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
+  RepoFileReader( const InputStream &is, const ProcessRepo &callback,
+    const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
-      /**
+  /**
        * Dtor
        */
-      ~RepoFileReader();
-    private:
-      ProcessRepo _callback;
-    };
-    ///////////////////////////////////////////////////////////////////
+  ~RepoFileReader();
 
-    /** \relates RepoFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
+private:
+  ProcessRepo _callback;
+};
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace parser
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/** \relates RepoFileReader Stream output */
+std::ostream &operator<<( std::ostream &str, const RepoFileReader &obj );
+
+/////////////////////////////////////////////////////////////////
+} // namespace parser
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_REPO_REPOFILEREADER_H

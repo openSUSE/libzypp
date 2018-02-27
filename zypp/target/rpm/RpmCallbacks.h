@@ -33,35 +33,30 @@ namespace rpm
 struct RpmRemoveReport : public callback::ReportBase
 {
 
-  enum Action {
-    ABORT,  // abort and return error
-    RETRY,   // retry
-    IGNORE   // ignore
+  enum Action
+  {
+    ABORT, // abort and return error
+    RETRY, // retry
+    IGNORE // ignore
   };
 
   /** Start the operation */
-  virtual void start( const std::string & name )
-  {}
+  virtual void start( const std::string &name ) {}
   /**
    * Inform about progress
    * Return true on abort
    */
-  virtual bool progress( unsigned percent )
-  { return false; }
+  virtual bool progress( unsigned percent ) { return false; }
 
-  virtual Action problem( Exception & excpt_r )
-  { return ABORT; }
+  virtual Action problem( Exception &excpt_r ) { return ABORT; }
 
   /** Additional rpm output to be reported in \ref finish in case of success. */
-  virtual void finishInfo( const std::string & info_r )
-  {}
+  virtual void finishInfo( const std::string &info_r ) {}
 
   /** Finish operation in case of success */
-  virtual void finish()
-  {}
+  virtual void finish() {}
   /** Finish operation in case of fail, report fail exception */
-  virtual void finish( Exception & excpt_r )
-  {}
+  virtual void finish( Exception &excpt_r ) {}
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -70,36 +65,31 @@ struct RpmRemoveReport : public callback::ReportBase
 struct RpmInstallReport : public callback::ReportBase
 {
 
-  enum Action {
-    ABORT,  // abort and return error
-    RETRY,   // retry
-    IGNORE   // ignore
+  enum Action
+  {
+    ABORT, // abort and return error
+    RETRY, // retry
+    IGNORE // ignore
   };
 
   /** Start the operation */
-  virtual void start( const Pathname & name )
-  {}
+  virtual void start( const Pathname &name ) {}
   /**
    * Inform about progress
    * Return false on abort
    */
-  virtual bool progress( unsigned percent )
-  { return true; }
+  virtual bool progress( unsigned percent ) { return true; }
 
   /** Additional rpm output to be reported in \ref finish in case of success. */
-  virtual void finishInfo( const std::string & info_r )
-  {}
+  virtual void finishInfo( const std::string &info_r ) {}
 
   /** Finish operation in case of success */
-  virtual void finish()
-  {}
+  virtual void finish() {}
 
-  virtual Action problem( Exception & excpt_r )
-  { return ABORT; }
+  virtual Action problem( Exception &excpt_r ) { return ABORT; }
 
   /** Finish operation in case of fail, report fail exception */
-  virtual void finish( Exception & excpt_r )
-  {}
+  virtual void finish( Exception &excpt_r ) {}
 };
 
 } // namespace rpm

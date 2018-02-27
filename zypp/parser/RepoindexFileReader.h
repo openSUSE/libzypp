@@ -21,12 +21,12 @@
 
 namespace zypp
 {
-  class RepoInfo;
+class RepoInfo;
 
-  namespace parser
-  {
+namespace parser
+{
 
-  /**
+/**
    * Reads through a repoindex.xml file and collects repositories.
    *
    * After each repository is read, a \ref RepoInfo
@@ -41,17 +41,17 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1) );
    * \endcode
    */
-  class RepoindexFileReader : private base::NonCopyable
-  {
-  public:
-   /**
+class RepoindexFileReader : private base::NonCopyable
+{
+public:
+  /**
     * Callback definition.
     * First parameter is a \ref RepoInfo object with the resource
     * FIXME return value is ignored
     */
-    typedef function< bool( const RepoInfo & )> ProcessResource;
+  typedef function<bool( const RepoInfo & )> ProcessResource;
 
-   /**
+  /**
     * CTOR. Creates also \ref xml::Reader and starts reading.
     *
     * \param repoindexFile is the repoindex.xml file you want to read
@@ -59,10 +59,10 @@ namespace zypp
     *
     * \see RepoindexFileReader::ProcessResource
     */
-    RepoindexFileReader( const zypp::Pathname & repoindexFile,
-                         const ProcessResource & callback);
+  RepoindexFileReader(
+    const zypp::Pathname &repoindexFile, const ProcessResource &callback );
 
-    /**
+  /**
      * \short Constructor. Creates the reader and start reading.
      *
      * \param is a valid input stream
@@ -70,24 +70,22 @@ namespace zypp
      *
      * \see RepoindexFileReader::ProcessResource
      */
-     RepoindexFileReader( const InputStream &is,
-                          const ProcessResource & callback );
+  RepoindexFileReader( const InputStream &is, const ProcessResource &callback );
 
-    /**
+  /**
      * DTOR
      */
-    ~RepoindexFileReader();
+  ~RepoindexFileReader();
 
-    /** Metadata TTL (repoindex.xml:xpath:/repoindex@ttl or 0). */
-    Date::Duration ttl() const;
+  /** Metadata TTL (repoindex.xml:xpath:/repoindex@ttl or 0). */
+  Date::Duration ttl() const;
 
-  private:
-    class Impl;
-    RW_pointer<Impl,rw_pointer::Scoped<Impl> > _pimpl;
-  };
+private:
+  class Impl;
+  RW_pointer<Impl, rw_pointer::Scoped<Impl>> _pimpl;
+};
 
-
-  } // ns parser
+} // ns parser
 } // ns zypp
 
 #endif /*zypp_source_yum_RepoindexFileReader_H*/

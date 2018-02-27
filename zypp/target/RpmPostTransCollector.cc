@@ -29,179 +29,210 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace target
+///////////////////////////////////////////////////////////////////
+namespace target
+{
+
+///////////////////////////////////////////////////////////////////
+/// \class RpmPostTransCollector::Impl
+/// \brief RpmPostTransCollector implementation.
+///////////////////////////////////////////////////////////////////
+class RpmPostTransCollector::Impl : private base::NonCopyable
+{
+  friend std::ostream &operator<<( std::ostream &str, const Impl &obj );
+  friend std::ostream &dumpOn( std::ostream &str, const Impl &obj );
+
+public:
+  Impl( const Pathname &root_r )
+    : _root( root_r )
   {
+  }
 
-    ///////////////////////////////////////////////////////////////////
-    /// \class RpmPostTransCollector::Impl
-    /// \brief RpmPostTransCollector implementation.
-    ///////////////////////////////////////////////////////////////////
-    class RpmPostTransCollector::Impl : private base::NonCopyable
+  ~Impl()
+  {
+    if ( !_scripts.empty() )
+      discardScripts();
+  }
+
+  /** Extract and remember a packages %posttrans script for later execution. */
+  bool collectScriptFromPackage( ManagedFile rpmPackage_r )
+  {
+    rpm::RpmHeader::constPtr pkg(
+      rpm::RpmHeader::readPackage( rpmPackage_r, rpm::RpmHeader::NOVERIFY ) );
+    if ( !pkg )
     {
-      friend std::ostream & operator<<( std::ostream & str, const Impl & obj );
-      friend std::ostream & dumpOn( std::ostream & str, const Impl & obj );
-      public:
-	Impl( const Pathname & root_r )
-	: _root( root_r )
-	{}
+      WAR << "Unexpectedly this is no package: " << rpmPackage_r << endl;
+      return false;
+    }
 
-	~Impl()
-	{ if ( !_scripts.empty() ) discardScripts(); }
+    std::string prog( pkg->tag_posttransprog() );
+    if ( prog.empty() || prog == "<lua>" ) // by now leave lua to rpm
+      return false;
 
-	/** Extract and remember a packages %posttrans script for later execution. */
-	bool collectScriptFromPackage( ManagedFile rpmPackage_r )
-	{
-	  rpm::RpmHeader::constPtr pkg( rpm::RpmHeader::readPackage( rpmPackage_r, rpm::RpmHeader::NOVERIFY ) );
-	  if ( ! pkg )
-	  {
-	    WAR << "Unexpectedly this is no package: " << rpmPackage_r << endl;
-	    return false;
-	  }
+    filesystem::TmpFile script( tmpDir(), rpmPackage_r->basename() );
+    filesystem::addmod( script.path(), 0500 );
+    script.autoCleanup( false ); // no autodelete; within a tmpdir
+    {
+      std::ofstream out( script.path().c_str() );
+      out << "#! " << pkg->tag_posttransprog() << endl
+          << pkg->tag_posttrans() << endl;
+    }
+    _scripts.push_back( script.path().basename() );
+    MIL << "COLLECT posttrans: " << PathInfo( script.path() ) << endl;
+    //DBG << "PROG:  " << pkg->tag_posttransprog() << endl;
+    //DBG << "SCRPT: " << pkg->tag_posttrans() << endl;
+    return true;
+  }
 
-	  std::string prog( pkg->tag_posttransprog() );
-	  if ( prog.empty() || prog == "<lua>" )	// by now leave lua to rpm
-	    return false;
+  /** Execute te remembered scripts. */
+  void executeScripts()
+  {
+    if ( _scripts.empty() )
+      return;
 
-	  filesystem::TmpFile script( tmpDir(), rpmPackage_r->basename() );
-	  filesystem::addmod( script.path(), 0500 );
-	  script.autoCleanup( false );	// no autodelete; within a tmpdir
-	  {
-	    std::ofstream out( script.path().c_str() );
-	    out << "#! " << pkg->tag_posttransprog() << endl
-	        << pkg->tag_posttrans() << endl;
-	  }
-	  _scripts.push_back( script.path().basename() );
-	  MIL << "COLLECT posttrans: " << PathInfo( script.path() ) << endl;
-	  //DBG << "PROG:  " << pkg->tag_posttransprog() << endl;
-	  //DBG << "SCRPT: " << pkg->tag_posttrans() << endl;
-	  return true;
-	}
+    HistoryLog historylog;
 
-	/** Execute te remembered scripts. */
-	void executeScripts()
-	{
-	  if ( _scripts.empty() )
-	    return;
+    Pathname noRootScriptDir(
+      ZConfig::instance().update_scriptsPath() / tmpDir().basename() );
 
-	  HistoryLog historylog;
+    for ( const auto &script : _scripts )
+    {
+      MIL << "EXECUTE posttrans: " << script << endl;
+      ExternalProgram prog( ( noRootScriptDir / script ).asString(),
+        ExternalProgram::Stderr_To_Stdout, false, -1, true, _root );
 
-	  Pathname noRootScriptDir( ZConfig::instance().update_scriptsPath() / tmpDir().basename() );
+      str::Str collect;
+      for ( std::string line = prog.receiveLine(); !line.empty();
+            line = prog.receiveLine() )
+      {
+        DBG << line;
+        collect << "    " << line;
+      }
+      int ret = prog.close();
+      const std::string &scriptmsg( collect );
 
-	  for ( const auto & script : _scripts )
-	  {
-	    MIL << "EXECUTE posttrans: " << script << endl;
-            ExternalProgram prog( (noRootScriptDir/script).asString(), ExternalProgram::Stderr_To_Stdout, false, -1, true, _root );
+      if ( ret != 0 || !scriptmsg.empty() )
+      {
+        const std::string &pkgident(
+          script.substr( 0, script.size() - 6 ) ); // strip tmp file suffix
 
-	    str::Str collect;
-	    for( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-	    {
-	      DBG << line;
-	      collect << "    " << line;
-	    }
-	    int ret = prog.close();
-	    const std::string & scriptmsg( collect );
+        if ( !scriptmsg.empty() )
+        {
+          str::Str msg;
+          msg << "Output of " << pkgident << " %posttrans script:\n"
+              << scriptmsg;
+          historylog.comment( msg, true /*timestamp*/ );
+          JobReport::info( msg );
+        }
 
-	    if ( ret != 0 || ! scriptmsg.empty() )
-	    {
-	      const std::string & pkgident( script.substr( 0, script.size()-6 ) );	// strip tmp file suffix
+        if ( ret != 0 )
+        {
+          str::Str msg;
+          msg << pkgident << " %posttrans script failed (returned " << ret
+              << ")";
+          WAR << msg << endl;
+          historylog.comment( msg, true /*timestamp*/ );
+          JobReport::warning( msg );
+        }
+      }
+    }
+    _scripts.clear();
+  }
 
-	      if ( ! scriptmsg.empty() )
-	      {
-		str::Str msg;
-		msg << "Output of " << pkgident << " %posttrans script:\n" << scriptmsg;
-		historylog.comment( msg, true /*timestamp*/);
-		JobReport::info( msg );
-	      }
+  /** Discard all remembered scrips. */
+  void discardScripts()
+  {
+    if ( _scripts.empty() )
+      return;
 
-	      if ( ret != 0 )
-	      {
-		str::Str msg;
-		msg << pkgident << " %posttrans script failed (returned " << ret << ")";
-		WAR << msg << endl;
-		historylog.comment( msg, true /*timestamp*/);
-		JobReport::warning( msg );
-	      }
-	    }
-	  }
-	  _scripts.clear();
-	}
+    HistoryLog historylog;
 
-	/** Discard all remembered scrips. */
-	void discardScripts()
-	{
-	  if ( _scripts.empty() )
-	    return;
+    str::Str msg;
+    msg << "%posttrans scripts skipped while aborting:\n";
+    for ( const auto &script : _scripts )
+    {
+      const std::string &pkgident(
+        script.substr( 0, script.size() - 6 ) ); // strip tmp file suffix
+      WAR << "UNEXECUTED posttrans: " << script << endl;
+      msg << "    " << pkgident << "\n";
+    }
 
-	  HistoryLog historylog;
+    historylog.comment( msg, true /*timestamp*/ );
+    JobReport::warning( msg );
 
-	  str::Str msg;
-	  msg << "%posttrans scripts skipped while aborting:\n";
-	  for ( const auto & script : _scripts )
-	  {
-	    const std::string & pkgident( script.substr( 0, script.size()-6 ) );	// strip tmp file suffix
-	    WAR << "UNEXECUTED posttrans: " << script << endl;
-	    msg << "    " << pkgident << "\n";
-	  }
+    _scripts.clear();
+  }
 
-	  historylog.comment( msg, true /*timestamp*/);
-	  JobReport::warning( msg );
+private:
+  /** Lazy create tmpdir on demand. */
+  Pathname tmpDir()
+  {
+    if ( !_ptrTmpdir )
+      _ptrTmpdir.reset( new filesystem::TmpDir(
+        _root / ZConfig::instance().update_scriptsPath(), "posttrans" ) );
+    DBG << _ptrTmpdir->path() << endl;
+    return _ptrTmpdir->path();
+  }
 
-	  _scripts.clear();
-	}
+private:
+  Pathname _root;
+  std::list<std::string> _scripts;
+  boost::scoped_ptr<filesystem::TmpDir> _ptrTmpdir;
+};
 
-      private:
-	/** Lazy create tmpdir on demand. */
-	Pathname tmpDir()
-	{
-	  if ( !_ptrTmpdir ) _ptrTmpdir.reset( new filesystem::TmpDir( _root / ZConfig::instance().update_scriptsPath(), "posttrans" ) );
-	  DBG << _ptrTmpdir->path() << endl;
-	  return _ptrTmpdir->path();
-	}
+/** \relates RpmPostTransCollector::Impl Stream output */
+inline std::ostream &operator<<(
+  std::ostream &str, const RpmPostTransCollector::Impl &obj )
+{
+  return str << "RpmPostTransCollector::Impl";
+}
 
-      private:
-	Pathname _root;
-	std::list<std::string> _scripts;
-	boost::scoped_ptr<filesystem::TmpDir> _ptrTmpdir;
-    };
+/** \relates RpmPostTransCollector::Impl Verbose stream output */
+inline std::ostream &dumpOn(
+  std::ostream &str, const RpmPostTransCollector::Impl &obj )
+{
+  return str << obj;
+}
 
-    /** \relates RpmPostTransCollector::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector::Impl & obj )
-    { return str << "RpmPostTransCollector::Impl"; }
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : RpmPostTransCollector
+//
+///////////////////////////////////////////////////////////////////
 
-    /** \relates RpmPostTransCollector::Impl Verbose stream output */
-    inline std::ostream & dumpOn( std::ostream & str, const RpmPostTransCollector::Impl & obj )
-    { return str << obj; }
+RpmPostTransCollector::RpmPostTransCollector( const Pathname &root_r )
+  : _pimpl( new Impl( root_r ) )
+{
+}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : RpmPostTransCollector
-    //
-    ///////////////////////////////////////////////////////////////////
+RpmPostTransCollector::~RpmPostTransCollector() {}
 
-    RpmPostTransCollector::RpmPostTransCollector( const Pathname & root_r )
-      : _pimpl( new Impl( root_r ) )
-    {}
+bool RpmPostTransCollector::collectScriptFromPackage( ManagedFile rpmPackage_r )
+{
+  return _pimpl->collectScriptFromPackage( rpmPackage_r );
+}
 
-    RpmPostTransCollector::~RpmPostTransCollector()
-    {}
+void RpmPostTransCollector::executeScripts()
+{
+  return _pimpl->executeScripts();
+}
 
-    bool RpmPostTransCollector::collectScriptFromPackage( ManagedFile rpmPackage_r )
-    { return _pimpl->collectScriptFromPackage( rpmPackage_r ); }
+void RpmPostTransCollector::discardScripts()
+{
+  return _pimpl->discardScripts();
+}
 
-    void RpmPostTransCollector::executeScripts()
-    { return _pimpl->executeScripts(); }
+std::ostream &operator<<( std::ostream &str, const RpmPostTransCollector &obj )
+{
+  return str << *obj._pimpl;
+}
 
-    void RpmPostTransCollector::discardScripts()
-    { return _pimpl->discardScripts(); }
+std::ostream &dumpOn( std::ostream &str, const RpmPostTransCollector &obj )
+{
+  return dumpOn( str, *obj._pimpl );
+}
 
-    std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector & obj )
-    { return str << *obj._pimpl; }
-
-    std::ostream & dumpOn( std::ostream & str, const RpmPostTransCollector & obj )
-    { return dumpOn( str, *obj._pimpl ); }
-
-  } // namespace target
-  ///////////////////////////////////////////////////////////////////
+} // namespace target
+///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

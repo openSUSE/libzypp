@@ -22,15 +22,15 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace sat
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace sat
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : LocaleSupport
-    //
-    /** Convenience methods to manage support for a specific \ref Locale.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : LocaleSupport
+//
+/** Convenience methods to manage support for a specific \ref Locale.
      *
      * \code
      *   sat::LocaleSupport myLocale( Locale("de") );
@@ -56,74 +56,92 @@ namespace zypp
      *
      * \todo If iterator is too slow install a proxy watching the Pool::serial.
      */
-    class LocaleSupport : public SolvIterMixin<LocaleSupport,filter_iterator<filter::ByLocaleSupport,Pool::SolvableIterator> >
-                        , protected detail::PoolMember
-    {
-      public:
-        /** Default ctor */
-        LocaleSupport()
-        {}
-        /** Ctor taking a \ref Locale. */
-        LocaleSupport( const Locale & locale_r )
-        :  _locale( locale_r )
-        {}
+class LocaleSupport
+  : public SolvIterMixin<LocaleSupport,
+      filter_iterator<filter::ByLocaleSupport, Pool::SolvableIterator>>,
+    protected detail::PoolMember
+{
+public:
+  /** Default ctor */
+  LocaleSupport() {}
+  /** Ctor taking a \ref Locale. */
+  LocaleSupport( const Locale &locale_r )
+    : _locale( locale_r )
+  {
+  }
 
-      public:
-        /** My \ref Locale */
-        const Locale & locale() const
-        { return _locale; }
+public:
+  /** My \ref Locale */
+  const Locale &locale() const { return _locale; }
 
-        /** Whether there are language specific packages supporting my \ref Locale. */
-        bool isAvailable() const
-        { return Pool(*this).isAvailableLocale( _locale ); }
+  /** Whether there are language specific packages supporting my \ref Locale. */
+  bool isAvailable() const
+  {
+    return Pool( *this ).isAvailableLocale( _locale );
+  }
 
-        /** Whether the solver will automatically select language specific packages for my \ref Locale. */
-        bool isRequested() const
-        { return Pool(*this).isRequestedLocale( _locale ); }
+  /** Whether the solver will automatically select language specific packages for my \ref Locale. */
+  bool isRequested() const
+  {
+    return Pool( *this ).isRequestedLocale( _locale );
+  }
 
-        /** Turn on/off solver support for my \ref Locale.*/
-        void setRequested( bool yesno_r )
-        { yesno_r ? Pool(*this).addRequestedLocale( _locale ) : Pool(*this).eraseRequestedLocale( _locale ); }
+  /** Turn on/off solver support for my \ref Locale.*/
+  void setRequested( bool yesno_r )
+  {
+    yesno_r ? Pool( *this ).addRequestedLocale( _locale )
+            : Pool( *this ).eraseRequestedLocale( _locale );
+  }
 
-      public:
-        /** \name Iterate through all \ref sat::Solvables supporting my \ref Locale. */
-        //@{
-        typedef Solvable_iterator iterator;  // from SolvIterMixin
+public:
+  /** \name Iterate through all \ref sat::Solvables supporting my \ref Locale. */
+  //@{
+  typedef Solvable_iterator iterator; // from SolvIterMixin
 
-        iterator begin() const
-        { return Pool(*this).filterBegin( filter::ByLocaleSupport( _locale ) ); }
+  iterator begin() const
+  {
+    return Pool( *this ).filterBegin( filter::ByLocaleSupport( _locale ) );
+  }
 
-        iterator end() const
-        { return Pool(*this).filterEnd( filter::ByLocaleSupport( _locale ) ); }
-        //@}
+  iterator end() const
+  {
+    return Pool( *this ).filterEnd( filter::ByLocaleSupport( _locale ) );
+  }
+  //@}
 
-      private:
-        Locale _locale;
-    };
-    ///////////////////////////////////////////////////////////////////
+private:
+  Locale _locale;
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates LocaleSupport Stream output */
-    std::ostream & operator<<( std::ostream & str, const LocaleSupport & obj );
+/** \relates LocaleSupport Stream output */
+std::ostream &operator<<( std::ostream &str, const LocaleSupport &obj );
 
-    /** \relates LocaleSupport More verbose stream output including dependencies */
-    std::ostream & dumpOn( std::ostream & str, const LocaleSupport & obj );
+/** \relates LocaleSupport More verbose stream output including dependencies */
+std::ostream &dumpOn( std::ostream &str, const LocaleSupport &obj );
 
-    /** \relates LocaleSupport */
-    inline bool operator==( const LocaleSupport & lhs, const LocaleSupport & rhs )
-    { return lhs.locale() == rhs.locale(); }
+/** \relates LocaleSupport */
+inline bool operator==( const LocaleSupport &lhs, const LocaleSupport &rhs )
+{
+  return lhs.locale() == rhs.locale();
+}
 
-    /** \relates LocaleSupport */
-    inline bool operator!=( const LocaleSupport & lhs, const LocaleSupport & rhs )
-    { return lhs.locale() != rhs.locale(); }
+/** \relates LocaleSupport */
+inline bool operator!=( const LocaleSupport &lhs, const LocaleSupport &rhs )
+{
+  return lhs.locale() != rhs.locale();
+}
 
-    /** \relates LocaleSupport */
-    inline bool operator<( const LocaleSupport & lhs, const LocaleSupport & rhs )
-    { return lhs.locale() < rhs.locale(); }
+/** \relates LocaleSupport */
+inline bool operator<( const LocaleSupport &lhs, const LocaleSupport &rhs )
+{
+  return lhs.locale() < rhs.locale();
+}
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace sat
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace sat
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_SAT_LOCALESUPPORT_H

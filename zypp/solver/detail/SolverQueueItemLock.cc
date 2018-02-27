@@ -17,8 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-extern "C"
-{
+extern "C" {
 #include <solv/solver.h>
 }
 
@@ -30,100 +29,102 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SolverQueueItemLock);
+IMPL_PTR_TYPE( SolverQueueItemLock );
 
 //---------------------------------------------------------------------------
 
-std::ostream &
-SolverQueueItemLock::dumpOn( std::ostream & os ) const
+std::ostream &SolverQueueItemLock::dumpOn( std::ostream &os ) const
 {
-    os << "[" << (_soft?"Soft":"") << "Lock: " <<
-	_item << "]";
+  os << "[" << ( _soft ? "Soft" : "" ) << "Lock: " << _item << "]";
 
-    return os;
+  return os;
 }
 
 //---------------------------------------------------------------------------
 
-SolverQueueItemLock::SolverQueueItemLock (const ResPool & pool,
-					      const PoolItem & item, bool soft)
-    : SolverQueueItem (QUEUE_ITEM_TYPE_LOCK, pool)
-    , _item (item)
-    , _soft (soft)
+SolverQueueItemLock::SolverQueueItemLock(
+  const ResPool &pool, const PoolItem &item, bool soft )
+  : SolverQueueItem( QUEUE_ITEM_TYPE_LOCK, pool )
+  , _item( item )
+  , _soft( soft )
 {
 }
 
-
-SolverQueueItemLock::~SolverQueueItemLock()
-{
-}
+SolverQueueItemLock::~SolverQueueItemLock() {}
 
 //---------------------------------------------------------------------------
 
-bool SolverQueueItemLock::addRule (sat::detail::CQueue & q)
+bool SolverQueueItemLock::addRule( sat::detail::CQueue &q )
 {
-    ::Id id = _item.satSolvable().id();
-    if (id == ID_NULL) {
-	ERR << "Lock : " << _item << " not found" << endl;
-	return false;
+  ::Id id = _item.satSolvable().id();
+  if ( id == ID_NULL )
+  {
+    ERR << "Lock : " << _item << " not found" << endl;
+    return false;
+  }
+  MIL << "Lock " << _item << " with the SAT-Pool ID: " << id << endl;
+  if ( _item.status().isInstalled() )
+  {
+    if ( _soft )
+    {
+      queue_push( &( q ), SOLVER_INSTALL | SOLVER_SOLVABLE | SOLVER_WEAK );
     }
-    MIL << "Lock " << _item << " with the SAT-Pool ID: " << id << endl;
-    if (_item.status().isInstalled()) {
-	if (_soft) {
-	    queue_push( &(q), SOLVER_INSTALL | SOLVER_SOLVABLE | SOLVER_WEAK );
-	} else {
-	    queue_push( &(q), SOLVER_INSTALL | SOLVER_SOLVABLE );
-	}
-    } else {
-	if (_soft) {
-	    queue_push( &(q), SOLVER_ERASE | SOLVER_SOLVABLE | SOLVER_WEAK );
-	} else {
-	    queue_push( &(q), SOLVER_ERASE | SOLVER_SOLVABLE );
-	}
+    else
+    {
+      queue_push( &( q ), SOLVER_INSTALL | SOLVER_SOLVABLE );
     }
-    queue_push( &(q), id );
-    return true;
+  }
+  else
+  {
+    if ( _soft )
+    {
+      queue_push( &( q ), SOLVER_ERASE | SOLVER_SOLVABLE | SOLVER_WEAK );
+    }
+    else
+    {
+      queue_push( &( q ), SOLVER_ERASE | SOLVER_SOLVABLE );
+    }
+  }
+  queue_push( &( q ), id );
+  return true;
 }
 
-SolverQueueItem_Ptr
-SolverQueueItemLock::copy (void) const
+SolverQueueItem_Ptr SolverQueueItemLock::copy( void ) const
 {
-    SolverQueueItemLock_Ptr new_lock = new SolverQueueItemLock (pool(), _item);
-    new_lock->SolverQueueItem::copy(this);
+  SolverQueueItemLock_Ptr new_lock = new SolverQueueItemLock( pool(), _item );
+  new_lock->SolverQueueItem::copy( this );
 
-    new_lock->_soft = _soft;
-    return new_lock;
+  new_lock->_soft = _soft;
+  return new_lock;
 }
 
-int
-SolverQueueItemLock::cmp (SolverQueueItem_constPtr item) const
+int SolverQueueItemLock::cmp( SolverQueueItem_constPtr item ) const
 {
-    int cmp = this->compare (item);
-    if (cmp != 0)
-        return cmp;
-    SolverQueueItemLock_constPtr lock = dynamic_pointer_cast<const SolverQueueItemLock>(item);
-    return compareByNVRA (_item, lock->_item);
+  int cmp = this->compare( item );
+  if ( cmp != 0 )
+    return cmp;
+  SolverQueueItemLock_constPtr lock =
+    dynamic_pointer_cast<const SolverQueueItemLock>( item );
+  return compareByNVRA( _item, lock->_item );
 }
-
 
 //---------------------------------------------------------------------------
-
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////

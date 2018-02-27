@@ -20,55 +20,54 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  /// \class LanguageCode
-  /// \brief Language codes (iso639_2/iso639_1).
-  ///
-  /// In fact the class will not prevent to use a non iso language code.
-  /// Just a warning will appear in the log.
-  ///////////////////////////////////////////////////////////////////
-  class LanguageCode : public IdStringType<LanguageCode>
-  {
-  public:
-    /** Default Ctor: \ref noCode */
-    LanguageCode();
+///////////////////////////////////////////////////////////////////
+/// \class LanguageCode
+/// \brief Language codes (iso639_2/iso639_1).
+///
+/// In fact the class will not prevent to use a non iso language code.
+/// Just a warning will appear in the log.
+///////////////////////////////////////////////////////////////////
+class LanguageCode : public IdStringType<LanguageCode>
+{
+public:
+  /** Default Ctor: \ref noCode */
+  LanguageCode();
 
-    /** Ctor from string. */
-    explicit LanguageCode( IdString str_r );
+  /** Ctor from string. */
+  explicit LanguageCode( IdString str_r );
 
-    /** Ctor from string. */
-    explicit LanguageCode( const std::string & str_r );
+  /** Ctor from string. */
+  explicit LanguageCode( const std::string &str_r );
 
-    /** Ctor from string. */
-    explicit LanguageCode( const char * str_r );
+  /** Ctor from string. */
+  explicit LanguageCode( const char *str_r );
 
-     /** Dtor */
-    ~LanguageCode();
+  /** Dtor */
+  ~LanguageCode();
 
-  public:
-    /** \name LanguageCode constants. */
-    //@{
-    /** Empty code. */
-    static const LanguageCode noCode;
-    /** Last resort "en". */
-    static const LanguageCode enCode;
-    //@}
+public:
+  /** \name LanguageCode constants. */
+  //@{
+  /** Empty code. */
+  static const LanguageCode noCode;
+  /** Last resort "en". */
+  static const LanguageCode enCode;
+  //@}
 
-  public:
-    /** Return the language code asString. */
-    std::string code() const
-    { return std::string(_str); }
+public:
+  /** Return the language code asString. */
+  std::string code() const { return std::string( _str ); }
 
-    /** Return the translated language name; if unknown the language code. */
-    std::string name() const;
+  /** Return the translated language name; if unknown the language code. */
+  std::string name() const;
 
-  private:
-    friend class IdStringType<LanguageCode>;
-    IdString _str;
-  };
+private:
+  friend class IdStringType<LanguageCode>;
+  IdString _str;
+};
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 
-ZYPP_DEFINE_ID_HASHABLE( ::zypp::LanguageCode );
+ZYPP_DEFINE_ID_HASHABLE(::zypp::LanguageCode );
 
 #endif // ZYPP_LANGUAGECODE_H

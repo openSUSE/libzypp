@@ -29,14 +29,15 @@ namespace susetags
 {
 
 Downloader::Downloader( const RepoInfo &repoinfo, const Pathname &delta_dir )
-  : repo::Downloader(repoinfo), _delta_dir(delta_dir)
+  : repo::Downloader( repoinfo )
+  , _delta_dir( delta_dir )
 {
 }
 
 RepoStatus Downloader::status( MediaSetAccess &media )
 {
-  RepoStatus ret( media.provideOptionalFile( repoInfo().path() + "/content") );
-  if ( !ret.empty() )	// else: mandatory master index is missing
+  RepoStatus ret( media.provideOptionalFile( repoInfo().path() + "/content" ) );
+  if ( !ret.empty() ) // else: mandatory master index is missing
     ret = ret && RepoStatus( media.provideOptionalFile( "/media.1/media" ) );
   // else: mandatory master index is missing -> stay empty
   return ret;
@@ -45,17 +46,15 @@ RepoStatus Downloader::status( MediaSetAccess &media )
 // search old repository file file to run the delta algorithm on
 static Pathname search_deltafile( const Pathname &dir, const Pathname &file )
 {
-  Pathname deltafile(dir + file.basename());
-  if (PathInfo(deltafile).isExist())
+  Pathname deltafile( dir + file.basename() );
+  if ( PathInfo( deltafile ).isExist() )
     return deltafile;
   return Pathname();
 }
 
-
 /** \todo: Downloading/sigcheck of master index shoudl be common in base class */
-void Downloader::download( MediaSetAccess &media,
-                           const Pathname &dest_dir,
-                           const ProgressData::ReceiverFnc & progress )
+void Downloader::download( MediaSetAccess &media, const Pathname &dest_dir,
+  const ProgressData::ReceiverFnc &progress )
 {
   downloadMediaInfo( dest_dir, media );
 
@@ -69,14 +68,18 @@ void Downloader::download( MediaSetAccess &media,
     content.setRepoIndexConsumer( bind( &Downloader::consumeIndex, this, _1 ) );
     content.parse( inputfile );
   }
-  if ( ! _repoindex )
+  if ( !_repoindex )
   {
-    ZYPP_THROW( ParseException( (dest_dir+repoInfo().path()).asString() + ": " + "No repository index in content file." ) );
+    ZYPP_THROW(
+      ParseException( ( dest_dir + repoInfo().path() ).asString() + ": " +
+                      "No repository index in content file." ) );
   }
   MIL << "RepoIndex: " << _repoindex << endl;
   if ( _repoindex->metaFileChecksums.empty() )
   {
-    ZYPP_THROW( ParseException( (dest_dir+repoInfo().path()).asString() + ": " + "No metadata checksums in content file." ) );
+    ZYPP_THROW(
+      ParseException( ( dest_dir + repoInfo().path() ).asString() + ": " +
+                      "No metadata checksums in content file." ) );
   }
   if ( _repoindex->signingKeys.empty() )
   {
@@ -87,40 +90,45 @@ void Downloader::download( MediaSetAccess &media,
   Pathname descr_dir = _repoindex->descrdir; // path below reporoot
   //_datadir  = _repoIndex->datadir;  // path below reporoot
 
-  std::map<std::string,RepoIndex::FileChecksumMap::const_iterator> availablePackageTranslations;
+  std::map<std::string, RepoIndex::FileChecksumMap::const_iterator>
+    availablePackageTranslations;
 
-  for_( it, _repoindex->metaFileChecksums.begin(), _repoindex->metaFileChecksums.end() )
+  for_( it, _repoindex->metaFileChecksums.begin(),
+    _repoindex->metaFileChecksums.end() )
   {
     // omit unwanted translations
     if ( str::hasPrefix( it->first, "packages" ) )
     {
-      static const str::regex rx_packages( "^packages((.gz)?|(.([^.]*))(.gz)?)$" );
+      static const str::regex rx_packages(
+        "^packages((.gz)?|(.([^.]*))(.gz)?)$" );
       str::smatch what;
       if ( str::regex_match( it->first, what, rx_packages ) )
       {
-	if ( what[4].empty() // packages(.gz)?
-	  || what[4] == "DU"
-	  || what[4] == "en" )
-	{ ; /* always downloaded */ }
-	else if ( what[4] == "FL" )
-	{ continue; /* never downloaded */ }
-	else
-	{
-	  // remember and decide later
-	  availablePackageTranslations[what[4]] = it;
-	  continue;
-	}
+        if ( what[ 4 ].empty() // packages(.gz)?
+             || what[ 4 ] == "DU" || what[ 4 ] == "en" )
+        {
+          ; /* always downloaded */
+        }
+        else if ( what[ 4 ] == "FL" )
+        {
+          continue; /* never downloaded */
+        }
+        else
+        {
+          // remember and decide later
+          availablePackageTranslations[ what[ 4 ] ] = it;
+          continue;
+        }
       }
       else
-	continue; // discard
+        continue; // discard
     }
-    else if ( it->first == "patterns.pat"
-              || it->first == "patterns.pat.gz" )
+    else if ( it->first == "patterns.pat" || it->first == "patterns.pat.gz" )
     {
       // take all patterns in one go
     }
-    else if ( str::endsWith( it->first, ".pat" )
-              || str::endsWith( it->first, ".pat.gz" ) )
+    else if ( str::endsWith( it->first, ".pat" ) ||
+              str::endsWith( it->first, ".pat.gz" ) )
     {
 
       // *** see also zypp/parser/susetags/RepoParser.cc ***
@@ -132,25 +140,29 @@ void Downloader::download( MediaSetAccess &media,
       std::vector<std::string> patparts;
       unsigned archpos = 2;
       // expect "<name>.<arch>.pat[.gz]", <name> might contain additional dots
-      unsigned count = str::split( it->first, std::back_inserter(patparts), "." );
-      if ( patparts[count-1] == "gz" )
-          archpos++;
+      unsigned count =
+        str::split( it->first, std::back_inserter( patparts ), "." );
+      if ( patparts[ count - 1 ] == "gz" )
+        archpos++;
 
       if ( count > archpos )
       {
-        try				// might by an invalid architecture
+        try // might by an invalid architecture
         {
-          Arch patarch( patparts[count-archpos] );
-          if ( !patarch.compatibleWith( ZConfig::instance().systemArchitecture() ) )
+          Arch patarch( patparts[ count - archpos ] );
+          if ( !patarch.compatibleWith(
+                 ZConfig::instance().systemArchitecture() ) )
           {
             // discard, if not compatible
             MIL << "Discarding pattern " << it->first << endl;
             continue;
           }
         }
-        catch ( const Exception & excpt )
+        catch ( const Exception &excpt )
         {
-          WAR << "Pattern file name does not contain recognizable architecture: " << it->first << endl;
+          WAR
+            << "Pattern file name does not contain recognizable architecture: "
+            << it->first << endl;
           // keep .pat file if it doesn't contain an recognizable arch
         }
       }
@@ -158,34 +170,38 @@ void Downloader::download( MediaSetAccess &media,
     MIL << "adding job " << it->first << endl;
     OnMediaLocation location( repoInfo().path() + descr_dir + it->first, 1 );
     location.setChecksum( it->second );
-    enqueueDigested(location, FileChecker(), search_deltafile(_delta_dir + descr_dir, it->first));
+    enqueueDigested( location, FileChecker(),
+      search_deltafile( _delta_dir + descr_dir, it->first ) );
   }
 
   // check whether to download more package translations:
   {
-    auto fnc_checkTransaltions( [&]( const Locale & locale_r ) {
+    auto fnc_checkTransaltions( [&]( const Locale &locale_r ) {
       for ( Locale toGet( locale_r ); toGet; toGet = toGet.fallback() )
       {
-	auto it( availablePackageTranslations.find( toGet.code() ) );
-	if ( it != availablePackageTranslations.end() )
-	{
-	  auto mit( it->second );
-	  MIL << "adding job " << mit->first << endl;
-	  OnMediaLocation location( repoInfo().path() + descr_dir + mit->first, 1 );
-	  location.setChecksum( mit->second );
-	  enqueueDigested(location, FileChecker(), search_deltafile(_delta_dir + descr_dir, mit->first));
-	  break;
-	}
+        auto it( availablePackageTranslations.find( toGet.code() ) );
+        if ( it != availablePackageTranslations.end() )
+        {
+          auto mit( it->second );
+          MIL << "adding job " << mit->first << endl;
+          OnMediaLocation location(
+            repoInfo().path() + descr_dir + mit->first, 1 );
+          location.setChecksum( mit->second );
+          enqueueDigested( location, FileChecker(),
+            search_deltafile( _delta_dir + descr_dir, mit->first ) );
+          break;
+        }
       }
-    });
-    for ( const Locale & it : ZConfig::instance().repoRefreshLocales() )
+    } );
+    for ( const Locale &it : ZConfig::instance().repoRefreshLocales() )
     {
       fnc_checkTransaltions( it );
     }
     fnc_checkTransaltions( ZConfig::instance().textLocale() );
   }
 
-  for_( it, _repoindex->mediaFileChecksums.begin(), _repoindex->mediaFileChecksums.end() )
+  for_( it, _repoindex->mediaFileChecksums.begin(),
+    _repoindex->mediaFileChecksums.end() )
   {
     // Repo adopts license files listed in HASH
     if ( it->first != "license.tar.gz" )
@@ -194,26 +210,27 @@ void Downloader::download( MediaSetAccess &media,
     MIL << "adding job " << it->first << endl;
     OnMediaLocation location( repoInfo().path() + it->first, 1 );
     location.setChecksum( it->second );
-    enqueueDigested(location, FileChecker(), search_deltafile(_delta_dir, it->first));
+    enqueueDigested(
+      location, FileChecker(), search_deltafile( _delta_dir, it->first ) );
   }
 
-  for_( it, _repoindex->signingKeys.begin(),_repoindex->signingKeys.end() )
+  for_( it, _repoindex->signingKeys.begin(), _repoindex->signingKeys.end() )
   {
     MIL << "adding job " << it->first << endl;
     OnMediaLocation location( repoInfo().path() + it->first, 1 );
     location.setChecksum( it->second );
-    enqueueDigested(location);
+    enqueueDigested( location );
   }
 
   start( dest_dir, media );
 }
 
-void Downloader::consumeIndex( const RepoIndex_Ptr & data_r )
+void Downloader::consumeIndex( const RepoIndex_Ptr &data_r )
 {
   MIL << "Consuming repo index" << endl;
   _repoindex = data_r;
 }
 
-}// ns susetags
-}// ns source
+} // ns susetags
+} // ns source
 } // ns zypp

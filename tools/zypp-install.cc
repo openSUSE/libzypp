@@ -29,8 +29,8 @@ using std::endl;
 using namespace zypp;
 
 ////////////////////////////////////////////////////////////////////////////////
-int main( int argc, char * argv[] )
-try {
+int main( int argc, char *argv[] ) try
+{
   --argc;
   ++argv;
 #if ( TEST_DEBUGLOG )
@@ -39,15 +39,15 @@ try {
 #endif
 
   Pathname sysRoot( "/" );
-  ZYpp::Ptr zypp = getZYpp();		// acquire initial zypp lock
+  ZYpp::Ptr zypp = getZYpp(); // acquire initial zypp lock
 
   ////////////////////////////////////////////////////////////////////////////////
   // init Target:
   {
     cout << "Initialize target at " << sysRoot << endl;
-    zypp->initializeTarget( sysRoot );	// initialize target
+    zypp->initializeTarget( sysRoot ); // initialize target
     cout << "Loading target resolvables" << endl;
-    zypp->getTarget()->load();		// load installed packages to pool
+    zypp->getTarget()->load(); // load installed packages to pool
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -56,62 +56,64 @@ try {
     RepoManager repoManager( sysRoot );
 
     // sync the current repo set
-    for ( RepoInfo & nrepo : repoManager.knownRepositories() )
+    for ( RepoInfo &nrepo : repoManager.knownRepositories() )
     {
-      if ( ! nrepo.enabled() )
-	continue;
+      if ( !nrepo.enabled() )
+        continue;
 
       // Often volatile media are sipped in automated environments
       // to avoid media chagne requests:
       if ( nrepo.url().schemeIsVolatile() )
-	continue;
+        continue;
 
       bool refreshNeeded = false;
-      if ( nrepo.autorefresh() )	// test whether to autorefresh repo metadata
+      if ( nrepo.autorefresh() ) // test whether to autorefresh repo metadata
       {
-	for ( const Url & url : nrepo.baseUrls() )
-	{
-	  try
-	  {
-	    if ( repoManager.checkIfToRefreshMetadata( nrepo, url ) == RepoManager::REFRESH_NEEDED )
-	    {
-	      cout << "Need to autorefresh repo " << nrepo.alias() << endl;
-	      refreshNeeded = true;
-	    }
-	    break;	// exit after first successful checkIfToRefreshMetadata
-	  }
-	  catch ( const Exception & exp )
-	  {}	// Url failed, try next one...
-	}
-	// If all urls failed we can leave it to the code below to
-	// fail if access is actually needed and still failing.
-	// (missing metadata, package download, ...)
+        for ( const Url &url : nrepo.baseUrls() )
+        {
+          try
+          {
+            if ( repoManager.checkIfToRefreshMetadata( nrepo, url ) ==
+                 RepoManager::REFRESH_NEEDED )
+            {
+              cout << "Need to autorefresh repo " << nrepo.alias() << endl;
+              refreshNeeded = true;
+            }
+            break; // exit after first successful checkIfToRefreshMetadata
+          }
+          catch ( const Exception &exp )
+          {
+          } // Url failed, try next one...
+        }
+        // If all urls failed we can leave it to the code below to
+        // fail if access is actually needed and still failing.
+        // (missing metadata, package download, ...)
       }
 
       // initial metadata download or cache refresh
-      if ( ! repoManager.isCached( nrepo ) || refreshNeeded )
+      if ( !repoManager.isCached( nrepo ) || refreshNeeded )
       {
-	cout << "Refreshing repo " << nrepo << endl;
-	if ( repoManager.isCached( nrepo ) )
-	{
-	  repoManager.cleanCache( nrepo );
-	}
-	repoManager.refreshMetadata( nrepo );
-	repoManager.buildCache( nrepo );
+        cout << "Refreshing repo " << nrepo << endl;
+        if ( repoManager.isCached( nrepo ) )
+        {
+          repoManager.cleanCache( nrepo );
+        }
+        repoManager.refreshMetadata( nrepo );
+        repoManager.buildCache( nrepo );
       }
 
       // load cache
       try
       {
-	cout << "Loading resolvables from " << nrepo.alias() << endl;
-	repoManager.loadFromCache( nrepo );// load available packages to pool
+        cout << "Loading resolvables from " << nrepo.alias() << endl;
+        repoManager.loadFromCache( nrepo ); // load available packages to pool
       }
-      catch ( const Exception & exp )
+      catch ( const Exception &exp )
       {
-	// cachefile has old fomat (or is corrupted): try yo rebuild it
-	repoManager.cleanCache( nrepo );
-	repoManager.buildCache( nrepo );
-	repoManager.loadFromCache( nrepo );
+        // cachefile has old fomat (or is corrupted): try yo rebuild it
+        repoManager.cleanCache( nrepo );
+        repoManager.buildCache( nrepo );
+        repoManager.loadFromCache( nrepo );
       }
     }
   }
@@ -129,18 +131,17 @@ try {
   // otherwise select manually whatever you need...
   zypp->resolver()->doUpgrade();
 
-
   ////////////////////////////////////////////////////////////////////////////////
   // solve selection...
   {
     cout << "Solving dependencies..." << endl;
 
     unsigned attempt = 0;
-    while ( ! zypp->resolver()->resolvePool() )
+    while ( !zypp->resolver()->resolvePool() )
     {
       ++attempt;
       cout << "Solving dependencies: " << attempt << ". attempt failed" << endl;
-      const ResolverProblemList & problems( zypp->resolver()->problems() );
+      const ResolverProblemList &problems( zypp->resolver()->problems() );
       cout << problems.size() << " problems found..." << endl;
       // Problem:
       // ==============================
@@ -156,38 +157,40 @@ try {
       // Solution:
       // break kdepim3-3.5.10-29.1.4.x86_64 by ignoring some of its dependencies
 
-      ProblemSolutionList totry;	// only needed if you (interactively) resolve problems...
+      ProblemSolutionList
+        totry; // only needed if you (interactively) resolve problems...
 
       unsigned probNo = 0;
-      for ( const auto & probPtr : problems )
+      for ( const auto &probPtr : problems )
       {
-	cout << "Problem " << ++probNo << ": " << probPtr->description() << endl;
+        cout << "Problem " << ++probNo << ": " << probPtr->description()
+             << endl;
 
-	const ProblemSolutionList & solutions = probPtr->solutions();
-	unsigned solNo = 0;
-	for ( const auto & solPtr : solutions )
-	{
-	  cout << "  Solution " << ++solNo << ": " << solPtr->description() << endl;
-	}
+        const ProblemSolutionList &solutions = probPtr->solutions();
+        unsigned solNo = 0;
+        for ( const auto &solPtr : solutions )
+        {
+          cout << "  Solution " << ++solNo << ": " << solPtr->description()
+               << endl;
+        }
 
-	// if you (interactively) resolve problems pick 1 solution per problem
-	// and store it int the totry list. After having applied the selected
-	// start a new attempt.
-	//
-	// It's not necessary to process all problems. You can pick a solution
-	// for the first problem and retry immediately. Often one solution actually
-	// resolves more than one reported problem.
-	//
-	// totry.push_back( solPtr );
+        // if you (interactively) resolve problems pick 1 solution per problem
+        // and store it int the totry list. After having applied the selected
+        // start a new attempt.
+        //
+        // It's not necessary to process all problems. You can pick a solution
+        // for the first problem and retry immediately. Often one solution actually
+        // resolves more than one reported problem.
+        //
+        // totry.push_back( solPtr );
       }
 
-
-      if ( ! totry.empty() )
+      if ( !totry.empty() )
       {
-	cout << "Apply selected solutions..." << endl;
-	zypp->resolver()->applySolutions( totry );
-	cout << "Solving dependencies..." << endl;
-	continue;
+        cout << "Apply selected solutions..." << endl;
+        zypp->resolver()->applySolutions( totry );
+        cout << "Solving dependencies..." << endl;
+        continue;
       }
       // otherwise give up
       throw "Solving dependencies failed: Giving up!";
@@ -200,19 +203,19 @@ try {
   if ( false )
   {
     cout << "PoolItem summary (individual packages):" << endl;
-    for ( const PoolItem & pi : zypp->pool() )
+    for ( const PoolItem &pi : zypp->pool() )
     {
       if ( pi.status().transacts() )
-	cout << "  " << pi << endl;
+        cout << "  " << pi << endl;
     }
   }
   else
   {
     cout << "Selectable summary (grouped by name):" << endl;
-    for ( const ui::Selectable_Ptr & sel : zypp->pool().proxy() )
+    for ( const ui::Selectable_Ptr &sel : zypp->pool().proxy() )
     {
       if ( sel->toModify() )
-	cout << "  " << sel << endl;
+        cout << "  " << sel << endl;
     }
   }
 
@@ -231,7 +234,7 @@ try {
       policy.dryRun( true );
       dryRunEtc = true;
     }
-    if ( true  )
+    if ( true )
     {
       policy.downloadMode( DownloadOnly );
       dryRunEtc = true;
@@ -239,17 +242,17 @@ try {
 
     try
     {
-      ZYppCommitResult result = zypp->commit( policy );	// go....
-      if ( ! ( result.allDone() || ( dryRunEtc && result.noError() ) ) )
+      ZYppCommitResult result = zypp->commit( policy ); // go....
+      if ( !( result.allDone() || ( dryRunEtc && result.noError() ) ) )
       {
-	throw "Incomplete commit!";
-	// ZYppCommitResult offers access to the TransactionStepList
-	// where you can see which packages have been processed and
-	// which not.
+        throw "Incomplete commit!";
+        // ZYppCommitResult offers access to the TransactionStepList
+        // where you can see which packages have been processed and
+        // which not.
       }
       cout << "Commit succeeded" << endl;
     }
-    catch ( const Exception & exp )
+    catch ( const Exception &exp )
     {
       cout << "Commit aborted with exception:" << endl;
       throw;
@@ -258,13 +261,23 @@ try {
   cout << "[bye]: " << endl;
   return 0;
 }
-catch ( const Exception & exp )
-{ cerr << exp << endl << exp.historyAsString();	exit( 91 ); }
-catch ( const std::exception & exp )
-{ cerr << exp.what() << endl;			exit( 92 ); }
-catch ( const char * exp )
-{ cerr << (exp?exp:"Oops!") << endl;		exit( 93 ); }
-catch (...)
-{ cerr << "Oops!" << endl;			exit( 94 ); }
-
-
+catch ( const Exception &exp )
+{
+  cerr << exp << endl << exp.historyAsString();
+  exit( 91 );
+}
+catch ( const std::exception &exp )
+{
+  cerr << exp.what() << endl;
+  exit( 92 );
+}
+catch ( const char *exp )
+{
+  cerr << ( exp ? exp : "Oops!" ) << endl;
+  exit( 93 );
+}
+catch ( ... )
+{
+  cerr << "Oops!" << endl;
+  exit( 94 );
+}

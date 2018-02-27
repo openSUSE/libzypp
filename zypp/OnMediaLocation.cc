@@ -19,17 +19,17 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-  /******************************************************************
+  ///////////////////////////////////////////////////////////////////
+/******************************************************************
   **
   **	FUNCTION NAME : operator<<
   **	FUNCTION TYPE : std::ostream &
   */
-  std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj )
-  {
-    return str << "[" << obj.medianr() << "]" << obj.filename()
-              << "{" << obj.downloadSize() << "|" << obj.checksum() << "}";
-  }
+std::ostream &operator<<( std::ostream &str, const OnMediaLocation &obj )
+{
+  return str << "[" << obj.medianr() << "]" << obj.filename() << "{"
+             << obj.downloadSize() << "|" << obj.checksum() << "}";
+}
 
 /////////////////////////////////////////////////////////////////
 } // namespace zypp

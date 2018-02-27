@@ -20,53 +20,53 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  Capabilities:: Capabilities( const sat::detail::IdType * base_r, sat::detail::IdType skip_r )
+Capabilities::Capabilities(
+  const sat::detail::IdType *base_r, sat::detail::IdType skip_r )
   : _begin( base_r )
-  {
-    if ( ! _begin )
-      return;
+{
+  if ( !_begin )
+    return;
 
-    if ( skip_r )
+  if ( skip_r )
+  {
+    for ( const sat::detail::IdType *end = _begin; *end; ++end )
     {
-      for ( const sat::detail::IdType * end = _begin; *end; ++end )
+      if ( *end == skip_r )
       {
-        if ( *end == skip_r )
-        {
-          _begin = end+1;
-          return;
-        }
+        _begin = end + 1;
+        return;
       }
     }
-    // skipp all ==> empty
-    _begin = 0;
   }
+  // skipp all ==> empty
+  _begin = 0;
+}
 
+Capabilities::size_type Capabilities::size() const
+{
+  if ( !_begin )
+    return 0;
 
-  Capabilities::size_type Capabilities::size() const
+  // jump over libsolvs internal ids.
+  Capabilities::size_type ret = 0;
+  for ( const sat::detail::IdType *end = _begin; *end; ++end )
   {
-    if ( ! _begin )
-      return 0;
-
-    // jump over libsolvs internal ids.
-    Capabilities::size_type ret = 0;
-    for ( const sat::detail::IdType * end = _begin; *end; ++end )
-    {
-      if ( ! sat::detail::isDepMarkerId( *end ) )
-        ++ret;
-    }
-    return ret;
+    if ( !sat::detail::isDepMarkerId( *end ) )
+      ++ret;
   }
+  return ret;
+}
 
-  /******************************************************************
+/******************************************************************
   **
   **	FUNCTION NAME : operator<<
   **	FUNCTION TYPE : std::ostream &
   */
-  std::ostream & operator<<( std::ostream & str, const Capabilities & obj )
-  {
-    return dumpRange( str << "(" << obj.size() << ")", obj.begin(), obj.end() );
-  }
+std::ostream &operator<<( std::ostream &str, const Capabilities &obj )
+{
+  return dumpRange( str << "(" << obj.size() << ")", obj.begin(), obj.end() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

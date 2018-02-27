@@ -25,32 +25,32 @@
 #include "zypp/base/PtrTypes.h"
 
 /////////////////////////////////////////////////////////////////////////
-namespace zypp 
+namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  {
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    {
-      // A few type names exposed in the public API
-      //
-      class Resolver;
-      typedef Resolver ResolverInternal;	///< Preferred name in API
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{
+// A few type names exposed in the public API
+//
+class Resolver;
+typedef Resolver ResolverInternal; ///< Preferred name in API
 
-      class ItemCapKind;
-      typedef std::list<ItemCapKind> ItemCapKindList;
+class ItemCapKind;
+typedef std::list<ItemCapKind> ItemCapKindList;
 
-      DEFINE_PTR_TYPE(SolverQueueItem);
-      typedef std::list<SolverQueueItem_Ptr> SolverQueueItemList;
+DEFINE_PTR_TYPE( SolverQueueItem );
+typedef std::list<SolverQueueItem_Ptr> SolverQueueItemList;
 
-      DEFINE_PTR_TYPE(SolutionAction);
-      typedef std::list<SolutionAction_Ptr> SolutionActionList;
+DEFINE_PTR_TYPE( SolutionAction );
+typedef std::list<SolutionAction_Ptr> SolutionActionList;
 
-    } // namespace detail
-    /////////////////////////////////////////////////////////////////////
-  } // namespace solver
-  ///////////////////////////////////////////////////////////////////////
+} // namespace detail
+/////////////////////////////////////////////////////////////////////
+} // namespace solver
+///////////////////////////////////////////////////////////////////////
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////
 #endif // ZYPP_SOLVER_DETAIL_TYPES_H

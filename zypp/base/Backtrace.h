@@ -18,7 +18,7 @@
 namespace zypp
 {
 
-  /** Dump current stack trace to a stream.
+/** Dump current stack trace to a stream.
    * Thanks to http://stackoverflow.com/questions/77005.
     * \code
    * #include <iostream>
@@ -29,7 +29,7 @@ namespace zypp
    * std::string trace( str::Str() << zypp::dumpBacktrace );
    * \endcode
    */
-  std::ostream & dumpBacktrace( std::ostream & stream_r );
+std::ostream &dumpBacktrace( std::ostream &stream_r );
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

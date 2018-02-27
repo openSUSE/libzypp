@@ -24,60 +24,66 @@
 
 namespace zypp
 {
-  /**
+/**
    * \short Represents an available product in media
    */
-  struct MediaProductEntry
-  {
-    Pathname    _dir;
-    std::string _name;
+struct MediaProductEntry
+{
+  Pathname _dir;
+  std::string _name;
 
-    /**
+  /**
      * \short Ctor
      */
-    MediaProductEntry( const Pathname & dir_r = "/", const std::string & name_r = std::string() )
-      : _dir(dir_r), _name(name_r)
-    {
-    }
-
-    bool operator<( const MediaProductEntry &rhs ) const
-    {
-      int res = _name.compare( rhs._name );
-      return ( res < 0 || ( res == 0 && _dir < rhs._dir ) );
-    }
-  };
-
-  /**
-   * A set of available products in media
-   */
-  typedef std::set<MediaProductEntry> MediaProductSet;
-
-  /**
-   * FIXME: add a comment here...
-   */
-  template <class TOutputIterator>
-  static void scanProductsFile( const Pathname & file_r, TOutputIterator result )
+  MediaProductEntry(
+    const Pathname &dir_r = "/", const std::string &name_r = std::string() )
+    : _dir( dir_r )
+    , _name( name_r )
   {
-    std::ifstream pfile( file_r.asString().c_str() );
-    while ( pfile.good() ) {
-
-      std::string value = str::getline( pfile, str::TRIM );
-      if ( pfile.bad() ) {
-        ERR << "Error parsing " << file_r << std::endl;
-        ZYPP_THROW(Exception("Error parsing " + file_r.asString()));
-      }
-      if ( pfile.fail() ) {
-        break; // no data on last line
-      }
-      std::string tag = str::stripFirstWord( value, true );
-
-      if ( tag.size() ) {
-        *result = MediaProductEntry( tag, value );
-      }
-    }
   }
 
-  /**
+  bool operator<( const MediaProductEntry &rhs ) const
+  {
+    int res = _name.compare( rhs._name );
+    return ( res < 0 || ( res == 0 && _dir < rhs._dir ) );
+  }
+};
+
+/**
+   * A set of available products in media
+   */
+typedef std::set<MediaProductEntry> MediaProductSet;
+
+/**
+   * FIXME: add a comment here...
+   */
+template <class TOutputIterator>
+static void scanProductsFile( const Pathname &file_r, TOutputIterator result )
+{
+  std::ifstream pfile( file_r.asString().c_str() );
+  while ( pfile.good() )
+  {
+
+    std::string value = str::getline( pfile, str::TRIM );
+    if ( pfile.bad() )
+    {
+      ERR << "Error parsing " << file_r << std::endl;
+      ZYPP_THROW( Exception( "Error parsing " + file_r.asString() ) );
+    }
+    if ( pfile.fail() )
+    {
+      break; // no data on last line
+    }
+    std::string tag = str::stripFirstWord( value, true );
+
+    if ( tag.size() )
+    {
+      *result = MediaProductEntry( tag, value );
+    }
+  }
+}
+
+/**
    * \short Available products in a url location
    *
    * \param url_r url to inspect
@@ -85,28 +91,30 @@ namespace zypp
    * items will be inserted.
    * \throws MediaException If accessng the media fails
    */
-  template <class TOutputIterator>
-  void productsInMedia( const Url & url_r, TOutputIterator result )
+template <class TOutputIterator>
+void productsInMedia( const Url &url_r, TOutputIterator result )
+{
+  media::MediaManager media_mgr;
+  // open the media
+  media::MediaId id = media_mgr.open( url_r );
+  media_mgr.attach( id );
+  Pathname products_file = Pathname( "media.1/products" );
+
+  try
   {
-    media::MediaManager media_mgr;
-    // open the media
-    media::MediaId id = media_mgr.open(url_r);
-    media_mgr.attach(id);
-    Pathname products_file = Pathname("media.1/products");
+    media_mgr.provideFile( id, products_file );
+    products_file = media_mgr.localPath( id, products_file );
+    scanProductsFile( products_file, result );
+  }
+  catch ( const Exception &excpt )
+  {
+    ZYPP_CAUGHT( excpt );
+    MIL << "No products description found on the Url" << std::endl;
+  }
+  media_mgr.release( id, "" );
+}
 
-    try  {
-      media_mgr.provideFile (id, products_file);
-      products_file = media_mgr.localPath (id, products_file);
-      scanProductsFile (products_file, result);
-    }
-    catch ( const Exception & excpt ) {
-      ZYPP_CAUGHT(excpt);
-      MIL << "No products description found on the Url" << std::endl;
-    }
-    media_mgr.release(id, "");
- }
-
- /**
+/**
    * \short Available products in a url location
    *
    * \param url_r url to inspect
@@ -114,10 +122,10 @@ namespace zypp
    * items will be inserted.
    * \throws MediaException If accessng the media fails
    */
-  void productsInMedia( const Url & url_r, MediaProductSet &set )
-  {
-    productsInMedia(url_r, std::inserter(set, set.end()));
-  }
+void productsInMedia( const Url &url_r, MediaProductSet &set )
+{
+  productsInMedia( url_r, std::inserter( set, set.end() ) );
+}
 
 } // ns zypp
 

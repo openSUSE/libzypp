@@ -23,53 +23,52 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace media
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace media
+{ /////////////////////////////////////////////////////////////////
 
-    /** 
+/** 
      *
      */
-    class UrlResolverPlugin
-    {
-      friend std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
+class UrlResolverPlugin
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const UrlResolverPlugin &obj );
 
-    public:
+public:
+  class Impl;
 
-      class Impl;
+  typedef std::multimap<std::string, std::string> HeaderList;
 
-      typedef std::multimap<std::string, std::string> HeaderList;
-
-      /**
+  /**
        * Resolves an url using the installed plugins
        * If no plugin is found the url is resolved as
        * its current value.
        *
        * Custom headers are inserted in the provided header list
        */
-      static Url resolveUrl(const Url &url, HeaderList &headers);
+  static Url resolveUrl( const Url &url, HeaderList &headers );
 
-    public:
-      /** Dtor */
-      ~UrlResolverPlugin();
+public:
+  /** Dtor */
+  ~UrlResolverPlugin();
 
-    private:
+private:
+  /** Default ctor */
+  UrlResolverPlugin();
 
-      /** Default ctor */
-      UrlResolverPlugin();
+  /** Pointer to implementation */
+  RW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-      /** Pointer to implementation */
-      RW_pointer<Impl> _pimpl;
-    };
-    ///////////////////////////////////////////////////////////////////
+/** \relates UrlResolverPlugin Stream output */
+std::ostream &operator<<( std::ostream &str, const UrlResolverPlugin &obj );
 
-    /** \relates UrlResolverPlugin Stream output */
-    std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
-
-    /////////////////////////////////////////////////////////////////
-  } // namespace media
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace media
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_MEDIA_URLRESOLVERPLUGIN_H

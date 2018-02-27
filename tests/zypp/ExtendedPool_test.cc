@@ -19,44 +19,50 @@ static TestSetup test;
 
 void testcase_init()
 {
-//   cout << "+++[repoinit]=======================" << endl;
-  test.loadTestcaseRepos( TESTS_SRC_DIR"/data/PoolReuseIds/SeqA" );
-//   for ( auto && pi : ResPool::instance() )
-//     cout << pi << " " << pi.resolvable() << endl;
-//   cout << "---[repoinit]=======================" << endl;
+  //   cout << "+++[repoinit]=======================" << endl;
+  test.loadTestcaseRepos( TESTS_SRC_DIR "/data/PoolReuseIds/SeqA" );
+  //   for ( auto && pi : ResPool::instance() )
+  //     cout << pi << " " << pi.resolvable() << endl;
+  //   cout << "---[repoinit]=======================" << endl;
 }
 
 void testcase_init2()
 {
-//   cout << "+++[repoinit2]=======================" << endl;
+  //   cout << "+++[repoinit2]=======================" << endl;
   sat::Pool::instance().reposEraseAll();
-  test.loadTestcaseRepos( TESTS_SRC_DIR"/data/PoolReuseIds/SeqB" );
-//   for ( auto && pi : ResPool::instance() )
-//     cout << pi << " " << pi.resolvable() << endl;
-//   cout << "---[repoinit2]=======================" << endl;
+  test.loadTestcaseRepos( TESTS_SRC_DIR "/data/PoolReuseIds/SeqB" );
+  //   for ( auto && pi : ResPool::instance() )
+  //     cout << pi << " " << pi.resolvable() << endl;
+  //   cout << "---[repoinit2]=======================" << endl;
 }
 
-void checkpi( const PoolItem & pi )
+void checkpi( const PoolItem &pi )
 {
   BOOST_CHECK( pi.resolvable() );
-  BOOST_CHECK_EQUAL( pi.id(),	pi.resolvable()->id() );
-  BOOST_CHECK_EQUAL( bool(asKind<Package>( pi.resolvable() )),	    isKind<Package>(pi) );
-  BOOST_CHECK_EQUAL( bool(asKind<Patch>( pi.resolvable() )),	    isKind<Patch>(pi) );
-  BOOST_CHECK_EQUAL( bool(asKind<Pattern>( pi.resolvable() )),	    isKind<Pattern>(pi) );
-  BOOST_CHECK_EQUAL( bool(asKind<Product>( pi.resolvable() )),	    isKind<Product>(pi) );
-  BOOST_CHECK_EQUAL( bool(asKind<SrcPackage>( pi.resolvable() )),   isKind<SrcPackage>(pi) );
-  BOOST_CHECK_EQUAL( bool(asKind<Application>( pi.resolvable() )),  isKind<Application>(pi) );
+  BOOST_CHECK_EQUAL( pi.id(), pi.resolvable()->id() );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<Package>( pi.resolvable() ) ), isKind<Package>( pi ) );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<Patch>( pi.resolvable() ) ), isKind<Patch>( pi ) );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<Pattern>( pi.resolvable() ) ), isKind<Pattern>( pi ) );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<Product>( pi.resolvable() ) ), isKind<Product>( pi ) );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<SrcPackage>( pi.resolvable() ) ), isKind<SrcPackage>( pi ) );
+  BOOST_CHECK_EQUAL(
+    bool( asKind<Application>( pi.resolvable() ) ), isKind<Application>( pi ) );
 }
 
 void repocheck()
 {
-//   cout << "+++[repocheck]======================" << endl;
-  for ( auto && pi : ResPool::instance() )
+  //   cout << "+++[repocheck]======================" << endl;
+  for ( auto &&pi : ResPool::instance() )
   {
-//     cout << "??? " << pi << endl;
+    //     cout << "??? " << pi << endl;
     checkpi( pi );
   }
-//   cout << "---[repocheck]======================" << endl;
+  //   cout << "---[repocheck]======================" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -79,7 +85,7 @@ void repocheck()
 // Resolvable is still the original one created for a package...
 ///////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(t_1)	{ testcase_init(); }
-BOOST_AUTO_TEST_CASE(t_2)	{ repocheck(); }
-BOOST_AUTO_TEST_CASE(t_4)	{ testcase_init2(); }
-BOOST_AUTO_TEST_CASE(t_5)	{ repocheck(); }
+BOOST_AUTO_TEST_CASE( t_1 ) { testcase_init(); }
+BOOST_AUTO_TEST_CASE( t_2 ) { repocheck(); }
+BOOST_AUTO_TEST_CASE( t_4 ) { testcase_init2(); }
+BOOST_AUTO_TEST_CASE( t_5 ) { repocheck(); }

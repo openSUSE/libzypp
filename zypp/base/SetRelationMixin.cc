@@ -15,30 +15,23 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  const std::string & ESetCompareDef::asString( Enum val_r )
-  {
-    static std::map<Enum,std::string> _table = {
-      { uncomparable,		"{?}" },
-      { equal,		"{=}" },
-      { properSubset,		"{<}" },
-      { properSuperset,	"{>}" },
-      { disjoint,		"{ }" },
-    };
-    return _table[val_r];
-  }
+const std::string &ESetCompareDef::asString( Enum val_r )
+{
+  static std::map<Enum, std::string> _table = {
+    {uncomparable, "{?}"}, {equal, "{=}"}, {properSubset, "{<}"},
+    {properSuperset, "{>}"}, {disjoint, "{ }"},
+  };
+  return _table[ val_r ];
+}
 
-  const std::string & ESetRelationDef::asString( Enum val_r )
-  {
-    static std::map<Enum,std::string> _table = {
-      { uncomparable,		"{??}" },
-      { equal,		"{==}" },
-      { properSubset,		"{<<}" },
-      { properSuperset,	"{>>}" },
-      { disjoint,		"{  }" },
-      { subset,		"{<=}" },
-      { superset,		"{>=}" },
-    };
-    return _table[val_r];
-  }
+const std::string &ESetRelationDef::asString( Enum val_r )
+{
+  static std::map<Enum, std::string> _table = {
+    {uncomparable, "{??}"}, {equal, "{==}"}, {properSubset, "{<<}"},
+    {properSuperset, "{>>}"}, {disjoint, "{  }"}, {subset, "{<=}"},
+    {superset, "{>=}"},
+  };
+  return _table[ val_r ];
+}
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -32,88 +32,100 @@ Permission is granted to anyone to use this software for any purpose, including 
 ///////////////////////////////////////////////////////////////////
 namespace iobind
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace parser
+///////////////////////////////////////////////////////////////////
+namespace parser
+{
+struct ZYPP_LOCAL xml_escape_parser
+{
+  std::string unescape( const std::string &istr ) const
   {
-    struct ZYPP_LOCAL xml_escape_parser
+    size_t i;
+    std::string str = istr;
+    i = str.find_first_of( "&" );
+    while ( i != std::string::npos )
     {
-      std::string unescape(const std::string &istr) const
+      if ( str[ i ] == '&' )
       {
-	size_t i;
-	std::string str = istr;
-	i = str.find_first_of("&");
-	while (i != std::string::npos)
-	{
-	  if (str[i] == '&')
-	  {
-	    if (!str.compare(i + 1, 3, "lt;"))
-	      str.replace(i, 4, 1, '<');
-	    else if (!str.compare(i + 1, 3, "gt;"))
-	      str.replace(i, 4, 1, '>');
-	    else if (!str.compare(i + 1, 4, "amp;"))
-	      str.replace(i, 5, 1, '&');
-	    else if (!str.compare(i + 1, 5, "apos;"))
-	      str.replace(i, 6, 1, '\'');
-	    else if (!str.compare(i + 1, 5, "quot;"))
-	      str.replace(i, 6, 1, '"');
-	  }
-	  i = str.find_first_of("&", i + 1);
-	}
-	return str;
+        if ( !str.compare( i + 1, 3, "lt;" ) )
+          str.replace( i, 4, 1, '<' );
+        else if ( !str.compare( i + 1, 3, "gt;" ) )
+          str.replace( i, 4, 1, '>' );
+        else if ( !str.compare( i + 1, 4, "amp;" ) )
+          str.replace( i, 5, 1, '&' );
+        else if ( !str.compare( i + 1, 5, "apos;" ) )
+          str.replace( i, 6, 1, '\'' );
+        else if ( !str.compare( i + 1, 5, "quot;" ) )
+          str.replace( i, 6, 1, '"' );
       }
-    };
-  } // namespace parser
-  ///////////////////////////////////////////////////////////////////
+      i = str.find_first_of( "&", i + 1 );
+    }
+    return str;
+  }
+};
+} // namespace parser
+///////////////////////////////////////////////////////////////////
 } // namespace iobind
 ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////
-  namespace xml
+///////////////////////////////////////////////////////////////////
+namespace xml
+{
+///////////////////////////////////////////////////////////////////
+namespace detail
+{
+std::ostream &EscapedString::dumpOn( std::ostream &str ) const
+{
+  typedef unsigned char uchar;
+  for ( char ch : _in )
   {
-    ///////////////////////////////////////////////////////////////////
-    namespace detail
+    switch ( ch )
     {
-      std::ostream & EscapedString::dumpOn( std::ostream & str ) const
-      {
-	typedef unsigned char uchar;
-	for ( char ch : _in )
-	{
-	  switch ( ch )
-	  {
-	    case '<':	str << "&lt;";		break;
-	    case '>':	str << "&gt;";		break;
-	    case '&':	str << "&amp;";		break;
-	    case '"':	str << "&quot;";	break;
-	    case '\'':	str << "&apos;";	break;
+      case '<':
+        str << "&lt;";
+        break;
+      case '>':
+        str << "&gt;";
+        break;
+      case '&':
+        str << "&amp;";
+        break;
+      case '"':
+        str << "&quot;";
+        break;
+      case '\'':
+        str << "&apos;";
+        break;
 
-	    // control chars we allow:
-	    case '\n':
-	    case '\r':
-	    case '\t':
-	      str << ch;
-	      break;
+      // control chars we allow:
+      case '\n':
+      case '\r':
+      case '\t':
+        str << ch;
+        break;
 
-	    default:
-	      if ( uchar(ch) < 32u )
-		str << '?'; // filter problematic control chars (XML1.0)
-	      else
-		str << ch;
-	      break;
-	  }
-	}
-	return str;
-      }
+      default:
+        if ( uchar( ch ) < 32u )
+          str << '?'; // filter problematic control chars (XML1.0)
+        else
+          str << ch;
+        break;
+    }
+  }
+  return str;
+}
 
-    } // detail
-    ///////////////////////////////////////////////////////////////////
+} // detail
+///////////////////////////////////////////////////////////////////
 
-    std::string unescape( const std::string & in_r )
-    { return iobind::parser::xml_escape_parser().unescape( in_r ); }
+std::string unescape( const std::string &in_r )
+{
+  return iobind::parser::xml_escape_parser().unescape( in_r );
+}
 
-  } // namespace xml
-  /////////////////////////////////////////////////////////////////
+} // namespace xml
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -17,8 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-extern "C"
-{
+extern "C" {
 #include <solv/solver.h>
 }
 
@@ -32,93 +31,90 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SolverQueueItemInstall);
+IMPL_PTR_TYPE( SolverQueueItemInstall );
 
 //---------------------------------------------------------------------------
 
-std::ostream &
-SolverQueueItemInstall::dumpOn( std::ostream & os ) const
+std::ostream &SolverQueueItemInstall::dumpOn( std::ostream &os ) const
 {
-    os << "[" << (_soft?"Soft":"") << "Install: "
-    << _name
-    << "]";
+  os << "[" << ( _soft ? "Soft" : "" ) << "Install: " << _name << "]";
 
-    return os;
+  return os;
 }
 
 //---------------------------------------------------------------------------
 
-SolverQueueItemInstall::SolverQueueItemInstall (const ResPool & pool, std::string name, bool soft)
-    : SolverQueueItem (QUEUE_ITEM_TYPE_INSTALL, pool)
-    , _name (name)
-    , _soft (soft)
+SolverQueueItemInstall::SolverQueueItemInstall(
+  const ResPool &pool, std::string name, bool soft )
+  : SolverQueueItem( QUEUE_ITEM_TYPE_INSTALL, pool )
+  , _name( name )
+  , _soft( soft )
 {
 }
 
-
-SolverQueueItemInstall::~SolverQueueItemInstall()
-{
-}
+SolverQueueItemInstall::~SolverQueueItemInstall() {}
 
 //---------------------------------------------------------------------------
 
-bool SolverQueueItemInstall::addRule (sat::detail::CQueue & q)
+bool SolverQueueItemInstall::addRule( sat::detail::CQueue &q )
 {
-    ::Id id = IdString(_name).id();
-    if (_soft) {
-	queue_push( &(q), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_WEAK  );
-    } else {
-	queue_push( &(q), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME );
-    }
-    queue_push( &(q), id);
+  ::Id id = IdString( _name ).id();
+  if ( _soft )
+  {
+    queue_push( &( q ), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME | SOLVER_WEAK );
+  }
+  else
+  {
+    queue_push( &( q ), SOLVER_INSTALL | SOLVER_SOLVABLE_NAME );
+  }
+  queue_push( &( q ), id );
 
-    MIL << "Install " << _name << (_soft ? "(soft)" : "")
-	<< " with SAT-PoolID: " << id << endl;
-    return true;
+  MIL << "Install " << _name << ( _soft ? "(soft)" : "" )
+      << " with SAT-PoolID: " << id << endl;
+  return true;
 }
 
-SolverQueueItem_Ptr
-SolverQueueItemInstall::copy (void) const
+SolverQueueItem_Ptr SolverQueueItemInstall::copy( void ) const
 {
-    SolverQueueItemInstall_Ptr new_install = new SolverQueueItemInstall (pool(), _name);
-    new_install->SolverQueueItem::copy(this);
+  SolverQueueItemInstall_Ptr new_install =
+    new SolverQueueItemInstall( pool(), _name );
+  new_install->SolverQueueItem::copy( this );
 
-    new_install->_soft = _soft;
-    return new_install;
+  new_install->_soft = _soft;
+  return new_install;
 }
 
-int
-SolverQueueItemInstall::cmp (SolverQueueItem_constPtr item) const
+int SolverQueueItemInstall::cmp( SolverQueueItem_constPtr item ) const
 {
-    int cmp = this->compare (item);
-    if (cmp != 0)
-        return cmp;
-    SolverQueueItemInstall_constPtr ins = dynamic_pointer_cast<const SolverQueueItemInstall>(item);
-    if (_name != ins->_name) {
-	return _name.compare(ins->_name);
-    }
-    return 0;
+  int cmp = this->compare( item );
+  if ( cmp != 0 )
+    return cmp;
+  SolverQueueItemInstall_constPtr ins =
+    dynamic_pointer_cast<const SolverQueueItemInstall>( item );
+  if ( _name != ins->_name )
+  {
+    return _name.compare( ins->_name );
+  }
+  return 0;
 }
-
 
 //---------------------------------------------------------------------------
-
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////

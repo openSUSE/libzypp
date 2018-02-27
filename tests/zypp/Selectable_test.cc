@@ -8,18 +8,18 @@
 
 static TestSetup test;
 
-BOOST_AUTO_TEST_CASE(testcase_init)
+BOOST_AUTO_TEST_CASE( testcase_init )
 {
-//   zypp::base::LogControl::instance().logToStdErr();
-  test.loadTestcaseRepos( TESTS_SRC_DIR"/data/TCSelectable" );
+  //   zypp::base::LogControl::instance().logToStdErr();
+  test.loadTestcaseRepos( TESTS_SRC_DIR "/data/TCSelectable" );
 
-//   dumpRange( USR, test.pool().knownRepositoriesBegin(),
-//                   test.pool().knownRepositoriesEnd() ) << endl;
-//   USR << "pool: " << test.pool() << endl;
+  //   dumpRange( USR, test.pool().knownRepositoriesBegin(),
+  //                   test.pool().knownRepositoriesEnd() ) << endl;
+  //   USR << "pool: " << test.pool() << endl;
 }
 /////////////////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(candiadate)
+BOOST_AUTO_TEST_CASE( candiadate )
 {
   ResPoolProxy poolProxy( test.poolProxy() );
   ui::Selectable::Ptr s( poolProxy.lookup( ResKind::package, "candidate" ) );
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(candiadate)
   if ( ZConfig::instance().solver_allowVendorChange() )
   {
     BOOST_CHECK_EQUAL( s->candidateObj()->repoInfo().alias(), "RepoHIGH" );
-    BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition("4-1") );
+    BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition( "4-1" ) );
     BOOST_CHECK_EQUAL( s->candidateObj()->arch(), Arch_i586 );
     // updateCandidate:
     BOOST_CHECK_EQUAL( s->updateCandidateObj(), s->candidateObj() );
@@ -44,18 +44,19 @@ BOOST_AUTO_TEST_CASE(candiadate)
   else
   {
     BOOST_CHECK_EQUAL( s->candidateObj()->repoInfo().alias(), "RepoMID" );
-    BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition("0-1") );
+    BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition( "0-1" ) );
     BOOST_CHECK_EQUAL( s->candidateObj()->arch(), Arch_i586 );
     // no updateCandidate due to low version
     BOOST_CHECK_EQUAL( s->updateCandidateObj(), PoolItem() );
   }
 }
 
-BOOST_AUTO_TEST_CASE(candiadatenoarch)
+BOOST_AUTO_TEST_CASE( candiadatenoarch )
 {
   ResPoolProxy poolProxy( test.poolProxy() );
-  ui::Selectable::Ptr s( poolProxy.lookup( ResKind::package, "candidatenoarch" ) );
-/*[package]candidatenoarch: S_KeepInstalled
+  ui::Selectable::Ptr s(
+    poolProxy.lookup( ResKind::package, "candidatenoarch" ) );
+  /*[package]candidatenoarch: S_KeepInstalled
    (I 1) {
    I__s_(17)candidatenoarch-1-1.i586(@System)
 }  (A 8) {
@@ -69,12 +70,11 @@ BOOST_AUTO_TEST_CASE(candiadatenoarch)
    U__s_(15)candidatenoarch-0-1.noarch(RepoMID)
 }  */
   BOOST_CHECK_EQUAL( s->candidateObj()->repoInfo().alias(), "RepoHIGH" );
-  BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition("5-1") );
+  BOOST_CHECK_EQUAL( s->candidateObj()->edition(), Edition( "5-1" ) );
   BOOST_CHECK_EQUAL( s->candidateObj()->arch(), Arch_noarch );
   // no updateCandidate due to low version
   BOOST_CHECK_EQUAL( s->updateCandidateObj(), s->candidateObj() );
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -83,7 +83,8 @@ BOOST_AUTO_TEST_CASE(candiadatenoarch)
 /////////////////////////////////////////////////////////////////////////////
 
 // build ResStatus and return whether the comination is supported. (e.g currently no LOCKED state below APPL_HIGH)
-inline bool initStatus( ResStatus::TransactValue fromState, ResStatus::TransactByValue fromBy, ResStatus & from )
+inline bool initStatus( ResStatus::TransactValue fromState,
+  ResStatus::TransactByValue fromBy, ResStatus &from )
 {
   from = ResStatus();
   if ( fromState == ResStatus::KEEP_STATE )
@@ -93,7 +94,7 @@ inline bool initStatus( ResStatus::TransactValue fromState, ResStatus::TransactB
   else
   {
     from.setTransactValue( fromState, fromBy );
-    if ( fromState == ResStatus::LOCKED && ! from.isLocked() )
+    if ( fromState == ResStatus::LOCKED && !from.isLocked() )
       return false; // no lock at this level (by now just USER APPL_HIGH)
   }
   return true;
@@ -132,52 +133,91 @@ inline bool _none( TIter begin_r, TIter end_r, ResStatus::TransactValue val_r )
 }
 
 template <class TIter>
-inline bool _atLeastOne( TIter begin_r, TIter end_r, ResStatus::TransactValue val_r )
-{ return ! _none( begin_r, end_r, val_r ); }
+inline bool _atLeastOne(
+  TIter begin_r, TIter end_r, ResStatus::TransactValue val_r )
+{
+  return !_none( begin_r, end_r, val_r );
+}
 
 inline bool _allBySolver( ui::Selectable::Ptr sel )
 {
   for_( it, sel->installedBegin(), sel->installedEnd() )
   {
-    if ( it->status().transacts() && ! it->status().isBySolver() )
+    if ( it->status().transacts() && !it->status().isBySolver() )
       return false;
   }
   for_( it, sel->availableBegin(), sel->availableEnd() )
   {
-    if ( it->status().transacts() && ! it->status().isBySolver() )
+    if ( it->status().transacts() && !it->status().isBySolver() )
       return false;
   }
   return true;
 }
 
-inline bool _allInstalled( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )		{ return _all( sel->installedBegin(), sel->installedEnd(), val_r ); }
-inline bool _noneInstalled( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )		{ return _none( sel->installedBegin(), sel->installedEnd(), val_r ); }
-inline bool _atLeastOneInstalled( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )	{ return _atLeastOne( sel->installedBegin(), sel->installedEnd(), val_r ); }
+inline bool _allInstalled(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _all( sel->installedBegin(), sel->installedEnd(), val_r );
+}
+inline bool _noneInstalled(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _none( sel->installedBegin(), sel->installedEnd(), val_r );
+}
+inline bool _atLeastOneInstalled(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _atLeastOne( sel->installedBegin(), sel->installedEnd(), val_r );
+}
 
-inline bool _allAvailable( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )		{ return _all( sel->availableBegin(), sel->availableEnd(), val_r ); }
-inline bool _noneAvailable( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )		{ return _none( sel->availableBegin(), sel->availableEnd(), val_r ); }
-inline bool _atLeastOneAvailable( ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )	{ return _atLeastOne( sel->availableBegin(), sel->availableEnd(), val_r ); }
+inline bool _allAvailable(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _all( sel->availableBegin(), sel->availableEnd(), val_r );
+}
+inline bool _noneAvailable(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _none( sel->availableBegin(), sel->availableEnd(), val_r );
+}
+inline bool _atLeastOneAvailable(
+  ui::Selectable::Ptr sel, ResStatus::TransactValue val_r )
+{
+  return _atLeastOne( sel->availableBegin(), sel->availableEnd(), val_r );
+}
 
-inline bool _haveInstalled( ui::Selectable::Ptr sel )						{ return ! sel->installedEmpty(); }
-inline bool _haveAvailable( ui::Selectable::Ptr sel )						{ return ! sel->availableEmpty(); }
+inline bool _haveInstalled( ui::Selectable::Ptr sel )
+{
+  return !sel->installedEmpty();
+}
+inline bool _haveAvailable( ui::Selectable::Ptr sel )
+{
+  return !sel->availableEmpty();
+}
 
-inline bool _noInstalled( ui::Selectable::Ptr sel )						{ return sel->installedEmpty(); }
-inline bool _noAvailable( ui::Selectable::Ptr sel )						{ return sel->availableEmpty(); }
+inline bool _noInstalled( ui::Selectable::Ptr sel )
+{
+  return sel->installedEmpty();
+}
+inline bool _noAvailable( ui::Selectable::Ptr sel )
+{
+  return sel->availableEmpty();
+}
 
-#define allInstalled(V)			_allInstalled(sel,ResStatus::V)
-#define noneInstalled(V)		_noneInstalled(sel,ResStatus::V)
-#define atLeastOneInstalled(V)		_atLeastOneInstalled(sel,ResStatus::V)
+#define allInstalled( V ) _allInstalled( sel, ResStatus::V )
+#define noneInstalled( V ) _noneInstalled( sel, ResStatus::V )
+#define atLeastOneInstalled( V ) _atLeastOneInstalled( sel, ResStatus::V )
 
-#define allAvailable(V)			_allAvailable(sel,ResStatus::V)
-#define noneAvailable(V)		_noneAvailable(sel,ResStatus::V)
-#define atLeastOneAvailable(V)		_atLeastOneAvailable(sel,ResStatus::V)
+#define allAvailable( V ) _allAvailable( sel, ResStatus::V )
+#define noneAvailable( V ) _noneAvailable( sel, ResStatus::V )
+#define atLeastOneAvailable( V ) _atLeastOneAvailable( sel, ResStatus::V )
 
-#define haveInstalled			_haveInstalled(sel)
-#define haveAvailable			_haveAvailable(sel)
-#define noInstalled			_noInstalled(sel)
-#define noAvailable			_noAvailable(sel)
+#define haveInstalled _haveInstalled( sel )
+#define haveAvailable _haveAvailable( sel )
+#define noInstalled _noInstalled( sel )
+#define noAvailable _noAvailable( sel )
 
-#define allBySolver			_allBySolver(sel)
+#define allBySolver _allBySolver( sel )
 
 // Verify Selectable::status computes the right value.
 //
@@ -197,57 +237,55 @@ inline bool _noAvailable( ui::Selectable::Ptr sel )						{ return sel->available
 void verifyState( ui::Selectable::Ptr sel )
 {
   ui::Status status( sel->status() );
-  SEC << dump(sel) << endl;
+  SEC << dump( sel ) << endl;
   switch ( status )
   {
     case ui::S_Update:
     case ui::S_AutoUpdate:
       BOOST_CHECK( haveInstalled );
-      BOOST_CHECK( atLeastOneAvailable(TRANSACT) );
-      BOOST_CHECK_EQUAL( allBySolver, status==ui::S_AutoUpdate );
+      BOOST_CHECK( atLeastOneAvailable( TRANSACT ) );
+      BOOST_CHECK_EQUAL( allBySolver, status == ui::S_AutoUpdate );
       break;
 
     case ui::S_Del:
     case ui::S_AutoDel:
       BOOST_CHECK( haveInstalled );
-      BOOST_CHECK( noneAvailable(TRANSACT) );	// else would be UPDATE
-      BOOST_CHECK( atLeastOneInstalled(TRANSACT) );
-      BOOST_CHECK_EQUAL( allBySolver, status==ui::S_AutoDel );
+      BOOST_CHECK( noneAvailable( TRANSACT ) ); // else would be UPDATE
+      BOOST_CHECK( atLeastOneInstalled( TRANSACT ) );
+      BOOST_CHECK_EQUAL( allBySolver, status == ui::S_AutoDel );
       break;
 
     case ui::S_Protected:
       BOOST_CHECK( haveInstalled );
-      BOOST_CHECK( noneAvailable(TRANSACT) );	// else would be UPDATE
-      BOOST_CHECK( noneInstalled(TRANSACT) );	// else would be DEL
-      BOOST_CHECK( allInstalled(LOCKED) );	// implies noneInstalled(TRANSACT)
+      BOOST_CHECK( noneAvailable( TRANSACT ) ); // else would be UPDATE
+      BOOST_CHECK( noneInstalled( TRANSACT ) ); // else would be DEL
+      BOOST_CHECK( allInstalled( LOCKED ) ); // implies noneInstalled(TRANSACT)
       break;
 
     case ui::S_KeepInstalled:
       BOOST_CHECK( haveInstalled );
-      BOOST_CHECK( noneAvailable(TRANSACT) );	// else would be UPDATE
-      BOOST_CHECK( noneInstalled(TRANSACT) );	// else would be DEL
-      BOOST_CHECK( ! allInstalled(LOCKED) );	// else would be PROTECTED
+      BOOST_CHECK( noneAvailable( TRANSACT ) ); // else would be UPDATE
+      BOOST_CHECK( noneInstalled( TRANSACT ) ); // else would be DEL
+      BOOST_CHECK( !allInstalled( LOCKED ) );   // else would be PROTECTED
       break;
-
 
     case ui::S_Install:
     case ui::S_AutoInstall:
       BOOST_CHECK( noInstalled );
-      BOOST_CHECK( atLeastOneAvailable(TRANSACT) );
-      BOOST_CHECK_EQUAL( allBySolver, status==ui::S_AutoInstall );
+      BOOST_CHECK( atLeastOneAvailable( TRANSACT ) );
+      BOOST_CHECK_EQUAL( allBySolver, status == ui::S_AutoInstall );
       break;
 
     case ui::S_Taboo:
       BOOST_CHECK( noInstalled );
-      BOOST_CHECK( noneAvailable(TRANSACT) );	// else would be INSTALL
-      BOOST_CHECK( allAvailable(LOCKED) );	// implies noneAvailable(TRANSACT)
+      BOOST_CHECK( noneAvailable( TRANSACT ) ); // else would be INSTALL
+      BOOST_CHECK( allAvailable( LOCKED ) ); // implies noneAvailable(TRANSACT)
       break;
-
 
     case ui::S_NoInst:
       BOOST_CHECK( noInstalled );
-      BOOST_CHECK( noneAvailable(TRANSACT) );	// else would be INSTALL
-      BOOST_CHECK( ! allAvailable(LOCKED) );	// else would be TABOO
+      BOOST_CHECK( noneAvailable( TRANSACT ) ); // else would be INSTALL
+      BOOST_CHECK( !allAvailable( LOCKED ) );   // else would be TABOO
       break;
   }
 }
@@ -255,16 +293,17 @@ void verifyState( ui::Selectable::Ptr sel )
 // Create all ResStatus combinations over a Selectables PoolItems
 struct StatusCombination
 {
-  StatusCombination()
-  {}
+  StatusCombination() {}
   StatusCombination( ui::Selectable::Ptr sel_r )
   {
-   _items.insert( _items.end(), sel_r->installedBegin(), sel_r->installedEnd() );
-   _items.insert( _items.end(), sel_r->availableBegin(), sel_r->availableEnd() );
+    _items.insert(
+      _items.end(), sel_r->installedBegin(), sel_r->installedEnd() );
+    _items.insert(
+      _items.end(), sel_r->availableBegin(), sel_r->availableEnd() );
   }
   bool next()
   {
-    for (auto i : _items)
+    for ( auto i : _items )
     {
       switch ( i.status().getTransactValue() )
       {
@@ -291,32 +330,36 @@ struct StatusCombination
 void testStatusTable( ui::Selectable::Ptr sel )
 {
   StatusCombination comb( sel );
-  do {
+  do
+  {
     verifyState( sel );
   } while ( comb.next() );
 }
 
-BOOST_AUTO_TEST_CASE(status_verify)
+BOOST_AUTO_TEST_CASE( status_verify )
 {
   // this verifies the Selectables computes ui::Status
   ResPoolProxy poolProxy( test.poolProxy() );
   ResPoolProxy::ScopedSaveState saveState( poolProxy );
   {
-    ui::Selectable::Ptr sel( poolProxy.lookup( ResKind::package, "installed_only" ) );
+    ui::Selectable::Ptr sel(
+      poolProxy.lookup( ResKind::package, "installed_only" ) );
     BOOST_REQUIRE( !sel->installedEmpty() );
     BOOST_REQUIRE( sel->availableEmpty() );
     BOOST_CHECK_EQUAL( sel->status(), ui::S_KeepInstalled );
     testStatusTable( sel );
   }
   {
-    ui::Selectable::Ptr sel( poolProxy.lookup( ResKind::package, "installed_and_available" ) );
+    ui::Selectable::Ptr sel(
+      poolProxy.lookup( ResKind::package, "installed_and_available" ) );
     BOOST_REQUIRE( !sel->installedEmpty() );
     BOOST_REQUIRE( !sel->availableEmpty() );
     BOOST_CHECK_EQUAL( sel->status(), ui::S_KeepInstalled );
     testStatusTable( sel );
   }
   {
-    ui::Selectable::Ptr sel( poolProxy.lookup( ResKind::package, "available_only" ) );
+    ui::Selectable::Ptr sel(
+      poolProxy.lookup( ResKind::package, "available_only" ) );
     BOOST_REQUIRE( sel->installedEmpty() );
     BOOST_REQUIRE( !sel->availableEmpty() );
     BOOST_CHECK_EQUAL( sel->status(), ui::S_NoInst );
@@ -329,19 +372,21 @@ BOOST_AUTO_TEST_CASE(status_verify)
 
 /////////////////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(pickstatus_cycle)
+BOOST_AUTO_TEST_CASE( pickstatus_cycle )
 {
   return;
   // TODO: automate it
   ResPoolProxy poolProxy( test.poolProxy() );
   ResPoolProxy::ScopedSaveState saveState( poolProxy );
-  ui::Selectable::Ptr sel( poolProxy.lookup( ResKind::package, "installed_and_available" ) );
+  ui::Selectable::Ptr sel(
+    poolProxy.lookup( ResKind::package, "installed_and_available" ) );
 
-  USR << dump(sel) << endl;
-  for ( const PoolItem & pi : sel->picklist() )
+  USR << dump( sel ) << endl;
+  for ( const PoolItem &pi : sel->picklist() )
   {
-    (sel->pickInstall( pi, ResStatus::USER ) ? WAR : ERR) << (pi.multiversionInstall() ? "M " : "  " ) << pi << endl;
-    USR << dump(sel) << endl;
+    ( sel->pickInstall( pi, ResStatus::USER ) ? WAR : ERR )
+      << ( pi.multiversionInstall() ? "M " : "  " ) << pi << endl;
+    USR << dump( sel ) << endl;
   }
 }
 

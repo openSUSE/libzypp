@@ -18,22 +18,22 @@ using namespace zypp::media;
 using boost::unit_test::test_suite;
 using boost::unit_test::test_case;
 
-BOOST_AUTO_TEST_CASE(verifier_test)
+BOOST_AUTO_TEST_CASE( verifier_test )
 {
   MediaVerifierRef verifier(
-      new MyMediaVerifier(/* "SUSE-Linux-CORE-i386 9" */)
-                           );
-  MediaManager     mm;
-  media::MediaId   id;
+    new MyMediaVerifier( /* "SUSE-Linux-CORE-i386 9" */ ) );
+  MediaManager mm;
+  media::MediaId id;
 
   //id = mm.open(zypp::Url("cd:/"), "");
-  id = mm.open(zypp::Url("ftp://machcd2/CDs/SLES-10-ISSLE-Beta1a-ppc/CD1"), "");
-  mm.addVerifier( id, verifier);
-  mm.attach(id);
-  mm.provideFile(id, Pathname("/suse/setup/descr/EXTRA_PROV"));
-  mm.release(id);
-  mm.attach(id);
-  mm.provideFile(id, Pathname("/suse/setup/descr/EXTRA_PROV"));  
+  id = mm.open(
+    zypp::Url( "ftp://machcd2/CDs/SLES-10-ISSLE-Beta1a-ppc/CD1" ), "" );
+  mm.addVerifier( id, verifier );
+  mm.attach( id );
+  mm.provideFile( id, Pathname( "/suse/setup/descr/EXTRA_PROV" ) );
+  mm.release( id );
+  mm.attach( id );
+  mm.provideFile( id, Pathname( "/suse/setup/descr/EXTRA_PROV" ) );
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

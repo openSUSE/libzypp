@@ -22,14 +22,14 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  
-  namespace parser
-  { /////////////////////////////////////////////////////////////////
-      
-   namespace ws
-   {
-       
-    /**
+
+namespace parser
+{ /////////////////////////////////////////////////////////////////
+
+namespace ws
+{
+
+/**
      * \short Read packages and repository search result data from
      * from webpin web search results.
      *
@@ -43,22 +43,23 @@ namespace zypp
      *     bind( &SomeClass::callbackfunc, &SomeClassInstance, _1, _2 ) );
      * \endcode
      */
-    class WebpinResultFileReader
-    {
-        friend std::ostream & operator<<( std::ostream & str, const WebpinResultFileReader & obj );
-    public:
-      
-     /**
+class WebpinResultFileReader
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const WebpinResultFileReader &obj );
+
+public:
+  /**
       * Callback definition.
       * First parameter is a \ref WebpinResult object.
       *
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-        typedef function< bool( const zypp::ws::WebpinResult & )> ProcessWebpinResult;
-      
-    public:
-     /**
+  typedef function<bool( const zypp::ws::WebpinResult & )> ProcessWebpinResult;
+
+public:
+  /**
       * \short Constructor. Creates the reader and start reading.
       *
       * \param result_file Valid result XML file from Webpin
@@ -69,28 +70,30 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      WebpinResultFileReader( const Pathname &result_file,
-                      const ProcessWebpinResult & callback/*,
-                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc()*/);
-     
-      /**
+  WebpinResultFileReader(
+    const Pathname &result_file, const ProcessWebpinResult &callback /*,
+                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc()*/ );
+
+  /**
        * Dtor
        */
-      ~WebpinResultFileReader();
-    private:
-      class Impl;
-      RW_pointer<Impl,rw_pointer::Scoped<Impl> > _pimpl;
-    };
-    ///////////////////////////////////////////////////////////////////
+  ~WebpinResultFileReader();
 
-    /** \relates WebpinResultFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const WebpinResultFileReader & obj );
+private:
+  class Impl;
+  RW_pointer<Impl, rw_pointer::Scoped<Impl>> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-   } //namespace ws
-    /////////////////////////////////////////////////////////////////
-  } // namespace parser
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/** \relates WebpinResultFileReader Stream output */
+std::ostream &operator<<(
+  std::ostream &str, const WebpinResultFileReader &obj );
+
+} //namespace ws
+/////////////////////////////////////////////////////////////////
+} // namespace parser
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_PARSER_WEBPINRESULTFILEREADER_H

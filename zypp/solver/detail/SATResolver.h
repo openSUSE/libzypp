@@ -24,8 +24,7 @@
 #ifndef ZYPP_USE_RESOLVER_INTERNALS
 #error Do not directly include this file!
 #else
-extern "C"
-{
+extern "C" {
 #include <solv/solver.h>
 #include <solv/pool.h>
 }
@@ -51,18 +50,17 @@ extern "C"
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
 
-  namespace sat
-  {
-    class Transaction;
-  }
+namespace sat
+{
+class Transaction;
+}
 
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -72,164 +70,209 @@ namespace zypp
  * via solver::detail::Resolver to SATResolver is pedestrian and error prone.
  * Introdce a dedicated solver option structure which is passed down as a whole.
 */
-class SATResolver : public base::ReferenceCounted, private base::NonCopyable, private sat::detail::PoolMember
+class SATResolver : public base::ReferenceCounted,
+                    private base::NonCopyable,
+                    private sat::detail::PoolMember
 {
 
-  private:
-    ResPool _pool;
-    sat::detail::CPool *_satPool;
-    sat::detail::CSolver *_satSolver;
-    sat::detail::CQueue _jobQueue;
+private:
+  ResPool _pool;
+  sat::detail::CPool *_satPool;
+  sat::detail::CSolver *_satSolver;
+  sat::detail::CQueue _jobQueue;
 
-    // list of problematic items (orphaned)
-    PoolItemList _problem_items;
+  // list of problematic items (orphaned)
+  PoolItemList _problem_items;
 
-    // list populated by calls to addPoolItemTo*()
-    PoolItemList _items_to_install;
-    PoolItemList _items_to_remove;
-    PoolItemList _items_to_lock;
-    PoolItemList _items_to_keep;
+  // list populated by calls to addPoolItemTo*()
+  PoolItemList _items_to_install;
+  PoolItemList _items_to_remove;
+  PoolItemList _items_to_lock;
+  PoolItemList _items_to_keep;
 
-    // solve results
-    PoolItemList _result_items_to_install;
-    PoolItemList _result_items_to_remove;
-  public:
-    bool _fixsystem:1;			// repair errors in rpm dependency graph
-    bool _allowdowngrade:1;		// allow to downgrade installed solvable
-    bool _allownamechange:1;		// allow to change name of installed solvable
-    bool _allowarchchange:1;		// allow to change architecture of installed solvables
-    bool _allowvendorchange:1;		// allow to change vendor of installed solvables
-    bool _allowuninstall:1;		// allow removal of installed solvables
-    bool _updatesystem:1;		// update
-    bool _noupdateprovide:1;		// true: update packages needs not to provide old package
-    bool _dosplitprovides:1;		// true: consider legacy split provides
-    bool _onlyRequires:1;		// true: consider required packages only
-    bool _ignorealreadyrecommended:1;	// true: ignore recommended packages that were already recommended by the installed packages
-    bool _distupgrade:1;
-    bool _distupgrade_removeunsupported:1;
-    bool _dup_allowdowngrade:1;		// dup mode: allow to downgrade installed solvable
-    bool _dup_allownamechange:1;	// dup mode: allow to change name of installed solvable
-    bool _dup_allowarchchange:1;	// dup mode: allow to change architecture of installed solvables
-    bool _dup_allowvendorchange:1;	// dup mode: allow to change vendor of installed solvables
-    bool _solveSrcPackages:1;		// false: generate no job rule for source packages selected in the pool
-    bool _cleandepsOnRemove:1;		// whether removing a package should also remove no longer needed requirements
+  // solve results
+  PoolItemList _result_items_to_install;
+  PoolItemList _result_items_to_remove;
 
-  private:
-    // ---------------------------------- methods
-    std::string SATprobleminfoString (Id problem, std::string &detail, Id &ignoreId);
-    void resetItemTransaction (PoolItem item);
+public:
+  bool _fixsystem : 1;       // repair errors in rpm dependency graph
+  bool _allowdowngrade : 1;  // allow to downgrade installed solvable
+  bool _allownamechange : 1; // allow to change name of installed solvable
+  bool
+    _allowarchchange : 1; // allow to change architecture of installed solvables
+  bool _allowvendorchange : 1; // allow to change vendor of installed solvables
+  bool _allowuninstall : 1;    // allow removal of installed solvables
+  bool _updatesystem : 1;      // update
+  bool
+    _noupdateprovide : 1; // true: update packages needs not to provide old package
+  bool _dosplitprovides : 1; // true: consider legacy split provides
+  bool _onlyRequires : 1;    // true: consider required packages only
+  bool
+    _ignorealreadyrecommended : 1; // true: ignore recommended packages that were already recommended by the installed packages
+  bool _distupgrade : 1;
+  bool _distupgrade_removeunsupported : 1;
+  bool
+    _dup_allowdowngrade : 1; // dup mode: allow to downgrade installed solvable
+  bool
+    _dup_allownamechange : 1; // dup mode: allow to change name of installed solvable
+  bool
+    _dup_allowarchchange : 1; // dup mode: allow to change architecture of installed solvables
+  bool
+    _dup_allowvendorchange : 1; // dup mode: allow to change vendor of installed solvables
+  bool
+    _solveSrcPackages : 1; // false: generate no job rule for source packages selected in the pool
+  bool
+    _cleandepsOnRemove : 1; // whether removing a package should also remove no longer needed requirements
 
-    // Create a SAT solver and reset solver selection in the pool (Collecting
-    void solverInit(const PoolItemList & weakItems);
-    // common solver run with the _jobQueue; Save results back to pool
-    bool solving(const CapabilitySet & requires_caps = CapabilitySet(),
-		 const CapabilitySet & conflict_caps = CapabilitySet());
-    // cleanup solver
-    void solverEnd();
-    // set locks for the solver
-    void setLocks();
-    // set requirements for a running system
-    void setSystemRequirements();
+private:
+  // ---------------------------------- methods
+  std::string SATprobleminfoString(
+    Id problem, std::string &detail, Id &ignoreId );
+  void resetItemTransaction( PoolItem item );
 
-   // Checking if this solvable/item has a buddy which reflect the real
-   // user visible description of an item
-   // e.g. The release package has a buddy to the concerning product item.
-   // This user want's the message "Product foo conflicts with product bar" and
-   // NOT "package release-foo conflicts with package release-bar"
-   // So these functions return the concerning buddy (e.g. product item)
-    sat::Solvable mapSolvable (const Id &id);
-    PoolItem mapItem (const PoolItem &item);
+  // Create a SAT solver and reset solver selection in the pool (Collecting
+  void solverInit( const PoolItemList &weakItems );
+  // common solver run with the _jobQueue; Save results back to pool
+  bool solving( const CapabilitySet &requires_caps = CapabilitySet(),
+    const CapabilitySet &conflict_caps = CapabilitySet() );
+  // cleanup solver
+  void solverEnd();
+  // set locks for the solver
+  void setLocks();
+  // set requirements for a running system
+  void setSystemRequirements();
 
-  public:
+  // Checking if this solvable/item has a buddy which reflect the real
+  // user visible description of an item
+  // e.g. The release package has a buddy to the concerning product item.
+  // This user want's the message "Product foo conflicts with product bar" and
+  // NOT "package release-foo conflicts with package release-bar"
+  // So these functions return the concerning buddy (e.g. product item)
+  sat::Solvable mapSolvable( const Id &id );
+  PoolItem mapItem( const PoolItem &item );
 
-    SATResolver (const ResPool & pool, sat::detail::CPool *satPool);
-    virtual ~SATResolver();
+public:
+  SATResolver( const ResPool &pool, sat::detail::CPool *satPool );
+  virtual ~SATResolver();
 
-    // ---------------------------------- I/O
+  // ---------------------------------- I/O
 
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
-    friend std::ostream& operator<<(std::ostream& str, const SATResolver & obj)
-    { return obj.dumpOn (str); }
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
+  friend std::ostream &operator<<( std::ostream &str, const SATResolver &obj )
+  {
+    return obj.dumpOn( str );
+  }
 
-    ResPool pool (void) const;
-    void setPool (const ResPool & pool) { _pool = pool; }
+  ResPool pool( void ) const;
+  void setPool( const ResPool &pool ) { _pool = pool; }
 
-    // solver run with pool selected items
-    bool resolvePool(const CapabilitySet & requires_caps,
-		     const CapabilitySet & conflict_caps,
-		     const PoolItemList & weakItems,
-		     const std::set<Repository> & upgradeRepos
-		     );
-    // solver run with the given request queue
-    bool resolveQueue(const SolverQueueItemList &requestQueue,
-		      const PoolItemList & weakItems
-		      );
-    // searching for new packages
-    void doUpdate();
+  // solver run with pool selected items
+  bool resolvePool( const CapabilitySet &requires_caps,
+    const CapabilitySet &conflict_caps, const PoolItemList &weakItems,
+    const std::set<Repository> &upgradeRepos );
+  // solver run with the given request queue
+  bool resolveQueue(
+    const SolverQueueItemList &requestQueue, const PoolItemList &weakItems );
+  // searching for new packages
+  void doUpdate();
 
-    ResolverProblemList problems ();
-    void applySolutions (const ProblemSolutionList &solutions);
+  ResolverProblemList problems();
+  void applySolutions( const ProblemSolutionList &solutions );
 
-    bool fixsystem () const {return _fixsystem;}
-    void setFixsystem ( const bool fixsystem) { _fixsystem = fixsystem;}
+  bool fixsystem() const { return _fixsystem; }
+  void setFixsystem( const bool fixsystem ) { _fixsystem = fixsystem; }
 
-    bool ignorealreadyrecommended () const {return _ignorealreadyrecommended;}
-    void setIgnorealreadyrecommended ( const bool ignorealreadyrecommended) { _ignorealreadyrecommended = ignorealreadyrecommended;}
+  bool ignorealreadyrecommended() const { return _ignorealreadyrecommended; }
+  void setIgnorealreadyrecommended( const bool ignorealreadyrecommended )
+  {
+    _ignorealreadyrecommended = ignorealreadyrecommended;
+  }
 
-    bool distupgrade () const {return _distupgrade;}
-    void setDistupgrade ( const bool distupgrade) { _distupgrade = distupgrade;}
+  bool distupgrade() const { return _distupgrade; }
+  void setDistupgrade( const bool distupgrade ) { _distupgrade = distupgrade; }
 
-    bool distupgrade_removeunsupported () const {return _distupgrade_removeunsupported;}
-    void setDistupgrade_removeunsupported ( const bool distupgrade_removeunsupported) { _distupgrade_removeunsupported = distupgrade_removeunsupported;}
+  bool distupgrade_removeunsupported() const
+  {
+    return _distupgrade_removeunsupported;
+  }
+  void setDistupgrade_removeunsupported(
+    const bool distupgrade_removeunsupported )
+  {
+    _distupgrade_removeunsupported = distupgrade_removeunsupported;
+  }
 
-    bool allowdowngrade () const {return _allowdowngrade;}
-    void setAllowdowngrade ( const bool allowdowngrade) { _allowdowngrade = allowdowngrade;}
+  bool allowdowngrade() const { return _allowdowngrade; }
+  void setAllowdowngrade( const bool allowdowngrade )
+  {
+    _allowdowngrade = allowdowngrade;
+  }
 
-    bool allowarchchange () const {return _allowarchchange;}
-    void setAllowarchchange ( const bool allowarchchange) { _allowarchchange = allowarchchange;}
+  bool allowarchchange() const { return _allowarchchange; }
+  void setAllowarchchange( const bool allowarchchange )
+  {
+    _allowarchchange = allowarchchange;
+  }
 
-    bool allowvendorchange () const {return _allowvendorchange;}
-    void setAllowvendorchange ( const bool allowvendorchange) { _allowvendorchange = allowvendorchange;}
+  bool allowvendorchange() const { return _allowvendorchange; }
+  void setAllowvendorchange( const bool allowvendorchange )
+  {
+    _allowvendorchange = allowvendorchange;
+  }
 
-    bool allowuninstall () const {return _allowuninstall;}
-    void setAllowuninstall ( const bool allowuninstall) { _allowuninstall = allowuninstall;}
+  bool allowuninstall() const { return _allowuninstall; }
+  void setAllowuninstall( const bool allowuninstall )
+  {
+    _allowuninstall = allowuninstall;
+  }
 
-    bool updatesystem () const {return _updatesystem;}
-    void setUpdatesystem ( const bool updatesystem) { _updatesystem = updatesystem;}
+  bool updatesystem() const { return _updatesystem; }
+  void setUpdatesystem( const bool updatesystem )
+  {
+    _updatesystem = updatesystem;
+  }
 
-    bool noupdateprovide () const {return _noupdateprovide;}
-    void setNoupdateprovide ( const bool noupdateprovide) { _noupdateprovide = noupdateprovide;}
+  bool noupdateprovide() const { return _noupdateprovide; }
+  void setNoupdateprovide( const bool noupdateprovide )
+  {
+    _noupdateprovide = noupdateprovide;
+  }
 
-    bool dosplitprovides () const {return _dosplitprovides;}
-    void setDosplitprovides ( const bool dosplitprovides) { _dosplitprovides = dosplitprovides;}
+  bool dosplitprovides() const { return _dosplitprovides; }
+  void setDosplitprovides( const bool dosplitprovides )
+  {
+    _dosplitprovides = dosplitprovides;
+  }
 
-    bool onlyRequires () const {return _onlyRequires;}
-    void setOnlyRequires ( const bool onlyRequires) { _onlyRequires = onlyRequires;}
+  bool onlyRequires() const { return _onlyRequires; }
+  void setOnlyRequires( const bool onlyRequires )
+  {
+    _onlyRequires = onlyRequires;
+  }
 
-    bool solveSrcPackages() const 		{ return _solveSrcPackages; }
-    void setSolveSrcPackages( bool state_r )	{ _solveSrcPackages = state_r; }
+  bool solveSrcPackages() const { return _solveSrcPackages; }
+  void setSolveSrcPackages( bool state_r ) { _solveSrcPackages = state_r; }
 
-    bool cleandepsOnRemove() const 		{ return _cleandepsOnRemove; }
-    void setCleandepsOnRemove( bool state_r )	{ _cleandepsOnRemove = state_r; }
+  bool cleandepsOnRemove() const { return _cleandepsOnRemove; }
+  void setCleandepsOnRemove( bool state_r ) { _cleandepsOnRemove = state_r; }
 
-    PoolItemList problematicUpdateItems( void ) const { return _problem_items; }
-    PoolItemList problematicUpdateItems() { return _problem_items; }
+  PoolItemList problematicUpdateItems( void ) const { return _problem_items; }
+  PoolItemList problematicUpdateItems() { return _problem_items; }
 
-    PoolItemList resultItemsToInstall () { return _result_items_to_install; }
-    PoolItemList resultItemsToRemove () { return _result_items_to_remove; }
+  PoolItemList resultItemsToInstall() { return _result_items_to_install; }
+  PoolItemList resultItemsToRemove() { return _result_items_to_remove; }
 
-    sat::StringQueue autoInstalled() const;
-    sat::StringQueue userInstalled() const;
+  sat::StringQueue autoInstalled() const;
+  sat::StringQueue userInstalled() const;
 };
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
-/////////////////////////////////////////////////////////////////////////
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
+   /////////////////////////////////////////////////////////////////////////
 #endif // ZYPP_USE_RESOLVER_INTERNALS
 #endif // ZYPP_SOLVER_DETAIL_SAT_RESOLVER_H

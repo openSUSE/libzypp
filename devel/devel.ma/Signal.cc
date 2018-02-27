@@ -11,22 +11,20 @@ using std::cout;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace boost
 {
-  template<class Tp>
-      std::ostream & operator<<( std::ostream & str, const signal<Tp> & obj )
-  {
-    return str << "Connected slots: " << obj.num_slots();
-  }
+template <class Tp>
+std::ostream &operator<<( std::ostream &str, const signal<Tp> &obj )
+{
+  return str << "Connected slots: " << obj.num_slots();
+}
 
-  namespace signals
-  {
-    std::ostream & operator<<( std::ostream & str, const connection & obj )
-    {
-      return str << "Connection: "
-	  << ( obj.connected() ? '*' : '_' )
-	  << ( obj.blocked()   ? 'B' : '_' )
-	  ;
-    }
-  }
+namespace signals
+{
+std::ostream &operator<<( std::ostream &str, const connection &obj )
+{
+  return str << "Connection: " << ( obj.connected() ? '*' : '_' )
+             << ( obj.blocked() ? 'B' : '_' );
+}
+}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,11 +36,11 @@ using boost::signals::trackable;
 
 struct HelloWorld
 {
-  HelloWorld() {++i;}
-  HelloWorld(const HelloWorld &) {++i;}
-  ~HelloWorld() { --i;}
+  HelloWorld() { ++i; }
+  HelloWorld( const HelloWorld & ) { ++i; }
+  ~HelloWorld() { --i; }
 
-  void operator()(unsigned) const
+  void operator()( unsigned ) const
   {
     USR << "Hello, World! " << i << std::endl;
   }
@@ -62,26 +60,23 @@ struct M
     _sigA( i );
   }
 
-  typedef signal<void(unsigned)> SigA;
+  typedef signal<void( unsigned )> SigA;
 
-  SigA & siga() const { return _sigA; }
+  SigA &siga() const { return _sigA; }
 
   mutable SigA _sigA;
 };
 
 struct X : public trackable
 {
-  X() {_s=++s;}
-  X( const X & ) {_s=++s;}
-  X& operator=( const X & ) { return *this; }
-  ~X() {_s=-_s;}
+  X() { _s = ++s; }
+  X( const X & ) { _s = ++s; }
+  X &operator=( const X & ) { return *this; }
+  ~X() { _s = -_s; }
   static int s;
   int _s;
 
-  void pong( unsigned i ) const
-  {
-    DBG << _s << ' ' << i << endl;
-  }
+  void pong( unsigned i ) const { DBG << _s << ' ' << i << endl; }
 };
 
 int X::s;
@@ -91,9 +86,10 @@ int X::s;
 **      FUNCTION NAME : main
 **      FUNCTION TYPE : int
 */
-int main( int argc, const char * argv[] )
+int main( int argc, const char *argv[] )
 {
-  --argc; ++argv; // skip arg 0
+  --argc;
+  ++argv; // skip arg 0
 
   M m;
   m.ping();
@@ -109,7 +105,6 @@ int main( int argc, const char * argv[] )
     X y;
     m.siga().connect( boost::bind( &X::pong, &y, _1 ) );
     m.ping();
-
   }
 
   m.ping();
@@ -119,4 +114,3 @@ int main( int argc, const char * argv[] )
   INT << "---STOP" << endl;
   return 0;
 }
-

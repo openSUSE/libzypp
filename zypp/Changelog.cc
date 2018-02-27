@@ -19,14 +19,13 @@ using namespace std;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /** \relates ChangelogEntry */
-  std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj )
-  { 
-    out << obj.date() << " " << obj.author() << endl << obj.text() << endl;
-    return out;
-  }
+/** \relates ChangelogEntry */
+std::ostream &operator<<( std::ostream &out, const ChangelogEntry &obj )
+{
+  out << obj.date() << " " << obj.author() << endl << obj.text() << endl;
+  return out;
+}
 
-
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

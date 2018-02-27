@@ -9,7 +9,6 @@
 /** \file zypp/ExternalProgram.h
 */
 
-
 #ifndef ZYPP_EXTERNALPROGRAM_H
 #define ZYPP_EXTERNALPROGRAM_H
 
@@ -22,9 +21,10 @@
 #include "zypp/base/ExternalDataSource.h"
 #include "zypp/Pathname.h"
 
-namespace zypp {
+namespace zypp
+{
 
-    /**
+/**
      * @short Execute a program and give access to its io
      * An object of this class encapsulates the execution of
      * an external program. It starts the program using fork
@@ -55,31 +55,30 @@ namespace zypp {
      *
      * \endcode
      */
-    class ExternalProgram : public zypp::externalprogram::ExternalDataSource
-    {
+class ExternalProgram : public zypp::externalprogram::ExternalDataSource
+{
 
-    public:
+public:
+  typedef std::vector<std::string> Arguments;
 
-      typedef std::vector<std::string> Arguments;
-
-      /**
+  /**
        * Define symbols for different policies on the handling
        * of stderr
        */
-      enum Stderr_Disposition {
-    	Normal_Stderr,
-    	Discard_Stderr,
-    	Stderr_To_Stdout,
-    	Stderr_To_FileDesc
-      };
+  enum Stderr_Disposition
+  {
+    Normal_Stderr,
+    Discard_Stderr,
+    Stderr_To_Stdout,
+    Stderr_To_FileDesc
+  };
 
-
-      /**
+  /**
        * For passing additional environment variables to set
        */
-      typedef std::map<std::string,std::string> Environment;
+  typedef std::map<std::string, std::string> Environment;
 
-      /**
+  /**
        * Start the external program by using the shell <tt>/bin/sh<tt>
        * with the option <tt>-c</tt>. You can use io direction symbols < and >.
        * @param commandline a shell commandline that is appended to
@@ -87,12 +86,12 @@ namespace zypp {
        * @param default_locale whether to set LC_ALL=C before starting
        * @param root directory to chroot into; or just 'cd' if '/'l;  nothing if empty
        */
-      ExternalProgram (std::string commandline,
-    		     Stderr_Disposition stderr_disp = Normal_Stderr,
-    		     bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
-    		     const Pathname& root = "");
+  ExternalProgram( std::string commandline,
+    Stderr_Disposition stderr_disp = Normal_Stderr, bool use_pty = false,
+    int stderr_fd = -1, bool default_locale = false,
+    const Pathname &root = "" );
 
-      /**
+  /**
        * Start an external program by giving the arguments as an arry of char *pointers.
        * If environment is provided, varaiables will be added to the childs environment,
        * overwriting existing ones.
@@ -114,61 +113,58 @@ namespace zypp {
        * if empty).
        */
 
-      ExternalProgram();
+  ExternalProgram();
 
-      ExternalProgram (const Arguments &argv,
-    		     Stderr_Disposition stderr_disp = Normal_Stderr,
-    		     bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
-    		     const Pathname& root = "");
+  ExternalProgram( const Arguments &argv,
+    Stderr_Disposition stderr_disp = Normal_Stderr, bool use_pty = false,
+    int stderr_fd = -1, bool default_locale = false,
+    const Pathname &root = "" );
 
-      ExternalProgram (const Arguments &argv, const Environment & environment,
-    		     Stderr_Disposition stderr_disp = Normal_Stderr,
-    		     bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
-    		     const Pathname& root = "");
+  ExternalProgram( const Arguments &argv, const Environment &environment,
+    Stderr_Disposition stderr_disp = Normal_Stderr, bool use_pty = false,
+    int stderr_fd = -1, bool default_locale = false,
+    const Pathname &root = "" );
 
-      ExternalProgram (const char *const *argv,
-    		     Stderr_Disposition stderr_disp = Normal_Stderr,
-    		     bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
-    		     const Pathname& root = "");
+  ExternalProgram( const char *const *argv,
+    Stderr_Disposition stderr_disp = Normal_Stderr, bool use_pty = false,
+    int stderr_fd = -1, bool default_locale = false,
+    const Pathname &root = "" );
 
-      ExternalProgram (const char *const *argv, const Environment & environment,
-    		     Stderr_Disposition stderr_disp = Normal_Stderr,
-    		     bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
-    		     const Pathname& root = "");
+  ExternalProgram( const char *const *argv, const Environment &environment,
+    Stderr_Disposition stderr_disp = Normal_Stderr, bool use_pty = false,
+    int stderr_fd = -1, bool default_locale = false,
+    const Pathname &root = "" );
 
-      ExternalProgram (const char *binpath, const char *const *argv_1,
-    		     bool use_pty = false);
+  ExternalProgram(
+    const char *binpath, const char *const *argv_1, bool use_pty = false );
 
+  ExternalProgram( const char *binpath, const char *const *argv_1,
+    const Environment &environment, bool use_pty = false );
 
-      ExternalProgram (const char *binpath, const char *const *argv_1, const Environment & environment,
-    		     bool use_pty = false);
+  ~ExternalProgram();
 
+  /** Wait for the progamm to complete. */
+  int close();
 
-      ~ExternalProgram();
-
-      /** Wait for the progamm to complete. */
-      int close();
-
-      /**
+  /**
        * Kill the program
        */
-      bool kill();
+  bool kill();
 
-      /**
+  /**
        * Return whether program is running
        */
-      bool running();
+  bool running();
 
-      /**
+  /**
        * return pid
        * */
-      pid_t getpid() { return pid; }
+  pid_t getpid() { return pid; }
 
-      /** The command we're executing. */
-      const std::string & command() const
-      { return _command; }
+  /** The command we're executing. */
+  const std::string &command() const { return _command; }
 
-      /** Some detail telling why the execution failed, if it failed.
+  /** Some detail telling why the execution failed, if it failed.
        * Empty if the command is still running or successfully completed.
        *
        * \li <tt>Can't open pty (%s).</tt>
@@ -177,17 +173,15 @@ namespace zypp {
        * \li <tt>Command exited with status %d.</tt>
        * \li <tt>Command was killed by signal %d (%s).</tt>
       */
-      const std::string & execError() const
-      { return _execError; }
+  const std::string &execError() const { return _execError; }
 
-      /**
+  /**
        * origfd will be accessible as newfd and closed (unless they were equal)
        */
-      static void renumber_fd (int origfd, int newfd);
+  static void renumber_fd( int origfd, int newfd );
 
-    public:
-
-      /**
+public:
+  /**
        * Redirect all command output to an \c ostream.
        * Returns when the command has completed.
        * \code
@@ -205,92 +199,109 @@ namespace zypp {
        *     ERR << prog.execError() << endl;
        * \endcode
        */
-      std::ostream & operator>>( std::ostream & out_r );
+  std::ostream &operator>>( std::ostream &out_r );
 
-    protected:
-      int checkStatus( int );
+protected:
+  int checkStatus( int );
 
-    private:
-
-      /**
+private:
+  /**
        * Set to true, if a pair of ttys is used for communication
        * instead of a pair of pipes.
        */
-      bool use_pty;
+  bool use_pty;
 
-      pid_t pid;
-      int _exitStatus;
-      /** Store the command we're executing. */
-      std::string _command;
-      /** Remember execution errors like failed fork/exec. */
-      std::string _execError;
+  pid_t pid;
+  int _exitStatus;
+  /** Store the command we're executing. */
+  std::string _command;
+  /** Remember execution errors like failed fork/exec. */
+  std::string _execError;
 
-      void start_program (const char *const *argv, const Environment & environment,
-    			Stderr_Disposition stderr_disp = Normal_Stderr,
-    			int stderr_fd = -1, bool default_locale = false,
-    			const char* root = NULL);
+  void start_program( const char *const *argv, const Environment &environment,
+    Stderr_Disposition stderr_disp = Normal_Stderr, int stderr_fd = -1,
+    bool default_locale = false, const char *root = NULL );
+};
 
-    };
-
-
-  namespace externalprogram
-  {
-    /** Helper providing pipe FDs for \ref ExternalProgramWithStderr.
+namespace externalprogram
+{
+/** Helper providing pipe FDs for \ref ExternalProgramWithStderr.
      * Moved to a basse class because the pipe needs to be initialized
      * before the \ref ExternalProgram base class is initialized.
      * \see \ref ExternalProgramWithStderr
      */
-    struct EarlyPipe
+struct EarlyPipe
+{
+  enum
+  {
+    R = 0,
+    W = 1
+  };
+  EarlyPipe();
+  ~EarlyPipe();
+  void closeW()
+  {
+    if ( _fds[ W ] != -1 )
     {
-      enum { R=0, W=1 };
-      EarlyPipe();
-      ~EarlyPipe();
-      void closeW()		{ if ( _fds[W] != -1 ) { ::close( _fds[W] ); _fds[W] = -1; } }
-      FILE * stderr()		{ return _stderr; }
-      protected:
-	FILE * _stderr;
-	int _fds[2];
-    };
-  } // namespace externalprogram
+      ::close( _fds[ W ] );
+      _fds[ W ] = -1;
+    }
+  }
+  FILE *stderr() { return _stderr; }
+protected:
+  FILE *_stderr;
+  int _fds[ 2 ];
+};
+} // namespace externalprogram
 
-  /** ExternalProgram extended to offer reading programs stderr.
+/** ExternalProgram extended to offer reading programs stderr.
    * \see \ref ExternalProgram
    */
-  class ExternalProgramWithStderr : private externalprogram::EarlyPipe, public ExternalProgram
+class ExternalProgramWithStderr : private externalprogram::EarlyPipe,
+                                  public ExternalProgram
+{
+public:
+  ExternalProgramWithStderr( const Arguments &argv_r )
+    : ExternalProgram(
+        argv_r, Stderr_To_FileDesc, /*use_pty*/ false, _fds[ W ] )
   {
-    public:
-      ExternalProgramWithStderr( const Arguments & argv_r )
-	: ExternalProgram( argv_r, Stderr_To_FileDesc, /*use_pty*/false, _fds[W] )
-      { _initStdErr(); }
+    _initStdErr();
+  }
 
-      ExternalProgramWithStderr( const Arguments & argv_r, const Environment & environment_r )
-        : ExternalProgram( argv_r, environment_r, Stderr_To_FileDesc, /*use_pty*/false, _fds[W] )
-      { _initStdErr(); }
+  ExternalProgramWithStderr(
+    const Arguments &argv_r, const Environment &environment_r )
+    : ExternalProgram( argv_r, environment_r, Stderr_To_FileDesc,
+        /*use_pty*/ false, _fds[ W ] )
+  {
+    _initStdErr();
+  }
 
-    public:
-      /** Return \c FILE* to read programms stderr (O_NONBLOCK set). */
-      using externalprogram::EarlyPipe::stderr;
+public:
+  /** Return \c FILE* to read programms stderr (O_NONBLOCK set). */
+  using externalprogram::EarlyPipe::stderr;
 
-      /** Read data up to \c delim_r from stderr (nonblocking).
+  /** Read data up to \c delim_r from stderr (nonblocking).
        * \note If \c delim_r is '\0', we read as much data as possible.
        * \return \c false if data are not yet available (\c retval_r remains untouched then).
        */
-      bool stderrGetUpTo( std::string & retval_r, const char delim_r, bool returnDelim_r = false );
+  bool stderrGetUpTo(
+    std::string &retval_r, const char delim_r, bool returnDelim_r = false );
 
-      /** Read next complete line from stderr (nonblocking).
+  /** Read next complete line from stderr (nonblocking).
        * \return \c false if data are not yet available (\c retval_r remains untouched then).
        */
-      bool stderrGetline( std::string & retval_r, bool returnDelim_r = false  )
-      { return stderrGetUpTo( retval_r, '\n', returnDelim_r ); }
+  bool stderrGetline( std::string &retval_r, bool returnDelim_r = false )
+  {
+    return stderrGetUpTo( retval_r, '\n', returnDelim_r );
+  }
 
-    private:
-      /** Close write end of the pipe (childs end). */
-      void _initStdErr()
-      { closeW(); }
+private:
+  /** Close write end of the pipe (childs end). */
+  void _initStdErr() { closeW(); }
 
-    private:
-      std::string _buffer;
-  };
+private:
+  std::string _buffer;
+};
 
 } // namespace zypp
 

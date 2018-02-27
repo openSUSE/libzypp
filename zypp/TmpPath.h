@@ -17,13 +17,15 @@
 #include "zypp/Pathname.h"
 #include "zypp/base/PtrTypes.h"
 
-namespace zypp {
-  namespace filesystem {
+namespace zypp
+{
+namespace filesystem
+{
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : TmpPath
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : TmpPath
+/**
      * @short Automaticaly deletes files or directories when no longer needed.
      *
      * TmpPath is constructed from a Pathname. Multiple TmpPath instances
@@ -36,82 +38,77 @@ namespace zypp {
      *
      * Principally serves as base class, but standalone usable.
      **/
-    class TmpPath
-    {
-      public:
-        /**
+class TmpPath
+{
+public:
+  /**
          * Default Ctor. An empty Pathname.
          **/
-        TmpPath();
+  TmpPath();
 
-        /**
+  /**
          * Ctor. Takes a Pathname.
          **/
-        explicit
-        TmpPath( const Pathname & tmpPath_r );
+  explicit TmpPath( const Pathname &tmpPath_r );
 
-        /**
+  /**
          * Dtor.
          **/
-        virtual
-        ~TmpPath();
+  virtual ~TmpPath();
 
-        /**
+  /**
          * Test whether the Pathname is valid (i.e. not empty. NOT whether
          * it really denotes an existing file or directory).
          **/
-        explicit operator bool() const;
+  explicit operator bool() const;
 
-        /**
+  /**
          * @return The Pathname.
          **/
-        Pathname
-        path() const;
+  Pathname path() const;
 
-        /**
+  /**
          * Type conversion to Pathname.
          **/
-        operator Pathname() const
-        { return path(); }
+  operator Pathname() const { return path(); }
 
-        /**
+  /**
 	 * Whether path is valid and deleted when the last reference drops.
 	 */
-        bool autoCleanup() const;
+  bool autoCleanup() const;
 
-        /**
+  /**
 	 * Turn \ref autoCleanup on/off if path is valid.
 	 */
-	void autoCleanup( bool yesno_r );
+  void autoCleanup( bool yesno_r );
 
-      public:
-        /**
+public:
+  /**
          * @return The default directory where temporary
          * files should be are created (/var/tmp).
          **/
-        static const Pathname &
-        defaultLocation();
+  static const Pathname &defaultLocation();
 
-      protected:
-        class Impl;
-        RW_pointer<Impl> _impl;
+protected:
+  class Impl;
+  RW_pointer<Impl> _impl;
+};
+///////////////////////////////////////////////////////////////////
 
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    /**
+/**
      * Stream output as pathname.
      **/
-    inline std::ostream &
-    operator<<( std::ostream & str, const TmpPath & obj )
-    { return str << static_cast<Pathname>(obj); }
+inline std::ostream &operator<<( std::ostream &str, const TmpPath &obj )
+{
+  return str << static_cast<Pathname>( obj );
+}
 
-    ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : TmpFile
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : TmpFile
+/**
      * @short Provide a new empty temporary file and delete it when no
      * longer needed.
      *
@@ -123,39 +120,36 @@ namespace zypp {
      * TmpFile provides the Pathname of the temporary file, or an empty
      * path in case of any error.
      **/
-    class TmpFile : public TmpPath
-    {
-      public:
-        /**
+class TmpFile : public TmpPath
+{
+public:
+  /**
          * Ctor. Takes a Pathname.
          **/
-        explicit
-        TmpFile( const Pathname & inParentDir_r = defaultLocation(),
-                 const std::string & prefix_r = defaultPrefix() );
+  explicit TmpFile( const Pathname &inParentDir_r = defaultLocation(),
+    const std::string &prefix_r = defaultPrefix() );
 
-        /** Provide a new empty temporary directory as sibling.
+  /** Provide a new empty temporary directory as sibling.
          * \code
          *   TmpFile s = makeSibling( "/var/lib/myfile" );
          *   // returns: /var/lib/myfile.XXXXXX
          * \endcode
          * If \c sibling_r exists, sibling is created using the same mode.
          */
-        static TmpFile makeSibling( const Pathname & sibling_r );
+  static TmpFile makeSibling( const Pathname &sibling_r );
 
-      public:
-        /**
+public:
+  /**
          * @return The default prefix for temporary files (TmpFile.)
          **/
-        static const std::string &
-        defaultPrefix();
+  static const std::string &defaultPrefix();
+};
+///////////////////////////////////////////////////////////////////
 
-    };
-    ///////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : TmpDir
-    /**
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : TmpDir
+/**
      * @short Provide a new empty temporary directory and recursively
      * delete it when no longer needed.
      *
@@ -167,38 +161,36 @@ namespace zypp {
      * TmpDir provides the Pathname of the temporary directory , or an empty
      * path in case of any error.
      **/
-    class TmpDir : public TmpPath
-    {
-      public:
-        /**
+class TmpDir : public TmpPath
+{
+public:
+  /**
          * Ctor. Takes a Pathname.
          **/
-        explicit
-        TmpDir( const Pathname & inParentDir_r = defaultLocation(),
-                const std::string & prefix_r = defaultPrefix() );
+  explicit TmpDir( const Pathname &inParentDir_r = defaultLocation(),
+    const std::string &prefix_r = defaultPrefix() );
 
-        /** Provide a new empty temporary directory as sibling.
+  /** Provide a new empty temporary directory as sibling.
          * \code
          *   TmpDir s = makeSibling( "/var/lib/mydir" );
          *   // returns: /var/lib/mydir.XXXXXX
          * \endcode
          * If \c sibling_r exists, sibling is created using the same mode.
          */
-        static TmpDir makeSibling( const Pathname & sibling_r );
+  static TmpDir makeSibling( const Pathname &sibling_r );
 
-      public:
-        /**
+public:
+  /**
          * @return The default prefix for temporary directories (TmpDir.)
          **/
-        static const std::string &
-        defaultPrefix();
-    };
-    ///////////////////////////////////////////////////////////////////
+  static const std::string &defaultPrefix();
+};
+///////////////////////////////////////////////////////////////////
 
-  } // namespace filesystem
+} // namespace filesystem
 
-  /** Global access to the zypp.TMPDIR (created on demand, deleted when libzypp is unloaded) */
-  Pathname myTmpDir();	// implemented in ZYppImpl.cc
+/** Global access to the zypp.TMPDIR (created on demand, deleted when libzypp is unloaded) */
+Pathname myTmpDir(); // implemented in ZYppImpl.cc
 
 } // namespace zypp
 

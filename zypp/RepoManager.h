@@ -33,7 +33,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-   /**
+/**
     * Parses \a repo_file and returns a list of \ref RepoInfo objects
     * corresponding to repositories found within the file.
     *
@@ -44,15 +44,15 @@ namespace zypp
     * \throws ParseException If the file parsing fails
     * \throws Exception On other errors.
     */
-   std::list<RepoInfo> readRepoFile(const Url & repo_file);
+std::list<RepoInfo> readRepoFile( const Url &repo_file );
 
-  /**
+/**
    * Repo manager settings.
    * Settings default to ZYpp global settings.
    */
-  struct RepoManagerOptions
-  {
-    /** Default ctor following \ref ZConfig global settings.
+struct RepoManagerOptions
+{
+  /** Default ctor following \ref ZConfig global settings.
      * If an optional \c root_r directory is given, all paths  will
      * be prefixed accordingly.
      * \code
@@ -63,9 +63,9 @@ namespace zypp
      *          \knownReposPath
      * \endcode
      */
-    RepoManagerOptions( const Pathname & root_r = Pathname() );
+  RepoManagerOptions( const Pathname &root_r = Pathname() );
 
-    /** Test setup adjusting all paths to be located below one \c root_r directory.
+  /** Test setup adjusting all paths to be located below one \c root_r directory.
      * \code
      *    root_r\          - repoCachePath
      *          \raw       - repoRawCachePath
@@ -74,132 +74,138 @@ namespace zypp
      *          \repos.d   - knownReposPath
      * \endcode
      */
-    static RepoManagerOptions makeTestSetup( const Pathname & root_r );
+  static RepoManagerOptions makeTestSetup( const Pathname &root_r );
 
-    Pathname repoCachePath;
-    Pathname repoRawCachePath;
-    Pathname repoSolvCachePath;
-    Pathname repoPackagesCachePath;
-    Pathname knownReposPath;
-    Pathname knownServicesPath;
-    Pathname pluginsPath;
-    bool probe;
-    /**
+  Pathname repoCachePath;
+  Pathname repoRawCachePath;
+  Pathname repoSolvCachePath;
+  Pathname repoPackagesCachePath;
+  Pathname knownReposPath;
+  Pathname knownServicesPath;
+  Pathname pluginsPath;
+  bool probe;
+  /**
      * Target distro ID to be used when refreshing repo index services.
      * Repositories not maching this ID will be skipped/removed.
      *
      * If empty, \ref Target::targetDistribution() will be used instead.
      */
-    std::string servicesTargetDistro;
+  std::string servicesTargetDistro;
 
-    /** remembers root_r value for later use */
-    Pathname rootDir;
-  };
+  /** remembers root_r value for later use */
+  Pathname rootDir;
+};
 
-
-
-  /**
+/**
    * \short creates and provides information about known sources.
    *
    */
-  class RepoManager
+class RepoManager
+{
+  friend std::ostream &operator<<( std::ostream &str, const RepoManager &obj );
+
+public:
+  /** Implementation  */
+  class Impl;
+
+  /** ServiceInfo typedefs */
+  typedef std::set<ServiceInfo> ServiceSet;
+  typedef ServiceSet::const_iterator ServiceConstIterator;
+  typedef ServiceSet::size_type ServiceSizeType;
+
+  /** RepoInfo typedefs */
+  typedef std::set<RepoInfo> RepoSet;
+  typedef RepoSet::const_iterator RepoConstIterator;
+  typedef RepoSet::size_type RepoSizeType;
+
+public:
+  RepoManager( const RepoManagerOptions &options = RepoManagerOptions() );
+  /** Dtor */
+  ~RepoManager();
+
+  enum RawMetadataRefreshPolicy
   {
-    friend std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
+    RefreshIfNeeded,
+    RefreshForced,
+    RefreshIfNeededIgnoreDelay
+  };
 
-  public:
-    /** Implementation  */
-    class Impl;
+  enum CacheBuildPolicy
+  {
+    BuildIfNeeded,
+    BuildForced
+  };
 
-    /** ServiceInfo typedefs */
-    typedef std::set<ServiceInfo> ServiceSet;
-    typedef ServiceSet::const_iterator ServiceConstIterator;
-    typedef ServiceSet::size_type ServiceSizeType;
+  /** Flags for tuning RefreshService */
+  enum RefreshServiceBit
+  {
+    RefreshService_restoreStatus =
+      ( 1 << 0 ), ///< Force restoring repo enabled/disabled status
+    RefreshService_forceRefresh =
+      ( 1 << 1 ), ///< Force refresh even if TTL is not reached
+  };
+  ZYPP_DECLARE_FLAGS( RefreshServiceFlags, RefreshServiceBit );
 
-    /** RepoInfo typedefs */
-    typedef std::set<RepoInfo> RepoSet;
-    typedef RepoSet::const_iterator RepoConstIterator;
-    typedef RepoSet::size_type RepoSizeType;
+  /** Options tuning RefreshService */
+  typedef RefreshServiceFlags RefreshServiceOptions;
 
-  public:
-   RepoManager( const RepoManagerOptions &options = RepoManagerOptions() );
-   /** Dtor */
-    ~RepoManager();
-
-    enum RawMetadataRefreshPolicy
-    {
-      RefreshIfNeeded,
-      RefreshForced,
-      RefreshIfNeededIgnoreDelay
-    };
-
-    enum CacheBuildPolicy
-    {
-      BuildIfNeeded,
-      BuildForced
-    };
-
-    /** Flags for tuning RefreshService */
-    enum RefreshServiceBit
-    {
-      RefreshService_restoreStatus	= (1<<0),	///< Force restoring repo enabled/disabled status
-      RefreshService_forceRefresh	= (1<<1),	///< Force refresh even if TTL is not reached
-    };
-    ZYPP_DECLARE_FLAGS(RefreshServiceFlags,RefreshServiceBit);
-
-    /** Options tuning RefreshService */
-    typedef RefreshServiceFlags RefreshServiceOptions;
-
-
-    /** \name Known repositories.
+  /** \name Known repositories.
      *
      * The known repositories are read from
      * \ref RepoManagerOptions::knownReposPath passed on the Ctor.
      * Which defaults to ZYpp global settings.
      */
-   //@{
-    bool repoEmpty() const;
-    RepoSizeType repoSize() const;
-    RepoConstIterator repoBegin() const;
-    RepoConstIterator repoEnd() const;
-    Iterable<RepoConstIterator> repos() const;
+  //@{
+  bool repoEmpty() const;
+  RepoSizeType repoSize() const;
+  RepoConstIterator repoBegin() const;
+  RepoConstIterator repoEnd() const;
+  Iterable<RepoConstIterator> repos() const;
 
-    /** List of known repositories. */
-    std::list<RepoInfo> knownRepositories() const
-    { return std::list<RepoInfo>(repoBegin(),repoEnd()); }
+  /** List of known repositories. */
+  std::list<RepoInfo> knownRepositories() const
+  {
+    return std::list<RepoInfo>( repoBegin(), repoEnd() );
+  }
 
-    /** Find RepoInfo by alias or return \ref RepoInfo::noRepo. */
-    RepoInfo getRepo( const std::string & alias ) const;
-    /** \overload Take alias from RepoInfo. */
-    RepoInfo getRepo( const RepoInfo & info_r ) const
-    { return getRepo( info_r.alias() ); }
+  /** Find RepoInfo by alias or return \ref RepoInfo::noRepo. */
+  RepoInfo getRepo( const std::string &alias ) const;
+  /** \overload Take alias from RepoInfo. */
+  RepoInfo getRepo( const RepoInfo &info_r ) const
+  {
+    return getRepo( info_r.alias() );
+  }
 
-    /** Return whether there is a known repository for \c alias. */
-    bool hasRepo( const std::string & alias ) const;
-    /** \overload Take alias from RepoInfo. */
-    bool hasRepo( const RepoInfo & info_r ) const
-    { return hasRepo( info_r.alias() ); }
+  /** Return whether there is a known repository for \c alias. */
+  bool hasRepo( const std::string &alias ) const;
+  /** \overload Take alias from RepoInfo. */
+  bool hasRepo( const RepoInfo &info_r ) const
+  {
+    return hasRepo( info_r.alias() );
+  }
 
-    /** Some stupid string but suitable as alias for your url if nothing better is available.
+  /** Some stupid string but suitable as alias for your url if nothing better is available.
      * Something like \c "http-download.opensuse.org-83df67e5"
     */
-    static std::string makeStupidAlias( const Url & url_r = Url() );
-   //@}
+  static std::string makeStupidAlias( const Url &url_r = Url() );
+  //@}
 
-   /**
+  /**
     * \short Status of local metadata
     */
-    RepoStatus metadataStatus( const RepoInfo &info ) const;
+  RepoStatus metadataStatus( const RepoInfo &info ) const;
 
-    /**
+  /**
      * Possibly return state of checkIfRefreshMEtadata function
      */
-    enum RefreshCheckStatus {
-      REFRESH_NEEDED,  /**< refresh is needed */
-      REPO_UP_TO_DATE, /**< repository not changed */
-      REPO_CHECK_DELAYED     /**< refresh is delayed due to settings */
-    };
+  enum RefreshCheckStatus
+  {
+    REFRESH_NEEDED,    /**< refresh is needed */
+    REPO_UP_TO_DATE,   /**< repository not changed */
+    REPO_CHECK_DELAYED /**< refresh is delayed due to settings */
+  };
 
-    /**
+  /**
      * Checks whether to refresh metadata for specified repository and url.
      * <p>
      * The need for refresh is evaluated according to the following conditions,
@@ -253,11 +259,10 @@ namespace zypp
      * \throws Exception on unknown error
      *
      */
-    RefreshCheckStatus checkIfToRefreshMetadata( const RepoInfo &info,
-                                   const Url &url,
-                                   RawMetadataRefreshPolicy policy = RefreshIfNeeded);
+  RefreshCheckStatus checkIfToRefreshMetadata( const RepoInfo &info,
+    const Url &url, RawMetadataRefreshPolicy policy = RefreshIfNeeded );
 
-    /**
+  /**
      * \short Path where the metadata is downloaded and kept
      *
      * Given a repoinfo, tells where \ref RepoManager will download
@@ -267,10 +272,9 @@ namespace zypp
      *
      * \throws repo::RepoNoAliasException if can't figure an alias
      */
-    Pathname metadataPath( const RepoInfo &info ) const;
+  Pathname metadataPath( const RepoInfo &info ) const;
 
-
-    /**
+  /**
      * \short Path where the rpm packages are downloaded and kept
      *
      * Given a repoinfo, tells where \ref RepoProvidePackage will download
@@ -280,10 +284,9 @@ namespace zypp
      *
      * \throws repo::RepoNoAliasException if can't figure an alias
      */
-    Pathname packagesPath( const RepoInfo &info ) const;
+  Pathname packagesPath( const RepoInfo &info ) const;
 
-
-   /**
+  /**
     * \short Refresh local raw cache
     *
     * Will try to download the metadata
@@ -297,11 +300,12 @@ namespace zypp
     * \throws repo::RepoException if the repository is invalid
     *         (no valid metadata found at any of baseurls)
     */
-   void refreshMetadata( const RepoInfo &info,
-                         RawMetadataRefreshPolicy policy = RefreshIfNeeded,
-                         const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void refreshMetadata( const RepoInfo &info,
+    RawMetadataRefreshPolicy policy = RefreshIfNeeded,
+    const ProgressData::ReceiverFnc &progressrcv =
+      ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Clean local metadata
     *
     * Empty local metadata.
@@ -309,10 +313,11 @@ namespace zypp
     * \throws repo::RepoNoAliasException if can't figure an alias
     * \throws Exception on unknown error.
     */
-   void cleanMetadata( const RepoInfo &info,
-                       const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void cleanMetadata(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Clean local package cache
     *
     * Empty local directory with downloaded packages
@@ -320,15 +325,16 @@ namespace zypp
     * \throws repo::RepoNoAliasException if can't figure an alias
     * \throws Exception on unknown error.
     */
-   void cleanPackages( const RepoInfo &info,
-                       const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void cleanPackages(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Status of metadata cache
     */
-    RepoStatus cacheStatus( const RepoInfo &info ) const;
+  RepoStatus cacheStatus( const RepoInfo &info ) const;
 
-   /**
+  /**
     * \short Refresh local cache
     *
     * Will try to build the cache from local metadata.
@@ -346,11 +352,12 @@ namespace zypp
     * \throws parser::ParseException if parser encounters an error.
     * \throws Exception on unknown error.
     */
-   void buildCache( const RepoInfo &info,
-                    CacheBuildPolicy policy = BuildIfNeeded,
-                    const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void buildCache( const RepoInfo &info,
+    CacheBuildPolicy policy = BuildIfNeeded,
+    const ProgressData::ReceiverFnc &progressrcv =
+      ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short clean local cache
     *
     * Clean the cached version of the metadata
@@ -362,18 +369,18 @@ namespace zypp
     *     cleaned because of repository record not found.
     * \throws Exception on unknown error.
     */
-   void cleanCache( const RepoInfo &info,
-                    const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void cleanCache(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Whether a repository exists in cache
     *
     * \param RepoInfo to be checked.
     */
-    bool isCached( const RepoInfo &info ) const;
+  bool isCached( const RepoInfo &info ) const;
 
-
-    /**
+  /**
     * \short Load resolvables into the pool
     *
     * Creating from cache requires that the repository is
@@ -382,33 +389,34 @@ namespace zypp
     * \throws repo::RepoNoAliasException if can't figure an alias to look in cache
     * \throw RepoNotCachedException When the source is not cached.
     */
-   void loadFromCache( const RepoInfo &info,
-                       const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void loadFromCache(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * Remove any subdirectories of cache directories which no longer belong
     * to any of known repositories.
     *
     * These can be temporary directories left by interrupted refresh,
     * or dirs left after changing .repo files outside of libzypp.
     */
-   void cleanCacheDirGarbage( const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void cleanCacheDirGarbage( const ProgressData::ReceiverFnc &progressrcv =
+                               ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Probe repo metadata type.
     *
     * The location to probe consists of the base \a url (you may think of it as
     * a mountpoint) and the \a path to the repository on the mounted media
     * (ususally \c / ).
     */
-   repo::RepoType probe( const Url & url, const Pathname & path ) const;
-   /**
+  repo::RepoType probe( const Url &url, const Pathname &path ) const;
+  /**
     * \overload Using the default path \c "/".
     */
-   repo::RepoType probe( const Url & url ) const;
+  repo::RepoType probe( const Url &url ) const;
 
-
-   /**
+  /**
     * \short Adds a repository to the list of known repositories.
     *
     *
@@ -422,10 +430,11 @@ namespace zypp
     *         If RepoManagerOptions::probe is true and access to the url fails.
     * \throws Exception On other errors.
     */
-   void addRepository( const RepoInfo &info,
-                       const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void addRepository(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-   /**
+  /**
     * \short Adds repositores from a repo file to the list of known repositories.
     * \param url Url of the repo file
     *
@@ -437,17 +446,19 @@ namespace zypp
     * \throws RepoException ON other repository related errors
     * \throws Exception On other errors.
     */
-    void addRepositories( const Url &url,
-                         const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
-    /**
+  void addRepositories(
+    const Url &url, const ProgressData::ReceiverFnc &progressrcv =
+                      ProgressData::ReceiverFnc() );
+  /**
      * \short Remove the best matching repository from known repos list
      *
      * \throws RepoNotFoundException If no repo match
      */
-    void removeRepository( const RepoInfo & info,
-                           const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  void removeRepository(
+    const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv =
+                            ProgressData::ReceiverFnc() );
 
-    /**
+  /**
      * \short Modify repository attributes
      *
      * \throws RepoAlreadyExistsException if the alias specified in newinfo
@@ -456,15 +467,17 @@ namespace zypp
      * \throws ParseException If the file parsing fails
      * \throws Exception On other errors.
      */
-    void modifyRepository( const std::string &alias,
-                           const RepoInfo & newinfo,
-                           const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
-    /** \overload Take alias from RepoInfo. */
-    void modifyRepository( const RepoInfo & newinfo,
-                           const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() )
-    { modifyRepository( newinfo.alias(), newinfo, progressrcv ); }
+  void modifyRepository( const std::string &alias, const RepoInfo &newinfo,
+    const ProgressData::ReceiverFnc &progressrcv =
+      ProgressData::ReceiverFnc() );
+  /** \overload Take alias from RepoInfo. */
+  void modifyRepository( const RepoInfo &newinfo,
+    const ProgressData::ReceiverFnc &progressrcv = ProgressData::ReceiverFnc() )
+  {
+    modifyRepository( newinfo.alias(), newinfo, progressrcv );
+  }
 
-    /**
+  /**
      * \short Find a matching repository info
      *
      * \note if multiple repositories incorrectly share the
@@ -477,10 +490,11 @@ namespace zypp
      * \throws ParseException If the file parsing fails
      * \throws Exception On other errors.
      */
-    RepoInfo getRepositoryInfo( const std::string &alias,
-                                const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  RepoInfo getRepositoryInfo(
+    const std::string &alias, const ProgressData::ReceiverFnc &progressrcv =
+                                ProgressData::ReceiverFnc() );
 
-    /**
+  /**
      * \short Find repository info by URL.
      *
      * \param url URL to find.
@@ -499,70 +513,72 @@ namespace zypp
      * \throws ParseException If the file parsing fails
      * \throws Exception On other errors.
      */
-    RepoInfo getRepositoryInfo( const Url & url,
-                                const url::ViewOption & urlview = url::ViewOption::DEFAULTS,
-                                const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
+  RepoInfo getRepositoryInfo( const Url &url,
+    const url::ViewOption &urlview = url::ViewOption::DEFAULTS,
+    const ProgressData::ReceiverFnc &progressrcv =
+      ProgressData::ReceiverFnc() );
 
-
-    /** \name Known services.
+  /** \name Known services.
      *
      * The known services are read from
      * \ref RepoManagerOptions::knownServicesPath passed on the Ctor.
      * Which defaults to ZYpp global settings.
      */
-    //@{
-    /**
+  //@{
+  /**
      * Gets true if no service is in RepoManager (so no one in specified location)
      *
      * \return true if any ServiceInfo is in RepoManager
      */
-    bool serviceEmpty() const;
+  bool serviceEmpty() const;
 
-    /**
+  /**
      * Gets count of service in RepoManager (in specified location)
      *
      * \return count of service
      */
-    ServiceSizeType serviceSize() const;
+  ServiceSizeType serviceSize() const;
 
-    /**
+  /**
      * Iterator to first service in internal storage.
      * \note Iterator is immutable, so you cannot change pointed ServiceInfo
      * \return Iterator to first service
      */
-    ServiceConstIterator serviceBegin() const;
+  ServiceConstIterator serviceBegin() const;
 
-    /**
+  /**
      * Iterator to place behind last service in internal storage.
      * \return iterator to end
      */
-    ServiceConstIterator serviceEnd() const;
+  ServiceConstIterator serviceEnd() const;
 
-    /** Iterate the known services. */
-    Iterable<ServiceConstIterator> services() const;
+  /** Iterate the known services. */
+  Iterable<ServiceConstIterator> services() const;
 
-    /** List of known services. */
-    std::list<ServiceInfo> knownServices() const
-    { return std::list<ServiceInfo>(serviceBegin(),serviceEnd()); }
+  /** List of known services. */
+  std::list<ServiceInfo> knownServices() const
+  {
+    return std::list<ServiceInfo>( serviceBegin(), serviceEnd() );
+  }
 
-    /**
+  /**
      * \short Finds ServiceInfo by alias or return \ref ServiceInfo::noService
      *
      * \param alias unique identifier of service
      * \return information about service
      */
-    ServiceInfo getService( const std::string & alias ) const;
+  ServiceInfo getService( const std::string &alias ) const;
 
-    /** Return whether there is a known service for \c alias. */
-    bool hasService( const std::string & alias ) const;
-    //@}
+  /** Return whether there is a known service for \c alias. */
+  bool hasService( const std::string &alias ) const;
+  //@}
 
-    /**
+  /**
      * \short Probe the type or the service.
      */
-    repo::ServiceType probeService( const Url &url ) const;
+  repo::ServiceType probeService( const Url &url ) const;
 
-    /**
+  /**
      * Adds new service by it's alias and url
      *
      * \param alias unique identifier of the service
@@ -570,18 +586,18 @@ namespace zypp
      *
      * \throws FIXME RepoAlreadyExistException and as reponame is service name
      */
-    void addService( const std::string & alias, const Url& url );
+  void addService( const std::string &alias, const Url &url );
 
-    /**
+  /**
      * Adds new service
      *
      * \param service service info
      *
      * \throws FIXME RepoAlreadyExistException and as reponame is service name
      */
-    void addService( const ServiceInfo & service );
+  void addService( const ServiceInfo &service );
 
-    /**
+  /**
      * Removes service specified by its name
      *
      * \param alias unique indientifier of the service to remove
@@ -589,19 +605,19 @@ namespace zypp
      * \throws RepoException if service is not found or file with ServiceInfo cannot be deleted
      * \throws Exception if file contain more services and rewrite file failed
      */
-    void removeService( const std::string & alias );
-    /** \overload Take alias from ServiceInfo */
-    void removeService( const ServiceInfo & service );
+  void removeService( const std::string &alias );
+  /** \overload Take alias from ServiceInfo */
+  void removeService( const ServiceInfo &service );
 
-
-    /**
+  /**
      * Refreshes all enabled services.
      *
      * \see refreshService(ServiceInfo)
      */
-    void refreshServices( const RefreshServiceOptions & options_r = RefreshServiceOptions() );
+  void refreshServices(
+    const RefreshServiceOptions &options_r = RefreshServiceOptions() );
 
-    /**
+  /**
      * Refresh specific service.
      *
      * \param alias unique indientifier of the service to refresh
@@ -609,11 +625,13 @@ namespace zypp
      * \throws RepoException if service is not found.
      * \throws MediaException If there's a problem downloading the repo index file.
      */
-    void refreshService( const std::string & alias, const RefreshServiceOptions & options_r = RefreshServiceOptions() );
-    /** \overload Take alias from ServiceInfo */
-    void refreshService( const ServiceInfo & service, const RefreshServiceOptions & options_r = RefreshServiceOptions() );
+  void refreshService( const std::string &alias,
+    const RefreshServiceOptions &options_r = RefreshServiceOptions() );
+  /** \overload Take alias from ServiceInfo */
+  void refreshService( const ServiceInfo &service,
+    const RefreshServiceOptions &options_r = RefreshServiceOptions() );
 
-    /**
+  /**
      * Modifies service file (rewrites it with new values) and underlying
      * repositories if needed.
      *
@@ -629,28 +647,35 @@ namespace zypp
      * \throws RepoException if sservice with oldAlias is not known
      * \throws Exception if have problems with files
      */
-    void modifyService( const std::string & oldAlias, const ServiceInfo & service );
-    /** \overload Take alias from ServiceInfo. */
-    void modifyService( const ServiceInfo & service )
-    { modifyService( service.alias(), service ); }
+  void modifyService( const std::string &oldAlias, const ServiceInfo &service );
+  /** \overload Take alias from ServiceInfo. */
+  void modifyService( const ServiceInfo &service )
+  {
+    modifyService( service.alias(), service );
+  }
 
-  private:
-    /**
+private:
+  /**
      * Functor thats filter RepoInfo by service which it belongs to.
      */
-    struct MatchServiceAlias
-    {
-      public:
-        MatchServiceAlias( const std::string & alias_ ) : alias(alias_) {}
-        bool operator()( const RepoInfo & info ) const
-        { return info.service() == alias; }
-      private:
-        std::string alias;
-    };
-
+  struct MatchServiceAlias
+  {
   public:
+    MatchServiceAlias( const std::string &alias_ )
+      : alias( alias_ )
+    {
+    }
+    bool operator()( const RepoInfo &info ) const
+    {
+      return info.service() == alias;
+    }
 
-    /**
+  private:
+    std::string alias;
+  };
+
+public:
+  /**
      * fill to output iterator repositories in service name. This output iterator can perform
      * any action on with Repo or service Container, because it is sets and it isn't dynamic recreate.
      *
@@ -682,36 +707,39 @@ namespace zypp
      *     bind(&ChangePriority::doIt, &changer, _1)));
      * \endcode
      */
-    template<typename OutputIterator>
-    void getRepositoriesInService( const std::string & alias,
-                                   OutputIterator out ) const
-    {
-      MatchServiceAlias filter(alias);
+  template <typename OutputIterator>
+  void getRepositoriesInService(
+    const std::string &alias, OutputIterator out ) const
+  {
+    MatchServiceAlias filter( alias );
 
-      std::copy( boost::make_filter_iterator( filter, repoBegin(), repoEnd() ),
-                 boost::make_filter_iterator( filter, repoEnd(), repoEnd() ),
-                 out);
-    }
+    std::copy( boost::make_filter_iterator( filter, repoBegin(), repoEnd() ),
+      boost::make_filter_iterator( filter, repoEnd(), repoEnd() ), out );
+  }
 
-  private:
-    /** Pointer to implementation */
-    RWCOW_pointer<Impl> _pimpl;
-  };
-  ZYPP_DECLARE_OPERATORS_FOR_FLAGS(RepoManager::RefreshServiceFlags);
-  ///////////////////////////////////////////////////////////////////
+private:
+  /** Pointer to implementation */
+  RWCOW_pointer<Impl> _pimpl;
+};
+ZYPP_DECLARE_OPERATORS_FOR_FLAGS( RepoManager::RefreshServiceFlags );
+///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoManager Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
+/** \relates RepoManager Stream output */
+std::ostream &operator<<( std::ostream &str, const RepoManager &obj );
 
-  /** Iterate the known repositories. */
-  inline Iterable<RepoManager::RepoConstIterator> RepoManager::repos() const
-  { return makeIterable( repoBegin(), repoEnd() ); }
+/** Iterate the known repositories. */
+inline Iterable<RepoManager::RepoConstIterator> RepoManager::repos() const
+{
+  return makeIterable( repoBegin(), repoEnd() );
+}
 
-  /** Iterate the known services. */
-  inline Iterable<RepoManager::ServiceConstIterator> RepoManager::services() const
-  { return makeIterable( serviceBegin(), serviceEnd() ); }
+/** Iterate the known services. */
+inline Iterable<RepoManager::ServiceConstIterator> RepoManager::services() const
+{
+  return makeIterable( serviceBegin(), serviceEnd() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP2_REPOMANAGER_H

@@ -4,22 +4,27 @@
 
 static TestSetup test( Arch_x86_64 );
 
-namespace zypp { namespace detail {
-  /** \relates RepositoryIterator Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const RepositoryIterator & obj )
-  {
-    str << "RI["<< *obj <<"]";
-    return str;
-  }
-}}
+namespace zypp
+{
+namespace detail
+{
+/** \relates RepositoryIterator Stream output */
+inline std::ostream &operator<<(
+  std::ostream &str, const RepositoryIterator &obj )
+{
+  str << "RI[" << *obj << "]";
+  return str;
+}
+}
+}
 
 // Must be the first test!
-BOOST_AUTO_TEST_CASE(findSystemRepo)
+BOOST_AUTO_TEST_CASE( findSystemRepo )
 {
   // On the fly check that findSystemRepo does not
   // cause loading the SystemRepo. check 2 times.
-  BOOST_REQUIRE( ! test.satpool().findSystemRepo() );
-  BOOST_REQUIRE( ! test.satpool().findSystemRepo() );
+  BOOST_REQUIRE( !test.satpool().findSystemRepo() );
+  BOOST_REQUIRE( !test.satpool().findSystemRepo() );
 }
 
 void checkRepoIter()
@@ -35,8 +40,7 @@ void checkRepoIter()
   BOOST_CHECK_EQUAL( count, 0 );
 }
 
-
-BOOST_AUTO_TEST_CASE(repolist)
+BOOST_AUTO_TEST_CASE( repolist )
 {
   // libzypp-11: underlying libsolv changed the pools repository
   // pointer list. It may now contain emebeded NULLs which have
@@ -75,9 +79,7 @@ BOOST_AUTO_TEST_CASE(repolist)
   BOOST_CHECK_EQUAL( satpool.reposSize(), 2 );
   checkRepoIter();
 
-
-
-/*  for_( it, satpool.reposBegin(),  satpool.reposEnd() )
+  /*  for_( it, satpool.reposBegin(),  satpool.reposEnd() )
   {
     cout << "- " << *it << endl;
   }*/

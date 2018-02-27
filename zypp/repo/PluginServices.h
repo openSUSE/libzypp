@@ -20,46 +20,46 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class ServiceInfo;
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
-  { /////////////////////////////////////////////////////////////////
+class ServiceInfo;
+///////////////////////////////////////////////////////////////////
+namespace repo
+{ /////////////////////////////////////////////////////////////////
 
-    class PluginServices
-    {
-      friend std::ostream & operator<<( std::ostream & str, const PluginServices& obj );
-    public:
-      
-     /**
+class PluginServices
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const PluginServices &obj );
+
+public:
+  /**
       * Callback definition.
       * First parameter is a \ref ServiceInfo object with the resource.
       *
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      typedef function< bool( const ServiceInfo & )> ProcessService;
-      
-      /** Implementation  */
-      class Impl;
+  typedef function<bool( const ServiceInfo & )> ProcessService;
 
-    public:
-      PluginServices(const Pathname &path,
-                    const ProcessService & callback);
-     
-      /**
+  /** Implementation  */
+  class Impl;
+
+public:
+  PluginServices( const Pathname &path, const ProcessService &callback );
+
+  /**
        * Dtor
        */
-      ~PluginServices();
-    };
-    ///////////////////////////////////////////////////////////////////
+  ~PluginServices();
+};
+///////////////////////////////////////////////////////////////////
 
-    /** \relates ServiceFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const PluginServices & obj );
+/** \relates ServiceFileReader Stream output */
+std::ostream &operator<<( std::ostream &str, const PluginServices &obj );
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace repo
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_REPO_LOCALSERVICES_H

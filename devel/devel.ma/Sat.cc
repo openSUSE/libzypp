@@ -4,11 +4,14 @@
 #include <boost/thread/thread_time.hpp>
 namespace boost
 {
-  namespace detail
-  {
-    inline std::ostream & operator<<( std::ostream & str, const thread_data_base & obj )
-    { return str << &obj; }
-  }
+namespace detail
+{
+inline std::ostream &operator<<(
+  std::ostream &str, const thread_data_base &obj )
+{
+  return str << &obj;
+}
+}
 }
 
 #include "zypp/ByteCount.h"
@@ -36,8 +39,7 @@ struct ClassLevelLockable
   typedef boost::lock_guard<Lockable> Lock;
   struct Lock
   {
-    Lock( const Derived & obj )
-    {}
+    Lock( const Derived &obj ) {}
     ~Lock
   };
 
@@ -49,20 +51,20 @@ struct ObjectLevelLockable
 {
   typedef boost::recursive_mutex Lockable;
   typedef boost::lock_guard<Lockable> Lock;
-
 };
-
 
 struct MilSync
 {
-  MilSync( const char * file_r, const char * func_r, const int line_r )
+  MilSync( const char *file_r, const char *func_r, const int line_r )
     : _guard( _mutex )
-    , _str( zypp::base::logger::getStream( ZYPP_BASE_LOGGER_LOGGROUP, zypp::base::logger::E_MIL, file_r, func_r, line_r ) )
-  {}
+    , _str( zypp::base::logger::getStream( ZYPP_BASE_LOGGER_LOGGROUP,
+        zypp::base::logger::E_MIL, file_r, func_r, line_r ) )
+  {
+  }
   typedef boost::recursive_mutex Lockable;
-  static Lockable             _mutex;
+  static Lockable _mutex;
   boost::lock_guard<Lockable> _guard;
-  std::ostream & _str;
+  std::ostream &_str;
 };
 MilSync::Lockable MilSync::_mutex;
 
@@ -71,30 +73,25 @@ struct ThreadExcl
   ThreadExcl()
   {
     MIL << "+TE" << boost::this_thread::get_id() << endl;
-    boost::this_thread::sleep(  boost::posix_time::seconds(1) );
+    boost::this_thread::sleep( boost::posix_time::seconds( 1 ) );
   }
 
-  ~ThreadExcl()
-  {
-    MIL << "-TE" << boost::this_thread::get_id() << endl;
-  }
+  ~ThreadExcl() { MIL << "-TE" << boost::this_thread::get_id() << endl; }
 };
 
-void t_exit()
-{
-  MIL << "---" << boost::this_thread::get_id() << endl;
-}
+void t_exit() { MIL << "---" << boost::this_thread::get_id() << endl; }
 
 void t_main()
 {
-  MIL << "+++" << boost::this_thread::get_id() << " " << boost::this_thread::interruption_enabled() << endl;
+  MIL << "+++" << boost::this_thread::get_id() << " "
+      << boost::this_thread::interruption_enabled() << endl;
   boost::this_thread::at_thread_exit( t_exit );
   ThreadExcl a;
-  while( true )
-    boost::this_thread::sleep(  boost::posix_time::seconds(1) );
+  while ( true )
+    boost::this_thread::sleep( boost::posix_time::seconds( 1 ) );
 }
 
-int main( int argc, char * argv[] )
+int main( int argc, char *argv[] )
 {
   //zypp::base::LogControl::instance().logfile( "log.restrict" );
   INT << "===[START]==========================================" << endl;

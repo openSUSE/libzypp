@@ -3,7 +3,7 @@
 
 #include <zypp/MediaProducts.h>
 
-BOOST_AUTO_TEST_CASE(compile)
+BOOST_AUTO_TEST_CASE( compile )
 {
   // make sure header compiles
 }

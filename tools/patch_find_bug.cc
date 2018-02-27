@@ -1,6 +1,6 @@
 #define INCLUDE_TESTSETUP_WITHOUT_BOOST
 #include "zypp/../tests/lib/TestSetup.h"
-#undef  INCLUDE_TESTSETUP_WITHOUT_BOOST
+#undef INCLUDE_TESTSETUP_WITHOUT_BOOST
 
 #include "zypp/PoolQuery.h"
 
@@ -9,25 +9,25 @@ using std::flush;
 
 static std::string appname( "patch_find_bug" );
 
-int errexit( const std::string & msg_r = std::string(), int exit_r = 101 )
+int errexit( const std::string &msg_r = std::string(), int exit_r = 101 )
 {
-  if ( ! msg_r.empty() )
+  if ( !msg_r.empty() )
   {
     cerr << endl << msg_r << endl << endl;
   }
   return exit_r;
 }
 
-
-int usage( const std::string & msg_r = std::string(), int exit_r = 100 )
+int usage( const std::string &msg_r = std::string(), int exit_r = 100 )
 {
-  if ( ! msg_r.empty() )
+  if ( !msg_r.empty() )
   {
     cerr << endl << msg_r << endl << endl;
   }
   cerr << "Usage: " << appname << "[OPTIONS] bugnumber..." << endl;
   cerr << "  Find patches refering to bugnumber (substring)." << endl;
-  cerr << "  --root SYSROOT: Load system located below directory SYSROOT" << endl;
+  cerr << "  --root SYSROOT: Load system located below directory SYSROOT"
+       << endl;
   return exit_r;
 }
 
@@ -36,14 +36,14 @@ int usage( const std::string & msg_r = std::string(), int exit_r = 100 )
 **      FUNCTION NAME : main
 **      FUNCTION TYPE : int
 */
-int main( int argc, char * argv[] )
+int main( int argc, char *argv[] )
 {
   INT << "===[START]==========================================" << endl;
-  appname = Pathname::basename( argv[0] );
+  appname = Pathname::basename( argv[ 0 ] );
   --argc;
   ++argv;
 
-  if ( ! argc )
+  if ( !argc )
   {
     return usage();
   }
@@ -51,24 +51,24 @@ int main( int argc, char * argv[] )
   ///////////////////////////////////////////////////////////////////
 
   ZConfig::instance();
-  Pathname sysRoot("/");
+  Pathname sysRoot( "/" );
 
-  if ( (*argv) == std::string("--root") )
+  if ( ( *argv ) == std::string( "--root" ) )
   {
-    --argc,++argv;
-    if ( ! argc )
-      return errexit("--root requires an argument.");
+    --argc, ++argv;
+    if ( !argc )
+      return errexit( "--root requires an argument." );
 
-    if ( ! PathInfo( *argv ).isDir() )
-      return errexit("--root requires a directory.");
+    if ( !PathInfo( *argv ).isDir() )
+      return errexit( "--root requires a directory." );
 
     sysRoot = *argv;
-    --argc,++argv;
+    --argc, ++argv;
   }
 
   TestSetup::LoadSystemAt( sysRoot );
 
-  for ( ; argc; --argc,++argv )
+  for ( ; argc; --argc, ++argv )
   {
     PoolQuery q;
     q.setMatchSubstring();
@@ -82,7 +82,7 @@ int main( int argc, char * argv[] )
     else
     {
       cout << "BUG REFERENCE '" << *argv << endl;
-      for_( it , q.begin(), q.end() )
+      for_( it, q.begin(), q.end() )
       {
         // print the solvable that has a match:
         cout << "  - " << *it << endl;
@@ -93,13 +93,16 @@ int main( int argc, char * argv[] )
           for_( d, it.matchesBegin(), it.matchesEnd() )
           {
             // directly access specific attribute like "subFind(updateReferenceType)":
-            cout << "    - " << d->inSolvAttr() << "\t\"" << d->asString() << "\" has type \""
-                << d->subFind( sat::SolvAttr::updateReferenceType ).asString() << "\"" << endl;
+            cout << "    - " << d->inSolvAttr() << "\t\"" << d->asString()
+                 << "\" has type \""
+                 << d->subFind( sat::SolvAttr::updateReferenceType ).asString()
+                 << "\"" << endl;
 
             // list the whole updateReference structure:
             for_( s, d->subBegin(), d->subEnd() )
             {
-              cout << "       -" << s.inSolvAttr() << "\t\"" << s.asString() << "\"" << endl;
+              cout << "       -" << s.inSolvAttr() << "\t\"" << s.asString()
+                   << "\"" << endl;
             }
           }
         }

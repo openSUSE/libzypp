@@ -16,14 +16,13 @@ using namespace boost::unit_test;
 
 using namespace zypp::parser::yum;
 
-#define DATADIR (Pathname(TESTS_SRC_DIR) + "/parser/yum/data")
+#define DATADIR ( Pathname( TESTS_SRC_DIR ) + "/parser/yum/data" )
 
 class Collector
 {
 public:
-  Collector()
-  {}
-  
+  Collector() {}
+
   bool callback( const OnMediaLocation &loc, const string &id )
   {
     items.push_back( make_pair( id, loc ) );
@@ -31,46 +30,50 @@ public:
     //cout << items.size() << endl;
     return true;
   }
-  
-  vector<pair<string, OnMediaLocation> > items;
+
+  vector<pair<string, OnMediaLocation>> items;
   //vector<OnMediaLocation> items;
 };
 
-BOOST_AUTO_TEST_CASE(patches_read_test)
+BOOST_AUTO_TEST_CASE( patches_read_test )
 {
   list<Pathname> entries;
   if ( filesystem::readdir( entries, DATADIR, false ) != 0 )
-    ZYPP_THROW(Exception("failed to read directory"));
-  
-  for ( list<Pathname>::const_iterator it = entries.begin(); it != entries.end(); ++it )
+    ZYPP_THROW( Exception( "failed to read directory" ) );
+
+  for ( list<Pathname>::const_iterator it = entries.begin();
+        it != entries.end(); ++it )
   {
     Pathname file = *it;
     //cout << file.basename().substr(0, 7) << " " << file.extension() << endl;
-    if ( ( file.basename().substr(0, 7) == "patches" ) && (file.extension() == ".xml" ) )
+    if ( ( file.basename().substr( 0, 7 ) == "patches" ) &&
+         ( file.extension() == ".xml" ) )
     {
       //cout << *it << endl;
-      
+
       Collector collect;
-      PatchesFileReader( file, bind( &Collector::callback, &collect, _1, _2 ));
-      
-      std::ifstream ifs( file.extend(".solution").asString().c_str() );
-      cout << "Comparing to " << file.extend(".solution") << endl;
+      PatchesFileReader( file, bind( &Collector::callback, &collect, _1, _2 ) );
+
+      std::ifstream ifs( file.extend( ".solution" ).asString().c_str() );
+      cout << "Comparing to " << file.extend( ".solution" ) << endl;
       unsigned int count = 0;
-      while ( ifs && ! ifs.eof() && count < collect.items.size() )
+      while ( ifs && !ifs.eof() && count < collect.items.size() )
       {
         string id;
         string checksum_type;
         string checksum;
         string loc;
-        
-        getline(ifs, id);
-        BOOST_CHECK_EQUAL( collect.items[count].first, id);
-        getline(ifs, checksum_type);
-        getline(ifs, checksum);
-        BOOST_CHECK_EQUAL( collect.items[count].second.checksum(), CheckSum(checksum_type, checksum) );
-        getline(ifs, loc);
-        BOOST_CHECK_EQUAL( collect.items[count].second.filename(), Pathname(loc) );
-        
+
+        getline( ifs, id );
+        BOOST_CHECK_EQUAL( collect.items[ count ].first, id );
+        getline( ifs, checksum_type );
+        getline( ifs, checksum );
+        BOOST_CHECK_EQUAL( collect.items[ count ].second.checksum(),
+          CheckSum( checksum_type, checksum ) );
+        getline( ifs, loc );
+        BOOST_CHECK_EQUAL(
+          collect.items[ count ].second.filename(), Pathname( loc ) );
+
         count++;
       }
       BOOST_CHECK_EQUAL( collect.items.size(), count );

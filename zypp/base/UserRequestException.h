@@ -20,11 +20,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : UserRequestException
-  //
-  /** Base for exceptions caused by explicit user request.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : UserRequestException
+//
+/** Base for exceptions caused by explicit user request.
    *
    * Use the derived convenience classes to throw exceptions
    * of a certain kind.
@@ -61,47 +61,58 @@ namespace zypp
    * }
    * \endcode
   */
-  class UserRequestException : public Exception
+class UserRequestException : public Exception
+{
+public:
+  enum Kind
   {
-    public:
-      enum Kind { UNSPECIFIED, IGNORE, SKIP, RETRY, ABORT };
-    public:
-      explicit
-      UserRequestException( const std::string & msg_r = std::string() );
-      UserRequestException( const std::string & msg_r, const Exception & history_r );
-      explicit
-      UserRequestException( Kind kind_r, const std::string & msg_r = std::string() );
-      UserRequestException( Kind kind_r, const std::string & msg_r, const Exception & history_r );
-    public:
-      Kind kind() const
-      { return _kind; }
-    protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
-    private:
-      Kind _kind;
+    UNSPECIFIED,
+    IGNORE,
+    SKIP,
+    RETRY,
+    ABORT
   };
-  ///////////////////////////////////////////////////////////////////
 
-  /** Convenience macro to declare more specific PluginScriptExceptions. */
-#define declException( EXCP, KIND )					\
-  struct EXCP : public UserRequestException {				\
-    explicit								\
-    EXCP( const std::string & msg_r = std::string() )			\
-      : UserRequestException( KIND, msg_r )				\
-    {}									\
-    EXCP( const std::string & msg_r, const Exception & history_r )	\
-      : UserRequestException( KIND, msg_r, history_r )			\
-    {}									\
+public:
+  explicit UserRequestException( const std::string &msg_r = std::string() );
+  UserRequestException( const std::string &msg_r, const Exception &history_r );
+  explicit UserRequestException(
+    Kind kind_r, const std::string &msg_r = std::string() );
+  UserRequestException(
+    Kind kind_r, const std::string &msg_r, const Exception &history_r );
+
+public:
+  Kind kind() const { return _kind; }
+protected:
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
+
+private:
+  Kind _kind;
+};
+///////////////////////////////////////////////////////////////////
+
+/** Convenience macro to declare more specific PluginScriptExceptions. */
+#define declException( EXCP, KIND )                                            \
+  struct EXCP : public UserRequestException                                    \
+  {                                                                            \
+    explicit EXCP( const std::string &msg_r = std::string() )                  \
+      : UserRequestException( KIND, msg_r )                                    \
+    {                                                                          \
+    }                                                                          \
+    EXCP( const std::string &msg_r, const Exception &history_r )               \
+      : UserRequestException( KIND, msg_r, history_r )                         \
+    {                                                                          \
+    }                                                                          \
   }
 
-  declException( IgnoreRequestException, IGNORE );
-  declException( SkipRequestException, SKIP );
-  declException( RetryRequestException, RETRY );
-  declException( AbortRequestException, ABORT );
+declException( IgnoreRequestException, IGNORE );
+declException( SkipRequestException, SKIP );
+declException( RetryRequestException, RETRY );
+declException( AbortRequestException, ABORT );
 
 #undef declException
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_USERREQUESTEXCEPTION_H

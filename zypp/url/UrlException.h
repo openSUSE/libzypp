@@ -9,138 +9,145 @@
 /**
  * \file zypp/url/UrlException.h
  */
-#ifndef   ZYPP_URL_URLEXCEPTION_H
-#define   ZYPP_URL_URLEXCEPTION_H
+#ifndef ZYPP_URL_URLEXCEPTION_H
+#define ZYPP_URL_URLEXCEPTION_H
 
 #include "zypp/base/Exception.h"
-
 
 //////////////////////////////////////////////////////////////////////
 namespace zypp
 { ////////////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////////////
-  namespace url
-  { //////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+namespace url
+{ //////////////////////////////////////////////////////////////////
 
-
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Base class for all URL exceptions.
      */
-    class UrlException: public zypp::Exception
-    {
-    public:
-      UrlException()
-        : zypp::Exception("Url exception")
-      {}
+class UrlException : public zypp::Exception
+{
+public:
+  UrlException()
+    : zypp::Exception( "Url exception" )
+  {
+  }
 
-      UrlException(const std::string &msg)
-        : zypp::Exception(msg)
-      {}
+  UrlException( const std::string &msg )
+    : zypp::Exception( msg )
+  {
+  }
 
-      virtual ~UrlException() throw() {};
-    };
+  virtual ~UrlException() throw(){};
+};
 
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Thrown if the encoded string contains a NUL byte (%00).
      */
-    class UrlDecodingException: public UrlException
-    {
-    public:
-      UrlDecodingException()
-        : UrlException("Url NUL decoding exception")
-      {}
+class UrlDecodingException : public UrlException
+{
+public:
+  UrlDecodingException()
+    : UrlException( "Url NUL decoding exception" )
+  {
+  }
 
-      UrlDecodingException(const std::string &msg)
-        : UrlException(msg)
-      {}
+  UrlDecodingException( const std::string &msg )
+    : UrlException( msg )
+  {
+  }
 
-      virtual ~UrlDecodingException() throw() {};
-    };
+  virtual ~UrlDecodingException() throw(){};
+};
 
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Thrown if the url or a component can't be parsed at all.
      */
-    class UrlParsingException: public UrlException
-    {
-    public:
-      UrlParsingException()
-        : UrlException("Url parsing failure exception")
-      {}
+class UrlParsingException : public UrlException
+{
+public:
+  UrlParsingException()
+    : UrlException( "Url parsing failure exception" )
+  {
+  }
 
-      UrlParsingException(const std::string &msg)
-        : UrlException(msg)
-      {}
+  UrlParsingException( const std::string &msg )
+    : UrlException( msg )
+  {
+  }
 
-      virtual ~UrlParsingException() throw() {};
-    };
+  virtual ~UrlParsingException() throw(){};
+};
 
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Thrown if a url component is invalid.
      */
-    class UrlBadComponentException: public UrlException
-    {
-    public:
-      UrlBadComponentException()
-        : UrlException("Url bad component exception")
-      {}
+class UrlBadComponentException : public UrlException
+{
+public:
+  UrlBadComponentException()
+    : UrlException( "Url bad component exception" )
+  {
+  }
 
-      UrlBadComponentException(const std::string &msg)
-        : UrlException(msg)
-      {}
+  UrlBadComponentException( const std::string &msg )
+    : UrlException( msg )
+  {
+  }
 
-      virtual ~UrlBadComponentException() throw() {};
-    };
+  virtual ~UrlBadComponentException() throw(){};
+};
 
-
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Thrown if scheme does not allow a component.
      */
-    class UrlNotAllowedException: public UrlException
-    {
-    public:
-      UrlNotAllowedException()
-        : UrlException("Url not allowed component exception")
-      {}
+class UrlNotAllowedException : public UrlException
+{
+public:
+  UrlNotAllowedException()
+    : UrlException( "Url not allowed component exception" )
+  {
+  }
 
-      UrlNotAllowedException(const std::string &msg)
-        : UrlException(msg)
-      {}
+  UrlNotAllowedException( const std::string &msg )
+    : UrlException( msg )
+  {
+  }
 
-      virtual ~UrlNotAllowedException() throw() {};
-    };
+  virtual ~UrlNotAllowedException() throw(){};
+};
 
-
-    // ---------------------------------------------------------------
-    /**
+// ---------------------------------------------------------------
+/**
      * Thrown if a feature e.g. parsing of a component
      * is not supported for the url/scheme.
      */
-    class UrlNotSupportedException: public UrlException
-    {
-    public:
-      UrlNotSupportedException()
-        : UrlException("Url parsing unsupported exception")
-      {}
+class UrlNotSupportedException : public UrlException
+{
+public:
+  UrlNotSupportedException()
+    : UrlException( "Url parsing unsupported exception" )
+  {
+  }
 
-      UrlNotSupportedException(const std::string &msg)
-        : UrlException(msg)
-      {}
+  UrlNotSupportedException( const std::string &msg )
+    : UrlException( msg )
+  {
+  }
 
-      virtual ~UrlNotSupportedException() throw() {};
-    };
+  virtual ~UrlNotSupportedException() throw(){};
+};
 
+//////////////////////////////////////////////////////////////////
+} // namespace url
+////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////
-  } // namespace url
-  ////////////////////////////////////////////////////////////////////
-
-  ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 } // namespace zypp
 //////////////////////////////////////////////////////////////////////
 

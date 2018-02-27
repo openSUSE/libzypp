@@ -9,8 +9,8 @@
 /**
  * \file zypp/url/UrlUtils.h
  */
-#ifndef   ZYPP_URL_URLUTILS_H
-#define   ZYPP_URL_URLUTILS_H
+#ifndef ZYPP_URL_URLUTILS_H
+#define ZYPP_URL_URLUTILS_H
 
 #include "zypp/url/UrlException.h"
 
@@ -25,38 +25,34 @@
 namespace zypp
 { ////////////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////////////
-  /** Url details namespace. */
-  namespace url
-  { //////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+/** Url details namespace. */
+namespace url
+{ //////////////////////////////////////////////////////////////////
 
-
-    // ---------------------------------------------------------------
-    /** A parameter vector container.
+// ---------------------------------------------------------------
+/** A parameter vector container.
      * A string vector containing splited PathParam- or Query-String.
      * Each string in the vector is allways URL percent encoded and
      * usually contains a "key=value" pair.
      */
-    typedef std::vector < std::string >             ParamVec;
+typedef std::vector<std::string> ParamVec;
 
-
-    /** A parameter map container.
+/** A parameter map container.
      * A map containing key and value pairs parsed from a PathParam-
      * or Query-String.
      */
-    typedef std::map < std::string, std::string >   ParamMap;
+typedef std::map<std::string, std::string> ParamMap;
 
-
-    /** Encoding flags.
+/** Encoding flags.
      */
-    typedef enum {
-        E_ENCODED, //!< Flag to request encoded string(s).
-        E_DECODED  //!< Flag to request decoded string(s).
-    } EEncoding;
+typedef enum {
+  E_ENCODED, //!< Flag to request encoded string(s).
+  E_DECODED  //!< Flag to request decoded string(s).
+} EEncoding;
 
-
-    // ---------------------------------------------------------------
-    /** Encodes a string using URL percent encoding.
+// ---------------------------------------------------------------
+/** Encodes a string using URL percent encoding.
      *
      * By default, all characters except of "a-zA-Z0-9_.-" will be encoded.
      * Additional characters from the set ":/?#[]@!$&'()*+,;=", that are
@@ -81,13 +77,11 @@ namespace zypp
      * \param eflag    If to detect and skip already encoded substrings.
      * \return A percent encoded string.
      */
-    std::string
-    encode(const std::string &str, const std::string &safe = "",
-                                   EEncoding         eflag = E_DECODED);
+std::string encode( const std::string &str, const std::string &safe = "",
+  EEncoding eflag = E_DECODED );
 
-
-    // ---------------------------------------------------------------
-    /** Decodes a URL percent encoded string.
+// ---------------------------------------------------------------
+/** Decodes a URL percent encoded string.
      * Replaces all occurences of \c "%<hex><hex>" in the \p str string
      * with the character encoded using the two hexadecimal digits that
      * follows the "%" character.
@@ -102,12 +96,10 @@ namespace zypp
      * \throws UrlDecodingException if \p allowNUL is false and
      *         a encoded NUL byte (\c "%00") was found in \p str.
      */
-    std::string
-    decode(const std::string &str, bool allowNUL = false);
+std::string decode( const std::string &str, bool allowNUL = false );
 
-
-    // ---------------------------------------------------------------
-    /** Encode one character.
+// ---------------------------------------------------------------
+/** Encode one character.
      *
      * Encode the specified character \p c into its \c "%<hex><hex>"
      * representation.
@@ -116,12 +108,10 @@ namespace zypp
      * \return A percent encoded representation of the character,
      *         e.g. %20 for a ' ' (space).
      */
-    std::string
-    encode_octet(const unsigned char c);
+std::string encode_octet( const unsigned char c );
 
-
-    // ---------------------------------------------------------------
-    /** Decode one character.
+// ---------------------------------------------------------------
+/** Decode one character.
      *
      * Decode the \p hex parameter pointing to (at least) two hexadecimal
      * digits into its character value and return it.
@@ -139,12 +129,10 @@ namespace zypp
      * \return The value (0-255) encoded in the \p hex characters or -1
      *         if \p hex does not point to two hexadecimal characters.
      */
-    int
-    decode_octet(const char *hex);
+int decode_octet( const char *hex );
 
-
-    // ---------------------------------------------------------------
-    /** Split into a parameter vector.
+// ---------------------------------------------------------------
+/** Split into a parameter vector.
      *
      * Splits a parameter string \p pstr into substrings using \p psep
      * as separator and appends the resulting substrings to \p pvec.
@@ -157,14 +145,10 @@ namespace zypp
      * \param psep    Parameter separator character to split at.
      * \throws UrlNotSupportedException if \p psep separator is empty.
      */
-    void
-    split(ParamVec          &pvec,
-          const std::string &pstr,
-          const std::string &psep);
+void split( ParamVec &pvec, const std::string &pstr, const std::string &psep );
 
-
-    // ---------------------------------------------------------------
-    /** Split into a parameter map.
+// ---------------------------------------------------------------
+/** Split into a parameter map.
      *
      * Splits a parameter string \p pstr into substrings using \p psep as
      * separator and then, each substring into key and value pair using
@@ -191,16 +175,11 @@ namespace zypp
      * \throws UrlNotSupportedException if \p psep or \p vsep separator
      *         is empty.
      */
-    void
-    split(ParamMap          &pmap,
-          const std::string &pstr,
-          const std::string &psep,
-          const std::string &vsep,
-          EEncoding         eflag = E_ENCODED);
+void split( ParamMap &pmap, const std::string &pstr, const std::string &psep,
+  const std::string &vsep, EEncoding eflag = E_ENCODED );
 
-
-    // ---------------------------------------------------------------
-    /** Join parameter vector to a string.
+// ---------------------------------------------------------------
+/** Join parameter vector to a string.
      *
      * Creates a string containing all substrings from the \p pvec separated
      * by \p psep separator character. The substrings in \p pvec should be
@@ -213,13 +192,10 @@ namespace zypp
      * \param psep    Parameter separator character to use.
      * \return A parameter string.
      */
-    std::string
-    join(const ParamVec     &pvec,
-         const std::string  &psep);
+std::string join( const ParamVec &pvec, const std::string &psep );
 
-
-    // ---------------------------------------------------------------
-    /** Join parameter map to a string.
+// ---------------------------------------------------------------
+/** Join parameter map to a string.
      *
      * Creates a string containing all parameter key-value pairs from the
      * parameter map \p pmap, that will be joined using the \p psep character
@@ -240,18 +216,14 @@ namespace zypp
      * \throws UrlNotSupportedException if \p psep or \p vsep separator
      *         is empty.
      */
-    std::string
-    join(const ParamMap     &pmap,
-         const std::string  &psep,
-         const std::string  &vsep,
-         const std::string  &safe);
+std::string join( const ParamMap &pmap, const std::string &psep,
+  const std::string &vsep, const std::string &safe );
 
+//////////////////////////////////////////////////////////////////
+} // namespace url
+////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////
-  } // namespace url
-  ////////////////////////////////////////////////////////////////////
-
-  ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 } // namespace zypp
 //////////////////////////////////////////////////////////////////////
 

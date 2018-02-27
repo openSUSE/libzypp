@@ -20,29 +20,33 @@ namespace zypp
 { /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 // CLASS NAME : ProvideFilePolicy
-  
-  /** Policy for \ref provideFile.
+
+/** Policy for \ref provideFile.
     * Provides callback hook for progress reporting.
     */
-  class ProvideFilePolicy
+class ProvideFilePolicy
+{
+public:
+  /** Progress callback signature. */
+  typedef function<bool( int )> ProgressCB;
+
+  /** Set callback. */
+  ProvideFilePolicy &progressCB( ProgressCB progressCB_r )
   {
-  public:
-    /** Progress callback signature. */
-    typedef function<bool ( int )> ProgressCB;
+    _progressCB = progressCB_r;
+    return *this;
+  }
 
-    /** Set callback. */
-    ProvideFilePolicy & progressCB( ProgressCB progressCB_r )
-    { _progressCB = progressCB_r; return *this; }
+  /** Evaluate callback. */
+  bool progress( int value ) const;
 
-    /** Evaluate callback. */
-    bool progress( int value ) const;
-
-  public:
-    typedef function<bool ()> FailOnChecksumErrorCB;	///< Legacy to remain bincompat
-  private:
-    FailOnChecksumErrorCB _failOnChecksumErrorCB;	///< Legacy to remain bincompat
-    ProgressCB            _progressCB;
-  };
+public:
+  typedef function<bool()>
+    FailOnChecksumErrorCB; ///< Legacy to remain bincompat
+private:
+  FailOnChecksumErrorCB _failOnChecksumErrorCB; ///< Legacy to remain bincompat
+  ProgressCB _progressCB;
+};
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

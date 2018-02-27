@@ -16,15 +16,14 @@ namespace base
 class ZYppLockedException : public Exception
 {
 public:
-    ZYppLockedException( const std::string & msg_r,
-                         const std::string &name,
-                         pid_t locker_pid );
-    virtual ~ZYppLockedException() throw();
-    pid_t locker_pid() const { return _locker_pid; }
-    std::string name() const { return _name; }
+  ZYppLockedException(
+    const std::string &msg_r, const std::string &name, pid_t locker_pid );
+  virtual ~ZYppLockedException() throw();
+  pid_t locker_pid() const { return _locker_pid; }
+  std::string name() const { return _name; }
 private:
-    pid_t _locker_pid;
-    std::string _name;
+  pid_t _locker_pid;
+  std::string _name;
 };
 
 /**
@@ -43,23 +42,23 @@ private:
 class InterProcessMutex : private base::NonCopyable
 {
 public:
-   /**
+  /**
     * Processes can be of two types
     * Reader or Writer
     */
-    enum ConsumerType
-    {
-        Reader,
-        Writer
-    };
+  enum ConsumerType
+  {
+    Reader,
+    Writer
+  };
 
-   /**
+  /**
     * options to alter the mutex behavor
     */
-   class Options
-   {
-   public:
-       /**
+  class Options
+  {
+  public:
+    /**
         * Options for a mutex of type \ref ptype
         * with a given name and timeout.
         * Default is name "zypp" and no timeout
@@ -74,23 +73,22 @@ public:
         * directory if not.
         *
         */
-       Options( ConsumerType ptype,
-                const std::string &pname = "zypp",
-                int ptimeout = -1 );
+    Options( ConsumerType ptype, const std::string &pname = "zypp",
+      int ptimeout = -1 );
 
-       /**
+    /**
         * set the path where the lockfile is
         * created.
         */
-       void setPath( const Pathname &base );
+    void setPath( const Pathname &base );
 
-       std::string name;
-       int timeout;
-       ConsumerType type;
-       Pathname base;
-   };
-    
-   /**
+    std::string name;
+    int timeout;
+    ConsumerType type;
+    Pathname base;
+  };
+
+  /**
     * Creates a mutex with a name and a timeout.
     *
     * default timeout is -1 which means no timeout
@@ -105,25 +103,23 @@ public:
     * the timeout is reached.
     *
     */
-    InterProcessMutex( const Options &poptions );
+  InterProcessMutex( const Options &poptions );
 
-    /**
+  /**
      * Destructor, gives up the lock on the named
      * resource.
      */
-    ~InterProcessMutex();
+  ~InterProcessMutex();
 
 private:
-    bool isProcessRunning(pid_t pid_r);
-    Pathname lockFilePath() const;
+  bool isProcessRunning( pid_t pid_r );
+  Pathname lockFilePath() const;
+
 private:
-    shared_ptr<Fd> _fd;
-    Options _options;
+  shared_ptr<Fd> _fd;
+  Options _options;
 };
-
-
-} }
-
+}
+}
 
 #endif
-

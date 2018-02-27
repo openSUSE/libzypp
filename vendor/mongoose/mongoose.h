@@ -23,47 +23,50 @@
  */
 
 #ifndef MONGOOSE_HEADER_INCLUDED
-#define	MONGOOSE_HEADER_INCLUDED
+#define MONGOOSE_HEADER_INCLUDED
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-struct mg_context;	/* Handle for the HTTP service itself	*/
-struct mg_connection;	/* Handle for the individual connection	*/
+struct mg_context;    /* Handle for the HTTP service itself	*/
+struct mg_connection; /* Handle for the individual connection	*/
 
 /*
  * This structure contains full information about the HTTP request.
  * It is passed to the user-specified callback function as a parameter.
  */
-struct mg_request_info {
-	char	*request_method;	/* "GET", "POST", etc	*/
-	char	*uri;			/* Normalized URI	*/
-	char	*query_string;		/* \0 - terminated	*/
-	char	*post_data;		/* POST data buffer	*/
-	char	*remote_user;		/* Authenticated user	*/
-	long	remote_ip;		/* Client's IP address	*/
-	int	remote_port;		/* Client's port	*/
-	int	post_data_len;		/* POST buffer length	*/
-	int	http_version_major;
-	int	http_version_minor;
-	int	status_code;		/* HTTP status code	*/
-	int	num_headers;		/* Number of headers	*/
-#define	MAX_HTTP_HEADERS	64
-	struct mg_header {
-		char	*name;		/* HTTP header name	*/
-		char	*value;		/* HTTP header value	*/
-	} http_headers[MAX_HTTP_HEADERS];
+struct mg_request_info
+{
+  char *request_method; /* "GET", "POST", etc	*/
+  char *uri;            /* Normalized URI	*/
+  char *query_string;   /* \0 - terminated	*/
+  char *post_data;      /* POST data buffer	*/
+  char *remote_user;    /* Authenticated user	*/
+  long remote_ip;       /* Client's IP address	*/
+  int remote_port;      /* Client's port	*/
+  int post_data_len;    /* POST buffer length	*/
+  int http_version_major;
+  int http_version_minor;
+  int status_code; /* HTTP status code	*/
+  int num_headers; /* Number of headers	*/
+#define MAX_HTTP_HEADERS 64
+  struct mg_header
+  {
+    char *name;  /* HTTP header name	*/
+    char *value; /* HTTP header value	*/
+  } http_headers[ MAX_HTTP_HEADERS ];
 };
 
 /*
  * Mongoose configuration option.
  * Array of those is returned by mg_get_option_list().
  */
-struct mg_option {
-	char	*name;
-	char	*description;
-	char	*default_value;
+struct mg_option
+{
+  char *name;
+  char *description;
+  char *default_value;
 };
 
 /*
@@ -85,28 +88,28 @@ struct mg_option {
  *			does use its third argument to pass the result back.
  */
 
-struct mg_context *mg_start(void);
-void mg_stop(struct mg_context *);
-const struct mg_option *mg_get_option_list(void);
-const char *mg_get_option(struct mg_context *, const char *);
-int mg_set_option(struct mg_context *, const char *, const char *);
+struct mg_context *mg_start( void );
+void mg_stop( struct mg_context * );
+const struct mg_option *mg_get_option_list( void );
+const char *mg_get_option( struct mg_context *, const char * );
+int mg_set_option( struct mg_context *, const char *, const char * );
 
-typedef void (*mg_callback_t)(struct mg_connection *,
-		const struct mg_request_info *info, void *user_data);
+typedef void ( *mg_callback_t )(
+  struct mg_connection *, const struct mg_request_info *info, void *user_data );
 
-void mg_bind_to_uri(struct mg_context *ctx, const char *uri_regex,
-		mg_callback_t func, void *user_data);
-void mg_bind_to_error_code(struct mg_context *ctx, int error_code,
-		mg_callback_t func, void *user_data);
-void mg_protect_uri(struct mg_context *ctx, const char *uri_regex,
-		mg_callback_t func, void *user_data);
+void mg_bind_to_uri( struct mg_context *ctx, const char *uri_regex,
+  mg_callback_t func, void *user_data );
+void mg_bind_to_error_code(
+  struct mg_context *ctx, int error_code, mg_callback_t func, void *user_data );
+void mg_protect_uri( struct mg_context *ctx, const char *uri_regex,
+  mg_callback_t func, void *user_data );
 
 /*
  * Needed only if SSL certificate asks for a password.
  * Instead of prompting for a password, specified function will be called.
  */
-typedef int (*mg_spcb_t)(char *buf, int num, int w, void *key);
-void mg_set_ssl_password_callback(struct mg_context *ctx, mg_spcb_t func);
+typedef int ( *mg_spcb_t )( char *buf, int num, int w, void *key );
+void mg_set_ssl_password_callback( struct mg_context *ctx, mg_spcb_t func );
 
 /*
  * Functions that can be used within the user URI callback
@@ -117,10 +120,10 @@ void mg_set_ssl_password_callback(struct mg_context *ctx, mg_spcb_t func);
  * mg_get_var	Helper function to get form variable value.
  *		Returned value must be free-d by the caller.
  */
-int mg_write(struct mg_connection *, const void *buf, int len);
-int mg_printf(struct mg_connection *, const char *fmt, ...);
-const char *mg_get_header(const struct mg_connection *, const char *hdr_name);
-char *mg_get_var(const struct mg_connection *, const char *var_name);
+int mg_write( struct mg_connection *, const void *buf, int len );
+int mg_printf( struct mg_connection *, const char *fmt, ... );
+const char *mg_get_header( const struct mg_connection *, const char *hdr_name );
+char *mg_get_var( const struct mg_connection *, const char *var_name );
 
 /*
  * General helper functions
@@ -129,8 +132,8 @@ char *mg_get_var(const struct mg_connection *, const char *var_name);
  *		a NULL terminated list of asciz strings.
  *		Fills buf with stringified \0 terminated MD5 hash.
  */
-const char *mg_version(void);
-void mg_md5(char *buf, ...);
+const char *mg_version( void );
+void mg_md5( char *buf, ... );
 
 #ifdef __cplusplus
 }

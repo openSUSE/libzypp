@@ -29,58 +29,61 @@
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : SolverQueueItemInstallOneOf
 
-class SolverQueueItemInstallOneOf : public SolverQueueItem {
+class SolverQueueItemInstallOneOf : public SolverQueueItem
+{
 
-  public:
-    typedef std::list<PoolItem> PoolItemList;
-    
-  private:
+public:
+  typedef std::list<PoolItem> PoolItemList;
 
-    PoolItemList _oneOfList; // List of candidates
-    bool _soft;          // if triggered by a soft requirement (a recommends)    
+private:
+  PoolItemList _oneOfList; // List of candidates
+  bool _soft;              // if triggered by a soft requirement (a recommends)
 
-  public:
+public:
+  SolverQueueItemInstallOneOf(
+    const ResPool &pool, const PoolItemList &itemList, bool soft = false );
+  virtual ~SolverQueueItemInstallOneOf();
 
-    SolverQueueItemInstallOneOf (const ResPool & pool, const PoolItemList & itemList, bool soft = false);
-    virtual ~SolverQueueItemInstallOneOf();
-    
-    // ---------------------------------- I/O
+  // ---------------------------------- I/O
 
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+  virtual std::ostream &dumpOn( std::ostream &str ) const;
 
-    friend std::ostream& operator<<(std::ostream & str, const SolverQueueItemInstallOneOf & obj)
-    { return obj.dumpOn (str); }
+  friend std::ostream &operator<<(
+    std::ostream &str, const SolverQueueItemInstallOneOf &obj )
+  {
+    return obj.dumpOn( str );
+  }
 
-    // ---------------------------------- accessors
+  // ---------------------------------- accessors
 
-    bool isSoft (void) const { return _soft; }    
-    
-    // ---------------------------------- methods
+  bool isSoft( void ) const { return _soft; }
 
-    virtual bool addRule (sat::detail::CQueue & q);
-    virtual SolverQueueItem_Ptr copy (void) const;
-    virtual int cmp (SolverQueueItem_constPtr item) const;
+  // ---------------------------------- methods
+
+  virtual bool addRule( sat::detail::CQueue &q );
+  virtual SolverQueueItem_Ptr copy( void ) const;
+  virtual int cmp( SolverQueueItem_constPtr item ) const;
 };
 
 ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////
 
 #endif // ZYPP_SOLVER_DETAIL_QUEUEITEMINSTALLONEOF_H

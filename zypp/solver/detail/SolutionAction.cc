@@ -32,162 +32,185 @@
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 { ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  { /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    { ///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{ ///////////////////////////////////////////////////////////////////
 
 using namespace std;
 
-IMPL_PTR_TYPE(SolutionAction);
+IMPL_PTR_TYPE( SolutionAction );
 
 //---------------------------------------------------------------------------
 
-SolutionAction::SolutionAction()
-{
-}
+SolutionAction::SolutionAction() {}
 
-
-SolutionAction::~SolutionAction()
-{
-}
-
+SolutionAction::~SolutionAction() {}
 
 //---------------------------------------------------------------------------
 
-ostream &
-TransactionSolutionAction::dumpOn( ostream& os) const
+ostream &TransactionSolutionAction::dumpOn( ostream &os ) const
 {
-    os << "TransactionSolutionAction: ";
-    switch (_action) {
-	case KEEP:			os << "Keep " << _item; break;
-	case INSTALL:			os << "Install " << _item; break;
-	case REMOVE:			os << "Remove " << _item; break;
-	case UNLOCK:			os << "Unlock " << _item; break;
-    	case LOCK:			os << "Lock " << _item; break;
-	case REMOVE_EXTRA_REQUIRE:	os << "Remove require " << _capability; break;
-	case REMOVE_EXTRA_CONFLICT:	os << "Remove conflict " << _capability; break;
-	case ADD_SOLVE_QUEUE_ITEM:	os << "Add SolveQueueItem " <<  _solverQueueItem; break;
-	case REMOVE_SOLVE_QUEUE_ITEM:	os << "Remove SolveQueueItem " <<  _solverQueueItem; break;
-    }
-    return os;
+  os << "TransactionSolutionAction: ";
+  switch ( _action )
+  {
+    case KEEP:
+      os << "Keep " << _item;
+      break;
+    case INSTALL:
+      os << "Install " << _item;
+      break;
+    case REMOVE:
+      os << "Remove " << _item;
+      break;
+    case UNLOCK:
+      os << "Unlock " << _item;
+      break;
+    case LOCK:
+      os << "Lock " << _item;
+      break;
+    case REMOVE_EXTRA_REQUIRE:
+      os << "Remove require " << _capability;
+      break;
+    case REMOVE_EXTRA_CONFLICT:
+      os << "Remove conflict " << _capability;
+      break;
+    case ADD_SOLVE_QUEUE_ITEM:
+      os << "Add SolveQueueItem " << _solverQueueItem;
+      break;
+    case REMOVE_SOLVE_QUEUE_ITEM:
+      os << "Remove SolveQueueItem " << _solverQueueItem;
+      break;
+  }
+  return os;
 }
 
-
-ostream&
-operator<<( ostream& os, const SolutionActionList & actionlist)
+ostream &operator<<( ostream &os, const SolutionActionList &actionlist )
 {
-    for (SolutionActionList::const_iterator iter = actionlist.begin(); iter != actionlist.end(); ++iter) {
-	os << *(*iter);
-	os << endl;
-    }
-    return os;
-}
-
-//---------------------------------------------------------------------------
-
-ostream &
-InjectSolutionAction::dumpOn( ostream& os ) const
-{
-    os << "InjectSolutionAction: ";
-    switch (_kind) {
-	case WEAK:	os << "Weak"; break;
-	default: os << "Wrong kind"; break;
-    }
-    os << " ";
-    os << _item;
-    return os;
+  for ( SolutionActionList::const_iterator iter = actionlist.begin();
+        iter != actionlist.end(); ++iter )
+  {
+    os << *( *iter );
+    os << endl;
+  }
+  return os;
 }
 
 //---------------------------------------------------------------------------
 
-
-ostream &
-SolutionAction::dumpOn( std::ostream & os ) const
+ostream &InjectSolutionAction::dumpOn( ostream &os ) const
 {
-    os << "SolutionAction<";
-    os << "not specified";
-    os << "> ";
-    return os;
+  os << "InjectSolutionAction: ";
+  switch ( _kind )
+  {
+    case WEAK:
+      os << "Weak";
+      break;
+    default:
+      os << "Wrong kind";
+      break;
+  }
+  os << " ";
+  os << _item;
+  return os;
 }
 
+//---------------------------------------------------------------------------
 
-bool
-TransactionSolutionAction::execute(ResolverInternal & resolver) const
+ostream &SolutionAction::dumpOn( std::ostream &os ) const
 {
-    bool ret = true;
-    switch (action()) {
-	case KEEP:
-	    _item.status().resetTransact (ResStatus::USER);
-    	    ret = _item.status().setTransact (false, ResStatus::APPL_HIGH); // APPL_HIGH: Locking should not be saved permanently
-	    break;
-	case INSTALL:
-	    if (_item.status().isToBeUninstalled())
-		ret = _item.status().setTransact (false, ResStatus::USER);
-	    else
-		_item.status().setToBeInstalled (ResStatus::USER);
-	    break;
-	case REMOVE:
-	    if (_item.status().isToBeInstalled()) {
-		_item.status().setTransact (false,ResStatus::USER);
-		_item.status().setLock (true,ResStatus::USER); // no other dependency can set it again
-	    } else if (_item.status().isInstalled())
-		_item.status().setToBeUninstalled (ResStatus::USER);
-	    else
-		_item.status().setLock (true,ResStatus::USER); // no other dependency can set it again
-	    break;
-	case UNLOCK:
-	    ret = _item.status().setLock (false, ResStatus::USER);
-	    if (!ret) ERR << "Cannot unlock " << _item << endl;
-	    break;
-	case LOCK:
-    	    _item.status().resetTransact (ResStatus::USER);
-	    ret = _item.status().setLock (true, ResStatus::APPL_HIGH); // APPL_HIGH: Locking should not be saved permanently
-	    if (!ret) ERR << "Cannot lock " << _item << endl;
-	    break;
-	case REMOVE_EXTRA_REQUIRE:
-	    resolver.removeExtraRequire (_capability);
-	    break;
-	case REMOVE_EXTRA_CONFLICT:
-	    resolver.removeExtraConflict (_capability);
-	    break;
-	case ADD_SOLVE_QUEUE_ITEM:
-	    resolver.addQueueItem(_solverQueueItem);
-	    break;
-	case REMOVE_SOLVE_QUEUE_ITEM:
-	    resolver.removeQueueItem(_solverQueueItem);
-	    break;
-	default:
-	    ERR << "Wrong TransactionKind" << endl;
-	    ret = false;
-    }
-    return ret;
+  os << "SolutionAction<";
+  os << "not specified";
+  os << "> ";
+  return os;
 }
 
-bool
-InjectSolutionAction::execute(ResolverInternal & resolver) const
+bool TransactionSolutionAction::execute( ResolverInternal &resolver ) const
 {
-    switch (_kind) {
-        case WEAK:
-	    // set item dependencies to weak
-	    resolver.addWeak (_item);
-            break;
-        default:
-	    ERR << "No valid InjectSolutionAction kind found" << endl;
-	    return false;
-    }
-
-    return true;
+  bool ret = true;
+  switch ( action() )
+  {
+    case KEEP:
+      _item.status().resetTransact( ResStatus::USER );
+      ret = _item.status().setTransact( false,
+        ResStatus::
+          APPL_HIGH ); // APPL_HIGH: Locking should not be saved permanently
+      break;
+    case INSTALL:
+      if ( _item.status().isToBeUninstalled() )
+        ret = _item.status().setTransact( false, ResStatus::USER );
+      else
+        _item.status().setToBeInstalled( ResStatus::USER );
+      break;
+    case REMOVE:
+      if ( _item.status().isToBeInstalled() )
+      {
+        _item.status().setTransact( false, ResStatus::USER );
+        _item.status().setLock(
+          true, ResStatus::USER ); // no other dependency can set it again
+      }
+      else if ( _item.status().isInstalled() )
+        _item.status().setToBeUninstalled( ResStatus::USER );
+      else
+        _item.status().setLock(
+          true, ResStatus::USER ); // no other dependency can set it again
+      break;
+    case UNLOCK:
+      ret = _item.status().setLock( false, ResStatus::USER );
+      if ( !ret )
+        ERR << "Cannot unlock " << _item << endl;
+      break;
+    case LOCK:
+      _item.status().resetTransact( ResStatus::USER );
+      ret = _item.status().setLock( true,
+        ResStatus::
+          APPL_HIGH ); // APPL_HIGH: Locking should not be saved permanently
+      if ( !ret )
+        ERR << "Cannot lock " << _item << endl;
+      break;
+    case REMOVE_EXTRA_REQUIRE:
+      resolver.removeExtraRequire( _capability );
+      break;
+    case REMOVE_EXTRA_CONFLICT:
+      resolver.removeExtraConflict( _capability );
+      break;
+    case ADD_SOLVE_QUEUE_ITEM:
+      resolver.addQueueItem( _solverQueueItem );
+      break;
+    case REMOVE_SOLVE_QUEUE_ITEM:
+      resolver.removeQueueItem( _solverQueueItem );
+      break;
+    default:
+      ERR << "Wrong TransactionKind" << endl;
+      ret = false;
+  }
+  return ret;
 }
 
-      ///////////////////////////////////////////////////////////////////
-    };// namespace detail
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-  };// namespace solver
-  ///////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////
-};// namespace zypp
+bool InjectSolutionAction::execute( ResolverInternal &resolver ) const
+{
+  switch ( _kind )
+  {
+    case WEAK:
+      // set item dependencies to weak
+      resolver.addWeak( _item );
+      break;
+    default:
+      ERR << "No valid InjectSolutionAction kind found" << endl;
+      return false;
+  }
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////
+}; // namespace detail
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+}; // namespace solver
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+}; // namespace zypp
 /////////////////////////////////////////////////////////////////////////

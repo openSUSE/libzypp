@@ -18,35 +18,40 @@ using std::endl;
 
 struct Print
 {
-  template<class Tp>
-    bool operator()( const Tp & val_r ) const
-    { USR << val_r << endl; return true; }
+  template <class Tp>
+  bool operator()( const Tp &val_r ) const
+  {
+    USR << val_r << endl;
+    return true;
+  }
 };
 
 ///////////////////////////////////////////////////////////////////
 
-template<class Tp>
-  struct PrintOn : public std::unary_function<Tp, bool>
+template <class Tp>
+struct PrintOn : public std::unary_function<Tp, bool>
+{
+  bool operator()( const Tp &obj ) const
   {
-    bool operator()( const Tp & obj ) const
-    {
-      if ( _leadNL )
-        _str << std::endl << _prfx << obj;
-      else
-        _str << _prfx << obj << std::endl;
-      return true;
-    }
+    if ( _leadNL )
+      _str << std::endl << _prfx << obj;
+    else
+      _str << _prfx << obj << std::endl;
+    return true;
+  }
 
-    PrintOn( std::ostream & str, const std::string & prfx = std::string(), bool leadNL = false )
+  PrintOn( std::ostream &str, const std::string &prfx = std::string(),
+    bool leadNL = false )
     : _str( str )
     , _prfx( prfx )
     , _leadNL( leadNL )
-    {}
+  {
+  }
 
-    std::ostream & _str;
-    std::string _prfx;
-    bool _leadNL;
-  };
+  std::ostream &_str;
+  std::string _prfx;
+  bool _leadNL;
+};
 
 ///////////////////////////////////////////////////////////////////
 #endif // MA_PRINTING_H

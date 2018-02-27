@@ -30,27 +30,35 @@ using namespace std;
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  ///////////////////////////////////////////////////////////////////////
-  namespace solver
-  {
-    /////////////////////////////////////////////////////////////////////
-    namespace detail
-    {
-      ProblemSolutionCombi::ProblemSolutionCombi()
-      {}
+///////////////////////////////////////////////////////////////////////
+namespace solver
+{
+/////////////////////////////////////////////////////////////////////
+namespace detail
+{
+ProblemSolutionCombi::ProblemSolutionCombi() {}
 
-      void ProblemSolutionCombi::addSingleAction( Capability capability, TransactionKind action)
-      { addAction( new TransactionSolutionAction( capability, action ) ); }
+void ProblemSolutionCombi::addSingleAction(
+  Capability capability, TransactionKind action )
+{
+  addAction( new TransactionSolutionAction( capability, action ) );
+}
 
-      void ProblemSolutionCombi::addSingleAction( PoolItem item, TransactionKind action )
-      { addAction( new TransactionSolutionAction( item, action ) ); }
+void ProblemSolutionCombi::addSingleAction(
+  PoolItem item, TransactionKind action )
+{
+  addAction( new TransactionSolutionAction( item, action ) );
+}
 
-      void ProblemSolutionCombi::addSingleAction( SolverQueueItem_Ptr item, TransactionKind action )
-      { addAction( new TransactionSolutionAction( item, action ) ); }
+void ProblemSolutionCombi::addSingleAction(
+  SolverQueueItem_Ptr item, TransactionKind action )
+{
+  addAction( new TransactionSolutionAction( item, action ) );
+}
 
-    } // namespace detail
-    /////////////////////////////////////////////////////////////////////
-  } // namespace solver
-  ///////////////////////////////////////////////////////////////////////
+} // namespace detail
+/////////////////////////////////////////////////////////////////////
+} // namespace solver
+///////////////////////////////////////////////////////////////////////
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////

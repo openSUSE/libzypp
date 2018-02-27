@@ -15,56 +15,67 @@
 
 namespace zypp
 {
-  namespace repo
-  {
+namespace repo
+{
 
-  /**
+/**
    * \short Repository type enumeration
    *
    * Repositories can be from varous types
    * ...
    */
-  struct RepoType
+struct RepoType
+{
+  static const RepoType RPMMD;
+  static const RepoType YAST2;
+  static const RepoType RPMPLAINDIR;
+  static const RepoType NONE;
+
+  enum Type
   {
-    static const RepoType RPMMD;
-    static const RepoType YAST2;
-    static const RepoType RPMPLAINDIR;
-    static const RepoType NONE;
-
-    enum Type
-    {
-      NONE_e,
-      RPMMD_e,
-      YAST2_e,
-      RPMPLAINDIR_e,
-    };
-
-    RepoType() : _type(NONE_e) {}
-
-    RepoType(Type type) : _type(type) {}
-
-    explicit RepoType(const std::string & strval_r);
-
-    Type toEnum() const { return _type; }
-
-    RepoType::Type parse(const std::string & strval_r);
-
-    const std::string & asString() const;
-
-    Type _type;
+    NONE_e,
+    RPMMD_e,
+    YAST2_e,
+    RPMPLAINDIR_e,
   };
 
+  RepoType()
+    : _type( NONE_e )
+  {
+  }
 
-  inline std::ostream & operator<<( std::ostream & str, const RepoType & obj )
-  { return str << obj.asString(); }
+  RepoType( Type type )
+    : _type( type )
+  {
+  }
 
-  inline bool operator==(const RepoType & obj1, const RepoType & obj2)
-  { return obj1._type == obj2._type; }
+  explicit RepoType( const std::string &strval_r );
 
-  inline bool operator!=(const RepoType & obj1, const RepoType & obj2)
-  { return ! (obj1 == obj2); }
+  Type toEnum() const { return _type; }
 
-  } // ns repo
+  RepoType::Type parse( const std::string &strval_r );
+
+  const std::string &asString() const;
+
+  Type _type;
+};
+
+inline std::ostream &operator<<( std::ostream &str, const RepoType &obj )
+{
+  return str << obj.asString();
+}
+
+inline bool operator==( const RepoType &obj1, const RepoType &obj2 )
+{
+  return obj1._type == obj2._type;
+}
+
+inline bool operator!=( const RepoType &obj1, const RepoType &obj2 )
+{
+  return !( obj1 == obj2 );
+}
+
+} // ns repo
 } // ns zypp
 
 #endif

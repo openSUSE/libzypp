@@ -32,18 +32,18 @@
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Functional.h"
 
-#include "zypp/solver/detail/Types.h"	// SolutionAction type
+#include "zypp/solver/detail/Types.h" // SolutionAction type
 
 /////////////////////////////////////////////////////////////////////////
-namespace zypp 
+namespace zypp
 {
-  DEFINE_PTR_TYPE(Resolver);
+DEFINE_PTR_TYPE( Resolver );
 
-  DEFINE_PTR_TYPE(ProblemSolution);
-  typedef std::list<ProblemSolution_Ptr> ProblemSolutionList;
+DEFINE_PTR_TYPE( ProblemSolution );
+typedef std::list<ProblemSolution_Ptr> ProblemSolutionList;
 
-  DEFINE_PTR_TYPE(ResolverProblem);
-  typedef std::list<ResolverProblem_Ptr> ResolverProblemList;
+DEFINE_PTR_TYPE( ResolverProblem );
+typedef std::list<ResolverProblem_Ptr> ResolverProblemList;
 
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////

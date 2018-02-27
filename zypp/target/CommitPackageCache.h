@@ -24,96 +24,106 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace target
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace target
+{ /////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    /// \class RepoProvidePackage
-    /// \short Default PackageProvider for \ref CommitPackageCache
-    ///
-    /// \p pool_r \ref ResPool used to get candidates
-    /// \p pi item to be commited
-    ///////////////////////////////////////////////////////////////////
-    class RepoProvidePackage
-    {
-    public:
-      RepoProvidePackage();
-      ~RepoProvidePackage();
+///////////////////////////////////////////////////////////////////
+/// \class RepoProvidePackage
+/// \short Default PackageProvider for \ref CommitPackageCache
+///
+/// \p pool_r \ref ResPool used to get candidates
+/// \p pi item to be commited
+///////////////////////////////////////////////////////////////////
+class RepoProvidePackage
+{
+public:
+  RepoProvidePackage();
+  ~RepoProvidePackage();
 
-      /** Provide package optionally fron cache only. */
-      ManagedFile operator()( const PoolItem & pi, bool fromCache_r );
+  /** Provide package optionally fron cache only. */
+  ManagedFile operator()( const PoolItem &pi, bool fromCache_r );
 
-    private:
-      struct Impl;
-      RW_pointer<Impl> _impl;
-    };
+private:
+  struct Impl;
+  RW_pointer<Impl> _impl;
+};
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	CLASS NAME : CommitPackageCache
-    //
-    /** Target::commit helper optimizing package provision.
+///////////////////////////////////////////////////////////////////
+//
+//	CLASS NAME : CommitPackageCache
+//
+/** Target::commit helper optimizing package provision.
     */
-    class CommitPackageCache
-    {
-      friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
+class CommitPackageCache
+{
+  friend std::ostream &operator<<(
+    std::ostream &str, const CommitPackageCache &obj );
 
-    public:
-      typedef function<ManagedFile( const PoolItem & pi, bool fromCache_r )> PackageProvider;
+public:
+  typedef function<ManagedFile( const PoolItem &pi, bool fromCache_r )>
+    PackageProvider;
 
-    public:
-      /** Ctor */
-      CommitPackageCache( const PackageProvider & packageProvider_r = RepoProvidePackage() );
+public:
+  /** Ctor */
+  CommitPackageCache(
+    const PackageProvider &packageProvider_r = RepoProvidePackage() );
 
-      /** \deprecated Legacy Ctor; Pathname rootDir_r is not used.
+  /** \deprecated Legacy Ctor; Pathname rootDir_r is not used.
        * The repositories RepoInfo::packagesPath defines the cache location.
        */
-      CommitPackageCache( const Pathname & /*rootDir_r*/, const PackageProvider & packageProvider_r = RepoProvidePackage() ) ZYPP_DEPRECATED;
+  CommitPackageCache( const Pathname & /*rootDir_r*/,
+    const PackageProvider &packageProvider_r = RepoProvidePackage() )
+    ZYPP_DEPRECATED;
 
-      /** Dtor */
-      ~CommitPackageCache();
+  /** Dtor */
+  ~CommitPackageCache();
 
-    public:
-      /** Download(commit) sequence of solvables to compute read ahead. */
-      void setCommitList( std::vector<sat::Solvable> commitList_r );
-      /** \overload */
-      template <class TIterator>
-      void setCommitList( TIterator begin_r, TIterator end_r )
-      { setCommitList( std::vector<sat::Solvable>( begin_r, end_r  ) ); }
+public:
+  /** Download(commit) sequence of solvables to compute read ahead. */
+  void setCommitList( std::vector<sat::Solvable> commitList_r );
+  /** \overload */
+  template <class TIterator>
+  void setCommitList( TIterator begin_r, TIterator end_r )
+  {
+    setCommitList( std::vector<sat::Solvable>( begin_r, end_r ) );
+  }
 
-      /** Provide a package. */
-      ManagedFile get( const PoolItem & citem_r );
-      /** \overload */
-      ManagedFile get( sat::Solvable citem_r )
-      { return get( PoolItem(citem_r) ); }
+  /** Provide a package. */
+  ManagedFile get( const PoolItem &citem_r );
+  /** \overload */
+  ManagedFile get( sat::Solvable citem_r )
+  {
+    return get( PoolItem( citem_r ) );
+  }
 
-      /** Whether preloaded hint is set.
+  /** Whether preloaded hint is set.
        * If preloaded the cache tries to avoid trigering the infoInCache CB,
        * based on the assumption this was already done when preloading the cache.
        */
-      bool preloaded() const;
-      /** Set preloaded hint. */
-      void preloaded( bool newval_r );
+  bool preloaded() const;
+  /** Set preloaded hint. */
+  void preloaded( bool newval_r );
 
-    public:
-      /** Implementation. */
-      class Impl;
-      /** Ctor taking an implementation. */
-      explicit CommitPackageCache( Impl * pimpl_r );
-    private:
-      /** Pointer to implementation. */
-      RW_pointer<Impl> _pimpl;
-    };
-    ///////////////////////////////////////////////////////////////////
+public:
+  /** Implementation. */
+  class Impl;
+  /** Ctor taking an implementation. */
+  explicit CommitPackageCache( Impl *pimpl_r );
 
-    /** \relates CommitPackageCache Stream output */
-    std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
+private:
+  /** Pointer to implementation. */
+  RW_pointer<Impl> _pimpl;
+};
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace target
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/** \relates CommitPackageCache Stream output */
+std::ostream &operator<<( std::ostream &str, const CommitPackageCache &obj );
+
+/////////////////////////////////////////////////////////////////
+} // namespace target
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_TARGET_COMMITPACKAGECACHE_H

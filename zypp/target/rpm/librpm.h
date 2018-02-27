@@ -17,8 +17,7 @@
 #include <rpm/rpm4compat.h>
 #endif // _RPM_5
 
-extern "C"
-{
+extern "C" {
 #ifdef _RPM_5
 #include <rpm/rpmtag.h>
 #else

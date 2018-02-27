@@ -26,67 +26,80 @@
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace debug
-  { /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+namespace debug
+{ /////////////////////////////////////////////////////////////////
 
-    /** \defgroup DEBUG Debug tools
+/** \defgroup DEBUG Debug tools
     */
 
 #define TAG INT << __PRETTY_FUNCTION__ << std::endl
 
-    /** 'ps v' */
-    inline std::ostream & dumpMemOn( std::ostream & str, const std::string & msg = std::string() )
-    {
-      static std::string mypid( str::numstring( getpid() ) );
-      const char* argv[] =
-      {
-        "ps",
-        "v",
-        mypid.c_str(),
-        NULL
-      };
-      ExternalProgram prog(argv,ExternalProgram::Discard_Stderr, false, -1, true);
+/** 'ps v' */
+inline std::ostream &dumpMemOn(
+  std::ostream &str, const std::string &msg = std::string() )
+{
+  static std::string mypid( str::numstring( getpid() ) );
+  const char *argv[] = {"ps", "v", mypid.c_str(), NULL};
+  ExternalProgram prog(
+    argv, ExternalProgram::Discard_Stderr, false, -1, true );
 
-      str << "MEMUSAGE " << msg << std::endl;
-      for( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )
-          str << line;
+  str << "MEMUSAGE " << msg << std::endl;
+  for ( std::string line = prog.receiveLine(); !line.empty();
+        line = prog.receiveLine() )
+    str << line;
 
-      prog.close();
-      return str;
-    }
+  prog.close();
+  return str;
+}
 
-    ///////////////////////////////////////////////////////////////////
-    /** \defgroup DBG_TRACER Tracer
+///////////////////////////////////////////////////////////////////
+/** \defgroup DBG_TRACER Tracer
      * \ingroup DEBUG
     */
-    //@{
-    /** Base for a simple tracer. Provides an enum indicating which
+//@{
+/** Base for a simple tracer. Provides an enum indicating which
      * traced functions were called.
     */
-    struct TraceCADBase
-    {
-      enum What { CTOR, COPYCTOR, MOVECTOR, ASSIGN, MOVEASSIGN, DTOR, PING };
-      std::string _ident;
-    };
+struct TraceCADBase
+{
+  enum What
+  {
+    CTOR,
+    COPYCTOR,
+    MOVECTOR,
+    ASSIGN,
+    MOVEASSIGN,
+    DTOR,
+    PING
+  };
+  std::string _ident;
+};
 
-    /** \relates TraceCADBase Stream output of TraceCADBase::What. */
-    inline std::ostream & operator<<( std::ostream & str, TraceCADBase::What obj )
-    {
-      switch( obj )
-        {
-        case TraceCADBase::CTOR:	return str << "CTOR";
-        case TraceCADBase::COPYCTOR:	return str << "COPYCTOR";
-        case TraceCADBase::MOVECTOR:	return str << "MOVECTOR";
-        case TraceCADBase::ASSIGN:	return str << "ASSIGN";
-        case TraceCADBase::MOVEASSIGN:	return str << "MOVEASSIGN";
-        case TraceCADBase::DTOR:	return str << "DTOR";
-        case TraceCADBase::PING:	return str << "PING";
-        }
-      return str;
-    }
+/** \relates TraceCADBase Stream output of TraceCADBase::What. */
+inline std::ostream &operator<<( std::ostream &str, TraceCADBase::What obj )
+{
+  switch ( obj )
+  {
+    case TraceCADBase::CTOR:
+      return str << "CTOR";
+    case TraceCADBase::COPYCTOR:
+      return str << "COPYCTOR";
+    case TraceCADBase::MOVECTOR:
+      return str << "MOVECTOR";
+    case TraceCADBase::ASSIGN:
+      return str << "ASSIGN";
+    case TraceCADBase::MOVEASSIGN:
+      return str << "MOVEASSIGN";
+    case TraceCADBase::DTOR:
+      return str << "DTOR";
+    case TraceCADBase::PING:
+      return str << "PING";
+  }
+  return str;
+}
 
-    /** A simple tracer for (copy) Construction, Assignment, and
+/** A simple tracer for (copy) Construction, Assignment, and
      * Destruction. To trace class Foo, derive public from
      * TraceCAD<Foo>. This tracer simply calls traceCAD in each
      * traced method, and traceCAD simply drops a line in the log.
@@ -107,78 +120,96 @@ namespace zypp
      *
      * \see \c Example.COW_debug.cc.
      */
-    template<class Tp>
-      struct TraceCAD : public base::ProvideNumericId<TraceCAD<Tp>, unsigned long>
-                      , public TraceCADBase
-      {
-        static unsigned long & _totalTraceCAD()
-        { static unsigned long _val = 0;
-          return _val; }
+template <class Tp>
+struct TraceCAD : public base::ProvideNumericId<TraceCAD<Tp>, unsigned long>,
+                  public TraceCADBase
+{
+  static unsigned long &_totalTraceCAD()
+  {
+    static unsigned long _val = 0;
+    return _val;
+  }
 
-        TraceCAD()
-        { _ident = __PRETTY_FUNCTION__;
-          ++_totalTraceCAD();
-          traceCAD( CTOR, *this, *this ); }
+  TraceCAD()
+  {
+    _ident = __PRETTY_FUNCTION__;
+    ++_totalTraceCAD();
+    traceCAD( CTOR, *this, *this );
+  }
 
-        TraceCAD( const TraceCAD & rhs )
-        { ++_totalTraceCAD();
-          traceCAD( COPYCTOR, *this, rhs ); }
+  TraceCAD( const TraceCAD &rhs )
+  {
+    ++_totalTraceCAD();
+    traceCAD( COPYCTOR, *this, rhs );
+  }
 
-        TraceCAD( TraceCAD && rhs )
-        { ++_totalTraceCAD();
-	  traceCAD( MOVECTOR, *this, rhs ); }
+  TraceCAD( TraceCAD &&rhs )
+  {
+    ++_totalTraceCAD();
+    traceCAD( MOVECTOR, *this, rhs );
+  }
 
-        TraceCAD & operator=( const TraceCAD & rhs )
-        { traceCAD( ASSIGN, *this, rhs ); return *this; }
+  TraceCAD &operator=( const TraceCAD &rhs )
+  {
+    traceCAD( ASSIGN, *this, rhs );
+    return *this;
+  }
 
-        TraceCAD & operator=( TraceCAD && rhs )
-        { traceCAD( MOVEASSIGN, *this, rhs ); return *this; }
+  TraceCAD &operator=( TraceCAD &&rhs )
+  {
+    traceCAD( MOVEASSIGN, *this, rhs );
+    return *this;
+  }
 
-        virtual ~TraceCAD()
-        { --_totalTraceCAD();
-          traceCAD( DTOR, *this, *this ); }
+  virtual ~TraceCAD()
+  {
+    --_totalTraceCAD();
+    traceCAD( DTOR, *this, *this );
+  }
 
-        void ping() const
-        { traceCAD( PING, *this, *this ); }
-      };
+  void ping() const { traceCAD( PING, *this, *this ); }
+};
 
-    /** \relates TraceCAD Stream output. */
-    template<class Tp>
-      inline std::ostream & operator<<( std::ostream & str, const TraceCAD<Tp> & obj )
-      { return str << "(ID " << obj.numericId() << ", TOTAL " << obj._totalTraceCAD()
-                   << ") [" << &obj << "] "; }
+/** \relates TraceCAD Stream output. */
+template <class Tp>
+inline std::ostream &operator<<( std::ostream &str, const TraceCAD<Tp> &obj )
+{
+  return str << "(ID " << obj.numericId() << ", TOTAL " << obj._totalTraceCAD()
+             << ") [" << &obj << "] ";
+}
 
-    /** Drop a log line about the traced method. Overload to
+/** Drop a log line about the traced method. Overload to
      * fit your needs.
     */
-    template<class Tp>
-      void traceCAD( TraceCADBase::What what_r,
-                     const TraceCAD<Tp> & self_r,
-                     const TraceCAD<Tp> & rhs_r )
-      {
-        switch( what_r )
-          {
-          case TraceCADBase::CTOR:
-          case TraceCADBase::PING:
-          case TraceCADBase::DTOR:
-            L_DBG("DEBUG") << what_r << self_r << " (" << self_r._ident << ")" << std::endl;
-            break;
+template <class Tp>
+void traceCAD( TraceCADBase::What what_r, const TraceCAD<Tp> &self_r,
+  const TraceCAD<Tp> &rhs_r )
+{
+  switch ( what_r )
+  {
+    case TraceCADBase::CTOR:
+    case TraceCADBase::PING:
+    case TraceCADBase::DTOR:
+      L_DBG( "DEBUG" ) << what_r << self_r << " (" << self_r._ident << ")"
+                       << std::endl;
+      break;
 
-          case TraceCADBase::COPYCTOR:
-          case TraceCADBase::MOVECTOR:
-          case TraceCADBase::ASSIGN:
-          case TraceCADBase::MOVEASSIGN:
-            L_DBG("DEBUG") << what_r << self_r << "( " << rhs_r << ")" << " (" << self_r._ident << ")" << std::endl;
-            break;
-          }
-      }
-    //@}
-    ///////////////////////////////////////////////////////////////////
+    case TraceCADBase::COPYCTOR:
+    case TraceCADBase::MOVECTOR:
+    case TraceCADBase::ASSIGN:
+    case TraceCADBase::MOVEASSIGN:
+      L_DBG( "DEBUG" ) << what_r << self_r << "( " << rhs_r << ")"
+                       << " (" << self_r._ident << ")" << std::endl;
+      break;
+  }
+}
+//@}
+///////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace debug
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+} // namespace debug
+///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_DEBUG_H

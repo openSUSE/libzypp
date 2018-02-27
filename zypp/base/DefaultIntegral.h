@@ -20,12 +20,11 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-
-  ///////////////////////////////////////////////////////////////////
-  //
-  //  CLASS NAME : DefaultIntegral<Tp,TInitial>
-  //
-  /** Integral type with defined initial value when default constructed.
+///////////////////////////////////////////////////////////////////
+//
+//  CLASS NAME : DefaultIntegral<Tp,TInitial>
+//
+/** Integral type with defined initial value when default constructed.
    *
    * \code
    * typedef DefaultIntegral<unsigned,0> Counter;
@@ -37,68 +36,104 @@ namespace zypp
    * \todo maybe specialize for bool, add logical and bit operators
    * \todo let TInitial default to 0 then remove base/Counter.h
   */
-  template<class Tp, Tp TInitial>
-    class DefaultIntegral
-    {
-    public:
-      typedef Tp value_type;
+template <class Tp, Tp TInitial>
+class DefaultIntegral
+{
+public:
+  typedef Tp value_type;
 
-    public:
-      DefaultIntegral( Tp val_r = TInitial )
-      : _val( val_r )
-      { BOOST_STATIC_ASSERT(boost::is_integral<Tp>::value); }
+public:
+  DefaultIntegral( Tp val_r = TInitial )
+    : _val( val_r )
+  {
+    BOOST_STATIC_ASSERT( boost::is_integral<Tp>::value );
+  }
 
-      /** Conversion to Tp. */
-      //@{
-      Tp & get()       { return _val; }
-      Tp   get() const { return _val; }
+  /** Conversion to Tp. */
+  //@{
+  Tp &get() { return _val; }
+  Tp get() const { return _val; }
 
-      operator Tp &()       { return get(); }
-      operator Tp  () const { return get(); }
-      //@}
+  operator Tp &() { return get(); }
+  operator Tp() const { return get(); }
+  //@}
 
-      /** The initial value. */
-      constexpr Tp initial() const { return TInitial; }
+  /** The initial value. */
+  constexpr Tp initial() const { return TInitial; }
 
-      /** Reset to the defined initial value. */
-      DefaultIntegral & reset()	{ _val = TInitial; return *this; }
+  /** Reset to the defined initial value. */
+  DefaultIntegral &reset()
+  {
+    _val = TInitial;
+    return *this;
+  }
 
-      /** \name Arithmetic operations.
+  /** \name Arithmetic operations.
        * \c + \c - \c * \c / are provided via conversion to Tp.
       */
-      //@{
-      DefaultIntegral & operator=( Tp rhs )  {  _val = rhs; return *this; }
-      DefaultIntegral & operator+=( Tp rhs ) { _val += rhs; return *this; }
-      DefaultIntegral & operator-=( Tp rhs ) { _val -= rhs; return *this; }
-      DefaultIntegral & operator*=( Tp rhs ) { _val *= rhs; return *this; }
-      DefaultIntegral & operator/=( Tp rhs ) { _val /= rhs; return *this; }
+  //@{
+  DefaultIntegral &operator=( Tp rhs )
+  {
+    _val = rhs;
+    return *this;
+  }
+  DefaultIntegral &operator+=( Tp rhs )
+  {
+    _val += rhs;
+    return *this;
+  }
+  DefaultIntegral &operator-=( Tp rhs )
+  {
+    _val -= rhs;
+    return *this;
+  }
+  DefaultIntegral &operator*=( Tp rhs )
+  {
+    _val *= rhs;
+    return *this;
+  }
+  DefaultIntegral &operator/=( Tp rhs )
+  {
+    _val /= rhs;
+    return *this;
+  }
 
-      DefaultIntegral & operator++(/*prefix*/) { ++_val; return *this; }
-      DefaultIntegral & operator--(/*prefix*/) { --_val; return *this; }
+  DefaultIntegral &operator++( /*prefix*/ )
+  {
+    ++_val;
+    return *this;
+  }
+  DefaultIntegral &operator--( /*prefix*/ )
+  {
+    --_val;
+    return *this;
+  }
 
-      DefaultIntegral operator++(int/*postfix*/) { return _val++; }
-      DefaultIntegral operator--(int/*postfix*/) { return _val--; }
-      //@}
+  DefaultIntegral operator++( int /*postfix*/ ) { return _val++; }
+  DefaultIntegral operator--( int /*postfix*/ ) { return _val--; }
+  //@}
 
-    private:
-      Tp _val;
-    };
+private:
+  Tp _val;
+};
 
-    /** \relates DefaultIntegral \c true initialized \c bool  */
-    typedef DefaultIntegral<bool,true>  TrueBool;
+/** \relates DefaultIntegral \c true initialized \c bool  */
+typedef DefaultIntegral<bool, true> TrueBool;
 
-    /** \relates DefaultIntegral \c false initialized \c bool */
-    typedef DefaultIntegral<bool,false> FalseBool;
+/** \relates DefaultIntegral \c false initialized \c bool */
+typedef DefaultIntegral<bool, false> FalseBool;
 
-    /** \relates DefaultIntegral \c zero initialized \c integral */
-    template<typename TIntegral>
-    using ZeroInit = DefaultIntegral<TIntegral,TIntegral(0)>;
+/** \relates DefaultIntegral \c zero initialized \c integral */
+template <typename TIntegral>
+using ZeroInit = DefaultIntegral<TIntegral, TIntegral( 0 )>;
 
-    template<class Tp, Tp TInitial>
-    std::string asString( const DefaultIntegral<Tp,TInitial> & obj )
-    { return asString( obj.get() ); }
+template <class Tp, Tp TInitial>
+std::string asString( const DefaultIntegral<Tp, TInitial> &obj )
+{
+  return asString( obj.get() );
+}
 
-  /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_DEFAULTINTEGRAL_H

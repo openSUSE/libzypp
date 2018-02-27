@@ -26,24 +26,28 @@ using namespace zypp;
 using namespace zypp::filesystem;
 using namespace zypp::repo;
 
-BOOST_AUTO_TEST_CASE(repoinfo_test)
+BOOST_AUTO_TEST_CASE( repoinfo_test )
 {
-  WebServer web((Pathname(TESTS_SRC_DIR) + "/data/Mirrorlist/remote-site").c_str(), 10001);
+  WebServer web(
+    ( Pathname( TESTS_SRC_DIR ) + "/data/Mirrorlist/remote-site" ).c_str(),
+    10001 );
   web.start();
 
-  Url weburl (web.url());
-  weburl.setPathName("/metalink.xml");
+  Url weburl( web.url() );
+  weburl.setPathName( "/metalink.xml" );
 
   RepoInfo ri;
 
-  ri.setMirrorListUrl(weburl);
+  ri.setMirrorListUrl( weburl );
 
-  BOOST_CHECK(ri.url().asString() == "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/");
+  BOOST_CHECK(
+    ri.url().asString() ==
+    "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/" );
 
   ostringstream ostr;
-  ri.dumpAsIniOn(ostr);
+  ri.dumpAsIniOn( ostr );
 
-  BOOST_CHECK( ostr.str().find("baseurl=") == string::npos );
+  BOOST_CHECK( ostr.str().find( "baseurl=" ) == string::npos );
 
   web.stop();
 }

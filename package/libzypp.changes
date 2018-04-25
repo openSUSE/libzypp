@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 25 15:16:11 CEST 2018 - ma@suse.de
+
+- Avoid zombie tar processes (bsc#1076192)
+- version 15.25.11 (19)
+
+-------------------------------------------------------------------
 Fri Mar 23 17:07:44 CET 2018 - ma@suse.de
 
 - Make sure the product file comes from /etc/products.d for the

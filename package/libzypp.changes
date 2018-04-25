@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 25 15:16:30 CEST 2018 - ma@suse.de
+
+- Avoid zombie tar processes (bsc#1076192)
+- version 14.45.11 (39)
+
+-------------------------------------------------------------------
 Tue Feb 20 19:01:49 CET 2018 - ma@suse.de
 
 - Adapt loop mounting of iso images (bsc#1038132, bsc#1033236)

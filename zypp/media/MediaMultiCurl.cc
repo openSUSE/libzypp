@@ -1338,7 +1338,7 @@ void MediaMultiCurl::doGetFileCopy( const Pathname & filename , const Pathname &
   curl_easy_setopt(_curl, CURLOPT_PRIVATE, file);
   try
     {
-      MediaCurl::doGetFileCopyFile(filename, dest, file, report, options);
+      MediaCurl::doGetFileCopyFile(filename, dest, ByteCount(), file, report, options);
     }
   catch (Exception &ex)
     {
@@ -1455,7 +1455,7 @@ void MediaMultiCurl::doGetFileCopy( const Pathname & filename , const Pathname &
 	  file = fopen(destNew.c_str(), "w+e");
 	  if (!file)
 	    ZYPP_THROW(MediaWriteException(destNew));
-	  MediaCurl::doGetFileCopyFile(filename, dest, file, report, options | OPTION_NO_REPORT_START);
+	  MediaCurl::doGetFileCopyFile(filename, dest, ByteCount(), file, report, options | OPTION_NO_REPORT_START);
 	}
     }
 

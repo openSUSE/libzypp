@@ -16,12 +16,38 @@
 #include "zypp/PackageKeyword.h"
 #include "zypp/Changelog.h"
 #include "zypp/VendorSupportOptions.h"
+#include "zypp/Callback.h"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   DEFINE_PTR_TYPE(Package);
+
+
+  /** Callbacks for rpm header downloads on demand.
+   *
+   * Per default all methods answer \c false.
+  */
+  struct PackageHeadReport : public callback::ReportBase
+  {
+
+    const char * ACCEPT_PACKAGE_HEAD_DOWNLOAD = "PackageHeadReport/AskAboutPackageHeadDownload";
+
+    /**
+    * Ask user if the RPM header for \a packageName_r should be downloaded
+    *
+    * The UserData object will have the following fields:
+    * "PackageName"		The name of the package header to be downloaded
+    *
+    * Userdata accepted:
+    * "Response"			bool user can either accept or deny the request
+    *
+    * \note this is a non virtual function and will use ReportBase::report to send the report.
+    *
+    */
+    bool askUserAboutPackageHeadDownload ( const std::string &packageName_r );
+  };
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -128,6 +154,9 @@ namespace zypp
     /** Whether the package is cached. */
     bool isCached() const
     { return ! cachedLocation().empty(); }
+
+    /** End of the RPM header in the package file. */
+    ByteCount headerend() const;
 
   protected:
     friend Ptr make<Self>( const sat::Solvable & solvable_r );

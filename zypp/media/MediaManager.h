@@ -762,6 +762,31 @@ namespace zypp
       void
       provideFile(MediaAccessId   accessId,
                   const Pathname &filename ) const;
+      /**
+       * Get at least the first number of bytes of a file denoted by relative path below of the
+       * 'attach point' of the specified media and the path prefix on the media.
+       *
+       * \note The media backend might not support partial file downloads, in that case the full file
+       *       is provided
+       *
+       * \param accessId  The media access id to use.
+       * \param filename  The filename to provide, relative to localRoot().
+       * \param minBytes  The minmum numbers of bytes to provide
+       *
+       * \throws MediaNotOpenException in case of invalid access id.
+       * \throws MediaNotAttachedException in case, that the media is not attached.
+       * \throws MediaNotDesiredException in case, that the media verification failed.
+       * \throws MediaNotAFileException in case, that the requested filename is not a file.
+       * \throws MediaFileNotFoundException in case, that the requested filenamedoes not exists.
+       * \throws MediaWriteException in case, that the file can't be copied from from remote source.
+       * \throws MediaSystemException in case a system operation fails.
+       * \throws MediaException derived exception, depending on the url (handler).
+       */
+
+      void
+      provideFileHead(MediaAccessId   accessId_r,
+                  const Pathname &filename_r,
+                  const ByteCount minBytes_r) const;
 
       /**
        * FIXME: see MediaAccess class.

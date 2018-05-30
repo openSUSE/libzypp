@@ -358,7 +358,24 @@ class MediaHandler {
 	 * \throws MediaException
 	 *
 	 **/
-	virtual void getFile( const Pathname & filename ) const = 0;
+	virtual void getFile( const Pathname & filename ) const;
+
+	/**
+	 * Call concrete handler to provide at least the specified number of
+	 * bytes of file below attach point.
+	 *
+	 * If \a minBytes is set to zero, the full file is downloaded
+	 *
+	 * Default implementation provided, that returns whether a file
+	 * is located at 'localRoot + filename'.
+	 *
+	 * Asserted that media is attached.
+	 *
+	 * \throws MediaException
+	 *
+	 **/
+	virtual void getFileHead( const Pathname & filename_r, const ByteCount minBytes_r ) const;
+
 
         /**
          * Call concrete handler to provide a file under a different place
@@ -372,6 +389,20 @@ class MediaHandler {
 	 *
          **/
         virtual void getFileCopy( const Pathname & srcFilename, const Pathname & targetFilename ) const;
+
+
+        /**
+         * Call concrete handler to provide at least the number of bytes
+         * specified of a file under a different place
+         * in the file system (usually not under attach point) as a copy.
+         * Media must be attached before by callee.
+         *
+         * Default implementation provided that calls getFileCopy(srcFilename, targetFilename)
+	 *
+	 * \throws MediaException
+	 *
+         **/
+        virtual void getFileHeadCopy( const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r ) const;
 
 
 	/**
@@ -574,6 +605,17 @@ class MediaHandler {
 	void provideFile( Pathname filename ) const;
 
 	/**
+	 * Use concrete handler to provide at least the specified nr of bytes of
+	 * file denoted by path below
+	 * 'localRoot'. Filename is interpreted relative to the
+	 * attached url and a path prefix is preserved.
+	 *
+	 * \throws MediaException
+	 *
+	 **/
+	void provideFileHead(const Pathname &filename_r, const ByteCount minBytes_r ) const;
+
+	/**
 	 * Call concrete handler to provide a copy of a file under a different place
          * in the file system (usually not under attach point) as a copy.
          * Media must be attached before by callee.
@@ -585,6 +627,23 @@ class MediaHandler {
 	 *
 	 **/
         void provideFileCopy( Pathname srcFilename, Pathname targetFilename) const;
+
+        /**
+	 * Call concrete handler to provide at least the number of bytes specified
+	 * of a file under a different place in the file system (usually not under attach point)
+	 * as a copy.
+         * Media must be attached before by callee.
+         * Depending on the handler backend this might simply provide the full file
+         *
+         * @param srcFilename    Filename of source file on the media
+         * @param targetFilename Filename for the target in the file system
+         * @param minBytes       Provide at least specifiednr of bytes
+	 *
+	 * \throws MediaException
+	 *
+	 **/
+	void provideFileHeadCopy( const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r ) const;
+
 
 	/**
 	 * Use concrete handler to provide directory denoted

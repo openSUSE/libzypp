@@ -173,6 +173,51 @@ namespace zypp
       Pathname provideFile(const Pathname & file, unsigned media_nr = 1, ProvideFileOptions options = PROVIDE_DEFAULT );
 
       /**
+       * Provides at least the first n bytes of \a file_r from media \a mediaNr_r.
+       *
+       * \param resource location of the file on media
+       * \param minBytes the first n bytes to provide at least, can be ignored by backed
+       * \return local pathname of the requested file
+       *
+       * \note interaction with the user does not ocurr if
+       * \ref ProvideFileOptions::NON_INTERACTIVE is set.
+       *
+       * \note OnMediaLocation::optional() hint has no effect on the transfer.
+       *
+       * \throws MediaException if a problem occured and user has chosen to
+       *         abort the operation. The calling code should take care
+       *         to quit the current operation.
+       * \throws SkipRequestException if a problem occured and user has chosen
+       *         to skip the current operation. The calling code should continue
+       *         with the next one, if possible.
+       * \see zypp::media::MediaManager::provideFile()
+       */
+      Pathname provideFileHead(const OnMediaLocation & resource_r, const ByteCount minBytes_r, ProvideFileOptions options_r = PROVIDE_DEFAULT );
+
+      /**
+       * Provides at least the first n bytes of \a file from media \a media_nr.
+       *
+       * \param file path to the file relative to media URL
+       * \param minBytes the first n bytes to provide at least, can be ignored by backed
+       * \param media_nr the media number in the media set
+       * \return local pathname of the requested file
+       *
+       * \note interaction with the user does not ocurr if
+       * \ref ProvideFileOptions::NON_INTERACTIVE is set.
+       *
+       * \note OnMediaLocation::optional() hint has no effect on the transfer.
+       *
+       * \throws MediaException if a problem occured and user has chosen to
+       *         abort the operation. The calling code should take care
+       *         to quit the current operation.
+       * \throws SkipRequestException if a problem occured and user has chosen
+       *         to skip the current operation. The calling code should continue
+       *         with the next one, if possible.
+       * \see zypp::media::MediaManager::provideFile()
+       */
+      Pathname provideFileHead(const Pathname & file_r, const ByteCount minBytes_r, unsigned mediaNr_r = 1, ProvideFileOptions options_r = PROVIDE_DEFAULT );
+
+      /**
        * Provides \a file from \a url.
        *
        * \param absolute url to the file

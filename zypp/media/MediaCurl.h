@@ -54,6 +54,7 @@ class MediaCurl : public MediaHandler
     virtual void attachTo (bool next = false);
     virtual void releaseFrom( const std::string & ejectDev );
     virtual void getFile( const Pathname & filename ) const;
+    virtual void getFileHead( const Pathname & filename, const ByteCount minBytes ) const override;
     virtual void getDir( const Pathname & dirname, bool recurse_r ) const;
     virtual void getDirInfo( std::list<std::string> & retlist,
                              const Pathname & dirname, bool dots = true ) const;
@@ -83,6 +84,13 @@ class MediaCurl : public MediaHandler
      *
      */
     virtual void getFileCopy( const Pathname & srcFilename, const Pathname & targetFilename) const;
+    /**
+     *
+     * \throws MediaException
+     *
+     */
+    void getFileHeadCopy(const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r) const override;
+
 
     /**
      *
@@ -90,6 +98,7 @@ class MediaCurl : public MediaHandler
      *
      */
     virtual void doGetFileCopy( const Pathname & srcFilename, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const;
+    void doGetFileHeadCopy( const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r, callback::SendReport<DownloadProgressReport> &report_r, RequestOptions options_r = OPTION_NONE ) const;
 
 
     virtual bool checkAttachPoint(const Pathname &apoint) const;
@@ -149,7 +158,7 @@ class MediaCurl : public MediaHandler
      */
     void evaluateCurlCode( const zypp::Pathname &filename, CURLcode code, bool timeout ) const;
 
-    void doGetFileCopyFile( const Pathname & srcFilename, const Pathname & dest, FILE *file, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const;
+    void doGetFileCopyFile( const Pathname & srcFilename_r, const Pathname & dest_r, const ByteCount minBytes_r, FILE *file_r, callback::SendReport<DownloadProgressReport> & report_r, RequestOptions options_r = OPTION_NONE ) const;
 
   private:
     /**

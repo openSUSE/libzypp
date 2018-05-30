@@ -19,6 +19,7 @@
 #include "zypp/ZYppFactory.h"
 #include "zypp/target/rpm/RpmDb.h"
 #include "zypp/target/rpm/RpmHeader.h"
+#include "zypp/MediaSetAccess.h"
 
 using namespace std;
 
@@ -144,21 +145,33 @@ namespace zypp
 
   Changelog Package::changelog() const
   {
-      Target_Ptr target( getZYpp()->getTarget() );
-      if ( ! target )
-      {
-        ERR << "Target not initialized. Changelog is not available." << std::endl;
-        return Changelog();
-      }
 
-      if ( repository().isSystemRepo() )
-      {
-          target::rpm::RpmHeader::constPtr header;
-          target->rpmDb().getData(name(), header);
-          return header ? header->tag_changelog() : Changelog(); // might be deleted behind our back (bnc #530595)
-      }
-      WAR << "changelog is not available for uninstalled packages" << std::endl;
+    Target_Ptr target( getZYpp()->getTarget() );
+    if ( ! target )
+    {
+      ERR << "Target not initialized. Changelog is not available." << std::endl;
       return Changelog();
+    }
+
+    target::rpm::RpmHeader::constPtr header;
+    if ( repository().isSystemRepo() || ui::Selectable::get(satSolvable())->identicalInstalled(poolItem()) ) {
+        target->rpmDb().getData(name(), header);
+    } else {
+      if ( isCached() ) {
+        header = target::rpm::RpmHeader::readPackage( cachedLocation(), target::rpm::RpmHeader::NOVERIFY );
+      } else {
+        callback::SendReport<PackageHeadReport> report;
+        if ( report->askUserAboutPackageHeadDownload ( name() ) ) {
+          RepoInfo repo = repoInfo();
+          MediaSetAccess acc( repo.url() );
+          Pathname rpmHeadPath = acc.provideFileHead( location(), headerend() );
+          if ( !rpmHeadPath.empty() ) {
+            header = target::rpm::RpmHeader::readPackage( rpmHeadPath, target::rpm::RpmHeader::NOVERIFY );
+          }
+        }
+      }
+    }
+    return header ? header->tag_changelog() : Changelog(); // might be deleted behind our back (bnc #530595)
   }
 
   std::string Package::buildhost() const
@@ -193,7 +206,35 @@ namespace zypp
   }
 
   Package::FileList Package::filelist() const
-  { return FileList( sat::SolvAttr::filelist, satSolvable() ); }
+  {
+    PoolItem installed = ui::Selectable::get(satSolvable())->identicalInstalledObj(poolItem());
+
+    if ( installed  ) {
+      return FileList( sat::SolvAttr::filelist, installed.satSolvable() );
+    } else {
+      target::rpm::RpmHeader::constPtr head;
+
+      if ( isCached() ) {
+        head = target::rpm::RpmHeader::readPackage( cachedLocation(), target::rpm::RpmHeader::NOVERIFY );
+      } else if ( satSolvable() ){
+        callback::SendReport<PackageHeadReport> report;
+
+        if ( report->askUserAboutPackageHeadDownload ( this->name() ) ) {
+          RepoInfo repo = repoInfo();
+          MediaSetAccess acc( repo.url() );
+          Pathname rpmHeadPath = acc.provideFileHead( location(), headerend());
+
+          if ( !rpmHeadPath.empty() ) {
+            head = target::rpm::RpmHeader::readPackage( rpmHeadPath, target::rpm::RpmHeader::NOVERIFY );
+
+            if ( head )
+              satSolvable().updateFilelistFrom(head);
+          }
+        }
+      }
+    }
+    return FileList( sat::SolvAttr::filelist, satSolvable() );
+  }
 
   CheckSum Package::checksum() const
   { return lookupCheckSumAttribute( sat::SolvAttr::checksum ); }
@@ -224,6 +265,21 @@ namespace zypp
   std::string Package::sourcePkgLongName() const
   { return str::form( "%s-%s.%s", sourcePkgName().c_str(), sourcePkgEdition().c_str(), sourcePkgType().c_str() ); }
 
+  ByteCount Package::headerend() const
+  { return lookupNumAttribute( sat::SolvAttr::headerend ); }
+
+  bool PackageHeadReport::askUserAboutPackageHeadDownload(const string &packageName_r)
+  {
+    UserData data( ACCEPT_PACKAGE_HEAD_DOWNLOAD );
+    data.set( "PackageName", packageName_r );
+    report( data );
+
+    if ( data.hasvalue("Response") ) {
+      return data.get<bool>("Response");
+    }
+    return false;
+
+  }
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

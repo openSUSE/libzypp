@@ -969,16 +969,26 @@ void MediaCurl::getFile( const Pathname & filename ) const
 {
     // Use absolute file name to prevent access of files outside of the
     // hierarchy below the attach point.
-    getFileCopy(filename, localPath(filename).absolutename());
+  getFileCopy(filename, localPath(filename).absolutename());
+}
+
+void MediaCurl::getFileHead(const Pathname &filename, const ByteCount minBytes) const
+{
+  getFileHeadCopy( filename, localPath(filename).absolutename(), minBytes );
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void MediaCurl::getFileCopy( const Pathname & filename , const Pathname & target) const
 {
+  getFileHeadCopy( filename, target, ByteCount() );
+}
+
+void MediaCurl::getFileHeadCopy(const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r) const
+{
   callback::SendReport<DownloadProgressReport> report;
 
-  Url fileurl(getFileUrl(filename));
+  Url fileurl(getFileUrl(srcFilename_r));
 
   bool retry = false;
 
@@ -986,7 +996,10 @@ void MediaCurl::getFileCopy( const Pathname & filename , const Pathname & target
   {
     try
     {
-      doGetFileCopy(filename, target, report);
+      if ( minBytes_r > 0 )
+        doGetFileHeadCopy(srcFilename_r, targetFilename_r, minBytes_r, report);
+      else
+        doGetFileCopy(srcFilename_r, targetFilename_r, report);
       retry = false;
     }
     // retry with proper authentication data
@@ -1370,21 +1383,26 @@ bool MediaCurl::detectDirIndex() const
 
 ///////////////////////////////////////////////////////////////////
 
-void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & target, callback::SendReport<DownloadProgressReport> & report, RequestOptions options ) const
+void MediaCurl::doGetFileCopy(const Pathname & filename , const Pathname & target, callback::SendReport<DownloadProgressReport> & report, RequestOptions options ) const
 {
-    Pathname dest = target.absolutename();
+  doGetFileHeadCopy( filename, target, ByteCount(), report, options );
+}
+
+void MediaCurl::doGetFileHeadCopy(const Pathname & srcFilename_r , const Pathname & targetFilename_r, const ByteCount minBytes_r, callback::SendReport<DownloadProgressReport> & report_r, RequestOptions options_r ) const
+{
+    Pathname dest = targetFilename_r.absolutename();
     if( assert_dir( dest.dirname() ) )
     {
       DBG << "assert_dir " << dest.dirname() << " failed" << endl;
-      Url url(getFileUrl(filename));
+      Url url(getFileUrl(srcFilename_r));
       ZYPP_THROW( MediaSystemException(url, "System error on " + dest.dirname().asString()) );
     }
-    string destNew = target.asString() + ".new.zypp.XXXXXX";
+    string destNew = targetFilename_r.asString() + ".new.zypp.XXXXXX";
     char *buf = ::strdup( destNew.c_str());
     if( !buf)
     {
       ERR << "out of memory for temp file name" << endl;
-      Url url(getFileUrl(filename));
+      Url url(getFileUrl(srcFilename_r));
       ZYPP_THROW(MediaSystemException(url, "out of memory for temp file name"));
     }
 
@@ -1410,10 +1428,10 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     DBG << "temp: " << destNew << endl;
 
     // set IFMODSINCE time condition (no download if not modified)
-    if( PathInfo(target).isExist() && !(options & OPTION_NO_IFMODSINCE) )
+    if( PathInfo(targetFilename_r).isExist() && !(options_r & OPTION_NO_IFMODSINCE) )
     {
       curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, (long)PathInfo(target).mtime());
+      curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, (long)PathInfo(targetFilename_r).mtime());
     }
     else
     {
@@ -1422,7 +1440,7 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
     }
     try
     {
-      doGetFileCopyFile(filename, dest, file, report, options);
+      doGetFileCopyFile(srcFilename_r, dest, minBytes_r, file, report_r, options_r);
     }
     catch (Exception &e)
     {
@@ -1484,9 +1502,9 @@ void MediaCurl::doGetFileCopy( const Pathname & filename , const Pathname & targ
 
 ///////////////////////////////////////////////////////////////////
 
-void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & dest, FILE *file, callback::SendReport<DownloadProgressReport> & report, RequestOptions options ) const
+void MediaCurl::doGetFileCopyFile(const Pathname & srcFilename_r, const Pathname & dest_r, const ByteCount minBytes_r, FILE *file_r, callback::SendReport<DownloadProgressReport> & report_r, RequestOptions options_r ) const
 {
-    DBG << filename.asString() << endl;
+    DBG << srcFilename_r.asString() << endl;
 
     if(!_url.isValid())
       ZYPP_THROW(MediaBadUrlException(_url));
@@ -1494,7 +1512,7 @@ void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & 
     if(_url.getHost().empty())
       ZYPP_THROW(MediaBadUrlEmptyHostException(_url));
 
-    Url url(getFileUrl(filename));
+    Url url(getFileUrl(srcFilename_r));
 
     DBG << "URL: " << url.asString() << endl;
     // Use URL without options and without username and passwd
@@ -1518,17 +1536,23 @@ void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & 
       ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
     }
 
-    ret = curl_easy_setopt( _curl, CURLOPT_WRITEDATA, file );
+    ret = curl_easy_setopt( _curl, CURLOPT_WRITEDATA, file_r );
     if ( ret != 0 ) {
       ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
     }
 
     // Set callback and perform.
-    ProgressData progressData(_curl, _settings.timeout(), url, &report);
-    if (!(options & OPTION_NO_REPORT_START))
-      report->start(url, dest);
+    ProgressData progressData(_curl, _settings.timeout(), url, &report_r);
+    if (!(options_r & OPTION_NO_REPORT_START))
+      report_r->start(url, dest_r);
     if ( curl_easy_setopt( _curl, CURLOPT_PROGRESSDATA, &progressData ) != 0 ) {
       WAR << "Can't set CURLOPT_PROGRESSDATA: " << _curlError << endl;;
+    }
+
+    if ( minBytes_r > 0 ) {
+      std::string rangeStr = str::Format("0-%1%") % minBytes_r.asString(ByteCount::B, 0, 0);
+      MIL << "Requesting range download of: " << rangeStr << std::endl;
+      curl_easy_setopt( _curl, CURLOPT_RANGE, rangeStr.c_str());
     }
 
     ret = curl_easy_perform( _curl );
@@ -1537,7 +1561,7 @@ void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & 
     // with a future date for the server, the server may respond 200 sending a
     // zero size file.
     // curl-7.19.4 introduces CURLINFO_CONDITION_UNMET to check this condition.
-    if ( ftell(file) == 0 && ret == 0 )
+    if ( ftell(file_r) == 0 && ret == 0 )
     {
       long httpReturnCode = 33;
       if ( curl_easy_getinfo( _curl, CURLINFO_RESPONSE_CODE, &httpReturnCode ) == CURLE_OK && httpReturnCode == 200 )
@@ -1561,14 +1585,14 @@ void MediaCurl::doGetFileCopyFile( const Pathname & filename , const Pathname & 
     if ( ret != 0 )
     {
       ERR << "curl error: " << ret << ": " << _curlError
-          << ", temp file size " << ftell(file)
+          << ", temp file size " << ftell(file_r)
           << " bytes." << endl;
 
       // the timeout is determined by the progress data object
       // which holds whether the timeout was reached or not,
       // otherwise it would be a user cancel
       try {
-        evaluateCurlCode( filename, ret, progressData.reached);
+        evaluateCurlCode( srcFilename_r, ret, progressData.reached);
       }
       catch ( const MediaException &e ) {
         // some error, we are not sure about file existence, rethrw

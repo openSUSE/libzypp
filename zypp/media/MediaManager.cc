@@ -682,6 +682,19 @@ namespace zypp
       ref.handler->provideFile(filename);
     }
 
+    void MediaManager::provideFileHead(MediaAccessId accessId_r,
+                                   const Pathname &filename_r,
+                                   const ByteCount minBytes_r) const
+    {
+      MutexLock glock(g_Mutex);
+
+      ManagedMedia &ref( m_impl->findMM(accessId_r));
+
+      ref.checkDesired(accessId_r);
+
+      ref.handler->provideFileHead( filename_r, minBytes_r );
+    }
+
     // ---------------------------------------------------------------
     void
     MediaManager::setDeltafile(MediaAccessId   accessId,

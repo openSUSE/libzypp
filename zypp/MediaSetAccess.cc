@@ -171,6 +171,25 @@ IMPL_PTR_TYPE(MediaSetAccess);
     return op.result;
   }
 
+  Pathname MediaSetAccess::provideFileHead(const OnMediaLocation &resource_r, const ByteCount minBytes_r, ProvideFileOptions options_r)
+  {
+    Pathname result;
+    auto op = [ &minBytes_r, &result ] ( media::MediaAccessId media, const Pathname &file ) {
+      media::MediaManager media_mgr;
+      media_mgr.provideFileHead(media, file ,minBytes_r);
+      result = media_mgr.localPath(media, file);
+    };
+    provide( op, resource_r, options_r, Pathname() );
+    return result;
+  }
+
+  Pathname MediaSetAccess::provideFileHead(const Pathname &file_r, const ByteCount minBytes_r, unsigned mediaNr_r, ProvideFileOptions options_r)
+  {
+    OnMediaLocation resource;
+    resource.setLocation(file_r, mediaNr_r);
+    return provideFileHead( resource, minBytes_r, options_r );
+  }
+
   ManagedFile MediaSetAccess::provideFileFromUrl(const Url &file_url, ProvideFileOptions options)
   {
     Url url(file_url);

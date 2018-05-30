@@ -222,6 +222,19 @@ namespace zypp {
 	void provideFile( const Pathname & filename ) const;
 
 	/**
+	 * Use concrete handler to provide the first n bytes of file denoted by path below
+	 * 'attach point'. Filename is interpreted relative to the
+	 * attached url and a path prefix is preserved. The partial file is stored in the
+	 * specified target path
+	 *
+	 * \throws MediaException
+	 *
+	 **/
+	void provideFileHead( const Pathname &filename_r, const ByteCount minBytes_r) const;
+
+
+
+	/**
 	 * Remove filename below attach point IFF handler downloads files
 	 * to the local filesystem. Never remove anything from media.
 	 *

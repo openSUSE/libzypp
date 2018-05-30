@@ -1004,6 +1004,17 @@ void MediaHandler::provideFileCopy( Pathname srcFilename,
   DBG << "provideFileCopy(" << srcFilename << "," << targetFilename  << ")" << endl;
 }
 
+void MediaHandler::provideFileHeadCopy(const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r ) const
+{
+  if ( !isAttached() ) {
+    INT << "Media not_attached on provideFileHeadCopy(" << srcFilename_r
+        << "," << targetFilename_r << minBytes_r.asString() << ")" << endl;
+    ZYPP_THROW(MediaNotAttachedException(url()));
+  }
+  getFileHeadCopy( srcFilename_r, targetFilename_r, minBytes_r ); // pass to concrete handler
+  DBG << "provideFilePartCopy(" << srcFilename_r << "," << targetFilename_r  << "," << minBytes_r << ")" << endl;
+}
+
 void MediaHandler::provideFile( Pathname filename ) const
 {
   if ( !isAttached() ) {
@@ -1012,6 +1023,17 @@ void MediaHandler::provideFile( Pathname filename ) const
   }
 
   getFile( filename ); // pass to concrete handler
+  DBG << "provideFile(" << filename << ")" << endl;
+}
+
+void MediaHandler::provideFileHead(const Pathname &filename, const ByteCount minBytes_r) const
+{
+  if ( !isAttached() ) {
+    INT << "Error: Not attached on provideFileHead(" << filename << ", " << minBytes_r << ")" << endl;
+    ZYPP_THROW(MediaNotAttachedException(url()));
+  }
+
+  getFileHead( filename, minBytes_r ); // pass to concrete handler
   DBG << "provideFile(" << filename << ")" << endl;
 }
 
@@ -1245,6 +1267,11 @@ void MediaHandler::getFile( const Pathname & filename ) const
       ZYPP_THROW(MediaFileNotFoundException(url(), filename));
 }
 
+void MediaHandler::getFileHead(const Pathname &filename_r, const ByteCount minBytes_r) const
+{
+  getFile( filename_r );
+}
+
 
 void MediaHandler::getFileCopy ( const Pathname & srcFilename, const Pathname & targetFilename ) const
 {
@@ -1255,7 +1282,10 @@ void MediaHandler::getFileCopy ( const Pathname & srcFilename, const Pathname & 
   }
 }
 
-
+void MediaHandler::getFileHeadCopy(const Pathname &srcFilename_r, const Pathname &targetFilename_r, const ByteCount minBytes_r) const
+{
+  getFileCopy( srcFilename_r, targetFilename_r );
+}
 
 ///////////////////////////////////////////////////////////////////
 //

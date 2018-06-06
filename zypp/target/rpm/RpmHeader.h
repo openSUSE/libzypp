@@ -170,6 +170,10 @@ public:
           */
   std::list<FileInfo> tag_fileinfos() const;
 
+  /** return the raw data building the filelist.
+   * File \c i is built by <tt>dirnames[dirindexes[i]] + basenames[i]</tt>. */
+  void raw_filenames( stringList & basenames_r, stringList & dirnames_r, intList & dirindexes_r ) const;
+
   Changelog tag_changelog() const;
 
 public:

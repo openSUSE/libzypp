@@ -904,6 +904,13 @@ std::list<std::string> RpmHeader::tag_filenames() const
   return ret;
 }
 
+void RpmHeader::raw_filenames( stringList & basenames_r, stringList & dirnames_r, intList & dirindexes_r ) const
+{
+  string_list( RPMTAG_BASENAMES, basenames_r );
+  string_list( RPMTAG_DIRNAMES, dirnames_r );
+  int_list( RPMTAG_DIRINDEXES, dirindexes_r );
+}
+
 ///////////////////////////////////////////////////////////////////
 //
 //

@@ -29,6 +29,7 @@ extern "C"
   struct _Solvable;
   struct _Solver;
   struct _Transaction;
+  struct _Repodata;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -64,6 +65,7 @@ namespace zypp
       typedef ::_Solvable	CSolvable;	///< Wrapped libsolv C data type exposed as backdoor
       typedef ::_Solver		CSolver;	///< Wrapped libsolv C data type exposed as backdoor
       typedef ::_Transaction	CTransaction;	///< Wrapped libsolv C data type exposed as backdoor
+      typedef ::_Repodata	CRepodata;	///< Wrapped libsolv C data type exposed as backdoor
     } // namespace detail
     ///////////////////////////////////////////////////////////////////
 

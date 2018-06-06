@@ -33,6 +33,13 @@ namespace zypp
   class CpeId;
   class Date;
   class OnMediaLocation;
+  namespace target
+  {
+    namespace rpm
+    {
+      class RpmHeader;
+    }
+  }
   ///////////////////////////////////////////////////////////////////
   namespace sat
   {
@@ -372,6 +379,13 @@ namespace zypp
        * download e.g. an rpm (path, checksum, downloadsize, etc.).
        */
       OnMediaLocation lookupLocation() const;
+      //@}
+
+    public:
+      /** \name Attribute updates. */
+      //@{
+      /** Replace the SOLVABLE_FILELIST by data in \a rpmHeader_r (\c nullptr clears the list). */
+      void updateFilelistFrom( const intrusive_ptr<const target::rpm::RpmHeader> & rpmHeader_r );
       //@}
 
     public:

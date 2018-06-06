@@ -28,6 +28,7 @@
 #include "zypp/ZConfig.h"
 
 #include "zypp/ui/Selectable.h"
+#include "zypp/target/rpm/RpmHeader.h"
 
 using std::endl;
 
@@ -261,6 +262,37 @@ namespace zypp
       return ret;
     }
 
+    void Solvable::updateFilelistFrom( const target::rpm::RpmHeader::constPtr & rpmHeader_r )
+    {
+      detail::CSolvable * _solvable( get() );
+      if ( !_solvable )
+	return;	// never update noSolvable
+      if ( !_solvable->repo )
+	return;	// solvable needs to belong to a repo
+
+      target::rpm::RpmHeader::stringList basenames;
+      target::rpm::RpmHeader::stringList dirnames;
+      target::rpm::RpmHeader::intList    dirindexes;
+      if ( rpmHeader_r )
+	rpmHeader_r->raw_filenames( basenames, dirnames, dirindexes );
+
+      detail::CRepodata * data = ::repo_add_repodata( _solvable->repo, REPO_REUSE_REPODATA );
+
+      if ( basenames.size() )
+      {
+	// remember directories in pool
+	std::vector<detail::IdType> solvdir( dirnames.size(), detail::noId );
+	for ( unsigned i = 0; i < dirnames.size(); ++i )
+	  solvdir[i] = ::repodata_str2dir( data, dirnames[i].c_str(), 1 );
+	// now add the files
+	for ( unsigned i = 0; i < basenames.size(); ++i )
+	  ::repodata_add_dirstr( data, _id, SOLVABLE_FILELIST, solvdir[dirindexes[i]], basenames[i].c_str() );
+      }
+      else
+	::repodata_unset( data, _id, SOLVABLE_FILELIST );
+
+      ::repodata_internalize( data );
+    }
 
     IdString Solvable::ident() const
     {

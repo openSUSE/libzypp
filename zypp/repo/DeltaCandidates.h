@@ -13,6 +13,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/repo/PackageDelta.h"
@@ -33,7 +34,7 @@ namespace zypp
      * gets all patches and deltas from them for a given
      * package.
      */
-    class DeltaCandidates
+    class ZYPP_API DeltaCandidates
     {
       friend std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
 
@@ -50,8 +51,7 @@ namespace zypp
       DeltaCandidates( const std::list<Repository> & repos, const std::string & pkgname = "" );
       /** Dtor */
       ~DeltaCandidates();
-
-      std::list<packagedelta::DeltaRpm> deltaRpms(const Package::constPtr & package) const;
+ std::list<packagedelta::DeltaRpm> deltaRpms(const Package::constPtr & package) const;
 
     private:
       /** Pointer to implementation */

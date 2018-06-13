@@ -31,7 +31,7 @@ namespace zypp
     /** Just inherits Exception to separate media exceptions
      *
      **/
-    class MediaException : public Exception
+    class ZYPP_API MediaException : public Exception
     {
     public:
       /** Ctor taking message.
@@ -50,7 +50,7 @@ namespace zypp
       virtual ~MediaException() throw() {};
     };
 
-    class MediaMountException : public MediaException
+    class ZYPP_API MediaMountException : public MediaException
     {
     public:
       MediaMountException()
@@ -91,7 +91,7 @@ namespace zypp
       std::string _cmdout;
     };
 
-    class MediaUnmountException : public MediaException
+    class ZYPP_API MediaUnmountException : public MediaException
     {
     public:
       /** Ctor taking message.
@@ -112,7 +112,7 @@ namespace zypp
       std::string _path;
     };
 
-    class MediaBadFilenameException : public MediaException
+    class ZYPP_API MediaBadFilenameException : public MediaException
     {
     public:
       MediaBadFilenameException(const std::string & filename_r)
@@ -127,7 +127,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaNotOpenException : public MediaException
+    class ZYPP_API MediaNotOpenException : public MediaException
     {
     public:
       MediaNotOpenException(const std::string & action_r)
@@ -141,7 +141,7 @@ namespace zypp
       std::string _action;
     };
 
-    class MediaFileNotFoundException : public MediaException
+    class ZYPP_API MediaFileNotFoundException : public MediaException
     {
     public:
       MediaFileNotFoundException(const Url & url_r,
@@ -158,7 +158,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaWriteException : public MediaException
+    class ZYPP_API MediaWriteException : public MediaException
     {
     public:
       MediaWriteException(const Pathname & filename_r)
@@ -172,7 +172,7 @@ namespace zypp
       std::string _filename;
     };
 
-    class MediaNotAttachedException : public MediaException
+    class ZYPP_API MediaNotAttachedException : public MediaException
     {
     public:
       MediaNotAttachedException(const Url & url_r)
@@ -186,7 +186,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaBadAttachPointException : public MediaException
+    class ZYPP_API MediaBadAttachPointException : public MediaException
     {
     public:
       MediaBadAttachPointException(const Url & url_r)
@@ -200,7 +200,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaCurlInitException : public MediaException
+    class ZYPP_API MediaCurlInitException : public MediaException
     {
     public:
       MediaCurlInitException(const Url & url_r)
@@ -214,7 +214,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaSystemException : public MediaException
+    class ZYPP_API MediaSystemException : public MediaException
     {
     public:
       MediaSystemException(const Url & url_r,
@@ -231,7 +231,7 @@ namespace zypp
       std::string _message;
     };
 
-    class MediaNotAFileException : public MediaException
+    class ZYPP_API MediaNotAFileException : public MediaException
     {
     public:
       MediaNotAFileException(const Url & url_r,
@@ -248,7 +248,7 @@ namespace zypp
       std::string _path;
     };
 
-    class MediaNotADirException : public MediaException
+    class ZYPP_API MediaNotADirException : public MediaException
     {
     public:
       MediaNotADirException(const Url & url_r,
@@ -265,7 +265,7 @@ namespace zypp
       std::string _path;
     };
 
-    class MediaBadUrlException : public MediaException
+    class ZYPP_API MediaBadUrlException : public MediaException
     {
     public:
       MediaBadUrlException(const Url & url_r,
@@ -281,7 +281,7 @@ namespace zypp
       std::string _msg;
     };
 
-    class MediaBadUrlEmptyHostException : public MediaBadUrlException
+    class ZYPP_API MediaBadUrlEmptyHostException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyHostException(const Url & url_r)
@@ -292,7 +292,7 @@ namespace zypp
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaBadUrlEmptyFilesystemException : public MediaBadUrlException
+    class ZYPP_API MediaBadUrlEmptyFilesystemException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyFilesystemException(const Url & url_r)
@@ -303,7 +303,7 @@ namespace zypp
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaBadUrlEmptyDestinationException : public MediaBadUrlException
+    class ZYPP_API MediaBadUrlEmptyDestinationException : public MediaBadUrlException
     {
     public:
       MediaBadUrlEmptyDestinationException(const Url & url_r)
@@ -314,7 +314,7 @@ namespace zypp
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaUnsupportedUrlSchemeException : public MediaBadUrlException
+    class ZYPP_API MediaUnsupportedUrlSchemeException : public MediaBadUrlException
     {
     public:
       MediaUnsupportedUrlSchemeException(const Url & url_r)
@@ -325,7 +325,7 @@ namespace zypp
       virtual std::ostream & dumpOn( std::ostream & str ) const;
     };
 
-    class MediaNotSupportedException : public MediaException
+    class ZYPP_API MediaNotSupportedException : public MediaException
     {
     public:
       MediaNotSupportedException(const Url & url_r)
@@ -338,7 +338,7 @@ namespace zypp
       std::string _url;
     };
 
-    class MediaCurlException : public MediaException
+    class ZYPP_API MediaCurlException : public MediaException
     {
     public:
       MediaCurlException(const Url & url_r,
@@ -358,7 +358,7 @@ namespace zypp
       std::string _msg;
     };
 
-    class MediaCurlSetOptException : public MediaException
+    class ZYPP_API MediaCurlSetOptException : public MediaException
     {
     public:
       MediaCurlSetOptException(const Url & url_r, const std::string & msg_r)
@@ -373,7 +373,7 @@ namespace zypp
       std::string _msg;
     };
 
-    class MediaNotDesiredException : public MediaException
+    class ZYPP_API MediaNotDesiredException : public MediaException
     {
     public:
       MediaNotDesiredException(const Url & url_r)
@@ -387,7 +387,7 @@ namespace zypp
       std::string  _url;
     };
 
-    class MediaIsSharedException : public MediaException
+    class ZYPP_API MediaIsSharedException : public MediaException
     {
     public:
       /**
@@ -404,7 +404,7 @@ namespace zypp
       std::string _name;
     };
 
-    class MediaNotEjectedException: public MediaException
+    class ZYPP_API MediaNotEjectedException: public MediaException
     {
     public:
       MediaNotEjectedException()
@@ -423,7 +423,7 @@ namespace zypp
       std::string _name;
     };
 
-    class MediaUnauthorizedException: public MediaException
+    class ZYPP_API MediaUnauthorizedException: public MediaException
     {
     public:
       MediaUnauthorizedException()
@@ -458,7 +458,7 @@ namespace zypp
       std::string _hint;
     };
 
-    class MediaForbiddenException : public MediaException
+    class ZYPP_API MediaForbiddenException : public MediaException
     {
     public:
       MediaForbiddenException(const Url & url_r, const std::string & msg = "")
@@ -472,7 +472,7 @@ namespace zypp
       std::string _msg;
     };
 
-    class MediaTimeoutException : public MediaException
+    class ZYPP_API MediaTimeoutException : public MediaException
     {
     public:
       MediaTimeoutException(const Url & url_r, const std::string & msg = "")
@@ -487,7 +487,7 @@ namespace zypp
     };
 
     /** For HTTP 503 and similar. */
-    class MediaTemporaryProblemException : public MediaException
+    class ZYPP_API MediaTemporaryProblemException : public MediaException
     {
     public:
       MediaTemporaryProblemException(const Url & url_r, const std::string & msg = "")
@@ -501,7 +501,7 @@ namespace zypp
       std::string _msg;
     };
 
-    class MediaBadCAException : public MediaException
+    class ZYPP_API MediaBadCAException : public MediaException
     {
     public:
       MediaBadCAException(const Url & url_r, const std::string & msg = "")

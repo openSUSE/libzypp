@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/InputStream.h"
 #include "zypp/RepoInfo.h"
@@ -48,7 +49,7 @@ namespace zypp
      * Repeating the \c baseurl= tag on each line is also accepted, but when the
      * file has to be written, the preferred style is used.
      */
-    class RepoFileReader
+    class ZYPP_API RepoFileReader
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
     public:

@@ -85,7 +85,7 @@ namespace zypp
 
   /** Convenience macro to declare more specific PluginScriptExceptions. */
 #define declException( EXCP, KIND )					\
-  struct EXCP : public UserRequestException {				\
+  struct ZYPP_API EXCP : public UserRequestException {				\
     explicit								\
     EXCP( const std::string & msg_r = std::string() )			\
       : UserRequestException( KIND, msg_r )				\

@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <vector>
 
+#include "zypp/APIConfig.h"
 #include "zypp/sat/WhatProvides.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@ namespace zypp
      *
      * \todo Publish obsoleteUsesProvides config option.
      */
-    class WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
+    class ZYPP_API WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
                           protected detail::PoolMember
     {
       public:

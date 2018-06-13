@@ -348,7 +348,7 @@ namespace zypp
      * Extended iterator methods valid only if not @end.
      * \note Implementation: Keep iterator_adaptor base and _dip in sync!
      */
-    class LookupAttr::iterator : public boost::iterator_adaptor<
+    class ZYPP_API LookupAttr::iterator : public boost::iterator_adaptor<
         iterator                       // Derived
         , detail::CDataiterator *            // Base
         , detail::IdType               // Value
@@ -574,7 +574,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr::iterator Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
 
     ///////////////////////////////////////////////////////////////////
 

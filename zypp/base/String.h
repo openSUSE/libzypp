@@ -909,9 +909,9 @@ namespace zypp
     /** Encode all characters other than [a-zA-Z0-9] as %XX.
      * This includes the % character itself, which becomes %25.
      */
-    std::string hexencode( const C_Str & str_r );
+    ZYPP_API std::string hexencode( const C_Str & str_r );
     /** Decode hexencoded %XX sequences. */
-    std::string hexdecode( const C_Str & str_r );
+    ZYPP_API std::string hexdecode( const C_Str & str_r );
     //@}
     ///////////////////////////////////////////////////////////////////
 
@@ -980,9 +980,9 @@ namespace zypp
     { return trim( std::move(s), R_TRIM ); }
     //@}
 
-    std::string stripFirstWord( std::string & line, const bool ltrim_first = true );
+    ZYPP_API std::string stripFirstWord( std::string & line, const bool ltrim_first = true );
 
-    std::string stripLastWord( std::string & line, const bool rtrim_first = true );
+    ZYPP_API std::string stripLastWord( std::string & line, const bool rtrim_first = true );
 
     /** Return stream content up to (but not returning) the next newline.
      * \see \ref receiveUpTo

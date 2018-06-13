@@ -12,6 +12,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ProgressData.h"
 #include "zypp/Pathname.h"
@@ -25,7 +26,7 @@ namespace zypp
   namespace repo
   { /////////////////////////////////////////////////////////////////
 
-    class PluginServices
+    class ZYPP_API PluginServices
     {
       friend std::ostream & operator<<( std::ostream & str, const PluginServices& obj );
     public:

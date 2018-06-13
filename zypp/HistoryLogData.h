@@ -33,7 +33,7 @@ namespace zypp
   /// \ingroup g_EnumerationClass
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  struct HistoryActionID
+  struct ZYPP_API HistoryActionID
   {
     static const HistoryActionID NONE;
 
@@ -83,7 +83,7 @@ namespace zypp
   { return lhs.toEnum() != rhs.toEnum(); }
 
   /** \relates HistoryActionID */
-  std::ostream & operator << (std::ostream & str, const HistoryActionID & id);
+  ZYPP_API std::ostream & operator << (std::ostream & str, const HistoryActionID & id);
   ///////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ namespace zypp
   /// plain string values. Derived classes for well known entries tell
   ///
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogData
+  class ZYPP_API HistoryLogData
   {
   public:
     typedef shared_ptr<HistoryLogData>		Ptr;
@@ -185,7 +185,7 @@ namespace zypp
   };
 
   /** \relates HistoryLogData Stream output */
-  std::ostream & operator<<( std::ostream & str, const HistoryLogData & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const HistoryLogData & obj );
   ///////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ namespace zypp
   /// \brief  A zypp history log line for an installed packaged.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataInstall : public HistoryLogData
+  class ZYPP_API HistoryLogDataInstall : public HistoryLogData
   {
   public:
     typedef shared_ptr<HistoryLogDataInstall>		Ptr;

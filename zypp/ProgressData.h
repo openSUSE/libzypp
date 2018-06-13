@@ -388,7 +388,7 @@ namespace zypp
    *
    * \endcode
    */
-  class CombinedProgressData
+  class ZYPP_API CombinedProgressData
   {
   public:
     /**

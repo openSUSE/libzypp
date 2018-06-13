@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <list>
+#include "zypp/APIConfig.h"
 #include "zypp/base/DefaultIntegral.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/Function.h"
@@ -36,7 +37,7 @@ namespace zypp
    */
   typedef function<void ( const Pathname &file )> FileChecker;
 
-  class FileCheckException : public Exception
+  class ZYPP_API FileCheckException : public Exception
   {
   public:
     FileCheckException(const std::string &msg)
@@ -44,7 +45,7 @@ namespace zypp
     {}
   };
 
-  class CheckSumCheckException : public FileCheckException
+  class ZYPP_API CheckSumCheckException : public FileCheckException
   {
   public:
     CheckSumCheckException(const std::string &msg)
@@ -52,7 +53,7 @@ namespace zypp
     {}
   };
 
-  class SignatureCheckException : public FileCheckException
+  class ZYPP_API SignatureCheckException : public FileCheckException
   {
   public:
     SignatureCheckException(const std::string &msg)
@@ -67,7 +68,7 @@ namespace zypp
   /**
    * \short Checks for a valid checksum and interacts with the user.
    */
-   class ChecksumFileChecker
+   class ZYPP_API ChecksumFileChecker
    {
    public:
      typedef CheckSumCheckException ExceptionType;
@@ -90,7 +91,7 @@ namespace zypp
    /**
     * \short Checks for the validity of a signature
     */
-   class SignatureFileChecker
+   class ZYPP_API SignatureFileChecker
    {
      public:
        typedef SignatureCheckException ExceptionType;

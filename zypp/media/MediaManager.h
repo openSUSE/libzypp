@@ -52,7 +52,7 @@ namespace zypp
     /**
      * Interface to implement a media verifier.
      */
-    class MediaVerifierBase //: private zypp::NonCopyable
+    class ZYPP_API MediaVerifierBase //: private zypp::NonCopyable
     {
     public:
       MediaVerifierBase()

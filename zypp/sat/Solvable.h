@@ -512,7 +512,7 @@ namespace zypp
      * \relates Solvable
      * \relates sat::SolvIterMixin
      */
-    struct asSolvable
+    struct ZYPP_API asSolvable
     {
       typedef Solvable result_type;
 

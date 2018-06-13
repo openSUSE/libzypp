@@ -16,6 +16,7 @@
 
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 #include "zypp/Url.h"
@@ -34,7 +35,7 @@ namespace rpm
 /** Just inherits Exception to separate media exceptions
  *
  **/
-class RpmException : public Exception
+class ZYPP_API RpmException : public Exception
 {
 public:
   /** Ctor taking message.
@@ -54,7 +55,7 @@ public:
   {};
 };
 
-class GlobalRpmInitException : public RpmException
+class ZYPP_API GlobalRpmInitException : public RpmException
 {
 public:
   /** Ctor taking message.
@@ -69,7 +70,7 @@ public:
 private:
 };
 
-class RpmInvalidRootException : public RpmException
+class ZYPP_API RpmInvalidRootException : public RpmException
 {
 public:
   /** Ctor taking message.
@@ -99,7 +100,7 @@ private:
   std::string _dbpath;
 };
 
-class RpmAccessBlockedException : public RpmException
+class ZYPP_API RpmAccessBlockedException : public RpmException
 {
 public:
   RpmAccessBlockedException( const Pathname & root_r,
@@ -125,7 +126,7 @@ private:
   std::string _dbpath;
 };
 
-class RpmSubprocessException : public RpmException
+class ZYPP_API RpmSubprocessException : public RpmException
 {
 public:
   RpmSubprocessException(const std::string & errmsg_r)
@@ -140,7 +141,7 @@ private:
   std::string _errmsg;
 };
 
-class RpmInitException : public RpmException
+class ZYPP_API RpmInitException : public RpmException
 {
 public:
   RpmInitException(const Pathname & root_r,
@@ -158,7 +159,7 @@ private:
   std::string _dbpath;
 };
 
-class RpmDbOpenException : public RpmException
+class ZYPP_API RpmDbOpenException : public RpmException
 {
 public:
   RpmDbOpenException(const Pathname & root_r,
@@ -176,7 +177,7 @@ private:
   std::string _dbpath;
 };
 
-class RpmDbAlreadyOpenException : public RpmException
+class ZYPP_API RpmDbAlreadyOpenException : public RpmException
 {
 public:
   RpmDbAlreadyOpenException(const Pathname & old_root_r,
@@ -200,7 +201,7 @@ private:
   std::string _new_dbpath;
 };
 
-class RpmDbNotOpenException : public RpmException
+class ZYPP_API RpmDbNotOpenException : public RpmException
 {
 public:
   RpmDbNotOpenException()
@@ -213,7 +214,7 @@ protected:
 private:
 };
 
-class RpmDbConvertException : public RpmException
+class ZYPP_API RpmDbConvertException : public RpmException
 {
 public:
   RpmDbConvertException()
@@ -226,7 +227,7 @@ protected:
 private:
 };
 
-class RpmNullDatabaseException : public RpmException
+class ZYPP_API RpmNullDatabaseException : public RpmException
 {
 public:
   RpmNullDatabaseException()

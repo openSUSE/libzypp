@@ -14,6 +14,7 @@
 
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Exception.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -28,7 +29,7 @@ namespace zypp
     //	CLASS NAME : ParseDefException
     //
     /** Common base class for \ref ParseDef exceptions. */
-    struct ParseDefException : public Exception
+    struct ZYPP_API ParseDefException : public Exception
     {
       ParseDefException( const std::string & what_r );
     };
@@ -39,7 +40,7 @@ namespace zypp
     //	CLASS NAME : ParseDefBuildException
     //
     /** Exceptions when building a ParseDef tree. */
-    struct ParseDefBuildException : public ParseDefException
+    struct ZYPP_API ParseDefBuildException : public ParseDefException
     {
       ParseDefBuildException( const std::string & what_r );
     };
@@ -50,7 +51,7 @@ namespace zypp
     //	CLASS NAME : ParseDefValidateException
     //
     /** Parse exceptions related to the documents node structure. */
-    struct ParseDefValidateException : public ParseDefException
+    struct ZYPP_API ParseDefValidateException : public ParseDefException
     {
       ParseDefValidateException( const std::string & what_r );
     };
@@ -61,7 +62,7 @@ namespace zypp
     //	CLASS NAME : ParseDefDataException
     //
     /** Parse exceptions related to the nodes content. */
-    struct ParseDefDataException : public ParseDefException
+    struct ZYPP_API ParseDefDataException : public ParseDefException
     {
       ParseDefDataException( const std::string & what_r );
     };

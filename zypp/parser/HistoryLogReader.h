@@ -13,6 +13,7 @@
 #ifndef ZYPP_PARSER_HISTORYLOGREADER_H_
 #define ZYPP_PARSER_HISTORYLOGREADER_H_
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Flags.h"
 #include "zypp/ProgressData.h"
@@ -63,7 +64,7 @@ namespace zypp
   /// \see \ref HistoryLogData for how to access the individual data fields.
   ///
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogReader
+  class ZYPP_API HistoryLogReader
   {
   public:
 

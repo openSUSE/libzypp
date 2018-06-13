@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <vector>
 
+#include "zypp/APIConfig.h"
 #include "zypp/Digest.h"
 
 namespace zypp {
@@ -32,7 +33,7 @@ struct MediaBlock {
   size_t size;
 };
 
-class MediaBlockList {
+class ZYPP_API MediaBlockList {
 public:
   MediaBlockList(off_t filesize=off_t(-1));
 

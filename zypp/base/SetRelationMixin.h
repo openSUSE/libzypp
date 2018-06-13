@@ -55,7 +55,7 @@ namespace zypp
   /// as well as \c SetCompare::properSubset. Accordingly \c SetRelation::subset
   /// matches \c SetCompare::equal as well as \c SetCompare::properSuperset.
   ///////////////////////////////////////////////////////////////////
-  struct ESetRelationDef {
+  struct ZYPP_API ESetRelationDef {
     enum Enum {
       uncomparable	= SetCompare::uncomparable,	///< "{??}"
       equal		= SetCompare::equal,		///< "{==}"

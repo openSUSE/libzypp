@@ -458,14 +458,6 @@ INSTALL(  FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/yum
 )
 
-SET( zypp_parser_ws_SRCS
-  parser/ws/WebpinResultFileReader.cc
-)
-
-SET( zypp_parser_ws_HEADERS
-  parser/ws/WebpinResultFileReader.h
-)
-
 INSTALL(  FILES
   ${zypp_parser_ws_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/ws
@@ -795,14 +787,6 @@ SET( zypp_repo_susetags_SRCS
 
 SET( zypp_repo_susetags_HEADERS
   repo/susetags/Downloader.h
-)
-
-SET( zypp_ws_SRCS
-  ws/WebpinResult.cc
-)
-
-SET( zypp_ws_HEADERS
-  ws/WebpinResult.h
 )
 
 ####################################################################

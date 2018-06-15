@@ -12,6 +12,7 @@
 #ifndef ZYPP_RESTRAITS_H
 #define ZYPP_RESTRAITS_H
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ResKind.h"
 
@@ -82,7 +83,7 @@ namespace zypp
       typedef intrusive_ptr<TRes>       PtrType;
       typedef intrusive_ptr<const TRes> constPtrType;
 
-      static const ResKind              kind;	///< Defined in ResKind.cc
+      ZYPP_API static const ResKind              kind;	///< Defined in ResKind.cc
 
       /** Those are denoted to be installed, if the
        *  solver verifies them as being satisfied. */
@@ -93,7 +94,7 @@ namespace zypp
    * Resolvable is common base and has no Kind value.
    */
   template<>
-    struct ResTraits<Resolvable>
+    struct ZYPP_API ResTraits<Resolvable>
     {
       typedef ResKind                         KindType;
       typedef intrusive_ptr<Resolvable>       PtrType;
@@ -104,7 +105,7 @@ namespace zypp
    * ResObject is common base and has no Kind value.
    */
   template<>
-    struct ResTraits<ResObject>
+    struct ZYPP_API ResTraits<ResObject>
     {
       typedef ResKind                        KindType;
       typedef intrusive_ptr<ResObject>       PtrType;

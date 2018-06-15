@@ -21,6 +21,7 @@
 #include <boost/format.hpp>
 #include <boost/utility/string_ref.hpp>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Easy.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
@@ -87,7 +88,7 @@ namespace zypp
    *
    * \todo Check whether to replace by boost::string_ref
    */
-  class C_Str
+  class ZYPP_API C_Str
   {
     public:
       typedef std::string::size_type size_type;
@@ -165,7 +166,7 @@ namespace zypp
 
     ///////////////////////////////////////////////////////////////////
     /** Printf style construction of std::string. */
-    std::string form( const char * format, ... )
+    ZYPP_API std::string form( const char * format, ... )
     __attribute__ ((format (printf, 1, 2)));
 
     ///////////////////////////////////////////////////////////////////
@@ -173,7 +174,7 @@ namespace zypp
      * Like ::strerror, but the numerical value is included in
      * the string as well.
     */
-    std::string strerror( int errno_r );
+    ZYPP_API std::string strerror( int errno_r );
 
     ///////////////////////////////////////////////////////////////////
     /** Assert \c free called for allocated <tt>char *</tt>.
@@ -207,7 +208,7 @@ namespace zypp
     ///   std::string txt( str::Str() << 45 );
     /// \endcode
     ///////////////////////////////////////////////////////////////////
-    struct Str
+    struct ZYPP_API Str
     {
       template<class Tp>
       Str & operator<<( Tp && val )
@@ -248,7 +249,7 @@ namespace zypp
     ///   std::string txt( str::Format("Hello %1%") % 13 );
     /// \endcode
     ///////////////////////////////////////////////////////////////////
-    struct Format
+    struct ZYPP_API Format
     {
       Format() { _fmter.exceptions( boost::io::no_error_bits ); }
       Format( const std::string & format_r ) : Format() { _fmter.parse( format_r ); }
@@ -416,10 +417,10 @@ namespace zypp
     */
     //@{
     /** Return \c true if str is <tt>1, true, yes, on</tt> (or a nonzero number). */
-    bool strToTrue( const C_Str & str );
+    ZYPP_API bool strToTrue( const C_Str & str );
 
     /** Return \c false if str is <tt>0, false, no, off</tt>. */
-    bool strToFalse( const C_Str & str );
+    ZYPP_API bool strToFalse( const C_Str & str );
 
     /** Parse \c str into a bool depending on the default value.
      * If the \c default is true, look for a legal \c false string.
@@ -447,7 +448,7 @@ namespace zypp
     /**
      * \short Return a string with all occurrences of \c from_r replaced with \c to_r.
      */
-    std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r );
+    ZYPP_API std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r );
 
     /** \overload A function is called on demand to compute each replacement value.
      */
@@ -457,7 +458,7 @@ namespace zypp
      * \short Replace all occurrences of \c from_r with \c to_r in \c str_r (inplace).
      * A reference to \c str_r is also returned for convenience.
      */
-    std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r );
+    ZYPP_API std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r );
 
     /** \overload A function is called on demand to compute each replacement value.
      */
@@ -882,7 +883,7 @@ namespace zypp
        * For use when printing \a c separated values, and where
        * \ref joinEscaped() is too heavy.
        */
-      std::string escape( const C_Str & str_r, const char c = ' ' );
+      ZYPP_API std::string escape( const C_Str & str_r, const char c = ' ' );
 
       /** Escape \a next_r and append it to \a str_r using separator \a sep_r. */
       inline void appendEscaped( std::string & str_r, const C_Str & next_r, const char sep_r = ' ' )
@@ -919,8 +920,8 @@ namespace zypp
     /** Return lowercase version of \a s
      * \todo improve
     */
-    std::string toLower( const std::string & s );
-    std::string toLower( std::string && s );
+    ZYPP_API std::string toLower( const std::string & s );
+    ZYPP_API std::string toLower( std::string && s );
     /** \overload */
     inline std::string toLower( const char * s )
     { return( s ? toLower( std::string(s) ) : std::string() ); }
@@ -928,8 +929,8 @@ namespace zypp
     /** Return uppercase version of \a s
      * \todo improve
     */
-    std::string toUpper( const std::string & s );
-    std::string toUpper( std::string && s );
+    ZYPP_API std::string toUpper( const std::string & s );
+    ZYPP_API std::string toUpper( std::string && s );
     /** \overload */
     inline std::string toUpper( const char * s )
     { return( s ? toUpper( std::string(s) ) : std::string() ); }
@@ -965,8 +966,8 @@ namespace zypp
       TRIM    = (L_TRIM|R_TRIM)
     };
 
-    std::string trim( const std::string & s, const Trim trim_r = TRIM );
-    std::string trim( std::string && s, const Trim trim_r = TRIM );
+    ZYPP_API std::string trim( const std::string & s, const Trim trim_r = TRIM );
+    ZYPP_API std::string trim( std::string && s, const Trim trim_r = TRIM );
 
     inline std::string ltrim( const std::string & s )
     { return trim( s, L_TRIM ); }
@@ -986,12 +987,12 @@ namespace zypp
     /** Return stream content up to (but not returning) the next newline.
      * \see \ref receiveUpTo
      */
-    std::string getline( std::istream & str, bool trim = false );
+    ZYPP_API std::string getline( std::istream & str, bool trim = false );
 
     /** Return stream content up to (but not returning) the next newline.
      * \see \ref receiveUpTo
      */
-    std::string getline( std::istream & str, const Trim trim_r );
+    ZYPP_API std::string getline( std::istream & str, const Trim trim_r );
 
     /** Return stream content up to the next ocurrence of \c delim_r or EOF
      * \c delim_r, if found, is always read from the stream. Whether it is

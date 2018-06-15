@@ -12,6 +12,7 @@
 #include <list>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/ProblemTypes.h"
 #include "zypp/ResolverProblem.h"
 
@@ -34,7 +35,7 @@ namespace zypp
   ///    - Ignore: Inject artificial "provides" for a missing requirement
   ///	(pretend that requirement is satisfied)
   /////////////////////////////////////////////////////////////////////////
-  class ProblemSolution : public base::ReferenceCounted
+  class ZYPP_API ProblemSolution : public base::ReferenceCounted
   {
   public:
     typedef solver::detail::SolutionAction_Ptr SolutionAction_Ptr;
@@ -97,10 +98,10 @@ namespace zypp
   };
 
   /** \relates ProblemSolution Stream output */
-  std::ostream& operator<<(std::ostream&, const ProblemSolution & obj );
+  ZYPP_API std::ostream& operator<<(std::ostream&, const ProblemSolution & obj );
 
   /** \relates ProblemSolution Stream output */
-  std::ostream& operator<<(std::ostream&, const ProblemSolutionList & obj );
+  ZYPP_API std::ostream& operator<<(std::ostream&, const ProblemSolutionList & obj );
 
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////

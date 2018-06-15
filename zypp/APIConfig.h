@@ -46,6 +46,21 @@
   #define ZYPP_LOCAL
 #endif
 
+/*
+   No, this is not an evil backdoor. ZYPP_BUILD_INTERNAL just exports more symbols
+   for libzypp's internal unit tests. If you want slower loading times and more
+   symbols that can vanish from version to version, feel free to define ZYPP_BUILD_INTERNAL.
+   \note based on code from the Qt project qglobal.h
+*/
+#if defined(ZYPP_BUILD_INTERNAL) && defined(ZYPP_DLL)
+#    define ZYPP_AUTOTEST_API ZYPP_DECL_EXPORT
+#elif defined(ZYPP_BUILD_INTERNAL)
+#    define ZYPP_AUTOTEST_API ZYPP_DECL_EXPORT
+#else
+#    define ZYPP_AUTOTEST_API
+#endif
+
+
 /**
  * The ZYPP_DEPRECATED macro can be used to trigger compile-time warnings
  * with gcc >= 3.2 when deprecated functions are used.

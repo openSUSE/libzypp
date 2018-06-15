@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/ExternalDataSource.h"
 #include "zypp/Pathname.h"
 
@@ -55,7 +56,7 @@ namespace zypp {
      *
      * \endcode
      */
-    class ExternalProgram : public zypp::externalprogram::ExternalDataSource
+    class ZYPP_API ExternalProgram : public zypp::externalprogram::ExternalDataSource
     {
 
     public:

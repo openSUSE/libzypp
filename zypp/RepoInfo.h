@@ -15,6 +15,7 @@
 #include <list>
 #include <set>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/APIConfig.h"
 
@@ -68,7 +69,7 @@ namespace zypp
    * \note Name, baseUrls and mirrorUrl are subject to repo variable replacement
    * (\see \ref RepoVariablesStringReplacer).
    */
-  class RepoInfo : public repo::RepoInfoBase
+  class ZYPP_API RepoInfo : public repo::RepoInfoBase
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
@@ -558,10 +559,10 @@ namespace zypp
   typedef std::list<RepoInfo> RepoInfoList;
 
   /** \relates RepoInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
   /** \relates RepoInfo::GpgCheck Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

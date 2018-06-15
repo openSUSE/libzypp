@@ -13,6 +13,7 @@
 #define ZYPP2_REPOSTATUS_H
 
 #include <iosfwd>
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/CheckSum.h"
 #include "zypp/Date.h"
@@ -35,7 +36,7 @@ namespace zypp
   /// use outside this class. \ref operator== tells if the checksums
   /// of two rRepoStatus are the same.
   ///////////////////////////////////////////////////////////////////
-  class RepoStatus
+  class ZYPP_API RepoStatus
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
     friend RepoStatus operator&&( const RepoStatus & lhs, const RepoStatus & rhs );
@@ -84,13 +85,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoStatus Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const RepoStatus & obj );
 
   /** \relates RepoStatus Combine two RepoStatus (combined checksum and newest timestamp) */
-  RepoStatus operator&&( const RepoStatus & lhs, const RepoStatus & rhs );
+  ZYPP_API RepoStatus operator&&( const RepoStatus & lhs, const RepoStatus & rhs );
 
   /** \relates RepoStatus Whether 2 RepoStatus refer to the same content checksum */
-  bool operator==( const RepoStatus & lhs, const RepoStatus & rhs );
+  ZYPP_API bool operator==( const RepoStatus & lhs, const RepoStatus & rhs );
 
   /** \relates RepoStatus Whether 2 RepoStatus refer to different content checksums */
   inline bool operator!=( const RepoStatus & lhs, const RepoStatus & rhs )

@@ -27,7 +27,7 @@ namespace zypp {
  * Class for handling media authentication data. This is the most generic
  * class containing only username and password members.
  */
-class AuthData
+class ZYPP_API AuthData
 {
 public:
   AuthData()
@@ -71,7 +71,7 @@ typedef shared_ptr<AuthData> AuthData_Ptr;
 /**
  * Curl HTTP authentication data.
  */
-class CurlAuthData : public AuthData {
+class ZYPP_API CurlAuthData : public AuthData {
 public:
   /**
    * Default constructor. Initializes username and password to empty strings
@@ -152,8 +152,8 @@ private:
 
 typedef shared_ptr<CurlAuthData> CurlAuthData_Ptr;
 
-std::ostream & operator << (std::ostream & str, const AuthData & auth_data);
-std::ostream & operator << (std::ostream & str, const CurlAuthData & auth_data);
+ZYPP_API std::ostream & operator << (std::ostream & str, const AuthData & auth_data);
+ZYPP_API std::ostream & operator << (std::ostream & str, const CurlAuthData & auth_data);
 
 ///////////////////////////////////////////////////////////////////
 

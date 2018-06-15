@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
@@ -92,7 +93,7 @@ namespace zypp
      * \note A Singleton using a Singleton implementation class,
      * that's why there is no _pimpl like in other classes.
     */
-    class LogControl
+    class ZYPP_API LogControl
     {
       friend std::ostream & operator<<( std::ostream & str, const LogControl & obj );
 

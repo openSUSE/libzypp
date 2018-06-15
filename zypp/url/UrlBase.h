@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_URLBASE_H
 #define   ZYPP_URL_URLBASE_H
 
+#include "zypp/APIConfig.h"
 #include "zypp/url/UrlUtils.h"
 #include "zypp/base/PtrTypes.h"
 
@@ -36,7 +37,7 @@ namespace zypp
      * to modify a view option combination and a ViewOption::has()
      * method, to check if a specified option is enabled or not.
      */
-    struct ViewOption
+    struct ZYPP_API ViewOption
     {
       /** @{ */
       /**

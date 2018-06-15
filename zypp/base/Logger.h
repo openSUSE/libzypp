@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
+
 ///////////////////////////////////////////////////////////////////
 #ifdef ZYPP_NDEBUG
 #define OSDLOG( MSG )
@@ -121,12 +123,12 @@ namespace zypp
        * @note You won't call @ref getStream directly, but use the
        * @ref ZYPP_BASE_LOGGER_MACROS.
       */
-      extern std::ostream & getStream( const char * group_r,
+      ZYPP_API extern std::ostream & getStream( const char * group_r,
                                        LogLevel     level_r,
                                        const char * file_r,
                                        const char * func_r,
                                        const int    line_r );
-      extern bool isExcessive();
+      ZYPP_API  extern bool isExcessive();
 
       /////////////////////////////////////////////////////////////////
     } // namespace logger

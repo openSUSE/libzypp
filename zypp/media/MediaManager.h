@@ -470,7 +470,7 @@ namespace zypp
      *   - \c script<->libzypp communication:
      *     - \TODO to be documented.
      */
-    class MediaManager: private zypp::base::NonCopyable
+    class ZYPP_API MediaManager: private zypp::base::NonCopyable
     {
     public:
       /**

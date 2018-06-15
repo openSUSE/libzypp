@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 
@@ -35,7 +36,7 @@ namespace zypp
     /// \p pool_r \ref ResPool used to get candidates
     /// \p pi item to be commited
     ///////////////////////////////////////////////////////////////////
-    class RepoProvidePackage
+    class ZYPP_API RepoProvidePackage
     {
     public:
       RepoProvidePackage();
@@ -55,7 +56,7 @@ namespace zypp
     //
     /** Target::commit helper optimizing package provision.
     */
-    class CommitPackageCache
+    class ZYPP_API CommitPackageCache
     {
       friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
 
@@ -108,7 +109,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates CommitPackageCache Stream output */
-    std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
 
     /////////////////////////////////////////////////////////////////
   } // namespace target

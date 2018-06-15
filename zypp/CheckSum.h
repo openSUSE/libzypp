@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Exception.h"
 #include "zypp/Pathname.h"
 

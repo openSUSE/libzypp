@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Easy.h"
 #include "zypp/base/EnumClass.h"
 
@@ -25,7 +26,7 @@ namespace zypp
   /// \brief Result of set comparison (use like 'enum class \ref SetCompare')
   /// This is the type a \c compare function should return.
   ///////////////////////////////////////////////////////////////////
-  struct ESetCompareDef {
+  struct ZYPP_API ESetCompareDef {
     enum Enum {
       uncomparable	= 0,		///< "{?}"
       equal		= (1<<0),	///< "{=}"

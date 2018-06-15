@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/ProvideNumericId.h"
@@ -127,7 +128,7 @@ namespace zypp
    * The different ammount of triggers is due to different rules for sending
    * percent or 'still alive' messages.
    */
-  class ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
+  class ZYPP_API ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
   {
     public:
       typedef long long value_type;
@@ -345,7 +346,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ProgressData Stream output */
-  std::ostream & operator<<( std::ostream & str, const ProgressData & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const ProgressData & obj );
 
   ///////////////////////////////////////////////////////////////////
 

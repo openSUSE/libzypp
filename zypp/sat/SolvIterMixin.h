@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/base/Hash.h"
@@ -46,7 +47,7 @@ namespace zypp
        * used in \ref SolvIterMixin when mapping a  Solvable iterator
        * to a Selectable iterator.
       */
-      struct UnifyByIdent
+      struct ZYPP_API UnifyByIdent
       {
         bool operator()( const Solvable & solv_r ) const;
 

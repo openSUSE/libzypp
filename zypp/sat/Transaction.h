@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/Iterator.h"
@@ -48,7 +49,7 @@ namespace zypp
      *       do not cause/require any specific action. To skip those informal steps
      *       when iterating, use the \ref actionBegin /\ref actionEnd methods.
      */
-    class Transaction : public SolvIterMixin<Transaction, detail::Transaction_const_iterator>
+    class ZYPP_API Transaction : public SolvIterMixin<Transaction, detail::Transaction_const_iterator>
     {
       friend std::ostream & operator<<( std::ostream & str, const Transaction & obj );
       friend std::ostream & dumpOn( std::ostream & str, const Transaction & obj );
@@ -190,13 +191,13 @@ namespace zypp
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Transaction::StepStages);
 
     /** \relates Transaction Stream output */
-    std::ostream & operator<<( std::ostream & str, const Transaction & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Transaction & obj );
 
     /** \relates Transaction Verbose stream output */
-    std::ostream & dumpOn( std::ostream & str, const Transaction & obj );
+    ZYPP_API std::ostream & dumpOn( std::ostream & str, const Transaction & obj );
 
     /** \relates Transaction */
-    bool operator==( const Transaction & lhs, const Transaction & rhs );
+    ZYPP_API bool operator==( const Transaction & lhs, const Transaction & rhs );
 
     /** \relates Transaction */
     inline bool operator!=( const Transaction & lhs, const Transaction & rhs )
@@ -213,7 +214,7 @@ namespace zypp
      *
      * \see \ref Transaction.
      */
-    class Transaction::Step
+    class ZYPP_API Transaction::Step
     {
       friend std::ostream & operator<<( std::ostream & str, const Step & obj );
 
@@ -273,13 +274,13 @@ namespace zypp
     };
 
     /** \relates Transaction::Step Stream output */
-    std::ostream & operator<<( std::ostream & str, const Transaction::Step & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Transaction::Step & obj );
 
     /** \relates Transaction::StepType Stream output */
-    std::ostream & operator<<( std::ostream & str, Transaction::StepType obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, Transaction::StepType obj );
 
     /** \relates Transaction::StepStage Stream output */
-    std::ostream & operator<<( std::ostream & str, Transaction::StepStage obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, Transaction::StepStage obj );
 
    ///////////////////////////////////////////////////////////////////
     namespace detail
@@ -287,7 +288,7 @@ namespace zypp
 
       /** \ref Transaction iterator.
        */
-      class Transaction_iterator : public boost::iterator_adaptor<
+      class ZYPP_API Transaction_iterator : public boost::iterator_adaptor<
       Transaction_iterator		// Derived
       , const detail::IdType *		// Base
       , Transaction::Step		// Value
@@ -360,7 +361,7 @@ namespace zypp
     { return find( pi_r.satSolvable() ); }
 
 
-    struct  Transaction::FilterAction
+    struct  ZYPP_API Transaction::FilterAction
     {
       FilterAction() {}
       FilterAction( StepStages filter_r ) : _filter( filter_r ) {}

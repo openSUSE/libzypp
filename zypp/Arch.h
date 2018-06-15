@@ -17,6 +17,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/String.h"
 #include "zypp/base/Iterator.h"
 
@@ -33,7 +34,7 @@ namespace zypp
   //
   /** Architecture.
   */
-  class Arch
+  class ZYPP_API Arch
   {
   public:
     /** Default ctor \ref Arc_noarch. */
@@ -159,126 +160,126 @@ namespace zypp
    * confuse this with \ref Arch_noarch, which is in fact an
    * architecture.
   */
-  extern const Arch Arch_empty;
+  ZYPP_API extern const Arch Arch_empty;
 
   /** \relates Arch */
-  extern const Arch Arch_noarch;
+  ZYPP_API extern const Arch Arch_noarch;
 
   /** \relates Arch */
-  extern const Arch Arch_pentium4;
+  ZYPP_API extern const Arch Arch_pentium4;
   /** \relates Arch */
-  extern const Arch Arch_pentium3;
+  ZYPP_API extern const Arch Arch_pentium3;
 
   /** \relates Arch */
-  extern const Arch Arch_x86_64;
+  ZYPP_API extern const Arch Arch_x86_64;
   /** \relates Arch */
-  extern const Arch Arch_athlon;
+  ZYPP_API extern const Arch Arch_athlon;
   /** \relates Arch */
-  extern const Arch Arch_i686;
+  ZYPP_API extern const Arch Arch_i686;
   /** \relates Arch */
-  extern const Arch Arch_i586;
+  ZYPP_API extern const Arch Arch_i586;
   /** \relates Arch */
-  extern const Arch Arch_i486;
+  ZYPP_API extern const Arch Arch_i486;
   /** \relates Arch */
-  extern const Arch Arch_i386;
+  ZYPP_API extern const Arch Arch_i386;
 
   /** \relates Arch */
-  extern const Arch Arch_s390x;
+  ZYPP_API extern const Arch Arch_s390x;
   /** \relates Arch */
-  extern const Arch Arch_s390;
+  ZYPP_API extern const Arch Arch_s390;
 
   /** \relates Arch */
-  extern const Arch Arch_ppc64le;
+  ZYPP_API extern const Arch Arch_ppc64le;
 
   /** \relates Arch */
-  extern const Arch Arch_ppc64p7;
+  ZYPP_API extern const Arch Arch_ppc64p7;
   /** \relates Arch */
-  extern const Arch Arch_ppc64;
+  ZYPP_API extern const Arch Arch_ppc64;
   /** \relates Arch */
-  extern const Arch Arch_ppc;
+  ZYPP_API extern const Arch Arch_ppc;
 
   /** \relates Arch */
-  extern const Arch Arch_ia64;
+  ZYPP_API extern const Arch Arch_ia64;
 
   /** \relates Arch */
-  extern const Arch Arch_alphaev67;
+  ZYPP_API extern const Arch Arch_alphaev67;
   /** \relates Arch */
-  extern const Arch Arch_alphaev6;
+  ZYPP_API extern const Arch Arch_alphaev6;
   /** \relates Arch */
-  extern const Arch Arch_alphapca56;
+  ZYPP_API extern const Arch Arch_alphapca56;
   /** \relates Arch */
-  extern const Arch Arch_alphaev56;
+  ZYPP_API extern const Arch Arch_alphaev56;
   /** \relates Arch */
-  extern const Arch Arch_alphaev5;
+  ZYPP_API extern const Arch Arch_alphaev5;
   /** \relates Arch */
-  extern const Arch Arch_alpha;
-
-   /** \relates Arch */
-  extern const Arch Arch_sparc64v;
-  /** \relates Arch */
-  extern const Arch Arch_sparc64;
-  /** \relates Arch */
-  extern const Arch Arch_sparcv9v;
-  /** \relates Arch */
-  extern const Arch Arch_sparcv9;
-  /** \relates Arch */
-  extern const Arch Arch_sparcv8;
-  /** \relates Arch */
-  extern const Arch Arch_sparc;
-
-  /** \relates Arch */
-  extern const Arch Arch_aarch64;
-
-  /** \relates Arch */
-  extern const Arch Arch_armv7tnhl;	/* exists? */
-  /** \relates Arch */
-  extern const Arch Arch_armv7thl;	/* exists? */
-
-  /** \relates Arch */
-  extern const Arch Arch_armv7hnl,	/* legacy: */Arch_armv7nhl;
-  /** \relates Arch */
-  extern const Arch Arch_armv7hl;
-  /** \relates Arch */
-  extern const Arch Arch_armv6hl;
-
-  /** \relates Arch */
-  extern const Arch Arch_armv7l;
-  /** \relates Arch */
-  extern const Arch Arch_armv6l;
-  /** \relates Arch */
-  extern const Arch Arch_armv5tejl;
-  /** \relates Arch */
-  extern const Arch Arch_armv5tel;
-  /** \relates Arch */
-  extern const Arch Arch_armv5tl;
-  /** \relates Arch */
-  extern const Arch Arch_armv5l;
-  /** \relates Arch */
-  extern const Arch Arch_armv4tl;
-  /** \relates Arch */
-  extern const Arch Arch_armv4l;
-  /** \relates Arch */
-  extern const Arch Arch_armv3l;
+  ZYPP_API extern const Arch Arch_alpha;
 
    /** \relates Arch */
-  extern const Arch Arch_sh3;
+  ZYPP_API extern const Arch Arch_sparc64v;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sparc64;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sparcv9v;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sparcv9;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sparcv8;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sparc;
 
   /** \relates Arch */
-  extern const Arch Arch_sh4;
-  /** \relates Arch */
-  extern const Arch Arch_sh4a;
+  ZYPP_API extern const Arch Arch_aarch64;
 
   /** \relates Arch */
-  extern const Arch Arch_m68k;
+  ZYPP_API extern const Arch Arch_armv7tnhl;	/* exists? */
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv7thl;	/* exists? */
 
   /** \relates Arch */
-  extern const Arch Arch_mips;
+  ZYPP_API extern const Arch Arch_armv7hnl,	/* legacy: */Arch_armv7nhl;
   /** \relates Arch */
-  extern const Arch Arch_mipsel;
+  ZYPP_API extern const Arch Arch_armv7hl;
   /** \relates Arch */
-  extern const Arch Arch_mips64;
+  ZYPP_API extern const Arch Arch_armv6hl;
+
   /** \relates Arch */
-  extern const Arch Arch_mips64el;
+  ZYPP_API extern const Arch Arch_armv7l;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv6l;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv5tejl;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv5tel;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv5tl;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv5l;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv4tl;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv4l;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_armv3l;
+
+   /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sh3;
+
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sh4;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_sh4a;
+
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_m68k;
+
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_mips;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_mipsel;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_mips64;
+  /** \relates Arch */
+  ZYPP_API extern const Arch Arch_mips64el;
   //@}
 
   ///////////////////////////////////////////////////////////////////

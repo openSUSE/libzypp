@@ -18,6 +18,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Iterable.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Exception.h"
@@ -44,7 +45,7 @@ namespace zypp
   /// \class BadKeyException
   /// \brief Exception thrown when the supplied key is not a valid gpg key
   ///////////////////////////////////////////////////////////////////
-  class BadKeyException : public Exception
+  class ZYPP_API BadKeyException : public Exception
   {
     public:
       /** Ctor taking message.
@@ -75,7 +76,7 @@ namespace zypp
   /// \brief Class representing a GPG Public Keys subkeys.
   /// \see \ref PublicKeyData.
   ///////////////////////////////////////////////////////////////////
-  class PublicSubkeyData
+  class ZYPP_API PublicSubkeyData
   {
   public:
     /** Default constructed: empty data. */
@@ -136,7 +137,7 @@ namespace zypp
   /// armored version of the key placed in a tempfile. In this
   /// case use \ref PublicKey.
   ///////////////////////////////////////////////////////////////////
-  class PublicKeyData
+  class ZYPP_API PublicKeyData
   {
   public:
     /** Default constructed: empty data. */
@@ -266,7 +267,7 @@ namespace zypp
   /// keys, the \b last keys data are made available via the API. The
   /// additional keys data are made available via \ref hiddenKeys.
   ///////////////////////////////////////////////////////////////////
-  class PublicKey
+  class ZYPP_API PublicKey
   {
   public:
     /** Implementation  */
@@ -364,7 +365,7 @@ namespace zypp
   { return str << obj.asString(); }
 
   /** \relates PublicKey Detailed stream output */
-  std::ostream & dumpOn( std::ostream & str, const PublicKey & obj );
+  ZYPP_API std::ostream & dumpOn( std::ostream & str, const PublicKey & obj );
 
  /////////////////////////////////////////////////////////////////
 } // namespace zypp

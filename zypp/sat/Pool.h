@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/Pathname.h"
 
 #include "zypp/sat/detail/PoolMember.h"
@@ -41,7 +42,7 @@ namespace zypp
      *
      * Explicitly shared singleton \ref Pool::instance.
      */
-    class Pool : protected detail::PoolMember
+    class ZYPP_API Pool : protected detail::PoolMember
     {
       public:
         typedef detail::SolvableIterator SolvableIterator;
@@ -275,7 +276,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Pool Stream output */
-    std::ostream & operator<<( std::ostream & str, const Pool & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Pool & obj );
 
     /** \relates Pool */
     inline bool operator==( const Pool & lhs, const Pool & rhs )

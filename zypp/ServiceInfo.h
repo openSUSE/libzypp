@@ -15,6 +15,7 @@
 #include <set>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/Url.h"
 
 #include "zypp/base/Iterable.h"
@@ -33,7 +34,7 @@ namespace zypp
   /// \note Name and Url are subject to repo variable replacement
   /// (\see \ref RepoVariablesStringReplacer).
   ///
-  class ServiceInfo : public repo::RepoInfoBase
+  class ZYPP_API ServiceInfo : public repo::RepoInfoBase
   {
   public:
     /** Default ctor creates \ref noService.*/
@@ -223,7 +224,7 @@ namespace zypp
   typedef std::list<ServiceInfo> ServiceInfoList;
 
   /** \relates ServiceInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
 
 
     /////////////////////////////////////////////////////////////////

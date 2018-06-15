@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/sat/Queue.h"
 #include "zypp/sat/Solvable.h"
@@ -27,7 +28,7 @@ namespace zypp
     /// \class FileConflicts
     /// \brief Libsolv queue representing file conflicts.
     ///////////////////////////////////////////////////////////////////
-    class FileConflicts : private Queue
+    class ZYPP_API FileConflicts : private Queue
     {
       friend bool operator==( const FileConflicts & lhs, const FileConflicts & rhs );
       static constexpr size_type queueBlockSize = 6;
@@ -70,16 +71,16 @@ namespace zypp
     };
 
     /** \relates FileConflicts Stream output */
-    std::ostream & operator<<( std::ostream & str, const FileConflicts & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const FileConflicts & obj );
 
     /** \relates FileConflicts::Conflict Stream output */
-    std::ostream & operator<<( std::ostream & str, const FileConflicts::Conflict & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const FileConflicts::Conflict & obj );
 
     /** \relates FileConflicts XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts & obj );
+    ZYPP_API std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts & obj );
 
     /** \relates FileConflicts::Conflict XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts::Conflict & obj );
+    ZYPP_API std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts::Conflict & obj );
 
     /** \relates FileConflicts */
     inline bool operator==( const FileConflicts & lhs, const FileConflicts & rhs )

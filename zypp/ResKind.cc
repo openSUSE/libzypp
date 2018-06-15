@@ -31,17 +31,17 @@ namespace zypp
   const ResKind ResKind::application	( "application" );
 
   template<>
-    const ResKind ResTraits<Package>	::kind( ResKind::package );
+    const ResKind ZYPP_API ResTraits<Package>	::kind( ResKind::package );
   template<>
-    const ResKind ResTraits<Patch>	::kind( ResKind::patch );
+    const ResKind ZYPP_API ResTraits<Patch>	::kind( ResKind::patch );
   template<>
-    const ResKind ResTraits<Pattern>	::kind( ResKind::pattern );
+    const ResKind ZYPP_API ResTraits<Pattern>	::kind( ResKind::pattern );
   template<>
-    const ResKind ResTraits<Product>	::kind( ResKind::product );
+    const ResKind ZYPP_API ResTraits<Product>	::kind( ResKind::product );
   template<>
-    const ResKind ResTraits<SrcPackage>	::kind( ResKind::srcpackage );
+    const ResKind ZYPP_API ResTraits<SrcPackage>	::kind( ResKind::srcpackage );
   template<>
-    const ResKind ResTraits<Application>::kind( ResKind::application );
+    const ResKind ZYPP_API ResTraits<Application>::kind( ResKind::application );
 
   ResKind ResKind::explicitBuiltin( const char * str_r )
   {

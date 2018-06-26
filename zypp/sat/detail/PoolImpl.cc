@@ -505,8 +505,23 @@ namespace zypp
 	  // Add removed locales+fallback except they are still in current
 	  for ( Locale lang: localesTracker.removed() )
 	  {
-	    for ( ; lang && ! localeIds.current().count( IdString(lang) ); lang = lang.fallback() )
-	    { localeIds.removed().insert( IdString(lang) ); }
+	    if ( lang && ! localeIds.current().count( IdString(lang) ) ) {
+
+	      //remove the requested one
+	      localeIds.removed().insert( IdString(lang) );
+
+	      //remove fallbacks
+	      const auto &currLangs = localeIds.current();
+	      auto checkIsFallback = [&lang]( const IdString &currLoc_r ){
+		return Locale(currLoc_r).hasFallback(lang);
+	      };
+	      for ( lang = lang.fallback(); lang && ! localeIds.current().count( IdString(lang) ); lang = lang.fallback() ) {
+		//remove the language only if its not a fallback for any other
+		if ( std::none_of( currLangs.begin(), currLangs.end(), checkIsFallback ) )
+		  localeIds.removed().insert( IdString(lang) );
+	      }
+	    }
+
 	  }
 
 	  // Assert that TrackedLocaleIds::current is not empty.

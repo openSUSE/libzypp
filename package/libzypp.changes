@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul  9 15:51:25 CEST 2018 - ma@suse.de
+
+- HardLocksFile: Prevent against empty commit without Target having
+- version 14.45.12 (39)
+
+-------------------------------------------------------------------
 Wed Apr 25 15:16:30 CEST 2018 - ma@suse.de
 
 - Avoid zombie tar processes (bsc#1076192)

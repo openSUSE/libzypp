@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 18 10:06:00 CEST 2018 - ma@suse.de
+
+- Prefer calling "repo2solv" rather than "repo2solv.sh"
+- libzypp-devel should not require cmake (bsc#1101349)
+- version 15.25.13 (19)
+
+-------------------------------------------------------------------
 Mon Jul  9 15:50:53 CEST 2018 - ma@suse.de
 
 - HardLocksFile: Prevent against empty commit without Target having

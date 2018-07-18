@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 18 11:43:23 CEST 2018 - ma@suse.de
+
+- RepoManager: Explicitly request repo2solv to generate application
+  pseudo packages.
+- version 14.45.14 (39)
+
+-------------------------------------------------------------------
 Wed Jul 18 10:04:45 CEST 2018 - ma@suse.de
 
 - Prefer calling "repo2solv" rather than "repo2solv.sh"

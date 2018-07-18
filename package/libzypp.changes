@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Jul 18 09:10:25 CEST 2018 - ma@suse.de
+
+- PackageProvider: Validate deta rpms before caching (bsc#1091624,
+  bsc#1088705)
+- PackageProvider: Validate downloaded rpm package signatures before
+  caching (bsc#1091624,bsc#1088705)
+- version 16.17.16 (0)
+
+-------------------------------------------------------------------
 Tue Jul 17 15:53:57 CEST 2018 - ma@suse.de
 
 - libzypp-devel should not require cmake (bsc#1101349)

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 18 11:42:34 CEST 2018 - ma@suse.de
+
+- RepoManager: Explicitly request repo2solv to generate application
+  pseudo packages.
+- version 16.17.17 (0)
+
+-------------------------------------------------------------------
 Wed Jul 18 09:10:25 CEST 2018 - ma@suse.de
 
 - PackageProvider: Validate deta rpms before caching (bsc#1091624,

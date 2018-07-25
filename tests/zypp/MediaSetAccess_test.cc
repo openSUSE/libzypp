@@ -260,6 +260,35 @@ BOOST_AUTO_TEST_CASE(msa_remote_tests)
 
   // providing a file which does not exist should throw
   BOOST_CHECK_THROW(setaccess.provideFile("/testBADNAME.txt"), media::MediaFileNotFoundException);
+
+  BOOST_CHECK(setaccess.doesFileExist("/test-big.txt"));
+  BOOST_CHECK(setaccess.doesFileExist("dir/test-big.txt"));
+
+  {
+    // providing a file with wrong filesize should throw
+    OnMediaLocation locPlain("dir/test-big.txt");
+    locPlain.setDownloadSize( zypp::ByteCount(500, zypp::ByteCount::B) );
+    BOOST_CHECK_THROW(setaccess.provideFile(locPlain), media::MediaFileSizeExceededException);
+
+    // using the correct file size should NOT throw
+    locPlain.setDownloadSize( zypp::ByteCount(7135, zypp::ByteCount::B) );
+    Pathname file = setaccess.provideFile( locPlain );
+    BOOST_CHECK(check_file_exists(file) == true);
+  }
+
+  {
+    // test the maximum filesize again with metalink downloads
+    // providing a file with wrong filesize should throw
+    OnMediaLocation locMeta("/test-big.txt");
+    locMeta.setDownloadSize( zypp::ByteCount(500, zypp::ByteCount::B) );
+    BOOST_CHECK_THROW(setaccess.provideFile(locMeta), media::MediaFileSizeExceededException);
+
+    // using the correct file size should NOT throw
+    locMeta.setDownloadSize( zypp::ByteCount(7135, zypp::ByteCount::B) );
+    Pathname file = setaccess.provideFile( locMeta );
+    BOOST_CHECK(check_file_exists(file) == true);
+  }
+
   web.stop();
 }
 

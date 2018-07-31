@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 31 12:39:10 CEST 2018 - ma@suse.de
+
+- Handle http error 502 Bad Gateway in curl backend (bsc #1070851)
+  (fixes openSUSE/zypper#177)
+- version 14.45.15 (39)
+
+-------------------------------------------------------------------
 Wed Jul 18 11:43:23 CEST 2018 - ma@suse.de
 
 - RepoManager: Explicitly request repo2solv to generate application

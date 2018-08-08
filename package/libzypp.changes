@@ -23,6 +23,7 @@ Wed Jul 18 10:04:45 CEST 2018 - ma@suse.de
 Mon Jul  9 15:51:25 CEST 2018 - ma@suse.de
 
 - HardLocksFile: Prevent against empty commit without Target having
+  been been loaded (bsc#1096803)
 - version 14.45.12 (39)
 
 -------------------------------------------------------------------

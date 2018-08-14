@@ -37,15 +37,6 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
-  namespace env
-  {
-    bool YAST_IS_RUNNING()
-    {
-      static const char * envp = getenv( "YAST_IS_RUNNING" );
-      return envp && *envp;
-    }
-  }
-
   ///////////////////////////////////////////////////////////////////
   namespace repo
   {
@@ -174,7 +165,7 @@ namespace zypp
 
       typedef target::rpm::RpmDb RpmDb;
 
-      RpmDb::CheckPackageResult packageSigCheck( const Pathname & path_r, UserData & userData ) const
+      RpmDb::CheckPackageResult packageSigCheck( const Pathname & path_r, bool isMandatory_r, UserData & userData ) const
       {
 	if ( !_target )
 	  _target = getZYpp()->getTarget();
@@ -182,7 +173,14 @@ namespace zypp
 	RpmDb::CheckPackageResult ret = RpmDb::CHK_ERROR;
 	RpmDb::CheckPackageDetail detail;
 	if ( _target )
-	  ret = _target->rpmDb().checkPackage( path_r, detail );
+	{
+	  ret = _target->rpmDb().checkPackageSignature( path_r, detail );
+	  if ( ret == RpmDb::CHK_NOSIG && !isMandatory_r )
+	  {
+	    WAR << "Relax CHK_NOSIG: Config says unsigned packages are OK" << endl;
+	    ret = RpmDb::CHK_OK;
+	  }
+	}
 	else
 	  detail.push_back( RpmDb::CheckPackageDetail::value_type( ret, "OOps. Target is not initialized!" ) );
 
@@ -297,6 +295,7 @@ namespace zypp
 
       MIL << "provide Package " << _package << endl;
       Url url = * info.baseUrlsBegin();
+      try {
       do {
         _retry = false;
 	if ( ! ret->empty() )
@@ -309,19 +308,37 @@ namespace zypp
           {
             ret = doProvidePackage();
 
-	    if ( info.pkgGpgCheck()
-#warning bsc1037210 disabled SrcPackage signature check if YAST_IS_RUNNING - waiting for yast to be fixed
-	      && !( env::YAST_IS_RUNNING() && isKind<SrcPackage>( _package ) ) )
+	    if ( info.pkgGpgCheck() )
 	    {
 	      UserData userData( "pkgGpgCheck" );
 	      ResObject::constPtr roptr( _package );	// gcc6 needs it more explcit. Has problem deducing
 	      userData.set( "ResObject", roptr );	// a type for '_package->asKind<ResObject>()'...
 	      /*legacy:*/userData.set( "Package", roptr->asKind<Package>() );
 	      userData.set( "Localpath", ret.value() );
-	      RpmDb::CheckPackageResult res = packageSigCheck( ret, userData );
+#if ( 1 )
+	      bool pkgGpgCheckIsMandatory = info.pkgGpgCheckIsMandatory();
+	      if ( str::startsWith( VERSION, "16.15." ) )
+	      {
+		// BSC#1038984: For a short period of time, libzypp-16.15.x
+		// will silently accept unsigned packages IFF a repositories gpgcheck
+		// configuration is explicitly turned OFF like this:
+		//     gpgcheck      = 0
+		//     repo_gpgcheck = 0
+		//     pkg_gpgcheck  = 1
+		// This will allow some already released products to adapt to the behavioral
+		// changes introduced by fixing BSC#1038984, while systems with a default
+		// configuration (gpgcheck = 1) already benefit from the fix.
+		// With libzypp-16.16.x the above configuration will reject unsigned packages
+		// as it should.
+		if ( pkgGpgCheckIsMandatory && !info.gpgCheck() && !info.repoGpgCheck() )
+		  pkgGpgCheckIsMandatory = false;
+	      }
+	      RpmDb::CheckPackageResult res = packageSigCheck( ret, pkgGpgCheckIsMandatory, userData );
+#else
+	      RpmDb::CheckPackageResult res = packageSigCheck( ret, info.pkgGpgCheckIsMandatory(), userData );
+#endif
 	      // publish the checkresult, even if it is OK. Apps may want to report something...
 	      report()->pkgGpgCheck( userData );
-	      DBG << "CHK: " << res << endl;
 
 	      if ( res != RpmDb::CHK_OK )
 	      {
@@ -345,6 +362,7 @@ namespace zypp
 		    case RpmDb::CHK_FAIL:	// Signature does not verify
 		    case RpmDb::CHK_NOTTRUSTED:	// Signature is OK, but key is not trusted
 		    case RpmDb::CHK_ERROR:	// File does not exist or can't be opened
+		    case RpmDb::CHK_NOSIG:	// File is unsigned
 		    default:
 		      // report problem (w. details), throw if to abort, else retry/ignore
 		      defaultReportSignatureError( res, str::Str() << userData.get<RpmDb::CheckPackageDetail>( "CheckPackageDetail" ) );
@@ -413,6 +431,16 @@ namespace zypp
               }
           }
       } while ( _retry );
+      } catch(...){
+	// bsc#1045735: Be sure no invalid files stay in the cache!
+	// TODO: It would be better to provide a filechecker passed to the
+	// fetcher that performs the pkgGpgCheck. This way a bad file would be
+	// discarded before it's moved to the cache.
+	// For now make sure the file gets deleted (even if keeppackages=1).
+	if ( ! ret->empty() )
+	  ret.setDispose( filesystem::unlink );
+	throw;
+      }
 
       report()->finish( _package, repo::DownloadResolvableReport::NO_ERROR, std::string() );
       MIL << "provided Package " << _package << " at " << ret << endl;

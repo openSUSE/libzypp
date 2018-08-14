@@ -16,9 +16,9 @@ Wed Jul 18 11:42:34 CEST 2018 - ma@suse.de
 Wed Jul 18 09:10:25 CEST 2018 - ma@suse.de
 
 - PackageProvider: Validate deta rpms before caching (bsc#1091624,
-  bsc#1088705)
+  bsc#1088705, CVE-2018-7685)
 - PackageProvider: Validate downloaded rpm package signatures before
-  caching (bsc#1091624,bsc#1088705)
+  caching (bsc#1091624, bsc#1088705, CVE-2018-7685)
 - version 16.17.16 (0)
 
 -------------------------------------------------------------------

@@ -305,7 +305,7 @@ namespace zypp
           MIL << "Providing file of repo '" << repo_r.alias() << "' from " << url << endl;
           shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( url, repo_r );
 
-	  fetcher.enqueue( loc_r );
+	  fetcher.enqueue( loc_r, policy_r.fileChecker() );
 	  fetcher.start( destinationDir, *access );
 
 	  // reached if no exception has been thrown, so this is the correct file
@@ -320,12 +320,10 @@ namespace zypp
         }
         catch ( const UserRequestException & excpt )
 	{
-	  ZYPP_CAUGHT( excpt );
 	  ZYPP_RETHROW( excpt );
 	}
         catch ( const FileCheckException & excpt )
 	{
-	  ZYPP_CAUGHT( excpt );
 	  ZYPP_RETHROW( excpt );
 	}
         catch ( const Exception &e )

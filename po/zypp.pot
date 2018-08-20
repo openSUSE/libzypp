@@ -1,20 +1,22 @@
-# English message file for YaST2 (@memory@).
-# Copyright (C) 2005 SUSE Linux Products GmbH.
-# Copyright (C) 2002 SuSE Linux AG.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR SuSE Linux GmbH, Nuernberg
+# This file is distributed under the same license as the zypp package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: YaST (@memory@)\n"
+"Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-20 11:45+0200\n"
-"PO-Revision-Date: 2007-08-22 14:13+0200\n"
-"Last-Translator: proofreader <i18n@suse.de>\n"
-"Language-Team: English <i18n@suse.de>\n"
-"Language: en\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: zypp/Url.cc:114
 msgid "Invalid LDAP URL query string"
@@ -26,21 +28,16 @@ msgid "Invalid LDAP URL query parameter '%s'"
 msgstr ""
 
 #: zypp/Url.cc:300
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "Unable to determine target"
+msgstr ""
 
 #: zypp/Url.cc:313
-#, fuzzy
 msgid "Invalid empty Url object reference"
-msgstr "Invalid preference"
+msgstr ""
 
-# ###############################################################################
-# Old yast2-agents.po
 #: zypp/Url.cc:326 zypp/Url.cc:340
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "Unable to open"
+msgstr ""
 
 #: zypp/thread/Mutex.cc:33
 msgid "Can't initialize mutex attributes"
@@ -79,9 +76,8 @@ msgid "Conflicts"
 msgstr ""
 
 #: zypp/Dep.cc:100
-#, fuzzy
 msgid "Obsoletes"
-msgstr "Obsoletes"
+msgstr ""
 
 #: zypp/Dep.cc:101
 msgid "Recommends"
@@ -106,14 +102,12 @@ msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr ""
 
 #: zypp/target/TargetImpl.cc:310
-#, fuzzy
 msgid " executed"
-msgstr "Execute"
+msgstr ""
 
 #: zypp/target/TargetImpl.cc:332
-#, fuzzy
 msgid " execution failed"
-msgstr "DBI Execution failed: %s"
+msgstr ""
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
@@ -160,9 +154,8 @@ msgid "HalVolume not initialized"
 msgstr ""
 
 #: zypp/target/hal/HalContext.cc:229
-#, fuzzy
 msgid "Unable to create dbus connection"
-msgstr "unable to create work area\n"
+msgstr ""
 
 #: zypp/target/hal/HalContext.cc:242
 msgid "libhal_ctx_new: Can't create libhal context"
@@ -189,9 +182,8 @@ msgstr ""
 #. TranslatorExplanation the colon is followed by an error message
 #: zypp/target/rpm/RpmDb.cc:849 zypp/target/rpm/RpmDb.cc:2076
 #: zypp/target/rpm/RpmDb.cc:2222
-#, fuzzy
 msgid "RPM failed: "
-msgstr "Download failed: "
+msgstr ""
 
 #. TranslatorExplanation first %s is file name, second is error message
 #: zypp/target/rpm/RpmDb.cc:1130
@@ -302,9 +294,9 @@ msgstr ""
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/RepoManager.cc:305 zypp/RepoManager.cc:767 zypp/RepoManager.cc:1525
 #: zypp/repo/PluginServices.cc:49
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Failed to read directory '%s'"
-msgstr "Failed to parse: %s."
+msgstr ""
 
 #: zypp/RepoManager.cc:315
 #, boost-format
@@ -322,9 +314,9 @@ msgstr ""
 #. TranslatorExplanation '%s' is a filename
 #: zypp/RepoManager.cc:722 zypp/RepoManager.cc:1649 zypp/RepoManager.cc:1714
 #: zypp/RepoManager.cc:1790 zypp/RepoManager.cc:1855 zypp/RepoManager.cc:1976
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't open file '%s' for writing."
-msgstr "Reading log entries from %s."
+msgstr ""
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
@@ -342,9 +334,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: zypp/RepoManager.cc:1130 zypp/RepoManager.cc:1241 zypp/RepoManager.cc:1297
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't create %s"
-msgstr "Can't find %s."
+msgstr ""
 
 #: zypp/RepoManager.cc:1138
 msgid "Can't create metadata cache directory."
@@ -361,9 +353,9 @@ msgid "Can't create cache at %s - no writing permissions."
 msgstr ""
 
 #: zypp/RepoManager.cc:1368
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Failed to cache repo (%d)."
-msgstr "Failed to parse: %s."
+msgstr ""
 
 #: zypp/RepoManager.cc:1379
 msgid "Unhandled repository type"
@@ -393,9 +385,9 @@ msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/RepoManager.cc:1700
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
-msgstr "Invalid privilege '{0}'"
+msgstr ""
 
 #: zypp/RepoManager.cc:1739
 #, c-format, boost-format
@@ -408,9 +400,9 @@ msgstr ""
 
 #. TranslatorExplanation '%s' is a filename
 #: zypp/RepoManager.cc:1772 zypp/RepoManager.cc:1964
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't delete '%s'"
-msgstr "Can't find %s."
+msgstr ""
 
 #: zypp/RepoManager.cc:1952 zypp/RepoManager.cc:2396
 msgid "Can't figure out where the service is stored."
@@ -422,14 +414,14 @@ msgid "Url scheme does not allow a %s"
 msgstr ""
 
 #: zypp/url/UrlBase.cc:173
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid %s component '%s'"
-msgstr "Invalid component URI: "
+msgstr ""
 
 #: zypp/url/UrlBase.cc:180
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid %s component"
-msgstr "Invalid component URI: "
+msgstr ""
 
 #: zypp/url/UrlBase.cc:786 zypp/url/UrlBase.cc:1231
 msgid "Query string parsing not supported for this URL"
@@ -440,9 +432,9 @@ msgid "Url scheme is a required component"
 msgstr ""
 
 #: zypp/url/UrlBase.cc:830
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Invalid privilege '{0}'"
+msgstr ""
 
 #: zypp/url/UrlBase.cc:949
 msgid "Url scheme does not allow a username"
@@ -461,18 +453,18 @@ msgid "Url scheme does not allow a host component"
 msgstr ""
 
 #: zypp/url/UrlBase.cc:1049
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid host component '%s'"
-msgstr "Invalid component URI: "
+msgstr ""
 
 #: zypp/url/UrlBase.cc:1070
 msgid "Url scheme does not allow a port"
 msgstr ""
 
 #: zypp/url/UrlBase.cc:1081
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid port component '%s'"
-msgstr "Invalid component URI: "
+msgstr ""
 
 #: zypp/url/UrlBase.cc:1098
 msgid "Url scheme requires path name"
@@ -499,14 +491,14 @@ msgid "Invalid parameter array join separator character"
 msgstr ""
 
 #: zypp/ExternalProgram.cc:258
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't open pty (%s)."
-msgstr "Couldn't open file: %s."
+msgstr ""
 
 #: zypp/ExternalProgram.cc:269
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't open pipe (%s)."
-msgstr "Couldn't open file: %s."
+msgstr ""
 
 #: zypp/ExternalProgram.cc:350
 #, c-format, boost-format
@@ -519,9 +511,9 @@ msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
 msgstr ""
 
 #: zypp/ExternalProgram.cc:361
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
-msgstr "Can't find %s."
+msgstr ""
 
 #. don't want to get here
 #: zypp/ExternalProgram.cc:373
@@ -530,9 +522,9 @@ msgid "Can't exec '%s' (%s)."
 msgstr ""
 
 #: zypp/ExternalProgram.cc:381
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't fork (%s)."
-msgstr "Can't find %s."
+msgstr ""
 
 #: zypp/ExternalProgram.cc:507
 #, c-format, boost-format
@@ -590,7 +582,7 @@ msgstr[1] ""
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
-msgstr "unknown"
+msgstr ""
 
 #: zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
@@ -625,25 +617,15 @@ msgid "The vendor does not provide support."
 msgstr ""
 
 #: zypp/VendorSupportOptions.cc:45
-msgid ""
-"Problem determination, which means technical support designed to provide "
-"compatibility information, installation assistance, usage support, on-going "
-"maintenance and basic troubleshooting. Level 1 Support is not intended to "
-"correct product defect errors."
+msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
 msgstr ""
 
 #: zypp/VendorSupportOptions.cc:48
-msgid ""
-"Problem isolation, which means technical support designed to duplicate "
-"customer problems, isolate problem area and provide resolution for problems "
-"not resolved by Level 1 Support."
+msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
 msgstr ""
 
 #: zypp/VendorSupportOptions.cc:51
-msgid ""
-"Problem resolution, which means technical support designed to resolve "
-"complex problems by engaging engineering in resolution of product defects "
-"which have been identified by Level 2 Support."
+msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
 msgstr ""
 
 #: zypp/VendorSupportOptions.cc:54
@@ -4247,9 +4229,8 @@ msgid "Tried to import not existent key %s into keyring %s"
 msgstr ""
 
 #: zypp/KeyRing.cc:556
-#, fuzzy
 msgid "Failed to delete key."
-msgstr "Failed to parse: %s."
+msgstr ""
 
 #: zypp/KeyRing.cc:564
 #, c-format, boost-format
@@ -4257,9 +4238,9 @@ msgid "Signature file %s not found"
 msgstr ""
 
 #: zypp/repo/RepoProvideFile.cc:259
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr "Reading log entries from %s."
+msgstr ""
 
 #: zypp/repo/RepoProvideFile.cc:265
 msgid "No url in repository."
@@ -4270,16 +4251,13 @@ msgid "Service plugin does not support changing an attribute."
 msgstr ""
 
 #: zypp/repo/PackageProvider.cc:300
-#, fuzzy
 msgid "Signature verification failed"
-msgstr "DBI Execution failed: %s"
+msgstr ""
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: zypp/repo/PackageProvider.cc:431
 #, c-format, boost-format
-msgid ""
-"Package %s seems to be corrupted during transfer. Do you want to retry "
-"retrieval?"
+msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
 msgstr ""
 
 #. TranslatorExplanation %s = name of the package being processed.
@@ -4423,9 +4401,9 @@ msgid "keep %s"
 msgstr ""
 
 #: zypp/solver/detail/SATResolver.cc:1170
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "remove lock to allow installation of %s"
-msgstr "Reading log entries from %s."
+msgstr ""
 
 #: zypp/solver/detail/SATResolver.cc:1221
 #: zypp/solver/detail/SATResolver.cc:1242
@@ -4463,9 +4441,9 @@ msgid "install %s despite the inferior architecture"
 msgstr ""
 
 #: zypp/solver/detail/SATResolver.cc:1297
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "keep obsolete %s"
-msgstr "Obsoletes"
+msgstr ""
 
 #: zypp/solver/detail/SATResolver.cc:1302
 #, c-format, boost-format
@@ -4495,9 +4473,9 @@ msgid "replacement of %s with %s"
 msgstr ""
 
 #: zypp/solver/detail/SATResolver.cc:1358
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "deinstallation of %s"
-msgstr "Reading log entries from %s."
+msgstr ""
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: zypp/solver/detail/ProblemSolutionIgnore.cc:42
@@ -4520,9 +4498,9 @@ msgid "One or both of '%s' or '%s' attributes is required."
 msgstr ""
 
 #: zypp/base/InterProcessMutex.cc:83
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Can't open lock file: %s"
-msgstr "Couldn't open file: %s."
+msgstr ""
 
 #: zypp/base/InterProcessMutex.cc:143
 msgid "This action is being run by another program already."
@@ -4549,9 +4527,9 @@ msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
 
 #: zypp/base/StrMatcher.cc:158
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Invalid regular expression '%s'"
-msgstr "Invalid privilege '{0}'"
+msgstr ""
 
 #: zypp/misc/CheckAccessDeleted.cc:240
 msgid "Please install package 'lsof' first."
@@ -4564,14 +4542,14 @@ msgid "Authentication required for '%s'"
 msgstr ""
 
 #: zypp/media/MediaException.cc:31
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Failed to mount %s on %s"
-msgstr "Failed to parse: %s."
+msgstr ""
 
 #: zypp/media/MediaException.cc:41
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Failed to unmount %s"
-msgstr "Failed to parse: %s."
+msgstr ""
 
 #: zypp/media/MediaException.cc:47
 #, c-format, boost-format
@@ -4681,9 +4659,9 @@ msgid "Cannot eject media '%s'"
 msgstr ""
 
 #: zypp/media/MediaException.cc:199
-#, fuzzy, c-format, boost-format
+#, c-format, boost-format
 msgid "Permission to access '%s' denied."
-msgstr "Permission denied\n"
+msgstr ""
 
 #: zypp/media/MediaException.cc:207
 #, c-format, boost-format
@@ -4711,9 +4689,7 @@ msgid "Unsupported HTTP authentication method '%s'"
 msgstr ""
 
 #: zypp/media/MediaCurl.cc:1009
-msgid ""
-"Visit the Novell Customer Center to check whether your registration is valid "
-"and has not expired."
+msgid "Visit the Novell Customer Center to check whether your registration is valid and has not expired."
 msgstr ""
 
 #: zypp/sat/detail/PoolImpl.cc:184
@@ -4817,61 +4793,3 @@ msgid ""
 "  from install of\n"
 "     %4%"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Failed to download %s from %s"
-#~ msgstr "Failed to parse: %s."
-
-#, fuzzy
-#~ msgid "Invalid user name or password."
-#~ msgstr "Invalid password"
-
-#, fuzzy
-#~ msgid "Can't open solv-file: "
-#~ msgstr "Couldn't open file: %s."
-
-#, fuzzy
-#~ msgid "Software management is already running."
-#~ msgstr "A daemon is already running"
-
-#~ msgid "Requirememt %s cannot be fulfilled."
-#~ msgstr "Requirement %s cannot be fulfilled."
-
-#, fuzzy
-#~ msgid "%s is lacking the requirement %s"
-#~ msgstr "List package's requirements"
-
-#~ msgid "system"
-#~ msgstr "system"
-
-#, fuzzy
-#~ msgid "Unable to parse Url authority"
-#~ msgstr "Unable to determine target"
-
-#, fuzzy
-#~ msgid "Unable to restore all sources."
-#~ msgstr "Unable to determine target"
-
-#, fuzzy
-#~ msgid "Reading product from %s"
-#~ msgstr "Reading log entries from %s."
-
-#, fuzzy
-#~ msgid "Reading filelist from %s"
-#~ msgstr "Reading log entries from %s."
-
-#, fuzzy
-#~ msgid "Reading packages from %s"
-#~ msgstr "Reading log entries from %s."
-
-#, fuzzy
-#~ msgid "Reading pattern from %s"
-#~ msgstr "Reading log entries from %s."
-
-#, fuzzy
-#~ msgid "Reading packages file"
-#~ msgstr "No package owns file {0}"
-
-#, fuzzy
-#~ msgid "Downloading %s"
-#~ msgstr "Downloading Package Lists"

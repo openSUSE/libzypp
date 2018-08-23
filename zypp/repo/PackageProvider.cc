@@ -612,23 +612,23 @@ namespace zypp
 					   const DeltaCandidates & deltas_r,
 					   const PackageProviderPolicy & policy_r )
       {
-	if ( pi_r.isKind<Package>() )
+	if ( pi_r.satSolvable().isKind<Package>() )
 	  return new RpmPackageProvider( access_r, pi_r->asKind<Package>(), deltas_r, policy_r );
-	else if ( pi_r.isKind<SrcPackage>() )
+	else if ( pi_r.satSolvable().isKind<SrcPackage>() )
 	  return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), policy_r );
 	else
-	  ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.asUserString() ) );
+	  ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.satSolvable().asUserString() ) );
       }
 
       inline PackageProvider::Impl * make( RepoMediaAccess & access_r, const PoolItem & pi_r,
 						  const PackageProviderPolicy & policy_r )
       {
-	if ( pi_r.isKind<Package>() )
+	if ( pi_r.satSolvable().isKind<Package>() )
 	  return new PackageProviderImpl<Package>( access_r, pi_r->asKind<Package>(), policy_r );
-	else if ( pi_r.isKind<SrcPackage>() )
+	else if ( pi_r.satSolvable().isKind<SrcPackage>() )
 	  return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), policy_r );
 	else
-	  ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.asUserString() ) );
+	  ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.satSolvable().asUserString() ) );
       }
 
       inline PackageProvider::Impl * make( RepoMediaAccess & access_r, const Package::constPtr & package_r,

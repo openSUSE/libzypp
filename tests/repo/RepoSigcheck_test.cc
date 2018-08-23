@@ -363,5 +363,5 @@ BOOST_AUTO_TEST_CASE(summary)
   BOOST_CHECK_EQUAL( keyRing.publicKeys().size(),		1 );
   BOOST_CHECK_EQUAL( keyRing.trustedPublicKeys().size(),	1 );
   BOOST_CHECK_EQUAL( KeyRing::defaultAccept(),			KeyRing::ACCEPT_NOTHING );
-  BOOST_CHECK_EQUAL( test.satpool().repos().size(),		5 );	//
+  BOOST_CHECK_EQUAL( test.satpool().reposSize(),		5 );	//
 }

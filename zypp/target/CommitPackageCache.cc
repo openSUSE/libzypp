@@ -88,9 +88,9 @@ namespace zypp
 	repo::PackageProvider pkgProvider( _impl->_access, pi_r, _impl->_packageProviderPolicy );
 	ret = pkgProvider.providePackageFromCache();
       }
-      else if ( pi_r.isKind<Package>() )	// may make use of deltas
+      else if ( pi_r.satSolvable().isKind<Package>() )	// may make use of deltas
       {
-	repo::DeltaCandidates deltas( _impl->_repos, pi_r.name() );
+	repo::DeltaCandidates deltas( _impl->_repos, pi_r.satSolvable().name() );
 	repo::PackageProvider pkgProvider( _impl->_access, pi_r, deltas, _impl->_packageProviderPolicy );
 	return pkgProvider.providePackage();
       }

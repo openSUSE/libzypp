@@ -386,7 +386,7 @@ namespace zypp
     if( signature.empty() || (!PathInfo( signature ).isExist()) )
     {
       bool res = report->askUserToAcceptUnsignedFile( filedesc, context );
-      MIL << "User decision on unsigned file: " << res << endl;
+      MIL << "askUserToAcceptUnsignedFile: " << res << endl;
       return res;
     }
 
@@ -417,22 +417,21 @@ namespace zypp
         {
           MIL << "Key was updated. Saving new version into trusted keyring: " << generalKeyData << endl;
           importKey( exportKey( generalKeyData, generalKeyRing() ), true );
-	  trustedKeyData = generalKeyData = PublicKeyData(); // invalidated by import.
+	  trustedKeyData = publicKeyExists( id, trustedKeyRing() ); // re-read: invalidated by import?
 	}
       }
 
-      if ( ! trustedKeyData )	// invalidated by previous import
-	trustedKeyData = publicKeyExists( id, trustedKeyRing() );
+      // it exists, is trusted, does it validate?
       report->infoVerify( filedesc, trustedKeyData, context );
-
-      // it exists, is trusted, does it validates?
       if ( verifyFile( file, signature, trustedKeyRing() ) )
       {
         return (sigValid_r=true);	// signature is actually successfully validated!
       }
       else
       {
-        return report->askUserToAcceptVerificationFailed( filedesc, exportKey( trustedKeyData, trustedKeyRing() ), context );
+	bool res = report->askUserToAcceptVerificationFailed( filedesc, exportKey( trustedKeyData, trustedKeyRing() ), context );
+	MIL << "askUserToAcceptVerificationFailed: " << res << endl;
+        return res;
       }
     }
     else
@@ -450,7 +449,6 @@ namespace zypp
             reply == KeyRingReport::KEY_TRUST_AND_IMPORT )
         {
           MIL << "User wants to trust key " << id << " " << key.name() << endl;
-          //dumpFile( unKey.path() );
 
           Pathname whichKeyring;
           if ( reply == KeyRingReport::KEY_TRUST_AND_IMPORT )
@@ -462,25 +460,17 @@ namespace zypp
           else
             whichKeyring = generalKeyRing();
 
-          // emit key added
+          // does it validate?
+	  report->infoVerify( filedesc, generalKeyData, context );
           if ( verifyFile( file, signature, whichKeyring ) )
           {
-            MIL << "File signature is verified" << endl;
 	    return (sigValid_r=true);	// signature is actually successfully validated!
           }
           else
           {
-            MIL << "File signature check fails" << endl;
-            if ( report->askUserToAcceptVerificationFailed( filedesc, key, context ) )
-            {
-              MIL << "User continues anyway." << endl;
-              return true;
-            }
-            else
-            {
-              MIL << "User does not want to continue" << endl;
-              return false;
-            }
+	    bool res = report->askUserToAcceptVerificationFailed( filedesc, key, context );
+	    MIL << "askUserToAcceptVerificationFailed: " << res << endl;
+	    return res;
           }
         }
         else
@@ -491,18 +481,11 @@ namespace zypp
       }
       else
       {
-        // unknown key...
+        // signed with an unknown key...
         MIL << "File [" << file << "] ( " << filedesc << " ) signed with unknown key [" << id << "]" << endl;
-        if ( report->askUserToAcceptUnknownKey( filedesc, id, context ) )
-        {
-          MIL << "User wants to accept unknown key " << id << endl;
-          return true;
-        }
-        else
-        {
-          MIL << "User does not want to accept unknown key " << id << endl;
-          return false;
-        }
+	bool res = report->askUserToAcceptUnknownKey( filedesc, id, context );
+	MIL << "askUserToAcceptUnknownKey: " << res << endl;
+	return res;
       }
     }
     return false;
@@ -575,55 +558,37 @@ namespace zypp
       MIL << "Deleted key " << id << " from keyring " << keyring << endl;
   }
 
-
   std::string KeyRing::Impl::readSignatureKeyId( const Pathname & signature )
   {
     if ( ! PathInfo( signature ).isFile() )
       ZYPP_THROW(Exception( str::Format(_("Signature file %s not found")) % signature.asString() ));
 
-    MIL << "Determining key id if signature " << signature << endl;
-    // HACK create a tmp keyring with no keys
-    filesystem::TmpDir dir( _base_dir, "fake-keyring" );
-
+    MIL << "Determining key id of signature " << signature << endl;
     const char* argv[] =
     {
       GPG_BINARY,
-      "--homedir", dir.path().asString().c_str(),
-      "--no-default-keyring",
-      "--quiet",
-      "--no-tty",
-      "--no-greeting",
-      "--batch",
-      "--status-fd", "1",
+      "--list-packets",
       signature.asString().c_str(),
       NULL
     };
+    ExternalProgram prog( argv ,ExternalProgram::Discard_Stderr, false, -1, true );
 
-    ExternalProgram prog( argv,ExternalProgram::Discard_Stderr, false, -1, true );
-
-    std::string line;
-    int count = 0;
-
-    str::regex rxNoKey( "^\\[GNUPG:\\] NO_PUBKEY (.+)\n$" );
+    // :signature packet: algo 1, keyid 1397BC53640DB551
+    //         version 4, created 1501094968, md5len 0, sigclass 0x00
+    //         digest algo 8, begin of digest 15 89
+    //         hashed subpkt 2 len 4 (sig created 2017-07-26)
+    //         subpkt 16 len 8 (issuer key ID 1397BC53640DB551)
+    //         data: [4095 bits]
     std::string id;
-    for( line = prog.receiveLine(), count=0; !line.empty(); line = prog.receiveLine(), count++ )
+    for( std::string line = prog.receiveLine(); !line.empty(); line = prog.receiveLine() )
     {
-      //MIL << "[" << line << "]" << endl;
-      str::smatch what;
-      if( str::regex_match( line, what, rxNoKey ) )
+      if ( id.empty() && str::startsWith( line, ":signature packet:" ) )
       {
-        if ( what.size() >= 1 )
-	{
-          id = what[1];
-	  break;
-	}
-        //dumpRegexpResults( what );
+	static const str::regex rxKeyId( " keyid +([0-9A-Z]+)" );
+	str::smatch what;
+	if( str::regex_match( line, what, rxKeyId ) )
+	  id = what[1];
       }
-    }
-
-    if ( count == 0 )
-    {
-      MIL << "no output" << endl;
     }
 
     MIL << "Determined key id [" << id << "] for signature " << signature << endl;

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 24 12:24:14 CEST 2018 - ma@suse.de
+
+- Translations updated
+- version 15.25.17 (19)
+
+-------------------------------------------------------------------
 Tue Aug 14 17:55:20 CEST 2018 - ma@suse.de
 
 - PackageProvider: Validate deta rpms before caching (bsc#1091624,

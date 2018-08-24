@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 24 12:22:41 CEST 2018 - ma@suse.de
+
+- Translations updated
+- version 16.17.19 (0)
+
+-------------------------------------------------------------------
 Tue Jul 31 12:37:32 CEST 2018 - ma@suse.de
 
 - Handle http error 502 Bad Gateway in curl backend (bsc #1070851)

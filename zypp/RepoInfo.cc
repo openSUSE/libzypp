@@ -391,7 +391,7 @@ namespace zypp
     getRawGpgChecks( ogpg[0], ogpg[1], ogpg[2] );
 
     bool changed = false;
-    switch ( mode_r )
+    switch ( mode_r.asEnum() )
     {
       case GpgCheck::On:
 	changed = changeGpgCheckTo( ogpg, true,          indeterminate, indeterminate );
@@ -819,7 +819,7 @@ namespace zypp
 
   std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj )
   {
-    switch ( obj )
+    switch ( obj.asEnum() )
     {
 #define OUTS( V ) case RepoInfo::V: return str << #V; break
       OUTS( GpgCheck::On );

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 31 08:28:08 CEST 2018 - ma@suse.de
+
+- lsof: use '-K i' if lsof supports it (bsc#1099847, bsc#1036304)
+- version 14.45.17 (39)
+
+-------------------------------------------------------------------
 Fri Aug 24 10:19:35 CEST 2018 - ma@suse.de
 
 - PackageProvider: Validate deta rpms before caching (bsc#1091624,

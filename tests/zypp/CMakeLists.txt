@@ -26,6 +26,7 @@ ADD_TESTS(
   PathInfo
   Pathname
   PluginFrame
+  PoolQueryCC
   PoolQuery
   ProgressData
   PtrTypes

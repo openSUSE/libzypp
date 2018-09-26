@@ -35,6 +35,9 @@ using namespace zypp::sat;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+  /** Backported code uses StrMatcher which replaced the sat::AttrMatcher in future.*/
+  typedef sat::AttrMatcher StrMatcher;
+
   ///////////////////////////////////////////////////////////////////
   namespace
   { /////////////////////////////////////////////////////////////////
@@ -438,8 +441,10 @@ namespace zypp
     mutable AttrMatchList _attrMatchList;
 
   private:
-    /** Pass flags from \ref compile, as they may have been changed. */
-    string createRegex( const StrContainer & container, const Match & flags ) const;
+    /** Join patterns in \a container_r according to \a flags_r into a single \ref StrMatcher.
+     * The \ref StrMatcher returned will be a REGEX if more than one pattern was passed.
+     */
+    StrMatcher joinedStrMatcher( const StrContainer & container_r, const Match & flags_r ) const;
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -476,13 +481,8 @@ namespace zypp
   {
     _attrMatchList.clear();
 
-    Match cflags( _flags );
-    if ( cflags.mode() == Match::OTHER ) // this will never succeed...
-      ZYPP_THROW( MatchUnknownModeException( cflags ) );
-
-    /** Compiled search strings. */
-    string rcstrings;
-
+    if ( _flags.mode() == Match::OTHER ) // this will never succeed...
+      ZYPP_THROW( MatchUnknownModeException( _flags ) );
 
     // 'different'         - will have to iterate through all and match by ourselves (slow)
     // 'same'              - will pass the compiled string to dataiterator_init
@@ -507,11 +507,8 @@ namespace zypp
       StrContainer joined;
       invokeOnEach(_strings.begin(), _strings.end(), EmptyFilter(), MyInserter(joined));
       invokeOnEach(_attrs.begin()->second.begin(), _attrs.begin()->second.end(), EmptyFilter(), MyInserter(joined));
-      rcstrings = createRegex(joined, cflags);
-      if (joined.size() > 1) // switch to regex for multiple strings
-        cflags.setModeRegex();
-      _attrMatchList.push_back( AttrMatchData( _attrs.begin()->first,
-                                sat::AttrMatcher( rcstrings, cflags ) ) );
+
+      _attrMatchList.push_back( AttrMatchData( _attrs.begin()->first, joinedStrMatcher( joined, _flags ) ) );
     }
 
     // // MULTIPLE ATTRIBUTES
@@ -559,18 +556,15 @@ attremptycheckend:
         if (attrvals_empty)
         {
           invokeOnEach(_strings.begin(), _strings.end(), EmptyFilter(), MyInserter(joined));
-          rcstrings = createRegex(joined, cflags);
         }
         else
         {
           invokeOnEach(_strings.begin(), _strings.end(), EmptyFilter(), MyInserter(joined));
           invokeOnEach(_attrs.begin()->second.begin(), _attrs.begin()->second.end(), EmptyFilter(), MyInserter(joined));
-          rcstrings = createRegex(joined, cflags);
         }
-        if (joined.size() > 1) // switch to regex for multiple strings
-          cflags.setModeRegex();
-        // May use the same AttrMatcher for all
-        sat::AttrMatcher matcher( rcstrings, cflags );
+
+        // May use the same StrMatcher for all
+        StrMatcher matcher( joinedStrMatcher( joined, _flags ) );
         for_( ai, _attrs.begin(), _attrs.end() )
         {
           _attrMatchList.push_back( AttrMatchData( ai->first, matcher ) );
@@ -588,11 +582,8 @@ attremptycheckend:
           StrContainer joined;
           invokeOnEach(_strings.begin(), _strings.end(), EmptyFilter(), MyInserter(joined));
           invokeOnEach(ai->second.begin(), ai->second.end(), EmptyFilter(), MyInserter(joined));
-          string s = createRegex(joined, cflags);
-          if (joined.size() > 1) // switch to regex for multiple strings
-            cflags.setModeRegex();
-          _attrMatchList.push_back( AttrMatchData( ai->first,
-                                    sat::AttrMatcher( s, cflags ) ) );
+
+          _attrMatchList.push_back( AttrMatchData( ai->first, joinedStrMatcher( joined, _flags ) ) );
         }
       }
     }
@@ -612,14 +603,10 @@ attremptycheckend:
           if ( ! mstr.empty() )
             joined.insert( mstr );
 
-          cflags = _flags;
-          rcstrings = createRegex( joined, cflags );
-          if ( joined.size() > 1 ) // switch to regex for multiple strings
-            cflags.setModeRegex();
-
-          _attrMatchList.push_back( AttrMatchData( it->attr,
-                                    sat::AttrMatcher( rcstrings, cflags ),
-                                                      it->predicate, it->predicateStr ) );
+	  // copy and exchange the StrMatcher
+	  AttrMatchData nattr( *it );
+	  nattr.attrMatcher = joinedStrMatcher( joined, _flags );
+          _attrMatchList.push_back( nattr );
         }
         else
         {
@@ -632,12 +619,7 @@ attremptycheckend:
     // If no attributes defined at all, then add 'query all'
     if ( _attrMatchList.empty() )
     {
-      cflags = _flags;
-      rcstrings = createRegex( _strings, cflags );
-      if ( _strings.size() > 1 ) // switch to regex for multiple strings
-        cflags.setModeRegex();
-      _attrMatchList.push_back( AttrMatchData( sat::SolvAttr::allAttr,
-                                sat::AttrMatcher( rcstrings, cflags ) ) );
+      _attrMatchList.push_back( AttrMatchData( sat::SolvAttr::allAttr, joinedStrMatcher( _strings, _flags ) ) );
     }
 
     // Finally check here, whether all involved regex compile.
@@ -671,24 +653,25 @@ attremptycheckend:
     return regexed;
   }
 
-  string PoolQuery::Impl::createRegex( const StrContainer & container, const Match & flags ) const
+  StrMatcher PoolQuery::Impl::joinedStrMatcher( const StrContainer & container_r, const Match & flags_r ) const
   {
+    USR << flags_r << " - " << container_r << endl;
 //! macro for word boundary tags for regexes
 #define WB (_match_word ? string("\\b") : string())
-    string rstr;
 
-    if (container.empty())
-      return rstr;
+    if ( container_r.empty() )
+      return StrMatcher( std::string(), flags_r );
 
-    if (container.size() == 1)
-    {
-      return WB + *container.begin() + WB;
-    }
+    if ( container_r.size() == 1 )
+      return StrMatcher( WB + *container_r.begin() + WB, flags_r );
 
     // multiple strings
+    Match retflags( flags_r );
+    retflags.setModeRegex();
+    std::string retstr;
 
-    bool use_wildcards = flags.isModeGlob();
-    StrContainer::const_iterator it = container.begin();
+    bool use_wildcards = flags_r.isModeGlob();
+    StrContainer::const_iterator it = container_r.begin();
     string tmp;
 
     if (use_wildcards)
@@ -696,28 +679,28 @@ attremptycheckend:
     else
       tmp = *it;
 
-    if ( flags.isModeString() || flags.isModeGlob() )
-      rstr = "^";
-    rstr += WB + "(" + tmp;
+    if ( flags_r.isModeString() || flags_r.isModeGlob() )
+      retstr = "^";
+    retstr += WB + "(" + tmp;
 
     ++it;
 
-    for (; it != container.end(); ++it)
+    for (; it != container_r.end(); ++it)
     {
       if (use_wildcards)
         tmp = wildcards2regex(*it);
       else
         tmp = *it;
 
-      rstr += "|" + tmp;
+      retstr += "|" + tmp;
     }
 
-    rstr += ")" + WB;
-    if ( flags.isModeString() || flags.isModeGlob() )
-      rstr += "$";
+    retstr += ")" + WB;
+    if ( flags_r.isModeString() || flags_r.isModeGlob() )
+      retstr += "$";
 
-    return rstr;
 #undef WB
+    return StrMatcher( retstr, retflags );
   }
 
   string PoolQuery::Impl::asString() const

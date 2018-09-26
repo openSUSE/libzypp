@@ -371,7 +371,6 @@ namespace zypp
     Impl()
       : _flags( Match::SUBSTRING | Match::NOCASE | Match::SKIP_KIND )
       , _match_word(false)
-      , _require_all(false)
       , _status_flags(ALL)
     {}
 
@@ -394,7 +393,6 @@ namespace zypp
     /** Sat solver search flags */
     Match _flags;
     bool _match_word;
-    bool _require_all;
 
     /** Sat solver status flags */
     StatusFilter _status_flags;
@@ -421,7 +419,6 @@ namespace zypp
       OUTS( _uncompiledPredicated );
       OUTS( _flags.get() );
       OUTS( _match_word );
-      OUTS( _require_all );
       OUTS( _status_flags );
       OUTS( _edition );
       OUTS( _op.inSwitch() );
@@ -449,7 +446,6 @@ namespace zypp
 	      && _attrs == rhs._attrs
 	      && _uncompiledPredicated == rhs._uncompiledPredicated
 	      && _match_word == rhs._match_word
-	      && _require_all == rhs._require_all
 	      && _status_flags == rhs._status_flags
 	      && _edition == rhs._edition
 	      && _op == rhs._op
@@ -737,18 +733,9 @@ namespace zypp
     else
       tmp = *it;
 
-    if (_require_all)
-    {
-      if ( ! flags.isModeString() ) // not match exact
-        tmp += ".*" + WB + tmp;
-      rstr = "(?=" + tmp + ")";
-    }
-    else
-    {
-      if ( flags.isModeString() || flags.isModeGlob() )
-        rstr = "^";
-      rstr += WB + "(" + tmp;
-    }
+    if ( flags.isModeString() || flags.isModeGlob() )
+      rstr = "^";
+    rstr += WB + "(" + tmp;
 
     ++it;
 
@@ -759,29 +746,12 @@ namespace zypp
       else
         tmp = *it;
 
-      if (_require_all)
-      {
-        if ( ! flags.isModeString() ) // not match exact
-          tmp += ".*" + WB + tmp;
-        rstr += "(?=" + tmp + ")";
-      }
-      else
-      {
-        rstr += "|" + tmp;
-      }
+      rstr += "|" + tmp;
     }
 
-    if (_require_all)
-    {
-      if ( ! flags.isModeString() ) // not match exact
-        rstr += WB + ".*";
-    }
-    else
-    {
-      rstr += ")" + WB;
-      if ( flags.isModeString() || flags.isModeGlob() )
-        rstr += "$";
-    }
+    rstr += ")" + WB;
+    if ( flags.isModeString() || flags.isModeGlob() )
+      rstr += "$";
 
     return rstr;
 #undef WB
@@ -985,10 +955,6 @@ namespace zypp
   { _pimpl->_status_flags = flags; }
 
 
-  void PoolQuery::setRequireAll(bool require_all)
-  { _pimpl->_require_all = require_all; }
-
-
   const PoolQuery::StrContainer &
   PoolQuery::strings() const
   { return _pimpl->_strings; }
@@ -1038,9 +1004,6 @@ namespace zypp
   bool PoolQuery::matchWord() const
   { return _pimpl->_match_word; }
 
-  bool PoolQuery::requireAll() const
-  { return _pimpl->_require_all; }
-
   PoolQuery::StatusFilter PoolQuery::statusFilterFlags() const
   { return _pimpl->_status_flags; }
 
@@ -1067,6 +1030,9 @@ namespace zypp
   void PoolQuery::execute(ProcessResolvable fnc)
   { invokeOnEach( begin(), end(), fnc); }
 
+
+  /*DEPRECATED LEGACY:*/void PoolQuery::setRequireAll( bool ) {}
+  /*DEPRECATED LEGACY:*/bool PoolQuery::requireAll() const    { return false; }
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -1102,7 +1068,7 @@ namespace zypp
     static const PoolQueryAttr kindAttr;
     static const PoolQueryAttr stringAttr;
     static const PoolQueryAttr stringTypeAttr;
-    static const PoolQueryAttr requireAllAttr;
+    static const PoolQueryAttr requireAllAttr;	// LEAGACY: attribute was defined but never implemented.
     static const PoolQueryAttr caseSensitiveAttr;
     static const PoolQueryAttr installStatusAttr;
     static const PoolQueryAttr editionAttr;
@@ -1115,7 +1081,7 @@ namespace zypp
   const PoolQueryAttr PoolQueryAttr::kindAttr( "type" );
   const PoolQueryAttr PoolQueryAttr::stringAttr( "query_string" );
   const PoolQueryAttr PoolQueryAttr::stringTypeAttr("match_type");
-  const PoolQueryAttr PoolQueryAttr::requireAllAttr("require_all");
+  const PoolQueryAttr PoolQueryAttr::requireAllAttr("require_all");	// LEAGACY: attribute was defined but never implemented.
   const PoolQueryAttr PoolQueryAttr::caseSensitiveAttr("case_sensitive");
   const PoolQueryAttr PoolQueryAttr::installStatusAttr("install_status");
   const PoolQueryAttr PoolQueryAttr::editionAttr("version");
@@ -1239,18 +1205,8 @@ namespace zypp
       }
       else if ( attribute==PoolQueryAttr::requireAllAttr )
       {
-        if ( str::strToTrue(attrValue) )
-        {
-          setRequireAll(true);
-        }
-        else if ( !str::strToFalse(attrValue) )
-        {
-          setRequireAll(false);
-        }
-        else
-        {
-          WAR << "unknown boolean value " << attrValue << endl;
-        }
+	// LEAGACY: attribute was defined but never implemented.
+	// Actually it should not occur outside our testcases.
       }
       else if ( attribute==PoolQueryAttr::caseSensitiveAttr )
       {
@@ -1385,19 +1341,6 @@ namespace zypp
     {
       str << "case_sensitive: ";
       if (caseSensitive())
-      {
-        str << "on" << delim;
-      }
-      else
-      {
-        str << "off" << delim;
-      }
-    }
-
-    if( requireAll() != q.requireAll() )
-    {
-      str << "require_all: ";
-      if (requireAll())
       {
         str << "on" << delim;
       }

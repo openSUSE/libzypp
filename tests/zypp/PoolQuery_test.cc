@@ -606,7 +606,6 @@ BOOST_AUTO_TEST_CASE(pool_query_recovery)
   q.addRepo("opensuse");
   q.addKind(ResKind::patch);
   q.setMatchRegex();
-  q.setRequireAll();
   q.setCaseSensitive();
   q.setUninstalledOnly();
   q.setEdition(Edition("0.8.3"),Rel::NE);

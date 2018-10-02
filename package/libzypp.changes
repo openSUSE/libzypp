@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Oct  2 16:00:15 CEST 2018 - ma@suse.de
+
+- Add filesize check for downloads with known size (bsc#408814)
+- MediaMultiCurl: Trigger aliveCallback when downloading metalink
+  files (bsc#1021291)
+- version 14.47.0 (39)
+
+-------------------------------------------------------------------
 Tue Oct  2 12:36:18 CEST 2018 - ma@suse.de
 
 - Fix conversion of string and glob to regex when compiling queries

@@ -21,8 +21,8 @@ template <class TCont>
 std::ostream & nlist( std::ostream & str, const TCont & set_r )
 {
   str << "[" << set_r.size() << "]: ";
-  for ( const auto & solv : set_r )
-    str << " \"" << solv.name() << "\"";
+  for_( it, set_r.begin(), set_r.end() )
+    str << " \"" << PoolItem(*it).satSolvable().name() << "\"";
   return str << endl;
 }
 
@@ -44,7 +44,7 @@ static const unsigned qtestRXFAILCOMB	= unsigned(-3);
 
 unsigned qtest( const std::string & pattern_r, Match::Mode mode_r, bool verbose_r = false )
 {
-  static constexpr const bool noMatchInvalidRegexException = false;
+  static const bool noMatchInvalidRegexException = false;
 
   typedef std::set<sat::Solvable> Result;
   PoolQuery q;

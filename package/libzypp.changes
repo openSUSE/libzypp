@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct  2 14:58:17 CEST 2018 - ma@suse.de
+
+- Add filesize check for downloads with known size (bsc#408814)
+- version 16.19.0 (0)
+
+-------------------------------------------------------------------
 Tue Oct  2 12:17:41 CEST 2018 - ma@suse.de
 
 - Fix conversion of string and glob to regex when compiling queries

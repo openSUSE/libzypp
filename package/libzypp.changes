@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct  2 12:36:18 CEST 2018 - ma@suse.de
+
+- Fix conversion of string and glob to regex when compiling queries
+  (bsc#1099982, bsc#939392, bsc#556664)
+- version 14.46.0 (39)
+
+-------------------------------------------------------------------
 Mon Oct  1 14:37:39 CEST 2018 - ma@suse.de
 
 - Fix blocking wait for finished child process (bsc#1109877)

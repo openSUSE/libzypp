@@ -14,6 +14,17 @@
 #ifndef ZYPP_BASE_GETTEXT_H
 #define ZYPP_BASE_GETTEXT_H
 
+/** Undef translation macros if they already exist */
+#ifdef _
+#undef _
+#endif
+#ifdef N_
+#undef N_
+#endif
+#ifdef PL_
+#undef PL_
+#endif
+
 /** Just tag text for translation. */
 #define N_(MSG) MSG
 

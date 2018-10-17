@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/DefaultIntegral.h"
 
@@ -104,7 +105,7 @@ namespace zypp
      *  }
      * \endcode
      */
-    class LookupAttr
+    class ZYPP_API LookupAttr
     {
       public:
         typedef MatchException Exception;
@@ -229,10 +230,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const LookupAttr & obj );
 
     /** \relates LookupAttr Verbose stream output including the query result. */
-    std::ostream & dumpOn( std::ostream & str, const LookupAttr & obj );
+    ZYPP_API std::ostream & dumpOn( std::ostream & str, const LookupAttr & obj );
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -347,7 +348,7 @@ namespace zypp
      * Extended iterator methods valid only if not @end.
      * \note Implementation: Keep iterator_adaptor base and _dip in sync!
      */
-    class LookupAttr::iterator : public boost::iterator_adaptor<
+    class ZYPP_API LookupAttr::iterator : public boost::iterator_adaptor<
         iterator                       // Derived
         , detail::CDataiterator *            // Base
         , detail::IdType               // Value
@@ -573,7 +574,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr::iterator Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
 
     ///////////////////////////////////////////////////////////////////
 

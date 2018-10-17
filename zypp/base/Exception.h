@@ -19,6 +19,7 @@
 #include <typeinfo>
 #include <type_traits>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Errno.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -142,7 +143,7 @@ namespace zypp
    * in the remaining code of zypp. If we can we should try to wrap
    * the blocxx macros and typedef the classes in here.
    **/
-  class Exception : public std::exception
+  class ZYPP_API Exception : public std::exception
   {
     friend std::ostream & operator<<( std::ostream & str, const Exception & obj );
 
@@ -309,7 +310,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Exception Stream output */
-  std::ostream & operator<<( std::ostream & str, const Exception & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Exception & obj );
 
   ///////////////////////////////////////////////////////////////////
   namespace exception_detail

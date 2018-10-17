@@ -46,7 +46,7 @@ namespace zypp
   /// \todo Merge with ResObject
   /// \todo Get rid of refcout/smart_prt bloat, as this type is actually IdBased (i.e. sizeof(unsigned))
   ///////////////////////////////////////////////////////////////////
-  class Resolvable : public sat::SolvableType<Resolvable>,
+  class ZYPP_API Resolvable : public sat::SolvableType<Resolvable>,
                      public base::ReferenceCounted, private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const Resolvable & obj );

@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -39,7 +41,7 @@ namespace zypp
      * static const Unit T( 1099511627776, "T", 3 );
      * \endcode
     */
-      class Unit
+      class ZYPP_API Unit
       {
       public:
         typedef long long ValueType;

@@ -10,8 +10,9 @@
 #ifndef YUMRESOURCETYPE_H_
 #define YUMRESOURCETYPE_H_
 
+#include "zypp/APIConfig.h"
 #include <iosfwd>
-#include<string>
+#include <string>
 
 namespace zypp
 {
@@ -24,7 +25,7 @@ namespace zypp
   /**
    *
    */
-  struct ResourceType
+  struct ZYPP_API ResourceType
   {
     static const ResourceType NONE; // unknown
     static const ResourceType REPOMD;

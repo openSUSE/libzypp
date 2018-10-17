@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/ResObject.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -24,7 +25,7 @@ namespace zypp
   /// \class Application
   /// \brief Class representing an application (appdata.xml)
   ///////////////////////////////////////////////////////////////////
-  class Application : public ResObject
+  class ZYPP_API Application : public ResObject
   {
   public:
     typedef Application              Self;

@@ -460,14 +460,6 @@ INSTALL(  FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/yum
 )
 
-SET( zypp_parser_ws_SRCS
-  parser/ws/WebpinResultFileReader.cc
-)
-
-SET( zypp_parser_ws_HEADERS
-  parser/ws/WebpinResultFileReader.h
-)
-
 INSTALL(  FILES
   ${zypp_parser_ws_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/ws
@@ -799,14 +791,6 @@ SET( zypp_repo_susetags_HEADERS
   repo/susetags/Downloader.h
 )
 
-SET( zypp_ws_SRCS
-  ws/WebpinResult.cc
-)
-
-SET( zypp_ws_HEADERS
-  ws/WebpinResult.h
-)
-
 ####################################################################
 
 SET( zypp_misc_HEADERS
@@ -929,7 +913,9 @@ SET_LOGGROUP( "libsolv" ${zypp_sat_SRCS} )
 ADD_LIBRARY(zypp SHARED ${zypp_lib_SRCS})
 SET_TARGET_PROPERTIES( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES( zypp PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden" )
 SET (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map")
+
 # System libraries
 SET(UTIL_LIBRARY util)
 TARGET_LINK_LIBRARIES(zypp ${UTIL_LIBRARY} )

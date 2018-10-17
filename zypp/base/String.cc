@@ -14,6 +14,7 @@
 
 #include <iostream>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/String.h"
 #include "zypp/base/LogTools.h"
 
@@ -33,7 +34,7 @@ namespace zypp
      **      FUNCTION NAME : form
      **      FUNCTION TYPE : std::string
     */
-    std::string form( const char * format, ... )
+    ZYPP_API std::string form( const char * format, ... )
     {
       SafeBuf safe;
 

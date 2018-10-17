@@ -15,6 +15,7 @@
 #include <vector>
 #include "zypp/base/Function.h"
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/ReferenceCounted.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/Flags.h"
@@ -77,7 +78,7 @@ namespace zypp
      *
      * \endcode
      */
-    class MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
     {
       friend std::ostream & operator<<( std::ostream & str, const MediaSetAccess & obj );
 

@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/EnumClass.h"
@@ -28,7 +29,7 @@ namespace zypp
   /// See http://cpe.mitre.org/ for more information on the
   /// Common Platform Enumearation.
   ///////////////////////////////////////////////////////////////////
-  class CpeId : public base::SetRelationMixin<CpeId>
+  class ZYPP_API CpeId : public base::SetRelationMixin<CpeId>
   {
   public:
     /** WFN attribute value */
@@ -155,7 +156,7 @@ namespace zypp
   ///
   /// \see http://cpe.mitre.org/ for more information on the Common Platform Enumeration.
   ///////////////////////////////////////////////////////////////////
-  class CpeId::Value : public base::SetRelationMixin<Value>
+  class ZYPP_API CpeId::Value : public base::SetRelationMixin<Value>
   {
   public:
     /** Logical value matching ANY value. */
@@ -296,7 +297,7 @@ namespace zypp
   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( CpeId::Value, const std::string & );
 
   /** \relates CpeId::Value Stream output */
-  std::ostream & operator<<( std::ostream & str, const CpeId::Value & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CpeId::Value & obj );
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

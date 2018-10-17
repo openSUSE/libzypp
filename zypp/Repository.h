@@ -13,6 +13,8 @@
 #define ZYPP_SAT_REPOSITORY_H
 
 #include <iosfwd>
+
+#include "zypp/APIConfig.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/Pathname.h"
 #include "zypp/sat/detail/PoolMember.h"
@@ -36,7 +38,7 @@ namespace zypp
     //	CLASS NAME : Repository
     //
     /** */
-    class Repository : protected sat::detail::PoolMember
+    class ZYPP_API Repository : protected sat::detail::PoolMember
     {
     public:
         typedef filter_iterator<detail::ByRepository, sat::detail::SolvableIterator> SolvableIterator;
@@ -323,7 +325,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Repository Stream output */
-    std::ostream & operator<<( std::ostream & str, const Repository & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const Repository & obj );
 
     /** \relates Repository XML output */
     std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj );
@@ -442,7 +444,7 @@ namespace zypp
       //	CLASS NAME : RepositoryIterator
       //
       /** */
-      class RepositoryIterator : public boost::iterator_adaptor<
+      class ZYPP_API RepositoryIterator : public boost::iterator_adaptor<
 	    RepositoryIterator                            // Derived
 			   , sat::detail::CRepo **        // Base
                            , Repository                   // Value

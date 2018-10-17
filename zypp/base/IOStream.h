@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <boost/io/ios_state.hpp>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
@@ -108,7 +109,7 @@ namespace zypp
      * }
      * \endcode
      */
-    class EachLine : private base::NonCopyable
+    class ZYPP_API EachLine : private base::NonCopyable
     {
       public:
 	/** Ctor taking a stream and reading the 1st line from it. */

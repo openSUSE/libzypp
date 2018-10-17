@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Flags.h"
 
@@ -58,7 +59,7 @@ namespace zypp
     /// and heatmap.
     /// See also http://dirk-loss.de/sshvis/drunken_bishop.pdf.
     ///////////////////////////////////////////////////////////////////
-    class DrunkenBishop
+    class ZYPP_API DrunkenBishop
     {
       friend std::ostream & operator<<( std::ostream & str, const DrunkenBishop & obj );
 

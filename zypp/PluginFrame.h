@@ -16,6 +16,7 @@
 #include <string>
 #include <map>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 
 #include "zypp/PluginFrameException.h"
@@ -37,7 +38,7 @@ namespace zypp
    *
    * \see PluginScript
    */
-  class PluginFrame
+  class ZYPP_API PluginFrame
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
     friend bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
@@ -254,7 +255,7 @@ namespace zypp
   };
 
   /** \relates PluginFrame Stream output for logging */
-  std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
 
   /** \relates PluginFrame Stream output writing all data for logging (no throw) */
   inline std::ostream & dumpOn( std::ostream & str, const PluginFrame & obj )
@@ -265,7 +266,7 @@ namespace zypp
   { return PluginFrame::readFrom( str, obj ); }
 
   /** \relates PluginFrame Comparison based on content. */
-  bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
+  ZYPP_API bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
 
   /** \relates PluginFrame Comparison based on content. */
   inline bool operator!=( const PluginFrame & lhs, const PluginFrame & rhs )

@@ -12,6 +12,7 @@
 #ifndef ZYPP_PATCH_H
 #define ZYPP_PATCH_H
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Flags.h"
 #include "zypp/sat/SolvAttr.h"
 #include "zypp/ResObject.h"
@@ -33,7 +34,7 @@ namespace zypp
    * Patches can be marked for installation but their
    * installation is a no-op.
    */
-  class Patch : public ResObject
+  class ZYPP_API Patch : public ResObject
   {
     public:
       typedef Patch                    Self;
@@ -237,13 +238,13 @@ namespace zypp
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Patch::SeverityFlags);
 
   /** \relates Patch::Category string representation.*/
-  std::string asString( const Patch::Category & obj );
+  ZYPP_API std::string asString( const Patch::Category & obj );
 
   /** \relates Patch::InteractiveFlag string representation.*/
-  std::string asString( const Patch::InteractiveFlag & obj );
+  ZYPP_API std::string asString( const Patch::InteractiveFlag & obj );
 
   /** \relates Patch::SeverityFlag string representation.*/
-  std::string asString( const Patch::SeverityFlag & obj );
+  ZYPP_API std::string asString( const Patch::SeverityFlag & obj );
 
   /**
    * Query class for Patch issue references
@@ -265,7 +266,7 @@ namespace zypp
    * \endcode
    *
    */
-  class Patch::ReferenceIterator : public boost::iterator_adaptor<
+  class ZYPP_API Patch::ReferenceIterator : public boost::iterator_adaptor<
       Patch::ReferenceIterator           // Derived
       , sat::LookupAttr::iterator        // Base
       , int                              // Value

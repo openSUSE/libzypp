@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -40,7 +42,7 @@ namespace zypp
      * \todo Add support for handling extensions incl. stripping
      * extensions from basename (basename("/path/foo.baa", ".baa") ==> "foo")
     */
-    class Pathname
+    class ZYPP_API Pathname
     {
     public:
       /** Default ctor: an empty path. */

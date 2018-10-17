@@ -14,6 +14,7 @@
 
 #include <iostream>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/LogControl.h"
 #include "zypp/base/LogTools.h"
 #include "zypp/base/Exception.h"
@@ -84,7 +85,7 @@ namespace zypp
 #endif
       }
 
-      struct ParseException : public Exception
+      struct ZYPP_API ParseException : public Exception
       {
 	ParseException()
 	: Exception( "Parse error: " + ( structuredErrors.empty() ? std::string("unknown error"): structuredErrors.back() ) )

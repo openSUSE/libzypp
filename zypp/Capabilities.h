@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/DefaultIntegral.h"
 #include "zypp/sat/detail/PoolMember.h"
 #include "zypp/Capability.h"
@@ -32,7 +33,7 @@ namespace zypp
    * which must be skipped on iteration or size calculation
    * (\see \ref detail::isDepMarkerId).
    */
-  class Capabilities
+  class ZYPP_API Capabilities
   {
     public:
       typedef Capability value_type;
@@ -84,7 +85,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Capabilities Stream output */
-  std::ostream & operator<<( std::ostream & str, const Capabilities & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Capabilities & obj );
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -92,7 +93,7 @@ namespace zypp
   //
   /** \ref Capabilities iterator.
    */
-  class Capabilities::const_iterator : public boost::iterator_adaptor<
+  class ZYPP_API Capabilities::const_iterator : public boost::iterator_adaptor<
         const_iterator                   // Derived
       , const sat::detail::IdType *      // Base
       , const Capability                 // Value

@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Hash.h"
 
 #include "zypp/IdStringType.h"
@@ -46,7 +47,7 @@ namespace zypp
   ///   l.fallback().fallback().fallback() == Locale::noCode == "";
   /// \endcode
   ///////////////////////////////////////////////////////////////////
-  class Locale : public IdStringType<Locale>
+  class ZYPP_API Locale : public IdStringType<Locale>
   {
   public:
     /** Default Ctor: \ref noCode */

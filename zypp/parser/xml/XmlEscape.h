@@ -14,6 +14,7 @@
 
 #include <sstream>
 #include <string>
+
 #include "zypp/APIConfig.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -25,7 +26,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     namespace detail
     {
-      struct EscapedString
+      struct ZYPP_API EscapedString
       {
 	EscapedString( const std::string & in_r ) : _in( in_r ) {}
 	std::ostream & dumpOn( std::ostream & str ) const;

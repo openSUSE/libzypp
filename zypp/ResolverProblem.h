@@ -12,6 +12,7 @@
 #include <list>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/ProblemTypes.h"
 #include "zypp/ProblemSolution.h"
 
@@ -22,7 +23,7 @@ namespace zypp
   /// \class ResolverProblem
   /// \brief Describe a solver problem and offer solutions.
   ///////////////////////////////////////////////////////////////////////
-  class ResolverProblem : public base::ReferenceCounted
+  class ZYPP_API ResolverProblem : public base::ReferenceCounted
   {
   public:
     /** Constructor. */
@@ -86,10 +87,10 @@ namespace zypp
   };
 
   /** \relates ResolverProblem Stream output */
-  std::ostream & operator<<( std::ostream &, const ResolverProblem & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream &, const ResolverProblem & obj );
 
   /** \relates ResolverProblem Stream output */
-  std::ostream & operator<<( std::ostream &, const ResolverProblemList & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream &, const ResolverProblemList & obj );
 
 
 } // namespace zypp

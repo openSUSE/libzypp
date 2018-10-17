@@ -16,6 +16,7 @@
 #include <string>
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/ResPool.h"
 #include "zypp/Bitmap.h"
 #include "zypp/base/Flags.h"
@@ -28,7 +29,7 @@ namespace zypp
   /// \class DiskUsageCounter
   /// \brief Compute disk space occupied by packages across partitions/directories
   ///////////////////////////////////////////////////////////////////
-  class DiskUsageCounter
+  class ZYPP_API DiskUsageCounter
   {
 
   public:

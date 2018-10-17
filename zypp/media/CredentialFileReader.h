@@ -12,6 +12,7 @@
 #ifndef ZYPP_MEDIA_CREDENTIALFILEREADER_H
 #define ZYPP_MEDIA_CREDENTIALFILEREADER_H
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Function.h"
 #include "zypp/Url.h"
 #include "zypp/Pathname.h"
@@ -27,7 +28,7 @@ namespace zypp
     //////////////////////////////////////////////////////////////////////
     /// \class CredentialFileReader
     /// \brief Parse credentials files and catalogs
-    class CredentialFileReader
+    class ZYPP_API CredentialFileReader
     {
     public:
       /** Callback invoked for each entry found in the file.

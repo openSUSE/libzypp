@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <vector>
 #include <string>
+
+#include <zypp/APIConfig.h>
 #include <zypp/Pathname.h>
 #include <zypp/base/PtrTypes.h>
 
@@ -38,7 +40,7 @@ namespace zypp
    * enabled by \ref setDebugOutputFile.\n
    * This data file can be used as datasource when passed to \ref check(const Pathname &, bool).
    */
-  class CheckAccessDeleted
+  class ZYPP_API CheckAccessDeleted
   {
 
     public:
@@ -121,10 +123,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates CheckAccessDeleted Stream output */
-  std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted & obj );
 
   /** \relates CheckAccessDeleted::ProcInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted::ProcInfo & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted::ProcInfo & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

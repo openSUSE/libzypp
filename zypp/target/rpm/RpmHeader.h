@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/APIConfig.h"
 #include "zypp/target/rpm/BinHeader.h"
 
 #include "zypp/Package.h"
@@ -57,7 +58,7 @@ struct FileInfo
  *
  * <B>NEVER create <code>RpmHeader</code> from a NULL <code>Header</code>! </B>
  **/
-class RpmHeader : public BinHeader
+class ZYPP_API RpmHeader : public BinHeader
 {
 public:
   typedef intrusive_ptr<RpmHeader> Ptr;

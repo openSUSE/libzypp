@@ -71,7 +71,7 @@ namespace zypp
      * Note the description is based in the way Novell defines the support
      * levels, and the semantics may be different for other vendors.
      */
-    std::string asUserString( VendorSupportOption );
+    ZYPP_API std::string asUserString( VendorSupportOption );
 
     /**
      * converts the support option to a description intended to be printed

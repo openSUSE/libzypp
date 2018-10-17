@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/NonCopyable.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/APIConfig.h"
@@ -51,7 +52,7 @@ namespace zypp
    * \todo define Exceptions
    * ZYpp API main interface
    */
-  class ZYpp : private base::NonCopyable
+  class ZYPP_API ZYpp : private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const ZYpp & obj );
 

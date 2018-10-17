@@ -13,6 +13,8 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
+
 namespace zypp
 {
   namespace repo
@@ -23,7 +25,7 @@ namespace zypp
    *
    * Currently we have only RIS service, but more can come later.
    */
-  struct ServiceType
+  struct ZYPP_API ServiceType
   {
     /**
      * Repository Index Service (RIS)

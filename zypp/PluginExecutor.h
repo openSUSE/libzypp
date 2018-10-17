@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/PluginScript.h"
 
@@ -38,7 +39,7 @@ namespace zypp
   /// \see PluginScript
   /// \ingroup g_RAII
   ///////////////////////////////////////////////////////////////////
-  class PluginExecutor
+  class ZYPP_API PluginExecutor
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj );
     friend bool operator==( const PluginExecutor & lhs, const PluginExecutor & rhs );
@@ -82,7 +83,7 @@ namespace zypp
   };
 
   /** \relates PluginExecutor Stream output */
-  std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj );
 
   /** \relates PluginExecutor Comparison based on reference. */
   inline bool operator==( const PluginExecutor & lhs, const PluginExecutor & rhs )

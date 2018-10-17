@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Function.h"
 #include "zypp/base/InputStream.h"
@@ -37,7 +38,7 @@ namespace zypp
     /** Data returned by \ref ProductFileReader
      * \see \ref ProductFileReader
     */
-    class ProductFileData
+    class ZYPP_API ProductFileData
     {
       public:
         class Impl;
@@ -98,10 +99,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates  ProductFileData Stream output */
-    std::ostream & operator<<( std::ostream & str, const ProductFileData & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const ProductFileData & obj );
 
     /** \relates  ProductFileData::Upgrade Stream output */
-    std::ostream & operator<<( std::ostream & str, const ProductFileData::Upgrade & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const ProductFileData::Upgrade & obj );
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -117,7 +118,7 @@ namespace zypp
      *                             "/etc/products.d" );
      * \endcode
      */
-    class ProductFileReader
+    class ZYPP_API ProductFileReader
     {
     public:
       /** Callback being invoked for each \ref ProductFileData parsed.

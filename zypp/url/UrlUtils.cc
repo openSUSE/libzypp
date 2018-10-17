@@ -9,6 +9,7 @@
 /**
  * \file zypp/url/UrlUtils.cc
  */
+#include "zypp/APIConfig.h"
 #include "zypp/base/Gettext.h"
 #include "zypp/base/String.h"
 #include "zypp/url/UrlUtils.h"

@@ -47,7 +47,7 @@ namespace zypp {
      * The inteface here basically checks whether the handler exists,
      * then forwards the request to @ref MediaHandler.
      **/
-    class MediaAccess : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API MediaAccess : public base::ReferenceCounted, private base::NonCopyable
     {
     public:
 	typedef intrusive_ptr<MediaAccess> Ptr;
@@ -432,7 +432,7 @@ namespace zypp {
       };
     };
 
-    std::ostream & operator<<( std::ostream & str, const MediaAccess & obj );
+    ZYPP_API std::ostream & operator<<( std::ostream & str, const MediaAccess & obj );
 
 ///////////////////////////////////////////////////////////////////
 

@@ -16,13 +16,15 @@
 
 #include <string>
 
+#include "zypp/APIConfig.h"
+
 namespace zypp {
   namespace externalprogram {
 
     /**
      * @short Bidirectional stream to external data
      */
-    class ExternalDataSource
+    class ZYPP_API ExternalDataSource
     {
     protected:
       FILE *inputfile;

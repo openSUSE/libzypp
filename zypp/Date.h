@@ -16,6 +16,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Exception.h"
 #include "zypp/base/EnumClass.h"
 
@@ -29,7 +30,7 @@ namespace zypp
   //
   /** Store and operate on date (time_t).
   */
-  class Date
+  class ZYPP_API Date
   {
     friend std::ostream & operator<<( std::ostream & str, const Date & obj );
 
@@ -255,10 +256,10 @@ namespace zypp
   /** \relates Date XML output.
    * Print \c time_t and \c text attribute. Allow alternate node name [date].
    */
-  std::ostream & dumpAsXmlOn( std::ostream & str, const Date & obj, const std::string & name_r = "date" );
+  ZYPP_API std::ostream & dumpAsXmlOn( std::ostream & str, const Date & obj, const std::string & name_r = "date" );
 
   ///////////////////////////////////////////////////////////////////
-  class DateFormatException : public Exception
+  class ZYPP_API  DateFormatException : public Exception
   {
   public:
     DateFormatException( const std::string & msg ) : Exception( msg )

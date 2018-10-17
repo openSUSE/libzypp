@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_URLUTILS_H
 #define   ZYPP_URL_URLUTILS_H
 
+#include "zypp/APIConfig.h"
 #include "zypp/url/UrlException.h"
 
 #include <string>
@@ -81,7 +82,7 @@ namespace zypp
      * \param eflag    If to detect and skip already encoded substrings.
      * \return A percent encoded string.
      */
-    std::string
+    ZYPP_API std::string
     encode(const std::string &str, const std::string &safe = "",
                                    EEncoding         eflag = E_DECODED);
 
@@ -102,7 +103,7 @@ namespace zypp
      * \throws UrlDecodingException if \p allowNUL is false and
      *         a encoded NUL byte (\c "%00") was found in \p str.
      */
-    std::string
+    ZYPP_API std::string
     decode(const std::string &str, bool allowNUL = false);
 
 

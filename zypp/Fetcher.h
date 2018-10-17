@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/Flags.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/Pathname.h"
@@ -102,7 +103,7 @@ namespace zypp
   * type (md5,sha1,sha256) is auto detected by looking at the cheksums
   * length. No need to somehow encode it in the filename.
   */
-  class Fetcher
+  class ZYPP_API Fetcher
   {
     friend std::ostream & operator<<( std::ostream & str,
                                       const Fetcher & obj );
@@ -328,7 +329,7 @@ namespace zypp
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Fetcher::Options);
 
   /** \relates Fetcher Stream output */
-  std::ostream & operator<<( std::ostream & str, const Fetcher & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const Fetcher & obj );
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

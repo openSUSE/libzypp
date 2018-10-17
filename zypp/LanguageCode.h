@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <string>
 
+#include "zypp/APIConfig.h"
 #include "zypp/IdStringType.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -27,7 +28,7 @@ namespace zypp
   /// In fact the class will not prevent to use a non iso language code.
   /// Just a warning will appear in the log.
   ///////////////////////////////////////////////////////////////////
-  class LanguageCode : public IdStringType<LanguageCode>
+  class ZYPP_API LanguageCode : public IdStringType<LanguageCode>
   {
   public:
     /** Default Ctor: \ref noCode */

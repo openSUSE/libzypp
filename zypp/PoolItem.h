@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <functional>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/ResObject.h"
 
@@ -47,7 +48,7 @@ namespace zypp
   /// \c const, i.e. you can't change the refered PoolItem. The PoolItem
   /// (i.e. the status) is always mutable.
   ///////////////////////////////////////////////////////////////////
-  class PoolItem : public sat::SolvableType<PoolItem>
+  class ZYPP_API PoolItem : public sat::SolvableType<PoolItem>
   {
     friend std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
     public:
@@ -163,7 +164,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates PoolItem Stream output */
-  std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
 
 
   /** \relates PoolItem Required to disambiguate vs. (PoolItem,ResObject::constPtr) due to implicit PoolItem::operator ResObject::constPtr  */

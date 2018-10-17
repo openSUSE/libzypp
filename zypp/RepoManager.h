@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <list>
 
+#include "zypp/APIConfig.h"
 #include "zypp/base/PtrTypes.h"
 #include "zypp/base/Iterator.h"
 #include "zypp/base/Flags.h"
@@ -44,13 +45,13 @@ namespace zypp
     * \throws ParseException If the file parsing fails
     * \throws Exception On other errors.
     */
-   std::list<RepoInfo> readRepoFile(const Url & repo_file);
+   std::list<RepoInfo> ZYPP_API readRepoFile(const Url & repo_file);
 
   /**
    * Repo manager settings.
    * Settings default to ZYpp global settings.
    */
-  struct RepoManagerOptions
+  struct ZYPP_API RepoManagerOptions
   {
     /** Default ctor following \ref ZConfig global settings.
      * If an optional \c root_r directory is given, all paths  will
@@ -102,7 +103,7 @@ namespace zypp
    * \short creates and provides information about known sources.
    *
    */
-  class RepoManager
+  class ZYPP_API RepoManager
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
 
@@ -701,7 +702,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoManager Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
+  std::ostream & operator<< ( std::ostream & str, const RepoManager & obj );
 
   /** Iterate the known repositories. */
   inline Iterable<RepoManager::RepoConstIterator> RepoManager::repos() const

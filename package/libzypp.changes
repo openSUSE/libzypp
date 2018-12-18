@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec 18 16:11:18 CET 2018 - ma@suse.de
+
+- Simplify complex locks so zypper can display them (bsc#1112911)
+- PoolQuery: Treat explicit queries for 'kind:name' correctly (bsc#1035729)
+- version 15.27.1 (19)
+
+-------------------------------------------------------------------
 Tue Oct  2 15:53:49 CEST 2018 - ma@suse.de
 
 - Add filesize check for downloads with known size (bsc#408814)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 18 16:10:45 CET 2018 - ma@suse.de
+
+- Simplify complex locks so zypper can display them (bsc#1112911)
+- version 16.19.1 (0)
+
+-------------------------------------------------------------------
 Tue Oct  2 14:58:17 CEST 2018 - ma@suse.de
 
 - Add filesize check for downloads with known size (bsc#408814)

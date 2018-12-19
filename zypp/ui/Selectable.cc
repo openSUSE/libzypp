@@ -208,6 +208,8 @@ namespace zypp
     void Selectable::setLicenceConfirmed( bool val_r )
     { _pimpl->setLicenceConfirmed( val_r ); }
 
+    bool Selectable::hasLocks() const
+    { return  _pimpl->hasLocks(); }
 
     Selectable::Fate Selectable::fate() const
     {

@@ -336,6 +336,24 @@ namespace zypp
       void setLicenceConfirmed( bool val_r )
       { if ( candidateObj() ) candidateObj().status().setLicenceConfirmed( val_r ); }
 
+      /** \copydoc Selectable::hasLocks()const */
+      bool hasLocks() const
+      {
+	for_( it, availableBegin(), availableEnd() )
+	{
+	  const PoolItem & pi( *it );
+	  if ( pi.status().isLocked() )
+	    return true;
+	}
+        for_( it, installedBegin(), installedEnd() )
+	{
+	  const PoolItem & pi( *it );
+	  if ( pi.status().isLocked() )
+	    return true;
+	}
+	return false;
+      }
+
     private:
       PoolItem transactingInstalled() const
       {

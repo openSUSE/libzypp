@@ -1559,7 +1559,13 @@ namespace
 
     rpmQVKArguments_s qva;
     memset( &qva, 0, sizeof(rpmQVKArguments_s) );
+    // In rpm >= 4.15 qva_flags these symbols dont exist and qva_flags
+    // is not used in signature checking at all.
+#ifdef HAVE_VERIFYDIGEST
     qva.qva_flags = (VERIFY_DIGEST|VERIFY_SIGNATURE);
+#else
+    ::rpmtsSetVfyFlags( ts, RPMVSF_DEFAULT );
+#endif
 
     RpmlogCapture vresult;
     LocaleGuard guard( LC_ALL, "C" );	// bsc#1076415: rpm log output is localized, but we need to parse it :(

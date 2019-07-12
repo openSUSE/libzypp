@@ -35,6 +35,34 @@ SET( zyppng_core_HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/core/IdString
 )
 
+SET( zyppng_meta_HEADERS
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/type_traits.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/TypeTraits
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/function_traits.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/FunctionTraits
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/functional.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/meta/Functional
+  )
+
+SET( zyppng_monadic_HEADERS
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/asyncresult.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/AsyncResult
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/await.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Await
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/expected.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Expected
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/redo.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Redo
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/transform.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Transform
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/mtry.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/MTry
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/lift.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Lift
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/wait.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/monadic/Wait
+)
+
 SET( zyppng_media_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/media/medianetwork.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/media/network/downloader.cc
@@ -67,6 +95,8 @@ SET ( zyppng_HEADERS
   ${zyppng_base_HEADERS}
   ${zyppng_base_private_HEADERS}
   ${zyppng_core_HEADERS}
+  ${zyppng_meta_HEADERS}
+  ${zyppng_monadic_HEADERS}
   ${zyppng_media_HEADERS}
   ${zyppng_media_private_HEADERS}
   PARENT_SCOPE

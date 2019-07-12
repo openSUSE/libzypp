@@ -14,6 +14,9 @@ namespace zypp {
   namespace media {
     class TransferSettings;
   }
+  namespace filesystem {
+    class Pathname;
+  }
 }
 
 namespace zyppng {
@@ -156,7 +159,7 @@ namespace zyppng {
     /*!
      * Returns the target file path, this is where the downloaded data is stored
      */
-    zypp::Pathname targetPath () const;
+    zypp::filesystem::Pathname targetPath () const;
 
     /*!
      * Returns the current internal state of the Download
@@ -207,7 +210,7 @@ namespace zyppng {
      * Set a already existing local file to be used for partial downloading, in case of a multichunk download all chunks from the
      * file that have the expected checksum will be reused instead of downloaded
      */
-    void setDeltaFile ( const zypp::Pathname &file );
+    void setDeltaFile ( const zypp::filesystem::Pathname &file );
 
     /*!
      * Returns a reference to the internally used \sa zyppng::NetworkRequestDispatcher

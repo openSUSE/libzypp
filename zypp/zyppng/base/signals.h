@@ -18,6 +18,9 @@
 #include <sigc++/signal.h>
 #include <sigc++/connection.h>
 
+#define pubsignals public
+#define privsignals private
+
 namespace zyppng {
 
 using sigc::signal;

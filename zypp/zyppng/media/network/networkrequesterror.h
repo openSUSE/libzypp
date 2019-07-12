@@ -72,7 +72,7 @@ class NetworkRequestErrorPrivate;
           return boost::any_cast<T>( it->second );
         } catch ( const boost::bad_any_cast &) { }
       }
-      return defaultVal;
+      return std::move(defaultVal);
     }
 
     /*!

@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include <strstream>
 
-
 namespace zyppng {
 
   std::vector<char> peek_data_fd( FILE *fd, off_t offset, size_t count )

@@ -1095,6 +1095,7 @@ namespace zypp
     {
       // ----------------------------------------------------------------- //
       ZYppCommitPolicy policy_r( policy_rX );
+      bool explicitDryRun = policy_r.dryRun();	// explicit dry run will trigger a fileconflict check, implicit (download-only) not.
 
       // Fake outstanding YCP fix: Honour restriction to media 1
       // at installation, but install all remaining packages if post-boot.
@@ -1313,12 +1314,20 @@ namespace zypp
 	  else
 	  {
 	    DBG << "dryRun/downloadOnly: Not installing/deleting anything." << endl;
+	    if ( explicitDryRun ) {
+	      // if cache is preloaded, check for file conflicts
+	      commitFindFileConflicts( policy_r, result );
+	    }
 	  }
 	}
       }
       else
       {
         DBG << "dryRun: Not downloading/installing/deleting anything." << endl;
+	if ( explicitDryRun ) {
+	  // if cache is preloaded, check for file conflicts
+	  commitFindFileConflicts( policy_r, result );
+	}
       }
 
       ///////////////////////////////////////////////////////////////////

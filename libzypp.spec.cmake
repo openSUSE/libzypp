@@ -47,11 +47,7 @@ Recommends:     lsof
 %endif
 BuildRequires:  cmake
 BuildRequires:  openssl-devel
-%if 0%{?suse_version} >= 1130 || 0%{?fedora_version} >= 16
 BuildRequires:  pkgconfig(libudev)
-%else
-BuildRequires:  hal-devel
-%endif
 BuildRequires:  boost-devel
 BuildRequires:  dejagnu
 BuildRequires:  doxygen
@@ -150,11 +146,7 @@ Requires:       openssl-devel
 Requires:       popt-devel
 Requires:       rpm-devel > 4.4
 Requires:       zlib-devel
-%if 0%{?suse_version} >= 1130 || 0%{?fedora_version} >= 16
 Requires:       libudev-devel
-%else
-Requires:       hal-devel
-%endif
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1100
 # Code11+

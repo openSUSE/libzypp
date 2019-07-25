@@ -88,12 +88,12 @@ BOOST_AUTO_TEST_CASE(checkcleanup)
 
   //explicit cleanup
   loop.reset();
-  BOOST_REQUIRE_EQUAL( nullptr, zyppng::EventDispatcher::instance().get() );
+  BOOST_REQUIRE_EQUAL( static_cast<zyppng::EventDispatcher *>(nullptr), zyppng::EventDispatcher::instance().get() );
 
   //implicit cleanup
   {
     zyppng::EventDispatcher::createMain();
-    BOOST_REQUIRE_EQUAL( nullptr, zyppng::EventDispatcher::instance().get() );
+    BOOST_REQUIRE_EQUAL( static_cast<zyppng::EventDispatcher *>(nullptr), zyppng::EventDispatcher::instance().get() );
   }
 
   //only one instance per thread

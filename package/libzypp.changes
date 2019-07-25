@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 25 17:19:51 CEST 2019 - ma@suse.de
+
+- MediaCurl: Fix leaking filedescriptors (bsc#1116995)
+- version 14.48.2 (39)
+
+-------------------------------------------------------------------
 Fri Jul 19 10:22:58 CEST 2019 - ma@suse.de
 
 - commit: Run file conflict check on dry-run (best with download-only)

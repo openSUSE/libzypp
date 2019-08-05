@@ -34,6 +34,7 @@
 #include "zypp/target/modalias/Modalias.h"
 #include "zypp/media/MediaPriority.h"
 
+#ifndef JEZYPP_NO_HELIXREPO
 extern "C"
 {
 // Workaround libsolv project not providing a common include
@@ -41,6 +42,7 @@ extern "C"
 // #include <solv/repo_helix.h>
 int repo_add_helix( ::Repo *repo, FILE *fp, int flags );
 }
+#endif
 
 using std::endl;
 
@@ -330,10 +332,12 @@ namespace zypp
 
       int PoolImpl::_addHelix( CRepo * repo_r, FILE * file_r )
       {
-        setDirty(__FUNCTION__, repo_r->name );
+#ifndef JEZYPP_NO_HELIXREPO
+	setDirty(__FUNCTION__, repo_r->name );
         int ret = ::repo_add_helix( repo_r, file_r, 0 );
         if ( ret == 0 )
           _postRepoAdd( repo_r );
+#endif
         return 0;
       }
 

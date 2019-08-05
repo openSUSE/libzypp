@@ -22,8 +22,19 @@ IF (DEBIAN)
   SET (have_system ${have_system}x)
 ENDIF (DEBIAN)
 
+IF (JEZYPP)
+  # just libzypp
+  MESSAGE (STATUS "Building JEZYPP to support SCC for RES")
+  SET (DISABLE_AUTODOCS ON)
+  SET (ENABLE_BUILD_TESTS OFF)	# woudl need helix
+  ADD_DEFINITIONS (-DJEZYPP)
+  ADD_DEFINITIONS (-DJEZYPP_NO_HELIXREPO)
+  SET (have_system ${have_system}x)
+ENDIF (RES8)
+
 IF (${have_system} STREQUAL x)
   MESSAGE (STATUS "Building for SUSE")
+  ADD_DEFINITIONS (-DSUSE)
 ENDIF (${have_system} STREQUAL x)
 
 IF (${have_system} STRGREATER xx)
@@ -229,9 +240,13 @@ INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp-history.lr DESTINATION ${SYSCONFDIR}/l
 ADD_SUBDIRECTORY( zypp )
 # do not build devel by default
 ADD_SUBDIRECTORY( devel EXCLUDE_FROM_ALL )
+IF (JEZYPP)
+#ADD_SUBDIRECTORY( solvtools )
+ELSE (JEZYPP)
 ADD_SUBDIRECTORY( tools )
 ADD_SUBDIRECTORY( doc )
 ADD_SUBDIRECTORY( vendor )
+ENDIF (JEZYPP)
 
 IF ( ENABLE_BUILD_TRANS )
   ADD_SUBDIRECTORY( po )

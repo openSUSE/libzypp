@@ -15,6 +15,10 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%if 0%{?rhel} >= 8
+# JEZYPP to support SCC for RES
+%define jezypp %{rhel}
+%endif
 
 %define force_gcc_46 0
 
@@ -50,7 +54,10 @@ BuildRequires:  openssl-devel
 BuildRequires:  pkgconfig(libudev)
 BuildRequires:  boost-devel
 BuildRequires:  dejagnu
+%if !0%{jezypp}
 BuildRequires:  doxygen
+BuildRequires:  graphviz
+%endif
 %if 0%{?force_gcc_46}
 BuildRequires:  gcc46
 BuildRequires:  gcc46-c++
@@ -58,7 +65,6 @@ BuildRequires:  gcc46-c++
 BuildRequires:  gcc-c++ >= 4.6
 %endif
 BuildRequires:  gettext-devel
-BuildRequires:  graphviz
 BuildRequires:  libxml2-devel
 %if 0%{?suse_version} != 1110
 # No libproxy on SLES
@@ -168,12 +174,14 @@ Requires:       libsolv-devel
 %description devel
 Package, Patch, Pattern, and Product Management - developers files
 
+%if !0%{?jezypp}
 %package devel-doc
 Summary:        Package, Patch, Pattern, and Product Management - developers files
 Group:          Documentation/HTML
 
 %description devel-doc
 Package, Patch, Pattern, and Product Management - developers files
+%endif
 
 %prep
 %setup -q
@@ -187,7 +195,10 @@ export CXX=g++-4.6
 %endif
 export CFLAGS="$RPM_OPT_FLAGS"
 export CXXFLAGS="$RPM_OPT_FLAGS"
+
 unset EXTRA_CMAKE_OPTIONS
+%if 0%{?jezypp}
+export EXTRA_CMAKE_OPTIONS="-DJEZYPP=%{jezypp}"
 %endif
 
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
@@ -198,8 +209,10 @@ cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       ${EXTRA_CMAKE_OPTIONS} \
       ..
 make %{?_smp_mflags} VERBOSE=1
+%if !0%{?jezypp}
 make -C doc/autodoc %{?_smp_mflags}
 make -C po %{?_smp_mflags} translations
+%endif
 
 %if 0%{?run_testsuite}
   make -C tests %{?_smp_mflags}
@@ -214,8 +227,10 @@ make -C po %{?_smp_mflags} translations
 rm -rf "$RPM_BUILD_ROOT"
 cd build
 make install DESTDIR=$RPM_BUILD_ROOT
+%if !0%{?jezypp}
 make -C doc/autodoc install DESTDIR=$RPM_BUILD_ROOT
-%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600
+%endif
+%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{jezypp}
 ln -s %{_sysconfdir}/yum.repos.d $RPM_BUILD_ROOT%{_sysconfdir}/zypp/repos.d
 %else
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/repos.d
@@ -242,10 +257,12 @@ mkdir -p $RPM_BUILD_ROOT%{_var}/cache/zypp
 sed -i "s|# solver.dupAllowVendorChange = true|solver.dupAllowVendorChange = false|g" %{buildroot}%{_sysconfdir}/zypp/zypp.conf
 %endif
 
+%if !0%{?jezypp}
 make -C po install DESTDIR=$RPM_BUILD_ROOT
 # Create filelist with translations
 cd ..
 %{find_lang} zypp
+%endif
 
 %post
 /sbin/ldconfig
@@ -316,10 +333,14 @@ fi
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
+%if !0%{?jezypp}
 %files -f zypp.lang
+%else
+%files
+%endif
 %defattr(-,root,root)
 %dir               %{_sysconfdir}/zypp
-%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600
+%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{jezypp}
 %{_sysconfdir}/zypp/repos.d
 %else
 %dir               %{_sysconfdir}/zypp/repos.d
@@ -337,11 +358,13 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir               %{_var}/log/zypp
 %dir               %{_var}/cache/zypp
 %{_prefix}/lib/zypp
-%{_datadir}/zypp
-%{_bindir}/*
 %{_libdir}/libzypp*so.*
+%if !0%{?jezypp}
+%{_bindir}/*
+%{_datadir}/zypp
 %doc %{_mandir}/man1/*.1.*
 %doc %{_mandir}/man5/*.5.*
+%endif
 
 %files devel
 %defattr(-,root,root)
@@ -350,8 +373,10 @@ rm -rf "$RPM_BUILD_ROOT"
 %{_datadir}/cmake/Modules/*
 %{_libdir}/pkgconfig/libzypp.pc
 
+%if !0%{?jezypp}
 %files devel-doc
 %defattr(-,root,root)
 %{_docdir}/%{name}
+%endif
 
 %changelog

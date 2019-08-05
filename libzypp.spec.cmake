@@ -188,9 +188,6 @@ export CXX=g++-4.6
 export CFLAGS="$RPM_OPT_FLAGS"
 export CXXFLAGS="$RPM_OPT_FLAGS"
 unset EXTRA_CMAKE_OPTIONS
-# No libproxy on SLE11
-%if 0%{?suse_version} == 1110
-export EXTRA_CMAKE_OPTIONS="-DDISABLE_LIBPROXY=ON"
 %endif
 
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \

@@ -908,13 +908,13 @@ namespace zypp
         ManagedFile guard( base, filesystem::recursive_rmdir );
 
         ExternalProgram::Arguments cmd;
-        cmd.push_back( "rpmdb2solv" );
+        cmd.push_back( "/usr/lib/zypp/tools/rpmdb2solv" );
         if ( ! _root.empty() ) {
           cmd.push_back( "-r" );
           cmd.push_back( _root.asString() );
         }
         cmd.push_back( "-X" );	// autogenerate pattern/product/... from -package
-        cmd.push_back( "-A" );	// autogenerate application pseudo packages
+        //cmd.push_back( "-A" );	// autogenerate application pseudo packages
         cmd.push_back( "-p" );
         cmd.push_back( Pathname::assertprefix( _root, "/etc/products.d" ).asString() );
 

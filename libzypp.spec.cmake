@@ -83,7 +83,9 @@ BuildRequires:  libsolv-devel <  0.7
 BuildRequires:  libsolv-tools
 %requires_eq    libsolv-tools
 %else
+%if !0%{jezypp}
 Requires:       libsolv-tools
+%endif
 %endif
 
 # required for testsuite, webrick
@@ -242,7 +244,9 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/vendors.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/multiversion.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/credentials.d
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins
+%if 0%{?jezypp}
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/tools
+%endif
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/appdata
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/commit
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/services

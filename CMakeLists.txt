@@ -241,7 +241,7 @@ ADD_SUBDIRECTORY( zypp )
 # do not build devel by default
 ADD_SUBDIRECTORY( devel EXCLUDE_FROM_ALL )
 IF (JEZYPP)
-#ADD_SUBDIRECTORY( solvtools )
+ADD_SUBDIRECTORY( solvtools )
 ELSE (JEZYPP)
 ADD_SUBDIRECTORY( tools )
 ADD_SUBDIRECTORY( doc )

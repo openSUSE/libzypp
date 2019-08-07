@@ -1349,12 +1349,12 @@ namespace zypp
         scoped_ptr<MediaMounter> forPlainDirs;
 
         ExternalProgram::Arguments cmd;
-        cmd.push_back( PathInfo( "/usr/bin/repo2solv" ).isFile() ? "repo2solv" : "repo2solv.sh" );
+        cmd.push_back( "/usr/lib/zypp/tools/repo2solv" );
         // repo2solv expects -o as 1st arg!
         cmd.push_back( "-o" );
         cmd.push_back( solvfile.asString() );
 	cmd.push_back( "-X" );	// autogenerate pattern from pattern-package
-        cmd.push_back( "-A" );	// autogenerate application pseudo packages
+	//cmd.push_back( "-A" );	// autogenerate application pseudo packages
 
         if ( repokind == RepoType::RPMPLAINDIR )
         {

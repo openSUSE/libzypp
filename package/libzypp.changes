@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 16 16:29:21 CEST 2019 - ma@suse.com
+
+- JEZYPP to support SCC for RES
+- version 16.20.3
+
+-------------------------------------------------------------------
 Thu Jul 25 17:19:20 CEST 2019 - ma@suse.de
 
 - MediaCurl: Fix leaking filedescriptors (bsc#1116995)

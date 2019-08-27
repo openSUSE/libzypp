@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 27 19:08:07 CEST 2019 - ma@suse.com
+
+- Adapt rpm package verification to changes in rpm-4.14
+- version 16.20.4
+
+-------------------------------------------------------------------
 Fri Aug 16 16:29:21 CEST 2019 - ma@suse.com
 
 - JEZYPP to support SCC for RES

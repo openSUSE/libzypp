@@ -485,6 +485,17 @@ INSTALL(  FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/pool
 )
 
+# SET( zypp_solver_detail_SRCS )
+
+SET( zypp_solver_HEADERS
+  solver/Types.h
+)
+
+INSTALL(  FILES
+  ${zypp_solver_HEADERS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/solver
+)
+
 SET( zypp_solver_detail_SRCS
   solver/detail/ProblemSolutionIgnore.cc
   solver/detail/ProblemSolutionCombi.cc
@@ -864,6 +875,7 @@ ${zypp_ui_HEADERS}
 ${zypp_media_HEADERS}
 ${zypp_media_proxyinfo_HEADERS}
 ${zypp_base_HEADERS}
+${zypp_solver_HEADERS}
 ${zypp_solver_detail_HEADERS}
 ${zypp_sat_HEADERS}
 ${zypp_sat_detail_HEADERS}

@@ -64,6 +64,7 @@ SET( zypp_SRCS
   ResObject.cc
   Resolvable.cc
   Resolver.cc
+  ResolverFocus.cc
   ResolverProblem.cc
   ResPool.cc
   ResPoolProxy.cc
@@ -169,6 +170,7 @@ SET( zypp_HEADERS
   ResObjects.h
   Resolvable.h
   Resolver.h
+  ResolverFocus.h
   ResolverNamespace.h
   ResolverProblem.h
   ResPool.h

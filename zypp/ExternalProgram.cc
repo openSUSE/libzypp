@@ -28,6 +28,7 @@
 #include "zypp/base/Gettext.h"
 #include "zypp/ExternalProgram.h"
 #include "zypp/base/CleanerThread_p.h"
+#include "zypp/base/Exception.h"
 
 using namespace std;
 
@@ -619,7 +620,11 @@ namespace zypp {
       {
 	_fds[R] = _fds[W] = -1;
 #ifdef HAVE_PIPE2
-	::pipe2( _fds, O_NONBLOCK );
+	const int err = ::pipe2( _fds, O_NONBLOCK );
+        if (err != 0) {
+          assert((err == -1) && (errno != EFAULT) && (errno != EINVAL));
+          ZYPP_THROW(Exception("Failed to open pipe"));
+        }
 #else
         ::pipe( _fds );
         ::fcntl(_fds[R], F_SETFD, O_NONBLOCK );

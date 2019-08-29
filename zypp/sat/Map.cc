@@ -122,11 +122,15 @@ namespace zypp
     Map::operator detail::CMap *()	// COW: nonconst version can't be inlined
     { return _pimpl.get(); }		// without exposing detail::CMap
 
-    bool operator==( const Map & lhs, const Map & rhs )
+    bool operator==( const Map &lhs, const Map &rhs )
     {
-      const detail::CMap * l = lhs;
-      const detail::CMap * r = rhs;
-      return( l == r || ( l->size == r->size && ::memcmp( l->map, r->map, l->size ) == 0 ) );
+      const detail::CMap *l = lhs;
+      const detail::CMap *r = rhs;
+      // only memcmp maps if they are not NULL, otherwise at least one is NULL => check if both are equal (i.e. both NULL)
+      const bool maps_equal = ( l->map != nullptr ) && ( r->map != nullptr )
+                                ? ::memcmp( l->map, r->map, l->size ) == 0
+                                : ( l->map == r->map );
+      return ( l == r || ( l->size == r->size && maps_equal ) );
     }
 
     /////////////////////////////////////////////////////////////////

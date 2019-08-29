@@ -221,6 +221,7 @@ namespace zypp
 	    str << 'Z';
 	    break;
 	  }
+          /* fall through */
 	  // else: FALLTHROUGH and print offset!
 	case TimeZoneFormat::offset:
 	  str << _timeZoneFormat( TimeZoneFormat::offset );

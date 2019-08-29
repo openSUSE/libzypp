@@ -1157,7 +1157,7 @@ void MediaCurl::evaluateCurlCode(const Pathname &filename,
       case CURLE_PARTIAL_FILE:
       case CURLE_OPERATION_TIMEDOUT:
 	timeout_reached	= true; // fall though to TimeoutException
-	// fall though...
+	/* fall through */
       case CURLE_ABORTED_BY_CALLBACK:
          if( timeout_reached )
         {

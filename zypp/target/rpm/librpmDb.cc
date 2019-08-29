@@ -306,7 +306,7 @@ unsigned librpmDb::dbRelease( bool force_r )
       DBG << "dbRelease: keep access, outstanding " << outstanding << endl;
       break;
     }
-    // else fall through:
+    /* fall through */
   case 0:
     DBG << "dbRelease: release" << (force_r && outstanding ? "(forced)" : "")
     << ", outstanding " << outstanding << endl;

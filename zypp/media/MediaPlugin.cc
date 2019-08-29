@@ -33,25 +33,25 @@ namespace zypp
     {
       MIL << "MediaPlugin::MediaPlugin(" << url_r << ", " << attach_point_hint_r << ")" << endl;
     }
-    void MediaPlugin::attachTo( bool next_r )
+    void MediaPlugin::attachTo( bool /* next_r */ )
     {}
 
-    void MediaPlugin::releaseFrom( const std::string & ejectDev_r )
+    void MediaPlugin::releaseFrom( const std::string & /* ejectDev_r */ )
     {}
 
-    void MediaPlugin::getFile(const Pathname & filename_r , const ByteCount & expectedFileSize_r) const
+    void MediaPlugin::getFile(const Pathname & /* filename_r */ , const ByteCount & /* expectedFileSize_r */ ) const
     {}
 
-    void MediaPlugin::getDir( const Pathname & dirname_r, bool recurse_r ) const
+    void MediaPlugin::getDir( const Pathname & /* dirname_r */, bool /* recurse_r */ ) const
     {}
 
-    void MediaPlugin::getDirInfo( std::list<std::string> & retlist_r, const Pathname & dirname_r, bool dots_r ) const
+    void MediaPlugin::getDirInfo( std::list<std::string> & /* retlist_r */, const Pathname & /* dirname_r */, bool /* dots_r */ ) const
     {}
 
-    void MediaPlugin::getDirInfo( filesystem::DirContent & retlist_r, const Pathname & dirname_r, bool dots_r ) const
+    void MediaPlugin::getDirInfo( filesystem::DirContent & /* retlist_r */, const Pathname & /* dirname_r */, bool /* dots_r */ ) const
     {}
 
-    bool MediaPlugin::getDoesFileExist( const Pathname & filename_r ) const
+    bool MediaPlugin::getDoesFileExist( const Pathname & /* filename_r */ ) const
     { return false; }
 
     //////////////////////////////////////////////////////////////////

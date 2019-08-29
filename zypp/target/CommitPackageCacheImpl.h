@@ -107,7 +107,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates CommitPackageCache::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const CommitPackageCache::Impl & obj )
+    inline std::ostream & operator<<( std::ostream & str, const CommitPackageCache::Impl & /* obj */ )
     {
       return str << "CommitPackageCache::Impl";
     }

@@ -345,7 +345,7 @@ class MediaHandler {
 	 *
 	 * Asserted that media is not attached.
 	 **/
-	virtual void forceEject( const std::string & device ) {}
+        virtual void forceEject( const std::string & /* device */ ) {}
 
 	/**
 	 * Call concrete handler to provide file below attach point.

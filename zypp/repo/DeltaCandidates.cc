@@ -51,7 +51,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates DeltaCandidates::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const DeltaCandidates::Impl & obj )
+    inline std::ostream & operator<<( std::ostream & str, const DeltaCandidates::Impl & /*obj*/ )
     {
       return str << "DeltaCandidates::Impl";
     }

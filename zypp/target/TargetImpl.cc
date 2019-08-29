@@ -1089,7 +1089,7 @@ namespace zypp
 	  static const StrMatcher isRpmConfigBackup( "\\.rpm(new|save|orig)$", Match::REGEX );
 
 	  filesystem::dirForEach( needrebootDir, filesystem::matchNoDots(),
-				  [&]( const Pathname & dir_r, const char *const str_r )->bool
+				  [&]( const Pathname & /* dir_r */, const char *const str_r )->bool
 				  {
 				    if ( ! isRpmConfigBackup( str_r ) )
 				    {

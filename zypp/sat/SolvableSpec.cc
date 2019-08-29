@@ -129,7 +129,7 @@ namespace zypp
     void SolvableSpec::parseFrom( const InputStream & istr_r )
     {
       iostr::simpleParseFile( istr_r,
-			      [this]( int num_r, const std::string & line_r )->bool
+			      [this]( int /* num_r */, const std::string & line_r )->bool
 			      {
 				this->parse( line_r );
 				return true;

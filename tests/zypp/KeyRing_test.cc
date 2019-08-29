@@ -218,10 +218,10 @@ BOOST_AUTO_TEST_CASE(keyring_import)
     Receiver()
     { connect(); }
 
-    virtual void trustedKeyAdded( const PublicKey & key_r )
+    virtual void trustedKeyAdded( const PublicKey & /* key_r */ )
     { ++_cbcnt; }
 
-    virtual void trustedKeyRemoved( const PublicKey & key_r )
+    virtual void trustedKeyRemoved( const PublicKey & /* key_r */ )
     { --_cbcnt; }
 
     unsigned _cbcnt = 0;

@@ -86,7 +86,7 @@ SolverQueueItem::~SolverQueueItem()
 //---------------------------------------------------------------------------
 
 void
-SolverQueueItem::copy (const SolverQueueItem *from)
+SolverQueueItem::copy (const SolverQueueItem * /* from */)
 {
 }
 

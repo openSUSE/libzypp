@@ -715,7 +715,7 @@ namespace zypp
 	  if ( root_r == "/" )
 	    ret.swap( _specMap[Pathname()] );		// original zypp.conf
 	  else
-	    scanConfAt( root_r, ret, zConfImpl_r );	// scan zypp.conf at root_r
+	    scanConfAt( root_r, ret);	// scan zypp.conf at root_r
 	  scanDirAt( root_r, ret, zConfImpl_r );	// add multiversion.d at root_r
 	  using zypp::operator<<;
 	  MIL << "MultiversionSpec '" << root_r << "' = " << ret << endl;
@@ -727,12 +727,12 @@ namespace zypp
       {	return _specMap[Pathname()]; }
 
     private:
-      void scanConfAt( const Pathname root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
+      void scanConfAt( const Pathname root_r, MultiversionSpec & spec_r)
       {
 	static const str::regex rx( "^multiversion *= *(.*)" );
 	str::smatch what;
 	iostr::simpleParseFile( InputStream( Pathname::assertprefix( root_r, _autodetectZyppConfPath() ) ),
-				[&]( int num_r, std::string line_r )->bool
+				[&]( int /* num_r */, std::string line_r )->bool
 				{
 				  if ( line_r[0] == 'm' && str::regex_match( line_r, what, rx ) )
 				  {
@@ -757,7 +757,7 @@ namespace zypp
 				{
 				  MIL << "Parsing " << dir_r/name_r << endl;
 				  iostr::simpleParseFile( InputStream( dir_r/name_r ),
-							  [&spec_r]( int num_r, std::string line_r )->bool
+							  [&spec_r]( int /* num_r */, std::string line_r )->bool
 							  {
 							    DBG << "  found " << line_r << endl;
 							    spec_r.insert( std::move(line_r) );

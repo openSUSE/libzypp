@@ -31,13 +31,13 @@
 
 namespace zypp {
 
-    bool DigestReport::askUserToAcceptNoDigest( const zypp::Pathname &file )
+    bool DigestReport::askUserToAcceptNoDigest( const zypp::Pathname & /* file */ )
     { return false; }
 
-    bool DigestReport::askUserToAccepUnknownDigest( const Pathname &file, const std::string &name )
+    bool DigestReport::askUserToAccepUnknownDigest( const Pathname & /* file */, const std::string & /* name */ )
     { return false; }
 
-    bool DigestReport::askUserToAcceptWrongDigest( const Pathname &file, const std::string &requested, const std::string &found )
+    bool DigestReport::askUserToAcceptWrongDigest( const Pathname & /* file */, const std::string & /* requested */ , const std::string & /* found */ )
     { return false; }
 
 

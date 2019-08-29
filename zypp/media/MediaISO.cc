@@ -246,7 +246,7 @@ namespace zypp
 
     // ---------------------------------------------------------------
 
-    void MediaISO::releaseFrom(const std::string & ejectDev)
+    void MediaISO::releaseFrom(const std::string & /* ejectDev */ )
     {
       Mount mount;
       mount.umount(attachPoint().asString());

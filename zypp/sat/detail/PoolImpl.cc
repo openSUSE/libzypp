@@ -105,7 +105,7 @@ namespace zypp
 
       /////////////////////////////////////////////////////////////////
 
-      static void logSat( CPool *, void *data, int type, const char *logString )
+      static void logSat( CPool *, void */* data */, int type, const char *logString )
       {
 	//                            "1234567890123456789012345678901234567890
 	if ( 0 == strncmp( logString, "job: user installed", 19 ) )

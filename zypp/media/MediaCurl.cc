@@ -60,7 +60,7 @@ namespace
     } (), true );
   }
 
-  int log_curl(CURL *curl, curl_infotype info,
+  int log_curl(CURL */* curl */, curl_infotype info,
                char *ptr, size_t len, void *max_lvl)
   {
     std::string pfx(" ");
@@ -939,7 +939,7 @@ void MediaCurl::disconnectFrom()
 
 ///////////////////////////////////////////////////////////////////
 
-void MediaCurl::releaseFrom( const std::string & ejectDev )
+void MediaCurl::releaseFrom( const std::string & /* ejectDev */ )
 {
   disconnect();
 }

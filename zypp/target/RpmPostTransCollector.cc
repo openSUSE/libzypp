@@ -204,7 +204,7 @@ namespace zypp
     };
 
     /** \relates RpmPostTransCollector::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector::Impl & obj )
+    inline std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector::Impl & /* obj */ )
     { return str << "RpmPostTransCollector::Impl"; }
 
     /** \relates RpmPostTransCollector::Impl Verbose stream output */

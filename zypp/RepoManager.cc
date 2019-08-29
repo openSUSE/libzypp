@@ -717,7 +717,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoManager::Impl Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const RepoManager::Impl & obj )
+  inline std::ostream & operator<<( std::ostream & str, const RepoManager::Impl & /* obj */ )
   { return str << "RepoManager::Impl"; }
 
   ///////////////////////////////////////////////////////////////////
@@ -1083,7 +1083,7 @@ namespace zypp
   }
 
 
-  void RepoManager::Impl::refreshMetadata( const RepoInfo & info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progress )
+  void RepoManager::Impl::refreshMetadata( const RepoInfo & info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & /* progress */ )
   {
     assert_alias(info);
     assert_urls(info);
@@ -1680,7 +1680,7 @@ namespace zypp
   }
 
 
-  void RepoManager::Impl::addRepositories( const Url & url, const ProgressData::ReceiverFnc & progressrcv )
+  void RepoManager::Impl::addRepositories( const Url & url, const ProgressData::ReceiverFnc & /* progressrcv */ )
   {
     std::list<RepoInfo> repos = readRepoFile(url);
     for ( std::list<RepoInfo>::const_iterator it = repos.begin();
@@ -1828,7 +1828,7 @@ namespace zypp
 
   ////////////////////////////////////////////////////////////////////////////
 
-  void RepoManager::Impl::modifyRepository( const std::string & alias, const RepoInfo & newinfo_r, const ProgressData::ReceiverFnc & progressrcv )
+  void RepoManager::Impl::modifyRepository( const std::string & alias, const RepoInfo & newinfo_r, const ProgressData::ReceiverFnc & /* progressrcv */ )
   {
     RepoInfo toedit = getRepositoryInfo(alias);
     RepoInfo newinfo( newinfo_r ); // need writable copy to upadte housekeeping data
@@ -1904,7 +1904,7 @@ namespace zypp
 
   ////////////////////////////////////////////////////////////////////////////
 
-  RepoInfo RepoManager::Impl::getRepositoryInfo( const std::string & alias, const ProgressData::ReceiverFnc & progressrcv )
+  RepoInfo RepoManager::Impl::getRepositoryInfo( const std::string & alias, const ProgressData::ReceiverFnc & /* progressrcv */ )
   {
     RepoConstIterator it( findAlias( alias, repos() ) );
     if ( it != repos().end() )
@@ -1915,7 +1915,7 @@ namespace zypp
   }
 
 
-  RepoInfo RepoManager::Impl::getRepositoryInfo( const Url & url, const url::ViewOption & urlview, const ProgressData::ReceiverFnc & progressrcv )
+  RepoInfo RepoManager::Impl::getRepositoryInfo( const Url & url, const url::ViewOption & urlview, const ProgressData::ReceiverFnc & /* progressrcv */ )
   {
     for_( it, repoBegin(), repoEnd() )
     {

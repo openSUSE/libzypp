@@ -77,7 +77,7 @@ namespace zypp
     PluginServices::~PluginServices()
     {}
 
-    std::ostream & operator<<( std::ostream & str, const PluginServices & obj )
+    std::ostream & operator<<( std::ostream & str, const PluginServices & /* obj */ )
     {
       return str;
     }

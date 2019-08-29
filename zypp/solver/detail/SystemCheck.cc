@@ -153,7 +153,7 @@ namespace zypp
     **	FUNCTION NAME : operator<<
     **	FUNCTION TYPE : std::ostream &
     */
-    std::ostream & operator<<( std::ostream & str, const SystemCheck & obj )
+    std::ostream & operator<<( std::ostream & str, const SystemCheck & /* obj */ )
     {
       str << _file << endl;
       str << "requires" << endl;

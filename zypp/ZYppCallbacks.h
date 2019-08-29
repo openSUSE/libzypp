@@ -113,7 +113,7 @@ namespace zypp
       /** Hint that package is available in the local cache (no download needed).
        * This will be the only trigger for an already cached package.
        */
-      virtual void infoInCache( Resolvable::constPtr res_r, const Pathname & localfile_r )
+      virtual void infoInCache( Resolvable::constPtr /* res_r */, const Pathname & /* localfile_r */ )
       {}
 
       virtual void start(
@@ -181,7 +181,7 @@ namespace zypp
        * Legacy data:
        * \param "Package"	Replaced by \c "ResObject" in 16.10.0. Package::constPtr of the package (\c nullptr in case of a SrcPackage)
        */
-      virtual void pkgGpgCheck( const UserData & userData_r = UserData() )
+      virtual void pkgGpgCheck( const UserData & /* userData_r */ = UserData() )
       {}
 
       virtual void finish(Resolvable::constPtr /*resolvable_ptr*/
@@ -378,8 +378,8 @@ namespace zypp
          * \param dbps_current Current download (cca last 1 sec). -1 if unknown.
          */
         virtual bool progress(int /*value*/, const Url &/*file*/,
-                              double dbps_avg = -1,
-                              double dbps_current = -1)
+                              double /* dbps_avg */ = -1,
+                              double /* dbps_current */ = -1)
         { return true; }
 
         virtual Action problem(
@@ -486,7 +486,7 @@ namespace zypp
        * \param progress_r	Progress counter for packages to check.
        * \return \c true to continue, \c false upon user abort request.
        */
-      virtual bool start( const ProgressData & progress_r )
+      virtual bool start( const ProgressData & /* progress_r */ )
       { return true; }
 
       /**
@@ -494,7 +494,7 @@ namespace zypp
        * \param noFilelist_r	Queue of so far skipped solvables (no filelist/not yet downloaded).
        * \return \c true to continue, \c false upon user abort request.
        */
-      virtual bool progress( const ProgressData & progress_r, const sat::Queue & noFilelist_r )
+      virtual bool progress( const ProgressData & /* progress_r */, const sat::Queue & /* noFilelist_r */ )
       { return true; }
 
       /**
@@ -503,7 +503,7 @@ namespace zypp
        * \param conflicts_r	File conflits queue.
        * \return \c true to continue, \c false upon user abort request.
        */
-      virtual bool result( const ProgressData & progress_r, const sat::Queue & noFilelist_r, const sat::FileConflicts & conflicts_r )
+      virtual bool result( const ProgressData & /* progress_r */, const sat::Queue & /* noFilelist_r */, const sat::FileConflicts & /* conflicts_r */ )
       { return true; }
     };
 
@@ -797,7 +797,7 @@ namespace zypp
 
   public:
     /** Send a ready to show message text. */
-    virtual bool message( MsgType type_r, const std::string & msg_r, const UserData & userData_r ) const
+    virtual bool message( MsgType /* type_r */, const std::string & /* msg_r */, const UserData & /* userData_r */ ) const
     { return true; }
 
 

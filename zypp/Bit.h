@@ -168,6 +168,9 @@ namespace zypp
         : _value( value_r )
         {}
 
+        constexpr BitField( const BitField<TInt>& other ) = default;
+        constexpr BitField( BitField<TInt>&& other ) = default;
+
       public:
         /** Validate in a boolean context. */
         explicit operator bool() const

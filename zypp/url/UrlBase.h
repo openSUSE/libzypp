@@ -183,6 +183,8 @@ namespace zypp
        */
       ViewOption();
 
+      constexpr ViewOption(const ViewOption&) = default;
+
 
       /**
        * Adds \p l and \p r to a new option combination.

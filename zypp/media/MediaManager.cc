@@ -58,6 +58,8 @@ namespace zypp
           , verifier(v)
         {}
 
+        ManagedMedia &operator=( const ManagedMedia &other ) = default;
+
         inline void
         checkAttached(MediaAccessId id)
         {

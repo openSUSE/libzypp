@@ -215,7 +215,7 @@ namespace zypp
           /** Returns the id stored at \c offset_r in the internal
            * whatprovidesdata array.
           */
-          const sat::detail::IdType whatProvidesData( unsigned offset_r )
+          sat::detail::IdType whatProvidesData( unsigned offset_r )
           { return _pool->whatprovidesdata[offset_r]; }
 
           /** Returns offset into the internal whatprovidesdata array.

@@ -97,7 +97,7 @@ namespace zypp
      * downloader to not error in case the not found resource is
      * not found.
      */
-    const bool optional() const { return _optional; }
+    bool optional() const { return _optional; }
 
   public:
     /** Unset \c filename and set \c medianr to \c 0. */

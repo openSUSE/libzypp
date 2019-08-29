@@ -85,7 +85,7 @@ namespace zypp
               if ( base_reference() && !*(++base_reference()) )
                 base_reference() = 0;
             }
-            reference dereference() const
+            value_type dereference() const
             { return( base() ? *base() : 0 ); }
         };
         ///////////////////////////////////////////////////////////////////

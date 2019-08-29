@@ -468,7 +468,7 @@ Pathname MediaCurl::_cookieFile = "/var/lib/YaST2/cookies";
  * initialized only once, this gets the anonymous id
  * from the target, which we pass in the http header
  */
-static const char *const anonymousIdHeader()
+static const char * anonymousIdHeader()
 {
   // we need to add the release and identifier to the
   // agent string.
@@ -486,7 +486,7 @@ static const char *const anonymousIdHeader()
  * initialized only once, this gets the distribution flavor
  * from the target, which we pass in the http header
  */
-static const char *const distributionFlavorHeader()
+static const char * distributionFlavorHeader()
 {
   // we need to add the release and identifier to the
   // agent string.
@@ -504,7 +504,7 @@ static const char *const distributionFlavorHeader()
  * initialized only once, this gets the agent string
  * which also includes the curl version
  */
-static const char *const agentString()
+static const char * agentString()
 {
   // we need to add the release and identifier to the
   // agent string.

@@ -310,6 +310,17 @@ void NetworkRequestDispatcher::enqueue(const std::shared_ptr<NetworkRequest> &re
   if ( !req )
     return;
   Z_D();
+
+  if ( std::find( d->_runningDownloads.begin(), d->_runningDownloads.end(), req ) != d->_runningDownloads.end() )  {
+    WAR << "Ignoring request to enqueue download " << req->url().asString() << " request is already running " << std::endl;
+    return;
+  }
+
+  if ( std::find( d->_pendingDownloads.begin(), d->_pendingDownloads.end(), req ) != d->_pendingDownloads.end() ) {
+    WAR << "Ignoring request to enqueue download " << req->url().asString() << " request is already enqueued " << std::endl;
+    return;
+  }
+
   req->d_func()->_dispatcher = this;
   if ( req->priority() == NetworkRequest::Normal )
     d->_pendingDownloads.push_back( req );

@@ -14,10 +14,14 @@ namespace std {
 
 #endif
 
+
+#if __cplusplus < 201703L
+
 namespace std {
 
 //implementation of the detector idiom, used to help with SFINAE
 //from https://en.cppreference.com/w/cpp/experimental/is_detected
+
 namespace detail {
 template <class Default, class AlwaysVoid,
   template<class...> class Op, class... Args>
@@ -28,7 +32,6 @@ struct detector {
 
 template <class Default, template<class...> class Op, class... Args>
 struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
-  // Note that std::void_t is a C++17 feature
   using value_t = std::true_type;
   using type = Op<Args...>;
 };
@@ -40,6 +43,8 @@ struct nonesuch{
 };
 
 } // namespace detail
+
+template <bool B> using bool_constant = integral_constant<bool, B>;
 
 template <template<class...> class Op, class... Args>
 using is_detected = typename detail::detector<detail::nonesuch, void, Op, Args...>::value_t;
@@ -66,9 +71,29 @@ template <class To, template<class...> class Op, class... Args>
 using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>;
 
 template <class To, template<class...> class Op, class... Args>
-constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
+constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value_t::value;
+
+//https://en.cppreference.com/w/cpp/types/conjunction)
+template<class...> struct conjunction : std::true_type { };
+template<class B1> struct conjunction<B1> : B1 { };
+template<class B1, class... Bn>
+struct conjunction<B1, Bn...>
+    : std::conditional_t<bool(B1::value), conjunction<Bn...>, B1> {};
+
+//https://en.cppreference.com/w/cpp/types/disjunction
+template<class...> struct disjunction : std::false_type { };
+template<class B1> struct disjunction<B1> : B1 { };
+template<class B1, class... Bn>
+struct disjunction<B1, Bn...>
+    : std::conditional_t<bool(B1::value), B1, disjunction<Bn...>>  { };
+
+//https://en.cppreference.com/w/cpp/types/negation
+template<class B>
+struct negation : std::bool_constant< !bool(B::value)> { };
 
 }
+#endif
+
 
 namespace zyppng {
   //check wether something is a instance of a template type

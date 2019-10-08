@@ -137,6 +137,19 @@ namespace zyppng {
     template <typename T>
     using has_value_type_t = typename T::value_type;
 
+    template <typename T, typename AsyncRet>
+    using is_asyncop_type = std::is_convertible<T*, AsyncOp<AsyncRet>*>;
+
+#if 0
+
+    template <typename T>
+    using is_async_op = typename std::conjunction<
+        std::is_detected< has_value_type_t, T >,
+        std::is_detected< is_asyncop_type, T, typename T::value_type >
+      >;
+
+#else
+
     /*!
      * Checks if a type T is a asynchronous operation type
      */
@@ -148,6 +161,8 @@ namespace zyppng {
       std::void_t< typename T::value_type, //needs to have a value_type
       std::enable_if_t<std::is_convertible< T*, AsyncOp<typename T::value_type>* >::value>>> //needs to be convertible to AsyncOp<T::value_type>
       : public std::true_type{};
+
+#endif
 
     /*!
      * Checks if a Callable object is of type async_op and if

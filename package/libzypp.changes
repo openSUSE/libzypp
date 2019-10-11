@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Oct 11 12:00:53 CEST 2019 - ma@suse.de
+
+- zypp.conf: Introduce `solver.focus` to define the resolvers general
+  attitude when resolving jobs (bsc#1146415)
+- Add Resolver API to set the ResolverFocus
+- version 16.21.0 (0)
+
+-------------------------------------------------------------------
 Thu Jul 25 17:19:20 CEST 2019 - ma@suse.de
 
 - MediaCurl: Fix leaking filedescriptors (bsc#1116995)

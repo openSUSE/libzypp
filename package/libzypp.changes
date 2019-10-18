@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 18 16:17:27 CEST 2019 - ma@suse.de
+
+- Fix empty metalink downloads if filesize is unknown (bsc#1153557)
+- version 15.28.3 (19)
+
+-------------------------------------------------------------------
 Thu Jul 25 17:19:39 CEST 2019 - ma@suse.de
 
 - MediaCurl: Fix leaking filedescriptors (bsc#1116995)

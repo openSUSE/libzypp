@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 18 16:17:02 CEST 2019 - ma@suse.de
+
+- Fix empty metalink downloads if filesize is unknown (bsc#1153557)
+- version 16.21.1 (0)
+
+-------------------------------------------------------------------
 Fri Oct 11 12:00:53 CEST 2019 - ma@suse.de
 
 - zypp.conf: Introduce `solver.focus` to define the resolvers general

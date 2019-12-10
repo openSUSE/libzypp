@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 10 14:19:50 CET 2019 - ma@suse.de
+
+- MediaCurl: assert cookie file has mode 0600 (bsc#1158763)
+- version 15.28.4 (19)
+
+-------------------------------------------------------------------
 Fri Oct 18 16:17:27 CEST 2019 - ma@suse.de
 
 - Fix empty metalink downloads if filesize is unknown (bsc#1153557)

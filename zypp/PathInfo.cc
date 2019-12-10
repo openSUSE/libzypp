@@ -1139,26 +1139,26 @@ namespace zypp
       int ret = assert_dir( path.dirname() );
       MIL << "assert_file_mode " << str::octstring( mode ) << " " << path;
       if ( ret != 0 )
-        return logResult( ret );
+        return _Log_Result( ret );
 
       PathInfo pi( path );
       if ( pi.isExist() )
       {
 	if ( ! pi.isFile() )
-	  return logResult( EEXIST );
+	  return _Log_Result( EEXIST );
 
 	mode = applyUmaskTo( mode );
 	if ( pi.st_mode() != mode )
 	  return chmod( path, mode );
 
-	return logResult( 0 );
+	return _Log_Result( 0 );
       }
 
       int fd = ::creat( path.c_str(), mode );
       if ( fd == -1 )
-        return logResult( errno );
+        return _Log_Result( errno );
       ::close( fd );
-      return logResult( 0 );
+      return _Log_Result( 0 );
     }
 
     ///////////////////////////////////////////////////////////////////

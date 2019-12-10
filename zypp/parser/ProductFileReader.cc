@@ -182,14 +182,14 @@ namespace zypp
       }
 
       /** collect _upgrade */
-      void doneUpgrade( const xml::Node & _node )
+      void doneUpgrade( const xml::Node & /* _node */ )
       {
         ProductFileData::Upgrade cdata( new ProductFileData::Upgrade::Impl( _upgrade ) );
         _pdata._upgrades.push_back( cdata );
         _upgrade = ProductFileData::Upgrade::Impl();
       }
       /** collect localized data */
-      void doneLocalizedDefault( const xml::Node & _node, std::string & store_r )
+      void doneLocalizedDefault( const xml::Node & /* _node */, std::string & store_r )
       {
 	// take 1st or default
 	if ( store_r.empty() || _tlocale.empty() )
@@ -197,7 +197,7 @@ namespace zypp
       }
 
       /** finaly */
-      void done( const xml::Node & _node )
+      void done( const xml::Node & /* _node */ )
       {
         _pdata._edition = Edition( _version, _release );
       }

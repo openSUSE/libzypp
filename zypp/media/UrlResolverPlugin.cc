@@ -81,7 +81,7 @@ namespace zypp
     }
 
     /** \relates UrlResolverPlugin::Impl Stream output */
-    inline std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin::Impl & obj )
+    inline std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin::Impl & /* obj */ )
     {
       return str << "UrlResolverPlugin::Impl";
     }

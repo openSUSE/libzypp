@@ -148,7 +148,7 @@ namespace zypp
   **	FUNCTION NAME : operator<<
   **	FUNCTION TYPE : std::ostream &
   */
-  std::ostream & operator<<( std::ostream & str, const FileChecker & obj )
+  std::ostream & operator<<( std::ostream & str, const FileChecker & /* obj */ )
   {
     return str;
   }

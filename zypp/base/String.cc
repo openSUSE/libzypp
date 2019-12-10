@@ -39,10 +39,10 @@ namespace zypp
 
       va_list ap;
       va_start( ap, format );
-      vasprintf( &safe._buf, format, ap );
+      const int err = vasprintf( &safe._buf, format, ap );
       va_end( ap );
 
-      return safe.asString();
+      return err != 0 ? "" : safe.asString();
     }
 
     /******************************************************************

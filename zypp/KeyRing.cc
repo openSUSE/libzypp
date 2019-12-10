@@ -57,14 +57,14 @@ namespace zypp
     _keyRingDefaultAccept = value_r;
   }
 
-  void KeyRingReport::infoVerify( const std::string & file_r, const PublicKeyData & keyData_r, const KeyContext & keycontext )
+  void KeyRingReport::infoVerify( const std::string & /* file_r */, const PublicKeyData & /* keyData_r */, const KeyContext & /* keycontext */ )
   {}
 
-  bool KeyRingReport::askUserToAcceptUnsignedFile( const std::string & file, const KeyContext & keycontext )
+  bool KeyRingReport::askUserToAcceptUnsignedFile( const std::string & /* file */, const KeyContext & /* keycontext */ )
   { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_UNSIGNED_FILE ); }
 
   KeyRingReport::KeyTrust
-  KeyRingReport::askUserToAcceptKey( const PublicKey & key, const KeyContext & keycontext )
+  KeyRingReport::askUserToAcceptKey( const PublicKey & /* key */, const KeyContext & /* keycontext */ )
   {
     if ( _keyRingDefaultAccept.testFlag( KeyRing::TRUST_KEY_TEMPORARILY ) )
       return KEY_TRUST_TEMPORARILY;
@@ -73,10 +73,10 @@ namespace zypp
     return KEY_DONT_TRUST;
   }
 
-  bool KeyRingReport::askUserToAcceptUnknownKey( const std::string & file, const std::string & id, const KeyContext & keycontext )
+  bool KeyRingReport::askUserToAcceptUnknownKey( const std::string & /* file */, const std::string & /* id */, const KeyContext & /* keycontext */ )
   { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_UNKNOWNKEY ); }
 
-  bool KeyRingReport::askUserToAcceptVerificationFailed( const std::string & file, const PublicKey & key, const KeyContext & keycontext )
+  bool KeyRingReport::askUserToAcceptVerificationFailed( const std::string & /* file */, const PublicKey & /* key */, const KeyContext & /* keycontext */ )
   { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_VERIFICATION_FAILED ); }
 
   bool KeyRingReport::askUserToAcceptPackageKey(const PublicKey &key_r, const KeyContext &keycontext_r)

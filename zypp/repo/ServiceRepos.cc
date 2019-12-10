@@ -28,7 +28,7 @@ namespace zypp
       RIMServiceRepos( const Pathname & /*root_r*/,
 		       const ServiceInfo & service,
 		       const ServiceRepos::ProcessRepo & callback,
-		       const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() )
+		       const ProgressData::ReceiverFnc & /* progress */ = ProgressData::ReceiverFnc() )
       {
 	// repoindex.xml must be fetched always without using cookies (bnc #573897)
 	Url serviceUrl( service.url() );
@@ -63,7 +63,7 @@ namespace zypp
       PluginServiceRepos( const Pathname & root_r,
 			  const ServiceInfo & service,
 			  const ServiceRepos::ProcessRepo & callback,
-			  const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() )
+			  const ProgressData::ReceiverFnc & /* progress */ = ProgressData::ReceiverFnc() )
       {
 	// bsc#1080693: Service script needs to be executed chrooted to the RepoManagers rootDir.
 	// The service is not aware of the rootDir, so it's explicitly passed and needs to be

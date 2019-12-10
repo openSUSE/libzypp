@@ -1,4 +1,4 @@
----
+
 Language: Cpp
 AccessModifierOffset: -2
 AlignAfterOpenBracket: DontAlign
@@ -74,7 +74,6 @@ IndentWidth: 2
 IndentWrappedFunctionNames: false
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
-KeepLineBreaksForNonEmptyLines: false
 KeepEmptyLinesAtTheStartOfBlocks: true
 MacroBlockBegin: ''
 MacroBlockEnd: ''

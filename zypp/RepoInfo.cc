@@ -167,7 +167,7 @@ namespace zypp
 	{
 	  //MIL << "GO content.." << endl;
 	  iostr::forEachLine( InputStream( master ),
-                            [this]( int num_r, std::string line_r )->bool
+                            [this]( int /* num_r */, std::string line_r )->bool
                             {
                               if ( str::startsWith( line_r, "REPOKEYWORDS" ) )
 			      {
@@ -343,7 +343,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoInfo::Impl Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const RepoInfo::Impl & obj )
+  inline std::ostream & operator<<( std::ostream & str, const RepoInfo::Impl & /* obj */ )
   {
     return str << "RepoInfo::Impl";
   }
@@ -953,7 +953,7 @@ namespace zypp
     return str;
   }
 
-  std::ostream & RepoInfo::dumpAsXmlOn( std::ostream & str, const std::string & content ) const
+  std::ostream & RepoInfo::dumpAsXmlOn( std::ostream & str, const std::string & /* content */ ) const
   {
     std::string tmpstr;
     str

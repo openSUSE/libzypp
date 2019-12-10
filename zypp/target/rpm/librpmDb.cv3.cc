@@ -36,7 +36,7 @@ namespace rpm
 * \throws RpmException
 *
 */
-void convertV3toV4( const Pathname & v3db_r, const librpmDb::constPtr & v4db_r )
+void convertV3toV4( const Pathname & v3db_r, const librpmDb::constPtr & /* v4db_r */ )
 {
   // report
   callback::SendReport<ConvertDBReport> report;

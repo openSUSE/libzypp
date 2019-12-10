@@ -1266,7 +1266,7 @@ void MediaHandler::getFileCopy (const Pathname & srcFilename, const Pathname & t
 //	DESCRIPTION : Asserted that media is attached.
 //                    Default implementation of pure virtual.
 //
-void MediaHandler::getDir( const Pathname & dirname, bool recurse_r ) const
+void MediaHandler::getDir( const Pathname & dirname, bool /* recurse_r */ ) const
 {
   PathInfo info( localPath( dirname ) );
   if( info.isDir() ) {

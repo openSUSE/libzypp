@@ -226,9 +226,9 @@ namespace zypp
           typedef scoped_ptr<D>       PtrType;
           typedef scoped_ptr<const D> constPtrType;
           /** Check whether pointer is not shared. */
-          bool unique( const constPtrType & ptr_r )
+          bool unique( const constPtrType & /* ptr_r */ )
           { return true; }
-          bool unique( const PtrType & ptr_r )
+          bool unique( const PtrType & /* ptr_r */ )
           { return true; }
           /** Return number of references. */
           long use_count( const constPtrType & ptr_r ) const

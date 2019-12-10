@@ -58,16 +58,16 @@ IniParser::~IniParser()
 void IniParser::beginParse()
 {}
 
-void IniParser::consume( const std::string &section, const std::string &key, const std::string &value )
+void IniParser::consume( const std::string & /* section */, const std::string & /* key */, const std::string & /* value */ )
 {}
 
-void IniParser::consume( const std::string &section )
+void IniParser::consume( const std::string & /* section */ )
 {}
 
 void IniParser::endParse()
 {}
 
-void IniParser::garbageLine( const std::string &section, const std::string &line )
+void IniParser::garbageLine( const std::string &section, const std::string & /* line */ )
 {
   std::string msg = str::form("%s: Section [%s]: Line %d contains garbage (no '=' or '%s' in key)",
 			      _inputname.c_str(), section.c_str(), _line_nr, keyGarbage().c_str());

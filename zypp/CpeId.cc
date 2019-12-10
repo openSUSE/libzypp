@@ -229,7 +229,7 @@ namespace zypp
 		case 'a':
 		  if ( wfn[1] == '\0' )
 		    break;
-		  // else: fallthrough
+		  /* fall through */
 		default:
 		  throw std::invalid_argument( str::Str() << "CpeId:Wfn:part: '" << wfn << "' illegal value; expected: 'h' | 'o' | 'a'"   );
 		  break;

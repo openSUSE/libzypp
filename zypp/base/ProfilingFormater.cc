@@ -38,7 +38,7 @@ namespace zypp
     // ProfilingFormater
     ///////////////////////////////////////////////////////////////////
 
-    std::string ProfilingFormater::format( const std::string & group_r,
+    std::string ProfilingFormater::format( const std::string & /* group_r */,
                                                   logger::LogLevel    level_r,
                                                   const char *        file_r,
                                                   const char *        func_r,

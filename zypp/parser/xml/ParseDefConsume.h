@@ -135,7 +135,7 @@ namespace zypp
       {
         virtual ~Assigner()
         {}
-        virtual void assign( const char * text_r )
+        virtual void assign( const char * /*text_r*/ )
         {}
       };
 

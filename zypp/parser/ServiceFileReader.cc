@@ -166,7 +166,7 @@ namespace zypp
     ServiceFileReader::~ServiceFileReader()
     {}
 
-    std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj )
+    std::ostream & operator<<( std::ostream & str, const ServiceFileReader & /* obj */ )
     {
       return str;
     }

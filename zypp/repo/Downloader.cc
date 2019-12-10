@@ -33,15 +33,15 @@ Downloader::~Downloader()
 {
 }
 
-RepoStatus Downloader::status( MediaSetAccess &media )
+RepoStatus Downloader::status( MediaSetAccess & /* media */ )
 {
   WAR << "Non implemented" << endl;
   return RepoStatus();
 }
 
-void Downloader::download( MediaSetAccess &media,
-                           const Pathname &dest_dir,
-                           const ProgressData::ReceiverFnc & progress )
+void Downloader::download( MediaSetAccess & /*media*/,
+                           const Pathname & /* dest_dir */,
+                           const ProgressData::ReceiverFnc & /* progress */ )
 {
   WAR << "Non implemented" << endl;
 }

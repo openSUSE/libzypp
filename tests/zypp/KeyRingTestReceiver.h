@@ -61,28 +61,28 @@ struct KeyRingTestReceiver : public zypp::callback::ReceiveReport<zypp::KeyRingR
   bool askedAcceptUnsignedFile() const
   { return _asked_user_to_accept_unsigned_file; }
     
-  virtual bool askUserToAcceptUnsignedFile( const std::string &file, const zypp::KeyContext &keycontext )
+  virtual bool askUserToAcceptUnsignedFile( const std::string &/* file */, const zypp::KeyContext &/* keycontext */ )
   {
     MIL << std::endl;
     _asked_user_to_accept_unsigned_file = true;
     return _answer_accept_unsigned_file;
   }
   
-  virtual bool askUserToAcceptUnknownKey( const std::string &file, const std::string &id, const zypp::KeyContext &keycontext )
+  virtual bool askUserToAcceptUnknownKey( const std::string &/* file */, const std::string &/* id */, const zypp::KeyContext &/* keycontext */ )
   {
     MIL << std::endl;
     _asked_user_to_accept_unknown_key = true;
     return _answer_accept_unknown_key;
   }
 
-  virtual KeyRingReport::KeyTrust askUserToAcceptKey( const zypp::PublicKey &key, const zypp::KeyContext &keycontext )
+  virtual KeyRingReport::KeyTrust askUserToAcceptKey( const zypp::PublicKey &/* key */, const zypp::KeyContext &/* keycontext */ )
   {
     MIL << std::endl;
     _asked_user_to_accept_key = true;
     return _answer_accept_key;
   }
 
-  virtual bool askUserToAcceptVerificationFailed( const std::string &file,  const zypp::PublicKey &key, const zypp::KeyContext &keycontext  )
+  virtual bool askUserToAcceptVerificationFailed( const std::string &/* file */,  const zypp::PublicKey &/* key */, const zypp::KeyContext &/* keycontext */  )
   {
     MIL << std::endl;
     _asked_user_to_accept_ver_failed = true;
@@ -122,7 +122,7 @@ struct KeyRingTestSignalReceiver : zypp::callback::ReceiveReport<zypp::KeyRingSi
     disconnect();
   }
 
-  virtual void trustedKeyAdded( const zypp::PublicKey &key )
+  virtual void trustedKeyAdded( const zypp::PublicKey &/* key */ )
   {
     MIL << "TEST: trusted key added to zypp Keyring. Synchronizing keys with fake rpm keyring" << std::endl;
     _trusted_key_added_called = true;
@@ -131,7 +131,7 @@ struct KeyRingTestSignalReceiver : zypp::callback::ReceiveReport<zypp::KeyRingSi
     //_rpmdb.exportTrustedKeysInZyppKeyRing();
   }
 
-  virtual void trustedKeyRemoved( const zypp::PublicKey &key  )
+  virtual void trustedKeyRemoved( const zypp::PublicKey &/* key */  )
   {
   }
   

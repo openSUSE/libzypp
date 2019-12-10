@@ -55,7 +55,7 @@ static Pathname search_deltafile( const Pathname &dir, const Pathname &file )
 /** \todo: Downloading/sigcheck of master index shoudl be common in base class */
 void Downloader::download( MediaSetAccess &media,
                            const Pathname &dest_dir,
-                           const ProgressData::ReceiverFnc & progress )
+                           const ProgressData::ReceiverFnc & /* progress */ )
 {
   downloadMediaInfo( dest_dir, media );
 

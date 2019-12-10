@@ -231,7 +231,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  void Fetcher::Impl::enqueueDigested( const OnMediaLocation &resource, const FileChecker &checker, const Pathname &deltafile )
+  void Fetcher::Impl::enqueueDigested( const OnMediaLocation &resource, const FileChecker &/* checker */, const Pathname &deltafile )
   {
     FetcherJob_Ptr job;
     job.reset(new FetcherJob(resource, deltafile));

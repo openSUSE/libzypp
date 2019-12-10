@@ -71,7 +71,7 @@ namespace zypp
 
       /** Explicit conversion to <tt>const char *</tt>. */
       const char * c_str() const
-      { return reinterpret_cast<const char *const>(get()); }
+      { return reinterpret_cast<const char *>(get()); }
 
       /** Explicit conversion to <tt>std::string</tt>. */
       std::string asString() const

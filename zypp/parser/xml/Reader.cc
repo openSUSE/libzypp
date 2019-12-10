@@ -50,7 +50,7 @@ namespace zypp
 
 
       std::list<std::string> structuredErrors;
-      void structuredErrorFunc( void * userData, xmlErrorPtr error )
+      void structuredErrorFunc( void * /* userData */, xmlErrorPtr error )
       {
 	if ( error )
 	{
@@ -104,7 +104,7 @@ namespace zypp
     //	METHOD TYPE : Constructor
     //
     Reader::Reader( const InputStream & stream_r,
-                    const Validate & validate_r )
+                    const Validate & /* validate_r */ )
     : _stream( stream_r )
     , _reader( xmlReaderForIO( ioread, ioclose, &_stream,
                                stream_r.path().asString().c_str(), "utf-8", XML_PARSE_PEDANTIC ) )

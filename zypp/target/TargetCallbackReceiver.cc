@@ -43,7 +43,7 @@ namespace zypp
 	}
 
         /** Start the operation */
-        void RpmInstallPackageReceiver::start( const Pathname & name )
+        void RpmInstallPackageReceiver::start( const Pathname & /* name */ )
 	{
 	    _report->start( _resolvable );
 	    _abort = false;
@@ -94,7 +94,7 @@ namespace zypp
 	}
 
         /** Finish operation in case of success */
-        void RpmInstallPackageReceiver::finish( Exception & excpt_r )
+        void RpmInstallPackageReceiver::finish( Exception & /* excpt_r */)
 	{
 	    _report->finish( _resolvable, rpm::InstallResolvableReport::INVALID, std::string(), _level );
 	}
@@ -129,7 +129,7 @@ namespace zypp
 	}
 
         /** Start the operation */
-        void RpmRemovePackageReceiver::start( const std::string & name )
+        void RpmRemovePackageReceiver::start( const std::string & /* name */ )
 	{
 	    _report->start( _resolvable );
             _abort = false;
@@ -180,7 +180,7 @@ namespace zypp
 	}
 
         /** Finish operation in case of success */
-        void RpmRemovePackageReceiver::finish( Exception & excpt_r )
+        void RpmRemovePackageReceiver::finish( Exception & /* excpt_r */ )
 	{
 	    _report->finish( _resolvable, rpm::RemoveResolvableReport::INVALID, std::string() );
 	}

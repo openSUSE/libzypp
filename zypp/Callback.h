@@ -152,7 +152,7 @@ namespace zypp
       typedef UserData::ContentType ContentType;
 
       /** The most generic way of sending/receiving data. */
-      virtual void report( const UserData & userData_r = UserData() )
+      virtual void report( const UserData & /* userData_r */ = UserData() )
       {}
 
       virtual ~ReportBase()

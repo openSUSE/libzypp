@@ -906,9 +906,6 @@ namespace
   }
 
 
-  std::string serialized( const std::string & arg_r )
-  { return "\n" + arg_r + "\n\n"; }
-
   template <typename... Args>
   std::string serialized( const std::string & arg_r, Args... args_r )
   { return "\n" + arg_r + serialized( args_r... ); }

@@ -115,7 +115,7 @@ namespace zypp
    */
     static void repositories_in_stream( const InputStream &is,
                                         const RepoFileReader::ProcessRepo &callback,
-                                        const ProgressData::ReceiverFnc &progress )
+                                        const ProgressData::ReceiverFnc &/* progress */ )
     {
       RepoFileParser dict(is);
       for_( its, dict.sectionsBegin(), dict.sectionsEnd() )
@@ -222,7 +222,7 @@ namespace zypp
     {}
 
 
-    std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj )
+    std::ostream & operator<<( std::ostream & str, const RepoFileReader & /* obj */ )
     {
       return str;
     }

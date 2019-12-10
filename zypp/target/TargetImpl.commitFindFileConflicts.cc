@@ -55,7 +55,7 @@ namespace zypp
 	, _state( ::rpm_state_create( pool_r, ::pool_get_rootdir(pool_r) ), ::rpm_state_free )
 	{}
 
-	void * operator()( sat::detail::CPool * pool_r, sat::detail::IdType id_r )
+	void * operator()( sat::detail::CPool * /* pool_r */, sat::detail::IdType id_r )
 	{
 	  void * ret = lookup( id_r );
 
@@ -119,7 +119,7 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    void TargetImpl::commitFindFileConflicts( const ZYppCommitPolicy & policy_r, ZYppCommitResult & result_r )
+    void TargetImpl::commitFindFileConflicts( const ZYppCommitPolicy & /* policy_r */, ZYppCommitResult & result_r )
     {
       sat::Queue todo;
       sat::FileConflicts conflicts;

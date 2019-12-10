@@ -336,7 +336,7 @@ namespace zypp {
     //
     //	DESCRIPTION : Asserted that media is attached.
     //
-    void MediaDISK::releaseFrom( const std::string & ejectDev )
+    void MediaDISK::releaseFrom( const std::string & /* ejectDev */ )
     {
       AttachedMedia am( attachedMedia());
       if(am.mediaSource && am.mediaSource->iown)

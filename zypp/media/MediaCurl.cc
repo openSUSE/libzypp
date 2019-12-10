@@ -60,7 +60,7 @@ namespace
     } (), true );
   }
 
-  int log_curl(CURL *curl, curl_infotype info,
+  int log_curl(CURL */* curl */, curl_infotype info,
                char *ptr, size_t len, void *max_lvl)
   {
     std::string pfx(" ");
@@ -468,7 +468,7 @@ Pathname MediaCurl::_cookieFile = "/var/lib/YaST2/cookies";
  * initialized only once, this gets the anonymous id
  * from the target, which we pass in the http header
  */
-static const char *const anonymousIdHeader()
+static const char * anonymousIdHeader()
 {
   // we need to add the release and identifier to the
   // agent string.
@@ -486,7 +486,7 @@ static const char *const anonymousIdHeader()
  * initialized only once, this gets the distribution flavor
  * from the target, which we pass in the http header
  */
-static const char *const distributionFlavorHeader()
+static const char * distributionFlavorHeader()
 {
   // we need to add the release and identifier to the
   // agent string.
@@ -504,7 +504,7 @@ static const char *const distributionFlavorHeader()
  * initialized only once, this gets the agent string
  * which also includes the curl version
  */
-static const char *const agentString()
+static const char * agentString()
 {
   // we need to add the release and identifier to the
   // agent string.
@@ -936,7 +936,7 @@ void MediaCurl::disconnectFrom()
 
 ///////////////////////////////////////////////////////////////////
 
-void MediaCurl::releaseFrom( const std::string & ejectDev )
+void MediaCurl::releaseFrom( const std::string & /* ejectDev */ )
 {
   disconnect();
 }
@@ -1154,7 +1154,7 @@ void MediaCurl::evaluateCurlCode(const Pathname &filename,
       case CURLE_PARTIAL_FILE:
       case CURLE_OPERATION_TIMEDOUT:
 	timeout_reached	= true; // fall though to TimeoutException
-	// fall though...
+	/* fall through */
       case CURLE_ABORTED_BY_CALLBACK:
          if( timeout_reached )
         {

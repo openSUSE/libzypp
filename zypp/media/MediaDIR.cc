@@ -117,7 +117,7 @@ namespace zypp {
     //
     //	DESCRIPTION : Asserted that media is attached.
     //
-    void MediaDIR::releaseFrom( const std::string & ejectDev )
+    void MediaDIR::releaseFrom( const std::string & /* ejectDev */ )
     {
       return;
     }

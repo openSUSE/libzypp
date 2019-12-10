@@ -255,11 +255,11 @@ namespace zypp
         streambuf_type _streambuf;
 
         std::ios_base::openmode
-        defMode( const std::istream & str_r )
+        defMode( const std::istream & /* str_r */ )
         { return std::ios_base::in; }
 
         std::ios_base::openmode
-        defMode( const std::ostream & str_r )
+        defMode( const std::ostream & /* str_r */ )
         { return std::ios_base::out; }
 
       };

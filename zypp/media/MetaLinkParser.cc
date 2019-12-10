@@ -76,7 +76,7 @@ static struct stateswitch stateswitches[] = {
   { STATE_M4FILE,       "url",          STATE_M4URL, 1},
   { STATE_M4FILE,       "pieces",       STATE_M4PIECES, 0},
   { STATE_M4PIECES,     "hash",         STATE_M4PHASH, 1 },
-  { NUMSTATES }
+  { NUMSTATES,          "",             NUMSTATES, 0 }
 };
 
 struct ml_url {
@@ -327,7 +327,7 @@ hexstr2bytes(unsigned char *buf, const char *str, int buflen)
 }
 
 static void XMLCALL
-endElement(void *userData, const xmlChar *name)
+endElement(void *userData, const xmlChar */* name */)
 {
   struct ml_parsedata *pd = reinterpret_cast<struct ml_parsedata *>(userData);
   // printf("end depth %d-%d name %s\n", pd->depth, pd->statedepth, name);

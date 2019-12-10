@@ -590,7 +590,7 @@ namespace zypp
     {
       retlist_r.clear();
       return dirForEach( path_r,
-			 [&]( const Pathname & dir_r, const char *const name_r )->bool
+			 [&]( const Pathname & /* dir_r */, const char *const name_r )->bool
 			 {
 			   if ( dots_r || name_r[0] != '.' )
 			     retlist_r.push_back( name_r );
@@ -641,7 +641,7 @@ namespace zypp
     int is_empty_dir( const Pathname & path_r )
     {
       return dirForEach( path_r,
-			 [&]( const Pathname & dir_r, const char *const name_r )->bool
+			 [&]( const Pathname & /* dir_r */, const char *const /* name_r */ )->bool
 			 { return false; } );
     }
 

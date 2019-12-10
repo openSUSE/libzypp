@@ -27,22 +27,22 @@ namespace zypp
     ParseDefConsume::~ParseDefConsume()
     {}
 
-    void ParseDefConsume::start( const Node & _node )
+    void ParseDefConsume::start( const Node & /* _node */ )
     {}
 
-    void ParseDefConsume::text( const Node & _node )
+    void ParseDefConsume::text( const Node & /* _node */ )
     {}
 
-    void ParseDefConsume::cdata( const Node & _node )
+    void ParseDefConsume::cdata( const Node & /* _node */ )
     {}
 
-    void ParseDefConsume::done( const Node & _node )
+    void ParseDefConsume::done( const Node & /* _node */ )
     {}
 
-    void ParseDefConsume::startSubnode( const Node & _node )
+    void ParseDefConsume::startSubnode( const Node & /* _node */ )
     {}
 
-    void ParseDefConsume::doneSubnode( const Node & _node )
+    void ParseDefConsume::doneSubnode( const Node & /* _node */ )
     {}
 
     ///////////////////////////////////////////////////////////////////

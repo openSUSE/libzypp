@@ -174,7 +174,7 @@ bool Downloader::repomd_Callback( const OnMediaLocation & loc_r, const ResourceT
   return true;
 }
 
-void Downloader::download( MediaSetAccess & media, const Pathname & dest_dir, const ProgressData::ReceiverFnc & progressrcv )
+void Downloader::download( MediaSetAccess & media, const Pathname & dest_dir, const ProgressData::ReceiverFnc & /* progressrcv */ )
 {
   downloadMediaInfo( dest_dir, media );
 

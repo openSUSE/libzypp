@@ -411,7 +411,7 @@ namespace zypp
       ///////////////////////////////////////////////////////////////////
 
       /** \relates LogControlImpl Stream output */
-      inline std::ostream & operator<<( std::ostream & str, const LogControlImpl & obj )
+      inline std::ostream & operator<<( std::ostream & str, const LogControlImpl & /* obj */ )
       {
         return str << "LogControlImpl";
       }
@@ -497,7 +497,7 @@ namespace zypp
      **	FUNCTION NAME : operator<<
      **	FUNCTION TYPE : std::ostream &
     */
-    std::ostream & operator<<( std::ostream & str, const LogControl & obj )
+    std::ostream & operator<<( std::ostream & str, const LogControl & /* obj */ )
     {
       return str << LogControlImpl::instance();
     }

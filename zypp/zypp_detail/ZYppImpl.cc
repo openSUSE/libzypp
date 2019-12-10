@@ -216,7 +216,7 @@ namespace zypp
      **	FUNCTION NAME : operator<<
      **	FUNCTION TYPE : std::ostream &
     */
-    std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj )
+    std::ostream & operator<<( std::ostream & str, const ZYppImpl & /* obj */ )
     {
       return str << "ZYppImpl";
     }

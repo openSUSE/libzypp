@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Dec 10 14:19:50 CET 2019 - ma@suse.de
 
-- MediaCurl: assert cookie file has mode 0600 (bsc#1158763)
+- MediaCurl: assert cookie file has mode 0600 (bsc#1158763, CVE-2019-18900)
 - version 15.28.4 (19)
 
 -------------------------------------------------------------------

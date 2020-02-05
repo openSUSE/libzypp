@@ -641,7 +641,7 @@ namespace zyppng {
   void DownloadPrivate::setFailed(std::string &&reason)
   {
     _errorString = reason;
-    //zypp::filesystem::unlink( _targetPath );
+    zypp::filesystem::unlink( _targetPath );
     setFinished( false );
   }
 
@@ -678,6 +678,12 @@ namespace zyppng {
   Download::Download(zyppng::DownloadPrivate &&prv)
   : Base( prv )
   { }
+
+  Download::~Download()
+  {
+    if ( this->state() > Download::InitialState && this->state() < Download::Success )
+      cancel();
+  }
 
   Url Download::url() const
   {
@@ -717,6 +723,19 @@ namespace zyppng {
   void Download::start()
   {
     d_func()->start();
+  }
+
+  void Download::cancel()
+  {
+    Z_D();
+    //we do not have more mirrors left we can try or we do not have a multi download, abort
+    while( d->_runningRequests.size() ) {
+      auto req = d->_runningRequests.back();
+      req->disconnectSignals();
+      d->_runningRequests.pop_back();
+      d->_requestDispatcher->cancel( *req, "Download cancelled" );
+    }
+    d->setFailed( "Download was cancelled explicitely" );
   }
 
   void Download::setMultiPartHandlingEnabled( bool enable )
@@ -806,6 +825,15 @@ namespace zyppng {
     : Base ( *new DownloaderPrivate( ) )
   {
 
+  }
+
+  Downloader::~Downloader()
+  {
+    Z_D();
+    while ( d->_runningDownloads.size() ) {
+      d->_runningDownloads.back()->cancel();
+      d->_runningDownloads.pop_back();
+    }
   }
 
   std::shared_ptr<Download> Downloader::downloadFile(zyppng::Url file, zypp::filesystem::Pathname targetPath, zypp::ByteCount expectedFileSize )

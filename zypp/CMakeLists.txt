@@ -335,6 +335,7 @@ SET( zypp_media_SRCS
   media/ZsyncParser.cc
   media/MediaBlockList.cc
   media/UrlResolverPlugin.cc
+  media/mediacurlprefetcher.cpp
 )
 
 SET( zypp_media_HEADERS
@@ -364,6 +365,7 @@ SET( zypp_media_HEADERS
   media/ZsyncParser.h
   media/MediaBlockList.h
   media/UrlResolverPlugin.h
+  media/mediacurlprefetcher.h
 )
 
 INSTALL(  FILES

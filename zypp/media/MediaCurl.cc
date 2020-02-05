@@ -26,6 +26,7 @@
 #include <zypp/media/CredentialManager.h>
 #include <zypp/media/CurlConfig.h>
 #include <zypp/media/CurlHelper.h>
+#include <zypp/media/mediacurlprefetcher.h>
 #include <zypp/Target.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
@@ -438,6 +439,8 @@ void MediaCurl::attachTo (bool next)
   // FIXME: need a derived class to propelly compare url's
   MediaSourceRef media( new MediaSource(_url.getScheme(), _url.asString()));
   setMediaSource(media);
+
+  _prefetchCacheId = MediaCurlPrefetcher::instance().createCache();
 }
 
 bool
@@ -460,6 +463,11 @@ void MediaCurl::disconnectFrom()
   {
     curl_easy_cleanup( _curl );
     _curl = NULL;
+  }
+
+  if ( _prefetchCacheId ) {
+    MediaCurlPrefetcher::instance().closeCache( _prefetchCacheId.get() );
+    _prefetchCacheId.reset();
   }
 }
 
@@ -500,6 +508,13 @@ void MediaCurl::getFileCopy( const Pathname & filename , const Pathname & target
   callback::SendReport<DownloadProgressReport> report;
 
   Url fileurl(getFileUrl(filename));
+
+  if ( _prefetchCacheId && MediaCurlPrefetcher::instance().requireFile( _prefetchCacheId.get(), fileurl, target, report ) ) {
+    MIL << "Got file " << filename << " from precache." << std::endl;
+    return;
+  } else {
+    MIL << "Precache failed for file " << filename << std::endl;
+  }
 
   bool retry = false;
 
@@ -1335,6 +1350,22 @@ bool MediaCurl::authenticate(const std::string & availAuthTypes, bool firstTry) 
 
 //need a out of line definiton, otherwise vtable is emitted for every translation unit
 MediaCurl::Callbacks::~Callbacks() {}
+
+void zypp::media::MediaCurl::precacheFiles( const std::vector<OnMediaLocation> &files )
+{
+  if ( !_prefetchCacheId )
+    _prefetchCacheId = MediaCurlPrefetcher::instance().createCache();
+  std::vector< MediaCurlPrefetcher::Request > prefetch;
+  std::for_each( files.begin(), files.end(), [this,  &prefetch ]( const OnMediaLocation &elem ){
+    MediaCurlPrefetcher::Request r;
+    r.cache = _prefetchCacheId.get();
+    r.url = getFileUrl( elem.filename() );
+    r.settings = settings();
+    r.expectedFileSize = elem.downloadSize();
+    prefetch.push_back( std::move(r) );
+  });
+  MediaCurlPrefetcher::instance().precacheFiles( std::move(prefetch) );
+}
 
 
   } // namespace media

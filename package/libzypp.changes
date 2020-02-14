@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Feb 14 12:23:50 CET 2020 - ma@suse.de
+
+- Service refresh must not attempt to modify plugin services
+- Let ServiceRefresh en-/disable repos with respect to previous
+  state and user modifications (bsc#1163408)
+- version 9.41.1 (8)
+
+-------------------------------------------------------------------
 Tue Oct  2 12:40:10 CEST 2018 - ma@suse.de
 
 - Fix conversion of string and glob to regex when compiling queries

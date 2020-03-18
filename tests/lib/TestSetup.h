@@ -436,5 +436,4 @@ private:
   std::unique_ptr<Impl> _pimpl;	// maybe worth creating RW_pointer traits for it
 };
 
-
 #endif //INCLUDE_TESTSETUP

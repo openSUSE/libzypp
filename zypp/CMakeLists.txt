@@ -104,6 +104,7 @@ SET( zypp_HEADERS
   AutoDispose.h
   Bit.h
   Bitmap.h
+  ByteArray.h
   ByteCount.h
   Callback.h
   Capabilities.h

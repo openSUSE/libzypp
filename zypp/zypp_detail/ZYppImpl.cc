@@ -67,6 +67,7 @@ namespace zypp
     ZYppImpl::ZYppImpl()
     : _target( nullptr )
     , _resolver( new Resolver( ResPool::instance()) )
+    , _ngContext( std::make_shared<zyppng::Context>() )
     {
       ZConfig::instance().about( MIL );
       MIL << "Initializing keyring..." << std::endl;
@@ -197,6 +198,11 @@ namespace zypp
       if (! _target)
         ZYPP_THROW( Exception("Target not initialized.") );
       return _target->_pimpl->provideSrcPackage( srcPackage_r );
+    }
+
+    zyppng::Context::Ptr ZYppImpl::ngContext()
+    {
+      return _ngContext;
     }
 
     //------------------------------------------------------------------------

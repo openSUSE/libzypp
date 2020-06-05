@@ -18,10 +18,12 @@ extern "C"
 #include <signal.h>
 
 #include <zypp/base/Logger.h>
+#include <zypp/base/LogControl.h>
 #include <zypp/base/Gettext.h>
 #include <zypp/base/IOStream.h>
 #include <zypp/base/Functional.h>
 #include <zypp/base/Backtrace.h>
+#include <zypp/base/LogControl.h>
 #include <zypp/PathInfo.h>
 
 #include <zypp/ZYppFactory.h>
@@ -30,6 +32,8 @@ extern "C"
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/sync/sharable_lock.hpp>
+
+#include <iostream>
 
 using boost::interprocess::file_lock;
 using boost::interprocess::scoped_lock;
@@ -52,6 +56,7 @@ namespace zypp
     void sigsegvHandler( int sig )
     {
       INT << "Error: signal " << sig << endl << dumpBacktrace << endl;
+      base::LogControl::instance().emergencyShutdown();
       ::signal( SIGSEGV, lastSigsegvHandler );
     }
   }

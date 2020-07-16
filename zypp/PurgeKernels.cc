@@ -255,14 +255,19 @@ namespace zypp {
     const unsigned tokenGrp = 1; //index of the group matching the token
     const unsigned modifierGrp = 2; //index of the group matching the offset modifier
 
+    if (_keepSpec.empty()) {
+	_keepSpec = "latest,latest-1,running";
+    }
 
     MIL << "Parsing keep spec: " << _keepSpec << std::endl;
 
     std::vector<std::string> words;
     str::split( _keepSpec, std::back_inserter(words), ",", str::TRIM );
     if ( words.empty() ) {
-      WAR << "Invalid keep spec: " << _keepSpec << " using default latest,running." << std::endl;
-      return;
+      WAR << "Invalid keep spec: " << _keepSpec << " using default latest,latest-1,running." << std::endl;
+      words.push_back("latest");
+      words.push_back("latest-1");
+      words.push_back("running");
     }
 
     _keepRunning = false;
@@ -413,11 +418,6 @@ namespace zypp {
   void PurgeKernels::markObsoleteKernels()
   {
     MIL << std::endl << "--------------------- Starting to mark obsolete kernels ---------------------"<<std::endl;
-
-    if ( _pimpl->_keepSpec.empty() ) {
-      WAR << "Keep spec is empty, removing nothing." << std::endl;
-      return;
-    }
 
     _pimpl->parseKeepSpec();
 

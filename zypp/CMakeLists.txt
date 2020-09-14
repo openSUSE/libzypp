@@ -340,7 +340,6 @@ SET( zypp_media_SRCS
   media/ZsyncParser.cc
   media/MediaBlockList.cc
   media/UrlResolverPlugin.cc
-  media/mediacurlprefetcher.cpp
 )
 
 SET( zypp_media_HEADERS
@@ -370,7 +369,6 @@ SET( zypp_media_HEADERS
   media/ZsyncParser.h
   media/MediaBlockList.h
   media/UrlResolverPlugin.h
-  media/mediacurlprefetcher.h
 )
 
 INSTALL(  FILES
@@ -791,6 +789,11 @@ SET( zypp_repo_susetags_HEADERS
   repo/susetags/Downloader.h
 )
 
+SET( zypp_PROTOBUF_SOURCES
+    proto/transfersettings.proto
+)
+
+
 ####################################################################
 
 SET( zypp_misc_HEADERS
@@ -816,6 +819,8 @@ INSTALL( FILES
 ####################################################################
 
 add_subdirectory( zyppng )
+
+protobuf_generate_cpp(ZYPP_PROTO_SRCS ZYPP_PROTO_HDRS ${zypp_PROTOBUF_SOURCES})
 
 SET( zypp_lib_SRCS
 ${zypp_misc_SRCS}
@@ -843,7 +848,7 @@ ${zypp_sat_SRCS}
 ${zypp_sat_detail_SRCS}
 ${zypp_EARLY_SRCS}
 ${zypp_base_SRCS}
-${zyppng_SRCS}
+${ZYPP_PROTO_SRCS}
 )
 
 SET( zypp_lib_HEADERS
@@ -870,7 +875,7 @@ ${zypp_target_modalias_HEADERS}
 ${zypp_target_HEADERS}
 ${zypp_pool_HEADERS}
 ${zypp_misc_HEADERS}
-${zyppng_HEADERS}
+${ZYPP_PROTO_HDRS}
 )
 
 #
@@ -935,6 +940,7 @@ macro( ADDZYPPLIB LIBNAME )
   target_link_libraries(${LIBNAME} ${SIGCPP_LIBRARIES})
   target_link_libraries(${LIBNAME} ${LIBGLIB_LIBRARIES})
   target_link_libraries(${LIBNAME} ${YAML_CPP_LIBRARIES})
+  target_link_libraries(${LIBNAME} ${PROTOBUF_LITE_LIBRARIES})
 
   IF (ENABLE_ZSTD_COMPRESSION)
     TARGET_LINK_LIBRARIES(${LIBNAME} ${ZSTD_LIBRARY})

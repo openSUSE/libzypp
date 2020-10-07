@@ -29,7 +29,6 @@ extern "C"
 
 #include <zypp/ZYppFactory.h>
 #include <zypp/zypp_detail/ZYppImpl.h>
-#include <zypp/zypp_detail/ZYppReadOnlyHack.h>
 
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -76,7 +75,7 @@ namespace zypp
 
     static bool active = getenv("ZYPP_READONLY_HACK");
 
-    void IWantIt()
+    void IWantIt()	// see zypp/zypp_detail/ZYppReadOnlyHack.h
     {
       active = true;
       MIL << "ZYPP_READONLY promised." <<  endl;

@@ -315,8 +315,8 @@ INSTALL(  FILES
 SET( zypp_media_SRCS
   media/CurlHelper.cc
   media/MediaException.cc
-  media/MediaAccess.cc
   media/MediaHandler.cc
+  media/MediaHandlerFactory.cc
   media/Mount.cc
   media/MediaNFS.cc
   media/MediaCD.cc
@@ -343,7 +343,6 @@ SET( zypp_media_SRCS
 )
 
 SET( zypp_media_HEADERS
-  media/MediaAccess.h
   media/MediaCD.h
   media/MediaCIFS.h
   media/MediaCurl.h
@@ -352,6 +351,7 @@ SET( zypp_media_HEADERS
   media/MediaDISK.h
   media/MediaException.h
   media/MediaHandler.h
+  media/MediaHandlerFactory.h
   media/MediaISO.h
   media/MediaPlugin.h
   media/MediaManager.h

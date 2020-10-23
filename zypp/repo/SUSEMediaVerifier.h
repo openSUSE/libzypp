@@ -11,7 +11,7 @@
 #define ZYPP_SUSE_MEDIAVERIFIER_H
 
 #include <zypp/media/MediaManager.h>
-#include <zypp/media/MediaAccess.h>
+#include <zypp/media/MediaHandler.h>
 
 namespace zypp
 {
@@ -54,7 +54,7 @@ namespace zypp
         * Reimplementation of virtual function, will be
         * called by the component verifying the media.
         */
-      virtual bool isDesiredMedia(const media::MediaAccessRef &ref);
+      virtual bool isDesiredMedia(const media::MediaHandler &ref);
       
       private:
         std::string _media_vendor;

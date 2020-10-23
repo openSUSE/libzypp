@@ -10,6 +10,7 @@
 #include <fstream>
 #include <zypp/base/Logger.h>
 #include <zypp/repo/SUSEMediaVerifier.h>
+#include <zypp/media/MediaHandler.h>
 
 using std::endl;
 
@@ -45,14 +46,14 @@ SUSEMediaVerifier::SUSEMediaVerifier( int media_nr, const Pathname &path_r )
   }
 }
 
-bool SUSEMediaVerifier::isDesiredMedia(const media::MediaAccessRef &ref)
+bool SUSEMediaVerifier::isDesiredMedia(const media::MediaHandler &ref)
 {
   if (_media_vendor.empty() || _media_id.empty())
     return true;
 
   Pathname media_file = "/media." + str::numstring(_media_nr) + "/media";
-  ref->provideFile (media_file, 0);
-  media_file = ref->localPath(media_file);
+  ref.provideFile (media_file, 0);
+  media_file = ref.localPath(media_file);
   std::ifstream str(media_file.asString().c_str());
   std::string vendor;
   std::string id;

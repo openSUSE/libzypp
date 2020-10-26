@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct  26 18:43:12 CET 2020 - brassh@web.de
+
+- enable proxy authentication via negotiate
+- version 17.25.3 (22)
+
+-------------------------------------------------------------------
 Wed Oct  7 12:05:33 CEST 2020 - ma@suse.de
 
 - Bump version to force rebuild against a fixed libsolv.

@@ -426,7 +426,7 @@ void MediaCurl::setupEasy()
   {
     DBG << "Proxy: '" << _settings.proxy() << "'" << endl;
     SET_OPTION(CURLOPT_PROXY, _settings.proxy().c_str());
-    SET_OPTION(CURLOPT_PROXYAUTH, CURLAUTH_BASIC|CURLAUTH_DIGEST|CURLAUTH_NTLM );
+    SET_OPTION(CURLOPT_PROXYAUTH, CURLAUTH_BASIC|CURLAUTH_DIGEST|CURLAUTH_NTLM|CURLAUTH_NEGOTIATE );
     /*---------------------------------------------------------------*
      *    CURLOPT_PROXYUSERPWD: [user name]:[password]
      *

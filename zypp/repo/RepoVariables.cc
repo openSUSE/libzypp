@@ -548,8 +548,14 @@ namespace zypp
 
     Url RepoVariablesUrlReplacer::operator()( const Url & value ) const
     {
-      static const Url::ViewOptions toReplace = url::ViewOption::DEFAULTS - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
-      const std::string & replaced( RepoVarExpand()( value.asString( toReplace ), RepoVarsMap::lookup ) );
+      Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
+      // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
+      // but this was done before as well. The final fix will have to keep the proxypasswd
+      // out side the url in a cedential file.
+      Url tmpurl { value };
+      tmpurl.setViewOptions( toReplace );
+      const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );
+
       Url newurl;
       if ( !replaced.empty() )
       {

@@ -53,12 +53,56 @@ namespace zypp {
       , pid( -1 )
     {
       const char *argv[4];
-      argv[0] = "/bin/sh";
+      argv[0] = shPath;
       argv[1] = "-c";
       argv[2] = commandline.c_str();
       argv[3] = 0;
 
       start_program( argv, Environment(), stderr_disp, stderr_fd, default_locale, root.c_str() );
+    }
+
+    ExternalProgram::ExternalProgram ( std::string script_path, 
+                  const Arguments & argv,
+                  Stderr_Disposition stderr_disp,
+                  bool use_pty,
+                  int stderr_fd,
+                  bool default_locale,
+                  const Pathname & root )
+      : ExternalProgram ( script_path, 
+                  argv,
+                  Environment(),
+                  stderr_disp,
+                  use_pty,
+                  stderr_fd,
+                  default_locale,
+                  root )
+    {
+    }
+
+
+    ExternalProgram::ExternalProgram ( std::string script_path, 
+                  const Arguments & argv,
+                  const Environment & environment,
+                  Stderr_Disposition stderr_disp,
+                  bool use_pty,
+                  int stderr_fd,
+                  bool default_locale,
+                  const Pathname & root )
+      : use_pty (use_pty),
+        pid( -1 )
+    {
+      const char * argvp[argv.size() + 2];
+      unsigned c = 2;
+      argvp[0] = shPath;
+      argvp[1] = script_path.c_str();
+      for_( i, argv.begin(), argv.end() )
+      {
+        argvp[c] = i->c_str();
+        ++c;
+      }
+      argvp[c] = 0;
+
+      start_program( argvp, environment, stderr_disp, stderr_fd, default_locale, root.c_str() );
     }
 
 
@@ -105,7 +149,6 @@ namespace zypp {
 
       start_program( argvp, environment, stderr_disp, stderr_fd, default_locale, root.c_str() );
     }
-
 
 
     ExternalProgram::ExternalProgram( const char *const *argv,

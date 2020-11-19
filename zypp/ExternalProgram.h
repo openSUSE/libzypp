@@ -94,6 +94,39 @@ namespace zypp {
     		     const Pathname& root = "");
 
       /**
+       * Start the shell script from external file by using the shell <tt>/bin/sh<tt>
+       * with the option <tt>-c</tt>. You can use io direction symbols < and >.
+       * @param commandline a shell commandline that is appended to
+       * <tt>/bin/sh -c</tt>.
+       * @param default_locale whether to set LC_ALL=C before starting
+       * @param root directory to chroot into; or just 'cd' if '/'l;  nothing if empty
+       */
+      ExternalProgram ( std::string script_path, 
+                   const Arguments & argv,
+                   Stderr_Disposition stderr_disp,
+                   bool use_pty,
+                   int stderr_fd,
+                   bool default_locale,
+                   const Pathname & root );
+
+      /**
+       * Start the shell script from external file by using the shell <tt>/bin/sh<tt>
+       * with the option <tt>-c</tt>. You can use io direction symbols < and >.
+       * @param commandline a shell commandline that is appended to
+       * <tt>/bin/sh -c</tt>.
+       * @param default_locale whether to set LC_ALL=C before starting
+       * @param root directory to chroot into; or just 'cd' if '/'l;  nothing if empty
+       */
+      ExternalProgram ( std::string script_path, 
+                    const Arguments & argv,
+                    const Environment & environment,
+                    Stderr_Disposition stderr_disp,
+                    bool use_pty,
+                    int stderr_fd,
+                    bool default_locale,
+                    const Pathname & root );
+
+      /**
        * Start an external program by giving the arguments as an arry of char *pointers.
        * If environment is provided, varaiables will be added to the childs environment,
        * overwriting existing ones.
@@ -215,6 +248,8 @@ namespace zypp {
 
     protected:
       int checkStatus( int );
+
+      const char *shPath = "/bin/sh";
 
     private:
 

@@ -121,6 +121,7 @@ namespace zypp
 	      return false;
 	    }
 
+<<<<<<< HEAD
             int npkgs = 0;
             rpm::librpmDb::db_const_iterator it;
             for ( it.findByName( scriptPair.second ); *it; ++it )
@@ -128,6 +129,12 @@ namespace zypp
 
             MIL << "EXECUTE posttrans: " << script << " with argument: " << npkgs << endl;
             ExternalProgram prog( (noRootScriptDir/script).asString() + " " +str::numstring( npkgs ), ExternalProgram::Stderr_To_Stdout, false, -1, true, _root );
+=======
+	    MIL << "EXECUTE posttrans: " << script << endl;
+
+	    const std::string scriptPath = (noRootScriptDir/script).asString();
+	    ExternalProgram prog( scriptPath, ExternalProgram::Arguments(), ExternalProgram::Stderr_To_Stdout, false, -1, true, _root );
+>>>>>>> 710217748... fixup! fix shell script launch for %posttrans section in RPM packge
 
 	    str::Str collect;
 	    for( std::string line = prog.receiveLine(); ! line.empty(); line = prog.receiveLine() )

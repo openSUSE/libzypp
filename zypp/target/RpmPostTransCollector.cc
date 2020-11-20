@@ -127,7 +127,6 @@ namespace zypp
               npkgs++;
 
 	    MIL << "EXECUTE posttrans: " << script << endl;
-
 	    const std::string scriptPath = (noRootScriptDir/script).asString();
 	    ExternalProgram prog( scriptPath, ExternalProgram::Arguments(), ExternalProgram::Stderr_To_Stdout, false, -1, true, _root );
 

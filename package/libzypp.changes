@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct  26 18:43:12 CET 2020 - brassh@web.de
+
+- enable negotiate as additional proxy authentication method,
+  if a proxyuser but not proxypass is provided in .curlrc
+
+-------------------------------------------------------------------
 Wed Oct  7 12:05:33 CEST 2020 - ma@suse.de
 
 - Bump version to force rebuild against a fixed libsolv.

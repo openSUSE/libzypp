@@ -456,6 +456,11 @@ void MediaCurl::setupEasy()
     if ( ! proxyuserpwd.empty() )
     {
       SET_OPTION(CURLOPT_PROXYUSERPWD, curlUnEscape( proxyuserpwd ).c_str());
+      if (proxyuserpwd.find(':') == std::string::npos)
+      {
+        DBG << "no proxy-password given, enable negotiate" << endl;
+        SET_OPTION(CURLOPT_PROXYAUTH, CURLAUTH_BASIC|CURLAUTH_DIGEST|CURLAUTH_NTLM|CURLAUTH_NEGOTIATE );
+      }    
     }
   }
 #if CURLVERSION_AT_LEAST(7,19,4)

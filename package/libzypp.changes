@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov 27 10:31:12 CET 2020 - ma@suse.de
+
+- RepoManager: Carefully tidy up the caches. Remove non-directory
+  entries. (bsc#1178966)
+- version 15.28.6 (19)
+
+-------------------------------------------------------------------
 Thu Jul 16 19:12:10 CEST 2020 - ma@suse.de
 
 - ZYPP_MEDIA_CURL_DEBUG logs full Authorization: header (bsc#1174215)

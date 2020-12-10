@@ -1122,7 +1122,8 @@ multifetchrequest::run(std::vector<Url> &urllist)
 		}
 	    }
 
-	  if ( _filesize > 0 && _fetchedgoodsize > _filesize ) {
+	  const int maxMetalinkSize = 16*1024*1024;
+	  if ( _filesize > 0 && _fetchedgoodsize > _filesize && (!_context || !_context->_customHeadersMetalink || _fetchedgoodsize > maxMetalinkSize) ) {
 	    ZYPP_THROW(MediaFileSizeExceededException(_baseurl, _filesize));
 	  }
 	}

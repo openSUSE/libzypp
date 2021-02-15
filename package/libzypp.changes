@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Feb 15 16:44:00 CET 2021 - ma@suse.de
+
+- Patch: Identify well-known category names (bsc#117984)
+  This allows to use the RH and SUSE patch categrory names synonymously:
+  (recommendedi = bugfix) and (optional = feature = enhancement).
+  (optional == feature == enhancement
+- version 16.21.5 (0)
+
+-------------------------------------------------------------------
 Fri Nov 27 10:28:56 CET 2020 - ma@suse.de
 
 - RepoManager: Carefully tidy up the caches. Remove non-directory

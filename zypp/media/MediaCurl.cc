@@ -292,11 +292,6 @@ void MediaCurl::setupEasy()
   }
   vol_settings.addHeader("Pragma:");
 
-  _settings.setTimeout(ZConfig::instance().download_transfer_timeout());
-  _settings.setConnectTimeout(CONNECT_TIMEOUT);
-
-  _settings.setUserAgentString(agentString());
-
   // fill some settings from url query parameters
   try
   {

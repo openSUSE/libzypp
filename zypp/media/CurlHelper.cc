@@ -321,22 +321,6 @@ const char * distributionFlavorHeader()
   return _value.c_str();
 }
 
-const char * agentString()
-{
-  // we need to add the release and identifier to the
-  // agent string.
-  // The target could be not initialized, and then this information
-  // is guessed.
-  static const std::string _value(
-    str::form(
-      "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s"
-      , curl_version_info(CURLVERSION_NOW)->version
-      , Target::targetDistribution( Pathname()/*guess root*/ ).c_str()
-      )
-    );
-  return _value.c_str();
-}
-
 void curlEscape( std::string & str_r,
   const char char_r, const std::string & escaped_r ) {
   for ( std::string::size_type pos = str_r.find( char_r );

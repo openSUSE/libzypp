@@ -43,7 +43,7 @@ namespace zypp
       void setUserAgentString( std::string && val_r );
 
       /** user agent string */
-      std::string userAgentString() const;
+      const std::string & userAgentString() const;
 
 
       /** sets the auth username */

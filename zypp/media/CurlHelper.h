@@ -19,7 +19,6 @@
 #include <zypp/media/TransferSettings.h>
 
 #define  CONNECT_TIMEOUT        60
-#define  TRANSFER_TIMEOUT_MAX   60 * 60
 
 #define EXPLICITLY_NO_PROXY "_none_"
 

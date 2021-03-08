@@ -458,6 +458,10 @@ namespace zypp
 		  download_mediaMountdir.restoreToDefault( Pathname(value) );
                 }
 
+                else if ( entry == "download.user_agent" )
+                {
+                  download_user_agent = value;
+                }
                 else if ( entry == "download.max_concurrent_connections" )
                 {
                   str::strtonum(value, download_max_concurrent_connections);
@@ -668,6 +672,7 @@ namespace zypp
     DefaultOption<bool> download_media_prefer_download;
     DefaultOption<Pathname> download_mediaMountdir;
 
+    std::string download_user_agent;
     int download_max_concurrent_connections;
     int download_min_download_speed;
     int download_max_download_speed;
@@ -1054,6 +1059,9 @@ namespace zypp
 
   void ZConfig::set_default_download_media_prefer_download()
   { _pimpl->download_media_prefer_download.restoreToDefault(); }
+
+  std::string ZConfig::download_user_agent() const
+  { return _pimpl->download_user_agent; }
 
   long ZConfig::download_max_concurrent_connections() const
   { return _pimpl->download_max_concurrent_connections; }

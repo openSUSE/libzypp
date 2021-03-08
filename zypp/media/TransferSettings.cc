@@ -23,11 +23,14 @@ namespace zypp
 	// agent string.
 	// The target could be not initialized, and then this information
 	// is guessed.
-	static const std::string _value {
-	  str::form( "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s",
-		     curl_version_info(CURLVERSION_NOW)->version,
-		     Target::targetDistribution( Pathname()/*guess root*/ ).c_str() )
-	};
+	static const std::string _value {[](){
+	  std::string ret { ZConfig::instance().download_user_agent() };
+	  if ( ret.empty() )
+	    ret = str::form( "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s",
+			     curl_version_info(CURLVERSION_NOW)->version,
+			     Target::targetDistribution( Pathname()/*guess root*/ ).c_str() );
+	  return ret;
+	}()};
 	return _value;
       }
     }

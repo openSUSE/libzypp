@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file zypp-core/fs/TmpPath.cc
+/** \file zypp/TmpPath.cc
  *
 */
 
@@ -16,11 +16,11 @@
 
 #include <iostream>
 
-#include <zypp-core/base/ReferenceCounted.h>
-#include <zypp-core/base/NonCopyable.h>
-#include <zypp-core/base/Logger.h>
-#include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/fs/TmpPath.h>
+#include <zypp/base/ReferenceCounted.h>
+#include <zypp/base/NonCopyable.h>
+#include <zypp/base/Logger.h>
+#include <zypp/PathInfo.h>
+#include <zypp/TmpPath.h>
 
 using std::endl;
 

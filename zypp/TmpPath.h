@@ -6,17 +6,17 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file zypp-core/fs/TmpPath.h
+/** \file zypp/TmpPath.h
  *
 */
-#ifndef ZYPP_CORE_FS_TMPPATH_H
-#define ZYPP_CORE_FS_TMPPATH_H
+#ifndef ZYPP_TMPPATH_H
+#define ZYPP_TMPPATH_H
 
 #include <iosfwd>
 
-#include <zypp-core/Pathname.h>
-#include <zypp-core/base/PtrTypes.h>
-#include <zypp-core/ManagedFile.h>
+#include <zypp/Pathname.h>
+#include <zypp/base/PtrTypes.h>
+#include <zypp/ManagedFile.h>
 
 namespace zypp {
   namespace filesystem {
@@ -209,4 +209,4 @@ namespace zypp {
 
 } // namespace zypp
 
-#endif // ZYPP_CORE_FS_TMPPATH_H
+#endif // ZYPP_TMPPATH_H

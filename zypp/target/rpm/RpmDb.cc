@@ -1220,6 +1220,8 @@ namespace
       { lineres = RpmDb::CHK_NOTTRUSTED; }
       else if ( line.find( ": NOTFOUND" ) != std::string::npos )
       { lineres = RpmDb::CHK_NOSIG; }
+      else
+      { ret = RpmDb::CHK_ERROR; } // unparsable line
 
       ++count[lineres];
       detail_r.push_back( RpmDb::CheckPackageDetail::value_type( lineres, std::move(line) ) );
@@ -1227,7 +1229,10 @@ namespace
 
     RpmDb::CheckPackageResult ret = ( res ? RpmDb::CHK_ERROR : RpmDb::CHK_OK );
 
-    if ( count[RpmDb::CHK_FAIL] )
+    if ( count[RpmDb::CHK_ERROR] }
+      ret = RpmDb::CHK_ERROR;
+
+    else if ( count[RpmDb::CHK_FAIL] )
       ret = RpmDb::CHK_FAIL;
 
     else if ( count[RpmDb::CHK_NOTFOUND] )

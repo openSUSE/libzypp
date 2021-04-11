@@ -1205,11 +1205,7 @@ namespace
       std::string & line( lines[i] );
       RpmDb::CheckPackageResult lineres = RpmDb::CHK_ERROR;
       if ( line.find( ": OK" ) != std::string::npos )
-      {
-	lineres = RpmDb::CHK_OK;
-	if ( line.find( "Signature, key ID" ) == std::string::npos )
-	  ++count[RpmDb::CHK_NOSIG];	// Valid but no gpg signature -> CHK_NOSIG
-      }
+      {	lineres = RpmDb::CHK_OK; }
       else if ( line.find( ": NOKEY" ) != std::string::npos )
       { lineres = RpmDb::CHK_NOKEY; }
       else if ( line.find( ": BAD" ) != std::string::npos )

@@ -1,14 +1,12 @@
+#include <curl/curl.h>	// for useragent version info
+
 #include <iostream>
-#include <sstream>
 
 #include <zypp/base/String.h>
 #include <zypp/base/Logger.h>
-#include <zypp/base/WatchFile.h>
-#include <zypp/base/ReferenceCounted.h>
-#include <zypp/base/NonCopyable.h>
-#include <zypp/ExternalProgram.h>
 #include <zypp/media/TransferSettings.h>
 #include <zypp/ZConfig.h>
+#include <zypp/Target.h>
 
 using std::endl;
 
@@ -18,6 +16,25 @@ namespace zypp
 {
   namespace media
   {
+    namespace {
+      const std::string & defaultUserAgent()
+      {
+	// we need to add the release and identifier to the
+	// agent string.
+	// The target could be not initialized, and then this information
+	// is guessed.
+	static const std::string _value {[](){
+	  std::string ret { ZConfig::instance().download_user_agent() };
+	  if ( ret.empty() )
+	    ret = str::form( "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s",
+			     curl_version_info(CURLVERSION_NOW)->version,
+			     Target::targetDistribution( Pathname()/*guess root*/ ).c_str() );
+	  return ret;
+	}()};
+	return _value;
+      }
+    }
+
     class TransferSettings::Impl
     {
     public:
@@ -53,7 +70,7 @@ namespace zypp
 
     public:
       std::vector<std::string> _headers;
-      std::string _useragent;
+      std::optional<std::string> _useragent;
       std::string _username;
       std::string _password;
       bool _useproxy;
@@ -100,10 +117,10 @@ namespace zypp
 
 
     void TransferSettings::setUserAgentString( std::string && val_r )
-    { _impl->_useragent = std::move(val_r); }
+    { if ( val_r.empty() ) _impl->_useragent.reset(); else _impl->_useragent = std::move(val_r); }
 
-    std::string TransferSettings::userAgentString() const
-    { return _impl->_useragent; }
+    const std::string & TransferSettings::userAgentString() const
+    { return _impl->_useragent.has_value() ? *(_impl->_useragent) : defaultUserAgent(); }
 
 
     void TransferSettings::setUsername( std::string && val_r )

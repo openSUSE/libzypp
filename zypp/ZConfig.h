@@ -261,6 +261,12 @@ namespace zypp
        */
       void repoLabelIsAlias( bool yesno_r );
 
+
+      /**
+       * A custom user agent string to send to a HTTP server.
+       */
+      std::string download_user_agent() const;
+
       /**
        * Maximum number of concurrent connections for a single transfer
        */

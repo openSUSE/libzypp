@@ -18,10 +18,6 @@
 #include <zypp/Url.h>
 #include <zypp/media/TransferSettings.h>
 
-#define  CONNECT_TIMEOUT        60
-#define  TRANSFER_TIMEOUT_MAX   60 * 60
-#define  DETECT_DIR_INDEX       0
-
 #define EXPLICITLY_NO_PROXY "_none_"
 
 #undef CURLVERSION_AT_LEAST
@@ -59,12 +55,6 @@ const char * anonymousIdHeader();
  * from the target, which we pass in the http header
  */
 const char * distributionFlavorHeader();
-
-/**
- * initialized only once, this gets the agent string
- * which also includes the curl version
- */
-const char * agentString();
 
 void curlEscape( std::string & str_r,  const char char_r, const std::string & escaped_r );
 std::string curlEscapedPath( std::string path_r );

@@ -123,11 +123,6 @@ namespace zyppng {
 
       locSet.addHeader("Pragma:");
 
-      locSet.setTimeout( zypp::ZConfig::instance().download_transfer_timeout() );
-      locSet.setConnectTimeout( CONNECT_TIMEOUT );
-
-      locSet.setUserAgentString( internal::agentString() );
-
       {
         char *ptr = getenv("ZYPP_MEDIA_CURL_DEBUG");
         _curlDebug = (ptr && *ptr) ? zypp::str::strtonum<long>( ptr) : 0L;

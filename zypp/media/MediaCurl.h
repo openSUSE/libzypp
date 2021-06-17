@@ -162,8 +162,6 @@ class MediaCurl : public MediaHandler
 
     bool authenticate(const std::string & availAuthTypes, bool firstTry) const;
 
-    bool detectDirIndex() const;
-
   private:
     long _curlDebug;
 

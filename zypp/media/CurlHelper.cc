@@ -10,6 +10,8 @@
 #include <zypp/media/MediaException.h>
 #include <list>
 
+#define  TRANSFER_TIMEOUT_MAX   60 * 60
+
 using std::endl;
 using namespace zypp;
 
@@ -307,22 +309,6 @@ const char * distributionFlavorHeader()
     str::trim( str::form(
       "X-ZYpp-DistributionFlavor: %s",
       Target::distributionFlavor( Pathname()/*guess root*/ ).c_str() ) )
-    );
-  return _value.c_str();
-}
-
-const char * agentString()
-{
-  // we need to add the release and identifier to the
-  // agent string.
-  // The target could be not initialized, and then this information
-  // is guessed.
-  static const std::string _value(
-    str::form(
-      "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s"
-      , curl_version_info(CURLVERSION_NOW)->version
-      , Target::targetDistribution( Pathname()/*guess root*/ ).c_str()
-      )
     );
   return _value.c_str();
 }

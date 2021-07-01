@@ -50,6 +50,7 @@ extern "C"
 #include <zypp/target/rpm/RpmException.h>
 #include <zypp/TmpPath.h>
 #include <zypp/KeyRing.h>
+#include <zypp/KeyManager.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
 #include <zypp/base/IOTools.h>
@@ -1183,14 +1184,14 @@ namespace
     //     V3 RSA/SHA256 Signature, key ID 3dbdc284: OK
     //     MD5 digest: OK (fd5259fe677a406951dcb2e9d08c4dcc)
     //
-    // TODO: try to get SIG info from the header rather than parsing the output
     std::vector<std::string> lines;
     str::split( vresult, std::back_inserter(lines), "\n" );
     unsigned count[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
     for ( unsigned i = 1; i < lines.size(); ++i )
     {
-      std::string & line( lines[i] );
+      std::string &line( lines[i] );
+
       RpmDb::CheckPackageResult lineres = RpmDb::CHK_ERROR;
       if ( line.find( ": OK" ) != std::string::npos )
       {
@@ -1239,6 +1240,44 @@ namespace
 
     if ( ret != RpmDb::CHK_OK )
     {
+      // check was not OK replace the signatures with the long version but reading it from the RPM header
+
+      // Get signature info from the package header, RPM always prints only the 8 byte ID
+      auto header = RpmHeader::readPackage( path_r, RpmHeader::NOVERIFY );
+      if ( !header ) {
+        ERR << "Failed to read package" << std::endl;
+        return RpmDb::CHK_ERROR;
+      }
+
+      auto keyMgr = zypp::KeyManagerCtx::createForOpenPGP();
+      std::unordered_map< std::string, std::string> fprs;
+      const auto &addFprs = [&]( auto tag ){
+        const auto &list1 = keyMgr.readSignatureFingerprints( header->blob_val( tag ) );
+        for ( const auto &id : list1 ) {
+          if ( id.size() <= 8 )
+            continue;
+
+          const std::string keyPrefix( "key ID " );
+          fprs.insert( std::make_pair( keyPrefix+id.substr( id.size() - 8 ), keyPrefix+id ) );
+
+        }
+      };
+
+      addFprs( RPMTAG_SIGGPG );
+      addFprs( RPMTAG_SIGPGP );
+      addFprs( RPMTAG_RSAHEADER );
+      addFprs( RPMTAG_DSAHEADER );
+
+      for ( auto &detail : detail_r ) {
+        auto &line = detail.second;
+
+        // replace the short key ID with the long ones parsed from the header
+        for ( const auto &fpr : fprs ) {
+          str::replaceAll( line, fpr.first, fpr.second );
+        }
+
+      }
+
       WAR << path_r << " (" << requireGPGSig_r << " -> " << ret << ")" << endl;
       WAR << vresult;
     }

@@ -205,6 +205,15 @@ namespace zypp
   std::string Locale::name() const
   { return CodeMaps::instance().name( _str ); }
 
+  bool Locale::hasFallback(const Locale &loc_r) const
+  {
+    for ( Locale fb = fallback(); fb; fb = fb.fallback() ) {
+      if ( fb == loc_r )
+        return true;
+    }
+    return false;
+  }
+
   Locale Locale::fallback() const
   { return CodeMaps::instance().fallback( _str ); }
 

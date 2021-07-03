@@ -91,6 +91,9 @@ namespace zypp
     /** Return the translated locale name. */
     std::string name() const;
 
+    /** Checks if \a loc is in the fallback list for this locale */
+    bool hasFallback (const Locale &loc_r ) const;
+
   public:
     /** Return the fallback locale for this locale, if no fallback exists the empty Locale::noCode.
      * The usual fallback sequence is "language_COUNTRY" -> "language" -> Locale::enCode ("en")

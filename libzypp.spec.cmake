@@ -27,11 +27,18 @@
 %bcond_with zstd
 %endif
 
+# flag to signal if we are running in CI or not
+%bcond_with cimode
+
 %bcond_without mediabackend_tests
 
 Name:           libzypp
 Version:        @VERSION@
+%if %{with cimode}
+Release:        0%{lua: print(os.time(os.date("!*t")))}.<RELEASE>
+%else
 Release:        0
+%endif
 License:        GPL-2.0+
 Url:            https://github.com/openSUSE/libzypp
 Summary:        Library for package, patch, pattern and product management

@@ -97,6 +97,10 @@ namespace zypp
 
     const Solvable Solvable::noSolvable;
 
+    const IdString Solvable::retractedToken	{ "retracted-patch-package()" };
+    const IdString Solvable::ptfMasterToken	{ "ptf()" };
+    const IdString Solvable::ptfPackageToken	{ "ptf-package()" };
+
     /////////////////////////////////////////////////////////////////
 
     detail::CSolvable * Solvable::get() const
@@ -385,6 +389,34 @@ namespace zypp
     bool Solvable::identIsAutoInstalled( const IdString & ident_r )
     {
       return myPool().isOnSystemByAuto( ident_r );
+    }
+
+    bool Solvable::isBlacklisted() const
+    { return isPtf() || isRetracted(); }
+
+    bool Solvable::isRetracted() const
+    {
+      NO_SOLVABLE_RETURN( false );
+      if ( isKind<Package>() )
+	return myPool().isRetracted( *this );
+      if ( isKind<Patch>() )
+	return lookupStrAttribute( SolvAttr::updateStatus ) == "retracted";
+      return false;
+    }
+
+    bool Solvable::isPtf() const
+    { return isPtfPackage() || isPtfMaster(); }
+
+    bool Solvable::isPtfMaster() const
+    {
+      NO_SOLVABLE_RETURN( false );
+      return myPool().isPtfMaster( *this );
+    }
+
+    bool Solvable::isPtfPackage() const
+    {
+      NO_SOLVABLE_RETURN( false );
+      return myPool().isPtfPackage( *this );
     }
 
     bool Solvable::multiversionInstall() const

@@ -129,7 +129,9 @@ namespace zypp
       {
         for ( const PoolItem & pi : available() )
         {
-          if ( pi.repository() == repo_r )
+	  if ( pi.isBlacklisted() )
+	    continue;
+           if ( pi.repository() == repo_r )
             return pi;
         }
         return PoolItem();
@@ -148,7 +150,10 @@ namespace zypp
 	// multiversionInstall: This returns the candidate for the last
 	// instance installed. Actually we'd need a list here.
 
-        if ( installedEmpty() || ! defaultCand )
+	if ( ! defaultCand || defaultCand.isBlacklisted() )
+	  return PoolItem();
+
+        if ( installedEmpty() )
           return defaultCand;
         // Here: installed and defaultCand are non NULL and it's not a
         //       multiversion install.
@@ -175,8 +180,15 @@ namespace zypp
       PoolItem highestAvailableVersionObj() const
       {
         PoolItem ret;
+	bool blacklistedOk = false;
         for ( const PoolItem & pi : available() )
         {
+	  if ( !blacklistedOk && pi.isBlacklisted() )
+	  {
+	    if ( ret )
+	      break;	// prefer a not retracted candidate
+	    blacklistedOk = true;
+	  }
           if ( !ret || pi.edition() > ret.edition() )
             ret = pi;
         }
@@ -297,6 +309,60 @@ namespace zypp
       { return picklist().end(); }
 
       ////////////////////////////////////////////////////////////////////////
+      bool hasBlacklisted() const
+      { // Blacklisted items are sorted to the end of the available list.
+	return !_availableItems.empty() && _availableItems.rbegin()->isBlacklisted();
+      }
+
+      bool hasBlacklistedInstalled() const
+      { // Blacklisted items may be embedded in the installed list.
+	for ( const PoolItem & pi : installed() ) {
+	  if ( pi.isBlacklisted() )
+	    return true;
+	}
+	return false;
+      }
+
+      bool hasRetracted() const
+      {
+	for ( const PoolItem & pi : makeIterable( _availableItems.rbegin(), _availableItems.rend() ) ) {
+	  if ( not pi.isBlacklisted() )
+	    break;
+	  if ( pi.isRetracted() )
+	    return true;
+	}
+	return false;
+      }
+
+      bool hasRetractedInstalled() const
+      {
+	for ( const PoolItem & pi : installed() ) {
+	  if ( pi.isRetracted() )
+	    return true;
+	}
+	return false;
+      }
+
+      bool hasPtf() const
+      {
+	for ( const PoolItem & pi : makeIterable( _availableItems.rbegin(), _availableItems.rend() ) ) {
+	  if ( not pi.isBlacklisted() )
+	    break;
+	  if ( pi.isPtf() )
+	    return true;
+	}
+	return false;
+      }
+
+      bool hasPtfInstalled() const
+      {
+	for ( const PoolItem & pi : installed() ) {
+	  if ( pi.isPtf() )
+	    return true;
+	}
+	return false;
+      }
+
 
       bool isUnmaintained() const
       { return availableEmpty(); }

@@ -55,6 +55,10 @@ namespace zypp
     public:
       typedef sat::detail::SolvableIdType IdType;
 
+      static const IdString retractedToken;    ///< Indicator provides `retracted-patch-package()`
+      static const IdString ptfMasterToken;    ///< Indicator provides `ptf()`
+      static const IdString ptfPackageToken;   ///< Indicator provides `ptf-package()`
+
     public:
       /** Default ctor creates \ref noSolvable.*/
       Solvable()
@@ -140,6 +144,40 @@ namespace zypp
        * Per default \c false. \see also \ref ZConfig::multiversion.
        */
       bool multiversionInstall() const;
+
+      /** \name Blacklisted packages.
+       *
+       * Blacklisted packages are visible in a repository, but no matter how good they
+       * apparently look like, they must not be considered during normal operations.
+       *
+       * Under normal conditions the resolver will avoid selecting blacklisted packages.
+       * To install a blacklisted package it must be selected explicitly. Whether this
+       * is a good idea, depends on the reason for having been blacklisted:
+       *
+       * - RETRACTED packages are usually buggy packages/patches which have been released
+       * and can not be removed from the public repositories anymore. Nevertheless those
+       * packages should not be installed.
+       *
+       * - PTFs usually contain special features or fixes which are not yet released as
+       * an official patch upadate. Installing a PTF will prevent it's packages from being
+       * updated until you decide to remove the PTF and follow the official releases again.
+       */
+      //@{
+      /** Whether this solvable is blacklisted (retracted,ptf,...). */
+      bool isBlacklisted() const;
+
+      /** Whether this solvable is retracted (provides \ref retractedToken). */
+      bool isRetracted() const;
+
+      /** Whether this solvable belongs to a PTF (provides \ref ptfMasterToken or \ref ptfPackageToken). */
+      bool isPtf() const;
+
+      /** Subset of \ref isPtf (provides \ref ptfMasterToken). */
+      bool isPtfMaster() const;
+
+      /** Subset of \ref isPtf (provides \ref ptfPackageToken). */
+      bool isPtfPackage() const;
+      //@}
 
       /** The items build time. */
       Date buildtime() const;

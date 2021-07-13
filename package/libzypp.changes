@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 13 14:23:05 CEST 2021 - ma@suse.de
+
+- Add support for PTFs.
+- version 16.22.0 (0)
+
+-------------------------------------------------------------------
 Mon Feb 15 16:44:00 CET 2021 - ma@suse.de
 
 - Patch: Identify well-known category names (bsc#1179847)

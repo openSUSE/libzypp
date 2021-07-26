@@ -238,6 +238,16 @@ Group:          Documentation/HTML
 %description devel-doc
 Developer documentation for libzypp.
 
+%if 0%{?suse_version} >= 1550
+%package kernel-multiversion
+Summary:        Kernel multi-version config file for libzypp
+Requires:       libzypp
+
+%description kernel-multiversion
+A configuration file that enables the multi-version feature of
+libzypp for kernel packages.
+%endif
+
 %prep
 %setup -q
 
@@ -291,9 +301,13 @@ mkdir -p %{buildroot}/%{_var}/lib/zypp
 mkdir -p %{buildroot}/%{_var}/log/zypp
 mkdir -p %{buildroot}/%{_var}/cache/zypp
 
-# Default to 'solver.dupAllowVendorChange = false' on TW and post SLE12
-%if 0%{?suse_version} >= 1330 || "%{distribution}" == "openSUSE Tumbleweed"
-sed -i "s|# solver.dupAllowVendorChange = true|solver.dupAllowVendorChange = false|g" %{buildroot}%{_sysconfdir}/zypp/zypp.conf
+%if 0%{?suse_version} < 1550
+# restore previous config file on old distros so we don't produce
+# an .rpmnew
+sed -i -e '/^# \(multiversion\(\.kernels\)\?\|solver\.allowVendorChange\) =/s/^# //' %{buildroot}/%{_sysconfdir}/zypp/zypp.conf
+%else
+# kernel multiversion feature
+echo "provides:multiversion(kernel)" > %{buildroot}/%{_sysconfdir}/zypp/multiversion.d/kernel.conf
 %endif
 
 cd ..
@@ -419,5 +433,10 @@ fi
 %files devel-doc
 %defattr(-,root,root)
 %{_docdir}/%{name}
+
+%if 0%{?suse_version} >= 1550
+%files kernel-multiversion
+%config(noreplace) %{_sysconfdir}/zypp/multiversion.d/kernel.conf
+%endif
 
 %changelog

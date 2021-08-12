@@ -387,9 +387,11 @@ Url clearQueryString(const Url &url)
 }
 
 // bsc#933839: propagate proxy settings passed in the repo URL
+// boo#1127591: propagate ssl settings passed in the repo URL
+//    should "ssl_clientcert" propagate to mirrors as well?
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r )
 {
-  for ( std::string param : { "proxy", "proxyport", "proxyuser", "proxypass"} )
+  for ( std::string param : { "proxy", "proxyport", "proxyuser", "proxypass", "ssl_capath", "ssl_verify"} )
   {
     const std::string & value( template_r.getQueryParam( param ) );
     if ( ! value.empty() )

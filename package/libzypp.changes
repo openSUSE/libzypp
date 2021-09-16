@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Sep 16 13:21:27 CEST 2021 - ma@suse.de
+
+- BuildRequires:  libsolv-devel >= 0.6.38
+  Must rebuild all caches to make sure rich dependency handling is
+  turned on. Needed for PTF support. (jsc#SLE-17974, bsc#1190530)
+- version 16.22.2 (0)
+
+-------------------------------------------------------------------
 Thu Jul 22 12:03:28 CEST 2021 - ma@suse.de
 
 - Fix solver jobs for PTFs (bsc#1186503)

@@ -1160,6 +1160,7 @@ namespace
     rpmts ts = ::rpmtsCreate();
     ::rpmtsSetRootDir( ts, root_r.c_str() );
     ::rpmtsSetVSFlags( ts, RPMVSF_DEFAULT );
+    ::rpmtsSetVfyLevel( ts, requireGPGSig_r ? RPMSIG_SIGNATURE_TYPE : 0 );
 
     rpmQVKArguments_s qva;
     memset( &qva, 0, sizeof(rpmQVKArguments_s) );
@@ -1194,11 +1195,7 @@ namespace
 
       RpmDb::CheckPackageResult lineres = RpmDb::CHK_ERROR;
       if ( line.find( ": OK" ) != std::string::npos )
-      {
-	lineres = RpmDb::CHK_OK;
-	if ( line.find( "Signature, key ID" ) == std::string::npos )
-	  ++count[RpmDb::CHK_NOSIG];	// Valid but no gpg signature -> CHK_NOSIG
-      }
+      { lineres = RpmDb::CHK_OK; }
       else if ( line.find( ": NOKEY" ) != std::string::npos )
       { lineres = RpmDb::CHK_NOKEY; }
       else if ( line.find( ": BAD" ) != std::string::npos )
@@ -1208,7 +1205,9 @@ namespace
       else if ( line.find( ": NOTRUSTED" ) != std::string::npos )
       { lineres = RpmDb::CHK_NOTTRUSTED; }
       else if ( line.find( ": NOTFOUND" ) != std::string::npos )
-      { continue; } // just collect details for signatures found (#229)
+      { lineres = RpmDb::CHK_NOSIG; }
+      else
+      { ret = RpmDb::CHK_ERROR; } // unparsable line
 
       ++count[lineres];
       detail_r.push_back( RpmDb::CheckPackageDetail::value_type( lineres, std::move(line) ) );
@@ -1216,7 +1215,10 @@ namespace
 
     RpmDb::CheckPackageResult ret = ( res ? RpmDb::CHK_ERROR : RpmDb::CHK_OK );
 
-    if ( count[RpmDb::CHK_FAIL] )
+    if ( count[RpmDb::CHK_ERROR] }
+      ret = RpmDb::CHK_ERROR;
+
+    else if ( count[RpmDb::CHK_FAIL] )
       ret = RpmDb::CHK_FAIL;
 
     else if ( count[RpmDb::CHK_NOTFOUND] )
@@ -1228,14 +1230,10 @@ namespace
     else if ( count[RpmDb::CHK_NOTTRUSTED] )
       ret = RpmDb::CHK_NOTTRUSTED;
 
-    else if ( ret == RpmDb::CHK_OK )
+    else if ( count[RpmDb::CHK_NOSIG] )
     {
-      if ( count[RpmDb::CHK_OK] == count[RpmDb::CHK_NOSIG]  )
-      {
-	detail_r.push_back( RpmDb::CheckPackageDetail::value_type( RpmDb::CHK_NOSIG, std::string("    ")+_("Package is not signed!") ) );
-	if ( requireGPGSig_r )
-	  ret = RpmDb::CHK_NOSIG;
-      }
+      detail_r.push_back( RpmDb::CheckPackageDetail::value_type( RpmDb::CHK_NOSIG, std::string("    ")+_("Package is not signed!") ) );
+      ret = RpmDb::CHK_NOSIG;
     }
 
     if ( ret != RpmDb::CHK_OK )

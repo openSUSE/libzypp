@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Oct  5 16:58:15 CEST 2021 - ma@suse.de
+
+- Rephrase vendor conflict message in case 2 packages are
+  involved (bsc#1187760)
+  This covers the case where not the packages itself would change
+  its vendor, but replaces a package from a different vendor.
+- RepoManager: Don't probe for plaindir repo if URL schema is
+  plugin: (bsc#1191286)
+- version 16.22.3 (0)
+
+-------------------------------------------------------------------
 Thu Sep 16 13:21:27 CEST 2021 - ma@suse.de
 
 - BuildRequires:  libsolv-devel >= 0.6.38

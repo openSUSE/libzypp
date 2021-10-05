@@ -1476,8 +1476,8 @@ namespace zypp
         gotMediaException = true;
       }
 
-      // if it is a non-downloading URL denoting a directory
-      if ( ! url.schemeIsDownloading() )
+      // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
+      if ( ! ( url.schemeIsDownloading() || url.getScheme() == "plugin" ) )
       {
         MediaMounter media( url );
         if ( PathInfo(media.getPathName()/path).isDir() )

@@ -65,6 +65,17 @@ namespace zypp
   {
     bool IGotIt(); // in readonly-mode
   }
+  namespace env
+  {
+    inline bool ZYPP_RPM_DEBUG()
+    {
+      static bool val = [](){
+	const char * env = getenv("ZYPP_RPM_DEBUG");
+	return( env && str::strToBool( env, true ) );
+      }();
+      return val;
+    }
+  } // namespace envnamespace target
 namespace target
 {
 namespace rpm
@@ -1692,7 +1703,8 @@ RpmDb::run_rpm (const RpmArgVec& opts,
   args.push_back(_root.asString().c_str());
   args.push_back("--dbpath");
   args.push_back(_dbPath.asString().c_str());
-
+  if ( env::ZYPP_RPM_DEBUG() )
+    args.push_back("-vv");
   const char* argv[args.size() + opts.size() + 1];
 
   const char** p = argv;
@@ -1765,7 +1777,11 @@ bool RpmDb::systemReadLine( std::string & line )
 	  }
 
 	  if ( ! ::ferror( inputfile ) || ::feof( inputfile ) )
+	  {
+	    if ( env::ZYPP_RPM_DEBUG() )
+	      L_DBG("RPM_DEBUG") << line << endl;
 	    return true; // complete line
+	  }
 	}
 	clearerr( inputfile );
       }

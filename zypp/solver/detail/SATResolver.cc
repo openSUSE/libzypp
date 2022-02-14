@@ -693,7 +693,7 @@ SATResolver::solverInit(const PoolItemList & weakItems)
     }
 
     for (PoolItemList::const_iterator iter = weakItems.begin(); iter != weakItems.end(); iter++) {
-        Id id = (*iter)->satSolvable().id();
+        Id id = iter->id();
         if (id == ID_NULL) {
             ERR << "Weaken: " << *iter << " not found" << endl;
         }
@@ -764,7 +764,7 @@ SATResolver::resolvePool(const CapabilitySet & requires_caps,
     solverInit(weakItems);
 
     for (PoolItemList::const_iterator iter = _items_to_install.begin(); iter != _items_to_install.end(); iter++) {
-        Id id = (*iter)->satSolvable().id();
+        Id id = iter->id();
         if (id == ID_NULL) {
             ERR << "Install: " << *iter << " not found" << endl;
         } else {
@@ -775,7 +775,7 @@ SATResolver::resolvePool(const CapabilitySet & requires_caps,
     }
 
     for (PoolItemList::const_iterator iter = _items_to_remove.begin(); iter != _items_to_remove.end(); iter++) {
-        Id id = (*iter)->satSolvable().id();
+        Id id = iter->id();
         if (id == ID_NULL) {
             ERR << "Delete: " << *iter << " not found" << endl;
         } else {
@@ -834,7 +834,7 @@ SATResolver::resolveQueue(const SolverQueueItemList &requestQueue,
 
     // Add addition item status to the resolve-queue cause these can be set by problem resolutions
     for (PoolItemList::const_iterator iter = _items_to_install.begin(); iter != _items_to_install.end(); iter++) {
-        Id id = (*iter)->satSolvable().id();
+        Id id = iter->id();
         if (id == ID_NULL) {
             ERR << "Install: " << *iter << " not found" << endl;
         } else {
@@ -844,7 +844,7 @@ SATResolver::resolveQueue(const SolverQueueItemList &requestQueue,
         }
     }
     for (PoolItemList::const_iterator iter = _items_to_remove.begin(); iter != _items_to_remove.end(); iter++) {
-        sat::detail::IdType ident( (*iter)->satSolvable().ident().id() );
+        sat::detail::IdType ident( iter->ident().id() );
         MIL << "Delete " << *iter << ident << endl;
         queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | MAYBE_CLEANDEPS );
         queue_push( &(_jobQueue), ident);
@@ -1009,7 +1009,7 @@ struct FindPackage : public resfilter::ResObjectFilterFunctor
 //----------------------------------------------------------------------------
 inline sat::Solvable mapBuddy( const PoolItem & item_r )
 {
-  if ( item_r.satSolvable().isKind<Package>() )
+  if ( item_r.isKind<Package>() )
   {
     sat::Solvable buddy = item_r.buddy();
     if ( buddy )
@@ -1232,6 +1232,44 @@ std::string SATResolver::SATproblemRuleInfoString (Id probr, std::string &detail
   return ret;
 }
 
+/////////////////////////////////////////////////////////////////////////
+namespace {
+  /// bsc#1194848 hint on ptf<>patch conflicts or common ptf conflicts
+  struct PtfPatchHint
+  {
+    void notInstallPatch( sat::Solvable slv_r, unsigned solution_r )
+    { _patch.push_back( slv_r.ident() ); }
+
+    void removePtf(  sat::Solvable slv_r, unsigned solution_r )
+    { _ptf.push_back( slv_r.ident() ); }
+
+    bool applies() const
+    { return not _ptf.empty(); }
+
+    std::string description() const {
+      if ( not _patch.empty() ) {
+        return str::Str()
+        // translator: %1% is the name of a PTF, %2% the name of a patch.
+        << (str::Format( _("%1% is not yet fully integrated into %2%.") ) % printlist(_ptf) % printlist(_patch)) << endl
+        << _("Typically you want to keep the PTF and choose to not install the maintenance patches.");
+      }
+      //else: a common problem due to an installed ptf
+      return str::Str()
+      // translator: %1% is the name of a PTF.
+      << (str::Format( _("The installed %1% blocks the desired action.") ) % printlist(_ptf)) << endl
+      << _("Typically you want to keep the PTF and choose to cancel the action.");
+    }
+  private:
+    using StoreType = IdString;
+    static std::string printlist( const std::vector<StoreType> & list_r )
+    { str::Str ret; dumpRange( ret.stream(), list_r.begin(), list_r.end(), "", "", ", ", "", "" ); return ret; }
+
+    std::vector<StoreType> _ptf;
+    std::vector<StoreType> _patch;
+  };
+}
+/////////////////////////////////////////////////////////////////////////
+
 ResolverProblemList
 SATResolver::problems ()
 {
@@ -1258,7 +1296,7 @@ SATResolver::problems ()
             MIL << whatString << endl;
             MIL << "------------------------------------" << endl;
             ResolverProblem_Ptr resolverProblem = new ResolverProblem (whatString, detail, SATgetCompleteProblemInfoStrings( problem ));
-
+            PtfPatchHint ptfPatchHint;  // bsc#1194848 hint on ptf<>patch conflicts
             solution = 0;
             while ((solution = solver_next_solution(_satSolver, problem, solution)) != 0) {
                 element = 0;
@@ -1283,6 +1321,8 @@ SATResolver::problems ()
                                         std::string description = str::Format(_("do not install %1%") ) % s.asString();
                                         MIL << description << endl;
                                         problemSolution->addDescription (description);
+                                        if ( s.isKind<Patch>() )
+                                          ptfPatchHint.notInstallPatch( s, resolverProblem->solutions().size() );
                                     }
                                 } else {
                                     ERR << "SOLVER_INSTALL_SOLVABLE: No item found for " << s.asString() << endl;
@@ -1519,6 +1559,8 @@ SATResolver::problems ()
                                 MIL << description << endl;
                                 problemSolution->addDescription (description);
                                 problemSolution->addSingleAction (itemFrom, REMOVE);
+                                if ( s.isPtfMaster() )
+                                  ptfPatchHint.removePtf( s, resolverProblem->solutions().size() );
                             }
                         }
                     }
@@ -1543,6 +1585,10 @@ SATResolver::problems ()
                 MIL << "------------------------------------" << endl;
             }
 
+            // bsc#1194848 hint on ptf<>patch conflicts
+            if ( ptfPatchHint.applies() ) {
+              resolverProblem->setDescription( str::Str() << ptfPatchHint.description() << endl << "(" << resolverProblem->description() << ")" );
+            }
             // save problem
             resolverProblems.push_back (resolverProblem);
         }
@@ -1559,15 +1605,15 @@ void SATResolver::setLocks()
     unsigned acnt = 0;
 
     for (PoolItemList::const_iterator iter = _items_to_lock.begin(); iter != _items_to_lock.end(); ++iter) {
-        sat::detail::SolvableIdType ident( (*iter)->satSolvable().id() );
+        sat::detail::SolvableIdType id( iter->id() );
         if (iter->status().isInstalled()) {
             ++icnt;
             queue_push( &(_jobQueue), SOLVER_INSTALL | SOLVER_SOLVABLE );
-            queue_push( &(_jobQueue), ident );
+            queue_push( &(_jobQueue), id );
         } else {
             ++acnt;
             queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE | MAYBE_CLEANDEPS );
-            queue_push( &(_jobQueue), ident );
+            queue_push( &(_jobQueue), id );
         }
     }
     MIL << "Locked " << icnt << " installed items and " << acnt << " NOT installed items." << endl;
@@ -1578,7 +1624,7 @@ void SATResolver::setLocks()
     ///////////////////////////////////////////////////////////////////
     std::set<IdString> unifiedByName;
     for (PoolItemList::const_iterator iter = _items_to_keep.begin(); iter != _items_to_keep.end(); ++iter) {
-      IdString ident( (*iter)->satSolvable().ident() );
+      IdString ident( iter->ident() );
       if ( unifiedByName.insert( ident ).second )
       {
         if ( ! ui::Selectable::get( *iter )->hasInstalledObj() )

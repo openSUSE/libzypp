@@ -20,6 +20,8 @@
 #include <fstream>
 #include <string>
 
+#include <unistd.h>
+
 #include <zypp-media/Mount>
 #include <zypp/base/ExternalDataSource.h>
 #include <zypp/base/Logger.h>
@@ -170,58 +172,69 @@ void Mount::umount( const std::string & path )
 
     std::string err;
 
-    this->run(argv, ExternalProgram::Stderr_To_Stdout);
+    int retry = 0;
 
-    if ( process == NULL )
-    {
-        ZYPP_THROW(MediaUnmountException("E_mount_failed", path));
-    }
+    do {
+      if ( err != "" ) {
+        WAR << "umount " << path << ": " << err << " - retrying in 1 sec" << endl;
+        sleep(1);
+      }
 
-    std::string value;
-    std::string output = process->receiveLine();
+      sync();
 
-    // parse error messages
-    while ( output.length() > 0)
-    {
-        std::string::size_type 	ret;
+      this->run(argv, ExternalProgram::Stderr_To_Stdout);
 
-        // extract \n
-        ret = output.find_first_of ( "\n" );
-        if ( ret != std::string::npos )
-        {
-            value.assign ( output, 0, ret );
-        }
-        else
-        {
-            value = output;
-        }
+      if ( process == NULL )
+      {
+          ZYPP_THROW(MediaUnmountException("E_mount_failed", path));
+      }
 
-        DBG << "stdout: " << value << endl;
+      std::string value;
+      std::string output = process->receiveLine();
 
-        // if  ( value.find ( "not mounted" ) != std::string::npos )
-        // {
-        //    err = Error::E_already_mounted;
-        // }
+      // parse error messages
+      while ( output.length() > 0)
+      {
+          std::string::size_type 	ret;
 
-        if  ( value.find ( "device is busy" ) != std::string::npos )
-        {
-            err = "Device is busy";
-        }
+          // extract \n
+          ret = output.find_first_of ( "\n" );
+          if ( ret != std::string::npos )
+          {
+              value.assign ( output, 0, ret );
+          }
+          else
+          {
+              value = output;
+          }
 
-        output = process->receiveLine();
-    }
+          DBG << "stdout: " << value << endl;
 
-    int status = Status();
+          // if  ( value.find ( "not mounted" ) != std::string::npos )
+          // {
+          //    err = Error::E_already_mounted;
+          // }
 
-    if ( status == 0 )
-    {
-        // return codes overwites parsed error message
-        err = "";
-    }
-    else if ( status != 0 && err == "" )
-    {
-        err = "Unmounting media failed";
-    }
+          if  ( value.find ( " is busy" ) != std::string::npos )
+          {
+              err = "Device is busy";
+          }
+
+          output = process->receiveLine();
+      }
+
+      int status = Status();
+
+      if ( status == 0 )
+      {
+          // return codes overwites parsed error message
+          err = "";
+      }
+      else if ( status != 0 && err == "" )
+      {
+          err = "Unmounting media failed";
+      }
+    } while( ++retry < 3 && err == "Device is busy" );
 
     if ( err != "") {
       WAR << "umount " << path << ": " << err << endl;

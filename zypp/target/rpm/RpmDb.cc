@@ -33,6 +33,7 @@ extern "C"
 #include "zypp/base/String.h"
 #include "zypp/base/Gettext.h"
 #include "zypp/base/LocaleGuard.h"
+#include "zypp/base/Regex.h"
 
 #include "zypp/Date.h"
 #include "zypp/Pathname.h"
@@ -1527,6 +1528,40 @@ namespace
     ts = rpmtsFree(ts);
     ::Fclose( fd );
 
+    // Check the individual signature/disgest results:
+
+    // To.map back known result strings to enum, everything else is CHK_ERROR.
+    typedef std::map<std::string,RpmDb::CheckPackageResult> ResultMap;
+    static const ResultMap resultMap {
+      { "OK",         RpmDb::CHK_OK },
+      { "NOKEY",      RpmDb::CHK_NOKEY },
+      { "BAD",        RpmDb::CHK_FAIL },
+      { "UNKNOWN",    RpmDb::CHK_NOTFOUND },
+      { "NOTRUSTED",  RpmDb::CHK_NOTTRUSTED },
+      { "NOTFOUND",   RpmDb::CHK_NOTFOUND },
+    };
+    auto getresult = []( const ResultMap & resultMap, ResultMap::key_type key )->ResultMap::mapped_type {
+      auto it = resultMap.find( key );
+      return it != resultMap.end() ? it->second : RpmDb::CHK_ERROR;
+    };
+
+    // To track the signature states we saw.
+    unsigned count[7] = { 0, 0, 0, 0, 0, 0, 0 };
+
+    // To track the kind off sigs we saw.
+    enum Saw {
+      SawNone          = 0,
+      SawHeaderSig     = (1 << 0),  // Header V3 RSA/SHA256 Signature, key ID 3dbdc284: OK
+      SawHeaderDigest  = (1 << 1),  // Header SHA1 digest: OK (a60386347863affefef484ff1f26c889373eb094)
+      SawPayloadDigest = (1 << 2),  // Payload SHA256 digest: OK
+      SawSig           = (1 << 3),  // V3 RSA/SHA256 Signature, key ID 3dbdc284: OK
+      SawDigest        = (1 << 4),  // MD5 digest: OK (fd5259fe677a406951dcb2e9d08c4dcc)
+    };
+    unsigned saw = SawNone;
+
+    static const str::regex rx( "^ *(Header|Payload)? .*(Signature, key|digest).*: ([A-Z]+)" );
+    str::smatch what;
+
     // results per line...
     //     Header V3 RSA/SHA256 Signature, key ID 3dbdc284: OK
     //     Header SHA1 digest: OK (a60386347863affefef484ff1f26c889373eb094)
@@ -1536,26 +1571,28 @@ namespace
     // TODO: try to get SIG info from the header rather than parsing the output
     std::vector<std::string> lines;
     str::split( vresult, std::back_inserter(lines), "\n" );
-    unsigned count[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
     for ( unsigned i = 1; i < lines.size(); ++i )
     {
       std::string & line( lines[i] );
+
       RpmDb::CheckPackageResult lineres = RpmDb::CHK_ERROR;
-      if ( line.find( ": OK" ) != std::string::npos )
-      {
-	lineres = RpmDb::CHK_OK;
-	if ( line.find( "Signature, key ID" ) == std::string::npos )
-	  ++count[RpmDb::CHK_NOSIG];	// Valid but no gpg signature -> CHK_NOSIG
+      if ( str::regex_match( line, what, rx ) ) {
+
+        lineres = getresult( resultMap, what[3] );
+        if ( lineres == RpmDb::CHK_NOTFOUND )
+          continue; // just collect details for signatures found (#229)
+
+        if ( what[1][0] == 'H' ) {
+          saw |= ( what[2][0] == 'S' ? SawHeaderSig :SawHeaderDigest );
+        }
+        else if ( what[1][0] == 'P' ) {
+          if ( what[2][0] == 'd' ) saw |= SawPayloadDigest;
+        }
+        else {
+          saw |= ( what[2][0] == 'S' ? SawSig : SawDigest );
+        }
       }
-      else if ( line.find( ": NOKEY" ) != std::string::npos )
-      { lineres = RpmDb::CHK_NOKEY; }
-      else if ( line.find( ": BAD" ) != std::string::npos )
-      { lineres = RpmDb::CHK_FAIL; }
-      else if ( line.find( ": UNKNOWN" ) != std::string::npos )
-      { lineres = RpmDb::CHK_NOTFOUND; }
-      else if ( line.find( ": NOTRUSTED" ) != std::string::npos )
-      { lineres = RpmDb::CHK_NOTTRUSTED; }
 
       ++count[lineres];
       detail_r.push_back( RpmDb::CheckPackageDetail::value_type( lineres, std::move(line) ) );
@@ -1577,11 +1614,20 @@ namespace
 
     else if ( ret == RpmDb::CHK_OK )
     {
-      if ( count[RpmDb::CHK_OK] == count[RpmDb::CHK_NOSIG]  )
-      {
-	detail_r.push_back( RpmDb::CheckPackageDetail::value_type( RpmDb::CHK_NOSIG, std::string("    ")+_("Package is not signed!") ) );
-	if ( requireGPGSig_r )
-	  ret = RpmDb::CHK_NOSIG;
+      // Everything is OK, so check whether it's sufficient.
+      // bsc#1184501: To count as signed the package needs a header signature
+      // and either a payload digest (secured by the header sig) or a content signature.
+      bool isSigned = (saw & SawHeaderSig) && ( (saw & SawPayloadDigest) || (saw & SawSig) );
+      if ( not isSigned ) {
+        std::string message { "    " };
+        if ( not (saw & SawHeaderSig) )
+          message += _("Package header is not signed!");
+        else
+          message += _("Package payload is not signed!");
+
+        detail_r.push_back( RpmDb::CheckPackageDetail::value_type( RpmDb::CHK_NOSIG, std::move(message) ) );
+        if ( requireGPGSig_r )
+          ret = RpmDb::CHK_NOSIG;
       }
     }
 

@@ -2,7 +2,7 @@
 Tue Mar 15 15:49:36 CET 2022 - ma@suse.de
 
 - Hint on ptf resolver conflicts (bsc#1194848)
-- Fix package signature check (bsc#184501)
+- Fix package signature check (bsc#1184501)
   Pay attention that header and payload are secured by a valid
   signature and report more detailed which signature is missing.
 - Set ZYPP_RPM_DEBUG=1 to capture verbose rpm command output.

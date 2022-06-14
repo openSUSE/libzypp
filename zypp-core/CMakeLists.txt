@@ -37,6 +37,10 @@ SET( zypp_toplevel_SRCS
 )
 INSTALL(  FILES ${zypp_toplevel_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core" )
 
+SET( zypp_base_private_HEADERS
+  base/private/configoption_p.h
+)
+
 SET( zypp_base_HEADERS
   base/DefaultIntegral
   base/defaultintegral.h
@@ -333,6 +337,7 @@ SET ( zypp_HEADERS
   ${zypp_toplevel_headers}
   ${zyppng_async_HEADERS}
   ${zypp_base_HEADERS}
+  ${zypp_base_private_HEADERS}
   ${zypp_fs_HEADERS}
   ${zypp_ui_HEADERS}
   ${zypp_url_HEADERS}

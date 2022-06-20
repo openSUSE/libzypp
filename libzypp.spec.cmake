@@ -413,7 +413,7 @@ fi
 %config(noreplace) %{_sysconfdir}/zypp/systemCheck
 %if 0%{?suse_version} > 1500
 %dir %{_distconfdir}/logrotate.d
-%{_distconfdir}/logrotate.d/zypp-history.lr
+%config %{_distconfdir}/logrotate.d/zypp-history.lr
 %else
 %config(noreplace) %{_sysconfdir}/logrotate.d/zypp-history.lr
 %endif

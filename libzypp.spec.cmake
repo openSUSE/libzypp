@@ -313,6 +313,12 @@ cd ..
 # Create filelist with translations
 %{find_lang} zypp
 
+%if 0%{?suse_version} > 1500
+# Move logratate files form /etc/logrotate.d to /usr/etc/logrotage.d
+mkdir -p %{buildroot}%{_distconfdir}/logrotate.d
+mv %{buildroot}/%{_sysconfdir}/logrotate.d/zypp-history.lr %{buildroot}%{_distconfdir}/logrotate.d
+%endif
+
 %check
 pushd build/tests
 LD_LIBRARY_PATH="$(pwd)/../zypp:$LD_LIBRARY_PATH" ctest --output-on-failure .
@@ -405,7 +411,12 @@ fi
 %dir               %{_sysconfdir}/zypp/credentials.d
 %config(noreplace) %{_sysconfdir}/zypp/zypp.conf
 %config(noreplace) %{_sysconfdir}/zypp/systemCheck
+%if 0%{?suse_version} > 1500
+%dir %{_distconfdir}/logrotate.d
+%{_distconfdir}/logrotate.d/zypp-history.lr
+%else
 %config(noreplace) %{_sysconfdir}/logrotate.d/zypp-history.lr
+%endif
 %dir               %{_var}/lib/zypp
 %if "%{_libexecdir}" != "%{_prefix}/lib"
 %dir               %{_libexecdir}/zypp

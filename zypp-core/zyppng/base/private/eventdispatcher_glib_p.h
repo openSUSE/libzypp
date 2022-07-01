@@ -82,7 +82,7 @@ public:
   bool runIdleTasks();
   void enableIdleSource ();
 
-  static std::shared_ptr<EventDispatcher> create ( );
+  static std::shared_ptr<EventDispatcher> create ( GMainContext *ctx = 0 );
   static void waitPidCallback ( GPid pid, gint status, gpointer user_data );
 
   std::thread::id _myThreadId;

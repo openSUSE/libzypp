@@ -338,9 +338,9 @@ void EventDispatcherPrivate::enableIdleSource()
   }
 }
 
-std::shared_ptr<EventDispatcher> EventDispatcherPrivate::create()
+std::shared_ptr<EventDispatcher> EventDispatcherPrivate::create( GMainContext *ctx )
 {
-  return std::shared_ptr<EventDispatcher>( new EventDispatcher() );
+  return std::shared_ptr<EventDispatcher>( new EventDispatcher( ctx ) );
 }
 
 void EventDispatcherPrivate::waitPidCallback( GPid pid, gint status, gpointer user_data )
@@ -561,6 +561,11 @@ UnixSignalSourceRef EventDispatcher::unixSignalSource()
     r = d->_signalSource.lock ();
   }
   return r;
+}
+
+GMainContext * EventDispatcher::glibContext()
+{
+  return d_func()->_ctx;
 }
 
 bool EventDispatcher::run_once()

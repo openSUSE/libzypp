@@ -18,7 +18,7 @@
 #include <zypp-core/zyppng/base/Signals>
 #include <zypp-core/zyppng/base/Base>
 
-// CONTINUE WITH THREAD DATA AND PUT THE DISPATCHER INSTANCE THERE!
+typedef struct _GMainContext GMainContext;
 
 namespace zyppng {
 
@@ -47,7 +47,7 @@ namespace zyppng {
     using Ptr = EventLoopRef;
     using WeakPtr = EventLoopWeakRef;
 
-    static Ptr create ();
+    static Ptr create ( GMainContext *ctx = nullptr );
     ~EventLoop() override;
 
     /*!
@@ -67,7 +67,7 @@ namespace zyppng {
     std::shared_ptr<EventDispatcher> eventDispatcher () const;
 
   private:
-    EventLoop();
+    EventLoop( GMainContext *ctx = nullptr );
 
   };
 

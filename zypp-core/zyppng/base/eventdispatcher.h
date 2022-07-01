@@ -21,11 +21,12 @@
 #include <memory>
 #include <functional>
 
+typedef struct _GMainContext            GMainContext;
+
 namespace zyppng {
 
 class SocketNotifier;
 class Timer;
-
 ZYPP_FWD_DECL_TYPE_WITH_REFS( EventDispatcher );
 ZYPP_FWD_DECL_TYPE_WITH_REFS( UnixSignalSource );
 class EventDispatcherPrivate;
@@ -46,8 +47,8 @@ class LIBZYPP_NG_EXPORT EventDispatcher : public Base
 
 public:
 
-  using Ptr = std::shared_ptr<EventDispatcher>;
-  using WeakPtr = std::shared_ptr<EventDispatcher>;
+  using Ptr = EventDispatcherRef;
+  using WeakPtr = EventDispatcherWeakRef;
   using IdleFunction = std::function<bool ()>;
 
 
@@ -143,11 +144,14 @@ public:
    */
   bool untrackChildProcess ( int pid );
 
+
   /*!
    * Returns the currently active \ref UnixSignalSource for this EventDispatcher.
    * It is required to keep the reference alive as long as signals need to be catched.
    */
   UnixSignalSourceRef unixSignalSource ();
+
+  GMainContext * glibContext();
 
 protected:
 

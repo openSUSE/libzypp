@@ -25,6 +25,8 @@ class TimerPrivate;
 class EventDispatcher;
 ZYPP_FWD_DECL_TYPE_WITH_REFS (Timer);
 
+ZYPP_FWD_DECL_TYPE_WITH_REFS( Timer );
+
 /*!
  * \brief The Timer class provides repetitive and single-shot timers.
  *
@@ -48,8 +50,8 @@ class Timer : public Base
 
 public:
 
-  using Ptr = std::shared_ptr<Timer>;
-  using WeakPtr = std::shared_ptr<Timer>;
+  using Ptr = TimerRef;
+  using WeakPtr = TimerWeakRef;
 
   /*!
    * \brief Creates a new Timer object, the timer is not started at this point

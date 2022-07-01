@@ -8,11 +8,11 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE(EventLoop)
 
-  EventLoop::EventLoop()
+  EventLoop::EventLoop( GMainContext *ctx )
     : Base ( * new EventLoopPrivate(*this) )
   {
     Z_D();
-    d->_dispatcher = ThreadData::current().ensureDispatcher();
+    d->_dispatcher = ThreadData::current().ensureDispatcher( ctx );
     d->_loop = g_main_loop_new( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()), false );
   }
 
@@ -21,7 +21,7 @@ namespace zyppng {
     g_main_loop_unref( d_func()->_loop );
   }
 
-  EventLoop::Ptr EventLoop::create()
+  EventLoop::Ptr EventLoop::create( GMainContext *ctx )
   {
     return Ptr( new EventLoop() );
   }

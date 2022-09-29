@@ -1506,7 +1506,7 @@ namespace
 
     rpmQVKArguments_s qva;
     memset( &qva, 0, sizeof(rpmQVKArguments_s) );
-    qva.qva_flags = (VERIFY_DIGEST|VERIFY_SIGNATURE);
+    qva.qva_flags = (VERIFY_ALL);
 
     RpmlogCapture vresult;
     LocaleGuard guard( LC_ALL, "C" );	// bsc#1076415: rpm log output is localized, but we need to parse it :(

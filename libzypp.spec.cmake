@@ -15,10 +15,8 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-%if 0%{?rhel} >= 8
 # JEZYPP to support SCC for RES
-%define jezypp %{rhel}
-%endif
+%define jezypp 1
 
 %define force_gcc_46 0
 
@@ -54,7 +52,7 @@ BuildRequires:  openssl-devel
 BuildRequires:  pkgconfig(libudev)
 BuildRequires:  boost-devel
 BuildRequires:  dejagnu
-%if !0%{jezypp}
+%if !0%{?jezypp}
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 %endif
@@ -78,12 +76,12 @@ BuildRequires:  pkg-config
 %endif
 
 BuildRequires:  libsolv-devel >= 0.6.23
-BuildRequires:  libsolv-devel <  0.7
+#BuildRequires:  libsolv-devel <  0.7
 %if 0%{?suse_version} >= 1100
 BuildRequires:  libsolv-tools
 %requires_eq    libsolv-tools
 %else
-%if !0%{jezypp}
+%if !0%{?jezypp}
 Requires:       libsolv-tools
 %endif
 %endif
@@ -232,7 +230,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %if !0%{?jezypp}
 make -C doc/autodoc install DESTDIR=$RPM_BUILD_ROOT
 %endif
-%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{jezypp}
+%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{?jezypp}
 ln -s %{_sysconfdir}/yum.repos.d $RPM_BUILD_ROOT%{_sysconfdir}/zypp/repos.d
 %else
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/zypp/repos.d
@@ -344,7 +342,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %endif
 %defattr(-,root,root)
 %dir               %{_sysconfdir}/zypp
-%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{jezypp}
+%if 0%{?fedora_version} || 0%{?rhel_version} >= 600 || 0%{?centos_version} >= 600 || 0%{?jezypp}
 %{_sysconfdir}/zypp/repos.d
 %else
 %dir               %{_sysconfdir}/zypp/repos.d

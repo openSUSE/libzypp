@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 30 14:25:38 CET 2022 - ma@suse.de
+
+- properly reset range requests (bsc#1204548)
+- version 16.22.5 (0)
+
+-------------------------------------------------------------------
 Tue Mar 15 15:49:36 CET 2022 - ma@suse.de
 
 - Hint on ptf resolver conflicts (bsc#1194848)

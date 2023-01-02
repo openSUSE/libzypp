@@ -1,0 +1,101 @@
+#! /usr/bin/python3
+import sys, os, re
+import subprocess
+import argparse
+
+def writeln( f, l ):
+    f.write( l )
+    f.write( '\n' )
+
+class PkgDef( object ):
+    ''''''
+    def __init__( self, pdef ):
+        d = re.split( r'\s+', pdef )
+        self.n = d[0]
+        self.v = d[1]
+        self.r = d[2]
+        self.prv = []
+        self.req = []
+        self.obs = []
+
+    def __str__( self ):
+        return f'PKG({self.n}-{self.v}-{self.r})'
+
+def buildPkg( pkgdef ):
+    with open( 'ptest.spec', 'w' ) as f:
+        writeln( f, '%undefine vendor' )
+        writeln( f, f'Name:           {pkgdef.n}' )
+        writeln( f, f'Version:        {pkgdef.v}' )
+        writeln( f, f'Release:        {pkgdef.r}' )
+        writeln( f, 'Provides:        test42' )
+        for t,d in [ ('Provides', 'prv'), ('Requires', 'req'), ('Obsoletes', 'obs') ]:
+            d = getattr( pkgdef, d )
+            for l in d:
+                writeln( f, f'{t}:        {l}' )
+
+        writeln( f, 'License:        nolicense' )
+        writeln( f, 'Summary:        nosummary' )
+        writeln( f, 'Vendor:         novendor' )
+        writeln( f, 'BuildArch:      noarch' )
+        writeln( f, 'BuildRoot:      /tmp/%{name}-%{version}-build' )
+        writeln( f, '%description' )
+        writeln( f, 'nodescription' )
+        writeln( f, '%install' )
+        writeln( f, 'rm -rf $RPM_BUILD_ROOT' )
+        writeln( f, 'mkdir -p $RPM_BUILD_ROOT' )
+        writeln( f, '%files' )
+
+    cmd = ["rpmbuild", "-bb", "ptest.spec"]
+    ret = subprocess.run( cmd )#, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL )
+
+    if ret.returncode != 0:
+        raise Exception( 'Rpmbild error', pdef )
+
+    print( "===== rpmbuild", ret.args, "=>", ret.returncode )
+
+def parseRepoDef( rfile ):
+    ret = []
+    with open( rfile, 'r' ) as f:
+        pdef = None
+        for l in f:
+            words = re.split( r'\s+', l.strip(), maxsplit=1 )
+            #print( words )
+            if len(words) == 1 and words[0] == '':
+                continue
+            typ, dat = words
+
+            if typ == 'Pkg:':
+                if pdef is not None:
+                    ret.append( pdef )
+                pdef = PkgDef( dat )
+            elif typ == 'Prv:':
+                pdef.prv.append( dat )
+            elif typ == 'Req:':
+                pdef.req.append( dat )
+            elif typ == 'Obs:':
+                pdef.obs.append( dat )
+
+            elif typ != '':
+                raise Exception( 'Unknown line type', typ )
+        else:
+            if pdef is not None:
+                ret.append( pdef )
+    return ret
+
+def main():
+
+    parser = argparse.ArgumentParser(
+                      prog = 'ptest-repo',
+                      description = 'Create a set of rpm packages from a desc file' )
+
+    parser.add_argument('filename', default="ptest.repo", nargs='?'   )           # positional argument
+
+    args = parser.parse_args()
+
+    rfile = args.filename
+    pkgdefs = parseRepoDef( rfile )
+    for pkgdef in pkgdefs:
+        buildPkg( pkgdef )
+
+if __name__ == '__main__':
+    main()

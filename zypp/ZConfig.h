@@ -306,6 +306,17 @@ namespace zypp
        */
       long download_max_silent_tries() const;
 
+      void set_download_max_silent_tries( long val );
+      void reset_download_max_silent_tries( );
+
+      /*!
+      * How long should zypp wait before attempting a retry of a failed download
+      */
+      long download_retry_wait_time() const;
+
+      void set_download_retry_wait_time ( long val );
+      void reset_download_retry_wait_time ();
+
       /**
        * Maximum time in seconds that you allow a transfer operation to take.
        */

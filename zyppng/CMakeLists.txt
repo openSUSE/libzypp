@@ -27,6 +27,7 @@ SET( zyppng_HEADERS
   downloader.h
   expected.h
   infobase.h
+  managedfile.h
   repoinfo.h
   repomanager.h
   repository.h
@@ -40,6 +41,7 @@ SET( zyppng_private_HEADERS
   private/expected_p.h
   private/globals_p.h
   private/infobase_p.h
+  private/managedfile_p.h
   private/repoinfo_p.h
   private/repomanager_p.h
   private/repository_p.h
@@ -52,6 +54,7 @@ SET( zyppng_SRCS
   expected.cc
   globals.cc
   infobase.cc
+  managedfile.cc
   repoinfo.cc
   repomanager.cc
   repository.cc

@@ -6,8 +6,8 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPPNG_PROGRESSOBSERVER_H
-#define ZYPPNG_PROGRESSOBSERVER_H
+#ifndef ZYPP_CORE_ZYPPNG_PROGRESSOBSERVER_H
+#define ZYPP_CORE_ZYPPNG_PROGRESSOBSERVER_H
 
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/zyppng/base/Signals>
@@ -258,4 +258,4 @@ namespace zyppng {
 
 } // namespace zyppng
 
-#endif // ZYPPNG_PROGRESSOBSERVER_H
+#endif // ZYPP_CORE_ZYPPNG_PROGRESSOBSERVER_H

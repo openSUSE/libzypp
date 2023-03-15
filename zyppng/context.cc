@@ -25,7 +25,6 @@ static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 
 /* Signals */
-
 typedef enum {
     // FIRST_SIG = 1,
     LAST_SIGNAL
@@ -71,7 +70,7 @@ zypp_context_set_property (GObject      *object,
     case PROP_CONTEXT: {
       GMainContext *boxed = reinterpret_cast<GMainContext *>(g_value_get_boxed( value ));
       self->_data._dispatcher = zyppng::ThreadData::current().ensureDispatcher(boxed);
-      self->_data._downloader = zyppng::util::share_gobject( zypp_downloader_new( self ) );
+      self->_data._downloader = zyppng::util::adopt_gobject( zypp_downloader_new( self ) );
       break;
     }
     case PROP_VERSION:
@@ -182,7 +181,7 @@ gboolean zypp_context_load_system ( ZyppContext *self, const gchar *sysRoot )
     USR << satpool.systemRepo() << std::endl;
   }
 
-  self->_data._manager = zyppng::util::share_gobject( zypp_repo_manager_new( self, self->_data.sysRoot ) );
+  self->_data._manager = zyppng::util::adopt_gobject( zypp_repo_manager_new( self, self->_data.sysRoot ) );
   auto &repoManager = self->_data._manager->_data.zyppRepoMgr;
   zypp::RepoInfoList repos = repoManager.knownRepositories();
   for_( it, repos.begin(), repos.end() )

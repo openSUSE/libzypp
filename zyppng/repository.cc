@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "private/repository_p.h"
+#include "private/repoinfo_p.h"
 #include <zypp/Repository.h>
 #include <iostream>
 
@@ -67,4 +68,11 @@ gchar *zypp_repository_get_name( ZyppRepository *self )
   if ( !self || !self->_data._repoManager )
     return nullptr;
   return g_strdup( self->_data._repo.name().c_str() );
+}
+
+ZyppRepoInfo *zypp_repository_get_repoinfo(ZyppRepository *self)
+{
+  if ( !self || !self->_data._repoManager )
+    return nullptr;
+  return zypp_repo_info_wrap_cpp ( self->_data._repo.info () );
 }

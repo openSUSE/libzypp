@@ -16,6 +16,9 @@
 #include <zyppng/utils/GObjectMemory>
 #include <string>
 
+#include <zyppng/repomanager.h>
+#include <zyppng/downloader.h>
+
 // the good ol zypp API
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZYppCallbacks.h>
@@ -33,8 +36,8 @@ struct _ZyppContext
     std::string version = "1.0";
     zypp::Pathname sysRoot = "/";
     zyppng::EventDispatcherRef _dispatcher;
-    zyppng::util::GObjectSPtr<ZyppRepoManager> _manager;
-    zyppng::util::GObjectSPtr<ZyppDownloader>  _downloader;
+    zyppng::ZyppRepoManagerRef _manager;
+    zyppng::ZyppDownloaderRef  _downloader;
     zypp::ZYpp::Ptr godPtr;
   } _data;
 };

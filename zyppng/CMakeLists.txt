@@ -28,6 +28,7 @@ SET( zyppng_HEADERS
   expected.h
   infobase.h
   managedfile.h
+  progressobserver.h
   repoinfo.h
   repomanager.h
   repository.h
@@ -42,6 +43,7 @@ SET( zyppng_private_HEADERS
   private/globals_p.h
   private/infobase_p.h
   private/managedfile_p.h
+  private/progressobserver_p.h
   private/repoinfo_p.h
   private/repomanager_p.h
   private/repository_p.h
@@ -55,6 +57,7 @@ SET( zyppng_SRCS
   globals.cc
   infobase.cc
   managedfile.cc
+  progressobserver.cc
   repoinfo.cc
   repomanager.cc
   repository.cc

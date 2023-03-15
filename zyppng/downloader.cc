@@ -8,13 +8,14 @@
 \---------------------------------------------------------------------*/
 #include "private/downloader_p.h"
 #include "private/context_p.h"
+#include "private/managedfile_p.h"
 
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp-core/zyppng/pipelines/expected.h>
 #include <zyppng/utils/GLibMemory>
+#include <zyppng/utils/RetainPtr>
 
 G_DEFINE_TYPE(ZyppDownloader, zypp_downloader, G_TYPE_OBJECT)
-
 G_DEFINE_QUARK (zypp-downloader-error-quark, zypp_downloader_error)
 
 namespace {
@@ -55,7 +56,6 @@ static void zypp_downloader_dispose (GObject *gobject)
 static void zypp_downloader_finalize (GObject *gobject)
 {
   ZyppDownloader *ptr = ZYPP_DOWNLOADER(gobject);
-  g_clear_weak_pointer( &ptr->_data.context );
   ptr->_data.~Cpp();
 
   // always call parent class finalizer
@@ -77,21 +77,21 @@ void zypp_downloader_init( ZyppDownloader *ctx )
 ZyppDownloader *zypp_downloader_new( ZyppContext *ctx )
 {
   ZyppDownloader *obj = ZYPP_DOWNLOADER(g_object_new( zypp_downloader_get_type(), NULL ));
-  g_set_weak_pointer( &obj->_data.context, ctx );
+  obj->_data._context.reset( ctx );
   obj->_data._provider = zyppng::Provide::create("/tmp/testdir");
   return obj;
 }
 
 void zypp_downloader_get_file_async ( ZyppDownloader *self, const gchar *url, const gchar *dest, GCancellable *c, GAsyncReadyCallback cb, gpointer user_data )
 {
-  auto task = zyppng::util::share_gobject( g_task_new( self, c, cb, user_data ) );
+  auto task = zyppng::util::adopt_gobject( g_task_new( self, c, cb, user_data ) );
   auto data = new AsyncData();
 
   using namespace zyppng::operators;
 
   data->op = self->_data._provider->provide( zypp::Url(url), zyppng::ProvideFileSpec() )
              | mbind ( std::bind( &copyProvideResToFile, self->_data._provider, std::placeholders::_1, zypp::Pathname(dest) ) )
-             | [ task ]( zyppng::expected<zypp::ManagedFile> &&res ){
+             | [ task ]( zyppng::expected<zypp::ManagedFile> &&res ) {
 
                 auto dl = ZYPP_DOWNLOADER(g_task_get_source_object( task.get() ));
 
@@ -108,10 +108,8 @@ void zypp_downloader_get_file_async ( ZyppDownloader *self, const gchar *url, co
                   return 0;
                 }
 
-                // give da file to the caller
-                res->resetDispose();
-                g_task_return_pointer( task.get(), g_strdup( res->value().c_str() ), g_free );
-
+                // give the file to the caller
+                g_task_return_pointer( task.get(), zypp_managed_file_new( *res ) , reinterpret_cast<GDestroyNotify>( zypp_managed_file_free) );
 
                 // dummy return
                 return 0;
@@ -123,10 +121,10 @@ void zypp_downloader_get_file_async ( ZyppDownloader *self, const gchar *url, co
   self->_data._runningTasks.push_back(task);
 }
 
-gchar * zypp_downloader_get_file_finish ( ZyppDownloader *self,
+ZyppManagedFile * zypp_downloader_get_file_finish ( ZyppDownloader *self,
                                           GAsyncResult  *result,
                                           GError **error )
 {
   g_return_val_if_fail (g_task_is_valid (result, self), NULL);
-  return reinterpret_cast<gchar *>(g_task_propagate_pointer (G_TASK (result), error));
+  return reinterpret_cast<ZyppManagedFile *>(g_task_propagate_pointer (G_TASK (result), error));
 }

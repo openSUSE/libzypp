@@ -26,8 +26,11 @@ SET( zyppng_HEADERS
   context.h
   downloader.h
   expected.h
+  infobase.h
+  repoinfo.h
   repomanager.h
   repository.h
+  serviceinfo.h
   zyppng.h
 )
 
@@ -36,8 +39,11 @@ SET( zyppng_private_HEADERS
   private/downloader_p.h
   private/expected_p.h
   private/globals_p.h
+  private/infobase_p.h
+  private/repoinfo_p.h
   private/repomanager_p.h
   private/repository_p.h
+  private/serviceinfo_p.h
 )
 
 SET( zyppng_SRCS
@@ -45,8 +51,11 @@ SET( zyppng_SRCS
   downloader.cc
   expected.cc
   globals.cc
+  infobase.cc
+  repoinfo.cc
   repomanager.cc
   repository.cc
+  serviceinfo.cc
 )
 
 glib_mkenums( zyppenums zyppenums.h.in zyppenums.c.in ${zyppng_HEADERS} )

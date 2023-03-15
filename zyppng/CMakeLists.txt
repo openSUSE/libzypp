@@ -50,8 +50,11 @@ INSTALL(  FILES ${zypp_media_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zyppng
 SET( zyppng_utils_HEADERS
   utils/GioMemory
   utils/GLibMemory
+  utils/GList
   utils/GObjectMemory
+  utils/OpaqueTypePtr
   utils/ResourcePtr
+  utils/RetainPtr
 )
 
 SET( zyppng_utils_SRCS

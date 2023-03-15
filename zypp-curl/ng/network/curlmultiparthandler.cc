@@ -634,6 +634,7 @@ namespace zyppng {
 
     _lastCode = c;
     _lastErrorMsg = msg;
+    _receiver.notifyErrorCodeChanged();
   }
 
   bool CurlMultiPartHandler::parseContentRangeHeader( const std::string_view &line, size_t &start, size_t &len, size_t &fileLen )

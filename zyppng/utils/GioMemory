@@ -23,7 +23,12 @@
 
 #include <gio/gio.h>
 
+#include <zyppng/utils/RetainPtr>
+#include <zyppng/utils/ResourcePtr>
 #include <zyppng/utils/GObjectMemory>
+
+ZYPP_DEFINE_GOBJECT_SIMPLE( GTask, g_task, G, TASK );
+ZYPP_DEFINE_GOBJECT_SIMPLE( GDBusConnection, g_dbus_connection, G, DBUS_CONNECTION );
 
 namespace zyppng::util
 {
@@ -40,7 +45,7 @@ public:
         }
     }
 
-    GObjectSPtr<GDBusConnection> bus_;
+    zyppng::RetainPtr<GDBusConnection, GLibTypeTraits<GDBusConnection>::RetainTrait> bus_;
 };
 
 }
@@ -58,7 +63,7 @@ typedef ResourcePtr<guint, internal::GDBusSignalUnsubscriber> GDBusSignalConnect
             g_dbus_connection_signal_subscribe(bus.get(), nullptr, "org.does.not.exist", nullptr, "/does/not/exist", nullptr, G_DBUS_SIGNAL_FLAGS_NONE, on_dbus_signal, this, nullptr), bus);
  \endcode
  */
-inline GDBusSignalConnection gdbus_signal_connection(guint id, GObjectSPtr<GDBusConnection> bus) noexcept
+inline GDBusSignalConnection gdbus_signal_connection(guint id, RetainPtr<GDBusConnection, typename util::GLibTypeTraits<GDBusConnection>::RetainTrait> bus) noexcept
 {
     return GDBusSignalConnection(id, internal::GDBusSignalUnsubscriber{bus});
 }

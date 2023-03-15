@@ -26,121 +26,102 @@
 #include <memory>
 #include <glib.h>
 
-#include <zyppng/utils/ResourcePtr>
 
+#include <zyppng/utils/ResourcePtr>
+#include <zyppng/utils/RetainPtr>
+#include <zyppng/utils/OpaqueTypePtr>
 namespace zyppng::util {
 
-namespace internal
-{
+    template< typename T> struct GLibTypeTraits;
 
-template<typename T> struct GlibDeleter;
-template<typename T> using GlibSPtr = std::shared_ptr<T>;
-template<typename T> using GlibUPtr = std::unique_ptr<T, GlibDeleter<T>>;
-
-/**
- * \brief Adapter class to assign to smart pointers from functions that take a reference.
- *
- * Adapter class that allows passing a shared_ptr or unique_ptr where glib
- * expects a parameter of type ElementType** (such as GError**), by providing
- * a default conversion operator to ElementType**. This allows the glib method
- * to assign to the ptr_ member. From the destructor, we assign to the
- * provided smart pointer.
- */
-template<typename SP>
-class GlibAssigner
-{
-public:
-    typedef typename SP::element_type ElementType;
-
-    GlibAssigner(SP& smart_ptr) noexcept :
-            smart_ptr_(smart_ptr)
-    {
-    }
-
-    GlibAssigner(const GlibAssigner& other) = delete;
-
-    GlibAssigner(GlibAssigner&& other) noexcept:
-            ptr_(other.ptr_), smart_ptr_(other.smart_ptr_)
-    {
-        other.ptr_ = nullptr;
-    }
-
-    ~GlibAssigner() noexcept
-    {
-        smart_ptr_ = SP(ptr_, GlibDeleter<ElementType>());
-    }
-
-    GlibAssigner& operator=(const GlibAssigner& other) = delete;
-
-    operator ElementType**() noexcept
-    {
-        return &ptr_;
-    }
-
-private:
-    ElementType* ptr_ = nullptr;
-
-    SP& smart_ptr_;
-};
-
-struct GSourceUnsubscriber
-{
-    void operator()(guint tag) noexcept
-    {
-        if (tag != 0)
-        {
-            g_source_remove(tag);
+    template <typename T, typename Trait = GLibTypeTraits<T> >
+    struct StdDeleterForGlibType {
+        void operator() ( T* ptr ) const {
+            Trait::delete_fn(ptr);
         }
+    };
+
+    namespace internal
+    {
+        /**
+         * \brief Adapter class to assign to smart pointers from functions that take a reference.
+         *
+         * Adapter class that allows passing a shared_ptr or unique_ptr where glib
+         * expects a parameter of type ElementType** (such as GError**), by providing
+         * a default conversion operator to ElementType**. This allows the glib method
+         * to assign to the ptr_ member. From the destructor, we assign to the
+         * provided smart pointer.
+         */
+        template<typename SP>
+        class GlibAssigner
+        {
+        public:
+            typedef typename SP::element_type ElementType;
+            using TraitsType = typename SP::traits_type;
+
+            GlibAssigner(SP& smart_ptr) noexcept :
+                    smart_ptr_(smart_ptr)
+            {
+            }
+
+            GlibAssigner(const GlibAssigner& other) = delete;
+
+            GlibAssigner(GlibAssigner&& other) noexcept:
+                    ptr_(other.ptr_), smart_ptr_(other.smart_ptr_)
+            {
+                other.ptr_ = nullptr;
+            }
+
+            ~GlibAssigner() noexcept
+            {
+                smart_ptr_ = SP(ptr_);
+            }
+
+            GlibAssigner& operator=(const GlibAssigner& other) = delete;
+
+            operator ElementType**() noexcept
+            {
+                return &ptr_;
+            }
+
+        private:
+            ElementType* ptr_ = nullptr;
+
+            SP& smart_ptr_;
+        };
+
+        struct GSourceUnsubscriber
+        {
+            void operator()(guint tag) noexcept
+            {
+                if (tag != 0)
+                {
+                    g_source_remove(tag);
+                }
+            }
+        };
+
+        template <typename T>
+        using has_glib_type_trait = typename GLibTypeTraits<T>::type_name; // type name is required to be in all the glib traits
+
+        template <class T>
+        using has_retain_traits = typename T::RetainTraits;
+
+        template <class T>
+        using has_delete_trait = decltype(T::delete_fn(std::declval< typename T::type_name *>()));
+
+        template <class T, class fn>
+        using is_simple_copy_trait_fn  =  decltype( std::declval<fn>()(std::declval<T *>()) );
+
+        template <class T, class fn>
+        using is_extended_copy_trait_fn  = decltype(std::declval<fn>()(std::declval<T *>(), std::declval< gpointer >()) );
+
+        template <class T>
+        using has_simple_copy_trait = is_simple_copy_trait_fn< typename T::type_name, decltype(T::copy_fn) >;
+
+        template <class T>
+        using has_extended_copy_trait = is_extended_copy_trait_fn< typename T::type_name, decltype(T::copy_fn) >;
     }
-};
-
-}
-
-#define ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(TypeName, func) \
-using TypeName##Deleter = internal::GlibDeleter<TypeName>; \
-using TypeName##SPtr = internal::GlibSPtr<TypeName>; \
-using TypeName##UPtr = internal::GlibUPtr<TypeName>; \
-namespace internal \
-{ \
-template<> struct GlibDeleter<TypeName> \
-{ \
-    void operator()(TypeName* ptr) noexcept \
-    { \
-        if (ptr) \
-        { \
-            ::func(ptr); \
-        } \
-    } \
-}; \
-}
-
-/**
- \brief Helper method to wrap a shared_ptr around a Glib type.
-
- Example:
- \code{.cpp}
- auto gkf = shared_glib(g_key_file_new());
- \endcode
- */
-template<typename T>
-inline internal::GlibSPtr<T> share_glib(T* ptr) noexcept
-{
-    return internal::GlibSPtr<T>(ptr, internal::GlibDeleter<T>());
-}
-
-/**
- \brief Helper method to wrap a unique_ptr around a Glib type.
-
- Example:
- \code{.cpp}
- auto gkf = unique_glib(g_key_file_new());
- \endcode
- */
-template<typename T>
-inline internal::GlibUPtr<T> unique_glib(T* ptr) noexcept
-{
-    return internal::GlibUPtr<T>(ptr, internal::GlibDeleter<T>());
-}
 
 /**
  \brief Helper method to take ownership of glib types assigned from a reference.
@@ -182,88 +163,207 @@ inline GSourceManager g_source_manager(guint id)
     return GSourceManager(id, internal::GSourceUnsubscriber());
 }
 
-#if 0
+}  // namespace zyppng::util
+
 /**
- * Below here is some hackery to extract the matching deleters for all built in glib types.
+ * @brief Generates the minimum \ref zyppng::internal::GLibTypeTraits for the given \a TypeName.
+ * These Type traits are used in C++ code to detect features of the glib types at compile time.
  */
-#pragma push_macro("G_DEFINE_AUTOPTR_CLEANUP_FUNC")
-#undef G_DEFINE_AUTOPTR_CLEANUP_FUNC
-#define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func) ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(TypeName, func)
+#define ZYPPNG_DEFINE_GLIB_TRAITS_WITH_CODE(TypeName, ...) \
+namespace zyppng::util \
+{ \
+    template<> struct GLibTypeTraits<::TypeName> \
+    { \
+       using type_name = ::TypeName; \
+       __VA_ARGS__\
+    }; \
+}
 
-#pragma push_macro("G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC")
-#undef G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC
-#define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func)
+/**
+ * @brief Generates the minimum \ref zyppng::internal::GLibTypeTraits for the given ambigous \a TypeName.
+ * Some types that are exported from glib are just simply typedefs for void. In those cases overloading
+ * the \ref GLibTypeTraits template does not work. And they are not detected automatically.
+ * Instead we create a Traits type having the TypeName as a postfix: GLibTypeTraitsTypeName for example.
+ * This trait can then be passed explicitely to templates requiring a GLibTypeTraits
+ */
+#define ZYPPNG_DEFINE_AMBIGOUS_TYPE_GLIB_TRAITS_WITH_CODE(TypeName, ...) \
+namespace zyppng::util \
+{ \
+    struct GLibTypeTraits##TypeName \
+    { \
+       using type_name = TypeName; \
+       __VA_ARGS__\
+    }; \
+}
 
-#pragma push_macro("G_DEFINE_AUTO_CLEANUP_FREE_FUNC")
-#undef G_DEFINE_AUTO_CLEANUP_FREE_FUNC
-#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
-#endif
+/**
+ * @brief Adds a retain trait to the enclosing \ref GLibTypeTraits.
+ * Use this as a argument to a \ref GLibTypeTraits definition in case the type supports reference counting.
+ * \code {.cpp}
+ *
+ * ZYPPNG_DEFINE_GLIB_TRAITS_WITH_CODE(TypeName,
+ *   ZYPPNG_ADD_GLIB_RETAINTRAITS_FULL( TypeName_ref, TypeName_unref )
+ * )
+ *
+ * \endcode
+ */
+#define ZYPPNG_ADD_GLIB_RETAINTRAITS_FULL( ref, unref ) \
+static constexpr auto ref_counting = true; \
+struct RetainTrait { \
+    static void increment( type_name *ptr ){ \
+        ::ref(ptr); \
+    } \
+    static void decrement( type_name *ptr ) { \
+        ::unref(ptr); \
+    } \
+};
 
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GAsyncQueue, g_async_queue_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GBookmarkFile, g_bookmark_file_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GBytes, g_bytes_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GChecksum, g_checksum_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GDateTime, g_date_time_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GDate, g_date_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GDir, g_dir_close)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GError, g_error_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GHashTable, g_hash_table_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GHmac, g_hmac_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GIOChannel, g_io_channel_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GKeyFile, g_key_file_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GList, g_list_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GArray, g_array_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GPtrArray, g_ptr_array_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GByteArray, g_byte_array_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMainContext, g_main_context_unref)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMainContextPusher, g_main_context_pusher_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMainLoop, g_main_loop_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GSource, g_source_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMappedFile, g_mapped_file_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMarkupParseContext, g_markup_parse_context_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GNode, g_node_destroy)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GOptionContext, g_option_context_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GOptionGroup, g_option_group_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GPatternSpec, g_pattern_spec_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GQueue, g_queue_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRand, g_rand_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRegex, g_regex_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMatchInfo, g_match_info_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GScanner, g_scanner_destroy)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GSequence, g_sequence_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GSList, g_slist_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GString, g_autoptr_cleanup_gstring_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GStringChunk, g_string_chunk_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GStrvBuilder, g_strv_builder_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GThread, g_thread_unref)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GMutexLocker, g_mutex_locker_free)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRecMutexLocker, g_rec_mutex_locker_free)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRWLockWriterLocker, g_rw_lock_writer_locker_free)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRWLockReaderLocker, g_rw_lock_reader_locker_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GTimer, g_timer_destroy)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GTimeZone, g_time_zone_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GTree, g_tree_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GVariant, g_variant_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GVariantBuilder, g_variant_builder_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GVariantIter, g_variant_iter_free)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GVariantDict, g_variant_dict_unref)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GVariantType, g_variant_type_free)
-//ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GRefString, g_ref_string_release)
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(GUri, g_uri_unref)
+/**
+ * @brief Convenience macro to add a retain trait to a type
+ * This macro can be used whenever the type has reference counting and
+ * uses functions with _ref and _unref postfixes. E.g. g_object_ref and g_object_unref
+ *
+ * \code {.cpp}
+ * // will add retain traits using g_object_ref and g_object_unref functions
+ * ZYPPNG_DEFINE_GLIB_TRAITS_WITH_CODE(GObject,
+ *   ZYPPNG_ADD_GLIB_RETAINTRAITS( g_object )
+ * )
+ * \endcode
+ */
+#define ZYPPNG_ADD_GLIB_RETAINTRAITS( ref_prefix ) ZYPPNG_ADD_GLIB_RETAINTRAITS_FULL( ref_prefix##_ref, ref_prefix##_unref )
 
-#if 0
-#pragma pop_macro("G_DEFINE_AUTOPTR_CLEANUP_FUNC")
-#pragma pop_macro("G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC")
-#pragma pop_macro("G_DEFINE_AUTO_CLEANUP_FREE_FUNC")
-#endif
+/**
+ * @brief Adds a copy helper trait to a \ref GLibTypeTraits type
+ * The given \a copyfn must either return a new instance or increase the refcount and return a pointer to the refcounted object,
+ * this is the case for all GObject types, because GObject's can not be copied
+ */
+#define ZYPPNG_ADD_GLIB_COPYTRAIT(copyfn) \
+    static type_name *copy_fn ( type_name *ptr ){ \
+        return ::copyfn(ptr); \
+    }
+
+/**
+ * @brief Adds a delete helper trait to a \ref GLibTypeTraits type
+ * The given function must either delete the given object or decrease the refcount in case of reference counted types.
+ */
+#define ZYPPNG_ADD_GLIB_DELETETRAIT(delfn) \
+    static void delete_fn ( type_name *ptr ){ \
+        ::delfn(ptr); \
+    }
+
+/**
+ * @brief Convencience macro to define the standard traits and smart pointer types for ref counted types
+ */
+#define ZYPPNG_DEFINE_GLIB_REF_TYPE_FULL(TypeName, ref, unref, ...) \
+ZYPPNG_DEFINE_GLIB_TRAITS_WITH_CODE(TypeName, \
+    ZYPPNG_ADD_GLIB_RETAINTRAITS_FULL( ref, unref ) \
+    ZYPPNG_ADD_GLIB_COPYTRAIT   ( ref ) \
+    ZYPPNG_ADD_GLIB_DELETETRAIT ( unref ) \
+    __VA_ARGS__ \
+) \
+namespace zyppng { \
+    using TypeName##Ref       = zyppng::RetainPtr<TypeName, zyppng::util::GLibTypeTraits<TypeName>::RetainTrait>; \
+    using TypeName##UniqueRef = std::unique_ptr<TypeName, zyppng::util::StdDeleterForGlibType<TypeName> >; \
+}
+
+/**
+ * @brief Convencience macro to define the standard traits and smart pointer types for ref counted types using ref and unref functions
+ * with the same prefix, e.g. g_object_ref and g_object_unref
+ */
+#define ZYPPNG_DEFINE_GLIB_REF_TYPE(TypeName, ref_prefix ) \
+    ZYPPNG_DEFINE_GLIB_REF_TYPE_FULL( TypeName, ref_prefix##_ref, ref_prefix##_unref )
+
+/**
+ * @brief Convencience macro to define the standard traits and smart pointer types for a simply glib type, that is a type only
+ * having a delete helper trait.
+ */
+#define ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(TypeName, func, ...) \
+ZYPPNG_DEFINE_GLIB_TRAITS_WITH_CODE(TypeName, \
+    ZYPPNG_ADD_GLIB_DELETETRAIT ( func ) \
+    __VA_ARGS__ \
+) \
+namespace zyppng { \
+    static_assert( !std::is_same_v<TypeName, void>, "Void derived types can not be used with ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE" );\
+    using TypeName##Ref       = zyppng::OpaqueTypePtr<TypeName, zyppng::util::StdDeleterForGlibType<TypeName> >; \
+    using TypeName##UniqueRef = std::unique_ptr<TypeName, zyppng::util::StdDeleterForGlibType<TypeName> >; \
+}
+
+/**
+ * @brief Convencience macro to define the standard traits and smart pointer types for a simple ambiguous glib type, that is a type only
+ * having a delete helper trait.
+ */
+#define ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(TypeName, func, ... ) \
+ZYPPNG_DEFINE_AMBIGOUS_TYPE_GLIB_TRAITS_WITH_CODE(TypeName, \
+    ZYPPNG_ADD_GLIB_DELETETRAIT ( func ) \
+    __VA_ARGS__ \
+) \
+namespace zyppng { \
+    using TypeName##Ref = zyppng::OpaqueTypePtr<TypeName, zyppng::util::StdDeleterForGlibType<TypeName, zyppng::util::GLibTypeTraits##TypeName> >; \
+    using TypeName##UniqueRef = std::unique_ptr<TypeName, zyppng::util::StdDeleterForGlibType<TypeName, zyppng::util::GLibTypeTraits##TypeName> >; \
+}
+
+
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GAsyncQueue, g_async_queue)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GBookmarkFile, g_bookmark_file_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GBytes, g_bytes)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GChecksum, g_checksum_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GDateTime, g_date_time)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GDate, g_date_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GDir, g_dir_close)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GError, g_error_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GHashTable, g_hash_table)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GHmac, g_hmac)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GIOChannel, g_io_channel)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GKeyFile, g_key_file)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GList, g_list_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GArray, g_array)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GPtrArray, g_ptr_array)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GByteArray, g_byte_array)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GMainContext, g_main_context)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GMainContextPusher, g_main_context_pusher_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GMainLoop, g_main_loop)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GSource, g_source)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GMappedFile, g_mapped_file)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GMarkupParseContext, g_markup_parse_context)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GNode, g_node_destroy)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GOptionContext, g_option_context_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GOptionGroup, g_option_group)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GPatternSpec, g_pattern_spec_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GQueue, g_queue_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GRand, g_rand_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GRegex, g_regex)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GMatchInfo, g_match_info)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GScanner, g_scanner_destroy)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GSequence, g_sequence_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GSList, g_slist_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GString, g_autoptr_cleanup_gstring_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GStringChunk, g_string_chunk_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GStrvBuilder, g_strv_builder)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GThread, g_thread)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GMutexLocker, g_mutex_locker_free)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GRecMutexLocker, g_rec_mutex_locker_free)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GRWLockWriterLocker, g_rw_lock_writer_locker_free)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GRWLockReaderLocker, g_rw_lock_reader_locker_free)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GTimer, g_timer_destroy)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GTimeZone, g_time_zone)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GTree, g_tree)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GVariant, g_variant)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GVariantBuilder, g_variant_builder)
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GVariantIter, g_variant_iter_free)
+ZYPPNG_DEFINE_GLIB_REF_TYPE( GVariantDict, g_variant_dict )
+ZYPPNG_DEFINE_GLIB_SIMPLE_TYPE(GVariantType, g_variant_type_free)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(GRefString, g_ref_string_release)
+ZYPPNG_DEFINE_GLIB_REF_TYPE(GUri, g_uri)
 
 /**
  * Manually add extra definitions for gchar* and gchar**
  */
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(gchar, g_free)
-typedef gchar* gcharv;
-ZYPPNG_UTIL_DEFINE_GLIB_SMART_POINTERS(gcharv, g_strfreev)
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(gchar, g_free)
 
-}  // namespace zyppng::util
+typedef gchar* gcharv;
+ZYPPNG_DEFINE_GLIB_AMBIGUOUS_TYPE(gcharv, g_strfreev)
+
+
+
 
 #endif

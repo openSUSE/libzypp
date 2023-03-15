@@ -336,6 +336,17 @@ SET( zyppng_thread_HEADERS
 SET( zyppng_thread_private_HEADERS
 )
 
+SET( zyppng_ui_SRCS
+  zyppng/ui/progressobserver.cc
+)
+
+SET( zyppng_ui_HEADERS
+  zyppng/ui/progressobserver.h
+)
+
+SET( zyppng_ui_private_HEADERS
+)
+
 SET ( zypp_HEADERS
   ${zypp_toplevel_headers}
   ${zyppng_async_HEADERS}
@@ -355,6 +366,8 @@ SET ( zypp_HEADERS
   ${zyppng_rpc_HEADERS}
   ${zyppng_thread_HEADERS}
   ${zyppng_thread_private_HEADERS}
+  ${zyppng_ui_HEADERS}
+  ${zyppng_ui_private_HEADERS}
 )
 
 SET ( zypp_SRCS
@@ -369,6 +382,7 @@ SET ( zypp_SRCS
   ${zyppng_io_SRCS}
   ${zyppng_rpc_SRCS}
   ${zyppng_thread_SRCS}
+  ${zyppng_ui_SRCS}
 )
 
 # Default loggroup for all files

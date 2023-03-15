@@ -1,0 +1,167 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+#ifndef ZYPPNG_UTIL_TRAITSTYPEPTR_H
+#define ZYPPNG_UTIL_TRAITSTYPEPTR_H
+
+#include <memory>
+
+namespace zyppng
+{
+  template <typename T> struct OpaqueCppTypePtrTraits {
+    struct Deleter {
+      void operator()( T *ptr ) {
+      if ( ptr )
+        delete ptr;
+      };
+    };
+  };
+
+
+  /**
+   * \brief Simple shared pointer wrapper to make the use of void* C types more safe
+   *
+   * When dealing with C libraries its very common to have types like:
+   * \code {.cpp}
+   * typedef MyType void;
+   * void my_type_free( MyType *t );
+   *
+   * typedef OtherType void;
+   * void other_type_free( OtherType *t);
+   * \endcode
+   *
+   * This kind of code makes the use of std::shared_ptr a bit unsafe because the deleter
+   * is not part of the shared_ptr type, instead all types would resove to std::shared_ptr<void>.
+   * The OpaqueTypePtr uses a Type trait as part of the type id so those can not be mixed:
+   * \code {.cpp}
+   * struct MyTypeTraits {
+   *  struct Deleter {
+   *    void operator( MyType *p ) {
+   *      if (p) ::my_type_free(p);
+   *    }
+   *  }
+   * }
+   *
+   * using MyTypeRef = OpaqueTypePtr<MyType, MyTypeTraits>;
+   * @endcode
+   *
+   *
+   * \endcode
+   *
+   */
+  template <typename T, typename Traits>
+  class OpaqueTypePtr
+  {
+    public:
+      using PtrType = std::shared_ptr<T>;
+      using element_type = T;
+      using traits_type = Traits;
+
+      OpaqueTypePtr()
+      {}
+
+      OpaqueTypePtr( std::nullptr_t )
+      {}
+
+      OpaqueTypePtr( const OpaqueTypePtr &other )
+      : _dptr(other._dptr)
+      {}
+
+      explicit
+      OpaqueTypePtr( typename PtrType::element_type * dptr )
+      : _dptr( dptr, Traits::Deleter() )
+      {}
+
+      OpaqueTypePtr & operator=( const OpaqueTypePtr &other )
+      { _dptr = other._dptr; }
+
+      OpaqueTypePtr & operator=( std::nullptr_t )
+      { reset(); return *this; }
+
+      void reset()
+      { PtrType().swap( _dptr ); }
+
+      void reset( typename PtrType::element_type * dptr )
+      { _dptr.reset(dptr, Traits::Deleter()); }
+
+      void swap( OpaqueTypePtr & rhs )
+      { _dptr.swap( rhs._dptr ); }
+
+      void swap( PtrType & rhs )
+      { _dptr.swap( rhs ); }
+
+      explicit operator bool() const
+      { return _dptr.get() != nullptr; }
+
+      const T & operator*() const
+      { return *_dptr; };
+
+      const T * operator->() const
+      { return _dptr.operator->(); }
+
+      const T * get() const
+      { return _dptr.get(); }
+
+      T & operator*()
+      { return *_dptr; }
+
+      T * operator->()
+      { return _dptr.operator->(); }
+
+      T * get()
+      { return _dptr.get(); }
+
+    private:
+      PtrType _dptr;
+    };
+    ///////////////////////////////////////////////////////////////////
+
+    /** \relates OpaqueTypePtr Stream output.
+     *
+     * Print the \c D object the OpaqueTypePtr refers, or \c "NULL"
+     * if the pointer is \c NULL.
+     */
+    template<class D, class DPtr>
+      inline std::ostream & operator<<( std::ostream & str, const OpaqueTypePtr<D, DPtr> & obj )
+      {
+        if ( obj.get() )
+          return str << *obj.get();
+        return str << std::string("NULL");
+      }
+
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator==( const OpaqueTypePtr<D, DPtr> & lhs, const OpaqueTypePtr<D, DPtr> & rhs )
+      { return( lhs.get() == rhs.get() ); }
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator==( const OpaqueTypePtr<D, DPtr> & lhs, std::nullptr_t )
+      { return( lhs.get() == nullptr ); }
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator==( std::nullptr_t, const OpaqueTypePtr<D, DPtr> & rhs )
+      { return( nullptr == rhs.get() ); }
+
+
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator!=( const OpaqueTypePtr<D, DPtr> & lhs, const OpaqueTypePtr<D, DPtr> & rhs )
+      { return ! ( lhs == rhs ); }
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator!=( const OpaqueTypePtr<D, DPtr> & lhs, std::nullptr_t )
+      { return( lhs.get() != nullptr ); }
+    /** \relates OpaqueTypePtr */
+    template<class D, class DPtr>
+      inline bool operator!=( std::nullptr_t, const OpaqueTypePtr<D, DPtr> & rhs )
+      { return( nullptr != rhs.get() ); }
+
+}
+
+
+#endif

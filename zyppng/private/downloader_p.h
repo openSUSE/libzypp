@@ -11,6 +11,7 @@
 #define ZYPPNG_PRIVATE_DOWNLOADER_P_H
 
 #include <zyppng/downloader.h>
+#include <zyppng/context.h>
 #include <zypp-media/ng/Provide>
 #include <zyppng/utils/GObjectMemory>
 #include <zyppng/utils/GioMemory>
@@ -19,9 +20,9 @@ struct _ZyppDownloader
 {
   GObjectClass            parent_class;
   struct Cpp {
-    ZyppContext *context  = nullptr;
+    zyppng::util::GObjectWeakPtr<ZyppContext> _context;
     zyppng::ProvideRef _provider;
-    std::vector<zyppng::util::GObjectSPtr<GTask>> _runningTasks;
+    std::vector<zyppng::GTaskRef> _runningTasks;
   } _data;
 };
 

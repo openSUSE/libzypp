@@ -33,7 +33,9 @@ SET( zyppng_HEADERS
   repomanager.h
   repository.h
   serviceinfo.h
+  #userrequest.h
   zyppng.h
+
 )
 
 SET( zyppng_private_HEADERS
@@ -48,6 +50,7 @@ SET( zyppng_private_HEADERS
   private/repomanager_p.h
   private/repository_p.h
   private/serviceinfo_p.h
+  #private/userrequest_p.h
 )
 
 SET( zyppng_SRCS
@@ -62,6 +65,7 @@ SET( zyppng_SRCS
   repomanager.cc
   repository.cc
   serviceinfo.cc
+  #userrequest.cc
 )
 
 glib_mkenums( zyppenums zyppenums.h.in zyppenums.c.in ${zyppng_HEADERS} )

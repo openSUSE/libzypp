@@ -16,6 +16,7 @@
 
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/base/signals.h>
+#include <zypp-core/AutoDispose.h>
 #include <memory>
 #include <unordered_set>
 #include <vector>
@@ -168,6 +169,13 @@ namespace zyppng {
     std::enable_if_t< std::is_member_function_pointer_v< SenderFunc >,  connection > connectFunc ( SenderFunc &&sFun, ReceiverFunc &&rFunc, const Tracker&...trackers  ) {
       return connectFunc( static_cast<typename internal::MemberFunction<SenderFunc>::ClassType &>(*this), std::forward<SenderFunc>(sFun), std::forward<ReceiverFunc>(rFunc), trackers... );
     }
+
+    /*!
+     * \internal Used by the C layer to connect a existing wrapper to the C++ instance
+     */
+    void  setData   ( uint32_t quark, zypp::AutoDispose<void *> data );
+    void* data      ( uint32_t quark );
+    void  clearData ( uint32_t quark );
 
   protected:
     Base ( BasePrivate &dd );

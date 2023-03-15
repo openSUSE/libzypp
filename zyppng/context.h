@@ -86,4 +86,10 @@ ZyppDownloader *zypp_context_get_downloader ( ZyppContext *self );
 
 G_END_DECLS
 
+#ifdef  __cplusplus
+
+#include <zyppng/utils/GObjectMemory>
+ZYPP_DEFINE_GOBJECT_SIMPLE( ZyppContext, zypp_context, ZYPP, CONTEXT )
+#endif
+
 #endif // ZYPPNG_CONTEXT_H

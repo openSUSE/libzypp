@@ -13,11 +13,13 @@
 #include <zyppng/repomanager.h>
 #include <zypp/RepoManager.h>
 
+#include "context_p.h"
+
 struct _ZyppRepoManager
 {
   GObjectClass            parent_class;
   struct Cpp {
-    ZyppContext *context  = nullptr;
+    zyppng::ZyppContextWeakRef context;
     zypp::RepoManager zyppRepoMgr;
   } _data;
 };

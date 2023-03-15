@@ -17,6 +17,7 @@
 G_BEGIN_DECLS
 
 typedef struct _ZyppContext ZyppContext;
+typedef struct _ZyppManagedFile ZyppManagedFile;
 
 /**
  * ZYPP_DOWNLOADER_ERROR:
@@ -61,10 +62,16 @@ void zypp_downloader_get_file_async ( ZyppDownloader *self, const gchar *url, co
  * @result: where to place the result
  * @error: return location for a GError, or NULL
  *
- * Returns: (transfer full): Path where the file was downloaded to
+ * Returns: (transfer full): #ZyppManagedFile for the downloaded file
  */
-gchar * zypp_downloader_get_file_finish ( ZyppDownloader *self, GAsyncResult *result, GError **error );
+ZyppManagedFile * zypp_downloader_get_file_finish ( ZyppDownloader *self, GAsyncResult *result, GError **error );
 
 G_END_DECLS
+
+#ifdef  __cplusplus
+
+#include <zyppng/utils/GObjectMemory>
+ZYPP_DEFINE_GOBJECT_SIMPLE( ZyppDownloader, zypp_downloader, ZYPP, DOWNLOADER )
+#endif
 
 #endif // ZYPPNG_DOWNLOADER_H

@@ -32,6 +32,7 @@ SET( zyppng_HEADERS
 SET( zyppng_private_HEADERS
   private/context_p.h
   private/downloader_p.h
+  private/globals_p.h
   private/repomanager_p.h
   private/repository_p.h
 )
@@ -39,6 +40,7 @@ SET( zyppng_private_HEADERS
 SET( zyppng_SRCS
   context.cc
   downloader.cc
+  globals.cc
   repomanager.cc
   repository.cc
 )

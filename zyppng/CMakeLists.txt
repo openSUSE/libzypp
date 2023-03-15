@@ -25,6 +25,7 @@ ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN
 SET( zyppng_HEADERS
   context.h
   downloader.h
+  expected.h
   repomanager.h
   repository.h
   zyppng.h
@@ -33,6 +34,7 @@ SET( zyppng_HEADERS
 SET( zyppng_private_HEADERS
   private/context_p.h
   private/downloader_p.h
+  private/expected_p.h
   private/globals_p.h
   private/repomanager_p.h
   private/repository_p.h
@@ -41,6 +43,7 @@ SET( zyppng_private_HEADERS
 SET( zyppng_SRCS
   context.cc
   downloader.cc
+  expected.cc
   globals.cc
   repomanager.cc
   repository.cc

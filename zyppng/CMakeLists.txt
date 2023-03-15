@@ -12,12 +12,13 @@ pkg_check_modules ( LIBGIO REQUIRED gio-2.0 )
 INCLUDE_DIRECTORIES( ${LIBGIO_INCLUDE_DIRS} )
 
 include(GObjectIntrospection)
+include(GLibTools)
 
 # Collect all files that may contain translatable texts
 FILE( GLOB_RECURSE POT_FILE_DEPENDS RELATIVE ${LIBZYPP_SOURCE_DIR} "*.h" "*.cc" )
 SET( POT_FILE_DEPENDS_ZYPPNG ${POT_FILE_DEPENDS} PARENT_SCOPE )
 
-INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} )
+INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} ${CMAKE_BINARY_DIR} )
 
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
@@ -45,7 +46,11 @@ SET( zyppng_SRCS
   repository.cc
 )
 
-INSTALL(  FILES ${zypp_media_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zyppng" )
+glib_mkenums( zyppenums zyppenums.h.in zyppenums.c.in ${zyppng_HEADERS} )
+
+SET( zyppng_public_HEADERS ${zyppng_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h )
+
+INSTALL(  FILES ${zyppng_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zyppng" )
 
 SET( zyppng_utils_HEADERS
   utils/GioMemory
@@ -65,9 +70,11 @@ INSTALL(  FILES ${zyppng_utils_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp
 SET( zyppng_lib_SRCS
     ${zyppng_SRCS}
     ${zyppng_utils_SRCS}
+    ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.c
 )
+
 SET( zyppng_lib_HEADERS
-    ${zyppng_private_HEADERS} ${zyppng_HEADERS} ${zyppng_utils_HEADERS}
+    ${zyppng_private_HEADERS} ${zyppng_public_HEADERS} ${zyppng_utils_HEADERS}
 )
 
 # Default loggroup for all files
@@ -88,7 +95,7 @@ gobject_introspection(
                --include=GLib-2.0 --include=GObject-2.0 --include=Gio-2.0
   COMPILER_ARGS --includedir=${CMAKE_CURRENT_SOURCE_DIR}
   SYMBOL_PREFIXES zypp
-  SOURCES ${zyppng_HEADERS}
+  SOURCES ${zyppng_public_HEADERS}
   #BUILT_SOURCES ${ZYPPNG_PUBLIC_BUILT_SOURCES}
   #              ${ZYPPNG_PUBLIC_BUILT_HEADERS}
 )

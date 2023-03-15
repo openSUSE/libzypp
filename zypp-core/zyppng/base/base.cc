@@ -73,4 +73,25 @@ namespace zyppng {
     return d_func()->threadId;
   }
 
+  void Base::setData( uint32_t quark, zypp::AutoDispose<void *> data )
+  {
+    Z_D();
+    d->_data.insert_or_assign ( quark, data );
+  }
+
+  void *Base::data( uint32_t quark )
+  {
+    Z_D();
+    if ( !d->_data.count (quark) )
+      return nullptr;
+    return d->_data.at(quark).value ();
+  }
+
+  void Base::clearData( uint32_t quark )
+  {
+    Z_D();
+    d->_data.erase(quark);
+  }
+
+
 } // namespace zyppng

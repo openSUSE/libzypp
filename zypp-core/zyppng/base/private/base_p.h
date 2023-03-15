@@ -1,6 +1,7 @@
 #ifndef ZYPP_NG_BASE_PRIVATE_BASE_P_H_INCLUDED
 #define ZYPP_NG_BASE_PRIVATE_BASE_P_H_INCLUDED
 
+#include "zypp-core/AutoDispose.h"
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/base/base.h>
 #include <zypp-core/zyppng/base/signals.h>
@@ -9,7 +10,6 @@
 
 namespace zyppng
 {
-
   class BasePrivate : public sigc::trackable
   {
     ZYPP_DECLARE_PUBLIC(Base)
@@ -21,6 +21,7 @@ namespace zyppng
 
     Base::WeakPtr parent;
     std::unordered_set< Base::Ptr > children;
+    std::unordered_map<uint32_t, zypp::AutoDispose<void *> > _data;
     Base *z_ptr = nullptr;
     std::thread::id threadId = std::this_thread::get_id();
   };

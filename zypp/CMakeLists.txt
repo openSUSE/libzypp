@@ -285,6 +285,25 @@ INSTALL(  FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/media
 )
 
+SET( zypp_ng_SRCS
+  ng/context.cc
+)
+
+SET( zypp_ng_HEADERS
+  ng/context.h
+  ng/Context
+)
+
+SET( zypp_ng_private_HEADERS
+  ng/private/context_p.h
+)
+
+#INSTALL( FILES
+#  ${zypp_ng_HEADERS}
+#  DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/repo
+#)
+
+
 SET( zypp_parser_SRCS
   parser/HistoryLogReader.cc
   parser/RepoFileReader.cc
@@ -826,6 +845,7 @@ ${zypp_parser_yum_SRCS}
 ${zypp_parser_SRCS}
 ${zypp_media_proxyinfo_SRCS}
 ${zypp_media_SRCS}
+${zypp_ng_SRCS}
 ${zypp_url_SRCS}
 ${zypp_repo_SRCS}
 ${zypp_repo_yum_SRCS}
@@ -855,6 +875,8 @@ ${zypp_parser_HEADERS}
 ${zypp_ui_HEADERS}
 ${zypp_media_HEADERS}
 ${zypp_media_compat_proxyinfo_HEADERS}
+${zypp_ng_HEADERS}
+${zypp_ng_private_HEADERS}
 ${zypp_base_HEADERS}
 ${zypp_solver_HEADERS}
 ${zypp_solver_detail_HEADERS}

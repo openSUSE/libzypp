@@ -6,10 +6,10 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/UserData.h
+/** \file	zypp-core/UserData.h
  */
-#ifndef ZYPP_USERDATA_H
-#define ZYPP_USERDATA_H
+#ifndef ZYPP_CORE_USERDATA_H
+#define ZYPP_CORE_USERDATA_H
 
 #include <iosfwd>
 #include <string>
@@ -233,4 +233,4 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_USERDATA_H
+#endif // ZYPP_CORE_USERDATA_H

@@ -185,7 +185,6 @@ SET( zypp_HEADERS
   SysContent.h
   Target.h
   TmpPath.h
-  UserData.h
   VendorAttr.h
   VendorSupportOptions.h
   ZConfig.h

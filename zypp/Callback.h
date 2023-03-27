@@ -13,7 +13,7 @@
 #define ZYPP_CALLBACK_H
 
 #include <zypp/base/NonCopyable.h>
-#include <zypp/UserData.h>
+#include <zypp-core/UserData.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

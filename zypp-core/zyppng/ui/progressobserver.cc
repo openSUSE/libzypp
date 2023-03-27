@@ -122,8 +122,8 @@ namespace zyppng {
   ZYPP_IMPL_PRIVATE_CONSTR_ARGS ( ProgressObserver, const std::string &label, int steps ) : Base( *( new ProgressObserverPrivate( *this ) ) )
   {
     Z_D();
-    d->_counterSteps = steps;
-    d->_label        = label;
+    d->_baseSteps = steps;
+    d->_label     = label;
   }
 
   void ProgressObserverPrivate::setLabel(const std::string &label)
@@ -275,6 +275,26 @@ namespace zyppng {
 
     // update stats
     d->onChildChanged();
+  }
+
+  /*!
+   * Creats a new \ref zypp::ProgressData::ReceiverFnc and links it to the current ProgressObserver,
+   * this can be used to interface with zypp code that was not yet migrated to the new ProgressObserver
+   * API.
+   *
+   * \note the returned \ref zypp::ProgressData::ReceiverFnc will keep a reference to the \a ProgressObserver
+   */
+  zypp::ProgressData::ReceiverFnc ProgressObserver::makeProgressDataReceiver()
+  {
+    return [ sThis = shared_this<ProgressObserver>() ](  const zypp::ProgressData & data ){
+      auto instance = sThis.get();
+      instance->setBaseSteps ( data.max () - data.min () );
+      instance->setCurrent ( data.val () - data.min () );
+      instance->setLabel ( data.name () );
+      if ( data.finalReport() )
+        instance->setFinished();
+      return true;
+    };
   }
 
 } // namespace zyppng

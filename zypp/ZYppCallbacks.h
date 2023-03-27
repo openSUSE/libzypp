@@ -14,7 +14,7 @@
 
 #include <zypp/base/EnumClass.h>
 #include <zypp/Callback.h>
-#include <zypp/UserData.h>
+#include <zypp-core/UserData.h>
 #include <zypp/Resolvable.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/Pathname.h>

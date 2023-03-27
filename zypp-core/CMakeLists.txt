@@ -23,6 +23,7 @@ SET( zypp_toplevel_headers
   Pathname.h
   TriBool.h
   Url.h
+  UserData.h
 )
 
 SET( zypp_toplevel_SRCS

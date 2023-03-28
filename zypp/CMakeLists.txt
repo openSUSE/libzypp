@@ -64,6 +64,7 @@ SET( zypp_SRCS
   Rel.cc
   RepoInfo.cc
   RepoManager.cc
+  RepoManagerOptions.cc
   Repository.cc
   RepoStatus.cc
   ResKind.cc
@@ -163,6 +164,7 @@ SET( zypp_HEADERS
   Rel.h
   RepoInfo.h
   RepoManager.h
+  RepoManagerOptions.h
   Repository.h
   RepoStatus.h
   Filter.h
@@ -602,10 +604,13 @@ INSTALL(  FILES
 )
 
 SET( zypp_zypp_detail_SRCS
+  zypp_detail/repomanagerbase_p.cc
   zypp_detail/ZYppImpl.cc
 )
 
 SET( zypp_zypp_detail_HEADERS
+  zypp_detail/repomanagerbase_p.h
+  zypp_detail/urlcredentialextractor_p.h
   zypp_detail/ZYppImpl.h
   zypp_detail/ZYppReadOnlyHack.h
 )

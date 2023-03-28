@@ -576,6 +576,7 @@ namespace zypp
 
   private:
       friend class RepoManager;
+      friend class RepoManagerBaseImpl;
       /** The builtin config file value. */
       Pathname builtinRepoCachePath() const;
       /** The builtin config file value. */

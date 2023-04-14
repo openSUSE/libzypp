@@ -43,3 +43,8 @@ IF ( ENABLE_DEVTOOL_REPOMIRROR )
     ADD_SUBDIRECTORY( repomirror )
 ENDIF ( ENABLE_DEVTOOL_REPOMIRROR )
 ## ############################################################
+OPTION( ENABLE_DEVTOOL_GRAPH "Devtool: build zypp-graph?" OFF )
+IF ( ENABLE_DEVTOOL_GRAPH )
+    MESSAGE( STATUS "DEVTOOL_GRAPH enabled" )
+    ADD_SUBDIRECTORY( zypp-graph )
+ENDIF ( ENABLE_DEVTOOL_GRAPH )

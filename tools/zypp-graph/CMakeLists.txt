@@ -1,0 +1,15 @@
+PROJECT( zypp-graph C CXX )
+
+set (CMAKE_CXX_STANDARD 17)
+SET (CMAKE_CXX_EXTENSIONS OFF)
+
+FIND_PACKAGE(Boost REQUIRED COMPONENTS graph )
+
+SET( SOURCES
+  main.cc
+)
+
+add_executable( ${PROJECT_NAME} ${SOURCES} )
+target_link_libraries( ${PROJECT_NAME} zypp )
+
+#INSTALL(TARGETS ${PROJECT_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")

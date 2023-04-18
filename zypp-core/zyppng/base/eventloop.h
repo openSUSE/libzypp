@@ -22,7 +22,8 @@
 
 namespace zyppng {
 
-  class EventDispatcher;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( EventDispatcher );
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( EventLoop );
   class EventLoopPrivate;
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS(EventLoop);

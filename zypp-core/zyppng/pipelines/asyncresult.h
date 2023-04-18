@@ -25,35 +25,76 @@ namespace zyppng {
 
   namespace detail {
 
-    /*!
-     * Checks if a Callable object is of type async_op and if
-     * it accepts the given MsgType and returns the expected type
-     */
-    template< typename Callback, typename Ret, typename MsgType, typename = std::void_t<> >
+    template< typename Callback, typename MsgType, typename = std::void_t<> >
     struct is_future_monad_cb : public std::false_type{};
 
-    template< typename Callback, typename Ret, typename MsgType >
-    struct is_future_monad_cb<Callback, Ret, MsgType,
+    template< typename Callback, typename MsgType >
+    struct is_future_monad_cb<Callback, MsgType,
       std::void_t<
-        typename Callback::value_type,
-        std::enable_if_t< std::is_same< typename Callback::value_type, Ret >::value >,
-        std::enable_if_t< is_async_op<Callback>::value >,
-        decltype ( std::declval<Callback>()( std::declval<MsgType>()) )//check if the callback has a operator() member with the correct signature
+        std::enable_if_t< is_async_op_v<Callback> >,
+        decltype ( std::declval<remove_smart_ptr_t<Callback>>()( std::declval<MsgType>()) )//check if the callback has a operator() member with the correct signature
         >
       > : public std::true_type{};
 
     /*!
-     * Checks if a Callable object is a syncronous callback type with the expected signature
+     * Checks if a Callable object is of type async_op and if
+     * it accepts the given MsgType and returns the expected type
      */
+    template< typename Callback, typename MsgType >
+    constexpr bool is_future_monad_cb_v = is_future_monad_cb<Callback, MsgType>::value;
+
     template< typename Callback, typename MsgType, typename = std::void_t<> >
     struct is_sync_monad_cb : public std::false_type{};
 
     template< typename Callback, typename MsgType >
     struct is_sync_monad_cb<Callback, MsgType
       , std::void_t<
-        std::enable_if_t< !is_async_op<Callback>::value >,
+        std::enable_if_t< !is_async_op_v<Callback> >,
         std::enable_if_t< !std::is_same< void, decltype ( std::declval<Callback>()(std::declval<MsgType>())) >::value > > //check if the callback has the correct signature:  cb( MsgType )
       > : public std::true_type{};
+
+    /*!
+     * Checks if a Callable object is a syncronous callback type with the expected signature
+     */
+    template< typename Callback, typename MsgType, typename = std::void_t<> >
+    constexpr bool is_sync_monad_cb_v = is_sync_monad_cb<Callback, MsgType>::value;
+
+
+    template <typename Callback, typename Arg>
+    using callback_returns_async_op = is_async_op< std::invoke_result_t<Callback, Arg >>;
+
+
+    template< typename Callback, typename MsgType, typename = std::void_t<> >
+    struct is_sync_monad_cb_with_async_res : public std::false_type{};
+
+    template< typename Callback, typename MsgType >
+    struct is_sync_monad_cb_with_async_res<Callback, MsgType
+      , std::void_t<
+        std::enable_if_t< is_sync_monad_cb<Callback, MsgType>::value >,
+        std::enable_if_t< callback_returns_async_op<Callback, MsgType>::value >>
+      > : public std::true_type{};
+
+    template< typename Callback, typename MsgType, typename = std::void_t<> >
+    struct is_sync_monad_cb_with_sync_res : public std::false_type{};
+
+    template< typename Callback, typename MsgType >
+    struct is_sync_monad_cb_with_sync_res<Callback, MsgType
+      , std::void_t<
+        std::enable_if_t< is_sync_monad_cb<Callback, MsgType>::value >,
+        std::enable_if_t< !callback_returns_async_op<Callback, MsgType>::value > >
+      > : public std::true_type{};
+
+    /*!
+     * Checks if a Callable object is a syncronous callback type with the expected signature
+     */
+    template <typename Callback, typename Arg>
+    constexpr bool is_sync_monad_cb_with_async_res_v = is_sync_monad_cb_with_async_res<Callback, Arg>::value;
+
+    /*!
+     * Checks if the given Callback is a function returning a syncronous result
+     */
+    template <typename Callback, typename Arg>
+    constexpr bool is_sync_monad_cb_with_sync_res_v =  is_sync_monad_cb_with_sync_res<Callback, Arg>::value;
 
 
     /*!
@@ -70,41 +111,57 @@ namespace zyppng {
      * information gets too complex and matching the pipe operator functions is a nightmare. This could be revisited
      * with newer C++ versions.
      *
+     * \todo with newer C++ versions revisit the possibility to use non shared ptr types throughout the pipeline instead of
+     *       the current smart pointer solution.
      */
-    template <typename Prev, typename AOp, typename = void>
-    struct AsyncResult;
+    //template <typename Prev, typename AOp, typename Enable = void>
+    //struct AsyncResult;
 
-    template <typename Prev, typename AOp >
-    struct AsyncResult<Prev,AOp> : public zyppng::AsyncOp< typename AOp::value_type > {
+    template <typename T>
+    struct is_nested_async : public std::false_type {};
 
-      AsyncResult ( std::shared_ptr<Prev> && prevTask, std::shared_ptr<AOp> &&cb )
+    template <typename T>
+    struct is_nested_async<AsyncOpRef<AsyncOpRef<T>>> : public std::true_type {};
+
+    template <typename T>
+    constexpr bool is_nested_async_v = is_nested_async<T>::value;
+
+
+    // case 1: connect async result to async callback
+    template <typename PrevRes, typename CallbackOp, typename AOpRes = typename CallbackOp::value_type >
+    struct AsyncToAsyncResult : public zyppng::AsyncOp< AOpRes > {
+
+      static_assert( !is_async_op_v<AOpRes>, "A AsyncResult can never return a async value" );
+      static_assert( !is_async_op_v<PrevRes>, "A incoming value can never be a async value" );
+
+      AsyncToAsyncResult ( AsyncOpRef<PrevRes> && prevTask, std::shared_ptr<CallbackOp> &&cb )
         : _prevTask( std::move(prevTask) )
         , _myTask( std::move(cb) ) {
         connect();
       }
 
-      AsyncResult ( const AsyncResult &other ) = delete;
-      AsyncResult& operator= ( const AsyncResult &other ) = delete;
+      AsyncToAsyncResult ( const AsyncToAsyncResult &other ) = delete;
+      AsyncToAsyncResult& operator= ( const AsyncToAsyncResult &other ) = delete;
 
-      AsyncResult ( AsyncResult &&other ) = delete;
-      AsyncResult& operator= ( AsyncResult &&other ) = delete;
+      AsyncToAsyncResult ( AsyncToAsyncResult &&other ) = delete;
+      AsyncToAsyncResult& operator= ( AsyncToAsyncResult &&other ) = delete;
 
-      virtual ~AsyncResult() {}
+      virtual ~AsyncToAsyncResult() {}
 
       void connect () {
         //not using a lambda here on purpose, binding this into a lambda that is stored in the _prev
         //object causes segfaults on gcc when the lambda is cleaned up with the _prev objects signal instance
-        _prevTask->onReady( std::bind( &AsyncResult::readyWasCalled, this, std::placeholders::_1) );
-        _myTask->onReady( [this] ( typename AOp::value_type && res ){
+        _prevTask->onReady( std::bind( &AsyncToAsyncResult::readyWasCalled, this, std::placeholders::_1) );
+        _myTask->onReady( [this] ( AOpRes && res ){
           this->setReady( std::move( res ) );
         });
       }
 
     private:
-      void readyWasCalled ( typename Prev::value_type && res ) {
+      void readyWasCalled ( PrevRes && res ) {
         //we need to force the passed argument into our stack, otherwise we
         //run into memory issues if the argument is moved out of the _prevTask object
-        typename Prev::value_type resStore = std::move(res);
+        PrevRes resStore = std::move(res);
 
         if ( _prevTask ) {
           //dumpInfo();
@@ -114,155 +171,165 @@ namespace zyppng {
         _myTask->operator()(std::move(resStore));
       }
 
-      std::shared_ptr<Prev> _prevTask;
-      std::shared_ptr<AOp> _myTask;
+      AsyncOpRef<PrevRes> _prevTask;
+      std::shared_ptr<CallbackOp> _myTask;
     };
 
-    template<typename AOp, typename In>
-    struct AsyncResult<void, AOp, In> : public zyppng::AsyncOp< typename AOp::value_type > {
+    template <typename PrevRes, typename Callback, typename Enable = void>
+    struct AsyncToSyncResult;
 
-      AsyncResult ( std::shared_ptr<AOp> &&cb )
-        : _myTask( std::move(cb) ) {
+    // case 2: connect async result to sync callback returning a sync value
+    template <typename PrevRes, typename Callback>
+    struct AsyncToSyncResult<PrevRes, Callback, std::enable_if_t< is_sync_monad_cb_with_sync_res_v<Callback, PrevRes> >>
+      : public zyppng::AsyncOp< typename std::invoke_result_t<Callback, PrevRes> > {
+
+      using value_type = std::invoke_result_t<Callback, PrevRes>;
+      static_assert( !is_async_op_v<value_type>, "A AsyncResult can never return a async value" );
+      static_assert( !is_async_op_v<PrevRes>, "A incoming value can never be a async value" );
+
+      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, Callback &&cb )
+        : _prevTask( std::move(prevTask) )
+        , _myTask( std::move(cb) ) {
         connect();
       }
 
-      virtual ~AsyncResult() { }
+      AsyncToSyncResult ( const AsyncToSyncResult &other ) = delete;
+      AsyncToSyncResult& operator= ( const AsyncToSyncResult &other ) = delete;
 
-      void run ( In &&val ) {
-        _myTask->operator()( std::move(val) );
-      }
+      AsyncToSyncResult ( AsyncToSyncResult &&other ) = delete;
+      AsyncToSyncResult& operator= ( AsyncToSyncResult &&other ) = delete;
 
-      AsyncResult ( const AsyncResult &other ) = delete;
-      AsyncResult& operator= ( const AsyncResult &other ) = delete;
+      virtual ~AsyncToSyncResult() {}
 
-      AsyncResult ( AsyncResult &&other ) = delete;
-      AsyncResult& operator= ( AsyncResult &&other ) = delete;
-
-    private:
       void connect () {
-        _myTask->onReady( [this] ( typename AOp::value_type && in ){
-          this->setReady( std::move( in ) );
-        });
-      }
-      std::shared_ptr<AOp> _myTask;
-    };
-
-    //need a wrapper to connect a sync callback to a async one
-    template < typename Callback, typename In, typename Out >
-    struct SyncCallbackWrapper : public AsyncOp<Out>
-    {
-      using value_type = Out;
-
-      template< typename C = Callback >
-      SyncCallbackWrapper( C &&c ) : _c( std::forward<C>(c) ){}
-
-      virtual ~SyncCallbackWrapper(){ }
-
-      void operator() ( In &&value ) {
-        this->setReady( std::invoke( _c, std::move(value)) );
+        //not using a lambda here on purpose, binding this into a lambda that is stored in the _prev
+        //object causes segfaults on gcc when the lambda is cleaned up with the _prev objects signal instance
+        _prevTask->onReady( std::bind( &AsyncToSyncResult::readyWasCalled, this, std::placeholders::_1) );
       }
 
     private:
-      Callback _c;
+      void readyWasCalled ( PrevRes &&res ) {
+        //we need to force the passed argument into our stack, otherwise we
+        //run into memory issues if the argument is moved out of the _prevTask object
+        PrevRes resStore = std::move(res);
+
+        if ( _prevTask ) {
+          _prevTask.reset();
+        }
+
+        this->setReady( std::invoke( _myTask, std::move( resStore )) );
+      }
+      AsyncOpRef<PrevRes> _prevTask;
+      Callback _myTask;
     };
 
-    /*!
-     * Simple AsyncOperator wrapper that accepts a Async result
-     * forwarding the actual value when it gets ready. This is used to
-     * simplify nested asyncronous results.
-     */
-    template< typename AOp, typename Ret = typename AOp::value_type >
-    struct SimplifyHelper : public AsyncOp<Ret>
-    {
 
-      virtual ~SimplifyHelper(){}
+    // case 3: connect async result to sync callback returning a async value
+    template <typename PrevRes, typename Callback>
+    struct AsyncToSyncResult<PrevRes, Callback, std::enable_if_t< is_sync_monad_cb_with_async_res_v<Callback, PrevRes> >>
+      : public zyppng::AsyncOp< typename remove_smart_ptr_t<std::invoke_result_t<Callback, PrevRes>>::value_type> {
 
-      void operator() ( std::shared_ptr<AOp> &&op ) {
-        assert( !_task );
-        _task = std::move(op);
-        _task->onReady( [this]( Ret &&val ){
+      using value_type = typename remove_smart_ptr_t<std::invoke_result_t<Callback, PrevRes>>::value_type;
+      static_assert(!is_async_op_v< value_type >, "A AsyncResult can never return a async value" );
+
+      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, Callback &&cb )
+        : _prevTask( std::move(prevTask) )
+        , _myTask( std::move(cb) ) {
+        connect();
+      }
+
+      AsyncToSyncResult ( const AsyncToSyncResult &other ) = delete;
+      AsyncToSyncResult& operator= ( const AsyncToSyncResult &other ) = delete;
+
+      AsyncToSyncResult ( AsyncToSyncResult &&other ) = delete;
+      AsyncToSyncResult& operator= ( AsyncToSyncResult &&other ) = delete;
+
+      virtual ~AsyncToSyncResult() {}
+
+      void connect () {
+        //not using a lambda here on purpose, binding this into a lambda that is stored in the _prev
+        //object causes segfaults on gcc when the lambda is cleaned up with the _prev objects signal instance
+        _prevTask->onReady( std::bind( &AsyncToSyncResult::readyWasCalled, this, std::placeholders::_1) );
+      }
+
+    private:
+      void readyWasCalled ( PrevRes &&res ) {
+
+        //we need to force the passed argument into our stack, otherwise we
+        //run into memory issues if the argument is moved out of the _prevTask object
+        PrevRes resStore = std::move(res);
+
+        if ( _prevTask ) {
+          _prevTask.reset();
+        }
+
+        _asyncResult = std::invoke( _myTask, std::move(resStore) );
+        _asyncResult->onReady( [this]( value_type &&val ){
           this->setReady( std::move(val) );
         });
       }
-    private:
-      std::shared_ptr<AOp> _task;
+      AsyncOpRef<PrevRes> _prevTask;
+      Callback _myTask;
+      AsyncOpRef<value_type> _asyncResult;
     };
-
-    /*!
-     * Takes a possibly nested future and simplifies it,
-     * so instead of AsyncResult<AsyncResult<int>> we get AsyncResult<int>.
-     * Usually we do not want to wait on the future of a future but get the nested result immediately
-     */
-    template < typename Res >
-    inline std::shared_ptr<AsyncOp<Res>> simplify ( std::shared_ptr< AsyncOp<Res> > &&res ) {
-      return std::move(res);
-    }
-
-    template < typename Res,
-      typename AOp =  AsyncOp< std::shared_ptr< AsyncOp<Res>> > >
-    inline std::shared_ptr<AsyncOp<Res>> simplify ( std::shared_ptr< AsyncOp< std::shared_ptr< AsyncOp<Res>> > > &&res ) {
-      std::shared_ptr<AsyncOp<Res>> op = std::make_shared< detail::AsyncResult< AOp, SimplifyHelper< AsyncOp<Res>>> >( std::move(res), std::make_shared<SimplifyHelper< AsyncOp<Res>>>() );
-      return detail::simplify( std::move(op) );
-    }
   }
 
   namespace operators {
 
-    //case 1 : binding a async message to a async callback
-    template< typename PrevOp
-      , typename Callback
-      , typename Ret =  typename Callback::value_type
-      , std::enable_if_t< detail::is_async_op<PrevOp>::value, int> = 0
-      //is the callback signature what we want?
-      , std::enable_if_t< detail::is_future_monad_cb< Callback, Ret, typename PrevOp::value_type >::value, int> = 0
-      >
-    auto operator| ( std::shared_ptr<PrevOp> &&future, std::shared_ptr<Callback> &&c )
+    template< typename PrevOp , typename Callback,
+      std::enable_if_t< detail::is_async_op_v<PrevOp>, int > = 0,
+      std::enable_if_t< detail::is_future_monad_cb_v<Callback, typename PrevOp::value_type>, int > = 0 >
+    auto operator| ( std::shared_ptr<PrevOp> &&in, std::shared_ptr<Callback>&& c ) -> AsyncOpRef<typename Callback::value_type>
     {
-      std::shared_ptr<AsyncOp<Ret>> op = std::make_shared<detail::AsyncResult< PrevOp, Callback>>( std::move(future), std::move(c) );
-      return detail::simplify( std::move(op) );
+      using PrevOpRes = typename PrevOp::value_type;
+      return std::make_shared<detail::AsyncToAsyncResult<PrevOpRes, Callback>>( std::move(in), std::move(c) );
     }
 
-    //case 2: binding a async message to a sync callback
-    template< typename PrevOp
-      , typename Callback
-      , typename Ret = std::result_of_t< Callback( typename PrevOp::value_type&& ) >
-      , std::enable_if_t< detail::is_async_op<PrevOp>::value, int> = 0
-      , std::enable_if_t< detail::is_sync_monad_cb< Callback, typename PrevOp::value_type >::value, int> = 0
-      >
-    auto operator| ( std::shared_ptr<PrevOp> &&future, Callback &&c )
+    template< typename PrevOp , typename Callback,
+      std::enable_if_t< detail::is_async_op_v<PrevOp>, int > = 0,
+      std::enable_if_t< detail::is_sync_monad_cb_with_async_res_v<Callback, typename PrevOp::value_type>, int > = 0
+    >
+    auto operator| ( std::shared_ptr<PrevOp> &&in, Callback &&c )
     {
-      std::shared_ptr<AsyncOp<Ret>> op(std::make_shared<detail::AsyncResult< PrevOp, detail::SyncCallbackWrapper<Callback, typename PrevOp::value_type, Ret> >>(
-        std::move(future)
-          ,  std::make_shared<detail::SyncCallbackWrapper<Callback, typename PrevOp::value_type, Ret>>( std::forward<Callback>(c) ) ));
-
-      return detail::simplify( std::move(op) );
+      using PrevOpRes = typename PrevOp::value_type;
+      using CbType    = std::remove_reference_t<Callback>;
+      using Ret       = typename detail::AsyncToSyncResult<PrevOpRes, CbType>::value_type;
+      return AsyncOpRef<Ret>( new detail::AsyncToSyncResult<PrevOpRes, CbType>( std::move(in), std::forward<Callback>(c) ) );
     }
 
-    //case 3: binding a sync message to a async callback
+    template< typename PrevOp , typename Callback,
+      std::enable_if_t< detail::is_async_op_v<PrevOp>, int > = 0,
+      std::enable_if_t< detail::is_sync_monad_cb_with_sync_res_v<Callback, typename PrevOp::value_type>, int > = 0
+    >
+    auto operator| ( std::shared_ptr<PrevOp> &&in, Callback &&c )
+    {
+      using PrevOpRes = typename PrevOp::value_type;
+      using CbType    = std::remove_reference_t<Callback>;
+      using Ret       = typename detail::AsyncToSyncResult<PrevOpRes, CbType>::value_type;
+      return AsyncOpRef<Ret>( new detail::AsyncToSyncResult<PrevOpRes, CbType>( std::move(in), std::forward<Callback>(c) ) );
+    }
+
+    template< typename PrevRes , typename CallbackOp,
+      std::enable_if_t< !detail::is_async_op_v<PrevRes>, int > = 0 ,
+      std::enable_if_t< detail::is_future_monad_cb_v<CallbackOp, PrevRes>, int > = 0 >
+    auto operator| ( PrevRes &&in, CallbackOp &&c ) -> AsyncOpRef<typename remove_smart_ptr_t<CallbackOp>::value_type>
+    {
+      // sync message to async callback case
+      std::forward<CallbackOp>(c)->operator()( std::forward<PrevRes>(in));
+      return c;
+    }
+
+    // sync to sync callback case, we do not need to differentiate between a callback with a async result or a normal one
+    // in both cases we simply can use the return type of the callback function
     template< typename SyncRes
       , typename Callback
-      , typename Ret = typename Callback::value_type
-      , std::enable_if_t< !detail::is_async_op< remove_smart_ptr_t<SyncRes> >::value, int> = 0
-      , std::enable_if_t< detail::is_future_monad_cb< Callback, Ret, SyncRes >::value, int> = 0
-      >
-    auto  operator| ( SyncRes &&in, std::shared_ptr<Callback> &&c )
-    {
-      AsyncOpRef<Ret> op( std::make_shared<detail::AsyncResult<void, Callback, SyncRes>>( std::move(c) ) );
-      static_cast< detail::AsyncResult<void, Callback, SyncRes>* >(op.get())->run( std::move(in) );
-      return detail::simplify( std::move(op) );
-    }
-
-    //case 4: binding a sync message to a sync callback
-    template< typename SyncRes
-      , typename Callback
-      , std::enable_if_t< !detail::is_async_op< remove_smart_ptr_t<SyncRes> >::value, int > = 0
-      , std::enable_if_t< detail::is_sync_monad_cb< Callback, SyncRes >::value, int > = 0
+      , std::enable_if_t< !detail::is_async_op_v< SyncRes >, int > = 0
+      , std::enable_if_t< detail::is_sync_monad_cb_v< Callback, SyncRes >, int > = 0
       >
     auto operator| ( SyncRes &&in, Callback &&c )
     {
       return std::forward<Callback>(c)(std::forward<SyncRes>(in));
     }
-
   }
 }
 

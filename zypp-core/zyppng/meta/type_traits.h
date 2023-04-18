@@ -72,6 +72,14 @@ using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>
 template <class To, template<class...> class Op, class... Args>
 constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value_t::value;
 
+template< class T >
+struct remove_cvref {
+  typedef std::remove_cv_t<std::remove_reference_t<T>> type;
+};
+
+template< class T >
+using remove_cvref_t = typename remove_cvref<T>::type;
+
 #endif
 
 #if __cplusplus < 201703L
@@ -120,7 +128,7 @@ namespace zyppng {
   using remove_smart_ptr_t = typename remove_smart_ptr<T>::type;
 
   //helper template to print type parameters
-  template <typename T>
+  template <typename ...T>
   class myerror_t;
 }
 

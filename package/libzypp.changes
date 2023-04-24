@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Apr 24 15:58:34 CEST 2023 - ma@suse.de
+
+- zypp.conf: Introduce 'download.connect_timeout' [60 sec.]
+  (bsc#1208329)
+  Maximum time in seconds that you allow the connection phase to
+  the server to take. This only limits the connection phase, it has
+  no impact once it has connected. (see also CURLOPT_CONNECTTIMEOUT)
+- version 16.22.7 (0)
+
+-------------------------------------------------------------------
 Thu Mar 23 17:57:48 CET 2023 - ma@suse.de
 
 - Removing a PTF without enabled repos should always fail

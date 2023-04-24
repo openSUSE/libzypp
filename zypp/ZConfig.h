@@ -234,6 +234,11 @@ namespace zypp
       /**
        * Maximum time in seconds that you allow a transfer operation to take.
        */
+      long download_connect_timeout() const;
+
+      /**
+       * Maximum time in seconds that you allow a transfer operation to take.
+       */
       long download_transfer_timeout() const;
 
 

@@ -39,7 +39,6 @@
 #include <unistd.h>
 
 #define  DETECT_DIR_INDEX       0
-#define  CONNECT_TIMEOUT        60
 #define  TRANSFER_TIMEOUT_MAX   60 * 60
 
 #define EXPLICITLY_NO_PROXY "_none_"
@@ -696,7 +695,7 @@ void MediaCurl::setupEasy()
   vol_settings.addHeader("Pragma:");
 
   _settings.setTimeout(ZConfig::instance().download_transfer_timeout());
-  _settings.setConnectTimeout(CONNECT_TIMEOUT);
+  _settings.setConnectTimeout(ZConfig::instance().download_connect_timeout());
 
   _settings.setUserAgentString(agentString());
 

@@ -321,6 +321,7 @@ namespace zypp
         , download_min_download_speed	( 0 )
         , download_max_download_speed	( 0 )
         , download_max_silent_tries	( 5 )
+        , download_connect_timeout	( 60 )
         , download_transfer_timeout	( 180 )
         , commit_downloadMode		( DownloadDefault )
 	, gpgCheck			( true )
@@ -464,6 +465,12 @@ namespace zypp
                 else if ( entry == "download.max_silent_tries" )
                 {
                   str::strtonum(value, download_max_silent_tries);
+                }
+                else if ( entry == "download.connect_timeout" )
+                {
+                  str::strtonum(value, download_connect_timeout);
+		  if ( download_connect_timeout < 0 )
+                    download_connect_timeout = 0;
                 }
                 else if ( entry == "download.transfer_timeout" )
                 {
@@ -657,6 +664,7 @@ namespace zypp
     int download_min_download_speed;
     int download_max_download_speed;
     int download_max_silent_tries;
+    int download_connect_timeout;
     int download_transfer_timeout;
 
     Option<DownloadMode> commit_downloadMode;
@@ -1006,6 +1014,9 @@ namespace zypp
 
   long ZConfig::download_max_silent_tries() const
   { return _pimpl->download_max_silent_tries; }
+
+  long ZConfig::download_connect_timeout() const
+  { return _pimpl->download_connect_timeout; }
 
   long ZConfig::download_transfer_timeout() const
   { return _pimpl->download_transfer_timeout; }

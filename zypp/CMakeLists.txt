@@ -609,6 +609,7 @@ SET( zypp_zypp_detail_SRCS
 )
 
 SET( zypp_zypp_detail_HEADERS
+  zypp_detail/keyring_p.h
   zypp_detail/repomanagerbase_p.h
   zypp_detail/urlcredentialextractor_p.h
   zypp_detail/ZYppImpl.h

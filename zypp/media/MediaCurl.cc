@@ -537,12 +537,12 @@ static const char *const agentString()
   // The target could be not initialized, and then this information
   // is guessed.
   static const std::string _value(
-    str::form(
+    str::trim( str::form(
        "ZYpp %s (curl %s) %s"
        , VERSION
        , curl_version_info(CURLVERSION_NOW)->version
        , Target::targetDistribution( Pathname()/*guess root*/ ).c_str()
-    )
+    ) )
   );
   return _value.c_str();
 }

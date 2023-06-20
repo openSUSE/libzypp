@@ -95,8 +95,11 @@ void TransferSettings::reset()
 
 void TransferSettings::addHeader( const std::string &header )
 {
-  if ( ! header.empty() )
-    _impl->_headers.push_back(header);
+  std::string val { str::trim( header ) };
+  if ( not val.empty() )
+    _impl->_headers.push_back( std::move(val) );
+  else
+    WAR << "Discard empty header" << endl;
 }
 
 TransferSettings::Headers::const_iterator TransferSettings::headersBegin() const

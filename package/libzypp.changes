@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jun 20 12:31:37 CEST 2023 - ma@suse.de
+
+- curl: Trim user agent and custom header strings (bsc#1212187)
+  HTTP/2 RFC 9113 forbids fields ending with a space. Violation
+  results in curl error: 92: HTTP/2 PROTOCOL_ERROR.
+- version 16.22.8 (0)
+
+-------------------------------------------------------------------
 Mon Apr 24 15:58:34 CEST 2023 - ma@suse.de
 
 - zypp.conf: Introduce 'download.connect_timeout' [60 sec.]

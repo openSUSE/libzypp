@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug  4 17:40:19 CEST 2023 - ma@suse.de
+
+- SINGLE_RPMTRANS: Respect ZYPP_READONLY_HACK when checking the
+  zypp-rpm lock (fixes openSUSE/openSUSE-repos#29)
+- version 17.31.18 (22)
+
+-------------------------------------------------------------------
 Fri Jul 28 12:26:54 CEST 2023 - ma@suse.de
 
 - Fix wrong filesize exceeded dl abort in zyppng::Downloader

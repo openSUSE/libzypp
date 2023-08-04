@@ -432,15 +432,15 @@ namespace zypp
         }
         if ( failed )
           ZYPP_THROW( makeLockedError( globalLock().lockerPid(), globalLock().lockerName() ));
-      }
 
-      // we got the global lock, now make sure zypp-rpm is not still running
-      {
-        ZYppGlobalLock zyppRpmLock( ZYppFactory::lockfileDir() / "zypp-rpm.pid" );
-        if ( zyppRpmLock.isZyppLocked () ) {
-          // release global lock, we will exit now
-          _theGlobalLock.reset();
-          ZYPP_THROW( makeLockedError( zyppRpmLock.lockerPid(), zyppRpmLock.lockerName() ));
+        // we got the global lock, now make sure zypp-rpm is not still running
+        {
+          ZYppGlobalLock zyppRpmLock( ZYppFactory::lockfileDir() / "zypp-rpm.pid" );
+          if ( zyppRpmLock.isZyppLocked () ) {
+            // release global lock, we will exit now
+            _theGlobalLock.reset();
+            ZYPP_THROW( makeLockedError( zyppRpmLock.lockerPid(), zyppRpmLock.lockerName() ));
+          }
         }
       }
 

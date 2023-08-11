@@ -120,6 +120,9 @@ namespace
       if ( dtype_r == ResourceType::OTHER || dtype_r == ResourceType::FILELISTS )
 	return true;	// skip it
 
+      if ( str::endsWith( typestr_r, "_db" ) )
+        return true;	// skip sqlitedb
+
       // filter custom resource types (by string)
       if ( dtype_r == ResourceType::NONE )
       {

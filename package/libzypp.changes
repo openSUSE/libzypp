@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 11 16:41:12 CEST 2023 - ma@suse.de
+
+- repo: Don't download unneeded sqlite metadata (fixes #476)
+- version 16.22.9 (0)
+
+-------------------------------------------------------------------
 Tue Jun 20 12:31:37 CEST 2023 - ma@suse.de
 
 - curl: Trim user agent and custom header strings (bsc#1212187)

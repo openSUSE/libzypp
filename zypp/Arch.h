@@ -134,8 +134,11 @@ namespace zypp
     /** */
     static std::string asString( const CompatSet & cset )
     {
-      return str::join( make_transform_iterator( cset.begin(), std::mem_fn(&Arch::asString) ),
-                        make_transform_iterator( cset.end(), std::mem_fn(&Arch::asString) ) );
+      // Explicitely select the overload we want, clang seems to choke if there is a static overload for the
+      // member function we want to capture in std::mem_fn (fixes GH-478)
+      const std::string & (Arch::*memfn)( ) const = &Arch::asString;
+      return str::join( make_transform_iterator( cset.begin(), std::mem_fn( memfn ) ),
+                        make_transform_iterator( cset.end(), std::mem_fn( memfn ) ) );
     }
 
   public:

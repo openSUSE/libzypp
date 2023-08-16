@@ -446,8 +446,8 @@ public:
   };
   ZYPP_DECLARE_FLAGS(Type,TypeBit);
 
-  static constexpr Type TYPE_NONE	= TypeBit(0x00);
-  static constexpr Type TYPE_ALL	= TypeBit(0xff);
+  static constexpr Type TYPE_NONE       = Type(0x00);
+  static constexpr Type TYPE_ALL	= Type(0xff);
 
   using PromptId = unsigned;
 

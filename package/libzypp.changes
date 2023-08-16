@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Aug 16 16:54:34 CEST 2023 - ma@suse.de
+
+- Fix zypp-tui/output/Out.h to build with clang.
+- Fix zypp/Arch.h for clang (fixes #478)
+  Clang seems to have issues with picking the overload in
+  std::men_fn if there is a static overload of a member function.
+  We need to explicitely specify the correct type of the function
+  pointer. To make sure this would not break compiling a
+  application with clang that builds against libzypp this patch
+  works around the problem.
+- version 17.31.19 (22)
+
+-------------------------------------------------------------------
 Fri Aug  4 17:40:19 CEST 2023 - ma@suse.de
 
 - SINGLE_RPMTRANS: Respect ZYPP_READONLY_HACK when checking the

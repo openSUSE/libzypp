@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug 17 06:44:11 UTC 2023 - Dirk Müller <dmueller@suse.com>
+
+- disable MULTICURL by default, set ZYPP_MULTICURL=1
+
+-------------------------------------------------------------------
 Wed Aug 16 16:54:34 CEST 2023 - ma@suse.de
 
 - Fix zypp-tui/output/Out.h to build with clang.

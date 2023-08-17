@@ -82,12 +82,12 @@ namespace zypp::media {
           WAR << "MediaNetwork backend enabled" << std::endl;
           which = network;
         }
-        else if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
-          WAR << "multicurl manually disabled." << std::endl;
-          which = curl;
+        else if ( getenvIs( "ZYPP_MULTICURL", "1" ) ) {
+          WAR << "multicurl manually enabled." << std::endl;
+          which = multicurl;
         }
         else
-          which = multicurl;
+          which = curl;
       }
       // Finally use the default
       std::unique_ptr<MediaNetworkCommonHandler> handler;

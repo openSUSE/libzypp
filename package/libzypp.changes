@@ -31,8 +31,6 @@ Fri Jul 28 12:26:54 CEST 2023 - ma@suse.de
 Mon Jul 24 16:58:18 CEST 2023 - ma@suse.de
 
 - Fix negative ZYPP_LOCK_TIMEOUT not waiting forever (bsc#1213231)
-- NetworkRequestManager: assert cookie file has mode 0600
-  (bsc#1158763)
 - Don't cleanup orphaned dirs if read-only mode was promised
   (bsc#1210740)
 - version 17.31.16 (22)

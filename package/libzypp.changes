@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 24 15:33:45 CEST 2023 - ma@suse.de
+
+- Fixup changes for 17.31.16. Remove faulty reference to a bug
+  actually fixed in 2019.
+- version 17.31.20 (22)
+
+-------------------------------------------------------------------
 Wed Aug 16 16:54:34 CEST 2023 - ma@suse.de
 
 - Fix zypp-tui/output/Out.h to build with clang.

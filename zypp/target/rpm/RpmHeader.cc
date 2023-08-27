@@ -11,6 +11,8 @@
 */
 #include "librpm.h"
 
+#include <cstring>
+
 #include <zypp/AutoDispose.h>
 
 ////////////////////////////////////////////////////////////////////

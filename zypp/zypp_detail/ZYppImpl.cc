@@ -120,6 +120,8 @@ namespace zypp
 
     void ZYppImpl::changeTargetTo( Target_Ptr newtarget_r )
     {
+      if ( _target && newtarget_r ) // bsc#1203760: Make sure the old target is deleted before a new one is created!
+        INT << "2 active targets at the same time must not happen!" << endl;
       _target = newtarget_r;
       ZConfig::instance().notifyTargetChanged();
       resolver()->setDefaultSolverFlags( /*all_r*/false );  // just changed defaults
@@ -134,6 +136,7 @@ namespace zypp
               return;
           }
           _target->unload();
+          _target = nullptr;  // bsc#1203760: Make sure the old target is deleted before a new one is created!
       }
       changeTargetTo( new Target( root, doRebuild_r ) );
       _target->buildCache();

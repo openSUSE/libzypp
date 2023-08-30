@@ -211,6 +211,14 @@ public:
   static unsigned blockAccess();
 
   /**
+   * @overload Blocks access iff the database is located at root_r/dbPath_r.
+   **/
+  static unsigned blockAccess( const Pathname & root_r, const Pathname & dbPath_r )
+  {
+    return ( root_r == _defaultRoot && dbPath_r == _defaultDbPath ) ? blockAccess() : 0;
+  }
+
+  /**
    * Allow access to rpmdb e.g. after @ref blockAccess. Subsequent calls to
    * @ref dbAccess will perform.
    *

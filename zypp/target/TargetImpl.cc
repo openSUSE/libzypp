@@ -979,7 +979,7 @@ namespace zypp
     {
       _rpm.closeDatabase();
       sigMultiversionSpecChanged();	// HACK: see sigMultiversionSpecChanged
-      MIL << "Targets closed" << endl;
+      MIL << "Closed target on " << _root << endl;
     }
 
     ///////////////////////////////////////////////////////////////////

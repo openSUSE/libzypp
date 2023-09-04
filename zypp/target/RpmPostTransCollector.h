@@ -14,7 +14,6 @@
 #include <iosfwd>
 
 #include <zypp/base/PtrTypes.h>
-#include <zypp/ManagedFile.h>
 #include <zypp/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -44,7 +43,7 @@ namespace zypp
         /** Extract and remember a packages %posttrans script for later execution.
          * \return whether a script was collected.
          */
-        bool collectScriptFromPackage( ManagedFile rpmPackage_r );
+        bool collectScriptFromPackage( const Pathname & rpmPackage_r );
 
         /** Execute the remembered scripts.
          * \return false if execution was aborted by a user callback

@@ -1694,9 +1694,7 @@ namespace zypp
             try
             {
               progress.tryLevel( target::rpm::InstallResolvableReport::RPM_NODEPS_FORCE );
-              if ( postTransCollector.collectScriptFromPackage( localfile ) )
-                flags |= rpm::RPMINST_NOPOSTTRANS;
-              rpm().installPackage( localfile, flags );
+              rpm().installPackage( localfile, flags, &postTransCollector );
               HistoryLog().install(citem);
 
               if ( progress.aborted() )
@@ -1764,7 +1762,7 @@ namespace zypp
             attemptToModify();
             try
             {
-              rpm().removePackage( p, flags );
+              rpm().removePackage( p, flags, &postTransCollector );
               HistoryLog().remove(citem);
 
               if ( progress.aborted() )

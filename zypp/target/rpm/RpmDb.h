@@ -35,6 +35,7 @@ namespace zypp
 {
 namespace target
 {
+class RpmPostTransCollector;
 namespace rpm
 {
 
@@ -403,6 +404,8 @@ public:
    *
    * */
   void installPackage ( const Pathname & filename, RpmInstFlags flags = RPMINST_NONE );
+  /** \overload For delayed %posttrans %transfiletrigger(postun|in) execution if driven by Target::commit. */
+  void installPackage( const Pathname & filename, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
 
   /** remove rpm package
    *
@@ -416,6 +419,9 @@ public:
    * */
   void removePackage( const std::string & name_r, RpmInstFlags flags = RPMINST_NONE );
   void removePackage( Package::constPtr package, RpmInstFlags flags = RPMINST_NONE );
+  /** \overload For delayed %posttrans %transfiletrigger(postun|in) execution if driven by Target::commit. */
+  void removePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
+  void removePackage( Package::constPtr package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
 
   /**
    * get backup dir for rpm config files
@@ -481,8 +487,8 @@ public:
   virtual std::ostream & dumpOn( std::ostream & str ) const;
 
 protected:
-  void doRemovePackage( const std::string & name_r, RpmInstFlags flags, callback::SendReport<RpmRemoveReport> & report );
-  void doInstallPackage( const Pathname & filename, RpmInstFlags flags, callback::SendReport<RpmInstallReport> & report );
+  void doRemovePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmRemoveReport> & report );
+  void doInstallPackage( const Pathname & filename, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmInstallReport> & report );
   void doRebuildDatabase(callback::SendReport<RebuildDBReport> & report);
 };
 

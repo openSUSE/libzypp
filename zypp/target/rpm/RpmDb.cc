@@ -44,6 +44,7 @@ extern "C"
 
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/rpm/RpmCallbacks.h>
+#include <zypp/target/RpmPostTransCollector.h>
 
 #include <zypp/HistoryLog.h>
 #include <zypp/target/rpm/librpmDb.h>
@@ -1648,12 +1649,16 @@ void RpmDb::processConfigFiles(const std::string& line, const std::string& name,
 
 ///////////////////////////////////////////////////////////////////
 //
-//
 //	METHOD NAME : RpmDb::installPackage
-//	METHOD TYPE : PMError
 //
 void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags )
+{ installPackage( filename, flags, nullptr ); }
+
+void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
 {
+  if ( postTransCollector_r && postTransCollector_r->collectScriptFromPackage( filename ) )
+    flags |= rpm::RPMINST_NOPOSTTRANS;
+
   callback::SendReport<RpmInstallReport> report;
 
   report->start(filename);
@@ -1661,7 +1666,7 @@ void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags )
   do
     try
     {
-      doInstallPackage(filename, flags, report);
+      doInstallPackage( filename, flags, postTransCollector_r, report );
       report->finish();
       break;
     }
@@ -1682,7 +1687,7 @@ void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags )
   while (true);
 }
 
-void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, callback::SendReport<RpmInstallReport> & report )
+void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmInstallReport> & report )
 {
   FAILIFNOTINITIALIZED;
   HistoryLog historylog;
@@ -1830,26 +1835,23 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, cal
 
 ///////////////////////////////////////////////////////////////////
 //
-//
 //	METHOD NAME : RpmDb::removePackage
-//	METHOD TYPE : PMError
 //
 void RpmDb::removePackage( Package::constPtr package, RpmInstFlags flags )
-{
-  // 'rpm -e' does not like epochs
-  return removePackage( package->name()
-                        + "-" + package->edition().version()
-                        + "-" + package->edition().release()
-                        + "." + package->arch().asString(), flags );
+{ removePackage( package, flags, nullptr ); }
+
+void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags )
+{ removePackage( name_r, flags, nullptr ); }
+
+void RpmDb::removePackage( Package::constPtr package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
+{ // 'rpm -e' does not like epochs
+  removePackage( package->name()
+                 + "-" + package->edition().version()
+                 + "-" + package->edition().release()
+                 + "." + package->arch().asString(), flags, postTransCollector_r );
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : RpmDb::removePackage
-//	METHOD TYPE : PMError
-//
-void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags )
+void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
 {
   callback::SendReport<RpmRemoveReport> report;
 
@@ -1858,7 +1860,7 @@ void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags )
   do
     try
     {
-      doRemovePackage(name_r, flags, report);
+      doRemovePackage( name_r, flags, postTransCollector_r, report );
       report->finish();
       break;
     }
@@ -1880,7 +1882,7 @@ void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags )
 }
 
 
-void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, callback::SendReport<RpmRemoveReport> & report )
+void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmRemoveReport> & report )
 {
   FAILIFNOTINITIALIZED;
   HistoryLog historylog;

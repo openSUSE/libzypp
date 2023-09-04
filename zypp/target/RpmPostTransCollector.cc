@@ -54,7 +54,7 @@ namespace zypp
         { if ( !_scripts.empty() ) discardScripts(); }
 
         /** Extract and remember a packages %posttrans script for later execution. */
-        bool collectScriptFromPackage( ManagedFile rpmPackage_r )
+        bool collectScriptFromPackage( const Pathname & rpmPackage_r )
         {
           rpm::RpmHeader::constPtr pkg( rpm::RpmHeader::readPackage( rpmPackage_r, rpm::RpmHeader::NOVERIFY ) );
           if ( ! pkg )
@@ -67,7 +67,7 @@ namespace zypp
           if ( prog.empty() || prog == "<lua>" )	// by now leave lua to rpm
             return false;
 
-          filesystem::TmpFile script( tmpDir(), rpmPackage_r->basename() );
+          filesystem::TmpFile script( tmpDir(), rpmPackage_r.basename() );
           filesystem::addmod( script.path(), 0500 );
           script.autoCleanup( false );	// no autodelete; within a tmpdir
           {
@@ -237,7 +237,7 @@ namespace zypp
     RpmPostTransCollector::~RpmPostTransCollector()
     {}
 
-    bool RpmPostTransCollector::collectScriptFromPackage( ManagedFile rpmPackage_r )
+    bool RpmPostTransCollector::collectScriptFromPackage( const Pathname & rpmPackage_r )
     { return _pimpl->collectScriptFromPackage( rpmPackage_r ); }
 
     bool RpmPostTransCollector::executeScripts()

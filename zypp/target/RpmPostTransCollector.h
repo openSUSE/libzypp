@@ -22,10 +22,19 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace target
   {
+    namespace rpm { class RpmDb; }
+
     ///////////////////////////////////////////////////////////////////
     /// \class RpmPostTransCollector
     /// \brief Extract and remember %posttrans scripts for later execution
-    /// \todo Maybe embedd this into the TransactionSteps.
+    ///
+    /// bsc#1041742: Attempt to delay also %transfiletrigger(postun|in) execution
+    /// iff rpm supports it. Rpm versions supporting --runposttrans will inject
+    /// "dump_posttrans:..." lines into the output if macro "_dump_posttrans" is
+    /// defined during execution. Those lines are collected and later fed into
+    /// "rpm --runposttrans".
+    /// If rpm does not support it, those lines are not injected. In this case we
+    /// collect and later execute the %posttrans script on our own.
     ///////////////////////////////////////////////////////////////////
     class RpmPostTransCollector
     {
@@ -40,17 +49,18 @@ namespace zypp
         ~RpmPostTransCollector();
 
       public:
-        /** Extract and remember a packages %posttrans script for later execution.
-         * \return whether a script was collected.
-         */
-        bool collectScriptFromPackage( const Pathname & rpmPackage_r );
+        /** Test whether a package defines a %posttrans script. */
+        bool hasPosttransScript( const Pathname & rpmPackage_r );
 
-        /** Execute the remembered scripts.
-         * \return false if execution was aborted by a user callback
-         */
-        bool executeScripts();
+        /** Extract and remember a packages %posttrans script or dump_posttrans lines for later execution. */
+        void collectPosttransInfo( const Pathname & rpmPackage_r, const std::vector<std::string> & runposttrans_r );
+        /** \overload 'remove' does not trigger a %posttrans, but it may trigger %transfiletriggers. */
+        void collectPosttransInfo( const std::vector<std::string> & runposttrans_r );
 
-        /** Discard all remembered scrips. */
+        /** Execute the remembered scripts and/or or dump_posttrans lines. */
+        void executeScripts( rpm::RpmDb & rpm_r );
+
+        /** Discard all remembered scripts and/or or dump_posttrans lines. */
         void discardScripts();
 
       public:

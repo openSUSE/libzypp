@@ -1853,9 +1853,11 @@ namespace zypp
 
       } // for
 
-      // process all remembered posttrans scripts. If aborting,
-      // at least log omitted scripts.
-      if ( abort || (abort = !postTransCollector.executeScripts()) )
+      // Process any remembered %posttrans and/or %transfiletrigger(postun|in)
+      // scripts. If aborting, at least log if scripts were omitted.
+      if ( not abort )
+        postTransCollector.executeScripts( rpm() );
+      else
         postTransCollector.discardScripts();
 
       // Check presence of update scripts/messages. If aborting,

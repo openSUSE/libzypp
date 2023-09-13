@@ -1656,8 +1656,8 @@ void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags )
 
 void RpmDb::installPackage( const Pathname & filename, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
 {
-  if ( postTransCollector_r && postTransCollector_r->collectScriptFromPackage( filename ) )
-    flags |= rpm::RPMINST_NOPOSTTRANS;
+  if ( postTransCollector_r && postTransCollector_r->hasPosttransScript( filename ) )
+    flags |= rpm::RPMINST_NOPOSTTRANS;  // Just set the flag here. In \ref doInstallPackage we collect what else is needed.
 
   callback::SendReport<RpmInstallReport> report;
 
@@ -1708,6 +1708,10 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
+  if ( postTransCollector_r ) {
+    opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
+    opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
+  }
   if (flags & RPMINST_NOUPGRADE)
     opts.push_back("-i");
   else
@@ -1759,6 +1763,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
   // LEGACY: collect and forward additional rpm output in finish
   std::string rpmmsg;
   std::vector<std::string> configwarnings;	// TODO: immediately process lines rather than collecting
+  std::vector<std::string> runposttrans;	// bsc#1041742: If rpm supports --runposttrans it injects 'dump_posttrans:' lines we do collect
 
   while ( systemReadLine( line ) )
   {
@@ -1767,6 +1772,10 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
       int percent;
       sscanf( line.c_str() + 2, "%d", &percent );
       report->progress( percent );
+      continue;
+    }
+    if ( str::hasPrefix( line, "dump_posttrans:" ) ) {
+      runposttrans.push_back( line );
       continue;
     }
     ++lineno;
@@ -1787,6 +1796,10 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
     rpmmsg += "[truncated]\n";
 
   int rpm_status = systemStatus();
+  if ( postTransCollector_r && rpm_status == 0 ) {
+    // Before doing anything else, handle any pending %posttrans script or dump_posttrans lines.
+    postTransCollector_r->collectPosttransInfo( filename, runposttrans );
+  }
 
   // evaluate result
   for (std::vector<std::string>::iterator it = configwarnings.begin();
@@ -1881,7 +1894,6 @@ void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags, RpmPo
   while (true);
 }
 
-
 void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmRemoveReport> & report )
 {
   FAILIFNOTINITIALIZED;
@@ -1907,6 +1919,10 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
+  if ( postTransCollector_r ) {
+    opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
+    opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
+  }
   opts.push_back("-e");
   opts.push_back("--allmatches");
 
@@ -1938,6 +1954,7 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 
   // LEGACY: collect and forward additional rpm output in finish
   std::string rpmmsg;
+  std::vector<std::string> runposttrans;	// bsc#1041742: If rpm supports --runposttrans it injects 'dump_posttrans:' lines we do collect
 
   // got no progress from command, so we fake it:
   // 5  - command started
@@ -1946,6 +1963,10 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
   report->progress( 5 );
   while (systemReadLine(line))
   {
+    if ( str::hasPrefix( line, "dump_posttrans:" ) ) {
+      runposttrans.push_back( line );
+      continue;
+    }
     ++lineno;
     cmdout.set( "lineno", lineno );
     report->report( cmdout );
@@ -1960,6 +1981,11 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
     rpmmsg += "[truncated]\n";
   report->progress( 50 );
   int rpm_status = systemStatus();
+  if ( postTransCollector_r && rpm_status == 0 ) {
+    // Before doing anything else, handle any pending %posttrans script or dump_posttrans lines.
+    // 'remove' does not trigger %posttrans, but it may trigger %transfiletriggers.
+    postTransCollector_r->collectPosttransInfo( runposttrans );
+  }
 
   if ( rpm_status != 0 )
   {

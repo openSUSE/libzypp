@@ -1991,6 +1991,62 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 
 ///////////////////////////////////////////////////////////////////
 //
+//	METHOD NAME : RpmDb::runposttrans
+//
+int RpmDb::runposttrans( const Pathname & filename_r, std::function<void(const std::string&)> output_r )
+{
+  FAILIFNOTINITIALIZED;
+  HistoryLog historylog;
+
+  MIL << "RpmDb::runposttrans(" << filename_r << ")" << endl;
+
+  RpmArgVec opts;
+  opts.push_back("-vv");  // want vverbose output to see scriptlet execution in the log
+  opts.push_back("--runposttrans");
+  opts.push_back(filename_r.c_str());
+  run_rpm (opts, ExternalProgram::Stderr_To_Stdout);
+
+  // Tailored to suit RpmPostTransCollector.
+  // It's a pity, but we need all those verbose debug lines just
+  // to figure out which script is currently executed. Otherwise we
+  // can't tell which output belongs to which script.
+  static const str::regex rx( "^D: (%.*): scriptlet start$" );
+  str::smatch what;
+  std::string line;
+  bool silent = true; // discard everything before 1st scriptlet
+  while ( systemReadLine(line) )
+  {
+    if ( not output_r )
+      continue;
+
+    if ( str::startsWith( line, "D:" ) ) {  // rpm debug output
+      if ( str::regex_match( line, what, rx ) ) {
+        // forward ripoff header
+        output_r( "RIPOFF:"+what[1] );
+        if ( silent )
+          silent = false;
+      }
+      continue;
+    }
+    if ( silent ) {
+      continue;
+    }
+    if ( str::startsWith( line, "+ " ) ) {  // shell -x debug output
+      continue;
+    }
+    // forward output line
+    output_r( line );
+  }
+
+  int rpm_status = systemStatus();
+  if ( rpm_status != 0 ) {
+    WAR << "rpm --runposttrans returned " << rpm_status << endl;
+  }
+  return rpm_status;
+}
+
+///////////////////////////////////////////////////////////////////
+//
 //
 //	METHOD NAME : RpmDb::backupPackage
 //	METHOD TYPE : bool

@@ -28,9 +28,9 @@ namespace zypp
   //
   /** Helper to create and pass std::istream.
    * The provided std::istream may either be std::cin,
-   * sone (gziped) file or an aleady existig \c std::istream.
+   * some (gziped) file or an already existing \c std::istream.
    *
-   * An optional \c name arument may be passed to the ctor,
+   * An optional \c name argument may be passed to the ctor,
    * to identify the stream in log messages, even if it is
    * not a file.
    *
@@ -120,7 +120,7 @@ namespace zypp
 
     /** Set the size of the input stream.
      * You may set it to whatever vaule is appropriate. E.g.
-     * <tt>*=10</tt> to compensate gzip comression. or the
+     * <tt>*=10</tt> to compensate gzip compression. or the
      * number of items, lines, ... The value is not used here,
      * just provided.
     */

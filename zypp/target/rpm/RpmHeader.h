@@ -83,8 +83,10 @@ public:
 
   virtual ~RpmHeader();
 
-  bool isSrc() const;	//< Either 'src' or 'nosrc'
-  bool isNosrc() const;	//< Only 'nosrc'
+  bool isSrc() const;	///< Either 'src' or 'nosrc'
+  bool isNosrc() const;	///< Only 'nosrc'
+
+  std::string ident() const; ///< N-V-R.A or empty
 
 public:
 

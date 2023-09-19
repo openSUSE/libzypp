@@ -294,6 +294,15 @@ bool RpmHeader::isNosrc() const
   return has_tag( RPMTAG_SOURCEPACKAGE ) && ( has_tag( RPMTAG_NOSOURCE ) || has_tag( RPMTAG_NOPATCH ) );
 }
 
+std::string RpmHeader::ident() const
+{
+  static str::Format fmt { "%1%-%2%-%3%.%4%" };
+  std::string ret;
+  if ( not empty() )
+    ret = fmt % tag_name() % tag_version() % tag_release() % tag_arch();
+  return ret;
+}
+
 ///////////////////////////////////////////////////////////////////
 //
 //

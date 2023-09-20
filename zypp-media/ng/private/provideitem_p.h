@@ -186,7 +186,7 @@ namespace zyppng {
     using ProvideItem::finishReq;
     void finishReq (  ProvideQueue &queue, ProvideRequestRef finishedReq, const ProvideMessage &msg ) override;
     void cancelWithError( std::exception_ptr error ) override;
-    void finishWithSuccess (AttachedMediaInfo &medium );
+    void finishWithSuccess (AttachedMediaInfo_Ptr medium );
     expected<zypp::media::AuthData> authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields ) override;
 
     void onMasterItemReady ( const zyppng::expected<AttachedMediaInfo *>& result );

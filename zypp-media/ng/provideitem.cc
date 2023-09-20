@@ -764,11 +764,9 @@ namespace zyppng {
       // if we have a attached medium this overrules the URL we are going to ask the user about... this is how the old media backend did handle this
       // i guess there were never password protected repositories that have different credentials on the redirection targets
       auto &attachedMedia = provider().attachedMediaInfos();
-      auto i = std::find_if( attachedMedia.begin(), attachedMedia.end(), [&]( const auto &m ) { return m._name == _handleRef.handle(); } );
-      if ( i == attachedMedia.end() )
+      if ( std::find( attachedMedia.begin(), attachedMedia.end(), _handleRef.mediaInfo() ) == attachedMedia.end() )
         return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Attachment handle vanished during request.") ) );
-
-      urlToUse = i->_attachedUrl;
+      urlToUse = _handleRef.mediaInfo()->_attachedUrl;
     }
     return ProvideItem::authenticationRequired( queue, req, urlToUse, lastTimestamp, extraFields );
   }
@@ -883,7 +881,7 @@ namespace zyppng {
     auto &attachedMedia = prov.attachedMediaInfos ();
 
     for ( auto &medium : attachedMedia ) {
-      if ( medium.isSameMedium ( _mirrorList, _initialSpec ) ) {
+      if ( medium->isSameMedium ( _mirrorList, _initialSpec ) ) {
         finishWithSuccess ( medium );
         return;
       }
@@ -999,26 +997,16 @@ namespace zyppng {
     }
   }
 
-  void AttachMediaItem::finishWithSuccess( AttachedMediaInfo &medium )
+  void AttachMediaItem::finishWithSuccess( AttachedMediaInfo_Ptr medium )
   {
 
     updateState(Finalizing);
 
-    // aquire a ref to keep the medium around until we notified all dependant attach operations
-    // currently not really required because only the next schedule run will clean up attached medias
-    // but in case that ever changes the code is safe already
-    medium.ref();
-    zypp::OnScopeExit autoUnref([&]{
-      medium.unref();
-    });
-
     auto prom = promise();
     try {
       if ( prom ) {
-        // the ref for the result we are giving out
-        medium.ref();
         try {
-          prom->setReady( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium._name) ) );
+          prom->setReady( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium ) ) );
         } catch( const zypp::Exception &e ) {
           ZYPP_CAUGHT(e);
         }
@@ -1030,7 +1018,7 @@ namespace zyppng {
     }
 
     // tell others as well
-    _sigReady.emit( zyppng::expected<AttachedMediaInfo *>::success(&medium) );
+    _sigReady.emit( zyppng::expected<AttachedMediaInfo *>::success(medium.get()) );
 
     prom->isReady ();
 
@@ -1076,8 +1064,7 @@ namespace zyppng {
     _masterItemConn.disconnect();
 
     if ( result ) {
-      AttachedMediaInfo &medium = *result.get();
-      finishWithSuccess(medium);
+      finishWithSuccess( AttachedMediaInfo_Ptr(result.get()) );
     } else {
       try {
         std::rethrow_exception ( result.error() );

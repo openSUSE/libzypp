@@ -39,6 +39,7 @@ namespace zyppng {
 
   class ProvidePrivate;
   using AnyMap = std::unordered_map<std::string, boost::any>;
+  DEFINE_PTR_TYPE(AttachedMediaInfo);
 
   /*!
   * RAII helper for media handles
@@ -47,13 +48,14 @@ namespace zyppng {
   {
     public:
       ProvideMediaHandle () = default;
-      ProvideMediaHandle ( Provide &parent, const std::string &hdl );
+      ProvideMediaHandle ( Provide &parent, AttachedMediaInfo_Ptr mediaInfoRef );
       std::shared_ptr<Provide> parent() const;
       bool isValid () const;
       std::string handle() const;
+      zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:
-      struct Data;
-      std::shared_ptr<Data> _ref;
+      ProvideWeakRef _parent;
+      AttachedMediaInfo_Ptr _mediaRef;
   };
 
   /*!
@@ -164,7 +166,6 @@ namespace zyppng {
 
   private:
     Provide(  const zypp::Pathname &workDir );
-    void releaseMedia( const std::string &mediaRef );
   };
 
 }

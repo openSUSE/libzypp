@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-24 17:02+0200\n"
+"POT-Creation-Date: 2023-09-21 11:50+0200\n"
 "PO-Revision-Date: 2023-05-29 06:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/libzypp/master/"
@@ -4816,15 +4816,21 @@ msgstr ""
 msgid "deinstallation of %1%"
 msgstr ""
 
-#: zypp/target/RpmPostTransCollector.cc:98
-#, boost-format
-msgid "Executing %%posttrans script '%1%'"
+#. Translator: progress bar label
+#: zypp/target/RpmPostTransCollector.cc:194
+msgid "Running post-transaction scripts"
 msgstr ""
 
-#. show a final message
-#: zypp/target/RpmPostTransCollector.cc:172
-#, c-format, boost-format
-msgid "Executing %posttrans scripts"
+#. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
+#: zypp/target/RpmPostTransCollector.cc:196
+#, boost-format
+msgid "Running %1% script"
+msgstr ""
+
+#. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
+#: zypp/target/RpmPostTransCollector.cc:198
+#, boost-format
+msgid "%1% script output:"
 msgstr ""
 
 #: zypp/target/TargetException.cc:27
@@ -4875,46 +4881,46 @@ msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:467 zypp/target/rpm/RpmDb.cc:1811
-#: zypp/target/rpm/RpmDb.cc:1970
+#: zypp/target/rpm/RpmDb.cc:468 zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1998
 msgid "RPM failed: "
 msgstr ""
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:792
+#: zypp/target/rpm/RpmDb.cc:793
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr ""
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:859
+#: zypp/target/rpm/RpmDb.cc:860
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1271
+#: zypp/target/rpm/RpmDb.cc:1272
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1273
+#: zypp/target/rpm/RpmDb.cc:1274
 msgid "Package payload is not signed!"
 msgstr ""
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1610
+#: zypp/target/rpm/RpmDb.cc:1611
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr ""
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1810
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1794
+#: zypp/target/rpm/RpmDb.cc:1812
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4922,13 +4928,13 @@ msgid ""
 msgstr ""
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1815
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr ""
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1799
+#: zypp/target/rpm/RpmDb.cc:1817
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4939,47 +4945,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1827 zypp/target/rpm/RpmDb.cc:1986
+#: zypp/target/rpm/RpmDb.cc:1845 zypp/target/rpm/RpmDb.cc:2014
 msgid "Additional rpm output"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:2128
+#: zypp/target/rpm/RpmDb.cc:2212
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2149
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "Signature is OK"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2151
+#: zypp/target/rpm/RpmDb.cc:2235
 msgid "Unknown type of signature"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2153
+#: zypp/target/rpm/RpmDb.cc:2237
 msgid "Signature does not verify"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2155
+#: zypp/target/rpm/RpmDb.cc:2239
 msgid "Signature is OK, but key is not trusted"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2157
+#: zypp/target/rpm/RpmDb.cc:2241
 msgid "Signatures public key is not available"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2159
+#: zypp/target/rpm/RpmDb.cc:2243
 msgid "File does not exist or signature can't be checked"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2161
+#: zypp/target/rpm/RpmDb.cc:2245
 msgid "File is unsigned"
 msgstr ""
 

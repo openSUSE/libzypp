@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.sv\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-24 17:02+0200\n"
+"POT-Creation-Date: 2023-09-21 11:50+0200\n"
 "PO-Revision-Date: 2023-09-09 06:15+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/libzypp/master/sv/"
@@ -4741,16 +4741,22 @@ msgstr "ersättning av %1% med %2%"
 msgid "deinstallation of %1%"
 msgstr "avinstallation av %1%"
 
-#: zypp/target/RpmPostTransCollector.cc:98
-#, boost-format
-msgid "Executing %%posttrans script '%1%'"
-msgstr "Kör %%posttrans-skriptet '%1%'"
+#. Translator: progress bar label
+#: zypp/target/RpmPostTransCollector.cc:194
+msgid "Running post-transaction scripts"
+msgstr ""
 
-#. show a final message
-#: zypp/target/RpmPostTransCollector.cc:172
-#, c-format, boost-format
-msgid "Executing %posttrans scripts"
-msgstr "Kör %p 1osttrans-skript"
+#. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
+#: zypp/target/RpmPostTransCollector.cc:196
+#, boost-format
+msgid "Running %1% script"
+msgstr ""
+
+#. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
+#: zypp/target/RpmPostTransCollector.cc:198
+#, boost-format
+msgid "%1% script output:"
+msgstr ""
 
 #: zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
@@ -4803,46 +4809,46 @@ msgstr "Det gick inte att utföra transaktionen på grund av följande problem:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:467 zypp/target/rpm/RpmDb.cc:1811
-#: zypp/target/rpm/RpmDb.cc:1970
+#: zypp/target/rpm/RpmDb.cc:468 zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1998
 msgid "RPM failed: "
 msgstr "RPM misslyckades: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:792
+#: zypp/target/rpm/RpmDb.cc:793
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Det gick inte att importera den offentliga nyckeln %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:859
+#: zypp/target/rpm/RpmDb.cc:860
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Det gick inte att ta bort den offentliga nyckeln %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1271
+#: zypp/target/rpm/RpmDb.cc:1272
 msgid "Package header is not signed!"
 msgstr "Pakethuvud är inte signerat!"
 
-#: zypp/target/rpm/RpmDb.cc:1273
+#: zypp/target/rpm/RpmDb.cc:1274
 msgid "Package payload is not signed!"
 msgstr "Paket payload är inte signerad!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1610
+#: zypp/target/rpm/RpmDb.cc:1611
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Konfigurationsfiler har ändrats för %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1810
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "RPM sparade %s som %s, men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1794
+#: zypp/target/rpm/RpmDb.cc:1812
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4852,13 +4858,13 @@ msgstr ""
 "Här visas de första 25 raderna med skillnader:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1815
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "RPM skapade %s som %s, men det gick inte att avgöra skillnaden"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1799
+#: zypp/target/rpm/RpmDb.cc:1817
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4871,47 +4877,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1827 zypp/target/rpm/RpmDb.cc:1986
+#: zypp/target/rpm/RpmDb.cc:1845 zypp/target/rpm/RpmDb.cc:2014
 msgid "Additional rpm output"
 msgstr "Ytterligare RPM-utdata"
 
-#: zypp/target/rpm/RpmDb.cc:2128
+#: zypp/target/rpm/RpmDb.cc:2212
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "skapade säkerhetskopian %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2149
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "Signature is OK"
 msgstr "Signaturen är OK"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2151
+#: zypp/target/rpm/RpmDb.cc:2235
 msgid "Unknown type of signature"
 msgstr "Okänd signaturtyp"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2153
+#: zypp/target/rpm/RpmDb.cc:2237
 msgid "Signature does not verify"
 msgstr "Signaturen kan inte verifieras"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2155
+#: zypp/target/rpm/RpmDb.cc:2239
 msgid "Signature is OK, but key is not trusted"
 msgstr "Signaturen är OK, men nyckeln är inte betrodd"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2157
+#: zypp/target/rpm/RpmDb.cc:2241
 msgid "Signatures public key is not available"
 msgstr "Signaturens offentliga nyckel är inte tillgänglig"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2159
+#: zypp/target/rpm/RpmDb.cc:2243
 msgid "File does not exist or signature can't be checked"
 msgstr "Filen finns inte eller signaturen kan inte kontrolleras"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2161
+#: zypp/target/rpm/RpmDb.cc:2245
 msgid "File is unsigned"
 msgstr "Filen är inte signerad"
 
@@ -5369,6 +5375,14 @@ msgstr "ja"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "nej"
+
+#, boost-format
+#~ msgid "Executing %%posttrans script '%1%'"
+#~ msgstr "Kör %%posttrans-skriptet '%1%'"
+
+#, c-format, boost-format
+#~ msgid "Executing %posttrans scripts"
+#~ msgstr "Kör %p 1osttrans-skript"
 
 #~ msgid "Package is not signed!"
 #~ msgstr "Paketet är inte signerat!"

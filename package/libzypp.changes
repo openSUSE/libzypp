@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Sep 21 14:54:42 CEST 2023 - ma@suse.de
+
+- Attempt to delay %transfiletrigger(postun|in) execution if rpm
+  supports it (bsc#1041742)
+  Decide during installation whether rpm is capable of delayed
+  %posttrans %transfiletrigger(postun|in) execution or whether we
+  can just handle the packages %posttrans. On TW a delayed
+  %transfiletrigger handling is possible since rpm-4.17.
+- Make sure the old target is deleted before a new one is created
+  (bsc#1203760)
+- version 17.31.21 (22)
+
+-------------------------------------------------------------------
 Thu Aug 24 15:33:45 CEST 2023 - ma@suse.de
 
 - Fixup changes for 17.31.16. Remove faulty reference to a bug

@@ -4,4 +4,4 @@
 
 INCLUDE ( FindPkgConfig )
 
-PKG_SEARCH_MODULE( LIBPROXY libproxy-1.0 )
+PKG_CHECK_MODULES( LIBPROXY libproxy-1.0 )

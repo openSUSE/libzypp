@@ -1684,7 +1684,11 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
+#if defined(WORKAROUNDDUMPPOSTTRANS_BUG_1216091)
+  if ( postTransCollector_r && _root == "/" ) {
+#else
   if ( postTransCollector_r ) {
+#endif
     opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
     opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
   }
@@ -1895,7 +1899,11 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
+#if defined(WORKAROUNDDUMPPOSTTRANS_BUG_1216091)
+  if ( postTransCollector_r && _root == "/" ) {
+#else
   if ( postTransCollector_r ) {
+#endif
     opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
     opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
   }

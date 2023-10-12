@@ -15,6 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
+
 %if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150400 || (0%{?is_opensuse} && 0%{?sle_version} >= 150100)
 %bcond_without zchunk
 %else
@@ -289,11 +291,11 @@ Developer documentation for libzypp.
 %build
 mkdir build
 cd build
-%if 0%{?suse_version} > 1500
-# Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction
-# While the bug is not fixed, we don't allow ZYPP_SINGLE_RPMTRANS=1 on a not UsrMerged system
-export CFLAGS="%{optflags} -DNO_SINGLETRANS_USERMERGE"
-export CXXFLAGS="%{optflags} -DNO_SINGLETRANS_USERMERGE"
+%if 0%{?suse_version} == 1600
+# bsc#1216091: rpm-4.18' does not execute 'rpm --runposttrans'
+# scripts chroot if --root is used.
+export CFLAGS="%{optflags} -DWORKAROUNDDUMPPOSTTRANS_BUG_1216091"
+export CXXFLAGS="%{optflags} -DWORKAROUNDDUMPPOSTTRANS_BUG_1216091"
 %else
 export CFLAGS="%{optflags}"
 export CXXFLAGS="%{optflags}"

@@ -261,6 +261,19 @@ namespace zyppng
     return *this;
   }
 
+  zypp::OnMediaLocation ProvideFileSpec::asOnMediaLocation( const zypp::Pathname &path, unsigned int mediaNr ) const
+  {
+    return zypp::OnMediaLocation( path, mediaNr )
+        .setDownloadSize( downloadSize() )
+        .setOptional( optional() )
+        .setChecksum( checksum() )
+        .setOpenSize( openSize() )
+        .setOpenChecksum( openChecksum() )
+        .setHeaderSize( headerSize() )
+        .setHeaderChecksum( headerChecksum() )
+        .setDeltafile( deltafile() );
+  }
+
   std::ostream & operator<<( std::ostream & str, const ProvideFileSpec & obj )
   { return str << *obj._pimpl; }
 

@@ -69,8 +69,10 @@ namespace zyppng {
 
   void ProvidePrivate::doSchedule ( zyppng::Timer & )
   {
-    if ( !_isRunning )
+    if ( !_isRunning ) {
+      MIL << "Provider is not started, NOT scheduling" << std::endl;
       return;
+    }
 
     if ( _isScheduling ) {
       DBG_PRV << "Scheduling triggered during scheduling, returning immediately." << std::endl;
@@ -942,6 +944,21 @@ namespace zyppng {
     return _mediaRef->_name;
   }
 
+  const zypp::Url &ProvideMediaHandle::baseUrl() const
+  {
+    static zypp::Url invalidHandle;
+    if ( !_mediaRef )
+      return invalidHandle;
+    return _mediaRef->_attachedUrl;
+  }
+
+  const zypp::Pathname &ProvideMediaHandle::localPath() const
+  {
+    static zypp::Pathname dummy;
+    ERR << "NOT IMPLEMENTED YET" << std::endl;
+    return dummy;
+  }
+
   AttachedMediaInfo_constPtr ProvideMediaHandle::mediaInfo() const
   {
     return _mediaRef;
@@ -1053,17 +1070,22 @@ namespace zyppng {
     return op->promise();
   }
 
-  AsyncOpRef<expected<std::string>> Provide::checksumForFile ( const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
   {
     using namespace zyppng::operators;
 
     zypp::Url url("chksum:///");
     url.setPathName( p );
     auto fut = provide( url, zyppng::ProvideFileSpec().setCustomHeaderValue( "chksumType", algorithm ) )
-      | mbind( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
-        if ( chksumRes.headers().contains(algorithm) )
-          return expected<std::string>::success( chksumRes.headers().value(algorithm).asString() );
-        return expected<std::string>::error( ZYPP_EXCPT_PTR( zypp::FileCheckException("Invalid/Empty checksum returned from worker") ) );
+      | and_then( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
+        if ( chksumRes.headers().contains(algorithm) ) {
+          try {
+            return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, chksumRes.headers().value(algorithm).asString() ) );
+          } catch ( ... ) {
+            return expected<zypp::CheckSum>::error( std::current_exception() );
+          }
+        }
+        return expected<zypp::CheckSum>::error( ZYPP_EXCPT_PTR( zypp::FileCheckException("Invalid/Empty checksum returned from worker") ) );
       } );
     return fut;
   }
@@ -1074,11 +1096,24 @@ namespace zyppng {
 
     zypp::Url url("copy:///");
     url.setPathName( source );
-    auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target ))
-      | mbind( [&]( ProvideRes &&copyRes) {
+    auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target  ))
+      | and_then( [&]( ProvideRes &&copyRes ) {
           return expected<zypp::ManagedFile>::success( copyRes.asManagedFile() );
       } );
     return fut;
+  }
+
+  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( ProvideRes &&source, const zypp::filesystem::Pathname &target )
+  {
+    using namespace zyppng::operators;
+
+    auto fName = source.file();
+    return copyFile( fName, target )
+           | [ resSave = std::move(source) ] ( auto &&result ) {
+               // callback lambda to keep the ProvideRes reference around until the op is finished,
+               // if the op fails the callback will be cleaned up and so the reference
+               return result;
+             };
   }
 
   void Provide::start ()

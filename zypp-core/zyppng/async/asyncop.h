@@ -24,6 +24,7 @@
 namespace zyppng {
 
   template <typename Result> struct AsyncOp;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( AsyncOpBase );
 
   namespace detail {
     template <typename T, typename Enable = std::void_t<> >
@@ -85,7 +86,9 @@ namespace zyppng {
   inline CancelNotImplementedException::~CancelNotImplementedException() { }
 
 
-  struct AsyncOpBase : public Base {
+  class AsyncOpBase : public Base {
+
+  public:
 
     /*!
      * Should return true if the async op supports cancelling, otherwise false
@@ -159,7 +162,7 @@ namespace zyppng {
 
     static_assert(!detail::is_async_op_v<Result>, "A async op can never have a async result");
 
-    using value_type = Result;
+    typedef Result value_type;
     using Ptr = std::shared_ptr<AsyncOp<Result>>;
 
     AsyncOp () = default;
@@ -247,8 +250,33 @@ namespace zyppng {
     std::optional<value_type> _maybeValue;
   };
 
+
   template <typename T>
   using AsyncOpRef = std::shared_ptr<AsyncOp<T>>;
+
+
+  /*!
+   * Helper mixin for AsyncOp types that host a inner pipeline for
+   * their logic. This is useful if a lot of state has to be preserved
+   * over a longer pipeline, instead of capturing all the seperate
+   * variables into the lambda callbacks it makes more sense to
+   * use a containing AsyncOp to help with it.
+   */
+  template <typename Base, typename Result = typename Base::value_type>
+  struct NestedAsyncOpMixin
+  {
+    template <typename ...Args>
+    void operator ()( Args &&...args ) {
+      assert(!_nestedPipeline);
+      _nestedPipeline = static_cast<Base *>(this)->makePipeline( std::forward<Args>(args)...);
+      _nestedPipeline->onReady([this]( auto &&val ){
+        static_cast<Base *>(this)->setReady( std::move(val) );
+      });
+    }
+
+  private:
+    AsyncOpRef<Result> _nestedPipeline;
+  };
 
   namespace detail {
     //A async result that is ready right away
@@ -262,12 +290,16 @@ namespace zyppng {
   }
 
   /*!
-   * Returns a \ref AsyncOpRef that is always ready, containing the \a result as
-   * its final value.
+   * Is \a isAsync is true returns a \ref AsyncOpRef that is always ready, containing the \a result as
+   * its final value, otherwise the value passed to the function is just forwarded.
    */
-  template <typename T>
-  AsyncOpRef<T> makeReadyResult ( T && result ) {
-    return std::make_shared<detail::ReadyResult<T>>( std::move(result) );
+  template <typename T, bool isAsync = true>
+  std::conditional_t<isAsync, AsyncOpRef<T>, T> makeReadyResult ( T && result ) {
+    if constexpr ( isAsync ) {
+      return std::make_shared<detail::ReadyResult<T>>( std::forward<T>(result) );
+    } else {
+      return result;
+    }
   }
 
 }

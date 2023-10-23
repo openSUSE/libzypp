@@ -290,6 +290,9 @@ void NetworkProvider::provide()
       MIL << "Explicity setting metalink " << ( doMetalink ? "enabled" : "disabled" ) << std::endl;
     }
 
+    ERR << "Forcing Metalink to be disabled until zsync/metalink is correctly implemented again" << std::endl;
+    doMetalink = false;
+
     req->_targetFileName  = localPath;
     req->_stagingFileName = stagingPath;
 
@@ -384,6 +387,8 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
         }
 
       }  catch ( const zypp::Exception &exp ) {
+        zypp::filesystem::hardlinkCopy ( item->_stagingFileName, "/tmp/broken" );
+        ZYPP_CAUGHT(exp);
         provideFailed( item->_spec.requestId(), zyppng::ProvideMessage::Code::InternalError, exp.asUserString (), false );
       }
 

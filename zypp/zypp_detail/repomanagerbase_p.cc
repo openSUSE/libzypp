@@ -170,10 +170,10 @@ namespace zypp
     //@TODO Add Appdata refresh?
   }
 
-  RepoStatus RepoManagerBaseImpl::metadataStatus( const RepoInfo & info ) const
+  RepoStatus RepoManagerBaseImpl::metadataStatus(const RepoInfo & info , const RepoManagerOptions &options)
   {
-    Pathname mediarootpath = rawcache_path_for_repoinfo( _options, info );
-    Pathname productdatapath = rawproductdata_path_for_repoinfo( _options, info );
+    Pathname mediarootpath = rawcache_path_for_repoinfo( options, info );
+    Pathname productdatapath = rawproductdata_path_for_repoinfo( options, info );
 
     repo::RepoType repokind = info.type();
     // If unknown, probe the local metadata
@@ -214,6 +214,11 @@ namespace zypp
     return status;
   }
 
+  RepoStatus RepoManagerBaseImpl::metadataStatus(const RepoInfo &info) const
+  {
+    return metadataStatus( info, _options );
+  }
+
   void RepoManagerBaseImpl::cleanMetadata(const RepoInfo &info, const ProgressData::ReceiverFnc & progressfnc )
   {
     ProgressData progress(100);
@@ -241,7 +246,7 @@ namespace zypp
    * \note Metadata in local cache directories must not be probed using \ref probe as
    * a cache path must not be rewritten (bnc#946129)
    */
-  repo::RepoType RepoManagerBaseImpl::probeCache( const Pathname & path_r ) const
+  repo::RepoType RepoManagerBaseImpl::probeCache( const Pathname & path_r )
   {
     MIL << "going to probe the cached repo at " << path_r << endl;
 
@@ -375,7 +380,7 @@ namespace zypp
     HistoryLog(_options.rootDir).addRepository(tosave);
   }
 
-  void RepoManagerBaseImpl::removeRepository( const RepoInfo & info, const ProgressData::ReceiverFnc & progressrcv )
+  void RepoManagerBaseImpl::removeRepositoryImpl( const RepoInfo & info, const ProgressData::ReceiverFnc & progressrcv )
   {
     ProgressData progress;
     callback::SendReport<ProgressReport> report;
@@ -759,9 +764,9 @@ namespace zypp
     return dir + Pathname(final_filename);
   }
 
-  void RepoManagerBaseImpl::touchIndexFile( const RepoInfo & info )
+  void RepoManagerBaseImpl::touchIndexFile(const RepoInfo &info, const RepoManagerOptions &options)
   {
-    Pathname productdatapath = rawproductdata_path_for_repoinfo( _options, info );
+    Pathname productdatapath = rawproductdata_path_for_repoinfo( options, info );
 
     repo::RepoType repokind = info.type();
     if ( repokind.toEnum() == repo::RepoType::NONE_e )
@@ -793,6 +798,11 @@ namespace zypp
 
     // touch the file, ignore error (they are logged anyway)
     filesystem::touch(p);
+  }
+
+  void RepoManagerBaseImpl::touchIndexFile( const RepoInfo & info )
+  {
+    return touchIndexFile( info, _options );
   }
 
   void RepoManagerBaseImpl::init_knownServices()
@@ -933,6 +943,17 @@ namespace zypp
       }
     }
     MIL << "end construct known repos" << endl;
+  }
+
+  void assert_alias(const RepoInfo &info)
+  {
+    if ( info.alias().empty() )
+      ZYPP_THROW( repo::RepoNoAliasException( info ) );
+    // bnc #473834. Maybe we can match the alias against a regex to define
+    // and check for valid aliases
+    if ( info.alias()[0] == '.')
+      ZYPP_THROW(repo::RepoInvalidAliasException(
+        info, _("Repository alias cannot start with dot.")));
   }
 
 }

@@ -31,16 +31,7 @@ namespace zypp {
   inline bool isTmpRepo( const RepoInfo & info_r )
   { return( info_r.filepath().empty() && info_r.usesAutoMethadataPaths() ); }
 
-  inline void assert_alias( const RepoInfo & info )
-  {
-    if ( info.alias().empty() )
-      ZYPP_THROW( repo::RepoNoAliasException( info ) );
-    // bnc #473834. Maybe we can match the alias against a regex to define
-    // and check for valid aliases
-    if ( info.alias()[0] == '.')
-      ZYPP_THROW(repo::RepoInvalidAliasException(
-        info, _("Repository alias cannot start with dot.")));
-  }
+  void assert_alias( const RepoInfo & info );
 
   inline void assert_alias( const ServiceInfo & info )
   {
@@ -272,13 +263,14 @@ namespace zypp {
     Pathname packagesPath( const RepoInfo & info ) const
     { return packagescache_path_for_repoinfo( _options, info ); }
 
+    static RepoStatus metadataStatus( const RepoInfo & info, const RepoManagerOptions &options );
     RepoStatus metadataStatus( const RepoInfo & info ) const;
 
     void cleanMetadata( const RepoInfo & info, OPT_PROGRESS );
 
     void cleanPackages(const RepoInfo & info, OPT_PROGRESS , bool isAutoClean = false);
 
-    repo::RepoType probeCache( const Pathname & path_r ) const;
+    static repo::RepoType probeCache( const Pathname & path_r );
 
     void cleanCacheDirGarbage( OPT_PROGRESS );
 
@@ -288,13 +280,16 @@ namespace zypp {
     { return PathInfo(solv_path_for_repoinfo( _options, info ) / "solv").isExist(); }
 
     RepoStatus cacheStatus( const RepoInfo & info ) const
-    { return RepoStatus::fromCookieFile(solv_path_for_repoinfo(_options, info) / "cookie"); }
+    { return cacheStatus( info, _options ); }
+
+    static RepoStatus cacheStatus( const RepoInfo & info, const RepoManagerOptions &options )
+    { return RepoStatus::fromCookieFile(solv_path_for_repoinfo(options, info) / "cookie"); }
 
     void loadFromCache( const RepoInfo & info, OPT_PROGRESS );
 
     void addProbedRepository( const RepoInfo & info, repo::RepoType probedType );
 
-    void removeRepository( const RepoInfo & info, OPT_PROGRESS );
+    virtual void removeRepository ( const RepoInfo & info, OPT_PROGRESS ) = 0;
 
     void modifyRepository( const std::string & alias, const RepoInfo & newinfo_r, OPT_PROGRESS );
 
@@ -327,7 +322,10 @@ namespace zypp {
 
     void modifyService( const std::string & oldAlias, const ServiceInfo & newService );
 
+    static void touchIndexFile( const RepoInfo & info, const RepoManagerOptions &options );
+
   protected:
+    void removeRepositoryImpl( const RepoInfo & info, OPT_PROGRESS );
     void saveService( ServiceInfo & service ) const;
 
     Pathname generateNonExistingName( const Pathname & dir, const std::string & basefilename ) const;

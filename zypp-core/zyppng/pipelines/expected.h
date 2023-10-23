@@ -18,11 +18,13 @@
 
 #include <zypp-core/zyppng/meta/Functional>
 #include <zypp-core/zyppng/pipelines/AsyncResult>
+#include <zypp-core/zyppng/pipelines/Wait>
+#include <zypp-core/zyppng/pipelines/Transform>
 
 namespace zyppng {
 
   template<typename T, typename E = std::exception_ptr>
-  class expected {
+  class [[nodiscard]] expected {
   protected:
       union {
           T m_value;
@@ -201,7 +203,7 @@ namespace zyppng {
 
 
   template<typename E>
-  class expected<void, E> {
+  class [[nodiscard]] expected<void, E> {
   private:
       union {
           void* m_value;
@@ -328,9 +330,9 @@ namespace zyppng {
   };
 
   template <typename Type, typename Err = std::exception_ptr >
-  static expected<Type,Err> make_expected_success( Type &&t )
+  static expected<std::decay_t<Type>,Err> make_expected_success( Type &&t )
   {
-    return expected<Type,Err>::success( std::forward<Type>(t) );
+    return expected<std::decay_t<Type>,Err>::success( std::forward<Type>(t) );
   }
 
   namespace detail {
@@ -341,6 +343,11 @@ namespace zyppng {
     // types. Instead we pass in the template types and evaluate the ::type in the end, when the correct invoke_result was chosen.
     template < typename Function, typename ArgType>
     using mbind_cb_result_t = typename std::conditional_t< std::is_same_v<ArgType,void>, std::invoke_result<Function>,std::invoke_result<Function, ArgType> >::type;
+
+    template <typename T>
+    bool waitForCanContinueExpected( const expected<T> &value ) {
+      return value.is_valid();
+    }
   }
 
 
@@ -349,15 +356,18 @@ namespace zyppng {
            , typename Function
            , typename ResultType = detail::mbind_cb_result_t<Function, T>
            >
-  std::enable_if_t< !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value, ResultType> mbind( const expected<T, E>& exp, Function f)
+  ResultType and_then( const expected<T, E>& exp, Function &&f)
   {
       if (exp) {
         if constexpr ( std::is_same_v<T,void> )
-          return std::invoke( f );
+          return std::invoke( std::forward<Function>(f) );
         else
-          return std::invoke( f, exp.get() );
+          return std::invoke( std::forward<Function>(f), exp.get() );
       } else {
+        if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
           return ResultType::error(exp.error());
+        else
+          return makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error(exp.error()) );
       }
   }
 
@@ -366,67 +376,159 @@ namespace zyppng {
     , typename Function
     , typename ResultType = detail::mbind_cb_result_t<Function, T>
     >
-  std::enable_if_t< !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value, ResultType> mbind( expected<T, E>&& exp, Function f)
+  ResultType and_then( expected<T, E>&& exp, Function &&f)
   {
     if (exp) {
       if constexpr ( std::is_same_v<T,void> )
-        return std::invoke( f );
+        return std::invoke( std::forward<Function>(f) );
       else
-        return std::invoke( f, std::move(exp.get()) );
+        return std::invoke( std::forward<Function>(f), std::move(exp.get()) );
     } else {
-      return ResultType::error( std::move(exp.error()) );
+      if constexpr ( !detail::is_async_op< ResultType >::value )
+        return ResultType::error( std::move(exp.error()) );
+      else
+        return makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error(exp.error()) );
     }
   }
 
   template < typename T
     , typename E
     , typename Function
-    , typename ResultType = detail::mbind_cb_result_t<Function, T>
+    , typename ResultType = detail::mbind_cb_result_t<Function, E>
     >
-  std::enable_if_t< detail::is_async_op< remove_smart_ptr_t<ResultType> >::value, ResultType> mbind( const expected<T, E>& exp, Function f)
+  ResultType or_else( const expected<T, E>& exp, Function &&f)
   {
-    if (exp) {
+    if (!exp) {
       if constexpr ( std::is_same_v<T,void> )
-        return std::invoke( f );
+        return std::invoke( std::forward<Function>(f) );
       else
-        return std::invoke( f, exp.get() );
+        return std::invoke( std::forward<Function>(f), exp.error() );
     } else {
-      return  makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error(exp.error()) );
+      return exp;
     }
   }
 
   template < typename T
     , typename E
     , typename Function
-    , typename ResultType = detail::mbind_cb_result_t<Function, T>
+    , typename ResultType = detail::mbind_cb_result_t<Function, E>
     >
-  std::enable_if_t< detail::is_async_op< remove_smart_ptr_t<ResultType> >::value, ResultType> mbind( expected<T, E>&& exp, Function f)
+  ResultType or_else( expected<T, E>&& exp, Function &&f)
+  {
+    if (!exp) {
+      if constexpr ( std::is_same_v<T,void> )
+        return std::invoke( std::forward<Function>(f) );
+      else
+        return std::invoke( std::forward<Function>(f), std::move(exp.error()) );
+    } else {
+      if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
+        return exp;
+      else
+        return makeReadyResult( std::move(exp) );
+    }
+  }
+
+
+  /*!
+   * Collects all values from a Container of \ref expected values, returning the
+   * contained values or the first error encountered as a expected<Container<T>>
+   */
+  template < template< class, class... > class Container,
+    typename T,
+    typename E,
+    typename ...CArgs >
+  expected<Container<T>, E> collect( Container<expected<T, E>, CArgs...>&& in ) {
+    Container<T> res;
+    for( auto &v : in ) {
+      if ( !v )
+        return expected<Container<T>,E>::error( std::move(v.error()) );
+      res.push_back( std::move(v.get()) );
+    }
+    return expected<Container<T>,E>::success( std::move(res) );
+  }
+
+  template < typename T
+    , typename E
+    , typename Function
+    >
+  expected<T, E> inspect( expected<T, E>&& exp, Function &&f)
   {
     if (exp) {
-      if constexpr ( std::is_same_v<T,void> )
-        return std::invoke( f );
-      else
-        return std::invoke( f, std::move(exp.get()) );
-    } else {
-      return  makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error( std::move(exp.error()) ) );
+      const auto &val = exp.get();
+      std::invoke( f, val );
     }
+    return exp;
+  }
+
+  template < typename T
+    , typename E
+    , typename Function
+    >
+  expected<T, E> inspect_err( expected<T, E>&& exp, Function &&f)
+  {
+    if (!exp) {
+      const auto &err = exp.error();
+      std::invoke( f, err );
+    }
+    return exp;
   }
 
   namespace detail {
+
     template <typename Callback>
-    struct mbind_helper {
+    struct and_then_helper {
       Callback function;
 
-      template< typename T
-        , typename E >
+      template< typename T, typename E >
       auto operator()( const expected<T, E>& exp ) {
-        return mbind( exp, function );
+        return and_then( exp, function );
       }
 
-      template< typename T
-        , typename E >
+      template< typename T, typename E >
       auto operator()( expected<T, E>&& exp ) {
-        return mbind( std::move(exp), function );
+        return and_then( std::move(exp), function );
+      }
+    };
+
+    template <typename Callback>
+    struct or_else_helper {
+      Callback function;
+
+      template< typename T, typename E >
+      auto operator()( const expected<T, E>& exp ) {
+        return or_else( exp, function );
+      }
+
+      template< typename T, typename E >
+      auto operator()( expected<T, E>&& exp ) {
+        return or_else( std::move(exp), function );
+      }
+    };
+
+    template <typename Callback>
+    struct inspect_helper {
+      Callback function;
+
+      template< typename T, typename E >
+      auto operator()( expected<T, E>&& exp ) {
+        return inspect( std::move(exp), function );
+      }
+    };
+
+    template <typename Callback>
+    struct inspect_err_helper {
+      Callback function;
+
+      template< typename T, typename E >
+      auto operator()( expected<T, E>&& exp ) {
+        return inspect_err( std::move(exp), function );
+      }
+    };
+
+    struct collect_helper {
+      template < typename T >
+      inline auto operator()( T&& in ) {
+        return collect( std::forward<T>(in) );
       }
     };
   }
@@ -434,11 +536,102 @@ namespace zyppng {
   namespace operators {
     template <typename Fun>
     auto mbind ( Fun && function ) {
-      return detail::mbind_helper<Fun> {
+      return detail::and_then_helper<Fun> {
         std::forward<Fun>(function)
       };
     }
+
+    template <typename Fun>
+    auto and_then ( Fun && function ) {
+      return detail::and_then_helper<Fun> {
+        std::forward<Fun>(function)
+      };
+    }
+
+    template <typename Fun>
+    auto or_else ( Fun && function ) {
+      return detail::or_else_helper<Fun> {
+        std::forward<Fun>(function)
+      };
+    }
+
+    template <typename Fun>
+    auto inspect ( Fun && function ) {
+      return detail::inspect_helper<Fun> {
+        std::forward<Fun>(function)
+      };
+    }
+
+    template <typename Fun>
+    auto inspect_err ( Fun && function ) {
+      return detail::inspect_err_helper<Fun> {
+        std::forward<Fun>(function)
+      };
+    }
+
+    inline detail::collect_helper collect() {
+      return detail::collect_helper();
+    }
   }
+
+
+  /*!
+   * This is logically the same as \code transform() | collect() \endcode , but the inner loop will stop waiting / transforming
+   * as soon as a error is encountered and returns the error right away.
+   */
+  template < template< class, class... > class Container,
+    typename Msg,
+    typename Transformation,
+    typename Ret = std::result_of_t<Transformation(Msg)>,
+    typename ...CArgs
+    >
+  auto transform_collect( Container<Msg, CArgs...>&& in, Transformation &&f )
+  {
+    using namespace zyppng::operators;
+    if constexpr ( detail::is_async_op_v<Ret> ) {
+      using AsyncRet = typename remove_smart_ptr_t<Ret>::value_type;
+      static_assert( is_instance_of<expected, AsyncRet>::value, "Transformation function must return a expected type" );
+
+      return transform( std::move(in), f )
+             // cancel WaitFor if one of the async ops returns a error
+             | detail::WaitForHelperExt<AsyncRet>( detail::waitForCanContinueExpected<typename AsyncRet::value_type> )
+             | collect();
+
+    } else {
+      static_assert( is_instance_of<expected, Ret>::value, "Transformation function must return a expected type" );
+      Container<typename Ret::value_type> results;
+      for ( auto &v : in ) {
+        auto res = f(std::move(v));
+        if ( res ) {
+          results.push_back( std::move(res.get()) );
+        } else {
+          return expected<Container<typename Ret::value_type>>::error( res.error() );
+        }
+      }
+      return expected<Container<typename Ret::value_type>>::success( std::move(results) );
+    }
+  }
+
+  namespace detail {
+    template <typename Fun>
+    struct transform_collect_helper {
+      Fun _callback;
+      template <typename T>
+      auto operator() ( T &&in ) {
+        return transform_collect( std::forward<T>(in), _callback );
+      }
+    };
+  }
+
+  namespace operators {
+    template <typename Transformation>
+    auto transform_collect( Transformation &&f ) {
+      return detail::transform_collect_helper{ std::forward<Transformation>(f)};
+    }
+  }
+
+
+
 }
 
 #endif

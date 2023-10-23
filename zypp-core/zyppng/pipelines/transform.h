@@ -17,8 +17,9 @@
 
 #include <zypp-core/zyppng/meta/TypeTraits>
 #include <zypp-core/zyppng/meta/Functional>
+#include <zypp-core/zyppng/pipelines/AsyncResult>
+#include <zypp-core/zyppng/pipelines/wait.h>
 #include <algorithm>
-#include <vector>
 
 namespace zyppng {
 
@@ -27,10 +28,10 @@ template < template< class, class... > class Container,
   typename Transformation,
   typename Ret = std::result_of_t<Transformation(Msg)>,
   typename ...CArgs >
-Container<Ret> transform( Container<Msg, CArgs...>&& val, Transformation transformation )
+Container<Ret> transform( Container<Msg, CArgs...>&& val, Transformation &&transformation )
 {
   Container<Ret> res;
-  std::transform( std::make_move_iterator(val.begin()), std::make_move_iterator(val.end()), std::back_inserter(res), transformation );
+  std::transform( std::make_move_iterator(val.begin()), std::make_move_iterator(val.end()), std::back_inserter(res), std::forward<Transformation>(transformation) );
   return res;
 }
 
@@ -39,21 +40,26 @@ template < template< class, class... > class Container,
   typename Transformation,
   typename Ret = std::result_of_t<Transformation(Msg)>,
   typename ...CArgs >
-Container<Ret> transform( const Container<Msg, CArgs...>& val, Transformation transformation )
+Container<Ret> transform( const Container<Msg, CArgs...>& val, Transformation &&transformation )
 {
   Container<Ret> res;
-  std::transform( val.begin(), val.end(), std::back_inserter(res), transformation );
+  std::transform( val.begin(), val.end(), std::back_inserter(res), std::forward<Transformation>(transformation) );
   return res;
 }
 
 namespace detail {
-    template <typename Transformation>
+    template <typename Transformation >
     struct transform_helper {
         Transformation function;
 
         template< class Container >
         auto operator()( Container&& arg ) {
-          return zyppng::transform( std::forward<Container>(arg), function );
+          if constexpr ( detail::is_sync_monad_cb_with_async_res_v<Transformation, typename Container::value_type> ) {
+            using namespace zyppng::operators;
+            return zyppng::transform( std::forward<Container>(arg), function ) | zyppng::waitFor();
+          } else {
+            return zyppng::transform( std::forward<Container>(arg), function );
+          }
         }
     };
 }

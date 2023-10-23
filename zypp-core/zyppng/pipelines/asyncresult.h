@@ -19,7 +19,6 @@
 #include <zypp-core/zyppng/meta/Functional>
 #include <zypp-core/zyppng/async/AsyncOp>
 
-
 namespace zyppng {
 
 
@@ -159,6 +158,9 @@ namespace zyppng {
 
     private:
       void readyWasCalled ( PrevRes && res ) {
+
+
+        //MIL << "Setting ready: " << typeid(this) << std::endl;
         //we need to force the passed argument into our stack, otherwise we
         //run into memory issues if the argument is moved out of the _prevTask object
         PrevRes resStore = std::move(res);
@@ -187,9 +189,10 @@ namespace zyppng {
       static_assert( !is_async_op_v<value_type>, "A AsyncResult can never return a async value" );
       static_assert( !is_async_op_v<PrevRes>, "A incoming value can never be a async value" );
 
-      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, Callback &&cb )
+      template <typename CBType = Callback>
+      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, CBType &&cb )
         : _prevTask( std::move(prevTask) )
-        , _myTask( std::move(cb) ) {
+        , _myTask( std::forward<CBType>(cb) ) {
         connect();
       }
 
@@ -209,6 +212,9 @@ namespace zyppng {
 
     private:
       void readyWasCalled ( PrevRes &&res ) {
+
+        //MIL << "Setting ready: " << typeid(this) << std::endl;
+
         //we need to force the passed argument into our stack, otherwise we
         //run into memory issues if the argument is moved out of the _prevTask object
         PrevRes resStore = std::move(res);
@@ -232,9 +238,10 @@ namespace zyppng {
       using value_type = typename remove_smart_ptr_t<std::invoke_result_t<Callback, PrevRes>>::value_type;
       static_assert(!is_async_op_v< value_type >, "A AsyncResult can never return a async value" );
 
-      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, Callback &&cb )
+      template <typename CBType = Callback>
+      AsyncToSyncResult ( AsyncOpRef<PrevRes> && prevTask, CBType &&cb )
         : _prevTask( std::move(prevTask) )
-        , _myTask( std::move(cb) ) {
+        , _myTask( std::forward<CBType>(cb) ) {
         connect();
       }
 
@@ -255,6 +262,8 @@ namespace zyppng {
     private:
       void readyWasCalled ( PrevRes &&res ) {
 
+        //MIL << "Setting ready "<<this<<" step 1: " << typeid(this) << std::endl;
+
         //we need to force the passed argument into our stack, otherwise we
         //run into memory issues if the argument is moved out of the _prevTask object
         PrevRes resStore = std::move(res);
@@ -265,6 +274,7 @@ namespace zyppng {
 
         _asyncResult = std::invoke( _myTask, std::move(resStore) );
         _asyncResult->onReady( [this]( value_type &&val ){
+          //MIL << "Setting ready "<<this<<" step 2: " << typeid(this) << std::endl;
           this->setReady( std::move(val) );
         });
       }
@@ -294,6 +304,8 @@ namespace zyppng {
       using PrevOpRes = typename PrevOp::value_type;
       using CbType    = std::remove_reference_t<Callback>;
       using Ret       = typename detail::AsyncToSyncResult<PrevOpRes, CbType>::value_type;
+      if ( in->isReady() )
+        return AsyncOpRef<Ret>( std::invoke( std::forward<Callback>(c), std::move(in->get()) ) );
       return AsyncOpRef<Ret>( new detail::AsyncToSyncResult<PrevOpRes, CbType>( std::move(in), std::forward<Callback>(c) ) );
     }
 
@@ -306,6 +318,9 @@ namespace zyppng {
       using PrevOpRes = typename PrevOp::value_type;
       using CbType    = std::remove_reference_t<Callback>;
       using Ret       = typename detail::AsyncToSyncResult<PrevOpRes, CbType>::value_type;
+
+      if ( in->isReady() )
+        return makeReadyResult( std::invoke( std::forward<Callback>(c), std::move(in->get()) ) );
       return AsyncOpRef<Ret>( new detail::AsyncToSyncResult<PrevOpRes, CbType>( std::move(in), std::forward<Callback>(c) ) );
     }
 
@@ -315,7 +330,7 @@ namespace zyppng {
     auto operator| ( PrevRes &&in, CallbackOp &&c ) -> AsyncOpRef<typename remove_smart_ptr_t<CallbackOp>::value_type>
     {
       // sync message to async callback case
-      std::forward<CallbackOp>(c)->operator()( std::forward<PrevRes>(in));
+      std::forward<CallbackOp>(c)->operator()( std::forward<PrevRes>(in) );
       return c;
     }
 

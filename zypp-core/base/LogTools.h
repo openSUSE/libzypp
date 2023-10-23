@@ -25,6 +25,12 @@
 #include <zypp-core/base/Iterator.h>
 #include <zypp-core/Globals.h>
 
+#ifdef __GNUG__
+#include <cstdlib>
+#include <memory>
+#include <cxxabi.h>
+#endif
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -469,6 +475,28 @@ namespace zypp
   /** \overload */
   inline std::ostream & hexdumpOn( std::ostream & outs, const char *ptr, size_t size )
   { return hexdumpOn( outs, (const unsigned char *)ptr, size ); }
+
+  /*!
+   * Write type info to stream
+   * @TODO de-inline me
+   */
+  inline std::ostream & operator<<( std::ostream & str, const std::type_info &info )
+  {
+#ifdef __GNUG__
+    int status = -4; // some arbitrary value to eliminate the compiler warning
+
+    // enable c++11 by passing the flag -std=c++11 to g++
+    std::unique_ptr<char, void(*)(void*)> res {
+        abi::__cxa_demangle(info.name(), NULL, NULL, &status),
+        std::free
+    };
+    return str << std::string((status==0) ? res.get() : info.name());
+#else
+    return str << info.name();
+#endif
+  }
+
+
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

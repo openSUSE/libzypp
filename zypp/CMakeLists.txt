@@ -670,10 +670,12 @@ INSTALL( FILES
 
 SET( zypp_repo_yum_SRCS
   repo/yum/Downloader.cc
+  repo/yum/RepomdFileCollector.cc
 )
 
 SET( zypp_repo_yum_HEADERS
   repo/yum/Downloader.h
+  repo/yum/RepomdFileCollector.h
 )
 
 SET( zypp_repo_susetags_SRCS

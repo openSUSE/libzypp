@@ -289,11 +289,14 @@ INSTALL(  FILES
 
 SET( zypp_ng_SRCS
   ng/context.cc
+  ng/userrequest.cc
 )
 
 SET( zypp_ng_HEADERS
   ng/context.h
   ng/Context
+  ng/userrequest.h
+  ng/UserRequest
 )
 
 SET( zypp_ng_private_HEADERS

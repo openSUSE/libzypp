@@ -500,7 +500,7 @@ namespace zyppng {
           connectAllTransitions<0>( nS, nS._transitions );
         }
 
-        _state = std::forward<NewState>(nS);
+        _state.template emplace<NewState>( std::forward<NewState>(nS) );
 
         // handle final state things
         if constexpr ( NewState::isFinal ) {

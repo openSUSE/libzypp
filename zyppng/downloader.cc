@@ -90,7 +90,7 @@ void zypp_downloader_get_file_async ( ZyppDownloader *self, const gchar *url, co
   using namespace zyppng::operators;
 
   data->op = self->_data._provider->provide( zypp::Url(url), zyppng::ProvideFileSpec() )
-             | mbind ( std::bind( &copyProvideResToFile, self->_data._provider, std::placeholders::_1, zypp::Pathname(dest) ) )
+             | and_then ( std::bind( &copyProvideResToFile, self->_data._provider, std::placeholders::_1, zypp::Pathname(dest) ) )
              | [ task ]( zyppng::expected<zypp::ManagedFile> &&res ) {
 
                 auto dl = ZYPP_DOWNLOADER(g_task_get_source_object( task.get() ));

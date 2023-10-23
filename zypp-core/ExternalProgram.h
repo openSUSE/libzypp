@@ -151,6 +151,7 @@ namespace zypp {
 
       ~ExternalProgram();
 
+#ifdef __cpp_lib_optional // YAST/PK explicitly use c++11 until 15-SP3
       /*!
        * Wait a certain timeout for the programm to complete, if \a timeout
        * is not set this will wait forever, 0 will check if the process is still
@@ -160,6 +161,7 @@ namespace zypp {
        * \returns true if the process has exited in time
        */
       bool waitForExit ( std::optional<uint64_t> timeout = {} );
+#endif
 
       /** Wait for the progamm to complete. */
       int close();

@@ -290,6 +290,8 @@ SET( zyppng_meta_HEADERS
 )
 
 SET( zyppng_pipelines_HEADERS
+  zyppng/pipelines/Algorithm
+  zyppng/pipelines/algorithm.h
   zyppng/pipelines/AsyncResult
   zyppng/pipelines/asyncresult.h
   zyppng/pipelines/Await

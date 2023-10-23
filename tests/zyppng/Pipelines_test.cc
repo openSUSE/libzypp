@@ -1,5 +1,6 @@
 #include <boost/test/unit_test.hpp>
 #include <zypp-core/zyppng/pipelines/AsyncResult>
+#include <zypp-core/zyppng/pipelines/Transform>
 #include <zypp-core/zyppng/base/EventLoop>
 #include <zypp-core/zyppng/base/Timer>
 
@@ -41,6 +42,10 @@ private:
 
 // we can not use primitive types with operator|
 struct Int {
+  Int( int val ) : value(val) {}
+
+  bool operator== ( const Int &other ) const { return value == other.value; }
+
   int value;
 };
 
@@ -159,6 +164,63 @@ BOOST_AUTO_TEST_CASE( asyncToMixedPipelineWithIndirectAsyncCB )
   ev->run();
 }
 
+BOOST_AUTO_TEST_CASE( asyncToMixedPipelineWithIndirectAsyncCBInStdFunction )
+{
+  using namespace zyppng::operators;
+
+  zyppng::EventLoopRef ev = zyppng::EventLoop::create();
+
+  const auto &makePipeline = [&](){
+
+    const std::function< AsyncOpRef<Int>( Int && ) > &addFiveAsync = []( auto &&in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); };
+
+    return zyppng::AsyncOpRef<std::string>(std::make_shared<DelayedValue<std::string>>("5"))
+           | &toSignedInt
+           | addFiveAsync
+           | &toString
+           | [&]( auto && res ){
+               BOOST_CHECK_EQUAL ( std::string("10") , res );
+               ev->quit ();
+               return res;
+             };
+  };
+
+  auto op = makePipeline();
+  BOOST_CHECK ( !op->isReady () );
+  ev->run();
+}
+
+BOOST_AUTO_TEST_CASE( syncTransform )
+{
+  using namespace zyppng::operators;
+  std::vector<Int> input{ 0, 10, 20 };
+  auto res = std::vector<Int>(input) | transform( &addFive );
+  static_assert( std::is_same_v<std::vector<Int>, decltype(res)> );
+  BOOST_CHECK_EQUAL ( res.size(), 3 );
+  BOOST_CHECK_EQUAL ( res[0].value, 5 );
+  BOOST_CHECK_EQUAL ( res[1].value, 15 );
+  BOOST_CHECK_EQUAL ( res[2].value, 25 );
+}
+
+BOOST_AUTO_TEST_CASE( asyncTransform )
+{
+  using namespace zyppng::operators;
+
+  zyppng::EventLoopRef ev = zyppng::EventLoop::create();
+
+  std::vector<Int> input{ 0, 10, 20 };
+  auto res = std::vector<Int>(input) | transform( []( auto &&in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); } );
+  static_assert( std::is_same_v<AsyncOpRef<std::vector<Int>>, decltype(res)> );
+  BOOST_CHECK ( !res->isReady () );
+
+  res->onReady ([&]( std::vector<Int> &&res ){
+    BOOST_CHECK_EQUAL ( res.size(), 3 );
+    BOOST_CHECK_EQUAL ( res[0].value, 5 );
+    BOOST_CHECK_EQUAL ( res[1].value, 15 );
+    BOOST_CHECK_EQUAL ( res[2].value, 25 );
+    ev->quit();
+  });
+}
 
 //------------------- Code following here is a compile time test, if it compiles it works as intended ------------------------------------
 

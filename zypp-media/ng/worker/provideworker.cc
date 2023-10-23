@@ -87,7 +87,7 @@ namespace zyppng::worker {
 
     _stream = RpcMessageStream::create( _controlIO );
 
-    return executeHandshake () | mbind( [&]() {
+    return executeHandshake () | and_then( [&]() {
       AutoDisconnect disC[] = {
         connect( *_stream, &RpcMessageStream::sigMessageReceived, *this, &ProvideWorker::messageReceived ),
         connect( *_stream, &RpcMessageStream::sigInvalidMessageReceived, *this, &ProvideWorker::onInvalidMessageReceived )
@@ -215,7 +215,7 @@ namespace zyppng::worker {
             return expected<RpcMessage>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to wait for response")) );
         }
         return expected<RpcMessage>::success( std::move(*nextMessage) );
-      } | mbind ( [&]( auto && m) {
+      } | and_then ( [&]( auto && m) {
         return parseReceivedMessage(m);
       } );
 
@@ -257,7 +257,7 @@ namespace zyppng::worker {
   expected<AuthInfo> ProvideWorker::requireAuthorization( const uint32_t id, const zypp::Url &url, const std::string &lastTriedUsername, const int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields )
   {
     return sendAndWaitForResponse( ProvideMessage::createAuthDataRequest( id, url, lastTriedUsername, lastTimestamp, extraFields ), { ProvideMessage::Code::AuthInfo, ProvideMessage::Code::NoAuthData } )
-           | mbind( [&]( ProvideMessage &&m ) {
+           | and_then( [&]( ProvideMessage &&m ) {
                if ( m.code() == ProvideMessage::Code::AuthInfo ) {
 
                 AuthInfo inf;
@@ -314,7 +314,7 @@ namespace zyppng::worker {
         }
       }
 
-      return initialize( _workerConf ) | mbind([&]( WorkerCaps &&caps ){
+      return initialize( _workerConf ) | and_then([&]( WorkerCaps &&caps ){
 
         caps.set_worker_name( _workerName.data() );
 
@@ -436,7 +436,7 @@ namespace zyppng::worker {
       const auto &msgTypeName = message.messagetypename();
       if ( msgTypeName == rpc::messageTypeName<zypp::proto::ProvideMessage>() ) {
         return parseReceivedMessage( message )
-               | mbind( [&]( ProvideMessage &&provide ){
+               | and_then( [&]( ProvideMessage &&provide ){
                    _pendingMessages.push_back(provide);
                    _msgAvail->start(0);
                    return expected<void>::success();

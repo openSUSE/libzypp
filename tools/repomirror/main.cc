@@ -341,7 +341,7 @@ int main ( int argc, char *argv[] )
                        | mbind (std::bind( &copyProvideResToFile, output, prov, std::placeholders::_1, workPath ) ) ;
             });
           }
-        | zyppng::waitFor<zyppng::expected<zypp::ManagedFile>>()
+        | zyppng::join()
         | [ &r, &output ]( const auto &&res ){
           output->putMsgTxt( zypp::str::Str() << "Finished with rpo: " << r.info().name() << "\n" );
           return res;
@@ -352,7 +352,7 @@ int main ( int argc, char *argv[] )
   std::vector<zyppng::expected<zypp::ManagedFile>> finalResults;
 
   auto rootOp = std::move( mop )
-  | zyppng::waitFor< std::vector<zyppng::expected<zypp::ManagedFile>> >()
+  | zyppng::join()
   | [&]( std::vector<std::vector<zyppng::expected<zypp::ManagedFile>>> &&allResults ) {
       // reduce to one vector of results
       for ( auto &innerVec : allResults ) {

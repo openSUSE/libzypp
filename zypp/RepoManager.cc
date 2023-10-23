@@ -203,6 +203,8 @@ namespace zypp
 
     void addRepositories( const Url & url, OPT_PROGRESS );
 
+    void removeRepository ( const RepoInfo & info, OPT_PROGRESS ) override;
+
   public:
     void refreshServices( const RefreshServiceOptions & options_r );
 
@@ -861,6 +863,13 @@ namespace zypp
     }
 
     MIL << "done" << endl;
+  }
+
+  void RepoManager::Impl::removeRepository(const RepoInfo &info, const ProgressData::ReceiverFnc &progressrcv )
+  {
+    callback::SendReport<ProgressReport> report;
+    ProgressReportAdaptor adapt( progressrcv, report );
+    removeRepositoryImpl( info, std::ref(adapt) );
   }
 
   ////////////////////////////////////////////////////////////////////////////

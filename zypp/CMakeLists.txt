@@ -298,6 +298,7 @@ SET( zypp_ng_HEADERS
 
 SET( zypp_ng_private_HEADERS
   ng/private/context_p.h
+  ng/private/repomanager_p.h
 )
 
 #INSTALL( FILES

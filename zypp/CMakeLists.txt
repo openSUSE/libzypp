@@ -290,6 +290,8 @@ INSTALL(  FILES
 SET( zypp_ng_SRCS
   ng/context.cc
   ng/userrequest.cc
+  ng/workflows/contextfacade.cc
+  ng/workflows/mediafacade.cc
 )
 
 SET( zypp_ng_HEADERS
@@ -297,6 +299,8 @@ SET( zypp_ng_HEADERS
   ng/Context
   ng/userrequest.h
   ng/UserRequest
+  ng/workflows/contextfacade.h
+  ng/workflows/mediafacade.h
 )
 
 SET( zypp_ng_private_HEADERS

@@ -271,7 +271,7 @@ namespace zyppng::worker
     if( !attachRoot.empty() &&
          zypp::PathInfo(attachRoot).isDir() &&
          attachRoot != "/" ) {
-      int res = recursive_rmdir( attachRoot );
+      int res = rmdir( attachRoot );
       if ( res == 0 ) {
         MIL << "Deleted default attach point " << attachRoot << std::endl;
       } else {

@@ -9,6 +9,7 @@
 #ifndef ZYPP_MEDIA_PROVIDE_H_INCLUDED
 #define ZYPP_MEDIA_PROVIDE_H_INCLUDED
 
+#include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/base/Base>
@@ -34,6 +35,8 @@ namespace zypp {
  *
  *       We should be a bit paranoid here and require that the URL has a user embedded, otherwise we go the default route
  *       and ask the server first about the auth method
+ *
+ * @TODO Make sure URLs are rewritten, e.g. MediaSetAccess::rewriteUrl
  */
 namespace zyppng {
 
@@ -47,11 +50,16 @@ namespace zyppng {
   class ProvideMediaHandle
   {
     public:
+
+      using ParentType = Provide;
+
       ProvideMediaHandle () = default;
       ProvideMediaHandle ( Provide &parent, AttachedMediaInfo_Ptr mediaInfoRef );
       std::shared_ptr<Provide> parent() const;
       bool isValid () const;
       std::string handle() const;
+      const zypp::Url &baseUrl() const;
+      const zypp::Pathname &localPath() const;
       zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:
       ProvideWeakRef _parent;
@@ -109,6 +117,7 @@ namespace zyppng {
   public:
 
     using MediaHandle = ProvideMediaHandle;
+    using Res = ProvideRes;
 
     static ProvideRef create( const zypp::Pathname &workDir = "" );
 
@@ -119,15 +128,17 @@ namespace zyppng {
     AsyncOpRef<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
+
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    AsyncOpRef<expected<std::string>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
+    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
     AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
+    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( ProvideRes &&source, const zypp::Pathname &target );
 
     void start();
     void setWorkerPath( const zypp::Pathname &path );
@@ -163,6 +174,15 @@ namespace zyppng {
      * in the \ref zypp::media::CredentialManager.
      */
     SignalProxy< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > sigAuthRequired();
+
+
+    static auto copyResultToDest ( ProvideRef provider, const zypp::Pathname &targetPath ) {
+      return [ providerRef=std::move(provider), targetPath = targetPath ]( ProvideRes &&file ){
+        zypp::filesystem::assert_dir( targetPath.dirname () );
+        return providerRef->copyFile( std::move(file), targetPath );
+      };
+    }
+
 
   private:
     Provide(  const zypp::Pathname &workDir );

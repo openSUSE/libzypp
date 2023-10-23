@@ -664,16 +664,15 @@ namespace zyppng {
       // request is def done
       _runningReq.reset();
 
-      try {
+      std::optional<zypp::ManagedFile> resFile;
 
+      try {
         const auto locFilename = msg.value( ProvideFinishedMsgFields::LocalFilename ).asString();
         const auto cacheHit    = msg.value( ProvideFinishedMsgFields::CacheHit ).asBool();
         const auto &wConf      = queue.workerConfig();
 
         const bool doesDownload     = wConf.worker_type() == ProvideQueue::Config::Downloading;
         const bool fileNeedsCleanup = doesDownload || ( wConf.worker_type() == ProvideQueue::Config::CPUBound && wConf.cfg_flags() & ProvideQueue::Config::FileArtifacts );
-
-        std::optional<zypp::ManagedFile> resFile;
 
         if ( doesDownload ) {
 
@@ -704,29 +703,48 @@ namespace zyppng {
 
         _targetFile = locFilename;
 
-        // keep the media handle around as long as the file is used by the code
-        auto resObj = std::make_shared<ProvideResourceData>();
-        resObj->_mediaHandle     = this->_handleRef;
-        resObj->_myFile          = *resFile;
-        resObj->_resourceUrl     = *(finishedReq->activeUrl());
-        resObj->_responseHeaders = msg.headers();
-
-        auto p = promise();
-        if ( p ) {
-          try {
-            p->setReady( expected<ProvideRes>::success( ProvideRes( resObj )) );
-          } catch( const zypp::Exception &e ) {
-            ZYPP_CAUGHT(e);
-          }
-        }
-
-        updateState( Finished );
-
       } catch ( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
         cancelWithError( std::current_exception() );
-      } catch ( ...) {
+      } catch ( const std::exception &e ) {
+        ZYPP_CAUGHT(e);
         cancelWithError( std::current_exception() );
+      }  catch ( ...) {
+        cancelWithError( std::current_exception() );
+      }
+
+      // keep the media handle around as long as the file is used by the code
+      auto resObj = std::make_shared<ProvideResourceData>();
+      resObj->_mediaHandle     = this->_handleRef;
+      resObj->_myFile          = *resFile;
+      resObj->_resourceUrl     = *(finishedReq->activeUrl());
+      resObj->_responseHeaders = msg.headers();
+
+      // if there is a exception escaping the pipeline we need to rethrow it after cleaning up
+      std::exception_ptr excpt;
+      auto p = promise();
+      if ( p ) {
+        try {
+          p->setReady( expected<ProvideRes>::success( ProvideRes( resObj )) );
+        } catch( const zypp::Exception &e ) {
+          ERR << "Caught unhandled pipline exception:" << e << std::endl;
+          ZYPP_CAUGHT(e);
+          excpt = std::current_exception ();
+        } catch ( const std::exception &e ) {
+          ERR << "Caught unhandled pipline exception:" << e.what() << std::endl;
+          ZYPP_CAUGHT(e);
+          excpt = std::current_exception ();
+        } catch ( ...) {
+          ERR << "Caught unhandled unknown exception:"  << std::endl;
+          excpt = std::current_exception ();
+        }
+      }
+
+      updateState( Finished );
+
+      if ( excpt ) {
+        ERR << "Rethrowing pipeline exception, this is a BUG!" << std::endl;
+        std::rethrow_exception ( excpt );
       }
 
     } else {

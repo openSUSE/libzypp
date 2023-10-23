@@ -301,6 +301,7 @@ SET( zypp_ng_HEADERS
   ng/UserRequest
   ng/workflows/contextfacade.h
   ng/workflows/mediafacade.h
+  ng/workflows/logichelpers.h
 )
 
 SET( zypp_ng_private_HEADERS

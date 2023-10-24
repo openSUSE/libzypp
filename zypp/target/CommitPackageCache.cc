@@ -83,7 +83,12 @@ namespace zypp
     ManagedFile RepoProvidePackage::operator()( const PoolItem & pi_r, bool fromCache_r )
     {
       ManagedFile ret;
-      if ( fromCache_r )
+      if ( not pi_r )
+      {
+        // close all media accessed so far
+        _impl->_access = repo::RepoMediaAccess();
+      }
+      else if ( fromCache_r )
       {
 	repo::PackageProvider pkgProvider( _impl->_access, pi_r, _impl->_packageProviderPolicy );
 	ret = pkgProvider.providePackageFromCache();

@@ -68,7 +68,10 @@ namespace zypp
       { return _preloaded; }
 
       void preloaded( bool newval_r )
-      { _preloaded = newval_r; }
+      {
+        if ( (_preloaded = newval_r) )
+          _packageProvider( PoolItem(), false );  // close all media accessed so far
+      }
 
     protected:
       /** Let the Source provide the package. */

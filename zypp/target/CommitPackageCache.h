@@ -32,7 +32,11 @@ namespace zypp
     /// \class RepoProvidePackage
     /// \short Default PackageProvider for \ref CommitPackageCache
     ///
-    /// \p pool_r \ref ResPool used to get candidates
+    /// Providing a NULL PoolItem will close all media accessed so far.
+    /// Done e.g. by CommitPackageCache::preloaded after having preloaded
+    /// the cache. Subsequent requests however will simply repoen required
+    /// media on demmand.
+    ///
     /// \p pi item to be commited
     ///////////////////////////////////////////////////////////////////
     class RepoProvidePackage
@@ -41,7 +45,7 @@ namespace zypp
       RepoProvidePackage();
       ~RepoProvidePackage();
 
-      /** Provide package optionally fron cache only. */
+      /** Provide package optionally from cache only. */
       ManagedFile operator()( const PoolItem & pi, bool fromCache_r );
 
     private:

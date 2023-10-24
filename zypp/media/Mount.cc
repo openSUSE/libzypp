@@ -167,66 +167,36 @@ void Mount::umount( const std::string & path )
 	NULL
      };
 
-    std::string err;
-
     this->run(argv, ExternalProgram::Stderr_To_Stdout);
 
-    if ( process == NULL )
-    {
-        ZYPP_THROW(MediaUnmountException("E_mount_failed", path));
+    if ( process == NULL ) {
+      ZYPP_THROW(MediaUnmountException("E_mount_failed", path));
     }
 
-    string value;
-    string output = process->receiveLine();
-
+    bool e_notMounted = false;
+    bool e_deviceBusy = false;
     // parse error messages
-    while ( output.length() > 0)
+    for ( std::string output = process->receiveLine(); not output.empty(); output = process->receiveLine() )
     {
-	string::size_type 	ret;
+      DBG << "stdout: " << output;  // has trailing std::endl
 
-	// extract \n
-	ret = output.find_first_of ( "\n" );
-	if ( ret != string::npos )
-	{
-	    value.assign ( output, 0, ret );
-	}
-	else
-	{
-	    value = output;
-	}
-
-	DBG << "stdout: " << value << endl;
-
-	// if  ( value.find ( "not mounted" ) != string::npos )
-	// {
-	//    err = Error::E_already_mounted;
-	// }
-
-	if  ( value.find ( "device is busy" ) != string::npos )
-	{
-	    err = "Device is busy";
-	}
-
-	output = process->receiveLine();
+      if  ( output.find ( "not mounted" ) != std::string::npos )
+        e_notMounted = true;
+      else if  ( output.find ( "device is busy" ) != std::string::npos )
+        e_deviceBusy = true;
     }
 
     int status = Status();
 
-    if ( status == 0 )
-    {
-	// return codes overwites parsed error message
-	err = "";
-    }
-    else if ( status != 0 && err == "" )
-    {
-	err = "Unmounting media failed";
-    }
-
-    if ( err != "") {
+    if ( status == 0 ) {
+      MIL << "unmounted " << path << endl;
+    } else if ( e_notMounted ) {
+      // bsc#1216064: nfs service restart during commit may have forcefully unmounted our mounts
+      WAR << "unmounted(not mounted) " << path << endl;
+    } else {
+      std::string err { e_deviceBusy ? "Device is busy" : "Unmounting media failed" };
       WAR << "umount " << path << ": " << err << endl;
       ZYPP_THROW(MediaUnmountException(err, path));
-    } else {
-      MIL << "unmounted " << path << endl;
     }
 }
 

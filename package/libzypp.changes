@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Oct 24 16:09:26 CEST 2023 - ma@suse.de
+
+- Ignore if the media to unmount is no longer mounted
+  (bsc#1216064)
+- Close all media after having preloaded the cache.
+  Mitigates the change that during package installation e.g. a
+  nfs.service restart forcefully unmounts the media we access
+  (bsc#1216064)
+- version 16.22.10 (0)
+
+-------------------------------------------------------------------
 Fri Aug 11 16:41:12 CEST 2023 - ma@suse.de
 
 - repo: Don't download unneeded sqlite metadata (fixes #476)

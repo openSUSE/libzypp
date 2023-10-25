@@ -292,6 +292,7 @@ SET( zypp_ng_SRCS
   ng/userrequest.cc
   ng/workflows/contextfacade.cc
   ng/workflows/mediafacade.cc
+  ng/workflows/repoinfowf.cc
 )
 
 SET( zypp_ng_HEADERS
@@ -302,6 +303,7 @@ SET( zypp_ng_HEADERS
   ng/workflows/contextfacade.h
   ng/workflows/mediafacade.h
   ng/workflows/logichelpers.h
+  ng/workflows/repoinfowf.h
 )
 
 SET( zypp_ng_private_HEADERS

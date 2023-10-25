@@ -9,6 +9,7 @@
 /** \file	zypp/RepoInfo.cc
  *
 */
+#include <zypp/ng/workflows/contextfacade.h>
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -40,6 +41,8 @@
 #include <zypp/TmpPath.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZYppCallbacks.h>
+
+#include <zypp/ng/workflows/repoinfowf.h>
 
 using std::endl;
 using zypp::xml::escape;
@@ -533,103 +536,9 @@ namespace zypp
     _pimpl->gpgKeyUrls().raw().push_back( url_r );
   }
 
-  Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const
-  {
-    if ( keyID_r.empty() )
-      return Pathname();
 
-    MIL << "Check for " << keyID_r << " at " << targetDirectory_r << endl;
-    std::string keyIDStr( keyID_r.size() > 8 ? keyID_r.substr( keyID_r.size()-8 ) : keyID_r );	// print short ID in Jobreports
-    filesystem::TmpDir tmpKeyRingDir;
-    KeyRing tempKeyRing(tmpKeyRingDir.path());
-
-    // translator: %1% is a gpg key ID like 3DBDC284
-    //             %2% is a cache directories path
-    JobReport::info( str::Format(_("Looking for gpg key ID %1% in cache %2%.") ) % keyIDStr % targetDirectory_r );
-    filesystem::dirForEach(targetDirectory_r,
-                           StrMatcher(".key", Match::STRINGEND),
-                           [&tempKeyRing]( const Pathname & dir_r, const std::string & str_r ){
-      try {
-
-        // deprecate a month old keys
-        PathInfo fileInfo ( dir_r/str_r );
-        if ( Date::now() - fileInfo.mtime() > Date::month ) {
-          //if unlink fails, the file will be overriden in the next step, no need
-          //to show a error
-          filesystem::unlink( dir_r/str_r );
-        } else {
-          tempKeyRing.multiKeyImport(dir_r/str_r, true);
-        }
-      } catch (const KeyRingException& e) {
-        ZYPP_CAUGHT(e);
-        ERR << "Error importing cached key from file '"<<dir_r/str_r<<"'."<<endl;
-      }
-      return true;
-    });
-
-    // no key in the cache is what we are looking for, lets download
-    // all keys specified in gpgkey= entries
-    if ( !tempKeyRing.isKeyTrusted(keyID_r) ) {
-      if ( ! gpgKeyUrlsEmpty() ) {
-        // translator: %1% is a gpg key ID like 3DBDC284
-        //             %2% is a repositories name
-        JobReport::info( str::Format(_("Looking for gpg key ID %1% in repository %2%.") ) % keyIDStr % asUserString() );
-        for ( const Url &url : gpgKeyUrls() ) {
-          try {
-            JobReport::info( "  gpgkey=" + url.asString() );
-            ManagedFile f = MediaSetAccess::provideOptionalFileFromUrl( url );
-            if ( f->empty() )
-              continue;
-
-            PublicKey key(f);
-            if ( !key.isValid() )
-              continue;
-
-            // import all keys into our temporary keyring
-            tempKeyRing.multiKeyImport(f, true);
-
-          } catch ( const std::exception & e ) {
-            //ignore and continue to next url
-            ZYPP_CAUGHT(e);
-            MIL << "Key import from url:'"<<url<<"' failed." << endl;
-          }
-        }
-      }
-      else {
-        // translator: %1% is a repositories name
-        JobReport::info( str::Format(_("Repository %1% does not define additional 'gpgkey=' URLs.") ) % asUserString() );
-      }
-    }
-
-    filesystem::assert_dir( targetDirectory_r );
-
-    //now write all keys into their own files in cache, override existing ones to always have
-    //up to date key data
-    for ( const auto & key: tempKeyRing.trustedPublicKeyData()) {
-      MIL << "KEY ID in KEYRING: " << key.id() << endl;
-
-      Pathname keyFile = targetDirectory_r/(str::Format("%1%.key") % key.rpmName()).asString();
-
-      std::ofstream fout( keyFile.c_str(), std::ios_base::out | std::ios_base::trunc );
-
-      if (!fout)
-        ZYPP_THROW(Exception(str::form("Cannot open file %s",keyFile.c_str())));
-
-      tempKeyRing.dumpTrustedPublicKey( key.id(), fout );
-    }
-
-    // key is STILL not known, we give up
-    if ( !tempKeyRing.isKeyTrusted(keyID_r) ) {
-      return Pathname();
-    }
-
-    PublicKeyData keyData( tempKeyRing.trustedPublicKeyData( keyID_r ) );
-    if ( !keyData ) {
-      ERR << "Error when exporting key from temporary keychain." << endl;
-      return Pathname();
-    }
-
-    return targetDirectory_r/(str::Format("%1%.key") % keyData.rpmName()).asString();
+  Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
+    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::create(), *this, keyID_r, targetDirectory_r );
   }
 
   void RepoInfo::addBaseUrl( const Url & url_r )

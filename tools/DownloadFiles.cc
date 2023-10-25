@@ -14,7 +14,6 @@
 #include <yaml-cpp/yaml.h>
 
 #include <boost/program_options.hpp>
-#include <boost/progress.hpp>
 #include <iostream>
 
 namespace po = boost::program_options;
@@ -23,6 +22,28 @@ struct DLEntry {
   zypp::Url _url;
   zypp::Pathname _deltaFile;
   zypp::ByteCount _dlSize;
+};
+
+// #489, bsc#1215294: Stop using boost version 1 timer library
+// https://www.boost.org/doc/libs/1_83_0/libs/timer/doc/original_timer.html
+// A simple handcrafted substitute for <boost/progress.hpp> progress_display
+struct PCBar {
+  PCBar() {
+    std::cout << std::endl;
+    std::cout << "0%   10   20   30   40   50   60   70   80   90   100%" << std::endl;
+    std::cout << "|----|----|----|----|----|----|----|----|----|----|" << std::endl;
+  }
+  ~PCBar() {
+    std::cout << std::endl;
+  }
+  void set( int pcval_r ) {
+    if ( pcval_r <= 0 )
+      std::cout << "\033[2K\r" << std::flush;
+    else if ( pcval_r < 100 )
+      std::cout << "\033[2K\r" << std::string( 1+pcval_r/2, '*' ) << std::flush;
+    else
+      std::cout << "\033[2K\r" << std::string( 51, '*' ) << std::flush;
+  }
 };
 
 // progress for downloading a file
@@ -37,15 +58,12 @@ struct DownloadProgressReportReceiver : public zypp::callback::ReceiveReport<zyp
   {
     assert(!_display);
     std::cout << "Starting download of: " << uri << " to " << localfile << std::endl;
-    _display = std::make_unique<boost::progress_display>( 100 );
+    _display = std::make_unique<PCBar>();
   }
 
   virtual bool progress(int value, const zypp::Url & uri, double drate_avg, double drate_now)
   {
-    auto increase = value - _display->count();
-    if ( increase > 0 && ( increase + _display->count() ) <= _display->expected_count() ) {
-      (*_display) += increase;
-    }
+    _display->set( value );
     return true;
   }
 
@@ -64,7 +82,7 @@ struct DownloadProgressReportReceiver : public zypp::callback::ReceiveReport<zyp
   }
 
 private:
-  std::unique_ptr<boost::progress_display> _display;
+  std::unique_ptr<PCBar> _display;
 };
 
 

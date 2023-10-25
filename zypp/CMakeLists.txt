@@ -291,7 +291,9 @@ SET( zypp_ng_SRCS
   ng/context.cc
   ng/userrequest.cc
   ng/repo/downloader.cc
+  ng/repo/refresh.cc
   ng/repo/workflows/repodownloaderwf.cc
+  ng/repo/workflows/repomanagerwf.cc
   ng/repo/workflows/rpmmd.cc
   ng/workflows/checksumwf.cc
   ng/workflows/contextfacade.cc
@@ -308,7 +310,11 @@ SET( zypp_ng_HEADERS
   ng/userrequest.h
   ng/UserRequest
   ng/repo/downloader.h
+  ng/repo/Downloader
+  ng/repo/refresh.h
+  ng/repo/Refresh
   ng/repo/workflows/repodownloaderwf.h
+  ng/repo/workflows/repomanagerwf.h
   ng/repo/workflows/rpmmd.h
   ng/workflows/checksumwf.h
   ng/workflows/contextfacade.h

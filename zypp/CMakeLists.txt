@@ -290,9 +290,16 @@ INSTALL(  FILES
 SET( zypp_ng_SRCS
   ng/context.cc
   ng/userrequest.cc
+  ng/repo/downloader.cc
+  ng/repo/workflows/repodownloaderwf.cc
+  ng/repo/workflows/rpmmd.cc
+  ng/workflows/checksumwf.cc
   ng/workflows/contextfacade.cc
+  ng/workflows/downloadwf.cc
+  ng/workflows/keyringwf.cc
   ng/workflows/mediafacade.cc
   ng/workflows/repoinfowf.cc
+  ng/workflows/signaturecheckwf.cc
 )
 
 SET( zypp_ng_HEADERS
@@ -300,10 +307,17 @@ SET( zypp_ng_HEADERS
   ng/Context
   ng/userrequest.h
   ng/UserRequest
+  ng/repo/downloader.h
+  ng/repo/workflows/repodownloaderwf.h
+  ng/repo/workflows/rpmmd.h
+  ng/workflows/checksumwf.h
   ng/workflows/contextfacade.h
+  ng/workflows/downloadwf.h
+  ng/workflows/keyringwf.h
   ng/workflows/mediafacade.h
   ng/workflows/logichelpers.h
   ng/workflows/repoinfowf.h
+  ng/workflows/signaturecheckwf.h
 )
 
 SET( zypp_ng_private_HEADERS

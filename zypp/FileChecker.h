@@ -67,7 +67,7 @@ namespace zypp
    /**
     * \short Checks for the validity of a signature
     */
-   class SignatureFileChecker: public keyring::VerifyFileContext
+   class SignatureFileChecker
    {
    public:
      typedef SignatureCheckException ExceptionType;
@@ -90,7 +90,7 @@ namespace zypp
 
      /** Call \ref KeyRing::verifyFileSignatureWorkflow to verify the file.
       *
-      * Keep in mind the the workflow may return \c true (\refr fileAccepted) due to user interaction
+      * Keep in mind the the workflow may return \c true (\ref fileAccepted) due to user interaction
       * or global defaults even if a signature was not actually sucessfully verified. Whether a
       * signature was actually sucessfully verified can be determined by checking \ref fileValidated
       * which is invokes IFF a signature for this file actually validated.
@@ -100,6 +100,12 @@ namespace zypp
       * \throws SignatureCheckException if validation fails
       */
      void operator()( const Pathname & file_r ) const;
+
+     keyring::VerifyFileContext &verifyContext();
+     const keyring::VerifyFileContext &verifyContext() const;
+
+   private:
+     keyring::VerifyFileContext _verifyContext;
    };
 
    /**

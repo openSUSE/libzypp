@@ -114,7 +114,7 @@ namespace repo
       }
 
       DBG << "Keyhint remember buddy " << keyData << endl;
-      sigchecker_r.addBuddyKey( keyid );
+      sigchecker_r.verifyContext().addBuddyKey( keyid );
     }
     catch ( const Exception & exp )
     { ZYPP_CAUGHT(exp); }
@@ -122,7 +122,7 @@ namespace repo
     { ZYPP_CAUGHT(exp); }
     catch (...)
     { INT << "Oops!" << endl; }
-    MIL << "Check keyhints done. Buddy keys: " << sigchecker_r.buddyKeys().size() << endl;
+    MIL << "Check keyhints done. Buddy keys: " << sigchecker_r.verifyContext().buddyKeys().size() << endl;
   }
 
 
@@ -184,7 +184,7 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
     {
       // only add the signature if it exists
       if ( isSigned )
-        sigchecker.signature( sigpathLocal );
+        sigchecker.verifyContext().signature( sigpathLocal );
 
       // only add the key if it exists
       if ( PathInfo(keypathLocal).isExist() )
@@ -192,7 +192,7 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
 
       // set the checker context even if the key is not known
       // (unsigned repo, key file missing; bnc #495977)
-      sigchecker.keyContext( repoInfo() );
+      sigchecker.verifyContext().keyContext( repoInfo() );
 
       // bsc#1184326: Check and handle extra gpg keys delivered with trusted signed master index.
       if ( masterIndex_r.basename() == "repomd.xml" ) {
@@ -228,7 +228,7 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
   // Accepted!
   _repoinfo.setMetadataPath( destdir_r );
   if ( isSigned )
-    _repoinfo.setValidRepoSignature( sigchecker.fileValidated() );
+    _repoinfo.setValidRepoSignature( sigchecker.verifyContext().fileValidated() );
   else
     _repoinfo.setValidRepoSignature( indeterminate );
 }

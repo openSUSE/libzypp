@@ -124,14 +124,6 @@ namespace zypp {
     PublicKey exportTrustedPublicKey( const PublicKeyData & keyData )
     { return exportKey( keyData, trustedKeyRing() ); }
 
-    bool verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r )
-    {
-      // Assert result and return value are in sync
-      context_r.fileAccepted( _verifyFileSignatureWorkflow( context_r ) );
-      return context_r.fileAccepted();
-    }
-    bool _verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r );
-
     bool verifyFileSignature( const Pathname & file, const Pathname & signature )
     { return verifyFile( file, signature, generalKeyRing() ); }
     bool verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
@@ -142,12 +134,9 @@ namespace zypp {
     PublicKeyData trustedPublicKeyExists( const std::string & id )
     { return publicKeyExists(id, trustedKeyRing());}
 
-    bool provideAndImportKeyFromRepositoryWorkflow (const std::string &id_r , const RepoInfo &info_r );
-
     void allowPreload( bool yesno_r )
     { _allowPreload = yesno_r; }
 
-  private:
     /** Impl helper providing on demand a KeyManagerCtx to manip a cached keyring. */
     CachedPublicKeyData::Manip keyRingManip( const Pathname & keyring )
     { return cachedPublicKeyData.manip( keyring ); }
@@ -179,13 +168,13 @@ namespace zypp {
     const Pathname trustedKeyRing() const
     { return _trusted_tmp_dir.path(); }
 
+  private:
     // Used for trusted and untrusted keyrings
     filesystem::TmpDir _trusted_tmp_dir;
     filesystem::TmpDir _general_tmp_dir;
     Pathname _base_dir;
     bool _allowPreload = false;	//< General keyring may be preloaded with keys cached on the system.
 
-  private:
     /** Functor returning the keyrings data (cached).
      * \code
      *  const std::list<PublicKeyData> & cachedPublicKeyData( const Pathname & keyring );

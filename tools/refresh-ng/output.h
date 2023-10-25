@@ -1,42 +1,16 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
-#include <zypp-core/zyppng/meta/type_traits.h>
-#include <boost/container/vector.hpp>
 #include <zypp-core/zyppng/base/Base>
 #include <ncpp/NotCurses.hh>
 #include <ncpp/Plane.hh>
 #include <ncpp/MultiSelector.hh>
 #include <ncpp/Reader.hh>
 #include <memory>
-#include <optional>
 
 
 static void zypp_release_ncplane ( struct ncplane *ptr ) { if ( ptr ) ncplane_destroy(ptr); }
 static void zypp_release_progbar ( struct ncprogbar *ptr ) { if ( ptr ) ncprogbar_destroy(ptr); }
-
-template <typename T>
-using as_user_string_t = decltype(T::asUserString);
-
-template <typename T>
-constexpr bool has_as_user_string_v = std::is_detected_v<as_user_string_t, T>;
-
-template <class... T>
-constexpr bool always_false = false;
-
-template <typename T>
-inline auto stringify ( const T& value ) {
-  if constexpr( has_as_user_string_v<T> ) {
-    return value.asUserString();
-  } else if constexpr ( std::is_same_v<std::string, T> ) {
-    return value;
-  } else if constexpr ( std::is_convertible_v<T, std::string> ) {
-    return (std::string)value;
-  } else {
-    static_assert( always_false<T>, "No way to convert to a string");
-  }
-}
-
 
 class OutputView : public zyppng::Base
 {
@@ -54,8 +28,8 @@ class OutputView : public zyppng::Base
       if ( !ptr->_stdplane )
         return nullptr;
 
-      uint rows = 0;
-      uint cols = 0;
+      int rows = 0;
+      int cols = 0;
       ptr->_stdplane->get_dim( rows, cols );
 
       int top_rows = ( rows - 2 );
@@ -63,7 +37,7 @@ class OutputView : public zyppng::Base
         return nullptr;
       }
 
-      uint bottom_rows = rows - top_rows;
+      int bottom_rows = rows - top_rows;
       if ( bottom_rows <= 0 ) {
         return nullptr;
       }
@@ -73,7 +47,7 @@ class OutputView : public zyppng::Base
       ptr->_topOuterPlane->rounded_box_sized( 0, 0, top_rows, cols, 0 );
 
       // the inner plane, here we put the text
-      uint r,c;
+      int r,c;
       ptr->_topOuterPlane->get_dim( r, c );
       ptr->_topPlaneLeft = std::make_unique<ncpp::Plane>( *ptr->_topOuterPlane, r-2 , (c-1) / 2, 1, 1 );
       ptr->_topPlaneLeft->set_scrolling( true );
@@ -154,11 +128,11 @@ class OutputView : public zyppng::Base
         putMsgTxt( desc, false  );
       putMsgTxt( label + ": " );
 
-      uint curX, curY;
+      int curX, curY;
       _topPlaneLeft->get_cursor_yx( curY, curX  );
       ncplane_options nopts = {
-        .y = (int)curY,
-        .x = (int)curX,
+        .y = curY,
+        .x = curX,
         .rows = 1,
         .cols = _topPlaneLeft->get_dim_x() - curX,
         .userptr = nullptr,
@@ -212,7 +186,7 @@ class OutputView : public zyppng::Base
       stringsStorage.reserve( data.size() );
 
       for ( const T& entry : data ) {
-        stringsStorage.push_back( std::make_pair( stringify(entry), std::string("") ) );
+        stringsStorage.push_back( std::make_pair( entry.asUserString(), std::string("") ) );
         items.push_back( ncmselector_item{
           .option = stringsStorage.back().first.data(),
           .desc   = stringsStorage.back().second.data(),
@@ -280,7 +254,7 @@ class OutputView : public zyppng::Base
     }
 
   private:
-    OutputView() : _progbar( nullptr, &zypp_release_progbar ) {}
+    OutputView() : _topOuterPlane( nullptr ), _topPlaneLeft( nullptr ), _topPlaneRight( nullptr ), _progbar( nullptr, &zypp_release_progbar ) {}
 
     std::unique_ptr<ncpp::NotCurses> _nc;
     std::unique_ptr<ncpp::Plane> _stdplane;

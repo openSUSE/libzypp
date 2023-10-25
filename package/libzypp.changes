@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 25 16:03:51 CEST 2023 - ma@suse.de
+
+- Stop using boost version 1 timer library (fixes #489,
+  bsc#1215294)
+- version 17.31.23 (22)
+
+-------------------------------------------------------------------
 Thu Oct 12 14:26:36 CEST 2023 - ma@suse.de
 
 - Preliminary disable 'rpm --runposttrans' usage for chrooted

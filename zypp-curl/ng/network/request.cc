@@ -238,11 +238,20 @@ namespace zyppng {
       {
 #if CURLVERSION_AT_LEAST(7,19,4)
         // restrict following of redirections from https to https only
-        if ( _url.getHost() == "download.opensuse.org" )
+        if ( _url.getHost() == "download.opensuse.org" ) {
+#if CURLVERSION_AT_LEAST(7,85,0)
+          setCurlOption( CURLOPT_REDIR_PROTOCOLS_STR, "http,https" );
+#else
           setCurlOption( CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
-        else
+#endif
+        } else {
+#if CURLVERSION_AT_LEAST(7,85,0)
+          setCurlOption( CURLOPT_REDIR_PROTOCOLS_STR, "https" );
+#else
           setCurlOption( CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
 #endif
+        }
+#endif // #if CURLVERSION_AT_LEAST(7,19,4)
 
         if( locSet.verifyPeerEnabled() ||
              locSet.verifyHostEnabled() )

@@ -139,7 +139,7 @@ namespace internal {
                   zypp::ByteCount expectedFileSize_r = 0,
                   zypp::callback::SendReport<zypp::media::DownloadProgressReport> *_report = nullptr );
 
-    void updateStats( double dltotal = 0.0, double dlnow = 0.0 );
+    void updateStats( curl_off_t dltotal = 0.0, curl_off_t dlnow = 0.0 );
 
     int reportProgress() const;
 
@@ -172,9 +172,9 @@ namespace internal {
     time_t _timeRcv	= 0;	///< Start of no-data timeout
     time_t _timeNow	= 0;	///< Now
 
-    double _dnlTotal	= 0.0;	///< Bytes to download or 0 if unknown
-    double _dnlLast	= 0.0;	///< Bytes downloaded at period start
-    double _dnlNow	= 0.0;	///< Bytes downloaded now
+    curl_off_t _dnlTotal = 0.0;	///< Bytes to download or 0 if unknown
+    curl_off_t _dnlLast	 = 0.0;	///< Bytes downloaded at period start
+    curl_off_t _dnlNow	 = 0.0;	///< Bytes downloaded now
 
     int    _dnlPercent= 0;	///< Percent completed or 0 if _dnlTotal is unknown
 
@@ -194,7 +194,7 @@ namespace internal {
     , report( _report )
   {}
 
-  void ProgressData::updateStats(double dltotal, double dlnow)
+  void ProgressData::updateStats( curl_off_t dltotal, curl_off_t dlnow )
   {
     time_t now = _timeNow = time(0);
 
@@ -221,14 +221,14 @@ namespace internal {
 
     // percentage:
     if ( _dnlTotal )
-      _dnlPercent = int(_dnlNow * 100 / _dnlTotal);
+      _dnlPercent = int( _dnlNow * 100 / _dnlTotal );
 
     // download rates:
-    _drateTotal = _dnlNow / std::max( int(now - _timeStart), 1 );
+    _drateTotal = double(_dnlNow) / std::max( int(now - _timeStart), 1 );
 
     if ( _timeLast < now )
     {
-      _drateLast = (_dnlNow - _dnlLast) / int(now - _timeLast);
+      _drateLast = double(_dnlNow - _dnlLast) / int(now - _timeLast);
       // start new period
       _timeLast  = now;
       _dnlLast   = _dnlNow;
@@ -477,11 +477,20 @@ void MediaCurl::setupEasy()
   {
 #if CURLVERSION_AT_LEAST(7,19,4)
     // restrict following of redirections from https to https only
-    if ( _url.getHost() == "download.opensuse.org" )
+    if ( _url.getHost() == "download.opensuse.org" ) {
+#if CURLVERSION_AT_LEAST(7,85,0)
+      SET_OPTION( CURLOPT_REDIR_PROTOCOLS_STR, "http,https" );
+#else
       SET_OPTION( CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
-    else
+#endif
+    } else {
+#if CURLVERSION_AT_LEAST(7,85,0)
+      SET_OPTION( CURLOPT_REDIR_PROTOCOLS_STR, "https" );
+#else
       SET_OPTION( CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
 #endif
+    }
+#endif // if CURLVERSION_AT_LEAST(7,19,4)
 
     if( _settings.verifyPeerEnabled() ||
         _settings.verifyHostEnabled() )
@@ -630,7 +639,7 @@ void MediaCurl::setupEasy()
   else
     MIL << "No cookies requested" << endl;
   SET_OPTION(CURLOPT_COOKIEJAR, _currentCookieFile.c_str() );
-  SET_OPTION(CURLOPT_PROGRESSFUNCTION, &progressCallback );
+  SET_OPTION(CURLOPT_XFERINFOFUNCTION, &progressCallback );
   SET_OPTION(CURLOPT_NOPROGRESS, 0L);
 
 #if CURLVERSION_AT_LEAST(7,18,0)
@@ -1334,7 +1343,7 @@ void MediaCurl::getDirInfo( filesystem::DirContent & retlist,
 
 ///////////////////////////////////////////////////////////////////
 //
-int MediaCurl::aliveCallback( void *clientp, double /*dltotal*/, double dlnow, double /*ultotal*/, double /*ulnow*/ )
+int MediaCurl::aliveCallback( void *clientp, curl_off_t /*dltotal*/, curl_off_t dlnow, curl_off_t /*ultotal*/, curl_off_t /*ulnow*/ )
 {
   internal::ProgressData *pdata = reinterpret_cast<internal::ProgressData *>( clientp );
   if( pdata )
@@ -1348,7 +1357,7 @@ int MediaCurl::aliveCallback( void *clientp, double /*dltotal*/, double dlnow, d
   return 0;
 }
 
-int MediaCurl::progressCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow )
+int MediaCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow )
 {
   internal::ProgressData *pdata = reinterpret_cast<internal::ProgressData *>( clientp );
   if( pdata )

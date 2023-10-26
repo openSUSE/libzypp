@@ -111,9 +111,9 @@ class MediaCurl : public MediaNetworkCommonHandler
 
   protected:
     /** Callback sending just an alive trigger to the UI, without stats (e.g. during metalink download). */
-    static int aliveCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
+    static int aliveCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
     /** Callback reporting download progress. */
-    static int progressCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
+    static int progressCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
     static CURL *progressCallback_getcurl( void *clientp );
     /**
      * check the url is supported by the curl library

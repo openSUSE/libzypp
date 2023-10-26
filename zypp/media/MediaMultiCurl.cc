@@ -1262,7 +1262,7 @@ static bool looks_like_metalink(const Pathname & file)
 // here we try to suppress all progress coming from a metalink download
 // bsc#1021291: Nevertheless send alive trigger (without stats), so UIs
 // are able to abort a hanging metalink download via callback response.
-int MediaMultiCurl::progressCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow)
+int MediaMultiCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow)
 {
   CURL *_curl = MediaCurl::progressCallback_getcurl(clientp);
   if (!_curl)
@@ -1306,10 +1306,10 @@ int MediaMultiCurl::progressCallback( void *clientp, double dltotal, double dlno
       // this is a metalink file change the expected filesize
       MediaCurl::resetExpectedFileSize( clientp, ByteCount( 2, ByteCount::MB) );
       // we're downloading the metalink file. Just trigger aliveCallbacks
-      curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, &MediaCurl::aliveCallback);
+      curl_easy_setopt(_curl, CURLOPT_XFERINFOFUNCTION, &MediaCurl::aliveCallback);
       return MediaCurl::aliveCallback(clientp, dltotal, dlnow, ultotal, ulnow);
     }
-  curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, &MediaCurl::progressCallback);
+  curl_easy_setopt(_curl, CURLOPT_XFERINFOFUNCTION, &MediaCurl::progressCallback);
   return MediaCurl::progressCallback(clientp, dltotal, dlnow, ultotal, ulnow);
 }
 
@@ -1366,7 +1366,7 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
   // change header to include Accept: metalink
   curl_easy_setopt(_curl, CURLOPT_HTTPHEADER, _customHeadersMetalink);
   // change to our own progress funcion
-  curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, &progressCallback);
+  curl_easy_setopt(_curl, CURLOPT_XFERINFOFUNCTION, &progressCallback);
   curl_easy_setopt(_curl, CURLOPT_PRIVATE, (*file) );	// important to pass the FILE* explicitly (passing through varargs)
   try
     {
@@ -1504,7 +1504,7 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
             ZYPP_THROW(MediaWriteException(destNew));
 
           // use the default progressCallback
-          curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, &MediaCurl::progressCallback);
+          curl_easy_setopt(_curl, CURLOPT_XFERINFOFUNCTION, &MediaCurl::progressCallback);
           MediaCurl::doGetFileCopyFile(srcFile, dest, file, report, options | OPTION_NO_REPORT_START);
         }
     }

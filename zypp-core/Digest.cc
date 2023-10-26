@@ -13,15 +13,20 @@
 */
 
 #include <cstdio> // snprintf
+
 #include <openssl/evp.h>
 #include <openssl/conf.h>
+#if OPENSSL_API_LEVEL < 30000
 #include <openssl/engine.h>
+#endif
+
 #include <string>
 #include <string.h>
 
 #include <iostream>
 #include <sstream>
 
+#include <zypp-core/AutoDispose.h>
 #include <zypp-core/Digest.h>
 #include <zypp-core/base/PtrTypes.h>
 
@@ -59,8 +64,11 @@ namespace zypp {
         ~P();
 
         EvpDataPtr mdctx;
-
+#if OPENSSL_API_LEVEL >= 30000
+        AutoDispose<EVP_MD *> md;
+#else
         const EVP_MD *md;
+#endif
         unsigned char md_value[EVP_MAX_MD_SIZE];
         unsigned md_len;
         zypp::ByteCount bytesHashed;
@@ -93,16 +101,32 @@ namespace zypp {
     {
       if(!openssl_digests_added)
       {
+#if OPENSSL_API_LEVEL >= 30000
+        // openssl 3.0 does not use engines anymore, instead we fetch algorithms via a new API
+        // also it seems initialization is implicit, i'm not sure if that call here is even required.
+        OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG | OPENSSL_INIT_ADD_ALL_DIGESTS, nullptr );
+#else
+# if OPENSSL_API_LEVEL >= 10100
+        OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG, nullptr );
+# else
         OPENSSL_config(NULL);
+# endif
         ENGINE_load_builtin_engines();
         ENGINE_register_all_complete();
         OpenSSL_add_all_digests();
+#endif
         openssl_digests_added = true;
       }
 
       if(!mdctx)
       {
+#if OPENSSL_API_LEVEL >= 30000
+        // this fetches the new provider based algorithms, returned objects have to be free'd
+        // i wonder if we could cache the providers instead of querying them for every Digest instance....
+        md = AutoDispose<EVP_MD *>( EVP_MD_fetch (nullptr, name.c_str(), nullptr), EVP_MD_free );
+#else
         md = EVP_get_digestbyname(name.c_str());
+#endif
         if(!md)
           return false;
 
@@ -130,6 +154,9 @@ namespace zypp {
 
     void Digest::P::cleanup()
     {
+#if OPENSSL_API_LEVEL >= 30000
+      md.reset();
+#endif
       mdctx.reset();
       finalized = false;
     }

@@ -65,7 +65,7 @@ protected:
 
   virtual void setupEasy() override;
   void checkFileDigest(Url &url, FILE *fp, MediaBlockList *blklist) const;
-  static int progressCallback( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
+  static int progressCallback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
 
 private:
   // the custom headers from MediaCurl plus a "Accept: metalink" header

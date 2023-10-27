@@ -74,7 +74,7 @@ namespace zypp::io {
   };
 
   using timeout_type = size_t;
-  static const timeout_type no_timeout = static_cast<timeout_type>(-1);
+  static constexpr timeout_type no_timeout = static_cast<timeout_type>(-1);
 
   /*!
    * Reads data from \a file until it finds a seperator \a c, hits the end of the file or times out.

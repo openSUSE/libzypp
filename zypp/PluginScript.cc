@@ -15,6 +15,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <glib.h>
+
 #include <zypp/base/LogTools.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp/base/String.h>
@@ -293,15 +295,12 @@ namespace zypp
       const char * buffer = data.c_str();
       ssize_t buffsize = data.size();
       do {
-        fd_set wfds;
-        FD_ZERO( &wfds );
-        FD_SET( fd, &wfds );
+        GPollFD watchFd;
+        watchFd.fd = fd;
+        watchFd.events =  G_IO_OUT | G_IO_ERR;
+        watchFd.revents = 0;
 
-        struct timeval tv;
-        tv.tv_sec = _sendTimeout;
-        tv.tv_usec = 0;
-
-        int retval = select( fd+1, NULL, &wfds, NULL, &tv );
+        int retval = g_poll( &watchFd, 1, _sendTimeout * 1000 );
         if ( retval > 0 )	// FD_ISSET( fd, &wfds ) will be true.
         {
           //DBG << "Ready to write..." << endl;
@@ -385,16 +384,13 @@ namespace zypp
           if ( errno == EWOULDBLOCK )
           {
             // wait a while for fd to become ready for reading...
-            fd_set rfds;
-            FD_ZERO( &rfds );
-            FD_SET( fd, &rfds );
+            GPollFD rfd;
+            rfd.fd = fd;
+            rfd.events =  G_IO_IN | G_IO_HUP | G_IO_ERR;
+            rfd.revents = 0;
 
-            struct timeval tv;
-            tv.tv_sec = _receiveTimeout;
-            tv.tv_usec = 0;
-
-            int retval = select( fd+1, &rfds, NULL, NULL, &tv );
-            if ( retval > 0 )	// FD_ISSET( fd, &rfds ) will be true.
+            int retval = g_poll( &rfd, 1, _receiveTimeout * 1000 );
+            if ( retval > 0 )	// rfd.revents was filled
             {
               ::clearerr( filep );
             }

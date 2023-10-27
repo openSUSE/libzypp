@@ -375,17 +375,18 @@ namespace zypp {
           do
           {
             /* Watch inputFile to see when it has input. */
-            fd_set rfds;
-            FD_ZERO( &rfds );
-            FD_SET( inputfileFd, &rfds );
+            GPollFD rfd;
+            rfd.fd = inputfileFd;
+            rfd.events =  G_IO_IN | G_IO_HUP | G_IO_ERR;
+            rfd.revents = 0;
 
-            /* Wait up to 1 seconds. */
-            struct timeval tv;
-            tv.tv_sec  = (delay < 0 ? 1 : 0);
-            tv.tv_usec = (delay < 0 ? 0 : delay*100000);
+            // each try increases our wait by 0.1 seconds, until we have
+            // 1 sec max timout.
+            gint timeout = delay < 0 ? 1000 : delay*100;
             if ( delay >= 0 && ++delay > 9 )
               delay = -1;
-            int retval = select( inputfileFd+1, &rfds, NULL, NULL, &tv );
+
+            int retval = g_poll( &rfd, 1, timeout );
 
             if ( retval == -1 )
             {

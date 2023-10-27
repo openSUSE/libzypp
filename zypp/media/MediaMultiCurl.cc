@@ -61,8 +61,8 @@ public:
   void disableCompetition();
 
   void checkdns();
-  void adddnsfd(fd_set &rset, int &maxfd);
-  void dnsevent(fd_set &rset);
+  void adddnsfd( std::vector<curl_waitfd> &waitFds );
+  void dnsevent( const std::vector<curl_waitfd> &waitFds );
 
   int _workerno;
 
@@ -506,20 +506,28 @@ multifetchworker::checkdns()
 }
 
 void
-multifetchworker::adddnsfd(fd_set &rset, int &maxfd)
+multifetchworker::adddnsfd(std::vector<curl_waitfd> &waitFds)
 {
   if (_state != WORKER_LOOKUP)
     return;
-  FD_SET(_dnspipe, &rset);
-  if (maxfd < _dnspipe)
-    maxfd = _dnspipe;
+
+  waitFds.push_back (
+        curl_waitfd {
+          .fd = _dnspipe,
+          .events = CURL_WAIT_POLLIN,
+          .revents = 0
+        });
 }
 
 void
-multifetchworker::dnsevent(fd_set &rset)
+multifetchworker::dnsevent( const std::vector<curl_waitfd> &waitFds )
 {
 
-  if (_state != WORKER_LOOKUP || !FD_ISSET(_dnspipe, &rset))
+  bool hasEvent = std::any_of( waitFds.begin (), waitFds.end(),[this]( const curl_waitfd &waitfd ){
+    return ( waitfd.fd == _dnspipe && waitfd.revents != 0 );
+  });
+
+  if (_state != WORKER_LOOKUP || !hasEvent)
     return;
   int status;
   while (waitpid(_pid, &status, 0) == -1)
@@ -851,8 +859,8 @@ multifetchrequest::run(std::vector<Url> &urllist)
   std::vector<Url>::iterator urliter = urllist.begin();
   for (;;)
     {
-      fd_set rset, wset, xset;
-      int maxfd, nqueue;
+      // our custom fd's we want to poll
+      std::vector<curl_waitfd> extraWaitFds;
 
       if (_finished)
         {
@@ -891,53 +899,50 @@ multifetchrequest::run(std::vector<Url> &urllist)
           break;
         }
 
-      FD_ZERO(&rset);
-      FD_ZERO(&wset);
-      FD_ZERO(&xset);
-
-      curl_multi_fdset(_multi, &rset, &wset, &xset, &maxfd);
-
       if (_lookupworkers)
         for (std::list<multifetchworker *>::iterator workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
-          (*workeriter)->adddnsfd(rset, maxfd);
+          (*workeriter)->adddnsfd( extraWaitFds );
 
-      timeval tv;
       // if we added a new job we have to call multi_perform once
       // to make it show up in the fd set. do not sleep in this case.
-      tv.tv_sec = 0;
-      tv.tv_usec = _havenewjob ? 0 : 200000;
-      if (_sleepworkers && !_havenewjob)
-        {
-          if (_minsleepuntil == 0)
-            {
-              for (std::list<multifetchworker *>::iterator workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
-                {
-                  multifetchworker *worker = *workeriter;
-                  if (worker->_state != WORKER_SLEEP)
-                    continue;
-                  if (!_minsleepuntil || _minsleepuntil > worker->_sleepuntil)
-                    _minsleepuntil = worker->_sleepuntil;
-                }
-            }
-          double sl = _minsleepuntil - currentTime();
-          if (sl < 0)
-            {
-              sl = 0;
-              _minsleepuntil = 0;
-            }
-          if (sl < .2)
-            tv.tv_usec = sl * 1000000;
+      int timeoutMs = _havenewjob ? 0 : 200;
+      if (_sleepworkers && !_havenewjob) {
+        if (_minsleepuntil == 0) {
+          for (std::list<multifetchworker *>::iterator workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter) {
+            multifetchworker *worker = *workeriter;
+            if (worker->_state != WORKER_SLEEP)
+              continue;
+            if (!_minsleepuntil || _minsleepuntil > worker->_sleepuntil)
+              _minsleepuntil = worker->_sleepuntil;
+          }
         }
-      int r = select(maxfd + 1, &rset, &wset, &xset, &tv);
+        double sl = _minsleepuntil - currentTime();
+        if (sl < 0) {
+          sl = 0;
+          _minsleepuntil = 0;
+        }
+        if (sl < .2)
+          timeoutMs = sl * 1000;
+      }
+
+      int r = 0;
+#if CURLVERSION_AT_LEAST(7,66,0)
+      CURLMcode mcode = curl_multi_poll( _multi, extraWaitFds.data(), extraWaitFds.size(), timeoutMs, &r );
+#else
+      CURLMcode mcode = curl_multi_wait( _multi, extraWaitFds.data(), extraWaitFds.size(), timeoutMs, &r );
+#endif
+      if ( mcode != CURLM_OK ) {
+        ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_poll() failed", str::Str() << "curl_multi_poll() returned CurlMcode: " << mcode ));
+      }
       if (r == -1 && errno != EINTR)
-        ZYPP_THROW(MediaCurlException(_baseurl, "select() failed", "unknown error"));
+        ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_poll() failed", "unknown error"));
       if (r != 0 && _lookupworkers)
         for (std::list<multifetchworker *>::iterator workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
           {
             multifetchworker *worker = *workeriter;
             if (worker->_state != WORKER_LOOKUP)
               continue;
-            (*workeriter)->dnsevent(rset);
+            (*workeriter)->dnsevent( extraWaitFds );
             if (worker->_state != WORKER_LOOKUP)
               _lookupworkers--;
           }
@@ -990,6 +995,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
 
       // collect all curl results, reschedule new jobs
       CURLMsg *msg;
+      int nqueue;
       while ((msg = curl_multi_info_read(_multi, &nqueue)) != 0)
         {
           if (msg->msg != CURLMSG_DONE)

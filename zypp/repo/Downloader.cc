@@ -24,6 +24,17 @@ using std::endl;
 
 namespace zypp
 {
+  namespace env {
+    bool ZYPP_REPOMD_WITH_PKCS7()
+    {
+      static bool val = [](){
+        const char * env = getenv("ZYPP_REPOMD_WITH_PKCS7");
+        return( env && zypp::str::strToBool( env, true ) );
+      }();
+      return val;
+    }
+  } // namespace env
+
 namespace repo
 {
   class ExtraSignatureFileChecker : public SignatureFileChecker
@@ -148,6 +159,10 @@ void Downloader::defaultDownloadMasterIndex( MediaSetAccess & media_r, const Pat
   setMediaSetAccess( media_r );
   enqueue( OnMediaLocation( sigpath, 1 ).setOptional( true ).setDownloadSize( ByteCount( 20, ByteCount::MB ) ) );
   enqueue( OnMediaLocation( keypath, 1 ).setOptional( true ).setDownloadSize( ByteCount( 20, ByteCount::MB ) ) );
+  if ( env::ZYPP_REPOMD_WITH_PKCS7() ) {
+    Pathname pkcs7path = masterIndex_r.extend( ".pkcs7" );
+    enqueue( OnMediaLocation( pkcs7path, 1 ).setOptional( true ).setDownloadSize( ByteCount( 20, ByteCount::MB ) ) );
+  }
   start( destdir_r );
   reset();
 

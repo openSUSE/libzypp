@@ -71,7 +71,7 @@ std::string TermLine::get( unsigned width_r, SplitFlags flags_r, char exp_r ) co
 
     // else: less boring
     std::string tag( zypp::str::Str() << '<' << percentHint << "%>" );
-    pc = ( pc > tag.size() ? pc - tag.size() : 0 );
+    pc = pc > tag.size() ? (diff - tag.size()) * percentHint / 100 : 0;
     return zypp::str::Str() << l << std::string( pc, '.' ) << tag << std::string( diff-pc-tag.size(), '=' ) << r;
   }
   else if ( diff < 0 )

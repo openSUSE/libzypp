@@ -164,4 +164,22 @@ namespace zypp::io {
   TimeoutException::~TimeoutException() noexcept
   { }
 
+  std::vector<char> peek_data_fd( FILE *fd, off_t offset, size_t count )
+  {
+    if ( !fd )
+      return {};
+
+    fflush( fd );
+
+    std::vector<char> data( count + 1 , '\0' );
+
+    ssize_t l = -1;
+    while ((l = pread( fileno( fd ), data.data(), count, offset ) ) == -1 && errno == EINTR)
+      ;
+    if (l == -1)
+      return {};
+
+    return data;
+  }
+
 }

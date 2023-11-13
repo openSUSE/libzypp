@@ -83,6 +83,11 @@ namespace zypp::io {
    * the file descriptor did not work. The default is to fail if it's not possible to unblock the file.
    */
   std::pair<ReceiveUpToResult, std::string> receiveUpto( FILE * file, char c, timeout_type timeout, bool failOnUnblockError = true );
+
+  /*!
+   * Fetches data from a FILE without changing the current file offset
+   */
+  std::vector<char> peek_data_fd ( FILE *fd, off_t offset, size_t count );
 }
 
 #endif

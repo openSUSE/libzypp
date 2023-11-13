@@ -210,8 +210,6 @@ namespace zyppng {
 
     std::variant< pending_t, running_t, prepareNextRangeBatch_t, finished_t > _runningMode = pending_t();
   };
-
-  std::vector<char> peek_data_fd ( FILE *fd, off_t offset, size_t count );
 }
 
 #endif

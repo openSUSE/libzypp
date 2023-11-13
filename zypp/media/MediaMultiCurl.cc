@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------\
+﻿/*---------------------------------------------------------------------\
 |                          ____ _   __ __ ___                          |
 |                         |__  / \ / / . \ . \                         |
 |                           / / \ V /|  _/  _/                         |
@@ -26,9 +26,11 @@
 #include <zypp/base/Logger.h>
 #include <zypp/media/MediaMultiCurl.h>
 #include <zypp-curl/parser/MetaLinkParser>
+#include <zypp-curl/parser/zsyncparser.h>
 #include <zypp/ManagedFile.h>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-curl/auth/CurlAuthData>
+#include <zypp-curl/parser/metadatahelper.h>
 
 using std::endl;
 using namespace zypp::base;
@@ -48,6 +50,16 @@ class multifetchrequest;
 // Hack: we derive from MediaCurl just to get the storage space for
 // settings, url, curlerrors and the like
 
+enum MultiFetchWorkerState {
+  WORKER_STARTING,
+  WORKER_LOOKUP,
+  WORKER_FETCH,
+  WORKER_DISCARD,
+  WORKER_DONE,
+  WORKER_SLEEP,
+  WORKER_BROKEN
+};
+
 class multifetchworker : MediaCurl {
   friend class multifetchrequest;
 
@@ -64,24 +76,31 @@ public:
   void adddnsfd( std::vector<curl_waitfd> &waitFds );
   void dnsevent( const std::vector<curl_waitfd> &waitFds );
 
-  int _workerno;
+  const int _workerno;
 
-  int _state;
-  bool _competing;
+  MultiFetchWorkerState _state = WORKER_STARTING;
+  bool _competing = false;
 
-  size_t _blkno;
-  off_t _blkstart;
-  size_t _blksize;
-  bool _noendrange;
+  struct BlockData {
+    size_t _blkno   = 0;
+    off_t _blkstart = 0;
+    size_t _blksize = 0;
+    std::optional<Digest> _digest;
+  };
+  std::vector<BlockData> _blocks;
 
-  double _blkstarttime;
-  size_t _blkreceived;
-  off_t  _received;
+  off_t _datastart = 0; //< The offset we want our download to start from
+  size_t _datasize = 0; //< The nr of bytes we need to download overall
+  bool _noendrange = false; //< Set to true if we try to request data with no end range, we will cancel the download after we have all bytes?
 
-  double _avgspeed;
-  double _maxspeed;
+  double _starttime    = 0; //< When was the current job started
+  size_t _datareceived = 0; //< Data downloaded in the current job only
+  off_t  _received     = 0; //< Overall data fetched by this worker
 
-  double _sleepuntil;
+  double _avgspeed = 0;
+  double _maxspeed = 0;
+
+  double _sleepuntil = 0;
 
 private:
   void stealjob();
@@ -92,26 +111,15 @@ private:
   size_t headerfunction(char *ptr, size_t size);
   static size_t _headerfunction(void *ptr, size_t size, size_t nmemb, void *stream);
 
-  multifetchrequest *_request;
-  int _pass;
+  multifetchrequest *_request = nullptr;
+  int _pass = 0;
   std::string _urlbuf;
-  off_t _off;
-  size_t _size;
-  Digest _dig;
+  off_t _off   = 0;   //<< Current file offset
+  size_t _size = 0; //<< Bytes still to be downloaded
 
-  pid_t _pid;
-  int _dnspipe;
+  pid_t _pid   = 0;
+  int _dnspipe = -1;
 };
-
-#define WORKER_STARTING 0
-#define WORKER_LOOKUP   1
-#define WORKER_FETCH    2
-#define WORKER_DISCARD  3
-#define WORKER_DONE     4
-#define WORKER_SLEEP    5
-#define WORKER_BROKEN   6
-
-
 
 class multifetchrequest {
 public:
@@ -130,10 +138,10 @@ protected:
   const Pathname _filename;
   Url _baseurl;
 
-  FILE *_fp;
+  FILE *_fp = nullptr;
   callback::SendReport<DownloadProgressReport> *_report;
   MediaBlockList *_blklist;
-  off_t _filesize;
+  off_t _filesize; //< size of the file we want to download
 
   CURLM *_multi;
 
@@ -149,7 +157,7 @@ protected:
   size_t _sleepworkers;
   double _minsleepuntil;
   bool _finished;
-  off_t _totalsize;
+  off_t _totalsize; //< nr of bytes we need to download ( e.g. filesize - ( bytes reused from deltafile ) )
   off_t _fetchedsize;
   off_t _fetchedgoodsize;
 
@@ -184,20 +192,21 @@ currentTime()
 size_t
 multifetchworker::writefunction(void *ptr, size_t size)
 {
-  size_t len, cnt;
+  size_t len = 0;
   if (_state == WORKER_BROKEN)
     return size ? 0 : 1;
 
   double now = currentTime();
 
   len = size > _size ? _size : size;
-  if (!len)
-    {
-      // kill this job?
-      return size;
-    }
+  if (!len) {
+    // kill this job?
+    return size;
+  }
 
-  if (_blkstart && _off == _blkstart)
+  // executed the first time writefunction is called
+  // just a check if we actually got statuscode 206 for partial data
+  if ( _datastart && _off == _datastart )
     {
       // make sure that the server replied with "partial content"
       // for http requests
@@ -212,35 +221,85 @@ multifetchworker::writefunction(void *ptr, size_t size)
         }
     }
 
-  _blkreceived += len;
+  _datareceived += len;
   _received += len;
 
   _request->_lastprogress = now;
 
-  if (_state == WORKER_DISCARD || !_request->_fp)
-    {
-      // block is no longer needed
-      // still calculate the checksum so that we can throw out bad servers
-      if (_request->_blklist)
-        _dig.update((const char *)ptr, len);
-      _off += len;
-      _size -= len;
-      return size;
+  // blocks are no longer needed, but we can calc checksums for the data we get
+  // so bad workers are removed..
+  // @TODO shouldn't we simply stop fetching data from the server if we set to discard?
+  bool discardData = (_state == WORKER_DISCARD || !_request->_fp);
+
+  // update checksums block by block
+  if ( _blocks.size () ) {
+    auto i = std::find_if( _blocks.begin(), _blocks.end(), [&]( const BlockData &d ){ return d._blkstart <= _off && d._blkstart + d._blksize > _off; } );
+    if ( i == _blocks.end() ) {
+      // error
+      DBG << "#" << _workerno << "Unable to find current block in given block list" << std::endl;
+      return size ? 0 : 1;
     }
-  if (fseeko(_request->_fp, _off, SEEK_SET))
-    return size ? 0 : 1;
-  cnt = fwrite(ptr, 1, len, _request->_fp);
-  if (cnt > 0)
-    {
-      _request->_fetchedsize += cnt;
-      if (_request->_blklist)
-        _dig.update((const char *)ptr, cnt);
-      _off += cnt;
-      _size -= cnt;
-      if (cnt == len)
+
+    off_t  currOff   = std::max( _off, i->_blkstart );
+    size_t remainLen = len;
+    size_t bytesWritten = 0;
+    while( remainLen > 0 && i != _blocks.end() ) {
+      size_t writtenBlk     = 0; // how many bytes have we written in this current iteration
+      size_t blockLenRemain = std::min( remainLen, i->_blksize - ( currOff - i->_blkstart ) ); // how many bytes missing in the current block
+      if ( !discardData ) {
+        // if we can't seek the file there is no purpose in trying again
+        if (fseeko(_request->_fp, currOff, SEEK_SET))
+          return size ? 0 : 1;
+
+        writtenBlk = fwrite( (const char *)ptr+bytesWritten, 1, blockLenRemain, _request->_fp);
+        if ( writtenBlk ) {
+          i->_digest->update( (const char *)ptr+bytesWritten, writtenBlk );
+        }
+      } else {
+        writtenBlk += blockLenRemain;
+        currOff += blockLenRemain;
+        i->_digest->update( (const char *)ptr+bytesWritten, writtenBlk );
+      }
+
+      // current data counters
+      remainLen    -= writtenBlk;
+      currOff      += writtenBlk;
+      bytesWritten += writtenBlk;
+
+      // overall data counters
+      _off += writtenBlk;
+      _size -= writtenBlk;
+      _request->_fetchedsize += writtenBlk;
+
+      // if we didn't write the remaining bytes of the block
+      // its time to stop
+      if ( writtenBlk != blockLenRemain )
+          return bytesWritten;
+
+      // next block
+      i++;
+    }
+    return bytesWritten;
+  } else {
+
+    size_t cnt = 0;
+    if ( discardData ) {
+        _off += len;
+        _size -= len;
         return size;
     }
-  return cnt;
+    if (fseeko(_request->_fp, _off, SEEK_SET))
+      return size ? 0 : 1;
+    cnt = fwrite(ptr, 1, len, _request->_fp);
+    if (cnt > 0) {
+        _request->_fetchedsize += cnt;
+        _off += cnt;
+        _size -= cnt;
+        if (cnt == len)
+          return size;
+    }
+    return cnt;
+  }
 }
 
 size_t
@@ -303,25 +362,10 @@ multifetchworker::_headerfunction(void *ptr, size_t size, size_t nmemb, void *st
 
 multifetchworker::multifetchworker(int no, multifetchrequest &request, const Url &url)
 : MediaCurl(url, Pathname())
+, _workerno( no )
+, _maxspeed( request._maxspeed )
+, _request ( &request )
 {
-  _workerno = no;
-  _request = &request;
-  _state = WORKER_STARTING;
-  _competing = false;
-  _off = _blkstart = 0;
-  _size = _blksize = 0;
-  _pass = 0;
-  _blkno = 0;
-  _pid = 0;
-  _dnspipe = -1;
-  _blkreceived = 0;
-  _received = 0;
-  _blkstarttime = 0;
-  _avgspeed = 0;
-  _sleepuntil = 0;
-  _maxspeed = _request->_maxspeed;
-  _noendrange = false;
-
   Url curlUrl( clearQueryString(url) );
   _urlbuf = curlUrl.asString();
   _curl = _request->_context->fromEasyPool(_url.getHost());
@@ -565,36 +609,54 @@ bool
 multifetchworker::checkChecksum()
 {
   // XXX << "checkChecksum block " << _blkno << endl;
-  if (!_blksize || !_request->_blklist)
+  if (!_datasize || !_request->_blklist || !_blocks.size() )
     return true;
-  return _request->_blklist->verifyDigest(_blkno, _dig);
+  return std::all_of ( _blocks.begin (), _blocks.end(), [&]( BlockData &block ){
+    if ( block._digest && !_request->_blklist->verifyDigest( block._blkno, *block._digest ) ) {
+      WAR << "#" << _workerno << ": Block: " << block._blkno << " failed to verify checksum" << endl;
+      return false;
+    }
+    return true;
+  });
 }
 
 bool
 multifetchworker::recheckChecksum()
 {
   // XXX << "recheckChecksum block " << _blkno << endl;
-  if (!_request->_fp || !_blksize || !_request->_blklist)
+  if (!_request->_fp || !_datasize || !_request->_blklist || !_blocks.size() )
     return true;
-  if (fseeko(_request->_fp, _blkstart, SEEK_SET))
-    return false;
-  char buf[4096];
-  size_t l = _blksize;
-  _request->_blklist->createDigest(_dig);	// resets digest
-  while (l)
-    {
+
+  for ( auto &blk : _blocks ) {
+    if ( !_request->_blklist->haveChecksum ( blk._blkno ) )
+      continue;
+
+    if (fseeko(_request->_fp, blk._blkstart, SEEK_SET))
+      return false;
+
+    blk._digest.emplace();
+    _request->_blklist->createDigest( *blk._digest );	// resets digest
+
+    char buf[4096];
+    size_t l = blk._blksize;
+    while (l) {
       size_t cnt = l > sizeof(buf) ? sizeof(buf) : l;
       if (fread(buf, cnt, 1, _request->_fp) != 1)
         return false;
-      _dig.update(buf, cnt);
+      blk._digest->update(buf, cnt);
       l -= cnt;
     }
-  return _request->_blklist->verifyDigest(_blkno, _dig);
+
+    if ( !_request->_blklist->verifyDigest( blk._blkno, *blk._digest ) ) {
+      WAR << "#" << _workerno << ": Block: " << blk._blkno << " failed to verify checksum" << endl;
+      return false;
+    }
+  }
+  return true;
 }
 
 
-void
-multifetchworker::stealjob()
+void multifetchworker::stealjob()
 {
   if (!_request->_stealing)
     {
@@ -611,14 +673,14 @@ multifetchworker::stealjob()
         continue;
       if (worker->_pass == -1)
         continue;	// do not steal!
-      if (worker->_state == WORKER_DISCARD || worker->_state == WORKER_DONE || worker->_state == WORKER_SLEEP || !worker->_blksize)
+      if (worker->_state == WORKER_DISCARD || worker->_state == WORKER_DONE || worker->_state == WORKER_SLEEP || !worker->_datasize)
         continue;	// do not steal finished jobs
-      if (!worker->_avgspeed && worker->_blkreceived)
+      if (!worker->_avgspeed && worker->_datareceived)
         {
           if (!now)
             now = currentTime();
-          if (now > worker->_blkstarttime)
-            worker->_avgspeed = worker->_blkreceived / (now - worker->_blkstarttime);
+          if (now > worker->_starttime)
+            worker->_avgspeed = worker->_datareceived / (now - worker->_starttime);
         }
       if (!best || best->_pass > worker->_pass)
         {
@@ -628,14 +690,14 @@ multifetchworker::stealjob()
       if (best->_pass < worker->_pass)
         continue;
       // if it is the same block, we want to know the best worker, otherwise the worst
-      if (worker->_blkstart == best->_blkstart)
+      if (worker->_datastart == best->_datastart)
         {
-          if ((worker->_blksize - worker->_blkreceived) * best->_avgspeed < (best->_blksize - best->_blkreceived) * worker->_avgspeed)
+        if ((worker->_datasize - worker->_datareceived) * best->_avgspeed < (best->_datasize - best->_datareceived) * worker->_avgspeed)
             best = worker;
         }
       else
         {
-          if ((worker->_blksize - worker->_blkreceived) * best->_avgspeed > (best->_blksize - best->_blkreceived) * worker->_avgspeed)
+        if ((worker->_datasize - worker->_datareceived) * best->_avgspeed > (best->_datasize - best->_datareceived) * worker->_avgspeed)
             best = worker;
         }
     }
@@ -649,23 +711,23 @@ multifetchworker::stealjob()
   // do not sleep twice
   if (_state != WORKER_SLEEP)
     {
-      if (!_avgspeed && _blkreceived)
+    if (!_avgspeed && _datareceived)
         {
           if (!now)
             now = currentTime();
-          if (now > _blkstarttime)
-            _avgspeed = _blkreceived / (now - _blkstarttime);
+          if (now > _starttime)
+            _avgspeed = _datareceived / (now - _starttime);
         }
 
       // lets see if we should sleep a bit
-      XXX << "me #" << _workerno << ": " << _avgspeed << ", size " << best->_blksize << endl;
-      XXX << "best #" << best->_workerno << ": " << best->_avgspeed << ", size " << (best->_blksize - best->_blkreceived) << endl;
-      if (_avgspeed && best->_avgspeed && best->_blksize - best->_blkreceived > 0 &&
-          (best->_blksize - best->_blkreceived) * _avgspeed < best->_blksize * best->_avgspeed)
+      XXX << "me #" << _workerno << ": " << _avgspeed << ", size " << best->_datasize << endl;
+      XXX << "best #" << best->_workerno << ": " << best->_avgspeed << ", size " << (best->_datasize - best->_datareceived) << endl;
+      if (_avgspeed && best->_avgspeed && best->_datasize - best->_datareceived > 0 &&
+          (best->_datasize - best->_datareceived) * _avgspeed < best->_datasize * best->_avgspeed)
         {
           if (!now)
             now = currentTime();
-          double sl = (best->_blksize - best->_blkreceived) / best->_avgspeed * 2;
+          double sl = (best->_datasize - best->_datareceived) / best->_avgspeed * 2;
           if (sl > 1)
             sl = 1;
           XXX << "#" << _workerno << ": going to sleep for " << sl * 1000 << " ms" << endl;
@@ -678,11 +740,23 @@ multifetchworker::stealjob()
 
   _competing = true;
   best->_competing = true;
-  _blkstart = best->_blkstart;
-  _blksize = best->_blksize;
+  _datastart = best->_datastart;
+  _datasize  = best->_datasize;
+  _blocks.clear ();
+  std::for_each( best->_blocks.begin(), best->_blocks.end(), [&](BlockData &b) {
+    _blocks.emplace_back( BlockData{
+      ._blkno    = b._blkno,
+      ._blkstart = b._blkstart,
+      ._blksize  = b._blksize
+    });
+    if ( _request->_blklist->haveChecksum( b._blkno) ) {
+      zypp::Digest d;
+      _request->_blklist->createDigest( d );
+      _blocks.back()._digest = std::move(d);
+    }
+  });
   best->_pass++;
   _pass = best->_pass;
-  _blkno = best->_blkno;
   run();
 }
 
@@ -695,7 +769,7 @@ multifetchworker::disableCompetition()
       multifetchworker *worker = *workeriter;
       if (worker == this)
         continue;
-      if (worker->_blkstart == _blkstart)
+      if (worker->_datastart == _datastart )
         {
           if (worker->_state == WORKER_FETCH)
             worker->_state = WORKER_DISCARD;
@@ -705,9 +779,20 @@ multifetchworker::disableCompetition()
 }
 
 
-void
-multifetchworker::nextjob()
+/*!
+ * Gets the next n blocks from the request, the way we handle this is to
+ * increase blocknr in the next request by as many blocks we take until it reaches the blockcount.
+ * That way we know when all blocks have been taken by a worker.
+ *
+ * IFF downloading of blocks fails, another worker might steal the job later on. We will fail either all
+ * blocks or none.
+ */
+void multifetchworker::nextjob()
 {
+  _datasize  = 0;
+  _datastart = -1;
+  _blocks.clear();
+
   _noendrange = false;
   if (_request->_stealing)
     {
@@ -718,7 +803,9 @@ multifetchworker::nextjob()
   MediaBlockList *blklist = _request->_blklist;
   if (!blklist)
     {
-      _blksize = _request->_defaultBlksize;
+      // if we have no blocklist we just download chunks in the size of _defaultBlksize
+      // in theory also supports having no filesize
+      _datasize = _request->_defaultBlksize;
       if (_request->_filesize != off_t(-1))
       {
         if (_request->_blkoff >= _request->_filesize)
@@ -726,34 +813,66 @@ multifetchworker::nextjob()
             stealjob();
             return;
           }
-        _blksize = _request->_filesize - _request->_blkoff;
-        if (_blksize > _request->_defaultBlksize)
-          _blksize = _request->_defaultBlksize;
+        _datasize = _request->_filesize - _request->_blkoff;
+        if (_datasize > _request->_defaultBlksize)
+          _datasize = _request->_defaultBlksize;
       }
       DBG << "No BLOCKLIST falling back to chunk size: " <<  _request->_defaultBlksize << std::endl;
     }
   else
     {
       MediaBlock blk = blklist->getBlock(_request->_blkno);
-      while (_request->_blkoff >= (off_t)(blk.off + blk.size))
-        {
-          if (++_request->_blkno == blklist->numBlocks())
-            {
+      // find the next block to download
+      while (_request->_blkoff >= (off_t)(blk.off + blk.size)) {
+          // we hit the end of the list
+          if (++_request->_blkno == blklist->numBlocks()) {
               stealjob();
               return;
-            }
+          }
           blk = blklist->getBlock(_request->_blkno);
           _request->_blkoff = blk.off;
-        }
-      _blksize = blk.off + blk.size - _request->_blkoff;
-      if (_blksize > _request->_defaultBlksize && !blklist->haveChecksum(_request->_blkno)) {
-        DBG << "Block: "<< _request->_blkno << " has no checksum falling back to default blocksize: " <<  _request->_defaultBlksize << std::endl;
-        _blksize = _request->_defaultBlksize;
       }
+
+      DBG << "#" << _workerno << "Collecting blocks to download" << std::endl;
+      const auto &addBlock = [&]( bool isFirst = false ) {
+        // XXX << "#" << _workerno << "Adding block nr " << _request->_blkno << " to range" << std::endl;
+        _blocks.emplace_back( BlockData{
+                                ._blkno    = _request->_blkno,
+                                ._blkstart = blk.off,
+                                ._blksize  = blk.size,
+                                ._digest   = {}
+                              } );
+
+        // in case the first block we find is not exactly aligned with the blockoffset
+        // unlikely but the original code did this so we continue to do so
+        if ( isFirst )
+          _datasize = blk.off + blk.size - _request->_blkoff;
+        else
+          _datasize += blk.size;
+
+      };
+
+      // push the first block in
+      addBlock( true );
+
+
+      // pick as many blocks we need until we reach _defaultBlkSize
+      // or until we find a gap between blocks
+      while ( _datasize < _request->_defaultBlksize && ( _request->_blkno + 1 ) < _request->_blklist->numBlocks ()) {
+        blk = blklist->getBlock( _request->_blkno + 1 );
+        if ( _blocks.back ()._blkstart + _blocks.back ()._blksize < blk.off )
+          break;
+
+        // consecutive blocks, and we have bytes left lets take it
+        ++_request->_blkno;
+        addBlock();
+      }
+
+      DBG << "#" << _workerno << "Done adding blocks to download, going to download " << _blocks.size() << " nr of block with " << _datasize << " nr of bytes" << std::endl;
+
     }
-  _blkno = _request->_blkno;
-  _blkstart = _request->_blkoff;
-  _request->_blkoff += _blksize;
+  _datastart = _request->_blkoff;
+  _request->_blkoff += _datasize;
   run();
 }
 
@@ -765,11 +884,11 @@ multifetchworker::run()
   if (_state == WORKER_BROKEN || _state == WORKER_DONE)
      return;	// just in case...
   if (_noendrange)
-    sprintf(rangebuf, "%llu-", (unsigned long long)_blkstart);
+    sprintf(rangebuf, "%llu-", (unsigned long long)_datastart);
   else
-    sprintf(rangebuf, "%llu-%llu", (unsigned long long)_blkstart, (unsigned long long)_blkstart + _blksize - 1);
-  XXX << "#" << _workerno << ": BLK " << _blkno << ":" << rangebuf << " " << _url << endl;
-  if (curl_easy_setopt(_curl, CURLOPT_RANGE, !_noendrange || _blkstart != 0 ? rangebuf : (char *)0) != CURLE_OK)
+    sprintf(rangebuf, "%llu-%llu", (unsigned long long)_datastart, (unsigned long long)_datastart + _datasize - 1);
+  XXX << "#" << _workerno << ":" << rangebuf << " " << _url << endl;
+  if (curl_easy_setopt(_curl, CURLOPT_RANGE, !_noendrange || _datastart != 0 ? rangebuf : (char *)0) != CURLE_OK)
     {
       _request->_activeworkers--;
       _state = WORKER_BROKEN;
@@ -783,16 +902,28 @@ multifetchworker::run()
       strncpy(_curlError, "curl_multi_add_handle failed", CURL_ERROR_SIZE);
       return;
     }
+
   _request->_havenewjob = true;
-  _off = _blkstart;
-  _size = _blksize;
-  if (_request->_blklist)
-    _request->_blklist->createDigest(_dig);	// resets digest
+  _off  = _datastart;
+  _size = _datasize;
+
+  // resets digests
+  if ( _request->_blklist && _blocks.size() ) {
+    for ( auto &b : _blocks ) {
+      if ( _request->_blklist->haveChecksum ( b._blkno ) ) {
+        b._digest.emplace();
+        _request->_blklist->createDigest( *b._digest );
+      } else {
+        b._digest.reset();
+      }
+    }
+  }
+
   _state = WORKER_FETCH;
 
   double now = currentTime();
-  _blkstarttime = now;
-  _blkreceived = 0;
+  _starttime = now;
+  _datareceived = 0;
 }
 
 
@@ -1005,14 +1136,14 @@ multifetchrequest::run(std::vector<Url> &urllist)
           multifetchworker *worker;
           if (curl_easy_getinfo(easy, CURLINFO_PRIVATE, &worker) != CURLE_OK)
             ZYPP_THROW(MediaCurlException(_baseurl, "curl_easy_getinfo", "unknown error"));
-          if (worker->_blkreceived && now > worker->_blkstarttime)
+          if (worker->_datareceived && now > worker->_starttime)
             {
               if (worker->_avgspeed)
-                worker->_avgspeed = (worker->_avgspeed + worker->_blkreceived / (now - worker->_blkstarttime)) / 2;
+                worker->_avgspeed = (worker->_avgspeed + worker->_datareceived / (now - worker->_starttime)) / 2;
               else
-                worker->_avgspeed = worker->_blkreceived / (now - worker->_blkstarttime);
+                worker->_avgspeed = worker->_datareceived / (now - worker->_starttime);
             }
-          XXX << "#" << worker->_workerno << ": BLK " << worker->_blkno << " done code " << cc << " speed " << worker->_avgspeed << endl;
+          XXX << "#" << worker->_workerno << " done code " << cc << " speed " << worker->_avgspeed << endl;
           curl_multi_remove_handle(_multi, easy);
           if (cc == CURLE_HTTP_RETURNED_ERROR)
             {
@@ -1034,7 +1165,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
                       worker->stealjob();
                       continue;
                     }
-                  if (worker->_blkstart >= _filesize)
+                  if (worker->_datastart >= _filesize)
                     {
                       worker->nextjob();
                       continue;
@@ -1069,7 +1200,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
                           continue;
                         }
                     }
-                  _fetchedgoodsize += worker->_blksize;
+                  _fetchedgoodsize += worker->_datasize;
                 }
 
               // make bad workers sleep a little
@@ -1226,43 +1357,8 @@ void MediaMultiCurl::setupEasy()
   struct curl_slist *sl = _customHeaders;
   for (; sl; sl = sl->next)
     _customHeadersMetalink = curl_slist_append(_customHeadersMetalink, sl->data);
-  _customHeadersMetalink = curl_slist_append(_customHeadersMetalink, "Accept: */*, application/metalink+xml, application/metalink4+xml");
-}
-
-static bool looks_like_metalink_fd(int fd)
-{
-  char buf[256], *p;
-  int l;
-  while ((l = pread(fd, buf, sizeof(buf) - 1, (off_t)0)) == -1 && errno == EINTR)
-    ;
-  if (l == -1)
-    return 0;
-  buf[l] = 0;
-  p = buf;
-  while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-    p++;
-  if (!strncasecmp(p, "<?xml", 5))
-    {
-      while (*p && *p != '>')
-        p++;
-      if (*p == '>')
-        p++;
-      while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-        p++;
-    }
-  bool ret = !strncasecmp(p, "<metalink", 9) ? true : false;
-  return ret;
-}
-
-static bool looks_like_metalink(const Pathname & file)
-{
-  int fd;
-  if ((fd = open(file.asString().c_str(), O_RDONLY|O_CLOEXEC)) == -1)
-    return false;
-  bool ret = looks_like_metalink_fd(fd);
-  close(fd);
-  DBG << "looks_like_metalink(" << file << "): " << ret << endl;
-  return ret;
+  //, application/x-zsync
+  _customHeadersMetalink = curl_slist_append(_customHeadersMetalink, "Accept: */*, application/x-zsync, application/metalink+xml, application/metalink4+xml");
 }
 
 // here we try to suppress all progress coming from a metalink download
@@ -1293,7 +1389,7 @@ int MediaMultiCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_of
   if (curl_easy_getinfo(_curl, CURLINFO_CONTENT_TYPE, &ptr) == CURLE_OK && ptr)
     {
       std::string ct = std::string(ptr);
-      if (ct.find("application/metalink+xml") == 0 || ct.find("application/metalink4+xml") == 0)
+      if (ct.find("application/x-zsync") == 0 || ct.find("application/metalink+xml") == 0 || ct.find("application/metalink4+xml") == 0)
         ismetalink = true;
     }
   if (!ismetalink && dlnow < 256)
@@ -1304,8 +1400,8 @@ int MediaMultiCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_of
   if (!ismetalink)
     {
       fflush(fp);
-      ismetalink = looks_like_metalink_fd(fileno(fp));
-      DBG << "looks_like_metalink_fd: " << ismetalink << endl;
+      ismetalink = looks_like_meta_file(fp) != MetaDataType::None;
+      DBG << "looks_like_meta_file: " << ismetalink << endl;
     }
   if (ismetalink)
     {
@@ -1407,35 +1503,52 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
     WAR << "Could not get the response code." << endl;
   }
 
-  bool ismetalink = false;
+  MetaDataType ismetalink = MetaDataType::None;
 
   char *ptr = NULL;
   if (curl_easy_getinfo(_curl, CURLINFO_CONTENT_TYPE, &ptr) == CURLE_OK && ptr)
     {
       std::string ct = std::string(ptr);
-      if (ct.find("application/metalink+xml") == 0 || ct.find("application/metalink4+xml") == 0)
-        ismetalink = true;
+      if (ct.find("application/x-zsync") == 0 )
+        ismetalink = MetaDataType::Zsync;
+      else if (ct.find("application/metalink+xml") == 0 || ct.find("application/metalink4+xml") == 0)
+        ismetalink = MetaDataType::MetaLink;
     }
 
-  if (!ismetalink)
+  if ( ismetalink == MetaDataType::None )
     {
       // some proxies do not store the content type, so also look at the file to find
       // out if we received a metalink (bnc#649925)
       fflush(file);
-      if (looks_like_metalink(destNew))
-        ismetalink = true;
+      ismetalink = looks_like_meta_file(destNew);
     }
 
-  if (ismetalink)
+  if ( ismetalink != MetaDataType::None )
     {
       bool userabort = false;
       Pathname failedFile = ZConfig::instance().repoCachePath() / "MultiCurl.failed";
       file = nullptr;	// explicitly close destNew before the parser reads it.
       try
         {
-          MetaLinkParser mlp;
-          mlp.parse(destNew);
-          MediaBlockList bl = mlp.getBlockList();
+          MediaBlockList bl;
+          std::vector<Url> urls;
+          if ( ismetalink == MetaDataType::Zsync ) {
+            ZsyncParser parser;
+            parser.parse( destNew );
+            bl = parser.getBlockList();
+            urls = parser.getUrls();
+
+            XXX << getFileUrl(srcFile.filename()) << " returned zsync meta data." << std::endl;
+            XXX << "With " << bl.numBlocks() << " nr of blocks and a blocksize of " << bl.getBlock(0).size << std::endl;
+          } else {
+            MetaLinkParser mlp;
+            mlp.parse(destNew);
+            bl = mlp.getBlockList();
+            urls = mlp.getUrls();
+
+            XXX << getFileUrl(srcFile.filename()) << " returned metalink meta data." << std::endl;
+            XXX << "With " << bl.numBlocks() << " nr of blocks and a blocksize of " << bl.getBlock(0).size << std::endl;
+          }
 
           /*
            * gihub issue libzipp:#277 Multicurl backend breaks with MirrorCache and Metalink with unknown filesize.
@@ -1446,16 +1559,15 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
             ZYPP_THROW( MediaException("Multicurl requires filesize but none was provided.") );
           }
 
-          std::vector<Url> urls = mlp.getUrls();
-    /*
-     * bsc#1191609 In certain locations we do not receive a suitable number of metalink mirrors, and might even
-     * download chunks serially from one and the same server. In those cases we need to fall back to a normal download.
-     */
-    if ( urls.size() < MIN_REQ_MIRRS ) {
-      ZYPP_THROW( MediaException("Multicurl enabled but not enough mirrors provided") );
-    }
+          /*
+           * bsc#1191609 In certain locations we do not receive a suitable number of metalink mirrors, and might even
+           * download chunks serially from one and the same server. In those cases we need to fall back to a normal download.
+           */
+          if ( urls.size() < MIN_REQ_MIRRS ) {
+            ZYPP_THROW( MediaException("Multicurl enabled but not enough mirrors provided") );
+          }
 
-          XXX << bl << endl;
+          // XXX << bl << endl;
           file = fopen((*destNew).c_str(), "w+e");
           if (!file)
             ZYPP_THROW(MediaWriteException(destNew));

@@ -17,17 +17,14 @@
 #include "base_p.h"
 #include "basicdownloader_p.h"
 #include <zypp-core/zyppng/base/statemachine.h>
+#include <zypp-curl/parser/metadatahelper.h>
 
 namespace zyppng {
 
   struct FinishedState;
   struct PrepareMultiState;
 
-  enum class MetaDataType {
-    None  = 0,
-    Zsync,
-    MetaLink
-  };
+  using MetaDataType = zypp::media::MetaDataType;
 
   /*!
      * State to download the actual metalink file, we can however not be 100% sure that we actually

@@ -17,46 +17,6 @@
 namespace zyppng {
 
   namespace  {
-
-    constexpr auto minMetalinkProbeSize = 256; //< The maximum probe size we download before we decide we really got no metalink file
-
-    MetaDataType looks_like_meta_data( const std::vector<char> &data )
-    {
-      if ( data.empty() )
-        return MetaDataType::None;
-
-      const char *p = data.data();
-      while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-        p++;
-
-      // If we have a zsync file, it has to start with zsync:
-      if ( !strncasecmp( p, "zsync:", 6 ) ) {
-        return MetaDataType::Zsync;
-      }
-
-      if (!strncasecmp(p, "<?xml", 5))
-      {
-        while (*p && *p != '>')
-          p++;
-        if (*p == '>')
-          p++;
-        while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-          p++;
-      }
-      bool ret = !strncasecmp( p, "<metalink", 9 ) ? true : false;
-      if ( ret )
-        return MetaDataType::MetaLink;
-
-      return MetaDataType::None;
-    }
-
-    MetaDataType looks_like_meta_file( const zypp::Pathname &file )
-    {
-      std::unique_ptr<FILE, decltype(&fclose)> fd( fopen( file.c_str(), "r" ), &fclose );
-      if ( !fd )
-        return MetaDataType::None;
-      return looks_like_meta_data( zyppng::peek_data_fd( fd.get(), 0, minMetalinkProbeSize )  );
-    }
   }
 
   DlMetaLinkInfoState::DlMetaLinkInfoState(DownloadPrivate &parent)
@@ -98,7 +58,7 @@ namespace zyppng {
     // some proxies do not store the content type, so also look at the file to find
     // out if we received a metalink (bnc#649925)
     if ( _detectedMetaType == MetaDataType::None )
-      _detectedMetaType = looks_like_meta_file( _request->targetFilePath() );
+      _detectedMetaType = zypp::media::looks_like_meta_file( _request->targetFilePath() );
     if ( _detectedMetaType == MetaDataType::None ) {
       // Move to finished state
       MIL << "Downloading on " << stateMachine()._spec.url() << " was successful, no metalink/zsync data. " << std::endl;
@@ -124,7 +84,7 @@ namespace zyppng {
   {
     auto &sm = stateMachine();
 
-    if ( _detectedMetaType == MetaDataType::None && dlnow < minMetalinkProbeSize ) {
+    if ( _detectedMetaType == MetaDataType::None && dlnow < zypp::media::minMetalinkProbeSize ) {
       // can't tell yet, ...
       return sm._sigAlive.emit( *sm.z_func(), dlnow );
     }
@@ -138,7 +98,7 @@ namespace zyppng {
     }
 
     if ( _detectedMetaType == MetaDataType::None ) {
-      _detectedMetaType = looks_like_meta_data( req.peekData( 0, minMetalinkProbeSize ) );
+      _detectedMetaType = zypp::media::looks_like_meta_data( req.peekData( 0, zypp::media::minMetalinkProbeSize ) );
     }
 
     if ( _detectedMetaType != MetaDataType::None ) {
@@ -155,11 +115,9 @@ namespace zyppng {
       // still no metalink, we assume a normal download, not perfect though
       if ( !_fallbackMilWritten ) {
         _fallbackMilWritten = true;
-        MIL << "No Metalink file detected after " << minMetalinkProbeSize << ", falling back to normal progress updates" << std::endl;
+        MIL << "No Metalink file detected after " << zypp::media::minMetalinkProbeSize << ", falling back to normal progress updates" << std::endl;
       }
       return BasicDownloaderStateBase::handleRequestProgress( req, dltotal, dlnow );
     }
   }
-
-
 }

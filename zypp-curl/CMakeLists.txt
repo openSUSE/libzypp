@@ -129,6 +129,7 @@ SET( zypp_curl_ng_network_private_SRCS
 SET( zypp_curl_parser_HEADERS
   parser/MediaBlockList
   parser/mediablocklist.h
+  parser/metadatahelper.h
   parser/MetaLinkParser
   parser/metalinkparser.h
   parser/ZsyncParser
@@ -139,7 +140,8 @@ SET( zypp_curl_parser_private_HEADERS
 )
 
 SET( zypp_curl_parser_SRCS
-  parser/mediablocklist.cc  
+  parser/mediablocklist.cc
+  parser/metadatahelper.cc
   parser/metalinkparser.cc
   parser/zsyncparser.cc
 )

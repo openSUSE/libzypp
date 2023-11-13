@@ -20,6 +20,7 @@
 #include <zypp-media/MediaConfig>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/StringV.h>
+#include <zypp-core/base/IOTools.h>
 #include <zypp-core/Pathname.h>
 #include <curl/curl.h>
 #include <stdio.h>
@@ -52,24 +53,6 @@ namespace zyppng {
 
     //helper for std::visit
     template<class T> struct always_false : std::false_type {};
-  }
-
-  std::vector<char> peek_data_fd( FILE *fd, off_t offset, size_t count )
-  {
-    if ( !fd )
-      return {};
-
-    fflush( fd );
-
-    std::vector<char> data( count + 1 , '\0' );
-
-    ssize_t l = -1;
-    while ((l = pread( fileno( fd ), data.data(), count, offset ) ) == -1 && errno == EINTR)
-      ;
-    if (l == -1)
-      return {};
-
-    return data;
   }
 
   NetworkRequest::Range NetworkRequest::Range::make(size_t start, size_t len, zyppng::NetworkRequest::DigestPtr &&digest, zyppng::NetworkRequest::CheckSumBytes &&expectedChkSum, std::any &&userData, std::optional<size_t> digestCompareLen, std::optional<size_t> dataBlockPadding )
@@ -1245,7 +1228,7 @@ namespace zyppng {
       return {};
 
     const auto &rmode = std::get<NetworkRequestPrivate::running_t>( d->_runningMode );
-    return peek_data_fd( rmode._outFile, offset, count );
+    return zypp::io::peek_data_fd( rmode._outFile, offset, count );
   }
 
   Url NetworkRequest::url() const

@@ -11,6 +11,8 @@
 #include <zypp/ZYppCallbacks.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/fs/TmpPath.h>
+#include <zypp-tui/application.h>
+#include <zypp-tui/output/Out.h>
 #include <yaml-cpp/yaml.h>
 
 #include <boost/program_options.hpp>
@@ -28,22 +30,19 @@ struct DLEntry {
 // https://www.boost.org/doc/libs/1_83_0/libs/timer/doc/original_timer.html
 // A simple handcrafted substitute for <boost/progress.hpp> progress_display
 struct PCBar {
-  PCBar() {
-    std::cout << std::endl;
-    std::cout << "0%   10   20   30   40   50   60   70   80   90   100%" << std::endl;
-    std::cout << "|----|----|----|----|----|----|----|----|----|----|" << std::endl;
-  }
-  ~PCBar() {
-    std::cout << std::endl;
+  PCBar() : bar(app.out(), "") {
+    bar->range(100);
+    bar->set(0);
+    bar.print();
   }
   void set( int pcval_r ) {
-    if ( pcval_r <= 0 )
-      std::cout << "\033[2K\r" << std::flush;
-    else if ( pcval_r < 100 )
-      std::cout << "\033[2K\r" << std::string( 1+pcval_r/2, '*' ) << std::flush;
-    else
-      std::cout << "\033[2K\r" << std::string( 51, '*' ) << std::flush;
+    bar->set(pcval_r);
+    bar.print();
   }
+
+  private:
+  ztui::Application app;
+  ztui::Out::ProgressBar bar;
 };
 
 // progress for downloading a file

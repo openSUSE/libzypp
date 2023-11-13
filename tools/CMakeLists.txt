@@ -7,7 +7,7 @@ FOREACH( loop_var ${APLLPROG} )
     ${loop_var}.cc
   )
   TARGET_LINK_LIBRARIES( ${loop_var}
-    zypp
+    zypp zypp-tui
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
   )
 ENDFOREACH( loop_var )

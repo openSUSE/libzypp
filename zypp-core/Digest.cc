@@ -174,14 +174,22 @@ namespace zypp {
       finalized = false;
     }
 
-    Digest::Digest() : _dp(new P())
+    Digest::Digest() : _dp( std::make_unique<P>() )
     {
     }
 
-    Digest::~Digest()
+    Digest::Digest(Digest &&other) : _dp( std::move(other._dp) )
     {
-      delete _dp;
     }
+
+    Digest &Digest::operator=(Digest &&other)
+    {
+      _dp = std::move( other._dp );
+      return *this;
+    }
+
+    Digest::~Digest()
+    { }
 
     bool Digest::create(const std::string& name)
     {

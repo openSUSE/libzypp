@@ -17,7 +17,7 @@
 
 #include <string>
 #include <iosfwd>
-#include <vector>
+#include <memory>
 
 #include <zypp-core/Pathname.h>
 #include <zypp-core/ByteArray.h>
@@ -37,14 +37,19 @@ namespace zypp {
     {
       private:
         class P;
-        P* _dp;
+        std::unique_ptr<P> _dp;
 
         // disabled
-        Digest(const Digest& d);
+        Digest(const Digest& d) = delete;
         // disabled
-        const Digest& operator=(const Digest& d);
+        const Digest& operator=(const Digest& d) = delete;
 
       public:
+
+        // moving is fine
+        Digest(Digest&& other);
+        Digest& operator=( Digest&& other);
+
         /** \name Well known digest algorithm names. */
         //@{
         /** md5 */

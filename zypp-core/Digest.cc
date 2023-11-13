@@ -18,6 +18,8 @@
 #include <openssl/conf.h>
 #if OPENSSL_API_LEVEL < 30000
 #include <openssl/engine.h>
+#else
+#include <openssl/provider.h>
 #endif
 
 #include <string>
@@ -28,6 +30,7 @@
 
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Digest.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/PtrTypes.h>
 
 using std::endl;
@@ -104,7 +107,17 @@ namespace zypp {
 #if OPENSSL_API_LEVEL >= 30000
         // openssl 3.0 does not use engines anymore, instead we fetch algorithms via a new API
         // also it seems initialization is implicit, i'm not sure if that call here is even required.
-        OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG | OPENSSL_INIT_ADD_ALL_DIGESTS, nullptr );
+        OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG, nullptr );
+
+        // md4 was moved to legacy, we need this for zsync
+        if ( !OSSL_PROVIDER_load( nullptr, "legacy" ) ) {
+          ERR << "Failed to load legacy openssl provider" << std::endl;
+        }
+        if ( !OSSL_PROVIDER_load( nullptr, "default") ) {
+          ERR << "Failed to load default openssl provider" << std::endl;
+        }
+
+        OPENSSL_init_crypto( OPENSSL_INIT_ADD_ALL_DIGESTS, nullptr );
 #else
 # if OPENSSL_API_LEVEL >= 10100
         OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG, nullptr );

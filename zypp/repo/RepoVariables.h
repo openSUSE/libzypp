@@ -38,7 +38,7 @@ namespace zypp
     /// When braces are used, the matching ending brace is the first \c } not
     /// escaped by a backslash and not within an embedded variable expansion.
     /// Within braces only \c $, \c } and \c backslash are escaped by a
-    /// backslash. There is no escaping outside braces, to stay comaptible
+    /// backslash. There is no escaping outside braces, to stay compatible
     /// with \c YUM (which does not support braces).
     ///
     /// <ul>
@@ -79,7 +79,7 @@ namespace zypp
      *
      * \note The $releasever value is overwritten by the environment
      * variable \c ZYPP_REPO_RELEASEVER. This might  be handy for
-     * distribution upogrades like this:
+     * distribution upgrades like this:
      * \code
      *   $ export ZYPP_REPO_RELEASEVER=13.2
      *   $ zypper lr -u

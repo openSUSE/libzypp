@@ -115,7 +115,7 @@ namespace zypp
 
         /** The var type: \c \, \c $, \c - , \c +
         * \li \c \ backslash escaped literal
-        * \li \c $	plain variable
+        * \li \c $ plain variable
         * \li \c - conditional: default value
         * \li \c + conditional: alternate value
         */
@@ -556,7 +556,7 @@ namespace zypp
       Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
       // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
       // but this was done before as well. The final fix will have to keep the proxypasswd
-      // out side the url in a cedential file.
+      // out side the url in a credential file.
       Url tmpurl { value };
       tmpurl.setViewOptions( toReplace );
       const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );

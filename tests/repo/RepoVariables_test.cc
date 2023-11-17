@@ -73,7 +73,7 @@ void helperGenRepVarExpandResults()
 {
   // Generate test result strings for RepVarExpand:
   //   ( STRING, REPLACED_all_vars_undef, REPLACED_all_vars_defined )
-  // Crefully check whether new stings are correct before
+  // Carefully check whether new stings are correct before
   // adding them to the testccse.
   std::map<std::string,std::string> vartable;
   std::map<std::string,std::pair<std::string,std::string>> result;

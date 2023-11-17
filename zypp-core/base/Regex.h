@@ -62,7 +62,7 @@ namespace zypp
     /// \ingroup ZYPP_STR_REGEX
     /// \relates regex
     /// Return whether a \ref regex matches a specific string. An optionally
-    /// passed \ref smatch object will contain the match reults.
+    /// passed \ref smatch object will contain the match results.
     //////////////////////////////////////////////////////////////////
     bool regex_match( const char * s, smatch & matches, const regex & regex );
 

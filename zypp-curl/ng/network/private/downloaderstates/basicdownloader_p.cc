@@ -107,10 +107,10 @@ namespace zyppng {
       return failed("Request was not intialized before starting it.");
 
     if ( _chksumtype  && _chksumVec ) {
-      std::shared_ptr<zypp::Digest> fileDigest = std::make_shared<zypp::Digest>();
+      std::optional<zypp::Digest> fileDigest = zypp::Digest();
       if ( fileDigest->create( *_chksumtype ) )
         // to run the checksum for the full file we need to request one big range with open end
-        _request->addRequestRange( 0, 0, fileDigest, *_chksumVec );
+        _request->addRequestRange( 0, 0, std::move(fileDigest), *_chksumVec );
     }
 
     if ( sm._spec.checkExistsOnly() )

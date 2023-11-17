@@ -314,7 +314,7 @@ namespace zyppng {
     req->resetRequestRanges();
     for ( const auto &block : blocks ) {
       if ( block.chksumVec && block.chksumtype.size() ) {
-        std::shared_ptr<zypp::Digest> dig = std::make_shared<zypp::Digest>();
+        std::optional<zypp::Digest> dig = zypp::Digest();
         if ( !dig->create( block.chksumtype ) ) {
           WAR_MEDIA << "Trying to create Digest with chksum type " << block.chksumtype << " failed " << std::endl;
           return false;
@@ -322,7 +322,7 @@ namespace zyppng {
 
         if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
           DBG_MEDIA << "Starting block " << block.start << " with checksum " << zypp::Digest::digestVectorToString( *block.chksumVec ) << "." << std::endl;
-        req->addRequestRange( block.start, block.len, dig, *block.chksumVec, std::any( block ), block.chksumCompareLen, block.chksumPad );
+        req->addRequestRange( block.start, block.len, std::move(dig), *block.chksumVec, std::any( block ), block.chksumCompareLen, block.chksumPad );
       } else {
 
         if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )

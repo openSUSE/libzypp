@@ -64,12 +64,12 @@ namespace zyppng {
       return false;
     }
 
-    std::shared_ptr<zypp::Digest> digest;
+    std::optional<zypp::Digest> digest;
     NetworkRequest::CheckSumBytes sum;
 
     const auto &headerSum = s.headerChecksum();
     if ( headerSum ) {
-      digest = std::make_shared<zypp::Digest>();
+      digest = zypp::Digest();
       if ( !digest->create( headerSum->type() ) ) {
         ERR << "Unknown header checksum type " << headerSum->type() << std::endl;
         return false;
@@ -77,7 +77,7 @@ namespace zyppng {
       sum = zypp::Digest::hexStringToUByteArray( headerSum->checksum() );
     }
 
-    r->addRequestRange( 0, s.headerSize(), digest, sum );
+    r->addRequestRange( 0, s.headerSize(), std::move(digest), sum );
     return true;
   }
 

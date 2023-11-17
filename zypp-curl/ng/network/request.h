@@ -3,6 +3,7 @@
 
 #include <zypp-curl/ng/network/networkrequesterror.h>
 #include <zypp-curl/ng/network/TransferSettings>
+#include <zypp-curl/ng/network/curlmultiparthandler.h>
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/zyppng/core/Url>
 #include <zypp-core/zyppng/core/ByteArray>
@@ -17,6 +18,7 @@
 
 namespace zypp {
   class Digest;
+  class CheckSum;
 
   namespace media {
     class AuthData;
@@ -71,27 +73,7 @@ namespace zyppng {
     };
     ZYPP_DECLARE_FLAGS(Options, OptionBits);
 
-    struct Range {
-      size_t start = 0;
-      size_t len = 0;
-      size_t bytesWritten = 0;
-      DigestPtr _digest; //< zypp::Digest that is updated when data is written, can be used to validate the file contents with a checksum
-
-      /**
-      * Enables automated checking of downloaded contents against a checksum.
-      * Only makes a difference if \ref _digest is initialized too
-      *
-      * \note expects checksum in byte NOT in string format
-      */
-      CheckSumBytes _checksum;
-      std::optional<size_t> _relevantDigestLen; //< If this is initialized , it defines how many bytes of the resulting checkum are compared
-      std::optional<size_t> _chksumPad;   //< If initialized we need to pad the digest with zeros before calculating the final checksum
-      std::any userData; //< Custom data the user can associate with the Range
-
-      State _rangeState = State::Pending; //< Flag to know if this range has been already requested and if the request was successful
-
-      static Range make ( size_t start, size_t len = 0, DigestPtr &&digest = nullptr, CheckSumBytes &&expectedChkSum = CheckSumBytes(), std::any &&userData = std::any(), std::optional<size_t> digestCompareLen = {}, std::optional<size_t> _dataBlockPadding = {} );
-    };
+    using Range = CurlMultiPartHandler::Range;
 
     struct Timings {
       std::chrono::microseconds namelookup;
@@ -145,9 +127,15 @@ namespace zyppng {
      * Adds a new range to the requested range list, the ranges can not overlap
      * \note This will not change a running download
      */
-    void addRequestRange ( size_t start, size_t len = 0, DigestPtr digest = nullptr, CheckSumBytes expectedChkSum = CheckSumBytes(), std::any userData = std::any(), std::optional<size_t> digestCompareLen = {}, std::optional<size_t> chksumpad = {}  );
+    void addRequestRange ( size_t start, size_t len = 0, std::optional<zypp::Digest> &&digest = {}, CheckSumBytes expectedChkSum = CheckSumBytes(), std::any userData = std::any(), std::optional<size_t> digestCompareLen = {}, std::optional<size_t> chksumpad = {}  );
 
-    void addRequestRange ( const Range &range );
+    void addRequestRange ( Range &&range );
+
+    /*!
+     * Sets the expected checksum for the full file.
+     * \note This will not change a running download
+     */
+    bool setExpectedFileChecksum( const zypp::CheckSum &expected );
 
     /*!
      * Clears all requested ranges, the next download will get the complete file

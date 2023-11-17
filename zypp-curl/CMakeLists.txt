@@ -63,6 +63,7 @@ SET( zypp_curl_proxyinfo_HEADERS
 INSTALL(  FILES ${zypp_curl_proxyinfo_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/zypp-curl/proxyinfo )
 
 SET( zypp_curl_ng_network_SRCS
+  ng/network/curlmultiparthandler.cc
   ng/network/downloader.cc
   ng/network/downloadspec.cc
   ng/network/mirrorcontrol.cc
@@ -72,6 +73,7 @@ SET( zypp_curl_ng_network_SRCS
 )
 
 SET( zypp_curl_ng_network_HEADERS
+  ng/network/curlmultiparthandler.h
   ng/network/AuthData
   ng/network/authdata.h
   ng/network/Downloader
@@ -168,7 +170,8 @@ SET( zypp_curl_lib_HEADERS
 # Default loggroup for all files
 SET_LOGGROUP( "zypp-curl" $${zypp_curl_lib_SRCS} )
 
-ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS} )
+ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
+  ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 #we include generated headers, so we need to wait for zypp-protobuf to be ready
 add_dependencies( zypp-curl zypp-protobuf )
 

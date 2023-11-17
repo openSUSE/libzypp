@@ -16,6 +16,7 @@
 
 #include <openssl/evp.h>
 #include <openssl/conf.h>
+#include <optional>
 #if OPENSSL_API_LEVEL < 30000
 #include <openssl/engine.h>
 #else
@@ -222,6 +223,14 @@ namespace zypp {
       _dp->finalized = false;
       _dp->bytesHashed = 0;
       return true;
+    }
+
+    Digest Digest::clone() const
+    {
+      Digest d;
+      if ( !_dp->name.empty () )
+        d.create ( _dp->name );
+      return d;
     }
 
     std::string Digest::digest()

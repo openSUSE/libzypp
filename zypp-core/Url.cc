@@ -27,17 +27,6 @@ namespace zypp
   using namespace zypp::url;
 
 
-  // -----------------------------------------------------------------
-  /*
-   * url       = [scheme:] [//authority] /path [?query] [#fragment]
-   */
-  #define RX_SPLIT_URL                       "^([^:/?#]+:|)" \
-                                             "(//[^/?#]*|)"  \
-                                             "([^?#]*)"        \
-                                             "([?][^#]*|)"   \
-                                             "(#.*|)"
-
-
   ////////////////////////////////////////////////////////////////////
   namespace
   { //////////////////////////////////////////////////////////////////
@@ -370,40 +359,26 @@ namespace zypp
   UrlRef
   Url::parseUrl(const std::string &encodedUrl)
   {
-    UrlRef      url;
+    // url = [scheme:] [//authority] /path [?query] [#fragment]
+    static const str::regex RX_SPLIT_URL {
+      //|  scheme    ||  authority || path ||    query  ||  fr  |
+      "^(([^:/?#]+):|)(//([^/?#]*)|)([^?#]*)([?]([^#]*)|)(#(.*)|)"
+    };
+
+    UrlRef url;
     str::smatch out;
-    bool        ret = false;
-
-    try
+    if ( str::regex_match( encodedUrl, out, RX_SPLIT_URL ) )
     {
-      str::regex  rex(RX_SPLIT_URL);
-      ret = str::regex_match(encodedUrl, out, rex);
-    }
-    catch( ... )
-    {}
-
-    if(ret && out.size() == 6)
-    {
-      std::string scheme = out[1];
-      if (scheme.size() > 1)
-        scheme = scheme.substr(0, scheme.size()-1);
-      std::string authority = out[2];
-      if (authority.size() >= 2)
-        authority = authority.substr(2);
-      std::string query = out[4];
-      if (query.size() > 1)
-        query = query.substr(1);
-      std::string fragment = out[5];
-      if (fragment.size() > 1)
-        fragment = fragment.substr(1);
-
-      url = g_urlSchemeRepository().getUrlByScheme(scheme);
-      if( !url)
-      {
-        url.reset( new UrlBase());
+      const std::string & scheme    { out[2] };
+      const std::string & authority { out[4] };
+      const std::string & path      { out[5] };
+      const std::string & query     { out[7] };
+      const std::string & fragment  { out[9] };
+      url = g_urlSchemeRepository().getUrlByScheme( scheme );
+      if( !url ) {
+        url.reset( new UrlBase() );
       }
-      url->init(scheme, authority, out[3],
-                query, fragment);
+      url->init( scheme, authority, path, query, fragment );
     }
     return url;
   }

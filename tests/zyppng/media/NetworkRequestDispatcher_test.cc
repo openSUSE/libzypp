@@ -107,7 +107,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_basic, bdata::make( withSSL ), withSSL)
   });
 
   disp->enqueue( reqData );
-  ev->run();
+  if ( disp->count () ) ev->run();
 
   BOOST_TEST_REQ_SUCCESS( reqData );
   BOOST_REQUIRE( gotStarted );
@@ -215,7 +215,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_errors, bdata::make( withSSL ), withSSL)
   disp->enqueue( get204 );
 
   disp->run();
-  ev->run();
+  if ( disp->count () ) ev->run();
 
   BOOST_TEST_REQ_ERR( req404, zyppng::NetworkRequestError::NotFound );
   BOOST_TEST_REQ_ERR( reqInvProto, zyppng::NetworkRequestError::UnsupportedProtocol );
@@ -248,41 +248,95 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL
   zyppng::Url weburl (web.url());
   weburl.setPathName("/complexdir/subdir1/subdir1-file1.txt");
 
-  zypp::filesystem::TmpFile targetFile;
-  zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+  const auto &checkFileExists = []( const zypp::filesystem::Pathname &filePath ) -> bool {
+    zypp::filesystem::PathInfo targetFileInfo( filePath );
+    return ( targetFileInfo.isExist() && targetFileInfo.isFile() );
+  };
 
-  std::shared_ptr<zypp::Digest> dig = std::make_shared<zypp::Digest>();
-  BOOST_REQUIRE_MESSAGE( dig->create( zypp::Digest::sha1() ), "Unable to create Digest " );
-
-  reqDLFile->transferSettings() = set;
-  reqDLFile->addRequestRange(0, 0, dig, zypp::media::hexstr2bytes("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15") );
-  disp->enqueue( reqDLFile );
-  ev->run();
-  BOOST_TEST_REQ_SUCCESS( reqDLFile );
-
-  //modify the checksum -> request should fail now
-  reqDLFile->resetRequestRanges();
-  reqDLFile->addRequestRange(0, 0, dig, zypp::media::hexstr2bytes("f1d2d2f924e986ac86fdf7b36c94bcdf32beec20") );
-  disp->enqueue( reqDLFile );
-  ev->run();
-  BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::InvalidChecksum );
-
-  weburl = web.url();
-  weburl.setPathName("/file-1.txt");
-  reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
-  reqDLFile->transferSettings() = set;
-  reqDLFile->setUrl( weburl );
-  reqDLFile->addRequestRange( 0, 7 );
-  disp->enqueue( reqDLFile );
-  ev->run();
-  BOOST_TEST_REQ_SUCCESS( reqDLFile );
-  {
-    zypp::filesystem::PathInfo targetFileInfo( targetFile.path() );
-    BOOST_REQUIRE( targetFileInfo.isExist() );
-    BOOST_REQUIRE( targetFileInfo.isFile() );
-    std::string fileSum = zypp::filesystem::md5sum( targetFile.path() );
+  const auto &checkFilesum = []( const zypp::filesystem::Pathname &filePath, const zypp::CheckSum sum  ) -> bool {
+    std::string fileSum = zypp::filesystem::checksum( filePath, sum.type() );
     fileSum = zypp::str::trim( fileSum );
-    BOOST_REQUIRE_EQUAL( std::string("16d2b386b2034b9488996466aaae0b57"), fileSum );
+    const std::string &expSumStr = sum.checksum ();
+    return (expSumStr == fileSum);
+  };
+
+
+  // download a full file using a open range starting from 0 with expected checksum
+  {
+    zypp::filesystem::TmpFile targetFile;
+    zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    std::optional<zypp::Digest> dig = zypp::Digest();
+    BOOST_REQUIRE_MESSAGE( dig->create( zypp::Digest::sha1() ), "Unable to create Digest " );
+
+    reqDLFile->transferSettings() = set;
+    reqDLFile->addRequestRange(0, 0, std::move(dig), zypp::media::hexstr2bytes("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15") );
+    disp->enqueue( reqDLFile );
+    if ( disp->count () ) ev->run();
+    BOOST_TEST_REQ_SUCCESS( reqDLFile );
+
+    BOOST_REQUIRE( checkFileExists(targetFile.path()) );
+    BOOST_REQUIRE( checkFilesum(targetFile.path(), zypp::CheckSum::sha1("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15")) );
+  }
+
+  // download a full file with expected checksum
+  {
+    zypp::filesystem::TmpFile targetFile;
+    zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    reqDLFile->transferSettings() = set;
+    BOOST_REQUIRE_MESSAGE( reqDLFile->setExpectedFileChecksum( zypp::CheckSum::sha1("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15") ), "Unable to set expected checksum" );
+    disp->enqueue( reqDLFile );
+    if ( disp->count () ) ev->run();
+    BOOST_TEST_REQ_SUCCESS( reqDLFile );
+
+    BOOST_REQUIRE( checkFileExists(targetFile.path()) );
+    BOOST_REQUIRE( checkFilesum(targetFile.path(), zypp::CheckSum::sha1("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15")) );
+  }
+
+  // download a full file using a open range starting from 0 but checksum should fail
+  {
+    zypp::filesystem::TmpFile targetFile;
+    zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    std::optional<zypp::Digest> dig = zypp::Digest();
+    BOOST_REQUIRE_MESSAGE( dig->create( zypp::Digest::sha1() ), "Unable to create Digest " );
+    //modify the checksum -> request should fail now
+    reqDLFile->addRequestRange(0, 0, std::move(dig), zypp::media::hexstr2bytes("f1d2d2f924e986ac86fdf7b36c94bcdf32beec20") );
+    disp->enqueue( reqDLFile );
+    if ( disp->count () ) ev->run();
+    BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::InvalidChecksum );
+
+    BOOST_REQUIRE( checkFileExists(targetFile.path()) );
+    BOOST_REQUIRE( !checkFilesum(targetFile.path(), zypp::CheckSum::sha1("f1d2d2f924e986ac86fdf7b36c94bcdf32beec20")) );
+  }
+
+  // download a full file but checksum should fail
+  {
+    zypp::filesystem::TmpFile targetFile;
+    zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    reqDLFile->transferSettings() = set;
+    BOOST_REQUIRE_MESSAGE( reqDLFile->setExpectedFileChecksum( zypp::CheckSum::sha1( "f1d2d2f924e986ac86fdf7b36c94bcdf32beec20") ) , "Unable to set expected checksum" );
+    disp->enqueue( reqDLFile );
+    if ( disp->count () ) ev->run();
+    BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::InvalidChecksum );
+
+    BOOST_REQUIRE( checkFileExists(targetFile.path()) );
+    BOOST_REQUIRE( !checkFilesum(targetFile.path(), zypp::CheckSum::sha1( "f1d2d2f924e986ac86fdf7b36c94bcdf32beec20")) );
+  }
+
+  {
+    zypp::filesystem::TmpFile targetFile;
+    zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    weburl = web.url();
+    weburl.setPathName("/file-1.txt");
+    reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
+    reqDLFile->transferSettings() = set;
+    reqDLFile->setUrl( weburl );
+    reqDLFile->addRequestRange( 0, 7 );
+    disp->enqueue( reqDLFile );
+    if ( disp->count () ) ev->run();
+    BOOST_TEST_REQ_SUCCESS( reqDLFile );
+
+    BOOST_REQUIRE( checkFileExists(targetFile.path()) );
+    BOOST_REQUIRE( checkFilesum(targetFile.path(), zypp::CheckSum::md5(std::string("16d2b386b2034b9488996466aaae0b57"))) );
   }
 }
 
@@ -319,7 +373,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_delay_download, bdata::make( withSSL ), withSS
   reqDLFile->transferSettings() = set;
 
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
 
   BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::Timeout );
 }
@@ -351,7 +405,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl, bdata::make( withSSL ), withSSL 
   reqDLFile->addRequestRange( 248, 6 );
   reqDLFile->addRequestRange(  76, 9 );
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   auto err = reqDLFile->error();
   BOOST_TEST_REQ_SUCCESS( reqDLFile );
 
@@ -424,7 +478,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_no_order, bdata::make( withSSL ),
   reqDLFile->addRequestRange( 10, str2.length() );
   reqDLFile->addRequestRange( 25, str3.length() );
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   BOOST_TEST_REQ_SUCCESS( reqDLFile );
 
   std::string downloaded = TestTools::readFile ( targetFile.path() );
@@ -473,7 +527,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_weird_data, bdata::make( withSSL 
   reqDLFile->addRequestRange( 25, str2.length() );
   reqDLFile->addRequestRange( 70, str3.length() );
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   BOOST_TEST_REQ_SUCCESS( reqDLFile );
 
   std::string downloaded = TestTools::readFile ( targetFile.path() );
@@ -516,7 +570,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_overlap, bdata::make( withSSL ), 
   reqDLFile->addRequestRange(  0, str1.length() );
   reqDLFile->addRequestRange( 40, str2.length() );
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   BOOST_TEST_REQ_SUCCESS( reqDLFile );
 
   std::string downloaded = TestTools::readFile ( targetFile.path() );
@@ -561,11 +615,12 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_data_missing, bdata::make( withSSL )
   reqDLFile->addRequestRange( 10, str2.length() + 1 );
   reqDLFile->addRequestRange( 25, str3.length() );
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::MissingData );
 }
 
-//Get many ranges from a file to force the server to return a range error
+// Get many ranges from a file to force the downloader into using multiple batches
+// and the server to generate range failure for requesting > 128 ranges ( configured in nginx.conf )
 BOOST_DATA_TEST_CASE(nwdispatcher_multipart_many_chunks_dl, bdata::make( withSSL ), withSSL )
 {
   auto ev = zyppng::EventLoop::create();
@@ -602,7 +657,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_many_chunks_dl, bdata::make( withSSL
   }
 
   disp->enqueue( reqDLFile );
-  ev->run();
+  if ( disp->count () ) ev->run();
   auto err = reqDLFile->error();
   std::cerr << err.toString () << std::endl;
   BOOST_TEST_REQ_SUCCESS( reqDLFile );

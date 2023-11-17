@@ -18,6 +18,7 @@
 #include <string>
 #include <iosfwd>
 #include <memory>
+#include <optional>
 
 #include <zypp-core/Pathname.h>
 #include <zypp-core/ByteArray.h>
@@ -146,6 +147,13 @@ namespace zypp {
          * but it may be implemented in a more efficient way.
          */
         bool reset();
+
+        /**
+         * Returns a clone of the current Digest and returns it.
+         * This is the same as manually creating a Digest with the same name ( so no
+         * checksum calculation state is copied )
+         */
+        Digest clone() const;
 
         /** \brief compute digest of a stream. convenience function
          *

@@ -14,6 +14,7 @@
 #ifndef ZYPP_NG_MEDIA_CURL_PRIVATE_REQUEST_P_H_INCLUDED
 #define ZYPP_NG_MEDIA_CURL_PRIVATE_REQUEST_P_H_INCLUDED
 
+#include <zypp-core/CheckSum.h>
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-media/MediaException>
@@ -29,8 +30,6 @@
 #include <variant>
 
 namespace zyppng {
-
-
 
   class NetworkRequestPrivate : public BasePrivate
   {
@@ -65,11 +64,6 @@ namespace zyppng {
     bool prepareToContinue ( std::string &errBuf  );
 
     /*!
-     * Add the next batch of range descriptions to the curl handle
-     */
-    bool prepareNextRangeBatch( std::string &errBuf );
-
-    /*!
      * \internal
      * This will return true if the download needs to be queued again to
      * continue downloading more stuff.
@@ -93,10 +87,6 @@ namespace zyppng {
     void reset ();
     void resetActivityTimer ();
     void onActivityTimeout (Timer &);
-    bool checkIfRangeChkSumIsValid(const NetworkRequest::Range &rng);
-    void validateRange ( NetworkRequest::Range &rng );
-    bool parseContentRangeHeader (const std::string_view &line, size_t &start , size_t &len);
-    bool parseContentTypeMultiRangeHeader ( const std::string_view &line, std::string &boundary );
 
     std::string errorMessage () const;
 
@@ -119,6 +109,12 @@ namespace zyppng {
     zypp::ByteCount                     _expectedFileSize; // the file size as expected by the user code
     std::vector<NetworkRequest::Range>  _requestedRanges; ///< the requested ranges that need to be downloaded
 
+    struct FileVerifyInfo {
+      zypp::Digest _fileDigest;
+      zypp::CheckSum _fileChecksum;
+    };
+    std::optional<FileVerifyInfo>       _fileVerification; ///< The digest for the full file
+
     NetworkRequest::FileMode            _fMode = NetworkRequest::WriteExclusive;
     NetworkRequest::Priority            _priority = NetworkRequest::Normal;
 
@@ -135,23 +131,10 @@ namespace zyppng {
     Signal< void ( NetworkRequest &req, const NetworkRequestError &err )> _sigFinished;
 
     static int curlProgressCallback ( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
-    size_t headerCallback (  char *ptr, size_t size, size_t nmemb  );
-    size_t writeCallback ( char *ptr, size_t size, size_t nmemb );
+    size_t headerCallback ( char *ptr, size_t bytes );
+    size_t writeCallback  (char *ptr, std::optional<off_t> offset, size_t bytes );
 
     std::unique_ptr< curl_slist, decltype (&curl_slist_free_all) > _headers;
-
-    // when requesting ranges from the server, we need to make sure not to request
-    // too many at the same time. Instead we batch our requests and reuse the open
-    // connection until we have the full file.
-    // However different server have different maximum nr of ranges, so we start with
-    // a high number and decrease until we find a rangecount that works
-    constexpr static int _rangeAttempt[] = {
-      255,
-      127,
-      63,
-      15,
-      5
-    };
 
     struct pending_t;
     struct running_t;
@@ -159,7 +142,7 @@ namespace zyppng {
 
     struct pending_t {
       pending_t(){}
-      bool _requireStatusPartial  = false;
+      std::unique_ptr<CurlMultiPartHandler> _partialHelper = {};
     };
 
     struct prepareNextRangeBatch_t
@@ -167,7 +150,7 @@ namespace zyppng {
       prepareNextRangeBatch_t( running_t &&prevState );
       zypp::AutoFILE _outFile;     //the file we are writing to
       off_t _downloaded       = 0; //downloaded bytes
-      int   _rangeAttemptIdx  = 0; // which range attempt index are we currently using
+      std::unique_ptr<CurlMultiPartHandler> _partialHelper = {};
     };
 
     struct running_t  {
@@ -177,13 +160,7 @@ namespace zyppng {
       Timer::Ptr _activityTimer = Timer::create();
 
       zypp::AutoFILE _outFile;
-      off_t  _currentRange = -1;
-      std::optional<NetworkRequest::Range> _currentSrvRange;
-
-      bool _allHeadersReceived    = false;
-      bool _gotContentRangeHeader = false;
-      bool _gotMultiRangeHeader   = false;
-      bool _requireStatusPartial  = false;
+      std::unique_ptr<CurlMultiPartHandler> _partialHelper = {};
 
       // handle the case when cancel() is called from a slot to the progress signal
       bool _isInCallback          = false;
@@ -194,12 +171,9 @@ namespace zyppng {
 
       off_t _lastProgressNow = -1; // last value returned from CURL, lets only send signals if we get actual updates
       off_t _downloaded = 0; //downloaded bytes
-      int   _rangeAttemptIdx = 0; // which range attempt index are we currently using
-      zypp::ByteCount _contentLenght; // the content length as reported by the server
+      off_t _currentFileOffset = 0;
 
-      //multirange support for HTTP requests (https://tools.ietf.org/html/rfc7233)
-      std::string _seperatorString; ///< The seperator string for multipart responses as defined in RFC 7233 Section 4.1
-      std::vector<char> _rangePrefaceBuffer; ///< Here we buffer
+      zypp::ByteCount _contentLenght; // the content length as reported by the server
     };
 
     struct finished_t {

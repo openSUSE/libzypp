@@ -25,6 +25,8 @@ OPTION (ENABLE_DEVEL_BUILD "Developer build, use zypp tools directly from build 
 OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
 # Distros using just zypper may want to enable this as default earlier
 OPTION (ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER "[preview] Force zypper into using a single rpm transaction to install" OFF)
+OPTION (DISTCONFDIR "Vendor defined */etc directory. E.g. /usr/etc")
+
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -354,6 +356,23 @@ INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION 
 # (don't forget to mention them in the .spec file)
 ####################################################################
 
+IF ( DISTCONFDIR )
+
+MESSAGE(STATUS "zypp.conf will be installed in ${DISTCONFDIR}/zypp")
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp.conf DESTINATION ${DISTCONFDIR}/zypp )
+
+MESSAGE(STATUS "needreboot will be installed in ${DISTCONFDIR}/zypp/")
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/needreboot DESTINATION ${DISTCONFDIR}/zypp )
+
+#install systemCheck
+MESSAGE(STATUS "systemCheck will be installed in ${DISTCONFDIR}/zypp")
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/systemCheck DESTINATION ${DISTCONFDIR}/zypp )
+
+# logrotate config file
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp-history.lr DESTINATION ${DISTCONFDIR}/logrotate.d )
+
+ELSE ( DISTCONFDIR )
+
 MESSAGE(STATUS "zypp.conf will be installed in ${SYSCONFDIR}/zypp")
 INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp.conf DESTINATION ${SYSCONFDIR}/zypp )
 
@@ -367,11 +386,17 @@ INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/systemCheck DESTINATION ${SYSCONFDIR}/zypp 
 # logrotate config file
 INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp-history.lr DESTINATION ${SYSCONFDIR}/logrotate.d )
 
+ENDIF ( DISTCONFDIR )
+
+
 IF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
   MESSAGE( STATUS "[preview] Force zypper into using a single rpm transaction to install" )
   ADD_DEFINITIONS( -DSINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
 ENDIF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
 
+IF ( DISTCONFDIR )
+ADD_DEFINITIONS( -DDISTCONFDIR="${DISTCONFDIR}" )
+ENDIF ( DISTCONFDIR )
 
 ####################################################################
 # SUBDIRECTORIES                                                   #

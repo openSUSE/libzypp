@@ -252,6 +252,9 @@ export CXXFLAGS="%{optflags}"
 unset EXTRA_CMAKE_OPTIONS
 
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+%if %{defined _distconfdir}
+       -DDISTCONFDIR=%{_distconfdir} \
+%endif
       -DENABLE_BUILD_DOCS=TRUE \
       -DENABLE_BUILD_TRANS=TRUE \
       -DENABLE_BUILD_TESTS=TRUE \
@@ -297,7 +300,11 @@ mkdir -p %{buildroot}/%{_var}/cache/zypp
 
 # Default to 'solver.dupAllowVendorChange = false' on TW and post SLE12
 %if 0%{?suse_version} >= 1330 || "%{distribution}" == "openSUSE Tumbleweed"
+%if %{defined _distconfdir}
+sed -i "s|# solver.dupAllowVendorChange = true|solver.dupAllowVendorChange = false|g" %{buildroot}%{_distconfdir}/zypp/zypp.conf
+%else
 sed -i "s|# solver.dupAllowVendorChange = true|solver.dupAllowVendorChange = false|g" %{buildroot}%{_sysconfdir}/zypp/zypp.conf
+%endif
 %endif
 
 cd ..
@@ -306,9 +313,10 @@ cd ..
 %{find_lang} zypp
 
 %if %{defined _distconfdir}
-# Move logratate files form /etc/logrotate.d to /usr/etc/logrotate.d
-mkdir -p %{buildroot}/%{_distconfdir}/logrotate.d
-mv %{buildroot}/%{_sysconfdir}/logrotate.d/zypp-history.lr %{buildroot}%{_distconfdir}/logrotate.d
+# Updating default values of /usr/etc/zypp/zypp.conf
+sed -z "s|## Default value: {configdir}/systemCheck\n##\n# solver.checkSystemFile = /etc/zypp/systemCheck|## Default value: %{_distconfdir}/systemCheck\n##\n# solver.checkSystemFile = %{_distconfdir}/zypp/systemCheck|g" %{buildroot}%{_distconfdir}/zypp/zypp.conf >%{buildroot}%{_distconfdir}/zypp/zypp.conver
+cp %{buildroot}%{_distconfdir}/zypp/zypp.conver %{buildroot}%{_distconfdir}/zypp/zypp.conf
+rm %{buildroot}%{_distconfdir}/zypp/zypp.conver
 %endif
 
 %check
@@ -319,7 +327,7 @@ popd
 %if %{defined _distconfdir}
 %pre
 # Prepare for migration to /usr/etc; save any old .rpmsave
-for i in logrotate.d/zypp-history.lr; do
+for i in logrotate.d/zypp-history.lr zypp/zypp.conf zypp/needreboot zypp/systemCheck; do
    test -f %{_sysconfdir}/${i}.rpmsave && mv -v %{_sysconfdir}/${i}.rpmsave %{_sysconfdir}/${i}.rpmsave.old ||:
 done
 %endif
@@ -327,7 +335,7 @@ done
 %if %{defined _distconfdir}
 %posttrans
 # Migration to /usr/etc, restore just created .rpmsave
-for i in logrotate.d/zypp-history.lr; do
+for i in logrotate.d/zypp-history.lr zypp/zypp.conf zypp/needreboot zypp/systemCheck; do
    test -f %{_sysconfdir}/${i}.rpmsave && mv -v %{_sysconfdir}/${i}.rpmsave %{_sysconfdir}/${i} ||:
 done
 %endif
@@ -352,15 +360,19 @@ done
 %dir               %{_sysconfdir}/zypp/vars.d
 %dir               %{_sysconfdir}/zypp/vendors.d
 %dir               %{_sysconfdir}/zypp/multiversion.d
-%config(noreplace) %{_sysconfdir}/zypp/needreboot
 %dir               %{_sysconfdir}/zypp/needreboot.d
 %dir               %{_sysconfdir}/zypp/credentials.d
-%config(noreplace) %{_sysconfdir}/zypp/zypp.conf
-%config(noreplace) %{_sysconfdir}/zypp/systemCheck
 %if %{defined _distconfdir}
 %{_distconfdir}/logrotate.d/zypp-history.lr
+%dir               %{_distconfdir}/zypp
+%{_distconfdir}/zypp/needreboot
+%{_distconfdir}/zypp/zypp.conf
+%{_distconfdir}/zypp/systemCheck
 %else
 %config(noreplace) %{_sysconfdir}/logrotate.d/zypp-history.lr
+%config(noreplace) %{_sysconfdir}/zypp/needreboot
+%config(noreplace) %{_sysconfdir}/zypp/zypp.conf
+%config(noreplace) %{_sysconfdir}/zypp/systemCheck
 %endif
 %dir               %{_var}/lib/zypp
 %if "%{_libexecdir}" != "%{_prefix}/lib"

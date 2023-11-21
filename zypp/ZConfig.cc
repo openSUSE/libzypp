@@ -44,6 +44,7 @@ using namespace zypp::parser;
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zconfig"
+#define ETC_ZYPP_CONF "/etc/zypp/zypp.conf"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -321,7 +322,15 @@ namespace zypp
     inline Pathname _autodetectZyppConfPath()
     {
       const char *env_confpath = getenv( "ZYPP_CONF" );
-      return env_confpath ? env_confpath : "/etc/zypp/zypp.conf";
+      if ( env_confpath )
+	return env_confpath;
+#ifdef DISTCONFDIR
+      if ( PathInfo(ETC_ZYPP_CONF).isExist() )
+        return ETC_ZYPP_CONF;
+      return DISTCONFDIR"/zypp/zypp.conf";
+#else
+      return ETC_ZYPP_CONF;
+#endif
     }
 
    /////////////////////////////////////////////////////////////////
@@ -1118,7 +1127,15 @@ namespace zypp
   }
 
   Pathname ZConfig::needrebootFile() const
-  { return configPath()/"needreboot"; }
+  {
+#ifdef DISTCONFDIR
+      if ( PathInfo(configPath()/"needreboot").isExist() )
+        return configPath()/"needreboot";
+      return DISTCONFDIR"needreboot";
+#else
+    return configPath()/"needreboot";
+#endif
+  }
 
   Pathname ZConfig::needrebootPath() const
   { return configPath()/"needreboot.d"; }
@@ -1237,8 +1254,18 @@ namespace zypp
 
 
   Pathname ZConfig::solver_checkSystemFile() const
-  { return ( _pimpl->solver_checkSystemFile.empty()
-      ? (configPath()/"systemCheck") : _pimpl->solver_checkSystemFile ); }
+  {
+    if ( !_pimpl->solver_checkSystemFile.empty() )
+      return _pimpl->solver_checkSystemFile;
+
+#ifdef DISTCONFDIR
+    if ( PathInfo(configPath()/"systemCheck").isExist() )
+      return configPath()/"systemCheck";
+    return DISTCONFDIR"systemCheck";
+#else
+    return configPath()/"systemCheck";
+#endif
+  }
 
   Pathname ZConfig::solver_checkSystemFileDir() const
   { return ( _pimpl->solver_checkSystemFileDir.empty()

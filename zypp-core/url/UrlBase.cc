@@ -35,11 +35,11 @@
 **
 ** host      = hostname | IPv4 | "[" IPv6-IP "]" | "[v...]"
 */
-#define RX_VALID_SCHEME    "^[" a_zA_Z "][" a_zA_Z "0-9\\.+-]*$"
+#define RX_VALID_SCHEME    "^[" a_zA_Z "][" a_zA_Z "0-9.+-]*$"
 
 #define RX_VALID_PORT      "^[0-9]{1,5}$"
 
-#define RX_VALID_HOSTNAME  "^[[:alnum:]${_}]+([\\.-][[:alnum:]${_}]+)*$"
+#define RX_VALID_HOSTNAME  "^[[:alnum:]${_}]+([.-][[:alnum:]${_}]+)*$"
 
 #define RX_VALID_HOSTIPV4  \
         "^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$"

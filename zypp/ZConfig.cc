@@ -1131,7 +1131,7 @@ namespace zypp
 #ifdef DISTCONFDIR
       if ( PathInfo(configPath()/"needreboot").isExist() )
         return configPath()/"needreboot";
-      return DISTCONFDIR"needreboot";
+      return DISTCONFDIR"/zypp/needreboot";
 #else
     return configPath()/"needreboot";
 #endif
@@ -1261,7 +1261,7 @@ namespace zypp
 #ifdef DISTCONFDIR
     if ( PathInfo(configPath()/"systemCheck").isExist() )
       return configPath()/"systemCheck";
-    return DISTCONFDIR"systemCheck";
+    return DISTCONFDIR"/zypp/systemCheck";
 #else
     return configPath()/"systemCheck";
 #endif
@@ -1365,6 +1365,8 @@ namespace zypp
     str << endl;
 
     str << "zypp.conf: '" << _pimpl->_parsedZyppConf << "'" << endl;
+    str << "needreboot: '" << needrebootFile() << "'" << endl;
+    str << "systemCheck: '" << solver_checkSystemFile() << "'" << endl;
     str << "TextLocale: '" << textLocale() << "' (" << defaultTextLocale() << ")" << endl;
     str << "SystemArchitecture: '" << systemArchitecture() << "' (" << defaultSystemArchitecture() << ")" << endl;
     return str;

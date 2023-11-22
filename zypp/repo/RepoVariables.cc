@@ -381,6 +381,9 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
+    bool hasRepoVarsEmbedded( const std::string & str_r )
+    { return FindVar( str_r, 0 ).nextVar(); }
+
     std::string RepoVarExpand::operator()( const std::string & value_r, VarRetriever varRetriever_r ) const
     { return expand( value_r, 0, varRetriever_r ); }
 

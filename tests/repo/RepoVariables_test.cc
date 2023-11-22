@@ -125,7 +125,7 @@ void helperGenRepVarExpandResults()
   }
 }
 
-void RepVarExpandTest( const std::string & string_r, const std::string & allUndef_r, const std::string & allDef_r )
+void RepVarExpandTest( const std::string & string_r, const std::string & allUndef_r, const std::string & allDef_r, bool hasVars=true )
 {
   std::map<std::string,std::string> vartable;
   bool varsoff = true;
@@ -140,6 +140,7 @@ void RepVarExpandTest( const std::string & string_r, const std::string & allUnde
     return &val;
   };
 
+  BOOST_CHECK_EQUAL( repo::hasRepoVarsEmbedded( string_r ), hasVars );
   varsoff = true;
   BOOST_CHECK_EQUAL( repo::RepoVarExpand()( string_r, varLookup ), allUndef_r );
   varsoff = false;
@@ -147,10 +148,10 @@ void RepVarExpandTest( const std::string & string_r, const std::string & allUnde
 }
 
 BOOST_AUTO_TEST_CASE(RepVarExpand)
-{ //              ( STRING                                  , REPLACED_all_vars_undef                 , REPLACED_all_vars_defined                )
-  RepVarExpandTest( ""                                      , ""                                      , ""                                       );
-  RepVarExpandTest( "$"                                     , "$"                                     , "$"                                      );
-  RepVarExpandTest( "$${}"                                  , "$${}"                                  , "$${}"                                   );
+{ //              ( STRING                                  , REPLACED_all_vars_undef                 , REPLACED_all_vars_defined                STRING has Vars)
+  RepVarExpandTest( ""                                      , ""                                      , ""                                       , false );
+  RepVarExpandTest( "$"                                     , "$"                                     , "$"                                      , false );
+  RepVarExpandTest( "$${}"                                  , "$${}"                                  , "$${}"                                   , false );
   RepVarExpandTest( "$_:"                                   , "$_:"                                   , "[_]:"                                   );
   RepVarExpandTest( "$_A:"                                  , "$_A:"                                  , "[_A]:"                                  );
   RepVarExpandTest( "$_A_:"                                 , "$_A_:"                                 , "[_A_]:"                                 );
@@ -163,7 +164,7 @@ BOOST_AUTO_TEST_CASE(RepVarExpand)
   RepVarExpandTest( "${C:+a\\${B\\}ba}"                     , ""                                      , "a${B}ba"                                );
   RepVarExpandTest( "${C:+a\\${B}ba}"                       , "ba}"                                   , "a${Bba}"                                );
   RepVarExpandTest( "${C:-a$Bba}"                           , "a$Bba"                                 , "[C]"                                    );
-  RepVarExpandTest( "${_A_B\\}"                             , "${_A_B\\}"                             , "${_A_B\\}"                              );
+  RepVarExpandTest( "${_A_B\\}"                             , "${_A_B\\}"                             , "${_A_B\\}"                              , false );
   RepVarExpandTest( "${_A_B}"                               , "${_A_B}"                               , "[_A_B]"                                 );
   RepVarExpandTest( "\\${_A_B}"                             , "\\${_A_B}"                             , "\\[_A_B]"                               );
   RepVarExpandTest( "__${D:+\\$X--{${E:-==\\$X{o\\}==}  }--}__\\${B}${}__", "__--}__\\${B}${}__"      , "__$X--{[E]  --}__\\[B]${}__"            );

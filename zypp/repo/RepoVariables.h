@@ -22,6 +22,9 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace repo
   {
+    /** Return whether \a str_r has embedded variables. */
+    bool hasRepoVarsEmbedded( const std::string & str_r );
+
     ///////////////////////////////////////////////////////////////////
     /// \class RepoVarExpand
     /// \brief Functor expanding repo variables in a string

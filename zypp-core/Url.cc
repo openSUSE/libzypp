@@ -206,6 +206,20 @@ namespace zypp
         addUrlByScheme("ftp",    ref);
         addUrlByScheme("sftp",   ref);
         addUrlByScheme("tftp",   ref);
+
+        // =====================================
+        ref.reset( new UrlBase());
+        ref->setViewOptions( zypp::url::ViewOption::DEFAULTS
+                             - zypp::url::ViewOption::EMPTY_AUTHORITY
+                             - zypp::url::ViewOption::EMPTY_PATH_NAME
+                             - zypp::url::ViewOption::WITH_PATH_NAME
+                             - zypp::url::ViewOption::WITH_QUERY_STR
+                             - zypp::url::ViewOption::WITH_FRAGMENT
+        );
+        ref->config("safe_fragment", ref->config( "safe_fragment" ) + "{}" ); // more readable: ${VAR}
+        ref->config("with_authority",   "n");   // disallow host,...
+        ref->config("require_pathname", "n");   // path not required
+        addUrlByScheme("zypp-rawurl", ref);     // in fragment: URL with unexpanded RepoVariables
       }
 
       bool
@@ -457,6 +471,12 @@ namespace zypp
   {
     return scheme_r == "plugin";
   }
+
+  bool Url::schemeIsRawUrl( const std::string & scheme_r )
+  {
+     return scheme_r == "zypp-rawurl";
+  }
+
   ///////////////////////////////////////////////////////////////////
 
   // -----------------------------------------------------------------
@@ -494,6 +514,18 @@ namespace zypp
     return m_impl->asString(opts);
   }
 
+  // -----------------------------------------------------------------
+  std::string
+  Url::asRawString() const
+  {
+    return schemeIsRawUrl() ? getFragment() : asString();
+  }
+
+  std::string
+  Url::asRawString(const ViewOptions &opts) const
+  {
+    return schemeIsRawUrl() ? getFragment() : asString(opts);
+  }
 
   // -----------------------------------------------------------------
   std::string
@@ -859,7 +891,7 @@ namespace zypp
 
   namespace hotfix1050625 {
     std::string asString( const Url & url_r )
-    { return url_r.m_impl->asString1050625(); }
+    { return url_r.asRawString( url_r.getViewOptions()+ViewOptions::hotfix1050625 ); }
   }
 
   ////////////////////////////////////////////////////////////////////

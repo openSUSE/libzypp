@@ -506,13 +506,6 @@ namespace zypp
       return asString(getViewOptions());
     }
 
-    std::string UrlBase::asString1050625() const
-    {
-      // Temp. fix to keep the proxypass in the query when writing the .repo files,
-      // but otherwise hiding it, when WITH_PASSWORD is not set.
-      return asString(getViewOptions()+ViewOptions::hotfix1050625);
-    }
-
     // ---------------------------------------------------------------
     std::string
     UrlBase::asString(const zypp::url::ViewOptions &opts) const

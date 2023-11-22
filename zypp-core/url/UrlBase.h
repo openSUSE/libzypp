@@ -1000,7 +1000,6 @@ namespace zypp
       void
       setViewOptions(const ViewOptions &vopts);
 
-      std::string asString1050625() const;
     protected:
       /**
        * Utility method to cleanup an encoded path name.

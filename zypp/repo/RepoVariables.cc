@@ -296,7 +296,10 @@ namespace zypp
           while ( scan.nextVar() )
           {
             static const std::string _emptyValue;
-            const std::string *const knownVar = ( varRetriever_r ? varRetriever_r( scan.varName() ) : nullptr );
+
+            int varType = scan.varType();
+            // VarRetriever callback is not needed for backslash escaped literals (varType '\\')
+            const std::string *const knownVar = ( varType != '\\' && varRetriever_r ? varRetriever_r( scan.varName() ) : nullptr );
             const std::string & varValue( knownVar ? *knownVar : _emptyValue );
 
 #if ( ZYPP_DBG_VAREXPAND )
@@ -309,7 +312,6 @@ namespace zypp
             bool mustSubstitute = false;	// keep original text per default
             std::string substitutionValue;
 
-            int varType = scan.varType();
             if ( varType == '$' )	// plain var
             {
               if ( knownVar )

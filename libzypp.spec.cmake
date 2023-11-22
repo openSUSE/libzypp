@@ -253,7 +253,7 @@ unset EXTRA_CMAKE_OPTIONS
 
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
 %if %{defined _distconfdir}
-       -DDISTCONFDIR=%{_distconfdir} \
+      -DDISTCONFDIR=%{_distconfdir} \
 %endif
       -DENABLE_BUILD_DOCS=TRUE \
       -DENABLE_BUILD_TRANS=TRUE \
@@ -313,9 +313,9 @@ cd ..
 %{find_lang} zypp
 
 %if %{defined _distconfdir}
-# Updating default values of /usr/etc/zypp/zypp.conf
+# Updating default values and descriptions of /usr/etc/zypp/zypp.conf
 sed -z "s|## Default value: {configdir}/systemCheck\n##\n# solver.checkSystemFile = /etc/zypp/systemCheck|## Default value: %{_distconfdir}/systemCheck\n##\n# solver.checkSystemFile = %{_distconfdir}/zypp/systemCheck|g" %{buildroot}%{_distconfdir}/zypp/zypp.conf >%{buildroot}%{_distconfdir}/zypp/zypp.conver
-cp %{buildroot}%{_distconfdir}/zypp/zypp.conver %{buildroot}%{_distconfdir}/zypp/zypp.conf
+sed -z "s|## /etc/zypp/zypp.conf|## /etc/zypp/zypp.conf or /usr/etc/zypp/zypp.conf|g" %{buildroot}%{_distconfdir}/zypp/zypp.conver >%{buildroot}%{_distconfdir}/zypp/zypp.conf
 rm %{buildroot}%{_distconfdir}/zypp/zypp.conver
 %endif
 

@@ -314,7 +314,7 @@ cd ..
 
 %if %{defined _distconfdir}
 # Updating default values and descriptions of /usr/etc/zypp/zypp.conf
-sed -z "s|## Default value: {configdir}/systemCheck\n##\n# solver.checkSystemFile = /etc/zypp/systemCheck|## Default value: %{_distconfdir}/systemCheck\n##\n# solver.checkSystemFile = %{_distconfdir}/zypp/systemCheck|g" %{buildroot}%{_distconfdir}/zypp/zypp.conf >%{buildroot}%{_distconfdir}/zypp/zypp.conver
+sed -z "s|## Default value: {configdir}/systemCheck\n##\n# solver.checkSystemFile = /etc/zypp/systemCheck|## Default value: %{_distconfdir}/zypp/systemCheck\n##\n# solver.checkSystemFile = %{_distconfdir}/zypp/systemCheck|g" %{buildroot}%{_distconfdir}/zypp/zypp.conf >%{buildroot}%{_distconfdir}/zypp/zypp.conver
 sed -z "s|## /etc/zypp/zypp.conf|## /etc/zypp/zypp.conf or /usr/etc/zypp/zypp.conf|g" %{buildroot}%{_distconfdir}/zypp/zypp.conver >%{buildroot}%{_distconfdir}/zypp/zypp.conf
 rm %{buildroot}%{_distconfdir}/zypp/zypp.conver
 %endif

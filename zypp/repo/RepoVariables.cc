@@ -228,8 +228,10 @@ namespace zypp
                   else if ( *scan == '$' )
                   {
                     // an embedded var?
-                    if ( ! (scan = findVarEnd( scan )) )
-                      return false;
+                    if ( const char * scanEnd = findVarEnd( scan ) )
+                      scan = scanEnd;
+                    else
+                      ++scan; // no valid var: treated as literal
                   }
                   else if ( *scan == '}' )
                   {

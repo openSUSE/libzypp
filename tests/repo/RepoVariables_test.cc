@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(RepVarExpand)
   RepVarExpandTest( "$_A_B:"                                , "$_A_B:"                                , "[_A_B]:"                                );
   RepVarExpandTest( "${C:+a$Bba\\}"                         , "${C:+a$Bba\\}"                         , "${C:+a[Bba]\\}"                         );
   RepVarExpandTest( "${C:+a$Bba}"                           , ""                                      , "a[Bba]"                                 );
-  RepVarExpandTest( "${C:+a${B\\}ba}"                       , "${C:+a${B\\}ba}"                       , "${C:+a${B\\}ba}"                        );
+  RepVarExpandTest( "${C:+a${B\\}ba}"                       , ""                                      , "a${B}ba"                                );
   RepVarExpandTest( "${C:+a${B}ba}"                         , ""                                      , "a[B]ba"                                 );
   RepVarExpandTest( "${C:+a\\$Bba}"                         , ""                                      , "a$Bba"                                  );
   RepVarExpandTest( "${C:+a\\${B\\}ba}"                     , ""                                      , "a${B}ba"                                );

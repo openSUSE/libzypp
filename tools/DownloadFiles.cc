@@ -26,25 +26,6 @@ struct DLEntry {
   zypp::ByteCount _dlSize;
 };
 
-// #489, bsc#1215294: Stop using boost version 1 timer library
-// https://www.boost.org/doc/libs/1_83_0/libs/timer/doc/original_timer.html
-// A simple handcrafted substitute for <boost/progress.hpp> progress_display
-struct PCBar {
-  PCBar() : bar(app.out(), "") {
-    bar->range(100);
-    bar->set(0);
-    bar.print();
-  }
-  void set( int pcval_r ) {
-    bar->set(pcval_r);
-    bar.print();
-  }
-
-  private:
-  ztui::Application app;
-  ztui::Out::ProgressBar bar;
-};
-
 // progress for downloading a file
 struct DownloadProgressReportReceiver : public zypp::callback::ReceiveReport<zypp::media::DownloadProgressReport>
 {
@@ -55,33 +36,39 @@ struct DownloadProgressReportReceiver : public zypp::callback::ReceiveReport<zyp
 
   virtual void start( const zypp::Url & uri, zypp::Pathname localfile )
   {
-    assert(!_display);
+    _last_drate_avg = -1;
     std::cout << "Starting download of: " << uri << " to " << localfile << std::endl;
-    _display = std::make_unique<PCBar>();
+    ztui::Application::instance ().out().dwnldProgressStart( uri );
   }
 
   virtual bool progress(int value, const zypp::Url & uri, double drate_avg, double drate_now)
   {
-    _display->set( value );
+    ztui::Application::instance ().out().dwnldProgress( uri, value, (long) drate_now);
+    _last_drate_avg = drate_avg;
     return true;
   }
 
   virtual DownloadProgressReport::Action
   problem( const zypp::Url & uri, DownloadProgressReport::Error error, const std::string & description )
   {
-    std::cerr << "Problem while downloading file " << description << std::endl;
+    if ( error == DownloadProgressReport::NO_ERROR ) {
+      // NO_ERROR: just a report but let the caller proceed as appropriate...
+      ztui::Application::instance().out().info() << "- " << ( ztui::ColorContext::LOWLIGHT << description );
+      return DownloadProgressReport::IGNORE;
+    }
+    ztui::Application::instance().out().dwnldProgressEnd(uri, _last_drate_avg, true);
     return DownloadProgressReport::ABORT;
   }
 
   // used only to finish, errors will be reported in media change callback (libzypp 3.20.0)
   virtual void finish( const zypp::Url & uri, Error error, const std::string & konreason )
   {
-    _display.reset();
-    std::cout << std::endl;
+    ztui::Application::instance().out().dwnldProgressEnd(
+          uri, _last_drate_avg, ( error == NOT_FOUND ? zypp::indeterminate : zypp::TriBool(error != NO_ERROR) ) );
   }
 
 private:
-  std::unique_ptr<PCBar> _display;
+  double _last_drate_avg;
 };
 
 

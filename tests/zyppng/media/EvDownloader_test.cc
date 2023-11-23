@@ -318,7 +318,7 @@ WebServer::RequestHandler makeMetaFileHandler ( const std::string &fName, const 
 //data for a range request, otherwise relocates the request
 WebServer::RequestHandler makeJunkBlockHandler ( const std::string &fName )
 {
-  return [ fName ]( WebServer::Request &req ){
+  return [ fName ]( WebServer::Request &req ) {
     auto it = req.params.find( "HTTP_RANGE" );
     if ( it != req.params.end() && zypp::str::startsWith( it->second, "bytes=" ) ) {
         //bytes=786432-1048575

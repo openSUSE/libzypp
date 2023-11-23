@@ -13,6 +13,47 @@
 namespace zyppng {
 
   /*!
+   * Data receiver interface for the \ref CurlMultiPartHandler class.
+   */
+  class CurlMultiPartDataReceiver {
+  public:
+    virtual ~CurlMultiPartDataReceiver() = default;
+
+    /*!
+     * Called for all received header data, after it was processed by the \ref CurlMultiPartHandler.
+     */
+    virtual size_t headerfunction ( char *ptr, size_t bytes ) = 0;
+
+    /*!
+     * Data callback func, this is called whenever there is actual data to be written to the file.
+     * If \a offset is set, usually when starting to write a new range, it means to continue to write on the current file pointer position, otherwise
+     * seek to the given one.
+     */
+    virtual size_t writefunction  ( char *ptr, std::optional<off_t> offset, size_t bytes ) = 0;
+
+    /*!
+     * Called everytime a new range is about to be written, returning false from the
+     * function will immediately cancel the request and not write anything to the file.
+     *
+     * @param range The index of the range that is to be started
+     * @param cancelReason Set to indicate why the request was cancelled.
+     */
+    virtual bool beginRange       ( off_t range, std::string &cancelReason ) { return true; };
+
+    /*!
+     * Called everytime a range was finished, returning false from the function will cancel the request.
+     *
+     * \note Normally \ref CurlMultiPartHandler will try to finish all ranges before failing even if one of them
+     *       can not be validated. If the code should cancel early do it via returning false here.
+     *
+     * @param range The index of the range that was finished
+     * @param validated Indicates of the range data could be validated against its given checksum
+     * @param cancelReason Set to indicate why the request was cancelled.
+     */
+    virtual bool finishedRange    ( off_t range, bool validated, std::string &cancelReason ) { return true; };
+  };
+
+  /*!
    * \brief The CurlMultiPartHandler class
    *
    * multirange support for HTTP requests (https://tools.ietf.org/html/rfc7233), if not operating
@@ -77,19 +118,8 @@ namespace zyppng {
         static Range make ( size_t start, size_t len = 0, std::optional<zypp::Digest> &&digest = {}, CheckSumBytes &&expectedChkSum = CheckSumBytes(), std::any &&userData = std::any(), std::optional<size_t> digestCompareLen = {}, std::optional<size_t> _dataBlockPadding = {} );
       };
 
-      /*!
-       *
-       */
-      using HeaderFunc = std::function<size_t ( char *ptr, size_t bytes )>;
-
-      /*!
-       * Data callback functor, this is called whenever there is actual data to be written to the file.
-       * If \a offset is set, usually when starting to write a new range, it means to continue to write on the current file pointer position, otherwise
-       * seek to the given one.
-       */
-      using WriteFunc  = std::function<size_t ( char *ptr, std::optional<off_t> offset, size_t bytes )>;
-
-      CurlMultiPartHandler( ProtocolMode mode, void *easyHandle, std::vector<Range> &ranges, HeaderFunc headerCb, WriteFunc writeCb );
+      CurlMultiPartHandler( ProtocolMode mode, void *easyHandle, std::vector<Range> &ranges, CurlMultiPartDataReceiver &receiver );
+      ~CurlMultiPartHandler();
 
       void *easyHandle() const;
       bool canRecover() const;
@@ -109,6 +139,7 @@ namespace zyppng {
       bool verifyData( );
 
       std::optional<size_t> reportedFileSize() const;
+      std::optional<off_t>  currentRange() const;
 
   private:
 
@@ -122,11 +153,11 @@ namespace zyppng {
       bool parseContentRangeHeader(const std::string_view &line, size_t &start, size_t &len, size_t &fileLen);
       bool parseContentTypeMultiRangeHeader(const std::string_view &line, std::string &boundary);
       bool checkIfRangeChkSumIsValid( Range &rng );
+      void setRangeState ( Range &rng, State state );
 
       ProtocolMode _protocolMode = ProtocolMode::HTTP;
       void *_easyHandle = nullptr;
-      HeaderFunc _headerCb = {};
-      WriteFunc  _writeCb  = {};
+      CurlMultiPartDataReceiver &_receiver;
 
       Code _lastCode       = Code::NoError;
       std::string _lastErrorMsg;

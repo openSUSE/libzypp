@@ -40,14 +40,14 @@ namespace zyppng {
         return 0;
 
       NetworkRequestPrivate *that = reinterpret_cast<NetworkRequestPrivate *>( userdata );
-      return that->headerCallback( ptr, size * nmemb );
+      return that->headerfunction( ptr, size * nmemb );
     }
     static size_t nwr_writeCallback ( char *ptr, size_t size, size_t nmemb, void *userdata ) {
       if ( !userdata )
         return 0;
 
       NetworkRequestPrivate *that = reinterpret_cast<NetworkRequestPrivate *>( userdata );
-      return that->writeCallback( ptr, {}, size * nmemb );
+      return that->writefunction( ptr, {}, size * nmemb );
     }
 
     //helper for std::visit
@@ -344,6 +344,10 @@ namespace zyppng {
       if( !( _options & NetworkRequest::ConnectionTest ) && !( _options & NetworkRequest::HeadRequest ) ){
         if ( _requestedRanges.size() ) {
 
+          std::sort( _requestedRanges.begin(), _requestedRanges.end(), []( const auto &elem1, const auto &elem2 ){
+            return ( elem1.start < elem2.start );
+          });
+
           CurlMultiPartHandler *helper = nullptr;
           if ( auto initState = std::get_if<pending_t>(&_runningMode) ) {
 
@@ -352,8 +356,7 @@ namespace zyppng {
                   multiPartMode
                   , _easyHandle
                   , _requestedRanges
-                  , [this]( char *ptr, size_t bytes ){ return this->headerCallback ( ptr, bytes ); }
-                  , [this]( char *ptr, std::optional<off_t> offset, size_t bytes ){ return this->writeCallback ( ptr, offset, bytes ); }
+                  , *this
             );
             helper = initState->_partialHelper.get();
 
@@ -607,7 +610,7 @@ namespace zyppng {
     return rmode._cachedResult ? CURLE_ABORTED_BY_CALLBACK : CURLE_OK;
   }
 
-  size_t NetworkRequestPrivate::headerCallback( char *ptr, size_t bytes )
+  size_t NetworkRequestPrivate::headerfunction( char *ptr, size_t bytes )
   {
     //it is valid to call this function with no data to write, just return OK
     if ( bytes == 0)
@@ -664,7 +667,7 @@ namespace zyppng {
     return bytes;
   }
 
-  size_t NetworkRequestPrivate::writeCallback( char *data, std::optional<off_t> offset, size_t max )
+  size_t NetworkRequestPrivate::writefunction( char *data, std::optional<off_t> offset, size_t max )
   {
     resetActivityTimer();
 

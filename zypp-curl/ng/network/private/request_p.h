@@ -31,7 +31,7 @@
 
 namespace zyppng {
 
-  class NetworkRequestPrivate : public BasePrivate
+  class NetworkRequestPrivate : public BasePrivate, public CurlMultiPartDataReceiver
   {
     ZYPP_DECLARE_PUBLIC(NetworkRequest)
   public:
@@ -131,8 +131,9 @@ namespace zyppng {
     Signal< void ( NetworkRequest &req, const NetworkRequestError &err )> _sigFinished;
 
     static int curlProgressCallback ( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
-    size_t headerCallback ( char *ptr, size_t bytes );
-    size_t writeCallback  (char *ptr, std::optional<off_t> offset, size_t bytes );
+
+    size_t headerfunction ( char *ptr, size_t bytes ) override;
+    size_t writefunction  (char *ptr, std::optional<off_t> offset, size_t bytes ) override;
 
     std::unique_ptr< curl_slist, decltype (&curl_slist_free_all) > _headers;
 

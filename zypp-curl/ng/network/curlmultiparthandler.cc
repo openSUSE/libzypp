@@ -85,16 +85,26 @@ namespace zyppng {
     };
   }
 
-  CurlMultiPartHandler::CurlMultiPartHandler(ProtocolMode mode, void *easyHandle, std::vector<Range> &ranges, HeaderFunc headerCb, WriteFunc writeCb )
+  CurlMultiPartHandler::CurlMultiPartHandler(ProtocolMode mode, void *easyHandle, std::vector<Range> &ranges, CurlMultiPartDataReceiver &receiver)
     : _protocolMode( mode )
     , _easyHandle( easyHandle )
-    , _headerCb( std::move(headerCb) )
-    , _writeCb( std::move(writeCb) )
+    , _receiver( receiver )
     , _requestedRanges( ranges )
   {
     // non http can only do range by range
     if ( _protocolMode == ProtocolMode::Basic ) {
-      _rangeAttemptIdx = sizeof( _rangeAttempt ) - 1;
+      WAR << "!!!! Downloading ranges without HTTP might be slow !!!!" << std::endl;
+      _rangeAttemptIdx = (sizeof( _rangeAttempt ) / sizeof(int)) - 1;
+    }
+  }
+
+  CurlMultiPartHandler::~CurlMultiPartHandler()
+  {
+    if ( _easyHandle ) {
+      curl_easy_setopt( _easyHandle, CURLOPT_HEADERFUNCTION, nullptr );
+      curl_easy_setopt( _easyHandle, CURLOPT_HEADERDATA, nullptr );
+      curl_easy_setopt( _easyHandle, CURLOPT_WRITEFUNCTION, nullptr );
+      curl_easy_setopt( _easyHandle, CURLOPT_WRITEDATA, nullptr );
     }
   }
 
@@ -103,7 +113,7 @@ namespace zyppng {
     // it is valid to call this function with no data to read, just call the given handler
     // or return ok
     if ( size * nmemb == 0)
-      return ( _headerCb ? _headerCb( ptr, size * nmemb ) : 0 );
+      return _receiver.headerfunction( ptr, size * nmemb );
 
     if ( _protocolMode == ProtocolMode::HTTP ) {
 
@@ -174,10 +184,7 @@ namespace zyppng {
       }
     }
 
-    if ( _headerCb )
-      return _headerCb( ptr, size * nmemb );
-    else
-      return ( size * nmemb );
+    return _receiver.headerfunction( ptr, size * nmemb );
   }
 
   size_t CurlMultiPartHandler::wrtcallback(char *ptr, size_t size, size_t nmemb)
@@ -186,7 +193,7 @@ namespace zyppng {
 
     //it is valid to call this function with no data to write, just call the given handler
     if ( max == 0)
-      return _writeCb( ptr, {}, max );
+      return _receiver.writefunction( ptr, {}, max );
 
     // try to consume all bytes that have been given to us
     size_t bytesConsumedSoFar = 0;
@@ -260,6 +267,7 @@ namespace zyppng {
         }
 
         if ( !foundRange ) {
+          // @TODO shouldn't we simply consume the rest of the range here and see if future data will contain a matchable range again?
           setCode( Code::InternalError, "Unable to find a matching range for data returned by the server.");
           return 0;
         }
@@ -274,6 +282,12 @@ namespace zyppng {
         const auto skipBytes = *seekTo - beginSrvRange;
         bytesConsumedSoFar += skipBytes;
         _currentSrvRange->bytesWritten += skipBytes;
+
+        std::string errBuf = "Receiver cancelled starting the current range.";
+        if ( !_receiver.beginRange (*_currentRange, errBuf) ) {
+          setCode( Code::InternalError, "Receiver cancelled starting the current range.");
+          return 0;
+        }
 
       } else if ( _protocolMode != ProtocolMode::HTTP && !_currentRange ) {
         // if we are not running in HTTP mode we can only request a single range, that means we get our data
@@ -309,7 +323,7 @@ namespace zyppng {
         // do only write what we need until the range is full
         const auto bytesToWrite = rng.len > 0 ? std::min( rng.len - rng.bytesWritten, availableData ) : availableData;
 
-        auto written = _writeCb( ptr + bytesConsumedSoFar, seekTo, bytesToWrite );
+        auto written = _receiver.writefunction( ptr + bytesConsumedSoFar, seekTo, bytesToWrite );
         if ( written <= 0 )
           return 0;
 
@@ -321,9 +335,15 @@ namespace zyppng {
         rng.bytesWritten += written;
         if ( _currentSrvRange ) _currentSrvRange->bytesWritten += written;
 
+        // range is done
         if ( rng.len > 0 && rng.bytesWritten >= rng.len ) {
+          std::string errBuf = "Receiver cancelled after finishing the current range.";
+          bool rngIsValid = validateRange( rng );
+          if ( !_receiver.finishedRange (*_currentRange, rngIsValid, errBuf) ) {
+            setCode( Code::InternalError, "Receiver cancelled starting the current range.");
+            return 0;
+          }
           _currentRange.reset();
-          validateRange( rng );
         }
 
         if ( _currentSrvRange && _currentSrvRange->len > 0 && _currentSrvRange->bytesWritten >= _currentSrvRange->len ) {
@@ -409,7 +429,7 @@ namespace zyppng {
     // we never auto downgrade to last range set ( which is 1 ) because in that case
     // just downloading the full file is usually faster.
     if ( _lastCode == Code::RangeFail )
-      return ( _rangeAttemptIdx + 1 < ( sizeof( _rangeAttempt ) - 1 )  ) && hasMoreWork();
+      return ( _rangeAttemptIdx + 1 < ( ( sizeof( _rangeAttempt ) / sizeof(int) ) - 1 )  ) && hasMoreWork();
     return false;
   }
 
@@ -439,7 +459,7 @@ namespace zyppng {
     if ( hasMoreWork() ) {
       // go to the next range batch level if we are restarted due to a failed range request
       if ( _lastCode == Code::RangeFail ) {
-        if ( _rangeAttemptIdx + 1 >= sizeof( _rangeAttempt ) ) {
+        if ( _rangeAttemptIdx + 1 >= (sizeof( _rangeAttempt ) / sizeof(int)) ) {
           setCode ( Code::RangeFail, "No more range batch sizes available", true );
           return false;
         }
@@ -458,8 +478,10 @@ namespace zyppng {
     // if we still have a current range set it valid by checking the checksum
     if ( _currentRange ) {
       auto &currR = _requestedRanges[*_currentRange];
+      std::string errBuf;
+      bool rngIsValid = validateRange( currR );
+      _receiver.finishedRange (*_currentRange, rngIsValid, errBuf);
       _currentRange.reset();
-      validateRange( currR );
     }
   }
 
@@ -494,6 +516,11 @@ namespace zyppng {
     _allHeadersReceived  = false;
     _isMuliPartResponse  = false;
 
+    if ( _requestedRanges.size() == 0 ) {
+      setCode( Code::InternalError, "Calling the CurlMultiPartHandler::prepare function without a range to download is not supported.");
+      return false;
+    }
+
     const auto setCurlOption = [&]( CURLoption opt, auto &&data )
     {
       auto ret = curl_easy_setopt( _easyHandle, opt, data );
@@ -508,17 +535,8 @@ namespace zyppng {
       setCurlOption( CURLOPT_WRITEFUNCTION, CurlMultiPartHandler::curl_wrtcallback );
       setCurlOption( CURLOPT_WRITEDATA, this );
 
-      if ( _requestedRanges.size() == 0 ) {
-        throw CurlMultInitRangeError("Calling the CurlMultiPartHandler::prepare function without a range to download is not supported.");
-      }
-
       std::string rangeDesc;
       uint rangesAdded = 0;
-
-      std::sort( _requestedRanges.begin(), _requestedRanges.end(), []( const auto &elem1, const auto &elem2 ){
-        return ( elem1.start < elem2.start );
-      });
-
       auto maxRanges = _rangeAttempt[_rangeAttemptIdx];
 
       // helper function to build up the request string for the range
@@ -553,25 +571,33 @@ namespace zyppng {
         const auto rangeEnd = range.len > 0 ? range.start + range.len - 1 : 0;
         closedRange = (rangeEnd > 0);
 
-        // remember this range was already requested
-        range._rangeState  = Running;
-        range.bytesWritten = 0;
-        if ( range._digest )
-          range._digest->reset();
+        bool added = false;
 
         // we try to compress the requested ranges into as big chunks as possible for the request,
         // when receiving we still track the original ranges so we can collect and test their checksums
         if ( !currentZippedRange ) {
+          added = true;
           currentZippedRange = std::make_pair( range.start, rangeEnd );
         } else {
           //range is directly consecutive to the previous range
           if ( currentZippedRange->second + 1 == range.start ) {
+            added = true;
             currentZippedRange->second = rangeEnd;
           } else {
             //this range does not directly follow the previous one, we build the string and start a new one
+            if ( rangesAdded +1 >= maxRanges ) break;
+            added = true;
             addRangeString( *currentZippedRange );
             currentZippedRange = std::make_pair( range.start, rangeEnd );
           }
+        }
+
+        // remember range was already requested
+        if ( added ) {
+          setRangeState( range, Running );
+          range.bytesWritten = 0;
+          if ( range._digest )
+            range._digest->reset();
         }
 
         if ( rangesAdded >= maxRanges ) {
@@ -647,14 +673,14 @@ namespace zyppng {
   {
     if ( rng._digest && rng._checksum.size() ) {
       if ( ( rng.len == 0 || rng.bytesWritten == rng.len ) && checkIfRangeChkSumIsValid(rng) )
-        rng._rangeState = Finished;
+        setRangeState(rng, Finished);
       else
-        rng._rangeState = Error;
+        setRangeState(rng, Error);
     } else {
       if ( rng.len == 0 ? true : rng.bytesWritten == rng.len )
-        rng._rangeState = Finished;
+        setRangeState(rng, Finished);
       else
-        rng._rangeState = Error;
+        setRangeState(rng, Error);
     }
     return ( rng._rangeState == Finished );
   }
@@ -677,6 +703,18 @@ namespace zyppng {
 
     // no checksum required
     return true;
+  }
+
+  void CurlMultiPartHandler::setRangeState( Range &rng, State state )
+  {
+    if ( rng._rangeState != state ) {
+      rng._rangeState = state;
+    }
+  }
+
+  std::optional<off_t> CurlMultiPartHandler::currentRange() const
+  {
+    return _currentRange;
   }
 
   std::optional<size_t> CurlMultiPartHandler::reportedFileSize() const

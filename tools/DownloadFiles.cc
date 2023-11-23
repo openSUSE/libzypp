@@ -90,6 +90,7 @@ int main ( int argc, char *argv[] )
 {
   // force the use of the new downloader code
   setenv("ZYPP_MEDIANETWORK", "1", 1);
+  ztui::Application app;
 
   auto appname = zypp::Pathname::basename( argv[0] );
   po::positional_options_description p;

@@ -10,6 +10,7 @@
 #include <zypp/PathInfo.h>
 
 #include "WebServer.h"
+#include "FtpServer.h"
 
 using std::cout;
 using std::endl;
@@ -243,14 +244,11 @@ BOOST_AUTO_TEST_CASE(msa_file_exist_local)
   BOOST_CHECK(!setaccess.doesFileExist("/testBADNAME.txt"));
 }
 
-/*
- * file exists remote
- */
-BOOST_AUTO_TEST_CASE(msa_remote_tests)
-{
-  WebServer web( DATADIR / "/src1/cd1", 10002 );
-  BOOST_REQUIRE( web.start() );
-  MediaSetAccess setaccess( web.url(), "/" );
+template <typename Server>
+void msa_remote_tests_impl() {
+  Server srv( DATADIR / "/src1/cd1", 10002 );
+  BOOST_REQUIRE( srv.start() );
+  MediaSetAccess setaccess( srv.url(), "/" );
 
   BOOST_CHECK(!setaccess.doesFileExist("/testBADNAME.txt"));
   BOOST_CHECK(setaccess.doesFileExist("/test.txt"));
@@ -264,7 +262,7 @@ BOOST_AUTO_TEST_CASE(msa_remote_tests)
 
   Pathname fPath;
   {
-    Url url = web.url();
+    Url url = srv.url();
     url.setPathName("/testBADNAME.txt");
 
     // providing a file which does not exist should throw
@@ -308,7 +306,23 @@ BOOST_AUTO_TEST_CASE(msa_remote_tests)
     BOOST_CHECK(check_file_exists(file) == true);
   }
 
-  web.stop();
+  srv.stop();
+}
+
+/*
+ * file exists remote http
+ */
+BOOST_AUTO_TEST_CASE(msa_remote_tests_http)
+{
+  msa_remote_tests_impl<WebServer>();
+}
+
+/*
+ * file exists remote ftp
+ */
+BOOST_AUTO_TEST_CASE(msa_remote_tests_ftp)
+{
+  msa_remote_tests_impl<FtpServer>();
 }
 
 

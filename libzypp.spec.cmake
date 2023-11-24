@@ -112,6 +112,7 @@ BuildRequires:  readline-devel >= 5.1
 # required for testsuite
 %if %{with mediabackend_tests}
 BuildRequires:  nginx
+BuildRequires:	vsftpd
 %endif
 
 Requires:       rpm

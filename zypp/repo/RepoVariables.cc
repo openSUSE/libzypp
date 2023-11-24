@@ -560,26 +560,51 @@ namespace zypp
 
     Url RepoVariablesUrlReplacer::operator()( const Url & value ) const
     {
-      Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
-      // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
-      // but this was done before as well. The final fix will have to keep the proxypasswd
-      // out side the url in a credential file.
-      Url tmpurl { value };
-      tmpurl.setViewOptions( toReplace );
-      const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );
-
       Url newurl;
-      if ( !replaced.empty() )
-      {
-        newurl = replaced;
-        newurl.setUsername( value.getUsername( url::E_ENCODED ), url::E_ENCODED );
-        newurl.setPassword( value.getPassword( url::E_ENCODED ), url::E_ENCODED );
-        newurl.setViewOptions( value.getViewOptions() );
+      if ( value.isValid() ) {
+        // The zypp-rawurl: schema is replaced by extracting and replacing the raw stringvalue.
+        // Other schmemata are replaced the traditional way.
+        if ( value.schemeIsRawUrl() ) {
+          const std::string & replaced { RepoVarExpand()( value.getFragment(), RepoVarsMap::lookup ) };
+          newurl = Url( replaced );
+        } else {
+          // The traditional
+          Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
+          // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
+          // but this was done before as well. The final fix will have to keep the proxypasswd
+          // out side the url in a credential file.
+          Url tmpurl { value };
+          tmpurl.setViewOptions( toReplace );
+          const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );
+
+          if ( !replaced.empty() )
+          {
+            newurl = replaced;
+            newurl.setUsername( value.getUsername( url::E_ENCODED ), url::E_ENCODED );
+            newurl.setPassword( value.getPassword( url::E_ENCODED ), url::E_ENCODED );
+            newurl.setViewOptions( value.getViewOptions() );
+          }
+        }
       }
       return newurl;
     }
   } // namespace repo
   ///////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////
+  // class RawUrl
+  ////////////////////////////////////////////////////////////////////
+
+  RawUrl::RawUrl( const std::string & encodedUrl_r )
+  {
+    if ( str::startsWith( encodedUrl_r, "zypp-rawurl:" ) || not repo::hasRepoVarsEmbedded( encodedUrl_r ) ) {
+      *this = Url( encodedUrl_r );
+    } else {
+      *this = Url( "zypp-rawurl:" );
+      setFragment( encodedUrl_r );
+    }
+  }
+
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -589,6 +614,11 @@ namespace zyppintern
   // internal helper called when re-acquiring the lock
   void repoVariablesReset()
   { repo::RepoVarsMap::instance().clear(); }
+  // Direct inspection and manipulation of the var-set for debugging and testcases
+  std::map<std::string,std::string> repoVariablesGet()
+  { return repo::RepoVarsMap::instance(); }
+  void repoVariablesSwap( std::map<std::string,std::string> & val_r )
+  { return repo::RepoVarsMap::instance().swap( val_r ); }
 
 } // namespace zyppintern
 ///////////////////////////////////////////////////////////////////

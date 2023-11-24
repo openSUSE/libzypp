@@ -14,6 +14,23 @@ using std::endl;
 using namespace zypp;
 using namespace boost::unit_test;
 
+// This is kind of ugly for testing: Whenever a zypp lock is
+// acquired the repo variables are cleared and re-read from disk,
+// which is ok (by ZYppFactory).
+// The VarReplacer itself however acquires a lock to resolve the
+// Target variables (like $releasever), which is ok as well.
+// For testing however - if we want to manipulate the variable
+// definitions - we must hold a lock ourselves. Otherwise the
+// VarReplacer will acquired one and so discard our custom
+// settings.
+#include <zypp/ZYppFactory.h>
+auto guard { getZYpp() };
+namespace zyppintern {
+  std::map<std::string,std::string> repoVariablesGet();
+  void repoVariablesSwap( std::map<std::string,std::string> & val_r );
+}
+// ---
+
 #define DATADIR (Pathname(TESTS_SRC_DIR) +  "/repo/yum/data")
 
 typedef std::list<std::string> ListType;
@@ -248,5 +265,78 @@ BOOST_AUTO_TEST_CASE(uncached)
   BOOST_CHECK_EQUAL( replacer1("${releasever}"),	"13.2" );
   ::setenv( "ZYPP_REPO_RELEASEVER", "13.3", 1 );
   BOOST_CHECK_EQUAL( replacer1("${releasever}"),	"13.3" );
+}
+
+BOOST_AUTO_TEST_CASE(replace_rawurl)
+{
+  std::string s;
+
+  s = "http://$host/repositories";  // lowercase, so it works for both (Url stores host component lowercased)
+  {
+    Url u { s };
+    RawUrl r { s };
+    // check replacing...
+    repo::RepoVariablesUrlReplacer replacer;
+    std::map<std::string,std::string> vardef { ::zyppintern::repoVariablesGet() };
+
+    vardef["host"] = ""; // make sure it's not defined
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_THROW( replacer( u ).asCompleteString(), zypp::url::UrlNotAllowedException ); // Url scheme requires a host component
+    BOOST_CHECK_THROW( replacer( r ).asCompleteString(), zypp::url::UrlNotAllowedException ); // Url scheme requires a host component
+
+    vardef["host"] = "cdn.opensuse.org";
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_EQUAL( replacer( u ).asCompleteString(), "http://cdn.opensuse.org/repositories" );
+    BOOST_CHECK_EQUAL( replacer( r ).asCompleteString(), "http://cdn.opensuse.org/repositories" );
+
+    vardef["host"] = "cdn.opensuse.org/pathadded";
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_EQUAL( replacer( u ).asCompleteString(), "http://cdn.opensuse.org/pathadded/repositories" );
+    BOOST_CHECK_EQUAL( replacer( r ).asCompleteString(), "http://cdn.opensuse.org/pathadded/repositories" );
+
+    vardef["host"] = "cdn.opensuse.org:1234/pathadded";
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_EQUAL( replacer( u ).asCompleteString(), "http://cdn.opensuse.org:1234/pathadded/repositories" );
+    BOOST_CHECK_EQUAL( replacer( r ).asCompleteString(), "http://cdn.opensuse.org:1234/pathadded/repositories" );
+
+    vardef["host"] = "//something making the Url invalid//";
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_THROW( replacer( u ).asCompleteString(), zypp::url::UrlNotAllowedException ); // Url scheme requires a host component
+    BOOST_CHECK_THROW( replacer( r ).asCompleteString(), zypp::url::UrlNotAllowedException ); // Url scheme requires a host component
+  }
+
+  // If embedded vars do not form a valid Url, RawUrl must be used to carry them.
+  // But one should make sure the expanded string later forms a valid Url.
+  s = "${OPENSUSE_DISTURL:-http://cdn.opensuse.org/repositories/}leap/repo";
+  BOOST_CHECK_THROW( Url{ s }, zypp::url::UrlBadComponentException );
+  {
+    RawUrl r { s };
+    BOOST_CHECK_EQUAL( r.getScheme(), "zypp-rawurl" );
+    BOOST_CHECK_EQUAL( r.getFragment(), s );
+    // Make sure a RawUrl (as Url or String) is not re-evaluated when fed
+    // back into a RawUrl. I.e. no zypp-rawurl as payload of a zypp-rawurl.
+    BOOST_CHECK_EQUAL( r, RawUrl( r ) );
+    BOOST_CHECK_EQUAL( r, RawUrl( r.asCompleteString() ) );
+    // Of course you can always do Url("zypp-rawurl:#zypp-rawurl:#$VAR"),
+    // but then you probably know what you are doing.
+    BOOST_CHECK_EQUAL( RawUrl( "zypp-rawurl:#zypp-rawurl:%23$VAR" ).asCompleteString(), "zypp-rawurl:#zypp-rawurl:%23$VAR" );
+    BOOST_CHECK_EQUAL( Url( "zypp-rawurl:#zypp-rawurl:%23$VAR" ).asCompleteString(),    "zypp-rawurl:#zypp-rawurl:%23$VAR" );
+
+    // check replacing...
+    repo::RepoVariablesUrlReplacer replacer;
+    std::map<std::string,std::string> vardef { ::zyppintern::repoVariablesGet() };
+
+    vardef["OPENSUSE_DISTURL"] = ""; // make sure it's not defined
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_EQUAL( replacer( r ).asCompleteString(), "http://cdn.opensuse.org/repositories/leap/repo" );
+
+    vardef["OPENSUSE_DISTURL"] = "https://mymirror.org/"; // custom value
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_EQUAL( replacer( r ).asCompleteString(), "https://mymirror.org/leap/repo" );
+
+    vardef["OPENSUSE_DISTURL"] = "//something making the Url invalid//";
+    ::zyppintern::repoVariablesSwap( vardef );
+    BOOST_CHECK_THROW( replacer( r ).asCompleteString(), zypp::url::UrlBadComponentException ); // Url scheme is a required component
+  }
 }
 // vim: set ts=2 sts=2 sw=2 ai et:

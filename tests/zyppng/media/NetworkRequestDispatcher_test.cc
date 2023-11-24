@@ -16,6 +16,7 @@
 #include <chrono>
 
 #include "WebServer.h"
+#include "FtpServer.h"
 #include "TestTools.h"
 
 
@@ -230,7 +231,8 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_errors, bdata::make( withSSL ), withSSL)
   BOOST_TEST_REQ_SUCCESS( get204 );
 }
 
-BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL )
+template <typename Server>
+void nwdispatcher_download( bool withSSL )
 {
   auto ev = zyppng::EventLoop::create();
   auto disp = std::make_shared<zyppng::NetworkRequestDispatcher>();
@@ -240,12 +242,12 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL
   //start request dispatching, does not need to have requests enqueued
   disp->run();
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"zypp/data/Fetcher/remote-site").c_str(), 10001, withSSL );
-  BOOST_REQUIRE( web.start() );
+  Server srv((zypp::Pathname(TESTS_SRC_DIR)/"zypp/data/Fetcher/remote-site").c_str(), 10001, withSSL );
+  BOOST_REQUIRE( srv.start() );
 
-  zyppng::TransferSettings set = web.transferSettings();
+  zyppng::TransferSettings set = srv.transferSettings();
 
-  zyppng::Url weburl (web.url());
+  zyppng::Url weburl (srv.url());
   weburl.setPathName("/complexdir/subdir1/subdir1-file1.txt");
 
   const auto &checkFileExists = []( const zypp::filesystem::Pathname &filePath ) -> bool {
@@ -325,7 +327,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL
   {
     zypp::filesystem::TmpFile targetFile;
     zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
-    weburl = web.url();
+    weburl = srv.url();
     weburl.setPathName("/file-1.txt");
     reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
     reqDLFile->transferSettings() = set;
@@ -338,6 +340,16 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL
     BOOST_REQUIRE( checkFileExists(targetFile.path()) );
     BOOST_REQUIRE( checkFilesum(targetFile.path(), zypp::CheckSum::md5(std::string("16d2b386b2034b9488996466aaae0b57"))) );
   }
+}
+
+BOOST_DATA_TEST_CASE(nwdispatcher_http_download, bdata::make( withSSL ), withSSL )
+{
+  nwdispatcher_download<WebServer>(withSSL);
+}
+
+BOOST_DATA_TEST_CASE(nwdispatcher_ftp_download, bdata::make( withSSL ), withSSL )
+{
+  nwdispatcher_download<FtpServer>(withSSL);
 }
 
 BOOST_DATA_TEST_CASE(nwdispatcher_delay_download, bdata::make( withSSL ), withSSL )
@@ -378,9 +390,8 @@ BOOST_DATA_TEST_CASE(nwdispatcher_delay_download, bdata::make( withSSL ), withSS
   BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::Timeout );
 }
 
-//Get a simple range from a existing file
-BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl, bdata::make( withSSL ), withSSL )
-{
+template <typename Server>
+void nwdispatcher_multipart_dl_impl( bool withSSL ) {
   auto ev = zyppng::EventLoop::create();
   auto disp = std::make_shared<zyppng::NetworkRequestDispatcher>();
   disp->sigQueueFinished().connect( [&ev]( const zyppng::NetworkRequestDispatcher& ){
@@ -389,7 +400,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl, bdata::make( withSSL ), withSSL 
 
   disp->run();
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"zypp/data/Fetcher/remote-site").c_str(), 10001, withSSL );
+  Server web((zypp::Pathname(TESTS_SRC_DIR)/"zypp/data/Fetcher/remote-site").c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
   auto weburl = web.url();
@@ -414,6 +425,17 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl, bdata::make( withSSL ), withSSL 
   BOOST_REQUIRE_EQUAL( std::string_view ( downloaded.data()+13 , 4 ), "SUSE" );
   BOOST_REQUIRE_EQUAL( std::string_view ( downloaded.data()+248, 6 ), "TCP/IP" );
   BOOST_REQUIRE_EQUAL( std::string_view ( downloaded.data()+76 , 9 ), "Slackware" );
+}
+
+//Get a simple range from a existing file
+BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_http, bdata::make( withSSL ), withSSL )
+{
+  nwdispatcher_multipart_dl_impl<WebServer>(withSSL);
+}
+
+BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_ftp, bdata::make( withSSL ), withSSL )
+{
+  nwdispatcher_multipart_dl_impl<FtpServer>(withSSL);
 }
 
 struct RangeData {

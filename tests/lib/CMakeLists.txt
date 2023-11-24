@@ -1,4 +1,5 @@
 find_program( NGINX nginx )
+find_program( VSFTPD vsftpd )
 find_library( LIBFCGI NAMES fcgi )
 find_library( LIBFCGI++ NAMES fcgi++ )
 
@@ -7,6 +8,13 @@ if ( NOT NGINX )
 else()
   message ( "Using nginx binary at: ${NGINX}" )
   ADD_DEFINITIONS( -DWEBSRV_BINARY="${NGINX}" )
+endif()
+
+if ( NOT VSFTPD )
+  message( FATAL_ERROR "vsftpd not found" )
+else()
+  message ( "Using vsftpd binary at: ${VSFTPD}" )
+  ADD_DEFINITIONS( -DFTPSRV_BINARY="${VSFTPD}" )
 endif()
 
 if ( NOT LIBFCGI )
@@ -24,6 +32,8 @@ endif()
 add_definitions( -DSRCDIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 ADD_LIBRARY(zypp_test_utils
+ FtpServer.h
+ FtpServer.cc
  TestSetup.h
  TestTools.h
  WebServer.h

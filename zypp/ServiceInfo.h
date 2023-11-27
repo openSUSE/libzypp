@@ -65,8 +65,10 @@ namespace zypp
     /** The service url */
     Url url() const;
 
-    /** The service raw url (no variables replaced) */
-    Url rawUrl() const;
+    /** The service raw url (no variables replaced)
+     * \deprecated \see \ref RawUrl
+     */
+    Url rawUrl() const ZYPP_DEPRECATED;
 
     /** Set the service url (raw value) */
     void setUrl( const Url& url );

@@ -65,8 +65,8 @@ namespace zypp
    * \note A RepoInfo is a hint about how
    * to create a Repository.
    *
-   * \note Name, baseUrls and mirrorUrl are subject to repo variable replacement
-   * (\see \ref RepoVariablesStringReplacer).
+   * \note Name, baseUrls, gpgKeyUrl and mirrorUrl are subject to repo variable
+   * replacement(\see \ref RepoVariablesStringReplacer and \ref RawUrl).
    */
   class RepoInfo : public repo::RepoInfoBase
   {
@@ -132,8 +132,9 @@ namespace zypp
       { return( baseUrlsEmpty() ? Url() : *baseUrlsBegin()); }
       /**
        * Pars pro toto: The first repository raw url (no variables replaced)
+       * \deprecated \see \ref RawUrl
        */
-      Url rawUrl() const;
+      Url rawUrl() const ZYPP_DEPRECATED;
 
       /**
        * The complete set of repository urls
@@ -144,8 +145,9 @@ namespace zypp
       url_set baseUrls() const;
       /**
        * The complete set of raw repository urls (no variables replaced)
+       * \deprecated \see \ref RawUrl
        */
-      url_set rawBaseUrls() const;
+      url_set rawBaseUrls() const ZYPP_DEPRECATED;
 
       /**
        * Add a base url. \see baseUrls
@@ -197,8 +199,9 @@ namespace zypp
       Url mirrorListUrl() const;
       /**
        * The raw mirrorListUrl (no variables replaced).
+       * \deprecated \see \ref RawUrl
        */
-      Url rawMirrorListUrl() const;
+      Url rawMirrorListUrl() const ZYPP_DEPRECATED;
       /**
        * Set mirror list url. \see mirrorListUrl
        * \param url The base url for the list
@@ -391,15 +394,19 @@ namespace zypp
 
       /** The list of gpgkey URLs defined for this repo */
       url_set gpgKeyUrls() const;
-      /** The list of raw gpgkey URLs defined for this repo (no variables replaced) */
-      url_set rawGpgKeyUrls() const;
+      /** The list of raw gpgkey URLs defined for this repo (no variables replaced)
+       * \deprecated \see \ref RawUrl
+       */
+      url_set rawGpgKeyUrls() const ZYPP_DEPRECATED;
       /** Set a list of gpgkey URLs defined for this repo */
       void setGpgKeyUrls( url_set urls );
 
       /** (leagcy API) The 1st gpgkey URL defined for this repo */
       Url gpgKeyUrl() const;
-      /** (leagcy API) The 1st raw gpgkey URL defined for this repo (no variables replaced) */
-      Url rawGpgKeyUrl() const;
+      /** (leagcy API) The 1st raw gpgkey URL defined for this repo (no variables replaced)
+       * \deprecated \see \ref RawUrl
+       */
+      Url rawGpgKeyUrl() const ZYPP_DEPRECATED;
       /** (leagcy API) Set the gpgkey URL defined for this repo */
       void setGpgKeyUrl( const Url &gpgkey );
 

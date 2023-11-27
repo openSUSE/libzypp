@@ -15,7 +15,7 @@ The variable expander also supports shell like definition of default and alterna
 \see \ref zypp::repo::RepoVarExpand Variable expander
 
 
-\subsection zypp-repoars-builtin Builtin repository variables
+\subsection zypp-repovars-builtin Builtin repository variables
 
 \li \c $arch -
 	The system's CPU architecture.
@@ -31,10 +31,11 @@ The variable expander also supports shell like definition of default and alterna
 	\c $releasever_major will be set to the leading portion up to (but not including) the 1st dot; \c $releasever_minor to the trailing portion after the 1st dot. If there's no dot in \c $releasever, \c $releasever_major is the same as \c $releasever and \c $releasever_minor is empty.
 
 
-\subsection zypp-repoars-userdefined User defined repository variables [requires 'libzypp(repovarexpand) >= 1']
+\subsection zypp-repovars-userdefined User defined repository variables [requires 'libzypp(repovarexpand) >= 1']
 
 A custom repository variable is defined by creating a file in \c /etc/zypp/vars.d. The variable name equals the file name. The files first line (up to but not including the newline character) defines the variables value. Valid variable(file) names consist of alphanumeric chars and '_' only.
 
 Variable substitution within an URIs authority [requires 'libzypp(repovarexpand) >= 1.1'] is limited to \c host and \c port. Bash style definition of default and alternate values is not supported. No variables can be used in an URIs \c scheme, \c user and \c password.
 
+The use of arbitrary strings which form a valid url after variable substitution - but not before - requires 'libzypp(repovarexpand) >= 1.2'. The \c zypp-rawurl: schema is used to wrap the unexpanded strings into a valid \ref Url until they get expanded (\see \ref zypp::RawUrl).
 */

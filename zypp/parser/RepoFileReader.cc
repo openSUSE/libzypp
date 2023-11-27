@@ -115,7 +115,7 @@ namespace zypp
           // #285: Fedora/dnf allows WS separated urls (and an optional comma)
           strv::splitRx( line_r, "[,[:blank:]]*[[:blank:]][,[:blank:]]*", [&store_r]( std::string_view w ) {
             if ( ! w.empty() )
-              store_r.push_back( Url(std::string(w)) );
+              store_r.push_back( RawUrl(std::string(w)) );  // RawUrl! to support repo var replacement
           });
         }
 

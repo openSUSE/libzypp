@@ -567,6 +567,16 @@ namespace zypp
         if ( value.schemeIsRawUrl() ) {
           const std::string & replaced { RepoVarExpand()( value.getFragment(), RepoVarsMap::lookup ) };
           newurl = Url( replaced );
+          // Fixup some legacy issue: RepoFileReader encodes a 'proxy=' in .repo in
+          // the Url's Query part. We must restore it from there unless the original Url
+          // defined proxy in it's query part.
+          if ( newurl.getQueryParam( "proxy" ).empty() ) {
+            const std::string & p { value.getQueryParam( "proxy" ) };
+            if ( not p.empty() ) {
+              newurl.setQueryParam( "proxy", p );
+              newurl.setQueryParam( "proxyport", value.getQueryParam( "proxyport" ) );
+            }
+          }
         } else {
           // The traditional
           Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;

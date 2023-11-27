@@ -61,11 +61,12 @@ namespace zypp
               it != dict.entriesEnd(*its);
               ++it )
         {
+
           // MIL << (*it).first << endl;
           if ( it->first == "name" )
             service.setName( it->second );
           else if ( it->first == "url" && ! it->second.empty() )
-            service.setUrl( Url (it->second) );
+            service.setUrl( RawUrl(it->second) ); // RawUrl! to support repo var replacement
           else if ( it->first == "enabled" )
             service.setEnabled( str::strToTrue( it->second ) );
           else if ( it->first == "autorefresh" )

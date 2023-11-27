@@ -172,8 +172,10 @@ namespace zypp
 
   std::ostream & ServiceInfo::dumpAsIniOn( std::ostream & str ) const
   {
+    // NOTE: hotfix1050625::asString provides the Url asRawSring,
+    // which is what we want when writing a .service file.
     RepoInfoBase::dumpAsIniOn(str)
-      << "url = " << hotfix1050625::asString( rawUrl() ) << endl
+      << "url = " << hotfix1050625::asString( _pimpl->_url.raw() ) << endl
       << "type = " << type() << endl;
 
     if ( ttl() )

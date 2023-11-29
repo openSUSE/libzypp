@@ -26,6 +26,26 @@ using namespace zypp::parser::yum;
 
 namespace zypp
 {
+  namespace env {
+    bool ZYPP_REPOMD_WITH_OTHER()
+    {
+      static bool val = [](){
+        const char * env = getenv("ZYPP_REPOMD_WITH_OTHER");
+        return( env && zypp::str::strToBool( env, true ) );
+      }();
+      return val;
+    }
+
+    bool ZYPP_REPOMD_WITH_FILELISTS()
+    {
+      static bool val = [](){
+        const char * env = getenv("ZYPP_REPOMD_WITH_FILELISTS");
+        return( env && zypp::str::strToBool( env, true ) );
+      }();
+      return val;
+    }
+  } // namespace env
+
 namespace repo
 {
 namespace yum
@@ -118,7 +138,10 @@ namespace yum
 #endif
 
       // filter well known resource types
-      if ( basetype == "other" || basetype == "filelists" )
+      if ( basetype == "other" && not env::ZYPP_REPOMD_WITH_OTHER() )
+        return true;	// skip it
+
+      if ( basetype == "filelists" && not env::ZYPP_REPOMD_WITH_FILELISTS() )
         return true;	// skip it
 
       // filter localized susedata

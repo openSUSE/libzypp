@@ -234,6 +234,7 @@ namespace zypp
             str::Format fmtScriptFailedMsg { "warning: %%posttrans(%1%) scriptlet failed, exit status %2%\n" };
             str::Format fmtPosttrans { "%%posttrans(%1%)" };
 
+            rpm::librpmDb::db_const_iterator it;  // Open DB only once
             while ( ! _scripts->empty() )
             {
               const auto &scriptPair = _scripts->front();
@@ -242,9 +243,8 @@ namespace zypp
               startNewScript( fmtPosttrans % pkgident );
 
               int npkgs = 0;
-              rpm::librpmDb::db_const_iterator it;
               for ( it.findByName( scriptPair.second ); *it; ++it )
-                npkgs++;
+                ++npkgs;
 
               MIL << "EXECUTE posttrans: " << script << " with argument: " << npkgs << endl;
               ExternalProgram::Arguments cmd {

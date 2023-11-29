@@ -431,6 +431,8 @@ namespace zyppng {
 
     if ( rmode->_partialHelper && rmode->_partialHelper->hasMoreWork() ) {
 
+      bool hadRangeFail = rmode->_partialHelper->lastError () == NetworkRequestError::RangeFail;
+
       _runningMode = prepareNextRangeBatch_t( std::move(std::get<running_t>( _runningMode )) );
 
       auto &prepMode = std::get<prepareNextRangeBatch_t>(_runningMode);
@@ -439,13 +441,15 @@ namespace zyppng {
         return false;
       }
 
-      // we reset the handle to default values. We do this to not run into
-      // "transfer closed with outstanding read data remaining" error CURL sometimes returns when
-      // we cancel a connection because of a range error to request a smaller batch.
-      // The error will still happen but much less frequently than without resetting the handle.
-      //
-      // Note: Even creating a new handle will NOT fix the issue
-      curl_easy_reset( _easyHandle );
+      if ( hadRangeFail ) {
+        // we reset the handle to default values. We do this to not run into
+        // "transfer closed with outstanding read data remaining" error CURL sometimes returns when
+        // we cancel a connection because of a range error to request a smaller batch.
+        // The error will still happen but much less frequently than without resetting the handle.
+        //
+        // Note: Even creating a new handle will NOT fix the issue
+        curl_easy_reset( _easyHandle );
+      }
       if ( !setupHandle(errBuf))
         return false;
       return true;

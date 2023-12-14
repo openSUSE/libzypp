@@ -1394,7 +1394,7 @@ namespace zypp
 	  if ( citem->isKind<Package>() )
 	  {
 	    // for packages this means being obsoleted (by rpm)
-	    // thius no additional action is needed.
+	    // thus no additional action is needed.
 	    step->stepStage( sat::Transaction::STEP_DONE );
 	    continue;
 	  }

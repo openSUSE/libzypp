@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Dec 14 10:48:01 CET 2023 - ma@suse.de
+
+- Open rpmdb just once during execution of %posttrans scripts
+  (bsc#1216412)
+- Avoid using select() since it does not support fd numbers >
+  1024 (fixes #447)
+- tools/DownloadFiles: use standard zypp progress bar (fixes #489)
+- Revert "Color download progress bar" (fixes #475)
+  Cyan is already used for the output of RPM scriptlets. Avoid this
+  colorific collision between download progress bar and scriptlet
+  output.
+- Fix ProgressBar's calculation of the printed tag position (fixes #494)
+- Switch zypp::Digest to Openssl 3.0 Provider API (fixes #144)
+- Fix usage of deprecated CURL features (fixes #486)
+- version 17.31.24 (22)
+
+-------------------------------------------------------------------
 Wed Oct 25 16:03:51 CEST 2023 - ma@suse.de
 
 - Stop using boost version 1 timer library (fixes #489,

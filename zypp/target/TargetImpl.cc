@@ -1593,6 +1593,14 @@ namespace zypp
                 }
               }
             }
+            else if ( citem->isKind<Patch>() && citem.status().isToBeInstalled() ) {
+              Patch::constPtr p = citem->asKind<Patch>();
+              if ( p->rebootSuggested() ) {
+                  auto rebootNeededFile = root() / "/run/reboot-needed";
+                  if ( filesystem::assert_file( rebootNeededFile ) == EEXIST )
+                    filesystem::touch( rebootNeededFile );
+              }
+            }
             else if ( citem->isKind<SrcPackage>() && citem.status().isToBeInstalled() )
             {
               // SrcPackage is install-only

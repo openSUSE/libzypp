@@ -40,7 +40,7 @@ namespace zypp
     void ServiceFileReader::Impl::parseServices( const Pathname & file,
                                   const ServiceFileReader::ProcessService & callback/*,
                                   const ProgressData::ReceiverFnc &progress*/ )
-    {
+    try {
       InputStream is(file);
       if( is.stream().fail() )
       {
@@ -147,6 +147,10 @@ namespace zypp
         if ( !callback(service) )
           ZYPP_THROW(AbortRequestException());
       }
+    }
+    catch ( Exception & ex ) {
+      ex.addHistory( "Parsing .service file "+file.asString() );
+      ZYPP_RETHROW( ex );
     }
 
     ///////////////////////////////////////////////////////////////////

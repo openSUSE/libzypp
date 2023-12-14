@@ -138,7 +138,7 @@ namespace zypp
     static void repositories_in_stream( const InputStream &is,
                                         const RepoFileReader::ProcessRepo &callback,
                                         const ProgressData::ReceiverFnc &progress )
-    {
+    try {
       RepoFileParser dict(is);
       for_( its, dict.sectionsBegin(), dict.sectionsEnd() )
       {
@@ -220,6 +220,10 @@ namespace zypp
         //if (!progress.tick())
         //  ZYPP_THROW(AbortRequestException());
       }
+    }
+    catch ( Exception & ex ) {
+      ex.addHistory( "Parsing .repo file "+is.name() );
+      ZYPP_RETHROW( ex );
     }
 
     ///////////////////////////////////////////////////////////////////

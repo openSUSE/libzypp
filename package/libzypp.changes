@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Dec 14 18:22:35 CET 2023 - ma@suse.de
+
+- Touch /run/reboot-needed if a patch suggesting a reboot was
+  installed (bsc#1217948)
+  It is expected that /run is cleaned at boot time, so the presence
+  of the file is one way to indicate that the system needs a reboot.
+  The recommended way for scripts to test whether a system reboot
+  is suggested will be calling `zypper needs-rebooting`.
+- version 16.22.11 (0)
+
+-------------------------------------------------------------------
 Tue Oct 24 16:09:26 CEST 2023 - ma@suse.de
 
 - Ignore if the media to unmount is no longer mounted

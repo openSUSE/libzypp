@@ -37,7 +37,9 @@ namespace zypp
     * Parses \a repo_file and returns a list of \ref RepoInfo objects
     * corresponding to repositories found within the file.
     *
-    * \param repo_file Valid URL of the repo file.
+    * \param repo_file Valid URL of the repo file. The URL is subject to
+    * repo variable expansion.
+    *
     * \return found list<RepoInfo>
     *
     * \throws MediaException If the access to the url fails
@@ -427,7 +429,7 @@ namespace zypp
 
    /**
     * \short Adds repositores from a repo file to the list of known repositories.
-    * \param url Url of the repo file
+    * \param url Url of the repo file. The URL is subject to repo variable expansion.
     *
     * \throws repo::RepoAlreadyExistsException If the repo clash some
     *         unique attribute like alias

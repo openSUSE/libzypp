@@ -468,9 +468,11 @@ namespace zypp
 
   std::list<RepoInfo> readRepoFile( const Url & repo_file )
   {
-    ManagedFile local = MediaSetAccess::provideFileFromUrl(repo_file);
+    repo::RepoVariablesUrlReplacer replaceVars;
+    Url repoFileUrl { replaceVars(repo_file) };
 
-    DBG << "reading repo file " << repo_file << ", local path: " << local << endl;
+    ManagedFile local = MediaSetAccess::provideFileFromUrl( repoFileUrl );
+    DBG << "reading repo file " << repoFileUrl << ", local path: " << local << endl;
 
     return repositories_in_file(local);
   }

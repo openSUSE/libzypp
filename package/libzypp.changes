@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 14 11:09:24 CET 2023 - ma@suse.de
+
+- Fix build issue with zchunk build flags (fixes #500)
+- version 17.31.25 (22)
+
+-------------------------------------------------------------------
 Thu Dec 14 10:48:01 CET 2023 - ma@suse.de
 
 - Open rpmdb just once during execution of %posttrans scripts

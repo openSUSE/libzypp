@@ -27,7 +27,7 @@ namespace zypp
       {
         _t( ServiceType::RIS_e )        | "ris"       |"RIS"|"nu"|"NU";
         _t( ServiceType::PLUGIN_e )     | "plugin"    |"PLUGIN";
-        _t( ServiceType::NONE_e )       | "N/A"       |"NONE"|"none";
+        _t( ServiceType::NONE_e )       | "N/A"       |"n/a"|"NONE"|"none";
       }
       return _t;
     }

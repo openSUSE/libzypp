@@ -27,7 +27,7 @@ namespace repo
         _t( RepoType::RPMMD_e )		| "rpm-md"	| "rpm"|"rpmmd"|"repomd"|"yum"|"up2date";
         _t( RepoType::YAST2_e )		| "yast2"	| "yast"|"susetags";
         _t( RepoType::RPMPLAINDIR_e )	| "plaindir";
-        _t( RepoType::NONE_e )		| "NONE"	| "none";
+        _t( RepoType::NONE_e )		| "N/A"         | "NONE"| "none";
       }
       return _t;
     }

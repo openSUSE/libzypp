@@ -81,6 +81,17 @@
 
 #include <optional>
 
+namespace zypp::env {
+  inline bool TRANSACTIONAL_UPDATE()
+  {
+    static bool val = [](){
+      const char * env = getenv("TRANSACTIONAL_UPDATE");
+      return( env && zypp::str::strToBool( env, true ) );
+    }();
+    return val;
+  }
+} // namespace zypp::env
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -1352,7 +1363,8 @@ namespace zypp
       // Prepare execution of commit plugins:
       ///////////////////////////////////////////////////////////////////
       PluginExecutor commitPlugins;
-      if ( root() == "/" && ! policy_r.dryRun() )
+
+      if ( (root() == "/" || zypp::env::TRANSACTIONAL_UPDATE) && ! policy_r.dryRun() )
       {
         commitPlugins.load( ZConfig::instance().pluginsPath()/"commit" );
       }

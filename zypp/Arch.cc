@@ -227,6 +227,8 @@ namespace zypp
   DEF_BUILTIN( mipsel );
   DEF_BUILTIN( mips64 );
   DEF_BUILTIN( mips64el );
+
+  DEF_BUILTIN( loong64 );
 #undef DEF_BUILTIN
 
   ///////////////////////////////////////////////////////////////////
@@ -382,6 +384,8 @@ namespace zypp
         defCompatibleWith( a_mipsel(),		a_noarch() );
         defCompatibleWith( a_mips64(),		a_noarch() );
         defCompatibleWith( a_mips64el(),	a_noarch() );
+
+        defCompatibleWith( a_loong64(),		a_noarch() );
         //
         ///////////////////////////////////////////////////////////////////
         // dumpOn( USR ) << endl;

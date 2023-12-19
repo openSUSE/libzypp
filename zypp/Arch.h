@@ -295,6 +295,9 @@ namespace zypp
   extern const Arch Arch_mips64;
   /** \relates Arch */
   extern const Arch Arch_mips64el;
+
+  /** \relates Arch */
+  extern const Arch Arch_loong64;
   //@}
 
   ///////////////////////////////////////////////////////////////////

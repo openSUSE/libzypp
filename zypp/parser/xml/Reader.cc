@@ -50,7 +50,7 @@ namespace zypp
 
 
       std::list<std::string> structuredErrors;
-      void structuredErrorFunc( void * userData, xmlErrorPtr error )
+      void structuredErrorFunc( void * userData, const xmlErrorPtr error )
       {
         if ( error )
         {

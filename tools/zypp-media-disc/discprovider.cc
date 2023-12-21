@@ -237,9 +237,6 @@ zyppng::worker::AttachResult DiscProvider::mountDevice ( const uint32_t id, cons
       } // for filesystems
 
       if ( mountsucceeded ) {
-        // lets check if we have the correct medium
-        bool canUseDevice = false;
-
         auto res = isDesiredMedium( attachUrl, dev->_mountPoint / attachRoot, verifier, extras.value( zyppng::AttachMsgFields::MediaNr, 1 ).asInt() );
         if ( !res ) {
           unmountDevice( *dev );

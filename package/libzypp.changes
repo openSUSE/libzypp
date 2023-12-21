@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Dec 21 18:14:32 CET 2023 - ma@suse.de
+
+- Call zypp commit plugins during transactional update (fixes #506)
+- Add support for loongarch64 (fixes #504)
+- Teach MediaMultiCurl to download HTTP Multibyte ranges.
+- Teach zsync downloads to MultiCurl.
+- Expand RepoVars in URLs downloading a .repo file (bsc#1212160)
+  Convenient and helps documentation as it may refer to a single
+  command for a bunch of distributions. Like e.g. "zypper ar
+  'https://server.my/$releasever/my.repo'".
+- version 17.31.26 (22)
+
+-------------------------------------------------------------------
 Thu Dec 14 11:09:24 CET 2023 - ma@suse.de
 
 - Fix build issue with zchunk build flags (fixes #500)

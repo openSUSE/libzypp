@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Dec 22 17:12:31 CET 2023 - ma@suse.de
+
+- CheckAccessDeleted: fix 'running in container' filter
+  (bsc#1218291)
+- version 17.31.27 (22)
+
+-------------------------------------------------------------------
 Thu Dec 21 18:14:32 CET 2023 - ma@suse.de
 
 - Call zypp commit plugins during transactional update (fixes #506)

@@ -92,9 +92,10 @@ namespace zypp
         // get stat info for the target file
         const PathInfo linkStat( linkTarget );
 
-        // Non-existent path means it's not reachable by us.
+        // Non-existent path could be anything. Pipe or socket (type:[inode])
+        // or an 'anon_inode:<file-type>'. (bsc#1218291)
         if ( !linkStat.isExist() )
-          return CONTAINER;
+          return IGNORE;
 
         // If the file exists, it could simply mean it exists in and outside a container, check inode to be safe
         if ( linkStat.ino() != procInfoStat.ino())

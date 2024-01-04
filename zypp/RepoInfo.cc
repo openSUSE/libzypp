@@ -884,10 +884,12 @@ namespace zypp
 
   std::ostream & RepoInfo::dumpOn( std::ostream & str ) const
   {
+    // Don't dump raw Urls while the fragment is hidden in the default view
+    // (because it may otherwise expose embedded passwords).
     RepoInfoBase::dumpOn(str);
     if ( _pimpl->baseurl2dump() )
     {
-      for ( const auto & url : _pimpl->baseUrls().raw() )
+      for ( const auto & url : _pimpl->baseUrls().transformed() )  // not .raw()!
       {
         str << "- url         : " << url << std::endl;
       }
@@ -899,7 +901,7 @@ namespace zypp
         str << tag_r << value_r << std::endl;
     });
 
-    strif( (_pimpl->_mirrorListForceMetalink ? "- metalink    : " : "- mirrorlist  : "), rawMirrorListUrl().asString() );
+    strif( (_pimpl->_mirrorListForceMetalink ? "- metalink    : " : "- mirrorlist  : "), mirrorListUrl().asString() ); // not rawMirrorListUrl()
     strif( "- path        : ", path().asString() );
     str << "- type        : " << type() << std::endl;
     str << "- priority    : " << priority() << std::endl;
@@ -913,7 +915,7 @@ namespace zypp
                               << std::endl;
 #undef OUTS
 
-    for ( const auto & url : _pimpl->gpgKeyUrls().raw() )
+    for ( const auto & url : _pimpl->gpgKeyUrls().transformed() )  // not .raw()!
     {
       str << "- gpgkey      : " << url << std::endl;
     }
@@ -932,6 +934,8 @@ namespace zypp
 
   std::ostream & RepoInfo::dumpAsIniOn( std::ostream & str ) const
   {
+    // NOTE: hotfix1050625::asString provides the Url asRawSring,
+    // which is what we want when writing a .repo file.
     RepoInfoBase::dumpAsIniOn(str);
 
     if ( _pimpl->baseurl2dump() )
@@ -948,8 +952,8 @@ namespace zypp
     if ( ! _pimpl->path.empty() )
       str << "path="<< path() << endl;
 
-    if ( ! (rawMirrorListUrl().asString().empty()) )
-      str << (_pimpl->_mirrorListForceMetalink ? "metalink=" : "mirrorlist=") << hotfix1050625::asString( rawMirrorListUrl() ) << endl;
+    if ( _pimpl->_mirrorListUrl.raw().isValid() )
+      str << (_pimpl->_mirrorListForceMetalink ? "metalink=" : "mirrorlist=") << hotfix1050625::asString( _pimpl->_mirrorListUrl.raw() ) << endl;
 
     if ( type() != repo::RepoType::NONE )
       str << "type=" << type().asString() << endl;
@@ -970,7 +974,7 @@ namespace zypp
       std::string indent( "gpgkey=");
       for ( const auto & url : _pimpl->gpgKeyUrls().raw() )
       {
-        str << indent << url << endl;
+        str << indent << hotfix1050625::asString( url ) << endl;
         if ( indent[0] != ' ' )
           indent = "       ";
       }

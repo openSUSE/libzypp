@@ -27,17 +27,6 @@ namespace zypp
   using namespace zypp::url;
 
 
-  // -----------------------------------------------------------------
-  /*
-   * url       = [scheme:] [//authority] /path [?query] [#fragment]
-   */
-  #define RX_SPLIT_URL                       "^([^:/?#]+:|)" \
-                                             "(//[^/?#]*|)"  \
-                                             "([^?#]*)"        \
-                                             "([?][^#]*|)"   \
-                                             "(#.*|)"
-
-
   ////////////////////////////////////////////////////////////////////
   namespace
   { //////////////////////////////////////////////////////////////////
@@ -217,6 +206,20 @@ namespace zypp
         addUrlByScheme("ftp",    ref);
         addUrlByScheme("sftp",   ref);
         addUrlByScheme("tftp",   ref);
+
+        // =====================================
+        ref.reset( new UrlBase());
+        ref->setViewOptions( zypp::url::ViewOption::DEFAULTS
+                             - zypp::url::ViewOption::EMPTY_AUTHORITY
+                             - zypp::url::ViewOption::EMPTY_PATH_NAME
+                             - zypp::url::ViewOption::WITH_PATH_NAME
+                             - zypp::url::ViewOption::WITH_QUERY_STR
+                             - zypp::url::ViewOption::WITH_FRAGMENT
+        );
+        ref->config("safe_fragment", ref->config( "safe_fragment" ) + "{}" ); // more readable: ${VAR}
+        ref->config("with_authority",   "n");   // disallow host,...
+        ref->config("require_pathname", "n");   // path not required
+        addUrlByScheme("zypp-rawurl", ref);     // in fragment: URL with unexpanded RepoVariables
       }
 
       bool
@@ -370,40 +373,26 @@ namespace zypp
   UrlRef
   Url::parseUrl(const std::string &encodedUrl)
   {
-    UrlRef      url;
+    // url = [scheme:] [//authority] /path [?query] [#fragment]
+    static const str::regex RX_SPLIT_URL {
+      //|  scheme    ||  authority || path ||    query  ||  fr  |
+      "^(([^:/?#]+):|)(//([^/?#]*)|)([^?#]*)([?]([^#]*)|)(#(.*)|)"
+    };
+
+    UrlRef url;
     str::smatch out;
-    bool        ret = false;
-
-    try
+    if ( str::regex_match( encodedUrl, out, RX_SPLIT_URL ) )
     {
-      str::regex  rex(RX_SPLIT_URL);
-      ret = str::regex_match(encodedUrl, out, rex);
-    }
-    catch( ... )
-    {}
-
-    if(ret && out.size() == 6)
-    {
-      std::string scheme = out[1];
-      if (scheme.size() > 1)
-        scheme = scheme.substr(0, scheme.size()-1);
-      std::string authority = out[2];
-      if (authority.size() >= 2)
-        authority = authority.substr(2);
-      std::string query = out[4];
-      if (query.size() > 1)
-        query = query.substr(1);
-      std::string fragment = out[5];
-      if (fragment.size() > 1)
-        fragment = fragment.substr(1);
-
-      url = g_urlSchemeRepository().getUrlByScheme(scheme);
-      if( !url)
-      {
-        url.reset( new UrlBase());
+      const std::string & scheme    { out[2] };
+      const std::string & authority { out[4] };
+      const std::string & path      { out[5] };
+      const std::string & query     { out[7] };
+      const std::string & fragment  { out[9] };
+      url = g_urlSchemeRepository().getUrlByScheme( scheme );
+      if( !url ) {
+        url.reset( new UrlBase() );
       }
-      url->init(scheme, authority, out[3],
-                query, fragment);
+      url->init( scheme, authority, path, query, fragment );
     }
     return url;
   }
@@ -482,6 +471,12 @@ namespace zypp
   {
     return scheme_r == "plugin";
   }
+
+  bool Url::schemeIsRawUrl( const std::string & scheme_r )
+  {
+     return scheme_r == "zypp-rawurl";
+  }
+
   ///////////////////////////////////////////////////////////////////
 
   // -----------------------------------------------------------------
@@ -519,6 +514,18 @@ namespace zypp
     return m_impl->asString(opts);
   }
 
+  // -----------------------------------------------------------------
+  std::string
+  Url::asRawString() const
+  {
+    return schemeIsRawUrl() ? getFragment() : asString();
+  }
+
+  std::string
+  Url::asRawString(const ViewOptions &opts) const
+  {
+    return schemeIsRawUrl() ? getFragment() : asString(opts);
+  }
 
   // -----------------------------------------------------------------
   std::string
@@ -884,7 +891,7 @@ namespace zypp
 
   namespace hotfix1050625 {
     std::string asString( const Url & url_r )
-    { return url_r.m_impl->asString1050625(); }
+    { return url_r.asRawString( url_r.getViewOptions()+ViewOptions::hotfix1050625 ); }
   }
 
   ////////////////////////////////////////////////////////////////////

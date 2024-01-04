@@ -65,8 +65,10 @@ namespace zypp
     /** The service url */
     Url url() const;
 
-    /** The service raw url (no variables replaced) */
-    Url rawUrl() const;
+    /** The service raw url (no variables replaced)
+     * \deprecated \see \ref RawUrl
+     */
+    Url rawUrl() const ZYPP_DEPRECATED;
 
     /** Set the service url (raw value) */
     void setUrl( const Url& url );
@@ -85,16 +87,16 @@ namespace zypp
      * You don't want to use the setters unless you are a \ref RepoManager.
      */
     //@{
-    /** Sugested TTL between two metadata auto-refreshs.
+    /** Suggested TTL between two metadata auto-refreshes.
      * The value (in seconds) may be provided in repoindex.xml:xpath:/repoindex@ttl.
      * Default is \a 0 - perform each auto-refresh request.
      */
     Date::Duration ttl() const;
 
-    /** Set sugested TTL. */
+    /** Set suggested TTL. */
     void setTtl( Date::Duration ttl_r );
 
-    /** Lazy init sugested TTL. */
+    /** Lazy init suggested TTL. */
     void setProbedTtl( Date::Duration ttl_r ) const;
 
     /** Date of last refresh (if known). */

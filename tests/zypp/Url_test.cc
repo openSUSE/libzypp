@@ -11,6 +11,7 @@
 #include <zypp/RepoInfo.h>
 
 #include <zypp/Url.h>
+#include <zypp/repo/RepoVariables.h>
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
@@ -91,12 +92,14 @@ BOOST_AUTO_TEST_CASE(test_url1)
     // asString shouldn't print the password, asCompleteString should.
     // further, the "//" at the begin of the path should be keept.
     str = "http://user:pass@localhost//srv/ftp?proxypass=@PROXYPASS@&proxy=proxy.my&proxyuser=@PROXYUSER@&Xproxypass=NOTTHIS&proxypass=@PROXYPASS@&proxypass=@PROXYPASS@";
-    one = "http://user@localhost//srv/ftp?proxy=proxy.my&proxyuser=@PROXYUSER@&Xproxypass=NOTTHIS";
-    two = str;
+    one =      "http://user@localhost//srv/ftp?proxypass=@PROXYPASS@&proxy=proxy.my&proxyuser=@PROXYUSER@&Xproxypass=NOTTHIS&proxypass=@PROXYPASS@&proxypass=@PROXYPASS@";
+    two = "http://user@localhost//srv/ftp?proxy=proxy.my&proxyuser=@PROXYUSER@&Xproxypass=NOTTHIS";
     url = str;
 
-    BOOST_CHECK_EQUAL( one, url.asString() );
-    BOOST_CHECK_EQUAL( two, url.asCompleteString() );
+    BOOST_CHECK_EQUAL( str, url.asCompleteString() );
+    BOOST_CHECK_EQUAL( one, hotfix1050625::asString( url ) );
+    BOOST_CHECK_EQUAL( two, url.asString() );
+
     // hidden proxypass in the query is available when explicitly asked for
     BOOST_CHECK_EQUAL( url.getQueryParam( "proxypass" ), "@PROXYPASS@" );
 
@@ -313,6 +316,63 @@ BOOST_AUTO_TEST_CASE(plugin_querystring_args)
   BOOST_CHECK_EQUAL( pm["v"], "optv" );
   BOOST_CHECK_EQUAL( pm["lopt"], "" );
   BOOST_CHECK_EQUAL( pm["o"], "" );
+}
+
+BOOST_AUTO_TEST_CASE(rawurls)
+{
+  std::string s;
+  // Both throw if constructed from an empty string (which is a legacy decision).
+  BOOST_CHECK_THROW( Url{ s }, zypp::url::UrlBadComponentException );
+  BOOST_CHECK_THROW( RawUrl{ s }, zypp::url::UrlBadComponentException );
+
+  // Without embedded vars both forms are the same
+  s = "http://cdn.opensuse.org/repositories";
+  BOOST_CHECK_EQUAL( Url{ s }, RawUrl{ s } );
+
+  // Without embedded vars both forms throw if Url is not valid
+  s = "no url";
+  BOOST_CHECK_THROW( Url{ s }, zypp::url::UrlBadComponentException );
+  BOOST_CHECK_THROW( RawUrl{ s }, zypp::url::UrlBadComponentException );
+
+  // Embedded vars may form a valid Url (apparently). RawUrl however always forms the
+  // zypp-rawurl: schema if vars are embedded because it resolves some issues. RawUrl
+  // is always able to restore the original unexpanded string. Url is not.
+  s = "http://$HOST/repositories";
+  {
+    Url u { s };
+    BOOST_CHECK_EQUAL( u.getScheme(), "http" );
+    // OOps: A variable in the host part of an Url must be defined lowercased,
+    // because the Url ctor stores the lowercased 'hostname'.
+    BOOST_CHECK_EQUAL( u.asCompleteString(), "http://$host/repositories" ); // not "http://$HOST/repositories
+
+    // RawUrl is able to restore the original unexpanded string...
+    RawUrl r { s };
+    BOOST_CHECK_EQUAL( r.getScheme(), "zypp-rawurl" );
+    BOOST_CHECK_EQUAL( r.getFragment(), s );
+
+    // OOps: Conditional vars in the host part don't work at all for Url.
+    s = "http://${HOST:-defaulthost}/repositories";
+    BOOST_CHECK_THROW( Url{ s }, zypp::url::UrlBadComponentException ); //  Invalid port component '-defaulthost}
+    r = s;
+    BOOST_CHECK_EQUAL( r.getScheme(), "zypp-rawurl" );
+    BOOST_CHECK_EQUAL( r.getFragment(), s );
+  }
+
+  // If embedded vars do not form a valid Url, RawUrl must be used to carry them.
+  // But one should make sure the expanded string later forms a valid Url.
+  s = "${OPENSUSE_DISTURL:-http://cdn.opensuse.org/repositories/}leap/repo";
+  BOOST_CHECK_THROW( Url{ s }, zypp::url::UrlBadComponentException );
+  {
+    RawUrl r { s };
+    BOOST_CHECK_EQUAL( r.getScheme(), "zypp-rawurl" );
+    BOOST_CHECK_EQUAL( r.getFragment(), s );
+
+    // The RawUrl can then be used and shipped as Url.
+    // The schema however stays zypp-rawurl: until a RepoVariablesUrlReplacer
+    // is used to form the intended Url.
+    BOOST_CHECK_EQUAL( r, Url{ r } );
+    BOOST_CHECK_EQUAL( r, Url{ r.asCompleteString() } );
+  }
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

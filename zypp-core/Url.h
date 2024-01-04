@@ -22,6 +22,8 @@ namespace zypp
 
   class Url;
   namespace hotfix1050625 {
+    // Temp. fix to keep the proxypass in the query when writing the .repo files,
+    // but otherwise hiding it, when WITH_PASSWORD is not set. Returns asRawString.
     std::string asString( const Url & url_r );
   }
   namespace filesystem {
@@ -280,6 +282,11 @@ namespace zypp
     /** \overload nonstatic version */
     bool schemeIsPlugin() const { return schemeIsPlugin( getScheme() ); }
 
+    /** zypp-rawurl */
+    static bool schemeIsRawUrl( const std::string & scheme_r );
+    /** \overload nonstatic version */
+    bool schemeIsRawUrl() const { return schemeIsRawUrl( getScheme() ); }
+
     /**
      * \brief Verifies the Url.
      *
@@ -326,10 +333,32 @@ namespace zypp
      * in the current object (see setViewOption()) and forces to
      * return a string with all URL components included.
      *
+     * \note: It may contain embedded passwords otherwise hidden
+     * by the \ref ViewOptions.
+     *
      * \return A complete string representation of the Url object.
      */
     std::string
     asCompleteString() const;
+
+    /**
+     * Returns the original raw string e.g. to be written back to a file.
+     *
+     * This is basically \ref asString, just for the \c zypp-rawurl:
+     * schema the unexpanded fragment part is returned. I.e. it returns
+     * a valid Url as string or a string with embedded RepoVariables
+     * which is expected to form a valid Url after variables have been
+     * replaced.
+     *
+     * Although a \c zypp-rawurl: written back \ref asCompleteString to a
+     * file could be used to restore the Url as well, it may be desired for
+     * user supplied strings to restore the original string value.
+     **/
+    std::string
+    asRawString() const;
+    /** \overload taking custom ViewOptions to render a Url (except for zypp-rawurl:). */
+    std::string
+    asRawString(const ViewOptions &opts) const;
 
 
     // -----------------

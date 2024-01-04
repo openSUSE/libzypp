@@ -87,6 +87,14 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace
   {
+    TODO:
+    - check locations extracting raw urls (raw.*Url)
+    - check locations setting urls (must be the raw one) (setBaseUrl)
+    - check UrlCredentialExtractor uses (must not be the raw ones)
+    - In general check all Urls passed from the application and which might become a
+    zypp-rawurl:. The repos rawurls can not be modified if the changes do not persist
+    the var expansion.
+
     ///////////////////////////////////////////////////////////////////
     /// \class UrlCredentialExtractor
     /// \brief Extract credentials in \ref Url authority and store them via \ref CredentialManager.

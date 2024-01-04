@@ -115,7 +115,7 @@ namespace zypp
 
         /** The var type: \c \, \c $, \c - , \c +
         * \li \c \ backslash escaped literal
-        * \li \c $	plain variable
+        * \li \c $ plain variable
         * \li \c - conditional: default value
         * \li \c + conditional: alternate value
         */
@@ -228,8 +228,10 @@ namespace zypp
                   else if ( *scan == '$' )
                   {
                     // an embedded var?
-                    if ( ! (scan = findVarEnd( scan )) )
-                      return false;
+                    if ( const char * scanEnd = findVarEnd( scan ) )
+                      scan = scanEnd;
+                    else
+                      ++scan; // no valid var: treated as literal
                   }
                   else if ( *scan == '}' )
                   {
@@ -294,7 +296,10 @@ namespace zypp
           while ( scan.nextVar() )
           {
             static const std::string _emptyValue;
-            const std::string *const knownVar = ( varRetriever_r ? varRetriever_r( scan.varName() ) : nullptr );
+
+            int varType = scan.varType();
+            // VarRetriever callback is not needed for backslash escaped literals (varType '\\')
+            const std::string *const knownVar = ( varType != '\\' && varRetriever_r ? varRetriever_r( scan.varName() ) : nullptr );
             const std::string & varValue( knownVar ? *knownVar : _emptyValue );
 
 #if ( ZYPP_DBG_VAREXPAND )
@@ -307,7 +312,6 @@ namespace zypp
             bool mustSubstitute = false;	// keep original text per default
             std::string substitutionValue;
 
-            int varType = scan.varType();
             if ( varType == '$' )	// plain var
             {
               if ( knownVar )
@@ -376,6 +380,9 @@ namespace zypp
       }
     } // namespace
     ///////////////////////////////////////////////////////////////////
+
+    bool hasRepoVarsEmbedded( const std::string & str_r )
+    { return FindVar( str_r, 0 ).nextVar(); }
 
     std::string RepoVarExpand::operator()( const std::string & value_r, VarRetriever varRetriever_r ) const
     { return expand( value_r, 0, varRetriever_r ); }
@@ -553,26 +560,61 @@ namespace zypp
 
     Url RepoVariablesUrlReplacer::operator()( const Url & value ) const
     {
-      Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
-      // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
-      // but this was done before as well. The final fix will have to keep the proxypasswd
-      // out side the url in a cedential file.
-      Url tmpurl { value };
-      tmpurl.setViewOptions( toReplace );
-      const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );
-
       Url newurl;
-      if ( !replaced.empty() )
-      {
-        newurl = replaced;
-        newurl.setUsername( value.getUsername( url::E_ENCODED ), url::E_ENCODED );
-        newurl.setPassword( value.getPassword( url::E_ENCODED ), url::E_ENCODED );
-        newurl.setViewOptions( value.getViewOptions() );
+      if ( value.isValid() ) {
+        // The zypp-rawurl: schema is replaced by extracting and replacing the raw stringvalue.
+        // Other schmemata are replaced the traditional way.
+        if ( value.schemeIsRawUrl() ) {
+          const std::string & replaced { RepoVarExpand()( value.getFragment(), RepoVarsMap::lookup ) };
+          newurl = Url( replaced );
+          // Fixup some legacy issue: RepoFileReader encodes a 'proxy=' in .repo in
+          // the Url's Query part. We must restore it from there unless the original Url
+          // defined proxy in it's query part.
+          if ( newurl.getQueryParam( "proxy" ).empty() ) {
+            const std::string & p { value.getQueryParam( "proxy" ) };
+            if ( not p.empty() ) {
+              newurl.setQueryParam( "proxy", p );
+              newurl.setQueryParam( "proxyport", value.getQueryParam( "proxyport" ) );
+            }
+          }
+        } else {
+          // The traditional
+          Url::ViewOptions toReplace = value.getViewOptions() - url::ViewOption::WITH_USERNAME - url::ViewOption::WITH_PASSWORD;
+          // Legacy: Not 100% correct because it substitutes inside the 'proxypass=' value,
+          // but this was done before as well. The final fix will have to keep the proxypasswd
+          // out side the url in a credential file.
+          Url tmpurl { value };
+          tmpurl.setViewOptions( toReplace );
+          const std::string & replaced( RepoVarExpand()( hotfix1050625::asString( tmpurl ), RepoVarsMap::lookup ) );
+
+          if ( !replaced.empty() )
+          {
+            newurl = replaced;
+            newurl.setUsername( value.getUsername( url::E_ENCODED ), url::E_ENCODED );
+            newurl.setPassword( value.getPassword( url::E_ENCODED ), url::E_ENCODED );
+            newurl.setViewOptions( value.getViewOptions() );
+          }
+        }
       }
       return newurl;
     }
   } // namespace repo
   ///////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////
+  // class RawUrl
+  ////////////////////////////////////////////////////////////////////
+
+  RawUrl::RawUrl( const std::string & encodedUrl_r )
+  {
+    if ( str::startsWith( encodedUrl_r, "zypp-rawurl:" ) || not repo::hasRepoVarsEmbedded( encodedUrl_r ) ) {
+      *this = Url( encodedUrl_r );
+    } else {
+      *this = Url( "zypp-rawurl:" );
+      setFragment( encodedUrl_r );
+    }
+  }
+
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -582,6 +624,11 @@ namespace zyppintern
   // internal helper called when re-acquiring the lock
   void repoVariablesReset()
   { repo::RepoVarsMap::instance().clear(); }
+  // Direct inspection and manipulation of the var-set for debugging and testcases
+  std::map<std::string,std::string> repoVariablesGet()
+  { return repo::RepoVarsMap::instance(); }
+  void repoVariablesSwap( std::map<std::string,std::string> & val_r )
+  { return repo::RepoVarsMap::instance().swap( val_r ); }
 
 } // namespace zyppintern
 ///////////////////////////////////////////////////////////////////

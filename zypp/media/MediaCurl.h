@@ -146,6 +146,9 @@ class MediaCurl : public MediaNetworkCommonHandler
     static void resetExpectedFileSize ( void *clientp, const ByteCount &expectedFileSize );
 
   private:
+
+    CURLcode executeCurl() const;
+
     /**
      * Return a comma separated list of available authentication methods
      * supported by server.

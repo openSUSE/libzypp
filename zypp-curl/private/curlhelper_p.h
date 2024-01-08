@@ -18,10 +18,14 @@
 #include <zypp-core/Url.h>
 #include <zypp-curl/TransferSettings>
 
+#include <optional>
+
 #define EXPLICITLY_NO_PROXY "_none_"
 
 #undef CURLVERSION_AT_LEAST
 #define CURLVERSION_AT_LEAST(M,N,O) LIBCURL_VERSION_NUM >= ((((M)<<8)+(N))<<8)+(O)
+
+typedef struct _GPollFD GPollFD;
 
 namespace zypp
 {
@@ -56,6 +60,46 @@ std::string curlUnEscape( std::string text_r );
 
 zypp::Url clearQueryString(const zypp::Url &url);
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r );
+
+
+/*!
+ * Helper class to simplify using the curl multi API, takes
+ * care of remembering the registered sockets and the required curl timeout.
+ */
+struct CurlPollHelper
+{
+  struct CurlPoll {
+    CURLM *_multi = nullptr;
+  };
+
+  CurlPollHelper( CurlPoll &p );
+  ~CurlPollHelper();
+
+  /*!
+   * Iterator over the passed in poll fd's and call curl_multi_socket_action on them if one of
+   * them signals that events have happened
+   */
+  CURLMcode handleSocketActions( const std::vector<GPollFD> &actionsFds, int first = 0 );
+
+  /*!
+   * Tells libcurl that the requested timeout was reached.
+   */
+  CURLMcode handleTimout ();
+
+  /*!
+   * Callback for libcurl when it wants us to track or stop us from tracking a socket
+   */
+  static int socketcb (CURL * easy, curl_socket_t s, int what, CurlPollHelper *userp, void *sockp );
+
+  /*!
+   * Callback for libcurl when it wants us to start/update/remove a timer
+   */
+  static int timercb( CURLM *, long timeout_ms, CurlPollHelper *thatPtr );
+
+  CurlPoll &_parent;
+  std::vector<GPollFD> socks; //< This is the list of fd's we need to track, events have been set by curl
+  std::optional<long> timeout_ms = 0; //if set curl wants a timeout
+};
 
 }
 

@@ -223,7 +223,7 @@ private:
   int _dnspipe = -1;
 };
 
-class multifetchrequest {
+class multifetchrequest : protected internal::CurlPollHelper::CurlPoll  {
 public:
   multifetchrequest(const MediaMultiCurl *context, const Pathname &filename, const Url &baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize);
   ~multifetchrequest();
@@ -249,8 +249,6 @@ protected:
   std::vector<Stripe> _requiredStripes; // all the data we need
 
   off_t _filesize = 0; //< size of the file we want to download
-
-  CURLM *_multi = nullptr;
 
   std::list< std::unique_ptr<multifetchworker> > _workers;
   bool _stealing = false;
@@ -951,14 +949,14 @@ multifetchworker::run()
 
 
 multifetchrequest::multifetchrequest(const MediaMultiCurl *context, const Pathname &filename, const Url &baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize)
-  : _context(context)
+  : internal::CurlPollHelper::CurlPoll{ multi }
+  , _context(context)
   , _filename(filename)
   , _baseurl(baseurl)
   , _fp(fp)
   , _report(report)
   , _blklist(std::move(blklist))
   , _filesize(filesize)
-  , _multi(multi)
   , _starttime(currentTime())
   , _timeout(context->_settings.timeout())
   , _connect_timeout(context->_settings.connectTimeout())
@@ -1007,74 +1005,10 @@ multifetchrequest::run(std::vector<Url> &urllist)
   int workerno = 0;
   std::vector<Url>::iterator urliter = urllist.begin();
 
-  struct CurlMuliSockHelper {
-    CurlMuliSockHelper( multifetchrequest &p ) : _parent(p) {
-      curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETFUNCTION, socketcb );
-      curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETDATA, this );
-      curl_multi_setopt( _parent._multi, CURLMOPT_TIMERFUNCTION, timercb );
-      curl_multi_setopt( _parent._multi, CURLMOPT_TIMERDATA, this );
-    }
-
-    ~CurlMuliSockHelper() {
-      curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETFUNCTION, nullptr );
-      curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETDATA, nullptr );
-      curl_multi_setopt( _parent._multi, CURLMOPT_TIMERFUNCTION, nullptr );
-      curl_multi_setopt( _parent._multi, CURLMOPT_TIMERDATA, nullptr );
-    }
-
-    static int socketcb (CURL * easy, curl_socket_t s, int what, CurlMuliSockHelper *userp, void *sockp ) {
-      auto it = std::find_if( userp->socks.begin(), userp->socks.end(), [&]( const GPollFD &fd){ return fd.fd == s; });
-      gushort events = 0;
-      if ( what == CURL_POLL_REMOVE ) {
-        if ( it == userp->socks.end() ) {
-          WAR << "Ignoring unknown socket in static_socketcb" << std::endl;
-          return 0;
-        }
-        userp->socks.erase(it);
-        return 0;
-      } else if ( what == CURL_POLL_IN ) {
-        events = G_IO_IN | G_IO_HUP | G_IO_ERR;
-      } else if ( what == CURL_POLL_OUT ) {
-        events = G_IO_OUT | G_IO_ERR;
-      } else if ( what == CURL_POLL_INOUT ) {
-        events = G_IO_IN | G_IO_OUT | G_IO_HUP | G_IO_ERR;
-      }
-
-      if ( it != userp->socks.end() ) {
-        it->events = events;
-        it->revents = 0;
-      } else {
-        userp->socks.push_back(
-          GPollFD{
-            .fd = s,
-            .events = events,
-            .revents = 0
-          }
-        );
-      }
-
-      return 0;
-    }
-
-    //called by curl to setup a timer
-    static int timercb( CURLM *, long timeout_ms, CurlMuliSockHelper *thatPtr ) {
-      if ( !thatPtr )
-        return 0;
-      if ( timeout_ms == -1 )
-        thatPtr->timeout_ms.reset(); // curl wants to delete its timer
-      else
-        thatPtr->timeout_ms = timeout_ms; // maximum time curl wants us to sleep
-      return 0;
-    }
-
-    multifetchrequest &_parent;
-    std::vector<GPollFD> socks;
-    std::optional<long> timeout_ms = 0; //if set curl wants a timeout
-  } _curlHelper(*this) ;
+  internal::CurlPollHelper _curlHelper(*this);
 
   // kickstart curl
-  int handles = 0;
-  CURLMcode mcode = curl_multi_socket_action( _multi, CURL_SOCKET_TIMEOUT, 0, &handles );
+  CURLMcode mcode = _curlHelper.handleTimout();
   if (mcode != CURLM_OK)
     ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
 
@@ -1171,33 +1105,13 @@ multifetchrequest::run(std::vector<Url> &urllist)
 
       // run curl
       if ( r == 0 ) {
-        int handles = 0;
-        CURLMcode mcode = curl_multi_socket_action( _multi, CURL_SOCKET_TIMEOUT, 0, &handles );
+        CURLMcode mcode = _curlHelper.handleTimout();
         if (mcode != CURLM_OK)
           ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
       } else {
-        for ( int sock = dnsFdCount; sock < waitFds.size(); sock++ ) {
-          const auto &waitFd = waitFds[sock];
-          if ( waitFd.revents == 0 )
-            continue;
-
-          int ev = 0;
-          if ( (waitFd.revents & G_IO_HUP) == G_IO_HUP
-              || (waitFd.revents & G_IO_IN) == G_IO_IN ) {
-            ev = CURL_CSELECT_IN;
-          }
-          if ( (waitFd.revents & G_IO_OUT) == G_IO_OUT ) {
-            ev |= CURL_CSELECT_OUT;
-          }
-          if ( (waitFd.revents & G_IO_ERR) == G_IO_ERR ) {
-            ev |= CURL_CSELECT_ERR;
-          }
-
-          int runn = 0;
-          CURLMcode mcode = curl_multi_socket_action( _multi, waitFd.fd, ev, &runn );
-          if (mcode != CURLM_OK)
-            ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
-        }
+        CURLMcode mcode = _curlHelper.handleSocketActions( waitFds, dnsFdCount );
+        if (mcode != CURLM_OK)
+          ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
       }
 
       double now = currentTime();

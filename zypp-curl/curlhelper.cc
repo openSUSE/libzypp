@@ -21,8 +21,8 @@
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/auth/CurlAuthData>
 #include <zypp-media/MediaException>
-#include <list>
 #include <string>
+#include <glib.h>
 
 #define  TRANSFER_TIMEOUT_MAX   60 * 60
 
@@ -401,6 +401,96 @@ zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r )
       url_r.setQueryParam( param, value );
   }
   return url_r;
+}
+
+CurlPollHelper::CurlPollHelper(CurlPoll &p) : _parent(p) {
+  curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETFUNCTION, socketcb );
+  curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETDATA, this );
+  curl_multi_setopt( _parent._multi, CURLMOPT_TIMERFUNCTION, timercb );
+  curl_multi_setopt( _parent._multi, CURLMOPT_TIMERDATA, this );
+}
+
+CurlPollHelper::~CurlPollHelper() {
+  curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETFUNCTION, nullptr );
+  curl_multi_setopt( _parent._multi, CURLMOPT_SOCKETDATA, nullptr );
+  curl_multi_setopt( _parent._multi, CURLMOPT_TIMERFUNCTION, nullptr );
+  curl_multi_setopt( _parent._multi, CURLMOPT_TIMERDATA, nullptr );
+}
+
+int CurlPollHelper::socketcb(CURL *easy, curl_socket_t s, int what, CurlPollHelper *userp, void *sockp) {
+  auto it = std::find_if( userp->socks.begin(), userp->socks.end(), [&]( const GPollFD &fd){ return fd.fd == s; });
+  gushort events = 0;
+  if ( what == CURL_POLL_REMOVE ) {
+    if ( it == userp->socks.end() ) {
+      WAR << "Ignoring unknown socket in static_socketcb" << std::endl;
+      return 0;
+    }
+    userp->socks.erase(it);
+    return 0;
+  } else if ( what == CURL_POLL_IN ) {
+    events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+  } else if ( what == CURL_POLL_OUT ) {
+    events = G_IO_OUT | G_IO_ERR;
+  } else if ( what == CURL_POLL_INOUT ) {
+    events = G_IO_IN | G_IO_OUT | G_IO_HUP | G_IO_ERR;
+  }
+
+  if ( it != userp->socks.end() ) {
+    it->events = events;
+    it->revents = 0;
+  } else {
+    userp->socks.push_back(
+          GPollFD{
+            .fd = s,
+            .events = events,
+            .revents = 0
+          }
+          );
+  }
+  return 0;
+}
+
+int CurlPollHelper::timercb(CURLM *, long timeout_ms, CurlPollHelper *thatPtr) {
+  if ( !thatPtr )
+    return 0;
+  if ( timeout_ms == -1 )
+    thatPtr->timeout_ms.reset(); // curl wants to delete its timer
+  else
+    thatPtr->timeout_ms = timeout_ms; // maximum time curl wants us to sleep
+  return 0;
+}
+
+CURLMcode internal::CurlPollHelper::handleSocketActions( const std::vector<GPollFD> &actionsFds , int first )
+{
+  for ( int sock = first; sock < actionsFds.size(); sock++ ) {
+    const auto &waitFd = actionsFds[sock];
+    if ( waitFd.revents == 0 )
+      continue;
+
+    int ev = 0;
+    if ( (waitFd.revents & G_IO_HUP) == G_IO_HUP
+        || (waitFd.revents & G_IO_IN) == G_IO_IN ) {
+      ev = CURL_CSELECT_IN;
+    }
+    if ( (waitFd.revents & G_IO_OUT) == G_IO_OUT ) {
+      ev |= CURL_CSELECT_OUT;
+    }
+    if ( (waitFd.revents & G_IO_ERR) == G_IO_ERR ) {
+      ev |= CURL_CSELECT_ERR;
+    }
+
+    int runn = 0;
+    CURLMcode mcode = curl_multi_socket_action( _parent._multi, waitFd.fd, ev, &runn );
+    if (mcode != CURLM_OK)
+      return mcode;
+  }
+  return CURLM_OK;
+}
+
+CURLMcode internal::CurlPollHelper::handleTimout()
+{
+  int handles = 0;
+  return curl_multi_socket_action( _parent._multi, CURL_SOCKET_TIMEOUT, 0, &handles );
 }
 
 }

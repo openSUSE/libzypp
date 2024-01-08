@@ -22,6 +22,7 @@
 #include <zypp/base/Gettext.h>
 
 #include <zypp/media/MediaCurl.h>
+#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/auth/CurlAuthData>
 #include <zypp-media/auth/CredentialManager>
@@ -38,6 +39,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <glib.h>
 
 using std::endl;
 
@@ -1062,7 +1064,7 @@ bool MediaCurl::doGetDoesFileExist( const Pathname & filename ) const
     ZYPP_THROW(MediaCurlSetOptException(url, _curlError));
   }
 
-  CURLcode ok = curl_easy_perform( _curl );
+  CURLcode ok = executeCurl();
   MIL << "perform code: " << ok << " [ " << curl_easy_strerror(ok) << " ]" << endl;
 
   // as we are not having user interaction, the user can't cancel
@@ -1243,7 +1245,7 @@ void MediaCurl::doGetFileCopyFile( const OnMediaLocation & srcFile, const Pathna
       WAR << "Can't set CURLOPT_PROGRESSDATA: " << _curlError << endl;;
     }
 
-    ret = curl_easy_perform( _curl );
+    ret = executeCurl();
 #if CURLVERSION_AT_LEAST(7,19,4)
     // bnc#692260: If the client sends a request with an If-Modified-Since header
     // with a future date for the server, the server may respond 200 sending a
@@ -1260,7 +1262,7 @@ void MediaCurl::doGetFileCopyFile( const OnMediaLocation & srcFile, const Pathna
           WAR << "TIMECONDITION unmet - retry without." << endl;
           curl_easy_setopt(_curl, CURLOPT_TIMECONDITION, CURL_TIMECOND_NONE);
           curl_easy_setopt(_curl, CURLOPT_TIMEVALUE, 0L);
-          ret = curl_easy_perform( _curl );
+          ret = executeCurl();
         }
       }
     }
@@ -1407,6 +1409,69 @@ void MediaCurl::resetExpectedFileSize(void *clientp, const ByteCount &expectedFi
   if ( data ) {
     data->expectedFileSize( expectedFileSize );
   }
+}
+
+/*!
+ * Executes the given curl handle in a multi context
+ *
+ * \note this should not be a const function, but API forces us to do so
+ */
+CURLcode MediaCurl::executeCurl() const
+{
+  // initialize our helpers
+  AutoDispose<internal::CurlPollHelper::CurlPoll> cMulti(
+    internal::CurlPollHelper::CurlPoll{ curl_multi_init() }
+    ,[](auto &releaseMe ){ if (releaseMe._multi) curl_multi_cleanup(releaseMe._multi); }
+  );
+
+  if (!cMulti->_multi)
+    ZYPP_THROW(MediaCurlInitException(_url));
+
+  // we could derive from that, but currently that does not make a lot of sense
+  internal::CurlPollHelper _curlHelper(cMulti.value());
+
+  // add the easy handle to the multi instance
+  if ( curl_multi_add_handle( cMulti->_multi, _curl ) != CURLM_OK )
+    ZYPP_THROW(MediaCurlException( _url, "curl_multi_add_handle", "unknown error"));
+
+  // make sure the handle is cleanly removed from the multi handle
+  OnScopeExit autoRemove([&](){ curl_multi_remove_handle( cMulti->_multi, _curl ); });
+
+  // kickstart curl, this will cause libcurl to go over the added handles and register sockets and timeouts
+  CURLMcode mcode = _curlHelper.handleTimout();
+  if (mcode != CURLM_OK)
+    ZYPP_THROW(MediaCurlException( _url, "curl_multi_socket_action", "unknown error"));
+
+  bool canContinue = true;
+  while ( canContinue ) {
+
+    // copy them in case curl changes the vector as we go over the events later
+    auto requestedFds = _curlHelper.socks;
+    int r = zyppng::eintrSafeCall( g_poll, requestedFds.data(), requestedFds.size(), _curlHelper.timeout_ms.value_or( -1 ) );
+    if ( r == -1 )
+      ZYPP_THROW( MediaCurlException(_url, "g_poll() failed", "unknown error") );
+
+    // run curl
+    if ( r == 0 ) {
+      CURLMcode mcode = _curlHelper.handleTimout();
+      if (mcode != CURLM_OK)
+        ZYPP_THROW(MediaCurlException(_url, "curl_multi_socket_action", "unknown error"));
+    } else {
+      CURLMcode mcode = _curlHelper.handleSocketActions( requestedFds );
+      if (mcode != CURLM_OK)
+        ZYPP_THROW(MediaCurlException(_url, "curl_multi_socket_action", "unknown error"));
+    }
+
+    CURLMsg *msg;
+    int nqueue;
+    while ((msg = curl_multi_info_read( cMulti->_multi, &nqueue)) != 0) {
+        if ( msg->msg != CURLMSG_DONE  ) continue;
+        if ( msg->easy_handle != _curl ) continue;
+
+        return msg->data.result;
+    }
+  }
+  return CURLE_OK;
 }
 
 ///////////////////////////////////////////////////////////////////

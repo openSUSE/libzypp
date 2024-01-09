@@ -50,7 +50,11 @@ namespace zypp
 
 
       std::list<std::string> structuredErrors;
-      void structuredErrorFunc( void * userData, const xmlErrorPtr error )
+#if LIBXML_VERSION >= 21200
+      void structuredErrorFunc( void * userData, const xmlError * error )
+#else
+      void structuredErrorFunc( void * userData, xmlError * error )
+#endif
       {
         if ( error )
         {

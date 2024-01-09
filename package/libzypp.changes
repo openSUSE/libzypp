@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan  9 15:38:42 CET 2024 - ma@suse.de
+
+- Fix to build with libxml 2.12.x (fixes #505)
+- version 17.31.28 (22)
+
+-------------------------------------------------------------------
 Fri Dec 22 17:12:31 CET 2023 - ma@suse.de
 
 - CheckAccessDeleted: fix 'running in container' filter

@@ -60,28 +60,6 @@ namespace zypp
           structuredErrors.push_back( err );
           WAR << err << endl;
         }
-#if 0
-        if ( error )
-        {
-#define X(m) SEC << " " << #m << "\t" << error->m << endl
-#define XS(m) SEC << " " << #m << "\t" << (error->m?error->m:"NA") << endl
-            X(domain);
-            X(code);
-            XS(message);
-            X(level);
-            XS(file);
-            X(line);
-            XS(str1);
-            XS(str2);
-            XS(str3);
-            X(int1);
-            X(int2);
-            X(ctxt);
-            X(node);
-#undef X
-#undef XS
-        }
-#endif
       }
 
       struct ParseException : public Exception

@@ -1,5 +1,6 @@
 #include "wakeup.h"
 
+#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-core/zyppng/base/SocketNotifier>
 
 #include <unistd.h>
@@ -21,13 +22,13 @@ namespace zyppng {
 
   void Wakeup::notify()
   {
-    write( _wakeupPipe[1], "\n", 1);
+    eintrSafeCall( ::write, _wakeupPipe[1], "\n", 1);
   }
 
   void Wakeup::ack()
   {
     char dummy;
-    while ( ::read( _wakeupPipe[0], &dummy, 1 ) > 0 ) { continue; }
+    while ( eintrSafeCall( ::read, _wakeupPipe[0], &dummy, 1 ) > 0 ) { continue; }
   }
 
   int Wakeup::pollfd() const

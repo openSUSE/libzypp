@@ -32,6 +32,7 @@ namespace zypp::io {
   BlockingMode setFILEBlocking ( FILE *file, bool mode = true );
   BlockingMode setFDBlocking ( int fd, bool mode = true );
 
+
   /*!
     Blocks until all data in buf was written to the fd or a error occured
    */
@@ -40,11 +41,11 @@ namespace zypp::io {
   /*!
     Blocks until the number of bytes passed via \a size was received
    */
-        enum class ReadAllResult {
-                Error,
-                Eof,
-                Ok
-        };
+  enum class ReadAllResult {
+          Error,
+          Eof,
+          Ok
+  };
   ReadAllResult readAll ( int fd, void *buf, size_t size );
 
   class TimeoutException : public Exception

@@ -23,6 +23,7 @@
 
 #include <zypp/media/MediaCurl.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/base/userrequestexception.h>
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/auth/CurlAuthData>
 #include <zypp-media/auth/CredentialManager>
@@ -31,12 +32,12 @@
 #include <zypp/Target.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
+#include <zypp/zypp_detail/ZYppImpl.h> // for zypp_poll
 
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mount.h>
-#include <errno.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <glib.h>
@@ -1445,11 +1446,12 @@ CURLcode MediaCurl::executeCurl() const
   bool canContinue = true;
   while ( canContinue ) {
 
-    // copy them in case curl changes the vector as we go over the events later
-    auto requestedFds = _curlHelper.socks;
-    int r = zyppng::eintrSafeCall( g_poll, requestedFds.data(), requestedFds.size(), _curlHelper.timeout_ms.value_or( -1 ) );
+    // copy watched sockets in case curl changes the vector as we go over the events later
+    std::vector<GPollFD> requestedFds = _curlHelper.socks;
+
+    int r = zypp_detail::zypp_poll( requestedFds, _curlHelper.timeout_ms.value_or( -1 ) );
     if ( r == -1 )
-      ZYPP_THROW( MediaCurlException(_url, "g_poll() failed", "unknown error") );
+      ZYPP_THROW( MediaCurlException(_url, "zypp_poll() failed", "unknown error") );
 
     // run curl
     if ( r == 0 ) {

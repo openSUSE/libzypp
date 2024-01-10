@@ -11,7 +11,6 @@
 */
 #ifndef ZYPP_ZYPP_H
 #define ZYPP_ZYPP_H
-
 #include <iosfwd>
 
 #include <zypp/base/NonCopyable.h>
@@ -108,6 +107,17 @@ namespace zypp
      */
     void finishTarget();
 
+    /**
+     * To be called from zyppers signal handlers. Sets a shutdown signal
+     * in a signal and thread safe way.
+     */
+    static void setShutdownSignal();
+
+    /**
+     * To be called from zypper code. This resets the shutdown signal state
+     * to normal..
+     */
+    static void clearShutdownSignal();
 
   public:
     typedef ZYppCommitResult CommitResult;
@@ -161,7 +171,6 @@ namespace zypp
     RW_pointer<Impl> _pimpl;
   };
   ///////////////////////////////////////////////////////////////////
-
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

@@ -74,6 +74,12 @@ namespace zypp
   void ZYpp::finishTarget()
   { _pimpl->finishTarget(); }
 
+  void ZYpp::setShutdownSignal()
+  { zypp_detail::ZYppImpl::setShutdownSignal(); }
+
+  void ZYpp::clearShutdownSignal()
+  { zypp_detail::ZYppImpl::clearShutdownSignal(); }
+
   ZYppCommitResult ZYpp::commit( const ZYppCommitPolicy & policy_r )
   { return _pimpl->commit( policy_r ); }
 

@@ -23,13 +23,14 @@
 #include <algorithm>
 
 
+#include <zypp/ManagedFile.h>
 #include <zypp/ZConfig.h>
 #include <zypp/base/Logger.h>
 #include <zypp/media/MediaMultiCurl.h>
+#include <zypp/zypp_detail/ZYppImpl.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-curl/parser/MetaLinkParser>
 #include <zypp-curl/parser/zsyncparser.h>
-#include <zypp/ManagedFile.h>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-curl/auth/CurlAuthData>
 #include <zypp-curl/parser/metadatahelper.h>
@@ -1087,9 +1088,9 @@ multifetchrequest::run(std::vector<Url> &urllist)
       dnsFdCount = waitFds.size(); // remember how many dns fd's we have
       waitFds.insert( waitFds.end(), _curlHelper.socks.begin(), _curlHelper.socks.end() ); // add the curl fd's to the poll data
 
-      int r = zyppng::eintrSafeCall( g_poll, waitFds.data(), waitFds.size(), timeoutMs );
+      int r = zypp_detail::zypp_poll( waitFds, timeoutMs );
       if ( r == -1 )
-        ZYPP_THROW(MediaCurlException(_baseurl, "g_poll() failed", "unknown error"));
+        ZYPP_THROW(MediaCurlException(_baseurl, "zypp_poll() failed", "unknown error"));
       if ( r != 0 && _lookupworkers ) {
         for (auto workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
           {

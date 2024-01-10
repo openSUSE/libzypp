@@ -28,6 +28,56 @@
 
 using std::endl;
 
+#include <glib.h>
+#include <atomic>
+#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/base/userrequestexception.h>
+
+namespace {
+
+  // Helper pipe to safely signal libzypp's poll code
+  // to stop polling and throw a user abort exception.
+  // Due to the pain that is unix signal handling we need
+  // to use atomics and be very careful about what we are calling.
+  //
+  // Not cleaned up, this happens when the application that is using libzypp
+  // exits.
+  std::atomic<int> shutdownPipeRead{-1};
+  std::atomic<int> shutdownPipeWrite{-1};
+
+  bool makeShutdownPipe() {
+    int pipeFds[]{ -1, -1 };
+  #ifdef HAVE_PIPE2
+      if ( ::pipe2( pipeFds, O_CLOEXEC ) != 0 )
+        return false;
+  #else
+      if ( ::pipe( pipeFds ) != 0 )
+        return false;
+      ::fcntl( pipeFds[0], F_SETFD, O_CLOEXEC );
+      ::fcntl( pipeFds[1], F_SETFD, O_CLOEXEC );
+  #endif
+      shutdownPipeRead.store(pipeFds[0]);
+      shutdownPipeWrite.store(pipeFds[1]);
+      return true;
+  }
+
+  const bool ensureShutdownPipe() {
+    static auto pipesInitialized = makeShutdownPipe();
+    return pipesInitialized;
+  }
+
+  const int shutdownPipeReadFd() {
+    if ( !ensureShutdownPipe() )
+      return -1;
+    return shutdownPipeRead.load();
+  }
+
+  const int shutdownPipeWriteFd() {
+    return shutdownPipeWrite.load();
+  }
+
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -68,6 +118,10 @@ namespace zypp
     : _target( nullptr )
     , _resolver( new Resolver( ResPool::instance()) )
     {
+      // trigger creation of the shutdown pipe
+      if ( !ensureShutdownPipe() )
+        WAR << "Failed to create shutdown pipe" << std::endl;
+
       ZConfig::instance().about( MIL );
       MIL << "Initializing keyring..." << std::endl;
       _keyring = new KeyRing(tmpPath());
@@ -220,6 +274,44 @@ namespace zypp
     Pathname ZYppImpl::tmpPath() const
     { return zypp::myTmpDir(); }
 
+    AutoFD ZYppImpl::shutdownSignalFd()
+    {
+      const auto pipe = shutdownPipeReadFd();
+      if (pipe == -1) {
+        ZYPP_THROW( zypp::Exception("Failed to create shutdown pipe") );
+      }
+
+      // dup the fd, so the calling code can close() it
+      return AutoFD( ::dup( pipe ) );
+    }
+
+    void ZYppImpl::setShutdownSignal()
+    {
+      // ONLY signal safe code here, that means no logging or anything else that is more than using atomics
+      // or writing a fd
+      int sigFd = shutdownPipeWriteFd();
+      if ( sigFd == -1 ) {
+        // we have no fd to set this
+        return;
+      }
+      zyppng::eintrSafeCall( write, sigFd, "1", 1 );
+    }
+
+    void ZYppImpl::clearShutdownSignal()
+    {
+      // ONLY signal safe code here, that means no logging or anything else that is more than using atomics
+      // or writing a fd
+      int sigFd = shutdownPipeWriteFd();
+      if ( sigFd == -1 ) {
+        // we have no fd so nothing to clear
+        return;
+      }
+
+      char buf;
+      while( zyppng::eintrSafeCall( read, sigFd, &buf, 1 ) > 0 )
+        continue;
+    }
+
     /******************************************************************
      **
      **	FUNCTION NAME : operator<<
@@ -228,6 +320,29 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj )
     {
       return str << "ZYppImpl";
+    }
+
+    int zypp_poll( std::vector<GPollFD> &fds, int timeout)
+    {
+      // request a shutdown fd we can use
+      auto shutdownFd = ZYppImpl::shutdownSignalFd();
+
+      fds.push_back( GPollFD {
+        .fd       = shutdownFd.value(),
+        .events   = G_IO_IN,
+        .revents  = 0
+      });
+
+      // make sure to remove our fd again
+      OnScopeExit removeShutdownFd( [&](){ fds.pop_back(); } );
+
+      int r = zyppng::eintrSafeCall( g_poll, fds.data(), fds.size(), timeout );
+      if ( r > 0 ) {
+        // at least one fd triggered, if its our's we throw
+        if ( fds.back().revents )
+          ZYPP_THROW( UserRequestException( UserRequestException::ABORT, "Shutdown signal received during poll." ) );
+      }
+      return r;
     }
 
     /////////////////////////////////////////////////////////////////

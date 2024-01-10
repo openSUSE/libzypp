@@ -23,6 +23,8 @@
 #include <zypp/DiskUsageCounter.h>
 #include <zypp/ManagedFile.h>
 
+typedef struct _GPollFD GPollFD;
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -113,6 +115,16 @@ namespace zypp
       /** Hook for actions to trigger if the Target changes (initialize/finish) */
       void changeTargetTo( Target_Ptr newtarget_r );
 
+      /**
+       * Returns the read end of the shutdown pipe, the fd is duplicated
+       * so closing it won't have impact on the original pipe.
+       *
+       * \note do not read values from the fd, just use it to cleanly exit calls to select/poll and initiate shutdown
+       */
+      static AutoFD shutdownSignalFd();
+      static void setShutdownSignal();
+      static void clearShutdownSignal();
+
     private:
       /** */
       Target_Ptr _target;
@@ -129,6 +141,20 @@ namespace zypp
 
     /** \relates ZYppImpl Stream output */
     std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj );
+
+    /**
+     * Small wrapper around g_poll that additionally listens to the shutdown FD
+     * returned by \ref ZYpp::shutdownSignalFd.
+     *
+     * EINTR is handled internally, no need to explicitely handle it.
+     *
+     * For zyppng related code we should use different means to cancel processes,
+     * e.g via the top level event loop
+     *
+     * \throws zypp::UserAbortException in case the shutdown signal was received
+     */
+    int zypp_poll( std::vector<GPollFD> &fds, int timeout = -1 );
+
 
     /////////////////////////////////////////////////////////////////
   } // namespace zypp_detail

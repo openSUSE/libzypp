@@ -74,7 +74,7 @@ namespace zyppng {
       // connection until we have the full file.
       // However different server have different maximum nr of ranges, so we start with
       // a high number and decrease until we find a rangecount that works
-      constexpr static int _rangeAttempt[] = {
+      constexpr static unsigned _rangeAttempt[] = {
         255,
         127,
         63,
@@ -82,6 +82,8 @@ namespace zyppng {
         5,
         1
       };
+
+      constexpr static unsigned _rangeAttemptSize = ( sizeof( _rangeAttempt ) / sizeof(unsigned) );
 
       enum State {
         Pending,    //< waiting to be dispatched
@@ -173,7 +175,7 @@ namespace zyppng {
       std::optional<Range> _currentSrvRange;
       std::optional<size_t> _reportedFileSize; ///< Filesize as reported by the content range or byte range headers
 
-      int _rangeAttemptIdx = 0;
+      unsigned _rangeAttemptIdx = 0;
       std::vector<Range>  &_requestedRanges; ///< the requested ranges that need to be downloaded
   };
 

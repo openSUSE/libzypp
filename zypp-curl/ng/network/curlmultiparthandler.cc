@@ -94,7 +94,7 @@ namespace zyppng {
     // non http can only do range by range
     if ( _protocolMode == ProtocolMode::Basic ) {
       WAR << "!!!! Downloading ranges without HTTP might be slow !!!!" << std::endl;
-      _rangeAttemptIdx = (sizeof( _rangeAttempt ) / sizeof(int)) - 1;
+      _rangeAttemptIdx = _rangeAttemptSize - 1;
     }
   }
 
@@ -429,7 +429,7 @@ namespace zyppng {
     // we never auto downgrade to last range set ( which is 1 ) because in that case
     // just downloading the full file is usually faster.
     if ( _lastCode == Code::RangeFail )
-      return ( _rangeAttemptIdx + 1 < ( ( sizeof( _rangeAttempt ) / sizeof(int) ) - 1 )  ) && hasMoreWork();
+      return ( _rangeAttemptIdx + 1 < ( _rangeAttemptSize - 1 )  ) && hasMoreWork();
     return false;
   }
 
@@ -459,7 +459,7 @@ namespace zyppng {
     if ( hasMoreWork() ) {
       // go to the next range batch level if we are restarted due to a failed range request
       if ( _lastCode == Code::RangeFail ) {
-        if ( _rangeAttemptIdx + 1 >= (sizeof( _rangeAttempt ) / sizeof(int)) ) {
+        if ( _rangeAttemptIdx + 1 >= _rangeAttemptSize ) {
           setCode ( Code::RangeFail, "No more range batch sizes available", true );
           return false;
         }

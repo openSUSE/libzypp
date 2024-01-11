@@ -45,6 +45,9 @@ namespace {
   std::atomic<int> shutdownPipeRead{-1};
   std::atomic<int> shutdownPipeWrite{-1};
 
+  // make sure the arch we compile against has lock free atomics
+  static_assert( std::atomic<int>::is_always_lock_free, "atomic<int> needs to be lock free for use in signal handlers" );
+
   bool makeShutdownPipe() {
     int pipeFds[]{ -1, -1 };
   #ifdef HAVE_PIPE2
@@ -274,17 +277,6 @@ namespace zypp
     Pathname ZYppImpl::tmpPath() const
     { return zypp::myTmpDir(); }
 
-    AutoFD ZYppImpl::shutdownSignalFd()
-    {
-      const auto pipe = shutdownPipeReadFd();
-      if (pipe == -1) {
-        ZYPP_THROW( zypp::Exception("Failed to create shutdown pipe") );
-      }
-
-      // dup the fd, so the calling code can close() it
-      return AutoFD( ::dup( pipe ) );
-    }
-
     void ZYppImpl::setShutdownSignal()
     {
       // ONLY signal safe code here, that means no logging or anything else that is more than using atomics
@@ -325,10 +317,13 @@ namespace zypp
     int zypp_poll( std::vector<GPollFD> &fds, int timeout)
     {
       // request a shutdown fd we can use
-      auto shutdownFd = ZYppImpl::shutdownSignalFd();
+      const auto shutdownFd = shutdownPipeReadFd();
+      if (shutdownFd == -1) {
+        ZYPP_THROW( zypp::Exception("Failed to get shutdown pipe") );
+      }
 
       fds.push_back( GPollFD {
-        .fd       = shutdownFd.value(),
+        .fd       = shutdownFd,
         .events   = G_IO_IN,
         .revents  = 0
       });

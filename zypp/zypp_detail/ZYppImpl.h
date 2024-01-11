@@ -116,13 +116,13 @@ namespace zypp
       void changeTargetTo( Target_Ptr newtarget_r );
 
       /**
-       * Returns the read end of the shutdown pipe, the fd is duplicated
-       * so closing it won't have impact on the original pipe.
-       *
-       * \note do not read values from the fd, just use it to cleanly exit calls to select/poll and initiate shutdown
+       * Enable the shutdown signal for \ref zypp_poll calls
        */
-      static AutoFD shutdownSignalFd();
       static void setShutdownSignal();
+
+      /**
+       * Disable the shutdown signal for \ref zypp_poll calls
+       */
       static void clearShutdownSignal();
 
     private:

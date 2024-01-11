@@ -29,7 +29,6 @@
 using std::endl;
 
 #include <glib.h>
-#include <atomic>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-core/base/userrequestexception.h>
 
@@ -42,11 +41,8 @@ namespace {
   //
   // Not cleaned up, this happens when the application that is using libzypp
   // exits.
-  std::atomic<int> shutdownPipeRead{-1};
-  std::atomic<int> shutdownPipeWrite{-1};
-
-  // make sure the arch we compile against has lock free atomics
-  static_assert( std::atomic<int>::is_always_lock_free, "atomic<int> needs to be lock free for use in signal handlers" );
+  volatile sig_atomic_t shutdownPipeRead{-1};
+  volatile sig_atomic_t shutdownPipeWrite{-1};
 
   bool makeShutdownPipe() {
     int pipeFds[]{ -1, -1 };
@@ -59,8 +55,8 @@ namespace {
       ::fcntl( pipeFds[0], F_SETFD, O_CLOEXEC );
       ::fcntl( pipeFds[1], F_SETFD, O_CLOEXEC );
   #endif
-      shutdownPipeRead.store(pipeFds[0]);
-      shutdownPipeWrite.store(pipeFds[1]);
+      shutdownPipeRead = pipeFds[0];
+      shutdownPipeWrite = pipeFds[1];
       return true;
   }
 
@@ -72,11 +68,11 @@ namespace {
   const int shutdownPipeReadFd() {
     if ( !ensureShutdownPipe() )
       return -1;
-    return shutdownPipeRead.load();
+    return static_cast<int>(shutdownPipeRead);
   }
 
   const int shutdownPipeWriteFd() {
-    return shutdownPipeWrite.load();
+    return static_cast<int>(shutdownPipeWrite);
   }
 
 }

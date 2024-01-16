@@ -18,14 +18,14 @@ msgstr ""
 #: zypp/CountryCode.cc:50
 #, fuzzy
 msgid "Unknown country: "
-msgstr "ไม่ทราบประเภทของระเบียน: %1"
+msgstr "ไม่ทราบประเทศ: %1"
 
 #. Defined CountryCode constants
 #. Defined LanguageCode constants
 #: zypp/CountryCode.cc:149 zypp/LanguageCode.cc:148
 #, fuzzy
 msgid "No Code"
-msgstr "โค้ดภาษา"
+msgstr "ไม่มีรหัส"
 
 #: zypp/CountryCode.cc:158
 msgid "Andorra"
@@ -64,7 +64,7 @@ msgstr "อาร์เมเนีย"
 #. :ARM:051:
 #: zypp/CountryCode.cc:165
 msgid "Netherlands Antilles"
-msgstr "เนเธอร์แลนด์ แอนทิลีส"
+msgstr "เนเธอร์แลนด์แอนทิลลีส"
 
 #. :ANT:530:
 #: zypp/CountryCode.cc:166
@@ -84,7 +84,7 @@ msgstr "อาร์เจนตินา"
 #. :ARG:032:
 #: zypp/CountryCode.cc:169
 msgid "American Samoa"
-msgstr "อเมริกัน ซามัว"
+msgstr "อเมริกันซามัว"
 
 #. :ASM:016:
 #: zypp/CountryCode.cc:170
@@ -124,7 +124,7 @@ msgstr "บาร์บาดอส"
 #. :BRB:052:
 #: zypp/CountryCode.cc:177
 msgid "Bangladesh"
-msgstr "บังคลาเทศ"
+msgstr "บังกลาเทศ"
 
 #. :BGD:050:
 #: zypp/CountryCode.cc:178
@@ -189,7 +189,7 @@ msgstr "ภูฏาน"
 #. :BTN:064:
 #: zypp/CountryCode.cc:190
 msgid "Bouvet Island"
-msgstr "หมู่เกาะบูเวท์นอร์ฟอล์ค"
+msgstr "เกาะบูเว"
 
 #. :BVT:074:
 #: zypp/CountryCode.cc:191
@@ -214,7 +214,7 @@ msgstr "แคนาดา"
 #. :CAN:124:
 #: zypp/CountryCode.cc:195
 msgid "Cocos (Keeling) Islands"
-msgstr "หมู่เกาะโคคอส (Keeling)"
+msgstr "หมู่เกาะโคโคส (คีลิง)"
 
 #. :CCK:166:
 #. :CAF:140:
@@ -341,7 +341,7 @@ msgstr "อียิปต์"
 #. :EGY:818:
 #: zypp/CountryCode.cc:221
 msgid "Western Sahara"
-msgstr "ซาฮาร่าตะวันตก"
+msgstr "ซาฮาราตะวันตก"
 
 #. :ESH:732:
 #: zypp/CountryCode.cc:222
@@ -366,7 +366,7 @@ msgstr "ฟินแลนด์"
 #. :FIN:246:
 #: zypp/CountryCode.cc:226
 msgid "Fiji"
-msgstr "ฟิจิ"
+msgstr "ฟีจี"
 
 #. :FJI:242:
 #: zypp/CountryCode.cc:227
@@ -391,7 +391,7 @@ msgstr "ฝรั่งเศส"
 #. :FRA:250:
 #: zypp/CountryCode.cc:231
 msgid "Metropolitan France"
-msgstr "เมืองหลวงฝรั่งเศส"
+msgstr "ฝรั่งเศสแผ่นดินใหญ่"
 
 #. :FXX:249:
 #: zypp/CountryCode.cc:232
@@ -573,7 +573,7 @@ msgstr "เจอร์ซีย์"
 
 #: zypp/CountryCode.cc:268
 msgid "Jamaica"
-msgstr "จาไมก้า"
+msgstr "จาเมกา"
 
 #. :JAM:388:
 #: zypp/CountryCode.cc:269
@@ -673,7 +673,7 @@ msgstr "ไลบีเรีย"
 #. :LBR:430:
 #: zypp/CountryCode.cc:288
 msgid "Lesotho"
-msgstr "เลโซโทต"
+msgstr "เลโซโท"
 
 #. :LSO:426:
 #: zypp/CountryCode.cc:289
@@ -807,7 +807,7 @@ msgstr "มาเลเซีย"
 #. :MYS:458:
 #: zypp/CountryCode.cc:315
 msgid "Mozambique"
-msgstr "โมแซมบิก"
+msgstr "โมซัมบิก"
 
 #. :MOZ:508:
 #: zypp/CountryCode.cc:316
@@ -948,12 +948,12 @@ msgstr "ปารากวัย"
 #. :PRY:600:
 #: zypp/CountryCode.cc:343
 msgid "Qatar"
-msgstr "กาต้าร์"
+msgstr "กาตาร์"
 
 #. :QAT:634:
 #: zypp/CountryCode.cc:344
 msgid "Reunion"
-msgstr "รียูเนียน"
+msgstr "เรอูว์นียง"
 
 #. :REU:638:
 #: zypp/CountryCode.cc:345
@@ -972,12 +972,12 @@ msgstr "สมาพันธรัฐรัสเซีย"
 #. :RUS:643:
 #: zypp/CountryCode.cc:348
 msgid "Rwanda"
-msgstr "รวันด้า"
+msgstr "รวันดา"
 
 #. :RWA:646:
 #: zypp/CountryCode.cc:349
 msgid "Saudi Arabia"
-msgstr "ซาอุดิอาระเบีย"
+msgstr "ซาอุดีอาระเบีย"
 
 #. :SAU:682:
 #: zypp/CountryCode.cc:350
@@ -1007,7 +1007,7 @@ msgstr "สิงคโปร์"
 #. :SGP:702:
 #: zypp/CountryCode.cc:355
 msgid "Saint Helena"
-msgstr "เซนต์เฮเลน่า"
+msgstr "เซนต์เฮเลนา"
 
 #. :SHN:654:
 #: zypp/CountryCode.cc:356
@@ -1047,12 +1047,12 @@ msgstr "โซมาเลีย"
 #. :SOM:706:
 #: zypp/CountryCode.cc:363
 msgid "Suriname"
-msgstr "ซูรินาเม"
+msgstr "ซูรินาม"
 
 #. :SUR:740:
 #: zypp/CountryCode.cc:364
 msgid "Sao Tome and Principe"
-msgstr "ซาวโทมและพรินซิป"
+msgstr "เซาตูเมและปรินซีปี"
 
 #. :STP:678:
 #: zypp/CountryCode.cc:365
@@ -1092,7 +1092,7 @@ msgstr "โตโก"
 #. :TGO:768:
 #: zypp/CountryCode.cc:372
 msgid "Thailand"
-msgstr "ราชอาณาจักรไทย"
+msgstr "ไทย"
 
 #. :THA:764:
 #: zypp/CountryCode.cc:373
@@ -1118,7 +1118,7 @@ msgstr "ตูนีเซีย"
 #. :TUN:788:
 #: zypp/CountryCode.cc:377
 msgid "Tonga"
-msgstr "ตองก้า"
+msgstr "ตองกา"
 
 #. :TON:776:
 #: zypp/CountryCode.cc:378
@@ -1164,7 +1164,7 @@ msgstr "ยูกันดา"
 #. :UGA:800:
 #: zypp/CountryCode.cc:386
 msgid "United States Minor Outlying Islands"
-msgstr "หมู่เกาะยูเอส ไมเนอร์ เอาท์ไลย์อิ้ง"
+msgstr "เกาะเล็กรอบนอกของสหรัฐอเมริกา"
 
 #. :UMI:581:
 #: zypp/CountryCode.cc:387
@@ -1184,7 +1184,7 @@ msgstr "อุซเบกิสถาน"
 #. :UZB:860:
 #: zypp/CountryCode.cc:390
 msgid "Holy See (Vatican City State)"
-msgstr "นครรัฐวาติกัน"
+msgstr "สันตะสำนัก (นครรัฐวาติกัน)"
 
 #. :VAT:336:
 #: zypp/CountryCode.cc:391
@@ -1204,7 +1204,7 @@ msgstr "หมู่เกาะบริติชเวอร์จิน"
 #. :VGB:092:
 #: zypp/CountryCode.cc:394
 msgid "Virgin Islands, U.S."
-msgstr "หมู่เกาะเวอร์จิน, สหรัฐอเมริกา"
+msgstr "หมู่เกาะเวอร์จินของสหรัฐอเมริกา"
 
 #. :VIR:850:
 #: zypp/CountryCode.cc:395
@@ -1265,12 +1265,12 @@ msgstr "ต้องการ"
 
 #: zypp/Dep.cc:99
 msgid "Conflicts"
-msgstr ""
+msgstr "ขัดแย้ง"
 
 #: zypp/Dep.cc:100
 #, fuzzy
 msgid "Obsoletes"
-msgstr "ลบอัตโนมัติ"
+msgstr "ล้าสมัย"
 
 #: zypp/Dep.cc:101
 msgid "Recommends"
@@ -1411,18 +1411,18 @@ msgstr ""
 #: zypp/LanguageCode.cc:199
 #, fuzzy
 msgid "Apache Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: ara ar
 #: zypp/LanguageCode.cc:201
 msgid "Arabic"
-msgstr "ภาษาอารบิก"
+msgstr "อารบิก"
 
 #. language code: arc
 #: zypp/LanguageCode.cc:203
 #, fuzzy
 msgid "Aramaic"
-msgstr "จาไมก้า"
+msgstr "แอราเมอิก"
 
 #. language code: arg an
 #: zypp/LanguageCode.cc:205
@@ -1439,7 +1439,7 @@ msgstr "อาร์เมเนีย"
 #: zypp/LanguageCode.cc:211
 #, fuzzy
 msgid "Araucanian"
-msgstr "ภาษายูเครน"
+msgstr ""
 
 #. language code: arp
 #: zypp/LanguageCode.cc:213
@@ -1509,13 +1509,13 @@ msgstr "อาเซอร์ไบจาน"
 #: zypp/LanguageCode.cc:237
 #, fuzzy
 msgid "Banda"
-msgstr "รวันด้า"
+msgstr ""
 
 #. language code: bai
 #: zypp/LanguageCode.cc:239
 #, fuzzy
 msgid "Bamileke Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: bak ba
 #: zypp/LanguageCode.cc:241
@@ -1536,7 +1536,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:247
 #, fuzzy
 msgid "Balinese"
-msgstr "ภาษาญี่ปุ่น"
+msgstr "บาหลี"
 
 #. language code: baq eus eu
 #: zypp/LanguageCode.cc:249 zypp/LanguageCode.cc:251
@@ -1573,7 +1573,7 @@ msgstr "&Membase"
 #. language code: ben bn
 #: zypp/LanguageCode.cc:263
 msgid "Bengali"
-msgstr "ภาษาเบ็งกาลี"
+msgstr "เบงกาลี"
 
 #. language code: ber
 #: zypp/LanguageCode.cc:265
@@ -2552,12 +2552,12 @@ msgstr ""
 #: zypp/LanguageCode.cc:661
 #, fuzzy
 msgid "Lao"
-msgstr "บันทึกการทำงาน"
+msgstr "ลาว"
 
 #. language code: lat la
 #: zypp/LanguageCode.cc:663
 msgid "Latin"
-msgstr ""
+msgstr "ละติน"
 
 #. language code: lav lv
 #: zypp/LanguageCode.cc:665
@@ -2574,7 +2574,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:669
 #, fuzzy
 msgid "Limburgan"
-msgstr "ลักซ์เซมเบิร์ก"
+msgstr "ลักเซมเบิร์ก"
 
 #. language code: lin ln
 #: zypp/LanguageCode.cc:671
@@ -2584,13 +2584,13 @@ msgstr ""
 #. language code: lit lt
 #: zypp/LanguageCode.cc:673
 msgid "Lithuanian"
-msgstr "ภาษาลิทัวเนีย"
+msgstr "ลิทัวเนีย"
 
 #. language code: lol
 #: zypp/LanguageCode.cc:675
 #, fuzzy
 msgid "Mongo"
-msgstr "คองโก"
+msgstr "มองโก"
 
 #. language code: loz
 #: zypp/LanguageCode.cc:677
@@ -2617,7 +2617,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:685
 #, fuzzy
 msgid "Ganda"
-msgstr "รวันด้า"
+msgstr "กันดา"
 
 #. language code: lui
 #: zypp/LanguageCode.cc:687
@@ -2628,7 +2628,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:689
 #, fuzzy
 msgid "Lunda"
-msgstr "วันอาทิตย์"
+msgstr "ลูนดา"
 
 #. language code: luo
 #: zypp/LanguageCode.cc:691
@@ -2643,7 +2643,7 @@ msgstr ""
 #. language code: mac mkd mk
 #: zypp/LanguageCode.cc:695 zypp/LanguageCode.cc:697
 msgid "Macedonian"
-msgstr "ภาษามาซิโดเนีย"
+msgstr "มาซิโดเนีย"
 
 #. language code: mad
 #: zypp/LanguageCode.cc:699
@@ -2659,7 +2659,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:703
 #, fuzzy
 msgid "Marshallese"
-msgstr "หมู่เกาะมาแชลล์"
+msgstr "มาร์แชลล์"
 
 #. language code: mai
 #: zypp/LanguageCode.cc:705
@@ -2675,7 +2675,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:709
 #, fuzzy
 msgid "Malayalam"
-msgstr "มาเลเซีย"
+msgstr "มลยาฬัม"
 
 #. language code: man
 #: zypp/LanguageCode.cc:711
@@ -2685,7 +2685,7 @@ msgstr ""
 #. language code: mao mri mi
 #: zypp/LanguageCode.cc:713 zypp/LanguageCode.cc:715
 msgid "Maori"
-msgstr ""
+msgstr "มาวรี"
 
 #. language code: map
 #: zypp/LanguageCode.cc:717
@@ -2706,7 +2706,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:723 zypp/LanguageCode.cc:725
 #, fuzzy
 msgid "Malay"
-msgstr "มาเลเซีย"
+msgstr "มาเลย์"
 
 #. language code: mdf
 #: zypp/LanguageCode.cc:727

@@ -776,18 +776,15 @@ namespace zyppng {
     return zypp::str::asString ( rawStr.value() );
   }
 
-  AttachedMediaInfo_Ptr ProvidePrivate::addMedium(ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec )
+  AttachedMediaInfo_Ptr ProvidePrivate::addMedium( AttachedMediaInfo_Ptr &&medium )
   {
-    auto str = nextMediaId();
-    MIL_PRV << "Generated new ID for media attachment: " << str << std::endl;
-    _attachedMediaInfos.push_back( AttachedMediaInfo_Ptr(new AttachedMediaInfo( std::move(str), {}, workerType, baseUrl, spec ) ) );
-    return _attachedMediaInfos.back();
-  }
+    assert( medium );
+    if ( !medium )
+      return nullptr;
 
-  AttachedMediaInfo_Ptr ProvidePrivate::addMedium(zypp::proto::Capabilities::WorkerType workerType, ProvideQueueWeakRef backingQueue, const std::string &id, const zypp::Url &baseUrl, ProvideMediaSpec &spec)
-  {
-    MIL_PRV << "New media attachment with id: " << id << std::endl;
-    _attachedMediaInfos.push_back( AttachedMediaInfo_Ptr(new AttachedMediaInfo(id, backingQueue, workerType, baseUrl, spec) ) );
+    MIL_PRV << "Registered new media attachment with ID: " << medium->name() << " with mountPoint: (" << medium->_localMountPoint.value_or(zypp::Pathname()) << ")" << std::endl;
+    _attachedMediaInfos.push_back( std::move(medium) );
+
     return _attachedMediaInfos.back();
   }
 
@@ -952,11 +949,12 @@ namespace zyppng {
     return _mediaRef->_attachedUrl;
   }
 
-  const zypp::Pathname &ProvideMediaHandle::localPath() const
+  const std::optional<zypp::Pathname> &ProvideMediaHandle::localPath() const
   {
-    static zypp::Pathname dummy;
-    ERR << "NOT IMPLEMENTED YET" << std::endl;
-    return dummy;
+    static std::optional<zypp::Pathname> invalidHandle;
+    if ( !_mediaRef )
+      return invalidHandle;
+    return _mediaRef->_localMountPoint;
   }
 
   AttachedMediaInfo_constPtr ProvideMediaHandle::mediaInfo() const

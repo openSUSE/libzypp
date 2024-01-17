@@ -939,7 +939,7 @@ namespace zyppng {
         // if the media file is empty in the spec we can not do anything
         // simply pretend attach worked
         if( _initialSpec.mediaFile().empty() ) {
-          finishWithSuccess( prov.addMedium( _workerType, _mirrorList.front(), _initialSpec ) );
+          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
           return;
         }
 
@@ -1151,7 +1151,7 @@ namespace zyppng {
 
         // all good, register the medium and tell all child items
         _runningReq.reset();
-        return finishWithSuccess( provider().addMedium( _workerType, baseUrl, _initialSpec ) );
+        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, baseUrl, _initialSpec) ) );
 
       } else if ( msg.code() == ProvideMessage::Code::NotFound ) {
 
@@ -1160,7 +1160,8 @@ namespace zyppng {
         if ( _verifier->totalMedia () == 1 ) {
           // relaxed , tolerate a vanished media file
           _runningReq.reset();
-          return finishWithSuccess( provider().addMedium( _workerType, _mirrorList.front(), _initialSpec) );
+
+          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
         } else {
           return ProvideItem::finishReq ( queue, finishedReq, msg );
         }
@@ -1170,12 +1171,21 @@ namespace zyppng {
     } else {
       // real device attach
       if ( msg.code() == ProvideMessage::Code::AttachFinished ) {
+
+        std::optional<zypp::Pathname> mntPoint;
+        auto mountPtVal = msg.value( zyppng::AttachFinishedMsgFields::LocalMountPoint );
+        if ( mountPtVal.valid() && mountPtVal.isString() ) {
+          mntPoint = zypp::Pathname(mountPtVal.asString());
+        }
+
         _runningReq.reset();
-        return finishWithSuccess( provider().addMedium( _workerType
+        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>(
+          finishedReq->provideMessage().value( AttachMsgFields::AttachId ).asString()
           , queue.weak_this<ProvideQueue>()
-          , finishedReq->provideMessage().value( AttachMsgFields::AttachId ).asString()
+          , _workerType
           , *finishedReq->activeUrl()
-          , _initialSpec ) );
+          , _initialSpec
+          , mntPoint ) ) );
       }
     }
 

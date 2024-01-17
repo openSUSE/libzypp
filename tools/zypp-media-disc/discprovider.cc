@@ -145,7 +145,7 @@ zyppng::worker::AttachResult DiscProvider::mountDevice ( const uint32_t id, cons
 
     // we found the device we want!
     attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ dev, attachRoot } ) );
-    return zyppng::worker::AttachResult::success();
+    return zyppng::worker::AttachResult::success( dev->_mountPoint / attachRoot );
   }
 
   std::list<std::string> filesystems;
@@ -245,7 +245,7 @@ zyppng::worker::AttachResult DiscProvider::mountDevice ( const uint32_t id, cons
 
         MIL << "Found requested medium in dev " << dev->_name << std::endl;
         attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ dev, attachRoot } ) );
-        return zyppng::worker::AttachResult::success();
+        return zyppng::worker::AttachResult::success( dev->_mountPoint / attachRoot );
       }
     } // for each device
 

@@ -121,7 +121,7 @@ namespace zyppng {
           // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
           if ( ! ( _baseUrl.schemeIsDownloading() || _baseUrl.schemeIsPlugin() ) ) {
 
-            if ( zypp::PathInfo(_medium.localPath()/_path).isDir() ) {
+            if ( _medium.localPath() && zypp::PathInfo(_medium.localPath().value()/_path).isDir() ) {
               // allow empty dirs for now
               MIL << "Probed type RPMPLAINDIR at " << _baseUrl << " (" << _path << ")" << std::endl;
               return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMPLAINDIR);

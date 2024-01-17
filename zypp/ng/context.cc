@@ -16,11 +16,14 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE( Context )
 
-  ZYPP_IMPL_PRIVATE_CONSTR( Context ) : UserInterface( *new ContextPrivate( *this ) ) {
+  ZYPP_IMPL_PRIVATE_CONSTR( Context )
+    : UserInterface( *new ContextPrivate( *this ) )
+  {
     Z_D();
     d->_zyppPtr = zypp::getZYpp();
     d->_eventDispatcher = ThreadData::current().ensureDispatcher();
-    d->_provider = Provide::create("/tmp/providedir");
+
+    d->_provider = Provide::create( d->_providerDir );
 
     // @TODO should start be implicit as soon as something is enqueued?
     d->_provider->start();

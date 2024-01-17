@@ -89,13 +89,16 @@ namespace zypp
         const Pathname linkTarget = filesystem::readlink( path );
         if ( linkTarget.empty() ) return IGNORE;
 
+        // Pipe or socket 'type:[inode]' or an 'anon_inode:<file-type>'
+        // They may or may not belong to a container... (bsc#1218291)
+        if ( linkTarget.relative() ) return IGNORE;
+
         // get stat info for the target file
         const PathInfo linkStat( linkTarget );
 
-        // Non-existent path could be anything. Pipe or socket (type:[inode])
-        // or an 'anon_inode:<file-type>'. (bsc#1218291)
+        // Non-existent path means it's not reachable by us.
         if ( !linkStat.isExist() )
-          return IGNORE;
+          return CONTAINER;
 
         // If the file exists, it could simply mean it exists in and outside a container, check inode to be safe
         if ( linkStat.ino() != procInfoStat.ino())

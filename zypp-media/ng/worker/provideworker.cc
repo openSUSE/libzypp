@@ -175,10 +175,10 @@ namespace zyppng::worker {
   }
 
 
-  void ProvideWorker::attachSuccess(const uint32_t id)
+  void ProvideWorker::attachSuccess(const uint32_t id, const std::optional<std::string> &localMountPoint)
   {
     MIL_PRV << "Sending attachSuccess for request " << id << std::endl;
-    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id ).impl() ) ) {
+    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id, localMountPoint ).impl() ) ) {
       ERR << "Failed to send AttachFinished message" << std::endl;
     } else {
       MIL << "Sent back attach success" << std::endl;

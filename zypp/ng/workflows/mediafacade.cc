@@ -23,7 +23,7 @@ namespace zyppng {
     zypp::media::MediaAccessId mediaId () const;
     const ProvideMediaSpec &spec() const;
     const zypp::Url &url() const;
-    const zypp::Pathname &rootPath() const;
+    const std::optional<zypp::Pathname> &rootPath() const;
     MediaSyncFacadeRef parent() const;
 
     /*!
@@ -40,7 +40,7 @@ namespace zyppng {
     zypp::Url _attachedUrl;
     ProvideMediaSpec _spec;
     MediaSyncFacadeRef _parent;
-    zypp::Pathname _localPath;
+    std::optional<zypp::Pathname> _localPath;
   };
 
   IMPL_PTR_TYPE( AttachedSyncMediaInfo );
@@ -68,7 +68,7 @@ namespace zyppng {
     return _attachedUrl;
   }
 
-  const zypp::Pathname &AttachedSyncMediaInfo::rootPath() const
+  const std::optional<zypp::Pathname> &AttachedSyncMediaInfo::rootPath() const
   {
     return _localPath;
   }
@@ -123,9 +123,9 @@ namespace zyppng {
     return _data->url();
   }
 
-  const zypp::Pathname &SyncMediaHandle::localPath() const
+  const std::optional<zypp::Pathname> &SyncMediaHandle::localPath() const
   {
-    static zypp::Pathname invalidPath;
+    static std::optional<zypp::Pathname> invalidPath;
     if ( !_data )
       return invalidPath;
     return _data->rootPath();

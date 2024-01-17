@@ -46,10 +46,12 @@ namespace zypp
 namespace internal {
 
 void globalInitCurlOnce();
+
+uint curlVersion();
+
 /** Setup CURLOPT_VERBOSE and CURLOPT_DEBUGFUNCTION according to env::ZYPP_MEDIA_CURL_DEBUG. */
 void setupZYPP_MEDIA_CURL_DEBUG( CURL *curl );
 size_t log_redirects_curl( char *ptr, size_t size, size_t nmemb, void *userdata);
-
 
 void fillSettingsFromUrl( const zypp::Url &url, zypp::media::TransferSettings &s );
 void fillSettingsSystemProxy( const zypp::Url& url, zypp::media::TransferSettings &s );
@@ -61,6 +63,7 @@ std::string curlUnEscape( std::string text_r );
 zypp::Url clearQueryString(const zypp::Url &url);
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r );
 
+CURLcode setCurlRedirProtocols(CURL *curl, bool enableHttp = false );
 
 /*!
  * Helper class to simplify using the curl multi API, takes

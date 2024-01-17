@@ -71,6 +71,12 @@ void globalInitCurlOnce()
   } (), true );
 }
 
+uint curlVersion()
+{
+  auto curlV = curl_version_info ( CURLVERSION_NOW );
+  return curlV->version_num;
+}
+
 int log_curl( CURL * curl, curl_infotype info, char * ptr, size_t len, void * max_lvl )
 {
   if ( max_lvl == nullptr )
@@ -491,6 +497,46 @@ CURLMcode internal::CurlPollHelper::handleTimout()
 {
   int handles = 0;
   return curl_multi_socket_action( _parent._multi, CURL_SOCKET_TIMEOUT, 0, &handles );
+}
+
+/*!
+ * Enables the redirection protocols that we support, this code is a bit ugly
+ * because for newer versions we need to detect the current curl version at runtime, but at the same
+ * time need the compile time switch in case we are built against a older libcurl version.
+ *
+ * Reason for this is that we do not explicitely require the libcurl version we are built against,
+ * this could mean we are ending up with a libcurl older than the one we built against.
+ *
+ * See bsc#1218831
+ */
+CURLcode setCurlRedirProtocols(CURL *curl, bool enableHttp)
+{
+#if CURLVERSION_AT_LEAST(7,19,4)
+  if ( enableHttp ) {
+#if CURLVERSION_AT_LEAST(7,85,0)
+    // runtime version might be different from build version
+    if( ::internal::curlVersion() >= CURL_VERSION_BITS(7,85,0) ) {
+      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS_STR, "http,https" );
+    } else {
+      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
+    }
+#else
+    return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
+#endif
+  } else {
+#if CURLVERSION_AT_LEAST(7,85,0)
+    // runtime version might be different from build version
+    if( ::internal::curlVersion() >= CURL_VERSION_BITS(7,85,0) ) {
+      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS_STR, "https" );
+    } else {
+      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+    }
+#else
+    return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+#endif
+  }
+#endif // #if CURLVERSION_AT_LEAST(7,19,4)
+  return CURLE_OK;
 }
 
 }

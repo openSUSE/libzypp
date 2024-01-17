@@ -96,7 +96,7 @@ zyppng::worker::AttachResult DirProvider::mountDevice ( const uint32_t id, const
     auto i = std::find_if( devs.begin(), devs.end(), [&]( const auto &d ) { return d->_name == pathStr; } );
     if ( i != devs.end() ) {
       attachedMedia().insert( { attachId, zyppng::worker::AttachedMedia{ ._dev = *i, ._attachRoot = "/" } } );
-      return zyppng::worker::AttachResult::success();
+      return zyppng::worker::AttachResult::success( (*i)->_mountPoint );
     }
 
     // we did not find a existing device, well lets make a new one
@@ -110,7 +110,7 @@ zyppng::worker::AttachResult DirProvider::mountDevice ( const uint32_t id, const
       ._properties = {}
       });
     attachedMedia().insert( { attachId, zyppng::worker::AttachedMedia{ ._dev = newDev, ._attachRoot = "/" } } );
-    return zyppng::worker::AttachResult::success();
+    return zyppng::worker::AttachResult::success( path );
 
   }  catch ( const zypp::Exception &e  ) {
     return zyppng::worker::AttachResult::error (

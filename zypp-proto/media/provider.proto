@@ -142,7 +142,7 @@ package zypp.proto;
   - Code: 201 - Attach Finished
     Desc: Sent to the controller once a worker mounted a medium successfully.
     Fields:
-      - None -
+      optional string localMountPoint  -> Where the device was locally mounted if applicable, e.g. http does not mount
 
   - Code: 202 - Auth Info
     Desc: Response sent by the controller to a AUTH_REQUIRED request.

@@ -28,9 +28,6 @@
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/ManagedFile.h>
 
-#include <queue>
-#include <variant>
-
 namespace zyppng {
 
   namespace constants {
@@ -71,8 +68,7 @@ namespace zyppng {
     void dequeueItem   ( ProvideItem *item );
 
     std::string nextMediaId () const;
-    AttachedMediaInfo_Ptr addMedium ( zypp::proto::Capabilities::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec );
-    AttachedMediaInfo_Ptr addMedium ( zypp::proto::Capabilities::WorkerType workerType, ProvideQueueWeakRef backingQueue, const std::string &id, const zypp::Url &baseUrl, ProvideMediaSpec &spec );
+    AttachedMediaInfo_Ptr addMedium ( AttachedMediaInfo_Ptr &&medium );
 
     std::string effectiveScheme ( const std::string &scheme ) const;
 

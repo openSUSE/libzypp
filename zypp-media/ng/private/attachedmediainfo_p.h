@@ -35,8 +35,11 @@ namespace zyppng {
     void ref_to( unsigned refCnt ) const override;
 
   public:
+    AttachedMediaInfo( const std::string &id, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec );
+    AttachedMediaInfo( const std::string &id, ProvideQueueWeakRef backingQueue, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec, const std::optional<zypp::Pathname> &mnt = {} );
 
-    AttachedMediaInfo( const std::string &name, ProvideQueueWeakRef backingQueue, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec );
+    void setName( std::string &&name );
+    const std::string &name() const;
 
     /*!
      * Returns true if \a other requests the same medium as this instance
@@ -48,6 +51,7 @@ namespace zyppng {
     ProvideQueue::Config::WorkerType _workerType;
     zypp::Url   _attachedUrl; // the URL that was used for the attach request
     ProvideMediaSpec _spec;
+    std::optional<zypp::Pathname> _localMountPoint; // if initialized tells where the workers mounted to medium
     mutable std::optional<std::chrono::steady_clock::time_point> _idleSince; ///< Set if the medium is idle
   };
 

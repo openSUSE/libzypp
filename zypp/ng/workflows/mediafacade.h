@@ -32,7 +32,7 @@ namespace zyppng {
     MediaSyncFacadeRef parent() const;
     bool isValid () const;
     const zypp::Url &baseUrl() const;
-    const zypp::Pathname &localPath() const;
+    const std::optional<zypp::Pathname> &localPath() const;
     const AttachedSyncMediaInfo &info ()const;
 
   private:

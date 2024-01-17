@@ -45,7 +45,7 @@ namespace zypp::media {
 
   MetaDataType looks_like_meta_file(const Pathname &file)
   {
-    std::unique_ptr<FILE, decltype(&fclose)> fd( fopen( file.c_str(), "r" ), &fclose );
+    std::unique_ptr<FILE, int(*)(FILE *)> fd( fopen( file.c_str(), "r" ), &fclose );
     return looks_like_meta_file( fd.get() );
   }
 

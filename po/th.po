@@ -18,7 +18,7 @@ msgstr ""
 #: zypp/CountryCode.cc:50
 #, fuzzy
 msgid "Unknown country: "
-msgstr "ไม่ทราบประเทศ: %1"
+msgstr "ไม่ทราบประเทศ: "
 
 #. Defined CountryCode constants
 #. Defined LanguageCode constants
@@ -29,7 +29,7 @@ msgstr "ไม่มีรหัส"
 
 #: zypp/CountryCode.cc:158
 msgid "Andorra"
-msgstr "แอนโดรา"
+msgstr "อันดอร์รา"
 
 #. :AND:020:
 #: zypp/CountryCode.cc:159
@@ -49,7 +49,7 @@ msgstr "แอนติกาและบาร์บูดา"
 #. :ATG:028:
 #: zypp/CountryCode.cc:162
 msgid "Anguilla"
-msgstr "แองกีลา"
+msgstr "แองกวิลลา"
 
 #. :AIA:660:
 #: zypp/CountryCode.cc:163
@@ -119,7 +119,7 @@ msgstr "บอสเนียและเฮอร์เซโกวินา"
 #. :BIH:070:
 #: zypp/CountryCode.cc:176
 msgid "Barbados"
-msgstr "บาร์บาดอส"
+msgstr "บาร์เบโดส"
 
 #. :BRB:052:
 #: zypp/CountryCode.cc:177
@@ -179,7 +179,7 @@ msgstr "บราซิล"
 #. :BRA:076:
 #: zypp/CountryCode.cc:188
 msgid "Bahamas"
-msgstr "บาฮามา"
+msgstr "บาฮามาส"
 
 #. :BHS:044:
 #: zypp/CountryCode.cc:189
@@ -241,7 +241,7 @@ msgstr "โกตดิวัวร์"
 #. :CIV:384:
 #: zypp/CountryCode.cc:201
 msgid "Cook Islands"
-msgstr "หมู่เกาะคุ้ก"
+msgstr "หมู่เกาะคุก"
 
 #. :COK:184:
 #: zypp/CountryCode.cc:202
@@ -251,7 +251,7 @@ msgstr "ชิลี"
 #. :CHL:152:
 #: zypp/CountryCode.cc:203
 msgid "Cameroon"
-msgstr "คาเมรูน"
+msgstr "แคเมอรูน"
 
 #. :CMR:120:
 #: zypp/CountryCode.cc:204
@@ -261,7 +261,7 @@ msgstr "จีน"
 #. :CHN:156:
 #: zypp/CountryCode.cc:205
 msgid "Colombia"
-msgstr "โคลัมเบีย"
+msgstr "โคลอมเบีย"
 
 #. :COL:170:
 #: zypp/CountryCode.cc:206
@@ -276,7 +276,7 @@ msgstr "คิวบา"
 #. :CUB:192:
 #: zypp/CountryCode.cc:208
 msgid "Cape Verde"
-msgstr "แหลมเวอร์ดี"
+msgstr "กาบูเวร์ดี"
 
 #. :CPV:132:
 #: zypp/CountryCode.cc:209
@@ -296,12 +296,12 @@ msgstr "สาธารณรัฐเช็ก"
 #. :CZE:203:
 #: zypp/CountryCode.cc:212
 msgid "Germany"
-msgstr "เยอรมันนี"
+msgstr "เยอรมนี"
 
 #. :DEU:276:
 #: zypp/CountryCode.cc:213
 msgid "Djibouti"
-msgstr "จิบูติ"
+msgstr "จิบูตี"
 
 #. :DJI:262:
 #: zypp/CountryCode.cc:214
@@ -371,12 +371,12 @@ msgstr "ฟีจี"
 #. :FJI:242:
 #: zypp/CountryCode.cc:227
 msgid "Falkland Islands (Malvinas)"
-msgstr "หมู่เกาะฟอล์คแลนด์ (Malvinas)"
+msgstr "หมู่เกาะฟอล์กแลนด์ (มัลบินัส)"
 
 #. :FLK:238:
 #: zypp/CountryCode.cc:228
 msgid "Federated States of Micronesia"
-msgstr "สหพันธรัฐไมโครนีเซียสหพันธรัฐไมโครนีเซีย"
+msgstr "สหพันธรัฐไมโครนีเซีย"
 
 #. :FSM:583:
 #: zypp/CountryCode.cc:229
@@ -510,7 +510,7 @@ msgstr "โครเอเชีย"
 #. :HRV:191:
 #: zypp/CountryCode.cc:255
 msgid "Haiti"
-msgstr "ไฮติ"
+msgstr "เฮติ"
 
 #. :HTI:332:
 #: zypp/CountryCode.cc:256
@@ -757,17 +757,17 @@ msgstr "มาเก๊า"
 #. :MAC:446:
 #: zypp/CountryCode.cc:305
 msgid "Northern Mariana Islands"
-msgstr "หมู่เกาะมาเรียนเหนือ"
+msgstr "หมู่เกาะมาเรียนาเหนือ"
 
 #. :MNP:580:
 #: zypp/CountryCode.cc:306
 msgid "Martinique"
-msgstr "มาทินิค"
+msgstr "มาร์ตินีก"
 
 #. :MTQ:474:
 #: zypp/CountryCode.cc:307
 msgid "Mauritania"
-msgstr "มอริทาเนีย"
+msgstr "มอริเตเนีย"
 
 #. :MRT:478:
 #: zypp/CountryCode.cc:308
@@ -787,7 +787,7 @@ msgstr "มอริเชียส"
 #. :MUS:480:
 #: zypp/CountryCode.cc:311
 msgid "Maldives"
-msgstr "มัลดิฟ"
+msgstr "มัลดีฟส์"
 
 #. :MDV:462:
 #: zypp/CountryCode.cc:312
@@ -817,7 +817,7 @@ msgstr "นามิเบีย"
 #. :NAM:516:
 #: zypp/CountryCode.cc:317
 msgid "New Caledonia"
-msgstr "นิวคาลิโดเนีย"
+msgstr "นิวแคลิโดเนีย"
 
 #. :NCL:540:
 #: zypp/CountryCode.cc:318
@@ -827,7 +827,7 @@ msgstr "ไนเจอร์"
 #. :NER:562:
 #: zypp/CountryCode.cc:319
 msgid "Norfolk Island"
-msgstr "เกาะนอร์ฟอล์ค"
+msgstr "เกาะนอร์ฟอล์ก"
 
 #. :NFK:574:
 #: zypp/CountryCode.cc:320
@@ -837,7 +837,7 @@ msgstr "ไนจีเรีย"
 #. :NGA:566:
 #: zypp/CountryCode.cc:321
 msgid "Nicaragua"
-msgstr "นิคารากัว"
+msgstr "นิการากัว"
 
 #. :NIC:558:
 #: zypp/CountryCode.cc:322
@@ -858,12 +858,12 @@ msgstr "เนปาล"
 #. language code: nau na
 #: zypp/CountryCode.cc:325 zypp/LanguageCode.cc:781
 msgid "Nauru"
-msgstr "นาวรู"
+msgstr "นาอูรู"
 
 #. :NRU:520:
 #: zypp/CountryCode.cc:326
 msgid "Niue"
-msgstr "นิอุเอ"
+msgstr "นีอูเอ"
 
 #. :NIU:570:
 #: zypp/CountryCode.cc:327
@@ -928,7 +928,7 @@ msgstr "เปอร์โตริโก"
 #. :PRI:630:
 #: zypp/CountryCode.cc:339
 msgid "Palestinian Territory"
-msgstr "เขตปกครองปาเลสไตน์"
+msgstr "ดินแดนปาเลสไตน์"
 
 #. :PSE:275:
 #: zypp/CountryCode.cc:340
@@ -938,7 +938,7 @@ msgstr "โปรตุเกส"
 #. :PRT:620:
 #: zypp/CountryCode.cc:341
 msgid "Palau"
-msgstr "เกาะพาเลา"
+msgstr "ปาเลา"
 
 #. :PLW:585:
 #: zypp/CountryCode.cc:342
@@ -953,7 +953,7 @@ msgstr "กาตาร์"
 #. :QAT:634:
 #: zypp/CountryCode.cc:344
 msgid "Reunion"
-msgstr "เรอูว์นียง"
+msgstr "เรอูนียง"
 
 #. :REU:638:
 #: zypp/CountryCode.cc:345
@@ -967,7 +967,7 @@ msgstr "เซอร์เบีย"
 
 #: zypp/CountryCode.cc:347
 msgid "Russian Federation"
-msgstr "สมาพันธรัฐรัสเซีย"
+msgstr "สหพันธรัฐรัสเซีย"
 
 #. :RUS:643:
 #: zypp/CountryCode.cc:348
@@ -987,7 +987,7 @@ msgstr "หมู่เกาะโซโลมอน"
 #. :SLB:090:
 #: zypp/CountryCode.cc:351
 msgid "Seychelles"
-msgstr "ซีเชลล์"
+msgstr "เซเชลส์"
 
 #. :SYC:690:
 #: zypp/CountryCode.cc:352
@@ -1022,7 +1022,7 @@ msgstr "สฟาลบาร์และยานไมเอน"
 #. :SJM:744:
 #: zypp/CountryCode.cc:358
 msgid "Slovakia"
-msgstr "สโลวัก"
+msgstr "สโลวะเกีย"
 
 #. :SVK:703:
 #: zypp/CountryCode.cc:359
@@ -1037,7 +1037,7 @@ msgstr "ซานมาริโน"
 #. :SMR:674:
 #: zypp/CountryCode.cc:361
 msgid "Senegal"
-msgstr "เซนีกัล"
+msgstr "เซเนกัล"
 
 #. :SEN:686:
 #: zypp/CountryCode.cc:362
@@ -1072,7 +1072,7 @@ msgstr "สวาซิแลนด์"
 #. :SWZ:748:
 #: zypp/CountryCode.cc:368
 msgid "Turks and Caicos Islands"
-msgstr "เกาะเติร์กและเคคอส"
+msgstr "หมู่เกาะเติกส์และหมู่เกาะเคคอส"
 
 #. :TCA:796:
 #: zypp/CountryCode.cc:369
@@ -1082,7 +1082,7 @@ msgstr "ชาด"
 #. :TCD:148:
 #: zypp/CountryCode.cc:370
 msgid "French Southern Territories"
-msgstr "เฟรนช์เซาเทิร์น"
+msgstr "เฟรนช์เซาเทิร์นเทร์ริทอรีส์"
 
 #. :ATF:260:
 #: zypp/CountryCode.cc:371
@@ -1097,13 +1097,13 @@ msgstr "ไทย"
 #. :THA:764:
 #: zypp/CountryCode.cc:373
 msgid "Tajikistan"
-msgstr "ทาจีกิสถาน"
+msgstr "ทาจิกิสถาน"
 
 #. :TJK:762:
 #. language code: tkl
 #: zypp/CountryCode.cc:374 zypp/LanguageCode.cc:1045
 msgid "Tokelau"
-msgstr "โทเคเลา"
+msgstr "โตเกเลา"
 
 #. :TKL:772:
 #: zypp/CountryCode.cc:375
@@ -1113,7 +1113,7 @@ msgstr "เติร์กเมนิสถาน"
 #. :TKM:795:
 #: zypp/CountryCode.cc:376
 msgid "Tunisia"
-msgstr "ตูนีเซีย"
+msgstr "ตูนิเซีย"
 
 #. :TUN:788:
 #: zypp/CountryCode.cc:377
@@ -1133,7 +1133,7 @@ msgstr "ตุรกี"
 #. :TUR:792:
 #: zypp/CountryCode.cc:380
 msgid "Trinidad and Tobago"
-msgstr "ตรีนิแดดและโทบาโก"
+msgstr "ตรินิแดดและโตเบโก"
 
 #. :TTO:780:
 #. language code: tvl
@@ -1174,7 +1174,7 @@ msgstr "สหรัฐอเมริกา"
 #. :USA:840:
 #: zypp/CountryCode.cc:388
 msgid "Uruguay"
-msgstr "อูรุกวัย"
+msgstr "อุรุกวัย"
 
 #. :URY:858:
 #: zypp/CountryCode.cc:389
@@ -1194,7 +1194,7 @@ msgstr "เซนต์วินเซนต์และเกรนาดีน
 #. :VCT:670:
 #: zypp/CountryCode.cc:392
 msgid "Venezuela"
-msgstr "เวเนซูเอลา"
+msgstr "เวเนซุเอลา"
 
 #. :VEN:862:
 #: zypp/CountryCode.cc:393
@@ -1219,7 +1219,7 @@ msgstr "วานูอาตู"
 #. :VUT:548:
 #: zypp/CountryCode.cc:397
 msgid "Wallis and Futuna"
-msgstr "หมู่เกาะวาลลิสและหมู่เกาะฟุตูนา"
+msgstr "วาลลิสและฟุตูนา"
 
 #. :WLF:876:
 #: zypp/CountryCode.cc:398
@@ -1239,7 +1239,7 @@ msgstr "มายอต"
 #. :MYT:175:
 #: zypp/CountryCode.cc:401
 msgid "South Africa"
-msgstr "แอฟฟริกาใต้"
+msgstr "แอฟริกาใต้"
 
 #. :ZAF:710:
 #: zypp/CountryCode.cc:402
@@ -1253,11 +1253,11 @@ msgstr "ซิมบับเว"
 
 #: zypp/Dep.cc:96
 msgid "Provides"
-msgstr ""
+msgstr "มอบ"
 
 #: zypp/Dep.cc:97
 msgid "Prerequires"
-msgstr ""
+msgstr "สิ่งที่ต้องมีก่อน"
 
 #: zypp/Dep.cc:98
 msgid "Requires"
@@ -1274,25 +1274,25 @@ msgstr "ล้าสมัย"
 
 #: zypp/Dep.cc:101
 msgid "Recommends"
-msgstr ""
+msgstr "แนะนำ"
 
 #: zypp/Dep.cc:102
 msgid "Suggests"
-msgstr ""
+msgstr "อาจเกี่ยวข้อง"
 
 #: zypp/Dep.cc:103
 msgid "Enhances"
-msgstr ""
+msgstr "ขยาย"
 
 #: zypp/Dep.cc:104
 msgid "Supplements"
-msgstr ""
+msgstr "เสริม"
 
 #. TranslatorExplanation first %s is key name, second is keyring name
 #: zypp/KeyRing.cc:753
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
-msgstr ""
+msgstr "พยายามนำเข้ากุญแจ %s ที่ไม่มีอยู่จริงเข้าไปในพวงกุญแจ %s"
 
 #: zypp/KeyRing.cc:759
 #, fuzzy
@@ -1357,7 +1357,7 @@ msgstr ""
 #. language code: afr af
 #: zypp/LanguageCode.cc:177
 msgid "Afrikaans"
-msgstr "ภาษาแอฟริคานส์"
+msgstr "อาฟรีกานส์"
 
 #. language code: ain
 #: zypp/LanguageCode.cc:179
@@ -1389,13 +1389,13 @@ msgstr ""
 #: zypp/LanguageCode.cc:191
 #, fuzzy
 msgid "Algonquian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: alt
 #: zypp/LanguageCode.cc:193
 #, fuzzy
 msgid "Southern Altai"
-msgstr "แอฟฟริกาใต้"
+msgstr "อัลไตใต้"
 
 #. language code: amh am
 #: zypp/LanguageCode.cc:195
@@ -1460,7 +1460,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:219
 #, fuzzy
 msgid "Assamese"
-msgstr "เช่นเดียวกับ"
+msgstr ""
 
 #. language code: ast
 #: zypp/LanguageCode.cc:221
@@ -1471,13 +1471,13 @@ msgstr ""
 #: zypp/LanguageCode.cc:223
 #, fuzzy
 msgid "Athapascan Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: aus
 #: zypp/LanguageCode.cc:225
 #, fuzzy
 msgid "Australian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: ava av
 #: zypp/LanguageCode.cc:227
@@ -1618,7 +1618,7 @@ msgstr ""
 #. language code: bos bs
 #: zypp/LanguageCode.cc:281
 msgid "Bosnian"
-msgstr "ภาษาบอสเนีย"
+msgstr "บอสเนีย"
 
 #. language code: bra
 #: zypp/LanguageCode.cc:283
@@ -1649,7 +1649,7 @@ msgstr ""
 #. language code: bul bg
 #: zypp/LanguageCode.cc:293
 msgid "Bulgarian"
-msgstr "ภาษาบัลแกเรีย"
+msgstr "บัลแกเรีย"
 
 #. language code: bur mya my
 #: zypp/LanguageCode.cc:295 zypp/LanguageCode.cc:297
@@ -1679,7 +1679,7 @@ msgstr ""
 #. language code: cat ca
 #: zypp/LanguageCode.cc:307
 msgid "Catalan"
-msgstr "ภาษาคาตะลาน"
+msgstr "คาตาลัน"
 
 #. language code: cau
 #: zypp/LanguageCode.cc:309
@@ -1773,7 +1773,7 @@ msgstr "กาแยน"
 #: zypp/LanguageCode.cc:345
 #, fuzzy
 msgid "Chamic Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: cop
 #: zypp/LanguageCode.cc:347
@@ -1784,7 +1784,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:349
 #, fuzzy
 msgid "Cornish"
-msgstr "ภาษาเดนมาร์ก"
+msgstr ""
 
 #. language code: cos co
 #: zypp/LanguageCode.cc:351
@@ -1834,7 +1834,7 @@ msgstr ""
 #. language code: cze ces cs
 #: zypp/LanguageCode.cc:369 zypp/LanguageCode.cc:371
 msgid "Czech"
-msgstr "ภาษาเช็ก"
+msgstr "เช็ก"
 
 #. language code: dak
 #: zypp/LanguageCode.cc:373
@@ -1844,7 +1844,7 @@ msgstr ""
 #. language code: dan da
 #: zypp/LanguageCode.cc:375
 msgid "Danish"
-msgstr "ภาษาเดนมาร์ก"
+msgstr "เดนมาร์ก"
 
 #. language code: dar
 #: zypp/LanguageCode.cc:377
@@ -1896,7 +1896,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:395
 #, fuzzy
 msgid "Lower Sorbian"
-msgstr "ภาษาเซอร์เบียน"
+msgstr "เซอร์เบียต่ำ"
 
 #. language code: dua
 #: zypp/LanguageCode.cc:397
@@ -1911,7 +1911,7 @@ msgstr ""
 #. language code: dut nld nl
 #: zypp/LanguageCode.cc:401 zypp/LanguageCode.cc:403
 msgid "Dutch"
-msgstr "ภาษาดัตช์"
+msgstr "ดัตช์"
 
 #. language code: dyu
 #: zypp/LanguageCode.cc:405
@@ -1947,7 +1947,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:417
 #, fuzzy
 msgid "English"
-msgstr "ภาษาอังกฤษ (แบบอเมริกา)"
+msgstr "อังกฤษ"
 
 #. language code: enm
 #: zypp/LanguageCode.cc:419
@@ -1962,7 +1962,7 @@ msgstr ""
 #. language code: est et
 #: zypp/LanguageCode.cc:423
 msgid "Estonian"
-msgstr "ภาษาเอสโตเนีย"
+msgstr "เอสโตเนีย"
 
 #. language code: ewe ee
 #: zypp/LanguageCode.cc:425
@@ -2006,7 +2006,7 @@ msgstr "ฟิลิปปินส์"
 #. language code: fin fi
 #: zypp/LanguageCode.cc:439
 msgid "Finnish"
-msgstr "ภาษาฟินแลนด์"
+msgstr "ฟินแลนด์"
 
 #. language code: fiu
 #: zypp/LanguageCode.cc:441
@@ -2021,7 +2021,7 @@ msgstr ""
 #. language code: fre fra fr
 #: zypp/LanguageCode.cc:445 zypp/LanguageCode.cc:447
 msgid "French"
-msgstr "ภาษาฝรั่งเศส"
+msgstr "ฝรั่งเศส"
 
 #. language code: frm
 #: zypp/LanguageCode.cc:449
@@ -2068,7 +2068,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:465
 #, fuzzy
 msgid "Germanic (Other)"
-msgstr "ภาษาเยอรมัน (สวิตเซอร์แลนด์)"
+msgstr "เยอรมัน (อื่นๆ)"
 
 #. language code: geo kat ka
 #: zypp/LanguageCode.cc:467 zypp/LanguageCode.cc:469
@@ -2079,7 +2079,7 @@ msgstr "จอร์เจีย"
 #. language code: ger deu de
 #: zypp/LanguageCode.cc:471 zypp/LanguageCode.cc:473
 msgid "German"
-msgstr "ภาษาเยอรมัน"
+msgstr "เยอรมัน"
 
 #. language code: gez
 #: zypp/LanguageCode.cc:475
@@ -2159,7 +2159,7 @@ msgstr ""
 #. language code: guj gu
 #: zypp/LanguageCode.cc:507
 msgid "Gujarati"
-msgstr "ภาษาคุชราตี"
+msgstr "คุชราต"
 
 #. language code: gwi
 #: zypp/LanguageCode.cc:509
@@ -2190,7 +2190,7 @@ msgstr ""
 #. language code: heb he
 #: zypp/LanguageCode.cc:519
 msgid "Hebrew"
-msgstr "ภาษาฮิบรู"
+msgstr "ฮิบรู"
 
 #. language code: her hz
 #: zypp/LanguageCode.cc:521
@@ -2210,7 +2210,7 @@ msgstr ""
 #. language code: hin hi
 #: zypp/LanguageCode.cc:527
 msgid "Hindi"
-msgstr "ภาษาฮินดี"
+msgstr "ฮินดี"
 
 #. language code: hit
 #: zypp/LanguageCode.cc:529
@@ -2231,12 +2231,12 @@ msgstr ""
 #: zypp/LanguageCode.cc:535
 #, fuzzy
 msgid "Upper Sorbian"
-msgstr "ภาษาเซอร์เบียน"
+msgstr "เซอร์เบียบน"
 
 #. language code: hun hu
 #: zypp/LanguageCode.cc:537
 msgid "Hungarian"
-msgstr "ภาษาฮังการี"
+msgstr "ฮังการี"
 
 #. language code: hup
 #: zypp/LanguageCode.cc:539
@@ -2256,7 +2256,7 @@ msgstr ""
 #. language code: ice isl is
 #: zypp/LanguageCode.cc:545 zypp/LanguageCode.cc:547
 msgid "Icelandic"
-msgstr "ภาษาไอซ์แลนด์"
+msgstr "ไอซ์แลนด์"
 
 #. language code: ido io
 #: zypp/LanguageCode.cc:549
@@ -2303,7 +2303,7 @@ msgstr ""
 #. language code: ind id
 #: zypp/LanguageCode.cc:565
 msgid "Indonesian"
-msgstr "ภาษาอินโดนีเซีย"
+msgstr "อินโดนีเซีย"
 
 #. language code: ine
 #: zypp/LanguageCode.cc:567
@@ -2329,18 +2329,18 @@ msgstr ""
 #: zypp/LanguageCode.cc:575
 #, fuzzy
 msgid "Iroquoian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: ita it
 #: zypp/LanguageCode.cc:577
 msgid "Italian"
-msgstr "ภาษาอิตาลี"
+msgstr "อิตาลี"
 
 #. language code: jav jv
 #: zypp/LanguageCode.cc:579
 #, fuzzy
 msgid "Javanese"
-msgstr "ภาษาญี่ปุ่น"
+msgstr "ชวา"
 
 #. language code: jbo
 #: zypp/LanguageCode.cc:581
@@ -2350,19 +2350,19 @@ msgstr ""
 #. language code: jpn ja
 #: zypp/LanguageCode.cc:583
 msgid "Japanese"
-msgstr "ภาษาญี่ปุ่น"
+msgstr "ญี่ปุ่น"
 
 #. language code: jpr
 #: zypp/LanguageCode.cc:585
 #, fuzzy
 msgid "Judeo-Persian"
-msgstr "ภาษาอินโดนีเซีย"
+msgstr ""
 
 #. language code: jrb
 #: zypp/LanguageCode.cc:587
 #, fuzzy
 msgid "Judeo-Arabic"
-msgstr "ภาษาอารบิก"
+msgstr ""
 
 #. language code: kaa
 #: zypp/LanguageCode.cc:589
@@ -2440,7 +2440,7 @@ msgstr ""
 #. language code: khm km
 #: zypp/LanguageCode.cc:617
 msgid "Khmer"
-msgstr "ภาษาเขมร"
+msgstr "เขมร"
 
 #. language code: kho
 #: zypp/LanguageCode.cc:619
@@ -2486,7 +2486,7 @@ msgstr "คองโก"
 #. language code: kor ko
 #: zypp/LanguageCode.cc:635
 msgid "Korean"
-msgstr "ภาษาเกาหลี"
+msgstr "เกาหลี"
 
 #. language code: kos
 #: zypp/LanguageCode.cc:637
@@ -2675,17 +2675,17 @@ msgstr ""
 #: zypp/LanguageCode.cc:709
 #, fuzzy
 msgid "Malayalam"
-msgstr "มลยาฬัม"
+msgstr "มาลายาลัม"
 
 #. language code: man
 #: zypp/LanguageCode.cc:711
 msgid "Mandingo"
-msgstr ""
+msgstr "มันดิงกา"
 
 #. language code: mao mri mi
 #: zypp/LanguageCode.cc:713 zypp/LanguageCode.cc:715
 msgid "Maori"
-msgstr "มาวรี"
+msgstr "เมารี"
 
 #. language code: map
 #: zypp/LanguageCode.cc:717
@@ -2695,7 +2695,7 @@ msgstr ""
 #. language code: mar mr
 #: zypp/LanguageCode.cc:719
 msgid "Marathi"
-msgstr "ภาษามาราฐี"
+msgstr "มราฐี"
 
 #. language code: mas
 #: zypp/LanguageCode.cc:721
@@ -2717,7 +2717,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:729
 #, fuzzy
 msgid "Mandar"
-msgstr "รวันด้า"
+msgstr ""
 
 #. language code: men
 #: zypp/LanguageCode.cc:731
@@ -2727,7 +2727,7 @@ msgstr ""
 #. language code: mga
 #: zypp/LanguageCode.cc:733
 msgid "Irish, Middle (900-1200)"
-msgstr ""
+msgstr "ไอริชกลาง (900-1200)"
 
 #. language code: mic
 #: zypp/LanguageCode.cc:735
@@ -2743,7 +2743,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:739
 #, fuzzy
 msgid "Miscellaneous Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: mkh
 #: zypp/LanguageCode.cc:741
@@ -2776,7 +2776,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:751
 #, fuzzy
 msgid "Manobo Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: moh
 #: zypp/LanguageCode.cc:753
@@ -2804,19 +2804,19 @@ msgstr ""
 #: zypp/LanguageCode.cc:761
 #, fuzzy
 msgid "Multiple Languages"
-msgstr "ภาษา"
+msgstr "หลายภาษา"
 
 #. language code: mun
 #: zypp/LanguageCode.cc:763
 #, fuzzy
 msgid "Munda languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: mus
 #: zypp/LanguageCode.cc:765
 #, fuzzy
 msgid "Creek"
-msgstr "ภาษากรีก"
+msgstr "มัสคีกี"
 
 #. language code: mwl
 #: zypp/LanguageCode.cc:767
@@ -2832,7 +2832,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:771
 #, fuzzy
 msgid "Mayan Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: myv
 #: zypp/LanguageCode.cc:773
@@ -2848,7 +2848,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:777
 #, fuzzy
 msgid "North American Indian"
-msgstr "อเมริกาเหนือ"
+msgstr ""
 
 #. language code: nap
 #: zypp/LanguageCode.cc:779
@@ -2858,7 +2858,7 @@ msgstr ""
 #. language code: nav nv
 #: zypp/LanguageCode.cc:783
 msgid "Navajo"
-msgstr ""
+msgstr "นาวาโฮ"
 
 #. language code: nbl nr
 #: zypp/LanguageCode.cc:785
@@ -2874,13 +2874,13 @@ msgstr ""
 #: zypp/LanguageCode.cc:789
 #, fuzzy
 msgid "Ndonga"
-msgstr "ตองก้า"
+msgstr "ตองกา"
 
 #. language code: nds
 #: zypp/LanguageCode.cc:791
 #, fuzzy
 msgid "Low German"
-msgstr "ภาษาเยอรมัน"
+msgstr "เยอรมันต่ำ"
 
 #. language code: nep ne
 #: zypp/LanguageCode.cc:793
@@ -2892,7 +2892,7 @@ msgstr "เนปาล"
 #: zypp/LanguageCode.cc:795
 #, fuzzy
 msgid "Nepal Bhasa"
-msgstr "เนปาล"
+msgstr ""
 
 #. language code: nia
 #: zypp/LanguageCode.cc:797
@@ -2908,45 +2908,45 @@ msgstr ""
 #: zypp/LanguageCode.cc:801
 #, fuzzy
 msgid "Niuean"
-msgstr "นิอุเอ"
+msgstr "นีวเว"
 
 #. language code: nno nn
 #: zypp/LanguageCode.cc:803
 #, fuzzy
 msgid "Norwegian Nynorsk"
-msgstr "ภาษานอร์เวย์"
+msgstr "นอร์เวย์นีนอสก์"
 
 #. language code: nob nb
 #: zypp/LanguageCode.cc:805
 #, fuzzy
 msgid "Norwegian Bokmal"
-msgstr "ภาษานอร์เวย์"
+msgstr "นอร์เวย์บุคมอล"
 
 #. language code: nog
 #: zypp/LanguageCode.cc:807
 msgid "Nogai"
-msgstr ""
+msgstr "โนไก"
 
 #. language code: non
 #: zypp/LanguageCode.cc:809
 msgid "Norse, Old"
-msgstr ""
+msgstr "นอร์สโบราณ"
 
 #. language code: nor no
 #: zypp/LanguageCode.cc:811
 msgid "Norwegian"
-msgstr "ภาษานอร์เวย์"
+msgstr "นอร์เวย์"
 
 #. language code: nso
 #: zypp/LanguageCode.cc:813
 msgid "Northern Sotho"
-msgstr ""
+msgstr "โซโทเหนือ"
 
 #. language code: nub
 #: zypp/LanguageCode.cc:815
 #, fuzzy
 msgid "Nubian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: nwc
 #: zypp/LanguageCode.cc:817
@@ -2961,64 +2961,64 @@ msgstr ""
 #. language code: nym
 #: zypp/LanguageCode.cc:821
 msgid "Nyamwezi"
-msgstr ""
+msgstr "เนียมเวซี"
 
 #. language code: nyn
 #: zypp/LanguageCode.cc:823
 msgid "Nyankole"
-msgstr ""
+msgstr "เนียนโกเล"
 
 #. language code: nyo
 #: zypp/LanguageCode.cc:825
 msgid "Nyoro"
-msgstr ""
+msgstr "นิโอโร"
 
 #. language code: nzi
 #: zypp/LanguageCode.cc:827
 msgid "Nzima"
-msgstr ""
+msgstr "นซิมา"
 
 #. language code: oci oc
 #: zypp/LanguageCode.cc:829
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "อ็อกซิตัน (หลัง 1500)"
 
 #. language code: oji oj
 #: zypp/LanguageCode.cc:831
 msgid "Ojibwa"
-msgstr ""
+msgstr "โอจิบวา"
 
 #. language code: ori or
 #: zypp/LanguageCode.cc:833
 msgid "Oriya"
-msgstr ""
+msgstr "โอดิยา"
 
 #. language code: orm om
 #: zypp/LanguageCode.cc:835
 msgid "Oromo"
-msgstr ""
+msgstr "โอโรโม"
 
 #. language code: osa
 #: zypp/LanguageCode.cc:837
 #, fuzzy
 msgid "Osage"
-msgstr "แถบแสดงการใช้"
+msgstr "โอซากี"
 
 #. language code: oss os
 #: zypp/LanguageCode.cc:839
 msgid "Ossetian"
-msgstr ""
+msgstr "ออสเซเตีย"
 
 #. language code: ota
 #: zypp/LanguageCode.cc:841
 msgid "Turkish, Ottoman (1500-1928)"
-msgstr ""
+msgstr "ตุรกีออตโตมัน (1500-1928)"
 
 #. language code: oto
 #: zypp/LanguageCode.cc:843
 #, fuzzy
 msgid "Otomian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: paa
 #: zypp/LanguageCode.cc:845
@@ -3028,23 +3028,23 @@ msgstr ""
 #. language code: pag
 #: zypp/LanguageCode.cc:847
 msgid "Pangasinan"
-msgstr ""
+msgstr "ปังกาซีนัน"
 
 #. language code: pal
 #: zypp/LanguageCode.cc:849
 msgid "Pahlavi"
-msgstr ""
+msgstr "ปะห์ลาวี"
 
 #. language code: pam
 #: zypp/LanguageCode.cc:851
 msgid "Pampanga"
-msgstr ""
+msgstr "ปัมปังกา"
 
 #. language code: pan pa
 #: zypp/LanguageCode.cc:853
 #, fuzzy
 msgid "Panjabi"
-msgstr "ภาษาปัญจาบี"
+msgstr "ปัญจาบ"
 
 #. language code: pap
 #: zypp/LanguageCode.cc:855
@@ -3055,24 +3055,24 @@ msgstr ""
 #: zypp/LanguageCode.cc:857
 #, fuzzy
 msgid "Palauan"
-msgstr "เกาะพาเลา"
+msgstr "ปาเลา"
 
 #. language code: peo
 #: zypp/LanguageCode.cc:859
 msgid "Persian, Old (ca.600-400 B.C.)"
-msgstr ""
+msgstr "เปอร์เซียโบราณ (ประมาณ 600-400 B.C."
 
 #. language code: per fas fa
 #: zypp/LanguageCode.cc:861 zypp/LanguageCode.cc:863
 #, fuzzy
 msgid "Persian"
-msgstr "รุ่น"
+msgstr "เปอร์เซีย"
 
 #. language code: phi
 #: zypp/LanguageCode.cc:865
 #, fuzzy
 msgid "Philippine (Other)"
-msgstr "ฟิลิปปินส์"
+msgstr "ฟิลิปปินส์ (อื่นๆ)"
 
 #. language code: phn
 #: zypp/LanguageCode.cc:867
@@ -3087,7 +3087,7 @@ msgstr ""
 #. language code: pol pl
 #: zypp/LanguageCode.cc:871
 msgid "Polish"
-msgstr "ภาษาโปแลนด์"
+msgstr "โปแลนด์"
 
 #. language code: pon
 #: zypp/LanguageCode.cc:873
@@ -3097,13 +3097,13 @@ msgstr ""
 #. language code: por pt
 #: zypp/LanguageCode.cc:875
 msgid "Portuguese"
-msgstr "ภาษาโปรตุเกส"
+msgstr "โปรตุเกส"
 
 #. language code: pra
 #: zypp/LanguageCode.cc:877
 #, fuzzy
 msgid "Prakrit Languages"
-msgstr "ภาษาหลัก"
+msgstr ""
 
 #. language code: pro
 #: zypp/LanguageCode.cc:879
@@ -3155,7 +3155,7 @@ msgstr "โรมาเนีย"
 #. language code: rum ron ro
 #: zypp/LanguageCode.cc:897 zypp/LanguageCode.cc:899
 msgid "Romanian"
-msgstr "ภาษาโรมาเนีย"
+msgstr "โรมาเนีย"
 
 #. language code: run rn
 #: zypp/LanguageCode.cc:901
@@ -3166,7 +3166,7 @@ msgstr "บุรุนดี"
 #. language code: rus ru
 #: zypp/LanguageCode.cc:903
 msgid "Russian"
-msgstr "ภาษารัสเซีย"
+msgstr "รัสเซีย"
 
 #. language code: sad
 #: zypp/LanguageCode.cc:905
@@ -3193,7 +3193,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:913
 #, fuzzy
 msgid "Salishan Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: sam
 #: zypp/LanguageCode.cc:915
@@ -3218,7 +3218,7 @@ msgstr ""
 #. language code: scc srp sr
 #: zypp/LanguageCode.cc:923 zypp/LanguageCode.cc:925
 msgid "Serbian"
-msgstr "ภาษาเซอร์เบียน"
+msgstr "เซอร์เบีย"
 
 #. language code: scn
 #: zypp/LanguageCode.cc:927
@@ -3233,7 +3233,7 @@ msgstr ""
 #. language code: scr hrv hr
 #: zypp/LanguageCode.cc:931 zypp/LanguageCode.cc:933
 msgid "Croatian"
-msgstr "ภาษาโครเอเชีย"
+msgstr "โครเอเชีย"
 
 #. language code: sel
 #: zypp/LanguageCode.cc:935
@@ -3254,7 +3254,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:941
 #, fuzzy
 msgid "Sign Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: shn
 #: zypp/LanguageCode.cc:943
@@ -3270,13 +3270,13 @@ msgstr ""
 #. language code: sin si
 #: zypp/LanguageCode.cc:947
 msgid "Sinhala"
-msgstr "ภาษาอักษรสิงหล"
+msgstr "สิงหล"
 
 #. language code: sio
 #: zypp/LanguageCode.cc:949
 #, fuzzy
 msgid "Siouan Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: sit
 #: zypp/LanguageCode.cc:951
@@ -3291,24 +3291,24 @@ msgstr ""
 #. language code: slo slk sk
 #: zypp/LanguageCode.cc:955 zypp/LanguageCode.cc:957
 msgid "Slovak"
-msgstr "ภาษาสโลวะเกีย"
+msgstr "สโลวะเกีย"
 
 #. language code: slv sl
 #: zypp/LanguageCode.cc:959
 msgid "Slovenian"
-msgstr "ภาษาสโลวีเนีย"
+msgstr "สโลวีเนีย"
 
 #. language code: sma
 #: zypp/LanguageCode.cc:961
 #, fuzzy
 msgid "Southern Sami"
-msgstr "จอร์เจียใต้"
+msgstr ""
 
 #. language code: sme se
 #: zypp/LanguageCode.cc:963
 #, fuzzy
 msgid "Northern Sami"
-msgstr "อเมริกาเหนือ"
+msgstr ""
 
 #. language code: smi
 #: zypp/LanguageCode.cc:965
@@ -3367,7 +3367,7 @@ msgstr "โซมาเลีย"
 #: zypp/LanguageCode.cc:985
 #, fuzzy
 msgid "Songhai"
-msgstr "เซี่ยงไฮ้"
+msgstr ""
 
 #. language code: sot st
 #: zypp/LanguageCode.cc:987
@@ -3377,13 +3377,13 @@ msgstr ""
 #. language code: spa es
 #: zypp/LanguageCode.cc:989
 msgid "Spanish"
-msgstr "ภาษาสเปน"
+msgstr "สเปน"
 
 #. language code: srd sc
 #: zypp/LanguageCode.cc:991
 #, fuzzy
 msgid "Sardinian"
-msgstr "ภาษายูเครน"
+msgstr ""
 
 #. language code: srr
 #: zypp/LanguageCode.cc:993
@@ -3409,7 +3409,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:1001
 #, fuzzy
 msgid "Sundanese"
-msgstr "วันอาทิตย์"
+msgstr ""
 
 #. language code: sus
 #: zypp/LanguageCode.cc:1003
@@ -3420,7 +3420,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:1005
 #, fuzzy
 msgid "Sumerian"
-msgstr "ลำดับอนุกรม (Seri&al)"
+msgstr ""
 
 #. language code: swa sw
 #: zypp/LanguageCode.cc:1007
@@ -3430,7 +3430,7 @@ msgstr ""
 #. language code: swe sv
 #: zypp/LanguageCode.cc:1009
 msgid "Swedish"
-msgstr "ภาษาสวีเดน"
+msgstr "สวีเดน"
 
 #. language code: syr
 #: zypp/LanguageCode.cc:1011
@@ -3442,7 +3442,7 @@ msgstr "ซีเรีย"
 #: zypp/LanguageCode.cc:1013
 #, fuzzy
 msgid "Tahitian"
-msgstr "ภาษาโครเอเชีย"
+msgstr ""
 
 #. language code: tai
 #: zypp/LanguageCode.cc:1015
@@ -3453,7 +3453,7 @@ msgstr "อื่น ๆ"
 #. language code: tam ta
 #: zypp/LanguageCode.cc:1017
 msgid "Tamil"
-msgstr "ภาษาทมิฬ"
+msgstr "ทมิฬ"
 
 #. language code: tat tt
 #: zypp/LanguageCode.cc:1019
@@ -3495,7 +3495,7 @@ msgstr ""
 #. language code: tha th
 #: zypp/LanguageCode.cc:1033
 msgid "Thai"
-msgstr "ภาษาไทย"
+msgstr "ไทย"
 
 #. language code: tib bod bo
 #: zypp/LanguageCode.cc:1035 zypp/LanguageCode.cc:1037
@@ -3580,12 +3580,12 @@ msgstr ""
 #: zypp/LanguageCode.cc:1069
 #, fuzzy
 msgid "Tupi Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: tur tr
 #: zypp/LanguageCode.cc:1071
 msgid "Turkish"
-msgstr "ภาษาตุรกี"
+msgstr "ตุรกี"
 
 #. language code: tut
 #: zypp/LanguageCode.cc:1073
@@ -3620,7 +3620,7 @@ msgstr ""
 #. language code: ukr uk
 #: zypp/LanguageCode.cc:1087
 msgid "Ukrainian"
-msgstr "ภาษายูเครน"
+msgstr "ยูเครน"
 
 #. language code: umb
 #: zypp/LanguageCode.cc:1089
@@ -3658,7 +3658,7 @@ msgstr "ผู้ผลิต"
 #. language code: vie vi
 #: zypp/LanguageCode.cc:1101
 msgid "Vietnamese"
-msgstr "ภาษาเวียดนาม"
+msgstr "เวียดนาม"
 
 #. language code: vol vo
 #: zypp/LanguageCode.cc:1103
@@ -3674,7 +3674,7 @@ msgstr ""
 #: zypp/LanguageCode.cc:1107
 #, fuzzy
 msgid "Wakashan Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: wal
 #: zypp/LanguageCode.cc:1109
@@ -3694,18 +3694,18 @@ msgstr ""
 #. language code: wel cym cy
 #: zypp/LanguageCode.cc:1115 zypp/LanguageCode.cc:1117
 msgid "Welsh"
-msgstr "ภาษาเวลช์"
+msgstr "เวลส์"
 
 #. language code: wen
 #: zypp/LanguageCode.cc:1119
 #, fuzzy
 msgid "Sorbian Languages"
-msgstr "เป็นก_ลุ่มภาษา"
+msgstr ""
 
 #. language code: wln wa
 #: zypp/LanguageCode.cc:1121
 msgid "Walloon"
-msgstr "ภาษาวัลลูน"
+msgstr "วัลลูน"
 
 #. language code: wol wo
 #: zypp/LanguageCode.cc:1123
@@ -3720,7 +3720,7 @@ msgstr ""
 #. language code: xho xh
 #: zypp/LanguageCode.cc:1127
 msgid "Xhosa"
-msgstr "ภาษาโคซา"
+msgstr "โคซา"
 
 #. language code: yao
 #: zypp/LanguageCode.cc:1129
@@ -3741,13 +3741,13 @@ msgstr ""
 #: zypp/LanguageCode.cc:1135
 #, fuzzy
 msgid "Yoruba"
-msgstr "อรูบา"
+msgstr "โยรูบา"
 
 #. language code: ypk
 #: zypp/LanguageCode.cc:1137
 #, fuzzy
 msgid "Yupik Languages"
-msgstr "ภาษา"
+msgstr ""
 
 #. language code: zap
 #: zypp/LanguageCode.cc:1139
@@ -3772,7 +3772,7 @@ msgstr ""
 #. language code: zul zu
 #: zypp/LanguageCode.cc:1147
 msgid "Zulu"
-msgstr "ภาษาซูลู"
+msgstr "ซูลู"
 
 #. language code: zun
 #: zypp/LanguageCode.cc:1149
@@ -4738,7 +4738,7 @@ msgstr ""
 #: zypp/target/rpm/RpmDb.cc:1845 zypp/target/rpm/RpmDb.cc:2014
 #, fuzzy
 msgid "Additional rpm output"
-msgstr "ข้อมูลเพิ่มเติม"
+msgstr "ข้อมูล rpm output เพิ่มเติม"
 
 #: zypp/target/rpm/RpmDb.cc:2212
 #, c-format, boost-format
@@ -4749,7 +4749,7 @@ msgstr ""
 #: zypp/target/rpm/RpmDb.cc:2233
 #, fuzzy
 msgid "Signature is OK"
-msgstr "ไม่พบแฟ้มควบคุม %1 บนสื่อการติดตั้ง"
+msgstr "ลายเซ็นใช้ได้"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2235
@@ -4760,13 +4760,13 @@ msgstr ""
 #: zypp/target/rpm/RpmDb.cc:2237
 #, fuzzy
 msgid "Signature does not verify"
-msgstr "ไม่พบแฟ้มควบคุม %1 บนสื่อการติดตั้ง"
+msgstr "ลายเช็นไม่ได้รับการตรวจสอบ"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2239
 #, fuzzy
 msgid "Signature is OK, but key is not trusted"
-msgstr "ไม่พบแฟ้มควบคุม %1 บนสื่อการติดตั้ง"
+msgstr "ลายเซ็นใช้ได้ แต่กุญแตไม่สามารถเชื่อถือได้"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2241
@@ -4792,12 +4792,12 @@ msgstr ""
 #: zypp-core/ExternalProgram.cc:245
 #, fuzzy, c-format, boost-format
 msgid "Can't open pty (%s)."
-msgstr "ไม่สามารถเปิดแฟ้ม %1 ได้"
+msgstr "ไม่สามารถเปิด pty (%s) ได้"
 
 #: zypp-core/ExternalProgram.cc:264 zypp-core/ExternalProgram.cc:281
 #, fuzzy, c-format, boost-format
 msgid "Can't open pipe (%s)."
-msgstr "ไม่สามารถเปิดแฟ้ม %1 ได้"
+msgstr "ไม่สามารถเปิด pipe (%s) ได้"
 
 #: zypp-core/Url.cc:114
 msgid "Invalid LDAP URL query string"
@@ -4823,7 +4823,7 @@ msgstr ""
 #: zypp-core/base/Exception.cc:150
 #, fuzzy
 msgid "History:"
-msgstr "คลังแพกเกจ: "
+msgstr "ประวัติ:"
 
 #: zypp-core/url/UrlBase.cc:220
 #, c-format, boost-format
@@ -4872,7 +4872,7 @@ msgstr ""
 #: zypp-core/url/UrlBase.cc:1126
 #, fuzzy, c-format, boost-format
 msgid "Invalid host component '%s'"
-msgstr "ค่าสำหรับตัวเลือก '%1' ไม่ถูกต้อง: %2"
+msgstr "host component '%s' ไม่ถูกต้อง"
 
 #: zypp-core/url/UrlBase.cc:1147
 msgid "Url scheme does not allow a port"
@@ -4881,7 +4881,7 @@ msgstr ""
 #: zypp-core/url/UrlBase.cc:1158
 #, fuzzy, c-format, boost-format
 msgid "Invalid port component '%s'"
-msgstr "ค่าสำหรับตัวเลือก '%1' ไม่ถูกต้อง: %2"
+msgstr "port component '%s' ไม่ถูกต้อง"
 
 #: zypp-core/url/UrlBase.cc:1175
 msgid "Url scheme requires path name"
@@ -4910,7 +4910,7 @@ msgstr ""
 #: zypp-core/zyppng/io/abstractspawnengine.cc:183
 #, fuzzy, c-format, boost-format
 msgid "Command exited with status %d."
-msgstr "หมดเวลาของคำสั่งหลังจาก %1 วินาที"
+msgstr "ออกจากคำสั่งด้วยสถานะ %d"
 
 #: zypp-core/zyppng/io/abstractspawnengine.cc:204
 #, c-format, boost-format
@@ -4938,7 +4938,7 @@ msgstr ""
 #: zypp-core/zyppng/io/forkspawnengine.cc:376
 #, fuzzy, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
-msgstr "ไม่สามารถเปิดแฟ้ม %1 ได้"
+msgstr "ไม่สามารถ chdir ไป '%s' (%s) ได้"
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:377
 #, c-format, boost-format
@@ -5307,15 +5307,15 @@ msgstr "ไม่ใช่"
 #~ msgstr "ล้มเหลวในการดาวน์โหลดแฟ้ม delta ของแพกเกจ RPM: %1"
 
 #~ msgid "Serbia and Montenegro"
-#~ msgstr "เซอร์เบีย และมอนติเนโกร"
+#~ msgstr "เซอร์เบียและมอนเตเนโกร"
 
 #, fuzzy
 #~ msgid "Unknown Distribution"
-#~ msgstr "ผู้รวบรวมเผยแพร่:"
+#~ msgstr "ผู้รวบรวมเผยแพร่ที่ไม่รู้จัก"
 
 #, fuzzy
 #~ msgid "ignore some dependencies of %s"
-#~ msgstr "การตรวจสอบการขึ้นอยู่แก่กันของระบบ ไม่พบปัญหา"
+#~ msgstr "เพิกเฉยต่อการขึ้นอยู่แก่กันของ %s"
 
 #, fuzzy
 #~ msgid ""
@@ -5337,16 +5337,16 @@ msgstr "ไม่ใช่"
 
 #, fuzzy
 #~ msgid "%s remove ok"
-#~ msgstr "เพื่อจะลบ:"
+#~ msgstr "ลบ % เรียบร้อย"
 
 #, fuzzy
 #~ msgid "Do not install or delete the resolvables concerned"
-#~ msgstr "ไม่ต้องทำการติดตั้งตัวจัดการการบูตระบบ ให้ทำเพียงสร้างแฟ้มการปรับแต่ง"
+#~ msgstr "ไม่ต้องติดตั้งหรือลบสิ่งที่แก้ไขได้ที่กำลังคำนึงถึง"
 
 #, fuzzy
 #~ msgid "Can't open solv-file: "
-#~ msgstr "ไม่สามารถเปิดแฟ้ม %1 ได้"
+#~ msgstr "ไม่สามารถเปิดแฟ้ม solv-file:"
 
 #, fuzzy
 #~ msgid "Error reading solv-file: "
-#~ msgstr "เกิดข้อผิดพลาดขึ้นระหว่างเขียนแฟ้ม '%1'"
+#~ msgstr "เกิดข้อผิดพลาดระหว่างเขียนแฟ้ม solv-file: "

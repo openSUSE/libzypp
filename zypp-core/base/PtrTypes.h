@@ -97,6 +97,12 @@ namespace zypp
     /** \class intrusive_ptr */
     using boost::intrusive_ptr;
 
+    template<typename T, typename... Args>
+    inline intrusive_ptr<T>
+    make_intrusive( Args&&... __args ) {
+      return intrusive_ptr<T>( new T( std::forward<Args>(__args)...) );
+    }
+
     /** */
     using boost::static_pointer_cast;
     /**  */

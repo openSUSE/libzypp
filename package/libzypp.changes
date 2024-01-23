@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Tue Jan 23 16:10:26 CET 2024 - ma@suse.de
+
+- CheckAccessDeleted: fix running_in_container detection
+  (bsc#1218782)
+- Detect CURLOPT_REDIR_PROTOCOLS_STR availability at runtime
+  (bsc#1218831)
+- Make Wakeup class EINTR safe.
+- Add a way to cancel media operations on shutdown
+  (openSUSE/zypper#522)
+  This patch adds a mechanism to signal libzypp that a shutdown was
+  requested, usually when CTRL+C was pressed by the user. Currently
+  only the media backend will utilize this, but can be extended to
+  all code paths that use g_poll() to wait for events.
+- Manually poll fds for curl in MediaCurl.
+  Using curl_easy_perform does not give us the required control on
+  when we want to cancel a download. Switching to the MultiCurl
+  implementation with a external poll() event loop will give us
+  much more freedom and helps us to improve our Ctrl+C handling.
+- Move reusable curl poll code to curlhelper.h.
+- version 17.31.29 (22)
+
+-------------------------------------------------------------------
 Tue Jan  9 15:38:42 CET 2024 - ma@suse.de
 
 - Fix to build with libxml 2.12.x (fixes #505)

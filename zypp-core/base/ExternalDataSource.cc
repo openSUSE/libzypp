@@ -9,9 +9,9 @@
 /** \file zypp/base/ExternalDataSource.cc
  */
 
+
 #define _GNU_SOURCE 1 // for ::getline
 
-#include <signal.h>
 #include <errno.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -25,6 +25,7 @@
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/ExternalDataSource.h>
 #include <zypp-core/AutoDispose.h>
+#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
 using std::endl;
 
@@ -111,12 +112,10 @@ namespace zypp {
       io::setFILEBlocking( inputfile, mode );
     }
 
-    std::string
-    ExternalDataSource::receiveLine()
+    std::string ExternalDataSource::receiveLine()
     {
-      if ( inputfile )
-      {
-        ssize_t nread = getline( &linebuffer, &linebuffer_size, inputfile );
+      if ( inputfile ) {
+        ssize_t nread = zyppng::eintrSafeCallEx( getline, [&](){clearerr ( inputfile );}, &linebuffer, &linebuffer_size, inputfile );
         if ( nread == -1 )
             return "";
         else

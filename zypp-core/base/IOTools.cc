@@ -124,21 +124,25 @@ namespace zypp::io {
 
       clearerr( inputfile );
 
-      int retval = g_poll( &fd, 1, remainingTimeout );
+      int retval = zyppng::eintrSafeCall( g_poll, &fd, 1, remainingTimeout );
       if ( retval == -1 )
       {
-        if ( errno != EINTR ) {
-          ERR << "select error: " << strerror(errno) << std::endl;
-          return std::make_pair( ReceiveUpToResult::Error, std::string() );
-        }
+        ERR << "select error: " << zyppng::strerr_cxx() << std::endl;
+        return std::make_pair( ReceiveUpToResult::Error, std::string() );
       }
       else if ( retval )
       {
         // Data is available now.
-        ssize_t nread = getdelim( &linebuf.value(), &linebuffer_size, c, inputfile );
+        ssize_t nread = zyppng::eintrSafeCallEx( ::getdelim, [&](){ clearerr( inputfile ); }, &linebuf.value(), &linebuffer_size, c, inputfile );
         if ( nread == -1 ) {
-          if ( ::feof( inputfile ) )
+          if ( ::feof( inputfile ) ) {
             return std::make_pair( ReceiveUpToResult::EndOfFile, std::move(line) );
+          }
+          if ( errno != EAGAIN && ( ::ferror( inputfile ) || errno != 0 ) ) {
+            if ( errno ) ERR << "getdelim error: " << zyppng::strerr_cxx() << std::endl;
+            else ERR << "Unknown getdelim error." << std::endl;
+            return std::make_pair( ReceiveUpToResult::Error, std::string() );
+          }
         }
         else
         {

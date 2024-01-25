@@ -17,13 +17,38 @@ namespace zyppng {
     return std::string( strBuf.data() );
   }
 
+
+  /*!
+   * Extended version of \ref eintrSafeCall
+   *
+   * Calls a given \a function in a \a EINTR safe way. The \a restartCb is
+   * invoked after every time we have to restart \a function because of EINTR, it can be used to
+   * reset additional errors:
+   * \code
+   * FILE *myFile;
+   * // open file
+   * // ...
+   * eintrSafeCall( ::getline, [&](){ ::clearerr(myFile); }, myFile );
+   * \endcode
+   */
+  template<typename Fun, typename RestartCb, typename... Args >
+  auto eintrSafeCallEx ( const Fun &function, const RestartCb &restartCb, Args&&... args ) {
+    int res;
+    while ( true ) {
+      errno = 0;
+      res = std::invoke(function, args... );
+      if ( res == -1 && errno == EINTR ) {
+        std::invoke( restartCb );
+        continue;
+      }
+      break;
+    };
+    return res;
+  }
+
   template<typename Fun, typename... Args >
   auto eintrSafeCall ( Fun &&function, Args&&... args ) {
-    int res;
-    do {
-      res = std::forward<Fun>(function)( std::forward<Args>(args)... );
-    } while ( res == -1 && errno == EINTR );
-    return res;
+    return eintrSafeCallEx( std::forward<Fun>(function), [](){},  std::forward<Args>(args)... );
   }
 
   bool blockAllSignalsForCurrentThread ( );

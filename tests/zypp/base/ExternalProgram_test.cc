@@ -9,6 +9,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <signal.h>
+#include <sys/time.h>
+
 #define BOOST_TEST_MODULE ExternalProgram
 #define DATADIR (Pathname(TESTS_SRC_DIR) + "/zypp/base/data/ExternalProgram")
 
@@ -220,4 +223,46 @@ BOOST_AUTO_TEST_CASE( WaitForExit )
   BOOST_CHECK( !proc.waitForExit( 500 ) );
   BOOST_REQUIRE_LT( zyppng::Timer::elapsedSince( start), 1000 );
   BOOST_CHECK( proc.waitForExit() );
+}
+
+
+void handler(int signo, siginfo_t *info, void *context)
+{ /* do nothing */ }
+
+BOOST_AUTO_TEST_CASE(readline_sigalrm)
+{
+  struct sigaction act = { {0} };
+  struct sigaction oldAct = { {0} };
+  act.sa_flags = SA_SIGINFO;
+  act.sa_sigaction = &handler;
+  sigaction(SIGALRM, &act, &oldAct);
+
+  struct itimerval t = { {0} };
+  t.it_interval.tv_sec = 42;
+  t.it_value.tv_sec = 1;
+  setitimer(ITIMER_REAL, &t, NULL);
+
+  ExternalProgram::Arguments cmd;
+  cmd.push_back("sh");
+  cmd.push_back("-c");
+  cmd.push_back("sleep 2; echo license.de.txt");
+
+  LocaleSet ret;
+  ExternalProgram prog( cmd, ExternalProgram::Stderr_To_Stdout );
+
+  std::string received;
+  for ( std::string output( prog.receiveLine() ); output.length() ; output = prog.receiveLine( ) ) {
+    received += output;
+  }
+  prog.close();
+
+  BOOST_REQUIRE( !received.empty() );
+  BOOST_REQUIRE_EQUAL( received, "license.de.txt\n");
+
+  // disable timer and handler
+  sigaction(SIGALRM, &oldAct, NULL);
+  t.it_interval.tv_sec = 0;
+  t.it_value.tv_sec    = 0;
+  setitimer(ITIMER_REAL, &t, NULL);
+
 }

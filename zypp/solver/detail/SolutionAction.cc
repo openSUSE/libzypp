@@ -55,6 +55,8 @@ SolutionAction::~SolutionAction()
 {
 }
 
+bool SolutionAction::skipsPatchesOnly() const
+{ return false; }
 
 //---------------------------------------------------------------------------
 
@@ -166,6 +168,9 @@ TransactionSolutionAction::execute(ResolverInternal & resolver) const
     }
     return ret;
 }
+
+bool TransactionSolutionAction::skipsPatchesOnly() const
+{ return _action == KEEP && _item.isKind<Patch>(); }
 
 bool
 InjectSolutionAction::execute(ResolverInternal & resolver) const

@@ -60,6 +60,10 @@ namespace zypp
              * Returns 'true' on success, 'false' on error.
              **/
             virtual bool execute (ResolverInternal & resolver) const = 0;
+
+        public:
+            /** The solution contains only 'do not install patch:' actions. */
+            virtual bool skipsPatchesOnly() const;
         };
 
 
@@ -117,7 +121,11 @@ namespace zypp
           TransactionKind action() const { return _action; }
 
           // ---------------------------------- methods
-            virtual bool execute(ResolverInternal & resolver) const;
+          virtual bool execute(ResolverInternal & resolver) const;
+
+        public:
+            /** The solution contains only 'do not install patch:' actions. */
+            bool skipsPatchesOnly() const override;
 
         protected:
 

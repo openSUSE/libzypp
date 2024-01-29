@@ -23,6 +23,7 @@
  */
 
 #define ZYPP_USE_RESOLVER_INTERNALS
+#include <functional>
 
 #include <zypp/base/Gettext.h>
 #include <zypp/solver/detail/SolutionAction.h>
@@ -58,6 +59,17 @@ namespace zypp
     std::string		_description;
     std::string		_details;
     SolutionActionList	_actions;
+
+    template <typename Predicate>
+    bool allActionsMatch( Predicate && predicate ) const
+    {
+      if ( _actions.empty() )
+        return false;
+      for ( const auto & aptr : _actions )
+        if ( not std::invoke( std::forward<Predicate>(predicate), aptr ) )
+          return false;
+      return true;
+    }
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -123,6 +135,13 @@ namespace zypp
   void ProblemSolution::addAction( solver::detail::SolutionAction_Ptr action )
   { _pimpl->_actions.push_back( action ); }
 
+
+  bool ProblemSolution::skipsPatchesOnly() const
+  {
+    return _pimpl->allActionsMatch( []( const SolutionAction_Ptr & aptr ) -> bool {
+      return aptr->skipsPatchesOnly();
+    } );
+  }
 
 
   std::ostream & operator<<( std::ostream & os, const ProblemSolution & obj )

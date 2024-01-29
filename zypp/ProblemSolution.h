@@ -24,7 +24,7 @@ namespace zypp
   ///
   /// All problems should have at least 2-3 (mutually exclusive) solutions:
   ///
-  ///    -	 Undo: Do not perform the offending transaction
+  ///    - Undo: Do not perform the offending transaction
   ///	 (do not install the package that had unsatisfied requirements,
   ///	  do not remove	 the package that would break other packages' requirements)
   ///
@@ -49,7 +49,7 @@ namespace zypp
     /** Constructor. */
     ProblemSolution( std::string description, std::string details );
 
-   /** Destructor. */
+    /** Destructor. */
     virtual ~ProblemSolution();
 
 
@@ -90,6 +90,9 @@ namespace zypp
      **/
     void addAction( SolutionAction_Ptr action );
 
+  public:
+    /** The solution contains only 'do not install patch:' actions. */
+    bool skipsPatchesOnly() const;
 
   private:
     struct Impl;

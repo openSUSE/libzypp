@@ -295,6 +295,7 @@ SET( zypp_ng_SRCS
   ng/repo/workflows/repodownloaderwf.cc
   ng/repo/workflows/repomanagerwf.cc
   ng/repo/workflows/rpmmd.cc
+  ng/repo/workflows/susetags.cc
   ng/workflows/checksumwf.cc
   ng/workflows/contextfacade.cc
   ng/workflows/downloadwf.cc
@@ -316,6 +317,7 @@ SET( zypp_ng_HEADERS
   ng/repo/workflows/repodownloaderwf.h
   ng/repo/workflows/repomanagerwf.h
   ng/repo/workflows/rpmmd.h
+  ng/repo/workflows/susetags.h
   ng/workflows/checksumwf.h
   ng/workflows/contextfacade.h
   ng/workflows/downloadwf.h

@@ -171,7 +171,7 @@ int main ( int argc, char *argv[] )
     auto op = std::move(refCtx)
         | and_then( [&](zyppng::repo::AsyncRefreshContextRef &&refCtx ) {
           return refCtx->zyppContext()->provider()->attachMedia( ri.url(), zyppng::ProvideMediaSpec( ri.name() ) )
-                | and_then( [&, refCtx = refCtx ]( auto &&mediaHandle ){
+                | and_then( [&, refCtx = refCtx ]( auto &&mediaHandle ) mutable {
                     return zyppng::RepoManagerWorkflow::refreshMetadata( std::move(refCtx), std::move(mediaHandle), observer );
                 });
         });

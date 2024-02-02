@@ -32,16 +32,16 @@ namespace zyppng {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
-    using RefreshContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, repo::AsyncRefreshContextRef, repo::SyncRefreshContextRef>;
-    using ZyppContextType = typename remove_smart_ptr_t<RefreshContextRefType>::ContextType;
-    using ProvideType     = typename ZyppContextType::ProvideType;
+    using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
+    using ProvideType     = typename remove_smart_ptr_t<ZyppContextRefType>::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;
 
-    ProbeRepoLogic(RefreshContextRefType refCtx, const MediaHandle &medium, const zypp::Pathname &path )
-      : _refreshContext(std::move(refCtx))
+    ProbeRepoLogic(ZyppContextRefType zyppCtx, const MediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath )
+      : _zyppContext(std::move(zyppCtx))
       , _medium(medium)
       , _path(path)
+      , _targetPath(std::move(targetPath))
     {}
 
     MaybeAsyncRef<expected<zypp::repo::RepoType>> execute( ) {
@@ -60,17 +60,17 @@ namespace zyppng {
       // on ftp file-not-found(bnc #335906). Instead we'll check another types
       // before throwing.
 
-      std::shared_ptr<ProvideType> providerRef = _refreshContext->zyppContext()->provider();
+      std::shared_ptr<ProvideType> providerRef = _zyppContext->provider();
 
       // TranslatorExplanation '%s' is an URL
       _error = zypp::repo::RepoException (zypp::str::form( _("Error trying to read from '%s'"), url.asString().c_str() ));
 
       // first try rpmmd
-      return providerRef->provide( _medium, _path/"repodata/repomd.xml", ProvideFileSpec() )
-        | and_then( ProvideType::copyResultToDest(providerRef, _refreshContext->targetDir()/"repodata/repomd.xml") )
-
+      return providerRef->provide( _medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+        | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
+        | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
         // try susetags if rpmmd fails and remember the error
-        | or_else( [this, providerRef]( std::exception_ptr &&err ){
+        | or_else( [this, providerRef]( std::exception_ptr &&err ) {
           try {
             std::rethrow_exception (err);
           } catch ( const zypp::media::MediaFileNotFoundException &e ) {
@@ -82,21 +82,12 @@ namespace zyppng {
             _gotMediaError = true;
           } catch( ... ) {
             // any other error, we give up
-            return makeReadyResult( expected<zypp::ManagedFile>::error( std::current_exception() ) );
+            return makeReadyResult( expected<zypp::repo::RepoType>::error( std::current_exception() ) );
           }
-          return providerRef->provide( _medium, _path/"content", ProvideFileSpec() )
-              | and_then( ProvideType::copyResultToDest(providerRef, _refreshContext->targetDir()/"content") );
+          return providerRef->provide( _medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+              | and_then( maybeCopyResultToDest("content") )
+              | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
         })
-        | and_then( []( zypp::ManagedFile &&file ) {
-          // no dispose in tmpdir
-          file.resetDispose();
-
-          if ( zypp::str::hasSuffix( file->c_str(), "/repodata/repomd.xml") )
-            return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD);
-          else
-            return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2);
-        })
-
         // no rpmmd and no susetags!
         | or_else( [this]( std::exception_ptr &&err ) {
 
@@ -118,12 +109,14 @@ namespace zyppng {
             return expected<zypp::repo::RepoType>::error( std::current_exception() );
           }
 
+          const auto &url = _medium.baseUrl();
+
           // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
-          if ( ! ( _baseUrl.schemeIsDownloading() || _baseUrl.schemeIsPlugin() ) ) {
+          if ( ! ( url.schemeIsDownloading() || url.schemeIsPlugin() ) ) {
 
             if ( _medium.localPath() && zypp::PathInfo(_medium.localPath().value()/_path).isDir() ) {
               // allow empty dirs for now
-              MIL << "Probed type RPMPLAINDIR at " << _baseUrl << " (" << _path << ")" << std::endl;
+              MIL << "Probed type RPMPLAINDIR at " << url << " (" << _path << ")" << std::endl;
               return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMPLAINDIR);
             }
           }
@@ -131,32 +124,49 @@ namespace zyppng {
           if( _gotMediaError )
             return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR( _error ));
 
-          MIL << "Probed type NONE at " << _baseUrl << " (" << _path << ")" << std::endl;
+          MIL << "Probed type NONE at " << url << " (" << _path << ")" << std::endl;
           return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::NONE);
-        });
+        })
+      ;
     }
 
-    private:
+  private:
+    /**
+     * creates a callback that copies the downloaded file into the target directory if it was given.
+     * \returns expected<void>::success() if everything worked out
+     */
+    auto maybeCopyResultToDest ( std::string &&subPath ) {
+      return [this, subPath = std::move(subPath)]( ProvideRes file ) -> MaybeAsyncRef<expected<void>> {
+        if ( _targetPath ) {
+          MIL << "Target path is set, copying " << file.file() << " to " << *_targetPath/subPath << std::endl;
+          return std::move(file)
+              | ProvideType::copyResultToDest( _zyppContext->provider(), *_targetPath/subPath)
+              | and_then([this]( zypp::ManagedFile file ){ file.resetDispose(); return expected<void>::success(); } );
+        }
+        return makeReadyResult( expected<void>::success() );
+      };
+    }
 
-    RefreshContextRefType _refreshContext;
+  private:
+    ZyppContextRefType _zyppContext;
     MediaHandle _medium;
     zypp::Pathname _path;
+    std::optional<zypp::Pathname> _targetPath;
 
-    zypp::Url _baseUrl;
     zypp::repo::RepoException _error;
     bool _gotMediaError = false;
   };
 
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > RepoManagerWorkflow::probeRepoType(repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, const zypp::Pathname &path)
+  AsyncOpRef<expected<zypp::repo::RepoType> > RepoManagerWorkflow::probeRepoType(ContextRef ctx, const ProvideMediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath)
   {
-    return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(refCtx), medium, path );
+    return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), medium, path, std::move(targetPath) );
   }
 
-  expected<zypp::repo::RepoType> RepoManagerWorkflow::probeRepoType(repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, const zypp::Pathname &path)
+  expected<zypp::repo::RepoType> RepoManagerWorkflow::probeRepoType(SyncContextRef ctx, const SyncMediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath )
   {
-    return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(refCtx), medium, path );
+    return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), medium, path, std::move(targetPath) );
   }
 
 
@@ -230,14 +240,15 @@ namespace zyppng {
             if ( oldstatus == cachestatus ) {
               // difference in seconds
               double diff = ::difftime( (zypp::Date::ValueType)zypp::Date::now(), (zypp::Date::ValueType)oldstatus.timestamp() ) / 60;
-              if ( diff < zypp::ZConfig::instance().repo_refresh_delay() ) {
+              const auto refDelay = _refreshContext->zyppContext()->config().repo_refresh_delay();
+              if ( diff < refDelay ) {
                 if ( diff < 0 ) {
                   WAR << "Repository '" << info.alias() << "' was refreshed in the future!" << std::endl;
                 }
                 else {
                   MIL << "Repository '" << info.alias()
                   << "' has been refreshed less than repo.refresh.delay ("
-                  << zypp::ZConfig::instance().repo_refresh_delay()
+                  << refDelay
                   << ") minutes ago. Advising to skip refresh" << std::endl;
                   return makeReadyResult( expected<repo::RefreshCheckStatus>::success(repo::REPO_CHECK_DELAYED) );
                 }
@@ -251,7 +262,7 @@ namespace zyppng {
           return info.type() | [this]( zypp::repo::RepoType &&repokind ) {
             // if unknown: probe it
             if ( repokind == zypp::repo::RepoType::NONE )
-              return RepoManagerWorkflow::probeRepoType( _refreshContext, _medium, _refreshContext->repoInfo().path() );
+              return RepoManagerWorkflow::probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() );
             return makeReadyResult( expected<zypp::repo::RepoType>::success(repokind) );
           } | and_then([this, oldstatus]( zypp::repo::RepoType &&repokind ) {
 
@@ -269,6 +280,7 @@ namespace zyppng {
                 }
                 else { // includes newstatus.empty() if e.g. repo format changed
                   MIL << "repo has changed, going to refresh" << std::endl;
+                  MIL << "Old status: " << oldstatus << " New Status: " << newstatus << std::endl;
                   return expected<repo::RefreshCheckStatus>::success(repo::REFRESH_NEEDED);
                 }
               });
@@ -329,12 +341,10 @@ namespace zyppng {
 
         return mtry(assert_alias_cb, _refreshContext->repoInfo() )
         | and_then( [this](){ return mtry(zypp::assert_urls, _refreshContext->repoInfo() ); })
-        | and_then( [this](){
-          return RepoManagerWorkflow::checkIfToRefreshMetadata ( _refreshContext, _medium, _progress );
-        })
-        | and_then([this]( repo::RefreshCheckStatus &&status ){
+        | and_then( [this](){ return RepoManagerWorkflow::checkIfToRefreshMetadata ( _refreshContext, _medium, _progress ); })
+        | and_then( [this]( repo::RefreshCheckStatus &&status ){
 
-          MIL << "!!!!!!!!!!!!!!!!!RefreshCheckStatus returned: " << status << std::endl;
+          MIL << "RefreshCheckStatus returned: " << status << std::endl;
 
           // check whether to refresh metadata
           // if the check fails for this url, it throws, so another url will be checked
@@ -346,27 +356,13 @@ namespace zyppng {
           // bsc#1048315: Always re-probe in case of repo format change.
           // TODO: Would be sufficient to verify the type and re-probe
           // if verification failed (or type is RepoType::NONE)
-          return RepoManagerWorkflow::probeRepoType ( _refreshContext, _medium, _refreshContext->repoInfo().path() )
+          return RepoManagerWorkflow::probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() )
           | and_then([this]( zypp::repo::RepoType &&repokind ) {
 
             auto &info = _refreshContext->repoInfo();
 
-            if ( info.type() != repokind )
-            {
-#if 0
-              // update probed type only for repos in system
-              for_( it, repoBegin(), repoEnd() )
-              {
-                if ( info.alias() == (*it).alias() )
-                {
-                  RepoInfo modifiedrepo = *it;
-                  modifiedrepo.setType( repokind );
-                  // don't modify .repo in refresh.
-                  // modifyRepository( info.alias(), modifiedrepo );
-                  break;
-                }
-              }
-#endif
+            if ( info.type() != repokind ) {
+              _refreshContext->setProbedType( repokind );
               // Adjust the probed type in RepoInfo
               info.setProbedType( repokind ); // lazy init!
             }

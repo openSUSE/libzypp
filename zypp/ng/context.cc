@@ -40,6 +40,11 @@ namespace zyppng {
     return d_func()->_zyppPtr->keyRing();
   }
 
+  zypp::ZConfig &Context::config()
+  {
+    return zypp::ZConfig::instance();
+  }
+
   void Context::executeImpl(AsyncOpBaseRef op)
   {
     auto loop = EventLoop::create();

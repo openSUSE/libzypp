@@ -153,7 +153,7 @@ namespace zyppng {
     std::vector<zypp::Url> useableUrls = urls;
 
     // first try and find a already attached medium
-    auto i = std::find_if( _attachedMedia.begin (), _attachedMedia.end(), [&]( const auto &medium ) {
+    auto i = std::find_if( _attachedMedia.begin (), _attachedMedia.end(), [&]( const AttachedSyncMediaInfo_Ptr &medium ) {
       return medium->isSameMedium( useableUrls, request );
     });
 
@@ -202,6 +202,15 @@ namespace zyppng {
     }
 
     return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No URL to attach") ) );
+  }
+
+  zyppng::MediaSyncFacade::~MediaSyncFacade()
+  {
+    // this should never happen because every handle has a reference to the media manager, but still add a debug output
+    // so we know in case we have weird behavior.
+    if ( _attachedMedia.size () ) {
+      WAR << "Releasing zyppng::MediaSyncFacade with still valid MediaHandles, this is a bug!" << std::endl;
+    }
   }
 
   expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
@@ -335,7 +344,7 @@ namespace zyppng {
 
     try {
       zypp::media::MediaManager mgr;
-      mgr.release ( ptr->mediaId() );
+      mgr.close ( ptr->mediaId() );
     } catch ( const zypp::Exception & e ) {
       ZYPP_CAUGHT(e);
     }

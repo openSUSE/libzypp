@@ -13,13 +13,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <list>
 #include <map>
 #include <algorithm>
 #include <chrono>
 
 #include <zypp-core/base/InputStream>
+#include <zypp-core/Digest.h>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/Gettext.h>
 #include <zypp-core/base/DefaultIntegral>
@@ -43,8 +43,6 @@
 
 #include <zypp/parser/xml/Reader.h>
 #include <zypp/repo/ServiceRepos.h>
-#include <zypp/repo/yum/Downloader.h>
-#include <zypp/repo/susetags/Downloader.h>
 #include <zypp/repo/PluginServices.h>
 #include <zypp/repo/PluginRepoverification.h>
 
@@ -55,7 +53,16 @@
 #include <zypp/ZYppCallbacks.h>
 
 #include "sat/Pool.h"
+#include "zypp-media/ng/providespec.h"
 #include <zypp/base/Algorithm.h>
+
+
+// zyppng related includes
+#include <zypp-core/zyppng/pipelines/Lift>
+#include <zypp/ng/workflows/contextfacade.h>
+#include <zypp/ng/repo/refresh.h>
+#include <zypp/ng/repo/workflows/repomanagerwf.h>
+
 
 using std::endl;
 using std::string;
@@ -142,6 +149,8 @@ namespace zypp
       : RepoManagerBaseImpl( opt )
       , _pluginRepoverification( _options.pluginsPath/"repoverification", _options.rootDir )
     {
+      init_knownServices();
+      init_knownRepositories();
     }
 
     ~Impl()
@@ -217,7 +226,7 @@ namespace zypp
     void refreshGeoIPData ( const RepoInfo::url_set &urls );
 
   private:
-    PluginRepoverification _pluginRepoverification;
+    zypp_private::repo::PluginRepoverification _pluginRepoverification;
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -233,276 +242,97 @@ namespace zypp
 
   RepoManager::RefreshCheckStatus RepoManager::Impl::checkIfToRefreshMetadata( const RepoInfo & info, const Url & url, RawMetadataRefreshPolicy policy )
   {
-    assert_alias(info);
-    try
-    {
-      MIL << "Check if to refresh repo " << info.alias() << " at " << url << " (" << info.type() << ")" << endl;
+    using namespace zyppng::operators;
+    using zyppng::operators::operator|;
 
-      refreshGeoIPData( { url } );
+    refreshGeoIPData( { url } );
 
-      // first check old (cached) metadata
-      Pathname mediarootpath = rawcache_path_for_repoinfo( _options, info );
-      filesystem::assert_dir( mediarootpath );
-      RepoStatus oldstatus = metadataStatus( info );
+    auto ctx = zyppng::SyncContext::create();
+    auto res = zyppng::repo::SyncRefreshContext::create( ctx, info, _options )
+    | and_then( [&]( zyppng::repo::SyncRefreshContextRef &&refCtx ) {
+      return ctx->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
+          | and_then( [ r = std::move(refCtx) ]( auto &&mediaHandle ){ return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), mediaHandle, nullptr ); } );
+    } );
 
-      if ( oldstatus.empty() )
-      {
-        MIL << "No cached metadata, going to refresh" << endl;
-        return REFRESH_NEEDED;
-      }
-
-      if ( url.schemeIsVolatile() )
-      {
-        MIL << "Never refresh CD/DVD" << endl;
-        return REPO_UP_TO_DATE;
-      }
-
-      if ( policy == RefreshForced )
-      {
-        MIL << "Forced refresh!" << endl;
-        return REFRESH_NEEDED;
-      }
-
-      if ( url.schemeIsLocal() )
-      {
-        policy = RefreshIfNeededIgnoreDelay;
-      }
-
-      // Check whether repo.refresh.delay applies...
-      if ( policy != RefreshIfNeededIgnoreDelay )
-      {
-        // bsc#1174016: Prerequisite to skipping the refresh is that metadata
-        // and solv cache status match. They will not, if the repos URL was
-        // changed e.g. due to changed repovars.
-        RepoStatus cachestatus = cacheStatus( info );
-
-        if ( oldstatus == cachestatus )
-        {
-          // difference in seconds
-          double diff = ::difftime( (Date::ValueType)Date::now(), (Date::ValueType)oldstatus.timestamp() ) / 60;
-          if ( diff < ZConfig::instance().repo_refresh_delay() )
-          {
-            if ( diff < 0 )
-            {
-              WAR << "Repository '" << info.alias() << "' was refreshed in the future!" << endl;
-            }
-            else
-            {
-              MIL << "Repository '" << info.alias()
-              << "' has been refreshed less than repo.refresh.delay ("
-              << ZConfig::instance().repo_refresh_delay()
-              << ") minutes ago. Advising to skip refresh" << endl;
-              return REPO_CHECK_DELAYED;
-            }
-          }
-        }
-        else {
-          MIL << "Metadata and solv cache don't match. Check data on server..." << endl;
-        }
-      }
-
-      repo::RepoType repokind = info.type();
-      // if unknown: probe it
-      if ( repokind == RepoType::NONE )
-        repokind = probe( url, info.path() );
-
-      // retrieve newstatus
-      RepoStatus newstatus;
-      switch ( repokind.toEnum() )
-      {
-        case RepoType::RPMMD_e:
-        {
-          MediaSetAccess media( url );
-          newstatus = RepoStatus( info ) && yum::Downloader( info, mediarootpath ).status( media );
-        }
-        break;
-
-        case RepoType::YAST2_e:
-        {
-          MediaSetAccess media( url );
-          newstatus = RepoStatus( info ) && susetags::Downloader( info, mediarootpath ).status( media );
-        }
-        break;
-
-        case RepoType::RPMPLAINDIR_e:
-          newstatus = RepoStatus( info ) && RepoStatus( MediaMounter(url).getPathName(info.path()) );	// dir status
-          break;
-
-        default:
-        case RepoType::NONE_e:
-          ZYPP_THROW( RepoUnknownTypeException( info ) );
-          break;
-      }
-
-      // check status
-      if ( oldstatus == newstatus )
-      {
-        MIL << "repo has not changed" << endl;
-        touchIndexFile( info );
-        return REPO_UP_TO_DATE;
-      }
-      else // includes newstatus.empty() if e.g. repo format changed
-      {
-        MIL << "repo has changed, going to refresh" << endl;
-        return REFRESH_NEEDED;
-      }
+    if ( !res ) {
+      ZYPP_RETHROW ( res.error() );
     }
-    catch ( const Exception &e )
-    {
-      ZYPP_CAUGHT(e);
-      ERR << "refresh check failed for " << url << endl;
-      ZYPP_RETHROW(e);
-    }
-
-    return REFRESH_NEEDED; // default
+    return static_cast<RepoManager::RefreshCheckStatus>(res.get());
   }
 
 
   void RepoManager::Impl::refreshMetadata( const RepoInfo & info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progress )
   {
-    assert_alias(info);
-    assert_urls(info);
+    using namespace zyppng;
+    using namespace zyppng::operators;
+    using zyppng::operators::operator|;
 
     // make sure geoIP data is up 2 date
     refreshGeoIPData( info.baseUrls() );
+
+    // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
+    media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
 
     // we will throw this later if no URL checks out fine
     RepoException rexception( info, PL_("Valid metadata not found at specified URL",
                                         "Valid metadata not found at specified URLs",
                                         info.baseUrlsSize() ) );
 
-    // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-    media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
+
+    auto ctx = SyncContext::create();
+
+    // helper callback in case the repo type changes on the remote
+    const auto &updateProbedType = [&]( repo::RepoType repokind ) {
+      // update probed type only for repos in system
+      for_( it, repoBegin(), repoEnd() )
+      {
+        if ( info.alias() == (*it).alias() )
+        {
+          RepoInfo modifiedrepo = *it;
+          modifiedrepo.setType( repokind );
+          // don't modify .repo in refresh.
+          // modifyRepository( info.alias(), modifiedrepo );
+          break;
+        }
+      }
+    };
+
     // try urls one by one
     for ( RepoInfo::urls_const_iterator it = info.baseUrlsBegin(); it != info.baseUrlsEnd(); ++it )
     {
-      try
-      {
-        Url url(*it);
+      try {
+        auto res = zyppng::repo::SyncRefreshContext::create( ctx, info, _options )
+            | and_then( [&]( zyppng::repo::SyncRefreshContextRef refCtx ) {
+              // in case probe detects a different repokind, update our internal repos
+              refCtx->connectFunc( &zyppng::repo::SyncRefreshContext::sigProbedTypeChanged, updateProbedType );
+              return ctx->provider()->attachMedia( *it, zyppng::ProvideMediaSpec() )
+                     | and_then( [ refCtx ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::refreshMetadata ( std::move(refCtx), std::move(mediaHandle), nullptr); } );
+        });
 
-        // check whether to refresh metadata
-        // if the check fails for this url, it throws, so another url will be checked
-        if (checkIfToRefreshMetadata(info, url, policy)!=REFRESH_NEEDED)
-          return;
-
-        MIL << "Going to refresh metadata from " << url << endl;
-
-        // bsc#1048315: Always re-probe in case of repo format change.
-        // TODO: Would be sufficient to verify the type and re-probe
-        // if verification failed (or type is RepoType::NONE)
-        repo::RepoType repokind = info.type();
-        {
-          repo::RepoType probed = probe( *it, info.path() );
-          if ( repokind != probed )
-          {
-            repokind = probed;
-            // update probed type only for repos in system
-            for_( it, repoBegin(), repoEnd() )
-            {
-              if ( info.alias() == (*it).alias() )
-              {
-                RepoInfo modifiedrepo = *it;
-                modifiedrepo.setType( repokind );
-                // don't modify .repo in refresh.
-                // modifyRepository( info.alias(), modifiedrepo );
-                break;
-              }
-            }
-            // Adjust the probed type in RepoInfo
-            info.setProbedType( repokind ); // lazy init!
-          }
-          // no need to continue with an unknown type
-          if ( repokind.toEnum() == RepoType::NONE_e )
-            ZYPP_THROW(RepoUnknownTypeException( info ));
+        if ( !res ) {
+          ZYPP_RETHROW( res.error() );
         }
-
-        Pathname mediarootpath = rawcache_path_for_repoinfo( _options, info );
-        if( filesystem::assert_dir(mediarootpath) )
-        {
-          Exception ex(str::form( _("Can't create %s"), mediarootpath.c_str()) );
-          ZYPP_THROW(ex);
-        }
-
-        // create temp dir as sibling of mediarootpath
-        filesystem::TmpDir tmpdir( filesystem::TmpDir::makeSibling( mediarootpath ) );
-        if( tmpdir.path().empty() )
-        {
-          Exception ex(_("Can't create metadata cache directory."));
-          ZYPP_THROW(ex);
-        }
-
-        if ( ( repokind.toEnum() == RepoType::RPMMD_e ) ||
-             ( repokind.toEnum() == RepoType::YAST2_e ) )
-        {
-          MediaSetAccess media(url);
-          shared_ptr<repo::Downloader> downloader_ptr;
-
-          MIL << "Creating downloader for [ " << info.alias() << " ]" << endl;
-
-          if ( repokind.toEnum() == RepoType::RPMMD_e ) {
-            downloader_ptr.reset(new yum::Downloader(info, mediarootpath ));
-            if ( _pluginRepoverification.checkIfNeeded() )
-              downloader_ptr->setPluginRepoverification( _pluginRepoverification ); // susetags is dead so we apply just to yum
-          }
-          else
-            downloader_ptr.reset( new susetags::Downloader(info, mediarootpath) );
-
-          /**
-           * Given a downloader, sets the other repos raw metadata
-           * path as cache paths for the fetcher, so if another
-           * repo has the same file, it will not download it
-           * but copy it from the other repository
-           */
-          for_( it, repoBegin(), repoEnd() )
-          {
-            Pathname cachepath(rawcache_path_for_repoinfo( _options, *it ));
-            if ( PathInfo(cachepath).isExist() )
-              downloader_ptr->addCachePath(cachepath);
-          }
-
-          downloader_ptr->download( media, tmpdir.path() );
-        }
-        else if ( repokind.toEnum() == RepoType::RPMPLAINDIR_e )
-        {
-          // as substitute for real metadata remember the checksum of the directory we refreshed
-          MediaMounter media( url );
-          RepoStatus newstatus = RepoStatus( media.getPathName( info.path() ) );	// dir status
-
-          Pathname productpath( tmpdir.path() / info.path() );
-          filesystem::assert_dir( productpath );
-          newstatus.saveToCookieFile( productpath/"cookie" );
-        }
-        else
-        {
-          ZYPP_THROW(RepoUnknownTypeException( info ));
-        }
-
-        // ok we have the metadata, now exchange
-        // the contents
-        filesystem::exchange( tmpdir.path(), mediarootpath );
         if ( ! isTmpRepo( info ) )
           reposManip();	// remember to trigger appdata refresh
 
         // we are done.
         return;
-      }
-      catch ( const Exception &e )
-      {
-        ZYPP_CAUGHT(e);
+
+      } catch ( const zypp::Exception &e ) {
         ERR << "Trying another url..." << endl;
 
         // remember the exception caught for the *first URL*
         // if all other URLs fail, the rexception will be thrown with the
         // cause of the problem of the first URL remembered
         if (it == info.baseUrlsBegin())
-          rexception.remember(e);
+          rexception.remember( e );
         else
-          rexception.addHistory(  e.asUserString() );
-
+          rexception.addHistory( e.asUserString() );
       }
     } // for every url
     ERR << "No more urls..." << endl;
     ZYPP_THROW(rexception);
+
   }
 
   void RepoManager::Impl::buildCache( const RepoInfo & info, CacheBuildPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
@@ -667,86 +497,20 @@ namespace zypp
    */
   repo::RepoType RepoManager::Impl::probe( const Url & url, const Pathname & path  ) const
   {
-    MIL << "going to probe the repo type at " << url << " (" << path << ")" << endl;
+    using namespace zyppng;
+    using namespace zyppng::operators;
+    using zyppng::operators::operator|;
 
-    if ( url.getScheme() == "dir" && ! PathInfo( url.getPathName()/path ).isDir() )
-    {
-      // Handle non existing local directory in advance, as
-      // MediaSetAccess does not support it.
-      MIL << "Probed type NONE (not exists) at " << url << " (" << path << ")" << endl;
-      return repo::RepoType::NONE;
+    auto ctx = zyppng::SyncContext::create();
+    auto res = ctx->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
+        | and_then( [&]( auto mediaHandle ) {
+          return zyppng::RepoManagerWorkflow::probeRepoType( ctx, mediaHandle, path );
+        });
+
+    if ( !res ) {
+      ZYPP_RETHROW ( res.error() );
     }
-
-    // prepare exception to be thrown if the type could not be determined
-    // due to a media exception. We can't throw right away, because of some
-    // problems with proxy servers returning an incorrect error
-    // on ftp file-not-found(bnc #335906). Instead we'll check another types
-    // before throwing.
-
-    // TranslatorExplanation '%s' is an URL
-    RepoException enew(str::form( _("Error trying to read from '%s'"), url.asString().c_str() ));
-    bool gotMediaException = false;
-    try
-    {
-      MediaSetAccess access(url);
-      try
-      {
-        if ( access.doesFileExist(path/"/repodata/repomd.xml") )
-        {
-          MIL << "Probed type RPMMD at " << url << " (" << path << ")" << endl;
-          return repo::RepoType::RPMMD;
-        }
-      }
-      catch ( const media::MediaException &e )
-      {
-        ZYPP_CAUGHT(e);
-        DBG << "problem checking for repodata/repomd.xml file" << endl;
-        enew.remember(e);
-        gotMediaException = true;
-      }
-
-      try
-      {
-        if ( access.doesFileExist(path/"/content") )
-        {
-          MIL << "Probed type YAST2 at " << url << " (" << path << ")" << endl;
-          return repo::RepoType::YAST2;
-        }
-      }
-      catch ( const media::MediaException &e )
-      {
-        ZYPP_CAUGHT(e);
-        DBG << "problem checking for content file" << endl;
-        enew.remember(e);
-        gotMediaException = true;
-      }
-
-      // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
-      if ( ! ( url.schemeIsDownloading() || url.schemeIsPlugin() ) )
-      {
-        MediaMounter media( url );
-        if ( PathInfo(media.getPathName()/path).isDir() )
-        {
-          // allow empty dirs for now
-          MIL << "Probed type RPMPLAINDIR at " << url << " (" << path << ")" << endl;
-          return repo::RepoType::RPMPLAINDIR;
-        }
-      }
-    }
-    catch ( const Exception &e )
-    {
-      ZYPP_CAUGHT(e);
-      // TranslatorExplanation '%s' is an URL
-      Exception enew(str::form( _("Unknown error reading from '%s'"), url.asString().c_str() ));
-      enew.remember(e);
-      ZYPP_THROW(enew);
-    }
-
-    if (gotMediaException)
-      ZYPP_THROW(enew);
-
-    MIL << "Probed type NONE at " << url << " (" << path << ")" << endl;
-    return repo::RepoType::NONE;
+    return res.get();
   }
 
   ////////////////////////////////////////////////////////////////////////////

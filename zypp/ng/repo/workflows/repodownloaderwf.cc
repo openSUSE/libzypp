@@ -19,6 +19,7 @@
 
 #include <zypp/ng/workflows/signaturecheckwf.h>
 #include <zypp/ng/repo/workflows/rpmmd.h>
+#include <zypp/ng/repo/workflows/susetags.h>
 
 // sync workflow helpers
 #include <zypp/ng/workflows/contextfacade.h>
@@ -303,6 +304,7 @@ namespace zyppng {
           case zypp::repo::RepoType::RPMMD_e:
             return RpmmdWorkflows::repoStatus( dlCtx, mediaHandle );
           case zypp::repo::RepoType::YAST2_e:
+            return SuseTagsWorkflows::repoStatus( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
           case zypp::repo::RepoType::NONE_e:
             break;
@@ -331,6 +333,7 @@ namespace zyppng {
           case zypp::repo::RepoType::RPMMD_e:
             return RpmmdWorkflows::download( dlCtx, mediaHandle, std::move(progressObserver) );
           case zypp::repo::RepoType::YAST2_e:
+            return SuseTagsWorkflows::download( std::move(dlCtx), mediaHandle, std::move(progressObserver) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
           case zypp::repo::RepoType::NONE_e:
             break;

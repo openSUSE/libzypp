@@ -394,6 +394,8 @@ namespace zypp
       throw;
     }
 
+    void do_ZYPP_RETHROW( const std::exception_ptr & excpt_r, const CodeLocation & where_r );
+
     /** Helper for \ref ZYPP_EXCPT_PTR( Exception ). */
     template<class TExcpt, EnableIfIsException<TExcpt> = 0>
     std::exception_ptr do_ZYPP_EXCPT_PTR( const TExcpt & excpt_r, const CodeLocation & where_r );

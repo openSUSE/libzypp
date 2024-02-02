@@ -38,6 +38,25 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const CodeLocation & obj )
     { return str << obj.asString(); }
 
+    void do_ZYPP_RETHROW(const std::exception_ptr &excpt_r, const CodeLocation &where_r)
+    {
+      if ( !excpt_r )
+        return;
+
+      try {
+        std::rethrow_exception (excpt_r);
+      } catch ( const zypp::Exception &e ) {
+        Exception::log( e, where_r, "RETHROW: " );
+        throw;
+      } catch ( const std::exception & e ) {
+        Exception::log( typeid(e).name(), where_r, "RETHROW:   " );
+        throw;
+      } catch (...) {
+        Exception::log( "Unknown Exception", where_r, "RETHROW:   " );
+        throw;
+      }
+    }
+
     /////////////////////////////////////////////////////////////////
   } // namespace exception_detail
   ///////////////////////////////////////////////////////////////////
@@ -46,15 +65,15 @@ namespace zypp
   {}
 
   Exception::Exception( const std::string & msg_r )
-  : _msg( msg_r )
+    : _msg( msg_r )
   {}
 
   Exception::Exception( std::string && msg_r )
-  : _msg( std::move(msg_r) )
+    : _msg( std::move(msg_r) )
   {}
 
   Exception::Exception( const std::string & msg_r, const Exception & history_r )
-  : _msg( msg_r )
+    : _msg( msg_r )
   { remember( history_r ); }
 
   Exception::Exception( std::string && msg_r, const Exception & history_r )

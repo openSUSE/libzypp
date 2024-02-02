@@ -147,6 +147,7 @@ namespace zypp
         NULL
       };
 
+      filesystem::assert_dir( new_r.dirname() );  // bsc#1219442: in case .rpm and .drpm are not in the same directory
       if ( ! applydeltarpm( argv, report_r ) )
         return false;
 
@@ -178,6 +179,7 @@ namespace zypp
         NULL
       };
 
+      filesystem::assert_dir( new_r.dirname() );  // bsc#1219442: in case .rpm and .drpm are not in the same directory
       if ( ! applydeltarpm( argv, report_r ) )
         return false;
 

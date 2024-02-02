@@ -33,8 +33,8 @@ namespace zyppng {
 
   namespace RepoManagerWorkflow {
 
-    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, const zypp::Pathname & path );
-    expected<zypp::repo::RepoType> probeRepoType ( repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, const zypp::Pathname & path  );
+    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, const ProvideMediaHandle &medium, const zypp::Pathname & path, std::optional<zypp::Pathname> targetPath = {} );
+    expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, const SyncMediaHandle &medium, const zypp::Pathname & path, std::optional<zypp::Pathname> targetPath = {} );
 
     AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata( repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );
     expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata( repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );

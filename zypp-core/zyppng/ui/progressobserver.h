@@ -131,7 +131,7 @@ namespace zyppng {
     inline auto finishProgress( ProgressObserverRef progressObserver ) {
       return [ progressObserver = std::move(progressObserver) ]( auto &&val ) {
         if ( progressObserver ) progressObserver->setFinished ();
-        return val;
+        return std::forward<decltype(val)>(val);
       };
     }
 

@@ -108,7 +108,29 @@ namespace zyppng::repo {
   template<typename ZyppContextRefType>
   const std::optional<typename RefreshContext<ZyppContextRefType>::PluginRepoverification> &RefreshContext<ZyppContextRefType>::pluginRepoverification() const
   {
-    return _pluginRepoverification;
+      return _pluginRepoverification;
+  }
+
+  template<typename ZyppContextRefType>
+  void RefreshContext<ZyppContextRefType>::setProbedType(zypp::repo::RepoType rType)
+  {
+    if ( _probedType && *_probedType == rType )
+      return;
+
+    _probedType = rType;
+    _sigProbedTypeChanged.emit(rType);
+  }
+
+  template<typename ZyppContextRefType>
+  const std::optional<zypp::repo::RepoType> &RefreshContext<ZyppContextRefType>::probedType() const
+  {
+    return _probedType;
+  }
+
+  template<typename ZyppContextRefType>
+  SignalProxy<void (zypp::repo::RepoType)> RefreshContext<ZyppContextRefType>::sigProbedTypeChanged()
+  {
+    return _sigProbedTypeChanged;
   }
 
 

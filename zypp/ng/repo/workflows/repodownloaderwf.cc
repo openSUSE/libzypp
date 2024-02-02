@@ -211,7 +211,7 @@ namespace zyppng {
                 return makeReadyResult( expected<zypp::PublicKeyData>::success(keyData) );
 
               // TODO: Enhance the key caching in general...
-              const zypp::ZConfig & conf = zypp::ZConfig::instance();
+              const zypp::ZConfig & conf = _dlContext->zyppContext()->config();
               zypp::Pathname cacheFile = conf.repoManagerRoot() / conf.pubkeyCachePath() / file;
 
               return zypp::PublicKey::noThrow(cacheFile)
@@ -221,11 +221,11 @@ namespace zyppng {
                    else
                      return expected<zypp::PublicKey>::error( std::make_exception_ptr (zypp::Exception("File does not provide key")));
                  }
-               | or_else ([ this, file = std::move(file), keyid = keyid, cacheFile = std::move(cacheFile) ]( auto && ) -> MaybeAsyncRef<expected<zypp::PublicKey>> {
+               | or_else ([ this, file = std::move(file), keyid = keyid, cacheFile ]( auto && ) -> MaybeAsyncRef<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
                    return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true) )
                       | and_then( ProvideType::copyResultToDest( providerRef, _destdir / file ) )
-                      | and_then( [this, providerRef, file = std::move(file), keyid = std::move(keyid), cacheFile = std::move(cacheFile)]( zypp::ManagedFile &&res ) {
+                      | and_then( [this, providerRef, file, keyid , cacheFile = std::move(cacheFile)]( zypp::ManagedFile &&res ) {
 
                           // remember we downloaded the file
                           _dlContext->files().push_back ( res );
@@ -240,7 +240,7 @@ namespace zyppng {
                           // Try to cache it...
                           zypp::filesystem::assert_dir( cacheFile.dirname() );
                           return providerRef->copyFile( key.path(), cacheFile )
-                           | [ key = std::move(key)]( expected<zypp::ManagedFile> &&res ){
+                           | [ key ]( expected<zypp::ManagedFile> &&res ){
                                if ( res ) {
                                  // do not delete from cache
                                  res->resetDispose ();
@@ -254,7 +254,7 @@ namespace zyppng {
                    return expected<zypp::PublicKeyData>::success(keyRing->publicKeyData( keyid ));	// fetch back from keyring in case it was a hidden key
                  });
             })
-         | [this, res = std::move(res)] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) {
+         | [this, res = res] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) {
              std::for_each( keyHints.begin(), keyHints.end(), [this]( const expected<zypp::PublicKeyData> &keyData ){
                if ( keyData && *keyData ) {
                  if ( not zypp::PublicKey::isSafeKeyId( keyData->id() ) ) {
@@ -301,9 +301,13 @@ namespace zyppng {
 
         constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
+        const auto finalizeStatus = [ dlCtx ]( zypp::RepoStatus &&status  ){
+           return expected<zypp::RepoStatus>::success( zypp::RepoStatus( dlCtx->repoInfo()) && status );
+        };
+
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::repoStatus( dlCtx, mediaHandle );
+            return RpmmdWorkflows::repoStatus( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::YAST2_e:
             return SuseTagsWorkflows::repoStatus( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
@@ -333,7 +337,7 @@ namespace zyppng {
 
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::download( dlCtx, mediaHandle, std::move(progressObserver) );
+            return RpmmdWorkflows::download( std::move(dlCtx), mediaHandle, std::move(progressObserver) );
           case zypp::repo::RepoType::YAST2_e:
             return SuseTagsWorkflows::download( std::move(dlCtx), mediaHandle, std::move(progressObserver) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:

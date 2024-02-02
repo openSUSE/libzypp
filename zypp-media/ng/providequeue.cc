@@ -21,7 +21,6 @@
 #include <zypp-media/auth/CredentialManager>
 
 #include <zypp/APIConfig.h>
-#include <variant>
 #include <bitset>
 
 namespace zyppng {

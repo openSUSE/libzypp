@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb  2 13:58:35 CET 2024 - ma@suse.de
+
+- applydeltaprm: Create target directory if it does not exist
+  (bsc#1219442)
+- version 16.22.12 (0)
+
+-------------------------------------------------------------------
 Thu Dec 14 18:22:35 CET 2023 - ma@suse.de
 
 - Touch /run/reboot-needed if a patch suggesting a reboot was

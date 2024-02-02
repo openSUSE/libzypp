@@ -169,7 +169,7 @@ namespace zyppng::CheckSumWorkflow {
     using zyppng::operators::operator|;
     return [ zyppCtx, checksum=checksum ]( ProvideRes &&res ) -> AsyncOpRef<expected<ProvideRes>> {
       return verifyChecksum( zyppCtx, checksum, res.file() )
-       | [ res = std::move(res)] ( expected<void> &&result ) mutable {
+       | [ res ] ( expected<void> &&result ) mutable {
           if ( result )
             return expected<ProvideRes>::success( std::move(res) );
           else
@@ -183,7 +183,7 @@ namespace zyppng::CheckSumWorkflow {
     using zyppng::operators::operator|;
     return [ zyppCtx = std::move(zyppCtx), checksum=checksum ]( SyncProvideRes &&res ) -> expected<SyncProvideRes> {
       return verifyChecksum( zyppCtx, checksum, res.file() )
-       | [ res = std::move(res)] ( expected<void> &&result ) mutable {
+       | [ res ] ( expected<void> &&result ) mutable {
           if ( result )
             return expected<SyncProvideRes>::success( std::move(res) );
           else

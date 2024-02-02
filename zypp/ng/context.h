@@ -12,10 +12,10 @@
 #include <zypp-core/zyppng/async/AsyncOp>
 #include <zypp-core/zyppng/ui/UserInterface>
 #include <zypp/RepoManager.h>
-#include <vector>
 
 namespace zypp {
-    DEFINE_PTR_TYPE(KeyRing);
+  DEFINE_PTR_TYPE(KeyRing);
+  class ZConfig;
 }
 
 namespace zyppng {
@@ -55,6 +55,7 @@ namespace zyppng {
 
     ProvideRef provider() const;
     KeyRingRef keyRing () const;
+    zypp::ZConfig &config();
 
   private:
     void executeImpl ( AsyncOpBaseRef op );

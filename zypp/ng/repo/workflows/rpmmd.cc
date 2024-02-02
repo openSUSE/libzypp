@@ -139,16 +139,6 @@ namespace zyppng::RpmmdWorkflows {
                       return DownloadWorkflow::provideToCacheDir( _ctx, _mediaHandle, file.filename(), ProvideFileSpec(file) )
                           | inspect ( incProgress( _progressObserver ) );
 
-#if 0
-                      auto providerRef = _ctx->zyppContext()->provider();
-                      return providerRef->provide( _mediaHandle, file.filename(), ProvideFileSpec(file) )
-                             | inspect ( incProgress( _progressObserver ) )
-                             | and_then( CheckSumWorkflow::checksumFileChecker( _ctx->zyppContext(), file.checksum() ) )
-                             | inspect ( incProgress( _progressObserver ) )
-                             | and_then( ProvideType::copyResultToDest( providerRef, _ctx->destDir() / file.filename() ))
-                             | inspect ( incProgress( _progressObserver ) )
-                             ;
-#endif
                     }) | and_then ( [this]( std::vector<zypp::ManagedFile> &&dlFiles ) {
                       auto &downloadedFiles = _ctx->files();
                       downloadedFiles.insert( downloadedFiles.end(), std::make_move_iterator(dlFiles.begin()), std::make_move_iterator(dlFiles.end()) );

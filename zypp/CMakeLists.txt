@@ -292,6 +292,7 @@ SET( zypp_ng_SRCS
   ng/userrequest.cc
   ng/repo/downloader.cc
   ng/repo/refresh.cc
+  ng/repo/workflows/plaindir.cc
   ng/repo/workflows/repodownloaderwf.cc
   ng/repo/workflows/repomanagerwf.cc
   ng/repo/workflows/rpmmd.cc
@@ -314,6 +315,7 @@ SET( zypp_ng_HEADERS
   ng/repo/Downloader
   ng/repo/refresh.h
   ng/repo/Refresh
+  ng/repo/workflows/plaindir.h
   ng/repo/workflows/repodownloaderwf.h
   ng/repo/workflows/repomanagerwf.h
   ng/repo/workflows/rpmmd.h
@@ -667,7 +669,6 @@ SET( zypp_repo_SRCS
   repo/PackageDelta.cc
   repo/SUSEMediaVerifier.cc
   repo/MediaInfoDownloader.cc
-  repo/Downloader.cc
   repo/RepoVariables.cc
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
@@ -688,7 +689,6 @@ SET( zypp_repo_HEADERS
   repo/PackageDelta.h
   repo/SUSEMediaVerifier.h
   repo/MediaInfoDownloader.h
-  repo/Downloader.h
   repo/RepoVariables.h
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
@@ -702,21 +702,17 @@ INSTALL( FILES
 )
 
 SET( zypp_repo_yum_SRCS
-  repo/yum/Downloader.cc
   repo/yum/RepomdFileCollector.cc
 )
 
 SET( zypp_repo_yum_HEADERS
-  repo/yum/Downloader.h
   repo/yum/RepomdFileCollector.h
 )
 
 SET( zypp_repo_susetags_SRCS
-  repo/susetags/Downloader.cc
 )
 
 SET( zypp_repo_susetags_HEADERS
-  repo/susetags/Downloader.h
 )
 
 

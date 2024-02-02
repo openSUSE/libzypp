@@ -105,7 +105,7 @@ namespace zyppng {
              return provider->provide( _medium, _file, _filespec )
              | and_then( [this]( ProvideRes &&res ) {
                 return verifyFile( res.file() )
-                | and_then( [res = std::move(res)]() {
+                | and_then( [res = res]() {
                   return expected<ProvideRes>::success( std::move(res) );
                 });
                })
@@ -128,7 +128,7 @@ namespace zyppng {
                 zypp::filesystem::assert_dir( targetPath.dirname () );
 
                 return _ctx->zyppContext()->provider()->copyFile( cachedFile, _ctx->destDir() / _file )
-                | and_then( [cachedFile = std::move(cachedFile)]( zypp::ManagedFile &&f) { f.resetDispose(); return make_expected_success (std::move(f)); });
+                | and_then( [cachedFile]( zypp::ManagedFile &&f) { f.resetDispose(); return make_expected_success (std::move(f)); });
             });
           }
         };

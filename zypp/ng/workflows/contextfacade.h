@@ -13,7 +13,8 @@
 #include <zypp/ng/workflows/mediafacade.h>
 
 namespace zypp {
-    DEFINE_PTR_TYPE(KeyRing);
+  DEFINE_PTR_TYPE(KeyRing);
+  class ZConfig;
 }
 
 namespace zyppng {
@@ -34,6 +35,7 @@ namespace zyppng {
 
     MediaSyncFacadeRef provider() const;
     KeyRingRef keyRing () const;
+    zypp::ZConfig &config();
 
   private:
     MediaSyncFacadeRef _media;

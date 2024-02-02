@@ -77,6 +77,18 @@ namespace zypp::repo::yum
   } // namespace
 
 
+  /**
+   *  \class RepomdFileCollector
+   *  \brief Helper filtering the files offered by a RepomdFileReader
+   *
+   *  Collected files from repomd.xml:
+   *      File types:
+   *          type        (plain)
+   *          type_db     (sqlite, ignored by zypp)
+   *          type_zck    (zchunk, preferred)
+   *      Localized type:
+   *          susedata.LOCALE
+  */
   RepomdFileCollector::RepomdFileCollector( const Pathname &destDir_r )
     : _destDir { destDir_r }
   {

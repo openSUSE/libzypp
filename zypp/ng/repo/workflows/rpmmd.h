@@ -24,6 +24,11 @@ namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
 
+   /**
+    * \short Downloader workspace for YUM (rpm-nmd) repositories
+    * Encapsulates all the knowledge of which files have
+    * to be downloaded to the local disk.
+    */
   namespace RpmmdWorkflows {
     AsyncOpRef<expected<zypp::RepoStatus>> repoStatus( repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle );
     expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle );

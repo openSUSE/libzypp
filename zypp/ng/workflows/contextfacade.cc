@@ -25,4 +25,9 @@ namespace zyppng
   {
     return zypp::getZYpp()->keyRing();
   }
+
+  zypp::ZConfig &SyncContext::config()
+  {
+    return zypp::ZConfig::instance();
+  }
 }

@@ -160,10 +160,7 @@ namespace zypp
 
   RepoManagerBaseImpl::RepoManagerBaseImpl(const RepoManagerOptions &opt)
     : _options(opt)
-  {
-    init_knownServices();
-    init_knownRepositories();
-  }
+  { }
 
   RepoManagerBaseImpl::~RepoManagerBaseImpl()
   {

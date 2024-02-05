@@ -149,11 +149,11 @@ namespace ansi
   // enabled via ctor Color::Constant -> Color
   /** \relates ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
   template <typename CCC_>
-  using EnableIfCustomColorCtor = typename std::enable_if< ansi::ColorTraits<typename std::decay<CCC_>::type>::customColorCtor >::type;
+  using EnableIfCustomColorCtor = std::enable_if_t< ansi::ColorTraits<std::decay_t<CCC_>>::customColorCtor >;
 
   /** \relates ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
   template <typename CCC_>
-  using DisableIfCustomColorCtor = typename std::enable_if< !ansi::ColorTraits<typename std::decay<CCC_>::type>::customColorCtor >::type;
+  using DisableIfCustomColorCtor = std::enable_if_t< !ansi::ColorTraits<std::decay_t<CCC_>>::customColorCtor >;
 
   ///////////////////////////////////////////////////////////////////
   /// \class Color

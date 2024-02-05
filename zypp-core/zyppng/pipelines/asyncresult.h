@@ -49,7 +49,7 @@ namespace zyppng {
     struct is_sync_monad_cb<Callback, MsgType
       , std::void_t<
         std::enable_if_t< !is_async_op_v<Callback> >,
-        std::enable_if_t< !std::is_same< void, decltype ( std::declval<Callback>()(std::declval<MsgType>())) >::value > > //check if the callback has the correct signature:  cb( MsgType )
+        std::enable_if_t< !std::is_same_v< void, decltype ( std::declval<Callback>()(std::declval<MsgType>())) > > > //check if the callback has the correct signature:  cb( MsgType )
       > : public std::true_type{};
 
     /*!

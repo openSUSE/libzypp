@@ -329,11 +329,11 @@ namespace zypp
   {
     /** SFINAE: Hide template signature unless \a TExcpt is derived from \ref Exception. */
     template<class TExcpt>
-    using EnableIfIsException = typename std::enable_if< std::is_base_of<Exception,TExcpt>::value, int>::type;
+    using EnableIfIsException = std::enable_if_t< std::is_base_of_v<Exception,TExcpt>, int>;
 
     /** SFINAE: Hide template signature if \a TExcpt is derived from  \ref Exception. */
     template<class TExcpt>
-    using EnableIfNotException = typename std::enable_if< !std::is_base_of<Exception,TExcpt>::value, int>::type;
+    using EnableIfNotException = std::enable_if_t< !std::is_base_of_v<Exception,TExcpt>, int>;
 
 
     /** Helper for \ref ZYPP_THROW( Exception ). */

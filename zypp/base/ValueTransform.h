@@ -36,7 +36,7 @@ namespace zypp
     {
       typedef Tp RawType;
       typedef TUnaryFunction Transformator;
-      typedef typename std::result_of<Transformator(RawType)>::type TransformedType;
+      typedef std::result_of_t<Transformator(RawType)>TransformedType;
 
     public:
       ValueTransform()
@@ -94,7 +94,7 @@ namespace zypp
       typedef TUnaryFunction Transformator;
       typedef typename Container::size_type size_type;
       typedef typename Container::value_type RawType;
-      typedef typename std::result_of<Transformator(RawType)>::type TransformedType;
+      typedef std::result_of_t<Transformator(RawType)>TransformedType;
 
     public:
       ContainerTransform()

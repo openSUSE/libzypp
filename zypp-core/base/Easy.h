@@ -105,7 +105,7 @@
  * \endcode
  */
 template<typename TBase, typename TDerived>
-using disable_use_as_copy_ctor = typename std::enable_if<!std::is_base_of<TBase,typename std::remove_reference<TDerived>::type>::value>::type;
+using disable_use_as_copy_ctor = std::enable_if_t<!std::is_base_of_v<TBase,std::remove_reference_t<TDerived>>>;
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

@@ -59,7 +59,7 @@ namespace zypp
     {
       public:
         typedef TEnum Enum;	///< The underlying enum type
-        typedef typename std::underlying_type<Enum>::type Integral;	///< The underlying integral type
+        typedef std::underlying_type_t<Enum>Integral;	///< The underlying integral type
 
       public:
         constexpr Flags()				: _val( 0 ) {}

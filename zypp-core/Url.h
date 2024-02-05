@@ -147,6 +147,12 @@ namespace zypp
     Url(const std::string &encodedUrl);
 
 
+    /**
+     * @brief Move construct a Url object
+     */
+    Url(Url &&other) = default;
+
+
     // -----------------
     /**
      * \brief Parse a percent-encoded URL string.
@@ -199,6 +205,12 @@ namespace zypp
      */
     Url&
     operator = (const Url &url);
+
+
+    /**
+     * \brief Moves the data from other into the current object
+     */
+    Url &operator=(Url &&other) = default;
 
 
     // -----------------

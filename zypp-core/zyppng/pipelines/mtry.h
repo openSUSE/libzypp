@@ -22,7 +22,7 @@ namespace zyppng {
 
   template < typename F
     , typename ...Args
-    , typename Ret = typename std::invoke_result<F, Args...>::type
+    , typename Ret = std::invoke_result_t<F, Args...>
     , typename Exp = expected<Ret, std::exception_ptr>
     >
   Exp mtry(F &&f, Args&& ...args)
@@ -48,7 +48,7 @@ namespace zyppng {
 
       template <
         typename ...Args,
-        typename Ret = typename std::invoke_result<Callback, Args...>::type
+        typename Ret = std::invoke_result_t<Callback, Args...>
       >
       auto operator()( Args&& ...args ){
         return mtry( function, std::forward<Args>(args)... );

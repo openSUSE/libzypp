@@ -41,13 +41,13 @@ namespace zyppng {
 
   private:
     template < typename RetType = SigR >
-    std::enable_if_t< std::is_same<void,RetType>::value, RetType >
+    std::enable_if_t< std::is_same_v<void,RetType>, RetType >
     sigHandler ( SigT... ) {
       this->setReady( std::move(_req) );
     }
 
     template < typename RetType = SigR >
-    std::enable_if_t< !std::is_same<void,RetType>::value, RetType >
+    std::enable_if_t< !std::is_same_v<void,RetType>, RetType >
     sigHandler ( SigT... ) {
       this->setReady( std::move(_req) );
       return {};

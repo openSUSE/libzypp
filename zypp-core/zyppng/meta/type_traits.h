@@ -116,13 +116,13 @@ namespace zyppng {
 
   //Provides the member typedef type which is the type pointed to by T, or, if T is not a pointer, then type is the same as T.
   template< typename T>
-  struct remove_smart_ptr{ using type = typename std::remove_cv<T>::type; };
+  struct remove_smart_ptr{ using type = std::remove_cv_t<T>; };
 
   template< typename T>
-  struct remove_smart_ptr<std::shared_ptr<T>>{ using type = typename std::remove_cv<T>::type; };
+  struct remove_smart_ptr<std::shared_ptr<T>>{ using type = std::remove_cv_t<T>; };
 
   template< typename T>
-  struct remove_smart_ptr<std::unique_ptr<T>>{ using type = typename std::remove_cv<T>::type; };
+  struct remove_smart_ptr<std::unique_ptr<T>>{ using type = std::remove_cv_t<T>; };
 
   template< typename T>
   using remove_smart_ptr_t = typename remove_smart_ptr<T>::type;

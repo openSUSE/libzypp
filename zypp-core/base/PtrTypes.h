@@ -466,11 +466,13 @@ namespace zypp
         typedef typename DTraits::PtrType               PtrType;
         typedef typename DTraits::constPtrType          constPtrType;
 
-        RWCOW_pointer()
-        {}
+        RWCOW_pointer() {}
 
-        RWCOW_pointer( std::nullptr_t )
-        {}
+        RWCOW_pointer(std::nullptr_t) {}
+
+        RWCOW_pointer(const RWCOW_pointer &) = default;
+
+        RWCOW_pointer(RWCOW_pointer &&) = default;
 
         explicit
         RWCOW_pointer( typename PtrType::element_type * dptr )
@@ -484,6 +486,10 @@ namespace zypp
 
         RWCOW_pointer & operator=( std::nullptr_t )
         { reset(); return *this; }
+
+        RWCOW_pointer &operator=(const RWCOW_pointer &) = default;
+
+        RWCOW_pointer &operator=(RWCOW_pointer &&) = default;
 
         void reset()
         { PtrType().swap( _dptr ); }

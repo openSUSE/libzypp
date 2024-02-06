@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Feb  6 10:36:24 CET 2024 - ma@suse.de
+
+- applydeltaprm: Create target directory if it does not exist
+  (bsc#1219442)
+- Add ProblemSolution::skipsPatchesOnly (for openSUSE/zypper#514)
+- Fix problems with EINTR in ExternalDataSource::getline (fixes
+  bsc#1215698)
+- version 17.31.30 (22)
+
+-------------------------------------------------------------------
 Tue Jan 23 16:10:26 CET 2024 - ma@suse.de
 
 - CheckAccessDeleted: fix running_in_container detection

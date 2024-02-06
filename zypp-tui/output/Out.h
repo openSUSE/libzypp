@@ -670,6 +670,12 @@ public:
     std::ostream & operator<<( const Tp & val )
     { return (*_str) << val; /*return *this;*/ }
 
+    operator std::ostream &()
+    { return *_str; }
+
+    std::ostream & stream()
+    { return *_str; }
+
    private:
       std::unique_ptr<std::ostringstream> _str; // work around missing move ctor
   };

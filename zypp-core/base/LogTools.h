@@ -31,6 +31,21 @@ namespace zypp
 
   using std::endl;
 
+  /// \brief Helper to produce not-NL-terminated multi line output.
+  /// Used as leading separator it prints a separating NL by omitting
+  /// output upon it's first invocation.
+  /// \code
+  ///   Container foo { 1,2,3 };
+  ///   MLSep sep;
+  ///   for ( auto && el : foo )
+  ///     cout << sep << el;
+  ///   # "1\n2\n3"
+  /// \endcode
+  struct MLSep
+  { bool _first = true; };
+  std::ostream & operator<<( std::ostream & str, MLSep & obj )
+  { if ( obj._first ) obj._first = false; else str << endl; return str; }
+
   /** Print range defined by iterators (multiline style).
    * \code
    * intro [ pfx ITEM [ { sep ITEM }+ ] sfx ] extro

@@ -13,6 +13,7 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
 #include <zypp/base/StringV.h>
+#include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/UserRequestException>
 
@@ -233,17 +234,17 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     RepoFileReader::RepoFileReader( const Pathname & repo_file,
-                                    const ProcessRepo & callback,
+                                    ProcessRepo  callback,
                                     const ProgressData::ReceiverFnc &progress )
-      : _callback(callback)
+      : _callback(std::move(callback))
     {
       repositories_in_stream(InputStream(repo_file), _callback, progress);
     }
 
     RepoFileReader::RepoFileReader( const InputStream &is,
-                                    const ProcessRepo & callback,
+                                    ProcessRepo  callback,
                                     const ProgressData::ReceiverFnc &progress )
-      : _callback(callback)
+      : _callback(std::move(callback))
     {
       repositories_in_stream(is, _callback, progress);
     }

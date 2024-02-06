@@ -11,6 +11,7 @@
 */
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 #include <zypp/base/Gettext.h>
 #include <zypp/base/LogTools.h>
@@ -199,20 +200,20 @@ namespace zypp
       {}
 
       AttrMatchData( sat::SolvAttr attr_r )
-        : attr( attr_r )
+        : attr(std::move( attr_r ))
       {}
 
-      AttrMatchData( sat::SolvAttr attr_r, const StrMatcher & strMatcher_r )
-        : attr( attr_r )
-        , strMatcher( strMatcher_r )
+      AttrMatchData( sat::SolvAttr attr_r, StrMatcher  strMatcher_r )
+        : attr(std::move( attr_r ))
+        , strMatcher(std::move( strMatcher_r ))
       {}
 
-      AttrMatchData( sat::SolvAttr attr_r, const StrMatcher & strMatcher_r,
-                     const Predicate & predicate_r, const std::string & predicateStr_r )
-        : attr( attr_r )
-        , strMatcher( strMatcher_r )
-        , predicate( predicate_r )
-        , predicateStr( predicateStr_r )
+      AttrMatchData( sat::SolvAttr attr_r, StrMatcher  strMatcher_r,
+                     Predicate  predicate_r, std::string  predicateStr_r )
+        : attr(std::move( attr_r ))
+        , strMatcher(std::move( strMatcher_r ))
+        , predicate(std::move( predicate_r ))
+        , predicateStr(std::move( predicateStr_r ))
       {}
 
       /** A usable Predicate must provide a string serialization.

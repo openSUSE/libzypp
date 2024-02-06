@@ -33,14 +33,14 @@ namespace zyppng {
 
   namespace RepoManagerWorkflow {
 
-    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, const ProvideMediaHandle &medium, const zypp::Pathname & path, std::optional<zypp::Pathname> targetPath = {} );
-    expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, const SyncMediaHandle &medium, const zypp::Pathname & path, std::optional<zypp::Pathname> targetPath = {} );
+    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, ProvideMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath = {} );
+    expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, SyncMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath = {} );
 
-    AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata( repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );
-    expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata( repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver = nullptr );
 
-    AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );
-    expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver = nullptr );
 
     AsyncOpRef<expected<repo::AsyncRefreshContextRef> > buildCache( repo::AsyncRefreshContextRef refCtx, ProgressObserverRef progressObserver = nullptr );
     expected<repo::SyncRefreshContextRef> buildCache( repo::SyncRefreshContextRef refCtx, ProgressObserverRef progressObserver = nullptr );

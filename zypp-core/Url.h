@@ -128,7 +128,7 @@ namespace zypp
      * \param url The URL implementation reference to make a copy of.
      * \throws url::UrlException if reference is empty.
      */
-    Url(const zypp::url::UrlRef &url);
+    Url(zypp::url::UrlRef url);
 
 
     /**

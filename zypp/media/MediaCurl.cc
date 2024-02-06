@@ -18,6 +18,7 @@
 #include <zypp/ExternalProgram.h>
 #include <zypp/base/String.h>
 #include <zypp/base/Gettext.h>
+#include <utility>
 #include <zypp-core/parser/Sysconfig>
 #include <zypp/base/Gettext.h>
 
@@ -138,7 +139,7 @@ namespace internal {
 
   struct ProgressData
   {
-    ProgressData( CURL *curl, time_t timeout = 0, const zypp::Url & url = zypp::Url(),
+    ProgressData( CURL *curl, time_t timeout = 0, zypp::Url  url = zypp::Url(),
                   zypp::ByteCount expectedFileSize_r = 0,
                   zypp::callback::SendReport<zypp::media::DownloadProgressReport> *_report = nullptr );
 
@@ -187,9 +188,9 @@ namespace internal {
 
 
 
-  ProgressData::ProgressData(CURL *curl, time_t timeout, const Url &url, ByteCount expectedFileSize_r, zypp::callback::SendReport< zypp::media::DownloadProgressReport> *_report)
+  ProgressData::ProgressData(CURL *curl, time_t timeout, Url url, ByteCount expectedFileSize_r, zypp::callback::SendReport< zypp::media::DownloadProgressReport> *_report)
     : _curl( curl )
-    , _url( url )
+    , _url(std::move( url ))
     , _timeout( timeout )
     , _timeoutReached( false )
     , _fileSizeExceeded ( false )

@@ -17,6 +17,7 @@
 #include <zypp/PublicKey.h>
 #include <zypp/ZYppCallbacks.h>
 
+#include <utility>
 #include <zypp-core/zyppng/pipelines/Transform>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp-core/zyppng/pipelines/MTry>
@@ -45,11 +46,11 @@ namespace zyppng {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      RepoInfoProvideKeyLogic( ZyppContextRefType &&zyppContext, zypp::RepoInfo info, const std::string &keyID_r, const zypp::Pathname &targetDirectory_r )
+      RepoInfoProvideKeyLogic( ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, std::string &&keyID_r, zypp::Pathname &&targetDirectory_r )
         : _zyppContext( std::move(zyppContext) )
         , _info( std::move(info) )
-        , _keyID_r( keyID_r )
-        , _targetDirectory_r( targetDirectory_r )
+        , _keyID_r(std::move( keyID_r ))
+        , _targetDirectory_r(std::move( targetDirectory_r ))
         , _keyIDStr( _keyID_r.size() > 8 ? _keyID_r.substr( _keyID_r.size()-8 ) : _keyID_r )	// print short ID in Jobreports
         , _tempKeyRing( _tmpKeyRingDir )
       { }
@@ -214,14 +215,14 @@ namespace zyppng {
     };
   }
 
-  zypp::filesystem::Pathname RepoInfoWorkflow::provideKey( SyncContextRef ctx, zypp::RepoInfo info, const std::string &keyID_r, const zypp::filesystem::Pathname &targetDirectory_r )
+  zypp::filesystem::Pathname RepoInfoWorkflow::provideKey( SyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return SyncRepoInfoProvideKey::run( std::move(ctx), info, keyID_r, targetDirectory_r );
+    return SyncRepoInfoProvideKey::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
-  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(ContextRef ctx, zypp::RepoInfo info, const std::string &keyID_r, const zypp::filesystem::Pathname &targetDirectory_r )
+  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(ContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return AsyncRepoInfoProvideKey::run( std::move(ctx), info, keyID_r, targetDirectory_r );
+    return AsyncRepoInfoProvideKey::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
 }

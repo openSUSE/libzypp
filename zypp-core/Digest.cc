@@ -91,7 +91,7 @@ namespace zypp {
     bool Digest::P::openssl_digests_added = false;
 
     Digest::P::P() :
-      md(NULL),
+      md(nullptr),
       finalized(false)
     {
     }

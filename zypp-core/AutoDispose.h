@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <boost/call_traits.hpp>
+#include <utility>
 
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/PtrTypes.h>
@@ -113,28 +114,18 @@ namespace zypp
       {}
 
       /** Ctor taking dispose function and using default constructed value. */
-      explicit AutoDispose( const Dispose & dispose_r )
-      : _pimpl( new Impl( value_type(), dispose_r ) )
+      explicit AutoDispose( Dispose dispose_r )
+      : _pimpl( new Impl( value_type(), std::move(dispose_r) ) )
       {}
 
       /** Ctor taking value and no dispose function. */
-      explicit AutoDispose( const value_type & value_r )
-      : _pimpl( new Impl( value_r ) )
+      explicit AutoDispose( value_type value_r )
+      : _pimpl( new Impl( std::move(value_r) ) )
       {}
 
       /** Ctor taking value and dispose function. */
-      AutoDispose( const value_type & value_r, const Dispose & dispose_r )
-      : _pimpl( new Impl( value_r, dispose_r ) )
-      {}
-
-      /** Ctor taking rvalue and no dispose function. */
-      explicit AutoDispose( value_type &&value_r )
-        : _pimpl( new Impl( std::move(value_r) ) )
-      {}
-
-      /** Ctor taking rvalue and dispose function. */
-      AutoDispose( value_type &&value_r, const Dispose & dispose_r )
-        : _pimpl( new Impl( std::move(value_r), dispose_r ) )
+      AutoDispose( value_type value_r, Dispose dispose_r )
+      : _pimpl( new Impl( std::move(value_r), std::move(dispose_r) ) )
       {}
 
     public:
@@ -259,8 +250,8 @@ namespace zypp
         Impl( )
         {}
 
-        Impl( const Dispose & dispose_r )
-          : _dispose( dispose_r )
+        Impl( Dispose  dispose_r )
+          : _dispose(std::move( dispose_r ))
         {}
 
         ~Impl()

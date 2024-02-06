@@ -24,6 +24,7 @@
 #include <zypp/sat/LookupAttr.h>
 
 #include <zypp/Repository.h>
+#include <utility>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ZConfig.h>
 
@@ -83,12 +84,12 @@ namespace zypp
 
     Solvable::SplitIdent::SplitIdent( ResKind kind_r, IdString name_r )
     : _ident( name_r )
-    , _kind( kind_r )
+    , _kind(std::move( kind_r ))
     { _doSplit( _ident, _kind, _name ); }
 
     Solvable::SplitIdent::SplitIdent( ResKind kind_r, const C_Str & name_r )
     : _ident( name_r )
-    , _kind( kind_r )
+    , _kind(std::move( kind_r ))
     { _doSplit( _ident, _kind, _name ); }
 
     /////////////////////////////////////////////////////////////////

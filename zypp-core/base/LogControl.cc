@@ -23,6 +23,7 @@
 #include <zypp-core/TriBool.h>
 #include <zypp-core/AutoDispose.h>
 
+#include <utility>
 #include <zypp-core/zyppng/io/Socket>
 #include <zypp-core/zyppng/io/SockAddr>
 #include <zypp-core/zyppng/base/EventLoop>
@@ -408,8 +409,8 @@ namespace zypp
 
       public:
         /** */
-        Loglinebuf( const std::string & group_r, LogLevel level_r )
-        : _group( group_r )
+        Loglinebuf( std::string  group_r, LogLevel level_r )
+        : _group(std::move( group_r ))
         , _level( level_r )
         , _file( "" )
         , _func( "" )

@@ -43,7 +43,7 @@ namespace zypp
 
       public:
         /** Default ctor */
-        RpmPostTransCollector( const Pathname & root_r );
+        RpmPostTransCollector( Pathname root_r );
 
         /** Dtor */
         ~RpmPostTransCollector();

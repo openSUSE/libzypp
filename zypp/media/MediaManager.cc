@@ -14,6 +14,7 @@
 #include <iostream>
 #include <typeinfo>
 
+#include <utility>
 #include <zypp-media/MediaException>
 #include <zypp/media/MediaManager.h>
 #include <zypp/media/MediaHandlerFactory.h>
@@ -161,9 +162,9 @@ namespace zypp
         Pathname         deltafile;
 
       private:
-        ManagedMedia( std::unique_ptr<MediaHandler> &&h, const MediaVerifierRef &v)
+        ManagedMedia( std::unique_ptr<MediaHandler> &&h, MediaVerifierRef v)
           : desired (false)
-          , verifier(v)
+          , verifier(std::move(v))
           , _handler ( std::move(h) )
         {}
 

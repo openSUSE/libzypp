@@ -15,6 +15,7 @@
 #include <cerrno>
 
 #include <iostream>
+#include <utility>
 
 #include <zypp-core/base/ReferenceCounted.h>
 #include <zypp-core/base/NonCopyable.h>
@@ -48,8 +49,8 @@ namespace zypp {
 
       public:
 
-        Impl( const Pathname & path_r, Flags flags_r = CtorDefault )
-        : _path( path_r ), _flags( flags_r )
+        Impl( Pathname &&path_r, Flags flags_r = CtorDefault )
+        : _path(std::move( path_r )), _flags( flags_r )
         {}
 
         ~Impl()
@@ -113,8 +114,8 @@ namespace zypp {
     //	METHOD NAME : TmpPath::TmpPath
     //	METHOD TYPE : Constructor
     //
-    TmpPath::TmpPath( const Pathname & tmpPath_r )
-    :_impl( tmpPath_r.empty() ? nullptr : new Impl( tmpPath_r ) )
+    TmpPath::TmpPath( Pathname tmpPath_r )
+    :_impl( tmpPath_r.empty() ? nullptr : new Impl( std::move(tmpPath_r) ) )
     {}
 
     ///////////////////////////////////////////////////////////////////

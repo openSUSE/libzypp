@@ -17,6 +17,7 @@
 #include <zypp/PublicKey.h>
 
 #include <zypp-core/base/Gettext.h>
+#include <utility>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp/ng/Context>
@@ -36,8 +37,8 @@ namespace zyppng::KeyRingWorkflow {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
-    ImportKeyFromRepoLogic( ZyppContextRefType context, const std::string &keyId, zypp::RepoInfo info )
-      : _context( std::move(context) ), _keyId(keyId), _repo( std::move(info) )
+    ImportKeyFromRepoLogic( ZyppContextRefType context, std::string &&keyId, zypp::RepoInfo &&info )
+      : _context( std::move(context) ), _keyId(std::move(keyId)), _repo( std::move(info) )
     { }
 
     MaybeAsyncRef<bool> execute () {
@@ -115,14 +116,14 @@ namespace zyppng::KeyRingWorkflow {
     }
   };
 
-  bool provideAndImportKeyFromRepository( SyncContextRef ctx, const std::string &id_r, const zypp::RepoInfo &info_r )
+  bool provideAndImportKeyFromRepository( SyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r )
   {
-    return SyncImportKeyFromRepoExecutor::run( ctx, id_r, info_r );
+    return SyncImportKeyFromRepoExecutor::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
-  AsyncOpRef<bool> provideAndImportKeyFromRepository( ContextRef ctx, const std::string &id_r, const zypp::RepoInfo &info_r)
+  AsyncOpRef<bool> provideAndImportKeyFromRepository( ContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
   {
-    return AsyncImportKeyFromRepoExecutor::run( ctx, id_r, info_r );
+    return AsyncImportKeyFromRepoExecutor::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
   namespace {
@@ -139,7 +140,7 @@ namespace zyppng::KeyRingWorkflow {
       using ZyppContextRefType = MaybeAsyncContextRef<OpType>;
       using KeyTrust = zypp::KeyRingReport::KeyTrust;
 
-      VerifyFileSignatureLogic( ZyppContextRefType zyppContext, KeyRingRef keyRing, zypp::keyring::VerifyFileContext &&ctx )
+      VerifyFileSignatureLogic( ZyppContextRefType zyppContext, KeyRingRef &&keyRing, zypp::keyring::VerifyFileContext &&ctx )
         : _zyppContext( std::move(zyppContext) )
         , _keyRing( std::move(keyRing) )
         , _verifyContext( std::move(ctx) )

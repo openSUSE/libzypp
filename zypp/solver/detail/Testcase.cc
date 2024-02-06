@@ -20,6 +20,7 @@
 #include <zypp/solver/detail/Testcase.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/LogControl.h>
+#include <utility>
 #include <zypp-core/base/GzStream>
 #include <zypp/base/String.h>
 #include <zypp/base/PtrTypes.h>
@@ -62,8 +63,8 @@ namespace zypp
         :dumpPath("/var/log/YaST2/solverTestcase")
       {}
 
-      Testcase::Testcase(const std::string & path)
-        :dumpPath(path)
+      Testcase::Testcase(std::string  path)
+        :dumpPath(std::move(path))
       {}
 
       Testcase::~Testcase()

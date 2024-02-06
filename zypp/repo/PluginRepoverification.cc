@@ -10,6 +10,7 @@
  */
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 #include "PluginRepoverification.h"
 
@@ -107,11 +108,11 @@ namespace zypp_private
     {
     public:
       Impl( RW_pointer<PluginRepoverification::Impl> parent_r,
-            Pathname sigpathLocal_r, Pathname keypathLocal_r, const RepoInfo & repo_r )
-      : _parent { parent_r }
+            Pathname &&sigpathLocal_r, Pathname &&keypathLocal_r, RepoInfo &&repo_r )
+      : _parent { std::move( parent_r ) }
       , _sigpathLocal { std::move(sigpathLocal_r) }
       , _keypathLocal { std::move(keypathLocal_r) }
-      , _repoinfo { repo_r }
+      , _repoinfo { std::move(repo_r) }
       {}
 
       RW_pointer<PluginRepoverification::Impl> _parent;
@@ -133,7 +134,7 @@ namespace zypp_private
       Impl()
       {}
 
-      Impl( Pathname plugindir_r, Pathname chroot_r )
+      Impl( Pathname &&plugindir_r, Pathname &&chroot_r )
       : _watchPlugindir { std::move(plugindir_r), WatchFile::NO_INIT }
       , _chroot { std::move(chroot_r) }
       {}
@@ -276,9 +277,8 @@ namespace zypp_private
     bool PluginRepoverification::checkIfNeeded()
     { return _pimpl->checkIfNeeded(); }
 
-    PluginRepoverification::Checker PluginRepoverification::getChecker( const Pathname & sigpathLocal_r, const Pathname & keypathLocal_r,
-                                                                        const RepoInfo & repo_r ) const
-    { return Checker( new Checker::Impl( _pimpl, sigpathLocal_r, keypathLocal_r, repo_r ) ); }
+    PluginRepoverification::Checker PluginRepoverification::getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, RepoInfo repo_r ) const
+    { return Checker( new Checker::Impl( _pimpl, std::move(sigpathLocal_r), std::move(keypathLocal_r), std::move(repo_r) ) ); }
 
 
     std::ostream & operator<<( std::ostream & str, const PluginRepoverification & obj )

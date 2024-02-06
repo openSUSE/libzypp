@@ -32,6 +32,7 @@ extern "C"
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/sync/sharable_lock.hpp>
+#include <utility>
 
 #include <iostream>
 
@@ -343,10 +344,10 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  ZYppFactoryException::ZYppFactoryException( const std::string & msg_r, pid_t lockerPid_r, const std::string & lockerName_r )
-    : Exception( msg_r )
+  ZYppFactoryException::ZYppFactoryException( std::string msg_r, pid_t lockerPid_r, std::string lockerName_r )
+    : Exception( std::move(msg_r) )
     , _lockerPid( lockerPid_r )
-    , _lockerName( lockerName_r )
+    , _lockerName(std::move( lockerName_r ))
   {}
 
   ZYppFactoryException::~ZYppFactoryException() throw ()

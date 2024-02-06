@@ -100,7 +100,7 @@ namespace zypp_private
       ///////////////////////////////////////////////////////////////////
 
       /** \ref FileChecker factory remembering the location of the master index files GPG signature and key. */
-      Checker getChecker( const Pathname & sigpathLocal_r, const Pathname & keypathLocal_r, const RepoInfo & repo_r ) const;
+      Checker getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, RepoInfo repo_r ) const;
 
     public:
       class Impl;                 ///< Implementation class.

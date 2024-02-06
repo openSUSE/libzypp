@@ -11,6 +11,7 @@
 */
 #include <iostream>
 #include <zypp/base/Logger.h>
+#include <utility>
 #include <zypp-core/base/DefaultIntegral>
 
 #include <zypp/PoolItem.h>
@@ -39,10 +40,10 @@ namespace zypp
     public:
       Impl() {}
 
-      Impl( ResObject::constPtr res_r,
-            const ResStatus & status_r )
-      : _status( status_r )
-      , _resolvable( res_r )
+      Impl( ResObject::constPtr &&res_r,
+            ResStatus &&status_r )
+      : _status( std::move(status_r) )
+      , _resolvable( std::move(res_r) )
       {}
 
       ResStatus & status() const

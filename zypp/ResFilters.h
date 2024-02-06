@@ -19,6 +19,8 @@
 #include <zypp/PoolItem.h>
 #include <zypp/Repository.h>
 
+#include <utility>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -151,8 +153,8 @@ namespace zypp
       ByName()
       {}
 
-      ByName( const std::string & name_r )
-      : _name( name_r )
+      ByName( std::string  name_r )
+      : _name(std::move( name_r ))
       {}
 
       bool operator()( ResObject::constPtr p ) const
@@ -170,8 +172,8 @@ namespace zypp
       : _alias( repository_r.info().alias() )
       {}
 
-      ByRepository( const std::string & alias_r )
-      : _alias( alias_r )
+      ByRepository( std::string  alias_r )
+      : _alias(std::move( alias_r ))
       {}
 
       bool operator()( ResObject::constPtr p ) const
@@ -197,8 +199,8 @@ namespace zypp
     template<class TCompare = CompareByEQ<Edition> >
       struct ByEdition
       {
-        ByEdition( const Edition & edition_r, TCompare cmp_r )
-        : _edition( edition_r )
+        ByEdition( Edition  edition_r, TCompare cmp_r )
+        : _edition(std::move( edition_r ))
         , _cmp( cmp_r )
         {}
 

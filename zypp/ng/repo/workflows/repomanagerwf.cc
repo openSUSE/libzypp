@@ -9,6 +9,7 @@
 #include "repomanagerwf.h"
 
 #include <zypp-core/ManagedFile.h>
+#include <utility>
 #include <zypp-core/zyppng/pipelines/MTry>
 #include <zypp-media/MediaException>
 #include <zypp-media/ng/Provide>
@@ -37,10 +38,10 @@ namespace zyppng {
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;
 
-    ProbeRepoLogic(ZyppContextRefType zyppCtx, const MediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath )
+    ProbeRepoLogic(ZyppContextRefType zyppCtx, MediaHandle &&medium, zypp::Pathname &&path, std::optional<zypp::Pathname> &&targetPath )
       : _zyppContext(std::move(zyppCtx))
-      , _medium(medium)
-      , _path(path)
+      , _medium(std::move(medium))
+      , _path(std::move(path))
       , _targetPath(std::move(targetPath))
     {}
 
@@ -159,14 +160,14 @@ namespace zyppng {
 
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > RepoManagerWorkflow::probeRepoType(ContextRef ctx, const ProvideMediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath)
+  AsyncOpRef<expected<zypp::repo::RepoType> > RepoManagerWorkflow::probeRepoType(ContextRef ctx, ProvideMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
   {
-    return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), medium, path, std::move(targetPath) );
+    return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
-  expected<zypp::repo::RepoType> RepoManagerWorkflow::probeRepoType(SyncContextRef ctx, const SyncMediaHandle &medium, const zypp::Pathname &path, std::optional<zypp::Pathname> targetPath )
+  expected<zypp::repo::RepoType> RepoManagerWorkflow::probeRepoType(SyncContextRef ctx, SyncMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath )
   {
-    return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), medium, path, std::move(targetPath) );
+    return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
 
@@ -186,7 +187,7 @@ namespace zyppng {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      CheckIfToRefreshMetadataLogic( RefreshContextRefType refCtx, const MediaHandle &medium, ProgressObserverRef progressObserver )
+      CheckIfToRefreshMetadataLogic( RefreshContextRefType refCtx, MediaHandle &&medium, ProgressObserverRef progressObserver )
         : _refreshContext(std::move(refCtx))
         , _progress(std::move( progressObserver ))
         , _medium(std::move( medium ))
@@ -296,14 +297,14 @@ namespace zyppng {
     };
   }
 
-  AsyncOpRef<expected<repo::RefreshCheckStatus> > RepoManagerWorkflow::checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::RefreshCheckStatus> > RepoManagerWorkflow::checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver)
   {
-    return SimpleExecutor< CheckIfToRefreshMetadataLogic , AsyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), medium, std::move(progressObserver) );
+    return SimpleExecutor< CheckIfToRefreshMetadataLogic , AsyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
 
-  expected<repo::RefreshCheckStatus> RepoManagerWorkflow::checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, ProgressObserverRef progressObserver)
+  expected<repo::RefreshCheckStatus> RepoManagerWorkflow::checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver)
   {
-    return SimpleExecutor< CheckIfToRefreshMetadataLogic , SyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), medium, std::move(progressObserver) );
+    return SimpleExecutor< CheckIfToRefreshMetadataLogic , SyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
 
 
@@ -326,7 +327,7 @@ namespace zyppng {
       using DlContextType    = repo::DownloadContext<ZyppContextRefType>;
       using DlContextRefType = std::shared_ptr<DlContextType>;
 
-      RefreshMetadataLogic( RefreshContextRefType refCtx, const MediaHandle &medium, ProgressObserverRef progressObserver )
+      RefreshMetadataLogic( RefreshContextRefType refCtx, MediaHandle &&medium, ProgressObserverRef progressObserver )
         : _refreshContext(std::move(refCtx))
         , _progress ( std::move( progressObserver ) )
         , _medium   ( std::move( medium ) )
@@ -527,14 +528,14 @@ namespace zyppng {
   }
 
   namespace RepoManagerWorkflow {
-    AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, const ProvideMediaHandle &medium, ProgressObserverRef progressObserver )
+    AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver )
     {
-      return SimpleExecutor<RefreshMetadataLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), medium, std::move(progressObserver));
+      return SimpleExecutor<RefreshMetadataLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
     }
 
-    expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, const SyncMediaHandle &medium, ProgressObserverRef progressObserver )
+    expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver )
     {
-      return SimpleExecutor<RefreshMetadataLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), medium, std::move(progressObserver));
+      return SimpleExecutor<RefreshMetadataLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
     }
   }
 }

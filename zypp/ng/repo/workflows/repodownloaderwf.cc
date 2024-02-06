@@ -10,6 +10,7 @@
 #include <zypp/ng/workflows/logichelpers.h>
 #include "zypp/parser/yum/RepomdFileReader.h"
 
+#include <utility>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
@@ -43,10 +44,10 @@ namespace zyppng {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      DownloadMasterIndexLogic( DlContextRefType &&ctxRef, const MediaHandle &mediaHandle, const zypp::filesystem::Pathname &masterIndex_r  )
+      DownloadMasterIndexLogic( DlContextRefType &&ctxRef, MediaHandle &&mediaHandle, zypp::filesystem::Pathname &&masterIndex_r  )
         : _dlContext( std::move(ctxRef) )
-        , _media( mediaHandle )
-        , _masterIndex( masterIndex_r )
+        , _media(std::move( mediaHandle ))
+        , _masterIndex(std::move( masterIndex_r ))
       { }
 
     public:
@@ -284,20 +285,20 @@ namespace zyppng {
 
     }
 
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::downloadMasterIndex(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle, const zypp::Pathname &masterIndex_r)
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::downloadMasterIndex(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::Pathname masterIndex_r)
     {
-      return SimpleExecutor<DownloadMasterIndexLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>>>::run( std::move(dl), mediaHandle, masterIndex_r );
+      return SimpleExecutor<DownloadMasterIndexLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
     }
 
-    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle, const zypp::Pathname &masterIndex_r)
+    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::Pathname masterIndex_r)
     {
-      return SimpleExecutor<DownloadMasterIndexLogic, SyncOp<expected<repo::SyncDownloadContextRef>>>::run( std::move(dl), mediaHandle, masterIndex_r );
+      return SimpleExecutor<DownloadMasterIndexLogic, SyncOp<expected<repo::SyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
     }
 
 
     namespace {
       template <class DlContextRefType, class MediaHandleType>
-      auto statusImpl ( DlContextRefType dlCtx, const MediaHandleType &mediaHandle ) {
+      auto statusImpl ( DlContextRefType dlCtx, MediaHandleType &&mediaHandle ) {
 
         constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
@@ -307,11 +308,11 @@ namespace zyppng {
 
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::repoStatus( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
+            return RpmmdWorkflows::repoStatus( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::YAST2_e:
-            return SuseTagsWorkflows::repoStatus( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
+            return SuseTagsWorkflows::repoStatus( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
-            return PlaindirWorkflows::repoStatus ( dlCtx, mediaHandle ) | and_then( std::move(finalizeStatus) );
+            return PlaindirWorkflows::repoStatus ( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::NONE_e:
             break;
         }
@@ -320,28 +321,28 @@ namespace zyppng {
       }
     }
 
-    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle) {
-      return statusImpl( dl, mediaHandle );
+    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle) {
+      return statusImpl( dl, std::move(mediaHandle) );
     }
 
-    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle) {
-       return statusImpl( dl, mediaHandle );
+    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle) {
+       return statusImpl( dl, std::move(mediaHandle) );
     }
 
 
     namespace {
       template <class DlContextRefType, class MediaHandleType>
-      auto downloadImpl ( DlContextRefType dlCtx, const MediaHandleType &mediaHandle, ProgressObserverRef progressObserver ) {
+      auto downloadImpl ( DlContextRefType dlCtx, MediaHandleType &&mediaHandle, ProgressObserverRef &&progressObserver ) {
 
         constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::download( std::move(dlCtx), mediaHandle, std::move(progressObserver) );
+            return RpmmdWorkflows::download( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle), std::move(progressObserver) );
           case zypp::repo::RepoType::YAST2_e:
-            return SuseTagsWorkflows::download( std::move(dlCtx), mediaHandle, std::move(progressObserver) );
+            return SuseTagsWorkflows::download( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle), std::move(progressObserver) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
-            return PlaindirWorkflows::download ( std::move(dlCtx), mediaHandle );
+            return PlaindirWorkflows::download ( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle) );
           case zypp::repo::RepoType::NONE_e:
             break;
         }
@@ -350,14 +351,14 @@ namespace zyppng {
       }
     }
 
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::download(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::download(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
     {
-      return downloadImpl( dl, mediaHandle, std::move(progressObserver) );
+      return downloadImpl( dl, std::move(mediaHandle), std::move(progressObserver) );
     }
 
-    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::download(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::download(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver)
     {
-      return downloadImpl( dl, mediaHandle, std::move(progressObserver) );
+      return downloadImpl( dl, std::move(mediaHandle), std::move(progressObserver) );
     }
 
 }

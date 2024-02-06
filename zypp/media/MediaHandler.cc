@@ -22,6 +22,7 @@
 #include <zypp/base/String.h>
 #include <zypp/media/MediaHandler.h>
 #include <zypp/media/MediaManager.h>
+#include <utility>
 #include <zypp-media/Mount>
 #include <limits.h>
 #include <stdlib.h>
@@ -51,17 +52,17 @@ namespace zypp {
 //
 //	DESCRIPTION :
 //
-MediaHandler::MediaHandler ( const Url &      url_r,
+MediaHandler::MediaHandler ( Url       url_r,
                              const Pathname & attach_point_r,
-                             const Pathname & urlpath_below_attachpoint_r,
+                             Pathname  urlpath_below_attachpoint_r,
                              const bool       does_download_r )
     : _mediaSource()
     , _attachPoint( new AttachPoint())
     , _attachPointHint()
-    , _relativeRoot( urlpath_below_attachpoint_r)
+    , _relativeRoot(std::move( urlpath_below_attachpoint_r))
     , _does_download( does_download_r )
     , _attach_mtime(0)
-    , _url( url_r )
+    , _url(std::move( url_r ))
     , _parentId(0)
 {
   Pathname real_attach_point( getRealPath(attach_point_r.asString()));

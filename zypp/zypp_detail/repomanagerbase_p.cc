@@ -25,6 +25,7 @@
 #include <zypp/repo/PluginServices.h>
 
 #include <fstream>
+#include <utility>
 
 namespace zypp
 {
@@ -158,8 +159,8 @@ namespace zypp
   { return not zypp::PathInfo(path_r/".no_auto_prune").isExist(); }
 
 
-  RepoManagerBaseImpl::RepoManagerBaseImpl(const RepoManagerOptions &opt)
-    : _options(opt)
+  RepoManagerBaseImpl::RepoManagerBaseImpl(RepoManagerOptions &&opt)
+    : _options(std::move(opt))
   { }
 
   RepoManagerBaseImpl::~RepoManagerBaseImpl()

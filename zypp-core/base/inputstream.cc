@@ -13,6 +13,7 @@
 #include <zypp-core/base/LogTools.h>
 
 #include "inputstream.h"
+#include <utility>
 #include <zypp-core/base/GzStream>
 
 #ifdef ENABLE_ZCHUNK_COMPRESSION
@@ -70,9 +71,9 @@ namespace zypp
   //	METHOD TYPE : Constructor
   //
   InputStream::InputStream( std::istream & stream_r,
-                            const std::string & name_r )
+                            std::string  name_r )
   : _stream( &stream_r, NullDeleter() )
-  , _name( name_r )
+  , _name(std::move( name_r ))
   {}
 
   ///////////////////////////////////////////////////////////////////
@@ -80,8 +81,8 @@ namespace zypp
   //	METHOD NAME : InputStream::InputStream
   //	METHOD TYPE : Constructor
   //
-  InputStream::InputStream( const Pathname & file_r )
-  : _path( file_r )
+  InputStream::InputStream( Pathname  file_r )
+  : _path(std::move( file_r ))
   , _stream( streamForFile( _path.asString() ) )
   , _name( _path.asString() )
   , _size( _helperInitSize( _path ) )
@@ -92,11 +93,11 @@ namespace zypp
   //	METHOD NAME : InputStream::InputStream
   //	METHOD TYPE : Constructor
   //
-  InputStream::InputStream( const Pathname & file_r,
-                            const std::string & name_r )
-  : _path( file_r )
+  InputStream::InputStream( Pathname  file_r,
+                            std::string  name_r )
+  : _path(std::move( file_r ))
   , _stream( streamForFile( _path.asString() ) )
-  , _name( name_r )
+  , _name(std::move( name_r ))
   , _size( _helperInitSize( _path ) )
   {}
 
@@ -118,10 +119,10 @@ namespace zypp
   //	METHOD TYPE : Constructor
   //
   InputStream::InputStream( const std::string & file_r,
-                            const std::string & name_r )
+                            std::string  name_r )
   : _path( file_r )
   , _stream( streamForFile( _path.asString() ) )
-  , _name( name_r )
+  , _name(std::move( name_r ))
   , _size( _helperInitSize( _path ) )
   {}
 
@@ -143,10 +144,10 @@ namespace zypp
   //	METHOD TYPE : Constructor
   //
   InputStream::InputStream( const char * file_r,
-                            const std::string & name_r )
+                            std::string  name_r )
   : _path( file_r )
   , _stream( streamForFile( _path.asString() ) )
-  , _name( name_r )
+  , _name(std::move( name_r ))
   , _size( _helperInitSize( _path ) )
   {}
 

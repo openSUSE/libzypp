@@ -27,6 +27,8 @@ extern "C"
 #include <zypp/base/Logger.h>
 #include <zypp/solver/detail/SolverQueueItem.h>
 
+#include <utility>
+
 using std::endl;
 
 /////////////////////////////////////////////////////////////////////////
@@ -73,9 +75,9 @@ operator<<( std::ostream & os, const SolverQueueItemList & itemlist )
 
 //---------------------------------------------------------------------------
 
-SolverQueueItem::SolverQueueItem (SolverQueueItemType type, const ResPool & pool)
+SolverQueueItem::SolverQueueItem (SolverQueueItemType type, ResPool  pool)
     : _type (type)
-    , _pool (pool)
+    , _pool (std::move(pool))
 {
 }
 

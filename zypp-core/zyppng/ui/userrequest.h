@@ -77,8 +77,7 @@ namespace zyppng {
       Debug, Info, Warning, Error, Important, Data
     };
 
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, const std::string &message, MType mType = MType::Info, const UserData &data = {} );
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string &&message, MType mType = MType::Info, UserData &&data = {} );
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string message, MType mType = MType::Info, UserData data = {} );
     UserRequestType type() const override;
 
     MType messageType();
@@ -130,7 +129,7 @@ namespace zyppng {
 
     using index_type = std::vector<Choice>::size_type;
 
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(ListChoiceRequest, const std::string &label, const std::vector<Choice> &answers, const index_type defaultAnswer, UserData userData = {} );
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS(ListChoiceRequest, std::string label, std::vector<Choice> answers, index_type defaultAnswer, UserData userData = {} );
     UserRequestType type() const override;
 
     const std::string &label() const;
@@ -156,7 +155,7 @@ namespace zyppng {
     ZYPP_ADD_CREATE_FUNC(BooleanChoiceRequest)
 
   public:
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(BooleanChoiceRequest, const std::string &label, const bool defaultAnswer = false, UserData userData = {} );
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS(BooleanChoiceRequest, std::string label, const bool defaultAnswer = false, UserData userData = {} );
     UserRequestType type() const override;
 
     const std::string &label() const;

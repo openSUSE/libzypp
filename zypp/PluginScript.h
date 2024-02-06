@@ -99,10 +99,10 @@ namespace zypp
       PluginScript();
 
       /** Ctor taking script path and no arguments. */
-      PluginScript( const Pathname & script_r );
+      PluginScript( Pathname script_r );
 
       /** Ctor taking script path and script arguments. */
-      PluginScript( const Pathname & script_r, const Arguments & args_r );
+      PluginScript( Pathname script_r, Arguments args_r );
 
     public:
       /** Return the script path if set. */

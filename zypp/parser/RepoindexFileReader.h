@@ -59,8 +59,8 @@ namespace zypp
     *
     * \see RepoindexFileReader::ProcessResource
     */
-    RepoindexFileReader( const zypp::Pathname & repoindexFile,
-                         const ProcessResource & callback);
+    RepoindexFileReader(Pathname repoindexFile,
+                         ProcessResource callback);
 
     /**
      * \short Constructor. Creates the reader and start reading.
@@ -71,7 +71,7 @@ namespace zypp
      * \see RepoindexFileReader::ProcessResource
      */
      RepoindexFileReader( const InputStream &is,
-                          const ProcessResource & callback );
+                          ProcessResource callback );
 
     /**
      * DTOR

@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 
 #include <zypp/target/TargetCallbackReceiver.h>
 
@@ -24,7 +25,7 @@ namespace zypp
 
         RpmInstallPackageReceiver::RpmInstallPackageReceiver (Resolvable::constPtr res)
             : callback::ReceiveReport<rpm::RpmInstallReport> ()
-            , _resolvable (res)
+            , _resolvable (std::move(res))
             , _level( target::rpm::InstallResolvableReport::RPM )
             , _abort (false)
         {
@@ -118,7 +119,7 @@ namespace zypp
 
         RpmRemovePackageReceiver::RpmRemovePackageReceiver (Resolvable::constPtr res)
             : callback::ReceiveReport<rpm::RpmRemoveReport> ()
-            , _resolvable (res)
+            , _resolvable (std::move(res))
             , _abort(false)
         {
         }

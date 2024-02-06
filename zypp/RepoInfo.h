@@ -76,6 +76,11 @@ namespace zypp
       RepoInfo();
       virtual ~RepoInfo();
 
+      RepoInfo(const RepoInfo &) = default;
+      RepoInfo(RepoInfo &&) = default;
+      RepoInfo &operator=(const RepoInfo &) = default;
+      RepoInfo &operator=(RepoInfo &&) = default;
+
       /** Represents no Repository (one with an empty alias). */
       static const RepoInfo noRepo;
 

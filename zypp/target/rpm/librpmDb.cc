@@ -12,6 +12,7 @@
 #include "librpm.h"
 
 #include <iostream>
+#include <utility>
 
 #include <zypp/base/Logger.h>
 #include <zypp/PathInfo.h>
@@ -53,9 +54,9 @@ public:
     return str;
   }
 
-  D( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r )
-      : _root  ( root_r )
-      , _dbPath( dbPath_r )
+  D( Pathname  root_r, Pathname  dbPath_r, bool readonly_r )
+      : _root  (std::move( root_r ))
+      , _dbPath(std::move( dbPath_r ))
       , _ts    ( 0 )
   {
     _error.reset();
@@ -496,7 +497,7 @@ public:
   rpmdbMatchIterator   _mi;
 
   D( librpmDb::constPtr dbptr_r )
-      : _dbptr( dbptr_r )
+      : _dbptr(std::move( dbptr_r ))
       , _mi( 0 )
   {
     if ( !_dbptr )

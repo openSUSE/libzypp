@@ -79,7 +79,7 @@ class SolverQueueItem : public base::ReferenceCounted, private base::NonCopyable
 
   protected:
 
-    SolverQueueItem (SolverQueueItemType type, const ResPool & pool);
+    SolverQueueItem (SolverQueueItemType type, ResPool  pool);
 
   public:
 

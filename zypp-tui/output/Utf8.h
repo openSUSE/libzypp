@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 
 namespace ztui {
 
@@ -36,7 +37,7 @@ namespace utf8
   public:
     string() {}
     string( const char * rhs )		: _str( rhs ) {}
-    string( const std::string & rhs )	: _str( rhs ) {}
+    string( std::string  rhs )	: _str(std::move( rhs )) {}
 
   public:
     const char * c_str() const			{ return _str.c_str(); }

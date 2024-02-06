@@ -49,7 +49,7 @@ namespace zypp
     *
     * \see RepomdFileReader::ProcessResource
     */
-    RepomdFileReader( const Pathname & repomd_file, const ProcessResource & callback );
+    RepomdFileReader(const Pathname & repomd_file, ProcessResource callback );
     /** \overload Quick parsing keywords and keyhints. */
     RepomdFileReader( const Pathname & repomd_file );
 

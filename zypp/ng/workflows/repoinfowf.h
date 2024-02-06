@@ -19,8 +19,8 @@ namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS (SyncContext);
 
   namespace RepoInfoWorkflow {
-    zypp::Pathname provideKey ( SyncContextRef ctx, zypp::RepoInfo info, const std::string &keyID_r, const zypp::Pathname &targetDirectory_r );
-    AsyncOpRef<zypp::Pathname> provideKey ( ContextRef ctx, zypp::RepoInfo info, const std::string &keyID_r, const zypp::Pathname &targetDirectory_r );
+    zypp::Pathname provideKey ( SyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
+    AsyncOpRef<zypp::Pathname> provideKey ( ContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
   }
 }
 

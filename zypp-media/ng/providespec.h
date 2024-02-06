@@ -29,7 +29,7 @@ namespace zyppng
   {
   public:
 
-    ProvideMediaSpec( const std::string &label="", const zypp::Pathname &verifyData = zypp::Pathname(), unsigned medianr = 1 );
+    ProvideMediaSpec(std::string label="", zypp::Pathname verifyData = zypp::Pathname(), unsigned medianr = 1 );
 
     /*!
      * The label of the medium, this will be shown in case a media change is required

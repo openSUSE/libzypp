@@ -14,6 +14,7 @@
 
 #include <string>
 #include <list>
+#include <utility>
 
 #include <zypp/Date.h>
 
@@ -32,9 +33,9 @@ namespace zypp
   public:
     /** Default ctor */
     ChangelogEntry( const Date & d,
-                    const std::string & a,
-                    const std::string & t )
-    : _date( d ), _author( a ), _text( t )
+                    std::string  a,
+                    std::string  t )
+    : _date( d ), _author(std::move( a )), _text(std::move( t ))
     {};
     /** Dtor */
     ~ChangelogEntry()

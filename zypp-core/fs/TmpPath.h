@@ -49,7 +49,7 @@ namespace zypp {
          * Ctor. Takes a Pathname.
          **/
         explicit
-        TmpPath( const Pathname & tmpPath_r );
+        TmpPath( Pathname tmpPath_r );
 
         /**
          * Dtor.

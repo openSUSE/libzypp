@@ -18,6 +18,7 @@
 #include <zypp/repo/RepoException.h>
 
 #include <zypp-core/base/Gettext.h>
+#include <utility>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/fs/PathInfo.h>
@@ -100,8 +101,8 @@ namespace zypp {
     RepoCollector()
     {}
 
-    RepoCollector(const std::string & targetDistro_)
-      : targetDistro(targetDistro_)
+    RepoCollector(std::string  targetDistro_)
+      : targetDistro(std::move(targetDistro_))
     {}
 
     bool collect( const RepoInfo &repo );
@@ -219,7 +220,7 @@ namespace zypp {
     struct MatchServiceAlias
     {
     public:
-      MatchServiceAlias( const std::string & alias_ ) : alias(alias_) {}
+      MatchServiceAlias( std::string  alias_ ) : alias(std::move(alias_)) {}
       bool operator()( const RepoInfo & info ) const
       { return info.service() == alias; }
     private:
@@ -237,7 +238,7 @@ namespace zypp {
     using RepoSizeType = RepoSet::size_type;
 
 
-    RepoManagerBaseImpl( const RepoManagerOptions &opt );
+    RepoManagerBaseImpl(RepoManagerOptions &&opt );
     virtual ~RepoManagerBaseImpl();
 
   public:

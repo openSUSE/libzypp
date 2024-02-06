@@ -79,7 +79,7 @@ namespace zypp
       *
       */
       RepoFileReader( const Pathname & repo_file,
-                      const ProcessRepo & callback,
+                      ProcessRepo  callback,
                       const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
      /**
@@ -94,7 +94,7 @@ namespace zypp
       *
       */
       RepoFileReader( const InputStream &is,
-                      const ProcessRepo & callback,
+                      ProcessRepo  callback,
                       const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
 
       /**

@@ -61,14 +61,14 @@ namespace zypp
     {
     public:
       ParseDefConsumeRedirect();
-      ParseDefConsumeRedirect( const shared_ptr<ParseDefConsume> & target_r );
+      ParseDefConsumeRedirect( shared_ptr<ParseDefConsume> target_r );
       ParseDefConsumeRedirect( ParseDefConsume * allocatedTarget_r );
       ParseDefConsumeRedirect( ParseDefConsume & target_r );
 
       virtual ~ParseDefConsumeRedirect();
 
     public:
-      void setRedirect( const shared_ptr<ParseDefConsume> & target_r );
+      void setRedirect( shared_ptr<ParseDefConsume> target_r );
       void setRedirect( ParseDefConsume * allocatedTarget_r );
       void setRedirect( ParseDefConsume & target_r );
       void cancelRedirect();

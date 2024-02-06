@@ -21,7 +21,7 @@ namespace zyppng::PlaindirWorkflows {
 
   namespace {
     template<typename DlContextRefType, typename MediaHandle>
-    auto statusLogic( DlContextRefType &&ctx, MediaHandle &&mediaHandle ) {
+    auto statusLogic( DlContextRefType &&ctx, MediaHandle mediaHandle ) {
       constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
       // this can only happen if this function is called with a non mounting medium, but those do not support plaindir anyway
@@ -36,20 +36,20 @@ namespace zyppng::PlaindirWorkflows {
     }
   }
 
-  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle)
+  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle)
   {
-    return statusLogic( std::move(dl), mediaHandle );
+    return statusLogic( std::move(dl), std::move(mediaHandle) );
   }
 
-  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle)
+  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle)
   {
-    return statusLogic( std::move(dl), mediaHandle );
+    return statusLogic( std::move(dl), std::move(mediaHandle) );
   }
 
 
   namespace {
     template<typename DlContextRefType, typename MediaHandle>
-    auto dlLogic( DlContextRefType &&ctx, MediaHandle &&mediaHandle, ProgressObserverRef progressObserver ) {
+    auto dlLogic( DlContextRefType &&ctx, MediaHandle mediaHandle, ProgressObserverRef progressObserver ) {
 
       constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
       using Ret = expected<DlContextRefType>;
@@ -82,14 +82,14 @@ namespace zyppng::PlaindirWorkflows {
     }
   }
 
-  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
   {
-    return dlLogic( std::move(dl), mediaHandle, std::move(progressObserver) );
+    return dlLogic( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
-  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver)
   {
-    return dlLogic( std::move(dl), mediaHandle, std::move(progressObserver) );
+    return dlLogic( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
 }

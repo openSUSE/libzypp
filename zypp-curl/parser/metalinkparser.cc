@@ -477,6 +477,7 @@ std::vector<Url>
 MetaLinkParser::getUrls() const
 {
   std::vector<Url> urls;
+  urls.reserve(pd->urls.size());
   for ( const auto &mirr : pd->urls )
     urls.push_back( mirr.url );
   return urls;

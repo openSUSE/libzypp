@@ -29,6 +29,8 @@ extern "C"
 #include <zypp/Resolver.h>
 #include <zypp/solver/detail/SolverQueueItemDelete.h>
 
+#include <utility>
+
 using std::endl;
 
 /////////////////////////////////////////////////////////////////////////
@@ -59,7 +61,7 @@ SolverQueueItemDelete::dumpOn( std::ostream & os ) const
 
 SolverQueueItemDelete::SolverQueueItemDelete (const ResPool & pool, std::string name, bool soft)
     : SolverQueueItem (QUEUE_ITEM_TYPE_DELETE, pool)
-    , _name (name)
+    , _name (std::move(name))
     , _soft (soft)
 {
 }

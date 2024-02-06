@@ -126,7 +126,7 @@ class Resolver : private base::NonCopyable
 
   public:
 
-    Resolver( const ResPool & pool );
+    Resolver( ResPool  pool );
     virtual ~Resolver();
 
     // ---------------------------------- I/O

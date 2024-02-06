@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <utility>
 
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/LogTools.h>
@@ -137,8 +138,8 @@ namespace zypp
     //	METHOD NAME : PathInfo::PathInfo
     //	METHOD TYPE : Constructor
     //
-    PathInfo::PathInfo( const Pathname & path, Mode initial )
-    : path_t( path )
+    PathInfo::PathInfo( Pathname  path, Mode initial )
+    : path_t(std::move( path ))
     , mode_e( initial )
     , error_i( -1 )
     {

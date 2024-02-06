@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "mediafacade.h"
 #include <zypp-core/TriBool.h>
+#include <utility>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/repo/SUSEMediaVerifier.h>
 
@@ -18,7 +19,7 @@ namespace zyppng {
 
   public:
 
-    AttachedSyncMediaInfo( MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec, const zypp::Pathname &locPath );
+    AttachedSyncMediaInfo( MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath );
 
     zypp::media::MediaAccessId mediaId () const;
     const ProvideMediaSpec &spec() const;
@@ -45,11 +46,11 @@ namespace zyppng {
 
   IMPL_PTR_TYPE( AttachedSyncMediaInfo );
 
-  AttachedSyncMediaInfo::AttachedSyncMediaInfo(MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec, const zypp::Pathname &locPath)
+  AttachedSyncMediaInfo::AttachedSyncMediaInfo(MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath)
     : _id( mediaId )
-    , _attachedUrl( baseUrl )
-    , _spec( mediaSpec )
-    , _parent( parentRef )
+    , _attachedUrl(std::move( baseUrl ))
+    , _spec(std::move( mediaSpec ))
+    , _parent(std::move( parentRef ))
     , _localPath( locPath )
   {}
 

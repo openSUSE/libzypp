@@ -29,6 +29,8 @@ extern "C"
 #include <zypp/IdStringType.h>
 #include <zypp/solver/detail/SolverQueueItemInstall.h>
 
+#include <utility>
+
 using std::endl;
 
 /////////////////////////////////////////////////////////////////////////
@@ -60,7 +62,7 @@ SolverQueueItemInstall::dumpOn( std::ostream & os ) const
 
 SolverQueueItemInstall::SolverQueueItemInstall (const ResPool & pool, std::string name, bool soft)
     : SolverQueueItem (QUEUE_ITEM_TYPE_INSTALL, pool)
-    , _name (name)
+    , _name (std::move(name))
     , _soft (soft)
 {
 }

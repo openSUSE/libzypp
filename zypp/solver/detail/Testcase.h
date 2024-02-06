@@ -44,7 +44,7 @@ namespace zypp
 
         public:
           Testcase();
-          Testcase( const std::string & path );
+          Testcase( std::string  path );
           ~Testcase();
 
           bool createTestcase( Resolver & resolver, bool dumpPool = true, bool runSolver = true );

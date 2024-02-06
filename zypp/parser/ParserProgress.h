@@ -12,6 +12,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
+#include <utility>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -31,7 +32,7 @@ namespace parser
        * unit, then
        */
       ParserProgress( boost::function<void (long int)> fnc, long int total_steps = 100 )
-      : _fnc(fnc), _previous_progress(0), _total_steps(total_steps)
+      : _fnc(std::move(fnc)), _previous_progress(0), _total_steps(total_steps)
       {
 
       };

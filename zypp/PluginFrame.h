@@ -67,7 +67,7 @@ namespace zypp
       /** Ctor taking command and body
        * \throw PluginFrameException If \ref setCommand throws
        */
-      PluginFrame( const std::string & command_r, const std::string & body_r );
+      PluginFrame(const std::string & command_r, std::string body_r );
 
       /** Ctor taking the command and a HeaderInitializerList
        * \throw PluginFrameException If \ref setCommand throws
@@ -77,7 +77,7 @@ namespace zypp
       /** Ctor taking command, body and a HeaderInitializerList
        * \throw PluginFrameException If \ref setCommand throws
        */
-      PluginFrame( const std::string & command_r, const std::string & body_r, HeaderInitializerList contents_r );
+      PluginFrame(const std::string & command_r, std::string body_r, HeaderInitializerList contents_r );
 
       /** Ctor reading frame data from a stream
        * \throw PluginFrameException On error reading from stream

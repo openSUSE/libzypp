@@ -16,6 +16,7 @@
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Function.h>
+#include <utility>
 #include <zypp-core/base/InputStream>
 
 #include <zypp/Pathname.h>
@@ -129,12 +130,12 @@ namespace zypp
       ProductFileReader()
       {}
 
-      ProductFileReader( const Consumer & consumer_r )
-      : _consumer( consumer_r )
+      ProductFileReader( Consumer  consumer_r )
+      : _consumer(std::move( consumer_r ))
       {}
 
-      ProductFileReader( const Consumer & consumer_r, const InputStream & input_r )
-      : _consumer( consumer_r )
+      ProductFileReader( Consumer  consumer_r, const InputStream & input_r )
+      : _consumer(std::move( consumer_r ))
       { parse( input_r ); }
 
     public:

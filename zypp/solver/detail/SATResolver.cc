@@ -52,6 +52,8 @@ extern "C"
 #include <zypp/solver/detail/SystemCheck.h>
 #include <zypp/solver/detail/SolutionAction.h>
 #include <zypp/solver/detail/SolverQueueItem.h>
+
+#include <utility>
 using std::endl;
 
 #define XDEBUG(x) do { if (base::logger::isExcessive()) XXX << x << std::endl;} while (0)
@@ -285,8 +287,8 @@ SATResolver::dumpOn( std::ostream & os ) const
 //---------------------------------------------------------------------------
 
 // NOTE: flag defaults must be in sync with ZVARDEFAULT in Resolver.cc
-SATResolver::SATResolver (const ResPool & pool, sat::detail::CPool *satPool)
-    : _pool(pool)
+SATResolver::SATResolver (ResPool  pool, sat::detail::CPool *satPool)
+    : _pool(std::move(pool))
     , _satPool(satPool)
     , _satSolver(NULL)
     , _focus			( ZConfig::instance().solver_focus() )

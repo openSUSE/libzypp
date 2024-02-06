@@ -18,6 +18,7 @@
 #include <zypp/ZConfig.h>
 #include <zypp/base/Logger.h>
 #include <zypp/media/MediaManager.h>
+#include <utility>
 #include <zypp-core/base/UserRequestException>
 
 #include <zypp-core/ui/ProgressData>
@@ -35,8 +36,8 @@ namespace zypp
     /**
      * \short Ctor
      */
-    MediaProductEntry( const Pathname & dir_r = "/", const std::string & name_r = std::string() )
-      : _dir(dir_r), _name(name_r)
+    MediaProductEntry( Pathname  dir_r = "/", std::string  name_r = std::string() )
+      : _dir(std::move(dir_r)), _name(std::move(name_r))
     {
     }
 

@@ -19,6 +19,7 @@
  * 02111-1307, USA.
  */
 #include <boost/static_assert.hpp>
+#include <utility>
 
 #define ZYPP_USE_RESOLVER_INTERNALS
 
@@ -73,8 +74,8 @@ std::ostream & Resolver::dumpOn( std::ostream & os ) const
 
 //---------------------------------------------------------------------------
 
-Resolver::Resolver (const ResPool & pool)
-    : _pool(pool)
+Resolver::Resolver (ResPool  pool)
+    : _pool(std::move(pool))
     , _satResolver(NULL)
     , _poolchanged(_pool.serial() )
     , _upgradeMode              ( false )

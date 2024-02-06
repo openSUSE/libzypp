@@ -26,6 +26,7 @@ extern "C"
 #include <list>
 #include <set>
 #include <map>
+#include <utility>
 
 #include <zypp-core/Pathname.h>
 #include <zypp-core/ByteCount.h>
@@ -232,7 +233,7 @@ namespace zypp
       //@{
       PathInfo();
       explicit
-      PathInfo( const Pathname & path, Mode initial = STAT );
+      PathInfo( Pathname  path, Mode initial = STAT );
       explicit
       PathInfo( const std::string & path, Mode initial = STAT );
       explicit
@@ -501,8 +502,8 @@ namespace zypp
     struct DirEntry {
       std::string name;
       FileType    type;
-      DirEntry( const std::string & name_r = std::string(), FileType type_r = FT_NOT_AVAIL )
-      : name( name_r )
+      DirEntry( std::string  name_r = std::string(), FileType type_r = FT_NOT_AVAIL )
+      : name(std::move( name_r ))
       , type( type_r )
       {}
 

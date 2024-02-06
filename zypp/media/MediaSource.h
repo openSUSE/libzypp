@@ -13,6 +13,7 @@
 #define ZYPP_MEDIA_MEDIASOURCE_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/Pathname.h>
 #include <zypp/base/String.h>
@@ -36,14 +37,14 @@ namespace zypp {
     class MediaSource
     {
     public:
-      MediaSource(const std::string &_type,  const std::string &_name,
+      MediaSource(std::string _type,  std::string _name,
                   unsigned int       _maj=0, unsigned int       _min=0,
-                  const std::string &_bdir=std::string(), bool  _own=true)
+                  std::string _bdir=std::string(), bool  _own=true)
         : maj_nr(_maj)
         , min_nr(_min)
-        , type(_type)
-        , name(_name)
-        , bdir(_bdir)
+        , type(std::move(_type))
+        , name(std::move(_name))
+        , bdir(std::move(_bdir))
         , iown(_own)
       {}
 
@@ -105,9 +106,9 @@ namespace zypp {
     class AttachPoint
     {
     public:
-      AttachPoint(const Pathname &_path=Pathname(),
+      AttachPoint(Pathname _path=Pathname(),
                   bool            _temp=true)
-        : path(_path)
+        : path(std::move(_path))
         , temp(_temp)
       {}
 
@@ -135,10 +136,10 @@ namespace zypp {
       AttachedMedia()
       {}
 
-      AttachedMedia(const MediaSourceRef &_mediaSource,
-                    const AttachPointRef &_attachPoint)
-        : mediaSource( _mediaSource)
-        , attachPoint( _attachPoint)
+      AttachedMedia(MediaSourceRef _mediaSource,
+                    AttachPointRef _attachPoint)
+        : mediaSource(std::move( _mediaSource))
+        , attachPoint(std::move( _attachPoint))
       {}
 
       MediaSourceRef mediaSource;

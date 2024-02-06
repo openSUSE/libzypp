@@ -89,9 +89,9 @@ namespace zypp
        * \param prefered_attach_point Prefered attach (mount) point. Use, if
        *        you want to mount the media to a specific directory.
        */
-      MediaSetAccess( const Url &url, const Pathname & prefered_attach_point = "" );
+      MediaSetAccess( Url url, Pathname  prefered_attach_point = "" );
       /** \overload Also taking a \ref label. */
-      MediaSetAccess( const std::string & label_r, const Url &url, const Pathname & prefered_attach_point = "" );
+      MediaSetAccess( std::string  label_r, Url url, Pathname  prefered_attach_point = "" );
       ~MediaSetAccess();
 
       /**

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <optional>
+#include <utility>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/NonCopyable.h>
 #include <zypp/base/Gettext.h>
@@ -64,8 +65,8 @@ namespace zypp
       };
 
       public:
-        Impl( const Pathname & root_r )
-        : _root( root_r )
+        Impl( Pathname &&root_r )
+        : _root(std::move( root_r ))
         , _myJobReport { "cmdout", "%posttrans" }
         {}
 
@@ -404,8 +405,8 @@ namespace zypp
     //
     ///////////////////////////////////////////////////////////////////
 
-    RpmPostTransCollector::RpmPostTransCollector( const Pathname & root_r )
-      : _pimpl( new Impl( root_r ) )
+    RpmPostTransCollector::RpmPostTransCollector( Pathname root_r )
+      : _pimpl( new Impl( std::move(root_r) ) )
     {}
 
     RpmPostTransCollector::~RpmPostTransCollector()

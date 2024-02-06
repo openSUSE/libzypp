@@ -11,6 +11,7 @@
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/private/curlhelper_p.h>
+#include <utility>
 #include <zypp-curl/parser/ZsyncParser>
 #include <zypp-core/fs/PathInfo.h>
 
@@ -25,7 +26,7 @@ namespace zyppng {
   PrepareMultiState::PrepareMultiState( std::shared_ptr<Request> oldReq, Mode m, DownloadPrivate &parent )
     : SimpleState( parent )
     , _mode(m)
-    , _oldRequest( oldReq )
+    , _oldRequest(std::move( oldReq ))
   {
     MIL << "About to enter PrepareMultiState for URL: " << parent._spec.url() << std::endl;
   }

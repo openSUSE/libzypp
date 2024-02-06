@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <time.h>
 #include <zypp/repo/RepoMirrorList.h>
@@ -42,8 +43,8 @@ namespace zypp
       {
         RepoMirrorListTempProvider()
         {}
-        RepoMirrorListTempProvider( const Pathname & localfile_r )
-        : _localfile( localfile_r )
+        RepoMirrorListTempProvider( Pathname  localfile_r )
+        : _localfile(std::move( localfile_r ))
         {}
         RepoMirrorListTempProvider( const Url & url_r )
         {

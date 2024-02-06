@@ -13,6 +13,7 @@
 #define ZYPP_TARGET_COMMITPACKAGECACHEIMPL_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/Logger.h>
 #include <zypp/base/Exception.h>
@@ -42,8 +43,8 @@ namespace zypp
       typedef CommitPackageCache::PackageProvider  PackageProvider;
 
     public:
-      Impl( const PackageProvider & packageProvider_r )
-      : _packageProvider( packageProvider_r )
+      Impl( PackageProvider &&packageProvider_r )
+      : _packageProvider(std::move( packageProvider_r ))
       {}
 
       virtual ~Impl()

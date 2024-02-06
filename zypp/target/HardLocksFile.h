@@ -13,6 +13,7 @@
 #define ZYPP_TARGET_HARDLOCKSFILE_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/PtrTypes.h>
 
@@ -42,8 +43,8 @@ namespace zypp
 
       public:
         /** Ctor taking the file to read/write. */
-        HardLocksFile( const Pathname & file_r )
-        : _file( file_r )
+        HardLocksFile( Pathname  file_r )
+        : _file(std::move( file_r ))
         {}
 
         /** Return the file path. */

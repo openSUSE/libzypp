@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 #include <zypp/base/Logger.h>
 #include <zypp/FileChecker.h>
 #include <zypp/ZYppFactory.h>
@@ -28,8 +29,8 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  ChecksumFileChecker::ChecksumFileChecker( const CheckSum &checksum )
-    : _checksum(checksum)
+  ChecksumFileChecker::ChecksumFileChecker( CheckSum checksum )
+    : _checksum(std::move(checksum))
   {}
 
   void ChecksumFileChecker::operator()( const Pathname &file ) const

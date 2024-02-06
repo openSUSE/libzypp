@@ -11,6 +11,7 @@
 */
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
@@ -296,9 +297,9 @@ namespace zypp
     namespace detail
     {
       DIWrap::DIWrap( RepoIdType repoId_r, SolvableIdType solvId_r, IdType attrId_r,
-                      const std::string & mstring_r, int flags_r )
+                      std::string  mstring_r, int flags_r )
       : _dip( new ::Dataiterator )
-      , _mstring( mstring_r )
+      , _mstring(std::move( mstring_r ))
       {
         ::dataiterator_init( _dip, sat::Pool::instance().get(), repoId_r, solvId_r, attrId_r,
                              _mstring.empty() ? 0 : _mstring.c_str(), flags_r );

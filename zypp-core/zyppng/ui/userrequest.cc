@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "userrequest.h"
 #include <string>
+#include <utility>
 
 namespace zyppng
 {
@@ -28,14 +29,7 @@ namespace zyppng
     return _userData;
   }
 
-  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, const std::string &message, MType mType, const UserData &data )
-    : UserRequest( data )
-    , _type( mType )
-    , _message( message )
-
-  { }
-
-  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string &&message, MType mType, UserData &&data )
+  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string message, MType mType, UserData data )
     : UserRequest( std::move(data) )
     , _type( mType )
     , _message( std::move(message) )
@@ -56,12 +50,12 @@ namespace zyppng
     return _message;
   }
 
-  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ListChoiceRequest, const std::string &label, const std::vector<Choice> &answers, const index_type defaultAnswer, UserData userData )
+  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ListChoiceRequest, std::string label, std::vector<Choice> answers, index_type defaultAnswer, UserData userData )
     : UserRequest( std::move(userData) )
-    , _label( label )
-    , _answers( answers )
-    , _answer( defaultAnswer )
-    , _default( defaultAnswer )
+    , _label( std::move(label) )
+    , _answers( std::move(answers) )
+    , _answer( std::move(defaultAnswer) )
+    , _default( std::move(defaultAnswer) )
   { }
 
   UserRequestType ListChoiceRequest::type() const
@@ -96,10 +90,10 @@ namespace zyppng
     return _answers;
   }
 
-  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(BooleanChoiceRequest, const std::string &label, const bool defaultAnswer, UserData userData )
+  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(BooleanChoiceRequest, std::string label, const bool defaultAnswer, UserData userData )
     : UserRequest( std::move(userData) )
-    , _label( label ),
-    _answer( defaultAnswer )
+    , _label( std::move(label) )
+    , _answer( defaultAnswer )
   { }
 
   UserRequestType BooleanChoiceRequest::type() const

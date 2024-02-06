@@ -21,6 +21,7 @@
 #include <iosfwd>
 
 #include <zypp/ExternalProgram.h>
+#include <utility>
 #include <zypp-core/KVMap>
 
 namespace zypp {
@@ -33,16 +34,16 @@ namespace zypp {
      */
     struct MountEntry
     {
-        MountEntry(const std::string &source,
-                   const std::string &target,
-                   const std::string &fstype,
-                   const std::string &options,
+        MountEntry(std::string source,
+                   std::string target,
+                   std::string fstype,
+                   std::string options,
                    const int         dumpfreq = 0,
                    const int         passnum  = 0)
-            : src(source)
-            , dir(target)
-            , type(fstype)
-            , opts(options)
+            : src(std::move(source))
+            , dir(std::move(target))
+            , type(std::move(fstype))
+            , opts(std::move(options))
             , freq(dumpfreq)
             , pass(passnum)
         {}

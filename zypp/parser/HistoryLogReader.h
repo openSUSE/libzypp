@@ -83,7 +83,7 @@ namespace zypp
      * As \a options_r argument pass \c HistoryLogReader::Options() to
      * use the default stettings, or an OR'ed combination of \ref OptionBits.
      */
-    HistoryLogReader( const Pathname & historyFile_r, const Options & options_r, const ProcessData & callback_r );
+    HistoryLogReader(Pathname historyFile_r, zypp::parser::HistoryLogReader::Options options_r, ProcessData callback_r );
 
     ~HistoryLogReader();
 

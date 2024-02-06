@@ -16,6 +16,7 @@
 
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
+#include <utility>
 #include <zypp-core/base/DtorReset>
 #include <zypp-core/base/DefaultIntegral>
 
@@ -99,13 +100,13 @@ namespace zypp
       typedef std::map<std::string, ImplPtr> SubNodes;
 
     public:
-      Impl( const std::string & name_r, Mode mode_r, const shared_ptr<ParseDefConsume> & target_r = shared_ptr<ParseDefConsume>() )
-      : _name( name_r )
+      Impl( std::string &&name_r, Mode mode_r, shared_ptr<ParseDefConsume> &&target_r = shared_ptr<ParseDefConsume>() )
+      : _name( std::move(name_r) )
       , _mode( mode_r )
       , _parent( NULL )
       {
         if ( target_r )
-          _callback.setRedirect( target_r );
+          _callback.setRedirect( std::move(target_r) );
       }
 
       ~Impl()
@@ -366,12 +367,12 @@ namespace zypp
     //	METHOD NAME : ParseDef::ParseDef
     //	METHOD TYPE : Ctor
     //
-    ParseDef::ParseDef( const std::string & name_r, Mode mode_r )
-    : _pimpl( new Impl( name_r, mode_r ) )
+    ParseDef::ParseDef( std::string name_r, Mode mode_r )
+    : _pimpl( new Impl( std::move(name_r), mode_r ) )
     {}
 
-    ParseDef::ParseDef( const std::string & name_r, Mode mode_r, const shared_ptr<ParseDefConsume> & target_r )
-    : _pimpl( new Impl( name_r, mode_r, target_r ) )
+    ParseDef::ParseDef( std::string name_r, Mode mode_r, shared_ptr<ParseDefConsume> target_r )
+    : _pimpl( new Impl( std::move(name_r), mode_r, std::move(target_r) ) )
     {}
 
     ParseDef::ParseDef( const shared_ptr<Impl> & pimpl_r )

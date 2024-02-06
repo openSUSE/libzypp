@@ -15,6 +15,7 @@
 #include <iosfwd>
 
 #include <string>
+#include <utility>
 
 #include <zypp/base/Exception.h>
 #include <zypp/Pathname.h>
@@ -128,9 +129,9 @@ private:
 class RpmSubprocessException : public RpmException
 {
 public:
-  RpmSubprocessException(const std::string & errmsg_r)
+  RpmSubprocessException(std::string  errmsg_r)
       : RpmException()
-      , _errmsg(errmsg_r)
+      , _errmsg(std::move(errmsg_r))
   {}
   virtual ~RpmSubprocessException() throw()
   {};
@@ -242,9 +243,9 @@ private:
 class RpmTransactionFailedException : public RpmException
 {
 public:
-  RpmTransactionFailedException(const std::string & errmsg_r)
+  RpmTransactionFailedException(std::string  errmsg_r)
     : RpmException()
-    , _errmsg(errmsg_r)
+    , _errmsg(std::move(errmsg_r))
   {}
   virtual ~RpmTransactionFailedException() throw()
     {};

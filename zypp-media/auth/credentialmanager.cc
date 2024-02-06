@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <utility>
 #include <zypp-media/MediaConfig>
 #include <zypp-core/base/Function.h>
 #include <zypp-core/base/Logger.h>
@@ -83,7 +84,7 @@ namespace zypp
   //
   struct CredentialManager::Impl
   {
-    Impl(const CredManagerOptions & options);
+    Impl(CredManagerOptions &&options);
 
     ~Impl()
     {}
@@ -117,8 +118,8 @@ namespace zypp
   //
   //////////////////////////////////////////////////////////////////////
 
-  CredentialManager::Impl::Impl(const CredManagerOptions & options)
-    : _options(options)
+  CredentialManager::Impl::Impl(CredManagerOptions &&options)
+    : _options(std::move(options))
     , _globalDirty(false)
     , _userDirty(false)
   {
@@ -319,8 +320,8 @@ namespace zypp
   //
   //////////////////////////////////////////////////////////////////////
 
-  CredentialManager::CredentialManager(const CredManagerOptions & opts)
-    : _pimpl(new Impl(opts))
+  CredentialManager::CredentialManager(CredManagerOptions opts)
+    : _pimpl(new Impl(std::move(opts)))
   {}
 
 

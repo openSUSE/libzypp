@@ -15,6 +15,7 @@ extern "C"
 #include <unistd.h>
 }
 #include <iostream>
+#include <utility>
 
 #include <zypp/base/Logger.h>
 #include <zypp/base/Measure.h>
@@ -138,8 +139,8 @@ namespace zypp
     class Measure::Impl
     {
     public:
-      Impl( const std::string & ident_r, std::ostream * log_r = nullptr )
-      : _ident  ( ident_r )
+      Impl( std::string &&ident_r, std::ostream * log_r = nullptr )
+      : _ident  (std::move( ident_r ))
       , _level  ( _glevel )
       , _seq    ( 0 )
       , _log    ( log_r )
@@ -218,19 +219,19 @@ namespace zypp
     Measure::Measure()
     {}
 
-    Measure::Measure( const std::string & ident_r )
-    : _pimpl( new Impl( ident_r ) )
+    Measure::Measure( std::string ident_r )
+    : _pimpl( new Impl( std::move(ident_r) ) )
     {}
 
-    Measure::Measure( const std::string & ident_r, std::ostream & out_r )
-    : _pimpl( new Impl( ident_r, &out_r ) )
+    Measure::Measure( std::string ident_r, std::ostream & out_r )
+    : _pimpl( new Impl( std::move(ident_r), &out_r ) )
     {}
 
     Measure::~Measure()
     {}
 
-    void Measure::start( const std::string & ident_r )
-    { stop(); _pimpl.reset( _pimpl ? new Impl( ident_r, _pimpl->logp() ) : new Impl( ident_r ) ); }
+    void Measure::start( std::string ident_r )
+    { stop(); _pimpl.reset( _pimpl ? new Impl( std::move(ident_r), _pimpl->logp() ) : new Impl( std::move(ident_r) ) ); }
 
     void Measure::restart()
     { _pimpl->restart(); }

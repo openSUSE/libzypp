@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <utility>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -53,7 +54,7 @@ namespace zypp
         /** ctor */
         Unit( ValueType factor_r, std::string symbol_r, unsigned prec_r )
         : _factor( factor_r )
-        , _symbol( symbol_r )
+        , _symbol(std::move( symbol_r ))
         , _prec( prec_r )
         {}
 

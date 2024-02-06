@@ -114,16 +114,16 @@ namespace zypp
       assert( _pimpl );
     }
 
-    CommitPackageCache::CommitPackageCache( const PackageProvider & packageProvider_r )
+    CommitPackageCache::CommitPackageCache( PackageProvider packageProvider_r )
     {
       if ( getenv("ZYPP_COMMIT_NO_PACKAGE_CACHE") )
         {
           MIL << "$ZYPP_COMMIT_NO_PACKAGE_CACHE is set." << endl;
-          _pimpl.reset( new Impl( packageProvider_r ) ); // no cache
+          _pimpl.reset( new Impl( std::move(packageProvider_r) ) ); // no cache
         }
       else
         {
-          _pimpl.reset( new CommitPackageCacheReadAhead( packageProvider_r ) );
+          _pimpl.reset( new CommitPackageCacheReadAhead( std::move(packageProvider_r) ) );
         }
       assert( _pimpl );
     }

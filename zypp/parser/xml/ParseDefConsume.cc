@@ -54,8 +54,8 @@ namespace zypp
     ParseDefConsumeRedirect::ParseDefConsumeRedirect()
     {}
 
-    ParseDefConsumeRedirect::ParseDefConsumeRedirect( const shared_ptr<ParseDefConsume> & target_r )
-    : _target( target_r )
+    ParseDefConsumeRedirect::ParseDefConsumeRedirect( shared_ptr<ParseDefConsume> target_r )
+    : _target( std::move(target_r) )
     {}
 
     ParseDefConsumeRedirect::ParseDefConsumeRedirect( ParseDefConsume * allocatedTarget_r )
@@ -69,8 +69,8 @@ namespace zypp
     ParseDefConsumeRedirect::~ParseDefConsumeRedirect()
     {}
 
-    void ParseDefConsumeRedirect::setRedirect( const shared_ptr<ParseDefConsume> & target_r )
-    { _target = target_r; }
+    void ParseDefConsumeRedirect::setRedirect( shared_ptr<ParseDefConsume> target_r )
+    { _target = std::move(target_r); }
 
     void ParseDefConsumeRedirect::setRedirect( ParseDefConsume * allocatedTarget_r )
     { _target.reset( allocatedTarget_r ); }

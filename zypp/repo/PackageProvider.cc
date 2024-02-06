@@ -16,6 +16,7 @@
 #include <zypp/repo/PackageDelta.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/Gettext.h>
+#include <utility>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/base/NonCopyable.h>
 #include <zypp/repo/PackageProvider.h>
@@ -110,10 +111,10 @@ namespace zypp
       typedef callback::UserData UserData;
     public:
       /** Ctor taking the Package to provide. */
-      PackageProviderImpl( RepoMediaAccess & access_r, const TPackagePtr & package_r,
-                           const PackageProviderPolicy & policy_r )
-      : _policy( policy_r )
-      , _package( package_r )
+      PackageProviderImpl( RepoMediaAccess &access_r, TPackagePtr &&package_r,
+                           PackageProviderPolicy &&policy_r )
+      : _policy(std::move( policy_r ))
+      , _package(std::move( package_r ))
       , _access( access_r )
       , _retry(false)
       {}
@@ -525,11 +526,11 @@ namespace zypp
     {
     public:
       RpmPackageProvider( RepoMediaAccess & access_r,
-                          const Package::constPtr & package_r,
-                          const DeltaCandidates & deltas_r,
-                          const PackageProviderPolicy & policy_r )
-      : PackageProviderImpl<Package>( access_r, package_r, policy_r )
-      , _deltas( deltas_r )
+                          Package::constPtr &&package_r,
+                          DeltaCandidates &&deltas_r,
+                          PackageProviderPolicy &&policy_r )
+      : PackageProviderImpl<Package>( access_r, std::move(package_r), std::move(policy_r) )
+      , _deltas( std::move(deltas_r) )
       {}
 
     protected:
@@ -642,53 +643,54 @@ namespace zypp
     namespace factory
     {
       inline PackageProvider::Impl * make( RepoMediaAccess & access_r, const PoolItem & pi_r,
-                                           const DeltaCandidates & deltas_r,
-                                           const PackageProviderPolicy & policy_r )
+                                           DeltaCandidates &&deltas_r,
+                                           PackageProviderPolicy &&policy_r )
       {
         if ( pi_r.isKind<Package>() )
-          return new RpmPackageProvider( access_r, pi_r->asKind<Package>(), deltas_r, policy_r );
+          return new RpmPackageProvider( access_r, pi_r->asKind<Package>(), std::move(deltas_r), std::move(policy_r) );
         else if ( pi_r.isKind<SrcPackage>() )
-          return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), policy_r );
+          return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), std::move(policy_r) );
         else
           ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.asUserString() ) );
       }
 
       inline PackageProvider::Impl * make( RepoMediaAccess & access_r, const PoolItem & pi_r,
-                                                  const PackageProviderPolicy & policy_r )
+                                                  PackageProviderPolicy &&policy_r )
       {
         if ( pi_r.isKind<Package>() )
-          return new PackageProviderImpl<Package>( access_r, pi_r->asKind<Package>(), policy_r );
+          return new PackageProviderImpl<Package>( access_r, pi_r->asKind<Package>(), std::move(policy_r) );
         else if ( pi_r.isKind<SrcPackage>() )
-          return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), policy_r );
+          return new PackageProviderImpl<SrcPackage>( access_r, pi_r->asKind<SrcPackage>(), std::move(policy_r) );
         else
           ZYPP_THROW( Exception( str::Str() << "Don't know how to cache non-package " << pi_r.asUserString() ) );
       }
 
-      inline PackageProvider::Impl * make( RepoMediaAccess & access_r, const Package::constPtr & package_r,
-                                           const DeltaCandidates & deltas_r,
-                                           const PackageProviderPolicy & policy_r )
-      { return new RpmPackageProvider( access_r, package_r, deltas_r, policy_r ); }
+      inline PackageProvider::Impl * make( RepoMediaAccess & access_r,
+                                           Package::constPtr &&package_r,
+                                           DeltaCandidates &&deltas_r,
+                                           PackageProviderPolicy &&policy_r )
+      { return new RpmPackageProvider( access_r, std::move(package_r), std::move(deltas_r), std::move(policy_r) ); }
 
     } // namespace factory
     ///////////////////////////////////////////////////////////////////
 
     PackageProvider::PackageProvider( RepoMediaAccess & access_r, const PoolItem & pi_r,
-                                      const DeltaCandidates & deltas_r, const PackageProviderPolicy & policy_r )
+                                      DeltaCandidates deltas_r, PackageProviderPolicy policy_r )
 
-    : _pimpl( factory::make( access_r, pi_r, deltas_r, policy_r ) )
+    : _pimpl( factory::make( access_r, pi_r, std::move(deltas_r), std::move(policy_r) ) )
     {}
 
     PackageProvider::PackageProvider( RepoMediaAccess & access_r, const PoolItem & pi_r,
-                                      const PackageProviderPolicy & policy_r )
-    : _pimpl( factory::make( access_r, pi_r, policy_r ) )
+                                      PackageProviderPolicy policy_r )
+    : _pimpl( factory::make( access_r, pi_r, std::move(policy_r) ) )
     {}
 
     /* legacy */
     PackageProvider::PackageProvider( RepoMediaAccess & access_r,
-                                      const Package::constPtr & package_r,
-                                      const DeltaCandidates & deltas_r,
-                                      const PackageProviderPolicy & policy_r )
-    : _pimpl( factory::make( access_r, package_r, deltas_r, policy_r ) )
+                                      Package::constPtr package_r,
+                                      DeltaCandidates deltas_r,
+                                      PackageProviderPolicy policy_r )
+    : _pimpl( factory::make( access_r, std::move(package_r), std::move(deltas_r), std::move(policy_r) ) )
     {}
 
     PackageProvider::~PackageProvider()

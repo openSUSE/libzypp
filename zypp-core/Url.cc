@@ -17,6 +17,7 @@
 #include <zypp-core/base/Regex.h>
 #include <stdexcept>
 #include <iostream>
+#include <utility>
 
 
 //////////////////////////////////////////////////////////////////////
@@ -305,8 +306,8 @@ namespace zypp
 
 
   // -----------------------------------------------------------------
-  Url::Url(const zypp::url::UrlRef &url)
-    : m_impl( url)
+  Url::Url(zypp::url::UrlRef url)
+    : m_impl(std::move( url))
   {
     if( !m_impl)
     {

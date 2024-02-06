@@ -28,6 +28,7 @@
 #include <zypp/ServiceInfo.h>
 #include <zypp/RepoStatus.h>
 #include <zypp/RepoManagerOptions.h>
+#include <utility>
 #include <zypp-core/ui/ProgressData>
 
 ///////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ namespace zypp
     typedef RepoSet::size_type RepoSizeType;
 
   public:
-   RepoManager( const RepoManagerOptions &options = RepoManagerOptions() );
+   RepoManager( RepoManagerOptions options = RepoManagerOptions() );
    /** Dtor */
     ~RepoManager();
 
@@ -598,7 +599,7 @@ namespace zypp
     struct MatchServiceAlias
     {
       public:
-        MatchServiceAlias( const std::string & alias_ ) : alias(alias_) {}
+        MatchServiceAlias( std::string  alias_ ) : alias(std::move(alias_)) {}
         bool operator()( const RepoInfo & info ) const
         { return info.service() == alias; }
       private:

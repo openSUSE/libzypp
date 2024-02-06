@@ -18,6 +18,7 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <type_traits>
+#include <utility>
 
 #include <zypp-core/base/Errno.h>
 
@@ -41,10 +42,10 @@ namespace zypp
       {}
 
       /** Ctor */
-      CodeLocation( const std::string & file_r,
-                    const std::string & func_r,
+      CodeLocation( std::string  file_r,
+                    std::string  func_r,
                     unsigned            line_r )
-      : _file( file_r ), _func( func_r ), _line( line_r )
+      : _file(std::move( file_r )), _func(std::move( func_r )), _line( line_r )
       {}
 
       /** Location as string */

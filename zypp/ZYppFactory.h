@@ -24,7 +24,7 @@ namespace zypp
   class ZYppFactoryException : public Exception
   {
   public:
-    ZYppFactoryException( const std::string & msg_r, pid_t lockerPid_r, const std::string & lockerName_r );
+    ZYppFactoryException( std::string msg_r, pid_t lockerPid_r, std::string lockerName_r );
     virtual ~ZYppFactoryException() throw ();
   public:
     pid_t lockerPid() const { return _lockerPid; }

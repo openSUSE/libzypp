@@ -13,6 +13,7 @@
 #define ZYPP_FILTER_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/Functional.h>
 #include <zypp/base/Function.h>
@@ -108,8 +109,8 @@ namespace zypp
         ByKind()
         {}
 
-        ByKind( const ResKind & kind_r )
-        : _kind( kind_r )
+        ByKind( ResKind  kind_r )
+        : _kind(std::move( kind_r ))
         {}
 
       public:

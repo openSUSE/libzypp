@@ -28,6 +28,8 @@ extern "C"
 #include <zypp/solver/detail/SolverQueueItemInstallOneOf.h>
 #include <zypp/sat/Pool.h>
 
+#include <utility>
+
 using std::endl;
 
 /////////////////////////////////////////////////////////////////////////
@@ -60,10 +62,10 @@ SolverQueueItemInstallOneOf::dumpOn( std::ostream & os ) const
 
 //---------------------------------------------------------------------------
 
-SolverQueueItemInstallOneOf::SolverQueueItemInstallOneOf (const ResPool & pool, const PoolItemList & itemList,
+SolverQueueItemInstallOneOf::SolverQueueItemInstallOneOf (const ResPool & pool, PoolItemList  itemList,
                                                           bool soft)
     : SolverQueueItem (QUEUE_ITEM_TYPE_INSTALL_ONE_OF, pool)
-    , _oneOfList (itemList)
+    , _oneOfList (std::move(itemList))
     , _soft (soft)
 {
 }

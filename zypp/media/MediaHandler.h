@@ -466,9 +466,9 @@ class MediaHandler {
          * On any error, the attach_point is set to an empty Pathname,
          * which should lead to E_bad_attachpoint.
          **/
-        MediaHandler ( const Url&       url_r,
+        MediaHandler ( Url        url_r,
                        const Pathname & attach_point_r,
-                       const Pathname & urlpath_below_attachpoint_r,
+                       Pathname  urlpath_below_attachpoint_r,
                        const bool       does_download_r );
 
         /**

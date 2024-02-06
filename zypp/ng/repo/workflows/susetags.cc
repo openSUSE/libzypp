@@ -45,7 +45,7 @@ namespace zyppng::SuseTagsWorkflows {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      StatusLogic( DlContextRefType ctx, MediaHandle media  )
+      StatusLogic( DlContextRefType ctx, MediaHandle &&media  )
         : _ctx(std::move(ctx))
         , _handle(std::move(media))
       {}
@@ -78,14 +78,14 @@ namespace zyppng::SuseTagsWorkflows {
     };
   }
 
-  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle)
+  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle)
   {
-    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), mediaHandle );
+    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
   }
 
-  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle)
+  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle)
   {
-    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), mediaHandle );
+    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
   }
 
 
@@ -116,7 +116,7 @@ namespace zyppng::SuseTagsWorkflows {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      DlLogic( DlContextRefType ctx, MediaHandle mediaHandle, ProgressObserverRef &&progressObserver )
+      DlLogic( DlContextRefType ctx, MediaHandle &&mediaHandle, ProgressObserverRef &&progressObserver )
         :  _ctx( std::move(ctx))
         , _mediaHandle(std::move(mediaHandle))
         , _progressObserver(std::move(progressObserver))
@@ -324,14 +324,14 @@ namespace zyppng::SuseTagsWorkflows {
     };
   }
 
-  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, const ProvideMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
   {
-    return SimpleExecutor< DlLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>> >::run( std::move(dl), mediaHandle, std::move(progressObserver) );
+    return SimpleExecutor< DlLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
-  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, const SyncMediaHandle &mediaHandle, ProgressObserverRef progressObserver)
+  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver)
   {
-    return SimpleExecutor< DlLogic, SyncOp<expected<repo::SyncDownloadContextRef>> >::run( std::move(dl), mediaHandle, std::move(progressObserver) );
+    return SimpleExecutor< DlLogic, SyncOp<expected<repo::SyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
 }

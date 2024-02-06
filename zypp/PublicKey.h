@@ -17,6 +17,7 @@
 #include <list>
 #include <set>
 #include <string>
+#include <utility>
 
 #include <zypp/base/Iterable.h>
 #include <zypp/base/PtrTypes.h>
@@ -61,8 +62,8 @@ namespace zypp
       /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
        */
-      BadKeyException( const std::string & msg_r, const Pathname &keyfile = Pathname() )
-      : Exception( msg_r ), _keyfile(keyfile)
+      BadKeyException( const std::string & msg_r, Pathname keyfile = Pathname() )
+      : Exception( msg_r ), _keyfile(std::move(keyfile))
       {}
       /** Dtor. */
       virtual ~BadKeyException() throw() {};

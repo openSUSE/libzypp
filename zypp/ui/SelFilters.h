@@ -13,6 +13,7 @@
 #define ZYPP_UI_SELFILTERS_H
 
 #include <string>
+#include <utility>
 
 #include <zypp/base/Functional.h>
 #include <zypp/ui/Selectable.h>
@@ -30,8 +31,8 @@ namespace zypp
       /** */
       struct ByKind
       {
-        ByKind( const ResKind & kind_r )
-        : _kind( kind_r )
+        ByKind( ResKind  kind_r )
+        : _kind(std::move( kind_r ))
         {}
 
         bool operator()( const Selectable::constPtr & obj ) const
@@ -45,8 +46,8 @@ namespace zypp
       /** */
       struct ByName
       {
-        ByName( const std::string & name_r )
-        : _name( name_r )
+        ByName( std::string  name_r )
+        : _name(std::move( name_r ))
         {}
 
         bool operator()( const ui::Selectable::constPtr & obj ) const

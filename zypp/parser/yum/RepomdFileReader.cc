@@ -10,6 +10,7 @@
  * Implementation of repomd.xml file reader.
  */
 #include <iostream>
+#include <utility>
 
 #include <zypp/base/String.h>
 #include <zypp/base/Logger.h>
@@ -45,8 +46,8 @@ namespace zypp
   {
   public:
     /** Ctro taking a ProcessResource callback */
-    Impl(const Pathname &repomd_file, const ProcessResource & callback )
-    : _callback( callback )
+    Impl(const Pathname &repomd_file, ProcessResource &&callback )
+    : _callback( std::move(callback) )
     {
       Reader reader( repomd_file );
       MIL << "Reading " << repomd_file << endl;
@@ -192,8 +193,8 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  RepomdFileReader::RepomdFileReader( const Pathname & repomd_file, const ProcessResource & callback )
-  : _pimpl( new Impl(repomd_file, callback) )
+  RepomdFileReader::RepomdFileReader( const Pathname & repomd_file, ProcessResource callback )
+  : _pimpl( new Impl(repomd_file, std::move(callback)) )
   {}
 
   RepomdFileReader::RepomdFileReader( const Pathname & repomd_file )

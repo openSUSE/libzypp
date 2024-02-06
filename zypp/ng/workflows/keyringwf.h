@@ -39,8 +39,8 @@ namespace zyppng {
      * Try to find the \a id in key cache or repository specified in \a info. Ask the user to trust
      * the key if it was found
      */
-    bool provideAndImportKeyFromRepository( SyncContextRef ctx, const std::string &id_r, const zypp::RepoInfo &info_r );
-    AsyncOpRef<bool> provideAndImportKeyFromRepository( ContextRef ctx, const std::string &id_r, const zypp::RepoInfo &info_r );
+    bool provideAndImportKeyFromRepository(SyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r );
+    AsyncOpRef<bool> provideAndImportKeyFromRepository(ContextRef ctx, std::string id_r, zypp::RepoInfo info_r );
 
     /**
      * Follows a signature verification interacting with the user.

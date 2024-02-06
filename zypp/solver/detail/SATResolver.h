@@ -142,7 +142,7 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
 
   public:
 
-    SATResolver (const ResPool & pool, sat::detail::CPool *satPool);
+    SATResolver (ResPool  pool, sat::detail::CPool *satPool);
     virtual ~SATResolver();
 
     // ---------------------------------- I/O

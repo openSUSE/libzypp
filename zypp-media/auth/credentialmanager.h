@@ -67,7 +67,7 @@ namespace zypp
     typedef CredentialSet::const_iterator              CredentialIterator;
 
 
-    CredentialManager(const CredManagerOptions & opts = CredManagerOptions());
+    CredentialManager(CredManagerOptions opts = CredManagerOptions());
 
     ~CredentialManager()
     {}

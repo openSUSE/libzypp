@@ -139,8 +139,8 @@ namespace zypp
         };
 
     public:
-      ParseDef( const std::string & name_r, Mode mode_r );
-      ParseDef( const std::string & name_r, Mode mode_r, const shared_ptr<ParseDefConsume> & target_r );
+      ParseDef( std::string name_r, Mode mode_r );
+      ParseDef( std::string name_r, Mode mode_r, shared_ptr<ParseDefConsume> target_r );
 
       virtual ~ParseDef();
 

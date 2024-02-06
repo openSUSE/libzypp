@@ -61,7 +61,7 @@ namespace zypp
     {
     public:
       /** Ctor taking the default \ref ProvideFilePolicy. */
-      RepoMediaAccess( const ProvideFilePolicy & defaultPolicy_r = ProvideFilePolicy() );
+      RepoMediaAccess(ProvideFilePolicy defaultPolicy_r = ProvideFilePolicy() );
       ~RepoMediaAccess();
 
       /** Provide a file from a Repository.

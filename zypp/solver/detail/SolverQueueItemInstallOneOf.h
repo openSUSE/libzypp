@@ -52,7 +52,7 @@ class SolverQueueItemInstallOneOf : public SolverQueueItem {
 
   public:
 
-    SolverQueueItemInstallOneOf (const ResPool & pool, const PoolItemList & itemList, bool soft = false);
+    SolverQueueItemInstallOneOf (const ResPool & pool, PoolItemList  itemList, bool soft = false);
     virtual ~SolverQueueItemInstallOneOf();
 
     // ---------------------------------- I/O

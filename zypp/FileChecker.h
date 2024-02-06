@@ -52,7 +52,7 @@ namespace zypp
       * Constructor.
       * \param checksum Checksum that validates the file
       */
-     ChecksumFileChecker( const CheckSum &checksum );
+     ChecksumFileChecker( CheckSum checksum );
      /**
       * \short Try to validate the file
       * \param file File to validate.

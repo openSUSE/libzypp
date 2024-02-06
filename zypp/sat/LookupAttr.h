@@ -298,7 +298,7 @@ namespace zypp
           {}
           /** Initializes */
           DIWrap( RepoIdType repoId_r, SolvableIdType solvId_r, IdType attrId_r,
-                  const std::string & mstring_r = std::string(), int flags_r = 0 );
+                  std::string  mstring_r = std::string(), int flags_r = 0 );
           /** \overload to catch \c NULL \a mstring_r. */
           DIWrap( RepoIdType repoId_r, SolvableIdType solvId_r, IdType attrId_r,
                   const char * mstring_r, int flags_r = 0 );

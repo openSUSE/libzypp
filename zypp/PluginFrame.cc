@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
 
@@ -38,15 +39,15 @@ namespace zypp
       Impl( const std::string & command_r )
       { setCommand( command_r ); }
 
-      Impl( const std::string & command_r, const std::string & body_r )
-        : _body( body_r )
+      Impl( const std::string & command_r, std::string &&body_r )
+        : _body(std::move( body_r ))
       { setCommand( command_r ); }
 
       Impl( const std::string & command_r, HeaderInitializerList contents_r )
       { setCommand( command_r ); addHeader( contents_r ); }
 
-      Impl( const std::string & command_r, const std::string & body_r, HeaderInitializerList contents_r )
-        : _body( body_r )
+      Impl( const std::string & command_r, std::string &&body_r, HeaderInitializerList contents_r )
+        : _body(std::move( body_r ))
       { setCommand( command_r ); addHeader( contents_r ); }
 
       Impl( std::istream & stream_r );
@@ -264,16 +265,16 @@ namespace zypp
     : _pimpl( new Impl( command_r ) )
   {}
 
-  PluginFrame::PluginFrame( const std::string & command_r, const std::string & body_r )
-    : _pimpl( new Impl( command_r, body_r ) )
+  PluginFrame::PluginFrame( const std::string & command_r, std::string body_r )
+    : _pimpl( new Impl( command_r, std::move(body_r) ) )
   {}
 
   PluginFrame::PluginFrame( const std::string & command_r, HeaderInitializerList contents_r )
     : _pimpl( new Impl( command_r, contents_r ) )
   {}
 
-  PluginFrame::PluginFrame( const std::string & command_r, const std::string & body_r, HeaderInitializerList contents_r )
-    : _pimpl( new Impl( command_r, body_r, contents_r ) )
+  PluginFrame::PluginFrame( const std::string & command_r, std::string body_r, HeaderInitializerList contents_r )
+    : _pimpl( new Impl( command_r, std::move(body_r), contents_r ) )
   {}
 
   PluginFrame::PluginFrame( std::istream & stream_r )

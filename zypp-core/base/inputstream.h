@@ -61,28 +61,28 @@ namespace zypp
 
     /** Ctor providing an aleady existig \c std::istream. */
     InputStream( std::istream & stream_r,
-                 const std::string & name_r = std::string() );
+                 std::string  name_r = std::string() );
 
     /** Ctor for reading a (gziped) file. */
-    InputStream( const Pathname & file_r );
+    InputStream( Pathname  file_r );
 
     /** Ctor for reading a (gziped) file. */
-    InputStream( const Pathname & file_r,
-                 const std::string & name_r );
+    InputStream( Pathname  file_r,
+                 std::string  name_r );
 
     /** Ctor for reading a (gziped) file. */
     InputStream( const std::string & file_r );
 
     /** Ctor for reading a (gziped) file. */
     InputStream( const std::string & file_r,
-                 const std::string & name_r );
+                 std::string  name_r );
 
     /** Ctor for reading a (gziped) file. */
     InputStream( const char * file_r );
 
     /** Ctor for reading a (gziped) file. */
     InputStream( const char * file_r,
-                 const std::string & name_r );
+                 std::string  name_r );
 
     /** Dtor. */
     ~InputStream();

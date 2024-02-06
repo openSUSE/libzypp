@@ -19,6 +19,7 @@
 #define KVMap_h
 
 #include <iosfwd>
+#include <utility>
 #include <vector>
 #include <map>
 
@@ -50,25 +51,25 @@ namespace zypp {
       std::string _fsplit;
       std::string _kvjoin;
       std::string _fjoin;
-      KVMapPolicy( const std::string & kvsplit_r, const std::string & fsplit_r )
-        : _kvsplit( kvsplit_r )
-        , _fsplit ( fsplit_r )
+      KVMapPolicy( std::string  kvsplit_r, std::string  fsplit_r )
+        : _kvsplit(std::move( kvsplit_r ))
+        , _fsplit (std::move( fsplit_r ))
         , _kvjoin ( _kvsplit )
         , _fjoin  ( _fsplit )
       {}
-      KVMapPolicy( const std::string & kvsplit_r, const std::string & fsplit_r,
-             const std::string & kvjoin_r )
-        : _kvsplit( kvsplit_r )
-        , _fsplit ( fsplit_r )
-        , _kvjoin ( kvjoin_r )
+      KVMapPolicy( std::string  kvsplit_r, std::string  fsplit_r,
+             std::string  kvjoin_r )
+        : _kvsplit(std::move( kvsplit_r ))
+        , _fsplit (std::move( fsplit_r ))
+        , _kvjoin (std::move( kvjoin_r ))
         , _fjoin  ( _fsplit )
       {}
-      KVMapPolicy( const std::string & kvsplit_r, const std::string & fsplit_r,
-             const std::string & kvjoin_r, const std::string & fjoin_r )
-        : _kvsplit( kvsplit_r )
-        , _fsplit ( fsplit_r )
-        , _kvjoin ( kvjoin_r )
-        , _fjoin  ( fjoin_r )
+      KVMapPolicy( std::string  kvsplit_r, std::string  fsplit_r,
+             std::string  kvjoin_r, std::string  fjoin_r )
+        : _kvsplit(std::move( kvsplit_r ))
+        , _fsplit (std::move( fsplit_r ))
+        , _kvjoin (std::move( kvjoin_r ))
+        , _fjoin  (std::move( fjoin_r ))
       {}
     };
 

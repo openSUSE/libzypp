@@ -17,6 +17,7 @@
 #include <zypp/base/Gettext.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
+#include <utility>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/repo/RepoProvideFile.h>
 #include <zypp/ZYppCallbacks.h>
@@ -61,9 +62,9 @@ namespace zypp
         typedef callback::ReceiveReport<ReportType> BaseType;
         typedef function<bool(int)>                 RedirectType;
 
-        DownloadFileReportHack( RedirectType redirect_r )
+        DownloadFileReportHack( RedirectType &&redirect_r )
         : _oldRec( Distributor::instance().getReceiver() )
-        , _redirect( redirect_r )
+        , _redirect(std::move( redirect_r ))
         { connect(); }
         ~DownloadFileReportHack()
         { if ( _oldRec ) Distributor::instance().setReceiver( *_oldRec ); else Distributor::instance().noReceiver(); }
@@ -121,8 +122,8 @@ namespace zypp
     class RepoMediaAccess::Impl
     {
     public:
-      Impl( const ProvideFilePolicy & defaultPolicy_r )
-        : _defaultPolicy( defaultPolicy_r )
+      Impl( ProvideFilePolicy &&defaultPolicy_r )
+        : _defaultPolicy(std::move( defaultPolicy_r ))
       {}
 
       ~Impl()
@@ -219,8 +220,8 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
 
-    RepoMediaAccess::RepoMediaAccess( const ProvideFilePolicy & defaultPolicy_r )
-      : _impl( new Impl( defaultPolicy_r ) )
+    RepoMediaAccess::RepoMediaAccess( ProvideFilePolicy defaultPolicy_r )
+      : _impl( new Impl( std::move(defaultPolicy_r) ) )
     {}
 
     RepoMediaAccess::~RepoMediaAccess()

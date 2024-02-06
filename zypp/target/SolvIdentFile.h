@@ -13,6 +13,7 @@
 #define ZYPP_TARGET_SOLVIDENTFILE_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/PtrTypes.h>
 
@@ -38,8 +39,8 @@ namespace zypp
 
       public:
         /** Ctor taking the file to read/write. */
-        SolvIdentFile( const Pathname & file_r )
-        : _file( file_r )
+        SolvIdentFile( Pathname  file_r )
+        : _file(std::move( file_r ))
         {}
 
         /** Return the file path. */

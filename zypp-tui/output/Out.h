@@ -23,6 +23,7 @@
 #include <zypp-core/base/Exception.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Flags.h>
+#include <utility>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/DtorReset>
 #include <zypp-core/base/Gettext.h>
@@ -997,9 +998,9 @@ public:
    * If non zero values for \a current_r or \a total_r are passed,
    * the label is prefixed by either "(#C)" or "(#C/#T)"
    */
-  ProgressBar( Out & out_r, NoStartBar, const std::string & progressId_r, const std::string & label_r, unsigned current_r = 0, unsigned total_r = 0 )
+  ProgressBar( Out & out_r, NoStartBar, std::string  progressId_r, const std::string & label_r, unsigned current_r = 0, unsigned total_r = 0 )
     : _out( out_r )
-    , _progressId( progressId_r )
+    , _progressId(std::move( progressId_r ))
   {
     if ( total_r )
       _labelPrefix = zypp::str::form( "(%*u/%u) ", numDigits( total_r ), current_r, total_r );

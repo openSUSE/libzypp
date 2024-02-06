@@ -12,6 +12,7 @@
 
 #include <zypp/base/LogTools.h>
 #include <zypp/base/Regex.h>
+#include <utility>
 #include <zypp-core/base/UserRequestException>
 #include <zypp-media/MediaException>
 #include <zypp/ZYppCallbacks.h>
@@ -33,18 +34,18 @@ IMPL_PTR_TYPE(MediaSetAccess);
 
 ///////////////////////////////////////////////////////////////////
 
-  MediaSetAccess::MediaSetAccess(const Url &url,
-                                 const Pathname & prefered_attach_point)
-      : _url(url)
-      , _prefAttachPoint(prefered_attach_point)
+  MediaSetAccess::MediaSetAccess(Url url,
+                                 Pathname  prefered_attach_point)
+      : _url(std::move(url))
+      , _prefAttachPoint(std::move(prefered_attach_point))
   {}
 
-  MediaSetAccess::MediaSetAccess(const std::string & label_r,
-                                 const Url &url,
-                                 const Pathname & prefered_attach_point)
-      : _url(url)
-      , _prefAttachPoint(prefered_attach_point)
-      , _label( label_r )
+  MediaSetAccess::MediaSetAccess(std::string  label_r,
+                                 Url url,
+                                 Pathname  prefered_attach_point)
+      : _url(std::move(url))
+      , _prefAttachPoint(std::move(prefered_attach_point))
+      , _label(std::move( label_r ))
   {}
 
   MediaSetAccess::~MediaSetAccess()

@@ -24,8 +24,8 @@ namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
 
   namespace SignatureFileCheckWorkflow {
-    expected<zypp::keyring::VerifyFileContext> verifySignature(SyncContextRef ctx, zypp::keyring::VerifyFileContext &&context );
-    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( ContextRef ctx, zypp::keyring::VerifyFileContext &&context );
+    expected<zypp::keyring::VerifyFileContext> verifySignature( SyncContextRef ctx, zypp::keyring::VerifyFileContext context );
+    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( ContextRef ctx, zypp::keyring::VerifyFileContext context );
   }
 
 }

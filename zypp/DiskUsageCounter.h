@@ -15,6 +15,7 @@
 #include <set>
 #include <string>
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/ResPool.h>
 #include <zypp/Bitmap.h>
@@ -63,11 +64,11 @@ namespace zypp
       ZYPP_DECLARE_FLAGS(HintFlags,Hint);
 
       /** Ctor initialize directory, fstype and sizes */
-      MountPoint( const std::string & d = "/",
-                  const std::string & f = std::string(),
+      MountPoint( std::string  d = "/",
+                  std::string  f = std::string(),
                   long long bs = 0LL, long long total = 0LL, long long used = 0LL, long long pkg = 0LL,
                   HintFlags hints = NoHint )
-        : dir(d), fstype(f)
+        : dir(std::move(d)), fstype(std::move(f))
         , block_size(bs), total_size(total), used_size(used), pkg_size(pkg)
         , readonly(hints.testFlag(Hint_readonly))
         , growonly(hints.testFlag(Hint_growonly))
@@ -156,8 +157,8 @@ namespace zypp
     {}
 
     /** Ctor taking the MountPointSet to compute */
-    DiskUsageCounter( const MountPointSet & mps_r )
-    : _mps( mps_r )
+    DiskUsageCounter( MountPointSet  mps_r )
+    : _mps(std::move( mps_r ))
     {}
 
     /** Set a MountPointSet to compute */

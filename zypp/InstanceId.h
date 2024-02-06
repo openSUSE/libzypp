@@ -13,6 +13,7 @@
 #define ZYPP_INSTANCEID_H
 
 #include <string>
+#include <utility>
 
 #include <zypp/PoolItem.h>
 
@@ -51,8 +52,8 @@ namespace zypp
       {}
 
       /** Ctor taking namespace */
-      InstanceId( const std::string & namespace_r )
-      : _namespace( namespace_r )
+      InstanceId( std::string  namespace_r )
+      : _namespace(std::move( namespace_r ))
       {}
 
     public:

@@ -12,6 +12,7 @@ extern "C"
 }
 
 #include <iostream>
+#include <utility>
 #include <zypp/base/Logger.h>
 #include <zypp/Repository.h>
 #include <zypp/repo/DeltaCandidates.h>
@@ -35,8 +36,8 @@ namespace zypp
         Impl()
         {}
 
-        Impl( const std::list<Repository> & repos, const std::string & pkgname = "" )
-        : repos(repos), pkgname(pkgname)
+        Impl( std::list<Repository> &&repos, std::string &&pkgname = "" )
+        : repos(std::move(repos)), pkgname(std::move(pkgname))
         {}
 
         std::list<Repository> repos;
@@ -67,9 +68,9 @@ namespace zypp
     {}
 
 
-    DeltaCandidates::DeltaCandidates(const std::list<Repository> & repos,
-                                     const std::string & pkgname)
-    : _pimpl( new Impl(repos, pkgname) )
+    DeltaCandidates::DeltaCandidates(std::list<Repository> repos,
+                                     std::string pkgname)
+    : _pimpl( new Impl(std::move(repos), std::move(pkgname)) )
     {}
 
     DeltaCandidates::~DeltaCandidates()

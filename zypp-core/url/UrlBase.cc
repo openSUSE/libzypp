@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <optional>
+#include <utility>
 
 // in the Estonian locale, a-z excludes t, for example. #302525
 // http://en.wikipedia.org/wiki/Estonian_alphabet
@@ -181,8 +182,8 @@ namespace zypp
       UrlBaseData()
       {}
 
-      UrlBaseData(const UrlConfig &conf)
-        : config(conf)
+      UrlBaseData(UrlConfig conf)
+        : config(std::move(conf))
       {}
 
       UrlConfig       config;

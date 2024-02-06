@@ -15,6 +15,7 @@
 #include <zypp/base/String.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/Gettext.h>
+#include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/DefaultIntegral>
 
@@ -106,7 +107,7 @@ namespace zypp
      *
      * \see RepoindexFileReader::RepoindexFileReader(Pathname,ProcessResource)
      */
-    Impl(const InputStream &is, const ProcessResource & callback);
+    Impl(const InputStream &is, ProcessResource &&callback);
 
     /**
      * Callback provided to the XML parser.
@@ -136,8 +137,8 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////////
 
   RepoindexFileReader::Impl::Impl(const InputStream &is,
-                                  const ProcessResource & callback)
-    : _callback(callback)
+                                  ProcessResource &&callback)
+    : _callback(std::move(callback))
   {
     Reader reader( is );
     MIL << "Reading " << is.path() << endl;
@@ -262,12 +263,12 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  RepoindexFileReader::RepoindexFileReader( const Pathname & repoindex_file, const ProcessResource & callback )
-  : _pimpl(new Impl(InputStream(repoindex_file), callback))
+  RepoindexFileReader::RepoindexFileReader( Pathname repoindex_file, ProcessResource callback )
+  : _pimpl(new Impl( InputStream(repoindex_file), std::move(callback) ))
   {}
 
-  RepoindexFileReader::RepoindexFileReader( const InputStream &is, const ProcessResource & callback )
-  : _pimpl(new Impl(is, callback))
+  RepoindexFileReader::RepoindexFileReader(const InputStream &is, ProcessResource callback )
+  : _pimpl(new Impl( is, std::move(callback) ))
   {}
 
   RepoindexFileReader::~RepoindexFileReader()

@@ -15,6 +15,8 @@
 #include <zypp-core/Url.h>
 #include <zypp-core/base/PtrTypes.h>
 
+#include <utility>
+
 namespace zypp {
   namespace media {
 
@@ -33,8 +35,8 @@ public:
 
   AuthData(const Url & url);
 
-  AuthData(const std::string & username, const std::string & password)
-    : _username(username), _password(password), _lastChange(0)
+  AuthData(std::string  username, std::string  password)
+    : _username(std::move(username)), _password(std::move(password)), _lastChange(0)
   {}
 
   virtual ~AuthData() {};

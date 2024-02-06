@@ -13,6 +13,7 @@
 #define ZYPP_TARGET_REQUESTEDLOCALESFILE_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/PtrTypes.h>
 
@@ -38,8 +39,8 @@ namespace zypp
 
       public:
         /** Ctor taking the file to read/write. */
-        RequestedLocalesFile( const Pathname & file_r )
-        : _file( file_r )
+        RequestedLocalesFile( Pathname  file_r )
+        : _file(std::move( file_r ))
         {}
 
         /** Return the file path. */

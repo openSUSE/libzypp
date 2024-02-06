@@ -18,6 +18,7 @@
 #include <arpa/inet.h>
 #include <glib.h>
 
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -226,7 +227,7 @@ private:
 
 class multifetchrequest : protected internal::CurlPollHelper::CurlPoll  {
 public:
-  multifetchrequest(const MediaMultiCurl *context, const Pathname &filename, const Url &baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize);
+  multifetchrequest(const MediaMultiCurl *context, Pathname filename, Url baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize);
   ~multifetchrequest();
 
   void run(std::vector<Url> &urllist);
@@ -963,11 +964,11 @@ multifetchworker::run()
 //////////////////////////////////////////////////////////////////////
 
 
-multifetchrequest::multifetchrequest(const MediaMultiCurl *context, const Pathname &filename, const Url &baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize)
+multifetchrequest::multifetchrequest(const MediaMultiCurl *context, Pathname filename, Url baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize)
   : internal::CurlPollHelper::CurlPoll{ multi }
   , _context(context)
-  , _filename(filename)
-  , _baseurl(baseurl)
+  , _filename(std::move(filename))
+  , _baseurl(std::move(baseurl))
   , _fp(fp)
   , _report(report)
   , _blklist(std::move(blklist))

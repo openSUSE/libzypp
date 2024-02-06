@@ -15,6 +15,7 @@
 #include <zypp-core/CheckSum.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/fs/PathInfo.h>
+#include <utility>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp-media/FileCheckException>
 #include <zypp-media/ng/Provide>
@@ -39,10 +40,10 @@ namespace zyppng::CheckSumWorkflow {
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;
 
-    CheckSumWorkflowLogic( ZyppContextRefType zyppContext, const zypp::CheckSum &checksum, const zypp::Pathname &file )
+    CheckSumWorkflowLogic( ZyppContextRefType zyppContext, zypp::CheckSum &&checksum, zypp::Pathname file )
       : _context( std::move(zyppContext) )
-      , _checksum( checksum )
-      , _file( file )
+      , _checksum(std::move( checksum ))
+      , _file(std::move( file ))
       {}
 
     auto execute()
@@ -154,21 +155,21 @@ namespace zyppng::CheckSumWorkflow {
     };
   };
 
-  expected<void> verifyChecksum( SyncContextRef zyppCtx, const zypp::CheckSum &checksum, const zypp::Pathname &file )
+  expected<void> verifyChecksum( SyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file )
   {
-    return SyncCheckSumExecutor::run( std::move(zyppCtx), checksum, file );
+    return SyncCheckSumExecutor::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
   }
 
-  AsyncOpRef<expected<void> > verifyChecksum( ContextRef zyppCtx, const zypp::CheckSum &checksum, const zypp::filesystem::Pathname &file )
+  AsyncOpRef<expected<void> > verifyChecksum( ContextRef zyppCtx, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
   {
-    return AsyncCheckSumExecutor::run( std::move(zyppCtx), checksum, file );
+    return AsyncCheckSumExecutor::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
   }
 
-  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( ContextRef zyppCtx, const zypp::CheckSum &checksum )
+  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( ContextRef zyppCtx, zypp::CheckSum checksum )
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx, checksum=checksum ]( ProvideRes &&res ) -> AsyncOpRef<expected<ProvideRes>> {
-      return verifyChecksum( zyppCtx, checksum, res.file() )
+    return [ zyppCtx, checksum=std::move(checksum) ]( ProvideRes &&res ) mutable -> AsyncOpRef<expected<ProvideRes>> {
+      return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
        | [ res ] ( expected<void> &&result ) mutable {
           if ( result )
             return expected<ProvideRes>::success( std::move(res) );
@@ -178,11 +179,11 @@ namespace zyppng::CheckSumWorkflow {
     };
   }
 
-  std::function<expected<SyncProvideRes> (SyncProvideRes &&)> checksumFileChecker(SyncContextRef zyppCtx, const zypp::CheckSum &checksum)
+  std::function<expected<SyncProvideRes> (SyncProvideRes &&)> checksumFileChecker(SyncContextRef zyppCtx, zypp::CheckSum checksum)
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx = std::move(zyppCtx), checksum=checksum ]( SyncProvideRes &&res ) -> expected<SyncProvideRes> {
-      return verifyChecksum( zyppCtx, checksum, res.file() )
+    return [ zyppCtx = std::move(zyppCtx), checksum=std::move(checksum) ]( SyncProvideRes &&res ) mutable -> expected<SyncProvideRes> {
+      return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
        | [ res ] ( expected<void> &&result ) mutable {
           if ( result )
             return expected<SyncProvideRes>::success( std::move(res) );

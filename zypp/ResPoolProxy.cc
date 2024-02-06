@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 #include <zypp/base/LogTools.h>
 
 #include <zypp/base/Iterator.h>
@@ -101,8 +102,8 @@ namespace zypp
     :_pool( ResPool::instance() )
     {}
 
-    Impl( ResPool pool_r, const pool::PoolImpl & poolImpl_r )
-    : _pool( pool_r )
+    Impl( ResPool &&pool_r, const pool::PoolImpl & poolImpl_r )
+    : _pool( std::move(pool_r) )
     {
       const pool::PoolImpl::Id2ItemT & id2item( poolImpl_r.id2item() );
       if ( ! id2item.empty() )
@@ -255,7 +256,7 @@ namespace zypp
   //	METHOD TYPE : Ctor
   //
   ResPoolProxy::ResPoolProxy( ResPool pool_r, const pool::PoolImpl & poolImpl_r )
-  : _pimpl( new Impl( pool_r, poolImpl_r ) )
+  : _pimpl( new Impl( std::move(pool_r), poolImpl_r ) )
   {}
 
   ///////////////////////////////////////////////////////////////////

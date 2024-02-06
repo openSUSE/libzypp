@@ -145,8 +145,8 @@ namespace zypp
   struct ZYPP_LOCAL RepoManager::Impl : public RepoManagerBaseImpl
   {
   public:
-    Impl( const RepoManagerOptions &opt )
-      : RepoManagerBaseImpl( opt )
+    Impl( RepoManagerOptions &&opt )
+      : RepoManagerBaseImpl( std::move(opt) )
       , _pluginRepoverification( _options.pluginsPath/"repoverification", _options.rootDir )
     {
       init_knownServices();
@@ -1194,8 +1194,8 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  RepoManager::RepoManager( const RepoManagerOptions & opt )
-  : _pimpl( new Impl(opt) )
+  RepoManager::RepoManager( RepoManagerOptions opt )
+  : _pimpl( new Impl(std::move(opt)) )
   {}
 
   RepoManager::~RepoManager()

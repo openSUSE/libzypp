@@ -18,6 +18,7 @@
 #include <glib.h>
 
 #include <zypp/base/LogTools.h>
+#include <utility>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp/base/String.h>
 #include <zypp/base/Signal.h>
@@ -114,11 +115,11 @@ namespace zypp
   struct PluginScript::Impl
   {
     public:
-      Impl( const Pathname & script_r = Pathname(), const Arguments & args_r = Arguments() )
+      Impl( Pathname &&script_r = Pathname(), Arguments &&args_r = Arguments() )
         : _sendTimeout( _defaultSendTimeout )
         , _receiveTimeout( _defaultReceiveTimeout )
-        , _script( script_r )
-        , _args( args_r )
+        , _script(std::move( script_r ))
+        , _args(std::move( args_r ))
       {}
 
       ~ Impl()
@@ -459,12 +460,12 @@ namespace zypp
     : _pimpl( new Impl )
   {}
 
-  PluginScript::PluginScript( const Pathname & script_r )
-    : _pimpl( new Impl( script_r ) )
+  PluginScript::PluginScript( Pathname script_r )
+    : _pimpl( new Impl( std::move(script_r) ) )
   {}
 
-  PluginScript::PluginScript( const Pathname & script_r, const Arguments & args_r )
-    : _pimpl( new Impl( script_r, args_r ) )
+  PluginScript::PluginScript( Pathname script_r, Arguments args_r )
+    : _pimpl( new Impl( std::move(script_r), std::move(args_r) ) )
   {}
 
   const Pathname & PluginScript::script() const

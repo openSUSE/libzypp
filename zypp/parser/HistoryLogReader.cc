@@ -12,6 +12,7 @@
  */
 #include <iostream>
 
+#include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp/base/IOStream.h>
 #include <zypp/base/Logger.h>
@@ -35,10 +36,10 @@ namespace zypp
   /////////////////////////////////////////////////////////////////////
   struct HistoryLogReader::Impl
   {
-    Impl( const Pathname & historyFile_r, const Options & options_r, const ProcessData & callback_r )
-    :  _filename( historyFile_r )
-    , _options( options_r )
-    , _callback( callback_r )
+    Impl( Pathname &&historyFile_r, Options &&options_r, ProcessData &&callback_r )
+    :  _filename( std::move(historyFile_r) )
+    , _options( std::move(options_r) )
+    , _callback( std::move(callback_r) )
     {}
 
     bool parseLine( const std::string & line_r, unsigned int lineNr_r );
@@ -212,8 +213,8 @@ namespace zypp
   //
   /////////////////////////////////////////////////////////////////////
 
-  HistoryLogReader::HistoryLogReader( const Pathname & historyFile_r, const Options & options_r, const ProcessData & callback_r )
-  : _pimpl( new HistoryLogReader::Impl( historyFile_r, options_r, callback_r ) )
+  HistoryLogReader::HistoryLogReader( Pathname historyFile_r, Options options_r, ProcessData callback_r )
+  : _pimpl( new HistoryLogReader::Impl( std::move(historyFile_r), std::move(options_r), std::move(callback_r) ) )
   {}
 
   HistoryLogReader::~HistoryLogReader()

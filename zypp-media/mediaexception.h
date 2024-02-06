@@ -15,6 +15,7 @@
 #include <iosfwd>
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <zypp-core/base/Exception.h>
@@ -61,15 +62,15 @@ namespace zypp
       /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
       */
-      MediaMountException( const std::string & error_r,
-                           const std::string & source_r,
-                           const std::string & target_r,
-                           const std::string & cmdout_r="")
+      MediaMountException( std::string  error_r,
+                           std::string  source_r,
+                           std::string  target_r,
+                           std::string  cmdout_r="")
       : MediaException()
-      , _error(error_r)
-      , _source(source_r)
-      , _target(target_r)
-      , _cmdout(cmdout_r)
+      , _error(std::move(error_r))
+      , _source(std::move(source_r))
+      , _target(std::move(target_r))
+      , _cmdout(std::move(cmdout_r))
       {}
       /** Dtor. */
       virtual ~MediaMountException() noexcept {}
@@ -98,11 +99,11 @@ namespace zypp
       /** Ctor taking message.
        * Use \ref ZYPP_THROW to throw exceptions.
       */
-      MediaUnmountException( const std::string & error_r,
-                             const std::string & path_r )
+      MediaUnmountException( std::string  error_r,
+                             std::string  path_r )
       : MediaException()
-      , _error(error_r)
-      , _path(path_r)
+      , _error(std::move(error_r))
+      , _path(std::move(path_r))
       {}
       /** Dtor. */
       virtual ~MediaUnmountException() noexcept {}
@@ -133,9 +134,9 @@ namespace zypp
     class MediaBadFilenameException : public MediaException
     {
     public:
-      MediaBadFilenameException(const std::string & filename_r)
+      MediaBadFilenameException(std::string  filename_r)
       : MediaException()
-      , _filename(filename_r)
+      , _filename(std::move(filename_r))
       {}
       virtual ~MediaBadFilenameException() noexcept {}
       std::string filename() const { return _filename; }
@@ -148,9 +149,9 @@ namespace zypp
     class MediaNotOpenException : public MediaException
     {
     public:
-      MediaNotOpenException(const std::string & action_r)
+      MediaNotOpenException(std::string  action_r)
       : MediaException()
-      , _action(action_r)
+      , _action(std::move(action_r))
       {}
       virtual ~MediaNotOpenException() noexcept {}
     protected:
@@ -236,10 +237,10 @@ namespace zypp
     {
     public:
       MediaSystemException(const Url & url_r,
-                           const std::string & message_r)
+                           std::string  message_r)
       : MediaException()
       , _url(url_r.asString())
-      , _message(message_r)
+      , _message(std::move(message_r))
       {}
       virtual ~MediaSystemException() noexcept {}
     protected:
@@ -287,10 +288,10 @@ namespace zypp
     {
     public:
       MediaBadUrlException(const Url & url_r,
-                           const std::string &msg_r = std::string())
+                           std::string msg_r = std::string())
       : MediaException()
       , _url(url_r.asString())
-      , _msg(msg_r)
+      , _msg(std::move(msg_r))
       {}
       virtual ~MediaBadUrlException() noexcept {}
     protected:
@@ -360,12 +361,12 @@ namespace zypp
     {
     public:
       MediaCurlException(const Url & url_r,
-                         const std::string & err_r,
-                         const std::string & msg_r)
+                         std::string  err_r,
+                         std::string  msg_r)
       : MediaException()
       , _url(url_r.asString())
-      , _err(err_r)
-      , _msg(msg_r)
+      , _err(std::move(err_r))
+      , _msg(std::move(msg_r))
       {}
       virtual ~MediaCurlException() noexcept {}
       std::string errstr() const { return _err; }
@@ -379,10 +380,10 @@ namespace zypp
     class MediaCurlSetOptException : public MediaException
     {
     public:
-      MediaCurlSetOptException(const Url & url_r, const std::string & msg_r)
+      MediaCurlSetOptException(const Url & url_r, std::string  msg_r)
       : MediaException()
       , _url(url_r.asString())
-      , _msg(msg_r)
+      , _msg(std::move(msg_r))
       {}
       virtual ~MediaCurlSetOptException() noexcept {}
     protected:
@@ -411,9 +412,9 @@ namespace zypp
       /**
        * \param name A media source as string (see MediaSource class).
        */
-      MediaIsSharedException(const std::string &name)
+      MediaIsSharedException(std::string name)
       : MediaException()
-      , _name(name)
+      , _name(std::move(name))
       {}
       virtual ~MediaIsSharedException() noexcept {}
     protected:
@@ -430,9 +431,9 @@ namespace zypp
       , _name("")
       {}
 
-      MediaNotEjectedException(const std::string &name)
+      MediaNotEjectedException(std::string name)
       : MediaException("Can't eject media")
-      , _name(name)
+      , _name(std::move(name))
       {}
       virtual ~MediaNotEjectedException() noexcept {}
     protected:
@@ -451,14 +452,14 @@ namespace zypp
       , _hint("")
       {}
 
-      MediaUnauthorizedException(const Url         &url_r,
+      MediaUnauthorizedException(Url url_r,
                                  const std::string &msg_r,
-                                 const std::string &err_r,
-                                 const std::string &hint_r)
+                                 std::string err_r,
+                                 std::string hint_r)
       : MediaException(msg_r)
-      , _url(url_r)
-      , _err(err_r)
-      , _hint(hint_r)
+      , _url(std::move(url_r))
+      , _err(std::move(err_r))
+      , _hint(std::move(hint_r))
       {}
 
       virtual ~MediaUnauthorizedException() noexcept {}

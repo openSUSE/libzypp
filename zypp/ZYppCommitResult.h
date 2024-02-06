@@ -13,6 +13,7 @@
 #define ZYPP_ZYPPCOMMITRESULT_H
 
 #include <iosfwd>
+#include <utility>
 #include <vector>
 #include <list>
 
@@ -33,8 +34,8 @@ namespace zypp
   class UpdateNotificationFile
   {
     public:
-      UpdateNotificationFile( sat::Solvable solvable_r, const Pathname & file_r )
-      : _solvable( solvable_r ), _file( file_r )
+      UpdateNotificationFile( sat::Solvable solvable_r, Pathname  file_r )
+      : _solvable( solvable_r ), _file(std::move( file_r ))
       {}
     public:
       sat::Solvable solvable() const { return _solvable; }

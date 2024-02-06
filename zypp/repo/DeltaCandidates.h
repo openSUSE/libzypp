@@ -47,7 +47,7 @@ namespace zypp
        * \short Creates a candidate calculator
        * \param repos Set of repositories providing patch and delta packages
        */
-      DeltaCandidates( const std::list<Repository> & repos, const std::string & pkgname = "" );
+      DeltaCandidates( std::list<Repository> repos, std::string pkgname = "" );
       /** Dtor */
       ~DeltaCandidates();
 

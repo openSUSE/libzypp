@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <utility>
 #include "providespec.h"
 
 using std::endl;
@@ -32,10 +33,10 @@ namespace zyppng
     Impl()
     {}
 
-    Impl( const std::string &label, const zypp::Pathname &vPath, unsigned medianr )
-      : _label( label )
+    Impl( std::string &&label, zypp::Pathname &&vPath, unsigned medianr )
+      : _label(std::move( label ))
       , _medianr( medianr )
-      , _verifyDataPath(vPath)
+      , _verifyDataPath(std::move(vPath))
     {}
 
     std::string _label;
@@ -86,8 +87,8 @@ namespace zyppng
   };
 
 
-  ProvideMediaSpec::ProvideMediaSpec( const std::string &label, const zypp::filesystem::Pathname &verifyData, unsigned medianr )
-    :  _pimpl( new Impl( label, verifyData, medianr ) )
+  ProvideMediaSpec::ProvideMediaSpec( std::string label, zypp::filesystem::Pathname verifyData, unsigned medianr )
+    :  _pimpl( new Impl( std::move(label), std::move(verifyData), medianr ) )
   {
 
   }

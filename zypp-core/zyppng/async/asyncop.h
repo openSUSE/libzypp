@@ -170,8 +170,8 @@ namespace zyppng {
     AsyncOp ( const AsyncOp &other ) = delete;
     AsyncOp& operator= ( const AsyncOp &other ) = delete;
 
-    AsyncOp& operator= ( AsyncOp &&other ) = default;
-    AsyncOp ( AsyncOp &&other ) = default;
+    AsyncOp& operator= ( AsyncOp &&other ) noexcept = default;
+    AsyncOp ( AsyncOp &&other ) noexcept = default;
 
     virtual ~AsyncOp(){}
 
@@ -215,7 +215,7 @@ namespace zyppng {
      *       when the AsyncOp becomes ready
      */
     template< typename Fun >
-    void onReady ( Fun cb ) {
+    void onReady ( Fun &&cb ) {
       this->_readyCb =  std::forward<Fun>(cb);
 
       if ( isReady() ) {
@@ -270,7 +270,7 @@ namespace zyppng {
       assert(!_nestedPipeline);
       _nestedPipeline = static_cast<Base *>(this)->makePipeline( std::forward<Args>(args)...);
       _nestedPipeline->onReady([this]( auto &&val ){
-        static_cast<Base *>(this)->setReady( std::move(val) );
+        static_cast<Base *>(this)->setReady( std::forward<decltype(val)>(val) );
       });
     }
 

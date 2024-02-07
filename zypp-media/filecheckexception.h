@@ -17,24 +17,24 @@ namespace zypp {
   class FileCheckException : public Exception
   {
   public:
-    FileCheckException(const std::string &msg)
-      : Exception(msg)
+    FileCheckException(std::string msg)
+      : Exception(std::move(msg))
     {}
   };
 
   class CheckSumCheckException : public FileCheckException
   {
   public:
-    CheckSumCheckException(const std::string &msg)
-      : FileCheckException(msg)
+    CheckSumCheckException(std::string msg)
+      : FileCheckException(std::move(msg))
     {}
   };
 
   class SignatureCheckException : public FileCheckException
   {
   public:
-    SignatureCheckException(const std::string &msg)
-      : FileCheckException(msg)
+    SignatureCheckException(std::string msg)
+      : FileCheckException(std::move(msg))
     {}
   };
 

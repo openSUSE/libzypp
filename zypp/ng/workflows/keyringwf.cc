@@ -54,7 +54,7 @@ namespace zyppng::KeyRingWorkflow {
       zypp::Pathname cacheDir = conf.repoManagerRoot() / conf.pubkeyCachePath();
 
       return RepoInfoWorkflow::provideKey( _context, _repo, _keyId, cacheDir )
-        | [this, cacheDir]( zypp::Pathname && myKey ) {
+        | [this, cacheDir]( zypp::Pathname myKey ) {
          if ( myKey.empty()  )
            // if we did not find any keys, there is no point in checking again, break
            return false;
@@ -227,7 +227,7 @@ namespace zyppng::KeyRingWorkflow {
           {
             // try to find the key in the repository info
             return provideAndImportKeyFromRepository ( _zyppContext, id, _verifyContext.keyContext().repoInfo() )
-              | [this, id]( bool &&success ) {
+              | [this, id]( bool success ) {
                   if ( !success ) {
                     return FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() };
                   }
@@ -285,7 +285,7 @@ namespace zyppng::KeyRingWorkflow {
         }
 
         using zyppng::operators::operator|;
-        return findKey( id ) | [this, id, buddies=std::move(buddies)]( FoundKeyData &&res ) {
+        return findKey( id ) | [this, id, buddies=std::move(buddies)]( FoundKeyData res ) {
 
           const zypp::Pathname & file         { _verifyContext.file() };
           const zypp::KeyContext & keyContext { _verifyContext.keyContext() };

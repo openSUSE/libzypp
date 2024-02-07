@@ -25,7 +25,7 @@ namespace zyppng {
     HeaderValue();
 
     HeaderValue( const HeaderValue &other );
-    HeaderValue( HeaderValue &&other );
+    HeaderValue( HeaderValue &&other ) noexcept;
 
     HeaderValue( const bool val );
     HeaderValue( const int32_t val );
@@ -53,7 +53,7 @@ namespace zyppng {
     const value_type &asVariant () const;
 
     HeaderValue &operator= ( const HeaderValue &other );
-    HeaderValue &operator= ( HeaderValue &&other );
+    HeaderValue &operator= ( HeaderValue &&other ) noexcept;
     HeaderValue &operator= ( const std::string &val );
     HeaderValue &operator= ( int32_t val );
     HeaderValue &operator= ( int64_t val );

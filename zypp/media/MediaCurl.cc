@@ -124,7 +124,7 @@ namespace internal {
     {
       if ( _isOptional ) {
         // we know _oldRec is valid...
-        _oldRec->start( std::move(_startFile), std::move(_startLocalfile) );
+        _oldRec->start( _startFile, std::move(_startLocalfile) );
         _isOptional = false;
       }
     }

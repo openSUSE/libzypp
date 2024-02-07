@@ -151,8 +151,8 @@ namespace zypp
       SolvableType() {}
       SolvableType( const SolvableType & ) {}
       void operator=( const SolvableType & ) {}
-      SolvableType( SolvableType && ) {}
-      void operator=( SolvableType && ) {}
+      SolvableType( SolvableType && ) noexcept {}
+      void operator=( SolvableType && ) noexcept {}
       ~SolvableType() {}
     };
 

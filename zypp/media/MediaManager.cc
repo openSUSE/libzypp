@@ -54,7 +54,7 @@ namespace zypp
           catch(...) {}
         }
 
-        ManagedMedia( ManagedMedia &&m )
+        ManagedMedia( ManagedMedia &&m ) noexcept
           : desired ( m.desired )
           , verifier( std::move(m.verifier) )
           , _handler ( std::move(m._handler) )

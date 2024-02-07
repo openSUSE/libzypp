@@ -46,7 +46,6 @@ namespace zypp
   public:
     /** Default ctor */
     RepoStatus();
-
     /** Compute status for single file or directory (recursively)
      *
      * \note Construction from a non existing file will result
@@ -62,6 +61,11 @@ namespace zypp
 
     /** Dtor */
     ~RepoStatus();
+
+    RepoStatus(const RepoStatus &) = default;
+    RepoStatus(RepoStatus &&) noexcept = default;
+    RepoStatus &operator=(const RepoStatus &) = default;
+    RepoStatus &operator=(RepoStatus &&) noexcept = default;
 
   public:
     /** Reads the status from a cookie file

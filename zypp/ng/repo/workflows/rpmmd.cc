@@ -43,7 +43,7 @@ namespace zyppng::RpmmdWorkflows {
 
       MaybeAsyncRef<expected<zypp::RepoStatus>> execute() {
         return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "/repodata/repomd.xml" , ProvideFileSpec() )
-          | [this]( expected<ProvideRes> &&repomdFile ) {
+          | [this]( expected<ProvideRes> repomdFile ) {
 
               if ( !repomdFile )
                 return makeReadyResult( make_expected_success (zypp::RepoStatus() ));
@@ -52,11 +52,11 @@ namespace zyppng::RpmmdWorkflows {
 
               if ( !status.empty() && _ctx->repoInfo ().requireStatusWithMediaFile()) {
                 return _ctx->zyppContext()->provider()->provide( _handle, "/media.1/media"  , ProvideFileSpec())
-                  | [status = std::move(status)]( expected<ProvideRes> &&mediaFile ) {
+                  | [status = std::move(status)]( expected<ProvideRes> mediaFile ) mutable {
                       if ( mediaFile ) {
-                        return make_expected_success(status && zypp::RepoStatus( mediaFile->file()) );
+                        return make_expected_success( status && zypp::RepoStatus( mediaFile->file()) );
                       }
-                      return make_expected_success(status);
+                      return make_expected_success( std::move(status) );
                     };
               }
               return makeReadyResult( make_expected_success(std::move(status)) );
@@ -114,7 +114,7 @@ namespace zyppng::RpmmdWorkflows {
 
               return RepoDownloaderWorkflow::downloadMasterIndex( _ctx, _mediaHandle, _ctx->repoInfo().path() / "/repodata/repomd.xml" )
                 | inspect( incProgress( _progressObserver ) )
-                | and_then( [this] ( DlContextRefType &&ctxRef ) {
+                | and_then( [this] ( DlContextRefType && ) {
 
                     zypp::Pathname repomdPath = _ctx->files().front();
                     std::vector<zypp::OnMediaLocation> requiredFiles;
@@ -134,7 +134,7 @@ namespace zyppng::RpmmdWorkflows {
                     // add the required files to the base steps
                     if ( _progressObserver ) _progressObserver->setBaseSteps ( _progressObserver->baseSteps () + requiredFiles.size() );
 
-                    return transform_collect  ( std::move(requiredFiles), [this]( zypp::OnMediaLocation &&file ) {
+                    return transform_collect  ( std::move(requiredFiles), [this]( zypp::OnMediaLocation file ) {
 
                       return DownloadWorkflow::provideToCacheDir( _ctx, _mediaHandle, file.filename(), ProvideFileSpec(file) )
                           | inspect ( incProgress( _progressObserver ) );

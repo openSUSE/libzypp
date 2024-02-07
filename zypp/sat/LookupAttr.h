@@ -305,7 +305,7 @@ namespace zypp
           DIWrap( const DIWrap & rhs );
           ~DIWrap();
         public:
-          void swap( DIWrap & rhs )
+          void swap( DIWrap & rhs ) noexcept
           {
             if ( &rhs != this ) // prevent self assign!
             {

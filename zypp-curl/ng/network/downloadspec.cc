@@ -15,7 +15,7 @@ namespace zyppng {
   public:
     DownloadSpecPrivate() = default;
     DownloadSpecPrivate( const DownloadSpecPrivate &other ) = default;
-    DownloadSpecPrivate( DownloadSpecPrivate &&other ) = default;
+    DownloadSpecPrivate( DownloadSpecPrivate &&other ) noexcept = default;
 
     DownloadSpecPrivate *clone () const {
       return new DownloadSpecPrivate(*this);
@@ -42,10 +42,6 @@ namespace zyppng {
     d_ptr->_targetPath = std::move(targetPath);
     d_ptr->_expectedFileSize = std::move( expectedFileSize );
   }
-
-  DownloadSpec::DownloadSpec( const DownloadSpec &other ) = default;
-
-  DownloadSpec &DownloadSpec::operator=(const DownloadSpec &other) = default;
 
   const Url &DownloadSpec::url() const
   {

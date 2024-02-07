@@ -651,7 +651,7 @@ namespace zyppng {
     size_t s = zypp::str::strtonum<size_t>( what[1]);
     size_t e = zypp::str::strtonum<size_t>( what[2]);
     fileLen  = zypp::str::strtonum<size_t>( what[3]);
-    start = std::move(s);
+    start = s;
     len   = ( e - s ) + 1;
     return true;
   }

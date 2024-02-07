@@ -37,7 +37,7 @@ namespace zyppng {
 
     struct ChildInfo {
       ChildInfo( std::vector<connection> &&conns, float weight ) : _signalConns( std::move(conns) ), _childWeight(weight){}
-      ChildInfo( ChildInfo &&other ) {
+      ChildInfo( ChildInfo &&other ) noexcept {
         _childWeight = other._childWeight;
         _signalConns = std::move(other._signalConns);
         other._signalConns.clear ();
@@ -47,7 +47,7 @@ namespace zyppng {
         std::for_each( _signalConns.begin (), _signalConns.end(), []( auto &sig ){ sig.disconnect(); });
       }
 
-      ChildInfo & operator= ( ChildInfo &&other )
+      ChildInfo & operator= ( ChildInfo &&other ) noexcept
       {
         _childWeight = other._childWeight;
         _signalConns = std::move(other._signalConns);

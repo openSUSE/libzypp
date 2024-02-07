@@ -337,7 +337,7 @@ MediaHandler::createAttachPoint() const
   {
     auto except = MediaBadAttachPointException( url() );
     except.addHistory( _("Create attach point: Can't find a writable directory to create an attach point") );
-    ZYPP_THROW( std::move(except) );
+    ZYPP_THROW( except );
   }
 
   MIL << "Created default attach point " << apoint << std::endl;

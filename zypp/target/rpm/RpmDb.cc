@@ -797,7 +797,7 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
     RpmSubprocessException excp( str::Format(_("Failed to import public key %1%") ) % pubkey_r.asString() );
     excp.moveToHistory( excplines );
     excp.addHistory( std::move(error_message) );
-    ZYPP_THROW( std::move(excp) );
+    ZYPP_THROW( excp );
   }
   else
   {
@@ -864,7 +864,7 @@ void RpmDb::removePubkey( const PublicKey & pubkey_r )
     RpmSubprocessException excp( str::Format(_("Failed to remove public key %1%") ) % pubkey_r.asString() );
     excp.moveToHistory( excplines );
     excp.addHistory( std::move(error_message) );
-    ZYPP_THROW( std::move(excp) );
+    ZYPP_THROW( excp );
   }
   else
   {
@@ -1247,7 +1247,7 @@ namespace
       }
 
       ++count[lineres];
-      detail_r.push_back( RpmDb::CheckPackageDetail::value_type( lineres, std::move(line) ) );
+      detail_r.push_back( RpmDb::CheckPackageDetail::value_type( lineres, line ) );
     }
 
     // Now combine the overall result:
@@ -1837,7 +1837,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
     auto excpt { RpmSubprocessException(_("RPM failed: ") + error_message ) };
     if ( not rpmmsg.empty() )
       excpt.addHistory( rpmmsg );
-    ZYPP_THROW(std::move(excpt));
+    ZYPP_THROW(excpt);
   }
   else if ( ! rpmmsg.empty() )
   {
@@ -2010,7 +2010,7 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
     auto excpt { RpmSubprocessException(_("RPM failed: ") + error_message ) };
     if ( not rpmmsg.empty() )
       excpt.addHistory( rpmmsg );
-    ZYPP_THROW(std::move(excpt));
+    ZYPP_THROW(excpt);
   }
   else if ( ! rpmmsg.empty() )
   {

@@ -541,18 +541,18 @@ namespace zypp
     return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::create(), *this, keyID_r, targetDirectory_r );
   }
 
-  void RepoInfo::addBaseUrl( const Url & url_r )
+  void RepoInfo::addBaseUrl( Url url_r )
   {
     for ( const auto & url : _pimpl->baseUrls().raw() )	// Raw unique!
       if ( url == url_r )
         return;
-    _pimpl->baseUrls().raw().push_back( url_r );
+    _pimpl->baseUrls().raw().push_back( std::move(url_r) );
   }
 
-  void RepoInfo::setBaseUrl( const Url & url_r )
+  void RepoInfo::setBaseUrl( Url url_r )
   {
     _pimpl->baseUrls().raw().clear();
-    _pimpl->baseUrls().raw().push_back( url_r );
+    _pimpl->baseUrls().raw().push_back( std::move(url_r) );
   }
 
   void RepoInfo::setBaseUrls( url_set urls )

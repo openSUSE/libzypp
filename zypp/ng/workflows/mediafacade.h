@@ -97,7 +97,7 @@ namespace zyppng {
      * Schedules a copy job to copy a file from \a source to \a target
      */
     expected<zypp::ManagedFile> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
-    expected<zypp::ManagedFile> copyFile ( Res &&source, const zypp::Pathname &target );
+    expected<zypp::ManagedFile> copyFile ( Res source, const zypp::Pathname &target );
 
     static auto copyResultToDest ( MediaSyncFacadeRef provider, const zypp::Pathname &targetPath ) {
       return [ providerRef=std::move(provider), targetPath = targetPath ]( Res &&file ){

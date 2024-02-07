@@ -157,20 +157,17 @@ namespace zyppng {
       }
 
     private:
-      void readyWasCalled ( PrevRes && res ) {
-
-
+      // we need to store the passed argument in our stack, otherwise we
+      // run into memory issues if the argument is moved out of the _prevTask object
+      // so even though we std::move() the argument further we need to copy it here
+      void readyWasCalled ( PrevRes res ) {
         //MIL << "Setting ready: " << typeid(this) << std::endl;
-        //we need to force the passed argument into our stack, otherwise we
-        //run into memory issues if the argument is moved out of the _prevTask object
-        PrevRes resStore = std::move(res);
-
         if ( _prevTask ) {
           //dumpInfo();
           _prevTask.reset();
         }
 
-        _myTask->operator()(std::move(resStore));
+        _myTask->operator()(std::move(res));
       }
 
       AsyncOpRef<PrevRes> _prevTask;
@@ -211,19 +208,16 @@ namespace zyppng {
       }
 
     private:
-      void readyWasCalled ( PrevRes &&res ) {
-
+      // we need to store the passed argument in our stack, otherwise we
+      // run into memory issues if the argument is moved out of the _prevTask object
+      // so even though we std::move() the argument further we need to copy it here
+      void readyWasCalled ( PrevRes res ) {
         //MIL << "Setting ready: " << typeid(this) << std::endl;
-
-        //we need to force the passed argument into our stack, otherwise we
-        //run into memory issues if the argument is moved out of the _prevTask object
-        PrevRes resStore = std::move(res);
-
         if ( _prevTask ) {
           _prevTask.reset();
         }
 
-        this->setReady( std::invoke( _myTask, std::move( resStore )) );
+        this->setReady( std::invoke( _myTask, std::move( res )) );
       }
       AsyncOpRef<PrevRes> _prevTask;
       Callback _myTask;
@@ -260,20 +254,18 @@ namespace zyppng {
       }
 
     private:
-      void readyWasCalled ( PrevRes &&res ) {
+      // we need to store the passed argument in our stack, otherwise we
+      // run into memory issues if the argument is moved out of the _prevTask object
+      // so even though we std::move() the argument further we need to copy it here
+      void readyWasCalled ( PrevRes res ) {
 
         //MIL << "Setting ready "<<this<<" step 1: " << typeid(this) << std::endl;
-
-        //we need to force the passed argument into our stack, otherwise we
-        //run into memory issues if the argument is moved out of the _prevTask object
-        PrevRes resStore = std::move(res);
-
         if ( _prevTask ) {
           _prevTask.reset();
         }
 
-        _asyncResult = std::invoke( _myTask, std::move(resStore) );
-        _asyncResult->onReady( [this]( value_type &&val ){
+        _asyncResult = std::invoke( _myTask, std::move(res) );
+        _asyncResult->onReady( [this]( value_type &&val ) {
           //MIL << "Setting ready "<<this<<" step 2: " << typeid(this) << std::endl;
           this->setReady( std::move(val) );
         });

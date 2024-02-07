@@ -231,7 +231,7 @@ namespace zypp_private
           if ( buffer ) excp.addHistory( buffer->str() );
           excp.addHistory( str::Format( "%1%%2% returned %3%" ) % (_chroot.emptyOrRoot()?"":"("+_chroot.asString()+")") % pluginPath % ret );
 
-          ZYPP_THROW( std::move(excp) );
+          ZYPP_THROW( excp );
         }
       }
 

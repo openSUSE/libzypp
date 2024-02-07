@@ -234,7 +234,7 @@ namespace zyppng {
       url.setPathName ("/");
 
       expected<MediaSyncFacade::Res> res = attachMedia( urls, ProvideMediaSpec( "" ) )
-          | and_then( [&, this]( MediaSyncFacade::MediaHandle &&handle ) {
+          | and_then( [&, this]( MediaSyncFacade::MediaHandle handle ) {
               return provide( handle, fileName, request.asOnMediaLocation(fileName, 1));
             });
 
@@ -331,7 +331,7 @@ namespace zyppng {
     }
   }
 
-  expected<zypp::ManagedFile> MediaSyncFacade::copyFile(zyppng::MediaSyncFacade::Res &&source, const zypp::Pathname &target)
+  expected<zypp::ManagedFile> MediaSyncFacade::copyFile(zyppng::MediaSyncFacade::Res source, const zypp::Pathname &target)
   {
     // not much to do here, since this will block until the file has been copied we do not need to remember the ProvideRes
     return copyFile( source.file(), target );

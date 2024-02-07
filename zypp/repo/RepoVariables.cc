@@ -548,7 +548,7 @@ namespace zypp
     }
     std::string RepoVariablesStringReplacer::operator()( std::string && value ) const
     {
-      return RepoVarExpand()( value, RepoVarsMap::lookup );
+      return RepoVarExpand()( std::move(value), RepoVarsMap::lookup );
     }
 
     Url RepoVariablesUrlReplacer::operator()( const Url & value ) const

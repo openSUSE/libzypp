@@ -148,7 +148,7 @@ namespace zyppng {
                  }
 
                  return SignatureFileCheckWorkflow::verifySignature( _dlContext->zyppContext(), std::move(vCtx))
-                  | and_then([ this, res = std::move(res) ]( zypp::keyring::VerifyFileContext &&verRes ){
+                  | and_then([ this, res = std::move(res) ]( zypp::keyring::VerifyFileContext verRes ){
                     // remember the validation status
                     _repoSigValidated = verRes.fileValidated();
                     return make_expected_success(std::move(res));
@@ -196,7 +196,7 @@ namespace zyppng {
 
         auto keyRing { _dlContext->zyppContext()->keyRing() };
         return zypp::parser::yum::RepomdFileReader(res.file()).keyhints()
-          | transform([this, keyRing]( std::pair<std::string, std::string> &&val ) {
+          | transform([this, keyRing]( std::pair<std::string, std::string> val ) {
 
               const auto& [ file, keyid ] = val;
               auto keyData = keyRing->trustedPublicKeyData( keyid );
@@ -218,20 +218,20 @@ namespace zyppng {
               return zypp::PublicKey::noThrow(cacheFile)
                | [ keyid = keyid ]( auto &&key ){
                    if ( key.fileProvidesKey( keyid ) )
-                     return make_expected_success( std::move(key) );
+                     return make_expected_success( std::forward<decltype(key)>(key) );
                    else
                      return expected<zypp::PublicKey>::error( std::make_exception_ptr (zypp::Exception("File does not provide key")));
                  }
-               | or_else ([ this, file = std::move(file), keyid = keyid, cacheFile ]( auto && ) -> MaybeAsyncRef<expected<zypp::PublicKey>> {
+               | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto && ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
                    return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true) )
                       | and_then( ProvideType::copyResultToDest( providerRef, _destdir / file ) )
                       | and_then( [this, providerRef, file, keyid , cacheFile = std::move(cacheFile)]( zypp::ManagedFile &&res ) {
 
                           // remember we downloaded the file
-                          _dlContext->files().push_back ( res );
+                          _dlContext->files().push_back ( std::move(res) );
 
-                          auto key = zypp::PublicKey::noThrow( res );
+                          auto key = zypp::PublicKey::noThrow( _dlContext->files().back() );
                           if ( not key.fileProvidesKey( keyid ) ) {
                             const auto &str = zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.";
                             WAR << str << std::endl;
@@ -241,7 +241,7 @@ namespace zyppng {
                           // Try to cache it...
                           zypp::filesystem::assert_dir( cacheFile.dirname() );
                           return providerRef->copyFile( key.path(), cacheFile )
-                           | [ key ]( expected<zypp::ManagedFile> &&res ){
+                           | [ key ]( expected<zypp::ManagedFile> res ) mutable {
                                if ( res ) {
                                  // do not delete from cache
                                  res->resetDispose ();
@@ -250,19 +250,19 @@ namespace zyppng {
                              };
                         });
                  })
-               | and_then( [ keyRing, keyid = keyid ]( zypp::PublicKey &&key){
+               | and_then( [ keyRing, keyid = keyid ]( zypp::PublicKey key ){
                    keyRing->importKey( key, false );		// store in general keyring (not trusted!)
                    return expected<zypp::PublicKeyData>::success(keyRing->publicKeyData( keyid ));	// fetch back from keyring in case it was a hidden key
                  });
             })
-         | [this, res = res] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) {
-             std::for_each( keyHints.begin(), keyHints.end(), [this]( const expected<zypp::PublicKeyData> &keyData ){
+         | [this, res = res] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) mutable {
+             std::for_each( keyHints.begin(), keyHints.end(), [this]( expected<zypp::PublicKeyData> &keyData ){
                if ( keyData && *keyData ) {
                  if ( not zypp::PublicKey::isSafeKeyId( keyData->id() ) ) {
                    WAR << "Keyhint " << keyData->id() << " for " << *keyData << " is not strong enough for auto import. Just caching it." << std::endl;
                    return;
                  }
-                 _buddyKeys.push_back ( *keyData );
+                 _buddyKeys.push_back ( std::move(keyData.get()) );
                }
              });
 
@@ -302,7 +302,7 @@ namespace zyppng {
 
         constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
-        const auto finalizeStatus = [ dlCtx ]( zypp::RepoStatus &&status  ){
+        const auto finalizeStatus = [ dlCtx ]( zypp::RepoStatus status  ){
            return expected<zypp::RepoStatus>::success( zypp::RepoStatus( dlCtx->repoInfo()) && status );
         };
 

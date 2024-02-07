@@ -575,8 +575,8 @@ namespace zyppng {
     BasicState( StatemachineType &sm ) : _sm( sm ){}
     virtual ~BasicState() {}
 
-    BasicState( BasicState && ) = default;
-    BasicState &operator= ( BasicState && ) = default;
+    BasicState( BasicState && ) noexcept = default;
+    BasicState &operator= ( BasicState && ) noexcept = default;
 
     StatemachineType &stateMachine () {
       return _sm;

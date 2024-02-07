@@ -124,14 +124,14 @@ namespace zypp
         { ++_totalTraceCAD();
           traceCAD( COPYCTOR, *this, rhs ); }
 
-        TraceCAD( TraceCAD && rhs )
+        TraceCAD( TraceCAD && rhs ) noexcept
         { ++_totalTraceCAD();
           traceCAD( MOVECTOR, *this, rhs ); }
 
         TraceCAD & operator=( const TraceCAD & rhs )
         { traceCAD( ASSIGN, *this, rhs ); return *this; }
 
-        TraceCAD & operator=( TraceCAD && rhs )
+        TraceCAD & operator=( TraceCAD && rhs )  noexcept
         { traceCAD( MOVEASSIGN, *this, rhs ); return *this; }
 
         virtual ~TraceCAD()

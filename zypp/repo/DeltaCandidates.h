@@ -43,6 +43,11 @@ namespace zypp
 
     public:
       DeltaCandidates();
+
+      DeltaCandidates(const DeltaCandidates &) = default;
+      DeltaCandidates(DeltaCandidates &&) noexcept = default;
+      DeltaCandidates &operator=(const DeltaCandidates &) = default;
+      DeltaCandidates &operator=(DeltaCandidates &&) noexcept = default;
       /**
        * \short Creates a candidate calculator
        * \param repos Set of repositories providing patch and delta packages

@@ -62,11 +62,11 @@ namespace zypp
         ProvideNumericId & operator=( const ProvideNumericId & /*rhs*/ )
         { return *this; }
         /** Move ctor */
-        ProvideNumericId( ProvideNumericId && rhs )
+        ProvideNumericId( ProvideNumericId && rhs ) noexcept
         : _numericId( rhs._numericId )
         { /*rhs._numericId = 0;*/ }
         /** Move Assign */
-        ProvideNumericId & operator=( ProvideNumericId && rhs )
+        ProvideNumericId & operator=( ProvideNumericId && rhs )  noexcept
         { if ( &rhs != this ) { _numericId = rhs._numericId; /*rhs._numericId = 0;*/ } return *this; }
         /** Dtor */
         ~ProvideNumericId()

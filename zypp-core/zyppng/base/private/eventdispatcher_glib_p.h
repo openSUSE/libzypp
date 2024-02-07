@@ -62,10 +62,10 @@ struct GLibTimerSource
 struct GlibWaitPIDData
 {
   GlibWaitPIDData( GPid pid );
-  GlibWaitPIDData( GlibWaitPIDData &&other );
+  GlibWaitPIDData( GlibWaitPIDData &&other ) noexcept;
   ~GlibWaitPIDData();
 
-  GlibWaitPIDData & operator= ( GlibWaitPIDData &&other );
+  GlibWaitPIDData & operator= ( GlibWaitPIDData &&other ) noexcept;
 
   guint tag = 0;
   GSource *source = nullptr;

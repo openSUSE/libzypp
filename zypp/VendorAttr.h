@@ -81,6 +81,11 @@ class VendorAttr
     /** Dtor */
     ~VendorAttr();
 
+    VendorAttr(const VendorAttr &) = default;
+    VendorAttr(VendorAttr &&) noexcept = default;
+    VendorAttr &operator=(const VendorAttr &) = default;
+    VendorAttr &operator=(VendorAttr &&) noexcept = default;
+
     /**
      * Adding new equivalent vendors described in a directory
      **/

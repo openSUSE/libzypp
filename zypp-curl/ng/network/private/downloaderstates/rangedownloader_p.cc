@@ -309,7 +309,7 @@ namespace zyppng {
   /**
    * Just initialize the requests ranges from the internal blocklist
    */
-  bool RangeDownloaderBaseState::addBlockRanges ( std::shared_ptr<Request> req , std::vector<Block> &&blocks ) const
+  bool RangeDownloaderBaseState::addBlockRanges ( std::shared_ptr<Request> req , std::vector<Block> blocks ) const
   {
     req->resetRequestRanges();
     for ( const auto &block : blocks ) {

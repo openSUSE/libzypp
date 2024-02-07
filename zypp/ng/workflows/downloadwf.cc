@@ -97,14 +97,14 @@ namespace zyppng {
       MaybeAsyncRef<expected<zypp::ManagedFile>> execute() {
 
         return findFileInCache( )
-        | [this]( expected<zypp::ManagedFile> &&cached ) -> MaybeAsyncRef<expected<zypp::ManagedFile>> {
+        | [this]( expected<zypp::ManagedFile> cached ) -> MaybeAsyncRef<expected<zypp::ManagedFile>> {
           if ( !cached ) {
              MIL << "Didn't find " << _file << " in the caches, providing from medium" << std::endl;
 
              // we didn't find it in the caches or the lookup failed, lets provide and check it
              std::shared_ptr<ProvideType> provider = _ctx->zyppContext()->provider();
              return provider->provide( _medium, _file, _filespec )
-             | and_then( [this]( ProvideRes &&res ) {
+             | and_then( [this]( ProvideRes res ) {
                 return verifyFile( res.file() )
                 | and_then( [res = res]() {
                   return expected<ProvideRes>::success( std::move(res) );
@@ -119,7 +119,7 @@ namespace zyppng {
           } else {
 
             return verifyFile ( cached.get() )
-            | and_then([ this, cachedFile = std::move(cached.get()) ]() mutable {
+            | and_then([ this, cachedFile = cached.get() ]() mutable {
                 if ( cachedFile == _ctx->destDir() / _file ) {
                   cachedFile.resetDispose(); // make sure dispose is reset
                   return makeReadyResult( expected<zypp::ManagedFile>::success(std::move(cachedFile) ));
@@ -152,7 +152,7 @@ namespace zyppng {
         caches.push_back( _ctx->destDir() );
         caches.insert( caches.end(), confDirs.begin(), confDirs.end() );
 
-        auto makeSearchPipeline = [this, targetFile]( zypp::Pathname &&cachePath ){
+        auto makeSearchPipeline = [this, targetFile]( zypp::Pathname cachePath ){
           zypp::Pathname cacheFilePath( cachePath / _file );
           zypp::PathInfo cacheFileInfo( cacheFilePath );
           if ( !cacheFileInfo.isExist () ) {
@@ -163,7 +163,7 @@ namespace zyppng {
             // calc checksum, but do not use the workflow. Here we don't want to ask the user if a wrong checksum should
             // be accepted
             return provider->checksumForFile( cacheFilePath, _filespec.checksum().type() )
-            | and_then([this, cacheFilePath, targetFile]( zypp::CheckSum &&sum ) {
+            | and_then([this, cacheFilePath, targetFile]( zypp::CheckSum sum ) {
 
               auto mgdFile = zypp::ManagedFile( cacheFilePath );
 
@@ -190,7 +190,7 @@ namespace zyppng {
         return zypp::Pathname( dlFilePath )
         | [this]( zypp::Pathname &&dlFilePath ) {
           if ( !_filespec.checksum().empty () ) {
-            return CheckSumWorkflow::verifyChecksum( _ctx->zyppContext(), _filespec.checksum (), dlFilePath );
+            return CheckSumWorkflow::verifyChecksum( _ctx->zyppContext(), _filespec.checksum (), std::move(dlFilePath) );
           }
           return makeReadyResult(expected<void>::success());
         };

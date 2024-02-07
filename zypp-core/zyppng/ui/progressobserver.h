@@ -76,7 +76,7 @@ namespace zyppng {
       struct progress_helper {
 
         progress_helper( ProgressObserverRef &&progressObserver, std::optional<std::string> &&newStr, double inc )
-          : _progressObserver( progressObserver )
+          : _progressObserver( std::move(progressObserver) )
           , _newString( std::move(newStr) )
           , _progressInc( inc )
         {}

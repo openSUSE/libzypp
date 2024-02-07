@@ -85,7 +85,7 @@ namespace zypp
       }
 
       if ( timestamp_r > _timestamp )
-        _timestamp = timestamp_r;
+        _timestamp = std::move(timestamp_r);
     }
 
     /** Inject the raw data from rhs */

@@ -292,7 +292,7 @@ namespace zypp
     { _impl->_ca_path = val_r; }
 
     void TransferSettings::setCertificateAuthoritiesPath( Pathname && val_r )
-    { _impl->_ca_path = std::move(val_r.asString()); }
+    { _impl->_ca_path = std::move(val_r); }
 
     const Pathname &TransferSettings::certificateAuthoritiesPath() const
     { return _impl->_ca_path; }

@@ -90,7 +90,7 @@ namespace zyppng {
 
             executor()->info( "  gpgkey=" + url.asString() );
             return fetchKey( url )
-              | and_then( [this, url]( zypp::ManagedFile &&f ) -> expected<void> {
+              | and_then( [this, url]( zypp::ManagedFile f ) -> expected<void> {
                   try {
                     if ( f->empty() )
                       return expected<void>::error(std::make_exception_ptr( zypp::Exception("Empty ManagedFile returned.") ));
@@ -113,7 +113,7 @@ namespace zyppng {
                 });
 
            })
-         | [this]( std::list<expected<void>> &&res ) ->zypp::Pathname {
+         | [this]( std::list<expected<void>> && ) ->zypp::Pathname {
               return writeKeysToTargetDir();
             };
       }

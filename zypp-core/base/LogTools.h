@@ -43,7 +43,7 @@ namespace zypp
   /// \endcode
   struct MLSep
   { bool _first = true; };
-  std::ostream & operator<<( std::ostream & str, MLSep & obj )
+  inline std::ostream & operator<<( std::ostream & str, MLSep & obj )
   { if ( obj._first ) obj._first = false; else str << endl; return str; }
 
   /** Print range defined by iterators (multiline style).

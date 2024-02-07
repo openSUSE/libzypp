@@ -184,10 +184,7 @@ namespace zyppng {
 
       if ( urlScheme == "https" )
       {
-        // restrict following of redirections from https to https only
-        // but be less restrictive for d.o.o
-        bool allowHttp = ( _url.getHost() == "download.opensuse.org" );
-        if ( :: internal::setCurlRedirProtocols ( _easyHandle, allowHttp ) != CURLE_OK ) {
+        if ( :: internal::setCurlRedirProtocols ( _easyHandle ) != CURLE_OK ) {
           ZYPP_THROW( zypp::media::MediaCurlSetOptException( _url, _errorBuf.data() ) );
         }
 

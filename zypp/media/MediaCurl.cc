@@ -478,10 +478,7 @@ void MediaCurl::setupEasy()
 
   if ( _url.getScheme() == "https" )
   {
-    // restrict following of redirections from https to https only
-    // but be less restrictive for d.o.o
-    bool allowHttp = ( _url.getHost() == "download.opensuse.org" );
-    if ( :: internal::setCurlRedirProtocols ( _curl, allowHttp ) != CURLE_OK ) {
+    if ( :: internal::setCurlRedirProtocols ( _curl ) != CURLE_OK ) {
       ZYPP_THROW(MediaCurlSetOptException(_url, _curlError));
     }
 

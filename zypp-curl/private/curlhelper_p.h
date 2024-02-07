@@ -63,7 +63,7 @@ std::string curlUnEscape( std::string text_r );
 zypp::Url clearQueryString(const zypp::Url &url);
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r );
 
-CURLcode setCurlRedirProtocols(CURL *curl, bool enableHttp = false );
+CURLcode setCurlRedirProtocols(CURL *curl);
 
 /*!
  * Helper class to simplify using the curl multi API, takes

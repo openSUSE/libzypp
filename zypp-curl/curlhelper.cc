@@ -509,32 +509,19 @@ CURLMcode internal::CurlPollHelper::handleTimout()
  *
  * See bsc#1218831
  */
-CURLcode setCurlRedirProtocols(CURL *curl, bool enableHttp)
+CURLcode setCurlRedirProtocols(CURL *curl)
 {
 #if CURLVERSION_AT_LEAST(7,19,4)
-  if ( enableHttp ) {
 #if CURLVERSION_AT_LEAST(7,85,0)
-    // runtime version might be different from build version
-    if( ::internal::curlVersion() >= CURL_VERSION_BITS(7,85,0) ) {
-      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS_STR, "http,https" );
-    } else {
-      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
-    }
-#else
-    return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS );
-#endif
+  // runtime version might be different from build version
+  if( ::internal::curlVersion() >= CURL_VERSION_BITS(7,85,0) ) {
+    return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS_STR, "https" );
   } else {
-#if CURLVERSION_AT_LEAST(7,85,0)
-    // runtime version might be different from build version
-    if( ::internal::curlVersion() >= CURL_VERSION_BITS(7,85,0) ) {
-      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS_STR, "https" );
-    } else {
-      return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
-    }
-#else
     return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
-#endif
   }
+#else
+  return curl_easy_setopt ( curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+#endif
 #endif // #if CURLVERSION_AT_LEAST(7,19,4)
   return CURLE_OK;
 }

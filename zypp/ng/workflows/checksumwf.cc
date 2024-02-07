@@ -62,12 +62,12 @@ namespace zyppng::CheckSumWorkflow {
       } else {
 
         return _context->provider()->checksumForFile ( _file, _checksum.type() )
-          | [] ( expected<zypp::CheckSum> &&sum ) {
+          | [] ( expected<zypp::CheckSum> sum ) {
             if ( !sum )
               return zypp::CheckSum( );
             return sum.get();
           }
-          | [this, _file=_file]( zypp::CheckSum &&real_checksum ){
+          | [this, _file=_file]( zypp::CheckSum real_checksum ){
              if ( (real_checksum != _checksum) )
              {
                // Remember askUserToAcceptWrongDigest decision for at most 12hrs in memory;
@@ -168,9 +168,9 @@ namespace zyppng::CheckSumWorkflow {
   std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( ContextRef zyppCtx, zypp::CheckSum checksum )
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx, checksum=std::move(checksum) ]( ProvideRes &&res ) mutable -> AsyncOpRef<expected<ProvideRes>> {
+    return [ zyppCtx, checksum=std::move(checksum) ]( ProvideRes res ) mutable -> AsyncOpRef<expected<ProvideRes>> {
       return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
-       | [ res ] ( expected<void> &&result ) mutable {
+       | [ res ] ( expected<void> result ) mutable {
           if ( result )
             return expected<ProvideRes>::success( std::move(res) );
           else
@@ -182,9 +182,9 @@ namespace zyppng::CheckSumWorkflow {
   std::function<expected<SyncProvideRes> (SyncProvideRes &&)> checksumFileChecker(SyncContextRef zyppCtx, zypp::CheckSum checksum)
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx = std::move(zyppCtx), checksum=std::move(checksum) ]( SyncProvideRes &&res ) mutable -> expected<SyncProvideRes> {
+    return [ zyppCtx = std::move(zyppCtx), checksum=std::move(checksum) ]( SyncProvideRes res ) mutable -> expected<SyncProvideRes> {
       return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
-       | [ res ] ( expected<void> &&result ) mutable {
+       | [ res ] ( expected<void> result ) mutable {
           if ( result )
             return expected<SyncProvideRes>::success( std::move(res) );
           else

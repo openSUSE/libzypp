@@ -162,6 +162,11 @@ namespace zypp
     /** Dtor. */
     ~ResStatus();
 
+    ResStatus(const ResStatus &) = default;
+    ResStatus(ResStatus &&) noexcept = default;
+    ResStatus &operator=(const ResStatus &) = default;
+    ResStatus &operator=(ResStatus &&) noexcept = default;
+
     /** Debug helper returning the bitfield.
      * It's save to expose the bitfield, as it can't be used to
      * recreate a ResStatus. So it is not possible to bypass

@@ -566,9 +566,6 @@ namespace ansi
     /** Append a string */
     ColorString & operator<<( const std::string & str_r )
     { _str += str_r; return *this; }
-    /** \overload moving */
-    ColorString & operator<<( std::string && str_r )
-    { _str += std::move(str_r); return *this; }
 
   public:
     /** Assign \ref Color */

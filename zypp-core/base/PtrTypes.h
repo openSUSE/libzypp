@@ -318,10 +318,10 @@ namespace zypp
         void reset( typename PtrType::element_type * dptr )
         { PtrType( dptr ).swap( _dptr ); }
 
-        void swap( RW_pointer & rhs )
+        void swap( RW_pointer & rhs ) noexcept
         { _dptr.swap( rhs._dptr ); }
 
-        void swap( PtrType & rhs )
+        void swap( PtrType & rhs ) noexcept
         { _dptr.swap( rhs ); }
 
         explicit operator bool() const
@@ -497,10 +497,10 @@ namespace zypp
         void reset( typename PtrType::element_type * dptr )
         { PtrType( dptr ).swap( _dptr ); }
 
-        void swap( RWCOW_pointer & rhs )
+        void swap( RWCOW_pointer & rhs ) noexcept
         { _dptr.swap( rhs._dptr ); }
 
-        void swap( PtrType & rhs )
+        void swap( PtrType & rhs ) noexcept
         { _dptr.swap( rhs ); }
 
         explicit operator bool() const

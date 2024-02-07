@@ -89,13 +89,13 @@ namespace zypp
     static CheckSum sha384( std::istream & input_r )		{ return  CheckSum( sha384Type(), input_r ); }
     static CheckSum sha512( std::istream & input_r )		{ return  CheckSum( sha512Type(), input_r ); }
 
-    static CheckSum md5( std::istream && input_r )		{ return  CheckSum( md5Type(), input_r ); }
-    static CheckSum sha( std::istream && input_r )		{ return  CheckSum( sha1Type(), input_r ); }
-    static CheckSum sha1( std::istream && input_r )		{ return  CheckSum( sha1Type(), input_r ); }
-    static CheckSum sha224( std::istream && input_r )		{ return  CheckSum( sha224Type(), input_r ); }
-    static CheckSum sha256( std::istream && input_r )		{ return  CheckSum( sha256Type(), input_r ); }
-    static CheckSum sha384( std::istream && input_r )		{ return  CheckSum( sha384Type(), input_r ); }
-    static CheckSum sha512( std::istream && input_r )		{ return  CheckSum( sha512Type(), input_r ); }
+    static CheckSum md5( std::istream && input_r )		{ return  CheckSum( md5Type(), std::move(input_r) ); }
+    static CheckSum sha( std::istream && input_r )		{ return  CheckSum( sha1Type(), std::move(input_r) ); }
+    static CheckSum sha1( std::istream && input_r )		{ return  CheckSum( sha1Type(), std::move(input_r) ); }
+    static CheckSum sha224( std::istream && input_r )		{ return  CheckSum( sha224Type(), std::move(input_r) ); }
+    static CheckSum sha256( std::istream && input_r )		{ return  CheckSum( sha256Type(), std::move(input_r) ); }
+    static CheckSum sha384( std::istream && input_r )		{ return  CheckSum( sha384Type(), std::move(input_r) ); }
+    static CheckSum sha512( std::istream && input_r )		{ return  CheckSum( sha512Type(), std::move(input_r) ); }
     //@}
 
     /** \name Reads the content of \param input_r and computes the checksum. */

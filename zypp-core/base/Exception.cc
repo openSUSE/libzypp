@@ -190,10 +190,7 @@ namespace zypp
   std::string Exception::strErrno( int errno_r )
   { return str::strerror( errno_r ); }
 
-  std::string Exception::strErrno( int errno_r, const std::string & msg_r )
-  { return strErrno( errno_r, std::string(msg_r) );  }
-
-  std::string Exception::strErrno( int errno_r, std::string && msg_r )
+  std::string Exception::strErrno( int errno_r, std::string msg_r )
   {
     msg_r += ": ";
     return msg_r += strErrno( errno_r );

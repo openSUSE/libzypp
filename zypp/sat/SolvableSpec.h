@@ -50,6 +50,11 @@ namespace zypp
       /** Dtor */
       ~SolvableSpec();
 
+      SolvableSpec(const SolvableSpec &) = default;
+      SolvableSpec(SolvableSpec &&) noexcept = default;
+      SolvableSpec &operator=(const SolvableSpec &) = default;
+      SolvableSpec &operator=(SolvableSpec &&) noexcept = default;
+
     public:
       /** Add all \ref sat::Solvable with this \a ident_r */
       void addIdent( IdString ident_r );

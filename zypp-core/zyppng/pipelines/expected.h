@@ -61,7 +61,7 @@ namespace zyppng {
           }
       }
 
-      expected(expected &&other)
+      expected(expected &&other) noexcept
           : m_isValid(other.m_isValid)
       {
           if (m_isValid) {
@@ -77,7 +77,7 @@ namespace zyppng {
           return *this;
       }
 
-      void swap(expected &other)
+      void swap(expected &other) noexcept
       {
           using std::swap;
           if (m_isValid) {
@@ -234,7 +234,7 @@ namespace zyppng {
           }
       }
 
-      expected(expected &&other)
+      expected(expected &&other) noexcept
           : m_isValid(other.m_isValid)
       {
           if (m_isValid) {
@@ -250,7 +250,7 @@ namespace zyppng {
           return *this;
       }
 
-      void swap(expected &other)
+      void swap(expected &other) noexcept
       {
           using std::swap;
           if (m_isValid) {
@@ -376,7 +376,7 @@ namespace zyppng {
     , typename Function
     , typename ResultType = detail::mbind_cb_result_t<Function, T>
     >
-  ResultType and_then( expected<T, E>&& exp, Function &&f)
+  ResultType and_then( expected<T, E> &&exp, Function &&f)
   {
     if (exp) {
       if constexpr ( std::is_same_v<T,void> )
@@ -451,11 +451,11 @@ namespace zyppng {
     , typename E
     , typename Function
     >
-  expected<T, E> inspect( expected<T, E>&& exp, Function &&f)
+  expected<T, E> inspect( expected<T, E> exp, Function &&f )
   {
     if (exp) {
       const auto &val = exp.get();
-      std::invoke( f, val );
+      std::invoke( std::forward<Function>(f), val );
     }
     return exp;
   }
@@ -464,14 +464,15 @@ namespace zyppng {
     , typename E
     , typename Function
     >
-  expected<T, E> inspect_err( expected<T, E>&& exp, Function &&f)
+  expected<T, E> inspect_err( expected<T, E> exp, Function &&f)
   {
     if (!exp) {
       const auto &err = exp.error();
-      std::invoke( f, err );
+      std::invoke( std::forward<Function>(f), err );
     }
     return exp;
   }
+
 
   namespace detail {
 

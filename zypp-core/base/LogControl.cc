@@ -244,7 +244,7 @@ namespace zypp
     /*!
      * Sends a message to the log thread.
      */
-    void pushMessage ( std::string &&msg ) {
+    void pushMessage ( std::string msg ) {
       if ( inPushMessage ) {
         return;
       }

@@ -292,9 +292,7 @@ namespace zypp
      /** Make a string from \a errno_r. */
     static std::string strErrno( int errno_r );
      /** Make a string from \a errno_r and \a msg_r. */
-    static std::string strErrno( int errno_r, const std::string & msg_r );
-    /** \overload moving */
-    static std::string strErrno( int errno_r, std::string && msg_r );
+    static std::string strErrno( int errno_r, std::string msg_r );
 
   public:
     /** Drop a logline on throw, catch or rethrow.

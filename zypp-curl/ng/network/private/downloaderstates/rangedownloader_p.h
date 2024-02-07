@@ -79,7 +79,7 @@ namespace zyppng {
 
   private:
     void handleRequestError( std::shared_ptr<Request> req, const zyppng::NetworkRequestError &err );
-    bool addBlockRanges( std::shared_ptr<Request> req, std::vector<Block> &&blocks ) const;
+    bool addBlockRanges(std::shared_ptr<Request> req, std::vector<Block> blocks ) const;
     void addNewRequest     (std::shared_ptr<Request> req, const bool connectSignals = true );
     bool assertExpectedFilesize ( off_t currentFilesize );
 

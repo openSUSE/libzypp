@@ -23,7 +23,7 @@ namespace zyppng
   struct AutoDisconnect
   {
     AutoDisconnect( connection &&conn ) : _conn ( std::move(conn) ) {}
-    AutoDisconnect( AutoDisconnect &&other ) : _conn ( std::move(other._conn) ) {}
+    AutoDisconnect( AutoDisconnect &&other ) noexcept : _conn ( std::move(other._conn) ) {}
 
     AutoDisconnect( const AutoDisconnect &other ) = delete;
     AutoDisconnect & operator=( const AutoDisconnect & ) = delete;

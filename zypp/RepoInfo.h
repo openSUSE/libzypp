@@ -159,11 +159,11 @@ namespace zypp
        * To recreate the base URLs list, use \ref setBaseUrl(const Url &) followed
        * by addBaseUrl().
        */
-      void addBaseUrl( const Url &url );
+      void addBaseUrl( Url url );
       /**
        * Clears current base URL list and adds \a url.
        */
-      void setBaseUrl( const Url &url );
+      void setBaseUrl( Url url );
       /**
        * Clears current base URL list and adds an \ref url_set.
        */

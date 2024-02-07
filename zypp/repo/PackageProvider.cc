@@ -53,7 +53,7 @@ namespace zypp
     public:
       RpmSigCheckException( repo::DownloadResolvableReport::Action action_r, std::string msg_r = "RpmSigCheckException" )
       : FileCheckException( std::move(msg_r) )
-      , _action( std::move(action_r) )
+      , _action( action_r )
       {}
 
       /** Users final decision how to proceed */

@@ -71,7 +71,7 @@ namespace zyppng {
         | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
         | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
         // try susetags if rpmmd fails and remember the error
-        | or_else( [this, providerRef]( std::exception_ptr &&err ) {
+        | or_else( [this, providerRef]( std::exception_ptr err ) {
           try {
             std::rethrow_exception (err);
           } catch ( const zypp::media::MediaFileNotFoundException &e ) {
@@ -90,7 +90,7 @@ namespace zyppng {
               | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
         })
         // no rpmmd and no susetags!
-        | or_else( [this]( std::exception_ptr &&err ) {
+        | or_else( [this]( std::exception_ptr err ) {
 
           try {
             std::rethrow_exception (err);
@@ -260,19 +260,19 @@ namespace zyppng {
             }
           }
 
-          return info.type() | [this]( zypp::repo::RepoType &&repokind ) {
+          return info.type() | [this]( zypp::repo::RepoType repokind ) {
             // if unknown: probe it
             if ( repokind == zypp::repo::RepoType::NONE )
               return RepoManagerWorkflow::probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() );
             return makeReadyResult( expected<zypp::repo::RepoType>::success(repokind) );
-          } | and_then([this, oldstatus]( zypp::repo::RepoType &&repokind ) {
+          } | and_then([this, oldstatus]( zypp::repo::RepoType repokind ) {
 
             // make sure to remember the repo type
             _refreshContext->repoInfo().setProbedType( repokind );
 
             auto dlContext = std::make_shared<repo::DownloadContext<ZyppContextRefType>>( _refreshContext->zyppContext(), _refreshContext->repoInfo(), _refreshContext->targetDir() );
             return RepoDownloaderWorkflow::repoStatus ( dlContext, _medium )
-              | and_then( [this, dlContext, oldstatus]( zypp::RepoStatus &&newstatus ){
+              | and_then( [this, dlContext, oldstatus]( zypp::RepoStatus newstatus ){
                 // check status
                 if ( oldstatus == newstatus ) {
                   MIL << "repo has not changed" << std::endl;
@@ -343,7 +343,7 @@ namespace zyppng {
         return mtry(assert_alias_cb, _refreshContext->repoInfo() )
         | and_then( [this](){ return mtry(zypp::assert_urls, _refreshContext->repoInfo() ); })
         | and_then( [this](){ return RepoManagerWorkflow::checkIfToRefreshMetadata ( _refreshContext, _medium, _progress ); })
-        | and_then( [this]( repo::RefreshCheckStatus &&status ){
+        | and_then( [this]( repo::RefreshCheckStatus status ){
 
           MIL << "RefreshCheckStatus returned: " << status << std::endl;
 
@@ -358,7 +358,7 @@ namespace zyppng {
           // TODO: Would be sufficient to verify the type and re-probe
           // if verification failed (or type is RepoType::NONE)
           return RepoManagerWorkflow::probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() )
-          | and_then([this]( zypp::repo::RepoType &&repokind ) {
+          | and_then([this]( zypp::repo::RepoType repokind ) {
 
             auto &info = _refreshContext->repoInfo();
 
@@ -384,7 +384,7 @@ namespace zyppng {
             return RepoDownloaderWorkflow::download ( dlContext, _medium, _progress );
 
           })
-          | and_then([this]( DlContextRefType &&downloadContext  ) {
+          | and_then([this]( DlContextRefType && ) {
 
             // ok we have the metadata, now exchange
             // the contents

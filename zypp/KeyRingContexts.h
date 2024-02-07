@@ -36,6 +36,12 @@ namespace zypp::keyring
     /** Ctor may take file to verify and detatched signature. */
     VerifyFileContext( Pathname file_r, Pathname signature_r );
 
+    VerifyFileContext(const VerifyFileContext &) = default;
+    VerifyFileContext(VerifyFileContext &&) noexcept = default;
+
+    VerifyFileContext &operator=(const VerifyFileContext &) = default;
+    VerifyFileContext &operator=(VerifyFileContext &&) noexcept = default;
+
     ~VerifyFileContext();
 
     /** File to verify. */

@@ -500,7 +500,7 @@ public:
     {}
 
     /** Move ctor */
-    XmlNode( XmlNode && rhs ) : ParentOut( rhs ) { _node.swap( rhs._node ); }
+    XmlNode( XmlNode && rhs ) noexcept : ParentOut( rhs ) { _node.swap( rhs._node ); }
 
   private:
     zypp::scoped_ptr<zypp::xmlout::Node> _node;
@@ -659,7 +659,7 @@ public:
       , _str( new std::ostringstream )
     {}
 
-    Info( Out::Info && rhs )
+    Info( Out::Info && rhs ) noexcept
       : ParentOut( rhs )
       , _str( std::move(rhs._str) )
     {}

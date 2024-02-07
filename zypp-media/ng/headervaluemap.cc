@@ -13,7 +13,7 @@ namespace zyppng {
     : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>( *other._val ) )
   {}
 
-  HeaderValue::HeaderValue( HeaderValue &&other )
+  HeaderValue::HeaderValue( HeaderValue &&other ) noexcept
     : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>( std::move(*other._val) ) )
   {}
 
@@ -123,7 +123,7 @@ namespace zyppng {
     return ( *_val == *other._val );
   }
 
-  HeaderValue &HeaderValue::operator= ( HeaderValue &&other )
+  HeaderValue &HeaderValue::operator= ( HeaderValue &&other ) noexcept
   {
     *_val = std::move( *other._val );
     return *this;

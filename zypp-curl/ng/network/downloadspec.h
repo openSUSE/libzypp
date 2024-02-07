@@ -38,13 +38,15 @@ namespace zyppng {
   {
     ZYPP_DECLARE_PRIVATE( DownloadSpec )
 
-  public:
+    public:
+    DownloadSpec(Url file, zypp::filesystem::Pathname targetPath,
+                 zypp::ByteCount expectedFileSize = zypp::ByteCount());
 
-    DownloadSpec( Url file, zypp::filesystem::Pathname targetPath, zypp::ByteCount expectedFileSize = zypp::ByteCount() );
+    DownloadSpec( const DownloadSpec &other ) = default;
+    DownloadSpec &operator= ( const DownloadSpec &other ) = default;
 
-    DownloadSpec( const DownloadSpec &other );
-    DownloadSpec &operator= ( const DownloadSpec &other );
-
+    DownloadSpec(DownloadSpec &&) noexcept = default;
+    DownloadSpec &operator=(DownloadSpec &&) noexcept = default;
     /*!
      * Returns the source URL of the download
      */

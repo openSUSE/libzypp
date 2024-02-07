@@ -168,7 +168,7 @@ namespace zyppng
     std::enable_if_t< detail::is_async_op_v<FOpType>, void> asyncExecute() {
       this->_innerPipeline = static_cast<Executor*>(this)->execute();
       this->_innerPipeline->onReady([this]( auto &&val ){
-        this->setReady( std::move(val) );
+        this->setReady( std::forward<decltype(val)>(val) );
       });
     }
   };

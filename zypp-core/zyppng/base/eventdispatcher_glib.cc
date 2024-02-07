@@ -247,7 +247,7 @@ GlibWaitPIDData::GlibWaitPIDData( GPid pid  )
   source = g_child_watch_source_new( pid );
 }
 
-GlibWaitPIDData::GlibWaitPIDData(GlibWaitPIDData &&other)
+GlibWaitPIDData::GlibWaitPIDData(GlibWaitPIDData &&other)  noexcept
   : tag( other.tag )
   , source( other.source )
   , callback( std::move( other.callback ) )
@@ -263,7 +263,7 @@ GlibWaitPIDData::~GlibWaitPIDData()
   }
 }
 
-GlibWaitPIDData &GlibWaitPIDData::operator=(GlibWaitPIDData &&other)
+GlibWaitPIDData &GlibWaitPIDData::operator=(GlibWaitPIDData &&other)  noexcept
 {
   tag = other.tag;
   source = other.source;
@@ -578,10 +578,10 @@ void EventDispatcher::invokeOnIdleImpl(EventDispatcher::IdleFunction &&callback)
   d->enableIdleSource();
 }
 
-void EventDispatcher::unrefLaterImpl(std::shared_ptr<void> &&ptr )
+void EventDispatcher::unrefLaterImpl( std::shared_ptr<void> &&ptr )
 {
   Z_D();
-  d->_unrefLater.push_back( std::forward< std::shared_ptr<void> >(ptr) );
+  d->_unrefLater.push_back( std::move(ptr) );
   d->enableIdleSource();
 }
 

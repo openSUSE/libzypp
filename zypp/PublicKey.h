@@ -212,6 +212,11 @@ namespace zypp
 
     ~PublicKeyData();
 
+    PublicKeyData(const PublicKeyData &) = default;
+    PublicKeyData(PublicKeyData &&) noexcept = default;
+    PublicKeyData &operator=(const PublicKeyData &) = default;
+    PublicKeyData &operator=(PublicKeyData &&) noexcept = default;
+
     /** Whether this contains valid data (not default constructed). */
     explicit operator bool() const;
 

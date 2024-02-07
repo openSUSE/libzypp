@@ -179,11 +179,11 @@ namespace zypp {
     {
     }
 
-    Digest::Digest(Digest &&other) : _dp( std::move(other._dp) )
+    Digest::Digest(Digest &&other) noexcept : _dp( std::move(other._dp) )
     {
     }
 
-    Digest &Digest::operator=(Digest &&other)
+    Digest &Digest::operator=(Digest &&other) noexcept
     {
       _dp = std::move( other._dp );
       return *this;
@@ -255,7 +255,7 @@ namespace zypp {
 #ifdef __cpp_lib_string_view
     namespace {
       template <typename BArr>
-      BArr hexStrToBArr ( std::string_view &&str ) {
+      BArr hexStrToBArr ( std::string_view str ) {
         BArr bytes;
         for ( std::string::size_type i = 0; i < str.length(); i+=2 )
         {

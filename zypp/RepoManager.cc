@@ -252,7 +252,7 @@ namespace zypp
     | and_then( [&]( zyppng::repo::SyncRefreshContextRef &&refCtx ) {
       refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
       return ctx->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
-          | and_then( [ r = std::move(refCtx) ]( auto &&mediaHandle ){ return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), mediaHandle, nullptr ); } );
+          | and_then( [ r = std::move(refCtx) ]( auto &&mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), mediaHandle, nullptr ); } );
     } );
 
     if ( !res ) {

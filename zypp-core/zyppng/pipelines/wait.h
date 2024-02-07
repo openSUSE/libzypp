@@ -93,7 +93,7 @@ namespace detail {
       typename ...CArgs,
       std::enable_if_t< !detail::is_async_op_v<Res>, int> = 0
       >
-    auto operator()( Container< Res, CArgs... > &&ops ) -> Container< Res, CArgs... > {
+    auto operator()( Container< Res, CArgs... > ops ) -> Container< Res, CArgs... > {
       return ops;
     }
   };

@@ -96,7 +96,13 @@ namespace zyppng
   public:
     ProvideFileSpec();
 
-    ProvideFileSpec( const zypp::OnMediaLocation &loc );
+    ProvideFileSpec(const zypp::OnMediaLocation &loc);
+
+    ProvideFileSpec(const ProvideFileSpec &) = default;
+    ProvideFileSpec(ProvideFileSpec &&) noexcept = default;
+
+    ProvideFileSpec &operator=(const ProvideFileSpec &) = default;
+    ProvideFileSpec &operator=(ProvideFileSpec &&) noexcept = default;
 
     /** Dtor */
     ~ProvideFileSpec();

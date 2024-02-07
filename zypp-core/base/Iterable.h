@@ -90,8 +90,8 @@ namespace zypp
 
   /** \relates Iterable convenient construction. */
   template <class TIterator>
-  Iterable<TIterator> makeIterable( std::pair<TIterator,TIterator> && range_r )
-  { return Iterable<TIterator>( std::forward<std::pair<TIterator,TIterator>>(range_r) ); }
+  Iterable<TIterator> makeIterable( std::pair<TIterator,TIterator> &&range_r )
+  { return Iterable<TIterator>( std::move(range_r) ); }
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_ITERABLE_H

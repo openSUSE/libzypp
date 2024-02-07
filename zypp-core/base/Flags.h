@@ -158,7 +158,7 @@ namespace zypp
         ret += sep;
         ret += str::hexstring( mask, 0 );
       }
-      ret += std::move(extro_r);
+      ret += extro_r;
       return ret;
     }
 

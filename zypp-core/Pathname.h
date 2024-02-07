@@ -62,14 +62,14 @@ namespace zypp
       {}
 
       /** Swap */
-      friend void swap( Pathname & lhs, Pathname & rhs )
+      friend void swap( Pathname & lhs, Pathname & rhs ) noexcept
       {
         using std::swap;
         swap( lhs._name, rhs._name );
       }
 
       /** Move Ctor */
-      Pathname( Pathname && tmp )
+      Pathname( Pathname && tmp ) noexcept
       : _name( std::move( tmp._name ) )
       {}
 

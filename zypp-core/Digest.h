@@ -48,8 +48,8 @@ namespace zypp {
       public:
 
         // moving is fine
-        Digest(Digest&& other);
-        Digest& operator=( Digest&& other);
+        Digest(Digest&& other) noexcept;
+        Digest& operator=( Digest&& other) noexcept;
 
         /** \name Well known digest algorithm names. */
         //@{

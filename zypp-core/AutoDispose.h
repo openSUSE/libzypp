@@ -151,7 +151,7 @@ namespace zypp
       { AutoDispose().swap( *this ); }
 
       /** Exchange the contents of two AutoDispose objects. */
-      void swap( AutoDispose & rhs )
+      void swap( AutoDispose & rhs ) noexcept
       { _pimpl.swap( rhs._pimpl ); }
 
       /** Returns true if this is the only AutoDispose instance managing the current data object */
@@ -224,7 +224,7 @@ namespace zypp
       { AutoDispose().swap( *this ); }
 
       /** Exchange the contents of two AutoDispose objects. */
-      void swap( AutoDispose & rhs )
+      void swap( AutoDispose & rhs ) noexcept
       { _pimpl.swap( rhs._pimpl ); }
 
     public:

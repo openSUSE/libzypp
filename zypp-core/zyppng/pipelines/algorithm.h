@@ -36,10 +36,10 @@ namespace zyppng {
     struct AsyncFirstOfImpl : public AsyncOp<AsyncResType> {
 
       AsyncFirstOfImpl( Container &&inData, Transformation &&transFunc, DefaultType &&defaultVal, Predicate &&predicate  )
-        : _inData    ( std::forward<Container>(inData) )
-        , _transFunc ( std::forward<Transformation>(transFunc) )
-        , _defaultVal( std::forward<DefaultType>(defaultVal) )
-        , _predicate ( std::forward<Predicate>(predicate))
+        : _inData    ( std::move(inData) )
+        , _transFunc ( std::move(transFunc) )
+        , _defaultVal( std::move(defaultVal) )
+        , _predicate ( std::move(predicate))
         , _currIter  ( _inData.begin() ) { execute(); }
 
     private:
@@ -90,10 +90,10 @@ namespace zyppng {
     template < class Transformation, class Predicate, class DefaultType >
     struct FirstOfHelper {
 
-      FirstOfHelper( Transformation &&transFunc, DefaultType &&defaultVal, Predicate &&predicate  )
-        : _transFunc ( std::forward<Transformation>(transFunc) )
-        , _defaultVal( std::forward<DefaultType>(defaultVal) )
-        , _predicate ( std::forward<Predicate>(predicate)) { }
+      FirstOfHelper( Transformation transFunc, DefaultType defaultVal, Predicate predicate  )
+        : _transFunc ( std::move(transFunc) )
+        , _defaultVal( std::move(defaultVal) )
+        , _predicate ( std::move(predicate)) { }
 
       template <  class Container
                 , typename ...CArgs>
@@ -146,7 +146,7 @@ namespace zyppng {
 
   template < class Transformation, class DefaultType, class Predicate >
   inline auto firstOf( Transformation &&transformFunc, DefaultType &&def, Predicate &&predicate = detail::ContinueUntilValidPredicate() ) {
-    return detail::FirstOfHelper( std::forward<Transformation>(transformFunc), std::forward<DefaultType>(def), std::forward<Predicate>(predicate) );
+    return detail::FirstOfHelper<Transformation, Predicate, DefaultType> ( std::forward<Transformation>(transformFunc), std::forward<DefaultType>(def), std::forward<Predicate>(predicate) );
   }
 
   namespace detail {

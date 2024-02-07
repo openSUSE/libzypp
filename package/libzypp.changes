@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb  7 10:25:39 CET 2024 - ma@suse.de
+
+- tui: allow to access the underlying ostream of out::Info.
+- Add MLSep: Helper to produce not-NL-terminated multi line
+  output.
+- version 17.31.31 (22)
+
+-------------------------------------------------------------------
 Tue Feb  6 10:36:24 CET 2024 - ma@suse.de
 
 - applydeltaprm: Create target directory if it does not exist

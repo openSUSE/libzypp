@@ -100,7 +100,7 @@ namespace zyppng {
     /*!
      * Bind the socket to a local address, this is usually required to listen for incoming connections.
      */
-    bool bind ( std::shared_ptr<SockAddr> addr );
+    bool bind ( const std::shared_ptr<SockAddr> &addr );
 
     /*!
      * Puts the socket in listen mode, the state is set accordingly.

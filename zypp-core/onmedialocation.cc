@@ -12,6 +12,7 @@
 #include <iostream>
 //#include <zypp/base/Logger.h>
 
+#include <utility>
 #include <zypp-core/OnMediaLocation>
 
 using std::endl;
@@ -121,7 +122,7 @@ namespace zypp
   { return _pimpl->_checksum; }
 
   OnMediaLocation & OnMediaLocation::setChecksum( CheckSum val_r )
-  { _pimpl->_checksum = val_r; return *this; }
+  { _pimpl->_checksum = std::move(val_r); return *this; }
 
   const ByteCount & OnMediaLocation::openSize() const
   { return _pimpl->_openSize; }
@@ -133,7 +134,7 @@ namespace zypp
   { return _pimpl->_openChecksum; }
 
   OnMediaLocation & OnMediaLocation::setOpenChecksum( CheckSum val_r )
-  { _pimpl->_openChecksum = val_r; return *this; }
+  { _pimpl->_openChecksum = std::move(val_r); return *this; }
 
   const ByteCount & OnMediaLocation::headerSize() const
   { return _pimpl->_headerSize; }
@@ -145,7 +146,7 @@ namespace zypp
   { return _pimpl->_headerChecksum; }
 
   OnMediaLocation & OnMediaLocation::setHeaderChecksum( CheckSum val_r )
-  { _pimpl->_headerChecksum = val_r; return *this; }
+  { _pimpl->_headerChecksum = std::move(val_r); return *this; }
 
   const Pathname &OnMediaLocation::deltafile() const
   { return _pimpl->_deltafile; }

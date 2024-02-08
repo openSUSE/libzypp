@@ -55,7 +55,7 @@ namespace zypp
         /**
          * Add a single action of an item
          */
-        void addSingleAction( PoolItem item, TransactionKind action );
+        void addSingleAction( const PoolItem& item, TransactionKind action );
 
         /**
          * Add a single action of a capability

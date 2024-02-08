@@ -227,14 +227,14 @@ namespace zyppng {
       return expected<MediaSyncFacade::Res>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("Can not provide a file without a URL.") ));
 
     std::optional<expected<MediaSyncFacade::Res>> lastErr;
-    for ( zypp::Url file_url : urls ) {
+    for ( const zypp::Url& file_url : urls ) {
 
       zypp::Url url(file_url);
       zypp::Pathname fileName(url.getPathName());
       url.setPathName ("/");
 
       expected<MediaSyncFacade::Res> res = attachMedia( urls, ProvideMediaSpec( "" ) )
-          | and_then( [&, this]( MediaSyncFacade::MediaHandle handle ) {
+          | and_then( [&, this]( const MediaSyncFacade::MediaHandle& handle ) {
               return provide( handle, fileName, request.asOnMediaLocation(fileName, 1));
             });
 

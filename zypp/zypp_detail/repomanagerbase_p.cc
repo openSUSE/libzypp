@@ -397,7 +397,7 @@ namespace zypp
 
       // TODO match by url
 
-      // we have a matcing repository, now we need to know
+      // we have a matching repository, now we need to know
       // where it does come from.
       RepoInfo todelete = *it;
       if (todelete.filepath().empty())

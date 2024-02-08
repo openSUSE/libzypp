@@ -13,6 +13,7 @@
 #define ZYPP_RESPOOLPROXY_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/PtrTypes.h>
 
@@ -69,7 +70,7 @@ namespace zypp
     { return lookup( pool::ByIdent( ident_r ) ); }
 
     ui::Selectable::Ptr lookup( ResKind kind_r, const std::string & name_r ) const
-    { return lookup( pool::ByIdent( kind_r, name_r ) ); }
+    { return lookup( pool::ByIdent( std::move(kind_r), name_r ) ); }
 
     ui::Selectable::Ptr lookup( const sat::Solvable & solv_r ) const
     { return lookup( pool::ByIdent( solv_r ) ); }

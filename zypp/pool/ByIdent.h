@@ -14,6 +14,8 @@
 
 #include <zypp/PoolItem.h>
 
+#include <utility>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -39,11 +41,11 @@ namespace zypp
         {}
 
         ByIdent( ResKind kind_r, IdString name_r )
-        : _id( makeIdent( kind_r, name_r ) )
+        : _id( makeIdent( std::move(kind_r), name_r ) )
         {}
 
         ByIdent( ResKind kind_r, const C_Str & name_r )
-        : _id( makeIdent( kind_r, name_r ) )
+        : _id( makeIdent( std::move(kind_r), name_r ) )
         {}
 
       public:
@@ -56,7 +58,7 @@ namespace zypp
         bool operator()( const PoolItem & pi_r ) const
         { return operator()( pi_r.satSolvable() ); }
 
-        bool operator()( ResObject::constPtr p_r ) const
+        bool operator()( const ResObject::constPtr& p_r ) const
         { return p_r ? operator()( p_r->satSolvable() ) : !_id; }
 
       private:
@@ -66,7 +68,7 @@ namespace zypp
             : slv_r.ident().id();
         }
 
-        sat::detail::IdType makeIdent( ResKind kind_r, IdString name_r )
+        sat::detail::IdType makeIdent( const ResKind& kind_r, IdString name_r )
         {
           if ( kind_r == ResKind::package )
             return name_r.id();
@@ -75,7 +77,7 @@ namespace zypp
           return IdString( str::form( "%s:%s", kind_r.c_str(), name_r.c_str() ) ).id();
         }
 
-        sat::detail::IdType makeIdent( ResKind kind_r, const C_Str & name_r )
+        sat::detail::IdType makeIdent( const ResKind& kind_r, const C_Str & name_r )
         {
           if ( kind_r == ResKind::package )
             return IdString( name_r ).id();

@@ -10,6 +10,7 @@
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
+#include <utility>
 #include <zypp-curl/TransferSettings>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-media/MediaException>
@@ -28,7 +29,7 @@ namespace zyppng {
   DownloadPrivateBase::~DownloadPrivateBase()
   { }
 
-  bool DownloadPrivateBase::handleRequestAuthError( std::shared_ptr<Request> req, const zyppng::NetworkRequestError &err )
+  bool DownloadPrivateBase::handleRequestAuthError( const std::shared_ptr<Request>& req, const zyppng::NetworkRequestError &err )
   {
     //Handle the auth errors explicitly, we need to give the user a way to put in new credentials
     //if we get valid new credentials we can retry the request
@@ -38,7 +39,7 @@ namespace zyppng {
       MIL << "Authentication failed for " << req->url() << " trying to recover." << std::endl;
 
       TransferSettings &ts = req->transferSettings();
-      const auto &applyCredToSettings = [&ts]( AuthData_Ptr auth, const std::string &authHint ) {
+      const auto &applyCredToSettings = [&ts]( const AuthData_Ptr& auth, const std::string &authHint ) {
         ts.setUsername( auth->username() );
         ts.setPassword( auth->password() );
         auto nwCred = dynamic_cast<NetworkAuthData *>( auth.get() );
@@ -373,7 +374,7 @@ namespace zyppng {
   }
 
   Downloader::Downloader( std::shared_ptr<MirrorControl> mc )
-    : Base ( *new DownloaderPrivate( mc, *this ) )
+    : Base ( *new DownloaderPrivate( std::move(mc), *this ) )
   { }
 
   Downloader::~Downloader()

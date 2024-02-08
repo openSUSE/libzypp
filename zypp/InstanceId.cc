@@ -46,7 +46,7 @@ namespace zypp
     return ret;
   }
 
-  PoolItem InstanceId::findPoolItem( const std::string str_r ) const
+  PoolItem InstanceId::findPoolItem( const std::string& str_r ) const
   {
     // [namespace:]<name>-<version>-<release>.<arch>@<repoalias>
     std::string::size_type namespaceOff( _namespace.size() );
@@ -59,7 +59,7 @@ namespace zypp
     }
 
     // check repo
-    std::string::size_type rdelim( str_r.find( "@" ) );
+    std::string::size_type rdelim( str_r.find( '@' ) );
     if ( rdelim == std::string::npos )
       return PoolItem();
 
@@ -68,7 +68,7 @@ namespace zypp
       return PoolItem();
 
     // check n-v-r.a from behind
-    std::string::size_type delim = str_r.rfind( ".", rdelim );
+    std::string::size_type delim = str_r.rfind( '.', rdelim );
     if ( delim == std::string::npos )
       return PoolItem();
 
@@ -76,14 +76,14 @@ namespace zypp
 
     // v-r starts at one but last '-'
     rdelim = delim;
-    delim = str_r.rfind( "-", rdelim );
+    delim = str_r.rfind( '-', rdelim );
     if ( delim == std::string::npos )
       return PoolItem();
 
     if ( delim == rdelim-1 ) // supress an empty release
       rdelim = delim;
 
-    delim = str_r.rfind( "-", delim-1 );
+    delim = str_r.rfind( '-', delim-1 );
     if ( delim == std::string::npos )
       return PoolItem();
 
@@ -106,7 +106,7 @@ namespace zypp
     return PoolItem();
   }
 
-  bool InstanceId::isSystemId( const std::string str_r ) const
+  bool InstanceId::isSystemId( const std::string& str_r ) const
   { return str::hasSuffix( str_r, Repository::systemRepoAlias() ); }
 
   /////////////////////////////////////////////////////////////////

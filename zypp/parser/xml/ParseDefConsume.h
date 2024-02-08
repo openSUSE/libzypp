@@ -16,6 +16,7 @@
 #include <zypp/base/Function.h>
 #include <zypp/base/Hash.h>
 #include <zypp/base/String.h>
+#include <utility>
 #include <zypp-core/base/DefaultIntegral>
 
 #include <zypp/parser/xml/Node.h>
@@ -221,11 +222,11 @@ namespace zypp
 
         /** Set pre notification callback. */
         void prenotify( function<void ( const Node & )> pre_r )
-        { _pre = pre_r; }
+        { _pre = std::move(pre_r); }
 
         /** Set post notification callback. */
         void postnotify( function<void ( const Node & )> post_r )
-        { _post = post_r; }
+        { _post = std::move(post_r); }
 
         virtual void start( const xml::Node & node_r )
         {
@@ -308,11 +309,11 @@ namespace zypp
 
         /** Set pre notification callback. */
         Builder & operator<<( function<void ( const Node & )> done_r )
-        { _ptr->prenotify( done_r ); return *this; }
+        { _ptr->prenotify( std::move(done_r) ); return *this; }
 
         /** Set post notification callback. */
         Builder & operator>>( function<void ( const Node & )> done_r )
-        { _ptr->postnotify( done_r ); return *this; }
+        { _ptr->postnotify( std::move(done_r) ); return *this; }
 
         /** Type conversion so this can be passed as node consumer to \ref ParseDef. */
         operator shared_ptr<ParseDefConsume> () const

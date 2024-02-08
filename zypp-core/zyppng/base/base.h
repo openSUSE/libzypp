@@ -78,12 +78,12 @@ namespace zyppng {
      * Adds a new object to the child list, the object
      * will keep a reference for its entire lifetime or until the object is removed
      */
-    void addChild ( Base::Ptr child );
+    void addChild ( const Base::Ptr& child );
 
     /*!
      * Removes a child object from the internal child list
      */
-    void removeChild (Ptr child );
+    void removeChild (const Ptr& child );
 
     /*!
      * Returns all child objects of this object

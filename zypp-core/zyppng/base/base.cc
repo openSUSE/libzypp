@@ -28,7 +28,7 @@ namespace zyppng {
     return d_func()->parent;
   }
 
-  void Base::addChild( Base::Ptr child )
+  void Base::addChild( const Base::Ptr& child )
   {
     Z_D();
     if ( !child )
@@ -49,7 +49,7 @@ namespace zyppng {
     child->d_func()->parent = tracker;
   }
 
-  void Base::removeChild( Base::Ptr child )
+  void Base::removeChild( const Base::Ptr& child )
   {
     if ( !child )
       return;

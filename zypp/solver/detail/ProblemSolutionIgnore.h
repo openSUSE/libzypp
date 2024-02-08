@@ -51,8 +51,8 @@ namespace zypp
       public:
         typedef std::list<PoolItem> PoolItemList;
 
-        ProblemSolutionIgnore( PoolItem item );
-        ProblemSolutionIgnore( PoolItemList itemList );
+        ProblemSolutionIgnore( const PoolItem& item );
+        ProblemSolutionIgnore( const PoolItemList& itemList );
       };
 
     } // namespace detail

@@ -43,7 +43,7 @@ namespace zypp
     */
     struct PoolStats
     {
-      void operator()( ResObject::constPtr ptr )
+      void operator()( const ResObject::constPtr& ptr )
       {
         ++_total;
         ++_perKind[ptr->kind()];

@@ -206,7 +206,7 @@ void Resolver::addExtraConflict( const Capability & capability )
 void Resolver::removeExtraConflict( const Capability & capability )
 { _extra_conflicts.erase (capability); }
 
-void Resolver::removeQueueItem( SolverQueueItem_Ptr item )
+void Resolver::removeQueueItem( const SolverQueueItem_Ptr& item )
 {
     bool found = false;
     for (SolverQueueItemList::const_iterator iter = _added_queue_items.begin();
@@ -223,7 +223,7 @@ void Resolver::removeQueueItem( SolverQueueItem_Ptr item )
     }
 }
 
-void Resolver::addQueueItem( SolverQueueItem_Ptr item )
+void Resolver::addQueueItem( const SolverQueueItem_Ptr& item )
 {
     bool found = false;
     for (SolverQueueItemList::const_iterator iter = _removed_queue_items.begin();
@@ -252,7 +252,7 @@ struct UndoTransact
         :resStatus(status)
     { }
 
-    bool operator()( PoolItem item )		// only transacts() items go here
+    bool operator()( const PoolItem& item )		// only transacts() items go here
     {
         item.status().resetTransact( resStatus );// clear any solver/establish transactions
         return true;
@@ -267,7 +267,7 @@ struct DoTransact
         :resStatus(status)
     { }
 
-    bool operator()( PoolItem item )		// only transacts() items go here
+    bool operator()( const PoolItem& item )		// only transacts() items go here
     {
         item.status().setTransact( true, resStatus );
         return true;
@@ -418,7 +418,7 @@ ResolverProblemList Resolver::problems() const
 
 void Resolver::applySolutions( const ProblemSolutionList & solutions )
 {
-  for ( ProblemSolution_Ptr solution : solutions )
+  for ( const ProblemSolution_Ptr& solution : solutions )
   {
     if ( ! applySolution( *solution ) )
       break;
@@ -429,7 +429,7 @@ bool Resolver::applySolution( const ProblemSolution & solution )
 {
   bool ret = true;
   DBG << "apply solution " << solution << endl;
-  for ( SolutionAction_Ptr action : solution.actions() )
+  for ( const SolutionAction_Ptr& action : solution.actions() )
   {
     if ( ! action->execute( *this ) )
     {

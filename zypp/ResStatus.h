@@ -647,7 +647,7 @@ namespace zypp
       return true;
     }
 
-    bool setStatus( ResStatus newStatus_r )
+    bool setStatus( const ResStatus& newStatus_r )
     {
       // State field is immutable!
       if ( _bitfield.value<StateField>() != newStatus_r._bitfield.value<StateField>() )

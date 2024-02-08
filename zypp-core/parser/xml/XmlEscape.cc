@@ -41,7 +41,7 @@ namespace iobind
       {
         size_t i;
         std::string str = istr;
-        i = str.find_first_of("&");
+        i = str.find_first_of('&');
         while (i != std::string::npos)
         {
           if (str[i] == '&')
@@ -57,7 +57,7 @@ namespace iobind
             else if (!str.compare(i + 1, 5, "quot;"))
               str.replace(i, 6, 1, '"');
           }
-          i = str.find_first_of("&", i + 1);
+          i = str.find_first_of('&', i + 1);
         }
         return str;
       }

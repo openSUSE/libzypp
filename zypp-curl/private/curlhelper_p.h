@@ -58,7 +58,7 @@ void fillSettingsSystemProxy( const zypp::Url& url, zypp::media::TransferSetting
 
 void curlEscape( std::string & str_r,  const char char_r, const std::string & escaped_r );
 std::string curlEscapedPath( std::string path_r );
-std::string curlUnEscape( std::string text_r );
+std::string curlUnEscape( const std::string& text_r );
 
 zypp::Url clearQueryString(const zypp::Url &url);
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r );

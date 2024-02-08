@@ -324,7 +324,7 @@ struct TableRow::Less
 {
   using SortParam = std::tuple<unsigned,bool>;  ///< column and sortCI
 
-  Less( const TableHeader & header_r, std::list<unsigned> by_columns_r )
+  Less( const TableHeader & header_r, const std::list<unsigned>& by_columns_r )
   {
     for ( unsigned curr_column : by_columns_r ) {
       _by_columns.push_back( SortParam( curr_column, header_r.hasStyle( curr_column, table::CStyle::SortCi ) ) );

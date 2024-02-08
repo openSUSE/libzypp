@@ -63,7 +63,7 @@ private:
   void multiTimerTimout ( const Timer &t );
   int  socketCallback(CURL *easy, curl_socket_t s, int what, void * );
 
-  void cancelAll ( NetworkRequestError result );
+  void cancelAll ( const NetworkRequestError& result );
   bool addRequestToMultiHandle ( NetworkRequest &req );
   void setFinished( NetworkRequest &req , NetworkRequestError result );
 

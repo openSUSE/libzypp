@@ -363,7 +363,7 @@ std::string curlEscapedPath( std::string path_r ) {
   return path_r;
 }
 
-std::string curlUnEscape( std::string text_r ) {
+std::string curlUnEscape( const std::string& text_r ) {
   char * tmp = curl_unescape( text_r.c_str(), 0 );
   std::string ret( tmp );
   curl_free( tmp );

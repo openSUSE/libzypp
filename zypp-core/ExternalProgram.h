@@ -92,7 +92,7 @@ namespace zypp {
        * @param default_locale whether to set LC_ALL=C before starting
        * @param root directory to chroot into; or just 'cd' if '/'l;  nothing if empty
        */
-      ExternalProgram (std::string commandline,
+      ExternalProgram (const std::string& commandline,
                      Stderr_Disposition stderr_disp = Normal_Stderr,
                      bool use_pty = false, int stderr_fd = -1, bool default_locale = false,
                      const Pathname& root = "");

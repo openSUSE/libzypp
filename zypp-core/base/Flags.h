@@ -135,7 +135,7 @@ namespace zypp
      */
     template<typename Enum>
     std::string stringify( const Flags<Enum> & flag_r, const std::initializer_list<std::pair<Flags<Enum>,std::string> > & flaglist_r = {},
-                           std::string intro_r = "[", std::string sep_r = "|", std::string extro_r = "]" )
+                           std::string intro_r = "[", std::string sep_r = "|", const std::string &extro_r = "]" )
     {
       std::string ret( std::move(intro_r) );
       std::string sep;

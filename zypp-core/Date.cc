@@ -50,7 +50,7 @@ namespace zypp
           {
             // prepend language[_territory]
             needLocale = _mylocale.substr( 0, loc ) + needLocale;
-            loc = _mylocale.find_last_of( "@" );
+            loc = _mylocale.find_last_of( '@' );
             if ( loc != std::string::npos )
             {
               // append [@modifier]

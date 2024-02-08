@@ -66,7 +66,7 @@ namespace zypp
           _name += "/..";
         else
         {
-          std::string::size_type pos = _name.rfind( "/" );
+          std::string::size_type pos = _name.rfind( '/' );
           if ( pos == _name.size() - 3 && _name[pos+1] == '.' && _name[pos+2] == '.' )
             _name += "/..";
           else

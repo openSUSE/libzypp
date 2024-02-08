@@ -516,7 +516,7 @@ namespace zypp
                 sit != dict.sectionsEnd();
                 ++sit )
           {
-            std::string section(*sit);
+            const std::string& section(*sit);
             //MIL << section << endl;
             for ( IniDict::entry_const_iterator it = dict.entriesBegin(*sit);
                   it != dict.entriesEnd(*sit);
@@ -863,7 +863,7 @@ namespace zypp
       {	return _specMap[Pathname()]; }
 
     private:
-      int scanConfAt( const Pathname root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
+      int scanConfAt( const Pathname& root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
       {
         static const str::regex rx( "^multiversion *= *(.*)" );
         str::smatch what;
@@ -879,7 +879,7 @@ namespace zypp
                                 } );
       }
 
-      void scanDirAt( const Pathname root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
+      void scanDirAt( const Pathname& root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
       {
         // NOTE:  Actually we'd need to scan and use the root_r! zypp.conf values.
         Pathname multiversionDir( zConfImpl_r.cfg_multiversion_path );

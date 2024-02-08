@@ -781,7 +781,7 @@ namespace zypp
     /** Whether there is an even number of consecutive backslashes before and including \a rbegin_r
      * An even number of backslashes means the character following is unescaped.
      */
-    inline bool evenNumberOfBackslashes( std::string::const_reverse_iterator rbegin_r, std::string::const_reverse_iterator rend_r )
+    inline bool evenNumberOfBackslashes( const std::string::const_reverse_iterator& rbegin_r, const std::string::const_reverse_iterator& rend_r )
     {
       unsigned backslashes = 0;
       for_( it, rbegin_r, rend_r )

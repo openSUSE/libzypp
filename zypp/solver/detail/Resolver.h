@@ -163,8 +163,8 @@ class Resolver : private base::NonCopyable
     void addExtraConflict( const Capability & capability );
     void removeExtraConflict( const Capability & capability );
 
-    void removeQueueItem( SolverQueueItem_Ptr item );
-    void addQueueItem( SolverQueueItem_Ptr item );
+    void removeQueueItem( const SolverQueueItem_Ptr& item );
+    void addQueueItem( const SolverQueueItem_Ptr& item );
 
     CapabilitySet extraRequires() const		{ return _extra_requires; }
     CapabilitySet extraConflicts() const	{ return _extra_conflicts; }

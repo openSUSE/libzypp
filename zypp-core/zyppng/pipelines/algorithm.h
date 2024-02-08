@@ -152,7 +152,7 @@ namespace zyppng {
   namespace detail {
 
     template <typename Excpt, typename ...Rest>
-    bool containsOneOfExceptionImpl( const std::exception_ptr exceptionPtr ) {
+    bool containsOneOfExceptionImpl( const std::exception_ptr &exceptionPtr ) {
       try {
         if constexpr ( sizeof...(Rest) == 0  ) {
           // on the lowest level we throw the exception
@@ -174,7 +174,7 @@ namespace zyppng {
    * \code
    *
    * expected<int> result = someFuncReturningExpected();
-   * if ( !result && containsOneOfException<zypp::FileNotFoundException, SomeOtherException>() ) {
+   * if ( !result && containsOneOfException<zypp::FileNotFoundException, SomeOtherException>( result.error() ) ) {
    *  std::cout << "Contains either zypp::FileNotFoundException or SomeOtherException" << std::endl;
    * }
    *
@@ -183,7 +183,7 @@ namespace zyppng {
    * Detects exceptions by throwing and catching them, so always pass the specific exception types to check for..
    */
   template <typename ...Excpt>
-  bool containsOneOfException( const std::exception_ptr exceptionPtr ) {
+  bool containsOneOfException( const std::exception_ptr &exceptionPtr ) {
     try {
       return detail::containsOneOfExceptionImpl<Excpt...>( exceptionPtr );
     } catch ( ... ) {}
@@ -197,14 +197,14 @@ namespace zyppng {
    * \code
    *
    * expected<int> result = someFuncReturningExpected();
-   * if ( !result && containsException<zypp::FileNotFoundException>() ) {
+   * if ( !result && containsException<zypp::FileNotFoundException>( result.error() ) ) {
    *  std::cout << "Contains zypp::FileNotFoundException" << std::endl;
    * }
    *
    * \endcode
    */
   template <typename Excpt>
-  bool containsException( const std::exception_ptr exceptionPtr ) {
+  bool containsException( const std::exception_ptr &exceptionPtr ) {
     try {
       std::rethrow_exception ( exceptionPtr );;
     } catch ( const Excpt &e ) {

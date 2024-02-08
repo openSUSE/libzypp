@@ -96,7 +96,7 @@ namespace zypp
 
     void setLineWriter ( boost::shared_ptr<log::LineWriter> writer ) {
       std::lock_guard lk( _lineWriterLock );
-      _lineWriter = writer;
+      _lineWriter = std::move(writer);
     }
 
     boost::shared_ptr<log::LineWriter> getLineWriter () {

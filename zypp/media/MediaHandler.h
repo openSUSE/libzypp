@@ -580,7 +580,7 @@ class MediaHandler {
          * \throws MediaException
          *
          **/
-        void provideFileCopy( const OnMediaLocation &srcFile, Pathname targetFilename ) const;
+        void provideFileCopy( const OnMediaLocation &srcFile, const Pathname& targetFilename ) const;
 
         /**
          * Use concrete handler to provide directory denoted
@@ -591,7 +591,7 @@ class MediaHandler {
          * \throws MediaException
          *
          **/
-        void provideDir( Pathname dirname ) const;
+        void provideDir( const Pathname& dirname ) const;
 
         /**
          * Use concrete handler to provide directory tree denoted
@@ -602,7 +602,7 @@ class MediaHandler {
          * \throws MediaException
          *
          **/
-        void provideDirTree( Pathname dirname ) const;
+        void provideDirTree( const Pathname& dirname ) const;
 
         /**
          * Remove filename below localRoot IFF handler downloads files
@@ -634,7 +634,7 @@ class MediaHandler {
          * \throws MediaException
          *
          **/
-        void releasePath( Pathname pathname ) const;
+        void releasePath( const Pathname& pathname ) const;
 
     public:
 

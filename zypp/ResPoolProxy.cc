@@ -30,38 +30,38 @@ namespace zypp
   /** Tem. friend of PoolItem */
   struct PoolItemSaver
   {
-    void saveState( ResPool pool_r )
+    void saveState( const ResPool& pool_r )
     {
       std::for_each( pool_r.begin(), pool_r.end(),
                      std::mem_fn(&PoolItem::saveState) );
     }
 
-    void saveState( ResPool pool_r, const ResKind & kind_r )
+    void saveState( const ResPool& pool_r, const ResKind & kind_r )
     {
       std::for_each( pool_r.byKindBegin(kind_r), pool_r.byKindEnd(kind_r),
                      std::mem_fn(&PoolItem::saveState) );
     }
 
-    void restoreState( ResPool pool_r )
+    void restoreState( const ResPool& pool_r )
     {
       std::for_each( pool_r.begin(), pool_r.end(),
                      std::mem_fn(&PoolItem::restoreState) );
     }
 
-    void restoreState( ResPool pool_r, const ResKind & kind_r )
+    void restoreState( const ResPool& pool_r, const ResKind & kind_r )
     {
       std::for_each( pool_r.byKindBegin(kind_r), pool_r.byKindEnd(kind_r),
                      std::mem_fn(&PoolItem::restoreState) );
     }
 
-    bool diffState( ResPool pool_r ) const
+    bool diffState( const ResPool& pool_r ) const
     {
       // return whether some PoolItem::sameState reported \c false.
       return( invokeOnEach( pool_r.begin(), pool_r.end(),
                             std::mem_fn(&PoolItem::sameState) ) < 0 );
     }
 
-    bool diffState( ResPool pool_r, const ResKind & kind_r ) const
+    bool diffState( const ResPool& pool_r, const ResKind & kind_r ) const
     {
       // return whether some PoolItem::sameState reported \c false.
       return( invokeOnEach( pool_r.byKindBegin(kind_r), pool_r.byKindEnd(kind_r),

@@ -116,7 +116,7 @@ namespace zypp
     class SolvIterMixin
     {
       public:
-        typedef size_t size_type;
+      typedef size_t size_type;
 
       public:
         /** \name Convenience methods.
@@ -197,8 +197,10 @@ namespace zypp
       protected:
         SolvIterMixin() {}
         ~SolvIterMixin() {}
-        SolvIterMixin(const SolvIterMixin &) {}
-        void operator=(const SolvIterMixin &) {}
+        SolvIterMixin(const SolvIterMixin &) = default;
+        SolvIterMixin & operator=(const SolvIterMixin &) = default;
+        SolvIterMixin(SolvIterMixin &&) noexcept = default;
+        SolvIterMixin &operator=(SolvIterMixin &&) noexcept = default;
      };
     ///////////////////////////////////////////////////////////////////
 

@@ -127,7 +127,7 @@ namespace zypp
   void ResolverProblem::setDetails( std::string details )
   { _pimpl->_details = std::move(details); }
 
-  void ResolverProblem::addSolution( ProblemSolution_Ptr solution, bool inFront )
+  void ResolverProblem::addSolution( const ProblemSolution_Ptr& solution, bool inFront )
   {
     if ( ! solutionInList( _pimpl->_solutions, solution ) )	// bsc#985674: filter duplicate solutions
     {

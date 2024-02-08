@@ -80,7 +80,7 @@ namespace zypp
     /**
      * Set detail description of the solution.
      **/
-    void setDetails( std::string details );
+    void setDetails( const std::string& details );
 
     /**
      * Collect multiple action descriptions in \ref details (NL separated)
@@ -91,7 +91,7 @@ namespace zypp
     /**
      * Add an action to the actions list.
      **/
-    void addAction( SolutionAction_Ptr action );
+    void addAction( const SolutionAction_Ptr& action );
 
   public:
     /** The solution contains only 'do not install patch:' actions. */

@@ -458,7 +458,7 @@ namespace zyppng {
     return Ptr( new Socket( domain, type, protocol ) );
   }
 
-  bool Socket::bind( std::shared_ptr<SockAddr> addr )
+  bool Socket::bind( const std::shared_ptr<SockAddr> &addr )
   {
     Z_D();
     if ( !addr || !d->initSocket() )
@@ -624,7 +624,7 @@ namespace zyppng {
     if ( !d->initSocket() )
       return false;
 
-    d->_targetAddr = addr;
+    d->_targetAddr = std::move(addr);
     if ( !d->transition( Socket::ConnectingState ) ) {
       abort();
       return false;

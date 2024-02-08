@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <boost/io/ios_state.hpp>
+#include <utility>
 
 #include <zypp-core/base/Flags.h>
 #include <zypp-core/base/PtrTypes.h>
@@ -182,7 +183,7 @@ namespace zypp
      *
      * \return Number if lines consumed (negative if aborted by callback).
      */
-     int forEachLine( std::istream & str_r, function<bool(int, std::string)> consume_r );
+     int forEachLine( std::istream & str_r, const function<bool(int, std::string)>& consume_r );
 
      /** \ref simpleParseFile modifications before consuming a line. */
      enum ParseFlag
@@ -201,7 +202,7 @@ namespace zypp
 
      /** \overload trimming lines, skipping '#'-comments and empty lines. */
      inline int simpleParseFile( std::istream & str_r, function<bool(int, std::string)> consume_r )
-     { return simpleParseFile( str_r, PF_TRIM | PF_SKIP_EMPTY | PF_SKIP_SHARP_COMMENT , consume_r ); }
+     { return simpleParseFile( str_r, PF_TRIM | PF_SKIP_EMPTY | PF_SKIP_SHARP_COMMENT , std::move(consume_r) ); }
 
     /////////////////////////////////////////////////////////////////
   } // namespace iostr

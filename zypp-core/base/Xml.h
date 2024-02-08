@@ -96,7 +96,7 @@ namespace zypp
 
       /** Convenience ctor for one attribute pair */
       Node( std::ostream & out_r, std::string name_r, Attr attr_r )
-      : Node( out_r, std::move(name_r), { attr_r } )
+        : Node( out_r, std::move(name_r), { std::move(attr_r) } )
       {}
 
       /** Optional content ctor taking nodename and attribute list */
@@ -106,20 +106,20 @@ namespace zypp
 
       /** Optional content Convenience ctor for one attribute pair */
       Node( std::ostream & out_r, std::string name_r, OptionalContentType, Attr attr_r )
-      : Node( out_r, std::move(name_r), optionalContent, { attr_r } )
+      : Node( out_r, std::move(name_r), optionalContent, { std::move(attr_r) } )
       {}
 
       /** Dtor wrting end tag */
       ~Node()
       {
         if ( isComment() )
-          _out << "-->";
+          _out.get()  << "-->";
         else
         {
           if ( _hasContent )
-            _out << "</" << _name << ">";
+            _out.get()  << "</" << _name << ">";
           else
-            _out << "/>";
+            _out.get()  << "/>";
         }
       }
 
@@ -149,9 +149,9 @@ namespace zypp
         {
           _hasContent = true;
           if ( isComment() )
-            _out << "|";
+            _out.get()  << "|";
           else
-            _out << ">";
+            _out.get()  << ">";
         }
         return _out;
       }
@@ -161,29 +161,30 @@ namespace zypp
       {
         if ( _name.empty() || _name[0] == '!' )
         {
-          _out << "<!--" << _name;
+          _out.get()  << "<!--" << _name;
           _name.clear();	// a comment
         }
         else
-          _out << "<" << _name;
+          _out.get()  << "<" << _name;
 
         printAttr( attrs_r );
 
         if ( !isComment() && _hasContent )
-          _out << ">";
+          _out.get()  << ">";
       }
 
       void printAttr( const std::initializer_list<Attr> & attrs_r )
       {
         for ( const auto & pair : attrs_r )
-          _out << " " << pair.first << "=\"" << xml::escape( pair.second ) << "\"";
+          _out.get() << " " << pair.first << "=\"" << xml::escape( pair.second ) << "\"";
       }
 
       bool isComment() const
       { return _name.empty();  }
 
     private:
-      std::ostream & _out;
+      // use a reference wrapper, otherwise the defaulted move operator is deleted
+      std::reference_wrapper<std::ostream> _out;
       std::string _name;
       bool _hasContent;
     };
@@ -201,7 +202,7 @@ namespace zypp
     }
     /** \overload for one attribute pair */
     inline std::ostream & node( std::ostream & out_r, const std::string & name_r, Node::Attr attr_r )
-    { return node( out_r, name_r, { attr_r } ); }
+    { return node( out_r, name_r, { std::move(attr_r) } ); }
 
   } // namespace xmlout
   ///////////////////////////////////////////////////////////////////

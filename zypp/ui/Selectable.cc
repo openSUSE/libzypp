@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 //#include <zypp/base/Logger.h>
 
 #include <zypp/ui/Selectable.h>
@@ -34,7 +35,7 @@ namespace zypp
     //	METHOD TYPE : Ctor
     //
     Selectable::Selectable( Impl_Ptr pimpl_r )
-    : _pimpl( pimpl_r )
+    : _pimpl( std::move(pimpl_r) )
     {}
 
     ///////////////////////////////////////////////////////////////////
@@ -100,7 +101,7 @@ namespace zypp
     PoolItem Selectable::setCandidate( const PoolItem & newCandidate_r, ResStatus::TransactByValue causer_r )
     { return _pimpl->setCandidate( newCandidate_r, causer_r ); }
 
-    PoolItem Selectable::setCandidate( ResObject::constPtr newCandidate_r, ResStatus::TransactByValue causer_r )
+    PoolItem Selectable::setCandidate( const ResObject::constPtr& newCandidate_r, ResStatus::TransactByValue causer_r )
     { return _pimpl->setCandidate( PoolItem( newCandidate_r ), causer_r ); }
 
     bool Selectable::setOnSystem( const PoolItem & newCandidate_r, ResStatus::TransactByValue causer_r )

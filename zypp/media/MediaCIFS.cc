@@ -43,13 +43,13 @@ namespace zypp {
     **
     ** Get the 1st path component (CIFS share name).
     */
-    inline std::string getShare( Pathname spath_r )
+    inline std::string getShare( const Pathname& spath_r )
     {
       if ( spath_r.empty() )
         return std::string();
 
       std::string share( spath_r.absolutename().asString() );
-      std::string::size_type sep = share.find( "/", 1 );
+      std::string::size_type sep = share.find( '/', 1 );
       if ( sep == std::string::npos )
         share = share.erase( 0, 1 ); // nothing but the share name in spath_r
       else
@@ -71,13 +71,13 @@ namespace zypp {
     **
     ** Strip off the 1st path component (CIFS share name).
     */
-    inline Pathname stripShare( Pathname spath_r )
+    inline Pathname stripShare( const Pathname& spath_r )
     {
       if ( spath_r.empty() )
         return Pathname();
 
       std::string striped( spath_r.absolutename().asString() );
-      std::string::size_type sep = striped.find( "/", 1 );
+      std::string::size_type sep = striped.find( '/', 1 );
       if ( sep == std::string::npos )
         return "/"; // nothing but the share name in spath_r
 

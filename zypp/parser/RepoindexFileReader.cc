@@ -66,7 +66,7 @@ namespace zypp
           for( ; vbeg != std::string::npos; vbeg = val_r.find( "%{", vbeg ) )
           {
             std::string::size_type nbeg = vbeg+2;
-            std::string::size_type nend = val_r.find( "}", nbeg );
+            std::string::size_type nend = val_r.find( '}', nbeg );
             if ( nend == std::string::npos )
             {
               WAR << "Incomplete variable in '" << val_r << "'" << endl;
@@ -264,7 +264,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   RepoindexFileReader::RepoindexFileReader( Pathname repoindex_file, ProcessResource callback )
-  : _pimpl(new Impl( InputStream(repoindex_file), std::move(callback) ))
+  : _pimpl(new Impl( InputStream(std::move(repoindex_file)), std::move(callback) ))
   {}
 
   RepoindexFileReader::RepoindexFileReader(const InputStream &is, ProcessResource callback )

@@ -362,7 +362,7 @@ namespace zypp
   Url::registerScheme(const std::string &scheme,
                       UrlRef            urlImpl)
   {
-    return g_urlSchemeRepository().addUrlByScheme(scheme, urlImpl);
+    return g_urlSchemeRepository().addUrlByScheme(scheme, std::move(urlImpl));
   }
 
 

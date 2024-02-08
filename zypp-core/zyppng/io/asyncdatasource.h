@@ -24,7 +24,7 @@ namespace zyppng {
     using WeakPtr = std::weak_ptr<AsyncDataSource>;
 
     static Ptr create ();
-    bool openFds ( std::vector<int> readFds, int writeFd = -1 );
+    bool openFds ( const std::vector<int>& readFds, int writeFd = -1 );
     void close () override;
 
     using IODevice::waitForReadyRead;

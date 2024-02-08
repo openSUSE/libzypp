@@ -954,7 +954,7 @@ MediaHandler::dependsOnParent(MediaAccessId parentId, bool exactIdMatch)
 //
 //	DESCRIPTION :
 //
-void MediaHandler::provideFileCopy( const OnMediaLocation &srcFile, Pathname targetFilename ) const
+void MediaHandler::provideFileCopy( const OnMediaLocation &srcFile, const Pathname& targetFilename ) const
 {
   if ( !isAttached() ) {
     INT << "Media not_attached on provideFileCopy(" << srcFile
@@ -986,7 +986,7 @@ void MediaHandler::provideFile( const OnMediaLocation &file ) const
 //
 //	DESCRIPTION :
 //
-void MediaHandler::provideDir( Pathname dirname ) const
+void MediaHandler::provideDir( const Pathname& dirname ) const
 {
   if ( !isAttached() ) {
     INT << "Error: Not attached on provideDir(" << dirname << ")" << endl;
@@ -1005,7 +1005,7 @@ void MediaHandler::provideDir( Pathname dirname ) const
 //
 //	DESCRIPTION :
 //
-void MediaHandler::provideDirTree( Pathname dirname ) const
+void MediaHandler::provideDirTree( const Pathname& dirname ) const
 {
   if ( !isAttached() ) {
     INT << "Error Not attached on provideDirTree(" << dirname << ")" << endl;
@@ -1024,7 +1024,7 @@ void MediaHandler::provideDirTree( Pathname dirname ) const
 //
 //	DESCRIPTION :
 //
-void MediaHandler::releasePath( Pathname pathname ) const
+void MediaHandler::releasePath( const Pathname& pathname ) const
 {
   if ( ! _does_download || _attachPoint->empty() )
     return;

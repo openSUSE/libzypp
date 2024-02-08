@@ -145,7 +145,7 @@ namespace zypp
   {
     try {
       if (old_r) {
-        std::rethrow_exception(old_r);
+        std::rethrow_exception(std::move(old_r));
       }
     } catch( const Exception& e ) {
       remember( e );

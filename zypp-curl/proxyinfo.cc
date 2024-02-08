@@ -12,6 +12,7 @@
 
 #include "proxyinfo.h"
 #include <iostream>
+#include <utility>
 
 #include <zypp/base/Logger.h>
 
@@ -34,7 +35,7 @@ namespace zypp {
     {}
 
     ProxyInfo::ProxyInfo(ProxyInfo::ImplPtr pimpl_r)
-    : _pimpl(pimpl_r)
+    : _pimpl(std::move(pimpl_r))
     {}
 
     bool ProxyInfo::enabled() const

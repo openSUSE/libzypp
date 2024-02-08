@@ -64,10 +64,10 @@ namespace zypp
       { return getIdFor( pi_r.satSolvable() ); }
 
       /** \ref InstanceId string to \ref Solvable. */
-      sat::Solvable findSolvable( const std::string str_r ) const
+      sat::Solvable findSolvable( const std::string &str_r ) const
       { return findPoolItem( str_r ).satSolvable(); }
       /** \ref InstanceId string to \ref PoolItem. */
-      PoolItem findPoolItem( const std::string str_r ) const;
+      PoolItem findPoolItem( const std::string& str_r ) const;
 
     public:
       /** \ref Solvable to \ref InstanceId string. */
@@ -79,12 +79,12 @@ namespace zypp
       { return getIdFor( pi_r ); }
 
       /** \ref InstanceId string to \ref PoolItem. */
-      PoolItem operator()( const std::string str_r ) const
+      PoolItem operator()( const std::string &str_r ) const
       { return findPoolItem( str_r ); }
 
       /** Quick test whether the InstanceId string would refer
        * to a system (installed) Solvable. */
-      bool isSystemId( const std::string str_r ) const;
+      bool isSystemId( const std::string& str_r ) const;
 
     public:
       /** The namespace in use. */

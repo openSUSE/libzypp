@@ -82,7 +82,7 @@ namespace zypp
         void collectPosttransInfo( const std::vector<std::string> & runposttrans_r )
         { collectDumpPosttransLines( runposttrans_r ); }
 
-        void collectScriptFromHeader( rpm::RpmHeader::constPtr pkg )
+        void collectScriptFromHeader( const rpm::RpmHeader::constPtr& pkg )
         {
           if ( pkg ) {
             if ( not _scripts ) {
@@ -161,7 +161,7 @@ namespace zypp
             }
 
             rpm::librpmDb::db_const_iterator it;
-            recallFromDumpfile( _dumpfile->_dumpfile, [&]( std::string n_r, std::string v_r, std::string r_r, std::string a_r ) -> void {
+            recallFromDumpfile( _dumpfile->_dumpfile, [&]( const std::string& n_r, const std::string& v_r, const std::string& r_r, const std::string& a_r ) -> void {
               if ( it.findPackage( n_r, Edition( v_r, r_r ) ) && headerHasPosttrans( *it ) )
                 collectScriptFromHeader( *it );
             } );
@@ -337,7 +337,7 @@ namespace zypp
         }
 
         /** Return whether RpmHeader has a  %posttrans. */
-        bool headerHasPosttrans( rpm::RpmHeader::constPtr pkg_r ) const
+        bool headerHasPosttrans( const rpm::RpmHeader::constPtr& pkg_r ) const
         {
           bool ret = false;
           if ( pkg_r ) {
@@ -373,7 +373,7 @@ namespace zypp
           // dump_posttrans: install 10 terminfo-base-6.4.20230819-19.1.x86_64
           static const str::regex rxInstalled { "^dump_posttrans: +install +[0-9]+ +(.+)-([^-]+)-([^-]+)\\.([^.]+)" };
           str::smatch what;
-          iostr::forEachLine( InputStream( dumpfile_r ), [&]( int num_r, std::string line_r ) -> bool {
+          iostr::forEachLine( InputStream( dumpfile_r ), [&]( int num_r, const std::string& line_r ) -> bool {
             if( str::regex_match( line_r, what, rxInstalled ) )
               consume_r( what[1], what[2], what[3], what[4] );
             return true; // continue iostr::forEachLine

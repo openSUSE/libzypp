@@ -44,7 +44,7 @@ namespace zypp
     // some Helpers and Predicates
     /////////////////////////////////////////////////////////////////
 
-    bool isDependencyAttribute( sat::SolvAttr attr_r )
+    bool isDependencyAttribute( const sat::SolvAttr& attr_r )
     {
       static sat::SolvAttr deps[] = {
         SolvAttr::provides,
@@ -77,7 +77,7 @@ namespace zypp
         , _arch( arch )
       {}
 
-      bool operator()( sat::LookupAttr::iterator iter_r )
+      bool operator()( const sat::LookupAttr::iterator& iter_r )
       {
         if ( !_arch.empty() && iter_r.inSolvable().arch() != _arch )
           return false;
@@ -116,7 +116,7 @@ namespace zypp
         , _arch( arch )
       {}
 
-      bool operator()( sat::LookupAttr::iterator iter_r )
+      bool operator()( const sat::LookupAttr::iterator& iter_r )
       {
         if ( !_arch.empty() && iter_r.inSolvable().arch() != _arch )
           return false;
@@ -146,7 +146,7 @@ namespace zypp
         : _cap( cap_r )
       {}
 
-      bool operator()( sat::LookupAttr::iterator iter_r ) const
+      bool operator()( const sat::LookupAttr::iterator& iter_r ) const
       {
         return _cap.matches( iter_r.asType<Capability>() ) == CapMatch::yes;
       }
@@ -193,8 +193,8 @@ namespace zypp
     {
       typedef function<bool(sat::LookupAttr::iterator)> Predicate;
 
-      static bool always( sat::LookupAttr::iterator ) { return true; }
-      static bool never( sat::LookupAttr::iterator ) { return false; }
+      static bool always( const sat::LookupAttr::iterator& ) { return true; }
+      static bool never( const sat::LookupAttr::iterator& ) { return false; }
 
       AttrMatchData()
       {}
@@ -1054,7 +1054,7 @@ namespace zypp
   }
 
   void PoolQuery::execute(ProcessResolvable fnc)
-  { invokeOnEach( begin(), end(), fnc); }
+  { invokeOnEach( begin(), end(), std::move(fnc)); }
 
 
   /*DEPRECATED LEGACY:*/void PoolQuery::setRequireAll( bool ) {}

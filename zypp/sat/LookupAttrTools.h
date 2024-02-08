@@ -15,6 +15,8 @@
 #include <zypp/sat/LookupAttr.h>
 #include <zypp/Repository.h>
 
+#include <utility>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -160,15 +162,15 @@ namespace zypp
         {}
 
         ArrayAttr( SolvAttr attr_r, LookupAttr::Location loc_r = LookupAttr::SOLV_ATTR )
-        : _q( attr_r, loc_r )
+        : _q( std::move(attr_r), loc_r )
         {}
 
         ArrayAttr( SolvAttr attr_r, Repository repo_r, LookupAttr::Location loc_r = LookupAttr::SOLV_ATTR )
-        : _q( attr_r, repo_r, loc_r )
+        : _q( std::move(attr_r), repo_r, loc_r )
         {}
 
         ArrayAttr( SolvAttr attr_r, Solvable solv_r )
-        : _q( attr_r, solv_r )
+        : _q( std::move(attr_r), solv_r )
         {}
 
       public:

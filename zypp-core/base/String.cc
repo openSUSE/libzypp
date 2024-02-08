@@ -13,6 +13,7 @@
 #include <cstdarg>
 
 #include <iostream>
+#include <utility>
 
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/LogTools.h>
@@ -347,10 +348,10 @@ namespace zypp
     std::string gsubFun( const std::string & str_r, const std::string & from_r, function<std::string()> to_r )
     {
       std::string ret( str_r );
-      return replaceAllFun( ret, from_r, to_r );
+      return replaceAllFun( ret, from_r, std::move(to_r) );
     }
 
-    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, function<std::string()> to_r )
+    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, const function<std::string()>& to_r )
     {
       if ( ! from_r.empty() )
       {

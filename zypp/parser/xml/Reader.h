@@ -141,7 +141,7 @@ namespace zypp
       typedef function<bool( Reader & )> ProcessNode;
 
       /** */
-      bool foreachNode( ProcessNode fnc_r )
+      bool foreachNode( const ProcessNode& fnc_r )
       {
         if ( _node.isAttribute() )
           nextNode();
@@ -154,7 +154,7 @@ namespace zypp
       }
 
       /** */
-      bool foreachNodeAttribute( ProcessNode fnc_r )
+      bool foreachNodeAttribute( const ProcessNode& fnc_r )
       {
         if ( _node.isAttribute() && ! fnc_r( *this ) )
           return false;
@@ -167,7 +167,7 @@ namespace zypp
       }
 
       /** */
-      bool foreachNodeOrAttribute( ProcessNode fnc_r )
+      bool foreachNodeOrAttribute( const ProcessNode& fnc_r )
       {
         for ( ; ! atEnd(); nextNodeOrAttribute() )
           {

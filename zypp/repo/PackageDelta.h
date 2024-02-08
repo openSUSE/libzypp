@@ -56,7 +56,7 @@ namespace zypp
 
       public:
         DeltaRpm() {}
-        DeltaRpm( sat::LookupAttr::iterator deltaInfo_r );
+        DeltaRpm( const sat::LookupAttr::iterator& deltaInfo_r );
 
       public:
         /** \name Target package ident. */

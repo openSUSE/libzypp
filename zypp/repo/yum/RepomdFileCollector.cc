@@ -56,7 +56,7 @@ namespace zypp::repo::yum
       // Strip the checksum preceding the file stem so we can look for an
       // old *-primary.xml which may contain some reusable blocks.
       std::string base { file.basename() };
-      size_t hypoff = base.find( "-" );
+      size_t hypoff = base.find( '-' );
       if ( hypoff != std::string::npos )
         base.replace( 0, hypoff + 1, "" );
 

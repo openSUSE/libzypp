@@ -13,6 +13,7 @@
 #define ZYPP_SAT_LOOKUPATTR_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp-core/base/DefaultIntegral>
@@ -121,6 +122,11 @@ namespace zypp
       public:
         /** Default ctor finds nothing. */
         LookupAttr();
+
+        LookupAttr(const LookupAttr &) = default;
+        LookupAttr(LookupAttr &&) noexcept = default;
+        LookupAttr &operator=(const LookupAttr &) = default;
+        LookupAttr &operator=(LookupAttr &&) noexcept = default;
 
         /** Lookup \ref SolvAttr in \ref Pool (all repositories). */
         explicit LookupAttr( SolvAttr attr_r, Location = SOLV_ATTR );
@@ -262,7 +268,7 @@ namespace zypp
         {}
         /** \copydoc LookupAttr::LookupAttr(SolvAttr) */
         explicit LookupRepoAttr( SolvAttr attr_r )
-        : LookupAttr( attr_r, REPO_ATTR )
+        : LookupAttr( std::move(attr_r), REPO_ATTR )
         {}
         /** \copydoc LookupAttr::LookupAttr(SolvAttr,Repository) */
         explicit LookupRepoAttr( SolvAttr attr_r, Repository repo_r );
@@ -476,7 +482,7 @@ namespace zypp
           * If \ref sat::SolvAttr::allAttr is passed, \ref subBegin is returned.
           * \see \ref solvAttrSubEntry
          */
-        iterator subFind( SolvAttr attr_r ) const;
+        iterator subFind( const SolvAttr& attr_r ) const;
         /** \overload Extending the current attribute name with by \c ":attrname_r".
          *
          * This assumes a sub-structur \c "update:reference" has attributes

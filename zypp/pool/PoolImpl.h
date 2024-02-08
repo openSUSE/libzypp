@@ -13,6 +13,7 @@
 #define ZYPP_POOL_POOLIMPL_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/Easy.h>
 #include <zypp/base/LogTools.h>
@@ -246,7 +247,7 @@ namespace zypp
           checkSerial();
           if ( !_poolProxy )
           {
-            _poolProxy.reset( new ResPoolProxy( self, *this ) );
+            _poolProxy.reset( new ResPoolProxy( std::move(self), *this ) );
           }
           return *_poolProxy;
         }

@@ -149,10 +149,10 @@ namespace zypp
 
     protected:
       SolvableType() {}
-      SolvableType( const SolvableType & ) {}
-      void operator=( const SolvableType & ) {}
-      SolvableType( SolvableType && ) noexcept {}
-      void operator=( SolvableType && ) noexcept {}
+      SolvableType( const SolvableType & ) = default;
+      SolvableType &operator=( const SolvableType & ) = default;
+      SolvableType( SolvableType && ) noexcept = default;
+      SolvableType &operator=( SolvableType && ) noexcept = default;
       ~SolvableType() {}
     };
 

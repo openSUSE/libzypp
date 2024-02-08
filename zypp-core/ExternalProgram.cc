@@ -45,7 +45,7 @@ namespace zypp {
     {}
 
 
-    ExternalProgram::ExternalProgram( std::string commandline,
+    ExternalProgram::ExternalProgram( const std::string& commandline,
                                       Stderr_Disposition stderr_disp,
                                       bool use_pty,
                                       int stderr_fd,

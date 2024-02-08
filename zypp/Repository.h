@@ -53,6 +53,11 @@ namespace zypp
         Repository()
         : _id( sat::detail::noRepoId ) {}
 
+        Repository(const Repository &) = default;
+        Repository(Repository &&) noexcept = default;
+        Repository &operator=(const Repository &) = default;
+        Repository &operator=(Repository &&) noexcept = default;
+
         /** \ref PoolImpl ctor. */
         explicit Repository( IdType id_r )
         : _id( id_r ) {}

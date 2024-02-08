@@ -59,13 +59,13 @@ namespace zypp
         Impl()
         : _parent( SolvAttr::noAttr )
         {}
-        Impl( SolvAttr attr_r, Location loc_r )
+        Impl( const SolvAttr& attr_r, Location loc_r )
         : _attr( attr_r ), _parent( attr_r.parent() ), _solv( loc_r == REPO_ATTR ? SOLVID_META : noSolvableId )
         {}
-        Impl( SolvAttr attr_r, Repository repo_r, Location loc_r )
+        Impl( const SolvAttr& attr_r, Repository repo_r, Location loc_r )
         : _attr( attr_r ), _parent( attr_r.parent() ), _repo( repo_r ), _solv( loc_r == REPO_ATTR ? SOLVID_META : noSolvableId )
         {}
-        Impl( SolvAttr attr_r, Solvable solv_r )
+        Impl( const SolvAttr& attr_r, Solvable solv_r )
         : _attr( attr_r ), _parent( attr_r.parent() ), _solv( solv_r )
         {}
 
@@ -75,7 +75,7 @@ namespace zypp
 
         void setAttr( SolvAttr attr_r )
         {
-          _attr = attr_r;
+          _attr = std::move(attr_r);
           SolvAttr p( _attr.parent() );
           if ( p != SolvAttr::noAttr )
             _parent = p;
@@ -122,7 +122,7 @@ namespace zypp
         { return _parent; }
 
         void setParent( SolvAttr attr_r )
-        { _parent = attr_r; }
+        { _parent = std::move(attr_r); }
 
       public:
         LookupAttr::iterator begin() const
@@ -171,25 +171,25 @@ namespace zypp
     {}
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Location loc_r )
-      : _pimpl( new Impl( attr_r, loc_r ) )
+      : _pimpl( new Impl( std::move(attr_r), std::move(loc_r) ) )
     {}
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Location loc_r )
-      : _pimpl( new Impl( attr_r, loc_r ) )
-    { _pimpl->setParent( parent_r ); }
+      : _pimpl( new Impl( std::move(attr_r), std::move(loc_r) ) )
+    { _pimpl->setParent( std::move(parent_r) ); }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( attr_r, repo_r, loc_r ) )
+      : _pimpl( new Impl( std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
     {}
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( attr_r, repo_r, loc_r ) )
-    { _pimpl->setParent( parent_r ); }
+      : _pimpl( new Impl( std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
+    { _pimpl->setParent( std::move(parent_r) ); }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Solvable solv_r )
-      : _pimpl( new Impl( attr_r, solv_r ) )
+      : _pimpl( new Impl( std::move(attr_r), std::move(solv_r) ) )
     {}
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Solvable solv_r )
-      : _pimpl( new Impl( attr_r, solv_r ) )
-    { _pimpl->setParent( parent_r ); }
+      : _pimpl( new Impl( std::move(attr_r), std::move(solv_r) ) )
+    { _pimpl->setParent( std::move(parent_r) ); }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -198,7 +198,7 @@ namespace zypp
     { return _pimpl->attr(); }
 
     void LookupAttr::setAttr( SolvAttr attr_r )
-    { _pimpl->setAttr( attr_r ); }
+    { _pimpl->setAttr( std::move(attr_r) ); }
 
     const StrMatcher & LookupAttr::strMatcher() const
     { return _pimpl->strMatcher(); }
@@ -230,7 +230,7 @@ namespace zypp
     { return _pimpl->parent(); }
 
     void LookupAttr::setParent( SolvAttr attr_r )
-    { _pimpl->setParent( attr_r ); }
+    { _pimpl->setParent( std::move(attr_r) ); }
 
     ///////////////////////////////////////////////////////////////////
 
@@ -282,7 +282,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     LookupRepoAttr::LookupRepoAttr( SolvAttr attr_r, Repository repo_r )
-      : LookupAttr( attr_r, repo_r, REPO_ATTR )
+      : LookupAttr( std::move(attr_r), repo_r, REPO_ATTR )
     {}
 
     void LookupRepoAttr::setRepo( Repository repo_r )
@@ -495,7 +495,7 @@ namespace zypp
       return iterator();
     }
 
-    LookupAttr::iterator LookupAttr::iterator::subFind( SolvAttr attr_r ) const
+    LookupAttr::iterator LookupAttr::iterator::subFind( const SolvAttr& attr_r ) const
     {
       iterator it = subBegin();
       if ( attr_r != sat::SolvAttr::allAttr )

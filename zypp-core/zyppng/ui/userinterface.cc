@@ -19,7 +19,7 @@ namespace zyppng {
   UserInterface::UserInterface( UserInterfacePrivate &d ) : Base(d)
   { }
 
-  void UserInterface::sendUserRequest(UserRequestRef event)
+  void UserInterface::sendUserRequest(const UserRequestRef& event)
   {
     Z_D();
     d->_sigEvent.emit( event );

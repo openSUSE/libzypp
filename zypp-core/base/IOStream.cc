@@ -97,7 +97,7 @@ namespace zypp
     // forEachLine
     ///////////////////////////////////////////////////////////////////
 
-    int forEachLine( std::istream & str_r, function<bool(int, std::string)> consume_r )
+    int forEachLine( std::istream & str_r, const function<bool(int, std::string)>& consume_r )
     {
       int lineno = 0;
       while ( str_r )

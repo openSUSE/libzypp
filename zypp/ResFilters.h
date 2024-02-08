@@ -157,7 +157,7 @@ namespace zypp
       : _name(std::move( name_r ))
       {}
 
-      bool operator()( ResObject::constPtr p ) const
+      bool operator()( const ResObject::constPtr& p ) const
       {
         return p->name() == _name;
       }
@@ -176,7 +176,7 @@ namespace zypp
       : _alias(std::move( alias_r ))
       {}
 
-      bool operator()( ResObject::constPtr p ) const
+      bool operator()( const ResObject::constPtr& p ) const
       {
         return p->repoInfo().alias() == _alias;
       }
@@ -204,7 +204,7 @@ namespace zypp
         , _cmp( cmp_r )
         {}
 
-        bool operator()( ResObject::constPtr p ) const
+        bool operator()( const ResObject::constPtr& p ) const
         {
           return _cmp( p->edition(), _edition );
         }
@@ -244,7 +244,7 @@ namespace zypp
         , _cmp( cmp_r )
         {}
 
-        bool operator()( ResObject::constPtr p ) const
+        bool operator()( const ResObject::constPtr& p ) const
         {
           return _cmp( p->arch(), _arch );
         }

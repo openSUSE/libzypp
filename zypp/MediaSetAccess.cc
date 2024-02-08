@@ -60,7 +60,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
   }
 
 
-  void MediaSetAccess::setVerifier( unsigned media_nr, media::MediaVerifierRef verifier )
+  void MediaSetAccess::setVerifier( unsigned media_nr, const media::MediaVerifierRef& verifier )
   {
     if (_medias.find(media_nr) != _medias.end())
     {
@@ -241,8 +241,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
     media::MediaManager media_mgr;
 
     for ( const auto &resource : files ) {
-      Pathname file(resource.filename());
-      unsigned media_nr(resource.medianr());
+           unsigned media_nr(resource.medianr());
       media::MediaAccessId media = getMediaAccessId( media_nr );
 
       if ( !media_mgr.isOpen( media ) ) {
@@ -257,7 +256,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
     }
   }
 
-  void MediaSetAccess::provide( ProvideOperation op,
+  void MediaSetAccess::provide( const ProvideOperation& op,
                                 const OnMediaLocation &resource,
                                 ProvideFileOptions options )
   {

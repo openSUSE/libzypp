@@ -97,7 +97,7 @@ namespace zyppng {
       virtual void requestStart    ( ProvideItem &item, uint32_t reqId, const zypp::Url &url, const AnyMap &extraData = {} ){}
       virtual void requestDone     ( ProvideItem &item, uint32_t reqId, const AnyMap &extraData = {} ){}
       virtual void requestRedirect ( ProvideItem &item, uint32_t reqId, const zypp::Url &toUrl, const AnyMap &extraData = {} ){}
-      virtual void requestFailed   ( ProvideItem &item, uint32_t reqId, const std::exception_ptr err, const AnyMap &requestData = {} ){}
+      virtual void requestFailed   ( ProvideItem &item, uint32_t reqId, const std::exception_ptr &err, const AnyMap &requestData = {} ){}
       virtual void pulse ( );
 
       const Stats &stats() const;

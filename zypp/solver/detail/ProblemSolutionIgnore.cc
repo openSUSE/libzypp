@@ -37,14 +37,14 @@ namespace zypp
     /////////////////////////////////////////////////////////////////////
     namespace detail
     {
-      ProblemSolutionIgnore::ProblemSolutionIgnore( PoolItem item )
+      ProblemSolutionIgnore::ProblemSolutionIgnore( const PoolItem& item )
       // TranslatorExplanation %s = name of package, patch, selection ...
       : ProblemSolution( str::form(_("break %s by ignoring some of its dependencies"), item.satSolvable().asString().c_str() ) )
       {
         addAction( new InjectSolutionAction( item, WEAK ) );
       }
 
-      ProblemSolutionIgnore::ProblemSolutionIgnore( PoolItemList itemList )
+      ProblemSolutionIgnore::ProblemSolutionIgnore( const PoolItemList& itemList )
       : ProblemSolution( _("generally ignore of some dependencies") )
       {
         for ( const auto & item : itemList)

@@ -147,7 +147,7 @@ namespace zyppng {
   }
 
 
-  bool AsyncDataSource::openFds ( std::vector<int> readFds, int writeFd )
+  bool AsyncDataSource::openFds ( const std::vector<int>& readFds, int writeFd )
   {
     Z_D();
 

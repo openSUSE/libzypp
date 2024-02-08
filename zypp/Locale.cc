@@ -41,7 +41,7 @@ namespace zypp
     { return( code_r ? withoutTrash( boost::string_ref(code_r) ) : IdString::Null ); }
 
     /** Return IdString from language/country codes. */
-    static IdString combineLC( LanguageCode language_r, CountryCode country_r )
+    static IdString combineLC( const LanguageCode& language_r, const CountryCode& country_r )
     {
       IdString ret;
       if ( language_r )
@@ -122,9 +122,9 @@ namespace zypp
 
   private:
     struct LC {
-      LC()					{}
-      LC( LanguageCode l_r )			: _l( l_r ) {}
-      LC( LanguageCode l_r, CountryCode c_r )	: _l( l_r ), _c( c_r ) {}
+      LC()                                                              {}
+      LC( const LanguageCode& l_r )                         : _l( l_r ) {}
+      LC( const LanguageCode& l_r, const CountryCode& c_r ) : _l( l_r ), _c( c_r ) {}
       LanguageCode _l;
       CountryCode  _c;
     };
@@ -189,7 +189,7 @@ namespace zypp
   : _str( CodeMaps::withoutTrash( str_r ) )
   {}
 
-  Locale::Locale( LanguageCode language_r, CountryCode country_r )
+  Locale::Locale( const LanguageCode& language_r, const CountryCode& country_r )
   : _str( CodeMaps::combineLC( language_r, country_r ) )
   {}
 

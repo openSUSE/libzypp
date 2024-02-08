@@ -171,7 +171,7 @@ namespace zypp
       return _target;
     }
 
-    void ZYppImpl::changeTargetTo( Target_Ptr newtarget_r )
+    void ZYppImpl::changeTargetTo( const Target_Ptr& newtarget_r )
     {
       if ( _target && newtarget_r ) // bsc#1203760: Make sure the old target is deleted before a new one is created!
         INT << "2 active targets at the same time must not happen!" << endl;

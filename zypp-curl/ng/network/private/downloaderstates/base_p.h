@@ -82,7 +82,7 @@ namespace zyppng {
 
 
     bool _emittedSigStart = false;
-    bool handleRequestAuthError(std::shared_ptr<Request> req, const zyppng::NetworkRequestError &err);
+    bool handleRequestAuthError(const std::shared_ptr<Request>& req, const zyppng::NetworkRequestError &err);
 
     NetworkRequestError safeFillSettingsFromURL ( const Url &url, TransferSettings &set );
 

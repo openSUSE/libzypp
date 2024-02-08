@@ -65,6 +65,11 @@ namespace zypp
       : _id( detail::noSolvableId )
       {}
 
+      Solvable(const Solvable &) = default;
+      Solvable(Solvable &&) noexcept = default;
+      Solvable &operator=(const Solvable &) = default;
+      Solvable &operator=(Solvable &&) noexcept = default;
+
       /** \ref PoolImpl ctor. */
       explicit Solvable( IdType id_r )
       : _id( id_r )

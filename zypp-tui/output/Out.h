@@ -496,7 +496,7 @@ public:
 
     /** Convenience ctor for one attribute pair */
     XmlNode( Out & out_r, const std::string & name_r, Attr attr_r )
-    : XmlNode( out_r, name_r, { attr_r } )
+    : XmlNode( out_r, name_r, { std::move(attr_r) } )
     {}
 
     /** Move ctor */
@@ -516,7 +516,7 @@ public:
   { if ( typeXML() ) { zypp::xmlout::node( std::cout, name_r, attrs_r ); } }
   /** \overload for one attribute pair */
   void xmlNode( const std::string & name_r, XmlNode::Attr attr_r )
-  { xmlNode( name_r, { attr_r } ); }
+  { xmlNode( name_r, { std::move(attr_r) } ); }
 
   ///////////////////////////////////////////////////////////////////
   /// \class TitleNode
@@ -568,7 +568,7 @@ public:
   void gap() { if ( type() == TYPE_NORMAL ) std::cout << std::endl; }
 
   void printRichText( std::string text, unsigned indent_r = 0U )
-  { ztui::printRichText( std::cout, text, indent_r, termwidth() ); }
+  { ztui::printRichText( std::cout, std::move(text), indent_r, termwidth() ); }
 
 
   /** Less common Paragraph formats */

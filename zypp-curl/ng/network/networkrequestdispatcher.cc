@@ -258,7 +258,7 @@ void NetworkRequestDispatcherPrivate::handleMultiSocketAction(curl_socket_t nati
   }
 }
 
-void NetworkRequestDispatcherPrivate::cancelAll( NetworkRequestError result )
+void NetworkRequestDispatcherPrivate::cancelAll( const NetworkRequestError& result )
 {
   //prevent dequeuePending from filling up the runningDownloads again
   zypp::DtorReset lockReset( _locked );

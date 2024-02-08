@@ -197,14 +197,14 @@ namespace zypp
         const LocaleSet & requestedLocales( satpool.getRequestedLocales() );
 
         yOut << YAML::Key << "locales" << YAML::Value << YAML::BeginSeq ;
-        for ( Locale l : requestedLocales ) {
+        for ( const Locale& l : requestedLocales ) {
           yOut << YAML::Value << YAML::BeginMap;
           yOut << YAML::Key << "fate" << YAML::Value << ( addedLocales.count(l) ? "added" : "" ) ;
           yOut << YAML::Key << "name" << YAML::Value << l.asString() ;
           yOut << YAML::EndMap;
         }
 
-        for ( Locale l : removedLocales ) {
+        for ( const Locale& l : removedLocales ) {
           yOut << YAML::Value << YAML::BeginMap;
           yOut << YAML::Key << "fate" << YAML::Value << "removed" ;
           yOut << YAML::Key << "name" << YAML::Value << l.asString() ;
@@ -214,7 +214,7 @@ namespace zypp
 
         // Vendor settings
         yOut << YAML::Key << "vendors" << YAML::Value << YAML::BeginSeq ;
-        VendorAttr::instance().foreachVendorList( [&]( VendorAttr::VendorList vlist )->bool {
+        VendorAttr::instance().foreachVendorList( [&]( const VendorAttr::VendorList& vlist )->bool {
           if ( ! vlist.empty() ) {
             yOut << YAML::Value << YAML::BeginSeq;
             for( const auto & v : vlist )

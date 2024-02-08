@@ -48,6 +48,10 @@ class NetworkRequestErrorPrivate;
 
     NetworkRequestError ();
 
+    NetworkRequestError(const NetworkRequestError &) = default;
+    NetworkRequestError(NetworkRequestError &&) noexcept = default;
+    NetworkRequestError &operator=(const NetworkRequestError &) = default;
+    NetworkRequestError &operator=(NetworkRequestError &&) noexcept = default;
     /**
      * @brief type
      * Returns the type of the error

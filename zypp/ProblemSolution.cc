@@ -116,7 +116,7 @@ namespace zypp
   void ProblemSolution::setDescription( std::string description )
   { _pimpl->_description = std::move(description); }
 
-  void ProblemSolution::setDetails( std::string details )
+  void ProblemSolution::setDetails( const std::string& details )
   { _pimpl->_details += "\n"; _pimpl->_details += details; }
 
   void ProblemSolution::pushDescriptionDetail( std::string description, bool front )
@@ -140,7 +140,7 @@ namespace zypp
     _pimpl->_details += description;
   }
 
-  void ProblemSolution::addAction( solver::detail::SolutionAction_Ptr action )
+  void ProblemSolution::addAction( const solver::detail::SolutionAction_Ptr& action )
   { _pimpl->_actions.push_back( action ); }
 
   bool ProblemSolution::skipsPatchesOnly() const

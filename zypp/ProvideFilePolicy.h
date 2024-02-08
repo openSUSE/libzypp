@@ -11,6 +11,7 @@
 #define ZYPP_PROVIDEFILEPOLICY_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/Function.h>
 #include <zypp/base/Functional.h>
@@ -34,7 +35,7 @@ namespace zypp
 
     /** Set callback. */
     ProvideFilePolicy & progressCB( ProgressCB progressCB_r )
-    { _progressCB = progressCB_r; return *this; }
+    { _progressCB = std::move(progressCB_r); return *this; }
 
     /** Evaluate callback. */
     bool progress( int value ) const;

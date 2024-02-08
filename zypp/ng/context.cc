@@ -45,7 +45,7 @@ namespace zyppng {
     return zypp::ZConfig::instance();
   }
 
-  void Context::executeImpl(AsyncOpBaseRef op)
+  void Context::executeImpl(const AsyncOpBaseRef& op)
   {
     auto loop = EventLoop::create();
     op->sigReady().connect([&](){

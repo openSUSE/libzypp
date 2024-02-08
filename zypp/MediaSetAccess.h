@@ -97,7 +97,7 @@ namespace zypp
       /**
        * Sets a \ref MediaVerifier verifier for given media number.
        */
-      void setVerifier( unsigned media_nr, media::MediaVerifierRef verifier );
+      void setVerifier( unsigned media_nr, const media::MediaVerifierRef& verifier );
 
       /**
        * The label identifing this media set and to be sent in a media change request.
@@ -358,7 +358,7 @@ namespace zypp
 
       typedef function<void( media::MediaAccessId, const OnMediaLocation & )> ProvideOperation;
 
-      void provide( ProvideOperation op, const OnMediaLocation &resource, ProvideFileOptions options );
+      void provide( const ProvideOperation& op, const OnMediaLocation &resource, ProvideFileOptions options );
 
       media::MediaAccessId getMediaAccessId (media::MediaNr medianr);
       virtual std::ostream & dumpOn( std::ostream & str ) const;

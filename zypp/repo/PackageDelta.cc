@@ -32,7 +32,7 @@ namespace zypp
   namespace packagedelta
   { /////////////////////////////////////////////////////////////////
 
-    DeltaRpm::DeltaRpm( sat::LookupAttr::iterator deltaInfo_r )
+    DeltaRpm::DeltaRpm( const sat::LookupAttr::iterator& deltaInfo_r )
     {
       if ( deltaInfo_r.inSolvAttr() != sat::SolvAttr::repositoryDeltaInfo )
       {

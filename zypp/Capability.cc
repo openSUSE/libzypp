@@ -201,7 +201,7 @@ namespace zypp
       Arch arch( Arch_empty );
       std::string name( name_r );
 
-      std::string::size_type asep( name_r.rfind( "." ) );
+      std::string::size_type asep( name_r.rfind( '.' ) );
       if ( asep != std::string::npos )
       {
         Arch ext( name_r.substr( asep+1 ) );

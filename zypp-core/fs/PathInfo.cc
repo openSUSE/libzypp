@@ -582,7 +582,7 @@ namespace zypp
       return ret;
     }
 
-    int dirForEach( const Pathname & dir_r, function<bool(const Pathname &, const char *const)> fnc_r )
+    int dirForEach( const Pathname & dir_r, const function<bool(const Pathname &, const char *const)>& fnc_r )
     {
       if ( ! fnc_r )
               return 0;

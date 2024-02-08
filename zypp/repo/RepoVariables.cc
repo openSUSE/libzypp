@@ -480,7 +480,7 @@ namespace zypp
         {
           if ( major_r || minor_r )
           {
-            std::string::size_type pos = releasever_r.find( "." );
+            std::string::size_type pos = releasever_r.find( '.' );
             if ( pos == std::string::npos )
             {
               if ( major_r ) *major_r = releasever_r;

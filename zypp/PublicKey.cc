@@ -12,6 +12,7 @@
 #include <climits>
 
 #include <iostream>
+#include <utility>
 #include <vector>
 
 #include <zypp/base/Gettext.h>
@@ -402,7 +403,7 @@ namespace zypp
   {}
 
   PublicKeyData::PublicKeyData(shared_ptr<Impl> data)
-    : _pimpl( data )
+    : _pimpl( std::move(data) )
   {}
 
   PublicKeyData::~PublicKeyData()

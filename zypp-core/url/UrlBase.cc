@@ -582,7 +582,7 @@ namespace zypp
         tmp.pathname = getPathName(zypp::url::E_ENCODED);
         if( !tmp.pathname.empty())
         {
-          if(url.find("/") != std::string::npos)
+          if(url.find('/') != std::string::npos)
           {
             // Url contains authority (that may be empty),
             // we may need a rewrite of the encoded path.
@@ -608,7 +608,7 @@ namespace zypp
           }
         }
         else if( opts.has(ViewOptions::EMPTY_PATH_NAME)
-                 && url.find("/") != std::string::npos)
+                 && url.find('/') != std::string::npos)
         {
           url += "/";
           if( opts.has(ViewOptions::EMPTY_PATH_PARAMS))

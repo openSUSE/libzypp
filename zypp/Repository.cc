@@ -11,6 +11,7 @@
 */
 #include <climits>
 #include <iostream>
+#include <utility>
 
 #include <zypp/base/Logger.h>
 #include <zypp/base/Gettext.h>
@@ -434,7 +435,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     Repository::ProductInfoIterator::ProductInfoIterator( sat::SolvAttr attr_r, Repository repo_r )
-    { base_reference() = sat::LookupRepoAttr( attr_r, repo_r ).begin(); }
+    { base_reference() = sat::LookupRepoAttr( std::move(attr_r), repo_r ).begin(); }
 
     std::string Repository::ProductInfoIterator::label() const
     { return base_reference().subFind( sat::SolvAttr::repositoryProductLabel ).asString(); }

@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 //#include <zypp/base/Logger.h>
 
 #include <zypp/base/SerialNumber.h>
@@ -46,7 +47,7 @@ namespace zypp
   //	METHOD TYPE : Ctor
   //
   ResPool::ResPool( pool::PoolTraits::Impl_Ptr impl_r )
-  : _pimpl( impl_r )
+  : _pimpl( std::move(impl_r) )
   {}
 
   ///////////////////////////////////////////////////////////////////

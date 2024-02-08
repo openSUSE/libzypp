@@ -115,7 +115,7 @@ namespace zypp
                              const ProvideFilePolicy & policy_r )
     {
       RepoMediaAccess access;
-      return access.provideFile(repo_r, loc_r, policy_r );
+      return access.provideFile(std::move(repo_r), loc_r, policy_r );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,12 +158,12 @@ namespace zypp
           media.reset( new MediaSetAccess(url) );
           _medias[url] = media;
         }
-        setVerifierForRepo( repo, media );
+        setVerifierForRepo( std::move(repo), media );
         return media;
       }
 
       private:
-        void setVerifierForRepo( RepoInfo repo, shared_ptr<MediaSetAccess> media )
+        void setVerifierForRepo( const RepoInfo& repo, const shared_ptr<MediaSetAccess>& media )
         {
           // Always set the MediaSetAccess label.
           media->setLabel( repo.name() );
@@ -233,7 +233,7 @@ namespace zypp
     const ProvideFilePolicy & RepoMediaAccess::defaultPolicy() const
     { return _impl->_defaultPolicy; }
 
-    ManagedFile RepoMediaAccess::provideFile( RepoInfo repo_r,
+    ManagedFile RepoMediaAccess::provideFile( const RepoInfo& repo_r,
                                               const OnMediaLocation & loc_rx,
                                               const ProvideFilePolicy & policy_r )
     {

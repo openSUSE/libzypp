@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/StrMatcher.h>
 
@@ -33,7 +34,7 @@ namespace zypp
   {
     void fillList( std::list<std::string> & ret_r, sat::Solvable solv_r, sat::SolvAttr attr_r )
     {
-      sat::LookupAttr query( attr_r, solv_r );
+      sat::LookupAttr query( std::move(attr_r), solv_r );
       for_( it, query.begin(), query.end() )
       {
         ret_r.push_back( it.asString() );

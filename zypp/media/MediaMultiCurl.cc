@@ -532,7 +532,7 @@ multifetchworker::~multifetchworker()
   disconnectFrom();
 }
 
-static inline bool env_isset(std::string name)
+static inline bool env_isset(const std::string& name)
 {
   const char *s = getenv(name.c_str());
   return s && *s ? true : false;
@@ -1633,7 +1633,7 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
               XXX << bl << endl;
               filesystem::unlink(failedFile);
             }
-          Pathname df = srcFile.deltafile();
+          const Pathname& df = srcFile.deltafile();
           if (!df.empty())
             {
               XXX << "reusing blocks from file " << df << endl;

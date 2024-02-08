@@ -86,7 +86,7 @@ namespace zypp
      * Add a solution to this problem. This class takes over ownership of
      * the problem and will delete it when neccessary.
      **/
-    void addSolution( ProblemSolution_Ptr solution, bool inFront = false );
+    void addSolution( const ProblemSolution_Ptr& solution, bool inFront = false );
 
   private:
     struct Impl;

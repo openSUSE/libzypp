@@ -49,7 +49,7 @@ namespace zyppng {
     void    setLabel    ( const std::string &label );
     const std::string &label () const;
 
-    void registerSubTask ( ProgressObserverRef child, float weight = 1.0 );
+    void registerSubTask ( const ProgressObserverRef& child, float weight = 1.0 );
 
     zypp::ProgressData::ReceiverFnc makeProgressDataReceiver ();
 

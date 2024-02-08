@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <utility>
 #include <zypp/base/Logger.h>
 #include <zypp/base/Exception.h>
 
@@ -137,7 +138,7 @@ namespace zypp
     {}
 
     void CommitPackageCache::setCommitList( std::vector<sat::Solvable> commitList_r )
-    { _pimpl->setCommitList( commitList_r ); }
+    { _pimpl->setCommitList( std::move(commitList_r) ); }
 
     ManagedFile CommitPackageCache::get( const PoolItem & citem_r )
     { return _pimpl->get( citem_r ); }

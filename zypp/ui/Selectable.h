@@ -13,6 +13,7 @@
 #define ZYPP_UI_SELECTABLE_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/base/ReferenceCounted.h>
 #include <zypp/base/NonCopyable.h>
@@ -86,7 +87,7 @@ namespace zypp
 
       /** Get the \ref Selctable by \c kind and \c name. */
       static Ptr get( ResKind kind_r, const std::string & name_r )
-      { return get( pool::ByIdent( kind_r, name_r ) ); }
+      { return get( pool::ByIdent( std::move(kind_r), name_r ) ); }
 
       /** Get the \c Package \ref Selctable by \c name. */
       static Ptr get( const std::string & name_r )
@@ -225,7 +226,7 @@ namespace zypp
        */
       PoolItem setCandidate( const PoolItem & newCandidate_r, ResStatus::TransactByValue causer_r = ResStatus::USER );
       /** \overload */
-      PoolItem setCandidate( ResObject::constPtr newCandidate_r, ResStatus::TransactByValue causer_r = ResStatus::USER );
+      PoolItem setCandidate( const ResObject::constPtr& newCandidate_r, ResStatus::TransactByValue causer_r = ResStatus::USER );
 
       /** Arrange the specified candidate (out of available objects) to be on system after commit.
        * If the specified candidate is not already installed (\ref identicalInstalled),

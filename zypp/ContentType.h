@@ -38,7 +38,7 @@ namespace zypp
      */
     explicit ContentType( std::string type_r )
     {
-      std::string::size_type pos = type_r.find( "/" );
+      std::string::size_type pos = type_r.find( '/' );
       if ( pos != std::string::npos )
       {
         testAndSet( _subtype, type_r.substr( pos+1 ) );

@@ -113,7 +113,7 @@ namespace zypp
 
     public:
       /** Hook for actions to trigger if the Target changes (initialize/finish) */
-      void changeTargetTo( Target_Ptr newtarget_r );
+      void changeTargetTo( const Target_Ptr& newtarget_r );
 
       /**
        * Enable the shutdown signal for \ref zypp_poll calls

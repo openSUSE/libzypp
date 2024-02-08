@@ -36,7 +36,7 @@ namespace zyppng {
 
   public:
     ZYPP_DECL_PRIVATE_CONSTR(UserInterface);
-    void sendUserRequest( UserRequestRef event );
+    void sendUserRequest( const UserRequestRef& event );
     SignalProxy<void( UserRequestRef event)> sigEvent();
 
   protected:

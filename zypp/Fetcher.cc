@@ -652,7 +652,7 @@ namespace zypp
     SignatureFileChecker sigchecker;
 
     // build the name of the index and the signature
-    OnMediaLocation idxloc(resource);
+    const OnMediaLocation& idxloc(resource);
     OnMediaLocation sigloc(resource);
     OnMediaLocation keyloc(resource);
 

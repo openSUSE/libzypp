@@ -422,13 +422,13 @@ public:
   void removePackage( Package::constPtr package, RpmInstFlags flags = RPMINST_NONE );
   /** \overload For delayed %posttrans %transfiletrigger(postun|in) execution if driven by Target::commit. */
   void removePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
-  void removePackage( Package::constPtr package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
+  void removePackage( const Package::constPtr& package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r );
 
   /** Run collected %posttrans and %transfiletrigger(postun|in) if `rpm --runposttrans` is supported.
    * Output-function receives a "RIPOFF:%scriptident(packageident)" line for every script
    * that is executed followed by lines the script outputs to stout/stderr.
    */
-  int runposttrans( const Pathname & filename_r, std::function<void(const std::string&)> output_r );
+  int runposttrans( const Pathname & filename_r, const std::function<void(const std::string&)>& output_r );
 
   /**
    * get backup dir for rpm config files

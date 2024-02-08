@@ -253,7 +253,7 @@ namespace zyppng {
     if ( newLabel ) setLabel ( *newLabel );
   }
 
-  void ProgressObserver::registerSubTask( ProgressObserverRef child, float weight )
+  void ProgressObserver::registerSubTask( const ProgressObserverRef& child, float weight )
   {
     Z_D();
     auto i = std::find( d->_children.begin(), d->_children.end(), child );

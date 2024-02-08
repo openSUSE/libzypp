@@ -334,7 +334,7 @@ startElement(void *userData, const xmlChar *name, const xmlChar **atts)
     }
 }
 
-UByteArray hexstr2bytes( std::string str )
+UByteArray hexstr2bytes( const std::string& str )
 {
   return Digest::hexStringToUByteArray( str );
 }

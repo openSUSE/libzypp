@@ -60,7 +60,7 @@ namespace zypp
       }
 
       void setCommitList( std::vector<sat::Solvable> commitList_r )
-      { _commitList = commitList_r; }
+      { _commitList = std::move(commitList_r); }
 
       const std::vector<sat::Solvable> & commitList() const
       { return _commitList; }

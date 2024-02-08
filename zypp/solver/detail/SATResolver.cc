@@ -334,7 +334,7 @@ SATResolver::pool (void) const
 // if data != NULL, set as APPL_LOW (from establishPool())
 
 static void
-SATSolutionToPool (PoolItem item, const ResStatus & status, const ResStatus::TransactByValue causer)
+SATSolutionToPool (const PoolItem& item, const ResStatus & status, const ResStatus::TransactByValue causer)
 {
     // resetting
     item.status().resetTransact (causer);
@@ -1048,7 +1048,7 @@ struct FindPackage
         {
         }
 
-    bool operator()( PoolItem p)
+    bool operator()( const PoolItem& p)
    {
        problemSolution->addSingleAction (p, action);
        return true;

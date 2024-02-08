@@ -56,7 +56,7 @@ namespace zypp
         {}
 
         /** Recursively expand Pattern. */
-        size_type doExpand( Pattern::constPtr pat_r )
+        size_type doExpand( const Pattern::constPtr& pat_r )
         {
           // INT << "+++ " << pat_r << " ++++++++++++++++++++++++++++++++++" << endl;
           _patternMap.clear();

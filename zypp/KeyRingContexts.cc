@@ -98,7 +98,7 @@ namespace zypp::keyring
   { return _pimpl->_buddyKeys; }
 
   void VerifyFileContext::addBuddyKey( std::string sid_r )
-  { _pimpl->_buddyKeys.insert( sid_r ); }
+  { _pimpl->_buddyKeys.insert( std::move(sid_r) ); }
 
   // Results:
   void VerifyFileContext::resetResults()

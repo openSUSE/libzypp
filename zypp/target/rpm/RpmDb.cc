@@ -26,6 +26,7 @@ extern "C"
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 #include <algorithm>
 
@@ -166,7 +167,7 @@ struct KeyRingSignalReceiver : callback::ReceiveReport<KeyRingSignals>
 
 static shared_ptr<KeyRingSignalReceiver> sKeyRingReceiver;
 
-unsigned diffFiles(const std::string file1, const std::string file2, std::string& out, int maxlines)
+unsigned diffFiles(const std::string& file1, const std::string& file2, std::string& out, int maxlines)
 {
   const char* argv[] =
     {
@@ -1859,12 +1860,12 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
 //	METHOD NAME : RpmDb::removePackage
 //
 void RpmDb::removePackage( Package::constPtr package, RpmInstFlags flags )
-{ removePackage( package, flags, nullptr ); }
+{ removePackage( std::move(package), flags, nullptr ); }
 
 void RpmDb::removePackage( const std::string & name_r, RpmInstFlags flags )
 { removePackage( name_r, flags, nullptr ); }
 
-void RpmDb::removePackage( Package::constPtr package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
+void RpmDb::removePackage( const Package::constPtr& package, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r )
 { // 'rpm -e' does not like epochs
   removePackage( package->name()
                  + "-" + package->edition().version()
@@ -2031,7 +2032,7 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 //
 //	METHOD NAME : RpmDb::runposttrans
 //
-int RpmDb::runposttrans( const Pathname & filename_r, std::function<void(const std::string&)> output_r )
+int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(const std::string&)>& output_r )
 {
   FAILIFNOTINITIALIZED;
   HistoryLog historylog;

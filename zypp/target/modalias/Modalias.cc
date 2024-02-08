@@ -131,7 +131,7 @@ namespace zypp
             //   ZYPP_MODALIAS_SYSFS=/tmp/modaliases
             DBG << "Using $ZYPP_MODALIAS_SYSFS modalias file: " << dir << endl;
             iostr::forEachLine( InputStream( pi.path() ),
-                                [&]( int num_r, std::string line_r )->bool
+                                [&]( int num_r, const std::string& line_r )->bool
                                 {
                                   this->_modaliases.push_back( line_r );
                                   return true;

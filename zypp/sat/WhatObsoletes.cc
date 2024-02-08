@@ -59,7 +59,7 @@ namespace zypp
       ctorDone();
     }
 
-    WhatObsoletes::WhatObsoletes( const ResObject::constPtr item_r )
+    WhatObsoletes::WhatObsoletes( const ResObject::constPtr& item_r )
     : _begin( 0 )
     {
       if ( item_r )
@@ -72,7 +72,7 @@ namespace zypp
     void WhatObsoletes::ctorAdd( const PoolItem & item_r )
     { ctorAdd( item_r->satSolvable() ); }
 
-    void WhatObsoletes::ctorAdd( ResObject_constPtr item_r )
+    void WhatObsoletes::ctorAdd( const ResObject_constPtr& item_r )
     { if ( item_r ) ctorAdd( item_r->satSolvable() ); }
 
 

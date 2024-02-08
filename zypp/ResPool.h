@@ -13,6 +13,7 @@
 #define ZYPP_RESPOOL_H
 
 #include <iosfwd>
+#include <utility>
 
 #include <zypp/APIConfig.h>
 #include <zypp/base/Iterator.h>
@@ -170,10 +171,10 @@ namespace zypp
       }
 
       byIdent_iterator byIdentBegin( ResKind kind_r, IdString name_r ) const
-      { return byIdentBegin( ByIdent(kind_r,name_r) ); }
+      { return byIdentBegin( ByIdent(std::move(kind_r),name_r) ); }
 
       byIdent_iterator byIdentBegin( ResKind kind_r, const C_Str & name_r ) const
-      { return byIdentBegin( ByIdent(kind_r,name_r) ); }
+      { return byIdentBegin( ByIdent(std::move(kind_r),name_r) ); }
 
       template<class TRes>
       byIdent_iterator byIdentBegin( IdString name_r ) const
@@ -201,10 +202,10 @@ namespace zypp
       }
 
       byIdent_iterator byIdentEnd( ResKind kind_r, IdString name_r ) const
-      { return byIdentEnd( ByIdent(kind_r,name_r) ); }
+      { return byIdentEnd( ByIdent(std::move(kind_r),name_r) ); }
 
       byIdent_iterator byIdentEnd( ResKind kind_r, const C_Str & name_r ) const
-      { return byIdentEnd( ByIdent(kind_r,name_r) ); }
+      { return byIdentEnd( ByIdent(std::move(kind_r),name_r) ); }
 
       template<class TRes>
       byIdent_iterator byIdentEnd( IdString name_r ) const
@@ -228,10 +229,10 @@ namespace zypp
       Iterable<byIdent_iterator> byIdent( const ByIdent & ident_r ) const
       { return makeIterable( byIdentBegin( ident_r ), byIdentEnd( ident_r ) ); }
 
-      Iterable<byIdent_iterator> byIdent( ResKind kind_r, IdString name_r ) const
+      Iterable<byIdent_iterator> byIdent( const ResKind& kind_r, IdString name_r ) const
       { return makeIterable( byIdentBegin( kind_r, name_r ), byIdentEnd(  kind_r, name_r ) ); }
 
-      Iterable<byIdent_iterator> byIdent( ResKind kind_r, const C_Str & name_r ) const
+      Iterable<byIdent_iterator> byIdent( const ResKind& kind_r, const C_Str & name_r ) const
       { return makeIterable( byIdentBegin(  kind_r, name_r ), byIdentEnd(  kind_r, name_r ) ); }
 
       template<class TRes>
@@ -325,7 +326,7 @@ namespace zypp
         friend class pool::PoolImpl;
         /** Factory: \ref ResPool::establishedStates */
         EstablishedStates( shared_ptr<Impl> pimpl_r )
-        : _pimpl { pimpl_r }
+        : _pimpl { std::move(pimpl_r) }
         {}
       };
       ///////////////////////////////////////////////////////////////////

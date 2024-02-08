@@ -56,7 +56,7 @@ namespace zypp
 
         /** Ctor from \ref ResObject::constPtr. */
         explicit
-        WhatObsoletes( const ResObject_constPtr item_r );
+        WhatObsoletes( const ResObject_constPtr& item_r );
 
         /** Ctor from a range of \ref Solvable, \ref PoolItem or \ref ResObject::constPtr. */
         template <class TIterator>
@@ -89,7 +89,7 @@ namespace zypp
 
       private:
         void ctorAdd( const PoolItem & item_r );
-        void ctorAdd( ResObject_constPtr item_r );
+        void ctorAdd( const ResObject_constPtr& item_r );
         void ctorAdd( Solvable item_r );
         void ctorDone();
 

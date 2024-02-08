@@ -86,13 +86,15 @@ namespace zypp
   class IdStringType : protected sat::detail::PoolMember
   {
     public:
-      typedef IdString::IdType IdType;
+    typedef IdString::IdType IdType;
 
     protected:
-      IdStringType() {}
-      IdStringType(const IdStringType &) {}
-      void operator=(const IdStringType &) {}
-      ~IdStringType() {}
+      IdStringType() = default;
+      IdStringType(const IdStringType &) = default;
+      IdStringType &operator=(const IdStringType &) = default;
+      IdStringType(IdStringType &&) noexcept = default;
+      IdStringType &operator=(IdStringType &&) noexcept = default;
+      ~IdStringType() = default;
 
     private:
       const Derived & self() const { return *static_cast<const Derived*>( this ); }

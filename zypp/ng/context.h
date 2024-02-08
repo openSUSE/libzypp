@@ -58,7 +58,7 @@ namespace zyppng {
     zypp::ZConfig &config();
 
   private:
-    void executeImpl ( AsyncOpBaseRef op );
+    void executeImpl ( const AsyncOpBaseRef& op );
   };
 
 }

@@ -635,7 +635,7 @@ public:
 //	METHOD TYPE : Constructor
 //
 librpmDb::db_const_iterator::db_const_iterator( librpmDb::constPtr dbptr_r )
-    : _d( * new D( dbptr_r ) )
+    : _d( * new D( std::move(dbptr_r) ) )
 {
   findAll();
 }

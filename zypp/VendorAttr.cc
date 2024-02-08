@@ -75,7 +75,7 @@ namespace zypp
       return isSuse( vendorMatchId(lVendor) ) && isSuse( vendorMatchId(rVendor) );
     }
 
-    unsigned foreachVendorList( std::function<bool(VendorList)> fnc_r ) const
+    unsigned foreachVendorList( const std::function<bool(VendorList)>& fnc_r ) const
     {
       std::map<unsigned,VendorList> lists;
       for( const auto & el : _vendorGroupMap )

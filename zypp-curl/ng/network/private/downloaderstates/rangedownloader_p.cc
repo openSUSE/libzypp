@@ -284,7 +284,7 @@ namespace zyppng {
       stateMachine()._requestDispatcher->reschedule();
   }
 
-  void RangeDownloaderBaseState::addNewRequest(std::shared_ptr<Request> req , const bool connectSignals)
+  void RangeDownloaderBaseState::addNewRequest(const std::shared_ptr<Request>& req , const bool connectSignals)
   {
     if ( connectSignals )
       req->connectSignals( *this );
@@ -309,7 +309,7 @@ namespace zyppng {
   /**
    * Just initialize the requests ranges from the internal blocklist
    */
-  bool RangeDownloaderBaseState::addBlockRanges ( std::shared_ptr<Request> req , std::vector<Block> blocks ) const
+  bool RangeDownloaderBaseState::addBlockRanges ( const std::shared_ptr<Request>& req , const std::vector<Block>& blocks ) const
   {
     req->resetRequestRanges();
     for ( const auto &block : blocks ) {

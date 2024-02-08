@@ -105,6 +105,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -191,7 +192,7 @@ MediaBlockList::setFileChecksum(std::string ctype, int cl, unsigned char *c)
 {
   if (!cl)
     return;
-  fsumtype = ctype;
+  fsumtype = std::move(ctype);
   fsum.resize(cl);
   memcpy(&fsum[0], c, cl);
 }
@@ -224,7 +225,7 @@ MediaBlockList::verifyFileDigest(Digest &digest) const
 }
 
 void
-MediaBlockList::setChecksum(size_t blkno, std::string cstype, int csl, unsigned char *cs, size_t cspad)
+MediaBlockList::setChecksum(size_t blkno, const std::string& cstype, int csl, unsigned char *cs, size_t cspad)
 {
   if (!csl)
     return;
@@ -436,7 +437,7 @@ fetchnext(FILE *fp, unsigned char *bp, size_t blksize, size_t pushback, unsigned
   return blksize - l;
 }
 
-void MediaBlockList::reuseBlocks(FILE *wfp, std::string filename)
+void MediaBlockList::reuseBlocks(FILE *wfp, const std::string& filename)
 {
 
   zypp::AutoFILE fp;
@@ -766,7 +767,7 @@ void MediaBlockList::reuseBlocks(FILE *wfp, std::string filename)
   rsums = nrsums;
 }
 
-void MediaBlockList::reuseBlocksOld(FILE *wfp, std::string filename)
+void MediaBlockList::reuseBlocksOld(FILE *wfp, const std::string& filename)
 {
 
   zypp::AutoFILE fp;

@@ -544,7 +544,7 @@ namespace zypp
     str::smatch what;
     std::string ret;
     iostr::simpleParseFile( InputStream( Pathname("/proc")/pid/"cgroup" ),
-                            [&]( int num_r, std::string line_r )->bool
+                            [&]( int num_r, const std::string& line_r )->bool
                             {
                               if ( str::regex_match( line_r, what, rx ) )
                               {

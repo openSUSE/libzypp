@@ -582,7 +582,7 @@ namespace zypp
        * dependency. Return #invocations of fnc_r, negative if fnc_r returned
        * false to indicate abort.
        */
-      int invokeOnEachSupportedLocale( Capability cap_r, function<bool (const Locale &)> fnc_r )
+      int invokeOnEachSupportedLocale( Capability cap_r, const function<bool (const Locale &)>& fnc_r )
       {
         CapDetail detail( cap_r );
         if ( detail.kind() == CapDetail::EXPRESSION )
@@ -621,7 +621,7 @@ namespace zypp
        * dependency. Return #invocations of fnc_r, negative if fnc_r returned
        * false to indicate abort.
        */
-      inline int invokeOnEachSupportedLocale( Capabilities cap_r, function<bool (Locale)> fnc_r )
+      inline int invokeOnEachSupportedLocale( Capabilities cap_r, const function<bool (Locale)>& fnc_r )
       {
         int cnt = 0;
         for_( cit, cap_r.begin(), cap_r.end() )

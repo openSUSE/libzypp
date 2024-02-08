@@ -93,7 +93,7 @@ public:
   /**
    * set / verify the (strong) checksum over a single block
    **/
-  void setChecksum(size_t blkno, std::string cstype, int csl, unsigned char *cs, size_t cspad=0);
+  void setChecksum(size_t blkno, const std::string& cstype, int csl, unsigned char *cs, size_t cspad=0);
   bool checkChecksum(size_t blkno, const unsigned char *buf, size_t bufl) const;
   UByteArray getChecksum( size_t blkno ) const;
   std::string getChecksumType( ) const;
@@ -125,8 +125,8 @@ public:
    * scan a file for blocks from our blocklist. if we find a suitable block,
    * it is removed from the list
    **/
-  void reuseBlocksOld(FILE *wfp, std::string filename);
-  void reuseBlocks(FILE *wfp, std::string filename);
+  void reuseBlocksOld(FILE *wfp, const std::string& filename);
+  void reuseBlocks(FILE *wfp, const std::string& filename);
 
   /**
    * return block list as string

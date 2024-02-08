@@ -466,7 +466,7 @@ namespace zypp
      *
      * @return 0 on success, -1 if aborted by callback, errno > 0 on ::readdir failure.
      */
-    int dirForEach( const Pathname & dir_r, function<bool(const Pathname &, const char *const)> fnc_r );
+    int dirForEach( const Pathname & dir_r, const function<bool(const Pathname &, const char *const)>& fnc_r );
 
     /**
      * Return content of directory via retlist. If dots is false

@@ -5,6 +5,8 @@
 
 #include <curl/curl.h>
 
+#include <utility>
+
 namespace zyppng {
 
   namespace {
@@ -633,7 +635,7 @@ namespace zyppng {
       return;
 
     _lastCode = c;
-    _lastErrorMsg = msg;
+    _lastErrorMsg = std::move(msg);
     _receiver.notifyErrorCodeChanged();
   }
 

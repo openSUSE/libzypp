@@ -81,7 +81,7 @@ private:
   struct ml_parsedata *pd;
 };
 
-UByteArray hexstr2bytes( std::string str );
+UByteArray hexstr2bytes( const std::string& str );
 
 } // namespace zypp::media
 

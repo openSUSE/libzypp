@@ -462,7 +462,7 @@ namespace zypp
 
     /** \overload A function is called on demand to compute each replacement value.
      */
-    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, function<std::string()> to_r );
+    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, const function<std::string()>& to_r );
 
     /** Enhance readability: insert gaps at regular distance
      * \code
@@ -884,7 +884,7 @@ namespace zypp
       /** Prefix lines by string computed by function taking line begin/end [std::string(const char*, const char*)]
        * Prints nothing for an empty string. Asserts a trainling '\n' on the last line.
        */
-      inline std::ostream & autoPrefix( std::ostream & str, const std::string & text_r, function<std::string(const char*, const char*)> fnc_r )
+      inline std::ostream & autoPrefix( std::ostream & str, const std::string & text_r, const function<std::string(const char*, const char*)>& fnc_r )
       {
         for ( const char * e = text_r.c_str(); *e; ++e )
         {

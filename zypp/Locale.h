@@ -62,7 +62,7 @@ namespace zypp
     explicit Locale( const char * str_r );
 
     /** Ctor taking LanguageCode and optional CountryCode. */
-    Locale( LanguageCode language_r, CountryCode country_r = CountryCode() );
+    Locale( const LanguageCode& language_r, const CountryCode& country_r = CountryCode() );
 
     /** Dtor */
     ~Locale();

@@ -13,6 +13,8 @@
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-core/fs/PathInfo.h>
 
+#include <utility>
+
 #include "basicdownloader_p.h"
 
 namespace zyppng {
@@ -79,7 +81,7 @@ namespace zyppng {
     const auto &spec = sm._spec;
 
     _request = std::make_shared<Request>( ::internal::clearQueryString(url), spec.targetPath() ) ;
-    _request->_myMirror = mirror;
+    _request->_myMirror = std::move(mirror);
     _request->_originalUrl = url;
     _request->transferSettings() = set;
 

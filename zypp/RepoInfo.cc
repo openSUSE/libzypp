@@ -195,7 +195,7 @@ namespace zypp
         {
           //MIL << "GO content.." << endl;
           iostr::forEachLine( InputStream( master ),
-                            [this]( int num_r, std::string line_r )->bool
+                            [this]( int num_r, const std::string& line_r )->bool
                             {
                               if ( str::startsWith( line_r, "REPOKEYWORDS" ) )
                               {

@@ -97,7 +97,7 @@ namespace zypp {
           str::regex regex( "^[ \t]*"+key_r+"[ \t]*=" );
           std::ofstream o( tmpf.path().c_str() );
           iostr::forEachLine( InputStream( path_r ),
-                              [&]( int num_r, std::string line_r )->bool
+                              [&]( int num_r, const std::string& line_r )->bool
                               {
                                 if ( !found && regex.matches( line_r ) )
                                 {

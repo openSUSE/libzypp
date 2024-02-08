@@ -180,7 +180,7 @@ namespace zypp
       unsigned _split( std::string_view line_r, std::string_view sep_r, Trim trim_r, WordConsumer && fnc_r );
 
       /** \ref splitRx working horse */
-      unsigned _splitRx(std::string_view line_r, const regex & rx_r, WordConsumer fnc_r );
+      unsigned _splitRx(std::string_view line_r, const regex & rx_r, const WordConsumer& fnc_r );
 #if LEGACY(1722)
       unsigned _splitRx( const std::string & line_r, const regex & rx_r, WordConsumer && fnc_r );
 #endif

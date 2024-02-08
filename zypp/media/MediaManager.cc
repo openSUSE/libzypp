@@ -893,7 +893,7 @@ namespace zypp
         if( ret.mediaSource && ret.attachPoint)
         {
           std::string mnt(ret.attachPoint->path.asString());
-          std::string our(path.asString());
+          const std::string& our(path.asString());
 
           if( our == mnt)
           {
@@ -923,7 +923,7 @@ namespace zypp
       for( e = entries.begin(); e != entries.end(); ++e)
       {
         std::string mnt(Pathname(e->dir).asString());
-        std::string our(path.asString());
+        const std::string& our(path.asString());
 
         if( our == mnt)
         {

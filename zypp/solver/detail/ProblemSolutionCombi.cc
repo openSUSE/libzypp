@@ -25,6 +25,8 @@
 
 #include <zypp/solver/detail/ProblemSolutionCombi.h>
 
+#include <utility>
+
 
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -41,11 +43,11 @@ namespace zypp
       void ProblemSolutionCombi::addSingleAction( Capability capability, TransactionKind action)
       { addAction( new TransactionSolutionAction( capability, action ) ); }
 
-      void ProblemSolutionCombi::addSingleAction( PoolItem item, TransactionKind action )
+      void ProblemSolutionCombi::addSingleAction( const PoolItem& item, TransactionKind action )
       { addAction( new TransactionSolutionAction( item, action ) ); }
 
       void ProblemSolutionCombi::addSingleAction( SolverQueueItem_Ptr item, TransactionKind action )
-      { addAction( new TransactionSolutionAction( item, action ) ); }
+      { addAction( new TransactionSolutionAction( std::move(item), action ) ); }
 
     } // namespace detail
     /////////////////////////////////////////////////////////////////////

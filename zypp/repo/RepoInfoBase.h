@@ -42,8 +42,13 @@ namespace zypp
 
     public:
       RepoInfoBase();
-      RepoInfoBase(const std::string & alias);
+      RepoInfoBase(const std::string &alias);
       virtual ~RepoInfoBase();
+
+      RepoInfoBase(const RepoInfoBase &) = default;
+      RepoInfoBase(RepoInfoBase &&) noexcept = default;
+      RepoInfoBase &operator=(const RepoInfoBase &) = default;
+      RepoInfoBase &operator=(RepoInfoBase &&) noexcept = default;
 
       /**
        * unique identifier for this source. If not specified

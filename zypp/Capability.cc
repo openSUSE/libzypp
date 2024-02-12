@@ -563,7 +563,7 @@ namespace zypp
 
   Capability Capability::guessPackageSpec( const std::string & str_r )
   {
-    bool dummy;
+    bool dummy = false;
     return guessPackageSpec( str_r, dummy );
   }
 

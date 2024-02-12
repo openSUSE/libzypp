@@ -383,7 +383,7 @@ bool NetworkRequestDispatcher::supportsProtocol( const Url &url )
   // curl_info does not need any free (is static)
   if (curl_info->protocols)
   {
-    const char * const *proto;
+    const char * const *proto = nullptr;
     std::string        scheme( url.getScheme() );
     bool               found = false;
     for(proto=curl_info->protocols; !found && *proto; ++proto) {

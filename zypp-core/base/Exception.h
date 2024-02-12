@@ -178,7 +178,7 @@ namespace zypp
     Exception( std::string && msg_r, Exception && history_r );
 
     /** Dtor. */
-    virtual ~Exception() throw();
+    ~Exception() throw() override;
 
     /** Return CodeLocation. */
     const CodeLocation & where() const
@@ -309,7 +309,7 @@ namespace zypp
     History              _history;
 
     /** Return message string. */
-    virtual const char * what() const throw()
+    const char * what() const throw() override
     { return _msg.c_str(); }
 
     /** Called by <tt>std::ostream & operator\<\<</tt>.

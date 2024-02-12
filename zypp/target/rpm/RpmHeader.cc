@@ -36,8 +36,8 @@ int unameToUid(const char * thisUname, uid_t * uid)
     static size_t lastUnameLen = 0;
     static size_t lastUnameAlloced;
     static uid_t lastUid;
-    struct passwd * pwent;
-    size_t thisUnameLen;
+    struct passwd * pwent = nullptr;
+    size_t thisUnameLen = 0;
 
     if (!thisUname) {
         lastUnameLen = 0;
@@ -86,8 +86,8 @@ int gnameToGid(const char * thisGname, gid_t * gid)
     static size_t lastGnameLen = 0;
     static size_t lastGnameAlloced;
     static gid_t lastGid;
-    size_t thisGnameLen;
-    struct group * grent;
+    size_t thisGnameLen = 0;
+    struct group * grent = nullptr;
 
     if (thisGname == NULL) {
         lastGnameLen = 0;
@@ -982,7 +982,7 @@ std::list<FileInfo> RpmHeader::tag_fileinfos() const
 
     for ( unsigned i = 0; i < basenames.size(); ++ i )
     {
-      uid_t uid;
+      uid_t uid = 0;
       if (uids.empty())
       {
         uid = unameToUid( usernames[i].c_str(), &uid );
@@ -992,7 +992,7 @@ std::list<FileInfo> RpmHeader::tag_fileinfos() const
         uid =uids[i];
       }
 
-      gid_t gid;
+      gid_t gid = 0;
       if (gids.empty())
       {
         gid = gnameToGid( groupnames[i].c_str(), &gid );

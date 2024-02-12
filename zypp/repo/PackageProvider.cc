@@ -119,17 +119,17 @@ namespace zypp
       , _retry(false)
       {}
 
-      virtual ~PackageProviderImpl() {}
+      ~PackageProviderImpl() override {}
 
     public:
       /** Provide the package.
        * The basic workflow.
        * \throws Exception.
        */
-      virtual ManagedFile providePackage() const;
+      ManagedFile providePackage() const override;
 
       /** Provide the package if it is cached. */
-      virtual ManagedFile providePackageFromCache() const
+      ManagedFile providePackageFromCache() const override
       {
         ManagedFile ret( doProvidePackageFromCache() );
         if ( ! ( ret->empty() ||  _package->repoInfo().keepPackages() ) )
@@ -138,7 +138,7 @@ namespace zypp
       }
 
       /** Whether the package is cached. */
-      virtual bool isCached() const
+      bool isCached() const override
       { return ! doProvidePackageFromCache()->empty(); }
 
     protected:
@@ -534,7 +534,7 @@ namespace zypp
       {}
 
     protected:
-      virtual ManagedFile doProvidePackage() const;
+      ManagedFile doProvidePackage() const override;
 
     private:
       typedef packagedelta::DeltaRpm	DeltaRpm;

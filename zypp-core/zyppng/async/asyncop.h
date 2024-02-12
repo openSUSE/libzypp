@@ -71,7 +71,7 @@ namespace zyppng {
     AsyncOpNotReadyException()
       : Exception( "AsyncOp instance not ready" )
     {}
-    virtual ~AsyncOpNotReadyException();
+    ~AsyncOpNotReadyException() override;
   };
   inline AsyncOpNotReadyException::~AsyncOpNotReadyException() { }
 
@@ -81,7 +81,7 @@ namespace zyppng {
     CancelNotImplementedException()
       : Exception ("AsyncOp does not support cancelling the operation")
     {}
-    virtual ~CancelNotImplementedException();
+    ~CancelNotImplementedException() override;
   };
   inline CancelNotImplementedException::~CancelNotImplementedException() { }
 
@@ -173,7 +173,7 @@ namespace zyppng {
     AsyncOp& operator= ( AsyncOp &&other ) noexcept = default;
     AsyncOp ( AsyncOp &&other ) noexcept = default;
 
-    virtual ~AsyncOp(){}
+    ~AsyncOp() override{}
 
     /*!
      * Sets the async operation ready, in case a callback

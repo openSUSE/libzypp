@@ -87,7 +87,7 @@ namespace zypp
 
     public:
       /** Provide the package. Either from Source or from cache. */
-      virtual ManagedFile get( const PoolItem & citem_r );
+      ManagedFile get( const PoolItem & citem_r ) override;
 
     private:
       /** Return whether \a pi is located on a CD/DVD */

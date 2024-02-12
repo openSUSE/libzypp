@@ -51,7 +51,7 @@ ZsyncParser::ZsyncParser()
 static int
 hexstr2bytes(unsigned char *buf, const char *str, int buflen)
 {
-  int i;
+  int i = 0;
   for (i = 0; i < buflen; i++)
     {
 #define c2h(c) (((c)>='0' && (c)<='9') ? ((c)-'0')              \
@@ -117,7 +117,7 @@ ZsyncParser::parse( const Pathname &filename )
       bl.setRsumSequence( sql );
 
       size_t nblks = (filesize + blksize - 1) / blksize;
-      size_t i;
+      size_t i = 0;
       off_t off = 0;
       size_t size = blksize;
       for (i = 0; i < nblks; i++)
@@ -187,7 +187,7 @@ std::vector<Url>
 ZsyncParser::getUrls()
 {
   std::vector<Url> ret;
-  size_t i;
+  size_t i = 0;
   for (i = 0; i < urls.size(); i++)
     ret.push_back(Url(urls[i]));
   return ret;

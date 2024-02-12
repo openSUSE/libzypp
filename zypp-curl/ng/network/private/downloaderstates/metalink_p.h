@@ -36,7 +36,7 @@ namespace zyppng {
 
     void enter ();
     void exit ();
-    virtual void setFinished () override;
+    void setFinished () override;
 
     std::shared_ptr<FinishedState> transitionToFinished ();
 

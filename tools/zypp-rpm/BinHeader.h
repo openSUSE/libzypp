@@ -61,7 +61,7 @@ public:
    **/
   BinHeader( BinHeader::Ptr & rhs );
 
-  virtual ~BinHeader();
+  ~BinHeader() override;
 
 public:
 
@@ -91,7 +91,7 @@ public:
 
 public:
 
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -105,9 +105,7 @@ public:
 class BinHeader::intList : private zypp::base::NonCopyable
 {
   public:
-    intList()
-      : _type( RPM_NULL_TYPE )
-    {}
+    intList() {}
 
     bool empty() const
     { return _data.empty(); }
@@ -124,7 +122,7 @@ class BinHeader::intList : private zypp::base::NonCopyable
 
   private:
     std::vector<long> _data;
-    rpmTagType _type;
+    rpmTagType _type{ RPM_NULL_TYPE };
 };
 
 ///////////////////////////////////////////////////////////////////

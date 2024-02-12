@@ -50,20 +50,20 @@ class MediaCurl : public MediaNetworkCommonHandler
 
     Url clearQueryString(const Url &url) const;
 
-    virtual void attachTo (bool next = false) override;
-    virtual void releaseFrom( const std::string & ejectDev ) override;
-    virtual void getFile( const OnMediaLocation & file ) const override;
-    virtual void getDir( const Pathname & dirname, bool recurse_r ) const override;
-    virtual void getDirInfo( std::list<std::string> & retlist,
+    void attachTo (bool next = false) override;
+    void releaseFrom( const std::string & ejectDev ) override;
+    void getFile( const OnMediaLocation & file ) const override;
+    void getDir( const Pathname & dirname, bool recurse_r ) const override;
+    void getDirInfo( std::list<std::string> & retlist,
                              const Pathname & dirname, bool dots = true ) const override;
-    virtual void getDirInfo( filesystem::DirContent & retlist,
+    void getDirInfo( filesystem::DirContent & retlist,
                              const Pathname & dirname, bool dots = true ) const override;
     /**
      * Repeatedly calls doGetDoesFileExist() until it successfully returns,
      * fails unexpectedly, or user cancels the operation. This is used to
      * handle authentication or similar retry scenarios on media level.
      */
-    virtual bool getDoesFileExist( const Pathname & filename ) const override;
+    bool getDoesFileExist( const Pathname & filename ) const override;
 
     /**
      * \see MediaHandler::getDoesFileExist
@@ -75,13 +75,13 @@ class MediaCurl : public MediaNetworkCommonHandler
      * \throws MediaException
      *
      */
-    virtual void disconnectFrom() override;
+    void disconnectFrom() override;
     /**
      *
      * \throws MediaException
      *
      */
-    virtual void getFileCopy( const OnMediaLocation& srcFile, const Pathname & targetFilename ) const override;
+    void getFileCopy( const OnMediaLocation& srcFile, const Pathname & targetFilename ) const override;
 
     /**
      *
@@ -91,14 +91,14 @@ class MediaCurl : public MediaNetworkCommonHandler
     virtual void doGetFileCopy( const OnMediaLocation &srcFile, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report,  RequestOptions options = OPTION_NONE ) const;
 
 
-    virtual bool checkAttachPoint(const Pathname &apoint) const override;
+    bool checkAttachPoint(const Pathname &apoint) const override;
 
   public:
 
     MediaCurl( const Url &      url_r,
                const Pathname & attach_point_hint_r );
 
-    virtual ~MediaCurl() override { try { release(); } catch(...) {} }
+    ~MediaCurl() override { try { release(); } catch(...) {} }
 
     static void setCookieFile( const Pathname & );
 

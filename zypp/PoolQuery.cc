@@ -1276,7 +1276,7 @@ namespace zypp
       }
       else if ( attribute == PoolQueryAttr::editionAttr)
       {
-        std::string::size_type pos;
+        std::string::size_type pos = 0;
         Rel rel("==");
         if (attrValue.find_first_of("=<>!") == 0)
         {

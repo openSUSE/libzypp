@@ -49,7 +49,7 @@ namespace zypp
       {}
 
       /** Dtor. */
-      virtual ~MediaException() noexcept override;
+      ~MediaException() noexcept override;
     };
 
     class MediaMountException : public MediaException
@@ -73,7 +73,7 @@ namespace zypp
       , _cmdout(std::move(cmdout_r))
       {}
       /** Dtor. */
-      virtual ~MediaMountException() noexcept {}
+      ~MediaMountException() noexcept override {}
 
       const std::string & mountError() const
       { return _error;  }
@@ -85,7 +85,7 @@ namespace zypp
       { return _cmdout; }
 
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _error;
       std::string _source;
@@ -106,9 +106,9 @@ namespace zypp
       , _path(std::move(path_r))
       {}
       /** Dtor. */
-      virtual ~MediaUnmountException() noexcept {}
+      ~MediaUnmountException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _error;
       std::string _path;
@@ -138,10 +138,10 @@ namespace zypp
       : MediaException()
       , _filename(std::move(filename_r))
       {}
-      virtual ~MediaBadFilenameException() noexcept {}
+      ~MediaBadFilenameException() noexcept override {}
       std::string filename() const { return _filename; }
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _filename;
     };
@@ -153,9 +153,9 @@ namespace zypp
       : MediaException()
       , _action(std::move(action_r))
       {}
-      virtual ~MediaNotOpenException() noexcept {}
+      ~MediaNotOpenException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _action;
     };
@@ -169,9 +169,9 @@ namespace zypp
       , _url(url_r.asString())
       , _filename(filename_r.asString())
       {}
-      virtual ~MediaFileNotFoundException() noexcept {}
+      ~MediaFileNotFoundException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
       std::string _filename;
@@ -184,9 +184,9 @@ namespace zypp
       : MediaException()
       , _filename(filename_r.asString())
       {}
-      virtual ~MediaWriteException() noexcept {}
+      ~MediaWriteException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _filename;
     };
@@ -198,9 +198,9 @@ namespace zypp
       : MediaException()
       , _url(url_r.asString())
       {}
-      virtual ~MediaNotAttachedException() noexcept {}
+      ~MediaNotAttachedException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
     };
@@ -212,9 +212,9 @@ namespace zypp
       : MediaException()
       , _url(url_r.asString())
       {}
-      virtual ~MediaBadAttachPointException() noexcept {}
+      ~MediaBadAttachPointException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
     };
@@ -226,9 +226,9 @@ namespace zypp
       : MediaException()
       , _url(url_r.asString())
       {}
-      virtual ~MediaCurlInitException() noexcept {}
+      ~MediaCurlInitException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
     };
@@ -242,9 +242,9 @@ namespace zypp
       , _url(url_r.asString())
       , _message(std::move(message_r))
       {}
-      virtual ~MediaSystemException() noexcept {}
+      ~MediaSystemException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
       std::string _message;
@@ -259,9 +259,9 @@ namespace zypp
       , _url(url_r.asString())
       , _path(path_r.asString())
       {}
-      virtual ~MediaNotAFileException() noexcept {}
+      ~MediaNotAFileException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
       std::string _path;
@@ -276,9 +276,9 @@ namespace zypp
       , _url(url_r.asString())
       , _path(path_r.asString())
       {}
-      virtual ~MediaNotADirException() noexcept {}
+      ~MediaNotADirException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _url;
       std::string _path;
@@ -293,9 +293,9 @@ namespace zypp
       , _url(url_r.asString())
       , _msg(std::move(msg_r))
       {}
-      virtual ~MediaBadUrlException() noexcept {}
+      ~MediaBadUrlException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -306,9 +306,9 @@ namespace zypp
       MediaBadUrlEmptyHostException(const Url & url_r)
       : MediaBadUrlException(url_r)
       {}
-      virtual ~MediaBadUrlEmptyHostException() noexcept {}
+      ~MediaBadUrlEmptyHostException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     };
 
     class MediaBadUrlEmptyFilesystemException : public MediaBadUrlException
@@ -317,9 +317,9 @@ namespace zypp
       MediaBadUrlEmptyFilesystemException(const Url & url_r)
       : MediaBadUrlException(url_r)
       {}
-      virtual ~MediaBadUrlEmptyFilesystemException() noexcept {}
+      ~MediaBadUrlEmptyFilesystemException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     };
 
     class MediaBadUrlEmptyDestinationException : public MediaBadUrlException
@@ -328,9 +328,9 @@ namespace zypp
       MediaBadUrlEmptyDestinationException(const Url & url_r)
       : MediaBadUrlException(url_r)
       {}
-      virtual ~MediaBadUrlEmptyDestinationException() noexcept {}
+      ~MediaBadUrlEmptyDestinationException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     };
 
     class MediaUnsupportedUrlSchemeException : public MediaBadUrlException
@@ -339,9 +339,9 @@ namespace zypp
       MediaUnsupportedUrlSchemeException(const Url & url_r)
       : MediaBadUrlException(url_r)
       {}
-      virtual ~MediaUnsupportedUrlSchemeException() noexcept {}
+      ~MediaUnsupportedUrlSchemeException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     };
 
     class MediaNotSupportedException : public MediaException
@@ -351,9 +351,9 @@ namespace zypp
       : MediaException()
       , _url(url_r.asString())
       {}
-      virtual ~MediaNotSupportedException() noexcept {}
+      ~MediaNotSupportedException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
     };
 
@@ -368,10 +368,10 @@ namespace zypp
       , _err(std::move(err_r))
       , _msg(std::move(msg_r))
       {}
-      virtual ~MediaCurlException() noexcept {}
+      ~MediaCurlException() noexcept override {}
       std::string errstr() const { return _err; }
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _err;
       std::string _msg;
@@ -385,9 +385,9 @@ namespace zypp
       , _url(url_r.asString())
       , _msg(std::move(msg_r))
       {}
-      virtual ~MediaCurlSetOptException() noexcept {}
+      ~MediaCurlSetOptException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -399,9 +399,9 @@ namespace zypp
       : MediaException()
       , _url(url_r.asString())
       {}
-      virtual ~MediaNotDesiredException() noexcept {}
+      ~MediaNotDesiredException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string  _url;
     };
@@ -416,9 +416,9 @@ namespace zypp
       : MediaException()
       , _name(std::move(name))
       {}
-      virtual ~MediaIsSharedException() noexcept {}
+      ~MediaIsSharedException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _name;
     };
@@ -435,9 +435,9 @@ namespace zypp
       : MediaException("Can't eject media")
       , _name(std::move(name))
       {}
-      virtual ~MediaNotEjectedException() noexcept {}
+      ~MediaNotEjectedException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       std::string _name;
     };
@@ -462,7 +462,7 @@ namespace zypp
       , _hint(std::move(hint_r))
       {}
 
-      virtual ~MediaUnauthorizedException() noexcept {}
+      ~MediaUnauthorizedException() noexcept override {}
 
       const Url         & url()  const { return _url;  }
       const std::string & err()  const { return _err;  }
@@ -470,7 +470,7 @@ namespace zypp
       const std::string & hint() const { return _hint; }
 
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       Url         _url;
       std::string _err;
@@ -484,9 +484,9 @@ namespace zypp
       : MediaException(msg)
       , _url(url_r.asString()), _msg(msg)
       {}
-      virtual ~MediaForbiddenException() noexcept {}
+      ~MediaForbiddenException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -498,9 +498,9 @@ namespace zypp
       : MediaException(msg)
       , _url(url_r.asString()), _msg(msg)
       {}
-      virtual ~MediaTimeoutException() noexcept {}
+      ~MediaTimeoutException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -514,9 +514,9 @@ namespace zypp
       , _msg(msg)
       , _expectedFileSize(cnt_r)
       {}
-      virtual ~MediaFileSizeExceededException() noexcept {}
+      ~MediaFileSizeExceededException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
       ByteCount _expectedFileSize;
@@ -530,9 +530,9 @@ namespace zypp
       : MediaException(msg)
       , _url(url_r.asString()), _msg(msg)
       {}
-      virtual ~MediaTemporaryProblemException() noexcept {}
+      ~MediaTemporaryProblemException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -544,9 +544,9 @@ namespace zypp
       : MediaException(msg)
       , _url(url_r.asString()), _msg(msg)
       {}
-      virtual ~MediaBadCAException() noexcept {}
+      ~MediaBadCAException() noexcept override {}
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
       std::string _url;
       std::string _msg;
     };
@@ -557,7 +557,7 @@ namespace zypp
       MediaInvalidCredentialsException( const std::string & msg = "" )
         : MediaException(msg)
       {}
-      virtual ~MediaInvalidCredentialsException() noexcept {}
+      ~MediaInvalidCredentialsException() noexcept override {}
     };
 
     class MediaRequestCancelledException : public MediaException
@@ -566,7 +566,7 @@ namespace zypp
       MediaRequestCancelledException( const std::string & msg = "" )
         : MediaException(msg)
       {}
-      virtual ~MediaRequestCancelledException() noexcept {}
+      ~MediaRequestCancelledException() noexcept override {}
     };
 
   /////////////////////////////////////////////////////////////////

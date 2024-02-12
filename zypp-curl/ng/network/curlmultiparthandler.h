@@ -126,7 +126,7 @@ namespace zyppng {
       };
 
       CurlMultiPartHandler( ProtocolMode mode, void *easyHandle, std::vector<Range> &ranges, CurlMultiPartDataReceiver &receiver );
-      ~CurlMultiPartHandler();
+      ~CurlMultiPartHandler() override;
 
       void *easyHandle() const;
       bool canRecover() const;

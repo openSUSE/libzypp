@@ -29,17 +29,17 @@ namespace zypp {
     public:
       ProxyInfoSysconfig(const Pathname & path);
       /**  */
-      bool enabled() const
+      bool enabled() const override
       { return _enabled; }
       /**  */
-      std::string proxy(const Url & url_r) const;
+      std::string proxy(const Url & url_r) const override;
       /**  */
-      ProxyInfo::NoProxyList noProxy() const
+      ProxyInfo::NoProxyList noProxy() const override
       { return _no_proxy; }
       /**  */
-      virtual ProxyInfo::NoProxyIterator noProxyBegin() const;
+      ProxyInfo::NoProxyIterator noProxyBegin() const override;
       /**  */
-      virtual ProxyInfo::NoProxyIterator noProxyEnd() const;
+      ProxyInfo::NoProxyIterator noProxyEnd() const override;
     private:
       DefaultIntegral<bool,false> _enabled;
       ProxyInfo::NoProxyList _no_proxy;

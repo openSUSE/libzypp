@@ -45,7 +45,7 @@ namespace zypp
     {
       StreamLineWriter( std::ostream & str_r ) : _str( &str_r ) {}
 
-      virtual void writeOut( const std::string & formated_r )
+      void writeOut( const std::string & formated_r ) override
       { (*_str) << formated_r << std::endl; }
 
       protected:

@@ -560,7 +560,7 @@ namespace zypp
       Selectable( Impl_Ptr pimpl_r );
     private:
       /** Dtor */
-      ~Selectable();
+      ~Selectable() override;
     private:
       /** Pointer to implementation */
       RW_pointer<Impl> _pimpl;

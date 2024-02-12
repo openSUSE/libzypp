@@ -77,7 +77,7 @@ class EventDispatcherPrivate : public BasePrivate
   ZYPP_DECLARE_PUBLIC(EventDispatcher)
 public:
   EventDispatcherPrivate( GMainContext *ctx, EventDispatcher &p );
-  virtual ~EventDispatcherPrivate();
+  ~EventDispatcherPrivate() override;
 
   bool runIdleTasks();
   void enableIdleSource ();

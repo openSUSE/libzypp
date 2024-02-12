@@ -77,7 +77,7 @@ namespace zyppng {
      * \note currently only AF_UNIX, SOCK_STREAM sockets are tested
      */
     static Ptr create ( int domain, int type, int protocol );
-    virtual ~Socket();
+    ~Socket() override;
 
     /*!
      * Closed the socket and disconnects from the peer.

@@ -219,7 +219,7 @@ namespace zypp
         {
           // remove depending (iso) handlers first
           ManagedMediaMap::iterator it;
-          bool found;
+          bool found = false;
           do
           {
             found = false;

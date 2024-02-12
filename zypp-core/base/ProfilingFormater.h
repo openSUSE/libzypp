@@ -25,13 +25,13 @@ namespace zypp
 
     struct ProfilingFormater : public LogControl::LineFormater
     {
-      virtual std::string format( const std::string & /*group_r*/,
+      std::string format( const std::string & /*group_r*/,
                                   logger::LogLevel    /*level_r*/,
                                   const char *        /*file_r*/,
                                   const char *        /*func_r*/,
                                   int                 /*line_r*/,
-                                  const std::string & /*message_r*/ );
-      virtual ~ProfilingFormater() {}
+                                  const std::string & /*message_r*/ ) override;
+      ~ProfilingFormater() override {}
     };
 
 

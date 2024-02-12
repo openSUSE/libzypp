@@ -87,9 +87,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
   void MediaSetAccess::releaseFile( const Pathname & file, unsigned media_nr)
   {
     media::MediaManager media_mgr;
-    media::MediaAccessId media;
-
-    media = getMediaAccessId( media_nr);
+    media::MediaAccessId media = getMediaAccessId( media_nr);
     DBG << "Going to release file " << file
         << " from media number " << media_nr << endl;
 
@@ -103,8 +101,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
                                 bool dots, unsigned media_nr )
   {
     media::MediaManager media_mgr;
-    media::MediaAccessId media;
-    media = getMediaAccessId(media_nr);
+    media::MediaAccessId media = getMediaAccessId(media_nr);
 
     // try to attach the media
     if ( ! media_mgr.isAttached(media) )
@@ -266,7 +263,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
     callback::SendReport<media::MediaChangeReport> report;
     media::MediaManager media_mgr;
 
-    media::MediaAccessId media;
+    media::MediaAccessId media = 0;
 
     do
     {

@@ -198,7 +198,7 @@ namespace zypp
     /** Ctor */
     Product( const sat::Solvable & solvable_r );
     /** Dtor */
-    virtual ~Product();
+    ~Product() override;
   };
 
   /** Helper to iterate a products URL lists.

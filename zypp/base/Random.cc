@@ -12,7 +12,7 @@ int random_int()
   static bool init = false;
   if (!init)
   {
-      unsigned int seed;
+      unsigned int seed = 0;
       init = true;
       int fd = open("/dev/urandom", O_RDONLY|O_CLOEXEC);
       if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed))

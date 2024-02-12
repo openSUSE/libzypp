@@ -45,7 +45,7 @@ public:
   MediaMultiCurl(const Url &url_r, const Pathname & attach_point_hint_r);
   ~MediaMultiCurl() override;
 
-  virtual void doGetFileCopy( const OnMediaLocation & srcFile, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const override;
+  void doGetFileCopy( const OnMediaLocation & srcFile, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const override;
 
   void multifetch(const Pathname &filename, FILE *fp, std::vector<Url> *urllist, MediaBlockList &&blklist, callback::SendReport<DownloadProgressReport> *report = 0, off_t filesize = off_t(-1)) const;
 
@@ -64,7 +64,7 @@ protected:
   CURL *fromEasyPool(const std::string &host) const;
   void toEasyPool(const std::string &host, CURL *easy) const;
 
-  virtual void setupEasy() override;
+  void setupEasy() override;
   void checkFileDigest(Url &url, FILE *fp, MediaBlockList &blklist) const;
   static int progressCallback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
 

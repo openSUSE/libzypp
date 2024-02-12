@@ -53,7 +53,7 @@ namespace zypp {
         : _path(std::move( path_r )), _flags( flags_r )
         {}
 
-        ~Impl()
+        ~Impl() override
         {
           if ( ! (_flags & Autodelete) || _path.empty() )
             return;

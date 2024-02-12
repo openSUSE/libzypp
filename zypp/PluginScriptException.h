@@ -28,7 +28,7 @@ namespace zypp
       PluginScriptException();
       PluginScriptException( const std::string & msg_r );
       PluginScriptException( const std::string & msg_r, const std::string & hist_r );
-      virtual ~PluginScriptException() throw();
+      ~PluginScriptException() throw() override;
   };
 
   /** Convenience macro to declare more specific PluginScriptExceptions. */

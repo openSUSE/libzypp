@@ -45,7 +45,7 @@ namespace zyppng {
 
     Downloader();
     Downloader( std::shared_ptr<MirrorControl> mc );
-    virtual ~Downloader();
+    ~Downloader() override;
 
     /*!
      * Generates a new Download object in waiting state
@@ -148,7 +148,7 @@ namespace zyppng {
       Finished,       //< Download has finished
     };
 
-    virtual ~Download();
+    ~Download() override;
 
     /*!
      * Returns the current internal state of the Download

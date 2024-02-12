@@ -66,10 +66,10 @@ namespace zypp
         : _oldRec( Distributor::instance().getReceiver() )
         , _redirect(std::move( redirect_r ))
         { connect(); }
-        ~DownloadFileReportHack()
+        ~DownloadFileReportHack() override
         { if ( _oldRec ) Distributor::instance().setReceiver( *_oldRec ); else Distributor::instance().noReceiver(); }
 
-        virtual void start( const Url & file, Pathname localfile )
+        void start( const Url & file, Pathname localfile ) override
         {
           if ( _oldRec )
             _oldRec->start( file, localfile );
@@ -77,7 +77,7 @@ namespace zypp
             BaseType::start( file, localfile );
         }
 
-        virtual bool progress( int value, const Url & file, double dbps_avg = -1, double dbps_current = -1 )
+        bool progress( int value, const Url & file, double dbps_avg = -1, double dbps_current = -1 ) override
         {
           bool ret = true;
           if ( _oldRec )
@@ -87,13 +87,13 @@ namespace zypp
           return ret;
         }
 
-        virtual Action problem( const Url & file, Error error, const std::string & description )
+        Action problem( const Url & file, Error error, const std::string & description ) override
         {
           if ( _oldRec )
             return _oldRec->problem( file, error, description );
           return BaseType::problem( file, error, description );
         }
-        virtual void finish( const Url & file, Error error, const std::string & reason )
+        void finish( const Url & file, Error error, const std::string & reason ) override
         {
           if ( _oldRec )
             _oldRec->finish( file, error, reason );

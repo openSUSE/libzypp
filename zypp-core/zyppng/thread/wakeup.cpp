@@ -27,7 +27,7 @@ namespace zyppng {
 
   void Wakeup::ack()
   {
-    char dummy;
+    char dummy = 0;
     while ( eintrSafeCall( ::read, _wakeupPipe[0], &dummy, 1 ) > 0 ) { continue; }
   }
 

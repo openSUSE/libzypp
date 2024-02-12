@@ -71,11 +71,11 @@ namespace zypp
         }
 
         // NO-OP; new sections are opened in consume()
-        virtual void beginParse()
+        void beginParse() override
         { /*EMPTY*/ }
 
         // start a new section [url]
-        virtual void consume( const std::string & section_r )
+        void consume( const std::string & section_r ) override
         {
           endParse();	// close any open section
           _secret.reset( new AuthData );
@@ -90,7 +90,7 @@ namespace zypp
           }
         }
 
-        virtual void consume( const std::string & section_r, const std::string & key_r, const std::string & value_r )
+        void consume( const std::string & section_r, const std::string & key_r, const std::string & value_r ) override
         {
           if ( !_secret && section_r.empty() )
             _secret.reset( new AuthData );	// a initial global section without [URL]
@@ -108,7 +108,7 @@ namespace zypp
         }
 
         // send any valid pending section
-        virtual void endParse()
+        void endParse() override
         {
           if ( _secret )
           {

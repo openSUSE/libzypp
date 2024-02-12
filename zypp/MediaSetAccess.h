@@ -92,7 +92,7 @@ namespace zypp
       MediaSetAccess( Url url, Pathname  prefered_attach_point = "" );
       /** \overload Also taking a \ref label. */
       MediaSetAccess( std::string  label_r, Url url, Pathname  prefered_attach_point = "" );
-      ~MediaSetAccess();
+      ~MediaSetAccess() override;
 
       /**
        * Sets a \ref MediaVerifier verifier for given media number.
@@ -361,7 +361,7 @@ namespace zypp
       void provide( const ProvideOperation& op, const OnMediaLocation &resource, ProvideFileOptions options );
 
       media::MediaAccessId getMediaAccessId (media::MediaNr medianr);
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
 
     private:
       /** Media or media set URL */

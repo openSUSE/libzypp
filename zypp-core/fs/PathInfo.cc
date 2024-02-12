@@ -380,8 +380,8 @@ namespace zypp
     //
     static int recursive_rmdir_1( const Pathname & dir, bool removeDir = true )
     {
-      DIR * dp;
-      struct dirent * d;
+      DIR * dp = nullptr;
+      struct dirent * d = nullptr;
 
       if ( ! (dp = opendir( dir.c_str() )) )
         return logResult( errno );

@@ -340,7 +340,7 @@ SATSolutionToPool (const PoolItem& item, const ResStatus & status, const ResStat
     item.status().resetTransact (causer);
     item.status().resetWeak ();
 
-    bool r;
+    bool r = false;
 
     // installation/deletion
     if (status.isToBeInstalled()) {
@@ -1128,7 +1128,7 @@ std::string SATResolver::SATproblemRuleInfoString (Id probr, std::string &detail
 {
   std::string ret;
   sat::detail::CPool *pool = _satSolver->pool;
-  Id dep, source, target;
+  Id dep = 0, source = 0, target = 0;
   SolverRuleinfo type = solver_ruleinfo(_satSolver, probr, &source, &target, &dep);
 
   ignoreId = 0;
@@ -1344,9 +1344,9 @@ SATResolver::problems ()
     ResolverProblemList resolverProblems;
     if (_satSolver && solver_problem_count(_satSolver)) {
         sat::detail::CPool *pool = _satSolver->pool;
-        int pcnt;
-        Id p, rp, what;
-        Id problem, solution, element;
+        int pcnt = 0;
+        Id p = 0, rp = 0, what = 0;
+        Id problem = 0, solution = 0, element = 0;
         sat::Solvable s, sd;
 
         CapabilitySet system_requires = SystemCheck::instance().requiredSystemCap();
@@ -1359,7 +1359,7 @@ SATResolver::problems ()
             MIL << "Problem " <<  pcnt++ << ":" << endl;
             MIL << "====================================" << endl;
             std::string detail;
-            Id ignoreId;
+            Id ignoreId = 0;
             std::string whatString = SATprobleminfoString (problem,detail,ignoreId);
             MIL << whatString << endl;
             MIL << "------------------------------------" << endl;

@@ -52,7 +52,7 @@ public:
 
   AbstractEventSource();
   AbstractEventSource( AbstractEventSourcePrivate &dd );
-  virtual ~AbstractEventSource();
+  ~AbstractEventSource() override;
 
   /*!
    * Returns the \sa EventDispatcher that takes care of this event source

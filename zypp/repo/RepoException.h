@@ -41,7 +41,7 @@ namespace zypp
         RepoException( const std::string & msg_r );
         RepoException( const RepoInfo & info );
         RepoException( const RepoInfo & info, const std::string & msg_r );
-        virtual ~RepoException() throw();
+        ~RepoException() throw() override;
 
         RepoInfo info()
         { return _info; }
@@ -50,7 +50,7 @@ namespace zypp
         { return info().alias(); }
 
       protected:
-        virtual std::ostream & dumpOn( std::ostream & str ) const;
+        std::ostream & dumpOn( std::ostream & str ) const override;
 
       private:
         RepoInfo _info;
@@ -179,7 +179,7 @@ namespace zypp
         ServiceException( const std::string & msg_r );
         ServiceException( const ServiceInfo & service_r );
         ServiceException( const ServiceInfo & service_r, const std::string & msg_r );
-        virtual ~ServiceException() throw();
+        ~ServiceException() throw() override;
 
         ServiceInfo service()
         { return _service; }
@@ -188,7 +188,7 @@ namespace zypp
         { return service().alias(); }
 
      protected:
-        virtual std::ostream & dumpOn( std::ostream & str ) const;
+        std::ostream & dumpOn( std::ostream & str ) const override;
 
       private:
         ServiceInfo _service;

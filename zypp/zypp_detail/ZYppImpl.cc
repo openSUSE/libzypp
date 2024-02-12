@@ -295,7 +295,7 @@ namespace zypp
         return;
       }
 
-      char buf;
+      char buf = 0;
       while( zyppng::eintrSafeCall( read, sigFd, &buf, 1 ) > 0 )
         continue;
     }

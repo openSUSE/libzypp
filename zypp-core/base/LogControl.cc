@@ -417,7 +417,7 @@ namespace zypp
         , _line( -1 )
         {}
         /** */
-        ~Loglinebuf()
+        ~Loglinebuf() override
         {
           if ( !_buffer.empty() )
             writeout( "\n", 1 );
@@ -433,10 +433,10 @@ namespace zypp
 
       private:
         /** */
-        virtual std::streamsize xsputn( const char * s, std::streamsize n )
+        std::streamsize xsputn( const char * s, std::streamsize n ) override
         { return writeout( s, n ); }
         /** */
-        virtual int overflow( int ch = EOF )
+        int overflow( int ch = EOF ) override
         {
           if ( ch != EOF )
             {

@@ -36,7 +36,7 @@ namespace zypp
     ResolverProblem( std::string description, std::string details, std::vector<std::string> &&completeProblemInfo );
 
     /** Destructor. */
-    ~ResolverProblem();
+    ~ResolverProblem() override;
 
 
     /**

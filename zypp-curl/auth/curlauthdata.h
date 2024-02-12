@@ -46,7 +46,7 @@ namespace zypp {
        * \return true if the object contains non-empty username,
        *  non-empty password, and specifies authentication type; false otherwise.
        */
-      virtual bool valid() const;
+      bool valid() const override;
 
       /**
        * Set HTTP authentication type(s) to use.
@@ -92,7 +92,7 @@ namespace zypp {
        */
       static std::string auth_type_long2str(long auth_type);
 
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
 
     private:
       std::string _auth_type_str;

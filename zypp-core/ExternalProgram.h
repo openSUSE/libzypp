@@ -149,7 +149,7 @@ namespace zypp {
                      bool use_pty = false);
 
 
-      ~ExternalProgram();
+      ~ExternalProgram() override;
 
 #ifdef __cpp_lib_optional // YAST/PK explicitly use c++11 until 15-SP3
       /*!
@@ -164,7 +164,7 @@ namespace zypp {
 #endif
 
       /** Wait for the progamm to complete. */
-      int close();
+      int close() override;
 
       /**
        * Kill the program

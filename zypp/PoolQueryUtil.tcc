@@ -36,7 +36,7 @@ namespace zypp
   void readPoolQueriesFromFile(const zypp::filesystem::Pathname &file,
       OutputIterator out )
   {
-    bool found;
+    bool found = false;
     std::ifstream fin( file.c_str() );
 
     if (!fin)

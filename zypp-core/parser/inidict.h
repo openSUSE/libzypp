@@ -97,7 +97,7 @@ namespace zypp
       IniDict();
 
       /** Dtor */
-      ~IniDict();
+      ~IniDict() override;
 
       /**
        * Fill a dictionary from a InputStream
@@ -143,11 +143,11 @@ namespace zypp
     public:
 
       /** Called when a section is found. */
-      virtual void consume( const std::string &section );
+      void consume( const std::string &section ) override;
       /** Called when a key value is found. */
-      virtual void consume( const std::string &section,
+      void consume( const std::string &section,
                             const std::string &key,
-                            const std::string &value );
+                            const std::string &value ) override;
 
     private:
       SectionSet _dict;

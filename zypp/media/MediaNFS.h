@@ -37,25 +37,25 @@ namespace zypp {
 
       protected:
 
-        virtual void attachTo (bool next = false) override;
+        void attachTo (bool next = false) override;
 
-        virtual void releaseFrom( const std::string & ejectDev ) override;
-        virtual void getFile( const OnMediaLocation & file ) const override;
-        virtual void getDir( const Pathname & dirname, bool recurse_r ) const override;
-        virtual void getDirInfo( std::list<std::string> & retlist,
+        void releaseFrom( const std::string & ejectDev ) override;
+        void getFile( const OnMediaLocation & file ) const override;
+        void getDir( const Pathname & dirname, bool recurse_r ) const override;
+        void getDirInfo( std::list<std::string> & retlist,
                                  const Pathname & dirname, bool dots = true ) const override;
-        virtual void getDirInfo( filesystem::DirContent & retlist,
+        void getDirInfo( filesystem::DirContent & retlist,
                                  const Pathname & dirname, bool dots = true ) const override;
-        virtual bool getDoesFileExist( const Pathname & filename ) const override;
+        bool getDoesFileExist( const Pathname & filename ) const override;
 
       public:
 
         MediaNFS( const Url&       url_r,
                   const Pathname & attach_point_hint_r );
 
-        virtual ~MediaNFS() override { try { release(); } catch(...) {} }
+        ~MediaNFS() override { try { release(); } catch(...) {} }
 
-        virtual bool isAttached() const override;
+        bool isAttached() const override;
     };
 
     ///////////////////////////////////////////////////////////////////

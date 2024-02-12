@@ -439,7 +439,7 @@ namespace zypp
     CredentialManager::CredentialSet creds;
     creds.insert(c_ptr);
 
-    int ret;
+    int ret = 0;
     if (credFile.absolute())
       ret = save_creds_in_file(creds, credFile, 0640);
     else

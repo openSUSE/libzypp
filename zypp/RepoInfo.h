@@ -74,7 +74,7 @@ namespace zypp
 
     public:
       RepoInfo();
-      virtual ~RepoInfo();
+      ~RepoInfo() override;
 
       RepoInfo(const RepoInfo &) = default;
       RepoInfo(RepoInfo &&) = default;
@@ -537,13 +537,13 @@ namespace zypp
        * Write a human-readable representation of this RepoInfo object
        * into the \a str stream. Useful for logging.
        */
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
 
       /**
        * Write this RepoInfo object into \a str in a <tr>.repo</tt> file format.
        * Raw values, no variable replacement.
        */
-      virtual std::ostream & dumpAsIniOn( std::ostream & str ) const;
+      std::ostream & dumpAsIniOn( std::ostream & str ) const override;
 
       /**
        * Write an XML representation of this RepoInfo object.
@@ -553,7 +553,7 @@ namespace zypp
        * \param content this argument is ignored (used in other classed derived
        *                from RepoInfoBase.
        */
-      virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
+      std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
       struct Impl;
     private:

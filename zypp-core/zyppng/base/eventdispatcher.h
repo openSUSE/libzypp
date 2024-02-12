@@ -51,7 +51,7 @@ public:
   using IdleFunction = std::function<bool ()>;
 
 
-  virtual ~EventDispatcher();
+  ~EventDispatcher() override;
 
   /*!
    * Enters the eventloop once and dequeues all pending events, once the event queue is empty the

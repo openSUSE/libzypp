@@ -76,7 +76,7 @@ namespace zypp
         pid_t mypid = getpid();
         {
           std::ifstream cmdlineStr( Pathname("/proc/"+zypp::str::numstring(mypid)+"/cmdline").c_str() );
-          char ch;
+          char ch = 0;
           const char * sep = "'";
           while ( cmdlineStr && cmdlineStr.get( ch ) )
           {

@@ -236,7 +236,7 @@ namespace zypp {
       if ( usePty )
       {
 
-        int master_tty,	slave_tty;		// fds for pair of ttys
+        int master_tty = 0,	slave_tty = 0;		// fds for pair of ttys
 
         // Create pair of ttys
         DBG << "Using ttys for communication with " << argv[0] << endl;

@@ -118,7 +118,7 @@ namespace zypp
       /** Ctor */
       Pattern( const sat::Solvable & solvable_r );
       /** Dtor */
-      virtual ~Pattern();
+      ~Pattern() override;
   };
   ///////////////////////////////////////////////////////////////////
 

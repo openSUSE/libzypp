@@ -41,37 +41,37 @@ namespace zypp
     /** */
     struct ParseDefImplConsume : public ParseDefConsumeRedirect
     {
-      virtual void start( const Node & node_r )
+      void start( const Node & node_r ) override
       {
         debuglog( "START ", node_r );
         ParseDefConsumeRedirect::start( node_r );
       }
 
-      virtual void text( const Node & node_r )
+      void text( const Node & node_r ) override
       {
         debuglog( "TEXT  ", node_r );
         ParseDefConsumeRedirect::text( node_r );
       }
 
-      virtual void cdata( const Node & node_r )
+      void cdata( const Node & node_r ) override
       {
         debuglog( "CDATA ", node_r );
         ParseDefConsumeRedirect::cdata( node_r );
       }
 
-      virtual void done( const Node & node_r )
+      void done( const Node & node_r ) override
       {
         debuglog( "DONE  ", node_r );
         ParseDefConsumeRedirect::done( node_r );
       }
 
-      virtual void startSubnode( const Node & node_r )
+      void startSubnode( const Node & node_r ) override
       {
         debuglog( "--->  ", node_r );
         ParseDefConsumeRedirect::startSubnode( node_r );
       }
 
-      virtual void doneSubnode( const Node & node_r )
+      void doneSubnode( const Node & node_r ) override
       {
         debuglog( "<---  ", node_r );
         ParseDefConsumeRedirect::doneSubnode( node_r );

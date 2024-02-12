@@ -54,7 +54,7 @@ namespace zypp
      */
     ServiceInfo( const std::string & alias, const Url& url );
 
-    virtual ~ServiceInfo();
+    ~ServiceInfo() override;
 
   public:
     /** Represents an empty service. */
@@ -197,7 +197,7 @@ namespace zypp
      *
      * \param str stream where serialized version service is written
      */
-    virtual std::ostream & dumpAsIniOn( std::ostream & str ) const;
+    std::ostream & dumpAsIniOn( std::ostream & str ) const override;
 
     /**
      * Write an XML representation of this ServiceInfo object.
@@ -206,7 +206,7 @@ namespace zypp
      * \param content if not empty, produces <service ...>content</service>
      *                otherwise <service .../>
      */
-    virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
+    std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
     struct Impl;
 

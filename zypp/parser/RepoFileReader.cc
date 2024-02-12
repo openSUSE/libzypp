@@ -43,7 +43,7 @@ namespace zypp
 
         using IniDict::consume;	// don't hide overloads we don't redefine here
 
-        virtual void consume( const std::string & section_r, const std::string & key_r, const std::string & value_r )
+        void consume( const std::string & section_r, const std::string & key_r, const std::string & value_r ) override
         {
           if ( key_r == "baseurl" )
           {
@@ -72,7 +72,7 @@ namespace zypp
           }
         }
 
-        virtual void garbageLine( const std::string & section_r, const std::string & line_r )
+        void garbageLine( const std::string & section_r, const std::string & line_r ) override
         {
           switch ( _inMultiline )
           {

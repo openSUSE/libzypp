@@ -65,7 +65,7 @@ namespace zyppng {
     using MirrorPick   = std::pair< std::vector<Url>::const_iterator, MirrorHandle >;
 
     static Ptr create ();
-    virtual ~MirrorControl();
+    ~MirrorControl() override;
     void registerMirrors( const std::vector<zypp::media::MetalinkMirror> &urls );
 
     /*!

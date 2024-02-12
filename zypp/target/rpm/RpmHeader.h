@@ -81,7 +81,7 @@ public:
    **/
   RpmHeader( BinHeader::Ptr & rhs );
 
-  virtual ~RpmHeader();
+  ~RpmHeader() override;
 
   bool isSrc() const;	///< Either 'src' or 'nosrc'
   bool isNosrc() const;	///< Only 'nosrc'
@@ -183,7 +183,7 @@ public:
 
 public:
 
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 
 public:
 

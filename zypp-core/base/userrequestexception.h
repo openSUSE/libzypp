@@ -76,7 +76,7 @@ namespace zypp
       Kind kind() const
       { return _kind; }
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
       Kind _kind;
   };

@@ -232,7 +232,7 @@ namespace zypp
   private:
     friend std::ostream & operator<<( std::ostream & str, const Target & obj );
     /** Stream output. */
-    std::ostream & dumpOn( std::ostream & str ) const;
+    std::ostream & dumpOn( std::ostream & str ) const override;
 
   private:
     /** Direct access to Impl. */

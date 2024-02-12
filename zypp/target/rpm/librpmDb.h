@@ -274,14 +274,14 @@ protected:
   /**
    * Trigger from @ref Rep, after refCount was decreased.
    **/
-  virtual void unref_to( unsigned refCount_r ) const;
+  void unref_to( unsigned refCount_r ) const override;
 
 public:
 
   /**
    * Destructor. Closes rpmdb.
    **/
-  virtual ~librpmDb();
+  ~librpmDb() override;
 
   /**
    * @return This handles root directory for all operations.
@@ -327,7 +327,7 @@ public:
   /**
    * Dump debug info.
    **/
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 };
 
 ///////////////////////////////////////////////////////////////////

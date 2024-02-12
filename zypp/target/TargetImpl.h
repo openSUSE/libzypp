@@ -65,7 +65,7 @@ namespace zypp
       /** Ctor. */
       TargetImpl(const Pathname & root_r = "/", bool doRebuild_r = false );
       /** Dtor. */
-      virtual ~TargetImpl();
+      ~TargetImpl() override;
 
       /**
        * generates the unique anonymous id which is called
@@ -133,7 +133,7 @@ namespace zypp
       ManagedFile provideSrcPackage( const SrcPackage_constPtr & srcPackage_r );
 
       /** Overload to realize stream output. */
-      virtual std::ostream & dumpOn( std::ostream & str ) const
+      std::ostream & dumpOn( std::ostream & str ) const override
       { return str << "Target(" << root() << ")"; }
 
       /** The RPM database */

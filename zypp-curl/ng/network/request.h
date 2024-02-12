@@ -90,7 +90,7 @@ namespace zyppng {
      * \param fMode The mode in which the file is opened in.
      */
     NetworkRequest(Url url, zypp::Pathname targetFile, FileMode fMode = WriteExclusive );
-    virtual ~NetworkRequest();
+    ~NetworkRequest() override;
 
     /*!
      * Sets the expected file size for the download.

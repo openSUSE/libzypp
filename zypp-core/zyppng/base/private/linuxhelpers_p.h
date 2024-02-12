@@ -33,7 +33,7 @@ namespace zyppng {
    */
   template<typename Fun, typename RestartCb, typename... Args >
   auto eintrSafeCallEx ( const Fun &function, const RestartCb &restartCb, Args&&... args ) {
-    int res;
+    int res = 0;
     while ( true ) {
       errno = 0;
       res = std::invoke(function, args... );

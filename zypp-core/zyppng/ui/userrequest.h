@@ -49,7 +49,7 @@ namespace zyppng {
   {
   public:
     UserRequest( UserData userData = {} );
-    virtual ~UserRequest();
+    ~UserRequest() override;
     virtual UserRequestType type() const = 0;
     const UserData &userData() const;
     UserData &userData();

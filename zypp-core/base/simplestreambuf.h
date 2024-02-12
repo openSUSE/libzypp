@@ -57,7 +57,7 @@ namespace zypp {
       public:
 
       SimpleStreamBuf( size_t bufsize_r = 512) : _buffer( bufsize_r ) { }
-      virtual ~SimpleStreamBuf() { close(); }
+      ~SimpleStreamBuf() override { close(); }
 
       SimpleStreamBuf * open( const char * name_r, std::ios_base::openmode mode_r = std::ios_base::in ) {
 
@@ -91,7 +91,7 @@ namespace zypp {
 
       protected:
 
-        virtual int sync() {
+        int sync() override {
           int ret = 0;
           if ( pbase() < pptr() ) {
             const int_type res = overflow();
@@ -101,7 +101,7 @@ namespace zypp {
           return ret;
         }
 
-        virtual int_type overflow( int_type c = traits_type::eof() ) {
+        int_type overflow( int_type c = traits_type::eof() ) override {
           int_type ret = traits_type::eof();
           if ( this->canWrite() ) {
             if ( ! traits_type::eq_int_type( c, traits_type::eof() ) )
@@ -122,7 +122,7 @@ namespace zypp {
           return ret;
         }
 
-        virtual int_type underflow() {
+        int_type underflow() override {
           int_type ret = traits_type::eof();
           if ( this->canRead() )
           {
@@ -145,12 +145,12 @@ namespace zypp {
           return ret;
         }
 
-        virtual pos_type seekpos( pos_type pos_r, std::ios_base::openmode openMode ) {
+        pos_type seekpos( pos_type pos_r, std::ios_base::openmode openMode ) override {
           return seekoff( off_type(pos_r), std::ios_base::beg, openMode );
         }
 
 
-        virtual pos_type seekoff( off_type off_r, std::ios_base::seekdir way_r, std::ios_base::openmode openMode ) {
+        pos_type seekoff( off_type off_r, std::ios_base::seekdir way_r, std::ios_base::openmode openMode ) override {
           pos_type ret = pos_type(off_type(-1));
           if ( !this->canSeek( way_r) )
             return ret;

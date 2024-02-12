@@ -145,18 +145,18 @@ struct KeyRingSignalReceiver : callback::ReceiveReport<KeyRingSignals>
     connect();
   }
 
-  ~KeyRingSignalReceiver()
+  ~KeyRingSignalReceiver() override
   {
     disconnect();
   }
 
-  virtual void trustedKeyAdded( const PublicKey &key )
+  void trustedKeyAdded( const PublicKey &key ) override
   {
     MIL << "trusted key added to zypp Keyring. Importing..." << endl;
     _rpmdb.importPubkey( key );
   }
 
-  virtual void trustedKeyRemoved( const PublicKey &key  )
+  void trustedKeyRemoved( const PublicKey &key  ) override
   {
     MIL << "Trusted key removed from zypp Keyring. Removing..." << endl;
     _rpmdb.removePubkey( key );
@@ -946,7 +946,7 @@ RpmDb::fileList( const std::string & name_r, const Edition & edition_r ) const
   std::list<FileInfo> result;
 
   librpmDb::db_const_iterator it;
-  bool found;
+  bool found = false;
   if (edition_r == Edition::noedition)
   {
     found = it.findPackage( name_r );
@@ -973,7 +973,7 @@ RpmDb::fileList( const std::string & name_r, const Edition & edition_r ) const
 bool RpmDb::hasFile( const std::string & file_r, const std::string & name_r ) const
 {
   librpmDb::db_const_iterator it;
-  bool res;
+  bool res = false;
   do
   {
     res = it.findByFile( file_r );
@@ -1778,7 +1778,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
   {
     if ( str::startsWith( line, "%%" ) )
     {
-      int percent;
+      int percent = 0;
       sscanf( line.c_str() + 2, "%d", &percent );
       report->progress( percent );
       continue;

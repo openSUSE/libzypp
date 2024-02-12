@@ -381,7 +381,7 @@ bool KeyManagerCtx::exportKey(const std::string &id, std::ostream &stream)
   GpgmeKeyPtr foundKey;
 
   //search for requested key id
-  gpgme_key_t key;
+  gpgme_key_t key = nullptr;
   gpgme_op_keylist_start(_pimpl->_ctx, NULL, 0);
   while (!(err = gpgme_op_keylist_next(_pimpl->_ctx, &key))) {
     if (key->subkeys && id == str::asString(key->subkeys->keyid)) {
@@ -503,7 +503,7 @@ bool KeyManagerCtx::Impl::importKey(GpgmeDataPtr &data, Callback &&calcDataSize)
 
 bool KeyManagerCtx::deleteKey(const std::string &id)
 {
-  gpgme_key_t key;
+  gpgme_key_t key = nullptr;
   GpgmeErr err = GPG_ERR_NO_ERROR;
 
   gpgme_op_keylist_start(_pimpl->_ctx, NULL, 0);

@@ -51,7 +51,7 @@ public:
       : Exception( msg_r )
   {}
   /** Dtor. */
-  virtual ~RpmException() throw()
+  ~RpmException() throw() override
   {};
 };
 
@@ -65,7 +65,7 @@ public:
       : RpmException("Global RPM initialization failed")
   {}
   /** Dtor. */
-  virtual ~GlobalRpmInitException() throw()
+  ~GlobalRpmInitException() throw() override
   {};
 private:
 };
@@ -83,7 +83,7 @@ public:
       , _dbpath(dbpath_r.asString())
   {}
   /** Dtor. */
-  virtual ~RpmInvalidRootException() throw()
+  ~RpmInvalidRootException() throw() override
   {};
   std::string root() const
   {
@@ -94,7 +94,7 @@ public:
     return _dbpath;
   }
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _root;
   std::string _dbpath;
@@ -109,7 +109,7 @@ public:
       , _root(root_r.asString())
       , _dbpath(dbpath_r.asString())
   {}
-  virtual ~RpmAccessBlockedException() throw()
+  ~RpmAccessBlockedException() throw() override
   {};
   std::string root() const
   {
@@ -120,7 +120,7 @@ public:
     return _dbpath;
   }
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _root;
   std::string _dbpath;
@@ -133,10 +133,10 @@ public:
       : RpmException()
       , _errmsg(std::move(errmsg_r))
   {}
-  virtual ~RpmSubprocessException() throw()
+  ~RpmSubprocessException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _errmsg;
 };
@@ -150,10 +150,10 @@ public:
       , _root(root_r.asString())
       , _dbpath(dbpath_r.asString())
   {}
-  virtual ~RpmInitException() throw()
+  ~RpmInitException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _root;
   std::string _dbpath;
@@ -168,10 +168,10 @@ public:
       , _root(root_r.asString())
       , _dbpath(dbpath_r.asString())
   {}
-  virtual ~RpmDbOpenException() throw()
+  ~RpmDbOpenException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _root;
   std::string _dbpath;
@@ -190,10 +190,10 @@ public:
       , _new_root(new_root_r.asString())
       , _new_dbpath(new_dbpath_r.asString())
   {}
-  virtual ~RpmDbAlreadyOpenException() throw()
+  ~RpmDbAlreadyOpenException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _old_root;
   std::string _old_dbpath;
@@ -207,10 +207,10 @@ public:
   RpmDbNotOpenException()
       : RpmException()
   {}
-  virtual ~RpmDbNotOpenException() throw()
+  ~RpmDbNotOpenException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
 };
 
@@ -220,10 +220,10 @@ public:
   RpmDbConvertException()
       : RpmException()
   {}
-  virtual ~RpmDbConvertException() throw()
+  ~RpmDbConvertException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
 };
 
@@ -233,10 +233,10 @@ public:
   RpmNullDatabaseException()
       : RpmException()
   {}
-  virtual ~RpmNullDatabaseException() throw()
+  ~RpmNullDatabaseException() throw() override
   {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
 };
 
@@ -247,10 +247,10 @@ public:
     : RpmException()
     , _errmsg(std::move(errmsg_r))
   {}
-  virtual ~RpmTransactionFailedException() throw()
+  ~RpmTransactionFailedException() throw() override
     {};
 protected:
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 private:
   std::string _errmsg;
 };

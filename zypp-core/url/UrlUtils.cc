@@ -36,7 +36,7 @@ namespace zypp
                        "abcdefghijklmnopqrstuvwxyz"
                        "0123456789.~_-");
       static const std::string more(URL_SAFE_CHARS);	// ":/?#[]@!$&'()*+,;="
-      size_t      beg, pos, len;
+      size_t      beg = 0, pos = 0, len = 0;
       std::string out;
 
       for(size_t i=0; i<safe.size(); i++)
@@ -86,7 +86,7 @@ namespace zypp
     std::string
     decode(const std::string &str, bool allowNUL)
     {
-      size_t      pos, end, len;
+      size_t      pos = 0, end = 0, len = 0;
       std::string out(str);
 
       len = out.length();
@@ -166,7 +166,7 @@ namespace zypp
           const std::string &pstr,
                 const std::string &psep)
     {
-      size_t beg, pos, len;
+      size_t beg = 0, pos = 0, len = 0;
       if( psep.empty())
       {
         ZYPP_THROW(UrlNotSupportedException(
@@ -205,7 +205,7 @@ namespace zypp
       ParamVec                 pvec;
       ParamVec::const_iterator pitr;
       std::string              k, v;
-      size_t                   pos;
+      size_t                   pos = 0;
 
       if( psep.empty() || vsep.empty())
       {

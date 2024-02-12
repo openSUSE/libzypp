@@ -256,7 +256,7 @@ startElement(void *userData, const xmlChar *name, const xmlChar **atts)
         const char *priority       = find_attr("priority", atts);
         const char *preference     = find_attr("preference", atts);
         const char *maxconnections = find_attr("maxconnections", atts);
-        int prio;
+        int prio = 0;
         auto &mirr = pd->urls.emplace_back();
         if (priority)
           prio = str::strtonum<int>(priority);
@@ -276,7 +276,7 @@ startElement(void *userData, const xmlChar *name, const xmlChar **atts)
       {
         const char *type = find_attr("type", atts);
         const char *length = find_attr("length", atts);
-        size_t blksize;
+        size_t blksize = 0;
 
         if (!type || !length)
           {

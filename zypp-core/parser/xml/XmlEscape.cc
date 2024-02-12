@@ -39,7 +39,7 @@ namespace iobind
     {
       std::string unescape(const std::string &istr) const
       {
-        size_t i;
+        size_t i = 0;
         std::string str = istr;
         i = str.find_first_of('&');
         while (i != std::string::npos)

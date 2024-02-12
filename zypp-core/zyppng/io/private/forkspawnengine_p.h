@@ -9,7 +9,7 @@ namespace zyppng {
   class AbstractDirectSpawnEngine : public AbstractSpawnEngine
   {
   public:
-    ~AbstractDirectSpawnEngine();
+    ~AbstractDirectSpawnEngine() override;
 
     bool isRunning ( bool wait = false ) override;
     bool waitForExit ( const std::optional<uint64_t> &timeout = {} ) override;

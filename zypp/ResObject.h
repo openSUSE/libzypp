@@ -74,9 +74,9 @@ namespace zypp
     /** Ctor */
     ResObject( const sat::Solvable & solvable_r );
     /** Dtor */
-    virtual ~ResObject();
+    ~ResObject() override;
     /** Helper for stream output */
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+    std::ostream & dumpOn( std::ostream & str ) const override;
     /** This is a \ref sat::SolvableType (allow implicit conversion in derived classes). */
     operator sat::Solvable() const
     { return satSolvable(); }

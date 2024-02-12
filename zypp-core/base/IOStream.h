@@ -52,7 +52,7 @@ namespace zypp
     {
       if ( from_r && to_r )
       {
-        char ch;
+        char ch = 0;
         while ( from_r && from_r.get( ch ) )
           to_r.put( ch );
       }
@@ -66,7 +66,7 @@ namespace zypp
     {
       if ( from_r && to_r )
       {
-        char ch;
+        char ch = 0;
         bool indent = true;
         while ( from_r && from_r.get( ch ) )
         {
@@ -86,7 +86,7 @@ namespace zypp
     {
       if ( from_r && ( to1_r ||to2_r ) )
       {
-        char ch;
+        char ch = 0;
         while ( from_r && from_r.get( ch ) )
         {
           to1_r.put( ch );

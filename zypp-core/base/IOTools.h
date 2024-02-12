@@ -64,7 +64,7 @@ namespace zypp::io {
     {}
 
     /** Dtor. */
-    virtual ~TimeoutException() noexcept override;
+    ~TimeoutException() noexcept override;
   };
 
   enum ReceiveUpToResult {

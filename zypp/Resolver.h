@@ -48,7 +48,7 @@ namespace zypp
     /** Ctor */
     Resolver( const ResPool & pool );
     /** Dtor */
-    virtual ~Resolver();
+    ~Resolver() override;
 
     /**
      * Reset all solver flags to the systems default (e.g. from zypp.conf).

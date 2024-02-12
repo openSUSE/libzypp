@@ -490,7 +490,7 @@ namespace zypp
     {
       std::ostringstream datas;
       do {
-        char ch;
+        char ch = 0;
         if ( str.get( ch ) )
         {
           if ( ch != delim_r )

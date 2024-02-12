@@ -298,7 +298,7 @@ MediaBlockList::updateRsum(unsigned int rs, const char* bytes, size_t len) const
   if (!len)
     return rs;
 
-  unsigned short s, m;
+  unsigned short s = 0, m = 0;
   s = (rs >> 16) & 65535;
   m = rs & 65535;
   for (; len > 0 ; len--)
@@ -320,7 +320,7 @@ MediaBlockList::verifyRsum(size_t blkno, unsigned int rs) const
     return true;
   if (rsumpad > size)
     {
-      unsigned short s, m;
+      unsigned short s = 0, m = 0;
       s = (rs >> 16) & 65535;
       m = rs & 65535;
       m += s * (rsumpad - size);
@@ -415,7 +415,7 @@ static size_t
 fetchnext(FILE *fp, unsigned char *bp, size_t blksize, size_t pushback, unsigned char *pushbackp)
 {
   size_t l = blksize;
-  int c;
+  int c = 0;
 
   if (pushback)
     {
@@ -466,7 +466,7 @@ void MediaBlockList::reuseBlocks(FILE *wfp, const std::string& filename)
       auto zsyncRsums = zsyncRsumsData.get();
       for ( std::size_t i = 0; i < rsums.size(); i++ ) {
         const auto &rs = rsums[i];
-        unsigned short s, m;
+        unsigned short s = 0, m = 0;
         s = (rs >> 16) & 65535;
         m = rs & 65535;
         zsyncRsums[i] = rsum{ s, m };
@@ -491,7 +491,7 @@ void MediaBlockList::reuseBlocks(FILE *wfp, const std::string& filename)
 
       // create hash of checksums
       // build the hashtable
-      uint rsumHashMask;
+      uint rsumHashMask = 0;
       {
         int i = 16;
 
@@ -849,7 +849,7 @@ void MediaBlockList::reuseBlocksOld(FILE *wfp, const std::string& filename)
       // a and b are the LS and MS bytes of the checksum, calculated a rolling style Adler32 checksum
       //
       // a(k,l) = (\sum_{i=k}^l X_i) \bmod M
-      unsigned short a, b;
+      unsigned short a = 0, b = 0;
       a = b = 0;
       memset(ringBuf.get(), 0, blksize);
       bool eof = 0;
@@ -864,7 +864,7 @@ void MediaBlockList::reuseBlocksOld(FILE *wfp, const std::string& filename)
             {
               // get the next character from the file
               // or if there are pushback chars use those
-              int c;
+              int c = 0;
               if (eof)
                 c = 0;
               else
@@ -1063,7 +1063,7 @@ std::string
 MediaBlockList::asString() const
 {
   std::string s;
-  size_t i, j;
+  size_t i = 0, j = 0;
 
   if (filesize != off_t(-1))
     {

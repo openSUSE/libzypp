@@ -301,7 +301,7 @@ namespace zypp
         : _value( & value_r )
         {}
 
-        virtual void start( const Node & node_r )
+        void start( const Node & node_r ) override
         {
           *_value = Edition( node_r.getAttribute("ver").asString(),
                              node_r.getAttribute("rel").asString(),
@@ -318,7 +318,7 @@ namespace zypp
         : _value( & value_r )
         {}
 
-        virtual void text( const Node & node_r )
+        void text( const Node & node_r ) override
         {
           *_value = node_r.value().asString();
         }
@@ -333,7 +333,7 @@ namespace zypp
         : _value( & value_r )
         {}
 
-        virtual void text( const Node & node_r )
+        void text( const Node & node_r ) override
         {
           *_value = Date(node_r.value().asString());
         }
@@ -348,7 +348,7 @@ namespace zypp
         : _value( & value_r )
         {}
 
-        virtual void start( const Node & node_r )
+        void start( const Node & node_r ) override
         {
           shared_ptr<Reader::Entry::Impl> centry( new Reader::Entry::Impl );
 

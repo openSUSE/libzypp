@@ -573,7 +573,7 @@ namespace zyppng {
     static constexpr bool isFinal = isFin;
 
     BasicState( StatemachineType &sm ) : _sm( sm ){}
-    virtual ~BasicState() {}
+    ~BasicState() override {}
 
     BasicState( BasicState && ) noexcept = default;
     BasicState &operator= ( BasicState && ) noexcept = default;

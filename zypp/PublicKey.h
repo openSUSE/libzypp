@@ -66,7 +66,7 @@ namespace zypp
       : Exception( msg_r ), _keyfile(std::move(keyfile))
       {}
       /** Dtor. */
-      virtual ~BadKeyException() throw() {};
+      ~BadKeyException() throw() override {};
     private:
       Pathname _keyfile;
   };

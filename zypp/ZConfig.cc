@@ -107,7 +107,7 @@ namespace zypp
     {
         int level = 1;
 
-        unsigned int op_1_ecx = 0, op_80000001_ecx = 0, op_7_ebx = 0, unused;
+        unsigned int op_1_ecx = 0, op_80000001_ecx = 0, op_7_ebx = 0, unused = 0;
         cpuid(1, 0, &unused, &unused, &op_1_ecx, &unused);
         cpuid(0x80000001, 0, &unused, &unused, &op_80000001_ecx, &unused);
         cpuid(7, 0, &unused, &op_7_ebx, &unused, &unused);
@@ -258,7 +258,7 @@ namespace zypp
       else if ( architecture == Arch_ppc64 )
       {
         const char * platform = (const char *)getauxval( AT_PLATFORM );
-        int powerlvl;
+        int powerlvl = 0;
         if ( platform && sscanf( platform, "power%d", &powerlvl ) == 1 && powerlvl > 6 )
           architecture = Arch_ppc64p7;
       }

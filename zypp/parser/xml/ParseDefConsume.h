@@ -66,7 +66,7 @@ namespace zypp
       ParseDefConsumeRedirect( ParseDefConsume * allocatedTarget_r );
       ParseDefConsumeRedirect( ParseDefConsume & target_r );
 
-      virtual ~ParseDefConsumeRedirect();
+      ~ParseDefConsumeRedirect() override;
 
     public:
       void setRedirect( shared_ptr<ParseDefConsume> target_r );
@@ -77,12 +77,12 @@ namespace zypp
       shared_ptr<ParseDefConsume> getRedirect() const;
 
     public:
-      virtual void start( const Node & _node );
-      virtual void text ( const Node & _node );
-      virtual void cdata( const Node & _node );
-      virtual void done ( const Node & _node );
-      virtual void startSubnode( const Node & _node );
-      virtual void doneSubnode ( const Node & _node );
+      void start( const Node & _node ) override;
+      void text ( const Node & _node ) override;
+      void cdata( const Node & _node ) override;
+      void done ( const Node & _node ) override;
+      void startSubnode( const Node & _node ) override;
+      void doneSubnode ( const Node & _node ) override;
 
     private:
       shared_ptr<ParseDefConsume> _target;
@@ -102,15 +102,15 @@ namespace zypp
 
       ParseDefConsumeCallback();
 
-      virtual ~ParseDefConsumeCallback();
+      ~ParseDefConsumeCallback() override;
 
     public:
-      virtual void start( const Node & node_r );
-      virtual void text( const Node & node_r );
-      virtual void cdata( const Node & node_r );
-      virtual void done( const Node & node_r );
-      virtual void startSubnode( const Node & node_r );
-      virtual void doneSubnode( const Node & node_r );
+      void start( const Node & node_r ) override;
+      void text( const Node & node_r ) override;
+      void cdata( const Node & node_r ) override;
+      void done( const Node & node_r ) override;
+      void startSubnode( const Node & node_r ) override;
+      void doneSubnode( const Node & node_r ) override;
 
     public:
       Callback _start;
@@ -150,7 +150,7 @@ namespace zypp
           : _value( &value_r )
         {}
 
-        virtual void assign( const char * text_r )
+        void assign( const char * text_r ) override
         { *_value = Tp( text_r ); }
 
         private:
@@ -228,7 +228,7 @@ namespace zypp
         void postnotify( function<void ( const Node & )> post_r )
         { _post = std::move(post_r); }
 
-        virtual void start( const xml::Node & node_r )
+        void start( const xml::Node & node_r ) override
         {
           if ( _pre )
             _pre( node_r );
@@ -238,13 +238,13 @@ namespace zypp
               assign( it->second, node_r.getAttribute( it->first.c_str() ).c_str() );
         }
 
-        virtual void text( const xml::Node & node_r )
+        void text( const xml::Node & node_r ) override
         {
           if ( ! _text.empty() )
             assign( _text, node_r.value().c_str() );
         }
 
-        virtual void done( const xml::Node & node_r )
+        void done( const xml::Node & node_r ) override
         {
           if ( _post )
             _post( node_r );

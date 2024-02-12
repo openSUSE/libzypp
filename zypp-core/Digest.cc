@@ -339,7 +339,7 @@ namespace zypp {
 
       while(is.good())
       {
-        size_t readed;
+        size_t readed = 0;
         is.read(buf, bufsize);
         readed = is.gcount();
         if(readed && !update(buf, readed))

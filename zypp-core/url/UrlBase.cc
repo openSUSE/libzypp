@@ -916,7 +916,7 @@ namespace zypp
     UrlBase::setAuthority(const std::string &authority)
     {
       std::string s = authority;
-      std::string::size_type p,q;
+      std::string::size_type p = 0,q = 0;
 
       std::string username, password, host, port;
 

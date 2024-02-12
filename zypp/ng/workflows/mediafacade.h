@@ -78,7 +78,7 @@ namespace zyppng {
     };
 
     ZYPP_DECL_PRIVATE_CONSTR ( MediaSyncFacade );
-    virtual ~MediaSyncFacade();
+    ~MediaSyncFacade() override;
 
     expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );

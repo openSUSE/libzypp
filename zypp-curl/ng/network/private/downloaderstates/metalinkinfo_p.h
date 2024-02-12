@@ -51,13 +51,13 @@ namespace zyppng {
     std::shared_ptr<PrepareMultiState> transitionToPrepareMulti ();
 
     bool initializeRequest( std::shared_ptr<Request> &r ) override;
-    virtual void gotFinished () override;
+    void gotFinished () override;
 
   protected:
     MetaDataType _detectedMetaType = MetaDataType::None;
     Signal< void () > _sigGotMetadata;
 
-    virtual void handleRequestProgress ( NetworkRequest &req, off_t dltotal, off_t dlnow ) override;
+    void handleRequestProgress ( NetworkRequest &req, off_t dltotal, off_t dlnow ) override;
 
   private:
     bool _fallbackMilWritten = false; //< Flag to know if we already logged that we fall back to the normal progress

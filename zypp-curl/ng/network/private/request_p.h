@@ -41,7 +41,7 @@ namespace zyppng {
     } _protocolMode = ProtocolMode::Default;
 
     NetworkRequestPrivate(Url &&url, zypp::Pathname &&targetFile, NetworkRequest::FileMode fMode, NetworkRequest &p );
-    virtual ~NetworkRequestPrivate();
+    ~NetworkRequestPrivate() override;
 
     bool initialize( std::string &errBuf );
 

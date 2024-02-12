@@ -25,7 +25,7 @@ namespace zypp
   {
   public:
     ZYppFactoryException( std::string msg_r, pid_t lockerPid_r, std::string lockerName_r );
-    virtual ~ZYppFactoryException() throw ();
+    ~ZYppFactoryException() throw () override;
   public:
     pid_t lockerPid() const { return _lockerPid; }
     const std::string & lockerName() const { return _lockerName; }

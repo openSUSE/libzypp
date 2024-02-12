@@ -173,7 +173,7 @@ namespace zypp
        : Exception( msg_r )
        {}
        /** Dtor. */
-       virtual ~KeyRingException() throw() {};
+       ~KeyRingException() throw() override {};
    };
 
   ///////////////////////////////////////////////////////////////////
@@ -311,7 +311,7 @@ namespace zypp
     bool verifyFileTrustedSignature( const Pathname &file, const Pathname &signature );
 
     /** Dtor */
-    ~KeyRing();
+    ~KeyRing() override;
 
     /** Access to private functions for the KeyRingWorkflow implementations */
     KeyRing::Impl &pimpl();

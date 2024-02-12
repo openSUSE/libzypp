@@ -32,7 +32,7 @@ namespace zypp
       PluginFrameException();
       PluginFrameException( const std::string & msg_r );
       PluginFrameException( const std::string & msg_r, const std::string & hist_r );
-      virtual ~PluginFrameException() throw();
+      ~PluginFrameException() throw() override;
   };
   ///////////////////////////////////////////////////////////////////
 

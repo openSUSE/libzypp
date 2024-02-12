@@ -53,7 +53,7 @@ namespace zypp
     ProblemSolution( std::string description, std::string details );
 
     /** Destructor. */
-    virtual ~ProblemSolution();
+    ~ProblemSolution() override;
 
 
     /**

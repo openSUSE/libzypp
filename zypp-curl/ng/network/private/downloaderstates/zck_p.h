@@ -38,8 +38,8 @@ namespace zyppng {
     DLZckHeadState( std::vector<Url> &&mirrors, DownloadPrivate &parent );
     DLZckHeadState( std::vector<Url> &&mirrors, std::shared_ptr<Request> &&oldReq, DownloadPrivate &parent );
 
-    virtual bool initializeRequest( std::shared_ptr<Request> &r ) override;
-    virtual void gotFinished () override;
+    bool initializeRequest( std::shared_ptr<Request> &r ) override;
+    void gotFinished () override;
 
     std::shared_ptr<DLZckState> transitionToDlZckState ();
 

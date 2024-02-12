@@ -72,7 +72,7 @@ void rpmpsPrintToStream ( Stream &str, rpmps ps )
   if ( !ps )
     return;
 
-  rpmProblem p;
+  rpmProblem p = nullptr;
   zypp::AutoDispose<rpmpsi> psi ( ::rpmpsInitIterator(ps), ::rpmpsFreeIterator );
   while ((p = rpmpsiNext(psi))) {
     zypp::AutoFREE<char> msg( rpmProblemString(p) );
@@ -118,7 +118,7 @@ bool pushTransactionErrorMessage ( rpmps ps )
 
   zypp::proto::target::TransactionError err;
 
-  rpmProblem p;
+  rpmProblem p = nullptr;
   zypp::AutoDispose<rpmpsi> psi ( ::rpmpsInitIterator(ps), ::rpmpsFreeIterator );
   while ((p = rpmpsiNext(psi))) {
     zypp::AutoFREE<char> msg( rpmProblemString(p) );
@@ -186,7 +186,7 @@ int main( int, char ** )
   }
 
   // make sure the expected FDs are around too
-  struct stat sb;
+  struct stat sb{};
   if ( fstat( static_cast<int>(ExpectedFds::MessageFd), &sb) == -1 ) {
     ZERR << "Expected message fd is not valid, aborting" << std::endl;
     return OtherError;

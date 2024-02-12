@@ -48,7 +48,7 @@ namespace zyppng {
     };
 
     static Ptr create ();
-    ~Process();
+    ~Process() override;
 
     bool start ( const char *const *argv );
     void stop  ( int signal = SIGTERM );

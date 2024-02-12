@@ -55,7 +55,7 @@ public:
    * \brief Creates a new Timer object, the timer is not started at this point
    */
   static std::shared_ptr<Timer> create ();
-  virtual ~Timer ();
+  ~Timer () override;
 
   /*!
    * \brief Sets the timer to trigger only once, after it has expired once

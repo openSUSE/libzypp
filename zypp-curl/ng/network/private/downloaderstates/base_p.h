@@ -42,7 +42,7 @@ namespace zyppng {
     ZYPP_DECLARE_PUBLIC(Download)
   public:
     DownloadPrivateBase ( Downloader &parent, std::shared_ptr<NetworkRequestDispatcher> requestDispatcher, std::shared_ptr<MirrorControl> mirrors, DownloadSpec &&spec, Download &p );
-    ~DownloadPrivateBase ();
+    ~DownloadPrivateBase () override;
 
     struct Block {
       off_t  start = 0;

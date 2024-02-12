@@ -40,7 +40,7 @@ namespace zypp
     /** Ctor */
     Application( const sat::Solvable & solvable_r );
     /** Dtor */
-    virtual ~Application();
+    ~Application() override;
   };
 
 } // namespace zypp

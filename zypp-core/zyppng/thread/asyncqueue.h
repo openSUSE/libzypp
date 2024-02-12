@@ -150,7 +150,7 @@ namespace zyppng {
   public:
 
     static std::shared_ptr<AsyncQueueWatch> create ( std::shared_ptr<AsyncQueueBase> queue );
-    virtual ~AsyncQueueWatch();
+    ~AsyncQueueWatch() override;
 
     void postNotifyEvent ();
 

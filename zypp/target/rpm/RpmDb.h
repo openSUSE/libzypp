@@ -83,7 +83,7 @@ public:
   /**
    * Destructor.
    **/
-  ~RpmDb();
+  ~RpmDb() override;
 
   /**
    * @return Root directory for all operations (empty if not initialized).
@@ -491,7 +491,7 @@ public:
   /**
    * Dump debug info.
    **/
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 
 protected:
   void doRemovePackage( const std::string & name_r, RpmInstFlags flags, RpmPostTransCollector* postTransCollector_r, callback::SendReport<RpmRemoveReport> & report );

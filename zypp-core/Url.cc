@@ -56,14 +56,14 @@ namespace zypp
       LDAPUrl(const LDAPUrl &url): UrlBase(url)
       {}
 
-      virtual UrlBase *
-      clone() const
+      UrlBase *
+      clone() const override
       {
         return new LDAPUrl(*this);
       }
 
-      virtual UrlSchemes
-      getKnownSchemes() const
+      UrlSchemes
+      getKnownSchemes() const override
       {
         UrlSchemes schemes(2);
         schemes[0] = "ldap";
@@ -71,8 +71,8 @@ namespace zypp
         return schemes;
       }
 
-      virtual void
-      configure()
+      void
+      configure() override
       {
         config("sep_pathparams",  "");
 
@@ -91,8 +91,8 @@ namespace zypp
         config("rx_pathparams",   "");
       }
 
-      virtual zypp::url::ParamMap
-      getQueryStringMap(zypp::url::EEncoding eflag) const
+      zypp::url::ParamMap
+      getQueryStringMap(zypp::url::EEncoding eflag) const override
       {
         static const char * const keys[] = {
           "attrs", "scope", "filter", "exts", NULL
@@ -118,8 +118,8 @@ namespace zypp
         return pmap;
       }
 
-      virtual void
-      setQueryStringMap(const zypp::url::ParamMap &pmap)
+      void
+      setQueryStringMap(const zypp::url::ParamMap &pmap) override
       {
         static const char * const keys[] = {
           "attrs", "scope", "filter", "exts", NULL

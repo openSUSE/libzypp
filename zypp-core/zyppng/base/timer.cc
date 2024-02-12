@@ -19,7 +19,7 @@ class TimerPrivate : BasePrivate
   ZYPP_DECLARE_PUBLIC(Timer)
 public:
   TimerPrivate( Timer &p );
-  virtual ~TimerPrivate();
+  ~TimerPrivate() override;
 
   uint64_t _beginMs = 0;
   uint64_t _requestedTimeout = 0;

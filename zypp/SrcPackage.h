@@ -54,7 +54,7 @@ namespace zypp
     /** Ctor */
     SrcPackage( const sat::Solvable & solvable_r );
     /** Dtor */
-    virtual ~SrcPackage();
+    ~SrcPackage() override;
   };
   ///////////////////////////////////////////////////////////////////
 

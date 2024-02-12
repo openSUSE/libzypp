@@ -31,7 +31,7 @@ class NetworkRequestDispatcherPrivate : public BasePrivate
   ZYPP_DECLARE_PUBLIC(NetworkRequestDispatcher)
 public:
   NetworkRequestDispatcherPrivate ( NetworkRequestDispatcher &p );
-  virtual ~NetworkRequestDispatcherPrivate();
+  ~NetworkRequestDispatcherPrivate() override;
 
   int _maxConnections = 10;
 

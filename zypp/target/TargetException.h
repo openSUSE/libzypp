@@ -45,7 +45,7 @@ namespace zypp
       : Exception( msg_r )
       {}
       /** Dtor. */
-      virtual ~TargetException() throw() {};
+      ~TargetException() throw() override {};
     };
 
     class TargetAbortedException : public TargetException
@@ -60,9 +60,9 @@ namespace zypp
       : TargetException( msg_r )
       {}
       /** Dtor. */
-      virtual ~TargetAbortedException() throw() {};
+      ~TargetAbortedException() throw() override {};
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     private:
     };
 

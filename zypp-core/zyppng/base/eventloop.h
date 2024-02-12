@@ -48,7 +48,7 @@ namespace zyppng {
     using WeakPtr = EventLoopWeakRef;
 
     static Ptr create ();
-    virtual ~EventLoop();
+    ~EventLoop() override;
 
     /*!
      * Start dispatching events, this function will block until \sa quit was called for the EventLoop instance

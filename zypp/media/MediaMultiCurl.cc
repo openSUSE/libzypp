@@ -144,7 +144,7 @@ class multifetchworker : private MediaCurl, public zyppng::CurlMultiPartDataRece
 
 public:
   multifetchworker(int no, multifetchrequest &request, const Url &url);
-  ~multifetchworker();
+  ~multifetchworker() override;
 
   /*!
    * Fetches the next job from the parent request,
@@ -516,7 +516,7 @@ multifetchworker::~multifetchworker()
   if (_pid)
     {
       kill(_pid, SIGKILL);
-      int status;
+      int status = 0;
       while (waitpid(_pid, &status, 0) == -1)
         if (errno != EINTR)
           break;
@@ -593,7 +593,7 @@ multifetchworker::checkdns()
     {
       close(pipefds[0]);
       // XXX: close all other file descriptors
-      struct addrinfo *ai, aihints;
+      struct addrinfo *ai = nullptr, aihints;
       memset(&aihints, 0, sizeof(aihints));
       aihints.ai_family = PF_UNSPEC;
       int tstsock = socket(PF_INET6, SOCK_DGRAM | SOCK_CLOEXEC, 0);
@@ -639,7 +639,7 @@ multifetchworker::dnsevent( const std::vector<GPollFD> &waitFds )
 
   if (_state != WORKER_LOOKUP || !hasEvent)
     return;
-  int status;
+  int status = 0;
   while (waitpid(_pid, &status, 0) == -1)
     {
       if (errno != EINTR)
@@ -1163,15 +1163,15 @@ multifetchrequest::run(std::vector<Url> &urllist)
         }
 
       // collect all curl results, (re)schedule jobs
-      CURLMsg *msg;
-      int nqueue;
+      CURLMsg *msg = nullptr;
+      int nqueue = 0;
       while ((msg = curl_multi_info_read(_multi, &nqueue)) != 0)
         {
           if (msg->msg != CURLMSG_DONE)
             continue;
           CURL *easy = msg->easy_handle;
           CURLcode cc = msg->data.result;
-          multifetchworker *worker;
+          multifetchworker *worker = nullptr;
 
           if (curl_easy_getinfo(easy, CURLINFO_PRIVATE, &worker) != CURLE_OK)
             ZYPP_THROW(MediaCurlException(_baseurl, "curl_easy_getinfo", "unknown error"));
@@ -1775,7 +1775,7 @@ void MediaMultiCurl::checkFileDigest(Url &url, FILE *fp, MediaBlockList &blklist
   Digest dig;
   blklist.createFileDigest(dig);
   char buf[4096];
-  size_t l;
+  size_t l = 0;
   while ((l = fread(buf, 1, sizeof(buf), fp)) > 0)
     dig.update(buf, l);
   if (!blklist.verifyFileDigest(dig))

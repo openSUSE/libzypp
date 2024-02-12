@@ -70,9 +70,9 @@ namespace zypp
     /** Ctor */
     Resolvable( const sat::Solvable & solvable_r );
     /** Dtor */
-    virtual ~Resolvable();
+    ~Resolvable() override;
     /** Helper for stream output */
-    virtual std::ostream & dumpOn( std::ostream & str ) const;
+    std::ostream & dumpOn( std::ostream & str ) const override;
 
   private:
     sat::Solvable _solvable;

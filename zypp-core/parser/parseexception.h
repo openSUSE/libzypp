@@ -38,9 +38,9 @@ namespace zypp
       /** Ctor */
       ParseException( const std::string & msg_r );
         /** Dtor */
-      virtual ~ParseException() throw();
+      ~ParseException() throw() override;
     protected:
-      virtual std::ostream & dumpOn( std::ostream & str ) const;
+      std::ostream & dumpOn( std::ostream & str ) const override;
     };
     ///////////////////////////////////////////////////////////////////
 

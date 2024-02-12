@@ -26,7 +26,7 @@ namespace zyppng {
   {
 
     MirrorHandlingStateBase ( DownloadPrivate &parent );
-    virtual ~MirrorHandlingStateBase();
+    ~MirrorHandlingStateBase() override;
     enum PrepareResult {
       Failed,
       Ok,

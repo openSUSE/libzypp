@@ -39,7 +39,7 @@ namespace zypp
         : zypp::Exception(msg)
       {}
 
-      virtual ~UrlException() throw() {};
+      ~UrlException() throw() override {};
     };
 
     // ---------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace zypp
         : UrlException(msg)
       {}
 
-      virtual ~UrlDecodingException() throw() {};
+      ~UrlDecodingException() throw() override {};
     };
 
     // ---------------------------------------------------------------
@@ -75,7 +75,7 @@ namespace zypp
         : UrlException(msg)
       {}
 
-      virtual ~UrlParsingException() throw() {};
+      ~UrlParsingException() throw() override {};
     };
 
     // ---------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace zypp
         : UrlException(msg)
       {}
 
-      virtual ~UrlBadComponentException() throw() {};
+      ~UrlBadComponentException() throw() override {};
     };
 
 
@@ -112,7 +112,7 @@ namespace zypp
         : UrlException(msg)
       {}
 
-      virtual ~UrlNotAllowedException() throw() {};
+      ~UrlNotAllowedException() throw() override {};
     };
 
 
@@ -132,7 +132,7 @@ namespace zypp
         : UrlException(msg)
       {}
 
-      virtual ~UrlNotSupportedException() throw() {};
+      ~UrlNotSupportedException() throw() override {};
     };
 
 

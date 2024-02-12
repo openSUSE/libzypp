@@ -14,7 +14,7 @@ namespace zyppng {
     ZYPP_DECLARE_PUBLIC(AsyncQueueWatch)
     public:
       AsyncQueueWatchPrivate( std::shared_ptr<AsyncQueueBase> &&q, AsyncQueueWatch &p );
-      virtual ~AsyncQueueWatchPrivate();
+      ~AsyncQueueWatchPrivate() override;
 
       std::shared_ptr<AsyncQueueBase> _queue;
       gint fds[2] = { -1, -1 };

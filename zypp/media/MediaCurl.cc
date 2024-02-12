@@ -59,7 +59,7 @@ namespace internal {
     , _isOptional { isOptional }
     { connect(); }
 
-    ~OptionalDownloadProgressReport()
+    ~OptionalDownloadProgressReport() override
     { if ( _oldRec ) Distributor::instance().setReceiver( *_oldRec ); else Distributor::instance().noReceiver(); }
 
     void reportbegin() override
@@ -389,7 +389,7 @@ void MediaCurl::checkProtocol(const Url &url) const
   // curl_info does not need any free (is static)
   if (curl_info->protocols)
   {
-    const char * const *proto;
+    const char * const *proto = nullptr;
     std::string        scheme( url.getScheme());
     bool               found = false;
     for(proto=curl_info->protocols; !found && *proto; ++proto)
@@ -1452,8 +1452,8 @@ CURLcode MediaCurl::executeCurl() const
         ZYPP_THROW(MediaCurlException(_url, "curl_multi_socket_action", "unknown error"));
     }
 
-    CURLMsg *msg;
-    int nqueue;
+    CURLMsg *msg = nullptr;
+    int nqueue = 0;
     while ((msg = curl_multi_info_read( cMulti->_multi, &nqueue)) != 0) {
         if ( msg->msg != CURLMSG_DONE  ) continue;
         if ( msg->easy_handle != _curl ) continue;

@@ -73,7 +73,7 @@ namespace utf8
             continue;
           }
 
-          wchar_t wc;
+          wchar_t wc = 0;
           size_t bytes = mbrtowc( &wc, s, slen, NULL );
           if ( bytes <= 0 )
             break;

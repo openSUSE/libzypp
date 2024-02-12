@@ -471,7 +471,7 @@ namespace zypp
    */
   inline std::ostream & hexdumpOn( std::ostream & outs, const unsigned char *ptr, size_t size )
   {
-    size_t i,c;
+    size_t i = 0,c = 0;
     unsigned width = 0x10;
     outs << str::form( "hexdump %10.10ld bytes (0x%8.8lx):\n", (long)size, (long)size );
 

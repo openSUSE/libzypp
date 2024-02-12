@@ -71,7 +71,7 @@ public:
    **/
   BinHeader( BinHeader::Ptr & rhs );
 
-  virtual ~BinHeader();
+  ~BinHeader() override;
 
 public:
 
@@ -101,7 +101,7 @@ public:
 
 public:
 
-  virtual std::ostream & dumpOn( std::ostream & str ) const;
+  std::ostream & dumpOn( std::ostream & str ) const override;
 };
 
 ///////////////////////////////////////////////////////////////////

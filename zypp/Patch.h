@@ -231,7 +231,7 @@ namespace zypp
       /** Ctor */
       Patch( const sat::Solvable & solvable_r );
       /** Dtor */
-      virtual ~Patch();
+      ~Patch() override;
   };
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Patch::Categories);
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Patch::InteractiveFlags);

@@ -60,7 +60,7 @@ namespace zypp
 
         protected:
           /** Overload to realize std::ostream & operator\<\<. */
-          virtual std::ostream & dumpOn( std::ostream & str ) const;
+          std::ostream & dumpOn( std::ostream & str ) const override;
       };
       //////////////////////////////////////////////////////////////////
 

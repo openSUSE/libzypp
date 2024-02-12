@@ -562,7 +562,7 @@ namespace zyppng {
   Socket::Ptr Socket::fromSocket( int fd, Socket::SocketState state )
   {
 
-    int domain;
+    int domain = 0;
     socklen_t optlen = sizeof(domain);
     int res = getsockopt( fd, SOL_SOCKET, SO_DOMAIN, &domain, &optlen );
     if ( res < 0 ) {
@@ -571,7 +571,7 @@ namespace zyppng {
       return nullptr;
     }
 
-    int protocol;
+    int protocol = 0;
     optlen = sizeof(protocol);
     res = getsockopt( fd, SOL_SOCKET, SO_PROTOCOL, &protocol, &optlen );
     if ( res < 0 ) {
@@ -580,7 +580,7 @@ namespace zyppng {
       return nullptr;
     }
 
-    int type;
+    int type = 0;
     optlen = sizeof(type);
     res = getsockopt( fd, SOL_SOCKET, SO_TYPE, &type, &optlen );
     if ( res < 0 ) {

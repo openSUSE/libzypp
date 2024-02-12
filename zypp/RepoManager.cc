@@ -153,7 +153,7 @@ namespace zypp
       init_knownRepositories();
     }
 
-    ~Impl()
+    ~Impl() override
     {
       // trigger appdata refresh if some repos change
       if ( ( _reposDirty || env::ZYPP_PLUGIN_APPDATA_FORCE_COLLECT() )

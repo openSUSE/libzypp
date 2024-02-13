@@ -9,9 +9,12 @@
 #ifndef ZYPP_PROBLEMSOLUTION_H
 #define ZYPP_PROBLEMSOLUTION_H
 
+#include <set>
 #include <list>
 #include <string>
+#include <optional>
 
+#include <zypp/PoolItem.h>
 #include <zypp/ProblemTypes.h>
 #include <zypp/ResolverProblem.h>
 
@@ -93,6 +96,9 @@ namespace zypp
   public:
     /** The solution contains only 'do not install patch:' actions. */
     bool skipsPatchesOnly() const;
+
+    /** The patches if \ref skipsPatchesOnly is true. */
+    std::optional<std::set<PoolItem>> getIfSkipsPatchesOnly() const;
 
   private:
     struct Impl;

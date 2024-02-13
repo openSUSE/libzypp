@@ -55,6 +55,9 @@ SolutionAction::~SolutionAction()
 {
 }
 
+PoolItem SolutionAction::item() const
+{ return PoolItem(); }
+
 bool SolutionAction::skipsPatchesOnly() const
 { return false; }
 

@@ -62,6 +62,9 @@ namespace zypp
             virtual bool execute (ResolverInternal & resolver) const = 0;
 
         public:
+            /** The PoolItem the solution refers to (if any). */
+            virtual PoolItem item() const;
+
             /** The solution contains only 'do not install patch:' actions. */
             virtual bool skipsPatchesOnly() const;
         };
@@ -116,7 +119,8 @@ namespace zypp
 
           // ---------------------------------- accessors
 
-          const PoolItem item() const { return _item; }
+          PoolItem item() const override
+          { return _item; }
           const Capability capability() const { return _capability; }
           TransactionKind action() const { return _action; }
 
@@ -170,7 +174,8 @@ namespace zypp
                 { return action.dumpOn (str); }
 
           // ---------------------------------- accessors
-            const PoolItem item() const { return _item; }
+            PoolItem item() const  override
+            { return _item; }
 
           // ---------------------------------- methods
             virtual bool execute(ResolverInternal & resolver) const;

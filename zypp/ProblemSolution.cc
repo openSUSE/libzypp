@@ -60,6 +60,14 @@ namespace zypp
     std::string		_details;
     SolutionActionList	_actions;
 
+    std::set<PoolItem> collectActionItems() const
+    {
+      std::set<PoolItem> ret;
+      for ( const auto & aptr : _actions )
+        ret.insert( aptr->item() );
+      return ret;
+    }
+
     template <typename Predicate>
     bool allActionsMatch( Predicate && predicate ) const
     {
@@ -135,12 +143,18 @@ namespace zypp
   void ProblemSolution::addAction( solver::detail::SolutionAction_Ptr action )
   { _pimpl->_actions.push_back( action ); }
 
-
   bool ProblemSolution::skipsPatchesOnly() const
   {
     return _pimpl->allActionsMatch( []( const SolutionAction_Ptr & aptr ) -> bool {
       return aptr->skipsPatchesOnly();
     } );
+  }
+
+  std::optional<std::set<PoolItem>> ProblemSolution::getIfSkipsPatchesOnly() const
+  {
+    if ( not skipsPatchesOnly() )
+      return std::nullopt;
+    return _pimpl->collectActionItems();
   }
 
 

@@ -37,153 +37,140 @@ namespace zypp
       DEFINE_PTR_TYPE(SolutionAction);
       typedef std::list<SolutionAction_Ptr> SolutionActionList;
 
-        /**
-         * Abstract base class for one action of a problem solution.
-         **/
-        class SolutionAction : public base::ReferenceCounted
-        {
-        protected:
-            typedef Resolver ResolverInternal;
-            SolutionAction ();
-        public:
-            virtual ~SolutionAction();
+      /**
+       * Abstract base class for one action of a problem solution.
+       **/
+      class SolutionAction : public base::ReferenceCounted
+      {
+      protected:
+        typedef Resolver ResolverInternal;
+        SolutionAction();
 
-            // ---------------------------------- I/O
-            virtual std::ostream & dumpOn( std::ostream & str ) const;
-            friend std::ostream& operator<<(std::ostream & str, const SolutionAction & action)
-                { return action.dumpOn (str); }
-            friend std::ostream& operator<<(std::ostream & str, const SolutionActionList & actionlist);
+      public:
+        virtual ~SolutionAction();
 
-            // ---------------------------------- methods
-            /**
-             * Execute this action.
-             * Returns 'true' on success, 'false' on error.
-             **/
-            virtual bool execute (ResolverInternal & resolver) const = 0;
-
-        public:
-            /** The PoolItem the solution refers to (if any). */
-            virtual PoolItem item() const;
-
-            /** The solution contains only 'do not install patch:' actions. */
-            virtual bool skipsPatchesOnly() const;
-        };
-
+        virtual std::ostream & dumpOn( std::ostream & str ) const;
 
         /**
-         * A problem solution action that performs a transaction
-         * (installs, removes, keep ...)  one resolvable
-         * (package, patch, pattern, product).
+         * Execute this action.
+         * Returns 'true' on success, 'false' on error.
          **/
-        typedef enum
-        {
-            KEEP,
-            INSTALL,
-            REMOVE,
-            UNLOCK,
-            LOCK,
-            REMOVE_EXTRA_REQUIRE,
-            REMOVE_EXTRA_CONFLICT,
-            ADD_SOLVE_QUEUE_ITEM,
-            REMOVE_SOLVE_QUEUE_ITEM,
-        } TransactionKind;
+        virtual bool execute( ResolverInternal & resolver ) const = 0;
+
+      public:
+        /** The PoolItem the solution refers to (if any). */
+        virtual PoolItem item() const;
+
+        /** The solution contains only 'do not install patch:' actions. */
+        virtual bool skipsPatchesOnly() const;
+      };
+
+      inline std::ostream & operator<<( std::ostream & str, const SolutionAction & action )
+      { return action.dumpOn( str ); }
+
+      std::ostream & operator<<( std::ostream & str, const SolutionActionList & actionlist );
 
 
-        class TransactionSolutionAction: public SolutionAction
-        {
-        public:
-            TransactionSolutionAction( PoolItem item,
-                                       TransactionKind action )
-                : SolutionAction(),
-                  _item( item ), _action( action ) {}
+      /**
+       * A problem solution action that performs a transaction
+       * (installs, removes, keep ...)  one resolvable
+       * (package, patch, pattern, product).
+       **/
+      typedef enum
+      {
+        KEEP,
+        INSTALL,
+        REMOVE,
+        UNLOCK,
+        LOCK,
+        REMOVE_EXTRA_REQUIRE,
+        REMOVE_EXTRA_CONFLICT,
+        ADD_SOLVE_QUEUE_ITEM,
+        REMOVE_SOLVE_QUEUE_ITEM,
+      } TransactionKind;
 
-            TransactionSolutionAction( Capability capability,
-                                       TransactionKind action )
-                : SolutionAction(),
-                  _capability( capability ), _action( action ) {}
+      class TransactionSolutionAction: public SolutionAction
+      {
+      public:
+        TransactionSolutionAction( PoolItem item, TransactionKind action )
+        : SolutionAction()
+        , _action( action )
+        , _item( item )
+        {}
+
+        TransactionSolutionAction( Capability capability, TransactionKind action )
+        : SolutionAction()
+        , _action( action )
+        , _capability( capability )
+        {}
+
+        TransactionSolutionAction( SolverQueueItem_Ptr item, TransactionKind action )
+        : SolutionAction()
+        , _action( action )
+        , _solverQueueItem( item )
+        {}
+
+        TransactionSolutionAction( TransactionKind action )
+        : SolutionAction()
+        , _action( action )
+        {}
+
+        std::ostream & dumpOn( std::ostream & str ) const override;
+
+        bool execute( ResolverInternal & resolver ) const override;
+
+      public:
+        PoolItem item() const override
+        { return _item; }
+
+        bool skipsPatchesOnly() const override;
+
+      protected:
+        const TransactionKind _action;
+
+        PoolItem _item;
+        Capability _capability;
+        SolverQueueItem_Ptr _solverQueueItem;
+      };
 
 
-            TransactionSolutionAction( SolverQueueItem_Ptr item,
-                                       TransactionKind action )
-                : SolutionAction(),
-                  _solverQueueItem( item ), _action( action ) {}
+      /**
+       * Type of ignoring; currently only WEAK
+       **/
+      typedef enum
+      {
+        WEAK
+      } InjectSolutionKind;
 
-            TransactionSolutionAction( TransactionKind action )
-                : SolutionAction(),
-                  _item(), _action( action ) {}
+      /**
+       * A problem solution action that injects an artificial "provides" to
+       * the pool to satisfy open requirements or remove the conflict of
+       * concerning resolvable
+       *
+       * This is typically used by "ignore" (user override) solutions.
+       **/
+      class InjectSolutionAction: public SolutionAction
+      {
+      public:
+        InjectSolutionAction( PoolItem item, const InjectSolutionKind & kind )
+        : SolutionAction()
+        , _kind( kind )
+        , _item( item )
+        {}
 
-          // ---------------------------------- I/O
-          virtual std::ostream & dumpOn( std::ostream & str ) const;
-          friend std::ostream& operator<<(std::ostream& str, const TransactionSolutionAction & action)
-                { return action.dumpOn (str); }
+        std::ostream & dumpOn( std::ostream & str ) const override;
 
-          // ---------------------------------- accessors
+        bool execute( ResolverInternal & resolver ) const override;
 
-          PoolItem item() const override
-          { return _item; }
-          const Capability capability() const { return _capability; }
-          TransactionKind action() const { return _action; }
+      public:
+        PoolItem item() const  override
+        { return _item; }
 
-          // ---------------------------------- methods
-          virtual bool execute(ResolverInternal & resolver) const;
+      protected:
+        const InjectSolutionKind _kind;
 
-        public:
-            /** The solution contains only 'do not install patch:' actions. */
-            bool skipsPatchesOnly() const override;
-
-        protected:
-
-            PoolItem _item;
-            Capability _capability;
-            SolverQueueItem_Ptr _solverQueueItem;
-
-            const TransactionKind _action;
-        };
-
-
-        /**
-         * Type of ignoring; currently only WEAK
-         **/
-
-        typedef enum
-        {
-            WEAK
-        } InjectSolutionKind;
-
-
-        /**
-         * A problem solution action that injects an artificial "provides" to
-         * the pool to satisfy open requirements or remove the conflict of
-         * concerning resolvable
-         *
-         * This is typically used by "ignore" (user override) solutions.
-         **/
-        class InjectSolutionAction: public SolutionAction
-        {
-        public:
-
-            InjectSolutionAction( PoolItem item,
-                                  const InjectSolutionKind & kind)
-                : SolutionAction(),
-                  _item( item ),
-                  _kind( kind ) {}
-
-          // ---------------------------------- I/O
-          virtual std::ostream & dumpOn( std::ostream & str ) const;
-          friend std::ostream& operator<<(std::ostream& str, const InjectSolutionAction & action)
-                { return action.dumpOn (str); }
-
-          // ---------------------------------- accessors
-            PoolItem item() const  override
-            { return _item; }
-
-          // ---------------------------------- methods
-            virtual bool execute(ResolverInternal & resolver) const;
-
-        protected:
-            PoolItem _item;
-            const InjectSolutionKind _kind;
-        };
+        PoolItem _item;
+      };
 
 
       ///////////////////////////////////////////////////////////////////

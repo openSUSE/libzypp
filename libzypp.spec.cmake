@@ -41,7 +41,7 @@ Recommends:     logrotate
 Recommends:     lsof
 %endif
 BuildRequires:  cmake
-BuildRequires:  openssl-devel
+BuildRequires:  libopenssl1-devel
 %if 0%{?suse_version} >= 1130
 BuildRequires:  libudev-devel
 %else
@@ -111,6 +111,7 @@ Requires:       gnupg2
 # Code11+
 BuildRequires:  libcurl-devel >= %{min_curl_version}
 Requires:       libcurl4   >= %{min_curl_version}
+Requires:       libcurl4-openssl1 >= %{min_curl_version}
 %else
 # Code10
 BuildRequires:  curl-devel
@@ -197,6 +198,7 @@ mkdir build
 cd build
 export CFLAGS="$RPM_OPT_FLAGS"
 export CXXFLAGS="$RPM_OPT_FLAGS"
+export LDFLAGS="-Wl,-rpath,/opt/suse/%_lib"
 unset TRANSLATION_SET
 unset EXTRA_CMAKE_OPTIONS
 # SLE11-* might want its own translation set:

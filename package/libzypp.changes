@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 15 15:12:02 CET 2024 - ma@suse.de
+
+- build against openssl1 and openssl1 enabled libcurl4 library.
+- version 9.41.3 (8)
+
+-------------------------------------------------------------------
 Tue Jun 20 14:53:34 CEST 2023 - ma@suse.de
 
 - curl: Trim user agent and custom header strings (bsc#1212187)

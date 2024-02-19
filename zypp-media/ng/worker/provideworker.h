@@ -16,7 +16,6 @@
 #include <zypp-core/zyppng/io/AsyncDataSource>
 #include <zypp-core/zyppng/rpc/MessageStream>
 #include <zypp-core/zyppng/pipelines/Expected>
-#include <zypp-proto/media/provider.pb.h>
 #include <zypp-media/ng/provide-configvars.h>
 #include <zypp-media/ng/private/providemessage_p.h>
 #include <zypp-media/ng/HeaderValueMap>
@@ -28,9 +27,9 @@
 
 namespace zyppng::worker {
 
-  using WorkerCaps     = zypp::proto::Capabilities;
-  using Message        = zypp::proto::Envelope;
-  using Configuration  = zypp::proto::Configuration;
+  using WorkerCaps     = zyppng::WorkerCaps;
+  using Message        = zyppng::ProvideMessage;
+  using Configuration  = zyppng::ProviderConfiguration;
 
   struct AuthInfo
   {
@@ -204,7 +203,7 @@ namespace zyppng::worker {
     Timer::Ptr _delayedShutdown = Timer::create();
     AsyncDataSource::Ptr _controlIO;
     RpcMessageStream::Ptr _stream;
-    Configuration _workerConf;
+    ProviderConfiguration _workerConf;
 
     std::exception_ptr _fatalError; //< Error that caused the eventloop to stop
 

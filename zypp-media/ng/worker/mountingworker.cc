@@ -99,7 +99,7 @@ namespace zyppng::worker
           return;
         }
 
-        case zyppng::ProvideMessage::Code::Provide: {
+        case zyppng::ProvideMessage::Code::Prov: {
 
           const auto url = zypp::Url( req->_spec.value( zyppng::DetachMsgFields::Url ).asString() );
           const auto &attachId = url.getAuthority();

@@ -14,11 +14,11 @@ namespace zyppng {
   IMPL_PTR_TYPE( AttachedMediaInfo )
 
 
-  AttachedMediaInfo::AttachedMediaInfo( const std::string &id, zypp::proto::Capabilities::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec )
+  AttachedMediaInfo::AttachedMediaInfo( const std::string &id, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec )
     : AttachedMediaInfo( id, {}, workerType, baseUrl, spec )
   { }
 
-  AttachedMediaInfo::AttachedMediaInfo( const std::string &id, ProvideQueueWeakRef backingQueue, zypp::proto::Capabilities::WorkerType workerType, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec , const std::optional<zypp::Pathname> &mnt )
+  AttachedMediaInfo::AttachedMediaInfo( const std::string &id, ProvideQueueWeakRef backingQueue, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, const ProvideMediaSpec &mediaSpec , const std::optional<zypp::Pathname> &mnt )
     : _name(id)
     , _backingQueue( std::move(backingQueue) )
     , _workerType( workerType )

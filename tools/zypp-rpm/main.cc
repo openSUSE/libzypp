@@ -1,6 +1,6 @@
 #include <zypp-proto/target/commit.pb.h>
 #include <zypp-core/zyppng/core/ByteArray>
-#include <zypp-core/zyppng/rpc/rpc.h>
+#include <zypp-core/zyppng/rpc/messagestream.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
@@ -100,11 +100,12 @@ bool sendBytes ( int fd, const void *buf, size_t n ) {
 template <typename Message>
 bool pushMessage ( const Message &msg ) {
 
-  zypp::proto::Envelope env;
+  zyppng::RpcMessage env;
   env.set_messagetypename( msg.GetTypeName() );
-  msg.SerializeToString( env.mutable_value() );
+  env.set_value( msg.SerializeAsString() );
+  //msg.SerializeToString( env.mutable_value() );
 
-  const auto &str = env.SerializeAsString();
+  const auto &str = env.serialize();
   zyppng::rpc::HeaderSizeType msgSize = str.length();
   if ( !sendBytes( static_cast<int>( ExpectedFds::MessageFd ), reinterpret_cast< void* >( &msgSize), sizeof (zyppng::rpc::HeaderSizeType) ) )
     return false;

@@ -33,8 +33,7 @@ namespace zyppng::worker
 
   zyppng::expected<WorkerCaps> DeviceDriver::initialize(const zyppng::worker::Configuration &conf)
   {
-    const auto &values = conf.values();
-    if ( const auto &i = values.find( std::string(zyppng::ATTACH_POINT) ); i != values.end() ) {
+    if ( const auto &i = conf.find( std::string(zyppng::ATTACH_POINT) ); i != conf.end() ) {
       const auto &val = i->second;
       MIL << "Got attachpoint from controller: " << val << std::endl;
       _attachRoot = zypp::Pathname(val).realpath();

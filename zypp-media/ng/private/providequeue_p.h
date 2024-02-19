@@ -15,14 +15,13 @@
 #define ZYPP_MEDIA_PRIVATE_PROVIDE_QUEUE_P_H_INCLUDED
 
 #include "providefwd_p.h"
+#include "providemessage_p.h"
 #include <zypp-media/ng/Provide>
-#include <zypp-proto/media/provider.pb.h>
 #include <zypp-core/zyppng/io/Process>
 #include <zypp-core/ByteCount.h>
 
 #include <deque>
 #include <chrono>
-#include <variant>
 
 namespace zyppng {
 
@@ -35,7 +34,7 @@ namespace zyppng {
     friend struct ProvideResourceData;
 
     static constexpr uint32_t InvalidId = (uint32_t) -1;
-    using Config = zypp::proto::Capabilities;
+    using Config = zyppng::WorkerCaps;
 
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 

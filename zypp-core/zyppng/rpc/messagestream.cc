@@ -11,8 +11,50 @@
 
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/zyppng/base/AutoDisconnect>
+#include <zypp-proto/core/envelope.pb.h>
 
 namespace zyppng {
+
+  RpcMessage::RpcMessage()
+    : _data( new zypp::proto::Envelope() )
+  { }
+
+  RpcMessage::RpcMessage( zypp::proto::Envelope data )
+    : _data( new zypp::proto::Envelope( std::move(data) ) )
+  { }
+
+  void RpcMessage::set_messagetypename(std::string name)
+  {
+    _data->set_messagetypename( std::move(name) );
+  }
+
+  const std::string &RpcMessage::messagetypename() const
+  {
+    return _data->messagetypename();
+  }
+
+  void RpcMessage::set_value(std::string name)
+  {
+    _data->set_value( std::move(name) );
+  }
+
+  const std::string &RpcMessage::value() const
+  {
+    return _data->value();
+  }
+
+  std::string RpcMessage::serialize() const
+  {
+    return _data->SerializeAsString();
+  }
+
+  std::string RpcBaseType::serialize() const
+  {
+    std::string target;
+    serializeInto ( target );
+    return target;
+  }
+
 
   InvalidMessageReceivedException::InvalidMessageReceivedException( const std::string &msg )
     : zypp::Exception( zypp::str::Str() << "Invalid Message received: (" << msg <<")" )
@@ -51,7 +93,7 @@ namespace zyppng {
       return false;
     }
 
-    _messages.push_back( std::move(m) );
+    _messages.emplace_back( std::move(m) );
     _sigNextMessage.emit ();
 
     if ( _messages.size() ) {
@@ -95,7 +137,7 @@ namespace zyppng {
       _messages.pop_front();
 
     } else {
-      const auto i = std::find_if( _messages.begin(), _messages.end(), [&]( const zypp::proto::Envelope &env ) {
+      const auto i = std::find_if( _messages.begin(), _messages.end(), [&]( const RpcMessage &env ) {
         return env.messagetypename() == msgName;
       });
 
@@ -151,7 +193,7 @@ namespace zyppng {
     if ( !_ioDev->canWrite () )
       return false;
 
-    const auto &str = env.SerializeAsString();
+    const auto &str = env._data->SerializeAsString();
     rpc::HeaderSizeType msgSize = str.length();
     _ioDev->write( (char *)(&msgSize), sizeof( rpc::HeaderSizeType ) );
     _ioDev->write( str.data(), str.size() );
@@ -174,5 +216,14 @@ namespace zyppng {
     while ( cont && _ioDev->bytesAvailable() ) {
       cont = readNextMessage ();
     }
+  }
+
+}
+
+namespace zypp {
+  template<>
+  zypp::proto::Envelope* rwcowClone<zypp::proto::Envelope>( const zypp::proto::Envelope * rhs )
+  {
+    return new zypp::proto::Envelope(*rhs);
   }
 }

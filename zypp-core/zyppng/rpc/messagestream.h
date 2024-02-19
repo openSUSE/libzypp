@@ -20,15 +20,69 @@
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/zyppng/io/IODevice>
 #include <zypp-core/zyppng/pipelines/expected.h>
-#include <zypp-proto/core/envelope.pb.h>
 #include <zypp-core/zyppng/rpc/rpc.h>
 
 #include <deque>
 #include <optional>
 
+namespace zypp::proto
+{
+  class Envelope;
+}
+
 namespace zyppng {
 
-  using RpcMessage = zypp::proto::Envelope;
+  class RpcMessageStream;
+
+  class InvalidMessageReceivedException : public zypp::Exception
+  {
+  public:
+    InvalidMessageReceivedException( const std::string &msg = {});
+  };
+
+  /*!
+   * Implement this Base class for all types that should serialized into
+   * a \ref RpcMessage
+   */
+  class RpcBaseType {
+  public:
+    RpcBaseType() = default;
+    virtual ~RpcBaseType() = default;
+    RpcBaseType(const RpcBaseType &) = default;
+    RpcBaseType(RpcBaseType &&) = default;
+    RpcBaseType &operator=(const RpcBaseType &) = default;
+    RpcBaseType &operator=(RpcBaseType &&) = default;
+
+    virtual const std::string &typeName() const = 0;
+    virtual bool deserialize( const std::string &data ) = 0;
+    virtual void serializeInto( std::string &str ) const = 0;
+    virtual std::string serialize() const;
+  };
+
+
+  class RpcMessage {
+
+  public:
+    friend class RpcMessageStream;
+    RpcMessage( );
+    RpcMessage( zypp::proto::Envelope data );
+
+    RpcMessage(const RpcMessage &) = default;
+    RpcMessage(RpcMessage &&) = default;
+    RpcMessage &operator=(const RpcMessage &) = default;
+    RpcMessage &operator=(RpcMessage &&) = default;
+
+    void set_messagetypename( std::string name );
+    const std::string &messagetypename() const;
+
+    void set_value( std::string name );
+    const std::string &value() const;
+
+    std::string serialize() const;
+
+  public:
+    zypp::RWCOW_pointer<zypp::proto::Envelope> _data;
+  };
 
   namespace rpc {
     /*!
@@ -41,14 +95,38 @@ namespace zyppng {
       static std::string name = T().GetTypeName();
       return name;
     }
+
+    template <typename T>
+    expected<void> deserializeMessageInto( const RpcMessage &message, T &target )
+    {
+      if ( !target.deserialize( message.value() ) ) {
+        const std::string &msg = zypp::str::Str() << "Failed to parse " << message.messagetypename() << " message.";
+        ERR << msg << std::endl ;
+        return expected<void>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException(msg) ) );
+      }
+      return expected<void>::success();
+    }
+
+    template <typename T>
+    expected<T> deserializeMessage( const RpcMessage &message )
+    {
+      T target;
+      auto res = deserializeMessageInto (message, target);
+      if ( !res )
+        return expected<T>::error( res.error() );
+      return expected<T>::success(std::move(target));
+    }
+
+    template <typename T>
+    RpcMessage serializeIntoMessage( const T& data )
+    {
+      RpcMessage env;
+      env.set_messagetypename( data.typeName() );
+      env.set_value( data.serialize() );
+      return env;
+    }
+
   }
-
-  class InvalidMessageReceivedException : public zypp::Exception
-  {
-  public:
-    InvalidMessageReceivedException( const std::string &msg = {});
-  };
-
 
   /*!
    *
@@ -118,12 +196,7 @@ namespace zyppng {
        */
       template <typename T>
       std::enable_if_t< !std::is_same_v<T, RpcMessage>, bool> sendMessage ( const T &m ) {
-        RpcMessage env;
-
-        env.set_messagetypename( m.GetTypeName() );
-        m.SerializeToString( env.mutable_value() );
-
-        return sendMessage ( env );
+        return sendMessage( rpc::serializeIntoMessage(m) );
       }
 
       /*!
@@ -139,13 +212,7 @@ namespace zyppng {
 
       template<class T>
       static expected< T > parseMessage ( const RpcMessage &m ) {
-        T p;
-        if ( !p.ParseFromString( m.value() ) ) {
-          const std::string &msg = zypp::str::Str() << "Failed to parse " << m.messagetypename() << " message.";
-          ERR << msg << std::endl ;
-          return expected<T>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException(msg) ) );
-        }
-        return expected<T>::success( std::move(p) );
+        return rpc::deserializeMessage<T>(m);
       }
 
       template<class T>
@@ -172,6 +239,55 @@ namespace zyppng {
 
   };
 }
+
+namespace zypp {
+  template<> zypp::proto::Envelope* rwcowClone<zypp::proto::Envelope>( const zypp::proto::Envelope * rhs );
+}
+
+/*!
+ * Helper macro to be added into the class declaration
+ * for a \ref zyppng::RpcBase subclass
+ */
+#define ZYPP_RPCBASE \
+  public: \
+    static const std::string &staticTypeName(); \
+    const std::string &typeName() const override; \
+    bool deserialize(const std::string &data) override; \
+    void serializeInto(std::string &str) const override; \
+    std::string serialize( ) const override; \
+  private: \
+
+/*!
+ * Helper macro to be added into the class cc file
+ * for a \ref zyppng::RpcBase subclass. Generates the
+ * default implementation for the virtual functions if
+ * the impl is a protobuf type
+ */
+#define ZYPP_IMPL_RPCBASE(Class, ImplClass, implVar) \
+  const std::string &Class::staticTypeName()  \
+  {  \
+    return rpc::messageTypeName<ImplClass>();  \
+  }  \
+  \
+  const std::string &Class::typeName() const  \
+  { \
+    return staticTypeName(); \
+  } \
+   \
+  bool Class::deserialize(const std::string &data) \
+  { \
+    return implVar->ParseFromString( data ); \
+  } \
+ \
+  void Class::serializeInto(std::string &str) const \
+  { \
+    implVar->SerializeToString( &str ); \
+  } \
+  \
+  std::string Class::serialize( ) const \
+  { \
+   return implVar->SerializeAsString( ); \
+  }
 
 
 

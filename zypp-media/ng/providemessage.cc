@@ -13,7 +13,97 @@
 #include <string_view>
 #include <string>
 
+#include <zypp-proto/media/provider.pb.h>
+
 namespace zyppng {
+
+  const std::string &ProviderConfiguration::staticTypeName()
+  {
+    return rpc::messageTypeName<zypp::proto::Configuration>();
+  }
+
+  const std::string &ProviderConfiguration::typeName() const
+  {
+    return staticTypeName();
+  }
+
+  bool ProviderConfiguration::deserialize(const std::string &data)
+  {
+    clear();
+    zypp::proto::Configuration implVar;
+    if ( !implVar.ParseFromString( data ) )
+      return false;
+
+    insert( implVar.values ().begin (), implVar.values ().end() );
+    return true;
+  }
+
+  void ProviderConfiguration::serializeInto(std::string &str) const
+  {
+    zypp::proto::Configuration implVar;
+    implVar.mutable_values()->insert( begin(), end() );
+    implVar.SerializeToString( &str );
+  }
+
+  std::string ProviderConfiguration::serialize( ) const
+  {
+    std::string res;
+    serializeInto(res);
+    return res;
+  }
+
+
+  /*!
+   * Worker Capabilities , sent by the workers to the provider
+   */
+  WorkerCaps::WorkerCaps()
+    : _data( new zypp::proto::Capabilities() )
+  { }
+
+  ZYPP_IMPL_RPCBASE(WorkerCaps, zypp::proto::Capabilities, _data)
+
+  WorkerCaps::~WorkerCaps()
+  { }
+
+  uint32_t WorkerCaps::protocol_version() const
+  {
+    return _data->protocol_version ();
+  }
+
+  WorkerCaps::WorkerType WorkerCaps::worker_type() const
+  {
+    return static_cast<WorkerCaps::WorkerType>(_data->worker_type ());
+  }
+
+  WorkerCaps::Flags WorkerCaps::cfg_flags() const
+  {
+    return static_cast<WorkerCaps::Flags>(_data->cfg_flags());
+  }
+
+  const std::string &WorkerCaps::worker_name() const
+  {
+    return _data->worker_name();
+  }
+
+  void WorkerCaps::set_protocol_version(uint32_t v)
+  {
+    _data->set_protocol_version(v);
+  }
+
+  void WorkerCaps::set_worker_type(WorkerType t)
+  {
+    _data->set_worker_type( static_cast<uint32_t>(t) );
+  }
+
+  void WorkerCaps::set_cfg_flags(Flags f)
+  {
+    _data->set_cfg_flags( static_cast<uint32_t>(f) );
+  }
+
+  void WorkerCaps::set_worker_name(std::string name)
+  {
+    _data->set_worker_name ( std::move(name) );
+  }
 
   static ProvideMessage::FieldVal fieldValFromProto ( const zypp::proto::DataField &field )
   {
@@ -221,7 +311,7 @@ namespace zyppng {
           return e;
         break;
       }
-      case ProvideMessage::Code::Provide: {
+      case ProvideMessage::Code::Prov: {
         std::exception_ptr error;
         DEF_REQ_FIELD(url);
         msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
@@ -330,6 +420,8 @@ namespace zyppng {
   ProvideMessage::ProvideMessage()
     : _impl ( new zypp::proto::ProvideMessage )
   { }
+
+  ZYPP_IMPL_RPCBASE( ProvideMessage, zypp::proto::ProvideMessage, _impl )
 
   expected<zyppng::ProvideMessage> ProvideMessage::create(const RpcMessage &message)
   {
@@ -466,7 +558,7 @@ namespace zyppng {
   ProvideMessage ProvideMessage::createProvide( const uint32_t reqId, const zypp::Url &url, const std::optional<std::string> &filename, const std::optional<std::string> &deltaFile, const std::optional<int64_t> &expFilesize, bool checkExistOnly )
   {
     ProvideMessage msg;
-    msg.setCode ( ProvideMessage::Code::Provide );
+    msg.setCode ( ProvideMessage::Code::Prov );
     msg.setRequestId ( reqId );
     msg.setValue ( ProvideMsgFields::Url, url.asCompleteString() );
 
@@ -560,12 +652,12 @@ namespace zyppng {
     _impl->set_request_id( id );
   }
 
-  uint ProvideMessage::code() const
+  uint32_t ProvideMessage::code() const
   {
     return _impl->message_code();
   }
 
-  void ProvideMessage::setCode( const uint newCode )
+  void ProvideMessage::setCode(const uint32_t newCode )
   {
     _impl->set_message_code ( newCode );
   }
@@ -650,15 +742,18 @@ namespace zyppng {
       }
     }
   }
+}
 
-  zypp::proto::ProvideMessage &ProvideMessage::impl()
-  {
-    return *_impl.get();
-  }
+namespace zypp {
+  template<>
+  proto::Configuration *rwcowClone<proto::Configuration>(const proto::Configuration *rhs)
+  { return new proto::Configuration( *rhs ); }
 
-  const zypp::proto::ProvideMessage &ProvideMessage::impl() const
-  {
-    return *_impl.get();
-  }
+  template<>
+  proto::Capabilities *rwcowClone<proto::Capabilities>(const proto::Capabilities *rhs)
+  { return new proto::Capabilities( *rhs ); }
 
+  template<>
+  zypp::proto::ProvideMessage* rwcowClone<zypp::proto::ProvideMessage>( const zypp::proto::ProvideMessage * rhs )
+  { return new zypp::proto::ProvideMessage(*rhs); }
 }

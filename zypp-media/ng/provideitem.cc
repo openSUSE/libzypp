@@ -516,7 +516,7 @@ namespace zyppng {
       case ProvideMessage::Code::Detach:
         url = _message.value( DetachMsgFields::Url );
         break;
-      case ProvideMessage::Code::Provide:
+      case ProvideMessage::Code::Prov:
         url = _message.value( ProvideMsgFields::Url );
         break;
       default:
@@ -546,7 +546,7 @@ namespace zyppng {
       case ProvideMessage::Code::Detach:
         this->_message.setValue( DetachMsgFields::Url, urlToUse.asCompleteString() );
         break;
-      case ProvideMessage::Code::Provide:
+      case ProvideMessage::Code::Prov:
         this->_message.setValue( ProvideMsgFields::Url, urlToUse.asCompleteString() );
         break;
       default:

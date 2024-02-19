@@ -186,7 +186,7 @@ namespace zyppng::worker
 
     private:
       WorkerCaps::WorkerType _wType;
-      zyppng::worker::Configuration _config;
+      ProviderConfiguration _config;
       time_t  _attach_mtime = 0; //< Timestamp of the mtab we did read
       zypp::Pathname _attachRoot;
       std::vector<std::shared_ptr<Device>> _sysDevs;

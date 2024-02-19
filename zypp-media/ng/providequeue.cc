@@ -10,7 +10,6 @@
 #include "private/providequeue_p.h"
 #include "private/provideitem_p.h"
 #include "private/provide_p.h"
-#include "private/providemessage_p.h"
 #include "private/providedbg_p.h"
 
 #include <zypp-core/fs/PathInfo.h>
@@ -36,7 +35,7 @@ namespace zyppng {
   {
     if ( !_request )
       return false;
-    return ( _request->code () == ProvideMessage::Code::Provide );
+    return ( _request->code () == ProvideMessage::Code::Prov );
   }
 
   bool ProvideQueue::Item::isDetachRequest() const
@@ -117,7 +116,7 @@ namespace zyppng {
       return;
 
     if ( item->code() != ProvideMessage::Code::Attach
-         && item->code() != ProvideMessage::Code::Provide ) {
+         && item->code() != ProvideMessage::Code::Prov ) {
       ERR << "Can not cancel a " << item->code() << " request!" << std::endl;
       return;
     }
@@ -200,7 +199,7 @@ namespace zyppng {
 
     // we first need to cancel the item
     auto c = ProvideMessage::createCancel ( i->_request->provideMessage().requestId() );
-    if( !_messageStream->sendMessage(c.impl()) )
+    if( !_messageStream->sendMessage(c) )
       ERR << "Failed to send cancel message to worker" << std::endl;
 
     i->_state = Item::Cancelling;
@@ -228,7 +227,7 @@ namespace zyppng {
         continue;
       }
 
-      if ( !_messageStream->sendMessage( reqRef->provideMessage().impl() ) ) {
+      if ( !_messageStream->sendMessage( reqRef->provideMessage() ) ) {
         ERR << "Failed to send message to worker process." << std::endl;
         fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
         return;
@@ -249,7 +248,7 @@ namespace zyppng {
 
   bool ProvideQueue::canScheduleMore() const
   {
-    return ( _activeItems.size() == 0 || ( _capabilities.cfg_flags () & zypp::proto::Capabilities::Pipeline ) == zypp::proto::Capabilities::Pipeline );
+    return ( _activeItems.size() == 0 || ( _capabilities.cfg_flags () & zyppng::WorkerCaps::Pipeline ) == zyppng::WorkerCaps::Pipeline );
   }
 
   bool ProvideQueue::isIdle() const
@@ -285,7 +284,7 @@ namespace zyppng {
         continue;
 
       auto &reqRef = i._request;
-      if ( reqRef->code() != ProvideMessage::Code::Provide )
+      if ( reqRef->code() != ProvideMessage::Code::Prov )
         continue;
       dlSize += reqRef->provideMessage().value( ProvideMsgFields::ExpectedFilesize, int64_t(0) ).asInt64();
     }
@@ -293,7 +292,7 @@ namespace zyppng {
       if ( i.isDetachRequest () )
         continue;
       auto &reqRef = i._request;
-      if ( reqRef->code() != ProvideMessage::Code::Provide )
+      if ( reqRef->code() != ProvideMessage::Code::Prov )
         continue;
       dlSize += reqRef->provideMessage().value( ProvideMsgFields::ExpectedFilesize, int64_t(0) ).asInt64();
     }
@@ -336,11 +335,11 @@ namespace zyppng {
 
     // we are ready to send the data
 
-    zypp::proto::Configuration conf;
+    ProviderConfiguration conf;
     // @TODO actually write real config data :D
-    conf.mutable_values ()->insert ( { AGENT_STRING_CONF.data (), "ZYpp " LIBZYPP_VERSION_STRING } );
-    conf.mutable_values ()->insert ( { ATTACH_POINT.data (), _workerProc->workingDirectory().asString() } );
-    conf.mutable_values ()->insert ( { PROVIDER_ROOT.data (), _parent.z_func()->providerWorkdir().asString() } );
+    conf.insert ( { AGENT_STRING_CONF.data (), "ZYpp " LIBZYPP_VERSION_STRING } );
+    conf.insert ( { ATTACH_POINT.data (), _workerProc->workingDirectory().asString() } );
+    conf.insert ( { PROVIDER_ROOT.data (), _parent.z_func()->providerWorkdir().asString() } );
 
     const auto &cleanupOnErr = [&](){
       readAllStderr();
@@ -360,13 +359,13 @@ namespace zyppng {
 
     // wait until we receive a message
     const auto &caps = _messageStream->nextMessageWait();
-    if ( !caps || caps->messagetypename() != rpc::messageTypeName<zypp::proto::Capabilities>() ) {
+    if ( !caps || caps->messagetypename() != WorkerCaps::staticTypeName() ) {
       ERR << "Worker did not sent a capabilities message, aborting" << std::endl;
       return cleanupOnErr();
     }
 
     {
-      auto p = _messageStream->parseMessage<zypp::proto::Capabilities>( *caps );
+      auto p = _messageStream->parseMessage<WorkerCaps>( *caps );
       if ( !p )
         return cleanupOnErr();
 
@@ -409,7 +408,7 @@ namespace zyppng {
 
     const auto &sendErrorToWorker = [&]( const uint32_t reqId, const uint code, const std::string &reason, bool transient = false ) {
       auto r = ProvideMessage::createErrorResponse ( reqId, code, reason, transient );
-      if ( !_messageStream->sendMessage( r.impl() ) ) {
+      if ( !_messageStream->sendMessage( r ) ) {
         ERR << "Failed to send Error message to worker process." << std::endl;
         fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
         return false;
@@ -422,7 +421,7 @@ namespace zyppng {
 
     while ( auto msg = _messageStream->nextMessage () ) {
 
-      if ( msg->messagetypename() == rpc::messageTypeName<zypp::proto::ProvideMessage>() ) {
+      if ( msg->messagetypename() == ProvideMessage::staticTypeName() ) {
 
         const auto &provMsg = ProvideMessage::create(*msg);
         if ( !provMsg ) {
@@ -613,7 +612,7 @@ namespace zyppng {
               }
 
               auto r = ProvideMessage::createAuthInfo ( reqRef->provideMessage().requestId(), authOpt->username(), authOpt->password(), authOpt->lastDatabaseUpdate(), authOpt->extraValues() );
-              if ( !_messageStream->sendMessage( r.impl() ) ) {
+              if ( !_messageStream->sendMessage( r ) ) {
                 ERR << "Failed to send AuthorizationInfo to worker process." << std::endl;
                 fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
                 return;
@@ -668,7 +667,7 @@ namespace zyppng {
               case Provide::Action::RETRY: {
                 MIL << "Sending back a MediaChanged message, retrying to find medium " << std::endl;
                 auto r = ProvideMessage::createMediaChanged ( reqIter->_request->provideMessage().requestId() );
-                if ( !_messageStream->sendMessage( r.impl() ) ){
+                if ( !_messageStream->sendMessage( r ) ){
                   ERR << "Failed to send MediaChanged to worker process." << std::endl;
                   fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
                   return;
@@ -722,7 +721,7 @@ namespace zyppng {
 
   void ProvideQueue::forwardToLog( std::string &&logLine )
   {
-    if ( (_capabilities.cfg_flags () & zypp::proto::Capabilities::ZyppLogFormat) == zypp::proto::Capabilities::ZyppLogFormat )
+    if ( (_capabilities.cfg_flags () & zyppng::WorkerCaps::ZyppLogFormat) == zyppng::WorkerCaps::ZyppLogFormat )
       zypp::base::LogControl::instance ().logRawLine( std::move(logLine) );
     else
       MIL << "Message from worker: " << _capabilities.worker_name() << ":" << logLine << std::endl;

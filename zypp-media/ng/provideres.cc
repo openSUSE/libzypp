@@ -8,8 +8,6 @@
 \---------------------------------------------------------------------*/
 
 #include "provideres.h"
-#include "private/provide_p.h"
-#include "private/providequeue_p.h"
 #include "private/provideres_p.h"
 
 namespace zyppng {

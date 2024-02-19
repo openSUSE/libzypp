@@ -129,7 +129,7 @@ namespace zyppng::worker {
           , url
           , localFile.empty () ? std::optional<std::string>() : localFile.asString ()
           , stagingFile.empty () ? std::optional<std::string>() : stagingFile.asString ()
-        ).impl() ) ) {
+        ) ) ) {
       ERR << "Failed to send ProvideStart message" << std::endl;
     }
   }
@@ -142,7 +142,7 @@ namespace zyppng::worker {
       for ( const auto &val : i->second )
         msg.addValue( i->first, val );
     }
-    if ( !_stream->sendMessage( msg.impl() ) ) {
+    if ( !_stream->sendMessage( msg ) ) {
       ERR << "Failed to send ProvideSuccess message" << std::endl;
     }
   }
@@ -155,7 +155,7 @@ namespace zyppng::worker {
       for ( const auto &val : i->second )
         msg.addValue( i->first, val );
     }
-    if ( !_stream->sendMessage( msg.impl() ) ) {
+    if ( !_stream->sendMessage( msg ) ) {
       ERR << "Failed to send ProvideFailed message" << std::endl;
     }
   }
@@ -178,7 +178,7 @@ namespace zyppng::worker {
   void ProvideWorker::attachSuccess(const uint32_t id, const std::optional<std::string> &localMountPoint)
   {
     MIL_PRV << "Sending attachSuccess for request " << id << std::endl;
-    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id, localMountPoint ).impl() ) ) {
+    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id, localMountPoint ) ) ) {
       ERR << "Failed to send AttachFinished message" << std::endl;
     } else {
       MIL << "Sent back attach success" << std::endl;
@@ -188,7 +188,7 @@ namespace zyppng::worker {
   void ProvideWorker::detachSuccess(const uint32_t id)
   {
     MIL_PRV << "Sending detachSuccess for request " << id << std::endl;
-    if ( !_stream->sendMessage( ProvideMessage::createDetachFinished ( id ).impl() ) ) {
+    if ( !_stream->sendMessage( ProvideMessage::createDetachFinished ( id ) ) ) {
       ERR << "Failed to send DetachFinished message" << std::endl;
     }
   }
@@ -199,7 +199,7 @@ namespace zyppng::worker {
     zypp::DtorReset delayedReset( _inControllerRequest );
     _inControllerRequest = true;
 
-    if ( !_stream->sendMessage( request.impl() ) )
+    if ( !_stream->sendMessage( request ) )
       return expected<ProvideMessage>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to send message")) );
 
     // flush the io device, this will block until all bytes are written
@@ -296,7 +296,7 @@ namespace zyppng::worker {
       return expected<void>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to receive handshake message")) );;
     }
 
-    auto exp = _stream->parseMessage<zypp::proto::Configuration>( *helo );
+    auto exp = _stream->parseMessage<zyppng::worker::Configuration>( *helo );
     if ( !exp ) {
       invalidMessageReceived( exp.error() );
       return expected<void>::error(exp.error());
@@ -307,7 +307,7 @@ namespace zyppng::worker {
       _workerConf = std::move(conf);
 
       auto &mediaConf = zypp::MediaConfig::instance();
-      for( const auto &[key,value] : _workerConf.values() ) {
+      for( const auto &[key,value] : _workerConf ) {
         zypp::Url keyUrl( key );
         if ( keyUrl.getScheme() == "zconfig" && keyUrl.getAuthority() == "main" ) {
           mediaConf.setConfigValue( keyUrl.getAuthority(), zypp::Pathname(keyUrl.getPathName()).basename(), value );
@@ -410,7 +410,7 @@ namespace zyppng::worker {
         if ( i != _pendingProvides.end() ) {
           switch ( (*i)->_state ) {
             case ProvideWorkerItem::Pending:
-              _stream->sendMessage ( ProvideMessage::createErrorResponse ( provide.requestId (), ProvideMessage::Code::Cancelled, "Cancelled by user." ).impl() );
+              _stream->sendMessage ( ProvideMessage::createErrorResponse ( provide.requestId (), ProvideMessage::Code::Cancelled, "Cancelled by user." ) );
               _pendingProvides.erase(i);
               break;
             case ProvideWorkerItem::Running:
@@ -434,7 +434,7 @@ namespace zyppng::worker {
   {
     const auto &handle = [&]( const RpcMessage &message ){
       const auto &msgTypeName = message.messagetypename();
-      if ( msgTypeName == rpc::messageTypeName<zypp::proto::ProvideMessage>() ) {
+      if ( msgTypeName == ProvideMessage::staticTypeName() ) {
         return parseReceivedMessage( message )
                | and_then( [&]( ProvideMessage &&provide ){
                    _pendingMessages.push_back(provide);

@@ -45,9 +45,7 @@ TestVMProvider::~TestVMProvider()
 
 zyppng::expected<zyppng::worker::WorkerCaps> TestVMProvider::initialize(const zyppng::worker::Configuration &conf)
 {
-  const auto &values = conf.values();
-
-  if ( const auto &i = values.find( std::string(zyppng::PROVIDER_ROOT) ); i != values.end() ) {
+  if ( const auto &i = conf.find( std::string(zyppng::PROVIDER_ROOT) ); i != conf.end() ) {
     const auto &val = i->second;
     MIL << "Got provider root from controller: " << val << std::endl;
     _provRoot = val;

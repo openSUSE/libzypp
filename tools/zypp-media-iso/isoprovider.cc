@@ -288,7 +288,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
         zypp::filesystem::assert_dir( subAttachRoot );
 
         auto confCopy = config();
-        (*confCopy.mutable_values())[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
+        confCopy[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
         const auto &res = _diskWorker->initialize( confCopy );
         if ( !res ) {
           const std::string &err = zypp::str::Str()<< "Failed to initialize worker for: " << src.asString();
@@ -311,7 +311,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
         zypp::filesystem::assert_dir( subAttachRoot );
 
         auto confCopy = config();
-        (*confCopy.mutable_values())[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
+        confCopy[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
         const auto &res = _dirWorker->initialize( confCopy );
         if ( !res ) {
           const std::string &err = zypp::str::Str()<< "Failed to initialize worker for: " << src.asString();
@@ -334,7 +334,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
         zypp::filesystem::assert_dir( subAttachRoot );
 
         auto confCopy = config();
-        (*confCopy.mutable_values())[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
+        confCopy[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
         const auto &res = _nfsWorker->initialize( confCopy );
         MIL << "AFTER INIT " << _nfsWorker->attachRoot() << std::endl;
         if ( !res ) {
@@ -358,7 +358,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
         zypp::filesystem::assert_dir( subAttachRoot );
 
         auto confCopy = config();
-        (*confCopy.mutable_values())[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
+        confCopy[std::string(zyppng::ATTACH_POINT)] = subAttachRoot.asString();
         const auto &res = _smbWorker->initialize( confCopy );
         if ( !res ) {
           const std::string &err = zypp::str::Str()<< "Failed to initialize worker for: " << src.asString();

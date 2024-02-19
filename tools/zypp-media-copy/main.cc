@@ -50,7 +50,7 @@ class CopyProvider : public zyppng::worker::ProvideWorker
 
       // here we only receive request codes, we only support Provide messages, all others are rejected
       // Cancel is never to be received here
-      if ( req->_spec.code() != zyppng::ProvideMessage::Code::Provide ) {
+      if ( req->_spec.code() != zyppng::ProvideMessage::Code::Prov ) {
         req->_state = zyppng::worker::ProvideWorkerItem::Finished;
         provideFailed( req->_spec.requestId()
           , zyppng::ProvideMessage::Code::BadRequest

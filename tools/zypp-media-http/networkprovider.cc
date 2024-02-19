@@ -96,24 +96,23 @@ NetworkProvider::NetworkProvider( std::string_view workerName )
 
 zyppng::expected<zyppng::worker::WorkerCaps> NetworkProvider::initialize( const zyppng::worker::Configuration &conf )
 {
-  const auto &values = conf.values();
-  const auto iEnd = values.end();
-  if ( const auto &i = values.find( std::string(zyppng::AGENT_STRING_CONF) ); i != iEnd ) {
+  const auto iEnd = conf.end();
+  if ( const auto &i = conf.find( std::string(zyppng::AGENT_STRING_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Setting agent string to: " << val << std::endl;
     _dlManager->requestDispatcher()->setAgentString( val );
   }
-  if ( const auto &i = values.find( std::string(zyppng::DISTRO_FLAV_CONF) ); i != iEnd ) {
+  if ( const auto &i = conf.find( std::string(zyppng::DISTRO_FLAV_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Setting distro flavor header to: " << val << std::endl;
     _dlManager->requestDispatcher()->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-DistributionFlavor", val );
   }
-  if ( const auto &i = values.find( std::string(zyppng::ANON_ID_CONF) ); i != iEnd ) {
+  if ( const auto &i = conf.find( std::string(zyppng::ANON_ID_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Got anonymous ID setting from controller" << std::endl;
     _dlManager->requestDispatcher()->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-AnonymousId", val );
   }
-  if ( const auto &i = values.find( std::string(zyppng::ATTACH_POINT) ); i != iEnd ) {
+  if ( const auto &i = conf.find( std::string(zyppng::ATTACH_POINT) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Got attachpoint from controller: " << val << std::endl;
     _attachPoint = val;
@@ -162,7 +161,7 @@ void NetworkProvider::provide()
 
     // here we only receive request codes, we only support Provide messages, all others are rejected
     // Cancel is never to be received here
-    if ( req->_spec.code() != zyppng::ProvideMessage::Code::Provide ) {
+    if ( req->_spec.code() != zyppng::ProvideMessage::Code::Prov ) {
       req->_state = zyppng::worker::ProvideWorkerItem::Finished;
       provideFailed( req->_spec.requestId()
         , zyppng::ProvideMessage::Code::BadRequest
@@ -382,7 +381,7 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
         if ( urls.size() == 0 )
           throw zypp::Exception("No usable mirrors in Mirrorlink file");
 
-        if ( !messageStream()->sendMessage( zyppng::ProvideMessage::createMetalinkRedir( item->_spec.requestId(), urls ).impl() ) ) {
+        if ( !messageStream()->sendMessage( zyppng::ProvideMessage::createMetalinkRedir( item->_spec.requestId(), urls ) ) ) {
           ERR << "Failed to send ProvideSuccess message" << std::endl;
         }
 

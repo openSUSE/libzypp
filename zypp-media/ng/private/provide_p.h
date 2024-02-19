@@ -22,8 +22,6 @@
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideItem>
 #include <zypp-media/ng/ProvideSpec>
-#include <zypp-proto/core/envelope.pb.h>
-#include <zypp-proto/media/provider.pb.h>
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/ManagedFile.h>

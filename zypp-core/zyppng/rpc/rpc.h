@@ -9,8 +9,7 @@
 #ifndef ZYPP_NG_RPC_RPC_H_INCLUDED
 #define ZYPP_NG_RPC_RPC_H_INCLUDED
 
-#include <zypp-proto/core/envelope.pb.h>
-
+#include <cstdint>
 namespace zyppng::rpc {
   /*!
      Type used as header before each zypp::proto::Envelope

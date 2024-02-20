@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Feb 20 17:30:42 CET 2024 - ma@suse.de
+
+- ProblemSolution::skipsPatchesOnly overload to handout the
+  patches.
+- Remove https->http redirection exceptions for
+  download.opensuse.org.
+- version 17.31.32 (22)
+
+-------------------------------------------------------------------
 Wed Feb  7 10:25:39 CET 2024 - ma@suse.de
 
 - tui: allow to access the underlying ostream of out::Info.

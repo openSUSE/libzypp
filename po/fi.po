@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: zypp.fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-21 11:50+0200\n"
-"PO-Revision-Date: 2022-03-16 00:12+0000\n"
+"PO-Revision-Date: 2024-02-21 11:42+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/libzypp/master/fi/"
 ">\n"
@@ -4173,12 +4173,12 @@ msgstr "\"%s\" vaatii tunnistautumisen"
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/media/MediaCurl.cc:770 zypp/media/MediaNetwork.cc:435
 msgid "Will try again..."
-msgstr ""
+msgstr "Yritetään uudelleen…"
 
 #: zypp/media/MediaCurl.cc:773
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "Luovutetaan %1% yrityksen jälkeen."
 
 #: zypp/media/MediaCurl.cc:888 zypp-curl/ng/network/networkrequesterror.cc:127
 msgid ""
@@ -4629,6 +4629,8 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
+"%1%-asennuksen poisto tässä kontekstissa poistaa (ei korvaa!) myös "
+"sisällytetyt PTF-paketit."
 
 #: zypp/solver/detail/SATResolver.cc:1318
 #, boost-format
@@ -4636,10 +4638,12 @@ msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
+"PTF tulisi poistaa komennolla ”%1%”. Niiden poistamisen sijaan tämä "
+"päivittää sisällytetyt PTF-paketit ."
 
 #: zypp/solver/detail/SATResolver.cc:1319
 msgid "Typically you want to keep the PTF or choose to cancel the action."
-msgstr ""
+msgstr "Tavallisesti halunnet säilyttää PTF:n tai perua toimenpiteen."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/solver/detail/SATResolver.cc:1324
@@ -4778,19 +4782,19 @@ msgstr "poistetaan asennus: %1%"
 #. Translator: progress bar label
 #: zypp/target/RpmPostTransCollector.cc:194
 msgid "Running post-transaction scripts"
-msgstr ""
+msgstr "Suoritetaan toimenpiteen jälkeisiä skriptejä"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/target/RpmPostTransCollector.cc:196
 #, boost-format
 msgid "Running %1% script"
-msgstr ""
+msgstr "Suoritetaan skriptiä %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/target/RpmPostTransCollector.cc:198
 #, boost-format
 msgid "%1% script output:"
-msgstr ""
+msgstr "Skriptin %1% tuloste:"
 
 #: zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
@@ -4833,6 +4837,8 @@ msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
+"Vastaanotettiin signaali ”%1% (%2%)”: järjestelmän eheyden varmistamiseksi "
+"käynnissä olevaa RPM-toimenpidettä ei voi perua."
 
 #: zypp/target/TargetImpl.cc:2739
 msgid "Executing the transaction failed because of the following problems:"
@@ -5109,7 +5115,7 @@ msgstr "Hakemistorajoitus (chroot) ei onnistu hakemistoon \"%s\" (%s)."
 #: zypp-core/zyppng/io/forkspawnengine.cc:376
 #, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
-msgstr "chdir  '%s' ei onnistu (%s)."
+msgstr "Kansion vaihto ”chdir %s” ei onnistu (%s)."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:377
 #, c-format, boost-format
@@ -5298,7 +5304,7 @@ msgstr " SSL-ongelma: Tarkista että CA-varmenne kuuluu \"%s\"."
 
 #: zypp-media/mediaexception.cc:220
 msgid "No free ressources available to attach medium."
-msgstr ""
+msgstr "Ei vapaita resursseja tietovälineen liittämiseksi."
 
 #: zypp-curl/auth/curlauthdata.cc:97
 #, c-format, boost-format

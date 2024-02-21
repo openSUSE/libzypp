@@ -100,14 +100,18 @@ namespace zypp
       typedef std::map<std::string, ImplPtr> SubNodes;
 
     public:
-      Impl( std::string &&name_r, Mode mode_r, shared_ptr<ParseDefConsume> &&target_r = shared_ptr<ParseDefConsume>() )
-      : _name( std::move(name_r) )
-      , _mode( mode_r )
-      , _parent( NULL )
-      {
+      Impl(std::string &&name_r, Mode mode_r,
+           shared_ptr<ParseDefConsume> &&target_r =
+          shared_ptr<ParseDefConsume>())
+        : _name(std::move(name_r)), _mode(mode_r), _parent(NULL) {
         if ( target_r )
           _callback.setRedirect( std::move(target_r) );
       }
+
+      Impl(const Impl &) = default;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
 
       ~Impl()
       {

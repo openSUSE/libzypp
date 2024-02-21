@@ -46,7 +46,11 @@ namespace zypp
      */
     struct PluginDebugBuffer
     {
-      PluginDebugBuffer( const std::string & buffer_r ) : _buffer( buffer_r ) {}
+      PluginDebugBuffer(const std::string &buffer_r) : _buffer(buffer_r) {}
+      PluginDebugBuffer(const PluginDebugBuffer &) = delete;
+      PluginDebugBuffer(PluginDebugBuffer &&) = delete;
+      PluginDebugBuffer &operator=(const PluginDebugBuffer &) = delete;
+      PluginDebugBuffer &operator=(PluginDebugBuffer &&) = delete;
       ~PluginDebugBuffer()
       {
         if ( PLUGIN_DEBUG )
@@ -70,7 +74,11 @@ namespace zypp
      */
     struct PluginDumpStderr
     {
-      PluginDumpStderr( ExternalProgramWithStderr & prog_r ) : _prog( prog_r ) {}
+      PluginDumpStderr(ExternalProgramWithStderr &prog_r) : _prog(prog_r) {}
+      PluginDumpStderr(const PluginDumpStderr &) = delete;
+      PluginDumpStderr(PluginDumpStderr &&) = delete;
+      PluginDumpStderr &operator=(const PluginDumpStderr &) = delete;
+      PluginDumpStderr &operator=(PluginDumpStderr &&) = delete;
       ~PluginDumpStderr()
       {
         std::string line;
@@ -122,8 +130,17 @@ namespace zypp
         , _args(std::move( args_r ))
       {}
 
-      ~ Impl()
-      { try { close(); } catch(...) {} }
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+
+      ~Impl() {
+        try {
+          close();
+        } catch (...) {
+        }
+      }
 
     public:
       static long _defaultSendTimeout;

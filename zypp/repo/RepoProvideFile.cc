@@ -62,10 +62,17 @@ namespace zypp
         typedef callback::ReceiveReport<ReportType> BaseType;
         typedef function<bool(int)>                 RedirectType;
 
-        DownloadFileReportHack( RedirectType &&redirect_r )
-        : _oldRec( Distributor::instance().getReceiver() )
-        , _redirect(std::move( redirect_r ))
-        { connect(); }
+        DownloadFileReportHack(RedirectType &&redirect_r)
+          : _oldRec(Distributor::instance().getReceiver()),
+            _redirect(std::move(redirect_r)) {
+          connect();
+        }
+
+        DownloadFileReportHack(const DownloadFileReportHack &) = delete;
+        DownloadFileReportHack(DownloadFileReportHack &&) = delete;
+        DownloadFileReportHack &operator=(const DownloadFileReportHack &) = delete;
+        DownloadFileReportHack &operator=(DownloadFileReportHack &&) = delete;
+
         ~DownloadFileReportHack() override
         { if ( _oldRec ) Distributor::instance().setReceiver( *_oldRec ); else Distributor::instance().noReceiver(); }
 
@@ -122,9 +129,13 @@ namespace zypp
     class RepoMediaAccess::Impl
     {
     public:
-      Impl( ProvideFilePolicy &&defaultPolicy_r )
-        : _defaultPolicy(std::move( defaultPolicy_r ))
-      {}
+      Impl(ProvideFilePolicy &&defaultPolicy_r)
+        : _defaultPolicy(std::move(defaultPolicy_r)) {}
+
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
 
       ~Impl()
       {

@@ -178,6 +178,11 @@ namespace zypp
     ~Impl()
     { invalidate(); }
 
+    Impl(const Impl &) = delete;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
+
     /** Compile the pattern. */
     void compile() const
     {

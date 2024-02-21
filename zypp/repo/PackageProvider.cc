@@ -85,6 +85,10 @@ namespace zypp
     struct PackageProvider::Impl : private base::NonCopyable
     {
       Impl() {}
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
       virtual ~Impl() {}
 
       /** Provide the package.
@@ -118,6 +122,11 @@ namespace zypp
       , _access( access_r )
       , _retry(false)
       {}
+
+      PackageProviderImpl(const PackageProviderImpl &) = delete;
+      PackageProviderImpl(PackageProviderImpl &&) = delete;
+      PackageProviderImpl &operator=(const PackageProviderImpl &) = delete;
+      PackageProviderImpl &operator=(PackageProviderImpl &&) = delete;
 
       ~PackageProviderImpl() override {}
 

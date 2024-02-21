@@ -88,8 +88,12 @@ namespace zypp
       , emptybaseurls(false)
     {}
 
-    ~Impl()
-    {}
+    Impl(const Impl &) = default;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
+
+    ~Impl() {}
 
   public:
     static const unsigned defaultPriority = 99;

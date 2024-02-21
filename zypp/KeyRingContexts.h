@@ -88,7 +88,7 @@ namespace zypp::keyring
     void signatureIdTrusted( bool yesno_r );
     //@}
   public:
-    struct Impl;	///< Implementation
+    class Impl;	///< Implementation
   private:
     RWCOW_pointer<Impl> _pimpl;	///< Pointer to implementation
   };

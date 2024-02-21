@@ -71,11 +71,16 @@ namespace zypp
         }
       }
 
-      ~LocaleGuard()
-      {
+      LocaleGuard(const LocaleGuard &) = delete;
+      LocaleGuard(LocaleGuard &&) = delete;
+      LocaleGuard &operator=(const LocaleGuard &) = delete;
+      LocaleGuard &operator=(LocaleGuard &&) = delete;
+
+      ~LocaleGuard() {
         if ( ! _mylocale.empty() )
           ::setlocale( LC_TIME, _mylocale.c_str() );
       }
+
     private:
       std::string _mylocale;
     };

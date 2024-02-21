@@ -47,11 +47,14 @@ namespace zypp {
             CtorDefault  = Autodelete
           };
 
-      public:
+    public:
+        Impl(Pathname &&path_r, Flags flags_r = CtorDefault)
+          : _path(std::move(path_r)), _flags(flags_r) {}
 
-        Impl( Pathname &&path_r, Flags flags_r = CtorDefault )
-        : _path(std::move( path_r )), _flags( flags_r )
-        {}
+        Impl(const Impl &) = delete;
+        Impl(Impl &&) = delete;
+        Impl &operator=(const Impl &) = delete;
+        Impl &operator=(Impl &&) = delete;
 
         ~Impl() override
         {

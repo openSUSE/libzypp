@@ -470,7 +470,7 @@ namespace ansi
   { enum { customColorCtor = true }; };	// enabled via ctor Color::Constant -> Color
 
   // Implememtation after ColorTraits<Color::Constant> instantiation !
-  Color & Color::operator<=( Color::Constant rhs )	{ return *this <= Color( rhs, Bg::Unchanged ); }
+  Color & Color::operator<=( Color::Constant rhs )	{ return this->operator<=( Color( rhs, Bg::Unchanged ) ); }
   Color Color::operator<( Color::Constant rhs ) const	{ return Color(*this) <= rhs; }
 
   /** \relates Color Print the colors SGRsequence if \ref do_colors is \c true */

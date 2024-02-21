@@ -140,10 +140,11 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
 
 struct KeyRingSignalReceiver : callback::ReceiveReport<KeyRingSignals>
 {
-  KeyRingSignalReceiver(RpmDb &rpmdb) : _rpmdb(rpmdb)
-  {
-    connect();
-  }
+  KeyRingSignalReceiver(RpmDb &rpmdb) : _rpmdb(rpmdb) { connect(); }
+  KeyRingSignalReceiver(const KeyRingSignalReceiver &) = delete;
+  KeyRingSignalReceiver(KeyRingSignalReceiver &&) = delete;
+  KeyRingSignalReceiver &operator=(const KeyRingSignalReceiver &) = delete;
+  KeyRingSignalReceiver &operator=(KeyRingSignalReceiver &&) = delete;
 
   ~KeyRingSignalReceiver() override
   {
@@ -1123,8 +1124,12 @@ namespace
       _oldMask = rpmlogSetMask( RPMLOG_UPTO( RPMLOG_PRI(RPMLOG_INFO) ) );
     }
 
-    ~RpmlogCapture()
-    {
+    RpmlogCapture(const RpmlogCapture &) = delete;
+    RpmlogCapture(RpmlogCapture &&) = delete;
+    RpmlogCapture &operator=(const RpmlogCapture &) = delete;
+    RpmlogCapture &operator=(RpmlogCapture &&) = delete;
+
+    ~RpmlogCapture() {
       rpmlogSetCallback( nullptr, nullptr );
       rpmlogSetMask( _oldMask );
     }

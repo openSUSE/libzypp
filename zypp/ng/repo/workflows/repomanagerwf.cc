@@ -142,7 +142,7 @@ namespace zyppng {
           MIL << "Target path is set, copying " << file.file() << " to " << *_targetPath/subPath << std::endl;
           return std::move(file)
               | ProvideType::copyResultToDest( _zyppContext->provider(), *_targetPath/subPath)
-              | and_then([this]( zypp::ManagedFile file ){ file.resetDispose(); return expected<void>::success(); } );
+              | and_then([]( zypp::ManagedFile file ){ file.resetDispose(); return expected<void>::success(); } );
         }
         return makeReadyResult( expected<void>::success() );
       };

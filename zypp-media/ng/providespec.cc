@@ -22,6 +22,10 @@ namespace zyppng
   {
   public:
     ProvideSpecBasePrivate() {}
+    ProvideSpecBasePrivate(const ProvideSpecBasePrivate &) = default;
+    ProvideSpecBasePrivate(ProvideSpecBasePrivate &&) = delete;
+    ProvideSpecBasePrivate &operator=(const ProvideSpecBasePrivate &) = delete;
+    ProvideSpecBasePrivate &operator=(ProvideSpecBasePrivate &&) = delete;
     virtual ~ProvideSpecBasePrivate() {}
     HeaderValueMap _customHeaders;
   };

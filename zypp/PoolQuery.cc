@@ -422,8 +422,12 @@ namespace zypp
       , _status_flags(ALL)
     {}
 
-    ~Impl()
-    {}
+    Impl(const Impl &) = default;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
+
+    ~Impl() {}
 
   public:
     /** String representation */
@@ -1611,6 +1615,11 @@ namespace zypp
         }
 
       public:
+        PoolQueryMatcher(const PoolQueryMatcher &) = default;
+        PoolQueryMatcher(PoolQueryMatcher &&) = default;
+        PoolQueryMatcher &operator=(const PoolQueryMatcher &) = default;
+        PoolQueryMatcher &operator=(PoolQueryMatcher &&) = default;
+
         /** Ctor stores the \ref PoolQuery settings.
          * \throw MatchException Any of the exceptions thrown by \ref PoolQuery::Impl::compile.
          */

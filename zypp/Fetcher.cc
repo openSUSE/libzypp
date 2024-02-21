@@ -90,11 +90,12 @@ namespace zypp
     };
     ZYPP_DECLARE_FLAGS(Flags, Flag);
 
+    FetcherJob(const FetcherJob &) = default;
+    FetcherJob(FetcherJob &&) = default;
+    FetcherJob &operator=(const FetcherJob &) = default;
+    FetcherJob &operator=(FetcherJob &&) = default;
 
-    FetcherJob( const OnMediaLocation &loc )
-      : location(loc)
-      , flags(None)
-    {
+    FetcherJob(const OnMediaLocation &loc) : location(loc), flags(None) {
       //MIL << location << endl;
     }
 
@@ -128,6 +129,11 @@ namespace zypp
 
   public:
     Impl();
+
+    Impl(const Impl &) = default;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
 
     ~Impl() {}
 

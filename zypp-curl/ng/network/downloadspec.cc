@@ -14,7 +14,9 @@ namespace zyppng {
   class DownloadSpecPrivate {
   public:
     DownloadSpecPrivate() = default;
-    DownloadSpecPrivate( const DownloadSpecPrivate &other ) = default;
+    DownloadSpecPrivate &operator=(const DownloadSpecPrivate &) = delete;
+    DownloadSpecPrivate &operator=(DownloadSpecPrivate &&) = delete;
+    DownloadSpecPrivate(const DownloadSpecPrivate &other) = default;
     DownloadSpecPrivate( DownloadSpecPrivate &&other ) noexcept = default;
 
     DownloadSpecPrivate *clone () const {

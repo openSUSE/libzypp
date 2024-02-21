@@ -48,8 +48,11 @@ namespace zypp
         _head_requests_allowed(true)
       {}
 
-      virtual ~Impl()
-      {}
+      Impl(const Impl &) = default;
+      Impl(Impl &&) = default;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+      virtual ~Impl() {}
 
       /** Offer default Impl. */
       static shared_ptr<Impl> nullimpl()

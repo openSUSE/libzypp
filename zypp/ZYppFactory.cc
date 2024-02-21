@@ -105,14 +105,16 @@ namespace zypp
   class ZYppGlobalLock
   {
   public:
-    ZYppGlobalLock( Pathname &&lFilePath )
-      : _zyppLockFilePath( std::move(lFilePath) )
-    , _zyppLockFile( NULL )
-    , _lockerPid( 0 )
-    , _cleanLock( false )
-    {
+    ZYppGlobalLock(Pathname &&lFilePath)
+      : _zyppLockFilePath(std::move(lFilePath)), _zyppLockFile(NULL),
+        _lockerPid(0), _cleanLock(false) {
       filesystem::assert_dir(_zyppLockFilePath.dirname() );
     }
+
+    ZYppGlobalLock(const ZYppGlobalLock &) = delete;
+    ZYppGlobalLock(ZYppGlobalLock &&) = delete;
+    ZYppGlobalLock &operator=(const ZYppGlobalLock &) = delete;
+    ZYppGlobalLock &operator=(ZYppGlobalLock &&) = delete;
 
     ~ZYppGlobalLock()
     {

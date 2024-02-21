@@ -98,6 +98,11 @@ namespace internal {
   // This is released at application shutdown.
   struct SharedData {
 
+    SharedData(const SharedData &) = delete;
+    SharedData(SharedData &&) = delete;
+    SharedData &operator=(const SharedData &) = delete;
+    SharedData &operator=(SharedData &&) = delete;
+
     ~SharedData() {
       MIL << "Releasing internal::SharedData for MediaNetwork." << std::endl;
     }

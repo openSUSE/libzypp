@@ -234,11 +234,10 @@ static gboolean  eventLoopIdleFunc ( gpointer user_data )
     if( dPtr->runIdleTasks() ) {
       return G_SOURCE_CONTINUE;
     }
+
+    g_source_unref ( dPtr->_idleSource );
+    dPtr->_idleSource = nullptr;
   }
-
-  g_source_unref ( dPtr->_idleSource );
-  dPtr->_idleSource = nullptr;
-
   return G_SOURCE_REMOVE;
 }
 

@@ -54,11 +54,12 @@ namespace zypp
           catch(...) {}
         }
 
-        ManagedMedia( ManagedMedia &&m ) noexcept
-          : desired ( m.desired )
-          , verifier( std::move(m.verifier) )
-          , _handler ( std::move(m._handler) )
-        {}
+        ManagedMedia(const ManagedMedia &) = delete;
+        ManagedMedia &operator=(const ManagedMedia &) = delete;
+
+        ManagedMedia(ManagedMedia &&m) noexcept
+          : desired(m.desired), verifier(std::move(m.verifier)),
+            _handler(std::move(m._handler)) {}
 
         static ManagedMedia makeManagedMedia ( const Url &o_url, const Pathname &preferred_attach_point, const MediaVerifierRef &v )
         {
@@ -213,6 +214,12 @@ namespace zypp
       {}
 
     public:
+
+      MediaManager_Impl(const MediaManager_Impl &) = delete;
+      MediaManager_Impl(MediaManager_Impl &&) = delete;
+      MediaManager_Impl &operator=(const MediaManager_Impl &) = delete;
+      MediaManager_Impl &operator=(MediaManager_Impl &&) = delete;
+
       ~MediaManager_Impl()
       {
         try

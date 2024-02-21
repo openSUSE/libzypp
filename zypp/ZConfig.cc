@@ -720,8 +720,11 @@ namespace zypp
         MIL << "ZConfig singleton created." << endl;
       }
 
-      ~Impl()
-      {}
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+      ~Impl() {}
 
       void notifyTargetChanged()
       {

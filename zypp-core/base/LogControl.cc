@@ -84,10 +84,12 @@ namespace zypp
   {
 
   public:
+    LogThread(const LogThread &) = delete;
+    LogThread(LogThread &&) = delete;
+    LogThread &operator=(const LogThread &) = delete;
+    LogThread &operator=(LogThread &&) = delete;
 
-    ~LogThread() {
-      stop();
-    }
+    ~LogThread() { stop(); }
 
     static LogThread &instance () {
       static LogThread t;
@@ -221,9 +223,12 @@ namespace zypp
       LogThread::instance();
     }
 
-    ~LogClient() {
-      ::close( _sockFD );
-    }
+    LogClient(const LogClient &) = delete;
+    LogClient(LogClient &&) = delete;
+    LogClient &operator=(const LogClient &) = delete;
+    LogClient &operator=(LogClient &&) = delete;
+
+    ~LogClient() { ::close(_sockFD); }
 
     /*!
      * Tries to connect to the log threads socket, returns true on success or
@@ -416,6 +421,12 @@ namespace zypp
         , _func( "" )
         , _line( -1 )
         {}
+
+        Loglinebuf(const Loglinebuf &) = default;
+        Loglinebuf(Loglinebuf &&) = default;
+        Loglinebuf &operator=(const Loglinebuf &) = default;
+        Loglinebuf &operator=(Loglinebuf &&) = default;
+
         /** */
         ~Loglinebuf() override
         {
@@ -493,6 +504,12 @@ namespace zypp
         : _mybuf( group_r, level_r )
         , _mystream( &_mybuf )
         {}
+
+        Loglinestream(const Loglinestream &) = delete;
+        Loglinestream(Loglinestream &&) = delete;
+        Loglinestream &operator=(const Loglinestream &) = delete;
+        Loglinestream &operator=(Loglinestream &&) = delete;
+
         /** */
         ~Loglinestream()
         { _mystream.flush(); }
@@ -544,8 +561,7 @@ namespace zypp
       struct LogControlImpl
       {
       public:
-        bool isExcessive() const
-        { return _excessive; }
+        bool isExcessive() const { return _excessive; }
 
         void excessive( bool onOff_r )
         { _excessive = onOff_r; }
@@ -704,6 +720,11 @@ namespace zypp
         }
 
       public:
+
+        LogControlImpl(const LogControlImpl &) = delete;
+        LogControlImpl(LogControlImpl &&) = delete;
+        LogControlImpl &operator=(const LogControlImpl &) = delete;
+        LogControlImpl &operator=(LogControlImpl &&) = delete;
 
         ~LogControlImpl()
         {

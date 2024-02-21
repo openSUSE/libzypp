@@ -48,9 +48,12 @@ namespace zypp
     Impl()
     {}
 
-    Impl( const Url & url_r )
-    : _url( url_r )
-    {}
+    Impl(const Url &url_r) : _url(url_r) {}
+
+    Impl(const Impl &) = default;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
 
     ~Impl()
     {}

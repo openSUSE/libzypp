@@ -76,10 +76,12 @@ namespace zypp
           : _trans( ::transaction_create( nullptr ) )
         { memset( _trans, 0, sizeof(*_trans) ); }
 
-        Impl( LoadFromPoolType )
-          : _watcher( myPool().serial() )
-          , _trans( nullptr )
-        {
+        Impl(const Impl &) = delete;
+        Impl(Impl &&) = delete;
+        Impl &operator=(const Impl &) = delete;
+        Impl &operator=(Impl &&) = delete;
+
+        Impl(LoadFromPoolType) : _watcher(myPool().serial()), _trans(nullptr) {
           Queue decisionq;
           for ( const PoolItem & pi : ResPool::instance() )
           {

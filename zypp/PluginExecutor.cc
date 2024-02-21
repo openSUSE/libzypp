@@ -34,8 +34,12 @@ namespace zypp
     Impl()
     {}
 
-    ~Impl()
-    {
+    Impl(const Impl &) = delete;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
+
+    ~Impl() {
       if ( ! empty() )
         send( PluginFrame( "PLUGINEND" ) );
       // ~PluginScript will disconnect all remaining plugins!

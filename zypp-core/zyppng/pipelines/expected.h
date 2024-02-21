@@ -114,6 +114,8 @@ namespace zyppng {
       template <typename... ConsParams>
       static expected success(ConsParams && ...params)
       {
+          // silence clang-tidy about uninitialized class members, we manually intialize them.
+          // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.UninitializedObject)
           expected result;
           result.m_isValid = true;
           new(&result.m_value) T(std::forward<ConsParams>(params)...);
@@ -123,6 +125,8 @@ namespace zyppng {
       template <typename... ConsParams>
       static expected error(ConsParams && ...params)
       {
+          // silence clang-tidy about uninitialized class members, we manually intialize them.
+          // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.UninitializedObject)
           expected result;
           result.m_isValid = false;
           new(&result.m_error) E(std::forward<ConsParams>(params)...);
@@ -284,19 +288,23 @@ namespace zyppng {
 
       static expected success()
       {
-          expected result;
-          result.m_isValid = true;
-          result.m_value = nullptr;
-          return result;
+        // silence clang-tidy about uninitialized class members, we manually intialize them.
+        // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.UninitializedObject)
+        expected result;
+        result.m_isValid = true;
+        result.m_value = nullptr;
+        return result;
       }
 
       template <typename... ConsParams>
       static expected error(ConsParams && ...params)
       {
-          expected result;
-          result.m_isValid = false;
-          new(&result.m_error) E(std::forward<ConsParams>(params)...);
-          return result;
+        // silence clang-tidy about uninitialized class members, we manually intialize them.
+        // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.UninitializedObject)
+        expected result;
+        result.m_isValid = false;
+        new(&result.m_error) E(std::forward<ConsParams>(params)...);
+        return result;
       }
 
       operator bool() const

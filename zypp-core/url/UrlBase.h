@@ -241,14 +241,14 @@ namespace zypp
     /**
      * ViewOptions is just an alias for ViewOption.
      */
-    typedef ViewOption                           ViewOptions;
+    using ViewOptions = ViewOption;
 
 
     // ---------------------------------------------------------------
     /**
      * Vector of URL scheme names.
      */
-    typedef std::vector<std::string>             UrlSchemes;
+    using UrlSchemes = std::vector<std::string>;
 
 
     // ---------------------------------------------------------------
@@ -1086,7 +1086,7 @@ namespace zypp
     /**
      * \brief Copy-On-Write Url reference.
      */
-    typedef RWCOW_pointer<UrlBase>          UrlRef;
+    using UrlRef = RWCOW_pointer<UrlBase>;
 
 
     //////////////////////////////////////////////////////////////////

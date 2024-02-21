@@ -62,15 +62,15 @@ namespace zypp
    */
   class PoolItemBest
   {
-      typedef std::unordered_map<IdString,PoolItem> Container;
+      using Container = std::unordered_map<IdString, PoolItem>;
     public:
       /** Predicate returning \c True if \a lhs is a better choice. */
-      typedef boost::function<bool ( const PoolItem & lhs, const PoolItem & rhs )> Predicate;
+      using Predicate = boost::function<bool (const PoolItem &, const PoolItem &)>;
 
-      typedef Container::size_type	size_type;
-      typedef Container::value_type	value_type;
-      typedef MapKVIteratorTraits<Container>::Value_const_iterator	iterator;
-      typedef MapKVIteratorTraits<Container>::Key_const_iterator	ident_iterator;
+      using size_type = Container::size_type;
+      using value_type = Container::value_type;
+      using iterator = MapKVIteratorTraits<Container>::Value_const_iterator;
+      using ident_iterator = MapKVIteratorTraits<Container>::Key_const_iterator;
 
     public:
       /** Indicator argument for ctor: consider locked packages less than not locked packages. */

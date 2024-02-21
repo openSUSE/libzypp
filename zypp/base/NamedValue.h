@@ -40,8 +40,8 @@ namespace zypp
   template< class Tp, const bool _tWithAlias = true >
   class NamedValue
   {
-    typedef std::map< std::string, Tp > NameMap;
-    typedef std::map< Tp, std::string > ValueMap;
+    using NameMap = std::map<std::string, Tp>;
+    using ValueMap = std::map<Tp, std::string>;
 
   public:
     /** Whether not initialized (no (name,value) pair remembered) */

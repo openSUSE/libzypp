@@ -112,8 +112,8 @@ namespace zypp
         /** Number of steps in transaction steps. */
         size_t size() const;
 
-        typedef detail::Transaction_iterator iterator;
-        typedef detail::Transaction_const_iterator const_iterator;
+        using iterator = detail::Transaction_iterator;
+        using const_iterator = detail::Transaction_const_iterator;
 
         /** Iterator to the first \ref TransactionStep */
         const_iterator begin() const;
@@ -151,7 +151,7 @@ namespace zypp
          */
         //@{
         struct FilterAction;
-        typedef filter_iterator<FilterAction,const_iterator> action_iterator;
+        using action_iterator = filter_iterator<FilterAction, const_iterator>;
 
         /** Whether the [filtered] transaction contains any steps . */
         bool actionEmpty( StepStages filter_r = StepStages() ) const;

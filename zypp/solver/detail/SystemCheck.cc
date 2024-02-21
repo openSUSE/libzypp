@@ -36,7 +36,7 @@ namespace zypp
     CapabilitySet	_require;
     CapabilitySet	_conflict;
 
-    typedef std::vector<std::string> CapList;
+    using CapList = std::vector<std::string>;
 
     const SystemCheck & SystemCheck::instance()
     {

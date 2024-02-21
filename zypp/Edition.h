@@ -61,7 +61,7 @@ namespace zypp
   {
     public:
       /** Type of an epoch. */
-      typedef unsigned epoch_t;
+      using epoch_t = unsigned int;
 
       /** Value representing \c noepoch. */
       static const epoch_t noepoch = 0;
@@ -114,12 +114,12 @@ namespace zypp
       /** \ref compare functor.
        * \see \ref RelCompare.
        */
-      typedef zypp::Compare<Edition> Compare;
+      using Compare = zypp::Compare<Edition>;
 
       /** \ref Edition \ref Range based on \ref Compare.
        * \see \ref RelCompare.
        */
-      typedef Range<Edition> CompareRange;
+      using CompareRange = Range<Edition>;
 
     public:
       /** \name Match two Editions
@@ -166,7 +166,7 @@ namespace zypp
       /** \ref Edition \ref Range based on \ref Match.
        * \see \ref RelCompare.
        */
-      typedef Range<Edition, Match> MatchRange;
+      using MatchRange = Range<Edition, Match>;
 
     private:
       static int _doCompare( const char * lhs,  const char * rhs );

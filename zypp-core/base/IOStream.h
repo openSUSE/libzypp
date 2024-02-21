@@ -33,7 +33,7 @@ namespace zypp
     /** Save and restore streams \c width, \c precision
      * and \c fmtflags.
      */
-    typedef boost::io::ios_base_all_saver IosFmtFlagsSaver;
+    using IosFmtFlagsSaver = boost::io::ios_base_all_saver;
 
 
     /** Read one line from stream.

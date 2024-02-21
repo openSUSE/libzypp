@@ -39,7 +39,7 @@ Locks& Locks::instance()
   return _instance;
 }
 
-typedef std::set<PoolQuery> LockSet;
+using LockSet = std::set<PoolQuery>;
 
 template <typename TPredicate>
 void remove_if( LockSet & lockset_r, TPredicate pred_r )

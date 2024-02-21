@@ -191,7 +191,7 @@ namespace zypp
      */
     struct AttrMatchData
     {
-      typedef function<bool(sat::LookupAttr::iterator)> Predicate;
+      using Predicate = function<bool (sat::LookupAttr::iterator)>;
 
       static bool always( const sat::LookupAttr::iterator& ) { return true; }
       static bool never( const sat::LookupAttr::iterator& ) { return false; }
@@ -401,7 +401,7 @@ namespace zypp
       return false;
     }
 
-    typedef std::list<AttrMatchData> AttrMatchList;
+    using AttrMatchList = std::list<AttrMatchData>;
 
 
   } /////////////////////////////////////////////////////////////////
@@ -1535,7 +1535,7 @@ namespace zypp
     class PoolQueryMatcher
     {
       public:
-        typedef sat::LookupAttr::iterator base_iterator;
+        using base_iterator = sat::LookupAttr::iterator;
 
       public:
         const base_iterator & end() const

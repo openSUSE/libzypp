@@ -184,7 +184,7 @@ namespace zypp {
   class ServiceCollector
   {
   public:
-    typedef std::set<ServiceInfo> ServiceSet;
+    using ServiceSet = std::set<ServiceInfo>;
 
     ServiceCollector( ServiceSet & services_r )
       : _services( services_r )

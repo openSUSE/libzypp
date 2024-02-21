@@ -138,7 +138,7 @@ namespace zypp
 
     public:
       /** */
-      typedef function<bool( Reader & )> ProcessNode;
+      using ProcessNode = function<bool (Reader &)>;
 
       /** */
       bool foreachNode( const ProcessNode& fnc_r )

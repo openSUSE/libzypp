@@ -77,7 +77,7 @@ namespace zypp
     /** Callback type to consume a single history line split into fields.
      * The return value indicates whether to continue parsing.
      */
-    typedef function< bool( const HistoryLogData::Ptr & )> ProcessData;
+    using ProcessData = function<bool (const HistoryLogData::Ptr &)>;
 
     /** Ctor taking file to parse and data consumer callback.
      * As \a options_r argument pass \c HistoryLogReader::Options() to

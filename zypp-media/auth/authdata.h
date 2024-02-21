@@ -78,7 +78,7 @@ private:
   std::map<std::string, std::string> _extraValues;
 };
 
-typedef shared_ptr<AuthData> AuthData_Ptr;
+using AuthData_Ptr = shared_ptr<AuthData>;
 std::ostream & operator << (std::ostream & str, const AuthData & auth_data);
 
 ///////////////////////////////////////////////////////////////////

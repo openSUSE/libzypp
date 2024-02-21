@@ -265,9 +265,9 @@ namespace zypp
       class DumpMap
       {
       public:
-        typedef TMap                        MapType;
-        typedef typename TMap::value_type   PairType;
-        typedef MapEntry<PairType>          MapEntryType;
+        using MapType = TMap;
+        using PairType = typename TMap::value_type;
+        using MapEntryType = MapEntry<PairType>;
 
         struct Transformer
         {
@@ -275,8 +275,7 @@ namespace zypp
           { return mapEntry( pair_r ); }
         };
 
-        typedef transform_iterator<Transformer, typename MapType::const_iterator>
-                MapEntry_const_iterator;
+        using MapEntry_const_iterator = transform_iterator<Transformer, typename MapType::const_iterator>;
 
       public:
         DumpMap( const TMap & map_r )
@@ -321,7 +320,7 @@ namespace zypp
       class DumpKeys
       {
       public:
-        typedef typename MapKVIteratorTraits<TMap>::Key_const_iterator MapKey_const_iterator;
+        using MapKey_const_iterator = typename MapKVIteratorTraits<TMap>::Key_const_iterator;
 
       public:
         DumpKeys( const TMap & map_r )
@@ -366,7 +365,7 @@ namespace zypp
       class DumpValues
       {
       public:
-        typedef typename MapKVIteratorTraits<TMap>::Value_const_iterator MapValue_const_iterator;
+        using MapValue_const_iterator = typename MapKVIteratorTraits<TMap>::Value_const_iterator;
 
       public:
         DumpValues( const TMap & map_r )

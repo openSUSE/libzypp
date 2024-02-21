@@ -66,7 +66,7 @@ namespace zypp {
 
     public:
 
-      typedef std::vector<std::string> Arguments;
+      using Arguments = std::vector<std::string>;
 
       /**
        * Define symbols for different policies on the handling
@@ -82,7 +82,7 @@ namespace zypp {
       /**
        * For passing additional environment variables to set
        */
-      typedef std::map<std::string,std::string> Environment;
+      using Environment = std::map<std::string, std::string>;
 
       /**
        * Start the external program by using the shell <tt>/bin/sh<tt>

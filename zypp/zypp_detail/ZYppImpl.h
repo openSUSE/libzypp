@@ -23,7 +23,7 @@
 #include <zypp/DiskUsageCounter.h>
 #include <zypp/ManagedFile.h>
 
-typedef struct _GPollFD GPollFD;
+using GPollFD = struct _GPollFD;
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

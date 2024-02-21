@@ -57,8 +57,8 @@ namespace zypp
     class Glob : private base::NonCopyable
     {
       public:
-        typedef size_t size_type;
-        typedef const char * value_type;
+        using size_type = size_t;
+        using value_type = const char *;
 
         /** Iterate NULL terminated \c char* array. */
         class const_iterator : public boost::iterator_adaptor<

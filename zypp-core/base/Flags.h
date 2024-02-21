@@ -58,8 +58,8 @@ namespace zypp
     class Flags
     {
       public:
-        typedef TEnum Enum;	///< The underlying enum type
-        typedef std::underlying_type_t<Enum>Integral;	///< The underlying integral type
+        using Enum = TEnum;	///< The underlying enum type
+        using Integral = std::underlying_type_t<Enum>;	///< The underlying integral type
 
       public:
         constexpr Flags()				: _val( 0 ) {}

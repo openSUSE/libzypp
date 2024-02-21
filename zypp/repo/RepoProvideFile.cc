@@ -59,8 +59,8 @@ namespace zypp
       */
       struct DownloadFileReportHack : public callback::ReceiveReport<media::DownloadProgressReport>
       {
-        typedef callback::ReceiveReport<ReportType> BaseType;
-        typedef function<bool(int)>                 RedirectType;
+        using BaseType = callback::ReceiveReport<ReportType>;
+        using RedirectType = function<bool (int)>;
 
         DownloadFileReportHack(RedirectType &&redirect_r)
           : _oldRec(Distributor::instance().getReceiver()),

@@ -285,8 +285,8 @@ namespace zypp
     std::string asString() const;
 
   public:
-    typedef const PublicSubkeyData * SubkeyIterator;
-    typedef const PublicKeySignatureData * KeySignatureIterator;
+    using SubkeyIterator = const PublicSubkeyData *;
+    using KeySignatureIterator = const PublicKeySignatureData *;
 
     /** Whether \ref subkeys is not empty. */
     bool hasSubkeys() const;
@@ -314,7 +314,7 @@ namespace zypp
 
   public:
     /** Random art fingerprint visualization type (\ref base::DrunkenBishop). */
-    typedef base::DrunkenBishop AsciiArt;
+    using AsciiArt = base::DrunkenBishop;
 
     /** Random art fingerprint visualization (\ref base::DrunkenBishop).
      * \code
@@ -398,7 +398,7 @@ namespace zypp
     /** The public keys data (\see \ref PublicKeyData).*/
     const PublicKeyData & keyData() const;
 
-    typedef PublicKeyData::SubkeyIterator SubkeyIterator;
+    using SubkeyIterator = PublicKeyData::SubkeyIterator;
 
     bool isValid() const
     { return ! ( id().empty() || fingerprint().empty() ); }
@@ -433,7 +433,7 @@ namespace zypp
     { return PublicKeyData::isSafeKeyId(id_r); }
 
   public:
-    typedef PublicKeyData::AsciiArt AsciiArt;	///!< \see \ref PublicKeyData
+    using AsciiArt = PublicKeyData::AsciiArt;	///!< \see \ref PublicKeyData
 
     AsciiArt asciiArt() const			///!< \see \ref PublicKeyData
     { return keyData().asciiArt(); }

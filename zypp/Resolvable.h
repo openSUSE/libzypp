@@ -52,11 +52,11 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const Resolvable & obj );
 
   public:
-    typedef Resolvable               Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::KindType     Kind;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = Resolvable;
+    using TraitsType = ResTraits<Self>;
+    using Kind = TraitsType::KindType;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
     /** This is a \ref sat::SolvableType. */

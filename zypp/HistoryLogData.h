@@ -105,12 +105,12 @@ namespace zypp
   class HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogData>		Ptr;
-    typedef shared_ptr<const HistoryLogData>	constPtr;
+    using Ptr = shared_ptr<HistoryLogData>;
+    using constPtr = shared_ptr<const HistoryLogData>;
 
-    typedef std::vector<std::string>	FieldVector;
-    typedef FieldVector::size_type 	size_type;
-    typedef FieldVector::const_iterator	const_iterator;
+    using FieldVector = std::vector<std::string>;
+    using size_type = FieldVector::size_type;
+    using const_iterator = FieldVector::const_iterator;
 
   public:
     /** Ctor \b moving \a FieldVector (via swap).
@@ -199,8 +199,8 @@ namespace zypp
   class HistoryLogDataInstall : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataInstall>		Ptr;
-    typedef shared_ptr<const HistoryLogDataInstall>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataInstall>;
+    using constPtr = shared_ptr<const HistoryLogDataInstall>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -239,8 +239,8 @@ namespace zypp
   class HistoryLogPatchStateChange : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogPatchStateChange>		Ptr;
-    typedef shared_ptr<const HistoryLogPatchStateChange>	constPtr;
+    using Ptr = shared_ptr<HistoryLogPatchStateChange>;
+    using constPtr = shared_ptr<const HistoryLogPatchStateChange>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -283,8 +283,8 @@ namespace zypp
   class HistoryLogDataRemove : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataRemove>		Ptr;
-    typedef shared_ptr<const HistoryLogDataRemove>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataRemove>;
+    using constPtr = shared_ptr<const HistoryLogDataRemove>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -318,8 +318,8 @@ namespace zypp
   class HistoryLogDataRepoAdd : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataRepoAdd>		Ptr;
-    typedef shared_ptr<const HistoryLogDataRepoAdd>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataRepoAdd>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoAdd>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -349,8 +349,8 @@ namespace zypp
   class HistoryLogDataRepoRemove : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataRepoRemove>	Ptr;
-    typedef shared_ptr<const HistoryLogDataRepoRemove>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataRepoRemove>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoRemove>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -378,8 +378,8 @@ namespace zypp
   class HistoryLogDataRepoAliasChange : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataRepoAliasChange>		Ptr;
-    typedef shared_ptr<const HistoryLogDataRepoAliasChange>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataRepoAliasChange>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoAliasChange>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -409,8 +409,8 @@ namespace zypp
   class HistoryLogDataRepoUrlChange : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataRepoUrlChange>		Ptr;
-    typedef shared_ptr<const HistoryLogDataRepoUrlChange>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataRepoUrlChange>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoUrlChange>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */
@@ -441,8 +441,8 @@ namespace zypp
   class HistoryLogDataStampCommand : public HistoryLogData
   {
   public:
-    typedef shared_ptr<HistoryLogDataStampCommand>		Ptr;
-    typedef shared_ptr<const HistoryLogDataStampCommand>	constPtr;
+    using Ptr = shared_ptr<HistoryLogDataStampCommand>;
+    using constPtr = shared_ptr<const HistoryLogDataStampCommand>;
     /** Ctor \b moving \a FieldVector (via swap).
      * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
      */

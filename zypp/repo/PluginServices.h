@@ -37,7 +37,7 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      typedef function< bool( const ServiceInfo & )> ProcessService;
+      using ProcessService = function<bool (const ServiceInfo &)>;
 
       /** Implementation  */
       class Impl;

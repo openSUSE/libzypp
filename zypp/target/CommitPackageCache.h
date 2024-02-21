@@ -60,7 +60,7 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
 
     public:
-      typedef function<ManagedFile( const PoolItem & pi, bool fromCache_r )> PackageProvider;
+      using PackageProvider = function<ManagedFile (const PoolItem &, bool)>;
 
     public:
       /** Ctor */

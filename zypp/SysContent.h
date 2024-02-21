@@ -63,12 +63,12 @@ namespace zypp
     */
     class Writer
     {
-      typedef std::set<ResObject::constPtr> StorageT;
+      using StorageT = std::set<ResObject::constPtr>;
     public:
-      typedef StorageT::value_type     value_type;
-      typedef StorageT::size_type      size_type;
-      typedef StorageT::iterator       iterator;
-      typedef StorageT::const_iterator const_iterator;
+      using value_type = StorageT::value_type;
+      using size_type = StorageT::size_type;
+      using iterator = StorageT::iterator;
+      using const_iterator = StorageT::const_iterator;
 
     public:
       /** Default Ctor. */
@@ -175,13 +175,13 @@ namespace zypp
       class Entry;
 
     private:
-      typedef std::list<Entry> StorageT;
+      using StorageT = std::list<Entry>;
 
     public:
-      typedef StorageT::value_type     value_type;
-      typedef StorageT::size_type      size_type;
-      typedef StorageT::iterator       iterator;
-      typedef StorageT::const_iterator const_iterator;
+      using value_type = StorageT::value_type;
+      using size_type = StorageT::size_type;
+      using iterator = StorageT::iterator;
+      using const_iterator = StorageT::const_iterator;
 
     public:
       /** Default Ctor. */

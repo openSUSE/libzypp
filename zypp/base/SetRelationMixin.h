@@ -37,7 +37,7 @@ namespace zypp
     static const std::string & asString( Enum val_r );
   };
   /** \relates ESetCompareDef typedef 'enum class SetCompare' */
-  typedef base::EnumClass<ESetCompareDef> SetCompare;
+  using SetCompare = base::EnumClass<ESetCompareDef>;
 
   /** \relates SetCompare Stream output */
   inline std::ostream & operator<<( std::ostream & str, const SetCompare::Enum & obj )
@@ -68,7 +68,7 @@ namespace zypp
     static const std::string & asString( Enum val_r );
   };
   /** \relates ESetRelationDef typedef 'enum class SetRelation' */
-  typedef base::EnumClass<ESetRelationDef> SetRelation;
+  using SetRelation = base::EnumClass<ESetRelationDef>;
 
   /** \relates SetRelation Stream output */
   inline std::ostream & operator<<( std::ostream & str, const SetRelation::Enum & obj )

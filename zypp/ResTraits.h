@@ -78,9 +78,9 @@ namespace zypp
   template<typename TRes>
     struct ResTraits
     {
-      typedef ResKind                   KindType;
-      typedef intrusive_ptr<TRes>       PtrType;
-      typedef intrusive_ptr<const TRes> constPtrType;
+      using KindType = ResKind;
+      using PtrType = intrusive_ptr<TRes>;
+      using constPtrType = intrusive_ptr<const TRes>;
 
       static const ResKind              kind;	///< Defined in ResKind.cc
 
@@ -103,9 +103,9 @@ namespace zypp
   template<>
     struct ResTraits<Resolvable>
     {
-      typedef ResKind                         KindType;
-      typedef intrusive_ptr<Resolvable>       PtrType;
-      typedef intrusive_ptr<const Resolvable> constPtrType;
+      using KindType = ResKind;
+      using PtrType = intrusive_ptr<Resolvable>;
+      using constPtrType = intrusive_ptr<const Resolvable>;
     };
 
   /** ResTraits specialisation for ResObject.
@@ -114,9 +114,9 @@ namespace zypp
   template<>
     struct ResTraits<ResObject>
     {
-      typedef ResKind                        KindType;
-      typedef intrusive_ptr<ResObject>       PtrType;
-      typedef intrusive_ptr<const ResObject> constPtrType;
+      using KindType = ResKind;
+      using PtrType = intrusive_ptr<ResObject>;
+      using constPtrType = intrusive_ptr<const ResObject>;
     };
 
   /** Convenient access to well known ResKinds.

@@ -88,8 +88,8 @@ namespace zypp
                          protected detail::PoolMember
     {
       public:
-        typedef Solvable  value_type;
-        typedef unsigned  size_type;
+        using value_type = Solvable;
+        using size_type = unsigned int;
 
       public:
         /** Default ctor */
@@ -115,7 +115,7 @@ namespace zypp
         size_type size() const;
 
       public:
-        typedef detail::WhatProvidesIterator const_iterator;
+        using const_iterator = detail::WhatProvidesIterator;
 
         /** Iterator pointing to the first \ref Solvable. */
         const_iterator begin() const;

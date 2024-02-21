@@ -25,7 +25,7 @@
 namespace zypp
 {
   class Locale;
-  typedef std::unordered_set<Locale> LocaleSet;
+  using LocaleSet = std::unordered_set<Locale>;
 
   ///////////////////////////////////////////////////////////////////
   /// \class Locale

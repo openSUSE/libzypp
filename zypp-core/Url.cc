@@ -169,7 +169,7 @@ namespace zypp
     class UrlByScheme
     {
     private:
-      typedef std::map<std::string,UrlRef> UrlBySchemeMap;
+      using UrlBySchemeMap = std::map<std::string, UrlRef>;
       UrlBySchemeMap urlByScheme;
 
     public:

@@ -24,7 +24,7 @@ namespace zypp
   /** A Pathname plus associated cleanup code to be executed when
    *  path is no longer needed.
    */
-  typedef AutoDispose<const Pathname> ManagedFile;
+  using ManagedFile = AutoDispose<const Pathname>;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

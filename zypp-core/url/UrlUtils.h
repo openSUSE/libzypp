@@ -37,14 +37,14 @@ namespace zypp
      * Each string in the vector is allways URL percent encoded and
      * usually contains a "key=value" pair.
      */
-    typedef std::vector < std::string >             ParamVec;
+    using ParamVec = std::vector<std::string>;
 
 
     /** A parameter map container.
      * A map containing key and value pairs parsed from a PathParam-
      * or Query-String.
      */
-    typedef std::map < std::string, std::string >   ParamMap;
+    using ParamMap = std::map<std::string, std::string>;
 
 
     /** Encoding flags.

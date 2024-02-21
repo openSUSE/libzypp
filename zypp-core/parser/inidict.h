@@ -42,10 +42,10 @@ namespace zypp
     {
       friend std::ostream & operator<<( std::ostream & str, const IniDict & obj );
     public:
-      typedef std::map<std::string, std::string> EntrySet;
-      typedef std::map<std::string, EntrySet> SectionSet;
-      typedef MapKVIteratorTraits<SectionSet>::Key_const_iterator section_const_iterator;
-      typedef EntrySet::const_iterator entry_const_iterator;
+      using EntrySet = std::map<std::string, std::string>;
+      using SectionSet = std::map<std::string, EntrySet>;
+      using section_const_iterator = MapKVIteratorTraits<SectionSet>::Key_const_iterator;
+      using entry_const_iterator = EntrySet::const_iterator;
 
       /**
        * \name Section Iterators

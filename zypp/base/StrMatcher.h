@@ -299,7 +299,7 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
   public:
-    typedef MatchException Exception;
+    using Exception = MatchException;
 
   public:
     /** Implementation  */

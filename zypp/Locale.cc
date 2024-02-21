@@ -128,7 +128,7 @@ namespace zypp
       LanguageCode _l;
       CountryCode  _c;
     };
-    typedef std::unordered_map<IdString,LC> CodeMap;
+    using CodeMap = std::unordered_map<IdString, LC>;
 
     /** Ctor initializes the code maps. */
     CodeMaps()

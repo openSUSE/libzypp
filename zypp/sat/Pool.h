@@ -46,9 +46,9 @@ namespace zypp
     class Pool : protected detail::PoolMember
     {
       public:
-        typedef detail::SolvableIterator SolvableIterator;
-        typedef zypp::detail::RepositoryIterator     RepositoryIterator;
-        typedef detail::size_type        size_type;
+        using SolvableIterator = detail::SolvableIterator;
+        using RepositoryIterator = zypp::detail::RepositoryIterator;
+        using size_type = detail::size_type;
 
       public:
         /** Singleton ctor. */
@@ -256,7 +256,7 @@ namespace zypp
          * \see \ref ZConfig::multiversionSpec
          */
         //@{
-        typedef SolvableSet MultiversionList;
+        using MultiversionList = SolvableSet;
         const MultiversionList & multiversion() const;
         /** \deprecated Legacy, use multiversion().empty() instead. */
         ZYPP_DEPRECATED bool multiversionEmpty() const { return multiversion().empty(); }

@@ -94,11 +94,11 @@ namespace zypp
     class AutoDispose
     {
     public:
-      typedef typename boost::call_traits<Tp>::param_type       param_type;
-      typedef typename boost::call_traits<Tp>::reference        reference;
-      typedef typename boost::call_traits<Tp>::const_reference  const_reference;
-      typedef Tp                                                value_type;
-      typedef typename boost::call_traits<Tp>::value_type       result_type;
+      using param_type = typename boost::call_traits<Tp>::param_type;
+      using reference = typename boost::call_traits<Tp>::reference;
+      using const_reference = typename boost::call_traits<Tp>::const_reference;
+      using value_type = Tp;
+      using result_type = typename boost::call_traits<Tp>::value_type;
       // bsc#1194597: Header is exposed in the public API, so it must be c++11:
       // using dispose_param_type = std::conditional_t< std::is_pointer_v<Tp> || std::is_integral_v<Tp>, Tp const, reference >;
       using dispose_param_type = std::conditional_t< std::is_pointer_v<Tp> || std::is_integral_v<Tp>, Tp const, reference >;
@@ -204,7 +204,7 @@ namespace zypp
     {
     public:
       /** Dispose function signatue. */
-      typedef function<void ()> Dispose;
+      using Dispose = function<void ()>;
 
     public:
       /** Default Ctor using default constructed value and no dispose function. */

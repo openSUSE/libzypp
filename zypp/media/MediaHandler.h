@@ -52,8 +52,8 @@ class MediaHandler {
     friend std::ostream & operator<<( std::ostream & str, const MediaHandler & obj );
 
     public:
-        typedef shared_ptr<MediaHandler> Ptr;
-        typedef shared_ptr<const MediaHandler> constPtr;
+        using Ptr = shared_ptr<MediaHandler>;
+        using constPtr = shared_ptr<const MediaHandler>;
 
         static bool setAttachPrefix(const Pathname &attach_prefix);
 

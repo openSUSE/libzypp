@@ -74,7 +74,7 @@ constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args.
 
 template< class T >
 struct remove_cvref {
-  typedef std::remove_cv_t<std::remove_reference_t<T>> type;
+  using type = std::remove_cv_t<std::remove_reference_t<T>>;
 };
 
 template< class T >

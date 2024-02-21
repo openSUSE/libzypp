@@ -32,10 +32,10 @@ namespace zypp
   class Product : public ResObject
   {
   public:
-    typedef Product                  Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = Product;
+    using TraitsType = ResTraits<Self>;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
     /** The reference package providing the product metadata,
@@ -70,7 +70,7 @@ namespace zypp
 
   public:
     /***/
-    typedef std::vector<constPtr> ReplacedProducts;
+    using ReplacedProducts = std::vector<constPtr>;
 
     /** Array of \b installed Products that would be replaced by
      *  installing this one.
@@ -209,12 +209,12 @@ namespace zypp
   {
     private:
       /** \todo Change to directly iterate the .solv */
-      typedef std::list<Url> ListType;
+      using ListType = std::list<Url>;
 
     public:
-      typedef ListType::value_type     value_type;
-      typedef ListType::size_type      size_type;
-      typedef ListType::const_iterator const_iterator;
+      using value_type = ListType::value_type;
+      using size_type = ListType::size_type;
+      using const_iterator = ListType::const_iterator;
 
       bool empty() const
       { return _list.empty(); }

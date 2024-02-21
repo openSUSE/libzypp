@@ -153,7 +153,7 @@ namespace zypp
     bool	_cleanLock;
 
   private:
-    typedef shared_ptr<void> ScopedGuard;
+    using ScopedGuard = shared_ptr<void>;
 
     /** Exception safe access to the lockfile.
      * \code

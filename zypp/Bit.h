@@ -48,7 +48,7 @@ namespace zypp
     template<class TInt>
       struct MaxBits
       {
-        typedef TInt IntT;
+        using IntT = TInt;
         static const unsigned value = (sizeof(IntT)*8);
       };
 
@@ -71,7 +71,7 @@ namespace zypp
     template<class TInt, unsigned _begin, unsigned _size>
       struct Mask
       {
-        typedef TInt IntT;
+        using IntT = TInt;
         static const IntT value    = bit_detail::Gen1Bits<IntT,_size>::value << _begin;
         static const IntT inverted = ~value;
       };
@@ -80,9 +80,9 @@ namespace zypp
     template<class TInt, unsigned _begin, unsigned _size>
       struct Range
       {
-        typedef TInt IntT;
-        typedef zypp::bit::MaxBits<IntT>           MaxBits;
-        typedef zypp::bit::Mask<IntT,_begin,_size> Mask;
+        using IntT = TInt;
+        using MaxBits = zypp::bit::MaxBits<IntT>;
+        using Mask = zypp::bit::Mask<IntT, _begin, _size>;
 
         static const unsigned begin  = _begin;
         static const unsigned size   = _size;
@@ -109,8 +109,8 @@ namespace zypp
     template<class TRange, typename TRange::IntT _value>
       struct RangeValue
       {
-        typedef TRange                RangeT;
-        typedef typename TRange::IntT IntT;
+        using RangeT = TRange;
+        using IntT = typename TRange::IntT;
 
         static const IntT value = _value << RangeT::begin;
       };
@@ -127,8 +127,8 @@ namespace zypp
     template<class TRange, unsigned _pos>
       struct RangeBit
       {
-        typedef TRange                RangeT;
-        typedef typename TRange::IntT IntT;
+        using RangeT = TRange;
+        using IntT = typename TRange::IntT;
 
         static const IntT value = IntT(1) << (RangeT::begin + _pos);
       };

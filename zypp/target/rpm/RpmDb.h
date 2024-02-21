@@ -53,7 +53,7 @@ public:
   /**
    * Default error class
    **/
-  typedef class InstTargetError Error;
+  using Error = class InstTargetError;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -277,7 +277,7 @@ private:
   */
   ExternalProgram *process;
 
-  typedef std::vector<const char*> RpmArgVec;
+  using RpmArgVec = std::vector<const char *>;
 
   /**
    * Run rpm with the specified arguments and handle stderr.
@@ -344,7 +344,7 @@ private:
 
 public:
 
-  typedef std::set<std::string> FileList;
+  using FileList = std::set<std::string>;
 
   /**
    * checkPackage result

@@ -49,7 +49,7 @@ namespace zypp
         ++_perKind[ptr->kind()];
       }
     public:
-      typedef std::map<ResKind,Counter<unsigned> > KindMap;
+      using KindMap = std::map<ResKind, Counter<unsigned int>>;
       Counter<unsigned> _total;
       KindMap           _perKind;
     };

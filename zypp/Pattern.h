@@ -31,14 +31,14 @@ namespace zypp
   class Pattern : public ResObject
   {
     public:
-      typedef Pattern                  Self;
-      typedef ResTraits<Self>          TraitsType;
-      typedef TraitsType::PtrType      Ptr;
-      typedef TraitsType::constPtrType constPtr;
+      using Self = Pattern;
+      using TraitsType = ResTraits<Self>;
+      using Ptr = TraitsType::PtrType;
+      using constPtr = TraitsType::constPtrType;
 
     public:
-      typedef sat::ArrayAttr<IdString,IdString> NameList;
-      typedef sat::SolvableSet                  Contents;
+      using NameList = sat::ArrayAttr<IdString, IdString>;
+      using Contents = sat::SolvableSet;
 
     public:
       /** */

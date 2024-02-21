@@ -37,10 +37,10 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const SolvableSet & obj );
 
       public:
-        typedef std::unordered_set<Solvable> Container;
-        typedef Container::value_type             value_type;
-        typedef Container::size_type              size_type;
-        typedef Solvable_iterator                 const_iterator; // from SolvIterMixin
+        using Container = std::unordered_set<Solvable>;
+        using value_type = Container::value_type;
+        using size_type = Container::size_type;
+        using const_iterator = Solvable_iterator; // from SolvIterMixin
 
       public:
         /** Default ctor */

@@ -108,10 +108,10 @@ namespace zypp
     class LookupAttr
     {
       public:
-        typedef MatchException Exception;
+        using Exception = MatchException;
 
       public:
-        typedef unsigned size_type;
+        using size_type = unsigned int;
 
         /** Specify the where to look for the attribule. */
         enum Location {

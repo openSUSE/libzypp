@@ -37,7 +37,7 @@ namespace zypp
    * \see http://www.boost.org/doc/html/tribool.html
    * \ingroup BOOST
   */
-  typedef boost::logic::tribool TriBool;
+  using TriBool = boost::logic::tribool;
   using   boost::logic::tribool;
   using   boost::logic::indeterminate;
 

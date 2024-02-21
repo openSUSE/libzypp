@@ -84,7 +84,7 @@ namespace zypp {
       /**
        * (key,value) map type
        **/
-      typedef std::map<std::string,std::string> map_type;
+      using map_type = std::map<std::string, std::string>;
 
       KVMapBase()
       {}

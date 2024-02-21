@@ -23,7 +23,7 @@ namespace parser
   class ParserProgress
   {
     public:
-      typedef boost::shared_ptr<ParserProgress> Ptr;
+      using Ptr = boost::shared_ptr<ParserProgress>;
 
       /**
        * initializes a progress objetc, with a callback functor

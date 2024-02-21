@@ -75,7 +75,7 @@ namespace zypp {
       scoped_ptr<WatchFile> _keyringP;
     };
 
-    typedef std::map<Pathname,Cache> CacheMap;
+    using CacheMap = std::map<Pathname, Cache>;
 
     const std::list<PublicKeyData> & getData( const Pathname & keyring_r ) const;
 

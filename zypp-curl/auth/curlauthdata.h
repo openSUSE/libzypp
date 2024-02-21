@@ -99,7 +99,7 @@ namespace zypp {
       long _auth_type;
     };
 
-    typedef shared_ptr<CurlAuthData> CurlAuthData_Ptr;
+    using CurlAuthData_Ptr = shared_ptr<CurlAuthData>;
     std::ostream & operator << (std::ostream & str, const CurlAuthData & auth_data);
   }
 }

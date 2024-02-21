@@ -25,7 +25,7 @@
 #undef CURLVERSION_AT_LEAST
 #define CURLVERSION_AT_LEAST(M,N,O) LIBCURL_VERSION_NUM >= ((((M)<<8)+(N))<<8)+(O)
 
-typedef struct _GPollFD GPollFD;
+using GPollFD = struct _GPollFD;
 
 namespace zypp
 {

@@ -37,8 +37,8 @@ namespace rpm
 class librpmDb : public base::ReferenceCounted, private base::NonCopyable
 {
 public:
-  typedef intrusive_ptr<librpmDb> Ptr;
-  typedef intrusive_ptr<const librpmDb> constPtr;
+  using Ptr = intrusive_ptr<librpmDb>;
+  using constPtr = intrusive_ptr<const librpmDb>;
 private:
   /**
    * <B>INTENTIONALLY UNDEFINED<\B> because of bug in Ptr classes

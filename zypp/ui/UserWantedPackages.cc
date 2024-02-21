@@ -34,7 +34,7 @@ namespace zypp
 {
     namespace ui
     {
-        typedef ResPoolProxy::const_iterator	PoolProxyIterator;
+        using PoolProxyIterator = ResPoolProxy::const_iterator;
 
         static inline ResPoolProxy		poolProxy()	{ return getZYpp()->poolProxy();	}
 

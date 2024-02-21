@@ -356,7 +356,7 @@ namespace zypp
        */
       Pathname provideFileInternal( const OnMediaLocation &resource, ProvideFileOptions options );
 
-      typedef function<void( media::MediaAccessId, const OnMediaLocation & )> ProvideOperation;
+      using ProvideOperation = function<void (media::MediaAccessId, const OnMediaLocation &)>;
 
       void provide( const ProvideOperation& op, const OnMediaLocation &resource, ProvideFileOptions options );
 
@@ -377,8 +377,8 @@ namespace zypp
 
       std::string _label;
 
-      typedef std::map<media::MediaNr, media::MediaAccessId> MediaMap;
-      typedef std::map<media::MediaNr, media::MediaVerifierRef > VerifierMap;
+      using MediaMap = std::map<media::MediaNr, media::MediaAccessId>;
+      using VerifierMap = std::map<media::MediaNr, media::MediaVerifierRef>;
 
       /** Mapping between media number and Media Access ID */
       MediaMap _medias;

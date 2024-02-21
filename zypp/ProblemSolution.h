@@ -40,8 +40,8 @@ namespace zypp
   class ProblemSolution : public base::ReferenceCounted
   {
   public:
-    typedef solver::detail::SolutionAction_Ptr SolutionAction_Ptr;
-    typedef solver::detail::SolutionActionList SolutionActionList;
+    using SolutionAction_Ptr = solver::detail::SolutionAction_Ptr;
+    using SolutionActionList = solver::detail::SolutionActionList;
 
     /** Constructor. */
     ProblemSolution();

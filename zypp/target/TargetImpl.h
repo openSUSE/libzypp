@@ -56,10 +56,10 @@ namespace zypp
 
     public:
       /** list of pool items  */
-      typedef std::list<PoolItem> PoolItemList;
+      using PoolItemList = std::list<PoolItem>;
 
       /** set of pool items  */
-      typedef std::set<PoolItem> PoolItemSet;
+      using PoolItemSet = std::set<PoolItem>;
 
     public:
       /** Ctor. */

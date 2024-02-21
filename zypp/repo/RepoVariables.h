@@ -57,7 +57,7 @@ namespace zypp
     struct RepoVarExpand
     {
       /** Function taking a variable name and returning a pointer to the variable value or \c nullptr if unset. */
-      typedef function<const std::string * ( const std::string & )> VarRetriever;
+      using VarRetriever = function<const std::string *(const std::string &)>;
 
       /** Return a copy of \a value_r with embedded variables expanded. */
       std::string operator()( const std::string & value_r, VarRetriever varRetriever_r ) const;
@@ -124,16 +124,16 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced strings */
-  typedef base::ValueTransform<std::string, repo::RepoVariablesStringReplacer> RepoVariablesReplacedString;
+  using RepoVariablesReplacedString = base::ValueTransform<std::string, repo::RepoVariablesStringReplacer>;
 
   /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced string lists */
-  typedef base::ContainerTransform<std::list<std::string>, repo::RepoVariablesStringReplacer> RepoVariablesReplacedStringList;
+  using RepoVariablesReplacedStringList = base::ContainerTransform<std::list<std::string>, repo::RepoVariablesStringReplacer>;
 
   /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced urls */
-  typedef base::ValueTransform<Url, repo::RepoVariablesUrlReplacer> RepoVariablesReplacedUrl;
+  using RepoVariablesReplacedUrl = base::ValueTransform<Url, repo::RepoVariablesUrlReplacer>;
 
   /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced url lists */
-  typedef base::ContainerTransform<std::list<Url>, repo::RepoVariablesUrlReplacer> RepoVariablesReplacedUrlList;
+  using RepoVariablesReplacedUrlList = base::ContainerTransform<std::list<Url>, repo::RepoVariablesUrlReplacer>;
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

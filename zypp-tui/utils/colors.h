@@ -74,18 +74,18 @@ template <ColorContext _ctxt>
 inline ansi::ColorStream & operator<<( ansi::ColorStream & cstr_r, const CCString<_ctxt> & cstring_r )
 { return cstr_r << (const ColorString &)cstring_r; }
 
-typedef CCString<ColorContext::DEFAULT>		DEFAULTString;
+using DEFAULTString = CCString<ColorContext::DEFAULT>;
 
-typedef CCString<ColorContext::MSG_STATUS>	MSG_STATUSString;
-typedef CCString<ColorContext::MSG_ERROR>	MSG_ERRORString;
-typedef CCString<ColorContext::MSG_WARNING>	MSG_WARNINGString;
+using MSG_STATUSString = CCString<ColorContext::MSG_STATUS>;
+using MSG_ERRORString = CCString<ColorContext::MSG_ERROR>;
+using MSG_WARNINGString = CCString<ColorContext::MSG_WARNING>;
 
-typedef CCString<ColorContext::POSITIVE>	POSITIVEString;
-typedef CCString<ColorContext::CHANGE>		CHANGEString;
-typedef CCString<ColorContext::NEGATIVE>	NEGATIVEString;
+using POSITIVEString = CCString<ColorContext::POSITIVE>;
+using CHANGEString = CCString<ColorContext::CHANGE>;
+using NEGATIVEString = CCString<ColorContext::NEGATIVE>;
 
-typedef CCString<ColorContext::HIGHLIGHT>	HIGHLIGHTString;
-typedef CCString<ColorContext::LOWLIGHT>	LOWLIGHTString;
+using HIGHLIGHTString = CCString<ColorContext::HIGHLIGHT>;
+using LOWLIGHTString = CCString<ColorContext::LOWLIGHT>;
 
 }
 

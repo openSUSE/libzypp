@@ -65,7 +65,7 @@ namespace zypp {
       P &operator=(P &&) = delete;
 
       public:
-        typedef zypp::shared_ptr<EVP_MD_CTX> EvpDataPtr;
+        using EvpDataPtr = zypp::shared_ptr<EVP_MD_CTX>;
         P();
         ~P();
 

@@ -43,17 +43,17 @@ namespace zypp
     {
     public:
 
-      typedef SelectableTraits::AvailableItemSet         AvailableItemSet;
-      typedef SelectableTraits::available_iterator       available_iterator;
-      typedef SelectableTraits::available_const_iterator available_const_iterator;
-      typedef SelectableTraits::available_size_type      available_size_type;
+      using AvailableItemSet = SelectableTraits::AvailableItemSet;
+      using available_iterator = SelectableTraits::available_iterator;
+      using available_const_iterator = SelectableTraits::available_const_iterator;
+      using available_size_type = SelectableTraits::available_size_type;
 
-      typedef SelectableTraits::InstalledItemSet         InstalledItemSet;
-      typedef SelectableTraits::installed_iterator       installed_iterator;
-      typedef SelectableTraits::installed_const_iterator installed_const_iterator;
-      typedef SelectableTraits::installed_size_type      installed_size_type;
+      using InstalledItemSet = SelectableTraits::InstalledItemSet;
+      using installed_iterator = SelectableTraits::installed_iterator;
+      using installed_const_iterator = SelectableTraits::installed_const_iterator;
+      using installed_size_type = SelectableTraits::installed_size_type;
 
-      typedef SelectableTraits::PickList		PickList;
+      using PickList = SelectableTraits::PickList;
 
     public:
       template <class TIterator>

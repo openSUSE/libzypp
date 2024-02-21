@@ -51,7 +51,7 @@ namespace zypp
   /**
    * A set of available products in media
    */
-  typedef std::set<MediaProductEntry> MediaProductSet;
+  using MediaProductSet = std::set<MediaProductEntry>;
 
   /**
    * FIXME: add a comment here...

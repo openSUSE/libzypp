@@ -55,18 +55,18 @@ namespace zypp
       friend std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
 
     public:
-      typedef intrusive_ptr<Selectable>        Ptr;
-      typedef intrusive_ptr<const Selectable>  constPtr;
+      using Ptr = intrusive_ptr<Selectable>;
+      using constPtr = intrusive_ptr<const Selectable>;
 
       /** Iterates over ResObject::constPtr */
-      typedef SelectableTraits::available_iterator      available_iterator;
-      typedef SelectableTraits::available_size_type     available_size_type;
+      using available_iterator = SelectableTraits::available_iterator;
+      using available_size_type = SelectableTraits::available_size_type;
 
-      typedef SelectableTraits::installed_iterator      installed_iterator;
-      typedef SelectableTraits::installed_size_type     installed_size_type;
+      using installed_iterator = SelectableTraits::installed_iterator;
+      using installed_size_type = SelectableTraits::installed_size_type;
 
-      typedef SelectableTraits::picklist_iterator	picklist_iterator;
-      typedef SelectableTraits::picklist_size_type	picklist_size_type;
+      using picklist_iterator = SelectableTraits::picklist_iterator;
+      using picklist_size_type = SelectableTraits::picklist_size_type;
 
     public:
       /** \name Static ctor substitues picking the item from the pool.
@@ -555,7 +555,7 @@ namespace zypp
     public:
       /** Implementation  */
       struct Impl;
-      typedef shared_ptr<Impl> Impl_Ptr;
+      using Impl_Ptr = shared_ptr<Impl>;
       /** Default ctor */
       Selectable( Impl_Ptr pimpl_r );
     private:
@@ -579,7 +579,7 @@ namespace zypp
      */
     struct asSelectable
     {
-      typedef Selectable_Ptr result_type;
+      using result_type = Selectable_Ptr;
 
       Selectable_Ptr operator()( const sat::Solvable & solv_r ) const;
 

@@ -36,7 +36,7 @@ namespace zypp
       /** Constructs a transfer program cmd line access. */
       TransferSettings();
 
-      typedef std::vector<std::string> Headers;
+      using Headers = std::vector<std::string>;
 
       /** reset the settings to the defaults */
       void reset();

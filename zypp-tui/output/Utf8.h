@@ -31,7 +31,7 @@ namespace utf8
   class string
   {
   public:
-    typedef std::string::size_type size_type;
+    using size_type = std::string::size_type;
     static const size_type npos = std::string::npos;
 
   public:

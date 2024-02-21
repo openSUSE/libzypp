@@ -18,9 +18,9 @@ namespace zypp
   class Locks
   {
   public:
-    typedef std::list<PoolQuery> LockList;
-    typedef LockList::const_iterator const_iterator;
-    typedef LockList::size_type size_type;
+    using LockList = std::list<PoolQuery>;
+    using const_iterator = LockList::const_iterator;
+    using size_type = LockList::size_type;
   public:
     class Impl;
 

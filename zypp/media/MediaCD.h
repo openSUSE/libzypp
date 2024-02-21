@@ -28,7 +28,7 @@ namespace zypp {
     class MediaCD : public MediaHandler {
 
       private:
-        typedef std::list<MediaSource> DeviceList;
+        using DeviceList = std::list<MediaSource>;
         /** list of devices to try to mount */
         mutable DeviceList _devices;
 

@@ -25,7 +25,7 @@ namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   class IdString;
-  typedef std::unordered_set<IdString> IdStringSet;
+  using IdStringSet = std::unordered_set<IdString>;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -42,7 +42,7 @@ namespace zypp
   class IdString : protected sat::detail::PoolMember
   {
     public:
-      typedef sat::detail::IdType IdType;
+      using IdType = sat::detail::IdType;
 
     public:
       /** Default ctor, empty string. */

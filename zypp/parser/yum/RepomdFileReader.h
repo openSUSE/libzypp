@@ -39,7 +39,7 @@ namespace zypp
   {
   public:
     /** Callback taking \ref OnMediaLocation and the resource type string */
-    typedef function< bool( OnMediaLocation &&, const std::string & )> ProcessResource;
+    using ProcessResource = function<bool (OnMediaLocation &&, const std::string &)>;
 
    /**
     * CTOR. Creates also \ref xml::Reader and starts reading.

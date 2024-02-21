@@ -58,7 +58,7 @@ namespace zypp
     */
     //@{
     /** progress reporting */
-    typedef function<void( unsigned )> Progress;
+    using Progress = function<void (unsigned int)>;
 
     /** Apply a binary delta to on-disk data to re-create a new rpm.
      * \see <tt>applydeltarpm deltarpm newrpm</tt>

@@ -42,7 +42,7 @@ namespace zypp
     /// \brief (Key, Value) string pair of XML node attributes
     struct NodeAttr : public std::pair<std::string,std::string>
     {
-      typedef std::pair<std::string,std::string> Pair;
+      using Pair = std::pair<std::string, std::string>;
 
       template <typename Tp>
       NodeAttr( std::string key_r, const Tp & val_r )
@@ -84,7 +84,7 @@ namespace zypp
     struct Node
     {
       NON_COPYABLE_BUT_MOVE( Node );
-      typedef NodeAttr Attr;
+      using Attr = NodeAttr;
 
       struct OptionalContentType {};	///< Ctor arg type
       static constexpr OptionalContentType optionalContent = OptionalContentType();

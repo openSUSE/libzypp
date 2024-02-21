@@ -185,7 +185,7 @@ namespace ansi
     { Unchanged, Default, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White };
 
     /** Color unique id type */
-    typedef std::uint32_t UidType;
+    using UidType = std::uint32_t;
 
     /** Predefined (foregreound) color contants
      * Intentionally not an <tt>enum class</tt>, so it can be used as

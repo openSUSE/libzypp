@@ -104,7 +104,7 @@ namespace zypp
 
 
       /** \see \ref log::LineWriter */
-      typedef log::LineWriter LineWriter;
+      using LineWriter = log::LineWriter;
 
       /** If you want to format loglines by yourself,
        *  derive from this, and overload \c format.

@@ -51,7 +51,7 @@ namespace zypp
   };
 
   /** List of ChangelogEntry. */
-  typedef std::list<ChangelogEntry> Changelog;
+  using Changelog = std::list<ChangelogEntry>;
 
   /** \relates ChangelogEntry */
   std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj );

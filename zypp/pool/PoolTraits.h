@@ -65,32 +65,29 @@ namespace zypp
     struct PoolTraits
     {
     public:
-      typedef sat::detail::SolvableIdType		SolvableIdType;
+      using SolvableIdType = sat::detail::SolvableIdType;
 
       /** pure items  */
-      typedef std::vector<PoolItem>			ItemContainerT;
-      typedef ItemContainerT::const_iterator            item_iterator;
-      typedef filter_iterator<ByPoolItem,ItemContainerT::const_iterator>
-                                                        const_iterator;
-      typedef ItemContainerT::size_type			size_type;
+      using ItemContainerT = std::vector<PoolItem>;
+      using item_iterator = ItemContainerT::const_iterator;
+      using const_iterator = filter_iterator<ByPoolItem, ItemContainerT::const_iterator>;
+      using size_type = ItemContainerT::size_type;
 
       /** ident index */
-      typedef std::unordered_multimap<sat::detail::IdType, PoolItem>
-                                                        Id2ItemT;
-      typedef P_Select2nd<Id2ItemT::value_type>         Id2ItemValueSelector;
-      typedef transform_iterator<Id2ItemValueSelector, Id2ItemT::const_iterator>
-                                                        byIdent_iterator;
+      using Id2ItemT = std::unordered_multimap<sat::detail::IdType, PoolItem>;
+      using Id2ItemValueSelector = P_Select2nd<Id2ItemT::value_type>;
+      using byIdent_iterator = transform_iterator<Id2ItemValueSelector, Id2ItemT::const_iterator>;
 
       /** list of known Repositories */
-      typedef sat::Pool::RepositoryIterator	        repository_iterator;
+      using repository_iterator = sat::Pool::RepositoryIterator;
 
       /** hard locks from etc/zypp/locks */
-      typedef std::list<PoolQuery>			HardLockQueries;
-      typedef HardLockQueries::const_iterator		hardLockQueries_iterator;
+      using HardLockQueries = std::list<PoolQuery>;
+      using hardLockQueries_iterator = HardLockQueries::const_iterator;
 
-      typedef PoolImpl                   Impl;
-      typedef shared_ptr<PoolImpl>       Impl_Ptr;
-      typedef shared_ptr<const PoolImpl> Impl_constPtr;
+      using Impl = PoolImpl;
+      using Impl_Ptr = shared_ptr<PoolImpl>;
+      using Impl_constPtr = shared_ptr<const PoolImpl>;
     };
     ///////////////////////////////////////////////////////////////////
 

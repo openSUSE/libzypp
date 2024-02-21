@@ -38,8 +38,8 @@ namespace zypp
     namespace
     { /////////////////////////////////////////////////////////////////
 
-      typedef std::unordered_set<detail::IdType> set_type;
-      typedef std::vector<sat::detail::IdType>        vector_type;
+      using set_type = std::unordered_set<detail::IdType>;
+      using vector_type = std::vector<sat::detail::IdType>;
 
       /////////////////////////////////////////////////////////////////
     } // namespace

@@ -83,7 +83,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   class CpeId::Impl : private base::NonCopyable
   {
-    typedef std::array<Value,Attribute::numAttributes> Wfn;
+    using Wfn = std::array<Value, Attribute::numAttributes>;
 
   public:
     Impl() {}

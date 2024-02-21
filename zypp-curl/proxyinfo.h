@@ -29,14 +29,14 @@ namespace zypp {
     class ProxyInfo
     {
     public:
-      typedef intrusive_ptr<ProxyInfo> Ptr;
-      typedef intrusive_ptr<ProxyInfo> constPtr;
-      typedef std::list<std::string> NoProxyList;
-      typedef std::list<std::string>::const_iterator NoProxyIterator;
+      using Ptr = intrusive_ptr<ProxyInfo>;
+      using constPtr = intrusive_ptr<ProxyInfo>;
+      using NoProxyList = std::list<std::string>;
+      using NoProxyIterator = std::list<std::string>::const_iterator;
 
       /** Implementation */
       struct Impl;
-      typedef shared_ptr<Impl> ImplPtr;
+      using ImplPtr = shared_ptr<Impl>;
 
       /** Default Ctor: guess the best available implementation. */
       ProxyInfo();

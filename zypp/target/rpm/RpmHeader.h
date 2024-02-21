@@ -61,8 +61,8 @@ struct FileInfo
 class RpmHeader : public BinHeader
 {
 public:
-  typedef intrusive_ptr<RpmHeader> Ptr;
-  typedef intrusive_ptr<const RpmHeader> constPtr;
+  using Ptr = intrusive_ptr<RpmHeader>;
+  using constPtr = intrusive_ptr<const RpmHeader>;
 
 private:
 

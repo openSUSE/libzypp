@@ -44,7 +44,7 @@ namespace zypp
       {
         bool operator()( const Solvable & solv_r ) const;
 
-        typedef std::unordered_set<unsigned> Uset;
+        using Uset = std::unordered_set<unsigned int>;
         UnifyByIdent()
           : _uset( new Uset )
         {}
@@ -116,7 +116,7 @@ namespace zypp
     class SolvIterMixin
     {
       public:
-      typedef size_t size_type;
+      using size_type = size_t;
 
       public:
         /** \name Convenience methods.
@@ -147,7 +147,7 @@ namespace zypp
       public:
         /** \name Iterate as Solvable */
         //@{
-        typedef  DerivedSolvable_iterator Solvable_iterator;
+        using Solvable_iterator = DerivedSolvable_iterator;
         Solvable_iterator solvableBegin() const
         { return self().begin(); }
         Solvable_iterator solvableEnd() const
@@ -158,7 +158,7 @@ namespace zypp
 
         /** \name Iterate as PoolItem */
         //@{
-        typedef transform_iterator<asPoolItem,Solvable_iterator> PoolItem_iterator;
+        using PoolItem_iterator = transform_iterator<asPoolItem, Solvable_iterator>;
         PoolItem_iterator poolItemBegin() const
         { return make_transform_iterator( solvableBegin(), asPoolItem() ); }
         PoolItem_iterator poolItemEnd() const
@@ -168,11 +168,11 @@ namespace zypp
         //@}
 
       private:
-        typedef filter_iterator<solvitermixin_detail::UnifyByIdent,Solvable_iterator> UnifiedSolvable_iterator;
+        using UnifiedSolvable_iterator = filter_iterator<solvitermixin_detail::UnifyByIdent, Solvable_iterator>;
       public:
         /** \name Iterate ui::Selectable::Ptr */
         //@{
-        typedef transform_iterator<ui::asSelectable,UnifiedSolvable_iterator> Selectable_iterator;
+        using Selectable_iterator = transform_iterator<ui::asSelectable, UnifiedSolvable_iterator>;
         Selectable_iterator selectableBegin() const
         { return make_transform_iterator( unifiedSolvableBegin(), ui::asSelectable() ); }
         Selectable_iterator selectableEnd() const

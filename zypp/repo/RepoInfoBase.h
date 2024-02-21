@@ -184,9 +184,9 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     /** \relates RepoInfoBase */
-    typedef shared_ptr<RepoInfoBase> RepoInfoBase_Ptr;
+    using RepoInfoBase_Ptr = shared_ptr<RepoInfoBase>;
     /** \relates RepoInfoBase */
-    typedef shared_ptr<const RepoInfoBase> RepoInfoBase_constPtr;
+    using RepoInfoBase_constPtr = shared_ptr<const RepoInfoBase>;
 
 
     /////////////////////////////////////////////////////////////////

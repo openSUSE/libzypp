@@ -174,8 +174,8 @@ namespace zypp
         {}
 
       public:
-        typedef LookupAttr::TransformIterator<TResult,TAttr> iterator;
-        typedef LookupAttr::size_type size_type;
+        using iterator = LookupAttr::TransformIterator<TResult, TAttr>;
+        using size_type = LookupAttr::size_type;
 
         iterator begin() const
         { return iterator( _q.begin() ); }

@@ -76,8 +76,8 @@ namespace zypp
       { _body = body_r; }
 
     public:
-      typedef std::pair<HeaderListIterator,HeaderListIterator> constKeyRange;
-      typedef std::pair<HeaderList::iterator,HeaderList::iterator> KeyRange;
+      using constKeyRange = std::pair<HeaderListIterator, HeaderListIterator>;
+      using KeyRange = std::pair<HeaderList::iterator, HeaderList::iterator>;
 
       HeaderList & headerList()
       { return _header; }

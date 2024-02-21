@@ -45,11 +45,11 @@ class BinHeader : public base::ReferenceCounted, private base::NonCopyable
 
 public:
 
-  typedef intrusive_ptr<BinHeader> Ptr;
+  using Ptr = intrusive_ptr<BinHeader>;
 
-  typedef intrusive_ptr<const BinHeader> constPtr;
+  using constPtr = intrusive_ptr<const BinHeader>;
 
-  typedef rpmTag tag;
+  using tag = rpmTag;
 
   class intList;
 

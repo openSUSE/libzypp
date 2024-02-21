@@ -154,12 +154,12 @@ namespace zypp
   /**
    * istream reading gzip files as well as plain files.
    **/
-  typedef detail::fXstream<std::istream,gzstream_detail::fgzstreambuf> ifgzstream;
+  using ifgzstream = detail::fXstream<std::istream, gzstream_detail::fgzstreambuf>;
 
   /**
    * ostream writing gzip files.
    **/
-  typedef detail::fXstream<std::ostream,gzstream_detail::fgzstreambuf> ofgzstream;
+  using ofgzstream = detail::fXstream<std::ostream, gzstream_detail::fgzstreambuf>;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

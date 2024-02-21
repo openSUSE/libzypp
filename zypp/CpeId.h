@@ -53,7 +53,7 @@ namespace zypp
       static constexpr unsigned numAttributes = other+1;	///< number of attributes
       static const std::string & asString( Enum val_r );	///< string representantion
     };
-    typedef base::EnumClass<EAttributeDef> Attribute;	///< 'enum class Attribute'
+    using Attribute = base::EnumClass<EAttributeDef>;	///< 'enum class Attribute'
 
   public:
     /** Indicator type for non-trowing ctor. */
@@ -212,7 +212,7 @@ namespace zypp
         wildcarded,
       };
     };
-    typedef base::EnumClass<ETypeDef> Type;	///< 'enum class Type'
+    using Type = base::EnumClass<ETypeDef>;	///< 'enum class Type'
 
     /** Return the \ref Type of this \ref Value. */
     Type type() const

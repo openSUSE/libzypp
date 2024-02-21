@@ -86,7 +86,7 @@ namespace zypp
   class IdStringType : protected sat::detail::PoolMember
   {
     public:
-    typedef IdString::IdType IdType;
+    using IdType = IdString::IdType;
 
     protected:
       IdStringType() = default;

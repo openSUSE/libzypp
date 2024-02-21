@@ -39,7 +39,7 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const HardLocksFile & obj );
       public:
 
-        typedef pool::PoolTraits::HardLockQueries Data;
+        using Data = pool::PoolTraits::HardLockQueries;
 
       public:
         /** Ctor taking the file to read/write. */

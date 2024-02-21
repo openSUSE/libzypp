@@ -36,16 +36,16 @@ namespace zypp
       // A few type names exposed in the public API
       //
       class Resolver;
-      typedef Resolver ResolverInternal;	///< Preferred name in API
+      using ResolverInternal = Resolver;	///< Preferred name in API
 
       struct ItemCapKind;
-      typedef std::list<ItemCapKind> ItemCapKindList;
+      using ItemCapKindList = std::list<ItemCapKind>;
 
       DEFINE_PTR_TYPE(SolverQueueItem);
-      typedef std::list<SolverQueueItem_Ptr> SolverQueueItemList;
+      using SolverQueueItemList = std::list<SolverQueueItem_Ptr>;
 
       DEFINE_PTR_TYPE(SolutionAction);
-      typedef std::list<SolutionAction_Ptr> SolutionActionList;
+      using SolutionActionList = std::list<SolutionAction_Ptr>;
 
     } // namespace detail
     /////////////////////////////////////////////////////////////////////

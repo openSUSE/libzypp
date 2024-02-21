@@ -29,7 +29,7 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be canceled.
       */
-      typedef function< bool( const RepoInfo & )> ProcessRepo;
+      using ProcessRepo = function<bool (const RepoInfo &)>;
 
       /**
        * bsc#1080693: Explicitly pass the RemoManagers rootDir until it can be queried from the ServiceInfo.

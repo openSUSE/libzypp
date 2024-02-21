@@ -29,7 +29,7 @@ namespace zypp::media
 {
   class MediaHandler;
 
-  typedef unsigned int  MediaNr;
+  using MediaNr = unsigned int;
 
 
   ///////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ namespace zypp::media
   /**
    * A shared reference to the MediaVerifier implementation.
    */
-  typedef zypp::RW_pointer<MediaVerifierBase> MediaVerifierRef;
+  using MediaVerifierRef = zypp::RW_pointer<MediaVerifierBase>;
 
 
   ///////////////////////////////////////////////////////////////////

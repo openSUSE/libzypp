@@ -31,7 +31,7 @@ namespace zypp
   {
   public:
     /** Progress callback signature. */
-    typedef function<bool ( int )> ProgressCB;
+    using ProgressCB = function<bool (int)>;
 
     /** Set callback. */
     ProvideFilePolicy & progressCB( ProgressCB progressCB_r )

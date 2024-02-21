@@ -49,7 +49,7 @@ namespace zypp
     //////////////////////////////////////////////////////////////////
     namespace
     {
-      typedef std::list<MediaSource> DeviceList;
+      using DeviceList = std::list<MediaSource>;
 
       //////////////////////////////////////////////////////////////////
       /// \brief Try to detect cd/dvd devices using udev

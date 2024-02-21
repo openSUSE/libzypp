@@ -402,7 +402,24 @@ SET_LOGGROUP( "zypp-core" ${zypp_SRCS} )
 # System libraries
 SET(UTIL_LIBRARY util)
 
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
+  set_source_files_properties( ${zyppng_rpc_HEADERS} ${zyppng_rpc_SRCS} PROPERTIES
+      SKIP_LINTING ON
+  )
+
+  if (ZYPP_CXX_CLANG_TIDY)
+    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
 ADD_LIBRARY( zypp-core STATIC ${zypp_SRCS} ${zypp_HEADERS} )
+
 #we include generated headers, so we need to wait for zypp-protobuf to be ready
 add_dependencies( zypp-core zypp-protobuf )
 

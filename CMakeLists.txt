@@ -25,6 +25,10 @@ OPTION (ENABLE_DEVEL_BUILD "Developer build, use zypp tools directly from build 
 OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
 # Distros using just zypper may want to enable this as default earlier
 OPTION (ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER "[preview] Force zypper into using a single rpm transaction to install" OFF)
+
+OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
+OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
+
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -309,6 +313,26 @@ IF ( NOT DOXYGEN )
 ELSE ( NOT DOXYGEN )
   MESSAGE( STATUS "doxygen found: ${DOXYGEN}" )
 ENDIF ( NOT DOXYGEN )
+
+if (ENABLE_CLANG_TIDY)
+  FIND_PROGRAM( CLANG-TIDY clang-tidy )
+  if ( CLANG-TIDY )
+    message( "Enabling clang-tidy checks")
+    set( ZYPP_CXX_CLANG_TIDY ${CLANG-TIDY} )
+  else ( CLANG-TIDY )
+    message(WARNING "clang-tidy not found.")
+  endif( CLANG-TIDY )
+endif(ENABLE_CLANG_TIDY)
+
+if ( ENABLE_CPPCHECK )
+  FIND_PROGRAM( CPPCHECK cppcheck )
+  if ( CPPCHECK )
+    message( "Enabling cppcheck")
+    set(ZYPP_CXX_CPPCHECK ${CPPCHECK};–std=c++17;--suppress=rethrowNoCurrentException)
+  else ( CPPCHECK )
+    message(WARNING "cppcheck not found.")
+  endif( CPPCHECK )
+endif(ENABLE_CPPCHECK)
 
 # By now just libsolvs external references require us to link against it:
 IF (ENABLE_ZSTD_COMPRESSION)

@@ -170,6 +170,16 @@ SET( zypp_curl_lib_HEADERS
 # Default loggroup for all files
 SET_LOGGROUP( "zypp-curl" $${zypp_curl_lib_SRCS} )
 
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+  if (ZYPP_CXX_CLANG_TIDY)
+    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
 ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
   ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 #we include generated headers, so we need to wait for zypp-protobuf to be ready

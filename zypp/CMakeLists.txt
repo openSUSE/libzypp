@@ -941,6 +941,26 @@ SET_LOGGROUP( "zypp" ${zypp_lib_SRCS} )
 # override some defaults
 SET_LOGGROUP( "libsolv" ${zypp_sat_SRCS} )
 
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
+  message(NOTICE "Enabling static analysis: ${ZYPP_CXX_CLANG_TIDY} ${ZYPP_CXX_CPPCHECK}")
+
+  set_source_files_properties(
+      target/TargetImpl.cc
+      PROPERTIES
+      SKIP_LINTING ON
+  )
+
+  if (ZYPP_CXX_CLANG_TIDY)
+    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
 ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS} )
 #we include generated headers, so we need to wait for zypp-protobuf to be ready
 add_dependencies( zypp-objlib zypp-protobuf )

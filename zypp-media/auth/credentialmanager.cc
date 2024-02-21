@@ -86,6 +86,11 @@ namespace zypp
   {
     Impl(CredManagerOptions &&options);
 
+    Impl(const Impl &) = delete;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
+
     ~Impl()
     {}
 

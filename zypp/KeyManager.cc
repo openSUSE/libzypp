@@ -107,9 +107,15 @@ namespace zypp
     Impl()
     { boost::call_once( gpgme_init_once, initGpgme ); }
 
-    ~Impl()
-    { if ( _ctx ) gpgme_release( _ctx ); }
+    Impl(const Impl &) = delete;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
 
+    ~Impl() {
+      if (_ctx)
+        gpgme_release(_ctx);
+    }
 
     /** Return all fingerprints found in \a signature_r. */
     std::list<std::string> readSignaturesFprs( const Pathname & signature_r )

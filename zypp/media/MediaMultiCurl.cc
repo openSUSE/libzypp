@@ -144,6 +144,10 @@ class multifetchworker : private MediaCurl, public zyppng::CurlMultiPartDataRece
 
 public:
   multifetchworker(int no, multifetchrequest &request, const Url &url);
+  multifetchworker(const multifetchworker &) = delete;
+  multifetchworker(multifetchworker &&) = delete;
+  multifetchworker &operator=(const multifetchworker &) = delete;
+  multifetchworker &operator=(multifetchworker &&) = delete;
   ~multifetchworker() override;
 
   /*!
@@ -227,7 +231,14 @@ private:
 
 class multifetchrequest : protected internal::CurlPollHelper::CurlPoll  {
 public:
-  multifetchrequest(const MediaMultiCurl *context, Pathname filename, Url baseurl, CURLM *multi, FILE *fp, callback::SendReport<DownloadProgressReport> *report, MediaBlockList &&blklist, off_t filesize);
+  multifetchrequest(const MediaMultiCurl *context, Pathname filename,
+                    Url baseurl, CURLM *multi, FILE *fp,
+                    callback::SendReport<DownloadProgressReport> *report,
+                    MediaBlockList &&blklist, off_t filesize);
+  multifetchrequest(const multifetchrequest &) = delete;
+  multifetchrequest(multifetchrequest &&) = delete;
+  multifetchrequest &operator=(const multifetchrequest &) = delete;
+  multifetchrequest &operator=(multifetchrequest &&) = delete;
   ~multifetchrequest();
 
   void run(std::vector<Url> &urllist);

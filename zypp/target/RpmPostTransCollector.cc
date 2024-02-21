@@ -70,6 +70,11 @@ namespace zypp
         , _myJobReport { "cmdout", "%posttrans" }
         {}
 
+        Impl(const Impl &) = delete;
+        Impl(Impl &&) = delete;
+        Impl &operator=(const Impl &) = delete;
+        Impl &operator=(Impl &&) = delete;
+
         ~Impl()
         {}
 

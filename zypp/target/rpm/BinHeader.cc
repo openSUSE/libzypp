@@ -48,7 +48,13 @@ namespace rpm
   struct HeaderEntryGetter : private base::NonCopyable
   {
     public:
-      HeaderEntryGetter( const Header & h_r, rpmTag & tag_r );
+      HeaderEntryGetter(const Header &h_r, rpmTag &tag_r);
+
+      HeaderEntryGetter(const HeaderEntryGetter &) = delete;
+      HeaderEntryGetter(HeaderEntryGetter &&) = delete;
+      HeaderEntryGetter &operator=(const HeaderEntryGetter &) = delete;
+      HeaderEntryGetter &operator=(HeaderEntryGetter &&) = delete;
+
       ~HeaderEntryGetter();
       rpmTagType  type();
       rpm_count_t cnt();

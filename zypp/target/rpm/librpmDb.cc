@@ -39,8 +39,10 @@ namespace rpm
  **/
 class librpmDb::D
 {
-  D & operator=( const D & ); // NO ASSIGNMENT!
-  D ( const D & );            // NO COPY!
+  D ( const D & ) = delete;            // NO COPY!
+  D & operator=( const D & ) = delete; // NO ASSIGNMENT!
+  D(D &&) = delete;
+  D &operator=(D &&) = delete;
 public:
 
   const Pathname _root;   // root directory for all operations
@@ -54,11 +56,8 @@ public:
     return str;
   }
 
-  D( Pathname  root_r, Pathname  dbPath_r, bool readonly_r )
-      : _root  (std::move( root_r ))
-      , _dbPath(std::move( dbPath_r ))
-      , _ts    ( 0 )
-  {
+  D(Pathname root_r, Pathname dbPath_r, bool readonly_r)
+    : _root(std::move(root_r)), _dbPath(std::move(dbPath_r)), _ts(0) {
     _error.reset();
     // set %_dbpath macro
     ::addMacro( NULL, "_dbpath", NULL, _dbPath.asString().c_str(), RMIL_CMDLINE );
@@ -486,8 +485,10 @@ std::ostream & librpmDb::dumpOn( std::ostream & str ) const
  **/
 class librpmDb::db_const_iterator::D
 {
-  D & operator=( const D & ); // NO ASSIGNMENT!
-  D ( const D & );            // NO COPY!
+  D & operator=( const D & ) = delete; // NO ASSIGNMENT!
+  D ( const D & ) = delete;            // NO COPY!
+  D(D &&);
+  D &operator=(D &&) = delete;
 public:
 
   librpmDb::constPtr     _dbptr;
@@ -496,10 +497,7 @@ public:
   RpmHeader::constPtr _hptr;
   rpmdbMatchIterator   _mi;
 
-  D( librpmDb::constPtr dbptr_r )
-      : _dbptr(std::move( dbptr_r ))
-      , _mi( 0 )
-  {
+  D(librpmDb::constPtr dbptr_r) : _dbptr(std::move(dbptr_r)), _mi(0) {
     if ( !_dbptr )
     {
       try

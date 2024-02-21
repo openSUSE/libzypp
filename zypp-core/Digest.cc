@@ -59,8 +59,10 @@ namespace zypp {
     // private data
     class Digest::P
     {
-      P(const P& p);
-      const P& operator=(const P& p);
+      P(const P& p) = delete;
+      const P& operator=(const P& p) = delete;
+      P(P &&) = delete;
+      P &operator=(P &&) = delete;
 
       public:
         typedef zypp::shared_ptr<EVP_MD_CTX> EvpDataPtr;

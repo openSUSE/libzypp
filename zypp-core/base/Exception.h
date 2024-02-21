@@ -397,23 +397,23 @@ namespace zypp
 
     /** Helper for \ref ZYPP_EXCPT_PTR( Exception ). */
     template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( const TExcpt & excpt_r, const CodeLocation & where_r );
+    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r );
     template<class TExcpt, EnableIfIsException<TExcpt>>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( const TExcpt & excpt_r, const CodeLocation & where_r )
+    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r )
     {
       excpt_r.relocate( where_r );
       Exception::log( excpt_r, where_r, "EXCPTR:   " );
-      return std::make_exception_ptr( excpt_r );
+      return std::make_exception_ptr( std::forward<TExcpt>(excpt_r) );
     }
 
     /** Helper for \ref ZYPP_EXCPT_PTR( not Exception ). */
     template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( const TExcpt & excpt_r, const CodeLocation & where_r );
+    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r );
     template<class TExcpt, EnableIfNotException<TExcpt>>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( const TExcpt & excpt_r, const CodeLocation & where_r )
+    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r )
     {
       Exception::log( typeid(excpt_r).name(), where_r, "EXCPTR:   " );
-      return std::make_exception_ptr( excpt_r );
+      return std::make_exception_ptr( std::forward<TExcpt>(excpt_r) );
     }
 
 

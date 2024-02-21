@@ -53,8 +53,11 @@ namespace zypp
         configure();
       }
 
-      LDAPUrl(const LDAPUrl &url): UrlBase(url)
-      {}
+      LDAPUrl(LDAPUrl &&) = default;
+      LDAPUrl &operator=(const LDAPUrl &) = default;
+      LDAPUrl &operator=(LDAPUrl &&) = default;
+      LDAPUrl(const LDAPUrl &url) : UrlBase(url) {}
+      ~LDAPUrl() override = default;
 
       UrlBase *
       clone() const override

@@ -150,6 +150,11 @@ namespace zypp
         _start.get();
       }
 
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+
       ~Impl()
       {
         _stop.get();

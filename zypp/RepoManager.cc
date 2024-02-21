@@ -93,13 +93,18 @@ namespace zypp
     class MediaMounter
     {
       public:
-        /** Ctor provides media access. */
+      /** Ctor provides media access. */
         MediaMounter( const Url & url_r )
         {
           media::MediaManager mediamanager;
           _mid = mediamanager.open( url_r );
           mediamanager.attach( _mid );
         }
+
+        MediaMounter(const MediaMounter &) = delete;
+        MediaMounter(MediaMounter &&) = delete;
+        MediaMounter &operator=(const MediaMounter &) = delete;
+        MediaMounter &operator=(MediaMounter &&) = delete;
 
         /** Ctor releases the media. */
         ~MediaMounter()
@@ -145,13 +150,18 @@ namespace zypp
   struct ZYPP_LOCAL RepoManager::Impl : public RepoManagerBaseImpl
   {
   public:
-    Impl( RepoManagerOptions &&opt )
-      : RepoManagerBaseImpl( std::move(opt) )
-      , _pluginRepoverification( _options.pluginsPath/"repoverification", _options.rootDir )
-    {
+    Impl(RepoManagerOptions &&opt)
+      : RepoManagerBaseImpl(std::move(opt)),
+        _pluginRepoverification(_options.pluginsPath / "repoverification",
+                                _options.rootDir) {
       init_knownServices();
       init_knownRepositories();
     }
+
+    Impl(const Impl &) = default;
+    Impl(Impl &&) = delete;
+    Impl &operator=(const Impl &) = delete;
+    Impl &operator=(Impl &&) = delete;
 
     ~Impl() override
     {

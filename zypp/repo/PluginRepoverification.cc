@@ -134,10 +134,14 @@ namespace zypp_private
       Impl()
       {}
 
-      Impl( Pathname &&plugindir_r, Pathname &&chroot_r )
-      : _watchPlugindir { std::move(plugindir_r), WatchFile::NO_INIT }
-      , _chroot { std::move(chroot_r) }
-      {}
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+
+      Impl(Pathname &&plugindir_r, Pathname &&chroot_r)
+        : _watchPlugindir{std::move(plugindir_r), WatchFile::NO_INIT},
+          _chroot{std::move(chroot_r)} {}
 
       ~Impl()
       {}

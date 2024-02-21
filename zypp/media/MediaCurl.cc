@@ -59,8 +59,17 @@ namespace internal {
     , _isOptional { isOptional }
     { connect(); }
 
-    ~OptionalDownloadProgressReport() override
-    { if ( _oldRec ) Distributor::instance().setReceiver( *_oldRec ); else Distributor::instance().noReceiver(); }
+    OptionalDownloadProgressReport(const OptionalDownloadProgressReport &) = delete;
+    OptionalDownloadProgressReport(OptionalDownloadProgressReport &&) = delete;
+    OptionalDownloadProgressReport &operator= (const OptionalDownloadProgressReport &) = delete;
+    OptionalDownloadProgressReport &operator= (OptionalDownloadProgressReport &&) = delete;
+
+    ~OptionalDownloadProgressReport() override {
+      if (_oldRec)
+        Distributor::instance().setReceiver(*_oldRec);
+      else
+        Distributor::instance().noReceiver();
+    }
 
     void reportbegin() override
     { if ( _oldRec ) _oldRec->reportbegin(); }
@@ -626,7 +635,9 @@ void MediaCurl::setupEasy()
   _currentCookieFile = _cookieFile.asString();
   if ( ::geteuid() == 0 || PathInfo(_currentCookieFile).owner() == ::geteuid() )
     filesystem::assert_file_mode( _currentCookieFile, 0600 );
-  if ( str::strToBool( _url.getQueryParam( "cookies" ), true ) )
+
+  const auto &cookieFileParam = _url.getQueryParam( "cookies" );
+  if ( !cookieFileParam.empty() && str::strToBool( cookieFileParam, true ) )
     SET_OPTION(CURLOPT_COOKIEFILE, _currentCookieFile.c_str() );
   else
     MIL << "No cookies requested" << endl;
@@ -1013,16 +1024,18 @@ bool MediaCurl::doGetDoesFileExist( const Pathname & filename ) const
   /// RAII Handler for temp. setting a head/range request
   struct TempSetHeadRequest
   {
-    TempSetHeadRequest( CURL * curl_r, bool doHttpHeadRequest_r )
-    : _curl { curl_r }
-    , _doHttpHeadRequest { doHttpHeadRequest_r }
-    {
+    TempSetHeadRequest(CURL *curl_r, bool doHttpHeadRequest_r)
+      : _curl{curl_r}, _doHttpHeadRequest{doHttpHeadRequest_r} {
       if ( _doHttpHeadRequest ) {
         curl_easy_setopt( _curl, CURLOPT_NOBODY, 1L );
       } else {
         curl_easy_setopt( _curl, CURLOPT_RANGE, "0-1" );
       }
     }
+    TempSetHeadRequest(const TempSetHeadRequest &) = delete;
+    TempSetHeadRequest(TempSetHeadRequest &&) = delete;
+    TempSetHeadRequest &operator=(const TempSetHeadRequest &) = delete;
+    TempSetHeadRequest &operator=(TempSetHeadRequest &&) = delete;
     ~TempSetHeadRequest() {
       if ( _doHttpHeadRequest ) {
         curl_easy_setopt( _curl, CURLOPT_NOBODY, 0L);

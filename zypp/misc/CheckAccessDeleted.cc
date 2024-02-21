@@ -182,8 +182,15 @@ namespace zypp
         TmpUnblock()
         : _wasBlocked( librpmDb::isBlocked() )
         { if ( _wasBlocked ) librpmDb::unblockAccess(); }
-        ~TmpUnblock()
-        { if ( _wasBlocked ) librpmDb::blockAccess(); }
+        TmpUnblock(const TmpUnblock &) = delete;
+        TmpUnblock(TmpUnblock &&) = delete;
+        TmpUnblock &operator=(const TmpUnblock &) = delete;
+        TmpUnblock &operator=(TmpUnblock &&) = delete;
+        ~TmpUnblock() {
+          if (_wasBlocked)
+            librpmDb::blockAccess();
+        }
+
       private:
         bool _wasBlocked;
       } tmpUnblock;

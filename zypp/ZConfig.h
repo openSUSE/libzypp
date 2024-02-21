@@ -570,6 +570,12 @@ namespace zypp
 
     public:
       class Impl;
+
+      ZConfig(const ZConfig &) = delete;
+      ZConfig(ZConfig &&) = delete;
+      ZConfig &operator=(const ZConfig &) = delete;
+      ZConfig &operator=(ZConfig &&) = delete;
+
       /** Dtor */
       ~ZConfig();
       void notifyTargetChanged();  ///< internal

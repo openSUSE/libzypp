@@ -28,10 +28,7 @@ namespace zypp {
 
     struct TmpUnsetEnv
     {
-      TmpUnsetEnv( const char * var_r )
-      : _set( false )
-      , _var( var_r )
-      {
+      TmpUnsetEnv(const char *var_r) : _set(false), _var(var_r) {
         const char * val = getenv( _var.c_str() );
         if ( val )
         {
@@ -40,6 +37,11 @@ namespace zypp {
           ::unsetenv( _var.c_str() );
         }
       }
+
+      TmpUnsetEnv(const TmpUnsetEnv &) = delete;
+      TmpUnsetEnv(TmpUnsetEnv &&) = delete;
+      TmpUnsetEnv &operator=(const TmpUnsetEnv &) = delete;
+      TmpUnsetEnv &operator=(TmpUnsetEnv &&) = delete;
 
       ~TmpUnsetEnv()
       {

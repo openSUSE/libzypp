@@ -24,7 +24,7 @@ namespace zypp
   /// \class OnMediaLocation::Impl
   /// \brief OnMediaLocation implementation.
   ///////////////////////////////////////////////////////////////////
-  struct OnMediaLocation::Impl
+  class OnMediaLocation::Impl
   {
   public:
     Impl()

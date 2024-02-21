@@ -149,9 +149,13 @@ namespace zypp
         foreach_file_recursive( dir, _modaliases );
       }
 
+      Impl(const Impl &) = delete;
+      Impl(Impl &&) = delete;
+      Impl &operator=(const Impl &) = delete;
+      Impl &operator=(Impl &&) = delete;
+
       /** Dtor. */
-      ~Impl()
-      {}
+      ~Impl() = default;
 
       /*
        * Check if a device on the system matches a modalias PATTERN.

@@ -702,6 +702,7 @@ namespace zypp
             case loglevel::msg:  return "";
             case loglevel::dbg:  return "D: ";
           }
+          return "";
         }
       };
 

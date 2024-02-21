@@ -3,10 +3,8 @@
 
 #include "eventdispatcher.h"
 
-#include <time.h>
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/Exception.h>
-#include <iostream>
 #include <glib.h>
 
 namespace zyppng {
@@ -18,7 +16,13 @@ class TimerPrivate : BasePrivate
 {
   ZYPP_DECLARE_PUBLIC(Timer)
 public:
-  TimerPrivate( Timer &p );
+  TimerPrivate(Timer &p);
+
+  TimerPrivate(const TimerPrivate &) = delete;
+  TimerPrivate(TimerPrivate &&) = delete;
+  TimerPrivate &operator=(const TimerPrivate &) = delete;
+  TimerPrivate &operator=(TimerPrivate &&) = delete;
+
   ~TimerPrivate() override;
 
   uint64_t _beginMs = 0;

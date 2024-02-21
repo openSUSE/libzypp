@@ -296,8 +296,11 @@ namespace zypp
         RW_pointer()
         {}
 
-        RW_pointer( std::nullptr_t )
-        {}
+        RW_pointer(const RW_pointer &) = default;
+        RW_pointer(RW_pointer &&) = default;
+        RW_pointer &operator=(const RW_pointer &) = default;
+        RW_pointer &operator=(RW_pointer &&) = default;
+        RW_pointer(std::nullptr_t) {}
 
         explicit
         RW_pointer( typename PtrType::element_type * dptr )

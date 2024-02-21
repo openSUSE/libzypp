@@ -18,8 +18,8 @@ ELSE ( NOT RPM_FOUND)
   endif()
 
   if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
-  	MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
-  	ADD_DEFINITIONS(-D_RPM_5)
+        MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
+        ADD_DEFINITIONS(-D_RPM_5)
   endif ()
 ENDIF( NOT RPM_FOUND)
 
@@ -29,6 +29,17 @@ SET( SOURCES
   BinHeader.h
   BinHeader.cc
 )
+
+# No clang tidy as long as we use protobuf, this will have too many errors
+#if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+#  if (ZYPP_CXX_CLANG_TIDY)
+#    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+#  endif(ZYPP_CXX_CLANG_TIDY)
+#
+#  if (ZYPP_CXX_CPPCHECK)
+#    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+#  endif(ZYPP_CXX_CPPCHECK)
+#endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-core )

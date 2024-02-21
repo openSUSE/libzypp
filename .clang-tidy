@@ -1,0 +1,18 @@
+Checks:          
+  - bugprone-use-after-move
+  - bugprone-move-forwarding-reference
+  - modernize-use-override
+  - performance-move-const-arg
+  - cppcoreguidelines-prefer-member-initializer
+  - cppcoreguidelines-special-member-functions
+  - performance-inefficient-vector-operation
+  - performance-for-range-copy
+  - bugprone-copy-constructor-init
+  # - bugprone-dangling-handle
+  - bugprone-dynamic-static-initializers
+  - bugprone-unsafe-functions
+  - -clang-diagnostic-unused-command-line-argument
+  - -clang-diagnostic-ignored-optimization-argument
+WarningsAsErrors: 'bugprone-use-after-move'
+CheckOptions:
+  performance-move-const-arg.CheckTriviallyCopyableMove: false

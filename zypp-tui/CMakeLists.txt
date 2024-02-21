@@ -64,6 +64,16 @@ SET ( zypp_SRCS
   ${zypp_tui_SRCS}
 )
 
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+  if (ZYPP_CXX_CLANG_TIDY)
+    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
 ADD_LIBRARY( zypp-tui ${zypp_SRCS} ${zypp_HEADERS} )
 add_dependencies( zypp-tui zypp-core )
 

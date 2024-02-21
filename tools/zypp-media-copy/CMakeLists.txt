@@ -7,6 +7,16 @@ SET( SOURCES
   main.cc
 )
 
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+  if (ZYPP_CXX_CLANG_TIDY)
+    set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )

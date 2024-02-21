@@ -29,7 +29,7 @@ namespace zypp
     class StatusBackup
     {
       public:
-        typedef ResStatus::TransactByValue Causer;
+        using Causer = ResStatus::TransactByValue;
 
       public:
         /** Backup status. */
@@ -125,7 +125,7 @@ namespace zypp
         }
 
         /** Highlevel action. */
-        typedef bool (StatusBackup::*Action)( const PoolItem &, Causer );
+        using Action = bool (StatusBackup::*)(const PoolItem &, Causer);
 
         /** Highlevel action on range of items. */
         template <class TIter>
@@ -156,7 +156,7 @@ namespace zypp
       , causer( causer_r )
       {}
 
-      typedef Selectable::Impl::available_const_iterator available_const_iterator;
+      using available_const_iterator = Selectable::Impl::available_const_iterator;
 
       //
       // Queries

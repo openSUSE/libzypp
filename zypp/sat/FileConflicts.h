@@ -56,8 +56,8 @@ namespace zypp
 
     public:
       using Queue::size_type;
-      typedef Conflict value_type;
-      typedef const value_type* const_iterator;
+      using value_type = Conflict;
+      using const_iterator = const value_type *;
 
       using Queue::empty;
       size_type size() const		{ return Queue::size()/queueBlockSize; }

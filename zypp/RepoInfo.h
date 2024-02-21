@@ -105,9 +105,9 @@ namespace zypp
        */
       void setPriority( unsigned newval_r );
 
-      typedef std::list<Url>          url_set;
-      typedef url_set::size_type      urls_size_type;
-      typedef transform_iterator<repo::RepoVariablesUrlReplacer, url_set::const_iterator> urls_const_iterator;
+      using url_set = std::list<Url>;
+      using urls_size_type = url_set::size_type;
+      using urls_const_iterator = transform_iterator<repo::RepoVariablesUrlReplacer, url_set::const_iterator>;
       /**
        * whether repository urls are available
        */
@@ -567,11 +567,11 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoInfo */
-  typedef shared_ptr<RepoInfo> RepoInfo_Ptr;
+  using RepoInfo_Ptr = shared_ptr<RepoInfo>;
   /** \relates RepoInfo */
-  typedef shared_ptr<const RepoInfo> RepoInfo_constPtr;
+  using RepoInfo_constPtr = shared_ptr<const RepoInfo>;
   /** \relates RepoInfo */
-  typedef std::list<RepoInfo> RepoInfoList;
+  using RepoInfoList = std::list<RepoInfo>;
 
   /** \relates RepoInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );

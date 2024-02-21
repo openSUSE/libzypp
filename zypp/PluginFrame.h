@@ -42,7 +42,7 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
     friend bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
 
-    typedef const std::initializer_list<std::pair<std::string,std::string>> & HeaderInitializerList;
+    using HeaderInitializerList = const std::initializer_list<std::pair<std::string, std::string>> &;
 
     public:
       /** "ACK" command. */
@@ -54,7 +54,7 @@ namespace zypp
 
     public:
       /** Default exception type */
-      typedef PluginFrameException Exception;
+      using Exception = PluginFrameException;
 
       /** Default ctor (empty frame) */
       PluginFrame();
@@ -132,10 +132,10 @@ namespace zypp
 
     public:
       /** The header list */
-      typedef std::multimap<std::string, std::string> HeaderList;
+      using HeaderList = std::multimap<std::string, std::string>;
 
       /** Header list iterator */
-      typedef HeaderList::const_iterator HeaderListIterator;
+      using HeaderListIterator = HeaderList::const_iterator;
 
     private:
       /** Modifyalble header list for internal use only. */

@@ -61,7 +61,7 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      typedef function< bool( const RepoInfo & )> ProcessRepo;
+      using ProcessRepo = function<bool (const RepoInfo &)>;
 
       /** Implementation  */
       class Impl;

@@ -332,7 +332,7 @@ namespace zypp
   template<class Tp>
       struct Option
       {
-        typedef Tp value_type;
+        using value_type = Tp;
 
         /** No default ctor, explicit initialisation! */
         Option( value_type initial_r )
@@ -362,8 +362,8 @@ namespace zypp
   template<class Tp>
       struct DefaultOption : public Option<Tp>
       {
-        typedef Tp         value_type;
-        typedef Option<Tp> option_type;
+        using value_type = Tp;
+        using option_type = Option<Tp>;
 
         explicit DefaultOption( value_type initial_r )
         : Option<Tp>( initial_r )
@@ -404,7 +404,7 @@ namespace zypp
   */
   class ZConfig::Impl
   {
-    typedef std::set<std::string> MultiversionSpec;
+    using MultiversionSpec = std::set<std::string>;
 
     /// Settings that follow a changed Target
     struct TargetDefaults
@@ -833,7 +833,7 @@ namespace zypp
     // overlay all system specific values.
     struct MultiversionMap
     {
-      typedef std::map<Pathname,MultiversionSpec> SpecMap;
+      using SpecMap = std::map<Pathname, MultiversionSpec>;
 
       MultiversionSpec & getSpec( Pathname root_r, const Impl & zConfImpl_r )	// from system at root
       {

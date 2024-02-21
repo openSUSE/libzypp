@@ -51,7 +51,7 @@ namespace zypp
     /////////////////////////////////////////////////////////////////
 
     /** lsof output line + files extracted so far for this PID */
-    typedef std::pair<std::string,std::unordered_set<std::string>> CacheEntry;
+    using CacheEntry = std::pair<std::string, std::unordered_set<std::string>>;
 
     /////////////////////////////////////////////////////////////////
     /// \class FilterRunsInContainer

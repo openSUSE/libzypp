@@ -516,7 +516,7 @@ namespace zypp
     { return str << '[' << obj.type << "] " << obj.name; }
 
     /** Returned by readdir. */
-    typedef std::list<DirEntry> DirContent;
+    using DirContent = std::list<DirEntry>;
 
     std::ostream & operator<<( std::ostream & str, const DirContent & obj );
 

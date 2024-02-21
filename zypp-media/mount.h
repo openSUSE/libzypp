@@ -64,7 +64,7 @@ namespace zypp {
     /** \relates MountEntry
      * A vector of mount entries.
      */
-    typedef std::vector<MountEntry> MountEntries;
+    using MountEntries = std::vector<MountEntry>;
 
     /** \relates MountEntry Stream output */
     std::ostream & operator<<( std::ostream & str, const MountEntry & obj );
@@ -80,12 +80,12 @@ namespace zypp {
          * For passing additional environment variables
          * to mount
          **/
-        typedef ExternalProgram::Environment Environment;
+        using Environment = ExternalProgram::Environment;
 
         /**
          * Mount options. 'key' or 'key=value' pairs, separated by ','
          **/
-        typedef KVMap<kvmap::KVMapBase::CharSep<'=',','> > Options;
+        using Options = KVMap<kvmap::KVMapBase::CharSep<'=', ','>>;
 
     public:
 

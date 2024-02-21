@@ -90,15 +90,15 @@ namespace zypp
   class PoolQuery : public sat::SolvIterMixin<PoolQuery, detail::PoolQueryIterator>
   {
   public:
-    typedef std::set<ResKind>                               Kinds;
-    typedef std::set<std::string>                           StrContainer;
-    typedef std::map<sat::SolvAttr, StrContainer>           AttrRawStrMap;
+    using Kinds = std::set<ResKind>;
+    using StrContainer = std::set<std::string>;
+    using AttrRawStrMap = std::map<sat::SolvAttr, StrContainer>;
 
-    typedef detail::PoolQueryIterator                       const_iterator;
-    typedef unsigned int                                    size_type;
+    using const_iterator = detail::PoolQueryIterator;
+    using size_type = unsigned int;
 
   public:
-    typedef function<bool( const sat::Solvable & )> ProcessResolvable;
+    using ProcessResolvable = function<bool (const sat::Solvable &)>;
 
     PoolQuery();
     ~PoolQuery();
@@ -524,10 +524,10 @@ namespace zypp
     , const sat::Solvable              // Reference
   >
   {
-      typedef std::vector<sat::LookupAttr::iterator> Matches;
+      using Matches = std::vector<sat::LookupAttr::iterator>;
     public:
-      typedef Matches::size_type size_type;
-      typedef Matches::const_iterator matches_iterator;
+      using size_type = Matches::size_type;
+      using matches_iterator = Matches::const_iterator;
     public:
       /** Default ctor is also \c end.*/
       PoolQueryIterator()

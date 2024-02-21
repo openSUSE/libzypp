@@ -60,8 +60,8 @@ namespace zypp
 
   public:
     // can't get swig working if shared_ptr is without namespace here
-    typedef ::boost::shared_ptr<ZYpp>       Ptr;
-    typedef ::boost::shared_ptr<const ZYpp> constPtr;
+    using Ptr = ::boost::shared_ptr<ZYpp>;
+    using constPtr = ::boost::shared_ptr<const ZYpp>;
 
   public:
 
@@ -120,7 +120,7 @@ namespace zypp
     static void clearShutdownSignal();
 
   public:
-    typedef ZYppCommitResult CommitResult;
+    using CommitResult = ZYppCommitResult;
 
     /** Commit changes and transactions.
      * \param \ref CommitPolicy
@@ -157,8 +157,8 @@ namespace zypp
   private:
     /** Factory */
     friend class ZYppFactory;
-    typedef zypp_detail::ZYppImpl Impl;
-    typedef shared_ptr<Impl>      Impl_Ptr;
+    using Impl = zypp_detail::ZYppImpl;
+    using Impl_Ptr = shared_ptr<Impl>;
     /** Factory ctor */
     explicit ZYpp( const Impl_Ptr & impl_r );
   private:

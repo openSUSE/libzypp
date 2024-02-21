@@ -30,10 +30,10 @@ namespace zypp
   {
 
   public:
-    typedef SrcPackage               Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = SrcPackage;
+    using TraitsType = ResTraits<Self>;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
     /** The type of the source rpm ("src" or "nosrc"). */

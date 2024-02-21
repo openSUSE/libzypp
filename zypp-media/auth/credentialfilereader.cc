@@ -51,7 +51,7 @@ namespace zypp
       // -------------------------------------
       struct CredentialFileReaderImpl : public parser::IniParser
       {
-        typedef CredentialFileReader::ProcessCredentials ProcessCredentials;
+        using ProcessCredentials = CredentialFileReader::ProcessCredentials;
 
         struct StopParsing {};
 

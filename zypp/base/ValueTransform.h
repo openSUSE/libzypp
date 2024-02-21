@@ -34,9 +34,9 @@ namespace zypp
     template<class Tp, class TUnaryFunction>
     struct ValueTransform
     {
-      typedef Tp RawType;
-      typedef TUnaryFunction Transformator;
-      typedef std::result_of_t<Transformator(RawType)>TransformedType;
+      using RawType = Tp;
+      using Transformator = TUnaryFunction;
+      using TransformedType = std::result_of_t<Transformator (RawType)>;
 
     public:
       ValueTransform()
@@ -90,11 +90,11 @@ namespace zypp
     template<class TContainer, class TUnaryFunction>
     struct ContainerTransform
     {
-      typedef TContainer Container;
-      typedef TUnaryFunction Transformator;
-      typedef typename Container::size_type size_type;
-      typedef typename Container::value_type RawType;
-      typedef std::result_of_t<Transformator(RawType)>TransformedType;
+      using Container = TContainer;
+      using Transformator = TUnaryFunction;
+      using size_type = typename Container::size_type;
+      using RawType = typename Container::value_type;
+      using TransformedType = std::result_of_t<Transformator (RawType)>;
 
     public:
       ContainerTransform()
@@ -115,7 +115,7 @@ namespace zypp
       size_type size() const
       { return _raw.size(); }
 
-      typedef typename Container::const_iterator RawConstIterator;
+      using RawConstIterator = typename Container::const_iterator;
 
       RawConstIterator rawBegin() const
       { return _raw.begin(); }
@@ -132,7 +132,7 @@ namespace zypp
       { return _raw; }
 
     public:
-      typedef transform_iterator<Transformator, typename Container::const_iterator> TransformedConstIterator;
+      using TransformedConstIterator = transform_iterator<Transformator, typename Container::const_iterator>;
 
       TransformedConstIterator transformedBegin() const
       { return make_transform_iterator( _raw.begin(), _transform ); }

@@ -37,10 +37,10 @@ namespace zypp
   class ResObject : public Resolvable
   {
   public:
-    typedef ResObject                Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = ResObject;
+    using TraitsType = ResTraits<Self>;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
     /** Convert \c this into a Ptr of a certain Kind.

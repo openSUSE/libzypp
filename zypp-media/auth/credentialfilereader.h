@@ -33,7 +33,7 @@ namespace zypp
       /** Callback invoked for each entry found in the file.
        * Return \c false to abort parsing.
        */
-      typedef function<bool(AuthData_Ptr &)> ProcessCredentials;
+      using ProcessCredentials = function<bool (AuthData_Ptr &)>;
 
       CredentialFileReader( const Pathname & crfile_r, const ProcessCredentials & callback_r );
       ~CredentialFileReader();

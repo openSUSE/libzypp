@@ -114,7 +114,7 @@ namespace zypp
 
   public:
     /** Reversed arch order, best Arch first. */
-    typedef std::set<Arch,CompareByGT<Arch> > CompatSet;
+    using CompatSet = std::set<Arch, CompareByGT<Arch>>;
 
     /** Return a set of all Arch's \ref compatibleWith a \a targetArch_r.
      * \note The set is ordered according to compare, thus iterating

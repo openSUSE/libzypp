@@ -127,7 +127,7 @@ namespace zypp
     */
     class ParseDef
     {
-      typedef ParseDefTraits Traits;
+      using Traits = ParseDefTraits;
 
     public:
       enum Mode

@@ -107,7 +107,7 @@ namespace zypp
     /*
     ** Behaviour configuration variables.
     */
-    typedef std::map< std::string, std::string > UrlConfig;
+    using UrlConfig = std::map<std::string, std::string>;
 
 
     // ---------------------------------------------------------------

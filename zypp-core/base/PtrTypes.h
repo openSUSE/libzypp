@@ -195,8 +195,8 @@ namespace zypp
       template<class D>
         struct Shared
         {
-          typedef shared_ptr<D>       PtrType;
-          typedef shared_ptr<const D> constPtrType;
+          using PtrType = shared_ptr<D>;
+          using constPtrType = shared_ptr<const D>;
           /** Check whether pointer is not shared. */
           bool unique( const constPtrType & ptr_r )
           { return !ptr_r || ptr_r.unique(); }
@@ -212,8 +212,8 @@ namespace zypp
       template<class D>
         struct Intrusive
         {
-          typedef intrusive_ptr<D>       PtrType;
-          typedef intrusive_ptr<const D> constPtrType;
+          using PtrType = intrusive_ptr<D>;
+          using constPtrType = intrusive_ptr<const D>;
           /** Check whether pointer is not shared. */
           bool unique( const constPtrType & ptr_r )
           { return !ptr_r || (ptr_r->refCount() <= 1); }
@@ -229,8 +229,8 @@ namespace zypp
        template<class D>
         struct Scoped
         {
-          typedef scoped_ptr<D>       PtrType;
-          typedef scoped_ptr<const D> constPtrType;
+          using PtrType = scoped_ptr<D>;
+          using constPtrType = scoped_ptr<const D>;
           /** Check whether pointer is not shared. */
           bool unique( const constPtrType & ptr_r )
           { return true; }
@@ -290,8 +290,8 @@ namespace zypp
     template<class D, class DTraits = rw_pointer::Shared<D> >
       struct RW_pointer
       {
-        typedef typename DTraits::PtrType               PtrType;
-        typedef typename DTraits::constPtrType          constPtrType;
+        using PtrType = typename DTraits::PtrType;
+        using constPtrType = typename DTraits::constPtrType;
 
         RW_pointer()
         {}
@@ -466,8 +466,8 @@ namespace zypp
     template<class D, class DTraits = rw_pointer::Shared<D> >
       struct RWCOW_pointer
       {
-        typedef typename DTraits::PtrType               PtrType;
-        typedef typename DTraits::constPtrType          constPtrType;
+        using PtrType = typename DTraits::PtrType;
+        using constPtrType = typename DTraits::constPtrType;
 
         RWCOW_pointer() {}
 

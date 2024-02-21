@@ -110,12 +110,12 @@ namespace out
     struct ListLayoutInit : public ListLayout { ListLayoutInit() : ListLayout( singleline_, wrapline_, gaped_, indent_ ) {} };
   }
 
-  typedef detail::ListLayoutInit<true, false,false, 0U>	XmlListLayout;
-  typedef detail::ListLayoutInit<true, true, false, 0U>	DefaultListLayout;	///< one element per line, no indent
-  typedef detail::ListLayoutInit<true, true, true,  0U>	DefaultGapedListLayout;	///< one element per line, no indent, gaped
-  typedef detail::ListLayoutInit<true, true, false, 2U>	IndentedListLayout;	///< one element per line, indented
-  typedef detail::ListLayoutInit<true, true, true,  2U>	IndentedGapedListLayout;///< one element per line, indented, gaped
-  typedef detail::ListLayoutInit<false,true, false, 2U>	CompressedListLayout;	///< multiple elements per line, indented
+  using XmlListLayout = detail::ListLayoutInit<true, false, false, 0U>;
+  using DefaultListLayout = detail::ListLayoutInit<true, true, false, 0U>;	///< one element per line, no indent
+  using DefaultGapedListLayout = detail::ListLayoutInit<true, true, true, 0U>;	///< one element per line, no indent, gaped
+  using IndentedListLayout = detail::ListLayoutInit<true, true, false, 2U>;	///< one element per line, indented
+  using IndentedGapedListLayout = detail::ListLayoutInit<true, true, true, 2U>;///< one element per line, indented, gaped
+  using CompressedListLayout = detail::ListLayoutInit<false, true, false, 2U>;	///< multiple elements per line, indented
 
   /*!
    * \class TableLayout
@@ -126,7 +126,7 @@ namespace out
     template <class TFormater> struct Writer;
   };
 
-  typedef TableLayout	DefaultTableLayout;	///< Simple Table
+  using DefaultTableLayout = TableLayout;	///< Simple Table
 
   // Either specialize per Type or define a custom Formater:
 
@@ -171,7 +171,7 @@ namespace out
   ///////////////////////////////////////////////////////////////////
   struct ListFormater : public XmlFormater
   {
-    typedef DefaultListLayout	NormalLayout;		//< ListLayout for NORMAL lists
+    using NormalLayout = DefaultListLayout;		//< ListLayout for NORMAL lists
 
     template <class Tp>
     std::string listElement( const Tp & val_r ) const	//< NORMAL representation of list element
@@ -184,7 +184,7 @@ namespace out
   ///////////////////////////////////////////////////////////////////
   struct TableFormater : public XmlFormater
   {
-    typedef DefaultTableLayout	NormalLayout;		//< NORMAL layout as Table
+    using NormalLayout = DefaultTableLayout;		//< NORMAL layout as Table
 
     TableHeader header() const				//< TableHeader for TableRow representation
     { return asTableHeader<>(); }
@@ -202,7 +202,7 @@ namespace out
   template <class TFormater>
   struct XmlFormaterAdaptor
   {
-    typedef XmlListLayout	NormalLayout;		//< Layout as XML list
+    using NormalLayout = XmlListLayout;		//< Layout as XML list
 
     template <class Tp>
     std::string listElement( const Tp & val_r ) const	//< use TFormater::asXmlListElement
@@ -484,7 +484,7 @@ public:
   /// \endcode
   struct XmlNode : protected ParentOut
   {
-    typedef zypp::xmlout::Node::Attr Attr;
+    using Attr = zypp::xmlout::Node::Attr;
 
     /** Ctor taking nodename and attribute list. */
     XmlNode( Out & out_r, const std::string & name_r, const std::initializer_list<Attr> & attrs_r = {} )

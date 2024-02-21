@@ -94,12 +94,12 @@ namespace zypp
     /**
      * Encoding flags.
      */
-    typedef zypp::url::EEncoding    EEncoding;
+    using EEncoding = zypp::url::EEncoding;
 
     /**
      * View options.
      */
-    typedef zypp::url::ViewOptions  ViewOptions;
+    using ViewOptions = zypp::url::ViewOptions;
 
 
     ~Url();

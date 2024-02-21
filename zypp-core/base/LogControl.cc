@@ -685,9 +685,9 @@ namespace zypp
         }
 
       private:
-        typedef shared_ptr<Loglinestream>        StreamPtr;
-        typedef std::map<LogLevel,StreamPtr>     StreamSet;
-        typedef std::map<std::string,StreamSet>  StreamTable;
+        using StreamPtr = shared_ptr<Loglinestream>;
+        using StreamSet = std::map<LogLevel, StreamPtr>;
+        using StreamTable = std::map<std::string, StreamSet>;
         /** one streambuffer per group and level */
         StreamTable _streamtable;
         zyppng::Socket::Ptr _sock;

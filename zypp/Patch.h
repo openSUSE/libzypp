@@ -37,13 +37,13 @@ namespace zypp
   class Patch : public ResObject
   {
     public:
-      typedef Patch                    Self;
-      typedef ResTraits<Self>          TraitsType;
-      typedef TraitsType::PtrType      Ptr;
-      typedef TraitsType::constPtrType constPtr;
+      using Self = Patch;
+      using TraitsType = ResTraits<Self>;
+      using Ptr = TraitsType::PtrType;
+      using constPtr = TraitsType::constPtrType;
 
     public:
-      typedef sat::SolvableSet Contents;
+      using Contents = sat::SolvableSet;
 
       enum Category {
         CAT_OTHER	= 1,	//!< unknown value specified

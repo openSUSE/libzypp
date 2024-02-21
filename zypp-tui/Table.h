@@ -38,7 +38,7 @@ namespace ztui {
 inline const char * asYesNo( bool val_r ) { return val_r ? _("Yes") : _("No"); }
 
 /** Custom sort index type for table rows representing solvables (like detailed search results). */
-typedef std::pair<zypp::sat::Solvable, zypp::ui::Selectable::picklist_size_type> SolvableCSI;
+using SolvableCSI = std::pair<zypp::sat::Solvable, zypp::ui::Selectable::picklist_size_type>;
 
 ///////////////////////////////////////////////////////////////////
 // Custom sort index helpers
@@ -217,7 +217,7 @@ public:
   //! output with \a parent table attributes
   std::ostream & dumpTo( std::ostream & stream, const Table & parent ) const;
 
-  typedef std::vector<std::string> container;
+  using container = std::vector<std::string>;
 
   const boost::any &userData() const
   { return _userData; }
@@ -398,7 +398,7 @@ private:
 class Table
 {
 public:
-  typedef std::list<TableRow> container;
+  using container = std::list<TableRow>;
 
   static TableLineStyle defaultStyle;
 

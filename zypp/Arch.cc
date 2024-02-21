@@ -41,7 +41,7 @@ namespace zypp
      * \note Need one bit for each builtin Arch.
      * \todo Migrate to some infinite BitField
     */
-    typedef bit::BitField<uint64_t> CompatBits;
+    using CompatBits = bit::BitField<uint64_t>;
 
     CompatEntry( const std::string & archStr_r,
                  CompatBits::IntT idBit_r = 1 )
@@ -248,12 +248,12 @@ namespace zypp
     */
     struct ArchCompatSet : private base::NonCopyable
     {
-      typedef Arch::CompatEntry       CompatEntry;
-      typedef CompatEntry::CompatBits CompatBits;
+      using CompatEntry = Arch::CompatEntry;
+      using CompatBits = CompatEntry::CompatBits;
 
-      typedef std::unordered_set<CompatEntry> Set;
-      typedef Set::iterator           iterator;
-      typedef Set::const_iterator     const_iterator;
+      using Set = std::unordered_set<CompatEntry>;
+      using iterator = Set::iterator;
+      using const_iterator = Set::const_iterator;
 
       /** Singleton access. */
       static ArchCompatSet & instance()

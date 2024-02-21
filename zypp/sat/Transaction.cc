@@ -52,8 +52,8 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const Impl & obj );
 
       public:
-        typedef std::unordered_set<detail::IdType> set_type;
-        typedef std::unordered_map<detail::IdType,detail::IdType> map_type;
+        using set_type = std::unordered_set<detail::IdType>;
+        using map_type = std::unordered_map<detail::IdType, detail::IdType>;
 
         struct PostMortem
         {
@@ -69,7 +69,7 @@ namespace zypp
           Edition  _edition;
           Arch     _arch;
         };
-        typedef std::unordered_map<detail::IdType,PostMortem> pmmap_type;
+        using pmmap_type = std::unordered_map<detail::IdType, PostMortem>;
 
       public:
         Impl()

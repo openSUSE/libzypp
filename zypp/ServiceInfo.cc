@@ -32,8 +32,8 @@ namespace zypp
   //
   struct ServiceInfo::Impl
   {
-    typedef ServiceInfo::ReposToEnable  ReposToEnable;
-    typedef ServiceInfo::ReposToDisable ReposToDisable;
+    using ReposToEnable = ServiceInfo::ReposToEnable;
+    using ReposToDisable = ServiceInfo::ReposToDisable;
 
   public:
     RepoVariablesReplacedUrl _url;

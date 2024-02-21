@@ -33,7 +33,7 @@ namespace zypp
     class Map
     {
     public:
-      typedef unsigned long size_type;
+      using size_type = unsigned long;
 
       /** Type to indicate the bitmap should match the current pools capacity. */
       struct PoolSizeType {};
@@ -129,7 +129,7 @@ namespace zypp
   /** \relates Map Clone function for RWCOW_pointer */
   template<> sat::detail::CMap * rwcowClone<sat::detail::CMap>( const sat::detail::CMap * rhs );
 
-  typedef sat::Map Bitmap;
+  using Bitmap = sat::Map;
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

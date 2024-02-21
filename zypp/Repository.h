@@ -39,14 +39,14 @@ namespace zypp
     class Repository : protected sat::detail::PoolMember
     {
     public:
-        typedef filter_iterator<detail::ByRepository, sat::detail::SolvableIterator> SolvableIterator;
-        typedef sat::detail::size_type size_type;
-        typedef sat::detail::RepoIdType IdType;
+        using SolvableIterator = filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>;
+        using size_type = sat::detail::size_type;
+        using IdType = sat::detail::RepoIdType;
 
-        typedef sat::ArrayAttr<std::string,std::string> Keywords;
+        using Keywords = sat::ArrayAttr<std::string, std::string>;
 
-        typedef std::string ContentRevision;
-        typedef std::string ContentIdentifier;
+        using ContentRevision = std::string;
+        using ContentIdentifier = std::string;
 
     public:
         /** Default ctor creates \ref noRepository.*/

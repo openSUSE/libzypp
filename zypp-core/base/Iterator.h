@@ -210,17 +210,15 @@ namespace zypp
     struct MapKVIteratorTraits
     {
       /** The map type */
-      typedef TMap                       MapType;
+      using MapType = TMap;
       /** The maps key type */
-      typedef typename TMap::key_type    KeyType;
+      using KeyType = typename TMap::key_type;
       /** The key iterator type */
-      typedef transform_iterator<GetPairFirst<typename MapType::value_type>,
-                                 typename MapType::const_iterator> Key_const_iterator;
+      using Key_const_iterator = transform_iterator<GetPairFirst<typename MapType::value_type>, typename MapType::const_iterator>;
       /** The maps value (mapped) type */
-      typedef typename TMap::mapped_type ValueType;
+      using ValueType = typename TMap::mapped_type;
       /** The value iterator type */
-      typedef transform_iterator<GetPairSecond<typename MapType::value_type>,
-                                 typename MapType::const_iterator> Value_const_iterator;
+      using Value_const_iterator = transform_iterator<GetPairSecond<typename MapType::value_type>, typename MapType::const_iterator>;
     };
 
   /** Convenience to create the key iterator from container::begin() */

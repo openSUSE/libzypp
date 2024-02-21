@@ -43,7 +43,7 @@ namespace zypp
       class Unit
       {
       public:
-        typedef long long ValueType;
+        using ValueType = long long;
 
         /** Default ctor */
         Unit()

@@ -51,7 +51,7 @@ namespace zypp
     /// \endcode
     //////////////////////////////////////////////////////////////////
 
-    typedef Exception regex_error;
+    using regex_error = Exception;
 
     class smatch;
     class regex;

@@ -162,7 +162,7 @@ namespace zyppng {
 
     static_assert(!detail::is_async_op_v<Result>, "A async op can never have a async result");
 
-    typedef Result value_type;
+    using value_type = Result;
     using Ptr = std::shared_ptr<AsyncOp<Result>>;
 
     AsyncOp () = default;

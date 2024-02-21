@@ -63,8 +63,8 @@ namespace zypp
     class ByLocaleSupport
     {
       private:
-        typedef bool (sat::Solvable::*LS1) (const Locale &) const;
-        typedef bool (sat::Solvable::*LS2) (const LocaleSet &) const;
+        using LS1 = bool (sat::Solvable::*)(const Locale &) const;
+        using LS2 = bool (sat::Solvable::*)(const LocaleSet &) const;
 
       public:
         /** Solvables with locale support. */
@@ -142,7 +142,7 @@ namespace zypp
     class ByStatus
     {
       public:
-        typedef bool (ResStatus::*Predicate)() const;
+        using Predicate = bool (ResStatus::*)() const;
 
       public:
         ByStatus( Predicate pred_r = 0 )

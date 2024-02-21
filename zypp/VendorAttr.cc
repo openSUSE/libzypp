@@ -99,8 +99,8 @@ namespace zypp
     unsigned _vendorGroupId = 0;	///< Highest group ID in use (incremented).
 
   private:
-    typedef DefaultIntegral<unsigned,0>				VendorMatchEntry;
-    typedef std::unordered_map<IdString, VendorMatchEntry>	VendorMatch;
+    using VendorMatchEntry = DefaultIntegral<unsigned int, 0>;
+    using VendorMatch = std::unordered_map<IdString, VendorMatchEntry>;
     mutable VendorMatch _vendorMatch;	///< Cache mapping vendor strings to equivalence class ID
     mutable unsigned _nextId = 0;	///< Least equivalence class ID in use (decremented).
 

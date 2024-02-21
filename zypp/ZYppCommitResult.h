@@ -45,7 +45,7 @@ namespace zypp
       Pathname      _file;
   };
 
-  typedef std::list<UpdateNotificationFile> UpdateNotifications;
+  using UpdateNotifications = std::list<UpdateNotificationFile>;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -63,7 +63,7 @@ namespace zypp
   class ZYppCommitResult
   {
     public:
-      typedef std::vector<sat::Transaction::Step> TransactionStepList;
+      using TransactionStepList = std::vector<sat::Transaction::Step>;
 
     public:
       ZYppCommitResult();

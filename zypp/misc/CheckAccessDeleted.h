@@ -62,9 +62,9 @@ namespace zypp
         std::string service() const;
       };
 
-      typedef size_t					size_type;
-      typedef ProcInfo					value_type;
-      typedef std::vector<ProcInfo>::const_iterator	const_iterator;
+      using size_type = size_t;
+      using value_type = ProcInfo;
+      using const_iterator = std::vector<ProcInfo>::const_iterator;
 
     public:
       /** Default ctor performs check immediately.

@@ -46,10 +46,10 @@ namespace zypp
     class PatternExpander
     {
       public:
-        typedef std::map<Pattern::constPtr, DefaultIntegral<bool, false> > PatternMap;
-        typedef PatternMap::size_type size_type;
-        typedef PatternMap::key_type  value_type;
-        typedef MapKVIteratorTraits<PatternMap>::Key_const_iterator const_iterator;
+        using PatternMap = std::map<Pattern::constPtr, DefaultIntegral<bool, false>>;
+        using size_type = PatternMap::size_type;
+        using value_type = PatternMap::key_type;
+        using const_iterator = MapKVIteratorTraits<PatternMap>::Key_const_iterator;
 
       public:
         PatternExpander()

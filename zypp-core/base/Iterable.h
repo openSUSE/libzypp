@@ -36,13 +36,13 @@ namespace zypp
   class Iterable
   {
   public:
-    typedef size_t size_type;
-    typedef TIterator iterator_type;
-    typedef typename std::iterator_traits<iterator_type>::value_type		value_type;
-    typedef typename std::iterator_traits<iterator_type>::difference_type	difference_type;
-    typedef typename std::iterator_traits<iterator_type>::pointer		pointer;
-    typedef typename std::iterator_traits<iterator_type>::reference		reference;
-    typedef typename std::iterator_traits<iterator_type>::iterator_category	iterator_category;
+    using size_type = size_t;
+    using iterator_type = TIterator;
+    using value_type = typename std::iterator_traits<iterator_type>::value_type;
+    using difference_type = typename std::iterator_traits<iterator_type>::difference_type;
+    using pointer = typename std::iterator_traits<iterator_type>::pointer;
+    using reference = typename std::iterator_traits<iterator_type>::reference;
+    using iterator_category = typename std::iterator_traits<iterator_type>::iterator_category;
 
     /** Ctor taking the iterator pair */
     Iterable()

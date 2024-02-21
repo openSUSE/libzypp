@@ -23,8 +23,8 @@ namespace zypp
   namespace sat
   {
     class Queue;
-    typedef Queue SolvableQueue;	///< Queue with Solvable ids
-    typedef Queue StringQueue;		///< Queue with String ids
+    using SolvableQueue = Queue;	///< Queue with Solvable ids
+    using StringQueue = Queue;		///< Queue with String ids
 
     ///////////////////////////////////////////////////////////////////
     /// \class Queue
@@ -34,9 +34,9 @@ namespace zypp
     class Queue
     {
       public:
-        typedef unsigned size_type;
-        typedef detail::IdType value_type;
-        typedef const value_type* const_iterator;
+        using size_type = unsigned int;
+        using value_type = detail::IdType;
+        using const_iterator = const value_type *;
 
       public:
         /** Default ctor: empty Queue. */

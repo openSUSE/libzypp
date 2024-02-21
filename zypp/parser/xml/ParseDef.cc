@@ -96,8 +96,8 @@ namespace zypp
     {
       friend std::ostream & operator<<( std::ostream & str, const ParseDef::Impl & obj );
     public:
-      typedef shared_ptr<Impl>               ImplPtr;
-      typedef std::map<std::string, ImplPtr> SubNodes;
+      using ImplPtr = shared_ptr<Impl>;
+      using SubNodes = std::map<std::string, ImplPtr>;
 
     public:
       Impl(std::string &&name_r, Mode mode_r,

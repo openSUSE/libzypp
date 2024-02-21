@@ -35,11 +35,11 @@ class BinHeader : public zypp::base::ReferenceCounted, private zypp::base::NonCo
 
 public:
 
-  typedef zypp::intrusive_ptr<BinHeader> Ptr;
+  using Ptr = zypp::intrusive_ptr<BinHeader>;
 
-  typedef zypp::intrusive_ptr<const BinHeader> constPtr;
+  using constPtr = zypp::intrusive_ptr<const BinHeader>;
 
-  typedef rpmTag tag;
+  using tag = rpmTag;
 
   class intList;
 

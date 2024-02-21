@@ -36,16 +36,16 @@ namespace zypp
   {
     friend std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
     friend std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );
-    typedef std::multimap<ResKind,ui::Selectable::Ptr> SelectablePool;
+    using SelectablePool = std::multimap<ResKind, ui::Selectable::Ptr>;
 
   public:
     /** Implementation  */
     struct Impl;
 
-    typedef MapKVIteratorTraits<SelectablePool>::Value_const_iterator const_iterator;
-    typedef SelectablePool::size_type size_type;
+    using const_iterator = MapKVIteratorTraits<SelectablePool>::Value_const_iterator;
+    using size_type = SelectablePool::size_type;
 
-    typedef ResPool::repository_iterator    repository_iterator;
+    using repository_iterator = ResPool::repository_iterator;
 
   public:
 

@@ -32,7 +32,7 @@ namespace zypp
   class CapDetail;
   class Arch;
 
-  typedef std::unordered_set<Capability> CapabilitySet;
+  using CapabilitySet = std::unordered_set<Capability>;
 
   ///////////////////////////////////////////////////////////////////
   //

@@ -115,19 +115,19 @@ namespace zypp
         }
       };
 
-      typedef std::set<PoolItem,AVOrder>       AvailableItemSet;
-      typedef AvailableItemSet::iterator       available_iterator;
-      typedef AvailableItemSet::const_iterator available_const_iterator;
-      typedef AvailableItemSet::size_type      available_size_type;
+      using AvailableItemSet = std::set<PoolItem, AVOrder>;
+      using available_iterator = AvailableItemSet::iterator;
+      using available_const_iterator = AvailableItemSet::const_iterator;
+      using available_size_type = AvailableItemSet::size_type;
 
-      typedef std::set<PoolItem,IOrder>        InstalledItemSet;
-      typedef AvailableItemSet::iterator       installed_iterator;
-      typedef AvailableItemSet::const_iterator installed_const_iterator;
-      typedef AvailableItemSet::size_type      installed_size_type;
+      using InstalledItemSet = std::set<PoolItem, IOrder>;
+      using installed_iterator = AvailableItemSet::iterator;
+      using installed_const_iterator = AvailableItemSet::const_iterator;
+      using installed_size_type = AvailableItemSet::size_type;
 
-      typedef std::vector<PoolItem>             PickList;
-      typedef PickList::const_iterator          picklist_iterator;
-      typedef PickList::size_type               picklist_size_type;
+      using PickList = std::vector<PoolItem>;
+      using picklist_iterator = PickList::const_iterator;
+      using picklist_size_type = PickList::size_type;
     };
     ///////////////////////////////////////////////////////////////////
 

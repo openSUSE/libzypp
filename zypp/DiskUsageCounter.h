@@ -151,7 +151,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    typedef std::set<MountPoint> MountPointSet;
+    using MountPointSet = std::set<MountPoint>;
 
     DiskUsageCounter()
     {}

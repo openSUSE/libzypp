@@ -112,7 +112,7 @@ namespace zypp
      */
     //@{
     /** Container of repos. */
-    typedef std::set<std::string> ReposToEnable;
+    using ReposToEnable = std::set<std::string>;
     bool                          reposToEnableEmpty() const;
     ReposToEnable::size_type      reposToEnableSize() const;
     ReposToEnable::const_iterator reposToEnableBegin() const;
@@ -138,7 +138,7 @@ namespace zypp
      */
     //@{
     /** Container of repos. */
-    typedef std::set<std::string>  ReposToDisable;
+    using ReposToDisable = std::set<std::string>;
     bool                           reposToDisableEmpty() const;
     ReposToDisable::size_type      reposToDisableSize() const;
     ReposToDisable::const_iterator reposToDisableBegin() const;
@@ -182,7 +182,7 @@ namespace zypp
       { return ! operator==( rhs ); }
       friend std::ostream & operator<<( std::ostream & str, const RepoState & obj );
     };
-    typedef std::map<std::string,RepoState> RepoStates;
+    using RepoStates = std::map<std::string, RepoState>;
 
     /** Access the remembered repository states. */
     const RepoStates & repoStates() const;
@@ -216,11 +216,11 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ServiceInfo */
-  typedef shared_ptr<ServiceInfo> ServiceInfo_Ptr;
+  using ServiceInfo_Ptr = shared_ptr<ServiceInfo>;
   /** \relates ServiceInfo */
-  typedef shared_ptr<const ServiceInfo> ServiceInfo_constPtr;
+  using ServiceInfo_constPtr = shared_ptr<const ServiceInfo>;
   /** \relates ServiceInfo */
-  typedef std::list<ServiceInfo> ServiceInfoList;
+  using ServiceInfoList = std::list<ServiceInfo>;
 
   /** \relates ServiceInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );

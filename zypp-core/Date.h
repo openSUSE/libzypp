@@ -35,8 +35,8 @@ namespace zypp
 
   public:
 
-    typedef time_t ValueType;
-    typedef time_t Duration;
+    using ValueType = time_t;
+    using Duration = time_t;
 
     static const ValueType second	= 1;
     static const ValueType minute	= 60;
@@ -139,7 +139,7 @@ namespace zypp
       weekday,	///< 2014-W06-5 (1 is Monday)
       ordinal,	///< 2014-038
     };};
-    typedef base::EnumClass<EDateFormatDef> DateFormat;	///< 'enum class DateFormat'
+    using DateFormat = base::EnumClass<EDateFormatDef>;	///< 'enum class DateFormat'
 
     /** Time formats for printing (use like 'enum class \ref TimeFormat') */
     struct ETimeFormatDef { enum Enum {
@@ -148,7 +148,7 @@ namespace zypp
       minutes,	///< 07:06
       hours,	///< 07
     };};
-    typedef base::EnumClass<ETimeFormatDef> TimeFormat;	///< 'enum class TimeFormat'
+    using TimeFormat = base::EnumClass<ETimeFormatDef>;	///< 'enum class TimeFormat'
 
     /** Timezone indicator for printing (use like 'enum class \ref TimeZoneFormat') */
     struct ETimeZoneFormatDef { enum Enum {
@@ -156,7 +156,7 @@ namespace zypp
       name,	///< UTC, CET, ...
       offset,	///< +00[:00]
     };};
-    typedef base::EnumClass<ETimeZoneFormatDef> TimeZoneFormat;	///< 'enum class TimeZoneFormat'
+    using TimeZoneFormat = base::EnumClass<ETimeZoneFormatDef>;	///< 'enum class TimeZoneFormat'
 
     /** Default format is <tt>'2014-02-07 07:06:41 CET'</tt>
      * The default is \ref DateFormat::calendar, \ref TimeFormat::seconds, \ref TimeZoneFormat::name and

@@ -50,9 +50,9 @@ namespace zypp
   class Target : public base::ReferenceCounted, public base::NonCopyable
   {
   public:
-    typedef target::TargetImpl  Impl;
-    typedef intrusive_ptr<Impl> Impl_Ptr;
-    typedef std::list<PoolItem> PoolItemList;
+    using Impl = target::TargetImpl;
+    using Impl_Ptr = intrusive_ptr<Impl>;
+    using PoolItemList = std::list<PoolItem>;
 
   public:
 

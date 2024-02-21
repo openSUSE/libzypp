@@ -148,10 +148,10 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const Exception & obj );
 
   public:
-    typedef exception_detail::CodeLocation CodeLocation;
-    typedef std::list<std::string>         History;
-    typedef History::const_iterator        HistoryIterator;
-    typedef History::size_type             HistorySize;
+    using CodeLocation = exception_detail::CodeLocation;
+    using History = std::list<std::string>;
+    using HistoryIterator = History::const_iterator;
+    using HistorySize = History::size_type;
 
     /** Default ctor.
      * Use \ref ZYPP_THROW to throw exceptions.

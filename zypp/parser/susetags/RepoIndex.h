@@ -49,7 +49,7 @@ namespace zypp
       {
         friend class ContentFileReader;
         public:
-          typedef std::map<std::string, CheckSum> FileChecksumMap;
+          using FileChecksumMap = std::map<std::string, CheckSum>;
 
           Pathname descrdir;
           Pathname datadir;

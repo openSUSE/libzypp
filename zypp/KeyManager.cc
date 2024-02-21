@@ -50,9 +50,9 @@ namespace zypp
     }
 
     //using boost::interprocess pointer because it allows a custom deleter
-    typedef boost::interprocess::scoped_ptr<gpgme_data, boost::function<void (gpgme_data_t)>> GpgmeDataPtr;
-    typedef boost::interprocess::scoped_ptr<_gpgme_key, boost::function<void (gpgme_key_t)>>  GpgmeKeyPtr;
-    typedef boost::interprocess::scoped_ptr<FILE, boost::function<int (FILE *)>> FILEPtr;
+    using GpgmeDataPtr = boost::interprocess::scoped_ptr<gpgme_data, boost::function<void (gpgme_data_t)>>;
+    using GpgmeKeyPtr = boost::interprocess::scoped_ptr<_gpgme_key, boost::function<void (gpgme_key_t)>>;
+    using FILEPtr = boost::interprocess::scoped_ptr<FILE, boost::function<int (FILE *)>>;
 
     struct GpgmeErr
     {

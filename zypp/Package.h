@@ -32,14 +32,14 @@ namespace zypp
   class Package : public ResObject
   {
   public:
-    typedef Package                  Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = Package;
+    using TraitsType = ResTraits<Self>;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
-    typedef sat::ArrayAttr<PackageKeyword,IdString> Keywords;
-    typedef sat::ArrayAttr<std::string,std::string> FileList;
+    using Keywords = sat::ArrayAttr<PackageKeyword, IdString>;
+    using FileList = sat::ArrayAttr<std::string, std::string>;
 
   public:
 

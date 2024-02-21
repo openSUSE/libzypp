@@ -111,8 +111,8 @@ namespace zypp
     template <class TPackage>
     class PackageProviderImpl : public PackageProvider::Impl
     {
-      typedef typename TPackage::constPtr TPackagePtr;	// Package or SrcPackage
-      typedef callback::UserData UserData;
+      using TPackagePtr = typename TPackage::constPtr;	// Package or SrcPackage
+      using UserData = callback::UserData;
     public:
       /** Ctor taking the Package to provide. */
       PackageProviderImpl( RepoMediaAccess &access_r, TPackagePtr &&package_r,
@@ -151,8 +151,8 @@ namespace zypp
       { return ! doProvidePackageFromCache()->empty(); }
 
     protected:
-      typedef PackageProviderImpl<TPackage>	Base;
-      typedef callback::SendReport<repo::DownloadResolvableReport>	Report;
+      using Base = PackageProviderImpl<TPackage>;
+      using Report = callback::SendReport<repo::DownloadResolvableReport>;
 
       /** Lookup the final rpm in cache.
        *
@@ -291,7 +291,7 @@ namespace zypp
         }
       }
 
-      typedef target::rpm::RpmDb RpmDb;
+      using RpmDb = target::rpm::RpmDb;
 
       /** Actual rpm package signature check. */
       RpmDb::CheckPackageResult packageSigCheck( const Pathname & path_r, bool isMandatory_r, UserData & userData ) const
@@ -353,7 +353,7 @@ namespace zypp
       RepoMediaAccess &		_access;
 
     private:
-      typedef shared_ptr<void>	ScopedGuard;
+      using ScopedGuard = shared_ptr<void>;
 
       ScopedGuard newReport() const
       {
@@ -546,7 +546,7 @@ namespace zypp
       ManagedFile doProvidePackage() const override;
 
     private:
-      typedef packagedelta::DeltaRpm	DeltaRpm;
+      using DeltaRpm = packagedelta::DeltaRpm;
 
       ManagedFile tryDelta( const DeltaRpm & delta_r ) const;
 

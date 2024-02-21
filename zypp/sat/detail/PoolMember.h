@@ -55,15 +55,15 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     namespace detail
     {
-      typedef ::s_Dataiterator	CDataiterator;	///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Datamatcher	CDatamatcher;	///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Map		CMap;		///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Pool		CPool;		///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Queue		CQueue;		///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Repo		CRepo;		///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Solvable	CSolvable;	///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Solver	CSolver;	///< Wrapped libsolv C data type exposed as backdoor
-      typedef ::s_Transaction	CTransaction;	///< Wrapped libsolv C data type exposed as backdoor
+      using CDataiterator = ::s_Dataiterator;	///< Wrapped libsolv C data type exposed as backdoor
+      using CDatamatcher = ::s_Datamatcher;	///< Wrapped libsolv C data type exposed as backdoor
+      using CMap = ::s_Map;		///< Wrapped libsolv C data type exposed as backdoor
+      using CPool = ::s_Pool;		///< Wrapped libsolv C data type exposed as backdoor
+      using CQueue = ::s_Queue;		///< Wrapped libsolv C data type exposed as backdoor
+      using CRepo = ::s_Repo;		///< Wrapped libsolv C data type exposed as backdoor
+      using CSolvable = ::s_Solvable;	///< Wrapped libsolv C data type exposed as backdoor
+      using CSolver = ::s_Solver;	///< Wrapped libsolv C data type exposed as backdoor
+      using CTransaction = ::s_Transaction;	///< Wrapped libsolv C data type exposed as backdoor
     } // namespace detail
     ///////////////////////////////////////////////////////////////////
 
@@ -101,7 +101,7 @@ namespace zypp
     { /////////////////////////////////////////////////////////////////
 
       /** Generic Id type. */
-      typedef int IdType;
+      using IdType = int;
       static const IdType noId( 0 );
       static const IdType emptyId( 1 );
 
@@ -122,15 +122,15 @@ namespace zypp
       /** Id type to connect \ref Solvable and sat-solvable.
        * Indext into solvable array.
       */
-      typedef unsigned SolvableIdType;
-      typedef SolvableIdType size_type;
+      using SolvableIdType = unsigned int;
+      using size_type = SolvableIdType;
       /** Id to denote \ref Solvable::noSolvable. */
       static const SolvableIdType noSolvableId( 0 );
       /** Id to denote the usually hidden \ref Solvable::systemSolvable. */
       static const SolvableIdType systemSolvableId( 1 );
 
       /** Id type to connect \ref Repo and sat-repo. */
-      typedef CRepo * RepoIdType;
+      using RepoIdType = CRepo *;
       /** Id to denote \ref Repo::noRepository. */
       static const RepoIdType noRepoId( 0 );
 

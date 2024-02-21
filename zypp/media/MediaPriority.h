@@ -43,7 +43,7 @@ namespace zypp
     class MediaPriority
     {
       public:
-        typedef int value_type;
+        using value_type = int;
 
       public:
         /** Default ctor. Least priority \c 0.*/

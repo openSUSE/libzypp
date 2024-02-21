@@ -62,17 +62,17 @@ namespace zypp
      * checked by the compiler.
      */
     //@{
-    typedef uint16_t FieldType;
-    typedef bit::BitField<FieldType> BitFieldType;
+    using FieldType = uint16_t;
+    using BitFieldType = bit::BitField<FieldType>;
     // Bit Ranges within FieldType defined by 1st bit and size:
-    typedef bit::Range<FieldType,0,                          1> StateField;
-    typedef bit::Range<FieldType,StateField::end,            2> ValidateField;
-    typedef bit::Range<FieldType,ValidateField::end,         2> TransactField;
-    typedef bit::Range<FieldType,TransactField::end,         2> TransactByField;
-    typedef bit::Range<FieldType,TransactByField::end,       2> TransactDetailField;
-    typedef bit::Range<FieldType,TransactDetailField::end,   1> LicenceConfirmedField;
-    typedef bit::Range<FieldType,LicenceConfirmedField::end, 4> WeakField;
-    typedef bit::Range<FieldType,WeakField::end,             1> UserLockQueryField; // internal
+    using StateField            = bit::Range<FieldType, 0                         , 1>;
+    using ValidateField         = bit::Range<FieldType, StateField::end           , 2>;
+    using TransactField         = bit::Range<FieldType, ValidateField::end        , 2>;
+    using TransactByField       = bit::Range<FieldType, TransactField::end        , 2>;
+    using TransactDetailField   = bit::Range<FieldType, TransactByField::end      , 2>;
+    using LicenceConfirmedField = bit::Range<FieldType, TransactDetailField::end  , 1>;
+    using WeakField             = bit::Range<FieldType, LicenceConfirmedField::end, 4>;
+    using UserLockQueryField    = bit::Range<FieldType, WeakField::end            , 1>; // internal
     // enlarge FieldType if more bits are needed. It's not yet
     // checked by the compiler.
     //@}

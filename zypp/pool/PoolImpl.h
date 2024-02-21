@@ -171,16 +171,16 @@ namespace zypp
 
       public:
         /** */
-        typedef PoolTraits::ItemContainerT		ContainerT;
-        typedef PoolTraits::size_type			size_type;
-        typedef PoolTraits::const_iterator		const_iterator;
-        typedef PoolTraits::Id2ItemT			Id2ItemT;
+        using ContainerT = PoolTraits::ItemContainerT;
+        using size_type = PoolTraits::size_type;
+        using const_iterator = PoolTraits::const_iterator;
+        using Id2ItemT = PoolTraits::Id2ItemT;
 
-        typedef PoolTraits::repository_iterator		repository_iterator;
+        using repository_iterator = PoolTraits::repository_iterator;
 
-        typedef sat::detail::SolvableIdType		SolvableIdType;
+        using SolvableIdType = sat::detail::SolvableIdType;
 
-        typedef ResPool::EstablishedStates::Impl	EstablishedStatesImpl;
+        using EstablishedStatesImpl = ResPool::EstablishedStates::Impl;
 
       public:
         /** Default ctor */
@@ -278,8 +278,8 @@ namespace zypp
         //
         ///////////////////////////////////////////////////////////////////
       public:
-        typedef PoolTraits::HardLockQueries           HardLockQueries;
-        typedef PoolTraits::hardLockQueries_iterator  hardLockQueries_iterator;
+        using HardLockQueries = PoolTraits::HardLockQueries;
+        using hardLockQueries_iterator = PoolTraits::hardLockQueries_iterator;
 
         const HardLockQueries & hardLockQueries() const
         { return _hardLockQueries; }

@@ -45,7 +45,7 @@ namespace zypp
       class ContentFileReader : private base::NonCopyable
       {
         public:
-          typedef function<void(const RepoIndex_Ptr &)> RepoIndexConsumer;
+          using RepoIndexConsumer = function<void (const RepoIndex_Ptr &)>;
 
         public:
           /** Default ctor */

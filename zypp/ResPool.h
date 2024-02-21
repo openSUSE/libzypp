@@ -64,10 +64,10 @@ namespace zypp
 
     public:
       /** \ref PoolItem */
-      typedef PoolItem				         value_type;
-      typedef pool::PoolTraits::size_type		 size_type;
-      typedef pool::PoolTraits::const_iterator	         const_iterator;
-      typedef pool::PoolTraits::repository_iterator      repository_iterator;
+      using value_type = PoolItem;
+      using size_type = pool::PoolTraits::size_type;
+      using const_iterator = pool::PoolTraits::const_iterator;
+      using repository_iterator = pool::PoolTraits::repository_iterator;
 
     public:
       /** Singleton ctor. */
@@ -161,8 +161,8 @@ namespace zypp
     public:
       /** \name Iterate over all PoolItems of a certain name and kind. */
       //@{
-      typedef pool::ByIdent                       ByIdent;
-      typedef pool::PoolTraits::byIdent_iterator  byIdent_iterator;
+      using ByIdent = pool::ByIdent;
+      using byIdent_iterator = pool::PoolTraits::byIdent_iterator;
 
       byIdent_iterator byIdentBegin( const ByIdent & ident_r ) const
       {
@@ -256,8 +256,8 @@ namespace zypp
     public:
       /** \name Iterate over all ResObjects of a certain kind. */
       //@{
-      typedef filter::ByKind ByKind;
-      typedef filter_iterator<ByKind,const_iterator> byKind_iterator;
+      using ByKind = filter::ByKind;
+      using byKind_iterator = filter_iterator<ByKind, const_iterator>;
 
       byKind_iterator byKindBegin( const ResKind & kind_r ) const
       { return make_filter_begin( ByKind(kind_r), *this ); }
@@ -284,8 +284,8 @@ namespace zypp
     public:
       /** \name Iterate over all ResObjects with a certain name (all kinds). */
       //@{
-      typedef zypp::resfilter::ByName ByName;
-      typedef filter_iterator<ByName,const_iterator> byName_iterator;
+      using ByName = zypp::resfilter::ByName;
+      using byName_iterator = filter_iterator<ByName, const_iterator>;
 
       byName_iterator byNameBegin( const std::string & name_r ) const
       { return make_filter_begin( ByName(name_r), *this ); }
@@ -316,7 +316,7 @@ namespace zypp
       public:
         ~EstablishedStates();
         /** Map holding pseudo installed items where current and established status differ. */
-        typedef std::map<PoolItem,ResStatus::ValidateValue> ChangedPseudoInstalled;
+        using ChangedPseudoInstalled = std::map<PoolItem, ResStatus::ValidateValue>;
         /** Return all pseudo installed items whose current state differs from the established one */
         ChangedPseudoInstalled changedPseudoInstalled() const;
       private:
@@ -339,7 +339,7 @@ namespace zypp
       EstablishedStates establishedStates() const;
 
       /** Map holding pseudo installed items where current and established status differ. */
-      typedef EstablishedStates::ChangedPseudoInstalled ChangedPseudoInstalled;
+      using ChangedPseudoInstalled = EstablishedStates::ChangedPseudoInstalled;
 
       /** Return all pseudo installed items whose current state differs from their initial one.
        * E.g. a Patch may become SATISFIED by updating the packages it refers to.
@@ -436,8 +436,8 @@ namespace zypp
        * These queries are re-evaluated when adding new repos to the pool.
        */
       //@{
-      typedef pool::PoolTraits::HardLockQueries           HardLockQueries;
-      typedef pool::PoolTraits::hardLockQueries_iterator  hardLockQueries_iterator;
+      using HardLockQueries = pool::PoolTraits::HardLockQueries;
+      using hardLockQueries_iterator = pool::PoolTraits::hardLockQueries_iterator;
 
       bool hardLockQueriesEmpty() const;
       size_type hardLockQueriesSize() const;

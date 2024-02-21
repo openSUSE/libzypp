@@ -23,7 +23,7 @@ namespace zypp
     /** Ensure derived classes cannot be copied.
      * Use private inheritance.
     */
-    typedef boost::noncopyable NonCopyable;
+    using NonCopyable = boost::noncopyable;
 
     /////////////////////////////////////////////////////////////////
   } // namespace base

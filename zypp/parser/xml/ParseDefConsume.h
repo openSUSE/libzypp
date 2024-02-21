@@ -98,7 +98,7 @@ namespace zypp
     class ParseDefConsumeCallback : public ParseDefConsume
     {
     public:
-      typedef function<void(const Node &)> Callback;
+      using Callback = function<void (const Node &)>;
 
       ParseDefConsumeCallback();
 
@@ -128,7 +128,7 @@ namespace zypp
     { /////////////////////////////////////////////////////////////////
       template <class Tp> struct Assigner;
 
-      typedef shared_ptr<Assigner<void> > AssignerRef;
+      using AssignerRef = shared_ptr<Assigner<void>>;
 
       /** Common interface to all Assigner types. */
       template <>

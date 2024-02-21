@@ -35,7 +35,7 @@ namespace zypp
     {
       friend std::ostream & operator<<( std::ostream & str, const SolvIdentFile & obj );
       public:
-        typedef std::unordered_set<IdString> Data;
+        using Data = std::unordered_set<IdString>;
 
       public:
         /** Ctor taking the file to read/write. */

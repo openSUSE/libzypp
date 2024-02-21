@@ -38,7 +38,7 @@ namespace ztui {
   class PromptOptions
   {
   public:
-    typedef std::vector<std::string> StrVector;
+    using StrVector = std::vector<std::string>;
 
     /**
    * Default c-tor.

@@ -65,7 +65,7 @@ namespace zypp
 
     public:
       /** Commandline arguments passed to a script on \ref open. */
-      typedef std::vector<std::string> Arguments;
+      using Arguments = std::vector<std::string>;
 
       /** \c pid_t(-1) constant indicating no connection. */
       static const pid_t NotConnected;

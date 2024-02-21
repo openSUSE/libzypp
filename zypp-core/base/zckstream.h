@@ -15,7 +15,7 @@
 #include <zypp-core/base/SimpleStreambuf>
 #include <zypp-core/base/fXstream>
 
-typedef struct zckCtx zckCtx;
+using zckCtx = struct zckCtx;
 
 namespace zypp {
 

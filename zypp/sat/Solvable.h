@@ -53,7 +53,7 @@ namespace zypp
     class Solvable : protected detail::PoolMember
     {
     public:
-      typedef sat::detail::SolvableIdType IdType;
+      using IdType = sat::detail::SolvableIdType;
 
       static const IdString retractedToken;	///< Indicator provides `retracted-patch-package()`
       static const IdString ptfMasterToken;	///< Indicator provides `ptf()`
@@ -565,7 +565,7 @@ namespace zypp
      */
     struct asSolvable
     {
-      typedef Solvable result_type;
+      using result_type = Solvable;
 
       Solvable operator()( const Solvable & solv_r ) const
       { return solv_r; }

@@ -131,13 +131,13 @@ namespace zypp
   class ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
   {
     public:
-      typedef long long value_type;
+      using value_type = long long;
       /** Most simple version of progress reporting
        * The percentage in most cases. Sometimes just keepalive.
        * \p sender ProgressData object who sends the progress info
        * \p
        */
-      typedef function<bool( const ProgressData & )> ReceiverFnc;
+      using ReceiverFnc = function<bool (const ProgressData &)>;
 
     private:
       enum State { INIT, RUN, END };

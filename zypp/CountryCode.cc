@@ -56,10 +56,10 @@ namespace zypp
       }
 
     private:
-      typedef std::unordered_map<std::string,const char *> CodeMap;
-      typedef CodeMap::const_iterator Link;
+      using CodeMap = std::unordered_map<std::string, const char *>;
+      using Link = CodeMap::const_iterator;
 
-      typedef std::unordered_map<IdString,Link> IndexMap;
+      using IndexMap = std::unordered_map<IdString, Link>;
 
       /** Ctor initializes the code maps.
        * http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html

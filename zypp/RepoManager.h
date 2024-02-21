@@ -63,14 +63,14 @@ namespace zypp
     struct Impl;
 
     /** ServiceInfo typedefs */
-    typedef std::set<ServiceInfo> ServiceSet;
-    typedef ServiceSet::const_iterator ServiceConstIterator;
-    typedef ServiceSet::size_type ServiceSizeType;
+    using ServiceSet = std::set<ServiceInfo>;
+    using ServiceConstIterator = ServiceSet::const_iterator;
+    using ServiceSizeType = ServiceSet::size_type;
 
     /** RepoInfo typedefs */
-    typedef std::set<RepoInfo> RepoSet;
-    typedef RepoSet::const_iterator RepoConstIterator;
-    typedef RepoSet::size_type RepoSizeType;
+    using RepoSet = std::set<RepoInfo>;
+    using RepoConstIterator = RepoSet::const_iterator;
+    using RepoSizeType = RepoSet::size_type;
 
   public:
    RepoManager( RepoManagerOptions options = RepoManagerOptions() );
@@ -99,7 +99,7 @@ namespace zypp
     ZYPP_DECLARE_FLAGS(RefreshServiceFlags,RefreshServiceBit);
 
     /** Options tuning RefreshService */
-    typedef RefreshServiceFlags RefreshServiceOptions;
+    using RefreshServiceOptions = RefreshServiceFlags;
 
 
     /** \name Known repositories.

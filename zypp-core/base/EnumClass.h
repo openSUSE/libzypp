@@ -47,8 +47,8 @@ namespace zypp
     class EnumClass : public TEnumDef
     {
     public:
-      typedef typename TEnumDef::Enum Enum;		///< The underlying enum type
-      typedef std::underlying_type_t<Enum>Integral;///< The underlying integral type
+      using Enum = typename TEnumDef::Enum;		///< The underlying enum type
+      using Integral = std::underlying_type_t<Enum>;///< The underlying integral type
 
       EnumClass( Enum val_r ) : _val( val_r ) {}
 

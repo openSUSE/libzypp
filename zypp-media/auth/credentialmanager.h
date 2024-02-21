@@ -62,9 +62,9 @@ namespace zypp
   class CredentialManager
   {
   public:
-    typedef std::set<AuthData_Ptr, AuthDataComparator> CredentialSet;
-    typedef CredentialSet::size_type                   CredentialSize;
-    typedef CredentialSet::const_iterator              CredentialIterator;
+    using CredentialSet = std::set<AuthData_Ptr, AuthDataComparator>;
+    using CredentialSize = CredentialSet::size_type;
+    using CredentialIterator = CredentialSet::const_iterator;
 
 
     CredentialManager(CredManagerOptions opts = CredManagerOptions());

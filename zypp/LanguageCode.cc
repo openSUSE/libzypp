@@ -55,10 +55,10 @@ namespace zypp
       }
 
     private:
-      typedef std::unordered_map<std::string,const char *> CodeMap;
-      typedef CodeMap::const_iterator Link;
+      using CodeMap = std::unordered_map<std::string, const char *>;
+      using Link = CodeMap::const_iterator;
 
-      typedef std::unordered_map<IdString,Link> IndexMap;
+      using IndexMap = std::unordered_map<IdString, Link>;
 
       /** Ctor initializes the code maps.
        * http://www.loc.gov/standards/iso639-2/ISO-639-2_values_8bits.txt

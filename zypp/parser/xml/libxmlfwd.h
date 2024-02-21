@@ -24,11 +24,11 @@ namespace zypp
   namespace xml
   { /////////////////////////////////////////////////////////////////
 
-    typedef xmlTextReaderMode ReadState;
+    using ReadState = xmlTextReaderMode;
     /** \relates ReadState Stream output. */
     std::ostream & operator<<( std::ostream & str, const ReadState & obj );
 
-    typedef xmlReaderTypes NodeType;
+    using NodeType = xmlReaderTypes;
     /** \relates NodeType Stream output. */
     std::ostream & operator<<( std::ostream & str, const NodeType & obj );
 

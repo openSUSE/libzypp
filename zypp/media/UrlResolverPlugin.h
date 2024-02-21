@@ -38,7 +38,7 @@ namespace zypp
 
       struct Impl;
 
-      typedef std::multimap<std::string, std::string> HeaderList;
+      using HeaderList = std::multimap<std::string, std::string>;
 
       /**
        * Resolves an url using the installed plugins

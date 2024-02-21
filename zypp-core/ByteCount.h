@@ -33,8 +33,8 @@ namespace zypp
 
   public:
 
-    typedef base::Unit      Unit;
-    typedef Unit::ValueType SizeType;
+    using Unit = base::Unit;
+    using SizeType = Unit::ValueType;
 
     /** \name Byte unit constants. */
     //@{

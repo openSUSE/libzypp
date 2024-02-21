@@ -105,7 +105,7 @@ class VendorAttr
 #endif
 
     /** Preferred type to pass equivalent vendor strings. */
-    typedef std::vector<std::string> VendorList;
+    using VendorList = std::vector<std::string>;
 
     /**
      * Adding new equivalent vendor strings container.

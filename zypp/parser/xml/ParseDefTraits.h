@@ -28,10 +28,10 @@ namespace zypp
     /** */
     struct ParseDefTraits
     {
-      typedef unsigned char                              ModeBitsType;
-      typedef bit::BitField<ModeBitsType>                ModeBits;
-      typedef bit::Range<ModeBitsType, 0,             1> TypeBits;
-      typedef bit::Range<ModeBitsType, TypeBits::end, 1> VisitBits;
+      using ModeBitsType = unsigned char;
+      using ModeBits = bit::BitField<ModeBitsType>;
+      using TypeBits = bit::Range<ModeBitsType, 0, 1>;
+      using VisitBits = bit::Range<ModeBitsType, TypeBits::end, 1>;
 
       enum TypeValue
         {

@@ -90,7 +90,7 @@ namespace zypp
         };
         ///////////////////////////////////////////////////////////////////
 
-        typedef std::vector<Upgrade> Upgrades;
+        using Upgrades = std::vector<Upgrade>;
         const Upgrades & upgrades() const;
 
       private:
@@ -124,7 +124,7 @@ namespace zypp
       /** Callback being invoked for each \ref ProductFileData parsed.
        * Return \c false to stop parsing.
        */
-      typedef function<bool( const ProductFileData & )> Consumer;
+      using Consumer = function<bool (const ProductFileData &)>;
 
     public:
       ProductFileReader()

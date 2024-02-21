@@ -27,7 +27,7 @@
 
 ///////////////////////////////////////////////////////////////////
 namespace boost { namespace logic { class tribool; } }
-namespace zypp { typedef boost::logic::tribool TriBool; }
+namespace zypp { using TriBool = boost::logic::tribool; }
 ///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ namespace zypp
   class C_Str
   {
     public:
-      typedef std::string::size_type size_type;
+      using size_type = std::string::size_type;
 
     public:
       C_Str()                            : _val( 0 ),             _sze( 0 ) {}

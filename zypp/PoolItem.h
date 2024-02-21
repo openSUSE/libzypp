@@ -203,7 +203,7 @@ namespace zypp
    */
   struct asPoolItem
   {
-    typedef PoolItem result_type;
+    using result_type = PoolItem;
 
     PoolItem operator()( const sat::Solvable & solv_r ) const
     { return PoolItem( solv_r ); }

@@ -27,10 +27,10 @@ namespace zypp
   class Application : public ResObject
   {
   public:
-    typedef Application              Self;
-    typedef ResTraits<Self>          TraitsType;
-    typedef TraitsType::PtrType      Ptr;
-    typedef TraitsType::constPtrType constPtr;
+    using Self = Application;
+    using TraitsType = ResTraits<Self>;
+    using Ptr = TraitsType::PtrType;
+    using constPtr = TraitsType::constPtrType;
 
   public:
     // no attributes defined by now

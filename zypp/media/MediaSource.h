@@ -27,7 +27,7 @@ namespace zypp {
     /**
      * Media manager access Id type.
      */
-    typedef unsigned int MediaAccessId;
+    using MediaAccessId = unsigned int;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -122,8 +122,8 @@ namespace zypp {
     std::ostream & operator<<( std::ostream & str, const AttachPoint & obj );
 
     ///////////////////////////////////////////////////////////////////
-    typedef zypp::RW_pointer<MediaSource> MediaSourceRef;
-    typedef zypp::RW_pointer<AttachPoint> AttachPointRef;
+    using MediaSourceRef = zypp::RW_pointer<MediaSource>;
+    using AttachPointRef = zypp::RW_pointer<AttachPoint>;
 
 
     ///////////////////////////////////////////////////////////////////

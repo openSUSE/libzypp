@@ -61,7 +61,7 @@ namespace zypp::keyring
     void keyContext( KeyContext keyContext_r );
 
     /** List of key safe key ids to import IFF \ref fileValidated. */
-    typedef std::set<std::string> BuddyKeys;
+    using BuddyKeys = std::set<std::string>;
     const BuddyKeys & buddyKeys() const;
     void addBuddyKey( std::string sid_r );
 

@@ -40,10 +40,10 @@ namespace zypp
   DEFINE_PTR_TYPE(Resolver);
 
   DEFINE_PTR_TYPE(ProblemSolution);
-  typedef std::list<ProblemSolution_Ptr> ProblemSolutionList;
+  using ProblemSolutionList = std::list<ProblemSolution_Ptr>;
 
   DEFINE_PTR_TYPE(ResolverProblem);
-  typedef std::list<ResolverProblem_Ptr> ResolverProblemList;
+  using ResolverProblemList = std::list<ResolverProblem_Ptr>;
 
 } // namespace zypp
 /////////////////////////////////////////////////////////////////////////

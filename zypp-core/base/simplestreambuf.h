@@ -209,7 +209,7 @@ namespace zypp {
         }
 
       private:
-        typedef std::vector<char> buffer_type;
+        using buffer_type = std::vector<char>;
         buffer_type              _buffer;
     };
   }

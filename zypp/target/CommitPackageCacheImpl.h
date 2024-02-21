@@ -40,7 +40,7 @@ namespace zypp
     class CommitPackageCache::Impl
     {
     public:
-      typedef CommitPackageCache::PackageProvider  PackageProvider;
+      using PackageProvider = CommitPackageCache::PackageProvider;
 
     public:
       Impl( PackageProvider &&packageProvider_r )

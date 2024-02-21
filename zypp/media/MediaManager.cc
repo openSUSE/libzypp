@@ -177,7 +177,7 @@ namespace zypp
       }
 
       // -------------------------------------------------------------
-      typedef std::map<MediaAccessId, ManagedMedia> ManagedMediaMap;
+      using ManagedMediaMap = std::map<MediaAccessId, ManagedMedia>;
 
       ////////////////////////////////////////////////////////////////
     } // anonymous

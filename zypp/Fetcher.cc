@@ -51,7 +51,7 @@ namespace zypp
     DefaultIntegral<bool,false> read;
   };
 
-  typedef shared_ptr<FetcherIndex> FetcherIndex_Ptr;
+  using FetcherIndex_Ptr = shared_ptr<FetcherIndex>;
 
   /** std::set ordering (less semantic) */
   struct SameFetcherIndex
@@ -111,7 +111,7 @@ namespace zypp
   };
 
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(FetcherJob::Flags);
-  typedef shared_ptr<FetcherJob> FetcherJob_Ptr;
+  using FetcherJob_Ptr = shared_ptr<FetcherJob>;
 
   std::ostream & operator<<( std::ostream & str, const FetcherJob_Ptr & obj )
   {

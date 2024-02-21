@@ -75,9 +75,9 @@ namespace zypp
   class PoolQueryResult : public sat::SolvIterMixin<PoolQueryResult,std::unordered_set<sat::Solvable>::const_iterator>
   {
     public:
-      typedef std::unordered_set<sat::Solvable>	ResultSet;
-      typedef ResultSet::size_type                      size_type;
-      typedef ResultSet::const_iterator                 const_iterator;
+      using ResultSet = std::unordered_set<sat::Solvable>;
+      using size_type = ResultSet::size_type;
+      using const_iterator = ResultSet::const_iterator;
 
     public:
       /** Default ctor (empty result) */

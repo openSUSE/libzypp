@@ -1454,14 +1454,14 @@ namespace zypp
       bool singleTransMode = policy_r.singleTransModeEnabled();
 
       DBG << "commit log file is set to: " << HistoryLog::fname() << endl;
-      if ( ! policy_r.dryRun() || policy_r.downloadMode() == DownloadOnly || singleTransMode )
+      if ( ! policy_r.dryRun() || policy_r.downloadMode() == DownloadOnly )
       {
         // Prepare the package cache. Pass all items requiring download.
         CommitPackageCache packageCache;
         packageCache.setCommitList( steps.begin(), steps.end() );
 
         bool miss = false;
-        if ( policy_r.downloadMode() != DownloadAsNeeded || singleTransMode )
+        if ( policy_r.downloadMode() != DownloadAsNeeded  )
         {
           // Preload the cache. Until now this means pre-loading all packages.
           // Once DownloadInHeaps is fully implemented, this will change and

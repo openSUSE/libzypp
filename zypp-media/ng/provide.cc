@@ -69,8 +69,10 @@ namespace zyppng {
 
   void ProvidePrivate::doSchedule ( zyppng::Timer & )
   {
-    if ( !_isRunning )
+    if ( !_isRunning ) {
+      MIL << "Provider is not started, NOT scheduling" << std::endl;
       return;
+    }
 
     if ( _isScheduling ) {
       DBG_PRV << "Scheduling triggered during scheduling, returning immediately." << std::endl;
@@ -112,30 +114,30 @@ namespace zyppng {
     // clean up old media
 
     for ( auto iMedia = _attachedMediaInfos.begin(); iMedia != _attachedMediaInfos.end();  ) {
-      if ( iMedia->_refCount > 0 ) {
-        MIL_PRV << "Not releasing media " << iMedia->_name << " refcount is not zero" << std::endl;
+      if ( (*iMedia)->refCount() > 1 ) {
+        MIL_PRV << "Not releasing media " << (*iMedia)->_name << " refcount is not zero" << std::endl;
         ++iMedia;
         continue;
       }
-      if ( iMedia->_workerType == ProvideQueue::Config::Downloading ) {
-        // we keep the information around for an hour so we do not constantly download the media files for no reasonDD
-        if ( std::chrono::steady_clock::now() - iMedia->_idleSince >= std::chrono::hours(1) ) {
-          MIL << "Detaching medium " << iMedia->_name << " for baseUrl " << iMedia->_attachedUrl << std::endl;
+      if ( (*iMedia)->_workerType == ProvideQueue::Config::Downloading ) {
+        // we keep the information around for an hour so we do not constantly download the media files for no reason
+        if ( (*iMedia)->_idleSince && std::chrono::steady_clock::now() - (*iMedia)->_idleSince.value() >= std::chrono::hours(1) ) {
+          MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->_attachedUrl << std::endl;
           iMedia = _attachedMediaInfos.erase(iMedia);
           continue;
         } else {
-          MIL_PRV << "Not releasing media " << iMedia->_name << " downloading worker and not timed out yet." << std::endl;
+          MIL_PRV << "Not releasing media " << (*iMedia)->_name << " downloading worker and not timed out yet." << std::endl;
         }
       } else {
         // mounting handlers, we need to send a request to the workers
-        auto bQueue = iMedia->_backingQueue.lock();
+        auto bQueue = (*iMedia)->_backingQueue.lock();
         if ( bQueue ) {
-          zypp::Url url = iMedia->_attachedUrl;
+          zypp::Url url = (*iMedia)->_attachedUrl;
           url.setScheme( url.getScheme() + std::string( constants::ATTACHED_MEDIA_SUFFIX) );
-          url.setAuthority( iMedia->_name );
+          url.setAuthority( (*iMedia)->_name );
           const auto &req = ProvideRequest::createDetach( url );
           if ( req ) {
-            MIL << "Detaching medium " << iMedia->_name << " for baseUrl " << iMedia->_attachedUrl << std::endl;
+            MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->_attachedUrl << std::endl;
             bQueue->enqueue ( *req );
             iMedia = _attachedMediaInfos.erase(iMedia);
             continue;
@@ -704,7 +706,7 @@ namespace zyppng {
     return _credManagerOptions;
   }
 
-  std::vector<AttachedMediaInfo> &ProvidePrivate::attachedMediaInfos()
+  std::vector<AttachedMediaInfo_Ptr> &ProvidePrivate::attachedMediaInfos()
   {
     return _attachedMediaInfos;
   }
@@ -774,18 +776,15 @@ namespace zyppng {
     return zypp::str::asString ( rawStr.value() );
   }
 
-  AttachedMediaInfo &ProvidePrivate::addMedium(ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec )
+  AttachedMediaInfo_Ptr ProvidePrivate::addMedium( AttachedMediaInfo_Ptr &&medium )
   {
-    auto str = nextMediaId();
-    MIL_PRV << "Generated new ID for media attachment: " << str << std::endl;
-    _attachedMediaInfos.push_back( AttachedMediaInfo{ std::move(str), {}, workerType, baseUrl, spec } );
-    return _attachedMediaInfos.back();
-  }
+    assert( medium );
+    if ( !medium )
+      return nullptr;
 
-  AttachedMediaInfo &ProvidePrivate::addMedium(zypp::proto::Capabilities::WorkerType workerType, ProvideQueueWeakRef backingQueue, const std::string &id, const zypp::Url &baseUrl, ProvideMediaSpec &spec)
-  {
-    MIL_PRV << "New media attachment with id: " << id << std::endl;
-    _attachedMediaInfos.push_back( AttachedMediaInfo{ id, backingQueue, workerType, baseUrl, spec } );
+    MIL_PRV << "Registered new media attachment with ID: " << medium->name() << " with mountPoint: (" << medium->_localMountPoint.value_or(zypp::Pathname()) << ")" << std::endl;
+    _attachedMediaInfos.push_back( std::move(medium) );
+
     return _attachedMediaInfos.back();
   }
 
@@ -920,37 +919,47 @@ namespace zyppng {
     return ++_nextRequestId;
   }
 
-  struct ProvideMediaHandle::Data
-  {
-    Data( Provide &parent, const std::string &hdl )
-      : _parent( parent.weak_this<Provide>() )
-      , _hdlName(hdl) { }
-
-    ~Data() {
-      auto p = _parent.lock(); if (p) p->releaseMedia(_hdlName);
-    }
-
-    ProvideWeakRef _parent;
-    std::string _hdlName;
-  };
-
-  ProvideMediaHandle::ProvideMediaHandle( Provide &parent, const std::string &hdl )
-  : _ref( std::make_shared<ProvideMediaHandle::Data>( parent, hdl ) )
+  ProvideMediaHandle::ProvideMediaHandle(Provide &parent, AttachedMediaInfo_Ptr mediaInfoRef )
+  : _parent( parent.weak_this<Provide>() )
+  , _mediaRef( std::move(mediaInfoRef) )
   {}
 
   std::shared_ptr<Provide> ProvideMediaHandle::parent() const
   {
-    return _ref->_parent.lock();
+    return _parent.lock();
   }
 
   bool ProvideMediaHandle::isValid() const
   {
-    return ( _ref.get() != nullptr );
+    return ( _mediaRef.get() != nullptr );
   }
 
   std::string ProvideMediaHandle::handle() const
   {
-    return _ref->_hdlName;
+    if ( !_mediaRef )
+      return {};
+    return _mediaRef->_name;
+  }
+
+  const zypp::Url &ProvideMediaHandle::baseUrl() const
+  {
+    static zypp::Url invalidHandle;
+    if ( !_mediaRef )
+      return invalidHandle;
+    return _mediaRef->_attachedUrl;
+  }
+
+  const std::optional<zypp::Pathname> &ProvideMediaHandle::localPath() const
+  {
+    static std::optional<zypp::Pathname> invalidHandle;
+    if ( !_mediaRef )
+      return invalidHandle;
+    return _mediaRef->_localMountPoint;
+  }
+
+  AttachedMediaInfo_constPtr ProvideMediaHandle::mediaInfo() const
+  {
+    return _mediaRef;
   }
 
 
@@ -1007,32 +1016,14 @@ namespace zyppng {
     // first check if there is a already attached medium we can use as well
     auto &attachedMedia = d->attachedMediaInfos ();
     for ( auto &medium : attachedMedia ) {
-      if ( medium.isSameMedium ( usableMirrs, request ) ) {
-        medium.ref();
-        return makeReadyResult( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *this, medium._name)  ) );
+      if ( medium->isSameMedium ( usableMirrs, request ) ) {
+        return makeReadyResult( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *this, medium ) ));
       }
     }
 
     auto op = AttachMediaItem::create( usableMirrs, request, *d_func() );
     d->queueItem (op);
     return op->promise();
-  }
-
-  void Provide::releaseMedia( const std::string &mediaRef )
-  {
-    Z_D();
-
-    if ( mediaRef.empty() )
-      return;
-
-    const auto i = std::find_if( d->_attachedMediaInfos.begin(), d->_attachedMediaInfos.end(), [&]( const auto &info ){ return info._name == mediaRef;} );
-    if ( i == d->_attachedMediaInfos.end() ) {
-      ERR << "Unknown media attach handle" << std::endl;
-      return;
-    }
-
-    // only unref'ing here, the scheduler will generate a message to the queues if needed
-    i->unref();
   }
 
   AsyncOpRef< expected<ProvideRes> > Provide::provide( const std::vector<zypp::Url> &urls, const ProvideFileSpec &request )
@@ -1051,45 +1042,48 @@ namespace zyppng {
   AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
   {
     Z_D();
-    const auto i = std::find_if( d->_attachedMediaInfos.begin(), d->_attachedMediaInfos.end(), [&]( const auto &info ){ return info._name == attachHandle.handle();} );
+    const auto i = std::find( d->_attachedMediaInfos.begin(), d->_attachedMediaInfos.end(), attachHandle.mediaInfo() );
     if ( i == d->_attachedMediaInfos.end() ) {
       return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Invalid attach handle")) ) );
     }
 
     // for downloading items we need to make the baseUrl part of the request URL
-    zypp::Url url = i->_attachedUrl;
+    zypp::Url url = (*i)->_attachedUrl;
 
     // real mount devices use a ID to reference a attached medium, for those we do not need to send the baseUrl as well since its already
     // part of the mount point, so if we mount host:/path/to/repo to the ID 1234 and look for the file /path/to/repo/file1 the request URL will look like:  nfs-media://1234/file1
-    if ( i->_workerType == ProvideQueue::Config::SimpleMount || i->_workerType == ProvideQueue::Config::VolatileMount ) {
+    if ( (*i)->_workerType == ProvideQueue::Config::SimpleMount || (*i)->_workerType == ProvideQueue::Config::VolatileMount ) {
       url = zypp::Url();
       // work around the zypp::Url requirements for certain Url schemes by attaching a suffix, that way we are always able to have a authority
-      url.setScheme( i->_attachedUrl.getScheme() + std::string(constants::ATTACHED_MEDIA_SUFFIX) );
-      url.setAuthority( i->_name );
+      url.setScheme( (*i)->_attachedUrl.getScheme() + std::string(constants::ATTACHED_MEDIA_SUFFIX) );
+      url.setAuthority( (*i)->_name );
       url.setPathName("/");
     }
 
     url.appendPathName( fileName );
     auto op = ProvideFileItem::create( {url}, request, *d );
-
-    i->ref();
-    op->setMediaRef( MediaHandle( *this, i->_name ));
-
+    op->setMediaRef( MediaHandle( *this, (*i) ));
     d->queueItem (op);
+
     return op->promise();
   }
 
-  AsyncOpRef<expected<std::string>> Provide::checksumForFile ( const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
   {
     using namespace zyppng::operators;
 
     zypp::Url url("chksum:///");
     url.setPathName( p );
     auto fut = provide( url, zyppng::ProvideFileSpec().setCustomHeaderValue( "chksumType", algorithm ) )
-      | mbind( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
-        if ( chksumRes.headers().contains(algorithm) )
-          return expected<std::string>::success( chksumRes.headers().value(algorithm).asString() );
-        return expected<std::string>::error( ZYPP_EXCPT_PTR( zypp::FileCheckException("Invalid/Empty checksum returned from worker") ) );
+      | and_then( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
+        if ( chksumRes.headers().contains(algorithm) ) {
+          try {
+            return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, chksumRes.headers().value(algorithm).asString() ) );
+          } catch ( ... ) {
+            return expected<zypp::CheckSum>::error( std::current_exception() );
+          }
+        }
+        return expected<zypp::CheckSum>::error( ZYPP_EXCPT_PTR( zypp::FileCheckException("Invalid/Empty checksum returned from worker") ) );
       } );
     return fut;
   }
@@ -1100,11 +1094,24 @@ namespace zyppng {
 
     zypp::Url url("copy:///");
     url.setPathName( source );
-    auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target ))
-      | mbind( [&]( ProvideRes &&copyRes) {
+    auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target  ))
+      | and_then( [&]( ProvideRes &&copyRes ) {
           return expected<zypp::ManagedFile>::success( copyRes.asManagedFile() );
       } );
     return fut;
+  }
+
+  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( ProvideRes &&source, const zypp::filesystem::Pathname &target )
+  {
+    using namespace zyppng::operators;
+
+    auto fName = source.file();
+    return copyFile( fName, target )
+           | [ resSave = std::move(source) ] ( auto &&result ) {
+               // callback lambda to keep the ProvideRes reference around until the op is finished,
+               // if the op fails the callback will be cleaned up and so the reference
+               return result;
+             };
   }
 
   void Provide::start ()

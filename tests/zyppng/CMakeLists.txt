@@ -2,6 +2,7 @@ ADD_TESTS(
   EventLoop
   IOBuffer
   UnixSignalSource
+  Pipelines
 )
 
 ADD_SUBDIRECTORY( media )

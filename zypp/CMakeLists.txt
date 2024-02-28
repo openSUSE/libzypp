@@ -64,6 +64,7 @@ SET( zypp_SRCS
   Rel.cc
   RepoInfo.cc
   RepoManager.cc
+  RepoManagerOptions.cc
   Repository.cc
   RepoStatus.cc
   ResKind.cc
@@ -163,6 +164,7 @@ SET( zypp_HEADERS
   Rel.h
   RepoInfo.h
   RepoManager.h
+  RepoManagerOptions.h
   Repository.h
   RepoStatus.h
   Filter.h
@@ -284,6 +286,60 @@ INSTALL(  FILES
   ${zypp_media_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/media
 )
+
+SET( zypp_ng_SRCS
+  ng/context.cc
+  ng/userrequest.cc
+  ng/repo/downloader.cc
+  ng/repo/refresh.cc
+  ng/repo/workflows/plaindir.cc
+  ng/repo/workflows/repodownloaderwf.cc
+  ng/repo/workflows/repomanagerwf.cc
+  ng/repo/workflows/rpmmd.cc
+  ng/repo/workflows/susetags.cc
+  ng/workflows/checksumwf.cc
+  ng/workflows/contextfacade.cc
+  ng/workflows/downloadwf.cc
+  ng/workflows/keyringwf.cc
+  ng/workflows/mediafacade.cc
+  ng/workflows/repoinfowf.cc
+  ng/workflows/signaturecheckwf.cc
+)
+
+SET( zypp_ng_HEADERS
+  ng/context.h
+  ng/Context
+  ng/userrequest.h
+  ng/UserRequest
+  ng/repo/downloader.h
+  ng/repo/Downloader
+  ng/repo/refresh.h
+  ng/repo/Refresh
+  ng/repo/workflows/plaindir.h
+  ng/repo/workflows/repodownloaderwf.h
+  ng/repo/workflows/repomanagerwf.h
+  ng/repo/workflows/rpmmd.h
+  ng/repo/workflows/susetags.h
+  ng/workflows/checksumwf.h
+  ng/workflows/contextfacade.h
+  ng/workflows/downloadwf.h
+  ng/workflows/keyringwf.h
+  ng/workflows/mediafacade.h
+  ng/workflows/logichelpers.h
+  ng/workflows/repoinfowf.h
+  ng/workflows/signaturecheckwf.h
+)
+
+SET( zypp_ng_private_HEADERS
+  ng/private/context_p.h
+  ng/private/repomanager_p.h
+)
+
+#INSTALL( FILES
+#  ${zypp_ng_HEADERS}
+#  DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/repo
+#)
+
 
 SET( zypp_parser_SRCS
   parser/HistoryLogReader.cc
@@ -583,10 +639,14 @@ INSTALL(  FILES
 )
 
 SET( zypp_zypp_detail_SRCS
+  zypp_detail/repomanagerbase_p.cc
   zypp_detail/ZYppImpl.cc
 )
 
 SET( zypp_zypp_detail_HEADERS
+  zypp_detail/keyring_p.h
+  zypp_detail/repomanagerbase_p.h
+  zypp_detail/urlcredentialextractor_p.h
   zypp_detail/ZYppImpl.h
   zypp_detail/ZYppReadOnlyHack.h
 )
@@ -609,7 +669,6 @@ SET( zypp_repo_SRCS
   repo/PackageDelta.cc
   repo/SUSEMediaVerifier.cc
   repo/MediaInfoDownloader.cc
-  repo/Downloader.cc
   repo/RepoVariables.cc
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
@@ -630,7 +689,6 @@ SET( zypp_repo_HEADERS
   repo/PackageDelta.h
   repo/SUSEMediaVerifier.h
   repo/MediaInfoDownloader.h
-  repo/Downloader.h
   repo/RepoVariables.h
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
@@ -644,19 +702,17 @@ INSTALL( FILES
 )
 
 SET( zypp_repo_yum_SRCS
-  repo/yum/Downloader.cc
+  repo/yum/RepomdFileCollector.cc
 )
 
 SET( zypp_repo_yum_HEADERS
-  repo/yum/Downloader.h
+  repo/yum/RepomdFileCollector.h
 )
 
 SET( zypp_repo_susetags_SRCS
-  repo/susetags/Downloader.cc
 )
 
 SET( zypp_repo_susetags_HEADERS
-  repo/susetags/Downloader.h
 )
 
 
@@ -826,6 +882,7 @@ ${zypp_parser_yum_SRCS}
 ${zypp_parser_SRCS}
 ${zypp_media_proxyinfo_SRCS}
 ${zypp_media_SRCS}
+${zypp_ng_SRCS}
 ${zypp_url_SRCS}
 ${zypp_repo_SRCS}
 ${zypp_repo_yum_SRCS}
@@ -855,6 +912,8 @@ ${zypp_parser_HEADERS}
 ${zypp_ui_HEADERS}
 ${zypp_media_HEADERS}
 ${zypp_media_compat_proxyinfo_HEADERS}
+${zypp_ng_HEADERS}
+${zypp_ng_private_HEADERS}
 ${zypp_base_HEADERS}
 ${zypp_solver_HEADERS}
 ${zypp_solver_detail_HEADERS}

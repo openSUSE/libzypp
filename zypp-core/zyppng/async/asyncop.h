@@ -14,6 +14,7 @@
 #ifndef ZYPPNG_ASYNC_ASYNCOP_H_INCLUDED
 #define ZYPPNG_ASYNC_ASYNCOP_H_INCLUDED
 
+#include <zypp-core/zyppng/meta/type_traits.h>
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/base/Exception.h>
 #include <zypp-core/zyppng/base/Signals>
@@ -21,6 +22,44 @@
 #include <memory>
 
 namespace zyppng {
+
+  template <typename Result> struct AsyncOp;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( AsyncOpBase );
+
+  namespace detail {
+    template <typename T, typename Enable = std::void_t<> >
+    struct has_value_type : public std::false_type{};
+
+    template <typename T>
+    struct has_value_type<T, std::void_t<typename T::value_type>> : public std::true_type {};
+
+    template <typename T>
+    constexpr bool has_value_type_v = has_value_type<T>::value;
+
+    template <typename T, typename Enable = void >
+    struct is_asyncop_type : public std::false_type{};
+
+    template <typename T>
+    struct is_asyncop_type<T, std::enable_if_t< std::is_convertible_v<T*, AsyncOp<typename T::value_type>*> >> : public std::true_type{};
+
+    template <typename T>
+    constexpr bool is_asyncop_type_v = is_asyncop_type<T>::value;
+
+    /*!
+     * Detects if a type is a AsyncOp based type. This
+     * is required in cases where we can not use simple Argument type matching
+     * but need to decide on the type characteristics. For example when a AsyncOp is
+     * passed as callback argument in the pipelines.
+     */
+    template <typename T>
+    using is_async_op = std::conjunction<
+      has_value_type<remove_smart_ptr_t<T>>,
+      is_asyncop_type<remove_smart_ptr_t<T> >
+      >;
+
+    template < typename T>
+    constexpr bool is_async_op_v = is_async_op<T>::value;
+  }
 
   /*!
    * Thrown if code tries to access the result of a async operation
@@ -34,6 +73,7 @@ namespace zyppng {
     {}
     virtual ~AsyncOpNotReadyException();
   };
+  inline AsyncOpNotReadyException::~AsyncOpNotReadyException() { }
 
   class CancelNotImplementedException : public zypp::Exception
   {
@@ -42,19 +82,13 @@ namespace zyppng {
       : Exception ("AsyncOp does not support cancelling the operation")
     {}
     virtual ~CancelNotImplementedException();
-
-
   };
-
-  inline AsyncOpNotReadyException::~AsyncOpNotReadyException()
-  { }
+  inline CancelNotImplementedException::~CancelNotImplementedException() { }
 
 
-  inline CancelNotImplementedException::~CancelNotImplementedException()
-  { }
+  class AsyncOpBase : public Base {
 
-
-  struct AsyncOpBase : public Base {
+  public:
 
     /*!
      * Should return true if the async op supports cancelling, otherwise false
@@ -104,8 +138,6 @@ namespace zyppng {
     Signal<void( const std::string & /*text*/, int /*current*/, int /*max*/ )> _sigProgress;
   };
 
-
-
   /*!
    *\class AsyncOp
    * The \a AsyncOp template class is the basic building block for the asynchronous pipelines.
@@ -128,7 +160,9 @@ namespace zyppng {
   template <typename Result>
   struct AsyncOp : public AsyncOpBase {
 
-    using value_type = Result;
+    static_assert(!detail::is_async_op_v<Result>, "A async op can never have a async result");
+
+    typedef Result value_type;
     using Ptr = std::shared_ptr<AsyncOp<Result>>;
 
     AsyncOp () = default;
@@ -189,12 +223,15 @@ namespace zyppng {
         auto weak = weak_from_this();
 
         _readyCb( std::move( _maybeValue.value()) );
-        _maybeValue.reset();
 
-        // reset the callback, it might be a lambda with captured ressources
-        // that need to be released after returning from the func
-        if ( !weak.expired() )
+        if ( !weak.expired() ) {
+          // value was passed on, reset the optional
+          _maybeValue.reset();
+
+          // reset the callback, it might be a lambda with captured ressources
+          // that need to be released after returning from the func
           _readyCb = {};
+        }
       }
     }
 
@@ -213,11 +250,35 @@ namespace zyppng {
     std::optional<value_type> _maybeValue;
   };
 
+
   template <typename T>
   using AsyncOpRef = std::shared_ptr<AsyncOp<T>>;
 
-  namespace detail {
 
+  /*!
+   * Helper mixin for AsyncOp types that host a inner pipeline for
+   * their logic. This is useful if a lot of state has to be preserved
+   * over a longer pipeline, instead of capturing all the seperate
+   * variables into the lambda callbacks it makes more sense to
+   * use a containing AsyncOp to help with it.
+   */
+  template <typename Base, typename Result = typename Base::value_type>
+  struct NestedAsyncOpMixin
+  {
+    template <typename ...Args>
+    void operator ()( Args &&...args ) {
+      assert(!_nestedPipeline);
+      _nestedPipeline = static_cast<Base *>(this)->makePipeline( std::forward<Args>(args)...);
+      _nestedPipeline->onReady([this]( auto &&val ){
+        static_cast<Base *>(this)->setReady( std::move(val) );
+      });
+    }
+
+  private:
+    AsyncOpRef<Result> _nestedPipeline;
+  };
+
+  namespace detail {
     //A async result that is ready right away
     template <typename T>
     struct ReadyResult : public zyppng::AsyncOp< T >
@@ -226,42 +287,19 @@ namespace zyppng {
         this->setReady( std::move(val) );
       }
     };
-
-#if 0
-    template <typename T>
-    using has_value_type_t = typename T::value_type;
-
-    template <typename T, typename AsyncRet>
-    using is_asyncop_type = std::is_convertible<T*, AsyncOp<AsyncRet>*>;
-
-
-    template <typename T>
-    using is_async_op = typename std::conjunction<
-        std::is_detected< has_value_type_t, T >,
-        std::is_detected< is_asyncop_type, T, typename T::value_type >
-      >;
-
-#else
-
-    /*!
-     * Checks if a type T is a asynchronous operation type
-     */
-    template < typename T, typename = std::void_t<> >
-    struct is_async_op : public std::false_type{};
-
-    template < typename T >
-    struct is_async_op<T,
-      std::void_t< typename T::value_type, //needs to have a value_type
-        std::enable_if_t<std::is_convertible< T*, AsyncOp<typename T::value_type>* >::value>>> //needs to be convertible to AsyncOp<T::value_type>
-      : public std::true_type{};
-
-#endif
-
   }
 
-  template <typename T>
-  AsyncOpRef<T> makeReadyResult ( T && result ) {
-    return std::make_shared<detail::ReadyResult<T>>( std::move(result) );
+  /*!
+   * Is \a isAsync is true returns a \ref AsyncOpRef that is always ready, containing the \a result as
+   * its final value, otherwise the value passed to the function is just forwarded.
+   */
+  template <typename T, bool isAsync = true>
+  std::conditional_t<isAsync, AsyncOpRef<T>, T> makeReadyResult ( T && result ) {
+    if constexpr ( isAsync ) {
+      return std::make_shared<detail::ReadyResult<T>>( std::forward<T>(result) );
+    } else {
+      return result;
+    }
   }
 
 }

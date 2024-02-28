@@ -23,6 +23,7 @@ SET( zypp_toplevel_headers
   Pathname.h
   TriBool.h
   Url.h
+  UserData.h
 )
 
 SET( zypp_toplevel_SRCS
@@ -289,6 +290,8 @@ SET( zyppng_meta_HEADERS
 )
 
 SET( zyppng_pipelines_HEADERS
+  zyppng/pipelines/Algorithm
+  zyppng/pipelines/algorithm.h
   zyppng/pipelines/AsyncResult
   zyppng/pipelines/asyncresult.h
   zyppng/pipelines/Await
@@ -336,6 +339,25 @@ SET( zyppng_thread_HEADERS
 SET( zyppng_thread_private_HEADERS
 )
 
+SET( zyppng_ui_SRCS
+  zyppng/ui/progressobserver.cc
+  zyppng/ui/userinterface.cc
+  zyppng/ui/userrequest.cc
+)
+
+SET( zyppng_ui_HEADERS
+  zyppng/ui/progressobserver.h
+  zyppng/ui/ProgressObserver
+  zyppng/ui/userinterface.h
+  zyppng/ui/UserInterface
+  zyppng/ui/userrequest.h
+  zyppng/ui/UserRequest
+)
+
+SET( zyppng_ui_private_HEADERS
+  zyppng/ui/private/userinterface_p.h
+)
+
 SET ( zypp_HEADERS
   ${zypp_toplevel_headers}
   ${zyppng_async_HEADERS}
@@ -355,6 +377,8 @@ SET ( zypp_HEADERS
   ${zyppng_rpc_HEADERS}
   ${zyppng_thread_HEADERS}
   ${zyppng_thread_private_HEADERS}
+  ${zyppng_ui_HEADERS}
+  ${zyppng_ui_private_HEADERS}
 )
 
 SET ( zypp_SRCS
@@ -369,6 +393,7 @@ SET ( zypp_SRCS
   ${zyppng_io_SRCS}
   ${zyppng_rpc_SRCS}
   ${zyppng_thread_SRCS}
+  ${zyppng_ui_SRCS}
 )
 
 # Default loggroup for all files

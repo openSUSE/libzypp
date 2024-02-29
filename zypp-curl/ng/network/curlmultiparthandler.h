@@ -51,11 +51,6 @@ namespace zyppng {
      * @param cancelReason Set to indicate why the request was cancelled.
      */
     virtual bool finishedRange    ( off_t range, bool validated, std::string &cancelReason ) { return true; };
-
-    /*!
-     * Called everytime the error code changes, this is just to notify that a error was set
-     */
-    virtual void notifyErrorCodeChanged () {};
   };
 
   /*!

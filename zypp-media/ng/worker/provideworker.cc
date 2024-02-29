@@ -87,7 +87,7 @@ namespace zyppng::worker {
 
     _stream = RpcMessageStream::create( _controlIO );
 
-    return executeHandshake () | and_then( [&]() {
+    return executeHandshake () | mbind( [&]() {
       AutoDisconnect disC[] = {
         connect( *_stream, &RpcMessageStream::sigMessageReceived, *this, &ProvideWorker::messageReceived ),
         connect( *_stream, &RpcMessageStream::sigInvalidMessageReceived, *this, &ProvideWorker::onInvalidMessageReceived )
@@ -175,10 +175,10 @@ namespace zyppng::worker {
   }
 
 
-  void ProvideWorker::attachSuccess(const uint32_t id, const std::optional<std::string> &localMountPoint)
+  void ProvideWorker::attachSuccess(const uint32_t id)
   {
     MIL_PRV << "Sending attachSuccess for request " << id << std::endl;
-    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id, localMountPoint ).impl() ) ) {
+    if ( !_stream->sendMessage( ProvideMessage::createAttachFinished ( id ).impl() ) ) {
       ERR << "Failed to send AttachFinished message" << std::endl;
     } else {
       MIL << "Sent back attach success" << std::endl;
@@ -215,7 +215,7 @@ namespace zyppng::worker {
             return expected<RpcMessage>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to wait for response")) );
         }
         return expected<RpcMessage>::success( std::move(*nextMessage) );
-      } | and_then ( [&]( auto && m) {
+      } | mbind ( [&]( auto && m) {
         return parseReceivedMessage(m);
       } );
 
@@ -257,7 +257,7 @@ namespace zyppng::worker {
   expected<AuthInfo> ProvideWorker::requireAuthorization( const uint32_t id, const zypp::Url &url, const std::string &lastTriedUsername, const int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields )
   {
     return sendAndWaitForResponse( ProvideMessage::createAuthDataRequest( id, url, lastTriedUsername, lastTimestamp, extraFields ), { ProvideMessage::Code::AuthInfo, ProvideMessage::Code::NoAuthData } )
-           | and_then( [&]( ProvideMessage &&m ) {
+           | mbind( [&]( ProvideMessage &&m ) {
                if ( m.code() == ProvideMessage::Code::AuthInfo ) {
 
                 AuthInfo inf;
@@ -314,7 +314,7 @@ namespace zyppng::worker {
         }
       }
 
-      return initialize( _workerConf ) | and_then([&]( WorkerCaps &&caps ){
+      return initialize( _workerConf ) | mbind([&]( WorkerCaps &&caps ){
 
         caps.set_worker_name( _workerName.data() );
 
@@ -436,7 +436,7 @@ namespace zyppng::worker {
       const auto &msgTypeName = message.messagetypename();
       if ( msgTypeName == rpc::messageTypeName<zypp::proto::ProvideMessage>() ) {
         return parseReceivedMessage( message )
-               | and_then( [&]( ProvideMessage &&provide ){
+               | mbind( [&]( ProvideMessage &&provide ){
                    _pendingMessages.push_back(provide);
                    _msgAvail->start(0);
                    return expected<void>::success();

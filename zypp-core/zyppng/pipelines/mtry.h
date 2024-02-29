@@ -21,50 +21,17 @@
 namespace zyppng {
 
   template < typename F
-    , typename ...Args
-    , typename Ret = typename std::invoke_result<F, Args...>::type
-    , typename Exp = expected<Ret, std::exception_ptr>
-    >
-  Exp mtry(F &&f, Args&& ...args)
+           , typename Ret = typename std::result_of<F()>::type
+           , typename Exp = expected<Ret, std::exception_ptr>
+           >
+  Exp mtry(F f)
   {
-    try {
-      if constexpr ( std::is_same_v<void, Ret> ) {
-        std::invoke(std::forward<F>(f), std::forward<Args>(args)... );
-        return expected<Ret, std::exception_ptr>::success();
-      } else {
-        return expected<Ret, std::exception_ptr>::success(std::invoke(std::forward<F>(f), std::forward<Args>(args)... ));
+      try {
+          return Exp::success(f());
+      } catch (...) {
+          return Exp::error(std::current_exception());
       }
-    } catch (...) {
-      return expected<Ret, std::exception_ptr>::error(std::current_exception());
-    }
   }
-
-
-  namespace detail
-  {
-    template <typename Callback>
-    struct mtry_helper {
-      Callback function;
-
-      template <
-        typename ...Args,
-        typename Ret = typename std::invoke_result<Callback, Args...>::type
-      >
-      auto operator()( Args&& ...args ){
-        return mtry( function, std::forward<Args>(args)... );
-      }
-    };
-  }
-
-  namespace operators {
-    template <typename Fun>
-    auto mtry ( Fun && function ) {
-      return detail::mtry_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-  }
-
 
 }
 

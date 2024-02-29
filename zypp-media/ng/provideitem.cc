@@ -664,15 +664,16 @@ namespace zyppng {
       // request is def done
       _runningReq.reset();
 
-      std::optional<zypp::ManagedFile> resFile;
-
       try {
+
         const auto locFilename = msg.value( ProvideFinishedMsgFields::LocalFilename ).asString();
         const auto cacheHit    = msg.value( ProvideFinishedMsgFields::CacheHit ).asBool();
         const auto &wConf      = queue.workerConfig();
 
         const bool doesDownload     = wConf.worker_type() == ProvideQueue::Config::Downloading;
         const bool fileNeedsCleanup = doesDownload || ( wConf.worker_type() == ProvideQueue::Config::CPUBound && wConf.cfg_flags() & ProvideQueue::Config::FileArtifacts );
+
+        std::optional<zypp::ManagedFile> resFile;
 
         if ( doesDownload ) {
 
@@ -703,48 +704,29 @@ namespace zyppng {
 
         _targetFile = locFilename;
 
+        // keep the media handle around as long as the file is used by the code
+        auto resObj = std::make_shared<ProvideResourceData>();
+        resObj->_mediaHandle     = this->_handleRef;
+        resObj->_myFile          = *resFile;
+        resObj->_resourceUrl     = *(finishedReq->activeUrl());
+        resObj->_responseHeaders = msg.headers();
+
+        auto p = promise();
+        if ( p ) {
+          try {
+            p->setReady( expected<ProvideRes>::success( ProvideRes( resObj )) );
+          } catch( const zypp::Exception &e ) {
+            ZYPP_CAUGHT(e);
+          }
+        }
+
+        updateState( Finished );
+
       } catch ( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
         cancelWithError( std::current_exception() );
-      } catch ( const std::exception &e ) {
-        ZYPP_CAUGHT(e);
+      } catch ( ...) {
         cancelWithError( std::current_exception() );
-      }  catch ( ...) {
-        cancelWithError( std::current_exception() );
-      }
-
-      // keep the media handle around as long as the file is used by the code
-      auto resObj = std::make_shared<ProvideResourceData>();
-      resObj->_mediaHandle     = this->_handleRef;
-      resObj->_myFile          = *resFile;
-      resObj->_resourceUrl     = *(finishedReq->activeUrl());
-      resObj->_responseHeaders = msg.headers();
-
-      // if there is a exception escaping the pipeline we need to rethrow it after cleaning up
-      std::exception_ptr excpt;
-      auto p = promise();
-      if ( p ) {
-        try {
-          p->setReady( expected<ProvideRes>::success( ProvideRes( resObj )) );
-        } catch( const zypp::Exception &e ) {
-          ERR << "Caught unhandled pipline exception:" << e << std::endl;
-          ZYPP_CAUGHT(e);
-          excpt = std::current_exception ();
-        } catch ( const std::exception &e ) {
-          ERR << "Caught unhandled pipline exception:" << e.what() << std::endl;
-          ZYPP_CAUGHT(e);
-          excpt = std::current_exception ();
-        } catch ( ...) {
-          ERR << "Caught unhandled unknown exception:"  << std::endl;
-          excpt = std::current_exception ();
-        }
-      }
-
-      updateState( Finished );
-
-      if ( excpt ) {
-        ERR << "Rethrowing pipeline exception, this is a BUG!" << std::endl;
-        std::rethrow_exception ( excpt );
       }
 
     } else {
@@ -782,9 +764,11 @@ namespace zyppng {
       // if we have a attached medium this overrules the URL we are going to ask the user about... this is how the old media backend did handle this
       // i guess there were never password protected repositories that have different credentials on the redirection targets
       auto &attachedMedia = provider().attachedMediaInfos();
-      if ( std::find( attachedMedia.begin(), attachedMedia.end(), _handleRef.mediaInfo() ) == attachedMedia.end() )
+      auto i = std::find_if( attachedMedia.begin(), attachedMedia.end(), [&]( const auto &m ) { return m._name == _handleRef.handle(); } );
+      if ( i == attachedMedia.end() )
         return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Attachment handle vanished during request.") ) );
-      urlToUse = _handleRef.mediaInfo()->_attachedUrl;
+
+      urlToUse = i->_attachedUrl;
     }
     return ProvideItem::authenticationRequired( queue, req, urlToUse, lastTimestamp, extraFields );
   }
@@ -899,7 +883,7 @@ namespace zyppng {
     auto &attachedMedia = prov.attachedMediaInfos ();
 
     for ( auto &medium : attachedMedia ) {
-      if ( medium->isSameMedium ( _mirrorList, _initialSpec ) ) {
+      if ( medium.isSameMedium ( _mirrorList, _initialSpec ) ) {
         finishWithSuccess ( medium );
         return;
       }
@@ -939,7 +923,7 @@ namespace zyppng {
         // if the media file is empty in the spec we can not do anything
         // simply pretend attach worked
         if( _initialSpec.mediaFile().empty() ) {
-          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
+          finishWithSuccess( prov.addMedium( _workerType, _mirrorList.front(), _initialSpec ) );
           return;
         }
 
@@ -1015,16 +999,26 @@ namespace zyppng {
     }
   }
 
-  void AttachMediaItem::finishWithSuccess( AttachedMediaInfo_Ptr medium )
+  void AttachMediaItem::finishWithSuccess( AttachedMediaInfo &medium )
   {
 
     updateState(Finalizing);
 
+    // aquire a ref to keep the medium around until we notified all dependant attach operations
+    // currently not really required because only the next schedule run will clean up attached medias
+    // but in case that ever changes the code is safe already
+    medium.ref();
+    zypp::OnScopeExit autoUnref([&]{
+      medium.unref();
+    });
+
     auto prom = promise();
     try {
       if ( prom ) {
+        // the ref for the result we are giving out
+        medium.ref();
         try {
-          prom->setReady( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium ) ) );
+          prom->setReady( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium._name) ) );
         } catch( const zypp::Exception &e ) {
           ZYPP_CAUGHT(e);
         }
@@ -1036,7 +1030,7 @@ namespace zyppng {
     }
 
     // tell others as well
-    _sigReady.emit( zyppng::expected<AttachedMediaInfo *>::success(medium.get()) );
+    _sigReady.emit( zyppng::expected<AttachedMediaInfo *>::success(&medium) );
 
     prom->isReady ();
 
@@ -1082,7 +1076,8 @@ namespace zyppng {
     _masterItemConn.disconnect();
 
     if ( result ) {
-      finishWithSuccess( AttachedMediaInfo_Ptr(result.get()) );
+      AttachedMediaInfo &medium = *result.get();
+      finishWithSuccess(medium);
     } else {
       try {
         std::rethrow_exception ( result.error() );
@@ -1151,7 +1146,7 @@ namespace zyppng {
 
         // all good, register the medium and tell all child items
         _runningReq.reset();
-        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, baseUrl, _initialSpec) ) );
+        return finishWithSuccess( provider().addMedium( _workerType, baseUrl, _initialSpec ) );
 
       } else if ( msg.code() == ProvideMessage::Code::NotFound ) {
 
@@ -1160,8 +1155,7 @@ namespace zyppng {
         if ( _verifier->totalMedia () == 1 ) {
           // relaxed , tolerate a vanished media file
           _runningReq.reset();
-
-          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
+          return finishWithSuccess( provider().addMedium( _workerType, _mirrorList.front(), _initialSpec) );
         } else {
           return ProvideItem::finishReq ( queue, finishedReq, msg );
         }
@@ -1171,21 +1165,12 @@ namespace zyppng {
     } else {
       // real device attach
       if ( msg.code() == ProvideMessage::Code::AttachFinished ) {
-
-        std::optional<zypp::Pathname> mntPoint;
-        auto mountPtVal = msg.value( zyppng::AttachFinishedMsgFields::LocalMountPoint );
-        if ( mountPtVal.valid() && mountPtVal.isString() ) {
-          mntPoint = zypp::Pathname(mountPtVal.asString());
-        }
-
         _runningReq.reset();
-        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>(
-          finishedReq->provideMessage().value( AttachMsgFields::AttachId ).asString()
+        return finishWithSuccess( provider().addMedium( _workerType
           , queue.weak_this<ProvideQueue>()
-          , _workerType
+          , finishedReq->provideMessage().value( AttachMsgFields::AttachId ).asString()
           , *finishedReq->activeUrl()
-          , _initialSpec
-          , mntPoint ) ) );
+          , _initialSpec ) );
       }
     }
 

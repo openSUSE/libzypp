@@ -36,18 +36,10 @@ ADD_SUBDIRECTORY( zypp-media-chksum )
 OPTION( ENABLE_DEVTOOL_REPOMIRROR "Devtool: build repomirror?" OFF )
 IF ( ENABLE_DEVTOOL_REPOMIRROR )
     MESSAGE( STATUS "DEVTOOL_REPOMIRROR enabled" )
-    FIND_PACKAGE( Notcurses++ QUIET )
+    FIND_PACKAGE( Notcurses++, QUIET )
     if ( NOT Notcurses++_FOUND )
-          MESSAGE( FATAL_ERROR " DEVTOOL_REPOMIRROR: Notcurses++ not found" )
+	  MESSAGE( FATAL_ERROR " DEVTOOL_REPOMIRROR: Notcurses++ not found" )
     ENDIF()
     ADD_SUBDIRECTORY( repomirror )
 ENDIF ( ENABLE_DEVTOOL_REPOMIRROR )
-## ############################################################
-
-## ############################################################
-OPTION( ENABLE_DEVTOOL_REFRESHNG "Devtool: build refreshng?" OFF )
-IF ( ENABLE_DEVTOOL_REFRESHNG )
-  ADD_SUBDIRECTORY( refresh-ng )
-ENDIF ( ENABLE_DEVTOOL_REFRESHNG )
-
 ## ############################################################

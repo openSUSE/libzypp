@@ -29,7 +29,7 @@ namespace zyppng
   {
   public:
 
-    ProvideMediaSpec( const std::string &label="", const zypp::Pathname &verifyData = zypp::Pathname(), unsigned medianr = 1 );
+    ProvideMediaSpec( const std::string &label, const zypp::Pathname &verifyData = zypp::Pathname(), unsigned medianr = 1 );
 
     /*!
      * The label of the medium, this will be shown in case a media change is required
@@ -180,8 +180,6 @@ namespace zyppng
      * Adds the custom header value \a val to the list of values identified by \a key
      */
     ProvideFileSpec &addCustomHeaderValue (  const std::string &key, const HeaderValueMap::Value &val );
-
-    zypp::OnMediaLocation asOnMediaLocation ( const zypp::Pathname &path, unsigned int mediaNr ) const;
 
   public:
     class Impl;                 ///< Implementation class.

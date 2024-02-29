@@ -138,7 +138,7 @@ zyppng::worker::AttachResult TestVMProvider::mountDevice ( const uint32_t id, co
 
     // we found the device we want!
     attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ dev, attachRoot } ) );
-    return zyppng::worker::AttachResult::success( dev->_mountPoint / attachRoot );
+    return zyppng::worker::AttachResult::success();
   }
 
   while ( true ) {
@@ -210,7 +210,7 @@ zyppng::worker::AttachResult TestVMProvider::mountDevice ( const uint32_t id, co
 
         MIL << "Found requested medium in dev " << dev->_name << std::endl;
         attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ dev, attachRoot } ) );
-        return zyppng::worker::AttachResult::success( dev->_mountPoint / attachRoot );
+        return zyppng::worker::AttachResult::success();
       }
     } // for each device
 

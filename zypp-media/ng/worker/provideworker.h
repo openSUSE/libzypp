@@ -161,7 +161,7 @@ namespace zyppng::worker {
     /*!
      * Send a \a AttachSuccess message to the controller. This is to signal that we are finished with mounting and verifying a medium
      */
-    void attachSuccess ( const uint32_t id, const std::optional<std::string> &localMountPoint = {} );
+    void attachSuccess ( const uint32_t id );
 
     /*!
      * Send a \a DetachSuccess message to the controller. This is to signal that we are finished unmounting a medium

@@ -28,6 +28,9 @@
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/ManagedFile.h>
 
+#include <queue>
+#include <variant>
+
 namespace zyppng {
 
   namespace constants {
@@ -68,7 +71,8 @@ namespace zyppng {
     void dequeueItem   ( ProvideItem *item );
 
     std::string nextMediaId () const;
-    AttachedMediaInfo_Ptr addMedium ( AttachedMediaInfo_Ptr &&medium );
+    AttachedMediaInfo &addMedium ( zypp::proto::Capabilities::WorkerType workerType, const zypp::Url &baseUrl, ProvideMediaSpec &spec );
+    AttachedMediaInfo &addMedium ( zypp::proto::Capabilities::WorkerType workerType, ProvideQueueWeakRef backingQueue, const std::string &id, const zypp::Url &baseUrl, ProvideMediaSpec &spec );
 
     std::string effectiveScheme ( const std::string &scheme ) const;
 
@@ -85,7 +89,7 @@ namespace zyppng {
     const zypp::Pathname &workerPath() const;
     const std::string queueName( ProvideQueue &q ) const;
 
-    std::vector<AttachedMediaInfo_Ptr> &attachedMediaInfos();
+    std::vector<AttachedMediaInfo> &attachedMediaInfos();
 
     std::list<ProvideItemRef> &items();
 
@@ -132,7 +136,7 @@ namespace zyppng {
     std::deque<QueueItem> _queues; //< List of request queues for the workers, grouped by scheme. We use a deque and not a map because of possible changes to the list of queues during scheduling
 
 
-    std::vector< AttachedMediaInfo_Ptr > _attachedMediaInfos; //< List of currently attached medias
+    std::vector< AttachedMediaInfo > _attachedMediaInfos; //< List of currently attached medias
 
     std::unordered_map< std::string, ProvideQueueRef > _workerQueues;
     std::unordered_map< std::string, ProvideQueue::Config > _schemeConfigs;

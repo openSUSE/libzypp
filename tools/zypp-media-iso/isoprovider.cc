@@ -128,7 +128,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
         }
       } else {
         attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ *i, relAttachRoot } ) );
-        return zyppng::worker::AttachResult::success( (*i)->_mountPoint / relAttachRoot );
+        return zyppng::worker::AttachResult::success();
       }
     }
 
@@ -259,7 +259,7 @@ zyppng::worker::AttachResult IsoProvider::mountDevice ( const uint32_t id, const
 
       knownDevices().push_back( devPtr );
       attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ devPtr, relAttachRoot } ) );
-      return zyppng::worker::AttachResult::success( devPtr->_mountPoint / relAttachRoot );
+      return zyppng::worker::AttachResult::success();
 
     };
 

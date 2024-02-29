@@ -21,28 +21,23 @@
 #include <zypp-media/auth/CredentialManager>
 
 #include <zypp/APIConfig.h>
+#include <variant>
 #include <bitset>
 
 namespace zyppng {
 
   bool ProvideQueue::Item::isAttachRequest() const
   {
-    if ( !_request )
-      return false;
     return ( _request->code () == ProvideMessage::Code::Attach );
   }
 
   bool ProvideQueue::Item::isFileRequest() const
   {
-    if ( !_request )
-      return false;
     return ( _request->code () == ProvideMessage::Code::Provide );
   }
 
   bool ProvideQueue::Item::isDetachRequest() const
   {
-    if ( !_request )
-      return false;
     return ( _request->code () == ProvideMessage::Code::Detach );
   }
 
@@ -394,8 +389,6 @@ namespace zyppng {
       }
 
       auto i = std::find_if( _activeItems.begin(), _activeItems.end(), [&]( const auto &elem ) {
-        if ( ! elem._request )
-          return false;
         return exp->requestId() == elem._request->provideMessage().requestId();
       });
 

@@ -53,8 +53,7 @@ namespace zyppng::worker
     HeaderValueMap _extra;
   };
 
-  // either the mountpoint or an error
-  using AttachResult = expected<zypp::Pathname, AttachError>;
+  using AttachResult = expected<void, AttachError>;
 
   /*!
    * Abstract base class to be used together with the \sa MountingWorker class to control

@@ -283,24 +283,7 @@ namespace zypp
    * \endcode
    */
   using OnScopeExit = AutoDispose<void>;
-
-  struct Deferred : public AutoDispose<void>
-  {
-    template <typename F>
-    Deferred( F&&cb );
-  };
-
-  template<typename F>
-  Deferred::Deferred(F &&cb) : AutoDispose( std::forward<F>(cb) ){}
-
-#define __zypp_defer_concatenate(__lhs, __rhs) \
-    __lhs##__rhs
-
-#define __zypp_defer_declarator(__id) \
-    zypp::Deferred __zypp_defer_concatenate(__defer, __id) = [&]()
-
-#define zypp_defer \
-    __zypp_defer_declarator(__LINE__)
+  using Deferred    = AutoDispose<void>;
 
   ///////////////////////////////////////////////////////////////////
 
@@ -348,7 +331,6 @@ namespace zypp
   {
     AutoFREE( void* ptr_r = nullptr ) : AutoDispose<void*>( ptr_r, [] ( void* ptr_r ) { if ( ptr_r ) ::free( ptr_r ); } ) {}
   };
-
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

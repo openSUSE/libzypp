@@ -15,9 +15,6 @@
 #include <zypp/ZYppFactory.h>
 #include <zypp/Digest.h>
 #include <zypp/KeyRing.h>
-#include <zypp/ng/workflows/keyringwf.h>
-#include <zypp/ng/workflows/checksumwf.h>
-#include <zypp/ng/workflows/signaturecheckwf.h>
 
 using std::endl;
 
@@ -34,9 +31,54 @@ namespace zypp
 
   void ChecksumFileChecker::operator()( const Pathname &file ) const
   {
-    const auto &res = zyppng::CheckSumWorkflow::verifyChecksum ( zyppng::SyncContext::create(), _checksum, file );
-    if ( !res ) {
-      std::rethrow_exception( res.error ( ) );
+    //MIL << "checking " << file << " file against checksum '" << _checksum << "'" << endl;
+    callback::SendReport<DigestReport> report;
+
+    if ( _checksum.empty() )
+    {
+      MIL << "File " <<  file << " has no checksum available." << std::endl;
+      if ( report->askUserToAcceptNoDigest(file) )
+      {
+        MIL << "User accepted " <<  file << " with no checksum." << std::endl;
+        return;
+      }
+      else
+      {
+        ZYPP_THROW( ExceptionType( file.basename() + " has no checksum" ) );
+      }
+    }
+    else
+    {
+      CheckSum real_checksum( _checksum.type(), filesystem::checksum( file, _checksum.type() ));
+      if ( (real_checksum != _checksum) )
+      {
+        // Remember askUserToAcceptWrongDigest decision for at most 12hrs in memory;
+        // Actually we just want to prevent asking the same question again when the
+        // previously downloaded file is retrieved from the disk cache.
+        static std::map<std::string,std::string> exceptions;
+        static Date exceptionsAge;
+        Date now( Date::now() );
+        if ( !exceptions.empty() && now-exceptionsAge > 12*Date::hour )
+          exceptions.clear();
+
+        WAR << "File " <<  file << " has wrong checksum " << real_checksum << " (expected " << _checksum << ")" << endl;
+        if ( !exceptions.empty() && exceptions[real_checksum.checksum()] == _checksum.checksum() )
+        {
+          WAR << "User accepted " <<  file << " with WRONG CHECKSUM. (remembered)" << std::endl;
+          return;
+        }
+        else if ( report->askUserToAcceptWrongDigest( file, _checksum.checksum(), real_checksum.checksum() ) )
+        {
+          WAR << "User accepted " <<  file << " with WRONG CHECKSUM." << std::endl;
+          exceptions[real_checksum.checksum()] = _checksum.checksum();
+          exceptionsAge = now;
+          return;
+        }
+        else
+        {
+          ZYPP_THROW( ExceptionType( file.basename() + " has wrong checksum" ) );
+        }
+      }
     }
   }
 
@@ -71,7 +113,7 @@ namespace zypp
   {}
 
   SignatureFileChecker::SignatureFileChecker( Pathname signature_r )
-  { _verifyContext.signature( std::move(signature_r) ); }
+  { signature( std::move(signature_r) ); }
 
   void SignatureFileChecker::addPublicKey( const Pathname & publickey_r )
   { addPublicKey( PublicKey(publickey_r) ); }
@@ -81,25 +123,16 @@ namespace zypp
 
   void SignatureFileChecker::operator()( const Pathname & file_r ) const
   {
+    const Pathname & sig { signature() };
+    if ( not ( sig.empty() || PathInfo(sig).isExist() ) )
+      ZYPP_THROW( ExceptionType("Signature " + sig.asString() + " not found.") );
+
+    MIL << "Checking " << file_r << " file validity using digital signature.." << endl;
     // const_cast because the workflow is allowed to store result values here
     SignatureFileChecker & self { const_cast<SignatureFileChecker&>(*this) };
-    self._verifyContext.file( file_r );
-
-    auto res = zyppng::SignatureFileCheckWorkflow::verifySignature ( zyppng::SyncContext::create(), keyring::VerifyFileContext(_verifyContext) );
-    if ( !res ) {
-      std::rethrow_exception( res.error ( ) );
-    }
-    self._verifyContext = std::move( *res );
-  }
-
-  keyring::VerifyFileContext &SignatureFileChecker::verifyContext()
-  {
-    return _verifyContext;
-  }
-
-  const keyring::VerifyFileContext &SignatureFileChecker::verifyContext() const
-  {
-    return _verifyContext;
+    self.file( file_r );
+    if ( not getZYpp()->keyRing()->verifyFileSignatureWorkflow( self ) )
+      ZYPP_THROW( ExceptionType( "Signature verification failed for "  + file_r.basename() ) );
   }
 
   /******************************************************************

@@ -75,8 +75,7 @@ namespace zyppng::worker
           }
 
           MIL << "Attach of " << attachUrl << " was successfull" << std::endl;
-
-          attachSuccess( req->_spec.requestId(), res.get().asString() );
+          attachSuccess( req->_spec.requestId() );
           return;
         }
         case zyppng::ProvideMessage::Code::Detach: {

@@ -20,6 +20,7 @@
 #include <zypp-core/zyppng/rpc/MessageStream>
 #include <zypp-media/ng/ProvideSpec> // for FieldType
 #include <zypp-media/ng/HeaderValueMap>
+#include <variant>
 #include <functional>
 #include <zypp-proto/media/provider.pb.h>
 
@@ -89,11 +90,6 @@ namespace zyppng {
     constexpr std::string_view Label   ("label");
   }
 
-  namespace AttachFinishedMsgFields
-  {
-    constexpr std::string_view LocalMountPoint ("local_mountpoint");
-  }
-
   namespace DetachMsgFields
   {
     constexpr std::string_view Url ("url");
@@ -130,7 +126,7 @@ namespace zyppng {
     static expected<ProvideMessage> create ( const zypp::proto::ProvideMessage &message );
     static ProvideMessage createProvideStarted  ( const uint32_t reqId, const zypp::Url &url , const std::optional<std::string> &localFilename = {}, const std::optional<std::string> &stagingFilename = {} );
     static ProvideMessage createProvideFinished ( const uint32_t reqId, const std::string &localFilename , bool cacheHit );
-    static ProvideMessage createAttachFinished  ( const uint32_t reqId, const std::optional<std::string> &localMountPoint = {} );
+    static ProvideMessage createAttachFinished  ( const uint32_t reqId );
     static ProvideMessage createDetachFinished  ( const uint32_t reqId );
     static ProvideMessage createAuthInfo ( const uint32_t reqId, const std::string &user, const std::string &pw, int64_t timestamp, const std::map<std::string, std::string> &extraValues = {} );
     static ProvideMessage createMediaChanged ( const uint32_t reqId );

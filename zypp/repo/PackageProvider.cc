@@ -9,7 +9,6 @@
 /** \file	zypp/repo/PackageProvider.cc
  *
 */
-#include "zypp/ng/workflows/contextfacade.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -33,7 +32,6 @@
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/FileChecker.h>
 #include <zypp/target/rpm/RpmHeader.h>
-#include <zypp/ng/workflows/keyringwf.h>
 
 using std::endl;
 
@@ -236,7 +234,7 @@ namespace zypp
 
               std::string keyID = hr->signatureKeyID();
               if ( keyID.length() > 0 ) {
-                if ( !zyppng::KeyRingWorkflow::provideAndImportKeyFromRepository ( zyppng::SyncContext::create(), keyID, info ) )
+                if ( ! getZYpp()->keyRing()->provideAndImportKeyFromRepositoryWorkflow( keyID, info ) )
                   break;
 
               } else {

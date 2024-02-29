@@ -87,7 +87,6 @@ SET( zypp_media_ng_private_HEADERS
 )
 
 SET( zypp_media_ng_SRCS
-  ng/attachedmediainfo.cc
   ng/headervaluemap.cc
   ng/provide.cc
   ng/provideres.cc

@@ -212,7 +212,7 @@ zyppng::worker::AttachResult DiskProvider::mountDevice ( const uint32_t id, cons
         }
       } else {
         attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ *i, relAttachRoot } ) );
-        return zyppng::worker::AttachResult::success( (*i)->_mountPoint / relAttachRoot );
+        return zyppng::worker::AttachResult::success();
       }
     }
 
@@ -339,7 +339,7 @@ zyppng::worker::AttachResult DiskProvider::mountDevice ( const uint32_t id, cons
     devPtr->_mountPoint = newAp;
     knownDevices().push_back( devPtr );
     attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ devPtr, relAttachRoot } ) );
-    return zyppng::worker::AttachResult::success( devPtr->_mountPoint / relAttachRoot );
+    return zyppng::worker::AttachResult::success();
 
   }  catch ( const zypp::Exception &e  ) {
     return zyppng::worker::AttachResult::error(

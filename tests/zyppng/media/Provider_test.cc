@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov )
   auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
-            | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
+            | mbind ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/test.txt", zyppng::ProvideFileSpec() );
             });
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_404 )
   auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
-            | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
+            | mbind ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/doesnotexist", zyppng::ProvideFileSpec() );
             });
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
   auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
-            | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
+            | mbind ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/media.1", zyppng::ProvideFileSpec() );
             });
@@ -540,7 +540,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
   auto op = prov->attachMedia( baseUrl, zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
-            | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
+            | mbind ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/test.txt", zyppng::ProvideFileSpec() );
             });
@@ -661,7 +661,7 @@ BOOST_AUTO_TEST_CASE( tvm_basic )
   ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
   ops.push_back( makeDVDProv( prov, devRoot, 3, "/file3") );
 
-  auto r = std::move(ops) | zyppng::waitFor();
+  auto r = std::move(ops) | zyppng::waitFor<zyppng::expected<void>>();
   r->sigReady().connect([&](){
     ev->quit();
   });
@@ -721,7 +721,7 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
   ops.push_back( makeDVDProv( prov, devRoot, 1, "/file1") );
   ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
 
-  auto r = std::move(ops) | zyppng::waitFor();
+  auto r = std::move(ops) | zyppng::waitFor<zyppng::expected<void>>();
   r->sigReady().connect([&](){
     ev->quit();
   });

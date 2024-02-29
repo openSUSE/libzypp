@@ -94,7 +94,7 @@ zyppng::worker::AttachResult NfsProvider::mountDevice ( const uint32_t id, const
         }
       } else {
         attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ *i, "/" } ) );
-        return zyppng::worker::AttachResult::success( (*i)->_mountPoint );
+        return zyppng::worker::AttachResult::success();
       }
     }
 
@@ -209,7 +209,7 @@ zyppng::worker::AttachResult NfsProvider::mountDevice ( const uint32_t id, const
       });
       knownDevices().push_back( newDev );
       attachedMedia().insert( std::make_pair( attachId, zyppng::worker::AttachedMedia{ newDev, "/" } ) );
-      return zyppng::worker::AttachResult::success( newDev->_mountPoint );
+      return zyppng::worker::AttachResult::success();
 
     }
     catch (const zypp::media::MediaMountException &e )

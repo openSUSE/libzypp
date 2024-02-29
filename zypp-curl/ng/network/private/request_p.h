@@ -86,7 +86,6 @@ namespace zyppng {
     void setResult ( NetworkRequestError &&err );
     void reset ();
     void resetActivityTimer ();
-
     void onActivityTimeout (Timer &);
 
     std::string errorMessage () const;
@@ -135,7 +134,6 @@ namespace zyppng {
 
     size_t headerfunction ( char *ptr, size_t bytes ) override;
     size_t writefunction  (char *ptr, std::optional<off_t> offset, size_t bytes ) override;
-    void notifyErrorCodeChanged () override;
 
     std::unique_ptr< curl_slist, decltype (&curl_slist_free_all) > _headers;
 

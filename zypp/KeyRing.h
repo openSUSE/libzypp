@@ -301,6 +301,44 @@ namespace zypp
     PublicKeyData trustedPublicKeyData( const std::string &id );
 
     /**
+     * Follows a signature verification interacting with the user.
+     * The bool returned depends on user decision to trust or not.
+     *
+     * To propagate user decisions, either connect to the \ref KeyRingReport
+     * or use its static methods to set the desired defaults.
+     *
+     * A second bool passed as reference arg \a sigValid_r tells whether the
+     * signature was actually successfully verified. If \a sigValid_r returns
+     * \c false, but the method \c true, you know it's due to user callback or
+     * defaults.
+     *
+     * \code
+     * struct KeyRingReportReceive : public callback::ReceiveReport<KeyRingReport>
+     * {
+     *   KeyRingReportReceive() { connect(); }
+     *
+     *   // Overload the virtual methods to return the appropriate values.
+     *   virtual bool askUserToAcceptUnsignedFile( const std::string &file );
+     *   ...
+     * };
+     * \endcode
+     *
+     * \param file Path of the file to be verified
+     * \param filedesc Description of the file (to give the user some context)
+     * \param signature Signature to verify the file against
+     * \param sigValid_r Returns whether signature was successfully verified
+     *
+     * \see \ref KeyRingReport
+     */
+    bool verifyFileSignatureWorkflow( const Pathname &file, const std::string &filedesc, const Pathname &signature, bool & sigValid_r, const KeyContext &keycontext = KeyContext());
+    /** \overload legacy version without 'bool & sigValid_r' */
+    bool verifyFileSignatureWorkflow( const Pathname &file, const std::string filedesc, const Pathname &signature, const KeyContext &keycontext = KeyContext());
+    /** \overload using a \ref keyring::VerifyFileContext to pass and return data.
+     * The preferred API. Returns keyring::VerifyFileContext::fileAccepted.
+     */
+    bool verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r );
+
+    /**
      * Verifies a file against a signature, with no user interaction
      *
      * \param file Path of the file to be verified
@@ -310,11 +348,14 @@ namespace zypp
 
     bool verifyFileTrustedSignature( const Pathname &file, const Pathname &signature );
 
+    /**
+     * Try to find the \a id in key cache or repository specified in \a info. Ask the user to trust
+     * the key if it was found
+     */
+    bool provideAndImportKeyFromRepositoryWorkflow ( const std::string &id , const RepoInfo &info );
+
     /** Dtor */
     ~KeyRing();
-
-    /** Access to private functions for the KeyRingWorkflow implementations */
-    KeyRing::Impl &pimpl();
 
   public:
     /** The general keyring may be populated with known keys stored on the system. */

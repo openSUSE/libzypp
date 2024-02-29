@@ -9,9 +9,6 @@
 /** \file	zypp/KeyRing.cc
  *
 */
-
-#include "zypp_detail/keyring_p.h"
-
 #include <iostream>
 #include <fstream>
 #include <optional>
@@ -30,12 +27,11 @@
 #include <zypp/base/Gettext.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp/PathInfo.h>
+#include <zypp/KeyRing.h>
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp/ZYppCallbacks.h>       // JobReport::instance
 #include <zypp/KeyManager.h>
-
-#include <zypp/ng/workflows/keyringwf.h>
 
 using std::endl;
 
@@ -114,74 +110,231 @@ namespace zypp
     report( data );
   }
 
+  namespace
+  {
+    ///////////////////////////////////////////////////////////////////
+    /// \class CachedPublicKeyData
+    /// \brief Functor returning the keyrings data (cached).
+    /// \code
+    ///   const std::list<PublicKeyData> & cachedPublicKeyData( const Pathname & keyring );
+    /// \endcode
+    ///////////////////////////////////////////////////////////////////
+    struct CachedPublicKeyData : private base::NonCopyable
+    {
+      const std::list<PublicKeyData> & operator()( const Pathname & keyring_r ) const
+      { return getData( keyring_r ); }
+
+      void setDirty( const Pathname & keyring_r )
+      { _cacheMap[keyring_r].setDirty(); }
+
+      ///////////////////////////////////////////////////////////////////
+      /// \brief Helper providing on demand a KeyManagerCtx to manip the cached keyring.
+      ///
+      /// The 1st call to \ref keyManagerCtx creates the \ref KeyManagerCtx. Returning
+      /// the context tags the cached data as dirty. Should be used to import/delete keys
+      /// in a cache keyring.
+      struct Manip {
+        NON_COPYABLE_BUT_MOVE( Manip );
+        Manip( CachedPublicKeyData & cache_r, Pathname keyring_r )
+        : _cache { cache_r }
+        , _keyring { std::move(keyring_r) }
+        {}
+
+        KeyManagerCtx & keyManagerCtx() {
+          if ( not _context ) {
+            _context = KeyManagerCtx::createForOpenPGP( _keyring );
+          }
+          // frankly: don't remember why an explicit setDirty was introduced and
+          // why WatchFile was not enough. Maybe some corner case when the keyrings
+          // are created?
+          _cache.setDirty( _keyring );
+          return _context.value();
+        }
+
+      private:
+        CachedPublicKeyData & _cache;
+        Pathname _keyring;
+        std::optional<KeyManagerCtx> _context;
+      };
+      ///////////////////////////////////////////////////////////////////
+
+      /** Helper providing on demand a KeyManagerCtx to manip the cached keyring. */
+      Manip manip( Pathname keyring_r ) { return Manip( *this, std::move(keyring_r) ); }
+
+    private:
+      struct Cache
+      {
+        Cache() {}
+
+        void setDirty()
+        {
+          _keyringK.reset();
+          _keyringP.reset();
+        }
+
+        void assertCache( const Pathname & keyring_r )
+        {
+          // .kbx since gpg2-2.1
+          if ( !_keyringK )
+            _keyringK.reset( new WatchFile( keyring_r/"pubring.kbx", WatchFile::NO_INIT ) );
+          if ( !_keyringP )
+            _keyringP.reset( new WatchFile( keyring_r/"pubring.gpg", WatchFile::NO_INIT ) );
+        }
+
+        bool hasChanged() const
+        {
+          bool k = _keyringK->hasChanged();	// be sure both files are checked
+          bool p = _keyringP->hasChanged();
+          return k || p;
+        }
+
+        std::list<PublicKeyData> _data;
+
+      private:
+
+        scoped_ptr<WatchFile> _keyringK;
+        scoped_ptr<WatchFile> _keyringP;
+      };
+
+      typedef std::map<Pathname,Cache> CacheMap;
+
+      const std::list<PublicKeyData> & getData( const Pathname & keyring_r ) const
+      {
+        Cache & cache( _cacheMap[keyring_r] );
+        // init new cache entry
+        cache.assertCache( keyring_r );
+        return getData( keyring_r, cache );
+      }
+
+      const std::list<PublicKeyData> & getData( const Pathname & keyring_r, Cache & cache_r ) const
+      {
+        if ( cache_r.hasChanged() ) {
+          cache_r._data = KeyManagerCtx::createForOpenPGP( keyring_r ).listKeys();
+          MIL << "Found keys: " << cache_r._data  << endl;
+        }
+        return cache_r._data;
+      }
+
+      mutable CacheMap _cacheMap;
+    };
+    ///////////////////////////////////////////////////////////////////
+
+
+  }
+
   ///////////////////////////////////////////////////////////////////
-
-  CachedPublicKeyData::Manip::Manip(CachedPublicKeyData &cache_r, filesystem::Pathname keyring_r)
-    : _cache { cache_r }
-    , _keyring { std::move(keyring_r) }
-  {}
-
-  KeyManagerCtx &CachedPublicKeyData::Manip::keyManagerCtx() {
-    if ( not _context ) {
-      _context = KeyManagerCtx::createForOpenPGP( _keyring );
+  //
+  //	CLASS NAME : KeyRing::Impl
+  //
+  /** KeyRing implementation. */
+  struct KeyRing::Impl
+  {
+    Impl( const Pathname & baseTmpDir )
+    : _trusted_tmp_dir( baseTmpDir, "zypp-trusted-kr" )
+    , _general_tmp_dir( baseTmpDir, "zypp-general-kr" )
+    , _base_dir( baseTmpDir )
+    {
+      MIL << "Current KeyRing::DefaultAccept: " << _keyRingDefaultAccept << endl;
     }
-    // frankly: don't remember why an explicit setDirty was introduced and
-    // why WatchFile was not enough. Maybe some corner case when the keyrings
-    // are created?
-    _cache.setDirty( _keyring );
-    return _context.value();
-  }
 
-  CachedPublicKeyData::Cache::Cache() {}
+    void importKey( const PublicKey & key, bool trusted = false );
+    void multiKeyImport( const Pathname & keyfile_r, bool trusted_r = false );
+    void deleteKey( const std::string & id, bool trusted );
 
-  void CachedPublicKeyData::Cache::setDirty()
-  {
-    _keyringK.reset();
-    _keyringP.reset();
-  }
+    std::string readSignatureKeyId( const Pathname & signature );
 
-  void CachedPublicKeyData::Cache::assertCache(const filesystem::Pathname &keyring_r)
-  {
-    // .kbx since gpg2-2.1
-    if ( !_keyringK )
-      _keyringK.reset( new WatchFile( keyring_r/"pubring.kbx", WatchFile::NO_INIT ) );
-    if ( !_keyringP )
-      _keyringP.reset( new WatchFile( keyring_r/"pubring.gpg", WatchFile::NO_INIT ) );
-  }
+    bool isKeyTrusted( const std::string & id )
+    { return bool(publicKeyExists( id, trustedKeyRing() )); }
+    bool isKeyKnown( const std::string & id )
+    { return publicKeyExists( id, trustedKeyRing() ) || publicKeyExists( id, generalKeyRing() ); }
 
-  bool CachedPublicKeyData::Cache::hasChanged() const
-  {
-    bool k = _keyringK->hasChanged();	// be sure both files are checked
-    bool p = _keyringP->hasChanged();
-    return k || p;
-  }
+    std::list<PublicKey> trustedPublicKeys()
+    { return publicKeys( trustedKeyRing() ); }
+    std::list<PublicKey> publicKeys()
+    { return publicKeys( generalKeyRing() ); }
 
-  const std::list<PublicKeyData> &CachedPublicKeyData::operator()(const filesystem::Pathname &keyring_r) const
-  { return getData( keyring_r ); }
+    const std::list<PublicKeyData> & trustedPublicKeyData()
+    { return publicKeyData( trustedKeyRing() ); }
+    const std::list<PublicKeyData> & publicKeyData()
+    { return publicKeyData( generalKeyRing() ); }
 
-  void CachedPublicKeyData::setDirty(const filesystem::Pathname &keyring_r)
-  { _cacheMap[keyring_r].setDirty(); }
+    void dumpPublicKey( const std::string & id, bool trusted, std::ostream & stream )
+    { dumpPublicKey( id, ( trusted ? trustedKeyRing() : generalKeyRing() ), stream ); }
 
-  CachedPublicKeyData::Manip CachedPublicKeyData::manip(filesystem::Pathname keyring_r) { return Manip( *this, std::move(keyring_r) ); }
+    PublicKey exportPublicKey( const PublicKeyData & keyData )
+    { return exportKey( keyData, generalKeyRing() ); }
+    PublicKey exportTrustedPublicKey( const PublicKeyData & keyData )
+    { return exportKey( keyData, trustedKeyRing() ); }
 
-  const std::list<PublicKeyData> &CachedPublicKeyData::getData(const filesystem::Pathname &keyring_r) const
-  {
-    Cache & cache( _cacheMap[keyring_r] );
-    // init new cache entry
-    cache.assertCache( keyring_r );
-    return getData( keyring_r, cache );
-  }
-
-  const std::list<PublicKeyData> &CachedPublicKeyData::getData(const filesystem::Pathname &keyring_r, Cache &cache_r) const
-  {
-    if ( cache_r.hasChanged() ) {
-      cache_r._data = KeyManagerCtx::createForOpenPGP( keyring_r ).listKeys();
-      MIL << "Found keys: " << cache_r._data  << std::endl;
+    bool verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r )
+    {
+      // Assert result and return value are in sync
+      context_r.fileAccepted( _verifyFileSignatureWorkflow( context_r ) );
+      return context_r.fileAccepted();
     }
-    return cache_r._data;
-  }
+    bool _verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r );
 
+    bool verifyFileSignature( const Pathname & file, const Pathname & signature )
+    { return verifyFile( file, signature, generalKeyRing() ); }
+    bool verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
+    { return verifyFile( file, signature, trustedKeyRing() ); }
 
+    PublicKeyData publicKeyExists( const std::string & id )
+    { return publicKeyExists(id, generalKeyRing());}
+    PublicKeyData trustedPublicKeyExists( const std::string & id )
+    { return publicKeyExists(id, trustedKeyRing());}
+
+    bool provideAndImportKeyFromRepositoryWorkflow (const std::string &id_r , const RepoInfo &info_r );
+
+    void allowPreload( bool yesno_r )
+    { _allowPreload = yesno_r; }
+
+  private:
+    /** Impl helper providing on demand a KeyManagerCtx to manip a cached keyring. */
+    CachedPublicKeyData::Manip keyRingManip( const Pathname & keyring )
+    { return cachedPublicKeyData.manip( keyring ); }
+
+    bool verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring );
+    void importKey( const Pathname & keyfile, const Pathname & keyring );
+
+    PublicKey exportKey( const std::string & id, const Pathname & keyring );
+    PublicKey exportKey( const PublicKeyData & keyData, const Pathname & keyring );
+    PublicKey exportKey( const PublicKey & key, const Pathname & keyring )
+    { return exportKey( key.keyData(), keyring ); }
+
+    void dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream );
+    filesystem::TmpFile dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring );
+
+    void deleteKey( const std::string & id, const Pathname & keyring );
+
+    std::list<PublicKey> publicKeys( const Pathname & keyring);
+    const std::list<PublicKeyData> & publicKeyData( const Pathname & keyring )
+    { return cachedPublicKeyData( keyring ); }
+
+    /** Get \ref PublicKeyData for ID (\c false if ID is not found). */
+    PublicKeyData publicKeyExists( const std::string & id, const Pathname & keyring );
+    /** Load key files cached on the system into the generalKeyRing. */
+    void preloadCachedKeys();
+
+    const Pathname generalKeyRing() const
+    { return _general_tmp_dir.path(); }
+    const Pathname trustedKeyRing() const
+    { return _trusted_tmp_dir.path(); }
+
+    // Used for trusted and untrusted keyrings
+    filesystem::TmpDir _trusted_tmp_dir;
+    filesystem::TmpDir _general_tmp_dir;
+    Pathname _base_dir;
+    bool _allowPreload = false;	//< General keyring may be preloaded with keys cached on the system.
+
+  private:
+    /** Functor returning the keyrings data (cached).
+     * \code
+     *  const std::list<PublicKeyData> & cachedPublicKeyData( const Pathname & keyring );
+     * \endcode
+     */
+    CachedPublicKeyData cachedPublicKeyData;
+  };
   ///////////////////////////////////////////////////////////////////
 
   namespace
@@ -209,13 +362,6 @@ namespace zypp
     };
   } // namespace
 
-  KeyRing::Impl::Impl(const filesystem::Pathname &baseTmpDir)
-    : _trusted_tmp_dir( baseTmpDir, "zypp-trusted-kr" )
-    , _general_tmp_dir( baseTmpDir, "zypp-general-kr" )
-    , _base_dir( baseTmpDir )
-  {
-    MIL << "Current KeyRing::DefaultAccept: " << _keyRingDefaultAccept << std::endl;
-  }
 
   void KeyRing::Impl::importKey( const PublicKey & key, bool trusted )
   {
@@ -380,6 +526,212 @@ namespace zypp
     return tmpFile;
   }
 
+  bool KeyRing::Impl::_verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r )
+  {
+    context_r.resetResults();
+    const Pathname & file        { context_r.file() };
+    const Pathname & signature   { context_r.signature() };
+    const std::string & filedesc { context_r.shortFile() };
+    const KeyContext & keyContext   { context_r.keyContext() };
+
+    callback::SendReport<KeyRingReport> report;
+    MIL << "Going to verify signature for " << filedesc << " ( " << file << " ) with " << signature << endl;
+
+    // if signature does not exists, ask user if they want to accept unsigned file.
+    if( signature.empty() || (!PathInfo( signature ).isExist()) )
+    {
+      bool res = report->askUserToAcceptUnsignedFile( filedesc, keyContext );
+      MIL << "askUserToAcceptUnsignedFile: " << res << endl;
+      return res;
+    }
+
+    // get the id of the signature (it might be a subkey id!)
+    context_r.signatureId( readSignatureKeyId( signature ) );
+    const std::string & id = context_r.signatureId();
+    PublicKeyData foundKey;
+    Pathname whichKeyring;
+
+    std::list<PublicKeyData> buddies;	// Could be imported IFF the file is validated by a trusted key
+    for ( const auto & sid : context_r.buddyKeys() ) {
+      if ( not PublicKeyData::isSafeKeyId( sid ) ) {
+        WAR << "buddy " << sid << ": key id is too short to safely identify a gpg key. Skipping it." << endl;
+        continue;
+      }
+      if ( trustedPublicKeyExists( sid ) ) {
+        MIL << "buddy " << sid << ": already in trusted key ring. Not needed." << endl;
+        continue;
+      }
+      auto pk = publicKeyExists( sid );
+      if ( not pk ) {
+        WAR << "buddy " << sid << ": not available in the public key ring. Skipping it." << endl;
+        continue;
+      }
+      if ( pk.providesKey(id) ) {
+        MIL << "buddy " << sid << ": is the signing key. Handled separately." << endl;
+        continue;
+      }
+      MIL << "buddy " << sid << ": candidate for auto import. Remeber it." << endl;
+      buddies.push_back( pk );
+    }
+
+    if ( !id.empty() ) {
+
+      // does key exists in trusted keyring
+      PublicKeyData trustedKeyData( publicKeyExists( id, trustedKeyRing() ) );
+      if ( trustedKeyData )
+      {
+        MIL << "Key is trusted: " << trustedKeyData << endl;
+
+        // lets look if there is an updated key in the
+        // general keyring
+        PublicKeyData generalKeyData( publicKeyExists( id, generalKeyRing() ) );
+        if ( generalKeyData )
+        {
+          // bnc #393160: Comment #30: Compare at least the fingerprint
+          // in case an attacker created a key the the same id.
+          //
+          // FIXME: bsc#1008325: For keys using subkeys, we'd actually need
+          // to compare the subkey sets, to tell whether a key was updated.
+          // because created() remains unchanged if the primary key is not touched.
+          // For now we wait until a new subkey signs the data and treat it as a
+          //  new key (else part below).
+          if ( trustedKeyData.fingerprint() == generalKeyData.fingerprint()
+             && trustedKeyData.created() < generalKeyData.created() )
+          {
+            MIL << "Key was updated. Saving new version into trusted keyring: " << generalKeyData << endl;
+            importKey( exportKey( generalKeyData, generalKeyRing() ), true );
+            trustedKeyData = publicKeyExists( id, trustedKeyRing() ); // re-read: invalidated by import?
+          }
+        }
+
+        foundKey = trustedKeyData;
+        whichKeyring = trustedKeyRing();
+      }
+      else
+      {
+        PublicKeyData generalKeyData( publicKeyExists( id, generalKeyRing() ) );
+        if ( generalKeyData )
+        {
+          PublicKey key( exportKey( generalKeyData, generalKeyRing() ) );
+          MIL << "Key [" << id << "] " << key.name() << " is not trusted" << endl;
+
+          // ok the key is not trusted, ask the user to trust it or not
+          KeyRingReport::KeyTrust reply = report->askUserToAcceptKey( key, keyContext );
+          if ( reply == KeyRingReport::KEY_TRUST_TEMPORARILY ||
+              reply == KeyRingReport::KEY_TRUST_AND_IMPORT )
+          {
+            MIL << "User wants to trust key [" << id << "] " << key.name() << endl;
+
+            if ( reply == KeyRingReport::KEY_TRUST_AND_IMPORT )
+            {
+              MIL << "User wants to import key [" << id << "] " << key.name() << endl;
+              importKey( key, true );
+              whichKeyring = trustedKeyRing();
+            }
+            else
+              whichKeyring = generalKeyRing();
+
+            foundKey = generalKeyData;
+          }
+          else
+          {
+            MIL << "User does not want to trust key [" << id << "] " << key.name() << endl;
+            return false;
+          }
+        }
+        else if ( ! keyContext.empty() )
+        {
+          // try to find the key in the repository info
+          if ( provideAndImportKeyFromRepositoryWorkflow( id, keyContext.repoInfo() ) ) {
+            whichKeyring = trustedKeyRing();
+            foundKey = PublicKeyData( publicKeyExists( id, trustedKeyRing() ) );
+          }
+        }
+      }
+    }
+
+    if ( foundKey ) {
+      // it exists, is trusted, does it validate?
+      context_r.signatureIdTrusted( whichKeyring == trustedKeyRing() );
+      report->infoVerify( filedesc, foundKey, keyContext );
+      if ( verifyFile( file, signature, whichKeyring ) )
+      {
+        context_r.fileValidated( true );
+        if ( context_r.signatureIdTrusted() && not buddies.empty() ) {
+          // Check for buddy keys to be imported...
+          MIL << "Validated with trusted key: importing buddy list..." << endl;
+          report->reportAutoImportKey( buddies, foundKey, keyContext );
+          for ( const auto & kd : buddies ) {
+            importKey( exportKey( kd, generalKeyRing() ), true );
+          }
+        }
+        return context_r.fileValidated();	// signature is actually successfully validated!
+      }
+      else
+      {
+        bool res = report->askUserToAcceptVerificationFailed( filedesc, exportKey( foundKey, whichKeyring ), keyContext );
+        MIL << "askUserToAcceptVerificationFailed: " << res << endl;
+        return res;
+      }
+    } else {
+      // signed with an unknown key...
+      MIL << "File [" << file << "] ( " << filedesc << " ) signed with unknown key [" << id << "]" << endl;
+      bool res = report->askUserToAcceptUnknownKey( filedesc, id, keyContext );
+      MIL << "askUserToAcceptUnknownKey: " << res << endl;
+      return res;
+    }
+
+    return false;
+  }
+
+  bool KeyRing::Impl::provideAndImportKeyFromRepositoryWorkflow(const std::string &id_r, const RepoInfo &info_r)
+  {
+    if ( id_r.empty() )
+      return false;
+
+    const ZConfig &conf = ZConfig::instance();
+    Pathname cacheDir = conf.repoManagerRoot() / conf.pubkeyCachePath();
+
+    Pathname myKey = info_r.provideKey( id_r, cacheDir );
+    if ( myKey.empty()  )
+      // if we did not find any keys, there is no point in checking again, break
+      return false;
+
+    callback::SendReport<KeyRingReport> report;
+
+    PublicKey key;
+    try {
+      key = PublicKey( myKey );
+    } catch ( const Exception &e ) {
+      ZYPP_CAUGHT(e);
+      return false;
+    }
+
+    if ( !key.isValid() ) {
+      ERR << "Key [" << id_r << "] from cache: " << cacheDir << " is not valid" << endl;
+      return false;
+    }
+
+    MIL << "Key [" << id_r << "] " << key.name() << " loaded from cache" << endl;
+
+    KeyContext context;
+    context.setRepoInfo( info_r );
+    if ( ! report->askUserToAcceptPackageKey( key, context ) ) {
+      return false;
+    }
+
+    MIL << "User wants to import key [" << id_r << "] " << key.name() << " from cache" << endl;
+    try {
+      importKey( key, true );
+    } catch ( const KeyRingException &e ) {
+      ZYPP_CAUGHT(e);
+      ERR << "Failed to import key: "<<id_r;
+      return false;
+    }
+
+    return true;
+  }
+
   std::list<PublicKey> KeyRing::Impl::publicKeys( const Pathname & keyring )
   {
     const std::list<PublicKeyData> & keys( publicKeyData( keyring ) );
@@ -450,11 +802,6 @@ namespace zypp
   KeyRing::~KeyRing()
   {}
 
-  KeyRing::Impl &KeyRing::pimpl()
-  {
-    return *_pimpl;
-  }
-
   void KeyRing::allowPreload( bool yesno_r )
   { _pimpl->allowPreload( yesno_r ); }
 
@@ -489,11 +836,40 @@ namespace zypp
   PublicKeyData KeyRing::trustedPublicKeyData(const std::string &id_r)
   { return _pimpl->trustedPublicKeyExists( id_r ); }
 
+  bool KeyRing::verifyFileSignatureWorkflow( const Pathname & file, const std::string & filedesc, const Pathname & signature, bool & sigValid_r, const KeyContext & keycontext )
+  {
+    sigValid_r = false;	// just in case....
+    keyring::VerifyFileContext context( file, signature );
+    context.shortFile( filedesc );
+    context.keyContext( keycontext );
+    verifyFileSignatureWorkflow( context );
+    sigValid_r = context.fileValidated();
+    return context.fileAccepted();
+  }
+
+  bool KeyRing::verifyFileSignatureWorkflow( const Pathname & file, const std::string filedesc, const Pathname & signature, const KeyContext & keycontext )
+  {
+    keyring::VerifyFileContext context( file, signature );
+    context.shortFile( filedesc );
+    context.keyContext( keycontext );
+    verifyFileSignatureWorkflow( context );
+    return context.fileAccepted();
+  }
+
+  bool KeyRing::verifyFileSignatureWorkflow( keyring::VerifyFileContext & context_r )
+  { return _pimpl->verifyFileSignatureWorkflow( context_r ); }
+
   bool KeyRing::verifyFileSignature( const Pathname & file, const Pathname & signature )
   { return _pimpl->verifyFileSignature( file, signature ); }
 
   bool KeyRing::verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
   { return _pimpl->verifyFileTrustedSignature( file, signature ); }
+
+  bool KeyRing::provideAndImportKeyFromRepositoryWorkflow(const std::string &id, const RepoInfo &info)
+  {
+    return _pimpl->provideAndImportKeyFromRepositoryWorkflow( id, info );
+  }
+
   void KeyRing::dumpPublicKey( const std::string & id, bool trusted, std::ostream & stream )
   { _pimpl->dumpPublicKey( id, trusted, stream ); }
 

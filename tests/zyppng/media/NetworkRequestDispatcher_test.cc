@@ -438,46 +438,6 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_ftp, bdata::make( withSSL ), with
   nwdispatcher_multipart_dl_impl<FtpServer>(withSSL);
 }
 
-// Test that simulates us sending a range request to the server and the server answering with a range header but does not send actual range data
-BOOST_DATA_TEST_CASE(nwdispatcher_rangereq_norangeanswer, bdata::make( withSSL ), withSSL )
-{
-  auto ev = zyppng::EventLoop::create();
-  auto disp = std::make_shared<zyppng::NetworkRequestDispatcher>();
-  disp->sigQueueFinished().connect( [&ev]( const zyppng::NetworkRequestDispatcher& ){
-    ev->quit();
-  });
-
-  disp->run();
-
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
-
-  web.addRequestHandler("norange", []( WebServer::Request &r ){
-    r.rout << "Status: 206\r\n"
-              "\r\n"
-              "Hello";
-  });
-
-  BOOST_REQUIRE( web.start() );
-
-  zyppng::TransferSettings set = web.transferSettings();
-  zypp::filesystem::TmpFile targetFile;
-
-  zyppng::Url weburl (web.url());
-  weburl.setPathName("/handler/norange");
-
-  zyppng::NetworkRequest::Ptr reqDLFile = std::make_shared<zyppng::NetworkRequest>( weburl, targetFile.path() );
-  reqDLFile->transferSettings() = set;
-  reqDLFile->setUrl( weburl );
-  reqDLFile->addRequestRange(  13, 4 );
-  reqDLFile->addRequestRange( 248, 6 );
-  reqDLFile->addRequestRange(  76, 9 );
-
-  disp->enqueue( reqDLFile );
-  ev->run();
-
-  BOOST_TEST_REQ_ERR( reqDLFile, zyppng::NetworkRequestError::ServerReturnedError );
-}
-
 struct RangeData {
   off_t offset;
   std::string payload;
@@ -721,6 +681,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_many_chunks_dl, bdata::make( withSSL
   disp->enqueue( reqDLFile );
   if ( disp->count () ) ev->run();
   auto err = reqDLFile->error();
+  std::cerr << err.toString () << std::endl;
   BOOST_TEST_REQ_SUCCESS( reqDLFile );
 
   std::string downloaded = TestTools::readFile ( targetFile.path() );

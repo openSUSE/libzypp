@@ -145,12 +145,7 @@ namespace zyppng {
         break;
       }
       case ProvideMessage::Code::AttachFinished: {
-        std::exception_ptr error;
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          OPT_FIELD_CHECK ( AttachFinished, local_mountpoint, std::string )
-          return true;
-        });
-        FAIL_IF_ERROR();
+        // no fields
         break;
       }
       case ProvideMessage::Code::DetachFinished: {
@@ -386,14 +381,11 @@ namespace zyppng {
     return msg;
   }
 
-  ProvideMessage ProvideMessage::createAttachFinished(const uint32_t reqId , const std::optional<std::string> &localMountPoint )
+  ProvideMessage ProvideMessage::createAttachFinished( const uint32_t reqId )
   {
     ProvideMessage msg;
     msg.setCode ( ProvideMessage::Code::AttachFinished );
     msg.setRequestId ( reqId );
-
-    if ( localMountPoint )
-      msg.setValue ( AttachFinishedMsgFields::LocalMountPoint, *localMountPoint );
 
     return msg;
   }

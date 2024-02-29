@@ -439,7 +439,6 @@ namespace zyppng {
       }
       if ( !setupHandle(errBuf))
         return false;
-
       return true;
     }
     errBuf = "Request has no more work";
@@ -718,21 +717,6 @@ namespace zyppng {
     _sigBytesDownloaded.emit( *z_func(), rmode._downloaded );
 
     return written;
-  }
-
-  void NetworkRequestPrivate::notifyErrorCodeChanged()
-  {
-    auto rmode = std::get_if<NetworkRequestPrivate::running_t>( &_runningMode );
-    if ( !rmode || !rmode->_partialHelper || !rmode->_partialHelper->hasError() )
-      return;
-
-    // oldest cached result wins
-    if ( rmode->_cachedResult )
-      return;
-
-    auto lastErr = NetworkRequestErrorPrivate::customError( rmode->_partialHelper->lastError() , std::string(rmode->_partialHelper->lastErrorMessage()) );
-    MIL_MEDIA << _easyHandle << " Multipart handler announced error code " << lastErr.toString () <<  std::endl;
-    rmode->_cachedResult = lastErr;
   }
 
   ZYPP_IMPL_PRIVATE(NetworkRequest)

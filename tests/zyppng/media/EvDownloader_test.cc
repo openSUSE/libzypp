@@ -258,38 +258,6 @@ std::vector< MirrorSet > generateMirr ()
       res.back().mirrors.push_back( std::make_pair( i*10, "/test.txt") );
     }
   }
-  //mirrors where some return a invalid range response ( 206 status but no range def )
-  res.push_back( MirrorSet() );
-  res.back().name = "Some mirrors return boken range responses";
-  res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
-  res.back().expectSuccess = true;
-  res.back().expectedHandlerDownloads  = 1;
-  //it is not really possible to know how many times the downloads will fail, there are
-  //5 broken mirrors in the set, but if a working mirror is done before the last broken
-  //URL is picked from the dataset, not all broken URLs will be used
-  res.back().expectedFileDownloads  = -1;
-  res.back().expectedStates = { zyppng::Download::InitialState, zyppng::Download::DlMetaLinkInfo, zyppng::Download::PrepareMulti, zyppng::Download::DlMetalink, zyppng::Download::Finished};
-  for ( int i = 10 ; i >= 1; i-- ) {
-    if ( i % 2 ) {
-      res.back().mirrors.push_back( std::make_pair( i*10, "/handler/brokenrange") );
-    } else {
-      res.back().mirrors.push_back( std::make_pair( i*10, "/test.txt") );
-    }
-  }
-
-  //all return a invalid range response ( 206 status but no range def )
-  res.push_back( MirrorSet() );
-  res.back().name = "All mirrors return boken range responses";
-  res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
-  res.back().expectSuccess = true;
-  res.back().expectedHandlerDownloads  = 2; //has to fall back to url handler download
-  res.back().expectedFileDownloads  = 10; //should try all mirrors and fail
-  res.back().expectedStates = { zyppng::Download::InitialState, zyppng::Download::DlMetaLinkInfo, zyppng::Download::PrepareMulti, zyppng::Download::DlMetalink, zyppng::Download::DlSimple  , zyppng::Download::Finished};
-  for ( int i = 10 ; i >= 1; i-- ) {
-    res.back().mirrors.push_back( std::make_pair( i*10, "/handler/brokenrange") );
-  }
 
 #if ENABLE_ZCHUNK_COMPRESSION
   //all mirrors good with zck:
@@ -382,40 +350,6 @@ WebServer::RequestHandler makeJunkBlockHandler ( const std::string &fName )
   };
 };
 
-//creates a request handler for the Mock WebServer that returns a 206 response but does not specify the range details
-WebServer::RequestHandler makeBrokenRangeHandler ( const std::string &fName )
-{
-  return [ fName ]( WebServer::Request &req ){
-    auto it = req.params.find( "HTTP_RANGE" );
-    if ( it != req.params.end() && zypp::str::startsWith( it->second, "bytes=" ) ) {
-        //bytes=786432-1048575
-        std::string range = it->second.substr( 6 ); //remove bytes=
-        size_t dash = range.find_first_of( "-" );
-        off_t start = -1;
-        off_t end = -1;
-        if ( dash != std::string::npos ) {
-          start = std::stoll( range.substr( 0, dash ) );
-          end   = std::stoll( range.substr( dash+1 ) );
-        }
-
-        if ( start != -1 && end != -1 ) {
-          std::string block;
-          for ( off_t curr = start; curr <= end; curr++ ) {
-            block += 'a';
-          }
-          req.rout << "Status: 206 Partial Content\r\n"
-                   << "Accept-Ranges: bytes\r\n"
-                   << "Content-Length: "<< block.length() <<"\r\n"
-                   <<"\r\n"
-                   << block;
-          return;
-        }
-    }
-    req.rout << "Location: /"<<fName<<"\r\n\r\n";
-    return;
-  };
-};
-
 int maxConcurrentDLs[] = { 1, 2, 4, 8, 10, 15 };
 
 BOOST_DATA_TEST_CASE( test1, bdata::make( generateMirr() ) * bdata::make( withSSL ) * bdata::make( maxConcurrentDLs )  , elem, withSSL, maxDLs )
@@ -454,8 +388,7 @@ BOOST_DATA_TEST_CASE( test1, bdata::make( generateMirr() ) * bdata::make( withSS
 
   std::string metaFile = zypp::str::Format( metaTempl ) % urls;
   web.addRequestHandler( elem.filename, makeMetaFileHandler(  elem.filename, &metaFile ) );
-  web.addRequestHandler( "random", makeJunkBlockHandler( elem.filename ) );
-  web.addRequestHandler( "brokenrange", makeBrokenRangeHandler( elem.filename ) );
+  web.addRequestHandler("random", makeJunkBlockHandler( elem.filename ) );
 
   int expectedDownloads = elem.expectedHandlerDownloads + elem.expectedFileDownloads;
   int startedDownloads = 0;

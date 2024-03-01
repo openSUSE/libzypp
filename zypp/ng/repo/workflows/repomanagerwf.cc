@@ -7,20 +7,28 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "repomanagerwf.h"
+#include "zypp/parser/xml/Reader.h"
 
 #include <zypp-core/ManagedFile.h>
-#include <utility>
 #include <zypp-core/zyppng/pipelines/MTry>
+#include <zypp-core/zyppng/pipelines/Algorithm>
 #include <zypp-media/MediaException>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 
+#include <zypp/ExternalProgram.h>
+#include <zypp/HistoryLog.h>
+#include <zypp/base/Algorithm.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
+#include <zypp/ng/repomanager.h>
 
-namespace zyppng {
+#include <utility>
+#include <fstream>
+
+namespace zyppng::RepoManagerWorkflow {
 
   using namespace zyppng::operators;
 
@@ -158,19 +166,60 @@ namespace zyppng {
     bool _gotMediaError = false;
   };
 
+  template <class RefreshContextRef>
+  auto probeRepoLogic( RefreshContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath)
+  {
+    using namespace zyppng::operators;
+    return ctx->provider()->attachMedia( repo.url(), zyppng::ProvideMediaSpec() )
+      | and_then( [ctx, path = repo.path() ]( auto &&mediaHandle ) {
+        return probeRepoType( ctx, std::forward<decltype(mediaHandle)>(mediaHandle), path );
+    });
+  }
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > RepoManagerWorkflow::probeRepoType(ContextRef ctx, ProvideMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
+  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(ContextRef ctx, ProvideMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
   {
     return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
-  expected<zypp::repo::RepoType> RepoManagerWorkflow::probeRepoType(SyncContextRef ctx, SyncMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath )
+  expected<zypp::repo::RepoType> probeRepoType(SyncContextRef ctx, SyncMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath )
   {
     return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
+  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath )
+  {
+    return probeRepoLogic( std::move(ctx), std::move(repo), std::move(targetPath) );
+  }
 
+  expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath )
+  {
+    return probeRepoLogic( std::move(ctx), std::move(repo), std::move(targetPath) );
+  }
+
+
+  namespace {
+    template <class ZyppContextRef>
+    auto readRepoFileLogic( ZyppContextRef ctx, zypp::Url repoFileUrl )
+    {
+      using namespace zyppng::operators;
+      return ctx->provider()->provide( repoFileUrl, ProvideFileSpec() )
+      | and_then([repoFileUrl]( auto local ){
+        DBG << "reading repo file " << repoFileUrl << ", local path: " << local.file() << std::endl;
+        return repositories_in_file( local.file() );
+      });
+    }
+  }
+
+  AsyncOpRef<expected<std::list<RepoInfo> > > readRepoFile(ContextRef ctx, zypp::Url repoFileUrl)
+  {
+    return readRepoFileLogic( std::move(ctx), std::move(repoFileUrl) );
+  }
+
+  expected<std::list<RepoInfo> > readRepoFile(SyncContextRef ctx, zypp::Url repoFileUrl)
+  {
+    return readRepoFileLogic( std::move(ctx), std::move(repoFileUrl) );
+  }
 
   namespace {
 
@@ -197,48 +246,51 @@ namespace zyppng {
 
         MIL << "Going to CheckIfToRefreshMetadata" << std::endl;
 
-        return mtry( static_cast<void(*)(const zypp::RepoInfo &)>(zypp::assert_alias), _refreshContext->repoInfo() )
-        // | and_then( refreshGeoIPData( { url } ); )  << should this be even here? probably should be put where we attach the medium
-        | and_then( [this](){
+        return assert_alias( _refreshContext->repoInfo() )
+        | and_then( [this] {
 
           const auto &info = _refreshContext->repoInfo();
-
           MIL << "Check if to refresh repo " << _refreshContext->repoInfo().alias() << " at " << _medium.baseUrl() << " (" << info.type() << ")" << std::endl;
+
+          // first check old (cached) metadata
+          return zyppng::RepoManager<ZyppContextRefType>::metadataStatus( info, _refreshContext->repoManagerOptions() );
+        })
+        | and_then( [this](zypp::RepoStatus oldstatus){
+
+          const auto &info = _refreshContext->repoInfo();
 
           _mediarootpath = _refreshContext->rawCachePath();
           zypp::filesystem::assert_dir(_mediarootpath );
 
-          // first check old (cached) metadata
-          zypp::RepoStatus oldstatus = zypp::RepoManagerBaseImpl::metadataStatus( info, _refreshContext->repoManagerOptions() );
-
           if ( oldstatus.empty() ) {
             MIL << "No cached metadata, going to refresh" << std::endl;
-            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(repo::REFRESH_NEEDED) );
+            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REFRESH_NEEDED) );
           }
 
           if ( _medium.baseUrl().schemeIsVolatile() ) {
             MIL << "Never refresh CD/DVD" << std::endl;
-            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(repo::REPO_UP_TO_DATE) );
+            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REPO_UP_TO_DATE) );
           }
 
-          if ( _refreshContext->policy() == repo::RefreshForced ) {
+          if ( _refreshContext->policy() == zypp::RepoManagerFlags::RefreshForced ) {
             MIL << "Forced refresh!" << std::endl;
-            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(repo::REFRESH_NEEDED) );
+            return makeReadyResult( expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REFRESH_NEEDED) );
           }
 
           if ( _medium.baseUrl().schemeIsLocal() ) {
-            _refreshContext->setPolicy( repo::RefreshIfNeededIgnoreDelay );
+            _refreshContext->setPolicy( zypp::RepoManagerFlags::RefreshIfNeededIgnoreDelay );
           }
 
           // Check whether repo.refresh.delay applies...
-          if ( _refreshContext->policy() != repo::RefreshIfNeededIgnoreDelay )
+          if ( _refreshContext->policy() != zypp::RepoManagerFlags::RefreshIfNeededIgnoreDelay )
           {
             // bsc#1174016: Prerequisite to skipping the refresh is that metadata
             // and solv cache status match. They will not, if the repos URL was
             // changed e.g. due to changed repovars.
-            zypp::RepoStatus cachestatus = zypp::RepoManagerBaseImpl::cacheStatus( info, _refreshContext->repoManagerOptions() );
+            expected<zypp::RepoStatus> cachestatus = zyppng::RepoManager<ZyppContextRefType>::cacheStatus( info, _refreshContext->repoManagerOptions() );
+            if ( !cachestatus ) return makeReadyResult( expected<repo::RefreshCheckStatus>::error(cachestatus.error()) );
 
-            if ( oldstatus == cachestatus ) {
+            if ( oldstatus == *cachestatus ) {
               // difference in seconds
               double diff = ::difftime( (zypp::Date::ValueType)zypp::Date::now(), (zypp::Date::ValueType)oldstatus.timestamp() ) / 60;
               const auto refDelay = _refreshContext->zyppContext()->config().repo_refresh_delay();
@@ -251,7 +303,7 @@ namespace zyppng {
                   << "' has been refreshed less than repo.refresh.delay ("
                   << refDelay
                   << ") minutes ago. Advising to skip refresh" << std::endl;
-                  return makeReadyResult( expected<repo::RefreshCheckStatus>::success(repo::REPO_CHECK_DELAYED) );
+                  return makeReadyResult( expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REPO_CHECK_DELAYED) );
                 }
               }
             }
@@ -263,7 +315,7 @@ namespace zyppng {
           return info.type() | [this]( zypp::repo::RepoType repokind ) {
             // if unknown: probe it
             if ( repokind == zypp::repo::RepoType::NONE )
-              return RepoManagerWorkflow::probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() );
+              return probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() );
             return makeReadyResult( expected<zypp::repo::RepoType>::success(repokind) );
           } | and_then([this, oldstatus]( zypp::repo::RepoType repokind ) {
 
@@ -276,13 +328,13 @@ namespace zyppng {
                 // check status
                 if ( oldstatus == newstatus ) {
                   MIL << "repo has not changed" << std::endl;
-                  zypp::RepoManagerBaseImpl::touchIndexFile( _refreshContext->repoInfo(), _refreshContext->repoManagerOptions() );
-                  return expected<repo::RefreshCheckStatus>::success(repo::REPO_UP_TO_DATE);
+                  return zyppng::RepoManager<ZyppContextRefType>::touchIndexFile( _refreshContext->repoInfo(), _refreshContext->repoManagerOptions() )
+                  | and_then([](){ return expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REPO_UP_TO_DATE); });
                 }
                 else { // includes newstatus.empty() if e.g. repo format changed
                   MIL << "repo has changed, going to refresh" << std::endl;
                   MIL << "Old status: " << oldstatus << " New Status: " << newstatus << std::endl;
-                  return expected<repo::RefreshCheckStatus>::success(repo::REFRESH_NEEDED);
+                  return expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REFRESH_NEEDED);
                 }
               });
           });
@@ -297,12 +349,12 @@ namespace zyppng {
     };
   }
 
-  AsyncOpRef<expected<repo::RefreshCheckStatus> > RepoManagerWorkflow::checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver)
   {
     return SimpleExecutor< CheckIfToRefreshMetadataLogic , AsyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
 
-  expected<repo::RefreshCheckStatus> RepoManagerWorkflow::checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver)
+  expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver)
   {
     return SimpleExecutor< CheckIfToRefreshMetadataLogic , SyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
@@ -331,25 +383,20 @@ namespace zyppng {
         : _refreshContext(std::move(refCtx))
         , _progress ( std::move( progressObserver ) )
         , _medium   ( std::move( medium ) )
-      {
-        MIL << "Constructor called" << std::endl;
-      }
+      { }
 
       MaybeAsyncRef<expected<RefreshContextRefType>> execute() {
 
-        // manually resolv the overloaded func
-        constexpr auto assert_alias_cb = static_cast<void (*)( const zypp::RepoInfo &)>(zypp::assert_alias);
-
-        return mtry(assert_alias_cb, _refreshContext->repoInfo() )
-        | and_then( [this](){ return mtry(zypp::assert_urls, _refreshContext->repoInfo() ); })
-        | and_then( [this](){ return RepoManagerWorkflow::checkIfToRefreshMetadata ( _refreshContext, _medium, _progress ); })
+        return assert_alias( _refreshContext->repoInfo() )
+        | and_then( [this](){ return assert_urls( _refreshContext->repoInfo() ); })
+        | and_then( [this](){ return checkIfToRefreshMetadata ( _refreshContext, _medium, _progress ); })
         | and_then( [this]( repo::RefreshCheckStatus status ){
 
           MIL << "RefreshCheckStatus returned: " << status << std::endl;
 
           // check whether to refresh metadata
           // if the check fails for this url, it throws, so another url will be checked
-          if ( status != repo::REFRESH_NEEDED )
+          if ( status != zypp::RepoManagerFlags::REFRESH_NEEDED )
             return makeReadyResult ( expected<RefreshContextRefType>::success( std::move(_refreshContext) ) );
 
           MIL << "Going to refresh metadata from " << _medium.baseUrl() << std::endl;
@@ -357,7 +404,7 @@ namespace zyppng {
           // bsc#1048315: Always re-probe in case of repo format change.
           // TODO: Would be sufficient to verify the type and re-probe
           // if verification failed (or type is RepoType::NONE)
-          return RepoManagerWorkflow::probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() )
+          return probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() )
           | and_then([this]( zypp::repo::RepoType repokind ) {
 
             auto &info = _refreshContext->repoInfo();
@@ -394,129 +441,8 @@ namespace zyppng {
 
             // we are done.
             return expected<RefreshContextRefType>::success( std::move(_refreshContext) );
-          })
-
-          ;
+          });
         });
-
-
-
-
-#if 0
-        assert_alias(info);
-        assert_urls(info);
-
-        // make sure geoIP data is up 2 date
-        refreshGeoIPData( info.baseUrls() );
-
-        // we will throw this later if no URL checks out fine
-        RepoException rexception( info, PL_("Valid metadata not found at specified URL",
-                                            "Valid metadata not found at specified URLs",
-                                            info.baseUrlsSize() ) );
-
-        // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-        media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
-        // try urls one by one
-        for ( RepoInfo::urls_const_iterator it = info.baseUrlsBegin(); it != info.baseUrlsEnd(); ++it )
-        {
-          try
-          {
-            Url url(*it);
-
-            // check whether to refresh metadata
-            // if the check fails for this url, it throws, so another url will be checked
-            if (checkIfToRefreshMetadata(info, url, policy)!=REFRESH_NEEDED)
-              return;
-
-            MIL << "Going to refresh metadata from " << url << endl;
-
-
-            repo::RepoType repokind = info.type();
-            {
-              repo::RepoType probed = probe( *it, info.path() );
-
-
-            }
-
-            aaaa
-
-            if ( ( repokind.toEnum() == RepoType::RPMMD_e ) ||
-                 ( repokind.toEnum() == RepoType::YAST2_e ) )
-            {
-              MediaSetAccess media(url);
-              shared_ptr<repo::Downloader> downloader_ptr;
-
-              MIL << "Creating downloader for [ " << info.alias() << " ]" << endl;
-
-              if ( repokind.toEnum() == RepoType::RPMMD_e ) {
-                downloader_ptr.reset(new yum::Downloader(info, mediarootpath ));
-                if ( _pluginRepoverification.checkIfNeeded() )
-                  downloader_ptr->setPluginRepoverification( _pluginRepoverification ); // susetags is dead so we apply just to yum
-              }
-              else
-                downloader_ptr.reset( new susetags::Downloader(info, mediarootpath) );
-
-              /**
-               * Given a downloader, sets the other repos raw metadata
-               * path as cache paths for the fetcher, so if another
-               * repo has the same file, it will not download it
-               * but copy it from the other repository
-               */
-              for_( it, repoBegin(), repoEnd() )
-              {
-                Pathname cachepath(rawcache_path_for_repoinfo( _options, *it ));
-                if ( PathInfo(cachepath).isExist() )
-                  downloader_ptr->addCachePath(cachepath);
-
-              }
-
-              downloader_ptr->download( media, tmpdir.path() );
-            }
-            else if ( repokind.toEnum() == RepoType::RPMPLAINDIR_e )
-            {
-              // as substitute for real metadata remember the checksum of the directory we refreshed
-              MediaMounter media( url );
-              RepoStatus newstatus = RepoStatus( media.getPathName( info.path() ) );	// dir status
-
-              Pathname productpath( tmpdir.path() / info.path() );
-              filesystem::assert_dir( productpath );
-              newstatus.saveToCookieFile( productpath/"cookie" );
-            }
-            else
-            {
-              ZYPP_THROW(RepoUnknownTypeException( info ));
-            }
-
-            // ok we have the metadata, now exchange
-            // the contents
-            filesystem::exchange( tmpdir.path(), mediarootpath );
-            if ( ! isTmpRepo( info ) )
-              reposManip();	// remember to trigger appdata refresh
-
-            // we are done.
-            return;
-          }
-          catch ( const Exception &e )
-          {
-            ZYPP_CAUGHT(e);
-            ERR << "Trying another url..." << endl;
-
-            // remember the exception caught for the *first URL*
-            // if all other URLs fail, the rexception will be thrown with the
-            // cause of the problem of the first URL remembered
-            if (it == info.baseUrlsBegin())
-              rexception.remember(e);
-            else
-              rexception.addHistory(  e.asUserString() );
-
-          }
-        } // for every url
-        ERR << "No more urls..." << endl;
-        ZYPP_THROW(rexception);
-
-#endif
-
-
       }
 
       RefreshContextRefType _refreshContext;
@@ -527,15 +453,685 @@ namespace zyppng {
     };
   }
 
-  namespace RepoManagerWorkflow {
-    AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver )
-    {
-      return SimpleExecutor<RefreshMetadataLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
-    }
+  AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver )
+  {
+    return SimpleExecutor<RefreshMetadataLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
+  }
 
-    expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver )
+  expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver )
+  {
+    return SimpleExecutor<RefreshMetadataLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
+  }
+
+  namespace {
+    template <class RefreshContextRef>
+    auto refreshMetadataLogic( RefreshContextRef refCtx, ProgressObserverRef progressObserver)
     {
-      return SimpleExecutor<RefreshMetadataLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
+      // small shared helper struct to pass around the exception and to remember that we tried the first URL
+      struct ExHelper {
+        bool isFirst;
+        // we will throw this later if no URL checks out fine
+        zypp::repo::RepoException rexception;
+      };
+
+      auto helper = std::make_shared<ExHelper>( ExHelper{
+       false,
+       zypp::repo::RepoException { refCtx->repoInfo(), PL_("Valid metadata not found at specified URL",
+                                  "Valid metadata not found at specified URLs",
+                                  refCtx->repoInfo().baseUrlsSize() ) }
+      });
+
+      // the actual logic pipeline, attaches the medium and tries to refresh from it
+      auto refreshPipeline = [ refCtx, progressObserver ]( zypp::Url url ){
+        return refCtx->zyppContext()->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
+            | and_then( [ refCtx , progressObserver]( auto mediaHandle ) mutable { return refreshMetadata ( std::move(refCtx), std::move(mediaHandle), progressObserver ); } );
+      };
+
+      // predicate that accepts only valid results, and in addition collects all errors in rexception
+      auto predicate = [ info = refCtx->repoInfo(), helper ]( const expected<RefreshContextRef> &res ) -> bool{
+        if ( !res ) {
+          try {
+            ZYPP_RETHROW( res.error() );
+          } catch ( const zypp::Exception &e ) {
+            ERR << "Trying another url..." << std::endl;
+
+            // remember the exception caught for the *first URL*
+            // if all other URLs fail, the rexception will be thrown with the
+            // cause of the problem of the first URL remembered
+            if ( helper->isFirst ) {
+              helper->rexception.remember( e );
+              helper->isFirst = false;
+            } else {
+              helper->rexception.addHistory( e.asUserString() );
+            }
+          }
+          return false;
+        }
+        return true;
+      };
+
+      // now go over the urls until we find one that works
+      return refCtx->repoInfo().baseUrls()
+        | firstOf( std::move(refreshPipeline), expected<RefreshContextRef>::error( std::make_exception_ptr(NotFoundException()) ), std::move(predicate) )
+        | [helper]( expected<RefreshContextRef> result ) {
+          if ( !result ) {
+            // none of the URLs worked
+            ERR << "No more urls..." << std::endl;
+            return expected<RefreshContextRef>::error( ZYPP_EXCPT_PTR(helper->rexception) );
+          }
+          // we are done.
+          return result;
+        };
     }
   }
+
+  AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProgressObserverRef progressObserver) {
+    return refreshMetadataLogic ( std::move(refCtx), std::move(progressObserver) );
+  }
+
+  expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, ProgressObserverRef progressObserver) {
+    return refreshMetadataLogic ( std::move(refCtx), std::move(progressObserver) );
+  }
+
+
+  namespace {
+
+    template<typename Executor, class OpType>
+    struct BuildCacheLogic : public LogicBase<Executor, OpType>{
+
+      using RefreshContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, repo::AsyncRefreshContextRef, repo::SyncRefreshContextRef>;
+      using ZyppContextRefType    = typename RefreshContextRefType::element_type::ContextRefType;
+      using ZyppContextType       = typename RefreshContextRefType::element_type::ContextType;
+      using ProvideType           = typename ZyppContextType::ProvideType;
+      using MediaHandle           = typename ProvideType::MediaHandle;
+      using ProvideRes            = typename ProvideType::Res;
+
+      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
+
+      BuildCacheLogic( RefreshContextRefType &&refCtx, zypp::RepoManagerFlags::CacheBuildPolicy policy, ProgressObserverRef &&progressObserver )
+        : _refCtx( std::move(refCtx) )
+        , _policy( policy )
+        , _progressObserver( std::move(progressObserver) )
+      {}
+
+      MaybeAsyncRef<expected<RefreshContextRefType>> execute() {
+
+        ProgressObserver::setup ( _progressObserver, zypp::str::form(_("Building repository '%s' cache"), _refCtx->repoInfo().label().c_str()), 100 );
+
+        return assert_alias(_refCtx->repoInfo() )
+        | and_then( mtry( [this] {
+          _mediarootpath   = rawcache_path_for_repoinfo( _refCtx->repoManagerOptions(), _refCtx->repoInfo() ).unwrap();
+          _productdatapath = rawproductdata_path_for_repoinfo( _refCtx->repoManagerOptions(), _refCtx->repoInfo() ).unwrap();
+        }))
+        | and_then( [this] {
+
+          const auto &options = _refCtx->repoManagerOptions();
+
+          if( zypp::filesystem::assert_dir( options.repoCachePath ) ) {
+            auto ex = ZYPP_EXCPT_PTR( zypp::Exception (zypp::str::form( _("Can't create %s"), options.repoCachePath.c_str()) ) );
+            return expected<RepoStatus>::error( std::move(ex) );
+          }
+
+          return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), options );
+
+        }) | and_then( [this](RepoStatus raw_metadata_status ) {
+
+          if ( raw_metadata_status.empty() )
+          {
+             /* if there is no cache at this point, we refresh the raw
+                in case this is the first time - if it's !autorefresh,
+                we may still refresh */
+            return refreshMetadata( _refCtx, ProgressObserver::makeSubTask( _progressObserver ) )
+              | and_then([this]( auto /*refCtx*/) { return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), _refCtx->repoManagerOptions() ); } );
+          }
+          return makeReadyResult( make_expected_success (raw_metadata_status) );
+
+        }) | and_then( [this]( RepoStatus raw_metadata_status ) {
+
+          bool needs_cleaning = false;
+          const auto &info = _refCtx->repoInfo();
+          if ( _refCtx->repoManager()->isCached( info ) )
+          {
+            MIL << info.alias() << " is already cached." << std::endl;
+            expected<RepoStatus> cache_status = RepoManager<ZyppContextRefType>::cacheStatus( info, _refCtx->repoManagerOptions() );
+            if ( !cache_status )
+              return makeReadyResult( expected<void>::error(cache_status.error()) );
+
+            if ( *cache_status == raw_metadata_status )
+            {
+              MIL << info.alias() << " cache is up to date with metadata." << std::endl;
+              if ( _policy == zypp::RepoManagerFlags::BuildIfNeeded )
+              {
+                // On the fly add missing solv.idx files for bash completion.
+                return makeReadyResult(
+                  solv_path_for_repoinfo( _refCtx->repoManagerOptions(), info)
+                  | and_then([this]( zypp::Pathname base ){
+                    if ( ! zypp::PathInfo(base/"solv.idx").isExist() )
+                      return mtry( zypp::sat::updateSolvFileIndex, base/"solv" );
+                    return expected<void>::success ();
+                  })
+                );
+              }
+              else {
+                MIL << info.alias() << " cache rebuild is forced" << std::endl;
+              }
+            }
+
+            needs_cleaning = true;
+          }
+
+          ProgressObserver::start( _progressObserver );
+
+          if (needs_cleaning)
+          {
+            auto r = _refCtx->repoManager()->cleanCache(info);
+            if ( !r )
+              return makeReadyResult( expected<void>::error(r.error()) );
+          }
+
+          MIL << info.alias() << " building cache..." << info.type() << std::endl;
+
+          expected<zypp::Pathname> base = solv_path_for_repoinfo( _refCtx->repoManagerOptions(), info);
+          if ( !base )
+            return makeReadyResult( expected<void>::error(base.error()) );
+
+          if( zypp::filesystem::assert_dir(*base) )
+          {
+            zypp::Exception ex(zypp::str::form( _("Can't create %s"), base->c_str()) );
+            return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(ex)) );
+          }
+
+          if( ! zypp::PathInfo(*base).userMayW() )
+          {
+            zypp::Exception ex(zypp::str::form( _("Can't create cache at %s - no writing permissions."), base->c_str()) );
+            return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(ex)) );
+          }
+
+          zypp::Pathname solvfile = *base / "solv";
+
+          // do we have type?
+          zypp::repo::RepoType repokind = info.type();
+
+          // if the type is unknown, try probing.
+          switch ( repokind.toEnum() )
+          {
+            case zypp::repo::RepoType::NONE_e:
+              // unknown, probe the local metadata
+              repokind = RepoManager<ZyppContextRefType>::probeCache( _productdatapath );
+            break;
+            default:
+            break;
+          }
+
+          MIL << "repo type is " << repokind << std::endl;
+
+          return mountIfRequired( repokind, info )
+          | and_then([this, repokind, solvfile = std::move(solvfile) ]( std::optional<MediaHandle> forPlainDirs ) {
+
+            const auto &info = _refCtx->repoInfo();
+
+            switch ( repokind.toEnum() )
+            {
+              case zypp::repo::RepoType::RPMMD_e :
+              case zypp::repo::RepoType::YAST2_e :
+              case zypp::repo::RepoType::RPMPLAINDIR_e :
+              {
+                // Take care we unlink the solvfile on error
+                zypp::ManagedFile guard( solvfile, zypp::filesystem::unlink );
+
+                zypp::ExternalProgram::Arguments cmd;
+                cmd.push_back( zypp::PathInfo( "/usr/bin/repo2solv" ).isFile() ? "repo2solv" : "repo2solv.sh" );
+                // repo2solv expects -o as 1st arg!
+                cmd.push_back( "-o" );
+                cmd.push_back( solvfile.asString() );
+                cmd.push_back( "-X" );	// autogenerate pattern from pattern-package
+                // bsc#1104415: no more application support // cmd.push_back( "-A" );	// autogenerate application pseudo packages
+
+                if ( repokind == zypp::repo::RepoType::RPMPLAINDIR )
+                {
+                  // recusive for plaindir as 2nd arg!
+                  cmd.push_back( "-R" );
+
+                  std::optional<zypp::Pathname> localPath = forPlainDirs.has_value() ? forPlainDirs->localPath() : zypp::Pathname();
+                  if ( !localPath )
+                    return expected<void>::error( ZYPP_EXCPT_PTR( zypp::repo::RepoException( zypp::str::Format(_("Failed to cache repo %1%")) % _refCtx->repoInfo() )) );
+
+                  // FIXME this does only work for dir: URLs
+                  cmd.push_back( (*localPath / info.path().absolutename()).c_str() );
+                }
+                else
+                  cmd.push_back( _productdatapath.asString() );
+
+                // @TODO async, make this into async pipeline, running repo2solv blocks potentially for a long time
+                zypp::ExternalProgram prog( cmd, zypp::ExternalProgram::Stderr_To_Stdout );
+                std::string errdetail;
+
+                for ( std::string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
+                  WAR << "  " << output;
+                  errdetail += output;
+                }
+
+                int ret = prog.close();
+                if ( ret != 0 )
+                {
+                  zypp::repo::RepoException ex(info, zypp::str::form( _("Failed to cache repo (%d)."), ret ));
+                  ex.addHistory( zypp::str::Str() << prog.command() << std::endl << errdetail << prog.execError() ); // errdetail lines are NL-terminaled!
+                  return expected<void>::error(ZYPP_EXCPT_PTR(ex));
+                }
+
+                // We keep it.
+                guard.resetDispose();
+                return mtry( zypp::sat::updateSolvFileIndex, solvfile ); // content digest for zypper bash completion
+              }
+              break;
+              default:
+                return expected<void>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoUnknownTypeException( info, _("Unhandled repository type") )) );
+              break;
+            }
+          })
+          | and_then([this, raw_metadata_status](){
+            // update timestamp and checksum
+            return _refCtx->repoManager()->setCacheStatus( _refCtx->repoInfo(), raw_metadata_status );
+          });
+        })
+        | and_then( [this](){
+          MIL << "Commit cache.." << std::endl;
+          ProgressObserver::finish( _progressObserver, ProgressObserver::Success );
+          return make_expected_success ( _refCtx );
+
+        })
+        | or_else ( [this]( std::exception_ptr e ) {
+          ProgressObserver::finish( _progressObserver, ProgressObserver::Success );
+          return expected<RefreshContextRefType>::error(e);
+        });
+      }
+
+    private:
+      MaybeAsyncRef<expected<std::optional<MediaHandle>>> mountIfRequired ( zypp::repo::RepoType repokind, zypp::RepoInfo info  ) {
+        if ( repokind != zypp::repo::RepoType::RPMPLAINDIR )
+          return makeReadyResult( make_expected_success( std::optional<MediaHandle>() ));
+
+        return _refCtx->zyppContext()->provider()->attachMedia( info.url(), ProvideMediaSpec() )
+        | and_then( [this]( MediaHandle handle ) {
+          return makeReadyResult( make_expected_success( std::optional<MediaHandle>( std::move(handle)) ));
+        });
+      }
+
+    private:
+      RefreshContextRefType _refCtx;
+      zypp::RepoManagerFlags::CacheBuildPolicy _policy;
+      ProgressObserverRef   _progressObserver;
+
+      zypp::Pathname _mediarootpath;
+      zypp::Pathname _productdatapath;
+    };
+  }
+
+  AsyncOpRef<expected<repo::AsyncRefreshContextRef> > buildCache(repo::AsyncRefreshContextRef refCtx, zypp::RepoManagerFlags::CacheBuildPolicy policy, ProgressObserverRef progressObserver)
+  {
+    return SimpleExecutor<BuildCacheLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), policy, std::move(progressObserver));
+  }
+
+  expected<repo::SyncRefreshContextRef> buildCache(repo::SyncRefreshContextRef refCtx, zypp::RepoManagerFlags::CacheBuildPolicy policy, ProgressObserverRef progressObserver)
+  {
+    return SimpleExecutor<BuildCacheLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), policy, std::move(progressObserver));
+  }
+
+
+  // Add repository logic
+  namespace {
+
+    template<typename Executor, class OpType>
+    struct AddRepoLogic : public LogicBase<Executor, OpType>{
+
+      using RepoManagerPtrType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncRepoManagerRef, SyncRepoManagerRef>;
+
+      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
+
+      AddRepoLogic( RepoManagerPtrType &&repoMgrRef, RepoInfo &&info, ProgressObserverRef &&myProgress )
+        : _repoMgrRef( std::move(repoMgrRef) )
+        , _info( std::move(info) )
+        , _myProgress ( std::move(myProgress) )
+      {}
+
+      MaybeAsyncRef<expected<RepoInfo> > execute() {
+        using namespace zyppng::operators;
+
+        return  assert_alias(_info)
+        | and_then([this]( ) {
+
+          MIL << "Try adding repo " << _info << std::endl;
+          ProgressObserver::setup( _myProgress, zypp::str::form(_("Adding repository '%s'"), _info.label().c_str()) );
+          ProgressObserver::start( _myProgress );
+
+          if ( _repoMgrRef->repos().find(_info) != _repoMgrRef->repos().end() )
+            return makeReadyResult( expected<RepoInfo>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(_info)) ) );
+
+          // check the first url for now
+          if ( _repoMgrRef->options().probe )
+          {
+            DBG << "unknown repository type, probing" << std::endl;
+            return assert_urls(_info)
+            | and_then([this]{ return probeRepoType( _repoMgrRef->zyppContext(), _info ); })
+            | and_then([this]( zypp::repo::RepoType probedtype ) {
+
+              if ( probedtype == zypp::repo::RepoType::NONE )
+                return expected<RepoInfo>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoUnknownTypeException(_info)) );
+
+              RepoInfo tosave = _info;
+              tosave.setType(probedtype);
+              return make_expected_success(tosave);
+            });
+          }
+          return makeReadyResult( make_expected_success(_info) );
+        })
+        | inspect( operators::setProgress( _myProgress, 50 ) )
+        | and_then( [this]( RepoInfo tosave ){ return _repoMgrRef->addProbedRepository( tosave, tosave.type() ); })
+        | and_then( [this]( RepoInfo updated ) {
+          ProgressObserver::finish( _myProgress );
+          MIL << "done" << std::endl;
+          return expected<RepoInfo>::success( updated );
+        })
+        | or_else( [this]( std::exception_ptr e) {
+          ProgressObserver::finish ( _myProgress, ProgressObserver::Error );
+          MIL << "done" << std::endl;
+          return expected<RepoInfo>::error(e);
+        })
+        ;
+      }
+
+      RepoManagerPtrType _repoMgrRef;
+      RepoInfo _info;
+      ProgressObserverRef _myProgress;
+    };
+  };
+
+  AsyncOpRef<expected<RepoInfo> > addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress )
+  {
+    return SimpleExecutor<AddRepoLogic, AsyncOp<expected<RepoInfo>>>::run( std::move(mgr), std::move(info), std::move(myProgress) );
+  }
+
+  expected<RepoInfo> addRepository( SyncRepoManagerRef mgr, const RepoInfo &info, ProgressObserverRef myProgress )
+  {
+    return SimpleExecutor<AddRepoLogic, SyncOp<expected<RepoInfo>>>::run( std::move(mgr), RepoInfo(info), std::move(myProgress) );
+  }
+
+  namespace {
+
+    template<typename Executor, class OpType>
+    struct AddReposLogic : public LogicBase<Executor, OpType>{
+
+      using RepoManagerPtrType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncRepoManagerRef, SyncRepoManagerRef>;
+      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
+
+      AddReposLogic( RepoManagerPtrType &&repoMgrRef, zypp::Url &&url, ProgressObserverRef &&myProgress )
+        : _repoMgrRef( std::move(repoMgrRef) )
+        , _url( std::move(url) )
+        , _myProgress ( std::move(myProgress) )
+      {}
+
+      MaybeAsyncRef<expected<void>> execute() {
+        using namespace zyppng::operators;
+
+        return mtry( zypp::repo::RepoVariablesUrlReplacer(), _url )
+        | and_then([this]( zypp::Url repoFileUrl ) { return readRepoFile( _repoMgrRef->zyppContext(), std::move(repoFileUrl) ); } )
+        | and_then([this]( std::list<RepoInfo> repos ) {
+
+          for ( std::list<RepoInfo>::const_iterator it = repos.begin();
+                it != repos.end();
+                ++it )
+          {
+            // look if the alias is in the known repos.
+            for_ ( kit, _repoMgrRef->repoBegin(), _repoMgrRef->repoEnd() )
+            {
+              if ( (*it).alias() == (*kit).alias() )
+              {
+                ERR << "To be added repo " << (*it).alias() << " conflicts with existing repo " << (*kit).alias() << std::endl;
+                return expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(*it)));
+              }
+            }
+          }
+
+          std::string filename = zypp::Pathname(_url.getPathName()).basename();
+          if ( filename == zypp::Pathname() )
+          {
+            // TranslatorExplanation '%s' is an URL
+            return expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoException(zypp::str::form( _("Invalid repo file name at '%s'"), _url.asString().c_str() ))));
+          }
+
+          const auto &options = _repoMgrRef->options();
+
+          // assert the directory exists
+          zypp::filesystem::assert_dir( options.knownReposPath );
+
+          zypp::Pathname repofile = _repoMgrRef->generateNonExistingName( options.knownReposPath, filename );
+          // now we have a filename that does not exists
+          MIL << "Saving " << repos.size() << " repo" << ( repos.size() ? "s" : "" ) << " in " << repofile << std::endl;
+
+          std::ofstream file(repofile.c_str());
+          if (!file)
+          {
+            // TranslatorExplanation '%s' is a filename
+            return expected<void>::error(ZYPP_EXCPT_PTR( zypp::Exception(zypp::str::form( _("Can't open file '%s' for writing."), repofile.c_str() ))));
+          }
+
+          for ( std::list<RepoInfo>::iterator it = repos.begin();
+                it != repos.end();
+                ++it )
+          {
+            MIL << "Saving " << (*it).alias() << std::endl;
+
+            const auto &rawCachePath = rawcache_path_for_repoinfo( options, *it );
+            if ( !rawCachePath ) return expected<void>::error(rawCachePath.error());
+
+            const auto &pckCachePath = packagescache_path_for_repoinfo( options, *it ) ;
+            if ( !pckCachePath ) return expected<void>::error(pckCachePath.error());
+
+            it->dumpAsIniOn(file);
+            it->setFilepath(repofile);
+            it->setMetadataPath( *rawCachePath );
+            it->setPackagesPath( *pckCachePath );
+            _repoMgrRef->reposManip().insert(*it);
+
+            zypp::HistoryLog( _repoMgrRef->options().rootDir).addRepository(*it);
+          }
+
+          MIL << "done" << std::endl;
+          return expected<void>::success();
+        });
+      }
+
+    private:
+      RepoManagerPtrType _repoMgrRef;
+      zypp::Url _url;
+      ProgressObserverRef _myProgress;
+    };
+
+  }
+
+  AsyncOpRef<expected<void>> addRepositories( AsyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress )
+  {
+    return SimpleExecutor<AddReposLogic, AsyncOp<expected<void>>>::run( std::move(mgr), std::move(url), std::move(myProgress) );
+  }
+
+  expected<void> addRepositories( SyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress)
+  {
+    return SimpleExecutor<AddReposLogic, SyncOp<expected<void>>>::run( std::move(mgr), std::move(url), std::move(myProgress) );
+  }
+
+
+  namespace {
+
+    template<typename Executor, class OpType>
+    struct RefreshGeoIpLogic : public LogicBase<Executor, OpType>{
+      protected:
+        ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
+
+      public:
+        using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
+        using ZyppContextType    = typename ZyppContextRefType::element_type;
+        using ProvideType        = typename ZyppContextType::ProvideType;
+        using MediaHandle        = typename ProvideType::MediaHandle;
+        using ProvideRes         = typename ProvideType::Res;
+
+
+        RefreshGeoIpLogic( ZyppContextRefType &&zyppCtx, RepoInfo::url_set &&urls )
+          : _zyppCtx( std::move(zyppCtx) )
+          , _urls( std::move(urls) )
+        { }
+
+        MaybeAsyncRef<expected<void>> execute() {
+
+          using namespace zyppng::operators;
+
+          if ( !_zyppCtx->config().geoipEnabled() ) {
+            MIL << "GeoIp disabled via ZConfig, not refreshing the GeoIP information." << std::endl;
+            return makeReadyResult(expected<void>::success());
+          }
+
+          std::vector<std::string> hosts;
+          for ( const auto &baseUrl : _urls ) {
+            const auto &host = baseUrl.getHost();
+            if ( zypp::any_of( _zyppCtx->config().geoipHostnames(), [&host]( const auto &elem ){ return ( zypp::str::compareCI( host, elem ) == 0 ); } ) ) {
+              hosts.push_back( host );
+              break;
+            }
+          }
+
+          if ( hosts.empty() ) {
+            MIL << "No configured geoip URL found, not updating geoip data" << std::endl;
+            return makeReadyResult(expected<void>::success());
+          }
+
+          _geoIPCache = _zyppCtx->config().geoipCachePath();
+
+          if ( zypp::filesystem::assert_dir( _geoIPCache ) != 0 ) {
+            MIL << "Unable to create cache directory for GeoIP." << std::endl;
+            return makeReadyResult(expected<void>::success());
+          }
+
+          if ( !zypp::PathInfo(_geoIPCache).userMayRWX() ) {
+            MIL << "No access rights for the GeoIP cache directory." << std::endl;
+            return  makeReadyResult(expected<void>::success());
+          }
+
+          // remove all older cache entries
+          zypp::filesystem::dirForEachExt( _geoIPCache, []( const zypp::Pathname &dir, const zypp::filesystem::DirEntry &entry ) {
+            if ( entry.type != zypp::filesystem::FT_FILE )
+              return true;
+
+            zypp::PathInfo pi( dir/entry.name );
+            auto age = std::chrono::system_clock::now() - std::chrono::system_clock::from_time_t( pi.mtime() );
+            if ( age < std::chrono::hours(24) )
+              return true;
+
+            MIL << "Removing GeoIP file for " << entry.name << " since it's older than 24hrs." << std::endl;
+            zypp::filesystem::unlink( dir/entry.name );
+            return true;
+          });
+
+          auto firstOfCb = [this]( std::string hostname ) {
+
+            // do not query files that are still there
+            if ( zypp::PathInfo( _geoIPCache / hostname ).isExist() )  {
+              MIL << "Skipping GeoIP request for " << hostname << " since a valid cache entry exists." << std::endl;
+              return makeReadyResult(false);
+            }
+
+            MIL << "Query GeoIP for " << hostname << std::endl;
+
+            zypp::Url url;
+            try {
+              url.setHost(hostname);
+              url.setScheme("https");
+
+            } catch(const zypp::Exception &e ) {
+              ZYPP_CAUGHT(e);
+              MIL << "Ignoring invalid GeoIP hostname: " << hostname << std::endl;
+              return makeReadyResult(false);
+            }
+
+            // always https ,but attaching makes things easier
+            return _zyppCtx->provider()->attachMedia( url, ProvideMediaSpec() )
+            | and_then( [this]( MediaHandle provideHdl ) { return _zyppCtx->provider()->provide( provideHdl, "/geopip", ProvideFileSpec() ); })
+            | inspect_err( [hostname]( const std::exception_ptr& ){ MIL << "Failed to query GeoIP from hostname: " << hostname << std::endl; } )
+            | and_then( [hostname, this]( ProvideRes provideRes ) {
+
+              // here we got something from the server, we will stop after this hostname and mark the process as success()
+
+              constexpr auto writeHostToFile = []( const zypp::Pathname &fName, const std::string &host ){
+                std::ofstream out;
+                out.open( fName.asString(), std::ios_base::trunc );
+                if ( out.is_open() ) {
+                  out << host << std::endl;
+                } else {
+                  MIL << "Failed to create/open GeoIP cache file " << fName << std::endl;
+                }
+              };
+
+              std::string geoipMirror;
+              try {
+                zypp::xml::Reader reader( provideRes.file() );
+                if ( reader.seekToNode( 1, "host" ) ) {
+                  const auto &str = reader.nodeText().asString();
+
+                  // make a dummy URL to ensure the hostname is valid
+                  zypp::Url testUrl;
+                  testUrl.setHost(str);
+                  testUrl.setScheme("https");
+
+                  if ( testUrl.isValid() ) {
+                    MIL << "Storing geoIP redirection: " << hostname << " -> " << str << std::endl;
+                    geoipMirror = str;
+                  }
+
+                } else {
+                  MIL << "No host entry or empty file returned for GeoIP, remembering for 24hrs" << std::endl;
+                }
+              } catch ( const zypp::Exception &e ) {
+                ZYPP_CAUGHT(e);
+                MIL << "Empty or invalid GeoIP file, not requesting again for 24hrs" << std::endl;
+              }
+
+              writeHostToFile( _geoIPCache / hostname, geoipMirror );
+              return expected<void>::success(); // need to return a expected<> due to and_then requirements
+            })
+            | []( expected<void> res ) { return res.is_valid(); };
+          };
+
+          return std::move(hosts)
+          | firstOf( std::move(firstOfCb), false, zyppng::detail::ContinueUntilValidPredicate() )
+          | []( bool foundGeoIP ){
+
+            if ( foundGeoIP ) {
+              MIL << "Successfully queried GeoIP data." << std::endl;
+              return expected<void>::success ();
+            }
+
+            MIL << "Failed to query GeoIP data." << std::endl;
+            return expected<void>::error( std::make_exception_ptr( zypp::Exception("No valid geoIP url found" )) );
+
+          };
+        }
+
+    private:
+        ZyppContextRefType _zyppCtx;
+        RepoInfo::url_set  _urls;
+        zypp::Pathname     _geoIPCache;
+
+    };
+  }
+
+  AsyncOpRef<expected<void> > refreshGeoIPData( ContextRef ctx, RepoInfo::url_set urls )
+  {
+    return SimpleExecutor<RefreshGeoIpLogic, AsyncOp<expected<void>>>::run( std::move(ctx), std::move(urls) );
+  }
+
+  expected<void> refreshGeoIPData( SyncContextRef ctx, RepoInfo::url_set urls )
+  {
+    return SimpleExecutor<RefreshGeoIpLogic, SyncOp<expected<void>>>::run( std::move(ctx), std::move(urls) );
+  }
+
+
+
 }

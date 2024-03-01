@@ -30,19 +30,70 @@ namespace zyppng {
     ZYPP_ADD_CREATE_FUNC(ProgressObserver)
 
   public:
+
+    enum FinishResult {
+      Success,
+      Error
+    };
+
     ZYPP_DECL_PRIVATE_CONSTR_ARGS(ProgressObserver, const std::string &label = std::string(), int steps = 100 );
 
     void    setBaseSteps( int steps );
     int     baseSteps   ( ) const;
     int     steps       ( ) const;
+    bool    started     ( ) const;
 
+    /*!
+     * Tells the \ref ProgressObserver to start sending signals on updates.
+     * If start was not called, no progress update or finished signals are emitted.
+     *
+     * Calling start will also trigger all parent observers to be started, but not the children
+     */
+    void    start       ( );
     void    reset       ( );
     void    setCurrent  ( double curr );
-    void    setFinished ( );
+    void    setFinished ( FinishResult result = Success );
     void    inc         ( double inc = 1.0, const std::optional<std::string> &newLabel = {} );
 
     double  progress() const;
     double  current()  const;
+
+
+    inline static ProgressObserverRef makeSubTask( ProgressObserverRef parentProgress, float weight = 1.0, const std::string &label = std::string(), int steps = 100  ) {
+      if ( parentProgress ) return parentProgress->makeSubTask( weight, label, steps );
+      return nullptr;
+    }
+
+    inline static void start ( ProgressObserverRef progress ) {
+      if ( progress ) progress->start();
+    }
+
+    inline static void setup( ProgressObserverRef progress, const std::string &label = std::string(), int steps = 100  ) {
+      if ( progress ) {
+        progress->setLabel( label );
+        progress->setBaseSteps ( steps );
+      }
+    }
+
+    inline static void increase( ProgressObserverRef progress,  double inc = 1.0, const std::optional<std::string> &newLabel = {} ) {
+      if ( progress ) progress->inc ( inc, newLabel );
+    }
+
+    inline static void setCurrent ( ProgressObserverRef progress, double curr ) {
+      if ( progress ) progress->setCurrent ( curr );
+    }
+
+    inline static void setLabel ( ProgressObserverRef progress, const std::string &label ) {
+      if ( progress ) progress->setLabel ( label );
+    }
+
+    inline static void setSteps ( ProgressObserverRef progress, int steps ) {
+      if ( progress ) progress->setBaseSteps ( steps );
+    }
+
+    inline static void finish ( ProgressObserverRef progress, ProgressObserver::FinishResult result = ProgressObserver::Success ) {
+      if ( progress ) progress->setFinished ( result );
+    }
 
     const std::vector<zyppng::ProgressObserverRef> &children();
 
@@ -51,28 +102,32 @@ namespace zyppng {
 
     void registerSubTask ( const ProgressObserverRef& child, float weight = 1.0 );
 
+    ProgressObserverRef makeSubTask( float weight = 1.0 ,const std::string &label = std::string(), int steps = 100 );
+
     zypp::ProgressData::ReceiverFnc makeProgressDataReceiver ();
 
+    SignalProxy<void ( ProgressObserver &sender  )> sigStarted ();
     SignalProxy<void ( ProgressObserver &sender, const std::string &str )> sigLabelChanged ();
     SignalProxy<void ( ProgressObserver &sender, double steps )>    sigStepsChanged();
     SignalProxy<void ( ProgressObserver &sender, double current ) > sigValueChanged();
     SignalProxy<void ( ProgressObserver &sender, double progress )> sigProgressChanged();
-    SignalProxy<void ( ProgressObserver &sender )> sigFinished();
+    SignalProxy<void ( ProgressObserver &sender, FinishResult result )> sigFinished();
     SignalProxy<void ( ProgressObserver &sender, ProgressObserverRef child )> sigNewSubprogress();
 
   };
-
 
   namespace operators {
 
     namespace detail {
 
       enum class progress_helper_mode {
+        Start,
         Increase,
-        Set
+        Set,
+        Finish
       };
 
-      template <auto mode = progress_helper_mode::Increase>
+      template <progress_helper_mode mode>
       struct progress_helper {
 
         progress_helper( ProgressObserverRef &&progressObserver, std::optional<std::string> &&newStr, double inc )
@@ -82,7 +137,16 @@ namespace zyppng {
         {}
 
         template <typename T>
-        void operator() ( T && ) {
+        auto operator() ( T &&t ) {
+          update();
+          return std::forward<T>(t);
+        }
+
+        void operator()() {
+          update();
+        }
+
+        void update() {
           if ( _progressObserver ) {
             if constexpr ( mode == progress_helper_mode::Increase ) {
               _progressObserver->inc( _progressInc, _newString );
@@ -99,6 +163,62 @@ namespace zyppng {
         std::optional<std::string> _newString;
         double _progressInc;
       };
+
+      template <>
+      struct progress_helper<progress_helper_mode::Start>
+      {
+        progress_helper( ProgressObserverRef &&progressObserver )
+          : _progressObserver( std::move(progressObserver) ){}
+
+        template <typename T>
+        auto operator() ( T &&t ) {
+          update();
+          return std::forward<T>(t);
+        }
+
+        void operator()() {
+          update();
+        }
+
+        void update() {
+          if ( _progressObserver ) { _progressObserver->start(); }
+        }
+
+        private:
+          ProgressObserverRef _progressObserver;
+      };
+
+      template <>
+      struct progress_helper<progress_helper_mode::Finish>
+      {
+        progress_helper( ProgressObserverRef &&progressObserver, ProgressObserver::FinishResult result = ProgressObserver::Success )
+          : _progressObserver( std::move(progressObserver) ){}
+
+        template <typename T>
+        auto operator() ( T &&t ) {
+          update();
+          return std::forward<T>(t);
+        }
+
+        void operator()() {
+          update();
+        }
+
+        void update() {
+          if ( _progressObserver ) { _progressObserver->setFinished( _result ); }
+        }
+
+        private:
+          ProgressObserverRef _progressObserver;
+          ProgressObserver::FinishResult _result;
+      };
+    }
+
+    /*!
+     * Starts the the given \ref ProgressObserver, forwarding the pipeline value without touching it
+     */
+    inline auto startProgress( ProgressObserverRef progressObserver ) {
+      return detail::progress_helper<detail::progress_helper_mode::Start>( std::move(progressObserver) );
     }
 
     /*!
@@ -120,7 +240,7 @@ namespace zyppng {
     /*!
      * Sets the label value in the given \ref ProgressObserver, forwarding the pipeline value without touching it
      */
-    inline auto setProgressLabel( ProgressObserverRef progressObserver, std::string &&newStr ) {
+    inline auto setProgressLabel( ProgressObserverRef progressObserver, std::string newStr ) {
       // use the Increase functor, it allows us to let the progress value untouched and just sets the strings
       return detail::progress_helper<detail::progress_helper_mode::Increase>( std::move(progressObserver), std::move(newStr), 0.0 );
     }
@@ -128,11 +248,8 @@ namespace zyppng {
     /*!
      * Sets the the given \ref ProgressObserver to finished, forwarding the pipeline value without touching it
      */
-    inline auto finishProgress( ProgressObserverRef progressObserver ) {
-      return [ progressObserver = std::move(progressObserver) ]( auto &&val ) {
-        if ( progressObserver ) progressObserver->setFinished ();
-        return std::forward<decltype(val)>(val);
-      };
+    inline auto finishProgress( ProgressObserverRef progressObserver, ProgressObserver::FinishResult result = ProgressObserver::Success ) {
+      return detail::progress_helper<detail::progress_helper_mode::Finish>( std::move(progressObserver), result );
     }
 
 

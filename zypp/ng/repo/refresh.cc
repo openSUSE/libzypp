@@ -7,7 +7,6 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "refresh.h"
-#include <zypp/zypp_detail/repomanagerbase_p.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-core/fs/PathInfo.h>
@@ -16,35 +15,39 @@
 namespace zyppng::repo {
 
   template<typename ZyppContextRefType>
-  RefreshContext<ZyppContextRefType>::RefreshContext( private_constr_t, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, zypp::RepoManagerOptions &&opts )
+  RefreshContext<ZyppContextRefType>::RefreshContext( private_constr_t, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextRefType> &&repoManager )
     : _zyppContext( std::move(zyppContext) )
+    , _repoManager( std::move(repoManager) )
     , _repoInfo( std::move(info) )
     , _rawCachePath( std::move(rawCachePath) )
     , _tmpDir( std::move(tempDir) )
-    , _repoManagerOptions( std::move(opts) )
   {}
 
   template<typename ZyppContextRefType>
-  expected<RefreshContextRef<ZyppContextRefType>> RefreshContext<ZyppContextRefType>::create( ZyppContextRefType zyppContext, zypp::RepoInfo info, zypp::RepoManagerOptions opts )
+  expected<RefreshContextRef<ZyppContextRefType>> RefreshContext<ZyppContextRefType>::create( ZyppContextRefType zyppContext, zypp::RepoInfo info, RepoManagerRef<ZyppContextRefType> repoManager )
   {
+    using namespace operators;
     using CtxType    = RefreshContext<ZyppContextRefType>;
     using CtxRefType = RefreshContextRef<ZyppContextRefType>;
 
-    zypp::Pathname rawCachePath = zypp::rawcache_path_for_repoinfo ( opts, info );
-    zypp::filesystem::TmpDir tmpdir( zypp::filesystem::TmpDir::makeSibling( rawCachePath, 0755 ) );
-    if( tmpdir.path().empty() && geteuid() != 0 ) {
-      tmpdir = zypp::filesystem::TmpDir();  // non-root user may not be able to write the cache
-    }
-    if( tmpdir.path().empty() ) {
-      return expected<CtxRefType>::error( ZYPP_EXCPT_PTR(zypp::Exception(_("Can't create metadata cache directory."))) );
-    }
+    return rawcache_path_for_repoinfo ( repoManager->options(), info )
+    | and_then( [&]( zypp::Pathname rawCachePath ) {
 
-    return expected<CtxRefType>::success( std::make_shared<CtxType>( private_constr_t{}
-                                                    , std::move(zyppContext)
-                                                    , std::move(info)
-                                                    , std::move(rawCachePath)
-                                                    , std::move(tmpdir)
-                                                    , std::move(opts)));
+      zypp::filesystem::TmpDir tmpdir( zypp::filesystem::TmpDir::makeSibling( rawCachePath, 0755 ) );
+      if( tmpdir.path().empty() && geteuid() != 0 ) {
+        tmpdir = zypp::filesystem::TmpDir();  // non-root user may not be able to write the cache
+      }
+      if( tmpdir.path().empty() ) {
+        return expected<CtxRefType>::error( ZYPP_EXCPT_PTR(zypp::Exception(_("Can't create metadata cache directory."))) );
+      }
+
+      return expected<CtxRefType>::success( std::make_shared<CtxType>( private_constr_t{}
+                                                      , std::move(zyppContext)
+                                                      , std::move(info)
+                                                      , std::move(rawCachePath)
+                                                      , std::move(tmpdir)
+                                                      , std::move(repoManager)));
+    } );
   }
 
   template<typename ZyppContextRefType>
@@ -90,9 +93,15 @@ namespace zyppng::repo {
   }
 
   template<typename ZyppContextRefType>
+  const RepoManagerRef<ZyppContextRefType> &RefreshContext<ZyppContextRefType>::repoManager() const
+  {
+    return _repoManager;
+  }
+
+  template<typename ZyppContextRefType>
   const zypp::RepoManagerOptions &RefreshContext<ZyppContextRefType>::repoManagerOptions() const
   {
-    return _repoManagerOptions;
+    return _repoManager->options();
   }
 
   template<typename ZyppContextRefType>
@@ -102,7 +111,7 @@ namespace zyppng::repo {
   }
 
   template<typename ZyppContextRefType>
-  void RefreshContext<ZyppContextRefType>::setPolicy(repo::RawMetadataRefreshPolicy newPolicy)
+  void RefreshContext<ZyppContextRefType>::setPolicy(RawMetadataRefreshPolicy newPolicy)
   {
     _policy = newPolicy;
   }

@@ -12,8 +12,10 @@
 #include <zypp/Url.h>
 #include <zypp/ng/userrequest.h>
 #include <zypp-media/ng/Provide>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/repo/workflows/repomanagerwf.h>
+#include <zypp/ng/repomanager.h>
 
 #include <zypp-tui/Application>
 #include <zypp-tui/output/OutNormal.h>
@@ -22,8 +24,6 @@
 #include <clocale>
 #include <iostream>
 #include <numeric>
-
-
 
 #include <termios.h>
 #include <fstream>
@@ -160,28 +160,18 @@ int main ( int argc, char *argv[] )
     observer->sigProgressChanged().connect([&](zyppng::ProgressObserver &o, double v){
       out.progress( "dl-repo", zypp::str::Str() << "Ref Progress changed to " << o.current() << "/" << o.steps () , o.progress () );
     });
-    observer->sigFinished().connect([&](zyppng::ProgressObserver &){
-      out.info ( zypp::str::Str() << "Progress moved to finished" << std::endl ); }
+    observer->sigFinished().connect([&](zyppng::ProgressObserver &, zyppng::ProgressObserver::FinishResult finRes ){
+      out.info ( zypp::str::Str() << "Progress moved to finished with res: " << finRes << std::endl ); }
     );
 
-    auto refCtx = zyppng::repo::AsyncRefreshContext::create ( ctx, ri, zypp::RepoManagerOptions(destdir) );
-    if ( !refCtx )
-      std::rethrow_exception ( refCtx.error () );
-
-    auto op = std::move(refCtx)
-        | and_then( [&](zyppng::repo::AsyncRefreshContextRef &&refCtx ) {
-          return refCtx->zyppContext()->provider()->attachMedia( ri.url(), zyppng::ProvideMediaSpec( ri.name() ) )
-                | and_then( [&, refCtx = refCtx ]( auto &&mediaHandle ) mutable {
-                    return zyppng::RepoManagerWorkflow::refreshMetadata( std::move(refCtx), std::move(mediaHandle), observer );
-                });
-        });
 
     out.progressStart("dl-repo", "Refreshing repositories");
-    ctx->execute ( op );
-    observer->setFinished ();
-    out.progressEnd("dl-repo", "Refreshing repositories",  !op->get().is_valid() );
 
-    auto &result = op->get();
+    auto repMgr = zyppng::AsyncRepoManager::create( ctx, zypp::RepoManagerOptions(destdir) ).unwrap();
+    auto result = repMgr->refreshMetadata( ri, zypp::RepoManagerFlags::RefreshIfNeeded, observer );
+    observer->setFinished ();
+    out.progressEnd("dl-repo", "Refreshing repositories",  !result.is_valid() );
+
     if ( !result.is_valid () )
       std::rethrow_exception( result.error() );
 

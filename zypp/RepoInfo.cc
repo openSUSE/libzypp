@@ -542,7 +542,7 @@ namespace zypp
 
 
   Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
-    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::create(), *this, keyID_r, targetDirectory_r );
+    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::defaultContext(), *this, keyID_r, targetDirectory_r );
   }
 
   void RepoInfo::addBaseUrl( Url url_r )

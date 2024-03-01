@@ -27,6 +27,7 @@
 #include <zypp/repo/ServiceType.h>
 #include <zypp/ServiceInfo.h>
 #include <zypp/RepoStatus.h>
+#include <zypp/RepoManagerFlags.h>
 #include <zypp/RepoManagerOptions.h>
 #include <utility>
 #include <zypp-core/ui/ProgressData>
@@ -77,30 +78,24 @@ namespace zypp
    /** Dtor */
     ~RepoManager();
 
-    enum RawMetadataRefreshPolicy
-    {
-      RefreshIfNeeded,
-      RefreshForced,
-      RefreshIfNeededIgnoreDelay
-    };
+    using RawMetadataRefreshPolicy = RepoManagerFlags::RawMetadataRefreshPolicy;
+    static constexpr RawMetadataRefreshPolicy RefreshIfNeeded             = RepoManagerFlags::RefreshIfNeeded;
+    static constexpr RawMetadataRefreshPolicy RefreshForced               = RepoManagerFlags::RefreshForced;
+    static constexpr RawMetadataRefreshPolicy RefreshIfNeededIgnoreDelay  = RepoManagerFlags::RefreshIfNeededIgnoreDelay;
 
-    enum CacheBuildPolicy
-    {
-      BuildIfNeeded,
-      BuildForced
-    };
+    using CacheBuildPolicy = RepoManagerFlags::CacheBuildPolicy;
+    static constexpr CacheBuildPolicy BuildIfNeeded = CacheBuildPolicy::BuildIfNeeded;
+    static constexpr CacheBuildPolicy BuildForced   = CacheBuildPolicy::BuildForced;
 
     /** Flags for tuning RefreshService */
-    enum RefreshServiceBit
-    {
-      RefreshService_restoreStatus	= (1<<0),	///< Force restoring repo enabled/disabled status
-      RefreshService_forceRefresh	= (1<<1),	///< Force refresh even if TTL is not reached
-    };
-    ZYPP_DECLARE_FLAGS(RefreshServiceFlags,RefreshServiceBit);
+    using RefreshServiceBit = RepoManagerFlags::RefreshServiceBit;
+    static constexpr RefreshServiceBit RefreshService_restoreStatus = RefreshServiceBit::RefreshService_restoreStatus;
+    static constexpr RefreshServiceBit RefreshService_forceRefresh  = RefreshServiceBit::RefreshService_forceRefresh;
+
+    using RefreshServiceFlags = RepoManagerFlags::RefreshServiceFlags;
 
     /** Options tuning RefreshService */
-    using RefreshServiceOptions = RefreshServiceFlags;
-
+    using RefreshServiceOptions = RepoManagerFlags::RefreshServiceFlags;
 
     /** \name Known repositories.
      *
@@ -142,14 +137,10 @@ namespace zypp
     */
     RepoStatus metadataStatus( const RepoInfo &info ) const;
 
-    /**
-     * Possibly return state of checkIfRefreshMEtadata function
-     */
-    enum RefreshCheckStatus {
-      REFRESH_NEEDED,  /**< refresh is needed */
-      REPO_UP_TO_DATE, /**< repository not changed */
-      REPO_CHECK_DELAYED     /**< refresh is delayed due to settings */
-    };
+    using RefreshCheckStatus = RepoManagerFlags::RefreshCheckStatus;
+    static constexpr RefreshCheckStatus REFRESH_NEEDED     = RefreshCheckStatus::REFRESH_NEEDED;     /**< refresh is needed */
+    static constexpr RefreshCheckStatus REPO_UP_TO_DATE    = RefreshCheckStatus::REPO_UP_TO_DATE;    /**< repository not changed */
+    static constexpr RefreshCheckStatus REPO_CHECK_DELAYED = RefreshCheckStatus::REPO_CHECK_DELAYED; /**< refresh is delayed due to settings */
 
     /**
      * Checks whether to refresh metadata for specified repository and url.
@@ -655,7 +646,6 @@ namespace zypp
     /** Pointer to implementation */
     RWCOW_pointer<Impl> _pimpl;
   };
-  ZYPP_DECLARE_OPERATORS_FOR_FLAGS(RepoManager::RefreshServiceFlags);
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoManager Stream output */

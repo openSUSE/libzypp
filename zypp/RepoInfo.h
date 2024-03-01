@@ -555,11 +555,14 @@ namespace zypp
        */
       std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
+      /** Raw values for RepoManager
+       *  \internal
+       */
+      void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
+
       struct Impl;
     private:
       friend class RepoManager;
-      /** Raw values for RepoManager */
-      void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
 
       /** Pointer to implementation */
       RWCOW_pointer<Impl> _pimpl;

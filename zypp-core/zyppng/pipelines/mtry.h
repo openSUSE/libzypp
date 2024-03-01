@@ -46,10 +46,7 @@ namespace zyppng {
     struct mtry_helper {
       Callback function;
 
-      template <
-        typename ...Args,
-        typename Ret = std::invoke_result_t<Callback, Args...>
-      >
+      template < typename ...Args >
       auto operator()( Args&& ...args ){
         return mtry( function, std::forward<Args>(args)... );
       }

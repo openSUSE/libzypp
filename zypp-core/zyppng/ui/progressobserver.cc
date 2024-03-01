@@ -1,4 +1,5 @@
 #include "progressobserver.h"
+#include "zypp-core/AutoDispose.h"
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-core/base/dtorreset.h>
 
@@ -33,6 +34,7 @@ namespace zyppng {
     int _baseValue = 0;
     int _baseSteps = 100;
 
+    bool _started         = false;
     bool _ignoreChildSigs = false;
 
     struct ChildInfo {
@@ -64,18 +66,25 @@ namespace zyppng {
     std::vector<ProgressObserverRef> _children;
     std::vector< ChildInfo > _childInfo;
 
+    void onChildStarted(ProgressObserver &);
     void onChildChanged();
-    void onChildFinished( ProgressObserver &child );
+    void onChildFinished( ProgressObserver &child , ProgressObserver::FinishResult );
 
+    Signal<void ( ProgressObserver &sender) >                             _sigStarted;
     Signal<void ( ProgressObserver &sender, const std::string &str )>     _sigLabelChanged;
     Signal<void ( ProgressObserver &sender, double steps ) >              _sigStepsChanged;
     Signal<void ( ProgressObserver &sender, double steps ) >              _sigValueChanged;
     Signal<void ( ProgressObserver &sender, double steps ) >              _sigProgressChanged;
-    Signal<void ( ProgressObserver &sender )>                             _sigFinished;
+    Signal<void ( ProgressObserver &sender, ProgressObserver::FinishResult )>  _sigFinished;
     Signal<void ( ProgressObserver &sender, ProgressObserverRef child )>  _sigNewSubprogress;
   };
 
   ZYPP_IMPL_PRIVATE(ProgressObserver)
+
+  void ProgressObserverPrivate::onChildStarted( ProgressObserver &/*child*/ )
+  {
+    if ( !_started ) z_func()->start();
+  }
 
   void ProgressObserverPrivate::onChildChanged()
   {
@@ -83,9 +92,9 @@ namespace zyppng {
       return;
 
     double currProgressSteps = _baseValue;
-    double accumSteps        = _baseSteps;
+    double accumSteps        = static_cast<double>(_baseSteps);
 
-    for ( auto i = 0; i < _children.size (); i++ ) {
+    for ( std::vector<ProgressObserverRef>::size_type i = 0; i < _children.size (); i++ ) {
       const auto childPtr   = _children[i].get();
       const auto &childInfo = _childInfo[i];
       const auto weight = childInfo._childWeight;
@@ -99,6 +108,9 @@ namespace zyppng {
     _counterSteps = accumSteps;
     _counterValue = currProgressSteps;
 
+    if ( !_started )
+      return;
+
     if ( notifyAccuMaxSteps )
       _sigStepsChanged.emit( *z_func(), _counterSteps );
     if ( notifyCurrSteps) {
@@ -107,7 +119,7 @@ namespace zyppng {
     }
   }
 
-  void ProgressObserverPrivate::onChildFinished(ProgressObserver &child)
+  void ProgressObserverPrivate::onChildFinished(ProgressObserver &child, ProgressObserver::FinishResult )
   {
     auto i = std::find_if( _children.begin (), _children.end (), [&]( const auto &elem ) { return ( &child == elem.get() ); } );
     if ( i == _children.end() ) {
@@ -142,6 +154,21 @@ namespace zyppng {
     return d_func()->_counterSteps;
   }
 
+  bool ProgressObserver::started() const
+  {
+    return d_func()->_started;
+  }
+
+  void ProgressObserver::start()
+  {
+    Z_D();
+    if ( d->_started )
+      return;
+
+    d->_started = true;
+    d->_sigStarted.emit( *this );
+  }
+
   void ProgressObserver::reset()
   {
     Z_D();
@@ -173,6 +200,11 @@ namespace zyppng {
     return d_func()->_label;
   }
 
+  SignalProxy<void (ProgressObserver &)> ProgressObserver::sigStarted()
+  {
+    return d_func()->_sigStarted;
+  }
+
   SignalProxy<void (ProgressObserver &, const std::string &)> ProgressObserver::sigLabelChanged()
   {
     return d_func()->_sigLabelChanged;
@@ -193,7 +225,7 @@ namespace zyppng {
     return d_func()->_sigProgressChanged;
   }
 
-  SignalProxy<void (ProgressObserver &sender)> ProgressObserver::sigFinished()
+  SignalProxy<void (ProgressObserver &sender, ProgressObserver::FinishResult result)> ProgressObserver::sigFinished()
   {
     return d_func()->_sigFinished;
   }
@@ -237,16 +269,24 @@ namespace zyppng {
     return d_func()->_baseSteps;
   }
 
-  void ProgressObserver::setFinished()
+  void ProgressObserver::setFinished( FinishResult result )
   {
     Z_D();
 
-    // finish all children first, children are removed via their finished signal
-    while ( d->_children.size() )
-      d->_children.front()->setFinished();
+    // finish all children first, started children are removed via their finished signal
+    // others we have to manually remove
+    while ( d->_children.size() ) {
+      auto back   = d->_children.back();
+      bool remove = !back->started ();
+      back->setFinished( result );
+      if ( remove ) d->_children.pop_back();
+    }
 
-    setCurrent( d->_baseSteps );
-    d->_sigFinished.emit( *this );
+    if ( result != Error )
+      setCurrent( d->_baseSteps );
+
+    if ( d->_started )
+      d->_sigFinished.emit( *this , result );
   }
 
   void ProgressObserver::inc( double inc, const std::optional<std::string> &newLabel )
@@ -268,19 +308,31 @@ namespace zyppng {
       d->_childInfo.push_back( {
         { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &sender, auto ){ d_func()->onChildChanged(); }, *this ),
           connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &sender, auto ){ d_func()->onChildChanged(); }, *this ),
+          connect     ( *child, &ProgressObserver::sigStarted, *d, &ProgressObserverPrivate::onChildStarted ),
           connect     ( *child, &ProgressObserver::sigFinished, *d, &ProgressObserverPrivate::onChildFinished )
         }
         , adjustedWeight
       });
       d->_sigNewSubprogress.emit( *this, child );
+
+      // if the child has been started already, we also need to start()
+      if ( child->started () )
+        start();
     }
 
     // update stats
     d->onChildChanged();
   }
 
+  ProgressObserverRef ProgressObserver::makeSubTask( float weight, const std::string &label, int steps )
+  {
+    auto r = ProgressObserver::create( label, steps );
+    registerSubTask ( r, weight );
+    return r;
+  }
+
   /*!
-   * Creats a new \ref zypp::ProgressData::ReceiverFnc and links it to the current ProgressObserver,
+   * Creates a new \ref zypp::ProgressData::ReceiverFnc and links it to the current ProgressObserver,
    * this can be used to interface with zypp code that was not yet migrated to the new ProgressObserver
    * API.
    *
@@ -290,6 +342,7 @@ namespace zyppng {
   {
     return [ sThis = shared_this<ProgressObserver>() ](  const zypp::ProgressData & data ){
       auto instance = sThis.get();
+      instance->start();
       instance->setBaseSteps ( data.max () - data.min () );
       instance->setCurrent ( data.val () - data.min () );
       instance->setLabel ( data.name () );

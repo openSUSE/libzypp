@@ -198,7 +198,7 @@ template <typename Ptr> inline auto zyppGetPtrHelper(Ptr &ptr) -> decltype(ptr.o
     ZYPP_ADD_PRIVATE_CONSTR_HELPER(); \
   public: \
     template < typename ...Args > \
-    inline static Class##Ref create ( Args &&... args ) { \
+    inline static auto create ( Args &&... args ) { \
       return std::make_shared< Class >( private_constr_t{}, std::forward<Args>(args)... ); \
     } \
   private:

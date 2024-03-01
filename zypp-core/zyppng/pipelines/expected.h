@@ -144,20 +144,61 @@ namespace zyppng {
       }
 
       #ifdef NO_EXCEPTIONS
-      #    define THROW_IF_EXCEPTIONS_ARE_ENABLED(WHAT) std::terminate()
+      #    define THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED(WHAT) std::terminate()
       #else
-      #    define THROW_IF_EXCEPTIONS_ARE_ENABLED(WHAT) throw std::logic_error(WHAT)
+      #    define THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED(WHAT) throw std::logic_error(WHAT)
       #endif
 
       T &get()
       {
-          if (!m_isValid) THROW_IF_EXCEPTIONS_ARE_ENABLED("expected<T, E> contains no value");
+          if (!m_isValid) THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED("expected<T, E> contains no value");
           return m_value;
       }
 
       const T &get() const
       {
-          if (!m_isValid) THROW_IF_EXCEPTIONS_ARE_ENABLED("expected<T, E> contains no value");
+          if (!m_isValid) THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED("expected<T, E> contains no value");
+          return m_value;
+      }
+
+      /*!
+       * Unwraps the value if the expected is valid, otherwise throws an exception.
+       * If the Error type is std::exception_ptr the exception will be rethrown, otherwise
+       * the Error object is directly thrown as if calling:
+       * \code
+       * expected<int,MyError> test = functionReturningError();
+       * throw test.error();
+       * \endcode
+       */
+      T &unwrap()
+      {
+          if (!m_isValid) {
+#ifdef NO_EXCEPTIONS
+            std::terminate();
+#else
+            if constexpr ( std::is_same_v<E, std::exception_ptr> ) {
+              std::rethrow_exception ( error() );
+            } else {
+              throw error();
+            }
+#endif
+          }
+          return m_value;
+      }
+
+      const T &unwrap() const
+      {
+        if (!m_isValid) {
+#ifdef NO_EXCEPTIONS
+          std::terminate();
+#else
+          if constexpr ( std::is_same_v<E, std::exception_ptr>() ) {
+            std::rethrow_exception ( error() );
+          } else {
+            throw error();
+          }
+#endif
+        }
           return m_value;
       }
 
@@ -183,13 +224,13 @@ namespace zyppng {
 
       E &error()
       {
-          if (m_isValid) THROW_IF_EXCEPTIONS_ARE_ENABLED("There is no error in this expected<T, E>");
+          if (m_isValid) THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED("There is no error in this expected<T, E>");
           return m_error;
       }
 
       const E &error() const
       {
-          if (m_isValid) THROW_IF_EXCEPTIONS_ARE_ENABLED("There is no error in this expected<T, E>");
+          if (m_isValid) THROW_MSG_IF_EXCEPTIONS_ARE_ENABLED("There is no error in this expected<T, E>");
           return m_error;
       }
 
@@ -335,6 +376,21 @@ namespace zyppng {
           return m_error;
       }
 
+      void unwrap() const
+      {
+          if (!m_isValid) {
+#ifdef NO_EXCEPTIONS
+            std::terminate();
+#else
+             if constexpr ( std::is_same_v<E, std::exception_ptr> ) {
+              std::rethrow_exception ( error() );
+            } else {
+              throw error();
+            }
+#endif
+          }
+      }
+
   };
 
   template <typename Type, typename Err = std::exception_ptr >
@@ -407,12 +463,12 @@ namespace zyppng {
   ResultType or_else( const expected<T, E>& exp, Function &&f)
   {
     if (!exp) {
-      if constexpr ( std::is_same_v<T,void> )
-        return std::invoke( std::forward<Function>(f) );
-      else
-        return std::invoke( std::forward<Function>(f), exp.error() );
+      return std::invoke( std::forward<Function>(f), exp.error() );
     } else {
-      return exp;
+      if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
+        return exp;
+      else
+        return makeReadyResult( std::move(exp) );
     }
   }
 
@@ -424,10 +480,7 @@ namespace zyppng {
   ResultType or_else( expected<T, E>&& exp, Function &&f)
   {
     if (!exp) {
-      if constexpr ( std::is_same_v<T,void> )
-        return std::invoke( std::forward<Function>(f) );
-      else
-        return std::invoke( std::forward<Function>(f), std::move(exp.error()) );
+      return std::invoke( std::forward<Function>(f), std::move(exp.error()) );
     } else {
       if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
         return exp;
@@ -445,7 +498,7 @@ namespace zyppng {
     typename T,
     typename E,
     typename ...CArgs >
-  expected<Container<T>, E> collect( Container<expected<T, E>, CArgs...>&& in ) {
+  std::enable_if_t<!std::is_same_v<void, T>, expected<Container<T>,E>> collect( Container<expected<T, E>, CArgs...>&& in ) {
     Container<T> res;
     for( auto &v : in ) {
       if ( !v )
@@ -453,6 +506,22 @@ namespace zyppng {
       res.push_back( std::move(v.get()) );
     }
     return expected<Container<T>,E>::success( std::move(res) );
+  }
+
+  /*!
+   * Specialization of collect working on a Container of expected<void> values,
+   * returning either success or the error encountered.
+   */
+  template < template< class, class... > class Container,
+    typename T,
+    typename E,
+    typename ...CArgs >
+  std::enable_if_t<std::is_same_v<void, T>, expected<T, E>> collect( Container<expected<T, E>, CArgs...>&& in ) {
+    for( auto &v : in ) {
+      if ( !v )
+        return expected<T,E>::error( std::move(v.error()) );
+    }
+    return expected<T,E>::success( );
   }
 
   template < typename T

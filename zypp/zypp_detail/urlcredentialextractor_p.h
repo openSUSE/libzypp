@@ -42,6 +42,10 @@ namespace zypp
   class UrlCredentialExtractor
   {
   public:
+    UrlCredentialExtractor( const Pathname & root_r )
+      : _root( root_r )
+    {}
+
     UrlCredentialExtractor( Pathname & root_r )
       : _root( root_r )
     {}

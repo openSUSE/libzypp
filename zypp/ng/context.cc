@@ -45,6 +45,21 @@ namespace zyppng {
     return zypp::ZConfig::instance();
   }
 
+  zypp::ResPool Context::pool()
+  {
+    return zypp::ResPool::instance();
+  }
+
+  zypp::ResPoolProxy Context::poolProxy()
+  {
+    return zypp::ResPool::instance().proxy();
+  }
+
+  zypp::sat::Pool Context::satPool()
+  {
+    return zypp::sat::Pool::instance();
+  }
+
   void Context::executeImpl(const AsyncOpBaseRef& op)
   {
     auto loop = EventLoop::create();

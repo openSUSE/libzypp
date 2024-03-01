@@ -16,6 +16,8 @@
 
 #include <zypp/RepoInfo.h>
 #include <zypp/RepoManagerOptions.h>
+#include <zypp/RepoManagerFlags.h>
+#include <zypp/ng/repomanager.h>
 #include <zypp/repo/PluginRepoverification.h>
 
 namespace zyppng {
@@ -27,21 +29,8 @@ namespace zyppng::repo {
 
   ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 (RefreshContext, ZyppContextRefType);
 
-  enum RawMetadataRefreshPolicy
-  {
-    RefreshIfNeeded,
-    RefreshForced,
-    RefreshIfNeededIgnoreDelay
-  };
-
-  /**
-   * Possibly return state of checkIfRefreshMEtadata function
-   */
-  enum RefreshCheckStatus {
-    REFRESH_NEEDED,     /**< refresh is needed */
-    REPO_UP_TO_DATE,    /**< repository not changed */
-    REPO_CHECK_DELAYED  /**< refresh is delayed due to settings */
-  };
+  using RawMetadataRefreshPolicy = zypp::RepoManagerFlags::RawMetadataRefreshPolicy;
+  using RefreshCheckStatus       = zypp::RepoManagerFlags::RefreshCheckStatus;
 
   /*!
    *
@@ -59,8 +48,8 @@ namespace zyppng::repo {
       using MediaHandle    = typename ProvideType::MediaHandle;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
-      static expected<repo::RefreshContextRef<ZyppContextRefType>> create( ZyppContextRefType zyppContext, zypp::RepoInfo info, zypp::RepoManagerOptions opts );
-      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, zypp::RepoManagerOptions &&opts );
+      static expected<repo::RefreshContextRef<ZyppContextRefType>> create( ZyppContextRefType zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextRefType> repoManager );
+      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextRefType> &&repoManager );
 
       ~RefreshContext() override;
 
@@ -71,10 +60,12 @@ namespace zyppng::repo {
       const ZyppContextRefType &zyppContext () const;
       const zypp::RepoInfo &repoInfo () const;
       zypp::RepoInfo &repoInfo ();
+
+      const RepoManagerRef<ZyppContextRefType> &repoManager() const;
       const zypp::RepoManagerOptions &repoManagerOptions() const;
 
-      repo::RawMetadataRefreshPolicy policy() const;
-      void setPolicy(repo::RawMetadataRefreshPolicy newPolicy);
+      RawMetadataRefreshPolicy policy() const;
+      void setPolicy(RawMetadataRefreshPolicy newPolicy);
 
       const std::optional<PluginRepoverification> &pluginRepoverification() const;
 
@@ -90,12 +81,12 @@ namespace zyppng::repo {
 
   private:
       ZyppContextRefType _zyppContext;
+      RepoManagerRef<ContextRefType> _repoManager;
       zypp::RepoInfo _repoInfo;
       zypp::Pathname _rawCachePath;
       zypp::filesystem::TmpDir _tmpDir;
-      repo::RawMetadataRefreshPolicy _policy = repo::RefreshIfNeeded;
+      repo::RawMetadataRefreshPolicy _policy = RawMetadataRefreshPolicy::RefreshIfNeeded;
       std::optional<PluginRepoverification> _pluginRepoverification;  ///< \see \ref plugin-repoverification
-      zypp::RepoManagerOptions _repoManagerOptions;
 
       std::optional<zypp::repo::RepoType> _probedType;
       Signal<void(zypp::repo::RepoType)> _sigProbedTypeChanged;

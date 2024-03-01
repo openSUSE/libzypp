@@ -25,7 +25,8 @@ namespace zyppng {
       template< class Arg >
       bool operator()( const Arg &value ) {
         // works if operator bool() const is implemented by type Arg
-        return !value;
+        if ( value ) return true;
+        return false;
       }
     };
 
@@ -120,7 +121,7 @@ namespace zyppng {
 
           for ( auto &in : std::forward<Container>(container) ) {
             OutputType res = std::invoke( _transFunc, std::move(in) );
-            if ( !_predicate(res) ) {
+            if ( _predicate(res) ) {
               return res;
             }
           }

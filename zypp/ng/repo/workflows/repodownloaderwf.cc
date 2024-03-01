@@ -222,7 +222,7 @@ namespace zyppng {
                    else
                      return expected<zypp::PublicKey>::error( std::make_exception_ptr (zypp::Exception("File does not provide key")));
                  }
-               | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto && ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
+               | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
                    return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true) )
                       | and_then( ProvideType::copyResultToDest( providerRef, _destdir / file ) )

@@ -25,7 +25,7 @@ namespace zyppng {
   template <typename T, typename SigGetter> struct AwaitImpl;
 
   template <typename ArgType, typename SigR, typename ...SigT >
-  struct AwaitImpl<std::shared_ptr<ArgType>, SignalProxy<SigR(SigT...)> (ArgType::*)()> : public zyppng::AsyncOp< std::shared_ptr<ArgType> > {
+  struct AwaitImpl<ArgType, SignalProxy<SigR(SigT...)> (ArgType::*)()> : public zyppng::AsyncOp< std::shared_ptr<ArgType> > {
 
     using SigGetter = SignalProxy<SigR(SigT...)> (ArgType::*)();
 

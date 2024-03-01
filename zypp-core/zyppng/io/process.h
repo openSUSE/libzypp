@@ -26,6 +26,8 @@ namespace zyppng {
   class ProcessPrivate;
   class IODevice;
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (Process);
+
   class Process : public AsyncDataSource
   {
     ZYPP_DECLARE_PRIVATE(Process);
@@ -34,8 +36,8 @@ namespace zyppng {
      * For passing additional environment variables to set
      */
     using Environment = std::map<std::string,std::string>;
-    using Ptr = std::shared_ptr<Process>;
-    using WeakPtr = std::weak_ptr<Process>;
+    using Ptr = ProcessRef;
+    using WeakPtr = ProcessWeakRef;
 
     enum OutputChannelMode {
       Seperate,

@@ -12,6 +12,7 @@
 #include <zypp-core/zyppng/async/AsyncOp>
 #include <zypp-core/zyppng/ui/UserInterface>
 #include <zypp/RepoManager.h>
+#include <zypp/ResPool.h>
 
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
@@ -23,7 +24,6 @@ namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( Provide );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( RepoManager );
 
   using KeyRing    = zypp::KeyRing;
   using KeyRingRef = zypp::KeyRing_Ptr;
@@ -57,9 +57,35 @@ namespace zyppng {
     KeyRingRef keyRing () const;
     zypp::ZConfig &config();
 
+    /**
+     * Access to the resolvable pool.
+     */
+    zypp::ResPool pool();
+
+    /** Pool of ui::Selectable.
+     * Based on the ResPool, ui::Selectable groups ResObjetcs of
+     * same kind and name.
+    */
+    zypp::ResPoolProxy poolProxy();
+
+    /**
+     * Access to the sat pool.
+     */
+    zypp::sat::Pool satPool();
+
   private:
     void executeImpl ( const AsyncOpBaseRef& op );
   };
+
+  template<typename T>
+  auto joinPipeline( ContextRef ctx, AsyncOpRef<T> res ) {
+    if constexpr ( detail::is_async_op_v<decltype(res)> ) {
+      ctx->execute(res);
+      return res->get();
+    } else {
+      return res;
+    }
+  }
 
 }
 

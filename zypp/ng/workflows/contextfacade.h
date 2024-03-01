@@ -33,9 +33,15 @@ namespace zyppng {
 
     using ProvideType = MediaSyncFacade;
 
+    static SyncContextRef defaultContext();
+
     MediaSyncFacadeRef provider() const;
     KeyRingRef keyRing () const;
     zypp::ZConfig &config();
+    zypp::ResPool pool();
+    zypp::ResPoolProxy poolProxy();
+    zypp::sat::Pool satPool();
+
 
   private:
     MediaSyncFacadeRef _media;
@@ -44,9 +50,10 @@ namespace zyppng {
   template<typename OpType>
   using MaybeAsyncContextRef = std::conditional_t<detail::is_async_op_v<OpType>, ContextRef, SyncContextRef>;
 
-
+  template<typename T>
+  auto joinPipeline( SyncContextRef ctx, T &&val ) {
+    return std::forward<T>(val);
+  }
 }
-
-
 
 #endif

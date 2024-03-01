@@ -164,6 +164,7 @@ SET( zypp_HEADERS
   Rel.h
   RepoInfo.h
   RepoManager.h
+  RepoManagerFlags.h
   RepoManagerOptions.h
   Repository.h
   RepoStatus.h
@@ -289,6 +290,9 @@ INSTALL(  FILES
 
 SET( zypp_ng_SRCS
   ng/context.cc
+  ng/progressobserveradaptor.cc
+  ng/reporthelper.cc
+  ng/repomanager.cc
   ng/userrequest.cc
   ng/repo/downloader.cc
   ng/repo/refresh.cc
@@ -296,6 +300,7 @@ SET( zypp_ng_SRCS
   ng/repo/workflows/repodownloaderwf.cc
   ng/repo/workflows/repomanagerwf.cc
   ng/repo/workflows/rpmmd.cc
+  ng/repo/workflows/serviceswf.cc
   ng/repo/workflows/susetags.cc
   ng/workflows/checksumwf.cc
   ng/workflows/contextfacade.cc
@@ -309,6 +314,10 @@ SET( zypp_ng_SRCS
 SET( zypp_ng_HEADERS
   ng/context.h
   ng/Context
+  ng/progressobserveradaptor.h
+  ng/reporthelper.h
+  ng/repomanager.h
+  ng/RepoManager
   ng/userrequest.h
   ng/UserRequest
   ng/repo/downloader.h
@@ -319,6 +328,7 @@ SET( zypp_ng_HEADERS
   ng/repo/workflows/repodownloaderwf.h
   ng/repo/workflows/repomanagerwf.h
   ng/repo/workflows/rpmmd.h
+  ng/repo/workflows/serviceswf.h
   ng/repo/workflows/susetags.h
   ng/workflows/checksumwf.h
   ng/workflows/contextfacade.h
@@ -639,13 +649,11 @@ INSTALL(  FILES
 )
 
 SET( zypp_zypp_detail_SRCS
-  zypp_detail/repomanagerbase_p.cc
   zypp_detail/ZYppImpl.cc
 )
 
 SET( zypp_zypp_detail_HEADERS
   zypp_detail/keyring_p.h
-  zypp_detail/repomanagerbase_p.h
   zypp_detail/urlcredentialextractor_p.h
   zypp_detail/ZYppImpl.h
   zypp_detail/ZYppReadOnlyHack.h
@@ -673,7 +681,6 @@ SET( zypp_repo_SRCS
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
   repo/PluginServices.cc
-  repo/ServiceRepos.cc
 )
 
 SET( zypp_repo_HEADERS
@@ -693,7 +700,6 @@ SET( zypp_repo_HEADERS
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
   repo/PluginServices.h
-  repo/ServiceRepos.h
 )
 
 INSTALL( FILES

@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "repoinfowf.h"
+#include "zypp/ng/reporthelper.h"
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/base/String.h>
@@ -47,7 +48,7 @@ namespace zyppng {
       using ProvideRes      = typename ProvideType::Res;
 
       RepoInfoProvideKeyLogic( ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, std::string &&keyID_r, zypp::Pathname &&targetDirectory_r )
-        : _zyppContext( std::move(zyppContext) )
+        : _reports( std::move(zyppContext ))
         , _info( std::move(info) )
         , _keyID_r(std::move( keyID_r ))
         , _targetDirectory_r(std::move( targetDirectory_r ))
@@ -74,7 +75,7 @@ namespace zyppng {
 
         if (  _info.gpgKeyUrlsEmpty() ) {
           // translator: %1% is a repositories name
-          executor()->info( zypp::str::Format(_("Repository %1% does not define additional 'gpgkey=' URLs.") ) % _info.asUserString() );
+          _reports.info( zypp::str::Format(_("Repository %1% does not define additional 'gpgkey=' URLs.") ) % _info.asUserString() );
           return makeReadyResult(writeKeysToTargetDir());
         }
 
@@ -83,12 +84,12 @@ namespace zyppng {
 
         // translator: %1% is a gpg key ID like 3DBDC284
         //             %2% is a repositories name
-        executor()->info( zypp::str::Format(_("Looking for gpg key ID %1% in repository %2%.") ) %  _keyIDStr % _info.asUserString() );
+        _reports.info( zypp::str::Format(_("Looking for gpg key ID %1% in repository %2%.") ) %  _keyIDStr % _info.asUserString() );
 
         return _info.gpgKeyUrls()
          | transform( [this]( const zypp::Url &url ) {
 
-            executor()->info( "  gpgkey=" + url.asString() );
+            _reports.info( "  gpgkey=" + url.asString() );
             return fetchKey( url )
               | and_then( [this, url]( zypp::ManagedFile f ) -> expected<void> {
                   try {
@@ -121,8 +122,8 @@ namespace zyppng {
     protected:
 
       MaybeAsyncRef<zyppng::expected<zypp::ManagedFile>> fetchKey ( const zypp::Url &url ) {
-        return _zyppContext->provider ()->provide( url, zyppng::ProvideFileSpec() )
-         | and_then( ProvideType::copyResultToDest( _zyppContext->provider(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
+        return _reports.zyppContext()->provider ()->provide( url, zyppng::ProvideFileSpec() )
+         | and_then( ProvideType::copyResultToDest( _reports.zyppContext()->provider(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
       }
 
       void importKeysInTargetDir () {
@@ -130,7 +131,7 @@ namespace zyppng {
 
         // translator: %1% is a gpg key ID like 3DBDC284
         //             %2% is a cache directories path
-       executor()->info( zypp::str::Format(_("Looking for gpg key ID %1% in cache %2%.") ) %  _keyIDStr %  _targetDirectory_r );
+        _reports.info( zypp::str::Format(_("Looking for gpg key ID %1% in cache %2%.") ) %  _keyIDStr %  _targetDirectory_r );
         zypp::filesystem::dirForEach( _targetDirectory_r,
                                       zypp::StrMatcher(".key", zypp::Match::STRINGEND),
                                       [this]( const zypp::Pathname & dir_r, const std::string & str_r ){
@@ -186,7 +187,7 @@ namespace zyppng {
         return  _targetDirectory_r/(zypp::str::Format("%1%.key") % keyData.rpmName()).asString();
       }
 
-      ZyppContextRefType _zyppContext;
+      ReportHelper<ZyppContextRefType> _reports;
       const zypp::RepoInfo    _info;
       const std::string _keyID_r;
       const zypp::Pathname    _targetDirectory_r;
@@ -200,29 +201,22 @@ namespace zyppng {
     struct AsyncRepoInfoProvideKey : public RepoInfoProvideKeyLogic<AsyncRepoInfoProvideKey, zyppng::AsyncOp<zypp::Pathname>>
     {
       using RepoInfoProvideKeyLogic::RepoInfoProvideKeyLogic;
-      bool info( const std::string & msg_r, const UserData & userData_r = UserData() ) {
-        _zyppContext->sendUserRequest( ShowMessageRequest::create( msg_r, ShowMessageRequest::MType::Info, userData_r ) );
-        return true;
-      }
     };
 
     struct SyncRepoInfoProvideKey : public RepoInfoProvideKeyLogic<SyncRepoInfoProvideKey, zyppng::SyncOp<zypp::Pathname>>
     {
       using RepoInfoProvideKeyLogic::RepoInfoProvideKeyLogic;
-      bool info( const std::string & msg_r, const UserData & userData_r = UserData() ) {
-        return zypp::JobReport::info( msg_r, userData_r );
-      }
     };
   }
 
   zypp::filesystem::Pathname RepoInfoWorkflow::provideKey( SyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return SyncRepoInfoProvideKey::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
+    return SimpleExecutor<RepoInfoProvideKeyLogic, SyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
   AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(ContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return AsyncRepoInfoProvideKey::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
+    return SimpleExecutor<RepoInfoProvideKeyLogic, AsyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
 }

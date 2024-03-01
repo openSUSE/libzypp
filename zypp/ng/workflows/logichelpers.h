@@ -28,6 +28,45 @@ namespace zyppng
   }
 
   /*!
+   * Helper Mixin for types that need to return async results if
+   * they are compiled in a async context.
+   */
+  template <bool isAsync>
+  struct MaybeAsyncMixin
+  {
+    // Make the isAsync flag accessible for subclasses.
+    static constexpr bool is_async = isAsync;
+
+    /*!
+     * Evaluates to either \a AsyncOpRef<Type> or \a Type ,based on the \a isAsync template param.
+     */
+    template<class Type>
+    using MaybeAsyncRef = std::conditional_t< isAsync, AsyncOpRef<Type>, Type>;
+
+
+  protected:
+    /*!
+     * Returns the value given in \a res either as \ref AsyncOpRef<T> or as T depending on the
+     * \a isAsync template param.
+     */
+    template <typename T>
+    inline auto makeReadyResult( T &&res ) {
+      return zyppng::makeReadyResult<T, isAsync>  ( std::forward<T>(res) );
+    }
+  };
+
+  /*!
+   * Forward declares some convenience functions from MaybeAsyncMixin class so they can be used directly
+   * See \ref MaybeAsyncMixin for documentation
+   */
+  #define ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( IsAsync ) \
+    using MaybeAsyncMixin<IsAsync>::makeReadyResult; \
+    template<class T> \
+    using MaybeAsyncRef = typename MaybeAsyncMixin<IsAsync>:: template MaybeAsyncRef<T>
+
+
+
+  /*!
    * Logic base class template, this allows us to implement certain workflows
    * in a sync/async agnostic way, based on the OpType the code is either
    * sync or async:
@@ -119,16 +158,10 @@ namespace zyppng
    * \endcode
    */
   template <typename Executor, typename OpType>
-  struct LogicBase : public detail::LogicBaseExec<OpType> {
+  struct LogicBase : public detail::LogicBaseExec<OpType>, public MaybeAsyncMixin<detail::is_async_op_v<OpType>> {
 
     using ExecutorType = Executor;
     using Result = typename OpType::value_type;
-
-    /*!
-     * Evaluates to either \a AsyncOpRef<Type> or \a Type , based on the Executor type.
-     */
-    template<class Type>
-    using MaybeAsyncRef = std::conditional_t< detail::is_async_op_v<OpType>, AsyncOpRef<Type>, Type>;
 
     LogicBase( ){ }
     virtual ~LogicBase(){}
@@ -152,15 +185,6 @@ namespace zyppng
      */
     Executor *executor () {
       return static_cast<Executor *>(this);
-    }
-
-    /*!
-     * Returns the value given in \a res either as \ref AsyncOpRef<T> or as T depending on the
-     * \a Executor type.
-     */
-    template <typename T>
-    inline auto makeReadyResult( T &&res ) {
-      return zyppng::makeReadyResult<T, zyppng::detail::is_async_op_v<OpType>>  ( std::forward<T>(res) );
     }
 
   private:
@@ -201,34 +225,5 @@ namespace zyppng
     using LogicBase<Executor, OpType>::makeReadyResult; \
     template<class T> \
     using MaybeAsyncRef = typename LogicBase<Executor, OpType>:: template MaybeAsyncRef<T>
-
-
-  template <typename Sub>
-  struct LogicHelper  {
-
-    template<class Type>
-    using MaybeAsyncRef = std::conditional_t< detail::is_async_op_v<Sub>, AsyncOpRef<Type>, Type>;
-
-    virtual ~LogicHelper(){}
-
-    inline Sub *subClass () {
-      return static_cast<Sub *>(this);
-    }
-
-    template <typename T>
-    inline auto makeReadyResult( T &&res ) {
-      return zyppng::makeReadyResult<T, zyppng::detail::is_async_op_v<Sub>>  ( std::forward<T>(res) );
-    }
-  };
-
-#define ZYPP_ENABLE_LOGIC_HELPER(Sub) \
-  using LogicHelper<Sub>::subClass; \
-  using LogicHelper<Sub>::makeReadyResult; \
-  template<class T> \
-  using MaybeAsyncRef = typename LogicHelper<Sub>:: template MaybeAsyncRef<T>
-
-
 }
-
-
 #endif

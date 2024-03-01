@@ -15,6 +15,7 @@
 #include <string>
 #include <map>
 #include <boost/any.hpp>
+#include <ostream>
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/ContentType.h>

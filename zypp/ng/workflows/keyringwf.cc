@@ -21,6 +21,7 @@
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp/ng/Context>
+#include <zypp/ng/reporthelper.h>
 #include <zypp/ng/UserRequest>
 
 namespace zyppng::KeyRingWorkflow {
@@ -76,7 +77,7 @@ namespace zyppng::KeyRingWorkflow {
 
          zypp::KeyContext context;
          context.setRepoInfo( _repo );
-         if ( ! executor()->askUserToAcceptPackageKey( key, context ) ) {
+         if ( !ReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
            return false;
          }
 
@@ -97,33 +98,14 @@ namespace zyppng::KeyRingWorkflow {
     zypp::RepoInfo _repo;
   };
 
-  struct AsyncImportKeyFromRepoExecutor : public ImportKeyFromRepoLogic< AsyncImportKeyFromRepoExecutor, zyppng::AsyncOp<bool> >
-  {
-    using ImportKeyFromRepoLogic::ImportKeyFromRepoLogic;
-    bool askUserToAcceptPackageKey( const zypp::PublicKey &key_r, const zypp::KeyContext &keycontext_r = zypp::KeyContext() ) {
-      ERR << "Not implemented yet" << std::endl;
-      return false;
-    }
-  };
-
-
-  struct SyncImportKeyFromRepoExecutor : public ImportKeyFromRepoLogic< SyncImportKeyFromRepoExecutor, zyppng::SyncOp<bool> >
-  {
-    using ImportKeyFromRepoLogic::ImportKeyFromRepoLogic;
-    bool askUserToAcceptPackageKey( const zypp::PublicKey &key_r, const zypp::KeyContext &keycontext_r = zypp::KeyContext() ) {
-      zypp::callback::SendReport<zypp::KeyRingReport> report;
-      return report->askUserToAcceptPackageKey ( key_r, keycontext_r );
-    }
-  };
-
   bool provideAndImportKeyFromRepository( SyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r )
   {
-    return SyncImportKeyFromRepoExecutor::run( ctx, std::move(id_r), std::move(info_r) );
+    return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
   AsyncOpRef<bool> provideAndImportKeyFromRepository( ContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
   {
-    return AsyncImportKeyFromRepoExecutor::run( ctx, std::move(id_r), std::move(info_r) );
+    return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
   namespace {
@@ -198,7 +180,7 @@ namespace zyppng::KeyRingWorkflow {
             MIL << "Key [" << id << "] " << key.name() << " is not trusted" << std::endl;
 
             // ok the key is not trusted, ask the user to trust it or not
-            zypp::KeyRingReport::KeyTrust reply = executor()->askUserToAcceptKey( key, _verifyContext.keyContext() );
+            zypp::KeyRingReport::KeyTrust reply = ReportHelper(_zyppContext).askUserToAcceptKey( key, _verifyContext.keyContext() );
             if ( reply == zypp::KeyRingReport::KEY_TRUST_TEMPORARILY ||
                  reply == zypp::KeyRingReport::KEY_TRUST_AND_IMPORT )
             {
@@ -251,7 +233,7 @@ namespace zyppng::KeyRingWorkflow {
         // if signature does not exists, ask user if they want to accept unsigned file.
         if( signature.empty() || (!zypp::PathInfo( signature ).isExist()) )
         {
-          bool res = executor()->askUserToAcceptUnsignedFile( filedesc, _verifyContext.keyContext() );
+          bool res = ReportHelper(_zyppContext).askUserToAcceptUnsignedFile( filedesc, _verifyContext.keyContext() );
           MIL << "askUserToAcceptUnsignedFile: " << res << std::endl;
           return makeReadyResult( makeReturn(res) );
         }
@@ -300,14 +282,15 @@ namespace zyppng::KeyRingWorkflow {
 
             // it exists, is trusted, does it validate?
             _verifyContext.signatureIdTrusted( res._whichKeyRing == _keyRing->pimpl().trustedKeyRing() );
-            executor()->infoVerify( filedesc, res._foundKey, keyContext );
+            ReportHelper reports(_zyppContext);
+            reports.infoVerify( filedesc, res._foundKey, keyContext );
             if ( _keyRing->pimpl().verifyFile( file, signature, res._whichKeyRing ) )
             {
               _verifyContext.fileValidated( true );
               if ( _verifyContext.signatureIdTrusted() && not buddies.empty() ) {
                 // Check for buddy keys to be imported...
                 MIL << "Validated with trusted key: importing buddy list..." << std::endl;
-                executor()->reportAutoImportKey( buddies, res._foundKey, keyContext );
+                reports.reportAutoImportKey( buddies, res._foundKey, keyContext );
                 for ( const auto & kd : buddies ) {
                   _keyRing->importKey( _keyRing->pimpl().exportKey( kd, _keyRing->pimpl().generalKeyRing() ), true );
                 }
@@ -316,14 +299,14 @@ namespace zyppng::KeyRingWorkflow {
             }
             else
             {
-              bool userAnswer = executor()->askUserToAcceptVerificationFailed( filedesc, _keyRing->pimpl().exportKey( res._foundKey, res._whichKeyRing ), keyContext );
+              bool userAnswer = reports.askUserToAcceptVerificationFailed( filedesc, _keyRing->pimpl().exportKey( res._foundKey, res._whichKeyRing ), keyContext );
               MIL << "askUserToAcceptVerificationFailed: " << userAnswer << std::endl;
               return makeReturn(userAnswer);
             }
           } else {
             // signed with an unknown key...
             MIL << "File [" << file << "] ( " << filedesc << " ) signed with unknown key [" << id << "]" << std::endl;
-            bool res = executor()->askUserToAcceptUnknownKey( filedesc, id, _verifyContext.keyContext() );
+            bool res = ReportHelper(_zyppContext).askUserToAcceptUnknownKey( filedesc, id, _verifyContext.keyContext() );
             MIL << "askUserToAcceptUnknownKey: " << res << std::endl;
             return makeReturn(res);
           }
@@ -343,141 +326,28 @@ namespace zyppng::KeyRingWorkflow {
         return std::make_pair( res, std::move(_verifyContext) ) ;
       }
     };
-
-    struct AsyncVerifyFileSignatureExecutor : public VerifyFileSignatureLogic<AsyncVerifyFileSignatureExecutor, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext>>>
-    {
-
-      using VerifyFileSignatureLogic::VerifyFileSignatureLogic;
-
-      bool askUserToAcceptUnsignedFile( const std::string &file, const zypp::KeyContext &keycontext = {} ) {
-
-        std::string label;
-        if (keycontext.empty())
-          label = zypp::str::Format(
-            // TranslatorExplanation: speaking of a file
-            _("File '%s' is unsigned, continue?")) % file;
-        else
-          label = zypp::str::Format(
-            // TranslatorExplanation: speaking of a file
-            _("File '%s' from repository '%s' is unsigned, continue?"))
-            % file % keycontext.repoInfo().asUserString();
-
-
-        auto req = BooleanChoiceRequest::create ( label, false, AcceptUnsignedFileRequest::makeData ( file, keycontext ) );
-        _zyppContext->sendUserRequest ( req );
-        return req->choice ();
-      }
-
-      KeyTrust askUserToAcceptKey( const zypp::PublicKey &key, const zypp::KeyContext &keycontext = {} ) {
-
-        auto req = TrustKeyRequest::create(
-              _("Do you want to reject the key, trust temporarily, or trust always?"),
-              TrustKeyRequest::KEY_DONT_TRUST,
-              AcceptKeyRequest::makeData ( key, keycontext )
-        );
-        _zyppContext->sendUserRequest ( req );
-        return static_cast<KeyTrust>(req->choice());
-      }
-
-      void infoVerify( const std::string & file_r, const zypp::PublicKeyData & keyData_r, const zypp::KeyContext &keycontext = {} ) {
-        std::string label = zypp::str::Format( _("Key Name: %1%")) % keyData_r.name();
-        auto req = ShowMessageRequest::create( label, ShowMessageRequest::MType::Info, VerifyInfoEvent::makeData ( file_r, keyData_r, keycontext) );
-        _zyppContext->sendUserRequest ( req );
-      }
-
-      void reportAutoImportKey( const std::list<zypp::PublicKeyData> & keyDataList_r, const zypp::PublicKeyData & keySigning_r, const zypp::KeyContext &keyContext_r ) {
-        const std::string &lbl =  zypp::str::Format( PL_( "Received %1% new package signing key from repository \"%2%\":",
-                                                          "Received %1% new package signing keys from repository \"%2%\":",
-                                         keyDataList_r.size() )) % keyDataList_r.size() % keyContext_r.repoInfo().asUserString();
-        _zyppContext->sendUserRequest( ShowMessageRequest::create( lbl, ShowMessageRequest::MType::Info, KeyAutoImportInfoEvent::makeData( keyDataList_r, keySigning_r, keyContext_r) ) );
-      }
-
-      bool askUserToAcceptVerificationFailed( const std::string &file, const zypp::PublicKey &key, const zypp::KeyContext &keycontext = {} )
-      {
-        std::string label;
-        if ( keycontext.empty() )
-          // translator: %1% is a file name
-          label = zypp::str::Format(_("Signature verification failed for file '%1%'.") ) % file;
-        else
-          // translator: %1% is a file name, %2% a repositories na  me
-          label = zypp::str::Format(_("Signature verification failed for file '%1%' from repository '%2%'.") ) % file % keycontext.repoInfo().asUserString();
-
-        // @TODO use a centralized Continue string!
-        label += std::string(" ") + _("Continue?");
-        auto req = BooleanChoiceRequest::create ( label, false, AcceptFailedVerificationRequest::makeData ( file, key, keycontext ) );
-        _zyppContext->sendUserRequest ( req );
-        return req->choice ();
-      }
-
-      bool askUserToAcceptUnknownKey( const std::string &file, const std::string &id, const zypp::KeyContext &keycontext = {} )
-      {
-        std::string label;
-
-        if (keycontext.empty())
-          label = zypp::str::Format(
-            // translators: the last %s is gpg key ID
-            _("File '%s' is signed with an unknown key '%s'. Continue?")) % file % id;
-        else
-          label = zypp::str::Format(
-            // translators: the last %s is gpg key ID
-            _("File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"))
-             % file % keycontext.repoInfo().asUserString() % id;
-
-        auto req = BooleanChoiceRequest::create ( label, false, AcceptUnknownKeyRequest::makeData ( file, id, keycontext ) );
-        _zyppContext->sendUserRequest ( req );
-        return req->choice ();
-      }
-    };
-
-    struct SyncVerifyFileSignatureExecutor : public VerifyFileSignatureLogic<SyncVerifyFileSignatureExecutor, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext>>>
-    {
-
-      using VerifyFileSignatureLogic::VerifyFileSignatureLogic;
-
-      bool askUserToAcceptUnsignedFile( const std::string &file, const zypp::KeyContext &keycontext = {} ) {
-        return _report->askUserToAcceptUnsignedFile( file, keycontext );
-      }
-      KeyTrust askUserToAcceptKey( const zypp::PublicKey &key, const zypp::KeyContext &keycontext = {} ) {
-        return _report->askUserToAcceptKey( key, keycontext );
-      }
-      void infoVerify( const std::string & file_r, const zypp::PublicKeyData & keyData_r, const zypp::KeyContext &keycontext = {} ) {
-        return _report->infoVerify( file_r, keyData_r, keycontext );
-      }
-      void reportAutoImportKey( const std::list<zypp::PublicKeyData> & keyDataList_r, const zypp::PublicKeyData & keySigning_r, const zypp::KeyContext &keyContext_r ) {
-        return _report->reportAutoImportKey( keyDataList_r, keySigning_r, keyContext_r );
-      }
-      bool askUserToAcceptVerificationFailed( const std::string &file, const zypp::PublicKey &key, const zypp::KeyContext &keycontext = {} ) {
-        return _report->askUserToAcceptVerificationFailed( file, key, keycontext );
-      }
-      bool askUserToAcceptUnknownKey( const std::string &file, const std::string &id, const zypp::KeyContext &keycontext = {} ) {
-        return _report->askUserToAcceptUnknownKey( file, id, keycontext );
-      }
-
-    private:
-      zypp::callback::SendReport<zypp::KeyRingReport> _report;
-    };
   }
 
   std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
-    return SyncVerifyFileSignatureExecutor::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
   }
 
   AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( ContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
-    return AsyncVerifyFileSignatureExecutor::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
   }
 
   std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
-    return SyncVerifyFileSignatureExecutor::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
   }
 
   AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(ContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
-    return AsyncVerifyFileSignatureExecutor::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
   }
 
 }

@@ -29,6 +29,11 @@
 #include <zypp/DownloadMode.h>
 #include <zypp/target/rpm/RpmFlags.h>
 
+namespace zyppng {
+  // just for the friend declaration
+  template<typename T> class RepoManager;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -582,7 +587,7 @@ namespace zypp
 
   private:
       friend class RepoManager;
-      friend class RepoManagerBaseImpl;
+      template<typename T> friend class zyppng::RepoManager;
       /** The builtin config file value. */
       Pathname builtinRepoCachePath() const;
       /** The builtin config file value. */

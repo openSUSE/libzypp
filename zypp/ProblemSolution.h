@@ -97,8 +97,10 @@ namespace zypp
     /** The solution contains only 'do not install patch:' actions. */
     bool skipsPatchesOnly() const;
 
+#ifdef __cpp_lib_optional // YAST/PK explicitly use c++11 until 15-SP3
     /** The patches if \ref skipsPatchesOnly is true. */
     std::optional<std::set<PoolItem>> getIfSkipsPatchesOnly() const;
+#endif
 
   private:
     struct Impl;

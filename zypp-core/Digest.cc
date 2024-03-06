@@ -120,7 +120,7 @@ namespace zypp {
 
         OPENSSL_init_crypto( OPENSSL_INIT_ADD_ALL_DIGESTS, nullptr );
 #else
-# if OPENSSL_API_LEVEL >= 10100
+# if OPENSSL_VERSION_NUMBER >= 0x10100000L
         OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CONFIG, nullptr );
 # else
         OPENSSL_config(NULL);

@@ -297,7 +297,7 @@ constexpr auto MAXURLS       = 10;
 // but each range has enough time to increase it's congestion window to something reasonable.
 //
 // Initial value 4 MB;
-constexpr auto MIN_STRIPE_SIZE = 4194304;
+constexpr auto MIN_STRIPE_SIZE_KB = 4096;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -991,12 +991,6 @@ multifetchrequest::multifetchrequest(const MediaMultiCurl *context, const Pathna
   // equally distribute the data we want to download over all workers
   _defaultBlksize = makeBlksize( _maxworkers, _totalsize );
 
-  if _defaultBlksize < MIN_STRIPE_SIZE {
-    // The calculated strip size is too small and can cause a loss in TCP throughput. Raise
-    // it to a reasonable value.
-    _defaultBlksize = MIN_STRIPE_SIZE;
-  }
-
   // lets build stripe informations
   zypp::ByteCount currStripeSize = 0;
   for (size_t blkno = 0; blkno < _blklist.numBlocks(); blkno++) {
@@ -1353,7 +1347,9 @@ multifetchrequest::run(std::vector<Url> &urllist)
 
 inline zypp::ByteCount multifetchrequest::makeBlksize ( uint maxConns, size_t filesize )
 {
-  return std::max<zypp::ByteCount>( filesize / std::min( std::max<int>( 1, maxConns ) , MAXURLS ), zypp::ByteCount(4, zypp::ByteCount::K) );
+  // If the calculated strip size is too small and can cause a loss in TCP throughput. Raise
+  // it to a reasonable value.
+  return std::max<zypp::ByteCount>( filesize / std::min( std::max<int>( 1, maxConns ) , MAXURLS ), zypp::ByteCount(MIN_STRIPE_SIZE_KB, zypp::ByteCount::K) );
 }
 
 //////////////////////////////////////////////////////////////////////

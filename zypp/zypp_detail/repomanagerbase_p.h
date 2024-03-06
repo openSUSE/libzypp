@@ -29,7 +29,7 @@ namespace zypp {
 
   /** Whether repo is not under RM control and provides its own methadata paths. */
   inline bool isTmpRepo( const RepoInfo & info_r )
-  { return( info_r.filepath().empty() && info_r.usesAutoMethadataPaths() ); }
+  { return( info_r.filepath().empty() && info_r.usesAutoMetadataPaths() ); }
 
   void assert_alias( const RepoInfo & info );
 

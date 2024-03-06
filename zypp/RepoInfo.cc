@@ -334,19 +334,19 @@ namespace zypp
     void packagesPath( Pathname new_r )
     { _packagesPath = std::move( new_r ); }
 
-    bool usesAutoMethadataPaths() const
+    bool usesAutoMetadataPaths() const
     { return str::hasSuffix( _metadataPath.asString(), "/%AUTO%" ); }
 
     Pathname metadataPath() const
     {
-      if ( usesAutoMethadataPaths() )
+      if ( usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%RAW%";
       return _metadataPath;
     }
 
     Pathname packagesPath() const
     {
-      if ( _packagesPath.empty() && usesAutoMethadataPaths() )
+      if ( _packagesPath.empty() && usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%PKG%";
       return _packagesPath;
     }
@@ -592,8 +592,8 @@ namespace zypp
   Pathname RepoInfo::packagesPath() const
   { return _pimpl->packagesPath(); }
 
-  bool RepoInfo::usesAutoMethadataPaths() const
-  { return _pimpl->usesAutoMethadataPaths(); }
+  bool RepoInfo::usesAutoMetadataPaths() const
+  { return _pimpl->usesAutoMetadataPaths(); }
 
   repo::RepoType RepoInfo::type() const
   { return _pimpl->type(); }

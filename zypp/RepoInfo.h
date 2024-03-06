@@ -266,7 +266,7 @@ namespace zypp
       void setMetadataPath( const Pathname &path );
 
       /** Whether \ref metadataPath uses \c %AUTO% setup. */
-      bool usesAutoMethadataPaths() const;
+      bool usesAutoMetadataPaths() const;
 
       /**
        * \short Path where this repo packages are cached

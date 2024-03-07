@@ -285,6 +285,20 @@ public:
 constexpr auto MIN_REQ_MIRRS = 4;
 constexpr auto MAXURLS       = 10;
 
+// TCP communication scales up as a connection proceeds. This is due to TCP slowstart where
+// the congestion window scales up. The stripe calculation assumes that every package can be fairly
+// downloaded from multiple mirrors omits that attempting to download say 1MB from 4 mirrors
+// means 4 requests of 256k, where then you have four congestion windows that need to increase
+// meaning the overall download speed is significantly lower. Counter intuitively this leads to
+// cases where *more* mirrors being available to zypper significantly lowers performance.
+//
+// Instead, there should be a minimum stripe size cap. This way any item smaller than the value
+// is downloaded in a single request, where as larger items are downloaded from many mirrors
+// but each range has enough time to increase it's congestion window to something reasonable.
+//
+// Initial value 4 MB;
+constexpr auto MIN_STRIPE_SIZE_KB = 4096;
+
 //////////////////////////////////////////////////////////////////////
 
 static double
@@ -1333,7 +1347,9 @@ multifetchrequest::run(std::vector<Url> &urllist)
 
 inline zypp::ByteCount multifetchrequest::makeBlksize ( uint maxConns, size_t filesize )
 {
-  return std::max<zypp::ByteCount>( filesize / std::min( std::max<int>( 1, maxConns ) , MAXURLS ), zypp::ByteCount(4, zypp::ByteCount::K) );
+  // If the calculated strip size is too small and can cause a loss in TCP throughput. Raise
+  // it to a reasonable value.
+  return std::max<zypp::ByteCount>( filesize / std::min( std::max<int>( 1, maxConns ) , MAXURLS ), zypp::ByteCount(MIN_STRIPE_SIZE_KB, zypp::ByteCount::K) );
 }
 
 //////////////////////////////////////////////////////////////////////

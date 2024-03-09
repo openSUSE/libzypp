@@ -43,8 +43,9 @@ namespace zypp
    * Use it to avoid hardcoded values and calls to getZYpp() just
    * to retrieve some value like architecture, languages or temppath.
    *
-   * It reads /etc/zypp/zypp.conf, the filename can be overridden by
-   * setting the ZYPP_CONF environment variable to a different file.
+   * It reads /etc/zypp/zypp.conf or /usr/etc/zypp/zypp.conf if not
+   * available. The filename can be overridden by setting the ZYPP_CONF
+   * environment variable to a different file.
    * Config values for \ref MediaConfig are forwarded to the MediaConfig
    * singleton.
    *

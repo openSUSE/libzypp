@@ -107,6 +107,11 @@ namespace zypp
       const char *  c_str()       const { return idStr().c_str(); }
       std::string   asString()    const { return idStr().asString(); }
 
+#ifdef __cpp_lib_string_view
+      std::string_view asStringView()      const { return idStr().asStringView(); }
+      explicit operator std::string_view() const { return asStringView(); }
+#endif
+
       IdType        id()          const { return idStr().id(); }
 
     public:

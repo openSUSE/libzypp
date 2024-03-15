@@ -230,7 +230,7 @@ namespace zypp
 
       /** Arrange the specified candidate (out of available objects) to be on system after commit.
        * If the specified candidate is not already installed (\ref identicalInstalled),
-       * and the \a causer_r has sufficient permisssion, then \a newCandidate_r is set as the new
+       * and the \a causer_r has sufficient permission, then \a newCandidate_r is set as the new
        * candidate (\ref setCandidate) and selected for installation.
        * \returns \c True if \a newCandidate_r is already installed or successfully selected for installation.
        */
@@ -242,6 +242,12 @@ namespace zypp
        * exist, the \ref installedObj.
        */
       PoolItem theObj() const;
+
+      /** The name(s) of the successor package if \ref vendorSupport is \ref VendorSupportSuperseded.
+       * It returns the value for the newest candidate.
+       * \see \ref Package::supersededBy
+       */
+      std::vector<std::string> supersededBy() const;
 
       ////////////////////////////////////////////////////////////////////////
 

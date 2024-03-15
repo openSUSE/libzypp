@@ -12,19 +12,82 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/Logger.h>
+#include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
+#include <zypp/base/StringV.h>
 #include <zypp/Package.h>
 #include <zypp/sat/LookupAttr.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/rpm/RpmHeader.h>
-
+#include <zypp/ui/Selectable.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zyppintern
 {
   using namespace zypp;
+
+  /** getVendorSupportOption return value */
+  using GetVendorSupportOptionReturn = std::pair<VendorSupportOption,std::optional<std::set<std::string_view>>>;
+
+  /** Get VendorSupportOption and the PKGNAME if VendorSupportSuperseded */
+  GetVendorSupportOptionReturn getVendorSupportOption( sat::Solvable solv_r )
+  {
+    static const IdString support_unsupported( "support_unsupported" );
+    static const IdString support_acc( "support_acc" );
+    static const IdString support_l1( "support_l1" );
+    static const IdString support_l2( "support_l2" );
+    static const IdString support_l3( "support_l3" );
+    static const IdString support_superseded( "support_superseded_by" ); // opt. followed by "(PKGNAME)"
+
+    GetVendorSupportOptionReturn ret { VendorSupportUnknown, std::nullopt };
+
+    // max over all identical packages
+    for ( const auto & solv : sat::WhatProvides( (Capability(solv_r.ident().id())) ) )
+    {
+      if ( solv.edition() == solv_r.edition()
+        && solv.ident() == solv_r.ident()
+        && solv_r.identical( solv ) )
+      {
+        for ( PackageKeyword kw : Package::Keywords( sat::SolvAttr::keywords, solv ) )
+        {
+          switch ( ret.first )
+          {
+            case VendorSupportUnknown:
+              if ( kw == support_unsupported )	{ ret.first = VendorSupportUnsupported; break; }
+            case VendorSupportUnsupported:
+              if ( kw == support_acc )	{ ret.first = VendorSupportACC; break; }
+            case VendorSupportACC:
+              if ( kw == support_l1 )	{ ret.first = VendorSupportLevel1; break; }
+            case VendorSupportLevel1:
+              if ( kw == support_l2 )	{ ret.first = VendorSupportLevel2; break; }
+            case VendorSupportLevel2:
+              if ( kw == support_l3 )	{ ret.first = VendorSupportLevel3; break; }
+            case VendorSupportLevel3:
+            case VendorSupportSuperseded:
+              // VendorSupportSuperseded is special as the kw may also contain a '(PKGNAME)'.
+              // In fact even multiple (PKGNAMES) derived from multiple keywords.
+              if ( strv::hasPrefix( kw.asStringView(), support_superseded.asStringView() ) ) {
+                ret.first = VendorSupportSuperseded;
+                if ( kw.c_str()[support_superseded.size()] == '(' && kw.c_str()[kw.size()-1] == ')' ) {
+                  std::string_view val { kw.c_str()+support_superseded.size()+1, kw.size()-support_superseded.size()-2 };
+                  if ( not val.empty() ) {
+                    if ( not ret.second )
+                      ret.second = std::set<std::string_view>();
+                    ret.second->insert( val );
+                  } else {
+                    WAR << "No superseding package defined in " << kw << endl;
+                  }
+                } else {
+                  WAR << "No superseding package defined in " << kw << endl;
+                }
+              }
+          }
+        }
+      }
+    }
+    return ret;
+  }
 
   inline bool schemeIsLocalDir( const Url & url_r )
   {
@@ -86,43 +149,7 @@ namespace zypp
   {}
 
   VendorSupportOption Package::vendorSupport() const
-  {
-    static const IdString support_unsupported( "support_unsupported" );
-    static const IdString support_acc( "support_acc" );
-    static const IdString support_l1( "support_l1" );
-    static const IdString support_l2( "support_l2" );
-    static const IdString support_l3( "support_l3" );
-
-    VendorSupportOption ret( VendorSupportUnknown );
-    // max over all identical packages
-    for ( const auto & solv : sat::WhatProvides( (Capability(ident().id())) ) )
-    {
-      if ( solv.edition() == edition()
-        && solv.ident() == ident()
-        && identical( solv ) )
-      {
-        for ( PackageKeyword kw : Keywords( sat::SolvAttr::keywords, solv ) )
-        {
-          switch ( ret )
-          {
-            case VendorSupportUnknown:
-              if ( kw == support_unsupported )	{ ret = VendorSupportUnsupported; break; }
-            case VendorSupportUnsupported:
-              if ( kw == support_acc )	{ ret = VendorSupportACC; break; }
-            case VendorSupportACC:
-              if ( kw == support_l1 )	{ ret = VendorSupportLevel1; break; }
-            case VendorSupportLevel1:
-              if ( kw == support_l2 )	{ ret = VendorSupportLevel2; break; }
-            case VendorSupportLevel2:
-              if ( kw == support_l3 )	{ return VendorSupportLevel3; break; }
-            case VendorSupportLevel3:
-              /* make gcc happy */ break;
-          }
-        }
-      }
-    }
-    return ret;
-  }
+  { return zyppintern::getVendorSupportOption( satSolvable() ).first; }
 
   bool Package::maybeUnsupported() const
   {
@@ -131,6 +158,7 @@ namespace zypp
       case VendorSupportUnknown:
       case VendorSupportUnsupported:
       case VendorSupportACC:
+      case VendorSupportSuperseded:
         return true;
 
       case VendorSupportLevel1:
@@ -139,6 +167,54 @@ namespace zypp
         break;	// intentionally no default:
     }
     return false;
+  }
+
+  std::vector<std::string> Package::supersededBy() const
+  {
+    std::vector<std::string> ret;
+    const auto & res = zyppintern::getVendorSupportOption( satSolvable() );
+    if ( res.second ) {
+      // translate the string_view set into stings
+      for ( const auto & v : *res.second )
+        ret.push_back( std::string( v ) );
+    }
+    return ret;
+  }
+
+
+  std::pair<std::vector<IdString>,std::vector<std::string>> Package::supersededByItems() const
+  {
+    std::pair<std::vector<IdString>,std::vector<std::string>> ret;
+    std::vector<std::string> todo { supersededBy() };
+    if ( not todo.empty() )
+    {
+      std::set<std::string> done;       // taken from todo and processed
+      std::set<std::string> unresolved; // supersededBy does not name a package
+      std::set<IdString>    resolved;   // supersededBy resolved to package (not superseded)
+      while ( not todo.empty() ) {
+        auto doneit { done.insert( std::move(todo.back()) ) };
+        todo.pop_back();
+        if ( not doneit.second )
+          continue; // already processed
+        const std::string & next { *doneit.first };
+
+        if ( auto sel = ui::Selectable::get( next ) ) {
+          const std::vector<std::string> & more { sel->supersededBy() };
+          if ( more.empty() ) {
+            resolved.insert( sel->ident() );
+          } else {
+            todo.insert( todo.end(), more.begin(), more.end() );
+          }
+        } else {
+          unresolved.insert( next );
+        }
+      }
+      if ( not resolved.empty() )
+        ret.first.insert( ret.first.end(), resolved.begin(), resolved.end() );
+      if ( not unresolved.empty() )
+        ret.second.insert( ret.second.end(), unresolved.begin(), unresolved.end() );
+    }
+    return ret;
   }
 
   Changelog Package::changelog() const

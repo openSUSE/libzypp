@@ -57,7 +57,21 @@ namespace zypp
        *
        * May have different semantics for different organizations.
        */
-      VendorSupportLevel3      = (1<<4)
+      VendorSupportLevel3      = (1<<4),
+
+      /**
+       * The package was discontinued and has been superseded by a new package
+       * with a different name. The new package is the successor of the
+       * old package, and as such only the new package is supported
+       * in the future.
+       *
+       * The old package will not receive updates anymore, so it's highly
+       * recommended to switch to the new package as soon as possible.
+       *
+       * \Note Packages carrying this flag also return the name of a
+       * successor in \ref Package::supersededBy().
+       */
+      VendorSupportSuperseded  = (1<<5),
     };
 
     // Make a flag set for this

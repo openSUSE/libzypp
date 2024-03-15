@@ -27,6 +27,8 @@ asUserString( VendorSupportOption opt )
         break;
     case VendorSupportACC:
         return _("Additional Customer Contract Necessary");
+    case VendorSupportSuperseded:
+        return _("Discontinued and superseded by a different package");
     }
     return _("invalid");
 }
@@ -52,6 +54,8 @@ std::string asUserStringDescription( VendorSupportOption opt )
         break;
     case VendorSupportACC:
         return _("An additional customer contract is necessary for getting support.");
+    case VendorSupportSuperseded:
+        return _("The package was discontinued and has been superseded by a new package with a different name.");
     }
     return _("Unknown support option. Description not available");
 }

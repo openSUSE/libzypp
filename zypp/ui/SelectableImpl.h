@@ -21,6 +21,7 @@
 #include <zypp/Resolver.h>
 #include <zypp/ui/Selectable.h>
 #include <zypp/ui/SelectableTraits.h>
+#include <zypp/Package.h>
 
 using std::endl;
 
@@ -242,6 +243,19 @@ namespace zypp
         if ( ret )
           return ret;
         return installedObj();
+      }
+
+      std::vector<std::string> supersededBy() const
+      {
+        std::vector<std::string> ret;
+        if ( kind() == ResKind::package ) {
+          for ( const PoolItem & pi : available() ) {
+            ret = pi->asKind<Package>()->supersededBy();
+            if ( not ret.empty() )
+              break;
+          }
+        }
+        return ret;
       }
 
       ////////////////////////////////////////////////////////////////////////

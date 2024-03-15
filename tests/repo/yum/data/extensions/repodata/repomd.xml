@@ -23,14 +23,14 @@
   </data>
   <data type="primary">
     <location href="repodata/primary.xml.gz"/>
-    <checksum type="sha">2eccb910f933ee28fd5f5223e05eab6c5b08db67</checksum>
+    <checksum type="sha">dff5db9c510c177b5ae01ec79f10ac47844e6494</checksum>
     <timestamp>1215823454</timestamp>
     <open-checksum type="sha">c6bd3c6099de74d97ed045163235be10ffa8a85f</open-checksum>
   </data>
 
   <data type="susedata">
     <location href="repodata/susedata.xml.gz"/>
-    <checksum type="sha">359396be40992603aecf6e2832839111e09eb080</checksum>
+    <checksum type="sha">2a9ad2b0e86106172b08b453b4d2c42b07adfb41</checksum>
     <timestamp>1227279057.0</timestamp>
     <open-checksum type="sha">b17c055bef95bca397faffdf028cfa91dd1b24bc</open-checksum>
   </data>

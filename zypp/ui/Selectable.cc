@@ -114,6 +114,9 @@ namespace zypp
     PoolItem Selectable::theObj() const
     { return _pimpl->theObj(); }
 
+    std::vector<std::string> Selectable::supersededBy() const
+    { return _pimpl->supersededBy(); }
+
     ////////////////////////////////////////////////////////////////////////
 
     bool Selectable::availableEmpty() const

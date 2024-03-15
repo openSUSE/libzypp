@@ -57,9 +57,30 @@ namespace zypp
 
     /**
      * True if the vendor support for this package
-     * is unknown or explictly unsupported.
+     * is unknown or explicitly unsupported.
      */
     bool maybeUnsupported() const;
+
+    /** The name(s) of the successor package if \ref vendorSupport is \ref VendorSupportSuperseded.
+     * Ideally only one name, but it might be that different repos
+     * provide different successor names. These are the pure metadata
+     * values. \see \ref supersededByItems and \ref ui::Selectable::supersededBy
+     */
+    std::vector<std::string> supersededBy() const;
+
+    /** The successor package(s) if \ref vendorSupport is \ref VendorSupportSuperseded.
+     * Each name returned by \ref supersededBy is resolved into the
+     * \ref Solvable::ident of an Item in the pool (collapsing chains
+     * of superseeded packages).
+     *
+     * The std::pair returned contains the IdString idents of superseeding packages and
+     * any std::strings which could not be resolved into a package name.
+     *
+     * Ideally you get back one IdString and no unresolved names. Multiple IdStrings
+     * express a choice. Unresolved names hint to broken repo metadata, as superseeding
+     * packages should be available in the repo.
+     */
+    std::pair<std::vector<IdString>,std::vector<std::string>> supersededByItems() const;
 
     /** Get the package change log */
     Changelog changelog() const;

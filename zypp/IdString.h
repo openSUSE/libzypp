@@ -102,6 +102,16 @@ namespace zypp
       explicit operator std::string() const
       { return asString(); }
 
+#ifdef __cpp_lib_string_view
+      /** As \c std::string_view */
+      std::string_view asStringView() const
+      { return { c_str(), size() }; }
+
+      /** Explicit conversion to \c std::string_view */
+      explicit operator std::string_view() const
+      { return asStringView(); }
+#endif
+
     public:
       /** Fast compare equal. */
       bool compareEQ( const IdString & rhs ) const

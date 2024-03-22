@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Mar 22 18:16:32 CET 2024 - ma@suse.de
+
+- Add resolver option 'removeOrphaned' for distupgrade
+  (bsc#1221525)
+- New VendorSupportOption flag VendorSupportSuperseded
+  (jsc#OBS-301, jsc#PED-8014)
+- Tests: fix vsftpd.conf where SUSE and Fedora use different
+  defaults (fixes #522)
+- Add default stripe minimum (#529)
+- Don't expose std::optional where YAST/PK explicitly use c++11.
+- Digest: Avoid using the deprecated OPENSSL_config.
+- version 17.32.0 (32)
+
+-------------------------------------------------------------------
 Tue Feb 20 17:30:42 CET 2024 - ma@suse.de
 
 - ProblemSolution::skipsPatchesOnly overload to handout the

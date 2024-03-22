@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2023-09-21 16:15+0000\n"
+"PO-Revision-Date: 2024-03-22 21:43+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
 ">\n"
@@ -4197,7 +4197,7 @@ msgstr "Contracte addicional de client necessari"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Descatalogat i substituït per un paquet diferent"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -4252,6 +4252,8 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"El paquet s'ha descatalogat i s'ha substituït per un paquet nou amb un nom "
+"diferent."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -4338,57 +4340,59 @@ msgstr "No es pot crear el directori cau de metadades."
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "No hi ha cap resum per al fitxer %s."
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Resum desconegut %s per al fitxer %s."
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Ha fallat la verificació del resum del fitxer %s."
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "El fitxer %s no està signat. Continuo?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "El fitxer %s del repositori %s no està signat. Continuo?"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
-msgstr ""
+msgstr "Voleu rebutjar la clau, confiar-hi temporalment o confiar-hi sempre?"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Nom de la clau: %1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha rebut %1% clau de signatura de paquets nova del repositori %2%:"
+msgstr[1] "S'han rebut %1% claus de signatura de paquets noves del repositori %2%:"
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Ha fallat la verificació de la signatura per al fitxer %1%."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
+"Ha fallat la verificació de la signatura per al fitxer %1% del repositori "
+"%2%."
 
 #. @TODO use a centralized Continue string!
 #: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
@@ -4399,7 +4403,7 @@ msgstr "Continuo?"
 #: zypp/ng/workflows/keyringwf.cc:419
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "El fitxer %s està signat amb una clau desconeguda: %s. Continuo?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
@@ -4407,6 +4411,8 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"El fitxer %s del repositori %s està signat amb una clau desconeguda: %s. "
+"Continuo?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77

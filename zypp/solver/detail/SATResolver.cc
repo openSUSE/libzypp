@@ -274,7 +274,7 @@ SATResolver::dumpOn( std::ostream & os ) const
 #undef OUTS
         os << "  focus	= "	<< _focus << endl;
         os << "  distupgrade	= "	<< _distupgrade << endl;
-        os << "  distupgrade_removeunsupported	= " << _distupgrade_removeunsupported << endl;
+        os << "  removeOrphaned	= " << _removeOrphaned << endl;
         os << "  solveSrcPackages	= "	<< _solveSrcPackages << endl;
         os << "  cleandepsOnRemove	= "	<< _cleandepsOnRemove << endl;
         os << "  fixsystem		= "	<< _fixsystem << endl;
@@ -304,7 +304,7 @@ SATResolver::SATResolver (ResPool  pool, sat::detail::CPool *satPool)
     , _onlyRequires		(ZConfig::instance().solver_onlyRequires())
     , _ignorealreadyrecommended(true)
     , _distupgrade(false)
-    , _distupgrade_removeunsupported(false)
+    , _removeOrphaned(false)
     , _dup_allowdowngrade	( ZConfig::instance().solver_dupAllowDowngrade() )
     , _dup_allownamechange	( ZConfig::instance().solver_dupAllowNameChange() )
     , _dup_allowarchchange	( ZConfig::instance().solver_dupAllowArchChange() )
@@ -637,7 +637,7 @@ void SATResolver::solverInitSetModeJobsAndFlags()
         queue_push( &(_jobQueue), SOLVER_DISTUPGRADE|SOLVER_SOLVABLE_ALL);
         queue_push( &(_jobQueue), 0 );
     }
-    if (_distupgrade_removeunsupported) {
+    if (_removeOrphaned) {
         queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
         queue_push( &(_jobQueue), 0 );
     }
@@ -709,7 +709,7 @@ SATResolver::solving(const CapabilitySet & requires_caps,
       // Produtcs unless removeunsupported is active (cleans up all).
       if ( _distupgrade )
       {
-        if ( _distupgrade_removeunsupported )
+        if ( _removeOrphaned )
           MIL << "Droplist processing not needed. RemoveUnsupported is On." << endl;
         else if ( ! ZConfig::instance().solverUpgradeRemoveDroppedPackages() )
           MIL << "Droplist processing is disabled in ZConfig." << endl;

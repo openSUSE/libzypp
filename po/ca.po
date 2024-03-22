@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-21 11:50+0200\n"
+"POT-Creation-Date: 2024-03-22 18:16+0100\n"
 "PO-Revision-Date: 2023-09-21 16:15+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
@@ -1550,20 +1550,20 @@ msgid "Supplements"
 msgstr "Complementa"
 
 #. TranslatorExplanation first %s is key name, second is keyring name
-#: zypp/KeyRing.cc:753
+#: zypp/KeyRing.cc:401
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
 msgstr "S'ha provat d'importar la clau no existent %s a l'anell de claus %s"
 
-#: zypp/KeyRing.cc:759
+#: zypp/KeyRing.cc:407
 msgid "Failed to import key."
 msgstr "Ha fallat importar la clau."
 
-#: zypp/KeyRing.cc:766
+#: zypp/KeyRing.cc:414
 msgid "Failed to delete key."
 msgstr "Error a l'hora d'esborrar la clau."
 
-#: zypp/KeyRing.cc:772
+#: zypp/KeyRing.cc:420
 #, c-format, boost-format
 msgid "Signature file %s not found"
 msgstr "El fitxer de la firma diginal %s no s'ha trobat"
@@ -4061,192 +4061,115 @@ msgstr "Zulu"
 msgid "Zuni"
 msgstr "Zuni"
 
-#: zypp/ProblemSolution.cc:114
+#: zypp/ProblemSolution.cc:134
 msgid "Following actions will be done:"
 msgstr "Es faran les accions següents:"
 
 #. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:64
+#: zypp/PublicKey.cc:65
 msgid "does not expire"
 msgstr "no caduca"
 
 #. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
-#: zypp/PublicKey.cc:69
+#: zypp/PublicKey.cc:70
 #, boost-format
 msgid "expired: %1%"
 msgstr "va caducar el %1%"
 
 #. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
-#: zypp/PublicKey.cc:74
+#: zypp/PublicKey.cc:75
 #, boost-format
 msgid "expires: %1%"
 msgstr "caduca el %1%"
 
 #. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:83
+#: zypp/PublicKey.cc:84
 msgid "(does not expire)"
 msgstr "(no caduca)"
 
 #. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:92
+#: zypp/PublicKey.cc:93
 msgid "(EXPIRED)"
 msgstr "(CADUCADA)"
 
 #. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:96
+#: zypp/PublicKey.cc:97
 msgid "(expires within 24h)"
 msgstr "(caduca d'aquí a 24 h)"
 
 #. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:100
+#: zypp/PublicKey.cc:101
 #, c-format, boost-format
 msgid "(expires in %d day)"
 msgid_plural "(expires in %d days)"
 msgstr[0] "(caduca d'aquí a %d dia)"
 msgstr[1] "(caduca d'aquí a %d dies)"
 
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a cache directories path
-#: zypp/RepoInfo.cc:548
-#, boost-format
-msgid "Looking for gpg key ID %1% in cache %2%."
-msgstr "Cercant la clau gpg amb l'ID %1% a la cau %2%."
-
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a repositories name
-#: zypp/RepoInfo.cc:576
-#, boost-format
-msgid "Looking for gpg key ID %1% in repository %2%."
-msgstr "Cercant la clau gpg amb l'ID %1% al repositori %2%."
-
-#. translator: %1% is a repositories name
-#: zypp/RepoInfo.cc:600
-#, boost-format
-msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "El repositori %1% no defineix URL \"gpgkey=\" addicionals."
-
-#: zypp/RepoManager.cc:320
-#, boost-format
-msgid "Cannot read repo directory '%1%': Permission denied"
-msgstr "No es pot llegir el directori del repositori %1%: permís denegat"
-
-#. TranslatorExplanation '%s' is a pathname
-#: zypp/RepoManager.cc:328 zypp/RepoManager.cc:800 zypp/RepoManager.cc:1603
-#: zypp/repo/PluginServices.cc:49
-#, c-format, boost-format
-msgid "Failed to read directory '%s'"
-msgstr "Error a l'hora de llegir el directori %s"
-
-#: zypp/RepoManager.cc:338
-#, boost-format
-msgid "Cannot read repo file '%1%': Permission denied"
-msgstr "No es pot llegir el fitxer de repositori %1%: permís denegat"
-
-#: zypp/RepoManager.cc:361
-msgid "Repository alias cannot start with dot."
-msgstr "L'àlies del repositori no pot començar amb un punt."
-
-#: zypp/RepoManager.cc:372
-msgid "Service alias cannot start with dot."
-msgstr "L'àlies del servei no pot començar amb un punt."
-
-#. TranslatorExplanation '%s' is a filename
-#: zypp/RepoManager.cc:755 zypp/RepoManager.cc:1721 zypp/RepoManager.cc:1787
-#: zypp/RepoManager.cc:1865 zypp/RepoManager.cc:1930 zypp/RepoManager.cc:2061
-#, c-format, boost-format
-msgid "Can't open file '%s' for writing."
-msgstr "No es pot obrir el fitxer %s per a l'escriptura."
-
-#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
-#. %1% = service name
-#. %2% = repository name
-#: zypp/RepoManager.cc:895
-#, boost-format
-msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
-msgstr "Servei desconegut \"%1%\": suprimint el repositori de serveis orfe %2%"
-
 #. we will throw this later if no URL checks out fine
-#: zypp/RepoManager.cc:1152
+#: zypp/RepoManager.cc:288 zypp/ng/repo/workflows/repomanagerwf.cc:413
 msgid "Valid metadata not found at specified URL"
 msgid_plural "Valid metadata not found at specified URLs"
 msgstr[0] "No s'han trobat metadades vàlides a l'URL especificat"
 msgstr[1] "No s'han trobat metadades vàlides als URL especificats"
 
-#: zypp/RepoManager.cc:1204 zypp/RepoManager.cc:1323 zypp/RepoManager.cc:1379
+#: zypp/RepoManager.cc:358 zypp/RepoManager.cc:414
+#: zypp/ng/repo/workflows/repomanagerwf.cc:377
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "No es pot crear %s"
 
-#: zypp/RepoManager.cc:1212
-msgid "Can't create metadata cache directory."
-msgstr "No es pot crear el directori cau de metadades."
-
-#: zypp/RepoManager.cc:1365
+#: zypp/RepoManager.cc:400
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Construint la memòria cau del repositori %s"
 
-#: zypp/RepoManager.cc:1385
+#: zypp/RepoManager.cc:420
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr ""
 "No es pot crear la memòria cau a %s - no se'n té permisos d'escriptura."
 
-#: zypp/RepoManager.cc:1446
+#: zypp/RepoManager.cc:481
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Error a l'hora de carregar el repositori (%d) a la memòria cau."
 
-#: zypp/RepoManager.cc:1457
+#: zypp/RepoManager.cc:492
 msgid "Unhandled repository type"
 msgstr "Tipus de repositori no manejat"
 
-#. prepare exception to be thrown if the type could not be determined
-#. due to a media exception. We can't throw right away, because of some
-#. problems with proxy servers returning an incorrect error
-#. on ftp file-not-found(bnc #335906). Instead we'll check another types
-#. before throwing.
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1494 zypp/RepoManager.cc:2556
-#, c-format, boost-format
-msgid "Error trying to read from '%s'"
-msgstr "Error en intentar llegir de '%s'"
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1547 zypp/RepoManager.cc:2564
-#, c-format, boost-format
-msgid "Unknown error reading from '%s'"
-msgstr "Error desconegut a l'hora de llegir '%s'"
-
-#: zypp/RepoManager.cc:1685
+#: zypp/RepoManager.cc:556
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Afegint el repositori %s"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1773
+#: zypp/RepoManager.cc:610
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Nom de repositori no vàlid a \"%s\""
 
-#: zypp/RepoManager.cc:1814
-#, c-format, boost-format
-msgid "Removing repository '%s'"
-msgstr "Suprimint el repositori %s"
-
-#: zypp/RepoManager.cc:1833 zypp/RepoManager.cc:1911
-msgid "Can't figure out where the repo is stored."
-msgstr "No es pot esbrinar on es desa el repositori."
-
 #. TranslatorExplanation '%s' is a filename
-#: zypp/RepoManager.cc:1847 zypp/RepoManager.cc:2049
+#: zypp/RepoManager.cc:624 zypp/zypp_detail/repomanagerbase_p.cc:358
+#: zypp/zypp_detail/repomanagerbase_p.cc:437
+#: zypp/zypp_detail/repomanagerbase_p.cc:500
+#: zypp/zypp_detail/repomanagerbase_p.cc:623
+#: zypp/zypp_detail/repomanagerbase_p.cc:731
 #, c-format, boost-format
-msgid "Can't delete '%s'"
-msgstr "No es pot esborrar %s"
+msgid "Can't open file '%s' for writing."
+msgstr "No es pot obrir el fitxer %s per a l'escriptura."
 
-#: zypp/RepoManager.cc:2037 zypp/RepoManager.cc:2487
-msgid "Can't figure out where the service is stored."
-msgstr "No s'ha sabut trobar on es guarda el servei."
+#. TranslatorExplanation '%s' is an URL
+#: zypp/RepoManager.cc:1054 zypp/ng/repo/workflows/repomanagerwf.cc:67
+#, c-format, boost-format
+msgid "Error trying to read from '%s'"
+msgstr "Error en intentar llegir de '%s'"
+
+#. TranslatorExplanation '%s' is an URL
+#: zypp/RepoManager.cc:1062
+#, c-format, boost-format
+msgid "Unknown error reading from '%s'"
+msgstr "Error desconegut a l'hora de llegir '%s'"
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4273,18 +4196,22 @@ msgid "Additional Customer Contract Necessary"
 msgstr "Contracte addicional de client necessari"
 
 #: zypp/VendorSupportOptions.cc:31
+msgid "Discontinued and superseded by a different package"
+msgstr ""
+
+#: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
 msgstr "invàlid"
 
-#: zypp/VendorSupportOptions.cc:39
+#: zypp/VendorSupportOptions.cc:41
 msgid "The level of support is unspecified"
 msgstr "El nivell de suport no està especificat."
 
-#: zypp/VendorSupportOptions.cc:42
+#: zypp/VendorSupportOptions.cc:44
 msgid "The vendor does not provide support."
 msgstr "El proveïdor ja no n'ofereix suport."
 
-#: zypp/VendorSupportOptions.cc:45
+#: zypp/VendorSupportOptions.cc:47
 msgid ""
 "Problem determination, which means technical support designed to provide "
 "compatibility information, installation assistance, usage support, on-going "
@@ -4296,7 +4223,7 @@ msgstr ""
 "manteniment continu i resolució bàsica de problemes. El suport de nivell 1 "
 "no està pensat per corregir errors de defecte del producte."
 
-#: zypp/VendorSupportOptions.cc:48
+#: zypp/VendorSupportOptions.cc:50
 msgid ""
 "Problem isolation, which means technical support designed to duplicate "
 "customer problems, isolate problem area and provide resolution for problems "
@@ -4306,7 +4233,7 @@ msgstr ""
 "duplicar els problemes del client, aïlla l'àrea del problema i proporciona "
 "la solució dels problemes no resolts pel nivell 1 de suport."
 
-#: zypp/VendorSupportOptions.cc:51
+#: zypp/VendorSupportOptions.cc:53
 msgid ""
 "Problem resolution, which means technical support designed to resolve "
 "complex problems by engaging engineering in resolution of product defects "
@@ -4316,15 +4243,21 @@ msgstr ""
 "resoldre problemes complexos a través d'enginyeria de resolució de defectes "
 "de producte que s'han identificat amb el suport de nivell 2."
 
-#: zypp/VendorSupportOptions.cc:54
+#: zypp/VendorSupportOptions.cc:56
 msgid "An additional customer contract is necessary for getting support."
 msgstr "Un contracte addicional de client és necessari per obtenir-ne suport."
 
-#: zypp/VendorSupportOptions.cc:56
+#: zypp/VendorSupportOptions.cc:58
+msgid ""
+"The package was discontinued and has been superseded by a new package with a "
+"different name."
+msgstr ""
+
+#: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
 msgstr "Opció de suport desconeguda. No n'hi ha descripció disponible."
 
-#: zypp/ZYppFactory.cc:376
+#: zypp/ZYppFactory.cc:379
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
@@ -4354,23 +4287,23 @@ msgid "Invalid regular expression '%s'"
 msgstr "Expressió regular no vàlida: \"%s\""
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1436
-#: zypp/media/MediaNetwork.cc:311
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1514
+#: zypp/media/MediaNetwork.cc:316
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Cal autenticació per a '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:770 zypp/media/MediaNetwork.cc:435
+#: zypp/media/MediaCurl.cc:782 zypp/media/MediaNetwork.cc:440
 msgid "Will try again..."
 msgstr "Es tornarà a intentar..."
 
-#: zypp/media/MediaCurl.cc:773
+#: zypp/media/MediaCurl.cc:785
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Es deixarà estar després de %1% intents."
 
-#: zypp/media/MediaCurl.cc:888 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:900 zypp-curl/ng/network/networkrequesterror.cc:127
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4378,7 +4311,7 @@ msgstr ""
 "Visiteu el Centre de clientela de SUSE per comprovar si el vostre registre "
 "és vàlid i no ha caducat."
 
-#: zypp/media/MediaCurl.cc:890 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:902 zypp-curl/ng/network/networkrequesterror.cc:129
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4386,7 +4319,7 @@ msgstr ""
 "Visiteu el Novell Customer Center per comprovar si el vostre registre encara "
 "és vàlid i no ha caducat."
 
-#: zypp/media/MediaHandler.cc:338
+#: zypp/media/MediaHandler.cc:339
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
@@ -4394,26 +4327,125 @@ msgstr ""
 "Crea un punt d'adjunció: no es pot trobar un directori d'escriptura per "
 "crear un punt d'adjunció."
 
-#: zypp/misc/CheckAccessDeleted.cc:455
+#: zypp/misc/CheckAccessDeleted.cc:466
 msgid "Please install package 'lsof' first."
 msgstr "Si us plau, instal·leu primer el paquet lsof."
 
-#: zypp/parser/RepoindexFileReader.cc:197
+#: zypp/ng/repo/refresh.cc:37
+msgid "Can't create metadata cache directory."
+msgstr "No es pot crear el directori cau de metadades."
+
+#: zypp/ng/workflows/checksumwf.cc:117
+#, c-format, boost-format
+msgid "No digest for file %s."
+msgstr ""
+
+#: zypp/ng/workflows/checksumwf.cc:123
+#, c-format, boost-format
+msgid "Unknown digest %s for file %s."
+msgstr ""
+
+#: zypp/ng/workflows/checksumwf.cc:129
+#, c-format, boost-format
+msgid "Digest verification failed for file '%s'"
+msgstr ""
+
+#. TranslatorExplanation: speaking of a file
+#: zypp/ng/workflows/keyringwf.cc:358
+#, c-format, boost-format
+msgid "File '%s' is unsigned, continue?"
+msgstr ""
+
+#. TranslatorExplanation: speaking of a file
+#: zypp/ng/workflows/keyringwf.cc:362
+#, c-format, boost-format
+msgid "File '%s' from repository '%s' is unsigned, continue?"
+msgstr ""
+
+#: zypp/ng/workflows/keyringwf.cc:374
+msgid "Do you want to reject the key, trust temporarily, or trust always?"
+msgstr ""
+
+#: zypp/ng/workflows/keyringwf.cc:383
+#, boost-format
+msgid "Key Name: %1%"
+msgstr ""
+
+#: zypp/ng/workflows/keyringwf.cc:389
+#, boost-format
+msgid "Received %1% new package signing key from repository \"%2%\":"
+msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translator: %1% is a file name
+#: zypp/ng/workflows/keyringwf.cc:400
+#, boost-format
+msgid "Signature verification failed for file '%1%'."
+msgstr ""
+
+#. translator: %1% is a file name, %2% a repositories na  me
+#: zypp/ng/workflows/keyringwf.cc:403
+#, boost-format
+msgid "Signature verification failed for file '%1%' from repository '%2%'."
+msgstr ""
+
+#. @TODO use a centralized Continue string!
+#: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
+msgid "Continue?"
+msgstr "Continuo?"
+
+#. translators: the last %s is gpg key ID
+#: zypp/ng/workflows/keyringwf.cc:419
+#, c-format, boost-format
+msgid "File '%s' is signed with an unknown key '%s'. Continue?"
+msgstr ""
+
+#. translators: the last %s is gpg key ID
+#: zypp/ng/workflows/keyringwf.cc:423
+#, c-format, boost-format
+msgid ""
+"File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
+msgstr ""
+
+#. translator: %1% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:77
+#, boost-format
+msgid "Repository %1% does not define additional 'gpgkey=' URLs."
+msgstr "El repositori %1% no defineix URL \"gpgkey=\" addicionals."
+
+#. no key in the cache is what we are looking for, lets download
+#. all keys specified in gpgkey= entries
+#. translator: %1% is a gpg key ID like 3DBDC284
+#. %2% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:86
+#, boost-format
+msgid "Looking for gpg key ID %1% in repository %2%."
+msgstr "Cercant la clau gpg amb l'ID %1% al repositori %2%."
+
+#. translator: %1% is a gpg key ID like 3DBDC284
+#. %2% is a cache directories path
+#: zypp/ng/workflows/repoinfowf.cc:133
+#, boost-format
+msgid "Looking for gpg key ID %1% in cache %2%."
+msgstr "Cercant la clau gpg amb l'ID %1% a la cau %2%."
+
+#: zypp/parser/RepoindexFileReader.cc:198
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr "Falta l'atribut requerit \"%s\"."
 
-#: zypp/parser/RepoindexFileReader.cc:209
+#: zypp/parser/RepoindexFileReader.cc:210
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "Són necessaris l'atribut \"%s\" o \"%s\", o bé tots dos."
 
-#: zypp/repo/PackageProvider.cc:331
+#: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
 msgstr "Ha fallat la verificació de la signatura"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:462
+#: zypp/repo/PackageProvider.cc:474
 #, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4423,29 +4455,37 @@ msgstr ""
 "intentar baixar-lo de nou?"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:486
+#: zypp/repo/PackageProvider.cc:498
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr "El paquet %s no s'ha pogut obtenir. Voleu intentar baixar-lo de nou?"
 
-#: zypp/repo/PackageProvider.cc:609
+#: zypp/repo/PackageProvider.cc:621
 msgid "applydeltarpm check failed."
 msgstr "La comprovació de l'applydeltarpm ha fallat."
 
-#: zypp/repo/PackageProvider.cc:620
+#: zypp/repo/PackageProvider.cc:632
 msgid "applydeltarpm failed."
 msgstr "ha fallat aplicar de l'RPM delta."
+
+#. TranslatorExplanation '%s' is a pathname
+#: zypp/repo/PluginServices.cc:49 zypp/zypp_detail/repomanagerbase_p.cc:129
+#: zypp/zypp_detail/repomanagerbase_p.cc:284
+#: zypp/zypp_detail/repomanagerbase_p.cc:815
+#, c-format, boost-format
+msgid "Failed to read directory '%s'"
+msgstr "Error a l'hora de llegir el directori %s"
 
 #: zypp/repo/RepoException.cc:129
 msgid "Service plugin does not support changing an attribute."
 msgstr "El servei de complements (plugin) no permet canviar-ne un atribut."
 
-#: zypp/repo/RepoProvideFile.cc:248
+#: zypp/repo/RepoProvideFile.cc:260
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "No es pot proporcionar el fitxer %s des del repositori %s"
 
-#: zypp/repo/RepoProvideFile.cc:254
+#: zypp/repo/RepoProvideFile.cc:266
 msgid "No url in repository."
 msgstr "No URL al repositori."
 
@@ -4616,7 +4656,7 @@ msgstr "trenca %s ignorant-ne algunes de les dependències"
 msgid "generally ignore of some dependencies"
 msgstr "ignora generalment algunes dependències"
 
-#: zypp/solver/detail/SATResolver.cc:1144
+#: zypp/solver/detail/SATResolver.cc:1146
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -4626,87 +4666,87 @@ msgstr ""
 "distribució i s'ha de reemplaçar"
 
 #. just in case
-#: zypp/solver/detail/SATResolver.cc:1146
+#: zypp/solver/detail/SATResolver.cc:1148
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr ""
 "el %1% per instal·lar no pertany a un repositori d'actualització de la "
 "distribució"
 
-#: zypp/solver/detail/SATResolver.cc:1150
+#: zypp/solver/detail/SATResolver.cc:1152
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr "el %1% instal·lat té una arquitectura inferior"
 
-#: zypp/solver/detail/SATResolver.cc:1152
+#: zypp/solver/detail/SATResolver.cc:1154
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr "el %1% per instal·lar té una arquitectura inferior"
 
-#: zypp/solver/detail/SATResolver.cc:1155
+#: zypp/solver/detail/SATResolver.cc:1157
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr "problema amb el %1% instal·lat"
 
-#: zypp/solver/detail/SATResolver.cc:1158
+#: zypp/solver/detail/SATResolver.cc:1160
 msgid "conflicting requests"
 msgstr "demandes conflictives"
 
-#: zypp/solver/detail/SATResolver.cc:1161
+#: zypp/solver/detail/SATResolver.cc:1163
 msgid "some dependency problem"
 msgstr "problemes de dependències"
 
-#: zypp/solver/detail/SATResolver.cc:1164
+#: zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr "no hi ha res que proporcioni el %1% requerit"
 
-#: zypp/solver/detail/SATResolver.cc:1165
-#: zypp/solver/detail/SATResolver.cc:1169
+#: zypp/solver/detail/SATResolver.cc:1167
+#: zypp/solver/detail/SATResolver.cc:1171
 msgid "Have you enabled all the required repositories?"
 msgstr "Heu habilitat tots els repositoris requerits?"
 
-#: zypp/solver/detail/SATResolver.cc:1168
+#: zypp/solver/detail/SATResolver.cc:1170
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr "el paquet requerit %1% no existeix"
 
-#: zypp/solver/detail/SATResolver.cc:1172
+#: zypp/solver/detail/SATResolver.cc:1174
 msgid "unsupported request"
 msgstr "petició no suportada"
 
-#: zypp/solver/detail/SATResolver.cc:1175
+#: zypp/solver/detail/SATResolver.cc:1177
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr "%1% és proporcionat pel sistema i no es pot esborrar"
 
-#: zypp/solver/detail/SATResolver.cc:1178
+#: zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "%1% is not installable"
 msgstr "%1% no és instal·lable"
 
-#: zypp/solver/detail/SATResolver.cc:1183
+#: zypp/solver/detail/SATResolver.cc:1185
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
 msgstr "no hi ha res que proporcioni %1%, necessari per al %2% instal·lat"
 
-#: zypp/solver/detail/SATResolver.cc:1185
+#: zypp/solver/detail/SATResolver.cc:1187
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr "no hi ha res que proporcioni %1%, necessari per al %2% per instal·lar"
 
-#: zypp/solver/detail/SATResolver.cc:1188
+#: zypp/solver/detail/SATResolver.cc:1190
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr "no es poden instal·lar tots dos: %1% i %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1193
+#: zypp/solver/detail/SATResolver.cc:1195
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 "el %1% instal·lat té conflicte amb %2%, proporcionat per l'instal·lat %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1195
+#: zypp/solver/detail/SATResolver.cc:1197
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
@@ -4714,14 +4754,14 @@ msgstr ""
 "el %1% instal·lat té conflicte amb el %2%, proporcionat per %3% per "
 "instal·lar"
 
-#: zypp/solver/detail/SATResolver.cc:1199
+#: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 "el %1% per instal·lar té conflicte amb %2%, proporcionat per l'instal·lat %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1201
+#: zypp/solver/detail/SATResolver.cc:1203
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
@@ -4730,47 +4770,47 @@ msgstr ""
 "el %1% per instal·lar té conflicte amb el %2%, proporcionat per %3% per "
 "instal·lar"
 
-#: zypp/solver/detail/SATResolver.cc:1208
+#: zypp/solver/detail/SATResolver.cc:1210
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr "el %1% instal·lat fa obsolet %2%, proporcionat per l'instal·lat %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1210
+#: zypp/solver/detail/SATResolver.cc:1212
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr "el %1% instal·lat fa obsolet %2%, proporcionat per %3% per instal·lar"
 
-#: zypp/solver/detail/SATResolver.cc:1214
+#: zypp/solver/detail/SATResolver.cc:1216
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 "el %1% per instal·lar fa obsolet %2%, proporcionat per l'instal·lat %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1216
+#: zypp/solver/detail/SATResolver.cc:1218
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 "el %1% per instal·lar fa obsolet %2%, proporcionat per %3% per instal·lar"
 
-#: zypp/solver/detail/SATResolver.cc:1221
+#: zypp/solver/detail/SATResolver.cc:1223
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr "el %1% instal·lat té conflicte amb %2%, proporcionat per si mateix"
 
-#: zypp/solver/detail/SATResolver.cc:1223
+#: zypp/solver/detail/SATResolver.cc:1225
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr "el %1% per instal·lar té conflicte amb %2%, proporcionat per si mateix"
 
-#: zypp/solver/detail/SATResolver.cc:1255
+#: zypp/solver/detail/SATResolver.cc:1257
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr ""
 "el %1% instal·lat requereix %2%, però aquest requisit no es pot proporcionar"
 
-#: zypp/solver/detail/SATResolver.cc:1257
+#: zypp/solver/detail/SATResolver.cc:1259
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
@@ -4779,11 +4819,11 @@ msgstr ""
 "el %1% per instal·lar requereix %2%, però aquest requisit no es pot "
 "proporcionar"
 
-#: zypp/solver/detail/SATResolver.cc:1259
+#: zypp/solver/detail/SATResolver.cc:1261
 msgid "deleted providers: "
 msgstr "proveïdors suprimits: "
 
-#: zypp/solver/detail/SATResolver.cc:1269
+#: zypp/solver/detail/SATResolver.cc:1271
 msgid ""
 "\n"
 "not installable providers: "
@@ -4791,17 +4831,17 @@ msgstr ""
 "\n"
 "proveïdors no desistal·lables: "
 
-#: zypp/solver/detail/SATResolver.cc:1271
+#: zypp/solver/detail/SATResolver.cc:1273
 msgid "not installable providers: "
 msgstr "proveïdors no desinstal·lables: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/solver/detail/SATResolver.cc:1308
+#: zypp/solver/detail/SATResolver.cc:1310
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr "%1% encara no s'ha integrat plenament a %2%."
 
-#: zypp/solver/detail/SATResolver.cc:1309
+#: zypp/solver/detail/SATResolver.cc:1311
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
@@ -4810,7 +4850,7 @@ msgstr ""
 "instal·lar els pedaços de manteniment."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1317
+#: zypp/solver/detail/SATResolver.cc:1319
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
@@ -4819,7 +4859,7 @@ msgstr ""
 "La supressió del PTF %1% instal·lat en aquest context també suprimirà (no "
 "substituirà!) els paquets PTF inclosos."
 
-#: zypp/solver/detail/SATResolver.cc:1318
+#: zypp/solver/detail/SATResolver.cc:1320
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
@@ -4828,117 +4868,117 @@ msgstr ""
 "El PTF s'hauria de suprimir cridant %1%. Això actualitzarà els paquets PTF "
 "inclosos en lloc de suprimir-los."
 
-#: zypp/solver/detail/SATResolver.cc:1319
+#: zypp/solver/detail/SATResolver.cc:1321
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr "Normalment, voleu mantenir el PTF o opteu per cancel·lar l'acció."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1324
+#: zypp/solver/detail/SATResolver.cc:1326
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr "El %1% instal·lat bloqueja l'acció desitjada."
 
-#: zypp/solver/detail/SATResolver.cc:1325
+#: zypp/solver/detail/SATResolver.cc:1327
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr "Normalment, voleu mantenir el PTF i opteu per cancel·lar l'acció."
 
-#: zypp/solver/detail/SATResolver.cc:1382
+#: zypp/solver/detail/SATResolver.cc:1384
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr "suprimeix el bloqueig per permetre la supressió de %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1389
-#: zypp/solver/detail/SATResolver.cc:1427
+#: zypp/solver/detail/SATResolver.cc:1391
+#: zypp/solver/detail/SATResolver.cc:1429
 #, boost-format
 msgid "do not install %1%"
 msgstr "no instal·lis %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1406
-#: zypp/solver/detail/SATResolver.cc:1448
+#: zypp/solver/detail/SATResolver.cc:1408
+#: zypp/solver/detail/SATResolver.cc:1450
 #, boost-format
 msgid "keep %1%"
 msgstr "mantén %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1411
+#: zypp/solver/detail/SATResolver.cc:1413
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr "suprimeix el bloqueig per permetre la instal·lació de %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1462
-#: zypp/solver/detail/SATResolver.cc:1483
+#: zypp/solver/detail/SATResolver.cc:1464
+#: zypp/solver/detail/SATResolver.cc:1485
 msgid "This request will break your system!"
 msgstr "Aquesta petició trencarà l'estabilitat del sistema!"
 
-#: zypp/solver/detail/SATResolver.cc:1463
-#: zypp/solver/detail/SATResolver.cc:1484
+#: zypp/solver/detail/SATResolver.cc:1465
+#: zypp/solver/detail/SATResolver.cc:1486
 msgid "ignore the warning of a broken system"
 msgstr "ignora l'avís de sistema trencat"
 
-#: zypp/solver/detail/SATResolver.cc:1468
+#: zypp/solver/detail/SATResolver.cc:1470
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr "no preguntis la instal·lació d'un resoluble que proporcioni %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1490
+#: zypp/solver/detail/SATResolver.cc:1492
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr "no preguntis la supressió de tots els resolubles que proporcionin %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1503
+#: zypp/solver/detail/SATResolver.cc:1505
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr "no instal·lis la versió més recent de %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1524
+#: zypp/solver/detail/SATResolver.cc:1526
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr "mantén %1% malgrat l'arquitectura inferior"
 
-#: zypp/solver/detail/SATResolver.cc:1529
+#: zypp/solver/detail/SATResolver.cc:1531
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr "instal·la %1% malgrat l'arquitectura inferior"
 
-#: zypp/solver/detail/SATResolver.cc:1538
+#: zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr "mantén obsolet %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1543
+#: zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr "instal·la %1% des d'un repositori exclòs"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1557
+#: zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr "instal·la %1% tot i que ha estat retret"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1560
+#: zypp/solver/detail/SATResolver.cc:1562
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr "permet instal·lar el PTF (format de text net) %1%"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1563
+#: zypp/solver/detail/SATResolver.cc:1565
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr "instal·la %1% tot i que és a la llista negra"
 
-#: zypp/solver/detail/SATResolver.cc:1583
+#: zypp/solver/detail/SATResolver.cc:1585
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr "degradació de %1% a %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1590
+#: zypp/solver/detail/SATResolver.cc:1592
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr "canvi d'arquitectura de %1% a %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/solver/detail/SATResolver.cc:1601
+#: zypp/solver/detail/SATResolver.cc:1603
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
@@ -4947,7 +4987,7 @@ msgstr ""
 "instal·la %1% (amb canvi de proveïdor)\n"
 "  %2%  -->  %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1606
+#: zypp/solver/detail/SATResolver.cc:1608
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
@@ -4956,29 +4996,29 @@ msgstr ""
 "instal·la %1% del proveïdor %2%\n"
 "  i reemplaça %3% del proveïdor %4%"
 
-#: zypp/solver/detail/SATResolver.cc:1615
+#: zypp/solver/detail/SATResolver.cc:1617
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr "reemplaçament de %1% per %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1626
+#: zypp/solver/detail/SATResolver.cc:1628
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr "desinstal·lació de %1%"
 
 #. Translator: progress bar label
-#: zypp/target/RpmPostTransCollector.cc:194
+#: zypp/target/RpmPostTransCollector.cc:200
 msgid "Running post-transaction scripts"
 msgstr "Executant scripts posteriors a la transacció"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:196
+#: zypp/target/RpmPostTransCollector.cc:202
 #, boost-format
 msgid "Running %1% script"
 msgstr "Executant l'script %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:198
+#: zypp/target/RpmPostTransCollector.cc:204
 #, boost-format
 msgid "%1% script output:"
 msgstr "Sortida de l'script %1%:"
@@ -4987,39 +5027,39 @@ msgstr "Sortida de l'script %1%:"
 msgid "Installation has been aborted as directed."
 msgstr "La instal·lació s'ha avortat tal com heu indicat."
 
-#: zypp/target/TargetImpl.cc:452
+#: zypp/target/TargetImpl.cc:463
 msgid " executed"
 msgstr " executat"
 
-#: zypp/target/TargetImpl.cc:474
+#: zypp/target/TargetImpl.cc:485
 msgid " execution failed"
 msgstr " ha fallat l'execució"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:591
+#: zypp/target/TargetImpl.cc:602
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s ja s'ha executat com a %s)"
 
-#: zypp/target/TargetImpl.cc:601
+#: zypp/target/TargetImpl.cc:612
 msgid " execution skipped while aborting"
 msgstr " execució omesa mentre s'avortava"
 
-#: zypp/target/TargetImpl.cc:656 zypp/target/TargetImpl.cc:676
-#: zypp/target/TargetImpl.cc:704 zypp/target/TargetImpl.cc:741
-#: zypp/target/TargetImpl.cc:749
+#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
+#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
+#: zypp/target/TargetImpl.cc:760
 msgid "Error sending update message notification."
 msgstr ""
 "S'ha produït un error durant l'enviament de la notificació d'actualització."
 
-#: zypp/target/TargetImpl.cc:800
+#: zypp/target/TargetImpl.cc:811
 msgid "New update message"
 msgstr "Nou missatge d'actualització"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2102
+#: zypp/target/TargetImpl.cc:2114
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -5028,46 +5068,46 @@ msgstr ""
 "Senyal rebut: \"%1% (%2%)\", per garantir la coherència del sistema, no és "
 "possible cancel·lar una transacció rpm en execució."
 
-#: zypp/target/TargetImpl.cc:2739
+#: zypp/target/TargetImpl.cc:2751
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "No s'ha pogut executar la transacció a causa dels problemes següents:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:468 zypp/target/rpm/RpmDb.cc:1829
-#: zypp/target/rpm/RpmDb.cc:1998
+#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
+#: zypp/target/rpm/RpmDb.cc:2016
 msgid "RPM failed: "
 msgstr "Ha fallat l'RPM: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:793
+#: zypp/target/rpm/RpmDb.cc:799
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Error a l'hora d'importar la clau pública %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:860
+#: zypp/target/rpm/RpmDb.cc:866
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Ha fallat suprimir la clau pública %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1272
+#: zypp/target/rpm/RpmDb.cc:1282
 msgid "Package header is not signed!"
 msgstr "La capçalera del paquet no està signada!"
 
-#: zypp/target/rpm/RpmDb.cc:1274
+#: zypp/target/rpm/RpmDb.cc:1284
 msgid "Package payload is not signed!"
 msgstr "El contingut del paquet no està signat!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1611
+#: zypp/target/rpm/RpmDb.cc:1621
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Fitxers de configuració modificats per a %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1810
+#: zypp/target/rpm/RpmDb.cc:1824
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -5075,7 +5115,7 @@ msgstr ""
 "diferència"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1812
+#: zypp/target/rpm/RpmDb.cc:1826
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -5085,7 +5125,7 @@ msgstr ""
 "Aquestes són les primeres 25 línies de diferència:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1815
+#: zypp/target/rpm/RpmDb.cc:1829
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -5093,7 +5133,7 @@ msgstr ""
 "diferència"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1817
+#: zypp/target/rpm/RpmDb.cc:1831
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -5106,49 +5146,97 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1845 zypp/target/rpm/RpmDb.cc:2014
+#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
 msgid "Additional rpm output"
 msgstr "Sortida addicional de l'rpm"
 
-#: zypp/target/rpm/RpmDb.cc:2212
+#: zypp/target/rpm/RpmDb.cc:2230
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "còpia de seguretat creada %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2233
+#: zypp/target/rpm/RpmDb.cc:2251
 msgid "Signature is OK"
 msgstr "La signatura és correcta"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2235
+#: zypp/target/rpm/RpmDb.cc:2253
 msgid "Unknown type of signature"
 msgstr "Tipus de signatura desconeguda"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2237
+#: zypp/target/rpm/RpmDb.cc:2255
 msgid "Signature does not verify"
 msgstr "La signatura no es verifica"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2239
+#: zypp/target/rpm/RpmDb.cc:2257
 msgid "Signature is OK, but key is not trusted"
 msgstr "La signatura és correcta, però no és de confiança"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2241
+#: zypp/target/rpm/RpmDb.cc:2259
 msgid "Signatures public key is not available"
 msgstr "La clau pública de signatures no està disponible"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2243
+#: zypp/target/rpm/RpmDb.cc:2261
 msgid "File does not exist or signature can't be checked"
 msgstr "El fitxer no existeix o la signatura no es pot comprovar"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2245
+#: zypp/target/rpm/RpmDb.cc:2263
 msgid "File is unsigned"
 msgstr "El fitxer no està signat."
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:121
+#, boost-format
+msgid "Cannot read repo directory '%1%': Permission denied"
+msgstr "No es pot llegir el directori del repositori %1%: permís denegat"
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:139
+#, boost-format
+msgid "Cannot read repo file '%1%': Permission denied"
+msgstr "No es pot llegir el fitxer de repositori %1%: permís denegat"
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:386
+#, c-format, boost-format
+msgid "Removing repository '%s'"
+msgstr "Suprimint el repositori %s"
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:405
+#: zypp/zypp_detail/repomanagerbase_p.cc:481
+msgid "Can't figure out where the repo is stored."
+msgstr "No es pot esbrinar on es desa el repositori."
+
+#. TranslatorExplanation '%s' is a filename
+#: zypp/zypp_detail/repomanagerbase_p.cc:419
+#: zypp/zypp_detail/repomanagerbase_p.cc:611
+#, c-format, boost-format
+msgid "Can't delete '%s'"
+msgstr "No es pot esborrar %s"
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:599
+#: zypp/zypp_detail/repomanagerbase_p.cc:662
+msgid "Can't figure out where the service is stored."
+msgstr "No s'ha sabut trobar on es guarda el servei."
+
+#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
+#. %1% = service name
+#. %2% = repository name
+#: zypp/zypp_detail/repomanagerbase_p.cc:909
+#, boost-format
+msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
+msgstr "Servei desconegut \"%1%\": suprimint el repositori de serveis orfe %2%"
+
+#: zypp/zypp_detail/repomanagerbase_p.cc:954
+msgid "Repository alias cannot start with dot."
+msgstr "L'àlies del repositori no pot començar amb un punt."
+
+#: zypp/zypp_detail/repomanagerbase_p.h:45
+msgid "Service alias cannot start with dot."
+msgstr "L'àlies del servei no pot començar amb un punt."
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-core/CheckSum.cc:136
@@ -5166,94 +5254,94 @@ msgstr "No es pot obrir pty (%s)."
 msgid "Can't open pipe (%s)."
 msgstr "No es pot obrir pipe (%s)."
 
-#: zypp-core/Url.cc:114
+#: zypp-core/Url.cc:118
 msgid "Invalid LDAP URL query string"
 msgstr "La cadena de consulta de l'URL de l'LDAP no és vàlida"
 
-#: zypp-core/Url.cc:153
+#: zypp-core/Url.cc:157
 #, c-format, boost-format
 msgid "Invalid LDAP URL query parameter '%s'"
 msgstr "El paràmetre de consulta de l'URL de l'LDAP \"%s\" no és vàlid"
 
-#: zypp-core/Url.cc:301
+#: zypp-core/Url.cc:305
 msgid "Unable to clone Url object"
 msgstr "No es pot clonar l'objecte de l'URL"
 
-#: zypp-core/Url.cc:314
+#: zypp-core/Url.cc:318
 msgid "Invalid empty Url object reference"
 msgstr "La referència d'objecte de l'URL buit no és vàlida"
 
-#: zypp-core/Url.cc:327 zypp-core/Url.cc:341
+#: zypp-core/Url.cc:331 zypp-core/Url.cc:345
 msgid "Unable to parse Url components"
 msgstr "No es poden analitzar els components de l'URL"
 
-#: zypp-core/base/Exception.cc:150
+#: zypp-core/base/Exception.cc:169
 msgid "History:"
 msgstr "Historial:"
 
-#: zypp-core/url/UrlBase.cc:220
+#: zypp-core/url/UrlBase.cc:221
 #, c-format, boost-format
 msgid "Url scheme does not allow a %s"
 msgstr "L'esquema de l'URL no permet un %s"
 
-#: zypp-core/url/UrlBase.cc:239
+#: zypp-core/url/UrlBase.cc:240
 #, c-format, boost-format
 msgid "Invalid %s component '%s'"
 msgstr "El component %s no és vàlid %s"
 
-#: zypp-core/url/UrlBase.cc:246
+#: zypp-core/url/UrlBase.cc:247
 #, c-format, boost-format
 msgid "Invalid %s component"
 msgstr "Component de %s no vàlid"
 
-#: zypp-core/url/UrlBase.cc:863 zypp-core/url/UrlBase.cc:1308
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
 msgid "Query string parsing not supported for this URL"
 msgstr "No s'admet l'anàlisi de cadenes de consulta per a aquesta URL"
 
-#: zypp-core/url/UrlBase.cc:901
+#: zypp-core/url/UrlBase.cc:902
 msgid "Url scheme is a required component"
 msgstr "L'esquema de l'URL és un component necessari"
 
-#: zypp-core/url/UrlBase.cc:907
+#: zypp-core/url/UrlBase.cc:908
 #, c-format, boost-format
 msgid "Invalid Url scheme '%s'"
 msgstr "L'esquema de l'URL \"%s\" no és vàlid"
 
-#: zypp-core/url/UrlBase.cc:1026
+#: zypp-core/url/UrlBase.cc:1027
 msgid "Url scheme does not allow a username"
 msgstr "L'esquema de l'URL no permet un nom d'usuari"
 
-#: zypp-core/url/UrlBase.cc:1060
+#: zypp-core/url/UrlBase.cc:1061
 msgid "Url scheme does not allow a password"
 msgstr "L'esquema de l'URL no permet una contrasenya"
 
-#: zypp-core/url/UrlBase.cc:1089
+#: zypp-core/url/UrlBase.cc:1090
 msgid "Url scheme requires a host component"
 msgstr "L'esquema de l'URL requereix un component d'amfitrió"
 
-#: zypp-core/url/UrlBase.cc:1099
+#: zypp-core/url/UrlBase.cc:1100
 msgid "Url scheme does not allow a host component"
 msgstr "L'esquema de l'URL no permet un component d'amfitrió"
 
-#: zypp-core/url/UrlBase.cc:1126
+#: zypp-core/url/UrlBase.cc:1127
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "El component d'amfitrió \"%s\" no és vàlid."
 
-#: zypp-core/url/UrlBase.cc:1147
+#: zypp-core/url/UrlBase.cc:1148
 msgid "Url scheme does not allow a port"
 msgstr "L'esquema de l'URL no permet un port"
 
-#: zypp-core/url/UrlBase.cc:1158
+#: zypp-core/url/UrlBase.cc:1159
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "El component de port \"%s\" no és vàlid"
 
-#: zypp-core/url/UrlBase.cc:1175
+#: zypp-core/url/UrlBase.cc:1176
 msgid "Url scheme requires path name"
 msgstr "L'esquema de l'URL requereix un nom de camí"
 
-#: zypp-core/url/UrlBase.cc:1196 zypp-core/url/UrlBase.cc:1210
+#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
 msgid "Relative path not allowed if authority exists"
 msgstr "No es permet un camí relatiu si existeix una autoritat"
 
@@ -5534,8 +5622,8 @@ msgstr "No"
 # ID
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:130 zypp-tui/output/OutNormal.cc:342
-#: zypp-tui/output/OutNormal.cc:345
+#: zypp-tui/output/Out.cc:130 zypp-tui/output/OutNormal.cc:340
+#: zypp-tui/output/OutNormal.cc:343
 msgid "done"
 msgstr "fet"
 
@@ -5546,36 +5634,32 @@ msgstr "atenció"
 
 #. translator: Shown as result tag in a progress bar: ...........[error]
 #. Translator: download progress bar result: "............[error]"
-#: zypp-tui/output/Out.cc:134 zypp-tui/output/OutNormal.cc:339
-#: zypp-tui/output/OutNormal.cc:345
+#: zypp-tui/output/Out.cc:134 zypp-tui/output/OutNormal.cc:337
+#: zypp-tui/output/OutNormal.cc:343
 msgid "error"
 msgstr "error"
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:50
+#: zypp-tui/output/Out.h:51
 msgid "Note:"
 msgstr "Atenció!"
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:52
+#: zypp-tui/output/Out.h:53
 msgid "Warning:"
 msgstr "Avís!"
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:54
+#: zypp-tui/output/Out.h:55
 msgid "Error:"
 msgstr "Error:"
-
-#: zypp-tui/output/Out.h:56
-msgid "Continue?"
-msgstr "Continuo?"
 
 #: zypp-tui/output/OutNormal.cc:89
 msgid "Warning: "
 msgstr "Avís! "
 
 #: zypp-tui/output/OutNormal.cc:253 zypp-tui/output/OutNormal.cc:287
-#: zypp-tui/output/OutNormal.cc:327
+#: zypp-tui/output/OutNormal.cc:325
 msgid "Retrieving:"
 msgstr "Obtenint"
 
@@ -5585,15 +5669,15 @@ msgid "starting"
 msgstr "començant"
 
 #. Translator: download progress bar result: "........[not found]"
-#: zypp-tui/output/OutNormal.cc:336 zypp-tui/output/OutNormal.cc:345
+#: zypp-tui/output/OutNormal.cc:334 zypp-tui/output/OutNormal.cc:343
 msgid "not found"
 msgstr "no trobat"
 
-#: zypp-tui/output/OutNormal.cc:422
+#: zypp-tui/output/OutNormal.cc:420
 msgid "No help available for this prompt."
 msgstr "No hi ha ajuda per a aquesta entrada."
 
-#: zypp-tui/output/OutNormal.cc:439
+#: zypp-tui/output/OutNormal.cc:437
 msgid "no help available for this option"
 msgstr "no hi ha ajuda disponible per a aquesta opció"
 

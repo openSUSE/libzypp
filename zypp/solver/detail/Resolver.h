@@ -197,6 +197,9 @@ class Resolver : private base::NonCopyable
     void setSolveSrcPackages( TriBool state_r )	{ _solveSrcPackages = indeterminate(state_r) ? false : bool(state_r); }
     //@}
 
+    void setRemoveOrphaned( bool yesno_r );
+    bool removeOrphaned() const;
+
     void setFocus( ResolverFocus focus_r );
     ResolverFocus focus() const;
 

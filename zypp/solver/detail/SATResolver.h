@@ -99,7 +99,7 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool _onlyRequires:1;		// true: consider required packages only (but recommended namespaces)
     bool _ignorealreadyrecommended:1;	// true: ignore recommended packages that were already recommended by the installed packages
     bool _distupgrade:1;
-    bool _distupgrade_removeunsupported:1;
+    bool _removeOrphaned:1;
     bool _dup_allowdowngrade:1;		// dup mode: allow one to downgrade installed solvable
     bool _dup_allownamechange:1;	// dup mode: allow one to change name of installed solvable
     bool _dup_allowarchchange:1;	// dup mode: allow one to change architecture of installed solvables
@@ -179,8 +179,8 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool distupgrade () const {return _distupgrade;}
     void setDistupgrade ( const bool distupgrade) { _distupgrade = distupgrade;}
 
-    bool distupgrade_removeunsupported () const {return _distupgrade_removeunsupported;}
-    void setDistupgrade_removeunsupported ( const bool distupgrade_removeunsupported) { _distupgrade_removeunsupported = distupgrade_removeunsupported;}
+    bool removeOrphaned () const {return _removeOrphaned;}
+    void setRemoveOrphaned ( const bool removeOrphaned) { _removeOrphaned = removeOrphaned;}
 
     bool allowdowngrade () const {return _allowdowngrade;}
     void setAllowdowngrade ( const bool allowdowngrade) { _allowdowngrade = allowdowngrade;}

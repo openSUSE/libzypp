@@ -223,6 +223,22 @@ namespace zypp
     void setUpdateMode( bool yesno_r );
     bool updateMode() const;
 
+    /**
+     * Set whether to remove unused orphans in 'upgrade' mode.
+     *
+     * Orphaned packages are those which are neither provided by any repository
+     * not have update candidates within any repository. They often denoted as
+     * dropped or not-wanted. They are leftovers of previous distribution
+     * versions.
+     *
+     * \Note 3rd party .rpm packages simply installed are seen as orphaned and
+     * may be removed by dup. Collecting these packages in a directory and
+     * adding this directory as a (plaindir) repo turns them into wanted
+     * packages. They are kind of protected by being part of an enabled
+     * repository.
+     */
+    void setRemoveOrphaned( bool yesno_r );
+    bool removeOrphaned() const;
 
     /** \name  Solver flags (non DUP modes)
      * Default for all flags is \c false unless overwritten by zypp.conf.

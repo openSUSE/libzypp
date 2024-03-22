@@ -140,6 +140,9 @@ void Resolver::setFocus( ResolverFocus focus_r )	{
 }
 ResolverFocus Resolver::focus() const			{ return _satResolver->_focus; }
 
+void Resolver::setRemoveOrphaned( bool yesno_r )        { _satResolver->_removeOrphaned = yesno_r; }
+bool Resolver::removeOrphaned() const                   { return _satResolver->_removeOrphaned; }
+
 #define ZOLV_FLAG_TRIBOOL( ZSETTER, ZGETTER, ZVARDEFAULT, ZVARNAME )			\
     void Resolver::ZSETTER( TriBool state_r )						\
     { _applyDefault_##ZGETTER = indeterminate(state_r);					\
@@ -316,8 +319,10 @@ void Resolver::solverInit()
     _satResolver->setIgnorealreadyrecommended	( ignoreAlreadyRecommended() );
 
     if (_upgradeMode) {
-      // may overwrite some settings
-      _satResolver->setDistupgrade_removeunsupported	(false);
+      // Maybe depend on ZConfig::solverUpgradeRemoveDroppedPackages.
+      // For sure right but a change in behavior for old distros.
+      // (Will disable weakremover processing in SATResolver)
+      // _satResolver->setRemoveOrphaned( ... );
     }
 
     // Resetting additional solver information

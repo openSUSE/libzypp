@@ -637,6 +637,14 @@ void SATResolver::solverInitSetModeJobsAndFlags()
     if (_distupgrade) {
         queue_push( &(_jobQueue), SOLVER_DISTUPGRADE|SOLVER_SOLVABLE_ALL);
         queue_push( &(_jobQueue), 0 );
+        // By now libsolv supports orphan handling just in dup.
+        // We keep it here in _distupgrade to make sure nothing bad happens
+        // in case libsolv changes and it's used in remove commands which
+        // have no repos enabled. I.e. everything would be orphaned.
+        if (_removeOrphaned) {
+          queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
+          queue_push( &(_jobQueue), 0 );
+        }
     }
     if (_removeUnneeded) {
         invokeOnEach ( _pool.begin(), _pool.end(), [this]( const PoolItem & pi_r ) {
@@ -646,9 +654,6 @@ void SATResolver::solverInitSetModeJobsAndFlags()
           }
           return true;
         } );
-    if (_removeOrphaned) {
-        queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
-        queue_push( &(_jobQueue), 0 );
     }
 
     solverSetFocus( *_satSolver, _focus );

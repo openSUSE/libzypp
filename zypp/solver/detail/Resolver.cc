@@ -143,6 +143,9 @@ ResolverFocus Resolver::focus() const			{ return _satResolver->_focus; }
 void Resolver::setRemoveOrphaned( bool yesno_r )        { _satResolver->_removeOrphaned = yesno_r; }
 bool Resolver::removeOrphaned() const                   { return _satResolver->_removeOrphaned; }
 
+void Resolver::setRemoveUnneeded( bool yesno_r )        { _satResolver->_removeUnneeded = yesno_r; }
+bool Resolver::removeUnneeded() const                   { return _satResolver->_removeUnneeded; }
+
 #define ZOLV_FLAG_TRIBOOL( ZSETTER, ZGETTER, ZVARDEFAULT, ZVARNAME )			\
     void Resolver::ZSETTER( TriBool state_r )						\
     { _applyDefault_##ZGETTER = indeterminate(state_r);					\

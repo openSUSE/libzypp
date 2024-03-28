@@ -100,6 +100,7 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool _ignorealreadyrecommended:1;	// true: ignore recommended packages that were already recommended by the installed packages
     bool _distupgrade:1;
     bool _removeOrphaned:1;
+    bool _removeUnneeded:1;
     bool _dup_allowdowngrade:1;		// dup mode: allow one to downgrade installed solvable
     bool _dup_allownamechange:1;	// dup mode: allow one to change name of installed solvable
     bool _dup_allowarchchange:1;	// dup mode: allow one to change architecture of installed solvables

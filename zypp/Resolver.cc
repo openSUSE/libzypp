@@ -105,6 +105,9 @@ namespace zypp
   void Resolver::setRemoveOrphaned( bool yesno_r )      { return _pimpl->setRemoveOrphaned( yesno_r ); }
   bool Resolver::removeOrphaned() const                 { return _pimpl->removeOrphaned(); }
 
+  void Resolver::setRemoveUnneeded( bool yesno_r )      { return _pimpl->setRemoveUnneeded( yesno_r ); }
+  bool Resolver::removeUnneeded() const                 { return _pimpl->removeUnneeded(); }
+
   void Resolver::setSystemVerification( bool yesno_r )	{ _pimpl->setVerifyingMode( yesno_r ); }
   void Resolver::setDefaultSystemVerification()		{ _pimpl->setVerifyingMode( indeterminate ); }
   bool Resolver::systemVerification() const		{ return _pimpl->isVerifyingMode(); }

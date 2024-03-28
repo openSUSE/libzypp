@@ -200,6 +200,9 @@ class Resolver : private base::NonCopyable
     void setRemoveOrphaned( bool yesno_r );
     bool removeOrphaned() const;
 
+    void setRemoveUnneeded( bool yesno_r );
+    bool removeUnneeded() const;
+
     void setFocus( ResolverFocus focus_r );
     ResolverFocus focus() const;
 

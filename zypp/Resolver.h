@@ -240,6 +240,22 @@ namespace zypp
     void setRemoveOrphaned( bool yesno_r );
     bool removeOrphaned() const;
 
+    /**
+     * File weak remove jobs for unneeded installed packages.
+     *
+     * \Note There needs to be one (even if empty) solver run before
+     * unneeded installed packages are determined. So this does not
+     * contribute to the very first solver run.
+     *
+     * \Note In order to tailor the \c unneeded classification one needs
+     * to be able to control the \c autoinstalled property of a package.
+     * Only autoinstalled packages can be unneeded. So switching the
+     * autoinstalled property is the way to (potentially) add or (surely)
+     * remove a package from the unneeded set.
+     */
+    void setRemoveUnneeded( bool yesno_r );
+    bool removeUnneeded() const;
+
     /** \name  Solver flags (non DUP modes)
      * Default for all flags is \c false unless overwritten by zypp.conf.
      */

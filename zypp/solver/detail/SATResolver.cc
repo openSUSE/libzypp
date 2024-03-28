@@ -305,6 +305,7 @@ SATResolver::SATResolver (ResPool  pool, sat::detail::CPool *satPool)
     , _ignorealreadyrecommended(true)
     , _distupgrade(false)
     , _removeOrphaned(false)
+    , _removeUnneeded(false)
     , _dup_allowdowngrade	( ZConfig::instance().solver_dupAllowDowngrade() )
     , _dup_allownamechange	( ZConfig::instance().solver_dupAllowNameChange() )
     , _dup_allowarchchange	( ZConfig::instance().solver_dupAllowArchChange() )
@@ -637,6 +638,14 @@ void SATResolver::solverInitSetModeJobsAndFlags()
         queue_push( &(_jobQueue), SOLVER_DISTUPGRADE|SOLVER_SOLVABLE_ALL);
         queue_push( &(_jobQueue), 0 );
     }
+    if (_removeUnneeded) {
+        invokeOnEach ( _pool.begin(), _pool.end(), [this]( const PoolItem & pi_r ) {
+          if ( pi_r.status().isUnneeded() ) {
+            queue_push( &(_jobQueue), SOLVER_ERASE | SOLVER_SOLVABLE_NAME | SOLVER_WEAK | MAYBE_CLEANDEPS );
+            queue_push( &(_jobQueue), pi_r.ident().id() );
+          }
+          return true;
+        } );
     if (_removeOrphaned) {
         queue_push( &(_jobQueue), SOLVER_DROP_ORPHANED|SOLVER_SOLVABLE_ALL);
         queue_push( &(_jobQueue), 0 );

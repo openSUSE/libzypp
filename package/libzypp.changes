@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 28 17:56:04 CET 2024 - ma@suse.de
+
+- Add resolver option 'removeUnneeded' to file weak remove jobs
+  for unneeded packages (bsc#1175678)
+- version 17.32.1 (32)
+
+-------------------------------------------------------------------
 Fri Mar 22 18:16:32 CET 2024 - ma@suse.de
 
 - Add resolver option 'removeOrphaned' for distupgrade

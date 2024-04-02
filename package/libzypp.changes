@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Apr  2 16:08:58 CEST 2024 - ma@suse.de
+
+- Fixup New VendorSupportOption flag VendorSupportSuperseded
+  (jsc#OBS-301, jsc#PED-8014)
+  Fixed the name of the keyword to "support_superseded" as it was
+  agreed on in jsc#OBS-301.
+- version 17.32.2 (32)
+
+-------------------------------------------------------------------
 Thu Mar 28 17:56:04 CET 2024 - ma@suse.de
 
 - Add resolver option 'removeUnneeded' to file weak remove jobs

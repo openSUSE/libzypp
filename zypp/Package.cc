@@ -38,7 +38,7 @@ namespace zyppintern
     static const IdString support_l1( "support_l1" );
     static const IdString support_l2( "support_l2" );
     static const IdString support_l3( "support_l3" );
-    static const IdString support_superseded( "support_superseded_by" ); // opt. followed by "(PKGNAME)"
+    static const IdString support_superseded( "support_superseded" ); // opt. followed by "(PKGNAME)"
 
     GetVendorSupportOptionReturn ret { VendorSupportUnknown, std::nullopt };
 

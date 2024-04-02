@@ -30,7 +30,7 @@
 
   <data type="susedata">
     <location href="repodata/susedata.xml.gz"/>
-    <checksum type="sha">2a9ad2b0e86106172b08b453b4d2c42b07adfb41</checksum>
+    <checksum type="sha">2950f8a880455d7b7e96d3bddd5859bd4db38524</checksum>
     <timestamp>1227279057.0</timestamp>
     <open-checksum type="sha">b17c055bef95bca397faffdf028cfa91dd1b24bc</open-checksum>
   </data>

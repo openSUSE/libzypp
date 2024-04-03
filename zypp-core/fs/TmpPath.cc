@@ -222,11 +222,12 @@ namespace zypp {
     TmpFile TmpFile::makeSibling( const Pathname & sibling_r )
     {
       TmpFile ret( sibling_r.dirname(), sibling_r.basename() );
-      // clone mode if sibling_r exists
-      PathInfo p( sibling_r );
-      if ( p.isFile() )
-      {
-        ::chmod( ret.path().c_str(), p.st_mode() );
+      if ( ret ) {
+        // clone mode if sibling_r exists
+        PathInfo p( sibling_r );
+        if ( p.isFile() ) {
+          ::chmod( ret.path().c_str(), p.st_mode() );
+        }
       }
       return ret;
     }
@@ -299,11 +300,12 @@ namespace zypp {
     TmpDir TmpDir::makeSibling( const Pathname & sibling_r )
     {
       TmpDir ret( sibling_r.dirname(), sibling_r.basename() );
-      // clone mode if sibling_r exists
-      PathInfo p( sibling_r );
-      if ( p.isDir() )
-      {
-        ::chmod( ret.path().c_str(), p.st_mode() );
+      if ( ret ) {
+        // clone mode if sibling_r exists
+        PathInfo p( sibling_r );
+        if ( p.isDir() ) {
+          ::chmod( ret.path().c_str(), p.st_mode() );
+        }
       }
       return ret;
     }

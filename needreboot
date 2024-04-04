@@ -3,7 +3,7 @@
 ## So the user gets informed that the system should be rebooted after
 ## one of these packages was updated.
 ##
-## This config file is for the systems administartor.
+## This config file is for the systems administrator.
 ## Additional configuration files can be placed in /etc/zypp/needreboot.d
 ##
 ## For packages the intended way would be to provide 'installhint(reboot-needed)'

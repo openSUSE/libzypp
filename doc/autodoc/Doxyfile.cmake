@@ -15,7 +15,8 @@ ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
 STRIP_FROM_PATH        = @ZYPP_PROJECT_ROOT@
-STRIP_FROM_INC_PATH    = @ZYPP_PROJECT_ROOT@/zypp @ZYPP_PROJECT_ROOT@/zypp-core
+STRIP_FROM_INC_PATH    = @ZYPP_PROJECT_ROOT@
+#STRIP_FROM_INC_PATH    = @ZYPP_PROJECT_ROOT@/zypp @ZYPP_PROJECT_ROOT@/zypp-core
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
 MULTILINE_CPP_IS_BRIEF = NO
@@ -65,17 +66,17 @@ WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = NO
 WARN_FORMAT            = "$file:$line: $text"
-WARN_LOGFILE           =
+WARN_LOGFILE           = @DOXYGEN_WARNINGS@
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @ZYPP_DOCINCLUDE_DIR@ @ZYPP_SOURCE_DIR@ @ZYPP_CORE_SOURCE_DIR@ @ZYPP_MEDIA_SOURCE_DIR@ @ZYPP_CURL_SOURCE_DIR@
+INPUT                  = @ZYPP_SOURCE_DIRS@
 FILE_PATTERNS          = *.h *.hh *.hxx *.hpp *.h++ *.c *.cc *.cxx *.cpp *.c++ *.tcc *.hcc *.doc
 RECURSIVE              = YES
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = */zyppng/*
-EXAMPLE_PATH           = @ZYPP_DOCINCLUDE_DIR@ @ZYPP_EXAMPLE_DIR@ @LIBZYPP_SOURCE_DIR@
+EXAMPLE_PATH           = @ZYPP_DOCINCLUDE_DIR@
 EXAMPLE_PATTERNS       =
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             =

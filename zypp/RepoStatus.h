@@ -48,8 +48,11 @@ namespace zypp
     RepoStatus();
     /** Compute status for single file or directory (recursively)
      *
-     * \note Construction from a non existing file will result
-     * in an empty status.
+     * Timestamp is the files mtime or the youngest mtime in the
+     * directory tree.
+     *
+     * \note Construction from a non existing file or direcory
+     * will result in an empty status.
      */
     explicit RepoStatus( const Pathname & path_r );
 
@@ -71,6 +74,10 @@ namespace zypp
     /** Reads the status from a cookie file
      * \returns An empty \ref RepoStatus if the file does not
      * exist or is not readable.
+     * \note Similar to the ctor's behavior, the returned timestamp
+     * is the cookie file's mtime. By touching an index or cookie
+     * file one may state the last time the data were found being
+     * up-to-date.
      * \see \ref saveToCookieFile
      */
     static RepoStatus fromCookieFile( const Pathname & path );

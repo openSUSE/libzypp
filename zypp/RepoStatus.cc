@@ -203,7 +203,13 @@ namespace zypp
     {
       // line := "[checksum] time_t"  !!! strip time from line
       std::string line { str::getline( file ) };
-      Date        stmp { str::strtonum<time_t>( str::stripLastWord( line ) ) };
+      Date        stmp { PathInfo( path_r ).mtime() };
+      // ma: Like the ctor, we return the files mtime as timestamp.
+      // Touching the file may indicate the last time the data were
+      // found being up-to-date.
+      // Below how one would retrieve the original timestamp stored
+      // inside the file - in case we's need it.
+      // Date     origstmp { str::strtonum<time_t>( str::stripLastWord( line ) ) };
       ret._pimpl->inject( std::move(line), std::move(stmp) );	// raw inject to avoid magic being added
     }
     return ret;

@@ -1364,7 +1364,7 @@ namespace zypp
       ///////////////////////////////////////////////////////////////////
       PluginExecutor commitPlugins;
 
-      if ( (root() == "/" || zypp::env::TRANSACTIONAL_UPDATE) && ! policy_r.dryRun() )
+      if ( ( root() == "/" || zypp::env::TRANSACTIONAL_UPDATE() ) && ! policy_r.dryRun() )
       {
         commitPlugins.load( ZConfig::instance().pluginsPath()/"commit" );
       }

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 11 16:10:46 CEST 2024 - ma@suse.de
+
+- Update RepoStatus fromCookieFile according to the files mtime
+  (bsc#1222086)
+- TmpFile: Don't call chmod if makeSibling failed.
+- version 17.32.3 (32)
+
+-------------------------------------------------------------------
 Tue Apr  2 16:08:58 CEST 2024 - ma@suse.de
 
 - Fixup New VendorSupportOption flag VendorSupportSuperseded

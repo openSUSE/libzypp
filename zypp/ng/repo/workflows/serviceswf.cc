@@ -34,6 +34,15 @@ namespace zyppng::RepoServicesWorkflow {
 
   namespace {
 
+    zypp::Url adaptServiceUrlToChroot( zypp::Url serviceUrl, zypp::Pathname root ) {
+      // if file:// or dir:// path we must prefix with the root_r
+      const auto &scheme = serviceUrl.getScheme();
+      if ( !root.empty() && (scheme == "dir" || scheme == "file") ) {
+        serviceUrl.setPathName ( root / zypp::Pathname(serviceUrl.getPathName()) );
+      }
+      return serviceUrl;
+    }
+
     template <class Executor, class OpType>
     struct FetchRIMServiceLogic : public LogicBase<Executor, OpType>
     {
@@ -60,7 +69,7 @@ namespace zyppng::RepoServicesWorkflow {
             // repoindex.xml must be fetched always without using cookies (bnc #573897)
             zypp::Url serviceUrl = _service.url();
             serviceUrl.setQueryParam( "cookies", "0" );
-            return serviceUrl;
+            return adaptServiceUrlToChroot( serviceUrl, _root_r );
           })
           | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec() ); })
           | and_then( [this]( auto mediaHandle )    { return _ctx->provider()->provide( mediaHandle, "repo/repoindex.xml", ProvideFileSpec() ); } )
@@ -323,7 +332,7 @@ namespace zyppng::RepoServicesWorkflow {
         // if the type is unknown, try probing.
         if ( _service.type() == zypp::repo::ServiceType::NONE ) {
 
-          return probeServiceType( _repoMgr->zyppContext(), _service.url () )
+          return probeServiceType( _repoMgr->zyppContext(), adaptServiceUrlToChroot( _service.url(), _repoMgr->options().rootDir ) )
           | and_then( [this]( zypp::repo::ServiceType type ){
               _service.setProbedType( type ); // lazy init!
               _serviceModified = true;

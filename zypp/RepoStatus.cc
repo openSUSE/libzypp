@@ -133,6 +133,22 @@ namespace zypp
     std::ostream & dumpOn( std::ostream & str ) const
     { return str << ( empty() ? "NO_REPOSTATUS" : checksum() ) << " " << time_t(_timestamp); }
 
+  public:
+    void assignFromCookieFile( const Pathname & path_r, bool useMtime_r = false )
+    {
+      std::ifstream file( path_r.c_str() );
+      if ( not file ) {
+        WAR << "No cookie file " << path_r << endl;
+        return;
+      }
+      // line := "[checksum] time_t"  !!! ALWAYS strip time from line
+      std::string         line { str::getline( file ) };
+      const std::string & time { str::stripLastWord( line ) };
+
+      Date stmp { useMtime_r ? PathInfo( path_r ).mtime() : str::strtonum<time_t>( time ) };
+      inject( std::move(line), std::move(stmp) );	// raw inject to avoid magic being added
+    }
+
   private:
     Checksums _checksums;
     Date _timestamp;
@@ -194,24 +210,14 @@ namespace zypp
   RepoStatus RepoStatus::fromCookieFile( const Pathname & path_r )
   {
     RepoStatus ret;
-    std::ifstream file( path_r.c_str() );
-    if ( !file )
-    {
-      WAR << "No cookie file " << path_r << endl;
-    }
-    else
-    {
-      // line := "[checksum] time_t"  !!! strip time from line
-      std::string line { str::getline( file ) };
-      Date        stmp { PathInfo( path_r ).mtime() };
-      // ma: Like the ctor, we return the files mtime as timestamp.
-      // Touching the file may indicate the last time the data were
-      // found being up-to-date.
-      // Below how one would retrieve the original timestamp stored
-      // inside the file - in case we's need it.
-      // Date     origstmp { str::strtonum<time_t>( str::stripLastWord( line ) ) };
-      ret._pimpl->inject( std::move(line), std::move(stmp) );	// raw inject to avoid magic being added
-    }
+    ret._pimpl->assignFromCookieFile( path_r );
+    return ret;
+  }
+
+  RepoStatus RepoStatus::fromCookieFileUseMtime( const Pathname & path_r )
+  {
+    RepoStatus ret;
+    ret._pimpl->assignFromCookieFile( path_r, /*useMtime*/true );
     return ret;
   }
 

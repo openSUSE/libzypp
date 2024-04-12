@@ -71,16 +71,22 @@ namespace zypp
     RepoStatus &operator=(RepoStatus &&) noexcept = default;
 
   public:
-    /** Reads the status from a cookie file
+    /** Reads the status from a cookie file.
      * \returns An empty \ref RepoStatus if the file does not
      * exist or is not readable.
-     * \note Similar to the ctor's behavior, the returned timestamp
-     * is the cookie file's mtime. By touching an index or cookie
-     * file one may state the last time the data were found being
-     * up-to-date.
      * \see \ref saveToCookieFile
      */
     static RepoStatus fromCookieFile( const Pathname & path );
+
+    /** Reads the status from a cookie file but uses the files mtime.
+     * Similar to the ctor's behavior, the returned timestamp
+     * is the cookie file's mtime. By touching an index or cookie
+     * file one may state the last time the data were found being
+     * up-to-date.
+     * Such a CookieFile is used e.g. as a pseudo metadata indexfile
+     * for plaindir repos.
+     */
+    static RepoStatus fromCookieFileUseMtime( const Pathname & path );
 
     /** Save the status information to a cookie file
      * \throws Exception if the file can't be saved

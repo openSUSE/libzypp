@@ -196,7 +196,10 @@ namespace zypp
         break;
 
       case repo::RepoType::RPMPLAINDIR_e :
-        status = RepoStatus::fromCookieFile( productdatapath/"cookie" );	// dir status at last refresh
+        // Dir status at last refresh. Plaindir uses the cookiefile as pseudo metadata index file.
+        // It gets touched if the refresh check finds the data being up-to-date. That's why we use
+        // the files mtime as timestamp (like the RepoStatus ctor in the other cases above).
+        status = RepoStatus::fromCookieFileUseMtime( productdatapath/"cookie" );
         break;
 
       case repo::RepoType::NONE_e :

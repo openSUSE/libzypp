@@ -956,13 +956,6 @@ void MediaCurl::evaluateCurlCode(const Pathname &filename,
         }
         break;
 
-      // Attempt to work around certain issues by autoretry in MediaCurl::getFileCopy
-      case CURLE_HTTP2:
-      case CURLE_HTTP2_STREAM:
-        err = "Curl error " + str::numstring( code );
-        ZYPP_THROW(MediaCurlExceptionMayRetryInternaly(url, err, _curlError));
-        break;
-
       default:
         err = "Curl error " + str::numstring( code );
         break;

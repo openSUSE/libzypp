@@ -241,8 +241,6 @@ namespace zypp {
   void MediaNetwork::runRequest ( const zyppng::DownloadSpec &spec, callback::SendReport<DownloadProgressReport> *report ) const
   {
     bool retry = true;
-    unsigned internalTry = 0;
-    static constexpr unsigned maxInternalTry = 3;
 
     while ( retry ) {
       retry = false;
@@ -433,16 +431,7 @@ namespace zypp {
             break;
           case zyppng::NetworkRequestError::Http2Error:
           case zyppng::NetworkRequestError::Http2StreamError: {
-            ++internalTry;
-            if ( internalTry < maxInternalTry ) {
-              retry = true;
-              // just report (NO_ERROR); no interactive request to the user
-              (*report)->problem( spec.url(), media::DownloadProgressReport::NO_ERROR, error.toString()+" "+_("Will try again..."));
-              continue;
-            } else {
-              excp = ZYPP_EXCPT_PTR( zypp::media::MediaCurlException( spec.url(), error.toString(), error.nativeErrorString() ) );
-            }
-
+            excp = ZYPP_EXCPT_PTR( zypp::media::MediaCurlException( spec.url(), error.toString(), error.nativeErrorString() ) );
             break;
           }
         }

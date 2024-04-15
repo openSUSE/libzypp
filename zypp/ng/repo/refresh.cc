@@ -31,7 +31,14 @@ namespace zyppng::repo {
     using CtxRefType = RefreshContextRef<ZyppContextRefType>;
 
     zypp::Pathname rawCachePath = zypp::rawcache_path_for_repoinfo ( opts, info );
+#if LEGACY(173205)
+    using zypp::PathInfo;
+    L_DBG("1222398") << "rawCachePath " << PathInfo( rawCachePath ) << std::endl;
+#endif
     zypp::filesystem::TmpDir tmpdir( zypp::filesystem::TmpDir::makeSibling( rawCachePath ) );
+#if LEGACY(173205)
+    L_DBG("1222398") << "siblinghPath " << PathInfo( tmpdir.path() ) << std::endl;
+#endif
 
     if( tmpdir.path().empty() ) {
       return expected<CtxRefType>::error( ZYPP_EXCPT_PTR(zypp::Exception(_("Can't create metadata cache directory."))) );
@@ -54,7 +61,16 @@ namespace zyppng::repo {
   template<typename ZyppContextRefType>
   void RefreshContext<ZyppContextRefType>::saveToRawCache()
   {
+#if LEGACY(173205)
+    using zypp::PathInfo;
+    L_DBG("1222398") << "PREEX rawCachePath " << PathInfo( _rawCachePath ) << std::endl;
+    L_DBG("1222398") << "PREEX siblinghPath " << PathInfo( _tmpDir.path() ) << std::endl;
+#endif
     zypp::filesystem::exchange( _tmpDir.path(), _rawCachePath );
+#if LEGACY(173205)
+    L_DBG("1222398") << "PSTEX rawCachePath " << PathInfo( _rawCachePath ) << std::endl;
+    L_DBG("1222398") << "PSTEX siblinghPath " << PathInfo( _tmpDir.path() ) << std::endl;
+#endif
   }
 
   template<typename ZyppContextRefType>

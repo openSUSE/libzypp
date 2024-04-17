@@ -35,7 +35,7 @@ namespace zyppng::repo {
     using zypp::PathInfo;
     L_DBG("1222398") << "rawCachePath " << PathInfo( rawCachePath ) << std::endl;
 #endif
-    zypp::filesystem::TmpDir tmpdir( zypp::filesystem::TmpDir::makeSibling( rawCachePath ) );
+    zypp::filesystem::TmpDir tmpdir( zypp::filesystem::TmpDir::makeSibling( rawCachePath, 0755 ) );
 #if LEGACY(173205)
     L_DBG("1222398") << "siblinghPath " << PathInfo( tmpdir.path() ) << std::endl;
 #endif

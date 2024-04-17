@@ -142,6 +142,10 @@ namespace zypp {
          * If \c sibling_r exists, sibling is created using the same mode.
          */
         static TmpFile makeSibling( const Pathname & sibling_r );
+        /** \overload If \c sibling_r does not exist, the sibling is created using \c mode,
+         * modified by the process's umask in the usual way, rather than the default 0700.
+         */
+        static TmpFile makeSibling( const Pathname & sibling_r, unsigned mode );
 
         /**
          * Create a temporary file and convert it to a automatically
@@ -192,6 +196,10 @@ namespace zypp {
          * If \c sibling_r exists, sibling is created using the same mode.
          */
         static TmpDir makeSibling( const Pathname & sibling_r );
+        /** \overload If \c sibling_r does not exist, the sibling is created using \c mode,
+         * modified by the process's umask in the usual way, rather than the default 0700.
+         */
+        static TmpDir makeSibling( const Pathname & sibling_r, unsigned mode );
 
       public:
         /**

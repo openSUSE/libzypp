@@ -218,6 +218,9 @@ namespace zypp {
     //	METHOD TYPE : TmpFile
     //
     TmpFile TmpFile::makeSibling( const Pathname & sibling_r )
+    { return makeSibling( sibling_r, -1U ); }
+
+    TmpFile TmpFile::makeSibling( const Pathname & sibling_r, unsigned mode )
     {
       TmpFile ret( sibling_r.dirname(), sibling_r.basename() );
       if ( ret ) {
@@ -225,6 +228,8 @@ namespace zypp {
         PathInfo p( sibling_r );
         if ( p.isFile() ) {
           ::chmod( ret.path().c_str(), p.st_mode() );
+        } else if ( mode != -1U ) {
+          ::chmod( ret.path().c_str(), applyUmaskTo( mode ) );
         }
       }
       return ret;
@@ -294,6 +299,9 @@ namespace zypp {
     //	METHOD TYPE : TmpDir
     //
     TmpDir TmpDir::makeSibling( const Pathname & sibling_r )
+    { return makeSibling( sibling_r, -1U ); }
+
+    TmpDir TmpDir::makeSibling( const Pathname & sibling_r, unsigned mode )
     {
       TmpDir ret( sibling_r.dirname(), sibling_r.basename() );
       if ( ret ) {
@@ -301,6 +309,8 @@ namespace zypp {
         PathInfo p( sibling_r );
         if ( p.isDir() ) {
           ::chmod( ret.path().c_str(), p.st_mode() );
+        } else if ( mode != -1U ) {
+          ::chmod( ret.path().c_str(), applyUmaskTo( mode ) );
         }
       }
       return ret;

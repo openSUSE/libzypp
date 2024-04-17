@@ -39,6 +39,9 @@
 #include <fstream>
 #include <utility>
 
+#undef ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zypp::zypp_readonly_hack {
   bool IGotIt(); // in readonly-mode
 }
@@ -169,7 +172,7 @@ namespace zyppng
       zypp::parser::RepoFileReader parser( file, std::bind( &RepoCollector::collect, &collector, std::placeholders::_1 ) );
       return expected<std::list<RepoInfo>>::success( std::move(collector.repos) );
     } catch ( ... ) {
-      return expected<std::list<RepoInfo>>::error( std::current_exception() );
+      return expected<std::list<RepoInfo>>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -362,7 +365,7 @@ namespace zyppng
         return expected<RepoStatus>::success(status);
       });
     } catch (...) {
-      return expected<RepoStatus>::error( std::current_exception() );
+      return expected<RepoStatus>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -386,7 +389,7 @@ namespace zyppng
 
     } catch ( ... ) {
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<void>::error( std::current_exception() );
+      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
     return expected<void>::success();
   }
@@ -407,7 +410,7 @@ namespace zyppng
 
     } catch (...) {
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<void>::error( std::current_exception() );
+      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
 
     return expected<void>::success();
@@ -487,7 +490,7 @@ namespace zyppng
     } catch (...) {
       // will finish all subprogress children
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<void>::error( std::current_exception() );
+      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
     ProgressObserver::finish ( myProgress );
     return expected<void>::success();
@@ -509,7 +512,7 @@ namespace zyppng
     } catch (...) {
       // will finish all subprogress children
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<void>::error( std::current_exception() );
+      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -601,7 +604,7 @@ namespace zyppng
       return expected<RepoInfo>::success( tosave );
 
     } catch (...) {
-      return expected<RepoInfo>::error( std::current_exception() );
+      return expected<RepoInfo>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -779,7 +782,7 @@ namespace zyppng
 
     } catch ( ... ) {
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<RepoInfo>::error( std::current_exception() );
+      return expected<RepoInfo>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -1225,7 +1228,7 @@ namespace zyppng
     // touch the file, ignore error (they are logged anyway)
     zypp::filesystem::touch(p);
     } catch ( ... )  {
-      return expected<void>::error( std::current_exception() );
+      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
     return expected<void>::success();
   }

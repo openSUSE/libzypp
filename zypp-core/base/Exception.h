@@ -396,25 +396,20 @@ namespace zypp
     void do_ZYPP_RETHROW( const std::exception_ptr & excpt_r, const CodeLocation & where_r );
 
     /** Helper for \ref ZYPP_EXCPT_PTR( Exception ). */
-    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r );
-    template<class TExcpt, EnableIfIsException<TExcpt>>
+    template<class TExcpt>
     std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r )
     {
-      excpt_r.relocate( where_r );
-      Exception::log( excpt_r, where_r, "EXCPTR:   " );
-      return std::make_exception_ptr( std::forward<TExcpt>(excpt_r) );
+      if constexpr( std::is_base_of_v<Exception, std::decay_t<TExcpt>> ) {
+        excpt_r.relocate( where_r );
+        Exception::log( excpt_r, where_r, "THROW (EXCPTR):   " );
+      } else {
+        Exception::log( typeid(excpt_r).name(), where_r, "THROW (EXCPTR):   " );
+      }
+      return std::make_exception_ptr<std::decay_t<TExcpt>>( std::forward<TExcpt>(excpt_r) );
     }
 
-    /** Helper for \ref ZYPP_EXCPT_PTR( not Exception ). */
-    template<class TExcpt, EnableIfNotException<TExcpt> = 0>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r );
-    template<class TExcpt, EnableIfNotException<TExcpt>>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r )
-    {
-      Exception::log( typeid(excpt_r).name(), where_r, "EXCPTR:   " );
-      return std::make_exception_ptr( std::forward<TExcpt>(excpt_r) );
-    }
+    /** Helper for \ref ZYPP_FWD_CURRENT_EXCPT(). */
+    std::exception_ptr do_ZYPP_FWD_EXCPT_PTR( const std::exception_ptr & excpt_r, const CodeLocation & where_r );
 
 
   } // namespace exception_detail
@@ -432,6 +427,14 @@ namespace zypp
   /** Drops a logline and returns Exception as a std::exception_ptr. */
 #define ZYPP_EXCPT_PTR(EXCPT)\
   ::zypp::exception_detail::do_ZYPP_EXCPT_PTR( EXCPT, ZYPP_EX_CODELOCATION )
+
+  /** Drops a logline and returns the given Exception as a std::exception_ptr. */
+#define ZYPP_FWD_EXCPT(EXCPT)\
+  ::zypp::exception_detail::do_ZYPP_FWD_EXCPT_PTR( EXCPT, ZYPP_EX_CODELOCATION )
+
+  /** Drops a logline and returns the current Exception as a std::exception_ptr. */
+#define ZYPP_FWD_CURRENT_EXCPT()\
+  ::zypp::exception_detail::do_ZYPP_FWD_EXCPT_PTR( std::current_exception(), ZYPP_EX_CODELOCATION )
 
   /** Drops a logline telling the Exception was caught (in order to handle it). */
 #define ZYPP_CAUGHT(EXCPT)\

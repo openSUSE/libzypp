@@ -28,6 +28,9 @@
 #include <utility>
 #include <fstream>
 
+#undef  ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng::RepoManagerWorkflow {
 
   using namespace zyppng::operators;
@@ -91,7 +94,7 @@ namespace zyppng::RepoManagerWorkflow {
             _gotMediaError = true;
           } catch( ... ) {
             // any other error, we give up
-            return makeReadyResult( expected<zypp::repo::RepoType>::error( std::current_exception() ) );
+            return makeReadyResult( expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
           }
           return providerRef->provide( _medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
               | and_then( maybeCopyResultToDest("content") )
@@ -112,10 +115,10 @@ namespace zyppng::RepoManagerWorkflow {
           } catch( zypp::Exception &e ) {
             _error.remember(e);
             // any other error, we give up
-            return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR(e) );
+            return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR(_error) );
           } catch(...) {
             // any other error, we give up
-            return expected<zypp::repo::RepoType>::error( std::current_exception() );
+            return expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() );
           }
 
           const auto &url = _medium.baseUrl();

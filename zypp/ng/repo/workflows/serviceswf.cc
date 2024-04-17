@@ -27,6 +27,9 @@
 #include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/workflows/mediafacade.h>
 
+#undef  ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng::RepoServicesWorkflow {
 
   using namespace zyppng::operators;
@@ -189,7 +192,7 @@ namespace zyppng::RepoServicesWorkflow {
           }
           return make_expected_success(retCode);
         } catch ( ... ) {
-          return expected<int>::error( std::current_exception() );
+          return expected<int>::error( ZYPP_FWD_CURRENT_EXCPT() );
         }
       }
     };
@@ -349,7 +352,7 @@ namespace zyppng::RepoServicesWorkflow {
           assert_alias( _service ).unwrap();
           assert_url( _service ).unwrap();
         } catch (...) {
-          return makeReadyResult(Ret::error(std::current_exception()));
+          return makeReadyResult(Ret::error(ZYPP_FWD_CURRENT_EXCPT()));
         }
 
         MIL << "Going to refresh service '" << _service.alias() <<  "', url: " << _service.url() << ", opts: " << _options << std::endl;
@@ -397,7 +400,7 @@ namespace zyppng::RepoServicesWorkflow {
               _informalError = e;
             } catch ( ... ) {
               // all other errors cancel the operation
-              return Ret::error( std::current_exception() );
+              return Ret::error( ZYPP_FWD_CURRENT_EXCPT() );
             }
           }
 

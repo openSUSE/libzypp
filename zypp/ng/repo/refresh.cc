@@ -41,6 +41,8 @@ namespace zyppng::repo {
         return expected<CtxRefType>::error( ZYPP_EXCPT_PTR(zypp::Exception(_("Can't create metadata cache directory."))) );
       }
 
+      MIL << "Creating RefreshContext " << std::endl;
+
       return expected<CtxRefType>::success( std::make_shared<CtxType>( private_constr_t{}
                                                       , std::move(zyppContext)
                                                       , std::move(info)

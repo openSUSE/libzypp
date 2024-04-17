@@ -1080,7 +1080,7 @@ namespace zyppng {
           try {
             return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, chksumRes.headers().value(algorithm).asString() ) );
           } catch ( ... ) {
-            return expected<zypp::CheckSum>::error( std::current_exception() );
+            return expected<zypp::CheckSum>::error( ZYPP_FWD_CURRENT_EXCPT() );
           }
         }
         return expected<zypp::CheckSum>::error( ZYPP_EXCPT_PTR( zypp::FileCheckException("Invalid/Empty checksum returned from worker") ) );

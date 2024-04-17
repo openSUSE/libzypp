@@ -35,7 +35,7 @@ namespace zyppng {
         return expected<Ret, std::exception_ptr>::success(std::invoke(std::forward<F>(f), std::forward<Args>(args)... ));
       }
     } catch (...) {
-      return expected<Ret, std::exception_ptr>::error(std::current_exception());
+      return expected<Ret, std::exception_ptr>::error(ZYPP_FWD_CURRENT_EXCPT());
     }
   }
 

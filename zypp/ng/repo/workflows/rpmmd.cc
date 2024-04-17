@@ -18,6 +18,9 @@
 #include <zypp/repo/yum/RepomdFileCollector.h>
 #include <zypp/ng/workflows/checksumwf.h>
 
+#undef  ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng::RpmmdWorkflows {
 
   namespace {
@@ -128,7 +131,7 @@ namespace zyppng::RpmmdWorkflows {
                         requiredFiles.push_back( file );
                       });
                     } catch ( ... ) {
-                      return makeReadyResult(expected<DlContextRefType>::error( std::current_exception() ) );
+                      return makeReadyResult(expected<DlContextRefType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
                     }
 
                     // add the required files to the base steps

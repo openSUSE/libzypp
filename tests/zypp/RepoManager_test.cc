@@ -141,7 +141,10 @@ BOOST_AUTO_TEST_CASE(repomanager_test)
 
   filesystem::mkdir( opts.knownReposPath );
   filesystem::mkdir( opts.knownServicesPath );
+  filesystem::assert_dir( opts.rootDir/"Datadir" );
+
   BOOST_CHECK_EQUAL( filesystem::copy_dir_content( DATADIR + "/repos.d", opts.knownReposPath ), 0 );
+  BOOST_CHECK_EQUAL( filesystem::copy_dir_content( DATADIR, opts.rootDir/"Datadir" ), 0 );
 
   RepoManager manager(opts);
 
@@ -185,7 +188,7 @@ BOOST_AUTO_TEST_CASE(repomanager_test)
 
   //test service
 
-  Url urlS( DATADIR.asDirUrl() );
+  Url urlS( zypp::Pathname("/Datadir").asDirUrl() );
 
   ServiceInfo service("test", urlS);
   service.setEnabled(true);
@@ -195,7 +198,7 @@ BOOST_AUTO_TEST_CASE(repomanager_test)
   BOOST_CHECK_EQUAL(manager.repoSize(), (unsigned) 7); // +3 from repoindex
 
   //simulate change of repoindex.xml
-  urlS = (DATADIR / "second").asDirUrl();
+  urlS = ( zypp::Pathname("/Datadir") / "second").asDirUrl();
 
   service.setUrl(urlS);
   service.setEnabled(true);

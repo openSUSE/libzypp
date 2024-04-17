@@ -43,6 +43,7 @@ namespace zyppng::CheckSumWorkflow {
 
     CheckSumWorkflowLogic( ZyppContextRefType zyppContext, zypp::CheckSum &&checksum, zypp::Pathname file )
       : _context( std::move(zyppContext) )
+      , _report( _context )
       , _checksum(std::move( checksum ))
       , _file(std::move( file ))
       {}
@@ -53,7 +54,7 @@ namespace zyppng::CheckSumWorkflow {
       //MIL << "checking " << file << " file against checksum '" << _checksum << "'" << endl;
       if ( _checksum.empty() ) {
         MIL << "File " <<  _file << " has no checksum available." << std::endl;
-        if ( ReportHelper(_context).askUserToAcceptNoDigest( _file ) ) {
+        if ( _report.askUserToAcceptNoDigest( _file ) ) {
           MIL << "User accepted " <<  _file << " with no checksum." << std::endl;
           return makeReadyResult( expected<void>::success() );
         } else {
@@ -86,7 +87,7 @@ namespace zyppng::CheckSumWorkflow {
                  WAR << "User accepted " <<  _file << " with WRONG CHECKSUM. (remembered)" << std::endl;
                  return expected<void>::success();
                }
-               else if ( ReportHelper(_context).askUserToAcceptWrongDigest( _file, _checksum.checksum(), real_checksum.checksum() ) )
+               else if ( _report.askUserToAcceptWrongDigest( _file, _checksum.checksum(), real_checksum.checksum() ) )
                {
                  WAR << "User accepted " <<  _file << " with WRONG CHECKSUM." << std::endl;
                  exceptions[real_checksum.checksum()] = _checksum.checksum();
@@ -105,6 +106,7 @@ namespace zyppng::CheckSumWorkflow {
 
   protected:
     ZyppContextRefType _context;
+    DigestReportHelper<ZyppContextRefType> _report;
     zypp::CheckSum _checksum;
     zypp::Pathname _file;
 

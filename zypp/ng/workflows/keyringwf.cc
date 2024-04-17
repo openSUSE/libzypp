@@ -77,7 +77,7 @@ namespace zyppng::KeyRingWorkflow {
 
          zypp::KeyContext context;
          context.setRepoInfo( _repo );
-         if ( !ReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
+         if ( !KeyRingReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
            return false;
          }
 
@@ -124,6 +124,7 @@ namespace zyppng::KeyRingWorkflow {
 
       VerifyFileSignatureLogic( ZyppContextRefType zyppContext, KeyRingRef &&keyRing, zypp::keyring::VerifyFileContext &&ctx )
         : _zyppContext( std::move(zyppContext) )
+        , _keyringReport( _zyppContext )
         , _keyRing( std::move(keyRing) )
         , _verifyContext( std::move(ctx) )
       { }
@@ -180,7 +181,7 @@ namespace zyppng::KeyRingWorkflow {
             MIL << "Key [" << id << "] " << key.name() << " is not trusted" << std::endl;
 
             // ok the key is not trusted, ask the user to trust it or not
-            zypp::KeyRingReport::KeyTrust reply = ReportHelper(_zyppContext).askUserToAcceptKey( key, _verifyContext.keyContext() );
+            zypp::KeyRingReport::KeyTrust reply = _keyringReport.askUserToAcceptKey( key, _verifyContext.keyContext() );
             if ( reply == zypp::KeyRingReport::KEY_TRUST_TEMPORARILY ||
                  reply == zypp::KeyRingReport::KEY_TRUST_AND_IMPORT )
             {
@@ -233,7 +234,7 @@ namespace zyppng::KeyRingWorkflow {
         // if signature does not exists, ask user if they want to accept unsigned file.
         if( signature.empty() || (!zypp::PathInfo( signature ).isExist()) )
         {
-          bool res = ReportHelper(_zyppContext).askUserToAcceptUnsignedFile( filedesc, _verifyContext.keyContext() );
+          bool res = _keyringReport.askUserToAcceptUnsignedFile( filedesc, _verifyContext.keyContext() );
           MIL << "askUserToAcceptUnsignedFile: " << res << std::endl;
           return makeReadyResult( makeReturn(res) );
         }
@@ -282,15 +283,14 @@ namespace zyppng::KeyRingWorkflow {
 
             // it exists, is trusted, does it validate?
             _verifyContext.signatureIdTrusted( res._whichKeyRing == _keyRing->pimpl().trustedKeyRing() );
-            ReportHelper reports(_zyppContext);
-            reports.infoVerify( filedesc, res._foundKey, keyContext );
+            _keyringReport.infoVerify( filedesc, res._foundKey, keyContext );
             if ( _keyRing->pimpl().verifyFile( file, signature, res._whichKeyRing ) )
             {
               _verifyContext.fileValidated( true );
               if ( _verifyContext.signatureIdTrusted() && not buddies.empty() ) {
                 // Check for buddy keys to be imported...
                 MIL << "Validated with trusted key: importing buddy list..." << std::endl;
-                reports.reportAutoImportKey( buddies, res._foundKey, keyContext );
+                _keyringReport.reportAutoImportKey( buddies, res._foundKey, keyContext );
                 for ( const auto & kd : buddies ) {
                   _keyRing->importKey( _keyRing->pimpl().exportKey( kd, _keyRing->pimpl().generalKeyRing() ), true );
                 }
@@ -299,14 +299,14 @@ namespace zyppng::KeyRingWorkflow {
             }
             else
             {
-              bool userAnswer = reports.askUserToAcceptVerificationFailed( filedesc, _keyRing->pimpl().exportKey( res._foundKey, res._whichKeyRing ), keyContext );
+              bool userAnswer = _keyringReport.askUserToAcceptVerificationFailed( filedesc, _keyRing->pimpl().exportKey( res._foundKey, res._whichKeyRing ), keyContext );
               MIL << "askUserToAcceptVerificationFailed: " << userAnswer << std::endl;
               return makeReturn(userAnswer);
             }
           } else {
             // signed with an unknown key...
             MIL << "File [" << file << "] ( " << filedesc << " ) signed with unknown key [" << id << "]" << std::endl;
-            bool res = ReportHelper(_zyppContext).askUserToAcceptUnknownKey( filedesc, id, _verifyContext.keyContext() );
+            bool res = _keyringReport.askUserToAcceptUnknownKey( filedesc, id, _verifyContext.keyContext() );
             MIL << "askUserToAcceptUnknownKey: " << res << std::endl;
             return makeReturn(res);
           }
@@ -317,6 +317,7 @@ namespace zyppng::KeyRingWorkflow {
 
     protected:
       ZyppContextRefType _zyppContext;
+      KeyRingReportHelper<ZyppContextRefType> _keyringReport;
       KeyRingRef _keyRing;
       zypp::keyring::VerifyFileContext _verifyContext;
 

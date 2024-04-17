@@ -730,6 +730,14 @@ namespace zypp
     int chmod( const Pathname & path, mode_t mode );
 
     /**
+     * Similar to '::chmod', but \c mode is modified by the process's
+     * umask in the usual way.
+     *
+     * @return 0 on success, errno on failure
+     **/
+    int chmodApplyUmask( const Pathname & path, mode_t mode );
+
+    /**
      * Add the \c mode bits to the file given by path.
      *
      * @return 0 on success, errno on failure

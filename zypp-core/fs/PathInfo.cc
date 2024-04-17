@@ -1099,6 +1099,9 @@ namespace zypp
       return logResult( 0 );
     }
 
+    int chmodApplyUmask( const Pathname & path, mode_t mode )
+    { return chmod( path, applyUmaskTo( mode ) ); }
+
     int addmod( const Pathname & path, mode_t mode )
     {
       mode_t omode( PathInfo( path ).st_mode() );

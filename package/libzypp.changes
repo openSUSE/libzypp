@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Apr 17 17:07:52 CEST 2024 - ma@suse.de
+
+- Fix creation of sibling cache dirs with too restrictive mode
+  (bsc#1222398)
+  Some install workflows in YAST may lead to too restrictive (0700)
+  raw cache directories in case of newly created repos. Later
+  commands running with user privileges may not be able to access
+  these repos.
+- version 17.32.4 (32)
+
+-------------------------------------------------------------------
 Thu Apr 11 16:10:46 CEST 2024 - ma@suse.de
 
 - Update RepoStatus fromCookieFile according to the files mtime

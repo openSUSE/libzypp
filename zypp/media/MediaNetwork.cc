@@ -500,7 +500,7 @@ namespace zypp {
         MIL << "Media file was not found, remembering in the cache" << std::endl;
         mediaFileCache.insert_or_assign( mediaCacheKey, internal::SharedData::MediaFileCacheEntry( zypp::ManagedFile() ) );
       }
-      std::rethrow_exception( std::current_exception() );
+      ZYPP_RETHROW( std::current_exception() );
     }
 
     // the request was successful

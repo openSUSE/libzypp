@@ -27,6 +27,9 @@
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp/ng/workflows/mediafacade.h>
 
+#undef  ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng {
   namespace {
 
@@ -132,7 +135,7 @@ namespace zyppng {
               try {
                 _dlContext->zyppContext()->keyRing()->importKey( zypp::PublicKey(keypathLocal), false );
               } catch (...) {
-                return makeReadyResult( expected<ProvideRes>::error( std::current_exception() ) );
+                return makeReadyResult( expected<ProvideRes>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
               }
             }
 

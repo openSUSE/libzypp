@@ -440,7 +440,7 @@ namespace zyppng {
       return expected<zypp::media::AuthData>::success(*userAuth);
     } catch ( const zypp::Exception &e ) {
       ZYPP_CAUGHT(e);
-      return expected<zypp::media::AuthData>::error( std::current_exception() );
+      return expected<zypp::media::AuthData>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 

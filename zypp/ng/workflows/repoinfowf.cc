@@ -107,7 +107,7 @@ namespace zyppng {
                     //ignore and continue to next url
                     ZYPP_CAUGHT(e);
                     MIL << "Key import from url:'"<<url<<"' failed." << std::endl;
-                    return expected<void>::error( std::current_exception() );
+                    return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
                   }
 
                   return expected<void>::success();

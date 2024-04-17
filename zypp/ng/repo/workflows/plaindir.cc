@@ -17,6 +17,9 @@
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 
+#undef  ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng::PlaindirWorkflows {
 
   namespace {
@@ -74,9 +77,9 @@ namespace zyppng::PlaindirWorkflows {
 
       } catch ( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
-        return makeReadyResult<Ret, isAsync>( Ret::error( ZYPP_EXCPT_PTR(e) ) );
+        return makeReadyResult<Ret, isAsync>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
       } catch ( ... ) {
-        return makeReadyResult<Ret, isAsync>( Ret::error( std::current_exception() ) );
+        return makeReadyResult<Ret, isAsync>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
       }
       return makeReadyResult<Ret, isAsync>( Ret::success( std::forward<DlContextRefType>(ctx) ) );
     }

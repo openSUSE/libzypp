@@ -18,6 +18,8 @@
 #include <zypp/ng/repo/refresh.h>
 #include <zypp/ng/repo/workflows/repomanagerwf.h>
 
+#undef ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
 
 using std::endl;
 using std::string;

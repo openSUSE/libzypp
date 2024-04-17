@@ -22,6 +22,9 @@
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 
+#undef ZYPP_BASE_LOGGER_LOGGROUP
+#define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
+
 namespace zyppng::SuseTagsWorkflows {
 
   namespace {
@@ -280,9 +283,9 @@ namespace zyppng::SuseTagsWorkflows {
 
                     } catch ( const zypp::Exception &e ) {
                       ZYPP_CAUGHT( e );
-                      return makeReadyResult(expected<DlContextRefType>::error( std::make_exception_ptr(e) ) );
+                      return makeReadyResult(expected<DlContextRefType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
                     } catch ( ... ) {
-                      return makeReadyResult(expected<DlContextRefType>::error( std::current_exception() ) );
+                      return makeReadyResult(expected<DlContextRefType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
                     }
 
                     // add the required files to the base steps

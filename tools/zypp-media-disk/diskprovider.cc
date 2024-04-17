@@ -332,7 +332,7 @@ zyppng::worker::AttachResult DiskProvider::mountDevice ( const uint32_t id, cons
     }
     catch ( ... ) {
       removeAttachPoint(newAp);
-      std::rethrow_exception( std::current_exception() );
+      ZYPP_RETHROW( std::current_exception() );
     }
 
     // mount worked ! YAY

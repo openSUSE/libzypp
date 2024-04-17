@@ -7,9 +7,12 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "mediafacade.h"
+#include <zypp/ZYppCallbacks.h>
 #include <zypp-core/TriBool.h>
+#include <zypp-core/base/userrequestexception.h>
 #include <utility>
 #include <zypp-media/ng/ProvideSpec>
+#include <zypp-media/mount.h>
 #include <zypp/repo/SUSEMediaVerifier.h>
 
 namespace zyppng {
@@ -148,6 +151,179 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE_CONSTR (MediaSyncFacade)  {  }
 
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
+  {
+
+    bool isVolatile = url.schemeIsVolatile();
+
+    auto effectiveUrl = url;
+
+    std::optional<zypp::media::MediaAccessId> attachId;
+    zypp::callback::SendReport<zypp::media::MediaChangeReport> report;
+
+    // nothing attached, make a new one
+    zypp::media::MediaManager mgr;
+    do {
+      try {
+        if ( !attachId ) {
+
+          if ( request.medianr() > 1 )
+            effectiveUrl = zypp::MediaSetAccess::rewriteUrl( effectiveUrl, request.medianr() );
+
+          attachId = mgr.open( effectiveUrl );
+          if ( !request.mediaFile().empty() ) {
+            mgr.addVerifier( *attachId, zypp::media::MediaVerifierRef( new zypp::repo::SUSEMediaVerifier( request.mediaFile(), request.medianr() ) ) );
+          }
+        }
+
+        // attach the medium
+        mgr.attach( *attachId );
+
+        auto locPath = mgr.localPath( *attachId, "/" );
+        auto attachInfo = AttachedSyncMediaInfo_Ptr( new AttachedSyncMediaInfo( shared_this<MediaSyncFacade>(), *attachId, url, request, locPath )  );
+        _attachedMedia.push_back( attachInfo );
+        return expected<MediaSyncFacade::MediaHandle>::success( std::move(attachInfo) );
+
+      } catch ( const zypp::media::MediaException &excp ) {
+
+        ZYPP_CAUGHT(excp);
+
+        // if no one is listening, just return the error as is
+        if ( !zypp::callback::SendReport<zypp::media::MediaChangeReport>::connected() || !attachId ) {
+          return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_CURRENT_EXCPT() );
+        }
+
+        // default action is to cancel
+        zypp::media::MediaChangeReport::Action user = zypp::media::MediaChangeReport::ABORT;
+
+        do {
+          // here: Manager tried all not attached drives and could not find the desired medium
+          // we need to send the media change report
+
+          // set up the reason
+          auto reason = zypp::media::MediaChangeReport::INVALID;
+          if( typeid(excp) == typeid( zypp::media::MediaNotDesiredException) ) {
+            reason = zypp::media::MediaChangeReport::WRONG;
+          }
+
+          unsigned int devindex = 0;
+
+          std::vector<std::string> devices;
+          mgr.getDetectedDevices(*attachId, devices, devindex);
+
+          std::optional<std::string> currentlyUsed;
+          if ( devices.size() ) currentlyUsed = devices[devindex];
+
+          if ( isVolatile ) {
+            // filter devices that are mounted, aka used, we can not eject them
+            const auto &mountedDevs = zypp::media::Mount::getEntries();
+            std::remove_if( devices.begin (), devices.end(), [&](const std::string &dev) {
+              zypp::PathInfo devInfo(dev);
+              return std::any_of( mountedDevs.begin (), mountedDevs.end(), [&devInfo]( const zypp::media::MountEntry &e ) {
+                zypp::PathInfo pi( e.src );
+                return ( pi.isBlk() && pi.devMajor() == devInfo.devMajor() && pi.devMinor() == devInfo.devMinor() );
+              });
+            });
+
+            if ( !devices.size () ) {
+              // Jammed, no currently free device
+              MIL << "No free device available, return jammed and try again later ( hopefully) " << std::endl;
+              if ( attachId ) mgr.close ( *attachId );
+              return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR(zypp::media::MediaJammedException()) );
+            }
+
+            // update index to currenty used dev
+            bool foundCurrent = false;
+            if ( currentlyUsed ) {
+              for ( unsigned int i = 0; i < devices.size(); i++ ) {
+                if ( devices[i] == *currentlyUsed ) {
+                  foundCurrent = true;
+                  devindex = i;
+                  break;
+                }
+              }
+            }
+
+            if ( !foundCurrent ){
+              devindex = 0; // seems 0 is what is set in the handlers too if there is no current
+            }
+          }
+
+          user = report->requestMedia (
+            effectiveUrl,
+            request.medianr(),
+            request.label(),
+            reason,
+            excp.asUserHistory(),
+            devices,
+            devindex
+          );
+
+          MIL << "ProvideFile exception caught, callback answer: " << user << std::endl;
+
+          switch ( user ) {
+            case zypp::media::MediaChangeReport::ABORT: {
+              DBG << "Aborting" << std::endl;
+              if ( attachId ) mgr.close ( *attachId );
+              zypp::AbortRequestException aexcp("Aborting requested by user");
+              aexcp.remember(excp);
+              return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR(aexcp) );
+            }
+            case zypp::media::MediaChangeReport::IGNORE: {
+              DBG << "Skipping" << std::endl;
+              if ( attachId ) mgr.close ( *attachId );
+              zypp::SkipRequestException nexcp("User-requested skipping of a file");
+              nexcp.remember(excp);
+              return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR(nexcp) );
+            }
+            case zypp::media::MediaChangeReport::EJECT: {
+              DBG << "Eject: try to release" << std::endl;
+              try
+              {
+                // MediaSetAccess does a releaseAll, but we can not release other devices that are in use
+                // media_mgr.releaseAll();
+                mgr.release (*attachId, devindex < devices.size() ? devices[devindex] : "");
+              }
+              catch ( const zypp::Exception & e)
+              {
+                ZYPP_CAUGHT(e);
+              }
+              break;
+            }
+            case zypp::media::MediaChangeReport::RETRY:
+            case zypp::media::MediaChangeReport::CHANGE_URL: {
+              // retry
+              DBG << "Going to try again" << std::endl;
+
+              // invalidate current media access id
+              if ( attachId ) {
+                mgr.close(*attachId);
+                attachId.reset();
+              }
+
+              // not attaching, media set will do that for us
+              // this could generate uncaught exception (#158620)
+              break;
+            }
+            default: {
+              DBG << "Don't know, let's ABORT" << std::endl;
+              if ( attachId ) mgr.close ( *attachId );
+              return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_CURRENT_EXCPT() );
+            }
+          }
+        } while( user == zypp::media::MediaChangeReport::EJECT );
+      } catch ( const zypp::Exception &e ) {
+        ZYPP_CAUGHT(e);
+        if ( attachId ) mgr.close ( *attachId );
+        return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_CURRENT_EXCPT() );
+      } catch (...) {
+        // didn't work -> clean up
+        if ( attachId ) mgr.close ( *attachId );
+        return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_CURRENT_EXCPT() );
+      }
+    } while ( true );
+  }
+
   expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
   {
     // rewrite and sanitize the urls if required
@@ -162,44 +338,38 @@ namespace zyppng {
       return expected<MediaSyncFacade::MediaHandle>::success( *i );
     }
 
-    // nothing attached, make a new one
-    zypp::media::MediaManager mgr;
+
     std::exception_ptr lastError;
+    std::exception_ptr jammedError;
+
+
+    // from here call attachMedia with just one URL
+    // catch errors, if one of the URLS returns JAMMED, remember it
+    // continue to try other URLs, if they all fail and JAMMED was remembered
+    // return it, otherwise the last error
+
     for ( const auto &url : useableUrls ) {
-      std::optional<zypp::media::MediaAccessId> attachId;
       try {
-
-        attachId = mgr.open( url );
-        if ( !request.mediaFile().empty() ) {
-          mgr.addVerifier( *attachId, zypp::media::MediaVerifierRef( new zypp::repo::SUSEMediaVerifier( request.mediaFile(), request.medianr() ) ) );
-        }
-
-        // attach the medium
-        mgr.attach( *attachId );
-
-        auto locPath = mgr.localPath( *attachId, "/" );
-        auto attachInfo = AttachedSyncMediaInfo_Ptr( new AttachedSyncMediaInfo( shared_this<MediaSyncFacade>(), *attachId, url, request, locPath )  );
-        _attachedMedia.push_back( attachInfo );
-        return expected<MediaSyncFacade::MediaHandle>::success( std::move(attachInfo) );
-
-      } catch ( const zypp::Exception &e ) {
-        lastError = std::current_exception();
+        return expected<MediaSyncFacade::MediaHandle>::success( attachMedia( url, request ).unwrap() );
+      } catch ( zypp::media::MediaJammedException &e) {
         ZYPP_CAUGHT(e);
+        if ( !jammedError ) jammedError = std::current_exception ();
+      }  catch ( const zypp::Exception &e ) {
+        ZYPP_CAUGHT(e);
+        lastError = std::current_exception();
       } catch (...) {
         // didn't work -> clean up
         lastError = std::current_exception();
       }
-
-      // this URL wasn't the one, prepare to try a new one
-      if ( attachId )
-        mgr.close ( *attachId );
-
-      attachId.reset();
     }
 
-    // if we have a error stored, return that one
-    if ( lastError ) {
-      return expected<MediaSyncFacade::MediaHandle>::error( lastError );
+    if ( jammedError ) {
+      // if we encountered a jammed error return it, there might be still a chance
+      // that invoking the provide again after other pipelines have finished might succeed
+      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_EXCPT(jammedError) );
+    } else if ( lastError ) {
+      // if we have a error stored, return that one
+      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_EXCPT(lastError) );
     }
 
     return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No URL to attach") ) );
@@ -212,11 +382,6 @@ namespace zyppng {
     if ( _attachedMedia.size () ) {
       WAR << "Releasing zyppng::MediaSyncFacade with still valid MediaHandles, this is a bug!" << std::endl;
     }
-  }
-
-  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
-  {
-    return attachMedia( std::vector<zypp::Url>{url}, request );
   }
 
   expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request)
@@ -291,9 +456,9 @@ namespace zyppng {
       }
     } catch ( const zypp::Exception &e ) {
       ZYPP_CAUGHT(e);
-      return expected<MediaSyncFacade::Res>::error(std::current_exception());
+      return expected<MediaSyncFacade::Res>::error(ZYPP_FWD_CURRENT_EXCPT());
     } catch (...) {
-      return expected<MediaSyncFacade::Res>::error(std::current_exception());
+      return expected<MediaSyncFacade::Res>::error(ZYPP_FWD_CURRENT_EXCPT());
     }
   }
 

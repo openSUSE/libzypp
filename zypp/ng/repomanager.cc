@@ -193,7 +193,7 @@ namespace zyppng
     bool nonroot( geteuid() != 0 );
     if ( nonroot && ! zypp::PathInfo(dir).userMayRX() )
     {
-      ReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo directory '%1%': Permission denied")) % dir );
+      JobReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo directory '%1%': Permission denied")) % dir );
     }
     else
     {
@@ -211,7 +211,7 @@ namespace zyppng
         {
           if ( nonroot && ! zypp::PathInfo(*it).userMayR() )
           {
-            ReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo file '%1%': Permission denied")) % *it );
+            JobReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo file '%1%': Permission denied")) % *it );
           }
           else
           {
@@ -1360,7 +1360,7 @@ namespace zyppng
           // translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
           //   %1% = service name
           //   %2% = repository name
-          ReportHelper(_zyppContext).warning( zypp::str::Format(_("Unknown service '%1%': Removing orphaned service repository '%2%'"))
+          JobReportHelper(_zyppContext).warning( zypp::str::Format(_("Unknown service '%1%': Removing orphaned service repository '%2%'"))
                               % repoInfo.service()
                               % repoInfo.alias() );
           try {
@@ -1368,7 +1368,7 @@ namespace zyppng
           }
           catch ( const zypp::Exception & caugth )
           {
-            ReportHelper(_zyppContext).error( caugth.asUserHistory() );
+            JobReportHelper(_zyppContext).error( caugth.asUserHistory() );
           }
         }
       }

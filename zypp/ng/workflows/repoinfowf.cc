@@ -187,7 +187,7 @@ namespace zyppng {
         return  _targetDirectory_r/(zypp::str::Format("%1%.key") % keyData.rpmName()).asString();
       }
 
-      ReportHelper<ZyppContextRefType> _reports;
+      JobReportHelper<ZyppContextRefType> _reports;
       const zypp::RepoInfo    _info;
       const std::string _keyID_r;
       const zypp::Pathname    _targetDirectory_r;

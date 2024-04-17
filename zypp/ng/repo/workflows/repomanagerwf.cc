@@ -262,9 +262,6 @@ namespace zyppng::RepoManagerWorkflow {
 
           const auto &info = _refreshContext->repoInfo();
 
-          _mediarootpath = _refreshContext->rawCachePath();
-          zypp::filesystem::assert_dir(_mediarootpath );
-
           if ( oldstatus.empty() ) {
             MIL << "No cached metadata, going to refresh" << std::endl;
             return makeReadyResult( expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REFRESH_NEEDED) );
@@ -348,7 +345,6 @@ namespace zyppng::RepoManagerWorkflow {
       RefreshContextRefType _refreshContext;
       ProgressObserverRef _progress;
       MediaHandle _medium;
-      zypp::Pathname _mediarootpath;
     };
   }
 

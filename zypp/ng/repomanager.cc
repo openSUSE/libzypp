@@ -432,7 +432,7 @@ namespace zyppng
     { ret = zypp::repo::RepoType::RPMMD; }
     else if ( zypp::PathInfo(path_r/"/content").isFile() )
     { ret = zypp::repo::RepoType::YAST2; }
-    else if ( zypp::PathInfo(path_r).isDir() )
+    else if ( zypp::PathInfo(path_r/"/cookie").isFile() )
     { ret = zypp::repo::RepoType::RPMPLAINDIR; }
 
     MIL << "Probed cached type " << ret << " at " << path_r << std::endl;

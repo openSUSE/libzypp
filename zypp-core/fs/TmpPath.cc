@@ -194,7 +194,7 @@ namespace zypp {
 
       // create the temp file
       Pathname tmpPath = (inParentDir_r + prefix_r).extend( "XXXXXX");
-      char * buf = ::strdup( tmpPath.asString().c_str() );
+      AutoFREE<char> buf { ::strdup( tmpPath.asString().c_str() ) };
       if ( ! buf )
         {
           ERR << "Out of memory" << endl;
@@ -206,12 +206,10 @@ namespace zypp {
         {
           // success; create _impl
           ::close( tmpFd );
-          _impl = RW_pointer<Impl>( new Impl( buf ) );
+          _impl = RW_pointer<Impl>( new Impl( Pathname(buf) ) );
         }
       else
         ERR << "Cant create '" << buf << "' " << ::strerror( errno ) << endl;
-
-      ::free( buf );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -275,7 +273,7 @@ namespace zypp {
 
       // create the temp dir
       Pathname tmpPath = (inParentDir_r + prefix_r).extend( "XXXXXX");
-      char * buf = ::strdup( tmpPath.asString().c_str() );
+      AutoFREE<char> buf { ::strdup( tmpPath.asString().c_str() ) };
       if ( ! buf )
         {
           ERR << "Out of memory" << endl;
@@ -288,8 +286,6 @@ namespace zypp {
         _impl = RW_pointer<Impl>( new Impl( tmp ) );
       else
         ERR << "Cant create '" << tmpPath << "' " << ::strerror( errno ) << endl;
-
-      ::free( buf );
     }
 
     ///////////////////////////////////////////////////////////////////

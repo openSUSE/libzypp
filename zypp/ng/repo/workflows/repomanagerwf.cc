@@ -318,7 +318,7 @@ namespace zyppng::RepoManagerWorkflow {
           return info.type() | [this]( zypp::repo::RepoType repokind ) {
             // if unknown: probe it
             if ( repokind == zypp::repo::RepoType::NONE )
-              return probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() );
+              return probeRepoType( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path()/*, _refreshContext->targetDir()*/ );
             return makeReadyResult( expected<zypp::repo::RepoType>::success(repokind) );
           } | and_then([this, oldstatus]( zypp::repo::RepoType repokind ) {
 
@@ -407,7 +407,7 @@ namespace zyppng::RepoManagerWorkflow {
           // bsc#1048315: Always re-probe in case of repo format change.
           // TODO: Would be sufficient to verify the type and re-probe
           // if verification failed (or type is RepoType::NONE)
-          return probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path(), _refreshContext->targetDir() )
+          return probeRepoType ( _refreshContext->zyppContext(), _medium, _refreshContext->repoInfo().path() /*, _refreshContext->targetDir()*/ )
           | and_then([this]( zypp::repo::RepoType repokind ) {
 
             auto &info = _refreshContext->repoInfo();

@@ -394,6 +394,12 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
       zypp::filesystem::unlink( item->_stagingFileName );
 
     } else {
+
+      if ( item->_dl->spec().checkExistsOnly() ) {
+        // check exist only, we just return success with the target file name
+        provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
+      }
+
       const auto errCode = zypp::filesystem::rename( item->_stagingFileName, item->_targetFileName );
       if( errCode ) {
 

@@ -475,8 +475,11 @@ namespace zyppng {
               return;
             }
 
+            const auto &isCheckExistsOnlyVal = reqRef->provideMessage().value( ProvideMsgFields::CheckExistOnly );
+            bool isCheckExistsOnly = isCheckExistsOnlyVal.valid() ? isCheckExistsOnlyVal.asBool() : false;
+
             // when a worker is downloading we keep a internal book of cache files
-            if ( doesDownload ) {
+            if ( doesDownload && !isCheckExistsOnly ) {
               const auto locFName = provMsg->value( ProvideFinishedMsgFields::LocalFilename ).asString();
               if ( provMsg->value( ProvideFinishedMsgFields::CacheHit, false ).asBool()) {
                 dataRef = _parent.addToFileCache ( locFName );
@@ -491,6 +494,7 @@ namespace zyppng {
                   continue;
                 }
               } else {
+
                 dataRef = _parent.addToFileCache ( locFName );
 
                 // unlikely this can happen but better be safe than sorry

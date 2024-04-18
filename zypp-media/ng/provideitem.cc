@@ -671,10 +671,11 @@ namespace zyppng {
         const auto cacheHit    = msg.value( ProvideFinishedMsgFields::CacheHit ).asBool();
         const auto &wConf      = queue.workerConfig();
 
+        const bool checkExistsOnly  = _initialSpec.checkExistsOnly();
         const bool doesDownload     = wConf.worker_type() == ProvideQueue::Config::Downloading;
         const bool fileNeedsCleanup = doesDownload || ( wConf.worker_type() == ProvideQueue::Config::CPUBound && wConf.cfg_flags() & ProvideQueue::Config::FileArtifacts );
 
-        if ( doesDownload ) {
+        if ( doesDownload && !checkExistsOnly ) {
 
           resFile = provider().addToFileCache ( locFilename );
           if ( !resFile ) {
@@ -695,7 +696,7 @@ namespace zyppng {
 
         } else {
           resFile = zypp::ManagedFile( zypp::filesystem::Pathname(locFilename) );
-          if ( fileNeedsCleanup )
+          if ( fileNeedsCleanup && !checkExistsOnly )
             resFile->setDispose( zypp::filesystem::unlink );
           else
             resFile->resetDispose();

@@ -88,6 +88,7 @@ int main ( int argc, char *argv[] )
     ri.setType ( zypp::repo::RepoType::RPMMD_e );
     ri.setBaseUrl( zypp::Url("https://download.opensuse.org/tumbleweed/repo/oss") );
 
+    zypp::filesystem::assert_dir("/tmp/dltest");
     zypp::Pathname destdir("/tmp/dltest");
 
     ctx->sigEvent().connect([&]( zyppng::UserRequestRef req ){

@@ -142,6 +142,41 @@ namespace zypp
     return repositories_in_file(local);
   }
 
+  std::ostream & operator<<( std::ostream & str, RepoManager::RawMetadataRefreshPolicy obj )
+  {
+    switch ( obj ) {
+#define OUTS(V) case RepoManager::V: str << #V; break
+      OUTS( RefreshIfNeeded );
+      OUTS( RefreshForced );
+      OUTS( RefreshIfNeededIgnoreDelay );
+#undef OUTS
+    }
+    return str;
+  }
+
+  std::ostream & operator<<( std::ostream & str, RepoManager::RefreshCheckStatus obj )
+  {
+    switch ( obj ) {
+#define OUTS(V) case RepoManager::V: str << #V; break
+      OUTS( REFRESH_NEEDED );
+      OUTS( REPO_UP_TO_DATE );
+      OUTS( REPO_CHECK_DELAYED );
+#undef OUTS
+    }
+    return str;
+  }
+
+  std::ostream & operator<<( std::ostream & str, RepoManager::CacheBuildPolicy obj )
+  {
+    switch ( obj ) {
+#define OUTS(V) case RepoManager::V: str << #V; break
+      OUTS( BuildIfNeeded );
+      OUTS( BuildForced );
+#undef OUTS
+    }
+    return str;
+  }
+
   ///////////////////////////////////////////////////////////////////
   /// \class RepoManager::Impl
   /// \brief RepoManager implementation.
@@ -252,6 +287,11 @@ namespace zypp
 
   RepoManager::RefreshCheckStatus RepoManager::Impl::checkIfToRefreshMetadata( const RepoInfo & info, const Url & url, RawMetadataRefreshPolicy policy )
   {
+    // Hotfix for bsc#1223094: No media access for CD/DVD unless rawchache is missing
+    if ( url.schemeIsVolatile() ) {
+      return metadataStatus( info ).empty() ? REFRESH_NEEDED : REPO_UP_TO_DATE;
+    }
+
     using namespace zyppng::operators;
     using zyppng::operators::operator|;
 
@@ -311,6 +351,12 @@ namespace zypp
     // try urls one by one
     for ( RepoInfo::urls_const_iterator it = info.baseUrlsBegin(); it != info.baseUrlsEnd(); ++it )
     {
+      // Hotfix for bsc#1223094: No media access for CD/DVD unless rawchache is missing
+      if ( it->schemeIsVolatile() && not metadataStatus( info ).empty() ) {
+        // we are done.
+        return;
+      }
+
       try {
         auto res = zyppng::repo::SyncRefreshContext::create( ctx, info, _options )
             | and_then( [&]( zyppng::repo::SyncRefreshContextRef refCtx ) {

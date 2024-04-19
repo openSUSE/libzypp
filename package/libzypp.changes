@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 19 15:58:26 CEST 2024 - ma@suse.de
+
+- Don't try to refresh volatile media as long as raw metadata are
+  present (bsc#1223094)
+- version 17.32.5 (32)
+
+-------------------------------------------------------------------
 Wed Apr 17 17:07:52 CEST 2024 - ma@suse.de
 
 - Fix creation of sibling cache dirs with too restrictive mode

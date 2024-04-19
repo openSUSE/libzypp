@@ -55,6 +55,8 @@ INSTALL(  FILES ${zypp_media_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/z
 SET( zypp_media_ng_HEADERS
   ng/headervaluemap.h
   ng/HeaderValueMap
+  ng/lazymediahandle.h
+  ng/LazyMediaHandle
   ng/provide.h
   ng/Provide
   ng/providefwd.h

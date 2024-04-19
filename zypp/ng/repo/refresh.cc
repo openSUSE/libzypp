@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "refresh.h"
+#include <zypp-media/ng/providespec.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-core/fs/PathInfo.h>
@@ -145,7 +146,6 @@ namespace zyppng::repo {
   {
     return _sigProbedTypeChanged;
   }
-
 
   // explicitely intantiate the template types we want to work with
   template class RefreshContext<SyncContextRef>;

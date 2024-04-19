@@ -833,7 +833,7 @@ namespace zyppng
       | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>() ); }
       | and_then( [this, url, policy]( zyppng::repo::RefreshContextRef<ZyppContextRefType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
-        return _zyppContext->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
+        return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
             | and_then( [ r = std::move(refCtx) ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), std::move(mediaHandle), nullptr ); } );
       })
         );
@@ -891,7 +891,7 @@ namespace zyppng
     using namespace zyppng::operators;
     return joinPipeline( _zyppContext,
       RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
-      | [this, url=url](auto) { return _zyppContext->provider()->attachMedia( url, zyppng::ProvideMediaSpec() ); }
+      | [this, url=url](auto) { return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() ); }
       | and_then( [this, path = path]( auto mediaHandle ) {
         return RepoManagerWorkflow::probeRepoType( _zyppContext, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     }));

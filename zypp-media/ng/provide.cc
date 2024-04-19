@@ -706,6 +706,36 @@ namespace zyppng {
     return _credManagerOptions;
   }
 
+  std::vector<zypp::Url> ProvidePrivate::sanitizeUrls(const std::vector<zypp::Url> &urls)
+  {
+    std::vector<zypp::Url> usableMirrs;
+    std::optional<ProvideQueue::Config> scheme;
+
+    for ( auto mirrIt = urls.begin() ; mirrIt != urls.end(); mirrIt++ ) {
+      const auto &s = schemeConfig( effectiveScheme( mirrIt->getScheme() ) );
+      if ( !s ) {
+        WAR << "URL: " << *mirrIt << " is not supported, ignoring!" << std::endl;
+        continue;
+      }
+      if ( !scheme ) {
+        scheme = *s;
+        usableMirrs.push_back ( *mirrIt );
+      } else {
+        if ( scheme->worker_type () == s->worker_type () ) {
+          usableMirrs.push_back( *mirrIt );
+        } else {
+          WAR << "URL: " << *mirrIt << " has different worker type than the primary URL: "<< usableMirrs.front() <<", ignoring!" << std::endl;
+        }
+      }
+    }
+
+    if ( !scheme || usableMirrs.empty() ) {
+      return {};
+    }
+
+    return usableMirrs;
+  }
+
   std::vector<AttachedMediaInfo_Ptr> &ProvidePrivate::attachedMediaInfos()
   {
     return _attachedMediaInfos;
@@ -974,6 +1004,37 @@ namespace zyppng {
     return ProvideRef( new Provide(workDir) );
   }
 
+  expected<Provide::LazyMediaHandle> Provide::prepareMedia(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request)
+  {
+    Z_D();
+    // sanitize the mirrors to contain only URLs that have same worker types
+    std::vector<zypp::Url> usableMirrs = d->sanitizeUrls( urls );
+    if ( usableMirrs.empty() ) {
+      return expected<Provide::LazyMediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
+    }
+    return expected<Provide::LazyMediaHandle>::success( shared_this<Provide>(), std::move(usableMirrs), request );
+  }
+
+  expected<Provide::LazyMediaHandle> Provide::prepareMedia(const zypp::Url &url, const ProvideMediaSpec &request)
+  {
+    return prepareMedia( std::vector<zypp::Url>{url}, request );
+  }
+
+  AsyncOpRef<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
+  {
+    using namespace zyppng::operators;
+    if ( lazyHandle.attached() )
+      return makeReadyResult( expected<MediaHandle>::success( *lazyHandle.handle() ) );
+
+    MIL << "Attaching lazy medium with label: [" << lazyHandle.spec().label() << "]" << std::endl;
+
+    return attachMedia( lazyHandle.urls(), lazyHandle.spec () )
+        | and_then([lazyHandle]( MediaHandle handle ) {
+          lazyHandle._sharedData->_mediaHandle = handle;
+          return expected<MediaHandle>::success( std::move(handle) );
+        });
+  }
+
   AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
   {
     return attachMedia (  std::vector<zypp::Url>{url}, request );
@@ -983,33 +1044,9 @@ namespace zyppng {
   {
     Z_D();
 
-    if ( urls.empty() ) {
-      return makeReadyResult( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No usable mirrors in mirrorlist."))) );
-    }
-
     // sanitize the mirrors to contain only URLs that have same worker types
-    std::vector<zypp::Url> usableMirrs;
-    std::optional<ProvideQueue::Config> scheme;
-
-    for ( auto mirrIt = urls.begin() ; mirrIt != urls.end(); mirrIt++ ) {
-      const auto &s = d->schemeConfig( d->effectiveScheme( mirrIt->getScheme() ) );
-      if ( !s ) {
-        WAR << "URL: " << *mirrIt << " is not supported, ignoring!" << std::endl;
-        continue;
-      }
-      if ( !scheme ) {
-        scheme = *s;
-        usableMirrs.push_back ( *mirrIt );
-      } else {
-        if ( scheme->worker_type () == s->worker_type () ) {
-          usableMirrs.push_back( *mirrIt );
-        } else {
-          WAR << "URL: " << *mirrIt << " has different worker type than the primary URL: "<< usableMirrs.front() <<", ignoring!" << std::endl;
-        }
-      }
-    }
-
-    if ( !scheme || usableMirrs.empty() ) {
+    std::vector<zypp::Url> usableMirrs = d->sanitizeUrls( urls );
+    if ( usableMirrs.empty() ) {
       return makeReadyResult( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
     }
 
@@ -1066,6 +1103,18 @@ namespace zyppng {
     d->queueItem (op);
 
     return op->promise();
+  }
+
+  AsyncOpRef<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  {
+    using namespace zyppng::operators;
+    return attachMediaIfNeeded ( attachHandle )
+    | and_then([weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ){
+      auto me = weakMe.lock();
+      if ( !me )
+        return makeReadyResult(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
+      return me->provide( handle, fName, req);
+    });
   }
 
   zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )

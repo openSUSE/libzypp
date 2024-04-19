@@ -1,6 +1,7 @@
 #ifndef ZYPP_NG_BASE_ZYPPGLOBAL_H_INCLUDED
 #define ZYPP_NG_BASE_ZYPPGLOBAL_H_INCLUDED
 
+#include <memory>
 #include <zypp-core/base/Easy.h>
 
 #ifndef EXPORT_EXPERIMENTAL_API
@@ -104,12 +105,20 @@ template <typename Ptr> inline auto zyppGetPtrHelper(Ptr &ptr) -> decltype(ptr.o
 #define Z_D() auto const d = d_func()
 #define Z_Z() auto const z = z_func()
 
+namespace zyppng {
+  template <typename T>
+  using Ref = std::shared_ptr<T>;
+
+  template <typename T>
+  using WeakRef = std::weak_ptr<T>;
+}
+
 /*!
  * Helper macro to declare Ref types
  */
 #define ZYPP_FWD_DECL_REFS(T) \
-  using T##Ref = std::shared_ptr<T>; \
-  using T##WeakRef = std::weak_ptr<T>
+  using T##Ref = Ref<T>; \
+  using T##WeakRef = WeakRef<T>
 
 /*
  * Helper Macro to forward declare types and ref types
@@ -122,9 +131,9 @@ template <typename Ptr> inline auto zyppGetPtrHelper(Ptr &ptr) -> decltype(ptr.o
   template< typename TArg1> \
   class T; \
   template< typename TArg1> \
-  using T##Ref = std::shared_ptr<T<TArg1>>; \
+  using T##Ref = Ref<T<TArg1>>; \
   template< typename TArg1> \
-  using T##WeakRef = std::weak_ptr<T<TArg1>>
+  using T##WeakRef = WeakRef<T<TArg1>>
 
 
 //@TODO enable for c++20

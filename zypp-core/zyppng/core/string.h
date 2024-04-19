@@ -22,10 +22,12 @@ namespace str {
   template <typename T>
   std::optional<T> safe_strtonum ( const std::string_view &val)
   {
-    errno = 0;
+    int oerrno = errno;
+    errno = 0;  // strtonum/::strtol has no dedicated error-return-code one could check
     const int entryVal = zypp::str::strtonum<T>( val.data() );
     if ( errno == ERANGE )
       return {};
+    errno = oerrno;
     return entryVal;
   }
 

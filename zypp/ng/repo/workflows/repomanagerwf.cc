@@ -47,9 +47,10 @@ namespace zyppng::RepoManagerWorkflow {
     using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
     using ProvideType     = typename remove_smart_ptr_t<ZyppContextRefType>::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
+    using LazyMediaHandle = typename ProvideType::LazyMediaHandle;
     using ProvideRes      = typename ProvideType::Res;
 
-    ProbeRepoLogic(ZyppContextRefType zyppCtx, MediaHandle &&medium, zypp::Pathname &&path, std::optional<zypp::Pathname> &&targetPath )
+    ProbeRepoLogic(ZyppContextRefType zyppCtx, LazyMediaHandle &&medium, zypp::Pathname &&path, std::optional<zypp::Pathname> &&targetPath )
       : _zyppContext(std::move(zyppCtx))
       , _medium(std::move(medium))
       , _path(std::move(path))
@@ -77,69 +78,73 @@ namespace zyppng::RepoManagerWorkflow {
       // TranslatorExplanation '%s' is an URL
       _error = zypp::repo::RepoException (zypp::str::form( _("Error trying to read from '%s'"), url.asString().c_str() ));
 
-      // first try rpmmd
-      return providerRef->provide( _medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
-        | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
-        | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
-        // try susetags if rpmmd fails and remember the error
-        | or_else( [this, providerRef]( std::exception_ptr err ) {
-          try {
-            std::rethrow_exception (err);
-          } catch ( const zypp::media::MediaFileNotFoundException &e ) {
-            // do nothing
-            ;
-          } catch( const zypp::media::MediaException &e ) {
-            DBG << "problem checking for repodata/repomd.xml file" << std::endl;
-            _error.remember ( err );
-            _gotMediaError = true;
-          } catch( ... ) {
-            // any other error, we give up
-            return makeReadyResult( expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
-          }
-          return providerRef->provide( _medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
-              | and_then( maybeCopyResultToDest("content") )
-              | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
-        })
-        // no rpmmd and no susetags!
-        | or_else( [this]( std::exception_ptr err ) {
-
-          try {
-            std::rethrow_exception (err);
-          } catch ( const zypp::media::MediaFileNotFoundException &e ) {
-            // do nothing
-            ;
-          } catch( const zypp::media::MediaException &e ) {
-            DBG << "problem checking for content file" << std::endl;
-            _error.remember ( err );
-            _gotMediaError = true;
-          } catch( zypp::Exception &e ) {
-            _error.remember(e);
-            // any other error, we give up
-            return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR(_error) );
-          } catch(...) {
-            // any other error, we give up
-            return expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() );
-          }
-
-          const auto &url = _medium.baseUrl();
-
-          // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
-          if ( ! ( url.schemeIsDownloading() || url.schemeIsPlugin() ) ) {
-
-            if ( _medium.localPath() && zypp::PathInfo(_medium.localPath().value()/_path).isDir() ) {
-              // allow empty dirs for now
-              MIL << "Probed type RPMPLAINDIR at " << url << " (" << _path << ")" << std::endl;
-              return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMPLAINDIR);
+      return providerRef->attachMediaIfNeeded( _medium )
+      | and_then([this, providerRef]( MediaHandle medium )
+      {
+        // first try rpmmd
+        return providerRef->provide( medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+          | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
+          | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
+          // try susetags if rpmmd fails and remember the error
+          | or_else( [this, providerRef, medium]( std::exception_ptr err ) {
+            try {
+              std::rethrow_exception (err);
+            } catch ( const zypp::media::MediaFileNotFoundException &e ) {
+              // do nothing
+              ;
+            } catch( const zypp::media::MediaException &e ) {
+              DBG << "problem checking for repodata/repomd.xml file" << std::endl;
+              _error.remember ( err );
+              _gotMediaError = true;
+            } catch( ... ) {
+              // any other error, we give up
+              return makeReadyResult( expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
             }
-          }
+            return providerRef->provide( medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+                | and_then( maybeCopyResultToDest("content") )
+                | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
+          })
+          // no rpmmd and no susetags!
+          | or_else( [this, medium]( std::exception_ptr err ) {
 
-          if( _gotMediaError )
-            return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR( _error ));
+            try {
+              std::rethrow_exception (err);
+            } catch ( const zypp::media::MediaFileNotFoundException &e ) {
+              // do nothing
+              ;
+            } catch( const zypp::media::MediaException &e ) {
+              DBG << "problem checking for content file" << std::endl;
+              _error.remember ( err );
+              _gotMediaError = true;
+            } catch( zypp::Exception &e ) {
+              _error.remember(e);
+              // any other error, we give up
+              return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR(_error) );
+            } catch(...) {
+              // any other error, we give up
+              return expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() );
+            }
 
-          MIL << "Probed type NONE at " << url << " (" << _path << ")" << std::endl;
-          return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::NONE);
-        })
-      ;
+            const auto &url = medium.baseUrl();
+
+            // if it is a non-downloading URL denoting a directory (bsc#1191286: and no plugin)
+            if ( ! ( url.schemeIsDownloading() || url.schemeIsPlugin() ) ) {
+
+              if ( medium.localPath() && zypp::PathInfo(medium.localPath().value()/_path).isDir() ) {
+                // allow empty dirs for now
+                MIL << "Probed type RPMPLAINDIR at " << url << " (" << _path << ")" << std::endl;
+                return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMPLAINDIR);
+              }
+            }
+
+            if( _gotMediaError )
+              return expected<zypp::repo::RepoType>::error( ZYPP_EXCPT_PTR( _error ));
+
+            MIL << "Probed type NONE at " << url << " (" << _path << ")" << std::endl;
+            return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::NONE);
+          })
+        ;
+      });
     }
 
   private:
@@ -161,7 +166,7 @@ namespace zyppng::RepoManagerWorkflow {
 
   private:
     ZyppContextRefType _zyppContext;
-    MediaHandle _medium;
+    LazyMediaHandle _medium;
     zypp::Pathname _path;
     std::optional<zypp::Pathname> _targetPath;
 
@@ -173,19 +178,19 @@ namespace zyppng::RepoManagerWorkflow {
   auto probeRepoLogic( RefreshContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath)
   {
     using namespace zyppng::operators;
-    return ctx->provider()->attachMedia( repo.url(), zyppng::ProvideMediaSpec() )
+    return ctx->provider()->prepareMedia( repo.url(), zyppng::ProvideMediaSpec() )
       | and_then( [ctx, path = repo.path() ]( auto &&mediaHandle ) {
         return probeRepoType( ctx, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     });
   }
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(ContextRef ctx, ProvideMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
+  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(ContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
   {
     return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
-  expected<zypp::repo::RepoType> probeRepoType(SyncContextRef ctx, SyncMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath )
+  expected<zypp::repo::RepoType> probeRepoType(SyncContextRef ctx, SyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath )
   {
     return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
@@ -236,10 +241,11 @@ namespace zyppng::RepoManagerWorkflow {
       using ZyppContextRefType = typename RefreshContextRefType::element_type::ContextRefType;
       using ZyppContextType = typename RefreshContextRefType::element_type::ContextType;
       using ProvideType     = typename ZyppContextType::ProvideType;
+      using LazyMediaHandle = typename ProvideType::LazyMediaHandle;
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      CheckIfToRefreshMetadataLogic( RefreshContextRefType refCtx, MediaHandle &&medium, ProgressObserverRef progressObserver )
+      CheckIfToRefreshMetadataLogic( RefreshContextRefType refCtx, LazyMediaHandle &&medium, ProgressObserverRef progressObserver )
         : _refreshContext(std::move(refCtx))
         , _progress(std::move( progressObserver ))
         , _medium(std::move( medium ))
@@ -258,7 +264,7 @@ namespace zyppng::RepoManagerWorkflow {
           // first check old (cached) metadata
           return zyppng::RepoManager<ZyppContextRefType>::metadataStatus( info, _refreshContext->repoManagerOptions() );
         })
-        | and_then( [this](zypp::RepoStatus oldstatus){
+        | and_then( [this](zypp::RepoStatus oldstatus) {
 
           const auto &info = _refreshContext->repoInfo();
 
@@ -344,16 +350,16 @@ namespace zyppng::RepoManagerWorkflow {
     protected:
       RefreshContextRefType _refreshContext;
       ProgressObserverRef _progress;
-      MediaHandle _medium;
+      LazyMediaHandle _medium;
     };
   }
 
-  AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata(repo::AsyncRefreshContextRef refCtx, LazyMediaHandle<Provide> medium, ProgressObserverRef progressObserver)
   {
     return SimpleExecutor< CheckIfToRefreshMetadataLogic , AsyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
 
-  expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver)
+  expected<repo::RefreshCheckStatus> checkIfToRefreshMetadata(repo::SyncRefreshContextRef refCtx, LazyMediaHandle<MediaSyncFacade> medium, ProgressObserverRef progressObserver)
   {
     return SimpleExecutor< CheckIfToRefreshMetadataLogic , SyncOp<expected<repo::RefreshCheckStatus>> >::run( std::move(refCtx), std::move(medium), std::move(progressObserver) );
   }
@@ -373,12 +379,13 @@ namespace zyppng::RepoManagerWorkflow {
       using ZyppContextType    = typename RefreshContextRefType::element_type::ContextType;
       using ProvideType        = typename ZyppContextType::ProvideType;
       using MediaHandle        = typename ProvideType::MediaHandle;
+      using LazyMediaHandle    = typename ProvideType::LazyMediaHandle;
       using ProvideRes         = typename ProvideType::Res;
 
       using DlContextType    = repo::DownloadContext<ZyppContextRefType>;
       using DlContextRefType = std::shared_ptr<DlContextType>;
 
-      RefreshMetadataLogic( RefreshContextRefType refCtx, MediaHandle &&medium, ProgressObserverRef progressObserver )
+      RefreshMetadataLogic( RefreshContextRefType refCtx, LazyMediaHandle &&medium, ProgressObserverRef progressObserver )
         : _refreshContext(std::move(refCtx))
         , _progress ( std::move( progressObserver ) )
         , _medium   ( std::move( medium ) )
@@ -446,18 +453,18 @@ namespace zyppng::RepoManagerWorkflow {
 
       RefreshContextRefType _refreshContext;
       ProgressObserverRef _progress;
-      MediaHandle _medium;
+      LazyMediaHandle _medium;
       zypp::Pathname _mediarootpath;
 
     };
   }
 
-  AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, ProvideMediaHandle medium, ProgressObserverRef progressObserver )
+  AsyncOpRef<expected<repo::AsyncRefreshContextRef> > refreshMetadata( repo::AsyncRefreshContextRef refCtx, LazyMediaHandle<Provide> medium, ProgressObserverRef progressObserver )
   {
     return SimpleExecutor<RefreshMetadataLogic, AsyncOp<expected<repo::AsyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
   }
 
-  expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, SyncMediaHandle medium, ProgressObserverRef progressObserver )
+  expected<repo::SyncRefreshContextRef> refreshMetadata( repo::SyncRefreshContextRef refCtx, LazyMediaHandle<MediaSyncFacade> medium, ProgressObserverRef progressObserver )
   {
     return SimpleExecutor<RefreshMetadataLogic, SyncOp<expected<repo::SyncRefreshContextRef>>>::run( std::move(refCtx), std::move(medium), std::move(progressObserver));
   }
@@ -482,7 +489,7 @@ namespace zyppng::RepoManagerWorkflow {
 
       // the actual logic pipeline, attaches the medium and tries to refresh from it
       auto refreshPipeline = [ refCtx, progressObserver ]( zypp::Url url ){
-        return refCtx->zyppContext()->provider()->attachMedia( url, zyppng::ProvideMediaSpec() )
+        return refCtx->zyppContext()->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
             | and_then( [ refCtx , progressObserver]( auto mediaHandle ) mutable { return refreshMetadata ( std::move(refCtx), std::move(mediaHandle), progressObserver ); } );
       };
 

@@ -89,6 +89,8 @@ namespace zyppng {
 
     zypp::media::CredManagerOptions &credManagerOptions ();
 
+    std::vector<zypp::Url> sanitizeUrls ( const std::vector<zypp::Url> &urls );
+
     ProvideStatusRef log () {
       return _log;
     }

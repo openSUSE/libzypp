@@ -16,6 +16,7 @@
 #include <zypp-core/zyppng/async/AsyncOp>
 #include <zypp-core/zyppng/pipelines/expected.h>
 #include <zypp-core/ByteCount.h>
+#include <zypp-media/ng/LazyMediaHandle>
 #include <zypp-media/ng/ProvideFwd>
 #include <zypp-media/ng/ProvideRes>
 #include <zypp-media/auth/AuthData>
@@ -116,17 +117,27 @@ namespace zyppng {
     friend class ProvideStatus;
   public:
 
-    using MediaHandle = ProvideMediaHandle;
+    using MediaHandle     = ProvideMediaHandle;
+    using LazyMediaHandle = zyppng::LazyMediaHandle<Provide>;
     using Res = ProvideRes;
 
     static ProvideRef create( const zypp::Pathname &workDir = "" );
 
+    /*!
+     * Prepares a lazy handle, that is attached only if a actual provide() is called onto it.
+     * Use this to delay a media attach until its used the first time
+     */
+    expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
+
+    AsyncOpRef<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
     AsyncOpRef<expected<MediaHandle>> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
     AsyncOpRef<expected<ProvideRes>> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
 
     /*!

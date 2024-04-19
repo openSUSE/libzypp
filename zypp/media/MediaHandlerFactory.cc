@@ -25,6 +25,28 @@ namespace zypp::media {
 
   }
 
+  std::optional<MediaHandlerFactory::MediaHandlerType> MediaHandlerFactory::handlerType(const Url &url)
+  {
+    std::string scheme = url.getScheme();
+    if (scheme == "cd" || scheme == "dvd")
+      return MediaCDType;
+    else if (scheme == "nfs" || scheme == "nfs4")
+      return MediaNFSType;
+    else if (scheme == "iso")
+      return MediaISOType;
+    else if (scheme == "file" || scheme == "dir")
+      return MediaFileType;
+    else if (scheme == "hd" )
+      return MediaDISKType;
+    else if (scheme == "cifs" || scheme == "smb")
+      return MediaCIFSType;
+    else if (scheme == "ftp" || scheme == "tftp" || scheme == "http" || scheme == "https")
+      return MediaCURLType;
+    else if (scheme == "plugin" )
+      return MediaPluginType;
+    return {};
+  }
+
   std::unique_ptr<MediaHandler> MediaHandlerFactory::createHandler( const Url &o_url, const Pathname &preferred_attach_point )
   {
     if(!o_url.isValid()) {
@@ -37,89 +59,105 @@ namespace zypp::media {
     UrlResolverPlugin::HeaderList custom_headers;
     Url url = UrlResolverPlugin::resolveUrl(o_url, custom_headers);
 
-    std::string scheme = url.getScheme();
-    MIL << "Trying scheme '" << scheme << "'" << std::endl;
 
-    /*
-    ** WARNING: Don't forget to update MediaAccess::downloads(url)
-    **          if you are adding a new url scheme / handler!
-    */
-    if (scheme == "cd" || scheme == "dvd")
-      _handler = std::make_unique<MediaCD> (url,preferred_attach_point);
-    else if (scheme == "nfs" || scheme == "nfs4")
-      _handler = std::make_unique<MediaNFS> (url,preferred_attach_point);
-    else if (scheme == "iso")
-      _handler = std::make_unique<MediaISO> (url,preferred_attach_point);
-    else if (scheme == "file" || scheme == "dir")
-      _handler = std::make_unique<MediaDIR> (url,preferred_attach_point);
-    else if (scheme == "hd")
-      _handler = std::make_unique<MediaDISK> (url,preferred_attach_point);
-    else if (scheme == "cifs" || scheme == "smb")
-      _handler = std::make_unique<MediaCIFS> (url,preferred_attach_point);
-    else if (scheme == "ftp" || scheme == "tftp" || scheme == "http" || scheme == "https")
-    {
-      enum WhichHandler { choose, curl, multicurl, network };
-      WhichHandler which = choose;
-      // Leagcy: choose handler in UUrl query
-      if ( const std::string & queryparam = url.getQueryParam("mediahandler"); ! queryparam.empty() ) {
-        if ( queryparam == "network" )
-          which = network;
-        else if ( queryparam == "multicurl" )
-          which = multicurl;
-        else if ( queryparam == "curl" )
-          which = curl;
-        else
-          WAR << "Unknown mediahandler='" << queryparam << "' in URL; Choosing the default" << std::endl;
-      }
-      // Otherwise choose handler through ENV
-      if ( which == choose ) {
-        auto getenvIs = []( std::string_view var, std::string_view val )->bool {
-          const char * v = ::getenv( var.data() );
-          return v && v == val;
-        };
+    MIL << "Trying scheme '" << o_url.getScheme() << "'" << std::endl;
 
-        if ( getenvIs( "ZYPP_MEDIANETWORK", "1" ) ) {
-          WAR << "MediaNetwork backend enabled" << std::endl;
-          which = network;
-        }
-        else if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
-          WAR << "multicurl manually disabled." << std::endl;
-          which = curl;
-        }
-        else
-          which = multicurl;
-      }
-      // Finally use the default
-      std::unique_ptr<MediaNetworkCommonHandler> handler;
-      switch ( which ) {
-        default:
-        case multicurl:
-          handler = std::make_unique<MediaMultiCurl>( url, preferred_attach_point );
-          break;
-
-        case network:
-          handler = std::make_unique<MediaNetwork>( url, preferred_attach_point );
-          break;
-
-        case curl:
-          handler = std::make_unique<MediaCurl>( url, preferred_attach_point );
-          break;
-      }
-      // Set up the handler
-      for ( const auto & el : custom_headers ) {
-        std::string header { el.first };
-        header += ": ";
-        header += el.second;
-        MIL << "Added custom header -> " << header << std::endl;
-        handler->settings().addHeader( std::move(header) );
-      }
-      _handler = std::move(handler);
-
+    const auto hdlType = handlerType( o_url );
+    if ( !hdlType ) {
+      ZYPP_THROW(MediaUnsupportedUrlSchemeException(url));
     }
-    else if (scheme == "plugin" )
-      _handler = std::make_unique<MediaPlugin> (url,preferred_attach_point);
-    else
-    {
+
+    switch(*hdlType) {
+      case MediaCDType: {
+        _handler = std::make_unique<MediaCD> (url,preferred_attach_point);
+        break;
+      }
+      case MediaNFSType: {
+        _handler = std::make_unique<MediaNFS> (url,preferred_attach_point);
+        break;
+      }
+      case MediaISOType: {
+        _handler = std::make_unique<MediaISO> (url,preferred_attach_point);
+        break;
+      }
+      case MediaFileType: {
+        _handler = std::make_unique<MediaDIR> (url,preferred_attach_point);
+        break;
+      }
+      case MediaDISKType: {
+        _handler = std::make_unique<MediaDISK> (url,preferred_attach_point);
+        break;
+      }
+      case MediaCIFSType: {
+        _handler = std::make_unique<MediaCIFS> (url,preferred_attach_point);
+        break;
+      }
+      case MediaCURLType: {
+        enum WhichHandler { choose, curl, multicurl, network };
+        WhichHandler which = choose;
+        // Leagcy: choose handler in UUrl query
+        if ( const std::string & queryparam = url.getQueryParam("mediahandler"); ! queryparam.empty() ) {
+          if ( queryparam == "network" )
+            which = network;
+          else if ( queryparam == "multicurl" )
+            which = multicurl;
+          else if ( queryparam == "curl" )
+            which = curl;
+          else
+            WAR << "Unknown mediahandler='" << queryparam << "' in URL; Choosing the default" << std::endl;
+        }
+        // Otherwise choose handler through ENV
+        if ( which == choose ) {
+          auto getenvIs = []( std::string_view var, std::string_view val )->bool {
+            const char * v = ::getenv( var.data() );
+            return v && v == val;
+          };
+
+          if ( getenvIs( "ZYPP_MEDIANETWORK", "1" ) ) {
+            WAR << "MediaNetwork backend enabled" << std::endl;
+            which = network;
+          }
+          else if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
+            WAR << "multicurl manually disabled." << std::endl;
+            which = curl;
+          }
+          else
+            which = multicurl;
+        }
+        // Finally use the default
+        std::unique_ptr<MediaNetworkCommonHandler> handler;
+        switch ( which ) {
+          default:
+          case multicurl:
+            handler = std::make_unique<MediaMultiCurl>( url, preferred_attach_point );
+            break;
+
+          case network:
+            handler = std::make_unique<MediaNetwork>( url, preferred_attach_point );
+            break;
+
+          case curl:
+            handler = std::make_unique<MediaCurl>( url, preferred_attach_point );
+            break;
+        }
+        // Set up the handler
+        for ( const auto & el : custom_headers ) {
+          std::string header { el.first };
+          header += ": ";
+          header += el.second;
+          MIL << "Added custom header -> " << header << std::endl;
+          handler->settings().addHeader( std::move(header) );
+        }
+        _handler = std::move(handler);
+        break;
+      }
+      case MediaPluginType: {
+        _handler = std::make_unique<MediaPlugin> (url,preferred_attach_point);
+        break;
+      }
+    }
+
+    if ( !_handler ) {
       ZYPP_THROW(MediaUnsupportedUrlSchemeException(url));
     }
 

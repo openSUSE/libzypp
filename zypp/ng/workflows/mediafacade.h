@@ -11,6 +11,7 @@
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-media/ng/Provide>
+#include <zypp-media/ng/LazyMediaHandle>
 #include <zypp/MediaSetAccess.h>
 #include <zypp/media/MediaManager.h>
 
@@ -42,7 +43,7 @@ namespace zyppng {
   /*!
    * A Facade class that mimics the behavior of the Provide
    * class just in a sync way. Meaning every operation will finish immediately
-   * instead of returns a \ref AsyncOp.
+   * instead of returning a \ref AsyncOp.
    */
   class ZYPP_API MediaSyncFacade : public Base
   {
@@ -51,7 +52,8 @@ namespace zyppng {
 
     friend class AttachedSyncMediaInfo;
 
-    using MediaHandle = SyncMediaHandle;
+    using MediaHandle     = SyncMediaHandle;
+    using LazyMediaHandle = ::zyppng::LazyMediaHandle<MediaSyncFacade>;
 
     class Res {
       public:
@@ -80,12 +82,17 @@ namespace zyppng {
     ZYPP_DECL_PRIVATE_CONSTR ( MediaSyncFacade );
     ~MediaSyncFacade() override;
 
+    expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
+
+    expected<MediaHandle> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
     expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
     expected<Res> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
     expected<Res> provide(  const zypp::Url &url, const ProvideFileSpec &request );
     expected<Res> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    expected<Res> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
 
     /*!
@@ -110,6 +117,7 @@ namespace zyppng {
     void releaseMedium ( const AttachedSyncMediaInfo *ptr );
 
   private:
+    std::vector<zypp::Url> sanitizeUrls(const std::vector<zypp::Url> &urls) const;
     std::vector<AttachedSyncMediaInfo_Ptr> _attachedMedia;
   };
 

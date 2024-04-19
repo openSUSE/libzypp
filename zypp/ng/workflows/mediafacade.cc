@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "mediafacade.h"
+#include "zypp/media/MediaHandlerFactory.h"
 #include <zypp/ZYppCallbacks.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/base/userrequestexception.h>
@@ -150,6 +151,36 @@ namespace zyppng {
   }
 
   ZYPP_IMPL_PRIVATE_CONSTR (MediaSyncFacade)  {  }
+
+  std::vector<zypp::Url> MediaSyncFacade::sanitizeUrls(const std::vector<zypp::Url> &urls) const
+  {
+    std::vector<zypp::Url> usableMirrs;
+    std::optional<zypp::media::MediaHandlerFactory::MediaHandlerType> handlerType;
+
+    for ( auto mirrIt = urls.begin() ; mirrIt != urls.end(); mirrIt++ ) {
+      const auto &s = zypp::media::MediaHandlerFactory::handlerType ( *mirrIt );
+      if ( !s ) {
+        WAR << "URL: " << *mirrIt << " is not supported, ignoring!" << std::endl;
+        continue;
+      }
+      if ( !handlerType ) {
+        handlerType = *s;
+        usableMirrs.push_back ( *mirrIt );
+      } else {
+        if ( handlerType == *s) {
+          usableMirrs.push_back( *mirrIt );
+        } else {
+          WAR << "URL: " << *mirrIt << " has different handler type than the primary URL: "<< usableMirrs.front() <<", ignoring!" << std::endl;
+        }
+      }
+    }
+
+    if ( !handlerType || usableMirrs.empty() ) {
+      return {};
+    }
+
+    return usableMirrs;
+  }
 
   expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
   {
@@ -327,7 +358,10 @@ namespace zyppng {
   expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
   {
     // rewrite and sanitize the urls if required
-    std::vector<zypp::Url> useableUrls = urls;
+    std::vector<zypp::Url> useableUrls = sanitizeUrls(urls);
+
+    if ( useableUrls.empty () )
+      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
 
     // first try and find a already attached medium
     auto i = std::find_if( _attachedMedia.begin (), _attachedMedia.end(), [&]( const AttachedSyncMediaInfo_Ptr &medium ) {
@@ -382,6 +416,34 @@ namespace zyppng {
     if ( _attachedMedia.size () ) {
       WAR << "Releasing zyppng::MediaSyncFacade with still valid MediaHandles, this is a bug!" << std::endl;
     }
+  }
+
+  expected<MediaSyncFacade::LazyMediaHandle> MediaSyncFacade::prepareMedia(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request)
+  {
+    const auto &useableUrls = sanitizeUrls(urls);
+    if ( useableUrls.empty () )
+      return expected<MediaSyncFacade::LazyMediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
+    return expected<LazyMediaHandle>::success( shared_this<MediaSyncFacade>(), std::move(useableUrls), request );
+  }
+
+  expected<MediaSyncFacade::LazyMediaHandle> MediaSyncFacade::prepareMedia(const zypp::Url &url, const ProvideMediaSpec &request)
+  {
+    return prepareMedia( std::vector<zypp::Url>{url}, request );
+  }
+
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
+  {
+    using namespace zyppng::operators;
+    if ( lazyHandle.attached() )
+      return expected<MediaHandle>::success( *lazyHandle.handle() );
+
+    MIL << "Attaching lazy medium with label: [" << lazyHandle.spec().label() << "]" << std::endl;
+
+    return attachMedia( lazyHandle.urls(), lazyHandle.spec () )
+        | and_then([lazyHandle]( MediaHandle handle ) {
+          lazyHandle._sharedData->_mediaHandle = handle;
+          return expected<MediaHandle>::success( std::move(handle) );
+        });
   }
 
   expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request)
@@ -460,6 +522,18 @@ namespace zyppng {
     } catch (...) {
       return expected<MediaSyncFacade::Res>::error(ZYPP_FWD_CURRENT_EXCPT());
     }
+  }
+
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  {
+    using namespace zyppng::operators;
+    return attachMediaIfNeeded ( attachHandle )
+    | and_then([weakMe = weak_this<MediaSyncFacade>(), fName = fileName, req = request ]( MediaHandle handle ){
+      auto me = weakMe.lock();
+      if ( !me )
+        return expected<Res>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation")));
+      return me->provide( handle, fName, req);
+    });
   }
 
   zyppng::expected<zypp::CheckSum> MediaSyncFacade::checksumForFile(const zypp::Pathname &p, const std::string &algorithm)

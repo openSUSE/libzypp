@@ -159,7 +159,7 @@ int main ( int argc, char *argv[] )
 
     auto observer = zyppng::ProgressObserver::create("Refreshing repositories", 2);
     observer->sigProgressChanged().connect([&](zyppng::ProgressObserver &o, double v){
-      out.progress( "dl-repo", zypp::str::Str() << "Ref Progress changed to " << o.current() << "/" << o.steps () , o.progress () );
+      out.progress( "dl-repo", zypp::str::Str() << "Ref Progress changed to " << o.current() << "/" << o.steps (), o.progress () );
     });
     observer->sigFinished().connect([&](zyppng::ProgressObserver &, zyppng::ProgressObserver::FinishResult finRes ){
       out.info ( zypp::str::Str() << "Progress moved to finished with res: " << finRes << std::endl ); }
@@ -168,16 +168,40 @@ int main ( int argc, char *argv[] )
 
     out.progressStart("dl-repo", "Refreshing repositories");
 
+    std::vector<zypp::RepoInfo> allSysReps;
+    {
+      auto sysRepMgr = zyppng::AsyncRepoManager::create( ctx, zypp::RepoManagerOptions() ).unwrap();
+      std::for_each (  sysRepMgr->repoBegin(), sysRepMgr->repoEnd(), [&]( zypp::RepoInfo info ){
+        if ( info.enabled () ) {
+          info.setMetadataPath (zypp::Pathname());
+          info.setPackagesPath (zypp::Pathname());
+          allSysReps.push_back(info);
+        }
+      });
+    }
+
     auto repMgr = zyppng::AsyncRepoManager::create( ctx, zypp::RepoManagerOptions(destdir) ).unwrap();
-    auto result = repMgr->refreshMetadata( ri, zypp::RepoManagerFlags::RefreshIfNeeded, observer );
+    auto result = repMgr->refreshMetadata( std::move(allSysReps), zypp::RepoManagerFlags::RefreshIfNeeded, observer );
     observer->setFinished ();
-    out.progressEnd("dl-repo", "Refreshing repositories",  !result.is_valid() );
 
-    if ( !result.is_valid () )
-      std::rethrow_exception( result.error() );
+    bool allSuccess = true;
+    std::for_each( result.begin (), result.end(), [&]( const auto &resPair ) {
+      if ( !resPair.second )
+        allSuccess = false;
 
-    out.info ( zypp::str::Str() << "Download worked!." << std::endl );
+      try {
+        resPair.second.unwrap();
+        out.info ( zypp::str::Str() << "Refreshing repository: " << resPair.first.name() << " worked!" );
+      } catch ( const zypp::Exception &e ) {
+        out.error ( zypp::str::Str() << "Refreshing repository: " << resPair.first.name() << " failed with Error: " << e );
+      } catch ( const std::exception &e ) {
+        out.error ( zypp::str::Str() << "Refreshing repository: " << resPair.first.name() << " failed with Error: " <<  e.what() );
+      } catch ( ... ) {
+        out.error ( zypp::str::Str() << "Refreshing repository: " << resPair.first.name() << " failed with Error: Unknown exception" );
+      }
+    });
 
+    out.progressEnd("dl-repo", "Refreshing repositories",  !allSuccess );
 
   } catch ( const zypp::Exception &e ) {
     out.error ( zypp::str::Str() << "Error: " << e << std::endl );

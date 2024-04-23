@@ -396,6 +396,8 @@ namespace zyppng {
      */
     expected<void> refreshMetadata( const RepoInfo & info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
+    std::vector<std::pair<RepoInfo, expected<void> > > refreshMetadata(std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
+
     expected<zypp::repo::RepoType> probe( const zypp::Url & url, const zypp::Pathname & path = zypp::Pathname() ) const;
 
     expected<void> buildCache( const RepoInfo & info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );

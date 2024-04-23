@@ -565,7 +565,7 @@ namespace zyppng::RepoManagerWorkflow {
         argsIn.push_back (nullptr);
         me->_proc->setOutputChannelMode ( Process::Merged );
         if (!me->_proc->start( argsIn.data() )) {
-          return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoException ( repo, zypp::str::form( _("Failed to cache repo ( unable to start repo2solv ).") )))) );
+          return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoException ( me->_repo, _("Failed to cache repo ( unable to start repo2solv ).") ))) );
         }
         return me;
       }
@@ -578,6 +578,10 @@ namespace zyppng::RepoManagerWorkflow {
       }
 
       void procFinished( int ret ) {
+
+        while ( _proc->canReadLine() )
+          readyRead();
+
         if ( ret != 0 ) {
           zypp::repo::RepoException ex( _repo, zypp::str::form( _("Failed to cache repo (%d)."), ret ));
           ex.addHistory( zypp::str::Str() << _proc->executedCommand() << std::endl << _errdetail << _proc->execError() ); // errdetail lines are NL-terminaled!
@@ -746,7 +750,7 @@ namespace zyppng::RepoManagerWorkflow {
           MIL << "repo type is " << repokind << std::endl;
 
           return mountIfRequired( repokind, info )
-          | and_then([this, repokind, solvfile = std::move(solvfile) ]( std::optional<MediaHandle> forPlainDirs ) {
+          | and_then([this, repokind, solvfile = std::move(solvfile) ]( std::optional<MediaHandle> forPlainDirs ) mutable {
 
             const auto &info = _refCtx->repoInfo();
 

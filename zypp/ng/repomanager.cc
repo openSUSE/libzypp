@@ -862,11 +862,11 @@ namespace zyppng
     return  joinPipeline( _zyppContext,
       // make sure geoIP data is up 2 date, but ignore errors
       RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
-      | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>()); }
+      | [this, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>()); }
       | and_then( [policy, myProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {
         refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
         // in case probe detects a different repokind, update our internal repos
-        refCtx->connectFunc( &zyppng::repo::SyncRefreshContext::sigProbedTypeChanged, cb );
+        refCtx->connectFunc( &repo::RefreshContext<ZyppContextRefType>::sigProbedTypeChanged, cb );
 
         return zyppng::RepoManagerWorkflow::refreshMetadata ( std::move(refCtx), myProgress );
       })
@@ -877,6 +877,76 @@ namespace zyppng
 
         return expected<void>::success ();
     }));
+  }
+
+  template<typename ZyppContextRefType>
+  std::vector<std::pair<RepoInfo, expected<void>>> RepoManager<ZyppContextRefType>::refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress )
+  {
+    using namespace zyppng::operators;
+
+    ProgressObserver::setup( myProgress, "Refreshing repositories" , 1 );
+
+    auto r = std::move(infos)
+        | transform( [this, policy, myProgress]( const RepoInfo &info ) {
+
+        auto subProgress = ProgressObserver::makeSubTask( myProgress, 1.0, zypp::str::Str() << _("Refreshing Repository: ") << info.alias(), 3 );
+
+        // helper callback in case the repo type changes on the remote
+        // do NOT capture by reference here, since this is possibly executed async
+        const auto &updateProbedType = [this, info = info]( zypp::repo::RepoType repokind ) {
+          // update probed type only for repos in system
+          for( const auto &repo : repos() ) {
+            if ( info.alias() == repo.alias() )
+            {
+              RepoInfo modifiedrepo = repo;
+              modifiedrepo.setType( repokind );
+              // don't modify .repo in refresh.
+              // modifyRepository( info.alias(), modifiedrepo );
+              break;
+            }
+          }
+        };
+
+        auto sharedThis = shared_this<RepoManager<ZyppContextRefType>>();
+
+        return
+          // make sure geoIP data is up 2 date, but ignore errors
+          RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
+          | [sharedThis, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( sharedThis->_zyppContext, info, sharedThis); }
+          | inspect( incProgress( subProgress ) )
+          | and_then( [policy, subProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {
+            refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
+            // in case probe detects a different repokind, update our internal repos
+            refCtx->connectFunc( &repo::RefreshContext<ZyppContextRefType>::sigProbedTypeChanged, cb );
+
+            return zyppng::RepoManagerWorkflow::refreshMetadata ( std::move(refCtx), ProgressObserver::makeSubTask( subProgress ) );
+          })
+          | inspect( incProgress( subProgress ) )
+          | and_then([subProgress]( repo::RefreshContextRef<ZyppContextRefType> ctx ) {
+
+            if ( ! isTmpRepo( ctx->repoInfo() ) )
+              ctx->repoManager()->reposManip();	// remember to trigger appdata refresh
+
+            return zyppng::RepoManagerWorkflow::buildCache ( std::move(ctx), CacheBuildPolicy::BuildIfNeeded, ProgressObserver::makeSubTask( subProgress ) );
+          })
+          | inspect( incProgress( subProgress ) )
+          | [ info = info, subProgress ]( expected<repo::RefreshContextRef<ZyppContextRefType>> result ) {
+            if ( result ) {
+              ProgressObserver::finish( subProgress, ProgressObserver::Success );
+              return std::make_pair(info, expected<void>::success() );
+            } else {
+              ProgressObserver::finish( subProgress, ProgressObserver::Error );
+              return std::make_pair(info, expected<void>::error( result.error() ) );
+            }
+          };
+      }
+      | [myProgress]( auto res ) {
+        ProgressObserver::finish( myProgress, ProgressObserver::Success );
+        return res;
+      }
+    );
+
+    return joinPipeline( _zyppContext, r );
   }
 
   /** Probe the metadata type of a repository located at \c url.

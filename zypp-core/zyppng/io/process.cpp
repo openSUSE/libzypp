@@ -16,7 +16,9 @@ namespace zyppng {
   class ProcessPrivate : public AsyncDataSourcePrivate
   {
   public:
-    ProcessPrivate( Process &p ) : AsyncDataSourcePrivate(p)
+    ProcessPrivate( Process &p )
+      : AsyncDataSourcePrivate(p)
+      , _sigFinished(p)
     { }
 
     void cleanup() {
@@ -30,7 +32,7 @@ namespace zyppng {
     zypp::AutoFD _stderrFd = -1;
     zypp::AutoFD _stdoutFd = -1;
     Signal<void ()> _sigStarted;
-    Signal<void ( int )> _sigFinished;
+    MemSignal<Process, void ( int )> _sigFinished;
     Signal<void ()> _sigFailedToStart;
 
     Process::OutputChannelMode _channelMode = Process::Seperate;

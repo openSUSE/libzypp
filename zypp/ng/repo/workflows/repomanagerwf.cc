@@ -7,9 +7,11 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "repomanagerwf.h"
+
 #include "zypp/parser/xml/Reader.h"
 
 #include <zypp-core/ManagedFile.h>
+#include <zypp-core/zyppng/io/Process>
 #include <zypp-core/zyppng/pipelines/MTry>
 #include <zypp-core/zyppng/pipelines/Algorithm>
 #include <zypp-media/MediaException>
@@ -542,6 +544,78 @@ namespace zyppng::RepoManagerWorkflow {
 
   namespace {
 
+    template <typename ZyppCtxRef> struct Repo2SolvOp;
+
+    template <>
+    struct Repo2SolvOp<ContextRef> : public AsyncOp<expected<void>>
+    {
+      Repo2SolvOp() { }
+
+      static AsyncOpRef<expected<void>> run( zypp::RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
+        MIL << "Starting repo2solv for repo " << repo.alias () << std::endl;
+        auto me = std::make_shared<Repo2SolvOp<ContextRef>>();
+        me->_repo = std::move(repo);
+        me->_proc = Process::create();
+        me->_proc->connect( &Process::sigFinished, *me, &Repo2SolvOp<ContextRef>::procFinished );
+        me->_proc->connect( &Process::sigReadyRead, *me, &Repo2SolvOp<ContextRef>::readyRead );
+
+        std::vector<const char *> argsIn;
+        argsIn.reserve ( args.size() );
+        std::for_each( args.begin (), args.end(), [&]( const std::string &s ) { argsIn.push_back(s.data()); });
+        argsIn.push_back (nullptr);
+        me->_proc->setOutputChannelMode ( Process::Merged );
+        if (!me->_proc->start( argsIn.data() )) {
+          return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoException ( repo, zypp::str::form( _("Failed to cache repo ( unable to start repo2solv ).") )))) );
+        }
+        return me;
+      }
+
+      void readyRead (){
+        const ByteArray &data = _proc->readLine();
+        const std::string &line = data.asString();
+        WAR << "  " << line;
+        _errdetail += line;
+      }
+
+      void procFinished( int ret ) {
+        if ( ret != 0 ) {
+          zypp::repo::RepoException ex( _repo, zypp::str::form( _("Failed to cache repo (%d)."), ret ));
+          ex.addHistory( zypp::str::Str() << _proc->executedCommand() << std::endl << _errdetail << _proc->execError() ); // errdetail lines are NL-terminaled!
+          setReady( expected<void>::error(ZYPP_EXCPT_PTR(ex)) );
+          return;
+        }
+        setReady( expected<void>::success() );
+      }
+
+    private:
+      ProcessRef  _proc;
+      zypp::RepoInfo _repo;
+      std::string _errdetail;
+    };
+
+    template <>
+    struct Repo2SolvOp<SyncContextRef>
+    {
+      static expected<void> run( zypp::RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
+        zypp::ExternalProgram prog( args, zypp::ExternalProgram::Stderr_To_Stdout );
+        std::string errdetail;
+
+        for ( std::string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
+          WAR << "  " << output;
+          errdetail += output;
+        }
+
+        int ret = prog.close();
+        if ( ret != 0 )
+        {
+          zypp::repo::RepoException ex(repo, zypp::str::form( _("Failed to cache repo (%d)."), ret ));
+          ex.addHistory( zypp::str::Str() << prog.command() << std::endl << errdetail << prog.execError() ); // errdetail lines are NL-terminaled!
+          return expected<void>::error(ZYPP_EXCPT_PTR(ex));
+        }
+        return expected<void>::success();
+      }
+    };
+
     template<typename Executor, class OpType>
     struct BuildCacheLogic : public LogicBase<Executor, OpType>{
 
@@ -700,7 +774,7 @@ namespace zyppng::RepoManagerWorkflow {
 
                   std::optional<zypp::Pathname> localPath = forPlainDirs.has_value() ? forPlainDirs->localPath() : zypp::Pathname();
                   if ( !localPath )
-                    return expected<void>::error( ZYPP_EXCPT_PTR( zypp::repo::RepoException( zypp::str::Format(_("Failed to cache repo %1%")) % _refCtx->repoInfo() )) );
+                    return makeReadyResult( expected<void>::error( ZYPP_EXCPT_PTR( zypp::repo::RepoException( zypp::str::Format(_("Failed to cache repo %1%")) % _refCtx->repoInfo() ))) );
 
                   // FIXME this does only work for dir: URLs
                   cmd.push_back( (*localPath / info.path().absolutename()).c_str() );
@@ -708,30 +782,16 @@ namespace zyppng::RepoManagerWorkflow {
                 else
                   cmd.push_back( _productdatapath.asString() );
 
-                // @TODO async, make this into async pipeline, running repo2solv blocks potentially for a long time
-                zypp::ExternalProgram prog( cmd, zypp::ExternalProgram::Stderr_To_Stdout );
-                std::string errdetail;
-
-                for ( std::string output( prog.receiveLine() ); output.length(); output = prog.receiveLine() ) {
-                  WAR << "  " << output;
-                  errdetail += output;
-                }
-
-                int ret = prog.close();
-                if ( ret != 0 )
-                {
-                  zypp::repo::RepoException ex(info, zypp::str::form( _("Failed to cache repo (%d)."), ret ));
-                  ex.addHistory( zypp::str::Str() << prog.command() << std::endl << errdetail << prog.execError() ); // errdetail lines are NL-terminaled!
-                  return expected<void>::error(ZYPP_EXCPT_PTR(ex));
-                }
-
-                // We keep it.
-                guard.resetDispose();
-                return mtry( zypp::sat::updateSolvFileIndex, solvfile ); // content digest for zypper bash completion
+                return Repo2SolvOp<ZyppContextRefType>::run( info, std::move(cmd) )
+                | and_then( [this, guard = std::move(guard), solvfile = std::move(solvfile) ]() mutable {
+                  // We keep it.
+                  guard.resetDispose();
+                  return mtry( zypp::sat::updateSolvFileIndex, solvfile ); // content digest for zypper bash completion
+                });
               }
               break;
               default:
-                return expected<void>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoUnknownTypeException( info, _("Unhandled repository type") )) );
+                return makeReadyResult( expected<void>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoUnknownTypeException( info, _("Unhandled repository type") )) ) );
               break;
             }
           })

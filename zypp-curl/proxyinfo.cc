@@ -28,7 +28,7 @@ namespace zypp {
 
     ProxyInfo::ProxyInfo()
 #ifdef WITH_LIBPROXY_SUPPORT
-    : _pimpl( new ProxyInfoLibproxy() )
+    : _pimpl( (ProxyInfoLibproxy::isAvailabe() ? static_cast<Impl *>(new ProxyInfoLibproxy()) : static_cast<Impl *>(new ProxyInfoSysconfig("proxy")))  )
 #else
     : _pimpl( new ProxyInfoSysconfig("proxy") )
 #endif

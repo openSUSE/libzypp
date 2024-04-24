@@ -42,10 +42,10 @@ SET( zypp_curl_auth_SRCS
 
 INSTALL(  FILES ${zypp_curl_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl/auth" )
 
-IF ( LIBPROXY_FOUND )
+IF( NOT DISABLE_LIBPROXY )
   SET(zypp_curl_proxyinfo_libproxy_SRCS proxyinfo/proxyinfolibproxy.cc)
   SET(zypp_curl_proxyinfo_libproxy_HEADERS proxyinfo/ProxyInfoLibproxy proxyinfo/proxyinfolibproxy.h)
-ENDIF( LIBPROXY_FOUND )
+ENDIF( )
 
 SET( zypp_curl_proxyinfo_SRCS
   proxyinfo/proxyinfosysconfig.cc
@@ -186,8 +186,9 @@ ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
 add_dependencies( zypp-curl zypp-protobuf )
 
 TARGET_LINK_LIBRARIES( zypp-curl ${CURL_LIBRARIES} )
-TARGET_LINK_LIBRARIES( zypp-curl ${LIBPROXY_LIBRARIES} )
 TARGET_LINK_LIBRARIES( zypp-curl ${LIBXML2_LIBRARIES} )
-IF ( LIBPROXY_FOUND )
-  target_include_directories(zypp-curl PUBLIC ${LIBPROXY_INCLUDE_DIRS})
-ENDIF( LIBPROXY_FOUND )
+
+IF( NOT DISABLE_LIBPROXY )
+  # required for dlload and dlclose
+  TARGET_LINK_LIBRARIES( zypp-curl  ${CMAKE_DL_LIBS} )
+ENDIF()

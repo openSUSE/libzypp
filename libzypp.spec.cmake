@@ -92,7 +92,16 @@ BuildRequires:  gettext-devel
 BuildRequires:  graphviz
 BuildRequires:  libxml2-devel
 BuildRequires:  yaml-cpp-devel
+
+# we are loading libproxy dynamically, however we have
+# a failsafe unit test that links against libproxy to make
+# sure the API did not change
 BuildRequires:  libproxy-devel
+
+#keep the libproxy runtime requires for old releases
+%if 0%{?sle_version} <= 150500
+Requires: libproxy1
+%endif
 
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:  pkgconfig

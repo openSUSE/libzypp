@@ -13,17 +13,28 @@
 #define ZYPP_MEDIA_PROXYINFO_PROXYINFOLIBPROXY_H
 
 #include <string>
-#include <map>
-
-#include <proxy.h>
 
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/proxyinfo/proxyinfoimpl.h>
 
+extern "C" {
+  typedef struct _pxProxyFactory pxProxyFactoryType;
+}
+
 namespace zypp {
   namespace media {
 
+    template <typename ProxyFactoryType>
+    using CreateFactorySig = ProxyFactoryType *(*) (void);
+
+    template <typename ProxyFactoryType>
+    using DelFactorySig    = void (*) (ProxyFactoryType *self);
+
+    template <typename ProxyFactoryType>
+    using GetProxiesSig    = char **(*) (ProxyFactoryType *self, const char *url);
+
+    using FreeProxiesCb   = void (*) (char **proxies);
 
     class ProxyInfoLibproxy : public ProxyInfo::Impl
     {
@@ -31,6 +42,9 @@ namespace zypp {
       ProxyInfoLibproxy();
       /**  */
       ~ProxyInfoLibproxy() override;
+
+      static bool isAvailabe();
+
       /**  */
       bool enabled() const override
       { return _enabled; }
@@ -46,7 +60,7 @@ namespace zypp {
     private:
       DefaultIntegral<bool,false> _enabled;
       ProxyInfo::NoProxyList _no_proxy;
-      pxProxyFactory *_factory;
+      pxProxyFactoryType *_factory;
     };
 
 ///////////////////////////////////////////////////////////////////

@@ -53,7 +53,7 @@ namespace zypp
    *                     "my stream's name" ) );
    * \endcode
   */
-  class InputStream
+  class ZYPP_API InputStream
   {
   public:
     /** Default ctor providing \c std::cin. */

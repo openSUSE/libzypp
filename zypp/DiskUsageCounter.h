@@ -29,7 +29,7 @@ namespace zypp
   /// \class DiskUsageCounter
   /// \brief Compute disk space occupied by packages across partitions/directories
   ///////////////////////////////////////////////////////////////////
-  class DiskUsageCounter
+  class ZYPP_API DiskUsageCounter
   {
 
   public:
@@ -213,10 +213,10 @@ namespace zypp
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(DiskUsageCounter::MountPoint::HintFlags);
 
   /** \relates DiskUsageCounter::MountPoint Stream output */
-  std::ostream & operator<<( std::ostream & str, const DiskUsageCounter::MountPoint & obj );
+  std::ostream & operator<<( std::ostream & str, const DiskUsageCounter::MountPoint & obj ) ZYPP_API;
 
   /** \relates DiskUsageCounter::MountPointSet Stream output */
-  std::ostream & operator<<( std::ostream & str, const DiskUsageCounter::MountPointSet & obj );
+  std::ostream & operator<<( std::ostream & str, const DiskUsageCounter::MountPointSet & obj ) ZYPP_API;
 
   /** \relates DiskUsageCounter Stream output */
   inline std::ostream & operator<<( std::ostream & str, const DiskUsageCounter & obj )

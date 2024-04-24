@@ -34,7 +34,7 @@ namespace zypp
   /// \see \ref makeResObject for how to construct ResObjects.
   /// \todo Merge with Resolvable
   ///////////////////////////////////////////////////////////////////
-  class ResObject : public Resolvable
+  class ZYPP_API ResObject : public Resolvable
   {
   public:
     using Self = ResObject;
@@ -99,7 +99,7 @@ namespace zypp
    * Package::Ptr   pkg( make<Package>( s ) );
    * \endcode
   */
-  ResObject::Ptr makeResObject( const sat::Solvable & solvable_r );
+  ResObject::Ptr makeResObject( const sat::Solvable & solvable_r ) ZYPP_API;
 
   /** Directly create a certain kind of ResObject from \ref sat::Solvable.
    *

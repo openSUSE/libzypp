@@ -36,7 +36,7 @@ namespace zypp
      * to modify a view option combination and a ViewOption::has()
      * method, to check if a specified option is enabled or not.
      */
-    struct ViewOption
+    struct ZYPP_API ViewOption
     {
       /** @{ */
       /**
@@ -48,14 +48,14 @@ namespace zypp
        *
        * This option is \b enabled by default.
        */
-      static const ViewOption WITH_SCHEME;
+      static const ViewOption WITH_SCHEME ZYPP_API;
       /**
        * Option to include username in the URL string.
        *
        * This option depends on a enabled WITH_SCHEME and
        * WITH_HOST options and is \b enabled by default.
        */
-      static const ViewOption WITH_USERNAME;
+      static const ViewOption WITH_USERNAME ZYPP_API;
       /**
        * Option to include password in the URL string.
        *
@@ -64,27 +64,27 @@ namespace zypp
        * \b disabled by default, causing to hide the
        * password in the URL authority.
        */
-      static const ViewOption WITH_PASSWORD;
+      static const ViewOption WITH_PASSWORD ZYPP_API;
       /**
        * Option to include hostname in the URL string.
        *
        * This option depends on a enabled WITH_SCHEME
        * option and is \b enabled by default.
        */
-      static const ViewOption WITH_HOST;
+      static const ViewOption WITH_HOST ZYPP_API;
       /**
        * Option to include port number in the URL string.
        *
        * This option depends on a enabled WITH_SCHEME and
        * WITH_HOST options and is \b enabled by default.
        */
-      static const ViewOption WITH_PORT;
+      static const ViewOption WITH_PORT ZYPP_API;
       /**
        * Option to include path name in the URL string.
        *
        * This option is \b enabled by default.
        */
-      static const ViewOption WITH_PATH_NAME;
+      static const ViewOption WITH_PATH_NAME ZYPP_API;
       /**
        * Option to include path parameters in the URL string.
        *
@@ -92,19 +92,19 @@ namespace zypp
        * option and is \b disabled by default, causing to
        * hide the path parameters.
        */
-      static const ViewOption WITH_PATH_PARAMS;
+      static const ViewOption WITH_PATH_PARAMS ZYPP_API;
       /**
        * Option to include query string in the URL string.
        *
        * This option is \b enabled by default.
        */
-      static const ViewOption WITH_QUERY_STR;
+      static const ViewOption WITH_QUERY_STR ZYPP_API;
       /**
        * Option to include fragment string in the URL string.
        *
        * This option is \b enabled by default.
        */
-      static const ViewOption WITH_FRAGMENT;
+      static const ViewOption WITH_FRAGMENT ZYPP_API;
       /** @} */
 
       /** @{ */
@@ -118,7 +118,7 @@ namespace zypp
        * This option depends on a enabled WITH_SCHEME view
        * option and is enabled by default.
        */
-      static const ViewOption EMPTY_AUTHORITY;
+      static const ViewOption EMPTY_AUTHORITY ZYPP_API;
       /**
        * Explicitely include the "/" path character.
        *
@@ -130,7 +130,7 @@ namespace zypp
        * This option depends on a enabled WITH_PATH_NAME view
        * option and is enabled by default.
        */
-      static const ViewOption EMPTY_PATH_NAME;
+      static const ViewOption EMPTY_PATH_NAME ZYPP_API;
       /**
        * Explicitely include the path parameters separator ";".
        *
@@ -140,7 +140,7 @@ namespace zypp
        * This option depends on a enabled EMPTY_PATH_NAME view
        * option and is disabled by default.
        */
-      static const ViewOption EMPTY_PATH_PARAMS;
+      static const ViewOption EMPTY_PATH_PARAMS ZYPP_API;
       /**
        * Explicitely include the query string separator "?".
        *
@@ -151,7 +151,7 @@ namespace zypp
        * This option depends on a enabled WITH_QUERY_STR view
        * option and is disabled by default.
        */
-      static const ViewOption EMPTY_QUERY_STR;
+      static const ViewOption EMPTY_QUERY_STR ZYPP_API;
       /**
        * Explicitely include the fragment string separator "#".
        *
@@ -162,7 +162,7 @@ namespace zypp
        * This option depends on a enabled WITH_FRAGMENT view
        * option and is disabled by default.
        */
-      static const ViewOption EMPTY_FRAGMENT;
+      static const ViewOption EMPTY_FRAGMENT ZYPP_API;
       /** @} */
 
       /** @{ */
@@ -174,7 +174,7 @@ namespace zypp
        *   WITH_PORT,      WITH_PATH_NAME,   WITH_QUERY_STR,
        *   WITH_FRAGMENT,  EMPTY_AUTHORITY,  EMPTY_PATH_NAME.
        */
-      static const ViewOption DEFAULTS;
+      static const ViewOption DEFAULTS ZYPP_API;
       /** @} */
 
 

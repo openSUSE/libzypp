@@ -47,7 +47,7 @@ namespace zypp
   //
   /**
   */
-  class Target : public base::ReferenceCounted, public base::NonCopyable
+  class ZYPP_API Target : public base::ReferenceCounted, public base::NonCopyable
   {
   public:
     using Impl = target::TargetImpl;

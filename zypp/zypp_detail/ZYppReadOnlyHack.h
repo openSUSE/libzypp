@@ -23,7 +23,7 @@ namespace zypp
   namespace zypp_readonly_hack
   { /////////////////////////////////////////////////////////////////
 
-    void IWantIt() ZYPP_DEPRECATED;
+    extern void IWantIt() ZYPP_DEPRECATED;
 
     /////////////////////////////////////////////////////////////////
   } // namespace zypp_readonly_hack

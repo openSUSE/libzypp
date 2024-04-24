@@ -77,7 +77,7 @@ namespace zypp
      *
      * \endcode
      */
-    class MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API MediaSetAccess : public base::ReferenceCounted, private base::NonCopyable
     {
       friend std::ostream & operator<<( std::ostream & str, const MediaSetAccess & obj );
 

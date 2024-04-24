@@ -48,7 +48,7 @@ namespace zypp {
  * logging. For the real action they call virtual methods overloaded by the
  * concrete handler.
  **/
-class MediaHandler {
+class ZYPP_TESTS MediaHandler {
     friend std::ostream & operator<<( std::ostream & str, const MediaHandler & obj );
 
     public:

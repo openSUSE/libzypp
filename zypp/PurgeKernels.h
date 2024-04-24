@@ -10,6 +10,7 @@
  *
 */
 
+#include <zypp/Globals.h>
 #include <zypp/PoolItem.h>
 #include <zypp/base/PtrTypes.h>
 
@@ -23,7 +24,7 @@ namespace zypp {
    * Implements the logic of the "purge-kernels" command.
    *
    */
-  class PurgeKernels
+  class ZYPP_API PurgeKernels
   {
   public:
     PurgeKernels();

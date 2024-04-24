@@ -23,7 +23,7 @@ namespace zypp
   /// \class ResolverProblem
   /// \brief Describe a solver problem and offer solutions.
   ///////////////////////////////////////////////////////////////////////
-  class ResolverProblem : public base::ReferenceCounted
+  class ZYPP_API ResolverProblem : public base::ReferenceCounted
   {
   public:
     /** Constructor. */

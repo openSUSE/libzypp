@@ -33,7 +33,7 @@ namespace zypp
   /// \note Name and Url are subject to repo variable replacement
   /// (\see \ref RepoVariablesStringReplacer).
   ///
-  class ServiceInfo : public repo::RepoInfoBase
+  class ZYPP_API ServiceInfo : public repo::RepoInfoBase
   {
   public:
     /** Default ctor creates \ref noService.*/
@@ -58,7 +58,7 @@ namespace zypp
 
   public:
     /** Represents an empty service. */
-    static const ServiceInfo noService;
+    static const ServiceInfo noService ZYPP_API;
 
   public:
 
@@ -223,7 +223,7 @@ namespace zypp
   using ServiceInfoList = std::list<ServiceInfo>;
 
   /** \relates ServiceInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
+  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj ) ZYPP_API;
 
 
     /////////////////////////////////////////////////////////////////

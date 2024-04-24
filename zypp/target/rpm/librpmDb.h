@@ -84,7 +84,7 @@ private:
   /**
    * Whether access is blocked (no _defaultDb will be available).
    **/
-  static bool _dbBlocked;
+  static bool _dbBlocked ZYPP_API;
 
   /**
    * For internal use. Pointer returned should immediately be
@@ -199,7 +199,7 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static unsigned dbRelease( bool force_r = false );
+  static unsigned dbRelease( bool force_r = false ) ZYPP_API;
 
   /**
    * Blocks further access to rpmdb. Basically the same as @ref dbRelease( true ),
@@ -208,7 +208,7 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static unsigned blockAccess();
+  static unsigned blockAccess() ZYPP_API;
 
   /**
    * @overload Blocks access iff the database is located at root_r/dbPath_r.
@@ -228,12 +228,12 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static void unblockAccess();
+  static void unblockAccess() ZYPP_API;
 
   /**
    * @return Whether database access is blocked.
    **/
-  static bool isBlocked()
+  static bool isBlocked() ZYPP_API
   {
     return _dbBlocked;
   }
@@ -340,7 +340,7 @@ public:
  *
  *
  **/
-class librpmDb::db_const_iterator
+class ZYPP_API librpmDb::db_const_iterator
 {
   db_const_iterator & operator=( const db_const_iterator & ); // NO ASSIGNMENT!
   db_const_iterator ( const db_const_iterator & );            // NO COPY!

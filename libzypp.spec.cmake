@@ -38,6 +38,13 @@
 %bcond_with sigc_block_workaround
 %endif
 
+
+%if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150600
+%bcond_without visibility_hidden
+%else
+%bcond_with visibility_hidden
+%endif
+
 # Distros using just zypper may want to enable this as default earlier
 %bcond_with enable_preview_single_rpmtrans_as_default_for_zypper
 
@@ -236,7 +243,7 @@ Group:          Documentation/HTML
 Developer documentation for libzypp.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 mkdir build
@@ -261,6 +268,7 @@ cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_SKIP_RPATH=1 \
       -DCMAKE_INSTALL_LIBEXECDIR=%{_libexecdir} \
+      %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \
       %{?with_zstd:-DENABLE_ZSTD_COMPRESSION=1} \
       %{?with_sigc_block_workaround:-DENABLE_SIGC_BLOCK_WORKAROUND=1} \

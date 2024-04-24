@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -40,7 +42,7 @@ namespace zypp
    *
    * \ingroup g_EnumerationClass
   */
-  struct Rel
+  struct ZYPP_API Rel
   {
     /** \name Relational operators
      * These are the \em real relational operator contants to

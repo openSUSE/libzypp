@@ -12,6 +12,7 @@
 #ifndef ZYPP_PACKAGE_H
 #define ZYPP_PACKAGE_H
 
+#include <zypp/Globals.h>
 #include <zypp/ResObject.h>
 #include <zypp/PackageKeyword.h>
 #include <zypp/Changelog.h>
@@ -29,7 +30,7 @@ namespace zypp
   //
   /** Package interface.
   */
-  class Package : public ResObject
+  class ZYPP_API Package : public ResObject
   {
   public:
     using Self = Package;

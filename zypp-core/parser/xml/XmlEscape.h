@@ -25,7 +25,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     namespace detail
     {
-      struct EscapedString
+      struct ZYPP_API EscapedString
       {
         EscapedString( const std::string & in_r ) : _in( in_r ) {}
         std::ostream & dumpOn( std::ostream & str ) const;
@@ -48,11 +48,11 @@ namespace zypp
      * The \ref detail::EscapedString can be dumped to an ostream and implicitly
      * converts into a std::string.
      */
-    inline detail::EscapedString escape( const std::string & in_r )
+    ZYPP_API inline detail::EscapedString escape( const std::string & in_r )
     { return detail::EscapedString( in_r ); }
 
     /** Unescape xml special charaters (<tt>&amp; -> &</tt>; from IoBind library) */
-    ZYPP_API std::string unescape( const std::string & in_r );
+    std::string unescape( const std::string & in_r ) ZYPP_API;
 
   } // namespace xml
   /////////////////////////////////////////////////////////////////

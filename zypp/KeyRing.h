@@ -41,7 +41,7 @@ namespace zypp
    * \endcode
    * \see \ref KeyRing
   */
-  struct KeyRingReport : public callback::ReportBase
+  struct ZYPP_API KeyRingReport : public callback::ReportBase
   {
     /**
      * User reply options for the askUserToTrustKey callback.
@@ -149,7 +149,7 @@ namespace zypp
      constexpr static const char *REPORT_AUTO_IMPORT_KEY = "KeyRingReport/reportAutoImportKey";
   };
 
-  struct KeyRingSignals : public callback::ReportBase
+  struct ZYPP_API KeyRingSignals : public callback::ReportBase
   {
     virtual void trustedKeyAdded( const PublicKey &/*key*/ )
     {}
@@ -157,7 +157,7 @@ namespace zypp
     {}
   };
 
-  class KeyRingException : public Exception
+  class ZYPP_API KeyRingException : public Exception
    {
      public:
        /** Ctor taking message.
@@ -183,7 +183,7 @@ namespace zypp
   /** Gpg key handling.
    *
   */
-  class KeyRing : public base::ReferenceCounted, private base::NonCopyable
+  class ZYPP_API KeyRing : public base::ReferenceCounted, private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const KeyRing & obj );
 
@@ -306,9 +306,9 @@ namespace zypp
      * \param file Path of the file to be verified
      * \param signature Signature to verify the file against
      */
-    bool verifyFileSignature( const Pathname &file, const Pathname &signature );
+    bool verifyFileSignature( const Pathname &file, const Pathname &signature ) ZYPP_API;
 
-    bool verifyFileTrustedSignature( const Pathname &file, const Pathname &signature );
+    bool verifyFileTrustedSignature( const Pathname &file, const Pathname &signature ) ZYPP_API;
 
     /** Dtor */
     ~KeyRing() override;

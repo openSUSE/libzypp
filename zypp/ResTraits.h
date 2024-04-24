@@ -82,7 +82,7 @@ namespace zypp
       using PtrType = intrusive_ptr<TRes>;
       using constPtrType = intrusive_ptr<const TRes>;
 
-      static const ResKind              kind;	///< Defined in ResKind.cc
+      static const ResKind              kind ZYPP_API;	///< Defined in ResKind.cc
 
       /** Those are denoted to be installed, if the
        *  solver verifies them as being satisfied. */
@@ -90,12 +90,12 @@ namespace zypp
     };
 
     // Defined in ResKind.cc
-    template<> const ResKind ResTraits<Package>::kind;
-    template<> const ResKind ResTraits<Patch>::kind;
-    template<> const ResKind ResTraits<Pattern>::kind;
-    template<> const ResKind ResTraits<Product>::kind;
-    template<> const ResKind ResTraits<SrcPackage>::kind;
-    template<> const ResKind ResTraits<Application>::kind;
+    template<> const ResKind ResTraits<Package>::kind ZYPP_API;
+    template<> const ResKind ResTraits<Patch>::kind ZYPP_API;
+    template<> const ResKind ResTraits<Pattern>::kind ZYPP_API;
+    template<> const ResKind ResTraits<Product>::kind ZYPP_API;
+    template<> const ResKind ResTraits<SrcPackage>::kind ZYPP_API;
+    template<> const ResKind ResTraits<Application>::kind ZYPP_API;
 
   /** ResTraits specialisation for Resolvable.
    * Resolvable is common base and has no Kind value.

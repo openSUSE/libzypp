@@ -27,7 +27,7 @@ namespace zypp
   /// In fact the class will not prevent to use a non iso country code.
   /// Just a warning will appear in the log.
   ///////////////////////////////////////////////////////////////////
-  class CountryCode : public IdStringType<CountryCode>
+  class ZYPP_API CountryCode : public IdStringType<CountryCode>
   {
   public:
     /** Default Ctor: \ref noCode */

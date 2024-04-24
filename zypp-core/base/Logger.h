@@ -15,6 +15,8 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 #ifndef ZYPP_NDEBUG
 namespace zypp
@@ -174,8 +176,8 @@ namespace zypp
                                        LogLevel     level_r,
                                        const char * file_r,
                                        const char * func_r,
-                                       const int    line_r );
-      extern bool isExcessive();
+                                       const int    line_r ) ZYPP_API;
+      extern bool isExcessive() ZYPP_API;
 
       /////////////////////////////////////////////////////////////////
     } // namespace logger

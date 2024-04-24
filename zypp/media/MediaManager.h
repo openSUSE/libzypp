@@ -44,7 +44,7 @@ namespace zypp::media
   /**
    * Interface to implement a media verifier.
    */
-  class MediaVerifierBase //: private zypp::NonCopyable
+  class ZYPP_TESTS MediaVerifierBase //: private zypp::NonCopyable
   {
   public:
     MediaVerifierBase()
@@ -450,7 +450,7 @@ namespace zypp::media
    *   - \c script<->libzypp communication:
    *     - \TODO to be documented.
    */
-  class MediaManager: private zypp::base::NonCopyable
+  class ZYPP_API MediaManager: private zypp::base::NonCopyable
   {
   public:
     /**
@@ -818,7 +818,7 @@ namespace zypp::media
      * FIXME: see MediaAccess class.
      */
     bool doesFileExist(MediaAccessId  accessId,
-                       const Pathname & filename ) const;
+                       const Pathname & filename ) const ZYPP_TESTS;
 
     /**
      * Fill in a vector of detected ejectable devices and the index of the

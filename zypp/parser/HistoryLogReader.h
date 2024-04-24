@@ -63,7 +63,7 @@ namespace zypp
   /// \see \ref HistoryLogData for how to access the individual data fields.
   ///
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogReader
+  class ZYPP_API HistoryLogReader
   {
   public:
 

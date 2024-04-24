@@ -30,7 +30,7 @@ namespace zypp
   /** Options and policies for ZYpp::commit.
    * \see \ref ZYpp::commit
    */
-  class ZYppCommitPolicy
+  class ZYPP_API ZYppCommitPolicy
   {
     public:
 
@@ -108,7 +108,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ZYppCommitPolicy Stream output. */
-  std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj );
+  std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

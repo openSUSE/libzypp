@@ -37,7 +37,7 @@ namespace zypp
   } // namespace sat
   ///////////////////////////////////////////////////////////////////
 
-  struct ProgressReport : public callback::ReportBase
+  struct ZYPP_API ProgressReport : public callback::ReportBase
   {
     virtual void start( const ProgressData &/*task*/ )
     {}
@@ -100,7 +100,7 @@ namespace zypp
   namespace repo
   {
     // progress for downloading a resolvable
-    struct DownloadResolvableReport : public callback::ReportBase
+    struct ZYPP_API DownloadResolvableReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -196,7 +196,7 @@ namespace zypp
     };
 
     // progress for probing a source
-    struct ProbeRepoReport : public callback::ReportBase
+    struct ZYPP_API ProbeRepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -222,7 +222,7 @@ namespace zypp
       virtual Action problem( const Url &/*url*/, Error /*error*/, const std::string &/*description*/ ) { return ABORT; }
     };
 
-    struct RepoCreateReport : public callback::ReportBase
+    struct ZYPP_API RepoCreateReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -256,7 +256,7 @@ namespace zypp
       {}
     };
 
-    struct RepoReport : public callback::ReportBase
+    struct ZYPP_API RepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -298,7 +298,7 @@ namespace zypp
   namespace media
   {
     // media change request callback
-    struct MediaChangeReport : public callback::ReportBase
+    struct ZYPP_API MediaChangeReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -347,7 +347,7 @@ namespace zypp
     /// \brief Temporarily disable MediaChangeReport
     /// Sometimes helpful to suppress interactive messages connected to
     /// MediaChangeReport while fallback URLs are avaialble.
-    struct ScopedDisableMediaChangeReport
+    struct ZYPP_API ScopedDisableMediaChangeReport
     {
       /** Disbale MediaChangeReport if \a condition_r is \c true.*/
       ScopedDisableMediaChangeReport( bool condition_r = true );
@@ -356,7 +356,7 @@ namespace zypp
     };
 
     // progress for downloading a file
-    struct DownloadProgressReport : public callback::ReportBase
+    struct ZYPP_API DownloadProgressReport : public callback::ReportBase
     {
         enum Action {
           ABORT,  // abort and return error
@@ -401,7 +401,7 @@ namespace zypp
     };
 
     // authentication issues report
-    struct AuthenticationReport : public callback::ReportBase
+    struct ZYPP_API AuthenticationReport : public callback::ReportBase
     {
       /**
        * Prompt for authentication data.
@@ -433,7 +433,7 @@ namespace zypp
   namespace target
   {
     /** Request to display the pre commit message of a patch. */
-    struct PatchMessageReport : public callback::ReportBase
+    struct ZYPP_API PatchMessageReport : public callback::ReportBase
     {
       /** Display \c patch->message().
        * Return \c true to continue, \c false to abort commit.
@@ -446,7 +446,7 @@ namespace zypp
      * \c %post script shipped by a package and to be executed
      * after the package was installed.
     */
-    struct PatchScriptReport : public callback::ReportBase
+    struct ZYPP_API PatchScriptReport : public callback::ReportBase
     {
       enum Notify { OUTPUT, PING };
       enum Action {
@@ -485,7 +485,7 @@ namespace zypp
     /// \a noFilelist_r. This usually happens if download mode 'as-needed'
     /// is used.
     ///////////////////////////////////////////////////////////////////
-    struct FindFileConflictstReport : public callback::ReportBase
+    struct ZYPP_API FindFileConflictstReport : public callback::ReportBase
     {
       /**
        * \param progress_r	Progress counter for packages to check.
@@ -518,7 +518,7 @@ namespace zypp
     {
 
       // progress for installing a resolvable
-      struct InstallResolvableReport : public callback::ReportBase
+      struct ZYPP_API InstallResolvableReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -568,11 +568,11 @@ namespace zypp
          * line     : std::reference_wrapper<const std::string>
          * lineno   : unsigned
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
       // progress for removing a resolvable
-      struct RemoveResolvableReport : public callback::ReportBase
+      struct ZYPP_API RemoveResolvableReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -609,11 +609,11 @@ namespace zypp
         /** "rpmout/removepkg": Additional rpm output (sent immediately).
          * For data \see \ref InstallResolvableReport::contentRpmout
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
       // progress for rebuilding the database
-      struct RebuildDBReport : public callback::ReportBase
+      struct ZYPP_API RebuildDBReport : public callback::ReportBase
       {
         enum Action {
           ABORT,  // abort and return error
@@ -682,14 +682,14 @@ namespace zypp
       /// \todo maybe include the sub-task reports here as well, so it
       /// becomes the only report needed to follow the transaction.
       ///////////////////////////////////////////////////////////////////
-      struct SingleTransReport : public callback::ReportBase
+      struct ZYPP_API SingleTransReport : public callback::ReportBase
       {
         /** \c "zypp-rpm/logline" report a line suitable to be written to the screen.
          * UserData:
          * \c "line"  : std::reference_wrapper<const std::string>; the line to show
          * \c "level" : enum class loglevel; rendering hint
          */
-        static const UserData::ContentType contentLogline;
+        static const UserData::ContentType contentLogline ZYPP_API;
         /** Rendering hint for log-lines to show. */
         enum class loglevel { dbg, msg, war, err, crt };
         /** Suggested prefix for log-lines to show. */
@@ -708,7 +708,7 @@ namespace zypp
 
       // Generic transaction reports, this is used for verifying and preparing tasks, the name param
       // for the start function defines which report we are looking at
-      struct TransactionReportSA : public callback::ReportBase
+      struct ZYPP_API TransactionReportSA : public callback::ReportBase
       {
         enum Error {
           NO_ERROR, // everything went perfectly fine
@@ -735,12 +735,12 @@ namespace zypp
        * Data:
        * line     : std::reference_wrapper<const std::string>
        */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
 
       // progress for installing a resolvable in single transaction mode
-      struct InstallResolvableReportSA : public callback::ReportBase
+      struct ZYPP_API InstallResolvableReportSA : public callback::ReportBase
       {
         enum Error {
           NO_ERROR,
@@ -771,11 +771,11 @@ namespace zypp
          * solvable : satSolvable processed
          * line     : std::reference_wrapper<const std::string>
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
       // progress for removing a resolvable in single transaction mode
-      struct RemoveResolvableReportSA : public callback::ReportBase
+      struct ZYPP_API RemoveResolvableReportSA : public callback::ReportBase
       {
         enum Error {
           NO_ERROR,
@@ -804,11 +804,11 @@ namespace zypp
         /** "zypp-rpm/removepkgsa": Additional rpm output (sent immediately).
          * For data \see \ref InstallResolvableReportSA::contentRpmout
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
       // progress for cleaning up the old version of a package after it was upgraded to a new version
-      struct CleanupPackageReportSA : public callback::ReportBase
+      struct ZYPP_API CleanupPackageReportSA : public callback::ReportBase
       {
         enum Error {
           NO_ERROR
@@ -832,13 +832,13 @@ namespace zypp
         /** "zypp-rpm/cleanupkgsa": Additional rpm output (sent immediately).
          * For data \see \ref InstallResolvableReportSA::contentRpmout
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
 
       // progress for script thats executed during a commit transaction
       // the resolvable can be null, for things like posttrans scripts
-      struct CommitScriptReportSA : public callback::ReportBase
+      struct ZYPP_API CommitScriptReportSA : public callback::ReportBase
       {
         enum Error {
           NO_ERROR,
@@ -870,7 +870,7 @@ namespace zypp
          * solvable : satSolvable processed ( can be empty )
          * line     : std::reference_wrapper<const std::string>
          */
-        static const UserData::ContentType contentRpmout;
+        static const UserData::ContentType contentRpmout ZYPP_API;
       };
 
       /////////////////////////////////////////////////////////////////
@@ -889,7 +889,7 @@ namespace zypp
    * Callback for cleaning locks which doesn't lock anything in pool.
    */
 
-  struct CleanEmptyLocksReport : public callback::ReportBase
+  struct ZYPP_API CleanEmptyLocksReport : public callback::ReportBase
   {
     /**
      * action performed by cleaning api to specific lock
@@ -941,7 +941,7 @@ namespace zypp
   /**
    * this callback handles merging old locks with newly added or removed
    */
-  struct SavingLocksReport : public callback::ReportBase
+  struct ZYPP_API SavingLocksReport : public callback::ReportBase
   {
     /**
      * action for old lock which is in conflict
@@ -996,7 +996,7 @@ namespace zypp
   /// \class JobReport
   /// \brief Generic report for sending messages.
   ///////////////////////////////////////////////////////////////////
-  struct JobReport : public callback::ReportBase
+  struct ZYPP_API JobReport : public callback::ReportBase
   {
   public:
     /** message type (use like 'enum class \ref MsgType') */
@@ -1049,7 +1049,7 @@ namespace zypp
   /// \class UserDataJobReport
   /// \brief \ref JobReport convenience sending this instance of \ref UserData with each message.
   ///////////////////////////////////////////////////////////////////
-  struct UserDataJobReport : public JobReport::UserData
+  struct ZYPP_API UserDataJobReport : public JobReport::UserData
   {
     using JobReport::UserData::UserData;
 

@@ -61,7 +61,7 @@ namespace zypp {
      *
      * \endcode
      */
-    class ExternalProgram : public zypp::externalprogram::ExternalDataSource
+    class ZYPP_API ExternalProgram : public zypp::externalprogram::ExternalDataSource
     {
 
     public:

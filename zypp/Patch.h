@@ -34,7 +34,7 @@ namespace zypp
    * Patches can be marked for installation but their
    * installation is a no-op.
    */
-  class Patch : public ResObject
+  class ZYPP_API Patch : public ResObject
   {
     public:
       using Self = Patch;
@@ -238,13 +238,13 @@ namespace zypp
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Patch::SeverityFlags);
 
   /** \relates Patch::Category string representation.*/
-  std::string asString( const Patch::Category & obj );
+  std::string asString( const Patch::Category & obj ) ZYPP_API;
 
   /** \relates Patch::InteractiveFlag string representation.*/
-  std::string asString( const Patch::InteractiveFlag & obj );
+  std::string asString( const Patch::InteractiveFlag & obj ) ZYPP_API;
 
   /** \relates Patch::SeverityFlag string representation.*/
-  std::string asString( const Patch::SeverityFlag & obj );
+  std::string asString( const Patch::SeverityFlag & obj ) ZYPP_API;
 
   /**
    * Query class for Patch issue references

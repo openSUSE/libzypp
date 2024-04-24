@@ -31,7 +31,7 @@ namespace zypp
     /// \class PackageProviderPolicy
     /// \brief Policies and options for \ref PackageProvider
     ///////////////////////////////////////////////////////////////////
-    class PackageProviderPolicy
+    class ZYPP_API PackageProviderPolicy
     {
     public:
       /** Get installed Editions callback signature. */
@@ -57,7 +57,7 @@ namespace zypp
     ///
     /// Use available deltarpm if apropriate.
     ///////////////////////////////////////////////////////////////////
-    class PackageProvider
+    class ZYPP_API PackageProvider
     {
     public:
       /** Ctor taking the package to provide.

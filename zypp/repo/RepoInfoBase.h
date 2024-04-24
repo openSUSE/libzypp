@@ -36,7 +36,7 @@ namespace zypp
      * \note Name is subject to repo variable replacement
      * (\see \ref RepoVariablesStringReplacer).
      */
-    class RepoInfoBase
+    class ZYPP_API RepoInfoBase
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 

@@ -54,8 +54,10 @@
 #ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
   #define ZYPP_API	ZYPP_DECL_EXPORT
   #define ZYPP_LOCAL	ZYPP_DECL_HIDDEN
+  #define ZYPP_TESTS	ZYPP_DECL_EXPORT
 #else
   #define ZYPP_API      ZYPP_DECL_IMPORT
+  #define ZYPP_TESTS	ZYPP_DECL_IMPORT
   #define ZYPP_LOCAL
 #endif
 

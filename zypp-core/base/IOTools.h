@@ -48,7 +48,7 @@ namespace zypp::io {
   };
   ReadAllResult readAll ( int fd, void *buf, size_t size );
 
-  class TimeoutException : public Exception
+  class ZYPP_API TimeoutException : public Exception
   {
   public:
     /** Ctor taking message.

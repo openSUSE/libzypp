@@ -43,7 +43,7 @@ namespace zypp
      *
      * \see \ref forEachLine
      */
-    std::string getline( std::istream & str );
+    std::string getline( std::istream & str ) ZYPP_API;
 
     /** Copy istream to ostream.
      * \return reference to the ostream.
@@ -109,7 +109,7 @@ namespace zypp
      * }
      * \endcode
      */
-    class EachLine : private base::NonCopyable
+    class ZYPP_API EachLine : private base::NonCopyable
     {
       public:
         /** Ctor taking a stream and reading the 1st line from it. */
@@ -183,7 +183,7 @@ namespace zypp
      *
      * \return Number if lines consumed (negative if aborted by callback).
      */
-     int forEachLine( std::istream & str_r, const function<bool(int, std::string)>& consume_r );
+     int forEachLine( std::istream & str_r, const function<bool(int, std::string)>& consume_r ) ZYPP_API;
 
      /** \ref simpleParseFile modifications before consuming a line. */
      enum ParseFlag
@@ -198,7 +198,7 @@ namespace zypp
      ZYPP_DECLARE_OPERATORS_FOR_FLAGS( ParseFlags );
 
      /** Simple lineparser optionally trimming and skipping comments. */
-     int simpleParseFile( std::istream & str_r, ParseFlags flags_r, function<bool(int, std::string)> consume_r );
+     int simpleParseFile( std::istream & str_r, ParseFlags flags_r, function<bool(int, std::string)> consume_r ) ZYPP_API;
 
      /** \overload trimming lines, skipping '#'-comments and empty lines. */
      inline int simpleParseFile( std::istream & str_r, function<bool(int, std::string)> consume_r )

@@ -37,7 +37,7 @@ namespace sat
    *
    * \see \ref LookupAttr
    */
-  class SolvAttr : public IdStringType<SolvAttr>
+  class ZYPP_API SolvAttr : public IdStringType<SolvAttr>
   {
     public:
       /** \name Some builtin SolvAttr constants. */

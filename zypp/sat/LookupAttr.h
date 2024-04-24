@@ -17,6 +17,7 @@
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp-core/base/DefaultIntegral>
+#include <zypp-core/Globals.h>
 
 #include <zypp/sat/detail/PoolMember.h>
 #include <zypp/sat/SolvAttr.h>
@@ -105,7 +106,7 @@ namespace zypp
      *  }
      * \endcode
      */
-    class LookupAttr
+    class ZYPP_API LookupAttr
     {
       public:
         using Exception = MatchException;
@@ -235,10 +236,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr & obj );
+    std::ostream & operator<<( std::ostream & str, const LookupAttr & obj ) ZYPP_API;
 
     /** \relates LookupAttr Verbose stream output including the query result. */
-    std::ostream & dumpOn( std::ostream & str, const LookupAttr & obj );
+    std::ostream & dumpOn( std::ostream & str, const LookupAttr & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -579,7 +580,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates LookupAttr::iterator Stream output. */
-    std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj );
+    std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
 

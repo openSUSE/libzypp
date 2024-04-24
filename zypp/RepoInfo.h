@@ -68,7 +68,7 @@ namespace zypp
    * \note Name, baseUrls and mirrorUrl are subject to repo variable replacement
    * (\see \ref RepoVariablesStringReplacer).
    */
-  class RepoInfo : public repo::RepoInfoBase
+  class ZYPP_API RepoInfo : public repo::RepoInfoBase
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
@@ -574,10 +574,10 @@ namespace zypp
   using RepoInfoList = std::list<RepoInfo>;
 
   /** \relates RepoInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
+  std::ostream & operator<<( std::ostream & str, const RepoInfo & obj ) ZYPP_API;
 
   /** \relates RepoInfo::GpgCheck Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj );
+  std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

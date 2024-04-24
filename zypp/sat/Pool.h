@@ -43,7 +43,7 @@ namespace zypp
      *
      * Explicitly shared singleton \ref Pool::instance.
      */
-    class Pool : protected detail::PoolMember
+    class ZYPP_API Pool : protected detail::PoolMember
     {
       public:
         using SolvableIterator = detail::SolvableIterator;
@@ -288,7 +288,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Pool Stream output */
-    std::ostream & operator<<( std::ostream & str, const Pool & obj );
+    std::ostream & operator<<( std::ostream & str, const Pool & obj ) ZYPP_API;
 
     /** \relates Pool */
     inline bool operator==( const Pool & lhs, const Pool & rhs )

@@ -37,7 +37,7 @@ namespace zypp
          * - Pkg is part of a pattern that is required by a pattern the
          *   user wanted to transact
          **/
-        std::set<std::string> userWantedPackageNames();
+        std::set<std::string> userWantedPackageNames() ZYPP_API;
 
     } // namespace ui
 } // namespace zypp

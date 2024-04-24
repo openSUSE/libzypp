@@ -16,6 +16,7 @@
 #include <list>
 #include <utility>
 
+#include <zypp/Globals.h>
 #include <zypp/Date.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +55,7 @@ namespace zypp
   using Changelog = std::list<ChangelogEntry>;
 
   /** \relates ChangelogEntry */
-  std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj );
+  std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
 } // namespace zypp

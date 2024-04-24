@@ -14,6 +14,8 @@
 
 #include <iosfwd>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -53,7 +55,7 @@ namespace zypp
   }
 
   /** \relates DownloadMode Stream output. */
-  std::ostream & operator<<( std::ostream & str, DownloadMode obj );
+  std::ostream & operator<<( std::ostream & str, DownloadMode obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

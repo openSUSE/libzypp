@@ -34,7 +34,7 @@ namespace zypp
       disjoint		= (1<<3),	///< "{ }"
     };
     /** String representantion */
-    static const std::string & asString( Enum val_r );
+    static const std::string & asString( Enum val_r ) ZYPP_API;
   };
   /** \relates ESetCompareDef typedef 'enum class SetCompare' */
   using SetCompare = base::EnumClass<ESetCompareDef>;
@@ -65,7 +65,7 @@ namespace zypp
       superset		= properSuperset|equal,		///< "{>=}"
     };
     /** String representantion */
-    static const std::string & asString( Enum val_r );
+    static const std::string & asString( Enum val_r ) ZYPP_API;
   };
   /** \relates ESetRelationDef typedef 'enum class SetRelation' */
   using SetRelation = base::EnumClass<ESetRelationDef>;

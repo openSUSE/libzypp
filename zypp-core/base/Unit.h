@@ -16,6 +16,8 @@
 #include <string>
 #include <utility>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -40,7 +42,7 @@ namespace zypp
      * static const Unit T( 1099511627776, "T", 3 );
      * \endcode
     */
-      class Unit
+      class ZYPP_API Unit
       {
       public:
         using ValueType = long long;

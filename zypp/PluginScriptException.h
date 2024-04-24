@@ -22,7 +22,7 @@ namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   /** Base class for \ref PluginScript \ref Exception. */
-  class PluginScriptException : public Exception
+  class ZYPP_API PluginScriptException : public Exception
   {
     public:
       PluginScriptException();
@@ -33,7 +33,7 @@ namespace zypp
 
   /** Convenience macro to declare more specific PluginScriptExceptions. */
 #define declException( EXCP, BASE )								\
-  class EXCP : public BASE {									\
+  class ZYPP_API EXCP : public BASE {							\
     public:											\
       EXCP() : BASE( #EXCP ) {}									\
       EXCP( const std::string & msg_r ) : BASE( msg_r ) {}					\

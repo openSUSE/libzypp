@@ -15,7 +15,7 @@ namespace zypp
    * for user information about locksfile and its format see
    * <a>http://en.opensuse.org/Libzypp/Locksfile</a>
    */
-  class Locks
+  class ZYPP_API Locks
   {
   public:
     using LockList = std::list<PoolQuery>;

@@ -54,7 +54,7 @@ namespace zypp
      * \endcode
      * \see Manual page glob(3)
      */
-    class Glob : private base::NonCopyable
+    class ZYPP_API Glob : private base::NonCopyable
     {
       public:
         using size_type = size_t;

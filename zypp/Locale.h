@@ -16,6 +16,7 @@
 #include <string>
 
 #include <zypp/base/Hash.h>
+#include <zypp/Globals.h>
 
 #include <zypp/IdStringType.h>
 #include <zypp/LanguageCode.h>
@@ -46,7 +47,7 @@ namespace zypp
   ///   l.fallback().fallback().fallback() == Locale::noCode == "";
   /// \endcode
   ///////////////////////////////////////////////////////////////////
-  class Locale : public IdStringType<Locale>
+  class ZYPP_API Locale : public IdStringType<Locale>
   {
   public:
     /** Default Ctor: \ref noCode */

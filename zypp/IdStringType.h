@@ -160,7 +160,7 @@ namespace zypp
       int compare( const char * rhs )         const { return compare( idStr(), rhs ); }
 
     private:
-      static int _doCompare( const char * lhs,  const char * rhs )
+      static inline int _doCompare( const char * lhs,  const char * rhs ) ZYPP_API
       {
         if ( ! lhs ) return rhs ? -1 : 0;
         return rhs ? ::strcmp( lhs, rhs ) : 1;

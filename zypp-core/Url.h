@@ -88,7 +88,7 @@ namespace zypp
    * \endcode
    *
    */
-  class Url
+  class ZYPP_API Url
   {
   public:
     /**
@@ -846,20 +846,20 @@ namespace zypp
     url::UrlRef m_impl;
   };
 
-  std::ostream & operator<<( std::ostream & str, const Url & url );
+  std::ostream & operator<<( std::ostream & str, const Url & url ) ZYPP_API;
 
   /**
    * needed for std::set
    */
-  bool operator<( const Url &lhs, const Url &rhs );
+  bool operator<( const Url &lhs, const Url &rhs ) ZYPP_API;
 
   /**
    * needed for find
    */
-  bool operator==( const Url &lhs, const Url &rhs );
+  bool operator==( const Url &lhs, const Url &rhs ) ZYPP_API;
 
 
-  bool operator!=( const Url &lhs, const Url &rhs );
+  bool operator!=( const Url &lhs, const Url &rhs ) ZYPP_API;
 
   ////////////////////////////////////////////////////////////////////
 } // namespace zypp

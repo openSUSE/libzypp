@@ -26,7 +26,7 @@ namespace zypp::keyring
   ///////////////////////////////////////////////////////////////////
   /// I/O context for KeyRing::verifyFileSignatureWorkflow.
   ///////////////////////////////////////////////////////////////////
-  class VerifyFileContext
+  class ZYPP_API VerifyFileContext
   {
   public:
     /** Ctor. */

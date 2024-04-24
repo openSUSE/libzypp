@@ -30,7 +30,7 @@ namespace zypp
     //	CLASS NAME : ParseException
     //
     /** */
-    class ParseException : public Exception
+    class ZYPP_API ParseException : public Exception
     {
     public:
       /** Default ctor */

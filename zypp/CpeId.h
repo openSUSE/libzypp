@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Flags.h>
 #include <zypp/base/EnumClass.h>
@@ -28,7 +29,7 @@ namespace zypp
   /// See http://cpe.mitre.org/ for more information on the
   /// Common Platform Enumearation.
   ///////////////////////////////////////////////////////////////////
-  class CpeId : public base::SetRelationMixin<CpeId>
+  class ZYPP_API CpeId : public base::SetRelationMixin<CpeId>
   {
   public:
     /** WFN attribute value */

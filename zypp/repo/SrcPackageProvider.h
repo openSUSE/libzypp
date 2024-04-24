@@ -35,7 +35,7 @@ namespace zypp
     //	CLASS NAME : SrcPackageProvider
     //
     /** */
-    class SrcPackageProvider : private base::NonCopyable
+    class ZYPP_API SrcPackageProvider : private base::NonCopyable
     {
     public:
       /** Ctor */

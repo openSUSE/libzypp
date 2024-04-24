@@ -60,7 +60,7 @@ namespace zypp
    * \ingroup ZyppConfig
    * \ingroup Singleton
   */
-  class ZConfig : private base::NonCopyable
+  class ZYPP_API ZConfig : private base::NonCopyable
   {
     public:
 

@@ -28,7 +28,7 @@ namespace zypp
   //
   /** Pattern interface.
   */
-  class Pattern : public ResObject
+  class ZYPP_API Pattern : public ResObject
   {
     public:
       using Self = Pattern;

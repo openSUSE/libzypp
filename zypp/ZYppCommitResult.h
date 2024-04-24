@@ -60,7 +60,7 @@ namespace zypp
    *
    * \see \ref ZYpp::commit
    */
-  class ZYppCommitResult
+  class ZYPP_API ZYppCommitResult
   {
     public:
       using TransactionStepList = std::vector<sat::Transaction::Step>;
@@ -192,7 +192,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ZYppCommitResult Stream output. */
-  std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj );
+  std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

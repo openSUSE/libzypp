@@ -84,7 +84,7 @@ namespace zypp
      * }
      * \endcode
      */
-    class WhatProvides : public SolvIterMixin<WhatProvides,detail::WhatProvidesIterator>,
+    class ZYPP_API WhatProvides : public SolvIterMixin<WhatProvides,detail::WhatProvidesIterator>,
                          protected detail::PoolMember
     {
       public:
@@ -134,7 +134,7 @@ namespace zypp
 
     ///////////////////////////////////////////////////////////////////
     /// \brief Container of packages providing `ptf()`
-    class AllPTFs : public WhatProvides
+    class ZYPP_API AllPTFs : public WhatProvides
     {
     public:
       AllPTFs() : WhatProvides( Capability(Solvable::ptfMasterToken.id()) ) {};

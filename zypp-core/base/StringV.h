@@ -177,7 +177,7 @@ namespace zypp
       //@}
 
       /** \ref split working horse */
-      unsigned _split( std::string_view line_r, std::string_view sep_r, Trim trim_r, WordConsumer && fnc_r );
+      unsigned _split( std::string_view line_r, std::string_view sep_r, Trim trim_r, WordConsumer && fnc_r ) ZYPP_API;
 
       /** \ref splitRx working horse */
       unsigned _splitRx(std::string_view line_r, const regex & rx_r, const WordConsumer& fnc_r );

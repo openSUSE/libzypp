@@ -51,7 +51,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Status Enum value as string. */
-    std::string asString( const Status & obj );
+    std::string asString( const Status & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
 

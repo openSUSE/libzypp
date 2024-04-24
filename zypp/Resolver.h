@@ -41,7 +41,7 @@ namespace zypp
    * the changes directly on the \ref PoolItem status objects,
    * call the \ref resolvePool() method.
    */
-  class Resolver : public base::ReferenceCounted, private base::NonCopyable
+  class ZYPP_API Resolver : public base::ReferenceCounted, private base::NonCopyable
   {
   public:
 

@@ -58,7 +58,7 @@ struct FileInfo
  *
  * <B>NEVER create <code>RpmHeader</code> from a NULL <code>Header</code>! </B>
  **/
-class RpmHeader : public BinHeader
+class ZYPP_API RpmHeader : public BinHeader
 {
 public:
   using Ptr = intrusive_ptr<RpmHeader>;

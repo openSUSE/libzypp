@@ -83,7 +83,7 @@ namespace zypp
      */
     std::string
     encode(const std::string &str, const std::string &safe = "",
-                                   EEncoding         eflag = E_DECODED);
+                                   EEncoding         eflag = E_DECODED) ZYPP_API;
 
 
     // ---------------------------------------------------------------
@@ -103,7 +103,7 @@ namespace zypp
      *         a encoded NUL byte (\c "%00") was found in \p str.
      */
     std::string
-    decode(const std::string &str, bool allowNUL = false);
+    decode(const std::string &str, bool allowNUL = false) ZYPP_API;
 
 
     // ---------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace zypp
      *         e.g. %20 for a ' ' (space).
      */
     std::string
-    encode_octet(const unsigned char c);
+    encode_octet(const unsigned char c) ZYPP_API;
 
 
     // ---------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace zypp
      *         if \p hex does not point to two hexadecimal characters.
      */
     int
-    decode_octet(const char *hex);
+    decode_octet(const char *hex) ZYPP_API;
 
 
     // ---------------------------------------------------------------

@@ -15,6 +15,7 @@
 #include <list>
 #include <string>
 
+#include <zypp/Globals.h>
 #include <zypp/ResObject.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -29,7 +30,7 @@ namespace zypp
   //
   /** Product interface.
   */
-  class Product : public ResObject
+  class ZYPP_API Product : public ResObject
   {
   public:
     using Self = Product;

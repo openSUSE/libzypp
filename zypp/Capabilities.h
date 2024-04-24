@@ -32,7 +32,7 @@ namespace zypp
    * which must be skipped on iteration or size calculation
    * (\see \ref detail::isDepMarkerId).
    */
-  class Capabilities
+  class ZYPP_API Capabilities
   {
     public:
       typedef Capability value_type;

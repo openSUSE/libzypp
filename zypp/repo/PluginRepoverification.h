@@ -29,7 +29,7 @@ namespace zypp_private
     /// \class PluginRepoverificationCheckException
     /// \brief Exceptiontype thrown if a plugins verification fails.
     ///////////////////////////////////////////////////////////////////
-    class PluginRepoverificationCheckException : public FileCheckException
+    class ZYPP_API PluginRepoverificationCheckException : public FileCheckException
     {
     public:
       PluginRepoverificationCheckException( const std::string &msg )

@@ -30,7 +30,7 @@ namespace zypp
     /// \Note Requested sizes are filled up to the next multiple of eight.
     /// Libsolv bitmaps are not shrinkable.
     ///////////////////////////////////////////////////////////////////
-    class Map
+    class ZYPP_API Map
     {
     public:
       using size_type = unsigned long;
@@ -117,7 +117,7 @@ namespace zypp
     { return str << obj.asString(); }
 
     /** \relates Map */
-    bool operator==( const Map & lhs, const Map & rhs );
+    bool operator==( const Map & lhs, const Map & rhs ) ZYPP_API;
 
     /** \relates Map */
     inline bool operator!=( const Map & lhs, const Map & rhs )

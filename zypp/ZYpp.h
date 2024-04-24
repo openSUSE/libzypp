@@ -54,7 +54,7 @@ namespace zypp
    * \todo define Exceptions
    * ZYpp API main interface
    */
-  class ZYpp : private base::NonCopyable
+  class ZYPP_API ZYpp : private base::NonCopyable
   {
     friend std::ostream & operator<<( std::ostream & str, const ZYpp & obj );
 

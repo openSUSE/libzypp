@@ -14,6 +14,8 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
@@ -29,7 +31,7 @@ namespace zypp
    * std::string trace( str::Str() << zypp::dumpBacktrace );
    * \endcode
    */
-  std::ostream & dumpBacktrace( std::ostream & stream_r );
+  std::ostream & dumpBacktrace( std::ostream & stream_r ) ZYPP_API;
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

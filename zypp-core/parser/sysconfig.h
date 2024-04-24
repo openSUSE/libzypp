@@ -21,7 +21,7 @@ namespace zypp {
     namespace sysconfig {
 
       /** Read sysconfig file \a path_r and return <tt>(key,valye)</tt> pairs. */
-      std::map<std::string,std::string> read( const Pathname & _path );
+      std::map<std::string,std::string> read( const Pathname & _path ) ZYPP_API;
 
       /** Add or change a value in sysconfig file \a path_r.
        *
@@ -53,7 +53,7 @@ namespace zypp {
        * \endcode
        */
       bool write( const Pathname & path_r, const std::string & key_r, const std::string & val_r,
-                  const std::string & newcomment_r = std::string() );
+                  const std::string & newcomment_r = std::string() ) ZYPP_API;
 
       /** Convenience to add or change a string-value in sysconfig file \a path_r.
        *
@@ -63,7 +63,7 @@ namespace zypp {
        * \see \ref write
        */
       bool writeStringVal( const Pathname & path_r, const std::string & key_r, const std::string & val_r,
-                           const std::string & newcomment_r = std::string() );
+                           const std::string & newcomment_r = std::string() ) ZYPP_API;
 
     } // namespace sysconfig
   } // namespace base

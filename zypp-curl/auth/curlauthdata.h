@@ -19,7 +19,7 @@ namespace zypp {
     /**
      * Curl HTTP authentication data.
      */
-    class CurlAuthData : public AuthData {
+    class ZYPP_API CurlAuthData : public AuthData {
     public:
       /**
        * Default constructor. Initializes username and password to empty strings

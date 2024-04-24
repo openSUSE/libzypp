@@ -82,7 +82,7 @@ namespace zypp
 
     static bool active = getenv("ZYPP_READONLY_HACK");
 
-    void IWantIt()	// see zypp/zypp_detail/ZYppReadOnlyHack.h
+    ZYPP_API void IWantIt()	// see zypp/zypp_detail/ZYppReadOnlyHack.h
     {
       active = true;
       MIL << "ZYPP_READONLY promised." <<  endl;

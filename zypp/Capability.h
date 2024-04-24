@@ -59,7 +59,7 @@ namespace zypp
    * [1] https://rpm-software-management.github.io/rpm/manual/boolean_dependencies.html
    * \see \ref CapDetail
    */
-  class Capability: protected sat::detail::PoolMember
+  class ZYPP_API Capability: protected sat::detail::PoolMember
   {
     public:
       enum CtorFlag { PARSED, UNPARSED };
@@ -271,10 +271,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Capability Stream output */
-  std::ostream & operator<<( std::ostream & str, const Capability & obj );
+  std::ostream & operator<<( std::ostream & str, const Capability & obj ) ZYPP_API;
 
   /** \relates Capability Detailed stream output */
-  std::ostream & dumpOn( std::ostream & str, const Capability & obj );
+  std::ostream & dumpOn( std::ostream & str, const Capability & obj ) ZYPP_API;
 
   /** \relates Capability */
   inline bool operator==( const Capability & lhs, const Capability & rhs )
@@ -306,7 +306,7 @@ namespace zypp
    * \endcode
    *
    */
-  class CapDetail: protected sat::detail::PoolMember
+  class ZYPP_API CapDetail: protected sat::detail::PoolMember
   {
     public:
       enum Kind
@@ -384,13 +384,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates CapDetail Stream output */
-  std::ostream & operator<<( std::ostream & str, const CapDetail & obj );
+  std::ostream & operator<<( std::ostream & str, const CapDetail & obj ) ZYPP_API;
 
   /** \relates CapDetail Stream output */
-  std::ostream & operator<<( std::ostream & str, CapDetail::Kind obj );
+  std::ostream & operator<<( std::ostream & str, CapDetail::Kind obj ) ZYPP_API;
 
   /** \relates CapDetail Stream output */
-  std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj );
+  std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
 

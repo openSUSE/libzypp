@@ -24,7 +24,7 @@ namespace zyppng {
   using KeyRing    = zypp::KeyRing;
   using KeyRingRef = zypp::KeyRing_Ptr;
 
-  class SyncContext {
+  class ZYPP_API SyncContext {
 
     ZYPP_ADD_CREATE_FUNC(SyncContext)
 

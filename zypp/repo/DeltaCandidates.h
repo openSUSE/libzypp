@@ -33,7 +33,7 @@ namespace zypp
      * gets all patches and deltas from them for a given
      * package.
      */
-    class DeltaCandidates
+    class ZYPP_API DeltaCandidates
     {
       friend std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
 
@@ -65,7 +65,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates DeltaCandidates Stream output */
-    std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj );
+    std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
 

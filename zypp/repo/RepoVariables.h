@@ -54,7 +54,7 @@ namespace zypp
     /// If variable is unset or empty nothing is substituted.
     /// Otherwise, the expansion of \c word is substituted.</li>
     /// </ul>
-    struct RepoVarExpand
+    struct ZYPP_API RepoVarExpand
     {
       /** Function taking a variable name and returning a pointer to the variable value or \c nullptr if unset. */
       using VarRetriever = function<const std::string *(const std::string &)>;
@@ -102,7 +102,7 @@ namespace zypp
      *
      * \see \ref RepoVarExpand for supported variable syntax.
      */
-    struct RepoVariablesStringReplacer
+    struct ZYPP_TESTS RepoVariablesStringReplacer
     {
       std::string operator()( const std::string & value_r ) const;
 
@@ -116,7 +116,7 @@ namespace zypp
      * Replaces repository variables in the URL (except for user/pass inside authority)
      * \see RepoVariablesStringReplacer
      */
-    struct RepoVariablesUrlReplacer
+    struct ZYPP_API RepoVariablesUrlReplacer
     {
       Url operator()( const Url & url_r ) const;
     };

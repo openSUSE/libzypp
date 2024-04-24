@@ -14,6 +14,7 @@
 
 #include <zypp/Pathname.h>
 #include <zypp/Url.h>
+#include <zypp/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/NonCopyable.h>
 #include <zypp/misc/TestcaseSetup.h>
@@ -23,7 +24,7 @@
 
 namespace zypp::misc::testcase {
 
-  struct TestcaseTrial
+  struct ZYPP_TESTS TestcaseTrial
   {
     struct Node {
       struct Impl;
@@ -55,7 +56,7 @@ namespace zypp::misc::testcase {
     RWCOW_pointer<Impl> _pimpl;
   };
 
-  class LoadTestcase : private zypp::base::NonCopyable
+  class ZYPP_API LoadTestcase : private zypp::base::NonCopyable
   {
   public:
     struct Impl;

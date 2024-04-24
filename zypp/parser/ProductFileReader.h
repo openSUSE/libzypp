@@ -38,7 +38,7 @@ namespace zypp
     /** Data returned by \ref ProductFileReader
      * \see \ref ProductFileReader
     */
-    class ProductFileData
+    class ZYPP_API ProductFileData
     {
       public:
         struct Impl;
@@ -99,10 +99,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates  ProductFileData Stream output */
-    std::ostream & operator<<( std::ostream & str, const ProductFileData & obj );
+    std::ostream & operator<<( std::ostream & str, const ProductFileData & obj ) ZYPP_API;
 
     /** \relates  ProductFileData::Upgrade Stream output */
-    std::ostream & operator<<( std::ostream & str, const ProductFileData::Upgrade & obj );
+    std::ostream & operator<<( std::ostream & str, const ProductFileData::Upgrade & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
     //
@@ -118,7 +118,7 @@ namespace zypp
      *                             "/etc/products.d" );
      * \endcode
      */
-    class ProductFileReader
+    class ZYPP_API ProductFileReader
     {
     public:
       /** Callback being invoked for each \ref ProductFileData parsed.

@@ -29,7 +29,7 @@ namespace zypp
     /** Just inherits Exception to separate target exceptions
      *
      **/
-    class TargetException : public Exception
+    class ZYPP_API TargetException : public Exception
     {
     public:
       /** Ctor taking message.
@@ -48,7 +48,7 @@ namespace zypp
       ~TargetException() throw() override {};
     };
 
-    class TargetAbortedException : public TargetException
+    class ZYPP_API TargetAbortedException : public TargetException
     {
     public:
       TargetAbortedException( );

@@ -128,7 +128,7 @@ namespace zypp
    * The different ammount of triggers is due to different rules for sending
    * percent or 'still alive' messages.
    */
-  class ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
+  class ZYPP_API ProgressData : public base::ProvideNumericId<ProgressData,unsigned>
   {
     public:
       using value_type = long long;
@@ -390,7 +390,7 @@ namespace zypp
    *
    * \endcode
    */
-  class CombinedProgressData
+  class ZYPP_API CombinedProgressData
   {
   public:
     /**

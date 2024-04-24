@@ -39,7 +39,7 @@ namespace zyppng::worker {
     std::map<std::string, std::string> extraKeys = {};
   };
 
-  class RequestCancelException : public zypp::media::MediaException
+  class ZYPP_API RequestCancelException : public zypp::media::MediaException
   {
   public:
     RequestCancelException();

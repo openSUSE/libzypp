@@ -64,14 +64,14 @@ namespace zypp
     /// Return whether a \ref regex matches a specific string. An optionally
     /// passed \ref smatch object will contain the match reults.
     //////////////////////////////////////////////////////////////////
-    bool regex_match( const char * s, smatch & matches, const regex & regex );
+    bool regex_match( const char * s, smatch & matches, const regex & regex ) ZYPP_API;
 
     /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
     inline bool regex_match(const std::string & s, smatch & matches, const regex & regex)
     { return regex_match( s.c_str(), matches, regex ); }
 
     /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
-    bool regex_match( const char * s, const regex & regex );
+    bool regex_match( const char * s, const regex & regex ) ZYPP_API;
 
     /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
     inline bool regex_match( const std::string & s, const regex & regex )
@@ -83,7 +83,7 @@ namespace zypp
      *
      * \note Using backreferences in the replacement string is NOT supported.
      */
-    std::string regex_substitute ( const std::string & s, const regex & regex, const std::string &replacement, bool global = true );
+    std::string regex_substitute ( const std::string & s, const regex & regex, const std::string &replacement, bool global = true ) ZYPP_API;
 
     //////////////////////////////////////////////////////////////////
     /// \class regex
@@ -91,7 +91,7 @@ namespace zypp
     ///
     /// \ingroup ZYPP_STR_REGEX
     //////////////////////////////////////////////////////////////////
-    class regex
+    class ZYPP_API regex
     {
     public:
 
@@ -164,7 +164,7 @@ namespace zypp
     /// If \c n is out of range, or if \c n is an unmatched sub-expression,
     /// then an empty string is returned.
     //////////////////////////////////////////////////////////////////
-    class smatch
+    class ZYPP_API smatch
     {
     public:
       smatch();

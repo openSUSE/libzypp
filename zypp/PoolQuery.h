@@ -87,7 +87,7 @@ namespace zypp
    * \see tests/zypp/PoolQuery_test.cc for more examples
    * \see sat::SolvIterMixin
    */
-  class PoolQuery : public sat::SolvIterMixin<PoolQuery, detail::PoolQueryIterator>
+  class ZYPP_API PoolQuery : public sat::SolvIterMixin<PoolQuery, detail::PoolQueryIterator>
   {
   public:
     using Kinds = std::set<ResKind>;
@@ -494,10 +494,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates PoolQuery Stream output. */
-  std::ostream & operator<<( std::ostream & str, const PoolQuery & obj );
+  std::ostream & operator<<( std::ostream & str, const PoolQuery & obj ) ZYPP_API;
 
   /** \relates PoolQuery Detailed stream output. */
-  std::ostream & dumpOn( std::ostream & str, const PoolQuery & obj );
+  std::ostream & dumpOn( std::ostream & str, const PoolQuery & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
   namespace detail
@@ -516,7 +516,7 @@ namespace zypp
    * But it also provides an iterator by itself, to allow a detailed inspection of
    * the individual attribute matches within the current Solvable.
    */
-  class PoolQueryIterator : public boost::iterator_adaptor<
+  class ZYPP_API PoolQueryIterator : public boost::iterator_adaptor<
     PoolQueryIterator                  // Derived
     , sat::LookupAttr::iterator        // Base
     , const sat::Solvable              // Value
@@ -615,7 +615,7 @@ namespace zypp
   { return str << obj.base(); }
 
   /** \relates PoolQueryIterator Detailed stream output. */
-  std::ostream & dumpOn( std::ostream & str, const PoolQueryIterator & obj );
+  std::ostream & dumpOn( std::ostream & str, const PoolQueryIterator & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
   } //namespace detail

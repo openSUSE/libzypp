@@ -143,7 +143,7 @@ namespace zypp
    * in the remaining code of zypp. If we can, we should try to wrap
    * the blocxx macros and typedef the classes in here.
    **/
-  class Exception : public std::exception
+  class ZYPP_API Exception : public std::exception
   {
     friend std::ostream & operator<<( std::ostream & str, const Exception & obj );
 
@@ -321,7 +321,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates Exception Stream output */
-  std::ostream & operator<<( std::ostream & str, const Exception & obj );
+  std::ostream & operator<<( std::ostream & str, const Exception & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
   namespace exception_detail

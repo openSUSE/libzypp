@@ -36,7 +36,7 @@ namespace zypp
     //	CLASS NAME : Repository
     //
     /** */
-    class Repository : protected sat::detail::PoolMember
+    class ZYPP_API Repository : protected sat::detail::PoolMember
     {
     public:
         using SolvableIterator = filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>;
@@ -336,10 +336,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Repository Stream output */
-    std::ostream & operator<<( std::ostream & str, const Repository & obj );
+    std::ostream & operator<<( std::ostream & str, const Repository & obj ) ZYPP_API;
 
     /** \relates Repository XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj );
+    std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj ) ZYPP_API;
 
     /** \relates Repository */
     inline bool operator==( const Repository & lhs, const Repository & rhs )
@@ -455,7 +455,7 @@ namespace zypp
       //	CLASS NAME : RepositoryIterator
       //
       /** */
-      class RepositoryIterator : public boost::iterator_adaptor<
+      class ZYPP_API RepositoryIterator : public boost::iterator_adaptor<
             RepositoryIterator                            // Derived
                            , sat::detail::CRepo **        // Base
                            , Repository                   // Value

@@ -33,7 +33,7 @@ namespace zypp
   ///
   /// Media number \c 0 usually indicates no media access.
   ///////////////////////////////////////////////////////////////////
-  class OnMediaLocation
+  class ZYPP_API OnMediaLocation
   {
     friend std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj );
     friend std::ostream & dumpOn( std::ostream & str, const OnMediaLocation & obj );

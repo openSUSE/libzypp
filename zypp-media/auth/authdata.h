@@ -27,7 +27,7 @@ namespace zypp {
  * Class for handling media authentication data. This is the most generic
  * class containing only username and password members.
  */
-class AuthData
+class ZYPP_API AuthData
 {
 public:
   AuthData()

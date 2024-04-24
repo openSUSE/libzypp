@@ -60,7 +60,7 @@ namespace zypp
    *
    * \todo Support arbitrary Predicates.
    */
-  class PoolItemBest
+  class ZYPP_API PoolItemBest
   {
       using Container = std::unordered_map<IdString, PoolItem>;
     public:

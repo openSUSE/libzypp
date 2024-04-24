@@ -37,7 +37,7 @@ namespace zypp {
      *
      * Principally serves as base class, but standalone usable.
      **/
-    class TmpPath
+    class ZYPP_API TmpPath
     {
       public:
         /**
@@ -124,7 +124,7 @@ namespace zypp {
      * TmpFile provides the Pathname of the temporary file, or an empty
      * path in case of any error.
      **/
-    class TmpFile : public TmpPath
+    class ZYPP_API TmpFile : public TmpPath
     {
       public:
         /**
@@ -178,7 +178,7 @@ namespace zypp {
      * TmpDir provides the Pathname of the temporary directory , or an empty
      * path in case of any error.
      **/
-    class TmpDir : public TmpPath
+    class ZYPP_API TmpDir : public TmpPath
     {
       public:
         /**
@@ -213,7 +213,7 @@ namespace zypp {
   } // namespace filesystem
 
   /** Global access to the zypp.TMPDIR (created on demand, deleted when libzypp is unloaded) */
-  Pathname myTmpDir();	// implemented in ZYppImpl.cc
+  Pathname myTmpDir() ZYPP_API;	// implemented in ZYppImpl.cc
 
 } // namespace zypp
 

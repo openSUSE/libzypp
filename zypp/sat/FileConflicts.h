@@ -27,7 +27,7 @@ namespace zypp
     /// \class FileConflicts
     /// \brief Libsolv queue representing file conflicts.
     ///////////////////////////////////////////////////////////////////
-    class FileConflicts : private Queue
+    class ZYPP_API FileConflicts : private Queue
     {
       friend bool operator==( const FileConflicts & lhs, const FileConflicts & rhs );
       static constexpr size_type queueBlockSize = 6;
@@ -70,16 +70,16 @@ namespace zypp
     };
 
     /** \relates FileConflicts Stream output */
-    std::ostream & operator<<( std::ostream & str, const FileConflicts & obj );
+    std::ostream & operator<<( std::ostream & str, const FileConflicts & obj ) ZYPP_API;
 
     /** \relates FileConflicts::Conflict Stream output */
-    std::ostream & operator<<( std::ostream & str, const FileConflicts::Conflict & obj );
+    std::ostream & operator<<( std::ostream & str, const FileConflicts::Conflict & obj ) ZYPP_API;
 
     /** \relates FileConflicts XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts & obj );
+    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts & obj ) ZYPP_API;
 
     /** \relates FileConflicts::Conflict XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts::Conflict & obj );
+    std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts::Conflict & obj ) ZYPP_API;
 
     /** \relates FileConflicts */
     inline bool operator==( const FileConflicts & lhs, const FileConflicts & rhs )

@@ -16,6 +16,7 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -637,8 +638,8 @@ namespace zypp
 /** Forward declaration of Ptr types */
 #define DEFINE_PTR_TYPE(NAME) \
 class NAME;                                                      \
-extern void intrusive_ptr_add_ref( const NAME * );               \
-extern void intrusive_ptr_release( const NAME * );               \
+extern void intrusive_ptr_add_ref( const NAME * ) ZYPP_API;               \
+extern void intrusive_ptr_release( const NAME * ) ZYPP_API;               \
 typedef zypp::intrusive_ptr<NAME>       NAME##_Ptr;        \
 typedef zypp::intrusive_ptr<const NAME> NAME##_constPtr;
 

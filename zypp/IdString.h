@@ -18,6 +18,7 @@
 
 #include <boost/utility/string_ref_fwd.hpp>
 
+#include <zypp-core/Globals.h>
 #include <zypp/sat/detail/PoolMember.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ namespace zypp
    * While comparison differs between \ref IdString::Null and \ref IdString::Empty
    * ( \c NULL and \c "" ), both are represented by an empty string \c "".
    */
-  class IdString : protected sat::detail::PoolMember
+  class ZYPP_API IdString : protected sat::detail::PoolMember
   {
     public:
       using IdType = sat::detail::IdType;
@@ -138,10 +139,10 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates IdString Stream output */
-  std::ostream & operator<<( std::ostream & str, const IdString & obj );
+  std::ostream & operator<<( std::ostream & str, const IdString & obj ) ZYPP_API;
 
   /** \relates IdString Stream output */
-  std::ostream & dumpOn( std::ostream & str, const IdString & obj );
+  std::ostream & dumpOn( std::ostream & str, const IdString & obj ) ZYPP_API;
 
   /** \relates IdString Equal */
   inline bool operator==( const IdString & lhs, const IdString & rhs )

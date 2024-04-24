@@ -36,16 +36,16 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   struct HistoryActionID
   {
-    static const HistoryActionID NONE;
+    static const HistoryActionID NONE ZYPP_API;
 
-    static const HistoryActionID INSTALL;
-    static const HistoryActionID REMOVE;
-    static const HistoryActionID REPO_ADD;
-    static const HistoryActionID REPO_REMOVE;
-    static const HistoryActionID REPO_CHANGE_ALIAS;
-    static const HistoryActionID REPO_CHANGE_URL;
-    static const HistoryActionID STAMP_COMMAND;
-    static const HistoryActionID PATCH_STATE_CHANGE;
+    static const HistoryActionID INSTALL ZYPP_API;
+    static const HistoryActionID REMOVE ZYPP_API;
+    static const HistoryActionID REPO_ADD ZYPP_API;
+    static const HistoryActionID REPO_REMOVE ZYPP_API;
+    static const HistoryActionID REPO_CHANGE_ALIAS ZYPP_API;
+    static const HistoryActionID REPO_CHANGE_URL ZYPP_API;
+    static const HistoryActionID STAMP_COMMAND ZYPP_API;
+    static const HistoryActionID PATCH_STATE_CHANGE ZYPP_API;
 
     enum ID
     {
@@ -102,7 +102,7 @@ namespace zypp
   /// plain string values. Derived classes for well known entries tell
   ///
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogData
+  class ZYPP_API HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogData>;
@@ -196,7 +196,7 @@ namespace zypp
   /// \brief  A zypp history log line for an installed packaged.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataInstall : public HistoryLogData
+  class ZYPP_API HistoryLogDataInstall : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataInstall>;
@@ -236,7 +236,7 @@ namespace zypp
   /// \brief  A zypp history log line for an installed packaged.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogPatchStateChange : public HistoryLogData
+  class ZYPP_API HistoryLogPatchStateChange : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogPatchStateChange>;
@@ -280,7 +280,7 @@ namespace zypp
   /// \brief A zypp history log line for a removed packge.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataRemove : public HistoryLogData
+  class ZYPP_API HistoryLogDataRemove : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataRemove>;
@@ -315,7 +315,7 @@ namespace zypp
   /// \brief A zypp history log line for an added repository.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataRepoAdd : public HistoryLogData
+  class ZYPP_API HistoryLogDataRepoAdd : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataRepoAdd>;
@@ -346,7 +346,7 @@ namespace zypp
   /// \brief A zypp history log line for a removed repository.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataRepoRemove : public HistoryLogData
+  class ZYPP_API HistoryLogDataRepoRemove : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataRepoRemove>;
@@ -375,7 +375,7 @@ namespace zypp
   /// \brief A zypp history log line for a repo alias change.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataRepoAliasChange : public HistoryLogData
+  class ZYPP_API HistoryLogDataRepoAliasChange : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataRepoAliasChange>;
@@ -438,7 +438,7 @@ namespace zypp
   /// triggered the following commit.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataStampCommand : public HistoryLogData
+  class ZYPP_API HistoryLogDataStampCommand : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataStampCommand>;

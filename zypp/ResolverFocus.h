@@ -14,6 +14,8 @@
 #include <iosfwd>
 #include <string>
 
+#include <zypp/Globals.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
@@ -27,12 +29,12 @@ namespace zypp
   };
 
   /** \relates ResolverFocus Conversion to string (enumerator name) */
-  std::string asString( const ResolverFocus & val_r );
+  std::string asString( const ResolverFocus & val_r ) ZYPP_API;
 
   /** \relates ResolverFocus Conversion from string (enumerator name, case insensitive, empty string is Default)
    * \returns \c false if \a val_r is not recognized
    */
-  bool fromString( const std::string & val_r, ResolverFocus & ret_r );
+  bool fromString( const std::string & val_r, ResolverFocus & ret_r ) ZYPP_API;
 
   /** \relates ResolverFocus Conversion from string (convenience)
    * \returns \ref ResolverFocus::Default if \a val_r is not recognized

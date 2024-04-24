@@ -32,7 +32,7 @@ namespace zypp
   /** ResPool::instance().proxy();
    * \todo integrate it into ResPool
   */
-  class ResPoolProxy
+  class ZYPP_API ResPoolProxy
   {
     friend std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
     friend std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );

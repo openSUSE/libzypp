@@ -146,7 +146,7 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     /**  */
-    struct ReportBase
+    struct ZYPP_API ReportBase
     {
       typedef callback::UserData UserData;
       typedef UserData::ContentType ContentType;
@@ -165,7 +165,7 @@ namespace zypp
 
     /**  */
     template<class TReport>
-      struct ReceiveReport : public TReport
+      struct ZYPP_API ReceiveReport : public TReport
       {
         typedef TReport                   ReportType;
         typedef ReceiveReport<TReport>    Receiver;
@@ -194,7 +194,7 @@ namespace zypp
 
     /**  */
     template<class TReport>
-      struct DistributeReport
+      struct ZYPP_API DistributeReport
       {
        public:
         typedef TReport                   ReportType;
@@ -233,7 +233,7 @@ namespace zypp
 
     /**  */
     template<class TReport>
-      struct SendReport : private zypp::base::NonCopyable
+      struct ZYPP_API SendReport : private zypp::base::NonCopyable
       {
         typedef TReport                   ReportType;
         typedef ReceiveReport<TReport>    Receiver;
@@ -281,7 +281,7 @@ namespace zypp
      * \endcode
     */
     template<class TReport>
-      struct TempConnect
+      struct ZYPP_API TempConnect
       {
         typedef TReport                   ReportType;
         typedef ReceiveReport<TReport>    Receiver;

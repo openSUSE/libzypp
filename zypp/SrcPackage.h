@@ -26,7 +26,7 @@ namespace zypp
   //
   /** SrcPackage interface.
   */
-  class SrcPackage : public ResObject
+  class ZYPP_API SrcPackage : public ResObject
   {
 
   public:

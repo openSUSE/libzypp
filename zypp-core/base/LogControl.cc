@@ -228,7 +228,7 @@ namespace zypp
     LogClient &operator=(const LogClient &) = delete;
     LogClient &operator=(LogClient &&) = delete;
 
-    ~LogClient() { ::close(_sockFD); }
+    ~LogClient() { if (_sockFD >= 0) ::close(_sockFD); }
 
     /*!
      * Tries to connect to the log threads socket, returns true on success or

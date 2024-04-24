@@ -47,7 +47,7 @@ namespace zypp
   /// \c const, i.e. you can't change the refered PoolItem. The PoolItem
   /// (i.e. the status) is always mutable.
   ///////////////////////////////////////////////////////////////////
-  class PoolItem : public sat::SolvableType<PoolItem>
+  class ZYPP_API PoolItem : public sat::SolvableType<PoolItem>
   {
     friend std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
     public:
@@ -169,8 +169,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates PoolItem Stream output */
-  std::ostream & operator<<( std::ostream & str, const PoolItem & obj );
-
+  std::ostream & operator<<( std::ostream & str, const PoolItem & obj ) ZYPP_API;
 
   /** \relates PoolItem Required to disambiguate vs. (PoolItem,ResObject::constPtr) due to implicit PoolItem::operator ResObject::constPtr  */
   inline bool operator==( const PoolItem & lhs, const PoolItem & rhs )

@@ -37,7 +37,7 @@ namespace zypp
    *
    * \see PluginScript
    */
-  class PluginFrame
+  class ZYPP_TESTS PluginFrame
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
     friend bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
@@ -254,7 +254,7 @@ namespace zypp
   };
 
   /** \relates PluginFrame Stream output for logging */
-  std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
+  std::ostream & operator<<( std::ostream & str, const PluginFrame & obj ) ZYPP_TESTS;
 
   /** \relates PluginFrame Stream output writing all data for logging (no throw) */
   inline std::ostream & dumpOn( std::ostream & str, const PluginFrame & obj )
@@ -265,7 +265,7 @@ namespace zypp
   { return PluginFrame::readFrom( str, obj ); }
 
   /** \relates PluginFrame Comparison based on content. */
-  bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
+  bool operator==( const PluginFrame & lhs, const PluginFrame & rhs ) ZYPP_TESTS;
 
   /** \relates PluginFrame Comparison based on content. */
   inline bool operator!=( const PluginFrame & lhs, const PluginFrame & rhs )

@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <vector>
 #include <string>
+#include <zypp/Globals.h>
 #include <zypp/Pathname.h>
 #include <zypp/base/PtrTypes.h>
 
@@ -38,7 +39,7 @@ namespace zypp
    * enabled by \ref setDebugOutputFile.\n
    * This data file can be used as datasource when passed to \ref check(const Pathname &, bool).
    */
-  class CheckAccessDeleted
+  class ZYPP_API CheckAccessDeleted
   {
 
     public:

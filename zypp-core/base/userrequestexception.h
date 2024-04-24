@@ -61,7 +61,7 @@ namespace zypp
    * }
    * \endcode
   */
-  class UserRequestException : public Exception
+  class ZYPP_API UserRequestException : public Exception
   {
     public:
       enum Kind { UNSPECIFIED, IGNORE, SKIP, RETRY, ABORT };
@@ -84,7 +84,7 @@ namespace zypp
 
   /** Convenience macro to declare more specific PluginScriptExceptions. */
 #define declException( EXCP, KIND )					\
-  struct EXCP : public UserRequestException {				\
+  struct ZYPP_API EXCP : public UserRequestException {				\
     explicit								\
     EXCP( const std::string & msg_r = std::string() )			\
       : UserRequestException( KIND, msg_r )				\

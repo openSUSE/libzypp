@@ -13,6 +13,7 @@
 #define ZYPP_REPOMANAGER_OPTIONS_H
 
 #include <zypp/Pathname.h>
+#include <zypp/Globals.h>
 #include <ostream>
 
 namespace zypp
@@ -21,7 +22,7 @@ namespace zypp
    * Repo manager settings.
    * Settings default to ZYpp global settings.
    */
-  struct RepoManagerOptions
+  struct ZYPP_API RepoManagerOptions
   {
     /** Default ctor following \ref ZConfig global settings.
      * If an optional \c root_r directory is given, all paths  will

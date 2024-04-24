@@ -14,7 +14,7 @@
 
 namespace zypp {
 
-  class FileCheckException : public Exception
+  class ZYPP_API FileCheckException : public Exception
   {
   public:
     FileCheckException(std::string msg)
@@ -22,7 +22,7 @@ namespace zypp {
     {}
   };
 
-  class CheckSumCheckException : public FileCheckException
+  class ZYPP_API CheckSumCheckException : public FileCheckException
   {
   public:
     CheckSumCheckException(std::string msg)
@@ -30,7 +30,7 @@ namespace zypp {
     {}
   };
 
-  class SignatureCheckException : public FileCheckException
+  class ZYPP_API SignatureCheckException : public FileCheckException
   {
   public:
     SignatureCheckException(std::string msg)

@@ -57,7 +57,7 @@ namespace zypp {
  *
  * \see \ref pg_zypp-solv-vendorchange
 */
-class VendorAttr
+class ZYPP_API VendorAttr
 {
     friend std::ostream & operator<<( std::ostream & str, const VendorAttr & obj );
 
@@ -176,7 +176,7 @@ class VendorAttr
 };
 
 /** \relates VendorAttr Stream output */
-std::ostream & operator<<( std::ostream & str, const VendorAttr & obj );
+std::ostream & operator<<( std::ostream & str, const VendorAttr & obj ) ZYPP_API;
 
 ///////////////////////////////////////////////////////////////////
 }; // namespace zypp

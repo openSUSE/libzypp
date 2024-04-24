@@ -41,7 +41,7 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1) );
    * \endcode
    */
-  class RepoindexFileReader : private base::NonCopyable
+  class ZYPP_API RepoindexFileReader : private base::NonCopyable
   {
   public:
    /**

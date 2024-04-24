@@ -38,7 +38,7 @@ namespace zypp
   /// \see PluginScript
   /// \ingroup g_RAII
   ///////////////////////////////////////////////////////////////////
-  class PluginExecutor
+  class ZYPP_API PluginExecutor
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj );
     friend bool operator==( const PluginExecutor & lhs, const PluginExecutor & rhs );

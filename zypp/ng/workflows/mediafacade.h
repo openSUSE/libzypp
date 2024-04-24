@@ -44,7 +44,7 @@ namespace zyppng {
    * class just in a sync way. Meaning every operation will finish immediately
    * instead of returns a \ref AsyncOp.
    */
-  class MediaSyncFacade : public Base
+  class ZYPP_API MediaSyncFacade : public Base
   {
     ZYPP_ADD_CREATE_FUNC(MediaSyncFacade);
   public:

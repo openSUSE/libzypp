@@ -26,7 +26,7 @@ namespace zypp
   /** Enumeration class of dependency types.
    * \ingroup g_EnumerationClass
   */
-  struct Dep
+  struct ZYPP_API Dep
   {
     friend bool operator==( const Dep & lhs, const Dep & rhs );
     friend bool operator!=( const Dep & lhs, const Dep & rhs );
@@ -39,15 +39,15 @@ namespace zypp
      * \see \ref zypp::Dep::inSwitch
     */
     //@{
-    static const Dep PROVIDES;
-    static const Dep PREREQUIRES;
-    static const Dep REQUIRES;
-    static const Dep CONFLICTS;
-    static const Dep OBSOLETES;
-    static const Dep RECOMMENDS;
-    static const Dep SUGGESTS;
-    static const Dep ENHANCES;
-    static const Dep SUPPLEMENTS;
+    static const Dep PROVIDES ZYPP_API;
+    static const Dep PREREQUIRES ZYPP_API;
+    static const Dep REQUIRES ZYPP_API;
+    static const Dep CONFLICTS ZYPP_API;
+    static const Dep OBSOLETES ZYPP_API;
+    static const Dep RECOMMENDS ZYPP_API;
+    static const Dep SUGGESTS ZYPP_API;
+    static const Dep ENHANCES ZYPP_API;
+    static const Dep SUPPLEMENTS ZYPP_API;
     //@}
 
     /** Enumarators provided \b only for use \ref inSwitch statement.
@@ -78,12 +78,12 @@ namespace zypp
     /** String representation of dependency type.
      * \return The constants names lowercased.
     */
-    const std::string & asString() const;
+    const std::string & asString() const ZYPP_API;
 
     /** Translated dependency type (capitalized).
      * \return The capitalized constants names translated.
     */
-    std::string asUserString() const;
+    std::string asUserString() const ZYPP_API;
 
     /** Enumarator provided for use in \c switch statement. */
     for_use_in_switch inSwitch() const

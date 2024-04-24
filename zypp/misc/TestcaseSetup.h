@@ -14,6 +14,7 @@
 #define ZYPP_MISC_TESTCASESETUP_H
 
 #include <zypp/Arch.h>
+#include <zypp/Globals.h>
 #include <zypp/Locale.h>
 #include <zypp/Pathname.h>
 #include <zypp/ResolverFocus.h>
@@ -74,7 +75,7 @@ namespace zypp::misc::testcase
     RWCOW_pointer<ForceInstallImpl> _pimpl;
   };
 
-  class TestcaseSetup
+  class ZYPP_API TestcaseSetup
   {
   public:
 

@@ -61,7 +61,7 @@ namespace zypp
      * \endcode
      * \see Reader
     */
-    class Writer
+    class ZYPP_API Writer
     {
       using StorageT = std::set<ResObject::constPtr>;
     public:
@@ -168,7 +168,7 @@ namespace zypp
     /** Retrieve \ref ResObject data serialized by \ref Writer.
      * \see Writer
     */
-    class Reader
+    class ZYPP_API Reader
     {
     public:
       /** Restored \ref ResObject data. */
@@ -240,7 +240,7 @@ namespace zypp
     //	CLASS NAME : Reader::Entry
     //
     /** Restored \ref ResObject data. */
-    class Reader::Entry
+    class ZYPP_API Reader::Entry
     {
     public:
       Entry();

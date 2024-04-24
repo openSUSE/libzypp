@@ -12,6 +12,7 @@ OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
 OPTION (ENABLE_BUILD_TESTS "Build and run test suite by default?" OFF)
 OPTION (ENABLE_ZSTD_COMPRESSION "Build with zstd compression support?" OFF)
+OPTION (ENABLE_VISIBILITY_HIDDEN "Build with hidden visibility by default?" OFF)
 OPTION (ENABLE_ZCHUNK_COMPRESSION "Build with zchunk compression support?" OFF)
 # Helps with bug https://bugzilla.gnome.org/show_bug.cgi?id=784550 , Segfault during signal emission when slots are cleared
 OPTION (ENABLE_SIGC_BLOCK_WORKAROUND "Enable a workaround for older sigcpp libraries?" OFF )
@@ -97,9 +98,12 @@ SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -pthread -fno-strict-aliasing -fPIC -g 
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fno-strict-aliasing -fPIC -g -Wall -Wp,-D_GLIBCXX_ASSERTIONS" )
 
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden -Woverloaded-virtual -Wnon-virtual-dtor -ftemplate-backtrace-limit=0" )
+IF ( ENABLE_VISIBILITY_HIDDEN )
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden" )
+ENDIF( ENABLE_VISIBILITY_HIDDEN )
 
-set( CMAKE_C_FLAGS_RELEASE     "${CMAKE_C_FLAGS} -O3 -DZYPP_NDEBUG -DNDEBUG" )
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -DZYPP_NDEBUG -DNDEBUG" )
+set( CMAKE_C_FLAGS_RELEASE     "${CMAKE_C_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
+set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
 
 IF(${CC_FORMAT_SECURITY})
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=format-security")

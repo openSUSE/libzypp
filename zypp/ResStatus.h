@@ -15,6 +15,7 @@
 #include <inttypes.h>
 #include <iosfwd>
 #include <zypp/Bit.h>
+#include <zypp/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -50,7 +51,7 @@ namespace zypp
    *        a to be installed/deleted solvable.
    *
   */
-  class ResStatus
+  class ZYPP_API ResStatus
   {
     friend std::ostream & operator<<( std::ostream & str, const ResStatus & obj );
     friend bool operator==( const ResStatus & lhs, const ResStatus & rhs );
@@ -706,13 +707,13 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ResStatus Stream output */
-  std::ostream & operator<<( std::ostream & str, const ResStatus & obj );
+  std::ostream & operator<<( std::ostream & str, const ResStatus & obj ) ZYPP_API;
 
   /** \relates ResStatus Stream output */
-  std::ostream & operator<<( std::ostream & str, ResStatus::TransactValue obj );
+  std::ostream & operator<<( std::ostream & str, ResStatus::TransactValue obj ) ZYPP_API;
 
   /** \relates ResStatus Stream output */
-  std::ostream & operator<<( std::ostream & str, ResStatus::TransactByValue obj );
+  std::ostream & operator<<( std::ostream & str, ResStatus::TransactByValue obj ) ZYPP_API;
 
   /** \relates ResStatus */
   inline bool operator==( const ResStatus & lhs, const ResStatus & rhs )

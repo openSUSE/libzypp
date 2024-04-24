@@ -29,7 +29,7 @@ namespace zypp
   /// A \b lowercased string and used as identification. Comparison
   /// against string values is always case insensitive.
   ///////////////////////////////////////////////////////////////////
-  class ResKind : public IdStringType<ResKind>
+  class ZYPP_API ResKind : public IdStringType<ResKind>
   {
     public:
       /** \name Some builtin ResKind constants. */

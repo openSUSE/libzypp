@@ -57,7 +57,7 @@ namespace zypp
    *
    * \ingroup g_BackendSpecific
   */
-  class Edition : public IdStringType<Edition>
+  class ZYPP_API Edition : public IdStringType<Edition>
   {
     public:
       /** Type of an epoch. */
@@ -169,7 +169,7 @@ namespace zypp
       using MatchRange = Range<Edition, Match>;
 
     private:
-      static int _doCompare( const char * lhs,  const char * rhs );
+      static int _doCompare( const char * lhs,  const char * rhs ) ZYPP_API;
       static int _doMatch( const char * lhs,  const char * rhs );
 
     private:

@@ -46,7 +46,7 @@ namespace rpm
 /**
  * @short Interface to the rpm program
  **/
-class RpmDb : public base::ReferenceCounted, private base::NonCopyable
+class ZYPP_API RpmDb : public base::ReferenceCounted, private base::NonCopyable
 {
 public:
 
@@ -500,10 +500,10 @@ protected:
 };
 
 /** \relates RpmDb::CheckPackageResult Stream output */
-std::ostream & operator<<( std::ostream & str, RpmDb::CheckPackageResult obj );
+std::ostream & operator<<( std::ostream & str, RpmDb::CheckPackageResult obj ) ZYPP_API;
 
 /** \relates RpmDb::checkPackageDetail Stream output */
-std::ostream & operator<<( std::ostream & str, const RpmDb::CheckPackageDetail & obj );
+std::ostream & operator<<( std::ostream & str, const RpmDb::CheckPackageDetail & obj ) ZYPP_API;
 
 } // namespace rpm
 } // namespace target

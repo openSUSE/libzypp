@@ -167,14 +167,14 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     /** Printf style construction of std::string. */
     std::string form( const char * format, ... )
-    __attribute__ ((format (printf, 1, 2)));
+    __attribute__ ((format (printf, 1, 2))) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
     /** Return string describing the \a error_r code.
      * Like ::strerror, but the numerical value is included in
      * the string as well.
     */
-    std::string strerror( int errno_r );
+    std::string strerror( int errno_r ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
     /** Assert \c free called for allocated <tt>char *</tt>.
@@ -417,10 +417,10 @@ namespace zypp
     */
     //@{
     /** Return \c true if str is <tt>1, true, yes, on, always</tt> (or a nonzero number). */
-    bool strToTrue( const C_Str & str );
+    bool strToTrue( const C_Str & str ) ZYPP_API;
 
     /** Return \c false if str is <tt>0, false, no, off, never</tt>. */
-    bool strToFalse( const C_Str & str );
+    bool strToFalse( const C_Str & str ) ZYPP_API;
 
     /** Parse \c str into a bool depending on the default value.
      * If the \c default is true, look for a legal \c false string.
@@ -441,28 +441,28 @@ namespace zypp
     }
 
     /** Parse \c str into a bool if it's a legal \c true or \c false string; else \c indeterminate. */
-    TriBool strToTriBool( const C_Str & str );
+    TriBool strToTriBool( const C_Str & str ) ZYPP_API;
 
     //@}
 
     /**
      * \short Return a string with all occurrences of \c from_r replaced with \c to_r.
      */
-    std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r );
+    std::string gsub( const std::string & str_r, const std::string & from_r, const std::string & to_r ) ZYPP_API;
 
     /** \overload A function is called on demand to compute each replacement value.
      */
-    std::string gsubFun( const std::string & str_r, const std::string & from_r, function<std::string()> to_r );
+    std::string gsubFun( const std::string & str_r, const std::string & from_r, function<std::string()> to_r ) ZYPP_API;
 
     /**
      * \short Replace all occurrences of \c from_r with \c to_r in \c str_r (inplace).
      * A reference to \c str_r is also returned for convenience.
      */
-    std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r );
+    std::string & replaceAll( std::string & str_r, const std::string & from_r, const std::string & to_r ) ZYPP_API;
 
     /** \overload A function is called on demand to compute each replacement value.
      */
-    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, const function<std::string()>& to_r );
+    std::string & replaceAllFun( std::string & str_r, const std::string & from_r, const function<std::string()>& to_r ) ZYPP_API;
 
     /** Enhance readability: insert gaps at regular distance
      * \code
@@ -500,8 +500,8 @@ namespace zypp
       TRIM    = (L_TRIM|R_TRIM)
     };
 
-    std::string trim( const std::string & s, const Trim trim_r = TRIM );
-    std::string trim( std::string && s, const Trim trim_r = TRIM );
+    std::string trim( const std::string & s, const Trim trim_r = TRIM ) ZYPP_API;
+    std::string trim( std::string && s, const Trim trim_r = TRIM ) ZYPP_API;
 
     inline std::string ltrim( const std::string & s )
     { return trim( s, L_TRIM ); }
@@ -916,7 +916,7 @@ namespace zypp
        * For use when printing \a c separated values, and where
        * \ref joinEscaped() is too heavy.
        */
-      std::string escape( const C_Str & str_r, const char c = ' ' );
+      std::string escape( const C_Str & str_r, const char c = ' ' ) ZYPP_API;
 
       /** Escape \a next_r and append it to \a str_r using separator \a sep_r. */
       inline void appendEscaped( std::string & str_r, const C_Str & next_r, const char sep_r = ' ' )
@@ -930,13 +930,13 @@ namespace zypp
       }
 
       /** Return \a str_r with '\'-escaped chars occurring in \a special_r (and '\'). */
-      std::string bEscape( std::string str_r, const C_Str & special_r );
+      std::string bEscape( std::string str_r, const C_Str & special_r ) ZYPP_API;
 
       /** Escape plain STRING \a str_r for use in a regex (not anchored by "^" or "$"). */
-      std::string rxEscapeStr( std::string str_r );
+      std::string rxEscapeStr( std::string str_r ) ZYPP_API;
 
       /** Escape GLOB \a str_r for use in a regex (not anchored by "^" or "$"). */
-      std::string rxEscapeGlob( std::string str_r );
+      std::string rxEscapeGlob( std::string str_r ) ZYPP_API;
 
       //! \todo unsecape()
 
@@ -962,8 +962,8 @@ namespace zypp
     /** Return lowercase version of \a s
      * \todo improve
     */
-    std::string toLower( const std::string & s );
-    std::string toLower( std::string && s );
+    std::string toLower( const std::string & s ) ZYPP_API;
+    std::string toLower( std::string && s ) ZYPP_API;
     /** \overload */
     inline std::string toLower( const char * s )
     { return( s ? toLower( std::string(s) ) : std::string() ); }
@@ -971,8 +971,8 @@ namespace zypp
     /** Return uppercase version of \a s
      * \todo improve
     */
-    std::string toUpper( const std::string & s );
-    std::string toUpper( std::string && s );
+    std::string toUpper( const std::string & s ) ZYPP_API;
+    std::string toUpper( std::string && s ) ZYPP_API;
     /** \overload */
     inline std::string toUpper( const char * s )
     { return( s ? toUpper( std::string(s) ) : std::string() ); }
@@ -995,19 +995,19 @@ namespace zypp
     { return ::strcasestr( str_r, val_r ); }
     //@}
 
-    std::string stripFirstWord( std::string & line, const bool ltrim_first = true );
+    std::string stripFirstWord( std::string & line, const bool ltrim_first = true ) ZYPP_API;
 
-    std::string stripLastWord( std::string & line, const bool rtrim_first = true );
-
-    /** Return stream content up to (but not returning) the next newline.
-     * \see \ref receiveUpTo
-     */
-    std::string getline( std::istream & str, bool trim = false );
+    std::string stripLastWord( std::string & line, const bool rtrim_first = true ) ZYPP_API;
 
     /** Return stream content up to (but not returning) the next newline.
      * \see \ref receiveUpTo
      */
-    std::string getline( std::istream & str, const Trim trim_r );
+    std::string getline( std::istream & str, bool trim = false ) ZYPP_API;
+
+    /** Return stream content up to (but not returning) the next newline.
+     * \see \ref receiveUpTo
+     */
+    std::string getline( std::istream & str, const Trim trim_r ) ZYPP_API;
 
     /** Return stream content up to the next ocurrence of \c delim_r or EOF
      * \c delim_r, if found, is always read from the stream. Whether it is

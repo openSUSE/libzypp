@@ -48,13 +48,13 @@ namespace zypp
     * \throws ParseException If the file parsing fails
     * \throws Exception On other errors.
     */
-   std::list<RepoInfo> readRepoFile(const Url & repo_file);
+   std::list<RepoInfo> readRepoFile(const Url & repo_file) ZYPP_API;
 
   /**
    * \short creates and provides information about known sources.
    *
    */
-  class RepoManager
+  class ZYPP_API RepoManager
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
 
@@ -659,7 +659,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoManager Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoManager & obj );
+  std::ostream & operator<<( std::ostream & str, const RepoManager & obj ) ZYPP_API;
 
   /** Iterate the known repositories. */
   inline Iterable<RepoManager::RepoConstIterator> RepoManager::repos() const

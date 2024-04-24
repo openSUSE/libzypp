@@ -21,7 +21,7 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class ZYppFactoryException : public Exception
+  class ZYPP_API ZYppFactoryException : public Exception
   {
   public:
     ZYppFactoryException( std::string msg_r, pid_t lockerPid_r, std::string lockerName_r );
@@ -40,7 +40,7 @@ namespace zypp
   //
   /** ZYpp factory class (Singleton)
   */
-  class ZYppFactory
+  class ZYPP_API ZYppFactory
   {
     friend std::ostream & operator<<( std::ostream & str, const ZYppFactory & obj );
 

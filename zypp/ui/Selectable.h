@@ -49,7 +49,7 @@ namespace zypp
      * Installed objects are sorted according the installation date, newer install
      * time first.
     */
-    class Selectable : public base::ReferenceCounted, private base::NonCopyable
+    class ZYPP_API Selectable : public base::ReferenceCounted, private base::NonCopyable
     {
       friend std::ostream & operator<<( std::ostream & str, const Selectable & obj );
       friend std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
@@ -574,16 +574,16 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Selectable Stream output */
-    std::ostream & operator<<( std::ostream & str, const Selectable & obj );
+    std::ostream & operator<<( std::ostream & str, const Selectable & obj ) ZYPP_API;
 
     /** \relates Selectable More verbose stream output */
-    std::ostream & dumpOn( std::ostream & str, const Selectable & obj );
+    std::ostream & dumpOn( std::ostream & str, const Selectable & obj ) ZYPP_API;
 
     /** Solvable to Selectable transform functor.
      * \relates Selectable
      * \relates sat::SolvIterMixin
      */
-    struct asSelectable
+    struct ZYPP_API asSelectable
     {
       using result_type = Selectable_Ptr;
 

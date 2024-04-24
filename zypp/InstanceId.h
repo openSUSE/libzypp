@@ -44,7 +44,7 @@ namespace zypp
    *   }
    * \endcode
    */
-  class InstanceId
+  class ZYPP_API InstanceId
   {
     public:
       /** Default ctor empty empty namespace */

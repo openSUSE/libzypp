@@ -50,7 +50,7 @@ namespace zypp
     /// packages as an own kind of solvable and map their arch to
     /// \ref Arch_noarch.
     ///////////////////////////////////////////////////////////////////
-    class Solvable : protected detail::PoolMember
+    class ZYPP_API Solvable : protected detail::PoolMember
     {
     public:
       using IdType = sat::detail::SolvableIdType;
@@ -438,13 +438,13 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Solvable Stream output */
-    std::ostream & operator<<( std::ostream & str, const Solvable & obj );
+    std::ostream & operator<<( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
     /** \relates Solvable More verbose stream output including dependencies */
-    std::ostream & dumpOn( std::ostream & str, const Solvable & obj );
+    std::ostream & dumpOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
     /** \relates Solvable XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const Solvable & obj );
+    std::ostream & dumpAsXmlOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
     /** \relates Solvable */
     inline bool operator==( const Solvable & lhs, const Solvable & rhs )
@@ -563,7 +563,7 @@ namespace zypp
      * \relates Solvable
      * \relates sat::SolvIterMixin
      */
-    struct asSolvable
+    struct ZYPP_TESTS asSolvable
     {
       using result_type = Solvable;
 

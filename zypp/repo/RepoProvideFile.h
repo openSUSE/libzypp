@@ -58,7 +58,7 @@ namespace zypp
      * files from different repositories in different order
      * without opening and closing medias all the time
      */
-    class RepoMediaAccess
+    class ZYPP_API RepoMediaAccess
     {
     public:
       /** Ctor taking the default \ref ProvideFilePolicy. */

@@ -14,6 +14,8 @@
 #ifndef ZYPP_BASE_GETTEXT_H
 #define ZYPP_BASE_GETTEXT_H
 
+#include <zypp/Globals.h>
+
 #ifdef ZYPP_DLL //defined if zypp is compiled as DLL
 
 /** Just tag text for translation. */
@@ -50,11 +52,11 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     /** Return translated text. */
-    const char * dgettext( const char * msgid );
+    const char * dgettext( const char * msgid ) ZYPP_API;
 
     /** Return translated text (plural form). */
     const char * dngettext( const char * msgid1, const char * msgid2,
-                            unsigned long n );
+                            unsigned long n ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////
   } // namespace gettext

@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include <zypp/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/sat/detail/PoolMember.h>
 
@@ -31,7 +32,7 @@ namespace zypp
     /// \brief Libsolv Id queue wrapper.
     /// \todo template value_type to work with IString and other Id based types
     ///////////////////////////////////////////////////////////////////
-    class Queue
+    class ZYPP_API Queue
     {
       public:
         using size_type = unsigned int;
@@ -115,13 +116,13 @@ namespace zypp
     };
 
     /** \relates Queue Stream output */
-    std::ostream & operator<<( std::ostream & str, const Queue & obj );
+    std::ostream & operator<<( std::ostream & str, const Queue & obj ) ZYPP_API;
 
     /** \relates Queue Stream output assuming a Solvable queue. */
-    std::ostream & dumpOn( std::ostream & str, const Queue & obj );
+    std::ostream & dumpOn( std::ostream & str, const Queue & obj ) ZYPP_API;
 
     /** \relates Queue */
-    bool operator==( const Queue & lhs, const Queue & rhs );
+    bool operator==( const Queue & lhs, const Queue & rhs ) ZYPP_API;
 
     /** \relates Queue */
     inline bool operator!=( const Queue & lhs, const Queue & rhs )

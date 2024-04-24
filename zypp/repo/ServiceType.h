@@ -23,15 +23,15 @@ namespace zypp
    *
    * Currently we have only RIS service, but more can come later.
    */
-  struct ServiceType
+  struct ZYPP_API ServiceType
   {
     /**
      * Repository Index Service (RIS)
      * (formerly known as 'Novell Update' (NU) service)
      */
-    static const ServiceType RIS;
+    static const ServiceType RIS ZYPP_API;
     /** No service set. */
-    static const ServiceType NONE;
+    static const ServiceType NONE ZYPP_API;
     /**
      * Plugin services are scripts installed on
      * your system that provide the package manager with
@@ -40,7 +40,7 @@ namespace zypp
      * The mechanism used to create this repository list
      * is completely up to the script
      */
-    static const ServiceType PLUGIN;
+    static const ServiceType PLUGIN ZYPP_API;
 
     enum Type
     {

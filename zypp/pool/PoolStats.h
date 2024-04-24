@@ -56,7 +56,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates PoolStats Stream output */
-    std::ostream & operator<<( std::ostream & str, const PoolStats & obj );
+    std::ostream & operator<<( std::ostream & str, const PoolStats & obj ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////
   } // namespace pool

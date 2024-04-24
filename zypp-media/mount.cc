@@ -63,7 +63,7 @@ void Mount::mount( const std::string & source,
                    const std::string & target,
                    const std::string & filesystem,
                    const std::string & options,
-                   const Environment & environment )
+                   const Environment & environment)
 {
   const char *const argv[] = {
     "/bin/mount",

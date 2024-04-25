@@ -67,7 +67,7 @@ namespace zyppng {
     std::vector< ChildInfo > _childInfo;
 
     void onChildStarted(ProgressObserver &);
-    void onChildChanged();
+    void updateCounters();
     void onChildFinished( ProgressObserver &child , ProgressObserver::FinishResult );
 
     Signal<void ( ProgressObserver &sender) >                             _sigStarted;
@@ -86,7 +86,7 @@ namespace zyppng {
     if ( !_started ) z_func()->start();
   }
 
-  void ProgressObserverPrivate::onChildChanged()
+  void ProgressObserverPrivate::updateCounters()
   {
     if ( _ignoreChildSigs )
       return;
@@ -130,7 +130,7 @@ namespace zyppng {
     const auto idx = std::distance ( _children.begin (), i );
     _children.erase(i);
     _childInfo.erase( _childInfo.begin () + idx );
-
+    updateCounters();
   }
 
   ZYPP_IMPL_PRIVATE_CONSTR_ARGS ( ProgressObserver, const std::string &label, int steps ) : Base( *( new ProgressObserverPrivate( *this ) ) )
@@ -138,6 +138,7 @@ namespace zyppng {
     Z_D();
     d->_baseSteps = steps;
     d->_label     = label;
+    d->updateCounters();
   }
 
   void ProgressObserverPrivate::setLabel(const std::string &label)
@@ -165,6 +166,8 @@ namespace zyppng {
     if ( d->_started )
       return;
 
+    d->updateCounters();
+
     d->_started = true;
     d->_sigStarted.emit( *this );
   }
@@ -177,7 +180,7 @@ namespace zyppng {
       d->_ignoreChildSigs = true;
       std::for_each( d->_children.begin (), d->_children.end(), []( auto &child ) { child->reset(); });
     }
-    d->onChildChanged();
+    d->updateCounters();
   }
 
   double ProgressObserver::progress() const
@@ -244,7 +247,7 @@ namespace zyppng {
     d->_baseSteps = steps;
 
     // update stats
-    d->onChildChanged();
+    d->updateCounters();
   }
 
   void ProgressObserver::setLabel(const std::string &label)
@@ -261,7 +264,7 @@ namespace zyppng {
     d->_baseValue = set;
 
     //update stats
-    d->onChildChanged();
+    d->updateCounters();
   }
 
   int ProgressObserver::baseSteps() const
@@ -306,8 +309,8 @@ namespace zyppng {
     } else {
       d->_children.push_back( child );
       d->_childInfo.push_back( {
-        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &sender, auto ){ d_func()->onChildChanged(); }, *this ),
-          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &sender, auto ){ d_func()->onChildChanged(); }, *this ),
+        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
+          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
           connect     ( *child, &ProgressObserver::sigStarted, *d, &ProgressObserverPrivate::onChildStarted ),
           connect     ( *child, &ProgressObserver::sigFinished, *d, &ProgressObserverPrivate::onChildFinished )
         }
@@ -321,7 +324,7 @@ namespace zyppng {
     }
 
     // update stats
-    d->onChildChanged();
+    d->updateCounters();
   }
 
   ProgressObserverRef ProgressObserver::makeSubTask( float weight, const std::string &label, int steps )

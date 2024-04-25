@@ -89,7 +89,8 @@ namespace zypp
         return false;	// aborted by user
       }
     }
-    else if ( _d->_state == END )
+
+    if ( _d->_state == END )
     {
       DBG << str::form( "{#%u|%s} END", numericId(), name().c_str() ) << endl;
     }

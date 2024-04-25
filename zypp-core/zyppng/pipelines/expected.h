@@ -24,7 +24,7 @@
 namespace zyppng {
 
   template<typename T, typename E = std::exception_ptr>
-  class [[nodiscard]] expected {
+  class ZYPP_NODISCARD expected {
   protected:
       union {
           T m_value;
@@ -248,7 +248,7 @@ namespace zyppng {
 
 
   template<typename E>
-  class [[nodiscard]] expected<void, E> {
+  class ZYPP_NODISCARD expected<void, E> {
   private:
       union {
           void* m_value;

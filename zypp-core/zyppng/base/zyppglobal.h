@@ -223,4 +223,6 @@ namespace zyppng {
 #define ZYPP_DECL_PRIVATE_CONSTR_ARGS(Class,...) Class( private_constr_t, __VA_ARGS__ )
 #define ZYPP_IMPL_PRIVATE_CONSTR_ARGS(Class,...) Class::Class( private_constr_t, __VA_ARGS__ )
 
+#define ZYPP_NODISCARD [[nodiscard]]
+
 #endif

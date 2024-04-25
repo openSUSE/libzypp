@@ -140,7 +140,7 @@ namespace zypp
 
   bool CombinedProgressData::operator()( const ProgressData &progress )
   {
-    if ( progress.reportAlive() || ( _weight == 0 ) )
+    if ( progress.reportAlive() || _pd.reportAlive() || ( _weight == 0 ) )
       return _pd.tick();
 
     // factor [0,1] of increase in subtask ( ie: before 0,2 now 0.5 )
@@ -150,7 +150,7 @@ namespace zypp
     // real increment of the parent task
     float real_increment = parent_factor*increment;
     _last_value = progress.val();
-    return _pd.incr( (int)( (_pd.max()-_pd.min()) * real_increment) );
+    return _pd.incr( (ProgressData::value_type)( (_pd.max()-_pd.min()) * real_increment) );
   }
 
   /////////////////////////////////////////////////////////////////

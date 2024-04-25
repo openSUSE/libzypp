@@ -162,13 +162,16 @@ class MediaCurl : public MediaNetworkCommonHandler
   private:
     std::string _currentCookieFile;
     static Pathname _cookieFile;
+    char _curlError[ CURL_ERROR_SIZE ];
 
     mutable std::string _lastRedirect;	///< to log/report redirections
 
   protected:
     CURL *_curl;
-    char _curlError[ CURL_ERROR_SIZE ];
     curl_slist *_customHeaders;
+
+    const char* curlError() const { return _curlError; };
+    void setCurlError(const char* error);
 };
 ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaCurl::RequestOptions);
 

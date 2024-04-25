@@ -389,6 +389,13 @@ void MediaCurl::setCookieFile( const Pathname &fileName )
   _cookieFile = fileName;
 }
 
+void MediaCurl::setCurlError(const char* error)
+{
+  // FIXME(dmllr): Use strlcpy if available for better performance
+  strncpy(_curlError, error, sizeof(_curlError)-1);
+  _curlError[sizeof(_curlError)-1] = '\0';
+}
+
 ///////////////////////////////////////////////////////////////////
 
 void MediaCurl::checkProtocol(const Url &url) const

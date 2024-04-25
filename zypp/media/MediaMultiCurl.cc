@@ -432,7 +432,7 @@ multifetchworker::headerfunction( char *p, size_t bytes )
   if ( repSize && *repSize != _request->_filesize  ) {
       XXX << "#" << _workerno << ": filesize mismatch" << endl;
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "filesize mismatch", CURL_ERROR_SIZE);
+      setCurlError("filesize mismatch");
       return 0;
   }
 
@@ -453,7 +453,7 @@ multifetchworker::multifetchworker(int no, multifetchrequest &request, const Url
   if (!_curl && !(_curl = curl_easy_init()))
     {
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "curl_easy_init failed", CURL_ERROR_SIZE);
+      setCurlError("curl_easy_init failed");
       return;
     }
 
@@ -472,7 +472,7 @@ bool multifetchworker::setupHandle()
     curl_easy_cleanup(_curl);
     _curl = 0;
     _state = WORKER_BROKEN;
-    strncpy(_curlError, "curl_easy_setopt failed", CURL_ERROR_SIZE);
+    setCurlError("curl_easy_setopt failed");
     return false;
   }
   curl_easy_setopt(_curl, CURLOPT_PRIVATE, this);
@@ -587,7 +587,7 @@ multifetchworker::checkdns()
   if (pipe(pipefds))
     {
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "DNS pipe creation failed", CURL_ERROR_SIZE);
+      setCurlError("DNS pipe creation failed");
       return;
     }
   _pid = fork();
@@ -597,7 +597,7 @@ multifetchworker::checkdns()
       close(pipefds[1]);
       _pid = 0;
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "DNS checker fork failed", CURL_ERROR_SIZE);
+      setCurlError("DNS checker fork failed");
       return;
     }
   else if (_pid == 0)
@@ -665,7 +665,7 @@ multifetchworker::dnsevent( const std::vector<GPollFD> &waitFds )
   if (!WIFEXITED(status))
     {
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "DNS lookup failed", CURL_ERROR_SIZE);
+      setCurlError("DNS lookup failed");
       _request->_activeworkers--;
       return;
     }
@@ -674,7 +674,7 @@ multifetchworker::dnsevent( const std::vector<GPollFD> &waitFds )
   if (exitcode != 0)
     {
       _state = WORKER_BROKEN;
-      strncpy(_curlError, "DNS lookup failed", CURL_ERROR_SIZE);
+      setCurlError("DNS lookup failed");
       _request->_activeworkers--;
       return;
     }
@@ -927,7 +927,7 @@ bool multifetchworker::continueJob()
 {
   bool hadRangeFail = _multiByteHandler->lastError() == MultiByteHandler::Code::RangeFail;
   if ( !_multiByteHandler->prepareToContinue() ) {
-    strncpy( _curlError, _multiByteHandler->lastErrorMessage().c_str(), CURL_ERROR_SIZE );
+    setCurlError(_multiByteHandler->lastErrorMessage().c_str());
     return false;
   }
 
@@ -956,14 +956,14 @@ multifetchworker::run()
   if ( !_multiByteHandler->prepare() ) {
     _request->_activeworkers--;
     _state = WORKER_BROKEN;
-    strncpy( _curlError, _multiByteHandler->lastErrorMessage ().c_str() , CURL_ERROR_SIZE );
+    setCurlError(_multiByteHandler->lastErrorMessage ().c_str());
     return;
   }
 
   if (curl_multi_add_handle(_request->_multi, _curl) != CURLM_OK) {
     _request->_activeworkers--;
     _state = WORKER_BROKEN;
-    strncpy( _curlError, "curl_multi_add_handle failed", CURL_ERROR_SIZE );
+    setCurlError("curl_multi_add_handle failed");
     return;
   }
 
@@ -1077,7 +1077,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
             {
               if ((*workeriter)->_state != WORKER_BROKEN)
                 continue;
-              ZYPP_THROW(MediaCurlException(_baseurl, "Server error", (*workeriter)->_curlError));
+              ZYPP_THROW(MediaCurlException(_baseurl, "Server error", (*workeriter)->curlError()));
             }
           break;
         }
@@ -1200,7 +1200,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
           const auto &setWorkerBroken = [&]( const std::string &str = {} ){
             worker->_state = WORKER_BROKEN;
             if ( !str.empty () )
-              strncpy(worker->_curlError, str.c_str(), CURL_ERROR_SIZE);
+              worker->setCurlError(str.c_str());
             _activeworkers--;
 
             if (!_activeworkers && !(urliter != urllist.end() && _workers.size() < MAXURLS)) {

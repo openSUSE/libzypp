@@ -29,6 +29,7 @@ OPTION (ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER "[preview] Force zy
 
 OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
+OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
 #--------------------------------------------------------------------------------
 SET (have_system x)
@@ -117,6 +118,10 @@ if ( NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   #cli args ignored by clang, it still prints a noisy warning though
   SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -rdynamic -Wl,-as-needed" )
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -Wl,-as-needed" )
+  if( ENABLE_UBSAN_CHECKS )
+    SET( CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} -fsanitize=undefined" )
+    SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=undefined" )
+  endif()
 endif()
 
 SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )

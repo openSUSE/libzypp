@@ -192,7 +192,8 @@ namespace zyppng {
       struct progress_helper<progress_helper_mode::Finish>
       {
         progress_helper( ProgressObserverRef &&progressObserver, ProgressObserver::FinishResult result = ProgressObserver::Success )
-          : _progressObserver( std::move(progressObserver) ){}
+          : _progressObserver( std::move(progressObserver) )
+          , _result(result){}
 
         template <typename T>
         auto operator() ( T &&t ) {

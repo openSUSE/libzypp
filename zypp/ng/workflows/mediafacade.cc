@@ -233,7 +233,7 @@ namespace zyppng {
       zypp::Pathname fileName(url.getPathName());
       url.setPathName ("/");
 
-      expected<MediaSyncFacade::Res> res = attachMedia( urls, ProvideMediaSpec( "" ) )
+      expected<MediaSyncFacade::Res> res = attachMedia( url, ProvideMediaSpec( "" ) )
           | and_then( [&, this]( const MediaSyncFacade::MediaHandle& handle ) {
               return provide( handle, fileName, request.asOnMediaLocation(fileName, 1));
             });

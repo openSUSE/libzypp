@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 29 12:00:59 CEST 2024 - ma@suse.de
+
+- Fix download from gpgkey URL (bsc#1223430, fixes openSUSE/zypper#546)
+- version 17.32.6 (32)
+
+-------------------------------------------------------------------
 Fri Apr 19 15:58:26 CEST 2024 - ma@suse.de
 
 - Don't try to refresh volatile media as long as raw metadata are

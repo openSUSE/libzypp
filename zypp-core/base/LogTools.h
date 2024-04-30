@@ -13,6 +13,7 @@
 #define ZYPP_BASE_LOGTOOLS_H
 
 #include <iostream>
+#include <optional>
 #include <string>
 #include <vector>
 #include <list>
@@ -515,6 +516,18 @@ namespace zypp
     return str << info.name();
 #endif
   }
+
+#ifdef __cpp_lib_optional // YAST/PK explicitly use c++11 until 15-SP3
+  template<class Tp>
+  inline std::ostream & operator<<( std::ostream & str, const std::optional<Tp> & obj )
+  {
+    if ( obj )
+      str << "opt(" << *obj << ")";
+    else
+      str << "nullopt";
+    return str;
+  }
+#endif
 
 
   /////////////////////////////////////////////////////////////////

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-03-02 00:45+0000\n"
+"PO-Revision-Date: 2024-04-30 21:43+0000\n"
 "Last-Translator: Antonio Simón <antonio@trans-mission.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/es/"
 ">\n"
@@ -3815,7 +3815,7 @@ msgstr "Se necesita un contrato adicional de cliente"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Se ha discontinuado y ha quedado obsoleto por otro paquete"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3872,6 +3872,8 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"El paquete se ha discontinuado y ha quedado obsoleto por un nuevo paquete "
+"con otro nombre."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3958,57 +3960,62 @@ msgstr "No es posible crear el directorio para el caché de metadatos."
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "No hay resumen para el archivo %s."
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Resumen desconocido %s para el archivo %s."
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Error de verificación del resumen para el archivo %s"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "El archivo %s no está asignado. ¿Desea continuar?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "El archivo %s del repositorio %s no está asignado. ¿Desea continuar?"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
+"¿Desea rechazar la clave, confiar en ella temporalmente o confiar en ella "
+"siempre?"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Nombre de la clave: %1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
 msgstr[0] ""
+"Ha recibido %1% clave de firma de paquete nueva para el repositorio %2%:"
 msgstr[1] ""
+"Ha recibido %1% clave de firmas de paquete nuevas para el repositorio %2%:"
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Error de verificación de firma para el archivo %1%."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
+"Error de verificación de firma para el archivo %1% desde el repositorio %2%."
 
 #. @TODO use a centralized Continue string!
 #: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
@@ -4020,6 +4027,7 @@ msgstr "¿Desea continuar?"
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"El archivo %s está firmado con una clave desconocida %s. ¿Desea continuar?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
@@ -4027,6 +4035,8 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"El archivo %s del repositorio %s está firmado con una clave desconocida %s. ¿"
+"Desea continuar?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77

@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-03-04 10:43+0000\n"
+"PO-Revision-Date: 2024-04-30 05:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (Taiwan) <https://l10n.opensuse.org/projects/libzypp/"
 "master/zh_TW/>\n"
@@ -3796,7 +3796,7 @@ msgstr "需要額外的使用者授權"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "已停產且已被另一個套件取代"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3846,7 +3846,7 @@ msgstr "要取得支援，需要額外的使用者授權。"
 msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
-msgstr ""
+msgstr "該套件已停產，一個使用其他名稱的新套件已將其取代。"
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3927,56 +3927,56 @@ msgstr "無法建立中繼資料快取目錄。"
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "檔案 %s 無摘要。"
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "未知摘要 %s (檔案 %s)。"
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "檔案 '%s' 的摘要驗證失敗"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "檔案 '%s' 未經簽署，要繼續嗎？"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "檔案 '%s' (來自儲存庫 '%s') 未經簽署，要繼續嗎？"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
-msgstr ""
+msgstr "您想要拒絕該金鑰、暫時信任還是永遠信任該金鑰？"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "金鑰名稱：%1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
+msgstr[0] "從儲存庫 \"%2%\" 中收到 %1% 個新的套件簽署金鑰："
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "檔案 '%1%' 的簽名驗證失敗。"
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr ""
+msgstr "對儲存庫 '%2%' 中的檔案 '%1%' 的簽名驗證失敗。"
 
 #. @TODO use a centralized Continue string!
 #: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
@@ -3987,14 +3987,14 @@ msgstr "要繼續嗎？"
 #: zypp/ng/workflows/keyringwf.cc:419
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "檔案 '%s' 經未知金鑰 '%s' 簽署。要繼續嗎？"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
 #, c-format, boost-format
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "檔案 '%s' (來自儲存庫 '%s') 經未知金鑰 '%s' 簽署。要繼續嗎？"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77

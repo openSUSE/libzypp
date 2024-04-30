@@ -134,7 +134,7 @@ namespace zypp
   /// \brief Class representing a signature on a GPG Public Key.
   /// \see \ref PublicKeyData.
   ///////////////////////////////////////////////////////////////////
-  class PublicKeySignatureData
+  class ZYPP_API PublicKeySignatureData
   {
   public:
     /** Default constructed: empty data. */
@@ -344,7 +344,7 @@ namespace zypp
   std::ostream & dumpOn( std::ostream & str, const PublicKeyData & obj ) ZYPP_API;
 
   /** \relates PublicKeyData Equal based on  fingerprint anf creation date. */
-  bool operator==( const PublicKeyData & lhs, const PublicKeyData & rhs );
+  bool operator==( const PublicKeyData & lhs, const PublicKeyData & rhs ) ZYPP_API;
 
   /** \relates PublicKeyData NotEqual. */
   inline bool operator!=( const PublicKeyData & lhs, const PublicKeyData & rhs )

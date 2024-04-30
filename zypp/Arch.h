@@ -244,7 +244,7 @@ namespace zypp
   extern const Arch Arch_armv7thl ZYPP_API;	/* exists? */
 
   /** \relates Arch */
-  extern const Arch Arch_armv7hnl,	/* legacy: */Arch_armv7nhl ZYPP_API;
+  extern const Arch Arch_armv7hnl ZYPP_API,	/* legacy: */Arch_armv7nhl ZYPP_API;
   /** \relates Arch */
   extern const Arch Arch_armv7hl ZYPP_API;
   /** \relates Arch */

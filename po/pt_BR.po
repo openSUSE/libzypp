@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2023-10-04 23:15+0000\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
+"PO-Revision-Date: 2024-05-02 00:43+0000\n"
+"Last-Translator: Samanta Magalhaes <samanta_texttrans@outlook.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/"
 "libzypp/master/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -3806,7 +3806,7 @@ msgstr "Contrato adicional do consumidor necessário"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Descontinuado e substituído por um pacote diferente"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3862,6 +3862,8 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"O pacote foi descontinuado e substituído por um novo pacote com um nome "
+"diferente."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3949,57 +3951,61 @@ msgstr "Não foi possível criar o diretório do cache de metadados."
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Nenhum digest para o arquivo %s."
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Digest %s desconhecido para o arquivo %s."
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Falha na verificação do digest para o arquivo '%s'"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "O arquivo '%s' não está assinado. Continuar?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "O arquivo '%s' do repositório '%s' não está assinado. Continuar?"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
+"Você deseja rejeitar a chave, confiar nela temporariamente ou confiar nela "
+"sempre?"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Nome da Chave: %1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
+msgstr[0] "%1% chave de assinatura de novo pacote recebida do repositório \"%2%\":"
 msgstr[1] ""
+"%1% chaves de assinatura de novo pacote recebidas do repositório \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Falha na verificação de assinatura para o arquivo '%1%'."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
+"Falha na verificação de assinatura para o arquivo '%1%' do repositório '%2%'."
 
 # internal key used: Ok
 #. @TODO use a centralized Continue string!
@@ -4012,6 +4018,7 @@ msgstr "Continuar?"
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"O arquivo '%s' está assinado com uma chave desconhecida '%s'. Continuar?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
@@ -4019,6 +4026,8 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"O arquivo '%s' do repositório '%s' está assinado com uma chave desconhecida "
+"'%s'. Continuar?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77

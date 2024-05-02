@@ -30,6 +30,7 @@
 #include <list>
 #include <map>
 
+#include <zypp/Globals.h>
 #include <zypp/solver/Types.h>
 #include <zypp/base/SerialNumber.h>
 
@@ -60,7 +61,7 @@ namespace zypp
  * all the solver logic and problem handling goes here; or completely merge
  * both classes.
  */
-class Resolver : private base::NonCopyable
+class ZYPP_API_DEPTESTOMATIC Resolver : private base::NonCopyable
 {
   typedef std::multimap<PoolItem,ItemCapKind> ItemCapKindMap;
   private:

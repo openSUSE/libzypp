@@ -42,7 +42,7 @@ namespace zypp
 //
 //	CLASS NAME : SolverQueueItemDelete
 
-class SolverQueueItemDelete : public SolverQueueItem {
+class ZYPP_API_DEPTESTOMATIC SolverQueueItemDelete : public SolverQueueItem {
 
   private:
 

@@ -60,7 +60,7 @@ namespace zypp::misc::testcase
     RWCOW_pointer<RepoDataImpl> _pimpl;
   };
 
-  class ForceInstall {
+  class ZYPP_API_DEPTESTOMATIC ForceInstall {
   public:
     ForceInstall ();
     ~ForceInstall ();
@@ -75,7 +75,7 @@ namespace zypp::misc::testcase
     RWCOW_pointer<ForceInstallImpl> _pimpl;
   };
 
-  class ZYPP_API TestcaseSetup
+  class ZYPP_API_DEPTESTOMATIC TestcaseSetup
   {
   public:
 

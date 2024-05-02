@@ -53,13 +53,18 @@
 
 #ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
   #define ZYPP_API	ZYPP_DECL_EXPORT
-  #define ZYPP_LOCAL	ZYPP_DECL_HIDDEN
   #define ZYPP_TESTS	ZYPP_DECL_EXPORT
+  #define ZYPP_LOCAL	ZYPP_DECL_HIDDEN
 #else
   #define ZYPP_API      ZYPP_DECL_IMPORT
   #define ZYPP_TESTS	ZYPP_DECL_IMPORT
   #define ZYPP_LOCAL
 #endif
+
+// A small set of internal symbols offered to the deptestomatic
+// tool (package libzypp-testsuite-tools) to load and evaluate
+// solver testcases.
+#define ZYPP_API_DEPTESTOMATIC  ZYPP_API
 
 /**
  * The ZYPP_DEPRECATED macro can be used to trigger compile-time warnings

@@ -18,6 +18,7 @@
 
 #include <string>
 #include <map>
+#include <zypp/Globals.h>
 
 /////////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -37,7 +38,7 @@ namespace zypp
       /**
        * Generating a testcase of the current pool and solver state.
        **/
-      class Testcase
+      class ZYPP_API_DEPTESTOMATIC Testcase
       {
         private:
           std::string dumpPath; // Path of the generated testcase

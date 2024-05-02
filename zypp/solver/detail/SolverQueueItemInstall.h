@@ -41,7 +41,7 @@ namespace zypp
 //
 //	CLASS NAME : SolverQueueItemInstall
 
-class SolverQueueItemInstall : public SolverQueueItem {
+class ZYPP_API_DEPTESTOMATIC SolverQueueItemInstall : public SolverQueueItem {
 
   private:
 

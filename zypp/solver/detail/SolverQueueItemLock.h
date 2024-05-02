@@ -41,7 +41,7 @@ namespace zypp
 //
 //	CLASS NAME : SolverQueueItemLock
 
-class SolverQueueItemLock : public SolverQueueItem {
+class ZYPP_API_DEPTESTOMATIC SolverQueueItemLock : public SolverQueueItem {
 
   private:
 

@@ -40,7 +40,7 @@ namespace zypp
 //
 //	CLASS NAME : SolverQueueItemInstallOneOf
 
-class SolverQueueItemInstallOneOf : public SolverQueueItem {
+class ZYPP_API_DEPTESTOMATIC SolverQueueItemInstallOneOf : public SolverQueueItem {
 
   public:
     typedef std::list<PoolItem> PoolItemList;

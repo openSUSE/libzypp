@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 
+#include <zypp/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/IdString.h>
 
@@ -32,7 +33,7 @@ namespace zypp
     //
     /** Hardware abstaction layer singleton.
      */
-    class Modalias
+    class ZYPP_API_DEPTESTOMATIC Modalias
     {
       friend std::ostream & operator<<( std::ostream & str, const Modalias & obj );
 
@@ -90,7 +91,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates Modalias Stream output */
-    std::ostream & operator<<( std::ostream & str, const Modalias & obj );
+    std::ostream & operator<<( std::ostream & str, const Modalias & obj ) ZYPP_API_DEPTESTOMATIC;
 
     /////////////////////////////////////////////////////////////////
   } // namespace target

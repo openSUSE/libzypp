@@ -41,7 +41,7 @@ namespace zypp
 #define TRACE ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__ )
 
     // OnScreenDebug messages colored to stderr
-    struct Osd
+    struct ZYPP_API Osd
     {
       Osd( std::ostream &, int = 0 );
       ~Osd();

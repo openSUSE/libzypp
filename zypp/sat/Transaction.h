@@ -192,13 +192,13 @@ namespace zypp
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Transaction::StepStages);
 
     /** \relates Transaction Stream output */
-    std::ostream & operator<<( std::ostream & str, const Transaction & obj );
+    std::ostream & operator<<( std::ostream & str, const Transaction & obj ) ZYPP_API;
 
     /** \relates Transaction Verbose stream output */
-    std::ostream & dumpOn( std::ostream & str, const Transaction & obj );
+    std::ostream & dumpOn( std::ostream & str, const Transaction & obj ) ZYPP_API;
 
     /** \relates Transaction */
-    bool operator==( const Transaction & lhs, const Transaction & rhs );
+    bool operator==( const Transaction & lhs, const Transaction & rhs ) ZYPP_API;
 
     /** \relates Transaction */
     inline bool operator!=( const Transaction & lhs, const Transaction & rhs )
@@ -275,13 +275,13 @@ namespace zypp
     };
 
     /** \relates Transaction::Step Stream output */
-    std::ostream & operator<<( std::ostream & str, const Transaction::Step & obj );
+    std::ostream & operator<<( std::ostream & str, const Transaction::Step & obj ) ZYPP_API;
 
     /** \relates Transaction::StepType Stream output */
-    std::ostream & operator<<( std::ostream & str, Transaction::StepType obj );
+    std::ostream & operator<<( std::ostream & str, Transaction::StepType obj ) ZYPP_API;
 
     /** \relates Transaction::StepStage Stream output */
-    std::ostream & operator<<( std::ostream & str, Transaction::StepStage obj );
+    std::ostream & operator<<( std::ostream & str, Transaction::StepStage obj ) ZYPP_API;
 
    ///////////////////////////////////////////////////////////////////
     namespace detail

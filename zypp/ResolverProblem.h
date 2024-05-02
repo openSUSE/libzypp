@@ -94,10 +94,10 @@ namespace zypp
   };
 
   /** \relates ResolverProblem Stream output */
-  std::ostream & operator<<( std::ostream &, const ResolverProblem & obj );
+  std::ostream & operator<<( std::ostream &, const ResolverProblem & obj ) ZYPP_API;
 
   /** \relates ResolverProblem Stream output */
-  std::ostream & operator<<( std::ostream &, const ResolverProblemList & obj );
+  std::ostream & operator<<( std::ostream &, const ResolverProblemList & obj ) ZYPP_API;
 
 
 } // namespace zypp

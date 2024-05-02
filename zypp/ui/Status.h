@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <zypp/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

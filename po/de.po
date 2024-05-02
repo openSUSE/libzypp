@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: zypp.de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-01-06 01:59+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/libzypp/master/de/"
-">\n"
+"PO-Revision-Date: 2024-05-02 09:43+0000\n"
+"Last-Translator: Gemineo <vistatec@gemineo.de>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/libzypp/master/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3807,7 +3807,7 @@ msgstr "Zusätzlicher Kundenvertrag erforderlich"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Nicht mehr in Betrieb und durch ein anderes Paket ersetzt"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3865,6 +3865,8 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"Das Paket ist nicht mehr in Betrieb und wurde durch ein neueres Paket mit "
+"einem anderen Namen ersetzt."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3951,57 +3953,58 @@ msgstr "Metadaten-Cache-Verzeichnis konnte nicht erstellt werden."
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Kein Digest für Datei %s."
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Unbekannter Digest %s für Datei %s."
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Fehler beim Überprüfen des Digest für Datei '%s'"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Die Datei '%s' ist unsigniert. Weiter?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Die Datei '%s' aus dem Repository '%s' ist unsigniert. Weiter?"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
-msgstr ""
+msgstr "Wollen Sie den Schlüssel abweisen, ihm temporär oder immer vertrauen?"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Schlüsselname: %1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1% neuen Paket-Signierschlüssel von Repository \"%2%\" erhalten:"
+msgstr[1] "%1% neue Paket-Signierschlüssel von Repository \"%2%\" erhalten:"
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Signaturüberprüfung für Datei '%1%' fehlgeschlagen."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
+"Signaturüberprüfung für Datei '%1%' aus Repository '%2%' fehlgeschlagen."
 
 # internal key used: Ok
 # internal key used: Ok
@@ -4014,7 +4017,7 @@ msgstr "Fortfahren?"
 #: zypp/ng/workflows/keyringwf.cc:419
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "Datei '%s' ist mit einem unbekannten Schlüssel '%s' signiert. Weiter?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
@@ -4022,6 +4025,8 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"Die Datei '%s' aus dem Repository '%s' ist mit einem unbekannten Schlüssel "
+"'%s' signiert. Weiter?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77

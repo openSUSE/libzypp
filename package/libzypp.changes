@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May  3 14:06:58 CEST 2024 - ma@suse.de
+
+- version 17.33.1 (33)
+
+-------------------------------------------------------------------
 Fri May  3 11:31:43 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - switch to reduced size libsolv-tools-base (jsc#PED-8153)

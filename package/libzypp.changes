@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri May  3 12:52:22 CEST 2024 - ma@suse.de
+
+- Fixed check for outdated repo metadata as non-root user
+  (bsc#1222086)
+- Add ZYPP_API for exported functions and switch to
+  visibility=hidden (jsc#PED-8153)
+- Dynamically resolve libproxy (jsc#PED-8153)
+- version 17.33.0 (33)
+
+-------------------------------------------------------------------
 Mon Apr 29 12:00:59 CEST 2024 - ma@suse.de
 
 - Fix download from gpgkey URL (bsc#1223430, fixes openSUSE/zypper#546)

@@ -117,8 +117,13 @@ BuildRequires:  pkg-config
 %endif
 
 BuildRequires:  libsolv-devel >= 0.7.24
+%if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150600
+BuildRequires:  libsolv-tools-base >= 0.7.29
+%requires_eq    libsolv-tools-base >= 0.7.29
+%else
 BuildRequires:  libsolv-tools
 %requires_eq    libsolv-tools
+%endif
 
 BuildRequires:  glib2-devel
 BuildRequires:  libsigc++2-devel

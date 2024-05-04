@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-03-01 17:42+0000\n"
+"PO-Revision-Date: 2024-05-04 16:43+0000\n"
 "Last-Translator: Davide Aiello <davide.aiello@novilingulists.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/it/"
 ">\n"
@@ -3805,7 +3805,7 @@ msgstr "Contratto clienti aggiuntivo necessario"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Non più supportato e sostituito da un pacchetto diverso"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3861,6 +3861,8 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"Il pacchetto non è più supportato ed è stato sostituito da un nuovo "
+"pacchetto con un nome diverso."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3947,57 +3949,62 @@ msgstr "Impossibile creare la directory della cache dei metadati."
 #: zypp/ng/workflows/checksumwf.cc:117
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Nessun sommario per il file %s."
 
 #: zypp/ng/workflows/checksumwf.cc:123
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Sommario %s sconosciuto per il file %s."
 
 #: zypp/ng/workflows/checksumwf.cc:129
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Verifica del sommario non riuscita per il file '%s'"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:358
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Il file '%s' non è firmato. Continuare?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/workflows/keyringwf.cc:362
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Il file '%s' dal repository '%s' non è firmato. Continuare?"
 
 #: zypp/ng/workflows/keyringwf.cc:374
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
+"Rifiutare la chiave, considerarla temporaneamente attendibile o considerarla "
+"sempre attendibile?"
 
 #: zypp/ng/workflows/keyringwf.cc:383
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Nome della chiave: %1%"
 
 #: zypp/ng/workflows/keyringwf.cc:389
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
 msgstr[0] ""
+"Ricevuta %1% nuova chiave di firma del pacchetto dal repository \"%2%\":"
 msgstr[1] ""
+"Ricevute %1% nuove chiavi di firma del pacchetto dal repository \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/ng/workflows/keyringwf.cc:400
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Verifica della firma non riuscita per il file '%1%'."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/workflows/keyringwf.cc:403
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
+"Verifica della firma non riuscita per il file '%1%' dal repository '%2%'."
 
 # internal key used: Ok
 # internal key used: Ok
@@ -4010,7 +4017,7 @@ msgstr "Continuare?"
 #: zypp/ng/workflows/keyringwf.cc:419
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "Il file '%s' è firmato con una chiave sconosciuta '%s'. Continuare?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/workflows/keyringwf.cc:423
@@ -4018,12 +4025,14 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"Il file '%s' dal repository '%s' è firmato con una chiave sconosciuta '%s'. "
+"Continuare?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:77
 #, boost-format
 msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "Il repository %1% non definisce URL aggiuntivi 'gpgkey=' ."
+msgstr "Il repository %1% non definisce URL aggiuntivi 'gpgkey='."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4049,7 +4058,7 @@ msgstr "L'attributo richiesto '%s' è mancante."
 #: zypp/parser/RepoindexFileReader.cc:210
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
-msgstr "È richiesto uno o entrambi gli attributi '%s' e '%s'."
+msgstr "Uno o entrambi gli attributi '%s' o '%s' sono richiesti."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"

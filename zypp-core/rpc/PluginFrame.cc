@@ -14,7 +14,7 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
 
-#include <zypp/PluginFrame.h>
+#include <zypp-core/rpc/PluginFrame.h>
 
 using std::endl;
 

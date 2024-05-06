@@ -30,8 +30,6 @@ SET( zypp_SRCS
   DiskUsageCounter.cc
   DownloadMode.cc
   Edition.cc
-  PluginFrame.cc
-  PluginFrameException.cc
   PluginScript.cc
   PluginScriptException.cc
   PluginExecutor.cc
@@ -117,8 +115,6 @@ SET( zypp_HEADERS
   DiskUsageCounter.h
   DownloadMode.h
   Edition.h
-  PluginFrame.h
-  PluginFrameException.h
   PluginScript.h
   PluginScriptException.h
   PluginExecutor.h

@@ -133,6 +133,20 @@ SET( zypp_fs_HEADERS
 
 INSTALL(  FILES ${zypp_fs_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/fs" )
 
+
+SET( zypp_rpc_SRCS
+  rpc/PluginFrame.cc
+  rpc/PluginFrameException.cc
+)
+
+SET( zypp_rpc_HEADERS
+  rpc/PluginFrame.h
+  rpc/PluginFrameException.h
+)
+
+INSTALL(  FILES ${zypp_rpc_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/rpc" )
+
+
 SET( zypp_ui_SRCS
   ui/progressdata.cc
 )
@@ -363,6 +377,7 @@ SET ( zypp_HEADERS
   ${zyppng_async_HEADERS}
   ${zypp_base_HEADERS}
   ${zypp_fs_HEADERS}
+  ${zypp_rpc_HEADERS}
   ${zypp_ui_HEADERS}
   ${zypp_url_HEADERS}
   ${zypp_parser_HEADERS}
@@ -385,6 +400,7 @@ SET ( zypp_SRCS
   ${zypp_toplevel_SRCS}
   ${zypp_base_SRCS}
   ${zypp_fs_SRCS}
+  ${zypp_rpc_SRCS}
   ${zypp_ui_SRCS}
   ${zypp_url_SRCS}
   ${zypp_parser_SRCS}

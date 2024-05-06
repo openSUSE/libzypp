@@ -19,7 +19,7 @@
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Pathname.h>
 
-#include <zypp/PluginFrame.h>
+#include <zypp-core/rpc/PluginFrame.h>
 #include <zypp/PluginScriptException.h>
 
 ///////////////////////////////////////////////////////////////////

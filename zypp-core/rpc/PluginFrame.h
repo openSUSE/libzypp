@@ -9,8 +9,8 @@
 /** \file	zypp/PluginFrame.h
  *
 */
-#ifndef ZYPP_PLUGINFRAME_H
-#define ZYPP_PLUGINFRAME_H
+#ifndef ZYPP_CORE_PLUGINFRAME_H
+#define ZYPP_CORE_PLUGINFRAME_H
 
 #include <iosfwd>
 #include <string>
@@ -18,7 +18,7 @@
 
 #include <zypp/base/PtrTypes.h>
 
-#include <zypp/PluginFrameException.h>
+#include <zypp-core/rpc/PluginFrameException.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -274,4 +274,4 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_PLUGINFRAME_H
+#endif // ZYPP_CORE_PLUGINFRAME_H

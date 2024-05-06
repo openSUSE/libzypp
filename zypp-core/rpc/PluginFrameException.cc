@@ -12,8 +12,8 @@
 #include <iostream>
 //#include <zypp/base/LogTools.h>
 
-#include <zypp/PluginFrameException.h>
-#include <zypp/PluginFrame.h>
+#include <zypp-core/rpc/PluginFrameException.h>
+#include <zypp-core/rpc/PluginFrame.h>
 
 using std::endl;
 

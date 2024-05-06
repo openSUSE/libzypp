@@ -9,10 +9,8 @@
 /** \file	zypp/PluginFrameException.h
  *
 */
-#ifndef ZYPP_PLUGINFRAMEEXCEPTION_H
-#define ZYPP_PLUGINFRAMEEXCEPTION_H
-
-#include <iosfwd>
+#ifndef ZYPP_CORE_PLUGINFRAMEEXCEPTION_H
+#define ZYPP_CORE_PLUGINFRAMEEXCEPTION_H
 
 #include <zypp/base/Exception.h>
 #include <zypp/Pathname.h>
@@ -39,4 +37,4 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_PLUGINFRAMEEXCEPTION_H
+#endif // ZYPP_CORE_PLUGINFRAMEEXCEPTION_H

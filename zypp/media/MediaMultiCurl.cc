@@ -528,9 +528,7 @@ multifetchworker::~multifetchworker()
     {
       kill(_pid, SIGKILL);
       int status = 0;
-      while (waitpid(_pid, &status, 0) == -1)
-        if (errno != EINTR)
-          break;
+      zyppng::eintrSafeCall( waitpid, _pid, &status, 0);
       _pid = 0;
     }
   if (_dnspipe != -1)
@@ -651,11 +649,7 @@ multifetchworker::dnsevent( const std::vector<GPollFD> &waitFds )
   if (_state != WORKER_LOOKUP || !hasEvent)
     return;
   int status = 0;
-  while (waitpid(_pid, &status, 0) == -1)
-    {
-      if (errno != EINTR)
-        return;
-    }
+  zyppng::eintrSafeCall( waitpid, _pid, &status, 0);
   _pid = 0;
   if (_dnspipe != -1)
     {

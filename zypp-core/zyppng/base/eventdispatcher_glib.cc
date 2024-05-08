@@ -1,6 +1,7 @@
 #include "timer.h"
 #include "private/eventdispatcher_glib_p.h"
 #include "private/threaddata_p.h"
+#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
 #include <zypp-core/base/Exception.h>
 #include <zypp-core/base/Logger.h>
@@ -499,7 +500,7 @@ bool EventDispatcher::waitForFdEvent( const int fd, int events , int &revents , 
   zypp::AutoDispose<GTimer *> timer( g_timer_new(), &g_timer_destroy );
   while ( !eventTriggered ) {
     g_timer_start( *timer );
-    const int res = g_poll( &pollFd, 1, timeout );
+    const int res = eintrSafeCall( g_poll, &pollFd, 1, timeout );
     switch ( res ) {
       case 0: //timeout
         timeout = 0;
@@ -513,9 +514,6 @@ bool EventDispatcher::waitForFdEvent( const int fd, int events , int &revents , 
         if ( timeout < 0 ) timeout = 0;
         if ( timeout <= 0 )
           return false;
-
-        if ( errno == EINTR )
-          continue;
 
         ERR << "g_poll error: " << strerror(errno) << std::endl;
         return false;

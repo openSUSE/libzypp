@@ -28,7 +28,7 @@ namespace zyppng {
 
     // Since Linux 2.6.27 we can pass additional flags with the type argument to avoid fcntl
     // if creating sockets fails we might need to change that
-    _socket = ::socket( _domain, _type | SOCK_NONBLOCK | SOCK_CLOEXEC, _protocol );
+    _socket = eintrSafeCall( ::socket, _domain, _type | SOCK_NONBLOCK | SOCK_CLOEXEC, _protocol );
     if ( _socket >= 0 )
       return true;
 
@@ -464,7 +464,7 @@ namespace zyppng {
     if ( !addr || !d->initSocket() )
       return false;
 
-    int res = ::bind( d->_socket, addr->nativeSockAddr(), addr->size() );
+    int res = eintrSafeCall( ::bind, d->_socket, addr->nativeSockAddr(), addr->size() );
     if ( res >= 0) return true;
 
     switch ( errno ) {
@@ -510,7 +510,7 @@ namespace zyppng {
     if ( !d->initSocket() )
       return false;
 
-    int res = ::listen( d->_socket, backlog );
+    int res = eintrSafeCall( ::listen, d->_socket, backlog );
     if ( res >= 0 ) {
       d->transition( Socket::ListeningState );
       return true;

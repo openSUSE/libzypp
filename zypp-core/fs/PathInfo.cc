@@ -282,11 +282,15 @@ namespace zypp
     //
     ///////////////////////////////////////////////////////////////////
 
-#define logResult MIL << endl, doLogResult
+#define logResult( ... ) doLogResult( __FUNCTION__, __LINE__, __VA_ARGS__ )
     namespace {
       /**  Helper function to log return values. */
-      inline int doLogResult( const int res, const char * rclass = 0 /*errno*/ )
+      inline int doLogResult( const char *function, const int line, const int res, const char * rclass = 0 /*errno*/ )
       {
+        // calling code has started a logline via: `MIL << "Some text";` but did not flush it via endl yet.
+        // we need to do this here but pass the actual function and line to getStream, because the last call to it before
+        // flushing is setting the logging location ( function/line ).
+        zypp::base::logger::getStream( ZYPP_BASE_LOGGER_LOGGROUP, zypp::base::logger::E_MIL, L_BASEFILE, function, line ) << endl;
         if ( res )
         {
           if ( rclass )

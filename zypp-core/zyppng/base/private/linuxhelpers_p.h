@@ -34,9 +34,8 @@ namespace zyppng {
   template<typename Fun, typename RestartCb, typename... Args >
   auto eintrSafeCallEx ( const Fun &function, const RestartCb &restartCb, Args&&... args ) {
     int res = 0;
-    int oerrno = errno;
     while ( true ) {
-      errno = oerrno;
+      errno = 0;
       res = std::invoke(function, args... );
       if ( res == -1 && errno == EINTR ) {
         std::invoke( restartCb );

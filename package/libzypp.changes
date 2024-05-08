@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May  8 14:05:16 CEST 2024 - bzeller@suse.de
+
+- Revert eintrSafeCall behavior to setting errno to 0.
+- version 17.33.3 (34)
+
+-------------------------------------------------------------------
 Mon May  6 08:28:32 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - fix up requires_eq usage for libsolv-tools-base

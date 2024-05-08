@@ -81,9 +81,10 @@ namespace zyppng {
     int res = -1;
     guint8 one = 1;
 
-    do
+    do {
+      errno = 0;
       res = write (d->fds[1], &one, sizeof one);
-    while (G_UNLIKELY (res == -1 && errno == EINTR));
+    } while (G_UNLIKELY (res == -1 && errno == EINTR));
   }
 
   SignalProxy<void ()> AsyncQueueWatch::sigMessageAvailable()

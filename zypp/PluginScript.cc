@@ -318,6 +318,7 @@ namespace zypp
         watchFd.events =  G_IO_OUT | G_IO_ERR;
         watchFd.revents = 0;
 
+        errno = 0;
         int retval = g_poll( &watchFd, 1, _sendTimeout * 1000 );
         if ( retval > 0 )	// FD_ISSET( fd, &wfds ) will be true.
         {

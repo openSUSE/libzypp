@@ -240,7 +240,7 @@ namespace zypp {
 
         // Create pair of ttys
         DBG << "Using ttys for communication with " << argv[0] << endl;
-        if (openpty (&master_tty, &slave_tty, 0, 0, 0) != 0)
+        if ( zyppng::eintrSafeCall( ::openpty, &master_tty, &slave_tty, (char *)0, (termios *)0, (winsize *)0) != 0)
         {
           _backend->setExecError( str::form( _("Can't open pty (%s)."), strerror(errno) ) );
           _backend->setExitStatus( 126 );
@@ -386,14 +386,11 @@ namespace zypp {
             if ( delay >= 0 && ++delay > 9 )
               delay = -1;
 
-            int retval = g_poll( &rfd, 1, timeout );
-
+            int retval = zyppng::eintrSafeCall( g_poll, &rfd, 1, timeout );
             if ( retval == -1 )
             {
-              if ( errno != EINTR ) {
-                ERR << "select error: " << strerror(errno) << endl;
-                break;
-              }
+              ERR << "select error: " << strerror(errno) << endl;
+              break;
             }
             else if ( retval )
             {

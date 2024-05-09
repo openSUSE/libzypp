@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May  9 13:43:39 UTC 2024 - Dirk Müller <dmueller@suse.com>
+
+- add one more missing export for libyui-qt-pkg
+
+-------------------------------------------------------------------
 Wed May  8 14:05:16 CEST 2024 - bzeller@suse.de
 
 - Revert eintrSafeCall behavior to setting errno to 0.

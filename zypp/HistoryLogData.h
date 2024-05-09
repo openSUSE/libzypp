@@ -406,7 +406,7 @@ namespace zypp
   /// \brief A zypp history log line for a repo url change.
   /// \ingroup g_ZyppHistory
   ///////////////////////////////////////////////////////////////////
-  class HistoryLogDataRepoUrlChange : public HistoryLogData
+  class ZYPP_API HistoryLogDataRepoUrlChange : public HistoryLogData
   {
   public:
     using Ptr = shared_ptr<HistoryLogDataRepoUrlChange>;

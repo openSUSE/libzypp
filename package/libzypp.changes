@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 13 11:48:13 CEST 2024 - bzeller@suse.de
+
+- version 17.33.4 (35)
+
+-------------------------------------------------------------------
 Thu May  9 13:43:39 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - add one more missing export for libyui-qt-pkg

@@ -106,7 +106,7 @@ BuildRequires:  yaml-cpp-devel
 BuildRequires:  libproxy-devel
 
 #keep the libproxy runtime requires for old releases
-%if 0%{?sle_version} <= 150500
+%if 0%{?suse_version} && 0%{?suse_version} <= 1500 && 0%{?sle_version} <= 150500
 Requires: libproxy1
 %endif
 

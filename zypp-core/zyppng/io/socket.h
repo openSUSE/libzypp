@@ -89,7 +89,7 @@ namespace zyppng {
     /*!
      * Returns the current number of bytes that are not yet written to the socket.
      */
-    int64_t bytesPending() const;
+    int64_t bytesPending() const override;
 
     /*!
      * Returns the current state the socket is in,

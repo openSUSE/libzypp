@@ -128,6 +128,7 @@ namespace zyppng {
         _state.emplace<SocketPrivate::ClosedState>();
         if ( _socket >= 0 && !_borrowedSocket )
           ::close( _socket );
+        z_func()->finishReadChannel( 0 );
         _socket = -1;
         _targetAddr.reset();
         _disconnected.emit();

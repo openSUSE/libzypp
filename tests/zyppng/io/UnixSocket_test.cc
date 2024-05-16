@@ -70,6 +70,7 @@ BOOST_AUTO_TEST_CASE ( lorem )
     bool timedOut = false;
     bool gotConnected = false;
     bool gotDisconnected = false;
+    bool gotReadChanFinished = false;
     auto error = zyppng::Socket::NoError;
 
     sock->sigError().connect( [&]( const zyppng::Socket::SocketError err ){
@@ -88,6 +89,11 @@ BOOST_AUTO_TEST_CASE ( lorem )
       gotDisconnected = true;
       BOOST_REQUIRE_EQUAL( sock->state(), zyppng::Socket::ClosedState );
       ev->quit();
+    });
+
+    sock->sigReadChannelFinished().connect( [&]( uint chan ){
+      gotReadChanFinished = true;
+      BOOST_REQUIRE_EQUAL( chan, 0 );
     });
 
     sock->sigReadyRead().connect([&](){
@@ -121,6 +127,7 @@ BOOST_AUTO_TEST_CASE ( lorem )
     BOOST_REQUIRE_EQUAL( error, zyppng::Socket::NoError );
     BOOST_REQUIRE( gotConnected );
     BOOST_REQUIRE( gotDisconnected );
+    BOOST_REQUIRE( gotReadChanFinished );
     BOOST_REQUIRE_EQUAL( timedOut, false );
   });
 

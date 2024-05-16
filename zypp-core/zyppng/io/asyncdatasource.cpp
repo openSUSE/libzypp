@@ -128,8 +128,10 @@ namespace zyppng {
     bool sig = readFd._readFd >= 0;
     readFd._readNotifier.reset();
     readFd._readFd = -1;
-    if ( sig )
+    if ( sig ) {
+      z_func()->finishReadChannel( channel );
       _sigReadFdClosed.emit( channel, reason );
+    }
   }
 
   ZYPP_IMPL_PRIVATE(AsyncDataSource)
@@ -261,8 +263,10 @@ namespace zyppng {
     for( uint i = 0; i < d->_readFds.size(); ++i ) {
       auto &readChan = d->_readFds[i];
       readChan._readNotifier.reset();
-      if ( readChan._readFd >= 0)
+      if ( readChan._readFd >= 0) {
+        finishReadChannel(i);
         d->_sigReadFdClosed.emit( i, UserRequest );
+      }
     }
     d->_readFds.clear();
 
@@ -373,6 +377,11 @@ namespace zyppng {
     }
     auto &channelRef = d->_readFds[ channel ];
     return ( channelRef._readNotifier && channelRef._readFd >= 0 );
+  }
+
+  int64_t AsyncDataSource::bytesPending() const
+  {
+    return d_func()->_writeBuffer.size();
   }
 
 }

@@ -71,6 +71,11 @@ namespace zyppng {
      */
     bool readFdOpen ( uint channel ) const;
 
+    /*!
+     * Returns the current number of bytes that are not yet written to the data source.
+     */
+    int64_t bytesPending() const override;
+
   protected:
     AsyncDataSource (  );
     AsyncDataSource( AsyncDataSourcePrivate &d );

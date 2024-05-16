@@ -23,6 +23,7 @@
 namespace zyppng {
 
   class IODevicePrivate;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(IODevice);
 
   /*!
    * The IODevice class represents a async sequential IO device, like a Socket or Pipe,
@@ -66,6 +67,14 @@ namespace zyppng {
     ByteArray read ( uint channel, int64_t maxSize );
     int64_t read ( uint channel, char *buf, int64_t maxSize );
 
+
+    /*!
+     * Convenience function that reads a line from the device into a ByteArray. Since
+     * this function has no way to signal if a error happened, a empty ByteArray is
+     * returned if there was no data or if a error occured.
+     */
+    ByteArray channelReadUntil ( uint channel, const char delim, int64_t maxSize = 0 );
+
     /*!
      * Convenience function that reads a line from the device into a ByteArray. Since
      * this function has no way to signal if a error happened, a empty ByteArray is
@@ -82,16 +91,38 @@ namespace zyppng {
      * If bytes have been read from the device this always returns the number of bytes that
      * have been read, otherwise if no data was read 0 is returned or if a error occurs -1 is returned.
      */
-    virtual int64_t channelReadLine ( uint channel, char *buf, const int64_t maxSize );
+    int64_t channelReadLine ( uint channel, char *buf, const int64_t maxSize );
     virtual int64_t bytesAvailable( uint channel ) const;
+
+    /*!
+     * Reads data from the device until one of the following conditions are met:
+     * - The delimiter is encountered
+     * - maxSize nr of bytes have been read
+     * - a error occurs on the device
+     *
+     * If bytes have been read from the device this always returns the number of bytes that
+     * have been read, otherwise if no data was read 0 is returned or if a error occurs -1 is returned.
+     */
+    virtual int64_t channelReadUntil ( uint channel, char *buf, const char delimiter, const int64_t maxSize );
 
     /*!
      * Returns true if a line can be read from the currently buffered data in the given channel
      */
     bool canReadLine ( uint channel ) const;
 
+    /*!
+     * Returns true if delim can be found in the currently buffered data
+     */
+    bool canReadUntil ( uint channel, const char delim ) const;
+
+
     int64_t write ( const ByteArray &data );
     int64_t write ( const char *data, int64_t len );
+
+    /*!
+     * Returns the current number of bytes that are not yet written to the device.
+     */
+    virtual int64_t bytesPending() const = 0;
 
     /*!
      * Blocks the current event loop to wait until there are bytes available to read from the device.
@@ -132,6 +163,12 @@ namespace zyppng {
      */
     SignalProxy< void ()> sigAllBytesWritten ();
 
+    /*!
+     * Emitted when the backing device of the given read channel is closed,
+     * data might be still available in the buffer to read
+     */
+    SignalProxy< void(uint) >sigReadChannelFinished();
+
   protected:
     IODevice( IODevicePrivate &d );
     virtual bool open ( const OpenMode mode );
@@ -140,6 +177,7 @@ namespace zyppng {
     virtual int64_t readData  ( uint channel, char *buffer, int64_t bufsize ) = 0;
     virtual void  readChannelChanged ( uint channel ) = 0;
     void setReadChannelCount ( uint channels );
+    void finishReadChannel ( uint channel );
   };
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS( IODevice::OpenMode );
 

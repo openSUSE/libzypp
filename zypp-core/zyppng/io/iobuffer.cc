@@ -202,11 +202,11 @@ namespace zyppng {
     return -1;
   }
 
-  ByteArray IOBuffer::readLine( const int64_t max )
+  ByteArray IOBuffer::readUntil(const char delim, const int64_t max)
   {
     assert( ( max >= 2 || max == 0 ) && size_t(max) <= ByteArray::maxSize() );
 
-    const auto idx = indexOf( '\n', max == 0 ? size() : max );
+    const auto idx = indexOf( delim, max == 0 ? size() : max );
     if ( idx == -1 )
       return {};
 
@@ -215,19 +215,34 @@ namespace zyppng {
     return b;
   }
 
-  int64_t IOBuffer::readLine( char *buffer, int64_t max )
+  int64_t IOBuffer::readUntil(char *buffer, const char delim, int64_t max)
   {
     assert( buffer != nullptr && max > 1 );
     const auto maxRead = max - 1;
-    const auto idx = indexOf( '\n', maxRead );
+    const auto idx = indexOf( delim, maxRead );
     const auto bytesRead = read( buffer, idx == -1 ? maxRead : idx + 1  );
     buffer[bytesRead] = '\0';
     return bytesRead;
   }
 
+  ByteArray IOBuffer::readLine( const int64_t max )
+  {
+    return readUntil( '\n', max );
+  }
+
+  int64_t IOBuffer::readLine( char *buffer, int64_t max )
+  {
+    return readUntil( buffer, '\n', max );
+  }
+
+  bool IOBuffer::canReadUntil(const char delim) const
+  {
+    return indexOf(delim) >= 0;
+  }
+
   bool IOBuffer::canReadLine() const
   {
-    return indexOf('\n') >= 0;
+    return canReadUntil('\n');
   }
 
 }

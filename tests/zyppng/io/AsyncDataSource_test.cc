@@ -29,6 +29,7 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close )
     loop->quit();
   });
 
+  bool gotReadChanFinished = false;
   bool gotClosed = false;
   zypp::ByteArray readData;
 
@@ -47,6 +48,12 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close )
     readAllData();
     loop->quit();
   });
+  dataSource->connectFunc( &zyppng::AsyncDataSource::sigReadChannelFinished, [&]( uint channel ){
+    if ( channel == 0 ) {
+      BOOST_REQUIRE ( !gotReadChanFinished );
+      gotReadChanFinished = true;
+    }
+  });
 
   std::thread writer( []( int writeFd, std::string_view text ){
     ::write( writeFd, text.data(), text.length() );
@@ -60,6 +67,7 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close )
 
   ::close( pipeFds[0] );
   BOOST_REQUIRE_EQUAL( std::string_view( readData.data(), readData.size() ), text );
+  BOOST_REQUIRE ( gotReadChanFinished );
   BOOST_REQUIRE ( gotClosed );
 }
 
@@ -85,6 +93,7 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close2 )
     loop->quit();
   });
 
+  bool gotReadChanFinished = false;
   bool gotClosed = false;
   zypp::ByteArray readData;
 
@@ -110,7 +119,13 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close2 )
     gotClosed = true;
     readAllData();
     loop->quit();
+  });
 
+  dataSource->connectFunc( &zyppng::AsyncDataSource::sigReadChannelFinished, [&]( uint channel ){
+    if ( channel == 0 ) {
+      BOOST_REQUIRE ( !gotReadChanFinished );
+      gotReadChanFinished = true;
+    }
   });
 
   std::thread writer( [&lock, &written, &cv]( int writeFd, std::string_view text ){
@@ -127,6 +142,7 @@ BOOST_AUTO_TEST_CASE ( pipe_read_close2 )
 
   ::close( pipeFds[0] );
   BOOST_REQUIRE_EQUAL( std::string_view( readData.data(), readData.size() ), text );
+  BOOST_REQUIRE ( gotReadChanFinished );
   BOOST_REQUIRE ( gotClosed );
 }
 

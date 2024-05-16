@@ -41,6 +41,18 @@ namespace zyppng {
     }
   }
 
+  void IODevice::finishReadChannel( uint channel )
+  {
+    Z_D();
+    if ( channel >= d->_readChannels.size() ) {
+      ERR << constants::outOfRangeErrMsg << std::endl;
+      return;
+    }
+
+    // just signal code that the read channel is finished)
+    d->_sigReadChannelFinished.emit( channel );
+  }
+
   void IODevice::setReadChannel ( uint channel )
   {
     Z_D();
@@ -167,7 +179,7 @@ namespace zyppng {
     return readSoFar;
   }
 
-  ByteArray IODevice::channelReadLine( uint channel, int64_t maxSize )
+  ByteArray IODevice::channelReadUntil( uint channel, const char delim, int64_t maxSize )
   {
     Z_D();
     if ( !canRead() || maxSize < 0 )
@@ -182,7 +194,7 @@ namespace zyppng {
     // largest possible ByteArray in int64_t boundaries
     const auto maxBArrSize = int64_t( std::min( ByteArray::maxSize(), std::size_t(std::numeric_limits<int64_t>::max()) ) );
     if ( maxSize > maxBArrSize ) {
-      ERR << "Calling channelReadLine with maxSize > int64_t(ByteArray::maxSize) " << std::endl;
+      ERR << "Calling channelReadUntil with maxSize > int64_t(ByteArray::maxSize) " << std::endl;
       maxSize = maxBArrSize - 1;
     }
 
@@ -201,7 +213,7 @@ namespace zyppng {
       result.resize (1); // leave room for \0
       do {
         result.resize( std::min( std::size_t(maxSize), std::size_t(result.size() + d->_readBufChunkSize )) );
-        lastReadSize = channelReadLine( channel, result.data() + readSoFar, result.size() - readSoFar );
+        lastReadSize = channelReadUntil( channel, result.data() + readSoFar, delim, result.size() - readSoFar );
         if ( lastReadSize > 0)
           readSoFar += lastReadSize;
 
@@ -209,11 +221,11 @@ namespace zyppng {
       // our readData request is always 1 byte bigger than the _readBufChunkSize because of the initial byte we allocated in the result buffer,
       // so the \0 that is appended by readLine does not make a difference.
       } while( lastReadSize == d->_readBufChunkSize
-                && result[readSoFar-1] != '\n' );
+                && result[readSoFar-1] != delim );
 
     } else {
       result.resize( maxSize );
-      readSoFar = channelReadLine( channel, result.data(), result.size() );
+      readSoFar = channelReadUntil( channel, result.data(), delim, result.size() );
     }
 
     if ( readSoFar > 0 ) {
@@ -229,7 +241,17 @@ namespace zyppng {
     return result;
   }
 
+  ByteArray IODevice::channelReadLine( uint channel, int64_t maxSize )
+  {
+    return channelReadUntil( channel, '\n', maxSize );
+  }
+
   int64_t IODevice::channelReadLine( uint channel, char *buf, const int64_t maxSize )
+  {
+    return channelReadUntil( channel, buf, '\n', maxSize );
+  }
+
+  int64_t IODevice::channelReadUntil(uint channel, char *buf, const char delimiter, const int64_t maxSize)
   {
     Z_D();
 
@@ -242,16 +264,16 @@ namespace zyppng {
     }
 
     if ( maxSize < 2 ) {
-      ERR << "channelReadLine needs at least a buffsize of 2" << std::endl;
+      ERR << "channelReadUntil needs at least a buffsize of 2" << std::endl;
       return -1;
     }
 
     int64_t toRead    = maxSize - 1; // append \0 at the end
     int64_t readSoFar = 0;
     if ( d->_readChannels[channel].size () > 0 )
-      readSoFar = d->_readChannels[channel].readLine( buf, toRead + 1 /*IOBuffer appends \0*/ );
+      readSoFar = d->_readChannels[channel].readUntil( buf, delimiter, toRead + 1 /*IOBuffer appends \0*/ );
 
-    if ( readSoFar == toRead || ( readSoFar > 0 && buf[readSoFar-1] == '\n' ) ) {
+    if ( readSoFar == toRead || ( readSoFar > 0 && buf[readSoFar-1] == delimiter ) ) {
       buf[readSoFar] = '\0';
       return readSoFar;
     }
@@ -271,7 +293,7 @@ namespace zyppng {
       }
       readSoFar+=r;
 
-      if ( buf[readSoFar-1] == '\n' )
+      if ( buf[readSoFar-1] == delimiter )
         break;
     }
 
@@ -288,6 +310,14 @@ namespace zyppng {
     if ( !canRead() )
       return 0;
     return d->_readChannels[channel].size() + rawBytesAvailable( channel );
+  }
+
+  bool IODevice::canReadUntil(uint channel, const char delim) const
+  {
+    Z_D();
+    if ( !canRead() || channel >= d->_readChannels.size() )
+      return false;
+    return d->_readChannels[channel].canReadUntil( delim );
   }
 
   bool IODevice::canReadLine ( uint channel ) const
@@ -339,6 +369,11 @@ namespace zyppng {
   SignalProxy< void ()> IODevice::sigAllBytesWritten ()
   {
     return d_func()->_sigAllBytesWritten;
+  }
+
+  SignalProxy<void (uint)> IODevice::sigReadChannelFinished()
+  {
+    return d_func()->_sigReadChannelFinished;
   }
 }
 

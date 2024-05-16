@@ -41,10 +41,11 @@ namespace zyppng {
     int64_t _readBufChunkSize = DefIoDeviceBufChunkSize;
 
     IODevice::OpenMode _mode = IODevice::Closed;
-    Signal<void()>    _readyRead;
-    Signal<void(uint)> _channelReadyRead;
+    Signal< void() >        _readyRead;
+    Signal< void(uint) >    _channelReadyRead;
     Signal< void (int64_t)> _sigBytesWritten;
-    Signal< void ()> _sigAllBytesWritten;
+    Signal< void ()>        _sigAllBytesWritten;
+    Signal< void(uint) >    _sigReadChannelFinished;
   };
 
 }

@@ -47,8 +47,11 @@ namespace zyppng {
     std::vector<Chunk>::size_type chunks ()  const;
     inline int64_t indexOf ( const char c ) const { return indexOf( c, size() ); }
     int64_t indexOf (const char c, int64_t maxCount, int64_t pos = 0 ) const;
+    ByteArray readUntil ( const char delim, const int64_t max = 0 );
+    int64_t readUntil( char *buffer, const char delim, int64_t max );
     ByteArray readLine ( const int64_t max = 0 );
     int64_t readLine( char *buffer, int64_t max );
+    bool canReadUntil ( const char delim ) const;
     bool canReadLine () const;
 
   private:

@@ -375,5 +375,22 @@ namespace zyppng {
   {
     return d_func()->_sigReadChannelFinished;
   }
+
+
+  IODeviceOStreamBuf::IODeviceOStreamBuf(IODeviceRef dev) : _dev(dev)
+  {}
+
+  IODeviceOStreamBuf::int_type IODeviceOStreamBuf::overflow( int_type __c )
+  {
+    if ( !_dev ){
+      return traits_type::eof();
+    }
+    if ( _dev->write ( (char *)&__c, 1 ) == 1 ) {
+      return traits_type::not_eof(__c);
+    }
+    return traits_type::eof();
+  }
+
+
 }
 

@@ -181,6 +181,27 @@ namespace zyppng {
   };
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS( IODevice::OpenMode );
 
+
+  /*!
+   * Small wrapper streambuf to support writing data to a IODevice
+   * using std::ostream
+   */
+  class IODeviceOStreamBuf : public std::streambuf
+  {
+    public:
+      IODeviceOStreamBuf( IODeviceRef dev );
+      IODeviceOStreamBuf(const IODeviceOStreamBuf &) = default;
+      IODeviceOStreamBuf(IODeviceOStreamBuf &&) = default;
+      IODeviceOStreamBuf &operator=(const IODeviceOStreamBuf &) = default;
+      IODeviceOStreamBuf &operator=(IODeviceOStreamBuf &&) = default;
+
+      // basic_streambuf interface
+  protected:
+      int_type overflow(int_type __c) override;
+
+  private:
+      IODeviceRef _dev;
+  };
 }
 
 #endif

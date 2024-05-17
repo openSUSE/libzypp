@@ -24,7 +24,18 @@ namespace zyppng {
     using WeakPtr = std::weak_ptr<AsyncDataSource>;
 
     static Ptr create ();
+
+    /*!
+     * Borrows the given fd's and starts reading/writing to them if data is available.
+     * Note that \ref AsyncDataSource does not take ownership of the FDs, they need to be closed
+     * explicitely after they were released with \ref close
+     */
     bool openFds ( const std::vector<int>& readFds, int writeFd = -1 );
+
+    /*!
+     * Closes the \ref AsyncDataSource and releases the used fd's to the calling code. They are NOT
+     * closed.
+     */
     void close () override;
 
     using IODevice::waitForReadyRead;

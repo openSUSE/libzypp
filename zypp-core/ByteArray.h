@@ -19,6 +19,7 @@ namespace zypp {
   {
   public:
     using vector<char>::vector;
+    explicit ByteArray ( const std::string &data ) : ByteArray( data.c_str(), data.length() ) { }
     explicit ByteArray ( const char *data, const int len = -1 ) : ByteArray( data, data + (len == -1 ? strlen(data) : len) ) { }
     std::string asString () const {
       if ( size() == 0 )

@@ -18,6 +18,7 @@
 
 #include <zypp/base/PtrTypes.h>
 
+#include <zypp-core/ByteArray.h>
 #include <zypp-core/rpc/PluginFrameException.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -51,6 +52,8 @@ namespace zypp
       static const std::string & errorCommand();
       /** "_ENOMETHOD" command. */
       static const std::string & enomethodCommand();
+      /** "content-lenght" header name */
+      static const std::string &contentLengthHeader();
 
     public:
       /** Default exception type */
@@ -69,6 +72,11 @@ namespace zypp
        */
       PluginFrame(const std::string & command_r, std::string body_r );
 
+      /** Ctor taking command and body
+       * \throw PluginFrameException If \ref setCommand throws
+       */
+      PluginFrame(const std::string & command_r, ByteArray body_r );
+
       /** Ctor taking the command and a HeaderInitializerList
        * \throw PluginFrameException If \ref setCommand throws
        */
@@ -77,7 +85,7 @@ namespace zypp
       /** Ctor taking command, body and a HeaderInitializerList
        * \throw PluginFrameException If \ref setCommand throws
        */
-      PluginFrame(const std::string & command_r, std::string body_r, HeaderInitializerList contents_r );
+      PluginFrame(const std::string & command_r, ByteArray body_r, HeaderInitializerList contents_r );
 
       /** Ctor reading frame data from a stream
        * \throw PluginFrameException On error reading from stream
@@ -115,20 +123,26 @@ namespace zypp
       {return command() == enomethodCommand(); }
 
       /** Return the frame body. */
-      const std::string & body() const;
+      const ByteArray & body() const;
 
       /** Return a reference to the frame body.
        * This may avoid creating unnecessary copies if you
        * want to manipulate large body data.
        * \code
-       *   std::string tmp;
+       *   ByteArray tmp;
        *   frame.bodyRef().swap( tmp );
        * \endcode
        */
-      std::string & bodyRef();
+      ByteArray & bodyRef();
 
       /** Set the frame body */
       void setBody( const std::string & body_r );
+
+      /** Set the frame body */
+      void setBody( const ByteArray & body_r );
+
+      /** Set the frame body */
+      void setBody( ByteArray && body_r );
 
     public:
       /** The header list */
@@ -221,6 +235,12 @@ namespace zypp
       void addHeader( const std::string & key_r, const std::string & value_r = std::string() );
       /** \overload taking an initializer_list */
       void addHeader( HeaderInitializerList contents_r );
+
+      /*!
+       * Parses the header line in \a header and if it is valid adds it to the internal
+       * header list.
+       */
+      void addRawHeader ( const ByteArray &header );
 
       /** Remove all headers for \c key_r. */
       void clearHeader( const std::string & key_r );

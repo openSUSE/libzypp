@@ -11,10 +11,9 @@
 */
 #include <iostream>
 #include <utility>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/String.h>
-
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/rpc/PluginFrame.h>
+#include <zypp-core/zyppng/core/String>
 
 using std::endl;
 
@@ -39,14 +38,14 @@ namespace zypp
       Impl( const std::string & command_r )
       { setCommand( command_r ); }
 
-      Impl( const std::string & command_r, std::string &&body_r )
+      Impl( const std::string & command_r, ByteArray &&body_r )
         : _body(std::move( body_r ))
       { setCommand( command_r ); }
 
       Impl( const std::string & command_r, HeaderInitializerList contents_r )
       { setCommand( command_r ); addHeader( contents_r ); }
 
-      Impl( const std::string & command_r, std::string &&body_r, HeaderInitializerList contents_r )
+      Impl( const std::string & command_r, ByteArray &&body_r, HeaderInitializerList contents_r )
         : _body(std::move( body_r ))
       { setCommand( command_r ); addHeader( contents_r ); }
 
@@ -66,14 +65,14 @@ namespace zypp
         _command = command_r;
       }
 
-      const std::string & body() const
+      const ByteArray & body() const
       { return _body; }
 
-      std::string & bodyRef()
+      ByteArray & bodyRef()
       { return _body; }
 
-      void setBody( const std::string & body_r )
-      { _body = body_r; }
+      void setBody( ByteArray && body_r )
+      { _body = std::move(body_r); }
 
     public:
       using constKeyRange = std::pair<HeaderListIterator, HeaderListIterator>;
@@ -139,6 +138,15 @@ namespace zypp
           addHeader( el.first, el.second );
       }
 
+      void addRawHeader ( const std::string_view data )
+      {
+        std::string::size_type sep( data.find( ':') );
+        if ( sep ==  std::string::npos )
+          ZYPP_THROW( PluginFrameException( "Missing colon in header" ) );
+
+        _header.insert( HeaderList::value_type( data.substr(0,sep), data.substr(sep+1) ) );
+      }
+
       void clearHeader( const std::string & key_r )
       {
         _header.erase( key_r );
@@ -149,7 +157,7 @@ namespace zypp
 
     private:
       std::string _command;
-      std::string _body;
+      ByteArray   _body;
       HeaderList  _header;
 
     public:
@@ -175,6 +183,9 @@ namespace zypp
 
   PluginFrame::Impl::Impl( std::istream & stream_r )
   {
+    // ATTENTION: Remember to also update the parser logic in zypp-core/zyppng/rpc/stompframestream.cc
+    //            if code here is changed or features are added.
+
     //DBG << "Parse from " << stream_r << endl;
     if ( ! stream_r )
       ZYPP_THROW( PluginFrameException( "Bad Stream" ) );
@@ -200,17 +211,46 @@ namespace zypp
       if ( data.empty() )
         break;	// --> empty line sep. header and body
 
-      std::string::size_type sep( data.find( ':') );
-      if ( sep ==  std::string::npos )
-        ZYPP_THROW( PluginFrameException( "Missing colon in header" ) );
+      addRawHeader( data );
 
-      _header.insert( HeaderList::value_type( data.substr(0,sep), data.substr(sep+1) ) );
     } while ( true );
 
+
+    // check for content-length header
+    std::optional<uint64_t> cLen;
+    {
+      const auto &contentLen = getHeaderNT( zypp::PluginFrame::contentLengthHeader(), std::string() );
+      if ( !contentLen.empty() ) {
+        cLen = zyppng::str::safe_strtonum<uint64_t>(contentLen);
+        if ( !cLen ) {
+          ERR << "Received malformed message from peer: Invalid value for " << zypp::PluginFrame::contentLengthHeader() << ":" << contentLen << std::endl;
+          ZYPP_THROW( PluginFrameException( "Invalid value for content-length." ) );
+        }
+
+        // do not keep the header, we regenerate it again when writing the frame anyway
+        clearHeader( zypp::PluginFrame::contentLengthHeader() );
+      }
+
+    }
+
     // data
-    _body = str::receiveUpTo( stream_r, '\0' );
-    if ( ! stream_r.good() )
-      ZYPP_THROW( PluginFrameException( "Missing NUL after body" ) );
+    if ( cLen ) {
+      _body.resize ( (*cLen)+1, '\0' );
+      stream_r.read ( _body.data(), (*cLen)+1 );
+
+      if ( ! stream_r.good() )
+        ZYPP_THROW( PluginFrameException( "Missing data in stream" ) );
+      if ( _body.back() != '\0' )
+        ZYPP_THROW( PluginFrameException( "Missing NUL after body" ) );
+
+      _body.pop_back (); // get rid of \0
+
+    } else {
+      const auto &data = str::receiveUpTo( stream_r, '\0' );
+      _body = ByteArray( data.c_str(), data.size() );
+      if ( ! stream_r.good() )
+        ZYPP_THROW( PluginFrameException( "Missing NUL after body" ) );
+    }
   }
 
   std::ostream & PluginFrame::Impl::writeTo( std::ostream & stream_r ) const
@@ -220,13 +260,24 @@ namespace zypp
       ZYPP_THROW( PluginFrameException( "Bad Stream" ) );
 
     // command
-    stream_r << _command << endl;
+    stream_r << _command << "\n";
+
+    // STOMP recommends sending a content-length header
+    stream_r << contentLengthHeader() << ':' << str::numstring( _body.size() ) << "\n";
+
     // header
     for_( it, _header.begin(), _header.end() )
-      stream_r << it->first << ':' << it->second << endl;
+      stream_r << it->first << ':' << it->second << "\n";
+
+    // header end
+    stream_r << "\n";
+
     // body
-    stream_r << endl
-             << _body << '\0';
+    stream_r.write( _body.data(), _body.size() );
+
+    // body end
+    stream_r << '\0';
+    stream_r.flush();
 
     if ( ! stream_r )
       ZYPP_THROW( PluginFrameException( "Write error" ) );
@@ -257,6 +308,12 @@ namespace zypp
     return _val;
   }
 
+  const std::string &PluginFrame::contentLengthHeader()
+  {
+    static std::string _val("content-length");
+    return _val;
+  }
+
   PluginFrame::PluginFrame()
     : _pimpl( Impl::nullimpl() )
   {}
@@ -265,7 +322,11 @@ namespace zypp
     : _pimpl( new Impl( command_r ) )
   {}
 
-  PluginFrame::PluginFrame( const std::string & command_r, std::string body_r )
+  PluginFrame::PluginFrame(const std::string & command_r, std::string body_r )
+    : _pimpl( new Impl( command_r, ByteArray(body_r) ) )
+  {}
+
+  PluginFrame::PluginFrame(const std::string & command_r, ByteArray body_r )
     : _pimpl( new Impl( command_r, std::move(body_r) ) )
   {}
 
@@ -273,7 +334,7 @@ namespace zypp
     : _pimpl( new Impl( command_r, contents_r ) )
   {}
 
-  PluginFrame::PluginFrame( const std::string & command_r, std::string body_r, HeaderInitializerList contents_r )
+  PluginFrame::PluginFrame(const std::string & command_r, ByteArray body_r, HeaderInitializerList contents_r )
     : _pimpl( new Impl( command_r, std::move(body_r), contents_r ) )
   {}
 
@@ -290,14 +351,20 @@ namespace zypp
   void  PluginFrame::setCommand( const std::string & command_r )
   { _pimpl->setCommand( command_r ); }
 
-  const std::string & PluginFrame::body() const
+  const ByteArray &PluginFrame::body() const
   { return _pimpl->body(); }
 
-  std::string & PluginFrame::bodyRef()
+  ByteArray &PluginFrame::bodyRef()
   { return _pimpl->bodyRef(); }
 
   void  PluginFrame::setBody( const std::string & body_r )
-  { _pimpl->setBody( body_r ); }
+  { _pimpl->setBody( ByteArray(body_r.data(), body_r.size()) ); }
+
+  void  PluginFrame::setBody( const ByteArray & body_r )
+  { _pimpl->setBody( ByteArray(body_r) ); }
+
+  void  PluginFrame::setBody( ByteArray && body_r )
+  { _pimpl->setBody( std::move(body_r) ); }
 
   std::ostream & PluginFrame::writeTo( std::ostream & stream_r ) const
   { return _pimpl->writeTo( stream_r ); }
@@ -325,6 +392,11 @@ namespace zypp
 
   void PluginFrame::addHeader( HeaderInitializerList contents_r )
   { _pimpl->addHeader( contents_r ); }
+
+  void PluginFrame::addRawHeader( const ByteArray &header )
+  {
+    _pimpl->addRawHeader( header.asStringView() );
+  }
 
   void PluginFrame::clearHeader( const std::string & key_r )
   { _pimpl->clearHeader( key_r ); }

@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(PluginFrameCtorAssign)
   BOOST_CHECK_EQUAL( bool(g), !g.empty() );
   BOOST_CHECK_EQUAL( g.empty(), false );
   BOOST_CHECK_EQUAL( g.command(), "command" );
-  BOOST_CHECK_EQUAL( g.body(), "body");
+  BOOST_CHECK_EQUAL( g.body().asString(), "body");
   BOOST_CHECK_EQUAL( g.headerEmpty(), true );
   BOOST_CHECK_EQUAL( (f == g), false );
   BOOST_CHECK_EQUAL( (f != g), true );
@@ -80,7 +80,7 @@ void doParse( const std::string & str_r )
   std::string data( str_r );
   data.push_back( '\0' );
   std::istringstream datas( data );
-   PluginFrame i( datas );
+  PluginFrame i( datas );
 }
 
 BOOST_AUTO_TEST_CASE(PluginFrameExceptipn)

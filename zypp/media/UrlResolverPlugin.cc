@@ -59,7 +59,7 @@ namespace zypp
             PluginFrame r(scr.receive());
             if (r.command() == "RESOLVEDURL") {
                 // now set
-                url = Url(r.body());
+                url = Url(r.body().asString());
                 PluginFrame::HeaderListIterator it;
 
                 for (it = r.headerBegin();
@@ -74,7 +74,7 @@ namespace zypp
                 }
             }
             else if (r.command() == "ERROR") {
-                ZYPP_THROW(MediaException(r.body()));
+                ZYPP_THROW(MediaException(r.body().asString()));
             }
         }
         return url;

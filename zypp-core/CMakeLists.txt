@@ -328,12 +328,14 @@ SET( zyppng_rpc_HEADERS
   zyppng/rpc/rpc.h
   zyppng/rpc/MessageStream
   zyppng/rpc/messagestream.h
+  zyppng/rpc/stompframestream.h
   zyppng/rpc/zerocopystreams.h
 )
 
 SET( zyppng_rpc_SRCS
   zyppng/rpc/rpc.cc
   zyppng/rpc/messagestream.cc
+  zyppng/rpc/stompframestream.cc
   zyppng/rpc/zerocopystreams.cc
 )
 

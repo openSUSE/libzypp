@@ -57,7 +57,7 @@ namespace zypp
    *  scr.close();
    * \endcode
    *
-   * \see http://stomp.codehaus.org/
+   * \see https://stomp.github.io
    */
   class ZYPP_API PluginScript
   {

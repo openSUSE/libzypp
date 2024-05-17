@@ -256,7 +256,7 @@ namespace zypp
         {
           doKill = false;
           str::strtonum( ret.getHeaderNT( "exit" ), _lastReturn.get() );
-          _lastExecError = ret.body();
+          _lastExecError = ret.body().asString();
         }
       }
       catch (...)

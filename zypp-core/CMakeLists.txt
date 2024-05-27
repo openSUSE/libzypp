@@ -51,6 +51,8 @@ SET( zypp_base_HEADERS
   base/ExternalDataSource.h
   base/Function.h
   base/Flags.h
+  base/filestreambuf.h
+  base/FileStreamBuf
   base/fXstream
   base/fxstream.h
   base/Gettext.h
@@ -87,6 +89,7 @@ SET( zypp_base_SRCS
   base/CleanerThread.cc
   base/Exception.cc
   base/ExternalDataSource.cc
+  base/filestreambuf.cc
   base/Gettext.cc
   base/gzstream.cc
   base/inputstream.cc

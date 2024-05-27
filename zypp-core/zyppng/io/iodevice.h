@@ -61,6 +61,7 @@ namespace zyppng {
     int64_t read ( char *buf, int64_t maxSize );
     virtual ByteArray readLine (const int64_t maxSize = 0 );
     virtual int64_t bytesAvailable () const;
+    int64_t readBufferCount() const;
     bool canReadLine () const;
 
     ByteArray readAll ( uint channel );
@@ -93,6 +94,11 @@ namespace zyppng {
      */
     int64_t channelReadLine ( uint channel, char *buf, const int64_t maxSize );
     virtual int64_t bytesAvailable( uint channel ) const;
+
+    /*!
+     * Returns the number of bytes currently buffered in the read buffer channel
+     */
+    int64_t readBufferCount( uint channel ) const;
 
     /*!
      * Reads data from the device until one of the following conditions are met:

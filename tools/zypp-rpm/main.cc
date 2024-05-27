@@ -1,6 +1,5 @@
-#include <zypp-proto/target/commit.pb.h>
 #include <zypp-core/zyppng/core/ByteArray>
-#include <zypp-core/zyppng/rpc/messagestream.h>
+#include <zypp-core/zyppng/rpc/stompframestream.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
@@ -8,6 +7,10 @@
 #include <zypp-core/ShutdownLock_p.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/StringV.h>
+#include <zypp-core/base/FileStreamBuf>
+
+#include <zypp-core/rpc/PluginFrame.h>
+#include <zypp-proto/target/CommitMessages.h>
 
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <mutex>
@@ -16,8 +19,6 @@
 // a copy should be created directly in the zypp-rpm project
 #include <zypp/target/rpm/librpm.h>
 #include <zypp/target/rpm/RpmFlags.h>
-
-#include <zypp-core/zyppng/rpc/zerocopystreams.h>
 
 extern "C"
 {
@@ -99,17 +100,28 @@ bool sendBytes ( int fd, const void *buf, size_t n ) {
 
 template <typename Message>
 bool pushMessage ( const Message &msg ) {
+  try {
+    zypp::FdStreamBuf f;
+    if ( !f.open( static_cast<int>( ExpectedFds::MessageFd ), std::ios_base::out ) )
+      return false;
 
-  zyppng::RpcMessage env;
-  env.set_messagetypename( msg.GetTypeName() );
-  env.set_value( msg.SerializeAsString() );
-  //msg.SerializeToString( env.mutable_value() );
+    // do not close the fd once the buffer is discarded
+    f.disableAutoClose ();
 
-  const auto &str = env.serialize();
-  zyppng::rpc::HeaderSizeType msgSize = str.length();
-  if ( !sendBytes( static_cast<int>( ExpectedFds::MessageFd ), reinterpret_cast< void* >( &msgSize), sizeof (zyppng::rpc::HeaderSizeType) ) )
-    return false;
-  return sendBytes( static_cast<int>( ExpectedFds::MessageFd ), str.c_str(), str.length() );
+    std::ostream outStr( &f );
+    const auto &maybeMessage = msg.toStompMessage();
+    if ( !maybeMessage ) {
+      std::rethrow_exception ( maybeMessage.error() );
+      return false;
+    }
+
+    maybeMessage->writeTo(outStr);
+    return true;
+
+  } catch ( const zypp::Exception &e ) {
+    ZERR << "Failed to write message ("<<e<<")"<<std::endl;
+  }
+  return false;
 }
 
 bool pushTransactionErrorMessage ( rpmps ps )
@@ -123,11 +135,7 @@ bool pushTransactionErrorMessage ( rpmps ps )
   zypp::AutoDispose<rpmpsi> psi ( ::rpmpsInitIterator(ps), ::rpmpsFreeIterator );
   while ((p = rpmpsiNext(psi))) {
     zypp::AutoFREE<char> msg( rpmProblemString(p) );
-
-    zypp::proto::target::TransactionProblemDesc desc;
-    desc.set_message( zypp::str::asString( msg.value() ) );
-
-    *err.mutable_problems()->Add() = std::move(desc);
+    err.problems.push_back( zypp::str::asString( msg.value() ) );
   }
 
   return pushMessage( err );
@@ -211,22 +219,20 @@ int main( int, char ** )
   zyppng::blockSignalsForCurrentThread( { SIGPIPE, SIGINT } );
 
   // lets read our todo from stdin
-  zyppng::rpc::HeaderSizeType msgSize = 0;
-  if ( !recvBytes( STDIN_FILENO, reinterpret_cast<char *>(&msgSize), sizeof(zyppng::rpc::HeaderSizeType) ) ) {
-    ZERR << "Wrong Header size, aborting" << std::endl;
-    return WrongHeaderSize;
-  }
-
   // since all we can receive on stdin is the commit message, there is no need to read a envelope first
   // we read it directly from the FD
   zypp::proto::target::Commit msg;
-  {
-    zyppng::FileInputStream in( STDIN_FILENO );
-    if ( !msg.ParseFromBoundedZeroCopyStream( &in, msgSize ) ) {
-      ZERR << "Wrong commit message format, aborting" << std::endl;
-      return WrongMessageFormat;
-    }
 
+  try {
+    zypp::PluginFrame pf( std::cin );
+    const auto &expMsg = zypp::proto::target::Commit::fromStompMessage ( pf );
+    if ( !expMsg ) {
+      std::rethrow_exception ( expMsg.error() );
+    }
+    msg = std::move(*expMsg);
+  } catch ( const zypp::Exception &e ) {
+    ZERR << "Wrong commit message format, aborting (" << e << ")" << std::endl;
+    return WrongMessageFormat;
   }
 
   // create or fill a pid file, if there is a existing one just take it over
@@ -251,9 +257,9 @@ int main( int, char ** )
     zypp::AutoFILE lockFile;
   };
   std::optional<s_lockinfo> lockinfo;
-  if ( !msg.lockfilepath ().empty () ) {
+  if ( !msg.lockFilePath.empty () ) {
     lockinfo.emplace();
-    zypp::Pathname lockFileName = zypp::Pathname( msg.lockfilepath() ) / "zypp-rpm.pid";
+    zypp::Pathname lockFileName = zypp::Pathname( msg.lockFilePath ) / "zypp-rpm.pid";
     lockinfo->lockFile = std::fopen( lockFileName.c_str(), "w");
     if ( lockinfo->lockFile == nullptr ) {
       ZERR << "Failed to create zypp-rpm pidfile." << std::endl;
@@ -277,15 +283,15 @@ int main( int, char ** )
     return RpmInitFailed;
   }
 
-  ::addMacro( NULL, "_dbpath", NULL, msg.dbpath().c_str(), RMIL_CMDLINE );
+  ::addMacro( NULL, "_dbpath", NULL, msg.dbPath.c_str(), RMIL_CMDLINE );
 
   auto ts = zypp::AutoDispose<rpmts>( ::rpmtsCreate(), ::rpmtsFree );;
-  ::rpmtsSetRootDir( ts, msg.root().c_str() );
+  ::rpmtsSetRootDir( ts, msg.root.c_str() );
 
   int tsFlags           = RPMTRANS_FLAG_NONE;
   int tsVerifyFlags     = RPMVSF_DEFAULT;
 
-  const auto &rpmInstFlags = msg.flags();
+  const auto &rpmInstFlags = msg.flags;
   if ( rpmInstFlags & RpmInstFlag::RPMINST_NODIGEST)
     tsVerifyFlags |= _RPMVSF_NODIGESTS;
   if ( rpmInstFlags  & RpmInstFlag::RPMINST_NOSIGNATURE)
@@ -335,13 +341,15 @@ int main( int, char ** )
   // do we care about knowing the public key?
   const bool allowUntrusted = ( rpmInstFlags & RpmInstFlag::RPMINST_ALLOWUNTRUSTED );
 
-  for ( int i = 0; i < msg.steps_size(); i++ ) {
-    const auto &step = msg.steps(i);
+  for ( int i = 0; i < msg.transactionSteps.size(); i++ ) {
+    const auto &step = msg.transactionSteps[i];
 
-    if ( step.has_install() ) {
+    if ( std::holds_alternative<zypp::proto::target::InstallStep>(step) ) {
 
-      const auto &file = step.install().pathname();
-      auto rpmHeader = readPackage( ts, step.install().pathname() );
+      const auto &install = std::get<zypp::proto::target::InstallStep>(step);
+
+      const auto &file = install.pathname;
+      auto rpmHeader = readPackage( ts, install.pathname );
 
       switch(rpmHeader.second) {
         case RPMRC_OK:
@@ -374,28 +382,28 @@ int main( int, char ** )
         return FailedToReadPackage;
       }
 
-      const auto res = ::rpmtsAddInstallElement( ts, rpmHeader.first.get(), &step, !step.install().multiversion(), nullptr  );
+      const auto res = ::rpmtsAddInstallElement( ts, rpmHeader.first.get(), &step, !install.multiversion, nullptr  );
       if ( res ) {
         ZERR << zypp::str::Format( "Failed to add %1% to the transaction." )% file << std::endl;
         return FailedToAddStepToTransaction;
       }
 
-    } else if ( step.has_remove() ) {
+    } else if ( std::holds_alternative<zypp::proto::target::RemoveStep>(step) ) {
 
-      const auto &remove = step.remove();
+      const auto &remove = std::get<zypp::proto::target::RemoveStep>(step);
 
-      const std::string &name = remove.name()
-                                + "-" + remove.version()
-                                + "-" + remove.release()
-                                + "." + remove.arch();
+      const std::string &name = remove.name
+                                + "-" + remove.version
+                                + "-" + remove.release
+                                + "." + remove.arch;
 
       bool found = false;
-      zypp::AutoDispose<rpmdbMatchIterator> it( ::rpmtsInitIterator( ts, rpmTag(RPMTAG_NAME), remove.name().c_str(), 0 ), ::rpmdbFreeIterator );
+      zypp::AutoDispose<rpmdbMatchIterator> it( ::rpmtsInitIterator( ts, rpmTag(RPMTAG_NAME), remove.name.c_str(), 0 ), ::rpmdbFreeIterator );
       while ( ::Header h = ::rpmdbNextIterator( it ) ) {
         BinHeader hdr(h);
-        if ( hdr.string_val( RPMTAG_VERSION ) == remove.version()
-             &&  hdr.string_val( RPMTAG_RELEASE ) == remove.release()
-             &&  hdr.string_val( RPMTAG_ARCH ) == remove.arch() ) {
+        if ( hdr.string_val( RPMTAG_VERSION ) == remove.version
+             &&  hdr.string_val( RPMTAG_RELEASE ) == remove.release
+             &&  hdr.string_val( RPMTAG_ARCH ) == remove.arch ) {
           found = true;
 
           const auto res = ::rpmtsAddEraseElement( ts, hdr.get(), 0  );
@@ -456,7 +464,7 @@ int main( int, char ** )
 #endif
 
   // handle --nodeps
-  if ( !( msg.flags() & RpmInstFlag::RPMINST_NODEPS) ) {
+  if ( !( msg.flags & RpmInstFlag::RPMINST_NODEPS) ) {
     if ( ::rpmtsCheck(ts) ) {
       zypp::AutoDispose<rpmps> ps( ::rpmtsProblems(ts), ::rpmpsFree );
       pushTransactionErrorMessage( ps );
@@ -477,23 +485,23 @@ int main( int, char ** )
   // we can safely filter those problems.
   int tsProbFilterFlags = RPMPROB_FILTER_REPLACEPKG | RPMPROB_FILTER_OLDPACKAGE;
 
-  if ( msg.ignorearch() )
+  if ( msg.ignoreArch )
     tsProbFilterFlags |= RPMPROB_FILTER_IGNOREARCH;
 
-  if ( msg.flags() & RpmInstFlag::RPMINST_ALLOWDOWNGRADE )
+  if ( msg.flags & RpmInstFlag::RPMINST_ALLOWDOWNGRADE )
     tsProbFilterFlags |= ( RPMPROB_FILTER_OLDPACKAGE ); // --oldpackage
 
-  if ( msg.flags() & RpmInstFlag::RPMINST_REPLACEFILES )
+  if ( msg.flags & RpmInstFlag::RPMINST_REPLACEFILES )
     tsProbFilterFlags |= ( RPMPROB_FILTER_REPLACENEWFILES
                            | RPMPROB_FILTER_REPLACEOLDFILES ); // --replacefiles
 
-  if ( msg.flags() & RpmInstFlag::RPMINST_FORCE )
+  if ( msg.flags & RpmInstFlag::RPMINST_FORCE )
     tsProbFilterFlags |= ( RPMPROB_FILTER_REPLACEPKG
                            | RPMPROB_FILTER_REPLACENEWFILES
                            | RPMPROB_FILTER_REPLACEOLDFILES
                            | RPMPROB_FILTER_OLDPACKAGE ); // --force
 
-  if ( msg.flags() & RpmInstFlag::RPMINST_IGNORESIZE )
+  if ( msg.flags & RpmInstFlag::RPMINST_IGNORESIZE )
     tsProbFilterFlags |= RPMPROB_FILTER_DISKSPACE | RPMPROB_FILTER_DISKNODES;
 
   const auto orderRes = rpmtsOrder( ts );
@@ -593,7 +601,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
     if ( key > 0 ) {
       auto i = that->removePckIndex.find(key);
       if ( i != that->removePckIndex.end() )
-        iStep = &that->commitData.steps( i->second );
+        iStep = &that->commitData.transactionSteps[i->second];
     }
   }
 
@@ -606,13 +614,18 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
   switch (what) {
     case RPMCALLBACK_INST_OPEN_FILE: {
 
-      if ( !iStep || !iStep->has_install() || iStep->install().pathname().empty() )
+      if ( !iStep || !std::holds_alternative<zypp::proto::target::InstallStep>(*iStep) )
         return NULL;
+
+      const auto &install = std::get<zypp::proto::target::InstallStep>(*iStep);
+      if ( install.pathname.empty() )
+          return NULL;
+
       if ( fd != NULL )
         ZERR << "ERR opening a file before closing the old one?  Really ? " << std::endl;
-      fd = Fopen( iStep->install().pathname().data(), "r.ufdio" );
+      fd = Fopen( install.pathname.data(), "r.ufdio" );
       if (fd == NULL || Ferror(fd)) {
-        ZERR << "Error when opening file " << iStep->install().pathname().data() << std::endl;
+        ZERR << "Error when opening file " << install.pathname.data() << std::endl;
         if (fd != NULL) {
           Fclose(fd);
           fd = NULL;
@@ -633,11 +646,11 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
 
     case RPMCALLBACK_INST_START: {
 
-      if ( !iStep || !iStep->has_install() )
+      if ( !iStep || !std::holds_alternative<zypp::proto::target::InstallStep>(*iStep) )
         return rc;
 
       zypp::proto::target::PackageBegin step;
-      step.set_stepid( iStep->stepid() );
+      step.stepId = std::get<zypp::proto::target::InstallStep>(*iStep).stepId;
       pushMessage( step );
 
       break;
@@ -654,18 +667,18 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
 
         // this is a package cleanup send the report accordingly
         zypp::proto::target::CleanupBegin step;
-        step.set_nvra( header.nvra() );
+        step.nvra = header.nvra();
         pushMessage( step );
 
       } else {
 
-        if ( !iStep->has_remove() ) {
+        if ( !std::holds_alternative<zypp::proto::target::RemoveStep>(*iStep) ) {
           ZERR << "Could not find package in removables " << header << " in transaction elements" << std::endl;
           return rc;
         }
 
         zypp::proto::target::PackageBegin step;
-        step.set_stepid( iStep->stepid() );
+        step.stepId = std::get<zypp::proto::target::RemoveStep>(*iStep).stepId;
         pushMessage( step );
       }
       break;
@@ -681,7 +694,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
       sendEndOfScriptTag();
 
       zypp::proto::target::PackageFinished step;
-      step.set_stepid( iStep->stepid() );
+      step.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
       pushMessage( step );
 
       break;
@@ -699,14 +712,14 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
 
         // this is a package cleanup send the report accordingly
         zypp::proto::target::CleanupFinished step;
-        step.set_nvra( header.nvra() );
+        step.nvra = header.nvra();
         pushMessage( step );
       } else {
 
         sendEndOfScriptTag();
 
         zypp::proto::target::PackageFinished step;
-        step.set_stepid( iStep->stepid() );
+        step.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
         pushMessage( step );
 
       }
@@ -721,7 +734,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
       }
 
       zypp::proto::target::PackageError step;
-      step.set_stepid( iStep->stepid() );
+      step.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
       pushMessage( step );
       break;
     }
@@ -736,8 +749,8 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
                                         : 100.0);
 
       zypp::proto::target::PackageProgress step;
-      step.set_stepid( iStep->stepid() );
-      step.set_amount( progress );
+      step.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
+      step.amount = progress;
       pushMessage( step );
 
       break;
@@ -756,14 +769,14 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
 
         // this is a package cleanup send the report accordingly
         zypp::proto::target::CleanupProgress step;
-        step.set_nvra( header.nvra() );
-        step.set_amount( progress );
+        step.nvra = header.nvra();
+        step.amount = progress;
         pushMessage( step );
 
       } else {
         zypp::proto::target::PackageProgress step;
-        step.set_stepid( iStep->stepid() );
-        step.set_amount( progress );
+        step.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
+        step.amount = progress;
         pushMessage( step );
       }
       break;
@@ -779,7 +792,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
       if ( what == RPMCALLBACK_VERIFY_START )
         n = "Verifying";
 #endif
-      step.set_name( n );
+      step.name = n;
       pushMessage( step );
       break;
     }
@@ -802,7 +815,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
                                       ? ((((float) amount) / total) * 100)
                                       : 100.0);
       zypp::proto::target::TransProgress prog;
-      prog.set_amount( percentage );
+      prog.amount = percentage;
       pushMessage( prog );
       break;
     }
@@ -812,13 +825,15 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
     case RPMCALLBACK_SCRIPT_START: {
       zypp::proto::target::ScriptBegin script;
       if ( iStep )
-        script.set_stepid( iStep->stepid() );
+        script.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
       else
-        script.set_stepid( -1 );
-      script.set_scripttype( std::string( tagToScriptTypeName( amount ) ) );
+        script.stepId = -1;
+
+      // script type is stored in the amount variable passed to the callback
+      script.scriptType = std::string( tagToScriptTypeName( amount ) );
 
       if ( header.get() ) {
-        script.set_scriptpackage( header.nvra() );
+        script.scriptPackage = header.nvra();
       }
 
       pushMessage( script );
@@ -829,21 +844,21 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
       sendEndOfScriptTag();
       zypp::proto::target::ScriptFinished script;
       if ( iStep )
-        script.set_stepid( iStep->stepid() );
+        script.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
       else
-        script.set_stepid( -1 );
+        script.stepId = ( -1 );
       pushMessage( script );
       break;
     }
     case RPMCALLBACK_SCRIPT_ERROR: {
       zypp::proto::target::ScriptError script;
       if ( iStep )
-        script.set_stepid( iStep->stepid() );
+        script.stepId = std::visit([](const auto &val){ return val.stepId;}, *iStep );
       else
-        script.set_stepid( -1 );
+        script.stepId = ( -1 );
 
       // for RPMCALLBACK_SCRIPT_ERROR 'total' is abused by librpm to distinguish between warning and "real" errors
-      script.set_fatal( total != RPMRC_OK );
+      script.fatal = ( total != RPMRC_OK );
       pushMessage( script );
       break;
     }
@@ -860,8 +875,8 @@ int rpmLogCallback ( rpmlogRec rec, rpmlogCallbackData )
   int logRc = 0;
 
   zypp::proto::target::RpmLog log;
-  log.set_level( rpmlogRecPriority(rec)  );
-  log.set_line( zypp::str::asString( ::rpmlogRecMessage(rec) ) );
+  log.level = rpmlogRecPriority(rec);
+  log.line  =  zypp::str::asString( ::rpmlogRecMessage(rec) );
   pushMessage( log );
 
   return logRc;

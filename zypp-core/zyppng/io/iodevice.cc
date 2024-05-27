@@ -112,6 +112,12 @@ namespace zyppng {
     return bytesAvailable( d->_currentReadChannel );
   }
 
+  int64_t IODevice::readBufferCount () const
+  {
+    Z_D();
+    return readBufferCount( d->_currentReadChannel );
+  }
+
   ByteArray IODevice::readAll()
   {
     Z_D();
@@ -310,6 +316,14 @@ namespace zyppng {
     if ( !canRead() )
       return 0;
     return d->_readChannels[channel].size() + rawBytesAvailable( channel );
+  }
+
+  int64_t IODevice::readBufferCount(uint channel) const
+  {
+    Z_D();
+    if ( !canRead() )
+      return 0;
+    return d->_readChannels[channel].size();
   }
 
   bool IODevice::canReadUntil(uint channel, const char delim) const

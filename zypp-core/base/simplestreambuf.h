@@ -59,9 +59,10 @@ namespace zypp {
       SimpleStreamBuf( size_t bufsize_r = 512) : _buffer( bufsize_r ) { }
       ~SimpleStreamBuf() override { close(); }
 
-      SimpleStreamBuf * open( const char * name_r, std::ios_base::openmode mode_r = std::ios_base::in ) {
+      template <typename OpenSpecType>
+      SimpleStreamBuf * open( OpenSpecType &&name_r, std::ios_base::openmode mode_r = std::ios_base::in ) {
 
-          if ( !this->openImpl( name_r, mode_r ) )
+          if ( !this->openImpl( std::forward<OpenSpecType>(name_r), mode_r ) )
             return nullptr;
 
           if ( this->canRead() ) {

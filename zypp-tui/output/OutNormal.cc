@@ -17,6 +17,7 @@
 #include <zypp-core/ByteCount.h> // for download progress reporting
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h> // for toUpper()
+#include <zypp-core/base/Gettext.h>
 
 #include <zypp-tui/utils/colors.h>
 #include <zypp-tui/output/AliveCursor.h>

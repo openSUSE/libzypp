@@ -980,6 +980,10 @@ macro( ADDZYPPLIB LIBNAME )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-core )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-protobuf )
 
+  # CAUTION, link zypp-tui.a at last, to prevent undefined references
+  # in case tui functions are used in libzypp.
+  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-tui )
+
   TARGET_LINK_LIBRARIES(${LIBNAME} ${UTIL_LIBRARY} )
   TARGET_LINK_LIBRARIES(${LIBNAME} ${RPM_LIBRARY} )
   TARGET_LINK_LIBRARIES(${LIBNAME} ${GETTEXT_LIBRARIES} )

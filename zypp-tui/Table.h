@@ -26,7 +26,6 @@
 
 #include <zypp/base/String.h>
 #include <zypp/base/Exception.h>
-#include <zypp-core/base/Gettext.h>
 #include <zypp/sat/Solvable.h>
 #include <zypp/ui/Selectable.h>
 
@@ -35,7 +34,7 @@
 
 namespace ztui {
 
-inline const char * asYesNo( bool val_r ) { return val_r ? _("Yes") : _("No"); }
+const char * asYesNo( bool val_r );  ///> _("Yes") or _("No")
 
 /** Custom sort index type for table rows representing solvables (like detailed search results). */
 using SolvableCSI = std::pair<zypp::sat::Solvable, zypp::ui::Selectable::picklist_size_type>;

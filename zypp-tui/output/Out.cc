@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 
-//#include <zypp/AutoDispose.h>
+#include <zypp-core/base/Gettext.h>
 
 #include "Out.h"
 #include <zypp-tui/Table.h>
@@ -20,6 +20,17 @@
 #include "Utf8.h"
 
 namespace ztui {
+
+  namespace text {
+    // translator: usually followed by a ' ' and some explanatory text
+    ColorString tagNote() { return HIGHLIGHTString(_("Note:") ); }
+    // translator: usually followed by a ' ' and some explanatory text
+    ColorString tagWarning() { return MSG_WARNINGString(_("Warning:") ); }
+    // translator: usually followed by a ' ' and some explanatory text
+    ColorString tagError() { return MSG_ERRORString(_("Error:") ); }
+
+    const char * qContinue() { return _("Continue?"); }
+  }
 
 ///////////////////////////////////////////////////////////////////
 namespace out

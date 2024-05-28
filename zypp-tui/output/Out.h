@@ -26,7 +26,6 @@
 #include <utility>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/DtorReset>
-#include <zypp-core/base/Gettext.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/ui/ProgressData>
@@ -47,15 +46,10 @@ enum class ProgressEnd { done, attention, error };
 
 namespace text
 {
-  // translator: usually followed by a ' ' and some explanatory text
-  inline ColorString tagNote() { return HIGHLIGHTString(_("Note:") ); }
-  // translator: usually followed by a ' ' and some explanatory text
-  inline ColorString tagWarning() { return MSG_WARNINGString(_("Warning:") ); }
-  // translator: usually followed by a ' ' and some explanatory text
-  inline ColorString tagError() { return MSG_ERRORString(_("Error:") ); }
-
-  inline const char * qContinue() { return _("Continue?"); }
-
+  ColorString tagNote();    ///< translated "Note:" highlighted
+  ColorString tagWarning(); ///< translated "Warning:" warning color
+  ColorString tagError();   ///< translated "Error:" error color
+  const char * qContinue(); ///< translated "Continue?"
 
   /** Simple join of two string types */
   template <class Tltext, class Trtext>

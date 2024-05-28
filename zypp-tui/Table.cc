@@ -14,6 +14,7 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
 #include <zypp/base/DtorReset.h>
+#include <zypp-core/base/Gettext.h>
 
 #include <zypp-tui/Application>
 #include <zypp-tui/utils/colors.h>
@@ -27,6 +28,8 @@
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypper"
 
 namespace ztui {
+
+const char * asYesNo( bool val_r ) { return val_r ? _("Yes") : _("No"); }
 
 TableLineStyle Table::defaultStyle = Ascii;
 

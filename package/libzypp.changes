@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri May 31 12:19:45 CEST 2024 - ma@suse.de
+
+- zypp-tui: Make sure translated texts use the correct textdomain
+  (fixes #551)
+- Skip libproxy1 requires for tumbleweed.
+- version 17.34.1 (34)
+
+-------------------------------------------------------------------
 Tue May 14 16:17:41 UTC 2024 - Dirk Müller <dmueller@suse.com>
 
 - don't require libproxy1 on tumbleweed, it is optional now

@@ -32,7 +32,7 @@ namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS (StompFrameStream);
 
-  class InvalidMessageReceivedException : public zypp::Exception
+  class ZYPP_API InvalidMessageReceivedException : public zypp::Exception
   {
   public:
     InvalidMessageReceivedException( const std::string &msg = {});
@@ -91,7 +91,7 @@ namespace zyppng {
    * Implements the basic protocol for sending zypp RPC messages over a IODevice
    * using the STOMP frame format as message type.
    */
-  class StompFrameStream : public zyppng::Base
+  class ZYPP_API StompFrameStream : public zyppng::Base
   {
     public:
 

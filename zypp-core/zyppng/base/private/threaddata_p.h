@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 #include <string>
+#include <zypp-core/Globals.h>
 
 namespace zyppng
 {
@@ -11,7 +12,7 @@ namespace zyppng
 
   struct ThreadData
   {
-    static ThreadData &current();
+    static ZYPP_API ThreadData &current();
 
     template<typename T>
     void setName( T &&name ) {
@@ -21,8 +22,7 @@ namespace zyppng
 
     const std::string &name() const;
 
-    std::shared_ptr<EventDispatcher> dispatcher()
-    { return _dispatcher.lock(); }
+    std::shared_ptr<EventDispatcher> dispatcher();
     std::shared_ptr<EventDispatcher> ensureDispatcher();
     void setDispatcher( const std::shared_ptr<EventDispatcher> &disp );
 

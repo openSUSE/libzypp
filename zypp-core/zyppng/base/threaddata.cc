@@ -33,6 +33,7 @@ namespace zyppng
   {
     auto sp = _dispatcher.lock();
     if (!sp) {
+      MIL << "Creating the Event Dispatcher for thread: " << name() << "("<<_threadId<<")" << std::endl;
       _dispatcher = sp = EventDispatcherPrivate::create();
     }
     return sp;
@@ -52,4 +53,12 @@ namespace zyppng
     // length is restricted to 16 characters, including the terminating null byte ('\0')
     pthread_setname_np( _nativeHandle, name().substr(0,15).c_str() );
   }
-}
+
+  std::shared_ptr<EventDispatcher> ThreadData::dispatcher() {
+    auto sp = _dispatcher.lock();
+    if (!sp) {
+      MIL << "Requested Event Dispatcher for thread: " << name() << "("<<_threadId<<") but none was created." << std::endl;
+    }
+    return sp;
+  }
+} // namespace zyppng

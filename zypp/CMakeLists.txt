@@ -975,10 +975,10 @@ macro( ADDZYPPLIB LIBNAME )
 
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
+  target_link_libraries(${LIBNAME} $<TARGET_OBJECTS:commit-proto-obj> )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-curl )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-media )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-core )
-  target_link_libraries(${LIBNAME} $<TARGET_OBJECTS:commit-proto-obj> )
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.

@@ -5,8 +5,8 @@
 # if more than one class is required to be shared between libzypp and zypp-rpm
 ADD_LIBRARY( commit-proto-obj OBJECT commit/CommitMessages.h commit/CommitMessages.cc )
 
-# tvm protobuf protocol lib
-ADD_LIBRARY( tvm-protobuf-obj OBJECT tvm/tvm.proto tvm/zerocopystreams.cc )
-target_include_directories ( tvm-protobuf-obj PRIVATE ${CMAKE_CURRENT_BINARY_DIR} )
-protobuf_generate( TARGET tvm-protobuf-obj )
+# tvm protocol lib
+ADD_LIBRARY( tvm-protocol-obj OBJECT tvm/tvmsettings.h tvm/tvmsettings.cc )
+
+
 

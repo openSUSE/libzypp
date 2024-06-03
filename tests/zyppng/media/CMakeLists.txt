@@ -6,6 +6,5 @@ IF( NOT DISABLE_MEDIABACKEND_TESTS)
   )
 ENDIF()
 
-target_link_libraries( Provider_test $<TARGET_OBJECTS:tvm-protobuf-obj> )
-target_link_libraries( Provider_test protobuf::libprotobuf-lite )
+target_link_libraries( Provider_test $<TARGET_OBJECTS:tvm-protocol-obj> )
 

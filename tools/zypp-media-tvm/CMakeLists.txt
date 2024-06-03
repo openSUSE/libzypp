@@ -9,22 +9,21 @@ SET( SOURCES
   testvmprovider.h
 )
 
-# No clang tidy as long as we use protobuf, this will have too many errors
-# if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
-#   if (ZYPP_CXX_CLANG_TIDY)
-#     set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
-#   endif(ZYPP_CXX_CLANG_TIDY)
-#
-#   if (ZYPP_CXX_CPPCHECK)
-#     set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
-#   endif(ZYPP_CXX_CPPCHECK)
-# endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
+  if (ZYPP_CXX_CLANG_TIDY)
+   set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
+  endif(ZYPP_CXX_CLANG_TIDY)
+
+  if (ZYPP_CXX_CPPCHECK)
+   set(CMAKE_CXX_CPPCHECK ${ZYPP_CXX_CPPCHECK})
+  endif(ZYPP_CXX_CPPCHECK)
+endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )
-target_link_libraries( ${PROJECT_NAME} $<TARGET_OBJECTS:tvm-protobuf-obj> )
-target_link_libraries( ${PROJECT_NAME} protobuf::libprotobuf-lite )
+target_link_libraries( ${PROJECT_NAME} $<TARGET_OBJECTS:tvm-protocol-obj> )
+target_link_libraries( ${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES

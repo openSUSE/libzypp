@@ -2641,7 +2641,7 @@ namespace zypp
           });
 
           // this is the source for control messages from zypp-rpm , we will get structured data information
-          // in form of protobuf messages
+          // in form of STOMP messages
           if ( !msgSource->openFds( std::vector<int>{ messagePipe->readFd }, prog->stdinFd() ) )
             ZYPP_THROW( target::rpm::RpmSubprocessException( "Failed to open read stream to subprocess" ) );
 

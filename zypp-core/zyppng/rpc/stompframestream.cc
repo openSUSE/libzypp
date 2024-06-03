@@ -20,12 +20,9 @@ namespace zyppng {
   constexpr auto MAX_HDRLEN  = 8 * 1024;    // we might send long paths in headers
   constexpr auto MAX_BODYLEN = 1024 * 1024; // 1Mb for now, we do not want to use up all the memory
 
-#if 0
   InvalidMessageReceivedException::InvalidMessageReceivedException( const std::string &msg )
     : zypp::Exception( zypp::str::Str() << "Invalid Message received: (" << msg <<")" )
   { }
-#endif
-
 
   zyppng::StompFrameStream::StompFrameStream( IODevice::Ptr iostr ) : _ioDev( std::move(iostr) )
   {
@@ -128,12 +125,13 @@ namespace zyppng {
                 parseError();
                 continue;
               }
-
+#if 0
               if ( (*cLen) > MAX_BODYLEN ) {
                 ERR << "Message body exceeds maximum length: " << zypp::ByteCount( *cLen ) << " vs " << zypp::ByteCount( MAX_BODYLEN ) << std::endl;
                 parseError();
                 continue;
               }
+#endif
 
               _pendingBodyLen = *cLen;
               _pendingMessage->clearHeader( zypp::PluginFrame::contentLengthHeader() );
@@ -291,7 +289,7 @@ namespace zyppng {
     return nextMessage (msgName);
   }
 
-  bool zyppng::StompFrameStream::sendMessage( const zypp::PluginFrame &env )
+  bool zyppng::StompFrameStream::sendFrame( const zypp::PluginFrame &env )
   {
     if ( !_ioDev->canWrite () )
       return false;

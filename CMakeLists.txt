@@ -413,13 +413,13 @@ ENDIF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
 ####################################################################
 # SUBDIRECTORIES                                                   #
 ####################################################################
-ADD_SUBDIRECTORY( zypp-proto )
 ADD_SUBDIRECTORY( zypp-core )
 ADD_SUBDIRECTORY( zypp-media )
 ADD_SUBDIRECTORY( zypp-curl )
 ADD_SUBDIRECTORY( zypp-tui )
 ADD_SUBDIRECTORY( zypp )
 ADD_SUBDIRECTORY( tools )
+ADD_SUBDIRECTORY( shared )
 ADD_SUBDIRECTORY( doc )
 
 IF ( ENABLE_BUILD_TRANS )

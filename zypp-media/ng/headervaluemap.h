@@ -20,7 +20,7 @@ namespace zyppng {
   class HeaderValue
   {
   public:
-    using value_type = std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>;
+    using value_type = std::variant<std::monostate, std::string, int32_t, int64_t, bool>;
 
     HeaderValue();
 
@@ -30,7 +30,6 @@ namespace zyppng {
     HeaderValue( const bool val );
     HeaderValue( const int32_t val );
     HeaderValue( const int64_t val );
-    HeaderValue( const double val );
     HeaderValue( std::string &&val );
     HeaderValue( const std::string &val );
     HeaderValue( const char *val );
@@ -46,7 +45,6 @@ namespace zyppng {
     const std::string &asString () const;
     int32_t asInt   () const;
     int64_t asInt64 () const;
-    double  asDouble() const;
     bool asBool () const;
 
     value_type &asVariant ();
@@ -57,7 +55,6 @@ namespace zyppng {
     HeaderValue &operator= ( const std::string &val );
     HeaderValue &operator= ( int32_t val );
     HeaderValue &operator= ( int64_t val );
-    HeaderValue &operator= ( double val );
     HeaderValue &operator= ( bool val );
 
     bool operator== ( const HeaderValue &other ) const;
@@ -78,8 +75,9 @@ namespace zyppng {
       : public boost::iterator_adaptor<
           HeaderValueMap::const_iterator                             // Derived
           , ValueMap::const_iterator // Base
-          , const std::pair<std::string, Value> // Value
+          , std::pair<std::string, Value> // Value
           , boost::use_default  // CategoryOrTraversal
+          , const std::pair<const std::string&, const Value&> // Reference
           >
     {
     public:
@@ -110,9 +108,9 @@ namespace zyppng {
         this->base_reference() = ++this->base_reference();
       }
 
-      std::pair<std::string, Value> dereference() const
+      std::pair<const std::string&, const Value&> dereference() const
       {
-        return  std::make_pair( key(), value() );
+        return  std::pair<const std::string&, const Value&>( key(), value() );
       }
     };
 
@@ -124,8 +122,8 @@ namespace zyppng {
       return contains(std::string(key));
     }
 
-    void set( const std::string &key, const Value &val );
-    void set( const std::string &key, Value &&val );
+    void set( const std::string &key, Value val );
+    void set( const std::string &key, std::vector<Value> val );
     void add( const std::string &key, const Value &val);
     void clear ();
     ValueMap::size_type size() const noexcept;

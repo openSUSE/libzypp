@@ -296,11 +296,12 @@ namespace zyppng {
           case ProvideMessage::Code::ExpectedSizeExceeded: {
 
             std::optional<int64_t> filesize;
-            finishedReq->provideMessage ().forEachVal( [&]( const std::string &key, const auto &val ){
-              if ( key == ProvideMsgFields::ExpectedFilesize && val.valid() )
+            const auto &hdrs = finishedReq->provideMessage ().headers ();
+            if ( hdrs.contains( ProvideMsgFields::ExpectedFilesize ) ) {
+              const auto &val = hdrs.value ( ProvideMsgFields::ExpectedFilesize );
+              if ( val.valid() )
                 filesize = val.asInt64();
-              return true;
-            });
+            }
 
             if ( !filesize ) {
               errPtr = ZYPP_EXCPT_PTR( zypp::media::MediaException( zypp::str::Str() << "ExceededExpectedSize Error for URL: " << reqUrl << " " << reason ) );

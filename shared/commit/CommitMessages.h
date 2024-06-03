@@ -7,6 +7,9 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 
+#ifndef ZYPP_SHARED_COMMIT_COMMITMESSAGE_H_INCLUDED
+#define ZYPP_SHARED_COMMIT_COMMITMESSAGE_H_INCLUDED
+
 #include <zypp-core/rpc/PluginFrame.h>
 #include <zypp-core/zyppng/pipelines/expected.h>
 
@@ -205,3 +208,5 @@ namespace zypp::proto::target
   };
 
 }
+
+#endif // ZYPP_SHARED_COMMIT_COMMITMESSAGE_H_INCLUDED

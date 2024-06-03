@@ -11,10 +11,11 @@
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
 #include <zypp-core/zyppng/pipelines/Wait>
-#include <zypp-core/zyppng/rpc/zerocopystreams.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
-#include <zypp-proto/test/tvm.pb.h>
+#include <shared/tvm/tvm.pb.h>
+#include <shared/tvm/zerocopystreams.h>
+
 #include <iostream>
 #include <fstream>
 

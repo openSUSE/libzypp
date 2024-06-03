@@ -964,8 +964,6 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS} )
-#we include generated headers, so we need to wait for zypp-protobuf to be ready
-add_dependencies( zypp-objlib zypp-protobuf )
 
 macro( ADDZYPPLIB LIBNAME )
   message( "ADDING lib ${LIBNAME} to project" )
@@ -980,7 +978,7 @@ macro( ADDZYPPLIB LIBNAME )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-curl )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-media )
   TARGET_LINK_LIBRARIES(${LIBNAME} zypp-core )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-protobuf )
+  target_link_libraries(${LIBNAME} $<TARGET_OBJECTS:commit-proto-obj> )
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.

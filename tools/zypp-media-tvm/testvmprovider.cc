@@ -13,10 +13,10 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/base/StringV.h>
 #include <zypp-media/ng/MediaVerifier>
-#include <zypp-proto/test/tvm.pb.h>
-#include <zypp-core/zyppng/rpc/zerocopystreams.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
+#include <shared/tvm/tvm.pb.h>
+#include <shared/tvm/zerocopystreams.h>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "TestVMProvider"

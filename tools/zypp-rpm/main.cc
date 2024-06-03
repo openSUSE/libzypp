@@ -10,7 +10,7 @@
 #include <zypp-core/base/FileStreamBuf>
 
 #include <zypp-core/rpc/PluginFrame.h>
-#include <zypp-proto/target/CommitMessages.h>
+#include <shared/commit/CommitMessages.h>
 
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <mutex>

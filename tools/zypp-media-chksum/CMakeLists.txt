@@ -20,7 +20,6 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )
-target_link_libraries( ${PROJECT_NAME} zypp-protobuf )
 
 IF ( INSTALL_NG_BINARIES )
   INSTALL( TARGETS ${PROJECT_NAME} DESTINATION "${ZYPP_LIBEXEC_INSTALL_DIR}/workers" )

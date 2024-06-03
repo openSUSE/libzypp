@@ -12,10 +12,12 @@
 *
 */
 
-#ifndef ZYPP_CORE_ZYPPNG_RPC_MESSAGESTREAM_H_INCLUDED
-#define ZYPP_CORE_ZYPPNG_RPC_MESSAGESTREAM_H_INCLUDED
+#ifndef ZYPP_CORE_ZYPPNG_RPC_STOMPFRAMESTREAM_H_INCLUDED
+#define ZYPP_CORE_ZYPPNG_RPC_STOMPFRAMESTREAM_H_INCLUDED
 
+#include <zypp-core/TriBool.h>
 #include <zypp-core/zyppng/base/Base>
+#include <zypp-core/zyppng/core/String>
 #include <zypp-core/zyppng/base/Signals>
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/zyppng/io/IODevice>
@@ -26,30 +28,62 @@
 #include <deque>
 #include <optional>
 
-namespace zypp::proto
-{
-  class Envelope;
-}
-
 namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS (StompFrameStream);
-#if 0
+
   class InvalidMessageReceivedException : public zypp::Exception
   {
   public:
     InvalidMessageReceivedException( const std::string &msg = {});
   };
-#endif
 
-  template <typename T>
-  expected<zypp::PluginFrame> toStompMessage( const T& msg ) {
-    return msg.toStompMessage();
-  }
+  namespace rpc {
 
-  template <typename T>
-  expected<void> fromStompMessage( const zypp::PluginFrame &message, T &target ) {
-    return target.fromStompMessage( message );
+    template <typename T>
+    expected<zypp::PluginFrame> toStompMessage( const T& msg ) {
+      return msg.toStompMessage();
+    }
+
+    template <typename T>
+    expected<T> fromStompMessage( const zypp::PluginFrame &message ) {
+      return T::fromStompMessage( message );
+    }
+
+    // Reads data from the stomp message and converts it to the target type
+    // used to read header values and values serialized into a terminated data field
+    template <typename T>
+    void parseDataIntoField( const std::string &headerVal, T &target  )
+    {
+      if constexpr ( std::is_same_v<bool, T> ) {
+        const auto &triBool = zypp::str::strToTriBool ( headerVal );
+        if ( indeterminate(triBool) ) {
+          ZYPP_THROW ( zypp::PluginFrameException( "Invalid value for boolean field" ) );
+        }
+        target = bool(triBool);
+      } else if constexpr ( std::is_same_v<std::string, T> ) {
+        target = headerVal;
+      } else {
+        // numbers
+        auto val = zyppng::str::safe_strtonum<T> ( headerVal );
+        if ( !val )
+          ZYPP_THROW ( zypp::PluginFrameException( "Invalid value for numerical field" ) );
+        target = *val;
+      }
+    }
+
+    // queries a header value and calls parseDataIntoField on it
+    template <typename T>
+    void parseHeaderIntoField( const zypp::PluginFrame &msg, const std::string &name, T &target  )
+    {
+      return parseDataIntoField ( msg.getHeader(name), target );
+    }
+
+    template <typename T>
+    inline zypp::PluginFrame prepareFrame() {
+      return zypp::PluginFrame ( std::string( T::typeName.data(), T::typeName.length() ) );
+    }
+
   }
 
   /*!
@@ -90,10 +124,30 @@ namespace zyppng {
       std::optional<zypp::PluginFrame> nextMessageWait ( const std::string &msgName = "" );
 
       /*!
-       * Send out a RpcMessage to the other side, depending on the underlying device state
+       * Send out a PluginFrame to the other side, depending on the underlying device state
        * this will be buffered and send when the device is writeable again.
        */
-      bool sendMessage ( const zypp::PluginFrame &message );
+      bool sendFrame ( const zypp::PluginFrame &message );
+
+      template <typename T>
+      bool sendMessage ( const T &message )
+      {
+        if constexpr ( std::is_same_v<T, zypp::PluginFrame> ) {
+          return sendFrame( message );
+        } else {
+          const auto &msg = rpc::toStompMessage(message);
+          if ( !msg ) {
+            ERR << "Failed to serialize message" << std::endl;
+            return false;
+          }
+          return sendFrame( *msg );
+        }
+      }
+
+      template<class T>
+      static expected< T > parseMessage ( const zypp::PluginFrame &m ) {
+        return rpc::fromStompMessage<T>(m);
+      }
 
       /*!
        * Reads all messages from the underlying IO Device, this is usually called automatically
@@ -136,4 +190,4 @@ namespace zyppng {
   };
 }
 
-#endif // ZYPP_CORE_ZYPPNG_RPC_MESSAGESTREAM_H_INCLUDED
+#endif // ZYPP_CORE_ZYPPNG_RPC_STOMPFRAMESTREAM_H_INCLUDED

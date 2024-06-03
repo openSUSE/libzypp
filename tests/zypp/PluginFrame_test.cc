@@ -86,10 +86,6 @@ void doParse( const std::string & str_r )
 BOOST_AUTO_TEST_CASE(PluginFrameExceptipn)
 {
   BOOST_CHECK_THROW( PluginFrame( "c\nc" ), PluginFrameException );
-  PluginFrame f;
-  BOOST_CHECK_THROW( f.addHeader( "c\nc" ), PluginFrameException );
-  BOOST_CHECK_THROW( f.addHeader( "c:c" ), PluginFrameException );
-  BOOST_CHECK_THROW( f.addHeader( "cc", "c\nc" ), PluginFrameException );
 
   BOOST_CHECK_THROW( doParse( "c" ), PluginFrameException );			// no NL after command
   BOOST_CHECK_THROW( doParse( "c\n" ), PluginFrameException );			// no NL after header

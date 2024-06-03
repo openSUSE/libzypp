@@ -15,8 +15,8 @@
 #include <zypp-media/ng/MediaVerifier>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
-#include <shared/tvm/tvm.pb.h>
-#include <shared/tvm/zerocopystreams.h>
+#include <yaml-cpp/yaml.h>
+#include <shared/tvm/tvmsettings.h>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "TestVMProvider"
@@ -282,60 +282,63 @@ void TestVMProvider::unmountDevice( zyppng::worker::Device &dev )
 
 void TestVMProvider::detectDevices( )
 {
-  const auto &fname = _provRoot/"tvm.conf";
-  int fd = open( fname.asString().data(), O_RDONLY );
-  if ( fd < 0 ) {
-    ERR << "Failed to open file " << fname << " error: "<<"("<<errno<<")"<<zyppng::strerr_cxx(errno)<< std::endl;
-    return;
-  }
 
-  zyppng::FileInputStream in( fd );
-  in.SetCloseOnDelete(true);
+  YAML::Node control;
+  try {
+    const auto &fname = _provRoot/"tvm.conf";
+    control = YAML::LoadFile( fname.asString() );
 
-  zypp::proto::test::TVMSettings set;
-  if ( !set.ParseFromZeroCopyStream( &in ) ) {
-    MIL << "No devices configured!" << std::endl;
-    return;
-  }
+    const auto &set = control.as<zypp::test::TVMSettings>();
+    if ( set.devices.empty () ) {
+      MIL << "No devices configured!" << std::endl;
+      return;
+    }
 
-  auto &sysDevs = knownDevices();
-
-  if ( sysDevs.size() ) {
-    for ( int i = 0; i < set.devices_size(); i++ ) {
-      const auto &dev = set.devices(i);
-      auto iDev = std::find_if( sysDevs.begin(), sysDevs.end(), [&]( const auto &d ){
-        return d->_name == dev.name();
-      });
-      if ( iDev == sysDevs.end() ) {
-        MIL << "Previously unknown device detected" << std::endl;
-        auto d = std::make_shared<zyppng::worker::Device>( zyppng::worker::Device{
-          ._name = dev.name()
+    auto &sysDevs = knownDevices();
+    if ( sysDevs.size() ) {
+      for ( const auto &dev : set.devices ) {
+        auto iDev = std::find_if( sysDevs.begin(), sysDevs.end(), [&]( const auto &d ){
+          return d->_name == dev.name;
         });
-        if ( dev.insertedpath().size() ) {
-          d->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedpath());
+        if ( iDev == sysDevs.end() ) {
+          MIL << "Previously unknown device detected" << std::endl;
+          auto d = std::make_shared<zyppng::worker::Device>( zyppng::worker::Device{
+            ._name = dev.name
+          });
+          if ( dev.insertedPath.size() ) {
+            d->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedPath);
+          }
+          sysDevs.push_back(d);
+          continue;
+        }
+
+        // mounted devices are never updated
+        if ( !(*iDev)->_mountPoint.empty() ) {
+          continue;
+        }
+
+        (*iDev)->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedPath);
+      }
+    } else {
+      for ( const auto &dev : set.devices ) {
+        MIL << "Found device: " << dev.name << std::endl;
+        auto d = std::make_shared<zyppng::worker::Device>( zyppng::worker::Device{
+          ._name = dev.name
+        });
+        if ( dev.insertedPath.size() ) {
+          d->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedPath);
         }
         sysDevs.push_back(d);
-        continue;
       }
-
-      // mounted devices are never updated
-      if ( !(*iDev)->_mountPoint.empty() ) {
-        continue;
-      }
-
-      (*iDev)->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedpath());
     }
-  } else {
-    for ( int i = 0; i < set.devices_size(); i++ ) {
-      const auto &dev = set.devices(i);
-      MIL << "Found device: " << dev.name() << std::endl;
-      auto d = std::make_shared<zyppng::worker::Device>( zyppng::worker::Device{
-        ._name = dev.name()
-      });
-      if ( dev.insertedpath().size() ) {
-        d->_properties[std::string(CONTENTDIR_PROP)] = zypp::Pathname(dev.insertedpath());
-      }
-      sysDevs.push_back(d);
-    }
+  } catch ( YAML::Exception &e ) {
+    WAR << "YAML exception: " << e.what() << std::endl;
+    return;
+  } catch ( const std::exception &e )  {
+    WAR << "Error when parsing the control file: " << e.what() << std::endl;
+    return;
+  } catch ( ... )  {
+    WAR << "Unknown error when parsing the control file" << std::endl;
+    return;
   }
 }

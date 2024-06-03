@@ -13,8 +13,8 @@
 #include <zypp-core/zyppng/pipelines/Wait>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
-#include <shared/tvm/tvm.pb.h>
-#include <shared/tvm/zerocopystreams.h>
+#include <yaml-cpp/yaml.h>
+#include <shared/tvm/tvmsettings.h>
 
 #include <iostream>
 #include <fstream>
@@ -568,19 +568,28 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
 
-static void writeTVMConfig ( const zypp::Pathname &file, const zypp::proto::test::TVMSettings &set )
+static void writeTVMConfig ( const zypp::Pathname &file, const zypp::test::TVMSettings &set )
 {
-  const auto &fname = file/"tvm.conf";
-  int fd = open( fname.asString().data(), O_WRONLY | O_CREAT | O_TRUNC, 0666 );
-  if ( fd < 0 ) {
-    ERR << "Failed to open/create file " << fname << " error: "<<zyppng::strerr_cxx(errno)<< " " << errno << std::endl;
+  try {
+    YAML::Emitter yOut;
+    yOut << YAML::convert<zypp::test::TVMSettings>::encode( set );
+
+    const auto &fname = file/"tvm.conf";
+    std::ofstream fout( fname.asString() );
+    fout << yOut.c_str();
+
+    MIL << "TVM config serialized to: " << fname << std::endl;
+
+  }  catch ( YAML::Exception &e ) {
+    WAR << "YAML exception when serializing the control file: " << e.what() << std::endl;
+    return;
+  } catch ( const std::exception &e )  {
+    WAR << "Error when serializing the control file: " << e.what() << std::endl;
+    return;
+  } catch ( ... )  {
+    WAR << "Unknown error when serializing the control file" << std::endl;
     return;
   }
-  zyppng::FileOutputStream out( fd );
-  out.SetCloseOnDelete( true );
-  if ( !set.SerializeToZeroCopyStream( &out ) )
-    ERR << "Failed to serialize settings" << std::endl;
-  MIL << "TVM config serialized to: " << fname << std::endl;
 }
 
 static auto makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Pathname &devRoot, int mediaNr, const std::string &fName )
@@ -642,16 +651,25 @@ BOOST_AUTO_TEST_CASE( tvm_basic )
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
-  zypp::proto::test::TVMSettings devSet;
-  auto dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot1");
-  dev->set_insertedpath( (devRoot/"cd1").asString() );
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot2");
-  dev->set_insertedpath( (devRoot/"cd2").asString() );
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot3");
-  dev->set_insertedpath( (devRoot/"cd3").asString() );
+  zypp::test::TVMSettings devSet;
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot1",
+      .insertedPath = (devRoot/"cd1").asString()
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot2",
+      .insertedPath = (devRoot/"cd2").asString()
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot3",
+      .insertedPath = (devRoot/"cd3").asString()
+    }
+  );
   writeTVMConfig( provideRoot, devSet );
 
   prov->start();
@@ -691,14 +709,25 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
-  zypp::proto::test::TVMSettings devSet;
-  auto dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot1");
-  dev->set_insertedpath( (devRoot/"cd1").asString() );
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot2");
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot3");
+  zypp::test::TVMSettings devSet;
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot1",
+      .insertedPath = (devRoot/"cd1").asString()
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot2",
+      .insertedPath = ""
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot3",
+      .insertedPath = ""
+    }
+  );
   writeTVMConfig( provideRoot, devSet );
 
   prov->start();
@@ -712,7 +741,7 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
     freeDevices = devices;
     labelAsked = label;
     mediaNrAsked = mediaNr;
-    devSet.mutable_devices(1)->set_insertedpath( (devRoot/"cd2").asString() );
+    devSet.devices[1].insertedPath = (devRoot/"cd2").asString();
     writeTVMConfig( provideRoot, devSet );
     return zyppng::Provide::RETRY;
   });
@@ -758,14 +787,25 @@ BOOST_DATA_TEST_CASE( tvm_medchange_abort, bdata::make( cancelOps ), cancelOp )
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
-  zypp::proto::test::TVMSettings devSet;
-  auto dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot1");
-  dev->set_insertedpath( (devRoot/"cd1").asString() );
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot2");
-  dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot3");
+  zypp::test::TVMSettings devSet;
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot1",
+      .insertedPath = (devRoot/"cd1").asString()
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot2",
+      .insertedPath = ""
+    }
+  );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot3",
+      .insertedPath = ""
+    }
+  );
   writeTVMConfig( provideRoot, devSet );
 
   prov->start();
@@ -834,10 +874,13 @@ BOOST_AUTO_TEST_CASE( tvm_jammed )
     return zyppng::Provide::ABORT;
   });
 
-  zypp::proto::test::TVMSettings devSet;
-  auto dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot1");
-  dev->set_insertedpath( (devRoot/"cd1").asString() );
+  zypp::test::TVMSettings devSet;
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot1",
+      .insertedPath = (devRoot/"cd1").asString()
+    }
+  );
   writeTVMConfig( provideRoot, devSet );
 
   prov->start();
@@ -889,7 +932,7 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
-  zypp::proto::test::TVMSettings devSet;
+  zypp::test::TVMSettings devSet;
 
   bool mediaChangeAllowed = false;
   bool gotInvalidMediaChange = false;
@@ -899,14 +942,17 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
       return zyppng::Provide::ABORT;
     }
 
-    devSet.mutable_devices(0)->set_insertedpath( (devRoot/"cd2").asString() );
+    devSet.devices[0].insertedPath = (devRoot/"cd2").asString();
     writeTVMConfig( provideRoot, devSet );
     return zyppng::Provide::RETRY;
   });
 
-  auto dev = devSet.add_devices();
-  dev->set_name("/fakedev/tvm/slot1");
-  dev->set_insertedpath( (devRoot/"cd1").asString() );
+  devSet.devices.push_back(
+    zypp::test::TVMSettings::Device{
+      .name = "/fakedev/tvm/slot1",
+      .insertedPath = (devRoot/"cd1").asString()
+    }
+  );
   writeTVMConfig( provideRoot, devSet );
 
   prov->start();

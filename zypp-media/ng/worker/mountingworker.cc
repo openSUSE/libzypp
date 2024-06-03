@@ -53,14 +53,13 @@ namespace zyppng::worker
           const auto label     = req->_spec.value( zyppng::AttachMsgFields::Label, "No label" ).asString();
           const auto attachId  = req->_spec.value( zyppng::AttachMsgFields::AttachId ).asString();
           HeaderValueMap vals;
-          req ->_spec.forEachVal([&]( const std::string &name, const auto &val ) {
-            if ( name == zyppng::AttachMsgFields::Url
-              || name == zyppng::AttachMsgFields::Label
-              || name == zyppng::AttachMsgFields::AttachId )
-              return true;
-            vals.add( name, val );
-            return true;
-          });
+          for ( const auto &i : req->_spec.headers() ) {
+            if ( i.first == zyppng::AttachMsgFields::Url
+              || i.first == zyppng::AttachMsgFields::Label
+              || i.first == zyppng::AttachMsgFields::AttachId )
+              continue;
+            vals.set( i.first, i.second );
+          }
 
           const auto &res = _driver->mountDevice( req->_spec.requestId(),  attachUrl, attachId, label, vals );
           if ( !res ) {

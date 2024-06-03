@@ -64,12 +64,11 @@
 #include <zypp-core/zyppng/io/AsyncDataSource>
 #include <zypp-core/zyppng/io/Process>
 #include <zypp-core/base/IOTools.h>
-#include <zypp-core/zyppng/rpc/rpc.h>
 #include <zypp-core/zyppng/rpc/stompframestream.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 #include <zypp-core/zyppng/base/EventDispatcher>
 
-#include <zypp-proto/target/CommitMessages.h>
+#include <shared/commit/CommitMessages.h>
 
 #include <zypp/target/rpm/RpmException.h>
 

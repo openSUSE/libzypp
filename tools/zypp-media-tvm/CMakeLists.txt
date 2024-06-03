@@ -23,7 +23,8 @@ SET( SOURCES
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )
-target_link_libraries( ${PROJECT_NAME} zypp-protobuf )
+target_link_libraries( ${PROJECT_NAME} $<TARGET_OBJECTS:tvm-protobuf-obj> )
+target_link_libraries( ${PROJECT_NAME} protobuf::libprotobuf-lite )
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES

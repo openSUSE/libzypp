@@ -13,7 +13,7 @@
 #include "private/providedbg_p.h"
 
 #include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/zyppng/rpc/MessageStream>
+#include <zypp-core/zyppng/rpc/stompframestream.h>
 #include <zypp-core/base/StringV.h>
 #include <zypp-media/ng/provide-configvars.h>
 #include <zypp-media/MediaException>
@@ -88,7 +88,7 @@ namespace zyppng {
     _currentExe = pN;
     _workerProc = Process::create();
     _workerProc->setWorkingDirectory ( workDir );
-    _messageStream = RpcMessageStream::create( _workerProc );
+    _messageStream = StompFrameStream::create( _workerProc );
     return doStartup();
   }
 
@@ -359,7 +359,7 @@ namespace zyppng {
 
     // wait until we receive a message
     const auto &caps = _messageStream->nextMessageWait();
-    if ( !caps || caps->messagetypename() != WorkerCaps::staticTypeName() ) {
+    if ( !caps || caps->command() != WorkerCaps::typeName ) {
       ERR << "Worker did not sent a capabilities message, aborting" << std::endl;
       return cleanupOnErr();
     }
@@ -375,7 +375,7 @@ namespace zyppng {
     DBG << "Received config for worker: " << this->_currentExe.asString() << " Worker Type: " << this->_capabilities.worker_type() << " Flags: " << std::bitset<32>( _capabilities.cfg_flags() ).to_string() << std::endl;
 
     // now we can set up signals and start processing messages
-    connect( *_messageStream, &RpcMessageStream::sigMessageReceived, *this, &ProvideQueue::processMessage );
+    connect( *_messageStream, &StompFrameStream::sigMessageReceived, *this, &ProvideQueue::processMessage );
     connect( *_workerProc, &IODevice::sigChannelReadyRead, *this, &ProvideQueue::processReadyRead );
     connect( *_workerProc, &Process::sigFinished, *this, &ProvideQueue::procFinished );
 
@@ -406,7 +406,7 @@ namespace zyppng {
       return i;
     };
 
-    const auto &sendErrorToWorker = [&]( const uint32_t reqId, const uint code, const std::string &reason, bool transient = false ) {
+    const auto &sendErrorToWorker = [&]( const uint32_t reqId, const MessageCodes code, const std::string &reason, bool transient = false ) {
       auto r = ProvideMessage::createErrorResponse ( reqId, code, reason, transient );
       if ( !_messageStream->sendMessage( r ) ) {
         ERR << "Failed to send Error message to worker process." << std::endl;
@@ -421,7 +421,7 @@ namespace zyppng {
 
     while ( auto msg = _messageStream->nextMessage () ) {
 
-      if ( msg->messagetypename() == ProvideMessage::staticTypeName() ) {
+      if ( msg->command() == ProvideMessage::typeName ) {
 
         const auto &provMsg = ProvideMessage::create(*msg);
         if ( !provMsg ) {
@@ -593,20 +593,19 @@ namespace zyppng {
               zypp::Url u( provMsg->value( AuthDataRequestMsgFields::EffectiveUrl ).asString() );
 
               std::map<std::string, std::string> extraVals;
-              provMsg->forEachVal( [&]( const std::string &name, const zyppng::ProvideMessage::FieldVal &val ) {
+              for( const auto &hdr : provMsg->headers() ) {
 
-                if ( name == AuthDataRequestMsgFields::EffectiveUrl
-                  || name == AuthDataRequestMsgFields::LastAuthTimestamp )
-                  return true;
+                if ( hdr.first == AuthDataRequestMsgFields::EffectiveUrl
+                  || hdr.first == AuthDataRequestMsgFields::LastAuthTimestamp )
+                  continue;
 
-                if ( !val.isString() ) {
-                  WAR << "Ignoring non string value for " << name << std::endl;
-                  return true;
+                if ( !hdr.second.isString() ) {
+                  WAR << "Ignoring non string value for " << hdr.first << std::endl;
+                  continue;
                 }
 
-                extraVals[name] = val.asString();
-                return true;
-              });
+                extraVals[hdr.first] = hdr.second.asString();
+              }
 
               const auto &authOpt = reqRef->owner()->authenticationRequired( *this, reqRef, u, provMsg->value( AuthDataRequestMsgFields::LastAuthTimestamp ).asInt64(), extraVals );
               if ( !authOpt ) {
@@ -700,11 +699,11 @@ namespace zyppng {
 
         } else  {
           // unknown code
-          ERR << "Received unsupported message " << msg->messagetypename() << " with code " << code << " ignoring! " << std::endl;
+          ERR << "Received unsupported message " << msg->command() << " with code " << code << " ignoring! " << std::endl;
         }
 
       } else {
-        ERR << "Received unsupported message " << msg->messagetypename() << "ignoring" << std::endl;
+        ERR << "Received unsupported message " << msg->command() << "ignoring" << std::endl;
       }
     }
   }

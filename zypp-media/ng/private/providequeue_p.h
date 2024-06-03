@@ -25,8 +25,7 @@
 
 namespace zyppng {
 
-  class RpcMessageStream;
-  using RpcMessageStreamPtr = std::shared_ptr<RpcMessageStream>;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (StompFrameStream);
 
   class ProvideQueue : public Base
   {
@@ -134,7 +133,7 @@ namespace zyppng {
     std::deque< Item > _waitQueue;
     std::list< Item >  _activeItems;
     Process::Ptr _workerProc;
-    RpcMessageStreamPtr _messageStream;
+    StompFrameStreamRef _messageStream;
     Signal<void()> _sigIdle;
     std::optional<TimePoint> _idleSince;
   };

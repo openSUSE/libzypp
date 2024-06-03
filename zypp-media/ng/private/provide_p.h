@@ -38,10 +38,6 @@ namespace zyppng {
   }
 
   class ProvideQueue;
-  class RpcMessageStream;
-  using RpcMessageStreamPtr = std::shared_ptr<RpcMessageStream>;
-
-
   class ProvidePrivate : public BasePrivate
   {
     ZYPP_DECLARE_PUBLIC(Provide);

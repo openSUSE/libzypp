@@ -139,5 +139,3 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( zypp-media STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
-#we include generated headers, so we need to wait for zypp-protobuf to be ready
-add_dependencies( zypp-media zypp-protobuf )

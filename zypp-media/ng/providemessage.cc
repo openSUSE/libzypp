@@ -8,148 +8,154 @@
 \---------------------------------------------------------------------*/
 
 #include "private/providemessage_p.h"
+#include "zypp-core/zyppng/rpc/stompframestream.h"
 
 #include <zypp-core/Url.h>
 #include <string_view>
 #include <string>
 
-#include <zypp-proto/media/provider.pb.h>
-
 namespace zyppng {
 
-  const std::string &ProviderConfiguration::staticTypeName()
+  zyppng::expected<zypp::PluginFrame> ProviderConfiguration::toStompMessage() const
   {
-    return rpc::messageTypeName<zypp::proto::Configuration>();
+    auto frame = rpc::prepareFrame<ProviderConfiguration>();
+    for ( const auto &v : *this ) {
+      frame.addHeader( v.first, v.second );
+    }
+    return zyppng::expected<zypp::PluginFrame>::success( std::move(frame) );
   }
 
-  const std::string &ProviderConfiguration::typeName() const
+  zyppng::expected<ProviderConfiguration> ProviderConfiguration::fromStompMessage(const zypp::PluginFrame &msg)
   {
-    return staticTypeName();
+    try {
+      if ( msg.command() != ProviderConfiguration::typeName )
+        ZYPP_THROW( InvalidMessageReceivedException("Message is not of type ProviderConfiguration") );
+
+      ProviderConfiguration res;
+      for ( auto i = msg.headerBegin (); i != msg.headerEnd(); i++  ) {
+        res.insert_or_assign ( i->first, i->second );
+      }
+
+      return zyppng::expected<ProviderConfiguration>::success ( std::move(res) );
+
+    } catch ( const zypp::Exception &e ) {
+      ZYPP_CAUGHT (e);
+      return zyppng::expected<ProviderConfiguration>::error( ZYPP_EXCPT_PTR(e) );
+    }
   }
-
-  bool ProviderConfiguration::deserialize(const std::string &data)
-  {
-    clear();
-    zypp::proto::Configuration implVar;
-    if ( !implVar.ParseFromString( data ) )
-      return false;
-
-    insert( implVar.values ().begin (), implVar.values ().end() );
-    return true;
-  }
-
-  void ProviderConfiguration::serializeInto(std::string &str) const
-  {
-    zypp::proto::Configuration implVar;
-    implVar.mutable_values()->insert( begin(), end() );
-    implVar.SerializeToString( &str );
-  }
-
-  std::string ProviderConfiguration::serialize( ) const
-  {
-    std::string res;
-    serializeInto(res);
-    return res;
-  }
-
 
   /*!
    * Worker Capabilities , sent by the workers to the provider
    */
   WorkerCaps::WorkerCaps()
-    : _data( new zypp::proto::Capabilities() )
   { }
-
-  ZYPP_IMPL_RPCBASE(WorkerCaps, zypp::proto::Capabilities, _data)
 
   WorkerCaps::~WorkerCaps()
   { }
 
   uint32_t WorkerCaps::protocol_version() const
   {
-    return _data->protocol_version ();
+    return _protocolVersion;
   }
 
   WorkerCaps::WorkerType WorkerCaps::worker_type() const
   {
-    return static_cast<WorkerCaps::WorkerType>(_data->worker_type ());
+    return static_cast<WorkerType>(_workerType);
   }
 
   WorkerCaps::Flags WorkerCaps::cfg_flags() const
   {
-    return static_cast<WorkerCaps::Flags>(_data->cfg_flags());
+    return static_cast<WorkerCaps::Flags>(_cfgFlags);
   }
 
   const std::string &WorkerCaps::worker_name() const
   {
-    return _data->worker_name();
+    return _workerName;
   }
 
   void WorkerCaps::set_protocol_version(uint32_t v)
   {
-    _data->set_protocol_version(v);
+    _protocolVersion = v;
   }
 
   void WorkerCaps::set_worker_type(WorkerType t)
   {
-    _data->set_worker_type( static_cast<uint32_t>(t) );
+    _workerType = t;
   }
 
   void WorkerCaps::set_cfg_flags(Flags f)
   {
-    _data->set_cfg_flags( static_cast<uint32_t>(f) );
+    _cfgFlags = f;
   }
 
   void WorkerCaps::set_worker_name(std::string name)
   {
-    _data->set_worker_name ( std::move(name) );
+    _workerName = std::move(name);
   }
 
-  static ProvideMessage::FieldVal fieldValFromProto ( const zypp::proto::DataField &field )
+  zyppng::expected<zypp::PluginFrame> WorkerCaps::toStompMessage() const
   {
-    ProvideMessage::FieldVal v;
-    switch ( field.field_val_case () ) {
-      case zypp::proto::DataField::FieldValCase::kBoolVal:
-        v = field.bool_val();
-        break;
-      case zypp::proto::DataField::FieldValCase::kDoubleVal:
-        v = field.double_val();
-        break;
-      case zypp::proto::DataField::FieldValCase::kIntVal:
-        v = field.int_val();
-        break;
-      case zypp::proto::DataField::FieldValCase::kLongVal:
-        v = field.long_val();
-        break;
-      case zypp::proto::DataField::FieldValCase::kStrVal:
-        v = field.str_val();
-        break;
-      case zypp::proto::DataField::FieldValCase::FIELD_VAL_NOT_SET:
-        ZYPP_THROW( std::logic_error("Unexpected DataField type"));
-        break;
+    try {
+      zypp::PluginFrame pf = zyppng::rpc::prepareFrame<WorkerCaps>();
+      pf.addHeader ( "protocolVersion", zypp::str::asString (_protocolVersion) );
+      pf.addHeader ( "workerType"     , zypp::str::asString (_workerType) );
+      pf.addHeader ( "cfgFlags"       , zypp::str::asString (_cfgFlags) );
+      pf.addHeader ( "workerName"     , zypp::str::asString (_workerName) );
+      return zyppng::expected<zypp::PluginFrame>::success ( std::move(pf) );
+
+    } catch ( const zypp::Exception &e ) {
+      ZYPP_CAUGHT (e);
+      return zyppng::expected<zypp::PluginFrame>::error( ZYPP_EXCPT_PTR(e) );
     }
-    return v;
   }
 
-  static void fieldValToProto ( const ProvideMessage::FieldVal &val, zypp::proto::DataField &field )
+  zyppng::expected<WorkerCaps> WorkerCaps::fromStompMessage(const zypp::PluginFrame &msg)
   {
-    if ( val.isString() )
-      field.set_str_val( val.asString () );
-    else if ( val.isInt() )
-      field.set_int_val( val.asInt() );
-    else if ( val.isInt64() )
-      field.set_long_val( val.asInt64() );
-    else if ( val.isDouble() )
-      field.set_double_val( val.asDouble() );
-    else if ( val.isBool() )
-      field.set_bool_val( val.asBool() );
-    else
-      ZYPP_THROW( std::logic_error("Unexpected FieldVal type"));
+    try {
+      if ( msg.command() != WorkerCaps::typeName )
+        ZYPP_THROW( InvalidMessageReceivedException("Message is not of type WorkerCaps") );
+
+      WorkerCaps res;
+      zyppng::rpc::parseHeaderIntoField( msg, "protocolVersion", res._protocolVersion );
+      zyppng::rpc::parseHeaderIntoField( msg, "workerType", res._workerType );
+      zyppng::rpc::parseHeaderIntoField( msg, "cfgFlags", res._cfgFlags );
+      zyppng::rpc::parseHeaderIntoField( msg, "workerName", res._workerName );
+      return zyppng::expected<WorkerCaps>::success ( std::move(res) );
+
+    } catch ( const zypp::Exception &e ) {
+      ZYPP_CAUGHT (e);
+      return zyppng::expected<WorkerCaps>::error( ZYPP_EXCPT_PTR(e) );
+    }
   }
 
-  static expected<void> validateMessage ( const ProvideMessage &msg )
+  template <typename T>
+  static zyppng::expected<void> doParseField( const std::string &val, ProvideMessage &t, std::string_view msgtype, std::string_view name ) {
+    try {
+      T tVal; // the target value type
+      zyppng::rpc::parseDataIntoField ( val, tVal );
+      t.addValue( name, std::move(tVal) );
+      return zyppng::expected<void>::success();
+    } catch ( const zypp::Exception &e ) {
+      ZYPP_CAUGHT(e);
+      return zyppng::expected<void>::error( ZYPP_EXCPT_PTR( InvalidMessageReceivedException( zypp::str::Str() << "Parse error " << msgtype << ", Field " << name << " has invalid type" ) ) );
+    }
+  }
+
+  ProvideMessage::ProvideMessage()
+  { }
+
+  expected<zyppng::ProvideMessage> ProvideMessage::create(const zypp::PluginFrame &msg)
   {
-    const auto c = msg.code();
+    if ( msg.command() != ProvideMessage::typeName ) {
+      return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR( InvalidMessageReceivedException("Message is not of type WorkerCaps") ) );
+    }
+
+    const std::string &codeStr = msg.getHeaderNT( std::string(ProvideMessageFields::RequestCode) );
+    if ( codeStr.empty () ) {
+      return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Invalid message, PluginFrame has no requestId header.")) );
+    }
+
+    const auto c = zyppng::str::safe_strtonum<uint32_t>( codeStr ).value_or ( NoCode );
     const auto validCode =    ( c >= ProvideMessage::Code::FirstInformalCode    && c <= ProvideMessage::Code::LastInformalCode  )
                            || ( c >= ProvideMessage::Code::FirstSuccessCode     && c <= ProvideMessage::Code::LastSuccessCode   )
                            || ( c >= ProvideMessage::Code::FirstRedirCode       && c <= ProvideMessage::Code::LastRedirCode     )
@@ -158,137 +164,147 @@ namespace zyppng {
                            || ( c >= ProvideMessage::Code::FirstControllerCode  && c <= ProvideMessage::Code::LastControllerCode)
                            || ( c >= ProvideMessage::Code::FirstWorkerCode      && c <= ProvideMessage::Code::LastWorkerCode    );
     if ( !validCode ) {
-      return zyppng::expected<void>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Invalid code in ProvideMessage")) );
+      return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Invalid code in PluginFrame")) );
     }
+
+    const std::string & idStr = msg.getHeaderNT( std::string(ProvideMessageFields::RequestId) );
+    if ( idStr.empty () ) {
+      return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Invalid message, PluginFrame has no requestId header.")) );
+    }
+
+    const auto &maybeId = zyppng::str::safe_strtonum<uint>( idStr );
+    if ( !maybeId ) {
+      return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Invalid message, can not parse requestId header.")) );
+    }
+
+    ProvideMessage pMessage;
+    pMessage.setCode ( static_cast<MessageCodes>(c) );
+    pMessage.setRequestId ( *maybeId );
 
     #define DEF_REQ_FIELD( fname ) bool has_##fname = false
 
-    #define REQ_FIELD_CHECK( msgtype, fname, ftype ) \
+    #define PARSE_FIELD( msgtype, fname, ftype, _C_ ) \
       if ( name == #fname ) { \
-        if ( !std::holds_alternative<ftype>(val.asVariant()) ) { \
-          error = ZYPP_EXCPT_PTR( InvalidMessageReceivedException( zypp::str::Str() << "Parse error " << #msgtype << ", Field " << #fname << " has invalid type" ) ); \
-          return false; \
+        const auto &res = doParseField<ftype>( val, pMessage, #msgtype, #fname ); \
+        if ( !res ) { \
+          return zyppng::expected<ProvideMessage>::error(res.error()); \
         } \
-      has_##fname = true; \
+        _C_ \
       }
 
-    #define OR_REQ_FIELD_CHECK( msgtype, fname, ftype ) else REQ_FIELD_CHECK( msgtype, fname, ftype )
-
-    #define OPT_FIELD_CHECK( msgtype, fname, ftype ) \
-      if ( name == #fname ) { \
-        if ( !std::holds_alternative<ftype>(val.asVariant() ) ) { \
-          error = ZYPP_EXCPT_PTR( InvalidMessageReceivedException( zypp::str::Str() << "Parse error " << #msgtype << ", Field " << #fname << " has invalid type" ) ); \
-          return false; \
-        } \
+    #define HANDLE_UNKNOWN_FIELD( fname, val ) { \
+        pMessage.addValue( fname, val ); \
       }
 
-    #define OR_OPT_FIELD_CHECK( msgtype, fname, ftype ) else OPT_FIELD_CHECK( msgtype, fname, ftype )
+    #define OR_HANDLE_UNKNOWN_FIELD( fname, val ) else HANDLE_UNKNOWN_FIELD( fname, val )
+
+    #define BEGIN_PARSE_HEADERS \
+    for ( const auto &header : msg.headerList() ) { \
+      const auto &name = header.first;  \
+      const auto &val  = header.second;
+
+    #define END_PARSE_HEADERS }
+
+    #define PARSE_REQ_FIELD( msgtype, fname, ftype ) PARSE_FIELD( msgtype, fname, ftype, has_##fname = true; )
+    #define OR_PARSE_REQ_FIELD( msgtype, fname, ftype ) else PARSE_REQ_FIELD( msgtype, fname, ftype )
+    #define PARSE_OPT_FIELD( msgtype, fname, ftype ) PARSE_FIELD( msgtype, fname, ftype, )
+    #define OR_PARSE_OPT_FIELD( msgtype, fname, ftype ) else PARSE_OPT_FIELD( msgtype, fname, ftype )
 
     #define FAIL_IF_NOT_SEEN_REQ_FIELD( msgtype, fname ) \
       if ( !has_##fname ) \
-        return expected<void>::error( ZYPP_EXCPT_PTR( InvalidMessageReceivedException( zypp::str::Str() << #msgtype <<" message does not contain required " << #fname << " field" ) ) )
+        return expected<ProvideMessage>::error( ZYPP_EXCPT_PTR( InvalidMessageReceivedException( zypp::str::Str() << #msgtype <<" message does not contain required " << #fname << " field" ) ) )
 
-    #define FAIL_IF_ERROR( ) \
-      if ( error ) return expected<void>::error( error )
-
-    const auto &validateErrorMsg = []( const auto &msg ){
-      std::exception_ptr error;
+    auto validateErrorMsg = [&]( const auto &msg ){
       DEF_REQ_FIELD(reason);
-      msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-        REQ_FIELD_CHECK ( Error, reason, std::string )
-        OR_OPT_FIELD_CHECK ( Error, history, std::string )
-        OR_OPT_FIELD_CHECK ( Error, transient, bool )
-        return true;
-      });
+      BEGIN_PARSE_HEADERS
+        PARSE_REQ_FIELD ( Error, reason, std::string )
+        OR_PARSE_OPT_FIELD ( Error, history, std::string )
+        OR_PARSE_OPT_FIELD ( Error, transient, bool )
+        OR_HANDLE_UNKNOWN_FIELD( name, val )
+      END_PARSE_HEADERS
       FAIL_IF_NOT_SEEN_REQ_FIELD( Error, reason );
-      FAIL_IF_ERROR();
-      return expected<void>::success();
+      return expected<ProvideMessage>::success( std::move(pMessage) );
     };
 
     switch ( c )
     {
       case ProvideMessage::Code::ProvideStarted: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK ( ProvideStarted, url, std::string )
-          OR_OPT_FIELD_CHECK ( ProvideStarted, local_filename, std::string )
-          OR_OPT_FIELD_CHECK ( ProvideStarted, staging_filename, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD     ( ProvideStarted, url, std::string )
+          OR_PARSE_OPT_FIELD  ( ProvideStarted, local_filename, std::string )
+          OR_PARSE_OPT_FIELD  ( ProvideStarted, staging_filename, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideStarted, url );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::ProvideFinished: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(cacheHit);
         DEF_REQ_FIELD(local_filename);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK     ( ProvideFinished, cacheHit,       bool )
-          OR_REQ_FIELD_CHECK  ( ProvideFinished, local_filename, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD     ( ProvideFinished, cacheHit,       bool )
+          OR_PARSE_REQ_FIELD  ( ProvideFinished, local_filename, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideFinished, cacheHit );
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideFinished, local_filename );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::AttachFinished: {
-        std::exception_ptr error;
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          OPT_FIELD_CHECK ( AttachFinished, local_mountpoint, std::string )
-          return true;
-        });
-        FAIL_IF_ERROR();
-        break;
+        BEGIN_PARSE_HEADERS
+          PARSE_OPT_FIELD ( AttachFinished, local_mountpoint, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::DetachFinished: {
-        // no fields
-        break;
+        // no known fields
+        BEGIN_PARSE_HEADERS
+          HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::AuthInfo: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(username);
         DEF_REQ_FIELD(password);
         DEF_REQ_FIELD(auth_timestamp);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK    ( AuthInfo, username, std::string )
-          OR_REQ_FIELD_CHECK ( AuthInfo, password, std::string )
-          OR_REQ_FIELD_CHECK ( AuthInfo, auth_timestamp, int64_t )
-          OR_OPT_FIELD_CHECK ( AuthInfo, authType, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD    ( AuthInfo, username, std::string )
+          OR_PARSE_REQ_FIELD ( AuthInfo, password, std::string )
+          OR_PARSE_REQ_FIELD ( AuthInfo, auth_timestamp, int64_t )
+          OR_PARSE_OPT_FIELD ( AuthInfo, authType, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideStarted, username );
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideStarted, password );
         FAIL_IF_NOT_SEEN_REQ_FIELD( ProvideStarted, auth_timestamp );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::MediaChanged:
-        /* No Fields */
-          break;
+        // no known fields
+        BEGIN_PARSE_HEADERS
+          HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
+        return expected<ProvideMessage>::success( std::move(pMessage) );
+
       case ProvideMessage::Code::Redirect: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(new_url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK ( Redirect, new_url, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD ( Redirect, new_url, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Redirect, new_url );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::Metalink: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(new_url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK ( Metalink, new_url, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD ( Metalink, new_url, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Metalink, new_url );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::BadRequest:
       case ProvideMessage::Code::Unauthorized:
@@ -306,30 +322,28 @@ namespace zyppng {
       case ProvideMessage::Code::MediaChangeAbort:
       case ProvideMessage::Code::MediaChangeSkip:
       case ProvideMessage::Code::InternalError: {
-        const auto &e = validateErrorMsg(msg);
-        if ( !e )
-          return e;
-        break;
+        return validateErrorMsg(msg);
       }
       case ProvideMessage::Code::Prov: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK    ( Provide, url, std::string )
-          OR_OPT_FIELD_CHECK ( Provide, filename, std::string )
-          OR_OPT_FIELD_CHECK ( Provide, delta_file, std::string )
-          OR_OPT_FIELD_CHECK ( Provide, expected_filesize, int64_t )
-          OR_OPT_FIELD_CHECK ( Provide, check_existance_only, bool )
-          OR_OPT_FIELD_CHECK ( Provide, metalink_enabled, bool )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD    ( Provide, url, std::string )
+          OR_PARSE_OPT_FIELD ( Provide, filename, std::string )
+          OR_PARSE_OPT_FIELD ( Provide, delta_file, std::string )
+          OR_PARSE_OPT_FIELD ( Provide, expected_filesize, int64_t )
+          OR_PARSE_OPT_FIELD ( Provide, check_existance_only, bool )
+          OR_PARSE_OPT_FIELD ( Provide, metalink_enabled, bool )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Provide, url );
-        FAIL_IF_ERROR();
-        break;
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::Cancel:
-        /* No Fields */
-          break;
+        // no known fields
+        BEGIN_PARSE_HEADERS
+          HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
+        return expected<ProvideMessage>::success( std::move(pMessage) );
 
       case ProvideMessage::Code::Attach: {
         std::exception_ptr error;
@@ -343,114 +357,102 @@ namespace zyppng {
         DEF_REQ_FIELD(verify_data);
         DEF_REQ_FIELD(media_nr);
 
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK    ( Attach, url        , std::string )
-          OR_REQ_FIELD_CHECK ( Attach, attach_id  , std::string )
-          OR_REQ_FIELD_CHECK ( Attach, label      , std::string )
-          OR_REQ_FIELD_CHECK ( Attach, verify_type, std::string )
-          OR_REQ_FIELD_CHECK ( Attach, verify_data, std::string )
-          OR_REQ_FIELD_CHECK ( Attach, media_nr   , int32_t )
-          OR_OPT_FIELD_CHECK ( Attach, device     , std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD    ( Attach, url        , std::string )
+          OR_PARSE_REQ_FIELD ( Attach, attach_id  , std::string )
+          OR_PARSE_REQ_FIELD ( Attach, label      , std::string )
+          OR_PARSE_REQ_FIELD ( Attach, verify_type, std::string )
+          OR_PARSE_REQ_FIELD ( Attach, verify_data, std::string )
+          OR_PARSE_REQ_FIELD ( Attach, media_nr   , int32_t )
+          OR_PARSE_OPT_FIELD ( Attach, device     , std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Provide, url );
         FAIL_IF_NOT_SEEN_REQ_FIELD( Provide, label );
         FAIL_IF_NOT_SEEN_REQ_FIELD( Provide, attach_id );
         if ( ! ( ( has_verify_data == has_verify_type ) && ( has_verify_type == has_media_nr ) ) )
-          return expected<void>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Error in Attach message, one of the following fields is not set or invalid: ( verify_type, verify_data, media_nr ). Either none or all need to be set. ")) );
-        FAIL_IF_ERROR();
-        break;
+          return expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Error in Attach message, one of the following fields is not set or invalid: ( verify_type, verify_data, media_nr ). Either none or all need to be set. ")) );
+
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::Detach: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK ( Detach, url, std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD ( Detach, url, std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Detach, url );
-        FAIL_IF_ERROR();
-        break;
+
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::AuthDataRequest: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(effective_url);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK     ( AuthDataRequest, effective_url,       std::string )
-          OR_OPT_FIELD_CHECK  ( AuthDataRequest, last_auth_timestamp, int64_t     )
-          OR_OPT_FIELD_CHECK  ( AuthDataRequest, username,            std::string )
-          OR_OPT_FIELD_CHECK  ( AuthDataRequest, authHint,            std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD     ( AuthDataRequest, effective_url,       std::string )
+          OR_PARSE_OPT_FIELD  ( AuthDataRequest, last_auth_timestamp, int64_t     )
+          OR_PARSE_OPT_FIELD  ( AuthDataRequest, username,            std::string )
+          OR_PARSE_OPT_FIELD  ( AuthDataRequest, authHint,            std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( AuthDataRequest, effective_url );
-        FAIL_IF_ERROR();
-        break;
+
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       case ProvideMessage::Code::MediaChangeRequest: {
-        std::exception_ptr error;
         DEF_REQ_FIELD(label);
         DEF_REQ_FIELD(media_nr);
         DEF_REQ_FIELD(device);
-        msg.forEachVal( [&]( const auto &name, const ProvideMessage::FieldVal &val ){
-          REQ_FIELD_CHECK    ( MediaChangeRequest, label,     std::string )
-          OR_REQ_FIELD_CHECK ( MediaChangeRequest, media_nr,  int32_t     )
-          OR_REQ_FIELD_CHECK ( MediaChangeRequest, device,    std::string )
-          OR_OPT_FIELD_CHECK ( MediaChangeRequest, desc,      std::string )
-          return true;
-        });
+        BEGIN_PARSE_HEADERS
+          PARSE_REQ_FIELD    ( MediaChangeRequest, label,     std::string )
+          OR_PARSE_REQ_FIELD ( MediaChangeRequest, media_nr,  int32_t     )
+          OR_PARSE_REQ_FIELD ( MediaChangeRequest, device,    std::string )
+          OR_PARSE_OPT_FIELD ( MediaChangeRequest, desc,      std::string )
+          OR_HANDLE_UNKNOWN_FIELD( name, val )
+        END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( MediaChangeRequest, label );
         FAIL_IF_NOT_SEEN_REQ_FIELD( MediaChangeRequest, media_nr );
         FAIL_IF_NOT_SEEN_REQ_FIELD( MediaChangeRequest, device );
-        FAIL_IF_ERROR();
-        break;
+
+        return expected<ProvideMessage>::success( std::move(pMessage) );
       }
       default: {
         // all error messages have the same format
         if ( c >= ProvideMessage::Code::FirstClientErrCode && c <= ProvideMessage::Code::LastSrvErrCode ) {
-          const auto &e = validateErrorMsg(msg);
-          if ( !e )
-            return e;
+          return validateErrorMsg(msg);
         }
-        break;
       }
     }
-    return expected<void>::success();
+
+    // we should never reach this line because we check in the beginning if the know the message code
+    return zyppng::expected<ProvideMessage>::error( ZYPP_EXCPT_PTR ( InvalidMessageReceivedException("Unknown code in PluginFrame")) );
   }
 
-  ProvideMessage::ProvideMessage()
-    : _impl ( new zypp::proto::ProvideMessage )
-  { }
-
-  ZYPP_IMPL_RPCBASE( ProvideMessage, zypp::proto::ProvideMessage, _impl )
-
-  expected<zyppng::ProvideMessage> ProvideMessage::create(const RpcMessage &message)
+  expected<zypp::PluginFrame> ProvideMessage::toStompMessage() const
   {
-    ProvideMessage msg;
-    const auto &res = RpcMessageStream::parseMessageInto<zypp::proto::ProvideMessage>( message, *msg._impl );
-    if ( res ) {
-      const auto &valid = validateMessage(msg);
-      if ( !valid ) {
-        ERR << "Invalid message for ID: " << msg._impl->request_id() << std::endl;;
-        return zyppng::expected<zyppng::ProvideMessage>::error( valid.error() );
+    zypp::PluginFrame f = rpc::prepareFrame<ProvideMessage>();
+    f.addHeader ( std::string(ProvideMessageFields::RequestCode), zypp::str::asString (static_cast<uint32_t>(_code)) );
+    f.addHeader ( std::string(ProvideMessageFields::RequestId), zypp::str::asString (_reqId) );
+    for ( auto i = _headers.beginList (); i != _headers.endList(); i++ ) {
+      for ( const auto &val : i->second ) {
+        const auto &strVal = std::visit([&]( const auto &val ){
+          if constexpr( std::is_same_v<std::decay_t<decltype(val)>, std::monostate> )
+              return std::string();
+          else {
+            return zypp::str::asString(val);
+          }
+        }, val.asVariant() );
+        if ( strVal.empty () )
+          continue;
+        f.addHeader( i->first, strVal );
       }
-
-      return zyppng::expected<zyppng::ProvideMessage>::success( std::move(msg) );
     }
-    ERR << "Failed to parse message" << std::endl;;
-    return zyppng::expected<zyppng::ProvideMessage>::error( res.error() );
+
+    return expected<zypp::PluginFrame>::success ( std::move(f) );
   }
 
-  expected<ProvideMessage> ProvideMessage::create( const zypp::proto::ProvideMessage &message )
+  expected<ProvideMessage> ProvideMessage::fromStompMessage(const zypp::PluginFrame &msg)
   {
-    ProvideMessage msg;
-    *msg._impl = std::move(message);
-    const auto &valid = validateMessage(msg);
-    if ( !valid ) {
-      ERR << "Invalid message for ID: " << msg._impl->request_id() << std::endl;;
-      return zyppng::expected<zyppng::ProvideMessage>::error( valid.error() );
-    }
-
-    return zyppng::expected<zyppng::ProvideMessage>::success( std::move(msg) );
+    return ProvideMessage::create(msg);
   }
 
   ProvideMessage ProvideMessage::createProvideStarted( const uint32_t reqId, const zypp::Url &url, const std::optional<std::string> &localFilename, const std::optional<std::string> &stagingFilename )
@@ -543,7 +545,7 @@ namespace zyppng {
     return msg;
   }
 
-  ProvideMessage ProvideMessage::createErrorResponse( const uint32_t reqId, const uint code, const std::string &reason, bool transient )
+  ProvideMessage ProvideMessage::createErrorResponse( const uint32_t reqId, const Code code, const std::string &reason, bool transient )
   {
     ProvideMessage msg;
     if ( code < Code::FirstClientErrCode || code > Code::LastSrvErrCode )
@@ -644,59 +646,42 @@ namespace zyppng {
 
   uint ProvideMessage::requestId() const
   {
-    return _impl->request_id();
+    return _reqId;
   }
 
   void ProvideMessage::setRequestId(const uint id)
   {
-    _impl->set_request_id( id );
+    _reqId = id;
   }
 
-  uint32_t ProvideMessage::code() const
+  ProvideMessage::Code ProvideMessage::code() const
   {
-    return _impl->message_code();
+    return _code;
   }
 
-  void ProvideMessage::setCode(const uint32_t newCode )
+  void ProvideMessage::setCode(const ProvideMessage::Code newCode )
   {
-    _impl->set_message_code ( newCode );
+    _code = newCode;
   }
 
-  std::vector<ProvideMessage::FieldVal> ProvideMessage::values( const std::string_view &str ) const
+  const std::vector<ProvideMessage::FieldVal> &ProvideMessage::values( const std::string_view &str ) const
   {
-    std::vector<ProvideMessage::FieldVal> values;
-    const auto &fields = _impl->fields();
-    for ( const auto &field : fields ) {
-      if ( field.key() != str )
-        continue;
-      values.push_back( fieldValFromProto(field) );
-    }
-    return values;
+    return _headers.values ( str );
   }
 
-  std::vector<ProvideMessage::FieldVal> ProvideMessage::values( const std::string &str ) const
+  const std::vector<ProvideMessage::FieldVal> &ProvideMessage::values( const std::string &str ) const
   {
     return values( std::string_view(str));
   }
 
   ProvideMessage::FieldVal ProvideMessage::value( const std::string_view &str, const FieldVal &defaultVal ) const
   {
-    const auto &fields = _impl->fields();
-    auto i = std::find_if( fields.rbegin(), fields.rend(), [&str]( const auto &val ){ return val.key() == str; } );
-    if ( i == fields.rend() )
-      return defaultVal;
-    return fieldValFromProto(*i);
+    return _headers.value ( str, defaultVal );
   }
 
-
-  HeaderValueMap ProvideMessage::headers() const
+  const HeaderValueMap &ProvideMessage::headers() const
   {
-    HeaderValueMap res;
-    auto &fields = _impl->fields();
-    for ( const auto &val : fields ) {
-      res.add( val.key() ,fieldValFromProto(val) );
-    }
-    return res;
+    return _headers;
   }
 
   ProvideMessage::FieldVal ProvideMessage::value( const std::string &str, const FieldVal &defaultVal ) const
@@ -711,14 +696,7 @@ namespace zyppng {
 
   void ProvideMessage::setValue( const std::string_view &name, const FieldVal &value )
   {
-    auto &fields = *_impl->mutable_fields();
-    auto i = std::find_if( fields.rbegin(), fields.rend(), [&name]( const auto &val ){ return val.key() == name; } );
-    if ( i == fields.rend() ) {
-      auto &newVal = *_impl->add_fields();
-      newVal.set_key( name.data() );
-      fieldValToProto( value, newVal );
-    } else
-      fieldValToProto( value, *i );
+    _headers.set( std::string(name), value );
   }
 
   void ProvideMessage::addValue( const std::string &name, const FieldVal &value )
@@ -728,32 +706,7 @@ namespace zyppng {
 
   void ProvideMessage::addValue( const std::string_view &name, const FieldVal &value )
   {
-    auto &newVal = *_impl->add_fields();
-    newVal.set_key( name.data() );
-    fieldValToProto( value, newVal );
+    _headers.add( std::string(name), value );
   }
 
-  void ProvideMessage::forEachVal( const std::function<bool (const std::string &, const FieldVal &)> &cb ) const
-  {
-    auto &fields = _impl->fields();
-    for ( const auto &val : fields ) {
-      if ( !cb( val.key(), fieldValFromProto(val) ) ) {
-        return;
-      }
-    }
-  }
-}
-
-namespace zypp {
-  template<>
-  proto::Configuration *rwcowClone<proto::Configuration>(const proto::Configuration *rhs)
-  { return new proto::Configuration( *rhs ); }
-
-  template<>
-  proto::Capabilities *rwcowClone<proto::Capabilities>(const proto::Capabilities *rhs)
-  { return new proto::Capabilities( *rhs ); }
-
-  template<>
-  zypp::proto::ProvideMessage* rwcowClone<zypp::proto::ProvideMessage>( const zypp::proto::ProvideMessage * rhs )
-  { return new zypp::proto::ProvideMessage(*rhs); }
 }

@@ -44,10 +44,10 @@ namespace zyppng::worker
 
   struct AttachError
   {
-    AttachError ( const uint code, const std::string &reason, const bool transient, const HeaderValueMap &extra = {} );
-    AttachError ( const uint code, const bool transient, const zypp::Exception &e );
+    AttachError ( const MessageCodes code, const std::string &reason, const bool transient, const HeaderValueMap &extra = {} );
+    AttachError ( const MessageCodes code, const bool transient, const zypp::Exception &e );
 
-    uint _code;
+    MessageCodes _code;
     std::string _reason;
     bool _transient;
     HeaderValueMap _extra;

@@ -328,18 +328,11 @@ SET( zyppng_pipelines_HEADERS
 )
 
 SET( zyppng_rpc_HEADERS
-  zyppng/rpc/rpc.h
-  zyppng/rpc/MessageStream
-  zyppng/rpc/messagestream.h
   zyppng/rpc/stompframestream.h
-  zyppng/rpc/zerocopystreams.h
 )
 
 SET( zyppng_rpc_SRCS
-  zyppng/rpc/rpc.cc
-  zyppng/rpc/messagestream.cc
   zyppng/rpc/stompframestream.cc
-  zyppng/rpc/zerocopystreams.cc
 )
 
 SET( zyppng_thread_SRCS
@@ -440,9 +433,6 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( zypp-core STATIC ${zypp_SRCS} ${zypp_HEADERS} )
-
-#we include generated headers, so we need to wait for zypp-protobuf to be ready
-add_dependencies( zypp-core zypp-protobuf )
 
 target_link_libraries( zypp-core ${LIBGLIB_LIBRARIES} )
 target_link_libraries( zypp-core ${OPENSSL_LIBRARIES} )

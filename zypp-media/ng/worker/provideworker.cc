@@ -21,7 +21,6 @@
 #include <zypp-core/zyppng/base/EventDispatcher>
 #include <zypp-media/MediaConfig>
 #include <ostream>
-#include <fstream>
 
 #include <zypp-media/ng/private/providedbg_p.h>
 
@@ -56,7 +55,7 @@ namespace zyppng::worker {
   ProvideWorker::~ProvideWorker()
   { }
 
-  RpcMessageStream::Ptr ProvideWorker::messageStream() const
+  StompFrameStreamRef ProvideWorker::messageStream() const
   {
     return _stream;
   }
@@ -85,12 +84,12 @@ namespace zyppng::worker {
     connect( *_controlIO, &AsyncDataSource::sigReadFdClosed, *this, &ProvideWorker::readFdClosed );
     connect( *_controlIO, &AsyncDataSource::sigWriteFdClosed, *this, &ProvideWorker::writeFdClosed );
 
-    _stream = RpcMessageStream::create( _controlIO );
+    _stream = StompFrameStream::create( _controlIO );
 
     return executeHandshake () | and_then( [&]() {
       AutoDisconnect disC[] = {
-        connect( *_stream, &RpcMessageStream::sigMessageReceived, *this, &ProvideWorker::messageReceived ),
-        connect( *_stream, &RpcMessageStream::sigInvalidMessageReceived, *this, &ProvideWorker::onInvalidMessageReceived )
+        connect( *_stream, &StompFrameStream::sigMessageReceived, *this, &ProvideWorker::messageReceived ),
+        connect( *_stream, &StompFrameStream::sigInvalidMessageReceived, *this, &ProvideWorker::onInvalidMessageReceived )
       };
       _loop->run();
       if ( _fatalError )
@@ -147,7 +146,7 @@ namespace zyppng::worker {
     }
   }
 
-  void ProvideWorker::provideFailed(const uint32_t id, const uint code, const std::string &reason, const bool transient, const HeaderValueMap extra )
+  void ProvideWorker::provideFailed(const uint32_t id, const ProvideMessage::Code code, const std::string &reason, const bool transient, const HeaderValueMap extra )
   {
     MIL_PRV << "Sending provideFailed for request " << id << " err: " << reason << std::endl;
     auto msg = ProvideMessage::createErrorResponse ( id, code, reason, transient );
@@ -161,7 +160,7 @@ namespace zyppng::worker {
   }
 
 
-  void ProvideWorker::provideFailed  ( const uint32_t id, const uint code, const bool transient, const zypp::Exception &e )
+  void ProvideWorker::provideFailed  ( const uint32_t id, const ProvideMessage::Code code, const bool transient, const zypp::Exception &e )
   {
     zyppng::HeaderValueMap extra;
     if ( !e.historyEmpty() ) {
@@ -210,11 +209,11 @@ namespace zyppng::worker {
       const auto &msg = _stream->nextMessageWait() | [&]( auto &&nextMessage ) {
         if ( !nextMessage ) {
           if ( _fatalError )
-            return expected<RpcMessage>::error( _fatalError );
+            return expected<zypp::PluginFrame>::error( _fatalError );
           else
-            return expected<RpcMessage>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to wait for response")) );
+            return expected<zypp::PluginFrame>::error( ZYPP_EXCPT_PTR(zypp::Exception("Failed to wait for response")) );
         }
-        return expected<RpcMessage>::success( std::move(*nextMessage) );
+        return expected<zypp::PluginFrame>::success( std::move(*nextMessage) );
       } | and_then ( [&]( auto && m) {
         return parseReceivedMessage(m);
       } );
@@ -261,21 +260,20 @@ namespace zyppng::worker {
                if ( m.code() == ProvideMessage::Code::AuthInfo ) {
 
                 AuthInfo inf;
-                m.forEachVal( [&]( const std::string &name, const ProvideMessage::FieldVal &val ) {
-                  if ( name == AuthInfoMsgFields::Username ) {
-                    inf.username = val.asString();
-                  } else if ( name == AuthInfoMsgFields::Password ) {
-                    inf.password = val.asString();
-                  } else if ( name == AuthInfoMsgFields::AuthTimestamp ) {
-                    inf.last_auth_timestamp = val.asInt64();
+                for( const auto &hdr : m.headers () ) {
+                  if ( hdr.first == AuthInfoMsgFields::Username ) {
+                    inf.username = hdr.second.asString();
+                  } else if ( hdr.first == AuthInfoMsgFields::Password ) {
+                    inf.password = hdr.second.asString();
+                  } else if ( hdr.first == AuthInfoMsgFields::AuthTimestamp ) {
+                    inf.last_auth_timestamp = hdr.second.asInt64();
                   } else {
-                    if ( !val.isString() ) {
-                      ERR << "Ignoring invalid extra value, " << name << " is not of type string" << std::endl;
+                    if ( !hdr.second.isString() ) {
+                      ERR << "Ignoring invalid extra value, " << hdr.first << " is not of type string" << std::endl;
                     }
-                    inf.extraKeys[name] = val.asString();
+                    inf.extraKeys[hdr.first] = hdr.second.asString();
                   }
-                  return true;
-                });
+                }
                 return expected<AuthInfo>::success(inf);
 
                }
@@ -302,7 +300,7 @@ namespace zyppng::worker {
       return expected<void>::error(exp.error());
     }
 
-    return std::move(*exp) | [&]( auto &&conf ) {
+    return std::move(*exp) | [&]( auto conf ) {
 
       _workerConf = std::move(conf);
 
@@ -430,19 +428,18 @@ namespace zyppng::worker {
     ERR << "Unsupported request with code: " << code << " received!" << std::endl;
   }
 
-  void ProvideWorker::pushSingleMessage( const RpcMessage &message )
+  void ProvideWorker::pushSingleMessage( const zypp::PluginFrame &message )
   {
-    const auto &handle = [&]( const RpcMessage &message ){
-      const auto &msgTypeName = message.messagetypename();
-      if ( msgTypeName == ProvideMessage::staticTypeName() ) {
-        return parseReceivedMessage( message )
-               | and_then( [&]( ProvideMessage &&provide ){
-                   _pendingMessages.push_back(provide);
-                   _msgAvail->start(0);
-                   return expected<void>::success();
-                });
-      }
-      return expected<void>::error( ZYPP_EXCPT_PTR( std::invalid_argument(zypp::str::Str()<<"Unknown message received: " << message.messagetypename())) );
+    const auto &handle = [&]( const zypp::PluginFrame &message ){
+      return parseReceivedMessage (message )
+      | and_then( [&]( ProvideMessage &&provide ){
+          _pendingMessages.push_back(provide);
+          _msgAvail->start(0);
+          return expected<void>::success();
+      })
+      | or_else( [&]( std::exception_ptr ) -> expected<void> {
+        return expected<void>::error( ZYPP_EXCPT_PTR( std::invalid_argument(zypp::str::Str()<<"Unknown message received: " << message.command() )) );
+      });
     };
 
     const auto &exp = handle( message );
@@ -459,7 +456,7 @@ namespace zyppng::worker {
     }
   }
 
-  expected<ProvideMessage> ProvideWorker::parseReceivedMessage(const RpcMessage &m)
+  expected<ProvideMessage> ProvideWorker::parseReceivedMessage( const zypp::PluginFrame &m)
   {
     auto exp = ProvideMessage::create(m);
     if ( !exp )

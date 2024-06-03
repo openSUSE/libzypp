@@ -358,7 +358,7 @@ namespace zyppng::worker
     };
   }
 
-  AttachError::AttachError ( const uint code, const std::string &reason, const bool transient, const HeaderValueMap &extra)
+  AttachError::AttachError ( const MessageCodes code, const std::string &reason, const bool transient, const HeaderValueMap &extra)
     : _code( code ),
       _reason( reason ),
       _transient( transient ),
@@ -367,7 +367,7 @@ namespace zyppng::worker
 
   }
 
-  AttachError::AttachError ( const uint code, const bool transient, const zypp::Exception &e )
+  AttachError::AttachError ( const MessageCodes code, const bool transient, const zypp::Exception &e )
     : _code( code ),
       _reason( e.asUserString() ),
       _transient( transient )

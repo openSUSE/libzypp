@@ -6,35 +6,31 @@ namespace zyppng {
   HeaderValueMap::Value HeaderValueMap::InvalidValue;
 
   HeaderValue::HeaderValue()
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>() )
+    : _val ( new value_type() )
   {}
 
   HeaderValue::HeaderValue( const HeaderValue &other )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>( *other._val ) )
+    : _val ( new value_type( *other._val ) )
   {}
 
   HeaderValue::HeaderValue( HeaderValue &&other ) noexcept
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>( std::move(*other._val) ) )
+    : _val ( new value_type( std::move(*other._val) ) )
   {}
 
   HeaderValue::HeaderValue( const bool val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>(val) )
+    : _val ( new value_type(val) )
   {}
 
   HeaderValue::HeaderValue( const int32_t val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>(val) )
+    : _val ( new value_type(val) )
   {}
 
   HeaderValue::HeaderValue( const int64_t val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>(val) )
-  {}
-
-  HeaderValue::HeaderValue( const double val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>(val) )
+    : _val ( new value_type(val) )
   {}
 
   HeaderValue::HeaderValue( const std::string &val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>(val) )
+    : _val ( new value_type(val) )
   {}
 
   HeaderValue::HeaderValue(const char *val)
@@ -42,7 +38,7 @@ namespace zyppng {
   {}
 
   HeaderValue::HeaderValue( std::string &&val )
-    : _val ( new std::variant<std::monostate, std::string, int32_t, int64_t, double, bool>( std::move(val) ) )
+    : _val ( new value_type( std::move(val) ) )
   {}
 
   bool HeaderValue::valid() const
@@ -65,11 +61,6 @@ namespace zyppng {
     return std::holds_alternative<int64_t>(*_val);
   }
 
-  bool HeaderValue::isDouble() const
-  {
-    return std::holds_alternative<double>(*_val);
-  }
-
   bool HeaderValue::isBool() const
   {
     return std::holds_alternative<bool>(*_val);
@@ -90,11 +81,6 @@ namespace zyppng {
     if ( std::holds_alternative<int32_t>(*_val) )
       return std::get<int32_t>( *_val );
     return std::get<int64_t>(*_val);
-  }
-
-  double HeaderValue::asDouble() const
-  {
-    return std::get<double>(*_val);
   }
 
   bool HeaderValue::asBool() const
@@ -147,12 +133,6 @@ namespace zyppng {
     return *this;
   }
 
-  HeaderValue &HeaderValue::operator= ( double val )
-  {
-    *_val = val;
-    return *this;
-  }
-
   HeaderValue &HeaderValue::operator= ( bool val )
   {
     *_val = val;
@@ -169,23 +149,23 @@ namespace zyppng {
     return _values.count (key) > 0 && _values.at(key).size () > 0 ;
   }
 
-  void HeaderValueMap::set( const std::string &key, const Value &val )
-  {
-    auto i = _values.find (key);
-    if ( i == _values.end() ) {
-      _values.insert ( std::make_pair(key, std::vector<Value>{val}) );
-    } else {
-      i->second = std::vector<Value>{val};
-    }
-  }
-
-  void HeaderValueMap::set(const std::string &key, Value &&val)
+  void HeaderValueMap::set(const std::string &key, Value val)
   {
     auto i = _values.find (key);
     if ( i == _values.end() ) {
       _values.insert ( std::make_pair(key, std::vector<Value>{std::move(val)}) );
     } else {
       i->second = std::vector<Value>{std::move(val)};
+    }
+  }
+
+  void HeaderValueMap::set( const std::string &key, std::vector<Value> val )
+  {
+    auto i = _values.find (key);
+    if ( i == _values.end() ) {
+      _values.insert ( std::make_pair(key, std::move(val)) );
+    } else {
+      i->second = std::move(val);
     }
   }
 

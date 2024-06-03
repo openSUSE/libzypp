@@ -14,7 +14,6 @@
 #include <zypp-core/zyppng/base/EventLoop>
 #include <zypp-core/zyppng/base/Timer>
 #include <zypp-core/zyppng/io/AsyncDataSource>
-#include <zypp-core/zyppng/rpc/MessageStream>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp-media/ng/provide-configvars.h>
 #include <zypp-media/ng/private/providemessage_p.h>
@@ -75,7 +74,7 @@ namespace zyppng::worker {
     ProvideWorker( std::string_view workerName );
     virtual ~ProvideWorker();
 
-    RpcMessageStream::Ptr messageStream() const;
+    StompFrameStreamRef messageStream() const;
 
     expected<void> run ( int recv = STDIN_FILENO, int send = STDOUT_FILENO );
 
@@ -148,14 +147,14 @@ namespace zyppng::worker {
      *
      * \note If the request referenced a \a ident before make sure to manually release it after sending the message.
      */
-    void provideFailed  ( const uint32_t id, const uint code, const std::string &reason, const bool transient, const HeaderValueMap extra = {} );
+    void provideFailed  (const uint32_t id, const ProvideMessage::Code code, const std::string &reason, const bool transient, const HeaderValueMap extra = {} );
 
     /*!
      * Overload of provideFailed that takes a \ref zypp::Exception to fill in the error details
      *
      * \note If the request referenced a \a ident before make sure to manually release it after sending the message.
      */
-    void provideFailed  ( const uint32_t id, const uint code, const bool transient, const zypp::Exception &e );
+    void provideFailed  (const uint32_t id, const ProvideMessage::Code code, const bool transient, const zypp::Exception &e );
 
     /*!
      * Send a \a AttachSuccess message to the controller. This is to signal that we are finished with mounting and verifying a medium
@@ -189,9 +188,9 @@ namespace zyppng::worker {
     void onInvalidMessageReceived ( );
     void invalidMessageReceived ( std::exception_ptr p );
     void handleSingleMessage (const ProvideMessage &provide );
-    void pushSingleMessage ( const RpcMessage &msg );
+    void pushSingleMessage (const zypp::PluginFrame &msg );
     expected<ProvideMessage> sendAndWaitForResponse ( const ProvideMessage &request, const std::vector<uint> &responseCodes );
-    expected<ProvideMessage> parseReceivedMessage( const RpcMessage &m );
+    expected<ProvideMessage> parseReceivedMessage(const zypp::PluginFrame &m );
 
   private:
     ProvideNotificatioMode _provNotificationMode = QUEUE_NOT_EMTPY;
@@ -202,7 +201,7 @@ namespace zyppng::worker {
     Timer::Ptr _msgAvail = Timer::create();
     Timer::Ptr _delayedShutdown = Timer::create();
     AsyncDataSource::Ptr _controlIO;
-    RpcMessageStream::Ptr _stream;
+    StompFrameStreamRef   _stream;
     ProviderConfiguration _workerConf;
 
     std::exception_ptr _fatalError; //< Error that caused the eventloop to stop

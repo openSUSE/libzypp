@@ -74,6 +74,89 @@ namespace zypp
       void setBody( ByteArray && body_r )
       { _body = std::move(body_r); }
 
+      static std::string escapeHeader( std::string_view val ) {
+
+        std::string escaped;
+        /*
+          Escape rules from the STOMP spec:
+          \r (octet 92 and 114) translates to carriage return (octet 13)
+          \n (octet 92 and 110) translates to line feed (octet 10)
+          \c (octet 92 and 99) translates to : (octet 58)
+          \\ (octet 92 and 92) translates to \ (octet 92)
+          Undefined escape sequences such as \t (octet 92 and 116) MUST be treated as a fatal protocol error.
+        */
+        for ( auto c = val.begin (); c!= val.end(); c++ ) {
+          switch( *c ) {
+            case '\n': {
+              escaped.push_back('\\');
+              escaped.push_back('n');
+              break;
+            }
+            case '\r': {
+              escaped.push_back('\\');
+              escaped.push_back('r');
+              break;
+            }
+            case '\\': {
+              escaped.push_back('\\');
+              escaped.push_back('\\');
+              break;
+            }
+            case ':': {
+              escaped.push_back('\\');
+              escaped.push_back('c');
+              break;
+            }
+            default:
+              escaped.push_back (*c);
+              break;
+          }
+        }
+        return escaped;
+      }
+
+      static std::string unescapeHeader( std::string_view val ) {
+        std::string unescaped;
+        for ( auto c = val.begin (); c!= val.end(); ) {
+          if ( *c != '\\' ) {
+            unescaped.push_back (*c);
+            c++;
+            continue;
+          }
+
+          c++;
+          if ( c == val.end() )
+            ZYPP_THROW( PluginFrameException( "Invalid start of escape sequence" ) );
+
+          switch ( *c ) {
+            case 'n': {
+              unescaped.push_back('\n');
+              c++;
+              break;
+            }
+            case 'r': {
+              unescaped.push_back('\r');
+              c++;
+              break;
+            }
+            case '\\': {
+              unescaped.push_back('\\');
+              c++;
+              break;
+            }
+            case 'c': {
+              unescaped.push_back(':');
+              c++;
+              break;
+            }
+            default:
+              ZYPP_THROW( PluginFrameException( "Unknown escape sequence" ) );
+              break;
+          }
+        }
+        return unescaped;
+      }
+
     public:
       using constKeyRange = std::pair<HeaderListIterator, HeaderListIterator>;
       using KeyRange = std::pair<HeaderList::iterator, HeaderList::iterator>;
@@ -114,10 +197,6 @@ namespace zypp
 
       HeaderList::value_type mkHeaderPair( const std::string & key_r, const std::string & value_r )
       {
-        if ( key_r.find_first_of( ":\n" ) != std::string::npos )
-          ZYPP_THROW( PluginFrameException( "Illegal char in header key", key_r ) );
-        if ( value_r.find_first_of( '\n' ) != std::string::npos )
-          ZYPP_THROW( PluginFrameException( "Illegal char in header value", value_r ) );
         return HeaderList::value_type( key_r, value_r );
       }
 
@@ -144,7 +223,7 @@ namespace zypp
         if ( sep ==  std::string::npos )
           ZYPP_THROW( PluginFrameException( "Missing colon in header" ) );
 
-        _header.insert( HeaderList::value_type( data.substr(0,sep), data.substr(sep+1) ) );
+        _header.insert( HeaderList::value_type( unescapeHeader(data.substr(0,sep)), unescapeHeader(data.substr(sep+1)) ) );
       }
 
       void clearHeader( const std::string & key_r )
@@ -267,7 +346,7 @@ namespace zypp
 
     // header
     for_( it, _header.begin(), _header.end() )
-      stream_r << it->first << ':' << it->second << "\n";
+      stream_r << escapeHeader(it->first) << ':' << escapeHeader(it->second) << "\n";
 
     // header end
     stream_r << "\n";

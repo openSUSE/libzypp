@@ -10,42 +10,13 @@
 
 #include <zypp-core/TriBool.h>
 #include <zypp-core/zyppng/core/String>
+#include <zypp-core/zyppng/rpc/stompframestream.h>
 #include <string>
 #include <string_view>
 
 namespace zypp::proto::target
 {
   namespace {
-
-    // Reads data from the stomp message and converts it to the target type
-    // used to read header values and values serialized into a terminated data field
-    template <typename T>
-    void parseDataIntoField( const std::string &headerVal, T &target  )
-    {
-      if constexpr ( std::is_same_v<bool, T> ) {
-
-        const auto &triBool = str::strToTriBool ( headerVal );
-        if ( indeterminate(triBool) ) {
-          ZYPP_THROW ( zypp::PluginFrameException( "Invalid value for boolean field" ) );
-        }
-        target = bool(triBool);
-      } else if constexpr ( std::is_same_v<std::string, T> ) {
-        target = headerVal;
-      } else {
-        // numbers
-        auto val = zyppng::str::safe_strtonum<T> ( headerVal );
-        if ( !val )
-          ZYPP_THROW ( zypp::PluginFrameException( "Invalid value for numerical field" ) );
-        target = *val;
-      }
-    }
-
-    template <typename T>
-    void parseHeaderIntoField( const zypp::PluginFrame &msg, const std::string &name, T &target  )
-    {
-      return parseDataIntoField ( msg.getHeader(name), target );
-    }
-
     // Serializes a field of type T into the ByteArray buffer, appending a \0 to terminate the field
     template <typename T>
     void serializeStepField ( ByteArray &data, const T&field ) {
@@ -105,7 +76,7 @@ namespace zypp::proto::target
           return zyppng::expected<T>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException( str::Str()<<"Message is not a " << T::typeName ) ) );
 
         if constexpr ( std::is_detected_v<has_stepid, T> ) {
-          parseHeaderIntoField ( msg, "stepId", c.stepId );
+          zyppng::rpc::parseHeaderIntoField ( msg, "stepId", c.stepId );
         }
 
         return zyppng::expected<T>::success(c);
@@ -114,11 +85,6 @@ namespace zypp::proto::target
         ZYPP_CAUGHT (e);
         return zyppng::expected<T>::error( ZYPP_EXCPT_PTR(e) );
       }
-    }
-
-    template <typename T>
-    inline PluginFrame prepareFrame() {
-      return PluginFrame ( std::string( T::typeName.data(), T::typeName.length() ) );
     }
   }
 
@@ -135,7 +101,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> Commit::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<Commit>();
+    PluginFrame f = zyppng::rpc::prepareFrame<Commit>();
     f.addHeader ("flags", asString (flags) );
     f.addHeader ("arch", arch );
     f.addHeader ("root", root );
@@ -176,12 +142,12 @@ namespace zypp::proto::target
       if ( msg.command() != Commit::typeName )
         return zyppng::expected<Commit>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a Commit") ) );
 
-      parseHeaderIntoField ( msg, "flags", c.flags );
-      parseHeaderIntoField ( msg, "arch", c.arch );
-      parseHeaderIntoField ( msg, "root", c.root );
-      parseHeaderIntoField ( msg, "dbPath", c.dbPath );
-      parseHeaderIntoField ( msg, "lockFilePath", c.lockFilePath );
-      parseHeaderIntoField ( msg, "ignoreArch", c.ignoreArch );
+      zyppng::rpc::parseHeaderIntoField ( msg, "flags", c.flags );
+      zyppng::rpc::parseHeaderIntoField ( msg, "arch", c.arch );
+      zyppng::rpc::parseHeaderIntoField ( msg, "root", c.root );
+      zyppng::rpc::parseHeaderIntoField ( msg, "dbPath", c.dbPath );
+      zyppng::rpc::parseHeaderIntoField ( msg, "lockFilePath", c.lockFilePath );
+      zyppng::rpc::parseHeaderIntoField ( msg, "ignoreArch", c.ignoreArch );
 
       // we got the fields, lets parse the steps
       // steps are serialized into a very simple form, starting with one byte that tells us what step type we look at
@@ -202,19 +168,19 @@ namespace zypp::proto::target
         switch ( stepType ) {
           case InstallStepType: {
             InstallStep s;
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.stepId       );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.pathname     );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.multiversion );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.stepId       );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.pathname     );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.multiversion );
             c.transactionSteps.push_back(s);
             break;
           }
           case RemoveStepType: {
             RemoveStep s;
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.stepId  );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.name    );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.version );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.release );
-            parseDataIntoField( fetchTerminatedField(i, data.end() ), s.arch    );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.stepId  );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.name    );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.version );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.release );
+            zyppng::rpc::parseDataIntoField( fetchTerminatedField(i, data.end() ), s.arch    );
             c.transactionSteps.push_back(s);
             break;
           }
@@ -233,7 +199,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> TransactionError::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<TransactionError>();
+    PluginFrame f = zyppng::rpc::prepareFrame<TransactionError>();
     ByteArray &body = f.bodyRef();
     for ( const auto &err : problems ) {
       serializeStepField ( body, err );
@@ -263,7 +229,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> RpmLog::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<RpmLog>();
+    PluginFrame f = zyppng::rpc::prepareFrame<RpmLog>();
     f.addHeader ("level", asString (level) );
     f.setBody( line );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
@@ -276,7 +242,7 @@ namespace zypp::proto::target
       if ( msg.command() != RpmLog::typeName )
         return zyppng::expected<RpmLog>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a RpmLog") ) );
 
-      parseHeaderIntoField ( msg, "level", c.level );
+      zyppng::rpc::parseHeaderIntoField ( msg, "level", c.level );
       c.line = msg.body().asString();
 
       return zyppng::expected<RpmLog>::success( std::move(c) );
@@ -293,7 +259,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> PackageProgress::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<PackageProgress>();
+    PluginFrame f = zyppng::rpc::prepareFrame<PackageProgress>();
     f.addHeader ("stepId", asString (stepId) );
     f.addHeader ("amount", asString (amount) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
@@ -306,8 +272,8 @@ namespace zypp::proto::target
       if ( msg.command() != PackageProgress::typeName )
         return zyppng::expected<PackageProgress>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a PackageProgress") ) );
 
-      parseHeaderIntoField ( msg, "stepId", c.stepId );
-      parseHeaderIntoField ( msg, "amount", c.amount );
+      zyppng::rpc::parseHeaderIntoField ( msg, "stepId", c.stepId );
+      zyppng::rpc::parseHeaderIntoField ( msg, "amount", c.amount );
 
       return zyppng::expected<PackageProgress>::success( std::move(c) );
 
@@ -319,7 +285,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> CleanupBegin::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<CleanupBegin>();
+    PluginFrame f = zyppng::rpc::prepareFrame<CleanupBegin>();
     f.addHeader ("nvra", asString (nvra) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
   }
@@ -331,7 +297,7 @@ namespace zypp::proto::target
       if ( msg.command() != CleanupBegin::typeName )
         return zyppng::expected<CleanupBegin>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a CleanupBegin") ) );
 
-      parseHeaderIntoField ( msg, "nvra", c.nvra );
+      zyppng::rpc::parseHeaderIntoField ( msg, "nvra", c.nvra );
       return zyppng::expected<CleanupBegin>::success( std::move(c) );
 
     } catch ( const zypp::Exception &e ) {
@@ -342,7 +308,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> CleanupFinished::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<CleanupFinished>();
+    PluginFrame f = zyppng::rpc::prepareFrame<CleanupFinished>();
     f.addHeader ("nvra", asString (nvra) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
   }
@@ -354,7 +320,7 @@ namespace zypp::proto::target
       if ( msg.command() != CleanupFinished::typeName )
         return zyppng::expected<CleanupFinished>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a CleanupFinished") ) );
 
-      parseHeaderIntoField ( msg, "nvra", c.nvra );
+      zyppng::rpc::parseHeaderIntoField ( msg, "nvra", c.nvra );
       return zyppng::expected<CleanupFinished>::success( std::move(c) );
 
     } catch ( const zypp::Exception &e ) {
@@ -365,7 +331,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> CleanupProgress::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<CleanupProgress>();
+    PluginFrame f = zyppng::rpc::prepareFrame<CleanupProgress>();
     f.addHeader ("nvra", asString (nvra) );
     f.addHeader ("amount", asString (amount) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
@@ -378,8 +344,8 @@ namespace zypp::proto::target
       if ( msg.command() != CleanupProgress::typeName )
         return zyppng::expected<CleanupProgress>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a CleanupProgress") ) );
 
-      parseHeaderIntoField ( msg, "nvra", c.nvra );
-      parseHeaderIntoField ( msg, "amount", c.amount );
+      zyppng::rpc::parseHeaderIntoField ( msg, "nvra", c.nvra );
+      zyppng::rpc::parseHeaderIntoField ( msg, "amount", c.amount );
       return zyppng::expected<CleanupProgress>::success( std::move(c) );
 
     } catch ( const zypp::Exception &e ) {
@@ -390,7 +356,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> ScriptBegin::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<ScriptBegin>();
+    PluginFrame f = zyppng::rpc::prepareFrame<ScriptBegin>();
     f.addHeader ("stepId"       , asString (stepId) );
     f.addHeader ("scriptType"   , asString (scriptType) );
     f.addHeader ("scriptPackage", asString (scriptPackage) );
@@ -404,9 +370,9 @@ namespace zypp::proto::target
       if ( msg.command() != ScriptBegin::typeName )
         return zyppng::expected<ScriptBegin>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a ScriptBegin") ) );
 
-      parseHeaderIntoField ( msg, "stepId"        , c.stepId );
-      parseHeaderIntoField ( msg, "scriptType"    , c.scriptType );
-      parseHeaderIntoField ( msg, "scriptPackage" , c.scriptPackage );
+      zyppng::rpc::parseHeaderIntoField ( msg, "stepId"        , c.stepId );
+      zyppng::rpc::parseHeaderIntoField ( msg, "scriptType"    , c.scriptType );
+      zyppng::rpc::parseHeaderIntoField ( msg, "scriptPackage" , c.scriptPackage );
 
       return zyppng::expected<ScriptBegin>::success( std::move(c) );
 
@@ -420,7 +386,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> ScriptError::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<ScriptError>();
+    PluginFrame f = zyppng::rpc::prepareFrame<ScriptError>();
     f.addHeader ("stepId" , asString (stepId) );
     f.addHeader ("fatal"  , asString (fatal) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
@@ -433,8 +399,8 @@ namespace zypp::proto::target
       if ( msg.command() != ScriptError::typeName )
         return zyppng::expected<ScriptError>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a ScriptError") ) );
 
-      parseHeaderIntoField ( msg, "stepId"  , c.stepId );
-      parseHeaderIntoField ( msg, "fatal"   , c.fatal );
+      zyppng::rpc::parseHeaderIntoField ( msg, "stepId"  , c.stepId );
+      zyppng::rpc::parseHeaderIntoField ( msg, "fatal"   , c.fatal );
 
       return zyppng::expected<ScriptError>::success( std::move(c) );
 
@@ -446,7 +412,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> TransBegin::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<TransBegin>();
+    PluginFrame f = zyppng::rpc::prepareFrame<TransBegin>();
     f.addHeader ("name" , asString (name) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
   }
@@ -458,7 +424,7 @@ namespace zypp::proto::target
       if ( msg.command() != TransBegin::typeName )
         return zyppng::expected<TransBegin>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a TransBegin") ) );
 
-      parseHeaderIntoField ( msg, "name"  , c.name );
+      zyppng::rpc::parseHeaderIntoField ( msg, "name"  , c.name );
 
       return zyppng::expected<TransBegin>::success( std::move(c) );
 
@@ -472,7 +438,7 @@ namespace zypp::proto::target
 
   zyppng::expected<PluginFrame> TransProgress::toStompMessage() const
   {
-    PluginFrame f = prepareFrame<TransProgress>();
+    PluginFrame f = zyppng::rpc::prepareFrame<TransProgress>();
     f.addHeader ("amount", asString (amount) );
     return zyppng::expected<PluginFrame>::success ( std::move(f) );
   }
@@ -484,7 +450,7 @@ namespace zypp::proto::target
       if ( msg.command() != TransProgress::typeName )
         return zyppng::expected<TransProgress>::error( ZYPP_EXCPT_PTR( zypp::PluginFrameException("Message is not a TransProgress") ) );
 
-      parseHeaderIntoField ( msg, "amount", c.amount );
+      zyppng::rpc::parseHeaderIntoField ( msg, "amount", c.amount );
 
       return zyppng::expected<TransProgress>::success( std::move(c) );
 

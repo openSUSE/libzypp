@@ -127,7 +127,6 @@ BuildRequires:  libsolv-tools
 
 BuildRequires:  glib2-devel
 BuildRequires:  libsigc++2-devel
-BuildRequires:  protobuf-devel
 BuildRequires:  readline-devel >= 5.1
 
 # required for testsuite

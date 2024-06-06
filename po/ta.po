@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-04 12:46+0000\n"
+"PO-Revision-Date: 2024-06-06 23:46+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -347,17 +347,17 @@ msgstr "எரிட்ரியா"
 #. :ERI:232:
 #: zypp/CountryCode.cc:223
 msgid "Spain"
-msgstr "Í¦ÀÂ¢ý"
+msgstr "ஸ்பெயின்"
 
 #. :ESP:724:
 #: zypp/CountryCode.cc:224
 msgid "Ethiopia"
-msgstr "±Í§¼¡É¢Â¡"
+msgstr "எத்தியோப்பியா"
 
 #. :ETH:231:
 #: zypp/CountryCode.cc:225
 msgid "Finland"
-msgstr "À¢ýÄ¡óÐ"
+msgstr "பின்லாந்து"
 
 #. :FIN:246:
 #: zypp/CountryCode.cc:226
@@ -377,52 +377,51 @@ msgstr "மைக்ரோனேசிய நாடுகளின் கூ�
 #. :FSM:583:
 #: zypp/CountryCode.cc:229
 msgid "Faroe Islands"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "ஃபாரோ தீவுகள்"
 
 #. :FRO:234:
 #: zypp/CountryCode.cc:230
 msgid "France"
-msgstr "À¢Ã¡ýÍ"
+msgstr "பிரான்ஸ்"
 
 #. :FRA:250:
 #: zypp/CountryCode.cc:231
 msgid "Metropolitan France"
-msgstr "பிரான்ஸ் மாநகர்"
+msgstr "பெருநகர பிரான்ஸ்"
 
 #. :FXX:249:
 #: zypp/CountryCode.cc:232
 msgid "Gabon"
-msgstr "º£É¡"
+msgstr "காபோன்"
 
 #. :GAB:266:
 #: zypp/CountryCode.cc:233
 msgid "United Kingdom"
-msgstr "யுனைடெட் கிங்டம்"
+msgstr "ஐக்கிய இராச்சியம்"
 
 #. :GBR:826:
 #: zypp/CountryCode.cc:234
 msgid "Grenada"
-msgstr "¸¢¦ÃÉ¼¡"
+msgstr "கிரெனடா"
 
 #. :GRD:308:
 #: zypp/CountryCode.cc:235
 msgid "Georgia"
-msgstr "¦º÷À¢Â¡"
+msgstr "ஜார்ஜியா"
 
 #. :GEO:268:
 #: zypp/CountryCode.cc:236
 msgid "French Guiana"
-msgstr "À¢¦Ãýî "
+msgstr "பிரஞ்சு கயானா"
 
 #. :GUF:254:
 #: zypp/CountryCode.cc:237
-#, fuzzy
 msgid "Guernsey"
-msgstr "§º÷ÁÉ¢"
+msgstr "குர்ன்சி"
 
 #: zypp/CountryCode.cc:238
 msgid "Ghana"
-msgstr "º£É¡"
+msgstr "கானா"
 
 #. :GHA:288:
 #: zypp/CountryCode.cc:239

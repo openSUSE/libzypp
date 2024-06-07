@@ -385,6 +385,7 @@ Url clearQueryString(const Url &url)
   curlUrl.delQueryParam("ssl_capath");
   curlUrl.delQueryParam("ssl_verify");
   curlUrl.delQueryParam("ssl_clientcert");
+  curlUrl.delQueryParam("ssl_clientkey");
   curlUrl.delQueryParam("timeout");
   curlUrl.delQueryParam("auth");
   curlUrl.delQueryParam("username");

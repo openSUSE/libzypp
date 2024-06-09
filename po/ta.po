@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-06 23:46+0000\n"
+"PO-Revision-Date: 2024-06-09 23:47+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -31,7 +31,7 @@ msgstr "அன்டோரா"
 #. :AND:020:
 #: zypp/CountryCode.cc:159
 msgid "United Arab Emirates"
-msgstr "³ì¸¢Â «¦ÁÃ¢ì¸ ¿¡Î¸û"
+msgstr "ஐக்கிய அரபு நாடுகள்"
 
 #. :ARE:784:
 #: zypp/CountryCode.cc:160
@@ -41,7 +41,7 @@ msgstr "ஆப்கானிஸ்தான்"
 #. :AFG:004:
 #: zypp/CountryCode.cc:161
 msgid "Antigua and Barbuda"
-msgstr "¬ýÊÌÅ¡ & À¡÷Ò¼¡"
+msgstr "ஆன்டிகுவா மற்றும் பார்புடா"
 
 #. :ATG:028:
 #: zypp/CountryCode.cc:162
@@ -56,12 +56,12 @@ msgstr "அல்பேனியா"
 #. :ALB:008:
 #: zypp/CountryCode.cc:164
 msgid "Armenia"
-msgstr "¬÷¦ºýÊÉ¡"
+msgstr "ஆர்மீனியா"
 
 #. :ARM:051:
 #: zypp/CountryCode.cc:165
 msgid "Netherlands Antilles"
-msgstr "¦¿¾÷Ä¡óÐ"
+msgstr "நெதர்லாந்து அண்டிலிஸ்"
 
 #. :ANT:530:
 #: zypp/CountryCode.cc:166
@@ -71,27 +71,27 @@ msgstr "அங்கோலா"
 #. :AGO:024:
 #: zypp/CountryCode.cc:167
 msgid "Antarctica"
-msgstr "¬ôÃ¢ì¸¡"
+msgstr "அண்டார்டிகா"
 
 #. :ATA:010:
 #: zypp/CountryCode.cc:168
 msgid "Argentina"
-msgstr "¬÷¦ºýÊÉ¡"
+msgstr "அர்ஜென்டினா"
 
 #. :ARG:032:
 #: zypp/CountryCode.cc:169
 msgid "American Samoa"
-msgstr "«¦ÁÃ¢ì¸¡, Å¼"
+msgstr "அமெரிக்க சமோவா"
 
 #. :ASM:016:
 #: zypp/CountryCode.cc:170
 msgid "Austria"
-msgstr "¬Íò¾¢Ã¢Â¡"
+msgstr "ஆஸ்திரியா"
 
 #. :AUT:040:
 #: zypp/CountryCode.cc:171
 msgid "Australia"
-msgstr "¬Íò¾¢§ÃÄ¢Â¡"
+msgstr "ஆஸ்திரேலியா"
 
 #. :AUS:036:
 #: zypp/CountryCode.cc:172

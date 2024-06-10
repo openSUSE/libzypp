@@ -6,9 +6,11 @@ FOREACH( loop_var ${APLLPROG} )
   ADD_EXECUTABLE( ${loop_var}
     ${loop_var}.cc
   )
+
+  link_zypp_object( ${loop_var} )
+
   TARGET_LINK_LIBRARIES( ${loop_var}
-    zypp zypp-tui
-    ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    PUBLIC  ${Boost_PROGRAM_OPTIONS_LIBRARY}
   )
 ENDFOREACH( loop_var )
 

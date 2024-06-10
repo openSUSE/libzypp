@@ -31,7 +31,7 @@ endif()
 
 add_definitions( -DSRCDIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
-ADD_LIBRARY(zypp_test_utils
+ADD_LIBRARY(zypp_test_utils OBJECT
  FtpServer.h
  FtpServer.cc
  TestSetup.h
@@ -40,4 +40,4 @@ ADD_LIBRARY(zypp_test_utils
  WebServer.cc
 )
 
-TARGET_LINK_LIBRARIES( zypp_test_utils zypp-allsym ${LIBFCGI} ${LIBFCGI++} pthread )
+TARGET_LINK_LIBRARIES( zypp_test_utils ${LIBFCGI} ${LIBFCGI++} pthread )

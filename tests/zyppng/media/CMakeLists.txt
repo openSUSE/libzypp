@@ -6,5 +6,5 @@ IF( NOT DISABLE_MEDIABACKEND_TESTS)
   )
 ENDIF()
 
-target_link_libraries( Provider_test $<TARGET_OBJECTS:tvm-protocol-obj> )
+target_link_libraries( Provider_test PUBLIC tvm-protocol-obj )
 

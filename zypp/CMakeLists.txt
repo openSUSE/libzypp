@@ -963,59 +963,66 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS} )
-
-macro( ADDZYPPLIB LIBNAME )
-  message( "ADDING lib ${LIBNAME} to project" )
-  ADD_LIBRARY( ${LIBNAME} SHARED $<TARGET_OBJECTS:zypp-objlib> )
-  SET_TARGET_PROPERTIES( ${LIBNAME} PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
-  SET_TARGET_PROPERTIES( ${LIBNAME} PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
+# due to limitations in cmake object libraries feature( object files are not derived transiently, they are only added to the target if they are added DIRECTLY)
+# we have this function that adds all zypp objects to a specified target.
+function(link_zypp_object target)
   # System libraries
   SET(UTIL_LIBRARY util)
 
+
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-objlib )
+
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
-  target_link_libraries(${LIBNAME} $<TARGET_OBJECTS:commit-proto-obj> )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-curl )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-media )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-core )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-curl )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-media )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-core )
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-tui )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-tui )
 
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${UTIL_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${RPM_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${GETTEXT_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${CURL_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${LIBXML2_LIBRARIES} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${LibSolv_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${SIGNALS_LIBRARY})
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${Boost_THREAD_LIBRARY})
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${GPGME_LIBRARIES})
-  target_link_libraries(${LIBNAME} ${YAML_CPP_LIBRARIES})
-  TARGET_LINK_LIBRARIES(${LIBNAME} pthread )
+  target_link_libraries( ${target} PUBLIC commit-proto-obj )
+
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LibSolv_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UTIL_LIBRARY} )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
+
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${GETTEXT_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${CURL_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LIBXML2_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${ZLIB_LIBRARY} )
+  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${SIGNALS_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${Boost_THREAD_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${GPGME_LIBRARIES})
+  target_link_libraries( ${target} PUBLIC ${YAML_CPP_LIBRARIES})
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC pthread )
 
   IF ( UDEV_FOUND )
-    TARGET_LINK_LIBRARIES(${LIBNAME} ${UDEV_LIBRARY} )
+    TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UDEV_LIBRARY} )
   ELSE ( UDEV_FOUND )
     IF ( HAL_FOUND )
-      TARGET_LINK_LIBRARIES(${LIBNAME} ${HAL_LIBRARY} ${HAL_STORAGE_LIBRARY} ${DBUS_LIBRARY} )
+      TARGET_LINK_LIBRARIES( ${target} PUBLIC ${HAL_LIBRARY} ${HAL_STORAGE_LIBRARY} ${DBUS_LIBRARY} )
     ENDIF ( HAL_FOUND )
   ENDIF ( UDEV_FOUND )
 
-endmacro()
+endfunction()
 
-#Release library stripped from most symbols, thats what we release to the packages
-ADDZYPPLIB(zypp)
+
+ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
+ADD_LIBRARY( zypp SHARED )
+
+link_zypp_object( zypp )
+
+SET_TARGET_PROPERTIES ( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
+SET_TARGET_PROPERTIES ( zypp PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 set_target_properties ( zypp PROPERTIES LINK_FLAGS "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map" )
 
 INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
 #library build just for using it in tests, contains all symbols
-ADDZYPPLIB(zypp-allsym)
-ADD_DEPENDENCIES( zypp-allsym zypp )
+#ADDZYPPLIB(zypp-allsym STATIC)
+#ADD_DEPENDENCIES( zypp-allsym zypp )
 
 #this part does nothing yet, only when switching away from using a map file to
 #a approach where symbols are exported explicitly it would make a difference

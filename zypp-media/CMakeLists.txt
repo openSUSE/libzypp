@@ -138,4 +138,5 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-media STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
+ADD_LIBRARY( zypp-media OBJECT ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
+TARGET_LINK_LIBRARIES( zypp-media PUBLIC zypp-core)

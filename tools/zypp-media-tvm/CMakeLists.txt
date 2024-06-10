@@ -22,7 +22,7 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 add_executable( ${PROJECT_NAME} ${SOURCES} )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )
-target_link_libraries( ${PROJECT_NAME} $<TARGET_OBJECTS:tvm-protocol-obj> )
+target_link_libraries( ${PROJECT_NAME} tvm-protocol-obj )
 target_link_libraries( ${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
 set_target_properties( ${PROJECT_NAME}

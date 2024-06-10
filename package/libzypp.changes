@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 10 20:52:35 CEST 2024 - ma@suse.de
+
+- Url: Hide known password entires when writing the query part
+  (bsc#1050625 bsc#1177583)
+- version 16.22.13 (0)
+
+-------------------------------------------------------------------
 Fri Feb  2 13:58:35 CET 2024 - ma@suse.de
 
 - applydeltaprm: Create target directory if it does not exist

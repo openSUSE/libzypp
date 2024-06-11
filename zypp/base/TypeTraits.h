@@ -38,6 +38,9 @@ namespace std
   template< bool B, class T, class F >
   using conditional_t = typename conditional<B,T,F>::type;
 
+  template< class T >
+  using decay_t = typename decay<T>::type;
+
   template< bool B, class T = void >
   using enable_if_t = typename enable_if<B,T>::type;
 

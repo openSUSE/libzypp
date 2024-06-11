@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-09 23:47+0000\n"
+"PO-Revision-Date: 2024-06-12 00:46+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -96,17 +96,17 @@ msgstr "ஆஸ்திரேலியா"
 #. :AUS:036:
 #: zypp/CountryCode.cc:172
 msgid "Aruba"
-msgstr "¦¸¡ÄõÀ¢Â¡"
+msgstr "அருபா"
 
 #. :ABW:533:
 #: zypp/CountryCode.cc:173
 msgid "Aland Islands"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "அலண்ட் தீவுகள்"
 
 #. :ALA:248:
 #: zypp/CountryCode.cc:174
 msgid "Azerbaijan"
-msgstr "«º÷¨Àº¡ý"
+msgstr "அஜர்பைஜான்"
 
 #. :AZE:031:
 #: zypp/CountryCode.cc:175
@@ -116,17 +116,17 @@ msgstr "பாஸ்னியா மற்றும் ஹெர்சகோ�
 #. :BIH:070:
 #: zypp/CountryCode.cc:176
 msgid "Barbados"
-msgstr "À¡÷§À¼¡Í"
+msgstr "பார்படாஸ்"
 
 #. :BRB:052:
 #: zypp/CountryCode.cc:177
 msgid "Bangladesh"
-msgstr "Àí¸Ç¡§¾Í"
+msgstr "பங்களாதேஷ்"
 
 #. :BGD:050:
 #: zypp/CountryCode.cc:178
 msgid "Belgium"
-msgstr "¦Àøº¢Âõ"
+msgstr "பெல்ஜியம்"
 
 #. :BEL:056:
 #: zypp/CountryCode.cc:179
@@ -136,12 +136,12 @@ msgstr "பர்கினா ஃபாஸோ"
 #. :BFA:854:
 #: zypp/CountryCode.cc:180
 msgid "Bulgaria"
-msgstr "Àø§¸Ã¢Â¡"
+msgstr "பல்கேரியா"
 
 #. :BGR:100:
 #: zypp/CountryCode.cc:181
 msgid "Bahrain"
-msgstr "À¢§Ãº¢ø"
+msgstr "பஹ்ரைன்"
 
 #. :BHR:048:
 #: zypp/CountryCode.cc:182
@@ -156,7 +156,7 @@ msgstr "பெனின்"
 #. :BEN:204:
 #: zypp/CountryCode.cc:184
 msgid "Bermuda"
-msgstr "§º÷Áý"
+msgstr "பெர்முடா"
 
 #. :BMU:060:
 #: zypp/CountryCode.cc:185
@@ -166,27 +166,27 @@ msgstr "புரூனய் தாருசலாம்"
 #. :BRN:096:
 #: zypp/CountryCode.cc:186
 msgid "Bolivia"
-msgstr "¦À¡Ä¢Å¢Â¡"
+msgstr "பொலிவியா"
 
 #. :BOL:068:
 #: zypp/CountryCode.cc:187
 msgid "Brazil"
-msgstr "À¢§Ãº¢ø"
+msgstr "பிரேசில்"
 
 #. :BRA:076:
 #: zypp/CountryCode.cc:188
 msgid "Bahamas"
-msgstr "ÀÉ¡Á¡"
+msgstr "பஹாமாஸ்"
 
 #. :BHS:044:
 #: zypp/CountryCode.cc:189
 msgid "Bhutan"
-msgstr "À¢§Ãº¢ø"
+msgstr "பூட்டான்"
 
 #. :BTN:064:
 #: zypp/CountryCode.cc:190
 msgid "Bouvet Island"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "பூவெட் தீவு"
 
 #. :BVT:074:
 #: zypp/CountryCode.cc:191
@@ -196,17 +196,17 @@ msgstr "பாட்ஸ்வானா"
 #. :BWA:072:
 #: zypp/CountryCode.cc:192
 msgid "Belarus"
-msgstr "¦ÀÄ¡åÍ"
+msgstr "பெலாரஸ்"
 
 #. :BLR:112:
 #: zypp/CountryCode.cc:193
 msgid "Belize"
-msgstr "¦Àøº¢Âõ"
+msgstr "பெலிஸ்"
 
 #. :BLZ:084:
 #: zypp/CountryCode.cc:194
 msgid "Canada"
-msgstr "¸É¼¡"
+msgstr "கனடா"
 
 #. :CAN:124:
 #: zypp/CountryCode.cc:195
@@ -222,12 +222,12 @@ msgstr "காங்கோ"
 #. :COD:180:
 #: zypp/CountryCode.cc:197
 msgid "Central African Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+msgstr "மத்திய ஆப்பிரிக்க குடியரசு"
 
 #. :COG:178:
 #: zypp/CountryCode.cc:199
 msgid "Switzerland"
-msgstr "ÍÅ¢ðº÷Ä¡óÐ"
+msgstr "சுவிட்சர்லாந்து"
 
 #. :CHE:756:
 #: zypp/CountryCode.cc:200
@@ -237,12 +237,12 @@ msgstr "கோடே த’ஐவரி"
 #. :CIV:384:
 #: zypp/CountryCode.cc:201
 msgid "Cook Islands"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "குக் தீவுகள்"
 
 #. :COK:184:
 #: zypp/CountryCode.cc:202
 msgid "Chile"
-msgstr "º¢Ä¢"
+msgstr "சிலி"
 
 #. :CHL:152:
 #: zypp/CountryCode.cc:203

@@ -2,7 +2,7 @@
 Mon Jun 10 20:52:35 CEST 2024 - ma@suse.de
 
 - Url: Hide known password entires when writing the query part
-  (bsc#1050625 bsc#1177583)
+  (bsc#1050625 bsc#1177583, CVE-2017-9271)
 - version 16.22.13 (0)
 
 -------------------------------------------------------------------

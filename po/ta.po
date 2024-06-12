@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-12 00:46+0000\n"
+"PO-Revision-Date: 2024-06-12 12:46+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -257,7 +257,7 @@ msgstr "சீனா"
 #. :CHN:156:
 #: zypp/CountryCode.cc:205
 msgid "Colombia"
-msgstr "¦¸¡ÄõÀ¢Â¡"
+msgstr "கொலம்பியா"
 
 #. :COL:170:
 #: zypp/CountryCode.cc:206
@@ -267,7 +267,7 @@ msgstr "காஸ்டா ரிகா"
 #. :CRI:188:
 #: zypp/CountryCode.cc:207
 msgid "Cuba"
-msgstr "¦¸¡ÄõÀ¢Â¡"
+msgstr "கியூபா"
 
 #. :CUB:192:
 #: zypp/CountryCode.cc:208
@@ -287,7 +287,7 @@ msgstr "சைப்ரஸ்"
 #. :CYP:196:
 #: zypp/CountryCode.cc:211
 msgid "Czech Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+msgstr "செக் குடியரசு"
 
 #. :CZE:203:
 #: zypp/CountryCode.cc:212
@@ -302,37 +302,37 @@ msgstr "ஜிபெளட்டி"
 #. :DJI:262:
 #: zypp/CountryCode.cc:214
 msgid "Denmark"
-msgstr "¦¼ýÁ¡÷ì"
+msgstr "டென்மார்க்"
 
 #. :DNK:208:
 #: zypp/CountryCode.cc:215
 msgid "Dominica"
-msgstr "Õ§ÁÉ¢Â¡"
+msgstr "டொமினிகா"
 
 #. :DMA:212:
 #: zypp/CountryCode.cc:216
 msgid "Dominican Republic"
-msgstr "¦¼¡Á¢É¢ì¸ý ÌÊÂÃÍ"
+msgstr "டொமினிக்கன் குடியரசு"
 
 #. :DOM:214:
 #: zypp/CountryCode.cc:217
 msgid "Algeria"
-msgstr "Àø§¸Ã¢Â¡"
+msgstr "அல்ஜீரியா"
 
 #. :DZA:012:
 #: zypp/CountryCode.cc:218
 msgid "Ecuador"
-msgstr "®ì¦Å§¼¡÷"
+msgstr "ஈக்வடார்"
 
 #. :ECU:218:
 #: zypp/CountryCode.cc:219
 msgid "Estonia"
-msgstr "±Í§¼¡É¢Â¡"
+msgstr "எஸ்டோனியா"
 
 #. :EST:233:
 #: zypp/CountryCode.cc:220
 msgid "Egypt"
-msgstr "±¸¢ôÐ"
+msgstr "எகிப்து"
 
 #. :EGY:818:
 #: zypp/CountryCode.cc:221
@@ -431,17 +431,17 @@ msgstr "ஜிப்ரால்டர்"
 #. :GIB:292:
 #: zypp/CountryCode.cc:240
 msgid "Greenland"
-msgstr "¸¢¦ÃÉ¼¡"
+msgstr "கிரீன்லாந்து"
 
 #. :GRL:304:
 #: zypp/CountryCode.cc:241
 msgid "Gambia"
-msgstr "º¦Áöì¸¡"
+msgstr "காம்பியா"
 
 #. :GMB:270:
 #: zypp/CountryCode.cc:242
 msgid "Guinea"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
+msgstr "கினியா"
 
 #. :GIN:324:
 #: zypp/CountryCode.cc:243
@@ -456,7 +456,7 @@ msgstr "ஈக்வடோரியல் கினியா"
 #. :GNQ:226:
 #: zypp/CountryCode.cc:245
 msgid "Greece"
-msgstr "¸¢Ã£Í"
+msgstr "கிரீஸ்"
 
 #. :GRC:300:
 #: zypp/CountryCode.cc:246
@@ -466,12 +466,12 @@ msgstr "தென் ஜியார்ஜியா மற்றும் தெ
 #. :SGS:239:
 #: zypp/CountryCode.cc:247
 msgid "Guatemala"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
+msgstr "குவாதமாலா"
 
 #. :GTM:320:
 #: zypp/CountryCode.cc:248
 msgid "Guam"
-msgstr "ÌÅ¡ò¾Á¡Ä¡"
+msgstr "குவாம்"
 
 #. :GUM:316:
 #: zypp/CountryCode.cc:249
@@ -481,7 +481,7 @@ msgstr "கினியா-பிசாவ்"
 #. :GNB:624:
 #: zypp/CountryCode.cc:250
 msgid "Guyana"
-msgstr "º£É¡"
+msgstr "கயானா"
 
 #. :GUY:328:
 #: zypp/CountryCode.cc:251
@@ -496,12 +496,12 @@ msgstr "ஹேர்ட் தீவு மற்றும் மெக்டெ
 #. :HMD:334:
 #: zypp/CountryCode.cc:253
 msgid "Honduras"
-msgstr "¬ñÎÃ¡Í"
+msgstr "ஹோண்டுராஸ்"
 
 #. :HND:340:
 #: zypp/CountryCode.cc:254
 msgid "Croatia"
-msgstr "Ì¦Ã¡§Åº¢Â¡"
+msgstr "குரோஷியா"
 
 #. :HRV:191:
 #: zypp/CountryCode.cc:255
@@ -511,31 +511,31 @@ msgstr "ஹைட்டி"
 #. :HTI:332:
 #: zypp/CountryCode.cc:256
 msgid "Hungary"
-msgstr "¬í§¸Ã¢"
+msgstr "ஹங்கேரி"
 
 #. :HUN:348:
 #: zypp/CountryCode.cc:257
 msgid "Indonesia"
-msgstr "­ó§¾¡É£º¢Â¡"
+msgstr "இந்தோனேசியா"
 
 #. :IDN:360:
 #: zypp/CountryCode.cc:258
 msgid "Ireland"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "அயர்லாந்து"
 
 #. :IRL:372:
 #: zypp/CountryCode.cc:259
 msgid "Israel"
-msgstr "­Í§Ãø"
+msgstr "இஸ்ரேல்"
 
 #. :ISR:376:
 #: zypp/CountryCode.cc:260
 msgid "Isle of Man"
-msgstr ""
+msgstr "மனித தீவு"
 
 #: zypp/CountryCode.cc:261
 msgid "India"
-msgstr "­ó¾¢Â¡"
+msgstr "இந்தியா"
 
 #. :IND:356:
 #: zypp/CountryCode.cc:262
@@ -545,41 +545,41 @@ msgstr "பிரிட்டிஷ் இந்துமாக் கடல் 
 #. :IOT:086:
 #: zypp/CountryCode.cc:263
 msgid "Iraq"
-msgstr "®Ã¡ì"
+msgstr "ஈராக்"
 
 #. :IRQ:368:
 #: zypp/CountryCode.cc:264
 msgid "Iran"
-msgstr "®Ã¡ì"
+msgstr "ஈரான்"
 
 #. :IRN:364:
 #: zypp/CountryCode.cc:265
 msgid "Iceland"
-msgstr "³ÍÄ¡óÐ"
+msgstr "ஐஸ்லாந்து"
 
 #. :ISL:352:
 #: zypp/CountryCode.cc:266
 msgid "Italy"
-msgstr "­ò¾¡Ä¢"
+msgstr "இத்தாலி"
 
 #. :ITA:380:
 #: zypp/CountryCode.cc:267
 msgid "Jersey"
-msgstr ""
+msgstr "ஜெர்சி"
 
 #: zypp/CountryCode.cc:268
 msgid "Jamaica"
-msgstr "º¦Áöì¸¡"
+msgstr "ஜமைக்கா"
 
 #. :JAM:388:
 #: zypp/CountryCode.cc:269
 msgid "Jordan"
-msgstr "§Â¡÷¾¡ý"
+msgstr "ஜோர்டான்"
 
 #. :JOR:400:
 #: zypp/CountryCode.cc:270
 msgid "Japan"
-msgstr "ºôÀ¡ý"
+msgstr "ஜப்பான்"
 
 #. :JPN:392:
 #: zypp/CountryCode.cc:271
@@ -589,12 +589,12 @@ msgstr "கென்யா"
 #. :KEN:404:
 #: zypp/CountryCode.cc:272
 msgid "Kyrgyzstan"
-msgstr "¾¡öÅ¡ý"
+msgstr "கிர்கிஸ்தான்"
 
 #. :KGZ:417:
 #: zypp/CountryCode.cc:273
 msgid "Cambodia"
-msgstr "¦¸¡ÄõÀ¢Â¡"
+msgstr "கம்போடியா"
 
 #. :KHM:116:
 #: zypp/CountryCode.cc:274
@@ -609,7 +609,7 @@ msgstr "கோமரோஸ்"
 #. :COM:174:
 #: zypp/CountryCode.cc:276
 msgid "Saint Kitts and Nevis"
-msgstr "¦ºÂ¢ýð ¸¢ðÍ & ¦¿Å¢Í"
+msgstr "செயின்ட் கிட்ஸ் மற்றும் நெவிஸ்"
 
 #. :KNA:659:
 #: zypp/CountryCode.cc:277
@@ -619,7 +619,7 @@ msgstr "வட கொரியா"
 #. :PRK:408:
 #: zypp/CountryCode.cc:278
 msgid "South Korea"
-msgstr "¦¾ý ¬ôÃ¢ì¸¡"
+msgstr "தென் கொரியா"
 
 #. :KOR:410:
 #: zypp/CountryCode.cc:279
@@ -629,12 +629,12 @@ msgstr "குவைத்"
 #. :KWT:414:
 #: zypp/CountryCode.cc:280
 msgid "Cayman Islands"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "கெய்மன் தீவுகள்"
 
 #. :CYM:136:
 #: zypp/CountryCode.cc:281
 msgid "Kazakhstan"
-msgstr "¾¡öÅ¡ý"
+msgstr "Kazakhstan"
 
 #. :KAZ:398:
 #: zypp/CountryCode.cc:282
@@ -649,7 +649,7 @@ msgstr "லெபனான்"
 #. :LBN:422:
 #: zypp/CountryCode.cc:284
 msgid "Saint Lucia"
-msgstr "¦ºýð æº¢Â¡"
+msgstr "செயின்ட் லூசியா"
 
 #. :LCA:662:
 #: zypp/CountryCode.cc:285
@@ -659,12 +659,12 @@ msgstr "லிச்சன்ஸ்டெயின்"
 #. :LIE:438:
 #: zypp/CountryCode.cc:286
 msgid "Sri Lanka"
-msgstr "¦º÷À¢Âý"
+msgstr "இலங்கை"
 
 #. :LKA:144:
 #: zypp/CountryCode.cc:287
 msgid "Liberia"
-msgstr "¦º÷À¢Â¡"
+msgstr "லைபீரியா"
 
 #. :LBR:430:
 #: zypp/CountryCode.cc:288
@@ -674,22 +674,22 @@ msgstr "லெசோத்தோ"
 #. :LSO:426:
 #: zypp/CountryCode.cc:289
 msgid "Lithuania"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+msgstr "லிதுவேனியா"
 
 #. :LTU:440:
 #: zypp/CountryCode.cc:290
 msgid "Luxembourg"
-msgstr "Äìºõ§À¡÷ì"
+msgstr "லக்சம்பர்க்"
 
 #. :LUX:442:
 #: zypp/CountryCode.cc:291
 msgid "Latvia"
-msgstr "ÄðÅ¢Â¡"
+msgstr "லாட்வியா"
 
 #. :LVA:428:
 #: zypp/CountryCode.cc:292
 msgid "Libya"
-msgstr "¦º÷À¢Â¡"
+msgstr "லிபியா"
 
 #. :LBY:434:
 #: zypp/CountryCode.cc:293

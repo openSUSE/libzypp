@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-12 12:46+0000\n"
+"PO-Revision-Date: 2024-06-14 12:46+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -699,21 +699,19 @@ msgstr "மொராக்கோ"
 #. :MAR:504:
 #: zypp/CountryCode.cc:294
 msgid "Monaco"
-msgstr "Á¡ø¼¡"
+msgstr "மொனாக்கோ"
 
 #. :MCO:492:
 #: zypp/CountryCode.cc:295
 msgid "Moldova"
-msgstr "Í§Ä¡Å¡ì"
+msgstr "மால்டோவா"
 
 #. :MDA:498:
 #: zypp/CountryCode.cc:296
-#, fuzzy
 msgid "Montenegro"
-msgstr "மாங்கோ"
+msgstr "மாண்டினீக்ரோ"
 
 #: zypp/CountryCode.cc:297
-#, fuzzy
 msgid "Saint Martin"
 msgstr "சான் மரினோ"
 
@@ -724,22 +722,22 @@ msgstr "மடகாஸ்கர்"
 #. :MDG:450:
 #: zypp/CountryCode.cc:299
 msgid "Marshall Islands"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "மார்ஷல் தீவுகள்"
 
 #. :MHL:584:
 #: zypp/CountryCode.cc:300
 msgid "Macedonia"
-msgstr "Á¡º¢§¼¡É¢Â¡"
+msgstr "மாசிடோனியா"
 
 #. :MKD:807:
 #: zypp/CountryCode.cc:301
 msgid "Mali"
-msgstr "Á¡ø¼¡"
+msgstr "மாலி"
 
 #. :MLI:466:
 #: zypp/CountryCode.cc:302
 msgid "Myanmar"
-msgstr "ÀÉ¡Á¡"
+msgstr "மியான்மர்"
 
 #. :MMR:104:
 #: zypp/CountryCode.cc:303
@@ -749,7 +747,7 @@ msgstr "மங்கோலியா"
 #. :MNG:496:
 #: zypp/CountryCode.cc:304
 msgid "Macao"
-msgstr "Á¡ø¼¡"
+msgstr "மக்காவ்"
 
 #. :MAC:446:
 #: zypp/CountryCode.cc:305
@@ -759,12 +757,12 @@ msgstr "வட மாரியானா தீவுகள்"
 #. :MNP:580:
 #: zypp/CountryCode.cc:306
 msgid "Martinique"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+msgstr "மார்டினிக்"
 
 #. :MTQ:474:
 #: zypp/CountryCode.cc:307
 msgid "Mauritania"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+msgstr "மொரிட்டானியா"
 
 #. :MRT:478:
 #: zypp/CountryCode.cc:308
@@ -774,12 +772,12 @@ msgstr "மான்ட்செர்ரட்"
 #. :MSR:500:
 #: zypp/CountryCode.cc:309
 msgid "Malta"
-msgstr "Á¡ø¼¡"
+msgstr "மால்டா"
 
 #. :MLT:470:
 #: zypp/CountryCode.cc:310
 msgid "Mauritius"
-msgstr "Ä¢òÐ§ÅÉ¢Â¡"
+msgstr "மொரிஷியஸ்"
 
 #. :MUS:480:
 #: zypp/CountryCode.cc:311

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
+
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
@@ -7,6 +8,12 @@ SET( CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 INCLUDE(ZyppCommon)
+
+# allow name libraries by name mixed with full
+# paths
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
 
 OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
@@ -64,11 +71,6 @@ IF (${have_system} STRGREATER xx)
 ENDIF (${have_system} STRGREATER xx)
 #--------------------------------------------------------------------------------
 
-# allow name libraries by name mixed with full
-# paths
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
 
 find_package(FindPkgConfig, QUIET)
 INCLUDE( ${LIBZYPP_SOURCE_DIR}/VERSION.cmake )
@@ -84,6 +86,7 @@ CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h )
 
 SET (CMAKE_CXX_STANDARD ${ZYPPCOMMON_CXX_STANDARD})
 SET (CMAKE_CXX_EXTENSIONS OFF)
+
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 CHECK_C_COMPILER_FLAG("-Werror=format-security" CC_FORMAT_SECURITY)
@@ -95,44 +98,55 @@ IF ( NOT CMAKE_USE_PTHREADS_INIT )
   MESSAGE( FATAL_ERROR "No pthreads found" )
 ENDIF ( NOT CMAKE_USE_PTHREADS_INIT )
 
-SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -pthread -fno-strict-aliasing -fPIC -g -Wall -Wp,-D_GLIBCXX_ASSERTIONS" )
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fno-strict-aliasing -fPIC -g -Wall -Wp,-D_GLIBCXX_ASSERTIONS" )
+# general flags used for all targets
+add_library( zypp_general_compiler_flags INTERFACE )
 
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden -Woverloaded-virtual -Wnon-virtual-dtor -ftemplate-backtrace-limit=0" )
+target_compile_options( zypp_general_compiler_flags INTERFACE "-pthread" "-fno-strict-aliasing" "-g" "-Wall" "-Wp,-D_GLIBCXX_ASSERTIONS" )
+target_compile_options( zypp_general_compiler_flags INTERFACE "-fvisibility-inlines-hidden" "-Woverloaded-virtual" "-Wnon-virtual-dtor" "-ftemplate-backtrace-limit=0" )
+
 IF ( ENABLE_VISIBILITY_HIDDEN )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden" )
+  target_compile_options( zypp_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 ENDIF( ENABLE_VISIBILITY_HIDDEN )
 
-set( CMAKE_C_FLAGS_RELEASE     "${CMAKE_C_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
-
-IF(${CC_FORMAT_SECURITY})
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=format-security")
+IF(${CXX_FORMAT_SECURITY})
+  target_compile_options( zypp_general_compiler_flags INTERFACE "-Werror=format-security")
 ENDIF(${CC_FORMAT_SECURITY})
 
-IF(${CXX_FORMAT_SECURITY})
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=format-security")
-ENDIF(${CXX_FORMAT_SECURITY})
 
-if ( NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  #cli args ignored by clang, it still prints a noisy warning though
-  SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -rdynamic -Wl,-as-needed" )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -Wl,-as-needed" )
-  if( ENABLE_UBSAN_CHECKS )
-    SET( CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} -fsanitize=undefined" )
-    SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=undefined" )
-  endif()
+#cli args ignored by clang, it still prints a noisy warning though
+list(APPEND LINKER_AS_NEEDED "-Wl,-as-needed" )
+target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<NOT:$<CXX_COMPILER_ID:Clang>>:${LINKER_AS_NEEDED}>" )
+target_link_options( zypp_general_compiler_flags    INTERFACE "$<$<NOT:$<CXX_COMPILER_ID:Clang>>:${LINKER_AS_NEEDED}>" )
+
+if( ENABLE_UBSAN_CHECKS )
+  target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<AND:$<CONFIG:DEBUG>,$<NOT:$<CXX_COMPILER_ID:Clang>>>:-fsanitize=undefined>" )
 endif()
-
-SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 INCLUDE(CheckFunctionExists)
 CHECK_FUNCTION_EXISTS(pipe2 PIPE2_FOUND)
 IF(${PIPE2_FOUND})
-  ADD_DEFINITIONS(-DHAVE_PIPE2)
+  target_compile_definitions(zypp_general_compiler_flags INTERFACE HAVE_PIPE2)
 ENDIF(${PIPE2_FOUND})
 
-ADD_DEFINITIONS( -D_FILE_OFFSET_BITS=64 )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE _FILE_OFFSET_BITS=64 )
+
+target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<NOT:$<CONFIG:DEBUG>>:-O2>")
+
+set(REL_COMPILE_DEFS ZYPP_NDEBUG NDEBUG)
+target_compile_definitions(zypp_general_compiler_flags INTERFACE "$<$<NOT:$<CONFIG:DEBUG>>:${REL_COMPILE_DEFS}>" )
+
+#usage requirements for all libs
+add_library( zypp_lib_compiler_flags INTERFACE)
+target_compile_options( zypp_lib_compiler_flags INTERFACE "-fPIC" "-rdynamic" )
+target_link_options   ( zypp_lib_compiler_flags INTERFACE "-fPIC" "-rdynamic" )
+target_link_libraries ( zypp_lib_compiler_flags INTERFACE zypp_general_compiler_flags )
+
+#usage requirements for all executables
+add_library( zypp_exe_compiler_flags INTERFACE)
+target_compile_options( zypp_exe_compiler_flags INTERFACE "-pie" "-fPIE")
+target_link_options   ( zypp_exe_compiler_flags INTERFACE "-fPIE" )
+target_link_libraries ( zypp_exe_compiler_flags INTERFACE zypp_general_compiler_flags "-lbz2" "-lzstd" "-llzma")
+
 SET( LIBZYPP_VERSION_INFO "${LIBZYPP_SO_FIRST}.${LIBZYPP_AGE}.${LIBZYPP_PATCH}" )
 SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )
 
@@ -150,8 +164,9 @@ MACRO(ADD_TESTS)
       LIST( APPEND TEST_REQ_LIBS zypp_test_utils )
     ENDIF()
 
-    link_zypp_object( ${loop_var}_test )
+    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp_exe_compiler_flags  )
     TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC ${TEST_REQ_LIBS}  )
+    link_zypp_object( ${loop_var}_test )
     ADD_TEST( ${loop_var}_test ${CMAKE_CURRENT_BINARY_DIR}/${loop_var}_test --catch_system_errors=no)
   ENDFOREACH( loop_var )
 ENDMACRO(ADD_TESTS)
@@ -166,28 +181,6 @@ MACRO( SET_LOGGROUP _group _files  )
 ENDMACRO( SET_LOGGROUP )
 
 ####################################################################
-
-INCLUDE(CheckSymbolExists)
-FIND_PACKAGE(Rpm REQUIRED)
-IF ( NOT RPM_FOUND)
-  MESSAGE( FATAL_ERROR " rpm-devel not found" )
-ELSE ( NOT RPM_FOUND)
-  INCLUDE_DIRECTORIES(${RPM_INCLUDE_DIR})
-  # fix includes not relative to rpm
-  INCLUDE_DIRECTORIES(${RPM_INCLUDE_DIR}/rpm)
-
-  # rpm verify function and callback states were introduced in rpm-4.15
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0")
-    ADD_DEFINITIONS( -DHAVE_RPM_VERIFY_TRANSACTION_STEP )
-  endif()
-
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
-        MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
-        ADD_DEFINITIONS(-D_RPM_5)
-  endif ()
-
-ENDIF( NOT RPM_FOUND)
-
 FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options unit_test_framework thread)
 IF (Boost_FOUND)
   MESSAGE( STATUS "boost found: includes in ${Boost_INCLUDE_DIRS}, library in ${Boost_LIBRARY_DIRS}")
@@ -248,7 +241,17 @@ IF( LIBSOLV_SRCDIR AND LIBSOLV_BUILDDIR )
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_BUILDDIR}/src ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv
   )
 
+  # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+  SET( CMAKE_MODULE_PATH
+      ${LIBSOLV_BUILDDIR}/cmake/modules
+      ${CMAKE_MODULE_PATH}
+  )
+
+  SET( LibSolv_ROOT )
+
+  FIND_PACKAGE(LibSolv REQUIRED ext)
   INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/libsolv/include ${CMAKE_BINARY_DIR}/libsolv/ext ${CMAKE_BINARY_DIR}/libsolv/solvversion ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv ${CMAKE_BINARY_DIR}/libsolv/ext/solv ${CMAKE_BINARY_DIR}/libsolv/include/solv )
+
   SET( LibSolv_LIBRARIES ${LIBSOLV_BUILDDIR}/ext/libsolvext.a ${LIBSOLV_BUILDDIR}/src/libsolv.a )
 
 ELSE()

@@ -2,12 +2,17 @@
 FILE( GLOB_RECURSE POT_FILE_DEPENDS RELATIVE ${LIBZYPP_SOURCE_DIR} "*.h" "*.cc" )
 SET( POT_FILE_DEPENDS_ZYPP ${POT_FILE_DEPENDS} PARENT_SCOPE )
 
-
 ADD_DEFINITIONS( -DZYPP_DLL )
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sywu/include )
 INCLUDE_DIRECTORIES( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} ${LIBZYPP_SOURCE_DIR}/libs/zypp-core SYSTEM )
 
-message(${LIBZYPP_SOURCE_DIR}/zypp-core)
+
+FIND_PACKAGE(Rpm REQUIRED)
+IF ( NOT RPM_FOUND)
+  MESSAGE( FATAL_ERROR " rpm-devel not found" )
+ENDIF ( NOT RPM_FOUND)
+
+
 
 # add_definitions( -DENABLE_SYWU )
 # add_subdirectory(sywu)
@@ -969,14 +974,13 @@ function(link_zypp_object target)
   # System libraries
   SET(UTIL_LIBRARY util)
 
-
   TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-objlib )
 
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
   TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-curl )
   TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-media )
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-core )
+
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.
@@ -984,7 +988,11 @@ function(link_zypp_object target)
 
   target_link_libraries( ${target} PUBLIC commit-proto-obj )
 
+  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-core )
+
+
   TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LibSolv_LIBRARIES} )
+
   TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UTIL_LIBRARY} )
   TARGET_LINK_LIBRARIES( ${target} PUBLIC ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
 
@@ -1005,13 +1013,30 @@ function(link_zypp_object target)
       TARGET_LINK_LIBRARIES( ${target} PUBLIC ${HAL_LIBRARY} ${HAL_STORAGE_LIBRARY} ${DBUS_LIBRARY} )
     ENDIF ( HAL_FOUND )
   ENDIF ( UDEV_FOUND )
-
 endfunction()
 
 
 ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
-ADD_LIBRARY( zypp SHARED )
 
+target_link_libraries( zypp-objlib PRIVATE zypp_lib_compiler_flags )
+
+target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR})
+
+# fix includes not relative to rpm
+target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR}/rpm)
+
+# rpm verify function and callback states were introduced in rpm-4.15
+if( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0")
+  target_compile_definitions( zypp-objlib PUBLIC HAVE_RPM_VERIFY_TRANSACTION_STEP )
+endif()
+
+if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
+      MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
+      target_compile_definitions( zypp-objlib PUBLIC _RPM_5)
+endif ()
+
+
+ADD_LIBRARY( zypp SHARED )
 link_zypp_object( zypp )
 
 SET_TARGET_PROPERTIES ( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )

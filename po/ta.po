@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-14 12:46+0000\n"
+"PO-Revision-Date: 2024-06-20 12:46+0000\n"
 "Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
 "Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
 "\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -782,22 +782,22 @@ msgstr "மொரிஷியஸ்"
 #. :MUS:480:
 #: zypp/CountryCode.cc:311
 msgid "Maldives"
-msgstr "Á¡ø¼¡"
+msgstr "மாலத்தீவுகள்"
 
 #. :MDV:462:
 #: zypp/CountryCode.cc:312
 msgid "Malawi"
-msgstr "Á¡ø¼¡"
+msgstr "மலாவி"
 
 #. :MWI:454:
 #: zypp/CountryCode.cc:313
 msgid "Mexico"
-msgstr "¦Áìº¢§¸¡"
+msgstr "மெக்சிகோ"
 
 #. :MEX:484:
 #: zypp/CountryCode.cc:314
 msgid "Malaysia"
-msgstr "Á¡ø¼¡"
+msgstr "மலேசியா"
 
 #. :MYS:458:
 #: zypp/CountryCode.cc:315
@@ -807,42 +807,42 @@ msgstr "மொசாம்பிக்"
 #. :MOZ:508:
 #: zypp/CountryCode.cc:316
 msgid "Namibia"
-msgstr "º¦Áöì¸¡"
+msgstr "நமீபியா"
 
 #. :NAM:516:
 #: zypp/CountryCode.cc:317
 msgid "New Caledonia"
-msgstr "Á¡º¢§¼¡É¢Â¡"
+msgstr "புதிய கலிடோனியா"
 
 #. :NCL:540:
 #: zypp/CountryCode.cc:318
 msgid "Niger"
-msgstr "¦º÷À¢Â¡"
+msgstr "நைஜர்"
 
 #. :NER:562:
 #: zypp/CountryCode.cc:319
 msgid "Norfolk Island"
-msgstr "«Â÷Ä¡óÐ"
+msgstr "நார்போக் தீவு"
 
 #. :NFK:574:
 #: zypp/CountryCode.cc:320
 msgid "Nigeria"
-msgstr "¦º÷À¢Â¡"
+msgstr "நைஜீரியா"
 
 #. :NGA:566:
 #: zypp/CountryCode.cc:321
 msgid "Nicaragua"
-msgstr "ÀÃ¡Ì§Å"
+msgstr "நிகரகுவா"
 
 #. :NIC:558:
 #: zypp/CountryCode.cc:322
 msgid "Netherlands"
-msgstr "¦¿¾÷Ä¡óÐ"
+msgstr "நெதர்லாந்து"
 
 #. :NLD:528:
 #: zypp/CountryCode.cc:323
 msgid "Norway"
-msgstr "¿¡÷§Å"
+msgstr "நார்வே"
 
 #. :NOR:578:
 #: zypp/CountryCode.cc:324

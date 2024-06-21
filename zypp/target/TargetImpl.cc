@@ -1086,7 +1086,11 @@ namespace zypp
         ManagedFile guard( base, filesystem::recursive_rmdir );
 
         ExternalProgram::Arguments cmd;
+#ifdef ZYPP_RPMDB2SOLV_PATH
+        cmd.push_back( ZYPP_RPMDB2SOLV_PATH );
+#else
         cmd.push_back( "rpmdb2solv" );
+#endif
         if ( ! _root.empty() ) {
           cmd.push_back( "-r" );
           cmd.push_back( _root.asString() );

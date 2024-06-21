@@ -51,8 +51,12 @@ ENDIF (DEBIAN)
 
 IF ( ENABLE_DEVEL_BUILD )
         MESSAGE( WARNING "Zypp devel build enabled, do not do this in production" )
-        SET( ZYPP_RPM_BINARY "${CMAKE_BINARY_DIR}/tools/zypp-rpm/zypp-rpm")
-        SET( ZYPP_WORKER_PATH "${CMAKE_BINARY_DIR}/tools/workers" )
+        SET( ZYPP_RPM_BINARY "${LIBZYPP_BINARY_DIR}/tools/zypp-rpm/zypp-rpm")
+        SET( ZYPP_WORKER_PATH "${LIBZYPP_BINARY_DIR}/tools/workers" )
+        if ( ZYPP_STACK_BUILD )
+          add_definitions( -DZYPP_REPO2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/repo2solv"  )
+          add_definitions( -DZYPP_RPMDB2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/rpmdb2solv")
+        endif()
 ELSE()
         SET( ZYPP_RPM_BINARY "${ZYPP_LIBEXEC_INSTALL_DIR}/zypp-rpm")
         SET( ZYPP_WORKER_PATH "${ZYPP_LIBEXEC_INSTALL_DIR}/workers" )
@@ -230,30 +234,9 @@ ENDIF( NOT YAML-CPP_FOUND)
 
 
 #Allow to override the libsolv install location
-IF( LIBSOLV_SRCDIR AND LIBSOLV_BUILDDIR )
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/include
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/ext
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/solvversion
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_SRCDIR}/src ${CMAKE_BINARY_DIR}/libsolv/include/solv
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_SRCDIR}/ext ${CMAKE_BINARY_DIR}/libsolv/ext/solv
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_BUILDDIR}/src ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv
-  )
-
-  # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-  SET( CMAKE_MODULE_PATH
-      ${LIBSOLV_BUILDDIR}/cmake/modules
-      ${CMAKE_MODULE_PATH}
-  )
-
-  SET( LibSolv_ROOT )
-
-  FIND_PACKAGE(LibSolv REQUIRED ext)
-  INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/libsolv/include ${CMAKE_BINARY_DIR}/libsolv/ext ${CMAKE_BINARY_DIR}/libsolv/solvversion ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv ${CMAKE_BINARY_DIR}/libsolv/ext/solv ${CMAKE_BINARY_DIR}/libsolv/include/solv )
-
-  SET( LibSolv_LIBRARIES ${LIBSOLV_BUILDDIR}/ext/libsolvext.a ${LIBSOLV_BUILDDIR}/src/libsolv.a )
-
+IF( ZYPP_STACK_BUILD )
+  INCLUDE_DIRECTORIES( ${ZYPP_STACK_INCLUDE_DIRS} )
+  SET( LibSolv_LIBRARIES libsolvext libsolv )
 ELSE()
   FIND_PACKAGE(LibSolv REQUIRED ext)
   #SET(LibSolv_USE_STATIC_LIBS ON)

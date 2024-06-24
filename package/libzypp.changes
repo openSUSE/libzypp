@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jun 24 12:48:00 CEST 2024 - ma@suse.de
+
+- Workaround broken libsolv-tools-base requirements (fixes
+  openSUSE/zypper#551)
+- Strip ssl_clientkey from repo urls (bsc#1226030)
+- Remove protobuf build dependency.
+- Lazily attach medium during refresh workflows (bsc#1223094)
+- Refactor RepoManager and add Service workflows.
+- version 17.34.2 (34)
+
+-------------------------------------------------------------------
 Fri May 31 12:19:45 CEST 2024 - ma@suse.de
 
 - zypp-tui: Make sure translated texts use the correct textdomain

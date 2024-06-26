@@ -399,7 +399,8 @@ namespace zyppng {
     if ( !_dev ){
       return traits_type::eof();
     }
-    if ( _dev->write ( (char *)&__c, 1 ) == 1 ) {
+    char buf = __c;
+    if ( _dev->write ( &buf, 1 ) == 1 ) {
       return traits_type::not_eof(__c);
     }
     return traits_type::eof();

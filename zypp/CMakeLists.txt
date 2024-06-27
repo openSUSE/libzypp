@@ -990,7 +990,6 @@ function(link_zypp_object target)
 
   TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-core )
 
-
   TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LibSolv_LIBRARIES} )
 
   TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UTIL_LIBRARY} )
@@ -1018,7 +1017,7 @@ endfunction()
 
 ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
 
-target_link_libraries( zypp-objlib PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( zypp-objlib PUBLIC zypp_lib_compiler_flags )
 
 target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR})
 

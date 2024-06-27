@@ -431,7 +431,7 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( zypp-core OBJECT ${zypp_SRCS} ${zypp_HEADERS} )
 
-target_link_libraries( zypp-core PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( zypp-core PUBLIC zypp_lib_compiler_flags )
 target_link_libraries( zypp-core PUBLIC ${LIBGLIB_LIBRARIES} )
 target_link_libraries( zypp-core PUBLIC ${OPENSSL_LIBRARIES} )
 target_link_libraries( zypp-core PUBLIC ${CRYPTO_LIBRARIES} )

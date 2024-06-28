@@ -11,7 +11,7 @@
 */
 #include "private/curlhelper_p.h"
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/Pathname.h>

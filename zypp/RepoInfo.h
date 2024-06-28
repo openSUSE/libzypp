@@ -16,7 +16,7 @@
 #include <set>
 
 #include <zypp/base/Iterator.h>
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp/Url.h>
 #include <zypp/Locale.h>

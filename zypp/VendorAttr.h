@@ -20,7 +20,7 @@
 #include <zypp/PathInfo.h>
 #include <zypp/Vendor.h>
 
-#include <zypp/APIConfig.h>	// LEGACY macros
+#include <zypp-core/Globals.h>	// LEGACY macros
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp {

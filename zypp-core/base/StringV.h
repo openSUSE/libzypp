@@ -14,7 +14,7 @@
 #include <string_view>
 #ifdef __cpp_lib_string_view
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Regex.h>
 #include <zypp-core/base/Flags.h>

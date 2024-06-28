@@ -15,7 +15,7 @@
 
 #include <zypp/base/NonCopyable.h>
 #include <zypp/base/PtrTypes.h>
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp/ManagedFile.h>

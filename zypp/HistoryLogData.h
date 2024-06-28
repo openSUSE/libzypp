@@ -15,7 +15,7 @@
 
 #include <iosfwd>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp/Date.h>
 #include <zypp/Edition.h>
 #include <zypp/Arch.h>

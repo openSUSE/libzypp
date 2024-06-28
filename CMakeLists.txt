@@ -240,6 +240,7 @@ else()
 
   # detecting libsolv features, so we know which libraries to link this is still required even if we were asked to build
   # without zstd support
+  include(CheckSymbolExists)
   set(CMAKE_REQUIRED_INCLUDES ${LibSolv_INCLUDE_DIRS} ${CMAKE_REQUIRED_INCLUDES})
   CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_ZLIB_COMPRESSION   "solv/solvversion.h" SOLV_NEED_ZLIB   )
   CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_LZMA_COMPRESSION   "solv/solvversion.h" SOLV_NEED_LZMA   )

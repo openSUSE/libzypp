@@ -140,6 +140,7 @@ target_compile_definitions(zypp_general_compiler_flags INTERFACE _FILE_OFFSET_BI
 target_compile_definitions(zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:ZYPP_NDEBUG NDEBUG> )
 
 target_compile_options( zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:-O2>)
+target_link_options   ( zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:-O2>)
 
 SET( LIBZYPP_VERSION_INFO "${LIBZYPP_SO_FIRST}.${LIBZYPP_AGE}.${LIBZYPP_PATCH}" )
 SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )

@@ -6,12 +6,13 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/APIConfig.h
+/** \file	zypp-core/Globals.h
  *  \brief	Provides API related macros.
  */
 #ifndef ZYPP_GLOBALS_H
 #define ZYPP_GLOBALS_H
 
+#include <zypp/APIConfig.h>             // LIBZYPP_ version defines for the LEGACY macro
 #include <zypp-core/base/Easy.h>	// some macros used almost everywhere
 
 /**
@@ -23,6 +24,15 @@
  * a soversion [<=9999] or numversion [<=999999].
  *
  */
+#ifndef LIBZYPP_VERSION_MAJOR
+#error Missing APIConfig.h include (LIBZYPP_VERSION_MAJOR)
+#endif
+#ifndef LIBZYPP_SOVERSION
+#error Missing APIConfig.h include (LIBZYPP_SOVERSION)
+#endif
+#ifndef LIBZYPP_VERSION
+#error Missing APIConfig.h include (LIBZYPP_VERSION)
+#endif
 #define LEGACY(CL) ( CL < 100 && LIBZYPP_VERSION_MAJOR <= CL ) || ( CL < 10000 && LIBZYPP_SOVERSION <= CL ) || LIBZYPP_VERSION <= CL
 
 /**

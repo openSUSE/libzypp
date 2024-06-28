@@ -303,24 +303,6 @@ namespace zypp
   unsigned VendorAttr::foreachVendorList( std::function<bool(VendorList)> fnc_r ) const
   { return _pimpl->foreachVendorList( std::move(fnc_r) ); }
 
-#if LEGACY(1722)
-  bool VendorAttr::addVendorDirectory( const Pathname & dirname ) const
-  { return const_cast<VendorAttr*>(this)->addVendorDirectory( dirname ); }
-
-  bool VendorAttr::addVendorFile( const Pathname & filename ) const
-  { return const_cast<VendorAttr*>(this)->addVendorFile( filename ); }
-
-  void VendorAttr::_addVendorList( std::vector<std::string> & vendorList_r ) const
-  { return const_cast<VendorAttr*>(this)->_addVendorList( VendorList( vendorList_r.begin(), vendorList_r.end() ) ); }
-
-  void VendorAttr::_addVendorList( std::vector<IdString> && list_r )
-  {
-    VendorList tmp;
-    for ( const auto & el : list_r )
-      tmp.push_back( std::string(el) );
-    _addVendorList( std::move(tmp) );
-  }
-#endif
   //////////////////////////////////////////////////////////////////
   // vendor equivalence:
   //////////////////////////////////////////////////////////////////

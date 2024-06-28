@@ -148,12 +148,6 @@ namespace zypp {
         * \return Modification time of the /etc/mtab file.
         */
         static time_t getMTime();
-
-    private:
-#if LEGACY(1722)
-        ExternalProgram * _bincompat1;
-        int               _bincompat2;
-#endif
     };
 
 

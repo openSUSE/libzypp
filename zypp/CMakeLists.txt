@@ -974,36 +974,36 @@ function(link_zypp_object target)
   # System libraries
   SET(UTIL_LIBRARY util)
 
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-objlib )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-objlib )
 
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-curl )
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-media )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-curl )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-media )
 
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-tui )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-tui )
 
-  target_link_libraries( ${target} PUBLIC commit-proto-obj )
+  target_link_libraries( ${target} PRIVATE commit-proto-obj )
 
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC zypp-core )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-core )
 
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LibSolv_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${LibSolv_LIBRARIES} )
 
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UTIL_LIBRARY} )
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${UTIL_LIBRARY} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
 
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${GETTEXT_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${CURL_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${LIBXML2_LIBRARIES} )
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${ZLIB_LIBRARY} )
-  #TARGET_LINK_LIBRARIES( ${target} PUBLIC ${SIGNALS_LIBRARY})
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${Boost_THREAD_LIBRARY})
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC ${GPGME_LIBRARIES})
-  target_link_libraries( ${target} PUBLIC ${YAML_CPP_LIBRARIES})
-  TARGET_LINK_LIBRARIES( ${target} PUBLIC pthread )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${GETTEXT_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${CURL_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${LIBXML2_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${ZLIB_LIBRARY} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${SIGNALS_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${Boost_THREAD_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${GPGME_LIBRARIES})
+  target_link_libraries( ${target} PRIVATE ${YAML_CPP_LIBRARIES})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE pthread )
 
   IF ( UDEV_FOUND )
     TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UDEV_LIBRARY} )
@@ -1017,7 +1017,7 @@ endfunction()
 
 ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
 
-target_link_libraries( zypp-objlib PUBLIC zypp_lib_compiler_flags )
+target_link_libraries( zypp-objlib PRIVATE zypp_lib_compiler_flags )
 
 target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR})
 

@@ -49,13 +49,16 @@ IF (DEBIAN)
   SET (have_system ${have_system}x)
 ENDIF (DEBIAN)
 
+# general flags used for all targets
+add_library( zypp_general_compiler_flags INTERFACE )
+
 IF ( ENABLE_DEVEL_BUILD )
         MESSAGE( WARNING "Zypp devel build enabled, do not do this in production" )
         SET( ZYPP_RPM_BINARY "${LIBZYPP_BINARY_DIR}/tools/zypp-rpm/zypp-rpm")
         SET( ZYPP_WORKER_PATH "${LIBZYPP_BINARY_DIR}/tools/workers" )
         if ( ZYPP_STACK_BUILD )
-          add_definitions( -DZYPP_REPO2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/repo2solv"  )
-          add_definitions( -DZYPP_RPMDB2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/rpmdb2solv")
+          target_compile_definitions( zypp_general_compiler_flags INTERFACE ZYPP_REPO2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/repo2solv"   )
+          target_compile_definitions( zypp_general_compiler_flags INTERFACE ZYPP_RPMDB2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/rpmdb2solv" )
         endif()
 ELSE()
         SET( ZYPP_RPM_BINARY "${ZYPP_LIBEXEC_INSTALL_DIR}/zypp-rpm")
@@ -63,8 +66,8 @@ ELSE()
 ENDIF( ENABLE_DEVEL_BUILD )
 
 message ( "Using zypp-rpm from path: ${ZYPP_RPM_BINARY}" )
-add_definitions( -DZYPP_RPM_BINARY="${ZYPP_RPM_BINARY}"  )
-add_definitions( -DZYPP_WORKER_PATH="${ZYPP_WORKER_PATH}")
+target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPP_RPM_BINARY}"  )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPP_WORKER_PATH}")
 
 IF (${have_system} STREQUAL x)
   MESSAGE (STATUS "Building for SUSE")
@@ -102,8 +105,6 @@ IF ( NOT CMAKE_USE_PTHREADS_INIT )
   MESSAGE( FATAL_ERROR "No pthreads found" )
 ENDIF ( NOT CMAKE_USE_PTHREADS_INIT )
 
-# general flags used for all targets
-add_library( zypp_general_compiler_flags INTERFACE )
 
 target_compile_options( zypp_general_compiler_flags INTERFACE "-pthread" "-fno-strict-aliasing" "-g" "-Wall" "-Wp,-D_GLIBCXX_ASSERTIONS" )
 target_compile_options( zypp_general_compiler_flags INTERFACE "-fvisibility-inlines-hidden" "-Woverloaded-virtual" "-Wnon-virtual-dtor" "-ftemplate-backtrace-limit=0" )
@@ -236,8 +237,6 @@ else()
     SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${LIBSOLV_LIBRARY})
   ENDIF()
 
-  target_include_directories( zypp_general_compiler_flags INTERFACE ${LibSolv_INCLUDE_DIRS} )
-
   # detecting libsolv features, so we know which libraries to link this is still required even if we were asked to build
   # without zstd support
   include(CheckSymbolExists)
@@ -272,6 +271,8 @@ else()
     SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${ZSTD_LIBRARY})
   endif ()
 endif( ZYPP_STACK_BUILD )
+
+target_include_directories( zypp_general_compiler_flags INTERFACE ${LibSolv_INCLUDE_DIRS} )
 
 pkg_search_module(GPGME gpgme>=1.8.0)
 IF ( GPGME_FOUND )
@@ -334,14 +335,6 @@ if ( ENABLE_CPPCHECK )
     message(WARNING "cppcheck not found.")
   endif( CPPCHECK )
 endif(ENABLE_CPPCHECK)
-
-# By now just libsolvs external references require us to link against it:
-IF (ENABLE_ZSTD_COMPRESSION)
-  MESSAGE("Building with zstd support enabled.")
-  FIND_LIBRARY (ZSTD_LIBRARY NAMES zstd)
-  FIND_PATH (ZSTD_INCLUDE_DIRS zstd.h)
-  #INCLUDE_DIRECTORIES (${ZSTD_INCLUDE_DIRS})
-ENDIF (ENABLE_ZSTD_COMPRESSION)
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=784550
 IF (ENABLE_ZCHUNK_COMPRESSION)

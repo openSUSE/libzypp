@@ -183,7 +183,7 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 ADD_LIBRARY( zypp-curl OBJECT ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
   ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 
-target_link_libraries( zypp-curl PUBLIC zypp_lib_compiler_flags )
+target_link_libraries( zypp-curl PRIVATE zypp_lib_compiler_flags )
 
 TARGET_LINK_LIBRARIES( zypp-curl PUBLIC zypp-core)
 TARGET_LINK_LIBRARIES( zypp-curl PUBLIC zypp-media )

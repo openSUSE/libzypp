@@ -96,7 +96,6 @@ SET( zypp_EARLY_SRCS
 )
 
 SET( zypp_HEADERS
-  ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h
   Application.h
   Arch.h
   Bit.h

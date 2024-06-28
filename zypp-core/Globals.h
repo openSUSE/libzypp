@@ -12,7 +12,7 @@
 #ifndef ZYPP_GLOBALS_H
 #define ZYPP_GLOBALS_H
 
-#include <zypp/APIConfig.h>             // LIBZYPP_ version defines for the LEGACY macro
+#include <zypp-core/APIConfig.h>        // LIBZYPP_ version defines for the LEGACY macro
 #include <zypp-core/base/Easy.h>	// some macros used almost everywhere
 
 /**

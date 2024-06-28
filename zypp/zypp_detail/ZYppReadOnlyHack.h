@@ -14,7 +14,7 @@
 #define ZYPP_ZYPP_DETAIL_ZYPPREADONLYHACK_H
 #warning ZYPP_ZYPP_DETAIL_ZYPPREADONLYHACK_H
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

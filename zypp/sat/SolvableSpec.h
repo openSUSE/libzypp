@@ -13,7 +13,7 @@
 
 #include <iosfwd>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp-core/base/InputStream>
 #include <zypp/base/String.h>

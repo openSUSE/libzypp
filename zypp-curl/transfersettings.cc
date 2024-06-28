@@ -22,7 +22,7 @@
 #include <zypp-core/ExternalProgram.h>
 #include <zypp-media/MediaConfig>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 using std::endl;
 

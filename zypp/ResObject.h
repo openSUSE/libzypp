@@ -12,7 +12,7 @@
 #ifndef ZYPP_RESOBJECT_H
 #define ZYPP_RESOBJECT_H
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp/Resolvable.h>
 #include <zypp/Vendor.h>

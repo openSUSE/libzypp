@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp/base/ReferenceCounted.h>
 #include <zypp/base/NonCopyable.h>

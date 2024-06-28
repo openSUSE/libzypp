@@ -19,7 +19,7 @@
 #include <zypp-media/MediaException>
 #include <zypp-media/auth/CredentialManager>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <bitset>
 
 namespace zyppng {

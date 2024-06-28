@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 ----------------------------------------------------------------------*/
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp-curl/ng/network/private/networkrequestdispatcher_p.h>
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/private/request_p.h>

@@ -16,7 +16,7 @@
 #include <set>
 #include <string>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp/base/NonCopyable.h>
 #include <zypp/base/PtrTypes.h>
 

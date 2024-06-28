@@ -15,7 +15,7 @@
 #include <iosfwd>
 
 #include <zypp/base/PtrTypes.h>
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////

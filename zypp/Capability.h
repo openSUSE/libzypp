@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include <zypp/APIConfig.h>
+#include <zypp-core/Globals.h>
 #include <zypp/sat/detail/PoolMember.h>
 
 #include <zypp/IdString.h>

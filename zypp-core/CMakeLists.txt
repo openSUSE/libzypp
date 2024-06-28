@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} )
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 SET( zypp_toplevel_headers
+  ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h
   AutoDispose.h
   ByteArray.h
   ByteCount.h

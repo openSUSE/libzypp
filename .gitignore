@@ -13,4 +13,3 @@ build
 CMakeLists.txt.user*
 .vscode
 .cache
-zypp/APIConfig.h

@@ -80,7 +80,7 @@ MATH( EXPR LIBZYPP_AGE     "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
 # But cmake is not libtool, it wants the verbatim suffix to libzypp.so
 MATH( EXPR LIBZYPP_SO_FIRST  "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
 SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
-CONFIGURE_FILE ( zypp/APIConfig.h.in zypp/APIConfig.h )
+CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h )
 
 SET (CMAKE_CXX_STANDARD ${ZYPPCOMMON_CXX_STANDARD})
 SET (CMAKE_CXX_EXTENSIONS OFF)

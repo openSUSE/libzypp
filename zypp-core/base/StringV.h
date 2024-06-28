@@ -181,9 +181,6 @@ namespace zypp
 
       /** \ref splitRx working horse */
       unsigned _splitRx(std::string_view line_r, const regex & rx_r, const WordConsumer& fnc_r );
-#if LEGACY(1722)
-      unsigned _splitRx( const std::string & line_r, const regex & rx_r, WordConsumer && fnc_r );
-#endif
     }  // namespace detail
     ///////////////////////////////////////////////////////////////////
 

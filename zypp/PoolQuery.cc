@@ -878,10 +878,6 @@ namespace zypp
 
   void PoolQuery::setComment(const std::string & comment) const
   { _pimpl->_comment = comment; }
-#if LEGACY(1722)
-  void PoolQuery::setComment(const std::string & comment)
-  { _pimpl->_comment = comment; }
-#endif
 
   void PoolQuery::addString(const std::string & value)
   { _pimpl->_strings.insert(value); }

@@ -164,9 +164,6 @@ namespace zypp
      * Stored and retrieved when serializing the query. E.g. as lock.
      */
     void setComment(const std::string & comment) const;
-#if LEGACY(1722)
-    void setComment(const std::string & comment);
-#endif
 
     /** Installed status filter setters. */
     //@{

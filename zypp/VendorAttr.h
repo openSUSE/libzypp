@@ -90,19 +90,11 @@ class ZYPP_API VendorAttr
      * Adding new equivalent vendors described in a directory
      **/
     bool addVendorDirectory( const Pathname & dirname_r );
-#if LEGACY(1722)
-    /** \deprecated This is NOT a CONST operation. */
-    bool addVendorDirectory( const Pathname & dirname_r ) const ZYPP_DEPRECATED;
-#endif
 
     /**
      * Adding new equivalent vendors described in a file
      **/
     bool addVendorFile( const Pathname & filename_r );
-#if LEGACY(1722)
-    /** \deprecated This is NOT a CONST operation. */
-    bool addVendorFile( const Pathname & filename_r ) const ZYPP_DEPRECATED;
-#endif
 
     /** Preferred type to pass equivalent vendor strings. */
     using VendorList = std::vector<std::string>;
@@ -166,12 +158,6 @@ class ZYPP_API VendorAttr
     class Impl;                 ///< Implementation class.
     RWCOW_pointer<Impl> _pimpl; ///< Pointer to implementation.
 
-#if LEGACY(1722)
-    /** \deprecated */
-    void _addVendorList( std::vector<std::string> & list_r ) const ZYPP_DEPRECATED;
-    /** \deprecated */
-    void _addVendorList( std::vector<IdString> && list_r );
-#endif
     void _addVendorList( VendorList && list_r );
 };
 

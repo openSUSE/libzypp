@@ -96,6 +96,7 @@ SET( zypp_EARLY_SRCS
 )
 
 SET( zypp_HEADERS
+  APIConfig.h
   Application.h
   Arch.h
   Bit.h

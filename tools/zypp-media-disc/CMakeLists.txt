@@ -20,6 +20,7 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
+target_link_libraries( ${PROJECT_NAME} zypp_exe_compiler_flags )
 target_link_libraries( ${PROJECT_NAME} zypp-media )
 target_link_libraries( ${PROJECT_NAME} zypp-core )
 
@@ -29,9 +30,9 @@ ENDIF()
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools/workers"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools/workers"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools/workers"
+    ARCHIVE_OUTPUT_DIRECTORY "${LIBZYPP_BINARY_DIR}/tools/workers"
+    LIBRARY_OUTPUT_DIRECTORY "${LIBZYPP_BINARY_DIR}/tools/workers"
+    RUNTIME_OUTPUT_DIRECTORY "${LIBZYPP_BINARY_DIR}/tools/workers"
 )
 
 IF ( UDEV_FOUND )

@@ -10,4 +10,5 @@ SET( SOURCES
 ADD_DEFINITIONS( -DZYPP_BUILD_DIR="${CMAKE_CURRENT_BINARY_DIR}" )
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
-target_link_libraries( ${PROJECT_NAME} zypp-allsym zypp-tui )
+target_link_libraries( ${PROJECT_NAME} PRIVATE zypp_exe_compiler_flags )
+link_zypp_object( ${PROJECT_NAME} )

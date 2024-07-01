@@ -38,7 +38,7 @@ namespace zypp
    *
    * \see PluginScript
    */
-  class ZYPP_API PluginFrame
+  class PluginFrame
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
     friend bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );

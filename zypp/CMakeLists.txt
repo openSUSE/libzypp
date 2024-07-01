@@ -2,12 +2,17 @@
 FILE( GLOB_RECURSE POT_FILE_DEPENDS RELATIVE ${LIBZYPP_SOURCE_DIR} "*.h" "*.cc" )
 SET( POT_FILE_DEPENDS_ZYPP ${POT_FILE_DEPENDS} PARENT_SCOPE )
 
-
 ADD_DEFINITIONS( -DZYPP_DLL )
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sywu/include )
 INCLUDE_DIRECTORIES( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} ${LIBZYPP_SOURCE_DIR}/libs/zypp-core SYSTEM )
 
-message(${LIBZYPP_SOURCE_DIR}/zypp-core)
+
+FIND_PACKAGE(Rpm REQUIRED)
+IF ( NOT RPM_FOUND)
+  MESSAGE( FATAL_ERROR " rpm-devel not found" )
+ENDIF ( NOT RPM_FOUND)
+
+
 
 # add_definitions( -DENABLE_SYWU )
 # add_subdirectory(sywu)
@@ -963,59 +968,85 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS} )
-
-macro( ADDZYPPLIB LIBNAME )
-  message( "ADDING lib ${LIBNAME} to project" )
-  ADD_LIBRARY( ${LIBNAME} SHARED $<TARGET_OBJECTS:zypp-objlib> )
-  SET_TARGET_PROPERTIES( ${LIBNAME} PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
-  SET_TARGET_PROPERTIES( ${LIBNAME} PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
+# due to limitations in cmake object libraries feature( object files are not derived transiently, they are only added to the target if they are added DIRECTLY)
+# we have this function that adds all zypp objects to a specified target.
+function(link_zypp_object target)
   # System libraries
   SET(UTIL_LIBRARY util)
 
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-objlib )
+
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
-  target_link_libraries(${LIBNAME} $<TARGET_OBJECTS:commit-proto-obj> )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-curl )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-media )
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-core )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-curl )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-media )
+
 
   # CAUTION, link zypp-tui.a at last, to prevent undefined references
   # in case tui functions are used in libzypp.
-  TARGET_LINK_LIBRARIES(${LIBNAME} zypp-tui )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-tui )
 
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${UTIL_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${RPM_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${GETTEXT_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${CURL_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${LIBXML2_LIBRARIES} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_LIBRARY} )
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${LibSolv_LIBRARIES} )
-  #TARGET_LINK_LIBRARIES(${LIBNAME} ${SIGNALS_LIBRARY})
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${Boost_THREAD_LIBRARY})
-  TARGET_LINK_LIBRARIES(${LIBNAME} ${GPGME_LIBRARIES})
-  target_link_libraries(${LIBNAME} ${YAML_CPP_LIBRARIES})
-  TARGET_LINK_LIBRARIES(${LIBNAME} pthread )
+  target_link_libraries( ${target} PRIVATE commit-proto-obj )
+
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE zypp-core )
+
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${LibSolv_LIBRARIES} )
+
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${UTIL_LIBRARY} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
+
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${GETTEXT_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${CURL_LIBRARIES} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${LIBXML2_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${ZLIB_LIBRARY} )
+  #TARGET_LINK_LIBRARIES( ${target} PRIVATE ${SIGNALS_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${Boost_THREAD_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE ${GPGME_LIBRARIES})
+  target_link_libraries( ${target} PRIVATE ${YAML_CPP_LIBRARIES})
+  TARGET_LINK_LIBRARIES( ${target} PRIVATE pthread )
 
   IF ( UDEV_FOUND )
-    TARGET_LINK_LIBRARIES(${LIBNAME} ${UDEV_LIBRARY} )
+    TARGET_LINK_LIBRARIES( ${target} PUBLIC ${UDEV_LIBRARY} )
   ELSE ( UDEV_FOUND )
     IF ( HAL_FOUND )
-      TARGET_LINK_LIBRARIES(${LIBNAME} ${HAL_LIBRARY} ${HAL_STORAGE_LIBRARY} ${DBUS_LIBRARY} )
+      TARGET_LINK_LIBRARIES( ${target} PUBLIC ${HAL_LIBRARY} ${HAL_STORAGE_LIBRARY} ${DBUS_LIBRARY} )
     ENDIF ( HAL_FOUND )
   ENDIF ( UDEV_FOUND )
+endfunction()
 
-endmacro()
 
-#Release library stripped from most symbols, thats what we release to the packages
-ADDZYPPLIB(zypp)
+ADD_LIBRARY( zypp-objlib OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
+
+target_link_libraries( zypp-objlib PRIVATE zypp_lib_compiler_flags )
+
+target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR})
+
+# fix includes not relative to rpm
+target_include_directories( zypp-objlib PUBLIC ${RPM_INCLUDE_DIR}/rpm)
+
+# rpm verify function and callback states were introduced in rpm-4.15
+if( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0")
+  target_compile_definitions( zypp-objlib PUBLIC HAVE_RPM_VERIFY_TRANSACTION_STEP )
+endif()
+
+if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
+      MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
+      target_compile_definitions( zypp-objlib PUBLIC _RPM_5)
+endif ()
+
+
+ADD_LIBRARY( zypp SHARED )
+link_zypp_object( zypp )
+
+SET_TARGET_PROPERTIES ( zypp PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
+SET_TARGET_PROPERTIES ( zypp PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 set_target_properties ( zypp PROPERTIES LINK_FLAGS "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map" )
 
 INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
 #library build just for using it in tests, contains all symbols
-ADDZYPPLIB(zypp-allsym)
-ADD_DEPENDENCIES( zypp-allsym zypp )
+#ADDZYPPLIB(zypp-allsym STATIC)
+#ADD_DEPENDENCIES( zypp-allsym zypp )
 
 #this part does nothing yet, only when switching away from using a map file to
 #a approach where symbols are exported explicitly it would make a difference

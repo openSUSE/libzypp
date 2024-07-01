@@ -180,13 +180,17 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
   endif(ZYPP_CXX_CPPCHECK)
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
+ADD_LIBRARY( zypp-curl OBJECT ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
   ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 
-TARGET_LINK_LIBRARIES( zypp-curl ${CURL_LIBRARIES} )
-TARGET_LINK_LIBRARIES( zypp-curl ${LIBXML2_LIBRARIES} )
+target_link_libraries( zypp-curl PRIVATE zypp_lib_compiler_flags )
+
+TARGET_LINK_LIBRARIES( zypp-curl PUBLIC zypp-core)
+TARGET_LINK_LIBRARIES( zypp-curl PUBLIC zypp-media )
+TARGET_LINK_LIBRARIES( zypp-curl PUBLIC ${CURL_LIBRARIES} )
+TARGET_LINK_LIBRARIES( zypp-curl PUBLIC ${LIBXML2_LIBRARIES} )
 
 IF( NOT DISABLE_LIBPROXY )
   # required for dlload and dlclose
-  TARGET_LINK_LIBRARIES( zypp-curl  ${CMAKE_DL_LIBS} )
+  TARGET_LINK_LIBRARIES( zypp-curl  PUBLIC ${CMAKE_DL_LIBS} )
 ENDIF()

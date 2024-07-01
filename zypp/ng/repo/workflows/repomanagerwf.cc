@@ -764,7 +764,11 @@ namespace zyppng::RepoManagerWorkflow {
                 zypp::ManagedFile guard( solvfile, zypp::filesystem::unlink );
 
                 zypp::ExternalProgram::Arguments cmd;
+#ifdef ZYPP_REPO2SOLV_PATH
+                cmd.push_back( ZYPP_REPO2SOLV_PATH );
+#else
                 cmd.push_back( zypp::PathInfo( "/usr/bin/repo2solv" ).isFile() ? "repo2solv" : "repo2solv.sh" );
+#endif
                 // repo2solv expects -o as 1st arg!
                 cmd.push_back( "-o" );
                 cmd.push_back( solvfile.asString() );

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 18:16+0100\n"
-"PO-Revision-Date: 2024-06-11 00:46+0000\n"
+"PO-Revision-Date: 2024-07-02 12:46+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
 "sl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -1472,36 +1472,33 @@ msgstr "Abkhazijski"
 
 #. language code: ace
 #: zypp/LanguageCode.cc:165
-#, fuzzy
 msgid "Achinese"
-msgstr "Kitajščina"
+msgstr "Aceščina"
 
 #. language code: ach
 #: zypp/LanguageCode.cc:167
-#, fuzzy
 msgid "Acoli"
-msgstr "Tihi način"
+msgstr "Ačolščina"
 
 #. language code: ada
 #: zypp/LanguageCode.cc:169
-#, fuzzy
 msgid "Adangme"
-msgstr "Območje"
+msgstr "Dangmenščina"
 
 #. language code: ady
 #: zypp/LanguageCode.cc:171
 msgid "Adyghe"
-msgstr ""
+msgstr "Adigejščina"
 
 #. language code: afa
 #: zypp/LanguageCode.cc:173
 msgid "Afro-Asiatic (Other)"
-msgstr ""
+msgstr "Afro-azijski (drugi)"
 
 #. language code: afh
 #: zypp/LanguageCode.cc:175
 msgid "Afrihili"
-msgstr ""
+msgstr "Afrihili"
 
 #. language code: afr af
 #: zypp/LanguageCode.cc:177
@@ -1510,21 +1507,18 @@ msgstr "Afrikanščina"
 
 #. language code: ain
 #: zypp/LanguageCode.cc:179
-#, fuzzy
 msgid "Ainu"
-msgstr "Linux"
+msgstr "Ainujščina"
 
 #. language code: aka ak
 #: zypp/LanguageCode.cc:181
-#, fuzzy
 msgid "Akan"
-msgstr "Abkhazijski"
+msgstr "Akanščina"
 
 #. language code: akk
 #: zypp/LanguageCode.cc:183
-#, fuzzy
 msgid "Akkadian"
-msgstr "Abkhazijski"
+msgstr "Akadščina"
 
 #. language code: alb sqi sq
 #: zypp/LanguageCode.cc:185 zypp/LanguageCode.cc:187
@@ -1533,14 +1527,13 @@ msgstr "Albanščina"
 
 #. language code: ale
 #: zypp/LanguageCode.cc:189
-#, fuzzy
 msgid "Aleut"
-msgstr "Aleutian"
+msgstr "Aleutščina"
 
 #. language code: alg
 #: zypp/LanguageCode.cc:191
 msgid "Algonquian Languages"
-msgstr ""
+msgstr "Algonkinski jeziki"
 
 #. language code: alt
 #: zypp/LanguageCode.cc:193

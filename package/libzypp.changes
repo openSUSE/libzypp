@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  2 12:30:20 CEST 2024 - ma@suse.de
+
+- Install zypp/APIConfig.h legacy include (fixes #557)
+- version 17.35.1 (35)
+
+-------------------------------------------------------------------
 Fri Jun 28 17:48:09 CEST 2024 - ma@suse.de
 
 - Update soname due to RepoManager refactoring and cleanup.

@@ -362,6 +362,7 @@ namespace zypp
         , "/tmp/"
         , "/proc/"
         , "/memfd:"
+        , "/snap/"
       };
       for_( it, arrayBegin( black ), arrayEnd( black ) )
       {

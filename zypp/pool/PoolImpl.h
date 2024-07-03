@@ -299,6 +299,8 @@ namespace zypp
           MIL << "HardLockQueries match " << locked.size() << " Solvables." << endl;
           for_( it, begin(), end() )
           {
+            // NOTE bsc#1225267: While reapplyLock sets but never unsets a lock,
+            // we don't need to care about buddies like in setHardLockQueries.
             resstatus::UserLockQueryManip::reapplyLock( it->status(), locked.contains( *it ) );
           }
         }
@@ -316,7 +318,11 @@ namespace zypp
           MIL << "HardLockQueries match " << locked.size() << " Solvables." << endl;
           for_( it, begin(), end() )
           {
-            resstatus::UserLockQueryManip::setLock( it->status(), locked.contains( *it ) );
+            // NOTE bsc#1225267: If the item has a buddy (a shared ResStatus), we lock if
+            // the item or the buddy is locked. Otherwise the item occurring later in the
+            // pool would dictate the status (unsetting a previously set lock).
+            bool yesno = locked.contains( *it ) || ( it->buddy() && locked.contains( PoolItem(it->buddy()) ) );
+            resstatus::UserLockQueryManip::setLock( it->status(), yesno );
           }
         }
 

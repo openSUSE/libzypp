@@ -107,6 +107,18 @@ BOOST_DATA_TEST_CASE( dltest_basic, bdata::make( withSSL ), withSSL)
   BOOST_REQUIRE ( allStates == std::vector<zyppng::Download::State>({zyppng::Download::InitialState, zyppng::Download::DlMetaLinkInfo, zyppng::Download::Finished}) );
 }
 
+
+// Globals are HORRIBLY broken here, do not use any static globals they might not be initialized at the point
+// of calling the initializer of the MirrorSet vector, so we are manually initializing the Byte and KByte Units here
+const auto makeBytes( zypp::ByteCount::SizeType size ) {
+  return zypp::ByteCount( size, zypp::ByteCount::Unit( 1LL, "B", 0 ) );
+};
+
+const auto makeKBytes( zypp::ByteCount::SizeType size ) {
+  return zypp::ByteCount( size, zypp::ByteCount::Unit( 1024LL, "KiB", 1 ) );
+};
+
+
 struct MirrorSet
 {
   std::string name; //<dataset name, used only in debug output if the test fails
@@ -117,7 +129,7 @@ struct MirrorSet
   int expectedHandlerDownloads; //< how many started downloads are handler requests
   std::vector<zyppng::Download::State> expectedStates;
   bool expectSuccess; //< should the download work out?
-  zypp::ByteCount chunkSize = zypp::ByteCount( 256, zypp::ByteCount::K );
+  zypp::ByteCount chunkSize = makeKBytes( 256 );
 
   //zck data
   zypp::CheckSum  headerChecksum; //< ZChunk header checksum
@@ -147,7 +159,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All good mirrors";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 1;
   res.back().expectedFileDownloads  = 9;
@@ -159,11 +171,11 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All good mirrors, 1024 chunk size";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 1;
   res.back().expectedFileDownloads  = 3;
-  res.back().chunkSize = zypp::ByteCount( 1024, zypp::ByteCount::K );
+  res.back().chunkSize = makeKBytes(1024);
   res.back().expectedStates = { zyppng::Download::InitialState, zyppng::Download::DlMetaLinkInfo, zyppng::Download::PrepareMulti, zyppng::Download::DlMetalink, zyppng::Download::Finished};
   for ( int i = 100 ; i >= 10; i -= 10 )
     res.back().mirrors.push_back( std::make_pair( i, "/test.txt") );
@@ -172,7 +184,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "Empty mirrors";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes (2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 10;
   res.back().expectedFileDownloads  = 0;
@@ -182,7 +194,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All broken mirrors";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 2; //has to fall back to url handler download
   res.back().expectedFileDownloads  = 10; //should try all mirrors and fail
@@ -194,7 +206,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All broken mirrors by params";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 2; //has to fall back to url handler download
   res.back().expectedFileDownloads  = 0; // Setting up the mirrors will fail before even starting a download, so we should only see requests to the handler directly
@@ -206,7 +218,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "Some broken mirrors less URLs than blocks";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads = 1;
   res.back().expectedFileDownloads = 9 + 3; // 3 should fail due to broken mirrors
@@ -223,7 +235,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "Some broken mirrors more URLs than blocks";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads = 1;
   //it is not really possible to know how many times the downloads will fail, there are
@@ -243,7 +255,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "Some mirrors return broken blocks";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 1;
   //it is not really possible to know how many times the downloads will fail, there are
@@ -262,7 +274,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "Some mirrors return boken range responses";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 1;
   //it is not really possible to know how many times the downloads will fail, there are
@@ -282,7 +294,7 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All mirrors return boken range responses";
   res.back().filename = "test.txt";
-  res.back().dlTotal = 2148018;
+  res.back().dlTotal = makeBytes(2148018);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 2; //has to fall back to url handler download
   res.back().expectedFileDownloads  = 10; //should try all mirrors and fail
@@ -296,15 +308,15 @@ std::vector< MirrorSet > generateMirr ()
   res.push_back( MirrorSet() );
   res.back().name = "All good mirrors with zck";
   res.back().filename = "primary.xml.zck";
-  res.back().dlTotal = 274638;
+  res.back().dlTotal = makeBytes(274638);
   res.back().expectSuccess = true;
   res.back().expectedHandlerDownloads  = 3; // query if metalink avail + dl metalink + dl zck head because request is reused
   res.back().expectedFileDownloads  = 5; // 5 Chunks ( chunk size is at least 4K but is likely a few bytes bigger )
   res.back().expectedStates = { zyppng::Download::InitialState, zyppng::Download::DetectMetaLink, zyppng::Download::DlMetaLinkInfo, zyppng::Download::PrepareMulti, zyppng::Download::DlZChunkHead, zyppng::Download::DlZChunk, zyppng::Download::Finished};
   res.back().headerChecksum = zypp::CheckSum( zypp::Digest::sha256(), "90a1a1b99ba3b6c8ae9f14b0c8b8c43141c69ec3388bfa3b9915fbeea03926b7");
-  res.back().headerSize     = 11717;
+  res.back().headerSize     = makeBytes(11717);
   res.back().deltaFilePath  = "primary-deltatemplate.xml.zck";
-  res.back().chunkSize      = zypp::ByteCount( 4, zypp::ByteCount::K );
+  res.back().chunkSize      = makeKBytes(4);
   for ( int i = 100 ; i >= 10; i -= 10 )
     res.back().mirrors.push_back( std::make_pair( i, "/primary.xml.zck") );
 #endif

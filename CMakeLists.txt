@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
+
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
@@ -7,6 +8,13 @@ SET( CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 INCLUDE(ZyppCommon)
+INCLUDE(CMakePushCheckState)
+
+# allow name libraries by name mixed with full
+# paths
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
 
 OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
@@ -42,18 +50,25 @@ IF (DEBIAN)
   SET (have_system ${have_system}x)
 ENDIF (DEBIAN)
 
+# general flags used for all targets
+add_library( zypp_general_compiler_flags INTERFACE )
+
 IF ( ENABLE_DEVEL_BUILD )
         MESSAGE( WARNING "Zypp devel build enabled, do not do this in production" )
-        SET( ZYPP_RPM_BINARY "${CMAKE_BINARY_DIR}/tools/zypp-rpm/zypp-rpm")
-        SET( ZYPP_WORKER_PATH "${CMAKE_BINARY_DIR}/tools/workers" )
+        SET( ZYPP_RPM_BINARY "${LIBZYPP_BINARY_DIR}/tools/zypp-rpm/zypp-rpm")
+        SET( ZYPP_WORKER_PATH "${LIBZYPP_BINARY_DIR}/tools/workers" )
+        if ( ZYPP_STACK_BUILD )
+          target_compile_definitions( zypp_general_compiler_flags INTERFACE ZYPP_REPO2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/repo2solv"   )
+          target_compile_definitions( zypp_general_compiler_flags INTERFACE ZYPP_RPMDB2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/rpmdb2solv" )
+        endif()
 ELSE()
         SET( ZYPP_RPM_BINARY "${ZYPP_LIBEXEC_INSTALL_DIR}/zypp-rpm")
         SET( ZYPP_WORKER_PATH "${ZYPP_LIBEXEC_INSTALL_DIR}/workers" )
 ENDIF( ENABLE_DEVEL_BUILD )
 
 message ( "Using zypp-rpm from path: ${ZYPP_RPM_BINARY}" )
-add_definitions( -DZYPP_RPM_BINARY="${ZYPP_RPM_BINARY}"  )
-add_definitions( -DZYPP_WORKER_PATH="${ZYPP_WORKER_PATH}")
+target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPP_RPM_BINARY}"  )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPP_WORKER_PATH}")
 
 IF (${have_system} STREQUAL x)
   MESSAGE (STATUS "Building for SUSE")
@@ -64,11 +79,6 @@ IF (${have_system} STRGREATER xx)
 ENDIF (${have_system} STRGREATER xx)
 #--------------------------------------------------------------------------------
 
-# allow name libraries by name mixed with full
-# paths
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
 
 find_package(FindPkgConfig, QUIET)
 INCLUDE( ${LIBZYPP_SOURCE_DIR}/VERSION.cmake )
@@ -84,6 +94,7 @@ CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h )
 
 SET (CMAKE_CXX_STANDARD ${ZYPPCOMMON_CXX_STANDARD})
 SET (CMAKE_CXX_EXTENSIONS OFF)
+
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 CHECK_C_COMPILER_FLAG("-Werror=format-security" CC_FORMAT_SECURITY)
@@ -95,109 +106,64 @@ IF ( NOT CMAKE_USE_PTHREADS_INIT )
   MESSAGE( FATAL_ERROR "No pthreads found" )
 ENDIF ( NOT CMAKE_USE_PTHREADS_INIT )
 
-SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -pthread -fno-strict-aliasing -fPIC -g -Wall -Wp,-D_GLIBCXX_ASSERTIONS" )
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fno-strict-aliasing -fPIC -g -Wall -Wp,-D_GLIBCXX_ASSERTIONS" )
 
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden -Woverloaded-virtual -Wnon-virtual-dtor -ftemplate-backtrace-limit=0" )
+target_compile_options( zypp_general_compiler_flags INTERFACE "-pthread" "-fno-strict-aliasing" "-g" "-Wall" "-Wp,-D_GLIBCXX_ASSERTIONS" )
+target_link_options( zypp_general_compiler_flags INTERFACE "-pthread" "-fno-strict-aliasing" "-g" "-Wall" "-Wp,-D_GLIBCXX_ASSERTIONS" )
+target_compile_options( zypp_general_compiler_flags INTERFACE "-fvisibility-inlines-hidden" "-Woverloaded-virtual" "-Wnon-virtual-dtor" "-ftemplate-backtrace-limit=0" )
+target_link_options( zypp_general_compiler_flags INTERFACE "-fvisibility-inlines-hidden" "-Woverloaded-virtual" "-Wnon-virtual-dtor" "-ftemplate-backtrace-limit=0" )
+
 IF ( ENABLE_VISIBILITY_HIDDEN )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden" )
+  target_compile_options( zypp_general_compiler_flags INTERFACE "-fvisibility=hidden" )
+  target_link_options( zypp_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 ENDIF( ENABLE_VISIBILITY_HIDDEN )
 
-set( CMAKE_C_FLAGS_RELEASE     "${CMAKE_C_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -DZYPP_NDEBUG -DNDEBUG" )
-
-IF(${CC_FORMAT_SECURITY})
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=format-security")
-ENDIF(${CC_FORMAT_SECURITY})
-
 IF(${CXX_FORMAT_SECURITY})
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=format-security")
+  target_compile_options( zypp_general_compiler_flags INTERFACE "-Werror=format-security")
+  target_link_options( zypp_general_compiler_flags INTERFACE "-Werror=format-security")
 ENDIF(${CXX_FORMAT_SECURITY})
 
+
+#cli args ignored by clang, it still prints a noisy warning though
 if ( NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  #cli args ignored by clang, it still prints a noisy warning though
-  SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} -rdynamic -Wl,-as-needed" )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -Wl,-as-needed" )
+  target_compile_options( zypp_general_compiler_flags INTERFACE "-Wl,-as-needed" )
+  target_link_options( zypp_general_compiler_flags    INTERFACE "-Wl,-as-needed" )
+
   if( ENABLE_UBSAN_CHECKS )
-    SET( CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} -fsanitize=undefined" )
-    SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=undefined" )
+    target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
+    target_link_options( zypp_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
   endif()
 endif()
-
-SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )
 
 INCLUDE(CheckFunctionExists)
 CHECK_FUNCTION_EXISTS(pipe2 PIPE2_FOUND)
 IF(${PIPE2_FOUND})
-  ADD_DEFINITIONS(-DHAVE_PIPE2)
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE HAVE_PIPE2 )
 ENDIF(${PIPE2_FOUND})
 
-ADD_DEFINITIONS( -D_FILE_OFFSET_BITS=64 )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE _FILE_OFFSET_BITS=64 )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:ZYPP_NDEBUG NDEBUG> )
+
+target_compile_options( zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:-O2>)
+target_link_options   ( zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:-O2>)
+
 SET( LIBZYPP_VERSION_INFO "${LIBZYPP_SO_FIRST}.${LIBZYPP_AGE}.${LIBZYPP_PATCH}" )
 SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )
 
 GENERATE_PACKAGING(${PACKAGE} ${VERSION})
 
 INCLUDE(CPack)
-
-MACRO(ADD_TESTS)
-  FOREACH( loop_var ${ARGV} )
-    SET_SOURCE_FILES_PROPERTIES( ${loop_var}_test.cc COMPILE_FLAGS "-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN -DBOOST_AUTO_TEST_MAIN=\"\" " )
-    ADD_EXECUTABLE( ${loop_var}_test ${loop_var}_test.cc )
-
-    SET(TEST_REQ_LIBS zypp-allsym ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} )
-    IF(NOT DISABLE_MEDIABACKEND_TESTS)
-      LIST( APPEND TEST_REQ_LIBS zypp_test_utils)
-    ENDIF()
-
-    TARGET_LINK_LIBRARIES( ${loop_var}_test ${TEST_REQ_LIBS} )
-    ADD_TEST( ${loop_var}_test ${CMAKE_CURRENT_BINARY_DIR}/${loop_var}_test --catch_system_errors=no)
-  ENDFOREACH( loop_var )
-ENDMACRO(ADD_TESTS)
-
-# Macro to set the log group for a list of files
-MACRO( SET_LOGGROUP _group _files  )
-  SET_SOURCE_FILES_PROPERTIES( ${_files} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
-  FOREACH (_currentFile ${ARGN})
-#MESSAGE( STATUS "setting loggroup to \"${_group}\" for ${_currentFile}" )
-    SET_SOURCE_FILES_PROPERTIES( ${_currentFile} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
-  ENDFOREACH (_currentFile ${ARGN})
-ENDMACRO( SET_LOGGROUP )
-
 ####################################################################
-
-INCLUDE(CheckSymbolExists)
-FIND_PACKAGE(Rpm REQUIRED)
-IF ( NOT RPM_FOUND)
-  MESSAGE( FATAL_ERROR " rpm-devel not found" )
-ELSE ( NOT RPM_FOUND)
-  INCLUDE_DIRECTORIES(${RPM_INCLUDE_DIR})
-  # fix includes not relative to rpm
-  INCLUDE_DIRECTORIES(${RPM_INCLUDE_DIR}/rpm)
-
-  # rpm verify function and callback states were introduced in rpm-4.15
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0")
-    ADD_DEFINITIONS( -DHAVE_RPM_VERIFY_TRANSACTION_STEP )
-  endif()
-
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
-        MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
-        ADD_DEFINITIONS(-D_RPM_5)
-  endif ()
-
-ENDIF( NOT RPM_FOUND)
-
 FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options unit_test_framework thread)
 IF (Boost_FOUND)
   MESSAGE( STATUS "boost found: includes in ${Boost_INCLUDE_DIRS}, library in ${Boost_LIBRARY_DIRS}")
-  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${Boost_INCLUDE_DIRS})
+  target_link_directories( zypp_general_compiler_flags INTERFACE ${Boost_LIBRARY_DIRS})
 ENDIF(Boost_FOUND)
 
 FIND_PACKAGE(Gettext REQUIRED)
 IF (GETTEXT_FOUND)
   MESSAGE(STATUS "Found Gettext: ${GETTEXT_SOURCE}")
-  INCLUDE_DIRECTORIES(${GETTEXT_INCLUDE_DIR})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${GETTEXT_INCLUDE_DIR})
 ELSE (GETTEXT_FOUND)
   MESSAGE( FATAL_ERROR "Gettext not found" )
 ENDIF (GETTEXT_FOUND)
@@ -206,74 +172,100 @@ FIND_PACKAGE(CURL REQUIRED)
 IF ( NOT CURL_FOUND)
   MESSAGE( FATAL_ERROR " curl not found" )
 ELSE ( NOT CURL_FOUND)
-  INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${CURL_INCLUDE_DIRS})
 ENDIF( NOT CURL_FOUND)
 
 FIND_PACKAGE(LibXml2 REQUIRED)
 IF ( NOT LIBXML2_FOUND)
   MESSAGE( FATAL_ERROR " libxml not found" )
 ELSE ( NOT LIBXML2_FOUND)
-  INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIR})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${LIBXML2_INCLUDE_DIR})
 ENDIF( NOT LIBXML2_FOUND)
 
 FIND_PACKAGE(ZLIB REQUIRED)
 IF ( NOT ZLIB_FOUND)
   MESSAGE( FATAL_ERROR " zlib not found" )
 ELSE ( NOT ZLIB_FOUND)
-  INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${ZLIB_INCLUDE_DIR})
 ENDIF( NOT ZLIB_FOUND)
 
 FIND_PACKAGE(YAML-CPP REQUIRED)
 IF ( NOT YAML-CPP_FOUND)
   MESSAGE( FATAL_ERROR " yaml-cpp not found" )
 ELSE ( NOT YAML-CPP_FOUND)
-  INCLUDE_DIRECTORIES(${YAML_CPP_INCLUDE_DIR})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${YAML_CPP_INCLUDE_DIR})
   IF ( NOT YAML_CPP_LIBRARIES )
     # Must have been found by config insted of module, use target instead.
     SET( YAML_CPP_LIBRARIES "yaml-cpp" )
   ENDIF ( NOT YAML_CPP_LIBRARIES )
 ENDIF( NOT YAML-CPP_FOUND)
 
-
 #Allow to override the libsolv install location
-IF( LIBSOLV_SRCDIR AND LIBSOLV_BUILDDIR )
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/include
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/ext
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/libsolv/solvversion
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_SRCDIR}/src ${CMAKE_BINARY_DIR}/libsolv/include/solv
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_SRCDIR}/ext ${CMAKE_BINARY_DIR}/libsolv/ext/solv
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIBSOLV_BUILDDIR}/src ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv
-  )
-
-  INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/libsolv/include ${CMAKE_BINARY_DIR}/libsolv/ext ${CMAKE_BINARY_DIR}/libsolv/solvversion ${CMAKE_BINARY_DIR}/libsolv/solvversion/solv ${CMAKE_BINARY_DIR}/libsolv/ext/solv ${CMAKE_BINARY_DIR}/libsolv/include/solv )
-  SET( LibSolv_LIBRARIES ${LIBSOLV_BUILDDIR}/ext/libsolvext.a ${LIBSOLV_BUILDDIR}/src/libsolv.a )
-
-ELSE()
+if( ZYPP_STACK_BUILD )
+  set ( LibSolv_FOUND TRUE )
+  SET ( LibSolv_INCLUDE_DIRS ${ZYPP_STACK_INCLUDE_DIRS} )
+  SET ( LibSolv_LIBRARIES libsolvext libsolv )
+else()
   FIND_PACKAGE(LibSolv REQUIRED ext)
   #SET(LibSolv_USE_STATIC_LIBS ON)
   IF ( NOT LibSolv_FOUND )
     MESSAGE( FATAL_ERROR " libsolv not found" )
   ELSE()
-    INCLUDE_DIRECTORIES( ${LibSolv_INCLUDE_DIRS} )
     # static case: Assert libsolv.a ist the last one linked
     SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${LIBSOLV_LIBRARY})
   ENDIF()
-ENDIF( LIBSOLV_SRCDIR AND LIBSOLV_BUILDDIR )
+
+  # detecting libsolv features, so we know which libraries to link this is still required even if we were asked to build
+  # without zstd support
+  include(CheckSymbolExists)
+  cmake_push_check_state(RESET)
+  set(CMAKE_REQUIRED_INCLUDES ${LibSolv_INCLUDE_DIRS} ${CMAKE_REQUIRED_INCLUDES})
+  CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_ZLIB_COMPRESSION   "solv/solvversion.h" SOLV_NEED_ZLIB   )
+  CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_LZMA_COMPRESSION   "solv/solvversion.h" SOLV_NEED_LZMA   )
+  CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_BZIP2_COMPRESSION  "solv/solvversion.h" SOLV_NEED_BZIP2  )
+  CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_ZSTD_COMPRESSION   "solv/solvversion.h" SOLV_NEED_ZSTD   )
+  cmake_pop_check_state()
+
+  # no check for system zchunk, default is usually to use the libsolv internal libs
+  #CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_ZCHUNK_COMPRESSION "solv/solvversion.h" SOLV_NEED_ZCHUNK )
+  #if ( SOLV_NEED_ZCHUNK )
+  #  FIND_PACKAGE(PkgConfig REQUIRED)
+  #  PKG_CHECK_MODULES(ZCHUNK zck REQUIRED)
+  #  set(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${ZCHUNK_LIBRARIES})
+  #endif ()
+
+  if ( SOLV_NEED_ZLIB )
+    FIND_PACKAGE (ZLIB REQUIRED)
+    SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${ZLIB_LIBRARY})
+  endif ()
+  if ( SOLV_NEED_LZMA )
+    FIND_LIBRARY(LZMA_LIBRARY NAMES lzma liblzma REQUIRED)
+    SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${LZMA_LIBRARY})
+  endif ()
+  if ( SOLV_NEED_BZIP2 )
+    FIND_PACKAGE (BZip2 REQUIRED)
+    SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${BZIP2_LIBRARIES})
+  endif ()
+  if ( SOLV_NEED_ZSTD )
+    FIND_LIBRARY (ZSTD_LIBRARY NAMES zstd REQUIRED)
+    SET(LibSolv_LIBRARIES ${LibSolv_LIBRARIES} ${ZSTD_LIBRARY})
+  endif ()
+endif( ZYPP_STACK_BUILD )
+
+target_include_directories( zypp_general_compiler_flags INTERFACE ${LibSolv_INCLUDE_DIRS} )
 
 pkg_search_module(GPGME gpgme>=1.8.0)
 IF ( GPGME_FOUND )
   MESSAGE(STATUS "Found gpgme ${GPGME_VERSION}" )
-  INCLUDE_DIRECTORIES( ${GPGME_INCLUDE_DIRS} )
-  LINK_DIRECTORIES(${GPGME_LIBRARY_DIRS})
+  target_include_directories( zypp_general_compiler_flags INTERFACE ${GPGME_INCLUDE_DIRS} )
+  target_link_directories( zypp_general_compiler_flags INTERFACE ${GPGME_LIBRARY_DIRS} )
 ELSE()
   FIND_PACKAGE(Gpgme REQUIRED)
   IF ( NOT GPGME_PTHREAD_FOUND )
     MESSAGE( FATAL_ERROR " gpgme not found" )
   ELSE()
-    INCLUDE_DIRECTORIES( ${GPGME_INCLUDES} )
-    LINK_DIRECTORIES(${GPGME_LIBRARY_DIR})
+    target_include_directories( zypp_general_compiler_flags INTERFACE ${GPGME_INCLUDES} )
+    target_link_directories( zypp_general_compiler_flags INTERFACE ${GPGME_LIBRARY_DIR} )
     SET(GPGME_LIBRARIES ${GPGME_PTHREAD_LIBRARIES})
   ENDIF()
 ENDIF()
@@ -284,13 +276,13 @@ FIND_PACKAGE(Udev)
 IF ( NOT UDEV_FOUND )
   MESSAGE(WARNING "No udev found. CD device detection will be poor")
 ELSE ( NOT UDEV_FOUND )
-  ADD_DEFINITIONS(-DHAVE_UDEV)
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE HAVE_UDEV)
 ENDIF ( NOT UDEV_FOUND )
 
 IF( DISABLE_LIBPROXY )
   MESSAGE( STATUS "libproxy support disabled" )
 ELSE( DISABLE_LIBPROXY )
-  ADD_DEFINITIONS(-DWITH_LIBPROXY_SUPPORT)
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE WITH_LIBPROXY_SUPPORT)
 ENDIF( DISABLE_LIBPROXY )
 
 FIND_PROGRAM( DOXYGEN doxygen )
@@ -324,43 +316,26 @@ if ( ENABLE_CPPCHECK )
   endif( CPPCHECK )
 endif(ENABLE_CPPCHECK)
 
-# By now just libsolvs external references require us to link against it:
-IF (ENABLE_ZSTD_COMPRESSION)
-  MESSAGE("Building with zstd support enabled.")
-  FIND_LIBRARY (ZSTD_LIBRARY NAMES zstd)
-  FIND_PATH (ZSTD_INCLUDE_DIRS zstd.h)
-  #INCLUDE_DIRECTORIES (${ZSTD_INCLUDE_DIRS})
-ENDIF (ENABLE_ZSTD_COMPRESSION)
-
 # https://bugzilla.gnome.org/show_bug.cgi?id=784550
 IF (ENABLE_ZCHUNK_COMPRESSION)
   MESSAGE("Building with zchunk support enabled.")
   PKG_CHECK_MODULES (ZCHUNK zck REQUIRED)
-
-  # work around some cmake versions where JOIN fails in case a list has only
-  # one element
-  list(LENGTH ZCHUNK_CFLAGS ZCHUNK_CFLAGS_len )
-  if ( ZCHUNK_CFLAGS_len GREATER 1 )
-    list(JOIN ZCHUNK_CFLAGS " " ZCHUNK_CFLAGS_STR)
-  else()
-    set( ZCHUNK_CFLAGS_STR "${ZCHUNK_CFLAGS}" )
-  endif()
-
-  SET( CMAKE_C_FLAGS     "${CMAKE_C_FLAGS} ${ZCHUNK_CFLAGS_STR}" )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ZCHUNK_CFLAGS_STR}" )
-  ADD_DEFINITIONS (-DENABLE_ZCHUNK_COMPRESSION=1)
+  message("ZCHUNK FLAGS ${ZCHUNK_CFLAGS} ")
+  target_compile_options( zypp_general_compiler_flags INTERFACE ${ZCHUNK_CFLAGS}  )
+  target_link_options( zypp_general_compiler_flags INTERFACE ${ZCHUNK_CFLAGS}  )
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE ENABLE_ZCHUNK_COMPRESSION=1 )
 ENDIF(ENABLE_ZCHUNK_COMPRESSION)
 
 IF(ENABLE_SIGC_BLOCK_WORKAROUND)
   message("Building with sigcpp block workaround")
-  ADD_DEFINITIONS (-DLIBZYPP_USE_SIGC_BLOCK_WORKAROUND=1)
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE LIBZYPP_USE_SIGC_BLOCK_WORKAROUND=1)
 ENDIF(ENABLE_SIGC_BLOCK_WORKAROUND)
 
 pkg_check_modules ( SIGCPP REQUIRED sigc++-2.0 )
-INCLUDE_DIRECTORIES( ${SIGCPP_INCLUDE_DIRS} )
+target_include_directories( zypp_general_compiler_flags INTERFACE ${SIGCPP_INCLUDE_DIRS} )
 
 pkg_check_modules ( LIBGLIB REQUIRED glib-2.0 )
-INCLUDE_DIRECTORIES( ${LIBGLIB_INCLUDE_DIRS} )
+target_include_directories( zypp_general_compiler_flags INTERFACE ${LIBGLIB_INCLUDE_DIRS} )
 
 MESSAGE(STATUS "soname: ${LIBZYPP_VERSION_INFO}")
 MESSAGE(STATUS "version: ${VERSION}")
@@ -393,9 +368,48 @@ INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp-history.lr DESTINATION ${SYSCONFDIR}/l
 
 IF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
   MESSAGE( STATUS "[preview] Force zypper into using a single rpm transaction to install" )
-  ADD_DEFINITIONS( -DSINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
+  target_compile_definitions( zypp_general_compiler_flags INTERFACE SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
 ENDIF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
 
+
+#usage requirements for all libs
+add_library( zypp_lib_compiler_flags INTERFACE)
+target_compile_options( zypp_lib_compiler_flags INTERFACE "-fPIC" "-rdynamic" "-Wl,--no-allow-shlib-undefined"  "-Wl,--no-undefined")
+target_link_options   ( zypp_lib_compiler_flags INTERFACE "-fPIC" "-rdynamic" "-Wl,--no-allow-shlib-undefined"  "-Wl,--no-undefined" )
+target_link_libraries ( zypp_lib_compiler_flags INTERFACE zypp_general_compiler_flags )
+
+#usage requirements for all executables
+add_library( zypp_exe_compiler_flags INTERFACE)
+target_compile_options( zypp_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
+target_link_options   ( zypp_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
+target_link_libraries ( zypp_exe_compiler_flags INTERFACE zypp_general_compiler_flags )
+
+
+MACRO(ADD_TESTS)
+  FOREACH( loop_var ${ARGV} )
+    SET_SOURCE_FILES_PROPERTIES( ${loop_var}_test.cc COMPILE_FLAGS "-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN -DBOOST_AUTO_TEST_MAIN=\"\" " )
+    ADD_EXECUTABLE( ${loop_var}_test ${loop_var}_test.cc )
+
+    SET(TEST_REQ_LIBS ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} )
+    IF(NOT DISABLE_MEDIABACKEND_TESTS)
+      LIST( APPEND TEST_REQ_LIBS zypp_test_utils )
+    ENDIF()
+
+    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp_exe_compiler_flags  )
+    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC ${TEST_REQ_LIBS}  )
+    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp-allsym  )
+    ADD_TEST( ${loop_var}_test ${CMAKE_CURRENT_BINARY_DIR}/${loop_var}_test --catch_system_errors=no)
+  ENDFOREACH( loop_var )
+ENDMACRO(ADD_TESTS)
+
+# Macro to set the log group for a list of files
+MACRO( SET_LOGGROUP _group _files  )
+  SET_SOURCE_FILES_PROPERTIES( ${_files} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
+  FOREACH (_currentFile ${ARGN})
+#MESSAGE( STATUS "setting loggroup to \"${_group}\" for ${_currentFile}" )
+    SET_SOURCE_FILES_PROPERTIES( ${_currentFile} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
+  ENDFOREACH (_currentFile ${ARGN})
+ENDMACRO( SET_LOGGROUP )
 
 ####################################################################
 # SUBDIRECTORIES                                                   #

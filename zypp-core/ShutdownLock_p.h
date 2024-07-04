@@ -28,7 +28,7 @@ class ExternalProgramWithSeperatePgid;
  * from going into hibernate/shutdown. The lock is automatically
  * released when the object is destroyed.
  */
-class ZYPP_LOCAL ShutdownLock
+class ShutdownLock
 {
 public:
   ShutdownLock( const std::string &who, const std::string &reason );

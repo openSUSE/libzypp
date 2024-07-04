@@ -93,6 +93,11 @@ namespace zypp
         // They may or may not belong to a container... (bsc#1218291)
         if ( linkTarget.relative() ) return IGNORE;
 
+        // bsc#1226014. Ignore snaps. Execuables below /snap/
+        // (may also be detectable via /proc/PID/cgroup)
+        if ( str::startsWith( linkTarget.asString(), "/snap/" ) )
+          return CONTAINER;
+
         // get stat info for the target file
         const PathInfo linkStat( linkTarget );
 

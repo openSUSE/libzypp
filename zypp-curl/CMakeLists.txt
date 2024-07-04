@@ -183,10 +183,11 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
   ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 
-TARGET_LINK_LIBRARIES( zypp-curl ${CURL_LIBRARIES} )
-TARGET_LINK_LIBRARIES( zypp-curl ${LIBXML2_LIBRARIES} )
+target_link_libraries( zypp-curl PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( zypp-curl INTERFACE ${CURL_LIBRARIES} )
+target_link_libraries( zypp-curl INTERFACE ${LIBXML2_LIBRARIES} )
 
 IF( NOT DISABLE_LIBPROXY )
   # required for dlload and dlclose
-  TARGET_LINK_LIBRARIES( zypp-curl  ${CMAKE_DL_LIBS} )
+  target_link_libraries( zypp-curl  INTERFACE ${CMAKE_DL_LIBS} )
 ENDIF()

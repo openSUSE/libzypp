@@ -74,13 +74,13 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
   endif(ZYPP_CXX_CPPCHECK)
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-tui ${zypp_SRCS} ${zypp_HEADERS} )
+ADD_LIBRARY( zypp-tui STATIC ${zypp_SRCS} ${zypp_HEADERS} )
 add_dependencies( zypp-tui zypp-core )
 
 set_target_properties( zypp-tui PROPERTIES COMPILE_FLAGS "-ffat-lto-objects")
 
-
-target_link_libraries( zypp-tui ${READLINE_LIBRARY})
+target_link_libraries( zypp-tui PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( zypp-tui INTERFACE ${READLINE_LIBRARY})
 target_include_directories( zypp-tui PUBLIC ${READLINE_INCLUDE_DIR})
 # target_compile_options( zypp-tui PUBLIC ${READLINE_CFLAGS_OTHER})
 

@@ -60,7 +60,7 @@ ENDIF( NOT DEFINED DOC_INSTALL_DIR )
 
 SET( ZYPPCOMMON_CXX_STANDARD 17 )
 #SET (CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} SYSTEM )
+INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} SYSTEM )
 
 ####################################################################
 # RPM SPEC                                                         #
@@ -68,17 +68,17 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_CUR
 
 MACRO(SPECFILE)
   MESSAGE(STATUS "Writing spec file...")
-  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/${PACKAGE}.spec.cmake ${CMAKE_BINARY_DIR}/package/${PACKAGE}.spec @ONLY)
+  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/${PACKAGE}.spec.cmake ${PROJECT_BINARY_DIR}/package/${PACKAGE}.spec @ONLY)
   MESSAGE(STATUS "I hate you rpm-lint...!!!")
-  IF (EXISTS ${CMAKE_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
-    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake ${CMAKE_BINARY_DIR}/package/${PACKAGE}-rpmlintrc @ONLY)
-  ENDIF (EXISTS ${CMAKE_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
+  IF (EXISTS ${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
+    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake ${PROJECT_BINARY_DIR}/package/${PACKAGE}-rpmlintrc @ONLY)
+  ENDIF (EXISTS ${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
 ENDMACRO(SPECFILE)
 
 MACRO(PKGCONFGFILE)
   MESSAGE(STATUS "Writing pkg-config file...")
-  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/libzypp.pc.cmake ${CMAKE_BINARY_DIR}/libzypp.pc @ONLY)
-  INSTALL( FILES ${CMAKE_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
+  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/libzypp.pc.cmake ${PROJECT_BINARY_DIR}/libzypp.pc @ONLY)
+  INSTALL( FILES ${PROJECT_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
 ENDMACRO(PKGCONFGFILE)
 
 ####################################################################
@@ -124,23 +124,27 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
 
   SPECFILE()
 
-  ADD_CUSTOM_TARGET( svncheck
-    COMMAND cd ${CMAKE_SOURCE_DIR} && LC_ALL=C git status | grep -q "nothing to commit .working directory clean."
+  if ( ZYPP_STACK_BUILD )
+    set( target_prefix "${PROJECT_NAME}_" )
+  endif()
+
+  ADD_CUSTOM_TARGET( ${target_prefix}svncheck
+    COMMAND cd ${PROJECT_SOURCE_DIR} && LC_ALL=C git status | grep -q "nothing to commit .working directory clean."
   )
 
   SET( AUTOBUILD_COMMAND
-    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/package/*.tar.bz2
+    COMMAND ${CMAKE_COMMAND} -E remove ${PROJECT_BINARY_DIR}/package/*.tar.bz2
     COMMAND ${CMAKE_MAKE_PROGRAM} package_source
-    COMMAND ${CMAKE_COMMAND} -E copy ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2 ${CMAKE_BINARY_DIR}/package
+    COMMAND ${CMAKE_COMMAND} -E copy ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2 ${PROJECT_BINARY_DIR}/package
     COMMAND ${CMAKE_COMMAND} -E remove ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/package/${PACKAGE}.changes" "${CMAKE_BINARY_DIR}/package/${PACKAGE}.changes"
+    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/package/${PACKAGE}.changes" "${PROJECT_BINARY_DIR}/package/${PACKAGE}.changes"
   )
 
-  ADD_CUSTOM_TARGET( srcpackage_local
+  ADD_CUSTOM_TARGET( ${target_prefix}srcpackage_local
     ${AUTOBUILD_COMMAND}
   )
 
-  ADD_CUSTOM_TARGET( srcpackage
+  ADD_CUSTOM_TARGET( ${target_prefix}srcpackage
     COMMAND ${CMAKE_MAKE_PROGRAM} svncheck
     ${AUTOBUILD_COMMAND}
   )

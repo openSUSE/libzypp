@@ -419,10 +419,6 @@ SET(UTIL_LIBRARY util)
 
 if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-  set_source_files_properties( ${zyppng_rpc_HEADERS} ${zyppng_rpc_SRCS} PROPERTIES
-      SKIP_LINTING ON
-  )
-
   if (ZYPP_CXX_CLANG_TIDY)
     set( CMAKE_CXX_CLANG_TIDY ${ZYPP_CXX_CLANG_TIDY} )
   endif(ZYPP_CXX_CLANG_TIDY)
@@ -435,19 +431,19 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( zypp-core STATIC ${zypp_SRCS} ${zypp_HEADERS} )
 
-target_link_libraries( zypp-core ${LIBGLIB_LIBRARIES} )
-target_link_libraries( zypp-core ${OPENSSL_LIBRARIES} )
-target_link_libraries( zypp-core ${CRYPTO_LIBRARIES} )
-target_link_libraries( zypp-core pthread )
-target_link_libraries( zypp-core ${SIGCPP_LIBRARIES} )
-TARGET_LINK_LIBRARIES( zypp-core ${ZLIB_LIBRARY} )
-message("URIL LIB  ${UTIL_LIBRARY}")
-TARGET_LINK_LIBRARIES( zypp-core ${UTIL_LIBRARY} )
+target_link_libraries( zypp-core PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( zypp-core INTERFACE ${LIBGLIB_LIBRARIES} )
+target_link_libraries( zypp-core INTERFACE ${OPENSSL_LIBRARIES} )
+target_link_libraries( zypp-core INTERFACE ${CRYPTO_LIBRARIES} )
+target_link_libraries( zypp-core INTERFACE pthread )
+target_link_libraries( zypp-core INTERFACE ${SIGCPP_LIBRARIES} )
+TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZLIB_LIBRARY} )
+TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${UTIL_LIBRARY} )
 
 IF (ENABLE_ZSTD_COMPRESSION)
-  TARGET_LINK_LIBRARIES( zypp-core ${ZSTD_LIBRARY})
+  TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZSTD_LIBRARY})
 ENDIF (ENABLE_ZSTD_COMPRESSION)
 
 IF (ENABLE_ZCHUNK_COMPRESSION)
-  TARGET_LINK_LIBRARIES( zypp-core ${ZCHUNK_LDFLAGS})
+  TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZCHUNK_LDFLAGS})
 ENDIF(ENABLE_ZCHUNK_COMPRESSION)

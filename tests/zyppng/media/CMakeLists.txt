@@ -4,7 +4,6 @@ IF( NOT DISABLE_MEDIABACKEND_TESTS)
     EvDownloader
     Provider
   )
+  target_link_libraries( Provider_test PUBLIC tvm-protocol-obj )
 ENDIF()
-
-target_link_libraries( Provider_test $<TARGET_OBJECTS:tvm-protocol-obj> )
 

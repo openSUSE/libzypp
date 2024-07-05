@@ -102,7 +102,7 @@ namespace zypp
      *
      * \see \ref RepoVarExpand for supported variable syntax.
      */
-    struct ZYPP_TESTS RepoVariablesStringReplacer
+    struct RepoVariablesStringReplacer
     {
       std::string operator()( const std::string & value_r ) const;
 

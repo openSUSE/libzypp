@@ -41,7 +41,7 @@ namespace zypp
     ///
     /// \note \ref contains does not match srcpackage: per default.
     ///////////////////////////////////////////////////////////////////
-    class ZYPP_TESTS SolvableSpec
+    class SolvableSpec
     {
     public:
       /** Default ctor */

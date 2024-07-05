@@ -24,7 +24,7 @@
 
 namespace zypp::misc::testcase {
 
-  struct ZYPP_TESTS TestcaseTrial
+  struct TestcaseTrial
   {
     struct Node {
       struct Impl;

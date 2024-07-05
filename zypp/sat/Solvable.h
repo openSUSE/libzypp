@@ -563,7 +563,7 @@ namespace zypp
      * \relates Solvable
      * \relates sat::SolvIterMixin
      */
-    struct ZYPP_TESTS asSolvable
+    struct asSolvable
     {
       using result_type = Solvable;
 

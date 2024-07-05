@@ -44,7 +44,7 @@ namespace zypp
   /**
    * \short Checks for a valid checksum and interacts with the user.
    */
-   class ZYPP_TESTS ChecksumFileChecker
+   class ChecksumFileChecker
    {
    public:
      typedef CheckSumCheckException ExceptionType;
@@ -67,7 +67,7 @@ namespace zypp
    /**
     * \short Checks for the validity of a signature
     */
-   class ZYPP_TESTS SignatureFileChecker
+   class SignatureFileChecker
    {
    public:
      typedef SignatureCheckException ExceptionType;

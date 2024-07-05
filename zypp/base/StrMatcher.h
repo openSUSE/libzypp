@@ -294,7 +294,7 @@ namespace zypp
   ///
   /// \Note Those flags are always set: <tt>REG_EXTENDED | REG_NOSUB | REG_NEWLINE</tt>
   ///////////////////////////////////////////////////////////////////
-  class ZYPP_TESTS StrMatcher
+  class StrMatcher
   {
     friend std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
@@ -393,7 +393,7 @@ namespace zypp
   };
 
   /** \relates StrMatcher Stream output */
-  std::ostream & operator<<( std::ostream & str, const StrMatcher & obj ) ZYPP_TESTS;
+  std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
   /** \relates StrMatcher */
   bool operator==( const StrMatcher & lhs, const StrMatcher & rhs );

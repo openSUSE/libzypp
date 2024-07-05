@@ -35,7 +35,7 @@ namespace zypp
    * After each file entry is read, an \ref OnMediaLocation and the resource type
    * string are prepared and passed to the \ref _callback.
    */
-  class ZYPP_TESTS RepomdFileReader : private base::NonCopyable
+  class RepomdFileReader : private base::NonCopyable
   {
   public:
     /** Callback taking \ref OnMediaLocation and the resource type string */

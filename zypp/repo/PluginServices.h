@@ -25,7 +25,7 @@ namespace zypp
   namespace repo
   { /////////////////////////////////////////////////////////////////
 
-    class ZYPP_TESTS PluginServices
+    class PluginServices
     {
       friend std::ostream & operator<<( std::ostream & str, const PluginServices& obj );
     public:

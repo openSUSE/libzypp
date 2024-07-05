@@ -32,7 +32,7 @@ namespace zyppng {
 
 namespace zyppng::repo {
   template <class ContextRefType>
-  class ZYPP_TESTS DownloadContext : public CacheProviderContext<ContextRefType>
+  class DownloadContext : public CacheProviderContext<ContextRefType>
   {
   public:
 

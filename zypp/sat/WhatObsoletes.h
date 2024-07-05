@@ -33,7 +33,7 @@ namespace zypp
      *
      * \todo Publish obsoleteUsesProvides config option.
      */
-    class ZYPP_TESTS WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
+    class WhatObsoletes : public SolvIterMixin<WhatObsoletes,detail::WhatProvidesIterator>,
                           protected detail::PoolMember
     {
       public:

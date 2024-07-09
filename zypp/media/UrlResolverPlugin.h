@@ -16,10 +16,10 @@
 #include <map>
 #include <string>
 
+#include <zypp-core/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Url.h>
 #include <zypp/PathInfo.h>
-
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -27,10 +27,8 @@ namespace zypp
   namespace media
   { /////////////////////////////////////////////////////////////////
 
-    /**
-     *
-     */
-    class UrlResolverPlugin
+    // openSUSE/libzypp#560: Keep it public while foreign test depend on it.
+    class ZYPP_API UrlResolverPlugin
     {
       friend std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
 

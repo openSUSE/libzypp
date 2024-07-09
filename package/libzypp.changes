@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Jul  9 11:28:36 CEST 2024 - ma@suse.de
+
+- Keep UrlResolverPlugin API public (fixes #560)
+- Blacklist /snap executables for 'zypper ps' (bsc#1226014)
+- Fix handling of buddies when applying locks (bsc#1225267)
+  Buddy pairs (like -release package and product) internally share
+  the same status object. When applying locks from query results
+  the locked bit must be set if either item is locked.
+- version 17.35.2 (35)
+
+-------------------------------------------------------------------
 Tue Jul  2 12:30:20 CEST 2024 - ma@suse.de
 
 - Install zypp/APIConfig.h legacy include (fixes #557)

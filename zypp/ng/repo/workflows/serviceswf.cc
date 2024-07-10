@@ -711,7 +711,7 @@ namespace zyppng::RepoServicesWorkflow {
           }
 
           if ( _informalError ) {
-            return Ret::error( std::make_exception_ptr (_informalError) );
+            return Ret::error( std::make_exception_ptr (_informalError.value()) );
           }
 
           return Ret::success( );

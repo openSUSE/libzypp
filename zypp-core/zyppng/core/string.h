@@ -24,7 +24,7 @@ namespace str {
   {
     int oerrno = errno;
     errno = 0;  // strtonum/::strtol has no dedicated error-return-code one could check
-    const int entryVal = zypp::str::strtonum<T>( val.data() );
+    const T entryVal = zypp::str::strtonum<T>( val.data() );
     if ( errno == ERANGE )
       return {};
     errno = oerrno;

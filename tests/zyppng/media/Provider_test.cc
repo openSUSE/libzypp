@@ -1,5 +1,6 @@
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
+#include <zypp-media/ng/private/providemessage_p.h>
 #include <zypp-media/MediaException>
 #include <zypp-media/auth/AuthData>
 #include <zypp-media/auth/CredentialManager>
@@ -33,6 +34,17 @@
   try { BOOST_REQUIRE_THROW(  statement, exception  ); } catch( ... ) { BOOST_FAIL( #statement" throws unexpected exception"); }
 
 namespace bdata = boost::unit_test::data;
+
+
+BOOST_AUTO_TEST_CASE( http_prov_time_overflow )
+{
+  const int64_t ts = int64_t(INT32_MAX) + 1;
+  auto inf = zyppng::ProvideMessage::createAuthInfo( 1, "user", "pw",  ts );
+  auto stomp = inf.toStompMessage ();
+  auto msg = zyppng::ProvideMessage::fromStompMessage ( stomp.unwrap() );
+  BOOST_REQUIRE_EQUAL( ts,msg.unwrap ().value ( zyppng::AuthInfoMsgFields::AuthTimestamp ).asInt64 () );
+}
+
 
 BOOST_AUTO_TEST_CASE( http_prov )
 {

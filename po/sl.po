@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2024-07-02 12:46+0000\n"
+"PO-Revision-Date: 2024-07-15 17:47+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
 "sl/>\n"
@@ -1537,9 +1537,8 @@ msgstr "Algonkinski jeziki"
 
 #. language code: alt
 #: zypp/LanguageCode.cc:193
-#, fuzzy
 msgid "Southern Altai"
-msgstr "Južna Afrika"
+msgstr "Južnoaltajščina"
 
 #. language code: amh am
 #: zypp/LanguageCode.cc:195
@@ -1549,13 +1548,12 @@ msgstr "Amharic"
 #. language code: ang
 #: zypp/LanguageCode.cc:197
 msgid "English, Old (ca.450-1100)"
-msgstr ""
+msgstr "Angleščina, stara (okoli 450–1100)"
 
 #. language code: apa
 #: zypp/LanguageCode.cc:199
-#, fuzzy
 msgid "Apache Languages"
-msgstr "Nastavi jezik"
+msgstr "Apaški jeziki"
 
 #. language code: ara ar
 #: zypp/LanguageCode.cc:201
@@ -1564,15 +1562,13 @@ msgstr "Arabski"
 
 #. language code: arc
 #: zypp/LanguageCode.cc:203
-#, fuzzy
 msgid "Aramaic"
-msgstr "Arabski"
+msgstr "Aramejščina"
 
 #. language code: arg an
 #: zypp/LanguageCode.cc:205
-#, fuzzy
 msgid "Aragonese"
-msgstr "Faerščina"
+msgstr "Aragonščina"
 
 # AM
 #. language code: arm hye hy
@@ -4349,7 +4345,7 @@ msgstr[1] "Na navedenih mestih niso bili najdeni veljavni metapodatki"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:568
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "Dodajanje vira v predpomnilnik ni uspelo (ni moč zagnati repo2solv)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:586
 #: zypp/ng/repo/workflows/repomanagerwf.cc:615
@@ -4370,7 +4366,7 @@ msgstr "Predpomnilnika v %s ni moč ustvariti – ni dovoljenja za pisanje."
 #: zypp/ng/repo/workflows/repomanagerwf.cc:785
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Dodajanje vira %1% v predpomnilnik ni uspelo"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:802
 msgid "Unhandled repository type"
@@ -4421,28 +4417,28 @@ msgstr "Ni moč brati datoteke vira »%1%«: dovoljenje zavrnjeno"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Čiščenje metapodatkov"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Čiščenje paketov"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Čiščenje map predpomnilnika"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Čiščenje mape: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Čiščenje predpomnilnika"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Nalaganje iz predpomnilnika"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -4461,11 +4457,11 @@ msgstr "Ni moč izbrisati »%s«"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Spreminjanje vira"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Osveževanje vira: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."

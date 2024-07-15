@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Jul 15 16:13:25 CEST 2024 - ma@suse.de
+
+- Translation: updated .pot file.
+- Conflict with python zypp-plugin < 0.6.4 (bsc#1227793)
+  Older zypp-plugins reject stomp headers including a '-'. Like the
+  'content-length' header we may send.
+- Fix int overflow in Provider (fixes #559)
+  This patch fixes an issue in safe_strtonum which caused
+  timestamps to overflow in the Provider message parser.
+- Fix error reporting on repoindex.xml parse error (bsc#1227625)
+- version 17.35.3 (35)
+
+-------------------------------------------------------------------
 Tue Jul  9 11:28:36 CEST 2024 - ma@suse.de
 
 - Keep UrlResolverPlugin API public (fixes #560)

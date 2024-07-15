@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek (libzypp)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 18:16+0100\n"
+"POT-Creation-Date: 2024-07-15 16:12+0200\n"
 "PO-Revision-Date: 2018-04-29 12:02+0000\n"
 "Last-Translator: Konstantina Tsolakoglou <konstantina@accountant.com>\n"
 "Language-Team: Greek <https://l10n.opensuse.org/projects/libzypp/master/el/"
@@ -3703,73 +3703,6 @@ msgid_plural "(expires in %d days)"
 msgstr[0] "(λήγει σε %d ημέρα)"
 msgstr[1] "(λήγει σε %d ημέρες)"
 
-#. we will throw this later if no URL checks out fine
-#: zypp/RepoManager.cc:288 zypp/ng/repo/workflows/repomanagerwf.cc:413
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "Δεν βρέθηκαν έγκυρα μεταδεδομένα στην καθορισμένη URL"
-msgstr[1] "Δεν βρέθηκαν έγκυρα μεταδεδομένα στις καθορισμένες URLs"
-
-#: zypp/RepoManager.cc:358 zypp/RepoManager.cc:414
-#: zypp/ng/repo/workflows/repomanagerwf.cc:377
-#, c-format, boost-format
-msgid "Can't create %s"
-msgstr "Αδυναμία δημιουργίας %s"
-
-#: zypp/RepoManager.cc:400
-#, c-format, boost-format
-msgid "Building repository '%s' cache"
-msgstr "Δημιουργία λανθάνουσας μνήμης αποθετηρίου '%s'"
-
-#: zypp/RepoManager.cc:420
-#, c-format, boost-format
-msgid "Can't create cache at %s - no writing permissions."
-msgstr ""
-"Αδυναμία δημιουργίας λανθάνουσας μνήμης στο %s - δεν έχετε δικαιώματα "
-"εγγραφής."
-
-#: zypp/RepoManager.cc:481
-#, c-format, boost-format
-msgid "Failed to cache repo (%d)."
-msgstr "Αποτυχία αποθήκευσης στην λανθάνουσα μνήμη του αποθετηρίου (%d)."
-
-#: zypp/RepoManager.cc:492
-msgid "Unhandled repository type"
-msgstr "Τύπος αδιαχείριστου αποθετηρίου"
-
-#: zypp/RepoManager.cc:556
-#, c-format, boost-format
-msgid "Adding repository '%s'"
-msgstr "Προσθήκη αποθετηρίου '%s'"
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:610
-#, c-format, boost-format
-msgid "Invalid repo file name at '%s'"
-msgstr "Μη έγκυρο όνομα αρχείου αποθετηρίου στο '%s'"
-
-#. TranslatorExplanation '%s' is a filename
-#: zypp/RepoManager.cc:624 zypp/zypp_detail/repomanagerbase_p.cc:358
-#: zypp/zypp_detail/repomanagerbase_p.cc:437
-#: zypp/zypp_detail/repomanagerbase_p.cc:500
-#: zypp/zypp_detail/repomanagerbase_p.cc:623
-#: zypp/zypp_detail/repomanagerbase_p.cc:731
-#, c-format, boost-format
-msgid "Can't open file '%s' for writing."
-msgstr "Αδυναμία ανοίγματος αρχείου '%s' για εγγραφή."
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1054 zypp/ng/repo/workflows/repomanagerwf.cc:67
-#, c-format, boost-format
-msgid "Error trying to read from '%s'"
-msgstr "Σφάλμα στην προσπάθεια ανάγνωσης από το '%s'"
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1062
-#, c-format, boost-format
-msgid "Unknown error reading from '%s'"
-msgstr "Άγνωστο σφάλμα κατά την ανάγνωση από '%s'"
-
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "άγνωστο"
@@ -3890,28 +3823,28 @@ msgstr "Μη  έγκυρη κανονική έκφραση '%s'"
 
 #. !\todo add comma to the message for the next release
 #: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1514
-#: zypp/media/MediaNetwork.cc:316
+#: zypp/media/MediaNetwork.cc:314
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Απαιτείται πιστοποίηση για '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:782 zypp/media/MediaNetwork.cc:440
+#: zypp/media/MediaCurl.cc:789
 msgid "Will try again..."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:785
+#: zypp/media/MediaCurl.cc:792
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:900 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:902 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3927,51 +3860,214 @@ msgstr ""
 "Δημιουργία σημείου προσάρτησης: Δεν είναι δυνατή η εύρεση εγγράψιμου "
 "καταλόγου για τη δημιουργία σημείου προσάρτησης"
 
-#: zypp/misc/CheckAccessDeleted.cc:466
+#: zypp/misc/CheckAccessDeleted.cc:472
 msgid "Please install package 'lsof' first."
 msgstr "Παρακαλούμε εγκαταστήστε πρώτα το πακέτο 'lsof'."
 
-#: zypp/ng/repo/refresh.cc:37
+#: zypp/ng/repo/refresh.cc:42
 msgid "Can't create metadata cache directory."
 msgstr "Αδυναμία δημιουργίας καταλόγου μεταδεδομένων λανθάνουσας μνήμης."
 
-#: zypp/ng/workflows/checksumwf.cc:117
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/repomanagerwf.cc:81
+#: zypp/ng/repo/workflows/serviceswf.cc:283
+#, c-format, boost-format
+msgid "Error trying to read from '%s'"
+msgstr "Σφάλμα στην προσπάθεια ανάγνωσης από το '%s'"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:432
+#: zypp/ng/repo/workflows/repomanagerwf.cc:655
+#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#, c-format, boost-format
+msgid "Can't create %s"
+msgstr "Αδυναμία δημιουργίας %s"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:487
+msgid "Valid metadata not found at specified URL"
+msgid_plural "Valid metadata not found at specified URLs"
+msgstr[0] "Δεν βρέθηκαν έγκυρα μεταδεδομένα στην καθορισμένη URL"
+msgstr[1] "Δεν βρέθηκαν έγκυρα μεταδεδομένα στις καθορισμένες URLs"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+msgid "Failed to cache repo ( unable to start repo2solv )."
+msgstr ""
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:586
+#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#, c-format, boost-format
+msgid "Failed to cache repo (%d)."
+msgstr "Αποτυχία αποθήκευσης στην λανθάνουσα μνήμη του αποθετηρίου (%d)."
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#, c-format, boost-format
+msgid "Building repository '%s' cache"
+msgstr "Δημιουργία λανθάνουσας μνήμης αποθετηρίου '%s'"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#, c-format, boost-format
+msgid "Can't create cache at %s - no writing permissions."
+msgstr ""
+"Αδυναμία δημιουργίας λανθάνουσας μνήμης στο %s - δεν έχετε δικαιώματα "
+"εγγραφής."
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#, boost-format
+msgid "Failed to cache repo %1%"
+msgstr ""
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+msgid "Unhandled repository type"
+msgstr "Τύπος αδιαχείριστου αποθετηρίου"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#, c-format, boost-format
+msgid "Adding repository '%s'"
+msgstr "Προσθήκη αποθετηρίου '%s'"
+
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#, c-format, boost-format
+msgid "Invalid repo file name at '%s'"
+msgstr "Μη έγκυρο όνομα αρχείου αποθετηρίου στο '%s'"
+
+#. TranslatorExplanation '%s' is a filename
+#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
+#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#, c-format, boost-format
+msgid "Can't open file '%s' for writing."
+msgstr "Αδυναμία ανοίγματος αρχείου '%s' για εγγραφή."
+
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/serviceswf.cc:290
+#: zypp/ng/repo/workflows/serviceswf.cc:296
+#, c-format, boost-format
+msgid "Unknown error reading from '%s'"
+msgstr "Άγνωστο σφάλμα κατά την ανάγνωση από '%s'"
+
+#: zypp/ng/repomanager.cc:196
+#, boost-format
+msgid "Cannot read repo directory '%1%': Permission denied"
+msgstr "Αδυναμία ανάγνωσης καταλόγου αποθετηρίου '%1%': Δεν έχετε δικαιώματα"
+
+#. TranslatorExplanation '%s' is a pathname
+#: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
+#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#, c-format, boost-format
+msgid "Failed to read directory '%s'"
+msgstr "Αποτυχία ανάγνωσης καταλόγου '%s'"
+
+#: zypp/ng/repomanager.cc:214
+#, boost-format
+msgid "Cannot read repo file '%1%': Permission denied"
+msgstr "Αδυναμία ανάγνωσης αρχείου αποθετηρίου '%1%': Δεν έχετε δικαιώματα"
+
+#: zypp/ng/repomanager.cc:383
+msgid "Cleaning metadata"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:401
+msgid "Cleaning packages"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:453
+msgid "Cleaning up cache dirs"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:473
+#, boost-format
+msgid "Cleaning up directory: %1%"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:503
+msgid "Cleaning cache"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:524
+msgid "Loading from cache"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:615
+#, c-format, boost-format
+msgid "Removing repository '%s'"
+msgstr "Αφαίρεση αποθετηρίου '%s'"
+
+#: zypp/ng/repomanager.cc:635 zypp/ng/repomanager.cc:719
+msgid "Can't figure out where the repo is stored."
+msgstr "Δεν είναι κατανοητό που είναι αποθηκευμένο το αποθετήριο."
+
+#. TranslatorExplanation '%s' is a filename
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#, c-format, boost-format
+msgid "Can't delete '%s'"
+msgstr "Αδυναμία διαγραφής '%s'"
+
+#: zypp/ng/repomanager.cc:705
+msgid "Modifying repository"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:892
+msgid "Refreshing Repository: "
+msgstr ""
+
+#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+msgid "Can't figure out where the service is stored."
+msgstr "Δεν είναι κατανοητό που είναι αποθηκευμένη η υπηρεσία."
+
+#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
+#. %1% = service name
+#. %2% = repository name
+#: zypp/ng/repomanager.cc:1433
+#, boost-format
+msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
+msgstr ""
+"Άγνωστη υπηρεσία '%1%': Αφαίρεση του ορφανού αποθετηρίου υπηρεσιών '%2%'"
+
+#: zypp/ng/repomanager.h:65
+msgid "Repository alias cannot start with dot."
+msgstr "Το alias του αποθετηρίου δεν μπορεί να ξεκινά από τελεία."
+
+#: zypp/ng/repomanager.h:77
+msgid "Service alias cannot start with dot."
+msgstr "Το ψευδώνυμο της υπηρεσίας δεν μπορεί να ξεκινά με τελεία."
+
+#: zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
 msgstr ""
 
-#: zypp/ng/workflows/checksumwf.cc:123
+#: zypp/ng/reporthelper.cc:39
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
 msgstr ""
 
-#: zypp/ng/workflows/checksumwf.cc:129
+#: zypp/ng/reporthelper.cc:52
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
 msgstr ""
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/workflows/keyringwf.cc:358
+#: zypp/ng/reporthelper.cc:69
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
 msgstr ""
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/workflows/keyringwf.cc:362
+#: zypp/ng/reporthelper.cc:73
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
 msgstr ""
 
-#: zypp/ng/workflows/keyringwf.cc:374
+#: zypp/ng/reporthelper.cc:90
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
 
-#: zypp/ng/workflows/keyringwf.cc:383
+#: zypp/ng/reporthelper.cc:116
 #, boost-format
 msgid "Key Name: %1%"
 msgstr ""
 
-#: zypp/ng/workflows/keyringwf.cc:389
+#: zypp/ng/reporthelper.cc:128
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
@@ -3979,37 +4075,37 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translator: %1% is a file name
-#: zypp/ng/workflows/keyringwf.cc:400
+#: zypp/ng/reporthelper.cc:144
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
 msgstr ""
 
 #. translator: %1% is a file name, %2% a repositories na  me
-#: zypp/ng/workflows/keyringwf.cc:403
+#: zypp/ng/reporthelper.cc:147
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
 
 #. @TODO use a centralized Continue string!
-#: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
+#: zypp/ng/reporthelper.cc:150 zypp-tui/output/Out.cc:32
 msgid "Continue?"
 msgstr "Συνέχεια;"
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/workflows/keyringwf.cc:419
+#: zypp/ng/reporthelper.cc:168
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/workflows/keyringwf.cc:423
+#: zypp/ng/reporthelper.cc:172
 #, c-format, boost-format
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:77
+#: zypp/ng/workflows/repoinfowf.cc:78
 #, boost-format
 msgid "Repository %1% does not define additional 'gpgkey=' URLs."
 msgstr ""
@@ -4018,14 +4114,14 @@ msgstr ""
 #. all keys specified in gpgkey= entries
 #. translator: %1% is a gpg key ID like 3DBDC284
 #. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:86
+#: zypp/ng/workflows/repoinfowf.cc:87
 #, boost-format
 msgid "Looking for gpg key ID %1% in repository %2%."
 msgstr ""
 
 #. translator: %1% is a gpg key ID like 3DBDC284
 #. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:133
+#: zypp/ng/workflows/repoinfowf.cc:134
 #, boost-format
 msgid "Looking for gpg key ID %1% in cache %2%."
 msgstr ""
@@ -4067,14 +4163,6 @@ msgstr "Απέτυχε ο έλεγχος applydeltarpm."
 #: zypp/repo/PackageProvider.cc:632
 msgid "applydeltarpm failed."
 msgstr "Αποτυχία applydeltarpm."
-
-#. TranslatorExplanation '%s' is a pathname
-#: zypp/repo/PluginServices.cc:49 zypp/zypp_detail/repomanagerbase_p.cc:129
-#: zypp/zypp_detail/repomanagerbase_p.cc:284
-#: zypp/zypp_detail/repomanagerbase_p.cc:815
-#, c-format, boost-format
-msgid "Failed to read directory '%s'"
-msgstr "Αποτυχία ανάγνωσης καταλόγου '%s'"
 
 #: zypp/repo/RepoException.cc:129
 msgid "Service plugin does not support changing an attribute."
@@ -4255,7 +4343,7 @@ msgstr "διακοπή %s λόγω αγνόησης μερικών εξαρτή�
 msgid "generally ignore of some dependencies"
 msgstr "γενικά αγνόηση μερικών εξαρτήσεων"
 
-#: zypp/solver/detail/SATResolver.cc:1146
+#: zypp/solver/detail/SATResolver.cc:1160
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -4263,151 +4351,151 @@ msgid ""
 msgstr ""
 
 #. just in case
-#: zypp/solver/detail/SATResolver.cc:1148
+#: zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1152
+#: zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1154
+#: zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1157
+#: zypp/solver/detail/SATResolver.cc:1171
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1160
+#: zypp/solver/detail/SATResolver.cc:1174
 msgid "conflicting requests"
 msgstr "συγκρουόμενες αιτήσεις"
 
-#: zypp/solver/detail/SATResolver.cc:1163
+#: zypp/solver/detail/SATResolver.cc:1177
 msgid "some dependency problem"
 msgstr "κάποιο πρόβλημα εξαρτήσεων"
 
-#: zypp/solver/detail/SATResolver.cc:1166
+#: zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1167
-#: zypp/solver/detail/SATResolver.cc:1171
+#: zypp/solver/detail/SATResolver.cc:1181
+#: zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1170
+#: zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1174
+#: zypp/solver/detail/SATResolver.cc:1188
 msgid "unsupported request"
 msgstr "μη υποστηριζόμενο αίτημα"
 
-#: zypp/solver/detail/SATResolver.cc:1177
+#: zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1180
+#: zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1185
+#: zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1187
+#: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1190
+#: zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1195
+#: zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1197
+#: zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1201
+#: zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1203
+#: zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
 "%3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1210
+#: zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1212
+#: zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1216
+#: zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1218
+#: zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1223
+#: zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1225
+#: zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1257
+#: zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1259
+#: zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1261
+#: zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
 msgstr "διαγραμμένοι πάροχοι: "
 
-#: zypp/solver/detail/SATResolver.cc:1271
+#: zypp/solver/detail/SATResolver.cc:1285
 msgid ""
 "\n"
 "not installable providers: "
@@ -4415,167 +4503,167 @@ msgstr ""
 "\n"
 "μη εγκαταστήσιμοι πάροχοι: "
 
-#: zypp/solver/detail/SATResolver.cc:1273
+#: zypp/solver/detail/SATResolver.cc:1287
 msgid "not installable providers: "
 msgstr "Μη εγκαταστήσιμοι πάροχοι: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/solver/detail/SATResolver.cc:1310
+#: zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1311
+#: zypp/solver/detail/SATResolver.cc:1325
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
 msgstr ""
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1319
+#: zypp/solver/detail/SATResolver.cc:1333
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1320
+#: zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1321
+#: zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr ""
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1326
+#: zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1327
+#: zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1384
+#: zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1391
-#: zypp/solver/detail/SATResolver.cc:1429
+#: zypp/solver/detail/SATResolver.cc:1405
+#: zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1408
-#: zypp/solver/detail/SATResolver.cc:1450
+#: zypp/solver/detail/SATResolver.cc:1422
+#: zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1413
+#: zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1464
-#: zypp/solver/detail/SATResolver.cc:1485
+#: zypp/solver/detail/SATResolver.cc:1478
+#: zypp/solver/detail/SATResolver.cc:1499
 msgid "This request will break your system!"
 msgstr "Το αίτημα αυτό θα καταστρέψει το σύστημα σας!"
 
-#: zypp/solver/detail/SATResolver.cc:1465
-#: zypp/solver/detail/SATResolver.cc:1486
+#: zypp/solver/detail/SATResolver.cc:1479
+#: zypp/solver/detail/SATResolver.cc:1500
 msgid "ignore the warning of a broken system"
 msgstr "αγνοήστε την προειδοποίηση ενός κατεστραμμένου συστήματος"
 
-#: zypp/solver/detail/SATResolver.cc:1470
+#: zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1492
+#: zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1505
+#: zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1526
+#: zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1531
+#: zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1540
+#: zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1545
+#: zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1559
+#: zypp/solver/detail/SATResolver.cc:1573
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1562
+#: zypp/solver/detail/SATResolver.cc:1576
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1565
+#: zypp/solver/detail/SATResolver.cc:1579
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1585
+#: zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1592
+#: zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr ""
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/solver/detail/SATResolver.cc:1603
+#: zypp/solver/detail/SATResolver.cc:1617
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
 "  %2%  -->  %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1608
+#: zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
 "  replacing %3% from vendor %4%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1617
+#: zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1628
+#: zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr ""
@@ -4601,34 +4689,34 @@ msgstr ""
 msgid "Installation has been aborted as directed."
 msgstr "Η εγκατάσταση ματαιώθηκε σύμφωνα με τις οδηγίες."
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:462
 msgid " executed"
 msgstr " εκτελέστηκε"
 
 # %s is either BOOTP or DHCP
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:484
 msgid " execution failed"
 msgstr " αποτυχία εκτέλεσηης"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:601
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "το %s έχει ήδη εκτελεστεί ως %s)"
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:611
 msgid " execution skipped while aborting"
 msgstr " η εκτέλεση παραλείφθηκε κατά την ματαίωση"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:666 zypp/target/TargetImpl.cc:686
+#: zypp/target/TargetImpl.cc:714 zypp/target/TargetImpl.cc:751
+#: zypp/target/TargetImpl.cc:759
 msgid "Error sending update message notification."
 msgstr "Σφάλμα κατά την αποστολή μηνύματος ειδοποίησης ενημέρωσης."
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:810
 msgid "New update message"
 msgstr "Νέο μήνυμα ενημέρωσης"
 
@@ -4640,7 +4728,7 @@ msgid ""
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2751
+#: zypp/target/TargetImpl.cc:2722
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
@@ -4758,55 +4846,6 @@ msgstr "Το αρχείο δεν υπάρχει ή η υπογραφή δεν μ
 msgid "File is unsigned"
 msgstr "Το αρχείο δεν είναι υπογεγραμμένο"
 
-#: zypp/zypp_detail/repomanagerbase_p.cc:121
-#, boost-format
-msgid "Cannot read repo directory '%1%': Permission denied"
-msgstr "Αδυναμία ανάγνωσης καταλόγου αποθετηρίου '%1%': Δεν έχετε δικαιώματα"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:139
-#, boost-format
-msgid "Cannot read repo file '%1%': Permission denied"
-msgstr "Αδυναμία ανάγνωσης αρχείου αποθετηρίου '%1%': Δεν έχετε δικαιώματα"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:386
-#, c-format, boost-format
-msgid "Removing repository '%s'"
-msgstr "Αφαίρεση αποθετηρίου '%s'"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:405
-#: zypp/zypp_detail/repomanagerbase_p.cc:481
-msgid "Can't figure out where the repo is stored."
-msgstr "Δεν είναι κατανοητό που είναι αποθηκευμένο το αποθετήριο."
-
-#. TranslatorExplanation '%s' is a filename
-#: zypp/zypp_detail/repomanagerbase_p.cc:419
-#: zypp/zypp_detail/repomanagerbase_p.cc:611
-#, c-format, boost-format
-msgid "Can't delete '%s'"
-msgstr "Αδυναμία διαγραφής '%s'"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:599
-#: zypp/zypp_detail/repomanagerbase_p.cc:662
-msgid "Can't figure out where the service is stored."
-msgstr "Δεν είναι κατανοητό που είναι αποθηκευμένη η υπηρεσία."
-
-#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
-#. %1% = service name
-#. %2% = repository name
-#: zypp/zypp_detail/repomanagerbase_p.cc:909
-#, boost-format
-msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
-msgstr ""
-"Άγνωστη υπηρεσία '%1%': Αφαίρεση του ορφανού αποθετηρίου υπηρεσιών '%2%'"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:954
-msgid "Repository alias cannot start with dot."
-msgstr "Το alias του αποθετηρίου δεν μπορεί να ξεκινά από τελεία."
-
-#: zypp/zypp_detail/repomanagerbase_p.h:45
-msgid "Service alias cannot start with dot."
-msgstr "Το ψευδώνυμο της υπηρεσίας δεν μπορεί να ξεκινά με τελεία."
-
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-core/CheckSum.cc:136
 #, c-format, boost-format
@@ -4844,7 +4883,7 @@ msgstr "Μη έγκυρη αναφορά αντικειμένου κενού Url
 msgid "Unable to parse Url components"
 msgstr "Αδυναμία ανάλυσης συστατικών Url"
 
-#: zypp-core/base/Exception.cc:169
+#: zypp-core/base/Exception.cc:186
 msgid "History:"
 msgstr "Ιστορικό:"
 
@@ -5177,75 +5216,75 @@ msgid ""
 "Unable to retrieve HTTP response\n"
 msgstr ""
 
-#: zypp-tui/Table.h:38
+#: zypp-tui/Table.cc:32
 msgid "Yes"
 msgstr "Ναι"
 
-#: zypp-tui/Table.h:38
+#: zypp-tui/Table.cc:32
 msgid "No"
 msgstr "Όχι"
 
-#. translator: Shown as result tag in a progress bar: ............[done]
-#. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:130 zypp-tui/output/OutNormal.cc:340
-#: zypp-tui/output/OutNormal.cc:343
-msgid "done"
-msgstr "έγινε"
-
-#. translator: Shown as result tag in a progress bar: .......[attention]
-#: zypp-tui/output/Out.cc:132
-msgid "attention"
-msgstr ""
-
-#. translator: Shown as result tag in a progress bar: ...........[error]
-#. Translator: download progress bar result: "............[error]"
-#: zypp-tui/output/Out.cc:134 zypp-tui/output/OutNormal.cc:337
-#: zypp-tui/output/OutNormal.cc:343
-msgid "error"
-msgstr "σφάλμα"
-
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:51
+#: zypp-tui/output/Out.cc:26
 msgid "Note:"
 msgstr ""
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:53
+#: zypp-tui/output/Out.cc:28
 #, fuzzy
 msgid "Warning:"
 msgstr "Προειδοποιηση: "
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:55
+#: zypp-tui/output/Out.cc:30
 #, fuzzy
 msgid "Error:"
 msgstr "Σφάλμα"
 
-#: zypp-tui/output/OutNormal.cc:89
+#. translator: Shown as result tag in a progress bar: ............[done]
+#. Translator: download progress bar result: ".............[done]"
+#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
+#: zypp-tui/output/OutNormal.cc:344
+msgid "done"
+msgstr "έγινε"
+
+#. translator: Shown as result tag in a progress bar: .......[attention]
+#: zypp-tui/output/Out.cc:143
+msgid "attention"
+msgstr ""
+
+#. translator: Shown as result tag in a progress bar: ...........[error]
+#. Translator: download progress bar result: "............[error]"
+#: zypp-tui/output/Out.cc:145 zypp-tui/output/OutNormal.cc:338
+#: zypp-tui/output/OutNormal.cc:344
+msgid "error"
+msgstr "σφάλμα"
+
+#: zypp-tui/output/OutNormal.cc:90
 msgid "Warning: "
 msgstr "Προειδοποιηση: "
 
-#: zypp-tui/output/OutNormal.cc:253 zypp-tui/output/OutNormal.cc:287
-#: zypp-tui/output/OutNormal.cc:325
+#: zypp-tui/output/OutNormal.cc:254 zypp-tui/output/OutNormal.cc:288
+#: zypp-tui/output/OutNormal.cc:326
 msgid "Retrieving:"
 msgstr "Λήψη:"
 
 # window title for kernel loading (see txt_load_kernel)
-#: zypp-tui/output/OutNormal.cc:260
+#: zypp-tui/output/OutNormal.cc:261
 msgid "starting"
 msgstr "εκκίνηση"
 
 #. Translator: download progress bar result: "........[not found]"
-#: zypp-tui/output/OutNormal.cc:334 zypp-tui/output/OutNormal.cc:343
+#: zypp-tui/output/OutNormal.cc:335 zypp-tui/output/OutNormal.cc:344
 #, fuzzy
 msgid "not found"
 msgstr "Δεν βρέθηκε"
 
-#: zypp-tui/output/OutNormal.cc:420
+#: zypp-tui/output/OutNormal.cc:421
 msgid "No help available for this prompt."
 msgstr "Καμία διαθέσιμη βοήθεια για αυτή την εντολή."
 
-#: zypp-tui/output/OutNormal.cc:437
+#: zypp-tui/output/OutNormal.cc:438
 msgid "no help available for this option"
 msgstr "καμία διαθέσιμη βοήθεια για αυτή την επιλογή"
 

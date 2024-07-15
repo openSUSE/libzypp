@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 18:16+0100\n"
+"POT-Creation-Date: 2024-07-15 16:12+0200\n"
 "PO-Revision-Date: 2024-07-02 12:46+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
@@ -1452,7 +1452,7 @@ msgid "Failed to delete key."
 msgstr "Brisanje ključa je spodletelo."
 
 #: zypp/KeyRing.cc:420
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Signature file %s not found"
 msgstr "Podpisna datoteka %s ni bila najdena"
 
@@ -4162,71 +4162,6 @@ msgid_plural "(expires in %d days)"
 msgstr[0] "(poteče čez %d dan)"
 msgstr[1] "(poteče čez %d dni)"
 
-#. we will throw this later if no URL checks out fine
-#: zypp/RepoManager.cc:288 zypp/ng/repo/workflows/repomanagerwf.cc:413
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "Na navedenem mestu niso bili najdeni veljavni metapodatki"
-msgstr[1] "Na navedenih mestih niso bili najdeni veljavni metapodatki"
-
-#: zypp/RepoManager.cc:358 zypp/RepoManager.cc:414
-#: zypp/ng/repo/workflows/repomanagerwf.cc:377
-#, boost-format, c-format
-msgid "Can't create %s"
-msgstr "Ni moč ustvariti %s"
-
-#: zypp/RepoManager.cc:400
-#, c-format, boost-format
-msgid "Building repository '%s' cache"
-msgstr "Grajenje predpomnilnika vira »%s«"
-
-#: zypp/RepoManager.cc:420
-#, c-format, boost-format
-msgid "Can't create cache at %s - no writing permissions."
-msgstr "Predpomnilnika v %s ni moč ustvariti – ni dovoljenja za pisanje."
-
-#: zypp/RepoManager.cc:481
-#, boost-format, c-format
-msgid "Failed to cache repo (%d)."
-msgstr "Predpomnjenje vira ni uspelo (%d)."
-
-#: zypp/RepoManager.cc:492
-msgid "Unhandled repository type"
-msgstr "Neobravnavana vrsta vira"
-
-#: zypp/RepoManager.cc:556
-#, c-format, boost-format
-msgid "Adding repository '%s'"
-msgstr "Dodajanje vira »%s«"
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:610
-#, boost-format, c-format
-msgid "Invalid repo file name at '%s'"
-msgstr "Neveljavno ime datoteke vira na »%s«"
-
-#. TranslatorExplanation '%s' is a filename
-#: zypp/RepoManager.cc:624 zypp/zypp_detail/repomanagerbase_p.cc:358
-#: zypp/zypp_detail/repomanagerbase_p.cc:437
-#: zypp/zypp_detail/repomanagerbase_p.cc:500
-#: zypp/zypp_detail/repomanagerbase_p.cc:623
-#: zypp/zypp_detail/repomanagerbase_p.cc:731
-#, boost-format, c-format
-msgid "Can't open file '%s' for writing."
-msgstr "Datoteke »%s« ni moč odpreti za pisanje."
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1054 zypp/ng/repo/workflows/repomanagerwf.cc:67
-#, c-format, boost-format
-msgid "Error trying to read from '%s'"
-msgstr "Napaka pri poskušanju branja iz »%s«"
-
-#. TranslatorExplanation '%s' is an URL
-#: zypp/RepoManager.cc:1062
-#, boost-format, c-format
-msgid "Unknown error reading from '%s'"
-msgstr "Neznana napaka pri branju iz »%s«"
-
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "neznano"
@@ -4345,22 +4280,22 @@ msgstr "Neveljaven regularni izraz »%s«"
 
 #. !\todo add comma to the message for the next release
 #: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1514
-#: zypp/media/MediaNetwork.cc:316
+#: zypp/media/MediaNetwork.cc:314
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Za »%s« je potrebna overitev"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:782 zypp/media/MediaNetwork.cc:440
+#: zypp/media/MediaCurl.cc:789
 msgid "Will try again..."
 msgstr "Poskusilo se bo znova …"
 
-#: zypp/media/MediaCurl.cc:785
+#: zypp/media/MediaCurl.cc:792
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Opuščeno po %1% poskusih."
 
-#: zypp/media/MediaCurl.cc:900 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4368,7 +4303,7 @@ msgstr ""
 "Obiščite SUSE Customer Center in preverite ali je registracija še veljavna "
 "in še ni potekla."
 
-#: zypp/media/MediaCurl.cc:902 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4384,51 +4319,211 @@ msgstr ""
 "Ustvarjanje priklopne točke: ni moč najti zapisljive mape za ustvarjanje "
 "priklopne točke"
 
-#: zypp/misc/CheckAccessDeleted.cc:466
+#: zypp/misc/CheckAccessDeleted.cc:472
 msgid "Please install package 'lsof' first."
 msgstr "Najprej namestite paket »lsof«."
 
-#: zypp/ng/repo/refresh.cc:37
+#: zypp/ng/repo/refresh.cc:42
 msgid "Can't create metadata cache directory."
 msgstr "Ni moč ustvariti mape predpomnilnika metapodatkov."
 
-#: zypp/ng/workflows/checksumwf.cc:117
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/repomanagerwf.cc:81
+#: zypp/ng/repo/workflows/serviceswf.cc:283
+#, c-format, boost-format
+msgid "Error trying to read from '%s'"
+msgstr "Napaka pri poskušanju branja iz »%s«"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:432
+#: zypp/ng/repo/workflows/repomanagerwf.cc:655
+#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#, c-format, boost-format
+msgid "Can't create %s"
+msgstr "Ni moč ustvariti %s"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:487
+msgid "Valid metadata not found at specified URL"
+msgid_plural "Valid metadata not found at specified URLs"
+msgstr[0] "Na navedenem mestu niso bili najdeni veljavni metapodatki"
+msgstr[1] "Na navedenih mestih niso bili najdeni veljavni metapodatki"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+msgid "Failed to cache repo ( unable to start repo2solv )."
+msgstr ""
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:586
+#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#, c-format, boost-format
+msgid "Failed to cache repo (%d)."
+msgstr "Predpomnjenje vira ni uspelo (%d)."
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#, c-format, boost-format
+msgid "Building repository '%s' cache"
+msgstr "Grajenje predpomnilnika vira »%s«"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#, c-format, boost-format
+msgid "Can't create cache at %s - no writing permissions."
+msgstr "Predpomnilnika v %s ni moč ustvariti – ni dovoljenja za pisanje."
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#, boost-format
+msgid "Failed to cache repo %1%"
+msgstr ""
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+msgid "Unhandled repository type"
+msgstr "Neobravnavana vrsta vira"
+
+#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#, c-format, boost-format
+msgid "Adding repository '%s'"
+msgstr "Dodajanje vira »%s«"
+
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#, c-format, boost-format
+msgid "Invalid repo file name at '%s'"
+msgstr "Neveljavno ime datoteke vira na »%s«"
+
+#. TranslatorExplanation '%s' is a filename
+#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
+#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#, c-format, boost-format
+msgid "Can't open file '%s' for writing."
+msgstr "Datoteke »%s« ni moč odpreti za pisanje."
+
+#. TranslatorExplanation '%s' is an URL
+#: zypp/ng/repo/workflows/serviceswf.cc:290
+#: zypp/ng/repo/workflows/serviceswf.cc:296
+#, c-format, boost-format
+msgid "Unknown error reading from '%s'"
+msgstr "Neznana napaka pri branju iz »%s«"
+
+#: zypp/ng/repomanager.cc:196
+#, boost-format
+msgid "Cannot read repo directory '%1%': Permission denied"
+msgstr "Ni moč brati mape vira »%1%«: dovoljenje zavrnjeno"
+
+#. TranslatorExplanation '%s' is a pathname
+#: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
+#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#, c-format, boost-format
+msgid "Failed to read directory '%s'"
+msgstr "Branje mape »%s« ni uspelo"
+
+#: zypp/ng/repomanager.cc:214
+#, boost-format
+msgid "Cannot read repo file '%1%': Permission denied"
+msgstr "Ni moč brati datoteke vira »%1%«: dovoljenje zavrnjeno"
+
+#: zypp/ng/repomanager.cc:383
+msgid "Cleaning metadata"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:401
+msgid "Cleaning packages"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:453
+msgid "Cleaning up cache dirs"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:473
+#, boost-format
+msgid "Cleaning up directory: %1%"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:503
+msgid "Cleaning cache"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:524
+msgid "Loading from cache"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:615
+#, c-format, boost-format
+msgid "Removing repository '%s'"
+msgstr "Odstranjevanje vira »%s«"
+
+#: zypp/ng/repomanager.cc:635 zypp/ng/repomanager.cc:719
+msgid "Can't figure out where the repo is stored."
+msgstr "Ni moč ugotoviti, kje je vir shranjen."
+
+#. TranslatorExplanation '%s' is a filename
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#, c-format, boost-format
+msgid "Can't delete '%s'"
+msgstr "Ni moč izbrisati »%s«"
+
+#: zypp/ng/repomanager.cc:705
+msgid "Modifying repository"
+msgstr ""
+
+#: zypp/ng/repomanager.cc:892
+msgid "Refreshing Repository: "
+msgstr ""
+
+#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+msgid "Can't figure out where the service is stored."
+msgstr "Ni moč ugotoviti, kje je storitev shranjena."
+
+#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
+#. %1% = service name
+#. %2% = repository name
+#: zypp/ng/repomanager.cc:1433
+#, boost-format
+msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
+msgstr "Neznana storitev »%1%«: odstranjevanje zapuščenega vira storitve »%2%«"
+
+#: zypp/ng/repomanager.h:65
+msgid "Repository alias cannot start with dot."
+msgstr "Drugo ime vira se ne more začeti s piko."
+
+#: zypp/ng/repomanager.h:77
+msgid "Service alias cannot start with dot."
+msgstr "Drugo ime storitve se ne more začeti s piko."
+
+#: zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
 msgstr "Ni izvlečka za datoteko %s."
 
-#: zypp/ng/workflows/checksumwf.cc:123
+#: zypp/ng/reporthelper.cc:39
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
 msgstr "Neznan izvleček %s za datoteko %s."
 
-#: zypp/ng/workflows/checksumwf.cc:129
+#: zypp/ng/reporthelper.cc:52
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
 msgstr "Potrjevanje z izvlečkom za datoteko »%s« ni uspelo"
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/workflows/keyringwf.cc:358
+#: zypp/ng/reporthelper.cc:69
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
 msgstr "Datoteka »%s« ni podpisana. Ali želite nadaljevati?"
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/workflows/keyringwf.cc:362
+#: zypp/ng/reporthelper.cc:73
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
 msgstr "Datoteka »%s« iz vira »%s« ni podpisana. Ali želite nadaljevati?"
 
-#: zypp/ng/workflows/keyringwf.cc:374
+#: zypp/ng/reporthelper.cc:90
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr "Ali želite zavrniti ključ, mu zaupati začasno, ali zaupati vedno?"
 
-#: zypp/ng/workflows/keyringwf.cc:383
+#: zypp/ng/reporthelper.cc:116
 #, boost-format
 msgid "Key Name: %1%"
 msgstr "Ime ključa: %1%"
 
-#: zypp/ng/workflows/keyringwf.cc:389
+#: zypp/ng/reporthelper.cc:128
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
@@ -4436,31 +4531,31 @@ msgstr[0] "Prejet %1% nov ključ za podpisovanje paketov iz vira »%2%«:"
 msgstr[1] "Prejetih %1% novih ključev za podpisovanje paketov iz vira »%2%«:"
 
 #. translator: %1% is a file name
-#: zypp/ng/workflows/keyringwf.cc:400
+#: zypp/ng/reporthelper.cc:144
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
 msgstr "Potrjevanje s podpisom za datoteko »%1%« ni uspelo."
 
 #. translator: %1% is a file name, %2% a repositories na  me
-#: zypp/ng/workflows/keyringwf.cc:403
+#: zypp/ng/reporthelper.cc:147
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr "Potrjevanje s podpisom za datoteko »%1%« iz vira »%2%« ni uspelo."
 
 #. @TODO use a centralized Continue string!
-#: zypp/ng/workflows/keyringwf.cc:406 zypp-tui/output/Out.h:57
+#: zypp/ng/reporthelper.cc:150 zypp-tui/output/Out.cc:32
 msgid "Continue?"
 msgstr "Ali želite nadaljevati?"
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/workflows/keyringwf.cc:419
+#: zypp/ng/reporthelper.cc:168
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
 "Datoteka »%s« je podpisana z neznanim ključem »%s«. Ali želite nadaljevati?"
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/workflows/keyringwf.cc:423
+#: zypp/ng/reporthelper.cc:172
 #, c-format, boost-format
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
@@ -4469,7 +4564,7 @@ msgstr ""
 "nadaljevati?"
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:77
+#: zypp/ng/workflows/repoinfowf.cc:78
 #, boost-format
 msgid "Repository %1% does not define additional 'gpgkey=' URLs."
 msgstr "Vir %1% ne določa dodatnih mest »gpgkey=«."
@@ -4478,14 +4573,14 @@ msgstr "Vir %1% ne določa dodatnih mest »gpgkey=«."
 #. all keys specified in gpgkey= entries
 #. translator: %1% is a gpg key ID like 3DBDC284
 #. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:86
+#: zypp/ng/workflows/repoinfowf.cc:87
 #, boost-format
 msgid "Looking for gpg key ID %1% in repository %2%."
 msgstr "Iskanje ključa GPG z določilnikom %1% v viru %2%."
 
 #. translator: %1% is a gpg key ID like 3DBDC284
 #. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:133
+#: zypp/ng/workflows/repoinfowf.cc:134
 #, boost-format
 msgid "Looking for gpg key ID %1% in cache %2%."
 msgstr "Iskanje ključa GPG z določilnikom %1% v predpomnilniku %2%."
@@ -4529,14 +4624,6 @@ msgstr "Preverjanje applydeltarpm ni uspelo."
 #: zypp/repo/PackageProvider.cc:632
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm ni uspel."
-
-#. TranslatorExplanation '%s' is a pathname
-#: zypp/repo/PluginServices.cc:49 zypp/zypp_detail/repomanagerbase_p.cc:129
-#: zypp/zypp_detail/repomanagerbase_p.cc:284
-#: zypp/zypp_detail/repomanagerbase_p.cc:815
-#, boost-format, c-format
-msgid "Failed to read directory '%s'"
-msgstr "Branje mape »%s« ni uspelo"
 
 #: zypp/repo/RepoException.cc:129
 msgid "Service plugin does not support changing an attribute."
@@ -4709,7 +4796,7 @@ msgstr "Ni moč ustvariti sat-pool."
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: zypp/solver/detail/ProblemSolutionIgnore.cc:42
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "break %s by ignoring some of its dependencies"
 msgstr "pokvari %s s prezrtjem nekaterih njegovih odvisnosti"
 
@@ -4717,7 +4804,7 @@ msgstr "pokvari %s s prezrtjem nekaterih njegovih odvisnosti"
 msgid "generally ignore of some dependencies"
 msgstr "splošno prezrtje nekaterih odvisnosti"
 
-#: zypp/solver/detail/SATResolver.cc:1146
+#: zypp/solver/detail/SATResolver.cc:1160
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -4727,96 +4814,96 @@ msgstr ""
 "nadomeščen"
 
 #. just in case
-#: zypp/solver/detail/SATResolver.cc:1148
+#: zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr "%1%, ki bo nameščen, ne spada v vir za nadgradnjo distribucije"
 
-#: zypp/solver/detail/SATResolver.cc:1152
+#: zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr "nameščeni %1% ima starejšo arhitekturo"
 
-#: zypp/solver/detail/SATResolver.cc:1154
+#: zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr "%1%, ki bo nameščen, ima starejšo arhitekturo"
 
-#: zypp/solver/detail/SATResolver.cc:1157
+#: zypp/solver/detail/SATResolver.cc:1171
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr "težava z nameščenim %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1160
+#: zypp/solver/detail/SATResolver.cc:1174
 msgid "conflicting requests"
 msgstr "zahteve v sporu"
 
-#: zypp/solver/detail/SATResolver.cc:1163
+#: zypp/solver/detail/SATResolver.cc:1177
 msgid "some dependency problem"
 msgstr "neka težava z odvisnostjo"
 
-#: zypp/solver/detail/SATResolver.cc:1166
+#: zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr "nič ne ponuja zahtevanega »%1%«"
 
-#: zypp/solver/detail/SATResolver.cc:1167
-#: zypp/solver/detail/SATResolver.cc:1171
+#: zypp/solver/detail/SATResolver.cc:1181
+#: zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
 msgstr "Ali ste omogočili vse zahtevane vire?"
 
-#: zypp/solver/detail/SATResolver.cc:1170
+#: zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr "zahtevani paket %1% ne obstaja"
 
-#: zypp/solver/detail/SATResolver.cc:1174
+#: zypp/solver/detail/SATResolver.cc:1188
 msgid "unsupported request"
 msgstr "nepodprta zahteva"
 
-#: zypp/solver/detail/SATResolver.cc:1177
+#: zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr "»%1%« ponuja sistema in ga ni mogoče izbrisati"
 
-#: zypp/solver/detail/SATResolver.cc:1180
+#: zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
 msgstr "%1% ni mogoče namestiti"
 
-#: zypp/solver/detail/SATResolver.cc:1185
+#: zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
 msgstr "nič ne ponuja »%1%«, ki ga potrebuje nameščeni %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1187
+#: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr "nič ne ponuja »%1%«, ki ga potrebuje %2%, ki bo nameščen"
 
-#: zypp/solver/detail/SATResolver.cc:1190
+#: zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr "ni mogoče namestiti oba %1% in %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1195
+#: zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr "nameščeni %1% je v sporu z »%2%«, ki ga ponuja nameščeni %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1197
+#: zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
 msgstr "nameščeni %1% je v sporu z »%2%«, ki ga ponuja %3%, ki bo nameščen"
 
-#: zypp/solver/detail/SATResolver.cc:1201
+#: zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr "%1%, ki bo nameščen, je v sporu z »%2%«, ki ga ponuja nameščeni %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1203
+#: zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
@@ -4824,44 +4911,44 @@ msgid ""
 msgstr ""
 "%1%, ki bo nameščen, je v sporu z »%2%«, ki ga ponuja %3%, ki bo nameščen"
 
-#: zypp/solver/detail/SATResolver.cc:1210
+#: zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr "nameščeni %1% nadomešča »%2%«, ki ga ponuja nameščeni %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1212
+#: zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr "nameščeni %1% nadomešča »%2%«, ki ga ponuja %3%, ki bo nameščen"
 
-#: zypp/solver/detail/SATResolver.cc:1216
+#: zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr "%1%, ki bo nameščen, nadomešča »%2%«, ki ga ponuja nameščeni %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1218
+#: zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr "%1%, ki bo nameščen, nadomešča »%2%«, ki ga ponuja %3%, ki bo nameščen"
 
-#: zypp/solver/detail/SATResolver.cc:1223
+#: zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr "nameščeni %1% je v sporu z »%2%«, ki ga ponuja sam"
 
-#: zypp/solver/detail/SATResolver.cc:1225
+#: zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr "%1%, ki bo nameščen, je v sporu z »%2%«, ki ga ponuja sam"
 
-#: zypp/solver/detail/SATResolver.cc:1257
+#: zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr "nameščeni %1% zahteva »%2%«, vendar te zahteve ni mogoče ponuditi"
 
-#: zypp/solver/detail/SATResolver.cc:1259
+#: zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
@@ -4869,11 +4956,11 @@ msgid ""
 msgstr ""
 "%1%, ki bo nameščen, zahteva »%2%«, vendar te zahteve ni mogoče ponuditi"
 
-#: zypp/solver/detail/SATResolver.cc:1261
+#: zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
 msgstr "izbrisani ponudniki: "
 
-#: zypp/solver/detail/SATResolver.cc:1271
+#: zypp/solver/detail/SATResolver.cc:1285
 msgid ""
 "\n"
 "not installable providers: "
@@ -4881,24 +4968,25 @@ msgstr ""
 "\n"
 "ponudniki, ki jih ni mogoče namestiti: "
 
-#: zypp/solver/detail/SATResolver.cc:1273
+#: zypp/solver/detail/SATResolver.cc:1287
 msgid "not installable providers: "
 msgstr "ponudniki, ki jih ni mogoče namestiti: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/solver/detail/SATResolver.cc:1310
+#: zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr "%1% še ni povsem integriran v %2%."
 
-#: zypp/solver/detail/SATResolver.cc:1311
+#: zypp/solver/detail/SATResolver.cc:1325
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
-msgstr "Običajno je želeno obdržati PTF in ne namestiti vzdrževalnih popravkov."
+msgstr ""
+"Običajno je želeno obdržati PTF in ne namestiti vzdrževalnih popravkov."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1319
+#: zypp/solver/detail/SATResolver.cc:1333
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
@@ -4907,7 +4995,7 @@ msgstr ""
 "Odstranitev nameščenega %1% v tem kontekstu bo odstranila (ne nadomestila!) "
 "tudi vsebovane pakete PTF."
 
-#: zypp/solver/detail/SATResolver.cc:1320
+#: zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
@@ -4916,117 +5004,117 @@ msgstr ""
 "PTF bi morali odstraniti z ukazom »%1%«. To bo posodobilo vsebovane pakete "
 "PTF, namesto da bi jih odstranilo."
 
-#: zypp/solver/detail/SATResolver.cc:1321
+#: zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr "Običajno je želeno obdržati PTF ali preklicati dejanje."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1326
+#: zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr "Nameščeni %1% blokira želeno dejanje."
 
-#: zypp/solver/detail/SATResolver.cc:1327
+#: zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr "Običajno je želeno obdržati PTF in preklicati dejanje."
 
-#: zypp/solver/detail/SATResolver.cc:1384
+#: zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr "odstrani zaklep za dovoljenje odstranitve %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1391
-#: zypp/solver/detail/SATResolver.cc:1429
+#: zypp/solver/detail/SATResolver.cc:1405
+#: zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
 msgstr "ne namesti %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1408
-#: zypp/solver/detail/SATResolver.cc:1450
+#: zypp/solver/detail/SATResolver.cc:1422
+#: zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
 msgstr "obdrži %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1413
+#: zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr "odstrani zaklep za dovoljenje namestitve %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1464
-#: zypp/solver/detail/SATResolver.cc:1485
+#: zypp/solver/detail/SATResolver.cc:1478
+#: zypp/solver/detail/SATResolver.cc:1499
 msgid "This request will break your system!"
 msgstr "Ta zahteva bo pokvarila sistem!"
 
-#: zypp/solver/detail/SATResolver.cc:1465
-#: zypp/solver/detail/SATResolver.cc:1486
+#: zypp/solver/detail/SATResolver.cc:1479
+#: zypp/solver/detail/SATResolver.cc:1500
 msgid "ignore the warning of a broken system"
 msgstr "prezri opozorilo o pokvaritvi sistema"
 
-#: zypp/solver/detail/SATResolver.cc:1470
+#: zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr "ne vprašaj za namestitev rešitve, ki ponuja %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1492
+#: zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr "ne vprašaj za izbris vseh rešitev, ki ponujajo %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1505
+#: zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr "ne namesti najnovejše različice %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1526
+#: zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr "obdrži %1% kljub starejši arhitekturi"
 
-#: zypp/solver/detail/SATResolver.cc:1531
+#: zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr "namesti %1% kljub starejši arhitekturi"
 
-#: zypp/solver/detail/SATResolver.cc:1540
+#: zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr "obdrži opuščeni %1%"
 
-#: zypp/solver/detail/SATResolver.cc:1545
+#: zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr "namesti %1% iz izločenega vira"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1559
+#: zypp/solver/detail/SATResolver.cc:1573
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr "namesti %1%, čeprav je bil opuščen"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1562
+#: zypp/solver/detail/SATResolver.cc:1576
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr "omogoči nameščanje PTF %1%"
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1565
+#: zypp/solver/detail/SATResolver.cc:1579
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr "namesti %1%, čeprav je bil dodan na seznam prepovedanih"
 
-#: zypp/solver/detail/SATResolver.cc:1585
+#: zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr "vrni %1% na starejšo različico %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1592
+#: zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr "spremeni arhitekturo %1% na %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/solver/detail/SATResolver.cc:1603
+#: zypp/solver/detail/SATResolver.cc:1617
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
@@ -5035,7 +5123,7 @@ msgstr ""
 "namesti %1% (s spremembo izdelovalca)\n"
 "  %2%  →  %3%"
 
-#: zypp/solver/detail/SATResolver.cc:1608
+#: zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
@@ -5044,12 +5132,12 @@ msgstr ""
 "namesti %1% izdelovalca %2%,\n"
 "  ki nadomesti %3% izdelovalca %4%"
 
-#: zypp/solver/detail/SATResolver.cc:1617
+#: zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr "nadomestitev %1% z %2%"
 
-#: zypp/solver/detail/SATResolver.cc:1628
+#: zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr "odstranitev %1%"
@@ -5075,34 +5163,34 @@ msgstr "Izhod skripta %1%:"
 msgid "Installation has been aborted as directed."
 msgstr "Namestitev je bila prekinjena, kot naročeno."
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:462
 msgid " executed"
 msgstr " izvedeno"
 
 # %s is either BOOTP or DHCP
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:484
 msgid " execution failed"
 msgstr " izvedba ni uspela"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:601
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s že izveden kot %s)"
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:611
 msgid " execution skipped while aborting"
 msgstr " izvedba preskočena med prekinitvijo"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:666 zypp/target/TargetImpl.cc:686
+#: zypp/target/TargetImpl.cc:714 zypp/target/TargetImpl.cc:751
+#: zypp/target/TargetImpl.cc:759
 msgid "Error sending update message notification."
 msgstr "Napaka pošiljanja obvestila s sporočilom posodobitve."
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:810
 msgid "New update message"
 msgstr "Sporočilo nove posodobitve"
 
@@ -5116,7 +5204,7 @@ msgstr ""
 "Prejet signal: »%1% (%2%)«. Zaradi zagotovitve skladnosti sistema ni mogoče "
 "preklicati tekoče transakcije RPM."
 
-#: zypp/target/TargetImpl.cc:2751
+#: zypp/target/TargetImpl.cc:2722
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "Izvajanje transakcije ni uspelo zaradi naslednjih težav:"
 
@@ -5150,7 +5238,7 @@ msgstr "Vsebina paketa ni podpisana!"
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
 #: zypp/target/rpm/RpmDb.cc:1621
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Spremenjene nastavitvene datoteke za %s:"
 
@@ -5195,7 +5283,7 @@ msgid "Additional rpm output"
 msgstr "Dodatni izhod RPM"
 
 #: zypp/target/rpm/RpmDb.cc:2230
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "created backup %s"
 msgstr "ustvaril varnostno kopijo %s"
 
@@ -5234,54 +5322,6 @@ msgstr "Datoteka ne obstaja ali pa podpisa ni moč potrditi"
 msgid "File is unsigned"
 msgstr "Datoteka ni podpisana"
 
-#: zypp/zypp_detail/repomanagerbase_p.cc:121
-#, boost-format
-msgid "Cannot read repo directory '%1%': Permission denied"
-msgstr "Ni moč brati mape vira »%1%«: dovoljenje zavrnjeno"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:139
-#, boost-format
-msgid "Cannot read repo file '%1%': Permission denied"
-msgstr "Ni moč brati datoteke vira »%1%«: dovoljenje zavrnjeno"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:386
-#, c-format, boost-format
-msgid "Removing repository '%s'"
-msgstr "Odstranjevanje vira »%s«"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:405
-#: zypp/zypp_detail/repomanagerbase_p.cc:481
-msgid "Can't figure out where the repo is stored."
-msgstr "Ni moč ugotoviti, kje je vir shranjen."
-
-#. TranslatorExplanation '%s' is a filename
-#: zypp/zypp_detail/repomanagerbase_p.cc:419
-#: zypp/zypp_detail/repomanagerbase_p.cc:611
-#, boost-format, c-format
-msgid "Can't delete '%s'"
-msgstr "Ni moč izbrisati »%s«"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:599
-#: zypp/zypp_detail/repomanagerbase_p.cc:662
-msgid "Can't figure out where the service is stored."
-msgstr "Ni moč ugotoviti, kje je storitev shranjena."
-
-#. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
-#. %1% = service name
-#. %2% = repository name
-#: zypp/zypp_detail/repomanagerbase_p.cc:909
-#, boost-format
-msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
-msgstr "Neznana storitev »%1%«: odstranjevanje zapuščenega vira storitve »%2%«"
-
-#: zypp/zypp_detail/repomanagerbase_p.cc:954
-msgid "Repository alias cannot start with dot."
-msgstr "Drugo ime vira se ne more začeti s piko."
-
-#: zypp/zypp_detail/repomanagerbase_p.h:45
-msgid "Service alias cannot start with dot."
-msgstr "Drugo ime storitve se ne more začeti s piko."
-
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-core/CheckSum.cc:136
 #, c-format, boost-format
@@ -5289,12 +5329,12 @@ msgid "Dubious type '%s' for %u byte checksum '%s'"
 msgstr "Dvomljiva vrsta »%s« za %u bajtov nadzorne vsote »%s«"
 
 #: zypp-core/ExternalProgram.cc:245
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Can't open pty (%s)."
 msgstr "Ni moč odpreti psevdo-terminala (%s)."
 
 #: zypp-core/ExternalProgram.cc:264 zypp-core/ExternalProgram.cc:281
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Can't open pipe (%s)."
 msgstr "Ni moč odpreti cevi (%s)."
 
@@ -5319,7 +5359,7 @@ msgstr "Neveljavna referenca na prazen objekt Url"
 msgid "Unable to parse Url components"
 msgstr "Ni moč razčleniti delov Url"
 
-#: zypp-core/base/Exception.cc:169
+#: zypp-core/base/Exception.cc:186
 msgid "History:"
 msgstr "Zgodovina:"
 
@@ -5434,7 +5474,7 @@ msgid "Can't chroot to '%s' (%s)."
 msgstr "Ni moč izvesti chroot v »%s« (%s)."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:376
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
 msgstr "Ni moč izvesti chdir v »%s« (%s)."
 
@@ -5476,12 +5516,12 @@ msgid "Can't exec '%s', unexpected error."
 msgstr "Ni moč izvesti »%s«. Nepričakovana napaka."
 
 #: zypp-media/mediaexception.cc:33
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Failed to mount %s on %s"
 msgstr "Priklapljanje %s v %s ni uspelo"
 
 #: zypp-media/mediaexception.cc:43
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Failed to unmount %s"
 msgstr "Odklapljanje %s ni uspelo"
 
@@ -5502,7 +5542,7 @@ msgid "File '%s' not found on medium '%s'"
 msgstr "Datoteke »%s« na nosilcu »%s« ni bilo moč najti"
 
 #: zypp-media/mediaexception.cc:63
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Cannot write file '%s'."
 msgstr "Datoteke »%s« ni moč zapisati."
 
@@ -5593,7 +5633,7 @@ msgid "Cannot eject any media"
 msgstr "Ni moč izvreči nobenega nosilca"
 
 #: zypp-media/mediaexception.cc:166
-#, boost-format, c-format
+#, c-format, boost-format
 msgid "Cannot eject media '%s'"
 msgstr "Ni moč izvreči nosilca »%s«"
 
@@ -5652,72 +5692,72 @@ msgstr ""
 "Napaka prejemanja (curl) za »%s«:\n"
 "Ni moč dobiti odziva HTTP\n"
 
-#: zypp-tui/Table.h:38
+#: zypp-tui/Table.cc:32
 msgid "Yes"
 msgstr "Da"
 
-#: zypp-tui/Table.h:38
+#: zypp-tui/Table.cc:32
 msgid "No"
 msgstr "Ne"
 
+#. translator: usually followed by a ' ' and some explanatory text
+#: zypp-tui/output/Out.cc:26
+msgid "Note:"
+msgstr "Opomba:"
+
+#. translator: usually followed by a ' ' and some explanatory text
+#: zypp-tui/output/Out.cc:28
+msgid "Warning:"
+msgstr "Opozorilo:"
+
+#. translator: usually followed by a ' ' and some explanatory text
+#: zypp-tui/output/Out.cc:30
+msgid "Error:"
+msgstr "Napaka:"
+
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:130 zypp-tui/output/OutNormal.cc:340
-#: zypp-tui/output/OutNormal.cc:343
+#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
+#: zypp-tui/output/OutNormal.cc:344
 msgid "done"
 msgstr "zaključeno"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
-#: zypp-tui/output/Out.cc:132
+#: zypp-tui/output/Out.cc:143
 msgid "attention"
 msgstr "pozor"
 
 #. translator: Shown as result tag in a progress bar: ...........[error]
 #. Translator: download progress bar result: "............[error]"
-#: zypp-tui/output/Out.cc:134 zypp-tui/output/OutNormal.cc:337
-#: zypp-tui/output/OutNormal.cc:343
+#: zypp-tui/output/Out.cc:145 zypp-tui/output/OutNormal.cc:338
+#: zypp-tui/output/OutNormal.cc:344
 msgid "error"
 msgstr "napaka"
 
-#. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:51
-msgid "Note:"
-msgstr "Opomba:"
-
-#. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:53
-msgid "Warning:"
-msgstr "Opozorilo:"
-
-#. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.h:55
-msgid "Error:"
-msgstr "Napaka:"
-
-#: zypp-tui/output/OutNormal.cc:89
+#: zypp-tui/output/OutNormal.cc:90
 msgid "Warning: "
 msgstr "Opozorilo: "
 
-#: zypp-tui/output/OutNormal.cc:253 zypp-tui/output/OutNormal.cc:287
-#: zypp-tui/output/OutNormal.cc:325
+#: zypp-tui/output/OutNormal.cc:254 zypp-tui/output/OutNormal.cc:288
+#: zypp-tui/output/OutNormal.cc:326
 msgid "Retrieving:"
 msgstr "Prejemanje:"
 
 # window title for kernel loading (see txt_load_kernel)
-#: zypp-tui/output/OutNormal.cc:260
+#: zypp-tui/output/OutNormal.cc:261
 msgid "starting"
 msgstr "zaganjanje"
 
 #. Translator: download progress bar result: "........[not found]"
-#: zypp-tui/output/OutNormal.cc:334 zypp-tui/output/OutNormal.cc:343
+#: zypp-tui/output/OutNormal.cc:335 zypp-tui/output/OutNormal.cc:344
 msgid "not found"
 msgstr "ni najdeno"
 
-#: zypp-tui/output/OutNormal.cc:420
+#: zypp-tui/output/OutNormal.cc:421
 msgid "No help available for this prompt."
 msgstr "Pomoč za ta poziv ni na voljo."
 
-#: zypp-tui/output/OutNormal.cc:437
+#: zypp-tui/output/OutNormal.cc:438
 msgid "no help available for this option"
 msgstr "pomoč za to možnost ni na voljo"
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2024-03-22 21:43+0000\n"
+"PO-Revision-Date: 2024-07-16 09:47+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4294,6 +4294,8 @@ msgstr[1] "No s'han trobat metadades vàlides als URL especificats"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:568
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
+"Ha fallat posar a la memòria cau el repositori (no s'ha pogut iniciar "
+"repo2solv)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:586
 #: zypp/ng/repo/workflows/repomanagerwf.cc:615
@@ -4315,7 +4317,7 @@ msgstr ""
 #: zypp/ng/repo/workflows/repomanagerwf.cc:785
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Ha fallat posar a la memòria cau el repositori %1%."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:802
 msgid "Unhandled repository type"
@@ -4366,28 +4368,28 @@ msgstr "No es pot llegir el fitxer de repositori %1%: permís denegat"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Netejant metadades"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Netejant paquets"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Netejant directoris de la cau"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Netejant el directori: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Netejant la cau"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Carregant de la cau"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -4406,11 +4408,11 @@ msgstr "No es pot esborrar %s"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Modificant el repositori"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Refrescant el repositori: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."

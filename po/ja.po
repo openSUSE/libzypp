@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2024-03-23 01:42+0000\n"
+"PO-Revision-Date: 2024-07-16 04:47+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3888,7 +3888,8 @@ msgstr[0] "指定した URL には正しいメタデータがありません"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:568
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "リポジトリのキャッシュ作成に失敗しました ( repo2solv を開始できませんでした )"
+" 。"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:586
 #: zypp/ng/repo/workflows/repomanagerwf.cc:615
@@ -3909,7 +3910,7 @@ msgstr "%s にキャッシュを作成できません - 書き込み許可があ
 #: zypp/ng/repo/workflows/repomanagerwf.cc:785
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "%1% リポジトリのキャッシュ作成に失敗しました"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:802
 msgid "Unhandled repository type"
@@ -3962,28 +3963,28 @@ msgstr ""
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "メタデータを清掃しています"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "パッケージを清掃しています"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "キャッシュディレクトリを清掃しています"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "ディレクトリを清掃しています: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "キャッシュを清掃しています"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "キャッシュから読み込んでいます"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -4002,11 +4003,11 @@ msgstr "'%s' を削除することができません"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "リポジトリを修正しています"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "リポジトリを更新しています: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."

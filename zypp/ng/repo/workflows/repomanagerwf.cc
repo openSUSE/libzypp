@@ -8,7 +8,8 @@
 \---------------------------------------------------------------------*/
 #include "repomanagerwf.h"
 
-#include "zypp/parser/xml/Reader.h"
+#include <zypp/parser/xml/Reader.h>
+#include <zypp/sat/Pool.h>
 
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/zyppng/io/Process>
@@ -23,7 +24,7 @@
 #include <zypp/base/Algorithm.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/logichelpers.h>
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/repomanager.h>
 
@@ -46,7 +47,7 @@ namespace zyppng::RepoManagerWorkflow {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
-    using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
+    using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContextRef, SyncContextRef >;
     using ProvideType     = typename remove_smart_ptr_t<ZyppContextRefType>::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
     using LazyMediaHandle = typename ProvideType::LazyMediaHandle;
@@ -187,7 +188,7 @@ namespace zyppng::RepoManagerWorkflow {
   }
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(ContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
+  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(AsyncContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
   {
     return SimpleExecutor< ProbeRepoLogic, AsyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
@@ -197,7 +198,7 @@ namespace zyppng::RepoManagerWorkflow {
     return SimpleExecutor< ProbeRepoLogic, SyncOp<expected<zypp::repo::RepoType>> >::run( std::move(ctx), std::move(medium), std::move(path), std::move(targetPath) );
   }
 
-  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath )
+  AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( AsyncContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath )
   {
     return probeRepoLogic( std::move(ctx), std::move(repo), std::move(targetPath) );
   }
@@ -221,7 +222,7 @@ namespace zyppng::RepoManagerWorkflow {
     }
   }
 
-  AsyncOpRef<expected<std::list<RepoInfo> > > readRepoFile(ContextRef ctx, zypp::Url repoFileUrl)
+  AsyncOpRef<expected<std::list<RepoInfo> > > readRepoFile(AsyncContextRef ctx, zypp::Url repoFileUrl)
   {
     return readRepoFileLogic( std::move(ctx), std::move(repoFileUrl) );
   }
@@ -264,7 +265,7 @@ namespace zyppng::RepoManagerWorkflow {
           MIL << "Check if to refresh repo " << _refreshContext->repoInfo().alias() << " at " << _medium.baseUrl() << " (" << info.type() << ")" << std::endl;
 
           // first check old (cached) metadata
-          return zyppng::RepoManager<ZyppContextRefType>::metadataStatus( info, _refreshContext->repoManagerOptions() );
+          return zyppng::RepoManager<ZyppContextType>::metadataStatus( info, _refreshContext->repoManagerOptions() );
         })
         | and_then( [this](zypp::RepoStatus oldstatus) {
 
@@ -295,7 +296,7 @@ namespace zyppng::RepoManagerWorkflow {
             // bsc#1174016: Prerequisite to skipping the refresh is that metadata
             // and solv cache status match. They will not, if the repos URL was
             // changed e.g. due to changed repovars.
-            expected<zypp::RepoStatus> cachestatus = zyppng::RepoManager<ZyppContextRefType>::cacheStatus( info, _refreshContext->repoManagerOptions() );
+            expected<zypp::RepoStatus> cachestatus = zyppng::RepoManager<ZyppContextType>::cacheStatus( info, _refreshContext->repoManagerOptions() );
             if ( !cachestatus ) return makeReadyResult( expected<repo::RefreshCheckStatus>::error(cachestatus.error()) );
 
             if ( oldstatus == *cachestatus ) {
@@ -336,7 +337,7 @@ namespace zyppng::RepoManagerWorkflow {
                 // check status
                 if ( oldstatus == newstatus ) {
                   MIL << "repo has not changed" << std::endl;
-                  return zyppng::RepoManager<ZyppContextRefType>::touchIndexFile( _refreshContext->repoInfo(), _refreshContext->repoManagerOptions() )
+                  return zyppng::RepoManager<ZyppContextType>::touchIndexFile( _refreshContext->repoInfo(), _refreshContext->repoManagerOptions() )
                   | and_then([](){ return expected<repo::RefreshCheckStatus>::success(zypp::RepoManagerFlags::REPO_UP_TO_DATE); });
                 }
                 else { // includes newstatus.empty() if e.g. repo format changed
@@ -510,7 +511,7 @@ namespace zyppng::RepoManagerWorkflow {
       };
 
       // predicate that accepts only valid results, and in addition collects all errors in rexception
-      auto predicate = [ info = refCtx->repoInfo(), helper ]( const expected<RefreshContextRef> &res ) -> bool{
+      auto predicate = [ /* info = refCtx->repoInfo(), */ helper ]( const expected<RefreshContextRef> &res ) -> bool{
         if ( !res ) {
           try {
             ZYPP_RETHROW( res.error() );
@@ -557,17 +558,17 @@ namespace zyppng::RepoManagerWorkflow {
     template <typename ZyppCtxRef> struct Repo2SolvOp;
 
     template <>
-    struct Repo2SolvOp<ContextRef> : public AsyncOp<expected<void>>
+    struct Repo2SolvOp<AsyncContextRef> : public AsyncOp<expected<void>>
     {
       Repo2SolvOp() { }
 
       static AsyncOpRef<expected<void>> run( zypp::RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
         MIL << "Starting repo2solv for repo " << repo.alias () << std::endl;
-        auto me = std::make_shared<Repo2SolvOp<ContextRef>>();
+        auto me = std::make_shared<Repo2SolvOp<AsyncContextRef>>();
         me->_repo = std::move(repo);
         me->_proc = Process::create();
-        me->_proc->connect( &Process::sigFinished, *me, &Repo2SolvOp<ContextRef>::procFinished );
-        me->_proc->connect( &Process::sigReadyRead, *me, &Repo2SolvOp<ContextRef>::readyRead );
+        me->_proc->connect( &Process::sigFinished, *me, &Repo2SolvOp<AsyncContextRef>::procFinished );
+        me->_proc->connect( &Process::sigReadyRead, *me, &Repo2SolvOp<AsyncContextRef>::readyRead );
 
         std::vector<const char *> argsIn;
         argsIn.reserve ( args.size() );
@@ -666,7 +667,7 @@ namespace zyppng::RepoManagerWorkflow {
             return expected<RepoStatus>::error( std::move(ex) );
           }
 
-          return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), options );
+          return RepoManager<ZyppContextType>::metadataStatus( _refCtx->repoInfo(), options );
 
         }) | and_then( [this](RepoStatus raw_metadata_status ) {
 
@@ -700,7 +701,7 @@ namespace zyppng::RepoManagerWorkflow {
           if ( _refCtx->repoManager()->isCached( info ) )
           {
             MIL << info.alias() << " is already cached." << std::endl;
-            expected<RepoStatus> cache_status = RepoManager<ZyppContextRefType>::cacheStatus( info, _refCtx->repoManagerOptions() );
+            expected<RepoStatus> cache_status = RepoManager<ZyppContextType>::cacheStatus( info, _refCtx->repoManagerOptions() );
             if ( !cache_status )
               return makeReadyResult( expected<void>::error(cache_status.error()) );
 
@@ -764,7 +765,7 @@ namespace zyppng::RepoManagerWorkflow {
           {
             case zypp::repo::RepoType::NONE_e:
               // unknown, probe the local metadata
-              repokind = RepoManager<ZyppContextRefType>::probeCache( _productdatapath );
+              repokind = RepoManager<ZyppContextType>::probeCache( _productdatapath );
             break;
             default:
             break;
@@ -943,7 +944,7 @@ namespace zyppng::RepoManagerWorkflow {
     };
   };
 
-  AsyncOpRef<expected<RepoInfo> > addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress )
+  AsyncOpRef< expected<RepoInfo> > addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress )
   {
     return SimpleExecutor<AddRepoLogic, AsyncOp<expected<RepoInfo>>>::run( std::move(mgr), std::move(info), std::move(myProgress) );
   }
@@ -1065,7 +1066,7 @@ namespace zyppng::RepoManagerWorkflow {
         ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
       public:
-        using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
+        using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContextRef, SyncContextRef >;
         using ZyppContextType    = typename ZyppContextRefType::element_type;
         using ProvideType        = typename ZyppContextType::ProvideType;
         using MediaHandle        = typename ProvideType::MediaHandle;
@@ -1219,7 +1220,7 @@ namespace zyppng::RepoManagerWorkflow {
     };
   }
 
-  AsyncOpRef<expected<void> > refreshGeoIPData( ContextRef ctx, RepoInfo::url_set urls )
+  AsyncOpRef<expected<void> > refreshGeoIPData( AsyncContextRef ctx, RepoInfo::url_set urls )
   {
     return SimpleExecutor<RefreshGeoIpLogic, AsyncOp<expected<void>>>::run( std::move(ctx), std::move(urls) );
   }

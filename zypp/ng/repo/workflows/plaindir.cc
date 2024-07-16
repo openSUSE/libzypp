@@ -13,7 +13,7 @@
 #include <zypp/ng/Context>
 
 #include <zypp/ng/workflows/logichelpers.h>
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 

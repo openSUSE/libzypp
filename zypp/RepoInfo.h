@@ -23,8 +23,13 @@
 #include <zypp/TriBool.h>
 #include <zypp/repo/RepoType.h>
 #include <zypp/repo/RepoVariables.h>
-
 #include <zypp/repo/RepoInfoBase.h>
+
+#include <zypp-core/zyppng/base/zyppglobal.h>
+
+namespace zyppng {
+  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 ( RepoManager, ContextType );
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -73,7 +78,11 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
     public:
-      RepoInfo();
+
+      // nullable -> ContextFactory::defaultContext() ?
+      RepoInfo ( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
+
+      ZYPP_INTERNAL_DEPRECATE RepoInfo();
       ~RepoInfo() override;
 
       RepoInfo(const RepoInfo &) = default;
@@ -82,7 +91,7 @@ namespace zypp
       RepoInfo &operator=(RepoInfo &&) = default;
 
       /** Represents no Repository (one with an empty alias). */
-      static const RepoInfo noRepo;
+      static const ZYPP_INTERNAL_DEPRECATE RepoInfo noRepo;
 
     public:
       /**
@@ -284,6 +293,17 @@ namespace zypp
        */
       void setPackagesPath( const Pathname &path );
 
+      /**
+       * \short Path where this repo's solv cache is located
+       */
+      Pathname solvCachePath() const;
+      /**
+       * \short set the path this repo's solv cache is located
+       *
+       * \param path directory path
+       */
+      void setSolvCachePath( const Pathname &path );
+
 
       /** \name Repository gpgchecks
        * How signature checking should be performed for this repo.
@@ -409,7 +429,7 @@ namespace zypp
       void setGpgKeyUrl( const Url &gpgkey );
 
       /** downloads all configured gpg keys into the defined directory */
-      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const;
+      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const ZYPP_INTERNAL_DEPRECATE ;
 
       /**
        * \short Whether packages downloaded from this repository will be kept in local cache
@@ -563,9 +583,18 @@ namespace zypp
       struct Impl;
     private:
       friend class RepoManager;
+      template <typename ContextType> friend class zyppng::RepoManager;
 
+      // for RepoManager to be able to set the context
+      void setContext( zyppng::ContextBaseRef context );
+
+      Impl *pimpl();
+      const Impl *pimpl() const;
+
+#if LEGACY(1735)
       /** Pointer to implementation */
-      RWCOW_pointer<Impl> _pimpl;
+      RWCOW_pointer<Impl> _dummy_for_abi;
+#endif
   };
   ///////////////////////////////////////////////////////////////////
 
@@ -575,6 +604,18 @@ namespace zypp
   using RepoInfo_constPtr = shared_ptr<const RepoInfo>;
   /** \relates RepoInfo */
   using RepoInfoList = std::list<RepoInfo>;
+
+  /** \relates RepoInfoBase */
+  inline bool operator==( const RepoInfo & lhs, const RepoInfo & rhs )
+  { return lhs.alias() == rhs.alias(); }
+
+  /** \relates RepoInfoBase */
+  inline bool operator!=( const RepoInfo & lhs, const RepoInfo & rhs )
+  { return lhs.alias() != rhs.alias(); }
+
+  inline bool operator<( const RepoInfo & lhs, const RepoInfo & rhs )
+  { return lhs.alias() < rhs.alias(); }
+
 
   /** \relates RepoInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo & obj ) ZYPP_API;

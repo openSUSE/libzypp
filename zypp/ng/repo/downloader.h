@@ -22,13 +22,9 @@
 #include <zypp/RepoInfo.h>
 
 #include <zypp/ng/workflows/downloadwf.h>
+#include <zypp/ng/context_fwd.h>
 
 #include <optional>
-
-namespace zyppng {
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( SyncContext );
-}
 
 namespace zyppng::repo {
   template <class ContextRefType>
@@ -67,7 +63,7 @@ namespace zyppng::repo {
   };
 
   using SyncDownloadContext  = DownloadContext<SyncContextRef>;
-  using AsyncDownloadContext = DownloadContext<ContextRef>;
+  using AsyncDownloadContext = DownloadContext<AsyncContextRef>;
   ZYPP_FWD_DECL_REFS(SyncDownloadContext);
   ZYPP_FWD_DECL_REFS(AsyncDownloadContext);
 }

@@ -9,10 +9,9 @@
 /** \file	zypp/RepoInfo.cc
  *
 */
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <iostream>
 #include <vector>
-#include <fstream>
 
 #include <zypp/base/Gettext.h>
 #include <zypp/base/LogTools.h>
@@ -34,7 +33,7 @@
 #include <zypp/base/IOStream.h>
 #include <zypp-core/base/InputStream>
 #include <zypp/parser/xml/Reader.h>
-
+#include <zypp/repo/detail/RepoInfoBaseImpl.h>
 
 #include <zypp/base/StrMatcher.h>
 #include <zypp/KeyRing.h>
@@ -43,6 +42,9 @@
 #include <zypp/ZYppCallbacks.h>
 
 #include <zypp/ng/workflows/repoinfowf.h>
+
+#include <zypp/zypp_detail/ZYppImpl.h>
+#include <zypp/ng/ContextBase>
 
 using std::endl;
 using zypp::xml::escape;
@@ -75,10 +77,11 @@ namespace zypp
   //	CLASS NAME : RepoInfo::Impl
   //
   /** RepoInfo implementation. */
-  struct RepoInfo::Impl
+  struct RepoInfo::Impl : public repo::RepoInfoBase::Impl
   {
-    Impl()
-      : _rawGpgCheck( indeterminate )
+    Impl( zyppng::ContextBaseRef &&context )
+      : RepoInfoBase::Impl( std::move(context) )
+      , _rawGpgCheck( indeterminate )
       , _rawRepoGpgCheck( indeterminate )
       , _rawPkgGpgCheck( indeterminate )
       , _validRepoSignature( indeterminate )
@@ -93,7 +96,7 @@ namespace zypp
     Impl &operator=(const Impl &) = delete;
     Impl &operator=(Impl &&) = delete;
 
-    ~Impl() {}
+    ~Impl() override {}
 
   public:
     static const unsigned defaultPriority = 99;
@@ -314,12 +317,29 @@ namespace zypp
     void rawRepoGpgCheck( TriBool val_r )	{ _rawRepoGpgCheck = val_r; }
     void rawPkgGpgCheck( TriBool val_r )	{ _rawPkgGpgCheck = val_r; }
 
-    bool cfgGpgCheck() const
-    { return indeterminate(_rawGpgCheck) ? ZConfig::instance().gpgCheck() : (bool)_rawGpgCheck; }
-    TriBool cfgRepoGpgCheck() const
-    { return indeterminate(_rawGpgCheck) && indeterminate(_rawRepoGpgCheck) ? ZConfig::instance().repoGpgCheck() : _rawRepoGpgCheck; }
-    TriBool cfgPkgGpgCheck() const
-    { return indeterminate(_rawGpgCheck) && indeterminate(_rawPkgGpgCheck) ? ZConfig::instance().pkgGpgCheck() : _rawPkgGpgCheck; }
+    bool cfgGpgCheck() const {
+      if ( !this->_ctx ) {
+        MIL << "RepoInfo has no context, returning default setting for cfgGpgCheck!" << std::endl;
+        return true;
+      }
+      return indeterminate(_rawGpgCheck) ? this->_ctx->config().gpgCheck() : (bool)_rawGpgCheck;
+    }
+
+    TriBool cfgRepoGpgCheck() const {
+      if ( !this->_ctx ) {
+        MIL << "RepoInfo has no context, returning default setting for cfgRepoGpgCheck!" << std::endl;
+        return zypp::indeterminate;
+      }
+      return indeterminate(_rawGpgCheck) && indeterminate(_rawRepoGpgCheck) ? this->_ctx->config().repoGpgCheck() : _rawRepoGpgCheck;
+    }
+
+    TriBool cfgPkgGpgCheck() const {
+      if ( !this->_ctx ) {
+        MIL << "RepoInfo has no context, returning default setting for cfgPkgGpgCheck!" << std::endl;
+        return zypp::indeterminate;
+      }
+      return indeterminate(_rawGpgCheck) && indeterminate(_rawPkgGpgCheck) ? this->_ctx->config().pkgGpgCheck() : _rawPkgGpgCheck;
+    }
 
   private:
     TriBool _validRepoSignature; ///< have  signed and valid repo metadata
@@ -332,6 +352,9 @@ namespace zypp
     std::string service;
     std::string targetDistro;
 
+    void solvPath ( Pathname new_r )
+    { _slvPath = std::move(new_r); }
+
     void metadataPath( Pathname new_r )
     { _metadataPath = std::move( new_r ); }
 
@@ -340,6 +363,13 @@ namespace zypp
 
     bool usesAutoMetadataPaths() const
     { return str::hasSuffix( _metadataPath.asString(), "/%AUTO%" ); }
+
+    Pathname solvPath() const
+    {
+      if ( usesAutoMetadataPaths () )
+        return _metadataPath.dirname() / "%SLV%";
+      return _slvPath;
+    }
 
     Pathname metadataPath() const
     {
@@ -359,6 +389,7 @@ namespace zypp
     mutable bool emptybaseurls;
 
   private:
+    Pathname _slvPath;
     Pathname _metadataPath;
     Pathname _packagesPath;
 
@@ -369,7 +400,7 @@ namespace zypp
 
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
     /** clone for RWCOW_pointer */
-    Impl * clone() const
+    Impl * clone() const override
     { return new Impl( *this ); }
   };
   ///////////////////////////////////////////////////////////////////
@@ -386,17 +417,20 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  const RepoInfo RepoInfo::noRepo;
+  const RepoInfo RepoInfo::noRepo(nullptr);
 
-  RepoInfo::RepoInfo()
-  : _pimpl( new Impl() )
+  RepoInfo::RepoInfo( zyppng::ContextBaseRef context )
+    : RepoInfoBase( *( new Impl( std::move(context) ) ) )
   {}
+
+  RepoInfo::RepoInfo() : RepoInfo( zypp_detail::GlobalStateHelper::context() )
+  { /* LEGACY DO NOT ADD CODE */ }
 
   RepoInfo::~RepoInfo()
   {}
 
   unsigned RepoInfo::priority() const
-  { return _pimpl->priority; }
+  { return pimpl()->priority; }
 
   unsigned RepoInfo::defaultPriority()
   { return Impl::defaultPriority; }
@@ -405,61 +439,75 @@ namespace zypp
   { return Impl::noPriority; }
 
   void RepoInfo::setPriority( unsigned newval_r )
-  { _pimpl->priority = newval_r ? newval_r : Impl::defaultPriority; }
+  { pimpl()->priority = newval_r ? newval_r : Impl::defaultPriority; }
 
 
   bool RepoInfo::gpgCheck() const
-  { return _pimpl->cfgGpgCheck(); }
+  { return pimpl()->cfgGpgCheck(); }
 
   void RepoInfo::setGpgCheck( TriBool value_r )
-  { _pimpl->rawGpgCheck( value_r ); }
+  { pimpl()->rawGpgCheck( value_r ); }
 
   void RepoInfo::setGpgCheck( bool value_r ) // deprecated legacy and for squid
   { setGpgCheck( TriBool(value_r) ); }
 
 
   bool RepoInfo::repoGpgCheck() const
-  { return gpgCheck() || bool(_pimpl->cfgRepoGpgCheck()); }
+  { return gpgCheck() || bool(pimpl()->cfgRepoGpgCheck()); }
 
   bool RepoInfo::repoGpgCheckIsMandatory() const
   {
-    bool ret = ( gpgCheck() && indeterminate(_pimpl->cfgRepoGpgCheck()) ) || bool(_pimpl->cfgRepoGpgCheck());
-    if ( ret && _pimpl->internalUnsignedConfirmed() )	// relax if unsigned repo was confirmed in the past
+    bool ret = ( gpgCheck() && indeterminate(pimpl()->cfgRepoGpgCheck()) ) || bool(pimpl()->cfgRepoGpgCheck());
+    if ( ret && pimpl()->internalUnsignedConfirmed() )	// relax if unsigned repo was confirmed in the past
       ret = false;
     return ret;
   }
 
   void RepoInfo::setRepoGpgCheck( TriBool value_r )
-  { _pimpl->rawRepoGpgCheck( value_r ); }
+  { pimpl()->rawRepoGpgCheck( value_r ); }
 
 
   bool RepoInfo::pkgGpgCheck() const
-  { return bool(_pimpl->cfgPkgGpgCheck()) || ( gpgCheck() && !bool(validRepoSignature())/*enforced*/ ) ; }
+  { return bool(pimpl()->cfgPkgGpgCheck()) || ( gpgCheck() && !bool(validRepoSignature())/*enforced*/ ) ; }
 
   bool RepoInfo::pkgGpgCheckIsMandatory() const
-  { return bool(_pimpl->cfgPkgGpgCheck()) || ( gpgCheck() && indeterminate(_pimpl->cfgPkgGpgCheck()) && !bool(validRepoSignature())/*enforced*/ ); }
+  { return bool(pimpl()->cfgPkgGpgCheck()) || ( gpgCheck() && indeterminate(pimpl()->cfgPkgGpgCheck()) && !bool(validRepoSignature())/*enforced*/ ); }
 
   void RepoInfo::setPkgGpgCheck( TriBool value_r )
-  { _pimpl->rawPkgGpgCheck( value_r ); }
+  { pimpl()->rawPkgGpgCheck( value_r ); }
 
 
   void RepoInfo::getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const
   {
-    g_r = _pimpl->rawGpgCheck();
-    r_r = _pimpl->rawRepoGpgCheck();
-    p_r = _pimpl->rawPkgGpgCheck();
+    g_r = pimpl()->rawGpgCheck();
+    r_r = pimpl()->rawRepoGpgCheck();
+    p_r = pimpl()->rawPkgGpgCheck();
   }
 
+  void RepoInfo::setContext( zyppng::ContextBaseRef context )
+  {
+    pimpl()->_ctx = std::move(context);
+  }
+
+  RepoInfo::Impl *RepoInfo::pimpl()
+  {
+    return static_cast<RepoInfo::Impl*>(_pimpl.get());
+  }
+
+  const RepoInfo::Impl *RepoInfo::pimpl() const
+  {
+    return static_cast<const RepoInfo::Impl*>( _pimpl.get() );
+  }
 
   TriBool RepoInfo::validRepoSignature() const
   {
-    TriBool ret( _pimpl->internalValidRepoSignature() );
+    TriBool ret( pimpl()->internalValidRepoSignature() );
     if ( ret && !repoGpgCheck() ) ret = false;	// invalidate any old signature if repoGpgCheck is off
     return ret;
   }
 
   void RepoInfo::setValidRepoSignature( TriBool value_r )
-  { _pimpl->internalSetValidRepoSignature( value_r ); }
+  { pimpl()->internalSetValidRepoSignature( value_r ); }
 
   ///////////////////////////////////////////////////////////////////
   namespace
@@ -520,156 +568,166 @@ namespace zypp
   }
 
   void RepoInfo::setMirrorListUrl( const Url & url_r )	// Raw
-  { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = false; }
+  { pimpl()->_mirrorListUrl.raw() = url_r; pimpl()->_mirrorListForceMetalink = false; }
 
   void RepoInfo::setMirrorListUrls( url_set urls )	// Raw
   { setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
 
   void  RepoInfo::setMetalinkUrl( const Url & url_r )	// Raw
-  { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = true; }
+  { pimpl()->_mirrorListUrl.raw() = url_r; pimpl()->_mirrorListForceMetalink = true; }
 
   void RepoInfo::setMetalinkUrls( url_set urls )	// Raw
   { setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
 
   void RepoInfo::setGpgKeyUrls( url_set urls )
-  { _pimpl->gpgKeyUrls().raw().swap( urls ); }
+  { pimpl()->gpgKeyUrls().raw().swap( urls ); }
 
   void RepoInfo::setGpgKeyUrl( const Url & url_r )
   {
-    _pimpl->gpgKeyUrls().raw().clear();
-    _pimpl->gpgKeyUrls().raw().push_back( url_r );
+    pimpl()->gpgKeyUrls().raw().clear();
+    pimpl()->gpgKeyUrls().raw().push_back( url_r );
   }
 
 
   Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
-    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::defaultContext(), *this, keyID_r, targetDirectory_r );
+    // LEGACY, only supported with SyncContext
+    auto sCtx = std::dynamic_pointer_cast<zyppng::SyncContext>( context() );
+    if ( sCtx ) return zyppng::RepoInfoWorkflow::provideKey( sCtx, *this, keyID_r, targetDirectory_r );
+    ERR << "Calling RepoInfo::provideKey in a async context is not supported" << std::endl;
+    return {};
   }
 
   void RepoInfo::addBaseUrl( Url url_r )
   {
-    for ( const auto & url : _pimpl->baseUrls().raw() )	// Raw unique!
+    for ( const auto & url : pimpl()->baseUrls().raw() )	// Raw unique!
       if ( url == url_r )
         return;
-    _pimpl->baseUrls().raw().push_back( std::move(url_r) );
+    pimpl()->baseUrls().raw().push_back( std::move(url_r) );
   }
 
   void RepoInfo::setBaseUrl( Url url_r )
   {
-    _pimpl->baseUrls().raw().clear();
-    _pimpl->baseUrls().raw().push_back( std::move(url_r) );
+    pimpl()->baseUrls().raw().clear();
+    pimpl()->baseUrls().raw().push_back( std::move(url_r) );
   }
 
   void RepoInfo::setBaseUrls( url_set urls )
-  { _pimpl->baseUrls().raw().swap( urls ); }
+  { pimpl()->baseUrls().raw().swap( urls ); }
 
   void RepoInfo::setPath( const Pathname &path )
-  { _pimpl->path = path; }
+  { pimpl()->path = path; }
 
   void RepoInfo::setType( const repo::RepoType &t )
-  { _pimpl->setType( t ); }
+  { pimpl()->setType( t ); }
 
   void RepoInfo::setProbedType( const repo::RepoType &t ) const
-  { _pimpl->setProbedType( t ); }
+  { pimpl()->setProbedType( t ); }
 
 
   void RepoInfo::setMetadataPath( const Pathname &path )
-  { _pimpl->metadataPath( path ); }
+  { pimpl()->metadataPath( path ); }
 
   void RepoInfo::setPackagesPath( const Pathname &path )
-  { _pimpl->packagesPath( path ); }
+  { pimpl()->packagesPath( path ); }
+
+  void RepoInfo::setSolvCachePath(const Pathname &path)
+  { pimpl()->solvPath (path); }
 
   void RepoInfo::setKeepPackages( bool keep )
-  { _pimpl->keeppackages = keep; }
+  { pimpl()->keeppackages = keep; }
 
   void RepoInfo::setService( const std::string& name )
-  { _pimpl->service = name; }
+  { pimpl()->service = name; }
 
   void RepoInfo::setTargetDistribution( const std::string & targetDistribution )
-  { _pimpl->targetDistro = targetDistribution; }
+  { pimpl()->targetDistro = targetDistribution; }
 
   bool RepoInfo::keepPackages() const
-  { return indeterminate(_pimpl->keeppackages) ? false : (bool)_pimpl->keeppackages; }
+  { return indeterminate(pimpl()->keeppackages) ? false : (bool)pimpl()->keeppackages; }
 
   Pathname RepoInfo::metadataPath() const
-  { return _pimpl->metadataPath(); }
+  { return pimpl()->metadataPath(); }
 
   Pathname RepoInfo::packagesPath() const
-  { return _pimpl->packagesPath(); }
+  { return pimpl()->packagesPath(); }
+
+  Pathname RepoInfo::solvCachePath() const
+  { return pimpl()->solvPath(); }
 
   bool RepoInfo::usesAutoMetadataPaths() const
-  { return _pimpl->usesAutoMetadataPaths(); }
+  { return pimpl()->usesAutoMetadataPaths(); }
 
   repo::RepoType RepoInfo::type() const
-  { return _pimpl->type(); }
+  { return pimpl()->type(); }
 
   Url RepoInfo::mirrorListUrl() const			// Variables replaced!
-  { return _pimpl->_mirrorListUrl.transformed(); }
+  { return pimpl()->_mirrorListUrl.transformed(); }
 
   Url RepoInfo::rawMirrorListUrl() const		// Raw
-  { return _pimpl->_mirrorListUrl.raw(); }
+  { return pimpl()->_mirrorListUrl.raw(); }
 
   bool RepoInfo::gpgKeyUrlsEmpty() const
-  { return _pimpl->gpgKeyUrls().empty(); }
+  { return pimpl()->gpgKeyUrls().empty(); }
 
   RepoInfo::urls_size_type RepoInfo::gpgKeyUrlsSize() const
-  { return _pimpl->gpgKeyUrls().size(); }
+  { return pimpl()->gpgKeyUrls().size(); }
 
   RepoInfo::url_set RepoInfo::gpgKeyUrls() const	// Variables replaced!
-  { return _pimpl->gpgKeyUrls().transformed(); }
+  { return pimpl()->gpgKeyUrls().transformed(); }
 
   RepoInfo::url_set RepoInfo::rawGpgKeyUrls() const	// Raw
-  { return _pimpl->gpgKeyUrls().raw(); }
+  { return pimpl()->gpgKeyUrls().raw(); }
 
   Url RepoInfo::gpgKeyUrl() const			// Variables replaced!
-  { return( _pimpl->gpgKeyUrls().empty() ? Url() : *_pimpl->gpgKeyUrls().transformedBegin() ); }
+  { return( pimpl()->gpgKeyUrls().empty() ? Url() : *pimpl()->gpgKeyUrls().transformedBegin() ); }
 
   Url RepoInfo::rawGpgKeyUrl() const			// Raw
-  { return( _pimpl->gpgKeyUrls().empty() ? Url() : *_pimpl->gpgKeyUrls().rawBegin() ) ; }
+  { return( pimpl()->gpgKeyUrls().empty() ? Url() : *pimpl()->gpgKeyUrls().rawBegin() ) ; }
 
   RepoInfo::url_set RepoInfo::baseUrls() const		// Variables replaced!
-  { return _pimpl->baseUrls().transformed(); }
+  { return pimpl()->baseUrls().transformed(); }
 
   RepoInfo::url_set RepoInfo::rawBaseUrls() const	// Raw
-  { return _pimpl->baseUrls().raw(); }
+  { return pimpl()->baseUrls().raw(); }
 
   Pathname RepoInfo::path() const
-  { return _pimpl->path; }
+  { return pimpl()->path; }
 
   std::string RepoInfo::service() const
-  { return _pimpl->service; }
+  { return pimpl()->service; }
 
   std::string RepoInfo::targetDistribution() const
-  { return _pimpl->targetDistro; }
+  { return pimpl()->targetDistro; }
 
   Url RepoInfo::rawUrl() const
-  { return( _pimpl->baseUrls().empty() ? Url() : *_pimpl->baseUrls().rawBegin() ); }
+  { return( pimpl()->baseUrls().empty() ? Url() : *pimpl()->baseUrls().rawBegin() ); }
 
   RepoInfo::urls_const_iterator RepoInfo::baseUrlsBegin() const
-  { return _pimpl->baseUrls().transformedBegin(); }
+  { return pimpl()->baseUrls().transformedBegin(); }
 
   RepoInfo::urls_const_iterator RepoInfo::baseUrlsEnd() const
-  { return _pimpl->baseUrls().transformedEnd(); }
+  { return pimpl()->baseUrls().transformedEnd(); }
 
   RepoInfo::urls_size_type RepoInfo::baseUrlsSize() const
-  { return _pimpl->baseUrls().size(); }
+  { return pimpl()->baseUrls().size(); }
 
   bool RepoInfo::baseUrlsEmpty() const
-  { return _pimpl->baseUrls().empty(); }
+  { return pimpl()->baseUrls().empty(); }
 
   bool RepoInfo::baseUrlSet() const
-  { return _pimpl->baseurl2dump(); }
+  { return pimpl()->baseurl2dump(); }
 
   const std::set<std::string> & RepoInfo::contentKeywords() const
-  { return _pimpl->contentKeywords(); }
+  { return pimpl()->contentKeywords(); }
 
   void RepoInfo::addContent( const std::string & keyword_r )
-  { _pimpl->addContent( keyword_r ); }
+  { pimpl()->addContent( keyword_r ); }
 
   bool RepoInfo::hasContent() const
-  { return _pimpl->hasContent(); }
+  { return pimpl()->hasContent(); }
 
   bool RepoInfo::hasContent( const std::string & keyword_r ) const
-  { return _pimpl->hasContent( keyword_r ); }
+  { return pimpl()->hasContent( keyword_r ); }
 
   ///////////////////////////////////////////////////////////////////
 
@@ -677,7 +735,7 @@ namespace zypp
   { return hasLicense( std::string() ); }
 
   bool RepoInfo::hasLicense( const std::string & name_r ) const
-  { return !_pimpl->licenseTgz( name_r ).empty(); }
+  { return !pimpl()->licenseTgz( name_r ).empty(); }
 
 
   bool RepoInfo::needToAcceptLicense() const
@@ -685,7 +743,7 @@ namespace zypp
 
   bool RepoInfo::needToAcceptLicense( const std::string & name_r ) const
   {
-    const Pathname & licenseTgz( _pimpl->licenseTgz( name_r ) );
+    const Pathname & licenseTgz( pimpl()->licenseTgz( name_r ) );
     if ( licenseTgz.empty() )
       return false;     // no licenses at all
 
@@ -745,7 +803,7 @@ namespace zypp
     cmd.push_back( "-z" );
     cmd.push_back( "-O" );
     cmd.push_back( "-f" );
-    cmd.push_back( _pimpl->licenseTgz( name_r ).asString() ); // if it not exists, avlocales was empty.
+    cmd.push_back( pimpl()->licenseTgz( name_r ).asString() ); // if it not exists, avlocales was empty.
     cmd.push_back( licenseFile );
 
     std::string ret;
@@ -764,7 +822,7 @@ namespace zypp
 
   LocaleSet RepoInfo::getLicenseLocales( const std::string & name_r ) const
   {
-    const Pathname & licenseTgz( _pimpl->licenseTgz( name_r ) );
+    const Pathname & licenseTgz( pimpl()->licenseTgz( name_r ) );
     if ( licenseTgz.empty() )
       return LocaleSet();
 
@@ -798,9 +856,9 @@ namespace zypp
   std::ostream & RepoInfo::dumpOn( std::ostream & str ) const
   {
     RepoInfoBase::dumpOn(str);
-    if ( _pimpl->baseurl2dump() )
+    if ( pimpl()->baseurl2dump() )
     {
-      for ( const auto & url : _pimpl->baseUrls().raw() )
+      for ( const auto & url : pimpl()->baseUrls().raw() )
       {
         str << "- url         : " << url << std::endl;
       }
@@ -812,26 +870,26 @@ namespace zypp
         str << tag_r << value_r << std::endl;
     });
 
-    strif( (_pimpl->_mirrorListForceMetalink ? "- metalink    : " : "- mirrorlist  : "), rawMirrorListUrl().asString() );
+    strif( (pimpl()->_mirrorListForceMetalink ? "- metalink    : " : "- mirrorlist  : "), rawMirrorListUrl().asString() );
     strif( "- path        : ", path().asString() );
     str << "- type        : " << type() << std::endl;
     str << "- priority    : " << priority() << std::endl;
 
     // Yes No Default(Y) Default(N)
 #define OUTS(T,B) ( indeterminate(T) ? (std::string("D(")+(B?"Y":"N")+")") : ((bool)T?"Y":"N") )
-    str << "- gpgcheck    : " << OUTS(_pimpl->rawGpgCheck(),gpgCheck())
-                              << " repo" << OUTS(_pimpl->rawRepoGpgCheck(),repoGpgCheck()) << (repoGpgCheckIsMandatory() ? "* ": " " )
+    str << "- gpgcheck    : " << OUTS(pimpl()->rawGpgCheck(),gpgCheck())
+                              << " repo" << OUTS(pimpl()->rawRepoGpgCheck(),repoGpgCheck()) << (repoGpgCheckIsMandatory() ? "* ": " " )
                               << "sig" << asString( validRepoSignature(), "?", "Y", "N" )
-                              << " pkg" << OUTS(_pimpl->rawPkgGpgCheck(),pkgGpgCheck()) << (pkgGpgCheckIsMandatory() ? "* ": " " )
+                              << " pkg" << OUTS(pimpl()->rawPkgGpgCheck(),pkgGpgCheck()) << (pkgGpgCheckIsMandatory() ? "* ": " " )
                               << std::endl;
 #undef OUTS
 
-    for ( const auto & url : _pimpl->gpgKeyUrls().raw() )
+    for ( const auto & url : pimpl()->gpgKeyUrls().raw() )
     {
       str << "- gpgkey      : " << url << std::endl;
     }
 
-    if ( ! indeterminate(_pimpl->keeppackages) )
+    if ( ! indeterminate(pimpl()->keeppackages) )
       str << "- keeppackages: " << keepPackages() << std::endl;
 
     strif( "- service     : ", service() );
@@ -847,22 +905,22 @@ namespace zypp
   {
     RepoInfoBase::dumpAsIniOn(str);
 
-    if ( _pimpl->baseurl2dump() )
+    if ( pimpl()->baseurl2dump() )
     {
       str << "baseurl=";
       std::string indent;
-      for ( const auto & url : _pimpl->baseUrls().raw() )
+      for ( const auto & url : pimpl()->baseUrls().raw() )
       {
         str << indent << hotfix1050625::asString( url ) << endl;
         if ( indent.empty() ) indent = "        ";	// "baseurl="
       }
     }
 
-    if ( ! _pimpl->path.empty() )
+    if ( ! pimpl()->path.empty() )
       str << "path="<< path() << endl;
 
     if ( ! (rawMirrorListUrl().asString().empty()) )
-      str << (_pimpl->_mirrorListForceMetalink ? "metalink=" : "mirrorlist=") << hotfix1050625::asString( rawMirrorListUrl() ) << endl;
+      str << (pimpl()->_mirrorListForceMetalink ? "metalink=" : "mirrorlist=") << hotfix1050625::asString( rawMirrorListUrl() ) << endl;
 
     if ( type() != repo::RepoType::NONE )
       str << "type=" << type().asString() << endl;
@@ -870,18 +928,18 @@ namespace zypp
     if ( priority() != defaultPriority() )
       str << "priority=" << priority() << endl;
 
-    if ( ! indeterminate(_pimpl->rawGpgCheck()) )
-      str << "gpgcheck=" << (_pimpl->rawGpgCheck() ? "1" : "0") << endl;
+    if ( ! indeterminate(pimpl()->rawGpgCheck()) )
+      str << "gpgcheck=" << (pimpl()->rawGpgCheck() ? "1" : "0") << endl;
 
-    if ( ! indeterminate(_pimpl->rawRepoGpgCheck()) )
-      str << "repo_gpgcheck=" << (_pimpl->rawRepoGpgCheck() ? "1" : "0") << endl;
+    if ( ! indeterminate(pimpl()->rawRepoGpgCheck()) )
+      str << "repo_gpgcheck=" << (pimpl()->rawRepoGpgCheck() ? "1" : "0") << endl;
 
-    if ( ! indeterminate(_pimpl->rawPkgGpgCheck()) )
-      str << "pkg_gpgcheck=" << (_pimpl->rawPkgGpgCheck() ? "1" : "0") << endl;
+    if ( ! indeterminate(pimpl()->rawPkgGpgCheck()) )
+      str << "pkg_gpgcheck=" << (pimpl()->rawPkgGpgCheck() ? "1" : "0") << endl;
 
     {
       std::string indent( "gpgkey=");
-      for ( const auto & url : _pimpl->gpgKeyUrls().raw() )
+      for ( const auto & url : pimpl()->gpgKeyUrls().raw() )
       {
         str << indent << url << endl;
         if ( indent[0] != ' ' )
@@ -889,7 +947,7 @@ namespace zypp
       }
     }
 
-    if (!indeterminate(_pimpl->keeppackages))
+    if (!indeterminate(pimpl()->keeppackages))
       str << "keeppackages=" << keepPackages() << endl;
 
     if( ! service().empty() )
@@ -914,20 +972,20 @@ namespace zypp
       << " gpgcheck=\"" << gpgCheck() << "\""
       << " repo_gpgcheck=\"" << repoGpgCheck() << "\""
       << " pkg_gpgcheck=\"" << pkgGpgCheck() << "\"";
-    if ( ! indeterminate(_pimpl->rawGpgCheck()) )
-      str << " raw_gpgcheck=\"" << (_pimpl->rawGpgCheck() ? "1" : "0") << "\"";
-    if ( ! indeterminate(_pimpl->rawRepoGpgCheck()) )
-      str << " raw_repo_gpgcheck=\"" << (_pimpl->rawRepoGpgCheck() ? "1" : "0") << "\"";
-    if ( ! indeterminate(_pimpl->rawPkgGpgCheck()) )
-      str << " raw_pkg_gpgcheck=\"" << (_pimpl->rawPkgGpgCheck() ? "1" : "0") << "\"";
+    if ( ! indeterminate(pimpl()->rawGpgCheck()) )
+      str << " raw_gpgcheck=\"" << (pimpl()->rawGpgCheck() ? "1" : "0") << "\"";
+    if ( ! indeterminate(pimpl()->rawRepoGpgCheck()) )
+      str << " raw_repo_gpgcheck=\"" << (pimpl()->rawRepoGpgCheck() ? "1" : "0") << "\"";
+    if ( ! indeterminate(pimpl()->rawPkgGpgCheck()) )
+      str << " raw_pkg_gpgcheck=\"" << (pimpl()->rawPkgGpgCheck() ? "1" : "0") << "\"";
     if (!(tmpstr = gpgKeyUrl().asString()).empty())
     if (!(tmpstr = gpgKeyUrl().asString()).empty())
       str << " gpgkey=\"" << escape(tmpstr) << "\"";
     if (!(tmpstr = mirrorListUrl().asString()).empty())
-      str << (_pimpl->_mirrorListForceMetalink ? " metalink=\"" : " mirrorlist=\"") << escape(tmpstr) << "\"";
+      str << (pimpl()->_mirrorListForceMetalink ? " metalink=\"" : " mirrorlist=\"") << escape(tmpstr) << "\"";
     str << ">" << endl;
 
-    if ( _pimpl->baseurl2dump() )
+    if ( pimpl()->baseurl2dump() )
     {
       for_( it, baseUrlsBegin(), baseUrlsEnd() )	// !transform iterator replaces variables
         str << "<url>" << escape((*it).asString()) << "</url>" << endl;

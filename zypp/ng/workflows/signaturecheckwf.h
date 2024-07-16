@@ -9,6 +9,7 @@
 #ifndef ZYPP_NG_SIGNATURECHECK_WORKFLOW_INCLUDED
 #define ZYPP_NG_SIGNATURECHECK_WORKFLOW_INCLUDED
 
+#include <zypp/ng/context_fwd.h>
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp-core/zyppng/pipelines/Expected>
 
@@ -17,15 +18,13 @@
 #include <zypp/KeyRingContexts.h>
 
 // async helper
-#include <zypp/ng/workflows/contextfacade.h>
+
 
 namespace zyppng {
 
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
-
   namespace SignatureFileCheckWorkflow {
     expected<zypp::keyring::VerifyFileContext> verifySignature( SyncContextRef ctx, zypp::keyring::VerifyFileContext context );
-    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( ContextRef ctx, zypp::keyring::VerifyFileContext context );
+    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( AsyncContextRef ctx, zypp::keyring::VerifyFileContext context );
   }
 
 }

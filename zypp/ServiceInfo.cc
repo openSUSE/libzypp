@@ -12,12 +12,15 @@
 #include <ostream>
 #include <iostream>
 
+#include <zypp/zypp_detail/ZYppImpl.h>
 #include <zypp/base/String.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp/parser/xml/XmlEscape.h>
 
 #include <zypp/RepoInfo.h>
 #include <zypp/ServiceInfo.h>
+
+#include <zypp/ng/ContextBase>
 
 using std::endl;
 using zypp::xml::escape;
@@ -84,17 +87,29 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  const ServiceInfo ServiceInfo::noService;
+  const ServiceInfo ServiceInfo::noService( zyppng::ContextBaseRef(nullptr) );
 
-  ServiceInfo::ServiceInfo() : _pimpl( new Impl() ) {}
+  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx ) : repo::RepoInfoBase( std::move(ctx) ), _pimpl( new Impl() ) {}
+
+  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx, const std::string & alias )
+    : repo::RepoInfoBase( std::move(ctx), alias ), _pimpl( new Impl() )
+  {}
+
+  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx, const std::string & alias, const Url & url )
+    : repo::RepoInfoBase( std::move(ctx), alias ), _pimpl( new Impl(url) )
+  {}
+
+
+  ServiceInfo::ServiceInfo() : ServiceInfo( zypp_detail::GlobalStateHelper::context() )
+  { /* LEGACY, DO NOT ADD CODE HERE */ }
 
   ServiceInfo::ServiceInfo(const std::string & alias)
-    : repo::RepoInfoBase(alias), _pimpl( new Impl() )
-  {}
+    : ServiceInfo( zypp_detail::GlobalStateHelper::context(), alias )
+  { /* LEGACY, DO NOT ADD CODE HERE */ }
 
   ServiceInfo::ServiceInfo(const std::string & alias, const Url & url)
-    : repo::RepoInfoBase(alias), _pimpl( new Impl(url) )
-  {}
+    : ServiceInfo( zypp_detail::GlobalStateHelper::context(), alias, url )
+  { /* LEGACY, DO NOT ADD CODE HERE */ }
 
   ServiceInfo::~ServiceInfo()
   {}

@@ -9,7 +9,7 @@
 
 #include "keyringwf.h"
 #include "logichelpers.h"
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/zypp_detail/keyring_p.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/ZConfig.h>
@@ -103,7 +103,7 @@ namespace zyppng::KeyRingWorkflow {
     return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
-  AsyncOpRef<bool> provideAndImportKeyFromRepository( ContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
+  AsyncOpRef<bool> provideAndImportKeyFromRepository( AsyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
   {
     return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
@@ -335,7 +335,7 @@ namespace zyppng::KeyRingWorkflow {
     return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
   }
 
-  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( ContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
+  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
     return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
@@ -346,7 +346,7 @@ namespace zyppng::KeyRingWorkflow {
     return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
   }
 
-  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(ContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
+  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(AsyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
     return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
   }

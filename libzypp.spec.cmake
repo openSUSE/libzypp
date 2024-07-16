@@ -114,6 +114,8 @@ BuildRequires:  graphviz
 BuildRequires:  libxml2-devel
 BuildRequires:  yaml-cpp-devel
 
+BuildRequires:  gobject-introspection-devel
+
 # we are loading libproxy dynamically, however we have
 # a failsafe unit test that links against libproxy to make
 # sure the API did not change

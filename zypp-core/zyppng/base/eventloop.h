@@ -39,7 +39,7 @@ namespace zyppng {
    * utilizing more of the CPU compared to starting all the tasks serially.
    *
    */
-  class LIBZYPP_NG_EXPORT EventLoop : public Base
+  class  EventLoop : public Base
   {
     ZYPP_DECLARE_PRIVATE(EventLoop)
 
@@ -48,6 +48,7 @@ namespace zyppng {
     using WeakPtr = EventLoopWeakRef;
 
     static Ptr create ( GMainContext *ctx = nullptr );
+    static Ptr create ( EventDispatcherRef dispatcher  );
     ~EventLoop() override;
 
     /*!
@@ -68,6 +69,7 @@ namespace zyppng {
 
   private:
     EventLoop( GMainContext *ctx = nullptr );
+    EventLoop( EventDispatcherRef dispatcher );
 
   };
 

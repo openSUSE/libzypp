@@ -19,21 +19,19 @@
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/ui/userrequest.h>
-#include <zypp/ng/context.h>
-#include <zypp/ng/workflows/contextfacade.h>
+
 
 #include <zypp/ZYppCallbacks.h>
+#include <zypp/ng/context_fwd.h>
 
 namespace zyppng {
-
-  ZYPP_FWD_DECL_REFS (Context);
 
   namespace detail {
     template <typename ContextRefType, typename Report>
     class ReportHolder;
 
     template <typename Report>
-    class ReportHolder<ContextRef, Report>
+    class ReportHolder<AsyncContextRef, Report>
     {};
 
     template <typename Report>
@@ -68,7 +66,7 @@ namespace zyppng {
     }
 
     static constexpr bool async () {
-      return std::is_same<ZyppContextRef, ContextRef>();
+      return std::is_same<ZyppContextRef, AsyncContextRef>();
     }
 
   protected:

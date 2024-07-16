@@ -8,7 +8,8 @@
 \---------------------------------------------------------------------*/
 #include "repodownloaderwf.h"
 #include <zypp/ng/workflows/logichelpers.h>
-#include "zypp/parser/yum/RepomdFileReader.h"
+#include <zypp/parser/yum/RepomdFileReader.h>
+#include <zypp/repo/RepoException.h>
 
 #include <utility>
 #include <zypp-media/ng/Provide>
@@ -24,7 +25,7 @@
 #include <zypp/ng/repo/workflows/plaindir.h>
 
 // sync workflow helpers
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/workflows/mediafacade.h>
 
 #undef  ZYPP_BASE_LOGGER_LOGGROUP

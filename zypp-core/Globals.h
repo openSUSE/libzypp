@@ -117,4 +117,17 @@
   #endif
 #endif
 
+
+
+#ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
+// used to flag API to be deprected inside of libzypp.
+#define ZYPP_INTERNAL_DEPRECATE ZYPP_DEPRECATED
+// used to mark externally used API as internally deprected
+#define ZYPP_LEGACY_API	ZYPP_DECL_EXPORT ZYPP_INTERNAL_DEPRECATE
+#else
+#define ZYPP_INTERNAL_DEPRECATE
+#define ZYPP_LEGACY_API
+#endif
+
+
 #endif

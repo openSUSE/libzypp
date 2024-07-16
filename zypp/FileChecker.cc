@@ -11,11 +11,13 @@
 */
 #include <iostream>
 #include <utility>
+#include <zypp/zypp_detail/ZYppImpl.h>
 #include <zypp/base/Logger.h>
 #include <zypp/FileChecker.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/Digest.h>
 #include <zypp/KeyRing.h>
+#include <zypp/ng/Context>
 #include <zypp/ng/workflows/keyringwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 #include <zypp/ng/workflows/signaturecheckwf.h>
@@ -35,7 +37,7 @@ namespace zypp
 
   void ChecksumFileChecker::operator()( const Pathname &file ) const
   {
-    const auto &res = zyppng::CheckSumWorkflow::verifyChecksum ( zyppng::SyncContext::create(), _checksum, file );
+    const auto &res = zyppng::CheckSumWorkflow::verifyChecksum ( zypp_detail::GlobalStateHelper::context(), _checksum, file );
     if ( !res ) {
       std::rethrow_exception( res.error ( ) );
     }
@@ -86,7 +88,7 @@ namespace zypp
     SignatureFileChecker & self { const_cast<SignatureFileChecker&>(*this) };
     self._verifyContext.file( file_r );
 
-    auto res = zyppng::SignatureFileCheckWorkflow::verifySignature ( zyppng::SyncContext::create(), keyring::VerifyFileContext(_verifyContext) );
+    auto res = zyppng::SignatureFileCheckWorkflow::verifySignature ( zypp_detail::GlobalStateHelper::context(), keyring::VerifyFileContext(_verifyContext) );
     if ( !res ) {
       std::rethrow_exception( res.error ( ) );
     }

@@ -28,7 +28,7 @@ OPTION (DISABLE_MEDIABACKEND_TESTS "Disable Tests depending on Nginx and libfcgi
 
 OPTION (DISABLE_LIBPROXY "Build without libproxy support even if package is installed?" OFF)
 OPTION (DISABLE_AUTODOCS "Do not require doxygen being installed (required to build autodocs)?" OFF)
-OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
+OPTION (BUILD_GLIB_API   "Build experimental glib libzypp API" OFF)
 # This option will reroute all tool binaries to the libzypp build dir instead of taking those installed in the default directories.
 OPTION (ENABLE_DEVEL_BUILD "Developer build, use zypp tools directly from build dir rather than the default locations" OFF)
 OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
@@ -130,7 +130,10 @@ if ( NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
   if( ENABLE_UBSAN_CHECKS )
     target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
+    target_compile_options( zypp_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
     target_link_options( zypp_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
+    target_link_options( zypp_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
+    target_link_options( zypp_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-lubsan>" )
   endif()
 endif()
 
@@ -397,7 +400,7 @@ MACRO(ADD_TESTS)
 
     TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp_exe_compiler_flags  )
     TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC ${TEST_REQ_LIBS}  )
-    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp-allsym  )
+    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp-allsym )
     ADD_TEST( ${loop_var}_test ${CMAKE_CURRENT_BINARY_DIR}/${loop_var}_test --catch_system_errors=no)
   ENDFOREACH( loop_var )
 ENDMACRO(ADD_TESTS)
@@ -423,7 +426,9 @@ ADD_SUBDIRECTORY( tools )
 ADD_SUBDIRECTORY( shared )
 ADD_SUBDIRECTORY( doc )
 
-ADD_SUBDIRECTORY( zyppng )
+IF( BUILD_GLIB_API )
+  ADD_SUBDIRECTORY( zypp-glib )
+ENDIF ( BUILD_GLIB_API )
 
 IF ( ENABLE_BUILD_TRANS )
   ADD_SUBDIRECTORY( po )

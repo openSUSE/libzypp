@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 2013-2017 Canonical Ltd.
+ * Copyright (C) 2022 SUSE Software Solutions Germany GmbH
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authored by: Pete Woods <pete.woods@canonical.com>
+ *              Benjamin Zeller <bzeller@suse.com>
+ */
+
+#ifndef ZYPP_GLIB_UTIL_GIOMEMORY_H
+#define ZYPP_GLIB_UTIL_GIOMEMORY_H
+
+#include <gio/gio.h>
+
+#include <zypp-glib/utils/RetainPtr>
+#include <zypp-glib/utils/ResourcePtr>
+#include <zypp-glib/utils/GObjectMemory>
+
+ZYPP_DEFINE_GOBJECT_SIMPLE( GTask, g_task, G, TASK );
+ZYPP_DEFINE_GOBJECT_SIMPLE( GDBusConnection, g_dbus_connection, G, DBUS_CONNECTION );
+
+namespace zypp::glib
+{
+namespace internal
+{
+struct GDBusSignalUnsubscriber
+{
+public:
+    void operator()(guint handle) noexcept
+    {
+        if (handle != 0 && G_IS_OBJECT(bus_.get()))
+        {
+            g_dbus_connection_signal_unsubscribe(bus_.get(), handle);
+        }
+    }
+
+    zyppng::RetainPtr<GDBusConnection, GLibTypeTraits<GDBusConnection>::RetainTrait> bus_;
+};
+
+}
+
+typedef ResourcePtr<guint, internal::GDBusSignalUnsubscriber> GDBusSignalConnection;
+
+/**
+ \brief Simple wrapper to manage the lifecycle of manual GDBus signal connections.
+
+ When 'signalConnection_' goes out of scope or is dealloc'ed, the connection will be removed:
+ \code{.cpp}
+ GDBusSignalConnection signalConnection_;
+
+ signalConnection_ = gdbus_signal_connection(
+            g_dbus_connection_signal_subscribe(bus.get(), nullptr, "org.does.not.exist", nullptr, "/does/not/exist", nullptr, G_DBUS_SIGNAL_FLAGS_NONE, on_dbus_signal, this, nullptr), bus);
+ \endcode
+ */
+inline GDBusSignalConnection gdbus_signal_connection(guint id, RetainPtr<GDBusConnection, typename glib::GLibTypeTraits<GDBusConnection>::RetainTrait> bus) noexcept
+{
+    return GDBusSignalConnection(id, internal::GDBusSignalUnsubscriber{bus});
+}
+
+
+/**
+ * \brief Helper template as a GDestroyNotify argument that simply calls delete on the passed object
+ */
+template <typename T>
+void g_destroy_notify_delete ( gpointer data ) {
+    delete (reinterpret_cast<T*>(data));
+}
+
+}  // namespace zypp::glib
+
+#endif

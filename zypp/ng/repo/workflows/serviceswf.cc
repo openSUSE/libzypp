@@ -23,7 +23,8 @@
 #include <zypp/zypp_detail/urlcredentialextractor_p.h>
 
 #include <zypp/ng/Context>
-#include <zypp/ng/workflows/contextfacade.h>
+
+#include <zypp/ng/repomanager.h>
 #include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/workflows/mediafacade.h>
 
@@ -53,8 +54,9 @@ namespace zyppng::RepoServicesWorkflow {
         ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
       public:
-        using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
-        using RepoMgrRefType     = RepoManagerRef<ZyppContextRefType>;
+        using ZyppContextType    = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContext, SyncContext >;
+        using ZyppContextRefType = Ref<ZyppContextType>;
+        using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
 
         FetchRIMServiceLogic( ZyppContextRefType &&ctx, zypp::Pathname &&root_r, ServiceInfo &&service, ProgressObserverRef &&myProgress )
           : _ctx( std::move(ctx) )
@@ -113,8 +115,9 @@ namespace zyppng::RepoServicesWorkflow {
       ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
       public:
-        using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
-        using RepoMgrRefType     = RepoManagerRef<ZyppContextRefType>;
+        using ZyppContextType    = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContext, SyncContext >;
+        using ZyppContextRefType = Ref<ZyppContextType>;
+        using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
         using Ret = expected<std::pair<zypp::ServiceInfo, RepoInfoList>>;
 
         FetchPluginServiceLogic( ZyppContextRefType &&ctx, zypp::Pathname &&root_r, ServiceInfo &&service, ProgressObserverRef &&myProgress )
@@ -241,7 +244,7 @@ namespace zyppng::RepoServicesWorkflow {
 
   }
 
-  AsyncOpRef<expected<std::pair<zypp::ServiceInfo, RepoInfoList>>> fetchRepoListfromService( ContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
+  AsyncOpRef<expected<std::pair<zypp::ServiceInfo, RepoInfoList>>> fetchRepoListfromService( AsyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
   {
     if ( service.type() == zypp::repo::ServiceType::PLUGIN )
       return ASyncFetchPluginService::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
@@ -263,7 +266,7 @@ namespace zyppng::RepoServicesWorkflow {
     template<typename ContextRefType>
     auto probeServiceLogic( ContextRefType ctx, const zypp::Url &url ) {
 
-      constexpr bool isAsync = std::is_same_v<ContextRefType, ContextRef>;
+      constexpr bool isAsync = std::is_same_v<ContextRefType, AsyncContextRef>;
       using MediaHandle = std::conditional_t<isAsync, ProvideMediaHandle, SyncMediaHandle>;
       using ProvideRes  = std::conditional_t<isAsync, zyppng::ProvideRes, SyncProvideRes>;
 
@@ -303,7 +306,7 @@ namespace zyppng::RepoServicesWorkflow {
     }
   }
 
-  AsyncOpRef<expected<zypp::repo::ServiceType> > probeServiceType(ContextRef ctx, const zypp::Url &url)
+  AsyncOpRef<expected<zypp::repo::ServiceType> > probeServiceType(AsyncContextRef ctx, const zypp::Url &url)
   {
     return probeServiceLogic( std::move(ctx), url );
   }
@@ -321,11 +324,12 @@ namespace zyppng::RepoServicesWorkflow {
       ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
     public:
-      using ZyppContextRefType = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, ContextRef, SyncContextRef >;
-      using RepoMgrRefType     = RepoManagerRef<ZyppContextRefType>;
+      using ZyppContextType    = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContext, SyncContext >;
+      using ZyppContextRefType = Ref<ZyppContextType>;
+      using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
       using Ret = expected<void>;
 
-      RefreshServiceLogic( RepoMgrRefType &&repoMgr, zypp::ServiceInfo &&info, zypp::RepoManager::RefreshServiceOptions options )
+      RefreshServiceLogic( RepoMgrRefType &&repoMgr, zypp::ServiceInfo &&info, zypp::RepoManagerFlags::RefreshServiceOptions options )
         : _repoMgr( std::move(repoMgr) )
         , _service( std::move(info) )
         , _options(options)
@@ -357,7 +361,7 @@ namespace zyppng::RepoServicesWorkflow {
 
         MIL << "Going to refresh service '" << _service.alias() <<  "', url: " << _service.url() << ", opts: " << _options << std::endl;
 
-        if ( _service.ttl() && !( _options.testFlag( zypp::RepoManager::RefreshService_forceRefresh) || _options.testFlag( zypp::RepoManager::RefreshService_restoreStatus ) ) )
+        if ( _service.ttl() && !( _options.testFlag( zypp::RepoManagerFlags::RefreshService_forceRefresh) || _options.testFlag( zypp::RepoManagerFlags::RefreshService_restoreStatus ) ) )
         {
           // Service defines a TTL; maybe we can re-use existing data without refresh.
           zypp::Date lrf = _service.lrf();
@@ -721,7 +725,7 @@ namespace zyppng::RepoServicesWorkflow {
 
       RepoMgrRefType    _repoMgr;
       zypp::ServiceInfo _service;
-      zypp::RepoManager::RefreshServiceOptions _options;
+      zypp::RepoManagerFlags::RefreshServiceOptions _options;
 
       // NOTE: It might be necessary to modify and rewrite the service info.
       // Either when probing the type, or when adjusting the repositories

@@ -27,10 +27,7 @@
 #include <zypp/Resolver.h>
 #include <zypp/KeyRing.h>
 #include <zypp/DiskUsageCounter.h>
-
-namespace zyppng {
-  class Context;
-}
+#include <zypp/ng/context_fwd.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

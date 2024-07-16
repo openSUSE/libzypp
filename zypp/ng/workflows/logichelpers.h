@@ -78,7 +78,7 @@ namespace zyppng
    *  // the public interface for the workflows are just functions, usually with some
    *  // context object just save passing a gazillion of arguments to the func and
    *  // to carry some state.
-   *  AsyncOpRef<expected<int>> computeInt( ContextRef context );
+   *  AsyncOpRef<expected<int>> computeInt( AsyncContextRef context );
    *  expected<int> computeInt( SyncContextRef context );
    *
    *  // ------------------ computeint.cc ---------------------------
@@ -143,9 +143,9 @@ namespace zyppng
    *
    *  } //namespace
    *
-   *  // by overloading this function on the (Sync)ContextRef type other workflow implementations
+   *  // by overloading this function on the (Sync)AsyncContextRef type other workflow implementations
    *  // can call the async/sync version just by passing the right parameters
-   *  AsyncOpRef<expected<int>> computeInt( ContextRef context ) {
+   *  AsyncOpRef<expected<int>> computeInt( AsyncContextRef context ) {
    *    // the run() static method is provided by the LogicBase subclass
    *    return ComputeIntAsyncExecutor::run( std::move(context) );
    *  }

@@ -19,12 +19,10 @@
 
 //@ TODO move required types into their own files... e.g. CheckStatus
 #include <zypp/ng/repo/Refresh>
+#include <zypp/ng/context_fwd.h>
 
 
 namespace zyppng {
-
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (SyncContext);
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   class Provide;
@@ -35,13 +33,13 @@ namespace zyppng {
 
   namespace RepoManagerWorkflow {
 
-    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath = {} );
+    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( AsyncContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath = {} );
     expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, SyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath = {} );
 
-    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( ContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath = {} );
+    AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType( AsyncContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath = {} );
     expected<zypp::repo::RepoType> probeRepoType ( SyncContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath = {} );
 
-    AsyncOpRef<expected<std::list<RepoInfo>>> readRepoFile( ContextRef ctx, zypp::Url repoFileUrl );
+    AsyncOpRef<expected<std::list<RepoInfo>>> readRepoFile( AsyncContextRef ctx, zypp::Url repoFileUrl );
     expected<std::list<RepoInfo>> readRepoFile( SyncContextRef ctx, zypp::Url repoFileUrl );
 
     AsyncOpRef<expected<repo::RefreshCheckStatus> > checkIfToRefreshMetadata( repo::AsyncRefreshContextRef refCtx, AsyncLazyMediaHandle medium, ProgressObserverRef progressObserver = nullptr );
@@ -62,7 +60,7 @@ namespace zyppng {
     AsyncOpRef<expected<void>> addRepositories( AsyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress = nullptr );
     expected<void> addRepositories( SyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress = nullptr );
 
-    AsyncOpRef<expected<void>> refreshGeoIPData( ContextRef ctx, RepoInfo::url_set urls );
+    AsyncOpRef<expected<void>> refreshGeoIPData( AsyncContextRef ctx, RepoInfo::url_set urls );
     expected<void> refreshGeoIPData( SyncContextRef ctx, RepoInfo::url_set urls );
 
   }

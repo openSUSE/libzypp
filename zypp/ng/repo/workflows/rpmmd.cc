@@ -7,12 +7,13 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "rpmmd.h"
+#include <zypp/repo/RepoException.h>
 #include <zypp-core/zyppng/ui/ProgressObserver>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
 
 #include <zypp/ng/workflows/logichelpers.h>
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/parser/yum/RepomdFileReader.h>
 #include <zypp/repo/yum/RepomdFileCollector.h>

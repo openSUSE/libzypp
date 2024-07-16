@@ -393,6 +393,9 @@ namespace zyppng {
 
   };
 
+  #define expected_return_on_error(T, exp) \
+    if ( !exp ) return expected<T>::error( exp.error() )
+
   template <typename Type, typename Err = std::exception_ptr >
   static expected<std::decay_t<Type>,Err> make_expected_success( Type &&t )
   {

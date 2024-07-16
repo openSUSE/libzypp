@@ -988,6 +988,7 @@ namespace zypp
     TargetImpl::~TargetImpl()
     {
       _rpm.closeDatabase();
+      //@BUG !!! This causes use after free in the exit handlers, use a sigc::signal
       sigMultiversionSpecChanged();	// HACK: see sigMultiversionSpecChanged
       MIL << "Closed target on " << _root << endl;
     }

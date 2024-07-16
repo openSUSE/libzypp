@@ -57,7 +57,7 @@ namespace zyppng {
    *
    * \sa zypp/zyppng/base/signals.h
    */
-  class LIBZYPP_NG_EXPORT Base : public sigc::trackable, public std::enable_shared_from_this<Base>
+  class  Base : public sigc::trackable, public std::enable_shared_from_this<Base>
   {
     NON_COPYABLE(Base);
     ZYPP_DECLARE_PRIVATE(Base)

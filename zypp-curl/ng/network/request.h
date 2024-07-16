@@ -39,7 +39,7 @@ namespace zyppng {
    * After creating a NetworkRequest and changing the required settings is enqueued
    * to the \sa zyppng::NetworkRequestDispatcher.
    */
-  class LIBZYPP_NG_EXPORT NetworkRequest : public Base
+  class  NetworkRequest : public Base
   {
   public:
 

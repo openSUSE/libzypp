@@ -30,8 +30,13 @@
 #include <zypp/target/rpm/RpmFlags.h>
 
 namespace zyppng {
-  // just for the friend declaration
+  // just for the friend declarations
   template<typename T> class RepoManager;
+  class ContextBase;
+}
+
+namespace zypp::zypp_detail{
+  class GlobalStateHelper;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -70,7 +75,7 @@ namespace zypp
     public:
 
       /** Singleton ctor */
-      static ZConfig & instance();
+      static ZYPP_INTERNAL_DEPRECATE ZConfig & instance();
 
       /** Print some detail about the current libzypp version.*/
       std::ostream & about( std::ostream & str ) const;
@@ -598,10 +603,13 @@ namespace zypp
 
       /** Dtor */
       ~ZConfig();
-      void notifyTargetChanged();  ///< internal
+      void notifyTargetChanged( const zypp::Pathname &newRoot, const zypp::Pathname &newConfig );  ///< internal
 
   private:
       friend class RepoManager;
+      friend class zyppng::ContextBase;
+      friend class zypp_detail::GlobalStateHelper;
+
       template<typename T> friend class zyppng::RepoManager;
       /** The builtin config file value. */
       Pathname builtinRepoCachePath() const;
@@ -615,7 +623,7 @@ namespace zypp
   private:
       friend class Impl;
       /** Default ctor. */
-      ZConfig();
+      ZConfig( zypp::Pathname p );
       /** Pointer to implementation */
       RW_pointer<Impl, rw_pointer::Scoped<Impl> > _pimpl;
   };

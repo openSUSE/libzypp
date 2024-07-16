@@ -49,7 +49,7 @@ namespace zypp
     * \throws ParseException If the file parsing fails
     * \throws Exception On other errors.
     */
-   std::list<RepoInfo> readRepoFile(const Url & repo_file) ZYPP_API;
+   std::list<RepoInfo> readRepoFile( const Url & repo_file ) ZYPP_INTERNAL_DEPRECATE ZYPP_API;
 
   /**
    * \short creates and provides information about known sources.

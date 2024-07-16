@@ -8,7 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "repoinfowf.h"
 #include "zypp/ng/reporthelper.h"
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Gettext.h>
@@ -214,7 +214,7 @@ namespace zyppng {
     return SimpleExecutor<RepoInfoProvideKeyLogic, SyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
-  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(ContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
+  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(AsyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
     return SimpleExecutor<RepoInfoProvideKeyLogic, AsyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }

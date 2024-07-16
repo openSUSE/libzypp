@@ -233,6 +233,8 @@ RpmDb::~RpmDb()
   closeDatabase();
   delete process;
   MIL  << "~RpmDb() end" << endl;
+
+  //@BUG !!! This causes use after free in the exit handlers, use a sigc::signal
   sKeyRingReceiver.reset();
 }
 

@@ -1,0 +1,455 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+#ifndef ZYPP_GLIB_UTIL_GLIST_H
+#define ZYPP_GLIB_UTIL_GLIST_H
+
+#include <zypp-glib/utils/GLibMemory>
+#include <boost/iterator/iterator_facade.hpp>
+#include <iostream>
+
+
+namespace zypp::glib {
+
+  enum Ownership {
+    Full,      //<< The container owns the Glist and the elements
+    Container, //<< Just owns the GList, but not the elements
+    None       //<< Just wraps the container, but does not maintain its lifetime or the elements lifetime
+  };
+
+  namespace internal {
+    template < typename GLibContainer, typename T, typename Enable = void >
+    struct GContainerTraits;
+
+    template <typename T, typename Traits>
+    class glistcontainer_iter;
+  }
+
+  template <typename T, typename Traits = internal::GContainerTraits<::GList, T> >
+  class GListView;
+
+  template <typename T , typename Traits = internal::GContainerTraits<::GList, T> >
+  class GListContainer;
+
+  namespace internal {
+
+    template <class... T>
+    constexpr bool always_false = false;
+
+    template <typename Trait>
+    constexpr bool list_can_copy_v = std::is_detected_v< internal::has_simple_copy_trait, Trait> || std::is_detected_v< internal::has_extended_copy_trait, Trait>;
+
+    template <typename Trait>
+    constexpr bool list_can_del_v  = std::is_detected_v< internal::has_delete_trait, Trait >;
+
+
+    /*!
+     * Detects if the given type is compatible to a common glib Container optimization that directly stores int types in
+     * the pointer part of a container node.
+     */
+    template <typename T>
+    constexpr bool g_containter_int_mode =  std::is_same_v< guint8, T>  || std::is_same_v< guint16, T>  || std::is_same_v< guint32, T>  ||
+                                            std::is_same_v< gint8, T>   || std::is_same_v< gint16, T>   || std::is_same_v< gint32, T>   ||
+                                            std::is_same_v< guint64, T> || std::is_same_v< gulong, T>   || std::is_same_v< gsize, T>    ||
+                                            std::is_same_v< gint64, T>  || std::is_same_v< glong, T>;
+
+    template <typename Trait>
+    constexpr auto delFnFromTrait () {
+      if constexpr ( list_can_del_v<Trait> )
+        return Trait::del_fn;
+      else {
+        return nullptr;
+      }
+    }
+
+    template <typename Trait>
+    constexpr auto copyFnFromTrait () {
+      if constexpr ( list_can_copy_v<Trait> )
+        return Trait::copy_fn;
+      else {
+        return nullptr;
+      }
+    }
+
+    template <typename T>
+    T gcontainer_gpointer_to_value( gconstpointer data ) {
+      if constexpr ( std::is_same_v< guint8, T> || std::is_same_v< guint16, T> || std::is_same_v< guint32, T> ) {
+        return GPOINTER_TO_UINT( data );
+      } else if constexpr ( std::is_same_v< gint8, T> || std::is_same_v< gint16, T> || std::is_same_v< gint32, T> ) {
+        return GPOINTER_TO_INT( data );
+      } else if constexpr ( std::is_same_v< guint64, T> || std::is_same_v< gulong, T> || std::is_same_v< gsize, T> ) {
+        return GPOINTER_TO_SIZE( data );
+      } else if constexpr ( std::is_same_v< gint64, T> || std::is_same_v< glong, T>  ) {
+        return GPOINTER_TO_SIZE( data );
+      } else if constexpr ( std::is_pointer_v<T> ) {
+        return (T)(data);
+      } else {
+        static_assert( always_false<T>, "gcontainer_gpointer_to_value can not be used with this type" );
+      }
+    }
+
+    template <typename T>
+    gpointer gcontainer_value_to_gpointer( T val ) {
+      if constexpr ( std::is_same_v< guint8, T> || std::is_same_v< guint16, T> || std::is_same_v< guint32, T> ) {
+        return GUINT_TO_POINTER( val );
+      } else if constexpr ( std::is_same_v< gint8, T> || std::is_same_v< gint16, T> || std::is_same_v< gint32, T> ) {
+        return GINT_TO_POINTER( val );
+      } else if constexpr ( std::is_same_v< guint64, T> || std::is_same_v< gulong, T> || std::is_same_v< gsize, T> ) {
+        return GSIZE_TO_POINTER( val );
+      } else if constexpr ( std::is_same_v< gint64, T> || std::is_same_v< glong, T>  ) {
+        return GSIZE_TO_POINTER( val );
+      } else if constexpr ( std::is_pointer_v<T> ) {
+        return ( gpointer )(val);
+      } else {
+        static_assert( always_false<T>, "gcontainer_value_to_gpointer can not be used with this type" );
+      }
+    }
+
+
+    template <typename GLibContainer, typename T> class gcontainer_value_ref;
+
+
+    template <typename T>
+    class gcontainer_value_ref<::GList, T>
+    {
+      public:
+        static_assert( g_containter_int_mode<T>, "gcontainer_value_ref is only usable with int based values" );
+        gcontainer_value_ref( ::GList *node ) : _node(node) { }
+
+        operator T () const {
+          return getValue();
+        }
+
+        gcontainer_value_ref &operator= ( const T& val ) {
+          _node->data = gcontainer_value_to_gpointer(val);
+          return *this;
+        }
+
+        gcontainer_value_ref &operator= ( const gcontainer_value_ref& val ) {
+          (*this) = val.getValue();
+          return *this;
+        }
+
+        bool operator== ( const gcontainer_value_ref& other ) const {
+          return getValue() == other.getValue();
+        }
+
+
+        bool operator== ( const T& val ) const {
+          return getValue() == val;
+        }
+
+      private:
+        T getValue() const { return gcontainer_gpointer_to_value<T>( _node->data ); }
+        ::GList *_node = nullptr;
+    };
+
+    /**
+     * Simple helper template to provide a correct GCopyFunc signature
+     * for the glist copy functions, since we are allowing copy functions
+     * with just one argument as well
+     *
+     * @tparam T The type we want to copy
+     * @tparam simpleCopyFn The Function we want to call
+     */
+    template < typename T, auto simpleCopyFn >
+    gpointer simpleCopyFnHelper( gconstpointer copy, gpointer ) {
+      return reinterpret_cast<gpointer>( simpleCopyFn( (T*)(copy) ) );
+    }
+
+    template<typename Fn>
+    void glist_release( ::GList *list, Ownership os, const Fn &delFn ) {
+      switch ( os ) {
+        case Ownership::Full: {
+          g_list_free_full( list, (GDestroyNotify)(delFn) );
+          break;
+        }
+        case Ownership::Container: {
+          g_list_free( list );
+          break;
+        }
+        case Ownership::None: {
+          break;
+        }
+      }
+    }
+
+    template < typename GLibContainer, typename T, typename Enable >
+    struct GContainerTraits {
+      static_assert( std::is_detected_v< internal::has_glib_type_trait, T >, "A Glib type trait is required to use GListContainer, forgot to use ZYPP_GLIB_DEFINE_GLIB_TRAITS_WITH_CODE for your type? " );
+      using type            = T;
+      using value_type      = T*;
+      using reference       = value_type;
+      using const_reference = const value_type;
+
+      static reference dereferenceData ( ::GList *node ) {
+        return (value_type)(node->data);
+      }
+
+      static const_reference dereferenceConstData ( const ::GList *node ) {
+        return (value_type)(node->data);
+      }
+
+      static value_type pointerToValue ( gpointer data ) {
+        return (value_type)(data);
+      }
+
+      static gpointer valueToPointer ( value_type value ) {
+        return (gpointer)value;
+      }
+
+      //static gconstpointer valueToPointer ( const value_type value ) {
+      //  return (gconstpointer)value;
+      //}
+
+      static void releaseData ( gpointer data ) {
+        static_assert( list_can_del_v<GLibTypeTraits<T>>, "A delete trait is required to use GListContainer" );
+        GLibTypeTraits<T>::delete_fn( static_cast<T*>(data));
+      }
+    };
+
+    template < typename GLibContainer, typename T >
+    struct GContainerTraits<GLibContainer, T, std::enable_if_t< g_containter_int_mode<T> > >{
+      using type            = T;
+      using value_type      = T;
+      using reference       = internal::gcontainer_value_ref<GLibContainer, T>;
+      using const_reference = T;
+
+      static reference dereferenceData ( ::GList *node ) {
+        return reference(node);
+      }
+
+      static const_reference dereferenceConstData ( const ::GList *node ) {
+        return gcontainer_gpointer_to_value<T>(node->data);
+      }
+
+      static value_type pointerToValue ( gpointer data ) {
+        return gcontainer_gpointer_to_value<T>( data );
+      }
+
+      static gpointer valueToPointer ( reference value ) {
+        return gcontainer_value_to_gpointer<value_type>( value );
+      }
+
+      static gpointer valueToPointer ( const_reference value ) {
+        return gcontainer_value_to_gpointer<value_type>( value );
+      }
+
+      static void releaseData ( gpointer data ) {
+        // the gpointers just contain plain data , nothing to free
+        return;
+      }
+    };
+
+
+    template <typename T, typename Traits>
+    class glistcontainer_iter
+      : public boost::iterator_facade<
+            glistcontainer_iter<T, Traits>
+          , typename Traits::value_type
+          , boost::bidirectional_traversal_tag
+          , std::conditional_t< std::is_const_v<T>, typename Traits::const_reference,  typename Traits::reference >
+        >
+    {
+    public:
+        glistcontainer_iter()
+          : _node(0) {}
+
+        explicit glistcontainer_iter(GList* p)
+          : _node(p) {}
+
+    private:
+        friend class boost::iterator_core_access;
+        friend class GListContainer<T, Traits>;
+
+        void increment() { if ( _node) _node = _node->next; }
+        void decrement() { if ( _node) _node = _node->prev; }
+
+        bool equal(glistcontainer_iter const& other) const {
+            return this->_node == other._node;
+        }
+
+        decltype(auto) dereference() const {
+          if constexpr ( std::is_const_v<T> ) {
+            return Traits::dereferenceConstData( _node );
+          } else {
+            return Traits::dereferenceData( _node );
+          }
+        }
+
+        GList* _node = nullptr;
+    };
+  }
+
+  template <typename T, typename Traits>
+  class GListView {
+    public:
+      using value_type      = typename Traits::value_type;
+      using const_iterator  = internal::glistcontainer_iter<const T, Traits>;
+      using const_ref       = typename Traits::const_reference;
+      using Ownership       = ::zypp::glib::Ownership;
+
+      GListView ( const ::GList *list, Ownership os = None )
+      : _list( const_cast<::GList*>(list) ) // removing the const for internal use of the pointer, all glib func want a non const version
+      , _os( os )
+      { }
+
+      GListView ( ::GList *list, Ownership os )
+      : _list( list )
+      , _os( os )
+      { }
+
+      // no implicit copies for now
+      GListView ( const GListView &other ) = delete;
+      GListView &operator= ( const GListView &other ) = delete;
+
+      GListView ( GListView &&other ) {
+        _list = other._list;
+        _os = other._os;
+        other._list = nullptr;
+      }
+
+      GListView &operator= ( GListView &&other ) {
+        _list = other._list;
+        _os = other._os;
+        other._list = nullptr;
+      }
+
+      virtual ~GListView() {
+        internal::glist_release( this->_list, this->_os, Traits::releaseData );
+      }
+
+      size_t size () const {
+        return g_list_length( _list );
+      }
+
+      const_iterator begin () const {
+        return const_iterator( _list );
+      }
+
+      const_iterator last () const {
+        return const_iterator( g_list_last( _list) );
+      }
+
+      const_iterator end () const {
+        return const_iterator();
+      }
+
+      const ::GList *get() {
+        return _list;
+      }
+
+      const_iterator operator[] ( const size_t index ) const {
+        auto node = g_list_nth( _list, index );
+        return const_iterator(node);
+      }
+
+      /**
+       * Creates a shallow copy of the list, that is copying the container and filling it only with references to the
+       * same elements as the initial list.
+       *
+       * \note the returned container will have \ref Ownership::Container regardless of the ownership strategy of the original
+       *       container.
+       */
+      GListContainer<T, Traits> copy () const {
+        return GListContainer<T, Traits>( g_list_copy( _list ), GListContainer<T, Traits>::Ownership::Container );
+      }
+
+    protected:
+      ::GList *_list = nullptr;
+      Ownership _os  = Ownership::Full;
+  };
+
+  template <typename T, typename Traits >
+  class GListContainer : public GListView<T, Traits>
+  {
+  public:
+    using this_type       = GListContainer;
+    using value_type      = typename Traits::value_type;
+    using reference       = typename Traits::reference;
+    using const_reference = typename Traits::const_reference;
+    using iterator        = internal::glistcontainer_iter<T, Traits>;
+    using const_iterator  = internal::glistcontainer_iter<const T, Traits>;
+    using Ownership       = ::zypp::glib::Ownership;
+
+    friend iterator;
+    friend const_iterator;
+
+    GListContainer () : GListView<T, Traits> ( (::GList *)nullptr, Ownership::Full ) { }
+    GListContainer ( ::GList *list, Ownership os ) : GListView<T, Traits> ( list, os ) { }
+
+    ::GList *get() {
+      return this->_list;
+    }
+
+    ::GList *take() {
+      this->_os = Ownership::None;
+      return this->_list;
+    }
+
+    void reverse () {
+        this->_list = g_list_reverse( this->_list );
+    }
+
+    iterator begin () {
+      return iterator( this->_list );
+    }
+
+    iterator last () {
+      return iterator( g_list_last( this->_list) );
+    }
+
+    iterator end () {
+      return iterator();
+    }
+
+    iterator operator[] ( const size_t index ) {
+      auto node = g_list_nth( this->_list, index );
+      return iterator(node);
+    }
+
+    void push_back ( const_reference data ) {
+      this->_list = g_list_append( this->_list, Traits::valueToPointer(data) );
+    }
+
+    void push_front ( const_reference data ) {
+      this->_list = g_list_prepend( this->_list, Traits::valueToPointer(data) );
+    }
+
+    iterator remove ( iterator i ) {
+      if ( i._node ) {
+        auto *next = i._node->next;
+        if ( this->_os == Ownership::Full )
+          Traits::releaseData( i._node->data );
+        this->_list = g_list_delete_link( this->_list, i._node );
+        return iterator(next);
+      }
+      return iterator();
+    }
+
+    void clear () {
+      internal::glist_release( this->_list, this->_os, Traits::releaseData );
+    }
+
+    iterator find ( GCompareFunc compare ) {
+      auto *node = g_list_find_custom(  this->_list, nullptr, compare );
+      return iterator(node);
+    }
+
+    iterator find ( const_reference data ) {
+      return iterator( g_list_find( this->_list, Traits::valueToPointer(data) ) );
+    }
+
+    this_type deepCopy ( GCopyFunc copyFn, gpointer userdata = nullptr ) const {
+      GList *copy = g_list_copy_deep( this->_list, copyFn, userdata );
+      return this_type( copy, Ownership::Full );
+    }
+  };
+}
+
+#endif

@@ -18,6 +18,11 @@
 #include <zypp-core/Globals.h>
 #include <zypp/Pathname.h>
 
+namespace zyppng {
+  class ContextBase;
+  using ContextBaseRef = std::shared_ptr<ContextBase>;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -41,14 +46,30 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     public:
-      RepoInfoBase();
-      RepoInfoBase(const std::string &alias);
+
       virtual ~RepoInfoBase();
 
+#if LEGACY(1733)
+    public:
+#else
+    protected:
+#endif
+      RepoInfoBase( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
+      RepoInfoBase( zyppng::ContextBaseRef context, const std::string &alias ) ZYPP_LOCAL;
+
+      ZYPP_INTERNAL_DEPRECATE RepoInfoBase();
+      ZYPP_INTERNAL_DEPRECATE RepoInfoBase(const std::string &alias);
       RepoInfoBase(const RepoInfoBase &) = default;
       RepoInfoBase(RepoInfoBase &&) noexcept = default;
       RepoInfoBase &operator=(const RepoInfoBase &) = default;
       RepoInfoBase &operator=(RepoInfoBase &&) noexcept = default;
+
+    public:
+
+      /**
+       * Returns the associated context of the RepoInfo
+       */
+      zyppng::ContextBaseRef context() const;
 
       /**
        * unique identifier for this source. If not specified
@@ -163,7 +184,9 @@ namespace zypp
       virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
 
       struct Impl;
-    private:
+
+    protected:
+      RepoInfoBase( Impl &pimpl );
       /** Pointer to implementation */
       RWCOW_pointer<Impl> _pimpl;
     };

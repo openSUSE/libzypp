@@ -117,12 +117,12 @@ namespace zyppng::CheckSumWorkflow {
     return SimpleExecutor<CheckSumWorkflowLogic, SyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
   }
 
-  AsyncOpRef<expected<void> > verifyChecksum( ContextRef zyppCtx, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
+  AsyncOpRef<expected<void> > verifyChecksum( AsyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
   {
     return SimpleExecutor<CheckSumWorkflowLogic, AsyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
   }
 
-  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( ContextRef zyppCtx, zypp::CheckSum checksum )
+  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( AsyncContextRef zyppCtx, zypp::CheckSum checksum )
   {
     using zyppng::operators::operator|;
     return [ zyppCtx, checksum=std::move(checksum) ]( ProvideRes res ) mutable -> AsyncOpRef<expected<ProvideRes>> {

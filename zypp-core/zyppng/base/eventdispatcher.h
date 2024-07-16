@@ -39,7 +39,7 @@ class EventDispatcherPrivate;
  * uses the glib eventloop, just like Qt and GTK, so integrating libzypp here is just a matter of passing the default main context
  * to the constructor of \ref EventDispatcher.
  */
-class LIBZYPP_NG_EXPORT EventDispatcher : public Base
+class  EventDispatcher : public Base
 {
   ZYPP_DECLARE_PRIVATE(EventDispatcher)
   friend class AbstractEventSource;

@@ -35,7 +35,7 @@ namespace zyppng {
    * implementing Metalink on top. If in doubt which one to use, always
    * use this one.
    */
-  class LIBZYPP_NG_EXPORT Downloader : public Base
+  class  Downloader : public Base
   {
     ZYPP_DECLARE_PRIVATE( Downloader )
   public:
@@ -123,7 +123,7 @@ namespace zyppng {
    * \endcode
    *
    */
-  class LIBZYPP_NG_EXPORT Download : public Base
+  class  Download : public Base
   {
     ZYPP_DECLARE_PRIVATE( Download )
 

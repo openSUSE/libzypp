@@ -37,6 +37,7 @@ extern "C"
 #include <zypp/sat/detail/PoolImpl.h>
 
 #include <zypp-media/MediaConfig>
+#include <zypp/zypp_detail/ZYppImpl.h>
 
 using std::endl;
 using namespace zypp::filesystem;
@@ -318,12 +319,6 @@ namespace zypp
       return target ? target->root() : Pathname();
     }
 
-    inline Pathname _autodetectZyppConfPath()
-    {
-      const char *env_confpath = getenv( "ZYPP_CONF" );
-      return env_confpath ? env_confpath : "/etc/zypp/zypp.conf";
-    }
-
    /////////////////////////////////////////////////////////////////
   } // namespace zypp
   ///////////////////////////////////////////////////////////////////
@@ -483,8 +478,8 @@ namespace zypp
     };
 
     public:
-      Impl()
-        : _parsedZyppConf         	( _autodetectZyppConfPath() )
+      Impl( Pathname &&confPath )
+        : _parsedZyppConf         	( std::move(confPath) )
         , cfg_arch                	( defaultSystemArchitecture() )
         , cfg_textLocale          	( defaultTextLocale() )
         , cfg_cache_path		{ "/var/cache/zypp" }
@@ -726,9 +721,8 @@ namespace zypp
       Impl &operator=(Impl &&) = delete;
       ~Impl() {}
 
-      void notifyTargetChanged()
+      void notifyTargetChanged( const zypp::Pathname &newRoot, const zypp::Pathname &newConf )
       {
-        Pathname newRoot { _autodetectSystemRoot() };
         MIL << "notifyTargetChanged (" << newRoot << ")" << endl;
 
         if ( newRoot.emptyOrRoot() ) {
@@ -737,7 +731,6 @@ namespace zypp
         else {
           _currentTargetDefaults = TargetDefaults();
 
-          Pathname newConf { newRoot/_autodetectZyppConfPath() };
           if ( PathInfo(newConf).isExist() ) {
             parser::IniDict dict( newConf );
             for ( const auto & [entry,value] : dict.entries( "main" ) ) {
@@ -870,7 +863,7 @@ namespace zypp
       {
         static const str::regex rx( "^multiversion *= *(.*)" );
         str::smatch what;
-        return iostr::simpleParseFile( InputStream( Pathname::assertprefix( root_r, _autodetectZyppConfPath() ) ),
+        return iostr::simpleParseFile( InputStream( Pathname::assertprefix( root_r, zypp_detail::autodetectZyppConfPath() ) ),
                                 [&]( int num_r, std::string line_r )->bool
                                 {
                                   if ( line_r[0] == 'm' && str::regex_match( line_r, what, rx ) )
@@ -924,8 +917,7 @@ namespace zypp
   //
   ZConfig & ZConfig::instance()
   {
-    static ZConfig _instance; // The singleton
-    return _instance;
+    return zypp_detail::GlobalStateHelper::config();
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -933,8 +925,8 @@ namespace zypp
   //	METHOD NAME : ZConfig::ZConfig
   //	METHOD TYPE : Ctor
   //
-  ZConfig::ZConfig()
-  : _pimpl( new Impl )
+  ZConfig::ZConfig(Pathname p)
+  : _pimpl( new Impl( std::move(p) ) )
   {
     about( MIL );
   }
@@ -947,8 +939,8 @@ namespace zypp
   ZConfig::~ZConfig( )
   {}
 
-  void ZConfig::notifyTargetChanged()
-  { return _pimpl->notifyTargetChanged(); }
+  void ZConfig::notifyTargetChanged( const zypp::Pathname &newRoot, const zypp::Pathname &newConfig )
+  { return _pimpl->notifyTargetChanged( newRoot, newConfig ); }
 
   Pathname ZConfig::systemRoot() const
   { return _autodetectSystemRoot(); }

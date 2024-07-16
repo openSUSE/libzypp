@@ -4,18 +4,19 @@
 #include <list>
 #include <string>
 
+#include <zypp/zypp_detail/ZYppImpl.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/Exception.h>
 #include <zypp/KeyRing.h>
 #include <zypp/PublicKey.h>
 #include <zypp/TmpPath.h>
 
+#include <zypp/ng/context.h>
 #include <zypp/ng/workflows/keyringwf.h>
 
 #include <boost/test/unit_test.hpp>
 
 #include "KeyRingTestReceiver.h"
-#include <zypp/ng/workflows/contextfacade.h>
 
 using boost::unit_test::test_suite;
 using boost::unit_test::test_case;
@@ -31,7 +32,7 @@ bool verifyFileSignatureWorkflow( KeyRing_Ptr ring, const Pathname &file, const 
   keyring::VerifyFileContext context( file, signature );
   context.shortFile( filedesc );
   context.keyContext( keycontext );
-  const auto &res = zyppng::KeyRingWorkflow::verifyFileSignature( zyppng::SyncContext::create(), ring, std::move(context) );
+  const auto &res = zyppng::KeyRingWorkflow::verifyFileSignature( zypp::zypp_detail::GlobalStateHelper::context(), ring, std::move(context) );
   sigValid_r = res.second.fileValidated();
   return res.second.fileAccepted();
 }
@@ -41,7 +42,7 @@ bool verifyFileSignatureWorkflow( KeyRing_Ptr ring, const Pathname &file, const 
   keyring::VerifyFileContext context( file, signature );
   context.shortFile( filedesc );
   context.keyContext( keycontext );
-  const auto &res = zyppng::KeyRingWorkflow::verifyFileSignature( zyppng::SyncContext::create(), ring, std::move(context) );
+  const auto &res = zyppng::KeyRingWorkflow::verifyFileSignature( zypp::zypp_detail::GlobalStateHelper::context(), ring, std::move(context) );
   return res.second.fileAccepted();
 }
 

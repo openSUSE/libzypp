@@ -11,6 +11,7 @@
 
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp/ng/context_fwd.h>
 
 namespace zypp {
   class RepoInfo;
@@ -23,9 +24,6 @@ namespace zypp {
 }
 
 namespace zyppng {
-
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (SyncContext);
 
   /*!
    * \namespace KeyRingWorkflow
@@ -40,7 +38,7 @@ namespace zyppng {
      * the key if it was found
      */
     bool provideAndImportKeyFromRepository(SyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r );
-    AsyncOpRef<bool> provideAndImportKeyFromRepository(ContextRef ctx, std::string id_r, zypp::RepoInfo info_r );
+    AsyncOpRef<bool> provideAndImportKeyFromRepository(AsyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r );
 
     /**
      * Follows a signature verification interacting with the user.
@@ -74,10 +72,10 @@ namespace zyppng {
      * \see \ref zypp::KeyRingReport
      */
     std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext && context_r );
-    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( ContextRef zyppContext, zypp::keyring::VerifyFileContext && context_r );
+    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::keyring::VerifyFileContext && context_r );
 
     std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
-    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( ContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
+    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
   }
 }
 

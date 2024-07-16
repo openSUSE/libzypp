@@ -290,7 +290,8 @@ INSTALL(  FILES
 )
 
 SET( zypp_ng_SRCS
-  ng/context.cc
+  ng/contextbase.cc
+  ng/fusionpool.cc
   ng/progressobserveradaptor.cc
   ng/reporthelper.cc
   ng/repomanager.cc
@@ -304,7 +305,6 @@ SET( zypp_ng_SRCS
   ng/repo/workflows/serviceswf.cc
   ng/repo/workflows/susetags.cc
   ng/workflows/checksumwf.cc
-  ng/workflows/contextfacade.cc
   ng/workflows/downloadwf.cc
   ng/workflows/keyringwf.cc
   ng/workflows/mediafacade.cc
@@ -314,6 +314,11 @@ SET( zypp_ng_SRCS
 
 SET( zypp_ng_HEADERS
   ng/context.h
+  ng/context_fwd.h
+  ng/contextbase.h
+  ng/ContextBase
+  ng/fusionpool.h
+  ng/FusionPool
   ng/Context
   ng/progressobserveradaptor.h
   ng/reporthelper.h
@@ -332,7 +337,6 @@ SET( zypp_ng_HEADERS
   ng/repo/workflows/serviceswf.h
   ng/repo/workflows/susetags.h
   ng/workflows/checksumwf.h
-  ng/workflows/contextfacade.h
   ng/workflows/downloadwf.h
   ng/workflows/keyringwf.h
   ng/workflows/mediafacade.h
@@ -342,8 +346,6 @@ SET( zypp_ng_HEADERS
 )
 
 SET( zypp_ng_private_HEADERS
-  ng/private/context_p.h
-  ng/private/repomanager_p.h
 )
 
 #INSTALL( FILES
@@ -651,12 +653,14 @@ INSTALL(  FILES
 
 SET( zypp_zypp_detail_SRCS
   zypp_detail/ZYppImpl.cc
+  zypp_detail/ZyppLock.cc
 )
 
 SET( zypp_zypp_detail_HEADERS
   zypp_detail/keyring_p.h
   zypp_detail/urlcredentialextractor_p.h
   zypp_detail/ZYppImpl.h
+  zypp_detail/ZyppLock.h
   zypp_detail/ZYppReadOnlyHack.h
 )
 
@@ -701,6 +705,10 @@ SET( zypp_repo_HEADERS
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
   repo/PluginServices.h
+)
+
+SET( zypp_repo_detail_HEADERS
+  repo/detail/RepoInfoBaseImpl.h
 )
 
 INSTALL( FILES
@@ -930,6 +938,7 @@ ${zypp_url_HEADERS}
 ${zypp_HEADERS}
 ${zypp_zypp_detail_HEADERS}
 ${zypp_repo_HEADERS}
+${zypp_repo_detail_HEADERS}
 ${zypp_source_susetags_HEADERS}
 ${zypp_target_modalias_HEADERS}
 ${zypp_target_HEADERS}
@@ -1043,20 +1052,6 @@ INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
 # library with more symbols for tests etc
 add_zypp_lib( zypp-allsym STATIC )
-
-#this part does nothing yet, only when switching away from using a map file to
-#a approach where symbols are exported explicitly it would make a difference
-#ZYPPNG symbols need to be added to the map file to be exported
-IF( EXPORT_NG_API )
-ADD_DEFINITIONS(-DEXPORT_EXPERIMENTAL_API)
-INCLUDE(GenerateExportHeader)
-message("Exporting experimental libzypp-ng API")
-GENERATE_EXPORT_HEADER(
-  zypp
-  BASE_NAME zypp-ng
-  PREFIX_NAME LIB
-)
-ENDIF ( EXPORT_NG_API )
 
 # install XML schemas
 FILE( GLOB YUM_SCHEMA_FILES ${LIBZYPP_SOURCE_DIR}/zypp/parser/yum/schema/*.rng )

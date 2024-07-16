@@ -37,14 +37,14 @@ namespace zypp
   {
   public:
     /** Default ctor creates \ref noService.*/
-    ServiceInfo();
+    ZYPP_INTERNAL_DEPRECATE ServiceInfo();
 
     /**
      *  Creates ServiceInfo with specified alias.
      *
      * \param alias unique short name of service
      */
-    ServiceInfo( const std::string & alias );
+    ZYPP_INTERNAL_DEPRECATE ServiceInfo( const std::string & alias );
 
     /**
      * ServiceInfo with alias and its URL
@@ -52,7 +52,33 @@ namespace zypp
      * \param alias unique shortname of service
      * \param url url to service
      */
-    ServiceInfo( const std::string & alias, const Url& url );
+    ZYPP_INTERNAL_DEPRECATE ServiceInfo( const std::string & alias, const Url& url );
+
+
+    /**
+     * Default ctor creates \ref noService.
+     * \internal
+     */
+    ServiceInfo( zyppng::ContextBaseRef contextRef ) ZYPP_LOCAL;
+
+    /**
+     *  Creates ServiceInfo with specified alias.
+     *
+     * \param alias unique short name of service
+     * \internal
+     */
+    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias ) ZYPP_LOCAL;
+
+    /**
+     * ServiceInfo with alias and its URL
+     *
+     * \param alias unique shortname of service
+     * \param url url to service
+     * \internal
+     */
+    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias, const Url& url ) ZYPP_LOCAL;
+
+
 
     ~ServiceInfo() override;
 
@@ -221,6 +247,17 @@ namespace zypp
   using ServiceInfo_constPtr = shared_ptr<const ServiceInfo>;
   /** \relates ServiceInfo */
   using ServiceInfoList = std::list<ServiceInfo>;
+
+  /** \relates RepoInfoBase */
+  inline bool operator==( const ServiceInfo & lhs, const ServiceInfo & rhs )
+  { return lhs.alias() == rhs.alias(); }
+
+  /** \relates RepoInfoBase */
+  inline bool operator!=( const ServiceInfo & lhs, const ServiceInfo & rhs )
+  { return lhs.alias() != rhs.alias(); }
+
+  inline bool operator<( const ServiceInfo & lhs, const ServiceInfo & rhs )
+  { return lhs.alias() < rhs.alias(); }
 
   /** \relates ServiceInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj ) ZYPP_API;

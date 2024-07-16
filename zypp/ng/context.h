@@ -6,79 +6,93 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPP_NG_CONTEXT_INCLUDED
-#define ZYPP_NG_CONTEXT_INCLUDED
+#ifndef ZYPP_NG_SYNCCONTEXT_INCLUDED
+#define ZYPP_NG_SYNCCONTEXT_INCLUDED
 
-#include <zypp-core/zyppng/async/AsyncOp>
-#include <zypp-core/zyppng/ui/UserInterface>
-#include <zypp/RepoManager.h>
-#include <zypp/ResPool.h>
-
-namespace zypp {
-  DEFINE_PTR_TYPE(KeyRing);
-  class ZConfig;
-}
+#include <zypp/ng/context_fwd.h>
+#include <zypp-core/fs/TmpPath.h>
+#include <zypp-core/zyppng/base/private/threaddata_p.h>
+#include <zypp/ZConfig.h>
+#include <zypp/ng/workflows/mediafacade.h>
+#include <zypp/ng/ContextBase>
+#include <zypp-core/zyppng/base/EventLoop>
 
 namespace zyppng {
 
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( Provide );
+  struct SyncTag{};
+  struct AsyncTag{};
 
-  using KeyRing    = zypp::KeyRing;
-  using KeyRingRef = zypp::KeyRing_Ptr;
+  namespace detail {
 
-  class ContextPrivate;
+    template <typename Tag>
+    struct ContextData;
 
+    template <>
+    struct ContextData<SyncTag>
+    {
+      ContextData()
+      : _provider( MediaSyncFacade::create()) {}
 
-  /*!
-   * The Context class is the central object of libzypp, carrying all state that is
-   * required to manage the system.
-   */
-  class Context : public UserInterface
-  {
-    ZYPP_DECLARE_PRIVATE(Context)
+      MediaSyncFacadeRef _provider;
+    };
+
+    template <>
+    struct ContextData<AsyncTag>
+    {
+      ContextData()
+        : _eventDispatcher(ThreadData::current().ensureDispatcher())
+        , _provider( Provide::create() ){
+        // @TODO should start be implicit as soon as something is enqueued?
+        _provider->start();
+      }
+      zyppng::EventDispatcherRef _eventDispatcher;
+      ProvideRef _provider;
+    };
+  }
+
+  template <typename Tag>
+  class Context : public ContextBase, private detail::ContextData<Tag> {
+
     ZYPP_ADD_CREATE_FUNC(Context)
 
   public:
+    ZYPP_DECL_PRIVATE_CONSTR(Context)
+    { }
 
-    using ProvideType = Provide;
+    using ProvideType     = std::conditional_t< std::is_same_v<Tag, AsyncTag>, Provide, MediaSyncFacade >;
+    using SyncOrAsyncTag  = Tag;
 
-    ZYPP_DECL_PRIVATE_CONSTR(Context);
-
-    template <typename AsyncRes>
-    void execute ( AsyncOpRef<AsyncRes> op ) {
-      if ( op->isReady () )
-        return;
-      return executeImpl( op );
+    auto provider() {
+      return this->_provider;
     }
 
-    ProvideRef provider() const;
-    KeyRingRef keyRing () const;
-    zypp::ZConfig &config();
+    template <typename AsyncRes, typename CtxTag = Tag >
+    std::enable_if_t< std::is_same_v<CtxTag, AsyncTag>> execute ( AsyncOpRef<AsyncRes> op ) {
+      if ( op->isReady () )
+        return;
 
-    /**
-     * Access to the resolvable pool.
-     */
-    zypp::ResPool pool();
+      auto loop = EventLoop::create( this->_eventDispatcher );
+      op->sigReady().connect([&](){
+        loop->quit();
+      });
+      loop->run();
+      return;
+    }
 
-    /** Pool of ui::Selectable.
-     * Based on the ResPool, ui::Selectable groups ResObjetcs of
-     * same kind and name.
-    */
-    zypp::ResPoolProxy poolProxy();
-
-    /**
-     * Access to the sat pool.
-     */
-    zypp::sat::Pool satPool();
-
-  private:
-    void executeImpl ( const AsyncOpBaseRef& op );
+    using ContextBase::legacyInit;
+    using ContextBase::changeToTarget;
   };
 
+  template<typename OpType>
+  using MaybeAsyncContextRef = std::conditional_t<detail::is_async_op_v<OpType>, AsyncContextRef, SyncContextRef>;
+
   template<typename T>
-  auto joinPipeline( ContextRef ctx, AsyncOpRef<T> res ) {
+  auto joinPipeline( SyncContextRef ctx, T &&val ) {
+    return std::forward<T>(val);
+  }
+
+  template<typename T>
+  auto joinPipeline( AsyncContextRef ctx, AsyncOpRef<T> res ) {
     if constexpr ( detail::is_async_op_v<decltype(res)> ) {
       ctx->execute(res);
       return res->get();
@@ -86,8 +100,6 @@ namespace zyppng {
       return res;
     }
   }
-
 }
-
 
 #endif

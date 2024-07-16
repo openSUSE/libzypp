@@ -12,15 +12,13 @@
 #include <zypp-core/Pathname.h>
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp/RepoInfo.h>
+#include <zypp/ng/context_fwd.h>
 
 namespace zyppng {
 
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (SyncContext);
-
   namespace RepoInfoWorkflow {
     zypp::Pathname provideKey ( SyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
-    AsyncOpRef<zypp::Pathname> provideKey ( ContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
+    AsyncOpRef<zypp::Pathname> provideKey ( AsyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
   }
 }
 

@@ -12,11 +12,9 @@
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp-core/ManagedFile.h>
+#include <zypp/ng/context_fwd.h>
 
 namespace zyppng {
-
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (Context);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (SyncContext);
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   class ProvideMediaHandle;
@@ -49,7 +47,7 @@ namespace zyppng {
     std::vector<zypp::Pathname> _cacheDirs;
   };
 
-  using AsyncCacheProviderContext = CacheProviderContext<ContextRef>;
+  using AsyncCacheProviderContext = CacheProviderContext<AsyncContextRef>;
   using SyncCacheProviderContext  = CacheProviderContext<SyncContextRef>;
   ZYPP_FWD_DECL_REFS(AsyncCacheProviderContext);
   ZYPP_FWD_DECL_REFS(SyncCacheProviderContext);

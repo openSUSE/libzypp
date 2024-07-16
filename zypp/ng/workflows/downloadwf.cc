@@ -12,7 +12,7 @@
 
 #include <utility>
 #include <zypp/ng/Context>
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/workflows/checksumwf.h>
 
 
@@ -57,7 +57,7 @@ namespace zyppng {
   }
 
 
-  template class CacheProviderContext<ContextRef>;
+  template class CacheProviderContext<AsyncContextRef>;
   template class CacheProviderContext<SyncContextRef>;
 
 

@@ -9,14 +9,14 @@
 #include "refresh.h"
 #include <zypp-media/ng/providespec.h>
 #include <zypp/ng/Context>
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/Gettext.h>
 
 namespace zyppng::repo {
 
-  template<typename ZyppContextRefType>
-  RefreshContext<ZyppContextRefType>::RefreshContext( private_constr_t, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextRefType> &&repoManager )
+  template<typename ZyppContextType>
+  RefreshContext<ZyppContextType>::RefreshContext( private_constr_t, Ref<ZyppContextType> &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager )
     : _zyppContext( std::move(zyppContext) )
     , _repoManager( std::move(repoManager) )
     , _repoInfo( std::move(info) )
@@ -24,12 +24,12 @@ namespace zyppng::repo {
     , _tmpDir( std::move(tempDir) )
   {}
 
-  template<typename ZyppContextRefType>
-  expected<RefreshContextRef<ZyppContextRefType>> RefreshContext<ZyppContextRefType>::create( ZyppContextRefType zyppContext, zypp::RepoInfo info, RepoManagerRef<ZyppContextRefType> repoManager )
+  template<typename ZyppContextType>
+  expected<RefreshContextRef<ZyppContextType>> RefreshContext<ZyppContextType>::create( Ref<ZyppContextType> zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextType> repoManager )
   {
     using namespace operators;
-    using CtxType    = RefreshContext<ZyppContextRefType>;
-    using CtxRefType = RefreshContextRef<ZyppContextRefType>;
+    using CtxType    = RefreshContext<ZyppContextType>;
+    using CtxRefType = RefreshContextRef<ZyppContextType>;
 
     return rawcache_path_for_repoinfo ( repoManager->options(), info )
     | and_then( [&]( zypp::Pathname rawCachePath ) {
@@ -53,80 +53,80 @@ namespace zyppng::repo {
     } );
   }
 
-  template<typename ZyppContextRefType>
-  RefreshContext<ZyppContextRefType>::~RefreshContext()
+  template<typename ZyppContextType>
+  RefreshContext<ZyppContextType>::~RefreshContext()
   {
     MIL << "Deleting RefreshContext" << std::endl;
   }
 
-  template<typename ZyppContextRefType>
-  void RefreshContext<ZyppContextRefType>::saveToRawCache()
+  template<typename ZyppContextType>
+  void RefreshContext<ZyppContextType>::saveToRawCache()
   {
     zypp::filesystem::exchange( _tmpDir.path(), _rawCachePath );
   }
 
-  template<typename ZyppContextRefType>
-  const zypp::Pathname &RefreshContext<ZyppContextRefType>::rawCachePath() const
+  template<typename ZyppContextType>
+  const zypp::Pathname &RefreshContext<ZyppContextType>::rawCachePath() const
   {
     return _rawCachePath;
   }
 
-  template<typename ZyppContextRefType>
-  zypp::Pathname RefreshContext<ZyppContextRefType>::targetDir() const
+  template<typename ZyppContextType>
+  zypp::Pathname RefreshContext<ZyppContextType>::targetDir() const
   {
     return _tmpDir.path();
   }
 
-  template<typename ZyppContextRefType>
-  const ZyppContextRefType &RefreshContext<ZyppContextRefType>::zyppContext() const
+  template<typename ZyppContextType>
+  const Ref<ZyppContextType> &RefreshContext<ZyppContextType>::zyppContext() const
   {
     return _zyppContext;
   }
 
-  template<typename ZyppContextRefType>
-  const zypp::RepoInfo &RefreshContext<ZyppContextRefType>::repoInfo() const
+  template<typename ZyppContextType>
+  const zypp::RepoInfo &RefreshContext<ZyppContextType>::repoInfo() const
   {
     return _repoInfo;
   }
 
-  template<typename ZyppContextRefType>
-  zypp::RepoInfo &RefreshContext<ZyppContextRefType>::repoInfo()
+  template<typename ZyppContextType>
+  zypp::RepoInfo &RefreshContext<ZyppContextType>::repoInfo()
   {
       return _repoInfo;
   }
 
-  template<typename ZyppContextRefType>
-  const RepoManagerRef<ZyppContextRefType> &RefreshContext<ZyppContextRefType>::repoManager() const
+  template<typename ZyppContextType>
+  const RepoManagerRef<ZyppContextType> &RefreshContext<ZyppContextType>::repoManager() const
   {
     return _repoManager;
   }
 
-  template<typename ZyppContextRefType>
-  const zypp::RepoManagerOptions &RefreshContext<ZyppContextRefType>::repoManagerOptions() const
+  template<typename ZyppContextType>
+  const zypp::RepoManagerOptions &RefreshContext<ZyppContextType>::repoManagerOptions() const
   {
     return _repoManager->options();
   }
 
-  template<typename ZyppContextRefType>
-  repo::RawMetadataRefreshPolicy RefreshContext<ZyppContextRefType>::policy() const
+  template<typename ZyppContextType>
+  repo::RawMetadataRefreshPolicy RefreshContext<ZyppContextType>::policy() const
   {
     return _policy;
   }
 
-  template<typename ZyppContextRefType>
-  void RefreshContext<ZyppContextRefType>::setPolicy(RawMetadataRefreshPolicy newPolicy)
+  template<typename ZyppContextType>
+  void RefreshContext<ZyppContextType>::setPolicy(RawMetadataRefreshPolicy newPolicy)
   {
     _policy = newPolicy;
   }
 
-  template<typename ZyppContextRefType>
-  const std::optional<typename RefreshContext<ZyppContextRefType>::PluginRepoverification> &RefreshContext<ZyppContextRefType>::pluginRepoverification() const
+  template<typename ZyppContextType>
+  const std::optional<typename RefreshContext<ZyppContextType>::PluginRepoverification> &RefreshContext<ZyppContextType>::pluginRepoverification() const
   {
       return _pluginRepoverification;
   }
 
-  template<typename ZyppContextRefType>
-  void RefreshContext<ZyppContextRefType>::setProbedType(zypp::repo::RepoType rType)
+  template<typename ZyppContextType>
+  void RefreshContext<ZyppContextType>::setProbedType(zypp::repo::RepoType rType)
   {
     if ( _probedType && *_probedType == rType )
       return;
@@ -135,20 +135,20 @@ namespace zyppng::repo {
     _sigProbedTypeChanged.emit(rType);
   }
 
-  template<typename ZyppContextRefType>
-  const std::optional<zypp::repo::RepoType> &RefreshContext<ZyppContextRefType>::probedType() const
+  template<typename ZyppContextType>
+  const std::optional<zypp::repo::RepoType> &RefreshContext<ZyppContextType>::probedType() const
   {
     return _probedType;
   }
 
-  template<typename ZyppContextRefType>
-  SignalProxy<void (zypp::repo::RepoType)> RefreshContext<ZyppContextRefType>::sigProbedTypeChanged()
+  template<typename ZyppContextType>
+  SignalProxy<void (zypp::repo::RepoType)> RefreshContext<ZyppContextType>::sigProbedTypeChanged()
   {
     return _sigProbedTypeChanged;
   }
 
   // explicitely intantiate the template types we want to work with
-  template class RefreshContext<SyncContextRef>;
-  template class RefreshContext<ContextRef>;
+  template class RefreshContext<SyncContext>;
+  template class RefreshContext<AsyncContext>;
 
 }

@@ -8,7 +8,8 @@
 \---------------------------------------------------------------------*/
 
 #include "downloader.h"
-#include <zypp/ng/workflows/contextfacade.h>
+#include <zypp/ng/Context>
+
 #include <zypp-core/zyppng/pipelines/MTry>
 #include <zypp-core/zyppng/base/Signals>
 #include <zypp-core/zyppng/pipelines/Wait>
@@ -16,7 +17,6 @@
 #include <zypp-core/fs/PathInfo.h>
 
 #include <zypp/KeyRing.h>
-#include <zypp/ng/Context>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 
@@ -55,5 +55,5 @@ namespace zyppng::repo {
 
   // explicitely intantiate the template types we want to work with
   template class DownloadContext<SyncContextRef>;
-  template class DownloadContext<ContextRef>;
+  template class DownloadContext<AsyncContextRef>;
 }

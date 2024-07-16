@@ -9,11 +9,12 @@
 #ifndef ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 #define ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 
+#include <zypp/ng/context_fwd.h>
 #include <zypp-core/zyppng/async/AsyncOp>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <functional>
 
-#include <zypp/ng/workflows/contextfacade.h>
+
 #include <zypp/ng/workflows/mediafacade.h>
 
 namespace zypp {
@@ -27,17 +28,16 @@ namespace zypp {
 namespace zyppng {
 
   class ProvideRes;
-  ZYPP_FWD_DECL_TYPE_WITH_REFS(Context);
 
   namespace CheckSumWorkflow {
     expected<void> verifyChecksum ( SyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file );
-    AsyncOpRef<expected<void>> verifyChecksum (  ContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file );
+    AsyncOpRef<expected<void>> verifyChecksum (  AsyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file );
 
     /*!
      * Returns a callable that executes the verify checksum as part of a pipeline,
      * forwarding the \ref ProvideRes if the workflow was successful.
      */
-    std::function< AsyncOpRef<expected<ProvideRes>>( ProvideRes && ) > checksumFileChecker( ContextRef zyppCtx, zypp::CheckSum checksum );
+    std::function< AsyncOpRef<expected<ProvideRes>>( ProvideRes && ) > checksumFileChecker( AsyncContextRef zyppCtx, zypp::CheckSum checksum );
     std::function< expected<SyncProvideRes>( SyncProvideRes && ) > checksumFileChecker( SyncContextRef zyppCtx, zypp::CheckSum checksum );
 
   }

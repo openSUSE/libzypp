@@ -20,15 +20,11 @@
 #include <zypp/ng/repomanager.h>
 #include <zypp/repo/PluginRepoverification.h>
 #include <zypp/ng/workflows/logichelpers.h>
-
-namespace zyppng {
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( SyncContext );
-}
+#include <zypp/ng/context_fwd.h>
 
 namespace zyppng::repo {
 
-  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 (RefreshContext, ZyppContextRefType);
+  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 (RefreshContext, ZyppContextType);
 
   using RawMetadataRefreshPolicy = zypp::RepoManagerFlags::RawMetadataRefreshPolicy;
   using RefreshCheckStatus       = zypp::RepoManagerFlags::RefreshCheckStatus;
@@ -39,19 +35,19 @@ namespace zyppng::repo {
    * on a local cache and a remote repository, as defined by the \ref zypp::RepoInfo
    *
    */
-  template<typename ZyppContextRefType>
-  class RefreshContext : public Base, public MaybeAsyncMixin< std::is_same_v<ZyppContextRefType, ContextRef> > {
+  template<typename ZyppContextType>
+  class RefreshContext : public Base, public MaybeAsyncMixin< std::is_same_v<ZyppContextType, AsyncContext> > {
     ZYPP_ADD_PRIVATE_CONSTR_HELPER();
-    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( (std::is_same_v<ZyppContextRefType, ContextRef>) );
+    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( (std::is_same_v<ZyppContextType, AsyncContext>) );
     public:
-      using ContextRefType = ZyppContextRefType;
-      using ContextType    = typename ZyppContextRefType::element_type;
+      using ContextRefType = Ref<ZyppContextType>;
+      using ContextType    = ZyppContextType;
       using ProvideType    = typename ContextType::ProvideType;
       using MediaHandle    = typename ProvideType::MediaHandle;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
-      static expected<repo::RefreshContextRef<ZyppContextRefType>> create( ZyppContextRefType zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextRefType> repoManager );
-      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextRefType> &&repoManager );
+      static expected<repo::RefreshContextRef<ZyppContextType>> create( Ref<ZyppContextType> zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextType> repoManager );
+      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, Ref<ZyppContextType> &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager );
 
       ~RefreshContext() override;
 
@@ -78,7 +74,7 @@ namespace zyppng::repo {
        * Current zypp context we are working on, either \ref zyppng::Context
        * or \ref zyppng::SyncContext.
        */
-      const ZyppContextRefType &zyppContext () const;
+      const Ref<ZyppContextType> &zyppContext () const;
 
       /*!
        * Current \ref zypp::RepoInfo this refresh context is operating with,
@@ -91,7 +87,7 @@ namespace zyppng::repo {
       /*!
        * Reference to the \ref zyppng::RepoManager that initiated the refresh
        */
-      const RepoManagerRef<ZyppContextRefType> &repoManager() const;
+      const RepoManagerRef<ZyppContextType> &repoManager() const;
       const zypp::RepoManagerOptions &repoManagerOptions() const;
 
       /*!
@@ -123,8 +119,8 @@ namespace zyppng::repo {
       SignalProxy<void(zypp::repo::RepoType)> sigProbedTypeChanged();
 
   private:
-      ZyppContextRefType _zyppContext;
-      RepoManagerRef<ContextRefType> _repoManager;
+      Ref<ContextType> _zyppContext;
+      RepoManagerRef<ContextType> _repoManager;
       zypp::RepoInfo _repoInfo;
       zypp::Pathname _rawCachePath;
       zypp::filesystem::TmpDir _tmpDir;
@@ -136,8 +132,8 @@ namespace zyppng::repo {
 
   };
 
-  using SyncRefreshContext  = RefreshContext<SyncContextRef>;
-  using AsyncRefreshContext = RefreshContext<ContextRef>;
+  using SyncRefreshContext  = RefreshContext<SyncContext>;
+  using AsyncRefreshContext = RefreshContext<AsyncContext>;
   ZYPP_FWD_DECL_REFS(SyncRefreshContext);
   ZYPP_FWD_DECL_REFS(AsyncRefreshContext);
 

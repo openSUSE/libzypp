@@ -23,6 +23,11 @@
 #include <zypp/Pathname.h>
 #include <zypp/ResPool.h>
 
+namespace zyppng {
+  template <typename ContextType>
+  class FusionPool;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -237,6 +242,7 @@ namespace zypp
   private:
     /** Direct access to Impl. */
     friend class zypp_detail::ZYppImpl;
+    template<class T> friend class zyppng::FusionPool;
 
     /** Pointer to implementation */
     RW_pointer<Impl,rw_pointer::Intrusive<Impl> > _pimpl;

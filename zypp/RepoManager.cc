@@ -10,11 +10,14 @@
  *
 */
 
+#include "RepoManager.h"
 #include <iostream>
 #include <zypp-core/Digest.h>
 #include <zypp-core/zyppng/pipelines/Lift>
+
+#include <zypp/zypp_detail/ZYppImpl.h>
+#include <zypp/ng/Context>
 #include <zypp/ng/progressobserveradaptor.h>
-#include <zypp/ng/workflows/contextfacade.h>
 #include <zypp/ng/repo/refresh.h>
 #include <zypp/ng/repo/workflows/repomanagerwf.h>
 
@@ -39,7 +42,8 @@ namespace zypp
   {
   public:
     Impl( zyppng::SyncContextRef &&ctx, RepoManagerOptions &&opt) {
-      _ngMgr = zyppng::SyncRepoManager::create( std::move(ctx), std::move(opt) ).unwrap();
+      _ngMgr = zyppng::SyncRepoManager::create( std::move(ctx), std::move(opt) );
+      _ngMgr->initialize().unwrap();
     }
 
     Impl(const Impl &) = delete;
@@ -54,6 +58,10 @@ namespace zypp
 
     zyppng::SyncRepoManager &ngMgr() {
       return *_ngMgr;
+    }
+
+    zyppng::SyncRepoManagerRef ngMgrRef() {
+      return _ngMgr;
     }
 
   private:
@@ -78,7 +86,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   RepoManager::RepoManager( RepoManagerOptions opt )
-    : _pimpl( new Impl( zyppng::SyncContext::defaultContext(), std::move(opt)) )
+    : _pimpl( new Impl( zypp_detail::GlobalStateHelper::context(), std::move(opt)) )
   {}
 
   RepoManager::~RepoManager()
@@ -126,7 +134,7 @@ namespace zypp
   { return _pimpl->ngMgr().metadataStatus( info ).unwrap(); }
 
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
-  { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, url, policy ).unwrap(); }
+  { return _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info), url, policy ).unwrap(); }
 
   Pathname RepoManager::metadataPath( const RepoInfo &info ) const
   { return _pimpl->ngMgr().metadataPath( info ).unwrap(); }
@@ -138,7 +146,7 @@ namespace zypp
   {
     // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
     zypp::media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
-    return _pimpl->ngMgr().refreshMetadata( info, policy, nullptr ).unwrap();
+    return _pimpl->ngMgr().refreshMetadata( const_cast<RepoInfo &>(info), policy, nullptr ).unwrap();
   }
 
   void RepoManager::cleanMetadata( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
@@ -154,7 +162,7 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    return _pimpl->ngMgr().buildCache( info, policy, adapt.observer() ).unwrap();
+    return _pimpl->ngMgr().buildCache( const_cast<RepoInfo &>(info), policy, adapt.observer() ).unwrap();
   }
 
   void RepoManager::cleanCache( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
@@ -164,7 +172,7 @@ namespace zypp
   { return _pimpl->ngMgr().isCached( info ).unwrap(); }
 
   void RepoManager::loadFromCache( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().loadFromCache( info, nullptr ).unwrap(); }
+  { return zypp_detail::GlobalStateHelper::pool ()->loadFromCache ( info, nullptr ).unwrap(); }
 
   void RepoManager::cleanCacheDirGarbage( const ProgressData::ReceiverFnc & progressrcv )
   { return _pimpl->ngMgr().cleanCacheDirGarbage( nullptr ).unwrap(); }
@@ -179,14 +187,7 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    RepoInfo updatedRepo = _pimpl->ngMgr().addRepository( info, adapt.observer() ).unwrap();
-
-    // We should fix the API as we must inject those paths
-    // into the repoinfo in order to keep it usable.
-    RepoInfo & oinfo( const_cast<RepoInfo &>(info) );
-    oinfo.setFilepath( updatedRepo.filepath() );
-    oinfo.setMetadataPath( zyppng::rawcache_path_for_repoinfo( _pimpl->ngMgr().options(), updatedRepo ).unwrap() );
-    oinfo.setPackagesPath( zyppng::packagescache_path_for_repoinfo( _pimpl->ngMgr().options(), updatedRepo ).unwrap() );
+    _pimpl->ngMgr().addRepository( const_cast<RepoInfo &>(info), adapt.observer() ).unwrap();
   }
 
   void RepoManager::addRepositories( const Url &url, const ProgressData::ReceiverFnc & progressrcv )
@@ -196,18 +197,15 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    return _pimpl->ngMgr().removeRepository( info, adapt.observer() ).unwrap();
+    return _pimpl->ngMgr().removeRepository( const_cast<RepoInfo &>(info), adapt.observer() ).unwrap();
   }
 
   void RepoManager::modifyRepository( const std::string &alias, const RepoInfo & newinfo, const ProgressData::ReceiverFnc & progressrcv )
   {
-    RepoInfo updated = _pimpl->ngMgr().modifyRepository( alias, newinfo, nullptr ).unwrap();
     // We should fix the API as we must inject those paths
     // into the repoinfo in order to keep it usable.
     RepoInfo & oinfo( const_cast<RepoInfo &>(newinfo) );
-    oinfo.setFilepath( updated.filepath());
-    oinfo.setMetadataPath( zyppng::rawcache_path_for_repoinfo( _pimpl->ngMgr().options(), updated ).unwrap() );
-    oinfo.setPackagesPath( zyppng::packagescache_path_for_repoinfo( _pimpl->ngMgr().options(), updated ).unwrap() );
+    _pimpl->ngMgr().modifyRepository( alias, oinfo, nullptr ).unwrap();
   }
 
   RepoInfo RepoManager::getRepositoryInfo( const std::string &alias, const ProgressData::ReceiverFnc & progressrcv )
@@ -271,7 +269,7 @@ namespace zypp
 
   std::list<RepoInfo> readRepoFile(const Url &repo_file)
   {
-    return zyppng::RepoManagerWorkflow::readRepoFile( zyppng::SyncContext::defaultContext (), repo_file ).unwrap();
+    return zyppng::RepoManagerWorkflow::readRepoFile( zypp_detail::GlobalStateHelper::context(), repo_file ).unwrap();
   }
 
   /////////////////////////////////////////////////////////////////

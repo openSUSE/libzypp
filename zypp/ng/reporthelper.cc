@@ -10,6 +10,7 @@
 #include "reporthelper.h"
 
 #include <zypp/Digest.h>
+#include <zypp/ng/Context>
 #include <zypp/ng/userrequest.h>
 
 namespace zyppng {
@@ -248,13 +249,13 @@ namespace zyppng {
 
   // explicitely intantiate the template types we want to work with
   template class BasicReportHelper<SyncContextRef>;
-  template class BasicReportHelper<ContextRef>;
+  template class BasicReportHelper<AsyncContextRef>;
   template class DigestReportHelper<SyncContextRef>;
-  template class DigestReportHelper<ContextRef>;
+  template class DigestReportHelper<AsyncContextRef>;
   template class KeyRingReportHelper<SyncContextRef>;
-  template class KeyRingReportHelper<ContextRef>;
+  template class KeyRingReportHelper<AsyncContextRef>;
   template class JobReportHelper<SyncContextRef>;
-  template class JobReportHelper<ContextRef>;
+  template class JobReportHelper<AsyncContextRef>;
 
 
 }

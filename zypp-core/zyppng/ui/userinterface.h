@@ -40,6 +40,7 @@ namespace zyppng {
     SignalProxy<void( UserRequestRef event)> sigEvent();
 
   protected:
+    UserInterface();
     UserInterface( UserInterfacePrivate &d );
   };
 

@@ -16,6 +16,8 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE_CONSTR( UserInterface ) : Base ( *( new UserInterfacePrivate(*this) ) ) { }
 
+  UserInterface::UserInterface() : Base ( *( new UserInterfacePrivate(*this) ) ) { }
+
   UserInterface::UserInterface( UserInterfacePrivate &d ) : Base(d)
   { }
 
@@ -29,4 +31,5 @@ namespace zyppng {
   {
     return d_func()->_sigEvent;
   }
+
 }

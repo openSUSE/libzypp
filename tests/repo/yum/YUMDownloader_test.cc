@@ -7,9 +7,9 @@
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
 
+#include <zypp/ng/context.h>
 #include <zypp/ng/repo/downloader.h>
 #include <zypp/ng/repo/workflows/rpmmd.h>
-#include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-media/ng/providespec.h>
 
 #include "tests/zypp/KeyRingTestReceiver.h"
@@ -38,7 +38,8 @@ BOOST_AUTO_TEST_CASE(yum_download)
   Pathname localdir(tmp.path());
 
   auto ctx = zyppng::SyncContext::create ();
-  auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
+  auto res = ctx->initialize ()
+  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() ); } )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
     return zyppng::RpmmdWorkflows::download(dlctx, h);

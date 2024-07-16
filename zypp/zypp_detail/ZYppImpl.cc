@@ -25,6 +25,7 @@
 #include <zypp/PoolItem.h>
 
 #include <zypp/ZYppCallbacks.h>	// JobReport::instance
+#include <zypp/zypp_detail/ZyppLock.h>
 
 using std::endl;
 
@@ -81,6 +82,17 @@ namespace {
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+
+  namespace env
+  {
+    /** Hack to circumvent the currently poor --root support.
+     *  To be replaced by the sysRoot of the context the lock belongs to.
+     */
+    inline Pathname ZYPP_LOCKFILE_ROOT()
+    { return getenv("ZYPP_LOCKFILE_ROOT") ? getenv("ZYPP_LOCKFILE_ROOT") : "/"; }
+  }
+
+
   ///////////////////////////////////////////////////////////////////
   namespace media
   {
@@ -108,23 +120,105 @@ namespace zypp
   namespace zypp_detail
   { /////////////////////////////////////////////////////////////////
 
+
+    static bool zyppLegacyShutdownStarted = false; // set to true if the GlobalStateHelper was destructed
+
+    zypp::Pathname autodetectZyppConfPath() {
+      const char *env_confpath = getenv("ZYPP_CONF");
+      return env_confpath ? env_confpath
+                          : zyppng::ContextBase::defaultConfigPath();
+    }
+
+    zyppng::SyncContextRef &GlobalStateHelper::assertContext() {
+
+      if ( zyppLegacyShutdownStarted )
+        ZYPP_THROW("Global State requested after it was freed");
+
+      // set up the global context for the legacy API
+      // zypp is booting
+      if (!_defaultContext) {
+        auto set = zyppng::ContextSettings {
+          .root = "/",
+          .configPath = autodetectZyppConfPath ()
+        };
+        _defaultContext = zyppng::SyncContext::create();
+
+        if ( !_config )
+          config(); // assert config
+
+        _defaultContext->legacyInit ( std::move(set),  _config );
+      }
+      return _defaultContext;
+    }
+
+    zyppng::FusionPoolRef<zyppng::SyncContext> &GlobalStateHelper::assertPool()
+    {
+      if ( !_defaultPool )
+         _defaultPool = zyppng::FusionPool<zyppng::SyncContext>::defaultPool();
+      return _defaultPool;
+    }
+
+    zypp::ZConfig &GlobalStateHelper::config() {
+
+      if ( zyppLegacyShutdownStarted )
+        ZYPP_THROW("Global State requested after it was freed");
+
+        auto &inst = instance();
+        if (!inst._config) {
+          inst._config.reset( new ZConfig( autodetectZyppConfPath () ) );
+        }
+
+        return *inst._config;
+    }
+
+    void GlobalStateHelper::lock()
+    {
+      if ( zyppLegacyShutdownStarted )
+        return;
+
+      auto &me = instance ();
+      if ( me._lock )
+        return;
+
+      const long LOCK_TIMEOUT = str::strtonum<long>( getenv( "ZYPP_LOCK_TIMEOUT" ) );
+      auto l = ZyppContextLock::globalLock( env::ZYPP_LOCKFILE_ROOT () );
+      l->acquireLock( LOCK_TIMEOUT );
+
+      // did not throw, we got the lock
+      me._lock = std::move(l);
+    }
+
+    void GlobalStateHelper::unlock()
+    {
+      if ( zyppLegacyShutdownStarted )
+        return;
+
+      auto &me = instance ();
+      me._lock.reset();
+    }
+
+    Pathname GlobalStateHelper::lockfileDir()
+    {
+      return ZyppContextLock::globalLockfileDir( env::ZYPP_LOCKFILE_ROOT() ) ;
+    }
+
+    GlobalStateHelper::~GlobalStateHelper()
+    {
+      zyppLegacyShutdownStarted = true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     //
     //	METHOD NAME : ZYppImpl::ZYppImpl
     //	METHOD TYPE : Constructor
     //
     ZYppImpl::ZYppImpl()
-    : _target( nullptr )
-    , _resolver( new Resolver( ResPool::instance()) )
     {
       // trigger creation of the shutdown pipe
       if ( !ensureShutdownPipe() )
         WAR << "Failed to create shutdown pipe" << std::endl;
 
-      ZConfig::instance().about( MIL );
-      MIL << "Initializing keyring..." << std::endl;
-      _keyring = new KeyRing(tmpPath());
-      _keyring->allowPreload( true );
+      GlobalStateHelper::config().about( MIL );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -166,41 +260,21 @@ namespace zypp
 
     Target_Ptr ZYppImpl::target() const
     {
-      if (! _target)
+      auto ref = getTarget();
+      if ( !ref )
         ZYPP_THROW(Exception("Target not initialized."));
-      return _target;
+      return ref;
     }
 
-    void ZYppImpl::changeTargetTo( const Target_Ptr& newtarget_r )
-    {
-      if ( _target && newtarget_r ) // bsc#1203760: Make sure the old target is deleted before a new one is created!
-        INT << "2 active targets at the same time must not happen!" << endl;
-      _target = newtarget_r;
-      ZConfig::instance().notifyTargetChanged();
-      resolver()->setDefaultSolverFlags( /*all_r*/false );  // just changed defaults
-    }
 
     void ZYppImpl::initializeTarget( const Pathname & root, bool doRebuild_r )
     {
-      MIL << "initTarget( " << root << (doRebuild_r?", rebuilddb":"") << ")" << endl;
-      if (_target) {
-          if (_target->root() == root) {
-              MIL << "Repeated call to initializeTarget()" << endl;
-              return;
-          }
-          _target->unload();
-          _target = nullptr;  // bsc#1203760: Make sure the old target is deleted before a new one is created!
-      }
-      changeTargetTo( new Target( root, doRebuild_r ) );
-      _target->buildCache();
+      context()->changeToTarget( root, doRebuild_r );
     }
 
     void ZYppImpl::finishTarget()
     {
-      if (_target)
-          _target->unload();
-
-      changeTargetTo( nullptr );
+      context()->finishTarget().unwrap();
     }
 
     //------------------------------------------------------------------------
@@ -210,55 +284,21 @@ namespace zypp
      * and target used for transact. */
     ZYppCommitResult ZYppImpl::commit( const ZYppCommitPolicy & policy_r )
     {
-      if ( getenv("ZYPP_TESTSUITE_FAKE_ARCH") )
-      {
-        ZYPP_THROW( Exception("ZYPP_TESTSUITE_FAKE_ARCH set. Commit not allowed and disabled.") );
-      }
-
-      MIL << "Attempt to commit (" << policy_r << ")" << endl;
-      if (! _target)
-        ZYPP_THROW( Exception("Target not initialized.") );
-
-
-      env::ScopedSet ea { "ZYPP_IS_RUNNING", str::numstring(getpid()).c_str() };
-      env::ScopedSet eb;
-      if ( _target->chrooted() )
-        eb = env::ScopedSet( "SYSTEMD_OFFLINE", "1" );	// bsc#1118758 - indicate no systemd if chrooted install
-
-      ZYppCommitResult res = _target->_pimpl->commit( pool(), policy_r );
-
-      if (! policy_r.dryRun() )
-      {
-        if ( policy_r.syncPoolAfterCommit() )
-          {
-            // reload new status from target
-            DBG << "reloading " << sat::Pool::instance().systemRepoAlias() << " repo to pool" << endl;
-            _target->load();
-          }
-        else
-          {
-            DBG << "unloading " << sat::Pool::instance().systemRepoAlias() << " repo from pool" << endl;
-            _target->unload();
-          }
-      }
-
-      MIL << "Commit (" << policy_r << ") returned: "
-          << res << endl;
-      return res;
+      return  GlobalStateHelper::pool()->commit( policy_r ).unwrap();
     }
 
     void ZYppImpl::installSrcPackage( const SrcPackage_constPtr & srcPackage_r )
     {
-      if (! _target)
+      if (! context()->target() )
         ZYPP_THROW( Exception("Target not initialized.") );
-      _target->_pimpl->installSrcPackage( srcPackage_r );
+      context()->target()->_pimpl->installSrcPackage( srcPackage_r );
     }
 
     ManagedFile ZYppImpl::provideSrcPackage( const SrcPackage_constPtr & srcPackage_r )
     {
-      if (! _target)
+      if (! context()->target() )
         ZYPP_THROW( Exception("Target not initialized.") );
-      return _target->_pimpl->provideSrcPackage( srcPackage_r );
+      return context()->target()->_pimpl->provideSrcPackage( srcPackage_r );
     }
 
     //------------------------------------------------------------------------
@@ -335,15 +375,14 @@ namespace zypp
       }
       return r;
     }
-
-    /////////////////////////////////////////////////////////////////
   } // namespace zypp_detail
   ///////////////////////////////////////////////////////////////////
 
-  Pathname myTmpDir()	// from TmpPath.h
+  Pathname myTmpDir() // from TmpPath.h
   {
-    static filesystem::TmpDir _tmpdir( filesystem::TmpPath::defaultLocation(), "zypp." );
-    return _tmpdir.path();
+      static filesystem::TmpDir _tmpdir(filesystem::TmpPath::defaultLocation(),
+                                        "zypp.");
+      return _tmpdir.path();
   }
 
   /////////////////////////////////////////////////////////////////

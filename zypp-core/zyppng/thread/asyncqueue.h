@@ -144,7 +144,7 @@ namespace zyppng {
   };
 
   class AsyncQueueWatchPrivate;
-  class LIBZYPP_NG_EXPORT AsyncQueueWatch : public AbstractEventSource
+  class  AsyncQueueWatch : public AbstractEventSource
   {
     ZYPP_DECLARE_PRIVATE(AsyncQueueWatch)
   public:

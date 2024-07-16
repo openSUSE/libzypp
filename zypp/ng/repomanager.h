@@ -22,6 +22,7 @@
 #include <zypp/repo/PluginRepoverification.h>
 #include <zypp/ng/workflows/logichelpers.h>
 
+
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/NonCopyable.h>
@@ -30,6 +31,7 @@
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp/ng/context_fwd.h>
 
 namespace zyppng {
 
@@ -39,16 +41,14 @@ namespace zyppng {
   using ServiceInfo         = zypp::ServiceInfo;
   using RepoManagerOptions  = zypp::RepoManagerOptions;
 
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
-  ZYPP_FWD_DECL_TYPE_WITH_REFS( SyncContext );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
-  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 ( RepoManager, ZyppContextRefType );
+  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 ( RepoManager, ZyppContextType );
+  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 ( FusionPool, ContextType );
 
-  using SyncRepoManager    = RepoManager<SyncContextRef>;
-  using SyncRepoManagerRef = RepoManagerRef<SyncContextRef>;
-
-  using AsyncRepoManager    = RepoManager<ContextRef>;
-  using AsyncRepoManagerRef = RepoManagerRef<ContextRef>;
+  using SyncRepoManager  = RepoManager<SyncContext>;
+  using AsyncRepoManager = RepoManager<AsyncContext>;
+  ZYPP_FWD_DECL_REFS( SyncRepoManager );
+  ZYPP_FWD_DECL_REFS( AsyncRepoManager );
 
   /** Whether repo is not under RM control and provides its own methadata paths. */
   inline bool isTmpRepo( const RepoInfo & info_r )
@@ -146,6 +146,10 @@ namespace zyppng {
   };
   ////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
   /**
      * Reads RepoInfo's from a repo file.
      *
@@ -171,7 +175,8 @@ namespace zyppng {
   inline expected<zypp::Pathname> rawcache_path_for_repoinfo( const RepoManagerOptions &opt, const RepoInfo &info )
   {
     using namespace zyppng::operators;
-    return assert_alias(info) | and_then( [&](){ return make_expected_success( isTmpRepo( info ) ? info.metadataPath() : opt.repoRawCachePath / info.escaped_alias()); });
+    return assert_alias(info) | and_then( [&](){
+      return make_expected_success( isTmpRepo( info ) ? info.metadataPath() : opt.repoRawCachePath / info.escaped_alias()); });
   }
 
   /**
@@ -195,7 +200,7 @@ namespace zyppng {
   {
     using namespace zyppng::operators;
     return assert_alias(info) |
-    and_then([&](){ return make_expected_success(isTmpRepo( info ) ? info.packagesPath() : opt.repoPackagesCachePath / info.escaped_alias()); });
+    and_then([&](){ return make_expected_success( isTmpRepo( info ) ? info.packagesPath() : opt.repoPackagesCachePath / info.escaped_alias()); });
   }
 
   /**
@@ -205,7 +210,7 @@ namespace zyppng {
   {
     using namespace zyppng::operators;
     return assert_alias(info) |
-    and_then([&](){ return make_expected_success(isTmpRepo( info ) ? info.metadataPath().dirname() / "%SLV%" : opt.repoSolvCachePath / info.escaped_alias()); });
+    and_then([&](){ return make_expected_success( isTmpRepo( info ) ? info.metadataPath().dirname() / "%SLV%" : opt.repoSolvCachePath / info.escaped_alias()); });
   }
 
   ////////////////////////////////////////////////////////////////////////////
@@ -238,20 +243,20 @@ namespace zyppng {
    * \brief The RepoManager class
    * Provides knowledge and methods to maintain repo settings and metadata for a given context.
    *
-   * Depending on the \a ZyppContextRefType the convenienve functions execute the workflows in
+   * Depending on the \a ZyppContextType the convenienve functions execute the workflows in
    * a sync or async way. In sync mode libzypp's legacy reports are executed. Otherwise progress report
    * is only provided via the \ref ProgressObserver classes.
    */
-  template <typename ZyppContextRefType>
-  class RepoManager : public Base, private MaybeAsyncMixin<std::is_same_v<ZyppContextRefType, ContextRef>>
+  template <typename ZyppContextType>
+  class RepoManager : public Base, private MaybeAsyncMixin<std::is_same_v<ZyppContextType, AsyncContext>>
   {
     ZYPP_ADD_PRIVATE_CONSTR_HELPER ();
-    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( (std::is_same_v<ZyppContextRefType, ContextRef>) );
+    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( (std::is_same_v<ZyppContextType, AsyncContext>) );
 
   public:
 
-    using ContextRefType      = ZyppContextRefType;
-    using ContextType         = typename ZyppContextRefType::element_type;
+    using ContextRefType      = Ref<ZyppContextType>;
+    using ContextType         = ZyppContextType;
 
     using RawMetadataRefreshPolicy = zypp::RepoManagerFlags::RawMetadataRefreshPolicy;
     using CacheBuildPolicy = zypp::RepoManagerFlags::CacheBuildPolicy;
@@ -264,13 +269,12 @@ namespace zyppng {
     using RefreshServiceOptions = zypp::RepoManagerFlags::RefreshServiceOptions;
 
 
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS (RepoManager, ZyppContextRefType zyppCtx, RepoManagerOptions opt  );
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS (RepoManager, Ref<ZyppContextType> zyppCtx, RepoManagerOptions opt  );
 
     template < typename ...Args >
-    inline static expected<std::shared_ptr<RepoManager<ZyppContextRefType>>> create ( Args && ...args ) {
+    inline static std::shared_ptr<RepoManager<ZyppContextType>> create ( Args && ...args ) {
       using namespace zyppng::operators;
-      auto mgr =  std::make_shared< RepoManager<ZyppContextRefType> >( private_constr_t{}, std::forward<Args>(args)... );
-      return mgr->initialize() | and_then( [mgr](){ return make_expected_success(mgr); } );
+      return std::make_shared< RepoManager<ZyppContextType> >( private_constr_t{}, std::forward<Args>(args)... );
     }
 
   public:
@@ -304,6 +308,48 @@ namespace zyppng {
   public:
 
     expected<void> initialize ();
+
+    /*!
+     * \brief Fills the repoInfo with the settings for this RepoManager, if not initialized yet.
+     *
+     */
+    expected<void> prepareRepoInfo ( RepoInfo &info )
+    {
+      try {
+
+        assert_alias (info).unwrap();
+
+        if ( !info.context() ) {
+          info.setContext ( _zyppContext );
+        }  else if ( info.context () != _zyppContext ) {
+          return expected<void>::error( ZYPP_EXCPT_PTR(zypp::Exception( "RepoInfo must be part of the same context!" )) );
+        }
+
+        if ( info.solvCachePath().empty() ) {
+          info.setSolvCachePath( solv_path_for_repoinfo( _options, info ).unwrap() );
+        }
+
+        if ( info.metadataPath().empty() ) {
+          info.setMetadataPath( rawcache_path_for_repoinfo( _options, info ).unwrap() );
+        }
+
+        if ( info.packagesPath().empty() ) {
+          info.setPackagesPath( packagescache_path_for_repoinfo( _options, info ).unwrap() );
+        }
+
+      } catch(...) {
+        return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
+      }
+      return expected<void>::success();
+    }
+
+    /*!
+     * \brief Copies the repoInfo and fills it with the settings for this RepoManager, if not initialized yet.
+     */
+    expected<RepoInfo> cloneAndPrepare( RepoInfo info ) {
+      using namespace zyppng::operators;
+      return prepareRepoInfo (info) | and_then( [&info](){ return expected<RepoInfo>::success(info); } );
+    }
 
     ContextRefType zyppContext() const {
       return _zyppContext;
@@ -364,18 +410,18 @@ namespace zyppng {
       });
     }
 
-    expected<void> loadFromCache( const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
+    expected<void> loadFromCache( FusionPoolRef<ContextType> fPool, const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
 
     expected<RepoInfo> addProbedRepository( RepoInfo info, zypp::repo::RepoType probedType );
 
-    expected<void> removeRepository( const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
+    expected<void> removeRepository(RepoInfo &info, ProgressObserverRef myProgress = nullptr );
 
-    expected<RepoInfo> modifyRepository( const std::string & alias, const RepoInfo & newinfo_r, ProgressObserverRef myProgress = nullptr );
+    expected<void> modifyRepository( const std::string & alias, RepoInfo & newinfo_r, ProgressObserverRef myProgress = nullptr );
 
     expected<RepoInfo> getRepositoryInfo( const std::string & alias );
     expected<RepoInfo> getRepositoryInfo( const zypp::Url & url, const zypp::url::ViewOption &urlview );
 
-    expected<RefreshCheckStatus> checkIfToRefreshMetadata( const RepoInfo & info, const zypp::Url & url, RawMetadataRefreshPolicy policy );
+    expected<RefreshCheckStatus> checkIfToRefreshMetadata( RepoInfo & info, const zypp::Url & url, RawMetadataRefreshPolicy policy );
 
     /**
      * \short Refresh local raw cache
@@ -394,18 +440,18 @@ namespace zyppng {
      * \todo Currently no progress is generated, especially for the async code
      *       We might need to change this
      */
-    expected<void> refreshMetadata( const RepoInfo & info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
+    expected<void> refreshMetadata( RepoInfo & info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
-    std::vector<std::pair<RepoInfo, expected<void> > > refreshMetadata(std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
+    std::vector<std::pair<RepoInfo, expected<void> > > refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
     expected<zypp::repo::RepoType> probe( const zypp::Url & url, const zypp::Pathname & path = zypp::Pathname() ) const;
 
-    expected<void> buildCache( const RepoInfo & info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );
+    expected<void> buildCache( RepoInfo & info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );
 
     /*!
      * Adds the repository in \a info and returns the updated \ref RepoInfo object.
      */
-    expected<RepoInfo> addRepository( const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
+    expected<void> addRepository(RepoInfo &info, ProgressObserverRef myProgress = nullptr );
 
     expected<void> addRepositories( const zypp::Url & url, ProgressObserverRef myProgress = nullptr );
 

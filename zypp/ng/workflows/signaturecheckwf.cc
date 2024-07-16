@@ -11,6 +11,7 @@
 #include "keyringwf.h"
 #include "logichelpers.h"
 
+#include <zypp/ng/context.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-media/filecheckexception.h>
@@ -60,7 +61,7 @@ namespace zyppng {
       return SimpleExecutor<VerifySignatureLogic, SyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
     }
 
-    AsyncOpRef<expected<zypp::keyring::VerifyFileContext> > verifySignature(ContextRef ctx, zypp::keyring::VerifyFileContext context )
+    AsyncOpRef<expected<zypp::keyring::VerifyFileContext> > verifySignature(AsyncContextRef ctx, zypp::keyring::VerifyFileContext context )
     {
       return SimpleExecutor<VerifySignatureLogic, AsyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
     }

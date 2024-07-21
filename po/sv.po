@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.sv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2024-04-10 09:43+0000\n"
+"PO-Revision-Date: 2024-07-21 12:47+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/libzypp/master/sv/"
 ">\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4064,6 +4064,7 @@ msgstr[1] "Giltig metadata hittades inte på specificerade URL:er"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:568
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
+"Misslyckades att cachelagra lagringsplats ( kunde inte starta repo2solv )."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:586
 #: zypp/ng/repo/workflows/repomanagerwf.cc:615
@@ -4084,7 +4085,7 @@ msgstr "Kan inte att skapa cache på %s - ingen skrivrättighet."
 #: zypp/ng/repo/workflows/repomanagerwf.cc:785
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Misslyckades att cachelagra lagringsplats %1%"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:802
 msgid "Unhandled repository type"
@@ -4093,7 +4094,7 @@ msgstr "Kan inte hantera lagringsplatstypen"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:878
 #, c-format, boost-format
 msgid "Adding repository '%s'"
-msgstr "Lägger till förrådet '%s'"
+msgstr "Lägger till lagringsplats '%s'"
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:973
@@ -4135,28 +4136,28 @@ msgstr "Kan inte läsa lagringsplatsfilen '%1%': Åtkomst nekad"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Rensar metadata"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Rensar paket"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Rensar cache kataloger"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Rensar katalog: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Rensar cache"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Laddar från cache"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -4175,11 +4176,11 @@ msgstr "Kan inte radera '%s'"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Modifierar lagringsplats"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Uppdaterar lagringsplats: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."
@@ -4226,7 +4227,7 @@ msgstr "Fil '%s' är osignerad, fortsätt?"
 #: zypp/ng/reporthelper.cc:73
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr "Fil '%s' från förråd '%s' är osignerad, fortsätt?"
+msgstr "Fil '%s' från lagringsplats '%s' är osignerad, fortsätt?"
 
 #: zypp/ng/reporthelper.cc:90
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
@@ -4241,8 +4242,8 @@ msgstr "Nyckelnamn: %1%"
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] "Fick %1% ny paketsigneringsnyckel från förråd \"%2%\":"
-msgstr[1] "Fick %1% nya paketsigneringsnycklar från förrådet \"%2%\":"
+msgstr[0] "Fick %1% ny paketsigneringsnyckel från lagringsplats \"%2%\":"
+msgstr[1] "Fick %1% nya paketsigneringsnycklar från lagringsplatser \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/ng/reporthelper.cc:144
@@ -4254,7 +4255,8 @@ msgstr "Signaturverifiering misslyckades för fil '%1%'."
 #: zypp/ng/reporthelper.cc:147
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr "Signaturverifiering misslyckades för fil '%1%' från förråd '%2%'."
+msgstr ""
+"Signaturverifiering misslyckades för fil '%1%' från lagringsplats '%2%'."
 
 # continue button label
 #. @TODO use a centralized Continue string!
@@ -4274,7 +4276,8 @@ msgstr "Fil '%s' har signerats med en okänd nyckel '%s'. Fortsätta?"
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
-"Fil '%s' från förråd '%s' har signerats med en okänd nyckel '%s'. Fortsätt?"
+"Fil '%s' från lagringsplats '%s' har signerats med en okänd nyckel '%s'. "
+"Fortsätt?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:78
@@ -4346,11 +4349,11 @@ msgstr "Insticksprogrammet för tjänsten har inte stöd för ändring av attrib
 #: zypp/repo/RepoProvideFile.cc:260
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr "Det går inte att hämta filen %s från förrådet %s"
+msgstr "Det går inte att hämta filen %s från lagringsplats %s"
 
 #: zypp/repo/RepoProvideFile.cc:266
 msgid "No url in repository."
-msgstr "Det finns ingen URL i förrådet."
+msgstr "Det finns ingen URL i lagringsplats."
 
 #. Translator: %1% the expected medium number; %2% the total number of media in the set; %3% the ident file on the medium.
 #: zypp/repo/SUSEMediaVerifier.cc:104 zypp-media/ng/mediaverifier.cc:109
@@ -4524,13 +4527,14 @@ msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
 "replaced"
 msgstr ""
-"det installerade %1% tillhör inte ett uppgraderingsförråd och måste ersättas"
+"det installerade %1% tillhör inte en uppgraderingslagringsplats och måste "
+"ersättas"
 
 #. just in case
 #: zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
-msgstr "det som ska installeras %1% tillhör inte ett uppgraderingsförråd"
+msgstr "det som ska installeras %1% tillhör inte en uppdateringslagringsplats"
 
 #: zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
@@ -4563,7 +4567,7 @@ msgstr "ingenting tillhandahåller den begärda '%1%'"
 #: zypp/solver/detail/SATResolver.cc:1181
 #: zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
-msgstr "Har du aktiverat alla nödvändiga förråd?"
+msgstr "Har du aktiverat alla nödvändiga lagringsplatser?"
 
 #: zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
@@ -4812,7 +4816,7 @@ msgstr "behåll föråldrad %1%"
 #: zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
-msgstr "installera %1% från exkluderat förråd"
+msgstr "installera %1% från exkluderad lagringsplats"
 
 #. translator: %1% is a package name
 #: zypp/solver/detail/SATResolver.cc:1573

@@ -1127,7 +1127,7 @@ namespace zyppng::RepoManagerWorkflow {
 
             // always https ,but attaching makes things easier
             return _zyppCtx->provider()->attachMedia( url, ProvideMediaSpec() )
-            | and_then( [this]( MediaHandle provideHdl ) { return _zyppCtx->provider()->provide( provideHdl, "/geopip", ProvideFileSpec() ); })
+            | and_then( [this]( MediaHandle provideHdl ) { return _zyppCtx->provider()->provide( provideHdl, "/geoip", ProvideFileSpec() ); })
             | inspect_err( [hostname]( const std::exception_ptr& ){ MIL << "Failed to query GeoIP from hostname: " << hostname << std::endl; } )
             | and_then( [hostname, this]( ProvideRes provideRes ) {
 

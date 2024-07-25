@@ -128,7 +128,7 @@ namespace zypp
     // frankly: don't remember why an explicit setDirty was introduced and
     // why WatchFile was not enough. Maybe some corner case when the keyrings
     // are created?
-    _cache.setDirty( _keyring );
+    _cache.get().setDirty( _keyring );
     return _context.value();
   }
 

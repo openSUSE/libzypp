@@ -47,7 +47,7 @@ namespace zypp {
 
       KeyManagerCtx & keyManagerCtx();
     private:
-      CachedPublicKeyData & _cache;
+      std::reference_wrapper<CachedPublicKeyData> _cache;
       Pathname _keyring;
       std::optional<KeyManagerCtx> _context;
     };

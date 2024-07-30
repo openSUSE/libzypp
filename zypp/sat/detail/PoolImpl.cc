@@ -518,7 +518,7 @@ namespace zypp
         bool done = _requestedLocalesTracker.remove( locale_r );
         if ( done )
         {
-          localeSetDirty( "addRequestedLocale", locale_r.code().c_str() );
+          localeSetDirty( "eraseRequestedLocale", locale_r.code().c_str() );
           MIL << "New RequestedLocales: " << _requestedLocalesTracker << " -" << locale_r << endl;
         }
         return done;

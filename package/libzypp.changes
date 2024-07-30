@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 30 16:59:53 CEST 2024 - ma@suse.de
+
+- Export CredentialManager for legacy YAST versions (bsc#1228420)
+- version 17.35.6 (35)
+
+-------------------------------------------------------------------
 Tue Jul 30 15:55:38 CEST 2024 - ma@suse.de
 
 - Export asSolvable for YAST (bsc#1228420)

@@ -14,6 +14,7 @@
 
 #include <set>
 
+#include <zypp-core/Globals.h>
 #include <zypp-core/Pathname.h>
 #include <zypp-media/auth/AuthData>
 
@@ -35,7 +36,7 @@ namespace zypp
   /**
    * \todo configurable cred file locations
    */
-  struct CredManagerOptions
+  struct ZYPP_API CredManagerOptions
   {
     CredManagerOptions(const Pathname & rootdir = "");
 
@@ -46,7 +47,7 @@ namespace zypp
   //////////////////////////////////////////////////////////////////////
 
   // comparator for CredentialSet
-  struct AuthDataComparator
+  struct ZYPP_API AuthDataComparator
   {
     bool operator()(const AuthData_Ptr & lhs, const AuthData_Ptr & rhs) const;
   };
@@ -59,7 +60,7 @@ namespace zypp
    * \todo better method names
    * \todo delete(AuthData) method
    */
-  class CredentialManager
+  class ZYPP_API CredentialManager
   {
   public:
     using CredentialSet = std::set<AuthData_Ptr, AuthDataComparator>;

@@ -179,7 +179,7 @@ struct TransactionData {
   zypp::proto::target::Commit &commitData;
 
   // dbinstance of removals to transaction step index
-  std::unordered_map<int, int> removePckIndex = {};
+  std::unordered_map<int, std::size_t> removePckIndex = {};
 
   // the fd used by rpm to dump script output
   zypp::AutoDispose<FD_t> rpmFd = {};
@@ -341,7 +341,7 @@ int main( int, char ** )
   // do we care about knowing the public key?
   const bool allowUntrusted = ( rpmInstFlags & RpmInstFlag::RPMINST_ALLOWUNTRUSTED );
 
-  for ( int i = 0; i < msg.transactionSteps.size(); i++ ) {
+  for ( std::size_t i = 0; i < msg.transactionSteps.size(); ++i ) {
     const auto &step = msg.transactionSteps[i];
 
     if ( std::holds_alternative<zypp::proto::target::InstallStep>(step) ) {

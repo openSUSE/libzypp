@@ -54,19 +54,16 @@ namespace zypp::media {
       ZYPP_THROW(MediaBadUrlException(o_url));
     }
 
-    std::unique_ptr<MediaHandler> _handler;
-
     UrlResolverPlugin::HeaderList custom_headers;
     Url url = UrlResolverPlugin::resolveUrl(o_url, custom_headers);
+    MIL << "Trying scheme '" << url.getScheme() << "'" << std::endl;
 
-
-    MIL << "Trying scheme '" << o_url.getScheme() << "'" << std::endl;
-
-    const auto hdlType = handlerType( o_url );
+    const auto hdlType = handlerType( url );
     if ( !hdlType ) {
       ZYPP_THROW(MediaUnsupportedUrlSchemeException(url));
     }
 
+    std::unique_ptr<MediaHandler> _handler;
     switch(*hdlType) {
       case MediaCDType: {
         _handler = std::make_unique<MediaCD> (url,preferred_attach_point);
@@ -152,7 +149,10 @@ namespace zypp::media {
         break;
       }
       case MediaPluginType: {
-        _handler = std::make_unique<MediaPlugin> (url,preferred_attach_point);
+        // bsc#1228208: MediaPluginType must be resolved to a valid schema by the
+        // above UrlResolverPlugin::resolveUrl call. MediaPlugin exists as a stub,
+        // but is not a usable handler type.
+        ZYPP_THROW(MediaUnsupportedUrlSchemeException(url));
         break;
       }
     }

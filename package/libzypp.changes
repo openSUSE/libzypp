@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug  2 12:46:50 CEST 2024 - ma@suse.de
+
+- Make sure not to statically linked installed tools (bsc#1228787)
+- version 17.35.8 (35)
+
+-------------------------------------------------------------------
 Thu Aug  1 17:35:44 CEST 2024 - ma@suse.de
 
 - MediaPluginType must be resolved to a valid MediaHandler

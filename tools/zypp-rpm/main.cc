@@ -51,6 +51,86 @@ namespace env
   }
 } // namespace env
 
+namespace dbg
+{
+  struct _dumpTransactionStep
+  {
+    _dumpTransactionStep( const zypp::proto::target::TransactionStep *const step_r )
+    : _step { step_r }
+    {}
+    std::ostream & dumpOn( std::ostream & str ) const
+    {
+      str << "TStep(";
+      if ( _step ) {
+        if ( std::holds_alternative<zypp::proto::target::InstallStep>(*_step) ) {
+          const auto &step = std::get<zypp::proto::target::InstallStep>(*_step);
+          str << step.stepId << "|" << step.pathname;
+        } else if ( std::holds_alternative<zypp::proto::target::RemoveStep>(*_step) ) {
+          const auto &step = std::get<zypp::proto::target::RemoveStep>(*_step);
+          str << step.stepId << "|" << step.name << "-" << step.version << "-" << step.release << "." << step.arch;
+        } else {
+          str << "OOPS";
+        }
+      } else {
+        str << "NULL";
+      }
+      return str << ")";
+    }
+    const zypp::proto::target::TransactionStep *const _step;
+  };
+  inline std::ostream & operator<<( std::ostream & str, const _dumpTransactionStep & obj )
+  { return obj.dumpOn( str ); }
+  inline _dumpTransactionStep dump( const zypp::proto::target::TransactionStep *const obj )
+  { return _dumpTransactionStep( obj ); }
+  inline _dumpTransactionStep dump( const zypp::proto::target::TransactionStep & obj )
+  { return _dumpTransactionStep( &obj ); }
+
+  struct _dumpRpmCallbackType
+  {
+    _dumpRpmCallbackType( rpmCallbackType_e flag_r )
+    : _flag { flag_r }
+    {}
+    std::ostream & dumpOn( std::ostream & str ) const
+    {
+      str << "RPMCALLBACK";
+      if ( _flag ) {
+#define OUTS(E) if ( _flag & RPMCALLBACK_##E ) str << "_" << #E
+        OUTS( INST_PROGRESS   );
+        OUTS( INST_START      );
+        OUTS( INST_OPEN_FILE  );
+        OUTS( INST_CLOSE_FILE );
+        OUTS( TRANS_PROGRESS  );
+        OUTS( TRANS_START     );
+        OUTS( TRANS_STOP      );
+        OUTS( UNINST_PROGRESS );
+        OUTS( UNINST_START    );
+        OUTS( UNINST_STOP     );
+        OUTS( UNPACK_ERROR    );
+        OUTS( CPIO_ERROR      );
+        OUTS( SCRIPT_ERROR    );
+        OUTS( SCRIPT_START    );
+        OUTS( SCRIPT_STOP     );
+        OUTS( INST_STOP       );
+        OUTS( ELEM_PROGRESS   );
+#ifdef HAVE_RPM_VERIFY_TRANSACTION_STEP
+        OUTS( VERIFY_PROGRESS );
+        OUTS( VERIFY_START    );
+        OUTS( VERIFY_STOP     );
+#endif
+#undef OUTS
+      } else {
+        str << "_UNKNOWN";
+      }
+      return str;
+    }
+    rpmCallbackType_e _flag;
+  };
+  inline std::ostream & operator<<( std::ostream & str, const _dumpRpmCallbackType & obj )
+  { return obj.dumpOn( str ); }
+  inline _dumpRpmCallbackType dump( rpmCallbackType obj )
+  { return _dumpRpmCallbackType( obj ); }
+}
+
 // this is the order we expect the FDs we need to communicate to be set up
 // by the parent. This is not pretty but it works and is less effort than
 // setting up a Unix Domain Socket and sending FDs over that.
@@ -605,6 +685,15 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
     }
   }
 
+#if 0
+  // dbg log callback sequence (collapsing RPMCALLBACK_INST_PROGRESS)
+  static rpmCallbackType prev = RPMCALLBACK_UNKNOWN;
+  if ( what != RPMCALLBACK_INST_PROGRESS || prev != RPMCALLBACK_INST_PROGRESS ) {
+    ZDBG << "LibCB " << dbg::dump(what) << ": " << dbg::dump(iStep) << " - "  << header.nvra() << std::endl;
+    prev = what;
+  }
+#endif
+
   const auto &sendEndOfScriptTag = [&](){
     //ZDBG << "Send end of script" << std::endl;
     ::Fflush( that->rpmFd );
@@ -687,7 +776,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
     case RPMCALLBACK_INST_STOP: {
 
       if ( !iStep ) {
-        ZERR << "Could not find package " << header << " in transaction elements for " << what << std::endl;
+        ZERR << "Could not find package " << header << " in transaction elements for " << dbg::dump(what) << std::endl;
         return rc;
       }
 
@@ -729,7 +818,7 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
     case RPMCALLBACK_UNPACK_ERROR: {
 
       if ( !iStep ) {
-        ZERR << "Could not find package " << header << " in transaction elements for " << what << std::endl;
+        ZERR << "Could not find package " << header << " in transaction elements for " << dbg::dump(what) << std::endl;
         return rc;
       }
 

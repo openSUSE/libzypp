@@ -2,12 +2,21 @@
 
 FILE( GLOB ALLCC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc" )
 STRING( REPLACE ".cc" ";" APLLPROG ${ALLCC} )
+
+# make sure not to statically linked installed tools
+SET( LINKALLSYM CalculateReusableBlocks DownloadFiles )
+
 FOREACH( loop_var ${APLLPROG} )
   ADD_EXECUTABLE( ${loop_var}
     ${loop_var}.cc
   )
   TARGET_LINK_LIBRARIES( ${loop_var} PUBLIC zypp_exe_compiler_flags ${Boost_PROGRAM_OPTIONS_LIBRARY} )
-  TARGET_LINK_LIBRARIES( ${loop_var} PUBLIC zypp-allsym  )
+  LIST( FIND LINKALLSYM ${loop_var} NEEDALLSYM )
+  if ( NEEDALLSYM EQUAL -1 )
+    TARGET_LINK_LIBRARIES( ${loop_var} PUBLIC zypp )
+  ELSE()
+    TARGET_LINK_LIBRARIES( ${loop_var} PUBLIC zypp-allsym )
+  ENDIF()
 ENDFOREACH( loop_var )
 
 ## ############################################################

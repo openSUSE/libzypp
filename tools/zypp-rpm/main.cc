@@ -1,3 +1,6 @@
+#include <optional>
+#include <vector>
+
 #include <zypp-core/zyppng/core/ByteArray>
 #include <zypp-core/zyppng/rpc/stompframestream.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
@@ -254,8 +257,28 @@ std::pair<RpmHeader, int> readPackage( rpmts ts_r, const zypp::filesystem::Pathn
   return std::make_pair( h, res );
 }
 
+// Remember 'install source rpm' transaction steps (bsc#1228647, installed separately)
+struct SourcePackageInstallHelper
+{
+  // < transaction step index, path to the .src.rpm >
+  using StepIndex = std::pair<std::size_t,zypp::Pathname>;
+  using StepIndices = std::vector<StepIndex>;
+
+  void remember( std::size_t stepIndex_r, zypp::Pathname pathname_r )
+  {
+    if ( not stepIndices ) stepIndices = StepIndices();
+    stepIndices->push_back( {stepIndex_r, std::move(pathname_r)} );
+  }
+
+  std::optional<StepIndices> stepIndices;   // Remembered source rpm installs
+  std::optional<std::size_t> currentStep;   // Current transaction step index for rpmLibCallback
+};
 
 struct TransactionData {
+  TransactionData( zypp::proto::target::Commit & commitData_r )
+  : commitData { commitData_r }
+  {}
+
   zypp::proto::target::Commit &commitData;
 
   // dbinstance of removals to transaction step index
@@ -263,6 +286,9 @@ struct TransactionData {
 
   // the fd used by rpm to dump script output
   zypp::AutoDispose<FD_t> rpmFd = {};
+
+  // Remember 'install source rpm' transaction steps (bsc#1228647, installed separately)
+  SourcePackageInstallHelper sourcePackageInstallHelper;
 };
 
 int main( int, char ** )
@@ -462,6 +488,14 @@ int main( int, char ** )
         return FailedToReadPackage;
       }
 
+      // bsc#1228647: ::rpmtsInstallElement accepts source rpms without an error, but
+      // is not able to handle them correctly within ::rpmtsRun. We need to remember
+      // them and run ::rpmInstallSourcePackage after the ::rpmtsRun is done.
+      if ( ::headerIsSource( rpmHeader.first.get() ) ) {
+        data.sourcePackageInstallHelper.remember( i, install.pathname );
+        continue;
+      }
+
       const auto res = ::rpmtsAddInstallElement( ts, rpmHeader.first.get(), &step, !install.multiversion, nullptr  );
       if ( res ) {
         ZERR << zypp::str::Format( "Failed to add %1% to the transaction." )% file << std::endl;
@@ -629,6 +663,27 @@ int main( int, char ** )
     return err;
   }
 
+  // bsc#1228647: ::rpmtsInstallElement accepts source rpms without an error, but
+  // is not able to handle them correctly within ::rpmtsRun. We need to remember
+  // them and run ::rpmInstallSourcePackage after the ::rpmtsRun is done.
+  if ( data.sourcePackageInstallHelper.stepIndices ) {
+    ::rpmtsEmpty( ts );   // Re-create an empty transaction set.
+    auto err = NoError;
+    for ( const auto & [stepi,path] : *data.sourcePackageInstallHelper.stepIndices ) {
+      zypp::AutoDispose<FD_t> fd { ::Fopen( path.c_str(), "r" ), ::Fclose };
+      data.sourcePackageInstallHelper.currentStep = stepi; // rpmLibCallback needs to look it up
+      ::rpmRC res = ::rpmInstallSourcePackage( ts, fd, nullptr, nullptr );
+      if ( res != 0 ) {
+        ZERR << "RPM InstallSourcePackage " << path << " failed: " << res << std::endl;
+        err = RpmFinishedWithError;
+      }
+    }
+    data.sourcePackageInstallHelper.currentStep = std::nullopt; // done
+    if ( err != NoError ) {
+      return err;
+    }
+  }
+
   //ZDBG << "Success !!!!" << std::endl;
 
   return NoError;
@@ -676,12 +731,18 @@ void *rpmLibCallback( const void *h, const rpmCallbackType what, const rpm_loff_
   const BinHeader header( (Header)h );
 
   auto iStep = key ? reinterpret_cast< const zypp::proto::target::TransactionStep * >( key ) : nullptr;
-  if ( !iStep && h ) {
-    auto key = headerGetInstance( header.get() );
-    if ( key > 0 ) {
-      auto i = that->removePckIndex.find(key);
-      if ( i != that->removePckIndex.end() )
-        iStep = &that->commitData.transactionSteps[i->second];
+  if ( !iStep ) {
+    if ( that->sourcePackageInstallHelper.currentStep ) {
+      // we're in ::rpmInstallSourcePackage
+      iStep = &that->commitData.transactionSteps[*(that->sourcePackageInstallHelper.currentStep)];
+    }
+    else if ( h ) {
+      auto key = headerGetInstance( header.get() );
+      if ( key > 0 ) {
+        auto i = that->removePckIndex.find(key);
+        if ( i != that->removePckIndex.end() )
+          iStep = &that->commitData.transactionSteps[i->second];
+      }
     }
   }
 

@@ -16,6 +16,7 @@
 
 #include <zypp/base/Logger.h>
 #include <zypp/PathInfo.h>
+#include <zypp-core/AutoDispose.h>
 #include <zypp/target/rpm/librpmDb.h>
 #include <zypp/target/rpm/RpmHeader.h>
 #include <zypp/target/rpm/RpmException.h>
@@ -144,13 +145,11 @@ std::string librpmDb::expand( const std::string & macro_r )
   if ( ! globalInit() )
     return macro_r;  // unexpanded
 
-  char * val = ::rpmExpand( macro_r.c_str(), NULL );
-  if ( !val )
-    return "";
+  AutoFREE<char> val = ::rpmExpand( macro_r.c_str(), NULL );
+  if ( val )
+    return std::string( val );
 
-  std::string ret( val );
-  free( val );
-  return ret;
+  return std::string();
 }
 
 ///////////////////////////////////////////////////////////////////

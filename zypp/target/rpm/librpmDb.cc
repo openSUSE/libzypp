@@ -162,27 +162,12 @@ librpmDb * librpmDb::newLibrpmDb()
 {
   // initialize librpm
   if ( ! globalInit() )
-  {
     ZYPP_THROW(GlobalRpmInitException());
-  }
 
   if ( _defaultDbPath.empty() )	// db_const_iterator access to /(default) without RpmDB/Tareget init.
     _defaultDbPath = suggestedDbPath( _defaultRoot );
 
-  // open rpmdb
-  librpmDb * ret = 0;
-  try
-  {
-    ret = new librpmDb( _defaultRoot, _defaultDbPath, /*readonly*/true );
-  }
-  catch (const RpmException & excpt_r)
-  {
-    ZYPP_CAUGHT(excpt_r);
-    delete ret;
-    ret = 0;
-    ZYPP_RETHROW(excpt_r);
-  }
-  return ret;
+  return new librpmDb( _defaultRoot, _defaultDbPath, /*readonly*/true ); // or throw
 }
 
 

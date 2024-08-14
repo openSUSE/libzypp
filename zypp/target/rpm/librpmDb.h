@@ -471,6 +471,9 @@ public:
   bool findPackage( const Package::constPtr & which_r );
 };
 
+/** \relates librpmDb::db_const_iterator stream output */
+std::ostream & operator<<( std::ostream & str, const librpmDb::db_const_iterator & obj ) ZYPP_API;
+
 ///////////////////////////////////////////////////////////////////
 } //namespace rpm
 } //namespace target

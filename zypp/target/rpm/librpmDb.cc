@@ -48,7 +48,7 @@ public:
 
   const Pathname _root;   // root directory for all operations
   const Pathname _dbPath; // directory (below root) that contains the rpmdb
-  rpmts _ts;              // transaction handle, includes database
+  AutoDispose<rpmts> _ts; // transaction handle, includes database
   shared_ptr<RpmException> _error;  // database error
 
   friend std::ostream & operator<<( std::ostream & str, const D & obj )
@@ -57,35 +57,25 @@ public:
     return str;
   }
 
-  D(Pathname root_r, Pathname dbPath_r, bool readonly_r)
-    : _root(std::move(root_r)), _dbPath(std::move(dbPath_r)), _ts(0) {
-    _error.reset();
+  D( Pathname root_r, Pathname dbPath_r, bool readonly_r )
+  : _root   { std::move(root_r) }
+  , _dbPath { std::move(dbPath_r) }
+  , _ts     { nullptr }
+  {
     // set %_dbpath macro
     ::addMacro( NULL, "_dbpath", NULL, _dbPath.asString().c_str(), RMIL_CMDLINE );
 
-    _ts = ::rpmtsCreate();
+    _ts = AutoDispose<rpmts>( ::rpmtsCreate(), ::rpmtsFree );
     ::rpmtsSetRootDir( _ts, _root.c_str() );
 
     // open database (creates a missing one on the fly)
-    int res = ::rpmtsOpenDB( _ts, (readonly_r ? O_RDONLY : O_RDWR ));
-    if ( res )
-    {
+    int res = ::rpmtsOpenDB( _ts, (readonly_r ? O_RDONLY : O_RDWR ) );
+    if ( res ) {
       ERR << "rpmdbOpen error(" << res << "): " << *this << endl;
-      _error = shared_ptr<RpmDbOpenException>(new RpmDbOpenException(_root, _dbPath));
-      rpmtsFree(_ts);
-      ZYPP_THROW(*_error);
-      return;
+      ZYPP_THROW(RpmDbOpenException(_root, _dbPath));
     }
 
     DBG << "DBACCESS " << *this << endl;
-  }
-
-  ~D()
-  {
-    if ( _ts )
-    {
-      ::rpmtsFree(_ts);
-    }
   }
 };
 

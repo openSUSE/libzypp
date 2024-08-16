@@ -34,6 +34,18 @@ namespace rpm
 {
 ///////////////////////////////////////////////////////////////////
 //
+//	CLASS NAME : librpmDb (ststic interface)
+//
+///////////////////////////////////////////////////////////////////
+
+Pathname librpmDb::_defaultRoot { "/" };
+Pathname librpmDb::_defaultDbPath;	// set in dbAccess depending on suggestedDbPath below /root
+Pathname librpmDb::_rpmDefaultDbPath;	// set by globalInit
+librpmDb::constPtr librpmDb::_defaultDb;
+bool librpmDb::_dbBlocked = true;
+
+///////////////////////////////////////////////////////////////////
+//
 //	CLASS NAME : librpmDb::D
 /**
  * @short librpmDb internal database handle
@@ -62,13 +74,16 @@ public:
   , _dbPath { std::move(dbPath_r) }
   , _ts     { nullptr }
   {
-    // set %_dbpath macro
-    ::addMacro( NULL, "_dbpath", NULL, _dbPath.asString().c_str(), RMIL_CMDLINE );
-
     _ts = AutoDispose<rpmts>( ::rpmtsCreate(), ::rpmtsFree );
     ::rpmtsSetRootDir( _ts, _root.c_str() );
 
     // open database (creates a missing one on the fly)
+    OnScopeExit cleanup;
+    if ( _dbPath != librpmDb::_rpmDefaultDbPath ) {
+      // temp set %{_dbpath} macro for rpmtsOpenDB
+      cleanup.setDispose( &macroResetDbpath );
+      macroSetDbpath( _dbPath );
+    }
     int res = ::rpmtsOpenDB( _ts, (readonly_r ? O_RDONLY : O_RDWR ) );
     if ( res ) {
       ERR << "rpmdbOpen error(" << res << "): " << *this << endl;
@@ -77,21 +92,16 @@ public:
 
     DBG << "DBACCESS " << *this << endl;
   }
+
+private:
+  static void macroSetDbpath( const Pathname & dppath_r )
+  { ::addMacro( NULL, "_dbpath", NULL, dppath_r.asString().c_str(), RMIL_CMDLINE ); }
+
+  static void macroResetDbpath()
+  { macroSetDbpath( librpmDb::_rpmDefaultDbPath ); }
 };
 
 ///////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////
-//
-//	CLASS NAME : librpmDb (ststic interface)
-//
-///////////////////////////////////////////////////////////////////
-
-Pathname librpmDb::_defaultRoot { "/" };
-Pathname librpmDb::_defaultDbPath;	// set in dbAccess depending on suggestedDbPath below /root
-Pathname librpmDb::_rpmDefaultDbPath;	// set by globalInit
-librpmDb::constPtr librpmDb::_defaultDb;
-bool librpmDb::_dbBlocked = true;
 
 ///////////////////////////////////////////////////////////////////
 //

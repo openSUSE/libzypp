@@ -72,6 +72,8 @@ Obsoletes:      yast2-packagemanager
 # bsc#1227793:  python zypp-plugin < 0.6.4 rejects stomp headers including a '-'
 Conflicts:      python2-zypp-plugin < 0.6.4
 Conflicts:      python3-zypp-plugin < 0.6.4
+# API refactoring. Prevent zypper from using (now) private symbols
+Conflicts:      zypper <= 17.35.9
 
 # Features we provide (update doc/autoinclude/FeatureTest.doc):
 Provides:       libzypp(plugin) = 0.1

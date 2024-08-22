@@ -84,7 +84,7 @@ private:
   /**
    * Whether access is blocked (no _defaultDb will be available).
    **/
-  static bool _dbBlocked ZYPP_API;
+  static bool _dbBlocked;
 
   /**
    * For internal use. Pointer returned should immediately be
@@ -199,7 +199,7 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static unsigned dbRelease( bool force_r = false ) ZYPP_API;
+  static unsigned dbRelease( bool force_r = false );
 
   /**
    * Blocks further access to rpmdb. Basically the same as @ref dbRelease( true ),
@@ -208,7 +208,7 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static unsigned blockAccess() ZYPP_API;
+  static unsigned blockAccess();
 
   /**
    * @overload Blocks access iff the database is located at root_r/dbPath_r.
@@ -228,12 +228,12 @@ public:
    * @return The number of outstandig references to the database, 0 if
    * if database was physically closed.
    **/
-  static void unblockAccess() ZYPP_API;
+  static void unblockAccess();
 
   /**
    * @return Whether database access is blocked.
    **/
-  static bool isBlocked() ZYPP_API
+  static bool isBlocked()
   {
     return _dbBlocked;
   }

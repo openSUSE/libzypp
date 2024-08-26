@@ -331,15 +331,17 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////
-
+/// \class librpmDb::db_const_iterator
+/// \brief Subclass to retrieve rpm database content.
+///
+/// If the specified rpm database was opened successfully, the iterator
+/// is initialized to @ref findAll. Otherwise the iterator is empty and
+/// @ref dbError is set.
+///
+/// \note The iterator will never create a not existing database.
+/// \note The iterator keeps the rpm database open as a reader, so do not
+/// store it for longer than necessary as it may prevent write operations.
 ///////////////////////////////////////////////////////////////////
-//
-//	CLASS NAME : librpmDb::db_const_iterator
-/**
- * @short Subclass to retrieve database content.
- *
- *
- **/
 class ZYPP_API librpmDb::db_const_iterator
 {
   db_const_iterator & operator=( const db_const_iterator & ); // NO ASSIGNMENT!
@@ -355,15 +357,27 @@ private:
   class D;
   D & _d;
 
+#if LEGACY(1735)
 public:
-
   /**
-   * Constructor. Iterator is initialized to @ref findAll.
-   * The default form accesses librpmDb's default database.
-   * Explicitly providing a database handle should not be
-   * neccesary, except for testing.
-   **/
-  db_const_iterator( librpmDb::constPtr dbptr_r = 0 );
+   * \deprecated Legacy code linked this with 'dbptr_r=0' as default argument.
+   * The ZYPP_API is not able to acquire a not-null dbptr_r, so we keep
+   * this symbol in the ZYPP_API and map it to the default ctor until
+   * we need to raise our SOVERSION. Afterwards this ctor is no longer
+   * needed.
+   */
+  db_const_iterator( librpmDb::constPtr dbptr_r ) ZYPP_DEPRECATED;
+#endif
+
+public:
+  /** Open the default rpmdb below the host system (at /). */
+  db_const_iterator();
+
+  /** Open the default rpmdb below the system at \a root_r. */
+  explicit db_const_iterator( const Pathname & root_r );
+
+  /** Open a specific rpmdb below the system at \a root_r. */
+  db_const_iterator( const Pathname & root_r, const Pathname & dbPath_r );
 
   /**
    * Destructor.
@@ -373,9 +387,6 @@ public:
   /**
    * Return any database error.
    *
-   * <B>NOTE:</B> If the database gets blocked (see @ref dbRelease)
-   * dbError will immediately report this, but an already running
-   * iteration will proceed to its end. Then the database is dropped.
    **/
   shared_ptr<RpmException> dbError() const;
 
@@ -409,10 +420,6 @@ public:
   /**
    * Reset to iterate all packages. Returns true if iterator
    * contains at least one entry.
-   *
-   * <B>NOTE:</B> No entry (false) migt be returned due to a
-   * meanwhile blocked database (see @ref dbRelease). Use
-   * @ref dbError to check this.
    **/
   bool findAll();
 

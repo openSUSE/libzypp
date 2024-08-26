@@ -610,163 +610,66 @@ public:
 //
 ///////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::db_iterator
-//	METHOD TYPE : Constructor
-//
+#if LEGACY(1735)
+// Former ZYPP_API used this as default ctor (dbptr_r == nullptr).
+// (dbptr_r!=nullptr) is not possible because librpmDb is not in ZYPP_API.
 librpmDb::db_const_iterator::db_const_iterator( librpmDb::constPtr dbptr_r )
-    : _d( * new D( std::move(dbptr_r) ) )
-{
-  findAll();
-}
+: db_const_iterator()
+{}
+#endif
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::~db_const_iterator
-//	METHOD TYPE : Destructor
-//
+librpmDb::db_const_iterator::db_const_iterator()
+: _d( * new D( "/" ) )
+{ findAll(); }
+
+librpmDb::db_const_iterator::db_const_iterator( const Pathname & root_r )
+: _d( * new D( root_r ) )
+{ findAll(); }
+
+librpmDb::db_const_iterator::db_const_iterator( const Pathname & root_r, const Pathname & dbPath_r )
+: _d( * new D( root_r, dbPath_r ) )
+{ findAll(); }
+
 librpmDb::db_const_iterator::~db_const_iterator()
-{
-  delete &_d;
-}
+{ delete &_d; }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::operator++
-//	METHOD TYPE : void
-//
 void librpmDb::db_const_iterator::operator++()
-{
-  _d.advance();
-}
+{ _d.advance(); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::dbHdrNum
-//	METHOD TYPE : unsigned
-//
 unsigned librpmDb::db_const_iterator::dbHdrNum() const
-{
-  return _d.offset();
-}
+{ return _d.offset(); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::operator*
-//	METHOD TYPE : const RpmHeader::constPtr &
-//
 const RpmHeader::constPtr & librpmDb::db_const_iterator::operator*() const
-{
-  return _d._hptr;
-}
+{ return _d._hptr; }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::dbError
-//	METHOD TYPE : PMError
-//
 shared_ptr<RpmException> librpmDb::db_const_iterator::dbError() const
 {
   if ( _d._dbptr )
     return _d._dbptr->error();
-
   return _d._dberr;
 }
 
-/******************************************************************
-**
-**
-**	FUNCTION NAME : operator<<
-**	FUNCTION TYPE : ostream &
-*/
 std::ostream & operator<<( std::ostream & str, const librpmDb::db_const_iterator & obj )
-{
-  str << "db_const_iterator(" << obj._d._dbptr
-  << " Size:" << obj._d.size()
-  << " HdrNum:" << obj._d.offset()
-  << ")";
-  return str;
-}
+{ return str << "db_const_iterator(" << obj._d._dbptr << ")"; }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findAll
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findAll()
-{
-  return _d.init( RPMDBI_PACKAGES );
-}
+{ return _d.init( RPMDBI_PACKAGES ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findByFile
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findByFile( const std::string & file_r )
-{
-  return _d.init( RPMTAG_BASENAMES, file_r.c_str() );
-}
+{ return _d.init( RPMTAG_BASENAMES, file_r.c_str() ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findByProvides
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findByProvides( const std::string & tag_r )
-{
-  return _d.init( RPMTAG_PROVIDENAME, tag_r.c_str() );
-}
+{ return _d.init( RPMTAG_PROVIDENAME, tag_r.c_str() ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findByRequiredBy
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findByRequiredBy( const std::string & tag_r )
-{
-  return _d.init( RPMTAG_REQUIRENAME, tag_r.c_str() );
-}
+{ return _d.init( RPMTAG_REQUIRENAME, tag_r.c_str() ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findByConflicts
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findByConflicts( const std::string & tag_r )
-{
-  return _d.init( RPMTAG_CONFLICTNAME, tag_r.c_str() );
-}
+{ return _d.init( RPMTAG_CONFLICTNAME, tag_r.c_str() ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::findByName
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findByName( const std::string & name_r )
-{
-  return _d.init( RPMTAG_NAME, name_r.c_str() );
-}
+{ return _d.init( RPMTAG_NAME, name_r.c_str() ); }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findPackage
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findPackage( const std::string & name_r )
 {
   if ( ! _d.init( RPMTAG_NAME, name_r.c_str() ) )
@@ -790,12 +693,6 @@ bool librpmDb::db_const_iterator::findPackage( const std::string & name_r )
   return _d.set( match );
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findPackage
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findPackage( const std::string & name_r, const Edition & ed_r )
 {
   if ( ! _d.init( RPMTAG_NAME, name_r.c_str() ) )
@@ -813,12 +710,6 @@ bool librpmDb::db_const_iterator::findPackage( const std::string & name_r, const
   return _d.destroy();
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::db_const_iterator::findPackage
-//	METHOD TYPE : bool
-//
 bool librpmDb::db_const_iterator::findPackage( const Package::constPtr & which_r )
 {
   if ( ! which_r )

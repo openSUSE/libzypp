@@ -20,7 +20,7 @@
  *
  * Deprecated items we can't drop immediately because YAST/PK still
  * refer to them or they break binary compatibility, should be
- * enclosed in `#if LEGACY(#)` where # is either a minor number(<=99),
+ * enclosed in `#if LEGACY(#)` where # is either a major number(<=99),
  * a soversion [<=9999] or numversion [<=999999].
  *
  */

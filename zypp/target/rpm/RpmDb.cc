@@ -196,19 +196,6 @@ unsigned diffFiles(const std::string& file1, const std::string& file2, std::stri
   return prog.close();
 }
 
-
-
-/******************************************************************
- **
- **
- **	FUNCTION NAME : stringPath
- **	FUNCTION TYPE : inline std::string
-*/
-inline std::string stringPath( const Pathname & root_r, const Pathname & sub_r )
-{
-  return librpmDb::stringPath( root_r, sub_r );
-}
-
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : RpmDb
@@ -261,7 +248,15 @@ RpmDb::~RpmDb()
 //
 std::ostream & RpmDb::dumpOn( std::ostream & str ) const
 {
-  return str << "RpmDb[" << stringPath( _root, _dbPath ) << "]";
+  return str << "RpmDb[" << dumpPath( _root, _dbPath ) << "]";
+}
+
+///////////////////////////////////////////////////////////////////
+RpmDb::db_const_iterator RpmDb::dbConstIterator() const
+{
+  if ( initialized() )
+    return db_const_iterator( root(), dbPath() );
+  return db_const_iterator();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -275,8 +270,6 @@ void RpmDb::initDatabase( Pathname root_r, bool doRebuild_r )
   ///////////////////////////////////////////////////////////////////
   // Check arguments
   ///////////////////////////////////////////////////////////////////
-  bool quickinit( root_r.empty() );
-
   if ( root_r.empty() )
     root_r = "/";
 
@@ -302,40 +295,22 @@ void RpmDb::initDatabase( Pathname root_r, bool doRebuild_r )
     // to /usr/lib/sysimage/rpm. We continue to use the old dbpath
     // (via the compat symlink) until a re-init.
     if ( root_r == _root ) {
-      MIL << "Calling initDatabase: already initialized at " << stringPath( _root, _dbPath ) << endl;
+      MIL << "Calling initDatabase: already initialized at " << dumpPath( _root, _dbPath ) << endl;
       return;
     }
     else
       ZYPP_THROW(RpmDbAlreadyOpenException(_root, _dbPath, root_r, dbPath_r));
   }
 
-  MIL << "Calling initDatabase: " << stringPath( root_r, dbPath_r )
-      << ( doRebuild_r ? " (rebuilddb)" : "" )
-      << ( quickinit ? " (quickinit)" : "" ) << endl;
+  MIL << "Calling initDatabase: " << dumpPath( root_r, dbPath_r )
+      << ( doRebuild_r ? " (rebuilddb)" : "" ) << endl;
 
   ///////////////////////////////////////////////////////////////////
   // init database
   ///////////////////////////////////////////////////////////////////
-  librpmDb::unblockAccess();
-
-  if ( quickinit )
-  {
-    MIL << "QUICK initDatabase (no systemRoot set)" << endl;
-    return;
-  }
-
-  try
-  {
-    // creates dbdir and empty rpm database if not present
-    librpmDb::dbAccess( root_r );
-  }
-  catch (const RpmException & excpt_r)
-  {
-    ZYPP_CAUGHT(excpt_r);
-    librpmDb::blockAccess();
-    ZYPP_RETHROW(excpt_r);
-  }
-
+  // creates dbdir and empty rpm database if not present
+  // or throws RpmException
+  librpmDb::dbOpenCreate( root_r, dbPath_r );
   _root   = root_r;
   _dbPath = dbPath_r;
 
@@ -345,12 +320,13 @@ void RpmDb::initDatabase( Pathname root_r, bool doRebuild_r )
   MIL << "Synchronizing keys with zypp keyring" << endl;
   syncTrustedKeys();
 
+#if 0 // if this is needed we need to forcefully close the db of running db_const_iterators
   // Close the database in case any write acces (create/convert)
   // happened during init. This should drop any lock acquired
   // by librpm. On demand it will be reopened readonly and should
   // not hold any lock.
   librpmDb::dbRelease( true );
-
+#endif
   MIL << "InitDatabase: " << *this << endl;
 }
 
@@ -367,19 +343,11 @@ void RpmDb::closeDatabase()
     return;
   }
 
-  MIL << "Calling closeDatabase: " << *this << endl;
-
-  ///////////////////////////////////////////////////////////////////
-  // Block further database access
-  ///////////////////////////////////////////////////////////////////
-  librpmDb::blockAccess( root(), dbPath() );
-
-  ///////////////////////////////////////////////////////////////////
-  // Uninit
-  ///////////////////////////////////////////////////////////////////
-  _root = _dbPath = Pathname();
-
+  // NOTE: There are no persistent librpmDb handles to invalidate.
+  // Running db_const_iterator may keep the DB physically open until they
+  // go out of scope too.
   MIL << "closeDatabase: " << *this << endl;
+  _root = _dbPath = Pathname();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -432,7 +400,7 @@ void RpmDb::doRebuildDatabase(callback::SendReport<RebuildDBReport> & report)
   ProgressData tics;
   {
     ProgressData::value_type hdrTotal = 0;
-    for ( librpmDb::db_const_iterator it; *it; ++it, ++hdrTotal )
+    for ( auto it = dbConstIterator(); *it; ++it, ++hdrTotal )
     {;}
     tics.range( hdrTotal );
   }
@@ -631,7 +599,7 @@ void RpmDb::syncTrustedKeys( SyncTrustedKeyBits mode_r )
     MIL << "Exporting rpm keyring into zypp trusted keyring" <<endl;
     // Temporarily disconnect to prevent the attempt to re-import the exported keys.
     callback::TempConnect<KeyRingSignals> tempDisconnect;
-    librpmDb::db_const_iterator keepDbOpen; // just to keep a ref.
+    auto keepDbOpen = dbConstIterator(); // just to keep a ref.
 
     TmpFile tmpfile( getZYpp()->tmpPath() );
     {
@@ -884,7 +852,7 @@ std::list<PublicKey> RpmDb::pubkeys() const
 {
   std::list<PublicKey> ret;
 
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   for ( it.findByName( "gpg-pubkey" ); *it; ++it )
   {
     Edition edition = it->tag_edition();
@@ -922,7 +890,7 @@ std::set<Edition> RpmDb::pubkeyEditions() const
   {
     std::set<Edition> ret;
 
-    librpmDb::db_const_iterator it;
+    auto it = dbConstIterator();
     for ( it.findByName( "gpg-pubkey" ); *it; ++it )
     {
       Edition edition = it->tag_edition();
@@ -946,7 +914,7 @@ RpmDb::fileList( const std::string & name_r, const Edition & edition_r ) const
 {
   std::list<FileInfo> result;
 
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   bool found = false;
   if (edition_r == Edition::noedition)
   {
@@ -973,7 +941,7 @@ RpmDb::fileList( const std::string & name_r, const Edition & edition_r ) const
 //
 bool RpmDb::hasFile( const std::string & file_r, const std::string & name_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   bool res = false;
   do
   {
@@ -999,7 +967,7 @@ bool RpmDb::hasFile( const std::string & file_r, const std::string & name_r ) co
 //
 std::string RpmDb::whoOwnsFile( const std::string & file_r) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   if (it.findByFile( file_r ))
   {
     return it->tag_name();
@@ -1017,7 +985,7 @@ std::string RpmDb::whoOwnsFile( const std::string & file_r) const
 //
 bool RpmDb::hasProvides( const std::string & tag_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   return it.findByProvides( tag_r );
 }
 
@@ -1031,7 +999,7 @@ bool RpmDb::hasProvides( const std::string & tag_r ) const
 //
 bool RpmDb::hasRequiredBy( const std::string & tag_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   return it.findByRequiredBy( tag_r );
 }
 
@@ -1045,7 +1013,7 @@ bool RpmDb::hasRequiredBy( const std::string & tag_r ) const
 //
 bool RpmDb::hasConflicts( const std::string & tag_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   return it.findByConflicts( tag_r );
 }
 
@@ -1059,7 +1027,7 @@ bool RpmDb::hasConflicts( const std::string & tag_r ) const
 //
 bool RpmDb::hasPackage( const std::string & name_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   return it.findPackage( name_r );
 }
 
@@ -1073,7 +1041,7 @@ bool RpmDb::hasPackage( const std::string & name_r ) const
 //
 bool RpmDb::hasPackage( const std::string & name_r, const Edition & ed_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   return it.findPackage( name_r, ed_r );
 }
 
@@ -1088,11 +1056,13 @@ bool RpmDb::hasPackage( const std::string & name_r, const Edition & ed_r ) const
 void RpmDb::getData( const std::string & name_r,
                      RpmHeader::constPtr & result_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   it.findPackage( name_r );
   result_r = *it;
+#if 0 // if this is needed we need to forcefully close the db of running db_const_iterators
   if (it.dbError())
     ZYPP_THROW(*(it.dbError()));
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1106,11 +1076,13 @@ void RpmDb::getData( const std::string & name_r,
 void RpmDb::getData( const std::string & name_r, const Edition & ed_r,
                      RpmHeader::constPtr & result_r ) const
 {
-  librpmDb::db_const_iterator it;
+  auto it = dbConstIterator();
   it.findPackage( name_r, ed_r  );
   result_r = *it;
+#if 0 // if this is needed we need to forcefully close the db of running db_const_iterators
   if (it.dbError())
     ZYPP_THROW(*(it.dbError()));
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1471,9 +1443,11 @@ RpmDb::run_rpm (const RpmArgVec& opts,
   p = copy (opts.begin (), opts.end (), p);
   *p = 0;
 
+#if 0 // if this is needed we need to forcefully close the db of running db_const_iterators
   // Invalidate all outstanding database handles in case
   // the database gets modified.
   librpmDb::dbRelease( true );
+#endif
 
   // Launch the program with default locale
   process = new ExternalProgram(argv, disp, false, -1, true);

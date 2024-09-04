@@ -30,6 +30,7 @@
 #include <zypp/target/rpm/RpmFlags.h>
 #include <zypp/target/rpm/RpmHeader.h>
 #include <zypp/target/rpm/RpmCallbacks.h>
+#include <zypp/target/rpm/librpmDb.h>
 #include <zypp/ZYppCallbacks.h>
 
 namespace zypp
@@ -54,6 +55,23 @@ public:
    * Default error class
    **/
   using Error = class InstTargetError;
+
+  /** Wrapper providing a \ref librpmDb::db_const_iterator for this \ref RpmDb.
+   * Provide a properly initialized iterator while RpmDb is initialized.
+   * Otherwise a null iterator.
+   * \see \ref RpmDb::dbConstIterator.
+   */
+  struct db_const_iterator : public librpmDb::db_const_iterator
+  {
+  private:
+    friend class RpmDb;
+    db_const_iterator()
+    : librpmDb::db_const_iterator { nullptr }
+    {}
+    db_const_iterator( const Pathname & root_r, const Pathname & dbPath_r )
+    : librpmDb::db_const_iterator { root_r, dbPath_r }
+    {}
+  };
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -108,6 +126,11 @@ public:
   {
     return( ! _root.empty() );
   }
+
+  /**
+   * \return db_const_iterator for this rpmdb (empty if not initialized)
+   */
+  db_const_iterator dbConstIterator() const;
 
   /**
    * Prepare access to the rpm database below \a root_r.

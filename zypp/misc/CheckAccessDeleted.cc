@@ -181,25 +181,6 @@ namespace zypp
     bool lsofNoOptKi()
     {
       using target::rpm::librpmDb;
-      // RpmDb access is blocked while the Target is not initialized.
-      // Launching the Target just for this query would be an overkill.
-      struct TmpUnblock {
-        TmpUnblock()
-        : _wasBlocked( librpmDb::isBlocked() )
-        { if ( _wasBlocked ) librpmDb::unblockAccess(); }
-        TmpUnblock(const TmpUnblock &) = delete;
-        TmpUnblock(TmpUnblock &&) = delete;
-        TmpUnblock &operator=(const TmpUnblock &) = delete;
-        TmpUnblock &operator=(TmpUnblock &&) = delete;
-        ~TmpUnblock() {
-          if (_wasBlocked)
-            librpmDb::blockAccess();
-        }
-
-      private:
-        bool _wasBlocked;
-      } tmpUnblock;
-
       librpmDb::db_const_iterator it;
       return( it.findPackage( "lsof" ) && it->tag_edition() < Edition("4.90") && !it->tag_provides().count( Capability("backported-option-Ki") ) );
     }

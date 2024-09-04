@@ -32,17 +32,55 @@ namespace target
 {
 namespace rpm
 {
+  namespace internal
+  {
+    // helper functions here expect basic checks on arguments have been performed.
+    // (globalInit done, root is absolute, dbpath not empty, ...)
+    inline const Pathname & rpmDefaultDbPath()
+    {
+      static const Pathname _val = [](){
+        Pathname ret = librpmDb::expand( "%{_dbpath}" );
+        if ( ret.empty() ) {
+          ret = "/usr/lib/sysimage/rpm";
+          WAR << "Looks like rpm has no %{_dbpath} set!?! Assuming " << ret << endl;
+        }
+        return ret;
+      }();
+      return _val;
+    }
+
+    inline Pathname suggestedDbPath( const Pathname & root_r )
+    {
+      if ( PathInfo( root_r ).isDir() ) {
+        // If a known dbpath exsists, we continue to use it
+        for ( auto p : { "/var/lib/rpm", "/usr/lib/sysimage/rpm" } ) {
+          if ( PathInfo( root_r/p, PathInfo::LSTAT/*!no symlink*/ ).isDir() ) {
+            MIL << "Suggest existing database at " << dumpPath( root_r, p ) << endl;
+            return p;
+          }
+        }
+      }
+      const Pathname & defaultDbPath { rpmDefaultDbPath() };
+      MIL << "Suggest rpm dbpath " << dumpPath( root_r, defaultDbPath ) << endl;
+      return defaultDbPath;
+    }
+
+    inline Pathname sanitizedDbPath( const Pathname & root_r, const Pathname & dbPath_r )
+    { return dbPath_r.empty() ? suggestedDbPath( root_r ) : dbPath_r; }
+
+    inline bool dbExists( const Pathname & root_r, const Pathname & dbPath_r )
+    {
+      Pathname dbdir { root_r / sanitizedDbPath( root_r, dbPath_r ) };
+      return PathInfo(dbdir).isDir() && ( PathInfo(dbdir/"Packages").isFile() || PathInfo(dbdir/"Packages.db").isFile() );
+    }
+
+  } // namespace internal
+
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : librpmDb (ststic interface)
 //
 ///////////////////////////////////////////////////////////////////
-
-Pathname librpmDb::_defaultRoot { "/" };
-Pathname librpmDb::_defaultDbPath;	// set in dbAccess depending on suggestedDbPath below /root
-Pathname librpmDb::_rpmDefaultDbPath;	// set by globalInit
-librpmDb::constPtr librpmDb::_defaultDb;
-bool librpmDb::_dbBlocked = true;
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -61,13 +99,9 @@ public:
   const Pathname _root;   // root directory for all operations
   const Pathname _dbPath; // directory (below root) that contains the rpmdb
   AutoDispose<rpmts> _ts; // transaction handle, includes database
-  shared_ptr<RpmException> _error;  // database error
 
   friend std::ostream & operator<<( std::ostream & str, const D & obj )
-  {
-    str << "{" << obj._error  << "(" << obj._root << ")" << obj._dbPath << "}";
-    return str;
-  }
+  { return str << "{" << dumpPath( obj._root, obj._dbPath ) << "}"; }
 
   D( Pathname root_r, Pathname dbPath_r, bool readonly_r )
   : _root   { std::move(root_r) }
@@ -79,7 +113,7 @@ public:
 
     // open database (creates a missing one on the fly)
     OnScopeExit cleanup;
-    if ( _dbPath != librpmDb::_rpmDefaultDbPath ) {
+    if ( _dbPath != internal::rpmDefaultDbPath() ) {
       // temp set %{_dbpath} macro for rpmtsOpenDB
       cleanup.setDispose( &macroResetDbpath );
       macroSetDbpath( _dbPath );
@@ -89,8 +123,6 @@ public:
       ERR << "rpmdbOpen error(" << res << "): " << *this << endl;
       ZYPP_THROW(RpmDbOpenException(_root, _dbPath));
     }
-
-    DBG << "DBACCESS " << *this << endl;
   }
 
 private:
@@ -98,17 +130,11 @@ private:
   { ::addMacro( NULL, "_dbpath", NULL, dppath_r.asString().c_str(), RMIL_CMDLINE ); }
 
   static void macroResetDbpath()
-  { macroSetDbpath( librpmDb::_rpmDefaultDbPath ); }
+  { macroSetDbpath( internal::rpmDefaultDbPath() ); }
 };
 
 ///////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::globalInit
-//	METHOD TYPE : bool
-//
 bool librpmDb::globalInit()
 {
   static bool initialized = false;
@@ -123,23 +149,12 @@ bool librpmDb::globalInit()
     return false;
   }
 
-  initialized = true; // Necessary to be able to use exand().
-  _rpmDefaultDbPath = expand( "%{_dbpath}" );
-
-  if ( _rpmDefaultDbPath.empty() ) {
-    _rpmDefaultDbPath = "/usr/lib/sysimage/";
-    WAR << "Looks like rpm has no %{_dbpath} set!?! Assuming " << _rpmDefaultDbPath << endl;
-  }
-  MIL << "librpm init done: (_target:" << expand( "%{_target}" ) << ") (_dbpath:" << _rpmDefaultDbPath << ")" << endl;
+  initialized = true; // Necessary to be able to use exand() in rpmDefaultDbPath().
+  const Pathname & rpmDefaultDbPath { internal::rpmDefaultDbPath() };  // init rpmDefaultDbPath()!
+  MIL << "librpm init done: (_target:" << expand( "%{_target}" ) << ") (_dbpath:" << rpmDefaultDbPath << ")" << endl;
   return initialized;
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::expand
-//	METHOD TYPE : std::string
-//
 std::string librpmDb::expand( const std::string & macro_r )
 {
   if ( ! globalInit() )
@@ -152,181 +167,54 @@ std::string librpmDb::expand( const std::string & macro_r )
   return std::string();
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::newLibrpmDb
-//	METHOD TYPE : librpmDb *
-//
-librpmDb * librpmDb::newLibrpmDb()
-{
-  // initialize librpm
-  if ( ! globalInit() )
-    ZYPP_THROW(GlobalRpmInitException());
-
-  if ( _defaultDbPath.empty() )	// db_const_iterator access to /(default) without RpmDB/Tareget init.
-    _defaultDbPath = suggestedDbPath( _defaultRoot );
-
-  return new librpmDb( _defaultRoot, _defaultDbPath, /*readonly*/true ); // or throw
-}
-
-
 Pathname librpmDb::suggestedDbPath( const Pathname & root_r )
 {
   if ( ! root_r.absolute() )
     ZYPP_THROW(RpmInvalidRootException( root_r, "" ));
 
-  // initialize librpm (for _rpmDefaultDbPath)
+  // initialize librpm (for rpmDefaultDbPath)
   if ( ! globalInit() )
     ZYPP_THROW(GlobalRpmInitException());
 
-  if ( PathInfo( root_r ).isDir() ) {
-    // If a known dbpath exsists, we continue to use it
-    for ( auto p : { "/var/lib/rpm", "/usr/lib/sysimage/rpm" } ) {
-      if ( PathInfo( root_r/p, PathInfo::LSTAT/*!no symlink*/ ).isDir() ) {
-        MIL << "Suggest existing database at " << stringPath( root_r, p ) << endl;
-        return p;
-      }
-    }
-  }
-
-  MIL << "Suggest rpm _dbpath " << stringPath( root_r, _rpmDefaultDbPath ) << endl;
-  return _rpmDefaultDbPath;
+  return internal::suggestedDbPath( root_r );
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dbAccess
-//	METHOD TYPE : PMError
-//
-void librpmDb::dbAccess( const Pathname & root_r )
+bool librpmDb::dbExists( const Pathname & root_r, const Pathname & dbPath_r )
 {
-  if ( _defaultDb )
-  {
-    // already accessing a database: switching is not allowed.
-    if ( _defaultRoot == root_r )
-      return;
-    else
-      ZYPP_THROW(RpmDbAlreadyOpenException(_defaultRoot, _defaultDbPath, root_r, _defaultDbPath));
-  }
+  if ( ! root_r.absolute() )
+    ZYPP_THROW(RpmInvalidRootException( root_r, "" ));
 
-  // got no database: we could switch to a new one (even if blocked!)
-  _defaultDbPath = suggestedDbPath( root_r );	// also asserts root_r is absolute
-  _defaultRoot = root_r;
+  // initialize librpm (for rpmDefaultDbPath)
+  if ( ! globalInit() )
+    ZYPP_THROW(GlobalRpmInitException());
 
-  MIL << "Set new database location: " << stringPath( _defaultRoot, _defaultDbPath ) << endl;
-  return dbAccess();
+  return internal::dbExists( root_r, dbPath_r );
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dbAccess
-//	METHOD TYPE : PMError
-//
-void librpmDb::dbAccess()
+librpmDb::constPtr librpmDb::dbOpenIf( const Pathname & root_r, const Pathname & dbPath_r )
+{ return dbAccess( root_r, dbPath_r, /*create_r*/false ); }
+
+librpmDb::constPtr librpmDb::dbOpenCreate( const Pathname & root_r, const Pathname & dbPath_r )
+{ return dbAccess( root_r, dbPath_r, /*create_r*/true ); }
+
+librpmDb::constPtr librpmDb::dbAccess( const Pathname & root_r, const Pathname & dbPath_rx, bool create_r )
 {
-  if ( _dbBlocked )
-  {
-    ZYPP_THROW(RpmAccessBlockedException(_defaultRoot, _defaultDbPath));
+  if ( ! root_r.absolute() )
+    ZYPP_THROW(RpmInvalidRootException( root_r, "" ));
+
+  // initialize librpm (for rpmDefaultDbPath)
+  if ( ! globalInit() )
+    ZYPP_THROW(GlobalRpmInitException());
+
+  Pathname dbPath { internal::sanitizedDbPath( root_r, dbPath_rx ) };
+  bool dbExists = internal::dbExists( root_r, dbPath );
+
+  if ( not create_r && not dbExists ) {
+    WAR << "NoOpen not existing database " << dumpPath( root_r, dbPath ) << endl;
+    return nullptr;
   }
-
-  if ( !_defaultDb )
-  {
-    // get access
-    _defaultDb = newLibrpmDb();
-  }
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dbAccess
-//	METHOD TYPE : PMError
-//
-void librpmDb::dbAccess( librpmDb::constPtr & ptr_r )
-{
-  ptr_r = nullptr;
-  dbAccess();
-  ptr_r = _defaultDb;
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dbRelease
-//	METHOD TYPE : unsigned
-//
-unsigned librpmDb::dbRelease( bool force_r )
-{
-  if ( !_defaultDb )
-  {
-    return 0;
-  }
-
-  unsigned outstanding = _defaultDb->refCount() - 1; // refCount can't be 0
-
-  switch ( outstanding )
-  {
-  default:
-    if ( !force_r )
-    {
-      DBG << "dbRelease: keep access, outstanding " << outstanding << endl;
-      break;
-    }
-    // else fall through:
-  case 0:
-    DBG << "dbRelease: release" << (force_r && outstanding ? "(forced)" : "")
-    << ", outstanding " << outstanding << endl;
-
-    _defaultDb->_d._error = shared_ptr<RpmAccessBlockedException>(new RpmAccessBlockedException(_defaultDb->_d._root, _defaultDb->_d._dbPath));
-    // tag handle invalid
-    _defaultDb = 0;
-    break;
-  }
-
-  return outstanding;
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::blockAccess
-//	METHOD TYPE : unsigned
-//
-unsigned librpmDb::blockAccess()
-{
-  MIL << "Block access" << endl;
-  _dbBlocked = true;
-  return dbRelease( /*force*/true );
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::unblockAccess
-//	METHOD TYPE : void
-//
-void librpmDb::unblockAccess()
-{
-  MIL << "Unblock access" << endl;
-  _dbBlocked = false;
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dumpState
-//	METHOD TYPE : ostream &
-//
-std::ostream & librpmDb::dumpState( std::ostream & str )
-{
-  if ( !_defaultDb )
-  {
-    return str << "[librpmDb " << (_dbBlocked?"BLOCKED":"CLOSED") << " " << stringPath( _defaultRoot, _defaultDbPath ) << "]";
-  }
-  return str << "[" << _defaultDb << "]";
+  MIL << (dbExists?"Open":"Create") << " database " << dumpPath( root_r, dbPath ) << endl;
+  return new librpmDb( root_r, dbPath, /*readonly*/true );
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -335,179 +223,60 @@ std::ostream & librpmDb::dumpState( std::ostream & str )
 //
 ///////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::librpmDb
-//	METHOD TYPE : Constructor
-//
-//	DESCRIPTION :
-//
 librpmDb::librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r )
-    : _d( * new D( root_r, dbPath_r, readonly_r ) )
+: _d( * new D( root_r, dbPath_r, readonly_r ) )
 {}
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::~librpmDb
-//	METHOD TYPE : Destructor
-//
-//	DESCRIPTION :
-//
 librpmDb::~librpmDb()
 {
+  MIL << "Close database " << *this << endl;
   delete &_d;
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::unref_to
-//	METHOD TYPE : void
-//
 void librpmDb::unref_to( unsigned refCount_r ) const
-{
-  if ( refCount_r == 1 )
-  {
-    dbRelease();
-  }
-}
+{ return; } // if ( refCount_r == 1 ) { tbd if we hold a static reference as weak ptr. }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::root
-//	METHOD TYPE : const Pathname &
-//
 const Pathname & librpmDb::root() const
-{
-  return _d._root;
-}
+{ return _d._root; }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dbPath
-//	METHOD TYPE : const Pathname &
-//
 const Pathname & librpmDb::dbPath() const
-{
-  return _d._dbPath;
-}
+{ return _d._dbPath; }
 
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::error
-//	METHOD TYPE : PMError
-//
-shared_ptr<RpmException> librpmDb::error() const
-{
-  return _d._error;
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::empty
-//	METHOD TYPE : bool
-//
-bool librpmDb::empty() const
-{
-  return( valid() && ! *db_const_iterator( this ) );
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::size
-//	METHOD TYPE : unsigned
-//
-unsigned librpmDb::size() const
-{
-  unsigned count = 0;
-  if ( valid() )
-  {
-    db_const_iterator it( this );
-    for ( db_const_iterator it( this ); *it; ++it )
-      ++count;
-  }
-  return count;
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dont_call_it
-//	METHOD TYPE : void *
-//
-void * librpmDb::dont_call_it() const
-{
-  return rpmtsGetRdb(_d._ts);
-}
-
-///////////////////////////////////////////////////////////////////
-//
-//
-//	METHOD NAME : librpmDb::dumpOn
-//	METHOD TYPE : ostream &
-//
-//	DESCRIPTION :
-//
 std::ostream & librpmDb::dumpOn( std::ostream & str ) const
-{
-  ReferenceCounted::dumpOn( str ) << _d;
-  return str;
-}
+{ return ReferenceCounted::dumpOn( str ) << _d; }
 
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : librpmDb::db_const_iterator::D
-/**
- *
- **/
+//
 class librpmDb::db_const_iterator::D
 {
   D & operator=( const D & ) = delete; // NO ASSIGNMENT!
   D ( const D & ) = delete;            // NO COPY!
   D(D &&);
   D &operator=(D &&) = delete;
+
 public:
 
-  librpmDb::constPtr     _dbptr;
-  shared_ptr<RpmException> _dberr;
+  librpmDb::constPtr              _dbptr;
+  AutoDispose<rpmdbMatchIterator> _mi;
+  RpmHeader::constPtr             _hptr;
 
-  RpmHeader::constPtr _hptr;
-  rpmdbMatchIterator   _mi;
+  /** A null iterator */
+  D()
+  {}
 
-  D(librpmDb::constPtr dbptr_r) : _dbptr(std::move(dbptr_r)), _mi(0) {
-    if ( !_dbptr )
-    {
-      try
-      {
-        librpmDb::dbAccess( _dbptr );
-      }
-      catch (const RpmException & excpt_r)
-      {
-        ZYPP_CAUGHT(excpt_r);
-      }
-      if ( !_dbptr )
-      {
-        WAR << "No database access: " << _dberr << endl;
-      }
-    }
-    else
-    {
-      destroy(); // Checks whether _dbptr still valid
-    }
-  }
-
-  ~D()
+  /** Open a specific rpmdb if it exists. */
+  D( const Pathname & root_r, const Pathname & dbPath_r = Pathname() )
   {
-    if ( _mi )
-    {
-      ::rpmdbFreeIterator( _mi );
+    try {
+      _dbptr = librpmDb::dbOpenIf( root_r, dbPath_r );
+    }
+    catch ( const RpmException & excpt_r ) {
+      ZYPP_CAUGHT(excpt_r);
+    }
+    if ( not _dbptr ) {
+      WAR << "No database access: " << dumpPath( root_r, dbPath_r ) << endl;
     }
   }
 
@@ -520,27 +289,17 @@ public:
     destroy();
     if ( ! _dbptr )
       return false;
-    _mi = ::rpmtsInitIterator( _dbptr->_d._ts, rpmTag(rpmtag), keyp, keylen );
+    _mi = AutoDispose<rpmdbMatchIterator>( ::rpmtsInitIterator( _dbptr->_d._ts, rpmTag(rpmtag), keyp, keylen ), ::rpmdbFreeIterator );
     return _mi;
   }
 
   /**
-   * Destroy iterator. Invalidates _dbptr, if database was blocked meanwile.
-   * Always returns false.
+   * Reset iterator. Always returns false.
    **/
   bool destroy()
   {
-    if ( _mi )
-    {
-      _mi = ::rpmdbFreeIterator( _mi );
-      _hptr = 0;
-    }
-    if ( _dbptr && _dbptr->error() )
-    {
-      _dberr = _dbptr->error();
-      WAR << "Lost database access: " << _dberr << endl;
-      _dbptr = 0;
-    }
+    _mi.reset();
+    _hptr.reset();
     return false;
   }
 
@@ -630,8 +389,15 @@ librpmDb::db_const_iterator::db_const_iterator( const Pathname & root_r, const P
 : _d( * new D( root_r, dbPath_r ) )
 { findAll(); }
 
+librpmDb::db_const_iterator::db_const_iterator( std::nullptr_t )
+: _d( * new D() )
+{}
+
 librpmDb::db_const_iterator::~db_const_iterator()
 { delete &_d; }
+
+bool librpmDb::db_const_iterator::hasDB() const
+{ return bool(_d._dbptr); }
 
 void librpmDb::db_const_iterator::operator++()
 { _d.advance(); }
@@ -641,13 +407,6 @@ unsigned librpmDb::db_const_iterator::dbHdrNum() const
 
 const RpmHeader::constPtr & librpmDb::db_const_iterator::operator*() const
 { return _d._hptr; }
-
-shared_ptr<RpmException> librpmDb::db_const_iterator::dbError() const
-{
-  if ( _d._dbptr )
-    return _d._dbptr->error();
-  return _d._dberr;
-}
 
 std::ostream & operator<<( std::ostream & str, const librpmDb::db_const_iterator & obj )
 { return str << "db_const_iterator(" << obj._d._dbptr << ")"; }

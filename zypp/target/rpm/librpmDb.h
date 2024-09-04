@@ -27,6 +27,20 @@ namespace target
 {
 namespace rpm
 {
+  struct _dumpPath {
+    _dumpPath( const Pathname & root_r, const Pathname & sub_r )
+    : _root {root_r }
+    , _sub { sub_r }
+    {}
+    const Pathname & _root;
+    const Pathname & _sub;
+  };
+  inline std::ostream & operator<<( std::ostream & str, const _dumpPath & obj )
+  { return str << "'(" << obj._root << ")" << obj._sub << "'"; }
+
+  /** dumpPath iomaip to dump '(root_r)sub_r' output, */
+  inline _dumpPath dumpPath( const Pathname & root_r, const Pathname & sub_r )
+  { return _dumpPath( root_r, sub_r ); }
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -39,81 +53,27 @@ class librpmDb : public base::ReferenceCounted, private base::NonCopyable
 public:
   using Ptr = intrusive_ptr<librpmDb>;
   using constPtr = intrusive_ptr<const librpmDb>;
+
 private:
   /**
    * <B>INTENTIONALLY UNDEFINED<\B> because of bug in Ptr classes
    * which allows implicit conversion from librpmDb::Ptr to
    * librpmDb::constPtr. Currently we don't want to provide non const
    * handles, as the database is opened READONLY.
-  *
    * \throws RpmException
-   *
    **/
   static void dbAccess( librpmDb::Ptr & ptr_r );
 
 public:
-
   ///////////////////////////////////////////////////////////////////
   //
   //	static interface
   //
   ///////////////////////////////////////////////////////////////////
-private:
 
   /**
-   * Current root directory for all operations.
-   * (initially /)
-   **/
-  static Pathname _defaultRoot;
-
-  /**
-   * Current directory (below root) that contains the rpmdb.
-   **/
-  static Pathname _defaultDbPath;
-
-  /**
-   * %_dbpath configured in rpm config.
-   **/
-  static Pathname _rpmDefaultDbPath;
-
-  /**
-   * Current rpmdb handle.
-   **/
-  static librpmDb::constPtr _defaultDb;
-
-  /**
-   * Whether access is blocked (no _defaultDb will be available).
-   **/
-  static bool _dbBlocked;
-
-  /**
-   * For internal use. Pointer returned should immediately be
-   * wrapped into librpmDb::Ptr.
-   *
-   * \throws RpmException
-   *
-   **/
-  static librpmDb * newLibrpmDb();
-
-  /**
-   * Access the database at the current default location. If necessary
-   * (eg. after @ref dbRelease), the database is opened. This just creates
-   * the internal handle. Once the handle is passed to e.g. some
-   * @ref db_const_iterator, the database will be closed if the last
-   * outstanding reference goes out of scope. If no external reference is
-   * created, you'll have to explicitly call @ref dbRelease to close the
-   * database.
-   *
-   * \throws RpmException
-   *
-   **/
-  static void dbAccess();
-
-public:
-
-  /**
-   * Initialize lib librpm (read configfiles etc.). It's called
-   * on demand but you may call it anytime.
+   * Initialize lib librpm (read configfiles etc.).
+   * It's called on demand but you may call it anytime.
    *
    * @return Whether librpm is initialized.
    **/
@@ -125,130 +85,53 @@ public:
   static std::string expand( const std::string & macro_r );
 
   /**
-   * @return String '(root_r)sub_r' used in debug output.
-   **/
-  static std::string stringPath( const Pathname & root_r, const Pathname & sub_r )
-  {
-    return std::string( "'(" ) + root_r.asString() + ")" + sub_r.asString() + "'";
-  }
-
-public:
-
-  /**
-   * @return Current root directory for all operations.
-   **/
-  static const Pathname & defaultRoot()
-  {
-    return _defaultRoot;
-  }
-
-  /**
-   * @return Current directory (below root) that contains the rpmdb.
-   **/
-  static const Pathname & defaultDbPath()
-  {
-    return _defaultDbPath;
-  }
-
-  /**
    * \return The preferred location of the rpmdb below \a root_r.
-   * It's the location of an already exising db, otherwise the
-   * default location sugested by rpms config.
+   * It's the location of an already existing db, otherwise the
+   * default location suggested by rpm's config.
    *
-   * \throws RpmInvalidRootException if root is not an absolute path or
-   * no directory for the rpmdb can determined.
+   * \throws RpmException if root is not an absolute path or no directory for the rpmdb can determined.
    **/
   static Pathname suggestedDbPath( const Pathname & root_r );
 
   /**
-   * Adjust access to the given database location, making it the new
-   * default location on success. No relative Pathnames are allowed.
+   * \return whether the rpmdb below the system at \a root_r exists.
+   * Unless a \a dbPath_r is explicitly specified, the systems default
+   * rpmdb is used (\see \ref suggestedDbPath).
    *
-   * It's not possible to access a database while access is blocked
-   * (see @ref blockAccess), but valid Pathnames provided will be stored
-   * as new default location.
-   *
-   * It's not allowed to switch to another location while a database
-   * is accessed. Use @ref dbRelease to force releasing the database first.
-  *
-   * \throws RpmException
-   *
-   **/
-  static void dbAccess( const Pathname & root_r );
+   * \throws RpmException if no directory for the rpmdb can be determined.
+   */
+  static bool dbExists( const Pathname & root_r, const Pathname & dbPath_r = Pathname() );
 
-  /**
-   * Same as &ref dbAccess(), but returns the database handle if
-   * avaialble, otherwise NULL. This creates an external reference, thus
-   * it should not be used longer than necessary. Be prepared that the
-   * handle might become invalid (see @ref dbRelease) later.
+  /** Open the rpmdb below the system at \a root_r (if it exists).
+   * If the database does not exist a \c nullptr is returned.
+   * Unless a \a dbPath_r is explicitly specified, the systems default
+   * rpmdb is used (\see \ref suggestedDbPath).
    *
-   * \throws RpmException
+   * \throws RpmException if an existing database can not be opened.
+   */
+  static librpmDb::constPtr dbOpenIf( const Pathname & root_r, const Pathname & dbPath_r = Pathname() );
+
+  /** Assert the rpmdb below the system at \a root_r exists.
+   * If the database does not exist an empty one is created.
+   * Unless a \a dbPath_r is explicitly specified, the systems default
+   * rpmdb is used (\see \ref suggestedDbPath).
    *
-   **/
-  static void dbAccess( librpmDb::constPtr & ptr_r );
-
-  /**
-   * If there are no outstanding references to the database (e.g. by @ref db_const_iterator),
-   * the database is closed. Subsequent calls to @ref dbAccess may however
-   * open the database again.
-   *
-   * If forced, the internal reference is dropped and it will look like
-   * the database was closed. But physically the database will be closed
-   * after all outstanding references are gone.
-   *
-   * @return The number of outstandig references to the database, 0 if
-   * if database was physically closed.
-   **/
-  static unsigned dbRelease( bool force_r = false );
-
-  /**
-   * Blocks further access to rpmdb. Basically the same as @ref dbRelease( true ),
-   * but subsequent calls to @ref dbAccess will fail returning E_RpmDB_access_blocked.
-   *
-   * @return The number of outstandig references to the database, 0 if
-   * if database was physically closed.
-   **/
-  static unsigned blockAccess();
-
-  /**
-   * @overload Blocks access iff the database is located at root_r/dbPath_r.
-   **/
-  static unsigned blockAccess( const Pathname & root_r, const Pathname & dbPath_r )
-  {
-    return ( root_r == _defaultRoot && dbPath_r == _defaultDbPath ) ? blockAccess() : 0;
-  }
-
-  /**
-   * Allow access to rpmdb e.g. after @ref blockAccess. Subsequent calls to
-   * @ref dbAccess will perform.
-   *
-   * <B>NOTE:</B> Initially we're in blocked mode. So you must call @ref unblockAccess
-   * unblockAccess at least once. Othwise nothing will happen.
-   *
-   * @return The number of outstandig references to the database, 0 if
-   * if database was physically closed.
-   **/
-  static void unblockAccess();
-
-  /**
-   * @return Whether database access is blocked.
-   **/
-  static bool isBlocked()
-  {
-    return _dbBlocked;
-  }
-
-  /**
-   * Dump debug info.
-   **/
-  static std::ostream & dumpState( std::ostream & str );
-
-public:
+   * \throws RpmException if the database can not be created or opened.
+   */
+  static librpmDb::constPtr dbOpenCreate( const Pathname & root_r, const Pathname & dbPath_r = Pathname() );
 
   /**
    * Subclass to retrieve database content.
    **/
   class db_const_iterator;
+
+private:
+
+  /**
+   * Internal workhorse managing database creation and access.
+   * \throws RpmException if an existing database can not be opened.
+   */
+  static librpmDb::constPtr dbAccess( const Pathname & root_r, const Pathname & dbPath_r, bool create_r = false );
 
 private:
   ///////////////////////////////////////////////////////////////////
@@ -263,13 +146,11 @@ private:
   class D;
   D & _d;
 
-protected:
-
   /**
    * Private constructor! librpmDb objects are to be created via
    * static interface only.
    **/
-  librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r );
+  librpmDb( const Pathname & root_r, const Pathname & dbPath_r, bool readonly_r = true );
 
   /**
    * Trigger from @ref Rep, after refCount was decreased.
@@ -293,36 +174,7 @@ public:
    **/
   const Pathname & dbPath() const;
 
-  /**
-   * Return any database error. Usg. if the database was
-   * blocked by calling @ref dbRelease(true) or @ref blockAccess.
-   **/
-  shared_ptr<RpmException> error() const;
-
-  /**
-   * @return Whether handle is valid.
-   **/
-  bool valid() const
-  {
-    return( ! error() );
-  }
-
-  /**
-   * @return True if handle is valid and database is empty.
-   **/
-  bool empty() const;
-
-  /**
-   * @return Number of entries in the database (0 if not valid).
-   **/
-  unsigned size() const;
-
 public:
-
-  /**
-   * Dont call it ;) It's for development and testing only.
-   **/
-  void * dont_call_it() const;
 
   /**
    * Dump debug info.
@@ -335,8 +187,8 @@ public:
 /// \brief Subclass to retrieve rpm database content.
 ///
 /// If the specified rpm database was opened successfully, the iterator
-/// is initialized to @ref findAll. Otherwise the iterator is empty and
-/// @ref dbError is set.
+/// is initialized to @ref findAll. Otherwise the iterator is an empty
+/// null iterator.
 ///
 /// \note The iterator will never create a not existing database.
 /// \note The iterator keeps the rpm database open as a reader, so do not
@@ -379,16 +231,18 @@ public:
   /** Open a specific rpmdb below the system at \a root_r. */
   db_const_iterator( const Pathname & root_r, const Pathname & dbPath_r );
 
+  /** A null iterator.
+   * What you get if the database does not exist.
+   */
+  db_const_iterator( std::nullptr_t );
+
   /**
    * Destructor.
    **/
   ~db_const_iterator();
 
-  /**
-   * Return any database error.
-   *
-   **/
-  shared_ptr<RpmException> dbError() const;
+  /** Whether an underlying rpmdb exists. */
+  bool hasDB() const;
 
   /**
    * Advance to next RpmHeader::constPtr.

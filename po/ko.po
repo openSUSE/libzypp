@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: zypp.ko\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2019-03-23 20:19+0000\n"
-"Last-Translator: Hwajin Kim <hwajin.kim@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/libzypp/master/ko/"
-">\n"
+"PO-Revision-Date: 2024-09-06 09:47+0000\n"
+"Last-Translator: Joungmin Lee <leejm516@gmail.com>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/libzypp/master/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.3\n"
+"X-Generator: Weblate 5.7.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: zypp/CountryCode.cc:50
@@ -3923,7 +3923,7 @@ msgstr "추가 고객 계약 필수"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "제공이 중단되어 다른 패키지로 대체되었습니다"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3976,7 +3976,7 @@ msgstr "지원을 받으려면 추가 고객 계약이 필요합니다."
 msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
-msgstr ""
+msgstr "이 패키지는 더 이상 제공되지 않고 다른 이름의 새로운 패키지로 대체되었습니다."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -4021,12 +4021,12 @@ msgstr "'%s'에 대한 인증 필요"
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/media/MediaCurl.cc:789
 msgid "Will try again..."
-msgstr ""
+msgstr "다시 시도하고 있습니다..."
 
 #: zypp/media/MediaCurl.cc:792
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "%1%회 시도 후에 중지합니다."
 
 #: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
 msgid ""

@@ -73,7 +73,7 @@ Obsoletes:      yast2-packagemanager
 Conflicts:      python2-zypp-plugin < 0.6.4
 Conflicts:      python3-zypp-plugin < 0.6.4
 # API refactoring. Prevent zypper from using (now) private symbols
-Conflicts:      zypper <= 17.35.9
+Conflicts:      zypper <= 1.14.76
 
 # Features we provide (update doc/autoinclude/FeatureTest.doc):
 Provides:       libzypp(plugin) = 0.1

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep  6 11:55:42 CEST 2024 - ma@suse.de
+
+- API refactoring. Prevent zypper from using now private libzypp
+  symbols (bsc#1230267)
+- Conflicts: zypper <= 1.14.76
+- version 17.35.10 (35)
+
+-------------------------------------------------------------------
 Mon Aug  5 12:04:25 CEST 2024 - ma@suse.de
 
 - single_rpmtrans: fix installation of .src.rpms (bsc#1228647)

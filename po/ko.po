@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: zypp.ko\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 16:12+0200\n"
-"PO-Revision-Date: 2024-09-06 09:47+0000\n"
+"PO-Revision-Date: 2024-09-07 03:47+0000\n"
 "Last-Translator: Joungmin Lee <leejm516@gmail.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/libzypp/master/ko/>"
 "\n"
@@ -4078,7 +4078,7 @@ msgstr[0] "지정한 URL에는 유효한 메타데이터가 없음"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:568
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "리포지터리 캐싱에 실패했습니다(repo2solv 실행이 불가능합니다)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:586
 #: zypp/ng/repo/workflows/repomanagerwf.cc:615
@@ -4099,7 +4099,7 @@ msgstr "%s에서 캐시를 생성할 수 없음 - 쓰기 권한이 없습니다.
 #: zypp/ng/repo/workflows/repomanagerwf.cc:785
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "%1% 리포지터리 캐싱에 실패했습니다"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:802
 msgid "Unhandled repository type"
@@ -4150,28 +4150,28 @@ msgstr "리포지토리 파일 '%1%'을(를) 읽을 수 없음: 사용 권한 �
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "메타데이터 정리 중"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "패키지 정리 중"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "캐시 디렉토리 정리 중"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "디렉토리 정리 중: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "캐시 정리 중"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "캐시에서 불러오는 중"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format

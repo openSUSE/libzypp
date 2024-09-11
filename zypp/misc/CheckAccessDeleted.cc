@@ -181,7 +181,7 @@ namespace zypp
     bool lsofNoOptKi()
     {
       using target::rpm::librpmDb;
-      librpmDb::db_const_iterator it;
+      librpmDb::db_const_iterator it( "/" );
       return( it.findPackage( "lsof" ) && it->tag_edition() < Edition("4.90") && !it->tag_provides().count( Capability("backported-option-Ki") ) );
     }
 

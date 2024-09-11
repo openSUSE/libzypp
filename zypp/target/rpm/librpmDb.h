@@ -222,8 +222,11 @@ public:
 #endif
 
 public:
-  /** Open the default rpmdb below the host system (at /). */
-  db_const_iterator();
+  /** Open the default rpmdb below the host system (at /).
+   * \deprecated It's preferred to explicitly tell the root directory
+   * of the system whose database you want to query.
+   */
+  db_const_iterator() ZYPP_DEPRECATED;
 
   /** Open the default rpmdb below the system at \a root_r. */
   explicit db_const_iterator( const Pathname & root_r );

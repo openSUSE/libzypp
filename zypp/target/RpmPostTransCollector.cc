@@ -165,7 +165,7 @@ namespace zypp
               _scripts = std::nullopt;
             }
 
-            rpm::librpmDb::db_const_iterator it;
+            rpm::RpmDb::db_const_iterator it { rpm_r.dbConstIterator() };
             recallFromDumpfile( _dumpfile->_dumpfile, [&]( const std::string& n_r, const std::string& v_r, const std::string& r_r, const std::string& a_r ) -> void {
               if ( it.findPackage( n_r, Edition( v_r, r_r ) ) && headerHasPosttrans( *it ) )
                 collectScriptFromHeader( *it );
@@ -240,7 +240,7 @@ namespace zypp
             str::Format fmtScriptFailedMsg { "warning: %%posttrans(%1%) scriptlet failed, exit status %2%\n" };
             str::Format fmtPosttrans { "%%posttrans(%1%)" };
 
-            rpm::librpmDb::db_const_iterator it;  // Open DB only once
+            rpm::RpmDb::db_const_iterator it { rpm_r.dbConstIterator() }; // Open DB only once
             while ( ! _scripts->empty() )
             {
               const auto &scriptPair = _scripts->front();

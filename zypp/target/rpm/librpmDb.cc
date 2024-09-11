@@ -373,7 +373,7 @@ public:
 // Former ZYPP_API used this as default ctor (dbptr_r == nullptr).
 // (dbptr_r!=nullptr) is not possible because librpmDb is not in ZYPP_API.
 librpmDb::db_const_iterator::db_const_iterator( librpmDb::constPtr dbptr_r )
-: db_const_iterator()
+: db_const_iterator( "/" )
 {}
 #endif
 

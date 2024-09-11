@@ -1454,8 +1454,6 @@ namespace zypp
       // Remove/install packages.
       ///////////////////////////////////////////////////////////////////
 
-      bool singleTransMode = policy_r.singleTransModeEnabled();
-
       DBG << "commit log file is set to: " << HistoryLog::fname() << endl;
       if ( ! policy_r.dryRun() || policy_r.downloadMode() == DownloadOnly )
       {

@@ -37,12 +37,15 @@ namespace zypp
       ///////////////////////////////////////////////////////////////////
       /// \class QueryInstalledEditionHelper
       /// \short Helper for PackageProvider queries during download.
+      /// Queries the exact version of a currently installed package
+      /// in context(/) which may then be used by \ref applydeltarpm
+      /// to build a final rpm.
       ///////////////////////////////////////////////////////////////////
       struct QueryInstalledEditionHelper
       {
         bool operator()( const std::string & name_r, const Edition & ed_r, const Arch & arch_r ) const
         {
-          rpm::librpmDb::db_const_iterator it;
+          rpm::librpmDb::db_const_iterator it( "/" );
           for ( it.findByName( name_r ); *it; ++it )
           {
             if ( arch_r == it->tag_arch()

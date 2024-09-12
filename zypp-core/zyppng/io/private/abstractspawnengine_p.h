@@ -1,6 +1,7 @@
 #ifndef ZYPPNG_IO_PRIVATE_ABSTRACTPROCESSBACKEND_H
 #define ZYPPNG_IO_PRIVATE_ABSTRACTPROCESSBACKEND_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <map>

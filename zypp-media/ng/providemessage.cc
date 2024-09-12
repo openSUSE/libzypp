@@ -509,7 +509,7 @@ namespace zyppng {
     msg.setValue ( AuthInfoMsgFields::Username, user  );
     msg.setValue ( AuthInfoMsgFields::Password, pw    );
     msg.setValue ( AuthInfoMsgFields::AuthTimestamp, timestamp );
-    for ( auto i : extraValues ) {
+    for ( const auto& i : extraValues ) {
       msg.setValue( i.first, i.second );
     }
     return msg;

@@ -82,7 +82,7 @@ namespace zypp
         lists[el.second].push_back( el.first );
 
       unsigned ret = 0;
-      for ( auto el : lists ) {
+      for ( auto& el : lists ) {
         VendorList & vlist { el.second };
         if ( vlist.empty() )
           continue;

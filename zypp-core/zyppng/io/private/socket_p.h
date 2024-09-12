@@ -27,7 +27,7 @@ namespace zyppng {
 
   class SocketPrivate : public IODevicePrivate
   {
-    ZYPP_DECLARE_PUBLIC(Socket);
+    ZYPP_DECLARE_PUBLIC(Socket)
   public:
 
     SocketPrivate( int domain, int type, int protocol, Socket &p ) : IODevicePrivate(p),

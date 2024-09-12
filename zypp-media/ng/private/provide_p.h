@@ -40,7 +40,7 @@ namespace zyppng {
   class ProvideQueue;
   class ProvidePrivate : public BasePrivate
   {
-    ZYPP_DECLARE_PUBLIC(Provide);
+    ZYPP_DECLARE_PUBLIC(Provide)
   public:
     ProvidePrivate( zypp::Pathname &&workDir, Provide &pub );
 

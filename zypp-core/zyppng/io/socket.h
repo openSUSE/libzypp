@@ -34,7 +34,7 @@ namespace zyppng {
    */
   class Socket : public IODevice
   {
-    ZYPP_DECLARE_PRIVATE(Socket);
+    ZYPP_DECLARE_PRIVATE(Socket)
   public:
 
     enum SocketError {

@@ -27,7 +27,7 @@ namespace zyppng
    */
   class ProvideItem : public Base
   {
-    ZYPP_DECLARE_PRIVATE(ProvideItem);
+    ZYPP_DECLARE_PRIVATE(ProvideItem)
     friend class Provide;
     friend class ProvidePrivate;
     friend class ProvideQueue;

@@ -31,7 +31,7 @@ namespace zyppng {
    */
   class IODevice : public Base
   {
-    ZYPP_DECLARE_PRIVATE(IODevice);
+    ZYPP_DECLARE_PRIVATE(IODevice)
   public:
 
     enum OpenModeFlag {

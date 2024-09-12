@@ -47,7 +47,7 @@ namespace zyppng {
    */
   class ZYPP_API MediaSyncFacade : public Base
   {
-    ZYPP_ADD_CREATE_FUNC(MediaSyncFacade);
+    ZYPP_ADD_CREATE_FUNC(MediaSyncFacade)
   public:
 
     friend class AttachedSyncMediaInfo;

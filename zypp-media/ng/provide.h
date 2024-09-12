@@ -110,7 +110,7 @@ namespace zyppng {
 
   class Provide : public Base
   {
-    ZYPP_DECLARE_PRIVATE(Provide);
+    ZYPP_DECLARE_PRIVATE(Provide)
     template<class T> friend class ProvidePromise;
     friend class ProvideItem;
     friend class ProvideMediaHandle;

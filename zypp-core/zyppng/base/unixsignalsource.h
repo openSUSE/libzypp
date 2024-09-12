@@ -11,7 +11,7 @@ namespace zyppng {
 
   class UnixSignalSource : public AbstractEventSource
   {
-    ZYPP_DECLARE_PRIVATE (UnixSignalSource);
+    ZYPP_DECLARE_PRIVATE(UnixSignalSource)
   public:
     ~UnixSignalSource() override;
 

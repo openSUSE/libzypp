@@ -30,7 +30,7 @@ namespace zyppng {
 
   class Process : public AsyncDataSource
   {
-    ZYPP_DECLARE_PRIVATE(Process);
+    ZYPP_DECLARE_PRIVATE(Process)
   public:
     /**
      * For passing additional environment variables to set

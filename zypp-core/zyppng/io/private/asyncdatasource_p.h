@@ -9,7 +9,7 @@
 namespace zyppng {
 
   class AsyncDataSourcePrivate : public IODevicePrivate {
-    ZYPP_DECLARE_PUBLIC(AsyncDataSource);
+    ZYPP_DECLARE_PUBLIC(AsyncDataSource)
   public:
     AsyncDataSourcePrivate ( AsyncDataSource &pub ) : IODevicePrivate(pub) {}
     struct ReadChannelDev {

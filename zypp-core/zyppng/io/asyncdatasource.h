@@ -10,7 +10,7 @@ namespace zyppng {
 
   class AsyncDataSource : public IODevice
   {
-    ZYPP_DECLARE_PRIVATE(AsyncDataSource);
+    ZYPP_DECLARE_PRIVATE(AsyncDataSource)
   public:
 
     enum ChannelCloseReason {

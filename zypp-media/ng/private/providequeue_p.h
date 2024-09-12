@@ -61,7 +61,7 @@ namespace zyppng {
     void cancel  ( ProvideRequest *item, std::exception_ptr error );
     void detach  ( const std::string &id );
     void scheduleNext ();
-    bool canScheduleMore () const;;
+    bool canScheduleMore () const;
     bool empty () const;
 
     /*!

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Sep 12 13:44:05 CEST 2024 - ma@suse.de
+
+- Deprecate librpmDb::db_const_iterator default ctor (bsc#1230267)
+  It's preferred to explicitly tell the root directory of the
+  system whose database you want to query.
+- version 17.35.11 (35)
+
+-------------------------------------------------------------------
 Fri Sep  6 11:55:42 CEST 2024 - ma@suse.de
 
 - API refactoring. Prevent zypper from using now private libzypp

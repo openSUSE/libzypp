@@ -94,7 +94,7 @@ namespace zypp
       using Transformator = TUnaryFunction;
       using size_type = typename Container::size_type;
       using RawType = typename Container::value_type;
-      using TransformedType = std::result_of_t<Transformator (RawType)>;
+      using TransformedType = std::invoke_result_t<Transformator, RawType>;
 
     public:
       ContainerTransform()

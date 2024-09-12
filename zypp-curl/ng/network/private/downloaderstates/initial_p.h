@@ -30,7 +30,7 @@ namespace zyppng {
 
     InitialState ( DownloadPrivate &parent ) : SimpleState( parent ){}
 
-    void enter ();;
+    void enter ();
     void exit ();
 
     void initiate();

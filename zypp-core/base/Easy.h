@@ -50,11 +50,6 @@
  */
 #define defConstStr(FNC,STR) inline const std::string & FNC { static const std::string val( STR ); return val; }
 
-#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100  + __GNUC_PATCHLEVEL__)
-#if GCC_VERSION < 40600 || not defined(__GXX_EXPERIMENTAL_CXX0X__)
-#define nullptr NULL
-#endif
-
 /** Delete copy ctor and copy assign */
 #define NON_COPYABLE(CLASS)			\
   CLASS( const CLASS & ) = delete;		\

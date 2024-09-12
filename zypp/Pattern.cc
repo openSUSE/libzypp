@@ -305,7 +305,7 @@ namespace zypp
       CapabilitySet caps;
       addCaps( caps, depKeeper_r, dep_r );
       sat::WhatProvides prv( caps );
-      for ( ui::Selectable::Ptr sel : prv.selectable() )
+      for ( const ui::Selectable::Ptr& sel : prv.selectable() )
       {
         const PoolItem & pi( sel->theObj() );
         if ( pi.isKind<Package>() )

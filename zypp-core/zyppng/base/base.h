@@ -101,7 +101,7 @@ namespace zyppng {
     template<typename T>
     std::vector< std::weak_ptr<T> > findChildren () const {
       std::vector< std::weak_ptr<T> > result;
-      for ( Ptr p : children() ) {
+      for ( const Ptr& p : children() ) {
         std::shared_ptr<T> casted = std::dynamic_pointer_cast<T>(p);
         if ( casted )
           result.push_back( std::weak_ptr<T>(casted) );

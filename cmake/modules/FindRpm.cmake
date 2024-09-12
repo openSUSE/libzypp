@@ -1,7 +1,4 @@
 
-cmake_policy(PUSH)
-cmake_policy(SET CMP0054 NEW) # if() quoted variables not dereferenced
-
 if(RPM_INCLUDE_DIR AND RPM_LIBRARY)
 	# Already in cache, be silent
 	set(RPM_FIND_QUIETLY TRUE)
@@ -92,5 +89,3 @@ else(RPM_INCLUDE_DIR AND RPM_LIBRARY AND RPMIO_LIBRARY)
 endif(RPM_INCLUDE_DIR AND RPM_LIBRARY AND RPMIO_LIBRARY)
 
 MARK_AS_ADVANCED(RPM_INCLUDE_DIR RPM_LIBRARY)
-
-cmake_policy(POP)

@@ -156,7 +156,6 @@ SET( LIBZYPP_SOVERSION_INFO "${LIBZYPP_SO_FIRST}" )
 
 GENERATE_PACKAGING(${PACKAGE} ${VERSION})
 
-INCLUDE(CPack)
 ####################################################################
 FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options unit_test_framework thread)
 IF (Boost_FOUND)

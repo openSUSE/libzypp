@@ -19,7 +19,7 @@ G_BEGIN_DECLS
 typedef struct _ZyppContext ZyppContext;
 typedef struct _ZyppRepoInfo ZyppRepoInfo;
 typedef struct _ZyppExpected ZyppExpected;
-typedef struct _ZyppTaskStatus ZyppTaskStatus;
+typedef struct _ZyppProgressObserver ZyppProgressObserver;
 
 typedef enum {
   ZYPP_REPO_MANAGER_UP_TO_DATE,
@@ -85,7 +85,7 @@ GList *zypp_repo_manager_get_known_services ( ZyppRepoManager *self ) LIBZYPP_GL
  *
  * Returns: (element-type ZyppExpected) (transfer full): list of results for the refreshed repos
  */
-GList *zypp_repo_manager_refresh_repos ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, ZyppTaskStatus *statusTracker ) LIBZYPP_GLIB_EXPORT;
+GList *zypp_repo_manager_refresh_repos ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, ZyppProgressObserver *statusTracker ) LIBZYPP_GLIB_EXPORT;
 
 G_END_DECLS
 

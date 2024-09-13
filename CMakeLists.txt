@@ -10,6 +10,11 @@ SET( CMAKE_MODULE_PATH
 INCLUDE(ZyppCommon)
 INCLUDE(CMakePushCheckState)
 
+# use Boost's config file
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
+
 # allow name libraries by name mixed with full
 # paths
 if(COMMAND cmake_policy)

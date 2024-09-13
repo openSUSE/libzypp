@@ -2,6 +2,8 @@
 # alternatives like the PacRunner replacement which *just* queries PacRunner
 # directly will only provide a .pc file. So use pkg-config to find it...
 
-INCLUDE ( FindPkgConfig )
+if(NOT PKG_CONFIG_FOUND)
+  include(FindPkgConfig)
+endif()
 
 PKG_CHECK_MODULES( LIBPROXY libproxy-1.0 )

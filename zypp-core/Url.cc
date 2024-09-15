@@ -390,7 +390,7 @@ namespace zypp
     {
       std::string scheme = out[1];
       if (scheme.size() > 1)
-        scheme = scheme.substr(0, scheme.size()-1);
+        scheme.pop_back();
       std::string authority = out[2];
       if (authority.size() >= 2)
         authority = authority.substr(2);

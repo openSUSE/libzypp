@@ -186,7 +186,7 @@ namespace zypp {
       auto &api = assertProxyApi ();
 
       zypp::AutoDispose<char **> proxies(
-            api.getProxies(_factory, (char *)url_r.asString(vopt).c_str())
+            api.getProxies(_factory, url_r.asString(vopt).c_str())
             , api.freeProxies
       );
       if ( !proxies.value() )

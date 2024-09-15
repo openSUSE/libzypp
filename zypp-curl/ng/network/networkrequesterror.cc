@@ -89,16 +89,13 @@ NetworkRequestError NetworkRequestErrorPrivate::fromCurlError(NetworkRequest &re
           switch ( httpReturnCode )
           {
             case 401: {
-              std::string auth_hint;
-              {
-                long auth_info = CURLAUTH_NONE;
+              long auth_info = CURLAUTH_NONE;
 
-                CURLcode infoRet =
-                  curl_easy_getinfo(req.nativeHandle(), CURLINFO_HTTPAUTH_AVAIL, &auth_info);
+              CURLcode infoRet =
+                curl_easy_getinfo(req.nativeHandle(), CURLINFO_HTTPAUTH_AVAIL, &auth_info);
 
-                if(infoRet == CURLE_OK) {
-                  extraInfo.insert( { "authHint", zypp::media::CurlAuthData::auth_type_long2str(auth_info) } );
-                }
+              if (infoRet == CURLE_OK) {
+                extraInfo.insert( { "authHint", zypp::media::CurlAuthData::auth_type_long2str(auth_info) } );
               }
 
               //if there is already a user:password entry in the settings the auth simply failed

@@ -918,8 +918,6 @@ namespace zypp
       std::string s = authority;
       std::string::size_type p = 0,q = 0;
 
-      std::string username, password, host, port;
-
       if ((p=s.find('@')) != std::string::npos)
       {
         q = s.find(':');

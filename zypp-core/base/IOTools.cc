@@ -54,7 +54,7 @@ namespace zypp::io {
 
   bool writeAll(int fd, void *buf, size_t size)
   {
-    char *tmpBuf = ( char *) buf;
+    char *tmpBuf = static_cast<char*>(buf);
 
     size_t written = 0;
     while ( written < size ) {
@@ -68,7 +68,7 @@ namespace zypp::io {
 
   ReadAllResult readAll (int fd, void *buf, size_t size )
   {
-    char *tmpBuf = (char *)buf;
+    char *tmpBuf = static_cast<char*>(buf);
     size_t read = 0;
     while ( read != size ) {
       const auto r = zyppng::eintrSafeCall( ::read, fd, tmpBuf+read, size - read );

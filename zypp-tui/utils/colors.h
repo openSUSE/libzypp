@@ -72,7 +72,7 @@ struct CCString : public ColorString
 
 template <ColorContext _ctxt>
 inline ansi::ColorStream & operator<<( ansi::ColorStream & cstr_r, const CCString<_ctxt> & cstring_r )
-{ return cstr_r << (const ColorString &)cstring_r; }
+{ return cstr_r << static_cast<const ColorString &>(cstring_r); }
 
 using DEFAULTString = CCString<ColorContext::DEFAULT>;
 

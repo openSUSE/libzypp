@@ -90,21 +90,21 @@ unsigned BinHeader::intList::set( void * val_r, unsigned cnt_r, rpmTagType type_
     {
 #if RPM_CHAR_TYPE != RPM_INT8_TYPE
       case RPM_CHAR_TYPE:
-        std::vector<long>( (char*)val_r, ((char*)val_r)+cnt_r ).swap( _data );
+        std::vector<long>( static_cast<char*>(val_r), static_cast<char*>(val_r)+cnt_r ).swap( _data );
         break;
 #endif
       case RPM_INT8_TYPE:
-        std::vector<long>( (int8_t*)val_r, ((int8_t*)val_r)+cnt_r ).swap( _data );
+        std::vector<long>( static_cast<int8_t*>(val_r), static_cast<int8_t*>(val_r)+cnt_r ).swap( _data );
         break;
       case RPM_INT16_TYPE:
-        std::vector<long>( (int16_t*)val_r, ((int16_t*)val_r)+cnt_r ).swap( _data );
+        std::vector<long>( static_cast<int16_t*>(val_r), static_cast<int16_t*>(val_r)+cnt_r ).swap( _data );
         break;
       case RPM_INT32_TYPE:
-        std::vector<long>( (int32_t*)val_r, ((int32_t*)val_r)+cnt_r ).swap( _data );
+        std::vector<long>( static_cast<int32_t*>(val_r), static_cast<int32_t*>(val_r)+cnt_r ).swap( _data );
         break;
 #ifndef _RPM_5
       case RPM_INT64_TYPE:
-        std::vector<long>( (int64_t*)val_r, ((int64_t*)val_r)+cnt_r ).swap( _data );
+        std::vector<long>( static_cast<int64_t*>(val_r), static_cast<int64_t*>(val_r)+cnt_r ).swap( _data );
         break;
 #endif
       default:
@@ -312,17 +312,17 @@ int BinHeader::int_val( tag tag_r ) const
           return 0;
 #if RPM_CHAR_TYPE != RPM_INT8_TYPE
         case RPM_CHAR_TYPE:
-          return *((char*)headerget.val());
+          return *(static_cast<char*>(headerget.val()));
 #endif
         case RPM_INT8_TYPE:
-          return *((int8_t*)headerget.val());
+          return *(static_cast<int8_t*>(headerget.val()));
         case RPM_INT16_TYPE:
-          return *((int16_t*)headerget.val());
+          return *(static_cast<int16_t*>(headerget.val()));
         case RPM_INT32_TYPE:
-          return *((int32_t*)headerget.val());
+          return *(static_cast<int32_t*>(headerget.val()));
 #ifndef _RPM_5
         case RPM_INT64_TYPE:
-          return *((int64_t*)headerget.val());
+          return *(static_cast<int64_t*>(headerget.val()));
 #endif
 
         default:
@@ -428,5 +428,5 @@ std::list<std::string> BinHeader::stringList_val( tag tag_r ) const
 std::ostream & BinHeader::dumpOn( std::ostream & str ) const
 {
   ReferenceCounted::dumpOn( str );
-  return str << '{' << (void*)_h << '}';
+  return str << '{' << static_cast<void*>(_h) << '}';
 }

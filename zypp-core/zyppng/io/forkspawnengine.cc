@@ -549,7 +549,7 @@ bool zyppng::GlibSpawnEngine::start( const char * const *argv, int stdin_fd, int
   g_autoptr(GError) error = NULL;
   g_spawn_async_with_fds(
         chdirTo,
-        (gchar **)argv,
+        const_cast<gchar**>(argv),
         envPtrs.data(),
         spawnFlags,
         needCallback ? &GlibSpawnEngine::glibSpawnCallback : nullptr,

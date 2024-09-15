@@ -141,7 +141,7 @@ namespace std
   inline std::ostream & operator<<( std::ostream & str, const zypp::shared_ptr<void> & obj )
   {
     if ( obj )
-      return str << zypp::str::form( "%p", (void*)obj.get() );
+      return str << zypp::str::form( "%p", static_cast<void*>(obj.get()) );
     return str << std::string("NULL");
   }
 

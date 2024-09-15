@@ -41,7 +41,7 @@ namespace zypp
             return reinterpret_cast<InputStream *>(context_r)
                    ->stream().read( buffer_r, bufferLen_r ).gcount();
           }
-        INT << "XML parser error: null pointer check failed " << context_r << ' ' << (void *)buffer_r << endl;
+        INT << "XML parser error: null pointer check failed " << context_r << ' ' << static_cast<void *>(buffer_r) << endl;
         return -1;
       }
 

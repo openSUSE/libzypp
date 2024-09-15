@@ -82,7 +82,7 @@ int log_curl( CURL * curl, curl_infotype info, char * ptr, size_t len, void * ma
   if ( max_lvl == nullptr )
     return 0;
 
-  long maxlvl = *((long *)max_lvl);
+  long maxlvl = *(static_cast<long*>(max_lvl));
   const char * pfx = "";
   bool isContent = true;  // otherwise it's data
   switch( info )

@@ -415,7 +415,6 @@ static size_t
 fetchnext(FILE *fp, unsigned char *bp, size_t blksize, size_t pushback, unsigned char *pushbackp)
 {
   size_t l = blksize;
-  int c = 0;
 
   if (pushback)
     {
@@ -426,7 +425,7 @@ fetchnext(FILE *fp, unsigned char *bp, size_t blksize, size_t pushback, unsigned
     }
   while (l)
     {
-      c = getc(fp);
+      int c = getc(fp);
       if (c == EOF)
         break;
       *bp++ = c;

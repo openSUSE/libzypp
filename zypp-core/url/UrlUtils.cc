@@ -131,16 +131,15 @@ namespace zypp
     std::string
     encode_octet(const unsigned char c)
     {
-      static const unsigned char tab[] = "0123456789ABCDEF";
-      unsigned char      out[4];
+      static const char tab[] = "0123456789ABCDEF";
+      char out[4];
 
       out[0] = '%';
       out[1] = tab[0x0f & (c >> 4)];
       out[2] = tab[0x0f & c];
       out[3] = '\0';
 
-      //snprintf(out, sizeof(out), "%%%02X", c);
-      return std::string((char *)out);
+      return std::string(out);
     }
 
 

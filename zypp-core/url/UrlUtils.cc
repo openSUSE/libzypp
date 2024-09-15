@@ -36,7 +36,7 @@ namespace zypp
                        "abcdefghijklmnopqrstuvwxyz"
                        "0123456789.~_-");
       static const std::string more(URL_SAFE_CHARS);	// ":/?#[]@!$&'()*+,;="
-      size_t      beg = 0, pos = 0, len = 0;
+      size_t      beg = 0, len = 0;
       std::string out;
 
       for(size_t i=0; i<safe.size(); i++)
@@ -49,7 +49,7 @@ namespace zypp
       beg = 0;
       while( beg < len)
       {
-        pos = str.find_first_not_of(skip, beg);
+        size_t pos = str.find_first_not_of(skip, beg);
         if(pos != std::string::npos)
         {
           if( pos > beg)
@@ -165,7 +165,7 @@ namespace zypp
           const std::string &pstr,
                 const std::string &psep)
     {
-      size_t beg = 0, pos = 0, len = 0;
+      size_t beg = 0, len = 0;
       if( psep.empty())
       {
         ZYPP_THROW(UrlNotSupportedException(
@@ -178,7 +178,7 @@ namespace zypp
 
       while( beg < len)
       {
-        pos = pstr.find(psep, beg);
+        size_t pos = pstr.find(psep, beg);
         if(pos != std::string::npos)
         {
           pvec.push_back( pstr.substr(beg, pos - beg));
@@ -204,7 +204,6 @@ namespace zypp
       ParamVec                 pvec;
       ParamVec::const_iterator pitr;
       std::string              k, v;
-      size_t                   pos = 0;
 
       if( psep.empty() || vsep.empty())
       {
@@ -217,7 +216,7 @@ namespace zypp
 
       for( pitr = pvec.begin(); pitr != pvec.end(); ++pitr)
       {
-        pos = pitr->find(vsep);
+        size_t pos = pitr->find(vsep);
         if(pos != std::string::npos)
         {
           if( eflag == E_DECODED)

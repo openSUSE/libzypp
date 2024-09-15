@@ -579,12 +579,12 @@ void zyppng::GlibSpawnEngine::glibSpawnCallback(void *data)
   d->that->resetSignals();
   bool doChroot = !d->that->_chroot.empty();
 
-  std::string execError;
-
   if ( d->that->_switchPgid )
     setpgid( 0, 0);
 
   if ( doChroot ) {
+    std::string execError;
+
     if ( ::chroot( d->that->_chroot.c_str() ) == -1 ) {
       execError = zypp::str::form( "Can't chroot to '%s' (%s).", d->that->_chroot.c_str(), strerror(errno).c_str() );
       std::cerr << execError << std::endl;// After fork log on stderr too

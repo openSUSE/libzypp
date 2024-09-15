@@ -111,11 +111,10 @@ namespace zypp
     {
       str::Str ret;
       ret << "cpe:/";
-      std::string val;
       unsigned colon = 0;	// to remember trailing colons
       for ( auto ai : WFN_ATTRIBUTES )
       {
-        val = _wfn[ai].asUri();
+        std::string val = _wfn[ai].asUri();
 
         if ( ai == Attribute::edition )
         {

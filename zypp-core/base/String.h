@@ -851,11 +851,11 @@ namespace zypp
           else
             maxWitdh_r -= indent_r.size();
         }
-        unsigned width = 0;
+
         for ( const char * e = text_r.c_str(), * s = e; *e; s = ++e )
         {
           for ( ; *e && *e != '\n'; ++e ) ;/*searching*/
-          width = e-s;
+          unsigned width = e-s;
           if ( maxWitdh_r && width > maxWitdh_r )
           {
             // must break line

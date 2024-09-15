@@ -495,7 +495,7 @@ namespace zypp
   }
   /** \overload */
   inline std::ostream & hexdumpOn( std::ostream & outs, const char *ptr, size_t size )
-  { return hexdumpOn( outs, (const unsigned char *)ptr, size ); }
+  { return hexdumpOn( outs, reinterpret_cast<const unsigned char*>(ptr), size ); }
 
   /*!
    * Write type info to stream

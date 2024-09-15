@@ -534,7 +534,7 @@ void EventDispatcher::trackChildProcess( int pid, std::function<void (int, int)>
   GlibWaitPIDData data ( pid );
   data.callback = std::move(callback);
 
-  g_source_set_callback ( data.source, (GSourceFunc) &EventDispatcherPrivate::waitPidCallback , d_ptr.get(), nullptr );
+  g_source_set_callback ( data.source, reinterpret_cast<GSourceFunc>(&EventDispatcherPrivate::waitPidCallback), d_ptr.get(), nullptr );
   data.tag = g_source_attach ( data.source, d->_ctx );
   d->_waitPIDs.insert( std::make_pair( pid, std::move(data) ) );
 }

@@ -335,7 +335,7 @@ MediaBlockList::checkRsum(size_t blkno, const unsigned char *buf, size_t bufl) c
 {
   if (blkno >= blocks.size() || bufl < blocks[blkno].size)
     return false;
-  unsigned int rs = updateRsum(0, (const char *)buf, blocks[blkno].size);
+  unsigned int rs = updateRsum(0, reinterpret_cast<const char*>(buf), blocks[blkno].size);
   return verifyRsum(blkno, rs);
 }
 
@@ -347,7 +347,7 @@ MediaBlockList::checkChecksum(size_t blkno, const unsigned char *buf, size_t buf
   Digest dig;
   if (!createDigest(dig))
     return false;
-  dig.update((const char *)buf, blocks[blkno].size);
+  dig.update(reinterpret_cast<const char*>(buf), blocks[blkno].size);
   return verifyDigest(blkno, dig);
 }
 
@@ -384,9 +384,9 @@ MediaBlockList::checkChecksumRotated(size_t blkno, const unsigned char *buf, siz
     return false;
   size_t size = blocks[blkno].size;
   size_t len = bufl - start > size ? size : bufl - start;
-  dig.update((const char *)buf + start, len);
+  dig.update(reinterpret_cast<const char*>(buf) + start, len);
   if (size > len)
-    dig.update((const char *)buf, size - len);
+    dig.update(reinterpret_cast<const char*>(buf), size - len);
   return verifyDigest(blkno, dig);
 }
 

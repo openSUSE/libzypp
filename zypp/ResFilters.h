@@ -166,20 +166,13 @@ namespace zypp
     };
 
     /** Select ResObject by repository or repository alias. */
-    struct ByRepository
+    struct ZYPP_API ByRepository
     {
-      ByRepository( Repository repository_r )
-      : _alias( repository_r.info().alias() )
-      {}
+      ByRepository(Repository repository_r);
 
-      ByRepository( std::string  alias_r )
-      : _alias(std::move( alias_r ))
-      {}
+      ByRepository(std::string alias_r);
 
-      bool operator()( const ResObject::constPtr& p ) const
-      {
-        return p->repoInfo().alias() == _alias;
-      }
+      bool operator()(const ResObject::constPtr &p) const;
 
       std::string _alias;
     };

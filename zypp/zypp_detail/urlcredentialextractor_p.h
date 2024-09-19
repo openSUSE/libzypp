@@ -14,7 +14,9 @@
 #define ZYPP_ZYPP_DETAIL_URLCREDENTIALEXTRACTOR_P_H
 
 #include <zypp-core/Url.h>
-#include <zypp/media/CredentialManager.h>
+
+#include <zypp/ng/context.h>
+#include <zypp-media/ng/auth/credentialmanager.h>
 
 namespace zypp
 {
@@ -42,12 +44,8 @@ namespace zypp
   class UrlCredentialExtractor
   {
   public:
-    UrlCredentialExtractor( const Pathname & root_r )
-      : _root( root_r )
-    {}
-
-    UrlCredentialExtractor( Pathname & root_r )
-      : _root( root_r )
+    UrlCredentialExtractor( zyppng::ContextBaseRef ctx )
+      : _ctx( std::move(ctx) )
     {}
 
     ~UrlCredentialExtractor()
@@ -59,7 +57,7 @@ namespace zypp
       bool ret = url_r.hasCredentialsInAuthority();
       if ( ret )
       {
-        if ( !_cmPtr ) _cmPtr.reset( new media::CredentialManager( _root ) );
+        if ( !_cmPtr ) _cmPtr = zyppng::media::CredentialManager::create( media::CredManagerSettings(_ctx) );
         _cmPtr->addUserCred( url_r );
       }
       return ret;
@@ -83,8 +81,8 @@ namespace zypp
     {	bool ret = false; for ( Url & url : urls_r ) { if ( extract( url ) && !ret ) ret = true; } return ret; }
 
   private:
-    const Pathname & _root;
-    scoped_ptr<media::CredentialManager> _cmPtr;
+    zyppng::ContextBaseRef _ctx;
+    zyppng::media::CredentialManagerRef _cmPtr;
   };
 }
 

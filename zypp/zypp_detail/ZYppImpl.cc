@@ -123,6 +123,7 @@ namespace zypp
 
     static bool zyppLegacyShutdownStarted = false; // set to true if the GlobalStateHelper was destructed
 
+    // if this logic is changed, also update the one in MediaConfig
     zypp::Pathname autodetectZyppConfPath() {
       const char *env_confpath = getenv("ZYPP_CONF");
       return env_confpath ? env_confpath

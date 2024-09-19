@@ -13,6 +13,7 @@
 
 #include <iosfwd>
 
+#include <zypp/Globals.h>
 #include <zypp/sat/Solvable.h>
 #include <zypp/Repository.h>
 #include <zypp-core/OnMediaLocation>
@@ -20,6 +21,10 @@
 #include <zypp/CheckSum.h>
 #include <zypp/CpeId.h>
 #include <zypp/Date.h>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -73,7 +78,14 @@ namespace zypp
       IdString		vendor() const				{ return satSolvable().vendor(); }
 
       Repository	repository() const			{ return satSolvable().repository(); }
-      RepoInfo		repoInfo() const			{ return satSolvable().repoInfo(); }
+
+      ZYPP_BEGIN_LEGACY_API
+      RepoInfo		repoInfo() const ZYPP_INTERNAL_DEPRECATE { return satSolvable().repoInfo(); }
+      ZYPP_END_LEGACY_API
+
+#ifdef __cpp_lib_optional
+      const std::optional<zyppng::RepoInfo> &ngRepoInfo() const { return satSolvable().ngRepoInfo(); }
+#endif
 
       bool		isSystem() const			{ return satSolvable().isSystem(); }
       bool		onSystemByUser() const			{ return satSolvable().onSystemByUser(); }

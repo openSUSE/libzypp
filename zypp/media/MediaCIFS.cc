@@ -19,7 +19,7 @@
 #include <zypp-core/KVMap>
 #include <zypp-media/Mount>
 #include <zypp-media/auth/AuthData>
-#include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/auth/credentialmanager.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp/ZConfig.h>
 
@@ -27,8 +27,9 @@
 
 #include <sys/types.h>
 #include <sys/mount.h>
-#include <errno.h>
 #include <dirent.h>
+
+#include <zypp/ng/context.h>
 
 using std::endl;
 
@@ -98,9 +99,9 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaCIFS::MediaCIFS( const Url &      url_r,
-                        const Pathname & attach_point_hint_r )
-        : MediaHandler( url_r, attach_point_hint_r,
+    MediaCIFS::MediaCIFS(zyppng::ContextBaseRef ctx, const Url &      url_r,
+                         const Pathname & attach_point_hint_r )
+        : MediaHandler( std::move(ctx), url_r, attach_point_hint_r,
                     stripShare( url_r.getPathName() ), // urlpath WITHOUT share name at attachpoint
                     false )       // does_download
     {
@@ -162,7 +163,7 @@ namespace zypp {
       std::string mountpoint( attachPoint().asString() );
 
       Mount mount;
-      CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+      auto cm = zyppng::media::CredentialManager::create( CredManagerSettings(_zyppContext) );
 
       Mount::Options options( _url.getQueryParam("mountoptions") );
       std::string username = _url.getUsername();
@@ -214,7 +215,7 @@ namespace zypp {
 
       if ( username.empty() || password.empty() )
       {
-        AuthData_Ptr c = cm.getCred(_url);
+        AuthData_Ptr c = cm->getCred(_url);
         if (c)
         {
           username = c->username();
@@ -403,10 +404,10 @@ namespace zypp {
     bool MediaCIFS::authenticate(AuthData & authdata, bool firstTry) const
     {
       //! \todo need a way to pass different CredManagerOptions here
-      CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+      auto cm = zyppng::media::CredentialManager::create( CredManagerSettings(_zyppContext) );
 
       // get stored credentials
-      AuthData_Ptr cmcred = cm.getCred(_url);
+      AuthData_Ptr cmcred = cm->getCred(_url);
 
       AuthData_Ptr smbcred;
       smbcred.reset(new AuthData());
@@ -457,8 +458,8 @@ namespace zypp {
 
         // save the credentials
         cmcred->setUrl(_url);
-        cm.addCred(*cmcred);
-        cm.save();
+        cm->addCred(*cmcred);
+        cm->save();
 
         return true;
       }

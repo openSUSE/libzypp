@@ -19,6 +19,7 @@
 #include <zypp/RepoStatus.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/PathInfo.h>
+#include <zypp/ng/repoinfo.h>
 
 using std::endl;
 
@@ -192,11 +193,17 @@ namespace zypp
     }
   }
 
-  RepoStatus::RepoStatus( const RepoInfo & info_r )
+  ZYPP_BEGIN_LEGACY_API
+  RepoStatus::RepoStatus( const RepoInfo & info_r ) : RepoStatus( info_r.ngRepoInfo() )
+  { }
+  ZYPP_END_LEGACY_API
+
+  RepoStatus::RepoStatus( const zyppng::RepoInfo & info_r )
   : _pimpl( new Impl() )
   {
     _pimpl->assignFromCtor( CheckSum::sha1FromString( info_r.url().asString() ).checksum(), Date() );
   }
+
 
   RepoStatus::RepoStatus( std::string checksum_r, Date timestamp_r )
   : _pimpl( new Impl() )

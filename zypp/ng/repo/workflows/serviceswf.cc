@@ -16,8 +16,8 @@
 #include <zypp-core/zyppng/pipelines/Await>
 #include <zypp-core/zyppng/io/Process>
 #include <zypp-media/ng/providespec.h>
-#include <zypp/parser/RepoindexFileReader.h>
-#include <zypp/parser/RepoFileReader.h>
+#include <zypp/ng/parser/repoindexfilereader.h>
+#include <zypp/ng/parser/RepoFileReader.h>
 #include <zypp/repo/RepoException.h>
 #include <zypp/Target.h>
 #include <zypp/zypp_detail/urlcredentialextractor_p.h>
@@ -66,7 +66,7 @@ namespace zyppng::RepoServicesWorkflow {
         {}
 
 
-        MaybeAsyncRef<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >> execute() {
+        MaybeAsyncRef<expected< std::pair<ServiceInfo, RepoInfoList> >> execute() {
 
           using namespace zyppng::operators;
 
@@ -76,15 +76,15 @@ namespace zyppng::RepoServicesWorkflow {
             serviceUrl.setQueryParam( "cookies", "0" );
             return adaptServiceUrlToChroot( serviceUrl, _root_r );
           })
-          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec() ); })
+          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec( _ctx ) ); })
           | and_then( [this]( auto mediaHandle )    { return _ctx->provider()->provide( mediaHandle, "repo/repoindex.xml", ProvideFileSpec() ); } )
           | and_then( [this]( auto provideResult )  {
             try {
 
-              zypp::RepoInfoList repos;
-              auto callback = [&]( const zypp::RepoInfo &r) { repos.push_back(r); return true; };
+              RepoInfoList repos;
+              auto callback = [&]( const RepoInfo &r) { repos.push_back(r); return true; };
 
-              zypp::parser::RepoindexFileReader reader( provideResult.file(), callback);
+              parser::RepoIndexFileReader reader( _ctx, provideResult.file(), callback);
               _service.setProbedTtl( reader.ttl() );	// hack! Modifying the const Service to set parsed TTL
 
               return make_expected_success( std::make_pair( _service, std::move(repos) ) );
@@ -95,7 +95,7 @@ namespace zyppng::RepoServicesWorkflow {
               ZYPP_CAUGHT ( e );
               zypp::repo::ServicePluginInformalException ex ( e.msg() );
               ex.remember( e );
-              return expected<std::pair<zypp::ServiceInfo, RepoInfoList>>::error( ZYPP_EXCPT_PTR( ex ) );
+              return expected<std::pair<ServiceInfo, RepoInfoList>>::error( ZYPP_EXCPT_PTR( ex ) );
             }
           });
         }
@@ -118,7 +118,7 @@ namespace zyppng::RepoServicesWorkflow {
         using ZyppContextType    = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContext, SyncContext >;
         using ZyppContextRefType = Ref<ZyppContextType>;
         using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
-        using Ret = expected<std::pair<zypp::ServiceInfo, RepoInfoList>>;
+        using Ret = expected<std::pair<ServiceInfo, RepoInfoList>>;
 
         FetchPluginServiceLogic( ZyppContextRefType &&ctx, zypp::Pathname &&root_r, ServiceInfo &&service, ProgressObserverRef &&myProgress )
           : _ctx( std::move(ctx) )
@@ -147,11 +147,11 @@ namespace zyppng::RepoServicesWorkflow {
             }
 
             try {
-              zypp::RepoInfoList repos;
-              auto callback = [&]( const zypp::RepoInfo &r) { repos.push_back(r); return true; };
+              RepoInfoList repos;
+              auto callback = [&]( const RepoInfo &r) { repos.push_back(r); return true; };
 
               std::stringstream buffer( _stdoutBuf );
-              zypp::parser::RepoFileReader parser( buffer, callback );
+              parser::RepoFileReader parser( _ctx, buffer, callback );
               return make_expected_success( std::make_pair( _service, std::move(repos) ) );
 
             } catch (...) {
@@ -170,7 +170,7 @@ namespace zyppng::RepoServicesWorkflow {
     };
 
 
-    struct SyncFetchPluginService : FetchPluginServiceLogic<SyncFetchPluginService, SyncOp< expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>
+    struct SyncFetchPluginService : FetchPluginServiceLogic<SyncFetchPluginService, SyncOp< expected< std::pair<ServiceInfo, RepoInfoList> >>>
     {
       using FetchPluginServiceLogic::FetchPluginServiceLogic;
       expected<int> runPlugin( std::string command ) {
@@ -200,7 +200,7 @@ namespace zyppng::RepoServicesWorkflow {
       }
     };
 
-    struct ASyncFetchPluginService : FetchPluginServiceLogic<ASyncFetchPluginService, AsyncOp< expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>
+    struct ASyncFetchPluginService : FetchPluginServiceLogic<ASyncFetchPluginService, AsyncOp< expected< std::pair<ServiceInfo, RepoInfoList> >>>
     {
       using FetchPluginServiceLogic::FetchPluginServiceLogic;
       AsyncOpRef<expected<int>> runPlugin( std::string command ) {
@@ -244,20 +244,20 @@ namespace zyppng::RepoServicesWorkflow {
 
   }
 
-  AsyncOpRef<expected<std::pair<zypp::ServiceInfo, RepoInfoList>>> fetchRepoListfromService( AsyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
+  AsyncOpRef<expected<std::pair<ServiceInfo, RepoInfoList>>> fetchRepoListfromService( AsyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
   {
     if ( service.type() == zypp::repo::ServiceType::PLUGIN )
       return ASyncFetchPluginService::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
     else
-      return SimpleExecutor<FetchRIMServiceLogic, AsyncOp<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
+      return SimpleExecutor<FetchRIMServiceLogic, AsyncOp<expected< std::pair<ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
   }
 
-  expected<std::pair<zypp::ServiceInfo, RepoInfoList>> fetchRepoListfromService( SyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
+  expected<std::pair<ServiceInfo, RepoInfoList>> fetchRepoListfromService( SyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
   {
     if ( service.type() == zypp::repo::ServiceType::PLUGIN )
       return SyncFetchPluginService::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
     else
-      return SimpleExecutor<FetchRIMServiceLogic, SyncOp<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
+      return SimpleExecutor<FetchRIMServiceLogic, SyncOp<expected< std::pair<ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
   }
 
 
@@ -270,7 +270,7 @@ namespace zyppng::RepoServicesWorkflow {
       using MediaHandle = std::conditional_t<isAsync, ProvideMediaHandle, SyncMediaHandle>;
       using ProvideRes  = std::conditional_t<isAsync, zyppng::ProvideRes, SyncProvideRes>;
 
-      return ctx->provider()->attachMedia( url, ProvideMediaSpec() )
+      return ctx->provider()->attachMedia( url, ProvideMediaSpec( ctx ) )
       | and_then( [ctx]( MediaHandle medium ) { return ctx->provider()->provide( medium, "/repo/repoindex.xml", ProvideFileSpec().setCheckExistsOnly()); } )
       | [url]( expected<ProvideRes> result ) {
         if ( result )
@@ -329,7 +329,7 @@ namespace zyppng::RepoServicesWorkflow {
       using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
       using Ret = expected<void>;
 
-      RefreshServiceLogic( RepoMgrRefType &&repoMgr, zypp::ServiceInfo &&info, zypp::RepoManagerFlags::RefreshServiceOptions options )
+      RefreshServiceLogic( RepoMgrRefType &&repoMgr, ServiceInfo &&info, zypp::RepoManagerFlags::RefreshServiceOptions options )
         : _repoMgr( std::move(repoMgr) )
         , _service( std::move(info) )
         , _options(options)
@@ -393,7 +393,7 @@ namespace zyppng::RepoServicesWorkflow {
           // to ServiceRepos.
           return fetchRepoListfromService( _repoMgr->zyppContext(), _repoMgr->options().rootDir, _service, nullptr );
           } )
-        | [this]( expected<std::pair<zypp::ServiceInfo, RepoInfoList>> serviceReposExp ) {
+        | [this]( expected<std::pair<ServiceInfo, RepoInfoList>> serviceReposExp ) {
 
           if ( !serviceReposExp ) {
             try {
@@ -408,7 +408,7 @@ namespace zyppng::RepoServicesWorkflow {
             }
           }
 
-          std::pair<zypp::ServiceInfo, RepoInfoList> serviceRepos = serviceReposExp.is_valid() ? std::move( serviceReposExp.get() ) : std::make_pair(  _service, RepoInfoList{} );
+          std::pair<ServiceInfo, RepoInfoList> serviceRepos = serviceReposExp.is_valid() ? std::move( serviceReposExp.get() ) : std::make_pair(  _service, RepoInfoList{} );
 
           // get target distro identifier
           std::string servicesTargetDistro = _repoMgr->options().servicesTargetDistro;
@@ -515,7 +515,7 @@ namespace zyppng::RepoServicesWorkflow {
 
           ////////////////////////////////////////////////////////////////////////////
           // create missing repositories and modify existing ones if needed...
-          zypp::UrlCredentialExtractor urlCredentialExtractor( _repoMgr->options().rootDir );	// To collect any credentials stored in repo URLs
+          zypp::UrlCredentialExtractor urlCredentialExtractor( _repoMgr->zyppContext() );	// To collect any credentials stored in repo URLs
           for_( it, collector.repos.begin(), collector.repos.end() )
           {
             // User explicitly requested the repo being enabled?
@@ -724,7 +724,7 @@ namespace zyppng::RepoServicesWorkflow {
 
 
       RepoMgrRefType    _repoMgr;
-      zypp::ServiceInfo _service;
+      ServiceInfo _service;
       zypp::RepoManagerFlags::RefreshServiceOptions _options;
 
       // NOTE: It might be necessary to modify and rewrite the service info.

@@ -12,7 +12,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
@@ -24,9 +23,9 @@
 #include <zypp/media/MediaManager.h>
 #include <utility>
 #include <zypp-media/Mount>
-#include <limits.h>
 #include <stdlib.h>
-#include <errno.h>
+
+#include <zypp/ng/context.h>
 
 using std::endl;
 
@@ -52,10 +51,11 @@ namespace zypp {
 //
 //	DESCRIPTION :
 //
-MediaHandler::MediaHandler ( Url       url_r,
-                             const Pathname & attach_point_r,
-                             Pathname  urlpath_below_attachpoint_r,
-                             const bool       does_download_r )
+  MediaHandler::MediaHandler (zyppng::ContextBaseRef ctx,
+                              Url       url_r,
+                              const Pathname & attach_point_r,
+                              Pathname  urlpath_below_attachpoint_r,
+                              const bool       does_download_r )
     : _mediaSource()
     , _attachPoint( new AttachPoint())
     , _attachPointHint()
@@ -64,6 +64,7 @@ MediaHandler::MediaHandler ( Url       url_r,
     , _attach_mtime(0)
     , _url(std::move( url_r ))
     , _parentId(0)
+    , _zyppContext( std::move(ctx) )
 {
   Pathname real_attach_point( getRealPath(attach_point_r.asString()));
 
@@ -321,7 +322,7 @@ MediaHandler::createAttachPoint() const
 
   if ( apoint.empty() )				// fallback to config value
   {
-    aroot = ZConfig::instance().download_mediaMountdir();
+    aroot = ZConfig::systemConfig().download_mediaMountdir();
     if ( ! aroot.empty() )
       apoint = createAttachPoint( aroot );
   }

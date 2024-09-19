@@ -6,24 +6,25 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/repo/RepoFileReader.cc
+/** \file	zypp/ng/repo/RepoFileReader.cc
  *
 */
+
+#include "RepoFileReader.h"
 #include <iostream>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/String.h>
 #include <zypp/base/StringV.h>
+#include <zypp/ng/repoinfo.h>
 #include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/UserRequestException>
-
 #include <zypp-core/parser/IniDict>
-#include <zypp/parser/RepoFileReader.h>
 
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 {
   ///////////////////////////////////////////////////////////////////
   namespace parser
@@ -35,10 +36,10 @@ namespace zypp
       /// \class RepoFileParser
       /// \brief Modified \ref IniDict to allow parsing multiple 'baseurl=' entries
       ///////////////////////////////////////////////////////////////////
-      class RepoFileParser : public IniDict
+      class RepoFileParser : public zypp::parser::IniDict
       {
       public:
-        RepoFileParser( const InputStream & is_r )
+        RepoFileParser( const zypp::InputStream & is_r )
         { read( is_r ); }
 
         using IniDict::consume;	// don't hide overloads we don't redefine here
@@ -93,40 +94,40 @@ namespace zypp
               break;
 
             case MultiLine::none:
-              IniDict::garbageLine( section_r, line_r );	// throw
+              zypp::parser::IniDict::garbageLine( section_r, line_r );	// throw
               break;
           }
         }
 
-        std::list<Url> & baseurls( const std::string & section_r )
+        std::list<zypp::Url> & baseurls( const std::string & section_r )
         { return _baseurls[section_r]; }
 
-        std::list<Url> & gpgkeys( const std::string & section_r )
+        std::list<zypp::Url> & gpgkeys( const std::string & section_r )
         { return _gpgkeys[section_r]; }
 
-        std::list<Url> & mirrorlist( const std::string & section_r )
+        std::list<zypp::Url> & mirrorlist( const std::string & section_r )
         { return _mirrorlist[section_r]; }
 
-        std::list<Url> & metalink( const std::string & section_r )
+        std::list<zypp::Url> & metalink( const std::string & section_r )
         { return _metalink[section_r]; }
 
       private:
-        void storeUrl( std::list<Url> & store_r, const std::string & line_r )
+        void storeUrl( std::list<zypp::Url> & store_r, const std::string & line_r )
         {
           // #285: Fedora/dnf allows WS separated urls (and an optional comma)
-          strv::splitRx( line_r, "[,[:blank:]]*[[:blank:]][,[:blank:]]*", [&store_r]( std::string_view w ) {
+          zypp::strv::splitRx( line_r, "[,[:blank:]]*[[:blank:]][,[:blank:]]*", [&store_r]( std::string_view w ) {
             if ( ! w.empty() )
-              store_r.push_back( Url(std::string(w)) );
+              store_r.push_back( zypp::Url(std::string(w)) );
           });
         }
 
         enum class MultiLine { none, baseurl, gpgkey, mirrorlist, metalink };
         MultiLine _inMultiline = MultiLine::none;
 
-        std::map<std::string,std::list<Url>> _baseurls;
-        std::map<std::string,std::list<Url>> _gpgkeys;
-        std::map<std::string,std::list<Url>> _mirrorlist;
-        std::map<std::string,std::list<Url>> _metalink;
+        std::map<std::string,std::list<zypp::Url>> _baseurls;
+        std::map<std::string,std::list<zypp::Url>> _gpgkeys;
+        std::map<std::string,std::list<zypp::Url>> _mirrorlist;
+        std::map<std::string,std::list<zypp::Url>> _metalink;
       };
 
     } //namespace
@@ -136,14 +137,15 @@ namespace zypp
    * \short List of RepoInfo's from a file.
    * \param file pathname of the file to read.
    */
-    static void repositories_in_stream( const InputStream &is,
+    static void repositories_in_stream( ContextBaseRef ctx,
+                                        const zypp::InputStream &is,
                                         const RepoFileReader::ProcessRepo &callback,
-                                        const ProgressData::ReceiverFnc &progress )
+                                        const zypp::ProgressData::ReceiverFnc &progress )
     try {
       RepoFileParser dict(is);
       for_( its, dict.sectionsBegin(), dict.sectionsEnd() )
       {
-        RepoInfo info(nullptr); // context is initialized by caller
+        RepoInfo info(ctx);
         info.setAlias(*its);
         std::string proxy;
         std::string proxyport;
@@ -154,23 +156,23 @@ namespace zypp
           if (it->first == "name" )
             info.setName(it-> second);
           else if ( it->first == "enabled" )
-            info.setEnabled( str::strToTrue( it->second ) );
+            info.setEnabled( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "priority" )
-            info.setPriority( str::strtonum<unsigned>( it->second ) );
+            info.setPriority( zypp::str::strtonum<unsigned>( it->second ) );
           else if ( it->first == "path" )
-            info.setPath( Pathname(it->second) );
+            info.setPath( zypp::Pathname(it->second) );
           else if ( it->first == "type" )
             ; // bsc#1177427 et.al.: type in a .repo file is legacy - ignore it and let RepoManager probe
           else if ( it->first == "autorefresh" )
-            info.setAutorefresh( str::strToTrue( it->second ) );
+            info.setAutorefresh( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "gpgcheck" )
-            info.setGpgCheck( str::strToTriBool( it->second ) );
+            info.setGpgCheck( zypp::str::strToTriBool( it->second ) );
           else if ( it->first == "repo_gpgcheck" )
-            info.setRepoGpgCheck( str::strToTrue( it->second ) );
+            info.setRepoGpgCheck( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "pkg_gpgcheck" )
-            info.setPkgGpgCheck( str::strToTrue( it->second ) );
+            info.setPkgGpgCheck( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "keeppackages" )
-            info.setKeepPackages( str::strToTrue( it->second ) );
+            info.setKeepPackages( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "service" )
             info.setService( it->second );
           else if ( it->first == "proxy" )
@@ -178,9 +180,9 @@ namespace zypp
             // Translate it into baseurl queryparams
             // NOTE: The hack here does not add proxy to mirrorlist urls but the
             //       original code worked without complains, so keep it for now.
-            static const str::regex ex( ":[0-9]+$" );	// portspec
-            str::smatch what;
-            if ( str::regex_match( it->second, what, ex ) )
+            static const zypp::str::regex ex( ":[0-9]+$" );	// portspec
+            zypp::str::smatch what;
+            if ( zypp::str::regex_match( it->second, what, ex ) )
             {
               proxy = it->second.substr( 0, it->second.size() - what[0].size() );
               proxyport = what[0].substr( 1 );
@@ -222,7 +224,7 @@ namespace zypp
         //  ZYPP_THROW(AbortRequestException());
       }
     }
-    catch ( Exception & ex ) {
+    catch ( zypp::Exception & ex ) {
       ex.addHistory( "Parsing .repo file "+is.name() );
       ZYPP_RETHROW( ex );
     }
@@ -233,20 +235,24 @@ namespace zypp
     //
     ///////////////////////////////////////////////////////////////////
 
-    RepoFileReader::RepoFileReader( const Pathname & repo_file,
+    RepoFileReader::RepoFileReader( ContextBaseRef context,
+                                    const zypp::Pathname & repo_file,
                                     ProcessRepo  callback,
-                                    const ProgressData::ReceiverFnc &progress )
-      : _callback(std::move(callback))
+                                    const zypp::ProgressData::ReceiverFnc &progress )
+      : _context( std::move(context) )
+      , _callback(std::move(callback))
     {
-      repositories_in_stream(InputStream(repo_file), _callback, progress);
+      repositories_in_stream(_context, zypp::InputStream(repo_file), _callback, progress);
     }
 
-    RepoFileReader::RepoFileReader( const InputStream &is,
+    RepoFileReader::RepoFileReader( ContextBaseRef context,
+                                    const zypp::InputStream &is,
                                     ProcessRepo  callback,
-                                    const ProgressData::ReceiverFnc &progress )
-      : _callback(std::move(callback))
+                                    const zypp::ProgressData::ReceiverFnc &progress )
+      : _context( std::move(context) )
+      , _callback(std::move(callback))
     {
-      repositories_in_stream(is, _callback, progress);
+      repositories_in_stream(_context, is, _callback, progress);
     }
 
     RepoFileReader::~RepoFileReader()

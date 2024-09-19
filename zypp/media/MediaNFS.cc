@@ -39,9 +39,10 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaNFS::MediaNFS( const Url &      url_r,
-                        const Pathname & attach_point_hint_r )
-      : MediaHandler( url_r, attach_point_hint_r,
+    MediaNFS::MediaNFS( zyppng::ContextBaseRef ctx,
+                        const Url &      url_r,
+                       const Pathname & attach_point_hint_r )
+      : MediaHandler( std::move(ctx), url_r, attach_point_hint_r,
                       "/", // urlpath at attachpoint
                       false ) // does_download
     {

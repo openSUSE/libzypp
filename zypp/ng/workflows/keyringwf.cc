@@ -19,10 +19,12 @@
 #include <zypp-core/base/Gettext.h>
 #include <utility>
 #include <zypp-core/zyppng/pipelines/Expected>
+
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/reporthelper.h>
 #include <zypp/ng/UserRequest>
+#include <zypp/ng/repoinfo.h>
 
 namespace zyppng::KeyRingWorkflow {
 
@@ -38,7 +40,7 @@ namespace zyppng::KeyRingWorkflow {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
-    ImportKeyFromRepoLogic( ZyppContextRefType context, std::string &&keyId, zypp::RepoInfo &&info )
+    ImportKeyFromRepoLogic( ZyppContextRefType context, std::string &&keyId, RepoInfo &&info )
       : _context( std::move(context) ), _keyId(std::move(keyId)), _repo( std::move(info) )
     { }
 
@@ -95,15 +97,15 @@ namespace zyppng::KeyRingWorkflow {
 
     ZyppContextRefType _context;
     std::string _keyId;
-    zypp::RepoInfo _repo;
+    RepoInfo _repo;
   };
 
-  bool provideAndImportKeyFromRepository( SyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r )
+  bool provideAndImportKeyFromRepository( SyncContextRef ctx, std::string id_r, RepoInfo info_r )
   {
     return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
 
-  AsyncOpRef<bool> provideAndImportKeyFromRepository( AsyncContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
+  AsyncOpRef<bool> provideAndImportKeyFromRepository( AsyncContextRef ctx, std::string id_r, RepoInfo info_r)
   {
     return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
   }
@@ -209,7 +211,7 @@ namespace zyppng::KeyRingWorkflow {
           else if ( ! _verifyContext.keyContext().empty() )
           {
             // try to find the key in the repository info
-            return provideAndImportKeyFromRepository ( _zyppContext, id, _verifyContext.keyContext().repoInfo() )
+            return provideAndImportKeyFromRepository ( _zyppContext, id, *_verifyContext.keyContext().ngRepoInfo() )
               | [this, id]( bool success ) {
                   if ( !success ) {
                     return FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() };

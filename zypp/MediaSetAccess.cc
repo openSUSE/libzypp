@@ -19,6 +19,7 @@
 #include <zypp/MediaSetAccess.h>
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
+#include <zypp/zypp_detail/ZYppImpl.h>
 //#include <zypp/source/MediaSetAccessReportReceivers.h>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
@@ -34,16 +35,30 @@ IMPL_PTR_TYPE(MediaSetAccess);
 
 ///////////////////////////////////////////////////////////////////
 
-  MediaSetAccess::MediaSetAccess(Url url,
-                                 Pathname  prefered_attach_point)
-      : _url(std::move(url))
-      , _prefAttachPoint(std::move(prefered_attach_point))
+  MediaSetAccess::MediaSetAccess(Url url, Pathname  prefered_attach_point)
+      : MediaSetAccess( zypp_detail::GlobalStateHelper::context(), std::move(url), std::move(prefered_attach_point) )
   {}
 
   MediaSetAccess::MediaSetAccess(std::string  label_r,
                                  Url url,
                                  Pathname  prefered_attach_point)
-      : _url(std::move(url))
+    : MediaSetAccess( zypp_detail::GlobalStateHelper::context(), std::move(label_r), std::move(url), std::move(prefered_attach_point) )
+  {}
+
+  MediaSetAccess::MediaSetAccess(zyppng::ContextBaseRef ctx,
+                                 Url url,
+                                 Pathname  prefered_attach_point)
+      : _zyppContext( std::move(ctx) )
+      , _url(std::move(url))
+      , _prefAttachPoint(std::move(prefered_attach_point))
+  {}
+
+  MediaSetAccess::MediaSetAccess( zyppng::ContextBaseRef ctx,
+                                  std::string  label_r,
+                                  Url url,
+                                  Pathname  prefered_attach_point)
+      : _zyppContext( std::move(ctx) )
+      , _url(std::move(url))
       , _prefAttachPoint(std::move(prefered_attach_point))
       , _label(std::move( label_r ))
   {}
@@ -192,13 +207,13 @@ IMPL_PTR_TYPE(MediaSetAccess);
    return Pathname();
   }
 
-  ManagedFile MediaSetAccess::provideFileFromUrl(const Url &file_url, ProvideFileOptions options)
+  ManagedFile MediaSetAccess::provideFileFromUrl( zyppng::ContextBaseRef ctx, const Url &file_url, ProvideFileOptions options )
   {
     Url url(file_url);
     Pathname path(url.getPathName());
 
     url.setPathName ("/");
-    MediaSetAccess access(url);
+    MediaSetAccess access(ctx, url);
 
     ManagedFile tmpFile = filesystem::TmpFile::asManagedFile();
 
@@ -212,17 +227,27 @@ IMPL_PTR_TYPE(MediaSetAccess);
     return tmpFile;
   }
 
-  ManagedFile MediaSetAccess::provideOptionalFileFromUrl( const Url & file_url )
+  ManagedFile MediaSetAccess::provideFileFromUrl(const Url &file_url, ProvideFileOptions options)
+  {
+    return provideFileFromUrl( zypp_detail::GlobalStateHelper::context(), file_url, options );
+  }
+
+  ManagedFile MediaSetAccess::provideOptionalFileFromUrl( zyppng::ContextBaseRef ctx, const Url & file_url )
   {
     try
     {
-      return provideFileFromUrl( file_url, PROVIDE_NON_INTERACTIVE );
+      return provideFileFromUrl( ctx, file_url, PROVIDE_NON_INTERACTIVE );
     }
     catch ( const media::MediaFileNotFoundException & excpt_r )
     { ZYPP_CAUGHT( excpt_r ); }
     catch ( const media::MediaNotAFileException & excpt_r )
     { ZYPP_CAUGHT( excpt_r ); }
    return ManagedFile();
+  }
+
+  ManagedFile MediaSetAccess::provideOptionalFileFromUrl( const Url & file_url )
+  {
+    return provideOptionalFileFromUrl( zypp_detail::GlobalStateHelper::context(), file_url );
   }
 
   bool MediaSetAccess::doesFileExist(const Pathname & file, unsigned media_nr )
@@ -413,7 +438,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
 
     Url url( medianr > 1 ? rewriteUrl( _url, medianr ) : _url );
     media::MediaManager media_mgr;
-    media::MediaAccessId id = media_mgr.open( url, _prefAttachPoint );
+    media::MediaAccessId id = media_mgr.open( _zyppContext, url, _prefAttachPoint );
     _medias[medianr] = id;
 
     try

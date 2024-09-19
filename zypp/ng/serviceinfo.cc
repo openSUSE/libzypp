@@ -19,179 +19,132 @@
 
 #include <zypp/RepoInfo.h>
 #include <zypp/ServiceInfo.h>
+#include <zypp/ng/serviceinfoshareddata.h>
 
 #include <zypp/ng/ContextBase>
 
 using std::endl;
 using zypp::xml::escape;
 
-///////////////////////////////////////////////////////////////////////////////
-namespace zypp
-{//////////////////////////////////////////////////////////////////////////////
+namespace zyppng
+{
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //  CLASS NAME : ServiceInfo::Impl
-  //
-  struct ServiceInfo::Impl
+  ServiceInfoSharedData::ServiceInfoSharedData( ContextBaseRef &&context ) : repo::RepoInfoBaseSharedData( std::move(context) )
+  { ServiceInfoSharedData::bindVariables(); }
+
+  ServiceInfoSharedData::ServiceInfoSharedData( ContextBaseRef &&context, const std::string &alias )
+    : repo::RepoInfoBaseSharedData( std::move(context), alias )
+  { ServiceInfoSharedData::bindVariables(); }
+
+  ServiceInfoSharedData::ServiceInfoSharedData( ContextBaseRef &&context, const std::string &alias, const zypp::Url &url_r )
+    : repo::RepoInfoBaseSharedData( std::move(context), alias )
+    , _url(url_r)
+  { ServiceInfoSharedData::bindVariables(); }
+
+  void ServiceInfoSharedData::bindVariables()
   {
-    using ReposToEnable = ServiceInfo::ReposToEnable;
-    using ReposToDisable = ServiceInfo::ReposToDisable;
-
-  public:
-    RepoVariablesReplacedUrl _url;
-    repo::ServiceType _type;
-    ReposToEnable _reposToEnable;
-    ReposToDisable _reposToDisable;
-    RepoStates _repoStates;
-    DefaultIntegral<Date::Duration,0> _ttl;
-    Date _lrf;
-
-  public:
-    Impl()
-    {}
-
-    Impl(const Url &url_r) : _url(url_r) {}
-
-    Impl(const Impl &) = default;
-    Impl(Impl &&) = delete;
-    Impl &operator=(const Impl &) = delete;
-    Impl &operator=(Impl &&) = delete;
-
-    ~Impl()
-    {}
-
-    void setProbedType( const repo::ServiceType & type_r ) const
-    {
-      if ( _type == repo::ServiceType::NONE
-           && type_r != repo::ServiceType::NONE )
-      {
-        // lazy init!
-        const_cast<Impl*>(this)->_type = type_r;
-      }
+    repo::RepoInfoBaseSharedData::bindVariables();
+    if ( _ctx ) {
+      _url.setTransformator( repo::RepoVariablesUrlReplacer( zypp::repo::RepoVarRetriever( *_ctx.get() ) ) );
+    } else {
+      _url.setTransformator( repo::RepoVariablesUrlReplacer( nullptr ) );
     }
+  }
 
-  private:
-    friend Impl * rwcowClone<Impl>( const Impl * rhs );
-
-    /** clone for RWCOW_pointer */
-    Impl * clone() const
-    { return new Impl( *this ); }
-  };
-  ///////////////////////////////////////////////////////////////////
-
-
+  ServiceInfoSharedData *ServiceInfoSharedData::clone() const
+  {
+    auto *n =  new ServiceInfoSharedData(*this);
+    n->bindVariables ();
+    return n;
+  }
   ///////////////////////////////////////////////////////////////////
   //
   //  CLASS NAME : ServiceInfo::Impl
   //
-  ///////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
 
-  const ServiceInfo ServiceInfo::noService( zyppng::ContextBaseRef(nullptr) );
-
-  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx ) : repo::RepoInfoBase( std::move(ctx) ), _pimpl( new Impl() ) {}
+  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx ) : repo::RepoInfoBase( ( *new ServiceInfoSharedData( std::move(ctx) )) ) {}
 
   ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx, const std::string & alias )
-    : repo::RepoInfoBase( std::move(ctx), alias ), _pimpl( new Impl() )
+    : repo::RepoInfoBase( ( *new ServiceInfoSharedData( std::move(ctx), alias )) )
   {}
 
-  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx, const std::string & alias, const Url & url )
-    : repo::RepoInfoBase( std::move(ctx), alias ), _pimpl( new Impl(url) )
+  ServiceInfo::ServiceInfo( zyppng::ContextBaseRef ctx, const std::string & alias, const zypp::Url & url )
+    : repo::RepoInfoBase( ( *new ServiceInfoSharedData( std::move(ctx), alias, url )) )
   {}
-
-
-  ServiceInfo::ServiceInfo() : ServiceInfo( zypp_detail::GlobalStateHelper::context() )
-  { /* LEGACY, DO NOT ADD CODE HERE */ }
-
-  ServiceInfo::ServiceInfo(const std::string & alias)
-    : ServiceInfo( zypp_detail::GlobalStateHelper::context(), alias )
-  { /* LEGACY, DO NOT ADD CODE HERE */ }
-
-  ServiceInfo::ServiceInfo(const std::string & alias, const Url & url)
-    : ServiceInfo( zypp_detail::GlobalStateHelper::context(), alias, url )
-  { /* LEGACY, DO NOT ADD CODE HERE */ }
 
   ServiceInfo::~ServiceInfo()
   {}
 
-  Url ServiceInfo::url() const			// Variables replaced
-  { return _pimpl->_url.transformed(); }
+  zypp::Url ServiceInfo::url() const			// Variables replaced
+  { return pimpl()->_url.transformed(); }
 
-  Url ServiceInfo::rawUrl() const		// Raw
-  { return _pimpl->_url.raw(); }
+  zypp::Url ServiceInfo::rawUrl() const		// Raw
+  { return pimpl()->_url.raw(); }
 
-  void ServiceInfo::setUrl( const Url& url )	// Raw
-  { _pimpl->_url.raw() = url; }
+  void ServiceInfo::setUrl( const zypp::Url& url )	// Raw
+  { pimpl()->_url.raw() = url; }
 
-  repo::ServiceType ServiceInfo::type() const				{ return _pimpl->_type; }
-  void ServiceInfo::setType( const repo::ServiceType & type )		{ _pimpl->_type = type; }
-  void ServiceInfo::setProbedType( const repo::ServiceType &t ) const	{ _pimpl->setProbedType( t ); }
+  zypp::repo::ServiceType ServiceInfo::type() const				{ return pimpl()->_type; }
+  void ServiceInfo::setType( const zypp::repo::ServiceType & type )		{ pimpl()->_type = type; }
+  void ServiceInfo::setProbedType( const zypp::repo::ServiceType &t ) const	{ pimpl()->setProbedType( t ); }
 
-  Date::Duration ServiceInfo::ttl() const			{ return _pimpl->_ttl; }
-  void ServiceInfo::setTtl( Date::Duration ttl_r )		{ _pimpl->_ttl = ttl_r; }
-  void ServiceInfo::setProbedTtl( Date::Duration ttl_r ) const	{ const_cast<ServiceInfo*>(this)->setTtl( ttl_r ); }
+  zypp::Date::Duration ServiceInfo::ttl() const                         { return pimpl()->_ttl; }
+  void ServiceInfo::setTtl( zypp::Date::Duration ttl_r )		{ pimpl()->_ttl = ttl_r; }
+  void ServiceInfo::setProbedTtl( zypp::Date::Duration ttl_r ) const	{ const_cast<ServiceInfo*>(this)->setTtl( ttl_r ); }
 
-  Date ServiceInfo::lrf() const					{ return _pimpl->_lrf; }
-  void ServiceInfo::setLrf( Date lrf_r )			{ _pimpl->_lrf = lrf_r; }
+  zypp::Date ServiceInfo::lrf() const				{ return pimpl()->_lrf; }
+  void ServiceInfo::setLrf( zypp::Date lrf_r )			{ pimpl()->_lrf = lrf_r; }
 
-  bool ServiceInfo::reposToEnableEmpty() const						{ return _pimpl->_reposToEnable.empty(); }
-  ServiceInfo::ReposToEnable::size_type ServiceInfo::reposToEnableSize() const		{ return _pimpl->_reposToEnable.size(); }
-  ServiceInfo::ReposToEnable::const_iterator ServiceInfo::reposToEnableBegin() const	{ return _pimpl->_reposToEnable.begin(); }
-  ServiceInfo::ReposToEnable::const_iterator ServiceInfo::reposToEnableEnd() const	{ return _pimpl->_reposToEnable.end(); }
+  bool ServiceInfo::reposToEnableEmpty() const						{ return pimpl()->_reposToEnable.empty(); }
+  ServiceInfo::ReposToEnable::size_type ServiceInfo::reposToEnableSize() const		{ return pimpl()->_reposToEnable.size(); }
+  ServiceInfo::ReposToEnable::const_iterator ServiceInfo::reposToEnableBegin() const	{ return pimpl()->_reposToEnable.begin(); }
+  ServiceInfo::ReposToEnable::const_iterator ServiceInfo::reposToEnableEnd() const	{ return pimpl()->_reposToEnable.end(); }
 
   bool ServiceInfo::repoToEnableFind( const std::string & alias_r ) const
-  { return( _pimpl->_reposToEnable.find( alias_r ) != _pimpl->_reposToEnable.end() ); }
+  { return( pimpl()->_reposToEnable.find( alias_r ) != pimpl()->_reposToEnable.end() ); }
 
   void ServiceInfo::addRepoToEnable( const std::string & alias_r )
   {
-    _pimpl->_reposToEnable.insert( alias_r );
-    _pimpl->_reposToDisable.erase( alias_r );
+    pimpl()->_reposToEnable.insert( alias_r );
+    pimpl()->_reposToDisable.erase( alias_r );
   }
 
   void ServiceInfo::delRepoToEnable( const std::string & alias_r )
-  { _pimpl->_reposToEnable.erase( alias_r ); }
+  { pimpl()->_reposToEnable.erase( alias_r ); }
 
   void ServiceInfo::clearReposToEnable()
-  { _pimpl->_reposToEnable.clear(); }
+  { pimpl()->_reposToEnable.clear(); }
 
 
-  bool ServiceInfo::reposToDisableEmpty() const						{ return _pimpl->_reposToDisable.empty(); }
-  ServiceInfo::ReposToDisable::size_type ServiceInfo::reposToDisableSize() const	{ return _pimpl->_reposToDisable.size(); }
-  ServiceInfo::ReposToDisable::const_iterator ServiceInfo::reposToDisableBegin() const	{ return _pimpl->_reposToDisable.begin(); }
-  ServiceInfo::ReposToDisable::const_iterator ServiceInfo::reposToDisableEnd() const	{ return _pimpl->_reposToDisable.end(); }
+  bool ServiceInfo::reposToDisableEmpty() const						{ return pimpl()->_reposToDisable.empty(); }
+  ServiceInfo::ReposToDisable::size_type ServiceInfo::reposToDisableSize() const	{ return pimpl()->_reposToDisable.size(); }
+  ServiceInfo::ReposToDisable::const_iterator ServiceInfo::reposToDisableBegin() const	{ return pimpl()->_reposToDisable.begin(); }
+  ServiceInfo::ReposToDisable::const_iterator ServiceInfo::reposToDisableEnd() const	{ return pimpl()->_reposToDisable.end(); }
 
   bool ServiceInfo::repoToDisableFind( const std::string & alias_r ) const
-  { return( _pimpl->_reposToDisable.find( alias_r ) != _pimpl->_reposToDisable.end() ); }
+  { return( pimpl()->_reposToDisable.find( alias_r ) != pimpl()->_reposToDisable.end() ); }
 
   void ServiceInfo::addRepoToDisable( const std::string & alias_r )
   {
-    _pimpl->_reposToDisable.insert( alias_r );
-    _pimpl->_reposToEnable.erase( alias_r );
+    pimpl()->_reposToDisable.insert( alias_r );
+    pimpl()->_reposToEnable.erase( alias_r );
   }
 
   void ServiceInfo::delRepoToDisable( const std::string & alias_r )
-  { _pimpl->_reposToDisable.erase( alias_r ); }
+  { pimpl()->_reposToDisable.erase( alias_r ); }
 
   void ServiceInfo::clearReposToDisable()
-  { _pimpl->_reposToDisable.clear(); }
+  { pimpl()->_reposToDisable.clear(); }
 
 
-  const ServiceInfo::RepoStates & ServiceInfo::repoStates() const	{ return _pimpl->_repoStates; }
-  void ServiceInfo::setRepoStates( RepoStates newStates_r )		{ swap( _pimpl->_repoStates, newStates_r ); }
-
-
-  std::ostream & operator<<( std::ostream & str, const ServiceInfo::RepoState & obj )
-  {
-    return str
-        << "enabled=" << obj.enabled << " "
-        << "autorefresh=" << obj.autorefresh << " "
-        << "priority=" << obj.priority;
-  }
+  const ServiceInfo::RepoStates & ServiceInfo::repoStates() const	{ return pimpl()->_repoStates; }
+  void ServiceInfo::setRepoStates( RepoStates newStates_r )		{ swap( pimpl()->_repoStates, newStates_r ); }
 
   std::ostream & ServiceInfo::dumpAsIniOn( std::ostream & str ) const
   {
     RepoInfoBase::dumpAsIniOn(str)
-      << "url = " << hotfix1050625::asString( rawUrl() ) << endl
+      << "url = " << zypp::hotfix1050625::asString( rawUrl() ) << endl
       << "type = " << type() << endl;
 
     if ( ttl() )
@@ -206,7 +159,7 @@ namespace zypp
       for ( const auto & el : repoStates() )
       {
         std::string tag( "repo_" );
-        tag += str::numstring( ++cnt );
+        tag += zypp::str::numstring( ++cnt );
         const RepoState & state( el.second );
 
         str << tag << "=" << el.first << endl
@@ -219,9 +172,9 @@ namespace zypp
     }
 
     if ( ! reposToEnableEmpty() )
-      str << "repostoenable = " << str::joinEscaped( reposToEnableBegin(), reposToEnableEnd() ) << endl;
+      str << "repostoenable = " << zypp::str::joinEscaped( reposToEnableBegin(), reposToEnableEnd() ) << endl;
     if ( ! reposToDisableEmpty() )
-      str << "repostodisable = " << str::joinEscaped( reposToDisableBegin(), reposToDisableEnd() ) << endl;
+      str << "repostodisable = " << zypp::str::joinEscaped( reposToDisableBegin(), reposToDisableEnd() ) << endl;
     return str;
   }
 
@@ -245,6 +198,16 @@ namespace zypp
     return str;
   }
 
+  ServiceInfoSharedData *ServiceInfo::pimpl()
+  {
+    return static_cast<ServiceInfoSharedData*>(_pimpl.get());
+  }
+
+  const ServiceInfoSharedData *ServiceInfo::pimpl() const
+  {
+    return static_cast<const ServiceInfoSharedData*>(_pimpl.get());
+  }
+
 
   std::ostream & operator<<( std::ostream& str, const ServiceInfo &obj )
   {
@@ -253,5 +216,6 @@ namespace zypp
 
 
 ///////////////////////////////////////////////////////////////////////////////
-} //namespace zypp
+
+} // namespace zyppng
 ///////////////////////////////////////////////////////////////////////////////

@@ -32,6 +32,8 @@
 #include <zypp/FileChecker.h>
 #include <zypp/Fetcher.h>
 
+#include <zypp/ng/repoinfo.h>
+
 using std::endl;
 using std::set;
 
@@ -117,13 +119,14 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    ManagedFile provideFile( RepoInfo repo_r,
+    ManagedFile provideFile( zyppng::RepoInfo repo_r,
                              const OnMediaLocation & loc_r,
                              const ProvideFilePolicy & policy_r )
     {
       RepoMediaAccess access;
-      return access.provideFile(std::move(repo_r), loc_r, policy_r );
+      return access.provideFile(repo_r, loc_r, policy_r );
     }
+
 
     ///////////////////////////////////////////////////////////////////
     class RepoMediaAccess::Impl
@@ -139,13 +142,11 @@ namespace zypp
 
       ~Impl()
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::iterator it;
-        for ( it = _medias.begin();
-              it != _medias.end();
-              ++it )
-        {
-          it->second->release();
-        }
+        std::for_each( _medias.begin (), _medias.end(), []( auto &val ){
+          std::for_each ( val.second.begin(), val.second.begin(), [](auto &entry) {
+            entry.second->release();
+          });
+        });
       }
 
       /** Provide a MediaSetAccess for \c url with label and verifier adjusted.
@@ -155,26 +156,33 @@ namespace zypp
        *
        * \todo This mixture of media and repos specific data is fragile.
       */
-      shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, RepoInfo repo )
+      shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, zyppng::RepoInfo repo )
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
-        it = _medias.find(url);
+        if ( !repo.context() ) {
+          ZYPP_THROW( zypp::Exception( str::Str()<<"Repo: " << repo << ", can not provide files without a context." ) );
+        }
+        // quick hack using the context ptr address as key for the nested map
+        const uintptr_t key = reinterpret_cast<uintptr_t>( repo.context().get() );
+        auto it = _medias.find(url);
         shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
-          media = it->second;
+          auto it2 = it->second.find( key );
+          if ( it2 != it->second.end() )
+            media = it2->second;
         }
-        else
+
+        if ( !media )
         {
-          media.reset( new MediaSetAccess(url) );
-          _medias[url] = media;
+          media.reset( new MediaSetAccess( repo.context(), url) );
+          _medias[url][key] = media;
         }
-        setVerifierForRepo( std::move(repo), media );
+        setVerifierForRepo( repo, media );
         return media;
       }
 
       private:
-        void setVerifierForRepo( const RepoInfo& repo, const shared_ptr<MediaSetAccess>& media )
+        void setVerifierForRepo( const zyppng::RepoInfo& repo, const shared_ptr<MediaSetAccess>& media )
         {
           // Always set the MediaSetAccess label.
           media->setLabel( repo.name() );
@@ -186,7 +194,7 @@ namespace zypp
           {
             if ( PathInfo(mediafile).isExist() )
             {
-              std::map<shared_ptr<MediaSetAccess>, RepoInfo>::const_iterator it;
+              std::map<shared_ptr<MediaSetAccess>, zyppng::RepoInfo>::const_iterator it;
               it = _verifier.find(media);
               if ( it != _verifier.end() )
               {
@@ -204,7 +212,7 @@ namespace zypp
                   media::MediaVerifierRef verifier( new repo::SUSEMediaVerifier( lverifier, i ) );
                   media->setVerifier( i, verifier);
                 }
-                _verifier[media] = repo;
+                _verifier.insert_or_assign( media, repo );
               }
               else {
                 WAR << "Invalid verifier for repo '" << repo.alias() << "' in '" << repo.metadataPath() << "': " << lverifier << endl;
@@ -222,8 +230,8 @@ namespace zypp
         }
 
       private:
-        std::map<shared_ptr<MediaSetAccess>, RepoInfo> _verifier;
-        std::map<Url, shared_ptr<MediaSetAccess> > _medias;
+        std::map<shared_ptr<MediaSetAccess>, zyppng::RepoInfo> _verifier;
+        std::map<Url, std::map<std::uintptr_t, shared_ptr<MediaSetAccess>> > _medias;
 
       public:
         ProvideFilePolicy _defaultPolicy;
@@ -244,7 +252,7 @@ namespace zypp
     const ProvideFilePolicy & RepoMediaAccess::defaultPolicy() const
     { return _impl->_defaultPolicy; }
 
-    ManagedFile RepoMediaAccess::provideFile( const RepoInfo& repo_r,
+    ManagedFile RepoMediaAccess::provideFile( const zyppng::RepoInfo& repo_r,
                                               const OnMediaLocation & loc_rx,
                                               const ProvideFilePolicy & policy_r )
     {
@@ -295,7 +303,7 @@ namespace zypp
       // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
       media::ScopedDisableMediaChangeReport guard( repo_r.baseUrlsSize() > 1 );
 
-      for ( RepoInfo::urls_const_iterator it = repo_r.baseUrlsBegin();
+      for ( auto it = repo_r.baseUrlsBegin();
             it != repo_r.baseUrlsEnd();
             /* incremented in the loop */ )
       {
@@ -343,6 +351,34 @@ namespace zypp
     }
 
     /////////////////////////////////////////////////////////////////
+
+    ManagedFile RepoMediaAccess::provideFile( const zyppng::RepoInfo &repo_r,
+                                             const OnMediaLocation &loc_r) {
+      return provideFile( repo_r, loc_r, defaultPolicy());
+    }
+
+    ZYPP_BEGIN_LEGACY_API
+    ManagedFile provideFile( RepoInfo repo_r,
+                             const OnMediaLocation & loc_r,
+                             const ProvideFilePolicy & policy_r )
+    {
+      return provideFile( repo_r.ngRepoInfo (), loc_r, policy_r );
+    }
+
+    ManagedFile RepoMediaAccess::provideFile(RepoInfo repo_r,
+                                             const OnMediaLocation &loc_r) {
+      return provideFile( repo_r.ngRepoInfo (), loc_r );
+    }
+
+    ManagedFile RepoMediaAccess::provideFile( const RepoInfo& repo_r,
+                                              const OnMediaLocation & loc_rx,
+                                              const ProvideFilePolicy & policy_r )
+    {
+      return provideFile( repo_r.ngRepoInfo (), loc_rx, policy_r );
+    }
+    ZYPP_END_LEGACY_API
+
+
   } // namespace repo
   ///////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////

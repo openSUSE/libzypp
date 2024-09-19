@@ -30,10 +30,11 @@
 
 #include <zypp-media/MediaConfig>
 #include <zypp/media/MediaNetwork.h>
-#include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/auth/credentialmanager.h>
 
 #include <zypp/Target.h>
 #include <zypp/ZConfig.h>
+#include <zypp/ng/context.h>
 
 
 using std::endl;
@@ -151,7 +152,7 @@ namespace internal {
         MIL << "Initializing internal::SharedData for MediaNetwork" << std::endl;
         _dispatcher = zyppng::ThreadData::current().ensureDispatcher();
         _downloader = std::make_shared<zyppng::Downloader>();
-        _downloader->requestDispatcher()->setMaximumConcurrentConnections( zypp::MediaConfig::instance().download_max_concurrent_connections() );
+        _downloader->requestDispatcher()->setMaximumConcurrentConnections( zypp::ZConfig::systemConfig().download_max_concurrent_connections() );
       }
   };
 
@@ -164,9 +165,9 @@ namespace zypp {
 
   namespace media {
 
-  MediaNetwork::MediaNetwork( const Url &      url_r,
-                              const Pathname & attach_point_hint_r )
-      : MediaNetworkCommonHandler( url_r, attach_point_hint_r,
+    MediaNetwork::MediaNetwork(zyppng::ContextBaseRef ctx, const Url &      url_r,
+                               const Pathname & attach_point_hint_r )
+      : MediaNetworkCommonHandler( std::move(ctx), url_r, attach_point_hint_r,
                                   "/",   // urlpath at attachpoint
                                   true ) // does_download
   {
@@ -286,11 +287,11 @@ namespace zypp {
       const auto &authRequiredSlot = [&]( zyppng::Download &req, zyppng::NetworkAuthData &auth, const std::string &availAuth ){
 
         //! \todo need a way to pass different CredManagerOptions here
-        CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+        auto cm = zyppng::media::CredentialManager::create( CredManagerSettings(_zyppContext) );
         CurlAuthData_Ptr credentials;
 
         // get stored credentials
-        AuthData_Ptr cmcred = cm.getCred(_url);
+        AuthData_Ptr cmcred = cm->getCred(_url);
         if ( cmcred && auth.lastDatabaseUpdate() < cmcred->lastDatabaseUpdate() ) {
           credentials.reset(new CurlAuthData(*cmcred));
           DBG << "got stored credentials:" << endl << *credentials << endl;
@@ -351,8 +352,8 @@ namespace zypp {
         auth = *credentials;
         if (!cmcred) {
           credentials->setUrl(_url);
-          cm.addCred(*credentials);
-          cm.save();
+          cm->addCred(*credentials);
+          cm->save();
         }
       };
 

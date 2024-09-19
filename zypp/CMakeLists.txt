@@ -46,6 +46,7 @@ SET( zypp_SRCS
   IdString.cc
   InstanceId.cc
   KeyManager.cc
+  KeyContext.cc
   KeyRing.cc
   KeyRingContexts.cc
   Locks.cc
@@ -70,6 +71,7 @@ SET( zypp_SRCS
   RepoManagerOptions.cc
   Repository.cc
   RepoStatus.cc
+  ResFilters.cc
   ResKind.cc
   ResObject.cc
   Resolvable.cc
@@ -293,11 +295,22 @@ SET( zypp_ng_SRCS
   ng/contextbase.cc
   ng/fusionpool.cc
   ng/progressobserveradaptor.cc
+  ng/repoinfo.cc
   ng/reporthelper.cc
   ng/repomanager.cc
+  ng/serviceinfo.cc
+  ng/userdata.cc
   ng/userrequest.cc
+  ng/parser/RepoFileReader.cc
+  ng/parser/repoindexfilereader.cc
+  ng/parser/servicefilereader.cc
   ng/repo/downloader.cc
+  ng/repo/pluginservices.cc
   ng/repo/refresh.cc
+  ng/repo/repoinfobase.cc
+  ng/repo/repoinfobaseshareddata.cc
+  ng/repo/repovariables.cc
+  ng/repo/repovariablescache.cc
   ng/repo/workflows/plaindir.cc
   ng/repo/workflows/repodownloaderwf.cc
   ng/repo/workflows/repomanagerwf.cc
@@ -321,15 +334,28 @@ SET( zypp_ng_HEADERS
   ng/FusionPool
   ng/Context
   ng/progressobserveradaptor.h
+  ng/repoinfo.h
+  ng/repoinfoshareddata.h
   ng/reporthelper.h
   ng/repomanager.h
+  ng/serviceinfo.h
+  ng/serviceinfoshareddata.h
   ng/RepoManager
+  ng/userdata.h
   ng/userrequest.h
   ng/UserRequest
+  ng/parser/RepoFileReader.h
+  ng/parser/repoindexfilereader.h
+  ng/parser/servicefilereader.h
   ng/repo/downloader.h
   ng/repo/Downloader
+  ng/repo/pluginservices.h
   ng/repo/refresh.h
   ng/repo/Refresh
+  ng/repo/repoinfobase.h
+  ng/repo/repoinfobaseshareddata.h
+  ng/repo/repovariables.h
+  ng/repo/repovariablescache.h
   ng/repo/workflows/plaindir.h
   ng/repo/workflows/repodownloaderwf.h
   ng/repo/workflows/repomanagerwf.h
@@ -356,17 +382,11 @@ SET( zypp_ng_private_HEADERS
 
 SET( zypp_parser_SRCS
   parser/HistoryLogReader.cc
-  parser/RepoFileReader.cc
-  parser/RepoindexFileReader.cc
-  parser/ServiceFileReader.cc
   parser/ProductFileReader.cc
 )
 
 SET( zypp_parser_HEADERS
   parser/HistoryLogReader.h
-  parser/RepoFileReader.h
-  parser/RepoindexFileReader.h
-  parser/ServiceFileReader.h
   parser/ProductFileReader.h
 )
 
@@ -669,9 +689,11 @@ INSTALL(  FILES
 )
 
 SET( zypp_repo_SRCS
+  repo/GpgCheck.cc
   repo/RepoException.cc
   repo/RepoMirrorList.cc
   repo/RepoType.cc
+  repo/ServiceRepoState.cc
   repo/ServiceType.cc
   repo/PackageProvider.cc
   repo/SrcPackageProvider.cc
@@ -684,30 +706,29 @@ SET( zypp_repo_SRCS
   repo/RepoVariables.cc
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
-  repo/PluginServices.cc
 )
 
 SET( zypp_repo_HEADERS
+  repo/GpgCheck.h
   repo/RepoException.h
-  repo/RepoMirrorList.h
   repo/RepoType.h
+  repo/ServiceRepoState.h
   repo/ServiceType.h
   repo/PackageProvider.h
   repo/SrcPackageProvider.h
   repo/RepoProvideFile.h
   repo/DeltaCandidates.h
+  repo/RepoVariables.h
+  repo/RepoInfoBase.h
+  repo/PluginRepoverification.h
+)
+
+SET( zypp_repo_detail_HEADERS
+  repo/RepoMirrorList.h
   repo/Applydeltarpm.h
   repo/PackageDelta.h
   repo/SUSEMediaVerifier.h
   repo/MediaInfoDownloader.h
-  repo/RepoVariables.h
-  repo/RepoInfoBase.h
-  repo/PluginRepoverification.h
-  repo/PluginServices.h
-)
-
-SET( zypp_repo_detail_HEADERS
-  repo/detail/RepoInfoBaseImpl.h
 )
 
 INSTALL( FILES
@@ -734,14 +755,12 @@ SET( zypp_repo_susetags_HEADERS
 
 SET( zypp_misc_HEADERS
   Misc.h
-  misc/DefaultLoadSystem.h
   misc/CheckAccessDeleted.h
   misc/TestcaseSetup.h
   misc/LoadTestcase.h
 )
 
 SET( zypp_misc_SRCS
-  misc/DefaultLoadSystem.cc
   misc/CheckAccessDeleted.cc
   misc/TestcaseSetup.cc
   misc/LoadTestcase.cc
@@ -845,6 +864,10 @@ SET ( zypp_media_compat_HEADERS
   media/CurlConfig.h
 )
 
+SET( zypp_media_compat_SOURCES
+  media/CredentialManager.cc
+)
+
 INSTALL( FILES
   ${zypp_media_compat_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/media
@@ -894,6 +917,7 @@ ${zypp_parser_susetags_SRCS}
 ${zypp_parser_xml_SRCS}
 ${zypp_parser_yum_SRCS}
 ${zypp_parser_SRCS}
+${zypp_media_compat_SOURCES}
 ${zypp_media_proxyinfo_SRCS}
 ${zypp_media_SRCS}
 ${zypp_ng_SRCS}

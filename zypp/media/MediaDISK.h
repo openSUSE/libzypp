@@ -44,7 +44,8 @@ namespace zypp {
 
       public:
 
-        MediaDISK( const Url &      url_r,
+        MediaDISK( zyppng::ContextBaseRef ctx,
+                   const Url &      url_r,
                    const Pathname & attach_point_hint_r );
 
         ~MediaDISK() override { try { release(); } catch(...) {} }

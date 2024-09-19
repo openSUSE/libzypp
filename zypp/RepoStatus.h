@@ -17,6 +17,10 @@
 #include <zypp/CheckSum.h>
 #include <zypp/Date.h>
 
+namespace zyppng {
+  class RepoInfo;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -56,8 +60,13 @@ namespace zypp
      */
     explicit RepoStatus( const Pathname & path_r );
 
+ZYPP_BEGIN_LEGACY_API
     /** Compute status of a \a RepoInfo to track changes requiring a refresh. */
     explicit RepoStatus( const RepoInfo & info_r );
+ZYPP_END_LEGACY_API
+
+    /** Compute status of a \a RepoInfo to track changes requiring a refresh. */
+    explicit RepoStatus( const zyppng::RepoInfo & info_r );
 
     /** Explicitly specify checksum string and timestamp to use. */
     RepoStatus( std::string checksum_r, Date timestamp_r );

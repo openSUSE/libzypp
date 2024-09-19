@@ -22,6 +22,38 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace repo
   {
+
+    /** Function taking a variable name and returning a pointer to the variable value or \c nullptr if unset. */
+    using RepoVarRetrieverFunctor = std::function<const std::string *(const std::string &)>;
+
+    /*!
+     * Helper functor class, requires a reference to a object
+     * implementing a function called \a resolveRepoVar with the RepoVarRetrieverFunctor signature.
+     *
+     * \code
+     * const std::string * SomeType::resolveRepoVar (const std::string &);
+     * \endcode
+     */
+    template <typename T, auto memFn = &T::resolveRepoVar >
+    struct RepoVarRetriever
+    {
+      RepoVarRetriever(T &varContainer) : _varContainer(varContainer) {}
+
+      ~RepoVarRetriever() = default;
+      RepoVarRetriever(const RepoVarRetriever &) = default;
+      RepoVarRetriever(RepoVarRetriever &&) = default;
+      RepoVarRetriever &operator=(const RepoVarRetriever &) = default;
+      RepoVarRetriever &operator=(RepoVarRetriever &&) = default;
+
+      const std::string * operator() (const std::string &val) {
+        return std::invoke ( memFn, _varContainer.get(), val );
+      }
+
+    private:
+      std::reference_wrapper<T> _varContainer;
+    };
+
+
     ///////////////////////////////////////////////////////////////////
     /// \class RepoVarExpand
     /// \brief Functor expanding repo variables in a string
@@ -57,7 +89,7 @@ namespace zypp
     struct ZYPP_API RepoVarExpand
     {
       /** Function taking a variable name and returning a pointer to the variable value or \c nullptr if unset. */
-      using VarRetriever = function<const std::string *(const std::string &)>;
+      using VarRetriever = RepoVarRetrieverFunctor;
 
       /** Return a copy of \a value_r with embedded variables expanded. */
       std::string operator()( const std::string & value_r, VarRetriever varRetriever_r ) const;
@@ -102,7 +134,7 @@ namespace zypp
      *
      * \see \ref RepoVarExpand for supported variable syntax.
      */
-    struct ZYPP_API RepoVariablesStringReplacer
+    struct ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoVariablesStringReplacer
     {
       std::string operator()( const std::string & value_r ) const;
 
@@ -116,24 +148,60 @@ namespace zypp
      * Replaces repository variables in the URL (except for user/pass inside authority)
      * \see RepoVariablesStringReplacer
      */
-    struct ZYPP_API RepoVariablesUrlReplacer
+    struct ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoVariablesUrlReplacer
     {
       Url operator()( const Url & url_r ) const;
     };
+
+    /*!
+     * Like \ref RepoVariablesStringReplacer, but uses a explicit \ref RepoVarRetrieverFunctor
+     * instead of a global static to retrieve variables
+     */
+    struct ZYPP_API RepoVariablesStringReplacerNg
+    {
+      RepoVariablesStringReplacerNg( RepoVarRetrieverFunctor varRetriever = nullptr );
+
+      std::string operator()( const std::string & value_r ) const;
+
+      /** \overload moving */
+      std::string operator()( std::string && value_r ) const;
+
+    private:
+       RepoVarRetrieverFunctor _varRetriever;
+    };
+
+    /*!
+     * Like \ref RepoVariablesUrlReplacer, but uses a explicit \ref RepoVarRetrieverFunctor
+     * instead of a global static to retrieve variables
+     */
+    struct ZYPP_API RepoVariablesUrlReplacerNg
+    {
+      RepoVariablesUrlReplacerNg( RepoVarRetrieverFunctor varRetriever = nullptr );
+
+      zypp::Url operator()( const zypp::Url & value ) const;
+
+    private:
+       RepoVarRetrieverFunctor _varRetriever;
+    };
+
   } // namespace repo
   ///////////////////////////////////////////////////////////////////
 
+  ZYPP_BEGIN_LEGACY_API
+
   /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced strings */
-  using RepoVariablesReplacedString = base::ValueTransform<std::string, repo::RepoVariablesStringReplacer>;
+  using RepoVariablesReplacedString ZYPP_INTERNAL_DEPRECATE = base::ValueTransform<std::string, repo::RepoVariablesStringReplacer>;
 
   /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced string lists */
-  using RepoVariablesReplacedStringList = base::ContainerTransform<std::list<std::string>, repo::RepoVariablesStringReplacer>;
+  using RepoVariablesReplacedStringList ZYPP_INTERNAL_DEPRECATE = base::ContainerTransform<std::list<std::string>, repo::RepoVariablesStringReplacer>;
 
   /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced urls */
-  using RepoVariablesReplacedUrl = base::ValueTransform<Url, repo::RepoVariablesUrlReplacer>;
+  using RepoVariablesReplacedUrl ZYPP_INTERNAL_DEPRECATE = base::ValueTransform<Url, repo::RepoVariablesUrlReplacer>;
 
   /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced url lists */
-  using RepoVariablesReplacedUrlList = base::ContainerTransform<std::list<Url>, repo::RepoVariablesUrlReplacer>;
+  using RepoVariablesReplacedUrlList ZYPP_INTERNAL_DEPRECATE = base::ContainerTransform<std::list<Url>, repo::RepoVariablesUrlReplacer>;
+
+  ZYPP_END_LEGACY_API
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

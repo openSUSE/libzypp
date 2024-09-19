@@ -28,19 +28,19 @@ namespace zyppng::repo {
   using namespace zyppng::operators;
 
   template <class ContextRefType>
-  DownloadContext<ContextRefType>::DownloadContext(ContextRefType zyppContext, const zypp::RepoInfo &info, const zypp::Pathname &destDir )
+  DownloadContext<ContextRefType>::DownloadContext(ContextRefType zyppContext, const RepoInfo &info, const zypp::Pathname &destDir )
     : CacheProviderContext<ContextRefType>( typename CacheProviderContext<ContextRefType>::private_constr_t{}, std::move(zyppContext), destDir )
     , _repoinfo(info)
   {}
 
   template <class ContextRefType>
-  const zypp::RepoInfo &DownloadContext<ContextRefType>::repoInfo() const { return _repoinfo; }
+  const RepoInfo &DownloadContext<ContextRefType>::repoInfo() const { return _repoinfo; }
 
   template <class ContextRefType>
   const zypp::filesystem::Pathname &DownloadContext<ContextRefType>::deltaDir() const { return _deltaDir; }
 
   template<class ContextRefType>
-  zypp::RepoInfo &DownloadContext<ContextRefType>::repoInfo() { return _repoinfo; }
+  RepoInfo &DownloadContext<ContextRefType>::repoInfo() { return _repoinfo; }
 
   template<class ContextRefType>
   std::vector<zypp::ManagedFile> &DownloadContext<ContextRefType>::files() { return _files; }

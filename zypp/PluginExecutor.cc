@@ -16,6 +16,8 @@
 #include <zypp/PathInfo.h>
 #include <zypp/PluginExecutor.h>
 
+#include <zypp/ng/userdata.h>
+
 using std::endl;
 
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
@@ -111,8 +113,8 @@ namespace zypp
         plugin.open();
 
         PluginFrame frame( "PLUGINBEGIN" );
-        if ( ZConfig::instance().hasUserData() )
-          frame.setHeader( "userdata", ZConfig::instance().userData() );
+        if ( zyppng::UserData::hasData() )
+          frame.setHeader( "userdata", zyppng::UserData::data() );
 
         doSend( plugin, frame );	// closes on error
         if ( plugin.isOpen() )

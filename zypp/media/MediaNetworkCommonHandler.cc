@@ -24,7 +24,7 @@ namespace zypp::media
   zypp::Url MediaNetworkCommonHandler::findGeoIPRedirect ( const zypp::Url &url )
   {
     try {
-      const auto &conf = ZConfig::instance();
+      const auto &conf = ZConfig::systemConfig();
       if ( !conf.geoipEnabled() ) {
         MIL << "GeoIp rewrites disabled via ZConfig." << std::endl;
         return Url();

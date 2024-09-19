@@ -67,8 +67,11 @@ SET( zypp_media_ng_HEADERS
   ng/provideres.h
   ng/provideitem.h
   ng/ProvideRes
+  ng/mediacontext.h
+  ng/MediaContext
   ng/mediaverifier.h
   ng/MediaVerifier
+  ng/auth/credentialmanager.h
   ng/worker/devicedriver.h
   ng/worker/DeviceDriver
   ng/worker/provideworker.h
@@ -93,11 +96,13 @@ SET( zypp_media_ng_SRCS
   ng/headervaluemap.cc
   ng/provide.cc
   ng/provideres.cc
+  ng/mediacontext.cc
   ng/providespec.cc
   ng/provideitem.cc
   ng/providemessage.cc
   ng/providequeue.cc
   ng/mediaverifier.cc
+  ng/auth/credentialmanager.cc
   ng/worker/devicedriver.cc
   ng/worker/provideworker.cc
   ng/worker/mountingworker.cc

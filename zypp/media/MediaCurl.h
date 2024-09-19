@@ -95,7 +95,8 @@ class MediaCurl : public MediaNetworkCommonHandler
 
   public:
 
-    MediaCurl( const Url &      url_r,
+    MediaCurl( zyppng::ContextBaseRef ctx,
+               const Url &      url_r,
                const Pathname & attach_point_hint_r );
 
     ~MediaCurl() override { try { release(); } catch(...) {} }

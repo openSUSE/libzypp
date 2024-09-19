@@ -1,13 +1,14 @@
 #include <sstream>
 #include <string>
-#include <zypp/parser/RepoFileReader.h>
+#include <zypp/ng/context.h>
+#include <zypp/ng/repoinfo.h>
+#include <zypp/ng/parser/RepoFileReader.h>
 #include <zypp/base/NonCopyable.h>
 
 #include "TestSetup.h"
 
 using std::stringstream;
 using std::string;
-using namespace zypp;
 
 static std::string suse_repo = "[factory-oss]\n"
 "name=factory-oss $releasever - $basearch\n"
@@ -29,13 +30,13 @@ static std::string suse_repo = "[factory-oss]\n"
 
 struct RepoCollector : private base::NonCopyable
 {
-  bool collect( const RepoInfo &repo )
+  bool collect( const zyppng::RepoInfo &repo )
   {
     repos.push_back(repo);
     return true;
   }
 
-  RepoInfoList repos;
+  zyppng::RepoInfoList repos;
 };
 
 // Must be the first test!
@@ -44,10 +45,12 @@ BOOST_AUTO_TEST_CASE(read_repo_file)
   {
     std::stringstream input(suse_repo);
     RepoCollector collector;
-    parser::RepoFileReader parser( input, bind( &RepoCollector::collect, &collector, _1 ) );
+    zyppng::SyncContextRef ctx = zyppng::SyncContext::create ();
+    ctx->initialize().unwrap();
+    zyppng::parser::RepoFileReader parser( ctx, input, bind( &RepoCollector::collect, &collector, _1 ) );
     BOOST_CHECK_EQUAL(1, collector.repos.size());
 
-    const RepoInfo & repo( collector.repos.front() );
+    const zyppng::RepoInfo & repo( collector.repos.front() );
 
     BOOST_CHECK_EQUAL( 5, repo.baseUrlsSize() );
     BOOST_CHECK_EQUAL( 5, repo.gpgKeyUrlsSize() );

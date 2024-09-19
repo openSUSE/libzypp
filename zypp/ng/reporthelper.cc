@@ -12,6 +12,7 @@
 #include <zypp/Digest.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/userrequest.h>
+#include <zypp/ng/repoinfo.h>
 
 namespace zyppng {
 
@@ -72,7 +73,7 @@ namespace zyppng {
         label = zypp::str::Format(
               // TranslatorExplanation: speaking of a file
               _("File '%s' from repository '%s' is unsigned, continue?"))
-            % file % keycontext.repoInfo().asUserString();
+            % file % keycontext.ngRepoInfo()->asUserString();
 
 
       auto req = BooleanChoiceRequest::create ( label, false, AcceptUnsignedFileRequest::makeData ( file, keycontext ) );
@@ -126,9 +127,12 @@ namespace zyppng {
   void KeyRingReportHelper<ZyppContextRef>::reportAutoImportKey(const std::list<zypp::PublicKeyData> &keyDataList_r, const zypp::PublicKeyData &keySigning_r, const zypp::KeyContext &keyContext_r)
   {
     if constexpr ( async() ) {
+
+      const auto &repoInfoOpt = keyContext_r.ngRepoInfo();
+
       const std::string &lbl =  zypp::str::Format( PL_( "Received %1% new package signing key from repository \"%2%\":",
                                                         "Received %1% new package signing keys from repository \"%2%\":",
-                                                        keyDataList_r.size() )) % keyDataList_r.size() % keyContext_r.repoInfo().asUserString();
+                                                        keyDataList_r.size() )) % keyDataList_r.size() % ( repoInfoOpt ? repoInfoOpt->asUserString() : std::string("norepo") );
       this->_ctx->sendUserRequest( ShowMessageRequest::create( lbl, ShowMessageRequest::MType::Info, KeyAutoImportInfoEvent::makeData( keyDataList_r, keySigning_r, keyContext_r) ) );
     } else {
       return _report->reportAutoImportKey( keyDataList_r, keySigning_r, keyContext_r );
@@ -145,7 +149,7 @@ namespace zyppng {
         label = zypp::str::Format(_("Signature verification failed for file '%1%'.") ) % file;
       else
         // translator: %1% is a file name, %2% a repositories na  me
-        label = zypp::str::Format(_("Signature verification failed for file '%1%' from repository '%2%'.") ) % file % keycontext.repoInfo().asUserString();
+        label = zypp::str::Format(_("Signature verification failed for file '%1%' from repository '%2%'.") ) % file % keycontext.ngRepoInfo()->asUserString();
 
       // @TODO use a centralized Continue string!
       label += std::string(" ") + _("Continue?");
@@ -171,7 +175,7 @@ namespace zyppng {
         label = zypp::str::Format(
               // translators: the last %s is gpg key ID
               _("File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"))
-            % file % keycontext.repoInfo().asUserString() % id;
+            % file % keycontext.ngRepoInfo()->asUserString() % id;
 
       auto req = BooleanChoiceRequest::create ( label, false, AcceptUnknownKeyRequest::makeData ( file, id, keycontext ) );
       this->_ctx->sendUserRequest ( req );

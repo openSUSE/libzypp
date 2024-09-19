@@ -1707,7 +1707,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
   opts.push_back("--noglob");
 
   // ZConfig defines cross-arch installation
-  if ( ! ZConfig::instance().systemArchitecture().compatibleWith( ZConfig::instance().defaultSystemArchitecture() ) )
+  if ( ! ZConfig::instance().systemArchitecture().compatibleWith( ZConfig::defaults().defaultSystemArchitecture() ) )
     opts.push_back("--ignorearch");
 
   if (flags & RPMINST_NODIGEST)

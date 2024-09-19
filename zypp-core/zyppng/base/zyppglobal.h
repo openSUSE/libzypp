@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <zypp-core/base/Easy.h>
+#include <zypp-core/Globals.h>
 
 /*
  * Convenience helpers to automatically generate boilerplate code
@@ -97,56 +98,6 @@ template <typename Ptr> inline auto zyppGetPtrHelper(Ptr &ptr) -> decltype(ptr.o
 
 #define Z_D() auto const d = d_func()
 #define Z_Z() auto const z = z_func()
-
-namespace zyppng {
-  template <typename T>
-  using Ref = std::shared_ptr<T>;
-
-  template <typename T>
-  using WeakRef = std::weak_ptr<T>;
-}
-
-namespace zypp {
-  template <typename T>
-  using Ref = std::shared_ptr<T>;
-
-  template <typename T>
-  using WeakRef = std::weak_ptr<T>;
-}
-
-/*!
- * Helper macro to declare Ref types
- */
-#define ZYPP_FWD_DECL_REFS(T) \
-  using T##Ref = Ref<T>; \
-  using T##WeakRef = WeakRef<T>
-
-/*
- * Helper Macro to forward declare types and ref types
- */
-#define ZYPP_FWD_DECL_TYPE_WITH_REFS(T) \
-  class T; \
-  ZYPP_FWD_DECL_REFS(T)
-
-#define ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1(T, TArg1) \
-  template< typename TArg1> \
-  class T; \
-  template< typename TArg1> \
-  using T##Ref = Ref<T<TArg1>>; \
-  template< typename TArg1> \
-  using T##WeakRef = WeakRef<T<TArg1>>
-
-
-//@TODO enable for c++20
-#if 0
-#define ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS(T, TArg1, ...) \
-  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
-  class T; \
-  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
-  using T##Ref = std::shared_ptr<T<TArg1 __VA_OPT__(,) __VA_ARGS__>>; \
-  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
-  using T##WeakRef = std::weak_ptr<T<TArg1 __VA_OPT__(,) __VA_ARGS__ >>
-#endif
 
 /*!
  * Defines a dummy struct that can be used to make a public constructor unusable

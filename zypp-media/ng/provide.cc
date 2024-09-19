@@ -701,7 +701,7 @@ namespace zyppng {
     return _items;
   }
 
-  zypp::media::CredManagerOptions &ProvidePrivate::credManagerOptions ()
+  zypp::media::CredManagerSettings &ProvidePrivate::credManagerOptions()
   {
     return _credManagerOptions;
   }
@@ -987,6 +987,13 @@ namespace zyppng {
     return _mediaRef->_localMountPoint;
   }
 
+  std::optional<ProvideMediaSpec> ProvideMediaHandle::spec() const
+  {
+    if ( !_mediaRef )
+      return {};
+    return _mediaRef->_spec;
+  }
+
   AttachedMediaInfo_constPtr ProvideMediaHandle::mediaInfo() const
   {
     return _mediaRef;
@@ -1001,7 +1008,11 @@ namespace zyppng {
 
   ProvideRef Provide::create( const zypp::filesystem::Pathname &workDir )
   {
-    return ProvideRef( new Provide(workDir) );
+    static ProvideWeakRef prov;
+    auto inst = prov.lock();
+    if ( !inst )
+      prov = inst = ProvideRef( new Provide(workDir) );
+    return inst;
   }
 
   expected<Provide::LazyMediaHandle> Provide::prepareMedia(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request)
@@ -1063,17 +1074,18 @@ namespace zyppng {
     return op->promise();
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const std::vector<zypp::Url> &urls, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request )
   {
+#warning Implement context handling
     Z_D();
     auto op = ProvideFileItem::create( urls, request, *d );
     d->queueItem (op);
     return op->promise();
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const zypp::Url &url, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request )
   {
-    return provide( std::vector<zypp::Url>{ url }, request );
+    return provide( std::move(ctx), std::vector<zypp::Url>{ url }, request );
   }
 
   AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
@@ -1117,13 +1129,13 @@ namespace zyppng {
     });
   }
 
-  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm  )
   {
     using namespace zyppng::operators;
 
     zypp::Url url("chksum:///");
     url.setPathName( p );
-    auto fut = provide( url, zyppng::ProvideFileSpec().setCustomHeaderValue( "chksumType", algorithm ) )
+    auto fut = provide( std::move(ctx), url, zyppng::ProvideFileSpec().setCustomHeaderValue( "chksumType", algorithm ) )
       | and_then( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
         if ( chksumRes.headers().contains(algorithm) ) {
           try {
@@ -1137,25 +1149,25 @@ namespace zyppng {
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile>> Provide::copyFile ( const zypp::Pathname &source, const zypp::Pathname &target )
+  AsyncOpRef<expected<zypp::ManagedFile>> Provide::copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target )
   {
     using namespace zyppng::operators;
 
     zypp::Url url("copy:///");
     url.setPathName( source );
-    auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target  ))
+    auto fut = provide( std::move(ctx), url, ProvideFileSpec().setDestFilenameHint( target  ))
       | and_then( [&]( ProvideRes &&copyRes ) {
           return expected<zypp::ManagedFile>::success( copyRes.asManagedFile() );
       } );
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( ProvideRes &&source, const zypp::filesystem::Pathname &target )
+  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( zyppng::MediaContextRef ctx, ProvideRes &&source, const zypp::filesystem::Pathname &target )
   {
     using namespace zyppng::operators;
 
     auto fName = source.file();
-    return copyFile( fName, target )
+    return copyFile( std::move(ctx), fName, target )
            | [ resSave = std::move(source) ] ( auto &&result ) {
                // callback lambda to keep the ProvideRes reference around until the op is finished,
                // if the op fails the callback will be cleaned up and so the reference
@@ -1195,13 +1207,13 @@ namespace zyppng {
     return d_func()->_workDir;
   }
 
-  const zypp::media::CredManagerOptions &Provide::credManangerOptions () const
+  const zypp::media::CredManagerSettings &Provide::credManangerOptions () const
   {
     Z_D();
     return d->_credManagerOptions;
   }
 
-  void Provide::setCredManagerOptions( const zypp::media::CredManagerOptions & opt )
+  void Provide::setCredManagerOptions( const zypp::media::CredManagerSettings & opt )
   {
     d_func()->_credManagerOptions = opt;
   }

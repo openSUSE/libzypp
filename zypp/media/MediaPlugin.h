@@ -29,7 +29,7 @@ namespace zypp
     class MediaPlugin : public MediaHandler
     {
       public:
-        MediaPlugin( const Url & url_r, const Pathname & attach_point_hint_r );
+        MediaPlugin( zyppng::ContextBaseRef ctx, const Url & url_r, const Pathname & attach_point_hint_r );
 
         ~MediaPlugin() override { try { release(); } catch(...) {} }
 

@@ -12,7 +12,6 @@
 
 #include <glib-object.h>
 #include <zypp-glib/zypp-glib_export.h>
-#include <zypp-glib/repomanageroptions.h>
 
 G_BEGIN_DECLS
 
@@ -43,7 +42,6 @@ typedef enum {
 /**
  * zypp_repo_manager_new: (constructor)
  * @ctx: The #ZyppContext the RepoManager should operate on
- * @options: (nullable): The RepoManager options, if null then a default option set is created based on the context
  * Returns: (transfer full): newly created #ZyppRepoManager
  */
 ZyppRepoManager *zypp_repo_manager_new( ZyppContext *ctx ) LIBZYPP_GLIB_EXPORT;

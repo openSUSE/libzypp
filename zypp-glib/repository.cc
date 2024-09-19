@@ -71,7 +71,7 @@ gchar *zypp_repository_get_name( ZyppRepository *self )
 
 ZyppRepoInfo *zypp_repository_get_repoinfo(ZyppRepository *self)
 {
-  if ( !self || !self->_data._repoManager )
+  if ( !self || !self->_data._repoManager || !self->_data._repo.ngInfo() )
     return nullptr;
-  return zypp_wrap_cpp ( self->_data._repo.info () );
+  return zypp_wrap_cpp ( *self->_data._repo.ngInfo() );
 }

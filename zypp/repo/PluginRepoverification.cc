@@ -20,6 +20,9 @@
 #include <zypp/ExternalProgram.h>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/WatchFile.h>
+
+#include <zypp/ng/repoinfo.h>
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -108,7 +111,7 @@ namespace zypp_private
     {
     public:
       Impl( RW_pointer<PluginRepoverification::Impl> parent_r,
-            Pathname &&sigpathLocal_r, Pathname &&keypathLocal_r, RepoInfo &&repo_r )
+            Pathname &&sigpathLocal_r, Pathname &&keypathLocal_r, zyppng::RepoInfo &&repo_r )
       : _parent { std::move( parent_r ) }
       , _sigpathLocal { std::move(sigpathLocal_r) }
       , _keypathLocal { std::move(keypathLocal_r) }
@@ -118,7 +121,7 @@ namespace zypp_private
       RW_pointer<PluginRepoverification::Impl> _parent;
       Pathname _sigpathLocal;
       Pathname _keypathLocal;
-      RepoInfo _repoinfo;
+      zyppng::RepoInfo _repoinfo;
     };
 
     ///////////////////////////////////////////////////////////////////
@@ -281,7 +284,7 @@ namespace zypp_private
     bool PluginRepoverification::checkIfNeeded()
     { return _pimpl->checkIfNeeded(); }
 
-    PluginRepoverification::Checker PluginRepoverification::getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, RepoInfo repo_r ) const
+    PluginRepoverification::Checker PluginRepoverification::getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, zyppng::RepoInfo repo_r ) const
     { return Checker( new Checker::Impl( _pimpl, std::move(sigpathLocal_r), std::move(keypathLocal_r), std::move(repo_r) ) ); }
 
 

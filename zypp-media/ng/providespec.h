@@ -25,11 +25,17 @@
 namespace zyppng
 {
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (MediaContext);
+
   class ProvideMediaSpec
   {
   public:
 
-    ProvideMediaSpec(std::string label="", zypp::Pathname verifyData = zypp::Pathname(), unsigned medianr = 1 );
+    ProvideMediaSpec( MediaContextRef ctx, std::string label="", zypp::Pathname verifyData = zypp::Pathname(), unsigned medianr = 1 );
+
+
+    MediaContextRef mediaContext() const;
+    void setMediaContext( MediaContextRef ctx );
 
     /*!
      * The label of the medium, this will be shown in case a media change is required

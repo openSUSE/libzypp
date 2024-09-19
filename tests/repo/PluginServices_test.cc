@@ -1,8 +1,4 @@
-#include <stdio.h>
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <list>
 #include <boost/test/unit_test.hpp>
 
 #include <zypp/ZYppFactory.h>
@@ -10,15 +6,17 @@
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
 #include <zypp/ZConfig.h>
-#include <zypp/repo/PluginServices.h>
-#include <zypp/ServiceInfo.h>
+
+#include <zypp/ng/context.h>
+#include <zypp/ng/repo/pluginservices.h>
+#include <zypp/ng/serviceinfo.h>
 
 using std::cout;
 using std::endl;
 using std::string;
-using namespace zypp;
+using namespace zyppng;
 using namespace boost::unit_test;
-using namespace zypp::repo;
+using namespace zyppng::repo;
 
 #define DATADIR (Pathname(TESTS_SRC_DIR) +  "/repo/yum/data")
 
@@ -46,7 +44,9 @@ BOOST_AUTO_TEST_CASE(plugin_services)
 {
   ServiceCollector::ServiceSet services;
 
-  PluginServices local("/space/tmp/services", ServiceCollector(services));
+  auto ctx = SyncContext::create();
+  ctx->initialize().unwrap();
+  PluginServices local(ctx, "/space/tmp/services", ServiceCollector(services));
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

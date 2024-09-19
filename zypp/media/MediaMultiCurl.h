@@ -42,7 +42,7 @@ public:
   friend class multifetchrequest;
   friend class multifetchworker;
 
-  MediaMultiCurl(const Url &url_r, const Pathname & attach_point_hint_r);
+  MediaMultiCurl( zyppng::ContextBaseRef ctx, const Url &url_r, const Pathname & attach_point_hint_r);
   ~MediaMultiCurl() override;
 
   void doGetFileCopy( const OnMediaLocation & srcFile, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report, RequestOptions options = OPTION_NONE ) const override;

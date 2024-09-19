@@ -12,7 +12,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <zypp/repo/PackageDelta.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/Gettext.h>
@@ -35,8 +34,10 @@
 #include <zypp/FileChecker.h>
 #include <zypp/target/rpm/RpmHeader.h>
 
+#include <zypp-core/zyppng/pipelines/Optional>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/keyringwf.h>
+#include <zypp/ng/repoinfo.h>
 
 #include <zypp/zypp_detail/ZYppImpl.h>
 
@@ -144,8 +145,11 @@ namespace zypp
       /** Provide the package if it is cached. */
       ManagedFile providePackageFromCache() const override
       {
+        const auto &ri = _package->ngRepoInfo();
+        if ( !ri )
+          return ManagedFile();
         ManagedFile ret( doProvidePackageFromCache() );
-        if ( ! ( ret->empty() ||  _package->repoInfo().keepPackages() ) )
+        if ( ! ( ret->empty() ||  ri->keepPackages() ) )
           ret.setDispose( filesystem::unlink );
         return ret;
       }
@@ -187,10 +191,14 @@ namespace zypp
         ManagedFile ret;
         OnMediaLocation loc = _package->location();
 
+        const auto &ri = _package->ngRepoInfo();
+        if ( !ri )
+          ZYPP_THROW(Exception("No RepoInfo in repository, can not provide a package."));
+
         ProvideFilePolicy policy;
         policy.progressCB( bind( &Base::progressPackageDownload, this, _1 ) );
         policy.fileChecker( bind( &Base::rpmSigFileChecker, this, _1 ) );
-        return _access.provideFile( _package->repoInfo(), loc, policy );
+        return _access.provideFile( *ri, loc, policy );
       }
 
     protected:
@@ -219,8 +227,8 @@ namespace zypp
       //@{
       void rpmSigFileChecker( const Pathname & file_r ) const
       {
-        RepoInfo info = _package->repoInfo();
-        if ( info.pkgGpgCheck() )
+        const auto &info = _package->ngRepoInfo();
+        if ( info.value_or( zyppng::RepoInfo(nullptr) ).pkgGpgCheck() )
         {
           UserData userData( "pkgGpgCheck" );
           ResObject::constPtr roptr( _package );	// gcc6 needs it more explcit. Has problem deducing
@@ -230,7 +238,7 @@ namespace zypp
 
           RpmDb::CheckPackageResult res = RpmDb::CHK_NOKEY;
           while ( res == RpmDb::CHK_NOKEY ) {
-            res = packageSigCheck( file_r, info.pkgGpgCheckIsMandatory(), userData );
+            res = packageSigCheck( file_r, info->pkgGpgCheckIsMandatory(), userData );
 
             // publish the checkresult, even if it is OK. Apps may want to report something...
             report()->pkgGpgCheck( userData );
@@ -250,7 +258,7 @@ namespace zypp
 
               std::string keyID = hr->signatureKeyID();
               if ( keyID.length() > 0 ) {
-                if ( !zyppng::KeyRingWorkflow::provideAndImportKeyFromRepository ( zypp::zypp_detail::GlobalStateHelper::context(), keyID, info ) )
+                if ( !zyppng::KeyRingWorkflow::provideAndImportKeyFromRepository ( zypp::zypp_detail::GlobalStateHelper::context(), keyID, *info ) )
                   break;
 
               } else {
@@ -391,25 +399,27 @@ namespace zypp
       }
 
       // HERE: cache misss, check toplevel cache or do download:
-      RepoInfo info = _package->repoInfo();
+      const auto &info = _package->ngRepoInfo();
+      if ( !info )
+        ZYPP_THROW(Exception("No RepoInfo in repository, can not provide a package."));
 
       // Check toplevel cache
       {
-        RepoManagerOptions topCache;
-        if ( info.packagesPath().dirname() != topCache.repoPackagesCachePath )	// not using toplevel cache
+        RepoManagerOptions topCache( info->context() );
+        if ( info->packagesPath().dirname() != topCache.repoPackagesCachePath )	// not using toplevel cache
         {
           const OnMediaLocation & loc( _package->location() );
           if ( ! loc.checksum().empty() )	// no cache hit without checksum
           {
-            PathInfo pi( topCache.repoPackagesCachePath / info.packagesPath().basename() / info.path() / loc.filename() );
+            PathInfo pi( topCache.repoPackagesCachePath / info->packagesPath().basename() / info->path() / loc.filename() );
             if ( pi.isExist() && loc.checksum() == CheckSum( loc.checksum().type(), std::ifstream( pi.c_str() ) ) )
             {
               report()->start( _package, pi.path().asFileUrl() );
-              const Pathname & dest( info.packagesPath() / info.path() / loc.filename() );
+              const Pathname & dest( info->packagesPath() / info->path() / loc.filename() );
               if ( filesystem::assert_dir( dest.dirname() ) == 0 && filesystem::hardlinkCopy( pi.path(), dest ) == 0 )
               {
                 ret = ManagedFile( dest );
-                if ( ! info.keepPackages() )
+                if ( ! info->keepPackages() )
                   ret.setDispose( filesystem::unlink );
 
                 MIL << "provided Package from toplevel cache " << _package << " at " << ret << endl;
@@ -422,11 +432,11 @@ namespace zypp
       }
 
       // FIXME we only support the first url for now.
-      if ( info.baseUrlsEmpty() )
+      if ( info->baseUrlsEmpty() )
         ZYPP_THROW(Exception("No url in repository."));
 
       MIL << "provide Package " << _package << endl;
-      Url url = * info.baseUrlsBegin();
+      Url url = * info->baseUrlsBegin();
       try {
       do {
         _retry = false;
@@ -570,10 +580,14 @@ namespace zypp
 
     ManagedFile RpmPackageProvider::doProvidePackage() const
     {
+      const auto &ri = _package->ngRepoInfo();
+
       // check whether to process patch/delta rpms
       // FIXME we only check the first url for now.
-      if ( ZConfig::instance().download_use_deltarpm()
-        && ( _package->repoInfo().url().schemeIsDownloading() || ZConfig::instance().download_use_deltarpm_always() ) )
+      if ( ri
+        && ri->context()
+        && ri->context()->config().download_use_deltarpm()
+        && ( _package->ngRepoInfo()->url().schemeIsDownloading() ||  ri->context()->config().download_use_deltarpm_always() ) )
       {
         std::list<DeltaRpm> deltaRpms;
         _deltas.deltaRpms( _package ).swap( deltaRpms );
@@ -610,7 +624,11 @@ namespace zypp
         {
           ProvideFilePolicy policy;
           policy.progressCB( bind( &RpmPackageProvider::progressDeltaDownload, this, _1 ) );
-          delta = _access.provideFile( delta_r.repository().info(), delta_r.location(), policy );
+          const auto &optRepo = delta_r.repository().ngInfo();
+          if ( !optRepo ) {
+            return ManagedFile();
+          }
+          delta = _access.provideFile( *optRepo, delta_r.location(), policy );
         }
       catch ( const Exception & excpt )
         {
@@ -627,7 +645,7 @@ namespace zypp
         }
 
       // Build the package
-      Pathname cachedest( _package->repoInfo().packagesPath() / _package->repoInfo().path() / _package->location().filename() );
+      Pathname cachedest( _package->ngRepoInfo()->packagesPath() / _package->ngRepoInfo()->path() / _package->location().filename() );
       Pathname builddest( cachedest.extend( ".drpm" ) );
 
       if ( ! applydeltarpm::provide( delta, builddest,

@@ -34,6 +34,8 @@ extern "C"
 #include <zypp/sat/Pool.h>
 #include <zypp/sat/LookupAttr.h>
 
+#include <zypp/ng/repoinfo.h>
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -150,7 +152,7 @@ namespace zypp
       if ( ret.isSystemRepo() )
       {
         // autoprovide (dummy) RepoInfo
-        RepoInfo info;
+        zyppng::RepoInfo info(nullptr);
         info.setAlias( alias_r );
         info.setName( alias_r );
         info.setAutorefresh( true );
@@ -197,7 +199,14 @@ namespace zypp
     Repository Pool::addRepoSolv( const Pathname & file_r )
     { return addRepoSolv( file_r, file_r.basename() ); }
 
+    ZYPP_BEGIN_LEGACY_API
     Repository Pool::addRepoSolv( const Pathname & file_r, const RepoInfo & info_r )
+    {
+      return addRepoSolv( file_r, info_r.ngRepoInfo() );
+    }
+    ZYPP_END_LEGACY_API
+
+    Repository Pool::addRepoSolv( const Pathname & file_r, const zyppng::RepoInfo & info_r )
     {
       Repository ret( addRepoSolv( file_r, info_r.alias() ) );
       ret.setInfo( info_r );
@@ -221,12 +230,19 @@ namespace zypp
     Repository Pool::addRepoHelix( const Pathname & file_r )
     { return addRepoHelix( file_r, file_r.basename() ); }
 
-    Repository Pool::addRepoHelix( const Pathname & file_r, const RepoInfo & info_r )
+    Repository Pool::addRepoHelix( const Pathname & file_r, const zyppng::RepoInfo & info_r )
     {
       Repository ret( addRepoHelix( file_r, info_r.alias() ) );
       ret.setInfo( info_r );
       return ret;
     }
+
+    ZYPP_BEGIN_LEGACY_API
+    Repository Pool::addRepoHelix( const Pathname & file_r, const RepoInfo & info_r )
+    {
+      return addRepoHelix( file_r, info_r.ngRepoInfo() );
+    }
+    ZYPP_END_LEGACY_API
 
    /////////////////////////////////////////////////////////////////
 

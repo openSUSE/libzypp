@@ -18,6 +18,8 @@
 #include <zypp/Package.h>
 #include <zypp/target/CommitPackageCacheReadAhead.h>
 
+#include <zypp/ng/repoinfo.h>
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -36,7 +38,7 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const IMediaKey & obj )
     {
       return str << "[S" << obj._repo.id() << ":" << obj._mediaNr << "]"
-                 << " " << obj._repo.info().alias();
+                 << " " << (obj._repo.ngInfo() ? obj._repo.ngInfo()->alias() : "norepo" );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -63,9 +65,9 @@ namespace zypp
     {
       if ( pi->mediaNr() == 0 ) // no media access at all
         return false;
-      if ( pi->repoInfo().baseUrlsEmpty() )
-        return false; // no Url - should actually not happen
-      std::string scheme( pi->repoInfo().baseUrlsBegin()->getScheme() );
+      if ( ! pi->ngRepoInfo() || pi->ngRepoInfo()->baseUrlsEmpty() )
+        return false; // no RepoInfo or no Url - should actually not happen
+      std::string scheme( pi->ngRepoInfo()->baseUrlsBegin()->getScheme() );
       return ( scheme == "dvd" || scheme == "cd" );
     }
 

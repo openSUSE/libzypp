@@ -11,10 +11,23 @@
 */
 
 #include "mediaconfig.h"
+#include <zypp-core/parser/inidict.h>
+#include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/base/String.h>
 
+#include <zypp-media/ng/mediacontext.h>
+
 namespace zypp {
+
+  namespace {
+    // LEGACY: detect zypp conf
+    zypp::Pathname autodetectZyppConfPath() {
+      const char *env_confpath = getenv("ZYPP_CONF");
+      return env_confpath ? env_confpath
+                          : zyppng::MediaContext::defaultConfigPath();
+    }
+  }
 
   class MediaConfigPrivate {
   public:
@@ -40,13 +53,42 @@ namespace zypp {
 
   };
 
-  MediaConfig::MediaConfig() : d_ptr( new MediaConfigPrivate() )
+  MediaConfig::MediaConfig( Pathname confFile ) : d_ptr( new MediaConfigPrivate() )
+  {
+    if ( zypp::filesystem::PathInfo(confFile).isExist() )
+    {
+      zypp::parser::IniDict dict( confFile );
+      for ( auto sit = dict.sectionsBegin();
+            sit != dict.sectionsEnd();
+            ++sit )
+      {
+        const std::string& section(*sit);
+        //MIL << section << endl;
+        for ( auto it = dict.entriesBegin(*sit);
+              it != dict.entriesEnd(*sit);
+              ++it )
+        {
+          std::string entry(it->first);
+          std::string value(it->second);
+          setConfigValue( section, entry, value );
+        }
+      }
+    }
+  }
+
+  MediaConfig::~MediaConfig()
   { }
 
-  MediaConfig &MediaConfig::instance()
+  MediaConfig &MediaConfig::systemConfig()
   {
-    static MediaConfig instance;
-    return instance;
+    static MediaConfig _sysConf( autodetectZyppConfPath() );
+    return _sysConf;
+  }
+
+  const MediaConfig &MediaConfig::defaults()
+  {
+    static MediaConfig _defConf( "" );
+    return _defConf;
   }
 
   bool MediaConfig::setConfigValue( const std::string &section, const std::string &entry, const std::string &value )

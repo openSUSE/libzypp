@@ -9,6 +9,8 @@
 /** \file	zypp/parser/RepoFileReader.cc
  *
 */
+
+#include "servicefilereader.h"
 #include <iostream>
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
@@ -17,14 +19,13 @@
 #include <zypp-core/base/UserRequestException>
 
 #include <zypp-core/parser/IniDict>
-#include <zypp/parser/ServiceFileReader.h>
-#include <zypp/ServiceInfo.h>
+#include <zypp/ng/serviceinfo.h>
 
 using std::endl;
 using zypp::parser::IniDict;
 
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 { /////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
   namespace parser
@@ -33,28 +34,28 @@ namespace zypp
     class ServiceFileReader::Impl
     {
     public:
-      static void parseServices( const Pathname & file,
+      static void parseServices( zyppng::ContextBaseRef ctx, const zypp::Pathname & file,
           const ServiceFileReader::ProcessService & callback );
     };
 
-    void ServiceFileReader::Impl::parseServices( const Pathname & file,
+    void ServiceFileReader::Impl::parseServices( zyppng::ContextBaseRef ctx, const zypp::Pathname & file,
                                   const ServiceFileReader::ProcessService & callback/*,
                                   const ProgressData::ReceiverFnc &progress*/ )
     try {
-      InputStream is(file);
+      zypp::InputStream is(file);
       if( is.stream().fail() )
       {
-        ZYPP_THROW(Exception("Failed to open service file"));
+        ZYPP_THROW(zypp::Exception("Failed to open service file"));
       }
 
-      parser::IniDict dict(is);
-      for ( parser::IniDict::section_const_iterator its = dict.sectionsBegin();
+      zypp::parser::IniDict dict(is);
+      for ( zypp::parser::IniDict::section_const_iterator its = dict.sectionsBegin();
             its != dict.sectionsEnd();
             ++its )
       {
         MIL << (*its) << endl;
 
-        ServiceInfo service(*its);
+        zyppng::ServiceInfo service(ctx, *its);
         std::map<std::string,std::pair<std::string,ServiceInfo::RepoState>> repoStates;	// <repo_NUM,< alias,RepoState >>
 
         for ( IniDict::entry_const_iterator it = dict.entriesBegin(*its);
@@ -65,21 +66,21 @@ namespace zypp
           if ( it->first == "name" )
             service.setName( it->second );
           else if ( it->first == "url" && ! it->second.empty() )
-            service.setUrl( Url (it->second) );
+            service.setUrl( zypp::Url (it->second) );
           else if ( it->first == "enabled" )
-            service.setEnabled( str::strToTrue( it->second ) );
+            service.setEnabled( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "autorefresh" )
-            service.setAutorefresh( str::strToTrue( it->second ) );
+            service.setAutorefresh( zypp::str::strToTrue( it->second ) );
           else if ( it->first == "type" )
-            service.setType( repo::ServiceType(it->second) );
+            service.setType( zypp::repo::ServiceType(it->second) );
           else if ( it->first == "ttl_sec" )
-            service.setTtl( str::strtonum<Date::Duration>(it->second) );
+            service.setTtl( zypp::str::strtonum<zypp::Date::Duration>(it->second) );
           else if ( it->first == "lrf_dat" )
-            service.setLrf( Date( it->second ) );
+            service.setLrf( zypp::Date( it->second ) );
           else if ( it->first == "repostoenable" )
           {
             std::vector<std::string> aliases;
-            str::splitEscaped( it->second, std::back_inserter(aliases) );
+            zypp::str::splitEscaped( it->second, std::back_inserter(aliases) );
             for_( ait, aliases.begin(), aliases.end() )
             {
               service.addRepoToEnable( *ait );
@@ -88,28 +89,28 @@ namespace zypp
           else if ( it->first == "repostodisable" )
           {
             std::vector<std::string> aliases;
-            str::splitEscaped( it->second, std::back_inserter(aliases) );
+            zypp::str::splitEscaped( it->second, std::back_inserter(aliases) );
             for_( ait, aliases.begin(), aliases.end() )
             {
               service.addRepoToDisable( *ait );
             }
           }
-          else if ( str::startsWith( it->first, "repo_" ) )
+          else if ( zypp::str::startsWith( it->first, "repo_" ) )
           {
-            static str::regex rxexpr( "([0-9]+)(_(.*))?" );
-            str::smatch what;
-            if ( str::regex_match( it->first.c_str()+5/*repo_*/, what, rxexpr ) )
+            static zypp::str::regex rxexpr( "([0-9]+)(_(.*))?" );
+            zypp::str::smatch what;
+            if ( zypp::str::regex_match( it->first.c_str()+5/*repo_*/, what, rxexpr ) )
             {
               std::string tag( what[1] );
               if (  what.size() > 3 )
               {
                 // attribute
                 if ( what[3] == "enabled" )
-                  repoStates[tag].second.enabled = str::strToBool( it->second, repoStates[tag].second.enabled );
+                  repoStates[tag].second.enabled = zypp::str::strToBool( it->second, repoStates[tag].second.enabled );
                 else if ( what[3] == "autorefresh" )
-                  repoStates[tag].second.autorefresh = str::strToBool( it->second, repoStates[tag].second.autorefresh );
+                  repoStates[tag].second.autorefresh = zypp::str::strToBool( it->second, repoStates[tag].second.autorefresh );
                 else if ( what[3] == "priority" )
-                  str::strtonum( it->second, repoStates[tag].second.priority );
+                  zypp::str::strtonum( it->second, repoStates[tag].second.priority );
                 else
                   ERR << "Unknown attribute " << it->first << " ignored" << endl;
               }
@@ -145,10 +146,10 @@ namespace zypp
 
         // add it to the list.
         if ( !callback(service) )
-          ZYPP_THROW(AbortRequestException());
+          ZYPP_THROW(zypp::AbortRequestException());
       }
     }
-    catch ( Exception & ex ) {
+    catch ( zypp::Exception & ex ) {
       ex.addHistory( "Parsing .service file "+file.asString() );
       ZYPP_RETHROW( ex );
     }
@@ -159,11 +160,13 @@ namespace zypp
     //
     ///////////////////////////////////////////////////////////////////
 
-    ServiceFileReader::ServiceFileReader( const Pathname & repo_file,
+    ServiceFileReader::ServiceFileReader(
+                                    zyppng::ContextBaseRef ctx,
+                                    const zypp::Pathname & repo_file,
                                     const ProcessService & callback/*,
                                     const ProgressData::ReceiverFnc &progress */)
     {
-      Impl::parseServices(repo_file, callback/*, progress*/);
+      Impl::parseServices(ctx, repo_file, callback/*, progress*/);
       //MIL << "Done" << endl;
     }
 

@@ -257,7 +257,7 @@ namespace zyppng {
     /*!
      * Loads the given RepoInfo associated with a solvFile into the Pool.
      */
-    expected<zypp::Repository> addRepository ( zypp::RepoInfo info, zypp::Pathname solvFilePath )
+    expected<zypp::Repository> addRepository ( RepoInfo info, zypp::Pathname solvFilePath )
     {
       return expected<zypp::Repository>::error( ZYPP_EXCPT_PTR( zypp::Exception("Not implemented")) );
     }

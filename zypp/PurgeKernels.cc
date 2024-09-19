@@ -22,12 +22,10 @@
 #include <zypp/ZConfig.h>
 
 #include <iostream>
-#include <fstream>
 #include <map>
 #include <unordered_map>
 #include <sys/utsname.h>
 #include <functional>
-#include <array>
 #include <climits>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
@@ -132,7 +130,7 @@ namespace zypp {
     std::set<Edition> _runningKernelEditionVariants;
     Flavour           _runningKernelFlavour;
     Arch              _kernelArch;
-    std::string       _keepSpec = ZConfig::instance().multiversionKernels();
+    std::string       _keepSpec = ZConfig::systemConfig().multiversionKernels();
     bool              _keepRunning     = true;
     bool              _detectedRunning = false;
   };

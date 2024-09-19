@@ -63,7 +63,7 @@ namespace zyppng::CheckSumWorkflow {
 
       } else {
 
-        return _context->provider()->checksumForFile ( _file, _checksum.type() )
+        return _context->provider()->checksumForFile ( _context, _file, _checksum.type() )
           | [] ( expected<zypp::CheckSum> sum ) {
             if ( !sum )
               return zypp::CheckSum( );

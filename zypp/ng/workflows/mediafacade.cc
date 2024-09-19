@@ -15,6 +15,7 @@
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp-media/mount.h>
 #include <zypp/repo/SUSEMediaVerifier.h>
+#include <zypp/ng/context.h>
 
 namespace zyppng {
 
@@ -141,6 +142,13 @@ namespace zyppng {
     return *_data;
   }
 
+  std::optional<ProvideMediaSpec> SyncMediaHandle::spec() const
+  {
+    if ( !_data )
+      return {};
+    return _data->spec();
+  }
+
   MediaSyncFacade::Res::Res(MediaHandle hdl, zypp::ManagedFile file)
     : _res( std::move(file) )
     , _provideHandle( std::move (hdl) )
@@ -201,7 +209,7 @@ namespace zyppng {
           if ( request.medianr() > 1 )
             effectiveUrl = zypp::MediaSetAccess::rewriteUrl( effectiveUrl, request.medianr() );
 
-          attachId = mgr.open( effectiveUrl );
+          attachId = mgr.open( std::dynamic_pointer_cast<ContextBase>( request.mediaContext() ), effectiveUrl );
           if ( !request.mediaFile().empty() ) {
             mgr.addVerifier( *attachId, zypp::media::MediaVerifierRef( new zypp::repo::SUSEMediaVerifier( request.mediaFile(), request.medianr() ) ) );
           }
@@ -446,7 +454,7 @@ namespace zyppng {
         });
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request)
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request)
   {
     using namespace zyppng::operators;
 
@@ -460,7 +468,7 @@ namespace zyppng {
       zypp::Pathname fileName(url.getPathName());
       url.setPathName ("/");
 
-      expected<MediaSyncFacade::Res> res = attachMedia( url, ProvideMediaSpec( "" ) )
+      expected<MediaSyncFacade::Res> res = attachMedia( url, ProvideMediaSpec( std::move(ctx), "" ) )
           | and_then( [&, this]( const MediaSyncFacade::MediaHandle& handle ) {
               return provide( handle, fileName, request.asOnMediaLocation(fileName, 1));
             });
@@ -483,9 +491,9 @@ namespace zyppng {
 
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const zypp::Url &url, const ProvideFileSpec &request)
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request)
   {
-    return provide( std::vector<zypp::Url>{url}, request );
+    return provide( std::move(ctx), std::vector<zypp::Url>{url}, request );
   }
 
   expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request)
@@ -536,7 +544,7 @@ namespace zyppng {
     });
   }
 
-  zyppng::expected<zypp::CheckSum> MediaSyncFacade::checksumForFile(const zypp::Pathname &p, const std::string &algorithm)
+  zyppng::expected<zypp::CheckSum> MediaSyncFacade::checksumForFile( MediaContextRef , const zypp::Pathname &p, const std::string &algorithm)
   {
     try {
       return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, zypp::filesystem::checksum ( p, algorithm ) ) );
@@ -545,7 +553,7 @@ namespace zyppng {
     }
   }
 
-  expected<zypp::ManagedFile> MediaSyncFacade::copyFile(const zypp::Pathname &source, const zypp::Pathname &target)
+  expected<zypp::ManagedFile> MediaSyncFacade::copyFile( MediaContextRef, const zypp::Pathname &source, const zypp::Pathname &target)
   {
     try {
       // do what Provide would do and make a URL
@@ -570,10 +578,10 @@ namespace zyppng {
     }
   }
 
-  expected<zypp::ManagedFile> MediaSyncFacade::copyFile(zyppng::MediaSyncFacade::Res source, const zypp::Pathname &target)
+  expected<zypp::ManagedFile> MediaSyncFacade::copyFile( zyppng::MediaContextRef ctx, zyppng::MediaSyncFacade::Res source, const zypp::Pathname &target)
   {
     // not much to do here, since this will block until the file has been copied we do not need to remember the ProvideRes
-    return copyFile( source.file(), target );
+    return copyFile( std::move(ctx), source.file(), target );
   }
 
   void zyppng::MediaSyncFacade::releaseMedium(const AttachedSyncMediaInfo *ptr)

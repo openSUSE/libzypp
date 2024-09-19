@@ -25,7 +25,7 @@
 namespace zypp {
   class Url;
   namespace media {
-    struct CredManagerOptions;
+    struct CredManagerSettings;
   }
 }
 
@@ -61,6 +61,7 @@ namespace zyppng {
       std::string handle() const;
       const zypp::Url &baseUrl() const;
       const std::optional<zypp::Pathname> &localPath() const;
+      std::optional<ProvideMediaSpec> spec() const;
       zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:
       ProvideWeakRef _parent;
@@ -134,8 +135,8 @@ namespace zyppng {
     AsyncOpRef<expected<MediaHandle>> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    AsyncOpRef<expected<ProvideRes>> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
+    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
+    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
@@ -143,13 +144,13 @@ namespace zyppng {
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
+    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( ProvideRes &&source, const zypp::Pathname &target );
+    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target );
+    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, ProvideRes &&source, const zypp::Pathname &target );
 
     void start();
     void setWorkerPath( const zypp::Pathname &path );
@@ -160,8 +161,8 @@ namespace zyppng {
 
     const zypp::Pathname &providerWorkdir () const;
 
-    const zypp::media::CredManagerOptions &credManangerOptions () const;
-    void setCredManagerOptions( const zypp::media::CredManagerOptions & opt );
+    const zypp::media::CredManagerSettings &credManangerOptions () const;
+    void setCredManagerOptions(const zypp::media::CredManagerSettings &opt );
 
     SignalProxy<void()> sigIdle();
 
@@ -182,15 +183,15 @@ namespace zyppng {
 
     /*!
      * This signal is emitted in case a request signaled a need to get Auth Info and nothing was found
-     * in the \ref zypp::media::CredentialManager.
+     * in the \ref zyppng::media::CredentialManager.
      */
     SignalProxy< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > sigAuthRequired();
 
 
-    static auto copyResultToDest ( ProvideRef provider, const zypp::Pathname &targetPath ) {
-      return [ providerRef=std::move(provider), targetPath = targetPath ]( ProvideRes &&file ){
+    static auto copyResultToDest ( ProvideRef provider, MediaContextRef ctx, const zypp::Pathname &targetPath ) {
+      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = targetPath ]( ProvideRes &&file ){
         zypp::filesystem::assert_dir( targetPath.dirname () );
-        return providerRef->copyFile( std::move(file), targetPath );
+        return providerRef->copyFile( opContext, std::move(file), targetPath );
       };
     }
 

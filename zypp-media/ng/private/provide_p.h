@@ -18,7 +18,7 @@
 #include "providequeue_p.h"
 #include "attachedmediainfo_p.h"
 
-#include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/auth/credentialmanager.h>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideItem>
 #include <zypp-media/ng/ProvideSpec>
@@ -83,7 +83,7 @@ namespace zyppng {
 
     std::list<ProvideItemRef> &items();
 
-    zypp::media::CredManagerOptions &credManagerOptions ();
+    zypp::media::CredManagerSettings &credManagerOptions ();
 
     std::vector<zypp::Url> sanitizeUrls ( const std::vector<zypp::Url> &urls );
 
@@ -140,7 +140,7 @@ namespace zyppng {
     std::unordered_map< std::string, FileCacheItem > _fileCache;
 
     zypp::Pathname _workerPath;
-    zypp::media::CredManagerOptions _credManagerOptions;
+    zypp::media::CredManagerSettings _credManagerOptions;
 
     ProvideStatusRef _log;
     Signal<void()> _sigIdle;

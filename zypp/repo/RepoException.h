@@ -20,6 +20,13 @@
 #include <zypp/RepoInfo.h>
 #include <zypp/ServiceInfo.h>
 
+namespace zyppng {
+  class RepoInfo;
+  class ServiceInfo;
+}
+
+ZYPP_BEGIN_LEGACY_API
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -41,6 +48,9 @@ namespace zypp
         RepoException( const std::string & msg_r );
         RepoException( const RepoInfo & info );
         RepoException( const RepoInfo & info, const std::string & msg_r );
+        RepoException( const zyppng::RepoInfo & info );
+        RepoException( const zyppng::RepoInfo & info, const std::string & msg_r );
+
         ~RepoException() throw() override;
 
         RepoInfo info()
@@ -69,6 +79,8 @@ namespace zypp
         RepoNotCachedException( const std::string & msg_r );
         RepoNotCachedException( const RepoInfo & info );
         RepoNotCachedException( const RepoInfo & info, const std::string & msg_r );
+        RepoNotCachedException( const zyppng::RepoInfo & info );
+        RepoNotCachedException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -82,6 +94,8 @@ namespace zypp
         RepoNoUrlException( const std::string & msg_r );
         RepoNoUrlException( const RepoInfo & info );
         RepoNoUrlException( const RepoInfo & info, const std::string & msg_r );
+        RepoNoUrlException( const zyppng::RepoInfo & info );
+        RepoNoUrlException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -95,6 +109,8 @@ namespace zypp
         RepoNoAliasException( const std::string & msg_r );
         RepoNoAliasException( const RepoInfo & info );
         RepoNoAliasException( const RepoInfo & info, const std::string & msg_r );
+        RepoNoAliasException( const zyppng::RepoInfo & info );
+        RepoNoAliasException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -107,6 +123,8 @@ namespace zypp
       RepoInvalidAliasException( const std::string & msg_r );
       RepoInvalidAliasException( const RepoInfo & info );
       RepoInvalidAliasException( const RepoInfo & info, const std::string & msg_r );
+      RepoInvalidAliasException( const zyppng::RepoInfo & info );
+      RepoInvalidAliasException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -120,6 +138,8 @@ namespace zypp
         RepoNotFoundException( const std::string & msg_r );
         RepoNotFoundException( const RepoInfo & info );
         RepoNotFoundException( const RepoInfo & info, const std::string & msg_r );
+        RepoNotFoundException( const zyppng::RepoInfo & info );
+        RepoNotFoundException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -133,6 +153,8 @@ namespace zypp
         RepoAlreadyExistsException( const std::string & msg_r );
         RepoAlreadyExistsException( const RepoInfo & info );
         RepoAlreadyExistsException( const RepoInfo & info, const std::string & msg_r );
+        RepoAlreadyExistsException( const zyppng::RepoInfo & info );
+        RepoAlreadyExistsException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -146,6 +168,8 @@ namespace zypp
         RepoUnknownTypeException( const std::string & msg_r );
         RepoUnknownTypeException( const RepoInfo & info );
         RepoUnknownTypeException( const RepoInfo & info, const std::string & msg_r );
+        RepoUnknownTypeException( const zyppng::RepoInfo & info );
+        RepoUnknownTypeException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -159,6 +183,8 @@ namespace zypp
         RepoMetadataException( const std::string & msg_r );
         RepoMetadataException( const RepoInfo & info );
         RepoMetadataException( const RepoInfo & info, const std::string & msg_r );
+        RepoMetadataException( const zyppng::RepoInfo & info );
+        RepoMetadataException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
     /**
@@ -192,6 +218,8 @@ namespace zypp
         ServiceException( const std::string & msg_r );
         ServiceException( const ServiceInfo & service_r );
         ServiceException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServiceException( const zyppng::ServiceInfo & service_r );
+        ServiceException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
         ~ServiceException() throw() override;
 
         ServiceInfo service()
@@ -217,6 +245,8 @@ namespace zypp
         ServiceNoAliasException( const std::string & msg_r );
         ServiceNoAliasException( const ServiceInfo & service_r );
         ServiceNoAliasException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServiceNoAliasException( const zyppng::ServiceInfo & service_r );
+        ServiceNoAliasException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
 
     /**
@@ -229,6 +259,8 @@ namespace zypp
       ServiceInvalidAliasException( const std::string & msg_r );
       ServiceInvalidAliasException( const ServiceInfo & info );
       ServiceInvalidAliasException( const ServiceInfo & info, const std::string & msg_r );
+      ServiceInvalidAliasException( const zyppng::ServiceInfo & service_r );
+      ServiceInvalidAliasException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
 
     /** Service already exists and some unique attribute can't be duplicated.
@@ -240,6 +272,8 @@ namespace zypp
         ServiceAlreadyExistsException( const std::string & msg_r );
         ServiceAlreadyExistsException( const ServiceInfo & service_r );
         ServiceAlreadyExistsException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServiceAlreadyExistsException( const zyppng::ServiceInfo & service_r );
+        ServiceAlreadyExistsException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
 
     /** Service has no or invalid url defined.
@@ -251,6 +285,8 @@ namespace zypp
         ServiceNoUrlException( const std::string & msg_r );
         ServiceNoUrlException( const ServiceInfo & service_r );
         ServiceNoUrlException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServiceNoUrlException( const zyppng::ServiceInfo & service_r );
+        ServiceNoUrlException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
     //@}
 
@@ -268,6 +304,8 @@ namespace zypp
         ServicePluginException( const std::string & msg_r );
         ServicePluginException( const ServiceInfo & service_r );
         ServicePluginException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServicePluginException( const zyppng::ServiceInfo & service_r );
+        ServicePluginException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
 
     /** Service plugin has trouble providing the metadata but this should not be treated as error.
@@ -279,6 +317,8 @@ namespace zypp
         ServicePluginInformalException( const std::string & msg_r );
         ServicePluginInformalException( const ServiceInfo & service_r );
         ServicePluginInformalException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServicePluginInformalException( const zyppng::ServiceInfo & service_r );
+        ServicePluginInformalException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
 
     /** Service plugin is immutable.
@@ -290,6 +330,8 @@ namespace zypp
         ServicePluginImmutableException( const std::string & msg_r );
         ServicePluginImmutableException( const ServiceInfo & service_r );
         ServicePluginImmutableException( const ServiceInfo & service_r, const std::string & msg_r );
+        ServicePluginImmutableException( const zyppng::ServiceInfo & service_r );
+        ServicePluginImmutableException( const zyppng::ServiceInfo & service_r, const std::string & msg_r );
     };
     //@}
 
@@ -299,4 +341,6 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
+
+ZYPP_END_LEGACY_API
 #endif // ZYPP_PARSER_TAGFILE_PARSEEXCEPTION_H

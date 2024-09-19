@@ -13,11 +13,11 @@
 #include <iosfwd>
 
 #include <zypp/base/PtrTypes.h>
-#include <zypp-core/ui/ProgressData>
 #include <zypp/Pathname.h>
+#include <zypp/ng/context_fwd.h>
 
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 { /////////////////////////////////////////////////////////////////
 
   class ServiceInfo;
@@ -37,13 +37,14 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      using ProcessService = function<bool (const ServiceInfo &)>;
+      using ProcessService = std::function<bool (const ServiceInfo &)>;
 
       /** Implementation  */
       class Impl;
 
     public:
-      PluginServices(const Pathname &path,
+      PluginServices( ContextBaseRef ctx,
+                    const zypp::Pathname &path,
                     const ProcessService & callback);
 
       /**

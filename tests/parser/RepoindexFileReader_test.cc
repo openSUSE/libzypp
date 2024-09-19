@@ -1,8 +1,11 @@
 #include <sstream>
 #include <string>
 #include <zypp/Pathname.h>
-#include <zypp/parser/RepoindexFileReader.h>
 #include <zypp/base/NonCopyable.h>
+
+#include <zypp/ng/parser/repoindexfilereader.h>
+#include <zypp/ng/context.h>
+#include <zypp/ng/repoinfo.h>
 
 #include "TestSetup.h"
 
@@ -21,13 +24,13 @@ static string service = "<repoindex arch=\"i386\" distver=\"11\">"
 
 struct RepoCollector : private base::NonCopyable
 {
-  bool collect( const RepoInfo &repo )
+  bool collect( const zyppng::RepoInfo &repo )
   {
     repos.push_back(repo);
     return true;
   }
 
-  RepoInfoList repos;
+  zyppng::RepoInfoList repos;
 };
 
 // Must be the first test!
@@ -36,11 +39,14 @@ BOOST_AUTO_TEST_CASE(read_index_file)
   {
     stringstream input(service);
     RepoCollector collector;
-    parser::RepoindexFileReader parser( input, bind( &RepoCollector::collect, &collector, _1 ) );
+
+    auto ctx = zyppng::SyncContext::create();
+    ctx->initialize().unwrap();
+
+    zyppng::parser::RepoIndexFileReader parser( ctx, input, bind( &RepoCollector::collect, &collector, _1 ) );
     BOOST_REQUIRE_EQUAL(3, collector.repos.size());
 
-    RepoInfo repo;
-    repo = collector.repos.front();
+    zyppng::RepoInfo repo = collector.repos.front();
 
     BOOST_CHECK_EQUAL("Company's Foo", repo.name());
     BOOST_CHECK_EQUAL("company-foo", repo.alias());

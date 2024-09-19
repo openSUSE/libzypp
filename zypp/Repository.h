@@ -22,6 +22,12 @@
 #include <zypp/Date.h>
 #include <zypp/CpeId.h>
 
+#include <optional>
+
+namespace zyppng {
+  class RepoInfo;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -251,15 +257,22 @@ namespace zypp
       Iterable<ProductInfoIterator> updatesProduct() const;
 
     public:
-        /** Return any associated \ref RepoInfo. */
-        RepoInfo info() const;
+#ifdef __cpp_lib_optional
+        const std::optional<zyppng::RepoInfo> &ngInfo() const;
+#endif
 
         /** Set \ref RepoInfo for this repository.
          * \throws Exception if this is \ref noRepository
          * \throws Exception if the \ref RepoInfo::alias
          *         does not match the \ref Repository::name.
          */
-        void setInfo( const RepoInfo & info_r );
+        void setInfo( const zyppng::RepoInfo &info_r );
+
+        ZYPP_BEGIN_LEGACY_API
+        void ZYPP_INTERNAL_DEPRECATE setInfo( const RepoInfo & info_r );
+        /** Return any associated \ref RepoInfo. */
+        RepoInfo ZYPP_INTERNAL_DEPRECATE info() const;
+        ZYPP_END_LEGACY_API
 
         /** Remove any \ref RepoInfo set for this repository. */
         void clearInfo();

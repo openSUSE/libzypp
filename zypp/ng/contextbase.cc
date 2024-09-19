@@ -10,15 +10,11 @@ namespace zyppng {
 
   ContextBase::ContextBase()
     : _tmpDir( zypp::filesystem::TmpPath::defaultLocation(), "zypp." )
+    , _repoVarCache( *this )
   { }
 
   ContextBase::~ContextBase()
   { }
-
-  zypp::Pathname ContextBase::defaultConfigPath()
-  {
-    return "/etc/zypp/zypp.conf";
-  }
 
   zypp::Pathname ContextBase::contextRoot() const
   {
@@ -176,6 +172,14 @@ namespace zyppng {
     return *_config;
   }
 
+  zypp::MediaConfig &ContextBase::mediaConfig()
+  {
+    assertInitialized();
+    // config loaded on demand if queried before initializing the target
+    if ( !_config ) loadConfig ( *_settings->configPath ).unwrap();
+    return _config->mediaConfig();
+  }
+
   zypp::Pathname ContextBase::tmpPath() const
   {
     return _tmpDir.path();
@@ -184,6 +188,26 @@ namespace zyppng {
   TargetRef ContextBase::target() const
   {
     return _target;
+  }
+
+  const std::string *ContextBase::resolveRepoVar(const std::string &var)
+  {
+    return _repoVarCache.lookup(var);
+  }
+
+  repo::RepoVarsMap &ContextBase::repoVarCache()
+  {
+    return _repoVarCache;
+  }
+
+  const repo::RepoVarsMap &ContextBase::repoVarCache() const
+  {
+    return _repoVarCache;
+  }
+
+  void ContextBase::clearRepoVariables()
+  {
+    _repoVarCache.clear();
   }
 
 }

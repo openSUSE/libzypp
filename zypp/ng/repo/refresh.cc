@@ -16,7 +16,7 @@
 namespace zyppng::repo {
 
   template<typename ZyppContextType>
-  RefreshContext<ZyppContextType>::RefreshContext( private_constr_t, Ref<ZyppContextType> &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager )
+  RefreshContext<ZyppContextType>::RefreshContext( private_constr_t, Ref<ZyppContextType> &&zyppContext, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager )
     : _zyppContext( std::move(zyppContext) )
     , _repoManager( std::move(repoManager) )
     , _repoInfo( std::move(info) )
@@ -25,7 +25,7 @@ namespace zyppng::repo {
   {}
 
   template<typename ZyppContextType>
-  expected<RefreshContextRef<ZyppContextType>> RefreshContext<ZyppContextType>::create( Ref<ZyppContextType> zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextType> repoManager )
+  expected<RefreshContextRef<ZyppContextType>> RefreshContext<ZyppContextType>::create( Ref<ZyppContextType> zyppContext, RepoInfo info, RepoManagerRef<ContextType> repoManager )
   {
     using namespace operators;
     using CtxType    = RefreshContext<ZyppContextType>;
@@ -84,13 +84,13 @@ namespace zyppng::repo {
   }
 
   template<typename ZyppContextType>
-  const zypp::RepoInfo &RefreshContext<ZyppContextType>::repoInfo() const
+  const RepoInfo &RefreshContext<ZyppContextType>::repoInfo() const
   {
     return _repoInfo;
   }
 
   template<typename ZyppContextType>
-  zypp::RepoInfo &RefreshContext<ZyppContextType>::repoInfo()
+  RepoInfo &RefreshContext<ZyppContextType>::repoInfo()
   {
       return _repoInfo;
   }

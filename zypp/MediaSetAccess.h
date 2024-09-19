@@ -25,6 +25,10 @@
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ManagedFile.h>
 
+namespace zyppng {
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(ContextBase);
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -89,9 +93,23 @@ namespace zypp
        * \param prefered_attach_point Prefered attach (mount) point. Use, if
        *        you want to mount the media to a specific directory.
        */
-      MediaSetAccess( Url url, Pathname  prefered_attach_point = "" );
+      MediaSetAccess( Url url, Pathname  prefered_attach_point = "" ) ZYPP_INTERNAL_DEPRECATE;
       /** \overload Also taking a \ref label. */
-      MediaSetAccess( std::string  label_r, Url url, Pathname  prefered_attach_point = "" );
+      MediaSetAccess( std::string  label_r, Url url, Pathname  prefered_attach_point = "" ) ZYPP_INTERNAL_DEPRECATE;
+
+
+      /**
+       * Creates a callback enabled media access for specified \a url.
+       *
+       * \param url
+       * \param prefered_attach_point Prefered attach (mount) point. Use, if
+       *        you want to mount the media to a specific directory.
+       */
+      MediaSetAccess( zyppng::ContextBaseRef ctx, Url url, Pathname  prefered_attach_point = "" );
+      /** \overload Also taking a \ref label. */
+      MediaSetAccess( zyppng::ContextBaseRef ctx, std::string  label_r, Url url, Pathname  prefered_attach_point = "" );
+
+
       ~MediaSetAccess() override;
 
       /**
@@ -215,7 +233,8 @@ namespace zypp
        *         with the next one, if possible.
        * \see zypp::media::MediaManager::provideFile()
        */
-      static ManagedFile provideFileFromUrl( const Url & file_url, ProvideFileOptions options = PROVIDE_DEFAULT );
+      static ManagedFile provideFileFromUrl( const Url & file_url, ProvideFileOptions options = PROVIDE_DEFAULT ) ZYPP_INTERNAL_DEPRECATE;
+      static ManagedFile provideFileFromUrl( zyppng::ContextBaseRef ctx, const Url & file_url, ProvideFileOptions options = PROVIDE_DEFAULT );
 
       /**
        * Provides an optional \a file from \a url.
@@ -224,7 +243,8 @@ namespace zypp
        * rather than throwing a \ref MediaException if the file is not present on
        * the media.
        */
-      static ManagedFile provideOptionalFileFromUrl( const Url & file_url );
+      static ManagedFile provideOptionalFileFromUrl( const Url & file_url ) ZYPP_INTERNAL_DEPRECATE;
+      static ManagedFile provideOptionalFileFromUrl( zyppng::ContextBaseRef ctx, const Url & file_url );
 
       /**
        * Release file from media.
@@ -364,6 +384,7 @@ namespace zypp
       std::ostream & dumpOn( std::ostream & str ) const override;
 
     private:
+      zyppng::ContextBaseRef _zyppContext;
       /** Media or media set URL */
       Url _url;
 

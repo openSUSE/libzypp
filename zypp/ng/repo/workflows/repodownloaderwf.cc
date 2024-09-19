@@ -65,9 +65,9 @@ namespace zyppng {
         return std::vector {
            // fetch signature and keys
             providerRef->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-             | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _sigpath ) ),
+             | and_then( ProvideType::copyResultToDest ( providerRef, _dlContext->zyppContext(), _destdir / _sigpath ) ),
             providerRef->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-             | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _keypath ) ),
+             | and_then( ProvideType::copyResultToDest ( providerRef, _dlContext->zyppContext(), _destdir / _keypath ) ),
            }
           | join()
           | [this]( std::vector<expected<zypp::ManagedFile>> &&res ) {
@@ -90,7 +90,7 @@ namespace zyppng {
           | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this, std::placeholders::_1 ) )
 
           // copy everything into a directory
-          | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _masterIndex )  )
+          | and_then( ProvideType::copyResultToDest ( providerRef, _dlContext->zyppContext(), _destdir / _masterIndex )  )
 
           // final tasks
           | and_then([this]( zypp::ManagedFile &&masterIndex ) {
@@ -229,7 +229,7 @@ namespace zyppng {
                | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
                    return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true) )
-                      | and_then( ProvideType::copyResultToDest( providerRef, _destdir / file ) )
+                      | and_then( ProvideType::copyResultToDest( providerRef, _dlContext->zyppContext(), _destdir / file ) )
                       | and_then( [this, providerRef, file, keyid , cacheFile = std::move(cacheFile)]( zypp::ManagedFile &&res ) {
 
                           // remember we downloaded the file
@@ -237,14 +237,14 @@ namespace zyppng {
 
                           auto key = zypp::PublicKey::noThrow( _dlContext->files().back() );
                           if ( not key.fileProvidesKey( keyid ) ) {
-                            const auto &str = zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.";
+                            const std::string str = zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.";
                             WAR << str << std::endl;
                             return makeReadyResult(expected<zypp::PublicKey>::error( std::make_exception_ptr( zypp::Exception(str)) ));
                           }
 
                           // Try to cache it...
                           zypp::filesystem::assert_dir( cacheFile.dirname() );
-                          return providerRef->copyFile( key.path(), cacheFile )
+                          return providerRef->copyFile( _dlContext->zyppContext(), key.path(), cacheFile )
                            | [ key ]( expected<zypp::ManagedFile> res ) mutable {
                                if ( res ) {
                                  // do not delete from cache

@@ -23,12 +23,12 @@
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp/base/LogTools.h>
-#include <zypp/parser/RepoFileReader.h>
-#include <zypp/parser/ServiceFileReader.h>
+#include <zypp/ng/parser/RepoFileReader.h>
+#include <zypp/ng/parser/servicefilereader.h>
 #include <zypp/sat/Pool.h>
 #include <zypp/zypp_detail/urlcredentialextractor_p.h>
 #include <zypp/repo/ServiceType.h>
-#include <zypp/repo/PluginServices.h>
+#include <zypp/ng/repo/pluginservices.h>
 
 #include <zypp/ng/Context>
 #include <zypp/ng/fusionpool.h>
@@ -166,12 +166,12 @@ namespace zyppng
     return true;
   }
 
-  expected<std::list<RepoInfo>> repositories_in_file(const zypp::Pathname &file)
+  expected<std::list<RepoInfo>> repositories_in_file( ContextBaseRef ctx, const zypp::Pathname &file)
   {
     try {
       MIL << "repo file: " << file << std::endl;
       RepoCollector collector;
-      zypp::parser::RepoFileReader parser( file, std::bind( &RepoCollector::collect, &collector, std::placeholders::_1 ) );
+      zyppng::parser::RepoFileReader parser( ctx, file, std::bind( &RepoCollector::collect, &collector, std::placeholders::_1 ) );
       return expected<std::list<RepoInfo>>::success( std::move(collector.repos) );
     } catch ( ... ) {
       return expected<std::list<RepoInfo>>::error( ZYPP_FWD_CURRENT_EXCPT() );
@@ -217,7 +217,7 @@ namespace zyppng
           }
           else
           {
-            const std::list<RepoInfo> tmp( repositories_in_file( *it ).unwrap() );
+            const std::list<RepoInfo> tmp( repositories_in_file( zyppContext, *it ).unwrap() );
             repos.insert( repos.end(), tmp.begin(), tmp.end() );
           }
         }
@@ -265,14 +265,14 @@ namespace zyppng
           cmd.push_back( "PROGRAM" );		// [2] - fix index below if changing!
           for ( const auto & rinfo : repos() )
           {
-            if ( ! rinfo.enabled() )
+            if ( ! rinfo.second.enabled() )
               continue;
             cmd.push_back( "-R" );
-            cmd.push_back( rinfo.alias() );
+            cmd.push_back( rinfo.second.alias() );
             cmd.push_back( "-t" );
-            cmd.push_back( rinfo.type().asString() );
+            cmd.push_back( rinfo.second.type().asString() );
             cmd.push_back( "-p" );
-            cmd.push_back( (rinfo.metadataPath()/rinfo.path()).asString() ); // bsc#1197684: path to the repodata/ directory inside the cache
+            cmd.push_back( (rinfo.second.metadataPath()/rinfo.second.path()).asString() ); // bsc#1197684: path to the repodata/ directory inside the cache
           }
 
           for_( it, entries.begin(), entries.end() )
@@ -478,7 +478,7 @@ namespace zyppng
             // if it does not belong known repo, make it disappear
             bool found = false;
             for_( r, repoBegin(), repoEnd() )
-              if ( subdir.basename() == r->escaped_alias() )
+              if ( subdir.basename() == r->second.escaped_alias() )
             { found = true; break; }
 
             if ( ! found && ( zypp::Date::now()-zypp::PathInfo(subdir).mtime() > zypp::Date::day ) )
@@ -600,10 +600,10 @@ namespace zyppng
       tosave.setFilepath(repofile);
       tosave.setMetadataPath( rawcache_path_for_repoinfo( _options, tosave ).unwrap() );
       tosave.setPackagesPath( packagescache_path_for_repoinfo( _options, tosave ).unwrap() );
-      reposManip().insert(tosave);
+      reposManip().insert( std::make_pair( tosave.alias(), tosave) );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.baseUrls() );
+      zypp::UrlCredentialExtractor( _zyppContext ).collect( tosave.baseUrls() );
 
       zypp::HistoryLog(_options.rootDir).addRepository(tosave);
 
@@ -631,14 +631,14 @@ namespace zyppng
       // they can be the same only if the provided is empty, that means
       // the provided repo has no alias
       // then skip
-      if ( (!info.alias().empty()) && ( info.alias() != repo.alias() ) )
+      if ( (!info.alias().empty()) && ( info.alias() != repo.first ) )
         continue;
 
       // TODO match by url
 
       // we have a matching repository, now we need to know
       // where it does come from.
-      RepoInfo todelete = repo;
+      RepoInfo todelete = repo.second;
       if (todelete.filepath().empty())
       {
         ZYPP_THROW(zypp::repo::RepoException( todelete, _("Can't figure out where the repo is stored.") ));
@@ -646,7 +646,7 @@ namespace zyppng
       else
       {
         // figure how many repos are there in the file:
-        std::list<RepoInfo> filerepos = repositories_in_file(todelete.filepath()).unwrap();
+        std::list<RepoInfo> filerepos = repositories_in_file( _zyppContext, todelete.filepath()).unwrap();
         std::for_each( filerepos.begin (), filerepos.end(), [this]( RepoInfo &info ){ prepareRepoInfo(info).unwrap(); });
 
         if ( filerepos.size() == 0	// bsc#984494: file may have already been deleted
@@ -692,7 +692,7 @@ namespace zyppng
         // now delete metadata (#301037)
         cleanMetadata( todelete, ProgressObserver::makeSubTask( myProgress, 0.4 )).unwrap();
         cleanPackages( todelete, ProgressObserver::makeSubTask( myProgress, 0.4 ), true/*isAutoClean*/ ).unwrap();
-        reposManip().erase(todelete);
+        reposManip().erase(todelete.alias());
         MIL << todelete.alias() << " successfully deleted." << std::endl;
         zypp::HistoryLog(_options.rootDir).removeRepository(todelete);
 
@@ -735,7 +735,7 @@ namespace zyppng
     {
       ProgressObserver::increase( myProgress );
       // figure how many repos are there in the file:
-      std::list<RepoInfo> filerepos = repositories_in_file(toedit.filepath()).unwrap();
+      std::list<RepoInfo> filerepos = repositories_in_file( _zyppContext, toedit.filepath()).unwrap();
       std::for_each( filerepos.begin (), filerepos.end(), [this]( RepoInfo &info ){ prepareRepoInfo(info).unwrap(); });
 
       // there are more repos in the same file
@@ -780,13 +780,13 @@ namespace zyppng
 
       ProgressObserver::increase( myProgress );
 
-      reposManip().erase(toedit);
-      reposManip().insert(newinfo);
+      reposManip().erase(toedit.alias());
+      reposManip().insert(std::make_pair(newinfo.alias(), newinfo));
 
       ProgressObserver::increase( myProgress );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.baseUrls() );
+      zypp::UrlCredentialExtractor( _zyppContext ).collect( newinfo.baseUrls() );
       zypp::HistoryLog(_options.rootDir).modifyRepository(toedit, newinfo);
       MIL << "repo " << alias << " modified" << std::endl;
 
@@ -808,7 +808,7 @@ namespace zyppng
     try {
     RepoConstIterator it( findAlias( alias, repos() ) );
     if ( it != repos().end() )
-      return make_expected_success(*it);
+      return make_expected_success(it->second);
     RepoInfo info( _zyppContext );
     info.setAlias( alias );
     ZYPP_THROW( zypp::repo::RepoNotFoundException(info) );
@@ -825,10 +825,10 @@ namespace zyppng
 
     for_( it, repoBegin(), repoEnd() )
     {
-      for_( urlit, (*it).baseUrlsBegin(), (*it).baseUrlsEnd() )
+      for_( urlit, it->second.baseUrlsBegin(), it->second.baseUrlsEnd() )
       {
         if ( (*urlit).asString(urlview) == url.asString(urlview) )
-          return make_expected_success(*it);
+          return make_expected_success(it->second);
       }
     }
     RepoInfo info( _zyppContext );
@@ -850,7 +850,7 @@ namespace zyppng
       | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextType>>() ); }
       | and_then( [this, url, policy]( zyppng::repo::RefreshContextRef<ZyppContextType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
-        return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
+        return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) )
             | and_then( [ r = std::move(refCtx) ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), std::move(mediaHandle), nullptr ); } );
       })
         );
@@ -864,10 +864,10 @@ namespace zyppng
     // do NOT capture by reference here, since this is possibly executed async
     const auto &updateProbedType = [this, info = info]( zypp::repo::RepoType repokind ) {
       // update probed type only for repos in system
-      for( const auto &repo : repos() ) {
-        if ( info.alias() == repo.alias() )
+      for( const auto &repoIter : repos() ) {
+        if ( info.alias() == repoIter.first )
         {
-          RepoInfo modifiedrepo = repo;
+          RepoInfo modifiedrepo = repoIter.second;
           modifiedrepo.setType( repokind );
           // don't modify .repo in refresh.
           // modifyRepository( info.alias(), modifiedrepo ); m
@@ -921,10 +921,10 @@ namespace zyppng
         // do NOT capture by reference here, since this is possibly executed async
         const auto &updateProbedType = [this, info = info]( zypp::repo::RepoType repokind ) {
           // update probed type only for repos in system
-          for( const auto &repo : repos() ) {
-            if ( info.alias() == repo.alias() )
+          for( const auto &repoIter : repos() ) {
+            if ( info.alias() == repoIter.first )
             {
-              RepoInfo modifiedrepo = repo;
+              RepoInfo modifiedrepo = repoIter.second;
               modifiedrepo.setType( repokind );
               // don't modify .repo in refresh.
               // modifyRepository( info.alias(), modifiedrepo );
@@ -987,7 +987,7 @@ namespace zyppng
     using namespace zyppng::operators;
     return joinPipeline( _zyppContext,
       RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
-      | [this, url=url](auto) { return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() ); }
+      | [this, url=url](auto) { return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) ); }
       | and_then( [this, path = path]( auto mediaHandle ) {
         return RepoManagerWorkflow::probeRepoType( _zyppContext, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     }));
@@ -1049,10 +1049,10 @@ namespace zyppng
     // of the .service file. Finaly insert into the service list.
     ServiceInfo toSave( service );
     saveService( toSave ).unwrap();
-    _services.insert( toSave );
+    _services.insert( std::make_pair( toSave.alias(), toSave ) );
 
     // check for credentials in Url
-    zypp::UrlCredentialExtractor( _options.rootDir ).collect( toSave.url() );
+    zypp::UrlCredentialExtractor( _zyppContext ).collect( toSave.url() );
 
     MIL << "added service " << toSave.alias() << std::endl;
 
@@ -1066,7 +1066,12 @@ namespace zyppng
   template<typename ZyppContextType>
   expected<void> RepoManager<ZyppContextType>::refreshService( const std::string &alias, const RefreshServiceOptions &options_r )
   {
-    return joinPipeline ( _zyppContext, RepoServicesWorkflow::refreshService( shared_this<RepoManager<ZyppContextType>>(), getService( alias ), options_r ) );
+    const auto &serviceOpt = getService(alias);
+    if( !serviceOpt )
+    {
+      ZYPP_THROW(zypp::repo::ServiceException( _("Can't find service alias.") ));
+    }
+    return joinPipeline ( _zyppContext, RepoServicesWorkflow::refreshService( shared_this<RepoManager<ZyppContextType>>(), *serviceOpt, options_r ) );
   }
 
   /*!
@@ -1076,13 +1081,12 @@ namespace zyppng
   expected<void> RepoManager<ZyppContextType>::refreshServices(const RefreshServiceOptions &options_r)
   {
     using namespace zyppng::operators;
+
     // copy the set of services since refreshService
     // can eventually invalidate the iterator
-    ServiceSet servicesCopy( serviceBegin(), serviceEnd() );
-
-    // convert the set into a vector, transform needs a container with push_back support
+    // save it into a vector, transform needs a container with push_back support
     std::vector<ServiceInfo> servicesVec;
-    std::copy( std::make_move_iterator(servicesCopy.begin()),  std::make_move_iterator(servicesCopy.end()), std::back_inserter(servicesVec));
+    std::transform( serviceBegin(), serviceEnd(), std::back_inserter(servicesVec), []( const auto &pair ){ return pair.second;} );
 
     return joinPipeline( _zyppContext,
       std::move(servicesVec)
@@ -1100,7 +1104,13 @@ namespace zyppng
     try {
     MIL << "Going to delete service " << alias << std::endl;
 
-    const ServiceInfo & service = getService( alias );
+    const auto &serviceOpt = getService(alias);
+    if( !serviceOpt )
+    {
+      ZYPP_THROW(zypp::repo::ServiceException( _("Can't find service alias.") ));
+    }
+
+    const ServiceInfo & service = *serviceOpt;
 
     zypp::Pathname location = service.filepath();
     if( location.empty() )
@@ -1108,11 +1118,11 @@ namespace zyppng
       ZYPP_THROW(zypp::repo::ServiceException( service, _("Can't figure out where the service is stored.") ));
     }
 
-    ServiceSet tmpSet;
-    zypp::parser::ServiceFileReader( location, ServiceCollector(tmpSet) );
+    ServiceMap tmpMap;
+    parser::ServiceFileReader( _zyppContext, location, ServiceCollector(tmpMap) );
 
     // only one service definition in the file
-    if ( tmpSet.size() == 1 )
+    if ( tmpMap.size() == 1 )
     {
       if ( zypp::filesystem::unlink(location) != 0 )
       {
@@ -1132,10 +1142,10 @@ namespace zyppng
         ZYPP_THROW( zypp::Exception(zypp::str::form( _("Can't open file '%s' for writing."), location.c_str() )));
       }
 
-      for_(it, tmpSet.begin(), tmpSet.end())
+      for_(it, tmpMap.begin(), tmpMap.end())
       {
-        if( it->alias() != alias )
-          it->dumpAsIniOn(file);
+        if( it->first != alias )
+          it->second.dumpAsIniOn(file);
       }
 
       MIL << alias << " successfully deleted from file " << location <<  std::endl;
@@ -1157,22 +1167,23 @@ namespace zyppng
   }
 
   template <typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::modifyService( const std::string & oldAlias, const ServiceInfo & newService )
+  expected<void> RepoManager<ZyppContextType>::modifyService( const std::string & oldAlias, ServiceInfo newService )
   {
     try {
 
     MIL << "Going to modify service " << oldAlias << std::endl;
-
-    // we need a writable copy to link it to the file where
-    // it is saved if we modify it
-    ServiceInfo service(newService);
-
-    if ( service.type() == zypp::repo::ServiceType::PLUGIN )
+    if ( newService.type() == zypp::repo::ServiceType::PLUGIN )
     {
-      ZYPP_THROW(zypp::repo::ServicePluginImmutableException( service ));
+      ZYPP_THROW(zypp::repo::ServicePluginImmutableException( newService ));
     }
 
-    const ServiceInfo & oldService = getService(oldAlias);
+    const auto &oldServiceOpt = getService(oldAlias);
+    if( !oldServiceOpt )
+    {
+      ZYPP_THROW(zypp::repo::ServiceException( _("Can't find service alias.") ));
+    }
+
+    const ServiceInfo &oldService = *oldServiceOpt;
 
     zypp::Pathname location = oldService.filepath();
     if( location.empty() )
@@ -1181,49 +1192,49 @@ namespace zyppng
     }
 
     // remember: there may multiple services being defined in one file:
-    ServiceSet tmpSet;
-    zypp::parser::ServiceFileReader( location, ServiceCollector(tmpSet) );
+    ServiceMap tmpMap;
+    parser::ServiceFileReader( _zyppContext, location, ServiceCollector(tmpMap) );
 
     zypp::filesystem::assert_dir(location.dirname());
     std::ofstream file(location.c_str());
-    for_(it, tmpSet.begin(), tmpSet.end())
+    for_(it, tmpMap.begin(), tmpMap.end())
     {
-      if( *it != oldAlias )
-        it->dumpAsIniOn(file);
+      if( it->first != oldAlias )
+        it->second.dumpAsIniOn(file);
     }
-    service.dumpAsIniOn(file);
+    newService.dumpAsIniOn(file);
     file.close();
-    service.setFilepath(location);
+    newService.setFilepath(location);
 
-    _services.erase(oldAlias);
-    _services.insert(service);
+    _services.erase  ( oldAlias );
+    _services.insert ( std::make_pair( newService.alias(), newService) );
     // check for credentials in Urls
-    zypp::UrlCredentialExtractor( _options.rootDir ).collect( service.url() );
+    zypp::UrlCredentialExtractor( _zyppContext ).collect( newService.url() );
 
 
     // changed properties affecting also repositories
-    if ( oldAlias != service.alias()			// changed alias
-         || oldService.enabled() != service.enabled() )	// changed enabled status
+    if ( oldAlias != newService.alias()			// changed alias
+         || oldService.enabled() != newService.enabled() )	// changed enabled status
     {
       std::vector<RepoInfo> toModify;
       getRepositoriesInService(oldAlias, std::back_inserter(toModify));
       for_( it, toModify.begin(), toModify.end() )
       {
-        if ( oldService.enabled() != service.enabled() )
+        if ( oldService.enabled() != newService.enabled() )
         {
-          if ( service.enabled() )
+          if ( newService.enabled() )
           {
             // reset to last refreshs state
-            const auto & last = service.repoStates().find( it->alias() );
-            if ( last != service.repoStates().end() )
+            const auto & last = newService.repoStates().find( it->alias() );
+            if ( last != newService.repoStates().end() )
               it->setEnabled( last->second.enabled );
           }
           else
             it->setEnabled( false );
         }
 
-        if ( oldAlias != service.alias() )
-          it->setService(service.alias());
+        if ( oldAlias != newService.alias() )
+          it->setService(newService.alias());
 
         modifyRepository(it->alias(), *it).unwrap();
       }
@@ -1367,11 +1378,11 @@ namespace zyppng
       //str::regex allowedServiceExt("^\\.service(_[0-9]+)?$");
       for_(it, entries.begin(), entries.end() )
       {
-        zypp::parser::ServiceFileReader(*it, ServiceCollector(_services));
+        parser::ServiceFileReader( _zyppContext, *it, ServiceCollector(_services));
       }
     }
 
-    zypp::repo::PluginServices(_options.pluginsPath/"services", ServiceCollector(_services));
+    repo::PluginServices( _zyppContext, _options.pluginsPath/"services", ServiceCollector(_services) );
 
     return expected<void>::success();
 
@@ -1442,7 +1453,7 @@ namespace zyppng
         // initialize the paths'
         prepareRepoInfo(repoInfo).unwrap();
         // remember it
-        _reposX.insert( repoInfo );	// direct access via _reposX in ctor! no reposManip.
+        _reposX.insert( std::make_pair( repoInfo.alias(), repoInfo ) );	// direct access via _reposX in ctor! no reposManip.
 
         // detect orphaned repos belonging to a deleted service
         const std::string & serviceAlias( repoInfo.service() );

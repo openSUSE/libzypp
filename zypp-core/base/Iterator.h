@@ -13,6 +13,7 @@
 #define ZYPP_BASE_ITERATOR_H
 
 #include <iterator>
+#include <memory>
 #include <utility>
 
 #include <boost/functional.hpp>
@@ -147,6 +148,49 @@ namespace zypp
   */
   using boost::transform_iterator;
   using boost::make_transform_iterator;
+
+
+  template <class T, class RefT>
+  class GenericIteratorNode {
+    using NodePtr = std::unique_ptr<GenericIteratorNode>;
+    virtual RefT ref() = 0;
+    virtual NodePtr clone() const = 0;
+    virtual NodePtr next() const  = 0;
+    virtual NodePtr prev() const  = 0;
+    virtual bool equals( const GenericIteratorNode &other ) const = 0;
+  };
+
+  template <class T, class RefT>
+  class GenericIterator : public boost::iterators::iterator_facade < GenericIterator<T, RefT>, T, boost::iterators::bidirectional_traversal_tag, RefT >  {
+  public:
+    GenericIterator( std::unique_ptr<GenericIteratorNode<T, RefT>> &&node  ) : _node(std::move(node)){}
+    ~GenericIterator() = default;
+
+    template <class OtherT, class OtherRef>
+    GenericIterator(GenericIterator<OtherT, OtherRef> const& other)
+      : _node(other._node) {}
+
+    GenericIterator(const GenericIterator &other) : _node( other._node->clone() ) {}
+    GenericIterator(GenericIterator &&other) : _node(std::move(other._node) ) {}
+    GenericIterator &operator=(const GenericIterator &other) { _node = other._node->clone(); }
+    GenericIterator &operator=(GenericIterator &&other) { _node = std::move(other._node); }
+
+  private:
+    friend class boost::iterator_core_access;
+
+    void increment() { _node = _node->next(); }
+    void decrement() { _node = _node->prev(); }
+
+    bool equal( GenericIterator const& other) const
+    {
+        return this->_node->equals( *other._node );
+    }
+
+    RefT dereference() const { return _node->ref(); }
+
+  private:
+    std::unique_ptr<GenericIteratorNode<T, RefT>> _node;
+  };
 
   /** Functor taking a \c std::pair returning \c std::pair.first.
    * \see MapKVIteratorTraits

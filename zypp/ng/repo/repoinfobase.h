@@ -6,34 +6,21 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file       zypp/repo/RepoInfoBase.h
- *
- */
-#ifndef REPOINFOBASE_H_
-#define REPOINFOBASE_H_
+#ifndef ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED
+#define ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED
 
 #include <iosfwd>
 
-#include <zypp/base/PtrTypes.h>
+#include <zypp/ng/context.h>
+#include <zypp/ng/repo/repoinfobaseshareddata.h>
 #include <zypp-core/Globals.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/base/PtrTypes.h>
 
-namespace zyppng {
-  class ContextBase;
-  using ContextBaseRef = std::shared_ptr<ContextBase>;
-}
 
-///////////////////////////////////////////////////////////////////
-namespace zypp
-{ /////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
-  { /////////////////////////////////////////////////////////////////
+namespace zyppng::repo
+{
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //    CLASS NAME : RepoInfoBase
-    //
     /**
      * \short Base class implementing common features of \ref RepoInfo and
      *        \ref ServiceInfo.
@@ -41,7 +28,7 @@ namespace zypp
      * \note Name is subject to repo variable replacement
      * (\see \ref RepoVariablesStringReplacer).
      */
-    class ZYPP_API RepoInfoBase
+    class RepoInfoBase
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
@@ -49,16 +36,7 @@ namespace zypp
 
       virtual ~RepoInfoBase();
 
-#if LEGACY(1733)
-    public:
-#else
     protected:
-#endif
-      RepoInfoBase( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
-      RepoInfoBase( zyppng::ContextBaseRef context, const std::string &alias ) ZYPP_LOCAL;
-
-      ZYPP_INTERNAL_DEPRECATE RepoInfoBase();
-      ZYPP_INTERNAL_DEPRECATE RepoInfoBase(const std::string &alias);
       RepoInfoBase(const RepoInfoBase &) = default;
       RepoInfoBase(RepoInfoBase &&) noexcept = default;
       RepoInfoBase &operator=(const RepoInfoBase &) = default;
@@ -78,12 +56,12 @@ namespace zypp
        * Normally, in a .repo file the section name is used
        * ( [somerepo] )
        */
-      std::string alias() const;
+      const std::string &alias() const;
 
       /**
        * Same as alias(), just escaped in a way to be a valid file name.
        */
-      std::string escaped_alias() const;
+      const std::string &escaped_alias() const;
 
       /**
        * \short Repository name
@@ -95,7 +73,7 @@ namespace zypp
       std::string name() const;
 
       /** The raw metadata name (no default, no variables replaced). */
-      std::string rawName() const;
+      const std::string &rawName() const;
 
       /**
        * \short Label for use in messages for the user interface.
@@ -126,7 +104,7 @@ namespace zypp
        * \note could be an empty pathname for repo
        * infos created in memory.
        */
-       Pathname filepath() const;
+       const zypp::Pathname &filepath() const;
 
 
     public:
@@ -163,7 +141,7 @@ namespace zypp
        *
        * \param path File path
        */
-      void setFilepath( const Pathname &filename );
+      void setFilepath( const zypp::Pathname &filename );
 
       /**
        * Write a human-readable representation of this RepoInfoBase object
@@ -183,22 +161,24 @@ namespace zypp
        */
       virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
 
-      struct Impl;
-
     protected:
-      RepoInfoBase( Impl &pimpl );
+      RepoInfoBase( RepoInfoBaseSharedData &pimpl );
+
+      // support rw_cow copying for derived types
+      RepoInfoBase( const zypp::RWCOW_pointer<RepoInfoBaseSharedData> &other );
+
       /** Pointer to implementation */
-      RWCOW_pointer<Impl> _pimpl;
+      zypp::RWCOW_pointer<RepoInfoBaseSharedData> _pimpl;
     };
     ///////////////////////////////////////////////////////////////////
 
     /** \relates RepoInfoBase */
     inline bool operator==( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
-    { return lhs.alias() == rhs.alias(); }
+    { return ( lhs.context() == rhs.context() && lhs.alias() == rhs.alias()); }
 
     /** \relates RepoInfoBase */
     inline bool operator!=( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
-    { return lhs.alias() != rhs.alias(); }
+    { return (lhs.context() != rhs.context() || lhs.alias() != rhs.alias()); }
 
     inline bool operator<( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
     { return lhs.alias() < rhs.alias(); }
@@ -206,17 +186,7 @@ namespace zypp
     /** \relates RepoInfoBase Stream output */
     std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
-    /** \relates RepoInfoBase */
-    using RepoInfoBase_Ptr = shared_ptr<RepoInfoBase>;
-    /** \relates RepoInfoBase */
-    using RepoInfoBase_constPtr = shared_ptr<const RepoInfoBase>;
 
+  } // namespace zyppng::repo
 
-    /////////////////////////////////////////////////////////////////
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-} // namespace zypp
-///////////////////////////////////////////////////////////////////
-
-#endif /*REPOINFOBASE_H_*/
+#endif /*ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED*/

@@ -50,9 +50,9 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaDISK::MediaDISK( const Url &      url_r,
-                          const Pathname & attach_point_hint_r )
-        : MediaHandler( url_r, attach_point_hint_r,
+    MediaDISK::MediaDISK(zyppng::ContextBaseRef ctx, const Url &      url_r,
+                         const Pathname & attach_point_hint_r )
+        : MediaHandler( std::move(ctx), url_r, attach_point_hint_r,
                     url_r.getPathName(), // urlpath below attachpoint
                     false ) // does_download
     {

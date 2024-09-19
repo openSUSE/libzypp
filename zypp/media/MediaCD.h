@@ -63,7 +63,8 @@ namespace zypp {
 
       public:
 
-        MediaCD( const Url &      url_r,
+        MediaCD( zyppng::ContextBaseRef ctx,
+                 const Url &      url_r,
                  const Pathname & attach_point_hint_r );
 
         ~MediaCD() override { try { release(); } catch(...) {} }

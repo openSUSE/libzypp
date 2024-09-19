@@ -38,6 +38,7 @@
 #include <zypp/sat/detail/PoolImpl.h>
 #include <zypp/solver/detail/Resolver.h>
 #include <zypp/solver/detail/SystemCheck.h>
+#include <zypp/ng/repoinfo.h>
 
 #include <yaml-cpp/yaml.h>
 
@@ -163,21 +164,21 @@ namespace zypp
           }
 
           const auto &myRepo = pi.repository();
-          const auto &myRepoInfo = myRepo.info();
-          if ( repos.find( myRepo.id()) == repos.end() ) {
+          const auto &myRepoInfo = myRepo.ngInfo();
+          if ( myRepoInfo && repos.find( myRepo.id()) == repos.end() ) {
             repos.insert( myRepo.id() );
             yOut << YAML::Value << YAML::BeginMap;
             yOut << YAML::Key << "alias" << YAML::Value << myRepo.alias();
             yOut << YAML::Key << "url" << YAML::BeginSeq;
-            for ( auto itUrl = myRepoInfo.baseUrlsBegin(); itUrl != myRepoInfo.baseUrlsEnd(); ++itUrl ) {
+            for ( auto itUrl = myRepoInfo->baseUrlsBegin(); itUrl != myRepoInfo->baseUrlsEnd(); ++itUrl ) {
               yOut << YAML::Value << itUrl->asString();
             }
             yOut << YAML::EndSeq;
-            yOut << YAML::Key << "path" << YAML::Value << myRepoInfo.path().asString();
-            yOut << YAML::Key << "type" << YAML::Value << myRepoInfo.type().asString();
+            yOut << YAML::Key << "path" << YAML::Value << myRepoInfo->path().asString();
+            yOut << YAML::Key << "type" << YAML::Value << myRepoInfo->type().asString();
             yOut << YAML::Key << "generated" << YAML::Value << myRepo.generatedTimestamp().form( "%Y-%m-%d %H:%M:%S" );
             yOut << YAML::Key << "outdated" << YAML::Value << myRepo.suggestedExpirationTimestamp().form( "%Y-%m-%d %H:%M:%S" );
-            yOut << YAML::Key << "priority" << YAML::Value << myRepoInfo.priority();
+            yOut << YAML::Key << "priority" << YAML::Value << myRepoInfo->priority();
             yOut << YAML::Key << "file" << YAML::Value << str::Format("%1%.repo.gz") % repoFileNames[myRepo.id()->repoid];
 
             yOut << YAML::EndMap;
@@ -330,7 +331,7 @@ namespace zypp
                    << YAML::Key << "name"    << YAML::Value << pi.name()
                    << YAML::Key << "status"  << YAML::Value << status.str();
               if ( !shortInfo ) {
-                yOut << YAML::Key << "channel" << YAML::Value << pi.repoInfo().alias()
+                yOut << YAML::Key << "channel" << YAML::Value << (pi.ngRepoInfo() ?  pi.ngRepoInfo()->alias() : "")
                      << YAML::Key << "arch"    << YAML::Value << pi.arch().asString()
                      << YAML::Key << "version" << YAML::Value << pi.edition().version()
                      << YAML::Key << "release" << YAML::Value << pi.edition().release();

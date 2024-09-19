@@ -126,7 +126,7 @@ zypp_repo_info_set_property (GObject      *object,
   {
     case PROP_CPPOBJ:
       g_return_if_fail( d->_constrProps ); // only if the constr props are still valid
-      ZYPP_GLIB_SET_CPPOBJ_PROP( zypp::RepoInfo, value, d->_constrProps->_cppObj )
+      ZYPP_GLIB_SET_CPPOBJ_PROP( zyppng::RepoInfo, value, d->_constrProps->_cppObj )
     case PROP_CONTEXT: {
       g_return_if_fail( d->_constrProps ); // only if the constr props are still valid
       ZyppContext *obj = ZYPP_CONTEXT(g_value_get_object( value ));
@@ -161,7 +161,7 @@ void ZyppRepoInfoPrivate::initialize()
     _info = std::move( _constrProps->_cppObj.value() );
   } else {
     if ( !_constrProps->_context ) g_error("Context argument can not be NULL");
-    _info = zypp::RepoInfo( zypp_context_get_cpp( _constrProps->_context.get() ) );
+    _info = zyppng::RepoInfo( zypp_context_get_cpp( _constrProps->_context.get() ) );
   }
   _constrProps.reset();
 }
@@ -172,12 +172,12 @@ ZyppRepoInfo *zypp_repo_info_new(ZyppContext *context)
   return static_cast<ZyppRepoInfo *>(g_object_new (ZYPP_TYPE_REPOINFO, "zyppcontext", context, NULL));
 }
 
-ZyppRepoInfo *zypp_wrap_cpp( zypp::RepoInfo info )
+ZyppRepoInfo *zypp_wrap_cpp(zyppng::RepoInfo info )
 {
   return static_cast<ZyppRepoInfo *>(g_object_new (ZYPP_TYPE_REPOINFO, zypp::glib::internal::ZYPP_CPP_OBJECT_PROPERTY_NAME.data(), &info, NULL));
 }
 
-zypp::RepoInfo &zypp_repo_info_get_cpp( ZyppRepoInfo *self )
+zyppng::RepoInfo &zypp_repo_info_get_cpp( ZyppRepoInfo *self )
 {
   ZYPP_REPO_INFO_D();
   return d->_info;

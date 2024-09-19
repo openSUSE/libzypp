@@ -15,6 +15,8 @@
 
 namespace zyppng
 {
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (MediaContext);
+
   template < class ProvideType >
   class LazyMediaHandle {
   public:

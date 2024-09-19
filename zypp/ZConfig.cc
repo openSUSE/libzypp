@@ -38,6 +38,7 @@ extern "C"
 
 #include <zypp-media/MediaConfig>
 #include <zypp/zypp_detail/ZYppImpl.h>
+#include <zypp/ng/userdata.h>
 
 using std::endl;
 using namespace zypp::filesystem;
@@ -45,6 +46,8 @@ using namespace zypp::parser;
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zconfig"
+
+#warning "Still need to sync MediaConfig::systemConfig and the one in ZConfig::systemConfig"
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -500,8 +503,9 @@ namespace zypp
         , pkgGpgCheck			( indeterminate )
         , apply_locks_file		( true )
         , pluginsPath			( "/usr/lib/zypp/plugins" )
-        , geoipEnabled ( true )
-        , geoipHosts { "download.opensuse.org" }
+        , geoipEnabled                  ( true )
+        , geoipHosts                    { "download.opensuse.org" }
+        , _mediaConf                    ( _parsedZyppConf )
       {
         MIL << "libzypp: " LIBZYPP_VERSION_STRING << endl;
         if ( PathInfo(_parsedZyppConf).isExist() )
@@ -519,9 +523,6 @@ namespace zypp
             {
               std::string entry(it->first);
               std::string value(it->second);
-
-              if ( _mediaConf.setConfigValue( section, entry, value ) )
-                continue;
 
               //DBG << (*it).first << "=" << (*it).second << endl;
               if ( section == "main" )
@@ -558,6 +559,7 @@ namespace zypp
                 {
                   cfg_config_path = Pathname(value);
                 }
+
                 else if ( entry == "reposdir" )
                 {
                   cfg_known_repos_path = Pathname(value);
@@ -808,7 +810,7 @@ namespace zypp
     std::vector<std::string> geoipHosts;
 
     /* Other config singleton instances */
-    MediaConfig &_mediaConf = MediaConfig::instance();
+    MediaConfig _mediaConf;
 
 
   public:
@@ -908,13 +910,20 @@ namespace zypp
 
     mutable MultiversionMap _multiversionMap;
   };
-  ///////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	METHOD NAME : ZConfig::instance
-  //	METHOD TYPE : ZConfig &
-  //
+
+  const ZConfig &ZConfig::defaults()
+  {
+    static ZConfig _conf("/dev/null");
+    return _conf;
+  }
+
+  ZConfig &ZConfig::systemConfig()
+  {
+    static ZConfig _sysConf( zypp_detail::autodetectZyppConfPath() );
+    return _sysConf;
+  }
+
   ZConfig & ZConfig::instance()
   {
     return zypp_detail::GlobalStateHelper::config();
@@ -1009,24 +1018,14 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   bool ZConfig::hasUserData() const
-  { return !_pimpl->userData.empty(); }
+  { return zyppng::UserData::hasData(); }
 
   std::string ZConfig::userData() const
-  { return _pimpl->userData; }
+  { return zyppng::UserData::data(); }
 
   bool ZConfig::setUserData( const std::string & str_r )
   {
-    for_( ch, str_r.begin(), str_r.end() )
-    {
-      if ( *ch < ' ' && *ch != '\t' )
-      {
-        ERR << "New user data string rejectded: char " << (int)*ch << " at position " <<  (ch - str_r.begin()) << endl;
-        return false;
-      }
-    }
-    MIL << "Set user data string to '" << str_r << "'" << endl;
-    _pimpl->userData = str_r;
-    return true;
+    return zyppng::UserData::setData(str_r);
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -1258,25 +1257,16 @@ namespace zypp
   { return _pimpl->apply_locks_file; }
 
   Pathname ZConfig::update_dataPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname("/var/adm");
   }
 
   Pathname ZConfig::update_messagesPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname(update_dataPath()/"update-messages");
   }
 
   Pathname ZConfig::update_scriptsPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname(update_dataPath()/"update-scripts");
   }
@@ -1325,6 +1315,16 @@ namespace zypp
   std::string ZConfig::multiversionKernels() const
   {
     return _pimpl->cfg_kernel_keep_spec;
+  }
+
+  const MediaConfig &ZConfig::mediaConfig() const
+  {
+    return _pimpl->_mediaConf;
+  }
+
+  MediaConfig &ZConfig::mediaConfig()
+  {
+    return _pimpl->_mediaConf;
   }
 
   ///////////////////////////////////////////////////////////////////

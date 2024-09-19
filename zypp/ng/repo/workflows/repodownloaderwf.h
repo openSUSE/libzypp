@@ -57,12 +57,15 @@ namespace zyppng {
       // check if we have a async media handle
       constexpr bool isAsync = std::is_same_v<ProvideType, Provide>;
       auto provider = mediaHandle.parent();
-      if ( !provider )
+      if ( !mediaHandle.isValid() || !provider )
         return makeReadyResult<expected<zypp::ManagedFile>, isAsync>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid handle"))) );
 
-      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true).setDownloadSize( zypp::ByteCount(20, zypp::ByteCount::MB ) ))
-             | and_then( ProvideType::copyResultToDest( provider, destdir / "/media.1/media" ) );
+      auto spec = mediaHandle.spec();
+      if ( !spec || !spec->mediaContext() )
+        return makeReadyResult<expected<zypp::ManagedFile>, isAsync>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid mediaspec in handle"))) );
 
+      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true).setDownloadSize( zypp::ByteCount(20, zypp::ByteCount::MB ) ) )
+             | and_then( ProvideType::copyResultToDest( provider, spec->mediaContext(), destdir / "/media.1/media" ) );
     }
   }
 }

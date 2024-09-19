@@ -64,8 +64,9 @@ namespace zypp {
 
       public:
 
-        MediaNetwork( const Url &      url_r,
-                  const Pathname & attach_point_hint_r );
+        MediaNetwork( zyppng::ContextBaseRef ctx,
+                      const Url &      url_r,
+                      const Pathname & attach_point_hint_r );
 
         ~MediaNetwork() override { try { release(); } catch(...) {} }
 

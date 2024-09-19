@@ -39,9 +39,9 @@ namespace zypp {
     //                as files are not copied.
     //                Thus attach_point_hint_r is ignored.
     //
-    MediaDIR::MediaDIR( const Url &      url_r,
-                        const Pathname & /*attach_point_hint_r*/ )
-        : MediaHandler( url_r, url_r.getPathName(),
+    MediaDIR::MediaDIR(zyppng::ContextBaseRef ctx, const Url &      url_r,
+                       const Pathname & /*attach_point_hint_r*/ )
+        : MediaHandler( std::move(ctx), url_r, url_r.getPathName(),
                     "/",    // urlpath below attachpoint
                     false ) // does_download
     {

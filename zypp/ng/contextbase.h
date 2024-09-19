@@ -11,7 +11,8 @@
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/zyppng/pipelines/expected.h>
-#include <zypp-core/zyppng/ui/UserInterface>
+#include <zypp-media/ng/MediaContext>
+#include <zypp/ng/repo/repovariablescache.h>
 
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
@@ -38,7 +39,7 @@ namespace zyppng {
     std::optional<zypp::Pathname> configPath;
   };
 
-  class ContextBase : public UserInterface
+  class ContextBase : public MediaContext
   {
   public:
     ~ContextBase() override;
@@ -47,13 +48,10 @@ namespace zyppng {
     ContextBase &operator=(const ContextBase &) = delete;
     ContextBase &operator=(ContextBase &&) = delete;
 
-
-    static zypp::Pathname defaultConfigPath();
-
     /*!
      * Returns the root path of the context
      */
-    zypp::Pathname contextRoot() const;
+    zypp::Pathname contextRoot() const override;
 
     /*!
      * Gets the zypp lock, loads the config and sets up keyring
@@ -75,8 +73,25 @@ namespace zyppng {
 
     KeyRingRef keyRing ();
     zypp::ZConfig &config();
+    zypp::MediaConfig &mediaConfig() override;
     zypp::Pathname tmpPath() const;
     TargetRef target() const;
+
+
+    /*!
+     * Tries to resolve the variable \a var from the repoCache,
+     * returns a pointer to the found value or nullptr if the variable
+     * is not known.
+     */
+    const std::string * resolveRepoVar( const std::string & var );
+
+    repo::RepoVarsMap &repoVarCache();
+    const repo::RepoVarsMap &repoVarCache() const;
+
+    /*!
+     * Resets all cached repo variables
+     */
+    void clearRepoVariables();
 
     /*!
      * Signal emitted during context close, e.g. unloading the target.
@@ -111,6 +126,11 @@ namespace zyppng {
     }
 
   private:
+
+    /**
+     * \todo move CredentialManager here
+     */
+
     std::optional<ContextSettings> _settings;
     bool _legacyMode = false; // set by legacyInit. Will disable locking inside the context, Zypp and ZyppFactory take care of that
 
@@ -130,6 +150,7 @@ namespace zyppng {
     TargetRef  _target;
 
     zypp::ZyppContextLockRef _myLock;
+    repo::RepoVarsMap _repoVarCache;
 
   };
 

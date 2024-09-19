@@ -27,6 +27,8 @@
 #include <optional>
 #include <vector>
 
+ZYPP_BEGIN_LEGACY_API
+
 namespace zypp {
   class RepoManager;
 }
@@ -132,5 +134,5 @@ namespace zypp::misc::testcase
 
 }
 
-
+ZYPP_END_LEGACY_API
 #endif // ZYPP_MISC_TESTCASESETUPIMPL_H

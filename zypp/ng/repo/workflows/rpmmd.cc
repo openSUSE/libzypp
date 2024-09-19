@@ -100,7 +100,7 @@ namespace zyppng::RpmmdWorkflows {
       using ProvideRes      = typename ProvideType::Res;
 
       DlLogic( DlContextRefType ctx, MediaHandle &&mediaHandle, ProgressObserverRef &&progressObserver )
-        : zypp::repo::yum::RepomdFileCollector( ctx->destDir() )
+        : zypp::repo::yum::RepomdFileCollector( ctx->zyppContext(), ctx->destDir() )
         , _ctx( std::move(ctx))
         , _mediaHandle(std::move(mediaHandle))
         , _progressObserver(std::move(progressObserver))
@@ -155,7 +155,7 @@ namespace zyppng::RpmmdWorkflows {
 
     private:
 
-      const zypp::RepoInfo &repoInfo() const override {
+      const zyppng::RepoInfo &repoInfo() const override {
         return _ctx->repoInfo();
       }
 

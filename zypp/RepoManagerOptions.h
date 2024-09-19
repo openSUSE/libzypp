@@ -16,6 +16,10 @@
 #include <zypp/Globals.h>
 #include <ostream>
 
+namespace zyppng {
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ContextBase);
+}
+
 namespace zypp
 {
   /**
@@ -35,7 +39,21 @@ namespace zypp
      *          \knownReposPath
      * \endcode
      */
-    RepoManagerOptions( const Pathname & root_r = Pathname() );
+    RepoManagerOptions( const Pathname & root_r = Pathname() ) ZYPP_INTERNAL_DEPRECATE;
+
+
+    /** Default ctor following \ref ZConfig global settings.
+     * If an optional \c root_r directory is given, all paths  will
+     * be prefixed accordingly.
+     * \code
+     *    ctx->contextRoot() \repoCachePath
+     *                \repoRawCachePath
+     *                \repoSolvCachePath
+     *                \repoPackagesCachePath
+     *                \knownReposPath
+     * \endcode
+     */
+    RepoManagerOptions( zyppng::ContextBaseRef ctx );
 
     /** Test setup adjusting all paths to be located below one \c root_r directory.
      * \code
@@ -66,6 +84,9 @@ namespace zypp
 
     /** remembers root_r value for later use */
     Pathname rootDir;
+
+    /** remember the context we want to use */
+    zyppng::ContextBaseWeakRef context;
   };
 
   std::ostream & operator<<( std::ostream & str, const RepoManagerOptions & obj );

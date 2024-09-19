@@ -76,6 +76,9 @@ namespace zypp
       const Transformator & transformator() const
       { return _transform; }
 
+      void setTransformator ( Transformator &&t )
+      { _transform = std::move(t); }
+
     private:
       RawType _raw;
       Transformator _transform;
@@ -87,7 +90,7 @@ namespace zypp
     ///
     /// This helper enforces to explicitly state wheter you are using
     /// the raw or the variable replaced value. Usually you set \c raw
-    /// and get \c transformed (uness writing \c raw to some config file).
+    /// and get \c transformed (unless writing \c raw to some config file).
     ///
     /// Offers iterating over transformed strings in the list.
     ///////////////////////////////////////////////////////////////////
@@ -162,6 +165,9 @@ namespace zypp
       /** Return the transformator */
       const Transformator & transformator() const
       { return _transform; }
+
+      void setTransformator ( Transformator &&t )
+      { _transform = std::move(t); }
 
     private:
       Container _raw;

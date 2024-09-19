@@ -1,10 +1,10 @@
-#include <iostream>
 #include <vector>
 #include <boost/test/unit_test.hpp>
 
 #include "WebServer.h"
 
 #include <zypp/repo/RepoMirrorList.h>
+#include <zypp/ng/context.h>
 
 using namespace zypp;
 using namespace zypp::repo;
@@ -20,8 +20,11 @@ BOOST_AUTO_TEST_CASE(get_mirrorlist)
   weburl1.setPathName("/metalink.xml");
   weburl2.setPathName("/mirrors.txt");
 
-  RepoMirrorList rml1 (weburl1);
-  RepoMirrorList rml2 (weburl2);
+  auto ctx = zyppng::SyncContext::create();
+  ctx->initialize ().unwrap ();
+
+  RepoMirrorList rml1 ( ctx, weburl1 );
+  RepoMirrorList rml2 ( ctx, weburl2 );
 
   BOOST_CHECK(rml1.getUrls().begin()->asString() == "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/");
   BOOST_CHECK(rml2.getUrls().begin()->asString() == "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/");

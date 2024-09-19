@@ -12,6 +12,7 @@
 #ifndef ZYPP_GLOBALS_H
 #define ZYPP_GLOBALS_H
 
+#include <memory>
 #include <zypp-core/APIConfig.h>        // LIBZYPP_ version defines for the LEGACY macro
 #include <zypp-core/base/Easy.h>	// some macros used almost everywhere
 
@@ -118,7 +119,6 @@
 #endif
 
 
-
 #ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
 // used to flag API to be deprected inside of libzypp.
 #define ZYPP_INTERNAL_DEPRECATE ZYPP_DEPRECATED
@@ -127,6 +127,78 @@
 #else
 #define ZYPP_INTERNAL_DEPRECATE
 #define ZYPP_LEGACY_API
+#endif
+
+/**
+ * Macro to disable legacy warnings for code that was otherwise marked as
+ * internal deprecated, for examples in files that are defining legacy API.
+ */
+#if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
+  #ifndef ZYPP_BEGIN_LEGACY_API
+  #define ZYPP_BEGIN_LEGACY_API \
+    _Pragma("GCC diagnostic push") \
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated\"") \
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+  #endif
+
+  #ifndef ZYPP_END_LEGACY_API
+  #define ZYPP_END_LEGACY_API \
+    _Pragma("GCC diagnostic pop")
+  #endif
+
+#else
+  #define ZYPP_BEGIN_LEGACY_API
+  #define ZYPP_END_LEGACY_API
+#endif
+
+namespace zyppng {
+  template <typename T>
+  using Ref = std::shared_ptr<T>;
+
+  template <typename T>
+  using WeakRef = std::weak_ptr<T>;
+}
+
+namespace zypp {
+  template <typename T>
+  using Ref = std::shared_ptr<T>;
+
+  template <typename T>
+  using WeakRef = std::weak_ptr<T>;
+}
+
+/*!
+ * Helper macro to declare Ref types
+ */
+#define ZYPP_FWD_DECL_REFS(T) \
+  using T##Ref = Ref<T>; \
+  using T##WeakRef = WeakRef<T>
+
+/*
+ * Helper Macro to forward declare types and ref types
+ */
+#define ZYPP_FWD_DECL_TYPE_WITH_REFS(T) \
+  class T; \
+  ZYPP_FWD_DECL_REFS(T)
+
+#define ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1(T, TArg1) \
+  template< typename TArg1> \
+  class T; \
+  template< typename TArg1> \
+  using T##Ref = Ref<T<TArg1>>; \
+  template< typename TArg1> \
+  using T##WeakRef = WeakRef<T<TArg1>>
+
+
+//@TODO enable for c++20
+#if 0
+#define ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS(T, TArg1, ...) \
+  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
+  class T; \
+  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
+  using T##Ref = std::shared_ptr<T<TArg1 __VA_OPT__(,) __VA_ARGS__>>; \
+  template< typename TArg1 __VA_OPT__(, typename) __VA_ARGS__  > \
+  using T##WeakRef = std::weak_ptr<T<TArg1 __VA_OPT__(,) __VA_ARGS__ >>
 #endif
 
 

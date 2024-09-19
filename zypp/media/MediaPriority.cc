@@ -44,27 +44,27 @@ namespace zypp
 #define RETURN_IF(scheme,value) \
         if ( ::strcmp( scheme+1, scheme_r.c_str()+1 ) == 0 ) return value;
           case 'c':
-            RETURN_IF( "cd",	ZConfig::instance().download_media_prefer_download() ? 1 : 2 );
+            RETURN_IF( "cd",	ZConfig::systemConfig().download_media_prefer_download() ? 1 : 2 );
             RETURN_IF( "cifs",	3 );
             break;
 
           case 'd':
-            RETURN_IF( "dvd",	ZConfig::instance().download_media_prefer_download() ? 1 : 2 );
+            RETURN_IF( "dvd",	ZConfig::systemConfig().download_media_prefer_download() ? 1 : 2 );
             RETURN_IF( "dir",	4 );
             break;
 
           case 'f':
             RETURN_IF( "file",	4 );
-            RETURN_IF( "ftp",	ZConfig::instance().download_media_prefer_download() ? 2 : 1);
+            RETURN_IF( "ftp",	ZConfig::systemConfig().download_media_prefer_download() ? 2 : 1);
             break;
 
           case 't':
-            RETURN_IF( "tftp",	ZConfig::instance().download_media_prefer_download() ? 2 : 1);
+            RETURN_IF( "tftp",	ZConfig::systemConfig().download_media_prefer_download() ? 2 : 1);
             break;
 
           case 'h':
-            RETURN_IF( "http",	ZConfig::instance().download_media_prefer_download() ? 2 : 1 );
-            RETURN_IF( "https",	ZConfig::instance().download_media_prefer_download() ? 2 : 1 );
+            RETURN_IF( "http",	ZConfig::systemConfig().download_media_prefer_download() ? 2 : 1 );
+            RETURN_IF( "https",	ZConfig::systemConfig().download_media_prefer_download() ? 2 : 1 );
             RETURN_IF( "hd",	4 );
             break;
 
@@ -74,7 +74,7 @@ namespace zypp
             break;
 
           case 's':
-            RETURN_IF( "sftp",	ZConfig::instance().download_media_prefer_download() ? 2 : 1 );
+            RETURN_IF( "sftp",	ZConfig::systemConfig().download_media_prefer_download() ? 2 : 1 );
             RETURN_IF( "smb",	3 );
             break;
 #undef RETURN_IF

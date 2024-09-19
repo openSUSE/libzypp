@@ -9,22 +9,28 @@
 /** \file zypp/parser/RepoindexFileReader.h
  * Interface of repoindex.xml file reader.
  */
-#ifndef zypp_source_yum_RepoindexFileReader_H
-#define zypp_source_yum_RepoindexFileReader_H
+#ifndef ZYPP_NG_PARSER_REPOINDEXFILEREADER_H_INCLUDED
+#define ZYPP_NG_PARSER_REPOINDEXFILEREADER_H_INCLUDED
 
 #include <zypp/base/PtrTypes.h>
-#include <zypp/base/NonCopyable.h>
 #include <zypp/base/Function.h>
 #include <zypp-core/base/InputStream>
 #include <zypp/Pathname.h>
 #include <zypp/Date.h>
 
-namespace zypp
+#include <zypp/ng/context_fwd.h>
+
+namespace zypp::xml {
+  class Reader;
+}
+
+namespace zyppng
 {
   class RepoInfo;
 
   namespace parser
   {
+    class RepoIndexVarReplacer;
 
   /**
    * Reads through a repoindex.xml file and collects repositories.
@@ -41,7 +47,7 @@ namespace zypp
    *                  bind( &SomeClass::callbackfunc, &SomeClassInstance, _1) );
    * \endcode
    */
-  class ZYPP_API RepoindexFileReader : private base::NonCopyable
+  class RepoIndexFileReader
   {
   public:
    /**
@@ -49,17 +55,17 @@ namespace zypp
     * First parameter is a \ref RepoInfo object with the resource
     * FIXME return value is ignored
     */
-    using ProcessResource = function<bool (const RepoInfo &)>;
-
-   /**
-    * CTOR. Creates also \ref xml::Reader and starts reading.
-    *
-    * \param repoindexFile is the repoindex.xml file you want to read
-    * \param callback is a function.
-    *
-    * \see RepoindexFileReader::ProcessResource
-    */
-    RepoindexFileReader(Pathname repoindexFile,
+    using ProcessResource = std::function<bool (const RepoInfo &)>;
+    /**
+     * CTOR. Creates also \ref xml::Reader and starts reading.
+     *
+     * \param repoindexFile is the repoindex.xml file you want to read
+     * \param callback is a function.
+     *
+     * \see RepoIndexFileReader::ProcessResource
+     */
+    RepoIndexFileReader( ContextBaseRef ctx,
+                         zypp::Pathname repoindexFile,
                          ProcessResource callback);
 
     /**
@@ -68,28 +74,41 @@ namespace zypp
      * \param is a valid input stream
      * \param callback Callback that will be called for each repository.
      *
-     * \see RepoindexFileReader::ProcessResource
+     * \see RepoIndexFileReader::ProcessResource
      */
-     RepoindexFileReader( const InputStream &is,
+     RepoIndexFileReader( ContextBaseRef ctx,
+                          const zypp::InputStream &is,
                           ProcessResource callback );
 
     /**
      * DTOR
      */
-    ~RepoindexFileReader();
+    ~RepoIndexFileReader();
+
+     RepoIndexFileReader(const RepoIndexFileReader &) = delete;
+     RepoIndexFileReader(RepoIndexFileReader &&) = delete;
+     RepoIndexFileReader &operator=(const RepoIndexFileReader &) = delete;
+     RepoIndexFileReader &operator=(RepoIndexFileReader &&) = delete;
+
 
     /** Metadata TTL (repoindex.xml:xpath:/repoindex@ttl or 0). */
-    Date::Duration ttl() const;
+    zypp::Date::Duration ttl() const;
 
   private:
-    class Impl;
-    RW_pointer<Impl,rw_pointer::Scoped<Impl> > _pimpl;
+    void run( const zypp::InputStream &is );
+    bool consumeNode( zypp::xml::Reader & reader_r );
+    bool getAttrValue( const std::string & key_r, zypp::xml::Reader & reader_r, std::string & value_r );
+
+  private:
+    ContextBaseRef _zyppCtx;
+    /** Function for processing collected data. Passed-in through constructor. */
+    ProcessResource _callback;
+    std::unique_ptr<RepoIndexVarReplacer> _replacer;
+    zypp::DefaultIntegral<zypp::Date::Duration,0> _ttl;
   };
 
 
   } // ns parser
 } // ns zypp
 
-#endif /*zypp_source_yum_RepoindexFileReader_H*/
-
-// vim: set ts=2 sts=2 sw=2 et ai:
+#endif /*ZYPP_NG_PARSER_REPOINDEXFILEREADER_H_INCLUDED*/

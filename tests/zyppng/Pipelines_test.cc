@@ -153,9 +153,9 @@ BOOST_AUTO_TEST_CASE( asyncToMixedPipelineWithIndirectAsyncCB )
 
   auto op = zyppng::AsyncOpRef<std::string>(std::make_shared<DelayedValue<std::string>>("5"))
             | &toSignedInt
-            | []( auto &&in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); }
+            | []( auto in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); }
             | &toString
-            | [&]( auto && res ){
+            | [&]( auto res ){
                 BOOST_CHECK_EQUAL ( std::string("10") , res );
                 ev->quit ();
                 return res;
@@ -172,13 +172,13 @@ BOOST_AUTO_TEST_CASE( asyncToMixedPipelineWithIndirectAsyncCBInStdFunction )
 
   const auto &makePipeline = [&](){
 
-    const std::function< AsyncOpRef<Int>( Int && ) > &addFiveAsync = []( auto &&in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); };
+    const std::function< AsyncOpRef<Int>( Int && ) > &addFiveAsync = []( auto in ){ in.value += 5; return std::make_shared<DelayedValue<Int>>(std::move(in)); };
 
     return zyppng::AsyncOpRef<std::string>(std::make_shared<DelayedValue<std::string>>("5"))
            | &toSignedInt
            | addFiveAsync
            | &toString
-           | [&]( auto && res ){
+           | [&]( auto res ){
                BOOST_CHECK_EQUAL ( std::string("10") , res );
                ev->quit ();
                return res;

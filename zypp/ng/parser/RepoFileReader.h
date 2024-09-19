@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/repo/RepoFileReader.h
+/** \file	zypp/ng/parser/RepoFileReader.h
  *
 */
 #ifndef ZYPP_REPO_REPOFILEREADER_H
@@ -18,9 +18,10 @@
 #include <zypp-core/base/InputStream>
 #include <zypp/RepoInfo.h>
 #include <zypp-core/ui/ProgressData>
+#include <zypp/ng/contextbase.h>
 
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 { /////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
   namespace parser
@@ -61,7 +62,7 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      using ProcessRepo = function<bool (const RepoInfo &)>;
+      using ProcessRepo = std::function<bool (const RepoInfo &)>;
 
       /** Implementation  */
       class Impl;
@@ -70,6 +71,7 @@ namespace zypp
      /**
       * \short Constructor. Creates the reader and start reading.
       *
+      * \param context The zypp context this RepoFileReader should evaluate in
       * \param repo_file A valid .repo file
       * \param callback Callback that will be called for each repository.
       * \param progress Optional progress function. \see ProgressData
@@ -78,9 +80,10 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      RepoFileReader( const Pathname & repo_file,
+      RepoFileReader( ContextBaseRef context,
+                      const zypp::Pathname & repo_file,
                       ProcessRepo  callback,
-                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
+                      const zypp::ProgressData::ReceiverFnc &progress = zypp::ProgressData::ReceiverFnc() );
 
      /**
       * \short Constructor. Creates the reader and start reading.
@@ -93,15 +96,17 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      RepoFileReader( const InputStream &is,
+      RepoFileReader( ContextBaseRef context,
+                      const zypp::InputStream &is,
                       ProcessRepo  callback,
-                      const ProgressData::ReceiverFnc &progress = ProgressData::ReceiverFnc() );
+                      const zypp::ProgressData::ReceiverFnc &progress = zypp::ProgressData::ReceiverFnc() );
 
       /**
        * Dtor
        */
       ~RepoFileReader();
     private:
+      ContextBaseRef _context;
       ProcessRepo _callback;
     };
     ///////////////////////////////////////////////////////////////////

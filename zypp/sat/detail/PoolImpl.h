@@ -21,6 +21,7 @@ extern "C"
 #include <solv/pool_parserpmrichdep.h>
 }
 #include <iosfwd>
+#include <optional>
 
 #include <zypp/base/Hash.h>
 #include <zypp/base/NonCopyable.h>
@@ -33,6 +34,10 @@ extern "C"
 #include <zypp/Locale.h>
 #include <zypp/Capability.h>
 #include <zypp/IdString.h>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -215,13 +220,13 @@ namespace zypp
 
         public:
           /** */
-          const RepoInfo & repoInfo( RepoIdType id_r )
-          { return _repoinfos[id_r]; }
+          const std::optional<zyppng::RepoInfo> &repoInfo( RepoIdType id_r );
+
           /** Also adjust repo priority and subpriority accordingly. */
-          void setRepoInfo( RepoIdType id_r, const RepoInfo & info_r );
+          void setRepoInfo( RepoIdType id_r, const std::optional<zyppng::RepoInfo> & info_r );
+
           /** */
-          void eraseRepoInfo( RepoIdType id_r )
-          { _repoinfos.erase( id_r ); }
+          void eraseRepoInfo(RepoIdType id_r);
 
         public:
           /** Returns the id stored at \c offset_r in the internal
@@ -361,7 +366,7 @@ namespace zypp
           /** Watch serial number. */
           SerialNumberWatcher _watcher;
           /** Additional \ref RepoInfo. */
-          std::map<RepoIdType,RepoInfo> _repoinfos;
+          std::map<RepoIdType,std::optional<zyppng::RepoInfo>> _repoinfos;
 
           /**  */
           base::SetTracker<LocaleSet> _requestedLocalesTracker;

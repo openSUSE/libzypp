@@ -308,7 +308,7 @@ namespace zyppng::SuseTagsWorkflows {
 
     private:
 
-      const zypp::RepoInfo &repoInfo() const {
+      const RepoInfo &repoInfo() const {
         return _ctx->repoInfo();
       }
 

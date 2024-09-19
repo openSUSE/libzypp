@@ -25,6 +25,7 @@
 #include <zypp/base/Logger.h>
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
+#include <zypp/zypp_detail/ZYppImpl.h>
 
 //////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -61,9 +62,9 @@ namespace zypp
           : desired(m.desired), verifier(std::move(m.verifier)),
             _handler(std::move(m._handler)) {}
 
-        static ManagedMedia makeManagedMedia ( const Url &o_url, const Pathname &preferred_attach_point, const MediaVerifierRef &v )
+        static ManagedMedia makeManagedMedia ( zyppng::ContextBaseRef &&ctx, const Url &o_url, const Pathname &preferred_attach_point, const MediaVerifierRef &v )
         {
-          auto handler = MediaHandlerFactory::createHandler( o_url, preferred_attach_point );
+          auto handler = MediaHandlerFactory::createHandler( std::move(ctx), o_url, preferred_attach_point );
           if ( !handler ) {
             ERR << "Failed to create media handler" << std::endl;
             ZYPP_THROW( MediaSystemException(o_url, "Failed to create media handler"));
@@ -315,9 +316,14 @@ namespace zypp
     MediaAccessId
     MediaManager::open(const Url &url, const Pathname &preferred_attach_point)
     {
+      return open( zypp_detail::GlobalStateHelper::context(), url, preferred_attach_point );
+    }
+
+    MediaAccessId MediaManager::open( zyppng::ContextBaseRef ctx, const Url &url, const Pathname &preferred_attach_point )
+    {
       // create new access handler for it
       MediaVerifierRef verifier( new NoVerifier());
-      ManagedMedia tmp = ManagedMedia::makeManagedMedia( url, preferred_attach_point, verifier );
+      ManagedMedia tmp = ManagedMedia::makeManagedMedia( std::move(ctx), url, preferred_attach_point, verifier );
 
       MediaAccessId nextId = m_impl->nextAccessId();
 

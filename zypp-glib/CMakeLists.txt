@@ -106,6 +106,8 @@ TARGET_LINK_LIBRARIES( zypp-glib zypp-allsym )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )
 #target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
 
+INSTALL(TARGETS zypp-glib LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
+
 INCLUDE(GenerateExportHeader)
 message("Exporting experimental libzypp-ng API")
 GENERATE_EXPORT_HEADER(

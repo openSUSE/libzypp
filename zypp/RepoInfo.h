@@ -9,8 +9,8 @@
 /** \file	zypp/RepoInfo.h
  *
 */
-#ifndef ZYPP_NG_REPOINFO_INCLUDED
-#define ZYPP_NG_REPOINFO_INCLUDED
+#ifndef ZYPP2_REPOSITORYINFO_H
+#define ZYPP2_REPOSITORYINFO_H
 
 #include <list>
 #include <set>
@@ -21,21 +21,21 @@
 #include <zypp/Url.h>
 #include <zypp/Locale.h>
 #include <zypp/TriBool.h>
-
 #include <zypp/repo/RepoType.h>
 #include <zypp/repo/RepoVariables.h>
+#include <zypp/repo/RepoInfoBase.h>
 #include <zypp/repo/GpgCheck.h>
 
-#include <zypp/ng/repo/repoinfobase.h>
+namespace zyppng {
+  class RepoInfo;
+}
 
-#include <zypp-core/base/Iterator.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
+ZYPP_BEGIN_LEGACY_API
 
 ///////////////////////////////////////////////////////////////////
-namespace zyppng
+namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  class RepoInfoSharedData;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -75,20 +75,23 @@ namespace zyppng
    * \note Name, baseUrls and mirrorUrl are subject to repo variable replacement
    * (\see \ref RepoVariablesStringReplacer).
    */
-  class RepoInfo : public repo::RepoInfoBase
+  class ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoInfo : public repo::RepoInfoBase
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
     public:
-
-      // nullable -> ContextFactory::defaultContext() ?
-      RepoInfo ( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
+      RepoInfo();
       ~RepoInfo() override;
 
-      RepoInfo(const RepoInfo &) = default;
-      RepoInfo(RepoInfo &&) = default;
-      RepoInfo &operator=(const RepoInfo &) = default;
-      RepoInfo &operator=(RepoInfo &&) = default;
+      RepoInfo( const zyppng::RepoInfo &pimpl );
+
+      RepoInfo(const RepoInfo &);
+      RepoInfo(RepoInfo &&);
+      RepoInfo &operator=(const RepoInfo &) ;
+      RepoInfo &operator=(RepoInfo &&);
+
+      /** Represents no Repository (one with an empty alias). */
+      static const ZYPP_INTERNAL_DEPRECATE RepoInfo noRepo;
 
     public:
       /**
@@ -111,9 +114,9 @@ namespace zyppng
        */
       void setPriority( unsigned newval_r );
 
-      using url_set = std::list<zypp::Url>;
+      using url_set = std::list<Url>;
       using urls_size_type = url_set::size_type;
-      using urls_const_iterator = zypp::transform_iterator<repo::RepoVariablesUrlReplacer, url_set::const_iterator>;
+      using urls_const_iterator = transform_iterator<repo::RepoVariablesUrlReplacerNg, url_set::const_iterator>;
       /**
        * whether repository urls are available
        */
@@ -139,12 +142,12 @@ namespace zyppng
       /**
        * Pars pro toto: The first repository url
        */
-      zypp::Url url() const
-      { return( baseUrlsEmpty() ? zypp::Url() : *baseUrlsBegin()); }
+      Url url() const
+      { return( baseUrlsEmpty() ? Url() : *baseUrlsBegin()); }
       /**
        * Pars pro toto: The first repository raw url (no variables replaced)
        */
-      zypp::Url rawUrl() const;
+      Url rawUrl() const;
 
       /**
        * The complete set of repository urls
@@ -165,11 +168,11 @@ namespace zyppng
        * To recreate the base URLs list, use \ref setBaseUrl(const Url &) followed
        * by addBaseUrl().
        */
-      void addBaseUrl( zypp::Url url );
+      void addBaseUrl( Url url );
       /**
        * Clears current base URL list and adds \a url.
        */
-      void setBaseUrl( zypp::Url url );
+      void setBaseUrl( Url url );
       /**
        * Clears current base URL list and adds an \ref url_set.
        */
@@ -195,31 +198,31 @@ namespace zyppng
        * same media layout.
        *
        */
-      zypp::Pathname path() const;
+      Pathname path() const;
       /**
        * set the product path. \see path()
        * \param path the path to the product
        */
-      void setPath( const zypp::Pathname &path );
+      void setPath( const Pathname &path );
 
       /**
        * Url of a file which contains a list of repository urls
        */
-      zypp::Url mirrorListUrl() const;
+      Url mirrorListUrl() const;
       /**
        * The raw mirrorListUrl (no variables replaced).
        */
-      zypp::Url rawMirrorListUrl() const;
+      Url rawMirrorListUrl() const;
       /**
        * Set mirror list url. \see mirrorListUrl
        * \param url The base url for the list
        */
-      void setMirrorListUrl( const zypp::Url &url );
+      void setMirrorListUrl( const Url &url );
       /** Like \ref setMirrorListUrl but take an \a url_set */
       void setMirrorListUrls( url_set urls );
 
       /** Like \ref setMirrorListUrl but expect metalink format. */
-      void setMetalinkUrl( const zypp::Url &url );
+      void setMetalinkUrl( const Url &url );
       /** Like \ref setMirrorListUrls but expect metalink format. */
       void setMetalinkUrls( url_set urls );
 
@@ -227,19 +230,19 @@ namespace zyppng
        * Type of repository,
        *
        */
-      zypp::repo::RepoType type() const;
+      repo::RepoType type() const;
       /**
        * This allows to adjust the \ref  RepoType lazy, from \c NONE to
        * some probed value, even for const objects.
        *
        * This is a NOOP if the current type is not \c NONE.
        */
-      void setProbedType( const zypp::repo::RepoType &t ) const;
+      void setProbedType( const repo::RepoType &t ) const;
       /**
        * set the repository type \see type
        * \param t
        */
-      void setType( const zypp::repo::RepoType &t );
+      void setType( const repo::RepoType &t );
 
       /**
        * \short Path where this repo metadata was read from
@@ -247,7 +250,7 @@ namespace zyppng
        * \note could be an empty pathname for repo
        * infos created in memory.
        */
-      zypp::Pathname metadataPath() const;
+      Pathname metadataPath() const;
       /**
        * \short Set the path where the local metadata is stored
        *
@@ -274,7 +277,7 @@ namespace zyppng
        *
        * \param path directory path
        */
-      void setMetadataPath( const zypp::Pathname &path );
+      void setMetadataPath( const Pathname &path );
 
       /** Whether \ref metadataPath uses \c %AUTO% setup. */
       bool usesAutoMetadataPaths() const;
@@ -282,24 +285,24 @@ namespace zyppng
       /**
        * \short Path where this repo packages are cached
        */
-      zypp::Pathname packagesPath() const;
+      Pathname packagesPath() const;
       /**
        * \short set the path where the local packages are stored
        *
        * \param path directory path
        */
-      void setPackagesPath( const zypp::Pathname &path );
+      void setPackagesPath( const Pathname &path );
 
       /**
        * \short Path where this repo's solv cache is located
        */
-      zypp::Pathname solvCachePath() const;
+      Pathname solvCachePath() const;
       /**
        * \short set the path this repo's solv cache is located
        *
        * \param path directory path
        */
-      void setSolvCachePath( const zypp::Pathname &path );
+      void setSolvCachePath( const Pathname &path );
 
 
       /** \name Repository gpgchecks
@@ -361,28 +364,30 @@ namespace zyppng
       /** Whether default signature checking should be performed. */
       bool gpgCheck() const;
       /** Set the value for \ref gpgCheck (or \c indeterminate to use the default). */
-      void setGpgCheck( zypp::TriBool value_r );
+      void setGpgCheck( TriBool value_r );
+      /** \overload \deprecated legacy and for squid */
+      void setGpgCheck( bool value_r );
 
       /** Whether the signature of repo metadata should be checked for this repo. */
       bool repoGpgCheck() const;
       /** Mandatory check (\ref repoGpgCheck is \c on) must ask to confirm using unsigned repos. */
       bool repoGpgCheckIsMandatory() const;
       /** Set the value for \ref repoGpgCheck (or \c indeterminate to use the default). */
-      void setRepoGpgCheck( zypp::TriBool value_r );
+      void setRepoGpgCheck( TriBool value_r );
 
       /** Whether the signature of rpm packages should be checked for this repo. */
       bool pkgGpgCheck() const;
       /** Mandatory check (\ref pkgGpgCheck is not \c off) must ask to confirm using unsigned packages. */
       bool pkgGpgCheckIsMandatory() const;
       /** Set the value for \ref pkgGpgCheck (or \c indeterminate to use the default). */
-      void setPkgGpgCheck( zypp::TriBool value_r );
+      void setPkgGpgCheck( TriBool value_r );
 
       /** Whether the repo metadata are signed and successfully validated or \c indeterminate if unsigned.
        * The value is usually set by \ref repo::Downloader when retrieving the metadata.
        */
-      zypp::TriBool validRepoSignature() const;
+      TriBool validRepoSignature() const;
       /** Set the value for \ref validRepoSignature (or \c indeterminate if unsigned). */
-      void setValidRepoSignature( zypp::TriBool value_r );
+      void setValidRepoSignature( TriBool value_r );
 
       using GpgCheck = zypp::repo::GpgCheck;
 
@@ -407,11 +412,14 @@ namespace zyppng
       void setGpgKeyUrls( url_set urls );
 
       /** (leagcy API) The 1st gpgkey URL defined for this repo */
-      zypp::Url gpgKeyUrl() const;
+      Url gpgKeyUrl() const;
       /** (leagcy API) The 1st raw gpgkey URL defined for this repo (no variables replaced) */
-      zypp::Url rawGpgKeyUrl() const;
+      Url rawGpgKeyUrl() const;
       /** (leagcy API) Set the gpgkey URL defined for this repo */
-      void setGpgKeyUrl( const zypp::Url &gpgkey );
+      void setGpgKeyUrl( const Url &gpgkey );
+
+      /** downloads all configured gpg keys into the defined directory */
+      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const ZYPP_INTERNAL_DEPRECATE ;
 
       /**
        * \short Whether packages downloaded from this repository will be kept in local cache
@@ -513,18 +521,19 @@ namespace zyppng
       bool needToAcceptLicense( const std::string & name_r ) const;
 
       /** Return the best license for the current (or a specified) locale. */
-      std::string getLicense( const zypp::Locale & lang_r = zypp::Locale() ) const;
+      std::string getLicense( const Locale & lang_r = Locale() ) const;
+      /** \overload not const LEGACY API */
+      std::string getLicense( const Locale & lang_r = Locale() ); // LEGACY API
       /** \overload taking a (product)name */
-      std::string getLicense( const std::string & name_r, const zypp::Locale & lang_r = zypp::Locale() ) const;
+      std::string getLicense( const std::string & name_r, const Locale & lang_r = Locale() ) const;
 
       /** Return the locales the license is available for.
        * \ref Locale::noCode is included in case of \c license.txt which does
        * not specify a specific locale.
        */
-      zypp::LocaleSet getLicenseLocales() const;
-
+      LocaleSet getLicenseLocales() const;
       /** \overload taking a (product)name */
-      zypp::LocaleSet getLicenseLocales( const std::string & name_r ) const;
+      LocaleSet getLicenseLocales( const std::string & name_r ) const;
      //@}
 
       /**
@@ -559,19 +568,20 @@ namespace zyppng
       /** Raw values for RepoManager
        *  \internal
        */
-      void getRawGpgChecks( zypp::TriBool & g_r, zypp::TriBool & r_r, zypp::TriBool & p_r ) const;
+      void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
 
-      struct Impl;
     private:
-      template <typename ContextType> friend class zyppng::RepoManager;
-
-      // for RepoManager to be able to set the context
-      void setContext( zyppng::ContextBaseRef context );
-
-      RepoInfoSharedData *pimpl();
-      const RepoInfoSharedData *pimpl() const;
+      friend class RepoManager;
+      zyppng::repo::RepoInfoBase &pimpl() override;
+      const zyppng::repo::RepoInfoBase &pimpl() const override;
+      std::unique_ptr<zyppng::RepoInfo> _pimpl;
   };
-
+  ///////////////////////////////////////////////////////////////////
+  ///
+  /** \relates RepoInfo */
+  using RepoInfo_Ptr = shared_ptr<RepoInfo>;
+  /** \relates RepoInfo */
+  using RepoInfo_constPtr = shared_ptr<const RepoInfo>;
   /** \relates RepoInfo */
   using RepoInfoList = std::list<RepoInfo>;
 
@@ -586,10 +596,14 @@ namespace zyppng
   inline bool operator<( const RepoInfo & lhs, const RepoInfo & rhs )
   { return lhs.alias() < rhs.alias(); }
 
+
   /** \relates RepoInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
+
+ZYPP_END_LEGACY_API
+
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_NG_REPOINFO_INCLUDED
+#endif // ZYPP2_REPOSITORYINFO_H

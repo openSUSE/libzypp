@@ -13,6 +13,8 @@
 #include <zypp-core/zyppng/pipelines/expected.h>
 #include <zypp-core/zyppng/ui/UserInterface>
 
+#include <zypp/ng/repo/repovariablescache.h>
+
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
   DEFINE_PTR_TYPE(Target);
@@ -78,6 +80,22 @@ namespace zyppng {
     zypp::Pathname tmpPath() const;
     TargetRef target() const;
 
+
+    /*!
+     * Tries to resolve the variable \a var from the repoCache,
+     * returns a pointer to the found value or nullptr if the variable
+     * is not known.
+     */
+    const std::string * resolveRepoVar( const std::string & var );
+
+    repo::RepoVarsMap &repoVarCache();
+    const repo::RepoVarsMap &repoVarCache() const;
+
+    /*!
+     * Resets all cached repo variables
+     */
+    void clearRepoVariables();
+
     /*!
      * Signal emitted during context close, e.g. unloading the target.
      * All classes depending on the context can connect to it to clean up.
@@ -130,6 +148,7 @@ namespace zyppng {
     TargetRef  _target;
 
     zypp::ZyppContextLockRef _myLock;
+    repo::RepoVarsMap _repoVarCache;
 
   };
 

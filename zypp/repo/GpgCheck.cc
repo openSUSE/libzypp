@@ -7,10 +7,25 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 
-#include <zypp-glib/error.h>
-#include <zypp-glib/context.h>
-#include <zypp-glib/repomanager.h>
-#include <zypp-glib/repoinfo.h>
-#include <zypp-glib/serviceinfo.h>
-#include <zypp-glib/expected.h>
-#include <zypp-glib/progressobserver.h>
+#include "GpgCheck.h"
+
+namespace zypp {
+  std::ostream & operator<<( std::ostream & str, const repo::GpgCheck & obj )
+  {
+    switch ( obj )
+    {
+#define OUTS( V ) case repo::V: return str << #V; break
+      OUTS( GpgCheck::On );
+      OUTS( GpgCheck::Strict );
+      OUTS( GpgCheck::AllowUnsigned );
+      OUTS( GpgCheck::AllowUnsignedRepo );
+      OUTS( GpgCheck::AllowUnsignedPackage );
+      OUTS( GpgCheck::Default );
+      OUTS( GpgCheck::Off );
+      OUTS( GpgCheck::indeterminate );
+#undef OUTS
+    }
+    return str << "GpgCheck::UNKNOWN";
+  }
+
+}

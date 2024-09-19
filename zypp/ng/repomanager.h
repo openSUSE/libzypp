@@ -21,6 +21,8 @@
 #include <zypp/repo/RepoException.h>
 #include <zypp/repo/PluginRepoverification.h>
 #include <zypp/ng/workflows/logichelpers.h>
+#include <zypp/ng/repoinfo.h>
+#include <zypp/ng/serviceinfo.h>
 
 
 #include <zypp-core/base/Gettext.h>
@@ -34,11 +36,7 @@
 #include <zypp/ng/context_fwd.h>
 
 namespace zyppng {
-
-  using RepoInfo            = zypp::RepoInfo;
   using RepoStatus          = zypp::RepoStatus;
-  using RepoInfoList        = zypp::RepoInfoList;
-  using ServiceInfo         = zypp::ServiceInfo;
   using RepoManagerOptions  = zypp::RepoManagerOptions;
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );

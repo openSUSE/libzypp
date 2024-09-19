@@ -143,7 +143,7 @@ namespace zypp
       RepoFileParser dict(is);
       for_( its, dict.sectionsBegin(), dict.sectionsEnd() )
       {
-        RepoInfo info(nullptr); // context is initialized by caller
+        RepoInfo info; // context is initialized by caller
         info.setAlias(*its);
         std::string proxy;
         std::string proxyport;

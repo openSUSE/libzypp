@@ -293,11 +293,17 @@ SET( zypp_ng_SRCS
   ng/contextbase.cc
   ng/fusionpool.cc
   ng/progressobserveradaptor.cc
+  ng/repoinfo.cc
   ng/reporthelper.cc
   ng/repomanager.cc
+  ng/serviceinfo.cc
   ng/userrequest.cc
   ng/repo/downloader.cc
   ng/repo/refresh.cc
+  ng/repo/repoinfobase.cc
+  ng/repo/repoinfobaseshareddata.cc
+  ng/repo/repovariables.cc
+  ng/repo/repovariablescache.cc
   ng/repo/workflows/plaindir.cc
   ng/repo/workflows/repodownloaderwf.cc
   ng/repo/workflows/repomanagerwf.cc
@@ -321,8 +327,12 @@ SET( zypp_ng_HEADERS
   ng/FusionPool
   ng/Context
   ng/progressobserveradaptor.h
+  ng/repoinfo.h
+  ng/repoinfoshareddata.h
   ng/reporthelper.h
   ng/repomanager.h
+  ng/serviceinfo.h
+  ng/serviceinfoshareddata.h
   ng/RepoManager
   ng/userrequest.h
   ng/UserRequest
@@ -330,6 +340,10 @@ SET( zypp_ng_HEADERS
   ng/repo/Downloader
   ng/repo/refresh.h
   ng/repo/Refresh
+  ng/repo/repoinfobase.h
+  ng/repo/repoinfobaseshareddata.h
+  ng/repo/repovariables.h
+  ng/repo/repovariablescache.h
   ng/repo/workflows/plaindir.h
   ng/repo/workflows/repodownloaderwf.h
   ng/repo/workflows/repomanagerwf.h
@@ -670,6 +684,7 @@ INSTALL(  FILES
 )
 
 SET( zypp_repo_SRCS
+  repo/GpgCheck.cc
   repo/RepoException.cc
   repo/RepoMirrorList.cc
   repo/RepoType.cc
@@ -689,9 +704,11 @@ SET( zypp_repo_SRCS
 )
 
 SET( zypp_repo_HEADERS
+  repo/GpgCheck.h
   repo/RepoException.h
   repo/RepoMirrorList.h
   repo/RepoType.h
+  repo/ServiceRepoState.h
   repo/ServiceType.h
   repo/PackageProvider.h
   repo/SrcPackageProvider.h
@@ -708,7 +725,6 @@ SET( zypp_repo_HEADERS
 )
 
 SET( zypp_repo_detail_HEADERS
-  repo/detail/RepoInfoBaseImpl.h
 )
 
 INSTALL( FILES

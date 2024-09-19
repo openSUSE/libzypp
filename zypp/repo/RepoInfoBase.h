@@ -6,21 +6,35 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED
-#define ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED
+/** \file       zypp/repo/RepoInfoBase.h
+ *
+ */
+#ifndef REPOINFOBASE_H_
+#define REPOINFOBASE_H_
 
 #include <iosfwd>
 
-#include <zypp/ng/context.h>
-#include <zypp/ng/repo/repoinfobaseshareddata.h>
+#include <zypp/base/PtrTypes.h>
 #include <zypp-core/Globals.h>
-#include <zypp-core/Pathname.h>
-#include <zypp-core/base/PtrTypes.h>
+#include <zypp/Pathname.h>
 
+ZYPP_BEGIN_LEGACY_API
 
-namespace zyppng::repo
-{
+namespace zyppng::repo {
+  class RepoInfoBase;
+}
 
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{ /////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+  namespace repo
+  { /////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
+    //
+    //    CLASS NAME : RepoInfoBase
+    //
     /**
      * \short Base class implementing common features of \ref RepoInfo and
      *        \ref ServiceInfo.
@@ -28,27 +42,23 @@ namespace zyppng::repo
      * \note Name is subject to repo variable replacement
      * (\see \ref RepoVariablesStringReplacer).
      */
-    class RepoInfoBase
+    class ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoInfoBase
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     public:
-
       virtual ~RepoInfoBase();
 
     protected:
+      RepoInfoBase();
+      RepoInfoBase(const std::string &alias);
+
       RepoInfoBase(const RepoInfoBase &) = default;
       RepoInfoBase(RepoInfoBase &&) noexcept = default;
       RepoInfoBase &operator=(const RepoInfoBase &) = default;
       RepoInfoBase &operator=(RepoInfoBase &&) noexcept = default;
 
     public:
-
-      /**
-       * Returns the associated context of the RepoInfo
-       */
-      zyppng::ContextBaseRef context() const;
-
       /**
        * unique identifier for this source. If not specified
        * It should be generated from the base url.
@@ -104,7 +114,7 @@ namespace zyppng::repo
        * \note could be an empty pathname for repo
        * infos created in memory.
        */
-       zypp::Pathname filepath() const;
+       Pathname filepath() const;
 
 
     public:
@@ -141,7 +151,7 @@ namespace zyppng::repo
        *
        * \param path File path
        */
-      void setFilepath( const zypp::Pathname &filename );
+      void setFilepath( const Pathname &filename );
 
       /**
        * Write a human-readable representation of this RepoInfoBase object
@@ -162,23 +172,18 @@ namespace zyppng::repo
       virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
 
     protected:
-      RepoInfoBase( RepoInfoBaseSharedData &pimpl );
-
-      // support rw_cow copying for derived types
-      RepoInfoBase( const zypp::RWCOW_pointer<RepoInfoBaseSharedData> &other );
-
-      /** Pointer to implementation */
-      zypp::RWCOW_pointer<RepoInfoBaseSharedData> _pimpl;
+      virtual zyppng::repo::RepoInfoBase &pimpl() = 0;
+      virtual const zyppng::repo::RepoInfoBase &pimpl() const = 0;
     };
     ///////////////////////////////////////////////////////////////////
 
     /** \relates RepoInfoBase */
     inline bool operator==( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
-    { return ( lhs.context() == rhs.context() && lhs.alias() == rhs.alias()); }
+    { return lhs.alias() == rhs.alias(); }
 
     /** \relates RepoInfoBase */
     inline bool operator!=( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
-    { return (lhs.context() != rhs.context() || lhs.alias() != rhs.alias()); }
+    { return lhs.alias() != rhs.alias(); }
 
     inline bool operator<( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
     { return lhs.alias() < rhs.alias(); }
@@ -186,7 +191,19 @@ namespace zyppng::repo
     /** \relates RepoInfoBase Stream output */
     std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
+    /** \relates RepoInfoBase */
+    using RepoInfoBase_Ptr = shared_ptr<RepoInfoBase>;
+    /** \relates RepoInfoBase */
+    using RepoInfoBase_constPtr = shared_ptr<const RepoInfoBase>;
 
-  } // namespace zyppng::repo
 
-#endif /*ZYPP_NG_REPO_REPOINFOBASE_H_INCLUDED*/
+    /////////////////////////////////////////////////////////////////
+  } // namespace repo
+  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+
+ZYPP_END_LEGACY_API
+
+#endif /*REPOINFOBASE_H_*/

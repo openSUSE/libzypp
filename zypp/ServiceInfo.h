@@ -6,11 +6,11 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/ng/ServiceInfo.h
+/** \file	zypp/ServiceInfo.h
  *
  */
-#ifndef ZYPP_NG_SERVICE_INFO_H_INCLUDED
-#define ZYPP_NG_SERVICE_INFO_H_INCLUDED
+#ifndef ZYPP_SERVICE_H
+#define ZYPP_SERVICE_H
 
 #include <set>
 #include <string>
@@ -19,17 +19,19 @@
 
 #include <zypp/base/Iterable.h>
 #include <zypp/repo/ServiceType.h>
+#include <zypp/repo/ServiceRepoState.h>
+#include <zypp/RepoInfo.h>
 #include <zypp/Date.h>
 
+namespace zyppng {
+  class ServiceInfo;
+}
 
-#include <zypp/ng/repoinfo.h>
-#include <zypp/repo/ServiceRepoState.h>
+ZYPP_BEGIN_LEGACY_API
 
 ///////////////////////////////////////////////////////////////////
-namespace zyppng
+namespace zypp
 { /////////////////////////////////////////////////////////////////
-
-  struct ServiceInfoSharedData;
 
   ///////////////////////////////////////////////////////////////////
   /// \class ServiceInfo
@@ -38,52 +40,58 @@ namespace zyppng
   /// \note Name and Url are subject to repo variable replacement
   /// (\see \ref RepoVariablesStringReplacer).
   ///
-  class ServiceInfo : public repo::RepoInfoBase
+  class ZYPP_API ZYPP_INTERNAL_DEPRECATE ServiceInfo : public repo::RepoInfoBase
   {
   public:
-    /**
-     * Default ctor creates \ref noService.
-     * \internal
-     */
-    ServiceInfo( zyppng::ContextBaseRef contextRef );
+    /** Default ctor creates \ref noService.*/
+    ServiceInfo();
+
+    ServiceInfo(const ServiceInfo &other);
+    ServiceInfo(ServiceInfo &&other);
+    ServiceInfo &operator=(const ServiceInfo &other);
+    ServiceInfo &operator=(ServiceInfo &&other);
 
     /**
      *  Creates ServiceInfo with specified alias.
      *
      * \param alias unique short name of service
-     * \internal
      */
-    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias );
+    ServiceInfo( const std::string & alias );
 
     /**
      * ServiceInfo with alias and its URL
      *
      * \param alias unique shortname of service
      * \param url url to service
-     * \internal
      */
-    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias, const zypp::Url& url );
+    ServiceInfo( const std::string & alias, const Url& url );
 
     ~ServiceInfo() override;
 
+  public:
+    /** Represents an empty service. */
+    static const ServiceInfo noService ZYPP_API;
+
+  public:
+
     /** The service url */
-    zypp::Url url() const;
+    Url url() const;
 
     /** The service raw url (no variables replaced) */
-    zypp::Url rawUrl() const;
+    Url rawUrl() const;
 
     /** Set the service url (raw value) */
-    void setUrl( const zypp::Url& url );
+    void setUrl( const Url& url );
 
 
     /** Service type */
-    zypp::repo::ServiceType type() const;
+    repo::ServiceType type() const;
 
     /** Set service type */
-    void setType( const zypp::repo::ServiceType & type );
+    void setType( const repo::ServiceType & type );
 
     /** Lazy init service type */
-    void setProbedType( const zypp::repo::ServiceType & t ) const;
+    void setProbedType( const repo::ServiceType & t ) const;
 
     /** \name Housekeeping data
      * You don't want to use the setters unless you are a \ref RepoManager.
@@ -93,19 +101,19 @@ namespace zyppng
      * The value (in seconds) may be provided in repoindex.xml:xpath:/repoindex@ttl.
      * Default is \a 0 - perform each auto-refresh request.
      */
-    zypp::Date::Duration ttl() const;
+    Date::Duration ttl() const;
 
     /** Set sugested TTL. */
-    void setTtl( zypp::Date::Duration ttl_r );
+    void setTtl( Date::Duration ttl_r );
 
     /** Lazy init sugested TTL. */
-    void setProbedTtl( zypp::Date::Duration ttl_r ) const;
+    void setProbedTtl( Date::Duration ttl_r ) const;
 
     /** Date of last refresh (if known). */
-    zypp::Date lrf() const;
+    Date lrf() const;
 
     /** Set date of last refresh. */
-    void setLrf( zypp::Date lrf_r );
+    void setLrf( Date lrf_r );
     //@}
     //
     /** \name Set of repos (repository aliases) to enable on next refresh.
@@ -121,8 +129,8 @@ namespace zyppng
     ReposToEnable::size_type      reposToEnableSize() const;
     ReposToEnable::const_iterator reposToEnableBegin() const;
     ReposToEnable::const_iterator reposToEnableEnd() const;
-    zypp::Iterable<ReposToEnable::const_iterator> reposToEnable() const
-    { return zypp::makeIterable( reposToEnableBegin(), reposToEnableEnd() ); }
+    Iterable<ReposToEnable::const_iterator> reposToEnable() const
+    { return makeIterable( reposToEnableBegin(), reposToEnableEnd() ); }
 
     /** Whether \c alias_r is mentioned in ReposToEnable. */
     bool repoToEnableFind( const std::string & alias_r ) const;
@@ -147,8 +155,8 @@ namespace zyppng
     ReposToDisable::size_type      reposToDisableSize() const;
     ReposToDisable::const_iterator reposToDisableBegin() const;
     ReposToDisable::const_iterator reposToDisableEnd() const;
-    zypp::Iterable<ReposToDisable::const_iterator> reposToDisable() const
-    { return zypp::makeIterable( reposToDisableBegin(), reposToDisableEnd() ); }
+    Iterable<ReposToDisable::const_iterator> reposToDisable() const
+    { return makeIterable( reposToDisableBegin(), reposToDisableEnd() ); }
 
     /** Whether \c alias_r is mentioned in ReposToDisable. */
     bool repoToDisableFind( const std::string & alias_r ) const;
@@ -161,14 +169,7 @@ namespace zyppng
     void clearReposToDisable();
     //@}
 
-    /** \name The original repo state as defined by the repoindex.xml upon last refresh.
-     *
-     * This state is remembered to detect any user modifications applied to the repos.
-     * It may not be available for all repos or in plugin services. In this case all
-     * changes requested by a service refresh are applied unconditionally.
-     */
-    //@{
-    using RepoState  = zypp::ServiceRepoState;
+    using RepoState  = ServiceRepoState;
     using RepoStates = std::map<std::string, RepoState>;
 
     /** Access the remembered repository states. */
@@ -196,11 +197,18 @@ namespace zyppng
     std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
   private:
-    ServiceInfoSharedData *pimpl();
-    const ServiceInfoSharedData *pimpl() const;
+    zyppng::repo::RepoInfoBase &pimpl() override;
+    const zyppng::repo::RepoInfoBase &pimpl() const override;
+
+    bool _ownsPimpl = true;
+    std::unique_ptr<zyppng::ServiceInfo> _pimpl;
   };
   ///////////////////////////////////////////////////////////////////
-  ///
+
+  /** \relates ServiceInfo */
+  using ServiceInfo_Ptr = shared_ptr<ServiceInfo>;
+  /** \relates ServiceInfo */
+  using ServiceInfo_constPtr = shared_ptr<const ServiceInfo>;
   /** \relates ServiceInfo */
   using ServiceInfoList = std::list<ServiceInfo>;
 
@@ -216,10 +224,12 @@ namespace zyppng
   { return lhs.alias() < rhs.alias(); }
 
   /** \relates ServiceInfo Stream output */
-  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj );
+  std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj ) ZYPP_API;
 
 
     /////////////////////////////////////////////////////////////////
 } // namespace zypp
-///////////////////////////////////////////////////////////////////
-#endif // ZYPP_NG_SERVICE_INFO_H_INCLUDED
+
+ZYPP_END_LEGACY_API
+
+#endif // ZYPP_SERVICE_H

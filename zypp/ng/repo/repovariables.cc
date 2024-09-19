@@ -6,11 +6,11 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
+#include "repovariables.h"
 
-#include <zypp-glib/error.h>
-#include <zypp-glib/context.h>
-#include <zypp-glib/repomanager.h>
-#include <zypp-glib/repoinfo.h>
-#include <zypp-glib/serviceinfo.h>
-#include <zypp-glib/expected.h>
-#include <zypp-glib/progressobserver.h>
+#include <zypp/repo/RepoVariables.h>
+
+namespace zyppng {
+  namespace repo {
+  }
+}

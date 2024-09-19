@@ -118,7 +118,6 @@
 #endif
 
 
-
 #ifdef ZYPP_DLL	//defined if zypp is compiled as DLL
 // used to flag API to be deprected inside of libzypp.
 #define ZYPP_INTERNAL_DEPRECATE ZYPP_DEPRECATED
@@ -127,6 +126,27 @@
 #else
 #define ZYPP_INTERNAL_DEPRECATE
 #define ZYPP_LEGACY_API
+#endif
+
+/**
+ * Macro to disable legacy warnings for code that was otherwise marked as
+ * internal deprecated, for examples in files that are defining legacy API.
+ */
+#if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
+  #ifndef ZYPP_BEGIN_LEGACY_API
+  #define ZYPP_BEGIN_LEGACY_API \
+    _Pragma("GCC diagnostic push") \
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated\"")
+  #endif
+
+  #ifndef ZYPP_END_LEGACY_API
+  #define ZYPP_END_LEGACY_API \
+    _Pragma("GCC diagnostic pop")
+  #endif
+
+#else
+  #define ZYPP_BEGIN_LEGACY_API
+  #define ZYPP_END_LEGACY_API
 #endif
 
 

@@ -10,11 +10,12 @@
  *
  */
 #include <iostream>
+#include <functional>
+
+#include "repoinfobase.h"
 
 #include <zypp/ZConfig.h>
 #include <zypp/zypp_detail/ZYppImpl.h>
-#include <zypp/repo/detail/RepoInfoBaseImpl.h>
-#include <zypp/repo/RepoVariables.h>
 
 #include <zypp/repo/RepoInfoBase.h>
 #include <zypp/TriBool.h>
@@ -24,35 +25,56 @@
 
 using std::endl;
 
-///////////////////////////////////////////////////////////////////
-namespace zypp
-{
-  ///////////////////////////////////////////////////////////////////
-  namespace repo
+namespace zyppng::repo {
+
+  RepoInfoBaseSharedData::RepoInfoBaseSharedData( zyppng::ContextBaseRef &&context )
+    : _ctx( std::move(context) )
+    , _enabled( zypp::indeterminate )
+    , _autorefresh( zypp::indeterminate )
   {
+    RepoInfoBaseSharedData::bindVariables();
+  }
 
-  RepoInfoBase::Impl::Impl( zyppng::ContextBaseRef &&context )
+  RepoInfoBaseSharedData::RepoInfoBaseSharedData(  zyppng::ContextBaseRef &&context, const std::string & alias_r )
     : _ctx( std::move(context) )
-    , _enabled( indeterminate )
-    , _autorefresh( indeterminate )
-  {}
+    , _enabled( zypp::indeterminate )
+    , _autorefresh( zypp::indeterminate )
+  {
+    RepoInfoBaseSharedData::bindVariables();
+    setAlias( alias_r );
+  }
 
-  RepoInfoBase::Impl::Impl(  zyppng::ContextBaseRef &&context, const std::string & alias_r )
-    : _ctx( std::move(context) )
-    , _enabled( indeterminate )
-    , _autorefresh( indeterminate )
-  { setAlias( alias_r ); }
+  void RepoInfoBaseSharedData::bindVariables()
+  {
+    if ( _ctx ) {
+      _name.setTransformator( RepoVariablesStringReplacer( zypp::repo::RepoVarRetriever( *_ctx.get() ) ) );
+    } else {
+      _name.setTransformator( RepoVariablesStringReplacer( nullptr ) );
+    }
+  }
 
 
-  void RepoInfoBase::Impl::setAlias( const std::string & alias_r )
+  void RepoInfoBaseSharedData::setAlias( const std::string & alias_r )
   {
     _alias = _escaped_alias = alias_r;
     // replace slashes with underscores
-    str::replaceAll( _escaped_alias, "/", "_" );
+    zypp::str::replaceAll( _escaped_alias, "/", "_" );
   }
 
-  RepoInfoBase::Impl * RepoInfoBase::Impl::clone() const
-  { return new Impl( *this ); }
+  void RepoInfoBaseSharedData::switchContext(ContextBaseRef ctx)
+  {
+    if ( ctx != _ctx ) {
+      _ctx = std::move(ctx);
+      bindVariables();
+    }
+  }
+
+  RepoInfoBaseSharedData * RepoInfoBaseSharedData::clone() const
+  {
+    auto *n = new RepoInfoBaseSharedData( *this );
+    n->bindVariables ();
+    return n;
+  }
 
   ///////////////////////////////////////////////////////////////////
 
@@ -62,27 +84,11 @@ namespace zypp
   //
   ///////////////////////////////////////////////////////////////////
 
-  RepoInfoBase::RepoInfoBase(Impl &pimpl  ) : _pimpl( &pimpl )
+  RepoInfoBase::RepoInfoBase( RepoInfoBaseSharedData &pimpl  ) : _pimpl( &pimpl )
   {}
-
-  RepoInfoBase::RepoInfoBase( zyppng::ContextBaseRef context )
-    : _pimpl( new Impl( std::move(context) ) )
-  { }
-
-  RepoInfoBase::RepoInfoBase( zyppng::ContextBaseRef context, const std::string &alias )
-    : _pimpl( new Impl( std::move(context), alias ) )
-  { }
 
   zyppng::ContextBaseRef RepoInfoBase::context() const
   { return _pimpl->_ctx; }
-
-  RepoInfoBase::RepoInfoBase()
-    : RepoInfoBase( zypp_detail::GlobalStateHelper::context() )
-  { /* LEGACY, DO NOT ADD CODE HERE */ }
-
-  RepoInfoBase::RepoInfoBase(const std::string & alias)
-    : RepoInfoBase( zypp_detail::GlobalStateHelper::context(), alias )
-  { /* LEGACY, DO NOT ADD CODE HERE */ }
 
   RepoInfoBase::~RepoInfoBase()
   {}
@@ -99,7 +105,7 @@ namespace zypp
   void RepoInfoBase::setName( const std::string &name )
   { _pimpl->_name.raw() = name; }
 
-  void RepoInfoBase::setFilepath( const Pathname &filepath )
+  void RepoInfoBase::setFilepath( const zypp::Pathname &filepath )
   { _pimpl->_filepath = filepath; }
 
   // true by default (if not set by setEnabled())
@@ -110,10 +116,10 @@ namespace zypp
   bool RepoInfoBase::autorefresh() const
   { return indeterminate(_pimpl->_autorefresh) ? false : (bool) _pimpl->_autorefresh; }
 
-  std::string RepoInfoBase::alias() const
+  const std::string &RepoInfoBase::alias() const
   { return _pimpl->_alias; }
 
-  std::string RepoInfoBase::escaped_alias() const
+  const std::string &RepoInfoBase::escaped_alias() const
   { return _pimpl->_escaped_alias; }
 
   std::string RepoInfoBase::name() const
@@ -123,7 +129,7 @@ namespace zypp
     return repo::RepoVariablesStringReplacer()( rawName() );
   }
 
-  std::string RepoInfoBase::rawName() const
+  const std::string &RepoInfoBase::rawName() const
   { return _pimpl->_name.raw(); }
 
   std::string RepoInfoBase::label() const
@@ -133,7 +139,7 @@ namespace zypp
     return name();
   }
 
-  Pathname RepoInfoBase::filepath() const
+  const zypp::Pathname &RepoInfoBase::filepath() const
   { return _pimpl->_filepath; }
 
 
@@ -171,7 +177,4 @@ namespace zypp
     return obj.dumpOn(str);
   }
 
-  } // namespace repo
-  ///////////////////////////////////////////////////////////////////
-} // namespace zypp
-///////////////////////////////////////////////////////////////////
+} //namespace zyppng::repo

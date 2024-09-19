@@ -9,7 +9,6 @@
 #include "private/repomanager_p.h"
 #include "private/serviceinfo_p.h"
 #include "private/repoinfo_p.h"
-#include "private/repomanageroptions_p.h"
 #include "expected.h"
 #include <zypp-glib/utils/GList>
 #include <string>
@@ -27,7 +26,6 @@ typedef enum
 {
   PROP_CPPOBJ = 1,
   CONTEXT_PROPERTY,
-  OPTIONS_PROPERTY,
   N_PROPERTIES
 } ZyppRepoManagerProperty;
 static GParamSpec *obj_properties[N_PROPERTIES] = { NULL };
@@ -60,12 +58,15 @@ void zypp_repo_manager_class_init( ZyppRepoManagerClass *klass )
                        zypp_context_get_type(),
                        GParamFlags( G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE) );
 
+  /*
+   for now we do not support passing RepoManagerOptions, the context defines those
   obj_properties[OPTIONS_PROPERTY] =
   g_param_spec_boxed( "options",
                        "ZyppRepoManagerOptions",
                        "The repo manager options to be used",
                        zypp_repo_manager_options_get_type (),
                        GParamFlags( G_PARAM_CONSTRUCT | G_PARAM_READWRITE ) );
+  */
 
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
@@ -80,7 +81,8 @@ void ZyppRepoManagerPrivate::initializeCpp( )
     _cppObj = std::move( _constrProps->_cppObj );
   } else {
     if ( !_constrProps->_ctx ) g_error("Context argument can not be NULL");
-    _cppObj = zyppng::SyncRepoManager::create ( zypp_context_get_cpp(  _constrProps->_ctx.get() ), _constrProps->_options );
+    auto ctx = zypp_context_get_cpp( _constrProps->_ctx.get() );
+    _cppObj = zyppng::SyncRepoManager::create ( ctx, zyppng::RepoManagerOptions(ctx) );
   }
   _constrProps.reset();
 }
@@ -110,13 +112,6 @@ zypp_repo_manager_set_property (GObject      *object,
         }
         break;
       }
-      case OPTIONS_PROPERTY: {
-        auto rO = reinterpret_cast<const ZyppRepoManagerOptions *>(g_value_get_boxed ( value ));
-        if ( d->_constrProps ) {
-          d->_constrProps->_options = rO->_opts;
-        }
-        break;
-      }
       default:
         /* We don't have any other property... */
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -134,11 +129,7 @@ zypp_repo_manager_get_property (GObject    *object,
   ZyppRepoManager *self = ZYPP_REPOMANAGER (object);
   ZYPP_REPO_MANAGER_D();
 
-  switch ((ZyppRepoManagerProperty)property_id )
-    {
-    case OPTIONS_PROPERTY: {
-      g_value_set_boxed ( value, zypp_repo_manager_options_new( d->_cppObj->options() ) );
-    }
+  switch ((ZyppRepoManagerProperty)property_id ) {
     default:
       /* We don't have any other property... */
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -153,9 +144,7 @@ zypp_repo_manager_get_property (GObject    *object,
 ZyppRepoManager *zypp_repo_manager_new( ZyppContext *ctx )
 {
   g_return_val_if_fail( ctx != nullptr, nullptr );
-
-  zypp::AutoDispose<ZyppRepoManagerOptions *>options( zypp_repo_manager_options_new( zypp_context_sysroot(ctx) ), zypp_repo_manager_options_free );
-  return static_cast<ZyppRepoManager *>( g_object_new( zypp_repo_manager_get_type(), "zyppcontext", ctx, "options", options.value(), nullptr ) );
+  return static_cast<ZyppRepoManager *>( g_object_new( zypp_repo_manager_get_type(), "zyppcontext", ctx, nullptr ) );
 }
 
 gboolean zypp_repo_manager_initialize( ZyppRepoManager *self, GError **error )
@@ -209,7 +198,7 @@ GList *zypp_repo_manager_get_known_repos(ZyppRepoManager *self)
   g_return_val_if_fail( d->_cppObj.operator bool() , nullptr );
 
   for ( auto i = d->_cppObj->repoBegin (); i != d->_cppObj->repoEnd(); i++ ) {
-    ret = g_list_append( ret, zypp_wrap_cpp ( *i ) );
+    ret = g_list_append( ret, zypp_wrap_cpp ( i->second ) );
   }
 
   return ret;
@@ -224,7 +213,7 @@ GList *zypp_repo_manager_get_known_services(ZyppRepoManager *self)
   g_return_val_if_fail( d->_cppObj.operator bool() , nullptr );
 
   for ( auto i = d->_cppObj->serviceBegin (); i != d->_cppObj->serviceEnd(); i++ ) {
-    ret = g_list_append( ret, zypp_wrap_cpp ( *i ) );
+    ret = g_list_append( ret, zypp_wrap_cpp ( i->second ) );
   }
 
   return ret;

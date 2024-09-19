@@ -17,10 +17,13 @@
 #include <zypp/Pathname.h>
 #include <zypp/ResStatus.h>
 
+namespace zyppng {
+  class RepoInfo;
+}
+
 namespace zypp
 {
   class PoolItem;
-  class RepoInfo;
 
   ///////////////////////////////////////////////////////////////////
   /// \class HistoryLog
@@ -107,14 +110,14 @@ namespace zypp
      *
      * \param repo info about the added repository
      */
-    void addRepository( const RepoInfo & repo );
+    void addRepository( const zyppng::RepoInfo & repo );
 
     /**
      * Log recently removed repository.
      *
      * \param repo info about the removed repository
      */
-    void removeRepository( const RepoInfo & repo );
+    void removeRepository( const zyppng::RepoInfo & repo );
 
     /**
      * Log certain modifications to a repository.
@@ -122,7 +125,7 @@ namespace zypp
      * \param oldrepo info about the old repository
      * \param newrepo info about the new repository
      */
-    void modifyRepository( const RepoInfo & oldrepo, const RepoInfo & newrepo );
+    void modifyRepository( const zyppng::RepoInfo & oldrepo, const zyppng::RepoInfo & newrepo );
 
     /**
      * Log state changes in patches

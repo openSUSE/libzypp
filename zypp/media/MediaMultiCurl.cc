@@ -143,7 +143,7 @@ class multifetchworker : private MediaCurl, public zyppng::CurlMultiPartDataRece
   friend class multifetchrequest;
 
 public:
-  multifetchworker(int no, multifetchrequest &request, const Url &url);
+  multifetchworker(zyppng::ContextBaseRef ctx, int no, multifetchrequest &request, const Url &url);
   multifetchworker(const multifetchworker &) = delete;
   multifetchworker(multifetchworker &&) = delete;
   multifetchworker &operator=(const multifetchworker &) = delete;
@@ -439,8 +439,8 @@ multifetchworker::headerfunction( char *p, size_t bytes )
   return bytes;
 }
 
-multifetchworker::multifetchworker(int no, multifetchrequest &request, const Url &url)
-: MediaCurl(url, Pathname())
+multifetchworker::multifetchworker( zyppng::ContextBaseRef ctx, int no, multifetchrequest &request, const Url &url)
+: MediaCurl(std::move(ctx), url, Pathname())
 , _workerno( no )
 , _maxspeed( request._maxspeed )
 , _request ( &request )
@@ -1048,7 +1048,7 @@ multifetchrequest::run(std::vector<Url> &urllist)
       if ((int)_activeworkers < _maxworkers && urliter != urllist.end() && _workers.size() < MAXURLS)
         {
           // spawn another worker!
-          _workers.push_back(std::make_unique<multifetchworker>(workerno++, *this, *urliter));
+          _workers.push_back(std::make_unique<multifetchworker>( _context->_zyppContext, workerno++, *this, *urliter));
           auto &worker = _workers.back();
           if (worker->_state != WORKER_BROKEN)
             {
@@ -1369,8 +1369,8 @@ inline zypp::ByteCount multifetchrequest::makeBlksize ( uint maxConns, size_t fi
 //////////////////////////////////////////////////////////////////////
 
 
-MediaMultiCurl::MediaMultiCurl(const Url &url_r, const Pathname & attach_point_hint_r)
-    : MediaCurl(url_r, attach_point_hint_r)
+MediaMultiCurl::MediaMultiCurl(zyppng::ContextBaseRef ctx, const Url &url_r, const Pathname & attach_point_hint_r)
+    : MediaCurl( std::move(ctx), url_r, attach_point_hint_r)
 {
   MIL << "MediaMultiCurl::MediaMultiCurl(" << url_r << ", " << attach_point_hint_r << ")" << endl;
   _multi = 0;
@@ -1582,7 +1582,7 @@ void MediaMultiCurl::doGetFileCopy( const OnMediaLocation &srcFile , const Pathn
   if ( ismetalink != MetaDataType::None )
     {
       bool userabort = false;
-      Pathname failedFile = ZConfig::instance().repoCachePath() / "MultiCurl.failed";
+      Pathname failedFile = ZConfig::systemConfig().repoCachePath() / "MultiCurl.failed";
       file = nullptr;	// explicitly close destNew before the parser reads it.
       try
         {

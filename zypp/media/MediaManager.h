@@ -24,6 +24,9 @@
 
 #include <list>
 
+namespace zyppng {
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(ContextBase);
+}
 
 namespace zypp::media
 {
@@ -493,7 +496,32 @@ namespace zypp::media
      * \throws MediaException
      */
     MediaAccessId
-    open(const Url &url, const Pathname & preferred_attach_point = "");
+    open( const Url &url, const Pathname & preferred_attach_point = "" ) ZYPP_INTERNAL_DEPRECATE;
+
+
+    /**
+     * Opens the media access for specified with the url.
+     *
+     * If the \p preferred_attach_point parameter does not
+     * point to a usable attach point directory, the media
+     * manager automatically creates a temporary attach
+     * point in a default directory. This default directory
+     * can be changed using setAttachPrefix() function.
+     *
+     * Remember to close() each id you've opened and not
+     * need any more. It is like a new and delete!
+     *
+     * \param  ctx, the zyppng context used for settings for the created MediaHandler
+     * \param  url The \ref MediaAccessUrl.
+     * \param  preferred_attach_point The preferred, already
+     *         existing directory, where the media should be
+     *         attached.
+     * \return a new media access id.
+     * \throws std::bad_alloc
+     * \throws MediaException
+     */
+    MediaAccessId
+    open( zyppng::ContextBaseRef ctx, const Url &url, const Pathname & preferred_attach_point = "");
 
     /**
      * Close the media access with specified id.

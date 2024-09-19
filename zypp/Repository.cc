@@ -27,6 +27,8 @@
 #include <zypp/Product.h>
 #include <zypp/sat/Pool.h>
 
+#include <zypp/ng/repoinfo.h>
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -66,10 +68,20 @@ namespace zypp
     }
 
     std::string Repository::name() const
-    { return info().name(); }
+    {
+      const auto &info = ngInfo();
+      if ( info )
+        return info->name();
+      return std::string();
+    }
 
     std::string Repository::label() const
-    { return info().label(); }
+    {
+      const auto &info = ngInfo();
+      if ( info )
+        return info->label();
+      return std::string();
+    }
 
     int Repository::satInternalPriority() const
     {
@@ -271,13 +283,24 @@ namespace zypp
       return ProductInfoIterator();
     }
 
-    RepoInfo Repository::info() const
+    const std::optional<zyppng::RepoInfo> &Repository::ngInfo() const
     {
-      NO_REPOSITORY_RETURN( RepoInfo() );
+      NO_REPOSITORY_RETURN( zyppng::RepoInfo::nullRepo() );
       return myPool().repoInfo( _repo );
     }
 
-    void Repository::setInfo( const RepoInfo & info_r )
+    ZYPP_BEGIN_LEGACY_API
+    RepoInfo Repository::info() const
+    {
+      NO_REPOSITORY_RETURN( RepoInfo() );
+      const auto &i = myPool().repoInfo( _repo );
+      if ( i )
+        return RepoInfo(*i);
+      return RepoInfo();
+    }
+    ZYPP_END_LEGACY_API
+
+    void Repository::setInfo( const zyppng::RepoInfo & info_r )
     {
         NO_REPOSITORY_THROW( Exception( "Can't set RepoInfo for norepo." ) );
         if ( info_r.alias() != alias() )
@@ -289,10 +312,17 @@ namespace zypp
         MIL << *this << endl;
     }
 
+    ZYPP_BEGIN_LEGACY_API
+    void Repository::setInfo( const RepoInfo & info_r )
+    {
+        setInfo( info_r.ngRepoInfo() );
+    }
+    ZYPP_END_LEGACY_API
+
     void Repository::clearInfo()
     {
         NO_REPOSITORY_RETURN();
-        myPool().setRepoInfo( _repo, RepoInfo() );
+        myPool().eraseRepoInfo( _repo );
     }
 
     void Repository::eraseFromPool()

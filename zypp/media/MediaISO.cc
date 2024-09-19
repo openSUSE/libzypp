@@ -41,9 +41,10 @@ namespace zypp
     //     filesystem: Optional, defaults to "auto".
     //
     ///////////////////////////////////////////////////////////////////
-    MediaISO::MediaISO(const Url      &url_r,
+    MediaISO::MediaISO(zyppng::ContextBaseRef ctx, const Url      &url_r,
                        const Pathname &attach_point_hint_r)
-      : MediaHandler(url_r, attach_point_hint_r,
+      : MediaHandler(std::move(ctx),
+                     url_r, attach_point_hint_r,
                      url_r.getPathName(), // urlpath below attachpoint
                      false)               // does_download
     {
@@ -108,7 +109,7 @@ namespace zypp
 
       MediaManager manager;
 
-      _parentId = manager.open(src, _url.getQueryParam("mnt"));
+      _parentId = manager.open( _zyppContext, src, _url.getQueryParam("mnt"));
     }
 
     // ---------------------------------------------------------------

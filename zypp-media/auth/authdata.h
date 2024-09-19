@@ -81,6 +81,12 @@ private:
 using AuthData_Ptr = shared_ptr<AuthData>;
 std::ostream & operator << (std::ostream & str, const AuthData & auth_data);
 
+// comparator for CredentialSet
+struct ZYPP_API AuthDataComparator
+{
+  bool operator()(const AuthData_Ptr & lhs, const AuthData_Ptr & rhs) const;
+};
+
 ///////////////////////////////////////////////////////////////////
 
   } // namespace media

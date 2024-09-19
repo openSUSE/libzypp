@@ -13,18 +13,18 @@
 #include <zypp-glib/context.h>
 #include <zypp-glib/serviceinfo.h>
 #include <zypp-glib/private/globals_p.h>
-#include <zypp/ServiceInfo.h>
+#include <zypp/ng/serviceinfo.h>
 #include <optional>
 
 struct ZyppServiceInfoPrivate
 {
   struct ConstructionProps {
-    std::optional<zypp::ServiceInfo> _cppObj;
+    std::optional<zyppng::ServiceInfo> _cppObj;
     zypp::glib::ZyppContextRef _context =  nullptr;
   };
   std::optional<ConstructionProps> _constrProps = ConstructionProps();
 
-  zypp::ServiceInfo _info{ zyppng::ContextBaseRef(nullptr) };
+  zyppng::ServiceInfo _info{ zyppng::ContextBaseRef(nullptr) };
 
   ZyppServiceInfoPrivate( ZyppServiceInfo *pub ) : _gObject(nullptr) {}
   void initialize();
@@ -37,12 +37,12 @@ private:
 struct _ZyppServiceInfo {
   GObject parent_instance;
   struct Cpp {
-    zypp::ServiceInfo _info;
+    zyppng::ServiceInfo _info;
   } _data;
 };
 
 
-ZyppServiceInfo *zypp_wrap_cpp(zypp::ServiceInfo info);
+ZyppServiceInfo *zypp_wrap_cpp(zyppng::ServiceInfo info);
 
 
 #endif // SERVICEINFO_P_H

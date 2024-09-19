@@ -6,16 +6,26 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
-#define ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
 
-#include <zypp-glib/repomanageroptions.h>
-#include <zypp/RepoManagerOptions.h>
+#include "GpgCheck.h"
 
-struct _ZyppRepoManagerOptions {
-  zypp::RepoManagerOptions _opts;
-};
+namespace zypp {
+  std::ostream & operator<<( std::ostream & str, const repo::GpgCheck & obj )
+  {
+    switch ( obj )
+    {
+#define OUTS( V ) case repo::V: return str << #V; break
+      OUTS( GpgCheck::On );
+      OUTS( GpgCheck::Strict );
+      OUTS( GpgCheck::AllowUnsigned );
+      OUTS( GpgCheck::AllowUnsignedRepo );
+      OUTS( GpgCheck::AllowUnsignedPackage );
+      OUTS( GpgCheck::Default );
+      OUTS( GpgCheck::Off );
+      OUTS( GpgCheck::indeterminate );
+#undef OUTS
+    }
+    return str << "GpgCheck::UNKNOWN";
+  }
 
-ZyppRepoManagerOptions *zypp_repo_manager_options_new( const zypp::RepoManagerOptions &rO );
-
-#endif // ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
+}

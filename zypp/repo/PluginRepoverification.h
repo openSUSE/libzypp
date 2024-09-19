@@ -14,9 +14,12 @@
 #include <iosfwd>
 
 #include <zypp/Globals.h>
-#include <zypp/RepoInfo.h>
 #include <zypp/FileChecker.h>
 #include <zypp/base/PtrTypes.h>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp_private
@@ -100,7 +103,7 @@ namespace zypp_private
       ///////////////////////////////////////////////////////////////////
 
       /** \ref FileChecker factory remembering the location of the master index files GPG signature and key. */
-      Checker getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, RepoInfo repo_r ) const;
+      Checker getChecker( Pathname sigpathLocal_r, Pathname keypathLocal_r, zyppng::RepoInfo repo_r ) const;
 
     public:
       class Impl;                 ///< Implementation class.

@@ -43,9 +43,11 @@ namespace zypp {
   {
     ZYPP_DECLARE_PRIVATE(MediaConfig)
   public:
+    MediaConfig( zypp::Pathname confFile );
+    ~MediaConfig();
 
-    /*! Singleton ctor */
-    static MediaConfig & instance();
+    static MediaConfig & systemConfig();
+    static const MediaConfig & defaults();
 
     bool setConfigValue ( const std::string &section, const std::string &entry, const std::string &value );
 
@@ -91,7 +93,6 @@ namespace zypp {
     long download_connect_timeout() const;
 
   private:
-    MediaConfig();
     std::unique_ptr<MediaConfigPrivate> d_ptr;
   };
 

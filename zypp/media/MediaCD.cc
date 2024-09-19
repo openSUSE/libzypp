@@ -127,8 +127,8 @@ namespace zypp
     //////////////////////////////////////////////////////////////////
 
 
-  MediaCD::MediaCD( const Url & url_r, const Pathname & attach_point_hint_r )
-    : MediaHandler( url_r, attach_point_hint_r, url_r.getPathName(), false )
+  MediaCD::MediaCD( zyppng::ContextBaseRef ctx, const Url & url_r, const Pathname & attach_point_hint_r )
+    : MediaHandler( std::move(ctx), url_r, attach_point_hint_r, url_r.getPathName(), false )
     , _lastdev( -1 )
     , _lastdev_tried( -1 )
   {

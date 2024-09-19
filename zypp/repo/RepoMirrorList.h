@@ -13,6 +13,7 @@
 #include <vector>
 #include <zypp/Url.h>
 #include <zypp/Pathname.h>
+#include <zypp/ng/context.h>
 
 namespace zypp
 {
@@ -21,10 +22,10 @@ namespace zypp
     class RepoMirrorList
     {
       public:
-        RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r );
+        RepoMirrorList( zyppng::ContextBaseRef ctx, const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r );
 
-        RepoMirrorList( const Url & url_r )
-        : RepoMirrorList( url_r, Pathname(), false )
+        RepoMirrorList( zyppng::ContextBaseRef ctx, const Url & url_r )
+        : RepoMirrorList( ctx, url_r, Pathname(), false )
         {}
 
         const std::vector<Url> & getUrls() const

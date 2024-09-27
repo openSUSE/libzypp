@@ -92,6 +92,9 @@ namespace zypp {
   void RepoInfo::setGpgCheck( zypp::TriBool value_r )
   { _pimpl->setGpgCheck(value_r); }
 
+  void RepoInfo::setGpgCheck(bool value_r)
+  { _pimpl->setGpgCheck(zypp::TriBool(value_r)); }
+
   bool RepoInfo::repoGpgCheck() const
   { return _pimpl->repoGpgCheck(); }
 

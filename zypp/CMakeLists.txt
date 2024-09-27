@@ -298,7 +298,11 @@ SET( zypp_ng_SRCS
   ng/repomanager.cc
   ng/serviceinfo.cc
   ng/userrequest.cc
+  ng/parser/RepoFileReader.cc
+  ng/parser/repoindexfilereader.cc
+  ng/parser/servicefilereader.cc
   ng/repo/downloader.cc
+  ng/repo/pluginservices.cc
   ng/repo/refresh.cc
   ng/repo/repoinfobase.cc
   ng/repo/repoinfobaseshareddata.cc
@@ -336,8 +340,12 @@ SET( zypp_ng_HEADERS
   ng/RepoManager
   ng/userrequest.h
   ng/UserRequest
+  ng/parser/RepoFileReader.h
+  ng/parser/repoindexfilereader.h
+  ng/parser/servicefilereader.h
   ng/repo/downloader.h
   ng/repo/Downloader
+  ng/repo/pluginservices.h
   ng/repo/refresh.h
   ng/repo/Refresh
   ng/repo/repoinfobase.h
@@ -370,18 +378,14 @@ SET( zypp_ng_private_HEADERS
 
 SET( zypp_parser_SRCS
   parser/HistoryLogReader.cc
-  parser/RepoFileReader.cc
   parser/RepoindexFileReader.cc
-  parser/ServiceFileReader.cc
   parser/ProductFileReader.cc
 )
 
 SET( zypp_parser_HEADERS
   parser/HistoryLogReader.h
   parser/ParserProgress.h
-  parser/RepoFileReader.h
   parser/RepoindexFileReader.h
-  parser/ServiceFileReader.h
   parser/ProductFileReader.h
 )
 
@@ -688,6 +692,7 @@ SET( zypp_repo_SRCS
   repo/RepoException.cc
   repo/RepoMirrorList.cc
   repo/RepoType.cc
+  repo/ServiceRepoState.cc
   repo/ServiceType.cc
   repo/PackageProvider.cc
   repo/SrcPackageProvider.cc
@@ -700,7 +705,6 @@ SET( zypp_repo_SRCS
   repo/RepoVariables.cc
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
-  repo/PluginServices.cc
 )
 
 SET( zypp_repo_HEADERS
@@ -721,7 +725,6 @@ SET( zypp_repo_HEADERS
   repo/RepoVariables.h
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
-  repo/PluginServices.h
 )
 
 SET( zypp_repo_detail_HEADERS

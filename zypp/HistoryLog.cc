@@ -21,7 +21,7 @@
 #include <zypp/PathInfo.h>
 #include <zypp/Date.h>
 
-#include <zypp/PoolItem.h>
+#include <zypp/ng/repoinfo.h>
 #include <zypp/Package.h>
 #include <zypp/RepoInfo.h>
 
@@ -286,31 +286,31 @@ namespace zypp
 
   /////////////////////////////////////////////////////////////////////////
 
-  void HistoryLog::addRepository(const RepoInfo & repo)
+  void HistoryLog::addRepository(const zyppng::RepoInfo & repo)
   {
     _log
       << timestamp()							// 1 timestamp
       << _sep << HistoryActionID::REPO_ADD.asString(true)		// 2 action
       << _sep << str::escape(repo.alias(), _sep)			// 3 alias
       << _sep << str::escape(repo.url().asString(), _sep)		// 4 primary URL
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+      << _sep << str::escape(repo.context()->config().userData(), _sep)	// 5 userdata
       << endl;
   }
 
 
-  void HistoryLog::removeRepository(const RepoInfo & repo)
+  void HistoryLog::removeRepository(const zyppng::RepoInfo & repo)
   {
     _log
       << timestamp()							// 1 timestamp
       << _sep << HistoryActionID::REPO_REMOVE.asString(true)		// 2 action
       << _sep << str::escape(repo.alias(), _sep)			// 3 alias
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 4 userdata
+      << _sep << str::escape(repo.context()->config().userData(), _sep)	// 4 userdata
       << endl;
   }
 
 
   void HistoryLog::modifyRepository(
-      const RepoInfo & oldrepo, const RepoInfo & newrepo)
+      const zyppng::RepoInfo & oldrepo, const zyppng::RepoInfo & newrepo)
   {
     if (oldrepo.alias() != newrepo.alias())
     {
@@ -319,7 +319,7 @@ namespace zypp
         << _sep << HistoryActionID::REPO_CHANGE_ALIAS.asString(true)	// 2 action
         << _sep << str::escape(oldrepo.alias(), _sep)			// 3 old alias
         << _sep << str::escape(newrepo.alias(), _sep)			// 4 new alias
-        << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+        << _sep << str::escape(oldrepo.context()->config().userData(), _sep)	// 5 userdata
         << endl;
     }
     if ( oldrepo.url() != newrepo.url() )
@@ -329,7 +329,7 @@ namespace zypp
         << _sep << HistoryActionID::REPO_CHANGE_URL.asString(true)	// 2 action
         << _sep << str::escape(oldrepo.url().asString(), _sep)		// 3 old url
         << _sep << str::escape(newrepo.url().asString(), _sep)		// 4 new url
-        << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+        << _sep << str::escape(oldrepo.context()->config().userData(), _sep)	// 5 userdata
         << endl;
     }
   }

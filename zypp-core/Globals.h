@@ -136,7 +136,8 @@
   #ifndef ZYPP_BEGIN_LEGACY_API
   #define ZYPP_BEGIN_LEGACY_API \
     _Pragma("GCC diagnostic push") \
-    _Pragma("GCC diagnostic ignored \"-Wdeprecated\"")
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated\"") \
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
   #endif
 
   #ifndef ZYPP_END_LEGACY_API

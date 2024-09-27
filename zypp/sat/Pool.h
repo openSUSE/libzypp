@@ -22,6 +22,10 @@
 #include <zypp/sat/SolvableSet.h>
 #include <zypp/sat/Queue.h>
 
+namespace zyppng {
+  class RepoInfo;
+}
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -141,7 +145,11 @@ namespace zypp
         /** \overload Using the \ref RepoInfo::alias \ref Repo name.
          * Additionally stores the \ref RepoInfo. \See \ref Prool::setInfo.
         */
-        Repository addRepoSolv( const Pathname & file_r, const RepoInfo & info_r );
+        ZYPP_BEGIN_LEGACY_API
+        Repository ZYPP_INTERNAL_DEPRECATE addRepoSolv( const Pathname & file_r, const RepoInfo & info_r );
+        ZYPP_END_LEGACY_API
+
+        Repository addRepoSolv( const Pathname & file_r, const zyppng::RepoInfo & info_r );
 
       public:
         /** Load \ref Solvables from a helix-file into a \ref Repository named \c name_r.
@@ -156,7 +164,11 @@ namespace zypp
         /** \overload Using the \ref RepoInfo::alias \ref Repo name.
          * Additionally stores the \ref RepoInfo. \See \ref Prool::setInfo.
         */
-        Repository addRepoHelix( const Pathname & file_r, const RepoInfo & info_r );
+        ZYPP_BEGIN_LEGACY_API
+        Repository ZYPP_INTERNAL_DEPRECATE addRepoHelix( const Pathname & file_r, const RepoInfo & info_r );
+        ZYPP_END_LEGACY_API
+
+        Repository addRepoHelix( const Pathname & file_r, const zyppng::RepoInfo & info_r );
 
       public:
         /** Whether \ref Pool contains solvables. */

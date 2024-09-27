@@ -155,7 +155,7 @@ namespace zyppng::RpmmdWorkflows {
 
     private:
 
-      const zypp::RepoInfo &repoInfo() const override {
+      const zyppng::RepoInfo &repoInfo() const override {
         return _ctx->repoInfo();
       }
 

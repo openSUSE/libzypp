@@ -46,7 +46,7 @@ namespace zypp
       RepoVarRetriever &operator=(RepoVarRetriever &&) = default;
 
       const std::string * operator() (const std::string &val) {
-        return std::invoke ( _varContainer.get(), memFn, val );
+        return std::invoke ( memFn, _varContainer.get(), val );
       }
 
     private:

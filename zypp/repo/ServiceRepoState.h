@@ -14,6 +14,10 @@
 
 #include <zypp/RepoInfo.h>
 
+namespace zyppng {
+  class RepoInfo;
+}
+
 namespace zypp
 {
 
@@ -30,12 +34,12 @@ namespace zypp
     bool	autorefresh;
     unsigned	priority;
 
-    ServiceRepoState()
-      : enabled( false ), autorefresh( true ), priority( RepoInfo::defaultPriority() )
-    {}
-    ServiceRepoState( const RepoInfo & repo_r )
-      : enabled( repo_r.enabled() ), autorefresh( repo_r.autorefresh() ), priority( repo_r.priority() )
-    {}
+    ServiceRepoState();
+
+    ServiceRepoState( const RepoInfo &repo_r );
+
+    ServiceRepoState( const zyppng::RepoInfo &repo_r );
+
     bool operator==( const ServiceRepoState & rhs ) const
     { return( enabled==rhs.enabled && autorefresh==rhs.autorefresh && priority==rhs.priority ); }
     bool operator!=( const ServiceRepoState & rhs ) const

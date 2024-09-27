@@ -18,8 +18,10 @@
 #include <zypp-core/ui/ProgressData>
 #include <zypp/Pathname.h>
 
+#include <zypp/ng/context_fwd.h>
+
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 { /////////////////////////////////////////////////////////////////
 
   class ServiceInfo;
@@ -52,7 +54,7 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      using ProcessService = function<bool (const ServiceInfo &)>;
+      using ProcessService = std::function<bool (const zyppng::ServiceInfo &)>;
 
       /** Implementation  */
       class Impl;
@@ -68,8 +70,9 @@ namespace zypp
       * \throws Exception If a error occurs at reading / parsing
       *
       */
-      ServiceFileReader( const Pathname & serviceFile,
-                      const ProcessService & callback);
+      ServiceFileReader( zyppng::ContextBaseRef ctx,
+                         const zypp::Pathname & serviceFile,
+                         const ProcessService & callback);
 
       /**
        * Dtor

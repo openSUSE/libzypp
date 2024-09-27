@@ -18,6 +18,10 @@
 #include <string>
 #include <functional>
 
+namespace zyppng {
+  class RepoInfo;
+}
+
 namespace zypp::repo::yum
 {
 
@@ -36,7 +40,7 @@ namespace zypp::repo::yum
     void finalize( const FinalizeCb &cb );
 
   protected:
-    virtual const RepoInfo &repoInfo() const = 0;
+    virtual const zyppng::RepoInfo &repoInfo() const = 0;
     virtual const Pathname &deltaDir() const = 0;
 
   private:

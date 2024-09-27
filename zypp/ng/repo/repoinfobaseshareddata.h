@@ -47,6 +47,7 @@ namespace zyppng::repo
 
   public:
     void setAlias( const std::string & alias_r );
+    void switchContext( ContextBaseRef ctx );
 
   protected:
     virtual void bindVariables();

@@ -83,7 +83,8 @@ namespace zypp
       RepoInfo();
       ~RepoInfo() override;
 
-      RepoInfo( const zyppng::RepoInfo &pimpl );
+      // copy of the ng repoinfo, cow semantics apply
+      explicit RepoInfo( const zyppng::RepoInfo &pimpl );
 
       RepoInfo(const RepoInfo &);
       RepoInfo(RepoInfo &&);
@@ -570,11 +571,26 @@ namespace zypp
        */
       void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
 
+      zyppng::RepoInfo &ngRepoInfo();
+      const zyppng::RepoInfo &ngRepoInfo() const;
+
     private:
       friend class RepoManager;
+
+      /*!
+       * Creates a RepoInfo instance that basically works like
+       * a reference to the ng object. Moving it will keep the same reference semantics,
+       * however a copy also will copy the ng RepoInfo
+       * \internal
+       */
+      RepoInfo( zyppng::RepoInfo *pimpl );
+
       zyppng::repo::RepoInfoBase &pimpl() override;
       const zyppng::repo::RepoInfoBase &pimpl() const override;
+
+      // only reason this is a pointer , is that we do not want to export the ng symbols
       std::unique_ptr<zyppng::RepoInfo> _pimpl;
+      bool _ownsImpl = true;
   };
   ///////////////////////////////////////////////////////////////////
   ///

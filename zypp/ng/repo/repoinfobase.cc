@@ -61,6 +61,14 @@ namespace zyppng::repo {
     zypp::str::replaceAll( _escaped_alias, "/", "_" );
   }
 
+  void RepoInfoBaseSharedData::switchContext(ContextBaseRef ctx)
+  {
+    if ( ctx != _ctx ) {
+      _ctx = std::move(ctx);
+      bindVariables();
+    }
+  }
+
   RepoInfoBaseSharedData * RepoInfoBaseSharedData::clone() const
   {
     auto *n = new RepoInfoBaseSharedData( *this );
@@ -108,10 +116,10 @@ namespace zyppng::repo {
   bool RepoInfoBase::autorefresh() const
   { return indeterminate(_pimpl->_autorefresh) ? false : (bool) _pimpl->_autorefresh; }
 
-  std::string RepoInfoBase::alias() const
+  const std::string &RepoInfoBase::alias() const
   { return _pimpl->_alias; }
 
-  std::string RepoInfoBase::escaped_alias() const
+  const std::string &RepoInfoBase::escaped_alias() const
   { return _pimpl->_escaped_alias; }
 
   std::string RepoInfoBase::name() const
@@ -121,7 +129,7 @@ namespace zyppng::repo {
     return repo::RepoVariablesStringReplacer()( rawName() );
   }
 
-  std::string RepoInfoBase::rawName() const
+  const std::string &RepoInfoBase::rawName() const
   { return _pimpl->_name.raw(); }
 
   std::string RepoInfoBase::label() const
@@ -131,7 +139,7 @@ namespace zyppng::repo {
     return name();
   }
 
-  zypp::Pathname RepoInfoBase::filepath() const
+  const zypp::Pathname &RepoInfoBase::filepath() const
   { return _pimpl->_filepath; }
 
 

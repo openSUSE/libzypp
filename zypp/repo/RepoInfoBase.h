@@ -51,8 +51,6 @@ namespace zypp
 
     protected:
       RepoInfoBase();
-      RepoInfoBase(const std::string &alias);
-
       RepoInfoBase(const RepoInfoBase &) = default;
       RepoInfoBase(RepoInfoBase &&) noexcept = default;
       RepoInfoBase &operator=(const RepoInfoBase &) = default;

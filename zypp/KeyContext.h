@@ -1,7 +1,8 @@
 #ifndef KEYCONTEXT_H_
 #define KEYCONTEXT_H_
 
-#include <zypp/RepoInfo.h>
+#include <zypp/ng/repoinfo.h>
+#include <optional>
 
 namespace zypp {
 
@@ -9,17 +10,17 @@ namespace zypp {
   {
   public:
     KeyContext(){}
-    KeyContext( const RepoInfo & repoinfo ) : _repoInfo( repoinfo ) {}
+    KeyContext( const zyppng::RepoInfo & repoinfo ) : _repoInfo( repoinfo ) {}
 
     /** Is the context unknown? */
-    bool empty() const { return _repoInfo.alias().empty(); }
+    bool empty() const { return (!_repoInfo.has_value()) || _repoInfo->alias().empty(); }
 
   public:
-    const RepoInfo repoInfo() const { return _repoInfo; }
-    void setRepoInfo(const RepoInfo & repoinfo) { _repoInfo = repoinfo; }
+    const std::optional<zyppng::RepoInfo> &repoInfo() const { return _repoInfo; }
+    void setRepoInfo(const zyppng::RepoInfo & repoinfo) { _repoInfo = repoinfo; }
 
   private:
-    RepoInfo _repoInfo;
+    std::optional<zyppng::RepoInfo> _repoInfo;
   };
 
 }

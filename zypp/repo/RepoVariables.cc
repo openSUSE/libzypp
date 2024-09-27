@@ -379,17 +379,17 @@ namespace zypp
 
     std::string RepoVariablesStringReplacer::operator()(const std::string &value_r) const
     {
-      RepoVariablesStringReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( value_r );
+      return RepoVariablesStringReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( value_r );
     }
 
     std::string RepoVariablesStringReplacer::operator()( std::string &&value_r ) const
     {
-      RepoVariablesStringReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( std::move(value_r) );
+      return RepoVariablesStringReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( std::move(value_r) );
     }
 
     zypp::Url RepoVariablesUrlReplacer::operator()(const zypp::Url &value) const
     {
-      RepoVariablesUrlReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( value );
+      return RepoVariablesUrlReplacerNg( RepoVarRetriever( *zypp_detail::GlobalStateHelper::context () ) )( value );
     }
 
     RepoVariablesStringReplacerNg::RepoVariablesStringReplacerNg(RepoVarRetrieverFunctor varRetriever)

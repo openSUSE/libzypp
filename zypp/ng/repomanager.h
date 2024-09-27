@@ -77,15 +77,41 @@ namespace zyppng {
     return expected<void>::success();
   }
 
+  namespace detail {
+    template <typename Info>
+    struct AliasCompare {
+      AliasCompare( const std::string &alias, const Info &iterValue ) : _res( alias == iterValue.alias() ) {}
+      operator bool() {
+        return _res;
+      }
+    private:
+      bool _res;
+    };
+
+    template <typename Str, typename Info>
+    struct AliasCompare<std::pair<Str, Info>> {
+      AliasCompare( const std::string &alias, const std::pair<Str, Info> &iterValue ) : _res(alias == iterValue.first) {
+      }
+      operator bool() {
+        return _res;
+      }
+    private:
+      bool _res;
+    };
+  }
+
   /** Check if alias_r is present in repo/service container. */
   template <class Iterator>
   inline bool foundAliasIn( const std::string & alias_r, Iterator begin_r, Iterator end_r )
   {
-    for_( it, begin_r, end_r )
-      if ( it->alias() == alias_r )
-      return true;
+    for_( it, begin_r, end_r ) {
+      if ( detail::AliasCompare( alias_r, *it ) ) {
+        return true;
+      }
+    }
     return false;
   }
+
   /** \overload */
   template <class Container>
   inline bool foundAliasIn( const std::string & alias_r, const Container & cont_r )
@@ -95,9 +121,11 @@ namespace zyppng {
   template <class Iterator>
   inline Iterator findAlias( const std::string & alias_r, Iterator begin_r, Iterator end_r )
   {
-    for_( it, begin_r, end_r )
-      if ( it->alias() == alias_r )
-      return it;
+    for_( it, begin_r, end_r ) {
+      if ( detail::AliasCompare( alias_r, *it ) ) {
+        return it;
+      }
+    }
     return end_r;
   }
   /** \overload */
@@ -153,7 +181,7 @@ namespace zyppng {
      *
      * \param file pathname of the file to read.
      */
-  expected<std::list<RepoInfo>> repositories_in_file( const zypp::Pathname & file );
+  expected<std::list<RepoInfo>> repositories_in_file( ContextBaseRef ctx, const zypp::Pathname & file );
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -217,20 +245,20 @@ namespace zyppng {
   class ServiceCollector
   {
   public:
-    using ServiceSet = std::set<ServiceInfo>;
+    using ServiceMap = std::map<std::string, ServiceInfo>;
 
-    ServiceCollector( ServiceSet & services_r )
+    ServiceCollector( ServiceMap & services_r )
       : _services( services_r )
     {}
 
     bool operator()( const ServiceInfo & service_r ) const
     {
-      _services.insert( service_r );
+      _services.insert( std::make_pair(service_r.alias(), service_r) );
       return true;
     }
 
   private:
-    ServiceSet & _services;
+    ServiceMap & _services;
   };
   ////////////////////////////////////////////////////////////////////////////
 
@@ -276,32 +304,18 @@ namespace zyppng {
     }
 
   public:
-
-    /**
-     * Functor thats filter RepoInfo by service which it belongs to.
-     */
-    struct MatchServiceAlias
-    {
-    public:
-      MatchServiceAlias( std::string  alias_ ) : alias(std::move(alias_)) {}
-      bool operator()( const RepoInfo & info ) const
-      { return info.service() == alias; }
-    private:
-      std::string alias;
-    };
-
     /** ServiceInfo typedefs */
-    using ServiceSet = std::set<ServiceInfo>;
-    using ServiceConstIterator = ServiceSet::const_iterator;
-    using ServiceSizeType = ServiceSet::size_type;
+    using ServiceMap = std::map<std::string, ServiceInfo>;
+    using ServiceConstIterator = ServiceMap::const_iterator;
+    using ServiceSizeType = ServiceMap::size_type;
 
     /** RepoInfo typedefs */
-    using RepoSet = std::set<RepoInfo>;
-    using RepoConstIterator = RepoSet::const_iterator;
-    using RepoSizeType = RepoSet::size_type;
+    using RepoMap = std::map<std::string, RepoInfo>;
+    using RepoConstIterator = RepoMap::const_iterator;
+    using RepoSizeType = RepoMap::size_type;
 
 
-    virtual ~RepoManager();
+    ~RepoManager() override;
 
   public:
 
@@ -363,10 +377,10 @@ namespace zyppng {
     bool hasRepo( const std::string & alias ) const
     { return foundAliasIn( alias, repos() ); }
 
-    RepoInfo getRepo( const std::string & alias ) const
+    std::optional<RepoInfo> getRepo( const std::string & alias ) const
     {
       RepoConstIterator it( findAlias( alias, repos() ) );
-      return it == repos().end() ? RepoInfo::noRepo : *it;
+      return it == repos().end() ? std::optional<RepoInfo>() : it->second;
     }
 
   public:
@@ -462,10 +476,10 @@ namespace zyppng {
     bool hasService( const std::string & alias ) const
     { return foundAliasIn( alias, _services ); }
 
-    ServiceInfo getService( const std::string & alias ) const
+    std::optional<ServiceInfo> getService( const std::string & alias ) const
     {
       ServiceConstIterator it( findAlias( alias, _services ) );
-      return it == _services.end() ? ServiceInfo::noService : *it;
+      return it == _services.end() ? std::optional<ServiceInfo>() : it->second;
     }
 
   public:
@@ -474,7 +488,7 @@ namespace zyppng {
 
     expected<void> addService( const ServiceInfo & service );
     expected<void> addService( const std::string & alias, const zypp::Url & url )
-    { return addService( ServiceInfo( alias, url ) ); }
+    { return addService( ServiceInfo( _zyppContext, alias, url ) ); }
 
     expected<void> removeService( const std::string & alias );
     expected<void> removeService( const ServiceInfo & service )
@@ -486,7 +500,7 @@ namespace zyppng {
 
     expected<void> refreshServices( const RefreshServiceOptions & options_r );
 
-    expected<void> modifyService( const std::string & oldAlias, const ServiceInfo & newService );
+    expected<void> modifyService( const std::string & oldAlias, ServiceInfo newService );
 
     static expected<void> touchIndexFile( const RepoInfo & info, const RepoManagerOptions &options );
 
@@ -514,10 +528,14 @@ namespace zyppng {
     template<typename OutputIterator>
     void getRepositoriesInService( const std::string & alias, OutputIterator out ) const
     {
-      MatchServiceAlias filter( alias );
-      std::copy( boost::make_filter_iterator( filter, repos().begin(), repos().end() ),
-        boost::make_filter_iterator( filter, repos().end(), repos().end() ),
-        out);
+      const auto &filter = [&]( const std::pair<std::string, RepoInfo> &elem ){
+        return elem.first == alias;
+      };
+
+      std::transform( boost::make_filter_iterator( filter, repos().begin(), repos().end() )
+                      , boost::make_filter_iterator( filter, repos().end(), repos().end() )
+                      , out
+                      , []( const std::pair<std::string, RepoInfo> &elem ){ return elem.second; } );
     }
 
     zypp::Pathname generateNonExistingName( const zypp::Pathname & dir, const std::string & basefilename ) const;
@@ -538,14 +556,17 @@ namespace zyppng {
     expected<void> init_knownRepositories();
 
   public:
-    const RepoSet & repos() const { return _reposX; }
-    RepoSet & reposManip()        { if ( ! _reposDirty ) _reposDirty = true; return _reposX; }
+    const RepoMap & repos() const { return _reposX; }
+    RepoMap & reposManip()        { if ( ! _reposDirty ) _reposDirty = true; return _reposX; }
+
+    const ServiceMap & services() const { return _services; }
+    ServiceMap & servicesManip()        { return _services; }
 
   protected:
     ContextRefType      _zyppContext;
     RepoManagerOptions	_options;
-    RepoSet 		_reposX;
-    ServiceSet		_services;
+    RepoMap 		_reposX;
+    ServiceMap		_services;
     zypp_private::repo::PluginRepoverification _pluginRepoverification;
     zypp::DefaultIntegral<bool,false> _reposDirty;
   };

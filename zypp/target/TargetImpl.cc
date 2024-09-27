@@ -1301,6 +1301,8 @@ namespace zypp
       MIL << "Target loaded: " << system.solvablesSize() << " resolvables" << endl;
     }
 
+    void predownloadPluginsHook( CommitPackageCache & packageCache, const ZYppCommitResult::TransactionStepList & steps );
+
     ///////////////////////////////////////////////////////////////////
     //
     // COMMIT
@@ -1464,6 +1466,9 @@ namespace zypp
         bool miss = false;
         if ( policy_r.downloadMode() != DownloadAsNeeded  )
         {
+
+          predownloadPluginsHook(packageCache, steps);
+
           // Preload the cache. Until now this means pre-loading all packages.
           // Once DownloadInHeaps is fully implemented, this will change and
           // we may actually have more than one heap.
@@ -3045,6 +3050,142 @@ namespace zypp
       repo::RepoMediaAccess access_r;
       repo::SrcPackageProvider prov( access_r );
       return prov.provideSrcPackage( srcPackage_r );
+    }
+
+
+    void predownloadPluginsHook( CommitPackageCache & packageCache, const ZYppCommitResult::TransactionStepList & steps )
+    {
+      PluginExecutor plugins;
+      plugins.load( ZConfig::instance().pluginsPath()/"predownload" );
+      if ( ! plugins )
+        return;
+      MIL << "TargetImpl::predownloadPluginsHook() start" << endl;
+
+      // first build items for download, skipping those which are already in the cache
+      ZYppCommitResult::TransactionStepList stepsNotCached;
+      for_( it, steps.begin(), steps.end() )
+      {
+        switch ( it->stepType() )
+        {
+          case sat::Transaction::TRANSACTION_INSTALL:
+          case sat::Transaction::TRANSACTION_MULTIINSTALL:
+          // proceed: only install actionas may require download.
+          break;
+
+          default:
+          // next: no download for or non-packages and delete actions.
+          continue;
+          break;
+        }
+
+        PoolItem pi( *it );
+        if ( pi->isKind<Package>() || pi->isKind<SrcPackage>() )
+        {
+          ManagedFile localfile;
+          localfile = packageCache.get_from_cache( pi );
+          if (!localfile->empty())
+            localfile.resetDispose(); // keep the package file in the cache
+          else {
+            stepsNotCached.push_back(*it);
+          }
+        }
+      }
+      using namespace std;
+      if (stepsNotCached.empty()) {
+        JobReport::info( "Nothing to download" );
+        return;
+      }
+      JobReport::info( "Preparing predownload plugins..." );
+
+      string message = ( ZConfig::instance().repoCachePath()/"packages" ).asString();
+      plugins.send( PluginFrame( "PREDOWNLOAD_DEST", message ) );
+      if ( plugins.empty() ) {
+        JobReport::warning( "Predownload plugins have died" );
+        return;
+      }
+
+      // collect info about required downloads
+      map<string, Url> repoUrls; // repo alias => baseurl
+      map<string, list<pair<int, string> > > repoFiles; // repo alias => [ ( file_size, file_location ) ]
+      for_(it, stepsNotCached.begin(), stepsNotCached.end()) {
+        if ( sat::Solvable solv = it->satSolvable() ) {
+          Repository repo = solv.repository();
+          string alias = repo.alias();
+          Url url = repo.info().url();
+          if (!url.isValid())
+            continue;
+          PoolItem pi( solv );
+
+          Package::constPtr p = pi->asKind<Package>();
+          string loc = p->location().filename().asString();
+
+          if (loc.size() < 2)
+            continue;
+          // let's trim the leading './'
+          if (loc[0] == '.' && loc[1] == '/')
+            loc = loc.substr(2);
+
+          int sz = p->location().downloadSize();
+          repoUrls[alias] = url;
+          repoFiles[alias].push_back(make_pair(sz, loc));
+        }
+      }
+
+      // send a message to plugin:
+      // baseurl file1 file2 .. fileN
+      for_(it, repoUrls.begin(), repoUrls.end()) {
+        message = it->first + string(" ") + it->second.asString();
+        list<pair<int, string> >& files = repoFiles[it->first];
+        if (files.empty())
+            continue;
+        files.sort();
+        // reverse loop because after sort() the bigger files are at the end, we want the download start with them
+        for_(i, files.rbegin(), files.rend()) {
+          message += " " + i->second;
+        }
+        message += " "; // make sure there is a delimiter after last package
+        plugins.send( PluginFrame( "PREDOWNLOAD_FROM_REPO", message ) );
+      }
+      if ( plugins.empty() ) {
+        JobReport::warning( "Predownload plugins have died" );
+        return;
+      }
+      // only the first survived plugin will be called for now
+      PluginScript plugin = plugins.first();
+      JobReport::info( "Starting predownload plugin..." );
+
+      plugin.send( PluginFrame( "PREDOWNLOAD_START" ) );
+      plugin.receive();
+      typedef PluginScript::Progress Progress;
+      Progress last(0,0);
+      bool allgood = 0;
+
+      Progress pr = plugin.progress();
+      while(1) {
+        if (pr.second < 1) {
+          JobReport::warning( "Predownload plugin have failed to report progress, continue without plugin" );
+          break;
+        }
+        JobReport::info( str::Format(_("Waiting predownload... Progress: %1%/%2%") ) % pr.first % pr.second );
+        last = pr;
+
+        if (pr.first < pr.second)
+          sleep(1);
+        else {
+          if (pr.first > 0)
+            allgood = 1;
+          break;
+        }
+        pr = plugin.progress();
+      }
+      const string & lastError = plugin.lastExecError();
+      if (!lastError.empty()) {
+        JobReport::warning( "Predownload plugin error: " + lastError );
+      } else if (allgood) {
+        JobReport::info( "Predownload plugin finished without errors" );
+      }
+
+      MIL << "TargetImpl::predownloadPluginsHook() end" << endl;
     }
     ////////////////////////////////////////////////////////////////
   } // namespace target

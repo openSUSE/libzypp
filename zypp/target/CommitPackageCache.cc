@@ -146,6 +146,9 @@ namespace zypp
     ManagedFile CommitPackageCache::get( const PoolItem & citem_r )
     { return _pimpl->get( citem_r ); }
 
+    ManagedFile CommitPackageCache::get_from_cache( const PoolItem & citem_r )
+    { return _pimpl->get_from_cache( citem_r ); }
+
     bool CommitPackageCache::preloaded() const
     { return _pimpl->preloaded(); }
 

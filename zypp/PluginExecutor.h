@@ -61,6 +61,9 @@ namespace zypp
       /** Number of open plugins */
       size_t size() const;
 
+      /** First plugin */
+      PluginScript first();
+
     public:
       /** Find and launch plugins sending \c PLUGINBEGIN.
        *

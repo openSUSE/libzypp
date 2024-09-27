@@ -196,7 +196,7 @@ namespace zypp
        * the cache (matching checksum is mandatory). Returns the
        * location of the cached file or an empty \ref Pathname.
        */
-      Pathname locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r );
+      Pathname locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r, const std::string & suffix_in_cache = "" );
       /**
        * Validates the provided file against its checkers.
        * \throws Exception
@@ -350,7 +350,7 @@ namespace zypp
 
   }
 
-  Pathname Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r )
+  Pathname Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r, const std::string & suffix_in_cache )
   {
     Pathname ret;
     // No checksum - no match
@@ -359,6 +359,10 @@ namespace zypp
 
     // first check in the destination directory
     Pathname cacheLocation = destDir_r / resource_r.filename();
+
+    if ( !suffix_in_cache.empty() )
+        cacheLocation = cacheLocation.extend( suffix_in_cache.c_str() );
+
     if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) )
     {
       swap( ret, cacheLocation );
@@ -369,11 +373,19 @@ namespace zypp
     for( const Pathname & cacheDir : _caches )
     {
       cacheLocation = cacheDir / resource_r.filename();
-      if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) )
+      std::string detail = cacheDir.asString();
+      if ( !suffix_in_cache.empty() )
+        detail += "with suffix " + suffix_in_cache;
+
+      if ( PathInfo(cacheLocation).isExist() )
       {
-        MIL << "file " << resource_r.filename() << " found in cache " << cacheDir << endl;
-        swap( ret, cacheLocation );
-        return ret;
+        MIL << "file " << resource_r.filename() << " found in cache " << detail << endl;
+        if (!is_checksum( cacheLocation, resource_r.checksum() ) )
+          MIL << "file " << resource_r.filename() << " failed checksum verification in cache " << detail << endl;
+        else {
+          swap( ret, cacheLocation );
+          return ret;
+        }
       }
     }
 
@@ -534,8 +546,28 @@ namespace zypp
 
       // get cached file (by checksum) or provide from media
       Pathname tmpFile = locateInCache( resource, destDir_r );
-      if ( tmpFile.empty() )
-      {
+      if ( tmpFile.empty() ) {
+        const std::string suffix(".unverified");
+        Pathname tmpFileUnverified = locateInCache( resource, destDir_r, suffix );
+        if (!tmpFileUnverified.empty()) {
+          try {
+            validate( tmpFileUnverified, jobp_r->checkers );
+            if (tmpFileUnverified.extension() == suffix ) {
+                std::string_view dest = tmpFileUnverified.asString().c_str();
+                dest.remove_suffix( suffix.length() );
+
+                rename( tmpFileUnverified.asString().c_str(), std::string(dest).c_str() );
+                tmpFile = locateInCache( resource, destDir_r );
+            }
+          } catch (...) {
+            // ignore all exceptions and proceed normally
+          };
+        }
+      }
+
+      if ( !tmpFile.empty() ) {
+        MIL << "Found in cache, verifying..." << endl;
+      } else {
         MIL << "Not found in cache, retrieving..." << endl;
         tmpFile = media_r.provideFile( resource, resource.optional() ? MediaSetAccess::PROVIDE_NON_INTERACTIVE : MediaSetAccess::PROVIDE_DEFAULT );
         releaseFileGuard.reset( new MediaSetAccess::ReleaseFileGuard( media_r, resource ) ); // release it when we leave the block

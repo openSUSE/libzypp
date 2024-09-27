@@ -66,6 +66,7 @@ namespace zypp
     public:
       /** Commandline arguments passed to a script on \ref open. */
       using Arguments = std::vector<std::string>;
+      using Progress = std::pair<int, int>;
 
       /** \c pid_t(-1) constant indicating no connection. */
       static const pid_t NotConnected;
@@ -171,6 +172,15 @@ namespace zypp
        *
        */
       void send( const PluginFrame & frame_r ) const;
+      
+      /** Send PLUGIN_PROGRESS frame and return /ref PluginScript::Progress
+       * \throw PluginScriptNotConnected
+       * \throw PluginScriptSendTimeout
+       * \throw PluginScriptDiedUnexpectedly (does not \ref close)
+       * \throw PluginScriptException on error
+       *
+       */
+      Progress progress() const;
 
       /** Receive a \ref PluginFrame.
        * \throw PluginScriptNotConnected

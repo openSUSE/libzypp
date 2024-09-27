@@ -46,8 +46,8 @@ namespace zyppng::repo {
       using MediaHandle    = typename ProvideType::MediaHandle;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
-      static expected<repo::RefreshContextRef<ZyppContextType>> create( Ref<ZyppContextType> zyppContext, zypp::RepoInfo info, RepoManagerRef<ContextType> repoManager );
-      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, Ref<ZyppContextType> &&zyppContext, zypp::RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager );
+      static expected<repo::RefreshContextRef<ZyppContextType>> create( Ref<ZyppContextType> zyppContext, RepoInfo info, RepoManagerRef<ContextType> repoManager );
+      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, Ref<ZyppContextType> &&zyppContext, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager );
 
       ~RefreshContext() override;
 
@@ -81,8 +81,8 @@ namespace zyppng::repo {
        * the workflow is free to change data in this \ref zypp::RepoInfo , so calling
        * code should take care to use it once the workflow has finished.
        */
-      const zypp::RepoInfo &repoInfo () const;
-      zypp::RepoInfo &repoInfo ();
+      const RepoInfo &repoInfo () const;
+      RepoInfo &repoInfo ();
 
       /*!
        * Reference to the \ref zyppng::RepoManager that initiated the refresh
@@ -121,7 +121,7 @@ namespace zyppng::repo {
   private:
       Ref<ContextType> _zyppContext;
       RepoManagerRef<ContextType> _repoManager;
-      zypp::RepoInfo _repoInfo;
+      RepoInfo _repoInfo;
       zypp::Pathname _rawCachePath;
       zypp::filesystem::TmpDir _tmpDir;
       repo::RawMetadataRefreshPolicy _policy = RawMetadataRefreshPolicy::RefreshIfNeeded;

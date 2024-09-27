@@ -6,21 +6,20 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPP_NG_REPOINFOWORKFLOW_INCLUDED
-#define ZYPP_NG_REPOINFOWORKFLOW_INCLUDED
+#include "ServiceRepoState.h"
 
-#include <zypp-core/Pathname.h>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp/RepoInfo.h>
-#include <zypp/ng/context_fwd.h>
+#include <zypp/ng/repoinfo.h>
 
-namespace zyppng {
+namespace zypp {
 
-  namespace RepoInfoWorkflow {
-    zypp::Pathname provideKey ( SyncContextRef ctx, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
-    AsyncOpRef<zypp::Pathname> provideKey ( AsyncContextRef ctx, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
-  }
-}
+  ServiceRepoState::ServiceRepoState( const zyppng::RepoInfo &repo_r )
+    : enabled( repo_r.enabled() ), autorefresh( repo_r.autorefresh() ), priority( repo_r.priority() )
+  {}
 
+  ServiceRepoState::ServiceRepoState(const RepoInfo &repo_r)
+    : ServiceRepoState(repo_r.ngRepoInfo()) {}
 
-#endif
+  ServiceRepoState::ServiceRepoState()
+    : enabled(false), autorefresh(true),
+      priority(zyppng::RepoInfo::defaultPriority()) {}
+} // namespace zypp

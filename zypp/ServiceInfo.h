@@ -46,6 +46,8 @@ namespace zypp
     /** Default ctor creates \ref noService.*/
     ServiceInfo();
 
+    ServiceInfo( const zyppng::ServiceInfo &i );
+
     ServiceInfo(const ServiceInfo &other);
     ServiceInfo(ServiceInfo &&other);
     ServiceInfo &operator=(const ServiceInfo &other);
@@ -196,12 +198,17 @@ namespace zypp
      */
     std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
+
+    zyppng::ServiceInfo &ngServiceInfo();
+    const zyppng::ServiceInfo &ngServiceInfo() const;
+
+
   private:
     zyppng::repo::RepoInfoBase &pimpl() override;
     const zyppng::repo::RepoInfoBase &pimpl() const override;
 
-    bool _ownsPimpl = true;
     std::unique_ptr<zyppng::ServiceInfo> _pimpl;
+    bool _ownsPimpl = true;
   };
   ///////////////////////////////////////////////////////////////////
 

@@ -10,7 +10,7 @@
 #include "RepomdFileCollector.h"
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
-#include <zypp/RepoInfo.h>
+#include <zypp/ng/repoinfo.h>
 #include <solv/solvversion.h>
 
 namespace zypp::env

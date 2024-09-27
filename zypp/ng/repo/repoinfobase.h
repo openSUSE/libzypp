@@ -56,12 +56,12 @@ namespace zyppng::repo
        * Normally, in a .repo file the section name is used
        * ( [somerepo] )
        */
-      std::string alias() const;
+      const std::string &alias() const;
 
       /**
        * Same as alias(), just escaped in a way to be a valid file name.
        */
-      std::string escaped_alias() const;
+      const std::string &escaped_alias() const;
 
       /**
        * \short Repository name
@@ -73,7 +73,7 @@ namespace zyppng::repo
       std::string name() const;
 
       /** The raw metadata name (no default, no variables replaced). */
-      std::string rawName() const;
+      const std::string &rawName() const;
 
       /**
        * \short Label for use in messages for the user interface.
@@ -104,7 +104,7 @@ namespace zyppng::repo
        * \note could be an empty pathname for repo
        * infos created in memory.
        */
-       zypp::Pathname filepath() const;
+       const zypp::Pathname &filepath() const;
 
 
     public:

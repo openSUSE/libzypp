@@ -25,8 +25,10 @@ namespace zyppng {
      * Once we can drop legacy APIs, or find a better way, this can be changed.
      */
     using RepoVarRetrieverFunctor = zypp::repo::RepoVarRetrieverFunctor;
+
     template <typename T, auto memFn = &T::resolveRepoVar >
     using RepoVarRetriever = zypp::repo::RepoVarRetriever<T, memFn>;
+
     using RepoVariablesStringReplacer = zypp::repo::RepoVariablesStringReplacerNg;
     using RepoVariablesUrlReplacer = zypp::repo::RepoVariablesUrlReplacerNg;
 

@@ -15,25 +15,34 @@ ZYPP_BEGIN_LEGACY_API
 
 namespace zypp {
 
-  ServiceInfo::ServiceInfo( ) : _pimpl( new zyppng::ServiceInfo( zypp_detail::GlobalStateHelper::context() ) ) {}
+  ServiceInfo::ServiceInfo( )
+    : _pimpl( new zyppng::ServiceInfo( zypp_detail::GlobalStateHelper::context() ) )
+  { }
 
-  ServiceInfo::ServiceInfo(const ServiceInfo &other)
+  ServiceInfo::ServiceInfo( const zyppng::ServiceInfo &i )
+    : _pimpl( std::make_unique<zyppng::ServiceInfo>(i) )
+  { }
+
+  ServiceInfo::ServiceInfo( const ServiceInfo &other )
     : _pimpl( std::make_unique<zyppng::ServiceInfo>(*other._pimpl) )
   { }
 
   ServiceInfo::ServiceInfo(ServiceInfo &&other)
     : _pimpl( std::move(other._pimpl) )
+    , _ownsPimpl( other._ownsPimpl )
   { }
 
   ServiceInfo &ServiceInfo::operator=(const ServiceInfo &other)
   {
     _pimpl = std::make_unique<zyppng::ServiceInfo>(*other._pimpl);
+    _ownsPimpl = true;
     return *this;
   }
 
   ServiceInfo &ServiceInfo::operator=(ServiceInfo &&other)
   {
     _pimpl = std::move(other._pimpl);
+    _ownsPimpl = other._ownsPimpl;
     return *this;
   }
 
@@ -41,7 +50,10 @@ namespace zypp {
 
   ServiceInfo::ServiceInfo( const std::string & alias, const zypp::Url & url ) : _pimpl( new zyppng::ServiceInfo( zypp_detail::GlobalStateHelper::context(), alias, url ) ) {}
 
-  ServiceInfo::~ServiceInfo() {}
+  ServiceInfo::~ServiceInfo()
+  {
+    if ( !_ownsPimpl ) _pimpl.release();
+  }
 
   zypp::Url ServiceInfo::url() const
   { return _pimpl->url(); }
@@ -138,6 +150,16 @@ namespace zypp {
   std::ostream & ServiceInfo::dumpAsXmlOn( std::ostream & str, const std::string & content ) const
   {
     return _pimpl->dumpAsXmlOn(str, content);
+  }
+
+  zyppng::ServiceInfo &ServiceInfo::ngServiceInfo()
+  {
+    return *_pimpl;
+  }
+
+  const zyppng::ServiceInfo &ServiceInfo::ngServiceInfo() const
+  {
+    return *_pimpl;
   }
 
   zyppng::repo::RepoInfoBase &ServiceInfo::pimpl()

@@ -81,9 +81,9 @@ namespace zyppng {
   {
     repo::RepoInfoBaseSharedData::bindVariables();
     if ( _ctx ) {
-      _mirrorListUrl.setTransformator( repo::RepoVariablesUrlReplacer( repo::RepoVarRetriever( *_ctx.get() ) )  );
-      _baseUrls.setTransformator( repo::RepoVariablesUrlReplacer( repo::RepoVarRetriever( *_ctx.get() ) )  );
-      _gpgKeyUrls.setTransformator( repo::RepoVariablesUrlReplacer( repo::RepoVarRetriever( *_ctx.get() ) )  );
+      _mirrorListUrl.setTransformator( repo::RepoVariablesUrlReplacer( zypp::repo::RepoVarRetriever( *_ctx.get() ) )  );
+      _baseUrls.setTransformator( repo::RepoVariablesUrlReplacer( zypp::repo::RepoVarRetriever( *_ctx.get() ) )  );
+      _gpgKeyUrls.setTransformator( repo::RepoVariablesUrlReplacer( zypp::repo::RepoVarRetriever( *_ctx.get() ) )  );
     } else {
       _mirrorListUrl.setTransformator( repo::RepoVariablesUrlReplacer( nullptr ) );
       _baseUrls.setTransformator( repo::RepoVariablesUrlReplacer( nullptr ) );
@@ -450,7 +450,7 @@ namespace zyppng {
 
   void RepoInfo::setContext( zyppng::ContextBaseRef context )
   {
-    pimpl()->_ctx = std::move(context);
+    pimpl()->switchContext(context);
   }
 
   RepoInfoSharedData *RepoInfo::pimpl()

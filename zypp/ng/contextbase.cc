@@ -187,6 +187,11 @@ namespace zyppng {
     return _target;
   }
 
+  const std::string *ContextBase::resolveRepoVar(const std::string &var)
+  {
+    return _repoVarCache.lookup(var);
+  }
+
   repo::RepoVarsMap &ContextBase::repoVarCache()
   {
     return _repoVarCache;

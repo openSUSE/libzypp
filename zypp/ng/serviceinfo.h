@@ -64,6 +64,11 @@ namespace zyppng
      */
     ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias, const zypp::Url& url );
 
+    ServiceInfo(const ServiceInfo &) = default;
+    ServiceInfo(ServiceInfo &&) = default;
+    ServiceInfo &operator=(const ServiceInfo &) = default;
+    ServiceInfo &operator=(ServiceInfo &&) = default;
+
     ~ServiceInfo() override;
 
     /** The service url */

@@ -24,30 +24,53 @@ namespace zypp {
     : _pimpl( std::make_unique<zyppng::RepoInfo>( zypp_detail::GlobalStateHelper::context() ) )
   {}
 
-  RepoInfo::~RepoInfo()
+  RepoInfo::RepoInfo(zyppng::RepoInfo *pimpl)
+    : _pimpl(pimpl)
+    , _ownsImpl(false)
   {}
+
+  RepoInfo::~RepoInfo()
+  {
+    if ( !_ownsImpl )
+      _pimpl.release();
+  }
 
   RepoInfo::RepoInfo( const zyppng::RepoInfo &pimpl )
     : _pimpl( std::make_unique<zyppng::RepoInfo>(pimpl) )
+    , _ownsImpl( true )
   { }
 
   RepoInfo::RepoInfo(const RepoInfo &other)
     : _pimpl( std::make_unique<zyppng::RepoInfo>(*other._pimpl) )
+    , _ownsImpl( true )
   {}
 
   RepoInfo::RepoInfo(RepoInfo &&other)
     : _pimpl( std::move(other._pimpl) )
+    , _ownsImpl( other._ownsImpl )
   {}
+
+  zyppng::repo::RepoInfoBase &RepoInfo::pimpl()
+  {
+    return *_pimpl;
+  }
+
+  const zyppng::repo::RepoInfoBase &RepoInfo::pimpl() const
+  {
+    return *_pimpl;
+  }
 
   RepoInfo &RepoInfo::operator=(const RepoInfo &other)
   {
     _pimpl = std::make_unique<zyppng::RepoInfo>(*other._pimpl);
+    _ownsImpl = true;
     return *this;
   }
 
   RepoInfo &RepoInfo::operator=( RepoInfo &&other )
   {
     _pimpl = std::move(other._pimpl);
+    _ownsImpl = other._ownsImpl;
     return *this;
   }
 
@@ -281,6 +304,12 @@ namespace zypp {
 
   bool RepoInfo::requireStatusWithMediaFile () const
   { return _pimpl->requireStatusWithMediaFile(); }
+
+  zyppng::RepoInfo &RepoInfo::ngRepoInfo()
+  { return *_pimpl; }
+
+  const zyppng::RepoInfo &RepoInfo::ngRepoInfo() const
+  { return *_pimpl; }
 
   ZYPP_END_LEGACY_API
 }

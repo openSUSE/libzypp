@@ -24,7 +24,7 @@ struct ZyppRepoInfoPrivate
   };
   std::optional<ConstructionProps> _constrProps = ConstructionProps();
 
-  zypp::RepoInfo _info{nullptr};
+  zypp::RepoInfo _info;
 
   ZyppRepoInfoPrivate( ZyppRepoInfo *pub ) : _gObject(nullptr) {}
   void initialize();

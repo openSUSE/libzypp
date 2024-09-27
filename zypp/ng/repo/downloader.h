@@ -19,7 +19,7 @@
 #include <zypp-media/ng/ProvideRes>
 #include <zypp/repo/PluginRepoverification.h>
 #include <zypp/RepoStatus.h>
-#include <zypp/RepoInfo.h>
+#include <zypp/ng/repoinfo.h>
 
 #include <zypp/ng/workflows/downloadwf.h>
 #include <zypp/ng/context_fwd.h>
@@ -37,12 +37,12 @@ namespace zyppng::repo {
     using ProvideType   = typename ContextType::ProvideType;
     using MediaHandle   = typename ProvideType::MediaHandle;
 
-    DownloadContext( ContextRefType zyppContext, const zypp::RepoInfo &info, const zypp::Pathname &destDir );
+    DownloadContext( ContextRefType zyppContext, const RepoInfo &info, const zypp::Pathname &destDir );
 
-    const zypp::RepoInfo &repoInfo () const;
+    const RepoInfo &repoInfo () const;
     const zypp::Pathname &deltaDir () const;
 
-    zypp::RepoInfo &repoInfo();
+    RepoInfo &repoInfo();
     std::vector<zypp::ManagedFile> &files();
 
     const std::optional<PluginRepoverification> &pluginRepoverification() const;
@@ -56,7 +56,7 @@ namespace zyppng::repo {
     void setDeltaDir(const zypp::Pathname &newDeltaDir);
 
   private:
-    zypp::RepoInfo _repoinfo;
+    RepoInfo _repoinfo;
     zypp::Pathname _deltaDir;
     std::vector<zypp::ManagedFile> _files; ///< Files downloaded
     std::optional<PluginRepoverification> _pluginRepoverification;  ///< \see \ref plugin-repoverification

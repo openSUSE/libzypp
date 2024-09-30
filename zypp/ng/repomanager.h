@@ -529,7 +529,7 @@ namespace zyppng {
     void getRepositoriesInService( const std::string & alias, OutputIterator out ) const
     {
       const auto &filter = [&]( const std::pair<std::string, RepoInfo> &elem ){
-        return elem.first == alias;
+        return elem.second.service() == alias;
       };
 
       std::transform( boost::make_filter_iterator( filter, repos().begin(), repos().end() )

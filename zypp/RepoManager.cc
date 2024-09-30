@@ -71,13 +71,7 @@ namespace zypp
 
     void syncRepos() {
       auto &ngRepos = _ngMgr->reposManip();
-
-      // remove all repos no longer valid
-      for ( auto i = _repos.begin (); i != _repos.end(); i++ ) {
-        if ( !ngRepos.count(i->alias()) ) {
-          i = _repos.erase ( i );
-        }
-      }
+      _repos.clear();
 
       // add repos we do not know yet
       for ( const auto &r : ngRepos ) {
@@ -90,13 +84,7 @@ namespace zypp
 
     void syncServices() {
       auto &ngServices = _ngMgr->servicesManip();
-
-      // remove all services no longer valid
-      for ( auto i = _services.begin (); i != _services.end(); i++ ) {
-        if ( !ngServices.count(i->ngServiceInfo().alias()) ) {
-          i = _services.erase ( i );
-        }
-      }
+      _services.clear();
 
       // add repos we do not know yet
       for ( const auto &s : ngServices ) {
@@ -193,7 +181,11 @@ namespace zypp
   { return _pimpl->ngMgr().metadataStatus( info.ngRepoInfo() ).unwrap(); }
 
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
-  { return _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo() , url, policy ).unwrap(); _pimpl->syncRepos(); }
+  {
+    auto res = _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo() , url, policy ).unwrap();
+    _pimpl->syncRepos();
+    return res;
+  }
 
   Pathname RepoManager::metadataPath( const RepoInfo &info ) const
   { return _pimpl->ngMgr().metadataPath( info.ngRepoInfo() ).unwrap(); }
@@ -254,7 +246,7 @@ namespace zypp
 
   void RepoManager::addRepositories( const Url &url, const ProgressData::ReceiverFnc & progressrcv )
   {
-    return _pimpl->ngMgr().addRepositories( url, nullptr ).unwrap();
+    _pimpl->ngMgr().addRepositories( url, nullptr ).unwrap();
     _pimpl->syncRepos();
   }
 
@@ -272,9 +264,6 @@ namespace zypp
     // into the repoinfo in order to keep it usable.
     RepoInfo & oinfo( const_cast<RepoInfo &>(newinfo) );
     _pimpl->ngMgr().modifyRepository( alias, oinfo.ngRepoInfo(), nullptr ).unwrap();
-    // repo modification can erase/modify multiple other repos
-    // impossible to track via just a syncRepos()
-    _pimpl->_repos.clear();
     _pimpl->syncRepos();
   }
 
@@ -356,7 +345,6 @@ namespace zypp
   void RepoManager::modifyService( const std::string & oldAlias, const ServiceInfo & service )
   {
     _pimpl->ngMgr().modifyService( oldAlias, service.ngServiceInfo() ).unwrap();
-    _pimpl->_services.erase(oldAlias);
     _pimpl->syncServices();
   }
 

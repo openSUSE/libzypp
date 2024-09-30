@@ -36,7 +36,7 @@ namespace zypp
 
     ServiceRepoState();
 
-    ServiceRepoState( const RepoInfo &repo_r );
+    ServiceRepoState( const RepoInfo &repo_r ) ZYPP_INTERNAL_DEPRECATE;
 
     ServiceRepoState( const zyppng::RepoInfo &repo_r );
 

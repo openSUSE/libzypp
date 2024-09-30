@@ -15,6 +15,8 @@ ZYPP_BEGIN_LEGACY_API
 
 namespace zypp {
 
+  const ServiceInfo ServiceInfo::noService( zyppng::ServiceInfo(nullptr) );
+
   ServiceInfo::ServiceInfo( )
     : _pimpl( new zyppng::ServiceInfo( zypp_detail::GlobalStateHelper::context() ) )
   { }

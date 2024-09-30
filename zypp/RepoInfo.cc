@@ -20,6 +20,8 @@ namespace zypp {
 
   ZYPP_BEGIN_LEGACY_API
 
+  const RepoInfo RepoInfo::noRepo( zyppng::RepoInfo(nullptr) );
+
   RepoInfo::RepoInfo( )
     : _pimpl( std::make_unique<zyppng::RepoInfo>( zypp_detail::GlobalStateHelper::context() ) )
   {}

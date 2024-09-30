@@ -28,6 +28,7 @@
 #include <zypp/ng/Context>
 #include <zypp/ng/UserRequest>
 #include <zypp/ng/workflows/logichelpers.h>
+#include <zypp/ng/repoinfo.h>
 
 #include <fstream>
 

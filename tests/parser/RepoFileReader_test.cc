@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include <zypp/ng/context.h>
+#include <zypp/ng/repoinfo.h>
 #include <zypp/ng/parser/RepoFileReader.h>
 #include <zypp/base/NonCopyable.h>
 

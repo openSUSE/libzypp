@@ -211,7 +211,7 @@ namespace zyppng::KeyRingWorkflow {
           else if ( ! _verifyContext.keyContext().empty() )
           {
             // try to find the key in the repository info
-            return provideAndImportKeyFromRepository ( _zyppContext, id, *_verifyContext.keyContext().repoInfo() )
+            return provideAndImportKeyFromRepository ( _zyppContext, id, *_verifyContext.keyContext().ngRepoInfo() )
               | [this, id]( bool success ) {
                   if ( !success ) {
                     return FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() };

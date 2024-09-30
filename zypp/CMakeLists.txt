@@ -46,6 +46,7 @@ SET( zypp_SRCS
   IdString.cc
   InstanceId.cc
   KeyManager.cc
+  KeyContext.cc
   KeyRing.cc
   KeyRingContexts.cc
   Locks.cc

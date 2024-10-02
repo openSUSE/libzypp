@@ -1082,6 +1082,8 @@ multifetchrequest::run(std::vector<Url> &urllist)
 
       // if we added a new job we have to call multi_perform once
       // to make it show up in the fd set. do not sleep in this case.
+      // setting timeout to 0 and not -1 will make sure the poll() case further down is actually entered, do not change
+      // without adapting the logic around poll
       int timeoutMs = _havenewjob ? 0 : 200;
       if ( _sleepworkers && !_havenewjob ) {
         if (_minsleepuntil == 0) {
@@ -1108,31 +1110,37 @@ multifetchrequest::run(std::vector<Url> &urllist)
       dnsFdCount = waitFds.size(); // remember how many dns fd's we have
       waitFds.insert( waitFds.end(), _curlHelper.socks.begin(), _curlHelper.socks.end() ); // add the curl fd's to the poll data
 
-      int r = zypp_detail::zypp_poll( waitFds, timeoutMs );
-      if ( r == -1 )
-        ZYPP_THROW(MediaCurlException(_baseurl, "zypp_poll() failed", "unknown error"));
-      if ( r != 0 && _lookupworkers ) {
-        for (auto workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
-          {
-            multifetchworker *worker = workeriter->get();
-            if (worker->_state != WORKER_LOOKUP)
-              continue;
-            (*workeriter)->dnsevent( waitFds );
-            if (worker->_state != WORKER_LOOKUP)
-              _lookupworkers--;
-          }
-      }
-      _havenewjob = false;
+      // run poll only if we either have a valid timeout or sockets to wait for... otherwise we end up waiting forever (bsc#1230912)
+      if ( !waitFds.empty() || timeoutMs != -1) {
+        int r = zypp_detail::zypp_poll( waitFds, timeoutMs );
+        if ( r == -1 )
+          ZYPP_THROW(MediaCurlException(_baseurl, "zypp_poll() failed", "unknown error"));
+        if ( r != 0 && _lookupworkers ) {
+          for (auto workeriter = _workers.begin(); workeriter != _workers.end(); ++workeriter)
+            {
+              multifetchworker *worker = workeriter->get();
+              if (worker->_state != WORKER_LOOKUP)
+                continue;
+              (*workeriter)->dnsevent( waitFds );
+              if (worker->_state != WORKER_LOOKUP)
+                _lookupworkers--;
+            }
+        }
 
-      // run curl
-      if ( r == 0 ) {
-        CURLMcode mcode = _curlHelper.handleTimout();
-        if (mcode != CURLM_OK)
-          ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
-      } else {
-        CURLMcode mcode = _curlHelper.handleSocketActions( waitFds, dnsFdCount );
-        if (mcode != CURLM_OK)
-          ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
+        // run curl
+        if ( r == 0 ) {
+          CURLMcode mcode = _curlHelper.handleTimout();
+          if (mcode != CURLM_OK)
+            ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
+        } else {
+          CURLMcode mcode = _curlHelper.handleSocketActions( waitFds, dnsFdCount );
+          if (mcode != CURLM_OK)
+            ZYPP_THROW(MediaCurlException(_baseurl, "curl_multi_socket_action", "unknown error"));
+        }
+
+        // reset havenewjobs, we just called into curl_multi_socket_action ... no need to call another time just because
+        // we maybe added jobs during checking the dns worker events
+        _havenewjob = false;
       }
 
       double now = currentTime();

@@ -1447,6 +1447,15 @@ CURLcode MediaCurl::executeCurl() const
   bool canContinue = true;
   while ( canContinue ) {
 
+    CURLMsg *msg = nullptr;
+    int nqueue = 0;
+    while ((msg = curl_multi_info_read( cMulti->_multi, &nqueue)) != 0) {
+        if ( msg->msg != CURLMSG_DONE  ) continue;
+        if ( msg->easy_handle != _curl ) continue;
+
+        return msg->data.result;
+    }
+
     // copy watched sockets in case curl changes the vector as we go over the events later
     std::vector<GPollFD> requestedFds = _curlHelper.socks;
 
@@ -1463,15 +1472,6 @@ CURLcode MediaCurl::executeCurl() const
       CURLMcode mcode = _curlHelper.handleSocketActions( requestedFds );
       if (mcode != CURLM_OK)
         ZYPP_THROW(MediaCurlException(_url, "curl_multi_socket_action", "unknown error"));
-    }
-
-    CURLMsg *msg = nullptr;
-    int nqueue = 0;
-    while ((msg = curl_multi_info_read( cMulti->_multi, &nqueue)) != 0) {
-        if ( msg->msg != CURLMSG_DONE  ) continue;
-        if ( msg->easy_handle != _curl ) continue;
-
-        return msg->data.result;
     }
   }
   return CURLE_OK;

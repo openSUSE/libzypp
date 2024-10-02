@@ -329,6 +329,9 @@ bool NetworkRequestDispatcherPrivate::addRequestToMultiHandle(NetworkRequest &re
     setFinished( req, NetworkRequestErrorPrivate::fromCurlMError( rc ) );
     return false;
   }
+
+  // make sure to wake up once to register what we have now
+  _timer->start(0);
   return true;
 }
 

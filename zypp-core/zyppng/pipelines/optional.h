@@ -27,7 +27,7 @@ namespace zyppng {
 
   template < typename T
            , typename Function
-           , typename ResultType = std::invoke_result<Function, T>
+           , typename ResultType = std::invoke_result_t<Function, T>
            >
   ResultType and_then( const std::optional<T>& opt, Function &&f)
   {
@@ -43,7 +43,7 @@ namespace zyppng {
 
   template < typename T
     , typename Function
-    , typename ResultType = std::invoke_result<Function, T>
+    , typename ResultType = std::invoke_result_t<Function, T>
     >
   ResultType and_then( std::optional<T> &&opt, Function &&f)
   {
@@ -59,7 +59,7 @@ namespace zyppng {
 
   template < typename T
     , typename Function
-    , typename ResultType = std::invoke_result<Function>
+    , typename ResultType = std::invoke_result_t<Function>
     >
   ResultType or_else( const std::optional<T>& opt, Function &&f)
   {
@@ -75,7 +75,7 @@ namespace zyppng {
 
   template < typename T
     , typename Function
-    , typename ResultType = std::invoke_result<Function>
+    , typename ResultType = std::invoke_result_t<Function>
     >
   ResultType or_else( std::optional<T>&& opt, Function &&f)
   {

@@ -92,7 +92,7 @@ namespace zypp
                                 const ProvideFilePolicy & policy_r );
 
       /** \overload Using the current default \ref ProvideFilePolicy. */
-      ManagedFile provideFile(RepoInfo repo_r, const OnMediaLocation &loc_r) ZYPP_INTERNAL_DEPRECATE;
+      ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation &loc_r ) ZYPP_INTERNAL_DEPRECATE;
 
       ManagedFile provideFile( const zyppng::RepoInfo &repo_r, const OnMediaLocation &loc_r );
 

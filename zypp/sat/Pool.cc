@@ -152,7 +152,7 @@ namespace zypp
       if ( ret.isSystemRepo() )
       {
         // autoprovide (dummy) RepoInfo
-        RepoInfo info;
+        zyppng::RepoInfo info(nullptr);
         info.setAlias( alias_r );
         info.setName( alias_r );
         info.setAutorefresh( true );

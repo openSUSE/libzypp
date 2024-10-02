@@ -360,7 +360,7 @@ namespace zypp
   {
     std::list<RepoInfo> rIs;
 
-    const auto &ngList = zyppng::RepoManagerWorkflow::readRepoFile( zypp_detail::GlobalStateHelper::context(), repo_file ).unwrap();
+    auto ngList = zyppng::RepoManagerWorkflow::readRepoFile( zypp_detail::GlobalStateHelper::context(), repo_file ).unwrap();
     for ( const auto &ngRi : ngList )
       rIs.push_back( zypp::RepoInfo(ngRi) );
 

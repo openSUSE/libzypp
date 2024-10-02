@@ -464,11 +464,9 @@ namespace zypp
         _repoinfos.insert_or_assign( id_r, *info_r );
       }
 
-      const zyppng::RepoInfo *PoolImpl::repoInfo(RepoIdType id_r)
+      const std::optional<zyppng::RepoInfo> &PoolImpl::repoInfo(RepoIdType id_r)
       {
-        if ( _repoinfos.count (id_r) )
-          return &_repoinfos.at(id_r);
-        return nullptr;
+        return _repoinfos[id_r];
       }
 
       void PoolImpl::eraseRepoInfo(RepoIdType id_r)

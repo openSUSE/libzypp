@@ -40,7 +40,7 @@ namespace zypp
 
         Url url(o_url);
         std::string name = url.getPathName();
-        Pathname plugin_path = (ZConfig::instance().pluginsPath()/"urlresolver")/name;
+        Pathname plugin_path = (ZConfig::systemConfig().pluginsPath()/"urlresolver")/name;
         if (PathInfo(plugin_path).isExist()) {
             PluginScript scr;
             scr.open(plugin_path);

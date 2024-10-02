@@ -71,6 +71,7 @@ SET( zypp_SRCS
   RepoManagerOptions.cc
   Repository.cc
   RepoStatus.cc
+  ResFilters.cc
   ResKind.cc
   ResObject.cc
   Resolvable.cc
@@ -298,6 +299,7 @@ SET( zypp_ng_SRCS
   ng/reporthelper.cc
   ng/repomanager.cc
   ng/serviceinfo.cc
+  ng/userdata.cc
   ng/userrequest.cc
   ng/parser/RepoFileReader.cc
   ng/parser/repoindexfilereader.cc
@@ -339,6 +341,7 @@ SET( zypp_ng_HEADERS
   ng/serviceinfo.h
   ng/serviceinfoshareddata.h
   ng/RepoManager
+  ng/userdata.h
   ng/userrequest.h
   ng/UserRequest
   ng/parser/RepoFileReader.h
@@ -379,14 +382,12 @@ SET( zypp_ng_private_HEADERS
 
 SET( zypp_parser_SRCS
   parser/HistoryLogReader.cc
-  parser/RepoindexFileReader.cc
   parser/ProductFileReader.cc
 )
 
 SET( zypp_parser_HEADERS
   parser/HistoryLogReader.h
   parser/ParserProgress.h
-  parser/RepoindexFileReader.h
   parser/ProductFileReader.h
 )
 
@@ -755,14 +756,12 @@ SET( zypp_repo_susetags_HEADERS
 
 SET( zypp_misc_HEADERS
   Misc.h
-  misc/DefaultLoadSystem.h
   misc/CheckAccessDeleted.h
   misc/TestcaseSetup.h
   misc/LoadTestcase.h
 )
 
 SET( zypp_misc_SRCS
-  misc/DefaultLoadSystem.cc
   misc/CheckAccessDeleted.cc
   misc/TestcaseSetup.cc
   misc/LoadTestcase.cc

@@ -34,7 +34,7 @@ namespace bpci = boost::interprocess;
 
 using std::endl;
 
-#define USER_CREDENTIALS_FILE ".zypp/credentials.cat"
+constexpr std::string_view USER_CREDENTIALS_FILE(".zypp/credentials.cat");
 
 //////////////////////////////////////////////////////////////////////
 namespace zypp
@@ -74,7 +74,7 @@ namespace zypp
   {
     char * homedir = getenv("HOME");
     if (homedir)
-      userCredFilePath = rootdir / homedir / USER_CREDENTIALS_FILE;
+      userCredFilePath = rootdir / homedir / USER_CREDENTIALS_FILE.data ();
   }
 
 

@@ -24,6 +24,11 @@
 #include <zypp/Capabilities.h>
 #include <zypp/Capability.h>
 #include <zypp/Locale.h>
+#include <optional>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -121,8 +126,15 @@ namespace zypp
 
       /** The \ref Repository this \ref Solvable belongs to. */
       Repository repository() const;
+
+      ZYPP_BEGIN_LEGACY_API
       /** The repositories \ref RepoInfo. */
-      RepoInfo repoInfo() const;
+      RepoInfo repoInfo() const ZYPP_INTERNAL_DEPRECATE;
+      ZYPP_END_LEGACY_API
+
+#ifdef __cpp_lib_optional
+      const std::optional<zyppng::RepoInfo> &ngRepoInfo() const;
+#endif
 
       /** Return whether this \ref Solvable belongs to the system repo.
        * \note This includes the otherwise hidden systemSolvable.

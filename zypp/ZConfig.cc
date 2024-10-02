@@ -38,6 +38,7 @@ extern "C"
 
 #include <zypp-media/MediaConfig>
 #include <zypp/zypp_detail/ZYppImpl.h>
+#include <zypp/ng/userdata.h>
 
 using std::endl;
 using namespace zypp::filesystem;
@@ -908,13 +909,20 @@ namespace zypp
 
     mutable MultiversionMap _multiversionMap;
   };
-  ///////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	METHOD NAME : ZConfig::instance
-  //	METHOD TYPE : ZConfig &
-  //
+
+  const ZConfig &ZConfig::defaults()
+  {
+    static ZConfig _conf("/dev/null");
+    return _conf;
+  }
+
+  ZConfig &ZConfig::systemConfig()
+  {
+    static ZConfig _sysConf( zypp_detail::autodetectZyppConfPath() );
+    return _sysConf;
+  }
+
   ZConfig & ZConfig::instance()
   {
     return zypp_detail::GlobalStateHelper::config();
@@ -1009,24 +1017,14 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   bool ZConfig::hasUserData() const
-  { return !_pimpl->userData.empty(); }
+  { return zyppng::UserData::hasData(); }
 
   std::string ZConfig::userData() const
-  { return _pimpl->userData; }
+  { return zyppng::UserData::data(); }
 
   bool ZConfig::setUserData( const std::string & str_r )
   {
-    for_( ch, str_r.begin(), str_r.end() )
-    {
-      if ( *ch < ' ' && *ch != '\t' )
-      {
-        ERR << "New user data string rejectded: char " << (int)*ch << " at position " <<  (ch - str_r.begin()) << endl;
-        return false;
-      }
-    }
-    MIL << "Set user data string to '" << str_r << "'" << endl;
-    _pimpl->userData = str_r;
-    return true;
+    return zyppng::UserData::setData(str_r);
   }
 
   ///////////////////////////////////////////////////////////////////

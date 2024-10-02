@@ -6,22 +6,15 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "ServiceRepoState.h"
-
+#include "ResFilters.h"
 #include <zypp/ng/repoinfo.h>
 
 namespace zypp {
-
-  ServiceRepoState::ServiceRepoState( const zyppng::RepoInfo &repo_r )
-    : enabled( repo_r.enabled() ), autorefresh( repo_r.autorefresh() ), priority( repo_r.priority() )
-  {}
-
-ZYPP_BEGIN_LEGACY_API
-  ServiceRepoState::ServiceRepoState(const RepoInfo &repo_r)
-    : ServiceRepoState(repo_r.ngRepoInfo()) {}
-ZYPP_END_LEGACY_API
-
-  ServiceRepoState::ServiceRepoState()
-    : enabled(false), autorefresh(true),
-      priority(zyppng::RepoInfo::defaultPriority()) {}
+  resfilter::ByRepository::ByRepository(Repository repository_r)
+    : _alias(repository_r.ngInfo() ? repository_r.ngInfo()->alias() : "" ) {}
+  resfilter::ByRepository::ByRepository(std::string alias_r)
+    : _alias(std::move(alias_r)) {}
+  bool resfilter::ByRepository::operator()(const ResObject::constPtr &p) const {
+    return (p->ngRepoInfo() ? p->ngRepoInfo()->alias() : "" ) == _alias;
+  }
 } // namespace zypp

@@ -125,6 +125,13 @@ namespace zyppng {
     template <typename T>
     constexpr bool is_nested_async_v = is_nested_async<T>::value;
 
+    // helper to figure out the return type for a mbind callback, if the ArgType is void the callback is considered to take no argument.
+    // Due to how std::conditional works, we cannot pass std::invoke_result_t but instead use the template type std::invoke_result, since
+    // one of the two options have no "::type" because the substitution fails, this breaks the std::conditional_t since it can only work with two well formed
+    // types. Instead we pass in the template types and evaluate the ::type in the end, when the correct invoke_result was chosen.
+    template < typename Function, typename ArgType>
+    using mbind_cb_result_t = typename std::conditional_t< std::is_same_v<ArgType,void>, std::invoke_result<Function>,std::invoke_result<Function, ArgType> >::type;
+
 
     // case 1: connect async result to async callback
     template <typename PrevRes, typename CallbackOp, typename AOpRes = typename CallbackOp::value_type >

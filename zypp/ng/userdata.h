@@ -6,22 +6,32 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "ServiceRepoState.h"
+#ifndef ZYPP_NG_USERDATA_H_INCLUDED
+#define ZYPP_NG_USERDATA_H_INCLUDED
 
-#include <zypp/ng/repoinfo.h>
+#include <string>
 
-namespace zypp {
+namespace zyppng {
 
-  ServiceRepoState::ServiceRepoState( const zyppng::RepoInfo &repo_r )
-    : enabled( repo_r.enabled() ), autorefresh( repo_r.autorefresh() ), priority( repo_r.priority() )
-  {}
 
-ZYPP_BEGIN_LEGACY_API
-  ServiceRepoState::ServiceRepoState(const RepoInfo &repo_r)
-    : ServiceRepoState(repo_r.ngRepoInfo()) {}
-ZYPP_END_LEGACY_API
+  /**
+   * Interface for usercode to define a string value to be passed to log, history, plugins...
+   */
+  class UserData {
 
-  ServiceRepoState::ServiceRepoState()
-    : enabled(false), autorefresh(true),
-      priority(zyppng::RepoInfo::defaultPriority()) {}
-} // namespace zypp
+  public:
+    ~UserData() = default;
+    static bool hasData();
+    static const std::string &data();
+    static bool setData( const std::string &str );
+
+  private:
+    UserData() = default;
+    static UserData &instance();
+
+    std::string _value;
+  };
+
+}
+
+#endif

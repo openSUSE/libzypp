@@ -300,41 +300,50 @@ namespace zyppng {
 
   bool RepoInfoSharedData::cfgGpgCheck() const
   {
+    const zypp::ZConfig *zConf = nullptr;
     if (!this->_ctx) {
       MIL << "RepoInfo has no context, returning default setting for "
-             "cfgGpgCheck!"
+             "cfgRepoGpgCheck!"
           << std::endl;
-      return true;
+      zConf = &zypp::ZConfig::defaults();
+    } else {
+      zConf = &this->_ctx->config();
     }
-    return zypp::indeterminate(_rawGpgCheck) ? this->_ctx->config().gpgCheck()
+    return zypp::indeterminate(_rawGpgCheck) ? zConf->gpgCheck()
                                              : (bool)_rawGpgCheck;
   }
 
   zypp::TriBool RepoInfoSharedData::cfgRepoGpgCheck() const
   {
+    const zypp::ZConfig *zConf = nullptr;
     if (!this->_ctx) {
       MIL << "RepoInfo has no context, returning default setting for "
              "cfgRepoGpgCheck!"
           << std::endl;
-      return zypp::indeterminate;
+      zConf = &zypp::ZConfig::defaults();
+    } else {
+      zConf = &this->_ctx->config();
     }
     return zypp::indeterminate(_rawGpgCheck) &&
         zypp::indeterminate(_rawRepoGpgCheck)
-        ? this->_ctx->config().repoGpgCheck()
+        ? zConf->repoGpgCheck()
         : _rawRepoGpgCheck;
   }
 
   zypp::TriBool RepoInfoSharedData::cfgPkgGpgCheck() const
   {
+    const zypp::ZConfig *zConf = nullptr;
     if (!this->_ctx) {
       MIL << "RepoInfo has no context, returning default setting for "
-             "cfgPkgGpgCheck!"
+             "cfgRepoGpgCheck!"
           << std::endl;
-      return zypp::indeterminate;
+      zConf = &zypp::ZConfig::defaults();
+    } else {
+      zConf = &this->_ctx->config();
     }
     return zypp::indeterminate(_rawGpgCheck) &&
         zypp::indeterminate(_rawPkgGpgCheck)
-        ? this->_ctx->config().pkgGpgCheck()
+        ? zConf->pkgGpgCheck()
         : _rawPkgGpgCheck;
   }
 
@@ -400,6 +409,12 @@ namespace zyppng {
 
   unsigned RepoInfo::priority() const
   { return pimpl()->priority; }
+
+  const std::optional<RepoInfo> &RepoInfo::nullRepo()
+  {
+    static std::optional<RepoInfo> _nullRepo;
+    return _nullRepo;
+  }
 
   unsigned RepoInfo::defaultPriority()
   { return RepoInfoSharedData::defaultPriority; }

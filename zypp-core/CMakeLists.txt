@@ -320,6 +320,9 @@ SET( zyppng_pipelines_HEADERS
   zyppng/pipelines/lift.h
   zyppng/pipelines/MTry
   zyppng/pipelines/mtry.h
+  zyppng/pipelines/operators.h
+  zyppng/pipelines/Optional
+  zyppng/pipelines/optional.h
   zyppng/pipelines/Redo
   zyppng/pipelines/redo.h
   zyppng/pipelines/Transform

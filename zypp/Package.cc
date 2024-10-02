@@ -22,6 +22,8 @@
 #include <zypp/target/rpm/RpmHeader.h>
 #include <zypp/ui/Selectable.h>
 
+#include <zypp/ng/repoinfo.h>
+
 ///////////////////////////////////////////////////////////////////
 namespace zyppintern
 {
@@ -96,7 +98,7 @@ namespace zyppintern
   }
 
   // here and from SrcPackage.cc
-  Pathname cachedLocation( const OnMediaLocation & loc_r, const RepoInfo & repo_r )
+  Pathname cachedLocation( const OnMediaLocation & loc_r, const zyppng::RepoInfo & repo_r )
   {
     PathInfo pi( repo_r.packagesPath() / repo_r.path() / loc_r.filename() );
 
@@ -277,7 +279,12 @@ namespace zypp
   { return lookupLocation(); }
 
   Pathname Package::cachedLocation() const
-  { return zyppintern::cachedLocation( location(), repoInfo() ); }
+  {
+    const auto &optRepoInfo = ngRepoInfo ();
+    if ( !optRepoInfo )
+      return Pathname();
+    return zyppintern::cachedLocation( location(), *optRepoInfo );
+  }
 
   std::string Package::sourcePkgName() const
   {

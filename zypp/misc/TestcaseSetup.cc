@@ -2,6 +2,7 @@
 
 namespace zypp::misc::testcase
 {
+  ZYPP_BEGIN_LEGACY_API
   RepoData::RepoData() : _pimpl( new RepoDataImpl )
   {}
 
@@ -257,4 +258,5 @@ namespace zypp::misc::testcase
     return *_pimpl;
   }
 
+  ZYPP_END_LEGACY_API
 }

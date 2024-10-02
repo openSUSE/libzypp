@@ -258,7 +258,7 @@ namespace zypp
 
     public:
 #ifdef __cpp_lib_optional
-        std::optional<zyppng::RepoInfo> ngInfo() const;
+        const std::optional<zyppng::RepoInfo> &ngInfo() const;
 #endif
 
         /** Set \ref RepoInfo for this repository.

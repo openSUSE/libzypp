@@ -29,6 +29,7 @@
 #include <zypp/ZConfig.h>
 
 #include <zypp/ui/Selectable.h>
+#include <zypp/ng/repoinfo.h>
 
 using std::endl;
 
@@ -367,9 +368,13 @@ namespace zypp
       return Repository( _solvable->repo );
     }
 
+   ZYPP_BEGIN_LEGACY_API
     RepoInfo Solvable::repoInfo() const
     { return repository().info(); }
+   ZYPP_END_LEGACY_API
 
+    const std::optional<zyppng::RepoInfo> &Solvable::ngRepoInfo() const
+    { return repository().ngInfo(); }
 
     bool Solvable::isSystem() const
     {
@@ -747,28 +752,34 @@ namespace zypp
       std::string ret = lookupStrAttribute( SolvAttr::eula, lang_r );
       if ( ret.empty() && isKind<Product>() )
       {
-        const RepoInfo & ri( repoInfo() );
+        const auto &ri( ngRepoInfo () );
+        if ( !ri )
+          return ret;
+
         std::string riname( name() );	// "license-"+name with fallback "license"
-        if ( ! ri.hasLicense( riname ) )
+        if ( ! ri->hasLicense( riname ) )
           riname.clear();
 
-        if ( ri.needToAcceptLicense( riname ) || ! ui::Selectable::get( *this )->hasInstalledObj() )
-          ret = ri.getLicense( riname, lang_r ); // bnc#908976: suppress informal license upon update
+        if ( ri->needToAcceptLicense( riname ) || ! ui::Selectable::get( *this )->hasInstalledObj() )
+          ret = ri->getLicense( riname, lang_r ); // bnc#908976: suppress informal license upon update
       }
       return ret;
     }
 
     bool Solvable::needToAcceptLicense() const
     {
-      NO_SOLVABLE_RETURN( false );
+      NO_SOLVABLE_RETURN( true );
       if ( isKind<Product>() )
       {
-        const RepoInfo & ri( repoInfo() );
+        const auto &ri( ngRepoInfo() );
+        if ( !ri )
+          return true;
+
         std::string riname( name() );	// "license-"+name with fallback "license"
-        if ( ! ri.hasLicense( riname ) )
+        if ( !ri->hasLicense( riname ) )
           riname.clear();
 
-        return ri.needToAcceptLicense( riname );
+        return ri->needToAcceptLicense( riname );
       }
       return true;
     }

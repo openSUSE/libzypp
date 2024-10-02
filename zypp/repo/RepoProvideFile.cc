@@ -124,7 +124,7 @@ namespace zypp
                              const ProvideFilePolicy & policy_r )
     {
       RepoMediaAccess access;
-      return access.provideFile(std::move(repo_r), loc_r, policy_r );
+      return access.provideFile(repo_r, loc_r, policy_r );
     }
 
 
@@ -172,7 +172,7 @@ namespace zypp
           media.reset( new MediaSetAccess(url) );
           _medias[url] = media;
         }
-        setVerifierForRepo( std::move(repo), media );
+        setVerifierForRepo( repo, media );
         return media;
       }
 
@@ -246,13 +246,6 @@ namespace zypp
 
     const ProvideFilePolicy & RepoMediaAccess::defaultPolicy() const
     { return _impl->_defaultPolicy; }
-
-    ManagedFile RepoMediaAccess::provideFile( const RepoInfo& repo_r,
-                                              const OnMediaLocation & loc_rx,
-                                              const ProvideFilePolicy & policy_r )
-    {
-      return provideFile( repo_r.ngRepoInfo (), loc_rx, policy_r );
-    }
 
     ManagedFile RepoMediaAccess::provideFile( const zyppng::RepoInfo& repo_r,
                                               const OnMediaLocation & loc_rx,
@@ -372,6 +365,12 @@ namespace zypp
       return provideFile( repo_r.ngRepoInfo (), loc_r );
     }
 
+    ManagedFile RepoMediaAccess::provideFile( const RepoInfo& repo_r,
+                                              const OnMediaLocation & loc_rx,
+                                              const ProvideFilePolicy & policy_r )
+    {
+      return provideFile( repo_r.ngRepoInfo (), loc_rx, policy_r );
+    }
     ZYPP_END_LEGACY_API
 
 

@@ -235,28 +235,32 @@ namespace zypp
         medianr = 1;
 
       OnMediaLocation ret;
-
       Pathname path;
-      switch ( repository().info().type().toEnum() )
-      {
-        case repo::RepoType::NONE_e:
-        {
-          path = lookupDatadirIn( repository() );
-          if ( ! path.empty() )
-            repository().info().setProbedType( repo::RepoType::YAST2_e );
-        }
-        break;
 
-        case repo::RepoType::YAST2_e:
+      const auto &ri = repository().ngInfo();
+      if ( ri ) {
+        switch ( ri->type().toEnum() )
         {
-          path = lookupDatadirIn( repository() );
-          if ( path.empty() )
-            path = "suse";
-        }
-        break;
-
-        default:
+          case repo::RepoType::NONE_e:
+          {
+            path = lookupDatadirIn( repository() );
+            if ( ! path.empty() ) {
+              ri->setProbedType( repo::RepoType::YAST2_e );
+            }
+          }
           break;
+
+          case repo::RepoType::YAST2_e:
+          {
+            path = lookupDatadirIn( repository() );
+            if ( path.empty() )
+              path = "suse";
+          }
+          break;
+
+          default:
+            break;
+        }
       }
       ret.setLocation    ( path/file, medianr );
       ret.setDownloadSize( ByteCount( lookupNumAttribute( SolvAttr::downloadsize ) ) );

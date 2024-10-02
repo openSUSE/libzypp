@@ -248,13 +248,13 @@ namespace zyppng {
           if ( isVolatile ) {
             // filter devices that are mounted, aka used, we can not eject them
             const auto &mountedDevs = zypp::media::Mount::getEntries();
-            std::remove_if( devices.begin (), devices.end(), [&](const std::string &dev) {
+            devices.erase( std::remove_if( devices.begin (), devices.end(), [&](const std::string &dev) {
               zypp::PathInfo devInfo(dev);
               return std::any_of( mountedDevs.begin (), mountedDevs.end(), [&devInfo]( const zypp::media::MountEntry &e ) {
                 zypp::PathInfo pi( e.src );
                 return ( pi.isBlk() && pi.devMajor() == devInfo.devMajor() && pi.devMinor() == devInfo.devMinor() );
               });
-            });
+            }), devices.end() );
 
             if ( !devices.size () ) {
               // Jammed, no currently free device

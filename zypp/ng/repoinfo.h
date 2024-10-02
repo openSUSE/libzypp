@@ -91,6 +91,9 @@ namespace zyppng
       RepoInfo &operator=(RepoInfo &&) = default;
 
     public:
+
+      static const std::optional<RepoInfo> &nullRepo();
+
       /**
        * The default priority (\c 99).
        */
@@ -444,7 +447,7 @@ namespace zyppng
       std::string targetDistribution() const;
       /**
        * Sets the distribution for which is this repository meant. This is
-       * an in-memory value only, does not get written to the .repo file upon
+       * an in-memory value only, does norepoInfot get written to the .repo file upon
        * saving.
        */
       void setTargetDistribution(const std::string & targetDistribution);

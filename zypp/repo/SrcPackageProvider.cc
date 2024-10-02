@@ -34,7 +34,10 @@ namespace zypp
     {}
 
     ManagedFile SrcPackageProvider::provideSrcPackage( const SrcPackage_constPtr & srcPackage_r ) const
-    { return _access.provideFile( srcPackage_r->repoInfo(), srcPackage_r->location() ); }
+    {
+      const auto &ri = srcPackage_r->ngRepoInfo();
+      return _access.provideFile( srcPackage_r->ngRepoInfo (), srcPackage_r->location() );
+    }
 
   } // namespace repo
   ///////////////////////////////////////////////////////////////////

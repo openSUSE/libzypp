@@ -129,6 +129,11 @@ namespace zyppng {
     }
 
   private:
+
+    /**
+     * \todo move CredentialManager here
+     */
+
     std::optional<ContextSettings> _settings;
     bool _legacyMode = false; // set by legacyInit. Will disable locking inside the context, Zypp and ZyppFactory take care of that
 

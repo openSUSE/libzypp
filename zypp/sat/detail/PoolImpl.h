@@ -220,7 +220,7 @@ namespace zypp
 
         public:
           /** */
-          const zyppng::RepoInfo *repoInfo( RepoIdType id_r );
+          const std::optional<zyppng::RepoInfo> &repoInfo( RepoIdType id_r );
 
           /** Also adjust repo priority and subpriority accordingly. */
           void setRepoInfo( RepoIdType id_r, const std::optional<zyppng::RepoInfo> & info_r );
@@ -366,7 +366,7 @@ namespace zypp
           /** Watch serial number. */
           SerialNumberWatcher _watcher;
           /** Additional \ref RepoInfo. */
-          std::map<RepoIdType,zyppng::RepoInfo> _repoinfos;
+          std::map<RepoIdType,std::optional<zyppng::RepoInfo>> _repoinfos;
 
           /**  */
           base::SetTracker<LocaleSet> _requestedLocalesTracker;

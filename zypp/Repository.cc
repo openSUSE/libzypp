@@ -283,20 +283,17 @@ namespace zypp
       return ProductInfoIterator();
     }
 
-    std::optional<zyppng::RepoInfo> Repository::ngInfo() const
+    const std::optional<zyppng::RepoInfo> &Repository::ngInfo() const
     {
-      NO_REPOSITORY_RETURN( std::optional<zyppng::RepoInfo>() );
-      const zyppng::RepoInfo *i = myPool().repoInfo( _repo );
-      if ( i )
-        return *i;
-      return std::optional<zyppng::RepoInfo>();
+      NO_REPOSITORY_RETURN( zyppng::RepoInfo::nullRepo() );
+      return myPool().repoInfo( _repo );
     }
 
     ZYPP_BEGIN_LEGACY_API
     RepoInfo Repository::info() const
     {
       NO_REPOSITORY_RETURN( RepoInfo() );
-      const zyppng::RepoInfo *i = myPool().repoInfo( _repo );
+      const auto &i = myPool().repoInfo( _repo );
       if ( i )
         return RepoInfo(*i);
       return RepoInfo();

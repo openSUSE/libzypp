@@ -110,7 +110,7 @@ namespace zypp
 
     repo::RepoType type() const
     {
-      if ( _type == repo::RepoType::NONE )
+      if ( _type == repo::RepoType::NONE && not metadataPath().empty() )
         setProbedType( probeCache( metadataPath() / path ) );
       return _type;
     }

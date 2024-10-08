@@ -664,15 +664,18 @@ namespace zypp
                 }
                 else if ( entry == "update.datadir" )
                 {
-                  update_data_path = Pathname(value);
+                  // ignore, this is a constant anyway and should not be user configurabe
+                  // update_data_path = Pathname(value);
                 }
                 else if ( entry == "update.scriptsdir" )
                 {
-                  update_scripts_path = Pathname(value);
+                  // ignore, this is a constant anyway and should not be user configurabe
+                  // update_scripts_path = Pathname(value);
                 }
                 else if ( entry == "update.messagessdir" )
                 {
-                  update_messages_path = Pathname(value);
+                  // ignore, this is a constant anyway and should not be user configurabe
+                  // update_messages_path = Pathname(value);
                 }
                 else if ( entry == "update.messages.notify" )
                 {
@@ -773,9 +776,6 @@ namespace zypp
     std::string cfg_kernel_keep_spec;
     Pathname locks_file;
 
-    Pathname update_data_path;
-    Pathname update_scripts_path;
-    Pathname update_messages_path;
     DefaultOption<std::string> updateMessagesNotify;
 
     bool	repo_add_probe;
@@ -1265,22 +1265,28 @@ namespace zypp
   bool ZConfig::apply_locks_file() const
   { return _pimpl->apply_locks_file; }
 
-  Pathname ZConfig::update_dataPath() const
+  Pathname ZConfig::update_dataPath()
+#if LEGACY(1735)
+  const
+#endif
   {
-    return ( _pimpl->update_data_path.empty()
-        ? Pathname("/var/adm") : _pimpl->update_data_path );
+    return Pathname("/var/adm");
   }
 
-  Pathname ZConfig::update_messagesPath() const
+  Pathname ZConfig::update_messagesPath()
+#if LEGACY(1735)
+  const
+#endif
   {
-    return ( _pimpl->update_messages_path.empty()
-             ? Pathname(update_dataPath()/"update-messages") : _pimpl->update_messages_path );
+    return Pathname(update_dataPath()/"update-messages");
   }
 
-  Pathname ZConfig::update_scriptsPath() const
+  Pathname ZConfig::update_scriptsPath()
+#if LEGACY(1735)
+  const
+#endif
   {
-    return ( _pimpl->update_scripts_path.empty()
-             ? Pathname(update_dataPath()/"update-scripts") : _pimpl->update_scripts_path );
+    return Pathname(update_dataPath()/"update-scripts");
   }
 
   std::string ZConfig::updateMessagesNotify() const

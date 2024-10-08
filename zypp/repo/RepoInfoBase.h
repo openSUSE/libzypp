@@ -18,9 +18,10 @@
 #include <zypp-core/Globals.h>
 #include <zypp/Pathname.h>
 
-namespace zyppng {
-  class ContextBase;
-  using ContextBaseRef = std::shared_ptr<ContextBase>;
+ZYPP_BEGIN_LEGACY_API
+
+namespace zyppng::repo {
+  class RepoInfoBase;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -41,36 +42,21 @@ namespace zypp
      * \note Name is subject to repo variable replacement
      * (\see \ref RepoVariablesStringReplacer).
      */
-    class ZYPP_API RepoInfoBase
+    class ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoInfoBase
     {
       friend std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     public:
-
       virtual ~RepoInfoBase();
 
-#if LEGACY(1733)
-    public:
-#else
     protected:
-#endif
-      RepoInfoBase( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
-      RepoInfoBase( zyppng::ContextBaseRef context, const std::string &alias ) ZYPP_LOCAL;
-
-      ZYPP_INTERNAL_DEPRECATE RepoInfoBase();
-      ZYPP_INTERNAL_DEPRECATE RepoInfoBase(const std::string &alias);
+      RepoInfoBase();
       RepoInfoBase(const RepoInfoBase &) = default;
       RepoInfoBase(RepoInfoBase &&) noexcept = default;
       RepoInfoBase &operator=(const RepoInfoBase &) = default;
       RepoInfoBase &operator=(RepoInfoBase &&) noexcept = default;
 
     public:
-
-      /**
-       * Returns the associated context of the RepoInfo
-       */
-      zyppng::ContextBaseRef context() const;
-
       /**
        * unique identifier for this source. If not specified
        * It should be generated from the base url.
@@ -183,12 +169,9 @@ namespace zypp
        */
       virtual std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const;
 
-      struct Impl;
-
     protected:
-      RepoInfoBase( Impl &pimpl );
-      /** Pointer to implementation */
-      RWCOW_pointer<Impl> _pimpl;
+      virtual zyppng::repo::RepoInfoBase &pimpl() = 0;
+      virtual const zyppng::repo::RepoInfoBase &pimpl() const = 0;
     };
     ///////////////////////////////////////////////////////////////////
 
@@ -218,5 +201,7 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
+
+ZYPP_END_LEGACY_API
 
 #endif /*REPOINFOBASE_H_*/

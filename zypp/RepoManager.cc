@@ -20,6 +20,7 @@
 #include <zypp/ng/progressobserveradaptor.h>
 #include <zypp/ng/repo/refresh.h>
 #include <zypp/ng/repo/workflows/repomanagerwf.h>
+#include <zypp-core/zyppng/pipelines/transform.h>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
@@ -33,6 +34,9 @@ using namespace zypp::repo;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 {
+
+  ZYPP_BEGIN_LEGACY_API
+
   ///////////////////////////////////////////////////////////////////
   /// \class RepoManager::Impl
   /// \brief RepoManager implementation.
@@ -44,6 +48,7 @@ namespace zypp
     Impl( zyppng::SyncContextRef &&ctx, RepoManagerOptions &&opt) {
       _ngMgr = zyppng::SyncRepoManager::create( std::move(ctx), std::move(opt) );
       _ngMgr->initialize().unwrap();
+      sync();
     }
 
     Impl(const Impl &) = delete;
@@ -63,6 +68,43 @@ namespace zypp
     zyppng::SyncRepoManagerRef ngMgrRef() {
       return _ngMgr;
     }
+
+    void syncRepos() {
+      auto &ngRepos = _ngMgr->reposManip();
+      _repos.clear();
+
+      // add repos we do not know yet
+      for ( const auto &r : ngRepos ) {
+        // COW semantics apply
+        zypp::RepoInfo tmp(r.second);
+        if ( _repos.count(tmp) == 0 )
+          _repos.insert( std::move(tmp) );
+      }
+    }
+
+    void syncServices() {
+      auto &ngServices = _ngMgr->servicesManip();
+      _services.clear();
+
+      // add repos we do not know yet
+      for ( const auto &s : ngServices ) {
+        // COW semantics apply
+        zypp::ServiceInfo tmp = s.second;
+        if ( _services.count(tmp) == 0 )
+          _services.insert( std::move(tmp) );
+      }
+    }
+
+    void sync() {
+      // we need to keep source level compatibility, and because we return direct iterators
+      // into our service and repo sets we need to provide real sets of the legacy RepoInfo and ServiceInfo
+      // using sync'ed sets is the only way I could think of for now
+      syncRepos();
+      syncServices();
+    }
+
+    ServiceSet _services;
+    RepoSet _repos;
 
   private:
     zyppng::SyncRepoManagerRef _ngMgr;
@@ -99,13 +141,18 @@ namespace zypp
   { return _pimpl->ngMgr().repoSize(); }
 
   RepoManager::RepoConstIterator RepoManager::repoBegin() const
-  { return _pimpl->ngMgr().repoBegin(); }
+  { return _pimpl->_repos.begin(); }
 
   RepoManager::RepoConstIterator RepoManager::repoEnd() const
-  { return _pimpl->ngMgr().repoEnd(); }
+  { return _pimpl->_repos.end(); }
 
   RepoInfo RepoManager::getRepo( const std::string & alias ) const
-  { return _pimpl->ngMgr().getRepo( alias ); }
+  {
+    const auto &optRepo = _pimpl->ngMgr().getRepo( alias );
+    if ( !optRepo )
+      return RepoInfo();
+    return RepoInfo(*optRepo);
+  }
 
   bool RepoManager::hasRepo( const std::string & alias ) const
   { return _pimpl->ngMgr().hasRepo( alias ); }
@@ -131,48 +178,54 @@ namespace zypp
   }
 
   RepoStatus RepoManager::metadataStatus( const RepoInfo & info ) const
-  { return _pimpl->ngMgr().metadataStatus( info ).unwrap(); }
+  { return _pimpl->ngMgr().metadataStatus( info.ngRepoInfo() ).unwrap(); }
 
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
-  { return _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info), url, policy ).unwrap(); }
+  {
+    auto res = _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo() , url, policy ).unwrap();
+    _pimpl->syncRepos();
+    return res;
+  }
 
   Pathname RepoManager::metadataPath( const RepoInfo &info ) const
-  { return _pimpl->ngMgr().metadataPath( info ).unwrap(); }
+  { return _pimpl->ngMgr().metadataPath( info.ngRepoInfo() ).unwrap(); }
 
   Pathname RepoManager::packagesPath( const RepoInfo &info ) const
-  { return _pimpl->ngMgr().packagesPath( info ).unwrap(); }
+  { return _pimpl->ngMgr().packagesPath( info.ngRepoInfo() ).unwrap(); }
 
   void RepoManager::refreshMetadata( const RepoInfo &info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
   {
     // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
     zypp::media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
-    return _pimpl->ngMgr().refreshMetadata( const_cast<RepoInfo &>(info), policy, nullptr ).unwrap();
+    _pimpl->ngMgr().refreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo(), policy, nullptr ).unwrap();
+    _pimpl->syncRepos();
   }
 
   void RepoManager::cleanMetadata( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().cleanMetadata( info, nullptr ).unwrap(); }
+  { return _pimpl->ngMgr().cleanMetadata( info.ngRepoInfo(), nullptr ).unwrap(); }
 
   void RepoManager::cleanPackages( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().cleanPackages( info, nullptr ).unwrap(); }
+  { return _pimpl->ngMgr().cleanPackages( info.ngRepoInfo(), nullptr ).unwrap(); }
 
   RepoStatus RepoManager::cacheStatus( const RepoInfo &info ) const
-  { return _pimpl->ngMgr().cacheStatus( info ).unwrap(); }
+  { return _pimpl->ngMgr().cacheStatus( info.ngRepoInfo() ).unwrap(); }
 
   void RepoManager::buildCache( const RepoInfo &info, CacheBuildPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    return _pimpl->ngMgr().buildCache( const_cast<RepoInfo &>(info), policy, adapt.observer() ).unwrap();
+    _pimpl->ngMgr().buildCache( const_cast<RepoInfo &>(info).ngRepoInfo(), policy, adapt.observer() ).unwrap();
+    _pimpl->syncRepos();
   }
 
   void RepoManager::cleanCache( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().cleanCache( info, nullptr ).unwrap(); }
+  { return _pimpl->ngMgr().cleanCache( info.ngRepoInfo(), nullptr ).unwrap(); }
 
   bool RepoManager::isCached( const RepoInfo &info ) const
-  { return _pimpl->ngMgr().isCached( info ).unwrap(); }
+  { return _pimpl->ngMgr().isCached( info.ngRepoInfo() ).unwrap(); }
 
   void RepoManager::loadFromCache( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
-  { return zypp_detail::GlobalStateHelper::pool ()->loadFromCache ( info, nullptr ).unwrap(); }
+  { return zypp_detail::GlobalStateHelper::pool ()->loadFromCache ( info.ngRepoInfo() , nullptr ).unwrap(); }
 
   void RepoManager::cleanCacheDirGarbage( const ProgressData::ReceiverFnc & progressrcv )
   { return _pimpl->ngMgr().cleanCacheDirGarbage( nullptr ).unwrap(); }
@@ -187,17 +240,22 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    _pimpl->ngMgr().addRepository( const_cast<RepoInfo &>(info), adapt.observer() ).unwrap();
+    _pimpl->ngMgr().addRepository( const_cast<RepoInfo &>(info).ngRepoInfo(), adapt.observer() ).unwrap();
+    _pimpl->syncRepos();
   }
 
   void RepoManager::addRepositories( const Url &url, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().addRepositories( url, nullptr ).unwrap(); }
+  {
+    _pimpl->ngMgr().addRepositories( url, nullptr ).unwrap();
+    _pimpl->syncRepos();
+  }
 
   void RepoManager::removeRepository( const RepoInfo & info, const ProgressData::ReceiverFnc & progressrcv )
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    return _pimpl->ngMgr().removeRepository( const_cast<RepoInfo &>(info), adapt.observer() ).unwrap();
+    _pimpl->ngMgr().removeRepository( const_cast<RepoInfo &>(info).ngRepoInfo(), adapt.observer() ).unwrap();
+    _pimpl->syncRepos();
   }
 
   void RepoManager::modifyRepository( const std::string &alias, const RepoInfo & newinfo, const ProgressData::ReceiverFnc & progressrcv )
@@ -205,14 +263,17 @@ namespace zypp
     // We should fix the API as we must inject those paths
     // into the repoinfo in order to keep it usable.
     RepoInfo & oinfo( const_cast<RepoInfo &>(newinfo) );
-    _pimpl->ngMgr().modifyRepository( alias, oinfo, nullptr ).unwrap();
+    _pimpl->ngMgr().modifyRepository( alias, oinfo.ngRepoInfo(), nullptr ).unwrap();
+    _pimpl->syncRepos();
   }
 
   RepoInfo RepoManager::getRepositoryInfo( const std::string &alias, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().getRepositoryInfo( alias ).unwrap(); }
+  {
+    return RepoInfo(_pimpl->ngMgr().getRepositoryInfo( alias ).unwrap());
+  }
 
   RepoInfo RepoManager::getRepositoryInfo( const Url & url, const url::ViewOption & urlview, const ProgressData::ReceiverFnc & progressrcv )
-  { return _pimpl->ngMgr().getRepositoryInfo( url, urlview ).unwrap(); }
+  { return RepoInfo(_pimpl->ngMgr().getRepositoryInfo( url, urlview ).unwrap()); }
 
   bool RepoManager::serviceEmpty() const
   { return _pimpl->ngMgr().serviceEmpty(); }
@@ -221,13 +282,17 @@ namespace zypp
   { return _pimpl->ngMgr().serviceSize(); }
 
   RepoManager::ServiceConstIterator RepoManager::serviceBegin() const
-  { return _pimpl->ngMgr().serviceBegin(); }
+  { return _pimpl->_services.begin(); }
 
   RepoManager::ServiceConstIterator RepoManager::serviceEnd() const
-  { return _pimpl->ngMgr().serviceEnd(); }
+  { return _pimpl->_services.end(); }
 
   ServiceInfo RepoManager::getService( const std::string & alias ) const
-  { return _pimpl->ngMgr().getService( alias ); }
+  {
+    const auto &optService = _pimpl->ngMgr().getService( alias );
+    if ( !optService ) return ServiceInfo();
+    return ServiceInfo(*optService);
+  }
 
   bool RepoManager::hasService( const std::string & alias ) const
   { return _pimpl->ngMgr().hasService( alias ); }
@@ -236,28 +301,52 @@ namespace zypp
   { return _pimpl->ngMgr().probeService( url ).unwrap(); }
 
   void RepoManager::addService( const std::string & alias, const Url& url )
-  { return _pimpl->ngMgr().addService( alias, url ).unwrap(); }
+  {
+    _pimpl->ngMgr().addService( alias, url ).unwrap();
+    _pimpl->syncServices();
+  }
 
   void RepoManager::addService( const ServiceInfo & service )
-  { return _pimpl->ngMgr().addService( service ).unwrap(); }
+  {
+    _pimpl->ngMgr().addService( service.ngServiceInfo() ).unwrap();
+    _pimpl->syncServices();
+  }
 
   void RepoManager::removeService( const std::string & alias )
-  { return _pimpl->ngMgr().removeService( alias ).unwrap(); }
+  {
+    _pimpl->ngMgr().removeService( alias ).unwrap();
+    _pimpl->syncServices();
+  }
 
   void RepoManager::removeService( const ServiceInfo & service )
-  { return _pimpl->ngMgr().removeService( service ).unwrap(); }
+  {
+    _pimpl->ngMgr().removeService( service.ngServiceInfo() ).unwrap();
+    _pimpl->syncServices();
+  }
 
   void RepoManager::refreshServices( const RefreshServiceOptions & options_r )
-  { return _pimpl->ngMgr().refreshServices( options_r ).unwrap(); }
+  {
+    _pimpl->ngMgr().refreshServices( options_r ).unwrap();
+    _pimpl->sync();
+  }
 
   void RepoManager::refreshService( const std::string & alias, const RefreshServiceOptions & options_r )
-  { return _pimpl->ngMgr().refreshService( alias, options_r ).unwrap(); }
+  {
+    _pimpl->ngMgr().refreshService( alias, options_r ).unwrap();
+    _pimpl->sync();
+  }
 
   void RepoManager::refreshService( const ServiceInfo & service, const RefreshServiceOptions & options_r )
-  { return _pimpl->ngMgr().refreshService( service, options_r ).unwrap(); }
+  {
+    _pimpl->ngMgr().refreshService( service.ngServiceInfo(), options_r ).unwrap();
+    _pimpl->sync();
+  }
 
   void RepoManager::modifyService( const std::string & oldAlias, const ServiceInfo & service )
-  { return _pimpl->ngMgr().modifyService( oldAlias, service ).unwrap(); }
+  {
+    _pimpl->ngMgr().modifyService( oldAlias, service.ngServiceInfo() ).unwrap();
+    _pimpl->syncServices();
+  }
 
   void RepoManager::refreshGeoIp (const RepoInfo::url_set &urls)
   { (void) _pimpl->ngMgr().refreshGeoIp( urls ); }
@@ -269,8 +358,16 @@ namespace zypp
 
   std::list<RepoInfo> readRepoFile(const Url &repo_file)
   {
-    return zyppng::RepoManagerWorkflow::readRepoFile( zypp_detail::GlobalStateHelper::context(), repo_file ).unwrap();
+    std::list<RepoInfo> rIs;
+
+    auto ngList = zyppng::RepoManagerWorkflow::readRepoFile( zypp_detail::GlobalStateHelper::context(), repo_file ).unwrap();
+    for ( const auto &ngRi : ngList )
+      rIs.push_back( zypp::RepoInfo(ngRi) );
+
+    return rIs;
   }
+
+  ZYPP_END_LEGACY_API
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

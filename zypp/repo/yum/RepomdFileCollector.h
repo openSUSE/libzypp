@@ -10,6 +10,7 @@
 #ifndef ZYPP_SOURCE_YUM_REPOMDFILECOLLECTOR
 #define ZYPP_SOURCE_YUM_REPOMDFILECOLLECTOR
 
+#include <zypp/ng/context_fwd.h>
 #include <zypp-core/base/Easy.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp-core/Pathname.h>
@@ -17,6 +18,10 @@
 #include <map>
 #include <string>
 #include <functional>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 namespace zypp::repo::yum
 {
@@ -28,7 +33,7 @@ namespace zypp::repo::yum
 
     using FinalizeCb = std::function<void ( const OnMediaLocation &file )>;
 
-    RepomdFileCollector( const Pathname & destDir_r );
+    RepomdFileCollector( zyppng::ContextBaseRef ctx, const Pathname & destDir_r );
     virtual ~RepomdFileCollector();
 
     bool collect( const OnMediaLocation & loc_r, const std::string & typestr_r );
@@ -36,7 +41,7 @@ namespace zypp::repo::yum
     void finalize( const FinalizeCb &cb );
 
   protected:
-    virtual const RepoInfo &repoInfo() const = 0;
+    virtual const zyppng::RepoInfo &repoInfo() const = 0;
     virtual const Pathname &deltaDir() const = 0;
 
   private:

@@ -6,9 +6,11 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-
-#ifndef ZYPP_REPO_PLUGINSERVICES_H
-#define ZYPP_REPO_PLUGINSERVICES_H
+/** \file	zypp/parser/ServiceFileReader.h
+ *
+*/
+#ifndef ZYPP_REPO_SERVICEFILEREADER_H
+#define ZYPP_REPO_SERVICEFILEREADER_H
 
 #include <iosfwd>
 
@@ -16,18 +18,33 @@
 #include <zypp-core/ui/ProgressData>
 #include <zypp/Pathname.h>
 
+#include <zypp/ng/context_fwd.h>
+
 ///////////////////////////////////////////////////////////////////
-namespace zypp
+namespace zyppng
 { /////////////////////////////////////////////////////////////////
 
   class ServiceInfo;
   ///////////////////////////////////////////////////////////////////
-  namespace repo
+  namespace parser
   { /////////////////////////////////////////////////////////////////
 
-    class PluginServices
+    /**
+     * \short Read service data from a .service file
+     *
+     * After each service is read, a \ref ServiceInfo is prepared and \ref _callback
+     * is called with the object passed in.
+     *
+     * The \ref _callback is provided on construction.
+     *
+     * \code
+     * ServiceFileReader reader(service_file,
+     *                bind( &SomeClass::callbackfunc, &SomeClassInstance, _1 ) );
+     * \endcode
+     */
+    class ServiceFileReader
     {
-      friend std::ostream & operator<<( std::ostream & str, const PluginServices& obj );
+      friend std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
     public:
 
      /**
@@ -37,29 +54,40 @@ namespace zypp
       * Return false from the callback to get a \ref AbortRequestException
       * to be thrown and the processing to be cancelled.
       */
-      using ProcessService = function<bool (const ServiceInfo &)>;
+      using ProcessService = std::function<bool (const zyppng::ServiceInfo &)>;
 
       /** Implementation  */
       class Impl;
 
     public:
-      PluginServices(const Pathname &path,
-                    const ProcessService & callback);
+     /**
+      * \short Constructor. Creates the reader and start reading.
+      *
+      * \param serviceFile A valid .repo file
+      * \param callback Callback that will be called for each repository.
+      *
+      * \throws AbortRequestException If the callback returns false
+      * \throws Exception If a error occurs at reading / parsing
+      *
+      */
+      ServiceFileReader( zyppng::ContextBaseRef ctx,
+                         const zypp::Pathname & serviceFile,
+                         const ProcessService & callback);
 
       /**
        * Dtor
        */
-      ~PluginServices();
+      ~ServiceFileReader();
     };
     ///////////////////////////////////////////////////////////////////
 
     /** \relates ServiceFileReader Stream output */
-    std::ostream & operator<<( std::ostream & str, const PluginServices & obj );
+    std::ostream & operator<<( std::ostream & str, const ServiceFileReader & obj );
 
     /////////////////////////////////////////////////////////////////
-  } // namespace repo
+  } // namespace parser
   ///////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_REPO_LOCALSERVICES_H
+#endif // ZYPP_REPO_SERVICEFILEREADER_H

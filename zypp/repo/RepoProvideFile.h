@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 
+#include <zypp/Globals.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Function.h>
 #include <zypp/base/Functional.h>
@@ -22,6 +23,10 @@
 #include <utility>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ProvideFilePolicy.h>
+
+namespace zyppng {
+  class RepoInfo;
+}
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -45,6 +50,10 @@ namespace zypp
      * \throws Exception
     */
     ManagedFile provideFile( RepoInfo repo_r,
+                             const OnMediaLocation & loc_r,
+                             const ProvideFilePolicy & policy_r = ProvideFilePolicy() ) ZYPP_INTERNAL_DEPRECATE;
+
+    ManagedFile provideFile( zyppng::RepoInfo repo_r,
                              const OnMediaLocation & loc_r,
                              const ProvideFilePolicy & policy_r = ProvideFilePolicy() );
 
@@ -74,13 +83,18 @@ namespace zypp
       * \throws Exception
       * \todo Investigate why this needs a non-const Repository as arg.
       */
-      ManagedFile provideFile( const RepoInfo& repo_r,
-                               const OnMediaLocation & loc_r,
-                               const ProvideFilePolicy & policy_r );
+      ManagedFile provideFile ( const RepoInfo& repo_r,
+                                const OnMediaLocation & loc_r,
+                                const ProvideFilePolicy & policy_r ) ZYPP_INTERNAL_DEPRECATE;
+
+      ManagedFile provideFile ( const zyppng::RepoInfo& repo_r,
+                                const OnMediaLocation & loc_r,
+                                const ProvideFilePolicy & policy_r );
 
       /** \overload Using the current default \ref ProvideFilePolicy. */
-      ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation & loc_r )
-      { return provideFile( std::move(repo_r), loc_r, defaultPolicy() ); }
+      ManagedFile provideFile( RepoInfo repo_r, const OnMediaLocation &loc_r ) ZYPP_INTERNAL_DEPRECATE;
+
+      ManagedFile provideFile( const zyppng::RepoInfo &repo_r, const OnMediaLocation &loc_r );
 
     public:
       /** Set a new default \ref ProvideFilePolicy. */

@@ -321,7 +321,7 @@ MediaHandler::createAttachPoint() const
 
   if ( apoint.empty() )				// fallback to config value
   {
-    aroot = ZConfig::instance().download_mediaMountdir();
+    aroot = ZConfig::systemConfig().download_mediaMountdir();
     if ( ! aroot.empty() )
       apoint = createAttachPoint( aroot );
   }

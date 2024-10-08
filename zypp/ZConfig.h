@@ -74,6 +74,15 @@ namespace zypp
   {
     public:
 
+      /** A ZConfig instance that has only the default settings, usable as fallback if
+       *  there is no context that can be asked and the system config is not applicable */
+      static const ZConfig &defaults();
+
+      /**
+       * The system config, parsed from /etc/zypp/zypp.conf.
+       */
+      static ZConfig &systemConfig();
+
       /** Singleton ctor */
       static ZYPP_INTERNAL_DEPRECATE ZConfig & instance();
 
@@ -391,7 +400,7 @@ namespace zypp
       void resetPkgGpgCheck();			///< Reset to the zconfig default
      //@}
       //
-      /**
+      /**ZConfig
        * Directory for equivalent vendor definitions  (configPath()/vendors.d)
        * \ingroup g_ZC_CONFIGFILES
        */

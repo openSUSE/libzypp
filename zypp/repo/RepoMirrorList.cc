@@ -124,7 +124,7 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r )
+    RepoMirrorList::RepoMirrorList( zyppng::ContextBaseRef ctx, const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r )
     {
       if ( url_r.getScheme() == "file" )
       {
@@ -147,7 +147,7 @@ namespace zypp
           cachefile /= "mirrorlist.txt";
 
         zypp::filesystem::PathInfo cacheinfo( cachefile );
-        if ( !cacheinfo.isFile() || cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 )
+        if ( !cacheinfo.isFile() || cacheinfo.mtime() < time(NULL) - (long) ctx->config().repo_refresh_delay() * 60 )
         {
           DBG << "Getting MirrorList from URL: " << url_r << endl;
           RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file

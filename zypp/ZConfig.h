@@ -493,22 +493,37 @@ namespace zypp
        */
       bool apply_locks_file() const;
 
+#if LEGACY(1735)
       /**
        * Path where the update items are kept (/var/adm)
        */
       Pathname update_dataPath() const;
 
-     /**
-      * Path where the repo metadata is downloaded and kept (update_dataPath()/).
-      * \ingroup g_ZC_REPOCACHE
-      */
+      /**
+       * Path where the update scripts are stored ( /var/adm/update-scripts )
+       */
       Pathname update_scriptsPath() const;
 
-     /**
-      * Path where the repo solv files are created and kept (update_dataPath()/solv).
-      * \ingroup g_ZC_REPOCACHE
-      */
+      /**
+       * Path where the update messages are stored ( /var/adm/update-messages )
+       */
       Pathname update_messagesPath() const;
+#else
+      /**
+       * Path where the update items are kept (/var/adm)
+       */
+      static Pathname update_dataPath();
+
+      /**
+       * Path where the update scripts are stored ( /var/adm/update-scripts )
+       */
+      static Pathname update_scriptsPath();
+
+      /**
+       * Path where the update messages are stored ( /var/adm/update-messages )
+       */
+      static Pathname update_messagesPath();
+#endif
 
       /** \name Command to be invoked to send update messages. */
       //@{

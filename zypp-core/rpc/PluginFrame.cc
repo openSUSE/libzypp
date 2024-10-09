@@ -74,7 +74,7 @@ namespace zypp
       void setBody( ByteArray && body_r )
       { _body = std::move(body_r); }
 
-      static std::string escapeHeader( std::string_view val ) {
+      static std::string escapeHeader( std::string_view val, bool escapeColon=true ) {
 
         std::string escaped;
         /*
@@ -84,6 +84,11 @@ namespace zypp
           \c (octet 92 and 99) translates to : (octet 58)
           \\ (octet 92 and 92) translates to \ (octet 92)
           Undefined escape sequences such as \t (octet 92 and 116) MUST be treated as a fatal protocol error.
+
+          bsc#1231043: We do allow a literal ":" in the header value(!) in order to stay
+          compatible with with plugin implementations (like zypp-plugin) which are not
+          prepared to unescape a ":" there. And in fact it should not be necessary because
+          the 1st colon separates header and value.
         */
         for ( auto c = val.begin (); c!= val.end(); c++ ) {
           switch( *c ) {
@@ -103,9 +108,12 @@ namespace zypp
               break;
             }
             case ':': {
-              escaped.push_back('\\');
-              escaped.push_back('c');
-              break;
+              if ( escapeColon ) {
+                escaped.push_back('\\');
+                escaped.push_back('c');
+                break;
+              } else
+                [[fallthrough]];
             }
             default:
               escaped.push_back (*c);
@@ -345,8 +353,12 @@ namespace zypp
     stream_r << contentLengthHeader() << ':' << str::numstring( _body.size() ) << "\n";
 
     // header
+    // bsc#1231043: We do allow a literal ":" in the header value(!) in order to stay
+    // compatible with with plugin implementations (like zypp-plugin) which are not
+    // prepared to unescape a ":" there. And in fact it should not be necessary because
+    // the 1st colon separates header and value.
     for_( it, _header.begin(), _header.end() )
-      stream_r << escapeHeader(it->first) << ':' << escapeHeader(it->second) << "\n";
+      stream_r << escapeHeader(it->first) << ':' << escapeHeader(it->second,/*escapeColon=*/false) << "\n";
 
     // header end
     stream_r << "\n";

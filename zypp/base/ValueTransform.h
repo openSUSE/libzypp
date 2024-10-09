@@ -36,7 +36,11 @@ namespace zypp
     {
       using RawType = Tp;
       using Transformator = TUnaryFunction;
-      using TransformedType = std::result_of_t<Transformator (RawType)>;
+#if __cplusplus < 201703L
+      using TransformedType = std::result_of_t<Transformator (RawType)>; // yast in 15.[23] uses c++11
+#else
+      using TransformedType = std::invoke_result_t<Transformator, RawType>;
+#endif
 
     public:
       ValueTransform()
@@ -94,8 +98,11 @@ namespace zypp
       using Transformator = TUnaryFunction;
       using size_type = typename Container::size_type;
       using RawType = typename Container::value_type;
+#if __cplusplus < 201703L
+      using TransformedType = std::result_of_t<Transformator (RawType)>; // yast in 15.[23] uses c++11
+#else
       using TransformedType = std::invoke_result_t<Transformator, RawType>;
-
+#endif
     public:
       ContainerTransform()
       {}

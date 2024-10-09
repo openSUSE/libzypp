@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Wed Oct  9 18:21:43 CEST 2024 - ma@suse.de
+
+- PluginFrame: Send unescaped colons in header values
+  (bsc#1231043)
+  According to the STOMP protocol it would be correct to escape a
+  colon in a header-value, but it breaks plugin receivers which do
+  not expect this. The first colon separates header-name from
+  header-value, so escaping in the header-value is not needed
+  anyway.
+  Escaping in the header-value affects especially the urlresolver
+  plugins. The input URL is passed in a header, but sent back as
+  raw data in the frames body. If the plugin receiver does not
+  correctly unescape the URL we may get back a "https\c//" which is
+  not usable.
+- Do not ignore return value of std::remove_if in MediaSyncFacade
+  (fixes #579)
+- Fix hang in curl code with no network connection (bsc#1230912)
+- version 17.35.12 (35)
+
+-------------------------------------------------------------------
 Thu Sep 12 13:44:05 CEST 2024 - ma@suse.de
 
 - Deprecate librpmDb::db_const_iterator default ctor (bsc#1230267)

@@ -14,6 +14,7 @@
 #include <string>
 #include <mutex>
 #include <map>
+#include <memory>
 
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/LogControl.h>
@@ -607,14 +608,14 @@ namespace zypp
         }
 
         /** NULL _lineWriter indicates no loggin. */
-        void setLineWriter( const shared_ptr<LogControl::LineWriter> & writer_r )
+        void setLineWriter( const std::shared_ptr<LogControl::LineWriter> & writer_r )
         { LogThread::instance().setLineWriter( writer_r ); }
 
-        shared_ptr<LogControl::LineWriter> getLineWriter() const
+        std::shared_ptr<LogControl::LineWriter> getLineWriter() const
         { return LogThread::instance().getLineWriter(); }
 
         /** Assert \a _lineFormater is not NULL. */
-        void setLineFormater( const shared_ptr<LogControl::LineFormater> & format_r )
+        void setLineFormater( const std::shared_ptr<LogControl::LineFormater> & format_r )
         {
           if ( format_r )
             _lineFormater = format_r;
@@ -625,11 +626,11 @@ namespace zypp
         void logfile( const Pathname & logfile_r, mode_t mode_r = 0640 )
         {
           if ( logfile_r.empty() )
-            setLineWriter( shared_ptr<LogControl::LineWriter>() );
+            setLineWriter( std::shared_ptr<LogControl::LineWriter>() );
           else if ( logfile_r == Pathname( "-" ) )
-            setLineWriter( shared_ptr<LogControl::LineWriter>(new log::StderrLineWriter) );
+            setLineWriter( std::shared_ptr<LogControl::LineWriter>(new log::StderrLineWriter) );
           else
-            setLineWriter( shared_ptr<LogControl::LineWriter>(new log::FileLineWriter(logfile_r, mode_r)) );
+            setLineWriter( std::shared_ptr<LogControl::LineWriter>(new log::FileLineWriter(logfile_r, mode_r)) );
         }
 
       private:
@@ -639,7 +640,7 @@ namespace zypp
         bool         _logToPPIDMode = false; ///< Hint for formatter to use the PPID and always show the thread name
         mutable TriBool _hideThreadName = indeterminate;	///< Hint for Formater whether to hide the thread name.
 
-        shared_ptr<LogControl::LineFormater> _lineFormater;
+        std::shared_ptr<LogControl::LineFormater> _lineFormater;
 
       public:
         /** Provide the log stream to write (logger interface) */
@@ -685,7 +686,7 @@ namespace zypp
         }
 
       private:
-        using StreamPtr = shared_ptr<Loglinestream>;
+        using StreamPtr = std::shared_ptr<Loglinestream>;
         using StreamSet = std::map<LogLevel, StreamPtr>;
         using StreamTable = std::map<std::string, StreamSet>;
         /** one streambuffer per group and level */
@@ -700,7 +701,7 @@ namespace zypp
 
           if ( getenv("ZYPP_PROFILING") )
           {
-            shared_ptr<LogControl::LineFormater> formater(new ProfilingFormater);
+            std::shared_ptr<LogControl::LineFormater> formater(new ProfilingFormater);
             setLineFormater(formater);
           }
         }
@@ -875,7 +876,7 @@ namespace zypp
       impl->logfile( logfile_r, mode_r );
     }
 
-    shared_ptr<LogControl::LineWriter> LogControl::getLineWriter() const
+    std::shared_ptr<LogControl::LineWriter> LogControl::getLineWriter() const
     {
       auto impl = LogControlImpl::instance();
       if ( !impl )
@@ -884,7 +885,7 @@ namespace zypp
       return impl->getLineWriter();
     }
 
-    void LogControl::setLineWriter( const shared_ptr<LineWriter> & writer_r )
+    void LogControl::setLineWriter( const std::shared_ptr<LineWriter> & writer_r )
     {
       auto impl = LogControlImpl::instance();
       if ( !impl )
@@ -892,7 +893,7 @@ namespace zypp
       impl->setLineWriter( writer_r );
     }
 
-    void LogControl::setLineFormater( const shared_ptr<LineFormater> & formater_r )
+    void LogControl::setLineFormater( const std::shared_ptr<LineFormater> & formater_r )
     {
       auto impl = LogControlImpl::instance();
       if ( !impl )
@@ -910,7 +911,7 @@ namespace zypp
       auto impl = LogControlImpl::instance();
       if ( !impl )
         return;
-      impl->setLineWriter( shared_ptr<LineWriter>() );
+      impl->setLineWriter( std::shared_ptr<LineWriter>() );
     }
 
     void LogControl::logToStdErr()
@@ -918,7 +919,7 @@ namespace zypp
       auto impl = LogControlImpl::instance();
       if ( !impl )
         return;
-      impl->setLineWriter( shared_ptr<LineWriter>( new log::StderrLineWriter ) );
+      impl->setLineWriter( std::shared_ptr<LineWriter>( new log::StderrLineWriter ) );
     }
 
     void base::LogControl::emergencyShutdown()

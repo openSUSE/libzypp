@@ -12,6 +12,7 @@
 #include <climits>
 
 #include <iostream>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -137,7 +138,7 @@ namespace zypp
 
   public:
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl();
+    static std::shared_ptr<Impl> nullimpl();
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -145,9 +146,9 @@ namespace zypp
     Impl * clone() const;
   };
 
-  shared_ptr<zypp::PublicSubkeyData::Impl> PublicSubkeyData::Impl::nullimpl()
+  std::shared_ptr<zypp::PublicSubkeyData::Impl> PublicSubkeyData::Impl::nullimpl()
   {
-    static shared_ptr<Impl> _nullimpl( new Impl );
+    static std::shared_ptr<Impl> _nullimpl( new Impl );
     return _nullimpl;
   }
 
@@ -212,7 +213,7 @@ namespace zypp
 
   public:
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl();
+    static std::shared_ptr<Impl> nullimpl();
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -220,9 +221,9 @@ namespace zypp
     Impl * clone() const;
   };
 
-  shared_ptr<zypp::PublicKeySignatureData::Impl> PublicKeySignatureData::Impl::nullimpl()
+  std::shared_ptr<zypp::PublicKeySignatureData::Impl> PublicKeySignatureData::Impl::nullimpl()
   {
-    static shared_ptr<Impl> _nullimpl( new Impl );
+    static std::shared_ptr<Impl> _nullimpl( new Impl );
     return _nullimpl;
   }
 
@@ -315,8 +316,8 @@ namespace zypp
 
   public:
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl();
-    static shared_ptr<Impl> fromGpgmeKey(gpgme_key_t rawData);
+    static std::shared_ptr<Impl> nullimpl();
+    static std::shared_ptr<Impl> fromGpgmeKey(gpgme_key_t rawData);
 
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -336,20 +337,20 @@ namespace zypp
     return ret;
   }
 
-  shared_ptr<PublicKeyData::Impl> PublicKeyData::Impl::nullimpl()
+  std::shared_ptr<PublicKeyData::Impl> PublicKeyData::Impl::nullimpl()
   {
-    static shared_ptr<Impl> _nullimpl( new Impl );
+    static std::shared_ptr<Impl> _nullimpl( new Impl );
     return _nullimpl;
   }
 
-  shared_ptr<PublicKeyData::Impl> PublicKeyData::Impl::fromGpgmeKey(gpgme_key_t rawData)
+  std::shared_ptr<PublicKeyData::Impl> PublicKeyData::Impl::fromGpgmeKey(gpgme_key_t rawData)
   {
     //gpgme stores almost nothing in the top level key
     //the information we look for is stored in the subkey, where subkey[0]
     //is always the primary key
     gpgme_subkey_t sKey = rawData->subkeys;
     if (sKey) {
-      shared_ptr<PublicKeyData::Impl> data(new Impl);
+      std::shared_ptr<PublicKeyData::Impl> data(new Impl);
       //libzypp expects the date of the latest signature on the first uid
       if ( rawData->uids && rawData->uids->signatures ) {
         data->_created = zypp::Date(rawData->uids->signatures->timestamp);
@@ -402,7 +403,7 @@ namespace zypp
     : _pimpl( Impl::nullimpl() )
   {}
 
-  PublicKeyData::PublicKeyData(shared_ptr<Impl> data)
+  PublicKeyData::PublicKeyData(std::shared_ptr<Impl> data)
     : _pimpl( std::move(data) )
   {}
 
@@ -591,15 +592,15 @@ namespace zypp
       }
 
     private:
-      shared_ptr<filesystem::TmpFile> _dontUseThisPtrDirectly; // shared_ptr ok because TmpFile itself is a refernce type (no COW)
+      std::shared_ptr<filesystem::TmpFile> _dontUseThisPtrDirectly; // shared_ptr ok because TmpFile itself is a reference type (no COW)
       PublicKeyData		_keyData;
       std::list<PublicKeyData>  _hiddenKeys;
 
     public:
       /** Offer default Impl. */
-      static shared_ptr<Impl> nullimpl()
+      static std::shared_ptr<Impl> nullimpl()
       {
-        static shared_ptr<Impl> _nullimpl( new Impl );
+        static std::shared_ptr<Impl> _nullimpl( new Impl );
         return _nullimpl;
       }
 

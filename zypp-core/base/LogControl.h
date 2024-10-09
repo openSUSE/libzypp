@@ -13,6 +13,7 @@
 #define ZYPP_BASE_LOGCONTROL_H
 
 #include <iosfwd>
+#include <memory>
 #include <ostream> //for std::endl
 
 #include <zypp-core/base/Logger.h>
@@ -73,7 +74,7 @@ namespace zypp
     {
       FileLineWriter( const Pathname & file_r, mode_t mode_r = 0 );
       protected:
-        shared_ptr<void> _outs;
+        std::shared_ptr<void> _outs;
     };
 
     /////////////////////////////////////////////////////////////////
@@ -127,7 +128,7 @@ namespace zypp
        * If you want to format loglines by yourself. NULL installs the
        * default formater.
       */
-      void setLineFormater( const shared_ptr<LineFormater> & formater_r );
+      void setLineFormater( const std::shared_ptr<LineFormater> & formater_r );
 
       /*!
        * Sets a special log mode that uses the ppid in the log output and always shows the
@@ -167,14 +168,14 @@ namespace zypp
 
     public:
       /** Get the current LineWriter */
-      shared_ptr<LineWriter> getLineWriter() const;
+      std::shared_ptr<LineWriter> getLineWriter() const;
 
       /** Assign a LineWriter.
        * If you want to log the (formated) loglines by yourself.
        * NULL turns off logging (same as logNothing)
        * \see \ref log::LineWriter
        */
-      void setLineWriter( const shared_ptr<LineWriter> & writer_r );
+      void setLineWriter( const std::shared_ptr<LineWriter> & writer_r );
 
     public:
       /** Turn on excessive logging for the lifetime of this object.*/
@@ -189,7 +190,7 @@ namespace zypp
       */
       struct ZYPP_API TmpLineWriter
       {
-        TmpLineWriter( const shared_ptr<LineWriter> & writer_r = shared_ptr<LineWriter>() )
+        TmpLineWriter( const std::shared_ptr<LineWriter> & writer_r = std::shared_ptr<LineWriter>() )
           : _writer( LogControl::instance().getLineWriter() )
         { LogControl::instance().setLineWriter( writer_r ); }
 
@@ -201,13 +202,13 @@ namespace zypp
         template<class TLineWriter>
         TmpLineWriter( TLineWriter * _allocated_r )
           : _writer( LogControl::instance().getLineWriter() )
-        { LogControl::instance().setLineWriter( shared_ptr<LineWriter>( _allocated_r ) ); }
+        { LogControl::instance().setLineWriter( std::shared_ptr<LineWriter>( _allocated_r ) ); }
 
         ~TmpLineWriter()
         { LogControl::instance().setLineWriter( _writer ); }
 
       private:
-        shared_ptr<LineWriter> _writer;
+        std::shared_ptr<LineWriter> _writer;
       };
 
     private:

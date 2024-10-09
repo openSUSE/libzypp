@@ -12,6 +12,8 @@
 #ifndef ZYPP_CURL_AUTH_CURLAUTHDATA_H_INCLUDED
 #define ZYPP_CURL_AUTH_CURLAUTHDATA_H_INCLUDED
 
+#include <memory>
+
 #include <zypp-media/auth/AuthData>
 
 namespace zypp {
@@ -99,7 +101,7 @@ namespace zypp {
       long _auth_type;
     };
 
-    using CurlAuthData_Ptr = shared_ptr<CurlAuthData>;
+    using CurlAuthData_Ptr = std::shared_ptr<CurlAuthData>;
     std::ostream & operator << (std::ostream & str, const CurlAuthData & auth_data);
   }
 }

@@ -13,6 +13,7 @@
 #define ZYPP_POOLITEMBEST_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Function.h>
@@ -150,7 +151,7 @@ namespace zypp
       /** Pointer to implementation */
       const RWCOW_pointer<Impl> & pimpl() const { return *(reinterpret_cast<RWCOW_pointer<Impl>*>( _dont_use_this_use_pimpl.get() )); }
       /** Avoid need to include Impl definition when inlined ctors (due to tepmlate) are provided. */
-      shared_ptr<void> _dont_use_this_use_pimpl;
+      std::shared_ptr<void> _dont_use_this_use_pimpl;
   };
   ///////////////////////////////////////////////////////////////////
 

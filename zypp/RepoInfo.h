@@ -13,6 +13,7 @@
 #define ZYPP2_REPOSITORYINFO_H
 
 #include <list>
+#include <memory>
 #include <set>
 
 #include <zypp/base/Iterator.h>
@@ -570,9 +571,9 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates RepoInfo */
-  using RepoInfo_Ptr = shared_ptr<RepoInfo>;
+  using RepoInfo_Ptr = std::shared_ptr<RepoInfo>;
   /** \relates RepoInfo */
-  using RepoInfo_constPtr = shared_ptr<const RepoInfo>;
+  using RepoInfo_constPtr = std::shared_ptr<const RepoInfo>;
   /** \relates RepoInfo */
   using RepoInfoList = std::list<RepoInfo>;
 

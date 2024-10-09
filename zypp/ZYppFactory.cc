@@ -15,6 +15,7 @@ extern "C"
 }
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <signal.h>
 
 #include <zypp/base/Logger.h>
@@ -153,7 +154,7 @@ namespace zypp
     bool	_cleanLock;
 
   private:
-    using ScopedGuard = shared_ptr<void>;
+    using ScopedGuard = std::shared_ptr<void>;
 
     /** Exception safe access to the lockfile.
      * \code

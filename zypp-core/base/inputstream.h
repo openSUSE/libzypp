@@ -13,6 +13,7 @@
 #define ZYPP_CORE_BASE_INPUTSTREAM_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/DefaultIntegral>
@@ -128,9 +129,9 @@ namespace zypp
     { _size = val_r; }
 
   private:
-    Pathname                 _path;
-    shared_ptr<std::istream> _stream;
-    std::string              _name;
+    Pathname                      _path;
+    std::shared_ptr<std::istream> _stream;
+    std::string                   _name;
     DefaultIntegral<std::streamoff,-1> _size;
   };
   ///////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 
 #include <zypp-core/base/PtrTypes.h>
 
@@ -36,7 +37,7 @@ namespace zypp {
 
       /** Implementation */
       struct Impl;
-      using ImplPtr = shared_ptr<Impl>;
+      using ImplPtr = std::shared_ptr<Impl>;
 
       /** Default Ctor: guess the best available implementation. */
       ProxyInfo();

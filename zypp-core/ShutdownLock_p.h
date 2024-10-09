@@ -13,6 +13,7 @@
 #ifndef ZYPP_SHUTDOWNLOCK_P_H_INCLUDED
 #define ZYPP_SHUTDOWNLOCK_P_H_INCLUDED
 
+#include <memory>
 #include <string>
 
 #include <zypp-core/Globals.h>
@@ -35,7 +36,7 @@ public:
    ~ShutdownLock();
 
 private:
-   shared_ptr<ExternalProgramWithSeperatePgid> _prog;
+   std::shared_ptr<ExternalProgramWithSeperatePgid> _prog;
 
 };
 

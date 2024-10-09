@@ -196,8 +196,8 @@ namespace zypp
       template<class D>
         struct Shared
         {
-          using PtrType = shared_ptr<D>;
-          using constPtrType = shared_ptr<const D>;
+          using PtrType = std::shared_ptr<D>;
+          using constPtrType = std::shared_ptr<const D>;
           /** Check whether pointer is not shared. */
           bool unique( const constPtrType & ptr_r )
           { return !ptr_r || ptr_r.unique(); }

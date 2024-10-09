@@ -13,8 +13,8 @@
 #define ZYPP_SAT_SOLVITERMIXIN_H
 
 #include <iosfwd>
+#include <memory>
 
-#include <zypp/base/PtrTypes.h>
 #include <zypp/base/Iterator.h>
 #include <zypp/base/Hash.h>
 
@@ -48,7 +48,7 @@ namespace zypp
         UnifyByIdent()
           : _uset( new Uset )
         {}
-        shared_ptr<Uset> _uset;
+        std::shared_ptr<Uset> _uset;
       };
 
 

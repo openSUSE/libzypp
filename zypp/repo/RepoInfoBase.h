@@ -13,6 +13,7 @@
 #define REPOINFOBASE_H_
 
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp-core/Globals.h>
@@ -184,9 +185,9 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
     /** \relates RepoInfoBase */
-    using RepoInfoBase_Ptr = shared_ptr<RepoInfoBase>;
+    using RepoInfoBase_Ptr = std::shared_ptr<RepoInfoBase>;
     /** \relates RepoInfoBase */
-    using RepoInfoBase_constPtr = shared_ptr<const RepoInfoBase>;
+    using RepoInfoBase_constPtr = std::shared_ptr<const RepoInfoBase>;
 
 
     /////////////////////////////////////////////////////////////////

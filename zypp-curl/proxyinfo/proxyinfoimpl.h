@@ -14,6 +14,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 
 #include <zypp-core/Url.h>
 #include <zypp-core/base/String.h>
@@ -72,7 +73,7 @@ namespace zypp {
 
     public:
       /** Default Impl: empty sets. */
-      static shared_ptr<Impl> _nullimpl;
+      static std::shared_ptr<Impl> _nullimpl;
     };
 
 

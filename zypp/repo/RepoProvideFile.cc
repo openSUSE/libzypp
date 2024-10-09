@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 #include <fstream>
 #include <sstream>
 #include <set>
@@ -139,7 +140,7 @@ namespace zypp
 
       ~Impl()
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::iterator it;
+        std::map<Url, std::shared_ptr<MediaSetAccess> >::iterator it;
         for ( it = _medias.begin();
               it != _medias.end();
               ++it )
@@ -155,11 +156,11 @@ namespace zypp
        *
        * \todo This mixture of media and repos specific data is fragile.
       */
-      shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, RepoInfo repo )
+      std::shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, RepoInfo repo )
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
+        std::map<Url, std::shared_ptr<MediaSetAccess> >::const_iterator it;
         it = _medias.find(url);
-        shared_ptr<MediaSetAccess> media;
+        std::shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
           media = it->second;
@@ -174,7 +175,7 @@ namespace zypp
       }
 
       private:
-        void setVerifierForRepo( const RepoInfo& repo, const shared_ptr<MediaSetAccess>& media )
+        void setVerifierForRepo( const RepoInfo& repo, const std::shared_ptr<MediaSetAccess>& media )
         {
           // Always set the MediaSetAccess label.
           media->setLabel( repo.name() );
@@ -186,7 +187,7 @@ namespace zypp
           {
             if ( PathInfo(mediafile).isExist() )
             {
-              std::map<shared_ptr<MediaSetAccess>, RepoInfo>::const_iterator it;
+              std::map<std::shared_ptr<MediaSetAccess>, RepoInfo>::const_iterator it;
               it = _verifier.find(media);
               if ( it != _verifier.end() )
               {
@@ -222,8 +223,8 @@ namespace zypp
         }
 
       private:
-        std::map<shared_ptr<MediaSetAccess>, RepoInfo> _verifier;
-        std::map<Url, shared_ptr<MediaSetAccess> > _medias;
+        std::map<std::shared_ptr<MediaSetAccess>, RepoInfo> _verifier;
+        std::map<Url, std::shared_ptr<MediaSetAccess> > _medias;
 
       public:
         ProvideFilePolicy _defaultPolicy;
@@ -304,7 +305,7 @@ namespace zypp
         try
         {
           MIL << "Providing file of repo '" << repo_r.alias() << "' from " << url << endl;
-          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( url, repo_r );
+          std::shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( url, repo_r );
 
           fetcher.enqueue( locWithPath, policy_r.fileChecker() );
           fetcher.start( destinationDir, *access );

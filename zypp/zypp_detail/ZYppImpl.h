@@ -13,6 +13,7 @@
 #define ZYPP_ZYPP_DETAIL_ZYPPIMPL_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/TmpPath.h>
 #include <zypp/Target.h>
@@ -135,7 +136,7 @@ namespace zypp
       /** */
       Pathname _home_path;
       /** defined mount points, used for disk usage counting */
-      shared_ptr<DiskUsageCounter> _disk_usage;
+      std::shared_ptr<DiskUsageCounter> _disk_usage;
     };
     ///////////////////////////////////////////////////////////////////
 

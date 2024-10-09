@@ -12,6 +12,7 @@
 #include "zypp/ng/workflows/contextfacade.h"
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <zypp/repo/PackageDelta.h>
 #include <zypp/base/Logger.h>
@@ -353,7 +354,7 @@ namespace zypp
       RepoMediaAccess &		_access;
 
     private:
-      using ScopedGuard = shared_ptr<void>;
+      using ScopedGuard = std::shared_ptr<void>;
 
       ScopedGuard newReport() const
       {
@@ -361,14 +362,14 @@ namespace zypp
         // Use a custom deleter calling _report.reset() when guard goes out of
         // scope (cast required as reset is overloaded). We want report to end
         // when leaving providePackage and not wait for *this going out of scope.
-        return shared_ptr<void>( static_cast<void*>(0),
-                                 std::bind( std::mem_fn(static_cast<void (shared_ptr<Report>::*)()>(&shared_ptr<Report>::reset)),
-                                            std::ref(_report) ) );
+        return std::shared_ptr<void>( static_cast<void*>(0),
+                                      std::bind( std::mem_fn(static_cast<void (std::shared_ptr<Report>::*)()>(&std::shared_ptr<Report>::reset)),
+                                                 std::ref(_report) ) );
       }
 
-      mutable bool               _retry;
-      mutable shared_ptr<Report> _report;
-      mutable Target_Ptr         _target;
+      mutable bool                    _retry;
+      mutable std::shared_ptr<Report> _report;
+      mutable Target_Ptr              _target;
     };
     ///////////////////////////////////////////////////////////////////
 

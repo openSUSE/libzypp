@@ -12,7 +12,7 @@
 #ifndef ZYPP_CORE_BASE_DTORRESET_H
 #define ZYPP_CORE_BASE_DTORRESET_H
 
-#include <zypp-core/base/PtrTypes.h>
+#include <memory>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -75,7 +75,7 @@ namespace zypp
         TVar & _var;
         TVal   _val;
       };
-    shared_ptr<void> _pimpl;
+    std::shared_ptr<void> _pimpl;
   };
   ///////////////////////////////////////////////////////////////////
 

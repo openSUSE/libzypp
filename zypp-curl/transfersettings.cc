@@ -12,6 +12,7 @@
 
 #include "transfersettings.h"
 #include <iostream>
+#include <memory>
 #include <sstream>
 
 #include <zypp-core/base/String.h>
@@ -55,9 +56,9 @@ namespace zypp
       virtual ~Impl() {}
 
       /** Offer default Impl. */
-      static shared_ptr<Impl> nullimpl()
+      static std::shared_ptr<Impl> nullimpl()
       {
-        static shared_ptr<Impl> _nullimpl( new Impl );
+        static std::shared_ptr<Impl> _nullimpl( new Impl );
         return _nullimpl;
       }
 

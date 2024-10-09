@@ -12,6 +12,7 @@
 #ifndef ZYPP_ZYPP_H
 #define ZYPP_ZYPP_H
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/base/NonCopyable.h>
 #include <zypp/base/PtrTypes.h>
@@ -157,7 +158,7 @@ namespace zypp
     /** Factory */
     friend class ZYppFactory;
     using Impl = zypp_detail::ZYppImpl;
-    using Impl_Ptr = shared_ptr<Impl>;
+    using Impl_Ptr = std::shared_ptr<Impl>;
     /** Factory ctor */
     explicit ZYpp( const Impl_Ptr & impl_r );
   private:

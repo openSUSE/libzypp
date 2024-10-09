@@ -13,6 +13,7 @@
 #define ZYPP_RESPOOL_H
 
 #include <iosfwd>
+#include <memory>
 #include <utility>
 
 #include <zypp-core/Globals.h>
@@ -325,7 +326,7 @@ namespace zypp
       private:
         friend class pool::PoolImpl;
         /** Factory: \ref ResPool::establishedStates */
-        EstablishedStates( shared_ptr<Impl> pimpl_r )
+        EstablishedStates( std::shared_ptr<Impl> pimpl_r )
         : _pimpl { std::move(pimpl_r) }
         {}
       };

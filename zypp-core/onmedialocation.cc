@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 //#include <zypp/base/Logger.h>
 
 #include <utility>
@@ -53,8 +54,8 @@ namespace zypp
 
   public:
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl()
-    { static shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
+    static std::shared_ptr<Impl> nullimpl()
+    { static std::shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
   private:
     friend Impl * rwcowClone<Impl>( const Impl * rhs );
     /** clone for RWCOW_pointer */

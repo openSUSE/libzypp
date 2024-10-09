@@ -23,6 +23,7 @@
 #include <openssl/provider.h>
 #endif
 
+#include <memory>
 #include <string>
 #include <string.h>
 
@@ -65,7 +66,7 @@ namespace zypp {
       P &operator=(P &&) = delete;
 
       public:
-        using EvpDataPtr = zypp::shared_ptr<EVP_MD_CTX>;
+        using EvpDataPtr = std::shared_ptr<EVP_MD_CTX>;
         P();
         ~P();
 

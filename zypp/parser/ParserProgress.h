@@ -10,8 +10,8 @@
 #ifndef ZYPP_ParserProgress_H
 #define ZYPP_ParserProgress_H
 
-#include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
+#include <memory>
 #include <utility>
 
 ///////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ namespace parser
   class ParserProgress
   {
     public:
-      using Ptr = boost::shared_ptr<ParserProgress>;
+      using Ptr = std::shared_ptr<ParserProgress>;
 
       /**
        * initializes a progress objetc, with a callback functor

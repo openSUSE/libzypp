@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <memory>
 #include <utility>
 #include "providespec.h"
 
@@ -49,8 +50,8 @@ namespace zyppng
 
   public:
     /** Offer default Impl. */
-    static zypp::shared_ptr<Impl> nullimpl()
-    { static zypp::shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
+    static std::shared_ptr<Impl> nullimpl()
+    { static std::shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
 
   private:
     friend ProvideMediaSpec::Impl * zypp::rwcowClone<ProvideMediaSpec::Impl>( const ProvideMediaSpec::Impl * rhs );
@@ -82,8 +83,8 @@ namespace zyppng
 
   public:
     /** Offer default Impl. */
-    static zypp::shared_ptr<Impl> nullimpl()
-    { static zypp::shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
+    static std::shared_ptr<Impl> nullimpl()
+    { static std::shared_ptr<Impl> _nullimpl( new Impl ); return _nullimpl; }
 
   private:
     friend ProvideFileSpec::Impl * zypp::rwcowClone<ProvideFileSpec::Impl>( const ProvideFileSpec::Impl * rhs );

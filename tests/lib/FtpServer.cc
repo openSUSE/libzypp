@@ -314,7 +314,7 @@ public:
 
     filesystem::TmpDir _workingDir;
     zypp::Pathname _docroot;
-    zypp::shared_ptr<std::thread> _thrd;
+    std::shared_ptr<std::thread> _thrd;
 
     unsigned int _port;
     int _wakeupPipe[2];

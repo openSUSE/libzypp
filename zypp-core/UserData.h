@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <string>
 #include <map>
+#include <memory>
 #include <boost/any.hpp>
 #include <ostream>
 
@@ -223,7 +224,7 @@ namespace zypp
 
     private:
       ContentType _type;
-      mutable shared_ptr<DataType> _dataP;
+      mutable std::shared_ptr<DataType> _dataP;
     };
 
     /** \relates UserData Stream output */

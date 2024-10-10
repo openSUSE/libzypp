@@ -13,6 +13,7 @@
 #include <fstream>
 #include <list>
 #include <map>
+#include <memory>
 
 #include <zypp/base/Easy.h>
 #include <zypp/base/LogControl.h>
@@ -51,7 +52,7 @@ namespace zypp
     DefaultIntegral<bool,false> read;
   };
 
-  using FetcherIndex_Ptr = shared_ptr<FetcherIndex>;
+  using FetcherIndex_Ptr = std::shared_ptr<FetcherIndex>;
 
   /** std::set ordering (less semantic) */
   struct SameFetcherIndex
@@ -111,7 +112,7 @@ namespace zypp
   };
 
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(FetcherJob::Flags);
-  using FetcherJob_Ptr = shared_ptr<FetcherJob>;
+  using FetcherJob_Ptr = std::shared_ptr<FetcherJob>;
 
   std::ostream & operator<<( std::ostream & str, const FetcherJob_Ptr & obj )
   {
@@ -157,9 +158,9 @@ namespace zypp
                 const ProgressData::ReceiverFnc & progress_receiver );
 
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl()
+    static std::shared_ptr<Impl> nullimpl()
     {
-      static shared_ptr<Impl> _nullimpl( new Impl );
+      static std::shared_ptr<Impl> _nullimpl( new Impl );
       return _nullimpl;
     }
   private:

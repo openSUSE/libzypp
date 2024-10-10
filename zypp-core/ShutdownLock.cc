@@ -3,6 +3,7 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/ExternalProgram.h>
 #include <iostream>
+#include <memory>
 #include <signal.h>
 
 zypp::ShutdownLock::ShutdownLock(const std::string &who, const std::string &reason)
@@ -22,7 +23,7 @@ zypp::ShutdownLock::ShutdownLock(const std::string &who, const std::string &reas
       "/usr/bin/cat",
       NULL
     };
-    _prog = shared_ptr<ExternalProgramWithSeperatePgid>( new ExternalProgramWithSeperatePgid( argv, ExternalProgram::Discard_Stderr ) );
+    _prog = std::shared_ptr<ExternalProgramWithSeperatePgid>( new ExternalProgramWithSeperatePgid( argv, ExternalProgram::Discard_Stderr ) );
   } catch (...) {
   }
 }

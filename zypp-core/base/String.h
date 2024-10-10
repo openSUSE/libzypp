@@ -15,6 +15,7 @@
 #include <cstring>
 
 #include <iosfwd>
+#include <memory>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -157,7 +158,7 @@ namespace zypp
         { return p->asString(); }
 
     template<class Tp>
-        inline std::string asString( const weak_ptr<Tp> &p )
+        inline std::string asString( const std::weak_ptr<Tp> &p )
         { return p->asString(); }
 
     template<>

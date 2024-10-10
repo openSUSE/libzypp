@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <memory>
 #include <utility>
 #include <vector>
 #include <time.h>
@@ -59,7 +60,7 @@ namespace zypp
         { return _localfile; }
 
       private:
-        shared_ptr<MediaSetAccess> _access;
+        std::shared_ptr<MediaSetAccess> _access;
         Pathname _localfile;
       };
       ///////////////////////////////////////////////////////////////////

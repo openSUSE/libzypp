@@ -24,6 +24,7 @@
 
 #include <thread>
 #include <atomic>
+#include <memory>
 #include <mutex>
 #include <condition_variable>
 #include <fastcgi/fcgiapp.h>
@@ -449,7 +450,7 @@ public:
 
     filesystem::TmpDir _workingDir;
     zypp::Pathname _docroot;
-    zypp::shared_ptr<std::thread> _thrd;
+    std::shared_ptr<std::thread> _thrd;
     std::map<std::string, WebServer::RequestHandler> _handlers;
     WebServer::RequestHandler _defaultHandler;
     unsigned int _port;

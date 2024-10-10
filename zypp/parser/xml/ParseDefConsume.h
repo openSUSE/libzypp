@@ -16,6 +16,7 @@
 #include <zypp/base/Function.h>
 #include <zypp/base/Hash.h>
 #include <zypp/base/String.h>
+#include <memory>
 #include <utility>
 #include <zypp-core/base/DefaultIntegral>
 
@@ -56,25 +57,25 @@ namespace zypp
     //
     /** ParseDef consumer redirecting all events to another consumer.
      * \note Allocated <tt>ParseDefConsume *</tt> passed are
-     *       immediately wraped into a shared_ptr.
+     *       immediately wrapped into a \c std::shared_ptr.
     */
     class ParseDefConsumeRedirect : public ParseDefConsume
     {
     public:
       ParseDefConsumeRedirect();
-      ParseDefConsumeRedirect( shared_ptr<ParseDefConsume> target_r );
+      ParseDefConsumeRedirect( std::shared_ptr<ParseDefConsume> target_r );
       ParseDefConsumeRedirect( ParseDefConsume * allocatedTarget_r );
       ParseDefConsumeRedirect( ParseDefConsume & target_r );
 
       ~ParseDefConsumeRedirect() override;
 
     public:
-      void setRedirect( shared_ptr<ParseDefConsume> target_r );
+      void setRedirect( std::shared_ptr<ParseDefConsume> target_r );
       void setRedirect( ParseDefConsume * allocatedTarget_r );
       void setRedirect( ParseDefConsume & target_r );
       void cancelRedirect();
 
-      shared_ptr<ParseDefConsume> getRedirect() const;
+      std::shared_ptr<ParseDefConsume> getRedirect() const;
 
     public:
       void start( const Node & _node ) override;
@@ -85,7 +86,7 @@ namespace zypp
       void doneSubnode ( const Node & _node ) override;
 
     private:
-      shared_ptr<ParseDefConsume> _target;
+      std::shared_ptr<ParseDefConsume> _target;
     };
     ///////////////////////////////////////////////////////////////////
 
@@ -128,7 +129,7 @@ namespace zypp
     { /////////////////////////////////////////////////////////////////
       template <class Tp> struct Assigner;
 
-      using AssignerRef = shared_ptr<Assigner<void>>;
+      using AssignerRef = std::shared_ptr<Assigner<void>>;
 
       /** Common interface to all Assigner types. */
       template <>
@@ -270,7 +271,7 @@ namespace zypp
        *
        * The class constructs the consumer, allows to extend it via
        * \ref operator(), and provides a conversion to
-       * \c shared_ptr<ParseDefConsume>, so it can be passed as a
+       * \c std::shared_ptr<ParseDefConsume>, so it can be passed as a
        * node consumer to \ref ParseDef.
        *
        * You may also set a <tt>void( const Node & )</tt> notification
@@ -316,11 +317,11 @@ namespace zypp
         { _ptr->postnotify( std::move(done_r) ); return *this; }
 
         /** Type conversion so this can be passed as node consumer to \ref ParseDef. */
-        operator shared_ptr<ParseDefConsume> () const
+        operator std::shared_ptr<ParseDefConsume> () const
         { return _ptr; }
 
         private:
-          shared_ptr<Consumer> _ptr;
+          std::shared_ptr<Consumer> _ptr;
       };
       /////////////////////////////////////////////////////////////////
     } // namespace parse_def_assign

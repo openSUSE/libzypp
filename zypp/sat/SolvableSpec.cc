@@ -9,6 +9,7 @@
 /** \file	zypp/sat/SolvableSpec.cc
  */
 #include <iostream>
+#include <memory>
 
 #include <zypp/base/LogTools.h>
 #include <zypp/base/IOStream.h>
@@ -117,7 +118,7 @@ namespace zypp
       CapabilitySet _provides;
       bool _addIdenticalInstalledToo = false;
       mutable SolvableSet _cacheIdenticalInstalled;	// follows _cache
-      mutable shared_ptr<WhatProvides> _cache;
+      mutable std::shared_ptr<WhatProvides> _cache;
 
     private:
       friend Impl * rwcowClone<Impl>( const Impl * rhs );

@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 #include <zypp/base/Logger.h>
 
 #include <zypp/SysContent.h>
@@ -71,9 +72,9 @@ namespace zypp
 
     public:
       /** Offer default Impl. */
-      static shared_ptr<Impl> nullimpl()
+      static std::shared_ptr<Impl> nullimpl()
       {
-        static shared_ptr<Impl> _nullimpl( new Impl );
+        static std::shared_ptr<Impl> _nullimpl( new Impl );
         return _nullimpl;
       }
 
@@ -212,7 +213,7 @@ namespace zypp
     : _pimpl( new Impl )
     {}
 
-    Reader::Entry::Entry( const shared_ptr<Impl> & pimpl_r )
+    Reader::Entry::Entry( const std::shared_ptr<Impl> & pimpl_r )
     : _pimpl( pimpl_r )
     {}
 
@@ -251,9 +252,9 @@ namespace zypp
 
     public:
       /** Offer default Impl. */
-      static shared_ptr<Impl> nullimpl()
+      static std::shared_ptr<Impl> nullimpl()
       {
-        static shared_ptr<Impl> _nullimpl( new Impl );
+        static std::shared_ptr<Impl> _nullimpl( new Impl );
         return _nullimpl;
       }
 
@@ -350,7 +351,7 @@ namespace zypp
 
         void start( const Node & node_r ) override
         {
-          shared_ptr<Reader::Entry::Impl> centry( new Reader::Entry::Impl );
+          std::shared_ptr<Reader::Entry::Impl> centry( new Reader::Entry::Impl );
 
           centry->_kind = node_r.getAttribute("kind").asString();
           centry->_name = node_r.getAttribute("name").asString();

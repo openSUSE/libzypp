@@ -12,6 +12,7 @@
 #ifndef ZYPP_ZYPP_H
 #define ZYPP_ZYPP_H
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/base/NonCopyable.h>
 #include <zypp/base/PtrTypes.h>
@@ -59,9 +60,8 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const ZYpp & obj );
 
   public:
-    // can't get swig working if shared_ptr is without namespace here
-    using Ptr = ::boost::shared_ptr<ZYpp>;
-    using constPtr = ::boost::shared_ptr<const ZYpp>;
+    using Ptr = std::shared_ptr<ZYpp>;
+    using constPtr = std::shared_ptr<const ZYpp>;
 
   public:
 
@@ -158,12 +158,13 @@ namespace zypp
     /** Factory */
     friend class ZYppFactory;
     using Impl = zypp_detail::ZYppImpl;
-    using Impl_Ptr = shared_ptr<Impl>;
+    using Impl_Ptr = std::shared_ptr<Impl>;
     /** Factory ctor */
     explicit ZYpp( const Impl_Ptr & impl_r );
   private:
     /** Deleted via shared_ptr */
     friend void ::boost::checked_delete<ZYpp>(ZYpp*) BOOST_NOEXCEPT;	// template<class T> inline void checked_delete(T * x)
+  public:
     /** Dtor */
     ~ZYpp();
   private:

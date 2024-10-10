@@ -13,6 +13,7 @@
 #define ZYPP_POOL_POOLIMPL_H
 
 #include <iosfwd>
+#include <memory>
 #include <utility>
 
 #include <zypp/base/Easy.h>
@@ -480,8 +481,8 @@ namespace zypp
         mutable DefaultIntegral<bool,true>    _id2itemDirty;
 
       private:
-        mutable shared_ptr<ResPoolProxy>      _poolProxy;
-        mutable shared_ptr<EstablishedStatesImpl> _establishedStates;
+        mutable std::shared_ptr<ResPoolProxy>      _poolProxy;
+        mutable std::shared_ptr<EstablishedStatesImpl> _establishedStates;
 
       private:
         /** Set of queries that define hardlocks. */

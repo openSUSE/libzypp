@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 #include <zypp-core/base/LogTools.h>
 
 #include "inputstream.h"
@@ -40,15 +41,15 @@ namespace zypp
       return -1;
     }
 
-    inline shared_ptr<std::istream> streamForFile ( const Pathname & file_r )
+    inline std::shared_ptr<std::istream> streamForFile ( const Pathname & file_r )
     {
 #ifdef ENABLE_ZCHUNK_COMPRESSION
       if ( const auto zType = filesystem::zipType( file_r ); zType == filesystem::ZT_ZCHNK )
-        return shared_ptr<std::istream>( new ifzckstream( file_r.asString().c_str() ) );
+        return std::shared_ptr<std::istream>( new ifzckstream( file_r.asString().c_str() ) );
 #endif
 
       //fall back to gzstream
-      return shared_ptr<std::istream>( new ifgzstream( file_r.asString().c_str() ) );
+      return std::shared_ptr<std::istream>( new ifgzstream( file_r.asString().c_str() ) );
     }
 
     /////////////////////////////////////////////////////////////////

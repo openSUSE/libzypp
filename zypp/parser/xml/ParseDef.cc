@@ -13,6 +13,7 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <memory>
 
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
@@ -96,13 +97,13 @@ namespace zypp
     {
       friend std::ostream & operator<<( std::ostream & str, const ParseDef::Impl & obj );
     public:
-      using ImplPtr = shared_ptr<Impl>;
+      using ImplPtr = std::shared_ptr<Impl>;
       using SubNodes = std::map<std::string, ImplPtr>;
 
     public:
       Impl(std::string &&name_r, Mode mode_r,
-           shared_ptr<ParseDefConsume> &&target_r =
-          shared_ptr<ParseDefConsume>())
+           std::shared_ptr<ParseDefConsume> &&target_r =
+           std::shared_ptr<ParseDefConsume>())
         : _name(std::move(name_r)), _mode(mode_r), _parent(NULL) {
         if ( target_r )
           _callback.setRedirect( std::move(target_r) );
@@ -375,11 +376,11 @@ namespace zypp
     : _pimpl( new Impl( std::move(name_r), mode_r ) )
     {}
 
-    ParseDef::ParseDef( std::string name_r, Mode mode_r, shared_ptr<ParseDefConsume> target_r )
+    ParseDef::ParseDef( std::string name_r, Mode mode_r, std::shared_ptr<ParseDefConsume> target_r )
     : _pimpl( new Impl( std::move(name_r), mode_r, std::move(target_r) ) )
     {}
 
-    ParseDef::ParseDef( const shared_ptr<Impl> & pimpl_r )
+    ParseDef::ParseDef( const std::shared_ptr<Impl> & pimpl_r )
     : _pimpl( pimpl_r )
     {}
 
@@ -417,7 +418,7 @@ namespace zypp
 
     ParseDef ParseDef::operator[]( const std::string & name_r )
     {
-      shared_ptr<Impl> retimpl( _pimpl->getNode( name_r ) );
+      std::shared_ptr<Impl> retimpl( _pimpl->getNode( name_r ) );
       if ( ! retimpl )
         {
           ZYPP_THROW( ParseDefBuildException( "No subnode "+name_r ) );
@@ -425,7 +426,7 @@ namespace zypp
       return retimpl;
     }
 
-    void ParseDef::setConsumer( const shared_ptr<ParseDefConsume> & target_r )
+    void ParseDef::setConsumer( const std::shared_ptr<ParseDefConsume> & target_r )
     { _pimpl->_callback.setRedirect( target_r ); }
 
     void ParseDef::setConsumer( ParseDefConsume * allocatedTarget_r )
@@ -437,7 +438,7 @@ namespace zypp
     void ParseDef::cancelConsumer()
     { _pimpl->_callback.cancelRedirect(); }
 
-    shared_ptr<ParseDefConsume> ParseDef::getConsumer() const
+    std::shared_ptr<ParseDefConsume> ParseDef::getConsumer() const
     { return _pimpl->_callback.getRedirect(); }
 
 

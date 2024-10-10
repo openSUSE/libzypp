@@ -9,6 +9,8 @@
 /** \file	zypp/parser/xml/ParseDefConsume.cc
  *
 */
+#include <memory>
+
 #include <zypp/parser/xml/ParseDefConsume.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +56,7 @@ namespace zypp
     ParseDefConsumeRedirect::ParseDefConsumeRedirect()
     {}
 
-    ParseDefConsumeRedirect::ParseDefConsumeRedirect( shared_ptr<ParseDefConsume> target_r )
+    ParseDefConsumeRedirect::ParseDefConsumeRedirect( std::shared_ptr<ParseDefConsume> target_r )
     : _target( std::move(target_r) )
     {}
 
@@ -69,7 +71,7 @@ namespace zypp
     ParseDefConsumeRedirect::~ParseDefConsumeRedirect()
     {}
 
-    void ParseDefConsumeRedirect::setRedirect( shared_ptr<ParseDefConsume> target_r )
+    void ParseDefConsumeRedirect::setRedirect( std::shared_ptr<ParseDefConsume> target_r )
     { _target = std::move(target_r); }
 
     void ParseDefConsumeRedirect::setRedirect( ParseDefConsume * allocatedTarget_r )
@@ -81,7 +83,7 @@ namespace zypp
     void ParseDefConsumeRedirect::cancelRedirect()
     { _target.reset(); }
 
-    shared_ptr<ParseDefConsume> ParseDefConsumeRedirect::getRedirect() const
+    std::shared_ptr<ParseDefConsume> ParseDefConsumeRedirect::getRedirect() const
     { return _target; }
 
     void ParseDefConsumeRedirect::start( const Node & _node )

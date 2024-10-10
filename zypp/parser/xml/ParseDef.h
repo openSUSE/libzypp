@@ -13,6 +13,7 @@
 #define ZYPP_PARSER_XML_PARSEDEF_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/parser/xml/ParseDefTraits.h>
@@ -140,7 +141,7 @@ namespace zypp
 
     public:
       ParseDef( std::string name_r, Mode mode_r );
-      ParseDef( std::string name_r, Mode mode_r, shared_ptr<ParseDefConsume> target_r );
+      ParseDef( std::string name_r, Mode mode_r, std::shared_ptr<ParseDefConsume> target_r );
 
       virtual ~ParseDef();
 
@@ -167,7 +168,7 @@ namespace zypp
       ParseDef & addNode( const std::string & name_r, Mode mode_r )
       { ParseDef tmp( name_r, mode_r ); return addNode( tmp ); }
 
-      ParseDef & addNode( const std::string & name_r, Mode mode_r, const shared_ptr<ParseDefConsume> & target_r )
+      ParseDef & addNode( const std::string & name_r, Mode mode_r, const std::shared_ptr<ParseDefConsume> & target_r )
       { ParseDef tmp( name_r, mode_r, target_r ); return addNode( tmp ); }
 
       /** Add subnode definition.
@@ -179,7 +180,7 @@ namespace zypp
       ParseDef & operator()( const std::string & name_r, Mode mode_r )
       { return addNode( name_r, mode_r ); }
 
-      ParseDef & operator()( const std::string & name_r, Mode mode_r, const shared_ptr<ParseDefConsume> & target_r )
+      ParseDef & operator()( const std::string & name_r, Mode mode_r, const std::shared_ptr<ParseDefConsume> & target_r )
       { return addNode( name_r, mode_r, target_r ); }
 
       /** Get subnode by name.
@@ -189,10 +190,10 @@ namespace zypp
 
     public:
       /** Set data consumer. */
-      void setConsumer( const shared_ptr<ParseDefConsume> & target_r );
+      void setConsumer( const std::shared_ptr<ParseDefConsume> & target_r );
       /** Set data consumer.
-       * \note \a allocatedTarget_r is immediately wraped into a
-       *       shared_ptr.
+       * \note \a allocatedTarget_r is immediately wrapped into a
+       *       \c std::shared_ptr.
       */
       void setConsumer( ParseDefConsume * allocatedTarget_r );
       /** Set data consumer. */
@@ -201,7 +202,7 @@ namespace zypp
       void cancelConsumer();
 
       /** Get data consumer. */
-      shared_ptr<ParseDefConsume> getConsumer() const;
+      std::shared_ptr<ParseDefConsume> getConsumer() const;
 
       /** Parse the node.
        * This parses the node and all defined subnodes. Unknown
@@ -221,7 +222,7 @@ namespace zypp
       /** Pointer to implementation (shared!) */
       RW_pointer<Impl> _pimpl;
 
-      ParseDef( const shared_ptr<Impl> & pimpl_r );
+      ParseDef( const std::shared_ptr<Impl> & pimpl_r );
       friend std::ostream & operator<<( std::ostream & str, const ParseDef & obj );
       friend std::ostream & operator<<( std::ostream & str, const ParseDef::Impl & obj );
 

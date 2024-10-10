@@ -13,6 +13,7 @@
 #define ZYPP_UI_SELECTABLE_H
 
 #include <iosfwd>
+#include <memory>
 #include <utility>
 
 #include <zypp/base/ReferenceCounted.h>
@@ -561,7 +562,7 @@ namespace zypp
     public:
       /** Implementation  */
       struct Impl;
-      using Impl_Ptr = shared_ptr<Impl>;
+      using Impl_Ptr = std::shared_ptr<Impl>;
       /** Default ctor */
       Selectable( Impl_Ptr pimpl_r );
     private:

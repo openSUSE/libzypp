@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <utility>
 
@@ -1619,7 +1620,7 @@ namespace zypp
         /** Ctor stores the \ref PoolQuery settings.
          * \throw MatchException Any of the exceptions thrown by \ref PoolQuery::Impl::compile.
          */
-        PoolQueryMatcher( const shared_ptr<const PoolQuery::Impl> & query_r )
+        PoolQueryMatcher( const std::shared_ptr<const PoolQuery::Impl> & query_r )
         {
           query_r->compile();
 
@@ -1854,7 +1855,7 @@ namespace zypp
 
   detail::PoolQueryIterator PoolQuery::begin() const
   {
-    return shared_ptr<detail::PoolQueryMatcher>( new detail::PoolQueryMatcher( _pimpl.getPtr() ) );
+    return std::shared_ptr<detail::PoolQueryMatcher>( new detail::PoolQueryMatcher( _pimpl.getPtr() ) );
   }
 
   /////////////////////////////////////////////////////////////////

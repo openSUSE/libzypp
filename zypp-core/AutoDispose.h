@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <boost/call_traits.hpp>
+#include <memory>
 #include <utility>
 
 #include <zypp-core/base/NonCopyable.h>
@@ -196,7 +197,7 @@ namespace zypp
         Dispose    _dispose;
       };
 
-      shared_ptr<Impl> _pimpl;
+      std::shared_ptr<Impl> _pimpl;
     };
 
     template<>
@@ -261,7 +262,7 @@ namespace zypp
         }
         Dispose    _dispose;
       };
-      shared_ptr<Impl> _pimpl;
+      std::shared_ptr<Impl> _pimpl;
     };
 
   /*!

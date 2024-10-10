@@ -12,6 +12,8 @@
 #ifndef ZYPP_ZYPPCALLBACKS_H
 #define ZYPP_ZYPPCALLBACKS_H
 
+#include <memory>
+
 #include <zypp/base/EnumClass.h>
 #include <zypp/Callback.h>
 #include <zypp-core/UserData.h>
@@ -352,7 +354,7 @@ namespace zypp
       /** Disbale MediaChangeReport if \a condition_r is \c true.*/
       ScopedDisableMediaChangeReport( bool condition_r = true );
     private:
-      shared_ptr<callback::TempConnect<media::MediaChangeReport> > _guard;
+      std::shared_ptr<callback::TempConnect<media::MediaChangeReport> > _guard;
     };
 
     // progress for downloading a file

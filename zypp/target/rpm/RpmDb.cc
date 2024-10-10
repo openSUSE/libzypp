@@ -24,6 +24,7 @@ extern "C"
 #include <sstream>
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <utility>
@@ -162,7 +163,7 @@ struct KeyRingSignalReceiver : callback::ReceiveReport<KeyRingSignals>
   RpmDb &_rpmdb;
 };
 
-static shared_ptr<KeyRingSignalReceiver> sKeyRingReceiver;
+static std::shared_ptr<KeyRingSignalReceiver> sKeyRingReceiver;
 
 unsigned diffFiles(const std::string& file1, const std::string& file2, std::string& out, int maxlines)
 {

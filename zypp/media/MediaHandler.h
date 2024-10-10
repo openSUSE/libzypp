@@ -14,6 +14,7 @@
 #define ZYPP_MEDIA_MEDIAHANDLERL_H
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 #include <list>
 
@@ -52,8 +53,8 @@ class MediaHandler {
     friend std::ostream & operator<<( std::ostream & str, const MediaHandler & obj );
 
     public:
-        using Ptr = shared_ptr<MediaHandler>;
-        using constPtr = shared_ptr<const MediaHandler>;
+        using Ptr = std::shared_ptr<MediaHandler>;
+        using constPtr = std::shared_ptr<const MediaHandler>;
 
         static bool setAttachPrefix(const Pathname &attach_prefix);
 

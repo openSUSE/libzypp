@@ -15,6 +15,7 @@
 #include <zypp-core/Url.h>
 #include <zypp-core/base/PtrTypes.h>
 
+#include <memory>
 #include <utility>
 
 namespace zypp {
@@ -78,7 +79,7 @@ private:
   std::map<std::string, std::string> _extraValues;
 };
 
-using AuthData_Ptr = shared_ptr<AuthData>;
+using AuthData_Ptr = std::shared_ptr<AuthData>;
 std::ostream & operator << (std::ostream & str, const AuthData & auth_data);
 
 ///////////////////////////////////////////////////////////////////

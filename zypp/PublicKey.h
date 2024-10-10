@@ -331,7 +331,7 @@ namespace zypp
     friend class KeyManagerCtx;
     static PublicKeyData fromGpgmeKey(_gpgme_key *data);
 
-    PublicKeyData(shared_ptr<Impl> data);
+    PublicKeyData(std::shared_ptr<Impl> data);
     friend std::ostream & dumpOn( std::ostream & str, const PublicKeyData & obj );
   };
   ///////////////////////////////////////////////////////////////////

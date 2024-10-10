@@ -14,6 +14,7 @@
 
 #include <set>
 #include <map>
+#include <memory>
 #include <list>
 #include <vector>
 
@@ -86,8 +87,8 @@ namespace zypp
       using hardLockQueries_iterator = HardLockQueries::const_iterator;
 
       using Impl = PoolImpl;
-      using Impl_Ptr = shared_ptr<PoolImpl>;
-      using Impl_constPtr = shared_ptr<const PoolImpl>;
+      using Impl_Ptr = std::shared_ptr<PoolImpl>;
+      using Impl_constPtr = std::shared_ptr<const PoolImpl>;
     };
     ///////////////////////////////////////////////////////////////////
 

@@ -102,7 +102,7 @@ namespace zypp
     private:
       /** Wraps the <tt>xmlChar *</tt>.
        * The appropriate custom deleter is set by the ctor. */
-      shared_ptr<const xmlChar> _xmlstr;
+      std::shared_ptr<const xmlChar> _xmlstr;
     };
     ///////////////////////////////////////////////////////////////////
 

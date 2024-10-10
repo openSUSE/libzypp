@@ -13,6 +13,7 @@
 #define ZYPP_SAT_WHATOBSOLETES_H
 
 #include <iosfwd>
+#include <memory>
 #include <vector>
 
 #include <zypp/sat/WhatProvides.h>
@@ -95,7 +96,7 @@ namespace zypp
 
       private:
         const sat::detail::IdType * _begin;
-        shared_ptr<void> _private;
+        std::shared_ptr<void> _private;
     };
     ///////////////////////////////////////////////////////////////////
 

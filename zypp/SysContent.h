@@ -14,6 +14,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <memory>
 #include <set>
 
 #include <zypp/base/PtrTypes.h>
@@ -250,7 +251,7 @@ namespace zypp
       const Arch & arch() const;
     public:
       class Impl;
-      Entry( const shared_ptr<Impl> & pimpl_r );
+      Entry( const std::shared_ptr<Impl> & pimpl_r );
     private:
       RW_pointer<Impl> _pimpl;
     };

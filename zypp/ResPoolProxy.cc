@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <memory>
 #include <utility>
 #include <zypp/base/LogTools.h>
 
@@ -202,9 +203,9 @@ namespace zypp
 
   public:
     /** Offer default Impl. */
-    static shared_ptr<Impl> nullimpl()
+    static std::shared_ptr<Impl> nullimpl()
     {
-      static shared_ptr<Impl> _nullimpl( new Impl );
+      static std::shared_ptr<Impl> _nullimpl( new Impl );
       return _nullimpl;
     }
   };

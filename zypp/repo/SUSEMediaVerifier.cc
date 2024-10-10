@@ -8,6 +8,8 @@
 \---------------------------------------------------------------------*/
 
 #include <fstream>
+#include <memory>
+
 #include <zypp/base/Logger.h>
 #include <zypp/base/Gettext.h>
 #include <zypp/repo/SUSEMediaVerifier.h>
@@ -109,7 +111,7 @@ namespace zypp
       }
 
     private:
-      shared_ptr<SMVData> _smvData;
+      std::shared_ptr<SMVData> _smvData;
       media::MediaNr _mediaNr = 1;
     };
 

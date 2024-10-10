@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <set>
 #include <map>
+#include <memory>
 
 #include <zypp/base/Regex.h>
 #include <zypp/base/PtrTypes.h>
@@ -531,7 +532,7 @@ namespace zypp
       {}
 
       /** \Ref PoolQuery ctor. */
-      PoolQueryIterator( const shared_ptr<PoolQueryMatcher> & matcher_r )
+      PoolQueryIterator( const std::shared_ptr<PoolQueryMatcher> & matcher_r )
       : _matcher( matcher_r )
       { increment(); }
 
@@ -602,8 +603,8 @@ namespace zypp
       const Matches & matches() const;
 
     private:
-      shared_ptr<PoolQueryMatcher> _matcher;
-      mutable shared_ptr<Matches>  _matches;
+      std::shared_ptr<PoolQueryMatcher> _matcher;
+      mutable std::shared_ptr<Matches>  _matches;
   };
   ///////////////////////////////////////////////////////////////////
 

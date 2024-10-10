@@ -79,7 +79,7 @@ namespace zypp
     namespace
     {
       /** Add item to the set created on demand. */
-      inline void addToSet( Solvable item, set_type *& pdata, shared_ptr<void>& _private )
+      inline void addToSet( Solvable item, set_type *& pdata, std::shared_ptr<void>& _private )
       {
         if ( ! pdata )
         {

@@ -15,6 +15,7 @@ extern "C"
 }
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <signal.h>
 
 #include <zypp/base/Logger.h>
@@ -153,7 +154,7 @@ namespace zypp
     bool	_cleanLock;
 
   private:
-    using ScopedGuard = shared_ptr<void>;
+    using ScopedGuard = std::shared_ptr<void>;
 
     /** Exception safe access to the lockfile.
      * \code
@@ -309,7 +310,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace
   {
-    static weak_ptr<ZYpp>		_theZYppInstance;
+    static std::weak_ptr<ZYpp>		_theZYppInstance;
     static scoped_ptr<ZYppGlobalLock>	_theGlobalLock;		// on/off in sync with _theZYppInstance
 
     ZYppGlobalLock & globalLock()

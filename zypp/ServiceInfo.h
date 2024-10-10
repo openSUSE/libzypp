@@ -12,6 +12,7 @@
 #ifndef ZYPP_SERVICE_H
 #define ZYPP_SERVICE_H
 
+#include <memory>
 #include <set>
 #include <string>
 
@@ -216,9 +217,9 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   /** \relates ServiceInfo */
-  using ServiceInfo_Ptr = shared_ptr<ServiceInfo>;
+  using ServiceInfo_Ptr = std::shared_ptr<ServiceInfo>;
   /** \relates ServiceInfo */
-  using ServiceInfo_constPtr = shared_ptr<const ServiceInfo>;
+  using ServiceInfo_constPtr = std::shared_ptr<const ServiceInfo>;
   /** \relates ServiceInfo */
   using ServiceInfoList = std::list<ServiceInfo>;
 

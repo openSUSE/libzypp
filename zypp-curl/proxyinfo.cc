@@ -12,6 +12,7 @@
 
 #include "proxyinfo.h"
 #include <iostream>
+#include <memory>
 #include <utility>
 
 #include <zypp/base/Logger.h>
@@ -24,7 +25,7 @@ using namespace zypp::base;
 namespace zypp {
   namespace media {
 
-    shared_ptr<ProxyInfo::Impl> ProxyInfo::Impl::_nullimpl;
+    std::shared_ptr<ProxyInfo::Impl> ProxyInfo::Impl::_nullimpl;
 
     ProxyInfo::ProxyInfo()
 #ifdef WITH_LIBPROXY_SUPPORT

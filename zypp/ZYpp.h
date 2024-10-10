@@ -164,6 +164,7 @@ namespace zypp
   private:
     /** Deleted via shared_ptr */
     friend void ::boost::checked_delete<ZYpp>(ZYpp*) BOOST_NOEXCEPT;	// template<class T> inline void checked_delete(T * x)
+  public:
     /** Dtor */
     ~ZYpp();
   private:

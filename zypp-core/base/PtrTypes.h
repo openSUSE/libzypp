@@ -18,8 +18,6 @@
 
 #include <zypp/Globals.h>
 #include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 ///////////////////////////////////////////////////////////////////
@@ -89,12 +87,6 @@ namespace zypp
     /** \class scoped_ptr */
     using boost::scoped_ptr;
 
-    /** \class shared_ptr */
-    using boost::shared_ptr;
-
-    /** \class weak_ptr */
-    using boost::weak_ptr;
-
     /** \class intrusive_ptr */
     using boost::intrusive_ptr;
 
@@ -128,35 +120,6 @@ namespace std
   // Otherwise we had to define an output operator always in the same namespace
   // as the typedef (else g++ will just print the pointer value).
 
-  /** \relates zypp::shared_ptr Stream output. */
-  template<class D>
-  inline std::ostream & operator<<( std::ostream & str, const zypp::shared_ptr<D> & obj )
-  {
-    if ( obj )
-      return str << *obj;
-    return str << std::string("NULL");
-  }
-  /** \overload specialize for void */
-  template<>
-  inline std::ostream & operator<<( std::ostream & str, const zypp::shared_ptr<void> & obj )
-  {
-    if ( obj )
-      return str << zypp::str::form( "%p", static_cast<void*>(obj.get()) );
-    return str << std::string("NULL");
-  }
-
-  /** \relates zypp::shared_ptr Stream output. */
-  template<class D>
-  inline std::ostream & dumpOn( std::ostream & str, const zypp::shared_ptr<D> & obj )
-  {
-    if ( obj )
-      return dumpOn( str, *obj );
-    return str << std::string("NULL");
-  }
-  /** \overload specialize for void */
-  template<>
-  inline std::ostream & dumpOn( std::ostream & str, const zypp::shared_ptr<void> & obj )
-  { return str << obj; }
 
   /** \relates zypp::intrusive_ptr Stream output. */
   template<class D>

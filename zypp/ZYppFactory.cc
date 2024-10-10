@@ -310,7 +310,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace
   {
-    static weak_ptr<ZYpp>		_theZYppInstance;
+    static std::weak_ptr<ZYpp>		_theZYppInstance;
     static scoped_ptr<ZYppGlobalLock>	_theGlobalLock;		// on/off in sync with _theZYppInstance
 
     ZYppGlobalLock & globalLock()

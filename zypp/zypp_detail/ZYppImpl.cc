@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <memory>
 #include <zypp/TmpPath.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
@@ -86,7 +87,7 @@ namespace zypp
   {
     ScopedDisableMediaChangeReport::ScopedDisableMediaChangeReport( bool condition_r )
     {
-      static weak_ptr<callback::TempConnect<media::MediaChangeReport> > globalguard;
+      static std::weak_ptr<callback::TempConnect<media::MediaChangeReport> > globalguard;
       if ( condition_r && ! (_guard = globalguard.lock()) )
       {
         // aquire a new one....

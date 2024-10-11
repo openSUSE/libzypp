@@ -988,8 +988,8 @@ namespace zypp
      * the the value returned by \p value
      */
     void updateFileContent( const Pathname &filename,
-                            boost::function<bool ()> condition,
-                            boost::function<std::string ()> value )
+                            std::function<bool ()> condition,
+                            std::function<std::string ()> value )
     {
         std::string val = value();
         // if the value is empty, then just dont

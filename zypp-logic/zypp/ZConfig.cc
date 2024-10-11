@@ -585,7 +585,7 @@ namespace zypp
                   std::vector<std::string> tmp;
                   str::split( value, back_inserter( tmp ), ", \t" );
 
-                  boost::function<Locale(const std::string &)> transform(
+                  std::function<Locale(const std::string &)> transform(
                     [](const std::string & str_r)->Locale{ return Locale(str_r); }
                   );
                   repoRefreshLocales.insert( make_transform_iterator( tmp.begin(), transform ),

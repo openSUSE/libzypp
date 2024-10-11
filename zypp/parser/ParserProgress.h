@@ -11,7 +11,7 @@
 #define ZYPP_ParserProgress_H
 
 #include <boost/shared_ptr.hpp>
-#include <boost/function.hpp>
+#include <functional>
 #include <utility>
 
 ///////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ namespace parser
        * the total_steps to the goal, and report using the same
        * unit, then
        */
-      ParserProgress( boost::function<void (long int)> fnc, long int total_steps = 100 )
+      ParserProgress( std::function<void (long int)> fnc, long int total_steps = 100 )
       : _fnc(std::move(fnc)), _previous_progress(0), _total_steps(total_steps)
       {
 
@@ -94,7 +94,7 @@ namespace parser
       }
 
     private:
-      boost::function<void (long int)> _fnc;
+      std::function<void (long int)> _fnc;
       long int _previous_progress;
       long int _total_steps;
   };

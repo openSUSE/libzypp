@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <boost/static_assert.hpp>
 #include <utility>
 
 #define ZYPP_USE_RESOLVER_INTERNALS

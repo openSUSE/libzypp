@@ -13,8 +13,6 @@
 #define ZYPP_CORE_BASE_DEFAULTINTEGRAL_H
 
 #include <iosfwd>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/is_integral.hpp>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -46,7 +44,7 @@ namespace zypp
     public:
       DefaultIntegral( Tp val_r = TInitial )
       : _val( val_r )
-      { BOOST_STATIC_ASSERT(boost::is_integral<Tp>::value); }
+      { static_assert(std::is_integral<Tp>::value, "Tp is not an integral type"); }
 
       /** Conversion to Tp. */
       //@{

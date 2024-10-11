@@ -46,12 +46,12 @@ namespace zypp
         RepoMirrorListTempProvider( Pathname  localfile_r )
         : _localfile(std::move( localfile_r ))
         {}
-        RepoMirrorListTempProvider( const Url & url_r )
+        RepoMirrorListTempProvider( zyppng::ContextBaseRef ctx, const Url & url_r )
         {
           Url abs_url( url_r );
           abs_url.setPathName( "/" );
           abs_url.setQueryParam( "mediahandler", "curl" );
-          _access.reset( new MediaSetAccess( abs_url ) );
+          _access.reset( new MediaSetAccess( ctx, abs_url ) );
           _localfile = _access->provideFile( url_r.getPathName() );
         }
 
@@ -134,7 +134,7 @@ namespace zypp
       else if ( ! PathInfo( metadatapath_r).isDir() )
       {
         // no cachedir
-        RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of any downloaded files
+        RepoMirrorListTempProvider provider( ctx, url_r );	// RAII: lifetime of any downloaded files
         _urls = RepoMirrorListParse( url_r, provider.localfile(), mirrorListForceMetalink_r );
       }
       else
@@ -150,7 +150,7 @@ namespace zypp
         if ( !cacheinfo.isFile() || cacheinfo.mtime() < time(NULL) - (long) ctx->config().repo_refresh_delay() * 60 )
         {
           DBG << "Getting MirrorList from URL: " << url_r << endl;
-          RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
+          RepoMirrorListTempProvider provider( ctx, url_r );	// RAII: lifetime of downloaded file
 
           // Create directory, if not existing
           DBG << "Copy MirrorList file to " << cachefile << endl;

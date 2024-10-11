@@ -515,7 +515,7 @@ namespace zyppng::RepoServicesWorkflow {
 
           ////////////////////////////////////////////////////////////////////////////
           // create missing repositories and modify existing ones if needed...
-          zypp::UrlCredentialExtractor urlCredentialExtractor( _repoMgr->options().rootDir );	// To collect any credentials stored in repo URLs
+          zypp::UrlCredentialExtractor urlCredentialExtractor( _repoMgr->zyppContext() );	// To collect any credentials stored in repo URLs
           for_( it, collector.repos.begin(), collector.repos.end() )
           {
             // User explicitly requested the repo being enabled?

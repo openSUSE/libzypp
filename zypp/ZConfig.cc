@@ -47,6 +47,8 @@ using namespace zypp::parser;
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zconfig"
 
+#warning "Still need to sync MediaConfig::systemConfig and the one in ZConfig::systemConfig"
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -501,8 +503,9 @@ namespace zypp
         , pkgGpgCheck			( indeterminate )
         , apply_locks_file		( true )
         , pluginsPath			( "/usr/lib/zypp/plugins" )
-        , geoipEnabled ( true )
-        , geoipHosts { "download.opensuse.org" }
+        , geoipEnabled                  ( true )
+        , geoipHosts                    { "download.opensuse.org" }
+        , _mediaConf                    ( _parsedZyppConf )
       {
         MIL << "libzypp: " LIBZYPP_VERSION_STRING << endl;
         if ( PathInfo(_parsedZyppConf).isExist() )
@@ -520,9 +523,6 @@ namespace zypp
             {
               std::string entry(it->first);
               std::string value(it->second);
-
-              if ( _mediaConf.setConfigValue( section, entry, value ) )
-                continue;
 
               //DBG << (*it).first << "=" << (*it).second << endl;
               if ( section == "main" )
@@ -559,6 +559,7 @@ namespace zypp
                 {
                   cfg_config_path = Pathname(value);
                 }
+
                 else if ( entry == "reposdir" )
                 {
                   cfg_known_repos_path = Pathname(value);
@@ -809,7 +810,7 @@ namespace zypp
     std::vector<std::string> geoipHosts;
 
     /* Other config singleton instances */
-    MediaConfig &_mediaConf = MediaConfig::instance();
+    MediaConfig _mediaConf;
 
 
   public:
@@ -1256,25 +1257,16 @@ namespace zypp
   { return _pimpl->apply_locks_file; }
 
   Pathname ZConfig::update_dataPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname("/var/adm");
   }
 
   Pathname ZConfig::update_messagesPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname(update_dataPath()/"update-messages");
   }
 
   Pathname ZConfig::update_scriptsPath()
-#if LEGACY(1735)
-  const
-#endif
   {
     return Pathname(update_dataPath()/"update-scripts");
   }
@@ -1323,6 +1315,16 @@ namespace zypp
   std::string ZConfig::multiversionKernels() const
   {
     return _pimpl->cfg_kernel_keep_spec;
+  }
+
+  const MediaConfig &ZConfig::mediaConfig() const
+  {
+    return _pimpl->_mediaConf;
+  }
+
+  MediaConfig &ZConfig::mediaConfig()
+  {
+    return _pimpl->_mediaConf;
   }
 
   ///////////////////////////////////////////////////////////////////

@@ -11,8 +11,7 @@
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/zyppng/pipelines/expected.h>
-#include <zypp-core/zyppng/ui/UserInterface>
-
+#include <zypp-media/ng/MediaContext>
 #include <zypp/ng/repo/repovariablescache.h>
 
 namespace zypp {
@@ -40,7 +39,7 @@ namespace zyppng {
     std::optional<zypp::Pathname> configPath;
   };
 
-  class ContextBase : public UserInterface
+  class ContextBase : public MediaContext
   {
   public:
     ~ContextBase() override;
@@ -49,13 +48,10 @@ namespace zyppng {
     ContextBase &operator=(const ContextBase &) = delete;
     ContextBase &operator=(ContextBase &&) = delete;
 
-
-    static zypp::Pathname defaultConfigPath();
-
     /*!
      * Returns the root path of the context
      */
-    zypp::Pathname contextRoot() const;
+    zypp::Pathname contextRoot() const override;
 
     /*!
      * Gets the zypp lock, loads the config and sets up keyring
@@ -77,6 +73,7 @@ namespace zyppng {
 
     KeyRingRef keyRing ();
     zypp::ZConfig &config();
+    zypp::MediaConfig &mediaConfig() override;
     zypp::Pathname tmpPath() const;
     TargetRef target() const;
 

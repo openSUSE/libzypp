@@ -603,7 +603,7 @@ namespace zyppng
       reposManip().insert( std::make_pair( tosave.alias(), tosave) );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.baseUrls() );
+      zypp::UrlCredentialExtractor( _zyppContext ).collect( tosave.baseUrls() );
 
       zypp::HistoryLog(_options.rootDir).addRepository(tosave);
 
@@ -786,7 +786,7 @@ namespace zyppng
       ProgressObserver::increase( myProgress );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.baseUrls() );
+      zypp::UrlCredentialExtractor( _zyppContext ).collect( newinfo.baseUrls() );
       zypp::HistoryLog(_options.rootDir).modifyRepository(toedit, newinfo);
       MIL << "repo " << alias << " modified" << std::endl;
 
@@ -1052,7 +1052,7 @@ namespace zyppng
     _services.insert( std::make_pair( toSave.alias(), toSave ) );
 
     // check for credentials in Url
-    zypp::UrlCredentialExtractor( _options.rootDir ).collect( toSave.url() );
+    zypp::UrlCredentialExtractor( _zyppContext ).collect( toSave.url() );
 
     MIL << "added service " << toSave.alias() << std::endl;
 
@@ -1209,7 +1209,7 @@ namespace zyppng
     _services.erase  ( oldAlias );
     _services.insert ( std::make_pair( newService.alias(), newService) );
     // check for credentials in Urls
-    zypp::UrlCredentialExtractor( _options.rootDir ).collect( newService.url() );
+    zypp::UrlCredentialExtractor( _zyppContext ).collect( newService.url() );
 
 
     // changed properties affecting also repositories

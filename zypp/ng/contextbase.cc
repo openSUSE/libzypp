@@ -16,11 +16,6 @@ namespace zyppng {
   ContextBase::~ContextBase()
   { }
 
-  zypp::Pathname ContextBase::defaultConfigPath()
-  {
-    return "/etc/zypp/zypp.conf";
-  }
-
   zypp::Pathname ContextBase::contextRoot() const
   {
     //  this is a programming error, the C API will hide the 2 step create and init process.
@@ -175,6 +170,14 @@ namespace zyppng {
     // config loaded on demand if queried before initializing the target
     if ( !_config ) loadConfig ( *_settings->configPath ).unwrap();
     return *_config;
+  }
+
+  zypp::MediaConfig &ContextBase::mediaConfig()
+  {
+    assertInitialized();
+    // config loaded on demand if queried before initializing the target
+    if ( !_config ) loadConfig ( *_settings->configPath ).unwrap();
+    return _config->mediaConfig();
   }
 
   zypp::Pathname ContextBase::tmpPath() const

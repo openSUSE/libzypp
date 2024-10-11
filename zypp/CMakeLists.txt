@@ -712,7 +712,6 @@ SET( zypp_repo_SRCS
 SET( zypp_repo_HEADERS
   repo/GpgCheck.h
   repo/RepoException.h
-  repo/RepoMirrorList.h
   repo/RepoType.h
   repo/ServiceRepoState.h
   repo/ServiceType.h
@@ -720,16 +719,17 @@ SET( zypp_repo_HEADERS
   repo/SrcPackageProvider.h
   repo/RepoProvideFile.h
   repo/DeltaCandidates.h
-  repo/Applydeltarpm.h
-  repo/PackageDelta.h
-  repo/SUSEMediaVerifier.h
-  repo/MediaInfoDownloader.h
   repo/RepoVariables.h
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
 )
 
 SET( zypp_repo_detail_HEADERS
+  repo/RepoMirrorList.h
+  repo/Applydeltarpm.h
+  repo/PackageDelta.h
+  repo/SUSEMediaVerifier.h
+  repo/MediaInfoDownloader.h
 )
 
 INSTALL( FILES
@@ -865,6 +865,10 @@ SET ( zypp_media_compat_HEADERS
   media/CurlConfig.h
 )
 
+SET( zypp_media_compat_SOURCES
+  media/CredentialManager.cc
+)
+
 INSTALL( FILES
   ${zypp_media_compat_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/media
@@ -914,6 +918,7 @@ ${zypp_parser_susetags_SRCS}
 ${zypp_parser_xml_SRCS}
 ${zypp_parser_yum_SRCS}
 ${zypp_parser_SRCS}
+${zypp_media_compat_SOURCES}
 ${zypp_media_proxyinfo_SRCS}
 ${zypp_media_SRCS}
 ${zypp_ng_SRCS}

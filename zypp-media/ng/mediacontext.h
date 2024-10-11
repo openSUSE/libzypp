@@ -6,16 +6,30 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#ifndef ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
-#define ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
+#ifndef ZYPP_MEDIA_NG_MEDIACONTEXT_H_INCLUDED
+#define ZYPP_MEDIA_NG_MEDIACONTEXT_H_INCLUDED
 
-#include <zypp-glib/repomanageroptions.h>
-#include <zypp/RepoManagerOptions.h>
+#include <zypp-core/zyppng/ui/userinterface.h>
 
-struct _ZyppRepoManagerOptions {
-  zypp::RepoManagerOptions _opts;
-};
+namespace zypp {
+  class MediaConfig;
+}
 
-ZyppRepoManagerOptions *zypp_repo_manager_options_new( const zypp::RepoManagerOptions &rO );
+namespace zyppng {
 
-#endif // ZYPP_GLIB_PRIVATE_REPO_MANAGER_OPTIONS_P_H
+  ZYPP_FWD_DECL_TYPE_WITH_REFS( MediaContext );
+
+  class MediaContext : public UserInterface {
+  public:
+    virtual zypp::Pathname contextRoot() const  = 0;
+    virtual zypp::MediaConfig &mediaConfig() = 0;
+
+    static zypp::Pathname defaultConfigPath(){
+      return "/etc/zypp/zypp.conf";
+    }
+  };
+
+}
+
+
+#endif

@@ -405,7 +405,7 @@ namespace zypp
 
       // Check toplevel cache
       {
-        RepoManagerOptions topCache;
+        RepoManagerOptions topCache( info->context() );
         if ( info->packagesPath().dirname() != topCache.repoPackagesCachePath )	// not using toplevel cache
         {
           const OnMediaLocation & loc( _package->location() );

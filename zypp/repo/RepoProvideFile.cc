@@ -142,13 +142,11 @@ namespace zypp
 
       ~Impl()
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::iterator it;
-        for ( it = _medias.begin();
-              it != _medias.end();
-              ++it )
-        {
-          it->second->release();
-        }
+        std::for_each( _medias.begin (), _medias.end(), []( auto &val ){
+          std::for_each ( val.second.begin(), val.second.begin(), [](auto &entry) {
+            entry.second->release();
+          });
+        });
       }
 
       /** Provide a MediaSetAccess for \c url with label and verifier adjusted.
@@ -160,17 +158,24 @@ namespace zypp
       */
       shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, zyppng::RepoInfo repo )
       {
-        std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
-        it = _medias.find(url);
+        if ( !repo.context() ) {
+          ZYPP_THROW( zypp::Exception( str::Str()<<"Repo: " << repo << ", can not provide files without a context." ) );
+        }
+        // quick hack using the context ptr address as key for the nested map
+        const uintptr_t key = reinterpret_cast<uintptr_t>( repo.context().get() );
+        auto it = _medias.find(url);
         shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
-          media = it->second;
+          auto it2 = it->second.find( key );
+          if ( it2 != it->second.end() )
+            media = it2->second;
         }
-        else
+
+        if ( !media )
         {
-          media.reset( new MediaSetAccess(url) );
-          _medias[url] = media;
+          media.reset( new MediaSetAccess( repo.context(), url) );
+          _medias[url][key] = media;
         }
         setVerifierForRepo( repo, media );
         return media;
@@ -226,7 +231,7 @@ namespace zypp
 
       private:
         std::map<shared_ptr<MediaSetAccess>, zyppng::RepoInfo> _verifier;
-        std::map<Url, shared_ptr<MediaSetAccess> > _medias;
+        std::map<Url, std::map<std::uintptr_t, shared_ptr<MediaSetAccess>> > _medias;
 
       public:
         ProvideFilePolicy _defaultPolicy;

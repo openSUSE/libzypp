@@ -140,7 +140,7 @@ namespace zyppng {
     if (_baseUrls.empty() && !mlurl.asString().empty()) {
       emptybaseurls = true;
       DBG << "MetadataPath: " << metadataPath() << endl;
-      zypp::repo::RepoMirrorList rmurls(mlurl, metadataPath(),
+      zypp::repo::RepoMirrorList rmurls(_ctx, mlurl, metadataPath(),
                                   _mirrorListForceMetalink);
       _baseUrls.raw().insert(_baseUrls.raw().end(), rmurls.getUrls().begin(),
                              rmurls.getUrls().end());

@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/source/Applydeltarpm.h
+/** \file	zypp/source/GpgCheck.h
  *
 */
 #ifndef ZYPP_REPO_GPGCHECK_H_INCLUDED

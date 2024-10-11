@@ -25,7 +25,7 @@
 namespace zypp {
   class Url;
   namespace media {
-    struct CredManagerOptions;
+    struct CredManagerSettings;
   }
 }
 
@@ -160,8 +160,8 @@ namespace zyppng {
 
     const zypp::Pathname &providerWorkdir () const;
 
-    const zypp::media::CredManagerOptions &credManangerOptions () const;
-    void setCredManagerOptions( const zypp::media::CredManagerOptions & opt );
+    const zypp::media::CredManagerSettings &credManangerOptions () const;
+    void setCredManagerOptions(const zypp::media::CredManagerSettings &opt );
 
     SignalProxy<void()> sigIdle();
 
@@ -182,7 +182,7 @@ namespace zyppng {
 
     /*!
      * This signal is emitted in case a request signaled a need to get Auth Info and nothing was found
-     * in the \ref zypp::media::CredentialManager.
+     * in the \ref zyppng::media::CredentialManager.
      */
     SignalProxy< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > sigAuthRequired();
 

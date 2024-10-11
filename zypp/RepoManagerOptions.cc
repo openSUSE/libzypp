@@ -12,6 +12,8 @@
 
 #include "RepoManagerOptions.h"
 #include <zypp/ZConfig.h>
+#include <zypp/ng/context.h>
+#include <zypp/zypp_detail/ZYppImpl.h>
 
 namespace zypp
 {
@@ -21,7 +23,8 @@ namespace zypp
   //
   ////////////////////////////////////////////////////////////////////
 
-  RepoManagerOptions::RepoManagerOptions( const Pathname & root_r )
+  ZYPP_BEGIN_LEGACY_API
+  RepoManagerOptions::RepoManagerOptions( const Pathname & root_r ) : probe(ZConfig::instance().repo_add_probe())
   {
     repoCachePath         = Pathname::assertprefix( root_r, ZConfig::instance().repoCachePath() );
     repoRawCachePath      = Pathname::assertprefix( root_r, ZConfig::instance().repoMetadataPath() );
@@ -30,13 +33,30 @@ namespace zypp
     knownReposPath        = Pathname::assertprefix( root_r, ZConfig::instance().knownReposPath() );
     knownServicesPath     = Pathname::assertprefix( root_r, ZConfig::instance().knownServicesPath() );
     pluginsPath           = Pathname::assertprefix( root_r, ZConfig::instance().pluginsPath() );
-    probe                 = ZConfig::instance().repo_add_probe();
+
 
     rootDir = root_r;
+    context = zypp_detail::GlobalStateHelper::context();
+  }
+  ZYPP_END_LEGACY_API
+
+  RepoManagerOptions::RepoManagerOptions( zyppng::ContextBaseRef ctx )
+    : probe(ctx->config().repo_add_probe())
+    , context(ctx)
+  {
+    rootDir               = ctx->contextRoot();
+    repoCachePath         = Pathname::assertprefix( rootDir, ctx->config().repoCachePath() );
+    repoRawCachePath      = Pathname::assertprefix( rootDir, ctx->config().repoMetadataPath() );
+    repoSolvCachePath     = Pathname::assertprefix( rootDir, ctx->config().repoSolvfilesPath() );
+    repoPackagesCachePath = Pathname::assertprefix( rootDir, ctx->config().repoPackagesPath() );
+    knownReposPath        = Pathname::assertprefix( rootDir, ctx->config().knownReposPath() );
+    knownServicesPath     = Pathname::assertprefix( rootDir, ctx->config().knownServicesPath() );
+    pluginsPath           = Pathname::assertprefix( rootDir, ctx->config().pluginsPath() );
   }
 
   RepoManagerOptions RepoManagerOptions::makeTestSetup( const Pathname & root_r )
   {
+    ZYPP_BEGIN_LEGACY_API
     RepoManagerOptions ret;
     ret.repoCachePath         = root_r;
     ret.repoRawCachePath      = root_r/"raw";
@@ -46,6 +66,7 @@ namespace zypp
     ret.knownServicesPath     = root_r/"services.d";
     ret.pluginsPath           = root_r/"plugins";
     ret.rootDir = root_r;
+    ZYPP_END_LEGACY_API
     return ret;
   }
 

@@ -24,7 +24,7 @@
 #include <zypp-curl/ng/network/TransferSettings>
 #include <zypp-curl/ng/network/private/mirrorcontrol_p.h>
 #include <zypp-curl/ng/network/networkrequesterror.h>
-#include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/auth/credentialmanager.h>
 
 namespace zyppng {
 
@@ -93,7 +93,7 @@ namespace zyppng {
     std::shared_ptr<NetworkRequestDispatcher> _requestDispatcher;
     std::shared_ptr<MirrorControl> _mirrorControl;
 
-    zypp::media::CredentialManager::CredentialSet _credCache; //< the credential cache for this download
+    zyppng::media::CredentialManager::CredentialSet _credCache; //< the credential cache for this download
 
     DownloadSpec _spec; // the download settings
     mutable zypp::TriBool _specHasZckInfo = zypp::indeterminate;

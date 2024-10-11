@@ -10,7 +10,8 @@
 #include "RepomdFileCollector.h"
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
-#include <zypp/RepoInfo.h>
+#include <zypp/ng/repoinfo.h>
+#include <zypp/ng/context.h>
 #include <solv/solvversion.h>
 
 namespace zypp::env
@@ -89,11 +90,11 @@ namespace zypp::repo::yum
    *      Localized type:
    *          susedata.LOCALE
   */
-  RepomdFileCollector::RepomdFileCollector( const Pathname &destDir_r )
+  RepomdFileCollector::RepomdFileCollector( zyppng::ContextBaseRef ctx, const Pathname &destDir_r )
     : _destDir { destDir_r }
   {
-    addWantedLocale( ZConfig::instance().textLocale() );
-    for ( const Locale & it : ZConfig::instance().repoRefreshLocales() )
+    addWantedLocale( ctx->config().textLocale() );
+    for ( const Locale & it : ctx->config().repoRefreshLocales() )
       addWantedLocale( it );
   }
 

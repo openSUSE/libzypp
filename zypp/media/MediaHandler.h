@@ -20,6 +20,7 @@
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp/base/PtrTypes.h>
+#include <zypp/Globals.h>
 
 #include <zypp/Url.h>
 
@@ -30,6 +31,10 @@
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::media"
+
+namespace zyppng {
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(ContextBase);
+}
 
 namespace zypp {
   namespace media {
@@ -116,6 +121,9 @@ class MediaHandler {
          * Access Id of media handler we depend on.
          */
         MediaAccessId    _parentId;
+
+        /** media handle context */
+        zyppng::ContextBaseRef _zyppContext;
 
      public:
 
@@ -466,7 +474,8 @@ class MediaHandler {
          * On any error, the attach_point is set to an empty Pathname,
          * which should lead to E_bad_attachpoint.
          **/
-        MediaHandler ( Url        url_r,
+        MediaHandler ( zyppng::ContextBaseRef ctx,
+                       Url        url_r,
                        const Pathname & attach_point_r,
                        Pathname  urlpath_below_attachpoint_r,
                        const bool       does_download_r );

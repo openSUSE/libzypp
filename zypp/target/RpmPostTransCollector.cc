@@ -235,7 +235,7 @@ namespace zypp
 
           // Scripts first...
           if ( _scripts ) {
-            Pathname noRootScriptDir( ZConfig::instance().update_scriptsPath() / tmpDir().basename() );
+            Pathname noRootScriptDir( ZConfig::update_scriptsPath() / tmpDir().basename() );
             // like rpm would report it (intentionally not translated and NL-terminated):
             str::Format fmtScriptFailedMsg { "warning: %%posttrans(%1%) scriptlet failed, exit status %2%\n" };
             str::Format fmtPosttrans { "%%posttrans(%1%)" };
@@ -336,7 +336,7 @@ namespace zypp
         /** Lazy create tmpdir on demand. */
         Pathname tmpDir()
         {
-          if ( !_ptrTmpdir ) _ptrTmpdir.reset( new filesystem::TmpDir( _root / ZConfig::instance().update_scriptsPath(), "posttrans" ) );
+          if ( !_ptrTmpdir ) _ptrTmpdir.reset( new filesystem::TmpDir( _root / ZConfig::update_scriptsPath(), "posttrans" ) );
           DBG << _ptrTmpdir->path() << endl;
           return _ptrTmpdir->path();
         }

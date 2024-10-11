@@ -701,7 +701,7 @@ namespace zyppng {
     return _items;
   }
 
-  zypp::media::CredManagerOptions &ProvidePrivate::credManagerOptions ()
+  zypp::media::CredManagerSettings &ProvidePrivate::credManagerOptions()
   {
     return _credManagerOptions;
   }
@@ -1195,13 +1195,13 @@ namespace zyppng {
     return d_func()->_workDir;
   }
 
-  const zypp::media::CredManagerOptions &Provide::credManangerOptions () const
+  const zypp::media::CredManagerSettings &Provide::credManangerOptions () const
   {
     Z_D();
     return d->_credManagerOptions;
   }
 
-  void Provide::setCredManagerOptions( const zypp::media::CredManagerOptions & opt )
+  void Provide::setCredManagerOptions( const zypp::media::CredManagerSettings & opt )
   {
     d_func()->_credManagerOptions = opt;
   }

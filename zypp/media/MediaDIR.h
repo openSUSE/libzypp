@@ -41,7 +41,8 @@ namespace zypp {
 
       public:
 
-        MediaDIR( const Url &      url_r,
+        MediaDIR( zyppng::ContextBaseRef ctx,
+                  const Url &      url_r,
                   const Pathname & attach_point_hint_r );
 
         ~MediaDIR() override { try { release(); } catch(...) {} }

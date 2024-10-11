@@ -215,9 +215,9 @@ namespace zyppng::RepoManagerWorkflow {
     {
       using namespace zyppng::operators;
       return ctx->provider()->provide( repoFileUrl, ProvideFileSpec() )
-      | and_then([repoFileUrl]( auto local ){
+      | and_then([ctx, repoFileUrl]( auto local ){
         DBG << "reading repo file " << repoFileUrl << ", local path: " << local.file() << std::endl;
-        return repositories_in_file( local.file() );
+        return repositories_in_file( ctx, local.file() );
       });
     }
   }
@@ -552,7 +552,7 @@ namespace zyppng::RepoManagerWorkflow {
     {
       Repo2SolvOp() { }
 
-      static AsyncOpRef<expected<void>> run( zypp::RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
+      static AsyncOpRef<expected<void>> run( RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
         MIL << "Starting repo2solv for repo " << repo.alias () << std::endl;
         auto me = std::make_shared<Repo2SolvOp<AsyncContextRef>>();
         me->_repo = std::move(repo);
@@ -594,14 +594,14 @@ namespace zyppng::RepoManagerWorkflow {
 
     private:
       ProcessRef  _proc;
-      zypp::RepoInfo _repo;
+      RepoInfo    _repo {nullptr};
       std::string _errdetail;
     };
 
     template <>
     struct Repo2SolvOp<SyncContextRef>
     {
-      static expected<void> run( zypp::RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
+      static expected<void> run( RepoInfo repo, zypp::ExternalProgram::Arguments args ) {
         zypp::ExternalProgram prog( args, zypp::ExternalProgram::Stderr_To_Stdout );
         std::string errdetail;
 
@@ -822,7 +822,7 @@ namespace zyppng::RepoManagerWorkflow {
       }
 
     private:
-      MaybeAsyncRef<expected<std::optional<MediaHandle>>> mountIfRequired ( zypp::repo::RepoType repokind, zypp::RepoInfo info  ) {
+      MaybeAsyncRef<expected<std::optional<MediaHandle>>> mountIfRequired ( zypp::repo::RepoType repokind, RepoInfo info  ) {
         if ( repokind != zypp::repo::RepoType::RPMPLAINDIR )
           return makeReadyResult( make_expected_success( std::optional<MediaHandle>() ));
 
@@ -879,7 +879,7 @@ namespace zyppng::RepoManagerWorkflow {
           ProgressObserver::setup( _myProgress, zypp::str::form(_("Adding repository '%s'"), _info.label().c_str()) );
           ProgressObserver::start( _myProgress );
 
-          if ( _repoMgrRef->repos().find(_info) != _repoMgrRef->repos().end() )
+          if ( _repoMgrRef->repos().find(_info.alias()) != _repoMgrRef->repos().end() )
             return makeReadyResult( expected<RepoInfo>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(_info)) ) );
 
           // check the first url for now
@@ -948,7 +948,7 @@ namespace zyppng::RepoManagerWorkflow {
       MaybeAsyncRef<expected<void>> execute() {
         using namespace zyppng::operators;
 
-        return mtry( zypp::repo::RepoVariablesUrlReplacer(), _url )
+        return mtry( zypp::repo::RepoVariablesUrlReplacerNg( zypp::repo::RepoVarRetriever( *_repoMgrRef->zyppContext() ) ), _url )
         | and_then([this]( zypp::Url repoFileUrl ) { return readRepoFile( _repoMgrRef->zyppContext(), std::move(repoFileUrl) ); } )
         | and_then([this]( std::list<RepoInfo> repos ) {
 
@@ -959,9 +959,9 @@ namespace zyppng::RepoManagerWorkflow {
             // look if the alias is in the known repos.
             for_ ( kit, _repoMgrRef->repoBegin(), _repoMgrRef->repoEnd() )
             {
-              if ( (*it).alias() == (*kit).alias() )
+              if ( (*it).alias() == kit->first )
               {
-                ERR << "To be added repo " << (*it).alias() << " conflicts with existing repo " << (*kit).alias() << std::endl;
+                ERR << "To be added repo " << (*it).alias() << " conflicts with existing repo " << kit->first << std::endl;
                 return expected<void>::error(ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(*it)));
               }
             }
@@ -1006,7 +1006,7 @@ namespace zyppng::RepoManagerWorkflow {
             it->setFilepath(repofile);
             it->setMetadataPath( *rawCachePath );
             it->setPackagesPath( *pckCachePath );
-            _repoMgrRef->reposManip().insert(*it);
+            _repoMgrRef->reposManip().insert( std::make_pair(it->alias(), *it));
 
             zypp::HistoryLog( _repoMgrRef->options().rootDir).addRepository(*it);
           }

@@ -63,7 +63,7 @@ namespace zyppng {
              - zypp::url::ViewOption::WITH_PASSWORD
              - zypp::url::ViewOption::WITH_QUERY_STR;
 
-      auto cachedCred = zypp::media::CredentialManager::findIn( _credCache, req->url(), vopt );
+      auto cachedCred = zyppng::media::CredentialManager::findIn( _credCache, req->url(), vopt );
 
       // only consider a cache entry if its newer than what we tried last time
       if ( cachedCred && cachedCred->lastDatabaseUpdate() > req->_authTimestamp ) {
@@ -177,7 +177,7 @@ namespace zyppng {
       if ( set.authType() == "basic"
            && set.username().size()
            && !set.password().size() ) {
-        zypp::media::CredentialManager cm(  _parent ? _parent->credManagerOptions() : zypp::media::CredManagerOptions() );
+        zypp::media::CredentialManager cm(  _parent ? _parent->credManagerOptions() : zypp::media::CredManagerSettings() );
         const auto cred = cm.getCred( url );
         if ( cred && cred->valid() ) {
           if ( !set.username().size() )

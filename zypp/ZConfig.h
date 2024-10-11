@@ -44,6 +44,7 @@ namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   class RepoManager;
+  class MediaConfig;
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -73,6 +74,15 @@ namespace zypp
   class ZYPP_API ZConfig : private base::NonCopyable
   {
     public:
+
+      /** A ZConfig instance that has only the default settings, usable as fallback if
+       *  there is no context that can be asked and the system config is not applicable */
+      static const ZConfig &defaults();
+
+      /**
+       * The system config, parsed from /etc/zypp/zypp.conf.
+       */
+      static ZConfig &systemConfig();
 
       /** Singleton ctor */
       static ZYPP_INTERNAL_DEPRECATE ZConfig & instance();
@@ -391,7 +401,7 @@ namespace zypp
       void resetPkgGpgCheck();			///< Reset to the zconfig default
      //@}
       //
-      /**
+      /**ZConfig
        * Directory for equivalent vendor definitions  (configPath()/vendors.d)
        * \ingroup g_ZC_CONFIGFILES
        */
@@ -498,22 +508,6 @@ namespace zypp
        */
       bool apply_locks_file() const;
 
-#if LEGACY(1735)
-      /**
-       * Path where the update items are kept (/var/adm)
-       */
-      Pathname update_dataPath() const;
-
-      /**
-       * Path where the update scripts are stored ( /var/adm/update-scripts )
-       */
-      Pathname update_scriptsPath() const;
-
-      /**
-       * Path where the update messages are stored ( /var/adm/update-messages )
-       */
-      Pathname update_messagesPath() const;
-#else
       /**
        * Path where the update items are kept (/var/adm)
        */
@@ -528,7 +522,6 @@ namespace zypp
        * Path where the update messages are stored ( /var/adm/update-messages )
        */
       static Pathname update_messagesPath();
-#endif
 
       /** \name Command to be invoked to send update messages. */
       //@{
@@ -590,6 +583,10 @@ namespace zypp
        * Defaults to a empty string, if no keep spec is defined no kernels are removed
        */
       std::string multiversionKernels() const;
+
+
+      const MediaConfig &mediaConfig() const;
+      MediaConfig &mediaConfig();
 
       //@}
 

@@ -405,11 +405,11 @@ namespace zyppng {
     }
 
     try {
-      zypp::media::CredentialManager mgr ( provider().credManagerOptions() );
+      auto mgr = zyppng::media::CredentialManager::create( provider().credManagerOptions() );
 
       MIL << "Looking for existing auth data for " << effectiveUrl << "more recent then " << lastTimestamp << std::endl;
 
-      auto credPtr = mgr.getCred( effectiveUrl );
+      auto credPtr = mgr->getCred( effectiveUrl );
       if ( credPtr && credPtr->lastDatabaseUpdate() > lastTimestamp ) {
         MIL << "Found existing auth data for " << effectiveUrl << "ts: " <<  credPtr->lastDatabaseUpdate() << std::endl;
         return expected<zypp::media::AuthData>::success( *credPtr );
@@ -431,12 +431,12 @@ namespace zyppng {
         return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No auth given by user." ) ) );
       }
 
-      mgr.addCred( *userAuth );
-      mgr.save();
+      mgr->addCred( *userAuth );
+      mgr->save();
 
       // rather ugly, but update the timestamp to the last mtime of the cred database our URL belongs to
       // otherwise we'd need to reload the cred database
-      userAuth->setLastDatabaseUpdate( mgr.timestampForCredDatabase( effectiveUrl ) );
+      userAuth->setLastDatabaseUpdate( mgr->timestampForCredDatabase( effectiveUrl ) );
 
       return expected<zypp::media::AuthData>::success(*userAuth);
     } catch ( const zypp::Exception &e ) {

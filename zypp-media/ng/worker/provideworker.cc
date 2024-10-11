@@ -304,7 +304,7 @@ namespace zyppng::worker {
 
       _workerConf = std::move(conf);
 
-      auto &mediaConf = zypp::MediaConfig::instance();
+      auto &mediaConf = zypp::MediaConfig::systemConfig();
       for( const auto &[key,value] : _workerConf ) {
         zypp::Url keyUrl( key );
         if ( keyUrl.getScheme() == "zconfig" && keyUrl.getAuthority() == "main" ) {

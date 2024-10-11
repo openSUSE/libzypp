@@ -1,6 +1,7 @@
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp-media/ng/private/providemessage_p.h>
+#include <zypp-media/ng/auth/credentialmanager.h>
 #include <zypp-media/MediaException>
 #include <zypp-media/auth/AuthData>
 #include <zypp-media/auth/CredentialManager>
@@ -314,7 +315,8 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -387,7 +389,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -450,7 +452,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -524,7 +526,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );

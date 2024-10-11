@@ -28,7 +28,6 @@ SET( zypp_glib_HEADERS
   progressobserver.h
   repoinfo.h
   repomanager.h
-  repomanageroptions.h
   repository.h
   serviceinfo.h
   #userrequest.h
@@ -45,7 +44,6 @@ SET( zypp_glib_private_HEADERS
   private/progressobserver_p.h
   private/repoinfo_p.h
   private/repomanager_p.h
-  private/repomanageroptions_p.h
   private/repository_p.h
   private/serviceinfo_p.h
   #private/userrequest_p.h
@@ -61,7 +59,6 @@ SET( zypp_glib_SRCS
   progressobserver.cc
   repoinfo.cc
   repomanager.cc
-  repomanageroptions.cc
   repository.cc
   serviceinfo.cc
   #userrequest.cc

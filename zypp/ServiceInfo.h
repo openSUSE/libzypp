@@ -19,8 +19,15 @@
 
 #include <zypp/base/Iterable.h>
 #include <zypp/repo/ServiceType.h>
+#include <zypp/repo/ServiceRepoState.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/Date.h>
+
+namespace zyppng {
+  class ServiceInfo;
+}
+
+ZYPP_BEGIN_LEGACY_API
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -33,18 +40,25 @@ namespace zypp
   /// \note Name and Url are subject to repo variable replacement
   /// (\see \ref RepoVariablesStringReplacer).
   ///
-  class ZYPP_API ServiceInfo : public repo::RepoInfoBase
+  class ZYPP_API ZYPP_INTERNAL_DEPRECATE ServiceInfo : public repo::RepoInfoBase
   {
   public:
     /** Default ctor creates \ref noService.*/
-    ZYPP_INTERNAL_DEPRECATE ServiceInfo();
+    ServiceInfo();
+
+    ServiceInfo( const zyppng::ServiceInfo &i );
+
+    ServiceInfo(const ServiceInfo &other);
+    ServiceInfo(ServiceInfo &&other);
+    ServiceInfo &operator=(const ServiceInfo &other);
+    ServiceInfo &operator=(ServiceInfo &&other);
 
     /**
      *  Creates ServiceInfo with specified alias.
      *
      * \param alias unique short name of service
      */
-    ZYPP_INTERNAL_DEPRECATE ServiceInfo( const std::string & alias );
+    ServiceInfo( const std::string & alias );
 
     /**
      * ServiceInfo with alias and its URL
@@ -52,33 +66,7 @@ namespace zypp
      * \param alias unique shortname of service
      * \param url url to service
      */
-    ZYPP_INTERNAL_DEPRECATE ServiceInfo( const std::string & alias, const Url& url );
-
-
-    /**
-     * Default ctor creates \ref noService.
-     * \internal
-     */
-    ServiceInfo( zyppng::ContextBaseRef contextRef ) ZYPP_LOCAL;
-
-    /**
-     *  Creates ServiceInfo with specified alias.
-     *
-     * \param alias unique short name of service
-     * \internal
-     */
-    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias ) ZYPP_LOCAL;
-
-    /**
-     * ServiceInfo with alias and its URL
-     *
-     * \param alias unique shortname of service
-     * \param url url to service
-     * \internal
-     */
-    ServiceInfo( zyppng::ContextBaseRef contextRef,  const std::string & alias, const Url& url ) ZYPP_LOCAL;
-
-
+    ServiceInfo( const std::string & alias, const Url& url );
 
     ~ServiceInfo() override;
 
@@ -183,31 +171,7 @@ namespace zypp
     void clearReposToDisable();
     //@}
 
-    /** \name The original repo state as defined by the repoindex.xml upon last refresh.
-     *
-     * This state is remembered to detect any user modifications applied to the repos.
-     * It may not be available for all repos or in plugin services. In this case all
-     * changes requested by a service refresh are applied unconditionally.
-     */
-    //@{
-    struct RepoState
-    {
-      bool	enabled;
-      bool	autorefresh;
-      unsigned	priority;
-
-      RepoState()
-        : enabled( false ), autorefresh( true ), priority( RepoInfo::defaultPriority() )
-      {}
-      RepoState( const RepoInfo & repo_r )
-        : enabled( repo_r.enabled() ), autorefresh( repo_r.autorefresh() ), priority( repo_r.priority() )
-      {}
-      bool operator==( const RepoState & rhs ) const
-      { return( enabled==rhs.enabled && autorefresh==rhs.autorefresh && priority==rhs.priority ); }
-      bool operator!=( const RepoState & rhs ) const
-      { return ! operator==( rhs ); }
-      friend std::ostream & operator<<( std::ostream & str, const RepoState & obj );
-    };
+    using RepoState  = ServiceRepoState;
     using RepoStates = std::map<std::string, RepoState>;
 
     /** Access the remembered repository states. */
@@ -234,10 +198,17 @@ namespace zypp
      */
     std::ostream & dumpAsXmlOn( std::ostream & str, const std::string & content = "" ) const override;
 
-    struct Impl;
+
+    zyppng::ServiceInfo &ngServiceInfo();
+    const zyppng::ServiceInfo &ngServiceInfo() const;
+
 
   private:
-      RWCOW_pointer<Impl> _pimpl;
+    zyppng::repo::RepoInfoBase &pimpl() override;
+    const zyppng::repo::RepoInfoBase &pimpl() const override;
+
+    std::unique_ptr<zyppng::ServiceInfo> _pimpl;
+    bool _ownsPimpl = true;
   };
   ///////////////////////////////////////////////////////////////////
 
@@ -265,5 +236,7 @@ namespace zypp
 
     /////////////////////////////////////////////////////////////////
 } // namespace zypp
-///////////////////////////////////////////////////////////////////
-#endif // ZYPP_SAT_REPOSITORY_H
+
+ZYPP_END_LEGACY_API
+
+#endif // ZYPP_SERVICE_H

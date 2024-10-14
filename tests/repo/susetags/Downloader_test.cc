@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(susetags_download)
   Pathname localdir(tmp.path());
 
   auto res = ctx->initialize ()
-  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() ); } )
+  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec(ctx) ); } )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(susetags_gz_download)
 
   Pathname localdir(tmp.path());
   auto res = ctx->initialize ()
-  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() ); } )
+  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec(ctx) ); } )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);

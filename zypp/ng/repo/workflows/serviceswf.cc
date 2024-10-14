@@ -76,7 +76,7 @@ namespace zyppng::RepoServicesWorkflow {
             serviceUrl.setQueryParam( "cookies", "0" );
             return adaptServiceUrlToChroot( serviceUrl, _root_r );
           })
-          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec() ); })
+          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec( _ctx ) ); })
           | and_then( [this]( auto mediaHandle )    { return _ctx->provider()->provide( mediaHandle, "repo/repoindex.xml", ProvideFileSpec() ); } )
           | and_then( [this]( auto provideResult )  {
             try {
@@ -270,7 +270,7 @@ namespace zyppng::RepoServicesWorkflow {
       using MediaHandle = std::conditional_t<isAsync, ProvideMediaHandle, SyncMediaHandle>;
       using ProvideRes  = std::conditional_t<isAsync, zyppng::ProvideRes, SyncProvideRes>;
 
-      return ctx->provider()->attachMedia( url, ProvideMediaSpec() )
+      return ctx->provider()->attachMedia( url, ProvideMediaSpec( ctx ) )
       | and_then( [ctx]( MediaHandle medium ) { return ctx->provider()->provide( medium, "/repo/repoindex.xml", ProvideFileSpec().setCheckExistsOnly()); } )
       | [url]( expected<ProvideRes> result ) {
         if ( result )

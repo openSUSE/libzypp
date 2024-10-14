@@ -13,6 +13,7 @@
 #include <iostream>
 #include <utility>
 #include "providespec.h"
+#include <zypp-media/ng/mediacontext.h>
 
 using std::endl;
 
@@ -37,12 +38,14 @@ namespace zyppng
     Impl()
     {}
 
-    Impl( std::string &&label, zypp::Pathname &&vPath, unsigned medianr )
-      : _label(std::move( label ))
+    Impl( MediaContextRef &&ctx, std::string &&label, zypp::Pathname &&vPath, unsigned medianr )
+      : _context(std::move(ctx))
+      , _label(std::move( label ))
       , _medianr( medianr )
       , _verifyDataPath(std::move(vPath))
     {}
 
+    MediaContextRef _context;
     std::string _label;
     unsigned _medianr = 0U;
     zypp::Pathname _verifyDataPath;
@@ -91,10 +94,22 @@ namespace zyppng
   };
 
 
-  ProvideMediaSpec::ProvideMediaSpec( std::string label, zypp::filesystem::Pathname verifyData, unsigned medianr )
-    :  _pimpl( new Impl( std::move(label), std::move(verifyData), medianr ) )
+  ProvideMediaSpec::ProvideMediaSpec( MediaContextRef ctx, std::string label, zypp::filesystem::Pathname verifyData, unsigned medianr )
+    :  _pimpl( new Impl( std::move(ctx), std::move(label), std::move(verifyData), medianr ) )
   {
 
+  }
+
+  MediaContextRef ProvideMediaSpec::mediaContext() const
+  {
+    return _pimpl->_context;
+  }
+
+  void ProvideMediaSpec::setMediaContext(MediaContextRef ctx)
+  {
+    if ( !ctx )
+      return;
+    _pimpl->_context = ctx;
   }
 
   const std::string &ProvideMediaSpec::label() const

@@ -160,7 +160,7 @@ namespace zyppng::RepoManagerWorkflow {
         if ( _targetPath ) {
           MIL << "Target path is set, copying " << file.file() << " to " << *_targetPath/subPath << std::endl;
           return std::move(file)
-              | ProvideType::copyResultToDest( _zyppContext->provider(), *_targetPath/subPath)
+              | ProvideType::copyResultToDest( _zyppContext->provider(), _zyppContext, *_targetPath/subPath)
               | and_then([]( zypp::ManagedFile file ){ file.resetDispose(); return expected<void>::success(); } );
         }
         return makeReadyResult( expected<void>::success() );
@@ -181,7 +181,7 @@ namespace zyppng::RepoManagerWorkflow {
   auto probeRepoLogic( RefreshContextRef ctx, RepoInfo repo, std::optional<zypp::Pathname> targetPath)
   {
     using namespace zyppng::operators;
-    return ctx->provider()->prepareMedia( repo.url(), zyppng::ProvideMediaSpec() )
+    return ctx->provider()->prepareMedia( repo.url(), zyppng::ProvideMediaSpec( repo.context() ) )
       | and_then( [ctx, path = repo.path() ]( auto &&mediaHandle ) {
         return probeRepoType( ctx, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     });
@@ -214,7 +214,7 @@ namespace zyppng::RepoManagerWorkflow {
     auto readRepoFileLogic( ZyppContextRef ctx, zypp::Url repoFileUrl )
     {
       using namespace zyppng::operators;
-      return ctx->provider()->provide( repoFileUrl, ProvideFileSpec() )
+      return ctx->provider()->provide( ctx, repoFileUrl, ProvideFileSpec() )
       | and_then([ctx, repoFileUrl]( auto local ){
         DBG << "reading repo file " << repoFileUrl << ", local path: " << local.file() << std::endl;
         return repositories_in_file( ctx, local.file() );
@@ -506,7 +506,7 @@ namespace zyppng::RepoManagerWorkflow {
 
       // the actual logic pipeline, attaches the medium and tries to refresh from it
       auto refreshPipeline = [ refCtx, progressObserver ]( zypp::Url url ){
-        return refCtx->zyppContext()->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
+        return refCtx->zyppContext()->provider()->prepareMedia( url, zyppng::ProvideMediaSpec( refCtx->zyppContext() ) )
             | and_then( [ refCtx , progressObserver]( auto mediaHandle ) mutable { return refreshMetadata ( std::move(refCtx), std::move(mediaHandle), progressObserver ); } );
       };
 
@@ -849,7 +849,7 @@ namespace zyppng::RepoManagerWorkflow {
         if ( repokind != zypp::repo::RepoType::RPMPLAINDIR )
           return makeReadyResult( make_expected_success( std::optional<MediaHandle>() ));
 
-        return _refCtx->zyppContext()->provider()->attachMedia( info.url(), ProvideMediaSpec() )
+        return _refCtx->zyppContext()->provider()->attachMedia( info.url(), ProvideMediaSpec( _refCtx->zyppContext() ) )
         | and_then( [this]( MediaHandle handle ) {
           return makeReadyResult( make_expected_success( std::optional<MediaHandle>( std::move(handle)) ));
         });
@@ -1150,7 +1150,7 @@ namespace zyppng::RepoManagerWorkflow {
             }
 
             // always https ,but attaching makes things easier
-            return _zyppCtx->provider()->attachMedia( url, ProvideMediaSpec() )
+            return _zyppCtx->provider()->attachMedia( url, ProvideMediaSpec( _zyppCtx ) )
             | and_then( [this]( MediaHandle provideHdl ) { return _zyppCtx->provider()->provide( provideHdl, "/geoip", ProvideFileSpec() ); })
             | inspect_err( [hostname]( const std::exception_ptr& ){ MIL << "Failed to query GeoIP from hostname: " << hostname << std::endl; } )
             | and_then( [hostname, this]( ProvideRes provideRes ) {

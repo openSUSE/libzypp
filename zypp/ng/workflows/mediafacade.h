@@ -35,6 +35,7 @@ namespace zyppng {
     const zypp::Url &baseUrl() const;
     const std::optional<zypp::Pathname> &localPath() const;
     const AttachedSyncMediaInfo &info ()const;
+    std::optional<ProvideMediaSpec> spec() const;
 
   private:
     AttachedSyncMediaInfo_Ptr _data;
@@ -89,8 +90,8 @@ namespace zyppng {
     expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    expected<Res> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
-    expected<Res> provide(  const zypp::Url &url, const ProvideFileSpec &request );
+    expected<Res> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
+    expected<Res> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request );
     expected<Res> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
     expected<Res> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
@@ -98,18 +99,18 @@ namespace zyppng {
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    expected<zypp::CheckSum> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
+    expected<zypp::CheckSum> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    expected<zypp::ManagedFile> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
-    expected<zypp::ManagedFile> copyFile ( Res source, const zypp::Pathname &target );
+    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target );
+    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, Res source, const zypp::Pathname &target );
 
-    static auto copyResultToDest ( MediaSyncFacadeRef provider, const zypp::Pathname &targetPath ) {
-      return [ providerRef=std::move(provider), targetPath = targetPath ]( Res &&file ){
+    static auto copyResultToDest ( MediaSyncFacadeRef provider, MediaContextRef ctx, const zypp::Pathname &targetPath ) {
+      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = targetPath ]( Res &&file ){
         zypp::filesystem::assert_dir( targetPath.dirname () );
-        return providerRef->copyFile( std::move(file), targetPath );
+        return providerRef->copyFile( opContext, std::move(file), targetPath );
       };
     }
 

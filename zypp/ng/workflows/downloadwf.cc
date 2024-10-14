@@ -110,7 +110,7 @@ namespace zyppng {
                   return expected<ProvideRes>::success( std::move(res) );
                 });
                })
-             | and_then( ProvideType::copyResultToDest( _ctx->zyppContext()->provider(), _ctx->destDir() / _file ) )
+             | and_then( ProvideType::copyResultToDest( _ctx->zyppContext()->provider(), _ctx->zyppContext(), _ctx->destDir() / _file ) )
              | and_then( []( zypp::ManagedFile &&file ){
                 file.resetDispose ();
                 return make_expected_success (std::move(file));
@@ -128,7 +128,7 @@ namespace zyppng {
                 const auto &targetPath = _ctx->destDir() / _file;
                 zypp::filesystem::assert_dir( targetPath.dirname () );
 
-                return _ctx->zyppContext()->provider()->copyFile( cachedFile, _ctx->destDir() / _file )
+                return _ctx->zyppContext()->provider()->copyFile( _ctx->zyppContext(), cachedFile, _ctx->destDir() / _file )
                 | and_then( [cachedFile]( zypp::ManagedFile &&f) { f.resetDispose(); return make_expected_success (std::move(f)); });
             });
           }
@@ -162,7 +162,7 @@ namespace zyppng {
 
             // calc checksum, but do not use the workflow. Here we don't want to ask the user if a wrong checksum should
             // be accepted
-            return provider->checksumForFile( cacheFilePath, _filespec.checksum().type() )
+            return provider->checksumForFile( _ctx->zyppContext(), cacheFilePath, _filespec.checksum().type() )
             | and_then([this, cacheFilePath, targetFile]( zypp::CheckSum sum ) {
 
               auto mgdFile = zypp::ManagedFile( cacheFilePath );

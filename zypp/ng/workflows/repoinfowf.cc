@@ -123,8 +123,8 @@ namespace zyppng {
     protected:
 
       MaybeAsyncRef<zyppng::expected<zypp::ManagedFile>> fetchKey ( const zypp::Url &url ) {
-        return _reports.zyppContext()->provider ()->provide( url, zyppng::ProvideFileSpec() )
-         | and_then( ProvideType::copyResultToDest( _reports.zyppContext()->provider(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
+        return _reports.zyppContext()->provider ()->provide( _reports.zyppContext(), url, zyppng::ProvideFileSpec() )
+         | and_then( ProvideType::copyResultToDest( _reports.zyppContext()->provider(), _reports.zyppContext(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
       }
 
       void importKeysInTargetDir () {

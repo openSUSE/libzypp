@@ -59,6 +59,11 @@ namespace zypp
         return sourceProvidePackage( citem_r );
       }
 
+      virtual ManagedFile get_from_cache( const PoolItem & citem_r )
+      {
+        return sourceProvideCachedPackage( citem_r );
+      }
+
       void setCommitList( std::vector<sat::Solvable> commitList_r )
       { _commitList = std::move(commitList_r); }
 

@@ -175,6 +175,8 @@ namespace zypp
 
       void send( const PluginFrame & frame_r ) const;
 
+      Progress progress() const;
+
       PluginFrame receive() const;
 
     private:
@@ -273,6 +275,23 @@ namespace zypp
     }
     return _lastReturn;
   }
+
+  PluginScript::Progress PluginScript::Impl::progress() const
+  {
+    const PluginFrame frame_r = PluginFrame( "PLUGIN_PROGRESS" );
+    PluginFrame resp;
+    Progress ret(-1,-1);
+    this->send( frame_r );
+    resp = this->receive();
+    if(resp.empty())
+      return ret;
+
+    ret.first = atoi( resp.getHeaderNT("PLUGIN_PROGRESS_CURRENT", "-1").c_str() );
+    ret.second = atoi( resp.getHeaderNT("PLUGIN_PROGRESS_MAX", "-1").c_str() );
+
+    return ret;
+  }
+  
 
   void PluginScript::Impl::send( const PluginFrame & frame_r ) const
   {
@@ -518,6 +537,9 @@ namespace zypp
 
   void PluginScript::send( const PluginFrame & frame_r ) const
   { _pimpl->send( frame_r ); }
+
+  PluginScript::Progress PluginScript::progress() const
+  { return _pimpl->progress(); }
 
   PluginFrame PluginScript::receive() const
   { return _pimpl->receive(); }

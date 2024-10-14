@@ -101,6 +101,9 @@ namespace zypp
     const std::list<PluginScript> scripts() const
     { return _scripts; }
 
+    PluginScript first()
+    { return *_scripts.begin(); }
+
   private:
     /** Launch a plugin sending PLUGINSTART message. */
     void doLoad( const PathInfo & pi_r )
@@ -176,6 +179,9 @@ namespace zypp
 
   void PluginExecutor::send( const PluginFrame & frame_r )
   { _pimpl->send( frame_r ); }
+
+  PluginScript PluginExecutor::first()
+  { return _pimpl->first(); }
 
   std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj )
   { return str << obj._pimpl->scripts(); }

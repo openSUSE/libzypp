@@ -362,7 +362,6 @@ SET( zypp_parser_SRCS
 
 SET( zypp_parser_HEADERS
   parser/HistoryLogReader.h
-  parser/ParserProgress.h
   parser/RepoFileReader.h
   parser/RepoindexFileReader.h
   parser/ServiceFileReader.h

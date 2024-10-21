@@ -132,7 +132,10 @@ namespace zyppng
     /** Set whether the resource is \ref optional. */
     ProvideFileSpec & setOptional( bool val );
 
-    /** The size of the resource on the server. */
+    /** The size of the resource on the server.
+     * \note If unset a default of at most 20MB is assumed.
+     * \ref setDownloadSize to zero for unlimited downloads.
+     */
     const zypp::ByteCount &downloadSize() const;
     /** Set the \ref downloadSize. */
     ProvideFileSpec &setDownloadSize( const zypp::ByteCount &val_r );

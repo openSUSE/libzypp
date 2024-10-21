@@ -40,7 +40,7 @@ namespace zypp
 
     bool _optional = false;
 
-    ByteCount _downloadSize;
+    ByteCount _downloadSize = zypp::ByteCount( 20, zypp::ByteCount::MB );
     CheckSum  _checksum;
 
     ByteCount _openSize;

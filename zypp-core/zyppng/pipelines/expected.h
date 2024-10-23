@@ -394,6 +394,26 @@ namespace zyppng {
 
   };
 
+  namespace detail {
+    template <typename T>
+    struct is_expected_type {
+      static constexpr bool value = false;
+    };
+
+    template<typename T, typename E>
+    struct is_expected_type<expected<T, E>> {
+      static constexpr bool value = true;
+    };
+  }
+
+  /*!
+   * \brief is_expected_type_v
+   *
+   * Detect at compile time if a given type is a expected type
+   */
+  template <typename T>
+  constexpr bool is_expected_type_v = detail::is_expected_type<T>::value;
+
   #define expected_return_on_error(T, exp) \
     if ( !exp ) return expected<T>::error( exp.error() )
 

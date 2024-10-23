@@ -14,6 +14,14 @@
 #include <zypp-core/zyppng/base/private/threaddata_p.h>
 #include <zypp-core/base/String.h>
 
+#include <zypp-glib/utils/RetainPtr>
+
+#include <zypp/ng/userrequest.h>
+#include <zypp-glib/ui/userrequest.h>
+#include <zypp-glib/ui/booleanchoicerequest.h>
+#include <zypp-glib/ui/listchoicerequest.h>
+#include <zypp-glib/ui/showmessagerequest.h>
+
 #include <iostream>
 
 typedef enum
@@ -28,11 +36,11 @@ GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 /* Signals */
 typedef enum {
-    // FIRST_SIG = 1,
+    SIG_EVENT = 1,
     LAST_SIGNAL
 } ZyppContextSignals;
 
-//static guint signals[LAST_SIGNAL] = { 0, };
+static guint signals[LAST_SIGNAL] = { 0, };
 
 
 G_DEFINE_TYPE_WITH_PRIVATE(ZyppContext, zypp_context, G_TYPE_OBJECT)
@@ -60,6 +68,23 @@ void zypp_context_class_init( ZyppContextClass *klass )
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
                                      obj_properties);
+
+  {
+    std::vector<GType> signal_parms = { ZYPP_TYPE_USER_REQUEST };
+    signals[SIG_EVENT] =
+      g_signal_newv ("event",
+                     G_TYPE_FROM_CLASS (klass),
+                    (GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS),
+                    NULL /* closure */,
+                    NULL /* accumulator */,
+                    NULL /* accumulator data */,
+                    NULL /* C marshaller */,
+                    G_TYPE_NONE /* return_type */,
+                    signal_parms.size() /* n_params */,
+                    signal_parms.data() );
+  }
+
+
 }
 
 static void glogHandler (const gchar *log_domain, GLogLevelFlags log_level, const gchar *message, gpointer user_data);
@@ -76,6 +101,40 @@ void ZyppContextPrivate::initializeCpp()
     _context = zyppng::SyncContext::create();
   }
   _constructProps.reset();
+
+  _signalConns.insert ( _signalConns.end(), {
+     _context->connectFunc( &zyppng::ContextBase::sigEvent, [this]( zyppng::UserRequestRef req ) {
+          switch( req->type() )  {
+            case zyppng::UserRequestType::Invalid: {
+              ERR << "Ignoring user request with type Invalid, this is a bug!" << std::endl;
+              return; //ignore
+            }
+            case zyppng::UserRequestType::Message: {
+              auto actualReq = std::dynamic_pointer_cast<zyppng::ShowMessageRequest>(req);
+              auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppShowMsgRequest>(actualReq);
+              g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+              return;
+            }
+            case zyppng::UserRequestType::ListChoice: {
+              auto actualReq = std::dynamic_pointer_cast<zyppng::ListChoiceRequest>(req);
+              auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppListChoiceRequest>(actualReq);
+              g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+              return;
+            }
+            case zyppng::UserRequestType::BooleanChoice: {
+              auto actualReq = std::dynamic_pointer_cast<zyppng::BooleanChoiceRequest>(req);
+              auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppBooleanChoiceRequest>(actualReq);
+              g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+              return;
+            }
+            case zyppng::UserRequestType::Custom: {
+              ERR << "Custom user requests can not be wrapped with glib!" << std::endl;
+              return; //ignore
+            }
+          }
+     })
+  });
+
 }
 
 zyppng::SyncContextRef &ZyppContextPrivate::cppType()

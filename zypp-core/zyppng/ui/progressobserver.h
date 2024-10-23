@@ -22,6 +22,7 @@
 namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
+  ZYPP_FWD_DECL_TYPE_WITH_REFS( UserRequest );
   class ProgressObserverPrivate;
 
   class ProgressObserver : public Base
@@ -106,6 +107,9 @@ namespace zyppng {
 
     zypp::ProgressData::ReceiverFnc makeProgressDataReceiver ();
 
+
+    void sendUserRequest( const UserRequestRef& event );
+
     SignalProxy<void ( ProgressObserver &sender  )> sigStarted ();
     SignalProxy<void ( ProgressObserver &sender, const std::string &str )> sigLabelChanged ();
     SignalProxy<void ( ProgressObserver &sender, double steps )>    sigStepsChanged();
@@ -113,6 +117,7 @@ namespace zyppng {
     SignalProxy<void ( ProgressObserver &sender, double progress )> sigProgressChanged();
     SignalProxy<void ( ProgressObserver &sender, FinishResult result )> sigFinished();
     SignalProxy<void ( ProgressObserver &sender, ProgressObserverRef child )> sigNewSubprogress();
+    SignalProxy<void ( ProgressObserver &sender, UserRequestRef event)> sigEvent();
 
   };
 

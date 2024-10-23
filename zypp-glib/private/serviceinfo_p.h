@@ -26,7 +26,7 @@ struct ZyppServiceInfoPrivate
 
   zyppng::ServiceInfo _info{ zyppng::ContextBaseRef(nullptr) };
 
-  ZyppServiceInfoPrivate( ZyppServiceInfo *pub ) : _gObject(nullptr) {}
+  ZyppServiceInfoPrivate( ZyppServiceInfo *pub ) : _gObject(pub) {}
   void initialize();
   void finalize(){}
 
@@ -36,9 +36,6 @@ private:
 
 struct _ZyppServiceInfo {
   GObject parent_instance;
-  struct Cpp {
-    zyppng::ServiceInfo _info;
-  } _data;
 };
 
 

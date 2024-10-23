@@ -31,24 +31,6 @@ namespace zyppng {
     return d;
   }
 
-  ZYPP_IMPL_PRIVATE_CONSTR_ARGS(TrustKeyRequest, std::string label, KeyTrust trust, UserData userData )
-    : UserRequest( std::move(userData) )
-    , _label( std::move(label) )
-    , _answer(trust)
-  { }
-
-  void TrustKeyRequest::setChoice(const KeyTrust sel)
-  { _answer = sel; }
-
-  TrustKeyRequest::KeyTrust TrustKeyRequest::choice() const
-  { return _answer; }
-
-  const std::string TrustKeyRequest::label() const
-  { return _label; }
-
-  UserRequestType TrustKeyRequest::type() const
-  { return UserRequestType::KeyTrust; }
-
   UserData AcceptKeyRequest::makeData(const zypp::PublicKey &key, const zypp::KeyContext &keycontext)
   {
     UserData d( CTYPE.data() );

@@ -7,8 +7,16 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 
-#include "reporthelper.h"
+#include <zypp/ng/context_fwd.h>
+#include <zypp-core/zyppng/ui/progressobserver.h>
 
 namespace zyppng {
+
+  class LegacyReportReceiverBase
+  {
+  public:
+    virtual ContextBaseRef context() = 0;
+    virtual ProgressObserverRef masterProgress() = 0;
+  };
 
 }

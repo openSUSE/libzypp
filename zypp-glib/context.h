@@ -51,9 +51,6 @@
  *
  * Settings for zypp are loaded from the rootfs directory and locks are also applied relative to it.
  * Meaning that one context can operate on "/" while another one can operate on "/tmp/rootfs".
- *
- * \note Currently only one ZyppContext is supported until we have refactored the underlying code to support
- *       having multiple of them. Mixing them atm will not work due to locks and libsolv limitations
  */
 
 

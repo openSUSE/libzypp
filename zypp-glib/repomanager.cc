@@ -37,7 +37,6 @@ typedef enum {
 } ZyppRepoManagerSignals;
 //static guint signals[LAST_SIGNAL] = { 0, };
 
-
 #define ZYPP_REPO_MANAGER_D() \
   ZYPP_GLIB_WRAPPER_D( ZyppRepoManager, zypp_repo_manager )
 
@@ -126,8 +125,8 @@ zypp_repo_manager_get_property (GObject    *object,
                            GParamSpec *pspec)
 {
   g_return_if_fail( ZYPP_IS_REPOMANAGER(object) );
-  ZyppRepoManager *self = ZYPP_REPOMANAGER (object);
-  ZYPP_REPO_MANAGER_D();
+//  ZyppRepoManager *self = ZYPP_REPOMANAGER (object);
+//  ZYPP_REPO_MANAGER_D();
 
   switch ((ZyppRepoManagerProperty)property_id ) {
     default:
@@ -221,6 +220,10 @@ GList *zypp_repo_manager_get_known_services(ZyppRepoManager *self)
 
 GList *zypp_repo_manager_refresh_repos( ZyppRepoManager *self, GList *repos, gboolean forceDownload, ZyppProgressObserver *statusTracker )
 {
+  ZYPP_REPO_MANAGER_D();
+
+  d->_cppObj->zyppContext();
+
   zypp::glib::GListContainer<ZyppExpected> results;
   zypp::glib::GListView<ZyppRepoInfo> repoInfos( repos );
 

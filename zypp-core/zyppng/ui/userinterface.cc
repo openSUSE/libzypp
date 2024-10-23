@@ -21,6 +21,12 @@ namespace zyppng {
   UserInterface::UserInterface( UserInterfacePrivate &d ) : Base(d)
   { }
 
+  UserInterfaceRef UserInterface::instance()
+  {
+    static UserInterfaceRef r = UserInterface::create();
+    return r;
+  }
+
   void UserInterface::sendUserRequest(const UserRequestRef& event)
   {
     Z_D();

@@ -2,6 +2,7 @@
 #include "zypp-core/AutoDispose.h"
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-core/base/dtorreset.h>
+#include <zypp-core/zyppng/ui/userrequest.h>
 
 namespace zyppng {
 
@@ -77,6 +78,7 @@ namespace zyppng {
     Signal<void ( ProgressObserver &sender, double steps ) >              _sigProgressChanged;
     Signal<void ( ProgressObserver &sender, ProgressObserver::FinishResult )>  _sigFinished;
     Signal<void ( ProgressObserver &sender, ProgressObserverRef child )>  _sigNewSubprogress;
+    Signal<void ( ProgressObserver &sender, UserRequestRef event)>        _sigEvent;
   };
 
   ZYPP_IMPL_PRIVATE(ProgressObserver)
@@ -309,8 +311,8 @@ namespace zyppng {
     } else {
       d->_children.push_back( child );
       d->_childInfo.push_back( {
-        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
-          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
+        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &, auto ){ d_func()->updateCounters(); }, *this ),
+          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &, auto ){ d_func()->updateCounters(); }, *this ),
           connect     ( *child, &ProgressObserver::sigStarted, *d, &ProgressObserverPrivate::onChildStarted ),
           connect     ( *child, &ProgressObserver::sigFinished, *d, &ProgressObserverPrivate::onChildFinished )
         }
@@ -353,6 +355,15 @@ namespace zyppng {
         instance->setFinished();
       return true;
     };
+  }
+
+  void ProgressObserver::sendUserRequest( const UserRequestRef &event )
+  {
+    Z_D();
+    d->_sigEvent.emit( *this, event );
+    if ( !event->accepted () ) {
+      // our receivers did not handle the request, we need to bubble up!
+    }
   }
 
 } // namespace zyppng

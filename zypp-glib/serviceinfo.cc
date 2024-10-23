@@ -103,5 +103,5 @@ ZyppServiceInfo *zypp_service_info_new ( ZyppContext *context )
 
 ZyppServiceInfo *zypp_wrap_cpp( zyppng::ServiceInfo info )
 {
-  return static_cast<ZyppServiceInfo *>(g_object_new (ZYPP_TYPE_SERVICE_INFO, zypp::glib::internal::ZYPP_CPP_OBJECT_PROPERTY_NAME.data(), &info, NULL));
+  return ZYPP_SERVICE_INFO(g_object_new (ZYPP_TYPE_SERVICE_INFO, zypp::glib::internal::ZYPP_CPP_OBJECT_PROPERTY_NAME.data(), &info, NULL));
 }

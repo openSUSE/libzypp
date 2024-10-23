@@ -23,7 +23,7 @@ namespace zypp::glib {
   };
 
   namespace internal {
-    template < typename GLibContainer, typename T, typename Enable = void >
+    template < typename GLibContainer, typename T, typename Traits = GLibTypeTraits<T>, typename Enable = void >
     struct GContainerTraits;
 
     template <typename T, typename Traits>
@@ -179,9 +179,8 @@ namespace zypp::glib {
       }
     }
 
-    template < typename GLibContainer, typename T, typename Enable >
+    template < typename GLibContainer, typename T, typename Traits, typename Enable >
     struct GContainerTraits {
-      static_assert( std::is_detected_v< internal::has_glib_type_trait, T >, "A Glib type trait is required to use GListContainer, forgot to use ZYPP_GLIB_DEFINE_GLIB_TRAITS_WITH_CODE for your type? " );
       using type            = T;
       using value_type      = T*;
       using reference       = value_type;
@@ -208,13 +207,13 @@ namespace zypp::glib {
       //}
 
       static void releaseData ( gpointer data ) {
-        static_assert( list_can_del_v<GLibTypeTraits<T>>, "A delete trait is required to use GListContainer" );
-        GLibTypeTraits<T>::delete_fn( static_cast<T*>(data));
+        static_assert( list_can_del_v<Traits>, "A delete trait is required to use GListContainer" );
+        Traits::delete_fn( static_cast<T*>(data));
       }
     };
 
-    template < typename GLibContainer, typename T >
-    struct GContainerTraits<GLibContainer, T, std::enable_if_t< g_containter_int_mode<T> > >{
+    template < typename GLibContainer, typename T, typename Traits >
+    struct GContainerTraits<GLibContainer, T, Traits, std::enable_if_t< g_containter_int_mode<T> > >{
       using type            = T;
       using value_type      = T;
       using reference       = internal::gcontainer_value_ref<GLibContainer, T>;
@@ -450,6 +449,12 @@ namespace zypp::glib {
       return this_type( copy, Ownership::Full );
     }
   };
+
+
+  // some convenience types
+  using GCharContainer = GListContainer<gchar, internal::GContainerTraits<::GList, gchar, GLibTypeTraitsgchar>>;
+  using GCharView      = GListView<gchar, internal::GContainerTraits<::GList, gchar, GLibTypeTraitsgchar>>;
+
 }
 
 #endif

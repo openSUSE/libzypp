@@ -31,11 +31,12 @@ namespace zyppng {
   */
 
 
+  // keep in sync with glib wrapper code
   enum class UserRequestType : uint {
+    Invalid,        // invalid message, used as a default return value in Glib Code
     Message,        // simple message to the user, no input or predefined like y/n
     ListChoice,     // request to select from a list of options
     BooleanChoice,  // request user to say yes or no
-    KeyTrust,       // request to the user to trust a key
     Custom = 512
   };
 
@@ -54,7 +55,25 @@ namespace zyppng {
     const UserData &userData() const;
     UserData &userData();
 
+    /*!
+     * Code accepted the event, it is now considered handled and will not be passed to the
+     * parent evennt handler for processing.
+     */
+    void accept();
+
+    /*!
+     * Sets the internal accepted flag to false, event is now considered as "not yet handled"
+     * and will bubble up to the parent event handler.
+     */
+    void ignore();
+
+    /*!
+     * Returns true if the event was handled, otherwise false is returned.
+     */
+    bool accepted() const;
+
   private:
+    bool        _accepted = false;
     UserData    _userData;
   };
 
@@ -65,7 +84,7 @@ namespace zyppng {
    * print on the users screen
    *
    * \code
-   * context->sendUserRequest( ShowMessageRequest::create("Repository downloaded") );
+   * UserInterface::instance()->sendUserRequest( ShowMessageRequest::create("Repository downloaded") );
    * \endcode
    */
   class ShowMessageRequest : public UserRequest
@@ -73,6 +92,7 @@ namespace zyppng {
     ZYPP_ADD_CREATE_FUNC(ShowMessageRequest)
   public:
 
+    // Keep in sync with the GLib wrapper enum!
     enum class MType {
       Debug, Info, Warning, Error, Important, Data
     };
@@ -97,7 +117,7 @@ namespace zyppng {
    * \code
    *
    * auto request = ListChoiceRequest::create( "Please select the choice you want: ", { {"y", "Info about y"}, {"n", "Info about n"}, {"d", "Info about d"} }, 1 );
-   * context->sendUserRequest( request );
+   * UserInterface::instance()->sendUserRequest( request );
    *
    * const auto choice = request->choice();
    * switch( choice ) {

@@ -1,3 +1,4 @@
+/*** BEGIN file-header ***/
 /*---------------------------------------------------------------------\
 |                          ____ _   __ __ ___                          |
 |                         |__  / \ / / . \ . \                         |
@@ -6,9 +7,23 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
+#include <zypp-glib/ui/zyppenums-ui.h>
 
-#include "reporthelper.h"
+/*** END file-header ***/
 
-namespace zyppng {
+/*** BEGIN file-production ***/
+/* enumerations from \"zyppng/@basename@\" */
+#include <zypp-glib/ui/@basename@>
+/*** END file-production ***/
 
-}
+/*** BEGIN value-header ***/
+G_DEFINE_ENUM_TYPE (@EnumName@, @enum_name@
+/*** END value-header ***/
+
+/*** BEGIN value-production ***/
+  ,G_DEFINE_ENUM_VALUE ( @VALUENAME@,  "@valuenick@")
+/*** END value-production ***/
+
+/*** BEGIN value-tail ***/
+)
+/*** END value-tail ***/

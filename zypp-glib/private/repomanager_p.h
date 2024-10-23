@@ -29,7 +29,6 @@ struct ZyppRepoManagerPrivate
   struct ConstructData {
     zyppng::SyncRepoManagerRef _cppObj;
     zypp::glib::ZyppContextRef _ctx;
-    zypp::RepoManagerOptions _options;
   };
   std::optional<ConstructData> _constrProps = ConstructData();
 

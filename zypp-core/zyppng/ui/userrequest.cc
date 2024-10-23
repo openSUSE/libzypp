@@ -72,6 +72,8 @@ namespace zyppng
   {
     if ( sel >= _answers.size() )
       ZYPP_THROW( std::logic_error("Selection index is out of range") );
+
+    accept();
     _answer = sel;
   }
 
@@ -108,6 +110,7 @@ namespace zyppng
 
   void BooleanChoiceRequest::setChoice(const bool sel)
   {
+    accept();
     _answer = sel;
   }
 

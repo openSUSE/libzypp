@@ -11,6 +11,7 @@
 #include <glib-object.h>
 #include <zypp-glib/zypp-glib_export.h>
 G_BEGIN_DECLS
+#pragma GCC visibility push(default)
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
@@ -24,5 +25,6 @@ GType @enum_name@_get_type (void) G_GNUC_CONST LIBZYPP_GLIB_EXPORT;
 /*** END value-header ***/
 
 /*** BEGIN file-tail ***/
+#pragma GCC visibility pop
 G_END_DECLS
 /*** END file-tail ***/

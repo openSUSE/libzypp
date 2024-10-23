@@ -65,52 +65,6 @@ namespace zyppng {
     UserData makeData ( const zypp::Pathname &p, const std::string &requested, const std::string &found );
   }
 
-
-  ZYPP_FWD_DECL_TYPE_WITH_REFS(TrustKeyRequest);
-  class TrustKeyRequest : public UserRequest
-  {
-    ZYPP_ADD_CREATE_FUNC(TrustKeyRequest)
-  public:
-    /*!
-     * Keep in sync with zypp::KeyRingReport::KeyTrust, we do not want
-     * to include old APIs here if possible.
-     */
-    enum KeyTrust
-    {
-      /**
-       * User has chosen not to trust the key.
-       */
-      KEY_DONT_TRUST = 0,
-      /**
-       * This basically means, we knew the key, but it was not trusted. User
-       * has chosen to continue, but not import the key.
-       */
-      KEY_TRUST_TEMPORARILY,
-      /**
-       * Import the key.
-       * This means saving the key in the trusted database so next run it will appear as trusted.
-       * Nothing to do with KEY_TRUST_TEMPORARILY, as you CAN trust a key without importing it,
-       * basically you will be asked every time again.
-       * There are programs who prefer to manage the trust keyring on their own and use trustKey
-       * without importing it into rpm.
-       */
-      KEY_TRUST_AND_IMPORT
-    };
-
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(TrustKeyRequest, std::string label, KeyTrust trust = KEY_DONT_TRUST, UserData userData = {} );
-
-    void setChoice ( const KeyTrust sel );
-    KeyTrust choice() const;
-
-    const std::string label() const;
-
-    UserRequestType type() const override;
-
-  private:
-      std::string _label;
-      KeyTrust _answer = KEY_DONT_TRUST;
-  };
-
   /*!
    * Ask user to trust and/or import the key to trusted keyring.
    * \see zypp::KeyTrust

@@ -30,8 +30,15 @@ SET( zypp_glib_HEADERS
   repomanager.h
   repository.h
   serviceinfo.h
-  #userrequest.h
   zypp-glib.h
+
+)
+
+SET( zypp_glib_ui_HEADERS
+  ui/booleanchoicerequest.h
+  ui/listchoicerequest.h
+  ui/showmessagerequest.h
+  ui/userrequest.h
 
 )
 
@@ -46,7 +53,16 @@ SET( zypp_glib_private_HEADERS
   private/repomanager_p.h
   private/repository_p.h
   private/serviceinfo_p.h
-  #private/userrequest_p.h
+  private/callbacks/legacyreportreceiverbase.h
+  #private/callbacks/keyring.h
+  #private/callbacks/media.h
+  #private/callbacks/rpm.h
+  private/callbacks/repo.h
+  private/callbacks/job.h
+  ui/private/booleanchoicerequest_p.h
+  ui/private/listchoicerequest_p.h
+  ui/private/showmessagerequest_p.h
+  ui/private/userrequest_p.h
 )
 
 SET( zypp_glib_SRCS
@@ -61,14 +77,19 @@ SET( zypp_glib_SRCS
   repomanager.cc
   repository.cc
   serviceinfo.cc
-  #userrequest.cc
+  ui/booleanchoicerequest.cc
+  ui/listchoicerequest.cc
+  ui/showmessagerequest.cc
+  ui/userrequest.cc
 )
 
 glib_mkenums( zyppenums zyppenums.h.in zyppenums.c.in ${zypp_glib_HEADERS} )
+glib_mkenums( ui/zyppenums-ui ui/zyppenums-ui.h.in ui/zyppenums-ui.c.in ${zypp_glib_ui_HEADERS} )
 
-SET( zypp_glib_public_HEADERS ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h )
+INSTALL(  FILES ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h  DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib" )
+INSTALL(  FILES ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib/ui" )
 
-INSTALL(  FILES ${zypp_glib_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib" )
+SET( zypp_glib_public_HEADERS ${zypp_glib_HEADERS} ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h )
 
 SET( zypp_glib_utils_HEADERS
   utils/GLibMemory
@@ -88,10 +109,16 @@ SET( zypp_glib_lib_SRCS
     ${zypp_glib_SRCS}
     ${zypp_glib_utils_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.c
+    ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.c
 )
 
 SET( zypp_glib_lib_HEADERS
-    ${zypp_glib_private_HEADERS} ${zypp_glib_public_HEADERS} ${zypp_glib_utils_HEADERS}
+    ${zypp_glib_private_HEADERS}
+    ${zypp_glib_HEADERS}
+    ${zypp_glib_ui_HEADERS}
+    ${zypp_glib_utils_HEADERS}
+    ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h
+    ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h
 )
 
 # Default loggroup for all files

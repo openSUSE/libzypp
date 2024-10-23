@@ -62,6 +62,11 @@ namespace zyppng {
 
 
   namespace operators {
+    /*!
+     * \brief inspect
+     * Invokes the callback if the value passed to the inspect implementation
+     * evaluates as valid, e.g for a \ref expected this means that it does not contain an error.
+     */
     template <typename Fun>
     auto inspect ( Fun && function ) {
       return detail::inspect_helper<Fun> {
@@ -69,6 +74,11 @@ namespace zyppng {
       };
     }
 
+    /*!
+     * \brief inspect_err
+     * Invokes the callback if the value passed to the inspect implementation
+     * evaluates as invalid, e.g for a \ref expected this means that it does contain an error.
+     */
     template <typename Fun>
     auto inspect_err ( Fun && function ) {
       return detail::inspect_err_helper<Fun> {

@@ -49,7 +49,9 @@ namespace zypp {
 
     public:
         Impl(Pathname &&path_r, Flags flags_r = CtorDefault)
-          : _path(std::move(path_r)), _flags(flags_r) {}
+          : _path(std::move(path_r)), _flags(flags_r) {
+            MIL << _path << endl;
+          }
 
         Impl(const Impl &) = delete;
         Impl(Impl &&) = delete;

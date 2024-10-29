@@ -407,6 +407,13 @@ namespace zyppng::RepoManagerWorkflow {
           if ( status != zypp::RepoManagerFlags::REFRESH_NEEDED )
             return makeReadyResult ( expected<RefreshContextRefType>::success( std::move(_refreshContext) ) );
 
+          // if REFRESH_NEEDED but we don't have the permission to write the cache, stop here.
+          if ( not zypp::PathInfo(_refreshContext->rawCachePath().dirname()).userMayWX() ) {
+            WAR << "No permision to write cache " << zypp::PathInfo(_refreshContext->rawCachePath().dirname()) << std::endl;
+            auto exception = ZYPP_EXCPT_PTR( zypp::repo::RepoNoPermissionException( _refreshContext->repoInfo() ) );
+            return makeReadyResult( expected<RefreshContextRefType>::error( std::move(exception) ) );
+          }
+
           MIL << "Going to refresh metadata from " << _medium.baseUrl() << std::endl;
 
           // bsc#1048315: Always re-probe in case of repo format change.
@@ -476,18 +483,25 @@ namespace zyppng::RepoManagerWorkflow {
     auto refreshMetadataLogic( RefreshContextRef refCtx, ProgressObserverRef progressObserver)
     {
       // small shared helper struct to pass around the exception and to remember that we tried the first URL
-      struct ExHelper {
-        bool isFirst;
-        // we will throw this later if no URL checks out fine
+      struct ExHelper
+      {
+        // We will throw this later if no URL checks out fine.
+        // The first exception will be remembered, further exceptions just added to the history.
+        ExHelper( const RepoInfo & info_r )
+        : rexception { info_r, _("Failed to retrieve new repository metadata.") }
+        {}
+        void remember( const zypp::Exception & old_r )
+        {
+          if ( rexception.historyEmpty() ) {
+            rexception.remember( old_r );
+          } else {
+            rexception.addHistory( old_r.asUserString() );
+          }
+        }
         zypp::repo::RepoException rexception;
       };
 
-      auto helper = std::make_shared<ExHelper>( ExHelper{
-       false,
-       zypp::repo::RepoException { refCtx->repoInfo(), PL_("Valid metadata not found at specified URL",
-                                  "Valid metadata not found at specified URLs",
-                                  refCtx->repoInfo().baseUrlsSize() ) }
-      });
+      auto helper = std::make_shared<ExHelper>( ExHelper{ refCtx->repoInfo() } );
 
       // the actual logic pipeline, attaches the medium and tries to refresh from it
       auto refreshPipeline = [ refCtx, progressObserver ]( zypp::Url url ){
@@ -500,18 +514,14 @@ namespace zyppng::RepoManagerWorkflow {
         if ( !res ) {
           try {
             ZYPP_RETHROW( res.error() );
+          } catch ( const zypp::repo::RepoNoPermissionException &e ) {
+            // We deliver the Exception caught here (no permission to write chache) and give up.
+            ERR << "Giving up..." << std::endl;
+            helper->remember( e );
+            return true;  // stop processing
           } catch ( const zypp::Exception &e ) {
             ERR << "Trying another url..." << std::endl;
-
-            // remember the exception caught for the *first URL*
-            // if all other URLs fail, the rexception will be thrown with the
-            // cause of the problem of the first URL remembered
-            if ( helper->isFirst ) {
-              helper->rexception.remember( e );
-              helper->isFirst = false;
-            } else {
-              helper->rexception.addHistory( e.asUserString() );
-            }
+            helper->remember( e );
           }
           return false;
         }

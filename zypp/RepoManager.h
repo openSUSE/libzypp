@@ -237,6 +237,7 @@ namespace zypp
     * \throws repo::RepoNoUrlException if no urls are available.
     * \throws repo::RepoNoAliasException if can't figure an alias
     * \throws repo::RepoUnknownTypeException if the metadata is unknown
+    * \throws repo::RepoNoPermissionException if the user has no permission to update(write) the caches
     * \throws repo::RepoException if the repository is invalid
     *         (no valid metadata found at any of baseurls)
     */
@@ -285,6 +286,7 @@ namespace zypp
     * \throws repo::RepoMetadataException if the metadata
     *     is not enough to build a cache (empty, incorrect, or
     *     refresh needed)
+    * \throws repo::RepoNoPermissionException if the user has no permission to update(write) the caches
     * \throws repo::RepoUnknownTypeException
     * \throws parser::ParseException if parser encounters an error.
     * \throws Exception on unknown error.

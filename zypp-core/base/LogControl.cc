@@ -312,30 +312,31 @@ namespace zypp
     static constexpr std::string_view RE { "\033[31;1;40m" };
     static constexpr std::string_view MA { "\033[35;40m" };
 
-    unsigned TraceLeave::_depth = 1;
+    unsigned TraceLeave::_depth = 0;
 
-    std::string tracestr( char tag_r, unsigned depth_r, const char * file_r, const char * fnc_r, int line_r )
+    std::string tracestr( char tag_r, unsigned depth_r, const std::string & msg_r, const char * file_r, const char * fnc_r, int line_r )
     {
-      static str::Format fmt { "*** %s %s(%s):%d" };
-      fmt % std::string(depth_r,tag_r) % file_r % fnc_r % line_r;
+      static str::Format fmt { "***%2d %s%c %s(%s):%d %s" };
+      fmt % depth_r %std::string(depth_r,'.') % tag_r % Pathname::basename(file_r) % fnc_r % line_r % msg_r;
       return fmt;
     }
 
-    TraceLeave::TraceLeave( const char * file_r, const char * fnc_r, int line_r )
-    : _file( std::move(file_r) )
-    , _fnc( std::move(fnc_r) )
+    TraceLeave::TraceLeave( const char * file_r, const char * fnc_r, int line_r, std::string msg_r )
+    : _file( file_r )
+    , _fnc( fnc_r )
     , _line( line_r )
+    , _msg( std::move(msg_r) )
     {
-      const std::string & m { tracestr( '>',_depth++, _file,_fnc,_line ) };
-      USR << m << endl;
-      Osd(L_USR("TRACE"),1) << m << endl;
+      unsigned depth = _depth++;
+      const std::string & m { tracestr( '>',depth, _msg, _file,_fnc,_line ) };
+      Osd(L_USR("TRACE"),depth) << m << endl;
     }
 
     TraceLeave::~TraceLeave()
     {
-      const std::string & m { tracestr( '<',--_depth, _file,_fnc,_line ) };
-      USR << m << endl;
-      Osd(L_USR("TRACE"),1) << m << endl;
+      unsigned depth = --_depth;
+      const std::string & m { tracestr( '<',depth, _msg, _file,_fnc,_line ) };
+      Osd(L_USR("TRACE"),depth) << m << endl;
     }
 
     Osd::Osd( std::ostream & str, int i )

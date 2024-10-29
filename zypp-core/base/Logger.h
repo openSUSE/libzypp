@@ -26,19 +26,21 @@ namespace zypp
 
     // Log code loacaton and block leave
     // Indent if nested
-    struct TraceLeave
+    struct ZYPP_API TraceLeave
     {
       TraceLeave( const TraceLeave & ) =delete;
       TraceLeave & operator=( const TraceLeave & ) =delete;
-      TraceLeave( const char * file_r, const char * fnc_r, int line_r );
+      TraceLeave( const char * file_r, const char * fnc_r, int line_r, std::string msg_r=std::string() );
       ~TraceLeave();
     private:
       static unsigned _depth;
       const char *    _file;
       const char *    _fnc;
       int             _line;
+      std::string     _msg;
     };
-#define TRACE ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__ )
+#define TRACE(M) ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__, M );
+#define XTRACE ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__ );
 
     // OnScreenDebug messages colored to stderr
     struct ZYPP_API Osd

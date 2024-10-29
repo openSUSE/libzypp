@@ -70,6 +70,7 @@ namespace zypp
     DEF_CTORS( RepoAlreadyExistsException,  "Repository already exists." );
     DEF_CTORS( RepoUnknownTypeException,    "Repository type can't be determined." );
     DEF_CTORS( RepoMetadataException,       "Repository metadata not usable." );
+    DEF_CTORS( RepoNoPermissionException,   _("No permision to write repository cache.") );
 
 #undef DEF_CTORS
 

@@ -161,6 +161,19 @@ namespace zypp
         RepoMetadataException( const RepoInfo & info, const std::string & msg_r );
     };
 
+    /**
+     * thrown if the user has no permission to update(write) the caches.
+     */
+    class ZYPP_API RepoNoPermissionException : public RepoException
+    {
+      public:
+        RepoNoPermissionException();
+        RepoNoPermissionException( const std::string & msg_r );
+        RepoNoPermissionException( const RepoInfo & info );
+        RepoNoPermissionException( const RepoInfo & info, const std::string & msg_r );
+    };
+
+
     //@}
     ///////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////

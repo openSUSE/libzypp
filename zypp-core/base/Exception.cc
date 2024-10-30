@@ -183,11 +183,11 @@ namespace zypp
   {
     std::ostringstream ret;
     if ( not _history.empty() ) {
-      ret << _("History:") << endl;
+      ret << _("History:");
       for ( const std::string & entry : _history ) {
         strv::split( entry, "\n", [&ret]( std::string_view line_r, unsigned idx, bool last_r ) -> void {
           if ( not ( last_r && line_r.empty() ) )
-            ret << (idx==0?" - ":"   ") << line_r << endl;
+            ret  << endl << (idx==0?" - ":"   ") << line_r;
         });
       }
     }

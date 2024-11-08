@@ -672,11 +672,24 @@ namespace zyppng::RepoManagerWorkflow {
 
           if ( raw_metadata_status.empty() )
           {
-             /* if there is no cache at this point, we refresh the raw
-                in case this is the first time - if it's !autorefresh,
-                we may still refresh */
-            return refreshMetadata( _refCtx, ProgressObserver::makeSubTask( _progressObserver ) )
+            // If there is no raw cache at this point, we refresh the raw metadata.
+            // This may happen if no autorefresh is configured and no explicit
+            // refresh was called.
+            //
+            zypp::Pathname mediarootParent { _mediarootpath.dirname() };
+
+            if ( zypp::filesystem::assert_dir( mediarootParent ) == 0
+              && zypp::PathInfo(mediarootParent).userMayWX() ) {
+
+              return refreshMetadata( _refCtx, ProgressObserver::makeSubTask( _progressObserver ) )
               | and_then([this]( auto /*refCtx*/) { return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), _refCtx->repoManagerOptions() ); } );
+
+            } else {
+              // Non-root user is not allowed to write the raw cache.
+              WAR << "No permission to write raw cache " << mediarootParent << std::endl;
+              auto exception = ZYPP_EXCPT_PTR( zypp::repo::RepoNoPermissionException( _refCtx->repoInfo() ) );
+              return makeReadyResult( expected<zypp::RepoStatus>::error( std::move(exception) ) );
+            }
           }
           return makeReadyResult( make_expected_success (raw_metadata_status) );
 

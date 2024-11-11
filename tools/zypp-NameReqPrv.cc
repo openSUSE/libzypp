@@ -281,7 +281,7 @@ int main( int argc, char * argv[] )
 
   auto _ { getZYpp() };
   ZConfig::instance();
-  Pathname sysRoot("/");
+  Pathname sysRoot( TestSetup::isTestcase( "." )? "." : "/" );
   sat::Pool satpool( sat::Pool::instance() );
 
   if ( argc && (*argv) == std::string("--root") )

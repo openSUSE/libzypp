@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenSUSE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-15 16:12+0200\n"
+"POT-Creation-Date: 2024-11-11 12:40+0100\n"
 "PO-Revision-Date: 2012-11-19 14:59+0200\n"
 "Last-Translator: Lucian Oprea <oprea.luci@gmail.com>\n"
 "Language-Team: Romanian <LL@li.org>\n"
@@ -3859,13 +3859,13 @@ msgstr ""
 msgid "Giving up after %1% attempts."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3879,7 +3879,7 @@ msgid ""
 "point"
 msgstr ""
 
-#: zypp/misc/CheckAccessDeleted.cc:472
+#: zypp/misc/CheckAccessDeleted.cc:453
 #, fuzzy
 msgid "Please install package 'lsof' first."
 msgstr "Curăț cache-ul pachetelor instalate."
@@ -3895,63 +3895,59 @@ msgstr "Nu se poate crea directorul pentru cache-ul de metadate."
 msgid "Error trying to read from '%s'"
 msgstr "Eroare la încercarea de a citi din '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:432
-#: zypp/ng/repo/workflows/repomanagerwf.cc:655
-#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#: zypp/ng/repo/workflows/repomanagerwf.cc:439
+#: zypp/ng/repo/workflows/repomanagerwf.cc:665
+#: zypp/ng/repo/workflows/repomanagerwf.cc:747
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Nu se poate crea %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:487
-#, fuzzy
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
-msgstr[1] "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
-msgstr[2] "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
+#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+msgid "Failed to retrieve new repository metadata."
+msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+#: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:586
-#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#: zypp/ng/repo/workflows/repomanagerwf.cc:596
+#: zypp/ng/repo/workflows/repomanagerwf.cc:625
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Sursa de instalare (%d) nu a putut fi încărcată în cache."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#: zypp/ng/repo/workflows/repomanagerwf.cc:653
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Construirea cache-ului sursei de instalare '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#: zypp/ng/repo/workflows/repomanagerwf.cc:753
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Nu se poate crea memoria cache la %s - lipsește dreptul de scriere."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+#: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
 msgstr "Tip de sursă de instalare netratat"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#: zypp/ng/repo/workflows/repomanagerwf.cc:901
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Adaug sursa de instalare '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#: zypp/ng/repo/workflows/repomanagerwf.cc:996
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Nume de fișier sursă de instalare invalid la '%s'"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
 #: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
 #, c-format, boost-format
@@ -4187,7 +4183,11 @@ msgstr "verificarea applydeltarpm a eșuat."
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm a eșuat."
 
-#: zypp/repo/RepoException.cc:129
+#: zypp/repo/RepoException.cc:73
+msgid "No permision to write repository cache."
+msgstr ""
+
+#: zypp/repo/RepoException.cc:130
 #, fuzzy
 msgid "Service plugin does not support changing an attribute."
 msgstr ""
@@ -4700,59 +4700,59 @@ msgid "New update message"
 msgstr "Nou mesaj de actualizare"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2114
+#: zypp/target/TargetImpl.cc:2112
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2722
+#: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
-#: zypp/target/rpm/RpmDb.cc:2016
+#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
+#: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
 msgstr "RPM a eșuat:"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:799
+#: zypp/target/rpm/RpmDb.cc:763
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Importul cheii publice %1% a eșuat"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:866
+#: zypp/target/rpm/RpmDb.cc:830
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Îndepărtarea cheii publice %1% a eșuat"
 
-#: zypp/target/rpm/RpmDb.cc:1282
+#: zypp/target/rpm/RpmDb.cc:1250
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1284
+#: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
 msgstr ""
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1621
+#: zypp/target/rpm/RpmDb.cc:1591
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Fișiere de configurare modificate pentru %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1824
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm a salvat %s ca %s, dar nu a putut determina diferențele"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1826
+#: zypp/target/rpm/RpmDb.cc:1796
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4762,13 +4762,13 @@ msgstr ""
 "Acestea sunt primele 25 de linii diferite:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1799
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm a creat %s ca %s, dar nu a putut determina diferențele"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1831
+#: zypp/target/rpm/RpmDb.cc:1801
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4781,50 +4781,50 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
+#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
 msgid "Additional rpm output"
 msgstr "Ieșire rpm suplimentară"
 
-#: zypp/target/rpm/RpmDb.cc:2230
+#: zypp/target/rpm/RpmDb.cc:2200
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "backup %s creat"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2251
+#: zypp/target/rpm/RpmDb.cc:2221
 #, fuzzy
 msgid "Signature is OK"
 msgstr "Fișierul semnătură %s nu a fost găsit"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2253
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2255
+#: zypp/target/rpm/RpmDb.cc:2225
 #, fuzzy
 msgid "Signature does not verify"
 msgstr "Fișierul semnătură %s nu a fost găsit"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2257
+#: zypp/target/rpm/RpmDb.cc:2227
 #, fuzzy
 msgid "Signature is OK, but key is not trusted"
 msgstr "Fișierul semnătură %s nu a fost găsit"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2259
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2261
+#: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2263
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "File is unsigned"
 msgstr ""
 
@@ -4884,7 +4884,7 @@ msgstr "Componentă %s invalidă '%s'"
 msgid "Invalid %s component"
 msgstr "Componentă invalidă %s"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
 msgid "Query string parsing not supported for this URL"
 msgstr "Pentru acest URL nu este suportată parcurgerea unui șir de interogare"
 
@@ -4897,41 +4897,41 @@ msgstr "Schema url este o componentă obligatorie"
 msgid "Invalid Url scheme '%s'"
 msgstr "Schemă ulr invalidă '%s'"
 
-#: zypp-core/url/UrlBase.cc:1027
+#: zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
 msgstr "Schema url nu permite un nume de utilizator"
 
-#: zypp-core/url/UrlBase.cc:1061
+#: zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
 msgstr "Schema url nu permite parolă"
 
-#: zypp-core/url/UrlBase.cc:1090
+#: zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
 msgstr "Schema url necesită o componentă gazdă"
 
-#: zypp-core/url/UrlBase.cc:1100
+#: zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
 msgstr "Schema url nu permite componentă gazdă"
 
-#: zypp-core/url/UrlBase.cc:1127
+#: zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "Componentă gazdă invalidă '%s'"
 
-#: zypp-core/url/UrlBase.cc:1148
+#: zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
 msgstr "Schema url nu permite port"
 
-#: zypp-core/url/UrlBase.cc:1159
+#: zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "Componentă port invalidă '%s'"
 
-#: zypp-core/url/UrlBase.cc:1176
+#: zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
 msgstr "Schema url necesită o cale"
 
-#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
+#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
 msgstr "Calea relativă nu este permisă dacă autoritatea există"
 
@@ -4939,15 +4939,15 @@ msgstr "Calea relativă nu este permisă dacă autoritatea există"
 msgid "Encoded string contains a NUL byte"
 msgstr "Șirul codat conține un byte NUL"
 
-#: zypp-core/url/UrlUtils.cc:173
+#: zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
 msgstr "Parametru invalid caracter de separare împărțire matrici"
 
-#: zypp-core/url/UrlUtils.cc:213
+#: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
 msgstr "Parametru de hartă invalid pentru separarea caracterelor"
 
-#: zypp-core/url/UrlUtils.cc:283
+#: zypp-core/url/UrlUtils.cc:281
 msgid "Invalid parameter array join separator character"
 msgstr "Parametru invalid caracter de separare uniune matrici"
 
@@ -5043,7 +5043,7 @@ msgstr ""
 "Mediul nu a fost deschis în timp ce se încerca efectuarea acțiunii '%s'."
 
 #: zypp-media/mediaexception.cc:58
-#: zypp-curl/ng/network/networkrequesterror.cc:138
+#: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "Fișierul '%s' nu a fost găsit pe mediul '%s'"
@@ -5150,7 +5150,7 @@ msgid "Permission to access '%s' denied."
 msgstr "Accesul la '%s' a fost interzis."
 
 #: zypp-media/mediaexception.cc:189
-#: zypp-curl/ng/network/networkrequesterror.cc:122
+#: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "Timp depășit în timpul accesării '%s'."
@@ -5161,7 +5161,7 @@ msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr ""
 
 #: zypp-media/mediaexception.cc:205
-#: zypp-curl/ng/network/networkrequesterror.cc:118
+#: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "Locația '%s' este temporar inaccesibilă."
@@ -5182,14 +5182,14 @@ msgstr ""
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Metodă de autentificare HTTP nesuportată '%s'"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:143
+#: zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
 
-#: zypp-curl/ng/network/networkrequesterror.cc:149
+#: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5282,6 +5282,16 @@ msgstr "da"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "nu"
+
+#, fuzzy
+#~ msgid "Valid metadata not found at specified URL"
+#~ msgid_plural "Valid metadata not found at specified URLs"
+#~ msgstr[0] ""
+#~ "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
+#~ msgstr[1] ""
+#~ "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
+#~ msgstr[2] ""
+#~ "La URL-ul (URL-urile) specificate nu au fost găsite metadate valide"
 
 #~ msgid "%s does not belong to a distupgrade repository"
 #~ msgstr "%s nu aparține de o sursă de instalare de actualizare distribuție"

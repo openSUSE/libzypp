@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-15 16:12+0200\n"
+"POT-Creation-Date: 2024-11-11 12:40+0100\n"
 "PO-Revision-Date: 2024-10-18 14:48+0000\n"
 "Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/es/"
@@ -3860,7 +3860,7 @@ msgstr "Se intentará de nuevo..."
 msgid "Giving up after %1% attempts."
 msgstr "Renunciar después de %1% intentos."
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3868,7 +3868,7 @@ msgstr ""
 "Visite el Centro de servicios al cliente de SUSE para comprobar si su "
 "registro es válido y no ha caducado."
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3884,7 +3884,7 @@ msgstr ""
 "Creación de punto de conexión: no se encuentra ningún directorio en el que "
 "se pueda escribir para crear un punto de conexión"
 
-#: zypp/misc/CheckAccessDeleted.cc:472
+#: zypp/misc/CheckAccessDeleted.cc:453
 msgid "Please install package 'lsof' first."
 msgstr "Instale primero el paquete lsof."
 
@@ -3899,63 +3899,61 @@ msgstr "No es posible crear el directorio para el caché de metadatos."
 msgid "Error trying to read from '%s'"
 msgstr "Error al intentar leer de %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:432
-#: zypp/ng/repo/workflows/repomanagerwf.cc:655
-#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#: zypp/ng/repo/workflows/repomanagerwf.cc:439
+#: zypp/ng/repo/workflows/repomanagerwf.cc:665
+#: zypp/ng/repo/workflows/repomanagerwf.cc:747
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "No es posible crear %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:487
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "No se han encontrado metadatos válidos en la URL especificada"
-msgstr[1] "No se han encontrado metadatos válidos en las URL especificadas"
+#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+msgid "Failed to retrieve new repository metadata."
+msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+#: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
-"No se pudo almacenar en caché el repositorio ( no se pudo iniciar repo2solv "
-")."
+"No se pudo almacenar en caché el repositorio ( no se pudo iniciar "
+"repo2solv )."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:586
-#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#: zypp/ng/repo/workflows/repomanagerwf.cc:596
+#: zypp/ng/repo/workflows/repomanagerwf.cc:625
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Error al añadir a caché el repositorio (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#: zypp/ng/repo/workflows/repomanagerwf.cc:653
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Construyendo el caché del repositorio %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#: zypp/ng/repo/workflows/repomanagerwf.cc:753
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "No es posible crear el caché en %s, no posee permisos de escritura."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "No se pudo almacenar en caché el repositorio %1%"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+#: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
 msgstr "Tipo de repositorio no gestionado"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#: zypp/ng/repo/workflows/repomanagerwf.cc:901
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Añadiendo el repositorio %s"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#: zypp/ng/repo/workflows/repomanagerwf.cc:996
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Nombre de archivo del repositorio no válido en %s"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
 #: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
 #, c-format, boost-format
@@ -4199,7 +4197,11 @@ msgstr "Error al comprobar applydeltarpm."
 msgid "applydeltarpm failed."
 msgstr "Error de applydeltarpm."
 
-#: zypp/repo/RepoException.cc:129
+#: zypp/repo/RepoException.cc:73
+msgid "No permision to write repository cache."
+msgstr ""
+
+#: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
 msgstr "El complemento del servicio no admite el cambio de un atributo."
 
@@ -4797,7 +4799,7 @@ msgid "New update message"
 msgstr "Nuevo mensaje de actualización"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2114
+#: zypp/target/TargetImpl.cc:2112
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -4806,35 +4808,35 @@ msgstr ""
 "Se ha recibido la señal: \"%1% (%2%)\". Para garantizar la coherencia del "
 "sistema, no es posible cancelar una transacción de rpm en ejecución."
 
-#: zypp/target/TargetImpl.cc:2722
+#: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 "Falló la ejecución de la transacción debido a los siguientes problemas:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
-#: zypp/target/rpm/RpmDb.cc:2016
+#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
+#: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
 msgstr "RPM fallido: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:799
+#: zypp/target/rpm/RpmDb.cc:763
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Error al importar la clave pública %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:866
+#: zypp/target/rpm/RpmDb.cc:830
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Error al eliminar la clave pública %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1282
+#: zypp/target/rpm/RpmDb.cc:1250
 msgid "Package header is not signed!"
 msgstr "¡Cabecera del paquete sin firmar!"
 
-#: zypp/target/rpm/RpmDb.cc:1284
+#: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
 msgstr "¡Contenido del paquete sin firmar!"
 
@@ -4845,20 +4847,20 @@ msgstr "¡Contenido del paquete sin firmar!"
 # modules/Mail.ycp:563
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1621
+#: zypp/target/rpm/RpmDb.cc:1591
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Se han modificado los archivos de configuración para %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1824
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
 "rpm ha guardado %s como %s, pero no es posible determinar la diferencia"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1826
+#: zypp/target/rpm/RpmDb.cc:1796
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4868,13 +4870,13 @@ msgstr ""
 "A continuación se presentan las primeras 25 líneas de diferencia:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1799
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm ha creado %s como %s, pero no es posible determinar la diferencia"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1831
+#: zypp/target/rpm/RpmDb.cc:1801
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4887,49 +4889,49 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
+#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
 msgid "Additional rpm output"
 msgstr "Salida de rpm adicional"
 
 # include/nis_server/io.ycp:582
 # include/backup/ui.ycp:1286
-#: zypp/target/rpm/RpmDb.cc:2230
+#: zypp/target/rpm/RpmDb.cc:2200
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "creada copia de seguridad %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2251
+#: zypp/target/rpm/RpmDb.cc:2221
 msgid "Signature is OK"
 msgstr "La firma es correcta"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2253
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
 msgstr "Tipo de firma desconocido"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2255
+#: zypp/target/rpm/RpmDb.cc:2225
 msgid "Signature does not verify"
 msgstr "La firma no cumple la verificación"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2257
+#: zypp/target/rpm/RpmDb.cc:2227
 msgid "Signature is OK, but key is not trusted"
 msgstr "La firma es correcta, pero la clave no es de confianza"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2259
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
 msgstr "La clave pública de firma no está disponible"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2261
+#: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
 msgstr "El archivo no existe o no es posible comprobar la firma"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2263
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "File is unsigned"
 msgstr "El fichero no está firmado"
 
@@ -4990,7 +4992,7 @@ msgstr "Componente %s no válido %s"
 msgid "Invalid %s component"
 msgstr "Componente %s no válido"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
 msgid "Query string parsing not supported for this URL"
 msgstr ""
 "El análisis de cadenas de consulta no es compatible con esta dirección URL"
@@ -5004,41 +5006,41 @@ msgstr "El esquema de URL es un componente obligatorio"
 msgid "Invalid Url scheme '%s'"
 msgstr "Esquema %s de URL no válido"
 
-#: zypp-core/url/UrlBase.cc:1027
+#: zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
 msgstr "El esquema de URL no permite un nombre de usuario"
 
-#: zypp-core/url/UrlBase.cc:1061
+#: zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
 msgstr "El esquema de URL no permite una contraseña"
 
-#: zypp-core/url/UrlBase.cc:1090
+#: zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
 msgstr "El esquema de URL requiere un componente host"
 
-#: zypp-core/url/UrlBase.cc:1100
+#: zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
 msgstr "El esquema de URL no permite un componente host"
 
-#: zypp-core/url/UrlBase.cc:1127
+#: zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "Componente de host no válido %s"
 
-#: zypp-core/url/UrlBase.cc:1148
+#: zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
 msgstr "El esquema de URL no permite un puerto"
 
-#: zypp-core/url/UrlBase.cc:1159
+#: zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "Componente de puerto no válido %s"
 
-#: zypp-core/url/UrlBase.cc:1176
+#: zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
 msgstr "El esquema URL requiere un nombre de vía"
 
-#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
+#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
 msgstr "No se permiten vías relativas si existe una autoridad"
 
@@ -5046,15 +5048,15 @@ msgstr "No se permiten vías relativas si existe una autoridad"
 msgid "Encoded string contains a NUL byte"
 msgstr "La cadena cifrada incluye un byte nulo"
 
-#: zypp-core/url/UrlUtils.cc:173
+#: zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
 msgstr "Carácter separador de división de conjunto de parámetros no válido"
 
-#: zypp-core/url/UrlUtils.cc:213
+#: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
 msgstr "Carácter separador de división de asignación de parámetros no válido"
 
-#: zypp-core/url/UrlUtils.cc:283
+#: zypp-core/url/UrlUtils.cc:281
 msgid "Invalid parameter array join separator character"
 msgstr "Carácter separador de unión de conjunto de parámetros no válido"
 
@@ -5150,7 +5152,7 @@ msgid "Medium not opened when trying to perform action '%s'."
 msgstr "No se ha abierto el medio al intentar realizar la acción %s."
 
 #: zypp-media/mediaexception.cc:58
-#: zypp-curl/ng/network/networkrequesterror.cc:138
+#: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "No se encuentra el archivo %s en el medio %s"
@@ -5256,7 +5258,7 @@ msgid "Permission to access '%s' denied."
 msgstr "Se ha denegado el permiso para acceder a %s."
 
 #: zypp-media/mediaexception.cc:189
-#: zypp-curl/ng/network/networkrequesterror.cc:122
+#: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "Se ha superado el tiempo de espera al acceder a %s."
@@ -5267,7 +5269,7 @@ msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "La descarga de datos ha excedido el tamaño esperado '%s 1' de '%s 2'."
 
 #: zypp-media/mediaexception.cc:205
-#: zypp-curl/ng/network/networkrequesterror.cc:118
+#: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "La ubicación '%s' está momentáneamente inaccesible."
@@ -5288,7 +5290,7 @@ msgstr "No hay recursos libres disponibles para adjuntar medios."
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Método de autenticación HTTP no compatible %s"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:143
+#: zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5297,7 +5299,7 @@ msgstr ""
 "(curl) Error de descarga para '%s':\n"
 "Código de error: %s\n"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:149
+#: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5387,6 +5389,11 @@ msgstr "si"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "no"
+
+#~ msgid "Valid metadata not found at specified URL"
+#~ msgid_plural "Valid metadata not found at specified URLs"
+#~ msgstr[0] "No se han encontrado metadatos válidos en la URL especificada"
+#~ msgstr[1] "No se han encontrado metadatos válidos en las URL especificadas"
 
 #, boost-format
 #~ msgid "Executing %%posttrans script '%1%'"

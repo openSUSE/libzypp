@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.et\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-15 16:12+0200\n"
+"POT-Creation-Date: 2024-11-11 12:40+0100\n"
 "PO-Revision-Date: 2019-12-08 11:54+0000\n"
 "Last-Translator: Jaanus Ojangu <jaanus.ojangu@gmail.com>\n"
 "Language-Team: Estonian <https://l10n.opensuse.org/projects/libzypp/master/"
@@ -3837,7 +3837,7 @@ msgstr ""
 msgid "Giving up after %1% attempts."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3845,7 +3845,7 @@ msgstr ""
 "Külastage SUSE kliendikeskust, et kontrollida, kas teie registreering on "
 "kehtiv ega ole aegunud."
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3860,7 +3860,7 @@ msgid ""
 msgstr ""
 "Lisamispunkti loomine: lisamispunkti loomiseks ei leia kirjutatavat kataloogi"
 
-#: zypp/misc/CheckAccessDeleted.cc:472
+#: zypp/misc/CheckAccessDeleted.cc:453
 msgid "Please install package 'lsof' first."
 msgstr "Palun esmalt paigaldage 'Isof' pakett."
 
@@ -3875,61 +3875,59 @@ msgstr "Metaandmete vahemälu kataloogi ei saa luua."
 msgid "Error trying to read from '%s'"
 msgstr "Viga lugemisel asukohast '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:432
-#: zypp/ng/repo/workflows/repomanagerwf.cc:655
-#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#: zypp/ng/repo/workflows/repomanagerwf.cc:439
+#: zypp/ng/repo/workflows/repomanagerwf.cc:665
+#: zypp/ng/repo/workflows/repomanagerwf.cc:747
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Pole võimalik luua %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:487
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "Valitud metaandmeid ei leitud määratud URL-ilt"
-msgstr[1] "Valitud metaandmeid ei leitud määratud URL-delt"
+#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+msgid "Failed to retrieve new repository metadata."
+msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+#: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:586
-#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#: zypp/ng/repo/workflows/repomanagerwf.cc:596
+#: zypp/ng/repo/workflows/repomanagerwf.cc:625
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Hoidla puhverdamine nurjus (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#: zypp/ng/repo/workflows/repomanagerwf.cc:653
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Loodava repositooriumi '%s' vahemälu"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#: zypp/ng/repo/workflows/repomanagerwf.cc:753
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Ei saa luua vahemälu kohas %s - puuduvad kirjutamise õigused."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+#: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
 msgstr "Käsitlemata tarkvarahoidla tüüp"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#: zypp/ng/repo/workflows/repomanagerwf.cc:901
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Lisatakse repositoorium '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#: zypp/ng/repo/workflows/repomanagerwf.cc:996
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Vigane repo faili nimi '%s'"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
 #: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
 #, c-format, boost-format
@@ -4161,7 +4159,11 @@ msgstr "applydeltarpm kontrollimine nurjus."
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm nurjus."
 
-#: zypp/repo/RepoException.cc:129
+#: zypp/repo/RepoException.cc:73
+msgid "No permision to write repository cache."
+msgstr ""
+
+#: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
 msgstr "Teenuse lisaprogramm ei toeta atribuudi muutmist."
 
@@ -4717,59 +4719,59 @@ msgid "New update message"
 msgstr "Uus uuendusteade"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2114
+#: zypp/target/TargetImpl.cc:2112
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2722
+#: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
-#: zypp/target/rpm/RpmDb.cc:2016
+#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
+#: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
 msgstr "RPM nurjus: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:799
+#: zypp/target/rpm/RpmDb.cc:763
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Avaliku võtme %1% import nurjus"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:866
+#: zypp/target/rpm/RpmDb.cc:830
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Avaliku võtme %1% eemaldamine nurjus"
 
-#: zypp/target/rpm/RpmDb.cc:1282
+#: zypp/target/rpm/RpmDb.cc:1250
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1284
+#: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
 msgstr ""
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1621
+#: zypp/target/rpm/RpmDb.cc:1591
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Muudetud seadistuste fail %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1824
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm salvestati %s nimega %s, kuid erinevust oli võimatu tuvastada"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1826
+#: zypp/target/rpm/RpmDb.cc:1796
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4779,13 +4781,13 @@ msgstr ""
 "Siin on esimesed 25 erinevuse rida:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1799
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm loodi %s nimega %s, aga oli võimatu leida erinevusi"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1831
+#: zypp/target/rpm/RpmDb.cc:1801
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4798,47 +4800,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
+#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
 msgid "Additional rpm output"
 msgstr "Täiendav rpm-i väljund"
 
-#: zypp/target/rpm/RpmDb.cc:2230
+#: zypp/target/rpm/RpmDb.cc:2200
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "loodi varukoopia %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2251
+#: zypp/target/rpm/RpmDb.cc:2221
 msgid "Signature is OK"
 msgstr "Allkiri on korras"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2253
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
 msgstr "Tundmatu allkirja tüüp"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2255
+#: zypp/target/rpm/RpmDb.cc:2225
 msgid "Signature does not verify"
 msgstr "Allkirja ei võrrelda"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2257
+#: zypp/target/rpm/RpmDb.cc:2227
 msgid "Signature is OK, but key is not trusted"
 msgstr "Allkiri on õige aga võti ei ole usaldatav"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2259
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
 msgstr "Allkirjade avalik võti pole saadaval"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2261
+#: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
 msgstr "Faili pole olemas või allkirja pole võimalik kontrollida"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2263
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "File is unsigned"
 msgstr "Fail on allkirjastamata"
 
@@ -4898,7 +4900,7 @@ msgstr "Vigane %s komponent '%s'"
 msgid "Invalid %s component"
 msgstr "Vigane %s komponent"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
 msgid "Query string parsing not supported for this URL"
 msgstr "Selle URL-i puhul ei toetata päringu kirje uurimist"
 
@@ -4911,41 +4913,41 @@ msgstr "URL kuju on nõutav komponent"
 msgid "Invalid Url scheme '%s'"
 msgstr "Vigane Url kuju '%s'"
 
-#: zypp-core/url/UrlBase.cc:1027
+#: zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
 msgstr "Url kuju ei võimalda kasutajanime"
 
-#: zypp-core/url/UrlBase.cc:1061
+#: zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
 msgstr "Url kuju ei võimalda salasõna"
 
-#: zypp-core/url/UrlBase.cc:1090
+#: zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
 msgstr "Url kuju nõuab arvutinime komponenti"
 
-#: zypp-core/url/UrlBase.cc:1100
+#: zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
 msgstr "Url kuju ei võimalda arvutinime komponenti"
 
-#: zypp-core/url/UrlBase.cc:1127
+#: zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "Vigane host komponent '%s'"
 
-#: zypp-core/url/UrlBase.cc:1148
+#: zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
 msgstr "Url kuju ei võimalda porti"
 
-#: zypp-core/url/UrlBase.cc:1159
+#: zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "Vigane pordi komponent '%s'"
 
-#: zypp-core/url/UrlBase.cc:1176
+#: zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
 msgstr "Url kuju nõuab teekonna nime"
 
-#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
+#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
 msgstr "Suhteline tee pole lubatud, kui autoriseerimine on olemas"
 
@@ -4953,15 +4955,15 @@ msgstr "Suhteline tee pole lubatud, kui autoriseerimine on olemas"
 msgid "Encoded string contains a NUL byte"
 msgstr "Krüpteeritud rida sisaldab Nul baiti"
 
-#: zypp-core/url/UrlUtils.cc:173
+#: zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
 msgstr "Vale parameetri reastuse jaotuse eraldusmärk"
 
-#: zypp-core/url/UrlUtils.cc:213
+#: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
 msgstr "Vigane parameeter kaardijaotuse eraldusmärk"
 
-#: zypp-core/url/UrlUtils.cc:283
+#: zypp-core/url/UrlUtils.cc:281
 msgid "Invalid parameter array join separator character"
 msgstr "Vigane parameetrimassiivi liitumismärk"
 
@@ -5056,7 +5058,7 @@ msgid "Medium not opened when trying to perform action '%s'."
 msgstr "Toimingu '%s' sooritamisel meedium ei avanenud."
 
 #: zypp-media/mediaexception.cc:58
-#: zypp-curl/ng/network/networkrequesterror.cc:138
+#: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "Faili '%s' ei leitud meediumil '%s'"
@@ -5162,7 +5164,7 @@ msgid "Permission to access '%s' denied."
 msgstr "Ligipääs '%s' on keelatud."
 
 #: zypp-media/mediaexception.cc:189
-#: zypp-curl/ng/network/networkrequesterror.cc:122
+#: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "'%s juurdepääsu ajalimiit on ületatud."
@@ -5173,7 +5175,7 @@ msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "Allalaaditud andmed ületasid faili suurust '%s'  '%s' -st."
 
 #: zypp-media/mediaexception.cc:205
-#: zypp-curl/ng/network/networkrequesterror.cc:118
+#: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "Asukoht '%s' on ajutiselt kättesaamatu."
@@ -5194,14 +5196,14 @@ msgstr ""
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "Mittetoetatud HTTP autoriseerimise meetod '%s'"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:143
+#: zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
 
-#: zypp-curl/ng/network/networkrequesterror.cc:149
+#: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5295,6 +5297,11 @@ msgstr "jah"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "ei"
+
+#~ msgid "Valid metadata not found at specified URL"
+#~ msgid_plural "Valid metadata not found at specified URLs"
+#~ msgstr[0] "Valitud metaandmeid ei leitud määratud URL-ilt"
+#~ msgstr[1] "Valitud metaandmeid ei leitud määratud URL-delt"
 
 #, boost-format
 #~ msgid "Executing %%posttrans script '%1%'"

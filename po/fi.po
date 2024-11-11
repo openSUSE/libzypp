@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-15 16:12+0200\n"
+"POT-Creation-Date: 2024-11-11 12:40+0100\n"
 "PO-Revision-Date: 2024-02-21 11:42+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/libzypp/master/fi/"
@@ -4048,14 +4048,14 @@ msgstr "Yritetään uudelleen…"
 msgid "Giving up after %1% attempts."
 msgstr "Luovutetaan %1% yrityksen jälkeen."
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr ""
 "Tarkista SUSEn asiakaskeskuksessa käymällä, onko rekisteröitymisesi voimassa."
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4071,7 +4071,7 @@ msgstr ""
 "Luo liitospiste: Kirjoitettavissa olevaa kansiota ei löydy liitospisteen "
 "luomiseksi"
 
-#: zypp/misc/CheckAccessDeleted.cc:472
+#: zypp/misc/CheckAccessDeleted.cc:453
 msgid "Please install package 'lsof' first."
 msgstr "Asenna 'lsof' paketti ensiksi."
 
@@ -4086,61 +4086,59 @@ msgstr "Metatiedon välimuistihakemistoa ei voi luoda."
 msgid "Error trying to read from '%s'"
 msgstr "Virhe luettaessa \"%s\""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:432
-#: zypp/ng/repo/workflows/repomanagerwf.cc:655
-#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#: zypp/ng/repo/workflows/repomanagerwf.cc:439
+#: zypp/ng/repo/workflows/repomanagerwf.cc:665
+#: zypp/ng/repo/workflows/repomanagerwf.cc:747
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Ei voi luoda %s"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:487
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "Annetusta verkko-osoitteesta ei löytynyt kelvollista metatietoa"
-msgstr[1] "Annetuista verkko-osoitteista ei löytynyt kelvollista metatietoa"
+#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+msgid "Failed to retrieve new repository metadata."
+msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+#: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:586
-#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#: zypp/ng/repo/workflows/repomanagerwf.cc:596
+#: zypp/ng/repo/workflows/repomanagerwf.cc:625
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Virhe asennuslähteen puskuroinnissa (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#: zypp/ng/repo/workflows/repomanagerwf.cc:653
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Rakennetaan asennuslähteen \"%s\" välimuistia"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#: zypp/ng/repo/workflows/repomanagerwf.cc:753
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Välimuistia %s ei voida luoda - ei kirjoitusoikeuksia."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+#: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
 msgstr "Virheellinen asennuslähteen tyyppi"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#: zypp/ng/repo/workflows/repomanagerwf.cc:901
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Lisätään asennuslähdettä \"%s\""
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#: zypp/ng/repo/workflows/repomanagerwf.cc:996
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Virheellinen asennuslähteen tiedostonimi \"%s\""
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
 #: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
 #, c-format, boost-format
@@ -4370,7 +4368,11 @@ msgstr "applydeltarpm-tarkistus epäonnistui."
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm epäonnistui."
 
-#: zypp/repo/RepoException.cc:129
+#: zypp/repo/RepoException.cc:73
+msgid "No permision to write repository cache."
+msgstr ""
+
+#: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
 msgstr "Palvelu-lisäosa ei tue ominaisuuksien muutosta."
 
@@ -4958,7 +4960,7 @@ msgid "New update message"
 msgstr "Uusi päivitysviesti"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2114
+#: zypp/target/TargetImpl.cc:2112
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -4967,53 +4969,53 @@ msgstr ""
 "Vastaanotettiin signaali ”%1% (%2%)”: järjestelmän eheyden varmistamiseksi "
 "käynnissä olevaa RPM-toimenpidettä ei voi perua."
 
-#: zypp/target/TargetImpl.cc:2722
+#: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "Toimenpidettä ei voitu suorittaa seuraavien ongelmien takia:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
-#: zypp/target/rpm/RpmDb.cc:2016
+#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
+#: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
 msgstr "RPM-virhe: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:799
+#: zypp/target/rpm/RpmDb.cc:763
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Avaimen tuonti tiedostosta %1% epäonnistui"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:866
+#: zypp/target/rpm/RpmDb.cc:830
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Julkisen avaimen %1% poisto epäonnistui"
 
-#: zypp/target/rpm/RpmDb.cc:1282
+#: zypp/target/rpm/RpmDb.cc:1250
 msgid "Package header is not signed!"
 msgstr "Paketin otsaketta ei ole allekirjoitettu!"
 
-#: zypp/target/rpm/RpmDb.cc:1284
+#: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
 msgstr "Paketin sisältöä ei ole allekirjoitettu!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1621
+#: zypp/target/rpm/RpmDb.cc:1591
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Muunnettiin paketin %s asetustiedostoja:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1824
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
 "rpm tallensi tiedoston %s nimellä %s. Erojen selvittäminen ei onnistunut"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1826
+#: zypp/target/rpm/RpmDb.cc:1796
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -5023,13 +5025,13 @@ msgstr ""
 "Tässä ensimmäiset 25 muuttunutta riviä:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1799
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm loi tiedoston %s nimellä %s, erojen selvittäminen ei onnistunut"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1831
+#: zypp/target/rpm/RpmDb.cc:1801
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -5042,47 +5044,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
+#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
 msgid "Additional rpm output"
 msgstr "rpm-lisätuloste"
 
-#: zypp/target/rpm/RpmDb.cc:2230
+#: zypp/target/rpm/RpmDb.cc:2200
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "luotiin varmuuskopio %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2251
+#: zypp/target/rpm/RpmDb.cc:2221
 msgid "Signature is OK"
 msgstr "Allekirjoitus kelpaa"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2253
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
 msgstr "Tuntematon allekirjoituksen tyyppi"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2255
+#: zypp/target/rpm/RpmDb.cc:2225
 msgid "Signature does not verify"
 msgstr "Allekirjoitusta ei voida todentaa"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2257
+#: zypp/target/rpm/RpmDb.cc:2227
 msgid "Signature is OK, but key is not trusted"
 msgstr "Allekirjoitus kelpaa, mutta avain ei ole luotettu"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2259
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
 msgstr "Allekirjoituksen julkinen avain ei ole saatavilla"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2261
+#: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
 msgstr "Tiedostoa ei ole tai allekirjoitusta ei voi tarkistaa"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2263
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "File is unsigned"
 msgstr "Tiedosto on allekirjoittamaton"
 
@@ -5142,7 +5144,7 @@ msgstr "Virheellinen %s-komponentti \"%s\""
 msgid "Invalid %s component"
 msgstr "Virheellinen %s-komponentti"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
 msgid "Query string parsing not supported for this URL"
 msgstr "Tämän verkko-osoitteen jäsentäminen kyselyksi ei ole tuettu"
 
@@ -5155,41 +5157,41 @@ msgstr "Verkko-osoite on pakollinen"
 msgid "Invalid Url scheme '%s'"
 msgstr "Virheellinen verkko-osoite: \"%s\""
 
-#: zypp-core/url/UrlBase.cc:1027
+#: zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
 msgstr "Verkko-osoite ei salli käyttäjänimeä"
 
-#: zypp-core/url/UrlBase.cc:1061
+#: zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
 msgstr "Verkko-osoite ei salli salasanaa"
 
-#: zypp-core/url/UrlBase.cc:1090
+#: zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
 msgstr "Verkko-osoite edellyttää konenimen"
 
-#: zypp-core/url/UrlBase.cc:1100
+#: zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
 msgstr "Verkko-osoite ei salli konenimeä"
 
-#: zypp-core/url/UrlBase.cc:1127
+#: zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "Virheellinen konenimi: \"%s\""
 
-#: zypp-core/url/UrlBase.cc:1148
+#: zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
 msgstr "Verkko-osoite ei salli portin määritystä"
 
-#: zypp-core/url/UrlBase.cc:1159
+#: zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "Virheellinen porttimääritys: \"%s\""
 
-#: zypp-core/url/UrlBase.cc:1176
+#: zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
 msgstr "Verkko-osoite edellyttää polun määrittämistä"
 
-#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
+#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
 msgstr ""
 "Suhteellisen polun määrittäminen ei ole sallittua, jos valtuuttaja on "
@@ -5199,15 +5201,15 @@ msgstr ""
 msgid "Encoded string contains a NUL byte"
 msgstr "Koodattu merkkijono sisältää NUL-tavun"
 
-#: zypp-core/url/UrlUtils.cc:173
+#: zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
 msgstr "Virheellinen parametritaulukon jaon erotin"
 
-#: zypp-core/url/UrlUtils.cc:213
+#: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
 msgstr "Virheellinen parametrikartan jaon erotin"
 
-#: zypp-core/url/UrlUtils.cc:283
+#: zypp-core/url/UrlUtils.cc:281
 msgid "Invalid parameter array join separator character"
 msgstr "Virheellinen parametritaulukon liitoksen erotin"
 
@@ -5302,7 +5304,7 @@ msgid "Medium not opened when trying to perform action '%s'."
 msgstr "Tietolähdettä ei avattu suoritettaessa \"%s\"."
 
 #: zypp-media/mediaexception.cc:58
-#: zypp-curl/ng/network/networkrequesterror.cc:138
+#: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "Tiedostoa \"%s\" ei löydy tietovälineeltä \"%s\""
@@ -5408,7 +5410,7 @@ msgid "Permission to access '%s' denied."
 msgstr "Pääsy evätty kohteeseen \"%s\"."
 
 #: zypp-media/mediaexception.cc:189
-#: zypp-curl/ng/network/networkrequesterror.cc:122
+#: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "Aikakatkaisu avattaessa \"%s\"."
@@ -5419,7 +5421,7 @@ msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "Ladattu tieto ylittää odotetun tiedostokoon ”%s”/”%s”."
 
 #: zypp-media/mediaexception.cc:205
-#: zypp-curl/ng/network/networkrequesterror.cc:118
+#: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "\"%s\" ei ole hetkellisesti saatavilla."
@@ -5438,7 +5440,7 @@ msgstr "Ei vapaita resursseja tietovälineen liittämiseksi."
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "HTTP-tunnistautumistapa \"%s\" ei ole tuettu"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:143
+#: zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5447,7 +5449,7 @@ msgstr ""
 "Latausvirhe (curl) kohteelle ”%s”:\n"
 "Virhekoodi: %s\n"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:149
+#: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5537,6 +5539,11 @@ msgstr "kyllä"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "ei"
+
+#~ msgid "Valid metadata not found at specified URL"
+#~ msgid_plural "Valid metadata not found at specified URLs"
+#~ msgstr[0] "Annetusta verkko-osoitteesta ei löytynyt kelvollista metatietoa"
+#~ msgstr[1] "Annetuista verkko-osoitteista ei löytynyt kelvollista metatietoa"
 
 #, boost-format
 #~ msgid "Executing %%posttrans script '%1%'"

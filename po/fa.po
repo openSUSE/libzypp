@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opensuse-i 18n\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-15 16:12+0200\n"
+"POT-Creation-Date: 2024-11-11 12:40+0100\n"
 "PO-Revision-Date: 2023-03-03 15:14+0000\n"
 "Last-Translator: Mohammad Rezaei Seresht <m.networking@gmail.com>\n"
 "Language-Team: Persian <https://l10n.opensuse.org/projects/libzypp/master/fa/"
@@ -3832,7 +3832,7 @@ msgstr "دوباره تلاش خواهد کرد..."
 msgid "Giving up after %1% attempts."
 msgstr "تسلیم شدن پس از %1% تلاش."
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:127
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3840,7 +3840,7 @@ msgstr ""
 "برای بررسی اینکه آیا ثبت نام شما معتبر است و منقضی نشده است، به مرکز مشتریان "
 "SUSE مراجعه کنید."
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:129
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3855,7 +3855,7 @@ msgid ""
 msgstr ""
 "ساخت نقطه ی اتصال: نمیتوان یک فهرست قابل نوشتن را برای ساخت نقطه ی اتصال یافت"
 
-#: zypp/misc/CheckAccessDeleted.cc:472
+#: zypp/misc/CheckAccessDeleted.cc:453
 msgid "Please install package 'lsof' first."
 msgstr "لطفا ابتدا بسته ی 'lsof' را نصب کنید."
 
@@ -3870,61 +3870,59 @@ msgstr "نمیتوان فهرست کش شبه داده را ساخت."
 msgid "Error trying to read from '%s'"
 msgstr "خطا در تلاش برای خواندن از '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:432
-#: zypp/ng/repo/workflows/repomanagerwf.cc:655
-#: zypp/ng/repo/workflows/repomanagerwf.cc:724
+#: zypp/ng/repo/workflows/repomanagerwf.cc:439
+#: zypp/ng/repo/workflows/repomanagerwf.cc:665
+#: zypp/ng/repo/workflows/repomanagerwf.cc:747
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "نمیتوان %s را ساخت"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:487
-msgid "Valid metadata not found at specified URL"
-msgid_plural "Valid metadata not found at specified URLs"
-msgstr[0] "شبه داده ی معتبر در آدرس تعیین شده یافت نشد"
-msgstr[1] "شبه داده ی معتبر در آدرس های تعیین شده یافت نشد"
+#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+msgid "Failed to retrieve new repository metadata."
+msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:568
+#: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:586
-#: zypp/ng/repo/workflows/repomanagerwf.cc:615
+#: zypp/ng/repo/workflows/repomanagerwf.cc:596
+#: zypp/ng/repo/workflows/repomanagerwf.cc:625
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "ناموفق در کش مخزن (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:643
+#: zypp/ng/repo/workflows/repomanagerwf.cc:653
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "در حال ساخت کش مخزن '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:730
+#: zypp/ng/repo/workflows/repomanagerwf.cc:753
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "نمیتوان کش را در %s ساخت - دسترسی نوشتن نیست."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:785
+#: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:802
+#: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
 msgstr "نوع مخزن کنترل نشده"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:878
+#: zypp/ng/repo/workflows/repomanagerwf.cc:901
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "در حال اضافه کردن مخزن '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:973
+#: zypp/ng/repo/workflows/repomanagerwf.cc:996
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "نام پرونده ی مخزن نامعتبر در '%s'"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:989 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
 #: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
 #, c-format, boost-format
@@ -4157,7 +4155,11 @@ msgstr "بررسی applydeltarpm ناموفق بود."
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm ناموفق بود."
 
-#: zypp/repo/RepoException.cc:129
+#: zypp/repo/RepoException.cc:73
+msgid "No permision to write repository cache."
+msgstr ""
+
+#: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
 msgstr "افزونه ی سرویس از تغییر صفت پشتیبانی نمیکند."
 
@@ -4721,59 +4723,59 @@ msgid "New update message"
 msgstr "پیغام بروزرسانی جدید"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2114
+#: zypp/target/TargetImpl.cc:2112
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2722
+#: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "اجرای تراکنش به دلیل مشکلات زیر انجام نشد:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:474 zypp/target/rpm/RpmDb.cc:1843
-#: zypp/target/rpm/RpmDb.cc:2016
+#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
+#: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
 msgstr "RPM شکست خورد: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:799
+#: zypp/target/rpm/RpmDb.cc:763
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "ناموفق در وارد کردن کلید عمومی از پرونده ی %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:866
+#: zypp/target/rpm/RpmDb.cc:830
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "ناموفق در حذف کلید عمومی %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1282
+#: zypp/target/rpm/RpmDb.cc:1250
 msgid "Package header is not signed!"
 msgstr "سرصفحه بسته امضا نشده است!"
 
-#: zypp/target/rpm/RpmDb.cc:1284
+#: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
 msgstr "محموله بسته امضا نشده است!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1621
+#: zypp/target/rpm/RpmDb.cc:1591
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "پرونده های پیکربندی تغییر کرده برای %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1824
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm ذخیره شد %s به عنوان %s، اما تعیین اختلاف امکانپذیر نبود"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1826
+#: zypp/target/rpm/RpmDb.cc:1796
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4783,13 +4785,13 @@ msgstr ""
 "اینها 25 خط اولیه ی اختلاف ها هستند:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1829
+#: zypp/target/rpm/RpmDb.cc:1799
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm ساخته شد %s به عنوان %s، اما تعیین اختلاف امکانپذیر نبود"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1831
+#: zypp/target/rpm/RpmDb.cc:1801
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4802,47 +4804,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1859 zypp/target/rpm/RpmDb.cc:2032
+#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
 msgid "Additional rpm output"
 msgstr "خروجی rpm اضافی"
 
-#: zypp/target/rpm/RpmDb.cc:2230
+#: zypp/target/rpm/RpmDb.cc:2200
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "پشتیبان ساخته شد %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2251
+#: zypp/target/rpm/RpmDb.cc:2221
 msgid "Signature is OK"
 msgstr "امضا خوب است"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2253
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
 msgstr "نوع امضا ناشناخته است"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2255
+#: zypp/target/rpm/RpmDb.cc:2225
 msgid "Signature does not verify"
 msgstr "امضا قابل تایید نیست"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2257
+#: zypp/target/rpm/RpmDb.cc:2227
 msgid "Signature is OK, but key is not trusted"
 msgstr "امضا خوب است، اما کلید اعتمادسازی نشده است"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2259
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
 msgstr "کلید عمومی امضاها موجود نیست"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2261
+#: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
 msgstr "پرونده موجود نیست و یا امضاها قابل بررسی نیستند"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2263
+#: zypp/target/rpm/RpmDb.cc:2233
 msgid "File is unsigned"
 msgstr "فایل تایید نشده"
 
@@ -4902,7 +4904,7 @@ msgstr "%s نامعتبر جزء %s'"
 msgid "Invalid %s component"
 msgstr "جزء %s نامعتبر"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1309
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
 msgid "Query string parsing not supported for this URL"
 msgstr "تجزیه ی پرس و جوی رشته برای این آدرس پشتیبانی نمیشود"
 
@@ -4915,41 +4917,41 @@ msgstr "شکل آدرس یک جزء درخواستی است"
 msgid "Invalid Url scheme '%s'"
 msgstr "شکل آدرس نامعتبر '%s'"
 
-#: zypp-core/url/UrlBase.cc:1027
+#: zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
 msgstr "شکل آدرس، نام کاربری را مجاز نمیکند"
 
-#: zypp-core/url/UrlBase.cc:1061
+#: zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
 msgstr "شکل آدرس، رمز عبور را مجاز نمیکند"
 
-#: zypp-core/url/UrlBase.cc:1090
+#: zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
 msgstr "شکل آدرس یک جزء میزبان را میخواهد"
 
-#: zypp-core/url/UrlBase.cc:1100
+#: zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
 msgstr "شکل آدرس یک جزء میزبان را اجازه نمیدهد"
 
-#: zypp-core/url/UrlBase.cc:1127
+#: zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
 msgstr "مؤلفه میزبان نامعتبر «%s»"
 
-#: zypp-core/url/UrlBase.cc:1148
+#: zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
 msgstr "شکل آدس یک درگاه را مجاز نمیکند"
 
-#: zypp-core/url/UrlBase.cc:1159
+#: zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
 msgstr "جزء درگاه نامعتبر '%s'"
 
-#: zypp-core/url/UrlBase.cc:1176
+#: zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
 msgstr "شکل آدرس یک نام مسیر را میخواهد"
 
-#: zypp-core/url/UrlBase.cc:1197 zypp-core/url/UrlBase.cc:1211
+#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
 msgstr "مسیر نسبی در صورت وجود مرجع مجاز نیست"
 
@@ -4957,15 +4959,15 @@ msgstr "مسیر نسبی در صورت وجود مرجع مجاز نیست"
 msgid "Encoded string contains a NUL byte"
 msgstr "رشته ی رمزی حاوی بایت NUL است"
 
-#: zypp-core/url/UrlUtils.cc:173
+#: zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
 msgstr "پارامتر کاراکتر جداکننده ی تقسیمگر آرایه نامعتبر"
 
-#: zypp-core/url/UrlUtils.cc:213
+#: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
 msgstr "پارامتر کاراکتر جداکننده ی تقسیمگر نقشه نامعتبر"
 
-#: zypp-core/url/UrlUtils.cc:283
+#: zypp-core/url/UrlUtils.cc:281
 msgid "Invalid parameter array join separator character"
 msgstr "پارامتر کاراکتر جداکننده ی پیوند آرایه نامعتبر"
 
@@ -5060,7 +5062,7 @@ msgid "Medium not opened when trying to perform action '%s'."
 msgstr "رسانه در هنگام تلاش برای انجام عمل '%s' باز نشده است."
 
 #: zypp-media/mediaexception.cc:58
-#: zypp-curl/ng/network/networkrequesterror.cc:138
+#: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "پرونده ی '%s' در رسانه ی '%s' یافت نشد"
@@ -5166,7 +5168,7 @@ msgid "Permission to access '%s' denied."
 msgstr "اجازه برای دسترسی به '%s' داده نشد."
 
 #: zypp-media/mediaexception.cc:189
-#: zypp-curl/ng/network/networkrequesterror.cc:122
+#: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "مهلت زمانی در هنگام دسترسی به '%s' پایان یافت."
@@ -5178,7 +5180,7 @@ msgstr ""
 "داده های دانلود شده از اندازه فایل مورد انتظار '%s' از '%s' فراتر رفته است."
 
 #: zypp-media/mediaexception.cc:205
-#: zypp-curl/ng/network/networkrequesterror.cc:118
+#: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "مکان '%s' به صورت موقتی غیر قابل دسترسی است."
@@ -5197,7 +5199,7 @@ msgstr "هیچ منبع رایگانی برای پیوست کردن رسانه �
 msgid "Unsupported HTTP authentication method '%s'"
 msgstr "حالت احراز هویت پشتیبانی نشده '%s'"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:143
+#: zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5206,7 +5208,7 @@ msgstr ""
 "خطای دانلود (curl) برای '%s':\n"
 "کد خطا: %s\n"
 
-#: zypp-curl/ng/network/networkrequesterror.cc:149
+#: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5295,6 +5297,11 @@ msgstr ""
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr ""
+
+#~ msgid "Valid metadata not found at specified URL"
+#~ msgid_plural "Valid metadata not found at specified URLs"
+#~ msgstr[0] "شبه داده ی معتبر در آدرس تعیین شده یافت نشد"
+#~ msgstr[1] "شبه داده ی معتبر در آدرس های تعیین شده یافت نشد"
 
 #, boost-format
 #~ msgid "Executing %%posttrans script '%1%'"

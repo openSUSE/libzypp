@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Nov 12 14:35:35 CET 2024 - ma@suse.de
+
+- BuildCache: Don't try to retrieve missing raw metadata if no
+  permission to write the cache (bsc#1225451)
+- RepoManager: throw RepoNoPermissionException if the user has no
+  permission to update(write) the caches (bsc#1225451)
+- version 17.35.13 (35)
+
+-------------------------------------------------------------------
 Wed Oct  9 18:21:43 CEST 2024 - ma@suse.de
 
 - PluginFrame: Send unescaped colons in header values

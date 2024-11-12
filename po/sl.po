@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2024-07-15 17:47+0000\n"
+"PO-Revision-Date: 2024-11-12 02:48+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
 "sl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4339,7 +4339,7 @@ msgstr "Ni moč ustvariti %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Pridobivanje metapodatkov za vir ni uspelo."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
@@ -4621,7 +4621,7 @@ msgstr "applydeltarpm ni uspel."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permision to write repository cache."
-msgstr ""
+msgstr "Ni dovoljenja za zapis predpomnilnika vira."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."

@@ -40,9 +40,10 @@ namespace zyppng::RpmmdWorkflows {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      StatusLogic( DlContextRefType ctx, MediaHandle &&media  )
+      StatusLogic( DlContextRefType ctx, MediaHandle &&media, ProgressObserverRef &&progressObserver  )
         : _ctx(std::move(ctx))
         , _handle(std::move(media))
+        , _progressObserver( std::move(progressObserver) )
       {}
 
       MaybeAsyncRef<expected<zypp::RepoStatus>> execute() {
@@ -69,17 +70,18 @@ namespace zyppng::RpmmdWorkflows {
 
       DlContextRefType _ctx;
       MediaHandle _handle;
+      ProgressObserverRef _progressObserver;
     };
   }
 
-  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle)
+  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProgressObserverRef progressObserver, ProvideMediaHandle mediaHandle )
   {
-    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
+    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
-  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle)
+  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, ProgressObserverRef progressObserver, SyncMediaHandle mediaHandle)
   {
-    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
+    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
 
@@ -116,8 +118,7 @@ namespace zyppng::RpmmdWorkflows {
 
               if ( _progressObserver ) _progressObserver->inc();
 
-              return RepoDownloaderWorkflow::downloadMasterIndex( _ctx, _mediaHandle, _ctx->repoInfo().path() / "/repodata/repomd.xml" )
-                | inspect( incProgress( _progressObserver ) )
+              return RepoDownloaderWorkflow::downloadMasterIndex( _ctx, _mediaHandle, _ctx->repoInfo().path() / "/repodata/repomd.xml", _progressObserver ) | inspect( incProgress( _progressObserver ) )
                 | and_then( [this] ( DlContextRefType && ) {
 
                     zypp::Pathname repomdPath = _ctx->files().front();
@@ -140,7 +141,7 @@ namespace zyppng::RpmmdWorkflows {
 
                     return transform_collect  ( std::move(requiredFiles), [this]( zypp::OnMediaLocation file ) {
 
-                      return DownloadWorkflow::provideToCacheDir( _ctx, _mediaHandle, file.filename(), ProvideFileSpec(file) )
+                      return DownloadWorkflow::provideToCacheDir( _ctx, _progressObserver, _mediaHandle, file.filename(), ProvideFileSpec(file) )
                           | inspect ( incProgress( _progressObserver ) );
 
                     }) | and_then ( [this]( std::vector<zypp::ManagedFile> &&dlFiles ) {
@@ -169,12 +170,12 @@ namespace zyppng::RpmmdWorkflows {
     };
   }
 
-  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProgressObserverRef progressObserver, ProvideMediaHandle mediaHandle)
   {
     return SimpleExecutor< DlLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
-  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver)
+  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, ProgressObserverRef progressObserver, SyncMediaHandle mediaHandle)
   {
     return SimpleExecutor< DlLogic, SyncOp<expected<repo::SyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }

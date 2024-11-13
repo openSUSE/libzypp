@@ -9,37 +9,12 @@
 #ifndef ZYPP_GLIB_CONTEXT_H
 #define ZYPP_GLIB_CONTEXT_H
 
-/*!
- * The zyppng API library aims to provide a new set of APIs for the libzypp API which
- * makes it possible to use libzypp from different programming languages and offers a
- * more high level and stable API than the original library.
- *
- * In order to support using multiple languages, zyppng will leverage GObject and GIR technologies,
- * featuring a pure glib based C API as described here: https://gi.readthedocs.io/en/latest/index.html
- *
- * The ultimate goal of this project is to function as the only officially supported API for compiling against
- * zypp. Tools like zypper will be rewritten to use this API set.
- *
- * \code {.python}
- * #!/usr/bin/env python3
- *
- * import gi.repository
- *
- * # Set the search path to use the newly generated introspection files, only required if they are not in the default directories
- * gi.require_version('GIRepository', '2.0')
- * from gi.repository import GIRepository
- * GIRepository.Repository.prepend_search_path('/home/zbenjamin/build/libzypp/zyppng')
- *
- * gi.require_version('Zypp', '1.0')
- * from gi.repository import Zypp
- *
- * context = Zypp.Context()
- * print(context.version())
- * \endcode
- *
- *
- */
+#include <glib-object.h>
+#include <zypp-glib/zypp-glib_export.h>
 
+G_BEGIN_DECLS
+
+typedef struct _ZyppProgressObserver ZyppProgressObserver;
 
 /**
  * ZyppContext:
@@ -53,10 +28,6 @@
  * Meaning that one context can operate on "/" while another one can operate on "/tmp/rootfs".
  */
 
-
-#include <glib-object.h>
-#include <zypp-glib/zypp-glib_export.h>
-G_BEGIN_DECLS
 
 /**
  * ZyppContext: glibContext: (transfer full)
@@ -84,14 +55,38 @@ G_DECLARE_FINAL_TYPE ( ZyppContext, zypp_context, ZYPP, CONTEXT, GObject )
  */
 gboolean zypp_context_load_system ( ZyppContext *self, const gchar *sysRoot, GError **error ) LIBZYPP_GLIB_EXPORT;
 
-const gchar * zypp_context_version ( ZyppContext *self ) LIBZYPP_GLIB_EXPORT;
-
 /**
  * zypp_context_sysroot:
  *
  * Returns: (transfer full) (nullable): The context root as requested when loading the system
  */
 gchar *zypp_context_sysroot( ZyppContext *self ) LIBZYPP_GLIB_EXPORT;
+
+
+/**
+ * zypp_context_get_progress_observer:
+ *
+ * Returns: (transfer full) (nullable): The currently used progress observer, or NULL if there was none registered.
+ */
+ZyppProgressObserver *zypp_context_get_progress_observer( ZyppContext *self ) LIBZYPP_GLIB_EXPORT;
+
+/**
+ * zypp_context_set_progress_observer:
+ *
+ * Sets the progress observer, this is where libzypp will generate progress and callback messages.
+ * The context will hold a strong reference to the observer until it is resettet.
+ */
+void zypp_context_set_progress_observer( ZyppContext *self, ZyppProgressObserver *obs ) LIBZYPP_GLIB_EXPORT;
+
+/**
+ * zypp_context_reset_progress_observer:
+ *
+ * Clears the reference to the current progress observer, code will not be able to generate task information
+ * for new tasks anymore, already running code however might still hold a reference to it.
+ */
+void zypp_context_reset_progress_observer( ZyppContext *self ) LIBZYPP_GLIB_EXPORT;
+
+
 
 G_END_DECLS
 

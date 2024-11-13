@@ -48,10 +48,11 @@ namespace zyppng {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      DownloadMasterIndexLogic( DlContextRefType &&ctxRef, MediaHandle &&mediaHandle, zypp::filesystem::Pathname &&masterIndex_r  )
+      DownloadMasterIndexLogic( DlContextRefType &&ctxRef, MediaHandle &&mediaHandle, zypp::filesystem::Pathname &&masterIndex_r, ProgressObserverRef progressObserver  )
         : _dlContext( std::move(ctxRef) )
         , _media(std::move( mediaHandle ))
         , _masterIndex(std::move( masterIndex_r ))
+        , _progressObserver(std::move(progressObserver))
       { }
 
     public:
@@ -151,7 +152,7 @@ namespace zyppng {
                    vCtx.addBuddyKey( keyData.id() );
                  }
 
-                 return SignatureFileCheckWorkflow::verifySignature( _dlContext->zyppContext(), std::move(vCtx))
+                 return SignatureFileCheckWorkflow::verifySignature( _dlContext->zyppContext(), _progressObserver, std::move(vCtx))
                   | and_then([ this, res = std::move(res) ]( zypp::keyring::VerifyFileContext verRes ){
                     // remember the validation status
                     _repoSigValidated = verRes.fileValidated();
@@ -278,6 +279,7 @@ namespace zyppng {
       DlContextRefType _dlContext;
       MediaHandle _media;
       zypp::Pathname _masterIndex;
+      ProgressObserverRef _progressObserver;
 
       zypp::Pathname _destdir;
       zypp::Pathname _sigpath;
@@ -289,38 +291,38 @@ namespace zyppng {
 
     }
 
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::downloadMasterIndex(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::Pathname masterIndex_r)
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef> > RepoDownloaderWorkflow::downloadMasterIndex(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::Pathname masterIndex_r, ProgressObserverRef progressObserver )
     {
-      return SimpleExecutor<DownloadMasterIndexLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
+      return SimpleExecutor<DownloadMasterIndexLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r), std::move(progressObserver) );
     }
 
-    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::Pathname masterIndex_r)
+    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::Pathname masterIndex_r, ProgressObserverRef progressObserver )
     {
-      return SimpleExecutor<DownloadMasterIndexLogic, SyncOp<expected<repo::SyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
+      return SimpleExecutor<DownloadMasterIndexLogic, SyncOp<expected<repo::SyncDownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r), std::move(progressObserver) );
     }
 
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> RepoDownloaderWorkflow::downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r )
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> RepoDownloaderWorkflow::downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver )
     {
       using namespace zyppng::operators;
       return dl->zyppContext()->provider()->attachMediaIfNeeded( mediaHandle )
-      | and_then([ dl, mi = std::move(masterIndex_r) ]( ProvideMediaHandle handle ) mutable {
-        return downloadMasterIndex( std::move(dl), std::move(handle), std::move(mi) );
+      | and_then([ dl, mi = std::move(masterIndex_r), po = std::move(progressObserver) ]( ProvideMediaHandle handle ) mutable {
+        return downloadMasterIndex( std::move(dl), std::move(handle), std::move(mi), std::move(po) );
       });
     }
 
-    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r )
+    expected<repo::SyncDownloadContextRef> RepoDownloaderWorkflow::downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver )
     {
       using namespace zyppng::operators;
       return dl->zyppContext()->provider()->attachMediaIfNeeded( mediaHandle )
-      | and_then([ dl, mi = std::move(masterIndex_r) ]( SyncMediaHandle handle ) mutable {
-        return downloadMasterIndex( std::move(dl), std::move(handle), std::move(mi) );
+      | and_then([ dl, mi = std::move(masterIndex_r), po = std::move(progressObserver)  ]( SyncMediaHandle handle ) mutable {
+        return downloadMasterIndex( std::move(dl), std::move(handle), std::move(mi), std::move(po) );
       });
     }
 
 
     namespace {
       template <class DlContextRefType, class MediaHandleType>
-      auto statusImpl ( DlContextRefType dlCtx, MediaHandleType &&mediaHandle ) {
+      auto statusImpl ( DlContextRefType dlCtx, MediaHandleType &&mediaHandle, ProgressObserverRef progressObserver ) {
 
         constexpr bool isAsync = std::is_same_v<DlContextRefType,repo::AsyncDownloadContextRef>;
 
@@ -330,11 +332,11 @@ namespace zyppng {
 
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::repoStatus( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
+            return RpmmdWorkflows::repoStatus( dlCtx, std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::YAST2_e:
-            return SuseTagsWorkflows::repoStatus( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
+            return SuseTagsWorkflows::repoStatus( dlCtx, std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
-            return PlaindirWorkflows::repoStatus ( dlCtx, std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
+            return PlaindirWorkflows::repoStatus ( dlCtx, std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) ) | and_then( std::move(finalizeStatus) );
           case zypp::repo::RepoType::NONE_e:
             break;
         }
@@ -343,27 +345,27 @@ namespace zyppng {
       }
     }
 
-    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle) {
-      return statusImpl( dl, std::move(mediaHandle) );
+    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver ) {
+      return statusImpl( dl, std::move(mediaHandle), std::move(progressObserver) );
     }
 
-    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle) {
-       return statusImpl( dl, std::move(mediaHandle) );
+    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver ) {
+       return statusImpl( dl, std::move(mediaHandle), std::move(progressObserver) );
     }
 
-    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle ) {
+    AsyncOpRef<expected<zypp::RepoStatus> > RepoDownloaderWorkflow::repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver ) {
       using namespace zyppng::operators;
       return dl->zyppContext()->provider()->attachMediaIfNeeded( mediaHandle )
-      | and_then([ dl ]( ProvideMediaHandle handle ) {
-        return repoStatus( dl, std::move(handle) );
+      | and_then([ dl, obs = std::move(progressObserver) ]( ProvideMediaHandle handle ) mutable {
+        return repoStatus( dl, std::move(handle), std::move(obs) );
       });
     }
 
-    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle ) {
+    expected<zypp::RepoStatus> RepoDownloaderWorkflow::repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver ) {
       using namespace zyppng::operators;
       return dl->zyppContext()->provider()->attachMediaIfNeeded( mediaHandle )
-      | and_then([ dl ]( SyncMediaHandle handle ) {
-        return repoStatus( dl, std::move(handle) );
+      | and_then([ dl, obs = std::move(progressObserver) ]( SyncMediaHandle handle ) {
+        return repoStatus( dl, std::move(handle), std::move(obs) );
       });
     }
 
@@ -376,11 +378,11 @@ namespace zyppng {
 
         switch( dlCtx->repoInfo().type().toEnum()) {
           case zypp::repo::RepoType::RPMMD_e:
-            return RpmmdWorkflows::download( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle), std::move(progressObserver) );
+            return RpmmdWorkflows::download( std::move(dlCtx), std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) );
           case zypp::repo::RepoType::YAST2_e:
-            return SuseTagsWorkflows::download( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle), std::move(progressObserver) );
+            return SuseTagsWorkflows::download( std::move(dlCtx), std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) );
           case zypp::repo::RepoType::RPMPLAINDIR_e:
-            return PlaindirWorkflows::download ( std::move(dlCtx), std::forward<MediaHandleType>(mediaHandle) );
+            return PlaindirWorkflows::download ( std::move(dlCtx), std::move(progressObserver), std::forward<MediaHandleType>(mediaHandle) );
           case zypp::repo::RepoType::NONE_e:
             break;
         }

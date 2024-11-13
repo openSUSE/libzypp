@@ -17,6 +17,7 @@
 #include <string>
 
 #include "globals_p.h"
+#include "progressobserver_p.h"
 
 // the good ol zypp API
 #include <zypp/ng/Context>
@@ -27,16 +28,17 @@ struct ZyppContextPrivate
   ZyppContextPrivate( ZyppContext *pub ) : WrapperPrivateBase(pub) {};
 
   void initializeCpp();
-  zyppng::SyncContextRef &cppType();
+  zyppng::AsyncContextRef &cppType();
 
   struct ConstructionProps {
     zypp::Pathname     _sysRoot = "/";
-    zyppng::SyncContextRef _cppObj;
+    zyppng::AsyncContextRef _cppObj;
   };
   std::optional<ConstructionProps> _constructProps = ConstructionProps();
 
-  std::string version = LIBZYPP_VERSION_STRING;
-  zyppng::SyncContextRef _context;
+  zypp::glib::GObjectPtr<ZyppProgressObserver> _masterProgress; //synced with the progress observer in zyppng::Context
+
+  zyppng::AsyncContextRef _context;
 };
 
 /*
@@ -52,6 +54,6 @@ struct _ZyppContext
 /**
  * zypp_context_get_cpp: (skip)
  */
-zyppng::SyncContextRef zypp_context_get_cpp( ZyppContext *self );
+zyppng::AsyncContextRef zypp_context_get_cpp( ZyppContext *self );
 
 #endif // CONTEXT_P_H

@@ -29,16 +29,18 @@ namespace zyppng {
 
   class ProvideRes;
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
+
   namespace CheckSumWorkflow {
-    expected<void> verifyChecksum ( SyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file );
-    AsyncOpRef<expected<void>> verifyChecksum (  AsyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file );
+    expected<void> verifyChecksum (SyncContextRef zyppCtx, zyppng::ProgressObserverRef taskObserver, zypp::CheckSum checksum, zypp::Pathname file );
+    AsyncOpRef<expected<void>> verifyChecksum (  AsyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum, zypp::Pathname file );
 
     /*!
      * Returns a callable that executes the verify checksum as part of a pipeline,
      * forwarding the \ref ProvideRes if the workflow was successful.
      */
-    std::function< AsyncOpRef<expected<ProvideRes>>( ProvideRes && ) > checksumFileChecker( AsyncContextRef zyppCtx, zypp::CheckSum checksum );
-    std::function< expected<SyncProvideRes>( SyncProvideRes && ) > checksumFileChecker( SyncContextRef zyppCtx, zypp::CheckSum checksum );
+    std::function< AsyncOpRef<expected<ProvideRes>>( ProvideRes && ) > checksumFileChecker(AsyncContextRef zyppCtx, zyppng::ProgressObserverRef taskObserver, zypp::CheckSum checksum );
+    std::function< expected<SyncProvideRes>( SyncProvideRes && ) > checksumFileChecker( SyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum );
 
   }
 }

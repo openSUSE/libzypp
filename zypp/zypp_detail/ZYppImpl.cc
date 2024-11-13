@@ -164,12 +164,12 @@ namespace zypp
       if ( zyppLegacyShutdownStarted )
         ZYPP_THROW("Global State requested after it was freed");
 
-        auto &inst = instance();
-        if (!inst._config) {
-          inst._config.reset( new ZConfig( autodetectZyppConfPath () ) );
-        }
+      auto &inst = instance();
+      if (!inst._config) {
+        inst._config.reset( new ZConfig( autodetectZyppConfPath () ) );
+      }
 
-        return *inst._config;
+      return *inst._config;
     }
 
     void GlobalStateHelper::lock()

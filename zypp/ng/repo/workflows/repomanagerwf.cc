@@ -652,6 +652,7 @@ namespace zyppng::RepoManagerWorkflow {
       MaybeAsyncRef<expected<RefreshContextRefType>> execute() {
 
         ProgressObserver::setup ( _progressObserver, zypp::str::form(_("Building repository '%s' cache"), _refCtx->repoInfo().label().c_str()), 100 );
+        ProgressObserver::start ( _progressObserver );
 
         return assert_alias(_refCtx->repoInfo() )
         | and_then( mtry( [this] {
@@ -727,8 +728,6 @@ namespace zyppng::RepoManagerWorkflow {
 
             needs_cleaning = true;
           }
-
-          ProgressObserver::start( _progressObserver );
 
           if (needs_cleaning)
           {

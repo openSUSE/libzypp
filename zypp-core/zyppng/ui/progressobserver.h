@@ -59,6 +59,7 @@ namespace zyppng {
     double  progress() const;
     double  current()  const;
 
+    ProgressObserverRef parent() const;
 
     inline static ProgressObserverRef makeSubTask( ProgressObserverRef parentProgress, float weight = 1.0, const std::string &label = std::string(), int steps = 100  ) {
       if ( parentProgress ) return parentProgress->makeSubTask( weight, label, steps );
@@ -106,7 +107,6 @@ namespace zyppng {
     ProgressObserverRef makeSubTask( float weight = 1.0 ,const std::string &label = std::string(), int steps = 100 );
 
     zypp::ProgressData::ReceiverFnc makeProgressDataReceiver ();
-
 
     void sendUserRequest( const UserRequestRef& event );
 

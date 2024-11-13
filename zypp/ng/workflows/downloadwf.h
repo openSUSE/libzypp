@@ -53,8 +53,8 @@ namespace zyppng {
   ZYPP_FWD_DECL_REFS(SyncCacheProviderContext);
 
   namespace DownloadWorkflow {
-    AsyncOpRef<expected<zypp::ManagedFile>> provideToCacheDir( AsyncCacheProviderContextRef cacheContext, ProvideMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec );
-    expected<zypp::ManagedFile> provideToCacheDir( SyncCacheProviderContextRef cacheContext, SyncMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec );
+    AsyncOpRef<expected<zypp::ManagedFile>> provideToCacheDir(AsyncCacheProviderContextRef cacheContext, ProgressObserverRef taskObserver, ProvideMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec );
+    expected<zypp::ManagedFile> provideToCacheDir( SyncCacheProviderContextRef cacheContext, ProgressObserverRef taskObserver, SyncMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec );
   }
 
 }

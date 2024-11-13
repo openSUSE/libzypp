@@ -637,7 +637,6 @@ namespace zypp {
           MIL << "Package not explicitly handled" << std::endl;
         }
       }
-
     }
 
     MIL << "Grouped packages: " << std::endl;

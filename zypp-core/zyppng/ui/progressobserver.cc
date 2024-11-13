@@ -129,6 +129,8 @@ namespace zyppng {
       return;
     }
 
+    child.d_func()->_parent.reset();
+
     const auto idx = std::distance ( _children.begin (), i );
     _children.erase(i);
     _childInfo.erase( _childInfo.begin () + idx );
@@ -195,6 +197,11 @@ namespace zyppng {
     return d_func()->_counterValue;
   }
 
+  ProgressObserverRef ProgressObserver::parent() const
+  {
+    return d_func()->_parent.lock();
+  }
+
   const std::vector<ProgressObserverRef> &ProgressObserver::children()
   {
     return d_func()->_children;
@@ -240,6 +247,11 @@ namespace zyppng {
     return d_func()->_sigNewSubprogress;
   }
 
+  SignalProxy<void ( ProgressObserver &sender, UserRequestRef event)> ProgressObserver::sigEvent()
+  {
+    return d_func()->_sigEvent;
+  }
+
   void ProgressObserver::setBaseSteps(int steps)
   {
     Z_D();
@@ -260,6 +272,8 @@ namespace zyppng {
   void ProgressObserver::setCurrent(double curr)
   {
     Z_D();
+    if ( !d->_started ) start();
+
     auto set = std::max<double>(0, std::min<double>( curr, d->_baseSteps ) );
     if ( set == d->_baseValue )
       return;
@@ -282,12 +296,12 @@ namespace zyppng {
     // others we have to manually remove
     while ( d->_children.size() ) {
       auto back   = d->_children.back();
-      bool remove = !back->started ();
       back->setFinished( result );
+      bool remove = !back->started ();
       if ( remove ) d->_children.pop_back();
     }
 
-    if ( result != Error )
+    if ( d->_started && result != Error )
       setCurrent( d->_baseSteps );
 
     if ( d->_started )
@@ -318,6 +332,7 @@ namespace zyppng {
         }
         , adjustedWeight
       });
+      child->d_func ()->_parent = weak_this<ProgressObserver>();
       d->_sigNewSubprogress.emit( *this, child );
 
       // if the child has been started already, we also need to start()
@@ -363,6 +378,8 @@ namespace zyppng {
     d->_sigEvent.emit( *this, event );
     if ( !event->accepted () ) {
       // our receivers did not handle the request, we need to bubble up!
+      auto p = d->_parent.lock();
+      if ( p ) p->sendUserRequest( event );
     }
   }
 

@@ -8,11 +8,31 @@
 
 namespace zyppng {
 
-
   ContextBase::ContextBase()
     : _tmpDir( zypp::filesystem::TmpPath::defaultLocation(), "zypp." )
     , _repoVarCache( *this )
   { }
+
+  void ContextBase::setProgressObserver(ProgressObserverRef observer)
+  {
+    if ( _masterProgress != observer ) {
+      _masterProgress = observer;
+      _sigProgressObserverChanged.emit();
+    }
+  }
+
+  ProgressObserverRef ContextBase::progressObserver() const
+  {
+    return _masterProgress;
+  }
+
+  void ContextBase::resetProgressObserver()
+  {
+    if ( _masterProgress ) {
+      _masterProgress.reset();
+      _sigProgressObserverChanged.emit();
+    }
+  }
 
   ContextBase::~ContextBase()
   { }

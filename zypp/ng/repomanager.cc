@@ -188,14 +188,14 @@ namespace zyppng
      * \param dir pathname of the directory to read.
      */
   template <typename ZContextRef>
-  std::list<RepoInfo> repositories_in_dir( ZContextRef zyppContext, const zypp::Pathname &dir )
+  std::list<RepoInfo> repositories_in_dir( ZContextRef zyppContext, ProgressObserverRef taskObserver, const zypp::Pathname &dir )
   {
     MIL << "directory " << dir << std::endl;
     std::list<RepoInfo> repos;
     bool nonroot( geteuid() != 0 );
     if ( nonroot && ! zypp::PathInfo(dir).userMayRX() )
     {
-      JobReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo directory '%1%': Permission denied")) % dir );
+      JobReportHelper(zyppContext, taskObserver).warning( zypp::str::Format(_("Cannot read repo directory '%1%': Permission denied")) % dir );
     }
     else
     {
@@ -213,7 +213,7 @@ namespace zyppng
         {
           if ( nonroot && ! zypp::PathInfo(*it).userMayR() )
           {
-            JobReportHelper(zyppContext).warning( zypp::str::Format(_("Cannot read repo file '%1%': Permission denied")) % *it );
+            JobReportHelper(zyppContext, taskObserver).warning( zypp::str::Format(_("Cannot read repo file '%1%': Permission denied")) % *it );
           }
           else
           {
@@ -519,12 +519,12 @@ namespace zyppng
   }
 
   template <typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::loadFromCache( FusionPoolRef<ContextType> fPool, const RepoInfo & info, ProgressObserverRef myProgress )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<void>> RepoManager<ZyppContextType>::loadFromCache( FusionPoolRef<ContextType> fPool, RepoInfo info, ProgressObserverRef myProgress )
   {
     using namespace zyppng::operators;
 
     if ( !info.context() || info.context() != zyppContext() ) {
-      return expected<void>::error( ZYPP_EXCPT_PTR( zypp::Exception("None or different context in RepoInfo is not supported.")) );
+      return makeReadyResult(expected<void>::error( ZYPP_EXCPT_PTR( zypp::Exception("None or different context in RepoInfo is not supported.")) ));
     }
 
     return zyppng::mtry( [this, fPool, info, myProgress](){
@@ -560,7 +560,7 @@ namespace zyppng
         | and_then([this, info =  info, myProgress] () mutable {
           return buildCache ( info, zypp::RepoManagerFlags::BuildIfNeeded, ProgressObserver::makeSubTask( myProgress ) );
         })
-        | and_then( mtry([this, fPool, info = info]{
+        | and_then( mtry([this, fPool]( RepoInfo info ){
           fPool->satPool().addRepoSolv( solv_path_for_repoinfo(_options, info).unwrap() / "solv", info );
         }));
     })
@@ -580,6 +580,9 @@ namespace zyppng
   {
     try {
       auto tosave = info;
+
+      if ( repos().find(tosave.alias()) != repos().end() )
+        return expected<RepoInfo>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(tosave)) );
 
       // assert the directory exists
       zypp::filesystem::assert_dir(_options.knownReposPath);
@@ -709,7 +712,7 @@ namespace zyppng
   }
 
   template <typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::modifyRepository(const std::string & alias, RepoInfo &newinfo_r, ProgressObserverRef myProgress )
+  expected<RepoInfo> RepoManager<ZyppContextType>::modifyRepository(const std::string & alias, RepoInfo newinfo_r, ProgressObserverRef myProgress )
   {
     try {
 
@@ -792,13 +795,12 @@ namespace zyppng
 
       ProgressObserver::finish ( myProgress );
 
-      newinfo_r = newinfo;
-      return expected<void>::success();
+      return expected<RepoInfo>::success(newinfo);
     }
 
     } catch ( ... ) {
       ProgressObserver::finish ( myProgress, ProgressObserver::Error );
-      return expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() );
+      return expected<RepoInfo>::error( ZYPP_FWD_CURRENT_EXCPT() );
     }
   }
 
@@ -841,23 +843,21 @@ namespace zyppng
   }
 
   template<typename ZyppContextType>
-  expected<typename RepoManager<ZyppContextType>::RefreshCheckStatus> RepoManager<ZyppContextType>::checkIfToRefreshMetadata( RepoInfo &info, const zypp::Url &url, RawMetadataRefreshPolicy policy)
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<std::pair<RepoInfo,typename RepoManager<ZyppContextType>::RefreshCheckStatus>>> RepoManager<ZyppContextType>::checkIfToRefreshMetadata( RepoInfo info, const zypp::Url &url, RawMetadataRefreshPolicy policy)
   {
     using namespace zyppng::operators;
-    return joinPipeline( _zyppContext,
-      prepareRepoInfo ( info )
-      | and_then( [ this, info, url ]() { return RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} ); } )
-      | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextType>>() ); }
+    return RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
+      | [this, info](auto) { return prepareRefreshContext(info); }
       | and_then( [this, url, policy]( zyppng::repo::RefreshContextRef<ZyppContextType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
         return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) )
-            | and_then( [ r = std::move(refCtx) ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), std::move(mediaHandle), nullptr ); } );
-      })
-        );
+            | and_then( [ refCtx ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(refCtx), std::move(mediaHandle), nullptr ); } )
+            | and_then( [ refCtx ]( auto checkStatus ){ return make_expected_success (std::make_pair( refCtx->repoInfo(), checkStatus ) ); });
+      });
   }
 
   template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::refreshMetadata( RepoInfo &info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<RepoInfo>> RepoManager<ZyppContextType>::refreshMetadata( RepoInfo info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress )
   {
     using namespace zyppng::operators;
     // helper callback in case the repo type changes on the remote
@@ -876,11 +876,9 @@ namespace zyppng
       }
     };
 
-    expected<RepoInfo> res = joinPipeline( _zyppContext,
       // make sure geoIP data is up 2 date, but ignore errors
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
-      | [this, info = info](auto) { return cloneAndPrepare(info); }
-      | and_then( [this]( RepoInfo info ) { return zyppng::repo::RefreshContext<ZyppContextType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextType>>()); } )
+    return RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
+      | [this, info = info](auto) { return prepareRefreshContext(info); }
       | and_then( [policy, myProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextType> refCtx ) {
         refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
         // in case probe detects a different repokind, update our internal repos
@@ -894,28 +892,21 @@ namespace zyppng
           rMgr->reposManip();	// remember to trigger appdata refresh
 
         return expected<RepoInfo>::success ( ctx->repoInfo() );
-    }));
-
-    if ( res ) {
-      // sync
-      info = res.get();
-      return expected<void>::success ();
-    }
-
-    return expected<void>::error( res.error() );
+    });
   }
 
   template<typename ZyppContextType>
-  std::vector<std::pair<RepoInfo, expected<void>>> RepoManager<ZyppContextType>::refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<std::vector<std::pair<RepoInfo, expected<void> > > > RepoManager<ZyppContextType>::refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress )
   {
     using namespace zyppng::operators;
 
     ProgressObserver::setup( myProgress, "Refreshing repositories" , 1 );
 
-    auto r = std::move(infos)
+    return std::move(infos)
         | transform( [this, policy, myProgress]( const RepoInfo &info ) {
 
         auto subProgress = ProgressObserver::makeSubTask( myProgress, 1.0, zypp::str::Str() << _("Refreshing Repository: ") << info.alias(), 3 );
+        ProgressObserver::start( subProgress );
 
         // helper callback in case the repo type changes on the remote
         // do NOT capture by reference here, since this is possibly executed async
@@ -938,7 +929,7 @@ namespace zyppng
         return
           // make sure geoIP data is up 2 date, but ignore errors
           RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
-          | [sharedThis, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextType>::create( sharedThis->_zyppContext, info, sharedThis); }
+          | [sharedThis, info = info](auto) { return sharedThis->prepareRefreshContext(info); }
           | inspect( incProgress( subProgress ) )
           | and_then( [policy, subProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextType> refCtx ) {
             refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
@@ -959,6 +950,8 @@ namespace zyppng
           | [ info = info, subProgress ]( expected<repo::RefreshContextRef<ZyppContextType>> result ) {
             if ( result ) {
               ProgressObserver::finish( subProgress, ProgressObserver::Success );
+              RepoInfo info = result.get()->repoInfo();
+              info.setName( info.name() + " refreshed" );
               return std::make_pair(info, expected<void>::success() );
             } else {
               ProgressObserver::finish( subProgress, ProgressObserver::Error );
@@ -971,8 +964,6 @@ namespace zyppng
         return res;
       }
     );
-
-    return joinPipeline( _zyppContext, r );
   }
 
   /** Probe the metadata type of a repository located at \c url.
@@ -982,56 +973,51 @@ namespace zyppng
    * a cache path must not be rewritten (bnc#946129)
    */
   template<typename ZyppContextType>
-  expected<zypp::repo::RepoType> RepoManager<ZyppContextType>::probe(const zypp::Url &url, const zypp::Pathname &path) const
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<zypp::repo::RepoType>> RepoManager<ZyppContextType>::probe(const zypp::Url &url, const zypp::Pathname &path) const
   {
     using namespace zyppng::operators;
-    return joinPipeline( _zyppContext,
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
+    return RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
       | [this, url=url](auto) { return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) ); }
       | and_then( [this, path = path]( auto mediaHandle ) {
         return RepoManagerWorkflow::probeRepoType( _zyppContext, std::forward<decltype(mediaHandle)>(mediaHandle), path );
-    }));
+    });
   }
 
   template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::buildCache( RepoInfo &info, CacheBuildPolicy policy, ProgressObserverRef myProgress )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<RepoInfo>> RepoManager<ZyppContextType>::buildCache( RepoInfo info, CacheBuildPolicy policy, ProgressObserverRef myProgress )
   {
     using namespace zyppng::operators;
 
-    return joinPipeline( _zyppContext,
-        prepareRepoInfo ( info )
-      | and_then( [this, info ]() { return zyppng::repo::RefreshContext<ZyppContextType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextType>>() ); } )
+    return cloneAndPrepare ( info )
+      | and_then( [this ]( auto info ) { return zyppng::repo::RefreshContext<ZyppContextType>::create( shared_this<RepoManager<ZyppContextType>>(), info ); } )
       | and_then( [policy, myProgress]( repo::RefreshContextRef<ZyppContextType> refCtx ) {
         return zyppng::RepoManagerWorkflow::buildCache ( std::move(refCtx), policy, myProgress );
       })
-      | and_then([]( auto ){ return expected<void>::success(); })
-    );
+      | and_then([]( zyppng::repo::RefreshContextRef<ZyppContextType> ctx ){ return make_expected_success(ctx->repoInfo());})
+    ;
   }
 
   template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::addRepository( RepoInfo &info, ProgressObserverRef myProgress )
-  {
-    expected_return_on_error( void, prepareRepoInfo (info) );
-    auto res = joinPipeline( _zyppContext, RepoManagerWorkflow::addRepository( shared_this<RepoManager<ZyppContextType>>(), info, std::move(myProgress) ) );
-
-    if ( res ) {
-      info = *res;
-      return expected<void>::success ();
-    }
-    return expected<void>::error( res.error() );
-  }
-
-  template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::addRepositories( const zypp::Url &url, ProgressObserverRef myProgress )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<RepoInfo>> RepoManager<ZyppContextType>::addRepository( RepoInfo info, ProgressObserverRef myProgress )
   {
     using namespace zyppng::operators;
-    return joinPipeline( _zyppContext, RepoManagerWorkflow::addRepositories( shared_this<RepoManager<ZyppContextType>>(), url, std::move(myProgress)));
+    return cloneAndPrepare (info)
+      | and_then( [this, myProgress]( RepoInfo info ){
+        return RepoManagerWorkflow::addRepository( shared_this<RepoManager<ZyppContextType>>(), info, std::move(myProgress) );
+      });
+  }
+
+  template<typename ZyppContextType>
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<void>> RepoManager<ZyppContextType>::addRepositories( const zypp::Url &url, ProgressObserverRef myProgress )
+  {
+    using namespace zyppng::operators;
+    return RepoManagerWorkflow::addRepositories( shared_this<RepoManager<ZyppContextType>>(), url, std::move(myProgress));
   }
 
   template <typename ZyppContextType>
-  expected<zypp::repo::ServiceType> RepoManager<ZyppContextType>::probeService( const zypp::Url & url ) const
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<zypp::repo::ServiceType>> RepoManager<ZyppContextType>::probeService( const zypp::Url & url ) const
   {
-    return joinPipeline( _zyppContext, RepoServicesWorkflow::probeServiceType ( _zyppContext, url ) );
+    return RepoServicesWorkflow::probeServiceType ( _zyppContext, url );
   }
 
   template <typename ZyppContextType>
@@ -1064,21 +1050,21 @@ namespace zyppng
   }
 
   template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::refreshService( const std::string &alias, const RefreshServiceOptions &options_r )
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<void>> RepoManager<ZyppContextType>::refreshService( const std::string &alias, const RefreshServiceOptions &options_r )
   {
     const auto &serviceOpt = getService(alias);
     if( !serviceOpt )
     {
       ZYPP_THROW(zypp::repo::ServiceException( _("Can't find service alias.") ));
     }
-    return joinPipeline ( _zyppContext, RepoServicesWorkflow::refreshService( shared_this<RepoManager<ZyppContextType>>(), *serviceOpt, options_r ) );
+    return RepoServicesWorkflow::refreshService( shared_this<RepoManager<ZyppContextType>>(), *serviceOpt, options_r );
   }
 
   /*!
    * \todo ignore ServicePluginInformalException in calling code
    */
   template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::refreshServices(const RefreshServiceOptions &options_r)
+  typename RepoManager<ZyppContextType>::template MaybeAsyncRef<expected<void>> RepoManager<ZyppContextType>::refreshServices(const RefreshServiceOptions &options_r)
   {
     using namespace zyppng::operators;
 
@@ -1088,12 +1074,10 @@ namespace zyppng
     std::vector<ServiceInfo> servicesVec;
     std::transform( serviceBegin(), serviceEnd(), std::back_inserter(servicesVec), []( const auto &pair ){ return pair.second;} );
 
-    return joinPipeline( _zyppContext,
-      std::move(servicesVec)
+    return std::move(servicesVec)
       | transform( [options_r, this]( ServiceInfo i ){ return RepoServicesWorkflow::refreshService( shared_this<RepoManager<ZyppContextType>>(), i, options_r ); } )
       | join()
-      | collect()
-    );
+      | collect();
   }
 
   ////////////////////////////////////////////////////////////////////////////
@@ -1349,12 +1333,6 @@ namespace zyppng
     return expected<void>::success();
   }
 
-  template<typename ZyppContextType>
-  expected<void> RepoManager<ZyppContextType>::refreshGeoIp( const RepoInfo::url_set &urls )
-  {
-    return joinPipeline( _zyppContext, RepoManagerWorkflow::refreshGeoIPData( _zyppContext, urls) );
-  }
-
   template <typename ZyppContextType>
   expected<void> RepoManager<ZyppContextType>::touchIndexFile( const RepoInfo & info )
   {
@@ -1446,7 +1424,7 @@ namespace zyppng
     {
       std::list<std::string> repoEscAliases;
       std::list<RepoInfo> orphanedRepos;
-      for ( const RepoInfo & rI : repositories_in_dir( _zyppContext, _options.knownReposPath ) )
+      for ( const RepoInfo & rI : repositories_in_dir( _zyppContext, _zyppContext->progressObserver(), _options.knownReposPath ) )
       {
         RepoInfo repoInfo = rI;
 
@@ -1476,7 +1454,7 @@ namespace zyppng
           // translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
           //   %1% = service name
           //   %2% = repository name
-          JobReportHelper(_zyppContext).warning( zypp::str::Format(_("Unknown service '%1%': Removing orphaned service repository '%2%'"))
+          JobReportHelper(_zyppContext, _zyppContext->progressObserver()).warning( zypp::str::Format(_("Unknown service '%1%': Removing orphaned service repository '%2%'"))
                               % repoInfo.service()
                               % repoInfo.alias() );
           try {
@@ -1485,7 +1463,7 @@ namespace zyppng
           }
           catch ( const zypp::Exception & caugth )
           {
-            JobReportHelper(_zyppContext).error( caugth.asUserHistory() );
+            JobReportHelper(_zyppContext, _zyppContext->progressObserver()).error( caugth.asUserHistory() );
           }
         }
       }

@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/RepoInfo.h
+/** \file	zypp/ng/repoinfo.h
  *
 */
 #ifndef ZYPP_NG_REPOINFO_INCLUDED

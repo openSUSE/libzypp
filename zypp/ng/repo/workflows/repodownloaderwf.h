@@ -34,20 +34,20 @@ namespace zyppng {
   using SyncLazyMediaHandle  = LazyMediaHandle<MediaSyncFacade>;
 
   namespace RepoDownloaderWorkflow {
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
 
-    AsyncOpRef<expected<zypp::RepoStatus>>  repoStatus( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle );
-    AsyncOpRef<expected<zypp::RepoStatus> > repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle );
-    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle );
-    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle );
+    AsyncOpRef<expected<zypp::RepoStatus>>  repoStatus( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<zypp::RepoStatus> > repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
 
     AsyncOpRef<expected<repo::AsyncDownloadContextRef>> download ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
     AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
     expected<repo::SyncDownloadContextRef> download ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
-    expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
+    expected<repo::SyncDownloadContextRef> download( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
 
     template <typename MediaHandle>
     auto downloadMediaInfo ( MediaHandle &&mediaHandle, const zypp::filesystem::Pathname &destdir ) {

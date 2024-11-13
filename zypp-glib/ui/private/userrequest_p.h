@@ -105,6 +105,9 @@ struct ZyppUserRequestImpl
     iface->get_data = get_data;
     iface->get_keys = get_keys;
     iface->get_content_type = get_content_type;
+    iface->set_accepted = set_accepted;
+    iface->set_ignored = set_ignored;
+    iface->get_accepted = get_accepted;
   }
 };
 

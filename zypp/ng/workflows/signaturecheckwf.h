@@ -22,9 +22,11 @@
 
 namespace zyppng {
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
+
   namespace SignatureFileCheckWorkflow {
-    expected<zypp::keyring::VerifyFileContext> verifySignature( SyncContextRef ctx, zypp::keyring::VerifyFileContext context );
-    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( AsyncContextRef ctx, zypp::keyring::VerifyFileContext context );
+    expected<zypp::keyring::VerifyFileContext> verifySignature(SyncContextRef ctx, zyppng::ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext context );
+    AsyncOpRef<expected<zypp::keyring::VerifyFileContext>> verifySignature( AsyncContextRef ctx, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext context );
   }
 
 }

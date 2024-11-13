@@ -18,23 +18,29 @@ G_BEGIN_DECLS
  * ZYPP_ERROR:
  *
  * Error domain for the zypp exception handling. Errors in this domain will
- * be from the #ZyppException enumeration. See #GError for information
+ * be from the #ZyppError enumeration. See #GError for information
  * on error domains.
 */
-#define ZYPP_EXCEPTION zypp_exception_quark ()
+#define ZYPP_ERROR zypp_error_quark ()
 
 /**
  * ZyppError:
- * @ZYPP_ERROR: Generic Error that happend in the zypp API, check error string for details
+ * @ZYPP_ERROR_GENERIC: Generic Error that happend in the zypp API, check error string for details
  */
 typedef enum
 {
-  ZYPP_ERROR
-} ZyppException;
+  ZYPP_ERROR_GENERIC
+} ZyppError;
 
-GQuark zypp_exception_quark () LIBZYPP_GLIB_EXPORT;
+GQuark zypp_error_quark () LIBZYPP_GLIB_EXPORT;
 
 
+/**
+ * zypp_error_get_history:
+ *
+ * Returns: (element-type gchar) (transfer full) (nullable):  the history strings from the exception
+ */
+GList * zypp_error_get_history (GError *error) LIBZYPP_GLIB_EXPORT;
 
 G_END_DECLS
 

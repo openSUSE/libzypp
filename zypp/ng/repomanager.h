@@ -12,6 +12,7 @@
 #ifndef ZYPP_NG_REPOMANAGER_INCLUDED
 #define ZYPP_NG_REPOMANAGER_INCLUDED
 
+
 #include <utility>
 
 #include <zypp/RepoManagerFlags.h>
@@ -23,6 +24,7 @@
 #include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/repoinfo.h>
 #include <zypp/ng/serviceinfo.h>
+#include <zypp/ng/repo/refresh.h>
 
 
 #include <zypp-core/base/Gettext.h>
@@ -363,6 +365,20 @@ namespace zyppng {
       return prepareRepoInfo (info) | and_then( [&info](){ return expected<RepoInfo>::success(info); } );
     }
 
+    /*!
+     * Prepare a refresh context that can be used to have more control over running a refresh operation
+     * manually.
+     */
+    expected<repo::RefreshContextRef<ZyppContextType>> prepareRefreshContext( RepoInfo info ) {
+      using namespace zyppng::operators;
+      return cloneAndPrepare (info ) |
+        and_then( [this]( RepoInfo info ) {
+          return repo::RefreshContext<ZyppContextType>::create( shared_this<RepoManager<ZyppContextType>>(), info );
+        }
+      );
+    }
+
+
     ContextRefType zyppContext() const {
       return _zyppContext;
     }
@@ -422,18 +438,20 @@ namespace zyppng {
       });
     }
 
-    expected<void> loadFromCache( FusionPoolRef<ContextType> fPool, const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
+    MaybeAsyncRef<expected<void>> loadFromCache( FusionPoolRef<ContextType> fPool, RepoInfo info, ProgressObserverRef myProgress = nullptr );
 
     expected<RepoInfo> addProbedRepository( RepoInfo info, zypp::repo::RepoType probedType );
 
     expected<void> removeRepository(RepoInfo &info, ProgressObserverRef myProgress = nullptr );
 
-    expected<void> modifyRepository( const std::string & alias, RepoInfo & newinfo_r, ProgressObserverRef myProgress = nullptr );
+    expected<RepoInfo> modifyRepository(const std::string & alias, RepoInfo newinfo_r, ProgressObserverRef myProgress = nullptr );
 
     expected<RepoInfo> getRepositoryInfo( const std::string & alias );
     expected<RepoInfo> getRepositoryInfo( const zypp::Url & url, const zypp::url::ViewOption &urlview );
 
-    expected<RefreshCheckStatus> checkIfToRefreshMetadata( RepoInfo & info, const zypp::Url & url, RawMetadataRefreshPolicy policy );
+    MaybeAsyncRef<expected<std::pair<RepoInfo,RefreshCheckStatus>>> checkIfToRefreshMetadata( RepoInfo info, const zypp::Url & url, RawMetadataRefreshPolicy policy );
+
+
 
     /**
      * \short Refresh local raw cache
@@ -452,20 +470,20 @@ namespace zyppng {
      * \todo Currently no progress is generated, especially for the async code
      *       We might need to change this
      */
-    expected<void> refreshMetadata( RepoInfo & info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
+    MaybeAsyncRef<expected<RepoInfo>> refreshMetadata( RepoInfo info, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
-    std::vector<std::pair<RepoInfo, expected<void> > > refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
+    MaybeAsyncRef<std::vector<std::pair<RepoInfo, expected<void>>>> refreshMetadata( std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
-    expected<zypp::repo::RepoType> probe( const zypp::Url & url, const zypp::Pathname & path = zypp::Pathname() ) const;
+    MaybeAsyncRef<expected<zypp::repo::RepoType>> probe( const zypp::Url & url, const zypp::Pathname & path = zypp::Pathname() ) const;
 
-    expected<void> buildCache( RepoInfo & info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );
+    MaybeAsyncRef<expected<RepoInfo>> buildCache( RepoInfo info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );
 
     /*!
      * Adds the repository in \a info and returns the updated \ref RepoInfo object.
      */
-    expected<void> addRepository(RepoInfo &info, ProgressObserverRef myProgress = nullptr );
+    MaybeAsyncRef<expected<RepoInfo>> addRepository( RepoInfo info, ProgressObserverRef myProgress = nullptr );
 
-    expected<void> addRepositories( const zypp::Url & url, ProgressObserverRef myProgress = nullptr );
+    MaybeAsyncRef<expected<void>> addRepositories( const zypp::Url & url, ProgressObserverRef myProgress = nullptr );
 
   public:
     bool serviceEmpty() const			{ return _services.empty(); }
@@ -484,7 +502,7 @@ namespace zyppng {
 
   public:
 
-    expected<zypp::repo::ServiceType> probeService( const zypp::Url & url ) const;
+    MaybeAsyncRef<expected<zypp::repo::ServiceType>> probeService( const zypp::Url & url ) const;
 
     expected<void> addService( const ServiceInfo & service );
     expected<void> addService( const std::string & alias, const zypp::Url & url )
@@ -494,11 +512,11 @@ namespace zyppng {
     expected<void> removeService( const ServiceInfo & service )
     { return removeService( service.alias() ); }
 
-    expected<void> refreshService( const std::string & alias, const RefreshServiceOptions & options_r );
-    expected<void> refreshService( const ServiceInfo & service, const RefreshServiceOptions & options_r )
+    MaybeAsyncRef<expected<void>> refreshService( const std::string & alias, const RefreshServiceOptions & options_r );
+    MaybeAsyncRef<expected<void>> refreshService( const ServiceInfo & service, const RefreshServiceOptions & options_r )
     {  return refreshService( service.alias(), options_r ); }
 
-    expected<void> refreshServices( const RefreshServiceOptions & options_r );
+    MaybeAsyncRef<expected<void>> refreshServices( const RefreshServiceOptions & options_r );
 
     expected<void> modifyService( const std::string & oldAlias, ServiceInfo newService );
 
@@ -518,12 +536,6 @@ namespace zyppng {
         return expected<void>::success();
       });
     }
-
-    /*!
-     * Checks for any of the given \a urls if there is no geoip data available, caches the results
-     * in the metadata cache for 24hrs. The given urls need to be configured as valid geoIP targets ( usually download.opensuse.org )
-     */
-    expected<void> refreshGeoIp ( const RepoInfo::url_set &urls );
 
     template<typename OutputIterator>
     void getRepositoriesInService( const std::string & alias, OutputIterator out ) const

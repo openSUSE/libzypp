@@ -33,14 +33,14 @@ namespace zyppng {
     /*!
      * Calculate status of the remote SUSETags repository
      */
-    AsyncOpRef<expected<zypp::RepoStatus>> repoStatus( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle );
-    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle );
+    AsyncOpRef<expected<zypp::RepoStatus>> repoStatus(repo::AsyncDownloadContextRef dl, ProgressObserverRef taskObserver, ProvideMediaHandle mediaHandle );
+    expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, ProgressObserverRef taskObserver, SyncMediaHandle mediaHandle );
 
     /*!
      * Download metadata to a local directory
      */
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> download ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
-    expected<repo::SyncDownloadContextRef> download ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> download ( repo::AsyncDownloadContextRef dl, ProgressObserverRef progressObserver, ProvideMediaHandle mediaHandle );
+    expected<repo::SyncDownloadContextRef> download ( repo::SyncDownloadContextRef dl, ProgressObserverRef progressObserver, SyncMediaHandle mediaHandle );
   }
 }
 

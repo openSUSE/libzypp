@@ -28,8 +28,9 @@ namespace zyppng {
       ZYPP_ENABLE_LOGIC_BASE(Executor,OpType);
       using ZyppContextRefType = MaybeAsyncContextRef<OpType>;
 
-      VerifySignatureLogic( ZyppContextRefType &&zyppCtx, zypp::keyring::VerifyFileContext &&ctx )
+      VerifySignatureLogic( ZyppContextRefType &&zyppCtx, ProgressObserverRef &&taskObserver, zypp::keyring::VerifyFileContext &&ctx )
         : _zyppCtx( std::move(zyppCtx) )
+        , _taskObserver( std::move(taskObserver) )
         , _verifyCtx( std::move(ctx) ) { }
 
       MaybeAsyncRef<expected<zypp::keyring::VerifyFileContext>> execute () {
@@ -41,7 +42,7 @@ namespace zyppng {
 
         MIL << "Checking " << _verifyCtx.file ()<< " file validity using digital signature.." << std::endl;
 
-        return KeyRingWorkflow::verifyFileSignature( _zyppCtx, zypp::keyring::VerifyFileContext( _verifyCtx ) )
+        return KeyRingWorkflow::verifyFileSignature( _zyppCtx, _taskObserver, zypp::keyring::VerifyFileContext( _verifyCtx ) )
          | []( auto &&res  ) {
              if ( not res.first  )
                return expected<zypp::keyring::VerifyFileContext>::error( ZYPP_EXCPT_PTR( zypp::SignatureCheckException( "Signature verification failed for "  + res.second.file().basename() ) ) );
@@ -50,20 +51,21 @@ namespace zyppng {
       }
 
     protected:
-      ZyppContextRefType _zyppCtx;
+      ZyppContextRefType  _zyppCtx;
+      ProgressObserverRef _taskObserver;
       zypp::keyring::VerifyFileContext _verifyCtx;
     };
   }
 
   namespace SignatureFileCheckWorkflow {
-    expected<zypp::keyring::VerifyFileContext> verifySignature(SyncContextRef ctx, zypp::keyring::VerifyFileContext context )
+    expected<zypp::keyring::VerifyFileContext> verifySignature(SyncContextRef ctx, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext context )
     {
-      return SimpleExecutor<VerifySignatureLogic, SyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
+      return SimpleExecutor<VerifySignatureLogic, SyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(taskObserver), std::move(context) );
     }
 
-    AsyncOpRef<expected<zypp::keyring::VerifyFileContext> > verifySignature(AsyncContextRef ctx, zypp::keyring::VerifyFileContext context )
+    AsyncOpRef<expected<zypp::keyring::VerifyFileContext> > verifySignature(AsyncContextRef ctx, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext context )
     {
-      return SimpleExecutor<VerifySignatureLogic, AsyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
+      return SimpleExecutor<VerifySignatureLogic, AsyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(taskObserver), std::move(context) );
     }
   }
 }

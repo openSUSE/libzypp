@@ -48,8 +48,9 @@ namespace zyppng::SuseTagsWorkflows {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      StatusLogic( DlContextRefType ctx, MediaHandle &&media  )
+      StatusLogic( DlContextRefType ctx, ProgressObserverRef &&taskObserver, MediaHandle &&media  )
         : _ctx(std::move(ctx))
+        , _taskObserver( std::move(taskObserver) )
         , _handle(std::move(media))
       {}
 
@@ -77,18 +78,19 @@ namespace zyppng::SuseTagsWorkflows {
       }
 
       DlContextRefType _ctx;
+      ProgressObserverRef _taskObserver;
       MediaHandle _handle;
     };
   }
 
-  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle)
+  AsyncOpRef<expected<zypp::RepoStatus> > repoStatus(repo::AsyncDownloadContextRef dl, ProgressObserverRef taskObserver, ProvideMediaHandle mediaHandle)
   {
-    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
+    return SimpleExecutor< StatusLogic, AsyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(taskObserver), std::move(mediaHandle) );
   }
 
-  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle)
+  expected<zypp::RepoStatus> repoStatus(repo::SyncDownloadContextRef dl, ProgressObserverRef taskObserver, SyncMediaHandle mediaHandle)
   {
-    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
+    return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(taskObserver), std::move(mediaHandle) );
   }
 
 
@@ -293,7 +295,7 @@ namespace zyppng::SuseTagsWorkflows {
 
                     return transform_collect  ( std::move(requiredFiles), [this]( zypp::OnMediaLocation file ) {
 
-                      return DownloadWorkflow::provideToCacheDir( _ctx, _mediaHandle, file.filename(), ProvideFileSpec(file) )
+                      return DownloadWorkflow::provideToCacheDir( _ctx, _progressObserver, _mediaHandle, file.filename(), ProvideFileSpec(file) )
                           | inspect ( incProgress( _progressObserver ) );
 
                     }) | and_then ( [this]( std::vector<zypp::ManagedFile> &&dlFiles ) {
@@ -327,12 +329,12 @@ namespace zyppng::SuseTagsWorkflows {
     };
   }
 
-  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
+  AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, ProgressObserverRef progressObserver, ProvideMediaHandle mediaHandle)
   {
     return SimpleExecutor< DlLogic, AsyncOp<expected<repo::AsyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }
 
-  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver)
+  expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, ProgressObserverRef progressObserver, SyncMediaHandle mediaHandle)
   {
     return SimpleExecutor< DlLogic, SyncOp<expected<repo::SyncDownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
   }

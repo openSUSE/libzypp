@@ -298,6 +298,7 @@ SET( zypp_ng_SRCS
   ng/repoinfo.cc
   ng/reporthelper.cc
   ng/repomanager.cc
+  ng/resource.cc
   ng/serviceinfo.cc
   ng/userdata.cc
   ng/userrequest.cc
@@ -338,6 +339,7 @@ SET( zypp_ng_HEADERS
   ng/repoinfoshareddata.h
   ng/reporthelper.h
   ng/repomanager.h
+  ng/resource.h
   ng/serviceinfo.h
   ng/serviceinfoshareddata.h
   ng/RepoManager

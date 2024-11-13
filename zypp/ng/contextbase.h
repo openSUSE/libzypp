@@ -13,6 +13,7 @@
 #include <zypp-core/zyppng/pipelines/expected.h>
 #include <zypp-media/ng/MediaContext>
 #include <zypp/ng/repo/repovariablescache.h>
+#include <zypp/ng/resource.h>
 
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
@@ -77,6 +78,16 @@ namespace zyppng {
     zypp::Pathname tmpPath() const;
     TargetRef target() const;
 
+    /*!
+     * Attempts to lock the resource identified by \a ident.
+     * The returned lock is automatically released when the last
+     * Shared or the last Exclusive lock instance is released.
+     */
+    expected<ResourceLock> lockResource (std::string ident, ResourceLock::Mode mode = ResourceLock::Shared );
+
+
+    void lockUnref( const std::string &ident );
+
 
     /*!
      * Tries to resolve the variable \a var from the repoCache,
@@ -127,12 +138,15 @@ namespace zyppng {
 
   private:
 
+    virtual void dequeueWaitingLocks( detail::ResourceLockData & ) = 0;
+
     /**
      * \todo move CredentialManager here
      */
 
     std::optional<ContextSettings> _settings;
     bool _legacyMode = false; // set by legacyInit. Will disable locking inside the context, Zypp and ZyppFactory take care of that
+    bool _inUnrefLock = false;
 
     Signal<void()> _sigClose;
     Signal<void()> _sigTargetChanged; // legacy support signal in case the context changes its target
@@ -152,6 +166,8 @@ namespace zyppng {
     zypp::ZyppContextLockRef _myLock;
     repo::RepoVarsMap _repoVarCache;
 
+  protected:
+    std::map<std::string, detail::ResourceLockData_Ptr> _resourceLocks;
   };
 
 

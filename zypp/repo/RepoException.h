@@ -197,6 +197,8 @@ namespace zypp
         RepoNoPermissionException( const std::string & msg_r );
         RepoNoPermissionException( const RepoInfo & info );
         RepoNoPermissionException( const RepoInfo & info, const std::string & msg_r );
+        RepoNoPermissionException( const zyppng::RepoInfo & info );
+        RepoNoPermissionException( const zyppng::RepoInfo & info, const std::string & msg_r );
     };
 
 

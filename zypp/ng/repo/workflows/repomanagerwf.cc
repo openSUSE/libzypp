@@ -684,7 +684,7 @@ namespace zyppng::RepoManagerWorkflow {
               && zypp::PathInfo(mediarootParent).userMayWX() ) {
 
               return refreshMetadata( _refCtx, ProgressObserver::makeSubTask( _progressObserver ) )
-              | and_then([this]( auto /*refCtx*/) { return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), _refCtx->repoManagerOptions() ); } );
+              | and_then([this]( auto /*refCtx*/) { return RepoManager<ZyppContextType>::metadataStatus( _refCtx->repoInfo(), _refCtx->repoManagerOptions() ); } );
 
             } else {
               // Non-root user is not allowed to write the raw cache.

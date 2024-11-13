@@ -183,8 +183,9 @@ namespace zypp
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
   {
     auto res = _pimpl->ngMgr().checkIfToRefreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo() , url, policy ).unwrap();
+    const_cast<RepoInfo &>(info).ngRepoInfo() = res.first;
     _pimpl->syncRepos();
-    return res;
+    return res.second;
   }
 
   Pathname RepoManager::metadataPath( const RepoInfo &info ) const
@@ -197,7 +198,7 @@ namespace zypp
   {
     // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
     zypp::media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
-    _pimpl->ngMgr().refreshMetadata( const_cast<RepoInfo &>(info).ngRepoInfo(), policy, nullptr ).unwrap();
+    const_cast<RepoInfo &>(info).ngRepoInfo() = _pimpl->ngMgr().refreshMetadata( info.ngRepoInfo(), policy, nullptr ).unwrap();
     _pimpl->syncRepos();
   }
 
@@ -214,7 +215,7 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    _pimpl->ngMgr().buildCache( const_cast<RepoInfo &>(info).ngRepoInfo(), policy, adapt.observer() ).unwrap();
+    const_cast<RepoInfo &>(info).ngRepoInfo() = _pimpl->ngMgr().buildCache( const_cast<RepoInfo &>(info).ngRepoInfo(), policy, adapt.observer() ).unwrap();
     _pimpl->syncRepos();
   }
 
@@ -240,7 +241,7 @@ namespace zypp
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    _pimpl->ngMgr().addRepository( const_cast<RepoInfo &>(info).ngRepoInfo(), adapt.observer() ).unwrap();
+    const_cast<RepoInfo &>(info).ngRepoInfo() = _pimpl->ngMgr().addRepository( info.ngRepoInfo (), adapt.observer() ).unwrap();
     _pimpl->syncRepos();
   }
 
@@ -262,8 +263,7 @@ namespace zypp
   {
     // We should fix the API as we must inject those paths
     // into the repoinfo in order to keep it usable.
-    RepoInfo & oinfo( const_cast<RepoInfo &>(newinfo) );
-    _pimpl->ngMgr().modifyRepository( alias, oinfo.ngRepoInfo(), nullptr ).unwrap();
+    const_cast<RepoInfo &>(newinfo).ngRepoInfo() = _pimpl->ngMgr().modifyRepository( alias, newinfo.ngRepoInfo(), nullptr ).unwrap();
     _pimpl->syncRepos();
   }
 
@@ -349,7 +349,9 @@ namespace zypp
   }
 
   void RepoManager::refreshGeoIp (const RepoInfo::url_set &urls)
-  { (void) _pimpl->ngMgr().refreshGeoIp( urls ); }
+  {
+    (void) zyppng::RepoManagerWorkflow::refreshGeoIPData( _pimpl->ngMgr().zyppContext(), urls);
+  }
 
   ////////////////////////////////////////////////////////////////////////////
 

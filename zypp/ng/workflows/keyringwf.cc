@@ -40,8 +40,8 @@ namespace zyppng::KeyRingWorkflow {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
-    ImportKeyFromRepoLogic( ZyppContextRefType context, std::string &&keyId, RepoInfo &&info )
-      : _context( std::move(context) ), _keyId(std::move(keyId)), _repo( std::move(info) )
+    ImportKeyFromRepoLogic( ZyppContextRefType context, ProgressObserverRef &&taskObserver, std::string &&keyId, RepoInfo &&info )
+      : _context( std::move(context) ), _taskObserver(std::move(taskObserver)), _keyId(std::move(keyId)), _repo( std::move(info) )
     { }
 
     MaybeAsyncRef<bool> execute () {
@@ -56,7 +56,7 @@ namespace zyppng::KeyRingWorkflow {
       const zypp::ZConfig &conf = _context->config();
       zypp::Pathname cacheDir = conf.repoManagerRoot() / conf.pubkeyCachePath();
 
-      return RepoInfoWorkflow::provideKey( _context, _repo, _keyId, cacheDir )
+      return RepoInfoWorkflow::provideKey( _context, _taskObserver, _repo, _keyId, cacheDir )
         | [this, cacheDir]( zypp::Pathname myKey ) {
          if ( myKey.empty()  )
            // if we did not find any keys, there is no point in checking again, break
@@ -79,7 +79,7 @@ namespace zyppng::KeyRingWorkflow {
 
          zypp::KeyContext context;
          context.setRepoInfo( _repo );
-         if ( !KeyRingReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
+         if ( !KeyRingReportHelper(_context, _taskObserver).askUserToAcceptPackageKey( key, context ) ) {
            return false;
          }
 
@@ -96,18 +96,19 @@ namespace zyppng::KeyRingWorkflow {
     }
 
     ZyppContextRefType _context;
+    ProgressObserverRef _taskObserver;
     std::string _keyId;
     RepoInfo _repo;
   };
 
-  bool provideAndImportKeyFromRepository( SyncContextRef ctx, std::string id_r, RepoInfo info_r )
+  bool provideAndImportKeyFromRepository( SyncContextRef ctx, ProgressObserverRef taskObserver, std::string id_r, RepoInfo info_r )
   {
-    return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
+    return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(taskObserver), std::move(id_r), std::move(info_r) );
   }
 
-  AsyncOpRef<bool> provideAndImportKeyFromRepository( AsyncContextRef ctx, std::string id_r, RepoInfo info_r)
+  AsyncOpRef<bool> provideAndImportKeyFromRepository(AsyncContextRef ctx, ProgressObserverRef taskObserver, std::string id_r, RepoInfo info_r)
   {
-    return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
+    return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(taskObserver), std::move(id_r), std::move(info_r) );
   }
 
   namespace {
@@ -124,9 +125,10 @@ namespace zyppng::KeyRingWorkflow {
       using ZyppContextRefType = MaybeAsyncContextRef<OpType>;
       using KeyTrust = zypp::KeyRingReport::KeyTrust;
 
-      VerifyFileSignatureLogic( ZyppContextRefType zyppContext, KeyRingRef &&keyRing, zypp::keyring::VerifyFileContext &&ctx )
+      VerifyFileSignatureLogic( ZyppContextRefType zyppContext, ProgressObserverRef &&taskObserver, KeyRingRef &&keyRing, zypp::keyring::VerifyFileContext &&ctx )
         : _zyppContext( std::move(zyppContext) )
-        , _keyringReport( _zyppContext )
+        , _taskObserver( std::move(taskObserver) )
+        , _keyringReport( _zyppContext, _taskObserver )
         , _keyRing( std::move(keyRing) )
         , _verifyContext( std::move(ctx) )
       { }
@@ -211,12 +213,12 @@ namespace zyppng::KeyRingWorkflow {
           else if ( ! _verifyContext.keyContext().empty() )
           {
             // try to find the key in the repository info
-            return provideAndImportKeyFromRepository ( _zyppContext, id, *_verifyContext.keyContext().ngRepoInfo() )
+            return provideAndImportKeyFromRepository ( _zyppContext, _taskObserver, id, *_verifyContext.keyContext().ngRepoInfo() )
               | [this, id]( bool success ) {
                   if ( !success ) {
                     return FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() };
                   }
-                  return FoundKeyData{ _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ),   _keyRing->pimpl().trustedKeyRing(), true };
+                  return FoundKeyData{ _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ), _keyRing->pimpl().trustedKeyRing(), true };
                 };
           }
         }
@@ -319,6 +321,7 @@ namespace zyppng::KeyRingWorkflow {
 
     protected:
       ZyppContextRefType _zyppContext;
+      ProgressObserverRef _taskObserver;
       KeyRingReportHelper<ZyppContextRefType> _keyringReport;
       KeyRingRef _keyRing;
       zypp::keyring::VerifyFileContext _verifyContext;
@@ -331,26 +334,26 @@ namespace zyppng::KeyRingWorkflow {
     };
   }
 
-  std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
+  std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature(SyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
-    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(taskObserver), std::move(kr), std::move(context_r) );
   }
 
-  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
+  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
-    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(taskObserver), std::move(kr), std::move(context_r) );
   }
 
-  std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
+  std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature(SyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
-    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(taskObserver), std::move(keyRing), std::move(context_r) );
   }
 
-  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(AsyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
+  AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(AsyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
-    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(taskObserver), std::move(keyRing), std::move(context_r) );
   }
 
 }

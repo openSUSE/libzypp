@@ -25,6 +25,7 @@ namespace zypp {
 namespace zyppng {
 
   class RepoInfo;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   /*!
    * \namespace KeyRingWorkflow
@@ -38,8 +39,8 @@ namespace zyppng {
      * Try to find the \a id in key cache or repository specified in \a info. Ask the user to trust
      * the key if it was found
      */
-    bool provideAndImportKeyFromRepository(SyncContextRef ctx, std::string id_r, RepoInfo info_r );
-    AsyncOpRef<bool> provideAndImportKeyFromRepository(AsyncContextRef ctx, std::string id_r, RepoInfo info_r );
+    bool provideAndImportKeyFromRepository(SyncContextRef ctx, zyppng::ProgressObserverRef taskObserver, std::string id_r, RepoInfo info_r );
+    AsyncOpRef<bool> provideAndImportKeyFromRepository(AsyncContextRef ctx, ProgressObserverRef taskObserver, std::string id_r, RepoInfo info_r );
 
     /**
      * Follows a signature verification interacting with the user.
@@ -72,11 +73,11 @@ namespace zyppng {
      *
      * \see \ref zypp::KeyRingReport
      */
-    std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext && context_r );
-    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::keyring::VerifyFileContext && context_r );
+    std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext && context_r );
+    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(AsyncContextRef zyppContext, zyppng::ProgressObserverRef taskObserver, zypp::keyring::VerifyFileContext && context_r );
 
-    std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
-    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( AsyncContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
+    std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, ProgressObserverRef taskObserver, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
+    AsyncOpRef<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(AsyncContextRef zyppContext, zyppng::ProgressObserverRef taskObserver, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r );
   }
 }
 

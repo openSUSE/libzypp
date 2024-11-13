@@ -623,7 +623,10 @@ namespace zyppng {
   namespace detail {
     template <typename Fun>
     struct transform_collect_helper {
+      template <typename F = Fun>
+      transform_collect_helper( F &&cb ) : _callback( std::forward<F>(cb)) {}
       Fun _callback;
+
       template <typename T>
       auto operator() ( T &&in ) {
         return transform_collect( std::forward<T>(in), _callback );
@@ -634,7 +637,7 @@ namespace zyppng {
   namespace operators {
     template <typename Transformation>
     auto transform_collect( Transformation &&f ) {
-      return detail::transform_collect_helper{ std::forward<Transformation>(f)};
+      return detail::transform_collect_helper<Transformation>( std::forward<Transformation>(f) );
     }
   }
 

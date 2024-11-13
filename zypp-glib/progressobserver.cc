@@ -7,18 +7,24 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "private/progressobserver_p.h"
-#include <new>
+
+#include <zypp/ng/userrequest.h>
+#include <zypp-glib/ui/userrequest.h>
+#include <zypp-glib/ui/booleanchoicerequest.h>
+#include <zypp-glib/ui/listchoicerequest.h>
+#include <zypp-glib/ui/showmessagerequest.h>
 
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/base/String.h>
-#include <iostream>
 
 G_DEFINE_FINAL_TYPE_WITH_PRIVATE( ZyppProgressObserver, zypp_progress_observer, G_TYPE_OBJECT )
 
 /* Signals */
 typedef enum {
   SIG_FINISHED = 1,
+  SIG_STARTED,
   SIG_NEW_CHILD,
+  SIG_EVENT,
   LAST_SIGNAL
 } ZyppProgressObserverSignals;
 
@@ -56,6 +62,21 @@ static void zypp_progress_observer_class_init (ZyppProgressObserverClass *klass)
 
   {
     std::vector<GType> signal_parms = {};
+    signals[SIG_STARTED] =
+      g_signal_newv ("start",
+                     G_TYPE_FROM_CLASS (klass),
+                    (GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS),
+                    NULL /* closure */,
+                    NULL /* accumulator */,
+                    NULL /* accumulator data */,
+                    NULL /* C marshaller */,
+                    G_TYPE_NONE /* return_type */,
+                    signal_parms.size() /* n_params */,
+                    signal_parms.data() );
+  }
+
+  {
+    std::vector<GType> signal_parms = {};
     signals[SIG_FINISHED] =
       g_signal_newv ("finished",
                      G_TYPE_FROM_CLASS (klass),
@@ -82,6 +103,21 @@ static void zypp_progress_observer_class_init (ZyppProgressObserverClass *klass)
         G_TYPE_NONE /* return_type */,
         signal_parms.size() /* n_params */,
         signal_parms.data() );
+  }
+
+  {
+    std::vector<GType> signal_parms = { ZYPP_TYPE_USER_REQUEST };
+    signals[SIG_EVENT] =
+      g_signal_newv ("event",
+                     G_TYPE_FROM_CLASS (klass),
+                    (GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS),
+                    NULL /* closure */,
+                    NULL /* accumulator */,
+                    NULL /* accumulator data */,
+                    NULL /* C marshaller */,
+                    G_TYPE_NONE /* return_type */,
+                    signal_parms.size() /* n_params */,
+                    signal_parms.data() );
   }
 
   obj_properties[PROP_CPPOBJ] = ZYPP_GLIB_ADD_CPPOBJ_PROP();
@@ -360,6 +396,9 @@ void ZyppProgressObserverPrivate::initializeCpp() {
      _cppObj->connectFunc( &zyppng::ProgressObserver::sigProgressChanged, [this]( auto &, double ){
        g_object_notify_by_pspec ( G_OBJECT(_gObject), obj_properties[PROP_PROGRESS] );
      }),
+     _cppObj->connectFunc( &zyppng::ProgressObserver::sigStarted, [this]( zyppng::ProgressObserver &sender ){
+      g_signal_emit (_gObject, signals[SIG_STARTED], 0);
+    }),
      _cppObj->connectFunc( &zyppng::ProgressObserver::sigFinished, [this]( zyppng::ProgressObserver &sender, zyppng::ProgressObserver::FinishResult ){
        g_signal_emit (_gObject, signals[SIG_FINISHED], 0);
      }),
@@ -367,10 +406,47 @@ void ZyppProgressObserverPrivate::initializeCpp() {
        auto wrapped = zypp::glib::zypp_wrap_cpp<ZyppProgressObserver>( newRef );
        zypp_progress_observer_reg_child ( _gObject, zypp::glib::ZyppProgressObserverRef(wrapped) );
        g_signal_emit( _gObject, signals[SIG_NEW_CHILD], 0, wrapped.get() );
-     })
+     }),
+      _cppObj->connectFunc( &zyppng::ProgressObserver::sigEvent, [this]( zyppng::ProgressObserver &s, zyppng::UserRequestRef req ) {
+           switch( req->type() )  {
+             case zyppng::UserRequestType::Invalid: {
+               ERR << "Ignoring user request with type Invalid, this is a bug!" << std::endl;
+               return; //ignore
+             }
+             case zyppng::UserRequestType::Message: {
+               auto actualReq = std::dynamic_pointer_cast<zyppng::ShowMessageRequest>(req);
+               auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppShowMsgRequest>(actualReq);
+               g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+               return;
+             }
+             case zyppng::UserRequestType::ListChoice: {
+               auto actualReq = std::dynamic_pointer_cast<zyppng::ListChoiceRequest>(req);
+               auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppListChoiceRequest>(actualReq);
+               g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+               return;
+             }
+             case zyppng::UserRequestType::BooleanChoice: {
+               auto actualReq = std::dynamic_pointer_cast<zyppng::BooleanChoiceRequest>(req);
+               auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppBooleanChoiceRequest>(actualReq);
+               g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+               return;
+             }
+             case zyppng::UserRequestType::Custom: {
+               ERR << "Custom user requests can not be wrapped with glib!" << std::endl;
+               return; //ignore
+             }
+           }
+      })
    });
 
   for ( const auto &chld : _cppObj->children () ) {
     zypp_progress_observer_reg_child( _gObject, zypp::glib::zypp_wrap_cpp<ZyppProgressObserver>(chld) );
   }
+}
+
+zyppng::ProgressObserverRef zypp_progress_observer_get_cpp( ZyppProgressObserver *self )
+{
+  g_return_val_if_fail( ZYPP_PROGRESS_OBSERVER(self), nullptr );
+  ZYPP_PROGRESS_OBSERVER_D();
+  return d->_cppObj;
 }

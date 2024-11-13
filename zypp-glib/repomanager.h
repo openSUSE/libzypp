@@ -11,6 +11,7 @@
 
 
 #include <glib-object.h>
+#include <gio/gio.h>
 #include <zypp-glib/zypp-glib_export.h>
 
 G_BEGIN_DECLS
@@ -18,7 +19,6 @@ G_BEGIN_DECLS
 typedef struct _ZyppContext ZyppContext;
 typedef struct _ZyppRepoInfo ZyppRepoInfo;
 typedef struct _ZyppExpected ZyppExpected;
-typedef struct _ZyppProgressObserver ZyppProgressObserver;
 
 typedef enum {
   ZYPP_REPO_MANAGER_UP_TO_DATE,
@@ -42,9 +42,18 @@ typedef enum {
 /**
  * zypp_repo_manager_new: (constructor)
  * @ctx: The #ZyppContext the RepoManager should operate on
+ *
  * Returns: (transfer full): newly created #ZyppRepoManager
  */
 ZyppRepoManager *zypp_repo_manager_new( ZyppContext *ctx ) LIBZYPP_GLIB_EXPORT;
+
+/**
+ * zypp_repo_manager_new_initialized: (constructor)
+ * @ctx: The #ZyppContext the RepoManager should operate on
+ *
+ * Returns: (transfer full): newly created #ZyppRepoManager
+ */
+ZyppRepoManager *zypp_repo_manager_new_initialized( ZyppContext *ctx, GError **error ) LIBZYPP_GLIB_EXPORT;
 
 
 /**
@@ -73,17 +82,41 @@ GList *zypp_repo_manager_get_known_repos ( ZyppRepoManager *self ) LIBZYPP_GLIB_
  */
 GList *zypp_repo_manager_get_known_services ( ZyppRepoManager *self ) LIBZYPP_GLIB_EXPORT;
 
-
+#if 0
 /**
  * zypp_repo_manager_refresh_repos:
  * @self: a #ZyppRepoManager
  * @repos: (element-type ZyppRepoInfo) (transfer none): the repositories to refresh
  * @forceDownload: Force downloading the repository even if its up 2 date
- * @statusTracker: (transfer full) (nullable): Progress tracker
  *
  * Returns: (element-type ZyppExpected) (transfer full): list of results for the refreshed repos
  */
-GList *zypp_repo_manager_refresh_repos ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, ZyppProgressObserver *statusTracker ) LIBZYPP_GLIB_EXPORT;
+GList *zypp_repo_manager_refresh_repos ( ZyppRepoManager *self, GList *repos, gboolean forceDownload ) LIBZYPP_GLIB_EXPORT;
+#endif
+
+/**
+ * zypp_repo_manager_refresh_repos_async:
+ * @self: a #ZyppRepoManager
+ * @repos: (element-type ZyppRepoInfo) (transfer none): the repositories to refresh
+ * @forceDownload: Force downloading the repository even if its up 2 date
+ * @cancellable: (nullable)
+ * @cb: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Returns: (element-type ZyppExpected) (transfer full): list of results for the refreshed repos
+ */
+void zypp_repo_manager_refresh_repos_async ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, GCancellable *cancellable, GAsyncReadyCallback cb, gpointer user_data ) LIBZYPP_GLIB_EXPORT;
+
+/**
+ * zypp_repo_manager_refresh_repos_finish:
+ * @self: (in): a #ZyppRepoManager
+ * @result: where to place the result
+ * @error: return location for a GError, or NULL
+ *
+ * Returns: (transfer full): Path where the file was downloaded to
+ */
+gchar * zypp_repo_manager_refresh_repos_finish ( ZyppRepoManager *self, GAsyncResult *result, GError **error );
+
 
 G_END_DECLS
 

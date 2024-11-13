@@ -14,13 +14,16 @@
 #include <zypp-core/zyppng/base/Signals>
 #include <zypp-core/fs/TmpPath.h>
 
-#include <zypp/RepoInfo.h>
+#include <zypp/ng/repoinfo.h>
 #include <zypp/RepoManagerOptions.h>
 #include <zypp/RepoManagerFlags.h>
-#include <zypp/ng/repomanager.h>
 #include <zypp/repo/PluginRepoverification.h>
 #include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/context_fwd.h>
+
+namespace zyppng {
+  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 (RepoManager, ZyppContextType);
+}
 
 namespace zyppng::repo {
 
@@ -46,8 +49,8 @@ namespace zyppng::repo {
       using MediaHandle    = typename ProvideType::MediaHandle;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
-      static expected<repo::RefreshContextRef<ZyppContextType>> create( Ref<ZyppContextType> zyppContext, RepoInfo info, RepoManagerRef<ContextType> repoManager );
-      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, Ref<ZyppContextType> &&zyppContext, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager );
+      static expected<repo::RefreshContextRef<ZyppContextType>> create( RepoManagerRef<ContextType> repoManager, RepoInfo info );
+      ZYPP_DECL_PRIVATE_CONSTR_ARGS(RefreshContext, RepoManagerRef<ContextType> &&repoManager, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir );
 
       ~RefreshContext() override;
 
@@ -74,7 +77,7 @@ namespace zyppng::repo {
        * Current zypp context we are working on, either \ref zyppng::Context
        * or \ref zyppng::SyncContext.
        */
-      const Ref<ZyppContextType> &zyppContext () const;
+      Ref<ZyppContextType> zyppContext() const;
 
       /*!
        * Current \ref zypp::RepoInfo this refresh context is operating with,
@@ -119,7 +122,6 @@ namespace zyppng::repo {
       SignalProxy<void(zypp::repo::RepoType)> sigProbedTypeChanged();
 
   private:
-      Ref<ContextType> _zyppContext;
       RepoManagerRef<ContextType> _repoManager;
       RepoInfo _repoInfo;
       zypp::Pathname _rawCachePath;

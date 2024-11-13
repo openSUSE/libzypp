@@ -20,6 +20,7 @@ INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} )
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 SET( zypp_glib_HEADERS
+  application.h
   context.h
   error.h
   expected.h
@@ -44,6 +45,7 @@ SET( zypp_glib_ui_HEADERS
 
 SET( zypp_glib_private_HEADERS
   private/context_p.h
+  private/error_p.h
   private/expected_p.h
   private/globals_p.h
   private/infobase_p.h
@@ -66,6 +68,7 @@ SET( zypp_glib_private_HEADERS
 )
 
 SET( zypp_glib_SRCS
+  application.cc
   context.cc
   error.cc
   expected.cc
@@ -77,6 +80,7 @@ SET( zypp_glib_SRCS
   repomanager.cc
   repository.cc
   serviceinfo.cc
+  zypp-glib.cc
   ui/booleanchoicerequest.cc
   ui/listchoicerequest.cc
   ui/showmessagerequest.cc
@@ -128,7 +132,7 @@ ADD_LIBRARY( zypp-glib SHARED  ${zypp_glib_lib_SRCS} ${zypp_glib_lib_HEADERS} )
 target_link_libraries( zypp-glib zypp_lib_compiler_flags )
 TARGET_LINK_LIBRARIES( zypp-glib zypp-allsym )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )
-#target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
+target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
 
 INSTALL(TARGETS zypp-glib LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
@@ -142,12 +146,12 @@ GENERATE_EXPORT_HEADER(
 
 gobject_introspection(
   FILENAME Zypp-1.0.gir
-  PACKAGES glib-2.0 gobject-2.0
+  PACKAGES glib-2.0 gobject-2.0 gio-2.0
   NAMESPACE Zypp
   LIBRARY zypp-glib
   #QUIET
   SCANNER_ARGS --add-include-path=${CMAKE_CURRENT_SOURCE_DIR}
-               --include=GLib-2.0 --include=GObject-2.0
+               --include=GLib-2.0 --include=GObject-2.0 --include=Gio-2.0
   COMPILER_ARGS --includedir=${CMAKE_CURRENT_SOURCE_DIR}
   SYMBOL_PREFIXES zypp
   SOURCES ${zypp_glib_public_HEADERS}

@@ -44,6 +44,10 @@ static void zypp_boolean_choice_request_class_init (ZyppBooleanChoiceRequestClas
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ZYPP_INIT_GOBJECT_BOILERPLATE_KLASS ( zypp_boolean_choice_request, gobject_class );
   obj_properties[PROP_CPPOBJ] = ZYPP_GLIB_ADD_CPPOBJ_PROP();
+
+  g_object_class_install_properties (gobject_class,
+                                     N_PROPERTIES,
+                                     obj_properties);
 }
 
 static void

@@ -41,9 +41,10 @@ namespace zyppng::CheckSumWorkflow {
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;
 
-    CheckSumWorkflowLogic( ZyppContextRefType zyppContext, zypp::CheckSum &&checksum, zypp::Pathname file )
+    CheckSumWorkflowLogic( ZyppContextRefType zyppContext, ProgressObserverRef &&taskObserver, zypp::CheckSum &&checksum, zypp::Pathname file )
       : _context( std::move(zyppContext) )
-      , _report( _context )
+      , _taskObserver( std::move(taskObserver) )
+      , _report( _context, _taskObserver )
       , _checksum(std::move( checksum ))
       , _file(std::move( file ))
       {}
@@ -106,27 +107,28 @@ namespace zyppng::CheckSumWorkflow {
 
   protected:
     ZyppContextRefType _context;
+    ProgressObserverRef _taskObserver;
     DigestReportHelper<ZyppContextRefType> _report;
     zypp::CheckSum _checksum;
     zypp::Pathname _file;
 
   };
 
-  expected<void> verifyChecksum( SyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::Pathname file )
+  expected<void> verifyChecksum( SyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum, zypp::Pathname file )
   {
-    return SimpleExecutor<CheckSumWorkflowLogic, SyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
+    return SimpleExecutor<CheckSumWorkflowLogic, SyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(taskObserver), std::move(checksum), std::move(file) );
   }
 
-  AsyncOpRef<expected<void> > verifyChecksum( AsyncContextRef zyppCtx, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
+  AsyncOpRef<expected<void> > verifyChecksum(AsyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
   {
-    return SimpleExecutor<CheckSumWorkflowLogic, AsyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
+    return SimpleExecutor<CheckSumWorkflowLogic, AsyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(taskObserver), std::move(checksum), std::move(file) );
   }
 
-  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( AsyncContextRef zyppCtx, zypp::CheckSum checksum )
+  std::function<AsyncOpRef<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( AsyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum )
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx, checksum=std::move(checksum) ]( ProvideRes res ) mutable -> AsyncOpRef<expected<ProvideRes>> {
-      return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
+    return [ zyppCtx = std::move(zyppCtx), tO = std::move(taskObserver), checksum=std::move(checksum) ]( ProvideRes res ) mutable -> AsyncOpRef<expected<ProvideRes>> {
+      return verifyChecksum( zyppCtx, std::move(tO), std::move(checksum), res.file() )
        | [ res ] ( expected<void> result ) mutable {
           if ( result )
             return expected<ProvideRes>::success( std::move(res) );
@@ -136,11 +138,11 @@ namespace zyppng::CheckSumWorkflow {
     };
   }
 
-  std::function<expected<SyncProvideRes> (SyncProvideRes &&)> checksumFileChecker(SyncContextRef zyppCtx, zypp::CheckSum checksum)
+  std::function<expected<SyncProvideRes> (SyncProvideRes &&)> checksumFileChecker(SyncContextRef zyppCtx, ProgressObserverRef taskObserver, zypp::CheckSum checksum)
   {
     using zyppng::operators::operator|;
-    return [ zyppCtx = std::move(zyppCtx), checksum=std::move(checksum) ]( SyncProvideRes res ) mutable -> expected<SyncProvideRes> {
-      return verifyChecksum( zyppCtx, std::move(checksum), res.file() )
+    return [ zyppCtx = std::move(zyppCtx), tO = std::move(taskObserver), checksum=std::move(checksum) ]( SyncProvideRes res ) mutable -> expected<SyncProvideRes> {
+      return verifyChecksum( zyppCtx, std::move(tO), std::move(checksum), res.file() )
        | [ res ] ( expected<void> result ) mutable {
           if ( result )
             return expected<SyncProvideRes>::success( std::move(res) );

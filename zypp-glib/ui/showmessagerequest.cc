@@ -63,6 +63,10 @@ static void zypp_show_msg_request_class_init (ZyppShowMsgRequestClass *klass)
         zypp_show_msg_request_type_get_type(),
         ZYPP_SHOW_MSG_TYPE_INFO,
         GParamFlags( G_PARAM_CONSTRUCT | G_PARAM_READWRITE ) );
+
+  g_object_class_install_properties (gobject_class,
+                                     N_PROPERTIES,
+                                     obj_properties);
 }
 
 static void

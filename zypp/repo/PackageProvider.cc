@@ -258,7 +258,7 @@ namespace zypp
 
               std::string keyID = hr->signatureKeyID();
               if ( keyID.length() > 0 ) {
-                if ( !zyppng::KeyRingWorkflow::provideAndImportKeyFromRepository ( zypp::zypp_detail::GlobalStateHelper::context(), keyID, *info ) )
+                if ( !zyppng::KeyRingWorkflow::provideAndImportKeyFromRepository ( zypp::zypp_detail::GlobalStateHelper::context(), zypp_detail::GlobalStateHelper::context()->progressObserver(), keyID, *info ) )
                   break;
 
               } else {

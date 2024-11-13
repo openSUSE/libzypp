@@ -16,9 +16,11 @@
 
 namespace zyppng {
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
+
   namespace RepoInfoWorkflow {
-    zypp::Pathname provideKey ( SyncContextRef ctx, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
-    AsyncOpRef<zypp::Pathname> provideKey ( AsyncContextRef ctx, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
+    zypp::Pathname provideKey ( SyncContextRef ctx, ProgressObserverRef taskObserver, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
+    AsyncOpRef<zypp::Pathname> provideKey ( AsyncContextRef ctx, ProgressObserverRef taskObserver, RepoInfo info, std::string keyID_r, zypp::Pathname targetDirectory_r );
   }
 }
 

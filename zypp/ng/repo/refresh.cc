@@ -9,6 +9,7 @@
 #include "refresh.h"
 #include <zypp-media/ng/providespec.h>
 #include <zypp/ng/Context>
+#include <zypp/ng/repomanager.h>
 
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/Gettext.h>
@@ -16,16 +17,15 @@
 namespace zyppng::repo {
 
   template<typename ZyppContextType>
-  RefreshContext<ZyppContextType>::RefreshContext( private_constr_t, Ref<ZyppContextType> &&zyppContext, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir, RepoManagerRef<ContextType> &&repoManager )
-    : _zyppContext( std::move(zyppContext) )
-    , _repoManager( std::move(repoManager) )
+  RefreshContext<ZyppContextType>::RefreshContext( private_constr_t, RepoManagerRef<ContextType> &&repoManager, RepoInfo &&info, zypp::Pathname &&rawCachePath, zypp::filesystem::TmpDir &&tempDir )
+    : _repoManager( std::move(repoManager) )
     , _repoInfo( std::move(info) )
     , _rawCachePath( std::move(rawCachePath) )
     , _tmpDir( std::move(tempDir) )
   {}
 
   template<typename ZyppContextType>
-  expected<RefreshContextRef<ZyppContextType>> RefreshContext<ZyppContextType>::create( Ref<ZyppContextType> zyppContext, RepoInfo info, RepoManagerRef<ContextType> repoManager )
+  expected<RefreshContextRef<ZyppContextType>> RefreshContext<ZyppContextType>::create( RepoManagerRef<ContextType> repoManager, RepoInfo info )
   {
     using namespace operators;
     using CtxType    = RefreshContext<ZyppContextType>;
@@ -45,11 +45,10 @@ namespace zyppng::repo {
       MIL << "Creating RefreshContext " << std::endl;
 
       return expected<CtxRefType>::success( std::make_shared<CtxType>( private_constr_t{}
-                                                      , std::move(zyppContext)
+                                                      , std::move(repoManager)
                                                       , std::move(info)
                                                       , std::move(rawCachePath)
-                                                      , std::move(tmpdir)
-                                                      , std::move(repoManager)));
+                                                      , std::move(tmpdir)));
     } );
   }
 
@@ -78,9 +77,9 @@ namespace zyppng::repo {
   }
 
   template<typename ZyppContextType>
-  const Ref<ZyppContextType> &RefreshContext<ZyppContextType>::zyppContext() const
+  Ref<ZyppContextType> RefreshContext<ZyppContextType>::zyppContext() const
   {
-    return _zyppContext;
+    return _repoManager->zyppContext();
   }
 
   template<typename ZyppContextType>

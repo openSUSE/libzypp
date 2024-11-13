@@ -200,7 +200,7 @@ struct retain_ptr {
     return *this;
   }
 
-  retain_ptr& operator = (nullptr_t) noexcept { this->reset(); return *this; }
+  retain_ptr& operator = (nullptr_t) noexcept { this->reset( nullptr ); return *this; }
 
   void swap (retain_ptr& that) noexcept {
     using std::swap;

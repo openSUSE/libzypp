@@ -18,17 +18,10 @@ namespace zyppng {
   using UserData    = zypp::callback::UserData;
   using ContentType = zypp::ContentType;
 
-
   ZYPP_FWD_DECL_TYPE_WITH_REFS( UserRequest );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ShowMessageRequest );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ListChoiceRequest );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( BooleanChoiceRequest );
-
-  /*
-  constexpr std::string_view CTYPE_SHOW_MESSAGE_REQUEST ("userreq/show-message");
-  constexpr std::string_view CTYPE_LIST_CHOICE_REQUEST  ("userreq/list-choice");
-  constexpr std::string_view CTYPE_BOOLEAN_COICE_REQUEST("userreq/boolean-choice");
-  */
 
 
   // keep in sync with glib wrapper code

@@ -64,12 +64,11 @@ public:
    * \brief Convenience function to schedule a callback to be called later.
    * \param callback a std::function that is called after all other events have been processed
    */
-  template< typename T = IdleFunction >
-  static void invokeOnIdle ( T &&callback )
+  static void invokeOnIdle ( IdleFunction &&callback )
   {
     auto ev = instance();
     if ( ev )
-      ev->invokeOnIdleImpl( std::forward<T>(callback) );
+      ev->invokeOnIdleImpl( std::move(callback) );
   }
 
   /*!

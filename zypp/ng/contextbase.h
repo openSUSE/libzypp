@@ -27,6 +27,7 @@ namespace zypp {
 namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ContextBase);
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   using KeyRing    = zypp::KeyRing;
   using KeyRingRef = zypp::KeyRing_Ptr;
@@ -48,6 +49,28 @@ namespace zyppng {
     ContextBase(ContextBase &&) = delete;
     ContextBase &operator=(const ContextBase &) = delete;
     ContextBase &operator=(ContextBase &&) = delete;
+
+
+    /*!
+     * Sets the master progress observer for this context, this is the place where all
+     * events and progress are received from, can be shared with another context.
+     */
+    void setProgressObserver( ProgressObserverRef observer );
+
+
+    /*!
+     * Returns the current \ref ProgressObserver, or a empty reference if
+     * no observer was registered
+     */
+    ProgressObserverRef progressObserver( ) const;
+
+    /*!
+     * Resets the currently used \ref ProgressObserver.
+     * Currently running pipelines might still have a reference to the
+     * observer though.
+     */
+    void resetProgressObserver();
+
 
     /*!
      * Returns the root path of the context
@@ -114,6 +137,14 @@ namespace zyppng {
       return _sigClose;
     }
 
+    /*!
+     * This signal is always emitted when the progress observer is changed,
+     * primarily used to signal the C wrapper to update its reference
+     */
+    SignalProxy<void()> sigProgressObserverChanged() {
+      return _sigProgressObserverChanged;
+    }
+
   protected:
     ContextBase();
 
@@ -150,6 +181,7 @@ namespace zyppng {
 
     Signal<void()> _sigClose;
     Signal<void()> _sigTargetChanged; // legacy support signal in case the context changes its target
+    Signal<void()> _sigProgressObserverChanged;
 
     expected<zypp::ZyppContextLockRef> aquireLock();
     expected<void> loadConfig( zypp::Pathname confPath );
@@ -165,6 +197,8 @@ namespace zyppng {
 
     zypp::ZyppContextLockRef _myLock;
     repo::RepoVarsMap _repoVarCache;
+
+    ProgressObserverRef _masterProgress;
 
   protected:
     std::map<std::string, detail::ResourceLockData_Ptr> _resourceLocks;

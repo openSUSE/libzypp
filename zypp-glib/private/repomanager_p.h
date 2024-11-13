@@ -22,17 +22,17 @@ struct ZyppRepoManagerPrivate
   ZyppRepoManagerPrivate( ZyppRepoManager *pub ) : WrapperPrivateBase(pub) {};
 
   void initializeCpp();
-  zyppng::SyncRepoManagerRef &cppType()  {
+  zyppng::AsyncRepoManagerRef &cppType()  {
     return _cppObj;
   }
 
   struct ConstructData {
-    zyppng::SyncRepoManagerRef _cppObj;
+    zyppng::AsyncRepoManagerRef _cppObj;
     zypp::glib::ZyppContextRef _ctx;
   };
   std::optional<ConstructData> _constrProps = ConstructData();
 
-  zyppng::SyncRepoManagerRef _cppObj;
+  zyppng::AsyncRepoManagerRef _cppObj;
 };
 
 struct _ZyppRepoManager

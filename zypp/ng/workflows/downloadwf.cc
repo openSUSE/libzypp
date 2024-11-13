@@ -88,8 +88,9 @@ namespace zyppng {
       using ProvideRes     = typename ProvideType::Res;
 
     public:
-      ProvideFromCacheOrMediumLogic( CacheProviderContextRefType cacheContext, MediaHandle &&medium, zypp::Pathname &&file, ProvideFileSpec &&filespec )
+      ProvideFromCacheOrMediumLogic( CacheProviderContextRefType cacheContext, ProgressObserverRef &&taskObserver, MediaHandle &&medium, zypp::Pathname &&file, ProvideFileSpec &&filespec )
         : _ctx( std::move(cacheContext) )
+        , _taskObserver( std::move(taskObserver) )
         , _medium( std::move(medium) )
         , _file(std::move( file ))
         , _filespec( std::move(filespec) ) {}
@@ -190,7 +191,7 @@ namespace zyppng {
         return zypp::Pathname( dlFilePath )
         | [this]( zypp::Pathname &&dlFilePath ) {
           if ( !_filespec.checksum().empty () ) {
-            return CheckSumWorkflow::verifyChecksum( _ctx->zyppContext(), _filespec.checksum (), std::move(dlFilePath) );
+            return CheckSumWorkflow::verifyChecksum( _ctx->zyppContext(), _taskObserver, _filespec.checksum (), std::move(dlFilePath) );
           }
           return makeReadyResult(expected<void>::success());
         };
@@ -198,6 +199,7 @@ namespace zyppng {
       }
 
       CacheProviderContextRefType _ctx;
+      ProgressObserverRef _taskObserver;
       MediaHandle     _medium;
       zypp::Pathname  _file;
       ProvideFileSpec _filespec;
@@ -206,14 +208,14 @@ namespace zyppng {
 
   namespace DownloadWorkflow {
 
-    AsyncOpRef<expected<zypp::ManagedFile> > provideToCacheDir( AsyncCacheProviderContextRef cacheContext, ProvideMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec )
+    AsyncOpRef<expected<zypp::ManagedFile> > provideToCacheDir( AsyncCacheProviderContextRef cacheContext,ProgressObserverRef taskObserver, ProvideMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec )
     {
-      return SimpleExecutor<ProvideFromCacheOrMediumLogic, AsyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(medium), std::move(file), std::move(filespec) );
+      return SimpleExecutor<ProvideFromCacheOrMediumLogic, AsyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(taskObserver), std::move(medium), std::move(file), std::move(filespec) );
     }
 
-    expected<zypp::ManagedFile> provideToCacheDir(SyncCacheProviderContextRef cacheContext, SyncMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec )
+    expected<zypp::ManagedFile> provideToCacheDir(SyncCacheProviderContextRef cacheContext, ProgressObserverRef taskObserver, SyncMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec )
     {
-      return SimpleExecutor<ProvideFromCacheOrMediumLogic, SyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(medium), std::move(file), std::move(filespec) );
+      return SimpleExecutor<ProvideFromCacheOrMediumLogic, SyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(taskObserver), std::move(medium), std::move(file), std::move(filespec) );
     }
 
   }

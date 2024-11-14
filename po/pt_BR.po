@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2024-09-09 18:47+0000\n"
+"PO-Revision-Date: 2024-11-14 15:48+0000\n"
 "Last-Translator: Rodrigo Macedo <sottomaiormacedotec@sottomaiormacedo.tech>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/"
 "libzypp/master/pt_BR/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.3\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3899,7 +3899,7 @@ msgstr "Não foi possível criar %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Falha ao recuperar novos metadados do repositório."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
@@ -4189,7 +4189,7 @@ msgstr "Falha no applydeltarpm."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permision to write repository cache."
-msgstr ""
+msgstr "Nenhuma permissão para gravar no cache do repositório."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."

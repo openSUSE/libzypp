@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2024-11-14 07:48+0000\n"
+"PO-Revision-Date: 2024-11-14 10:48+0000\n"
 "Last-Translator: Martin Hansen <mh306602@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://l10n.opensuse.org/projects/libzypp/"
 "master/nb/>\n"
@@ -1023,7 +1023,7 @@ msgstr "Qatar"
 #. :QAT:634:
 #: zypp/CountryCode.cc:344
 msgid "Reunion"
-msgstr "Reunion"
+msgstr "Réunion"
 
 #. :REU:638:
 #: zypp/CountryCode.cc:345
@@ -3683,7 +3683,7 @@ msgstr "Vietnamesisk"
 #. language code: vol vo
 #: zypp/LanguageCode.cc:1103
 msgid "Volapuk"
-msgstr "Volapuk"
+msgstr "Volapük"
 
 #. language code: vot
 #: zypp/LanguageCode.cc:1105
@@ -3945,12 +3945,12 @@ msgstr "Ukjent samsvarsmodus '%s'"
 #: zypp/base/StrMatcher.cc:153
 #, c-format, boost-format
 msgid "Unknown match mode '%s' for pattern '%s'"
-msgstr "Ukjent samsvarsmodus '%s' for mønsteret '%s'."
+msgstr "Ukjent samsvarsmodus '%s' for mønsteret '%s'"
 
 #: zypp/base/StrMatcher.cc:157
 #, c-format, boost-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
-msgstr "Ugyldig regulært uttrykk '%s': tilbakemelding 'regcomp'  %d"
+msgstr "Ugyldig regulært uttrykk '%s': regcomp returnerte %d"
 
 #: zypp/base/StrMatcher.cc:158
 #, c-format, boost-format
@@ -4089,7 +4089,7 @@ msgstr "Kan ikke lese pakkebrønn mappe '%1%': Tilgang nektet"
 #: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
-msgstr "Kunnne ikke lese katalogen: '%s'."
+msgstr "Kunne ikke lese mappen '%s'"
 
 #: zypp/ng/repomanager.cc:214
 #, boost-format
@@ -4582,8 +4582,7 @@ msgstr ""
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
-"den som skal installeres %1% er i konflikt med '%2%' gitt av %3% som skal "
-"installeres"
+"den som skal installeres %1% er i konflikt med '%2%' gitt av installerte %3%"
 
 #: zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
@@ -4920,7 +4919,7 @@ msgstr "Pakkeoverskrift er ikke signert!"
 
 #: zypp/target/rpm/RpmDb.cc:1252
 msgid "Package payload is not signed!"
-msgstr ""
+msgstr "Pakkeinnhold er ikke signert!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
@@ -4976,36 +4975,33 @@ msgstr "opprettet sikkerhetskopi %s"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2221
-#, fuzzy
 msgid "Signature is OK"
-msgstr "Signaturfilen %s ikke funnet"
+msgstr "Signaturen er OK"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2223
 msgid "Unknown type of signature"
-msgstr ""
+msgstr "Ukjent signatur type"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2225
-#, fuzzy
 msgid "Signature does not verify"
-msgstr "Signaturfilen %s ikke funnet"
+msgstr "Signaturen verifiserer ikke"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2227
-#, fuzzy
 msgid "Signature is OK, but key is not trusted"
-msgstr "Signaturfilen %s ikke funnet"
+msgstr "Signaturen er OK, men nøkkelen er ikke til å stole på"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2229
 msgid "Signatures public key is not available"
-msgstr ""
+msgstr "Signaturens offentlige nøkkel er ikke tilgjengelig"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2231
 msgid "File does not exist or signature can't be checked"
-msgstr ""
+msgstr "Filen eksisterer ikke eller signaturen kan ikke bli sjekket"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/target/rpm/RpmDb.cc:2233
@@ -5152,11 +5148,11 @@ msgstr "Kommandoen ble avsluttet med en ukjent feil."
 #: zypp-core/zyppng/io/forkspawnengine.cc:243
 #: zypp-core/zyppng/io/forkspawnengine.cc:486
 msgid "Invalid spawn arguments given."
-msgstr ""
+msgstr "Ugyldige spawn-argumenter gitt."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:299
 msgid "Unable to create control pipe."
-msgstr ""
+msgstr "Kan ikke opprette kontrollrør."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:366
 #, c-format, boost-format
@@ -5188,22 +5184,22 @@ msgstr "Kan ikke splitte (%s)."
 #: zypp-core/zyppng/io/forkspawnengine.cc:432
 #, c-format, boost-format
 msgid "Can't exec '%s', chdir failed (%s)."
-msgstr ""
+msgstr "Kan ikke utføre '%s', chdir mislykket (%s)."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:435
 #, c-format, boost-format
 msgid "Can't exec '%s', chroot failed (%s)."
-msgstr ""
+msgstr "Kan ikke utføre '%s', chroot mislykket (%s)."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:438
 #, c-format, boost-format
 msgid "Can't exec '%s', exec failed (%s)."
-msgstr ""
+msgstr "Kan ikke utføre '%s', utførelsen mislyktes (%s)."
 
 #: zypp-core/zyppng/io/forkspawnengine.cc:442
 #, c-format, boost-format
 msgid "Can't exec '%s', unexpected error."
-msgstr ""
+msgstr "Kan ikke utføre '%s', uventet feil."
 
 #: zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -5340,7 +5336,7 @@ msgstr "Tidsavbrudd under tilgang '%s'."
 #: zypp-media/mediaexception.cc:197
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
-msgstr ""
+msgstr "Nedlastede data overskred den forventede filstørrelsen '%s' av '%s'."
 
 #: zypp-media/mediaexception.cc:205
 #: zypp-curl/ng/network/networkrequesterror.cc:115
@@ -5355,7 +5351,7 @@ msgstr " SSL-sertifikatproblem, bekreft at CA-sertifikat er OK for '%s'."
 
 #: zypp-media/mediaexception.cc:220
 msgid "No free ressources available to attach medium."
-msgstr ""
+msgstr "Ingen tilgjengelige ressurser for å legge ved medium."
 
 #: zypp-curl/auth/curlauthdata.cc:97
 #, c-format, boost-format
@@ -5368,6 +5364,8 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
+"Last ned (curl) feil for '%s':\n"
+"Feil kode: %s\n"
 
 #: zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
@@ -5375,6 +5373,8 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Unable to retrieve HTTP response\n"
 msgstr ""
+"Last ned (curl) feil for '%s':\n"
+"Kunne ikke hente HTTP-svar\n"
 
 #: zypp-tui/Table.cc:32
 msgid "Yes"
@@ -5387,19 +5387,17 @@ msgstr "Nei"
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp-tui/output/Out.cc:26
 msgid "Note:"
-msgstr ""
+msgstr "Notat:"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp-tui/output/Out.cc:28
-#, fuzzy
 msgid "Warning:"
-msgstr "Advarsel: "
+msgstr "Advarsel:"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp-tui/output/Out.cc:30
-#, fuzzy
 msgid "Error:"
-msgstr "Feil"
+msgstr "Feil:"
 
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
@@ -5411,7 +5409,7 @@ msgstr "fullført"
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp-tui/output/Out.cc:143
 msgid "attention"
-msgstr ""
+msgstr "oppmerksomhet"
 
 #. translator: Shown as result tag in a progress bar: ...........[error]
 #. Translator: download progress bar result: "............[error]"
@@ -5436,9 +5434,8 @@ msgstr "starter"
 
 #. Translator: download progress bar result: "........[not found]"
 #: zypp-tui/output/OutNormal.cc:335 zypp-tui/output/OutNormal.cc:344
-#, fuzzy
 msgid "not found"
-msgstr "Ikke funnet"
+msgstr "ikke funnet"
 
 #: zypp-tui/output/OutNormal.cc:421
 msgid "No help available for this prompt."
@@ -5451,7 +5448,7 @@ msgstr "ingen tilgjengelig hjelp for dette valget"
 #. translators: Press '?' to see all options embedded in this prompt: "Continue? [y/n/? shows all options] (y):"
 #: zypp-tui/output/promptoptions.cc:85
 msgid "shows all options"
-msgstr ""
+msgstr "Vis alle alternativer"
 
 #: zypp-tui/output/promptoptions.cc:194
 msgid "yes"

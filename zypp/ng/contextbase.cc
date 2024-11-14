@@ -1,4 +1,5 @@
 #include "contextbase.h"
+#include "zypp-core/base/dtorreset.h"
 #include "zypp-core/zyppng/pipelines/mtry.h"
 #include "zypp/KeyRing.h"
 #include <zypp/Target.h>
@@ -7,18 +8,34 @@
 
 namespace zyppng {
 
-
   ContextBase::ContextBase()
     : _tmpDir( zypp::filesystem::TmpPath::defaultLocation(), "zypp." )
+    , _repoVarCache( *this )
   { }
+
+  void ContextBase::setProgressObserver(ProgressObserverRef observer)
+  {
+    if ( _masterProgress != observer ) {
+      _masterProgress = observer;
+      _sigProgressObserverChanged.emit();
+    }
+  }
+
+  ProgressObserverRef ContextBase::progressObserver() const
+  {
+    return _masterProgress;
+  }
+
+  void ContextBase::resetProgressObserver()
+  {
+    if ( _masterProgress ) {
+      _masterProgress.reset();
+      _sigProgressObserverChanged.emit();
+    }
+  }
 
   ContextBase::~ContextBase()
   { }
-
-  zypp::Pathname ContextBase::defaultConfigPath()
-  {
-    return "/etc/zypp/zypp.conf";
-  }
 
   zypp::Pathname ContextBase::contextRoot() const
   {
@@ -176,6 +193,14 @@ namespace zyppng {
     return *_config;
   }
 
+  zypp::MediaConfig &ContextBase::mediaConfig()
+  {
+    assertInitialized();
+    // config loaded on demand if queried before initializing the target
+    if ( !_config ) loadConfig ( *_settings->configPath ).unwrap();
+    return _config->mediaConfig();
+  }
+
   zypp::Pathname ContextBase::tmpPath() const
   {
     return _tmpDir.path();
@@ -184,6 +209,76 @@ namespace zyppng {
   TargetRef ContextBase::target() const
   {
     return _target;
+  }
+
+  expected<ResourceLock> ContextBase::lockResource(std::string ident , ResourceLock::Mode mode)
+  {
+    auto i = _resourceLocks.find ( ident );
+    if ( i == _resourceLocks.end() ) {
+      // simple case, lock does not exist
+     auto lockData = detail::ResourceLockData_Ptr( new detail::ResourceLockData());
+     lockData->_resourceIdent = std::move(ident);
+     lockData->_mode = mode;
+     lockData->_zyppContext = shared_this<ContextBase>();
+     _resourceLocks.insert( std::make_pair( lockData->_resourceIdent, lockData ) );
+     return expected<ResourceLock>::success( std::move(lockData) );
+    } else {
+      if ( mode == ResourceLock::Shared && i->second->_mode == ResourceLock::Shared )
+        return expected<ResourceLock>::success( i->second );
+      return expected<ResourceLock>::error( ZYPP_EXCPT_PTR(ResourceAlreadyLockedException(ident)));
+    }
+  }
+
+  void ContextBase::lockUnref( const std::string &ident )
+  {
+    if ( _inUnrefLock )
+      return;
+
+    zypp::DtorReset resetUnrefLock( _inUnrefLock, false );
+    _inUnrefLock = true;
+
+    auto i = _resourceLocks.find ( ident );
+    if ( i == _resourceLocks.end() ) {
+      MIL << "Unknown lock: " << ident << " can not be unref'ed" << std::endl;
+      return;
+    }
+
+    auto &lockData = *i->second.get();
+    if ( lockData.refCount() > 1 )
+      return;
+
+    // some house keeping, remove expired waiters
+    {
+      auto i = std::remove_if( lockData._lockQueue.begin (), lockData._lockQueue.end(), []( const auto &elem ){ return elem.expired(); });
+      lockData._lockQueue.erase( i, lockData._lockQueue.end() );
+    }
+
+    if ( lockData._lockQueue.empty() ) {
+      _resourceLocks.erase( lockData._resourceIdent );
+      return;
+    } else {
+      dequeueWaitingLocks ( lockData );
+    }
+  }
+
+  const std::string *ContextBase::resolveRepoVar(const std::string &var)
+  {
+    return _repoVarCache.lookup(var);
+  }
+
+  repo::RepoVarsMap &ContextBase::repoVarCache()
+  {
+    return _repoVarCache;
+  }
+
+  const repo::RepoVarsMap &ContextBase::repoVarCache() const
+  {
+    return _repoVarCache;
+  }
+
+  void ContextBase::clearRepoVariables()
+  {
+    _repoVarCache.clear();
   }
 
 }

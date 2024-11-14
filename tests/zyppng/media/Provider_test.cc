@@ -1,6 +1,7 @@
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp-media/ng/private/providemessage_p.h>
+#include <zypp-media/ng/auth/credentialmanager.h>
 #include <zypp-media/MediaException>
 #include <zypp-media/auth/AuthData>
 #include <zypp-media/auth/CredentialManager>
@@ -25,6 +26,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
+#include <zypp/ng/context.h>
 
 #ifndef TESTS_BUILD_DIR
 #error "TESTS_BUILD_DIR not defined"
@@ -57,6 +59,9 @@ BOOST_AUTO_TEST_CASE( http_prov )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -66,7 +71,7 @@ BOOST_AUTO_TEST_CASE( http_prov )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/media.1/media" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+  auto op = prov->provide( ctx, fileUrl, zyppng::ProvideFileSpec() );
 
   std::exception_ptr err;
   std::optional<zyppng::ProvideRes> resOpt;
@@ -100,6 +105,9 @@ BOOST_AUTO_TEST_CASE( http_attach )
 
   auto ev = zyppng::EventLoop::create ();
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   const auto &workerPath = zypp::Pathname ( TESTS_BUILD_DIR ).dirname() / "tools" / "workers";
   const auto &webRoot    = zypp::Pathname (TESTS_SRC_DIR)/"/zyppng/data/downloader";
   zypp::filesystem::TmpDir provideRoot;
@@ -111,7 +119,7 @@ BOOST_AUTO_TEST_CASE( http_attach )
   WebServer web( webRoot.c_str(), 10001, false );
   BOOST_REQUIRE( web.start() );
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( ctx, "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) );
 
@@ -138,6 +146,9 @@ BOOST_AUTO_TEST_CASE( http_attach_prov )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -147,7 +158,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov )
 
   zyppng::Provide::MediaHandle media;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( ctx, "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
@@ -187,6 +198,9 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_404 )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -196,7 +210,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_404 )
 
   zyppng::Provide::MediaHandle media;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( ctx, "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
@@ -235,6 +249,9 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -245,7 +262,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
   zyppng::Provide::MediaHandle media;
   std::exception_ptr err;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( ctx, "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
@@ -307,6 +324,9 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -314,7 +334,8 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -336,7 +357,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+  auto op = prov->provide( ctx, fileUrl, zyppng::ProvideFileSpec() );
 
   std::exception_ptr err;
   std::optional<zyppng::ProvideRes> resOpt;
@@ -380,6 +401,9 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -387,7 +411,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -405,7 +429,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+  auto op = prov->provide( ctx, fileUrl, zyppng::ProvideFileSpec() );
 
   std::exception_ptr err;
   std::optional<zyppng::ProvideRes> resOpt;
@@ -443,6 +467,9 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
   prov->start();
@@ -450,7 +477,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -478,7 +505,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+  auto op = prov->provide( ctx, fileUrl, zyppng::ProvideFileSpec() );
 
   std::exception_ptr err;
   std::optional<zyppng::ProvideRes> resOpt;
@@ -518,13 +545,16 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
 
   zypp::filesystem::TmpDir provideRoot;
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
   //don't write or read creds from real settings dir
   zypp::filesystem::TmpDir globCredPath;
   zypp::filesystem::TmpDir userCredPath;
-  zypp::media::CredManagerOptions opts;
+  zypp::media::CredManagerSettings opts;
   opts.globalCredFilePath = globCredPath.path() / "credentials.cat";
   opts.userCredFilePath   = userCredPath.path() / "credentials.cat";
   prov->setCredManagerOptions( opts );
@@ -550,7 +580,7 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
   auto baseUrl = web.url();
   baseUrl.setPathName("/handler");
 
-  auto op = prov->attachMedia( baseUrl, zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto op = prov->attachMedia( baseUrl, zyppng::ProvideMediaSpec( ctx, "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
@@ -604,17 +634,17 @@ static void writeTVMConfig ( const zypp::Pathname &file, const zypp::test::TVMSe
   }
 }
 
-static auto makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Pathname &devRoot, int mediaNr, const std::string &fName )
+static auto makeDVDProv ( zyppng::MediaContextRef ctx, zyppng::ProvideRef &prov, const zypp::filesystem::Pathname &devRoot, int mediaNr, const std::string &fName )
 {
   using namespace zyppng::operators;
 
-  return prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+  return prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set")
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(mediaNr)) / (std::string("media.") + zypp::str::numstring(mediaNr))  / "media" )
                                                 .setMedianr(mediaNr))
         | [&prov, mediaNr, fName]( zyppng::expected<zyppng::Provide::MediaHandle> &&res ){
             if ( res ) {
               std::cout << "Attached " << mediaNr << " as: " << res->handle() << std::endl;
-              return prov->provide ( *res, fName , zyppng::ProvideFileSpec() ) | [ attachId = *res, &prov ]( auto &&res ) {
+              return prov->provide ( *res, fName , zyppng::ProvideFileSpec() ) | [ attachId = *res ]( auto &&res ) {
                 if ( !res ) {
                   try {
                     std::rethrow_exception(res.error());
@@ -655,6 +685,9 @@ BOOST_AUTO_TEST_CASE( tvm_basic )
 
   auto ev = zyppng::EventLoop::create ();
 
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
+
   const auto &workerPath = zypp::Pathname ( TESTS_BUILD_DIR ).dirname() / "tools" / "workers";
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "zyppng" / "data" / "provide";
 
@@ -688,9 +721,9 @@ BOOST_AUTO_TEST_CASE( tvm_basic )
 
   std::vector< zyppng::AsyncOpRef<zyppng::expected<void>>> ops;
 
-  ops.push_back( makeDVDProv( prov, devRoot, 1, "/file1") );
-  ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
-  ops.push_back( makeDVDProv( prov, devRoot, 3, "/file3") );
+  ops.push_back( makeDVDProv( ctx, prov, devRoot, 1, "/file1") );
+  ops.push_back( makeDVDProv( ctx, prov, devRoot, 2, "/file2") );
+  ops.push_back( makeDVDProv( ctx, prov, devRoot, 3, "/file3") );
 
   auto r = std::move(ops) | zyppng::waitFor();
   r->sigReady().connect([&](){
@@ -717,6 +750,9 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "zyppng" / "data" / "provide";
 
   zypp::filesystem::TmpDir provideRoot;
+
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
 
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
@@ -760,8 +796,8 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
 
   std::vector< zyppng::AsyncOpRef<zyppng::expected<void>>> ops;
 
-  ops.push_back( makeDVDProv( prov, devRoot, 1, "/file1") );
-  ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
+  ops.push_back( makeDVDProv( ctx, prov, devRoot, 1, "/file1") );
+  ops.push_back( makeDVDProv( ctx, prov, devRoot, 2, "/file2") );
 
   auto r = std::move(ops) | zyppng::waitFor();
   r->sigReady().connect([&](){
@@ -794,8 +830,10 @@ BOOST_DATA_TEST_CASE( tvm_medchange_abort, bdata::make( cancelOps ), cancelOp )
   const auto &workerPath = zypp::Pathname ( TESTS_BUILD_DIR ).dirname() / "tools" / "workers";
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "zyppng" / "data" / "provide";
 
-  zypp::filesystem::TmpDir provideRoot;
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
 
+  zypp::filesystem::TmpDir provideRoot;
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
@@ -834,8 +872,8 @@ BOOST_DATA_TEST_CASE( tvm_medchange_abort, bdata::make( cancelOps ), cancelOp )
     return cancelOp;
   });
 
-  auto op1 = makeDVDProv( prov, devRoot, 1, "/file1");
-  auto op2 = makeDVDProv( prov, devRoot, 2, "/file2");
+  auto op1 = makeDVDProv( ctx, prov, devRoot, 1, "/file1");
+  auto op2 = makeDVDProv( ctx, prov, devRoot, 2, "/file2");
 
   const auto &readyCB = [&](){
     if ( op1->isReady() && op2->isReady() )
@@ -875,8 +913,10 @@ BOOST_AUTO_TEST_CASE( tvm_jammed )
   const auto &workerPath = zypp::Pathname ( TESTS_BUILD_DIR ).dirname() / "tools" / "workers";
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "zyppng" / "data" / "provide";
 
-  zypp::filesystem::TmpDir provideRoot;
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
 
+  zypp::filesystem::TmpDir provideRoot;
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
@@ -897,10 +937,10 @@ BOOST_AUTO_TEST_CASE( tvm_jammed )
 
   prov->start();
 
-  auto op1 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+  auto op1 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set" )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(1)) / (std::string("media.") + zypp::str::numstring(1))  / "media" )
                                                 .setMedianr(1));
-  auto op2 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+  auto op2 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set" )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
                                                 .setMedianr(2));
 
@@ -939,8 +979,10 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
   const auto &workerPath = zypp::Pathname ( TESTS_BUILD_DIR ).dirname() / "tools" / "workers";
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "zyppng" / "data" / "provide";
 
-  zypp::filesystem::TmpDir provideRoot;
+  auto ctx = zyppng::AsyncContext::create ();
+  ctx->initialize().unwrap();
 
+  zypp::filesystem::TmpDir provideRoot;
   auto prov = zyppng::Provide::create ( provideRoot );
   prov->setWorkerPath ( workerPath );
 
@@ -969,7 +1011,7 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
 
   prov->start();
 
-  auto op1 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+  auto op1 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set" )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(1)) / (std::string("media.") + zypp::str::numstring(1))  / "media" )
                                                 .setMedianr(1));
 
@@ -987,7 +1029,7 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
     }
 
     attach1Success = true;
-    op2 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+    op2 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set" )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
                                                 .setMedianr(2));
 
@@ -998,7 +1040,7 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
         op1.reset(); // kill the first media handle
         mediaChangeAllowed = true;
 
-        op3 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+        op3 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec( ctx, "CD Test Set" )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
                                                 .setMedianr(2));
         op3->sigReady().connect( [&]() {

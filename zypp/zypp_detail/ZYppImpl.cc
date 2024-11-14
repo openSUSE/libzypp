@@ -123,6 +123,7 @@ namespace zypp
 
     static bool zyppLegacyShutdownStarted = false; // set to true if the GlobalStateHelper was destructed
 
+    // if this logic is changed, also update the one in MediaConfig
     zypp::Pathname autodetectZyppConfPath() {
       const char *env_confpath = getenv("ZYPP_CONF");
       return env_confpath ? env_confpath
@@ -163,12 +164,12 @@ namespace zypp
       if ( zyppLegacyShutdownStarted )
         ZYPP_THROW("Global State requested after it was freed");
 
-        auto &inst = instance();
-        if (!inst._config) {
-          inst._config.reset( new ZConfig( autodetectZyppConfPath () ) );
-        }
+      auto &inst = instance();
+      if (!inst._config) {
+        inst._config.reset( new ZConfig( autodetectZyppConfPath () ) );
+      }
 
-        return *inst._config;
+      return *inst._config;
     }
 
     void GlobalStateHelper::lock()

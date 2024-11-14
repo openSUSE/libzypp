@@ -11,7 +11,9 @@
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/zyppng/pipelines/expected.h>
-#include <zypp-core/zyppng/ui/UserInterface>
+#include <zypp-media/ng/MediaContext>
+#include <zypp/ng/repo/repovariablescache.h>
+#include <zypp/ng/resource.h>
 
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
@@ -25,6 +27,7 @@ namespace zypp {
 namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ContextBase);
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   using KeyRing    = zypp::KeyRing;
   using KeyRingRef = zypp::KeyRing_Ptr;
@@ -38,7 +41,7 @@ namespace zyppng {
     std::optional<zypp::Pathname> configPath;
   };
 
-  class ContextBase : public UserInterface
+  class ContextBase : public MediaContext
   {
   public:
     ~ContextBase() override;
@@ -48,12 +51,31 @@ namespace zyppng {
     ContextBase &operator=(ContextBase &&) = delete;
 
 
-    static zypp::Pathname defaultConfigPath();
+    /*!
+     * Sets the master progress observer for this context, this is the place where all
+     * events and progress are received from, can be shared with another context.
+     */
+    void setProgressObserver( ProgressObserverRef observer );
+
+
+    /*!
+     * Returns the current \ref ProgressObserver, or a empty reference if
+     * no observer was registered
+     */
+    ProgressObserverRef progressObserver( ) const;
+
+    /*!
+     * Resets the currently used \ref ProgressObserver.
+     * Currently running pipelines might still have a reference to the
+     * observer though.
+     */
+    void resetProgressObserver();
+
 
     /*!
      * Returns the root path of the context
      */
-    zypp::Pathname contextRoot() const;
+    zypp::Pathname contextRoot() const override;
 
     /*!
      * Gets the zypp lock, loads the config and sets up keyring
@@ -75,8 +97,35 @@ namespace zyppng {
 
     KeyRingRef keyRing ();
     zypp::ZConfig &config();
+    zypp::MediaConfig &mediaConfig() override;
     zypp::Pathname tmpPath() const;
     TargetRef target() const;
+
+    /*!
+     * Attempts to lock the resource identified by \a ident.
+     * The returned lock is automatically released when the last
+     * Shared or the last Exclusive lock instance is released.
+     */
+    expected<ResourceLock> lockResource (std::string ident, ResourceLock::Mode mode = ResourceLock::Shared );
+
+
+    void lockUnref( const std::string &ident );
+
+
+    /*!
+     * Tries to resolve the variable \a var from the repoCache,
+     * returns a pointer to the found value or nullptr if the variable
+     * is not known.
+     */
+    const std::string * resolveRepoVar( const std::string & var );
+
+    repo::RepoVarsMap &repoVarCache();
+    const repo::RepoVarsMap &repoVarCache() const;
+
+    /*!
+     * Resets all cached repo variables
+     */
+    void clearRepoVariables();
 
     /*!
      * Signal emitted during context close, e.g. unloading the target.
@@ -86,6 +135,14 @@ namespace zyppng {
      */
     SignalProxy<void()> sigClose() {
       return _sigClose;
+    }
+
+    /*!
+     * This signal is always emitted when the progress observer is changed,
+     * primarily used to signal the C wrapper to update its reference
+     */
+    SignalProxy<void()> sigProgressObserverChanged() {
+      return _sigProgressObserverChanged;
     }
 
   protected:
@@ -111,11 +168,20 @@ namespace zyppng {
     }
 
   private:
+
+    virtual void dequeueWaitingLocks( detail::ResourceLockData & ) = 0;
+
+    /**
+     * \todo move CredentialManager here
+     */
+
     std::optional<ContextSettings> _settings;
     bool _legacyMode = false; // set by legacyInit. Will disable locking inside the context, Zypp and ZyppFactory take care of that
+    bool _inUnrefLock = false;
 
     Signal<void()> _sigClose;
     Signal<void()> _sigTargetChanged; // legacy support signal in case the context changes its target
+    Signal<void()> _sigProgressObserverChanged;
 
     expected<zypp::ZyppContextLockRef> aquireLock();
     expected<void> loadConfig( zypp::Pathname confPath );
@@ -130,7 +196,12 @@ namespace zyppng {
     TargetRef  _target;
 
     zypp::ZyppContextLockRef _myLock;
+    repo::RepoVarsMap _repoVarCache;
 
+    ProgressObserverRef _masterProgress;
+
+  protected:
+    std::map<std::string, detail::ResourceLockData_Ptr> _resourceLocks;
   };
 
 

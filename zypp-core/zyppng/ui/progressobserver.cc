@@ -2,6 +2,7 @@
 #include "zypp-core/AutoDispose.h"
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-core/base/dtorreset.h>
+#include <zypp-core/zyppng/ui/userrequest.h>
 
 namespace zyppng {
 
@@ -77,6 +78,7 @@ namespace zyppng {
     Signal<void ( ProgressObserver &sender, double steps ) >              _sigProgressChanged;
     Signal<void ( ProgressObserver &sender, ProgressObserver::FinishResult )>  _sigFinished;
     Signal<void ( ProgressObserver &sender, ProgressObserverRef child )>  _sigNewSubprogress;
+    Signal<void ( ProgressObserver &sender, UserRequestRef event)>        _sigEvent;
   };
 
   ZYPP_IMPL_PRIVATE(ProgressObserver)
@@ -126,6 +128,8 @@ namespace zyppng {
       WAR << "Unknown child sent a finished message, ignoring" << std::endl;
       return;
     }
+
+    child.d_func()->_parent.reset();
 
     const auto idx = std::distance ( _children.begin (), i );
     _children.erase(i);
@@ -193,6 +197,11 @@ namespace zyppng {
     return d_func()->_counterValue;
   }
 
+  ProgressObserverRef ProgressObserver::parent() const
+  {
+    return d_func()->_parent.lock();
+  }
+
   const std::vector<ProgressObserverRef> &ProgressObserver::children()
   {
     return d_func()->_children;
@@ -238,6 +247,11 @@ namespace zyppng {
     return d_func()->_sigNewSubprogress;
   }
 
+  SignalProxy<void ( ProgressObserver &sender, UserRequestRef event)> ProgressObserver::sigEvent()
+  {
+    return d_func()->_sigEvent;
+  }
+
   void ProgressObserver::setBaseSteps(int steps)
   {
     Z_D();
@@ -258,6 +272,8 @@ namespace zyppng {
   void ProgressObserver::setCurrent(double curr)
   {
     Z_D();
+    if ( !d->_started ) start();
+
     auto set = std::max<double>(0, std::min<double>( curr, d->_baseSteps ) );
     if ( set == d->_baseValue )
       return;
@@ -280,12 +296,12 @@ namespace zyppng {
     // others we have to manually remove
     while ( d->_children.size() ) {
       auto back   = d->_children.back();
-      bool remove = !back->started ();
       back->setFinished( result );
+      bool remove = !back->started ();
       if ( remove ) d->_children.pop_back();
     }
 
-    if ( result != Error )
+    if ( d->_started && result != Error )
       setCurrent( d->_baseSteps );
 
     if ( d->_started )
@@ -309,13 +325,14 @@ namespace zyppng {
     } else {
       d->_children.push_back( child );
       d->_childInfo.push_back( {
-        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
-          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &sender, auto ){ d_func()->updateCounters(); }, *this ),
+        { connectFunc ( *child, &ProgressObserver::sigStepsChanged, [this]( auto &, auto ){ d_func()->updateCounters(); }, *this ),
+          connectFunc ( *child, &ProgressObserver::sigValueChanged, [this]( auto &, auto ){ d_func()->updateCounters(); }, *this ),
           connect     ( *child, &ProgressObserver::sigStarted, *d, &ProgressObserverPrivate::onChildStarted ),
           connect     ( *child, &ProgressObserver::sigFinished, *d, &ProgressObserverPrivate::onChildFinished )
         }
         , adjustedWeight
       });
+      child->d_func ()->_parent = weak_this<ProgressObserver>();
       d->_sigNewSubprogress.emit( *this, child );
 
       // if the child has been started already, we also need to start()
@@ -353,6 +370,17 @@ namespace zyppng {
         instance->setFinished();
       return true;
     };
+  }
+
+  void ProgressObserver::sendUserRequest( const UserRequestRef &event )
+  {
+    Z_D();
+    d->_sigEvent.emit( *this, event );
+    if ( !event->accepted () ) {
+      // our receivers did not handle the request, we need to bubble up!
+      auto p = d->_parent.lock();
+      if ( p ) p->sendUserRequest( event );
+    }
   }
 
 } // namespace zyppng

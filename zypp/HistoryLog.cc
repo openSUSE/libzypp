@@ -21,12 +21,13 @@
 #include <zypp/PathInfo.h>
 #include <zypp/Date.h>
 
-#include <zypp/PoolItem.h>
+#include <zypp/ng/repoinfo.h>
 #include <zypp/Package.h>
 #include <zypp/RepoInfo.h>
 
 #include <zypp/HistoryLog.h>
 #include <zypp/HistoryLogData.h>
+#include <zypp/ng/userdata.h>
 
 using std::endl;
 using std::string;
@@ -111,7 +112,7 @@ namespace zypp
     inline void openLog()
     {
       if ( _fname.empty() )
-        _fname = ZConfig::instance().historyLogFile();
+        _fname = ZConfig::systemConfig().historyLogFile();
 
       _log.clear();
       _log.open( _fname.asString().c_str(), std::ios::out|std::ios::app );
@@ -168,7 +169,7 @@ namespace zypp
     if ( _refcnt )
       closeLog();
 
-    _fname = ZConfig::instance().historyLogFile();
+    _fname = ZConfig::systemConfig().historyLogFile();
     if ( _fname != "/dev/null" )  // no need to redirect /dev/null into the target
       _fname = rootdir / _fname;
     filesystem::assert_dir( _fname.dirname() );
@@ -181,7 +182,7 @@ namespace zypp
   const Pathname & HistoryLog::fname()
   {
     if ( _fname.empty() )
-      _fname = ZConfig::instance().historyLogFile();
+      _fname = ZConfig::systemConfig().historyLogFile();
     return _fname;
   }
 
@@ -226,7 +227,7 @@ namespace zypp
       << _sep << HistoryActionID::STAMP_COMMAND.asString(true)		// 2 action
       << _sep << userAtHostname()					// 3 requested by
       << _sep << cmdline()						// 4 command
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 6 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)	// 6 userdata
       << endl;
 
   }
@@ -252,9 +253,9 @@ namespace zypp
       _log << _sep;
 
     _log
-      << _sep << p->repoInfo().alias()					// 7 repo alias
+      << _sep << (p->ngRepoInfo().has_value () ? p->ngRepoInfo()->alias() : std::string())  // 7 repo alias
       << _sep << p->checksum().checksum()				// 8 checksum
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 9 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)	// 9 userdata
       << endl;
   }
 
@@ -280,37 +281,37 @@ namespace zypp
       _log << _sep;
 
     _log
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 7 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)	// 7 userdata
       << endl;
   }
 
   /////////////////////////////////////////////////////////////////////////
 
-  void HistoryLog::addRepository(const RepoInfo & repo)
+  void HistoryLog::addRepository(const zyppng::RepoInfo & repo)
   {
     _log
       << timestamp()							// 1 timestamp
       << _sep << HistoryActionID::REPO_ADD.asString(true)		// 2 action
       << _sep << str::escape(repo.alias(), _sep)			// 3 alias
       << _sep << str::escape(repo.url().asString(), _sep)		// 4 primary URL
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)            // 5 userdata
       << endl;
   }
 
 
-  void HistoryLog::removeRepository(const RepoInfo & repo)
+  void HistoryLog::removeRepository(const zyppng::RepoInfo & repo)
   {
     _log
       << timestamp()							// 1 timestamp
       << _sep << HistoryActionID::REPO_REMOVE.asString(true)		// 2 action
       << _sep << str::escape(repo.alias(), _sep)			// 3 alias
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 4 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)            // 4 userdata
       << endl;
   }
 
 
   void HistoryLog::modifyRepository(
-      const RepoInfo & oldrepo, const RepoInfo & newrepo)
+      const zyppng::RepoInfo & oldrepo, const zyppng::RepoInfo & newrepo)
   {
     if (oldrepo.alias() != newrepo.alias())
     {
@@ -319,7 +320,7 @@ namespace zypp
         << _sep << HistoryActionID::REPO_CHANGE_ALIAS.asString(true)	// 2 action
         << _sep << str::escape(oldrepo.alias(), _sep)			// 3 old alias
         << _sep << str::escape(newrepo.alias(), _sep)			// 4 new alias
-        << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+        << _sep << str::escape(zyppng::UserData::data(), _sep)          // 5 userdata
         << endl;
     }
     if ( oldrepo.url() != newrepo.url() )
@@ -329,7 +330,7 @@ namespace zypp
         << _sep << HistoryActionID::REPO_CHANGE_URL.asString(true)	// 2 action
         << _sep << str::escape(oldrepo.url().asString(), _sep)		// 3 old url
         << _sep << str::escape(newrepo.url().asString(), _sep)		// 4 new url
-        << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 5 userdata
+        << _sep << str::escape(zyppng::UserData::data(), _sep)          // 5 userdata
         << endl;
     }
   }
@@ -345,12 +346,12 @@ namespace zypp
       << _sep << p->name()						// 3 name
       << _sep << p->edition()						// 4 evr
       << _sep << p->arch()						// 5 arch
-      << _sep << p->repoInfo().alias()					// 6 repo alias
+      << _sep << (p->ngRepoInfo().has_value () ? p->ngRepoInfo()->alias() : std::string()) // 6 repo alias
       << _sep << p->severity()   					// 7 severity
       << _sep << p->category()  					// 8 category
       << _sep << ResStatus::validateValueAsString( oldstate )		// 9 old state
       << _sep << pi.status().validateValueAsString()			// 10 new state
-      << _sep << str::escape(ZConfig::instance().userData(), _sep)	// 11 userdata
+      << _sep << str::escape(zyppng::UserData::data(), _sep)	// 11 userdata
       << endl;
   }
 

@@ -44,8 +44,9 @@ namespace zypp {
       bool getDoesFileExist( const Pathname & filename ) const override;
 
     public:
-      MediaCIFS( const Url&       url_r,
-                const Pathname & attach_point_hint_r );
+      MediaCIFS( zyppng::ContextBaseRef ctx,
+                 const Url&       url_r,
+                 const Pathname & attach_point_hint_r );
 
       ~MediaCIFS() override { try { release(); } catch(...) {} }
 

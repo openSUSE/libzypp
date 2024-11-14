@@ -34,20 +34,20 @@ namespace zyppng {
   using SyncLazyMediaHandle  = LazyMediaHandle<MediaSyncFacade>;
 
   namespace RepoDownloaderWorkflow {
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
-    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r );
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<repo::AsyncDownloadContextRef>> downloadMasterIndex ( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
+    expected<repo::SyncDownloadContextRef> downloadMasterIndex ( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, zypp::filesystem::Pathname masterIndex_r, ProgressObserverRef progressObserver = nullptr );
 
-    AsyncOpRef<expected<zypp::RepoStatus>>  repoStatus( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle );
-    AsyncOpRef<expected<zypp::RepoStatus> > repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle );
-    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle );
-    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle );
+    AsyncOpRef<expected<zypp::RepoStatus>>  repoStatus( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    AsyncOpRef<expected<zypp::RepoStatus> > repoStatus( repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
+    expected<zypp::RepoStatus> repoStatus( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
 
     AsyncOpRef<expected<repo::AsyncDownloadContextRef>> download ( repo::AsyncDownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
     AsyncOpRef<expected<repo::AsyncDownloadContextRef> > download(repo::AsyncDownloadContextRef dl, AsyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
     expected<repo::SyncDownloadContextRef> download ( repo::SyncDownloadContextRef dl, SyncMediaHandle mediaHandle, ProgressObserverRef progressObserver = nullptr );
-    expected<repo::SyncDownloadContextRef> download(repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
+    expected<repo::SyncDownloadContextRef> download( repo::SyncDownloadContextRef dl, SyncLazyMediaHandle mediaHandle, ProgressObserverRef progressObserver);
 
     template <typename MediaHandle>
     auto downloadMediaInfo ( MediaHandle &&mediaHandle, const zypp::filesystem::Pathname &destdir ) {
@@ -57,11 +57,15 @@ namespace zyppng {
       // check if we have a async media handle
       constexpr bool isAsync = std::is_same_v<ProvideType, Provide>;
       auto provider = mediaHandle.parent();
-      if ( !provider )
+      if ( !mediaHandle.isValid() || !provider )
         return makeReadyResult<expected<zypp::ManagedFile>, isAsync>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid handle"))) );
 
-      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true) )
-             | and_then( ProvideType::copyResultToDest( provider, destdir / "/media.1/media" ) );
+      auto spec = mediaHandle.spec();
+      if ( !spec || !spec->mediaContext() )
+        return makeReadyResult<expected<zypp::ManagedFile>, isAsync>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid mediaspec in handle"))) );
+
+      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true))
+             | and_then( ProvideType::copyResultToDest( provider, spec->mediaContext(), destdir / "/media.1/media" ) );
 
     }
   }

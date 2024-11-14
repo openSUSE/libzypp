@@ -47,8 +47,12 @@ namespace zypp::media {
     return {};
   }
 
-  std::unique_ptr<MediaHandler> MediaHandlerFactory::createHandler( const Url &o_url, const Pathname &preferred_attach_point )
+  std::unique_ptr<MediaHandler> MediaHandlerFactory::createHandler( zyppng::ContextBaseRef ctx, const Url &o_url, const Pathname &preferred_attach_point )
   {
+    if ( !ctx ) {
+      MIL << "A MediaHandler always needs a context" << std::endl;
+      ZYPP_THROW(MediaException("MediaHandler always needs a valid Context."));
+    }
     if(!o_url.isValid()) {
       MIL << "Url is not valid" << std::endl;
       ZYPP_THROW(MediaBadUrlException(o_url));
@@ -66,27 +70,27 @@ namespace zypp::media {
     std::unique_ptr<MediaHandler> _handler;
     switch(*hdlType) {
       case MediaCDType: {
-        _handler = std::make_unique<MediaCD> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaCD> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaNFSType: {
-        _handler = std::make_unique<MediaNFS> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaNFS> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaISOType: {
-        _handler = std::make_unique<MediaISO> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaISO> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaFileType: {
-        _handler = std::make_unique<MediaDIR> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaDIR> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaDISKType: {
-        _handler = std::make_unique<MediaDISK> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaDISK> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaCIFSType: {
-        _handler = std::make_unique<MediaCIFS> (url,preferred_attach_point);
+        _handler = std::make_unique<MediaCIFS> (std::move(ctx), url,preferred_attach_point);
         break;
       }
       case MediaCURLType: {
@@ -126,15 +130,15 @@ namespace zypp::media {
         switch ( which ) {
           default:
           case multicurl:
-            handler = std::make_unique<MediaMultiCurl>( url, preferred_attach_point );
+            handler = std::make_unique<MediaMultiCurl>( std::move(ctx), url, preferred_attach_point );
             break;
 
           case network:
-            handler = std::make_unique<MediaNetwork>( url, preferred_attach_point );
+            handler = std::make_unique<MediaNetwork>( std::move(ctx), url, preferred_attach_point );
             break;
 
           case curl:
-            handler = std::make_unique<MediaCurl>( url, preferred_attach_point );
+            handler = std::make_unique<MediaCurl>( std::move(ctx), url, preferred_attach_point );
             break;
         }
         // Set up the handler

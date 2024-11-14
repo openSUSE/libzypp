@@ -27,7 +27,7 @@
 #include <zypp-core/base/userrequestexception.h>
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/auth/CurlAuthData>
-#include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/auth/credentialmanager.h>
 #include <zypp-curl/CurlConfig>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp/Target.h>
@@ -42,6 +42,8 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <glib.h>
+
+#include <zypp/ng/context.h>
 
 using std::endl;
 
@@ -344,9 +346,9 @@ Pathname MediaCurl::_cookieFile = "/var/lib/YaST2/cookies";
 #define SET_OPTION_LONG(opt,val) SET_OPTION(opt,(long)val)
 #define SET_OPTION_VOID(opt,val) SET_OPTION(opt,(void*)val)
 
-MediaCurl::MediaCurl( const Url &      url_r,
-                      const Pathname & attach_point_hint_r )
-    : MediaNetworkCommonHandler( url_r, attach_point_hint_r,
+MediaCurl::MediaCurl( zyppng::ContextBaseRef ctx, const Url &      url_r,
+                     const Pathname & attach_point_hint_r )
+    : MediaNetworkCommonHandler( std::move(ctx), url_r, attach_point_hint_r,
                                  "/", // urlpath at attachpoint
                                  true ), // does_download
       _curl( NULL ),
@@ -541,8 +543,8 @@ void MediaCurl::setupEasy()
        && _settings.username().size()
        && !_settings.password().size() ) {
 
-    CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
-    const auto cred = cm.getCred( _url );
+    auto cm = zyppng::media::CredentialManager::create( CredManagerSettings(_zyppContext) );
+    const auto cred = cm->getCred( _url );
     if ( cred && cred->valid() ) {
       if ( !_settings.username().size() )
         _settings.setUsername(cred->username());
@@ -1482,11 +1484,11 @@ CURLcode MediaCurl::executeCurl() const
 bool MediaCurl::authenticate(const std::string & availAuthTypes, bool firstTry) const
 {
   //! \todo need a way to pass different CredManagerOptions here
-  CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+  auto cm = zyppng::media::CredentialManager::create( CredManagerSettings(_zyppContext) );
   CurlAuthData_Ptr credentials;
 
   // get stored credentials
-  AuthData_Ptr cmcred = cm.getCred(_url);
+  AuthData_Ptr cmcred = cm->getCred(_url);
 
   if (cmcred && firstTry)
   {
@@ -1570,8 +1572,8 @@ bool MediaCurl::authenticate(const std::string & availAuthTypes, bool firstTry) 
     if (!cmcred)
     {
       credentials->setUrl(_url);
-      cm.addCred(*credentials);
-      cm.save();
+      cm->addCred(*credentials);
+      cm->save();
     }
 
     return true;

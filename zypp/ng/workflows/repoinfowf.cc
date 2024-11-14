@@ -28,6 +28,7 @@
 #include <zypp/ng/Context>
 #include <zypp/ng/UserRequest>
 #include <zypp/ng/workflows/logichelpers.h>
+#include <zypp/ng/repoinfo.h>
 
 #include <fstream>
 
@@ -47,8 +48,9 @@ namespace zyppng {
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
 
-      RepoInfoProvideKeyLogic( ZyppContextRefType &&zyppContext, zypp::RepoInfo &&info, std::string &&keyID_r, zypp::Pathname &&targetDirectory_r )
-        : _reports( std::move(zyppContext ))
+      RepoInfoProvideKeyLogic( ZyppContextRefType &&zyppContext, ProgressObserverRef &&taskObserver, RepoInfo &&info, std::string &&keyID_r, zypp::Pathname &&targetDirectory_r )
+        : _taskObserver( std::move(taskObserver) )
+        , _reports( std::move(zyppContext), _taskObserver )
         , _info( std::move(info) )
         , _keyID_r(std::move( keyID_r ))
         , _targetDirectory_r(std::move( targetDirectory_r ))
@@ -122,8 +124,8 @@ namespace zyppng {
     protected:
 
       MaybeAsyncRef<zyppng::expected<zypp::ManagedFile>> fetchKey ( const zypp::Url &url ) {
-        return _reports.zyppContext()->provider ()->provide( url, zyppng::ProvideFileSpec() )
-         | and_then( ProvideType::copyResultToDest( _reports.zyppContext()->provider(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
+        return _reports.zyppContext()->provider ()->provide( _reports.zyppContext(), url, zyppng::ProvideFileSpec() )
+         | and_then( ProvideType::copyResultToDest( _reports.zyppContext()->provider(), _reports.zyppContext(), _targetDirectory_r / zypp::Pathname( url.getPathName() ).basename() ) );
       }
 
       void importKeysInTargetDir () {
@@ -187,8 +189,9 @@ namespace zyppng {
         return  _targetDirectory_r/(zypp::str::Format("%1%.key") % keyData.rpmName()).asString();
       }
 
+      ProgressObserverRef _taskObserver;
       JobReportHelper<ZyppContextRefType> _reports;
-      const zypp::RepoInfo    _info;
+      const RepoInfo    _info{nullptr};
       const std::string _keyID_r;
       const zypp::Pathname    _targetDirectory_r;
       const std::string _keyIDStr;
@@ -197,7 +200,7 @@ namespace zyppng {
       zypp::KeyRing _tempKeyRing;
     };
 
-
+#if 0
     struct AsyncRepoInfoProvideKey : public RepoInfoProvideKeyLogic<AsyncRepoInfoProvideKey, zyppng::AsyncOp<zypp::Pathname>>
     {
       using RepoInfoProvideKeyLogic::RepoInfoProvideKeyLogic;
@@ -207,16 +210,17 @@ namespace zyppng {
     {
       using RepoInfoProvideKeyLogic::RepoInfoProvideKeyLogic;
     };
+#endif
   }
 
-  zypp::filesystem::Pathname RepoInfoWorkflow::provideKey( SyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
+  zypp::filesystem::Pathname RepoInfoWorkflow::provideKey( SyncContextRef ctx, ProgressObserverRef taskObserver, RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return SimpleExecutor<RepoInfoProvideKeyLogic, SyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
+    return SimpleExecutor<RepoInfoProvideKeyLogic, SyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(taskObserver), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
-  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(AsyncContextRef ctx, zypp::RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
+  AsyncOpRef<zypp::filesystem::Pathname> RepoInfoWorkflow::provideKey(AsyncContextRef ctx, ProgressObserverRef taskObserver, RepoInfo info, std::string keyID_r, zypp::filesystem::Pathname targetDirectory_r )
   {
-    return SimpleExecutor<RepoInfoProvideKeyLogic, AsyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
+    return SimpleExecutor<RepoInfoProvideKeyLogic, AsyncOp<zypp::filesystem::Pathname>>::run( std::move(ctx), std::move(taskObserver), std::move(info), std::move(keyID_r), std::move(targetDirectory_r) );
   }
 
 }

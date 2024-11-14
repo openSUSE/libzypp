@@ -16,6 +16,8 @@
 
 using std::endl;
 
+ZYPP_BEGIN_LEGACY_API
+
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
@@ -45,6 +47,14 @@ namespace zypp
     : Exception( msg_r ), _info( info )
     {}
 
+    RepoException::RepoException( const zyppng::RepoInfo & info )
+    : RepoException( RepoInfo(info) )
+    {}
+
+    RepoException::RepoException( const zyppng::RepoInfo & info, const std::string& msg_r )
+      : RepoException( RepoInfo(info), msg_r )
+    {}
+
     RepoException::~RepoException() throw()
     {}
 
@@ -60,7 +70,9 @@ namespace zypp
     CLASS::CLASS()                                                        : RepoException( MSG ) {} \
     CLASS::CLASS( const std::string & msg_r )                             : RepoException( msg_r ) {} \
     CLASS::CLASS( const RepoInfo & service_r )                            : RepoException( service_r, MSG ) {} \
-    CLASS::CLASS( const RepoInfo & service_r, const std::string & msg_r ) : RepoException( service_r, msg_r ) {}
+    CLASS::CLASS( const RepoInfo & service_r, const std::string & msg_r ) : RepoException( service_r, msg_r ) {}\
+    CLASS::CLASS( const zyppng::RepoInfo & service_r )                            : RepoException( service_r, MSG ) {} \
+    CLASS::CLASS( const zyppng::RepoInfo & service_r, const std::string & msg_r ) : RepoException( service_r, msg_r ) {}
 
     DEF_CTORS( RepoNotCachedException,      "Repository is not cached" );
     DEF_CTORS( RepoNoUrlException,          "Repository has no or invalid url defined." );
@@ -96,6 +108,14 @@ namespace zypp
     : Exception( msg_r ), _service( service_r )
     {}
 
+    ServiceException::ServiceException( const zyppng::ServiceInfo & service_r )
+    : ServiceException( ServiceInfo(service_r) )
+    {}
+
+    ServiceException::ServiceException( const zyppng::ServiceInfo & service_r, const std::string & msg_r )
+    : ServiceException( ServiceInfo(service_r), msg_r )
+    {}
+
     ServiceException::~ServiceException() throw()
     {}
 
@@ -111,7 +131,9 @@ namespace zypp
     CLASS::CLASS()                                                           : DEF_BASECLASS( MSG ) {} \
     CLASS::CLASS( const std::string & msg_r )                                : DEF_BASECLASS( msg_r ) {} \
     CLASS::CLASS( const ServiceInfo & service_r )                            : DEF_BASECLASS( service_r, MSG ) {} \
-    CLASS::CLASS( const ServiceInfo & service_r, const std::string & msg_r ) : DEF_BASECLASS( service_r, msg_r ) {}
+    CLASS::CLASS( const ServiceInfo & service_r, const std::string & msg_r ) : DEF_BASECLASS( service_r, msg_r ) {} \
+    CLASS::CLASS( const zyppng::ServiceInfo & service_r )                            : DEF_BASECLASS( service_r, MSG ) {} \
+    CLASS::CLASS( const zyppng::ServiceInfo & service_r, const std::string & msg_r ) : DEF_BASECLASS( service_r, msg_r ) {}
 
 #define DEF_BASECLASS ServiceException
     DEF_CTORS( ServiceNoAliasException,       "Service has no alias defined." );
@@ -136,3 +158,5 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
+
+ZYPP_END_LEGACY_API

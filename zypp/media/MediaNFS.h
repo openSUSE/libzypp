@@ -50,7 +50,8 @@ namespace zypp {
 
       public:
 
-        MediaNFS( const Url&       url_r,
+        MediaNFS( zyppng::ContextBaseRef ctx,
+                  const Url&       url_r,
                   const Pathname & attach_point_hint_r );
 
         ~MediaNFS() override { try { release(); } catch(...) {} }

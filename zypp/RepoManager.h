@@ -36,6 +36,8 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+  ZYPP_BEGIN_LEGACY_API
+
    /**
     * Parses \a repo_file and returns a list of \ref RepoInfo objects
     * corresponding to repositories found within the file.
@@ -660,6 +662,8 @@ namespace zypp
   /** Iterate the known services. */
   inline Iterable<RepoManager::ServiceConstIterator> RepoManager::services() const
   { return makeIterable( serviceBegin(), serviceEnd() ); }
+
+  ZYPP_END_LEGACY_API
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

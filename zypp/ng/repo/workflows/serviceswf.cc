@@ -16,8 +16,8 @@
 #include <zypp-core/zyppng/pipelines/Await>
 #include <zypp-core/zyppng/io/Process>
 #include <zypp-media/ng/providespec.h>
-#include <zypp/parser/RepoindexFileReader.h>
-#include <zypp/parser/RepoFileReader.h>
+#include <zypp/ng/parser/repoindexfilereader.h>
+#include <zypp/ng/parser/RepoFileReader.h>
 #include <zypp/repo/RepoException.h>
 #include <zypp/Target.h>
 #include <zypp/zypp_detail/urlcredentialextractor_p.h>
@@ -66,7 +66,7 @@ namespace zyppng::RepoServicesWorkflow {
         {}
 
 
-        MaybeAsyncRef<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >> execute() {
+        MaybeAsyncRef<expected< std::pair<ServiceInfo, RepoInfoList> >> execute() {
 
           using namespace zyppng::operators;
 
@@ -76,15 +76,15 @@ namespace zyppng::RepoServicesWorkflow {
             serviceUrl.setQueryParam( "cookies", "0" );
             return adaptServiceUrlToChroot( serviceUrl, _root_r );
           })
-          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec() ); })
+          | and_then( [this]( zypp::Url serviceUrl ){ return _ctx->provider()->attachMedia( serviceUrl, ProvideMediaSpec( _ctx ) ); })
           | and_then( [this]( auto mediaHandle )    { return _ctx->provider()->provide( mediaHandle, "repo/repoindex.xml", ProvideFileSpec() ); } )
           | and_then( [this]( auto provideResult )  {
             try {
 
-              zypp::RepoInfoList repos;
-              auto callback = [&]( const zypp::RepoInfo &r) { repos.push_back(r); return true; };
+              RepoInfoList repos;
+              auto callback = [&]( const RepoInfo &r) { repos.push_back(r); return true; };
 
-              zypp::parser::RepoindexFileReader reader( provideResult.file(), callback);
+              parser::RepoIndexFileReader reader( _ctx, provideResult.file(), callback);
               _service.setProbedTtl( reader.ttl() );	// hack! Modifying the const Service to set parsed TTL
 
               return make_expected_success( std::make_pair( _service, std::move(repos) ) );
@@ -95,7 +95,7 @@ namespace zyppng::RepoServicesWorkflow {
               ZYPP_CAUGHT ( e );
               zypp::repo::ServicePluginInformalException ex ( e.msg() );
               ex.remember( e );
-              return expected<std::pair<zypp::ServiceInfo, RepoInfoList>>::error( ZYPP_EXCPT_PTR( ex ) );
+              return expected<std::pair<ServiceInfo, RepoInfoList>>::error( ZYPP_EXCPT_PTR( ex ) );
             }
           });
         }
@@ -118,7 +118,7 @@ namespace zyppng::RepoServicesWorkflow {
         using ZyppContextType    = std::conditional_t<zyppng::detail::is_async_op_v<OpType>, AsyncContext, SyncContext >;
         using ZyppContextRefType = Ref<ZyppContextType>;
         using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
-        using Ret = expected<std::pair<zypp::ServiceInfo, RepoInfoList>>;
+        using Ret = expected<std::pair<ServiceInfo, RepoInfoList>>;
 
         FetchPluginServiceLogic( ZyppContextRefType &&ctx, zypp::Pathname &&root_r, ServiceInfo &&service, ProgressObserverRef &&myProgress )
           : _ctx( std::move(ctx) )
@@ -147,11 +147,11 @@ namespace zyppng::RepoServicesWorkflow {
             }
 
             try {
-              zypp::RepoInfoList repos;
-              auto callback = [&]( const zypp::RepoInfo &r) { repos.push_back(r); return true; };
+              RepoInfoList repos;
+              auto callback = [&]( const RepoInfo &r) { repos.push_back(r); return true; };
 
               std::stringstream buffer( _stdoutBuf );
-              zypp::parser::RepoFileReader parser( buffer, callback );
+              parser::RepoFileReader parser( _ctx, buffer, callback );
               return make_expected_success( std::make_pair( _service, std::move(repos) ) );
 
             } catch (...) {
@@ -170,7 +170,7 @@ namespace zyppng::RepoServicesWorkflow {
     };
 
 
-    struct SyncFetchPluginService : FetchPluginServiceLogic<SyncFetchPluginService, SyncOp< expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>
+    struct SyncFetchPluginService : FetchPluginServiceLogic<SyncFetchPluginService, SyncOp< expected< std::pair<ServiceInfo, RepoInfoList> >>>
     {
       using FetchPluginServiceLogic::FetchPluginServiceLogic;
       expected<int> runPlugin( std::string command ) {
@@ -200,7 +200,7 @@ namespace zyppng::RepoServicesWorkflow {
       }
     };
 
-    struct ASyncFetchPluginService : FetchPluginServiceLogic<ASyncFetchPluginService, AsyncOp< expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>
+    struct ASyncFetchPluginService : FetchPluginServiceLogic<ASyncFetchPluginService, AsyncOp< expected< std::pair<ServiceInfo, RepoInfoList> >>>
     {
       using FetchPluginServiceLogic::FetchPluginServiceLogic;
       AsyncOpRef<expected<int>> runPlugin( std::string command ) {
@@ -244,20 +244,20 @@ namespace zyppng::RepoServicesWorkflow {
 
   }
 
-  AsyncOpRef<expected<std::pair<zypp::ServiceInfo, RepoInfoList>>> fetchRepoListfromService( AsyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
+  AsyncOpRef<expected<std::pair<ServiceInfo, RepoInfoList>>> fetchRepoListfromService( AsyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
   {
     if ( service.type() == zypp::repo::ServiceType::PLUGIN )
       return ASyncFetchPluginService::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
     else
-      return SimpleExecutor<FetchRIMServiceLogic, AsyncOp<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
+      return SimpleExecutor<FetchRIMServiceLogic, AsyncOp<expected< std::pair<ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
   }
 
-  expected<std::pair<zypp::ServiceInfo, RepoInfoList>> fetchRepoListfromService( SyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
+  expected<std::pair<ServiceInfo, RepoInfoList>> fetchRepoListfromService( SyncContextRef ctx, zypp::Pathname root_r, ServiceInfo service, ProgressObserverRef myProgress )
   {
     if ( service.type() == zypp::repo::ServiceType::PLUGIN )
       return SyncFetchPluginService::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
     else
-      return SimpleExecutor<FetchRIMServiceLogic, SyncOp<expected< std::pair<zypp::ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
+      return SimpleExecutor<FetchRIMServiceLogic, SyncOp<expected< std::pair<ServiceInfo, RepoInfoList> >>>::run( std::move(ctx), std::move(root_r), std::move(service), std::move(myProgress) );
   }
 
 
@@ -270,7 +270,7 @@ namespace zyppng::RepoServicesWorkflow {
       using MediaHandle = std::conditional_t<isAsync, ProvideMediaHandle, SyncMediaHandle>;
       using ProvideRes  = std::conditional_t<isAsync, zyppng::ProvideRes, SyncProvideRes>;
 
-      return ctx->provider()->attachMedia( url, ProvideMediaSpec() )
+      return ctx->provider()->attachMedia( url, ProvideMediaSpec( ctx ) )
       | and_then( [ctx]( MediaHandle medium ) { return ctx->provider()->provide( medium, "/repo/repoindex.xml", ProvideFileSpec().setCheckExistsOnly()); } )
       | [url]( expected<ProvideRes> result ) {
         if ( result )
@@ -329,10 +329,11 @@ namespace zyppng::RepoServicesWorkflow {
       using RepoMgrRefType     = RepoManagerRef<ZyppContextType>;
       using Ret = expected<void>;
 
-      RefreshServiceLogic( RepoMgrRefType &&repoMgr, zypp::ServiceInfo &&info, zypp::RepoManagerFlags::RefreshServiceOptions options )
+      RefreshServiceLogic( RepoMgrRefType &&repoMgr, ServiceInfo &&info, zypp::RepoManagerFlags::RefreshServiceOptions options )
         : _repoMgr( std::move(repoMgr) )
         , _service( std::move(info) )
         , _options(options)
+        , _urlCredentialExtractor( _repoMgr->zyppContext() )
       { }
 
       MaybeAsyncRef<expected<void>> probeServiceIfNeeded() {
@@ -393,7 +394,7 @@ namespace zyppng::RepoServicesWorkflow {
           // to ServiceRepos.
           return fetchRepoListfromService( _repoMgr->zyppContext(), _repoMgr->options().rootDir, _service, nullptr );
           } )
-        | [this]( expected<std::pair<zypp::ServiceInfo, RepoInfoList>> serviceReposExp ) {
+        | [this]( expected<std::pair<ServiceInfo, RepoInfoList>> serviceReposExp ) {
 
           if ( !serviceReposExp ) {
             try {
@@ -404,11 +405,11 @@ namespace zyppng::RepoServicesWorkflow {
               _informalError = e;
             } catch ( ... ) {
               // all other errors cancel the operation
-              return Ret::error( ZYPP_FWD_CURRENT_EXCPT() );
+              return makeReadyResult(Ret::error( ZYPP_FWD_CURRENT_EXCPT() ));
             }
           }
 
-          std::pair<zypp::ServiceInfo, RepoInfoList> serviceRepos = serviceReposExp.is_valid() ? std::move( serviceReposExp.get() ) : std::make_pair(  _service, RepoInfoList{} );
+          std::pair<ServiceInfo, RepoInfoList> serviceRepos = serviceReposExp.is_valid() ? std::move( serviceReposExp.get() ) : std::make_pair(  _service, RepoInfoList{} );
 
           // get target distro identifier
           std::string servicesTargetDistro = _repoMgr->options().servicesTargetDistro;
@@ -482,12 +483,11 @@ namespace zyppng::RepoServicesWorkflow {
           ////////////////////////////////////////////////////////////////////////////
           // Now compare collected repos with the ones in the system...
           //
-          RepoInfoList oldRepos;
-          _repoMgr->getRepositoriesInService( _service.alias(), std::back_inserter( oldRepos ) );
+          _repoMgr->getRepositoriesInService( _service.alias(), std::back_inserter( _oldRepos ) );
 
           ////////////////////////////////////////////////////////////////////////////
           // find old repositories to remove...
-          for_( oldRepo, oldRepos.begin(), oldRepos.end() )
+          for_( oldRepo, _oldRepos.begin(), _oldRepos.end() )
           {
             if ( ! foundAliasIn( oldRepo->alias(), collector.repos ) )
             {
@@ -508,224 +508,232 @@ namespace zyppng::RepoServicesWorkflow {
                 DBG << "Service removes disabled repo " << oldRepo->alias() << std::endl;
 
               auto remRes = _repoMgr->removeRepository( *oldRepo );
-              if ( !remRes ) return Ret::error( remRes.error() );
+              if ( !remRes ) return makeReadyResult(Ret::error( remRes.error() ));
             }
           }
-
 
           ////////////////////////////////////////////////////////////////////////////
           // create missing repositories and modify existing ones if needed...
-          zypp::UrlCredentialExtractor urlCredentialExtractor( _repoMgr->options().rootDir );	// To collect any credentials stored in repo URLs
-          for_( it, collector.repos.begin(), collector.repos.end() )
-          {
-            // User explicitly requested the repo being enabled?
-            // User explicitly requested the repo being disabled?
-            // And hopefully not both ;) If so, enable wins.
-
-            zypp::TriBool toBeEnabled( zypp::indeterminate );	// indeterminate - follow the service request
-            DBG << "Service request to " << (it->enabled()?"enable":"disable") << " service repo " << it->alias() << std::endl;
-
-            if ( _options.testFlag( zypp::RepoManagerFlags::RefreshService_restoreStatus ) )
-            {
-              DBG << "Opt RefreshService_restoreStatus " << it->alias() << std::endl;
-              // this overrides any pending request!
-              // Remove from enable request list.
-              // NOTE: repoToDisable is handled differently.
-              //       It gets cleared on each refresh.
-              _service.delRepoToEnable( it->alias() );
-              // toBeEnabled stays indeterminate!
-            }
-            else
-            {
-              if ( _service.repoToEnableFind( it->alias() ) )
+          return std::move( collector.repos )
+            | operators::transform_collect( [this]( RepoInfo info ){ return updateOrAddRepo(info); } )
+            | and_then([this, newRepoStates = std::move(newRepoStates)]( auto ) mutable -> expected<void>  {
+              // Unlike reposToEnable, reposToDisable is always cleared after refresh.
+              if ( ! _service.reposToDisableEmpty() )
               {
-                DBG << "User request to enable service repo " << it->alias() << std::endl;
-                toBeEnabled = true;
-                // Remove from enable request list.
-                // NOTE: repoToDisable is handled differently.
-                //       It gets cleared on each refresh.
-                _service.delRepoToEnable( it->alias() );
+                _service.clearReposToDisable();
                 _serviceModified = true;
               }
-              else if ( _service.repoToDisableFind( it->alias() ) )
+
+              // Remember original service request for next refresh
+              if ( _service.repoStates() != newRepoStates )
               {
-                DBG << "User request to disable service repo " << it->alias() << std::endl;
-                toBeEnabled = false;
+                _service.setRepoStates( std::move(newRepoStates) );
+                _serviceModified = true;
               }
-            }
 
-            RepoInfoList::iterator oldRepo( findAlias( it->alias(), oldRepos ) );
-            if ( oldRepo == oldRepos.end() )
-            {
-              // Not found in oldRepos ==> a new repo to add
-
-              // Make sure the service repo is created with the appropriate enablement
-              if ( ! indeterminate(toBeEnabled) )
-                it->setEnabled( ( bool ) toBeEnabled );
-
-              DBG << "Service adds repo " << it->alias() << " " << (it->enabled()?"enabled":"disabled") << std::endl;
-              const auto &addRes = _repoMgr->addRepository( *it );
-              if (!addRes) return Ret::error( addRes.error() );
-            }
-            else
-            {
-              // ==> an exising repo to check
-              bool oldRepoModified = false;
-
-              if ( indeterminate(toBeEnabled) )
+              ////////////////////////////////////////////////////////////////////////////
+              // save service if modified: (unless a plugin service)
+              if ( _service.type() != zypp::repo::ServiceType::PLUGIN )
               {
-                // No user request: check for an old user modificaton otherwise follow service request.
-                // NOTE: Assert toBeEnabled is boolean afterwards!
-                if ( oldRepo->enabled() == it->enabled() )
-                  toBeEnabled = it->enabled();	// service requests no change to the system
-                else if ( _options.testFlag( zypp::RepoManagerFlags::RefreshService_restoreStatus ) )
+                if ( _service.ttl() )
                 {
-                  toBeEnabled = it->enabled();	// RefreshService_restoreStatus forced
-                  DBG << "Opt RefreshService_restoreStatus " << it->alias() <<  " forces " << (toBeEnabled?"enabled":"disabled") << std::endl;
+                  _service.setLrf( zypp::Date::now() );	// remember last refresh
+                  _serviceModified =  true;	// or use a cookie file
                 }
-                else
+
+                if ( _serviceModified )
                 {
-                  const auto & last = _service.repoStates().find( oldRepo->alias() );
-                  if ( last == _service.repoStates().end() || last->second.enabled != it->enabled() )
-                    toBeEnabled = it->enabled();	// service request has changed since last refresh -> follow
-                  else
-                  {
-                    toBeEnabled = oldRepo->enabled();	// service request unchaned since last refresh -> keep user modification
-                    DBG << "User modified service repo " << it->alias() <<  " may stay " << (toBeEnabled?"enabled":"disabled") << std::endl;
-                  }
+                  // write out modified service file.
+                  auto modRes = _repoMgr->modifyService( _service.alias(), _service );
+                  if ( !modRes ) return Ret::error( modRes.error() );
                 }
               }
 
-              // changed enable?
-              if ( toBeEnabled == oldRepo->enabled() )
-              {
-                DBG << "Service repo " << it->alias() << " stays " <<  (oldRepo->enabled()?"enabled":"disabled") << std::endl;
-              }
-              else if ( toBeEnabled )
-              {
-                DBG << "Service repo " << it->alias() << " gets enabled" << std::endl;
-                oldRepo->setEnabled( true );
-                oldRepoModified = true;
-              }
-              else
-              {
-                DBG << "Service repo " << it->alias() << " gets disabled" << std::endl;
-                oldRepo->setEnabled( false );
-                oldRepoModified = true;
+              if ( _informalError ) {
+                return Ret::error( std::make_exception_ptr (_informalError.value()) );
               }
 
-              // all other attributes follow the service request:
-
-              // changed name (raw!)
-              if ( oldRepo->rawName() != it->rawName() )
-              {
-                DBG << "Service repo " << it->alias() << " gets new NAME " << it->rawName() << std::endl;
-                oldRepo->setName( it->rawName() );
-                oldRepoModified = true;
-              }
-
-              // changed autorefresh
-              if ( oldRepo->autorefresh() != it->autorefresh() )
-              {
-                DBG << "Service repo " << it->alias() << " gets new AUTOREFRESH " << it->autorefresh() << std::endl;
-                oldRepo->setAutorefresh( it->autorefresh() );
-                oldRepoModified = true;
-              }
-
-              // changed priority?
-              if ( oldRepo->priority() != it->priority() )
-              {
-                DBG << "Service repo " << it->alias() << " gets new PRIORITY " << it->priority() << std::endl;
-                oldRepo->setPriority( it->priority() );
-                oldRepoModified = true;
-              }
-
-              // changed url?
-              {
-                RepoInfo::url_set newUrls( it->rawBaseUrls() );
-                urlCredentialExtractor.extract( newUrls );	// Extract! to prevent passwds from disturbing the comparison below
-                if ( oldRepo->rawBaseUrls() != newUrls )
-                {
-                  DBG << "Service repo " << it->alias() << " gets new URLs " << newUrls << std::endl;
-                  oldRepo->setBaseUrls( std::move(newUrls) );
-                  oldRepoModified = true;
-                }
-              }
-
-              // changed gpg check settings?
-              // ATM only plugin services can set GPG values.
-              if ( _service.type() == zypp::repo::ServiceType::PLUGIN )
-              {
-                zypp::TriBool ogpg[3];	// Gpg RepoGpg PkgGpg
-                zypp::TriBool ngpg[3];
-                oldRepo->getRawGpgChecks( ogpg[0], ogpg[1], ogpg[2] );
-                it->     getRawGpgChecks( ngpg[0], ngpg[1], ngpg[2] );
-      #define Z_CHKGPG(I,N)										\
-                if ( ! sameTriboolState( ogpg[I], ngpg[I] ) )						\
-                {											\
-                  DBG << "Service repo " << it->alias() << " gets new "#N"Check " << ngpg[I] << std::endl;	\
-                  oldRepo->set##N##Check( ngpg[I] );							\
-                  oldRepoModified = true;								\
-                }
-                Z_CHKGPG( 0, Gpg );
-                Z_CHKGPG( 1, RepoGpg );
-                Z_CHKGPG( 2, PkgGpg );
-      #undef Z_CHKGPG
-              }
-
-              // save if modified:
-              if ( oldRepoModified )
-              {
-                auto modRes = _repoMgr->modifyRepository( oldRepo->alias(), *oldRepo );
-                if ( !modRes ) return Ret::error( modRes.error() );
-              }
-            }
-          }
-
-          // Unlike reposToEnable, reposToDisable is always cleared after refresh.
-          if ( ! _service.reposToDisableEmpty() )
-          {
-            _service.clearReposToDisable();
-            _serviceModified = true;
-          }
-
-          // Remember original service request for next refresh
-          if ( _service.repoStates() != newRepoStates )
-          {
-            _service.setRepoStates( std::move(newRepoStates) );
-            _serviceModified = true;
-          }
-
-          ////////////////////////////////////////////////////////////////////////////
-          // save service if modified: (unless a plugin service)
-          if ( _service.type() != zypp::repo::ServiceType::PLUGIN )
-          {
-            if ( _service.ttl() )
-            {
-              _service.setLrf( zypp::Date::now() );	// remember last refresh
-              _serviceModified =  true;	// or use a cookie file
-            }
-
-            if ( _serviceModified )
-            {
-              // write out modified service file.
-              auto modRes = _repoMgr->modifyService( _service.alias(), _service );
-              if ( !modRes ) return Ret::error( modRes.error() );
-            }
-          }
-
-          if ( _informalError ) {
-            return Ret::error( std::make_exception_ptr (_informalError.value()) );
-          }
-
-          return Ret::success( );
+              return Ret::success( );
+            });
         };
       }
 
+      MaybeAsyncRef<expected<RepoInfo>> updateOrAddRepo( RepoInfo info  )
+      {
+        // User explicitly requested the repo being enabled?
+        // User explicitly requested the repo being disabled?
+        // And hopefully not both ;) If so, enable wins.
+        zypp::TriBool toBeEnabled( zypp::indeterminate );	// indeterminate - follow the service request
+        DBG << "Service request to " << (info.enabled()?"enable":"disable") << " service repo " << info.alias() << std::endl;
+
+        if ( _options.testFlag( zypp::RepoManagerFlags::RefreshService_restoreStatus ) )
+        {
+          DBG << "Opt RefreshService_restoreStatus " << info.alias() << std::endl;
+          // this overrides any pending request!
+          // Remove from enable request list.
+          // NOTE: repoToDisable is handled differently.
+          //       It gets cleared on each refresh.
+          _service.delRepoToEnable( info.alias() );
+          // toBeEnabled stays indeterminate!
+        }
+        else
+        {
+          if ( _service.repoToEnableFind( info.alias() ) )
+          {
+            DBG << "User request to enable service repo " << info.alias() << std::endl;
+            toBeEnabled = true;
+            // Remove from enable request list.
+            // NOTE: repoToDisable is handled differently.
+            //       It gets cleared on each refresh.
+            _service.delRepoToEnable( info.alias() );
+            _serviceModified = true;
+          }
+          else if ( _service.repoToDisableFind( info.alias() ) )
+          {
+            DBG << "User request to disable service repo " << info.alias() << std::endl;
+            toBeEnabled = false;
+          }
+        }
+
+        RepoInfoList::iterator oldRepo( findAlias( info.alias(), _oldRepos ) );
+        if ( oldRepo == _oldRepos.end() )
+        {
+          // Not found in oldRepos ==> a new repo to add
+
+          // Make sure the service repo is created with the appropriate enablement
+          if ( ! indeterminate(toBeEnabled) )
+            info.setEnabled( ( bool ) toBeEnabled );
+
+          DBG << "Service adds repo " << info.alias() << " " << (info.enabled()?"enabled":"disabled") << std::endl;
+          return _repoMgr->addRepository( info );
+        }
+        else
+        {
+          // ==> an exising repo to check
+          bool oldRepoModified = false;
+
+          if ( indeterminate(toBeEnabled) )
+          {
+            // No user request: check for an old user modificaton otherwise follow service request.
+            // NOTE: Assert toBeEnabled is boolean afterwards!
+            if ( oldRepo->enabled() == info.enabled() )
+              toBeEnabled = info.enabled();	// service requests no change to the system
+            else if ( _options.testFlag( zypp::RepoManagerFlags::RefreshService_restoreStatus ) )
+            {
+              toBeEnabled = info.enabled();	// RefreshService_restoreStatus forced
+              DBG << "Opt RefreshService_restoreStatus " << info.alias() <<  " forces " << (toBeEnabled?"enabled":"disabled") << std::endl;
+            }
+            else
+            {
+              const auto & last = _service.repoStates().find( oldRepo->alias() );
+              if ( last == _service.repoStates().end() || last->second.enabled != info.enabled() )
+                toBeEnabled = info.enabled();	// service request has changed since last refresh -> follow
+              else
+              {
+                toBeEnabled = oldRepo->enabled();	// service request unchaned since last refresh -> keep user modification
+                DBG << "User modified service repo " << info.alias() <<  " may stay " << (toBeEnabled?"enabled":"disabled") << std::endl;
+              }
+            }
+          }
+
+          // changed enable?
+          if ( toBeEnabled == oldRepo->enabled() )
+          {
+            DBG << "Service repo " << info.alias() << " stays " <<  (oldRepo->enabled()?"enabled":"disabled") << std::endl;
+          }
+          else if ( toBeEnabled )
+          {
+            DBG << "Service repo " << info.alias() << " gets enabled" << std::endl;
+            oldRepo->setEnabled( true );
+            oldRepoModified = true;
+          }
+          else
+          {
+            DBG << "Service repo " << info.alias() << " gets disabled" << std::endl;
+            oldRepo->setEnabled( false );
+            oldRepoModified = true;
+          }
+
+          // all other attributes follow the service request:
+
+          // changed name (raw!)
+          if ( oldRepo->rawName() != info.rawName() )
+          {
+            DBG << "Service repo " << info.alias() << " gets new NAME " << info.rawName() << std::endl;
+            oldRepo->setName( info.rawName() );
+            oldRepoModified = true;
+          }
+
+          // changed autorefresh
+          if ( oldRepo->autorefresh() != info.autorefresh() )
+          {
+            DBG << "Service repo " << info.alias() << " gets new AUTOREFRESH " << info.autorefresh() << std::endl;
+            oldRepo->setAutorefresh( info.autorefresh() );
+            oldRepoModified = true;
+          }
+
+          // changed priority?
+          if ( oldRepo->priority() != info.priority() )
+          {
+            DBG << "Service repo " << info.alias() << " gets new PRIORITY " << info.priority() << std::endl;
+            oldRepo->setPriority( info.priority() );
+            oldRepoModified = true;
+          }
+
+          // changed url?
+          {
+            RepoInfo::url_set newUrls( info.rawBaseUrls() );
+            _urlCredentialExtractor.extract( newUrls );	// Extract! to prevent passwds from disturbing the comparison below
+            if ( oldRepo->rawBaseUrls() != newUrls )
+            {
+              DBG << "Service repo " << info.alias() << " gets new URLs " << newUrls << std::endl;
+              oldRepo->setBaseUrls( std::move(newUrls) );
+              oldRepoModified = true;
+            }
+          }
+
+          // changed gpg check settings?
+          // ATM only plugin services can set GPG values.
+          if ( _service.type() == zypp::repo::ServiceType::PLUGIN )
+          {
+            zypp::TriBool ogpg[3];	// Gpg RepoGpg PkgGpg
+            zypp::TriBool ngpg[3];
+            oldRepo->getRawGpgChecks( ogpg[0], ogpg[1], ogpg[2] );
+            info.    getRawGpgChecks( ngpg[0], ngpg[1], ngpg[2] );
+
+#define Z_CHKGPG(I,N)										\
+            if ( ! sameTriboolState( ogpg[I], ngpg[I] ) )						\
+            {											\
+              DBG << "Service repo " << info.alias() << " gets new "#N"Check " << ngpg[I] << std::endl;	\
+              oldRepo->set##N##Check( ngpg[I] );							\
+              oldRepoModified = true;								\
+            }
+
+            Z_CHKGPG( 0, Gpg );
+            Z_CHKGPG( 1, RepoGpg );
+            Z_CHKGPG( 2, PkgGpg );
+#undef Z_CHKGPG
+          }
+
+          // save if modified:
+          if ( oldRepoModified ) {
+            return makeReadyResult( _repoMgr->modifyRepository( oldRepo->alias(), *oldRepo ) );
+          } else {
+            // nothing to do
+            return makeReadyResult( make_expected_success(*oldRepo) );
+          }
+        }
+      }
+
+
 
       RepoMgrRefType    _repoMgr;
-      zypp::ServiceInfo _service;
+      ServiceInfo _service;
       zypp::RepoManagerFlags::RefreshServiceOptions _options;
+      zypp::UrlCredentialExtractor _urlCredentialExtractor;	// To collect any credentials stored in repo URLs
+
+      // working variable so we do not have to store the oldRepos multiple times
+      RepoInfoList _oldRepos;
 
       // NOTE: It might be necessary to modify and rewrite the service info.
       // Either when probing the type, or when adjusting the repositories

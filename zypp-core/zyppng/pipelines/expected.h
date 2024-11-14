@@ -20,6 +20,7 @@
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp-core/zyppng/pipelines/Wait>
 #include <zypp-core/zyppng/pipelines/Transform>
+#include <zypp-core/zyppng/pipelines/operators.h>
 
 namespace zyppng {
 
@@ -393,6 +394,26 @@ namespace zyppng {
 
   };
 
+  namespace detail {
+    template <typename T>
+    struct is_expected_type {
+      static constexpr bool value = false;
+    };
+
+    template<typename T, typename E>
+    struct is_expected_type<expected<T, E>> {
+      static constexpr bool value = true;
+    };
+  }
+
+  /*!
+   * \brief is_expected_type_v
+   *
+   * Detect at compile time if a given type is a expected type
+   */
+  template <typename T>
+  constexpr bool is_expected_type_v = detail::is_expected_type<T>::value;
+
   #define expected_return_on_error(T, exp) \
     if ( !exp ) return expected<T>::error( exp.error() )
 
@@ -403,14 +424,6 @@ namespace zyppng {
   }
 
   namespace detail {
-
-    // helper to figure out the return type for a mbind callback, if the ArgType is void the callback is considered to take no argument.
-    // Due to how std::conditional works, we cannot pass std::invoke_result_t but instead use the template type std::invoke_result, since
-    // one of the two options have no "::type" because the substitution fails, this breaks the std::conditional_t since it can only work with two well formed
-    // types. Instead we pass in the template types and evaluate the ::type in the end, when the correct invoke_result was chosen.
-    template < typename Function, typename ArgType>
-    using mbind_cb_result_t = typename std::conditional_t< std::is_same_v<ArgType,void>, std::invoke_result<Function>,std::invoke_result<Function, ArgType> >::type;
-
     template <typename T>
     bool waitForCanContinueExpected( const expected<T> &value ) {
       return value.is_valid();
@@ -555,57 +568,6 @@ namespace zyppng {
 
 
   namespace detail {
-
-    template <typename Callback>
-    struct and_then_helper {
-      Callback function;
-
-      template< typename T, typename E >
-      auto operator()( const expected<T, E>& exp ) {
-        return and_then( exp, function );
-      }
-
-      template< typename T, typename E >
-      auto operator()( expected<T, E>&& exp ) {
-        return and_then( std::move(exp), function );
-      }
-    };
-
-    template <typename Callback>
-    struct or_else_helper {
-      Callback function;
-
-      template< typename T, typename E >
-      auto operator()( const expected<T, E>& exp ) {
-        return or_else( exp, function );
-      }
-
-      template< typename T, typename E >
-      auto operator()( expected<T, E>&& exp ) {
-        return or_else( std::move(exp), function );
-      }
-    };
-
-    template <typename Callback>
-    struct inspect_helper {
-      Callback function;
-
-      template< typename T, typename E >
-      auto operator()( expected<T, E>&& exp ) {
-        return inspect( std::move(exp), function );
-      }
-    };
-
-    template <typename Callback>
-    struct inspect_err_helper {
-      Callback function;
-
-      template< typename T, typename E >
-      auto operator()( expected<T, E>&& exp ) {
-        return inspect_err( std::move(exp), function );
-      }
-    };
-
     struct collect_helper {
       template < typename T >
       inline auto operator()( T&& in ) {
@@ -615,41 +577,6 @@ namespace zyppng {
   }
 
   namespace operators {
-    template <typename Fun>
-    auto mbind ( Fun && function ) {
-      return detail::and_then_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-
-    template <typename Fun>
-    auto and_then ( Fun && function ) {
-      return detail::and_then_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-
-    template <typename Fun>
-    auto or_else ( Fun && function ) {
-      return detail::or_else_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-
-    template <typename Fun>
-    auto inspect ( Fun && function ) {
-      return detail::inspect_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-
-    template <typename Fun>
-    auto inspect_err ( Fun && function ) {
-      return detail::inspect_err_helper<Fun> {
-        std::forward<Fun>(function)
-      };
-    }
-
     inline detail::collect_helper collect() {
       return detail::collect_helper();
     }
@@ -696,7 +623,10 @@ namespace zyppng {
   namespace detail {
     template <typename Fun>
     struct transform_collect_helper {
+      template <typename F = Fun>
+      transform_collect_helper( F &&cb ) : _callback( std::forward<F>(cb)) {}
       Fun _callback;
+
       template <typename T>
       auto operator() ( T &&in ) {
         return transform_collect( std::forward<T>(in), _callback );
@@ -707,7 +637,7 @@ namespace zyppng {
   namespace operators {
     template <typename Transformation>
     auto transform_collect( Transformation &&f ) {
-      return detail::transform_collect_helper{ std::forward<Transformation>(f)};
+      return detail::transform_collect_helper<Transformation>( std::forward<Transformation>(f) );
     }
   }
 

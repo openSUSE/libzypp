@@ -36,12 +36,12 @@ namespace zypp
     {
     public:
       Impl() : _useproxy( false ),
-        _timeout( MediaConfig::instance().download_transfer_timeout() ),
-        _connect_timeout( MediaConfig::instance().download_connect_timeout() ),
-        _maxConcurrentConnections( MediaConfig::instance().download_max_concurrent_connections() ),
-        _minDownloadSpeed(MediaConfig::instance().download_min_download_speed()),
-        _maxDownloadSpeed(MediaConfig::instance().download_max_download_speed()),
-        _maxSilentTries(MediaConfig::instance().download_max_silent_tries() ),
+        _timeout( MediaConfig::systemConfig().download_transfer_timeout() ),
+        _connect_timeout( MediaConfig::systemConfig().download_connect_timeout() ),
+        _maxConcurrentConnections( MediaConfig::systemConfig().download_max_concurrent_connections() ),
+        _minDownloadSpeed(MediaConfig::systemConfig().download_min_download_speed()),
+        _maxDownloadSpeed(MediaConfig::systemConfig().download_max_download_speed()),
+        _maxSilentTries(MediaConfig::systemConfig().download_max_silent_tries() ),
         _verify_host(false),
         _verify_peer(false),
         _ca_path("/etc/ssl/certs"),

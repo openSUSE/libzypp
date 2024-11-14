@@ -31,18 +31,19 @@ BOOST_AUTO_TEST_CASE(susetags_download)
   KeyRingTestReceiver keyring_callbacks;
   keyring_callbacks.answerAcceptKey(KeyRingReport::KEY_TRUST_TEMPORARILY);
 
+
+  auto ctx = zyppng::SyncContext::create ();
+
   Pathname p = DATADIR + "/stable-x86-subset";
-  RepoInfo repoinfo;
+  zyppng::RepoInfo repoinfo(ctx);
   repoinfo.setAlias("testrepo");
   repoinfo.setPath("/");
 
   filesystem::TmpDir tmp;
   Pathname localdir(tmp.path());
 
-
-  auto ctx = zyppng::SyncContext::create ();
   auto res = ctx->initialize ()
-  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() ); } )
+  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec(ctx) ); } )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);
@@ -106,18 +107,18 @@ BOOST_AUTO_TEST_CASE(susetags_gz_download)
   KeyRingTestReceiver keyring_callbacks;
   keyring_callbacks.answerAcceptKey(KeyRingReport::KEY_TRUST_TEMPORARILY);
 
+  auto ctx = zyppng::SyncContext::create ();
+
   Pathname p = DATADIR + "/stable-x86-subset-gz";
 
-  RepoInfo repoinfo;
+  zyppng::RepoInfo repoinfo(ctx);
   repoinfo.setAlias("testrepo");
   repoinfo.setPath("/");
   filesystem::TmpDir tmp;
 
   Pathname localdir(tmp.path());
-
-  auto ctx = zyppng::SyncContext::create ();
   auto res = ctx->initialize ()
-  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() ); } )
+  | and_then( [&]() { return ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec(ctx) ); } )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);

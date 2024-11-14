@@ -20,6 +20,7 @@ INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} )
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 SET( zypp_glib_HEADERS
+  application.h
   context.h
   error.h
   expected.h
@@ -28,16 +29,23 @@ SET( zypp_glib_HEADERS
   progressobserver.h
   repoinfo.h
   repomanager.h
-  repomanageroptions.h
   repository.h
   serviceinfo.h
-  #userrequest.h
   zypp-glib.h
+
+)
+
+SET( zypp_glib_ui_HEADERS
+  ui/booleanchoicerequest.h
+  ui/listchoicerequest.h
+  ui/showmessagerequest.h
+  ui/userrequest.h
 
 )
 
 SET( zypp_glib_private_HEADERS
   private/context_p.h
+  private/error_p.h
   private/expected_p.h
   private/globals_p.h
   private/infobase_p.h
@@ -45,13 +53,22 @@ SET( zypp_glib_private_HEADERS
   private/progressobserver_p.h
   private/repoinfo_p.h
   private/repomanager_p.h
-  private/repomanageroptions_p.h
   private/repository_p.h
   private/serviceinfo_p.h
-  #private/userrequest_p.h
+  private/callbacks/legacyreportreceiverbase.h
+  #private/callbacks/keyring.h
+  #private/callbacks/media.h
+  #private/callbacks/rpm.h
+  private/callbacks/repo.h
+  private/callbacks/job.h
+  ui/private/booleanchoicerequest_p.h
+  ui/private/listchoicerequest_p.h
+  ui/private/showmessagerequest_p.h
+  ui/private/userrequest_p.h
 )
 
 SET( zypp_glib_SRCS
+  application.cc
   context.cc
   error.cc
   expected.cc
@@ -61,17 +78,22 @@ SET( zypp_glib_SRCS
   progressobserver.cc
   repoinfo.cc
   repomanager.cc
-  repomanageroptions.cc
   repository.cc
   serviceinfo.cc
-  #userrequest.cc
+  zypp-glib.cc
+  ui/booleanchoicerequest.cc
+  ui/listchoicerequest.cc
+  ui/showmessagerequest.cc
+  ui/userrequest.cc
 )
 
 glib_mkenums( zyppenums zyppenums.h.in zyppenums.c.in ${zypp_glib_HEADERS} )
+glib_mkenums( ui/zyppenums-ui ui/zyppenums-ui.h.in ui/zyppenums-ui.c.in ${zypp_glib_ui_HEADERS} )
 
-SET( zypp_glib_public_HEADERS ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h )
+INSTALL(  FILES ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h  DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib" )
+INSTALL(  FILES ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib/ui" )
 
-INSTALL(  FILES ${zypp_glib_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib" )
+SET( zypp_glib_public_HEADERS ${zypp_glib_HEADERS} ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h )
 
 SET( zypp_glib_utils_HEADERS
   utils/GLibMemory
@@ -91,10 +113,16 @@ SET( zypp_glib_lib_SRCS
     ${zypp_glib_SRCS}
     ${zypp_glib_utils_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.c
+    ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.c
 )
 
 SET( zypp_glib_lib_HEADERS
-    ${zypp_glib_private_HEADERS} ${zypp_glib_public_HEADERS} ${zypp_glib_utils_HEADERS}
+    ${zypp_glib_private_HEADERS}
+    ${zypp_glib_HEADERS}
+    ${zypp_glib_ui_HEADERS}
+    ${zypp_glib_utils_HEADERS}
+    ${CMAKE_CURRENT_BINARY_DIR}/zyppenums.h
+    ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h
 )
 
 # Default loggroup for all files
@@ -104,7 +132,7 @@ ADD_LIBRARY( zypp-glib SHARED  ${zypp_glib_lib_SRCS} ${zypp_glib_lib_HEADERS} )
 target_link_libraries( zypp-glib zypp_lib_compiler_flags )
 TARGET_LINK_LIBRARIES( zypp-glib zypp-allsym )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )
-#target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
+target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
 
 INSTALL(TARGETS zypp-glib LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
@@ -118,12 +146,12 @@ GENERATE_EXPORT_HEADER(
 
 gobject_introspection(
   FILENAME Zypp-1.0.gir
-  PACKAGES glib-2.0 gobject-2.0
+  PACKAGES glib-2.0 gobject-2.0 gio-2.0
   NAMESPACE Zypp
   LIBRARY zypp-glib
   #QUIET
   SCANNER_ARGS --add-include-path=${CMAKE_CURRENT_SOURCE_DIR}
-               --include=GLib-2.0 --include=GObject-2.0
+               --include=GLib-2.0 --include=GObject-2.0 --include=Gio-2.0
   COMPILER_ARGS --includedir=${CMAKE_CURRENT_SOURCE_DIR}
   SYMBOL_PREFIXES zypp
   SOURCES ${zypp_glib_public_HEADERS}

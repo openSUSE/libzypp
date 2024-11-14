@@ -44,4 +44,9 @@ struct _ZyppProgressObserver
   GObjectClass parent_class;
 };
 
+/**
+ * zypp_progress_observer_get_cpp: (skip)
+ */
+zyppng::ProgressObserverRef zypp_progress_observer_get_cpp( ZyppProgressObserver *self );
+
 #endif

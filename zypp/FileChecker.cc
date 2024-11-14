@@ -37,7 +37,7 @@ namespace zypp
 
   void ChecksumFileChecker::operator()( const Pathname &file ) const
   {
-    const auto &res = zyppng::CheckSumWorkflow::verifyChecksum ( zypp_detail::GlobalStateHelper::context(), _checksum, file );
+    const auto &res = zyppng::CheckSumWorkflow::verifyChecksum ( zypp_detail::GlobalStateHelper::context(), zypp_detail::GlobalStateHelper::context()->progressObserver(), _checksum, file );
     if ( !res ) {
       std::rethrow_exception( res.error ( ) );
     }
@@ -88,7 +88,7 @@ namespace zypp
     SignatureFileChecker & self { const_cast<SignatureFileChecker&>(*this) };
     self._verifyContext.file( file_r );
 
-    auto res = zyppng::SignatureFileCheckWorkflow::verifySignature ( zypp_detail::GlobalStateHelper::context(), keyring::VerifyFileContext(_verifyContext) );
+    auto res = zyppng::SignatureFileCheckWorkflow::verifySignature ( zypp_detail::GlobalStateHelper::context(), zypp_detail::GlobalStateHelper::context()->progressObserver(), keyring::VerifyFileContext(_verifyContext) );
     if ( !res ) {
       std::rethrow_exception( res.error ( ) );
     }

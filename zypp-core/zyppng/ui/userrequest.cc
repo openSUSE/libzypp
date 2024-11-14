@@ -29,6 +29,21 @@ namespace zyppng
     return _userData;
   }
 
+  void UserRequest::accept()
+  {
+    _accepted = true;
+  }
+
+  void UserRequest::ignore()
+  {
+    _accepted = false;
+  }
+
+  bool UserRequest::accepted() const
+  {
+    return _accepted;
+  }
+
   ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string message, MType mType, UserData data )
     : UserRequest( std::move(data) )
     , _type( mType )
@@ -72,6 +87,8 @@ namespace zyppng
   {
     if ( sel >= _answers.size() )
       ZYPP_THROW( std::logic_error("Selection index is out of range") );
+
+    accept();
     _answer = sel;
   }
 
@@ -108,6 +125,7 @@ namespace zyppng
 
   void BooleanChoiceRequest::setChoice(const bool sel)
   {
+    accept();
     _answer = sel;
   }
 

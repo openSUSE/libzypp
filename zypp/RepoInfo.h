@@ -24,16 +24,18 @@
 #include <zypp/repo/RepoType.h>
 #include <zypp/repo/RepoVariables.h>
 #include <zypp/repo/RepoInfoBase.h>
-
-#include <zypp-core/zyppng/base/zyppglobal.h>
+#include <zypp/repo/GpgCheck.h>
 
 namespace zyppng {
-  ZYPP_FWD_DECL_TEMPL_TYPE_WITH_REFS_ARG1 ( RepoManager, ContextType );
+  class RepoInfo;
 }
+
+ZYPP_BEGIN_LEGACY_API
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -73,22 +75,21 @@ namespace zypp
    * \note Name, baseUrls and mirrorUrl are subject to repo variable replacement
    * (\see \ref RepoVariablesStringReplacer).
    */
-  class ZYPP_API RepoInfo : public repo::RepoInfoBase
+  class ZYPP_API ZYPP_INTERNAL_DEPRECATE RepoInfo : public repo::RepoInfoBase
   {
     friend std::ostream & operator<<( std::ostream & str, const RepoInfo & obj );
 
     public:
-
-      // nullable -> ContextFactory::defaultContext() ?
-      RepoInfo ( zyppng::ContextBaseRef context ) ZYPP_LOCAL;
-
-      ZYPP_INTERNAL_DEPRECATE RepoInfo();
+      RepoInfo();
       ~RepoInfo() override;
 
-      RepoInfo(const RepoInfo &) = default;
-      RepoInfo(RepoInfo &&) = default;
-      RepoInfo &operator=(const RepoInfo &) = default;
-      RepoInfo &operator=(RepoInfo &&) = default;
+      // copy of the ng repoinfo, cow semantics apply
+      explicit RepoInfo( const zyppng::RepoInfo &pimpl );
+
+      RepoInfo(const RepoInfo &);
+      RepoInfo(RepoInfo &&);
+      RepoInfo &operator=(const RepoInfo &) ;
+      RepoInfo &operator=(RepoInfo &&);
 
       /** Represents no Repository (one with an empty alias). */
       static const ZYPP_INTERNAL_DEPRECATE RepoInfo noRepo;
@@ -116,7 +117,7 @@ namespace zypp
 
       using url_set = std::list<Url>;
       using urls_size_type = url_set::size_type;
-      using urls_const_iterator = transform_iterator<repo::RepoVariablesUrlReplacer, url_set::const_iterator>;
+      using urls_const_iterator = transform_iterator<repo::RepoVariablesUrlReplacerNg, url_set::const_iterator>;
       /**
        * whether repository urls are available
        */
@@ -389,17 +390,7 @@ namespace zypp
       /** Set the value for \ref validRepoSignature (or \c indeterminate if unsigned). */
       void setValidRepoSignature( TriBool value_r );
 
-      /** Some predefined settings */
-      enum class GpgCheck {
-        indeterminate,		//< not specified
-        On,			//< 1** --gpgcheck
-        Strict,			//< 111 --gpgcheck-strict
-        AllowUnsigned,		//< 100 --gpgcheck-allow-unsigned
-        AllowUnsignedRepo,	//< 10* --gpgcheck-allow-unsigned-repo
-        AllowUnsignedPackage,	//< 1*0 --gpgcheck-allow-unsigned-package
-        Default,		//< *** --default-gpgcheck
-        Off,			//< 0** --no-gpgcheck
-      };
+      using GpgCheck = zypp::repo::GpgCheck;
 
       /** Adjust *GpgCheck settings according to \a mode_r.
        * \c GpgCheck::indeterminate will leave the settings as they are.
@@ -580,24 +571,29 @@ namespace zypp
        */
       void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
 
-      struct Impl;
+      zyppng::RepoInfo &ngRepoInfo();
+      const zyppng::RepoInfo &ngRepoInfo() const;
+
     private:
       friend class RepoManager;
-      template <typename ContextType> friend class zyppng::RepoManager;
 
-      // for RepoManager to be able to set the context
-      void setContext( zyppng::ContextBaseRef context );
+      /*!
+       * Creates a RepoInfo instance that basically works like
+       * a reference to the ng object. Moving it will keep the same reference semantics,
+       * however a copy also will copy the ng RepoInfo
+       * \internal
+       */
+      RepoInfo( zyppng::RepoInfo *pimpl );
 
-      Impl *pimpl();
-      const Impl *pimpl() const;
+      zyppng::repo::RepoInfoBase &pimpl() override;
+      const zyppng::repo::RepoInfoBase &pimpl() const override;
 
-#if LEGACY(1735)
-      /** Pointer to implementation */
-      RWCOW_pointer<Impl> _dummy_for_abi;
-#endif
+      // only reason this is a pointer , is that we do not want to export the ng symbols
+      std::unique_ptr<zyppng::RepoInfo> _pimpl;
+      bool _ownsImpl = true;
   };
   ///////////////////////////////////////////////////////////////////
-
+  ///
   /** \relates RepoInfo */
   using RepoInfo_Ptr = shared_ptr<RepoInfo>;
   /** \relates RepoInfo */
@@ -620,10 +616,10 @@ namespace zypp
   /** \relates RepoInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo & obj ) ZYPP_API;
 
-  /** \relates RepoInfo::GpgCheck Stream output */
-  std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj ) ZYPP_API;
-
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
+
+ZYPP_END_LEGACY_API
+
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP2_REPOSITORYINFO_H

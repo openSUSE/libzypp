@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov 15 10:45:20 CET 2024 - ma@suse.de
+
+- The 20MB download limit must not apply to non-metadata files like
+  package URLs provided via the CLI (bsc#1233393).
+- version 17.35.14 (35)
+
+-------------------------------------------------------------------
 Tue Nov 12 14:35:35 CET 2024 - ma@suse.de
 
 - BuildCache: Don't try to retrieve missing raw metadata if no

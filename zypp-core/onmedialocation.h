@@ -82,10 +82,7 @@ namespace zypp
     OnMediaLocation & setOptional( bool val );
 
   public:
-    /** The size of the resource on the server.
-     * \note If unset a default of at most 20MB is assumed.
-     * \ref setDownloadSize to zero for unlimited downloads.
-     */
+    /** The size of the resource on the server. */
     const ByteCount & downloadSize() const;
     /** Set the \ref downloadSize. */
     OnMediaLocation & setDownloadSize( ByteCount val_r );

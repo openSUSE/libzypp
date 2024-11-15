@@ -63,9 +63,9 @@ namespace zyppng {
         auto providerRef = _dlContext->zyppContext()->provider();
         return std::vector {
            // fetch signature and keys
-            providerRef->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ) )
+            providerRef->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
              | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _sigpath ) ),
-            providerRef->provide( _media, _keypath, ProvideFileSpec().setOptional( true ) )
+            providerRef->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
              | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _keypath ) ),
            }
           | join()
@@ -80,7 +80,7 @@ namespace zyppng {
              });
 
              // get the master index file
-             return provider()->provide( _media, _masterIndex, ProvideFileSpec() );
+             return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) );
            }
           // execute plugin verification if there is one
           | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this, std::placeholders::_1 ) )

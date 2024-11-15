@@ -60,7 +60,7 @@ namespace zyppng {
       if ( !provider )
         return makeReadyResult<expected<zypp::ManagedFile>, isAsync>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid handle"))) );
 
-      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true) )
+      return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true).setDownloadSize( zypp::ByteCount(20, zypp::ByteCount::MB ) ))
              | and_then( ProvideType::copyResultToDest( provider, destdir / "/media.1/media" ) );
 
     }

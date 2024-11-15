@@ -68,7 +68,7 @@ namespace zyppng
     bool _checkExistsOnly = false;
 
     bool _optional = false;
-    zypp::ByteCount _downloadSize = zypp::ByteCount( 20, zypp::ByteCount::MB );
+    zypp::ByteCount _downloadSize;
     zypp::CheckSum  _checksum;
 
     zypp::ByteCount _openSize;

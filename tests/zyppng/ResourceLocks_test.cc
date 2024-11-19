@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(simplelock)
 
   {
     // now lock again, try exclusive
-    auto lExcl = ctx->lockResource ( "test", zyppng::ResourceLock::Exclusive );
+    auto lExcl = ctx->lockResource ( "test", zyppng::ResourceLockRef::Exclusive );
     BOOST_REQUIRE( !lExcl.is_valid () );
     BOOST_REQUIRE_THROW ( lExcl.unwrap(), zyppng::ResourceAlreadyLockedException );
   }
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(simplelock)
 
   {
     // now lock again, try exclusive
-    auto lExcl = ctx->lockResource ( "test", zyppng::ResourceLock::Exclusive );
+    auto lExcl = ctx->lockResource ( "test", zyppng::ResourceLockRef::Exclusive );
     BOOST_REQUIRE_NO_THROW ( lExcl.unwrap() );
     BOOST_REQUIRE_EQUAL( lExcl->lockIdent(), std::string("test") );
   }
@@ -41,11 +41,11 @@ BOOST_AUTO_TEST_CASE(simplelock)
 BOOST_AUTO_TEST_CASE(two_simple_locks)
 {
   auto ctx = zyppng::SyncContext::create();
-  auto lExp = ctx->lockResource ( "test1", zyppng::ResourceLock::Exclusive );
+  auto lExp = ctx->lockResource ( "test1", zyppng::ResourceLockRef::Exclusive );
   BOOST_REQUIRE( lExp.is_valid () );
   BOOST_REQUIRE_EQUAL( lExp->lockIdent(), std::string("test1") );
 
-  auto lExp2 = ctx->lockResource ( "test2", zyppng::ResourceLock::Exclusive );
+  auto lExp2 = ctx->lockResource ( "test2", zyppng::ResourceLockRef::Exclusive );
   BOOST_REQUIRE( lExp.is_valid () );
   BOOST_REQUIRE_EQUAL( lExp2->lockIdent(), std::string("test2") );
 }
@@ -59,17 +59,17 @@ BOOST_AUTO_TEST_CASE(asyncLock)
   auto el = zyppng::EventLoop::create();
   auto ctx = zyppng::AsyncContext::create();
 
-  std::optional<zyppng::ResourceLock> l;
+  std::optional<zyppng::ResourceLockRef> l;
 
   {
-    auto expLock = ctx->lockResource ("test", zyppng::ResourceLock::Exclusive );
+    auto expLock = ctx->lockResource ("test", zyppng::ResourceLockRef::Exclusive );
     BOOST_REQUIRE( expLock.is_valid () );
     l.emplace ( std::move(expLock.get()) );
   }
 
-  std::vector<zyppng::ResourceLock> sharedLocks;
+  std::vector<zyppng::ResourceLockRef> sharedLocks;
 
-  const auto &sharedLockCb = [&]( zyppng::expected<zyppng::ResourceLock> l ) {
+  const auto &sharedLockCb = [&]( zyppng::expected<zyppng::ResourceLockRef> l ) {
 
     BOOST_REQUIRE( l.is_valid () );
     if ( !l ) {
@@ -86,13 +86,13 @@ BOOST_AUTO_TEST_CASE(asyncLock)
     return zyppng::expected<void>::success();
   };
 
-  auto asyncLock1 = ctx->lockResourceWait ( "test", 10, zyppng::ResourceLock::Shared ) | sharedLockCb;
-  auto asyncLock2 = ctx->lockResourceWait ( "test", 10, zyppng::ResourceLock::Shared ) | sharedLockCb;
-  auto asyncLock3 = ctx->lockResourceWait ( "test", 20, zyppng::ResourceLock::Exclusive );
+  auto asyncLock1 = ctx->lockResourceWait ( "test", 10, zyppng::ResourceLockRef::Shared ) | sharedLockCb;
+  auto asyncLock2 = ctx->lockResourceWait ( "test", 10, zyppng::ResourceLockRef::Shared ) | sharedLockCb;
+  auto asyncLock3 = ctx->lockResourceWait ( "test", 20, zyppng::ResourceLockRef::Exclusive );
 
   bool gotLock4 = false;
-  auto asyncLock4 = ctx->lockResourceWait ( "test", 30, zyppng::ResourceLock::Exclusive )
-      | ( [&]( zyppng::expected<zyppng::ResourceLock> l ) {
+  auto asyncLock4 = ctx->lockResourceWait ( "test", 30, zyppng::ResourceLockRef::Exclusive )
+      | ( [&]( zyppng::expected<zyppng::ResourceLockRef> l ) {
         gotLock4 = true; // should not happen
         return l;
   });

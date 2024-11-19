@@ -72,7 +72,7 @@ namespace zyppng {
      * Tries to lock a resource \a ident with specified \a mode , if the resource is locked already,
      * a delayed lock request is enqueued in a list of waiters for said lock. A \a timeout is required.
      */
-    AsyncOpRef<expected<ResourceLock>> lockResourceWait( std::string ident, uint timeout, ResourceLock::Mode mode = ResourceLock::Shared )
+    AsyncOpRef<expected<ResourceLockRef>> lockResourceWait( std::string ident, uint timeout, ResourceLockRef::Mode mode = ResourceLockRef::Shared )
     {
       if constexpr ( std::is_same_v<Tag, AsyncTag> ) {
         auto res = this->lockResource ( ident, mode );
@@ -145,10 +145,10 @@ namespace zyppng {
       if constexpr ( std::is_same_v<Tag, AsyncTag> ) {
 
         // callable to be executed when event loop is idle
-        const auto &makeResultCallable = []( std::weak_ptr<AsyncResourceLockReq> asyncOp, expected<ResourceLock> &&result ) {
+        const auto &makeResultCallable = []( std::weak_ptr<AsyncResourceLockReq> asyncOp, expected<ResourceLockRef> &&result ) {
           // the STL does copy the lambda around inside the std::function implementation instead of moving it. So we need to make it copy'able
           // which means storing the ResourceLock in a shared_ptr.
-          return [ asyncOp, res = std::make_shared<expected<ResourceLock>>(std::move(result)) ] () mutable {
+          return [ asyncOp, res = std::make_shared<expected<ResourceLockRef>>(std::move(result)) ] () mutable {
             auto promise = asyncOp.lock();
             if ( promise )
               promise->setFinished ( std::move(*res.get()) );
@@ -171,14 +171,14 @@ namespace zyppng {
             resLckData._mode = front->mode();
             // we can continue if the mode is shared, the next iteration will make sure the next one in the queue
             // has shared mode too
-            canCont = ( resLckData._mode == ResourceLock::Shared );
-            EventDispatcher::invokeOnIdle( makeResultCallable( front, make_expected_success( ResourceLock( detail::ResourceLockData_Ptr(&resLckData) ) ) ) );
+            canCont = ( resLckData._mode == ResourceLockRef::Shared );
+            EventDispatcher::invokeOnIdle( makeResultCallable( front, make_expected_success( ResourceLockRef( detail::ResourceLockData_Ptr(&resLckData) ) ) ) );
             resLckData._lockQueue.pop_front();
-          } else if ( front->mode() == ResourceLock::Shared ) {
+          } else if ( front->mode() == ResourceLockRef::Shared ) {
             // no need to further check the lock's mode, if we end up here the first iteration already
             // checked that it is a shared lock and set canCont accordingly
             resLckData._lockQueue.pop_front();
-            EventDispatcher::invokeOnIdle( makeResultCallable( front, make_expected_success( ResourceLock( detail::ResourceLockData_Ptr(&resLckData) ) ) ) );
+            EventDispatcher::invokeOnIdle( makeResultCallable( front, make_expected_success( ResourceLockRef( detail::ResourceLockData_Ptr(&resLckData) ) ) ) );
           } else {
             // front does not have a shared lock, we need to stop here
             break;
@@ -193,7 +193,7 @@ namespace zyppng {
             resLckData._lockQueue.pop_front ();
             continue;
           }
-          front->setFinished( expected<ResourceLock>::error( ZYPP_EXCPT_PTR( zypp::Exception("Lock waits not supported in sync mode")) ) );
+          front->setFinished( expected<ResourceLockRef>::error( ZYPP_EXCPT_PTR( zypp::Exception("Lock waits not supported in sync mode")) ) );
           resLckData._lockQueue.pop_front ();
         }
       }

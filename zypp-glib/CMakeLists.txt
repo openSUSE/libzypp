@@ -44,6 +44,7 @@ SET( zypp_glib_ui_HEADERS
 )
 
 SET( zypp_glib_private_HEADERS
+  private/cancellable_p.h
   private/context_p.h
   private/error_p.h
   private/expected_p.h
@@ -81,6 +82,7 @@ SET( zypp_glib_SRCS
   repository.cc
   serviceinfo.cc
   zypp-glib.cc
+  private/cancellable_p.cc
   ui/booleanchoicerequest.cc
   ui/listchoicerequest.cc
   ui/showmessagerequest.cc

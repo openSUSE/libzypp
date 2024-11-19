@@ -307,7 +307,6 @@ SET( zypp_ng_SRCS
   ng/parser/servicefilereader.cc
   ng/repo/downloader.cc
   ng/repo/pluginservices.cc
-  ng/repo/refresh.cc
   ng/repo/repoinfobase.cc
   ng/repo/repoinfobaseshareddata.cc
   ng/repo/repovariables.cc

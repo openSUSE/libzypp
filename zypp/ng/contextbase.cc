@@ -211,7 +211,7 @@ namespace zyppng {
     return _target;
   }
 
-  expected<ResourceLock> ContextBase::lockResource(std::string ident , ResourceLock::Mode mode)
+  expected<ResourceLockRef> ContextBase::lockResource(std::string ident , ResourceLockRef::Mode mode)
   {
     auto i = _resourceLocks.find ( ident );
     if ( i == _resourceLocks.end() ) {
@@ -221,11 +221,11 @@ namespace zyppng {
      lockData->_mode = mode;
      lockData->_zyppContext = shared_this<ContextBase>();
      _resourceLocks.insert( std::make_pair( lockData->_resourceIdent, lockData ) );
-     return expected<ResourceLock>::success( std::move(lockData) );
+     return expected<ResourceLockRef>::success( std::move(lockData) );
     } else {
-      if ( mode == ResourceLock::Shared && i->second->_mode == ResourceLock::Shared )
-        return expected<ResourceLock>::success( i->second );
-      return expected<ResourceLock>::error( ZYPP_EXCPT_PTR(ResourceAlreadyLockedException(ident)));
+      if ( mode == ResourceLockRef::Shared && i->second->_mode == ResourceLockRef::Shared )
+        return expected<ResourceLockRef>::success( i->second );
+      return expected<ResourceLockRef>::error( ZYPP_EXCPT_PTR(ResourceAlreadyLockedException(ident)));
     }
   }
 

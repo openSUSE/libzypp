@@ -9,6 +9,7 @@
 #include "resource.h"
 #include <zypp-core/zyppng/base/timer.h>
 #include <zypp/ng/context.h>
+#include <zypp/ng/repoinfo.h>
 namespace zyppng {
 
   namespace detail {
@@ -24,7 +25,16 @@ namespace zyppng {
         return;
       ctx->lockUnref ( _resourceIdent );
     }
+  }
 
+  namespace resources {
+    namespace repo {
+      std::string REPO_RESOURCE( const RepoInfo &info )
+      {
+        return zypp::str::Format( REPO_RESOURCE_STR.data() ) % info.alias();
+      }
+
+    }
   }
 
   ResourceAlreadyLockedException::ResourceAlreadyLockedException( std::string ident )
@@ -59,7 +69,7 @@ namespace zyppng {
     return Exception::dumpOn( str );
   }
 
-  AsyncResourceLockReq::AsyncResourceLockReq( std::string ident, ResourceLock::Mode m, uint timeout )
+  AsyncResourceLockReq::AsyncResourceLockReq( std::string ident, ResourceLockRef::Mode m, uint timeout )
     : _ident( std::move(ident) )
     , _mode( m )
     , _timeout( Timer::create() )
@@ -69,7 +79,7 @@ namespace zyppng {
     _timeout->start( timeout );
   }
 
-  void AsyncResourceLockReq::setFinished(expected<ResourceLock> &&lock)
+  void AsyncResourceLockReq::setFinished(expected<ResourceLockRef> &&lock)
   {
     _timeout->stop();
     setReady ( std::move(lock) );
@@ -80,7 +90,7 @@ namespace zyppng {
     return _ident;
   }
 
-  ResourceLock::Mode AsyncResourceLockReq::mode() const
+  ResourceLockRef::Mode AsyncResourceLockReq::mode() const
   {
     return _mode;
   }
@@ -93,25 +103,25 @@ namespace zyppng {
   void AsyncResourceLockReq::onTimeoutExceeded( Timer & )
   {
     _sigTimeout.emit(*this);
-    setFinished( expected<ResourceLock>::error( ZYPP_EXCPT_PTR( ResourceLockTimeoutException(_ident) ) ) );
+    setFinished( expected<ResourceLockRef>::error( ZYPP_EXCPT_PTR( ResourceLockTimeoutException(_ident) ) ) );
   }
 
-  ResourceLock::ResourceLock(detail::ResourceLockData_Ptr data)
+  ResourceLockRef::ResourceLockRef(detail::ResourceLockData_Ptr data)
     : _lockData( std::move(data) )
   {
   }
 
-  ContextBaseWeakRef ResourceLock::lockContext() const
+  ContextBaseWeakRef ResourceLockRef::lockContext() const
   {
     return _lockData->_zyppContext;
   }
 
-  const std::string &ResourceLock::lockIdent() const
+  const std::string &ResourceLockRef::lockIdent() const
   {
     return _lockData->_resourceIdent;
   }
 
-  ResourceLock::Mode ResourceLock::mode() const
+  ResourceLockRef::Mode ResourceLockRef::mode() const
   {
     return _lockData->_mode;
   }

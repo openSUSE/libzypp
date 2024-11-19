@@ -106,7 +106,7 @@ namespace zyppng {
      * The returned lock is automatically released when the last
      * Shared or the last Exclusive lock instance is released.
      */
-    expected<ResourceLock> lockResource (std::string ident, ResourceLock::Mode mode = ResourceLock::Shared );
+    expected<ResourceLockRef> lockResource (std::string ident, ResourceLockRef::Mode mode = ResourceLockRef::Shared );
 
 
     void lockUnref( const std::string &ident );

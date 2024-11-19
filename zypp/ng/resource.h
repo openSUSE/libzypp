@@ -26,6 +26,7 @@ namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ContextBase);
   ZYPP_FWD_DECL_TYPE_WITH_REFS (Timer);
+  class RepoInfo;
 
   namespace detail {
     DEFINE_PTR_TYPE(ResourceLockData);
@@ -34,8 +35,9 @@ namespace zyppng {
 
   namespace resources {
     namespace repo {
-      constexpr std::string_view REPO_RESOURCE_STR("/RepoManager/%1");
-      std::string REPO_RESOURCE( const std::string &repoAlias );
+      constexpr std::string_view REPO_RESOURCE_STR("/RepoManager/%1%");
+
+      std::string REPO_RESOURCE( const RepoInfo &info );
     }
   }
 
@@ -64,11 +66,15 @@ namespace zyppng {
   };
 
   /**
-   * Represents a shared or exclusive lock of a resource identified by
+   * Represents a reference to a shared or exclusive lock of a resource identified by
    * a unique string. Since libzypp supports async workflows we need to make
-   * sure that we do not modify a resource multiple times
+   * sure that we do not modify a resource multiple times.
+   *
+   * Copying the ResourceLockRef will increase the internal ref count on the lock
+   * registered in the context. That way even a Exclusive Lock ownership can be
+   * shared by subparts of a pipeline.
    */
-  class ResourceLock {
+  class ResourceLockRef {
 
     public:
       enum Mode{
@@ -76,14 +82,14 @@ namespace zyppng {
         Exclusive
       };
 
-      ResourceLock(detail::ResourceLockData_Ptr data);
-      ~ResourceLock() = default;
+      ResourceLockRef(detail::ResourceLockData_Ptr data);
+      ~ResourceLockRef() = default;
 
-      ResourceLock(const ResourceLock &) = delete;
-      ResourceLock &operator=(const ResourceLock &) = delete;
+      ResourceLockRef(const ResourceLockRef &) = default;
+      ResourceLockRef &operator=(const ResourceLockRef &) = default;
 
-      ResourceLock(ResourceLock && other) = default;
-      ResourceLock &operator=(ResourceLock && other) = default;
+      ResourceLockRef(ResourceLockRef && other) = default;
+      ResourceLockRef &operator=(ResourceLockRef && other) = default;
 
       /**
        * Returns the context it belongs to
@@ -107,10 +113,10 @@ namespace zyppng {
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS(AsyncResourceLockReq);
 
-  class AsyncResourceLockReq : public AsyncOp<expected<ResourceLock>>
+  class AsyncResourceLockReq : public AsyncOp<expected<ResourceLockRef>>
   {
   public:
-    AsyncResourceLockReq(std::string ident, ResourceLock::Mode m, uint timeout);
+    AsyncResourceLockReq(std::string ident, ResourceLockRef::Mode m, uint timeout);
 
     AsyncResourceLockReq(const AsyncResourceLockReq &) = delete;
     AsyncResourceLockReq(AsyncResourceLockReq &&) = delete;
@@ -119,9 +125,9 @@ namespace zyppng {
 
     ~AsyncResourceLockReq() override = default;
 
-    void setFinished( expected<ResourceLock> &&lock );
+    void setFinished( expected<ResourceLockRef> &&lock );
     const std::string &ident() const;
-    ResourceLock::Mode mode() const;
+    ResourceLockRef::Mode mode() const;
 
     SignalProxy<void (AsyncResourceLockReq &)> sigTimeout();
 
@@ -129,7 +135,7 @@ namespace zyppng {
     void onTimeoutExceeded( Timer & );
     Signal<void (AsyncResourceLockReq &)> _sigTimeout;
     std::string _ident;
-    ResourceLock::Mode _mode;
+    ResourceLockRef::Mode _mode;
     TimerRef _timeout;
   };
 
@@ -140,7 +146,7 @@ namespace zyppng {
     public:
       ContextBaseWeakRef _zyppContext;
       std::string        _resourceIdent;
-      ResourceLock::Mode _mode = ResourceLock::Shared;
+      ResourceLockRef::Mode _mode = ResourceLockRef::Shared;
 
       // other requests waiting to lock the resource
       // only weak locks, calling code still needs to be able to cancel the pipeline by releasing it

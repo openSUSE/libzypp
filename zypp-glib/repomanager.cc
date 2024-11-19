@@ -232,7 +232,7 @@ void zypp_repo_manager_refresh_repos_async ( ZyppRepoManager *self, GList *repos
   std::vector<zyppng::RepoInfo> cppInfos;
   std::transform( repoInfos.begin (), repoInfos.end(), std::back_inserter(cppInfos), []( ZyppRepoInfo *i) { return zypp_repo_info_get_cpp (i); } );
 
-  auto task = [ mgr = d->_cppObj, progress, repos = std::move(cppInfos), forceDownload ](){
+  auto task = [ mgr = d->_cppObj, progress, repos = std::move(cppInfos), forceDownload ]() {
     return mgr->refreshMetadata( repos, forceDownload ?  zypp::RepoManagerFlags::RefreshForced : zypp::RepoManagerFlags::RefreshIfNeeded, progress );
   };
 

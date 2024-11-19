@@ -441,10 +441,14 @@ namespace zyppng::RepoManagerWorkflow {
               return makeReadyResult( expected<DlContextRefType>::error( std::move(exception) ));
             }
 
-            auto dlContext = std::make_shared<DlContextType>( _refreshContext->zyppContext(), _refreshContext->repoInfo(), _refreshContext->targetDir() );
-            dlContext->setPluginRepoverification( _refreshContext->pluginRepoverification() );
-
-            return RepoDownloaderWorkflow::download ( dlContext, _medium, _progress );
+            return  _refreshContext->engageLock()
+              | and_then( [this]( zypp::Deferred lockRef ) {
+                    _lock = std::move(lockRef);
+                    auto dlContext = std::make_shared<DlContextType>( _refreshContext->zyppContext(), _refreshContext->repoInfo(), _refreshContext->targetDir() );
+                    dlContext->setPluginRepoverification( _refreshContext->pluginRepoverification() );
+                    return RepoDownloaderWorkflow::download ( dlContext, _medium, _progress );
+              }
+            );
 
           })
           | and_then([this]( DlContextRefType && ) {
@@ -457,10 +461,15 @@ namespace zyppng::RepoManagerWorkflow {
 
             // we are done.
             return expected<RefreshContextRefType>::success( std::move(_refreshContext) );
-          });
+          })
+          | [this]( auto res ) {
+            _lock.reset(); // clear the lock
+            return res;
+          };
         });
       }
 
+      zypp::Deferred _lock;
       RefreshContextRefType _refreshContext;
       ProgressObserverRef _progress;
       LazyMediaHandle _medium;
@@ -659,7 +668,11 @@ namespace zyppng::RepoManagerWorkflow {
           _mediarootpath   = rawcache_path_for_repoinfo( _refCtx->repoManagerOptions(), _refCtx->repoInfo() ).unwrap();
           _productdatapath = rawproductdata_path_for_repoinfo( _refCtx->repoManagerOptions(), _refCtx->repoInfo() ).unwrap();
         }))
-        | and_then( [this] {
+        | and_then( [this]() { return _refCtx->engageLock(); } )
+        | and_then( [this]( zypp::Deferred repoLock ) {
+
+          _repoLock = std::move(repoLock);
+
 
           const auto &options = _refCtx->repoManagerOptions();
 
@@ -833,11 +846,13 @@ namespace zyppng::RepoManagerWorkflow {
         })
         | and_then( [this](){
           MIL << "Commit cache.." << std::endl;
+          _repoLock.reset ();
           ProgressObserver::finish( _progressObserver, ProgressObserver::Success );
           return make_expected_success ( _refCtx );
 
         })
         | or_else ( [this]( std::exception_ptr e ) {
+          _repoLock.reset ();
           ProgressObserver::finish( _progressObserver, ProgressObserver::Success );
           return expected<RefreshContextRefType>::error(e);
         });
@@ -855,6 +870,7 @@ namespace zyppng::RepoManagerWorkflow {
       }
 
     private:
+      zypp::Deferred _repoLock;
       RefreshContextRefType _refCtx;
       zypp::RepoManagerFlags::CacheBuildPolicy _policy;
       ProgressObserverRef   _progressObserver;

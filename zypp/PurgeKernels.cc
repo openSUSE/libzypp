@@ -56,6 +56,18 @@ namespace zypp {
   };
   using GroupMap = std::unordered_map<std::string, GroupInfo>;
 
+  std::ostream & operator<<( std::ostream & str, const GroupInfo::GroupType & obj ) {
+    switch ( obj ) {
+#define OUTS(t) case GroupInfo::t: return str << #t
+      OUTS( None );
+      OUTS( Kernels );
+      OUTS( RelatedBinaries );
+      OUTS( Sources );
+#undef OUTS
+    };
+    return str << "[UNKNOWN_GroupType]";
+  }
+
   struct PurgeKernels::Impl  {
 
     Impl() {

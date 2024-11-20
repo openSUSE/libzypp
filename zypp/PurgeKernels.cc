@@ -517,7 +517,8 @@ namespace zypp {
     const filter::ByStatus toBeUninstalledFilter( &ResStatus::isToBeUninstalled );
 
     // kernel flavour regex
-    const str::regex kernelFlavourRegex("^kernel-(.*)$");
+    // XXX: No dashes in flavor names
+    const str::regex kernelFlavourRegex("^kernel-([^-]+)(-.*)?$");
 
     // the map of all installed kernel packages, grouped by Flavour -> Arch -> Version -> (List of all packages in that category)
     // devel and source packages are grouped together
@@ -605,12 +606,6 @@ namespace zypp {
         }
 
         std::string flavour = what[1];
-
-        // XXX: No dashes in flavor names
-        const auto dash = flavour.find_first_of('-');
-        if ( dash != std::string::npos ) {
-          flavour = flavour.substr( 0, dash );
-        }
 
         // the ident for kernels is the flavour, to also handle cases like kernel-base and kernel which should be in the same group handled together
         addPackageToMap( GroupInfo::Kernels, flavour, flavour, installedKrnlPck );

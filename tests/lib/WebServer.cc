@@ -26,8 +26,13 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#if FCGI_IN_SUBDIR
 #include <fastcgi/fcgiapp.h>
 #include <fastcgi/fcgio.h>
+#else
+#include <fcgiapp.h>
+#include <fcgio.h>
+#endif
 #include <iostream>
 #include <fstream>
 

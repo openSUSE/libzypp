@@ -40,5 +40,12 @@ ADD_LIBRARY(zypp_test_utils STATIC
  WebServer.cc
 )
 
+# These headers are in different subdirectories depending on the
+# distribution
+CHECK_INCLUDE_FILE( fastcgi/fcgiapp.h FASTCGI_HEADER_DIR )
+IF ( FASTCGI_HEADER_DIR )
+  target_compile_definitions( zypp_test_utils PRIVATE FCGI_IN_SUBDIR=1)
+ENDIF ( FASTCGI_HEADER_DIR )
+
 target_link_libraries( zypp_test_utils PRIVATE zypp_lib_compiler_flags )
 TARGET_LINK_LIBRARIES( zypp_test_utils PUBLIC ${LIBFCGI} ${LIBFCGI++} pthread )

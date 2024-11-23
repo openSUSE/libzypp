@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: zypp.fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2024-02-21 11:42+0000\n"
-"Last-Translator: Tommi Nieminen <software@legisign.org>\n"
+"PO-Revision-Date: 2024-11-23 21:48+0000\n"
+"Last-Translator: Rantala <toni.rantala@protonmail.com>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/libzypp/master/fi/"
 ">\n"
 "Language: fi\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3942,7 +3942,7 @@ msgstr "Erillinen asiakassopimus tarpeen"
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Lopetettu tai toisen paketin korvaama"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3997,6 +3997,7 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"Paketin kehitys on lopetettu tai se on korvattu eri nimisellä paketilla."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -4171,15 +4172,15 @@ msgstr "repo-tiedostoa '%1%' ei voitu lukea: Pääsy estetty"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Poistetaan metadata"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Poistetaan paketteja"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Tyhjennetään väliaikaishakemistot"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format

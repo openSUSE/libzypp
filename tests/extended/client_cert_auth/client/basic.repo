@@ -1,0 +1,4 @@
+[basic]
+enabled=1
+autorefresh=0
+baseurl=https://172.16.238.10/basic?ssl_clientcert=/Local/Common/certs/client/client.crt&ssl_clientkey=/Local/Common/certs/client/client.key

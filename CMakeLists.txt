@@ -30,6 +30,7 @@ OPTION (ENABLE_ZCHUNK_COMPRESSION "Build with zchunk compression support?" OFF)
 # Helps with bug https://bugzilla.gnome.org/show_bug.cgi?id=784550 , Segfault during signal emission when slots are cleared
 OPTION (ENABLE_SIGC_BLOCK_WORKAROUND "Enable a workaround for older sigcpp libraries?" OFF )
 OPTION (DISABLE_MEDIABACKEND_TESTS "Disable Tests depending on Nginx and libfcgi?" OFF)
+OPTION (ENABLE_TESTRUNNER "Build and install testrunner binary for CI tests?" OFF )
 
 OPTION (DISABLE_LIBPROXY "Build without libproxy support even if package is installed?" OFF)
 OPTION (DISABLE_AUTODOCS "Do not require doxygen being installed (required to build autodocs)?" OFF)

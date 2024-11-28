@@ -51,7 +51,7 @@ int main ( int argc, char *argv[] )
 
   TestSetup t;
   try {
-    t.LoadSystemAt( result.positionals().front() );
+    t.LoadSystemAt( "." );
   }  catch ( const zypp::Exception &e ) {
     std::cerr << "Failed to load the testcase at " << result.positionals().front() << std::endl;
     std::cerr << "Got exception: " << e << std::endl;

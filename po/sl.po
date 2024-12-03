@@ -4620,7 +4620,7 @@ msgid "applydeltarpm failed."
 msgstr "applydeltarpm ni uspel."
 
 #: zypp/repo/RepoException.cc:73
-msgid "No permision to write repository cache."
+msgid "No permission to write repository cache."
 msgstr "Ni dovoljenja za zapis predpomnilnika vira."
 
 #: zypp/repo/RepoException.cc:130

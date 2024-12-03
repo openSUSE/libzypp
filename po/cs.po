@@ -4384,7 +4384,7 @@ msgid "applydeltarpm failed."
 msgstr "Aplikování delta RPM se nezdařilo."
 
 #: zypp/repo/RepoException.cc:73
-msgid "No permision to write repository cache."
+msgid "No permission to write repository cache."
 msgstr ""
 
 #: zypp/repo/RepoException.cc:130

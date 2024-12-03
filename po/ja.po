@@ -4166,7 +4166,7 @@ msgid "applydeltarpm failed."
 msgstr "applydeltarpmが失敗しました。"
 
 #: zypp/repo/RepoException.cc:73
-msgid "No permision to write repository cache."
+msgid "No permission to write repository cache."
 msgstr "リポジトリキャッシュへの書き込み許可がありません。"
 
 #: zypp/repo/RepoException.cc:130

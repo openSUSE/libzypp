@@ -71,7 +71,8 @@ namespace rpm
     inline bool dbExists( const Pathname & root_r, const Pathname & dbPath_r )
     {
       Pathname dbdir { root_r / sanitizedDbPath( root_r, dbPath_r ) };
-      return PathInfo(dbdir).isDir() && ( PathInfo(dbdir/"Packages").isFile() || PathInfo(dbdir/"Packages.db").isFile() );
+      return PathInfo(dbdir).isDir() &&
+      ( PathInfo(dbdir/"Packages").isFile() || PathInfo(dbdir/"Packages.db").isFile() || PathInfo(dbdir/"rpmdb.sqlite").isFile() );
     }
 
   } // namespace internal

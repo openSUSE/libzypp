@@ -197,25 +197,26 @@ BOOST_AUTO_TEST_CASE(test_url3)
   BOOST_CHECK_EQUAL( url.asString(),
   "http://localhost/path/to?hoho=ha%20ha#frag");
 
-  // will be encoded as "foo%3Dbar%26key=foo%26bar%3Dvalue"
+  // will be encoded as "foo%3Dbar%26key=foo%26bar=value"
+  // bsc#1234304: `=` must be encoded in key but is a safe char in value
   key = "foo=bar&key";
   val = "foo&bar=value";
   url.setQueryParam(key, val);
   BOOST_CHECK_EQUAL( url.asString(),
-  "http://localhost/path/to?foo%3Dbar%26key=foo%26bar%3Dvalue&hoho=ha%20ha#frag");
+  "http://localhost/path/to?foo%3Dbar%26key=foo%26bar=value&hoho=ha%20ha#frag");
 
   // will be encoded as "foo%25bar=is%25de%25ad"
   key = "foo%bar";
   val = "is%de%ad";
   url.setQueryParam(key, val);
   BOOST_CHECK_EQUAL( url.asString(),
-  "http://localhost/path/to?foo%25bar=is%25de%25ad&foo%3Dbar%26key=foo%26bar%3Dvalue&hoho=ha%20ha#frag");
+  "http://localhost/path/to?foo%25bar=is%25de%25ad&foo%3Dbar%26key=foo%26bar=value&hoho=ha%20ha#frag");
 
   // get encoded query parameters and compare with results:
   zypp::url::ParamVec params( url.getQueryStringVec());
   const char * const  result[] = {
     "foo%25bar=is%25de%25ad",
-    "foo%3Dbar%26key=foo%26bar%3Dvalue",
+    "foo%3Dbar%26key=foo%26bar=value",
     "hoho=ha%20ha"
   };
   BOOST_CHECK( params.size() == (sizeof(result)/sizeof(result[0])));

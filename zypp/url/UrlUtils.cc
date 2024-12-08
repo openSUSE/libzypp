@@ -283,14 +283,18 @@ namespace zypp
           _("Invalid parameter array join separator character")
         ));
       }
+      std::string safeKey;
+      std::string safeVal;
 
-      std::string join_safe;
       for(std::string::size_type i=0; i<safe.size(); i++)
       {
-        if( psep.find(safe[i]) == std::string::npos &&
-            vsep.find(safe[i]) == std::string::npos)
-        {
-          join_safe.append(1, safe[i]);
+        if( psep.find(safe[i]) == std::string::npos ) {
+          if ( vsep.find(safe[i]) == std::string::npos ) {
+            safeKey.append(1, safe[i]);
+            safeVal.append(1, safe[i]);
+          } else {
+            safeVal.append(1, safe[i]);
+          }
         }
       }
       std::string              str;
@@ -298,15 +302,15 @@ namespace zypp
 
       if( i != pmap.end())
       {
-        str = encode(i->first, join_safe);
+        str = encode(i->first, safeKey);
         if( !i->second.empty())
-          str += vsep + encode(i->second, join_safe);
+          str += vsep + encode(i->second, safeVal);
 
         while( ++i != pmap.end())
         {
-          str += psep + encode(i->first, join_safe);
+          str += psep + encode(i->first, safeKey);
           if( !i->second.empty())
-            str +=  vsep + encode(i->second, join_safe);
+            str +=  vsep + encode(i->second, safeVal);
         }
       }
 

@@ -122,47 +122,61 @@ namespace zypp
       }
 
       void
-      setQueryStringMap(const zypp::url::ParamMap &pmap) override
+      setQueryStringMap(const zypp::url::ParamMap &pmap, EEncoding eflag ) override
       {
         static const char * const keys[] = {
           "attrs", "scope", "filter", "exts", NULL
         };
 
-        // remove psep ("?") from safe chars
-        std::string join_safe;
-        std::string safe(config("safe_querystr"));
-        std::string psep(config("psep_querystr"));
-        for(std::string::size_type i=0; i<safe.size(); i++)
+        if ( eflag == url::E_DECODED )
         {
-          if( psep.find(safe[i]) == std::string::npos)
-            join_safe.append(1, safe[i]);
-        }
-
-        zypp::url::ParamVec pvec(4);
-        zypp::url::ParamMap::const_iterator p;
-        for(p=pmap.begin(); p!=pmap.end(); ++p)
-        {
-          bool found=false;
-          for(size_t i=0; i<4; i++)
+          // remove psep ("?") from safe chars
+          std::string join_safe;
+          std::string safe(config("safe_querystr"));
+          std::string psep(config("psep_querystr"));
+          for(std::string::size_type i=0; i<safe.size(); i++)
           {
-            if(p->first == keys[i])
+            if( psep.find(safe[i]) == std::string::npos)
+              join_safe.append(1, safe[i]);
+          }
+
+          zypp::url::ParamVec pvec(4);
+          zypp::url::ParamMap::const_iterator p;
+          for(p=pmap.begin(); p!=pmap.end(); ++p)
+          {
+            bool found=false;
+            for(size_t i=0; i<4; i++)
             {
-              found=true;
-              pvec[i] = zypp::url::encode(p->second, join_safe);
+              if(p->first == keys[i])
+              {
+                found=true;
+                pvec[i] = zypp::url::encode(p->second, join_safe);
+              }
+            }
+            if( !found)
+            {
+              ZYPP_THROW(url::UrlNotSupportedException(
+                str::form(_("Invalid LDAP URL query parameter '%s'"),
+                          p->first.c_str())
+              ));
             }
           }
-          if( !found)
-          {
-            ZYPP_THROW(url::UrlNotSupportedException(
-              str::form(_("Invalid LDAP URL query parameter '%s'"),
-                          p->first.c_str())
-            ));
-          }
+          setQueryStringVec(pvec);
         }
-        setQueryStringVec(pvec);
+        else
+        {
+          setQueryString(
+            zypp::url::join(
+              pmap,
+              config("psep_querystr"),
+              config("vsep_querystr"),
+              config("safe_querystr"),
+              url::E_ENCODED
+            )
+          );
+        }
       }
     };
-
 
     // ---------------------------------------------------------------
     // FIXME: hmm..
@@ -834,7 +848,7 @@ namespace zypp
   void
   Url::setQueryStringMap(const zypp::url::ParamMap &pmap)
   {
-    m_impl->setQueryStringMap(pmap);
+    m_impl->setQueryStringMap(pmap, url::E_DECODED);
   }
 
   // -----------------------------------------------------------------

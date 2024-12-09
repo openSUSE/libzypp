@@ -232,10 +232,12 @@ namespace zypp
      *
      * See encode() function from details about the \p safe characters.
      *
+     *
      * \param pmap    Reference to a parameter map.
      * \param psep    Separator character to use between key-value pairs.
      * \param vsep    Separator character to use between keys and values.
      * \param safe    List of characters to accept without encoding.
+     * \param eflag   Tells whether keys and values in pmap are already encoded or decoded.
      * \return A URL percent-encoded parameter string.
      * \throws UrlNotSupportedException if \p psep or \p vsep separator
      *         is empty.
@@ -244,7 +246,8 @@ namespace zypp
     join(const ParamMap     &pmap,
          const std::string  &psep,
          const std::string  &vsep,
-         const std::string  &safe);
+         const std::string  &safe,
+         EEncoding          eflag);
 
 
     //////////////////////////////////////////////////////////////////

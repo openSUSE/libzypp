@@ -164,7 +164,7 @@ namespace zypp
     void
     split(ParamVec          &pvec,
           const std::string &pstr,
-	        const std::string &psep)
+          const std::string &psep)
     {
       size_t beg, pos, len;
       if( psep.empty())
@@ -275,7 +275,8 @@ namespace zypp
     join(const ParamMap    &pmap,
          const std::string &psep,
          const std::string &vsep,
-         const std::string &safe)
+         const std::string &safe,
+         EEncoding         eflag)
     {
       if( psep.empty() || vsep.empty())
       {
@@ -283,34 +284,50 @@ namespace zypp
           _("Invalid parameter array join separator character")
         ));
       }
-      std::string safeKey;
-      std::string safeVal;
 
-      for(std::string::size_type i=0; i<safe.size(); i++)
+      std::string str;
+
+      if ( eflag == E_DECODED )
       {
-        if( psep.find(safe[i]) == std::string::npos ) {
-          if ( vsep.find(safe[i]) == std::string::npos ) {
-            safeKey.append(1, safe[i]);
-            safeVal.append(1, safe[i]);
-          } else {
-            safeVal.append(1, safe[i]);
+        std::string safeKey;
+        std::string safeVal;
+
+        for(std::string::size_type i=0; i<safe.size(); i++)
+        {
+          if( psep.find(safe[i]) == std::string::npos ) {
+            if ( vsep.find(safe[i]) == std::string::npos ) {
+              safeKey.append(1, safe[i]);
+              safeVal.append(1, safe[i]);
+            } else {
+              safeVal.append(1, safe[i]);
+            }
+          }
+        }
+
+        ParamMap::const_iterator i( pmap.begin());
+
+        if( i != pmap.end())
+        {
+          str = encode(i->first, safeKey);
+          if( !i->second.empty())
+            str += vsep + encode(i->second, safeVal);
+
+          while( ++i != pmap.end())
+          {
+            str += psep + encode(i->first, safeKey);
+            if( !i->second.empty())
+              str +=  vsep + encode(i->second, safeVal);
           }
         }
       }
-      std::string              str;
-      ParamMap::const_iterator i( pmap.begin());
-
-      if( i != pmap.end())
+      else
       {
-        str = encode(i->first, safeKey);
-        if( !i->second.empty())
-          str += vsep + encode(i->second, safeVal);
-
-        while( ++i != pmap.end())
-        {
-          str += psep + encode(i->first, safeKey);
-          if( !i->second.empty())
-            str +=  vsep + encode(i->second, safeVal);
+        for ( ParamMap::const_iterator it = pmap.begin(); it != pmap.end(); ++it ) {
+          if ( not str.empty() )
+            str += psep;
+          str += it->first;
+          str += vsep;
+          str += it->second;
         }
       }
 

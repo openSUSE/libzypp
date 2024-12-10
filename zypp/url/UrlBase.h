@@ -844,11 +844,12 @@ namespace zypp
       /**
        * \brief Set the query parameters.
        * \param qmap The map with decoded query parameters.
+       * \param eflag Tells whether keys and values in pmap are already encoded or decoded.
        * \throws UrlNotSupportedException if parameter parsing
        *         is not supported for a URL (scheme).
        */
       virtual void
-      setQueryStringMap(const zypp::url::ParamMap &qmap);
+      setQueryStringMap(const zypp::url::ParamMap &qmap, EEncoding eflag);
 
       /**
        * \brief Set or add value for the specified query parameter.

@@ -283,4 +283,21 @@ BOOST_AUTO_TEST_CASE(plugin_querystring_args)
   BOOST_CHECK_EQUAL( pm["o"], "" );
 }
 
+BOOST_AUTO_TEST_CASE(bsc1234304)
+{
+  // Removing or adding queryparams should not alter the encoding of other queryparams.
+  // Old code decoded and re-encoded all params. "__token__=exp=%3D%26" was changed to
+  // "__token__=exp==%26" by this. That's not wrong, but we'd like to preserve the original
+  // params if possible.
+  Url u { "https://dl.suse.com/?__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt" };
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt" );
+  u.delQueryParam("t=t");
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9" );
+  u.setQueryParam("t=t", "a" );
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt=a" );
+  u.setQueryParam("t=t", "b" );
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt=b" );
+
+}
+
 // vim: set ts=2 sts=2 sw=2 ai et:

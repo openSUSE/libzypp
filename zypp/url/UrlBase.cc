@@ -1187,7 +1187,8 @@ namespace zypp
           pmap,
           config("psep_pathparam"),
           config("vsep_pathparam"),
-          config("safe_pathparams")
+          config("safe_pathparams"),
+          url::E_DECODED
         )
       );
     }
@@ -1218,7 +1219,7 @@ namespace zypp
 
     // ---------------------------------------------------------------
     void
-    UrlBase::setQueryStringMap(const zypp::url::ParamMap &pmap)
+    UrlBase::setQueryStringMap(const zypp::url::ParamMap &pmap, EEncoding eflag)
     {
       if( config("psep_querystr").empty() ||
           config("vsep_querystr").empty())
@@ -1232,7 +1233,8 @@ namespace zypp
           pmap,
           config("psep_querystr"),
           config("vsep_querystr"),
-          config("safe_querystr")
+          config("safe_querystr"),
+          eflag
         )
       );
     }
@@ -1241,18 +1243,42 @@ namespace zypp
     void
     UrlBase::setQueryParam(const std::string &param, const std::string &value)
     {
-          zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_DECODED));
-          pmap[param] = value;
-          setQueryStringMap(pmap);
+          zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_ENCODED));
+          zypp::url::ParamMap newmap;
+          newmap[param] = value;
+          std::string newval = url::join(
+            newmap,
+            config("psep_querystr"),
+            config("vsep_querystr"),
+            config("safe_querystr"),
+            url::E_DECODED
+          );
+          newmap.clear();
+          url::split(
+            newmap,
+            newval,
+            config("psep_querystr"),
+            config("vsep_querystr"),
+            url::E_ENCODED
+          );
+          pmap[newmap.begin()->first] = newmap.begin()->second;
+          setQueryStringMap(pmap, url::E_ENCODED);
     }
 
     // ---------------------------------------------------------------
     void
     UrlBase::delQueryParam(const std::string &param)
     {
-          zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_DECODED));
-          pmap.erase(param);
-          setQueryStringMap(pmap);
+          zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_ENCODED));
+          for ( zypp::url::ParamMap::iterator it = pmap.begin(), last = pmap.end(); it != last; ) {
+            if ( url::decode( it->first ) == param ) {
+              zypp::url::ParamMap::iterator todel = it;
+              ++it;
+              pmap.erase( todel );
+            } else
+              ++it;
+          }
+          setQueryStringMap(pmap, url::E_ENCODED);
     }
 
 

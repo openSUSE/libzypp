@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_URLBASE_H
 #define   ZYPP_URL_URLBASE_H
 
+#include <set>
 #include <zypp-core/url/UrlUtils.h>
 #include <zypp-core/base/PtrTypes.h>
 
@@ -879,6 +880,8 @@ namespace zypp
       virtual void
       delQueryParam(const std::string &param);
 
+      void
+      delQueryParams(const std::set<std::string> &params);
 
       // -----------------
       /**

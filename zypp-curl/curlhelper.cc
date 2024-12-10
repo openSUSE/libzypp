@@ -377,22 +377,24 @@ Url clearQueryString(const Url &url)
   curlUrl.setPassword( "" );
   curlUrl.setPathParams( "" );
   curlUrl.setFragment( "" );
-  curlUrl.delQueryParam("cookies");
-  curlUrl.delQueryParam("proxy");
-  curlUrl.delQueryParam("proxyport");
-  curlUrl.delQueryParam("proxyuser");
-  curlUrl.delQueryParam("proxypass");
-  curlUrl.delQueryParam("ssl_capath");
-  curlUrl.delQueryParam("ssl_verify");
-  curlUrl.delQueryParam("ssl_clientcert");
-  curlUrl.delQueryParam("ssl_clientkey");
-  curlUrl.delQueryParam("timeout");
-  curlUrl.delQueryParam("auth");
-  curlUrl.delQueryParam("username");
-  curlUrl.delQueryParam("password");
-  curlUrl.delQueryParam("mediahandler");
-  curlUrl.delQueryParam("credentials");
-  curlUrl.delQueryParam("head_requests");
+  curlUrl.delQueryParams( {
+    "cookies",
+    "proxy",
+    "proxyport",
+    "proxyuser",
+    "proxypass",
+    "ssl_capath",
+    "ssl_verify",
+    "ssl_clientcert",
+    "ssl_clientkey",
+    "timeout",
+    "auth",
+    "username",
+    "password",
+    "mediahandler",
+    "credentials",
+    "head_requests",
+  } );
   return curlUrl;
 }
 

@@ -12,6 +12,7 @@
 #ifndef   ZYPP_URL_H
 #define   ZYPP_URL_H
 
+#include <set>
 #include <zypp-core/url/UrlBase.h>
 #include <zypp-core/url/UrlUtils.h>
 
@@ -803,6 +804,10 @@ namespace zypp
      */
     void
     delQueryParam(const std::string &param);
+
+    /** \brief remove multiple query parameters at once */
+    void
+    delQueryParams(const std::set<std::string> &params);
 
 
     // -----------------

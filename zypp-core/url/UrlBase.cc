@@ -1347,16 +1347,34 @@ namespace zypp
     void
     UrlBase::delQueryParam(const std::string &param)
     {
+          bool dirty = false;
           zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_ENCODED));
           for ( auto it = pmap.begin(), last = pmap.end(); it != last; ) {
-            if ( url::decode( it->first ) == param )
+            if ( url::decode( it->first ) == param ) {
               it = pmap.erase( it );
-            else
+              dirty = true;
+            } else
               ++it;
           }
-          setQueryStringMap(pmap, url::E_ENCODED);
+          if ( dirty )
+            setQueryStringMap(pmap, url::E_ENCODED);
     }
 
+    void
+    UrlBase::delQueryParams(const std::set<std::string> &params)
+    {
+          bool dirty = false;
+          zypp::url::ParamMap pmap( getQueryStringMap(zypp::url::E_ENCODED));
+          for ( auto it = pmap.begin(), last = pmap.end(); it != last; ) {
+            if ( params.count( url::decode( it->first ) ) ) {
+              it = pmap.erase( it );
+              dirty = true;
+            } else
+              ++it;
+          }
+          if ( dirty )
+            setQueryStringMap(pmap, url::E_ENCODED);
+    }
 
     // ---------------------------------------------------------------
     std::string

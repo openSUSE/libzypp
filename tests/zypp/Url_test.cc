@@ -331,6 +331,10 @@ BOOST_AUTO_TEST_CASE(bsc1234304)
   u.setQueryParam("t=t", "b" );
   BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt=b" );
 
+  u.setQueryParam("local", "b" );
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&local=b&t%3Dt=b" );
+  u.delQueryParams( { "t=t", "local" } );
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9" );
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

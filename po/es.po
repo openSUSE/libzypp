@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2024-10-18 14:48+0000\n"
+"PO-Revision-Date: 2024-12-12 14:48+0000\n"
 "Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/es/"
 ">\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3908,7 +3908,7 @@ msgstr "No es posible crear %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "No se pudieron recuperar los nuevos metadatos del repositorio."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
@@ -4199,7 +4199,7 @@ msgstr "Error de applydeltarpm."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "No hay permiso para escribir en el caché de repositorio."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."

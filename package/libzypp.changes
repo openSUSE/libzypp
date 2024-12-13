@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Dec 13 12:09:19 CET 2024 - ma@suse.de
+
+- Url query part: `=` is a safe char in value (bsc#1234304)
+  Some CDN auth token implementations require a `=` within the
+  query parameters value not to be %-encoded.
+- version 9.41.4 (8)
+
+-------------------------------------------------------------------
 Thu Feb 15 15:12:02 CET 2024 - ma@suse.de
 
 - build against openssl1 and openssl1 enabled libcurl4 library.

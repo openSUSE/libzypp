@@ -24,6 +24,7 @@ int usage( const argparse::Options & options_r, int return_r = 0 )
 
 int main ( int argc, char *argv[] )
 {
+  auto z = getZYpp();
 
   appname = Pathname::basename( argv[0] );
   argparse::Options options;
@@ -94,12 +95,22 @@ int main ( int argc, char *argv[] )
   krnls.setKeepSpec( keepSpec );
   krnls.markObsoleteKernels();
 
-
-  std::cout << "Purged kernels: " << std::endl;
+  unsigned count = 0;
   auto pool = ResPool::instance();
   const filter::ByStatus toBeUninstalledFilter( &ResStatus::isToBeUninstalled );
   for ( auto it = pool.byStatusBegin( toBeUninstalledFilter ); it != pool.byStatusEnd( toBeUninstalledFilter );  it++  ) {
     std::cout << "Removing " << it->asString() + (it->status().isByUser() ? " (by user)" : " (autoremoved)") << std::endl;
+    ++count;
+  }
+  std::cout << "Purged kernels: " << count << std::endl;
+
+  const auto & clusterResult { krnls.clusterKmps() };
+  std::cout << clusterResult.first << endl;
+
+  const auto & purgableKmps { clusterResult.second };
+  std::cout << "Purgable Kmps: " << purgableKmps.size() << std::endl;
+  for ( const auto & kmp : purgableKmps ) {
+    std::cout << "  purge: " << kmp << std::endl;
   }
 
   return 0;

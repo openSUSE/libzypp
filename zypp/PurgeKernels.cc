@@ -701,4 +701,185 @@ namespace zypp {
     return _pimpl->_keepSpec;
   }
 
-}
+  std::pair<PurgeKernels::KernelKmps,PurgeKernels::PurgableKmps> PurgeKernels::clusterKmps( const bool checkSystem )
+  {
+    using SolvableSet =std::unordered_set<sat::Solvable>;
+
+    // Whether slv is in container
+    auto contains = []( const SolvableSet & container_r, const sat::Solvable & slv_r ) -> bool {
+      return container_r.find( slv_r ) != container_r.end();
+    };
+
+    // Remove items from fitting which do not occur in matching
+    auto intersect = [&contains]( SolvableSet & fitting_r, const SolvableSet & matching_r ) {
+      for ( auto it = fitting_r.begin(); it != fitting_r.end(); ) {
+        if ( contains( matching_r, *it ) )
+          ++it;
+        else
+          it = fitting_r.erase( it );
+      }
+    };
+
+    SolvableSet kernels;  // multiversion kernels, if checkSystem is true only the ones to keep.
+    SolvableSet purged;   // If checkSystem is true, kernels to be purged are kept here.
+    SolvableSet kmps;     // multiversion kmps
+    {
+      const Capability idxcap { "kernel-uname-r" };
+      sat::WhatProvides idx { idxcap };
+      for ( const auto & i : idx ) {
+        if ( i.isSystem() != checkSystem )
+          continue;
+        if ( not checkSystem || PoolItem(i).status().staysInstalled() )
+          kernels.insert( i );
+        else
+          purged.insert( i );
+      }
+    }
+    {
+      const Capability idxcap { "multiversion(kernel)" };
+      sat::WhatProvides idx { idxcap };
+
+      StrMatcher matchMod { "kmod(*)", Match::GLOB };
+      auto isKmp = [&matchMod]( const sat::Solvable & slv_r ) -> bool {
+        for ( const auto & prov : slv_r.provides() ) {
+          if ( matchMod.doMatch( prov.detail().name().c_str() ) )
+            return true;
+        }
+        return false;
+      };
+
+      for ( const auto & i : idx ) {
+        if ( i.isSystem() != checkSystem )
+          continue;
+        if ( contains( kernels, i ) || contains( purged, i ) )
+          continue;
+        if ( isKmp( i ) ) kmps.insert( i );
+          // else: multiversion others
+      }
+    }
+    MIL << "!Kernel " << kernels.size() << ", purged " << purged.size() << ", KMPs " << kmps.size() << std::endl;
+
+    // Caching which KMP requirement is provided by what kernel (kept ones only).
+    std::unordered_map<Capability,SolvableSet> whatKernelProvidesCache;
+    auto whatKernelProvides = [&]( const Capability & req ) -> const SolvableSet & {
+      auto iter = whatKernelProvidesCache.find( req );
+      if ( iter != whatKernelProvidesCache.end() )
+        return iter->second;  // hit
+      // miss:
+      SolvableSet & providingKernels = whatKernelProvidesCache[req];
+      sat::WhatProvides idx { req };
+      for ( const auto & i : idx ) {
+        if ( contains( kernels, i ) )
+          providingKernels.insert( i );
+      }
+      return providingKernels;
+    };
+
+    // using Bucket     = std::set<sat::Solvable,byNVRA>;              ///< fitting KMP versions
+    // using KmpBuckets = std::map<IdString,Bucket>;                   ///< KMP name : fitting KMP versions
+    // using KernelKmps = std::map<sat::Solvable,KmpBuckets,byNVRA>;   ///< kernel : KMP name : fitting KMP versions
+    // using PurgableKmps = std::unordered_set<sat::Solvable>;         ///< KMPs found to be superfluous
+
+    // Cluster the KMPs....
+    KernelKmps kernelKmps;
+    SolvableSet protectedKmps;
+
+    for ( const auto & kmp : kmps ) {
+      // Kernels satisfying all kernel related requirements
+      std::optional<SolvableSet> fittingKernels;
+      for ( const auto & req : kmp.requires() ) {
+        const SolvableSet & providingKernels { whatKernelProvides( req ) };
+        if ( providingKernels.size() == 0 )
+          continue; // not a kernel related requirement
+        if ( not fittingKernels ) {
+          fittingKernels = providingKernels; // initial set
+        } else {
+          intersect( *fittingKernels, providingKernels );
+        }
+      }
+      if ( fittingKernels ) {
+        for ( const auto & kernel : *fittingKernels ) {
+          kernelKmps[kernel][kmp.ident()].insert( kmp );
+        }
+      }
+      else {
+        // The Solvable::noSolvable entry for KMPs with no kernel requirements
+        kernelKmps[sat::Solvable::noSolvable][kmp.ident()].insert( kmp );
+        DBG << "PROTECT (no kernel requirements)" << kmp << std::endl;
+        protectedKmps.insert( kmp );
+      }
+    }
+
+    // Now protect the highest KMP versions per kernel.
+    // ==== kernel-default 5.14.21-150400.24.136.1 (i)
+    //      drbd-kmp-default fit 3 versions(s)
+    //          - drbd-kmp-default 9.0.30~1+git.10bee2d5_k5.14.21_150400.22-150400.1.75 (i)
+    //          - drbd-kmp-default 9.0.30~1+git.10bee2d5_k5.14.21_150400.24.11-150400.3.2.9 (i)
+    //          * drbd-kmp-default 9.0.30~1+git.10bee2d5_k5.14.21_150400.24.46-150400.3.4.1 (i)
+    for ( const auto & [kernel,bucket] : kernelKmps ) {
+      if ( not kernel ) // The Solvable::noSolvable entry for KMPs with no kernel requirements
+        continue;       // (already in protectedKmps)
+
+      for ( const auto & el : bucket ) {
+        const auto & versions { el.second };
+        sat::Solvable highest { *versions.rbegin() };
+        DBG << "PROTECT (best)" << highest << " for " << kernel << std::endl;
+        protectedKmps.insert( highest );
+      }
+    }
+
+    // Build result
+    SolvableSet purgableKmps { kmps };
+    for ( const auto & kmp : protectedKmps ) {
+      purgableKmps.erase( kmp );
+    }
+    MIL << "PROTECTED: " << protectedKmps.size() << std::endl;
+    MIL << "PURGABLE:  " << purgableKmps.size() << std::endl;
+    for ( const auto & kmp : purgableKmps ) {
+      DBG << "purge:     " << kmp << std::endl;
+    }
+    return { kernelKmps, purgableKmps };
+  }
+
+  std::ostream & operator<<( std::ostream & str, const PurgeKernels::KernelKmps & obj )
+  {
+    using SolvableSet = PurgeKernels::PurgableKmps;
+    SolvableSet kmps;
+    SolvableSet protectedKmps;
+
+    for ( const auto & [kernel,bucket] : obj ) {
+      if ( not kernel )
+        str << std::endl << "==== Does not require a kept kernel" << std::endl;
+      else
+        str << std::endl << "==== " << kernel << std::endl;
+
+      for ( const auto & [kmp,versions] : bucket ) {
+        sat::Solvable highest { *versions.rbegin() };
+        if ( kernel )
+          protectedKmps.insert( highest );
+        str << "     " << kmp << " fit " << versions.size() << " versions(s)" << std::endl;
+        for ( const auto & version : versions ) {
+          str << "         "<<(not kernel||version==highest?"*":"-")<<" " << version << std::endl;
+          kmps.insert( version );
+          if ( not kernel )
+            protectedKmps.insert( version );
+        }
+      }
+    }
+
+    SolvableSet purgableKmps { kmps };
+    for ( const auto & kmp : protectedKmps ) {
+      purgableKmps.erase( kmp );
+    }
+
+    str << "KMPS:      " << kmps.size() << std::endl;
+    str << "PROTECTED: " << protectedKmps.size() << std::endl;
+    str << "PURGABLE:  " << purgableKmps.size() << std::endl;
+    for ( const auto & kmp : purgableKmps ) {
+      str << "  purge:   " << kmp << std::endl;
+    }
+
+    return str;
+  }
+
+} // namespace zypp

@@ -177,7 +177,7 @@ namespace zypp::misc::testcase {
         if ( !trial["trial"] )
           return makeError("Every element in the trials sequence needs to have the 'trial' key.");
 
-        if ( !yamltest::detail::parseTrial( trial["trial"], t, err) )
+        if ( !yamltest::detail::parseTrial( trial["trial"], t, _setup.data().globalPath, err) )
           return false;
         _trials.push_back( t );
       }

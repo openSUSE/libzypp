@@ -84,6 +84,7 @@ namespace zypp
 
       /** Provide a package. */
       ManagedFile get( const PoolItem & citem_r );
+      ManagedFile get_from_cache( const PoolItem & citem_r );
       /** \overload */
       ManagedFile get( sat::Solvable citem_r )
       { return get( PoolItem(citem_r) ); }

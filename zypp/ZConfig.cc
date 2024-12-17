@@ -495,7 +495,7 @@ namespace zypp
         , repo_add_probe          	( false )
         , repo_refresh_delay      	( 10 )
         , repoLabelIsAlias              ( false )
-        , download_use_deltarpm   	( true )
+        , download_use_deltarpm   	( false)
         , download_use_deltarpm_always  ( false )
         , download_media_prefer_download( true )
         , download_mediaMountdir	( "/var/adm/mount" )

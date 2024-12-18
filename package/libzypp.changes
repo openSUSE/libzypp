@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 18 22:40:49 CET 2024 - ma@suse.de
+
+- Url: queryparams without value should not have a trailing "=".
+- version 17.35.16 (35)
+
+-------------------------------------------------------------------
 Mon Dec  9 19:01:14 CET 2024 - ma@suse.de
 
 - Url query part: `=` is a safe char in value (bsc#1234304)

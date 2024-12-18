@@ -326,8 +326,10 @@ namespace zypp
           if ( not str.empty() )
             str += psep;
           str += it->first;
-          str += vsep;
-          str += it->second;
+          if ( not it->second.empty() ) {
+            str += vsep;
+            str += it->second;
+          }
         }
       }
 

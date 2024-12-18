@@ -311,6 +311,9 @@ BOOST_AUTO_TEST_CASE(bsc1234304)
   u.setQueryParam("t=t", "b" );
   BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&t%3Dt=b" );
 
+  // queryparams without value should not have a trailing "="
+  u.setQueryParam("empty", "" );
+  BOOST_CHECK_EQUAL( u.getQueryString(), "__token__=exp=%3D%261862049599~acl=/SUSE/*~hmac=968c8dc9&empty&t%3Dt=b" );
 }
 
 // vim: set ts=2 sts=2 sw=2 ai et:

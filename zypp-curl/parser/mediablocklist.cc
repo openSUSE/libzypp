@@ -492,7 +492,7 @@ void MediaBlockList::reuseBlocks(FILE *wfp, const std::string& filename)
       // build the hashtable
       uint rsumHashMask = 0;
       {
-        int i = 16;
+        uint i = 16;
 
         /* Try hash size of 2^i; step down the value of i until we find a good size */
         while ((2 << (i - 1)) > nblks && i > 4)

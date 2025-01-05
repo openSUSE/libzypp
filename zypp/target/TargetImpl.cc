@@ -2498,7 +2498,7 @@ namespace zypp
 
               Resolvable::constPtr resPtr;
               const auto stepId = p->stepId;
-              if ( stepId >= 0 && stepId < steps.size() ) {
+              if ( stepId >= 0 && static_cast<size_t>(stepId) < steps.size() ) {
                 resPtr = makeResObject( steps.at(stepId).satSolvable() );
               }
 
@@ -2522,7 +2522,7 @@ namespace zypp
 
               Resolvable::constPtr resPtr;
               const auto stepId = p->stepId;
-              if ( stepId >= 0 && stepId < steps.size() ) {
+              if ( stepId >= 0 && static_cast<size_t>(stepId) < steps.size() ) {
                 resPtr = makeResObject( steps.at(stepId).satSolvable() );
 
                 if ( p->fatal ) {

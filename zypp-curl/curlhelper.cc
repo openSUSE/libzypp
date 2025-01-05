@@ -471,7 +471,7 @@ int CurlPollHelper::timercb(CURLM *, long timeout_ms, CurlPollHelper *thatPtr) {
 
 CURLMcode internal::CurlPollHelper::handleSocketActions( const std::vector<GPollFD> &actionsFds , int first )
 {
-  for ( int sock = first; sock < actionsFds.size(); sock++ ) {
+  for ( size_t sock = first; sock < actionsFds.size(); sock++ ) {
     const auto &waitFd = actionsFds[sock];
     if ( waitFd.revents == 0 )
       continue;

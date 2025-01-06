@@ -295,6 +295,9 @@ namespace zypp
     const char * t = 0;
     const char * n = 0;
 
+    // match any stat error appended to file path
+    static const str::regex statErr(R"(.*\(stat: [^)]+\)$)");
+
     for_( ch, line_r.c_str(), ch+line_r.size() )
     {
       switch ( *ch )
@@ -330,7 +333,9 @@ namespace zypp
             || ( *f == 'l' && *(f+1) == 't' && *(f+2) == 'x' && *(f+3) == '\0' ) ) )
       return;	// wrong filedescriptor type
 
-    if ( str::contains( n, "(stat: Permission denied)" ) )
+    // lib/dialects/linux/dproc.c will append stat error to file path
+    // if the file has not been detected as deleted. Ignore those cases
+    if ( str::regex_match( n, statErr ) )
       return;	// Avoid reporting false positive due to insufficient permission.
 
     if ( ! _verbose )

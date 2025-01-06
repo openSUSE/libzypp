@@ -46,7 +46,7 @@ namespace yamltest::detail {
           const std::string &fName = data.as<std::string>();
           MIL << "Trying to load list from file " << fName << std::endl;
           try {
-            auto doc = YAML::LoadFile( fName );
+            auto doc = YAML::LoadFile( (target.globalPath / fName).asString() );
             if ( doc.Type() != YAML::NodeType::Sequence ) {
               if ( err ) *err = "Expected the top node to be a sequence in external file for key: ";
               return false;
@@ -218,7 +218,7 @@ namespace yamltest::detail {
         if ( !success ) return false;
       }
       else if ( key == ("autoinst") ) {
-        bool success = readListInlineOrFromFile( [&]( const YAML::Node &dataNode, auto ){
+        bool success = readListInlineOrFromFile( [&]( const YAML::Node &dataNode, std::string * err ){
           target.autoinstalled.push( zypp::IdString( dataNode.as<std::string>() ).id() );
           return true;
         }, err );
@@ -238,10 +238,10 @@ namespace yamltest::detail {
   }
 
   template <typename T>
-  bool parseJobs  ( const YAML::Node &trial, std::vector<T> &target, std::string *err );
+  bool parseJobs  ( const YAML::Node &trial, std::vector<T> &target, const zypp::Pathname &testcaseDir, std::string *err );
 
   template <typename T>
-  bool parseSingleJob ( const YAML::Node &jobNode, std::vector<T> &target, std::string *err ) {
+  bool parseSingleJob ( const YAML::Node &jobNode, std::vector<T> &target, const zypp::Pathname &testcaseDir, std::string *err ) {
 
     constexpr bool isSubNode = std::is_same_v<T, std::shared_ptr<zypp::misc::testcase::TestcaseTrial::Node>>;
     if ( jobNode["include"] ) {
@@ -249,8 +249,8 @@ namespace yamltest::detail {
       const auto &fName = jobNode["include"].as<std::string>();
       MIL << "Including file " << fName << std::endl;
       try {
-        auto doc = YAML::LoadFile( fName );
-        if ( !parseJobs( doc, target, err ) )
+        auto doc = YAML::LoadFile( (testcaseDir / fName).asString() );
+        if ( !parseJobs( doc, target, testcaseDir, err ) )
           return false;
         MIL << "Including file " << fName << "was successful" << std::endl;
       } catch ( YAML::Exception &e ) {
@@ -291,13 +291,13 @@ namespace yamltest::detail {
           // if the type of a data field is a sequence, we treat all the elements in there
           // as sub elements. Just like in XML you can have sub nodes its the same here
           // the key name is ignored in those cases and can be chosen freely
-          if ( !parseJobs( data, n.children(), err ) )
+          if ( !parseJobs( data, n.children(), testcaseDir, err ) )
             return false;
         } else if ( data.IsMap() ) {
           // if the type of a data field is a map, we build a child node from it.
           // Just like with sequence but a single field.
           // The key name is ignored in those cases and can be chosen freely
-          if ( !parseSingleJob( data, n.children(), err) )
+          if ( !parseSingleJob( data, n.children(), testcaseDir, err) )
             return false;
         } else {
           ERR << "Ignoring field " << key << " with unsupported type:" << data.Type() << std::endl;
@@ -313,17 +313,17 @@ namespace yamltest::detail {
   }
 
   template <typename T>
-  bool parseJobs  ( const YAML::Node &trial, std::vector<T> &target, std::string *err ) {
+  bool parseJobs  ( const YAML::Node &trial, std::vector<T> &target, const zypp::Pathname &testcaseDir, std::string *err ) {
     for ( const auto &jobNode : trial ) {
-      if ( !parseSingleJob( jobNode, target, err ) )
+      if ( !parseSingleJob( jobNode, target, testcaseDir, err ) )
         return false;
     }
     return true;
   }
 
-  bool parseTrial ( const YAML::Node &trial, zypp::misc::testcase::TestcaseTrial &target, std::string *err ) {
+  bool parseTrial ( const YAML::Node &trial, zypp::misc::testcase::TestcaseTrial &target, const zypp::Pathname &testcaseDir, std::string *err ) {
     MIL << "Parsing trials." << std::endl;
-    return parseJobs( trial, target.nodes(), err );
+    return parseJobs( trial, target.nodes(), testcaseDir, err );
   }
 }
 

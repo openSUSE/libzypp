@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE( test_url5)
 BOOST_AUTO_TEST_CASE(plugin_scriptpath)
 {
   // plugin script path must not be rewritten
-  for ( const std::string & t : { "script", "script/", "/script", "/script/", "./script", "./script/" } )
+  for ( const std::string t : { "script", "script/", "/script", "/script/", "./script", "./script/" } )
   {
     BOOST_CHECK_EQUAL( Url("plugin:"+t).getPathName(),	t );
   }

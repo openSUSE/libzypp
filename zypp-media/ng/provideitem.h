@@ -13,9 +13,12 @@
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-media/ng/ProvideFwd>
 #include <zypp-core/ByteCount.h>
+#include <optional>
 
 namespace zyppng
 {
+  class ProvideQueue;
+  class ProvideMessage;
   class ProvidePrivate;
   class ProvideItemPrivate;
 

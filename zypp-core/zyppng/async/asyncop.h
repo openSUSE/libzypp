@@ -302,8 +302,26 @@ namespace zyppng {
     }
   }
 
+  /*!
+   * Generic Promise type to be returned to calling code waiting for async results.
+   * Can register a cleanup function to clean up resources when the request is cancelled.
+   */
+  template< typename T >
+  class AsyncOpPromise : public AsyncOp<T>
+  {
+  public:
+    using CleanupFun = std::function<void( AsyncOpPromise<T> &)>;
+    AsyncOpPromise( CleanupFun cleanup = nullptr )
+      : _cleanup( std::move(cleanup) )
+    {}
+
+    ~AsyncOpPromise() {
+      if ( _cleanup )
+        _cleanup(*this);
+    }
+
+  private:
+    CleanupFun _cleanup;
+  };
 }
-
-
-
 #endif

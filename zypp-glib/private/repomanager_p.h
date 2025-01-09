@@ -13,6 +13,7 @@
 #include <zypp-glib/repomanager.h>
 #include <zypp-glib/private/context_p.h>
 #include <zypp/ng/repomanager.h>
+#include <zypp-glib/utils/GioMemory>
 
 #include "globals_p.h"
 
@@ -33,6 +34,8 @@ struct ZyppRepoManagerPrivate
   std::optional<ConstructData> _constrProps = ConstructData();
 
   zyppng::AsyncRepoManagerRef _cppObj;
+
+  std::vector<zypp::glib::GTaskRef> _asyncOpsRunning;
 };
 
 struct _ZyppRepoManager

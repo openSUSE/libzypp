@@ -61,8 +61,7 @@ namespace zyppng {
   //return a async op that waits for a signal to emitted by a object
   template <typename T,
             typename SignalGetter >
-  auto await ( SignalGetter &&sigGet )
-  {
+  auto await ( SignalGetter &&sigGet ) {
     return  std::make_shared<detail::AwaitImpl<T, SignalGetter>>( std::forward<SignalGetter>(sigGet) );
   }
 

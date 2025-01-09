@@ -11,14 +11,13 @@
 #include "private/repoinfo_p.h"
 #include "private/error_p.h"
 #include "expected.h"
-#include "zypp-core/zyppng/ui/progressobserver.h"
-#include <zypp-glib/utils/GList>
-#include <string>
-#include <iostream>
-#include <zypp-glib/error.h>
+#include <zypp-core/zyppng/ui/progressobserver.h>
+#include <zypp-core/zyppng/pipelines/asyncresult.h>
+
+#include "utils/GList"
+#include "private/cancellable_p.h"
+#include "progressobserver.h"
 #include <zypp-glib/zyppenums.h>
-#include <zypp-glib/progressobserver.h>
-#include <zypp-glib/utils/GList>
 
 // define the GObject stuff
 G_DEFINE_TYPE_WITH_PRIVATE(ZyppRepoManager, zypp_repo_manager, G_TYPE_OBJECT)
@@ -220,84 +219,85 @@ GList *zypp_repo_manager_get_known_services(ZyppRepoManager *self)
   return ret;
 }
 
-void zypp_repo_manager_refresh_repos_async ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, GCancellable *cancellable, GAsyncReadyCallback cb, gpointer user_data )
+
+struct TaskData {
+  zyppng::AsyncOpBaseRef _op;
+  zyppng::ProgressObserverRef _prog;
+};
+
+void zypp_repo_manager_refresh_repo ( ZyppRepoManager *self, ZyppRepoInfo *repo, gboolean forceDownload, GCancellable *cancellable, GAsyncReadyCallback cb, gpointer user_data )
 {
   ZYPP_REPO_MANAGER_D();
 
   auto ctx = d->_cppObj->zyppContext();
-  auto progress = ctx->progressObserver();
+  zyppng::ProgressObserverRef progress = zyppng::ProgressObserver::makeSubTask( ctx->progressObserver(), 1.0, "Refreshing Repo und so" );
 
-  zypp::glib::GListContainer<ZyppExpected> results;
-  zypp::glib::GListView<ZyppRepoInfo> repoInfos( repos );
-  std::vector<zyppng::RepoInfo> cppInfos;
-  std::transform( repoInfos.begin (), repoInfos.end(), std::back_inserter(cppInfos), []( ZyppRepoInfo *i) { return zypp_repo_info_get_cpp (i); } );
+  g_return_if_fail( zyppng::EventDispatcher::instance()->glibContext() != nullptr );
 
-  auto task = [ mgr = d->_cppObj, progress, repos = std::move(cppInfos), forceDownload ]() {
-    return mgr->refreshMetadata( repos, forceDownload ?  zypp::RepoManagerFlags::RefreshForced : zypp::RepoManagerFlags::RefreshIfNeeded, progress );
-  };
+  if ( !repo ) {
+    GError *err = nullptr;
+    zypp_error_from_exception (&err, ZYPP_EXCPT_PTR ( zypp::Exception("Invalid arguments to zypp_repo_manager_refresh_repo_async") ));
+    g_task_report_error( self, cb, user_data, (gpointer)zypp_repo_manager_refresh_repo, err );
+    return;
+  }
 
-#if 0
-  auto cppResults = d->_cppObj->refreshMetadata( std::move(cppInfos), forceDownload ?  zypp::RepoManagerFlags::RefreshForced : zypp::RepoManagerFlags::RefreshIfNeeded, progress );
+  g_main_context_push_thread_default( zyppng::EventDispatcher::instance()->glibContext() );
+  zypp::glib::GTaskRef task = zypp::glib::adopt_gobject( g_task_new( self, cancellable, cb, user_data ) );
+  g_main_context_pop_thread_default ( zyppng::EventDispatcher::instance()->glibContext() );
 
-  // need to give the results back to the calling code
-  for ( const auto &res : cppResults ) {
-    if ( res.second ) {
-      // need to sync back the result
-      for ( auto info : repoInfos ) {
-        zyppng::RepoInfo &repo = zypp_repo_info_get_cpp (info);
-        if ( repo.alias() == res.first.alias() ) {
-          repo = res.first;
+
+  auto op = d->_cppObj->refreshMetadata( zypp_repo_info_get_cpp(repo), forceDownload ?  zypp::RepoManagerFlags::RefreshForced : zypp::RepoManagerFlags::RefreshIfNeeded, progress );
+
+  auto taskData = std::make_unique<TaskData>();
+  taskData->_prog = std::move(progress);
+  taskData->_op   = op;
+
+  // task keeps the reference to our async op
+  g_task_set_task_data( task.get(), new zyppng::AsyncOpBaseRef(op), zypp::glib::g_destroy_notify_delete<zyppng::AsyncOpBaseRef> );
+
+  auto taskPtr = task.get();
+
+  // we keep the reference to our task
+  d->_asyncOpsRunning.push_back( std::move(task) );
+
+  // this will get triggered immediately if the task is already done
+  op->onReady(
+    [ task = taskPtr /*do not take a reference*/ ]( zyppng::expected<zyppng::RepoInfo> res ){
+          MIL << "Async Operation finished" << std::endl;
+          if ( !res ) {
+            GError *err = nullptr;
+            zypp_error_from_exception (&err, res.error() );
+            g_task_return_error( task, err );
+            return;
+          }
+
+          // return the RepoInfo to the caller via callback
+          g_task_return_pointer( task, zypp_wrap_cpp( res.get() ), g_object_unref );
         }
-      }
+  );
+}
 
-      GValue val = G_VALUE_INIT;
-      g_value_init( &val, ZYPP_TYPE_REPO_REFRESH_RESULT);
-      g_value_set_enum ( &val, ZYPP_REPO_MANAGER_REFRESHED );
-      results.push_back ( zypp_expected_new_value (&val) );
+ZyppRepoInfo *zypp_repo_manager_refresh_repo_finish ( ZyppRepoManager *self,
+                                                      GAsyncResult  *result,
+                                                      GError **error )
+{
+  MIL << "Inside finish func" << std::endl;
+  g_return_val_if_fail (g_task_is_valid (result, self), NULL);
 
+  MIL << "Inside finish func 2" << std::endl;
+  // if the result is tagged with the zypp_repo_manager_refresh_repo func it was created before the task
+  // was even started and registered. No need to clean it
+  if ( !g_async_result_is_tagged ( result, (gpointer)zypp_repo_manager_refresh_repo ) ) {
+    ZYPP_REPO_MANAGER_D();
+    auto i = std::find_if( d->_asyncOpsRunning.begin(), d->_asyncOpsRunning.end(),[&]( const auto &e ) { return e.get() == G_TASK(result); } );
+    if ( i != d->_asyncOpsRunning.end() ) {
+      d->_asyncOpsRunning.erase(i);
     } else {
-      GError *err = nullptr;
-      zypp_error_from_exception ( &err, res.second.error() );
-      results.push_back ( zypp_expected_new_error ( err ) );
+      WAR << "Task was not in the list of currently running tasks, thats a bug" << std::endl;
     }
   }
 
-  //keep a reference to the tracker
-  zypp::glib::ZyppProgressObserverRef statusTracker = zypp::glib::zypp_wrap_cpp<ZyppProgressObserver>(progress);
-  zypp_progress_observer_set_current ( statusTracker.get(), 0 );
-  zypp_progress_observer_set_base_steps ( statusTracker.get(), repoInfos.size());
-
-  std::vector<zypp::glib::ZyppProgressObserverRef> subTasksTracker;
-  for ( const auto &info : repoInfos ) {
-    const auto &zInfo =  zypp_repo_info_get_cpp(info);
-    const std::string &name =  zInfo.name ();
-    zypp::glib::ZyppProgressObserverRef subTask = zypp::glib::g_object_create<ZyppProgressObserver>( "label", name.c_str (), "base-steps", 10 );
-    zypp_progress_observer_add_subtask ( statusTracker.get(), subTask.get(), 1.0 );
-    subTasksTracker.push_back ( subTask );
-  }
-
-  std::cerr << "------------------------ STARTING TO GENERATE ----------------------------" << std::endl;
-
-  for ( int i = 0; i < 10; i++ ) {
-    for ( auto &t : subTasksTracker ) {
-      zypp_progress_observer_inc( t.get(), 1 );
-    }
-  }
-  for ( auto &t : subTasksTracker ) {
-    zypp_progress_observer_set_finished ( t.get() );
-  }
-
-  zypp_progress_observer_set_current ( statusTracker.get(), repoInfos.size() );
-
-  GValue val = G_VALUE_INIT;
-  g_value_init( &val, ZYPP_TYPE_REPO_REFRESH_RESULT);
-  g_value_set_enum ( &val, ZYPP_REPO_MANAGER_REFRESHED );
-
-  results.push_back ( zypp_expected_new_value (&val) );
-  results.push_back ( zypp_expected_new_error ( g_error_new( ZYPP_REPO_MANAGER_ERROR, ZYPP_REPO_MANAGER_ERROR_REF_FAILED, "Refresh failed horribly") ) );
-  results.push_back ( zypp_expected_new_value (&val) );
-  results.push_back ( zypp_expected_new_error ( g_error_new( ZYPP_REPO_MANAGER_ERROR, ZYPP_REPO_MANAGER_ERROR_REF_FAILED, "Refresh failed horribly") ) );
-  return results.take();
-#endif
+  MIL << "Inside finish func 3" << std::endl;
+  return reinterpret_cast<ZyppRepoInfo *>(g_task_propagate_pointer (G_TASK (result), error));
 }
 

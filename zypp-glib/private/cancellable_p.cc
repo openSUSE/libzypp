@@ -12,13 +12,11 @@
 namespace zypp::glib
 {
 
-  void CancellableOp::onFdReady(int fd, int events)
-  {
-  }
 
-  void CancellableOp::onSignal(int signal)
-  {
-  }
+
+
+
+
 
 
 }

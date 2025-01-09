@@ -14,6 +14,7 @@
 #include <zypp-core/zyppng/base/private/threaddata_p.h>
 #include <zypp/ZConfig.h>
 #include <zypp/ng/workflows/mediafacade.h>
+#include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/ContextBase>
 #include <zypp-core/zyppng/base/EventLoop>
 #include <zypp-core/zyppng/base/EventDispatcher>
@@ -53,7 +54,7 @@ namespace zyppng {
   }
 
   template <typename Tag>
-  class Context : public ContextBase, private detail::ContextData<Tag> {
+  class Context : public ContextBase, public MaybeAsyncMixin< std::is_same_v<Tag, AsyncTag> >,  private detail::ContextData<Tag> {
 
     ZYPP_ADD_CREATE_FUNC(Context)
 
@@ -61,6 +62,7 @@ namespace zyppng {
     ZYPP_DECL_PRIVATE_CONSTR(Context)
     { }
 
+    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( (std::is_same_v<Tag, AsyncTag>) );
     using ProvideType     = std::conditional_t< std::is_same_v<Tag, AsyncTag>, Provide, MediaSyncFacade >;
     using SyncOrAsyncTag  = Tag;
 
@@ -72,7 +74,7 @@ namespace zyppng {
      * Tries to lock a resource \a ident with specified \a mode , if the resource is locked already,
      * a delayed lock request is enqueued in a list of waiters for said lock. A \a timeout is required.
      */
-    AsyncOpRef<expected<ResourceLockRef>> lockResourceWait( std::string ident, uint timeout, ResourceLockRef::Mode mode = ResourceLockRef::Shared )
+    MaybeAsyncRef<expected<ResourceLockRef>> lockResourceWait( std::string ident, uint timeout, ResourceLockRef::Mode mode = ResourceLockRef::Shared )
     {
       if constexpr ( std::is_same_v<Tag, AsyncTag> ) {
         auto res = this->lockResource ( ident, mode );
@@ -97,7 +99,7 @@ namespace zyppng {
         }
       } else {
         // no waiting in sync context
-        return makeReadyResult(this->lockResource ( ident, mode ));
+        return this->lockResource ( ident, mode );
       }
     }
 

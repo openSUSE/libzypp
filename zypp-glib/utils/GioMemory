@@ -28,6 +28,7 @@
 #include <zypp-glib/utils/GObjectMemory>
 
 ZYPP_DEFINE_GOBJECT_SIMPLE( GTask, g_task, G, TASK );
+ZYPP_DEFINE_GOBJECT_SIMPLE( GCancellable, g_cancellable, G, CANCELLABLE )
 ZYPP_DEFINE_GOBJECT_SIMPLE( GDBusConnection, g_dbus_connection, G, DBUS_CONNECTION );
 
 namespace zypp::glib
@@ -45,7 +46,7 @@ public:
         }
     }
 
-    zyppng::RetainPtr<GDBusConnection, GLibTypeTraits<GDBusConnection>::RetainTrait> bus_;
+    RetainPtr<GDBusConnection, GLibTypeTraits<GDBusConnection>::RetainTrait> bus_;
 };
 
 }

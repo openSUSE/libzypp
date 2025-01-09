@@ -44,11 +44,24 @@ namespace zyppng
     return _accepted;
   }
 
+  SignalProxy<void ()> UserRequest::sigFinished()
+  {
+    return _sigFinished;
+  }
+
+  void UserRequest::setFinished()
+  {
+    _finished = true;
+    _sigFinished.emit();
+  }
+
   ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string message, MType mType, UserData data )
     : UserRequest( std::move(data) )
     , _type( mType )
     , _message( std::move(message) )
-  { }
+  {
+    _finished = true; // always finished
+  }
 
   UserRequestType ShowMessageRequest::type() const
   {
@@ -90,6 +103,7 @@ namespace zyppng
 
     accept();
     _answer = sel;
+    setFinished(); // tell the code the event is ready
   }
 
   ListChoiceRequest::index_type ListChoiceRequest::choice() const
@@ -127,6 +141,7 @@ namespace zyppng
   {
     accept();
     _answer = sel;
+    setFinished(); // tell the code the event is ready
   }
 
   bool BooleanChoiceRequest::choice() const

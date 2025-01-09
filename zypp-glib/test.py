@@ -2,8 +2,10 @@
 
 import sys
 import re
+import urwid
 import inquirer
 import gi.repository
+
 # Set the search path to use the newly generated introspection files
 gi.require_version('GIRepository', '2.0')
 gi.require_version('GLib', '2.0')
@@ -20,18 +22,29 @@ gi.require_version('Zypp', '1.0')
 from gi.repository import Zypp
 
 
+loop = urwid.GLibEventLoop()
+
+application = Zypp.Application( eventDispatcher=loop._loop.get_context() )
 context = Zypp.Context()
 
+
+class ZyppMainView:
+  def __init():
+    return
+
 class Tracker:
-  def __init__(self, tracker = None, nesting = 0 ):
+  def __init__(self, tracker = None, nesting = 0, label = None ):
     if tracker is None:
       self.zyppTracker = Zypp.ProgressObserver()
     else:
       self.zyppTracker = tracker
 
+    if label is not None:
+      self.zyppTracker.set_label(label)
+
     self.childBars   = [] #where we store our children
-    self.progressBar = None
-    self.nesting     = 0
+    self.nesting     = nesting
+    self.progressBar = tqdm( total=100, position=self.nesting, desc=self.zyppTracker.get_label() )
 
     self.zyppTracker.connect("notify::label", self.on_label_change )
     self.zyppTracker.connect("notify::progress", self.on_progress )
@@ -40,16 +53,13 @@ class Tracker:
     self.zyppTracker.connect("new-subtask", self.on_new_subtask )
     self.zyppTracker.connect("event", self.on_user_request )
 
-    self.progressBar = tqdm( total=100, position=self.nesting, desc=self.zyppTracker.get_label() )
-
   def on_start( self, sender ):
     self.progressBar.update()
     self.lastProgress = 0
 
   def on_finished( self, sender ):
     self.progressBar.close()
-    del self.progressBar
-    self.progressBar = None
+    self.progressBar.update()
 
   def on_progress( self, sender, param ):
     newProgress = sender.get_property(param.name)
@@ -123,7 +133,21 @@ class Tracker:
         print(msgReq.get_message())
 
 
-progBar = Tracker()
+class Data:
+  def __init__( self ):
+    self.count = 0
+
+  def inc( self ):
+    self.count = self.count+1
+
+  def dec( self ):
+    self.count = self.count-1
+
+  def isDone( self ):
+    return (self.count <= 0)
+
+
+progBar = Tracker( label="Refreshing repositories" )
 context.set_progress_observer(progBar.zyppTracker)
 
 
@@ -144,20 +168,30 @@ except GLib.GError as e:
   exit(1)
 
 known_repos = repomgr.get_known_repos()
+if len(known_repos) == 0:
+  print("Nothing to do")
+  exit(0)
+
 print ("Knows repos: " + str(len(known_repos) ))
+
+def finRefresh( source_object, result, user_data ):
+  print("Ref_count is: " + str(user_data.count) )
+  try:
+    mep = source_object.refresh_repo_finish(result)
+    print("Yay refresh done for: " + mep.alias() )
+  except GLib.GError as e:
+    print("Error: " + e.message)
+    print("History: " + str(Zypp.Error.get_history(e)))
+  finally:
+    user_data.dec()
+    if user_data.isDone():
+      loop._loop.quit()
+
+counter = Data()
 for i in known_repos:
   print ( "Repo: "+i.name() )
+  print ("Refreshing")
+  counter.inc()
+  repomgr.refresh_repo( i, True, None, finRefresh, counter )
 
-print ("Refreshing")
-
-#refreshing the repos might change properties in the RepoInfos in our list
-refresh_results = repomgr.refresh_repos( known_repos, True)
-for res in refresh_results:
-  try:
-      result1 = res.get_value()
-  except GLib.GError as e:
-      print("Error: " + e.message)
-      print("History: " + str(Zypp.Error.get_history(e)))
-  else:
-      print("No error with res: ")
-      print(str(result1))
+loop.run()

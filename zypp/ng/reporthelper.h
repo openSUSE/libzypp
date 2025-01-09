@@ -123,7 +123,7 @@ namespace zyppng {
       if constexpr ( useNewStyleReports() ) {
         std::string label = (zypp::str::Format(_("No digest for file %s.")) % file ).str();
         auto req = BooleanChoiceRequest::create( label, false, AcceptNoDigestRequest::makeData(file) );
-        this->_taskObserver->sendUserRequest( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( req );
         return req->choice ();
       } else {
         return _report->askUserToAcceptNoDigest(file);
@@ -134,7 +134,7 @@ namespace zyppng {
       if constexpr ( useNewStyleReports() ) {
         std::string label = (zypp::str::Format(_("Unknown digest %s for file %s.")) %name % file).str();
         auto req = BooleanChoiceRequest::create( label, false, AcceptUnknownDigestRequest::makeData(file, name) );
-        this->_taskObserver->sendUserRequest( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( req );
         return req->choice ();
       } else {
         return _report->askUserToAccepUnknownDigest( file, name );
@@ -145,7 +145,7 @@ namespace zyppng {
       if constexpr ( useNewStyleReports() ) {
         std::string label = (zypp::str::Format(_("Digest verification failed for file '%s'")) % file).str();
         auto req = BooleanChoiceRequest::create( label, false, AcceptWrongDigestRequest::makeData(file, requested, found) );
-        this->_taskObserver->sendUserRequest( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( req );
         return req->choice ();
       } else {
         return _report->askUserToAcceptWrongDigest( file, requested, found );
@@ -188,7 +188,7 @@ namespace zyppng {
 
 
         auto req = BooleanChoiceRequest::create ( label, false, AcceptUnsignedFileRequest::makeData ( file, keycontext ) );
-        this->_taskObserver->sendUserRequest ( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest ( req );
         return req->choice ();
       } else {
         return _report->askUserToAcceptUnsignedFile( file, keycontext );
@@ -210,7 +210,7 @@ namespace zyppng {
               0, // default is option 0, do not trust
               AcceptKeyRequest::makeData ( key, keycontext )
               );
-        this->_taskObserver->sendUserRequest ( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest ( req );
         switch (req->choice()) {
           default:
           case 0:
@@ -241,7 +241,7 @@ namespace zyppng {
       if constexpr ( useNewStyleReports() ) {
         std::string label = zypp::str::Format( _("Key Name: %1%")) % keyData_r.name();
         auto req = ShowMessageRequest::create( label, ShowMessageRequest::MType::Info, VerifyInfoEvent::makeData ( file_r, keyData_r, keycontext) );
-        this->_taskObserver->sendUserRequest ( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest ( req );
       } else {
         return _report->infoVerify( file_r, keyData_r, keycontext );
       }
@@ -256,7 +256,7 @@ namespace zyppng {
         const std::string &lbl =  zypp::str::Format( PL_( "Received %1% new package signing key from repository \"%2%\":",
                                                           "Received %1% new package signing keys from repository \"%2%\":",
                                                           keyDataList_r.size() )) % keyDataList_r.size() % ( repoInfoOpt ? repoInfoOpt->asUserString() : std::string("norepo") );
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( lbl, ShowMessageRequest::MType::Info, KeyAutoImportInfoEvent::makeData( keyDataList_r, keySigning_r, keyContext_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( lbl, ShowMessageRequest::MType::Info, KeyAutoImportInfoEvent::makeData( keyDataList_r, keySigning_r, keyContext_r) ) );
       } else {
         return _report->reportAutoImportKey( keyDataList_r, keySigning_r, keyContext_r );
       }
@@ -276,7 +276,7 @@ namespace zyppng {
         // @TODO use a centralized Continue string!
         label += std::string(" ") + _("Continue?");
         auto req = BooleanChoiceRequest::create ( label, false, AcceptFailedVerificationRequest::makeData ( file, key, keycontext ) );
-        this->_taskObserver->sendUserRequest ( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest ( req );
         return req->choice ();
       } else {
         return _report->askUserToAcceptVerificationFailed( file, key, keycontext );
@@ -299,7 +299,7 @@ namespace zyppng {
               % file % keycontext.ngRepoInfo()->asUserString() % id;
 
         auto req = BooleanChoiceRequest::create ( label, false, AcceptUnknownKeyRequest::makeData ( file, id, keycontext ) );
-        this->_taskObserver->sendUserRequest ( req );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest ( req );
         return req->choice ();
       } else {
         return _report->askUserToAcceptUnknownKey( file, id, keycontext );
@@ -329,7 +329,7 @@ namespace zyppng {
     bool debug( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Debug, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Debug, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::debug ( msg_r, userData_r );
@@ -340,7 +340,7 @@ namespace zyppng {
     bool info( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Info, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Info, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::info ( msg_r, userData_r );
@@ -351,7 +351,7 @@ namespace zyppng {
     bool warning( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Warning, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Warning, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::warning ( msg_r, userData_r );
@@ -362,7 +362,7 @@ namespace zyppng {
     bool error( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Error, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Error, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::error ( msg_r, userData_r );
@@ -373,7 +373,7 @@ namespace zyppng {
     bool important( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Important, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Important, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::important ( msg_r, userData_r );
@@ -384,7 +384,7 @@ namespace zyppng {
     bool data( std::string msg_r, UserData userData_r = UserData() )
     {
       if constexpr ( useNewStyleReports() ) {
-        this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Data, std::move(userData_r) ) );
+        if ( this->_taskObserver ) this->_taskObserver->sendUserRequest( ShowMessageRequest::create( std::move(msg_r), ShowMessageRequest::MType::Data, std::move(userData_r) ) );
         return true;
       } else {
         return zypp::JobReport::data ( msg_r, userData_r );

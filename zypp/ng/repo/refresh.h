@@ -99,7 +99,7 @@ namespace zyppng::repo {
        */
       MaybeAsyncRef<expected<RepoLockRef>> engageLock() {
         using namespace zyppng::operators;
-        const auto lockSuccess = [this](){
+        const auto lockSuccess = [this]() -> expected<RepoLockRef>{
           _resLockRef++;
           return expected<RepoLockRef>::success( [this](){ releaseLock(); } );
         };

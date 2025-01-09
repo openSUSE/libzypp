@@ -279,6 +279,8 @@ namespace zypp
   {
     template <typename F>
     Deferred( F&&cb );
+
+    Deferred() : AutoDispose() {}
   };
 
   template<typename F>

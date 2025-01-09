@@ -60,7 +60,7 @@ struct ZyppUserRequestImpl
       return value;
     }
 
-    g_warning( G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, ( zypp::str::Str()<<"Unknown value type for key: "<<key ).asString().c_str() );
+    g_warning( ( zypp::str::Str()<<"Unknown value type for key: "<<key ).asString().c_str() );
     return nullptr;
   }
 

@@ -16,7 +16,6 @@
 #include <zypp-core/base/String.h>
 
 #include <zypp-glib/utils/RetainPtr>
-#include <iostream>
 
 typedef enum
 {
@@ -55,14 +54,8 @@ void zypp_context_class_init( ZyppContextClass *klass )
                                      obj_properties);
 }
 
-static void glogHandler (const gchar *log_domain, GLogLevelFlags log_level, const gchar *message, gpointer user_data);
-static gpointer installLogHandler ( gpointer );
-
 void ZyppContextPrivate::initializeCpp()
 {
-  static GOnce my_once = G_ONCE_INIT;
-  g_once( &my_once, installLogHandler, nullptr );
-
   if ( _constructProps && _constructProps->_cppObj ) {
     _context = std::move( _constructProps->_cppObj );
   } else {
@@ -184,35 +177,4 @@ void zypp_context_reset_progress_observer( ZyppContext *self )
   g_return_if_fail( ZYPP_CONTEXT(self) );
   ZYPP_CONTEXT_D();
   d->_context->resetProgressObserver();
-}
-
-static gpointer installLogHandler ( gpointer )
-{
-  g_log_set_default_handler( glogHandler, nullptr );
-  return nullptr;
-}
-
-void glogHandler (const gchar *log_domain, GLogLevelFlags log_level, const gchar *message, gpointer )
-{
-  switch (log_level & G_LOG_LEVEL_MASK) {
-    case G_LOG_LEVEL_ERROR:
-    case G_LOG_LEVEL_CRITICAL:
-      ERR << log_domain << ":" << message << std::endl;
-      break;
-    case G_LOG_LEVEL_WARNING:
-      WAR << log_domain << ":" << message << std::endl;
-      break;
-    case G_LOG_LEVEL_MESSAGE:
-      MIL << log_domain << ":" << message << std::endl;
-      break;
-    case G_LOG_LEVEL_INFO:
-      XXX << log_domain << ":" << message << std::endl;
-      break;
-    case G_LOG_LEVEL_DEBUG:
-      DBG << log_domain << ":" << message << std::endl;
-      break;
-    default:
-      MIL << log_domain << "("<<(log_level & G_LOG_LEVEL_MASK)<<"):" << message << std::endl;
-      break;
-  }
 }

@@ -82,40 +82,26 @@ GList *zypp_repo_manager_get_known_repos ( ZyppRepoManager *self ) LIBZYPP_GLIB_
  */
 GList *zypp_repo_manager_get_known_services ( ZyppRepoManager *self ) LIBZYPP_GLIB_EXPORT;
 
-#if 0
 /**
- * zypp_repo_manager_refresh_repos:
+ * zypp_repo_manager_refresh_repo:
  * @self: a #ZyppRepoManager
- * @repos: (element-type ZyppRepoInfo) (transfer none): the repositories to refresh
- * @forceDownload: Force downloading the repository even if its up 2 date
- *
- * Returns: (element-type ZyppExpected) (transfer full): list of results for the refreshed repos
- */
-GList *zypp_repo_manager_refresh_repos ( ZyppRepoManager *self, GList *repos, gboolean forceDownload ) LIBZYPP_GLIB_EXPORT;
-#endif
-
-/**
- * zypp_repo_manager_refresh_repos_async:
- * @self: a #ZyppRepoManager
- * @repos: (element-type ZyppRepoInfo) (transfer none): the repositories to refresh
+ * @repo: (transfer none): the repository to refresh
  * @forceDownload: Force downloading the repository even if its up 2 date
  * @cancellable: (nullable)
- * @cb: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
- *
- * Returns: (element-type ZyppExpected) (transfer full): list of results for the refreshed repos
+ * @cb: (scope async) (closure user_data): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  */
-void zypp_repo_manager_refresh_repos_async ( ZyppRepoManager *self, GList *repos, gboolean forceDownload, GCancellable *cancellable, GAsyncReadyCallback cb, gpointer user_data ) LIBZYPP_GLIB_EXPORT;
+void zypp_repo_manager_refresh_repo ( ZyppRepoManager *self, ZyppRepoInfo *repo, gboolean forceDownload, GCancellable *cancellable, GAsyncReadyCallback cb, gpointer user_data ) LIBZYPP_GLIB_EXPORT;
 
 /**
- * zypp_repo_manager_refresh_repos_finish:
+ * zypp_repo_manager_refresh_repo_finish:
  * @self: (in): a #ZyppRepoManager
- * @result: where to place the result
+ * @result: (in): where to place the result
  * @error: return location for a GError, or NULL
  *
- * Returns: (transfer full): Path where the file was downloaded to
+ * Returns: (transfer full): The refreshed #ZyppRepoInfo object
  */
-gchar * zypp_repo_manager_refresh_repos_finish ( ZyppRepoManager *self, GAsyncResult *result, GError **error );
+ZyppRepoInfo *zypp_repo_manager_refresh_repo_finish ( ZyppRepoManager *self, GAsyncResult *result, GError **error ) LIBZYPP_GLIB_EXPORT;
 
 
 G_END_DECLS

@@ -8,6 +8,9 @@ INCLUDE_DIRECTORIES( ${LIBGLIB_INCLUDE_DIRS} )
 pkg_check_modules ( LIBGOBJECT REQUIRED gobject-2.0 )
 INCLUDE_DIRECTORIES( ${LIBGOBJECT_INCLUDE_DIRS} )
 
+pkg_check_modules ( LIBGIO REQUIRED gio-2.0 )
+INCLUDE_DIRECTORIES( ${LIBGIO_INCLUDE_DIRS} )
+
 include(GObjectIntrospection)
 include(GLibTools)
 
@@ -101,6 +104,7 @@ SET( zypp_glib_utils_HEADERS
   utils/GLibMemory
   utils/GList
   utils/GObjectMemory
+  utils/GioMemory
   utils/OpaqueTypePtr
   utils/ResourcePtr
   utils/RetainPtr

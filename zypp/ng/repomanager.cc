@@ -850,10 +850,12 @@ namespace zyppng
       | [this, info](auto) { return prepareRefreshContext(info); }
       | and_then( [this, url, policy]( zyppng::repo::RefreshContextRef<ZyppContextType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
-        return refCtx->engageLock()
-            | and_then( [this, url](){ return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) ); } )
-            | and_then( [ refCtx ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(refCtx), std::move(mediaHandle), nullptr ); } )
-            | and_then( [ refCtx ]( auto checkStatus ){ return make_expected_success (std::make_pair( refCtx->repoInfo(), checkStatus ) ); });
+        return refCtx->engageLock( )
+            | and_then( [this, url, refCtx ]( zypp::Deferred lockRef ) {
+              return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec(_zyppContext) )
+                  | and_then( [ refCtx ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(refCtx), std::move(mediaHandle), nullptr ); } )
+                  | and_then( [ refCtx, lockRef ]( auto checkStatus ){ return make_expected_success (std::make_pair( refCtx->repoInfo(), checkStatus ) ); });
+            });
       });
   }
 

@@ -22,6 +22,8 @@
 namespace zyppng {
 class SocketNotifierPrivate;
 
+ZYPP_FWD_DECL_TYPE_WITH_REFS (SocketNotifier);
+
 /*!
  * The SocketNotifier class provides a generic way to monitor activity on a file descriptors.
  *

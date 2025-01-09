@@ -59,6 +59,9 @@ struct ZyppShowMsgRequestPrivate
         return zyppng::ShowMessageRequest::MType::Data;
         break;
     }
+
+    ERR << "Unknown message type " << (int)t << std::endl;
+    return zyppng::ShowMessageRequest::MType::Info;
   }
 
   static ZyppShowMsgRequestType convertEnum( zyppng::ShowMessageRequest::MType t ) {
@@ -77,6 +80,9 @@ struct ZyppShowMsgRequestPrivate
         return ZYPP_SHOW_MSG_TYPE_DATA;
         break;
     }
+
+    ERR << "Unknown message type " << (int)t << std::endl;
+    return ZYPP_SHOW_MSG_TYPE_INFO;
   }
 
 };

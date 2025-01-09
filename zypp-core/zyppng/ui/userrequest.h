@@ -11,6 +11,7 @@
 
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/zyppng/base/Signals>
+#include <zypp-core/zyppng/pipelines/Await>
 #include <zypp-core/UserData.h>
 #include <vector>
 namespace zyppng {
@@ -49,8 +50,9 @@ namespace zyppng {
     UserData &userData();
 
     /*!
-     * Code accepted the event, it is now considered handled and will not be passed to the
-     * parent evennt handler for processing.
+     * Code accepted the event, it is now considered as accepted and handeled by
+     * the user code, even if the handling is done asynchronous. This will also stop
+     * bubbling up further.
      */
     void accept();
 
@@ -65,6 +67,23 @@ namespace zyppng {
      */
     bool accepted() const;
 
+    /*!
+     * Returns true if the event was marked as finished, e.g. in cases where the
+     * user needs to be asked to resolve the event or another user request is pending and
+     * this one needs to wait the answer will arrive asynchronously
+     */
+    bool finished() const;
+
+    /*!
+     * Signal emitted when the event is ready
+     */
+    SignalProxy<void()> sigFinished();
+
+  protected:
+    void setFinished();
+    Signal<void()> _sigFinished;
+    bool        _finished = false; //< The usercode explicitely handled the event
+
   private:
     bool        _accepted = false;
     UserData    _userData;
@@ -77,7 +96,7 @@ namespace zyppng {
    * print on the users screen
    *
    * \code
-   * UserInterface::instance()->sendUserRequest( ShowMessageRequest::create("Repository downloaded") );
+   * progressObserver->sendUserRequest( ShowMessageRequest::create("Repository downloaded") );
    * \endcode
    */
   class ShowMessageRequest : public UserRequest
@@ -110,7 +129,7 @@ namespace zyppng {
    * \code
    *
    * auto request = ListChoiceRequest::create( "Please select the choice you want: ", { {"y", "Info about y"}, {"n", "Info about n"}, {"d", "Info about d"} }, 1 );
-   * UserInterface::instance()->sendUserRequest( request );
+   * progressObserver->sendUserRequest( request );
    *
    * const auto choice = request->choice();
    * switch( choice ) {
@@ -181,6 +200,18 @@ namespace zyppng {
     bool _answer = false;
 
   };
+
+  template<typename T>
+  AsyncOpRef< Ref<T> > waitForUserRespose( Ref<T> event ) {
+
+    if ( event->isFinished() ) {
+      return makeReadyResult ( std::move(event) );
+    }
+
+    using namespace zyppng::operators;
+    return std::move(event ) | await<T>( &UserRequest::sigFinished );
+
+  }
 
 }
 

@@ -38,6 +38,9 @@ struct dirent;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+  inline bool IamRoot()    { return ::geteuid() == 0; }
+  inline bool IamNotRoot() { return not IamRoot(); }
+
   ///////////////////////////////////////////////////////////////////
   /** Types and functions for filesystem operations.
    * \todo move zypp::filesystem stuff into separate header
@@ -77,6 +80,7 @@ namespace zypp
     //	CLASS NAME : StatMode
     /**
      * @short Wrapper class for mode_t values as derived from ::stat
+     * \note Mode restrictions usually do not apply to root (\ref IamRoot).
      **/
     class StatMode
     {
@@ -283,6 +287,7 @@ namespace zypp
 
       /** \name Query StatMode attibutes.
        * Combines \ref zypp::PathInfo::isExist and \ref zypp::filesystem::StatMode query.
+       * \note Mode restrictions usually do not apply to root (\ref IamRoot).
       */
       //@{
       FileType fileType() const;
@@ -338,7 +343,9 @@ namespace zypp
       gid_t  group()   const { return isExist() ? statbuf_C.st_gid : 0; }
       //@}
 
-      /** \name Permission according to current uid/gid. */
+      /** \name Permission according to current uid/gid.
+       * \note Mode restrictions usually do not apply to root (\ref IamRoot).
+       */
       //@{
       /** Returns current users permission (<tt>[0-7]</tt>)*/
       mode_t userMay() const;

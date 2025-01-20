@@ -408,7 +408,7 @@ namespace zyppng::RepoManagerWorkflow {
             return makeReadyResult ( expected<RefreshContextRefType>::success( std::move(_refreshContext) ) );
 
           // if REFRESH_NEEDED but we don't have the permission to write the cache, stop here.
-          if ( not zypp::PathInfo(_refreshContext->rawCachePath().dirname()).userMayWX() ) {
+          if ( zypp::IamNotRoot() && not zypp::PathInfo(_refreshContext->rawCachePath().dirname()).userMayWX() ) {
             WAR << "No permision to write cache " << zypp::PathInfo(_refreshContext->rawCachePath().dirname()) << std::endl;
             auto exception = ZYPP_EXCPT_PTR( zypp::repo::RepoNoPermissionException( _refreshContext->repoInfo() ) );
             return makeReadyResult( expected<RefreshContextRefType>::error( std::move(exception) ) );
@@ -679,7 +679,7 @@ namespace zyppng::RepoManagerWorkflow {
             zypp::Pathname mediarootParent { _mediarootpath.dirname() };
 
             if ( zypp::filesystem::assert_dir( mediarootParent ) == 0
-              && zypp::PathInfo(mediarootParent).userMayWX() ) {
+              && ( zypp::IamRoot() || zypp::PathInfo(mediarootParent).userMayWX() ) ) {
 
               return refreshMetadata( _refCtx, ProgressObserver::makeSubTask( _progressObserver ) )
               | and_then([this]( auto /*refCtx*/) { return RepoManager<ZyppContextRefType>::metadataStatus( _refCtx->repoInfo(), _refCtx->repoManagerOptions() ); } );
@@ -748,7 +748,7 @@ namespace zyppng::RepoManagerWorkflow {
             return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(ex)) );
           }
 
-          if( ! zypp::PathInfo(*base).userMayW() )
+          if( zypp::IamNotRoot() && not zypp::PathInfo(*base).userMayW() )
           {
             zypp::Exception ex(zypp::str::form( _("Can't create cache at %s - no writing permissions."), base->c_str()) );
             return makeReadyResult( expected<void>::error(ZYPP_EXCPT_PTR(ex)) );
@@ -1107,7 +1107,7 @@ namespace zyppng::RepoManagerWorkflow {
             return makeReadyResult(expected<void>::success());
           }
 
-          if ( !zypp::PathInfo(_geoIPCache).userMayRWX() ) {
+          if ( zypp::IamNotRoot() && not zypp::PathInfo(_geoIPCache).userMayRWX() ) {
             MIL << "No access rights for the GeoIP cache directory." << std::endl;
             return  makeReadyResult(expected<void>::success());
           }

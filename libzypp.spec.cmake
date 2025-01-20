@@ -90,7 +90,7 @@ Recommends:     logrotate
 # lsof is used for 'zypper ps':
 Recommends:     lsof
 %endif
-BuildRequires:  cmake >= 3.5
+BuildRequires:  cmake >= 3.10
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libudev)
 %if 0%{?suse_version} >= 1330
@@ -428,9 +428,9 @@ done
 
 %files devel
 %defattr(-,root,root)
+%{_libdir}/cmake/Zypp
 %{_libdir}/libzypp.so
 %{_libdir}/libzypp-tui.a
-%{_datadir}/cmake/Modules/*
 %{_includedir}/zypp
 %{_includedir}/zypp-core
 %{_includedir}/zypp-media

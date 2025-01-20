@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jan 20 10:36:25 CET 2025 - ma@suse.de
+
+- Move cmake config files to LIB_INSTALL_DIR/cmake/Zypp (fixes #28)
+- Fix 'zypper ps' when running in incus container (bsc#1229106)
+  Should apply to lxc and lxd containers as well.
+- Re-enable 'rpm --runposttrans' usage for chrooted systems
+  (bsc#1216091)
+- version 17.35.17 (35)
+
+-------------------------------------------------------------------
 Wed Dec 18 22:40:49 CET 2024 - ma@suse.de
 
 - Url: queryparams without value should not have a trailing "=".

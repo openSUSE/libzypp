@@ -495,11 +495,11 @@ void MediaBlockList::reuseBlocks(FILE *wfp, const std::string& filename)
         uint i = 16;
 
         /* Try hash size of 2^i; step down the value of i until we find a good size */
-        while ((2 << (i - 1)) > nblks && i > 4)
+        while ((2U << (i - 1)) > nblks && i > 4)
           i--;
 
         /* Allocate hash based on rsum */
-        rsumHashMask = (2 << i) - 1;
+        rsumHashMask = (2U << i) - 1;
       }
 
       // a array indexed via hash with lists of blocks resulting in the same rsum hash

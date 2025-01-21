@@ -59,9 +59,8 @@ namespace zypp
     friend std::ostream & operator<<( std::ostream & str, const ZYpp & obj );
 
   public:
-    // can't get swig working if shared_ptr is without namespace here
-    using Ptr = ::boost::shared_ptr<ZYpp>;
-    using constPtr = ::boost::shared_ptr<const ZYpp>;
+    using Ptr = shared_ptr<ZYpp>;
+    using constPtr = shared_ptr<const ZYpp>;
 
   public:
 

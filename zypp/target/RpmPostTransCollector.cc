@@ -18,6 +18,7 @@
 #include <zypp/base/Regex.h>
 #include <zypp/base/IOStream.h>
 #include <zypp/base/InputStream.h>
+#include <zypp/base/PtrTypes.h>
 #include <zypp/target/RpmPostTransCollector.h>
 
 #include <zypp/TmpPath.h>
@@ -389,7 +390,7 @@ namespace zypp
         Pathname _root;
         std::optional<ScriptList> _scripts;
         std::optional<Dumpfile> _dumpfile;
-        boost::scoped_ptr<filesystem::TmpDir> _ptrTmpdir;
+        scoped_ptr<filesystem::TmpDir> _ptrTmpdir;
 
         UserDataJobReport _myJobReport;       ///< JobReport with ContentType "cmdout/%posttrans"
 

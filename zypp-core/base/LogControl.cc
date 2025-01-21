@@ -18,6 +18,7 @@
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/base/ProfilingFormater.h>
+#include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/Date.h>
 #include <zypp-core/TriBool.h>
@@ -96,12 +97,12 @@ namespace zypp
       return t;
     }
 
-    void setLineWriter ( boost::shared_ptr<log::LineWriter> writer ) {
+    void setLineWriter ( zypp::shared_ptr<log::LineWriter> writer ) {
       std::lock_guard lk( _lineWriterLock );
       _lineWriter = std::move(writer);
     }
 
-    boost::shared_ptr<log::LineWriter> getLineWriter () {
+    zypp::shared_ptr<log::LineWriter> getLineWriter () {
       std::lock_guard lk( _lineWriterLock );
       auto lw = _lineWriter;
       return lw;
@@ -207,12 +208,12 @@ namespace zypp
     std::thread _thread;
     zyppng::Wakeup _stopSignal;
 
-    // since the public API uses boost::shared_ptr we can not use the atomic
+    // since the public API uses boost::shared_ptr (via the alias zypp::shared_ptr) we can not use the atomic
     // functionalities provided in std.
     // this lock type can be used safely in signals
     SpinLock _lineWriterLock;
     // boost shared_ptr has a lock free implementation of reference counting so it can be used from signal handlers as well
-    boost::shared_ptr<log::LineWriter> _lineWriter{ nullptr };
+    shared_ptr<log::LineWriter> _lineWriter{ nullptr };
   };
 
   class LogClient

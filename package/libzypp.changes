@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 22 16:09:09 CET 2025 - ma@suse.de
+
+- Create '.keep_packages' in the package cache dir to enforce
+  keeping downloaded packages of all repos cahed there (bsc#1232458)
+- version 17.35.19 (35)
+
+-------------------------------------------------------------------
 Mon Jan 20 17:17:16 CET 2025 - ma@suse.de
 
 - Fix missing UID checks in repomanager workflow (fixes #603)

@@ -141,7 +141,7 @@ namespace zypp
       ManagedFile providePackageFromCache() const override
       {
         ManagedFile ret( doProvidePackageFromCache() );
-        if ( ! ( ret->empty() ||  _package->repoInfo().keepPackages() ) )
+        if ( ! ( ret->empty() || _package->repoInfo().effectiveKeepPackages() ) )
           ret.setDispose( filesystem::unlink );
         return ret;
       }
@@ -158,7 +158,7 @@ namespace zypp
        *
        * A cache hit will return a non empty ManagedFile and an empty one on cache miss.
        *
-       * \note File disposal depending on the repos keepPackages setting
+       * \note File disposal depending on the repos effectiveKeepPackages setting
        * are not set here, but in \ref providePackage or \ref providePackageFromCache.
        */
       ManagedFile doProvidePackageFromCache() const
@@ -405,7 +405,7 @@ namespace zypp
               if ( filesystem::assert_dir( dest.dirname() ) == 0 && filesystem::hardlinkCopy( pi.path(), dest ) == 0 )
               {
                 ret = ManagedFile( dest );
-                if ( ! info.keepPackages() )
+                if ( ! info.effectiveKeepPackages() )
                   ret.setDispose( filesystem::unlink );
 
                 MIL << "provided Package from toplevel cache " << _package << " at " << ret << endl;

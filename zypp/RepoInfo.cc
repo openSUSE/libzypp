@@ -590,6 +590,9 @@ namespace zypp
   bool RepoInfo::keepPackages() const
   { return indeterminate(_pimpl->keeppackages) ? false : (bool)_pimpl->keeppackages; }
 
+  bool RepoInfo::effectiveKeepPackages() const
+  { return keepPackages() || PathInfo(packagesPath().dirname()/".keep_packages").isExist(); }
+
   Pathname RepoInfo::metadataPath() const
   { return _pimpl->metadataPath(); }
 

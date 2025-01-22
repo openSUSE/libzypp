@@ -426,6 +426,12 @@ namespace zypp
        */
       void setKeepPackages( bool keep );
 
+      /** \ref keepPackages unless the package cache itself enforces keeping the packages.
+       * This can be done by creating a file named \c .keep_packages in the package
+       * cache's toplevel directory (e.g. /var/cache/zypp/packages/.keep_packages)
+       */
+      bool effectiveKeepPackages() const;
+
       /**
        * Gets name of the service to which this repository belongs or empty string
        * if it has been added manually.

@@ -40,6 +40,7 @@ SET( zypp_glib_HEADERS
 
 SET( zypp_glib_ui_HEADERS
   ui/booleanchoicerequest.h
+  ui/inputrequest.h
   ui/listchoicerequest.h
   ui/showmessagerequest.h
   ui/userrequest.h
@@ -66,6 +67,7 @@ SET( zypp_glib_private_HEADERS
   private/callbacks/repo.h
   private/callbacks/job.h
   ui/private/booleanchoicerequest_p.h
+  ui/private/inputrequest_p.h
   ui/private/listchoicerequest_p.h
   ui/private/showmessagerequest_p.h
   ui/private/userrequest_p.h
@@ -87,6 +89,7 @@ SET( zypp_glib_SRCS
   zypp-glib.cc
   private/cancellable_p.cc
   ui/booleanchoicerequest.cc
+  ui/inputrequest.cc
   ui/listchoicerequest.cc
   ui/showmessagerequest.cc
   ui/userrequest.cc

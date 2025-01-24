@@ -23,6 +23,7 @@ namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ShowMessageRequest );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ListChoiceRequest );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( BooleanChoiceRequest );
+  ZYPP_FWD_DECL_TYPE_WITH_REFS( InputRequest );
 
 
   // keep in sync with glib wrapper code
@@ -31,6 +32,7 @@ namespace zyppng {
     Message,        // simple message to the user, no input or predefined like y/n
     ListChoice,     // request to select from a list of options
     BooleanChoice,  // request user to say yes or no
+    InputRequest,   // generic request for user input defining a list of input fields
     Custom = 512
   };
 
@@ -50,20 +52,31 @@ namespace zyppng {
     UserData &userData();
 
     /*!
-     * Code accepted the event, it is now considered as accepted and handeled by
-     * the user code, even if the handling is done asynchronous. This will also stop
-     * bubbling up further.
+     * Call this function when a request should be handled asynchronously, to notify
+     * the sender that the event was acknowledged but can not be handled right away
      */
-    void accept();
+    void ack();
+
+    bool acknowledged() const;
 
     /*!
-     * Sets the internal accepted flag to false, event is now considered as "not yet handled"
+     * Sets the internal ack flag to false, event is now considered as "not yet handled"
      * and will bubble up to the parent event handler.
      */
     void ignore();
 
     /*!
-     * Returns true if the event was handled, otherwise false is returned.
+     * User accepted the event
+     */
+    void accept();
+
+    /*!
+     * User rejected the event
+     */
+    void reject();
+
+    /*!
+     * Returns true if the event was accepted by the user, otherwise false is retuend
      */
     bool accepted() const;
 
@@ -75,21 +88,26 @@ namespace zyppng {
     bool finished() const;
 
     /*!
+     * Sets the event to finished in it's current state
+     */
+    void setFinished();
+
+    /*!
      * Signal emitted when the event is ready
      */
     SignalProxy<void()> sigFinished();
 
   protected:
-    void setFinished();
     Signal<void()> _sigFinished;
-    bool        _finished = false; //< The usercode explicitely handled the event
+
+  protected:
+    bool        _accepted     = false; //< User accepted or rejected the event
+    bool        _finished     = false; //< The usercode explicitely handled the event
 
   private:
-    bool        _accepted = false;
+    bool        _acknowledged = false; //< User code has seen and will handle the event
     UserData    _userData;
   };
-
-
 
   /*!
    * The ShowMessageRequest class represents a simple informal message that the code needs to
@@ -187,7 +205,7 @@ namespace zyppng {
     ZYPP_ADD_CREATE_FUNC(BooleanChoiceRequest)
 
   public:
-    ZYPP_DECL_PRIVATE_CONSTR_ARGS(BooleanChoiceRequest, std::string label, const bool defaultAnswer = false, UserData userData = {} );
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS( BooleanChoiceRequest, std::string label, const bool defaultAnswer = false, UserData userData = {} );
     UserRequestType type() const override;
 
     const std::string &label() const;
@@ -201,7 +219,42 @@ namespace zyppng {
 
   };
 
-  template<typename T>
+  class InputRequest : public UserRequest
+  {
+    ZYPP_ADD_CREATE_FUNC(InputRequest)
+
+    public:
+      /*!
+       * \brief The FieldType enum
+       * \attention Keep in sync with ZyppInputRequest glib wrapper code
+       */
+      enum FieldType {
+        Text,
+        Password
+      };
+
+      struct Field {
+        FieldType type;
+        std::string label;
+        std::string value;
+      };
+
+      ZYPP_DECL_PRIVATE_CONSTR_ARGS( InputRequest, std::string label, UserData userData = {} );
+
+      UserRequestType type() const override;
+
+      const std::string &label() const;
+
+      void addField( FieldType type, std::string label, std::string initialValue = "" );
+      std::vector<Field> &fields ();
+      const std::vector<Field> &fields () const;
+
+  private:
+      std::string _label;
+      std::vector<Field> _fields;
+  };
+
+  template< typename T >
   AsyncOpRef< Ref<T> > waitForUserRespose( Ref<T> event ) {
 
     if ( event->isFinished() ) {
@@ -209,7 +262,7 @@ namespace zyppng {
     }
 
     using namespace zyppng::operators;
-    return std::move(event ) | await<T>( &UserRequest::sigFinished );
+    return std::move( event ) | await<T>( &UserRequest::sigFinished );
 
   }
 

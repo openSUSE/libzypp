@@ -28,6 +28,8 @@
 
 namespace zyppng {
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( InputRequest );
+
   namespace constants {
     constexpr std::string_view DEFAULT_PROVIDE_WORKER_PATH = ZYPP_WORKER_PATH;
     constexpr std::string_view ATTACHED_MEDIA_SUFFIX = "-media";
@@ -61,6 +63,11 @@ namespace zyppng {
     void queueItem     ( ProvideItemRef item );
     void dequeueItem   ( ProvideItem *item );
 
+
+    using AuthRequestCb = std::function<void ( expected<zypp::media::AuthData> )>;
+    void authenticationRequired ( ProgressObserverRef pO, ProvideRequestRef item, zypp::Url effectiveUrl, std::string username, std::map<std::string, std::string> extra, AuthRequestCb asyncReadyCb );
+    void requestDestructing( ProvideRequest &req );
+
     std::string nextMediaId () const;
     AttachedMediaInfo_Ptr addMedium ( AttachedMediaInfo_Ptr &&medium );
 
@@ -93,9 +100,6 @@ namespace zyppng {
 
     uint32_t nextRequestId();
 
-    Signal< Provide::MediaChangeAction ( const std::string &, const std::string &, const int32_t, const std::vector<std::string> &, const std::optional<std::string> &) > _sigMediaChange;
-    Signal< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > _sigAuthRequired;
-
   protected:
     void doSchedule (Timer &);
 
@@ -126,6 +130,19 @@ namespace zyppng {
       std::deque<ProvideRequestRef> _requests;
     };
     std::deque<QueueItem> _queues; //< List of request queues for the workers, grouped by scheme. We use a deque and not a map because of possible changes to the list of queues during scheduling
+
+    struct AuthRequest {
+      zypp::Url   _url;
+      std::string _username;
+      InputRequestRef _userRequest;
+
+      struct Waiter {
+        ProvideRequest *_reqRef; // ProvideRequest will unregister all of its Auth events on destructions
+        AuthRequestCb _asyncReadyCb;
+      };
+      std::vector<Waiter> _authWaiters;
+    };
+    std::vector<AuthRequest> _authRequests; //< List of all Authentication requests, grouped by URL and username.. we try to coalesce the requests if possible
 
 
     std::vector< AttachedMediaInfo_Ptr > _attachedMediaInfos; //< List of currently attached medias

@@ -29,14 +29,26 @@ namespace zyppng
     return _userData;
   }
 
+  void UserRequest::ack()
+  {
+    _acknowledged = true;
+  }
+
+  bool UserRequest::acknowledged() const
+  {
+    return _acknowledged;
+  }
+
   void UserRequest::accept()
   {
+    _acknowledged = true;
     _accepted = true;
+    setFinished ();
   }
 
   void UserRequest::ignore()
   {
-    _accepted = false;
+    _acknowledged = false;
   }
 
   bool UserRequest::accepted() const
@@ -55,12 +67,20 @@ namespace zyppng
     _sigFinished.emit();
   }
 
+
+  void UserRequest::reject()
+  {
+    ack();
+    _accepted = false;
+    setFinished ();
+  }
+
   ZYPP_IMPL_PRIVATE_CONSTR_ARGS(ShowMessageRequest, std::string message, MType mType, UserData data )
     : UserRequest( std::move(data) )
     , _type( mType )
     , _message( std::move(message) )
   {
-    _finished = true; // always finished
+    _finished = _accepted = true; // always finished and accepted
   }
 
   UserRequestType ShowMessageRequest::type() const
@@ -149,4 +169,34 @@ namespace zyppng
     return _answer;
   }
 
+  ZYPP_IMPL_PRIVATE_CONSTR_ARGS ( InputRequest, std::string label, UserData userData )
+    : UserRequest( std::move(userData) )
+    , _label( std::move(label) )
+  {
+  }
+
+  UserRequestType InputRequest::type() const
+  {
+    return UserRequestType::InputRequest;
+  }
+
+  const std::string &InputRequest::label() const
+  {
+    return _label;
+  }
+
+  void InputRequest::addField(FieldType type, std::string label, std::string initialValue)
+  {
+    _fields.push_back ( Field{ type, label, initialValue} );
+  }
+
+  const std::vector<InputRequest::Field> &InputRequest::fields() const
+  {
+    return _fields;
+  }
+
+  std::vector<InputRequest::Field> &InputRequest::fields()
+  {
+    return _fields;
+  }
 }

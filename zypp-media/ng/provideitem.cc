@@ -16,6 +16,8 @@
 #include <zypp-media/MediaException>
 #include <zypp-core/base/UserRequestException>
 #include "mediaverifier.h"
+#include "zypp-core/zyppng/ui/progressobserver.h"
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/fs/PathInfo.h>
 
 using namespace std::literals;
@@ -23,6 +25,13 @@ using namespace std::literals;
 namespace zyppng {
 
   static constexpr std::string_view DEFAULT_MEDIA_VERIFIER("SuseMediaV1");
+
+  ProvideRequest::~ProvideRequest()
+  {
+    if ( _owner ) {
+      _owner->provider().requestDestructing(*this);
+    }
+  }
 
   expected<ProvideRequestRef> ProvideRequest::create(ProvideItem &owner, const std::vector<zypp::Url> &urls, const std::string &id, ProvideMediaSpec &spec )
   {
@@ -80,8 +89,8 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE(ProvideItem);
 
-  ProvideItem::ProvideItem( ProvidePrivate &parent )
-    : Base( *new ProvideItemPrivate( parent, *this ) )
+  ProvideItem::ProvideItem(ProvidePrivate &parent , ProgressObserverRef &&taskTracker)
+    : Base( *new ProvideItemPrivate( parent, *this, std::move(taskTracker) ) )
   { }
 
   ProvideItem::~ProvideItem()
@@ -154,6 +163,11 @@ namespace zyppng {
   zypp::ByteCount ProvideItem::bytesExpected () const
   {
     return 0;
+  }
+
+  ProgressObserverRef ProvideItem::taskTracker() const
+  {
+    return d_func()->_taskTracker;
   }
 
   ProvideItem::ItemStats ProvideItem::makeStats ()
@@ -396,15 +410,18 @@ namespace zyppng {
     cancelWithError(excpt);
   }
 
-  expected<zypp::media::AuthData> ProvideItem::authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields )
+  void ProvideItem::authenticationRequired(ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields , zyppng::ProvideItem::AuthReadyCb readyCb )
   {
+    Z_D();
 
     if ( req != _runningReq ) {
       WAR << "Received authenticationRequired for unknown request, rejecting" << std::endl;
-      return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Unknown request in authenticationRequired, this is a bug.") ) );
+      readyCb (  expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Unknown request in authenticationRequired, this is a bug.") ) ) );
+      return;
     }
 
     try {
+#warning Use Context here
       auto mgr = zyppng::media::CredentialManager::create( provider().credManagerOptions() );
 
       MIL << "Looking for existing auth data for " << effectiveUrl << "more recent then " << lastTimestamp << std::endl;
@@ -412,7 +429,8 @@ namespace zyppng {
       auto credPtr = mgr->getCred( effectiveUrl );
       if ( credPtr && credPtr->lastDatabaseUpdate() > lastTimestamp ) {
         MIL << "Found existing auth data for " << effectiveUrl << "ts: " <<  credPtr->lastDatabaseUpdate() << std::endl;
-        return expected<zypp::media::AuthData>::success( *credPtr );
+        readyCb ( expected<zypp::media::AuthData>::success( *credPtr ) );
+        return;
       }
 
       if ( credPtr ) MIL << "Found existing auth data for " << effectiveUrl << "but too old ts: " <<  credPtr->lastDatabaseUpdate() << std::endl;
@@ -422,27 +440,40 @@ namespace zyppng {
         username = i->second;
       }
 
-
-      MIL << "NO Auth data found, asking user. Last tried username was: " << username << std::endl;
-
-      auto userAuth = provider()._sigAuthRequired.emit( effectiveUrl, username, extraFields );
-      if ( !userAuth || !userAuth->valid() ) {
-        MIL << "User rejected to give auth" << std::endl;
-        return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No auth given by user." ) ) );
+      if ( !d->_taskTracker ) {
+        MIL << "No ProgressObserver registered for request, no auth available" << std::endl;
+        readyCb (  expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No auth found.") ) ) );
+        return;
       }
 
-      mgr->addCred( *userAuth );
-      mgr->save();
 
-      // rather ugly, but update the timestamp to the last mtime of the cred database our URL belongs to
-      // otherwise we'd need to reload the cred database
-      userAuth->setLastDatabaseUpdate( mgr->timestampForCredDatabase( effectiveUrl ) );
+      MIL << "NO Auth data found, asking user. Last tried username was: " << username << std::endl;
+      provider().authenticationRequired ( d->_taskTracker, req, effectiveUrl, username, extraFields, [ mgr = std::move(mgr), effUrl = effectiveUrl, readyCb = std::move(readyCb) ]( expected<zypp::media::AuthData> userAuth){
 
-      return expected<zypp::media::AuthData>::success(*userAuth);
+        if ( !userAuth || !userAuth->valid() ) {
+          MIL << "User rejected to give auth" << std::endl;
+          readyCb( expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No auth given by user." ) ) ) );
+        }
+
+        mgr->addCred( *userAuth );
+        mgr->save();
+
+        // rather ugly, but update the timestamp to the last mtime of the cred database our URL belongs to
+        // otherwise we'd need to reload the cred database
+        userAuth->setLastDatabaseUpdate( mgr->timestampForCredDatabase( effUrl ) );
+        readyCb( expected<zypp::media::AuthData>::success(*userAuth) );
+
+      });
+
     } catch ( const zypp::Exception &e ) {
       ZYPP_CAUGHT(e);
-      return expected<zypp::media::AuthData>::error( ZYPP_FWD_CURRENT_EXCPT() );
+      readyCb ( expected<zypp::media::AuthData>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
     }
+  }
+
+  void ProvideItem::mediaChangeRequired(const std::string &, zyppng::ProvideRequestRef, const std::string &, const int32_t, const std::vector<std::string> &, const std::optional<std::string> &, MediaChangeCb readyCb)
+  {
+    readyCb( {} );
   }
 
   bool ProvideItem::enqueueRequest( ProvideRequestRef request )
@@ -556,15 +587,15 @@ namespace zyppng {
     }
   }
 
-  ProvideFileItem::ProvideFileItem(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent)
-    : ProvideItem( parent )
+  ProvideFileItem::ProvideFileItem(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent, ProgressObserverRef &&taskTracker)
+    : ProvideItem( parent, std::move(taskTracker) )
     , _mirrorList  ( urls )
     , _initialSpec ( request )
   { }
 
-  ProvideFileItemRef ProvideFileItem::create(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent )
+  ProvideFileItemRef ProvideFileItem::create(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent , ProgressObserverRef &&taskTracker)
   {
-    return ProvideFileItemRef( new ProvideFileItem( urls, request, parent ) );
+    return ProvideFileItemRef( new ProvideFileItem( urls, request, parent, std::move(taskTracker)  ) );
   }
 
   void ProvideFileItem::initialize()
@@ -777,18 +808,20 @@ namespace zyppng {
     updateState( Finished );
   }
 
-  expected<zypp::media::AuthData> ProvideFileItem::authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields )
+  void ProvideFileItem::authenticationRequired (ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields , AuthReadyCb readyCb)
   {
     zypp::Url urlToUse = effectiveUrl;
     if ( _handleRef.isValid() ) {
       // if we have a attached medium this overrules the URL we are going to ask the user about... this is how the old media backend did handle this
       // i guess there were never password protected repositories that have different credentials on the redirection targets
       auto &attachedMedia = provider().attachedMediaInfos();
-      if ( std::find( attachedMedia.begin(), attachedMedia.end(), _handleRef.mediaInfo() ) == attachedMedia.end() )
-        return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Attachment handle vanished during request.") ) );
+      if ( std::find( attachedMedia.begin(), attachedMedia.end(), _handleRef.mediaInfo() ) == attachedMedia.end() ) {
+        readyCb( expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Attachment handle vanished during request.") ) ) );
+        return;
+      }
       urlToUse = _handleRef.mediaInfo()->_attachedUrl;
     }
-    return ProvideItem::authenticationRequired( queue, req, urlToUse, lastTimestamp, extraFields );
+    ProvideItem::authenticationRequired( queue, req, urlToUse, lastTimestamp, extraFields, std::move(readyCb) );
   }
 
   ProvideFileItem::ItemStats ProvideFileItem::makeStats ()
@@ -821,8 +854,8 @@ namespace zyppng {
     return (_initialSpec.checkExistsOnly() ? zypp::ByteCount(0) : _expectedBytes);
   }
 
-  AttachMediaItem::AttachMediaItem( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent )
-    : ProvideItem  ( parent )
+  AttachMediaItem::AttachMediaItem(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent , ProgressObserverRef &&taskTracker)
+    : ProvideItem  ( parent, std::move(taskTracker)  )
     , _mirrorList  ( urls )
     , _initialSpec ( request )
   { }
@@ -1102,9 +1135,9 @@ namespace zyppng {
     }
   }
 
-  AttachMediaItemRef AttachMediaItem::create( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent )
+  AttachMediaItemRef AttachMediaItem::create(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent , ProgressObserverRef &&taskTracker)
   {
-    return AttachMediaItemRef( new AttachMediaItem(urls, request, parent) );
+    return AttachMediaItemRef( new AttachMediaItem( urls, request, parent, std::move(taskTracker) ) );
   }
 
   SignalProxy<void (const zyppng::expected<AttachedMediaInfo *> &)> AttachMediaItem::sigReady()
@@ -1195,14 +1228,58 @@ namespace zyppng {
     return ProvideItem::finishReq ( queue, finishedReq, msg );
   }
 
-  expected<zypp::media::AuthData> AttachMediaItem::authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields )
+  void AttachMediaItem::authenticationRequired(ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields , AuthReadyCb readyCb)
   {
     zypp::Url baseUrl = effectiveUrl;
     if( _workerType == ProvideQueue::Config::Downloading ) {
         // remove /media.n/media
         baseUrl.setPathName( zypp::Pathname(baseUrl.getPathName()).dirname().dirname() );
     }
-    return ProvideItem::authenticationRequired( queue, req, baseUrl, lastTimestamp, extraFields );
+    ProvideItem::authenticationRequired( queue, req, baseUrl, lastTimestamp, extraFields, std::move(readyCb) );
+  }
+
+  void AttachMediaItem::mediaChangeRequired(const std::string &queueName, ProvideRequestRef req, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &freeDevs, const std::optional<std::string> &desc, MediaChangeCb readyCb)
+  {
+    if ( req != _runningReq ) {
+      WAR << "Received authenticationRequired for unknown request, rejecting" << std::endl;
+      readyCb ( Action::ABORT );
+      return;
+    }
+
+    if ( _pendingMediaChangeRequest ) {
+      WAR << "Pending request to the user does already exist, only one request per item is supported" << std::endl;
+      return;
+    }
+
+    auto tracker = taskTracker();
+    if ( !tracker ) {
+      readyCb( {} );
+      return;
+    }
+
+    _pendingMediaChangeRequest = InputRequest::create(
+      zypp::str::Format(_("Please insert medium [%s] #%d.")) % label % mediaNr,
+      ProvideMediaChangeRequest::makeData( label, mediaNr, freeDevs, desc )
+    );
+
+    _pendingMediaChangeRequest->sigFinished ().connect(
+      [wtis = weak_this<AttachMediaItem>(), readyCb = std::move(readyCb)]() {
+
+        bool accepted = false;
+        auto tis = wtis.lock();
+        if ( tis ) {
+          accepted = tis->_pendingMediaChangeRequest->accepted ();
+          tis->_pendingMediaChangeRequest.reset();
+        }
+
+        if ( accepted ) {
+          readyCb( Action::RETRY );
+        } else {
+          readyCb( Action::ABORT );
+        }
+      }
+    );
+    tracker->sendUserRequest ( _pendingMediaChangeRequest );
   }
 
 }

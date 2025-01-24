@@ -9,6 +9,7 @@
 #ifndef ZYPP_MEDIA_PROVIDE_H_INCLUDED
 #define ZYPP_MEDIA_PROVIDE_H_INCLUDED
 
+#include <zypp-core/zyppng/ui/userrequest.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/zyppng/base/zyppglobal.h>
@@ -41,9 +42,43 @@ namespace zypp {
  */
 namespace zyppng {
 
+
+  /*!
+   * A media user request asking the user to provide authentication
+   * for a URL.
+   *
+   * RequestType: InputRequest
+   * Userdata fields:
+   * - "url"   Url in question
+   * - "username" last Username given to zypp
+   */
+  namespace ProvideAuthRequest {
+    constexpr std::string_view CTYPE ("media/auth-request");
+    UserData makeData ( const zypp::Url &url, const std::string &username );
+  }
+
+  /*!
+   * A media user request asking the user to provide a different medium
+   * than the currently available ones.
+   *
+   * RequestType: InputRequest
+   * Userdata fields:
+   * - "label"   Label of the required medium
+   * - "mediaNr" Media Nr of the required medium
+   * - "freeDevs" list of free devices the user can utilize to provide the medium
+   * - "desc"    Media description (optional)
+   */
+  namespace ProvideMediaChangeRequest {
+    constexpr std::string_view CTYPE ("media/media-change-request");
+    UserData makeData( const std::string &label, const int32_t mediaNr, const std::vector<std::string> &freeDevs, const std::optional<std::string> &desc );
+  }
+
+
   class ProvidePrivate;
   using AnyMap = std::unordered_map<std::string, boost::any>;
   DEFINE_PTR_TYPE(AttachedMediaInfo);
+
+  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProgressObserver);
 
   /*!
   * RAII helper for media handles
@@ -131,26 +166,26 @@ namespace zyppng {
     expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    AsyncOpRef<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
-    AsyncOpRef<expected<MediaHandle>> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
-    AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
+    AsyncOpRef<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<MediaHandle>> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request, ProgressObserverRef tracker = nullptr );
 
-    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<ProvideRes>> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
 
 
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm );
+    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm, ProgressObserverRef tracker = nullptr );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target );
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, ProvideRes &&source, const zypp::Pathname &target );
+    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target, ProgressObserverRef tracker = nullptr );
+    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( MediaContextRef ctx, ProvideRes &&source, const zypp::Pathname &target, ProgressObserverRef tracker = nullptr );
 
     void start();
     void setWorkerPath( const zypp::Pathname &path );
@@ -166,35 +201,12 @@ namespace zyppng {
 
     SignalProxy<void()> sigIdle();
 
-    enum Action {
-      ABORT,  // abort and return error
-      RETRY,  // retry
-      SKIP    // abort and set skip request
-    };
-    using MediaChangeAction = std::optional<Action>;
-
-    /*!
-     * Connect to this signal to handle media change requests
-     *
-     * \note It is NOT supported to shutdown the provider or cancel items when in this callback
-     *       Returning Abort here will effectively cancel the current item anyway.
-     */
-    SignalProxy<MediaChangeAction( const std::string &queueRef, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &devices, const std::optional<std::string> &desc )> sigMediaChangeRequested( );
-
-    /*!
-     * This signal is emitted in case a request signaled a need to get Auth Info and nothing was found
-     * in the \ref zyppng::media::CredentialManager.
-     */
-    SignalProxy< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > sigAuthRequired();
-
-
-    static auto copyResultToDest ( ProvideRef provider, MediaContextRef ctx, const zypp::Pathname &targetPath ) {
-      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = targetPath ]( ProvideRes &&file ){
+    static auto copyResultToDest ( ProvideRef provider, MediaContextRef ctx, zypp::Pathname targetPath, ProgressObserverRef tracker = nullptr ) {
+      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = std::move(targetPath), tracker = std::move(tracker) ]( ProvideRes &&file ) mutable {
         zypp::filesystem::assert_dir( targetPath.dirname () );
-        return providerRef->copyFile( opContext, std::move(file), targetPath );
+        return providerRef->copyFile( std::move(opContext), std::move(file), std::move(targetPath), std::move(tracker) );
       };
     }
-
 
   private:
     Provide(  const zypp::Pathname &workDir );

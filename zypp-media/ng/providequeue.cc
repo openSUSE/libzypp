@@ -384,6 +384,17 @@ namespace zyppng {
     return true;
   }
 
+  bool ProvideQueue::sendErrorToWorker ( const uint32_t reqId, const MessageCodes code, const std::string &reason, bool transient ) {
+    auto r = ProvideMessage::createErrorResponse ( reqId, code, reason, transient );
+    if ( !_messageStream->sendMessage( r ) ) {
+      ERR << "Failed to send Error message to worker process." << std::endl;
+      fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
+      return false;
+    }
+    return true;
+  };
+
+
   void ProvideQueue::processMessage() {
 
     const auto &getRequest = [&]( const auto &exp ) -> decltype(_activeItems)::iterator {
@@ -404,16 +415,6 @@ namespace zyppng {
       }
 
       return i;
-    };
-
-    const auto &sendErrorToWorker = [&]( const uint32_t reqId, const MessageCodes code, const std::string &reason, bool transient = false ) {
-      auto r = ProvideMessage::createErrorResponse ( reqId, code, reason, transient );
-      if ( !_messageStream->sendMessage( r ) ) {
-        ERR << "Failed to send Error message to worker process." << std::endl;
-        fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
-        return false;
-      }
-      return true;
     };
 
     const bool doesDownload = this->_capabilities.worker_type() == Config::Downloading;
@@ -607,19 +608,9 @@ namespace zyppng {
                 extraVals[hdr.first] = hdr.second.asString();
               }
 
-              const auto &authOpt = reqRef->owner()->authenticationRequired( *this, reqRef, u, provMsg->value( AuthDataRequestMsgFields::LastAuthTimestamp ).asInt64(), extraVals );
-              if ( !authOpt ) {
-                if ( !sendErrorToWorker( reqRef->provideMessage().requestId(), ProvideMessage::Code::NoAuthData, "No auth given by user." ) )
-                  return;
-                continue;
-              }
+              reqRef->owner()->authenticationRequired( *this, reqRef, u, provMsg->value( AuthDataRequestMsgFields::LastAuthTimestamp ).asInt64(), extraVals
+                                                       ,[this, id = reqRef->provideMessage().requestId() ]( expected<zypp::media::AuthData> authData ){ finishAuthRequest( id, std::move(authData)); } );
 
-              auto r = ProvideMessage::createAuthInfo ( reqRef->provideMessage().requestId(), authOpt->username(), authOpt->password(), authOpt->lastDatabaseUpdate(), authOpt->extraValues() );
-              if ( !_messageStream->sendMessage( r ) ) {
-                ERR << "Failed to send AuthorizationInfo to worker process." << std::endl;
-                fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
-                return;
-              }
               continue;
 
             } catch ( const zypp::Exception &e ) {
@@ -657,39 +648,47 @@ namespace zyppng {
             if ( descVal.valid () && descVal.isString() )
               desc = descVal.asString();
 
-            auto res = _parent._sigMediaChange.emit(
+            req._request->owner()->mediaChangeRequired(
               _parent.queueName(*this),
               provMsg->value( MediaChangeRequestMsgFields::Label ).asString(),
               provMsg->value( MediaChangeRequestMsgFields::MediaNr ).asInt(),
               freeDevs,
-              desc
-            );
+              desc,
+              [this, reqRef = ProvideRequestWeakRef(reqIter->_request)]( Provide::MediaChangeAction res ) {
 
-            auto action = res ? *res : Provide::Action::ABORT;
-            switch ( action ) {
-              case Provide::Action::RETRY: {
-                MIL << "Sending back a MediaChanged message, retrying to find medium " << std::endl;
-                auto r = ProvideMessage::createMediaChanged ( reqIter->_request->provideMessage().requestId() );
-                if ( !_messageStream->sendMessage( r ) ){
-                  ERR << "Failed to send MediaChanged to worker process." << std::endl;
-                  fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
+                auto request = reqRef.lock();
+                if ( !request ) {
+                  MIL_PRV << "Ignoring response to media change, request is long gone!" << std::endl;
                   return;
                 }
-                continue;
+
+                auto action = res ? *res : Provide::Action::ABORT;
+                switch ( action ) {
+                  case Provide::Action::RETRY: {
+                    MIL << "Sending back a MediaChanged message, retrying to find medium " << std::endl;
+                    auto r = ProvideMessage::createMediaChanged ( request->provideMessage().requestId() );
+                    if ( !_messageStream->sendMessage( r ) ){
+                      ERR << "Failed to send MediaChanged to worker process." << std::endl;
+                      fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
+                      return;
+                    }
+                    return;
+                  }
+                  case Provide::Action::ABORT: {
+                    MIL << "Sending back a MediaChangeFailure message, request will fail " << std::endl;
+                    if ( !sendErrorToWorker( request->provideMessage().requestId(), ProvideMessage::Code::MediaChangeAbort, "Cancelled by User" ) )
+                      return;
+                    return;
+                  }
+                  case Provide::Action::SKIP: {
+                    MIL << "Sending back a MediaChangeFailure message, request will fail " << std::endl;
+                    if ( !sendErrorToWorker( request->provideMessage().requestId(), ProvideMessage::Code::MediaChangeSkip, "Skipped by User" ) )
+                      return;
+                    return;
+                  }
+                }
               }
-              case Provide::Action::ABORT: {
-                MIL << "Sending back a MediaChangeFailure message, request will fail " << std::endl;
-                if ( !sendErrorToWorker( reqRef->provideMessage().requestId(), ProvideMessage::Code::MediaChangeAbort, "Cancelled by User" ) )
-                  return;
-                continue;
-              }
-              case Provide::Action::SKIP: {
-                MIL << "Sending back a MediaChangeFailure message, request will fail " << std::endl;
-                if ( !sendErrorToWorker( reqRef->provideMessage().requestId(), ProvideMessage::Code::MediaChangeSkip, "Skipped by User" ) )
-                  return;
-                continue;
-              }
-            }
+            );
           } else {
             // if there is a unsupported worker request we need to stop immediately because the worker will be blocked until it gets a answer
             ERR << "Unsupported worker request: "<<code<<", this is a fatal error!" << std::endl;
@@ -705,6 +704,34 @@ namespace zyppng {
       } else {
         ERR << "Received unsupported message " << msg->command() << "ignoring" << std::endl;
       }
+    }
+  }
+
+
+  void ProvideQueue::finishAuthRequest( const uint32_t reqId, expected<zypp::media::AuthData> authData )
+  {
+    // only active items can have pending auth requests
+    auto i = std::find_if( _activeItems.begin(), _activeItems.end(), [&]( const auto &elem ) {
+      if ( ! elem._request )
+        return false;
+      return reqId == elem._request->provideMessage().requestId();
+    });
+
+    if ( i == _activeItems.end() ) {
+      ERR << "Ignoring unknown request ID: " << reqId << " maybe it was cancelled?" << std::endl;
+      return;
+    }
+
+    if ( !authData ) {
+      if ( !sendErrorToWorker( reqId, ProvideMessage::Code::NoAuthData, "No auth given by user." ) )
+        return;
+    }
+
+    auto r = ProvideMessage::createAuthInfo ( reqId, authData->username(), authData->password(), authData->lastDatabaseUpdate(), authData->extraValues() );
+    if ( !_messageStream->sendMessage( r ) ) {
+      ERR << "Failed to send AuthorizationInfo to worker process." << std::endl;
+      fatalWorkerError( ZYPP_EXCPT_PTR( zypp::media::MediaException("Failed to communicate with worker process.") ) );
+      return;
     }
   }
 

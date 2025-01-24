@@ -86,31 +86,31 @@ namespace zyppng {
     expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
     expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    expected<MediaHandle> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
-    expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
-    expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
+    expected<MediaHandle> attachMediaIfNeeded( LazyMediaHandle lazyHandle, ProgressObserverRef tracker = nullptr );
+    expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProgressObserverRef tracker = nullptr );
+    expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request, ProgressObserverRef tracker = nullptr );
 
-    expected<Res> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
-    expected<Res> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request );
-    expected<Res> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
-    expected<Res> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    expected<Res> provide(  MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    expected<Res> provide(  MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    expected<Res> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
+    expected<Res> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker = nullptr );
 
 
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    expected<zypp::CheckSum> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm );
+    expected<zypp::CheckSum> checksumForFile ( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm, ProgressObserverRef tracker = nullptr );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target );
-    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, Res source, const zypp::Pathname &target );
+    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target, ProgressObserverRef tracker = nullptr );
+    expected<zypp::ManagedFile> copyFile ( MediaContextRef ctx, Res source, const zypp::Pathname &target, ProgressObserverRef tracker = nullptr );
 
-    static auto copyResultToDest ( MediaSyncFacadeRef provider, MediaContextRef ctx, const zypp::Pathname &targetPath ) {
-      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = targetPath ]( Res &&file ){
+    static auto copyResultToDest ( MediaSyncFacadeRef provider, MediaContextRef ctx, const zypp::Pathname &targetPath, ProgressObserverRef tracker = nullptr ) {
+      return [ providerRef=std::move(provider), opContext = std::move(ctx), targetPath = targetPath, tracker = std::move(tracker) ]( Res &&file ){
         zypp::filesystem::assert_dir( targetPath.dirname () );
-        return providerRef->copyFile( opContext, std::move(file), targetPath );
+        return providerRef->copyFile( opContext, std::move(file), targetPath, tracker );
       };
     }
 

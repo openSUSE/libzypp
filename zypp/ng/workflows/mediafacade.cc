@@ -190,7 +190,7 @@ namespace zyppng {
     return usableMirrs;
   }
 
-  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request, zyppng::ProgressObserverRef tracker )
   {
 
     bool isVolatile = url.schemeIsVolatile();
@@ -363,7 +363,7 @@ namespace zyppng {
     } while ( true );
   }
 
-  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, zyppng::ProgressObserverRef tracker )
   {
     // rewrite and sanitize the urls if required
     std::vector<zypp::Url> useableUrls = sanitizeUrls(urls);
@@ -439,7 +439,7 @@ namespace zyppng {
     return prepareMedia( std::vector<zypp::Url>{url}, request );
   }
 
-  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMediaIfNeeded( LazyMediaHandle lazyHandle, zyppng::ProgressObserverRef tracker)
   {
     using namespace zyppng::operators;
     if ( lazyHandle.attached() )
@@ -454,7 +454,7 @@ namespace zyppng {
         });
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request)
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, zyppng::ProgressObserverRef tracker )
   {
     using namespace zyppng::operators;
 
@@ -491,12 +491,12 @@ namespace zyppng {
 
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request)
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request, zyppng::ProgressObserverRef tracker )
   {
     return provide( std::move(ctx), std::vector<zypp::Url>{url}, request );
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request)
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide(const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, zyppng::ProgressObserverRef tracker )
   {
     zypp::media::MediaManager mgr;
     const auto &handleInfo = attachHandle.info();
@@ -532,7 +532,7 @@ namespace zyppng {
     }
   }
 
-  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  expected<MediaSyncFacade::Res> MediaSyncFacade::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, zyppng::ProgressObserverRef tracker )
   {
     using namespace zyppng::operators;
     return attachMediaIfNeeded ( attachHandle )
@@ -544,7 +544,7 @@ namespace zyppng {
     });
   }
 
-  zyppng::expected<zypp::CheckSum> MediaSyncFacade::checksumForFile( MediaContextRef , const zypp::Pathname &p, const std::string &algorithm)
+  zyppng::expected<zypp::CheckSum> MediaSyncFacade::checksumForFile( MediaContextRef , const zypp::Pathname &p, const std::string &algorithm, zyppng::ProgressObserverRef tracker )
   {
     try {
       return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, zypp::filesystem::checksum ( p, algorithm ) ) );
@@ -553,7 +553,7 @@ namespace zyppng {
     }
   }
 
-  expected<zypp::ManagedFile> MediaSyncFacade::copyFile( MediaContextRef, const zypp::Pathname &source, const zypp::Pathname &target)
+  expected<zypp::ManagedFile> MediaSyncFacade::copyFile( MediaContextRef, const zypp::Pathname &source, const zypp::Pathname &target, zyppng::ProgressObserverRef tracker )
   {
     try {
       // do what Provide would do and make a URL
@@ -578,7 +578,7 @@ namespace zyppng {
     }
   }
 
-  expected<zypp::ManagedFile> MediaSyncFacade::copyFile( zyppng::MediaContextRef ctx, zyppng::MediaSyncFacade::Res source, const zypp::Pathname &target)
+  expected<zypp::ManagedFile> MediaSyncFacade::copyFile(zyppng::MediaContextRef ctx, zyppng::MediaSyncFacade::Res source, const zypp::Pathname &target, zyppng::ProgressObserverRef tracker)
   {
     // not much to do here, since this will block until the file has been copied we do not need to remember the ProvideRes
     return copyFile( std::move(ctx), source.file(), target );

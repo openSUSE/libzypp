@@ -38,7 +38,9 @@ namespace zyppng {
 
     friend class ProvideItem;
 
-    static expected<ProvideRequestRef> create( ProvideItem &owner, const std::vector<zypp::Url> &urls, const std::string &id, ProvideMediaSpec &spec );
+    virtual ~ProvideRequest();
+
+    static expected<ProvideRequestRef> create ( ProvideItem &owner, const std::vector<zypp::Url> &urls, const std::string &id, ProvideMediaSpec &spec );
     static expected<ProvideRequestRef> create ( ProvideItem &owner, const std::vector<zypp::Url> &urls, ProvideFileSpec &spec );
     static expected<ProvideRequestRef> createDetach( const zypp::Url &url );
 
@@ -90,8 +92,9 @@ namespace zyppng {
   class ProvideItemPrivate : public BasePrivate
   {
     public:
-      ProvideItemPrivate( ProvidePrivate & parent, ProvideItem &pub ) : BasePrivate(pub), _parent(parent) {}
+      ProvideItemPrivate( ProvidePrivate & parent, ProvideItem &pub, ProgressObserverRef taskTracker ) : BasePrivate(pub), _parent(parent), _taskTracker( std::move(taskTracker) ) {}
       ProvidePrivate &_parent;
+      ProgressObserverRef _taskTracker;
       ProvideItem::State _itemState = ProvideItem::Uninitialized;
       std::chrono::steady_clock::time_point _itemStarted;
       std::chrono::steady_clock::time_point _itemFinished;
@@ -131,7 +134,7 @@ namespace zyppng {
   {
   public:
 
-    static ProvideFileItemRef create ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent );
+    static ProvideFileItemRef create ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent, zyppng::ProgressObserverRef &&taskTracker );
 
     // ProvideItem interface
     void initialize () override;
@@ -144,14 +147,14 @@ namespace zyppng {
     zypp::ByteCount bytesExpected () const override;
 
   protected:
-    ProvideFileItem ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent );
+    ProvideFileItem ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent, zyppng::ProgressObserverRef &&taskTracker );
 
     void informalMessage ( ProvideQueue &, ProvideRequestRef req, const ProvideMessage &msg  ) override;
 
     using ProvideItem::finishReq;
     void finishReq ( ProvideQueue &queue, ProvideRequestRef finishedReq, const ProvideMessage &msg ) override;
     void cancelWithError ( std::exception_ptr error ) override;
-    expected<zypp::media::AuthData> authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields ) override;
+    void authenticationRequired( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields, AuthReadyCb readyCb ) override;
 
   private:
     Provide::MediaHandle _handleRef;    //< If we are using a attached media, this will keep the reference around
@@ -172,13 +175,13 @@ namespace zyppng {
   {
   public:
     ~AttachMediaItem();
-    static AttachMediaItemRef create ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    static AttachMediaItemRef create ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent, zyppng::ProgressObserverRef &&taskTracker );
     SignalProxy< void( const zyppng::expected<AttachedMediaInfo *> & ) > sigReady ();
 
     ProvidePromiseRef<Provide::MediaHandle> promise();
 
   protected:
-    AttachMediaItem ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    AttachMediaItem ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent, zyppng::ProgressObserverRef &&taskTracker );
 
     // ProvideItem interface
     void initialize () override;
@@ -187,8 +190,8 @@ namespace zyppng {
     void finishReq (  ProvideQueue &queue, ProvideRequestRef finishedReq, const ProvideMessage &msg ) override;
     void cancelWithError( std::exception_ptr error ) override;
     void finishWithSuccess (AttachedMediaInfo_Ptr medium );
-    expected<zypp::media::AuthData> authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields ) override;
-
+    void authenticationRequired (  ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields, AuthReadyCb readyCb  ) override;
+    void mediaChangeRequired ( const std::string &queueName, ProvideRequestRef req, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &freeDevs, const std::optional<std::string> &desc, MediaChangeCb readyCb ) override;
     void onMasterItemReady ( const zyppng::expected<AttachedMediaInfo *>& result );
 
   private:
@@ -200,6 +203,7 @@ namespace zyppng {
     ProvideQueue::Config::WorkerType _workerType = ProvideQueue::Config::Invalid;
     ProvidePromiseWeakRef<Provide::MediaHandle> _promise;
     MediaDataVerifierRef _verifier;
+    InputRequestRef _pendingMediaChangeRequest;
   };
 }
 

@@ -46,6 +46,7 @@ struct LIBZYPP_GLIB_EXPORT _ZyppUserRequestInterface
   GList  *(*get_keys) ( ZyppUserRequest *self );
   gchar  *(*get_content_type)( ZyppUserRequest *self );
   void    (*set_accepted)( ZyppUserRequest *self );
+  void    (*set_rejected)( ZyppUserRequest *self );
   void    (*set_ignored) ( ZyppUserRequest *self );
   gboolean(*get_accepted)( ZyppUserRequest *self );
 };

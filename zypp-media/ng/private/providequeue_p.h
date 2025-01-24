@@ -101,6 +101,8 @@ namespace zyppng {
 
     SignalProxy<void()> sigIdle();
 
+    void finishAuthRequest ( const uint32_t reqId, expected<zypp::media::AuthData> authData );
+
   private:
     bool doStartup ();
     void processMessage ( );
@@ -117,6 +119,7 @@ namespace zyppng {
     std::list< ProvideQueue::Item >::iterator dequeueActive ( std::list<Item>::iterator it );
     void fatalWorkerError ( const std::exception_ptr &reason = nullptr );
     void immediateShutdown ( const std::exception_ptr &reason );
+    bool sendErrorToWorker(const uint32_t reqId, const MessageCodes code, const std::string &reason, bool transient = false);
 
     /*!
      * Cancels the item the iterator \a i is pointing to, advancing the iterator to the next element in the list

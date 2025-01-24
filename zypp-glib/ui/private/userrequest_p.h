@@ -87,6 +87,12 @@ struct ZyppUserRequestImpl
     T_GET_PRIVATE(self)->_cppObj->accept();
   }
 
+  static void set_rejected( ZyppUserRequest *self )
+  {
+    g_return_if_fail ( T_IS_EXPECTED_GLIBTYPE (self) && T_GET_PRIVATE(self)->_cppObj );
+    T_GET_PRIVATE(self)->_cppObj->reject();
+  }
+
   static void set_ignored ( ZyppUserRequest *self )
   {
     g_return_if_fail ( T_IS_EXPECTED_GLIBTYPE (self) && T_GET_PRIVATE(self)->_cppObj );
@@ -106,6 +112,7 @@ struct ZyppUserRequestImpl
     iface->get_keys = get_keys;
     iface->get_content_type = get_content_type;
     iface->set_accepted = set_accepted;
+    iface->set_rejected = set_rejected;
     iface->set_ignored = set_ignored;
     iface->get_accepted = get_accepted;
   }

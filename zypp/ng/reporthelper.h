@@ -24,6 +24,7 @@
 #include <zypp/ng/Context>
 #include <zypp/ng/userrequest.h>
 #include <zypp/ng/repoinfo.h>
+#include <zypp/ng/workflows/logichelpers.h>
 
 #include <zypp/ZYppCallbacks.h>
 
@@ -78,7 +79,7 @@ namespace zyppng {
   }
 
   template<typename ZyppContextRef, typename ReportTag >
-  class BasicReportHelper {
+  class BasicReportHelper : public MaybeAsyncMixin< std::is_same_v< typename remove_smart_ptr_t<ZyppContextRef>::SyncOrAsyncTag, AsyncTag> > {
   public:
     virtual ~BasicReportHelper() = default;
     BasicReportHelper(const BasicReportHelper &) = default;

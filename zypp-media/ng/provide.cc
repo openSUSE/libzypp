@@ -9,6 +9,8 @@
 #include <zypp-media/MediaException>
 #include <zypp-media/FileCheckException>
 #include <zypp-media/CDTools>
+#include <zypp-core/zyppng/ui/userrequest.h>
+#include <zypp-core/zyppng/ui/progressobserver.h>
 
 // required to generate uuids
 #include <glib.h>
@@ -17,6 +19,26 @@
 L_ENV_CONSTR_DEFINE_FUNC(ZYPP_MEDIA_PROVIDER_DEBUG)
 
 namespace zyppng {
+
+  UserData ProvideAuthRequest::makeData(const zypp::Url &url, const std::string &username)
+  {
+    auto data = UserData( CTYPE.data() );
+    data.set ( "url", url );
+    data.set ( "username", username );
+    return data;
+  }
+
+  UserData ProvideMediaChangeRequest::makeData(const std::string &label, const int32_t mediaNr, const std::vector<std::string> &freeDevs, const std::optional<std::string> &desc)
+  {
+    auto data = UserData( CTYPE.data() );
+    data.set( "label", label );
+    data.set( "mediaNr", mediaNr );
+    data.set( "freeDevs", freeDevs );
+    if ( desc )
+      data.set( "desc", *desc );
+    return data;
+  }
+
 
   ProvidePrivate::ProvidePrivate(zypp::filesystem::Pathname &&workDir, Provide &pub)
     : BasePrivate(pub)
@@ -800,6 +822,87 @@ namespace zyppng {
     }
   }
 
+  void ProvidePrivate::authenticationRequired(ProgressObserverRef pO, ProvideRequestRef item, zypp::Url effectiveUrl, std::string username, std::map<std::string, std::string> extra, AuthRequestCb asyncReadyCb)
+  {
+    auto elem = std::find_if( _authRequests.begin(), _authRequests.end(), [&]( const auto &i){ return (i->_url == effectiveUrl && i->_username == username ); } );
+    if ( elem != _authRequests.end() ) {
+      MIL_PRV << "Found existing auth request for " << effectiveUrl << ":" << username << ", appending" << std::endl;
+      elem->_authWaiters.push_back( AuthRequest::Waiter{ ._reqRef = item.get(), ._asyncReadyCb = std::move(asyncReadyCb) } );
+    } else {
+      MIL_PRV << "No existing auth request for " << effectiveUrl << ":" << username << ", creating a new one" << std::endl;
+
+      auto &elem = _authRequests.emplace_back (
+        AuthRequest{
+          ._url = std::move(effectiveUrl),
+          ._username = std::move(username),
+          ._userRequest = InputRequest::create( "Please provide the password.", ProvideAuthRequest::makeData ( effectiveUrl, username ) ),
+          ._authWaiters = { AuthRequest::Waiter{ ._reqRef = item.get(), ._asyncReadyCb = std::move(asyncReadyCb) } }
+        }
+      );
+
+      // add the fields that we need
+      elem._userRequest->addField ( InputRequest::Text, "Username", elem._username );
+      elem._userRequest->addField ( InputRequest::Password, "Password" );
+
+      elem._userRequest->connectFunc ( &InputRequest::sigFinished, [this, weakReq = InputRequestWeakRef(elem._userRequest), effectiveUrl ]( ){
+
+        auto i = std::find_if( _authRequests.begin(), _authRequests.end(), [&]( const auto &i){ return ( i->_userRequest == weakReq ); } );
+        if ( i == _authRequests.end() ) {
+          MIL_PRV << "Invalid user auth request finished, this might be a bug!" << std::endl;
+          return; // request is deprecated or unknown
+        }
+
+        // remove before we notify the queues, so there are not accidentially new
+        // requests appended while we handle them
+        auto elem = std::move(*i);
+        _authRequests.erase (i);
+
+        if ( elem._userRequest->accepted () ) {
+          zypp::media::AuthData authData;
+          authData.setUrl ( effectiveUrl );
+          authData.setUsername ( elem._userRequest->fields ()[0].value );
+          authData.setPassword ( elem._userRequest->fields ()[1].value );
+
+          auto res = make_expected_success ( std::move(authData) );
+          for ( auto &waiter : elem._authWaiters ) {
+            waiter._asyncReadyCb( res );
+          }
+
+        } else {
+          auto err = expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No auth given by user." ) ) );
+          for ( auto &waiter : elem._authWaiters ) {
+            waiter._asyncReadyCb( err );
+          }
+        }
+      });
+
+      // send the request to the user code to handle, async CB will be called as soon as its ready
+      pO->sendUserRequest ( elem._userRequest );
+    }
+  }
+
+  void ProvidePrivate::requestDestructing(ProvideRequest &req)
+  {
+    // make sure request is not in pending auth requests
+    for( auto authIter = _authRequests.begin (); authIter != _authRequests.end(); ) {
+
+      for( auto i = authIter->_authWaiters.begin (); i != authIter->_authWaiters.end(); ) {
+        if ( i->_reqRef == &req ) {
+          i = authIter->_authWaiters.erase(i);
+        } else {
+          i++;
+        }
+      }
+
+      if ( authIter->_authWaiters.empty () ) {
+        authIter = _authRequests.erase (authIter);
+      } else {
+        authIter++;
+      }
+    }
+
+  }
+
   std::string ProvidePrivate::nextMediaId() const
   {
     zypp::AutoDispose rawStr( g_uuid_string_random (), g_free );
@@ -1031,7 +1134,7 @@ namespace zyppng {
     return prepareMedia( std::vector<zypp::Url>{url}, request );
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
+  AsyncOpRef<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle, ProgressObserverRef tracker)
   {
     using namespace zyppng::operators;
     if ( lazyHandle.attached() )
@@ -1046,12 +1149,12 @@ namespace zyppng {
         });
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
+  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request, ProgressObserverRef tracker )
   {
-    return attachMedia (  std::vector<zypp::Url>{url}, request );
+    return attachMedia (  std::vector<zypp::Url>{url}, request, std::move(tracker) );
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
+  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProgressObserverRef tracker )
   {
     Z_D();
 
@@ -1069,26 +1172,26 @@ namespace zyppng {
       }
     }
 
-    auto op = AttachMediaItem::create( usableMirrs, request, *d_func() );
+    auto op = AttachMediaItem::create( usableMirrs, request, *d_func(), std::move(tracker) );
     d->queueItem (op);
     return op->promise();
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProgressObserverRef tracker )
   {
 #warning Implement context handling
     Z_D();
-    auto op = ProvideFileItem::create( urls, request, *d );
+    auto op = ProvideFileItem::create( urls, request, *d, std::move(tracker) );
     d->queueItem (op);
     return op->promise();
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide(zyppng::MediaContextRef ctx, const zypp::Url &url, const ProvideFileSpec &request, ProgressObserverRef tracker )
   {
     return provide( std::move(ctx), std::vector<zypp::Url>{ url }, request );
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker )
   {
     Z_D();
     const auto i = std::find( d->_attachedMediaInfos.begin(), d->_attachedMediaInfos.end(), attachHandle.mediaInfo() );
@@ -1110,14 +1213,14 @@ namespace zyppng {
     }
 
     url.appendPathName( fileName );
-    auto op = ProvideFileItem::create( {url}, request, *d );
+    auto op = ProvideFileItem::create( {url}, request, *d, std::move(tracker) );
     op->setMediaRef( MediaHandle( *this, (*i) ));
     d->queueItem (op);
 
     return op->promise();
   }
 
-  AsyncOpRef<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  AsyncOpRef<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request, ProgressObserverRef tracker )
   {
     using namespace zyppng::operators;
     return attachMediaIfNeeded ( attachHandle )
@@ -1129,7 +1232,7 @@ namespace zyppng {
     });
   }
 
-  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( MediaContextRef ctx, const zypp::Pathname &p, const std::string &algorithm, ProgressObserverRef tracker  )
   {
     using namespace zyppng::operators;
 
@@ -1149,7 +1252,7 @@ namespace zyppng {
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile>> Provide::copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target )
+  AsyncOpRef<expected<zypp::ManagedFile>> Provide::copyFile ( MediaContextRef ctx, const zypp::Pathname &source, const zypp::Pathname &target, ProgressObserverRef tracker )
   {
     using namespace zyppng::operators;
 
@@ -1162,7 +1265,7 @@ namespace zyppng {
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( zyppng::MediaContextRef ctx, ProvideRes &&source, const zypp::filesystem::Pathname &target )
+  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( zyppng::MediaContextRef ctx, ProvideRes &&source, const zypp::filesystem::Pathname &target, ProgressObserverRef tracker )
   {
     using namespace zyppng::operators;
 
@@ -1221,16 +1324,6 @@ namespace zyppng {
   SignalProxy<void ()> Provide::sigIdle()
   {
     return d_func()->_sigIdle;
-  }
-
-  SignalProxy<Provide::MediaChangeAction ( const std::string &queueRef, const std::string &, const int32_t, const std::vector<std::string> &, const std::optional<std::string> &)> Provide::sigMediaChangeRequested()
-  {
-    return d_func()->_sigMediaChange;
-  }
-
-  SignalProxy< std::optional<zypp::media::AuthData> ( const zypp::Url &reqUrl, const std::string &triedUsername, const std::map<std::string, std::string> &extraValues ) > Provide::sigAuthRequired()
-  {
-    return d_func()->_sigAuthRequired;
   }
 
   ZYPP_IMPL_PRIVATE(Provide);
@@ -1330,4 +1423,5 @@ namespace zyppng {
       _stats._perSecond = zypp::ByteCount( diff / sinceStart.count() );
     }
   }
+
 }

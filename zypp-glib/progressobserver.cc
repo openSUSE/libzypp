@@ -11,6 +11,7 @@
 #include <zypp/ng/userrequest.h>
 #include <zypp-glib/ui/userrequest.h>
 #include <zypp-glib/ui/booleanchoicerequest.h>
+#include <zypp-glib/ui/inputrequest.h>
 #include <zypp-glib/ui/listchoicerequest.h>
 #include <zypp-glib/ui/showmessagerequest.h>
 
@@ -430,6 +431,12 @@ void ZyppProgressObserverPrivate::initializeCpp() {
                auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppBooleanChoiceRequest>(actualReq);
                g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
                return;
+             }
+             case zyppng::UserRequestType::InputRequest: {
+              auto actualReq = std::dynamic_pointer_cast<zyppng::InputRequest>(req);
+              auto gObjMsg = zypp::glib::zypp_wrap_cpp<ZyppInputRequest>(actualReq);
+              g_signal_emit (_gObject, signals[SIG_EVENT], 0, gObjMsg.get(), nullptr );
+              return;
              }
              case zyppng::UserRequestType::Custom: {
                ERR << "Custom user requests can not be wrapped with glib!" << std::endl;

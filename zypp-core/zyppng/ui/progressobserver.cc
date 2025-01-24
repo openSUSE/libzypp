@@ -376,10 +376,15 @@ namespace zyppng {
   {
     Z_D();
     d->_sigEvent.emit( *this, event );
-    if ( !event->accepted () ) {
+    if ( !event->acknowledged () ) {
       // our receivers did not handle the request, we need to bubble up!
       auto p = d->_parent.lock();
-      if ( p ) p->sendUserRequest( event );
+      if ( p ) {
+        p->sendUserRequest( event );
+      } else {
+        // no parent, no ack, finished
+        event->setFinished();
+      }
     }
   }
 

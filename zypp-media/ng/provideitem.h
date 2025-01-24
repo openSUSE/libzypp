@@ -9,6 +9,8 @@
 #ifndef ZYPP_MEDIA_PROVIDEITEM_H_INCLUDED
 #define ZYPP_MEDIA_PROVIDEITEM_H_INCLUDED
 
+#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-media/auth/authdata.h>
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-media/ng/ProvideFwd>
@@ -21,6 +23,8 @@ namespace zyppng
   class ProvideMessage;
   class ProvidePrivate;
   class ProvideItemPrivate;
+
+  ZYPP_FWD_DECL_TYPE_WITH_REFS ( ProgressObserver );
 
  /*!
    * Represents a operation added to the provide queue by the user code. A "user" operation can have multiple
@@ -52,7 +56,7 @@ namespace zyppng
       zypp::ByteCount _bytesExpected;
     };
 
-    ProvideItem( ProvidePrivate &parent );
+    ProvideItem(ProvidePrivate &parent, zyppng::ProgressObserverRef &&taskTracker );
     ~ProvideItem ();
 
     /*!
@@ -115,6 +119,8 @@ namespace zyppng
      */
     virtual zypp::ByteCount bytesExpected () const;
 
+    ProgressObserverRef taskTracker() const;
+
   protected:
     virtual ItemStats makeStats ();
 
@@ -145,11 +151,31 @@ namespace zyppng
      */
     virtual void finishReq ( ProvideQueue *queue, ProvideRequestRef finishedReq, const std::exception_ptr excpt );
 
+    using AuthReadyCb = std::function<void( expected<zypp::media::AuthData> )>;
+
     /*!
      * Request needs authentication data, the function is supposed to return the AuthData to use for the response, or an error
      * The default implementation simply uses the given URL to look for a Auth match in the \ref zypp::media::CredentialManager.
      */
-    virtual expected<zypp::media::AuthData> authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields );
+    virtual void authenticationRequired ( ProvideQueue &queue, ProvideRequestRef req, const zypp::Url &effectiveUrl, int64_t lastTimestamp, const std::map<std::string, std::string> &extraFields, AuthReadyCb readyCb );
+
+    enum Action {
+      ABORT,  // abort and return error
+      RETRY,  // retry
+      SKIP    // abort and set skip request
+    };
+    using MediaChangeAction = std::optional<Action>;
+
+    /*!
+     * Callback type for the async mediaChangeRequired func
+     */
+    using MediaChangeCb = std::function<void( MediaChangeAction ) >;
+
+    /*!
+     * Request needs a media change, the function is supposed to report back the action chosen by the user.
+     * Can be handled async, as long as the request is marked as ack()
+     */
+    virtual void mediaChangeRequired ( const std::string &queueName, ProvideRequestRef req, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &freeDevs, const std::optional<std::string> &desc, MediaChangeCb readyCb );
 
     /*!
      * Remembers previous redirects and returns false if the URL was encountered before, use this
@@ -185,8 +211,6 @@ namespace zyppng
      * \note calling updateState with state \ref Finished will potentially delete the Item instance
      */
     void updateState( const State newState );
-
-    void setFinished ();
 
   protected:
     ProvideRequestRef _runningReq;

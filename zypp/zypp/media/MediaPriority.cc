@@ -32,7 +32,7 @@ namespace zypp
 
       /**
        * 4: local:     file,dir,hd
-       * 3: remote:    nfs,cifs,smb
+       * 3: remote:    nfs,nfs4,cifs,smb
        * ?: download:  http,https,ftp,sftp, tftp
        * ?: volatile:  cd,dvd
        * 0:            the rest

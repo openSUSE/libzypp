@@ -36,15 +36,15 @@ namespace zypp
         RpmInstallPackageReceiver (Resolvable::constPtr res);
         virtual ~RpmInstallPackageReceiver ();
 
-        virtual void reportbegin();
+        void reportbegin() override;
 
-        virtual void reportend();
+        void reportend() override;
 
         /** Forwards generic reports. */
         void report( const UserData & userData_r ) override;
 
         /** Start the operation */
-        virtual void start( const Pathname & name );
+        void start( const Pathname & name ) override;
 
         void tryLevel( target::rpm::InstallResolvableReport::RpmLevel level_r );
 
@@ -54,19 +54,19 @@ namespace zypp
          * Inform about progress
          * Return true on abort
          */
-        virtual bool progress( unsigned percent );
+        bool progress( unsigned percent ) override;
 
         /** inform user about a problem */
-        virtual rpm::RpmInstallReport::Action problem( Exception & excpt_r );
+        rpm::RpmInstallReport::Action problem( Exception & excpt_r ) override;
 
         /** Additional rpm output to be reported in \ref finish in case of success. */
-        virtual void finishInfo( const std::string & info_r );
+        void finishInfo( const std::string & info_r ) override;
 
         /** Finish operation in case of success */
-        virtual void finish();
+        void finish() override;
 
-        /** Finish operatin in case of fail, report fail exception */
-        virtual void finish( Exception & excpt_r );
+        /** Finish operation in case of fail, report fail exception */
+        void finish( Exception & excpt_r ) override;
     };
 
     class RpmRemovePackageReceiver
@@ -82,21 +82,21 @@ namespace zypp
         RpmRemovePackageReceiver (Resolvable::constPtr res);
         virtual ~RpmRemovePackageReceiver ();
 
-        virtual void reportbegin();
+        void reportbegin() override;
 
-        virtual void reportend();
+        void reportend() override;
 
         /** Start the operation */
         /** Forwards generic reports. */
         void report( const UserData & userData_r ) override;
 
-        virtual void start( const std::string & name );
+        void start( const std::string & name ) override;
 
         /**
          * Inform about progress
          * Return true on abort
          */
-        virtual bool progress( unsigned percent );
+        bool progress( unsigned percent ) override;
 
         /**
          *  Returns true if removing is aborted during progress
@@ -104,16 +104,16 @@ namespace zypp
         bool aborted() const { return _abort; }
 
         /** inform user about a problem */
-        virtual rpm::RpmRemoveReport::Action problem( Exception & excpt_r );
+        rpm::RpmRemoveReport::Action problem( Exception & excpt_r ) override;
 
         /** Additional rpm output to be reported in \ref finish in case of success. */
-        virtual void finishInfo( const std::string & info_r );
+        void finishInfo( const std::string & info_r ) override;
 
         /** Finish operation in case of success */
-        virtual void finish();
+        void finish() override;
 
         /** Finish operatin in case of fail, report fail exception */
-        virtual void finish( Exception & excpt_r );
+        void finish( Exception & excpt_r ) override;
     };
 
     /////////////////////////////////////////////////////////////////

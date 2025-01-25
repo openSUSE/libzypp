@@ -29,7 +29,7 @@ public:
   // DeviceDriver interface
   zyppng::expected<zyppng::worker::WorkerCaps> initialize(const zyppng::worker::Configuration &conf) override;
   zyppng::worker::AttachResult mountDevice ( const uint32_t id, const zypp::Url &attachUrl, const std::string &attachId, const std::string &label, const zyppng::HeaderValueMap &extras ) override;
-  void detectDevices();
+  void detectDevices() override;
 
 protected:
   void unmountDevice ( zyppng::worker::Device &dev ) override;

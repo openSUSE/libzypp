@@ -118,7 +118,7 @@ namespace zyppng {
                   return expected<void>::success();
                 });
            } )
-         | [this]( std::list<expected<void>> && ) {
+         | []( std::list<expected<void>> && ) {
               return expected<void>::success();
             };
       }

@@ -677,7 +677,7 @@ namespace zyppng::RepoManagerWorkflow {
                 // On the fly add missing solv.idx files for bash completion.
                 return makeReadyResult(
                   solv_path_for_repoinfo( _refCtx->repoManagerOptions(), info)
-                  | and_then([this]( zypp::Pathname base ){
+                  | and_then([]( zypp::Pathname base ){
                     if ( ! zypp::PathInfo(base/"solv.idx").isExist() )
                       return mtry( zypp::sat::updateSolvFileIndex, base/"solv" );
                     return expected<void>::success ();
@@ -779,7 +779,7 @@ namespace zyppng::RepoManagerWorkflow {
                   cmd.push_back( _productdatapath.asString() );
 
                 return Repo2SolvOp::run( info, std::move(cmd) )
-                | and_then( [this, guard = std::move(guard), solvfile = std::move(solvfile) ]() mutable {
+                | and_then( [guard = std::move(guard), solvfile = std::move(solvfile) ]() mutable {
                   // We keep it.
                   guard.resetDispose();
                   return mtry( zypp::sat::updateSolvFileIndex, solvfile ); // content digest for zypper bash completion
@@ -814,7 +814,7 @@ namespace zyppng::RepoManagerWorkflow {
           return makeReadyResult( make_expected_success( std::optional<MediaHandle>() ));
 
         return _refCtx->zyppContext()->provider()->attachMedia( info.url(), ProvideMediaSpec() )
-        | and_then( [this]( MediaHandle handle ) {
+        | and_then( []( MediaHandle handle ) {
           return makeReadyResult( make_expected_success( std::optional<MediaHandle>( std::move(handle)) ));
         });
       }

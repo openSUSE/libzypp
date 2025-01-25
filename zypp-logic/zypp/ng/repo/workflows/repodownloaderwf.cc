@@ -108,7 +108,7 @@ namespace zyppng {
                   return makeReadyResult(expected<void>::success());
                 };
               })
-            | [this,masterres=std::move(masterres)]( expected<void> ) {
+            | [masterres=std::move(masterres)]( expected<void> ) {
               return make_expected_success( std::move(masterres) );
             };
 

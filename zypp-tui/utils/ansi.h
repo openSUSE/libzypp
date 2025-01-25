@@ -858,7 +858,7 @@ namespace std
    */
 template<class CCC_, typename = ztui::ansi::EnableIfCustomColorCtor<CCC_>>
 inline ostream & operator<<( ostream & str, CCC_ && color_r )
-{ return str << ztui::ansi::Color( forward<CCC_>(color_r) ); }
+{ return str << ztui::ansi::Color( std::forward<CCC_>(color_r) ); }
 } // namespace std
 
 #endif // ZYPP_TUI_UTILS_ANSI_H

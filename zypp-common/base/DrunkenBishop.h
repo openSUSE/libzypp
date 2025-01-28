@@ -15,8 +15,8 @@
 #include <vector>
 #include <string>
 
-#include <zypp/base/PtrTypes.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/base/Flags.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

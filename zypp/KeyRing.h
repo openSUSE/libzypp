@@ -23,8 +23,10 @@
 #include <zypp/Callback.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Locale.h>
-#include <zypp/PublicKey.h>
 #include <zypp/KeyRingContexts.h>
+
+#include <zypp-common/PublicKey.h>
+#include <zypp-common/KeyRingException.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -156,25 +158,6 @@ namespace zypp
     virtual void trustedKeyRemoved( const PublicKey &/*key*/ )
     {}
   };
-
-  class ZYPP_API KeyRingException : public Exception
-   {
-     public:
-       /** Ctor taking message.
-      * Use \ref ZYPP_THROW to throw exceptions.
-        */
-       KeyRingException()
-       : Exception( "Bad Key Exception" )
-       {}
-       /** Ctor taking message.
-        * Use \ref ZYPP_THROW to throw exceptions.
-        */
-       KeyRingException( const std::string & msg_r )
-       : Exception( msg_r )
-       {}
-       /** Dtor. */
-       ~KeyRingException() throw() override {};
-   };
 
   ///////////////////////////////////////////////////////////////////
   //

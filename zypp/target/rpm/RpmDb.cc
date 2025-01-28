@@ -40,7 +40,7 @@ extern "C"
 #include <zypp/Date.h>
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp-core/ui/ProgressData>
 
 #include <zypp/target/rpm/RpmDb.h>
@@ -52,7 +52,7 @@ extern "C"
 #include <zypp/target/rpm/RpmException.h>
 #include <zypp/TmpPath.h>
 #include <zypp/KeyRing.h>
-#include <zypp/KeyManager.h>
+#include <zypp-common/KeyManager.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
 #include <zypp/base/IOTools.h>

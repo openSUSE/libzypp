@@ -45,7 +45,6 @@ SET( zypp_SRCS
   HistoryLogData.cc
   IdString.cc
   InstanceId.cc
-  KeyManager.cc
   KeyRing.cc
   KeyRingContexts.cc
   Locks.cc
@@ -61,7 +60,6 @@ SET( zypp_SRCS
   ProblemSolution.cc
   Product.cc
   ProvideFilePolicy.cc
-  PublicKey.cc
   PurgeKernels.cc
   Range.cc
   Rel.cc
@@ -132,7 +130,6 @@ SET( zypp_HEADERS
   IdStringType.h
   InstanceId.h
   KeyContext.h
-  KeyManager.h
   KeyRing.h
   KeyRingContexts.h
   KVMap.h
@@ -158,7 +155,6 @@ SET( zypp_HEADERS
   ProblemTypes.h
   Product.h
   ProvideFilePolicy.h
-  PublicKey.h
   PurgeKernels.h
   Range.h
   RelCompare.h
@@ -205,7 +201,6 @@ INSTALL(  FILES ${zypp_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp" )
 
 SET( zypp_base_SRCS
   base/Backtrace.cc
-  base/DrunkenBishop.cc
   base/SerialNumber.cc
   base/Random.cc
   base/Measure.cc
@@ -217,7 +212,6 @@ SET( zypp_base_SRCS
 SET( zypp_base_HEADERS
   base/Backtrace.h
   base/Collector.h
-  base/DrunkenBishop.h
   base/SerialNumber.h
   base/Env.h
   base/Random.h
@@ -990,6 +984,7 @@ function(add_zypp_lib target shared_or_static )
 
   # CAUTION, link those libs always first and always in that order,
   # otherwise you get symbol lookup errors when linking against libzypp
+  TARGET_LINK_LIBRARIES( ${target} ${_link_mode} zypp-common )
   TARGET_LINK_LIBRARIES( ${target} ${_link_mode} zypp-curl )
   TARGET_LINK_LIBRARIES( ${target} ${_link_mode} zypp-media )
 
@@ -1004,7 +999,6 @@ function(add_zypp_lib target shared_or_static )
   TARGET_LINK_LIBRARIES( ${target} ${_link_mode} ${RPM_LIBRARY} ${RPMIO_LIBRARY} )
   TARGET_LINK_LIBRARIES( ${target} ${_link_mode} ${GETTEXT_LIBRARIES} )
   TARGET_LINK_LIBRARIES( ${target} ${_link_mode} ${Boost_THREAD_LIBRARY})
-  TARGET_LINK_LIBRARIES( ${target} ${_link_mode} ${GPGME_LIBRARIES})
   target_link_libraries( ${target} ${_link_mode} ${YAML_CPP_LIBRARIES})
 
   IF ( UDEV_FOUND )

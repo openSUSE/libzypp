@@ -14,7 +14,7 @@
 #include <zypp/RepoInfo.h>
 #include <zypp/ZConfig.h>
 #include <zypp/Pathname.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 
 #include <zypp-core/base/Gettext.h>
 #include <utility>

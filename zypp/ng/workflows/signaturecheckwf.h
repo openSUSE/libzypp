@@ -12,7 +12,7 @@
 #include <zypp-core/zyppng/pipelines/AsyncResult>
 #include <zypp-core/zyppng/pipelines/Expected>
 
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/Pathname.h>
 #include <zypp/KeyRingContexts.h>
 

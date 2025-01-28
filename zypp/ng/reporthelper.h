@@ -12,7 +12,7 @@
 #ifndef ZYPP_NG_REPORTHELPER_INCLUDED
 #define ZYPP_NG_REPORTHELPER_INCLUDED
 
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/KeyContext.h>
 #include <zypp/KeyRing.h>
 #include <zypp/Digest.h>

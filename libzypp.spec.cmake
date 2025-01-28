@@ -436,6 +436,7 @@ done
 %{_includedir}/zypp-media
 %{_includedir}/zypp-curl
 %{_includedir}/zypp-tui
+%{_includedir}/zypp-common
 %{_libdir}/pkgconfig/libzypp.pc
 
 %files devel-doc

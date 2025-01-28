@@ -10,11 +10,14 @@
  */
 #include <cstdint>
 #include <iostream>
+
+#include "DrunkenBishop.h"
+
 //#include <zypp/base/LogTools.h>
-#include <zypp/base/Flags.h>
-#include <zypp/base/String.h>
-#include <zypp/base/NonCopyable.h>
-#include <zypp/base/DrunkenBishop.h>
+#include <zypp-core/base/Flags.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/NonCopyable.h>
+
 
 using std::endl;
 

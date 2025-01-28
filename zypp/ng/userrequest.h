@@ -9,7 +9,7 @@
 #ifndef ZYPP_NG_USERREQUEST_H_INCLUDED
 #define ZYPP_NG_USERREQUEST_H_INCLUDED
 
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/KeyContext.h>
 #include <zypp-core/zyppng/ui/UserRequest>
 

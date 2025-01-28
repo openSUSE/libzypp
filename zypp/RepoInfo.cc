@@ -20,7 +20,7 @@
 #include <zypp/parser/xml/XmlEscape.h>
 
 #include <zypp/ManagedFile.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/MediaSetAccess.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/Glob.h>

@@ -33,7 +33,7 @@
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp/ZYppCallbacks.h>       // JobReport::instance
-#include <zypp/KeyManager.h>
+#include <zypp-common/KeyManager.h>
 
 #include <zypp/ng/workflows/keyringwf.h>
 

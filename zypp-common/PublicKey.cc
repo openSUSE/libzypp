@@ -15,18 +15,18 @@
 #include <utility>
 #include <vector>
 
+#include "PublicKey.h"
+#include "KeyManager.h"
+
 #include <zypp/base/Gettext.h>
 #include <zypp/base/String.h>
 #include <zypp/base/Regex.h>
-#include <zypp/PublicKey.h>
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp/PathInfo.h>
 #include <zypp/base/Exception.h>
 #include <zypp/base/LogTools.h>
 #include <zypp/Date.h>
-#include <zypp/KeyManager.h>
-#include <zypp/ZYppFactory.h>
 
 #include <gpgme.h>
 
@@ -286,12 +286,6 @@ namespace zypp
                       << created().printDate()
                       << " [" << expiresDetail( expires() ) << "]";
   }
-
-  bool PublicKeySignatureData::inTrustedRing() const
-  { return getZYpp()->keyRing()->isKeyTrusted(id()); }
-
-  bool PublicKeySignatureData::inKnownRing() const
-  { return getZYpp()->keyRing()->isKeyKnown(id()); }
 
   ///////////////////////////////////////////////////////////////////
   /// \class PublicKeyData::Impl
@@ -707,9 +701,6 @@ namespace zypp
 
   std::ostream & dumpOn( std::ostream & str, const PublicKey & obj )
   { return dumpOn( str, obj.keyData() ); }
-
-
-
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

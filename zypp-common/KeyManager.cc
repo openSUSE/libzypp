@@ -6,13 +6,14 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include <zypp/KeyManager.h>
-#include <zypp/KeyRing.h>
-#include <zypp/PathInfo.h>
-#include <zypp/base/Logger.h>
-#include <zypp/TmpPath.h>
-#include <zypp/base/String.h>
-#include <zypp/AutoDispose.h>
+#include "KeyManager.h"
+#include "KeyRingException.h"
+
+#include <zypp-core/fs/PathInfo.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/fs/TmpPath.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/AutoDispose.h>
 
 #include <boost/thread/once.hpp>
 #include <boost/interprocess/smart_ptr/scoped_ptr.hpp>

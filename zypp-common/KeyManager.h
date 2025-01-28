@@ -14,10 +14,8 @@
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Pathname.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp-core/ByteArray.h>
-
-#include <memory>
 
 namespace zypp
 {

@@ -14,10 +14,7 @@ SET( zypp_common_base_SRCS
   base/DrunkenBishop.cc
 )
 
-INSTALL(  FILES
-  ${zypp_base_HEADERS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/base
-)
+INSTALL( FILES ${zypp_common_base_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-common/base" )
 
 
 SET ( zypp_common_HEADERS

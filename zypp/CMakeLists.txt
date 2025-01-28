@@ -130,6 +130,7 @@ SET( zypp_HEADERS
   IdStringType.h
   InstanceId.h
   KeyContext.h
+  KeyManager.h
   KeyRing.h
   KeyRingContexts.h
   KVMap.h
@@ -155,6 +156,7 @@ SET( zypp_HEADERS
   ProblemTypes.h
   Product.h
   ProvideFilePolicy.h
+  PublicKey.h
   PurgeKernels.h
   Range.h
   RelCompare.h
@@ -212,6 +214,7 @@ SET( zypp_base_SRCS
 SET( zypp_base_HEADERS
   base/Backtrace.h
   base/Collector.h
+  base/DrunkenBishop.h
   base/SerialNumber.h
   base/Env.h
   base/Random.h
@@ -1031,6 +1034,7 @@ if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
 endif ()
 
 add_zypp_lib( zypp SHARED )
+
 set_target_properties ( zypp PROPERTIES LINK_FLAGS "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map" )
 INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 

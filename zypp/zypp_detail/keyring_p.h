@@ -14,7 +14,7 @@
 
 #include "zypp-core/fs/TmpPath.h"
 #include <zypp-core/fs/WatchFile>
-#include <zypp/KeyManager.h>
+#include <zypp-common/KeyManager.h>
 #include <zypp/KeyRing.h>
 
 #include <optional>

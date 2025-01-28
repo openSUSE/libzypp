@@ -4,7 +4,7 @@
 
 #include <zypp/Callback.h>
 #include <zypp/KeyRing.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/KeyContext.h>
 
 /**

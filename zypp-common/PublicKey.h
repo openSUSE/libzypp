@@ -13,16 +13,15 @@
 #define ZYPP_PUBLICKEY_H
 
 #include <iosfwd>
-#include <map>
 #include <list>
-#include <set>
 #include <string>
 #include <utility>
+
+#include <zypp-common/base/DrunkenBishop.h>
 
 #include <zypp/base/Iterable.h>
 #include <zypp/base/PtrTypes.h>
 #include <zypp/base/Exception.h>
-#include <zypp/base/DrunkenBishop.h>
 #include <zypp/Pathname.h>
 #include <zypp/Edition.h>
 #include <zypp/Date.h>
@@ -167,12 +166,6 @@ namespace zypp
      * For keys without expiration date \c INT_MAX is returned.
      */
     int daysToLive() const;
-
-    /** Whether the signature is trusted in rpmdb. */
-    bool inTrustedRing() const;
-
-    /** Whether the key has been seen before. */
-    bool inKnownRing() const;
 
     /** Simple string representation.
      * Encodes \ref id, \ref created and \ref expires

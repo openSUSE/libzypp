@@ -15,7 +15,7 @@
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp/base/StrMatcher.h>
 #include <zypp/KeyRing.h>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/ZYppCallbacks.h>
 
 #include <utility>

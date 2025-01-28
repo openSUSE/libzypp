@@ -15,7 +15,7 @@
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
 #include <zypp/ng/repo/Downloader>
-#include <zypp/PublicKey.h>
+#include <zypp-common/PublicKey.h>
 #include <zypp/KeyRing.h>
 
 #include <zypp/ng/workflows/signaturecheckwf.h>

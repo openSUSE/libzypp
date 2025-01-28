@@ -331,4 +331,11 @@ namespace zypp {
     }
 
   } // namespace filesystem
+
+  Pathname myTmpDir()
+  {
+    static filesystem::TmpDir _tmpdir( filesystem::TmpPath::defaultLocation(), "zypp." );
+    return _tmpdir.path();
+  }
+
 } // namespace zypp

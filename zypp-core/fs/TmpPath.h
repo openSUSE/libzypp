@@ -213,7 +213,7 @@ namespace zypp {
   } // namespace filesystem
 
   /** Global access to the zypp.TMPDIR (created on demand, deleted when libzypp is unloaded) */
-  Pathname myTmpDir() ZYPP_API;	// implemented in ZYppImpl.cc
+  Pathname myTmpDir() ZYPP_API;
 
 } // namespace zypp
 

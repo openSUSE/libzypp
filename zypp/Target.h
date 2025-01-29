@@ -222,12 +222,16 @@ namespace zypp
   public:
     /** Ctor. If \c doRebuild_r is \c true, an already existing
      * database is rebuilt (rpm --rebuilddb ).
+     * \internal
     */
     explicit
-    Target( const Pathname & root = "/", bool doRebuild_r = false );
-    /** Ctor */
+    Target( const Pathname & root = "/", bool doRebuild_r = false ) ZYPP_LOCAL;
+    /**
+     *  Ctor
+     * \internal
+     */
     explicit
-    Target( const Impl_Ptr & impl_r );
+    Target( const Impl_Ptr & impl_r ) ZYPP_LOCAL;
 
   private:
     friend std::ostream & operator<<( std::ostream & str, const Target & obj );

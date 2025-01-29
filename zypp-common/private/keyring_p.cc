@@ -10,13 +10,12 @@
  *
 */
 
-#include "zypp_detail/keyring_p.h"
+#include "keyring_p.h"
 
 #include <iostream>
 #include <fstream>
 #include <optional>
 #include <sys/file.h>
-#include <cstdio>
 #include <unistd.h>
 
 #include <zypp/TmpPath.h>
@@ -32,10 +31,7 @@
 #include <zypp/PathInfo.h>
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
-#include <zypp/ZYppCallbacks.h>       // JobReport::instance
 #include <zypp-common/KeyManager.h>
-
-#include <zypp/ng/workflows/keyringwf.h>
 
 using std::endl;
 
@@ -44,78 +40,7 @@ using std::endl;
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
-{ /////////////////////////////////////////////////////////////////
-
-  IMPL_PTR_TYPE(KeyRing);
-
-  namespace
-  {
-    KeyRing::DefaultAccept _keyRingDefaultAccept( KeyRing::ACCEPT_NOTHING );
-  }
-
-  KeyRing::DefaultAccept KeyRing::defaultAccept()
-  { return _keyRingDefaultAccept; }
-
-  void KeyRing::setDefaultAccept( DefaultAccept value_r )
-  {
-    MIL << "Set new KeyRing::DefaultAccept: " << value_r << endl;
-    _keyRingDefaultAccept = value_r;
-  }
-
-  void KeyRingReport::infoVerify( const std::string & file_r, const PublicKeyData & keyData_r, const KeyContext & keycontext )
-  {}
-
-  bool KeyRingReport::askUserToAcceptUnsignedFile( const std::string & file, const KeyContext & keycontext )
-  { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_UNSIGNED_FILE ); }
-
-  KeyRingReport::KeyTrust
-  KeyRingReport::askUserToAcceptKey( const PublicKey & key, const KeyContext & keycontext )
-  {
-    if ( _keyRingDefaultAccept.testFlag( KeyRing::TRUST_KEY_TEMPORARILY ) )
-      return KEY_TRUST_TEMPORARILY;
-    if ( _keyRingDefaultAccept.testFlag( KeyRing::TRUST_AND_IMPORT_KEY ) )
-      return KEY_TRUST_AND_IMPORT;
-    return KEY_DONT_TRUST;
-  }
-
-  bool KeyRingReport::askUserToAcceptUnknownKey( const std::string & file, const std::string & id, const KeyContext & keycontext )
-  { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_UNKNOWNKEY ); }
-
-  bool KeyRingReport::askUserToAcceptVerificationFailed( const std::string & file, const PublicKey & key, const KeyContext & keycontext )
-  { return _keyRingDefaultAccept.testFlag( KeyRing::ACCEPT_VERIFICATION_FAILED ); }
-
-  bool KeyRingReport::askUserToAcceptPackageKey(const PublicKey &key_r, const KeyContext &keycontext_r)
-  {
-    UserData data(ACCEPT_PACKAGE_KEY_REQUEST);
-    data.set("PublicKey", key_r);
-    data.set("KeyContext", keycontext_r);
-    report(data);
-
-    if ( data.hasvalue("TrustKey") )
-      return data.get<bool>("TrustKey");
-    return false;
-  }
-
-  void KeyRingReport::reportNonImportedKeys(const std::set<Edition> &keys_r)
-  {
-    UserData data(KEYS_NOT_IMPORTED_REPORT);
-    data.set("Keys", keys_r);
-    report(data);
-  }
-
-  void KeyRingReport::reportAutoImportKey( const std::list<PublicKeyData> & keyDataList_r,
-                                           const PublicKeyData & keySigning_r,
-                                           const KeyContext &keyContext_r )
-  {
-    UserData data { REPORT_AUTO_IMPORT_KEY };
-    data.set( "KeyDataList", keyDataList_r );
-    data.set( "KeySigning",  keySigning_r );
-    data.set( "KeyContext",  keyContext_r );
-    report( data );
-  }
-
-  ///////////////////////////////////////////////////////////////////
-
+{
   CachedPublicKeyData::Manip::Manip(CachedPublicKeyData &cache_r, filesystem::Pathname keyring_r)
     : _cache { cache_r }
     , _keyring { std::move(keyring_r) }
@@ -182,69 +107,40 @@ namespace zypp
   }
 
 
-  ///////////////////////////////////////////////////////////////////
-
-  namespace
-  {
-    /// Handle signal emission from within KeyRing::Impl::importKey
-    struct ImportKeyCBHelper
-    {
-      void operator()( const PublicKey & key_r )
-      {
-        try {
-          _rpmdbEmitSignal->trustedKeyAdded( key_r );
-          _emitSignal->trustedKeyAdded( key_r );
-        }
-        catch ( const Exception & excp )
-        {
-          ERR << "Could not import key into rpmdb: " << excp << endl;
-          // TODO: JobReport as hotfix for bsc#1057188; should bubble up and go through some callback
-          JobReport::error( excp.asUserHistory() );
-        }
-      }
-
-    private:
-      callback::SendReport<target::rpm::KeyRingSignals> _rpmdbEmitSignal;
-      callback::SendReport<KeyRingSignals>              _emitSignal;
-    };
-  } // namespace
-
-  KeyRing::Impl::Impl(const filesystem::Pathname &baseTmpDir)
+  KeyRingImpl::KeyRingImpl(const filesystem::Pathname &baseTmpDir)
     : _trusted_tmp_dir( baseTmpDir, "zypp-trusted-kr" )
     , _general_tmp_dir( baseTmpDir, "zypp-general-kr" )
     , _base_dir( baseTmpDir )
   {
-    MIL << "Current KeyRing::DefaultAccept: " << _keyRingDefaultAccept << std::endl;
   }
 
-  void KeyRing::Impl::importKey( const PublicKey & key, bool trusted )
+  void KeyRingImpl::importKey( const PublicKey & key, bool trusted )
   {
     importKey( key.path(), trusted ? trustedKeyRing() : generalKeyRing() );
     MIL << "Imported key " << key << " to " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
 
     if ( trusted )
     {
-      ImportKeyCBHelper emitSignal;
       if ( key.hiddenKeys().empty() )
       {
-        emitSignal( key );
+        _sigTrustedKeyAdded.emit( key );
       }
       else
       {
         // multiple keys: Export individual keys ascii armored to import in rpmdb
-        emitSignal( exportKey( key, trustedKeyRing() ) );
+        _sigTrustedKeyAdded.emit( exportKey( key, trustedKeyRing() ) );
         for ( const PublicKeyData & hkey : key.hiddenKeys() )
-          emitSignal( exportKey( hkey, trustedKeyRing() ) );
+          _sigTrustedKeyAdded.emit( exportKey( hkey, trustedKeyRing() ) );
       }
     }
   }
 
-  void KeyRing::Impl::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
+  void KeyRingImpl::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
   {
     importKey( keyfile_r, trusted_r ? trustedKeyRing() : generalKeyRing() );
   }
 
-  void KeyRing::Impl::deleteKey( const std::string & id, bool trusted )
+  void KeyRingImpl::deleteKey( const std::string & id, bool trusted )
   {
     PublicKeyData keyDataToDel( publicKeyExists( id, trusted ? trustedKeyRing() : generalKeyRing() ) );
     if ( ! keyDataToDel )
@@ -252,28 +148,16 @@ namespace zypp
       WAR << "Key to delete [" << id << "] is not in " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
       return;
     }
+
     deleteKey( id, trusted ? trustedKeyRing() : generalKeyRing() );
     MIL << "Deleted key [" << id << "] from " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
 
-    if ( trusted )
-    try {
-      PublicKey key( keyDataToDel );
-
-      callback::SendReport<target::rpm::KeyRingSignals> rpmdbEmitSignal;
-      rpmdbEmitSignal->trustedKeyRemoved( key );
-
-      callback::SendReport<KeyRingSignals> emitSignal;
-      emitSignal->trustedKeyRemoved( key );
-    }
-    catch ( const Exception & excp )
-    {
-      ERR << "Could not delete key from rpmmdb: " << excp << endl;
-      // TODO: JobReport as hotfix for bsc#1057188; should bubble up and go through some callback
-      JobReport::error( excp.asUserHistory() );
+    if ( trusted ) {
+      _sigTrustedKeyAdded.emit ( PublicKey( keyDataToDel ) );
     }
   }
 
-  PublicKeyData KeyRing::Impl::publicKeyExists( const std::string & id, const Pathname & keyring )
+  PublicKeyData KeyRingImpl::publicKeyExists( const std::string & id, const Pathname & keyring )
   {
     if ( _allowPreload && keyring == generalKeyRing() ) {
       _allowPreload = false;
@@ -293,7 +177,7 @@ namespace zypp
     return ret;
   }
 
-  void KeyRing::Impl::preloadCachedKeys()
+  void KeyRingImpl::preloadCachedKeys()
   {
     MIL << "preloadCachedKeys into general keyring..." << endl;
     CachedPublicKeyData::Manip manip { keyRingManip( generalKeyRing() ) }; // Provides the context if we want to manip a cached keyring.
@@ -347,12 +231,12 @@ namespace zypp
     }
   }
 
-  PublicKey KeyRing::Impl::exportKey( const PublicKeyData & keyData, const Pathname & keyring )
+  PublicKey KeyRingImpl::exportKey( const PublicKeyData & keyData, const Pathname & keyring )
   {
     return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
   }
 
-  PublicKey KeyRing::Impl::exportKey( const std::string & id, const Pathname & keyring )
+  PublicKey KeyRingImpl::exportKey( const std::string & id, const Pathname & keyring )
   {
     PublicKeyData keyData( publicKeyExists( id, keyring ) );
     if ( keyData )
@@ -364,12 +248,12 @@ namespace zypp
   }
 
 
-  void KeyRing::Impl::dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream )
+  void KeyRingImpl::dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream )
   {
     KeyManagerCtx::createForOpenPGP( keyring ).exportKey(id, stream);
   }
 
-  filesystem::TmpFile KeyRing::Impl::dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring )
+  filesystem::TmpFile KeyRingImpl::dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring )
   {
     filesystem::TmpFile tmpFile( _base_dir, "pubkey-"+id+"-" );
     MIL << "Going to export key [" << id << "] from " << keyring << " to " << tmpFile.path() << endl;
@@ -380,7 +264,7 @@ namespace zypp
     return tmpFile;
   }
 
-  std::list<PublicKey> KeyRing::Impl::publicKeys( const Pathname & keyring )
+  std::list<PublicKey> KeyRingImpl::publicKeys( const Pathname & keyring )
   {
     const std::list<PublicKeyData> & keys( publicKeyData( keyring ) );
     std::list<PublicKey> ret;
@@ -394,7 +278,7 @@ namespace zypp
     return ret;
   }
 
-  void KeyRing::Impl::importKey( const Pathname & keyfile, const Pathname & keyring )
+  void KeyRingImpl::importKey( const Pathname & keyfile, const Pathname & keyring )
   {
     if ( ! PathInfo( keyfile ).isExist() )
       // TranslatorExplanation first %s is key name, second is keyring name
@@ -407,14 +291,14 @@ namespace zypp
       ZYPP_THROW(KeyRingException(_("Failed to import key.")));
   }
 
-  void KeyRing::Impl::deleteKey( const std::string & id, const Pathname & keyring )
+  void KeyRingImpl::deleteKey( const std::string & id, const Pathname & keyring )
   {
     CachedPublicKeyData::Manip manip { keyRingManip( keyring ) }; // Provides the context if we want to manip a cached keyring.
     if ( ! manip.keyManagerCtx().deleteKey( id ) )
       ZYPP_THROW(KeyRingException(_("Failed to delete key.")));
   }
 
-  std::string KeyRing::Impl::readSignatureKeyId( const Pathname & signature )
+  std::string KeyRingImpl::readSignatureKeyId( const Pathname & signature )
   {
     if ( ! PathInfo( signature ).isFile() )
       ZYPP_THROW(KeyRingException( str::Format(_("Signature file %s not found")) % signature.asString() ));
@@ -430,85 +314,10 @@ namespace zypp
     return std::string();
   }
 
-  bool KeyRing::Impl::verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring )
+  bool KeyRingImpl::verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring )
   {
     return KeyManagerCtx::createForOpenPGP( keyring ).verify( file, signature );
   }
 
-  ///////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : KeyRing
-  //
-  ///////////////////////////////////////////////////////////////////
-
-  KeyRing::KeyRing( const Pathname & baseTmpDir )
-  : _pimpl( new Impl( baseTmpDir ) )
-  {}
-
-  KeyRing::~KeyRing()
-  {}
-
-  KeyRing::Impl &KeyRing::pimpl()
-  {
-    return *_pimpl;
-  }
-
-  void KeyRing::allowPreload( bool yesno_r )
-  { _pimpl->allowPreload( yesno_r ); }
-
-
-  void KeyRing::importKey( const PublicKey & key, bool trusted )
-  { _pimpl->importKey( key, trusted ); }
-
-  void KeyRing::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
-  { _pimpl->multiKeyImport( keyfile_r, trusted_r ); }
-
-  std::string KeyRing::readSignatureKeyId( const Pathname & signature )
-  { return _pimpl->readSignatureKeyId( signature ); }
-
-  void KeyRing::deleteKey( const std::string & id, bool trusted )
-  { _pimpl->deleteKey( id, trusted ); }
-
-  std::list<PublicKey> KeyRing::publicKeys()
-  { return _pimpl->publicKeys(); }
-
-  std:: list<PublicKey> KeyRing::trustedPublicKeys()
-  { return _pimpl->trustedPublicKeys(); }
-
-  std::list<PublicKeyData> KeyRing::publicKeyData()
-  { return _pimpl->publicKeyData(); }
-
-  std::list<PublicKeyData> KeyRing::trustedPublicKeyData()
-  { return _pimpl->trustedPublicKeyData(); }
-
-  PublicKeyData KeyRing::publicKeyData( const std::string &id_r )
-  { return _pimpl->publicKeyExists( id_r ); }
-
-  PublicKeyData KeyRing::trustedPublicKeyData(const std::string &id_r)
-  { return _pimpl->trustedPublicKeyExists( id_r ); }
-
-  bool KeyRing::verifyFileSignature( const Pathname & file, const Pathname & signature )
-  { return _pimpl->verifyFileSignature( file, signature ); }
-
-  bool KeyRing::verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
-  { return _pimpl->verifyFileTrustedSignature( file, signature ); }
-  void KeyRing::dumpPublicKey( const std::string & id, bool trusted, std::ostream & stream )
-  { _pimpl->dumpPublicKey( id, trusted, stream ); }
-
-  PublicKey KeyRing::exportPublicKey( const PublicKeyData & keyData )
-  { return _pimpl->exportPublicKey( keyData ); }
-
-  PublicKey KeyRing::exportTrustedPublicKey( const PublicKeyData & keyData )
-  { return _pimpl->exportTrustedPublicKey( keyData ); }
-
-  bool KeyRing::isKeyTrusted( const std::string & id )
-  { return _pimpl->isKeyTrusted( id ); }
-
-  bool KeyRing::isKeyKnown( const std::string & id )
-  { return _pimpl->isKeyKnown( id ); }
-
-  /////////////////////////////////////////////////////////////////
 } // namespace zypp
-///////////////////////////////////////////////////////////////////
+

@@ -28,17 +28,27 @@ SET ( zypp_common_SRCS
   PublicKey.cc
 )
 
+SET ( zypp_common_private_HEADERS
+  private/keyring_p.h
+)
+
+SET ( zypp_common_private_SRCS
+  private/keyring_p.cc
+)
+
 INSTALL(  FILES ${zypp_common_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-common" )
 
 
 SET( zypp_common_lib_SRCS
 ${zypp_common_base_SRCS}
 ${zypp_common_SRCS}
+${zypp_common_private_SRCS}
 )
 
 SET( zypp_common_lib_HEADERS
 ${zypp_common_base_HEADERS}
 ${zypp_common_HEADERS}
+${zypp_common_private_HEADERS}
 )
 
 

@@ -13,7 +13,6 @@
 #include <zypp/media/MediaCIFS.h>
 #include <zypp/media/MediaCurl.h>
 #include <zypp/media/MediaMultiCurl.h>
-#include <zypp/media/MediaNetwork.h>
 #include <zypp/media/MediaISO.h>
 #include <zypp/media/MediaPlugin.h>
 #include <zypp/media/UrlResolverPlugin.h>
@@ -90,13 +89,11 @@ namespace zypp::media {
         break;
       }
       case MediaCURLType: {
-        enum WhichHandler { choose, curl, multicurl, network };
+        enum WhichHandler { choose, curl, multicurl };
         WhichHandler which = choose;
         // Leagcy: choose handler in UUrl query
         if ( const std::string & queryparam = url.getQueryParam("mediahandler"); ! queryparam.empty() ) {
-          if ( queryparam == "network" )
-            which = network;
-          else if ( queryparam == "multicurl" )
+          if ( queryparam == "network" ||  queryparam == "multicurl" )
             which = multicurl;
           else if ( queryparam == "curl" )
             which = curl;
@@ -110,11 +107,7 @@ namespace zypp::media {
             return v && v == val;
           };
 
-          if ( getenvIs( "ZYPP_MEDIANETWORK", "1" ) ) {
-            WAR << "MediaNetwork backend enabled" << std::endl;
-            which = network;
-          }
-          else if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
+          if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
             WAR << "multicurl manually disabled." << std::endl;
             which = curl;
           }
@@ -128,11 +121,6 @@ namespace zypp::media {
           case multicurl:
             handler = std::make_unique<MediaMultiCurl>( url, preferred_attach_point );
             break;
-
-          case network:
-            handler = std::make_unique<MediaNetwork>( url, preferred_attach_point );
-            break;
-
           case curl:
             handler = std::make_unique<MediaCurl>( url, preferred_attach_point );
             break;

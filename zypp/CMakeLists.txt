@@ -203,6 +203,7 @@ INSTALL(  FILES ${zypp_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp" )
 
 SET( zypp_base_SRCS
   base/Backtrace.cc
+  base/ConfigValues.cc
   base/SerialNumber.cc
   base/Random.cc
   base/Measure.cc
@@ -213,6 +214,7 @@ SET( zypp_base_SRCS
 
 SET( zypp_base_HEADERS
   base/Backtrace.h
+  base/ConfigValues.h
   base/Collector.h
   base/DrunkenBishop.h
   base/SerialNumber.h

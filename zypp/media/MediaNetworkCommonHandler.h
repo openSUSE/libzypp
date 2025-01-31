@@ -22,7 +22,7 @@ namespace zypp
   {
     ///////////////////////////////////////////////////////////////////
     /// \class MediaNetworkCommonHandler
-    /// \brief Common baseclass for MediaCurl and MediaNetwork
+    /// \brief Baseclass for MediaCurl
     ///
     /// Access to commonly used stuff like \ref TransferSettings mainly
     //  to avoid duplicated code.

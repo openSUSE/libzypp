@@ -7,7 +7,7 @@
 |                                                                      |
 ----------------------------------------------------------------------*/
 #include "private/mirrorcontrol_p.h"
-#include "private/mediadebug_p.h"
+#include <zypp-curl/ng/network/private/mediadebug_p.h>
 #include <zypp-core/zyppng/base/EventDispatcher>
 #include <zypp-core/zyppng/base/Signals>
 #include <zypp-core/base/String.h>

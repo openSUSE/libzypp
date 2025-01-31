@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 ----------------------------------------------------------------------*/
-#include <zypp-curl/ng/network/private/downloader_p.h>
+#include <downloader/private/downloader_p.h>
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>

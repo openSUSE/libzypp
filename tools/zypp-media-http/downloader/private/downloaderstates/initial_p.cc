@@ -7,7 +7,7 @@
 |                                                                      |
 ----------------------------------------------------------------------*/
 
-#include <zypp-curl/ng/network/private/downloader_p.h>
+#include <downloader/private/downloader_p.h>
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
 
 #include "initial_p.h"

@@ -196,7 +196,8 @@ namespace zypp
     };
 
     // progress for probing a source
-    struct ZYPP_API ProbeRepoReport : public callback::ReportBase
+    /** \deprecated Is not sent by zypp. */
+    struct ZYPP_API ZYPP_DEPRECATED ProbeRepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -222,7 +223,8 @@ namespace zypp
       virtual Action problem( const Url &/*url*/, Error /*error*/, const std::string &/*description*/ ) { return ABORT; }
     };
 
-    struct ZYPP_API RepoCreateReport : public callback::ReportBase
+    /** \deprecated Is not sent by zypp. */
+    struct ZYPP_API ZYPP_DEPRECATED RepoCreateReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error
@@ -256,7 +258,8 @@ namespace zypp
       {}
     };
 
-    struct ZYPP_API RepoReport : public callback::ReportBase
+    /** \deprecated Is not sent by zypp. */
+    struct ZYPP_API ZYPP_DEPRECATED RepoReport : public callback::ReportBase
     {
       enum Action {
         ABORT,  // abort and return error

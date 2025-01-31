@@ -8,13 +8,14 @@
 \---------------------------------------------------------------------*/
 #include "networkprovider.h"
 
-#include <zypp-curl/ng/network/Downloader>
 #include <zypp-curl/ng/network/NetworkRequestDispatcher>
-#include <zypp-curl/ng/network/DownloadSpec>
 #include <zypp-curl/parser/MetaLinkParser>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/CheckSum.h>
 #include <zypp-media/ng/private/providedbg_p.h>
+
+#include <downloader/downloader.h>
+#include <downloader/downloadspec.h>
 
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP

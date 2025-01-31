@@ -3,10 +3,15 @@ PROJECT( zypp-media-http C CXX )
 set (CMAKE_CXX_STANDARD 17)
 SET (CMAKE_CXX_EXTENSIONS OFF)
 
+INCLUDE_DIRECTORIES ( ${zypp-media-http_SOURCE_DIR} )
+include(downloader/CMakeLists.txt)
+
 SET( SOURCES
   main.cc
   networkprovider.cc
   networkprovider.h
+  ${downloader_HEADERS}
+  ${downloader_SRCS}
 )
 
 if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )

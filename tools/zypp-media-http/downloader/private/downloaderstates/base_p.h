@@ -17,14 +17,15 @@
 #include <zypp-core/zyppng/base/private/base_p.h>
 #include <zypp-core/zyppng/base/signals.h>
 #include <zypp-core/TriBool.h>
-#include <zypp-curl/ng/network/Downloader>
-#include <zypp-curl/ng/network/DownloadSpec>
 #include <zypp-core/zyppng/core/ByteArray>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/ng/network/TransferSettings>
-#include <zypp-curl/ng/network/private/mirrorcontrol_p.h>
 #include <zypp-curl/ng/network/networkrequesterror.h>
 #include <zypp-media/auth/CredentialManager>
+
+#include <downloader/downloader.h>
+#include <downloader/downloadspec.h>
+#include <downloader/private/mirrorcontrol_p.h>
 
 namespace zyppng {
 

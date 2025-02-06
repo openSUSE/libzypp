@@ -21,7 +21,6 @@
 #include <boost/format.hpp>
 #include <boost/utility/string_ref.hpp>
 
-#include <zypp-core/base/Easy.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/Function.h>
 
@@ -812,20 +811,20 @@ namespace zypp
           else
           {
             std::string toadd( asString(*iter) );
-            for_( ch, toadd.begin(), toadd.end() )
+            for ( const char ch : toadd )
             {
-              switch ( *ch )
+              switch ( ch )
               {
                 case '"':
                 case '\'':
                 case '\\':
                   buf.push_back( '\\' );
-                  buf.push_back( *ch );
+                  buf.push_back( ch );
                   break;
                 default:
-                  if ( *ch == sep_r )
+                  if ( ch == sep_r )
                     buf.push_back( '\\' );
-                  buf.push_back( *ch );
+                  buf.push_back( ch );
               }
             }
           }

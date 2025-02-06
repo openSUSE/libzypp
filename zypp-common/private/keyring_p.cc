@@ -269,9 +269,9 @@ namespace zypp
     const std::list<PublicKeyData> & keys( publicKeyData( keyring ) );
     std::list<PublicKey> ret;
 
-    for_( it, keys.begin(), keys.end() )
+    for ( const PublicKeyData& keyData : keys )
     {
-      PublicKey key( exportKey( *it, keyring ) );
+      PublicKey key( exportKey( keyData, keyring ) );
       ret.push_back( key );
       MIL << "Found key " << key << endl;
     }

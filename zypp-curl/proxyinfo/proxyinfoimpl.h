@@ -59,9 +59,9 @@ namespace zypp {
         // A leading '.' in the pattern is ignored. Some implementations
         // need '.foo.ba' to prevent 'foo.ba' from matching 'xfoo.ba'.
         std::string host( str::toLower( url_r.getHost() ) );
-        for_( it, noproxy.begin(), noproxy.end() )
+        for ( const std::string & np : noproxy )
         {
-          std::string pattern( str::toLower( (*it)[0] == '.' ? it->c_str() + 1 : it->c_str() ) );
+          std::string pattern( str::toLower( np[0] == '.' ? np.c_str() + 1 : np.c_str() ) );
           if ( str::hasSuffix( host, pattern )
                && ( host.size() == pattern.size()
                     || host[host.size()-pattern.size()-1] == '.' ) )

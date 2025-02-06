@@ -93,14 +93,14 @@ int main( int argc, char * argv[] )
   if ( ! vm.count( "key-file" ) )
   {
     std::string last;
-    for_each_( it, rpmpubkeys )
+    for ( const PublicKey& rpmpubkey : rpmpubkeys )
     {
-      if ( last == it->gpgPubkeyVersion() )
-        cout << *it << endl;
+      if ( last == rpmpubkey.gpgPubkeyVersion() )
+        cout << rpmpubkey << endl;
       else
       {
-        dumpPubkeyOn( cout, *it );
-        last = it->gpgPubkeyVersion();
+        dumpPubkeyOn( cout, rpmpubkey );
+        last = rpmpubkey.gpgPubkeyVersion();
       }
     }
     return 0;
@@ -108,20 +108,20 @@ int main( int argc, char * argv[] )
 
   ///////////////////////////////////////////////////////////////////
 
-  for_each_( it, vm["key-file"].as< std::vector<std::string> >() )
+  for ( const std::string& keyfile : vm["key-file"].as< std::vector<std::string> >() )
   {
-    cout << "=== " << PathInfo(*it) << endl;
-    PublicKey pubkey( *it );
+    cout << "=== " << PathInfo( keyfile ) << endl;
+    PublicKey pubkey( keyfile );
     dumpPubkeyOn( cout, pubkey );
 
     std::string pubkeyV( pubkey.gpgPubkeyVersion() );
     std::string pubkeyR( pubkey.gpgPubkeyRelease() );
     unsigned count = 0;
-    for_each_( rpmpub, rpmpubkeys )
+    for ( const PublicKey& rpmpub : rpmpubkeys )
     {
-      if ( rpmpub->gpgPubkeyVersion() == pubkeyV )
+      if ( rpmpub.gpgPubkeyVersion() == pubkeyV )
       {
-        int cmp = rpmpub->gpgPubkeyRelease().compare( pubkeyR );
+        int cmp = rpmpub.gpgPubkeyRelease().compare( pubkeyR );
         if ( cmp < 0 )
           cout << "<<< ";
         else if ( cmp > 0 )
@@ -131,7 +131,7 @@ int main( int argc, char * argv[] )
           ++count;
           cout << "*** ";
         }
-        cout << "gpg-pubkey-" << rpmpub->gpgPubkeyVersion() << "-" << rpmpub->gpgPubkeyRelease() << " " << rpmpub->daysToLive() << endl;
+        cout << "gpg-pubkey-" << rpmpub.gpgPubkeyVersion() << "-" << rpmpub.gpgPubkeyRelease() << " " << rpmpub.daysToLive() << endl;
       }
     }
     if ( ! count )

@@ -659,8 +659,8 @@ BOOST_AUTO_TEST_CASE(pool_query_serialize)
     q.addAttribute( sat::SolvAttr::name,      "ma" );
     q.addDependency( sat::SolvAttr::name,     "nn", Rel::EQ, Edition("nne-nnr"), Arch_noarch );
     q.addDependency( sat::SolvAttr::name,     "nx", Rel::EQ, Edition("nxe-nxr"), Arch_noarch, Match::REGEX );
-    q.addDependency( sat::SolvAttr::requires, "rn", Rel::EQ, Edition("rne-rnr"), Arch_noarch );
-    q.addDependency( sat::SolvAttr::requires, "rx", Rel::EQ, Edition("rxe-rxr"), Arch_noarch, Match::GLOB );
+    q.addDependency( sat::SolvAttr::dep_requires, "rn", Rel::EQ, Edition("rne-rnr"), Arch_noarch );
+    q.addDependency( sat::SolvAttr::dep_requires, "rx", Rel::EQ, Edition("rxe-rxr"), Arch_noarch, Match::GLOB );
     queries.push_back( q );
   }
 
@@ -725,17 +725,17 @@ BOOST_AUTO_TEST_CASE(pool_query_equal)
   }
   {
     PoolQuery q;
-    q.addDependency( sat::SolvAttr::provides, "zypper" );
+    q.addDependency( sat::SolvAttr::dep_provides, "zypper" );
     v.push_back( q );
   }
   {
     PoolQuery q;
-    q.addDependency( sat::SolvAttr::provides, "zypper", Rel::GT, Edition("1.0")  );
+    q.addDependency( sat::SolvAttr::dep_provides, "zypper", Rel::GT, Edition("1.0")  );
     v.push_back( q );
   }
   {
     PoolQuery q;
-    q.addDependency( sat::SolvAttr::provides, "zypper", Rel::GT, Edition("2.0")  );
+    q.addDependency( sat::SolvAttr::dep_provides, "zypper", Rel::GT, Edition("2.0")  );
     v.push_back( q );
   }
 
@@ -764,7 +764,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     q.setCaseSensitive( false );
     q.setMatchSubstring();
     q.addString( "libzypp" );
-    q.addDependency( sat::SolvAttr::provides, "FOO" ); // ! finds 'perl(CPAN::InfoObj)' 'foO'
+    q.addDependency( sat::SolvAttr::dep_provides, "FOO" ); // ! finds 'perl(CPAN::InfoObj)' 'foO'
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 13 );
@@ -775,7 +775,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     q.setCaseSensitive( false );
     q.setMatchSubstring();
     q.addString( "libzypp" );
-    q.addDependency( sat::SolvAttr::provides, "FOO", Rel::GT, Edition("5.0") );
+    q.addDependency( sat::SolvAttr::dep_provides, "FOO", Rel::GT, Edition("5.0") );
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 7 );
@@ -785,7 +785,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     PoolQuery q;
     q.setCaseSensitive( false );
     q.setMatchSubstring();
-    q.addDependency( sat::SolvAttr::provides, "libzypp", Rel::GT, Edition("5.0") );
+    q.addDependency( sat::SolvAttr::dep_provides, "libzypp", Rel::GT, Edition("5.0") );
     q.addAttribute( sat::SolvAttr::arch, Arch_i586.asString() ); // OR with arch i585
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
@@ -797,7 +797,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     q.setCaseSensitive( false );
     q.setMatchSubstring();
     // libzypp provides yast2-packagemanager...
-    q.addDependency( sat::SolvAttr::provides, "yast2-packagemanager", Rel::GT, Edition("5.0"), Arch_i586 ); // AND with arch i585
+    q.addDependency( sat::SolvAttr::dep_provides, "yast2-packagemanager", Rel::GT, Edition("5.0"), Arch_i586 ); // AND with arch i585
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 2 );
@@ -819,7 +819,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     q.setCaseSensitive( false );
     q.setMatchSubstring();
     // libzypp provides yast2-packagemanager...
-    q.addDependency( sat::SolvAttr::provides, "yast2-packagemanager", Arch_i586 ); // AND with arch i585
+    q.addDependency( sat::SolvAttr::dep_provides, "yast2-packagemanager", Arch_i586 ); // AND with arch i585
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 2 );
@@ -840,7 +840,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     cout << "****addDependency3****"  << endl;
     PoolQuery q;
     // includes wine
-    q.addDependency( sat::SolvAttr::provides, "kernel" );
+    q.addDependency( sat::SolvAttr::dep_provides, "kernel" );
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 12 );
@@ -858,7 +858,7 @@ BOOST_AUTO_TEST_CASE(addDependency)
     cout << "****addDependency5****"  << endl;
     PoolQuery q;
     // Capability always matches exact
-    q.addDependency( sat::SolvAttr::provides, Capability("kernel") );
+    q.addDependency( sat::SolvAttr::dep_provides, Capability("kernel") );
     std::for_each(q.begin(), q.end(), PrintAndCount());
     //dumpQ( std::cout, q );
     BOOST_CHECK_EQUAL( q.size(), 2 );

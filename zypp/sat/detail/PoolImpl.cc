@@ -603,7 +603,7 @@ namespace zypp
 
           for ( const Solvable & pi : Pool::instance().solvables() )
           {
-            for ( const Capability & cap : pi.supplements() )
+            for ( const Capability & cap : pi.dep_supplements() )
             {
               _getLocaleDeps( cap, localeSet );
             }

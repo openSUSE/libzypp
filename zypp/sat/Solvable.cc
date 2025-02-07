@@ -482,60 +482,76 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    Capabilities Solvable::provides() const
+    Capabilities Solvable::dep_provides() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->provides );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_provides );
     }
-    Capabilities Solvable::requires() const
+    Capabilities Solvable::dep_requires() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->requires );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_requires );
     }
-    Capabilities Solvable::conflicts() const
+    Capabilities Solvable::dep_conflicts() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->conflicts );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_conflicts );
     }
-    Capabilities Solvable::obsoletes() const
+    Capabilities Solvable::dep_obsoletes() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->obsoletes );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_obsoletes );
     }
-    Capabilities Solvable::recommends() const
+    Capabilities Solvable::dep_recommends() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->recommends );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_recommends );
     }
-    Capabilities Solvable::suggests() const
+    Capabilities Solvable::dep_suggests() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->suggests );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_suggests );
     }
-    Capabilities Solvable::enhances() const
+    Capabilities Solvable::dep_enhances() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->enhances );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_enhances );
     }
-    Capabilities Solvable::supplements() const
+    Capabilities Solvable::dep_supplements() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
-      return _getCapabilities( _solvable->repo->idarraydata, _solvable->supplements );
+      return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_supplements );
     }
     Capabilities Solvable::prerequires() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
       // prerequires are a subset of requires
-       ::Offset offs = _solvable->requires;
+       ::Offset offs = _solvable->dep_requires;
        return offs ? Capabilities( _solvable->repo->idarraydata + offs, detail::solvablePrereqMarker )
                    : Capabilities();
     }
+
+#if __cplusplus < 202002L
+#define DECLARE_CAP_FWD(_Fnc_Name) \
+    Capabilities Solvable::_Fnc_Name() const \
+    { return dep_##_Fnc_Name(); }
+
+    DECLARE_CAP_FWD(provides)
+    DECLARE_CAP_FWD(requires)
+    DECLARE_CAP_FWD(conflicts)
+    DECLARE_CAP_FWD(obsoletes)
+    DECLARE_CAP_FWD(recommends)
+    DECLARE_CAP_FWD(suggests)
+    DECLARE_CAP_FWD(enhances)
+    DECLARE_CAP_FWD(supplements)
+#undef DECLARE_CAP_FWD
+#endif
 
     CapabilitySet Solvable::providesNamespace( const std::string & namespace_r ) const
     {
       NO_SOLVABLE_RETURN( CapabilitySet() );
       CapabilitySet ret;
-      Capabilities caps( provides() );
+      Capabilities caps( dep_provides() );
       for_( it, caps.begin(), caps.end() )
       {
         CapDetail caprep( it->detail() );
@@ -549,7 +565,7 @@ namespace zypp
     {
       NO_SOLVABLE_RETURN( CapabilitySet() );
       CapabilitySet ret;
-      Capabilities caps( provides() );
+      Capabilities caps( dep_provides() );
       for_( it, caps.begin(), caps.end() )
       {
         CapDetail caprep( it->detail() );
@@ -653,13 +669,13 @@ namespace zypp
     bool Solvable::supportsLocales() const
     {
       // false_c stops on 1st Locale.
-      return invokeOnEachSupportedLocale( supplements(), functor::false_c() ) < 0;
+      return invokeOnEachSupportedLocale( dep_supplements(), functor::false_c() ) < 0;
     }
 
     bool Solvable::supportsLocale( const Locale & locale_r ) const
     {
       // not_equal_to stops on == Locale.
-      return invokeOnEachSupportedLocale( supplements(), bind( std::not_equal_to<Locale>(), locale_r, _1 ) ) < 0;
+      return invokeOnEachSupportedLocale( dep_supplements(), bind( std::not_equal_to<Locale>(), locale_r, _1 ) ) < 0;
     }
 
     bool Solvable::supportsLocale( const LocaleSet & locales_r ) const
@@ -667,7 +683,7 @@ namespace zypp
       if ( locales_r.empty() )
         return false;
       // NoMatchIn stops if Locale is included.
-      return invokeOnEachSupportedLocale( supplements(), NoMatchIn(locales_r) ) < 0;
+      return invokeOnEachSupportedLocale( dep_supplements(), NoMatchIn(locales_r) ) < 0;
     }
 
     bool Solvable::supportsRequestedLocales() const
@@ -676,7 +692,7 @@ namespace zypp
     LocaleSet Solvable::getSupportedLocales() const
     {
       LocaleSet ret;
-      invokeOnEachSupportedLocale( supplements(), functor::collector( std::inserter( ret, ret.begin() ) ) );
+      invokeOnEachSupportedLocale( dep_supplements(), functor::collector( std::inserter( ret, ret.begin() ) ) );
       return ret;
     }
 

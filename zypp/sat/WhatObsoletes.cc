@@ -96,7 +96,7 @@ namespace zypp
 
       if ( obsoleteUsesProvides )
       {
-        WhatProvides obsoleted( item_r.obsoletes() );
+        WhatProvides obsoleted( item_r.dep_obsoletes() );
         if ( obsoleted.empty() )
           return;
 
@@ -110,7 +110,7 @@ namespace zypp
       }
       else // Obsoletes match names
       {
-        Capabilities obsoletes( item_r.obsoletes() );
+        Capabilities obsoletes( item_r.dep_obsoletes() );
         if ( obsoletes.empty() )
           return;
 

@@ -47,14 +47,14 @@ namespace zypp
     bool isDependencyAttribute( const sat::SolvAttr& attr_r )
     {
       static sat::SolvAttr deps[] = {
-        SolvAttr::provides,
-        SolvAttr::requires,
-        SolvAttr::recommends,
-        SolvAttr::obsoletes,
-        SolvAttr::conflicts,
-        SolvAttr::suggests,
-        SolvAttr::supplements,
-        SolvAttr::enhances,
+        SolvAttr::dep_provides,
+        SolvAttr::dep_requires,
+        SolvAttr::dep_recommends,
+        SolvAttr::dep_obsoletes,
+        SolvAttr::dep_conflicts,
+        SolvAttr::dep_suggests,
+        SolvAttr::dep_supplements,
+        SolvAttr::dep_enhances,
       };
       for_( it, arrayBegin(deps), arrayEnd(deps) )
         if ( *it == attr_r )

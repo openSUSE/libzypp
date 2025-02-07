@@ -741,7 +741,7 @@ SATResolver::solving(const CapabilitySet & requires_caps,
             sat::Solvable slv { (sat::detail::SolvableIdType)id };
             // get product buddies (they carry the weakremover)...
             static const Capability productCap { "product()" };
-            if ( slv && slv.provides().matches( productCap ) )
+            if ( slv && slv.dep_provides().matches( productCap ) )
             {
               CapabilitySet droplist { slv.valuesOfNamespace( "weakremover" ) };
               MIL << "Droplist for " << slv << ": size " << droplist.size() << endl;

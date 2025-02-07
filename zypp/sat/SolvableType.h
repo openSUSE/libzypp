@@ -102,17 +102,29 @@ namespace zypp
       template <class RDerived>
       bool		sameNVRA( const SolvableType<RDerived> & rhs ) const	{ return satSolvable().sameNVRA( rhs.satSolvable() ); }
 
-      Capabilities	provides() const			{ return satSolvable().provides(); }
-      Capabilities	requires() const			{ return satSolvable().requires(); }
-      Capabilities	conflicts() const			{ return satSolvable().conflicts(); }
-      Capabilities	obsoletes() const			{ return satSolvable().obsoletes(); }
-      Capabilities	recommends() const			{ return satSolvable().recommends(); }
-      Capabilities	suggests() const			{ return satSolvable().suggests(); }
-      Capabilities	enhances() const			{ return satSolvable().enhances(); }
-      Capabilities	supplements() const			{ return satSolvable().supplements(); }
+      Capabilities	dep_provides() const			{ return satSolvable().dep_provides(); }
+      Capabilities	dep_requires() const			{ return satSolvable().dep_requires(); }
+      Capabilities	dep_conflicts() const			{ return satSolvable().dep_conflicts(); }
+      Capabilities	dep_obsoletes() const			{ return satSolvable().dep_obsoletes(); }
+      Capabilities	dep_recommends() const			{ return satSolvable().dep_recommends(); }
+      Capabilities	dep_suggests() const			{ return satSolvable().dep_suggests(); }
+      Capabilities	dep_enhances() const			{ return satSolvable().dep_enhances(); }
+      Capabilities	dep_supplements() const			{ return satSolvable().dep_supplements(); }
       Capabilities	prerequires() const			{ return satSolvable().prerequires(); }
       Capabilities 	dep( Dep which_r ) const		{ return satSolvable().dep(which_r); }
       Capabilities 	operator[]( Dep which_r ) const		{ return satSolvable()[which_r]; }
+
+#if __cplusplus < 202002L
+      Capabilities	provides() const			{ return satSolvable().dep_provides(); }
+      Capabilities	requires() const			{ return satSolvable().dep_requires(); }
+      Capabilities	conflicts() const			{ return satSolvable().dep_conflicts(); }
+      Capabilities	obsoletes() const			{ return satSolvable().dep_obsoletes(); }
+      Capabilities	recommends() const			{ return satSolvable().dep_recommends(); }
+      Capabilities	suggests() const			{ return satSolvable().dep_suggests(); }
+      Capabilities	enhances() const			{ return satSolvable().dep_enhances(); }
+      Capabilities	supplements() const			{ return satSolvable().dep_supplements(); }
+#endif
+
 
       CapabilitySet	providesNamespace( const std::string & namespace_r ) const	{ return satSolvable().providesNamespace( namespace_r ); }
       CapabilitySet	valuesOfNamespace( const std::string & namespace_r ) const	{ return satSolvable().valuesOfNamespace( namespace_r ); }

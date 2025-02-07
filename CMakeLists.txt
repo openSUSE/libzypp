@@ -145,7 +145,9 @@ IF(${PIPE2_FOUND})
   target_compile_definitions( zypp_general_compiler_flags INTERFACE HAVE_PIPE2 )
 ENDIF(${PIPE2_FOUND})
 
-target_compile_definitions(zypp_general_compiler_flags INTERFACE _FILE_OFFSET_BITS=64 )
+#tell libsolv to rename its variables to be C++20 compatible
+target_compile_definitions(zypp_general_compiler_flags INTERFACE LIBSOLV_SOLVABLE_PREPEND_DEP )
+target_compile_definitions(zypp_general_compiler_flags INTERFACE _FILE_OFFSET_BITS=64 LIBSOLV_SOLVABLE_PREPEND_DEP )
 target_compile_definitions(zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:ZYPP_NDEBUG NDEBUG> )
 
 target_compile_options( zypp_general_compiler_flags INTERFACE $<$<NOT:$<CONFIG:DEBUG>>:-O2>)
@@ -349,7 +351,7 @@ CONFIGURE_FILE(${LIBZYPP_SOURCE_DIR}/libzypp.pc.cmake ${LIBZYPP_BINARY_DIR}/libz
 INSTALL( FILES ${LIBZYPP_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
 
 MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/FindZypp.cmake   DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp RENAME ZyppConfig.cmake )
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 
 ####################################################################

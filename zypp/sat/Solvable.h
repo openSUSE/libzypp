@@ -221,29 +221,40 @@ namespace zypp
        * \note Prerequires are a subset of requires.
        */
       //@{
-      Capabilities provides()    const;
-      Capabilities requires()    const;
-      Capabilities conflicts()   const;
-      Capabilities obsoletes()   const;
-      Capabilities recommends()  const;
-      Capabilities suggests()    const;
-      Capabilities enhances()    const;
-      Capabilities supplements() const;
-      Capabilities prerequires() const;
+      Capabilities dep_provides()    const;
+      Capabilities dep_requires()    const;
+      Capabilities dep_conflicts()   const;
+      Capabilities dep_obsoletes()   const;
+      Capabilities dep_recommends()  const;
+      Capabilities dep_suggests()    const;
+      Capabilities dep_enhances()    const;
+      Capabilities dep_supplements() const;
+      Capabilities prerequires()     const;
+
+#if __cplusplus < 202002L
+      Capabilities provides()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities requires()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities conflicts()   const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities obsoletes()   const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities recommends()  const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities suggests()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities enhances()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities supplements() const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+#endif
 
       /** Return \ref Capabilities selected by \ref Dep constant. */
       Capabilities dep( Dep which_r ) const
       {
         switch( which_r.inSwitch() )
         {
-          case Dep::PROVIDES_e:    return provides();    break;
-          case Dep::REQUIRES_e:    return requires();    break;
-          case Dep::CONFLICTS_e:   return conflicts();   break;
-          case Dep::OBSOLETES_e:   return obsoletes();   break;
-          case Dep::RECOMMENDS_e:  return recommends();  break;
-          case Dep::SUGGESTS_e:    return suggests();    break;
-          case Dep::ENHANCES_e:    return enhances();    break;
-          case Dep::SUPPLEMENTS_e: return supplements(); break;
+          case Dep::PROVIDES_e:    return dep_provides();    break;
+          case Dep::REQUIRES_e:    return dep_requires();    break;
+          case Dep::CONFLICTS_e:   return dep_conflicts();   break;
+          case Dep::OBSOLETES_e:   return dep_obsoletes();   break;
+          case Dep::RECOMMENDS_e:  return dep_recommends();  break;
+          case Dep::SUGGESTS_e:    return dep_suggests();    break;
+          case Dep::ENHANCES_e:    return dep_enhances();    break;
+          case Dep::SUPPLEMENTS_e: return dep_supplements(); break;
           case Dep::PREREQUIRES_e: return prerequires(); break;
         }
         return Capabilities();

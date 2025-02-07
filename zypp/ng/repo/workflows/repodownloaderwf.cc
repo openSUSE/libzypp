@@ -236,7 +236,7 @@ namespace zyppng {
 
                           auto key = zypp::PublicKey::noThrow( _dlContext->files().back() );
                           if ( not key.fileProvidesKey( keyid ) ) {
-                            const auto &str = zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.";
+                            const std::string str = (zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.");
                             WAR << str << std::endl;
                             return makeReadyResult(expected<zypp::PublicKey>::error( std::make_exception_ptr( zypp::Exception(str)) ));
                           }

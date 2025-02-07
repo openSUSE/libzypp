@@ -38,6 +38,7 @@ namespace sat
   const SolvAttr SolvAttr::arch         ( SOLVABLE_ARCH );
   const SolvAttr SolvAttr::vendor	( SOLVABLE_VENDOR );
 
+#if __cplusplus < 202002L
   const SolvAttr SolvAttr::provides	( SOLVABLE_PROVIDES );
   const SolvAttr SolvAttr::obsoletes	( SOLVABLE_OBSOLETES );
   const SolvAttr SolvAttr::conflicts	( SOLVABLE_CONFLICTS );
@@ -46,6 +47,16 @@ namespace sat
   const SolvAttr SolvAttr::suggests	( SOLVABLE_SUGGESTS );
   const SolvAttr SolvAttr::supplements	( SOLVABLE_SUPPLEMENTS );
   const SolvAttr SolvAttr::enhances	( SOLVABLE_ENHANCES );
+#endif
+
+  const SolvAttr SolvAttr::dep_provides   ( SOLVABLE_PROVIDES );
+  const SolvAttr SolvAttr::dep_obsoletes  ( SOLVABLE_OBSOLETES );
+  const SolvAttr SolvAttr::dep_conflicts  ( SOLVABLE_CONFLICTS );
+  const SolvAttr SolvAttr::dep_requires   ( SOLVABLE_REQUIRES );
+  const SolvAttr SolvAttr::dep_recommends ( SOLVABLE_RECOMMENDS );
+  const SolvAttr SolvAttr::dep_suggests   ( SOLVABLE_SUGGESTS );
+  const SolvAttr SolvAttr::dep_supplements( SOLVABLE_SUPPLEMENTS );
+  const SolvAttr SolvAttr::dep_enhances   ( SOLVABLE_ENHANCES );
 
   const SolvAttr SolvAttr::summary      ( SOLVABLE_SUMMARY );       // translated
   const SolvAttr SolvAttr::description  ( SOLVABLE_DESCRIPTION );   // translated

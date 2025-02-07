@@ -103,7 +103,7 @@ struct Table
     ResultLInes & details { row( *it_r ) };
     for_( match, it_r.matchesBegin(), it_r.matchesEnd() ) {
       std::string ent { match->inSolvAttr().asString().substr( 9, 3 )+": " +match->asString() };
-      if ( match->inSolvAttr() == sat::SolvAttr::requires
+      if ( match->inSolvAttr() == sat::SolvAttr::dep_requires
         && match->inSolvable().prerequires().contains( Capability(match->id()) ) ) {
         static const char * pre = "   " COL_C "[PRE]" COL_OFF;
         ent[3] = '+';
@@ -209,11 +209,11 @@ void dTree( const std::string & cmd_r, const std::string & spec_r )
   }
 
   static const std::list<sat::SolvAttr> attrs {
-    sat::SolvAttr::requires,
-    sat::SolvAttr::recommends,
-    sat::SolvAttr::obsoletes,
-    sat::SolvAttr::conflicts,
-    sat::SolvAttr::supplements,
+    sat::SolvAttr::dep_requires,
+    sat::SolvAttr::dep_recommends,
+    sat::SolvAttr::dep_obsoletes,
+    sat::SolvAttr::dep_conflicts,
+    sat::SolvAttr::dep_supplements,
   };
 
   std::map<sat::SolvAttr,std::map<sat::Solvable,std::set<std::string>>> result;	// solvables recommending provided capability
@@ -221,7 +221,7 @@ void dTree( const std::string & cmd_r, const std::string & spec_r )
     Table t;
     for ( const auto & el : spec )
     {
-      for ( const auto & cap : el.provides() )
+      for ( const auto & cap : el.dep_provides() )
       {
         // get attrs matching cap
         for ( const auto & attr : attrs )
@@ -373,13 +373,13 @@ int main( int argc, char * argv[] )
   bool matechexact	( false );
   bool withSrcPackages	( false );
   bool names		( true );
-  bool provides		( false );
-  bool requires		( false );
-  bool conflicts	( false );
-  bool obsoletes	( false );
-  bool recommends	( false );
-  bool supplements	( false );
-  bool enhacements	( false );
+  bool dep_provides	( false );
+  bool dep_requires	( false );
+  bool dep_conflicts	( false );
+  bool dep_obsoletes	( false );
+  bool dep_recommends	( false );
+  bool dep_supplements	( false );
+  bool dep_enhacements	( false );
 
 
   for ( ; argc; --argc,++argv )
@@ -390,8 +390,8 @@ int main( int argc, char * argv[] )
       {
         switch ( *arg )
         {
-          case 'a': names =		true, 	requires = provides =	true;	break;
-          case 'A': names =		true, 	requires = provides =	false;	break;
+          case 'a': names =		true, 	dep_requires = dep_provides =	true;	break;
+          case 'A': names =		true, 	dep_requires = dep_provides =	false;	break;
           case 'D':
             if ( argc > 1 )
             {
@@ -416,20 +416,20 @@ int main( int argc, char * argv[] )
           case 'x': matechexact =	true;	break;
           case 'n': names =		true;	break;
           case 'N': names =		false;	break;
-          case 'r': requires =		true;	break;
-          case 'R': requires =		false;	break;
-          case 'p': provides =		true;	break;
-          case 'P': provides =		false;	break;
-          case 'c': conflicts =		true;	break;
-          case 'C': conflicts =		false;	break;
-          case 'o': obsoletes =		true;	break;
-          case 'O': obsoletes =		false;	break;
-          case 'm': recommends =	true;	break;
-          case 'M': recommends =	false;	break;
-          case 's': supplements =	true;	break;
-          case 'S': supplements =	false;	break;
-          case 'e': enhacements =	true;	break;
-          case 'E': enhacements =	false;	break;
+          case 'r': dep_requires =		true;	break;
+          case 'R': dep_requires =		false;	break;
+          case 'p': dep_provides =		true;	break;
+          case 'P': dep_provides =		false;	break;
+          case 'c': dep_conflicts =		true;	break;
+          case 'C': dep_conflicts =		false;	break;
+          case 'o': dep_obsoletes =		true;	break;
+          case 'O': dep_obsoletes =		false;	break;
+          case 'm': dep_recommends =	true;	break;
+          case 'M': dep_recommends =	false;	break;
+          case 's': dep_supplements =	true;	break;
+          case 'S': dep_supplements =	false;	break;
+          case 'e': dep_enhacements =	true;	break;
+          case 'E': dep_enhacements =	false;	break;
         }
       }
       continue;
@@ -471,47 +471,47 @@ int main( int argc, char * argv[] )
 
       if ( names )
         q.addAttribute( sat::SolvAttr::name );
-      if ( provides )
+      if ( dep_provides )
       {
-        q.addDependency( sat::SolvAttr::provides );
-        q.addDependency( sat::SolvAttr::provides, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_provides );
+        q.addDependency( sat::SolvAttr::dep_provides, Capability(qstr) );
       }
-      if ( requires )
+      if ( dep_requires )
       {
-        q.addDependency( sat::SolvAttr::requires );
-        q.addDependency( sat::SolvAttr::requires, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_requires );
+        q.addDependency( sat::SolvAttr::dep_requires, Capability(qstr) );
       }
-      if ( conflicts )
+      if ( dep_conflicts )
       {
-        q.addDependency( sat::SolvAttr::conflicts );
-        q.addDependency( sat::SolvAttr::conflicts, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_conflicts );
+        q.addDependency( sat::SolvAttr::dep_conflicts, Capability(qstr) );
       }
-      if ( obsoletes )
+      if ( dep_obsoletes )
       {
-        q.addDependency( sat::SolvAttr::obsoletes );
-        q.addDependency( sat::SolvAttr::obsoletes, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_obsoletes );
+        q.addDependency( sat::SolvAttr::dep_obsoletes, Capability(qstr) );
       }
-      if ( recommends )
+      if ( dep_recommends )
       {
-        q.addDependency( sat::SolvAttr::recommends );
-        q.addDependency( sat::SolvAttr::recommends, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_recommends );
+        q.addDependency( sat::SolvAttr::dep_recommends, Capability(qstr) );
       }
-      if ( supplements )
+      if ( dep_supplements )
       {
-        q.addDependency( sat::SolvAttr::supplements );
-        q.addDependency( sat::SolvAttr::supplements, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_supplements );
+        q.addDependency( sat::SolvAttr::dep_supplements, Capability(qstr) );
       }
-      if ( enhacements )
+      if ( dep_enhacements )
       {
-        q.addDependency( sat::SolvAttr::enhances );
-        q.addDependency( sat::SolvAttr::enhances, Capability(qstr) );
-        q.addDependency( sat::SolvAttr::suggests );
-        q.addDependency( sat::SolvAttr::suggests, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_enhances );
+        q.addDependency( sat::SolvAttr::dep_enhances, Capability(qstr) );
+        q.addDependency( sat::SolvAttr::dep_suggests );
+        q.addDependency( sat::SolvAttr::dep_suggests, Capability(qstr) );
       }
     }
 
-    message << *argv << " [" << (ignorecase?'i':'_') << (names?'n':'_') << (requires?'r':'_') << (provides?'p':'_')
-    << (conflicts?'c':'_') << (obsoletes?'o':'_') << (recommends?'m':'_') << (supplements?'s':'_') << (enhacements?'e':'_')
+    message << *argv << " [" << (ignorecase?'i':'_') << (names?'n':'_') << (dep_requires?'r':'_') << (dep_provides?'p':'_')
+    << (dep_conflicts?'c':'_') << (dep_obsoletes?'o':'_') << (dep_recommends?'m':'_') << (dep_supplements?'s':'_') << (dep_enhacements?'e':'_')
     << "] {" << endl;
 
     Table t;

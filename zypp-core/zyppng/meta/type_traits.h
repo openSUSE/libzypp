@@ -16,7 +16,6 @@ namespace std {
 
 namespace std {
 
-#if __cplusplus < 202002L
 
 //implementation of the detector idiom, used to help with SFINAE
 //from https://en.cppreference.com/w/cpp/experimental/is_detected
@@ -72,6 +71,9 @@ using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>
 template <class To, template<class...> class Op, class... Args>
 constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value_t::value;
 
+
+#if __cplusplus < 202002L
+
 template< class T >
 struct remove_cvref {
   using type = std::remove_cv_t<std::remove_reference_t<T>>;
@@ -113,6 +115,9 @@ namespace zyppng {
 
   template < template< typename ... > class Templ, typename... Args >
   struct is_instance_of<Templ, Templ<Args...>> : std::true_type{};
+
+  template < template< class ... > class Templ, class Type >
+  constexpr bool is_instance_of_v = is_instance_of<Templ,Type>::value;
 
   //Provides the member typedef type which is the type pointed to by T, or, if T is not a pointer, then type is the same as T.
   template< typename T>

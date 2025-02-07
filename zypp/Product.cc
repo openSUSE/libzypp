@@ -172,7 +172,7 @@ namespace zypp
       if ( it->repository() == repository() )
       {
         // Got the package now try to get the provided 'flavor(...)'
-        Capabilities provides( it->provides() );
+        Capabilities provides( it->dep_provides() );
         for_( cap, provides.begin(), provides.end() )
         {
           std::string capstr( cap->asString() );

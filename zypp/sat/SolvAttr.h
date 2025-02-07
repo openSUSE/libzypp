@@ -55,23 +55,35 @@ namespace sat
       static const SolvAttr vendor;
       //@}
 
+
+#if __cplusplus < 202002L
       /** \name dependency attributes */
-      //@{
-      static const SolvAttr provides;
-      static const SolvAttr obsoletes;
-      static const SolvAttr conflicts;
+      static const SolvAttr provides ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      static const SolvAttr obsoletes ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      static const SolvAttr conflicts ZYPP_DEPRECATED; // use dep_ prefixed version instead
 #if __GNUC__ >= 10
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wc++20-compat"
 #endif
-      static const SolvAttr requires;
+      static const SolvAttr requires ZYPP_DEPRECATED; // use dep_ prefixed version instead
 #if __GNUC__ >= 10
 #pragma GCC diagnostic pop
 #endif
-      static const SolvAttr recommends;
-      static const SolvAttr suggests;
-      static const SolvAttr supplements;
-      static const SolvAttr enhances;
+      static const SolvAttr recommends ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      static const SolvAttr suggests ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      static const SolvAttr supplements ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      static const SolvAttr enhances ZYPP_DEPRECATED; // use dep_ prefixed version instead
+#endif
+
+      /** \name dependency attributes */
+      static const SolvAttr dep_provides;
+      static const SolvAttr dep_obsoletes;
+      static const SolvAttr dep_conflicts;
+      static const SolvAttr dep_requires;
+      static const SolvAttr dep_recommends;
+      static const SolvAttr dep_suggests;
+      static const SolvAttr dep_supplements;
+      static const SolvAttr dep_enhances;
 
       /** \name common */
       //@{

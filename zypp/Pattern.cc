@@ -202,11 +202,11 @@ namespace zypp
   { return lookupStrAttribute( sat::SolvAttr::order ); }
 
   bool Pattern::isAutoPattern() const
-  { return bool(autoCapability( provides() )); }
+  { return bool(autoCapability( dep_provides() )); }
 
   sat::Solvable Pattern::autoPackage() const
   {
-    Capability autocap( autoCapability( provides() ) );
+    Capability autocap( autoCapability( dep_provides() ) );
     if ( autocap )
     {
       Capability pkgCap( arch(), autocap.detail().ed().asString(), Rel::EQ, edition() );
@@ -325,7 +325,7 @@ namespace zypp
     inline bool isPatternsPackage( sat::Solvable depKeeper_r )
     {
       static const Capability indicator( "pattern()" );
-      return depKeeper_r.provides().matches( indicator );
+      return depKeeper_r.dep_provides().matches( indicator );
     }
   } // namespace
   ///////////////////////////////////////////////////////////////////

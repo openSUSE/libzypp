@@ -220,7 +220,7 @@ namespace zypp {
       bool mostLikelyKmod = false;
       StrMatcher matchMod( "kmod(*)", Match::GLOB );
       StrMatcher matchSym( "ksym(*)", Match::GLOB );
-      for ( const auto &prov : p.provides() ) {
+      for ( const auto &prov : p.dep_provides() ) {
         if ( matchMod.doMatch( prov.detail().name().c_str()) || matchSym.doMatch( prov.detail().name().c_str() ) ) {
           mostLikelyKmod = true;
           break;
@@ -252,7 +252,7 @@ namespace zypp {
       for ( const char * suffix : { "-debugsource", "-debuginfo" } ) {
         PoolQuery q;
         q.addKind( zypp::ResKind::package );
-        q.addDependency( sat::SolvAttr::provides, Capability( solvable.name()+suffix, Rel::EQ, solvable.edition() ) );
+        q.addDependency( sat::SolvAttr::dep_provides, Capability( solvable.name()+suffix, Rel::EQ, solvable.edition() ) );
         q.setInstalledOnly();
         q.setMatchExact();
 
@@ -465,7 +465,7 @@ namespace zypp {
           // We need to go over all package name provides ( provides is named like the package ) and match
           // them against the specified version to know which ones to keep. (bsc#1176740  bsc#1176192)
           std::for_each( kernelMap.second.begin(), kernelMap.second.end(), [ & ]( sat::Solvable solv ){
-            for ( Capability prov : solv.provides() ) {
+            for ( Capability prov : solv.dep_provides() ) {
               if ( prov.detail().name() == solv.name() && _keepSpecificEditions.count( prov.detail().ed() ) ) {
                 markAsKeep( solv );
                 break;
@@ -539,7 +539,7 @@ namespace zypp {
       // not represent the actual rpm package version anymore. ( bsc#1176740 )
       auto currCount = INT_MAX;
       Edition edToUse;
-      for ( Capability prov : installedKrnlPck.provides() ) {
+      for ( Capability prov : installedKrnlPck.dep_provides() ) {
         if ( prov.detail().name() == installedKrnlPck.name() ) {
           if ( edToUse == Edition::noedition ) {
             edToUse = installedKrnlPck.edition();
@@ -571,7 +571,7 @@ namespace zypp {
     //collect the list of installed kernel packages
     PoolQuery q;
     q.addKind( zypp::ResKind::package );
-    q.addAttribute( sat::SolvAttr::provides, "multiversion(kernel)" );
+    q.addAttribute( sat::SolvAttr::dep_provides, "multiversion(kernel)" );
     q.setInstalledOnly();
     q.setMatchExact();
 
@@ -581,7 +581,7 @@ namespace zypp {
 
       MIL << "Found installed multiversion kernel package " << installedKrnlPck << std::endl;
 
-      if ( installedKrnlPck.provides().matches(Capability("kernel-uname-r")) ) {
+      if ( installedKrnlPck.dep_provides().matches(Capability("kernel-uname-r")) ) {
         MIL << "Identified as a kernel package " << std::endl;
 
         // we group kernel packages by flavour

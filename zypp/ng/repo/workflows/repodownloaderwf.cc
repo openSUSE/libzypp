@@ -30,6 +30,7 @@
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
 
+
 namespace zyppng {
   namespace {
 
@@ -61,27 +62,29 @@ namespace zyppng {
         _destdir = _dlContext->destDir();
 
         auto providerRef = _dlContext->zyppContext()->provider();
-        return std::vector {
-           // fetch signature and keys
-            providerRef->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-             | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _sigpath ) ),
-            providerRef->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-             | and_then( ProvideType::copyResultToDest ( providerRef, _destdir / _keypath ) ),
-           }
-          | join()
-          | [this]( std::vector<expected<zypp::ManagedFile>> &&res ) {
+          return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+          | and_then( [this]( ProvideRes && masterres ) {
 
-             // remember downloaded files
-             std::for_each( res.begin (), res.end(),
-               [this]( expected<zypp::ManagedFile> &f){
-                 if (f.is_valid () ) {
-                   _dlContext->files().push_back( std::move(f.get()));
-                 }
-             });
+            return std::vector {
+              // fetch signature and keys
+              provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) ),
+              provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) ),
+            }
+            | join()
+            | [this,masterres=std::move(masterres)]( std::vector<expected<zypp::ManagedFile>> &&res ) {
+              // remember downloaded files
+              std::for_each( res.begin (), res.end(),
+                             [this]( expected<zypp::ManagedFile> &f){
+                               if (f.is_valid () ) {
+                                 _dlContext->files().push_back( std::move(f.get()));
+                               }
+                             });
+              return make_expected_success( std::move(masterres) );
+            };
 
-             // get the master index file
-             return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) );
-           }
+          } )
           // execute plugin verification if there is one
           | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this, std::placeholders::_1 ) )
 

@@ -31,13 +31,13 @@ namespace mbs
 
   struct MbToWc
   {
-    static const char _oooooooo = 0000;
-    static const char _Xooooooo = 0200;
-    static const char _XXoooooo = 0300;
-    static const char _XXXooooo = 0340;
-    static const char _XXXXoooo = 0360;
-    static const char _XXXXXooo = 0370;
-    static const char _ooXXXXXX = 0077;
+    static const char _oooooooo = static_cast<char>(0000);
+    static const char _Xooooooo = static_cast<char>(0200);
+    static const char _XXoooooo = static_cast<char>(0300);
+    static const char _XXXooooo = static_cast<char>(0340);
+    static const char _XXXXoooo = static_cast<char>(0360);
+    static const char _XXXXXooo = static_cast<char>(0370);
+    static const char _ooXXXXXX = static_cast<char>(0077);
 
     MbToWc( char ch )
     : _wc( ch )

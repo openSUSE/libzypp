@@ -57,7 +57,7 @@ function(ADD_A2X_MANPAGES)
 endfunction(ADD_A2X_MANPAGES)
 
 SET (libzypp_MAN1
-     zypp-CheckAccessDeleted.1 zypp-NameReqPrv.1)
+     zypp-NameReqPrv.1)
 
 SET (libzypp_MAN5
      locks.5)

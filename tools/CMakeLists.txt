@@ -21,7 +21,6 @@ ENDFOREACH( loop_var )
 
 ## ############################################################
 
-INSTALL(TARGETS zypp-CheckAccessDeleted DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 INSTALL(TARGETS zypp-NameReqPrv		DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 
 

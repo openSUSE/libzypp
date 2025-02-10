@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Feb 10 16:18:10 CET 2025 - ma@suse.de
+
+- Drop zypp-CheckAccessDeleted in favor of 'zypper ps'.
+- Fix Repoverification plugin not being executed (fixes #614)
+- Refresh: Fetch the master index file before key and signature
+  (bsc#1236820)
+- Allow libzypp to compile with C++20.
+- Deprecate RepoReports we do not trigger.
+- version 17.36.0 (35)
+
+-------------------------------------------------------------------
 Wed Jan 22 16:09:09 CET 2025 - ma@suse.de
 
 - Create '.keep_packages' in the package cache dir to enforce

@@ -70,9 +70,9 @@ namespace zypp {
     {
       const char * argvp[argv.size() + 1];
       unsigned c = 0;
-      for_( i, argv.begin(), argv.end() )
+      for ( const std::string & arg : argv )
       {
-        argvp[c] = i->c_str();
+        argvp[c] = arg.c_str();
         ++c;
       }
       argvp[c] = 0;
@@ -90,9 +90,9 @@ namespace zypp {
     {
       const char * argvp[argv.size() + 1];
       unsigned c = 0;
-      for_( i, argv.begin(), argv.end() )
+      for ( const std::string & arg : argv )
       {
-        argvp[c] = i->c_str();
+        argvp[c] = arg.c_str();
         ++c;
       }
       argvp[c] = 0;

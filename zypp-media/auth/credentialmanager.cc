@@ -19,7 +19,6 @@
 #include <zypp-media/MediaConfig>
 #include <zypp-core/base/Function.h>
 #include <zypp-core/base/Logger.h>
-#include <zypp-core/base/Easy.h>
 #include <zypp-core/fs/PathInfo.h>
 
 #include <zypp-media/auth/CredentialFileReader>
@@ -288,10 +287,10 @@ namespace zypp
       bpci::scoped_lock lock( lockFile );
 
       std::ofstream fs(file.c_str());
-      for_(it, creds.begin(), creds.end())
+      for ( auto& credentials : creds )
       {
-        (*it)->dumpAsIniOn(fs);
-        (*it)->setLastDatabaseUpdate( now );
+        credentials->dumpAsIniOn( fs );
+        credentials->setLastDatabaseUpdate( now );
         fs << endl;
       }
       if ( !fs ) {

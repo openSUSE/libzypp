@@ -22,7 +22,10 @@ namespace zyppng::repo {
     , _repoInfo( std::move(info) )
     , _rawCachePath( std::move(rawCachePath) )
     , _tmpDir( std::move(tempDir) )
-  {}
+  {
+    if ( _repoManager->pluginRepoverification().checkIfNeeded() )
+      _pluginRepoverification = _repoManager->pluginRepoverification();
+  }
 
   template<typename ZyppContextRefType>
   expected<RefreshContextRef<ZyppContextRefType>> RefreshContext<ZyppContextRefType>::create( ZyppContextRefType zyppContext, zypp::RepoInfo info, RepoManagerRef<ZyppContextRefType> repoManager )

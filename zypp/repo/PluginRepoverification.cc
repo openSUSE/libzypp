@@ -250,7 +250,7 @@ namespace zypp_private
 
     /** \relates PluginRepoverification::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const PluginRepoverification::Impl & obj )
-    { return str << "PluginRepoverification::Impl"; }
+    { return str << "PluginRepoverification(" << obj.plugindir() << ", " << obj.isNeeded() << ")"; }
 
     /** \relates PluginRepoverification::Impl Verbose stream output */
     inline std::ostream & dumpOn( std::ostream & str, const PluginRepoverification::Impl & obj )

@@ -38,6 +38,7 @@ namespace zyppng {
   using RepoInfoList        = zypp::RepoInfoList;
   using ServiceInfo         = zypp::ServiceInfo;
   using RepoManagerOptions  = zypp::RepoManagerOptions;
+  using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
   ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( SyncContext );
@@ -497,12 +498,16 @@ namespace zyppng {
     const RepoSet & repos() const { return _reposX; }
     RepoSet & reposManip()        { if ( ! _reposDirty ) _reposDirty = true; return _reposX; }
 
+  public:
+    PluginRepoverification pluginRepoverification() const
+    { return _pluginRepoverification; }
+
   protected:
     ContextRefType      _zyppContext;
     RepoManagerOptions	_options;
     RepoSet 		_reposX;
     ServiceSet		_services;
-    zypp_private::repo::PluginRepoverification _pluginRepoverification;
+    PluginRepoverification _pluginRepoverification;
     zypp::DefaultIntegral<bool,false> _reposDirty;
   };
 }

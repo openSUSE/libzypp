@@ -45,6 +45,7 @@ namespace zypp
         _verify_host(false),
         _verify_peer(false),
         _ca_path("/etc/ssl/certs"),
+        _enableCookieFile(false),
         _head_requests_allowed(true)
       {}
 
@@ -103,6 +104,8 @@ namespace zypp
       Pathname _ca_path;
       Pathname _client_cert_path;
       Pathname _client_key_path;
+
+      bool _enableCookieFile;
 
       // workarounds
       bool _head_requests_allowed;
@@ -290,6 +293,11 @@ namespace zypp
     const Pathname &TransferSettings::clientKeyPath() const
     { return _impl->_client_key_path; }
 
+    void TransferSettings::setEnableCookieFile(bool enable)
+    { _impl->_enableCookieFile = enable; }
+
+    bool TransferSettings::cookieFileEnabled() const
+    { return _impl->_enableCookieFile; }
 
     void TransferSettings::setCertificateAuthoritiesPath( const Pathname &val_r )
     { _impl->_ca_path = val_r; }

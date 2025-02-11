@@ -204,6 +204,10 @@ namespace zypp
       /** SSL client key file */
       const Pathname &clientKeyPath() const;
 
+      /** Enable or disable the use of the cookie file */
+      void setEnableCookieFile( bool enable = true );
+      bool cookieFileEnabled() const;
+
     protected:
       class Impl;
       RWCOW_pointer<Impl> _impl;

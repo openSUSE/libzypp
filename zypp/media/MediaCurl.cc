@@ -43,109 +43,12 @@
 #include <unistd.h>
 #include <glib.h>
 
+#include "detail/OptionalDownloadProgressReport.h"
+
 using std::endl;
 
 namespace internal {
   using namespace zypp;
-  /// \brief Bottleneck filtering all DownloadProgressReport issued from Media[Muli]Curl.
-  /// - Optional files will send no report until data are actually received (we know it exists).
-  /// - Control the progress report frequency passed along to the application.
-  struct OptionalDownloadProgressReport : public callback::ReceiveReport<media::DownloadProgressReport>
-  {
-    using TimePoint = std::chrono::steady_clock::time_point;
-
-    OptionalDownloadProgressReport( bool isOptional=false )
-    : _oldRec { Distributor::instance().getReceiver() }
-    , _isOptional { isOptional }
-    { connect(); }
-
-    OptionalDownloadProgressReport(const OptionalDownloadProgressReport &) = delete;
-    OptionalDownloadProgressReport(OptionalDownloadProgressReport &&) = delete;
-    OptionalDownloadProgressReport &operator= (const OptionalDownloadProgressReport &) = delete;
-    OptionalDownloadProgressReport &operator= (OptionalDownloadProgressReport &&) = delete;
-
-    ~OptionalDownloadProgressReport() override {
-      if (_oldRec)
-        Distributor::instance().setReceiver(*_oldRec);
-      else
-        Distributor::instance().noReceiver();
-    }
-
-    void reportbegin() override
-    { if ( _oldRec ) _oldRec->reportbegin(); }
-
-    void reportend() override
-    { if ( _oldRec ) _oldRec->reportend(); }
-
-    void report( const UserData & userData_r = UserData() ) override
-    { if ( _oldRec ) _oldRec->report( userData_r ); }
-
-
-    void start( const Url & file_r, Pathname localfile_r ) override
-    {
-      if ( not _oldRec ) return;
-      if ( _isOptional ) {
-        // delay start until first data are received.
-        _startFile      = file_r;
-        _startLocalfile = std::move(localfile_r);
-        return;
-      }
-      _oldRec->start( file_r, localfile_r );
-    }
-
-    bool progress( int value_r, const Url & file_r, double dbps_avg_r = -1, double dbps_current_r = -1 ) override
-    {
-      if ( not _oldRec ) return true;
-      if ( notStarted() ) {
-        if ( not ( value_r || dbps_avg_r || dbps_current_r ) )
-          return true;
-        sendStart();
-      }
-
-      //static constexpr std::chrono::milliseconds minfequency { 1000 }; only needed if we'd avoid sending reports without change
-      static constexpr std::chrono::milliseconds maxfequency { 100 };
-      TimePoint now { TimePoint::clock::now() };
-      TimePoint::duration elapsed { now - _lastProgressSent };
-      if ( elapsed < maxfequency )
-        return true;  // continue
-      _lastProgressSent = now;
-      return _oldRec->progress( value_r, file_r, dbps_avg_r, dbps_current_r );
-    }
-
-    Action problem( const Url & file_r, Error error_r, const std::string & description_r ) override
-    {
-      if ( not _oldRec || notStarted() ) return ABORT;
-      return _oldRec->problem( file_r, error_r, description_r );
-    }
-
-    void finish( const Url & file_r, Error error_r, const std::string & reason_r ) override
-    {
-      if ( not _oldRec || notStarted() ) return;
-      _oldRec->finish( file_r, error_r, reason_r );
-    }
-
-  private:
-    // _isOptional also indicates the delayed start
-    bool notStarted() const
-    { return _isOptional; }
-
-    void sendStart()
-    {
-      if ( _isOptional ) {
-        // we know _oldRec is valid...
-        _oldRec->start( _startFile, std::move(_startLocalfile) );
-        _isOptional = false;
-      }
-    }
-
-  private:
-    Receiver *const _oldRec;
-    bool     _isOptional;
-    Url      _startFile;
-    Pathname _startLocalfile;
-    TimePoint _lastProgressSent;
-  };
-
   struct ProgressData
   {
     ProgressData( CURL *curl, time_t timeout = 0, zypp::Url  url = zypp::Url(),
@@ -259,49 +162,6 @@ namespace internal {
     if ( report && !(*report)->progress( _dnlPercent, _url, _drateTotal, _drateLast ) )
       return 1;	// user requested abort
     return 0;
-  }
-
-  const char * anonymousIdHeader()
-  {
-    // we need to add the release and identifier to the
-    // agent string.
-    // The target could be not initialized, and then this information
-    // is guessed.
-    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
-    static const std::string _value( str::trim( str::form(
-      "X-ZYpp-AnonymousId: %s",
-      Target::anonymousUniqueId( Pathname()/*guess root*/ ).c_str()
-    )));
-    return _value.c_str();
-  }
-
-  const char * distributionFlavorHeader()
-  {
-    // we need to add the release and identifier to the
-    // agent string.
-    // The target could be not initialized, and then this information
-    // is guessed.
-    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
-    static const std::string _value( str::trim( str::form(
-      "X-ZYpp-DistributionFlavor: %s",
-      Target::distributionFlavor( Pathname()/*guess root*/ ).c_str()
-    )));
-    return _value.c_str();
-  }
-
-  const char * agentString()
-  {
-    // we need to add the release and identifier to the
-    // agent string.
-    // The target could be not initialized, and then this information
-    // is guessed.
-    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
-    static const std::string _value( str::trim( str::form(
-      "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s"
-      , curl_version_info(CURLVERSION_NOW)->version
-      , Target::targetDistribution( Pathname()/*guess root*/ ).c_str()
-    )));
-    return _value.c_str();
   }
 
   /// Attempt to work around certain issues by autoretry in MediaCurl::getFileCopy

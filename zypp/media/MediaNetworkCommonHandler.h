@@ -58,6 +58,12 @@ namespace zypp
        */
       static zypp::Url findGeoIPRedirect ( const zypp::Url &url );
 
+      static const char * anonymousIdHeader();
+
+      static const char * distributionFlavorHeader();
+
+      static const char *agentString();
+
     protected:
       mutable TransferSettings _settings;
       Url _redirTarget;

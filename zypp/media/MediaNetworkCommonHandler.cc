@@ -16,8 +16,10 @@
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp/base/Logger.h>
 #include <zypp-core/base/Regex.h>
+#include <zypp/Target.h>
 
 #include <fstream>
+#include <curl/curl.h>
 
 namespace zypp::media
 {
@@ -72,6 +74,34 @@ namespace zypp::media
     return Url();
   }
 
+  const char *MediaNetworkCommonHandler::anonymousIdHeader()
+  {
+    // we need to add the release and identifier to the
+    // agent string.
+    // The target could be not initialized, and then this information
+    // is guessed.
+    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
+    static const std::string _value( str::trim( str::form(
+                                                  "X-ZYpp-AnonymousId: %s",
+                                                  Target::anonymousUniqueId( Pathname()/*guess root*/ ).c_str()
+                                                  )));
+    return _value.c_str();
+  }
+
+  const char *MediaNetworkCommonHandler::distributionFlavorHeader()
+  {
+    // we need to add the release and identifier to the
+    // agent string.
+    // The target could be not initialized, and then this information
+    // is guessed.
+    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
+    static const std::string _value( str::trim( str::form(
+                                                  "X-ZYpp-DistributionFlavor: %s",
+                                                  Target::distributionFlavor( Pathname()/*guess root*/ ).c_str()
+                                                  )));
+    return _value.c_str();
+  }
+
   Url MediaNetworkCommonHandler::getFileUrl( const Pathname & filename_r ) const
   {
     static const zypp::str::regex invalidRewrites("^.*\\/repomd.xml(.asc|.key)?$|^\\/geoip$");
@@ -93,4 +123,17 @@ namespace zypp::media
     newurl.setPathName( ( Pathname("./"+baseUrl.getPathName()) / filename_r ).asString().substr(1) );
     return newurl;
   }
-}
+
+  const char *MediaNetworkCommonHandler::agentString() {
+    // we need to add the release and identifier to the
+    // agent string.
+    // The target could be not initialized, and then this information
+    // is guessed.
+    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
+    static const std::string _value(str::trim(str::form(
+                                                "ZYpp " LIBZYPP_VERSION_STRING " (curl %s) %s",
+                                                curl_version_info(CURLVERSION_NOW)->version,
+                                                Target::targetDistribution(Pathname() /*guess root*/).c_str())));
+    return _value.c_str();
+  }
+} // namespace zypp::media

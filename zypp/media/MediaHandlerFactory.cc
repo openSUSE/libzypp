@@ -12,6 +12,7 @@
 #include <zypp/media/MediaDISK.h>
 #include <zypp/media/MediaCIFS.h>
 #include <zypp/media/MediaCurl.h>
+#include <zypp/media/MediaCurl2.h>
 #include <zypp/media/MediaMultiCurl.h>
 #include <zypp/media/MediaISO.h>
 #include <zypp/media/MediaPlugin.h>
@@ -89,7 +90,7 @@ namespace zypp::media {
         break;
       }
       case MediaCURLType: {
-        enum WhichHandler { choose, curl, multicurl };
+        enum WhichHandler { choose, curl, curl2, multicurl };
         WhichHandler which = choose;
         // Leagcy: choose handler in UUrl query
         if ( const std::string & queryparam = url.getQueryParam("mediahandler"); ! queryparam.empty() ) {
@@ -97,6 +98,8 @@ namespace zypp::media {
             which = multicurl;
           else if ( queryparam == "curl" )
             which = curl;
+          else if ( queryparam == "curl2" )
+            which = curl2;
           else
             WAR << "Unknown mediahandler='" << queryparam << "' in URL; Choosing the default" << std::endl;
         }
@@ -107,12 +110,19 @@ namespace zypp::media {
             return v && v == val;
           };
 
+
+          which = multicurl;
+
           if ( getenvIs( "ZYPP_MULTICURL", "0" ) ) {
             WAR << "multicurl manually disabled." << std::endl;
             which = curl;
           }
-          else
-            which = multicurl;
+
+          if ( getenvIs( "ZYPP_CURL2", "1" ) ) {
+            WAR << "Curl2 manually selected." << std::endl;
+            which = curl2;
+          }
+
         }
         // Finally use the default
         std::unique_ptr<MediaNetworkCommonHandler> handler;
@@ -123,6 +133,9 @@ namespace zypp::media {
             break;
           case curl:
             handler = std::make_unique<MediaCurl>( url, preferred_attach_point );
+            break;
+          case curl2:
+            handler = std::make_unique<MediaCurl2>( url, preferred_attach_point );
             break;
         }
         // Set up the handler

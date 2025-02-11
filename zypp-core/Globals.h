@@ -107,7 +107,7 @@
  * also deprecate all member functions as well (which will cause warnings).
  *
  */
-#if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
+#ifndef NDEBUG
   #ifndef ZYPP_DEPRECATED
   #define ZYPP_DEPRECATED __attribute__ ((deprecated))
   #endif

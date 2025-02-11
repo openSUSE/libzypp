@@ -23,7 +23,7 @@ namespace zypp {
       : download_max_concurrent_connections( 5 )
       , download_min_download_speed	( 0 )
       , download_max_download_speed	( 0 )
-      , download_max_silent_tries	( 5 )
+      , download_max_silent_tries	( 1 )
       , download_transfer_timeout	( 180 )
       , download_connect_timeout        ( 60 )
     { }

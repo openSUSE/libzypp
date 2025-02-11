@@ -322,6 +322,13 @@ void fillSettingsFromUrl( const Url &url, media::TransferSettings &s )
     if( ! param.empty() && param == "no" )
       s.setHeadRequestsAllowed( false );
   }
+  {
+    const auto &cookieFileParam = url.getQueryParam( "cookies" );
+    if ( !cookieFileParam.empty() && str::strToBool( cookieFileParam, true ) )
+      s.setEnableCookieFile ( true );
+    else
+      s.setEnableCookieFile ( false );
+  }
 }
 
 /**

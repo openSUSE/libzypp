@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-11 12:40+0100\n"
-"PO-Revision-Date: 2020-06-29 19:45+0000\n"
+"PO-Revision-Date: 2025-02-13 11:50+0000\n"
 "Last-Translator: Manuel Vazquez <xixirei@yahoo.es>\n"
 "Language-Team: Galician <https://l10n.opensuse.org/projects/libzypp/master/"
 "gl/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4167,12 +4167,12 @@ msgstr "Autenticación necesaria para '%s'"
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/media/MediaCurl.cc:789
 msgid "Will try again..."
-msgstr ""
+msgstr "Tentarase de novo..."
 
 #: zypp/media/MediaCurl.cc:792
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "Desistir despois de %1% intentos."
 
 #: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
@@ -4222,11 +4222,13 @@ msgstr "Non se pode crear '%s'"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Non se puideron recuperar os novos metadatos do repositorio."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
+"Non foi posíbel almacenar en caché o repositorio (non se puido iniciar "
+"repo2solv )."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:596
 #: zypp/ng/repo/workflows/repomanagerwf.cc:625
@@ -4247,7 +4249,7 @@ msgstr "Non se pode crear a caché en %s - non hai permisos de escritura."
 #: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Non se puido almacenar en caché o repositorio %1%"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
@@ -4298,28 +4300,28 @@ msgstr "Non foi posíbel ler o ficheiro de repositorio '%1%': permiso denegado"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Limpando metadatos"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Limpando paquetes"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Limpando directorios de caché"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Limpando directorio:%1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Limpando caché"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Cargando da caché"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -4338,11 +4340,11 @@ msgstr "Non se pode borrar '%s'"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Modificación do repositorio"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Actualizando repositorio: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."
@@ -4368,12 +4370,12 @@ msgstr "O alias do servizo non pode comezar cun punto."
 #: zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Non hai resumo para o ficheiro %s."
 
 #: zypp/ng/reporthelper.cc:39
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Resumo descoñecido %s para o ficheiro %s."
 
 #: zypp/ng/reporthelper.cc:52
 #, c-format, boost-format
@@ -4384,7 +4386,7 @@ msgstr ""
 #: zypp/ng/reporthelper.cc:69
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "O ficheiro '%s' non está asinado. Quere continuar?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/reporthelper.cc:73
@@ -5045,7 +5047,7 @@ msgstr "%s xa executado como %s)"
 
 #: zypp/target/TargetImpl.cc:611
 msgid " execution skipped while aborting"
-msgstr " ignorada a execución ao abortar"
+msgstr " ignorada a execución ao interromper"
 
 #: zypp/target/TargetImpl.cc:666 zypp/target/TargetImpl.cc:686
 #: zypp/target/TargetImpl.cc:714 zypp/target/TargetImpl.cc:751
@@ -5067,14 +5069,14 @@ msgstr ""
 
 #: zypp/target/TargetImpl.cc:2720
 msgid "Executing the transaction failed because of the following problems:"
-msgstr ""
+msgstr "Fallou a execución da transacción debido aos seguintes problemas:"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
 #: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
 #: zypp/target/rpm/RpmDb.cc:1986
 msgid "RPM failed: "
-msgstr "Fallou RPM: "
+msgstr "Fallou o RPM: "
 
 #. Translator: %1% is a gpg public key
 #: zypp/target/rpm/RpmDb.cc:763

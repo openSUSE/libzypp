@@ -60,30 +60,34 @@ namespace zyppng {
   CurlMultiPartHandler::Range CurlMultiPartHandler::Range::clone() const
   {
     return Range {
-      .start = start,
-      .len = len,
-      .bytesWritten = 0,
-      ._digest = _digest ? _digest->clone() : std::optional<zypp::Digest>{},
+      {
+      ._start = _start,
+      ._len = _len,
       ._checksum = _checksum,
       ._relevantDigestLen = _relevantDigestLen,
-      ._chksumPad = _chksumPad,
-      .userData = userData,
-      ._rangeState = _rangeState
+      ._chksumPad = _chksumPad
+      },
+      0, //bytesWritten
+      _digest ? _digest->clone() : std::optional<zypp::Digest>{},
+      userData,
+      _rangeState
     };
   }
 
   CurlMultiPartHandler::Range CurlMultiPartHandler::Range::make(size_t start, size_t len, std::optional<zypp::Digest> &&digest, CheckSumBytes &&expectedChkSum, std::any &&userData, std::optional<size_t> digestCompareLen, std::optional<size_t> dataBlockPadding)
   {
     return Range {
-      .start = start,
-      .len   = len,
-      .bytesWritten = 0,
-      ._digest   = std::move( digest ),
-      ._checksum = std::move( expectedChkSum ),
-      ._relevantDigestLen = std::move( digestCompareLen ),
-      ._chksumPad  = std::move( dataBlockPadding ),
-      .userData = std::move( userData ),
-      ._rangeState = State::Pending
+      {
+        ._start = start,
+        ._len   = len,
+        ._checksum = std::move( expectedChkSum ),
+        ._relevantDigestLen = std::move( digestCompareLen ),
+        ._chksumPad  = std::move( dataBlockPadding ),
+      },
+      0,
+      std::move( digest ),
+      std::move( userData ),
+      State::Pending
     };
   }
 
@@ -161,7 +165,7 @@ namespace zyppng {
         Range r;
 
         size_t fileLen = 0;
-        if ( !parseContentRangeHeader( hdr, r.start, r.len, fileLen ) ) {
+        if ( !parseContentRangeHeader( hdr, r._start, r._len, fileLen ) ) {
           //@TODO shouldn't we map this to a extra error? After all this is not our fault
           setCode( Code::InternalError, "Invalid Content-Range header format." );
           return 0;
@@ -172,7 +176,7 @@ namespace zyppng {
           _reportedFileSize = fileLen;
         }
 
-        DBG << _easyHandle << " " << "Got content range :" << r.start << " len " << r.len << std::endl;
+        DBG << _easyHandle << " " << "Got content range :" << r._start << " len " << r._len << std::endl;
         _gotContentRangeInfo = true;
         _currentSrvRange = std::move(r);
 
@@ -229,8 +233,8 @@ namespace zyppng {
          */
 
         std::optional<uint> foundRange;
-        const size_t beginSrvRange = _currentSrvRange->start + _currentSrvRange->bytesWritten;
-        const size_t endSrvRange = beginSrvRange + (_currentSrvRange->len - _currentSrvRange->bytesWritten);
+        const size_t beginSrvRange = _currentSrvRange->_start + _currentSrvRange->bytesWritten;
+        const size_t endSrvRange = beginSrvRange + (_currentSrvRange->_len - _currentSrvRange->bytesWritten);
         auto currDist  = ULONG_MAX;
         for ( uint i = 0; i < _requestedRanges.size(); i++ ) {
           const auto &currR = _requestedRanges[i];
@@ -240,10 +244,10 @@ namespace zyppng {
             continue;
 
           // check if the range was already written
-          if ( currR.len && currR.len == currR.bytesWritten )
+          if ( currR._len && currR._len == currR.bytesWritten )
             continue;
 
-          const auto currRBegin = currR.start + currR.bytesWritten;
+          const auto currRBegin = currR._start + currR.bytesWritten;
           if ( !( beginSrvRange <= currRBegin && endSrvRange >= currRBegin ) )
             continue;
 
@@ -251,7 +255,7 @@ namespace zyppng {
           const auto newDist   = currRBegin - beginSrvRange;
 
           // exact match
-          if ( currRBegin == beginSrvRange && currR.len == _currentSrvRange->len ) {
+          if ( currRBegin == beginSrvRange && currR._len == _currentSrvRange->_len ) {
             foundRange = i;
             break;
           }
@@ -278,7 +282,7 @@ namespace zyppng {
         _currentRange = *foundRange;
 
         //continue writing where we stopped
-        seekTo = _requestedRanges[*foundRange].start + _requestedRanges[*foundRange].bytesWritten;
+        seekTo = _requestedRanges[*foundRange]._start + _requestedRanges[*foundRange].bytesWritten;
 
         //if we skip bytes we need to advance our written bytecount
         const auto skipBytes = *seekTo - beginSrvRange;
@@ -305,7 +309,7 @@ namespace zyppng {
           _currentRange = std::distance( _requestedRanges.begin(), i );
 
           //continue writing where we stopped
-          seekTo = _requestedRanges[*_currentRange].start + _requestedRanges[*_currentRange].bytesWritten;
+          seekTo = _requestedRanges[*_currentRange]._start + _requestedRanges[*_currentRange].bytesWritten;
         }
       }
 
@@ -317,13 +321,13 @@ namespace zyppng {
         // make sure we do not read over the current server range
         auto availableData = max - bytesConsumedSoFar;
         if ( _currentSrvRange ) {
-          availableData = std::min( availableData, _currentSrvRange->len - _currentSrvRange->bytesWritten );
+          availableData = std::min( availableData, _currentSrvRange->_len - _currentSrvRange->bytesWritten );
         }
 
         auto &rng = _requestedRanges[*_currentRange];
 
         // do only write what we need until the range is full
-        const auto bytesToWrite = rng.len > 0 ? std::min( rng.len - rng.bytesWritten, availableData ) : availableData;
+        const auto bytesToWrite = rng._len > 0 ? std::min( rng._len - rng.bytesWritten, availableData ) : availableData;
 
         auto written = _receiver.writefunction( ptr + bytesConsumedSoFar, seekTo, bytesToWrite );
         if ( written <= 0 )
@@ -338,7 +342,7 @@ namespace zyppng {
         if ( _currentSrvRange ) _currentSrvRange->bytesWritten += written;
 
         // range is done
-        if ( rng.len > 0 && rng.bytesWritten >= rng.len ) {
+        if ( rng._len > 0 && rng.bytesWritten >= rng._len ) {
           std::string errBuf = "Receiver cancelled after finishing the current range.";
           bool rngIsValid = validateRange( rng );
           if ( !_receiver.finishedRange (*_currentRange, rngIsValid, errBuf) ) {
@@ -348,7 +352,7 @@ namespace zyppng {
           _currentRange.reset();
         }
 
-        if ( _currentSrvRange && _currentSrvRange->len > 0 && _currentSrvRange->bytesWritten >= _currentSrvRange->len ) {
+        if ( _currentSrvRange && _currentSrvRange->_len > 0 && _currentSrvRange->bytesWritten >= _currentSrvRange->_len ) {
           _currentSrvRange.reset();
           // we ran out of data in the current chunk, reset the target range if it is not a open range as well, because next data will be
           // a chunk header again
@@ -395,7 +399,7 @@ namespace zyppng {
             size_t fileLen = 0;
             Range r;
             //if we can not parse the header the message must be broken
-            if(! parseContentRangeHeader( hdrLine, r.start, r.len, fileLen ) ) {
+            if(! parseContentRangeHeader( hdrLine, r._start, r._len, fileLen ) ) {
               setCode( Code::InternalError, "Invalid Content-Range header format." );
               return 0;
             }
@@ -493,8 +497,8 @@ namespace zyppng {
 
     for ( auto &r : _requestedRanges ) {
       if ( r._rangeState != CurlMultiPartHandler::Finished ) {
-        if ( r.len > 0 && r.bytesWritten != r.len )
-          setCode( Code::MissingData, (zypp::str::Format("Did not receive all requested data from the server ( off: %1%, req: %2%, recv: %3% ).") % r.start % r.len % r.bytesWritten ) );
+        if ( r._len > 0 && r.bytesWritten != r._len )
+          setCode( Code::MissingData, (zypp::str::Format("Did not receive all requested data from the server ( off: %1%, req: %2%, recv: %3% ).") % r._start % r._len % r.bytesWritten ) );
         else if ( r._digest && r._checksum.size() && !checkIfRangeChkSumIsValid(r) )  {
           setCode( Code::InvalidChecksum, (zypp::str::Format("Invalid checksum %1%, expected checksum %2%") % r._digest->digest() % zypp::Digest::digestVectorToString( r._checksum ) ) );
         } else {
@@ -570,7 +574,7 @@ namespace zyppng {
         if ( !closedRange )
           throw CurlMultInitRangeError("It is not supported to request more ranges after a open range.");
 
-        const auto rangeEnd = range.len > 0 ? range.start + range.len - 1 : 0;
+        const auto rangeEnd = range._len > 0 ? range._start + range._len - 1 : 0;
         closedRange = (rangeEnd > 0);
 
         bool added = false;
@@ -579,10 +583,10 @@ namespace zyppng {
         // when receiving we still track the original ranges so we can collect and test their checksums
         if ( !currentZippedRange ) {
           added = true;
-          currentZippedRange = std::make_pair( range.start, rangeEnd );
+          currentZippedRange = std::make_pair( range._start, rangeEnd );
         } else {
           //range is directly consecutive to the previous range
-          if ( currentZippedRange->second + 1 == range.start ) {
+          if ( currentZippedRange->second + 1 == range._start ) {
             added = true;
             currentZippedRange->second = rangeEnd;
           } else {
@@ -590,7 +594,7 @@ namespace zyppng {
             if ( rangesAdded +1 >= maxRanges ) break;
             added = true;
             addRangeString( *currentZippedRange );
-            currentZippedRange = std::make_pair( range.start, rangeEnd );
+            currentZippedRange = std::make_pair( range._start, rangeEnd );
           }
         }
 
@@ -675,12 +679,12 @@ namespace zyppng {
   bool CurlMultiPartHandler::validateRange( Range &rng )
   {
     if ( rng._digest && rng._checksum.size() ) {
-      if ( ( rng.len == 0 || rng.bytesWritten == rng.len ) && checkIfRangeChkSumIsValid(rng) )
+      if ( ( rng._len == 0 || rng.bytesWritten == rng._len ) && checkIfRangeChkSumIsValid(rng) )
         setRangeState(rng, Finished);
       else
         setRangeState(rng, Error);
     } else {
-      if ( rng.len == 0 ? true : rng.bytesWritten == rng.len )
+      if ( rng._len == 0 ? true : rng.bytesWritten == rng._len )
         setRangeState(rng, Finished);
       else
         setRangeState(rng, Error);

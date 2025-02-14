@@ -67,6 +67,7 @@ SET( zypp_curl_ng_network_SRCS
   ng/network/networkrequestdispatcher.cc
   ng/network/networkrequesterror.cc
   ng/network/request.cc
+  ng/network/zckhelper.cc
 )
 
 SET( zypp_curl_ng_network_HEADERS
@@ -77,11 +78,21 @@ SET( zypp_curl_ng_network_HEADERS
   ng/network/networkrequestdispatcher.h
   ng/network/NetworkRequestError
   ng/network/networkrequesterror.h
+  ng/network/rangedesc.h
   ng/network/Request
   ng/network/request.h
   ng/network/TransferSettings
   ng/network/transfersettings.h
 )
+
+if (ENABLE_ZCHUNK_COMPRESSION)
+  list( APPEND zypp_curl_ng_network_HEADERS
+    ng/network/zckhelper.h
+  )
+  list( APPEND zypp_curl_ng_network_SRCS
+    ng/network/zckhelper.cc
+  )
+endif()
 
 SET( zypp_curl_ng_network_private_HEADERS
   ng/network/private/mediadebug_p.h

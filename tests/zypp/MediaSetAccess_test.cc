@@ -288,9 +288,12 @@ void msa_remote_tests_impl() {
     BOOST_CHECK_THROW(setaccess.provideFile(locPlain), media::MediaFileSizeExceededException);
 
     // using the correct file size should NOT throw
-    locPlain.setDownloadSize( zypp::ByteCount(7135, zypp::ByteCount::B) );
-    Pathname file = setaccess.provideFile( locPlain );
-    BOOST_CHECK(check_file_exists(file) == true);
+    auto helper = [&](){
+      locPlain.setDownloadSize( zypp::ByteCount(7135, zypp::ByteCount::B) );
+      Pathname file = setaccess.provideFile( locPlain );
+      BOOST_CHECK(check_file_exists(file) == true);
+    };
+    BOOST_CHECK_NO_THROW ( helper() );
   }
 
   {

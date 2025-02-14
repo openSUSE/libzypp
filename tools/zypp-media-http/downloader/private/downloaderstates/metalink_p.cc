@@ -107,14 +107,14 @@ namespace zyppng {
       const auto &mediaBlock = _blockList.getBlock( i );
       const auto &blockSum   = _blockList.getChecksum ( i );
       _ranges.push_back(
-        Block{
-          .start = mediaBlock.off,
-          .len   = mediaBlock.size,
-          .chksumtype = _blockList.getChecksumType(),
-          .chksumVec  = blockSum,
-          .chksumCompareLen = blockSum.size( ),
-          .chksumPad = chksumPad > 0 ? chksumPad : std::optional<size_t>()
-        } );
+        Block{{
+          ._start = static_cast<size_t>(mediaBlock.off),
+          ._len   = mediaBlock.size,
+          ._chksumtype = _blockList.getChecksumType(),
+          ._checksum  = blockSum,
+          ._relevantDigestLen = blockSum.size( ),
+          ._chksumPad = chksumPad > 0 ? chksumPad : std::optional<size_t>()
+        }});
 
       bytesToDl += mediaBlock.size;
     }

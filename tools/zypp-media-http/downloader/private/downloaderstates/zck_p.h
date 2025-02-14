@@ -26,8 +26,6 @@ namespace zyppng {
   struct DLZckState;
   struct FinishedState;
 
-  bool isZchunkFile ( const zypp::Pathname &file );
-
   /*!
    * Zchunk header download state implementation. This downloads only the
    * zck header to calculate which ranges/blocks are required for download.

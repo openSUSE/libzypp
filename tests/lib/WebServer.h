@@ -82,6 +82,11 @@ class WebServer
   zypp::media::TransferSettings transferSettings () const;
 
   /**
+   * Returns the CA path for this server
+   */
+  zypp::Pathname caPath() const;
+
+  /**
    * shows the log of last run
    */
   std::string log() const;
@@ -140,6 +145,12 @@ class WebServer
    * Creates the corresponding HTTP response to the given parameters
    */
   static std::string makeResponseString ( const std::string &status, const std::vector<std::string> &headers, const std::string &content );
+
+  /*!
+   * Checks if the request sends authorization data that matches \a basicCred and forwards the request to callback.
+   * Otherwise sends a auth error back to the client.
+   */
+  static RequestHandler makeBasicAuthHandler( const std::string &basicCred, RequestHandler &&callback );
 
   class Impl;
 private:

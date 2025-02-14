@@ -332,7 +332,7 @@ namespace zyppng {
         if ( _requestedRanges.size() ) {
 
           std::sort( _requestedRanges.begin(), _requestedRanges.end(), []( const auto &elem1, const auto &elem2 ){
-            return ( elem1.start < elem2.start );
+            return ( elem1._start < elem2._start );
           });
 
           CurlMultiPartHandler *helper = nullptr;

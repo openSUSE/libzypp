@@ -122,6 +122,8 @@ class MediaCurl2 : public MediaNetworkCommonHandler
 
     bool authenticate(const std::string & availAuthTypes, bool firstTry);
 
+    bool tryZchunk( zyppng::NetworkRequestRef req, const OnMediaLocation &srcFile , const Pathname & target, callback::SendReport<DownloadProgressReport> & report  );
+
   private:
     zyppng::EventDispatcherRef _evDispatcher; //< keep the ev dispatcher alive as long as MediaCurl2 is
     zyppng::NetworkRequestDispatcherRef _nwDispatcher; //< keep the dispatcher alive as well

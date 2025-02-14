@@ -50,6 +50,11 @@
 
 #include "detail/OptionalDownloadProgressReport.h"
 
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+#include <zypp-curl/ng/network/zckhelper.h>
+#endif
+
+
 /*!
  * TODOS:
  *  - Add overall timeout for the request
@@ -412,8 +417,8 @@ namespace zypp {
       auto req = std::make_shared<zyppng::NetworkRequest>( curlUrl, destNew );
       req->setExpectedFileSize ( srcFile.downloadSize () );
 
-      // HERE add zchunk logic if required
-
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+#endif
       bool modified = true;
       const_cast<MediaCurl2 *>(this)->executeRequest ( req, &report );
 
@@ -460,6 +465,42 @@ namespace zypp {
 
       DBG << "done: " << PathInfo(dest) << endl;
     }
+
+
+    bool MediaCurl2::tryZchunk( zyppng::NetworkRequestRef req, const OnMediaLocation &srcFile, const Pathname &target, callback::SendReport<DownloadProgressReport> &report )
+    {
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+
+      // HERE add zchunk logic if required
+      if ( !srcFile.deltafile().empty()
+           && zyppng::ZckHelper::isZchunkFile (srcFile.deltafile ())
+           && srcFile.headerSize () > 0 ) {
+
+        // first fetch the zck header
+        std::optional<zypp::Digest> digest;
+        UByteArray sum;
+
+        const auto &headerSum = srcFile.headerChecksum();
+        if ( !headerSum.empty () ) {
+          digest = zypp::Digest();
+          if ( !digest->create( headerSum.type() ) ) {
+            ERR << "Unknown header checksum type " << headerSum.type() << std::endl;
+            return false;
+          }
+          sum = zypp::Digest::hexStringToUByteArray( headerSum.checksum() );
+        }
+
+        req->addRequestRange( 0, srcFile.headerSize(), std::move(digest), sum );
+        executeRequest ( req, &report );
+
+
+      }
+#else
+      return false;
+#endif
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////
 

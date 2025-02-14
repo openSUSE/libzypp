@@ -356,7 +356,7 @@ multifetchworker::writefunction(char *ptr, std::optional<off_t> offset, size_t b
   }
 
   const auto &blk = _blocks[*currRange];
-  off_t seekTo = blk.start + blk.bytesWritten;
+  off_t seekTo = blk._start + blk.bytesWritten;
 
   if ( ftell( _request->_fp ) != seekTo ) {
     // if we can't seek the file there is no purpose in trying again
@@ -378,7 +378,7 @@ bool multifetchworker::beginRange ( off_t workerRangeOff, std::string &cancelRea
   if ( currRangeState == Stripe::FINALIZED ){
     cancelReason = "Cancelled because stripe block is already finalized";
     _state = WORKER_DISCARD;
-    WAR << "#" << _workerno << ": trying to start a range ("<<stripeRangeOff<<"["<< _blocks[workerRangeOff].start <<" : "<<_blocks[workerRangeOff].len<<"]) that was already finalized, cancelling. Stealing was: " << _request->_stealing << endl;
+    WAR << "#" << _workerno << ": trying to start a range ("<<stripeRangeOff<<"["<< _blocks[workerRangeOff]._start <<" : "<<_blocks[workerRangeOff]._len<<"]) that was already finalized, cancelling. Stealing was: " << _request->_stealing << endl;
     return false;
   }
   stripeDesc.blockStates[stripeRangeOff] = currRangeState == Stripe::PENDING ?  Stripe::FETCH : Stripe::COMPETING;
@@ -400,12 +400,12 @@ bool multifetchworker::finishedRange ( off_t workerRangeOff, bool validated, std
   if ( currRangeState == Stripe::FETCH ) {
     // only us who wrote here, block is finalized
     stripeDesc.blockStates[stripeRangeOff] = Stripe::FINALIZED;
-    _request->_fetchedgoodsize += _blocks[workerRangeOff].len;
+    _request->_fetchedgoodsize += _blocks[workerRangeOff]._len;
   } else {
     // others wrote here, we need to check the full checksum
     if ( recheckChecksum ( workerRangeOff ) ) {
       stripeDesc.blockStates[stripeRangeOff] = Stripe::FINALIZED;
-      _request->_fetchedgoodsize += _blocks[workerRangeOff].len;
+      _request->_fetchedgoodsize += _blocks[workerRangeOff]._len;
     } else {
       // someone messed that block up, set it to refetch but continue since our
       // data is valid
@@ -690,13 +690,13 @@ bool multifetchworker::recheckChecksum( off_t workerRangeIdx )
   if ( currOf == -1 )
     return false;
 
-  if (fseeko(_request->_fp, blk.start, SEEK_SET))
+  if (fseeko(_request->_fp, blk._start, SEEK_SET))
     return false;
 
   zypp::Digest newDig = blk._digest->clone();
 
   char buf[4096];
-  size_t l = blk.len;
+  size_t l = blk._len;
   while (l) {
     size_t cnt = l > sizeof(buf) ? sizeof(buf) : l;
     if (fread(buf, cnt, 1, _request->_fp) != 1)
@@ -895,7 +895,7 @@ void multifetchworker::runjob()
     } else {
       _blocks.push_back( rangeFromBlock(stripeDesc.blocks[i]) );
       _rangeToStripeBlock.push_back( i );
-      _datasize += _blocks.back().len;
+      _datasize += _blocks.back()._len;
     }
   }
 

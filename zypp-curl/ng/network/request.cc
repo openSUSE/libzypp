@@ -93,7 +93,7 @@ namespace zyppng {
     reset();
 
     if ( _easyHandle )
-    //will reset to defaults but keep live connections, session ID and DNS caches
+      //will reset to defaults but keep live connections, session ID and DNS caches
       curl_easy_reset( _easyHandle );
     else
       _easyHandle = curl_easy_init();

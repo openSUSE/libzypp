@@ -49,6 +49,12 @@
 #include <glib.h>
 
 #include "detail/OptionalDownloadProgressReport.h"
+#include "zypp-curl/ng/network/private/mediadebug_p.h"
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+#include <zypp-curl/ng/network/zckhelper.h>
+#endif
+
 
 /*!
  * TODOS:
@@ -372,13 +378,7 @@ namespace zypp {
       DBG << "dest: " << dest << endl;
       DBG << "temp: " << destNew << endl;
 #if 0
-      Not implemented here yet, the target file will never exists due to the way we use the media backend:
-        1) we never use provideFileCopy from the outside, we only copy files after checking signatures
-        2) packages will not be here already because otherwise we would have fetched them from cache
-        3) repo refreshes are always done into a empty cache dir
-        4) NetworkRequest can not do IFMODSINCE yet
-      So only possible way to make this work is to use a maybe existing delta file, but the timestamp on that
-      would be the timestamp of the last copy ( which means there is at least a signature check in between so it could be incorrect)
+      Not implemented here yet because NetworkRequest can not do IFMODSINCE yet
       // set IFMODSINCE time condition (no download if not modified)
       if( PathInfo(target).isExist() && !(options & OPTION_NO_IFMODSINCE) )
       {
@@ -409,13 +409,17 @@ namespace zypp {
       // the rest was already passed as curl options (in attachTo).
       Url curlUrl( clearQueryString(url) );
 
-      auto req = std::make_shared<zyppng::NetworkRequest>( curlUrl, destNew );
+      auto req = std::make_shared<zyppng::NetworkRequest>( curlUrl, destNew, zyppng::NetworkRequest::WriteShared /*do not truncate*/ );
       req->setExpectedFileSize ( srcFile.downloadSize () );
 
-      // HERE add zchunk logic if required
-
-      bool modified = true;
-      const_cast<MediaCurl2 *>(this)->executeRequest ( req, &report );
+      bool done = false;
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+      done = const_cast<MediaCurl2*>(this)->tryZchunk(req, srcFile, destNew, report);
+#endif
+      if ( !done ) {
+        req->resetRequestRanges();
+        const_cast<MediaCurl2 *>(this)->executeRequest ( req, &report );
+      }
 
 #if 0
       Also disabled IFMODSINCE code, see above while not yet implemented here
@@ -442,24 +446,95 @@ namespace zypp {
 #endif
 #endif
 
-      if (modified)
-      {
-        // apply umask
-        if ( ::chmod( destNew->c_str(), filesystem::applyUmaskTo( 0644 ) ) )
-        {
-          ERR << "Failed to chmod file " << destNew << endl;
-        }
 
-        // move the temp file into dest
-        if ( rename( destNew, dest ) != 0 ) {
-          ERR << "Rename failed" << endl;
-          ZYPP_THROW(MediaWriteException(dest));
-        }
-        destNew.resetDispose();	// no more need to unlink it
+      // apply umask
+      if ( ::chmod( destNew->c_str(), filesystem::applyUmaskTo( 0644 ) ) )
+      {
+        ERR << "Failed to chmod file " << destNew << endl;
       }
+
+      // move the temp file into dest
+      if ( rename( destNew, dest ) != 0 ) {
+        ERR << "Rename failed" << endl;
+        ZYPP_THROW(MediaWriteException(dest));
+      }
+      destNew.resetDispose();	// no more need to unlink it
 
       DBG << "done: " << PathInfo(dest) << endl;
     }
+
+
+    bool MediaCurl2::tryZchunk( zyppng::NetworkRequestRef req, const OnMediaLocation &srcFile, const Pathname &target, callback::SendReport<DownloadProgressReport> &report )
+    {
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+
+      // HERE add zchunk logic if required
+      if ( !srcFile.deltafile().empty()
+           && zyppng::ZckHelper::isZchunkFile (srcFile.deltafile ())
+           && srcFile.headerSize () > 0 ) {
+
+        // first fetch the zck header
+        std::optional<zypp::Digest> digest;
+        UByteArray sum;
+
+        const auto &headerSum = srcFile.headerChecksum();
+        if ( !headerSum.empty () ) {
+          digest = zypp::Digest();
+          if ( !digest->create( headerSum.type() ) ) {
+            ERR << "Unknown header checksum type " << headerSum.type() << std::endl;
+            return false;
+          }
+          sum = zypp::Digest::hexStringToUByteArray( headerSum.checksum() );
+        }
+
+        req->addRequestRange( 0, srcFile.headerSize(), std::move(digest), sum );
+        executeRequest ( req, nullptr );
+
+        req->resetRequestRanges();
+
+        auto res = zyppng::ZckHelper::prepareZck( srcFile.deltafile(), target, srcFile.downloadSize() );
+        switch(res._code) {
+          case zyppng::ZckHelper::PrepareResult::Error: {
+            ERR << "Failed to setup zchunk because of: " << res._message << std::endl;
+            return false;
+          }
+          case zyppng::ZckHelper::PrepareResult::NothingToDo:
+            return true; // already done
+          case zyppng::ZckHelper::PrepareResult::ExceedsMaxLen:
+            ZYPP_THROW( MediaFileSizeExceededException( req->url(), srcFile.downloadSize(), res._message ));
+          case zyppng::ZckHelper::PrepareResult::Success:
+            break;
+        }
+
+        for ( const auto &block : res._blocks ) {
+          if ( block._checksum.size() && block._chksumtype.size() ) {
+            std::optional<zypp::Digest> dig = zypp::Digest();
+            if ( !dig->create( block._chksumtype ) ) {
+              WAR_MEDIA << "Trying to create Digest with chksum type " << block._chksumtype << " failed " << std::endl;
+              return false;
+            }
+
+            if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
+              DBG_MEDIA << "Starting block " << block._start << " with checksum " << zypp::Digest::digestVectorToString( block._checksum ) << "." << std::endl;
+            req->addRequestRange( block._start, block._len, std::move(dig), block._checksum, {}, block._relevantDigestLen, block._chksumPad );
+          }
+        };
+
+        executeRequest ( req, &report );
+
+        //we might have the file ready
+        std::string err;
+        if ( !zyppng::ZckHelper::validateZckFile( target, err) ) {
+          ERR << "ZCK failed with error: " << err << std::endl;
+          return false;
+        }
+        return true;
+      }
+#endif
+      return false;
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////
 
@@ -609,14 +684,13 @@ namespace zypp {
             }
             case zyppng::NetworkRequestError::Unauthorized:
             case zyppng::NetworkRequestError::AuthFailed: {
-              if ( firstAuth ) {
-                //in case we got a auth hint from the server the error object will contain it
-                std::string authHint = error.extraInfoValue("authHint", std::string());
-                if ( authenticate( authHint, firstAuth ) ) {
-                  firstAuth = false;
-                  retry = true;
-                  continue;
-                }
+
+              //in case we got a auth hint from the server the error object will contain it
+              std::string authHint = error.extraInfoValue("authHint", std::string());
+              if ( authenticate( authHint, firstAuth ) ) {
+                firstAuth = false;
+                retry = true;
+                continue;
               }
 
               errCode = zypp::media::DownloadProgressReport::ACCESS_DENIED;

@@ -4,6 +4,10 @@ SET( POT_FILE_DEPENDS_ZYPP_CURL ${POT_FILE_DEPENDS} PARENT_SCOPE )
 
 INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} )
 
+IF (ENABLE_ZCHUNK_COMPRESSION)
+  INCLUDE_DIRECTORIES( ${ZCHUNK_INCLUDEDIR} )
+ENDIF(ENABLE_ZCHUNK_COMPRESSION)
+
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 SET( zypp_curl_HEADERS
@@ -77,11 +81,21 @@ SET( zypp_curl_ng_network_HEADERS
   ng/network/networkrequestdispatcher.h
   ng/network/NetworkRequestError
   ng/network/networkrequesterror.h
+  ng/network/rangedesc.h
   ng/network/Request
   ng/network/request.h
   ng/network/TransferSettings
   ng/network/transfersettings.h
 )
+
+if (ENABLE_ZCHUNK_COMPRESSION)
+  list( APPEND zypp_curl_ng_network_HEADERS
+    ng/network/zckhelper.h
+  )
+  list( APPEND zypp_curl_ng_network_SRCS
+    ng/network/zckhelper.cc
+  )
+endif()
 
 SET( zypp_curl_ng_network_private_HEADERS
   ng/network/private/mediadebug_p.h

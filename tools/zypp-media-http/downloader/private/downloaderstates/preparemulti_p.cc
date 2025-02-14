@@ -18,6 +18,7 @@
 #include "preparemulti_p.h"
 
 #if ENABLE_ZCHUNK_COMPRESSION
+#include <zypp-curl/ng/network/zckhelper.h>
 #include "zck_p.h"
 #endif
 
@@ -38,7 +39,7 @@ namespace zyppng {
     const auto &url = spec.url();
     const auto &targetPath = spec.targetPath();
 #if ENABLE_ZCHUNK_COMPRESSION
-    _haveZckData = (isZchunkFile( spec.deltaFile() )  && spec.headerSize() > 0);
+    _haveZckData = (ZckHelper::isZchunkFile( spec.deltaFile() )  && spec.headerSize() > 0);
     MIL << " Upgrading request for URL: "<< url << " to multipart download , which zckunk=" << _haveZckData << std::endl;
 #else
     MIL << " Upgrading request for URL: "<< url << " to multipart download , which zckunk=false" << std::endl;

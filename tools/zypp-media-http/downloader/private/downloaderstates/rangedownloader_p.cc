@@ -64,7 +64,7 @@ namespace zyppng {
 
     MIL  << req.nativeHandle() << " " << "Request finished successfully."<<std::endl;
     const auto &rngs = reqLocked->requestedRanges();
-    std::for_each( rngs.begin(), rngs.end(), [&req]( const auto &b ){ DBG_MEDIA  << req.nativeHandle() << " " << "-> Block " << b.start << " finished." << std::endl; } );
+    std::for_each( rngs.begin(), rngs.end(), [&req]( const auto &b ){ DBG_MEDIA  << req.nativeHandle() << " " << "-> Block " << b._start << " finished." << std::endl; } );
 
     auto restartReqWithBlock = [ this ]( std::shared_ptr<Request> &req, std::vector<Block> &&blocks ) {
       MIL  << req->nativeHandle() << " " << "Reusing Request to download blocks:"<<std::endl;
@@ -129,7 +129,7 @@ namespace zyppng {
           Block b = std::any_cast<Block>(r.userData);;
           b._failedWithErr = req->error();
           if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
-            DBG_MEDIA << "Adding failed block to failed blocklist: " << b.start << " " << b.len << " (" << req->error().toString() << " [" << req->error().nativeErrorString()<< "])" << std::endl;
+            DBG_MEDIA << "Adding failed block to failed blocklist: " << b._start << " " << b._len << " (" << req->error().toString() << " [" << req->error().nativeErrorString()<< "])" << std::endl;
           return b;
         });
 
@@ -313,21 +313,21 @@ namespace zyppng {
   {
     req->resetRequestRanges();
     for ( const auto &block : blocks ) {
-      if ( block.chksumVec && block.chksumtype.size() ) {
+      if ( block._checksum.size() && block._chksumtype.size() ) {
         std::optional<zypp::Digest> dig = zypp::Digest();
-        if ( !dig->create( block.chksumtype ) ) {
-          WAR_MEDIA << "Trying to create Digest with chksum type " << block.chksumtype << " failed " << std::endl;
+        if ( !dig->create( block._chksumtype ) ) {
+          WAR_MEDIA << "Trying to create Digest with chksum type " << block._chksumtype << " failed " << std::endl;
           return false;
         }
 
         if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
-          DBG_MEDIA << "Starting block " << block.start << " with checksum " << zypp::Digest::digestVectorToString( *block.chksumVec ) << "." << std::endl;
-        req->addRequestRange( block.start, block.len, std::move(dig), *block.chksumVec, std::any( block ), block.chksumCompareLen, block.chksumPad );
+          DBG_MEDIA << "Starting block " << block._start << " with checksum " << zypp::Digest::digestVectorToString( block._checksum ) << "." << std::endl;
+        req->addRequestRange( block._start, block._len, std::move(dig), block._checksum, std::any( block ), block._relevantDigestLen, block._chksumPad );
       } else {
 
         if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
-          DBG_MEDIA << "Starting block " << block.start << " without checksum." << std::endl;
-        req->addRequestRange( block.start, block.len, {}, {}, std::any( block ) );
+          DBG_MEDIA << "Starting block " << block._start << " without checksum." << std::endl;
+        req->addRequestRange( block._start, block._len, {}, {}, std::any( block ) );
       }
     }
     return true;
@@ -377,12 +377,12 @@ namespace zyppng {
       const auto &r = _ranges.front();
 
       if ( !canDoRandomBlocks && lastBlockEnd ) {
-        if ( static_cast<const size_t>(r.start) != (*lastBlockEnd)+1 )
+        if ( static_cast<const size_t>(r._start) != (*lastBlockEnd)+1 )
           break;
       }
 
-      lastBlockEnd = r.start + r.len - 1;
-      accumulatedSize += r.len;
+      lastBlockEnd = r._start + r._len - 1;
+      accumulatedSize += r._len;
 
       blocks.push_back( std::move( _ranges.front() ) );
       _ranges.pop_front();
@@ -396,7 +396,7 @@ namespace zyppng {
   {
     const auto prefSize = std::max<zypp::ByteCount>( _preferredChunkSize, zypp::ByteCount(4, zypp::ByteCount::K) );
     // sort the failed requests by block number, this should make sure get them in offset order as well
-    _failedRanges.sort( []( const auto &a , const auto &b ){ return a.start < b.start; } );
+    _failedRanges.sort( []( const auto &a , const auto &b ){ return a._start < b._start; } );
 
     bool canDoRandomBlocks = ( zypp::str::hasPrefixCI( urlScheme, "http") );
 
@@ -409,12 +409,12 @@ namespace zyppng {
 
       //we need to check if we have consecutive blocks because only http mirrors support random request ranges
       if ( !canDoRandomBlocks && lastBlockEnd ) {
-        if ( static_cast<const size_t>(block.start) != (*lastBlockEnd)+1 )
+        if ( static_cast<const size_t>(block._start) != (*lastBlockEnd)+1 )
           break;
       }
 
-      lastBlockEnd = block.start + block.len - 1;
-      accumulatedSize += block.len;
+      lastBlockEnd = block._start + block._len - 1;
+      accumulatedSize += block._len;
 
       fblks.push_back( std::move( _failedRanges.front() ));
       _failedRanges.pop_front();

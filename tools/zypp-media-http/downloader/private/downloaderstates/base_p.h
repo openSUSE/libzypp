@@ -18,6 +18,7 @@
 #include <zypp-core/zyppng/base/signals.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/zyppng/core/ByteArray>
+#include <zypp-curl/ng/network/rangedesc.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/ng/network/TransferSettings>
 #include <zypp-curl/ng/network/networkrequesterror.h>
@@ -45,15 +46,7 @@ namespace zyppng {
     DownloadPrivateBase ( Downloader &parent, std::shared_ptr<NetworkRequestDispatcher> requestDispatcher, std::shared_ptr<MirrorControl> mirrors, DownloadSpec &&spec, Download &p );
     ~DownloadPrivateBase () override;
 
-    struct Block {
-      off_t  start = 0;
-      size_t len = 0;
-
-      std::string chksumtype;
-      std::optional<UByteArray> chksumVec;
-      std::optional<size_t> chksumCompareLen; //< initialized if only the first few bytes of the checksum should be considered
-      std::optional<size_t> chksumPad; //< initialized if the hashed blocks for a digest need to be padded if a block is smaller ( e.g. last block in a zsync file )
-
+    struct Block : public RangeDesc {
       int _retryCount = 0;  //< how many times was this request restarted
       NetworkRequestError _failedWithErr; //< what was the error this request failed with
     };

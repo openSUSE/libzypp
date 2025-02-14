@@ -12,6 +12,7 @@
 
 #include "initial_p.h"
 #if ENABLE_ZCHUNK_COMPRESSION
+#include <zypp-curl/ng/network/zckhelper.h>
 #include "zck_p.h"
 #endif
 
@@ -32,7 +33,7 @@ namespace zyppng {
     }
 
 #if ENABLE_ZCHUNK_COMPRESSION
-    bool deltaZck = isZchunkFile( spec.deltaFile() );
+    bool deltaZck = ZckHelper::isZchunkFile( spec.deltaFile() );
 #endif
     if ( spec.metalinkEnabled() ) {
 #if ENABLE_ZCHUNK_COMPRESSION

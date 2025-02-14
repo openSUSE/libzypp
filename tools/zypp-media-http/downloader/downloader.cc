@@ -16,6 +16,10 @@
 #include <zypp-media/MediaException>
 #include <zypp-core/base/String.h>
 
+#if ENABLE_ZCHUNK_COMPRESSION
+#include <zypp-curl/ng/network/zckhelper.h>
+#endif
+
 namespace zyppng {
 
   DownloadPrivateBase::DownloadPrivateBase(Downloader &parent, std::shared_ptr<NetworkRequestDispatcher> requestDispatcher, std::shared_ptr<MirrorControl> mirrors, DownloadSpec &&spec, Download &p)
@@ -97,7 +101,7 @@ namespace zyppng {
   bool DownloadPrivateBase::hasZckInfo() const
   {
     if ( zypp::indeterminate(_specHasZckInfo) )
-      _specHasZckInfo = ( _spec.headerSize() > 0 && isZchunkFile( _spec.deltaFile() ) );
+      _specHasZckInfo = ( _spec.headerSize() > 0 && ZckHelper::isZchunkFile( _spec.deltaFile() ) );
     return bool(_specHasZckInfo);
   }
 #endif

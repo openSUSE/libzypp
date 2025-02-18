@@ -21,50 +21,60 @@
 #include <zypp-core/TriBool.h>
 #include <zypp/PathInfo.h>
 #include <zypp/ZYppCallbacks.h>
+#include <zypp/ZYppFactory.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
   inline bool ImZYPPER()
-  { return filesystem::readlink( "/proc/self/exe" ).basename() == "zypper"; }
+  {
+    static bool ret = filesystem::readlink( "/proc/self/exe" ).basename() == "zypper";
+    return ret;
+  }
 
-  bool singleTransInEnv ()
+  inline bool singleTransInEnv()
+  {
+    const char *val = ::getenv("ZYPP_SINGLE_RPMTRANS");
+    return ( val && std::string_view( val ) == "1" );
+  }
+
+  inline bool singleTransEnabled()
   {
 #ifdef SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
-    static bool singleTrans = ImZYPPER();
+    return ImZYPPER();
 #else // SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
-    static bool singleTrans = ImZYPPER() && ([]()->bool{
-      const char *val = ::getenv("ZYPP_SINGLE_RPMTRANS");
-      bool ret = ( val && std::string_view( val ) == "1"  );
-#ifdef NO_SINGLETRANS_USERMERGE
-      // Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction
-      // While the bug is not fixed, we don't allow ZYPP_SINGLE_RPMTRANS=1 on a not UsrMerged system.
-      // I.e. if /lib is a directory and not a symlink.
-      if ( ret && PathInfo( "/lib", PathInfo::LSTAT ).isDir() ) {
-        WAR << "Ignore $ZYPP_SINGLE_RPMTRANS=1: Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction" << std::endl;
-        JobReport::info(
-        "[boo#1189788] Tumbleweeds filesystem package seems to be unable to perform the\n"
-        "              UsrMerge reliably in a single transaction. The requested\n"
-        "              $ZYPP_SINGLE_RPMTRANS=1 will therefore be IGNORED because\n"
-        "              the UsrMerge did not yet happen on this system."
-        , JobReport::UserData( "cmdout", "[boo#1189788]" ) );
-        return false;
-      }
-#endif
-      if ( ret ) {
-        JobReport::info(
-          "[TechPreview] $ZYPP_SINGLE_RPMTRANS=1 : New rpm install backend is enabled\n"
-          "              If you find any bugs or issues please let us know:\n"
-          "              https://bugzilla.opensuse.org/\n"
-          "              Component: libzypp (or zypper)\n"
-          "              And please attach the /var/log/zypper.log to the bug report."
-        , JobReport::UserData( "cmdout" ) );
-      }
-      return ret;
-    })();
+    return ImZYPPER() && singleTransInEnv();
 #endif // SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
-    return singleTrans;
+  }
+
+
+  inline bool isPreUsrmerge( const Pathname & root_r )
+  {
+    // If systems /lib is a directory and not a symlink.
+    return PathInfo( root_r / "lib", PathInfo::LSTAT ).isDir();
+  }
+
+  inline bool transactionWillUsrmerge()
+  {
+    // A package providing "may-perform-usrmerge" is going to be installed.
+    const sat::WhatProvides q { Capability("may-perform-usrmerge") };
+    for ( const auto & pi : q.poolItem() ) {
+      if ( pi.status().isToBeInstalled() )
+        return true;
+    }
+    return false;
+  }
+
+  inline bool pendingUsrmerge()
+  {
+    // NOTE: Bug 1189788 - UsrMerge: filesystem package breaks system when
+    // upgraded in a single rpm transaction. Target::Commit must amend this
+    // request depending on whether a UsrMerge may be performed by the
+    // transaction.
+    Target_Ptr target { getZYpp()->getTarget() };
+    bool ret = target && isPreUsrmerge( target->root() ) && transactionWillUsrmerge();
+    return ret;
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -81,7 +91,7 @@ namespace zypp
       , _downloadMode		( ZConfig::instance().commit_downloadMode() )
       , _rpmInstFlags		( ZConfig::instance().rpmInstallFlags() )
       , _syncPoolAfterCommit	( true )
-      , _singleTransMode        ( singleTransInEnv() )
+      , _singleTransMode        ( singleTransEnabled() )
       {}
 
     public:
@@ -89,7 +99,7 @@ namespace zypp
       DownloadMode		_downloadMode;
       target::rpm::RpmInstFlags	_rpmInstFlags;
       bool			_syncPoolAfterCommit;
-      bool                      _singleTransMode; //< run everything in one big rpm transaction
+      mutable bool              _singleTransMode; // mutable: [bsc#1189788] pending usrmerge must disable singletrans
 
     private:
       friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -122,13 +132,7 @@ namespace zypp
   { return _pimpl->_rpmInstFlags.testFlag( target::rpm::RPMINST_TEST );}
 
   ZYppCommitPolicy & ZYppCommitPolicy::downloadMode( DownloadMode val_r )
-  {
-    if ( singleTransModeEnabled() && val_r == DownloadAsNeeded ) {
-      DBG << val_r << " is not compatible with singleTransMode, falling back to " << DownloadInAdvance << std::endl;
-      _pimpl->_downloadMode = DownloadInAdvance;
-    }
-    _pimpl->_downloadMode = val_r; return *this;
-  }
+  { _pimpl->_downloadMode = val_r; return *this; }
 
   DownloadMode ZYppCommitPolicy::downloadMode() const
   {
@@ -176,7 +180,19 @@ namespace zypp
   { return _pimpl->_syncPoolAfterCommit; }
 
   bool ZYppCommitPolicy::singleTransModeEnabled() const
-  { return _pimpl->_singleTransMode; }
+  {
+    if ( _pimpl->_singleTransMode and pendingUsrmerge() ) {
+      WAR << "Ignore $ZYPP_SINGLE_RPMTRANS=1: Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction" << std::endl;
+      JobReport::info(
+        "[bsc#1189788] The filesystem package seems to be unable to perform the pending\n"
+        "              UsrMerge reliably in a single transaction. The single_rpmtrans\n"
+        "              backend will therefore be IGNORED and the transaction is performed\n"
+        "              by the classic_rpmtrans backend."
+        , JobReport::UserData( "cmdout", "[bsc#1189788]" ) );
+      _pimpl->_singleTransMode = false;
+    }
+    return _pimpl->_singleTransMode;
+  }
 
   std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj )
   {

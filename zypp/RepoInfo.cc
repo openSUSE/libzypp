@@ -168,7 +168,6 @@ namespace zypp
     RepoVariablesReplacedUrlList & gpgKeyUrls()
     { return _gpgKeyUrls; }
 
-
     const std::set<std::string> & contentKeywords() const
     { hasContent()/*init if not yet done*/; return _keywords.second; }
 
@@ -353,6 +352,11 @@ namespace zypp
       if ( _packagesPath.empty() && usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%PKG%";
       return _packagesPath;
+    }
+
+    Pathname predownloadPath() const
+    {
+      return packagesPath() / ".preload";
     }
 
     DefaultIntegral<unsigned,defaultPriority> priority;
@@ -577,6 +581,9 @@ namespace zypp
 
   void RepoInfo::setPackagesPath( const Pathname &path )
   { _pimpl->packagesPath( path ); }
+
+  Pathname RepoInfo::predownloadPath() const
+  { return _pimpl->predownloadPath(); }
 
   void RepoInfo::setKeepPackages( bool keep )
   { _pimpl->keeppackages = keep; }

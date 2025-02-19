@@ -270,6 +270,8 @@ namespace zypp
       Fetcher fetcher;
       fetcher.addCachePath( repo_r.packagesPath() );
       MIL << "Added cache path " << repo_r.packagesPath() << endl;
+      fetcher.addCachePath( repo_r.predownloadPath(), Fetcher::CleanFiles );
+      MIL << "Added cache path " << repo_r.predownloadPath() << endl;
 
       // Test whether download destination is writable, if not
       // switch into the tmpspace (e.g. bnc#755239, download and

@@ -284,6 +284,11 @@ namespace zypp
        */
       void setPackagesPath( const Pathname &path );
 
+      /**
+       * \short Path where this repo packages are predownloaded
+       */
+      Pathname predownloadPath() const;
+
 
       /** \name Repository gpgchecks
        * How signature checking should be performed for this repo.

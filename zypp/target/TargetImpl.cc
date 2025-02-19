@@ -48,6 +48,7 @@
 #include <zypp/target/rpm/librpmDb.h>
 #include <zypp/target/CommitPackageCache.h>
 #include <zypp/target/RpmPostTransCollector.h>
+#include <zypp/target/private/commitpackagepreloader_p.h>
 
 #include <zypp/parser/ProductFileReader.h>
 #include <zypp/repo/SrcPackageProvider.h>
@@ -1462,64 +1463,75 @@ namespace zypp
         packageCache.setCommitList( steps.begin(), steps.end() );
 
         bool miss = false;
+        std::unique_ptr<CommitPackagePreloader> preloader;
         if ( policy_r.downloadMode() != DownloadAsNeeded  )
         {
-          // Preload the cache. Until now this means pre-loading all packages.
-          // Once DownloadInHeaps is fully implemented, this will change and
-          // we may actually have more than one heap.
-          for_( it, steps.begin(), steps.end() )
           {
-            switch ( it->stepType() )
-            {
-              case sat::Transaction::TRANSACTION_INSTALL:
-              case sat::Transaction::TRANSACTION_MULTIINSTALL:
-                // proceed: only install actionas may require download.
-                break;
-
-              default:
-                // next: no download for or non-packages and delete actions.
-                continue;
-                break;
-            }
-
-            PoolItem pi( *it );
-            if ( pi->isKind<Package>() || pi->isKind<SrcPackage>() )
-            {
-              ManagedFile localfile;
-              try
-              {
-                localfile = packageCache.get( pi );
-                localfile.resetDispose(); // keep the package file in the cache
-              }
-              catch ( const AbortRequestException & exp )
-              {
-                it->stepStage( sat::Transaction::STEP_ERROR );
-                miss = true;
-                WAR << "commit cache preload aborted by the user" << endl;
-                ZYPP_THROW( TargetAbortedException( ) );
-                break;
-              }
-              catch ( const SkipRequestException & exp )
-              {
-                ZYPP_CAUGHT( exp );
-                it->stepStage( sat::Transaction::STEP_ERROR );
-                miss = true;
-                WAR << "Skipping cache preload package " << pi->asKind<Package>() << " in commit" << endl;
-                continue;
-              }
-              catch ( const Exception & exp )
-              {
-                // bnc #395704: missing catch causes abort.
-                // TODO see if packageCache fails to handle errors correctly.
-                ZYPP_CAUGHT( exp );
-                it->stepStage( sat::Transaction::STEP_ERROR );
-                miss = true;
-                INT << "Unexpected Error: Skipping cache preload package " << pi->asKind<Package>() << " in commit" << endl;
-                continue;
-              }
-            }
+            // concurrently preload the download cache as a workaround until we have
+            // migration to full async workflows ready
+            preloader = std::make_unique<CommitPackagePreloader>();
+            preloader->preloadTransaction( steps );
+            miss = preloader->missed ();
           }
-          packageCache.preloaded( true ); // try to avoid duplicate infoInCache CBs in commit
+
+          if ( !miss ) {
+            // Preload the cache. Until now this means pre-loading all packages.
+            // Once DownloadInHeaps is fully implemented, this will change and
+            // we may actually have more than one heap.
+            for_( it, steps.begin(), steps.end() )
+            {
+              switch ( it->stepType() )
+              {
+                case sat::Transaction::TRANSACTION_INSTALL:
+                case sat::Transaction::TRANSACTION_MULTIINSTALL:
+                  // proceed: only install actionas may require download.
+                  break;
+
+                default:
+                  // next: no download for or non-packages and delete actions.
+                  continue;
+                  break;
+              }
+
+              PoolItem pi( *it );
+              if ( pi->isKind<Package>() || pi->isKind<SrcPackage>() )
+              {
+                ManagedFile localfile;
+                try
+                {
+                  localfile = packageCache.get( pi );
+                  localfile.resetDispose(); // keep the package file in the cache
+                }
+                catch ( const AbortRequestException & exp )
+                {
+                  it->stepStage( sat::Transaction::STEP_ERROR );
+                  miss = true;
+                  WAR << "commit cache preload aborted by the user" << endl;
+                  ZYPP_THROW( TargetAbortedException( ) );
+                  break;
+                }
+                catch ( const SkipRequestException & exp )
+                {
+                  ZYPP_CAUGHT( exp );
+                  it->stepStage( sat::Transaction::STEP_ERROR );
+                  miss = true;
+                  WAR << "Skipping cache preload package " << pi->asKind<Package>() << " in commit" << endl;
+                  continue;
+                }
+                catch ( const Exception & exp )
+                {
+                  // bnc #395704: missing catch causes abort.
+                  // TODO see if packageCache fails to handle errors correctly.
+                  ZYPP_CAUGHT( exp );
+                  it->stepStage( sat::Transaction::STEP_ERROR );
+                  miss = true;
+                  INT << "Unexpected Error: Skipping cache preload package " << pi->asKind<Package>() << " in commit" << endl;
+                  continue;
+                }
+              }
+            }
+            packageCache.preloaded( true ); // try to avoid duplicate infoInCache CBs in commit
+          }
         }
 
         if ( miss )
@@ -1530,6 +1542,7 @@ namespace zypp
         {
           if ( ! policy_r.dryRun() )
           {
+
             if ( policy_r.singleTransModeEnabled() ) {
               commitInSingleTransaction( policy_r, packageCache, result );
             } else {
@@ -1537,6 +1550,9 @@ namespace zypp
               commitFindFileConflicts( policy_r, result );
               commit( policy_r, packageCache, result );
             }
+
+            if ( preloader )
+              preloader->cleanupCaches ();
           }
           else
           {

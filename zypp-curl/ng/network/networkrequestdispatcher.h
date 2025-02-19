@@ -147,6 +147,17 @@ namespace zyppng {
       void cancel  ( NetworkRequest &req , const NetworkRequestError &err );
 
       /*!
+       * Cancels all requests \a req setting the error description to \a reason.
+       */
+      void cancelAll  ( std::string reason = std::string() );
+
+      /*!
+       * Cancels all requests \a req setting the error to \a err.
+       */
+      void cancelAll  ( const NetworkRequestError &err );
+
+
+      /*!
        * Start dispatching requests, this needs to be done explicitly before any request can be executed.
        */
       void run ( );

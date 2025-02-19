@@ -239,7 +239,12 @@ namespace zypp {
 
     ManagedFile TmpFile::asManagedFile()
     {
-      filesystem::TmpFile tmpFile;
+      return asManagedFile( defaultLocation(), defaultPrefix() );
+    }
+
+    ManagedFile TmpFile::asManagedFile(const Pathname &inParentDir_r, const std::string &prefix_r)
+    {
+      filesystem::TmpFile tmpFile( inParentDir_r, prefix_r );
       ManagedFile mFile ( tmpFile.path(), filesystem::unlink );
       tmpFile.autoCleanup(false); //cleaned up by ManagedFile
       return mFile;

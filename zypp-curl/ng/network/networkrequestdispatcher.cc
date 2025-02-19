@@ -249,7 +249,9 @@ void NetworkRequestDispatcherPrivate::handleMultiSocketAction(curl_socket_t nati
           request->aboutToStart( );
         }
       } else {
-        //trigger notification about file downloaded
+        // trigger notification about file downloaded
+        // we create a error from the CURL code, there might be a already cached Result which will be used instead
+        // in cases like a RangeFail where we could not recover but there also is no real error code
         NetworkRequestError e = NetworkRequestErrorPrivate::fromCurlError( *request->z_func(), res, request->errorMessage() );
         setFinished( *request->z_func(), e );
       }
@@ -492,6 +494,16 @@ void NetworkRequestDispatcher::cancel(NetworkRequest &req, const NetworkRequestE
   }
 
   d->setFinished( req, err );
+}
+
+void NetworkRequestDispatcher::cancelAll(std::string reason)
+{
+  cancelAll( NetworkRequestErrorPrivate::customError( NetworkRequestError::Cancelled, reason.size() ? std::move(reason) : "Request explicitly cancelled" ) );
+}
+
+void NetworkRequestDispatcher::cancelAll(const NetworkRequestError &err)
+{
+  d_func()->cancelAll ( err );
 }
 
 void NetworkRequestDispatcher::run()

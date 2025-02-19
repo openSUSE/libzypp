@@ -661,11 +661,11 @@ namespace zyppng {
 
   size_t NetworkRequestPrivate::writefunction( char *data, std::optional<off_t> offset, size_t max )
   {
-    resetActivityTimer();
-
     //it is valid to call this function with no data to write, just return OK
     if ( max == 0)
       return 0;
+
+    resetActivityTimer();
 
     //in case of a HEAD request, we do not write anything
     if ( _options & NetworkRequest::HeadRequest ) {

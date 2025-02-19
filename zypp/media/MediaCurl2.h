@@ -28,6 +28,8 @@ namespace zyppng {
 namespace zypp {
   namespace media {
 
+  class CredentialManager;
+
 ///////////////////////////////////////////////////////////////////
 //
 //	CLASS NAME : MediaCurl2
@@ -102,7 +104,8 @@ class MediaCurl2 : public MediaNetworkCommonHandler
 
     ~MediaCurl2() override { try { release(); } catch(...) {} }
 
-    static void setCookieFile( const Pathname & );
+    // standard auth procedure, shared with CommitPackagePreloader
+    static bool authenticate( const Url &url, CredentialManager &cm, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry);
 
   protected:
     /**

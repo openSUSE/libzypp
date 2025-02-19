@@ -153,6 +153,12 @@ namespace zypp {
          */
         static ManagedFile asManagedFile ();
 
+        /**
+         * Create a temporary file in \a inParentDir_r with prefix \a prefix_r and convert it to a automatically
+         * cleaned up ManagedFile
+         */
+        static ManagedFile asManagedFile ( const Pathname & inParentDir_r, const std::string & prefix_r = defaultPrefix() );
+
       public:
         /**
          * @return The default prefix for temporary files (TmpFile.)

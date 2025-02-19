@@ -303,6 +303,17 @@ namespace zypp
     */
     void addCachePath( const Pathname &cache_dir );
 
+
+    enum CacheOptions {
+      Default     = 0,
+      CleanFiles  = 1
+    };
+    /**
+     * adds a directory to the list of directories
+     * where to look for cached files and options on how to handle the cache
+     */
+    void addCachePath( const Pathname &cache_dir, CacheOptions options );
+
     /**
      * Reset the transfer (jobs) list
      * \note It does not reset the cache directory list

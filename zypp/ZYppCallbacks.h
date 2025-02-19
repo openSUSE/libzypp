@@ -403,6 +403,73 @@ namespace zypp
         ) {}
     };
 
+    // progress for concurrently preloading a entire commit
+    struct ZYPP_API CommitPreloadReport : public callback::ReportBase
+    {
+        enum Error {
+          NO_ERROR,
+          NOT_FOUND, 	// the requested Url was not found
+          IO,		// IO error
+          ACCESS_DENIED, // user authent. failed while accessing restricted file
+          ERROR // other error
+        };
+
+        /*!
+         * Prefetch of all files has started
+         */
+        virtual void start( const UserData &userData = UserData() ) {}
+
+        /**
+         * Overall Download progress.
+         *
+         * \param value        Percentage value.
+
+         * Userdata sent:
+         * \param dbps_avg      Average download rate so far. (type: double) (optional)
+         * \param dbps_current  Current download (cca last 1 sec). (type: double) (optional)
+         * \param bytesReceived Already received bytes (type: double) (optional)
+         * \param bytesRequired Bytes we need to download (type: double) (optional)
+         */
+        virtual bool progress( int value, const UserData &userData = UserData() )
+        { return true; }
+
+        /**
+         * File just started to download
+         *
+         * Userdata sent:
+         * \param "Url"   Url where this request is downloaded from. (type: zypp::Url) (optional)
+         */
+
+        virtual void fileStart(
+          const Pathname &localfile,
+          const UserData &userData = UserData()
+        ) {}
+
+        /**
+         * File finished to download, Error indicated if it
+         * was successful for not.
+         *
+         * Userdata sent:
+         * \param "Url"   zypp::Url where this request is downloaded from  (type: zypp::Url) (optional)
+         * \param "description" Description of the error (type: std::String) (optional)
+         */
+        virtual void fileDone(
+          const Pathname &localfile,
+          Error error,
+          const UserData &userData = UserData()
+        ) {}
+
+        enum Result {
+          SUCCESS, //< everything was fetched as expected
+          MISS     //< some files are missing
+        };
+
+        /*!
+         * Prefetch finished
+         */
+        virtual void finish( Result res, const UserData &userData = UserData() ) {}
+    };
+
     // authentication issues report
     struct ZYPP_API AuthenticationReport : public callback::ReportBase
     {

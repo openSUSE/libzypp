@@ -58,6 +58,7 @@ namespace zypp
        */
       static zypp::Url findGeoIPRedirect ( const zypp::Url &url );
 
+    public:
       static const char * anonymousIdHeader();
 
       static const char * distributionFlavorHeader();

@@ -137,6 +137,15 @@ namespace zypp
 
     ~Impl() {}
 
+    struct CacheInfo{
+      zypp::Pathname _pathName;
+      Fetcher::CacheOptions _options = Fetcher::Default;
+
+      friend bool operator<( const CacheInfo &a, const CacheInfo & b) {
+        return a._pathName < b._pathName;
+      }
+    };
+
     void setOptions( Fetcher::Options options );
     Fetcher::Options options() const;
 
@@ -147,7 +156,7 @@ namespace zypp
 
     void enqueue( const OnMediaLocation &resource, const FileChecker &checker = FileChecker()  );
     void enqueueDigested( const OnMediaLocation &resource, const FileChecker &checker = FileChecker() );
-    void addCachePath( const Pathname &cache_dir );
+    void addCachePath( const Pathname &cache_dir, Fetcher::CacheOptions options );
     void reset();
     void setMediaSetAccess ( MediaSetAccess &media );
     void start( const Pathname &dest_dir,
@@ -196,7 +205,7 @@ namespace zypp
        * the cache (matching checksum is mandatory). Returns the
        * location of the cached file or an empty \ref Pathname.
        */
-      Pathname locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r );
+      ManagedFile locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r );
       /**
        * Validates the provided file against its checkers.
        * \throws Exception
@@ -229,7 +238,7 @@ namespace zypp
 
     std::list<FetcherJob_Ptr>   _resources;
     std::set<FetcherIndex_Ptr,SameFetcherIndex> _indexes;
-    std::set<Pathname> _caches;
+    std::set<CacheInfo> _caches;
     // checksums read from the indexes
     std::map<std::string, CheckSum> _checksums;
     // cache of dir contents
@@ -327,7 +336,7 @@ namespace zypp
     _mediaSetAccess = &media;
   }
 
-  void Fetcher::Impl::addCachePath( const Pathname &cache_dir )
+  void Fetcher::Impl::addCachePath( const Pathname &cache_dir, Fetcher::CacheOptions options )
   {
     PathInfo info(cache_dir);
     if ( info.isExist() )
@@ -335,7 +344,7 @@ namespace zypp
       if ( info.isDir() )
       {
         DBG << "Adding fetcher cache: '" << cache_dir << "'." << endl;
-        _caches.insert(cache_dir);
+        _caches.insert( { cache_dir, options } );
       }
       else
       {
@@ -350,34 +359,31 @@ namespace zypp
 
   }
 
-  Pathname Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r )
+  ManagedFile Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r )
   {
-    Pathname ret;
     // No checksum - no match
     if ( resource_r.checksum().empty() )
-      return ret;
+      return {};
 
     // first check in the destination directory
-    Pathname cacheLocation = destDir_r / resource_r.filename();
-    if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) )
-    {
-      swap( ret, cacheLocation );
-      return ret;
+    ManagedFile cacheLocation(destDir_r / resource_r.filename());
+    if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) ) {
+      return cacheLocation;
     }
 
     MIL << "start fetcher with " << _caches.size() << " cache directories." << endl;
-    for( const Pathname & cacheDir : _caches )
-    {
-      cacheLocation = cacheDir / resource_r.filename();
+    for( const CacheInfo & cacheInfo : _caches ) {
+      cacheLocation = ManagedFile(cacheInfo._pathName / resource_r.filename());
       if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) )
       {
-        MIL << "file " << resource_r.filename() << " found in cache " << cacheDir << endl;
-        swap( ret, cacheLocation );
-        return ret;
+        MIL << "file " << resource_r.filename() << " found in cache " << cacheInfo._pathName << endl;
+        if ( cacheInfo._options & Fetcher::CleanFiles )
+          cacheLocation.setDispose( filesystem::unlink );
+        return cacheLocation;
       }
     }
 
-    return ret;
+    return {};
   }
 
   void Fetcher::Impl::validate( const Pathname & localfile_r, const std::list<FileChecker> & checkers_r )
@@ -533,7 +539,9 @@ namespace zypp
       scoped_ptr<MediaSetAccess::ReleaseFileGuard> releaseFileGuard; // will take care provided files get released
 
       // get cached file (by checksum) or provide from media
-      Pathname tmpFile = locateInCache( resource, destDir_r );
+      ManagedFile managedTmpFile = locateInCache( resource, destDir_r );
+
+      Pathname tmpFile = managedTmpFile;
       if ( tmpFile.empty() )
       {
         MIL << "Not found in cache, retrieving..." << endl;
@@ -898,7 +906,12 @@ namespace zypp
 
   void Fetcher::addCachePath( const Pathname &cache_dir )
   {
-    _pimpl->addCachePath(cache_dir);
+    _pimpl->addCachePath(cache_dir, Fetcher::Default);
+  }
+
+  void Fetcher::addCachePath(const Pathname &cache_dir, CacheOptions options)
+  {
+    _pimpl->addCachePath(cache_dir, options);
   }
 
   void Fetcher::reset()

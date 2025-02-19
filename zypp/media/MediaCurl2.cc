@@ -48,6 +48,7 @@
 #include <unistd.h>
 #include <glib.h>
 
+#include "detail/DownloadProgressTracker.h"
 #include "detail/OptionalDownloadProgressReport.h"
 #include "zypp-curl/ng/network/private/mediadebug_p.h"
 
@@ -63,60 +64,6 @@
  */
 
 using std::endl;
-
-namespace internal {
-  using namespace zypp;
-
-  struct ProgressTracker {
-
-    using clock = std::chrono::steady_clock;
-
-    std::optional<clock::time_point> _timeStart; ///< Start total stats
-    std::optional<clock::time_point> _timeLast;	 ///< Start last period(~1sec)
-
-    double _dnlTotal	= 0.0;	///< Bytes to download or 0 if unknown
-    double _dnlLast	= 0.0;	  ///< Bytes downloaded at period start
-    double _dnlNow	= 0.0;	  ///< Bytes downloaded now
-
-    int    _dnlPercent= 0;	///< Percent completed or 0 if _dnlTotal is unknown
-
-    double _drateTotal= 0.0;	///< Download rate so far
-    double _drateLast	= 0.0;	///< Download rate in last period
-
-    void updateStats( double dltotal = 0.0, double dlnow = 0.0 )
-    {
-      clock::time_point now = clock::now();
-
-      if ( !_timeStart )
-        _timeStart = _timeLast = now;
-
-      // If called without args (0.0), recompute based on the last values seen
-      if ( dltotal && dltotal != _dnlTotal )
-        _dnlTotal = dltotal;
-
-      if ( dlnow && dlnow != _dnlNow ) {
-        _dnlNow = dlnow;
-      }
-
-      // percentage:
-      if ( _dnlTotal )
-        _dnlPercent = int(_dnlNow * 100 / _dnlTotal);
-
-      // download rates:
-      _drateTotal = _dnlNow / std::max( std::chrono::duration_cast<std::chrono::seconds>(now - *_timeStart).count(), int64_t(1) );
-
-      if ( _timeLast < now )
-      {
-        _drateLast = (_dnlNow - _dnlLast) / int( std::chrono::duration_cast<std::chrono::seconds>(now - *_timeLast).count() );
-        // start new period
-        _timeLast  = now;
-        _dnlLast   = _dnlNow;
-      }
-      else if ( _timeStart == _timeLast )
-        _drateLast = _drateTotal;
-    }
-  };
-}
 
 using namespace internal;
 using namespace zypp::base;
@@ -163,7 +110,7 @@ namespace zypp {
 
     Url MediaCurl2::clearQueryString(const Url &url) const
     {
-      return internal::clearQueryString(url);
+      return ::internal::clearQueryString(url);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -724,16 +671,20 @@ namespace zypp {
       if ( report ) (*report)->finish( req->url(), zypp::media::DownloadProgressReport::NO_ERROR, "" );
     }
 
-    ///////////////////////////////////////////////////////////////////
 
     bool MediaCurl2::authenticate(const std::string & availAuthTypes, bool firstTry)
     {
       //! \todo need a way to pass different CredManagerOptions here
       CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+      return authenticate( _url, cm, _effectiveSettings, availAuthTypes, firstTry );
+    }
+
+    bool MediaCurl2::authenticate(const Url &url, CredentialManager &cm, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry)
+    {
       CurlAuthData_Ptr credentials;
 
       // get stored credentials
-      AuthData_Ptr cmcred = cm.getCred(_url);
+      AuthData_Ptr cmcred = cm.getCred(url);
 
       if (cmcred && firstTry)
       {
@@ -749,8 +700,8 @@ namespace zypp {
         callback::SendReport<AuthenticationReport> auth_report;
 
         // preset the username if present in current url
-        if (!_url.getUsername().empty() && firstTry)
-          curlcred->setUsername(_url.getUsername());
+        if (!url.getUsername().empty() && firstTry)
+          curlcred->setUsername(url.getUsername());
         // if CM has found some credentials, preset the username from there
         else if (cmcred)
           curlcred->setUsername(cmcred->username());
@@ -758,14 +709,14 @@ namespace zypp {
         // indicate we have no good credentials from CM
         cmcred.reset();
 
-        std::string prompt_msg = str::Format(_("Authentication required for '%s'")) % _url.asString();
+        std::string prompt_msg = str::Format(_("Authentication required for '%s'")) % url.asString();
 
         // set available authentication types from the exception
         // might be needed in prompt
         curlcred->setAuthType(availAuthTypes);
 
         // ask user
-        if (auth_report->prompt(_url, prompt_msg, *curlcred))
+        if (auth_report->prompt(url, prompt_msg, *curlcred))
         {
           DBG << "callback answer: retry" << endl
               << "CurlAuthData: " << *curlcred << endl;
@@ -793,8 +744,8 @@ namespace zypp {
       // set username and password
       if (credentials)
       {
-        _effectiveSettings.setUsername(credentials->username());
-        _effectiveSettings.setPassword(credentials->password());
+        settings.setUsername(credentials->username());
+        settings.setPassword(credentials->password());
 
         // set available authentication types from the exception
         if (credentials->authType() == CURLAUTH_NONE)
@@ -802,12 +753,12 @@ namespace zypp {
 
         // set auth type (seems this must be set _after_ setting the userpwd)
         if (credentials->authType() != CURLAUTH_NONE) {
-          _effectiveSettings.setAuthType(credentials->authTypeAsString());
+          settings.setAuthType(credentials->authTypeAsString());
         }
 
         if (!cmcred)
         {
-          credentials->setUrl(_url);
+          credentials->setUrl(url);
           cm.addCred(*credentials);
           cm.save();
         }

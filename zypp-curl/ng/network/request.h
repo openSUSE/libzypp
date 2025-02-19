@@ -99,6 +99,8 @@ namespace zyppng {
      */
     void setExpectedFileSize ( zypp::ByteCount expectedFileSize );
 
+    zypp::ByteCount expectedFileSize() const;
+
     /*!
      * Sets the priority of the NetworkRequest, this will affect where
      * the \sa NetworkRequestDispatcher puts the Request in the Queue.
@@ -255,6 +257,17 @@ namespace zyppng {
      * to the server.
      */
     bool addRequestHeader(const std::string &header );
+
+    /*!
+     * Return the currently used path for the cookie file
+     */
+    const zypp::Pathname &cookieFile() const;
+
+    /*!
+     * Set path to use for the cookie file if enabled via TransferSettings.
+     * \note calling this on a already running request has no impact
+     */
+    void setCookieFile( zypp::Pathname cookieFile );
 
     /**
      * Signals that the dispatcher dequeued the request and actually starts downloading data

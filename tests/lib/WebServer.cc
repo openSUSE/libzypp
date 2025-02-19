@@ -513,7 +513,6 @@ int WebServer::port() const
     return _pimpl->port();
 }
 
-
 Url WebServer::url() const
 {
     Url url;
@@ -530,8 +529,13 @@ Url WebServer::url() const
 media::TransferSettings WebServer::transferSettings() const
 {
   media::TransferSettings set;
-  set.setCertificateAuthoritiesPath(zypp::Pathname(TESTS_SRC_DIR)/"data/webconf/ssl/certstore");
+  set.setCertificateAuthoritiesPath(caPath());
   return set;
+}
+
+filesystem::Pathname WebServer::caPath() const
+{
+  return ( zypp::Pathname(TESTS_SRC_DIR)/"data/webconf/ssl/certstore" );
 }
 
 void WebServer::stop()
@@ -588,6 +592,28 @@ std::string WebServer::makeResponseString(const std::string &status, const std::
   allHeaders += zypp::str::join( headers.begin(), headers.end(), "\r\n");
 
   return ( zypp::str::Format( genericResp ) % status % allHeaders %content );
+}
+
+WebServer::RequestHandler WebServer::makeBasicAuthHandler(const std::string &basicCred, WebServer::RequestHandler &&callback)
+{
+  return [ basicCred=basicCred, callback = std::move(callback) ]( WebServer::Request &req ){
+    //Basic dGVzdDp0ZXN0
+    auto it = req.params.find( "HTTP_AUTHORIZATION" );
+    bool authorized = false;
+    if ( it != req.params.end() )
+      authorized = ( it->second == basicCred );
+
+    if ( !authorized ) {
+      req.rout << "Status: 401 Unauthorized\r\n"
+                  "Content-Type: text/html; charset=utf-8\r\n"
+                  "WWW-Authenticate: Basic realm=\"User Visible Realm\", charset=\"UTF-8\" \r\n"
+                  "\r\n"
+                  "Sorry you are not authorized.";
+      return;
+    }
+
+    callback(req);
+  };
 };
 
 WebServer::~WebServer()

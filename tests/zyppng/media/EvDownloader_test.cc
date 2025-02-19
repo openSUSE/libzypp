@@ -572,24 +572,9 @@ BOOST_DATA_TEST_CASE( test1, bdata::make( generateMirr() ) * bdata::make( withSS
 //creates a request handler that requires a authentication to work
 WebServer::RequestHandler createAuthHandler ( )
 {
-  return [ ]( WebServer::Request &req ){
-    //Basic dGVzdDp0ZXN0
-    auto it = req.params.find( "HTTP_AUTHORIZATION" );
-    bool authorized = false;
-    if ( it != req.params.end() )
-      authorized = ( it->second == "Basic dGVzdDp0ZXN0" );
-
-    if ( !authorized ) {
-      req.rout << "Status: 401 Unauthorized\r\n"
-                  "Content-Type: text/html; charset=utf-8\r\n"
-                  "WWW-Authenticate: Basic realm=\"User Visible Realm\", charset=\"UTF-8\" \r\n"
-                  "\r\n"
-                  "Sorry you are not authorized.";
-      return;
-    }
-
+  return WebServer::makeBasicAuthHandler( "Basic dGVzdDp0ZXN0", []( WebServer::Request &req ) {
     if ( requestWantsMetaLink( req ) ) {
-      it = req.params.find( "HTTPS" );
+      auto it = req.params.find( "HTTPS" );
       if ( it != req.params.end() && it->second == "on" ) {
         req.rout << "Status: 307 Temporary Redirect\r\n"
                  << "Cache-Control: no-cache\r\n"
@@ -604,7 +589,7 @@ WebServer::RequestHandler createAuthHandler ( )
     req.rout << "Status: 307 Temporary Redirect\r\n"
                 "Location: /test.txt\r\n\r\n";
     return;
-  };
+  });
 };
 
 BOOST_DATA_TEST_CASE( dltest_auth, bdata::make( withSSL ), withSSL )

@@ -93,7 +93,7 @@ namespace zyppng {
     reset();
 
     if ( _easyHandle )
-    //will reset to defaults but keep live connections, session ID and DNS caches
+      //will reset to defaults but keep live connections, session ID and DNS caches
       curl_easy_reset( _easyHandle );
     else
       _easyHandle = curl_easy_init();
@@ -306,7 +306,7 @@ namespace zyppng {
 #endif
 
       zypp::filesystem::assert_file_mode( _currentCookieFile, 0600 );
-      if ( zypp::str::strToBool( _url.getQueryParam( "cookies" ), true ) )
+      if ( locSet.cookieFileEnabled() )
         setCurlOption( CURLOPT_COOKIEFILE, _currentCookieFile.c_str() );
       else
         MIL << _easyHandle << " " << "No cookies requested" << std::endl;
@@ -332,7 +332,7 @@ namespace zyppng {
         if ( _requestedRanges.size() ) {
 
           std::sort( _requestedRanges.begin(), _requestedRanges.end(), []( const auto &elem1, const auto &elem2 ){
-            return ( elem1.start < elem2.start );
+            return ( elem1._start < elem2._start );
           });
 
           CurlMultiPartHandler *helper = nullptr;
@@ -697,8 +697,8 @@ namespace zyppng {
     }
 
     //make sure we do not write after the expected file size
-    if ( _expectedFileSize && _expectedFileSize <= static_cast<zypp::ByteCount::SizeType>( rmode._currentFileOffset + max) ) {
-      rmode._cachedResult = NetworkRequestErrorPrivate::customError(  NetworkRequestError::InternalError, "Downloaded data exceeds expected length." );
+    if ( _expectedFileSize && static_cast<zypp::ByteCount::SizeType>( rmode._currentFileOffset + max) > _expectedFileSize ) {
+      rmode._cachedResult = NetworkRequestErrorPrivate::customError(  NetworkRequestError::ExceededMaxLen, "Downloaded data exceeds expected length." );
       return 0;
     }
 
@@ -753,6 +753,11 @@ namespace zyppng {
   void NetworkRequest::setExpectedFileSize( zypp::ByteCount expectedFileSize )
   {
     d_func()->_expectedFileSize = std::move( expectedFileSize );
+  }
+
+  zypp::ByteCount NetworkRequest::expectedFileSize() const
+  {
+    return d_func()->_expectedFileSize;
   }
 
   void NetworkRequest::setPriority( NetworkRequest::Priority prio, bool triggerReschedule )
@@ -1031,6 +1036,16 @@ namespace zyppng {
       d->_headers = std::unique_ptr< curl_slist, decltype (&curl_slist_free_all) >( res, &curl_slist_free_all );
 
     return true;
+  }
+
+  const zypp::Pathname &NetworkRequest::cookieFile() const
+  {
+    return d_func()->_currentCookieFile;
+  }
+
+  void NetworkRequest::setCookieFile(zypp::Pathname cookieFile )
+  {
+    d_func()->_currentCookieFile = std::move(cookieFile);
   }
 
   SignalProxy<void (NetworkRequest &req)> NetworkRequest::sigStarted()

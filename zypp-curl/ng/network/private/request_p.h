@@ -120,7 +120,7 @@ namespace zyppng {
     NetworkRequest::Priority            _priority = NetworkRequest::Normal;
 
     std::string _lastRedirect;	///< to log/report redirections
-    const std::string _currentCookieFile = "/var/lib/YaST2/cookies";
+    zypp::Pathname _currentCookieFile = "/var/lib/YaST2/cookies";
 
     void *_easyHandle = nullptr; // the easy handle that controlling this request
     NetworkRequestDispatcher *_dispatcher = nullptr; // the parent downloader owning this request

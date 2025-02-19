@@ -6,6 +6,7 @@
 #include <zypp-core/Digest.h>
 #include <zypp-core/zyppng/pipelines/Expected>
 #include <zypp-curl/ng/network/NetworkRequestError>
+#include <zypp-curl/ng/network/rangedesc.h>
 
 #include <optional>
 #include <any>
@@ -100,21 +101,18 @@ namespace zyppng {
       using CheckSumBytes = UByteArray;
       using Code = NetworkRequestError::Type;
 
-      struct Range {
-        size_t start = 0;
-        size_t len = 0;
+      struct Range : public RangeDesc {
+
+        Range( ) = default;
+        Range( RangeDesc &&rd, std::optional<zypp::Digest> dig, std::any userD, State rangeState = State::Pending );
+
         size_t bytesWritten = 0;
-        std::optional<zypp::Digest> _digest = {}; //< zypp::Digest that is updated when data is written, can be used to validate the file contents with a checksum
 
         /**
         * Enables automated checking of downloaded contents against a checksum.
-        * Only makes a difference if \ref _digest is initialized too
-        *
-        * \note expects checksum in byte NOT in string format
         */
-        CheckSumBytes _checksum;
-        std::optional<size_t> _relevantDigestLen; //< If this is initialized , it defines how many bytes of the resulting checkum are compared
-        std::optional<size_t> _chksumPad;   //< If initialized we need to pad the digest with zeros before calculating the final checksum
+        std::optional<zypp::Digest> _digest = {}; //< zypp::Digest that is updated when data is written, can be used to validate the file contents with a checksum
+
         std::any userData; //< Custom data the user can associate with the Range
 
         State _rangeState = State::Pending; //< Flag to know if this range has been already requested and if the request was successful

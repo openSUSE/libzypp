@@ -240,7 +240,13 @@ INSTALL(  FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/base
 )
 
+
+SET( zypp_media_detail_HEADERS
+  media/detail/OptionalDownloadProgressReport.h
+)
+
 SET( zypp_media_SRCS
+  media/detail/OptionalDownloadProgressReport.cc
   media/MediaHandler.cc
   media/MediaHandlerFactory.cc
   media/MediaNFS.cc
@@ -250,6 +256,7 @@ SET( zypp_media_SRCS
   media/MediaCIFS.cc
   media/MediaNetworkCommonHandler.cc
   media/MediaCurl.cc
+  media/MediaCurl2.cc
   media/MediaMultiCurl.cc
   media/MediaISO.cc
   media/MediaPlugin.cc
@@ -263,6 +270,7 @@ SET( zypp_media_HEADERS
   media/MediaCD.h
   media/MediaCIFS.h
   media/MediaCurl.h
+  media/MediaCurl2.h
   media/MediaMultiCurl.h
   media/MediaNetworkCommonHandler.h
   media/MediaDIR.h
@@ -912,6 +920,7 @@ ${zypp_parser_xml_HEADERS}
 ${zypp_parser_HEADERS}
 ${zypp_ui_HEADERS}
 ${zypp_media_HEADERS}
+${zypp_media_detail_HEADERS}
 ${zypp_media_compat_proxyinfo_HEADERS}
 ${zypp_ng_HEADERS}
 ${zypp_ng_private_HEADERS}

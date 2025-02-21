@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Feb 21 15:08:12 CET 2025 - ma@suse.de
+
+- Filesystem usrmerge must not be done in singletrans mode
+  (bsc#1236481, bsc#1189788)
+  Commit will amend the backend in case the transaction would
+  perform a filesystem usrmerge.
+- Workaround bsc#1216091 on Code16.
+- version 17.36.2 (35)
+
+-------------------------------------------------------------------
 Wed Feb 12 15:58:56 CET 2025 - ma@suse.de
 
 - Don't issue deprecated warnings if -DNDEBUG is set (bsc#1236983)

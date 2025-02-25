@@ -19,6 +19,7 @@
 #include <zypp/Arch.h>
 #include <zypp/repo/RepoVariables.h>
 #include <zypp/base/NonCopyable.h>
+#include <zypp/base/LogTools.h>
 
 #define ZYPP_DBG_VAREXPAND 0
 #if ( ZYPP_DBG_VAREXPAND )
@@ -405,10 +406,23 @@ namespace zypp
           // would clear the variables parsed so far.
           auto guard { getZYpp() };
 
+          // bsc#1237044: The context in which the variables are to be evaluated.
+          // TODO: In fact we should have a RepoVarsMap per context, no singleton.
+          // The code here reflects the weakness of the classic ZConfig singleton.
+          // We need to reset if the contextRoot changes and can't have different
+          // ZConfig::instance().varsPath() per context.
+          const Pathname contextRoot { ZConfig::instance().repoManagerRoot() };
+          const Pathname contextVarsPath { ZConfig::instance().varsPath() };
+          if ( contextRoot != _contextRoot ) {
+            MIL << "RepoVars context changed from " << _contextRoot << " -> " << contextRoot << endl;
+            _contextRoot = contextRoot;
+            clear();
+          }
+
           if ( empty() )	// at init / after reset
           {
             // load user definitions from vars.d
-            filesystem::dirForEach( ZConfig::instance().repoManagerRoot() / ZConfig::instance().varsPath(),
+            filesystem::dirForEach( contextRoot / contextVarsPath,
                                     filesystem::matchNoDots(), bind( &RepoVarsMap::parse, this, _1, _2 ) );
             // releasever_major/_minor are per default derived from releasever.
             // If releasever is userdefined, inject missing _major/_minor too.
@@ -429,7 +443,7 @@ namespace zypp
             }
           }
 
-          const std::string * ret = checkOverride( name_r );
+          const std::string * ret = checkOverride( name_r, contextRoot );
           if ( !ret )
           {
             // get value from map
@@ -495,7 +509,7 @@ namespace zypp
         }
 
         /** Check for conditions overwriting the (user) defined values. */
-        const std::string * checkOverride( const std::string & name_r )
+        const std::string * checkOverride( const std::string & name_r, const Pathname & contextRoot_r )
         {
           ///////////////////////////////////////////////////////////////////
           // Always check for changing releasever{,_major,_minor} (bnc#943563)
@@ -518,11 +532,7 @@ namespace zypp
             else if ( !count( name_r ) )
             {
               // No user defined value, so we follow the target
-              Target_Ptr trg( getZYpp()->getTarget() );
-              if ( trg )
-                val = trg->distributionVersion();
-              else
-                val = Target::distributionVersion( Pathname()/*guess*/ );
+              val = Target::distributionVersion( contextRoot_r );
 
               if ( val != operator[]( "$_releasever" ) )
               {
@@ -538,6 +548,9 @@ namespace zypp
 
           return nullptr;	// get user value from map
         }
+
+      private:
+        Pathname _contextRoot;
       };
     } // namespace
     ///////////////////////////////////////////////////////////////////

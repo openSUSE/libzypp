@@ -92,6 +92,13 @@ namespace zypp
        */
       void setRepoManagerRoot ( const Pathname &root );
 
+      /** Announce a target root directory without launching the Target.
+       * This can be used by workflows which want to run ---root but
+       * without immediately launching the \ref Target. The value is
+       * cleared as soon as a real \ref Target is up.
+       */
+      void announceSystemRoot( const Pathname & root_r );
+
     public:
 
       /** The autodetected system architecture. */

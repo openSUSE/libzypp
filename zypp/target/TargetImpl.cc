@@ -48,6 +48,7 @@
 #include <zypp/target/rpm/librpmDb.h>
 #include <zypp/target/CommitPackageCache.h>
 #include <zypp/target/RpmPostTransCollector.h>
+#include <zypp/target/private/commitpackagepreloader_p.h>
 
 #include <zypp/parser/ProductFileReader.h>
 #include <zypp/repo/SrcPackageProvider.h>
@@ -1464,6 +1465,13 @@ namespace zypp
         bool miss = false;
         if ( policy_r.downloadMode() != DownloadAsNeeded  )
         {
+          {
+            // concurrently preload the download cache as a workaround until we have
+            // migration to full async workflows ready
+            CommitPackagePreloader preloader;
+            preloader.preloadTransaction( steps );
+          }
+
           // Preload the cache. Until now this means pre-loading all packages.
           // Once DownloadInHeaps is fully implemented, this will change and
           // we may actually have more than one heap.

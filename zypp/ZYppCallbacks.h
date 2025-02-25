@@ -403,6 +403,58 @@ namespace zypp
         ) {}
     };
 
+    // progress for concurrently preloading a entire commit
+    struct ZYPP_API CommitPreloadReport : public callback::ReportBase
+    {
+        enum Error {
+          NO_ERROR,
+          NOT_FOUND, 	// the requested Url was not found
+          IO,		// IO error
+          ACCESS_DENIED, // user authent. failed while accessing restricted file
+          ERROR // other error
+        };
+
+        /*!
+         * Prefetch of all files has started
+         */
+        virtual void start( ) {}
+
+        /**
+         * Overall Download progress.
+         *
+         * \param value        Percentage value.
+         * \param dbps_avg     Average download rate so far. -1 if unknown.
+         * \param dbps_current Current download (cca last 1 sec). -1 if unknown.
+         */
+        virtual bool progress(int /*value*/,
+                              double dbps_avg = -1,
+                              double dbps_current = -1)
+        { return true; }
+
+        /**
+         * File just started to download
+         */
+        virtual void fileStart(
+          const Url &/*file*/
+          , Pathname /*localfile*/
+        ) {}
+
+        /**
+         * File finished to download, Error indicated if it
+         * was successful for not.
+         */
+        virtual void fileDone(
+          const Url &/*file*/
+          , Error /*error*/
+          , const std::string &/*description*/
+        ) {}
+
+        /*!
+         * Prefetch finished
+         */
+        virtual void finish() {}
+    };
+
     // authentication issues report
     struct ZYPP_API AuthenticationReport : public callback::ReportBase
     {

@@ -311,13 +311,6 @@ namespace zypp
       return ret;
     }
 
-
-    inline Pathname _autodetectSystemRoot()
-    {
-      Target_Ptr target( getZYpp()->getTarget() );
-      return target ? target->root() : Pathname();
-    }
-
     inline Pathname _autodetectZyppConfPath()
     {
       const char *env_confpath = getenv( "ZYPP_CONF" );
@@ -729,8 +722,23 @@ namespace zypp
       Impl &operator=(Impl &&) = delete;
       ~Impl() {}
 
+      /** bsc#1237044: Provide \ref announceSystemRoot to allow commands
+       * using --root without launching a Target. An announced SystemRoot
+       * is used rather than / when no Target is up. This enables sub
+       * components (e.g. VarReplacer) to refer to the right context.
+       *
+       * Setting or re-setting a Target clears any announced SystemRoot.
+       */
+      Pathname _autodetectSystemRoot() const
+      {
+        Target_Ptr target( getZYpp()->getTarget() );
+        return target ? target->root() : _announced_root_path;
+      }
+
       void notifyTargetChanged()
       {
+        _announced_root_path = Pathname();  // first of all reset any previously _announced_root_path
+
         Pathname newRoot { _autodetectSystemRoot() };
         MIL << "notifyTargetChanged (" << newRoot << ")" << endl;
 
@@ -756,6 +764,7 @@ namespace zypp
     public:
     /** Remember any parsed zypp.conf. */
     Pathname _parsedZyppConf;
+    Pathname _announced_root_path;
 
     Arch     cfg_arch;
     Locale   cfg_textLocale;
@@ -951,7 +960,7 @@ namespace zypp
   { return _pimpl->notifyTargetChanged(); }
 
   Pathname ZConfig::systemRoot() const
-  { return _autodetectSystemRoot(); }
+  { return _pimpl->_autodetectSystemRoot(); }
 
   Pathname ZConfig::repoManagerRoot() const
   {
@@ -961,6 +970,9 @@ namespace zypp
 
   void ZConfig::setRepoManagerRoot(const zypp::filesystem::Pathname &root)
   { _pimpl->cfg_repo_mgr_root_path = root; }
+
+  void ZConfig::announceSystemRoot( const Pathname & root_r )
+  { _pimpl->_announced_root_path = root_r; }
 
   ///////////////////////////////////////////////////////////////////
   //

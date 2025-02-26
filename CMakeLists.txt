@@ -45,7 +45,11 @@ OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
 #--------------------------------------------------------------------------------
+# Builtin defaults amended for legacy codestreams
+OPTION( LIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT "Builtin default for zypp.conf:download.use_deltarpm" OFF )
+#--------------------------------------------------------------------------------
 SET (have_system x)
+SET (LIBZYPP_CODESTREAM default)
 
 IF (DEBIAN)
   MESSAGE (STATUS "Building for Debian")
@@ -55,6 +59,15 @@ IF (DEBIAN)
   SET (have_system ${have_system}x)
 ENDIF (DEBIAN)
 
+IF (${have_system} STREQUAL x)
+  MESSAGE (STATUS "Building for SUSE (${LIBZYPP_CODESTREAM})")
+ENDIF (${have_system} STREQUAL x)
+
+IF (${have_system} STRGREATER xx)
+  MESSAGE (FATAL_ERROR "Can only build for one system type.")
+ENDIF (${have_system} STRGREATER xx)
+
+#--------------------------------------------------------------------------------
 # general flags used for all targets
 add_library( zypp_general_compiler_flags INTERFACE )
 
@@ -75,15 +88,7 @@ message ( "Using zypp-rpm from path: ${ZYPP_RPM_BINARY}" )
 target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPP_RPM_BINARY}"  )
 target_compile_definitions(zypp_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPP_WORKER_PATH}")
 
-IF (${have_system} STREQUAL x)
-  MESSAGE (STATUS "Building for SUSE")
-ENDIF (${have_system} STREQUAL x)
-
-IF (${have_system} STRGREATER xx)
-  MESSAGE (FATAL_ERROR "Can only build for one system type.")
-ENDIF (${have_system} STRGREATER xx)
 #--------------------------------------------------------------------------------
-
 
 find_package(FindPkgConfig, QUIET)
 INCLUDE( ${LIBZYPP_SOURCE_DIR}/VERSION.cmake )
@@ -95,7 +100,7 @@ MATH( EXPR LIBZYPP_AGE     "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
 # But cmake is not libtool, it wants the verbatim suffix to libzypp.so
 MATH( EXPR LIBZYPP_SO_FIRST  "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
 SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
-CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h )
+CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h @ONLY )
 
 SET (CMAKE_CXX_STANDARD ${ZYPPCOMMON_CXX_STANDARD})
 SET (CMAKE_CXX_EXTENSIONS OFF)

@@ -22,6 +22,7 @@ extern "C"
 #include <iostream>
 #include <fstream>
 #include <optional>
+#include <zypp-core/APIConfig.h>
 #include <zypp/base/LogTools.h>
 #include <zypp/base/IOStream.h>
 #include <zypp-core/base/InputStream>
@@ -495,7 +496,7 @@ namespace zypp
         , repo_add_probe          	( false )
         , repo_refresh_delay      	( 10 )
         , repoLabelIsAlias              ( false )
-        , download_use_deltarpm   	( true )
+        , download_use_deltarpm   	( LIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT )
         , download_use_deltarpm_always  ( false )
         , download_media_prefer_download( true )
         , download_mediaMountdir	( "/var/adm/mount" )
@@ -508,7 +509,7 @@ namespace zypp
         , geoipEnabled ( true )
         , geoipHosts { "download.opensuse.org" }
       {
-        MIL << "libzypp: " LIBZYPP_VERSION_STRING << endl;
+        MIL << "libzypp: " LIBZYPP_VERSION_STRING << " (" << LIBZYPP_CODESTREAM << ")" << endl;
         if ( PathInfo(_parsedZyppConf).isExist() )
         {
           parser::IniDict dict( _parsedZyppConf );
@@ -1339,7 +1340,7 @@ namespace zypp
 
   std::ostream & ZConfig::about( std::ostream & str ) const
   {
-    str << "libzypp: " LIBZYPP_VERSION_STRING << endl;
+    str << "libzypp: " LIBZYPP_VERSION_STRING << " (" << LIBZYPP_CODESTREAM << ")" << endl;
 
     str << "libsolv: " << solv_version;
     if ( ::strcmp( solv_version, LIBSOLV_VERSION_STRING ) )

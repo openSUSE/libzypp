@@ -229,7 +229,7 @@ namespace zypp
       Capabilities dep_suggests()    const;
       Capabilities dep_enhances()    const;
       Capabilities dep_supplements() const;
-      Capabilities prerequires()     const;
+      Capabilities dep_prerequires() const;
 
 #if __cplusplus < 202002L
       Capabilities provides()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
@@ -240,6 +240,7 @@ namespace zypp
       Capabilities suggests()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
       Capabilities enhances()    const ZYPP_DEPRECATED; // use dep_ prefixed version instead
       Capabilities supplements() const ZYPP_DEPRECATED; // use dep_ prefixed version instead
+      Capabilities prerequires() const ZYPP_DEPRECATED; // use dep_ prefixed version instead
 #endif
 
       /** Return \ref Capabilities selected by \ref Dep constant. */
@@ -255,7 +256,7 @@ namespace zypp
           case Dep::SUGGESTS_e:    return dep_suggests();    break;
           case Dep::ENHANCES_e:    return dep_enhances();    break;
           case Dep::SUPPLEMENTS_e: return dep_supplements(); break;
-          case Dep::PREREQUIRES_e: return prerequires(); break;
+          case Dep::PREREQUIRES_e: return dep_prerequires(); break;
         }
         return Capabilities();
       }

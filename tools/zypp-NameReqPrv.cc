@@ -104,7 +104,7 @@ struct Table
     for_( match, it_r.matchesBegin(), it_r.matchesEnd() ) {
       std::string ent { match->inSolvAttr().asString().substr( 9, 3 )+": " +match->asString() };
       if ( match->inSolvAttr() == sat::SolvAttr::dep_requires
-        && match->inSolvable().prerequires().contains( Capability(match->id()) ) ) {
+        && match->inSolvable().dep_prerequires().contains( Capability(match->id()) ) ) {
         static const char * pre = "   " COL_C "[PRE]" COL_OFF;
         ent[3] = '+';
         ent += pre;

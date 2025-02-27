@@ -110,7 +110,7 @@ namespace zypp
       Capabilities	dep_suggests() const			{ return satSolvable().dep_suggests(); }
       Capabilities	dep_enhances() const			{ return satSolvable().dep_enhances(); }
       Capabilities	dep_supplements() const			{ return satSolvable().dep_supplements(); }
-      Capabilities	prerequires() const			{ return satSolvable().prerequires(); }
+      Capabilities	dep_prerequires() const			{ return satSolvable().dep_prerequires(); }
       Capabilities 	dep( Dep which_r ) const		{ return satSolvable().dep(which_r); }
       Capabilities 	operator[]( Dep which_r ) const		{ return satSolvable()[which_r]; }
 
@@ -123,6 +123,7 @@ namespace zypp
       Capabilities	suggests() const			{ return satSolvable().dep_suggests(); }
       Capabilities	enhances() const			{ return satSolvable().dep_enhances(); }
       Capabilities	supplements() const			{ return satSolvable().dep_supplements(); }
+      Capabilities	prerequires() const			{ return satSolvable().dep_prerequires(); }
 #endif
 
 

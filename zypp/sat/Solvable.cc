@@ -522,7 +522,7 @@ namespace zypp
       NO_SOLVABLE_RETURN( Capabilities() );
       return _getCapabilities( _solvable->repo->idarraydata, _solvable->dep_supplements );
     }
-    Capabilities Solvable::prerequires() const
+    Capabilities Solvable::dep_prerequires() const
     {
       NO_SOLVABLE_RETURN( Capabilities() );
       // prerequires are a subset of requires
@@ -544,6 +544,7 @@ namespace zypp
     DECLARE_CAP_FWD(suggests)
     DECLARE_CAP_FWD(enhances)
     DECLARE_CAP_FWD(supplements)
+    DECLARE_CAP_FWD(prerequires)
 #undef DECLARE_CAP_FWD
 #endif
 

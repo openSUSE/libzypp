@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Feb 27 10:21:22 CET 2025 - ma@suse.de
+
+- Disable zypp.conf:download.use_deltarpm by default (fixes #620)
+  Measurements show that you don't benefit from using deltarpms
+  unless your network connection is very slow. That's why most
+  distributions even stop offering deltarpms. The default remains
+  unchanged on SUSE-15.6 and older.
+- Make sure repo variables are evaluated in the right context
+  (bsc#1237044)
+- Introducing MediaCurl2 a alternative HTTP backend.
+  This patch adds MediaCurl2 as a testbed for experimenting with a
+  more simple way to download files. Set ZYPP_CURL2=1 in the
+  environment to use it.
+- version 17.36.3 (35)
+
+-------------------------------------------------------------------
 Fri Feb 21 15:08:12 CET 2025 - ma@suse.de
 
 - Filesystem usrmerge must not be done in singletrans mode

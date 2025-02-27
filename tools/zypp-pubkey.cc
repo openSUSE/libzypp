@@ -35,6 +35,12 @@ std::ostream & dumpPubkeyOn( std::ostream & str, const PublicKey & key_r )
   std::vector<std::string> info;
   str::split( (str::Str() << dump(key_r)).str(), std::back_inserter( info ), "\n" );
 
+  if ( art.size() < info.size() ) {
+    std::string fill( art[0].size(), ' ' );
+    for ( unsigned i = art.size(); i < info.size(); ++i )
+      art.push_back( fill );
+  }
+
   for ( unsigned i = 1; i < info.size(); ++i )
     art[i] += info[i];
 

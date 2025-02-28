@@ -401,6 +401,7 @@ Url clearQueryString(const Url &url)
     "mediahandler",
     "credentials",
     "head_requests",
+    "mediahandler",
   } );
   return curlUrl;
 }

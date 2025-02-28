@@ -19,11 +19,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-11 12:40+0100\n"
+"POT-Creation-Date: 2025-02-28 16:30+0100\n"
 "PO-Revision-Date: 2024-12-04 09:48+0000\n"
 "Last-Translator: Guillaume GARDET <guillaume.gardet@opensuse.org>\n"
-"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/>"
-"\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/"
+">\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1298,27 +1298,6 @@ msgstr "Améliore"
 #: zypp/Dep.cc:104
 msgid "Supplements"
 msgstr "Complète"
-
-#. TranslatorExplanation first %s is key name, second is keyring name
-#: zypp/KeyRing.cc:401
-#, c-format, boost-format
-msgid "Tried to import not existent key %s into keyring %s"
-msgstr "Tentative d'importation d'une clé inexistante %s dans le porte-clé %s"
-
-#: zypp/KeyRing.cc:407
-msgid "Failed to import key."
-msgstr "Impossible d'importer la clé."
-
-# TLABEL restore_2002_08_07_0216__88
-#: zypp/KeyRing.cc:414
-msgid "Failed to delete key."
-msgstr "Impossible de supprimer la clé."
-
-# TLABEL linuxrc_2002_03_29_0036__117
-#: zypp/KeyRing.cc:420
-#, c-format, boost-format
-msgid "Signature file %s not found"
-msgstr "Fichier de signature %s introuvable"
 
 #: zypp/LanguageCode.cc:49
 msgid "Unknown language: "
@@ -3679,46 +3658,6 @@ msgstr "Zuni"
 msgid "Following actions will be done:"
 msgstr "Les actions suivantes seront exécutées :"
 
-#. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:65
-msgid "does not expire"
-msgstr "n'expire pas"
-
-#. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
-#: zypp/PublicKey.cc:70
-#, boost-format
-msgid "expired: %1%"
-msgstr "a expiré le : %1%"
-
-#. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
-#: zypp/PublicKey.cc:75
-#, boost-format
-msgid "expires: %1%"
-msgstr "expire le : %1%"
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:84
-msgid "(does not expire)"
-msgstr "(n'expire pas)"
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:93
-msgid "(EXPIRED)"
-msgstr "(EXPIRÉ)"
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:97
-msgid "(expires within 24h)"
-msgstr "(expire dans les 24h)"
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp/PublicKey.cc:101
-#, c-format, boost-format
-msgid "(expires in %d day)"
-msgid_plural "(expires in %d days)"
-msgstr[0] "(expire dans %d jour)"
-msgstr[1] "(expire dans %d jours)"
-
 # TLABEL printer_2002_08_07_0216__54
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3840,23 +3779,23 @@ msgid "Invalid regular expression '%s'"
 msgstr "Expression régulière '%s' invalide"
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1514
-#: zypp/media/MediaNetwork.cc:314
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1374
+#: zypp/media/MediaCurl2.cc:712
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Authentification requise pour '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:789
+#: zypp/media/MediaCurl.cc:649
 msgid "Will try again..."
 msgstr "Une nouvelle tentative va être effectuée..."
 
-#: zypp/media/MediaCurl.cc:792
+#: zypp/media/MediaCurl.cc:652
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Abandon après %1% tentatives."
 
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3864,7 +3803,7 @@ msgstr ""
 "Visitez SUSE Customer Center pour vérifier si votre enregistrement est "
 "valide et n'a pas expiré."
 
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/media/MediaCurl.cc:769 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3880,11 +3819,11 @@ msgstr ""
 "Création d'un point d'attache : Impossible de trouver un répertoire pour "
 "créer un point d'attache"
 
-#: zypp/misc/CheckAccessDeleted.cc:453
+#: zypp/misc/CheckAccessDeleted.cc:458
 msgid "Please install package 'lsof' first."
 msgstr "Veuillez d'abord installer le paquet 'lsof'."
 
-#: zypp/ng/repo/refresh.cc:42
+#: zypp/ng/repo/refresh.cc:45
 msgid "Can't create metadata cache directory."
 msgstr "Impossible de créer le répertoire de cache des métadonnées."
 
@@ -4041,11 +3980,11 @@ msgstr "Impossible de déterminer l'emplacement de stockage du service."
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr "Service '%1%' inconnu : suppression du dépôt de service orphelin '%2%'"
 
-#: zypp/ng/repomanager.h:65
+#: zypp/ng/repomanager.h:66
 msgid "Repository alias cannot start with dot."
 msgstr "L'alias d'un dépôt ne peut pas commencer par un point."
 
-#: zypp/ng/repomanager.h:77
+#: zypp/ng/repomanager.h:78
 msgid "Service alias cannot start with dot."
 msgstr "L'alias d'un service ne peut pas commencer par un point."
 
@@ -4742,18 +4681,18 @@ msgid "deinstallation of %1%"
 msgstr "désinstallation de %1%"
 
 #. Translator: progress bar label
-#: zypp/target/RpmPostTransCollector.cc:200
+#: zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
 msgstr "Exécution des scripts ultérieurs à la transaction"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:202
+#: zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
 msgstr "Exécution du script %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:204
+#: zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
 msgstr "Sortie du script %1% :"
@@ -4763,38 +4702,38 @@ msgid "Installation has been aborted as directed."
 msgstr "L'installation a été abandonnée comme demandé."
 
 # TLABEL online_update_2002_01_04_0147__113
-#: zypp/target/TargetImpl.cc:462
+#: zypp/target/TargetImpl.cc:463
 msgid " executed"
 msgstr " exécuté"
 
-#: zypp/target/TargetImpl.cc:484
+#: zypp/target/TargetImpl.cc:485
 msgid " execution failed"
 msgstr " échec de l'exécution"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:601
+#: zypp/target/TargetImpl.cc:602
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s déjà exécuté en tant que %s)"
 
-#: zypp/target/TargetImpl.cc:611
+#: zypp/target/TargetImpl.cc:612
 msgid " execution skipped while aborting"
 msgstr " exécution annulée lors de l'abandon"
 
-#: zypp/target/TargetImpl.cc:666 zypp/target/TargetImpl.cc:686
-#: zypp/target/TargetImpl.cc:714 zypp/target/TargetImpl.cc:751
-#: zypp/target/TargetImpl.cc:759
+#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
+#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
+#: zypp/target/TargetImpl.cc:760
 msgid "Error sending update message notification."
 msgstr "Erreur lors de l'envoi de la notification de mise à jour par message."
 
-#: zypp/target/TargetImpl.cc:810
+#: zypp/target/TargetImpl.cc:811
 msgid "New update message"
 msgstr "Nouveau message de mise à jour"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2112
+#: zypp/target/TargetImpl.cc:2128
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -4803,48 +4742,74 @@ msgstr ""
 "Signal reçu :\"%1% (%2%)\". Pour garantir la cohérence du système, il n'est "
 "pas possible d'annuler une transaction rpm en cours d'exécution."
 
-#: zypp/target/TargetImpl.cc:2720
+#: zypp/target/TargetImpl.cc:2736
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 "L'exécution de la transaction a échoué en raison des problèmes suivants :"
 
+#: zypp/target/commitpackagepreloader.cc:100
+msgid "No mirror found"
+msgstr ""
+
+#: zypp/target/commitpackagepreloader.cc:108
+msgid "Could not create target File"
+msgstr ""
+
+#: zypp/target/commitpackagepreloader.cc:134
+#: zypp/target/commitpackagepreloader.cc:364
+msgid "Already in Cache"
+msgstr ""
+
+#. error
+#: zypp/target/commitpackagepreloader.cc:279
+msgid "Failed to rename temporary file."
+msgstr ""
+
+#: zypp/target/commitpackagepreloader.cc:283
+msgid "Finished"
+msgstr ""
+
+#: zypp/target/commitpackagepreloader.cc:607
+msgid "Cancelled by user."
+msgstr ""
+
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:438 zypp/target/rpm/RpmDb.cc:1813
-#: zypp/target/rpm/RpmDb.cc:1986
+#: zypp/target/rpm/RpmDb.cc:434 zypp/target/rpm/RpmDb.cc:1809
+#: zypp/target/rpm/RpmDb.cc:1982
 msgid "RPM failed: "
 msgstr "Échec RPM : "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:763
+#: zypp/target/rpm/RpmDb.cc:759
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Impossible d'importer la clé publique %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:830
+#: zypp/target/rpm/RpmDb.cc:826
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Impossible de supprimer la clé publique %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1250
+#: zypp/target/rpm/RpmDb.cc:1246
 msgid "Package header is not signed!"
 msgstr "L'en-tête du paquet n'est pas signé !"
 
-#: zypp/target/rpm/RpmDb.cc:1252
+#: zypp/target/rpm/RpmDb.cc:1248
 msgid "Package payload is not signed!"
 msgstr "Le contenu du paquet n'est pas signé !"
 
 # TLABEL sw_single_2002_01_04_0147__11
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1591
+#: zypp/target/rpm/RpmDb.cc:1587
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Fichiers de configuration modifiés pour %s :"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1794
+#: zypp/target/rpm/RpmDb.cc:1790
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -4852,7 +4817,7 @@ msgstr ""
 "déterminer la différence"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1796
+#: zypp/target/rpm/RpmDb.cc:1792
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4862,7 +4827,7 @@ msgstr ""
 "Voici les 25 premières lignes qui diffèrent :\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1799
+#: zypp/target/rpm/RpmDb.cc:1795
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -4870,7 +4835,7 @@ msgstr ""
 "différence"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1801
+#: zypp/target/rpm/RpmDb.cc:1797
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4884,50 +4849,111 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1829 zypp/target/rpm/RpmDb.cc:2002
+#: zypp/target/rpm/RpmDb.cc:1825 zypp/target/rpm/RpmDb.cc:1998
 msgid "Additional rpm output"
 msgstr "Sortie rpm supplémentaire"
 
 # TLABEL backup_2002_03_14_2340__102
-#: zypp/target/rpm/RpmDb.cc:2200
+#: zypp/target/rpm/RpmDb.cc:2196
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "sauvegarde %s créée"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2221
+#: zypp/target/rpm/RpmDb.cc:2217
 msgid "Signature is OK"
 msgstr "La signature est correcte"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2223
+#: zypp/target/rpm/RpmDb.cc:2219
 msgid "Unknown type of signature"
 msgstr "Type de signature inconnu"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2225
+#: zypp/target/rpm/RpmDb.cc:2221
 msgid "Signature does not verify"
 msgstr "La signature n'est pas vérifiée"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2227
+#: zypp/target/rpm/RpmDb.cc:2223
 msgid "Signature is OK, but key is not trusted"
 msgstr "La signature est correcte mais la clé n'est pas certifiée"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2229
+#: zypp/target/rpm/RpmDb.cc:2225
 msgid "Signatures public key is not available"
 msgstr "La clé publique des signatures n'est pas disponible"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2231
+#: zypp/target/rpm/RpmDb.cc:2227
 msgid "File does not exist or signature can't be checked"
 msgstr "Le fichier n'existe pas ou la signature ne peut pas être vérifiée"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2233
+#: zypp/target/rpm/RpmDb.cc:2229
 msgid "File is unsigned"
 msgstr "Le fichier n'est pas signé"
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-common/PublicKey.cc:65
+msgid "does not expire"
+msgstr "n'expire pas"
+
+#. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
+#: zypp-common/PublicKey.cc:70
+#, boost-format
+msgid "expired: %1%"
+msgstr "a expiré le : %1%"
+
+#. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
+#: zypp-common/PublicKey.cc:75
+#, boost-format
+msgid "expires: %1%"
+msgstr "expire le : %1%"
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-common/PublicKey.cc:84
+msgid "(does not expire)"
+msgstr "(n'expire pas)"
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-common/PublicKey.cc:93
+msgid "(EXPIRED)"
+msgstr "(EXPIRÉ)"
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-common/PublicKey.cc:97
+msgid "(expires within 24h)"
+msgstr "(expire dans les 24h)"
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-common/PublicKey.cc:101
+#, c-format, boost-format
+msgid "(expires in %d day)"
+msgid_plural "(expires in %d days)"
+msgstr[0] "(expire dans %d jour)"
+msgstr[1] "(expire dans %d jours)"
+
+#. TranslatorExplanation first %s is key name, second is keyring name
+#: zypp-common/private/keyring_p.cc:285
+#, c-format, boost-format
+msgid "Tried to import not existent key %s into keyring %s"
+msgstr "Tentative d'importation d'une clé inexistante %s dans le porte-clé %s"
+
+#: zypp-common/private/keyring_p.cc:291
+msgid "Failed to import key."
+msgstr "Impossible d'importer la clé."
+
+# TLABEL restore_2002_08_07_0216__88
+#: zypp-common/private/keyring_p.cc:298
+msgid "Failed to delete key."
+msgstr "Impossible de supprimer la clé."
+
+# TLABEL linuxrc_2002_03_29_0036__117
+#: zypp-common/private/keyring_p.cc:304
+#, c-format, boost-format
+msgid "Signature file %s not found"
+msgstr "Fichier de signature %s introuvable"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-core/CheckSum.cc:136
@@ -4950,20 +4976,20 @@ msgstr "Impossible d'ouvrir le pipe (%s)."
 msgid "Invalid LDAP URL query string"
 msgstr "Chaîne de requête d'URL LDAP non valide"
 
-#: zypp-core/Url.cc:157
+#: zypp-core/Url.cc:159
 #, c-format, boost-format
 msgid "Invalid LDAP URL query parameter '%s'"
 msgstr "Paramètre de requête d'URL LDAP '%s' non valide"
 
-#: zypp-core/Url.cc:305
+#: zypp-core/Url.cc:319
 msgid "Unable to clone Url object"
 msgstr "Impossible de cloner l'objet d'URL"
 
-#: zypp-core/Url.cc:318
+#: zypp-core/Url.cc:332
 msgid "Invalid empty Url object reference"
 msgstr "Référence d'objet d'URL vide non valide"
 
-#: zypp-core/Url.cc:331 zypp-core/Url.cc:345
+#: zypp-core/Url.cc:345 zypp-core/Url.cc:359
 msgid "Unable to parse Url components"
 msgstr "Impossible d'analyser les composants de l'URL"
 
@@ -4986,7 +5012,7 @@ msgstr "Composant '%s' non valide '%s'"
 msgid "Invalid %s component"
 msgstr "Composant %s non valide"
 
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1307
+#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1308
 msgid "Query string parsing not supported for this URL"
 msgstr "Analyse de la chaîne de requête non prise en charge pour cette URL"
 
@@ -5051,7 +5077,7 @@ msgid "Invalid parameter map split separator character"
 msgstr ""
 "Caractère séparateur de division non valide pour le mappage de paramètres"
 
-#: zypp-core/url/UrlUtils.cc:281
+#: zypp-core/url/UrlUtils.cc:282
 msgid "Invalid parameter array join separator character"
 msgstr ""
 "Caractère séparateur de catégorie de jonction non valide pour l'ensemble de "

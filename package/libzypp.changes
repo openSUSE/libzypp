@@ -3,7 +3,7 @@ Fri Feb 28 16:20:03 CET 2025 - ma@suse.de
 
 - Add a transaction package preloader (fixes openSUSE/zypper#104)
   This patch adds a preloader that concurrently downloads files
-  during a transaction commit. IT's not yet enabled per default.
+  during a transaction commit. It's not yet enabled per default.
   To enable ithe preview set ZYPP_CURL2=1 and ZYPP_PCK_PRELOAD=1
   in the environment.
 - RpmPkgSigCheck_test: Exchange the test package signingkey

@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: zypp.nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2024-11-12 12:48+0000\n"
+"PO-Revision-Date: 2025-03-01 10:56+0000\n"
 "Last-Translator: Freek de Kruijf <freek@opensuse.org>\n"
-"Language-Team: Dutch <https://l10n.opensuse.org/projects/libzypp/master/nl/"
-">\n"
+"Language-Team: Dutch <https://l10n.opensuse.org/projects/libzypp/master/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4741,29 +4741,29 @@ msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:100
 msgid "No mirror found"
-msgstr ""
+msgstr "Geen mirror-server gevonden"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "Could not create target File"
-msgstr ""
+msgstr "Kon geen doelbestand aanmaken"
 
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "Al in de cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279
 msgid "Failed to rename temporary file."
-msgstr ""
+msgstr "Tijdelijk bestand hernoemen is mislukt."
 
 #: zypp/target/commitpackagepreloader.cc:283
 msgid "Finished"
-msgstr ""
+msgstr "Beëindigd"
 
 #: zypp/target/commitpackagepreloader.cc:607
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Geannuleerd door gebruiker."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message

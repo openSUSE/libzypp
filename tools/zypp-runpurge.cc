@@ -24,6 +24,7 @@ int usage( const argparse::Options & options_r, int return_r = 0 )
 
 int main ( int argc, char *argv[] )
 {
+  auto z = getZYpp();
 
   appname = Pathname::basename( argv[0] );
   argparse::Options options;
@@ -34,7 +35,7 @@ int main ( int argc, char *argv[] )
 
   auto result = options.parse( argc, argv );
 
-  if ( result.count( "help" ) || !result.count("uname") || !result.positionals().size() )
+  if ( result.count( "help" ) || !result.positionals().size() )
     return usage( options, 1 );
 
   const std::string &testcaseDir = result.positionals().front();
@@ -51,11 +52,36 @@ int main ( int argc, char *argv[] )
 
   TestSetup t;
   try {
-    t.LoadSystemAt( result.positionals().front() );
+    t.LoadSystemAt( "." );
   }  catch ( const zypp::Exception &e ) {
     std::cerr << "Failed to load the testcase at " << result.positionals().front() << std::endl;
     std::cerr << "Got exception: " << e << std::endl;
     return 1;
+  }
+
+  std::string unameR;
+  if ( result.count("uname") ) {
+    unameR = result["uname"].arg();
+  } else {
+    std::cout << "No --uname provided. Guessing it from the latest kernel-default installed...." << std::endl;
+    const PoolItem & running( ui::Selectable::get("kernel-default")->theObj() );
+    if ( not running ) {
+      std::cerr << "Oops: No installed kernel-default." << std::endl;
+      return usage( options, 1 );
+    }
+    std::cout << "Guess running: " << running.asString() << endl;
+    const Capability unameRProvides { "kernel-uname-r" }; // indicator provides
+    for ( const auto & cap : running.provides() ) {
+      if ( cap.matches( unameRProvides ) == CapMatch::yes ) {
+        unameR = cap.detail().ed().asString();
+        break;
+      }
+    }
+    if ( unameR.empty() ) {
+      std::cerr << "Oops: Guessed kernel does not provide " << unameRProvides << std::endl;
+      return usage( options, 1 );
+    }
+    std::cout << "Guess --uname: " << unameR << endl;
   }
 
   std::string keepSpec = "oldest,running,latest";
@@ -63,19 +89,28 @@ int main ( int argc, char *argv[] )
     keepSpec = result["keepSpec"].arg();
   }
 
+
   PurgeKernels krnls;
-  krnls.setUnameR( result["uname"].arg() );
+  krnls.setUnameR( unameR );
   krnls.setKeepSpec( keepSpec );
   krnls.markObsoleteKernels();
 
-  const auto &makeNVRA = []( const PoolItem &pck ) -> std::string  {
-    return pck.name() + "-" + pck.edition().asString() + "." + pck.arch().asString();
-  };
-
+  unsigned count = 0;
   auto pool = ResPool::instance();
   const filter::ByStatus toBeUninstalledFilter( &ResStatus::isToBeUninstalled );
   for ( auto it = pool.byStatusBegin( toBeUninstalledFilter ); it != pool.byStatusEnd( toBeUninstalledFilter );  it++  ) {
-    std::cout << "Removing " << makeNVRA(*it) + (it->status().isByUser() ? " (by user)" : " (autoremoved)") << std::endl;
+    std::cout << "Removing " << it->asString() + (it->status().isByUser() ? " (by user)" : " (autoremoved)") << std::endl;
+    ++count;
+  }
+  std::cout << "Purged kernels: " << count << std::endl;
+
+  const auto & clusterResult { krnls.clusterKmps() };
+  std::cout << clusterResult.first << endl;
+
+  const auto & purgableKmps { clusterResult.second };
+  std::cout << "Purgable Kmps: " << purgableKmps.size() << std::endl;
+  for ( const auto & kmp : purgableKmps ) {
+    std::cout << "  purge: " << kmp << std::endl;
   }
 
   return 0;

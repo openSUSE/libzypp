@@ -33,6 +33,8 @@ namespace zypp
         std::vector<Url> & getUrls()
         { return _urls; }
 
+        static zypp::Url toBaseUrl( zypp::Url metalinkUrl );
+
       private:
         std::vector<Url> _urls;
     };

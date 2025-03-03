@@ -535,6 +535,13 @@ namespace zypp
   void RepoInfo::setMetalinkUrls( url_set urls )	// Raw
   { setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
 
+  Url RepoInfo::metalinkUrl() const
+  {
+    if ( _pimpl->_mirrorListForceMetalink )
+      return _pimpl->_mirrorListUrl.transformed();
+    return zypp::Url();
+  }
+
   void RepoInfo::setGpgKeyUrls( url_set urls )
   { _pimpl->gpgKeyUrls().raw().swap( urls ); }
 

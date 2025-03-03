@@ -107,15 +107,8 @@ namespace zypp
         {
           if ( murl.getScheme() != "rsync" )
           {
-            size_t delpos = murl.getPathName().find("repodata/repomd.xml");
-            if( delpos != std::string::npos )
-            {
-              murl.setPathName( murl.getPathName().erase(delpos)  );
-            }
+            murl = RepoMirrorList::toBaseUrl(murl);
             ret.push_back( murl );
-
-            if ( ret.size() >= 4 )	// why 4?
-              break;
           }
         }
         return ret;
@@ -165,6 +158,20 @@ namespace zypp
           zypp::filesystem::unlink( cachefile );
         }
       }
+    }
+
+    Url RepoMirrorList::toBaseUrl( Url metalinkUrl )
+    {
+      size_t delpos = metalinkUrl.getPathName().find("repodata/repomd.xml");
+      if( delpos != std::string::npos )
+      {
+        metalinkUrl.setPathName( metalinkUrl.getPathName().erase(delpos)  );
+      }
+
+      // future /baseUrl/?metalink handling
+      metalinkUrl.delQueryParam("metalink");
+
+      return metalinkUrl;
     }
 
     /////////////////////////////////////////////////////////////////

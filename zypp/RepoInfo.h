@@ -217,6 +217,9 @@ namespace zypp
       /** Like \ref setMirrorListUrls but expect metalink format. */
       void setMetalinkUrls( url_set urls );
 
+      /** returns the configured metalink URL or a empty one */
+      Url metalinkUrl() const;
+
       /**
        * Type of repository,
        *

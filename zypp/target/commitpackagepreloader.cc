@@ -507,6 +507,9 @@ namespace zypp {
           if ( media::MediaHandlerFactory::handlerType(url) != media::MediaHandlerFactory::MediaCURLType )
             return;
 
+          // use geo IP if available
+          url = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
+
           repoUrls.push_back( RepoUrl {
                                 .baseUrl = std::move(url),
                                 .headers = std::move(custom_headers)

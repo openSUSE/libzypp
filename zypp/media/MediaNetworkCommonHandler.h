@@ -43,6 +43,13 @@ namespace zypp
       TransferSettings & settings()
       { return _settings; }
 
+
+      /**
+       * Rewrites the baseURL to the geoIP target if one is found in the metadata cache,
+       * otherwise simply returns the url again.
+       */
+      static zypp::Url findGeoIPRedirect ( const zypp::Url &url );
+
     protected:
 
       /**
@@ -50,13 +57,6 @@ namespace zypp
        * download url
        **/
       Url getFileUrl(const Pathname & filename) const;
-
-
-      /**
-       * Rewrites the baseURL to the geoIP target if one is found in the metadata cache,
-       * otherwise simply returns the url again.
-       */
-      static zypp::Url findGeoIPRedirect ( const zypp::Url &url );
 
     public:
       static const char * anonymousIdHeader();

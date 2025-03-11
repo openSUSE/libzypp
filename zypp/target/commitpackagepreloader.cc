@@ -508,7 +508,11 @@ namespace zypp {
             return;
 
           // use geo IP if available
-          url = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
+          {
+            const auto rewriteUrl = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
+            if ( rewriteUrl.isValid () )
+              url = rewriteUrl;
+          }
 
           repoUrls.push_back( RepoUrl {
                                 .baseUrl = std::move(url),

@@ -310,8 +310,10 @@ void NetworkRequestDispatcherPrivate::setFinished( NetworkRequest &req, NetworkR
     rLocked = delReq( _pendingDownloads, req );
 
   void *easyHandle = req.d_func()->_easyHandle;
-  if ( easyHandle )
+  if ( easyHandle ) {
+    MIL_MEDIA << "Removing easy handle: " << easyHandle << std::endl;
     curl_multi_remove_handle( _multi, easyHandle );
+  }
 
   req.d_func()->_dispatcher = nullptr;
 
@@ -332,6 +334,7 @@ bool NetworkRequestDispatcherPrivate::addRequestToMultiHandle(NetworkRequest &re
     return false;
   }
 
+  MIL_MEDIA << "Added easy handle: " << req.d_func()->_easyHandle << std::endl;
   // make sure to wake up once to register what we have now
   _timer->start(0);
   return true;

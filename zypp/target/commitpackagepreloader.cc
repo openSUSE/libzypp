@@ -454,6 +454,7 @@ namespace zypp {
     _requiredBytes   = 0;
     _downloadedBytes = 0;
     _missedDownloads = false;
+    _lastProgressUpdate.reset();
 
     zypp_defer {
       _dispatcher.reset();
@@ -600,18 +601,32 @@ namespace zypp {
 
   void CommitPackagePreloader::reportBytesDownloaded(ByteCount newBytes)
   {
+    // throttle progress updates to one time per second
+    const auto now = clock::now();
+    bool canUpdate = false;
+    if ( _lastProgressUpdate ) {
+      const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - *_lastProgressUpdate);
+      canUpdate = (duration >= std::chrono::milliseconds(500));
+    } else {
+      canUpdate = true;
+    }
+
     _downloadedBytes += newBytes;
     _pTracker->updateStats( _requiredBytes, _downloadedBytes );
 
-    callback::UserData userData( "CommitPreloadReport/progress" );
-    userData.set( "dbps_avg"    ,   static_cast<double>( _pTracker->_drateTotal ) );
-    userData.set( "dbps_current",   static_cast<double>( _pTracker->_drateLast ) );
-    userData.set( "bytesReceived",  static_cast<double>( _pTracker->_dnlNow ) );
-    userData.set( "bytesRequired",  static_cast<double>( _pTracker->_dnlTotal ) );
-    if ( !_report->progress( _pTracker->_dnlPercent, userData ) ) {
-      _missedDownloads = true;
-      _requiredDls.clear();
-      _dispatcher->cancelAll( _("Cancelled by user."));
+    // update progress one time per second
+    if( canUpdate ) {
+      _lastProgressUpdate = now;
+      callback::UserData userData( "CommitPreloadReport/progress" );
+      userData.set( "dbps_avg"    ,   static_cast<double>( _pTracker->_drateTotal ) );
+      userData.set( "dbps_current",   static_cast<double>( _pTracker->_drateLast ) );
+      userData.set( "bytesReceived",  static_cast<double>( _pTracker->_dnlNow ) );
+      userData.set( "bytesRequired",  static_cast<double>( _pTracker->_dnlTotal ) );
+      if ( !_report->progress( _pTracker->_dnlPercent, userData ) ) {
+        _missedDownloads = true;
+        _requiredDls.clear();
+        _dispatcher->cancelAll( _("Cancelled by user."));
+      }
     }
   }
 

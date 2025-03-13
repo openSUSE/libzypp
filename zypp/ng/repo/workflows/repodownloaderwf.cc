@@ -8,7 +8,8 @@
 \---------------------------------------------------------------------*/
 #include "repodownloaderwf.h"
 #include <zypp/ng/workflows/logichelpers.h>
-#include "zypp/parser/yum/RepomdFileReader.h"
+#include <zypp/parser/yum/RepomdFileReader.h>
+#include <zypp/repo/RepoMirrorList.h>
 
 #include <utility>
 #include <zypp-media/ng/Provide>
@@ -65,15 +66,8 @@ namespace zyppng {
           return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
           | and_then( [this]( ProvideRes && masterres ) {
 
-            return std::vector {
-              // fetch signature and keys
-              provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) ),
-              provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) ),
-            }
-            | join()
-            | [this,masterres=std::move(masterres)]( std::vector<expected<zypp::ManagedFile>> &&res ) {
+            return fetchKeys()
+            | [this,masterres=std::move(masterres)]( std::vector<expected<zypp::ManagedFile>> res ) {
               // remember downloaded files
               std::for_each( res.begin (), res.end(),
                              [this]( expected<zypp::ManagedFile> &f){
@@ -114,6 +108,41 @@ namespace zyppng {
     private:
       auto provider () {
         return _dlContext->zyppContext()->provider();
+      }
+
+      MaybeAsyncRef<std::vector<expected<zypp::ManagedFile>>> fetchKeys() {
+
+        const zypp::RepoInfo &repoInfo = _dlContext->repoInfo();
+        zypp::Url mlUrl = repoInfo.metalinkUrl();
+        if ( mlUrl.isValid() && mlUrl.schemeIsDownloading() && mlUrl.getHost() == "download.opensuse.org" ) {
+          // try to build a baseUrl
+          MIL << "Detected metalink from download.opensuse.org, fetching keys directly." << std::endl;
+          mlUrl = zypp::repo::RepoMirrorList::toBaseUrl( mlUrl );
+
+          MIL << "Using baseUrl " << mlUrl << " to fetch keys" << std::endl;
+          return provider()->attachMedia( mlUrl, zyppng::ProvideMediaSpec() )
+          | [this] ( expected<MediaHandle> medium ){
+            if ( medium )
+              return fetchKeysFromMedium (*medium);
+            else
+              return makeReadyResult( std::vector<expected<zypp::ManagedFile>>() );
+          };
+        } else {
+          // no metalink
+          return fetchKeysFromMedium (_media);
+        }
+
+      }
+
+      MaybeAsyncRef<std::vector<expected<zypp::ManagedFile>>> fetchKeysFromMedium( MediaHandle medium ) {
+        return std::vector {
+          // fetch signature and keys
+          provider()->provide( medium, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+          | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) ),
+          provider()->provide( medium, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+          | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) ),
+        }
+        | join();
       }
 
       MaybeAsyncRef<expected<ProvideRes>> signatureCheck ( ProvideRes &&res ) {

@@ -43,6 +43,7 @@
 #include <zypp/ZYppCallbacks.h>
 
 #include <zypp/ng/workflows/repoinfowf.h>
+#include <zypp-curl/private/curlhelper_p.h>
 
 using std::endl;
 using zypp::xml::escape;
@@ -150,7 +151,12 @@ namespace zypp
         emptybaseurls = true;
         DBG << "MetadataPath: " << metadataPath() << endl;
         repo::RepoMirrorList rmurls( mlurl, metadataPath(), _mirrorListForceMetalink );
-        _baseUrls.raw().insert( _baseUrls.raw().end(), rmurls.getUrls().begin(), rmurls.getUrls().end() );
+
+        // propagate internally used URL params like 'proxy' to the mirrors
+        const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
+          return internal::propagateQueryParams ( in , urlTemplate );
+        };
+        _baseUrls.raw().insert( _baseUrls.raw().end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
       }
       return _baseUrls;
     }

@@ -195,7 +195,7 @@ namespace zypp
   RepoStatus::RepoStatus( const RepoInfo & info_r )
   : _pimpl( new Impl() )
   {
-    _pimpl->assignFromCtor( CheckSum::sha1FromString( info_r.url().asString() ).checksum(), Date() );
+    _pimpl->assignFromCtor( CheckSum::sha1FromString( info_r.repoStatusString() ).checksum(), Date() );
   }
 
   RepoStatus::RepoStatus( std::string checksum_r, Date timestamp_r )

@@ -571,6 +571,13 @@ namespace zypp
        */
       void getRawGpgChecks( TriBool & g_r, TriBool & r_r, TriBool & p_r ) const;
 
+      /** A string value to track changes requiring a refresh.
+       * The strings value is arbitrary but it should change if the
+       * repositories URL changes.
+       * \internal
+       */
+      std::string repoStatusString() const;
+
       struct Impl;
     private:
       friend class RepoManager;

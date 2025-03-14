@@ -112,15 +112,9 @@ namespace zypp::media
     if ( canRedir )
       MIL << "Redirecting " << filename_r << " request to geoip location." << std::endl;
 
-    // Simply extend the URLs pathname. An 'absolute' URL path
-    // is achieved by encoding the leading '/' in an URL path:2
-    //   URL: ftp://user@server		-> ~user
-    //   URL: ftp://user@server/		-> ~user
-    //   URL: ftp://user@server//		-> ~user
-    //   URL: ftp://user@server/%2F	-> /
-    //                         ^- this '/' is just a separator
-    Url newurl( baseUrl );
-    newurl.setPathName( ( Pathname("./"+baseUrl.getPathName()) / filename_r ).asString().substr(1) );
+    // Simply extend the URLs pathname:
+    Url newurl { baseUrl };
+    newurl.appendPathName( filename_r );
     return newurl;
   }
 

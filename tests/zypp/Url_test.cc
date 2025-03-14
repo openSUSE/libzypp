@@ -342,4 +342,51 @@ BOOST_AUTO_TEST_CASE(bsc1234304)
 
 }
 
+BOOST_AUTO_TEST_CASE(bsc1238315)
+{
+  // Fix lost leading double slash when appending path to URLs.
+  // A leading "//" in ordinary URLs is quite meaningless but would be preserved.
+  // Important however with FTP whether a leading "//" is encoded as "/%2f".
+  Url u;
+  auto appendPathName = []( const Url & url_r, const Pathname & path_r, Url::EEncoding eflag_r = url::E_DECODED ) {
+    Url ret { url_r };
+    ret.appendPathName( path_r, eflag_r );
+    return ret.asString();
+  };
+
+  // No difference with singe "/" URLs:
+  u = Url("http://HOST/fo%20o");
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba%20a", url::E_ENCODED ),    "http://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba a" ),                      "http://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "%2fba%20a", url::E_ENCODED ), "http://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "/ba a" ),                     "http://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba%20a", url::E_ENCODED ), "http://host/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba a" ),                   "http://host/ba%20a" );
+
+  u = Url("ftp://HOST/fo%20o");
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba%20a", url::E_ENCODED ),    "ftp://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba a" ),                      "ftp://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "%2fba%20a", url::E_ENCODED ), "ftp://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "/ba a" ),                     "ftp://host/fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba%20a", url::E_ENCODED ), "ftp://host/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba a" ),                   "ftp://host/ba%20a" );
+
+  // FTP differs with double "//" URLs:
+  u = Url("http://HOST//fo%20o");
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba%20a", url::E_ENCODED ),    "http://host//fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba a" ),                      "http://host//fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "%2fba%20a", url::E_ENCODED ), "http://host//fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "/ba a" ),                     "http://host//fo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba%20a", url::E_ENCODED ), "http://host//ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba a" ),                   "http://host//ba%20a" );
+
+  u = Url("ftp://HOST//fo%20o");
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba%20a", url::E_ENCODED ),    "ftp://host/%2Ffo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "ba a" ),                      "ftp://host/%2Ffo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "%2fba%20a", url::E_ENCODED ), "ftp://host/%2Ffo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "/ba a" ),                     "ftp://host/%2Ffo%20o/ba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba%20a", url::E_ENCODED ), "ftp://host/%2Fba%20a" );
+  BOOST_CHECK_EQUAL( appendPathName( u, "../ba a" ),                   "ftp://host/%2Fba%20a" );
+}
+
 // vim: set ts=2 sts=2 sw=2 ai et:

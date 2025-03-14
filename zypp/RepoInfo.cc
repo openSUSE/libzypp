@@ -168,6 +168,16 @@ namespace zypp
     RepoVariablesReplacedUrlList & gpgKeyUrls()
     { return _gpgKeyUrls; }
 
+    std::string repoStatusString() const
+    {
+      baseUrls(); // ! call baseUrls() to be sure emptybaseurls is initialized.
+      if ( emptybaseurls )
+        return _mirrorListUrl.transformed().asString();
+      if ( baseUrls().empty() )
+        return std::string();
+      return (*baseUrls().transformedBegin()).asString();
+    }
+
     const std::set<std::string> & contentKeywords() const
     { hasContent()/*init if not yet done*/; return _keywords.second; }
 
@@ -544,6 +554,8 @@ namespace zypp
     _pimpl->gpgKeyUrls().raw().push_back( url_r );
   }
 
+  std::string RepoInfo::repoStatusString() const
+  { return _pimpl->repoStatusString(); }
 
   Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
     return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::defaultContext(), *this, keyID_r, targetDirectory_r );

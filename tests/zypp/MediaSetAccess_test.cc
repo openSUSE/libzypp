@@ -328,5 +328,17 @@ BOOST_AUTO_TEST_CASE(msa_remote_tests_ftp)
   msa_remote_tests_impl<FtpServer>();
 }
 
+BOOST_AUTO_TEST_CASE(ftp_absolute_path)
+{
+  FtpServer srv( DATADIR, 10002 );
+  BOOST_REQUIRE( srv.start() );
+
+  zypp::Url base = srv.url();
+  base.setPathName ( zypp::str::Str() << "//" << DATADIR );
+
+  MediaSetAccess setaccess( base, "/" );
+  OnMediaLocation loc( "/src1/cd1/test.txt" );
+  BOOST_CHECK_NO_THROW( setaccess.provideFile ( loc ) );
+}
 
 // vim: set ts=2 sts=2 sw=2 ai et:

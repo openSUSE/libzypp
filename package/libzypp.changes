@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Mar 17 10:22:21 CET 2025 - ma@suse.de
+
+- Fix computation of RepStatus if Repo URLs change.
+- Fix lost double slash when appending to an absolute FTP url
+  (bsc#1238315)
+  Ftp actually differs between absolute and relative URL paths.
+  Absolute path names begin with a double slash encoded as '/%2F'.
+  This must be preserved when manipulating the path.
+- version 17.36.5 (35)
+
+-------------------------------------------------------------------
 Fri Feb 28 16:20:03 CET 2025 - ma@suse.de
 
 - Add a transaction package preloader (fixes openSUSE/zypper#104)

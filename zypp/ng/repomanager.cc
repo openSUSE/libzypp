@@ -825,15 +825,15 @@ namespace zyppng
   }
 
   template<typename ZyppContextRefType>
-  expected<typename RepoManager<ZyppContextRefType>::RefreshCheckStatus> RepoManager<ZyppContextRefType>::checkIfToRefreshMetadata(const RepoInfo &info, const zypp::Url &url, RawMetadataRefreshPolicy policy)
+  expected<typename RepoManager<ZyppContextRefType>::RefreshCheckStatus> RepoManager<ZyppContextRefType>::checkIfToRefreshMetadata(const RepoInfo &info, const std::vector<zypp::Url> &urls, RawMetadataRefreshPolicy policy)
   {
     using namespace zyppng::operators;
     return joinPipeline( _zyppContext,
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, RepoInfo::url_set( urls.begin (), urls.end() ) )
       | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>() ); }
-      | and_then( [this, url, policy]( zyppng::repo::RefreshContextRef<ZyppContextRefType> &&refCtx ) {
+      | and_then( [this, urls, policy]( zyppng::repo::RefreshContextRef<ZyppContextRefType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
-        return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
+        return _zyppContext->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() )
             | and_then( [ r = std::move(refCtx) ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), std::move(mediaHandle), nullptr ); } );
       })
         );
@@ -956,12 +956,13 @@ namespace zyppng
    * a cache path must not be rewritten (bnc#946129)
    */
   template<typename ZyppContextRefType>
-  expected<zypp::repo::RepoType> RepoManager<ZyppContextRefType>::probe(const zypp::Url &url, const zypp::Pathname &path) const
+  expected<zypp::repo::RepoType> RepoManager<ZyppContextRefType>::probe(const std::vector<zypp::Url> &urls, const zypp::Pathname &path) const
   {
     using namespace zyppng::operators;
+
     return joinPipeline( _zyppContext,
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, {url} )
-      | [this, url=url](auto) { return _zyppContext->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() ); }
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, RepoInfo::url_set( urls.begin (), urls.end() ) )
+      | [this, urls=urls](auto) { return _zyppContext->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() ); }
       | and_then( [this, path = path]( auto mediaHandle ) {
         return RepoManagerWorkflow::probeRepoType( _zyppContext, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     }));

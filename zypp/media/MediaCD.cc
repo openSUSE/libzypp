@@ -127,20 +127,20 @@ namespace zypp
     //////////////////////////////////////////////////////////////////
 
 
-  MediaCD::MediaCD( const Url & url_r, const Pathname & attach_point_hint_r )
-    : MediaHandler( url_r, attach_point_hint_r, url_r.getPathName(), false )
+    MediaCD::MediaCD( MediaUrl url_r, const Pathname & attach_point_hint_r )
+      : MediaHandler( url_r, {}, attach_point_hint_r, url_r.url().getPathName(), false )
     , _lastdev( -1 )
     , _lastdev_tried( -1 )
   {
-    MIL << "MediaCD::MediaCD(" << url_r << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaCD::MediaCD(" << url() << ", " << attach_point_hint_r << ")" << endl;
 
-    if ( url_r.getScheme() != "dvd" && url_r.getScheme() != "cd" )
+      if ( _url.url().getScheme() != "dvd" && _url.url().getScheme() != "cd" )
     {
-      ERR << "Unsupported schema in the Url: " << url_r.asString() << endl;
-      ZYPP_THROW(MediaUnsupportedUrlSchemeException(_url));
+        ERR << "Unsupported schema in the Url: " << _url.url().asString() << endl;
+      ZYPP_THROW(MediaUnsupportedUrlSchemeException(_url.url()));
     }
 
-    std::string devices = _url.getQueryParam( "devices" );
+    std::string devices = _url.url().getQueryParam( "devices" );
     if ( ! devices.empty() )
     {
       std::vector<std::string> words;
@@ -163,8 +163,8 @@ namespace zypp
 
     if ( _devices.empty() )
     {
-      ERR << "Unable to find any cdrom drive for " << _url.asString() << endl;
-      ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url));
+      ERR << "Unable to find any cdrom drive for " << _url.url().asString() << endl;
+      ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
     }
   }
 
@@ -223,7 +223,7 @@ namespace zypp
       DBG << "creating on-demand device list" << endl;
       //default is /dev/cdrom; for dvd: /dev/dvd if it exists
       std::string device( "/dev/cdrom" );
-      if ( _url.getScheme() == "dvd" && PathInfo( "/dev/dvd" ).isBlk() )
+      if ( _url.url().getScheme() == "dvd" && PathInfo( "/dev/dvd" ).isBlk() )
       {
         device = "/dev/dvd";
       }
@@ -274,12 +274,12 @@ namespace zypp
       ZYPP_THROW(MediaNotSupportedException(url()));
 
     // This also fills the _devices list on demand
-    DeviceList detected( detectDevices( _url.getScheme() == "dvd" ? true : false ) );
+    DeviceList detected( detectDevices( _url.url().getScheme() == "dvd" ? true : false ) );
 
     Mount mount;
     MediaMountException merr;
 
-    std::string options = _url.getQueryParam( "mountoptions" );
+    std::string options = _url.url().getQueryParam( "mountoptions" );
     if ( options.empty() )
     {
       options="ro";
@@ -291,7 +291,7 @@ namespace zypp
     filesystems.push_back("iso9660");
 
     // if DVD, try UDF filesystem after iso9660
-    if ( _url.getScheme() == "dvd" )
+    if ( _url.url().getScheme() == "dvd" )
       filesystems.push_back("udf");
 
     // try all devices in sequence
@@ -454,14 +454,14 @@ namespace zypp
       if( !merr.mountOutput().empty())
       {
         ZYPP_THROW(MediaMountException(merr.mountError(),
-                                       _url.asString(),
+                                       _url.url().asString(),
                                        mountpoint,
                                        merr.mountOutput()));
       }
       else
       {
         ZYPP_THROW(MediaMountException("Mounting media failed",
-                                       _url.asString(), mountpoint));
+                                       _url.url().asString(), mountpoint));
       }
     }
     DBG << _lastdev << " " << count << endl;
@@ -526,7 +526,7 @@ namespace zypp
     if ( ! isAttached() )	// no device mounted in this instance
     {
       // This also fills the _devices list on demand
-      DeviceList detected( detectDevices( _url.getScheme() == "dvd" ? true : false ) );
+      DeviceList detected( detectDevices( _url.url().getScheme() == "dvd" ? true : false ) );
       for_( it, _devices.begin(), _devices.end() )
       {
         MediaSourceRef media( new MediaSource( *it ) );
@@ -656,7 +656,7 @@ namespace zypp
 
     if ( _devices.empty() )
       // This also fills the _devices list on demand
-      detectDevices( _url.getScheme() == "dvd" ? true : false );
+      detectDevices( _url.url().getScheme() == "dvd" ? true : false );
 
     for ( const auto & it : _devices )
       devices.push_back( it.name );

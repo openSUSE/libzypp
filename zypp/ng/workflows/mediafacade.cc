@@ -7,7 +7,8 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "mediafacade.h"
-#include "zypp/media/MediaHandlerFactory.h"
+#include <zypp/media/MediaHandlerFactory.h>
+#include <zypp-media/ng/private/attachedmediainfo_p.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/base/userrequestexception.h>
@@ -23,11 +24,12 @@ namespace zyppng {
 
   public:
 
-    AttachedSyncMediaInfo( MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath );
+    AttachedSyncMediaInfo( MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, std::vector<zypp::Url> mirrors, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath );
 
     zypp::media::MediaAccessId mediaId () const;
     const ProvideMediaSpec &spec() const;
-    const zypp::Url &url() const;
+    zypp::Url url() const;
+    const std::vector<zypp::Url> &mirrors() const;
     const std::optional<zypp::Pathname> &rootPath() const;
     MediaSyncFacadeRef parent() const;
 
@@ -42,7 +44,7 @@ namespace zyppng {
 
   private:
     zypp::media::MediaAccessId _id;
-    zypp::Url _attachedUrl;
+    std::vector<zypp::Url> _mirrors;
     ProvideMediaSpec _spec;
     MediaSyncFacadeRef _parent;
     std::optional<zypp::Pathname> _localPath;
@@ -50,13 +52,26 @@ namespace zyppng {
 
   IMPL_PTR_TYPE( AttachedSyncMediaInfo );
 
-  AttachedSyncMediaInfo::AttachedSyncMediaInfo(MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath)
+  AttachedSyncMediaInfo::AttachedSyncMediaInfo(MediaSyncFacadeRef parentRef, zypp::media::MediaAccessId mediaId, zypp::Url baseUrl, std::vector<zypp::Url> mirrors, ProvideMediaSpec mediaSpec, const zypp::Pathname &locPath)
     : _id( mediaId )
-    , _attachedUrl(std::move( baseUrl ))
+    , _mirrors( std::move( mirrors ) )
     , _spec(std::move( mediaSpec ))
     , _parent(std::move( parentRef ))
     , _localPath( locPath )
-  {}
+  {
+    // make sure attach URL is in front
+    if ( _mirrors.empty () ) {
+      _mirrors.push_back ( baseUrl );
+    } else {
+      auto i = std::find( _mirrors.begin(), _mirrors.end(), baseUrl );
+      if ( i != _mirrors.begin() ) {
+        if ( i != _mirrors.end() )
+          _mirrors.erase(i);
+        _mirrors.insert( _mirrors.begin(), baseUrl );
+      }
+    }
+
+  }
 
   zypp::media::MediaAccessId AttachedSyncMediaInfo::mediaId() const
   {
@@ -68,9 +83,17 @@ namespace zyppng {
     return _spec;
   }
 
-  const zypp::Url &AttachedSyncMediaInfo::url() const
+  zypp::Url AttachedSyncMediaInfo::url() const
   {
-    return _attachedUrl;
+    if ( !_mirrors.size() )
+      return {};
+
+    return _mirrors.at(0);
+  }
+
+  const std::vector<zypp::Url> &AttachedSyncMediaInfo::mirrors() const
+  {
+    return _mirrors;
   }
 
   const std::optional<zypp::Pathname> &AttachedSyncMediaInfo::rootPath() const
@@ -83,14 +106,9 @@ namespace zyppng {
     return _parent;
   }
 
-  bool AttachedSyncMediaInfo::isSameMedium(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &spec) {
-
-    const auto check = _spec.isSameMedium(spec);
-    if ( !zypp::indeterminate (check) )
-      return (bool)check;
-
-    // let the URL rule
-    return ( std::find( urls.begin(), urls.end(), _attachedUrl ) != urls.end() );
+  bool AttachedSyncMediaInfo::isSameMedium(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &spec)
+  {
+    return AttachedMediaInfo::isSameMedium ( _mirrors, _spec, urls, spec );
   }
 
   void AttachedSyncMediaInfo::unref_to( unsigned int count ) const
@@ -123,9 +141,9 @@ namespace zyppng {
   const zypp::Url &SyncMediaHandle::baseUrl() const
   {
     static zypp::Url invalidHandle;
-    if ( !_data )
+    if ( !_data || !_data->mirrors().size () )
       return invalidHandle;
-    return _data->url();
+    return _data->mirrors().at(0);
   }
 
   const std::optional<zypp::Pathname> &SyncMediaHandle::localPath() const
@@ -184,10 +202,30 @@ namespace zyppng {
 
   expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
   {
+    return attachMedia( std::vector<zypp::Url>{url}, request );
+  }
 
-    bool isVolatile = url.schemeIsVolatile();
+  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
+  {
+    // rewrite and sanitize the urls if required
+    std::vector<zypp::Url> useableUrls = sanitizeUrls(urls);
 
-    auto effectiveUrl = url;
+    if ( useableUrls.empty () )
+      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
+
+    if ( request.medianr() > 1 )
+      useableUrls = zyppng::transform ( useableUrls, [&]( const zypp::Url &u ) { return zypp::MediaSetAccess::rewriteUrl( u, request.medianr() );} );
+
+    // first try and find a already attached medium
+    auto i = std::find_if( _attachedMedia.begin (), _attachedMedia.end(), [&]( const AttachedSyncMediaInfo_Ptr &medium ) {
+      return medium->isSameMedium( useableUrls, request );
+    });
+
+    if ( i != _attachedMedia.end() ) {
+      return expected<MediaSyncFacade::MediaHandle>::success( *i );
+    }
+
+    bool isVolatile = useableUrls.front().schemeIsVolatile();
 
     std::optional<zypp::media::MediaAccessId> attachId;
     zypp::callback::SendReport<zypp::media::MediaChangeReport> report;
@@ -197,11 +235,7 @@ namespace zyppng {
     do {
       try {
         if ( !attachId ) {
-
-          if ( request.medianr() > 1 )
-            effectiveUrl = zypp::MediaSetAccess::rewriteUrl( effectiveUrl, request.medianr() );
-
-          attachId = mgr.open( effectiveUrl );
+          attachId = mgr.open(  zyppng::transform ( useableUrls, [](const auto &u) { return zypp::media::MediaUrl(u); } ) );
           if ( !request.mediaFile().empty() ) {
             mgr.addVerifier( *attachId, zypp::media::MediaVerifierRef( new zypp::repo::SUSEMediaVerifier( request.mediaFile(), request.medianr() ) ) );
           }
@@ -211,7 +245,7 @@ namespace zyppng {
         mgr.attach( *attachId );
 
         auto locPath = mgr.localPath( *attachId, "/" );
-        auto attachInfo = AttachedSyncMediaInfo_Ptr( new AttachedSyncMediaInfo( shared_this<MediaSyncFacade>(), *attachId, url, request, locPath )  );
+        auto attachInfo = AttachedSyncMediaInfo_Ptr( new AttachedSyncMediaInfo( shared_this<MediaSyncFacade>(), *attachId, useableUrls.front(), useableUrls, request, locPath )  );
         _attachedMedia.push_back( attachInfo );
         return expected<MediaSyncFacade::MediaHandle>::success( std::move(attachInfo) );
 
@@ -280,6 +314,8 @@ namespace zyppng {
             }
           }
 
+          zypp::Url effectiveUrl = useableUrls.front();
+
           user = report->requestMedia (
             effectiveUrl,
             request.medianr(),
@@ -332,6 +368,12 @@ namespace zyppng {
                 attachId.reset();
               }
 
+              // explicitely setting a URL from the callback wipes all mirrors
+              if ( useableUrls.front() != effectiveUrl ) {
+                useableUrls.clear ();
+                useableUrls.push_back ( effectiveUrl );
+              }
+
               // not attaching, media set will do that for us
               // this could generate uncaught exception (#158620)
               break;
@@ -353,60 +395,6 @@ namespace zyppng {
         return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_CURRENT_EXCPT() );
       }
     } while ( true );
-  }
-
-  expected<MediaSyncFacade::MediaHandle> MediaSyncFacade::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
-  {
-    // rewrite and sanitize the urls if required
-    std::vector<zypp::Url> useableUrls = sanitizeUrls(urls);
-
-    if ( useableUrls.empty () )
-      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
-
-    // first try and find a already attached medium
-    auto i = std::find_if( _attachedMedia.begin (), _attachedMedia.end(), [&]( const AttachedSyncMediaInfo_Ptr &medium ) {
-      return medium->isSameMedium( useableUrls, request );
-    });
-
-    if ( i != _attachedMedia.end() ) {
-      return expected<MediaSyncFacade::MediaHandle>::success( *i );
-    }
-
-
-    std::exception_ptr lastError;
-    std::exception_ptr jammedError;
-
-
-    // from here call attachMedia with just one URL
-    // catch errors, if one of the URLS returns JAMMED, remember it
-    // continue to try other URLs, if they all fail and JAMMED was remembered
-    // return it, otherwise the last error
-
-    for ( const auto &url : useableUrls ) {
-      try {
-        return expected<MediaSyncFacade::MediaHandle>::success( attachMedia( url, request ).unwrap() );
-      } catch ( zypp::media::MediaJammedException &e) {
-        ZYPP_CAUGHT(e);
-        if ( !jammedError ) jammedError = std::current_exception ();
-      }  catch ( const zypp::Exception &e ) {
-        ZYPP_CAUGHT(e);
-        lastError = std::current_exception();
-      } catch (...) {
-        // didn't work -> clean up
-        lastError = std::current_exception();
-      }
-    }
-
-    if ( jammedError ) {
-      // if we encountered a jammed error return it, there might be still a chance
-      // that invoking the provide again after other pipelines have finished might succeed
-      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_EXCPT(jammedError) );
-    } else if ( lastError ) {
-      // if we have a error stored, return that one
-      return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_FWD_EXCPT(lastError) );
-    }
-
-    return expected<MediaSyncFacade::MediaHandle>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("No URL to attach") ) );
   }
 
   zyppng::MediaSyncFacade::~MediaSyncFacade()

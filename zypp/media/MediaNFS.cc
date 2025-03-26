@@ -39,13 +39,13 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaNFS::MediaNFS( const Url &      url_r,
-                        const Pathname & attach_point_hint_r )
-      : MediaHandler( url_r, attach_point_hint_r,
+    MediaNFS::MediaNFS(const MediaUrl &url_r,
+                       const Pathname & attach_point_hint_r )
+      : MediaHandler( url_r, {}, attach_point_hint_r,
                       "/", // urlpath at attachpoint
                       false ) // does_download
     {
-        MIL << "MediaNFS::MediaNFS(" << url_r << ", " << attach_point_hint_r << ")" << endl;
+        MIL << "MediaNFS::MediaNFS(" << url_r.url() << ", " << attach_point_hint_r << ")" << endl;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -58,14 +58,14 @@ namespace zypp {
     //
     void MediaNFS::attachTo(bool next)
     {
-      if(_url.getHost().empty())
-        ZYPP_THROW(MediaBadUrlEmptyHostException(_url));
+      if(_url.url().getHost().empty())
+        ZYPP_THROW(MediaBadUrlEmptyHostException(_url.url()));
       if(next)
-        ZYPP_THROW(MediaNotSupportedException(_url));
+        ZYPP_THROW(MediaNotSupportedException(_url.url()));
 
-      std::string path = _url.getHost();
+      std::string path = _url.url().getHost();
       path += ':';
-      path += Pathname(_url.getPathName()).asString();
+      path += Pathname(_url.url().getPathName()).asString();
 
       MediaSourceRef media( new MediaSource("nfs", path));
       AttachedMedia  ret( findAttachedMedia( media));
@@ -92,13 +92,13 @@ namespace zypp {
       }
       std::string mountpoint( attachPoint().asString() );
 
-      std::string filesystem( _url.getScheme() );
-      if ( filesystem != "nfs4" && _url.getQueryParam("type") == "nfs4" )
+      std::string filesystem( _url.url().getScheme() );
+      if ( filesystem != "nfs4" && _url.url().getQueryParam("type") == "nfs4" )
       {
         filesystem = "nfs4";
       }
 
-      std::string options = _url.getQueryParam("mountoptions");
+      std::string options = _url.url().getQueryParam("mountoptions");
       if(options.empty())
       {
         options="ro";

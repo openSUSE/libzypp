@@ -32,28 +32,66 @@ namespace zypp
 
 IMPL_PTR_TYPE(MediaSetAccess);
 
+class MediaSetAccess::Impl {
+public:
+
+  Impl( std::vector<media::MediaUrl> &&urls, Pathname &&prefered_attach_point )
+    : _urls(std::move(urls))
+    , _prefAttachPoint(std::move(prefered_attach_point))
+  { }
+
+  Impl( std::string &&label_r, std::vector<media::MediaUrl> &&urls, Pathname &&prefered_attach_point)
+    : _urls(std::move(urls))
+    , _prefAttachPoint(std::move(prefered_attach_point))
+    , _label(std::move( label_r ))
+  { }
+
+  /** Media or media set URL */
+  std::vector<media::MediaUrl> _urls;
+
+  /**
+   * Prefered mount point.
+   *
+   * \see MediaManager::open(Url,Pathname)
+   * \see MediaHandler::_attachPoint
+   */
+  Pathname _prefAttachPoint;
+
+  std::string _label;
+
+  using MediaMap = std::map<media::MediaNr, media::MediaAccessId>;
+  using VerifierMap = std::map<media::MediaNr, media::MediaVerifierRef>;
+
+  /** Mapping between media number and Media Access ID */
+  MediaMap _medias;
+  /** Mapping between media number and corespondent verifier */
+  VerifierMap _verifiers;
+};
+
 ///////////////////////////////////////////////////////////////////
 
-  MediaSetAccess::MediaSetAccess(Url url,
-                                 Pathname  prefered_attach_point)
-      : _url(std::move(url))
-      , _prefAttachPoint(std::move(prefered_attach_point))
+  MediaSetAccess::MediaSetAccess(Url url, Pathname  prefered_attach_point)
+    : MediaSetAccess( { media::MediaUrl( std::move(url)) }, std::move(prefered_attach_point) )
   {}
 
-  MediaSetAccess::MediaSetAccess(std::string  label_r,
-                                 Url url,
-                                 Pathname  prefered_attach_point)
-      : _url(std::move(url))
-      , _prefAttachPoint(std::move(prefered_attach_point))
-      , _label(std::move( label_r ))
+  MediaSetAccess::MediaSetAccess(std::string label_r, Url url, Pathname prefered_attach_point)
+    : MediaSetAccess( std::move(label_r), { media::MediaUrl( std::move(url)) }, std::move(prefered_attach_point) )
   {}
+
+  MediaSetAccess::MediaSetAccess(std::vector<media::MediaUrl> urls, Pathname prefered_attach_point)
+    : _pimpl( std::make_unique<Impl>( std::move(urls), std::move(prefered_attach_point) ) )
+  { }
+
+  MediaSetAccess::MediaSetAccess(std::string label_r, std::vector<media::MediaUrl> urls, Pathname prefered_attach_point)
+    : _pimpl( std::make_unique<Impl>( std::move(label_r), std::move(urls), std::move(prefered_attach_point) ) )
+  { }
 
   MediaSetAccess::~MediaSetAccess()
   {
     try
     {
       media::MediaManager manager;
-      for ( const auto & mm : _medias )
+      for ( const auto & mm : _pimpl->_medias )
         manager.close( mm.second );
     }
     catch(...) {} // don't let exception escape a dtor.
@@ -62,22 +100,28 @@ IMPL_PTR_TYPE(MediaSetAccess);
 
   void MediaSetAccess::setVerifier( unsigned media_nr, const media::MediaVerifierRef& verifier )
   {
-    if (_medias.find(media_nr) != _medias.end())
+    if (_pimpl->_medias.find(media_nr) != _pimpl->_medias.end())
     {
       // the media already exists, set theverifier
-      media::MediaAccessId id = _medias[media_nr];
+      media::MediaAccessId id = _pimpl->_medias[media_nr];
       media::MediaManager media_mgr;
       media_mgr.addVerifier( id, verifier );
       // remove any saved verifier for this media
-      _verifiers.erase(media_nr);
+      _pimpl->_verifiers.erase(media_nr);
     }
     else
     {
       // save the verifier in the map, and set it when
       // the media number is first attached
-      _verifiers[media_nr] = verifier;
+      _pimpl->_verifiers[media_nr] = verifier;
     }
   }
+
+  const std::string &MediaSetAccess::label() const
+  { return _pimpl->_label; }
+
+  void MediaSetAccess::setLabel(const std::string &label_r)
+  { _pimpl->_label = label_r; }
 
   void MediaSetAccess::releaseFile( const OnMediaLocation & on_media_file )
   {
@@ -198,7 +242,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
     Pathname path(url.getPathName());
 
     url.setPathName ("/");
-    MediaSetAccess access(url);
+    MediaSetAccess access( std::vector<zypp::media::MediaUrl>{url} );
 
     ManagedFile tmpFile = filesystem::TmpFile::asManagedFile();
 
@@ -322,15 +366,24 @@ IMPL_PTR_TYPE(MediaSetAccess);
             // release all media before requesting another (#336881)
             media_mgr.releaseAll();
 
+            zypp::Url u = _pimpl->_urls.at(0).url();
             user = report->requestMedia (
-              _url,
+              u,
               media_nr,
-              _label,
+              _pimpl->_label,
               reason,
               excp.asUserHistory(),
               devices,
               devindex
             );
+
+            // if the user changes the primary URL, we can no longer use the mirrors,
+            // so we drop them and the settings for the primary too!
+            if ( u != _pimpl->_urls.at(0).url() ) {
+              MIL << "User changed the URL, dropping all mirrors" << std::endl;
+              _pimpl->_urls.clear ();
+              _pimpl->_urls.push_back( u );
+            }
           }
 
           MIL << "ProvideFile exception caught, callback answer: " << user << endl;
@@ -369,7 +422,7 @@ IMPL_PTR_TYPE(MediaSetAccess);
             DBG << "Going to try again" << endl;
             // invalidate current media access id
             media_mgr.close(media);
-            _medias.erase(media_nr);
+            _pimpl->_medias.erase(media_nr);
 
             // not attaching, media set will do that for us
             // this could generate uncaught exception (#158620)
@@ -406,27 +459,32 @@ IMPL_PTR_TYPE(MediaSetAccess);
 
   media::MediaAccessId MediaSetAccess::getMediaAccessId (media::MediaNr medianr)
   {
-    if ( _medias.find( medianr ) != _medias.end() )
+    if ( _pimpl->_medias.find( medianr ) != _pimpl->_medias.end() )
     {
-      return _medias[medianr];
+      return _pimpl->_medias[medianr];
     }
 
-    Url url( medianr > 1 ? rewriteUrl( _url, medianr ) : _url );
+    std::vector<media::MediaUrl> urls = _pimpl->_urls;
+    if ( medianr > 1 ) {
+      for ( auto &url : urls ) {
+        url.setUrl ( rewriteUrl (url.url(), medianr) );
+      }
+    }
     media::MediaManager media_mgr;
-    media::MediaAccessId id = media_mgr.open( url, _prefAttachPoint );
-    _medias[medianr] = id;
+    media::MediaAccessId id = media_mgr.open( urls, _pimpl->_prefAttachPoint );
+    _pimpl->_medias[medianr] = id;
 
     try
     {
-      if ( _verifiers.find(medianr) != _verifiers.end() )
+      if ( _pimpl->_verifiers.find(medianr) != _pimpl->_verifiers.end() )
       {
         // a verifier is set for this media
         // FIXME check the case where the verifier exists
         // but we have no access id for the media
         media_mgr.delVerifier( id );
-        media_mgr.addVerifier( id, _verifiers[medianr] );
+        media_mgr.addVerifier( id, _pimpl->_verifiers[medianr] );
         // remove any saved verifier for this media
-        _verifiers.erase( medianr );
+        _pimpl->_verifiers.erase( medianr );
       }
     }
     catch ( const Exception &e )
@@ -486,13 +544,13 @@ IMPL_PTR_TYPE(MediaSetAccess);
   {
     DBG << "Releasing all media IDs held by this MediaSetAccess" << endl;
     media::MediaManager manager;
-    for (MediaMap::const_iterator m = _medias.begin(); m != _medias.end(); ++m)
+    for ( auto m = _pimpl->_medias.begin(); m != _pimpl->_medias.end(); ++m )
       manager.release(m->second, "");
   }
 
   std::ostream & MediaSetAccess::dumpOn( std::ostream & str ) const
   {
-    str << "MediaSetAccess (URL='" << _url << "', attach_point_hint='" << _prefAttachPoint << "')";
+    str << "MediaSetAccess (URL='" << _pimpl->_urls.at(0) << "', attach_point_hint='" << _pimpl->_prefAttachPoint << "')";
     return str;
   }
 

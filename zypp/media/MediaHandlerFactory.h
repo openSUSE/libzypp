@@ -3,6 +3,7 @@
 
 #include <zypp/Pathname.h>
 #include <zypp/Url.h>
+#include <zypp/media/MediaUrl.h>
 #include <memory>
 #include <optional>
 
@@ -27,7 +28,7 @@ namespace zypp::media {
     };
 
     MediaHandlerFactory();
-    static std::unique_ptr<MediaHandler> createHandler (const Url& o_url, const Pathname & preferred_attach_point);
+    static std::unique_ptr<MediaHandler> createHandler (const std::vector<MediaUrl>& o_url, const Pathname & preferred_attach_point);
     static std::optional<MediaHandlerType> handlerType( const Url &url );
   };
 

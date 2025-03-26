@@ -52,10 +52,10 @@ namespace zypp
 
       public:
 
-        MediaISO(const Url      &url_r,
+        MediaISO(const MediaUrl &url_r,
                  const Pathname &attach_point_hint_r);
 
-        
+
         ~MediaISO() override;
 
         bool

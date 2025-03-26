@@ -376,7 +376,11 @@ namespace zyppng {
     expected<RepoInfo> getRepositoryInfo( const std::string & alias );
     expected<RepoInfo> getRepositoryInfo( const zypp::Url & url, const zypp::url::ViewOption &urlview );
 
-    expected<RefreshCheckStatus> checkIfToRefreshMetadata( const RepoInfo & info, const zypp::Url & url, RawMetadataRefreshPolicy policy );
+    expected<RefreshCheckStatus> checkIfToRefreshMetadata( const RepoInfo & info, const std::vector<zypp::Url> &urls, RawMetadataRefreshPolicy policy );
+
+    expected<RefreshCheckStatus> checkIfToRefreshMetadata( const RepoInfo & info, const zypp::Url & url, RawMetadataRefreshPolicy policy ) {
+      return checkIfToRefreshMetadata ( info, std::vector<zypp::Url>{url}, policy );
+    }
 
     /**
      * \short Refresh local raw cache
@@ -399,7 +403,7 @@ namespace zyppng {
 
     std::vector<std::pair<RepoInfo, expected<void> > > refreshMetadata(std::vector<RepoInfo> infos, RawMetadataRefreshPolicy policy, ProgressObserverRef myProgress = nullptr  );
 
-    expected<zypp::repo::RepoType> probe( const zypp::Url & url, const zypp::Pathname & path = zypp::Pathname() ) const;
+    expected<zypp::repo::RepoType> probe( const std::vector<zypp::Url> & url, const zypp::Pathname & path = zypp::Pathname() ) const;
 
     expected<void> buildCache( const RepoInfo & info, CacheBuildPolicy policy, ProgressObserverRef myProgress = nullptr );
 

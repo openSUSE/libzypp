@@ -302,29 +302,8 @@ namespace zypp {
           case zyppng::NetworkRequestError::Timeout:
           case zyppng::NetworkRequestError::Forbidden:
           case zyppng::NetworkRequestError::Http2Error:
-          case zyppng::NetworkRequestError::Http2StreamError: {
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, req.extendedErrorString() );
-            break;
-          }
-          case zyppng::NetworkRequestError::Unauthorized:
-          case zyppng::NetworkRequestError::AuthFailed: {
-
-            //in case we got a auth hint from the server the error object will contain it
-            std::string authHint = error.extraInfoValue("authHint", std::string());
-
-            media::CredentialManager cm(media::CredManagerOptions(ZConfig::instance().repoManagerRoot()));
-            bool newCreds = media::MediaCurl2::authenticate( _myMirror->baseUrl, cm, req.transferSettings(), authHint, _firstAuth );
-            if ( newCreds) {
-              _firstAuth = false;
-              _parent._dispatcher->enqueue( _req );
-              return;
-            }
-
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString() );
-            break;
-          }
+          case zyppng::NetworkRequestError::Http2StreamError:
           case zyppng::NetworkRequestError::NotFound: {
-
             MIL << "Download from mirror failed for file " << req.url () << " trying to taint mirror and move on" << std::endl;
 
             if ( taintCurrentMirror() ) {
@@ -344,6 +323,23 @@ namespace zypp {
             }
 
             failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString() );
+            break;
+          }
+          case zyppng::NetworkRequestError::Unauthorized:
+          case zyppng::NetworkRequestError::AuthFailed: {
+
+            //in case we got a auth hint from the server the error object will contain it
+            std::string authHint = error.extraInfoValue("authHint", std::string());
+
+            media::CredentialManager cm(media::CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+            bool newCreds = media::MediaNetworkCommonHandler::authenticate( _myMirror->baseUrl, cm, req.transferSettings(), authHint, _firstAuth );
+            if ( newCreds) {
+              _firstAuth = false;
+              _parent._dispatcher->enqueue( _req );
+              return;
+            }
+
+            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString() );
             break;
           }
           case zyppng::NetworkRequestError::NoError:
@@ -386,7 +382,8 @@ namespace zypp {
       const auto &loc = _job.lookupLocation();
 
       // rewrite URL for media handle
-      url = MediaSetAccess::rewriteUrl( url ,loc.medianr() );
+      if ( loc.medianr() > 1 )
+        url = MediaSetAccess::rewriteUrl( url ,loc.medianr() );
 
       // append path to file
       url.appendPathName( loc.filename() );
@@ -514,6 +511,8 @@ namespace zypp {
             if ( rewriteUrl.isValid () )
               url = rewriteUrl;
           }
+
+          MIL << "Adding Url: " << url << " to the mirror set" << std::endl;
 
           repoUrls.push_back( RepoUrl {
                                 .baseUrl = std::move(url),

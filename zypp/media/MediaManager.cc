@@ -61,12 +61,14 @@ namespace zypp
           : desired(m.desired), verifier(std::move(m.verifier)),
             _handler(std::move(m._handler)) {}
 
-        static ManagedMedia makeManagedMedia ( const Url &o_url, const Pathname &preferred_attach_point, const MediaVerifierRef &v )
+        static ManagedMedia makeManagedMedia ( const std::vector<MediaUrl> &o_urlList, const Pathname &preferred_attach_point, const MediaVerifierRef &v )
         {
-          auto handler = MediaHandlerFactory::createHandler( o_url, preferred_attach_point );
+          auto handler = MediaHandlerFactory::createHandler( o_urlList, preferred_attach_point );
           if ( !handler ) {
             ERR << "Failed to create media handler" << std::endl;
-            ZYPP_THROW( MediaSystemException(o_url, "Failed to create media handler"));
+            if ( o_urlList.size () )
+              ZYPP_THROW( MediaSystemException( o_urlList.at(0).url(), "Failed to create media handler"));
+            ZYPP_THROW( MediaException("Failed to create media handler") );
           }
           return ManagedMedia( std::move(handler), v );
         }
@@ -315,9 +317,14 @@ namespace zypp
     MediaAccessId
     MediaManager::open(const Url &url, const Pathname &preferred_attach_point)
     {
+      return open({MediaUrl(url)}, preferred_attach_point );
+    }
+
+    MediaAccessId MediaManager::open(const std::vector<MediaUrl> &urls, const Pathname &preferred_attach_point)
+    {
       // create new access handler for it
       MediaVerifierRef verifier( new NoVerifier());
-      ManagedMedia tmp = ManagedMedia::makeManagedMedia( url, preferred_attach_point, verifier );
+      ManagedMedia tmp = ManagedMedia::makeManagedMedia( urls, preferred_attach_point, verifier );
 
       MediaAccessId nextId = m_impl->nextAccessId();
 
@@ -325,7 +332,7 @@ namespace zypp
       //m_impl->mediaMap[nextId] = std::move(tmp);
 
       DBG << "Opened new media access using id " << nextId
-          << " to " << url.asString() << std::endl;
+          << " to " << urls.at(0).url().asString() << std::endl;
       return nextId;
     }
 

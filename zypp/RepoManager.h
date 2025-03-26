@@ -201,6 +201,18 @@ namespace zypp
                                    RawMetadataRefreshPolicy policy = RefreshIfNeeded);
 
     /**
+     * Overload for checkIfToRefreshMetadata using a list of Urls to check if to refresh
+     * metadata. The Urls in the list are treated as mirrors and need to resolve to the
+     * same media handler.
+     *
+     * \sa RepoInfo::groupedBaseUrls
+     *
+     */
+    RefreshCheckStatus checkIfToRefreshMetadata( const RepoInfo &info,
+                                   const std::vector<Url> &url,
+                                   RawMetadataRefreshPolicy policy = RefreshIfNeeded);
+
+    /**
      * \short Path where the metadata is downloaded and kept
      *
      * Given a repoinfo, tells where \ref RepoManager will download

@@ -17,7 +17,7 @@
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
-#include <zypp/Url.h>
+#include <zypp/media/MediaUrl.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/media/MediaSource.h>
 #include <zypp-media/MediaException>
@@ -492,8 +492,29 @@ namespace zypp::media
      * \throws std::bad_alloc
      * \throws MediaException
      */
+    MediaAccessId open(const Url &url, const Pathname & preferred_attach_point = "");
+
+
+    /**
+     * Opens the media access for specified via the url list.
+     * Each URL in the list is seen as a mirror for the primary Url.
+     * The primary URL always is the first one in the list, all mirrors resolving
+     * to a different handler than the primary will be ignored.
+     *
+     * Not all MediaHandler have to support mirrors, in those cases only the
+     * primary Url is used.
+     *
+     * \param  urls The \ref MediaAccessUrl and its mirrors.
+     * \param  preferred_attach_point The preferred, already
+     *         existing directory, where the media should be
+     *         attached.
+     * \return a new media access id.
+     * \throws std::bad_alloc
+     * \throws MediaException
+     */
     MediaAccessId
-    open(const Url &url, const Pathname & preferred_attach_point = "");
+    open(const std::vector<MediaUrl> &urls, const Pathname & preferred_attach_point = "");
+
 
     /**
      * Close the media access with specified id.
@@ -532,7 +553,7 @@ namespace zypp::media
     downloads(MediaAccessId accessId) const;
 
     /**
-     * Returns the \ref MediaAccessUrl of the media access id.
+     * Returns the primary \ref MediaAccessUrl of the media access id.
      *
      * \param accessId The media access id to query.
      * \return The \ref MediaAccessUrl used by the media access id.

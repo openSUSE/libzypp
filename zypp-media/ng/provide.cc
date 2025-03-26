@@ -122,7 +122,7 @@ namespace zyppng {
       if ( (*iMedia)->_workerType == ProvideQueue::Config::Downloading ) {
         // we keep the information around for an hour so we do not constantly download the media files for no reason
         if ( (*iMedia)->_idleSince && std::chrono::steady_clock::now() - (*iMedia)->_idleSince.value() >= std::chrono::hours(1) ) {
-          MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->_attachedUrl << std::endl;
+          MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->attachedUrl() << std::endl;
           iMedia = _attachedMediaInfos.erase(iMedia);
           continue;
         } else {
@@ -132,12 +132,12 @@ namespace zyppng {
         // mounting handlers, we need to send a request to the workers
         auto bQueue = (*iMedia)->_backingQueue.lock();
         if ( bQueue ) {
-          zypp::Url url = (*iMedia)->_attachedUrl;
+          zypp::Url url = (*iMedia)->attachedUrl();
           url.setScheme( url.getScheme() + std::string( constants::ATTACHED_MEDIA_SUFFIX) );
           url.setAuthority( (*iMedia)->_name );
           const auto &req = ProvideRequest::createDetach( url );
           if ( req ) {
-            MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->_attachedUrl << std::endl;
+            MIL << "Detaching medium " << (*iMedia)->_name << " for baseUrl " << (*iMedia)->attachedUrl() << std::endl;
             bQueue->enqueue ( *req );
             iMedia = _attachedMediaInfos.erase(iMedia);
             continue;
@@ -974,9 +974,17 @@ namespace zyppng {
   const zypp::Url &ProvideMediaHandle::baseUrl() const
   {
     static zypp::Url invalidHandle;
+    if ( !_mediaRef || !_mediaRef->_mirrors.size() )
+      return invalidHandle;
+    return _mediaRef->_mirrors.at(0);
+  }
+
+  const std::vector<zypp::Url> &ProvideMediaHandle::mirrors() const
+  {
+    static std::vector<zypp::Url> invalidHandle;
     if ( !_mediaRef )
       return invalidHandle;
-    return _mediaRef->_attachedUrl;
+    return _mediaRef->_mirrors;
   }
 
   const std::optional<zypp::Pathname> &ProvideMediaHandle::localPath() const
@@ -1084,21 +1092,30 @@ namespace zyppng {
       return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Invalid attach handle")) ) );
     }
 
-    // for downloading items we need to make the baseUrl part of the request URL
-    zypp::Url url = (*i)->_attachedUrl;
+    std::vector<zypp::Url> urls;
 
     // real mount devices use a ID to reference a attached medium, for those we do not need to send the baseUrl as well since its already
     // part of the mount point, so if we mount host:/path/to/repo to the ID 1234 and look for the file /path/to/repo/file1 the request URL will look like:  nfs-media://1234/file1
     if ( (*i)->_workerType == ProvideQueue::Config::SimpleMount || (*i)->_workerType == ProvideQueue::Config::VolatileMount ) {
-      url = zypp::Url();
+      auto url = zypp::Url();
       // work around the zypp::Url requirements for certain Url schemes by attaching a suffix, that way we are always able to have a authority
-      url.setScheme( (*i)->_attachedUrl.getScheme() + std::string(constants::ATTACHED_MEDIA_SUFFIX) );
+      url.setScheme( (*i)->attachedUrl().getScheme() + std::string(constants::ATTACHED_MEDIA_SUFFIX) );
       url.setAuthority( (*i)->_name );
       url.setPathName("/");
+      url.appendPathName( fileName );
+      urls.push_back(url);
+    } else {
+
+      // for other items we need to make the baseUrl part of the request URL
+      const auto &addUrl = [&]( const zypp::Url u ){
+        zypp::Url url = u;
+        url.appendPathName( fileName );
+        urls.push_back( url );
+      };
+      std::for_each ( (*i)->_mirrors.begin(), (*i)->_mirrors.end(), addUrl );
     }
 
-    url.appendPathName( fileName );
-    auto op = ProvideFileItem::create( {url}, request, *d );
+    auto op = ProvideFileItem::create( urls, request, *d );
     op->setMediaRef( MediaHandle( *this, (*i) ));
     d->queueItem (op);
 

@@ -142,7 +142,7 @@ namespace zyppng
     return *this;
   }
 
-  zypp::TriBool ProvideMediaSpec::isSameMedium( const ProvideMediaSpec &other )
+  zypp::TriBool ProvideMediaSpec::isSameMedium( const ProvideMediaSpec &other ) const
   {
     // first check if we have the same media data
     if ( _pimpl->_verifyDataPath != other._pimpl->_verifyDataPath )

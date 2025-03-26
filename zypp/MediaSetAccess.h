@@ -24,6 +24,7 @@
 #include <zypp/CheckSum.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ManagedFile.h>
+#include <zypp/media/MediaUrl.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -92,6 +93,24 @@ namespace zypp
       MediaSetAccess( Url url, Pathname  prefered_attach_point = "" );
       /** \overload Also taking a \ref label. */
       MediaSetAccess( std::string  label_r, Url url, Pathname  prefered_attach_point = "" );
+
+      /**
+       * Creates a callback enabled media access for specified \a url.
+       *
+       * \param urls
+       * \param prefered_attach_point Prefered attach (mount) point. Use, if
+       *        you want to mount the media to a specific directory.
+       */
+      MediaSetAccess( std::vector<media::MediaUrl> urls, Pathname  prefered_attach_point = "" );
+      /** \overload Also taking a \ref label. */
+      MediaSetAccess( std::string label_r, std::vector<media::MediaUrl> urls, Pathname  prefered_attach_point = "" );
+
+
+      MediaSetAccess(const MediaSetAccess &) = delete;
+      MediaSetAccess(MediaSetAccess &&) = delete;
+      MediaSetAccess &operator=(const MediaSetAccess &) = delete;
+      MediaSetAccess &operator=(MediaSetAccess &&) = delete;
+
       ~MediaSetAccess() override;
 
       /**
@@ -102,14 +121,12 @@ namespace zypp
       /**
        * The label identifing this media set and to be sent in a media change request.
        */
-      const std::string & label() const
-      { return _label; }
+      const std::string & label() const;
 
       /**
        * Set the label identifing this media set and to be sent in a media change request.
        */
-      void setLabel( const std::string & label_r )
-      { _label = label_r; }
+      void setLabel( const std::string & label_r );
 
       enum ProvideFileOption
       {
@@ -364,26 +381,9 @@ namespace zypp
       std::ostream & dumpOn( std::ostream & str ) const override;
 
     private:
-      /** Media or media set URL */
-      Url _url;
-
-      /**
-       * Prefered mount point.
-       *
-       * \see MediaManager::open(Url,Pathname)
-       * \see MediaHandler::_attachPoint
-       */
-      Pathname _prefAttachPoint;
-
-      std::string _label;
-
-      using MediaMap = std::map<media::MediaNr, media::MediaAccessId>;
-      using VerifierMap = std::map<media::MediaNr, media::MediaVerifierRef>;
-
-      /** Mapping between media number and Media Access ID */
-      MediaMap _medias;
-      /** Mapping between media number and corespondent verifier */
-      VerifierMap _verifiers;
+      class Impl;
+      /** Pointer to implementation */
+      std::unique_ptr<Impl> _pimpl;
     };
     ///////////////////////////////////////////////////////////////////
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaSetAccess::ProvideFileOptions);

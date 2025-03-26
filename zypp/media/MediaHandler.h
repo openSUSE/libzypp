@@ -13,6 +13,7 @@
 #ifndef ZYPP_MEDIA_MEDIAHANDLERL_H
 #define ZYPP_MEDIA_MEDIAHANDLERL_H
 
+#include <any>
 #include <iosfwd>
 #include <string>
 #include <list>
@@ -21,7 +22,7 @@
 #include <zypp/PathInfo.h>
 #include <zypp/base/PtrTypes.h>
 
-#include <zypp/Url.h>
+#include <zypp/media/MediaUrl.h>
 
 #include <zypp/media/MediaSource.h>
 #include <zypp-media/MediaException>
@@ -35,7 +36,6 @@ namespace zypp {
   namespace media {
 
     class MediaManager;
-
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -54,7 +54,6 @@ class MediaHandler {
     public:
         using Ptr = shared_ptr<MediaHandler>;
         using constPtr = shared_ptr<const MediaHandler>;
-
         static bool setAttachPrefix(const Pathname &attach_prefix);
 
         static std::string getRealPath(const std::string &path);
@@ -107,10 +106,16 @@ class MediaHandler {
         mutable time_t  _attach_mtime;
 
     protected:
+
         /**
-         * Url to handle
+         * All mirrors including the primary
          **/
-        const Url        _url;
+        const std::vector<MediaUrl> _urls;
+
+        /**
+         * Primary Url
+         */
+        const MediaUrl _url;
 
         /**
          * Access Id of media handler we depend on.
@@ -466,7 +471,8 @@ class MediaHandler {
          * On any error, the attach_point is set to an empty Pathname,
          * which should lead to E_bad_attachpoint.
          **/
-        MediaHandler ( Url        url_r,
+        MediaHandler ( MediaUrl primaryUrl_r,
+                       std::vector<MediaUrl>  urls_r,
                        const Pathname & attach_point_r,
                        Pathname  urlpath_below_attachpoint_r,
                        const bool       does_download_r );
@@ -495,12 +501,12 @@ class MediaHandler {
         /**
          * Protocol hint for MediaAccess.
          **/
-        std::string protocol() const { return _url.getScheme(); }
+        std::string protocol() const { return _url.url().getScheme(); }
 
         /**
-         * Url used.
+         * Primary Url used.
          **/
-        Url url() const { return _url; }
+        Url url() const { return _url.url(); }
 
         /**
          * Use concrete handler to attach the media.

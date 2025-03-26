@@ -35,20 +35,20 @@ namespace zypp {
     //	METHOD NAME : MediaDIR::MediaDIR
     //	METHOD TYPE : Constructor
     //
-    //	DESCRIPTION : Attach point is always url_r.getPathName(),
+    //	DESCRIPTION : Attach point is always _url.url().getPathName(),
     //                as files are not copied.
     //                Thus attach_point_hint_r is ignored.
     //
-    MediaDIR::MediaDIR( const Url &      url_r,
-                        const Pathname & /*attach_point_hint_r*/ )
-        : MediaHandler( url_r, url_r.getPathName(),
+    MediaDIR::MediaDIR(const MediaUrl &url,
+                       const Pathname & /*attach_point_hint_r*/ )
+        : MediaHandler( url, {}, url.url().getPathName(),
                     "/",    // urlpath below attachpoint
                     false ) // does_download
     {
-        MIL << "MediaDIR::MediaDIR(" << url_r << ")" << endl;
-        if( !url_r.getHost().empty())
+        MIL << "MediaDIR::MediaDIR(" << _url.url() << ")" << endl;
+        if( !_url.url().getHost().empty())
         {
-          ZYPP_THROW(MediaBadUrlException(url_r,
+          ZYPP_THROW(MediaBadUrlException(_url.url(),
             "Hostname not allowed in the Url"
           ));
         }

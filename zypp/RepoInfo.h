@@ -153,6 +153,12 @@ namespace zypp
       url_set rawBaseUrls() const;
 
       /**
+       * Returns the currently known baseUrls in groups, where each group contains a
+       * primary base url and additional urls that should be used as mirrors.
+       */
+      std::vector<std::vector<Url>> groupedBaseUrls() const;
+
+      /**
        * Add a base url. \see baseUrls
        * \param url The base url for the repository.
        *

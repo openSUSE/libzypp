@@ -15,6 +15,7 @@
 #include <zypp/base/Flags.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp/media/MediaNetworkCommonHandler.h>
+#include <zypp-curl/private/curlhelper_p.h>
 
 #include <curl/curl.h>
 
@@ -28,36 +29,17 @@ namespace zypp {
  * @short Implementation class for FTP, HTTP and HTTPS MediaHandler
  * @see MediaHandler
  **/
-class MediaCurl : public MediaNetworkCommonHandler
+class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHelper::CurlPoll
 {
-  public:
-    enum RequestOption
-    {
-        /** Defaults */
-        OPTION_NONE = 0x0,
-        /** retrieve only a range of the file */
-        OPTION_RANGE = 0x1,
-        /** only issue a HEAD (or equivalent) request */
-        OPTION_HEAD = 0x02,
-        /** to not add a IFMODSINCE header if target exists */
-        OPTION_NO_IFMODSINCE = 0x04,
-        /** do not send a start ProgressReport */
-        OPTION_NO_REPORT_START = 0x08,
-    };
-    ZYPP_DECLARE_FLAGS(RequestOptions,RequestOption);
+  struct RequestData {
+    int mirror = -1;
+    CURL *curl = nullptr;
+  };
 
   protected:
 
-    Url clearQueryString(const Url &url) const;
-
-    void attachTo (bool next = false) override;
     void releaseFrom( const std::string & ejectDev ) override;
-    void getFile( const OnMediaLocation & file ) const override;
-    void getDir( const Pathname & dirname, bool recurse_r ) const override;
-    void getDirInfo( std::list<std::string> & retlist,
-                             const Pathname & dirname, bool dots = true ) const override;
-    void getDirInfo( filesystem::DirContent & retlist,
-                             const Pathname & dirname, bool dots = true ) const override;
+
     /**
      * Repeatedly calls doGetDoesFileExist() until it successfully returns,
      * fails unexpectedly, or user cancels the operation. This is used to
@@ -68,7 +50,7 @@ class MediaCurl : public MediaNetworkCommonHandler
     /**
      * \see MediaHandler::getDoesFileExist
      */
-    virtual bool doGetDoesFileExist( const Pathname & filename ) const;
+    bool doGetDoesFileExist( const int mirror, const Pathname & filename );
 
     /**
      *
@@ -81,33 +63,19 @@ class MediaCurl : public MediaNetworkCommonHandler
      * \throws MediaException
      *
      */
-    void getFileCopy( const OnMediaLocation& srcFile, const Pathname & targetFilename ) const override;
+    void getFileCopy( const OnMediaLocation& srcFile, const Pathname & target ) const override;
 
-    /**
-     *
-     * \throws MediaException
-     *
-     */
-    virtual void doGetFileCopy( const OnMediaLocation &srcFile, const Pathname & targetFilename, callback::SendReport<DownloadProgressReport> & _report,  RequestOptions options = OPTION_NONE ) const;
-
-
-    bool checkAttachPoint(const Pathname &apoint) const override;
+    void getFileCopyFromMirror(const int mirror, const OnMediaLocation& srcFile, const Pathname & target );
 
   public:
 
-    MediaCurl( const Url &      url_r,
-               const Pathname & attach_point_hint_r );
+    MediaCurl( const MediaUrl &url_r,
+               const std::vector<MediaUrl> &mirrors_r,
+               const Pathname &attach_point_hint_r );
 
-    ~MediaCurl() override { try { release(); } catch(...) {} }
+    ~MediaCurl() override;
 
     static void setCookieFile( const Pathname & );
-
-    class Callbacks
-    {
-      public:
-        virtual ~Callbacks();
-        virtual bool progress( int percent ) = 0;
-    };
 
   protected:
     /** Callback sending just an alive trigger to the UI, without stats (e.g. during metalink download). */
@@ -115,17 +83,14 @@ class MediaCurl : public MediaNetworkCommonHandler
     /** Callback reporting download progress. */
     static int progressCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
     static CURL *progressCallback_getcurl( void *clientp );
-    /**
-     * check the url is supported by the curl library
-     * \throws MediaBadUrlException if there is a problem
-     **/
-    void checkProtocol(const Url &url) const;
+
+    void checkProtocol(const Url &url) const override;
 
     /**
      * initializes the curl easy handle with the data from the url
      * \throws MediaCurlSetOptException if there is a problem
      **/
-    virtual void setupEasy();
+    void setupEasy( RequestData &rData, TransferSettings &settings );
 
     /**
      * Evaluates a curl return code and throws the right MediaException
@@ -139,23 +104,21 @@ class MediaCurl : public MediaNetworkCommonHandler
      *
      * \throws MediaException If there is a problem
      */
-    void evaluateCurlCode(const zypp::Pathname &filename, CURLcode code, bool timeout) const;
-
-    void doGetFileCopyFile( const OnMediaLocation & srcFile, const Pathname & dest, FILE *file, callback::SendReport<DownloadProgressReport> & report, RequestOptions options = OPTION_NONE ) const;
+    void evaluateCurlCode( RequestData &rData, const zypp::Pathname &fileName, CURLcode code, bool timeout ) const;
 
     static void resetExpectedFileSize ( void *clientp, const ByteCount &expectedFileSize );
 
   private:
 
-    CURLcode executeCurl() const;
+    CURLcode executeCurl( RequestData &rData );
 
     /**
      * Return a comma separated list of available authentication methods
      * supported by server.
      */
-    std::string getAuthHint() const;
+    std::string getAuthHint(CURL *curl) const;
 
-    bool authenticate(const std::string & availAuthTypes, bool firstTry) const;
+    //bool authenticate(const std::string & availAuthTypes, bool firstTry) const;
 
     bool detectDirIndex() const;
 
@@ -165,15 +128,11 @@ class MediaCurl : public MediaNetworkCommonHandler
     char _curlError[ CURL_ERROR_SIZE ];
 
     mutable std::string _lastRedirect;	///< to log/report redirections
-
-  protected:
-    CURL *_curl;
     curl_slist *_customHeaders;
 
     const char* curlError() const { return _curlError; };
     void setCurlError(const char* error);
 };
-ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaCurl::RequestOptions);
 
 ///////////////////////////////////////////////////////////////////
 

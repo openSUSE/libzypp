@@ -264,6 +264,7 @@ SET( zypp_media_SRCS
   media/MediaSource.cc
   media/MediaManager.cc
   media/MediaPriority.cc
+  media/MediaUrl.cc
   media/UrlResolverPlugin.cc
 )
 
@@ -284,6 +285,7 @@ SET( zypp_media_HEADERS
   media/MediaNFS.h
   media/MediaSource.h
   media/MediaPriority.h
+  media/MediaUrl.h
   media/UrlResolverPlugin.h
 )
 

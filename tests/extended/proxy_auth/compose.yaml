@@ -1,0 +1,51 @@
+version: "3.9"
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+  server_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24
+
+
+services:
+  server:
+    build:
+      context:  .
+      dockerfile: ./server/Dockerfile
+    networks:
+      server_net:
+        ipv4_address: 172.16.239.10
+    volumes:
+      - ../common_files:/Local/Common
+
+
+  app:
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.3
+    build:
+      context:  .
+      dockerfile: ./client/Dockerfile
+    volumes:
+      - ../common_files:/Local/Common
+
+  proxy:
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.2
+      server_net:
+        ipv4_address: 172.16.239.2
+    build:
+      context:  .
+      dockerfile: ./proxy/Dockerfile
+    volumes:
+      - ../common_files:/Local/Common
+      - ./proxy/config:/etc/squid

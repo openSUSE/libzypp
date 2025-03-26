@@ -39,6 +39,13 @@
 
 %bcond_without mediabackend_tests
 
+
+%if 0%{?_with_cimode}
+%bcond_without testrunner
+%else
+%bcond_with testrunner
+%endif
+
 # older libsigc versions have a bug that causes a segfault
 # when clearing connections during signal emission
 # see https://bugzilla.gnome.org/show_bug.cgi?id=784550
@@ -325,6 +332,7 @@ cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       %{?with_sigc_block_workaround:-DENABLE_SIGC_BLOCK_WORKAROUND=1} \
       %{!?with_mediabackend_tests:-DDISABLE_MEDIABACKEND_TESTS=1} \
       %{?with enable_preview_single_rpmtrans_as_default_for_zypper:-DENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER=1} \
+      %{?with_testrunner:-DENABLE_TESTRUNNER=1} \
       ${EXTRA_CMAKE_OPTIONS} \
       ..
 make %{?_smp_mflags} VERBOSE=1

@@ -50,30 +50,30 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaDISK::MediaDISK( const Url &      url_r,
-                          const Pathname & attach_point_hint_r )
-        : MediaHandler( url_r, attach_point_hint_r,
-                    url_r.getPathName(), // urlpath below attachpoint
+    MediaDISK::MediaDISK(const MediaUrl &url_r,
+                         const Pathname & attach_point_hint_r )
+      : MediaHandler( url_r, {}, attach_point_hint_r,
+                    url_r.url().getPathName(), // urlpath below attachpoint
                     false ) // does_download
     {
-      MIL << "MediaDISK::MediaDISK(" << url_r << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaDISK::MediaDISK(" << _url.url() << ", " << attach_point_hint_r << ")" << endl;
 
-      _device = Pathname(_url.getQueryParam("device")).asString();
+      _device = Pathname(_url.url().getQueryParam("device")).asString();
       if( _device.empty())
       {
         ERR << "Media url does not contain a device specification" << std::endl;
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
       }
 #if DELAYED_VERIFY
       DBG << "Verify of " << _device << " delayed" << std::endl;
 #else
       if( !verifyIfDiskVolume( _device))
       {
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
       }
 #endif
 
-      _filesystem = _url.getQueryParam("filesystem");
+      _filesystem = _url.url().getQueryParam("filesystem");
       if(_filesystem.empty())
         _filesystem="auto";
 
@@ -200,7 +200,7 @@ namespace zypp {
       DBG << "Verifying " << _device << " ..." << std::endl;
       if( !verifyIfDiskVolume( _device))
       {
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
       }
 #endif
 
@@ -271,7 +271,7 @@ namespace zypp {
       std::string mountpoint( attachPoint().asString() );
 
       Mount mount;
-      std::string options = _url.getQueryParam("mountoptions");
+      std::string options = _url.url().getQueryParam("mountoptions");
       if(options.empty())
       {
         options = "ro";

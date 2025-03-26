@@ -161,6 +161,32 @@ namespace zypp
       return _baseUrls;
     }
 
+    std::vector<std::vector<Url>> groupedBaseUrls() const
+    {
+      // here we group the URLs to figure out mirrors
+      std::vector<std::vector<Url>> urlGroups;
+      int dlUrlIndex = -1; //we remember the index of the first downloading URL
+
+      const auto &baseUrls = this->baseUrls().transformed();
+      std::for_each ( baseUrls.begin(), baseUrls.end(), [&]( const zypp::Url &url ){
+        if ( !url.schemeIsDownloading () ) {
+          urlGroups.push_back ( { url } );
+          return;
+        }
+
+        if ( dlUrlIndex >= 0) {
+          urlGroups[dlUrlIndex].push_back ( url );
+          return;
+        }
+
+        // start a new group
+        urlGroups.push_back ( {url} );
+        dlUrlIndex = urlGroups.size() - 1;
+      });
+
+      return urlGroups;
+    }
+
     RepoVariablesReplacedUrlList & baseUrls()
     { return _baseUrls; }
 
@@ -671,6 +697,9 @@ namespace zypp
 
   Url RepoInfo::rawUrl() const
   { return( _pimpl->baseUrls().empty() ? Url() : *_pimpl->baseUrls().rawBegin() ); }
+
+  std::vector<std::vector<Url>> RepoInfo::groupedBaseUrls() const
+  { return _pimpl->groupedBaseUrls(); }
 
   RepoInfo::urls_const_iterator RepoInfo::baseUrlsBegin() const
   { return _pimpl->baseUrls().transformedBegin(); }

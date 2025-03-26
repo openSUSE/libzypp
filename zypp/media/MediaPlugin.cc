@@ -28,10 +28,10 @@ namespace zypp
   namespace media
   { //////////////////////////////////////////////////////////////////
 
-    MediaPlugin::MediaPlugin( const Url & url_r, const Pathname & attach_point_hint_r )
-      : MediaHandler( url_r, attach_point_hint_r, /*path below attachpoint*/"/", /*does_download*/false )
+    MediaPlugin::MediaPlugin(const MediaUrl &url_r, const Pathname & attach_point_hint_r )
+      : MediaHandler( url_r, {}, attach_point_hint_r, /*path below attachpoint*/"/", /*does_download*/false )
     {
-      MIL << "MediaPlugin::MediaPlugin(" << url_r << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaPlugin::MediaPlugin(" << url_r.url() << ", " << attach_point_hint_r << ")" << endl;
     }
     void MediaPlugin::attachTo( bool next_r )
     {}

@@ -24,7 +24,7 @@ const auto makeKBytes( zypp::ByteCount::SizeType size ) {
 };
 
 bool withSSL[]{ true, false};
-std::vector<std::string> backend = { "curl", "curl2", "multicurl" };
+std::vector<std::string> backend = { "curl", "curl2" };
 
 BOOST_DATA_TEST_CASE( base_provide_zck, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
 {

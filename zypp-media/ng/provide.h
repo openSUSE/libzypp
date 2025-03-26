@@ -60,6 +60,7 @@ namespace zyppng {
       bool isValid () const;
       std::string handle() const;
       const zypp::Url &baseUrl() const;
+      const std::vector<zypp::Url> &mirrors() const;
       const std::optional<zypp::Pathname> &localPath() const;
       zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:

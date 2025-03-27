@@ -792,7 +792,29 @@ namespace zypp
   // -----------------------------------------------------------------
 
   void Url::appendPathName( const Pathname & path_r, EEncoding eflag_r )
-  { if ( ! path_r.emptyOrRoot() ) setPathName( Pathname(getPathName( eflag_r )) / path_r, eflag_r ); }
+  {
+    if ( ! path_r.emptyOrRoot() ) {
+      // Check on string level to restore leading double slashes "//" (E_DECODED)
+      // Most important for ftp: where "/%2f" (E_ENCODED) denotes an absolute path.
+      std::string upath { getPathName( url::E_DECODED ) };
+      if ( upath.empty() ) {
+        setPathName( path_r.absolutename(), eflag_r );
+      } else {
+        bool doubleslhash = str::startsWith( upath, "//" );
+        Pathname npath { upath };   // now let Pathname handle the correct concatenation
+        if ( eflag_r == url::E_DECODED ) {
+          npath /= path_r;
+        } else {
+          npath /= url::decode( path_r.asString() );
+        }
+        if ( doubleslhash ) {
+          setPathName( "/" + npath.asString(), url::E_DECODED );
+        } else {
+          setPathName( npath.asString(), url::E_DECODED );
+        }
+      }
+    }
+  }
 
   // -----------------------------------------------------------------
   void

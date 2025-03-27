@@ -217,7 +217,7 @@ namespace zypp
 	    else
 	    {
 	      Url url( urlstr );
-	      url.setPathName( Pathname(url.getPathName()) / "repo" / pathstr );
+	      url.appendPathName( Pathname("/repo") / pathstr );
 	      info.setBaseUrl( url );
 	    }
 	  }

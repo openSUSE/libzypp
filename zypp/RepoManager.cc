@@ -2156,7 +2156,7 @@ namespace zypp
       {
 	Url url( service.rawUrl() );
 	if ( !path.empty() )
-	  url.setPathName( url.getPathName() / path );
+	  url.appendPathName( path );
 	it->setBaseUrl( std::move(url) );
       }
       else if ( !path.empty() )
@@ -2164,7 +2164,7 @@ namespace zypp
 	RepoInfo::url_set urls( it->rawBaseUrls() );
 	for ( Url & url : urls )
 	{
-	  url.setPathName( url.getPathName() / path );
+	  url.appendPathName( path );
 	}
 	it->setBaseUrls( std::move(urls) );
       }

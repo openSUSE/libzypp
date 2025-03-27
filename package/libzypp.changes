@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Mar 27 17:54:27 CET 2025 - ma@suse.de
+
+- Do not double encode URL strings passed on the commandline
+  (bsc#1237587)
+  URLs passed on the commandline must have their special chars
+  encoded already. We just want to check and encode forgotten
+  unsafe chars like a blank. A '%' however must not be encoded
+  again.
+- version 16.22.16 (0)
+
+-------------------------------------------------------------------
 Wed Dec 18 23:05:26 CET 2024 - ma@suse.de
 
 - Url: queryparams without value should not have a trailing "=".

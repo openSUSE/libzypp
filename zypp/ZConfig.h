@@ -76,6 +76,10 @@ namespace zypp
       std::ostream & about( std::ostream & str ) const;
 
     public:
+      /** The number of seconds to wait for the zypp lock to become available. */
+      long lockTimeout() const;
+
+    public:
 
       /** The target root directory.
        * Returns an empty path if no target is set.

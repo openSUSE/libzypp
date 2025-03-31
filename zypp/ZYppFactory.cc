@@ -25,6 +25,7 @@ extern "C"
 #include <zypp/base/Backtrace.h>
 #include <zypp/base/LogControl.h>
 #include <zypp/PathInfo.h>
+#include <zypp/ZConfig.h>
 
 #include <zypp/ZYppFactory.h>
 #include <zypp/zypp_detail/ZYppImpl.h>
@@ -396,7 +397,7 @@ namespace zypp
       {
         bool failed = true;
         // bsc#1184399,1213231: A negative ZYPP_LOCK_TIMEOUT will wait forever.
-        const long LOCK_TIMEOUT = str::strtonum<long>( getenv( "ZYPP_LOCK_TIMEOUT" ) );
+        const long LOCK_TIMEOUT = ZConfig::instance().lockTimeout();
         if ( LOCK_TIMEOUT != 0 )
         {
           Date logwait = Date::now();

@@ -528,7 +528,10 @@ namespace zypp
                 if ( _initialTargetDefaults.consume( entry, value ) )
                   continue;
 
-                if ( entry == "arch" )
+                if ( entry == "lock_timeout" ) {
+                  str::strtonum( value, cfg_lockTimeout );
+                }
+                else if ( entry == "arch" )
                 {
                   Arch carch( value );
                   if ( carch != cfg_arch )
@@ -767,6 +770,8 @@ namespace zypp
     Pathname _parsedZyppConf;
     Pathname _announced_root_path;
 
+    long cfg_lockTimeout = 0; // signed!
+
     Arch     cfg_arch;
     Locale   cfg_textLocale;
 
@@ -956,6 +961,15 @@ namespace zypp
   //
   ZConfig::~ZConfig( )
   {}
+
+  long ZConfig::lockTimeout() const
+  {
+    const char * env = getenv("ZYPP_LOCK_TIMEOUT");
+    if ( env ) {
+      return str::strtonum<long>( env );
+    }
+    return _pimpl->cfg_lockTimeout;
+  }
 
   void ZConfig::notifyTargetChanged()
   { return _pimpl->notifyTargetChanged(); }

@@ -355,11 +355,6 @@ mkdir -p %{buildroot}/%{_var}/lib/zypp
 mkdir -p %{buildroot}/%{_var}/log/zypp
 mkdir -p %{buildroot}/%{_var}/cache/zypp
 
-# Default to 'solver.dupAllowVendorChange = false' on TW and post SLE12
-%if 0%{?suse_version} >= 1330 || "%{distribution}" == "openSUSE Tumbleweed"
-sed -i "s|# solver.dupAllowVendorChange = true|solver.dupAllowVendorChange = false|g" %{buildroot}%{_sysconfdir}/zypp/zypp.conf
-%endif
-
 cd ..
 
 # Create filelist with translations

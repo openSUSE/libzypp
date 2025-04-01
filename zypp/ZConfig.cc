@@ -410,7 +410,7 @@ namespace zypp
       , solver_dupAllowDowngrade            ( true )
       , solver_dupAllowNameChange           ( true )
       , solver_dupAllowArchChange           ( true )
-      , solver_dupAllowVendorChange         ( true )
+      , solver_dupAllowVendorChange         ( false )
       , solver_cleandepsOnRemove            ( false )
       , solver_upgradeTestcasesToKeep       ( 2 )
       , solverUpgradeRemoveDroppedPackages  ( true )

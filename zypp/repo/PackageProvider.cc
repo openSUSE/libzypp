@@ -417,7 +417,6 @@ namespace zypp
         }
       }
 
-      // FIXME we only support the first url for now.
       if ( info.baseUrlsEmpty() )
         ZYPP_THROW(Exception("No url in repository."));
 

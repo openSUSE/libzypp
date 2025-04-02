@@ -51,46 +51,67 @@ namespace zyppng::KeyRingWorkflow {
       if ( _keyId.empty() || !_context )
         return makeReadyResult(false);
 
+      if ( _context->keyRing()->isKeyKnown(_keyId) ){
+        if ( _context->keyRing()->isKeyTrusted(_keyId) )
+          return makeReadyResult(true);
+
+        return makeReadyResult(importFromKnownKeyring ());
+      }
+
       const zypp::ZConfig &conf = _context->config();
       zypp::Pathname cacheDir = conf.repoManagerRoot() / conf.pubkeyCachePath();
 
-      return RepoInfoWorkflow::provideKey( _context, _repo, _keyId, cacheDir )
-        | [this, cacheDir]( zypp::Pathname myKey ) {
-         if ( myKey.empty()  )
-           // if we did not find any keys, there is no point in checking again, break
-           return false;
+      if (  _repo.gpgKeyUrlsEmpty() ) {
+        // translator: %1% is a repositories name
+        JobReportHelper(_context).info( zypp::str::Format(_("Repository %1% does not define 'gpgkey=' URLs.") ) % _repo.asUserString() );
+      }
 
-         zypp::PublicKey key;
-         try {
-           key = zypp::PublicKey( myKey );
-         } catch ( const zypp::Exception &e ) {
-           ZYPP_CAUGHT(e);
-           return false;
-         }
+      return RepoInfoWorkflow::fetchGpgKeys( _context, _repo )
+        | [this, cacheDir]( expected<void> res ) {
+          if ( !res ) return false;
+          if ( !_context->keyRing()->isKeyKnown(_keyId)  )
+            // if we did not find any keys, there is no point in checking again, break
+            return false;
 
-         if ( !key.isValid() ) {
-           ERR << "Key [" << _keyId << "] from cache: " << cacheDir << " is not valid" << std::endl;
-           return false;
-         }
-
-         MIL << "Key [" << _keyId << "] " << key.name() << " loaded from cache" << std::endl;
-
-         zypp::KeyContext context;
-         context.setRepoInfo( _repo );
-         if ( !KeyRingReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
-           return false;
-         }
-
-         MIL << "User wants to import key [" << _keyId << "] " << key.name() << " from cache" << std::endl;
-         try {
-           _context->keyRing()->importKey( key, true );
-         } catch ( const zypp::KeyRingException &e ) {
-           ZYPP_CAUGHT(e);
-           ERR << "Failed to import key: "<<_keyId;
-           return false;
-         }
-         return true;
+          return importFromKnownKeyring();
         };
+    }
+
+    bool importFromKnownKeyring() {
+      zypp::PublicKeyData keyData ( _context->keyRing()->publicKeyData(_keyId) );
+      if ( !keyData )
+        return false;
+
+      zypp::PublicKey key;
+      try {
+        key = zypp::PublicKey( _context->keyRing()->exportPublicKey( keyData ) );
+      } catch ( const zypp::Exception &e ) {
+        ZYPP_CAUGHT(e);
+        return false;
+      }
+
+      if ( !key.isValid() ) {
+        ERR << "Key [" << _keyId << "] from known keyring is not valid" << std::endl;
+        return false;
+      }
+
+      MIL << "Key [" << _keyId << "] " << key.name() << " loaded from cache" << std::endl;
+
+      zypp::KeyContext context;
+      context.setRepoInfo( _repo );
+      if ( !KeyRingReportHelper(_context).askUserToAcceptPackageKey( key, context ) ) {
+        return false;
+      }
+
+      MIL << "User wants to import key [" << _keyId << "] " << key.name() << " from cache" << std::endl;
+      try {
+        _context->keyRing()->importKey( key, true );
+      } catch ( const zypp::KeyRingException &e ) {
+        ZYPP_CAUGHT(e);
+        ERR << "Failed to import key: "<<_keyId;
+        return false;
+      }
+      return true;
     }
 
     ZyppContextRefType _context;
@@ -240,7 +261,14 @@ namespace zyppng::KeyRingWorkflow {
         }
 
         // get the id of the signature (it might be a subkey id!)
-        _verifyContext.signatureId( _keyRing->readSignatureKeyId( signature ) ); //throws !
+        try {
+          _verifyContext.signatureId( _keyRing->readSignatureKeyId( signature ) ); //throws !
+        } catch ( const zypp::Exception &e ) {
+          MIL << "Failed to read the signature from " << signature << std::endl;
+          ZYPP_CAUGHT(e);
+          return makeReadyResult( makeReturn(false) );
+        }
+
         const std::string & id = _verifyContext.signatureId();
 
         // collect the buddies
@@ -329,7 +357,8 @@ namespace zyppng::KeyRingWorkflow {
     };
   }
 
-  std::pair<bool,zypp::keyring::VerifyFileContext> verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
+  std::pair<bool,zypp::keyring::VerifyFileContext>
+  verifyFileSignature( SyncContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
     return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );

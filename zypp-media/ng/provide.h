@@ -38,6 +38,8 @@ namespace zypp {
  *       and ask the server first about the auth method
  *
  * @TODO Make sure URLs are rewritten, e.g. MediaSetAccess::rewriteUrl
+ *
+ * @TODO Unite custom headers from MediaSpec and FileSpec
  */
 namespace zyppng {
 

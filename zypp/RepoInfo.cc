@@ -589,10 +589,6 @@ namespace zypp
   std::string RepoInfo::repoStatusString() const
   { return _pimpl->repoStatusString(); }
 
-  Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
-    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::defaultContext(), *this, keyID_r, targetDirectory_r );
-  }
-
   void RepoInfo::addBaseUrl( Url url_r )
   {
     for ( const auto & url : _pimpl->baseUrls().raw() )	// Raw unique!

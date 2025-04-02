@@ -7,10 +7,13 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "repodownloaderwf.h"
-#include <zypp/ng/workflows/logichelpers.h>
-#include "zypp/parser/yum/RepomdFileReader.h"
+#include "zypp/ng/reporthelper.h"
+#include <zypp-core/zyppng/pipelines/mtry.h>
+#include <zypp/parser/yum/RepomdFileReader.h>
+#include <zypp/repo/RepoMirrorList.h>
 
 #include <utility>
+#include <fstream>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
@@ -19,6 +22,8 @@
 #include <zypp/KeyRing.h>
 
 #include <zypp/ng/workflows/signaturecheckwf.h>
+#include <zypp/ng/workflows/repoinfowf.h>
+#include <zypp/ng/workflows/logichelpers.h>
 #include <zypp/ng/repo/workflows/rpmmd.h>
 #include <zypp/ng/repo/workflows/susetags.h>
 #include <zypp/ng/repo/workflows/plaindir.h>
@@ -56,6 +61,8 @@ namespace zyppng {
 
     public:
       MaybeAsyncRef<expected<DlContextRefType>> execute( ) {
+
+        zypp::RepoInfo ri = _dlContext->repoInfo();
         // always download them, even if repoGpgCheck is disabled
         _sigpath = _masterIndex.extend( ".asc" );
         _keypath = _masterIndex.extend( ".key" );
@@ -64,23 +71,46 @@ namespace zyppng {
         auto providerRef = _dlContext->zyppContext()->provider();
           return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
           | and_then( [this]( ProvideRes && masterres ) {
+            // update the gpg keys provided by the repo
+            return RepoInfoWorkflow::fetchGpgKeys( _dlContext->zyppContext(), _dlContext->repoInfo() )
+            | and_then( [this](){
 
-            return std::vector {
-              // fetch signature and keys
-              provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) ),
-              provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
-              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) ),
-            }
-            | join()
-            | [this,masterres=std::move(masterres)]( std::vector<expected<zypp::ManagedFile>> &&res ) {
-              // remember downloaded files
-              std::for_each( res.begin (), res.end(),
-                             [this]( expected<zypp::ManagedFile> &f){
-                               if (f.is_valid () ) {
-                                 _dlContext->files().push_back( std::move(f.get()));
-                               }
-                             });
+              // fetch signature and maybe key file
+              return provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+
+              | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) )
+
+              | [this]( expected<zypp::ManagedFile> sigFile ) {
+                  zypp::Pathname sigpathLocal { _destdir/_sigpath };
+                  if ( !sigFile.is_valid () || !zypp::PathInfo(sigpathLocal).isExist() ) {
+                    return makeReadyResult(expected<void>::success()); // no sigfile, valid result
+                  }
+                  _dlContext->files().push_back( std::move(*sigFile) );
+
+                  // check if we got the key, if not we fall back to downloading the .key file
+                  auto expKeyId = mtry( &KeyRing::readSignatureKeyId, _dlContext->zyppContext()->keyRing(), sigpathLocal );
+                  if ( expKeyId && !_dlContext->zyppContext()->keyRing()->isKeyKnown(*expKeyId) ) {
+
+                    if ( _dlContext->repoInfo().mirrorListUrl().isValid() ) {
+                      // when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+                      // fetching the gpg key from any mirror
+                      JobReportHelper( _dlContext->zyppContext() ).warning(_("Downloading signature key via mirrors, consider explicitely setting gpgKeyUrl via the repository configuration instead."));
+                    }
+
+                    // we did not get the key via gpgUrl downloads, lets fallback
+                    return provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+                    | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) )
+                    | and_then( [this]( zypp::ManagedFile keyFile ) {
+                      _dlContext->files().push_back( std::move(keyFile));
+                      return expected<void>::success();
+                    });
+                  }
+
+                  // we should not reach this line, but if we do we continue and fail later if its required
+                  return makeReadyResult(expected<void>::success());
+                };
+              })
+            | [this,masterres=std::move(masterres)]( expected<void> ) {
               return make_expected_success( std::move(masterres) );
             };
 
@@ -175,8 +205,28 @@ namespace zyppng {
         // The local files are in destdir_r, if they were present on the server
         zypp::Pathname sigpathLocal { _destdir/_sigpath };
         zypp::Pathname keypathLocal { _destdir/_keypath };
+
         if ( _dlContext->pluginRepoverification() && _dlContext->pluginRepoverification()->isNeeded() ) {
           try {
+
+            if ( zypp::PathInfo(sigpathLocal).isExist() && !zypp::PathInfo(keypathLocal).isExist() ) {
+              auto kr = _dlContext->zyppContext()->keyRing();
+              // if we have a signature but no keyfile, we need to export it from the keyring
+              auto expKeyId = mtry( &KeyRing::readSignatureKeyId, kr.get(), sigpathLocal );
+              if ( !expKeyId ) {
+                MIL << "Failed to read signature from file: " << sigpathLocal << std::endl;
+              } else {
+                std::ofstream os( keypathLocal.c_str() );
+                if ( kr->isKeyKnown(*expKeyId) ) {
+                  kr->dumpPublicKey(
+                    *expKeyId,
+                    kr->isKeyTrusted(*expKeyId),
+                    os
+                  );
+                }
+              }
+            }
+
             _dlContext->pluginRepoverification()->getChecker( sigpathLocal, keypathLocal, _dlContext->repoInfo() )( prevRes.file() );
           } catch ( ... ) {
             return expected<ProvideRes>::error( std::current_exception () );
@@ -418,5 +468,4 @@ namespace zyppng {
         return downloadImpl( dl, std::move(handle), std::move(po) );
       });
     }
-
 }

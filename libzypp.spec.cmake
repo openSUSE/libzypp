@@ -15,7 +15,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
+# In Code16 libsolv moved the static libs from -devel to -devel-static.
+# Those are needed while cmake -DSUSE enforces linking libsolv statically.
+%if 0%{?suse_version} >= 1600
+%define libsolv_devel_package libsolv-devel-static
+%else
+%define libsolv_devel_package libsolv-devel
+%endif
 
 %if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150400 || (0%{?is_opensuse} && 0%{?sle_version} >= 150100)
 %bcond_without zchunk
@@ -132,11 +138,10 @@ BuildRequires:  pkgconfig
 BuildRequires:  pkg-config
 %endif
 
-BuildRequires:  libsolv-devel >= 0.7.24
+BuildRequires:  %{libsolv_devel_package} >= 0.7.31
 %if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150600
 BuildRequires:  libsolv-tools-base >= 0.7.29
 %requires_eq    libsolv-tools-base
-Requires:	( findutils if libsolv-tools-base <= 0.7.31 )
 %else
 BuildRequires:  libsolv-tools
 %requires_eq    libsolv-tools
@@ -269,9 +274,9 @@ Requires:       libcurl-devel >= %{min_curl_version}
 Requires:       libcurl-devel >= %{min_curl_version}
 %endif
 %if 0%{?suse_version}
-%requires_ge    libsolv-devel
+%requires_ge    %{libsolv_devel_package}
 %else
-Requires:       libsolv-devel
+Requires:       %{libsolv_devel_package}
 %endif
 
 %description devel

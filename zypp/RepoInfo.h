@@ -419,9 +419,6 @@ namespace zypp
       /** (leagcy API) Set the gpgkey URL defined for this repo */
       void setGpgKeyUrl( const Url &gpgkey );
 
-      /** downloads all configured gpg keys into the defined directory */
-      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const;
-
       /**
        * \short Whether packages downloaded from this repository will be kept in local cache
        */

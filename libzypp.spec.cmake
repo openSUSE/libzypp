@@ -302,6 +302,17 @@ export CFLAGS="%{optflags}"
 export CXXFLAGS="%{optflags}"
 %endif
 
+CMAKE_FLAGS=
+%if 0%{?fedora} || 0%{?rhel} >= 6
+CMAKE_FLAGS="-DFEDORA=1"
+%endif
+%if 0%{?mageia}
+CMAKE_FLAGS="-DMAGEIA=1"
+%endif
+%if 0%{?suse_version}
+CMAKE_FLAGS="-DSUSE=1"
+%endif
+
 EXTRA_CMAKE_OPTIONS=
 %if 0%{?suse_version}
 EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DLIBZYPP_CODESTREAM=0%{?suse_version}:0%{?sle_version}:0%{?is_opensuse}"
@@ -310,10 +321,8 @@ EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DLIBZYPP_CODESTREAM=0%{?suse_versio
 EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DLIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT=1"
 %endif
 
-cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-      -DENABLE_BUILD_DOCS=TRUE \
-      -DENABLE_BUILD_TRANS=TRUE \
-      -DENABLE_BUILD_TESTS=TRUE \
+cmake .. $CMAKE_FLAGS \
+      -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       -DDOC_INSTALL_DIR=%{_docdir} \
       -DLIB=%{_lib} \
       -DCMAKE_BUILD_TYPE=Release \
@@ -325,8 +334,8 @@ cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
       %{?with_sigc_block_workaround:-DENABLE_SIGC_BLOCK_WORKAROUND=1} \
       %{!?with_mediabackend_tests:-DDISABLE_MEDIABACKEND_TESTS=1} \
       %{?with enable_preview_single_rpmtrans_as_default_for_zypper:-DENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER=1} \
-      ${EXTRA_CMAKE_OPTIONS} \
-      ..
+      ${EXTRA_CMAKE_OPTIONS}
+
 make %{?_smp_mflags} VERBOSE=1
 
 %install

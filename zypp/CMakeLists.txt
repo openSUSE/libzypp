@@ -28,7 +28,6 @@ SET( zypp_SRCS
   Capability.cc
   CapMatch.cc
   Changelog.cc
-  CheckSum.cc
   CpeId.cc
   Dep.cc
   Digest.cc

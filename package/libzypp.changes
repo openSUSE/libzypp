@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Apr  3 16:05:35 CEST 2025 - ma@suse.de
+
+- Drop workaround for broken rpm-4.18 in Code16 (bsc#1237172)
+- BuildRequires:  %{libsolv_devel_package} >= 0.7.32.
+  Code16 moved static libs to libsolv-devel-static.
+- Drop usage of SHA1 hash algorithm because it will become
+  unavailable in FIPS mode (bsc#1240529)
+- Fix zypp.conf dupAllowVendorChange to reflect the correct
+  default (false).
+  The default was true in Code12 (libzypp-16.x) and changed to
+  false with Code15 (libzypp-17.x). Unfortunately this was done by
+  shipping a modified zypp.conf file rather than fixing the code.
+- zypp.conf: Add `lock_timeout` ($ZYPP_LOCK_TIMEOUT) (bsc#1239809)
+- version 17.36.6 (35)
+
+-------------------------------------------------------------------
 Mon Mar 17 10:22:21 CET 2025 - ma@suse.de
 
 - Fix computation of RepStatus if Repo URLs change.

@@ -119,7 +119,7 @@ namespace zypp
           std::stringstream ss;
           for ( std::string_view c : _checksums )
             ss << c;
-          _cachedchecksum = CheckSum::sha1(ss).checksum();
+          _cachedchecksum = CheckSum::sha256(ss).checksum();
         }
         ret = *_cachedchecksum;
       }
@@ -181,13 +181,13 @@ namespace zypp
     {
       if ( info.isFile() )
       {
-        _pimpl->assignFromCtor( filesystem::sha1sum( path_r ), Date( info.mtime() ) );
+        _pimpl->assignFromCtor( filesystem::checksum( path_r, "SHA256" ), Date( info.mtime() ) );
       }
       else if ( info.isDir() )
       {
         time_t t = info.mtime();
         recursiveTimestamp( path_r, t );
-        _pimpl->assignFromCtor( CheckSum::sha1FromString( str::numstring( t ) ).checksum(), Date( t ) );
+        _pimpl->assignFromCtor( CheckSum::sha256FromString( str::numstring( t ) ).checksum(), Date( t ) );
       }
     }
   }
@@ -195,7 +195,7 @@ namespace zypp
   RepoStatus::RepoStatus( const RepoInfo & info_r )
   : _pimpl( new Impl() )
   {
-    _pimpl->assignFromCtor( CheckSum::sha1FromString( info_r.repoStatusString() ).checksum(), Date() );
+    _pimpl->assignFromCtor( CheckSum::sha256FromString( info_r.repoStatusString() ).checksum(), Date() );
   }
 
   RepoStatus::RepoStatus( std::string checksum_r, Date timestamp_r )

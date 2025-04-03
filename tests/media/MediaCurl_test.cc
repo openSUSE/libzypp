@@ -219,3 +219,39 @@ BOOST_DATA_TEST_CASE( base_provide_not_found, bdata::make( withSSL ) * bdata::ma
   }
 }
 
+// case: fetching via
+BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
+{
+  //don't write or read creds from real settings dir
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  WebServer web( testRoot.c_str(), 10001, withSSL );
+  BOOST_REQUIRE( web.start() );
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  std::vector<zypp::Url> urls {
+    zypp::Url( "https://foo.bar/invalid"),
+    zypp::Url( "https://foo.bar/invalid"),
+    web.url()
+  };
+
+  std::for_each( urls.begin (), urls.end(), [&]( zypp::Url &url ) { url.setQueryParam( "mediahandler", backend ); } );
+  if( withSSL ) {
+    std::for_each( urls.begin (), urls.end(), [&]( zypp::Url &url ) { url.setQueryParam("ssl_capath", web.caPath().asString() ); } );
+  }
+
+  BOOST_CHECK_NO_THROW( id = mm.open( std::vector<zypp::media::MediaUrl>(urls.begin (), urls.end ()) ));
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+
+  zypp::OnMediaLocation loc("/test.txt");
+  {
+    BOOST_REQUIRE_EQUAL( mm.doesFileExist ( id, loc.filename () ), true );
+    // no auth given
+    BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
+  }
+}
+

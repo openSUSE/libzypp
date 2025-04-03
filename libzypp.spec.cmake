@@ -297,15 +297,8 @@ Developer documentation for libzypp.
 mkdir build
 cd build
 
-%if 0%{?suse_version} == 1600
-# bsc#1216091: rpm-4.18' does not execute 'rpm --runposttrans'
-# scripts chroot if --root is used.
-export CFLAGS="%{optflags} -DWORKAROUNDDUMPPOSTTRANS_BUG_1216091"
-export CXXFLAGS="%{optflags} -DWORKAROUNDDUMPPOSTTRANS_BUG_1216091"
-%else
 export CFLAGS="%{optflags}"
 export CXXFLAGS="%{optflags}"
-%endif
 
 CMAKE_FLAGS=
 %if 0%{?fedora} || 0%{?rhel} >= 6

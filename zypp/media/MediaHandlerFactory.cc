@@ -100,7 +100,7 @@ namespace zypp::media {
       ZYPP_THROW(MediaException("No valid Url left after resolving."));
     }
 
-    if ( resolved.size() && *hdlType != MediaCURLType )
+    if ( resolved.size() > 1 && *hdlType != MediaCURLType )
       ERR << "Got mirrors for handler type: " << *hdlType << " they will be ignored!" << std::endl;
 
     std::unique_ptr<MediaHandler> _handler;

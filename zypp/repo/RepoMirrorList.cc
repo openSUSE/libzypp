@@ -114,9 +114,6 @@ namespace zypp
               murl.setPathName( murl.getPathName().erase(delpos)  );
             }
             ret.push_back( murl );
-
-            if ( ret.size() >= 4 )	// why 4?
-              break;
           }
         }
         return ret;

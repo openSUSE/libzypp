@@ -12,6 +12,9 @@
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-media/ng/providespec.h>
 
+#include <zypp-common/KeyManager.h>
+#include <zypp/zypp_detail/keyring_p.h>
+
 #include "tests/zypp/KeyRingTestReceiver.h"
 
 
@@ -41,6 +44,8 @@ BOOST_AUTO_TEST_CASE(susetags_download)
 
 
   auto ctx = zyppng::SyncContext::create ();
+  ctx->keyRing ()->allowPreload( false );
+
   auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
@@ -109,6 +114,15 @@ BOOST_AUTO_TEST_CASE(susetags_gz_download)
   Pathname localdir(tmp.path());
 
   auto ctx = zyppng::SyncContext::create ();
+  ctx->keyRing ()->allowPreload( false );
+
+  {
+    // remove the key imported in the previous test, this should force the workflow to download the content.key file
+    ctx->keyRing()->deleteKey( "3FB89E3A27C6B0E4" );
+    BOOST_REQUIRE_MESSAGE( !ctx->keyRing()->isKeyTrusted( "3FB89E3A27C6B0E4" ), "Key should be gone from trusted!" );
+    BOOST_REQUIRE_MESSAGE( !ctx->keyRing()->isKeyKnown  ( "3FB89E3A27C6B0E4" ), "Key should be gone from known!" );
+  }
+
   auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
   | and_then( [&]( zyppng::SyncMediaHandle h ){
     auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );

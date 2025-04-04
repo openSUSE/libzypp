@@ -1471,7 +1471,7 @@ namespace zypp
             // migration to full async workflows ready
             preloader = std::make_unique<CommitPackagePreloader>();
             preloader->preloadTransaction( steps );
-            //miss = preloader->missed ();
+            miss = preloader->missed ();
           }
 
           if ( !miss ) {

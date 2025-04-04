@@ -38,6 +38,8 @@ namespace zypp {
  *       and ask the server first about the auth method
  *
  * @TODO Make sure URLs are rewritten, e.g. MediaSetAccess::rewriteUrl
+ *
+ * @TODO Unite custom headers from MediaSpec and FileSpec
  */
 namespace zyppng {
 
@@ -60,6 +62,7 @@ namespace zyppng {
       bool isValid () const;
       std::string handle() const;
       const zypp::Url &baseUrl() const;
+      const std::vector<zypp::Url> &mirrors() const;
       const std::optional<zypp::Pathname> &localPath() const;
       zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:

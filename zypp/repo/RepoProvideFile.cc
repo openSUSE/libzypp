@@ -9,6 +9,7 @@
 /** \file	zypp/source/RepoProvideFile.cc
  *
 */
+#include "zypp-core/zyppng/pipelines/transform.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -155,10 +156,13 @@ namespace zypp
        *
        * \todo This mixture of media and repos specific data is fragile.
       */
-      shared_ptr<MediaSetAccess> mediaAccessForUrl( const Url &url, RepoInfo repo )
+      shared_ptr<MediaSetAccess> mediaAccessForUrl( const std::vector<Url> &urls, RepoInfo repo )
       {
+        if ( !urls.size () )
+          return nullptr;
+
         std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
-        it = _medias.find(url);
+        it = _medias.find( urls.front() ); // primary Url is the key
         shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
@@ -166,10 +170,11 @@ namespace zypp
         }
         else
         {
-          media.reset( new MediaSetAccess(url) );
-          _medias[url] = media;
+          auto mediaUrls = zyppng::transform( urls, []( const zypp::Url &url ) { return media::MediaUrl(url); }  );
+          media.reset( new MediaSetAccess( std::move(mediaUrls) ) );
+          _medias[urls.front()] = media;
         }
-        setVerifierForRepo( std::move(repo), media );
+        setVerifierForRepo( repo, media );
         return media;
       }
 
@@ -297,16 +302,30 @@ namespace zypp
       // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
       media::ScopedDisableMediaChangeReport guard( repo_r.baseUrlsSize() > 1 );
 
-      for ( RepoInfo::urls_const_iterator it = repo_r.baseUrlsBegin();
-            it != repo_r.baseUrlsEnd();
+      const auto &groupedBaseUrls = repo_r.groupedBaseUrls ();
+      for ( auto it = groupedBaseUrls.begin(); it != groupedBaseUrls.end();
             /* incremented in the loop */ )
       {
-        Url url( *it );
+        // primary Url and maybe mirrors if the url is downloading
+        std::vector<Url> urls( *it );
         ++it;
+
+        if ( urls.empty () ) {
+          MIL << "Skipping empty Url group" << std::endl;
+          continue;
+        }
+
         try
         {
-          MIL << "Providing file of repo '" << repo_r.alias() << "' from " << url << endl;
-          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( url, repo_r );
+          MIL << "Providing file of repo '" << repo_r.alias() << "' from: ";
+          std::for_each( urls.begin (), urls.end(), [&]( const zypp::Url &u ){
+            MIL << u << ", ";
+          });
+          MIL << std::endl;
+
+          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( urls, repo_r );
+          if ( !access )
+            continue;
 
           fetcher.enqueue( locWithPath, policy_r.fileChecker() );
           fetcher.start( destinationDir, *access );

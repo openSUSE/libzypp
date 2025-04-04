@@ -125,6 +125,9 @@ namespace zypp
   RepoStatus RepoManager::metadataStatus( const RepoInfo & info ) const
   { return _pimpl->ngMgr().metadataStatus( info ).unwrap(); }
 
+  RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata(const RepoInfo &info, const std::vector<Url> &urls, RawMetadataRefreshPolicy policy)
+  { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, urls, policy ).unwrap(); }
+
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
   { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, url, policy ).unwrap(); }
 
@@ -170,10 +173,10 @@ namespace zypp
   { return _pimpl->ngMgr().cleanCacheDirGarbage( nullptr ).unwrap(); }
 
   repo::RepoType RepoManager::probe( const Url & url, const Pathname & path ) const
-  { return _pimpl->ngMgr().probe( url, path ).unwrap(); }
+  { return _pimpl->ngMgr().probe( {url}, path ).unwrap(); }
 
   repo::RepoType RepoManager::probe( const Url & url ) const
-  { return _pimpl->ngMgr().probe( url ).unwrap(); }
+  { return _pimpl->ngMgr().probe( {url} ).unwrap(); }
 
   void RepoManager::addRepository( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
   {

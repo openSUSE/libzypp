@@ -153,6 +153,12 @@ namespace zypp
       url_set rawBaseUrls() const;
 
       /**
+       * Returns the currently known baseUrls in groups, where each group contains a
+       * primary base url and additional urls that should be used as mirrors.
+       */
+      std::vector<std::vector<Url>> groupedBaseUrls() const;
+
+      /**
        * Add a base url. \see baseUrls
        * \param url The base url for the repository.
        *
@@ -412,9 +418,6 @@ namespace zypp
       Url rawGpgKeyUrl() const;
       /** (leagcy API) Set the gpgkey URL defined for this repo */
       void setGpgKeyUrl( const Url &gpgkey );
-
-      /** downloads all configured gpg keys into the defined directory */
-      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const;
 
       /**
        * \short Whether packages downloaded from this repository will be kept in local cache

@@ -56,7 +56,7 @@ namespace zyppng {
   namespace operators {
     template <typename Fun>
     auto mtry ( Fun && function ) {
-      return detail::mtry_helper<Fun> {
+      return ::zyppng::detail::mtry_helper<Fun> {
         std::forward<Fun>(function)
       };
     }

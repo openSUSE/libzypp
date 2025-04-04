@@ -52,6 +52,9 @@ namespace zyppng {
     const ProvideMessage &provideMessage () const { return _message; }
     ProvideMessage &provideMessage () { return _message; }
 
+    /**
+     * Returns the currenty active URL as set by the scheduler
+     */
     const std::optional<zypp::Url> activeUrl() const;
     void setActiveUrl ( const zypp::Url &urlToUse );
 

@@ -586,7 +586,6 @@ namespace zyppng {
       DBG << that->_easyHandle << " " << "Curl progress callback was called in invalid state "<< that->z_func()->state() << std::endl;
       return -1;
     }
-
     auto &rmode = std::get<running_t>( that->_runningMode );
 
     //reset the timer
@@ -621,6 +620,10 @@ namespace zyppng {
       else
         hdr = std::string_view();
 
+      if ( !std::holds_alternative<running_t>(_runningMode) ){
+        DBG << _easyHandle << " " << "Curl headerfunction callback was called in invalid state "<< z_func()->state() << std::endl;
+        return -1;
+      }
       auto &rmode = std::get<running_t>( _runningMode );
       if ( !hdr.size() ) {
         return ( bytes );
@@ -672,6 +675,10 @@ namespace zyppng {
       return ( max );
     }
 
+    if ( !std::holds_alternative<running_t>(_runningMode) ){
+      DBG << _easyHandle << " " << "Curl writefunction callback was called in invalid state "<< z_func()->state() << std::endl;
+      return -1;
+    }
     auto &rmode = std::get<running_t>( _runningMode );
 
     // if we have no open file create or open it

@@ -96,17 +96,13 @@ namespace zypp {
 
       // select a mirror we want to use
       if ( !prepareMirror( ) ) {
-        callback::UserData userData( "CommitPreloadReport/fileDone" );
-        userData.set( "description", _("No mirror found") );
-        _parent._report->fileDone( _targetPath, media::CommitPreloadReport::ERROR, userData );
+        finishCurrentJob ( _targetPath, {}, media::CommitPreloadReport::ERROR, asString( _("no mirror found") ), true );
         return nextJob();
       }
 
       if ( filesystem::assert_dir( _targetPath.dirname()) != 0 ) {
         ERR << "Failed to create target dir for file: " << _targetPath << std::endl;
-        callback::UserData userData( "CommitPreloadReport/fileDone" );
-        userData.set( "description", _("Could not create target File") );
-        _parent._report->fileDone( _targetPath, media::CommitPreloadReport::ERROR, userData );
+        finishCurrentJob ( _targetPath, {}, media::CommitPreloadReport::ERROR, asString( _("could not create target file") ), true );
         return nextJob();
       }
 
@@ -127,13 +123,8 @@ namespace zypp {
               filesystem::unlink( _targetPath );
 
           } else if ( is_checksum( _targetPath, loc.checksum() ) ) {
-
             // if we have the file already, no need to download again
-            callback::UserData userData( "CommitPreloadReport/fileDone" );
-            userData.set( "Url", url );
-            userData.set( "description", _("Already in Cache") );
-            _parent._report->fileDone( _targetPath, media::CommitPreloadReport::NO_ERROR, userData );
-
+            finishCurrentJob ( _targetPath, url, media::CommitPreloadReport::NO_ERROR, asString( _("already in cache") ), false );
             return nextJob();
 
           } else {
@@ -276,12 +267,9 @@ namespace zypp {
       if ( !req.hasError() ) {
         if ( filesystem::rename( _tmpFile, _targetPath ) != 0 ) {
           // error
-          failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("Failed to rename temporary file.") );
+          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("failed to rename temporary file."), true );
         } else {
-          callback::UserData userData( "CommitPreloadReport/fileDone" );
-          userData.set( "Url", req.url() );
-          userData.set( "description", _("Finished") );
-          _parent._report->fileDone( _targetPath, media::CommitPreloadReport::NO_ERROR, userData );
+          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NO_ERROR, asString( _("done") ), false );
         }
       } else {
         // handle errors and auth
@@ -296,7 +284,6 @@ namespace zypp {
           case zyppng::NetworkRequestError::ServerReturnedError:
           case zyppng::NetworkRequestError::MissingData:
           case zyppng::NetworkRequestError::RangeFail:
-          case zyppng::NetworkRequestError::Cancelled:
           case zyppng::NetworkRequestError::ExceededMaxLen:
           case zyppng::NetworkRequestError::TemporaryProblem:
           case zyppng::NetworkRequestError::Timeout:
@@ -308,6 +295,9 @@ namespace zypp {
 
             if ( taintCurrentMirror() ) {
               _notFoundRetry++;
+
+              const auto str = zypp::str::Format(_("Error: \"%1%\", trying next mirror.")) % req.extendedErrorString();
+              finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, str, false );
 
               media::TransferSettings settings;
               zypp::Url url;
@@ -322,7 +312,7 @@ namespace zypp {
               return;
             }
 
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString() );
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString(), true );
             break;
           }
           case zyppng::NetworkRequestError::Unauthorized:
@@ -339,7 +329,11 @@ namespace zypp {
               return;
             }
 
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString() );
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString(), true );
+            break;
+
+          } case zyppng::NetworkRequestError::Cancelled: {
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, req.extendedErrorString(), true );
             break;
           }
           case zyppng::NetworkRequestError::NoError:
@@ -351,15 +345,17 @@ namespace zypp {
       nextJob();
     }
 
-    void failCurrentJob( const zypp::Pathname &localPath, const std::optional<zypp::Url> &url, media::CommitPreloadReport::Error e, const std::optional<std::string> &errorMessage ) {
+    void finishCurrentJob( const zypp::Pathname &localPath, const std::optional<zypp::Url> &url, media::CommitPreloadReport::Error e, const std::optional<std::string> &errorMessage, bool fatal ) {
 
       callback::UserData userData( "CommitPreloadReport/fileDone" );
       if ( url )
         userData.set( "Url", url );
       if ( errorMessage )
-        userData.set( "description", _("Already in Cache") );
+        userData.set( "description", *errorMessage );
 
-      _parent._missedDownloads = true;
+      if ( e != media::CommitPreloadReport::NO_ERROR &&  fatal )
+        _parent._missedDownloads = true;
+
       _parent._report->fileDone( localPath, e, userData );
     }
 
@@ -579,7 +575,13 @@ namespace zypp {
       ev->run();
     }
 
-    MIL << "Preloading done, returning" << std::endl;
+    MIL << "Preloading done, mirror stats: " << std::endl;
+    for ( const auto &elem : _dlRepoInfo ) {
+      std::for_each ( elem.second._baseUrls.begin (), elem.second._baseUrls.end(), []( const RepoUrl &repoUrl ){
+        MIL << "url: " << repoUrl.baseUrl << " misses: " << repoUrl.miss << std::endl;
+      });
+    }
+    MIL << "Preloading done, mirror stats end" << std::endl;
   }
 
   void CommitPackagePreloader::cleanupCaches()

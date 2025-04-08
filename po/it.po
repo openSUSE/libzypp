@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2024-09-05 15:47+0000\n"
-"Last-Translator: Paolo Za <feus73@gmail.com>\n"
+"PO-Revision-Date: 2025-04-08 13:56+0000\n"
+"Last-Translator: Davide Aiello <davide.aiello@novilingulists.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/it/"
 ">\n"
 "Language: it\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.10.3\n"
 "X-Poedit-Bookmarks: 370,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: zypp/CountryCode.cc:50
@@ -3838,7 +3838,7 @@ msgstr "Impossibile creare %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Recupero dei nuovi metadati del repository non riuscito."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
@@ -3922,7 +3922,7 @@ msgstr "Pulizia dei pacchetti"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Pulizia della directory della cache"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
@@ -4125,7 +4125,7 @@ msgstr "applydeltarpm non riuscito."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "Nessuna autorizzazione in scrittura per la cache del repository."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4721,29 +4721,29 @@ msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:100
 msgid "No mirror found"
-msgstr ""
+msgstr "Nessun mirror trovato"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "Could not create target File"
-msgstr ""
+msgstr "Impossibile creare il file di destinazione"
 
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "Già presente nella cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279
 msgid "Failed to rename temporary file."
-msgstr ""
+msgstr "Ridenominazione del file temporaneo non riuscita."
 
 #: zypp/target/commitpackagepreloader.cc:283
 msgid "Finished"
-msgstr ""
+msgstr "Operazione terminata"
 
 #: zypp/target/commitpackagepreloader.cc:607
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Annullato dall'utente."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message

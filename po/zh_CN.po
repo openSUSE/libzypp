@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2024-04-30 05:43+0000\n"
+"PO-Revision-Date: 2025-04-08 10:56+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/libzypp/"
 "master/zh_CN/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3819,11 +3819,11 @@ msgstr "无法创建 %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "检索新储存库元数据失败。"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "缓存储存库失败（无法启动 repo2solv）。"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:596
 #: zypp/ng/repo/workflows/repomanagerwf.cc:625
@@ -3844,7 +3844,7 @@ msgstr "无法在 %s 创建缓存 - 无写入权限。"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "缓存储存库 %1% 失败"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
@@ -3895,28 +3895,28 @@ msgstr "无法读取源文件 '%1%'：权限被拒"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "正在清理元数据"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "正在清理软件包"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "正在清理缓存目录"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "正在清理目录 %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "正在清理缓存"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "正在从缓存加载"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -3935,11 +3935,11 @@ msgstr "无法删除 '%s'"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "正在修改储存库"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "正在刷新储存库： "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."
@@ -4094,7 +4094,7 @@ msgstr "Applydeltarpm 已失败。"
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "无权写入储存库缓存。"
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4672,29 +4672,29 @@ msgstr "由于以下问题执行操作失败："
 
 #: zypp/target/commitpackagepreloader.cc:100
 msgid "No mirror found"
-msgstr ""
+msgstr "未找到镜像"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "Could not create target File"
-msgstr ""
+msgstr "无法创建目标文件"
 
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "已在缓存中"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279
 msgid "Failed to rename temporary file."
-msgstr ""
+msgstr "重命名临时文件失败。"
 
 #: zypp/target/commitpackagepreloader.cc:283
 msgid "Finished"
-msgstr ""
+msgstr "已完成"
 
 #: zypp/target/commitpackagepreloader.cc:607
 msgid "Cancelled by user."
-msgstr ""
+msgstr "用户已取消。"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message

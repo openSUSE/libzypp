@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: zypp.de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2025-03-15 21:29+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2025-04-08 10:56+0000\n"
+"Last-Translator: Gemineo <vistatec@gemineo.de>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/libzypp/master/de/>"
 "\n"
 "Language: de\n"
@@ -3840,11 +3840,12 @@ msgstr "%s konnte nicht erstellt werden"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Neue Repository-Metadaten konnten nicht abgerufen werden."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
+"Repo konnte nicht gechached werden (repo2solv konnte nicht gestartet werden)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:596
 #: zypp/ng/repo/workflows/repomanagerwf.cc:625
@@ -3866,7 +3867,7 @@ msgstr ""
 #: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Repo %1% konnte nich gecached werden"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
@@ -4126,7 +4127,7 @@ msgstr "Fehler bei applydeltarpm."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "Keine Berechtigung zum Schreiben des Repository-Cache."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4753,7 +4754,7 @@ msgstr "Zieldatei konnte nicht erstellt werden"
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "Bereits im Cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279

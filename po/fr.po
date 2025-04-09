@@ -20,16 +20,16 @@ msgstr ""
 "Project-Id-Version: zypp.fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2024-12-04 09:48+0000\n"
-"Last-Translator: Guillaume GARDET <guillaume.gardet@opensuse.org>\n"
-"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/"
-">\n"
+"PO-Revision-Date: 2025-04-09 14:56+0000\n"
+"Last-Translator: Sophie Leroy <sophie@stoquart.com>\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/>"
+"\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3843,11 +3843,11 @@ msgstr "Impossible de créer %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Échec de la récupération des nouvelles métadonnées du dépôt."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "Échec de la mise en cache du dépôt (impossible de lancer repo2solv)."
 
 # TLABEL restore_2002_08_07_0216__88
 #: zypp/ng/repo/workflows/repomanagerwf.cc:596
@@ -3869,7 +3869,7 @@ msgstr "Impossible de créer le cache dans %s - pas d'autorisation en écriture.
 #: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Échec de la mise en cache du dépôt %1%"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
@@ -3922,28 +3922,28 @@ msgstr "Impossible de lire le fichier de dépôt '%1%' : permission refusée"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Nettoyage des métadonnées"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Nettoyage des paquets"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Nettoyage des répertoires de cache"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Nettoyage du répertoire : %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Nettoyage du cache"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Chargement à partir du cache"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -3962,11 +3962,11 @@ msgstr "Impossible de supprimer '%s'"
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Modification du dépôt"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Rafraîchissement du dépôt : "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."
@@ -4749,29 +4749,29 @@ msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:100
 msgid "No mirror found"
-msgstr ""
+msgstr "Aucune mise en miroir trouvée"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "Could not create target File"
-msgstr ""
+msgstr "Impossible de créer le fichier cible"
 
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "Déjà dans le cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279
 msgid "Failed to rename temporary file."
-msgstr ""
+msgstr "Échec du changement de nom du fichier temporaire."
 
 #: zypp/target/commitpackagepreloader.cc:283
 msgid "Finished"
-msgstr ""
+msgstr "Fini"
 
 #: zypp/target/commitpackagepreloader.cc:607
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Annulé par l'utilisateur."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message

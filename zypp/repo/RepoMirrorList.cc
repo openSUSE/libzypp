@@ -20,6 +20,7 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
+#include <zypp/media/MediaUrl.h>
 
 
 ///////////////////////////////////////////////////////////////////
@@ -51,7 +52,7 @@ namespace zypp
           Url abs_url( url_r );
           abs_url.setPathName( "/" );
           abs_url.setQueryParam( "mediahandler", "curl" );
-          _access.reset( new MediaSetAccess( abs_url ) );
+          _access.reset( new MediaSetAccess( std::vector<zypp::media::MediaUrl>{abs_url} ) );
           _localfile = _access->provideFile( url_r.getPathName() );
         }
 
@@ -113,9 +114,6 @@ namespace zypp
               murl.setPathName( murl.getPathName().erase(delpos)  );
             }
             ret.push_back( murl );
-
-            if ( ret.size() >= 4 )	// why 4?
-              break;
           }
         }
         return ret;

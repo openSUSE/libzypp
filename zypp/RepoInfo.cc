@@ -43,6 +43,7 @@
 #include <zypp/ZYppCallbacks.h>
 
 #include <zypp/ng/workflows/repoinfowf.h>
+#include <zypp-curl/private/curlhelper_p.h>
 
 using std::endl;
 using zypp::xml::escape;
@@ -150,9 +151,40 @@ namespace zypp
         emptybaseurls = true;
         DBG << "MetadataPath: " << metadataPath() << endl;
         repo::RepoMirrorList rmurls( mlurl, metadataPath(), _mirrorListForceMetalink );
-        _baseUrls.raw().insert( _baseUrls.raw().end(), rmurls.getUrls().begin(), rmurls.getUrls().end() );
+
+        // propagate internally used URL params like 'proxy' to the mirrors
+        const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
+          return internal::propagateQueryParams ( in , urlTemplate );
+        };
+        _baseUrls.raw().insert( _baseUrls.raw().end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
       }
       return _baseUrls;
+    }
+
+    std::vector<std::vector<Url>> groupedBaseUrls() const
+    {
+      // here we group the URLs to figure out mirrors
+      std::vector<std::vector<Url>> urlGroups;
+      int dlUrlIndex = -1; //we remember the index of the first downloading URL
+
+      const auto &baseUrls = this->baseUrls().transformed();
+      std::for_each ( baseUrls.begin(), baseUrls.end(), [&]( const zypp::Url &url ){
+        if ( !url.schemeIsDownloading () ) {
+          urlGroups.push_back ( { url } );
+          return;
+        }
+
+        if ( dlUrlIndex >= 0) {
+          urlGroups[dlUrlIndex].push_back ( url );
+          return;
+        }
+
+        // start a new group
+        urlGroups.push_back ( {url} );
+        dlUrlIndex = urlGroups.size() - 1;
+      });
+
+      return urlGroups;
     }
 
     RepoVariablesReplacedUrlList & baseUrls()
@@ -557,10 +589,6 @@ namespace zypp
   std::string RepoInfo::repoStatusString() const
   { return _pimpl->repoStatusString(); }
 
-  Pathname RepoInfo::provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r) const {
-    return zyppng::RepoInfoWorkflow::provideKey( zyppng::SyncContext::defaultContext(), *this, keyID_r, targetDirectory_r );
-  }
-
   void RepoInfo::addBaseUrl( Url url_r )
   {
     for ( const auto & url : _pimpl->baseUrls().raw() )	// Raw unique!
@@ -665,6 +693,9 @@ namespace zypp
 
   Url RepoInfo::rawUrl() const
   { return( _pimpl->baseUrls().empty() ? Url() : *_pimpl->baseUrls().rawBegin() ); }
+
+  std::vector<std::vector<Url>> RepoInfo::groupedBaseUrls() const
+  { return _pimpl->groupedBaseUrls(); }
 
   RepoInfo::urls_const_iterator RepoInfo::baseUrlsBegin() const
   { return _pimpl->baseUrls().transformedBegin(); }

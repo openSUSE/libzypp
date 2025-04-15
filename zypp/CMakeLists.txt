@@ -242,11 +242,13 @@ INSTALL(  FILES
 
 SET( zypp_media_detail_HEADERS
   media/detail/DownloadProgressTracker.h
+  media/detail/MediaNetworkRequestExecutor.h
   media/detail/OptionalDownloadProgressReport.h
 )
 
 SET( zypp_media_SRCS
   media/detail/DownloadProgressTracker.cc
+  media/detail/MediaNetworkRequestExecutor.cc
   media/detail/OptionalDownloadProgressReport.cc
   media/MediaHandler.cc
   media/MediaHandlerFactory.cc

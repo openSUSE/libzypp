@@ -26,6 +26,11 @@ namespace zyppng {
 }
 
 namespace zypp {
+
+  namespace internal {
+    ZYPP_FWD_DECL_TYPE_WITH_REFS (MediaNetworkRequestExecutor);
+  }
+
   namespace media {
 
 ///////////////////////////////////////////////////////////////////
@@ -95,8 +100,7 @@ class MediaCurl2 : public MediaNetworkCommonHandler
     bool tryZchunk( RequestData &reqData, const OnMediaLocation &srcFile , const Pathname & target, callback::SendReport<DownloadProgressReport> & report  );
 
   private:
-    zyppng::EventDispatcherRef _evDispatcher; //< keep the ev dispatcher alive as long as MediaCurl2 is
-    zyppng::NetworkRequestDispatcherRef _nwDispatcher; //< keep the dispatcher alive as well
+    internal::MediaNetworkRequestExecutorRef _executor;
 };
 ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaCurl2::RequestOptions);
 

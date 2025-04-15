@@ -55,7 +55,10 @@ namespace zypp
 
     std::ostream & MediaFileNotFoundException::dumpOn( std::ostream & str) const
     {
-      return str << form( _("File '%s' not found on medium '%s'"), _filename.c_str(), _url.c_str() );
+      if ( _filename.empty () )
+        return str << form( _("File '%s' not found"), _url.c_str() );
+      else
+        return str << form( _("File '%s' not found on medium '%s'"), _filename.c_str(), _url.c_str() );
     }
 
     std::ostream & MediaWriteException::dumpOn( std::ostream & str) const

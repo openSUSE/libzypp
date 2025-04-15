@@ -163,6 +163,10 @@ namespace zypp
     class ZYPP_API MediaFileNotFoundException : public MediaException
     {
     public:
+      MediaFileNotFoundException(const Url & url_r)
+      : MediaException()
+      , _url(url_r.asString())
+      {}
       MediaFileNotFoundException(const Url & url_r,
                                  const Pathname & filename_r)
       : MediaException()

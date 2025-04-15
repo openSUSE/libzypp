@@ -117,8 +117,8 @@ namespace zyppng {
  * Helper macro to declare Ref types
  */
 #define ZYPP_FWD_DECL_REFS(T) \
-  using T##Ref = Ref<T>; \
-  using T##WeakRef = WeakRef<T>
+  using T##Ref = ::zyppng::Ref<T>; \
+  using T##WeakRef = ::zyppng::WeakRef<T>
 
 /*
  * Helper Macro to forward declare types and ref types

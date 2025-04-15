@@ -75,7 +75,7 @@ namespace zypp
        **/
       void setupTransferSettings();
 
-      bool authenticate(const Url &url, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry );
+      bool authenticate( const Url &url, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry );
 
       /**
        * check the url is supported by the curl library

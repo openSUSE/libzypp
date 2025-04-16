@@ -79,7 +79,7 @@ namespace zyppng
      */
     ProvideMediaSpec &addCustomHeaderValue (  const std::string &key, const HeaderValueMap::Value &val );
 
-    zypp::TriBool isSameMedium ( const ProvideMediaSpec &other );
+    zypp::TriBool isSameMedium ( const ProvideMediaSpec &other ) const;
 
   public:
     class Impl;                 ///< Implementation class.

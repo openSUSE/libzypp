@@ -417,12 +417,11 @@ namespace zypp
         }
       }
 
-      // FIXME we only support the first url for now.
-      if ( info.baseUrlsEmpty() )
+      if ( info.effectiveBaseUrlsEmpty() )
         ZYPP_THROW(Exception("No url in repository."));
 
       MIL << "provide Package " << _package << endl;
-      Url url = * info.baseUrlsBegin();
+      Url url = info.effectiveBaseUrls().front();
       try {
       do {
         _retry = false;

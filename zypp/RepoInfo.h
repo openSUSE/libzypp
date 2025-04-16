@@ -133,18 +133,14 @@ namespace zypp
       /**
        * Pars pro toto: The first repository url
        */
-      Url url() const
-      { return( baseUrlsEmpty() ? Url() : *baseUrlsBegin()); }
+      Url url() const;
       /**
        * Pars pro toto: The first repository raw url (no variables replaced)
        */
       Url rawUrl() const;
 
       /**
-       * The complete set of repository urls
-       *
-       * These are either the configured baseurls, or if empty, the downloaded
-       * mirror list (\see \ref mirrorListUrl)
+       * The complete set of repository urls as configured
        */
       url_set baseUrls() const;
       /**
@@ -168,6 +164,30 @@ namespace zypp
        * Clears current base URL list and adds an \ref url_set.
        */
       void setBaseUrls( url_set urls );
+
+      /**
+       * whether effective repository urls are available
+       */
+      bool effectiveBaseUrlsEmpty() const;
+
+      /**
+       * The complete set of effective repository urls
+       *
+       * These are either the configured baseurls including the downloaded
+       * mirror list (\see \ref mirrorListUrl) or meta link urls.
+       *
+       * Also if there is just one baseUrl pointing to a well known opensuse server
+       * it might contain additional mirrors requested from the server on demand
+       */
+      url_set effectiveBaseUrls() const;
+
+      /**
+       * Returns the currently known effective baseUrls in groups, where each group contains a
+       * primary base url and additional urls that should be used as mirrors.
+       */
+      std::vector<std::vector<Url>> groupedBaseUrls() const;
+
+
 
       /**
        * \short Repository path
@@ -412,9 +432,6 @@ namespace zypp
       Url rawGpgKeyUrl() const;
       /** (leagcy API) Set the gpgkey URL defined for this repo */
       void setGpgKeyUrl( const Url &gpgkey );
-
-      /** downloads all configured gpg keys into the defined directory */
-      Pathname provideKey(const std::string &keyID_r, const Pathname &targetDirectory_r ) const;
 
       /**
        * \short Whether packages downloaded from this repository will be kept in local cache

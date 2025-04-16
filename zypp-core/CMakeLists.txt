@@ -179,6 +179,7 @@ INSTALL(  FILES ${zypp_url_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-cor
 SET( zypp_parser_SRCS
   parser/iniparser.cc
   parser/inidict.cc
+  parser/json.cc
   parser/parseexception.cc
   parser/sysconfig.cc
 )
@@ -188,6 +189,7 @@ SET( zypp_parser_HEADERS
   parser/iniparser.h
   parser/IniDict
   parser/inidict.h
+  parser/json.h
   parser/ParseException
   parser/parseexception.h
   parser/Sysconfig

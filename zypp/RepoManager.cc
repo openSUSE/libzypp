@@ -140,7 +140,7 @@ namespace zypp
   void RepoManager::refreshMetadata( const RepoInfo &info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
   {
     // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-    zypp::media::ScopedDisableMediaChangeReport guard( info.baseUrlsSize() > 1 );
+    zypp::media::ScopedDisableMediaChangeReport guard( info.effectiveBaseUrls().size() > 1 );
     return _pimpl->ngMgr().refreshMetadata( info, policy, nullptr ).unwrap();
   }
 

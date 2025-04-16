@@ -176,6 +176,19 @@ size_t log_redirects_curl( char *ptr, size_t size, size_t nmemb, void *userdata)
   return max;
 }
 
+
+void prepareSettingsAndUrl( zypp::Url &url_r, zypp::media::TransferSettings &s )
+{
+  ::internal::fillSettingsFromUrl ( url_r, s );
+
+  // if the proxy was not set (or explicitly unset) by url, then look...
+  if ( s.proxy().empty() )
+    ::internal::fillSettingsSystemProxy( url_r, s );
+
+  // remove extra options from the URL
+  url_r = ::internal::clearQueryString( url_r );
+}
+
 /**
  * Fills the settings structure using options passed on the url
  * for example ?timeout=x&proxy=foo

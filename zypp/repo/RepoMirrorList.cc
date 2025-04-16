@@ -9,7 +9,7 @@
 /** \file	zypp/repo/RepoMirrorList.cc
  *
 */
-
+#include "zypp-media/auth/credentialmanager.h"
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -20,7 +20,17 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
-#include <zypp/media/MediaUrl.h>
+
+#include <zypp-core/fs/TmpPath.h>
+#include <zypp-curl/ng/network/networkrequestdispatcher.h>
+#include <zypp-curl/ng/network/request.h>
+#include <zypp-curl/private/curlhelper_p.h>
+#include <zypp-core/zyppng/base/eventloop.h>
+
+#include <zypp/media/detail/MediaNetworkRequestExecutor.h>
+#include <zypp/media/MediaNetworkCommonHandler.h> // for the authentication workflow
+
+#include <zypp-core/parser/json.h>
 
 
 ///////////////////////////////////////////////////////////////////
@@ -44,16 +54,57 @@ namespace zypp
       {
         RepoMirrorListTempProvider()
         {}
-        RepoMirrorListTempProvider( Pathname  localfile_r )
+
+        RepoMirrorListTempProvider( Pathname localfile_r )
         : _localfile(std::move( localfile_r ))
         {}
+
         RepoMirrorListTempProvider( const Url & url_r )
         {
+          if ( url_r.schemeIsDownloading()
+               && RepoMirrorList::urlSupportsMirrorLink(url_r)
+               && url_r.getQueryStringMap().count("mirrorlist") > 0 ) {
+
+            // Auth will probably never be triggered, but add it for completeness
+            const auto &authCb = [&]( const zypp::Url &, media::TransferSettings &settings, const std::string & availAuthTypes, bool firstTry, bool &canContinue ) {
+              media::CredentialManager cm(media::CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+              if ( media::MediaNetworkCommonHandler::authenticate( url_r, cm, settings, availAuthTypes, firstTry ) ) {
+                canContinue = true;
+                return;
+              }
+              canContinue = false;
+            };
+
+            internal::MediaNetworkRequestExecutor executor;
+            executor.sigAuthRequired ().connect(authCb);
+
+            _tmpfile = filesystem::TmpFile();
+            _localfile = _tmpfile->path();
+
+            // prepare Url and Settings
+            auto url = url_r;
+            auto tSettings = media::TransferSettings();
+            ::internal::prepareSettingsAndUrl( url, tSettings );
+
+            auto req = std::make_shared<zyppng::NetworkRequest>( url_r, _localfile );
+            req->transferSettings () = tSettings;
+            executor.executeRequest ( req, nullptr );
+
+            // apply umask
+            if ( ::chmod( _localfile.c_str(), filesystem::applyUmaskTo( 0644 ) ) )
+            {
+              ERR << "Failed to chmod file " << _localfile << endl;
+            }
+
+            return;
+          }
+
+          // this will handle traditional media including URL resolver plugins
           Url abs_url( url_r );
           abs_url.setPathName( "/" );
-          abs_url.setQueryParam( "mediahandler", "curl" );
           _access.reset( new MediaSetAccess( std::vector<zypp::media::MediaUrl>{abs_url} ) );
           _localfile = _access->provideFile( url_r.getPathName() );
+
         }
 
         const Pathname & localfile() const
@@ -62,6 +113,7 @@ namespace zypp
       private:
         shared_ptr<MediaSetAccess> _access;
         Pathname _localfile;
+        std::optional<filesystem::TmpFile> _tmpfile;
       };
       ///////////////////////////////////////////////////////////////////
 
@@ -71,6 +123,61 @@ namespace zypp
         media::MetaLinkParser metalink;
         metalink.parse(tmpfstream);
         return metalink.getUrls();
+      }
+
+      inline std::vector<Url> RepoMirrorListParseJSON( const Pathname &tmpfile )
+      {
+        InputStream tmpfstream (tmpfile);
+
+        try {
+          parser::stream_parser parser;
+          std::string linebuf;
+          while ( std::getline(tmpfstream.stream(), linebuf) ) {
+            parser.write ( linebuf );
+          }
+          parser.finish();
+          if ( !parser.done() ) {
+            MIL << "Received incomplete JSON data from server, ignoring, no mirrors available." << std::endl;
+            return {};
+          }
+
+          auto mirrs = parser.release ();
+          if ( !mirrs.is_array () ) {
+            MIL << "Unexpected JSON format, top level element must be an array." << std::endl;
+            return {};
+          }
+
+          std::vector<Url> urls;
+          const auto &topArray = mirrs.as_array ();
+          for ( const auto &val : topArray ) {
+            if ( !val.is_object () ) {
+              MIL << "Unexpected JSON element, array must contain only objects. Ignoring current element" << std::endl;
+              continue;
+            }
+
+            const auto &obj = val.as_object();
+            for ( const auto &key : obj ) {
+              if ( key.key() == "url" ) {
+                const auto &elemValue = key.value();
+                if ( !elemValue.is_string () ) {
+                  MIL << "Unexpected JSON element, element \"url\" must contain a string. Ignoring current element" << std::endl;
+                  break;
+                }
+                try {
+                  urls.push_back ( Url( elemValue.as_string().c_str() ) );
+                } catch ( const url::UrlException &e ) {
+                  ZYPP_CAUGHT(e);
+                  MIL << "Invalid URL in mirrors file: "<< elemValue.as_string().c_str() << ", ignoring" << std::endl;
+                }
+              }
+            }
+          }
+          return urls;
+
+        } catch (...) {
+          MIL << "Caught exception while parsing json, no mirrors available" << std::endl;
+        }
+        return {};
       }
 
       inline std::vector<Url> RepoMirrorListParseTXT( const Pathname &tmpfile )
@@ -92,13 +199,15 @@ namespace zypp
       }
 
       /** Parse a local mirrorlist \a listfile_r and return usable URLs */
-      inline std::vector<Url> RepoMirrorListParse( const Url & url_r, const Pathname & listfile_r, bool mirrorListForceMetalink_r )
+      inline std::vector<Url> RepoMirrorListParse( const Url & url_r, const Pathname & listfile_r, RepoMirrorList::Format format )
       {
         USR << url_r << " " << listfile_r << endl;
 
         std::vector<Url> mirrorurls;
-        if ( mirrorListForceMetalink_r || url_r.asString().find( "/metalink" ) != std::string::npos )
+        if ( format == RepoMirrorList::MetaLink || url_r.asString().find( "/metalink" ) != std::string::npos )
           mirrorurls = RepoMirrorListParseXML( listfile_r );
+        else if ( format == RepoMirrorList::MirrorListJson || url_r.getQueryStringMap().count("mirrorlist") != 0 )
+          mirrorurls = RepoMirrorListParseJSON( listfile_r );
         else
           mirrorurls = RepoMirrorListParseTXT( listfile_r );
 
@@ -122,47 +231,70 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, bool mirrorListForceMetalink_r )
+    RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, Format format )
     {
+
+      PathInfo metaPathInfo( metadatapath_r);
       if ( url_r.getScheme() == "file" )
       {
         // never cache for local mirrorlist
-        _urls = RepoMirrorListParse( url_r, url_r.getPathName(), mirrorListForceMetalink_r );
+        _urls = RepoMirrorListParse( url_r, url_r.getPathName(), format );
       }
-      else if ( ! PathInfo( metadatapath_r).isDir() )
+      else if ( !metaPathInfo.isDir() )
       {
-        // no cachedir
+        // no cachedir or no access
         RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of any downloaded files
-        _urls = RepoMirrorListParse( url_r, provider.localfile(), mirrorListForceMetalink_r );
+        _urls = RepoMirrorListParse( url_r, provider.localfile(), format );
       }
       else
       {
         // have cachedir
         Pathname cachefile( metadatapath_r );
-        if ( mirrorListForceMetalink_r || url_r.asString().find( "/metalink" ) != std::string::npos )
+        if ( format == MetaLink || url_r.asString().find( "/metalink" ) != std::string::npos )
           cachefile /= "mirrorlist.xml";
+        else if ( format == MirrorListJson || url_r.getQueryStringMap().count("mirrorlist") != 0 )
+          cachefile /= "mirrorlist.json";
         else
           cachefile /= "mirrorlist.txt";
 
         zypp::filesystem::PathInfo cacheinfo( cachefile );
-        if ( !cacheinfo.isFile() || cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 )
+        if ( !cacheinfo.isFile()
+             // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
+             // it makes no sense to continously download the mirrors file if we can't store it
+             || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () )
+        )
         {
           DBG << "Getting MirrorList from URL: " << url_r << endl;
           RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
 
-          // Create directory, if not existing
-          DBG << "Copy MirrorList file to " << cachefile << endl;
-          zypp::filesystem::assert_dir( metadatapath_r );
-          zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+          if ( metaPathInfo.userMayRWX () ) {
+            // Create directory, if not existing
+            DBG << "Copy MirrorList file to " << cachefile << endl;
+            zypp::filesystem::assert_dir( metadatapath_r );
+            zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+          }
+          _urls = RepoMirrorListParse( url_r, provider.localfile(), format );
+
+        } else {
+          _urls = RepoMirrorListParse( url_r, cachefile, format );
         }
 
-        _urls = RepoMirrorListParse( url_r, cachefile, mirrorListForceMetalink_r );
+
         if( _urls.empty() )
         {
           DBG << "Removing Cachefile as it contains no URLs" << endl;
           zypp::filesystem::unlink( cachefile );
         }
       }
+    }
+
+    bool RepoMirrorList::urlSupportsMirrorLink(const Url &url)
+    {
+      static const std::vector<std::string> hosts{
+        "download.opensuse.org",
+        "cdn.opensuse.org"
+      };
+      return ( std::find( hosts.begin(), hosts.end(), str::toLower( url.getHost() )) != hosts.end() );
     }
 
     /////////////////////////////////////////////////////////////////

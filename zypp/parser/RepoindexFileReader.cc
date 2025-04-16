@@ -180,6 +180,11 @@ namespace zypp
       // xpath: /repoindex/data (+)
       if ( reader_r->name() == "repo" )
       {
+        // TODO: Ideally the repo values here are interpreted the same way as
+        // corresponding ones in the RepoFileReader. Check whether we can introduce
+        // a RepoInfo ctor from a string dict. Using it here and in RepoFileReader.
+        // For now we try to parse the same way as in RepoFileReader.
+
         RepoInfo info;
         // Set some defaults that are not contained in the repo information
         info.setAutorefresh( true );
@@ -236,7 +241,6 @@ namespace zypp
         if ( getAttrValue( "priority", reader_r, attrValue ) )
           info.setPriority( str::strtonum<unsigned>( attrValue ) );
 
-
         // optional enabled
         if ( getAttrValue( "enabled", reader_r, attrValue ) )
           info.setEnabled( str::strToBool( attrValue, info.enabled() ) );
@@ -245,9 +249,34 @@ namespace zypp
         if ( getAttrValue( "autorefresh", reader_r, attrValue ) )
           info.setAutorefresh( str::strToBool( attrValue, info.autorefresh() ) );
 
+        // optional *gpgcheck
+        if ( getAttrValue( "gpgcheck", reader_r, attrValue ) )
+          info.setGpgCheck( str::strToTriBool( attrValue ) );
+        if ( getAttrValue( "repo_gpgcheck", reader_r, attrValue ) )
+          info.setRepoGpgCheck( str::strToTrue( attrValue ) );
+        if ( getAttrValue( "pkg_gpgcheck", reader_r, attrValue ) )
+          info.setPkgGpgCheck( str::strToTrue( attrValue ) );
+
+        // optional keeppackages
+        if ( getAttrValue( "keeppackages", reader_r, attrValue ) )
+          info.setKeepPackages( str::strToTrue( attrValue ) );
+
+        // optional gpgkey
+        if ( getAttrValue( "gpgkey", reader_r, attrValue ) )
+          info.setGpgKeyUrl( Url(attrValue) );
+
+        // optional mirrorlist
+        if ( getAttrValue( "mirrorlist", reader_r, attrValue ) )
+          info.setMirrorListUrl( Url(attrValue) );
+
+        // optional metalink
+        if ( getAttrValue( "metalink", reader_r, attrValue ) )
+          info.setMetalinkUrl( Url(attrValue) );
+
         DBG << info << endl;
 
         // ignore the rest
+        // Specially: bsc#1177427 et.al.: type in a .repo file is legacy - ignore it
         _callback(info);
         return true;
       }

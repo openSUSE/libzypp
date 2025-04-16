@@ -86,7 +86,6 @@ namespace zypp
       , _type(repo::RepoType::NONE_e)
       ,	keeppackages(indeterminate)
       , _mirrorListForceMetalink(false)
-      , emptybaseurls(false)
     {}
 
     Impl(const Impl &) = default;
@@ -145,20 +144,51 @@ namespace zypp
 
     const RepoVariablesReplacedUrlList & baseUrls() const
     {
-      const Url & mlurl( _mirrorListUrl.transformed() );	// Variables replaced!
-      if ( _baseUrls.empty() && ! mlurl.asString().empty() )
+      return _baseUrls;
+    }
+
+    void resetEffectiveUrls() const {
+      _effectiveBaseUrls.clear ();
+      _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
+    }
+
+    url_set &effectiveBaseUrls() const
+    {
+      if ( !_effectiveBaseUrls.empty()
+           && ( std::chrono::steady_clock::now() - _lastEffectiveUrlsUpdate < std::chrono::hours(1) ) )
+        return _effectiveBaseUrls;
+
+      _effectiveBaseUrls.clear();
+      _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
+
+      auto mlType = _mirrorListForceMetalink ? repo::RepoMirrorList::MetaLink : repo::RepoMirrorList::Default;
+      Url mlurl( _mirrorListUrl.transformed() );	// Variables replaced!
+      if ( mlurl.asString().empty()
+           && _baseUrls.raw().size() == 1
+           && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
+
+        mlType = repo::RepoMirrorList::MirrorListJson;
+        mlurl = *_baseUrls.transformedBegin ();
+        mlurl.appendPathName("/");
+        mlurl.setQueryParam("mirrorlist", std::string() );
+
+        MIL << "Detected opensuse.org baseUrl with no mirrors, requesting them from : " << mlurl.asString() << std::endl;
+      }
+
+      if ( !mlurl.asString().empty() )
       {
-        emptybaseurls = true;
         DBG << "MetadataPath: " << metadataPath() << endl;
-        repo::RepoMirrorList rmurls( mlurl, metadataPath(), _mirrorListForceMetalink );
+        repo::RepoMirrorList rmurls( mlurl, metadataPath(), mlType );
 
         // propagate internally used URL params like 'proxy' to the mirrors
         const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
           return internal::propagateQueryParams ( in , urlTemplate );
         };
-        _baseUrls.raw().insert( _baseUrls.raw().end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
+        _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
       }
-      return _baseUrls;
+
+      _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), _baseUrls.transformedBegin (), _baseUrls.transformedEnd () );
+      return _effectiveBaseUrls;
     }
 
     std::vector<std::vector<Url>> groupedBaseUrls() const
@@ -167,7 +197,7 @@ namespace zypp
       std::vector<std::vector<Url>> urlGroups;
       int dlUrlIndex = -1; //we remember the index of the first downloading URL
 
-      const auto &baseUrls = this->baseUrls().transformed();
+      const auto &baseUrls = effectiveBaseUrls();
       std::for_each ( baseUrls.begin(), baseUrls.end(), [&]( const zypp::Url &url ){
         if ( !url.schemeIsDownloading () ) {
           urlGroups.push_back ( { url } );
@@ -191,7 +221,7 @@ namespace zypp
     { return _baseUrls; }
 
     bool baseurl2dump() const
-    { return !emptybaseurls && !_baseUrls.empty(); }
+    { return !_baseUrls.empty(); }
 
 
     const RepoVariablesReplacedUrlList & gpgKeyUrls() const
@@ -202,12 +232,11 @@ namespace zypp
 
     std::string repoStatusString() const
     {
-      baseUrls(); // ! call baseUrls() to be sure emptybaseurls is initialized.
-      if ( emptybaseurls )
+      if ( _mirrorListUrl.transformed().isValid() )
         return _mirrorListUrl.transformed().asString();
-      if ( baseUrls().empty() )
-        return std::string();
-      return (*baseUrls().transformedBegin()).asString();
+      if ( !baseUrls().empty() )
+        return (*baseUrls().transformedBegin()).asString();
+      return std::string();
     }
 
     const std::set<std::string> & contentKeywords() const
@@ -402,13 +431,14 @@ namespace zypp
     }
 
     DefaultIntegral<unsigned,defaultPriority> priority;
-    mutable bool emptybaseurls;
 
   private:
     Pathname _metadataPath;
     Pathname _packagesPath;
 
     mutable RepoVariablesReplacedUrlList _baseUrls;
+    mutable url_set _effectiveBaseUrls;
+    mutable std::chrono::steady_clock::time_point _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
     mutable std::pair<FalseBool, std::set<std::string> > _keywords;
 
     RepoVariablesReplacedUrlList _gpgKeyUrls;
@@ -594,17 +624,33 @@ namespace zypp
     for ( const auto & url : _pimpl->baseUrls().raw() )	// Raw unique!
       if ( url == url_r )
         return;
-    _pimpl->baseUrls().raw().push_back( std::move(url_r) );
+
+    _pimpl->baseUrls().raw().push_back( url_r );
+    _pimpl->resetEffectiveUrls ();
   }
 
   void RepoInfo::setBaseUrl( Url url_r )
   {
     _pimpl->baseUrls().raw().clear();
+    _pimpl->resetEffectiveUrls ();
     _pimpl->baseUrls().raw().push_back( std::move(url_r) );
   }
 
   void RepoInfo::setBaseUrls( url_set urls )
-  { _pimpl->baseUrls().raw().swap( urls ); }
+  {
+    _pimpl->resetEffectiveUrls ();
+    _pimpl->baseUrls().raw().swap( urls );
+  }
+
+  bool RepoInfo::effectiveBaseUrlsEmpty() const
+  {
+    return _pimpl->effectiveBaseUrls().empty();
+  }
+
+  RepoInfo::url_set RepoInfo::effectiveBaseUrls() const
+  {
+    return _pimpl->effectiveBaseUrls();
+  }
 
   void RepoInfo::setPath( const Pathname &path )
   { _pimpl->path = path; }
@@ -711,6 +757,13 @@ namespace zypp
 
   bool RepoInfo::baseUrlSet() const
   { return _pimpl->baseurl2dump(); }
+
+  Url RepoInfo::url() const
+  {
+    if ( _pimpl->effectiveBaseUrls().empty() )
+      return Url();
+    return _pimpl->effectiveBaseUrls().front();
+  }
 
   const std::set<std::string> & RepoInfo::contentKeywords() const
   { return _pimpl->contentKeywords(); }
@@ -1018,7 +1071,8 @@ namespace zypp
   {
     // We skip the check for downloading media unless a local copy of the
     // media file exists and states that there is more than one medium.
-    bool canSkipMediaCheck = std::all_of( baseUrlsBegin(), baseUrlsEnd(), []( const zypp::Url &url ) { return url.schemeIsDownloading(); });
+    const auto &effUrls = _pimpl->effectiveBaseUrls ();
+    bool canSkipMediaCheck = std::all_of( effUrls.begin(), effUrls.end(), []( const zypp::Url &url ) { return url.schemeIsDownloading(); });
     if ( canSkipMediaCheck ) {
       const auto &mDataPath = metadataPath();
       if ( not mDataPath.empty() ) {

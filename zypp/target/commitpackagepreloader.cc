@@ -363,17 +363,9 @@ namespace zypp {
 
       // rewrite Url
       zypp::Url url = _myMirror->baseUrl;
+
       media::TransferSettings settings;
-
-      // TODO share logic with MediaCurl2
-      ::internal::fillSettingsFromUrl( url, settings );
-
-      // if the proxy was not set (or explicitly unset) by url, then look...
-      if ( settings.proxy().empty() )
-        ::internal::fillSettingsSystemProxy( url, settings );
-
-      // remove extra options from the URL
-      url = ::internal::clearQueryString( url );
+      ::internal::prepareSettingsAndUrl ( url, settings );
 
       const auto &loc = _job.lookupLocation();
 
@@ -492,11 +484,10 @@ namespace zypp {
 
         // filter base URLs that do not download
         std::vector<RepoUrl> repoUrls;
-        const auto bu = pi.repoInfo().baseUrls();
+        const auto bu = pi.repoInfo().effectiveBaseUrls();
         std::for_each( bu.begin(), bu.end(), [&]( const zypp::Url &u ) {
           media::UrlResolverPlugin::HeaderList custom_headers;
           Url url = media::UrlResolverPlugin::resolveUrl(u, custom_headers);
-          MIL << "Trying scheme '" << url.getScheme() << "'" << std::endl;
 
           if ( media::MediaHandlerFactory::handlerType(url) != media::MediaHandlerFactory::MediaCURLType )
             return;

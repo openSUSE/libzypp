@@ -7,7 +7,8 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "repoinfowf.h"
-#include "zypp/ng/reporthelper.h"
+#include <zypp/ng/reporthelper.h>
+#include <zypp/repo/RepoMirrorList.h>
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/base/String.h>
@@ -56,8 +57,36 @@ namespace zyppng {
         using zyppng::operators::operator|;
         using zyppng::expected;
 
-        if (  _info.gpgKeyUrlsEmpty() )
-          return makeReadyResult( expected<void>::success() );
+        zypp::RepoInfo::url_set gpgKeyUrls = _info.gpgKeyUrls();
+
+        if (  gpgKeyUrls.empty() ) {
+          if ( !_info.baseUrlsEmpty()
+               && zypp::repo::RepoMirrorList::urlSupportsMirrorLink(*_info.baseUrlsBegin()) ) {
+
+            MIL << "No gpgkey URL specified, but d.o.o server detected. Trying to generate the key file path." << std::endl;
+
+            zypp::Url bUrl = *_info.baseUrlsBegin();
+            zypp::repo::RepoType::Type rType = _info.type().toEnum ();
+            switch( rType ) {
+             case zypp::repo::RepoType::RPMMD_e:
+                bUrl.appendPathName( _info.path() / "/repodata/repomd.xml.key" );
+                gpgKeyUrls.push_back( bUrl );
+                break;
+              case zypp::repo::RepoType::YAST2_e:
+                bUrl.appendPathName( _info.path() / "/content.key" );
+                gpgKeyUrls.push_back( bUrl );
+                break;
+              case zypp::repo::RepoType::NONE_e:
+              case zypp::repo::RepoType::RPMPLAINDIR_e: {
+                MIL << "Repo type is not known, unable to generate the gpgkey Url on the fly." << std::endl;
+                break;
+              }
+            }
+          }
+
+          if ( gpgKeyUrls.empty () )
+            return makeReadyResult( expected<void>::success() );
+        }
 
         _keysDownloaded.clear();
 
@@ -67,7 +96,7 @@ namespace zyppng {
         // translator: %1% is a repositories name
         _reports.info( zypp::str::Format(_("Looking for gpg keys in repository %1%.") ) % _info.asUserString() );
 
-        return _info.gpgKeyUrls()
+        return std::move(gpgKeyUrls)
          | transform( [this]( const zypp::Url &url ) {
 
             _reports.info( "  gpgkey=" + url.asString() );

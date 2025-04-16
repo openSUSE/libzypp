@@ -53,6 +53,12 @@ uint curlVersion();
 void setupZYPP_MEDIA_CURL_DEBUG( CURL *curl );
 size_t log_redirects_curl( char *ptr, size_t size, size_t nmemb, void *userdata);
 
+/*!
+ * Calls \ref fillSettingsFromUrl and \ref fillSettingsSystemProxy as expected,
+ * afterwards cleans the Url by calling \ref clearQueryString
+ */
+void prepareSettingsAndUrl(zypp::Url &url_r, zypp::media::TransferSettings &s );
+
 void fillSettingsFromUrl( const zypp::Url &url, zypp::media::TransferSettings &s );
 void fillSettingsSystemProxy( const zypp::Url& url, zypp::media::TransferSettings &s );
 

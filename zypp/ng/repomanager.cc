@@ -226,7 +226,7 @@ namespace zyppng
 
   expected<void> assert_urls(const RepoInfo &info)
   {
-    if ( info.baseUrlsEmpty() )
+    if ( info.effectiveBaseUrlsEmpty() )
       return expected<void>::error( ZYPP_EXCPT_PTR ( zypp::repo::RepoNoUrlException( info ) ) );
     return expected<void>::success();
   }
@@ -596,7 +596,7 @@ namespace zyppng
       reposManip().insert(tosave);
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.baseUrls() );
+      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.effectiveBaseUrls() );
 
       zypp::HistoryLog(_options.rootDir).addRepository(tosave);
 
@@ -772,7 +772,7 @@ namespace zyppng
       ProgressObserver::increase( myProgress );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.baseUrls() );
+      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.effectiveBaseUrls() );
       zypp::HistoryLog(_options.rootDir).modifyRepository(toedit, newinfo);
       MIL << "repo " << alias << " modified" << std::endl;
 
@@ -809,9 +809,9 @@ namespace zyppng
 
     for_( it, repoBegin(), repoEnd() )
     {
-      for_( urlit, (*it).baseUrlsBegin(), (*it).baseUrlsEnd() )
+      for( const auto &repourl : it->effectiveBaseUrls() )
       {
-        if ( (*urlit).asString(urlview) == url.asString(urlview) )
+        if ( repourl.asString(urlview) == url.asString(urlview) )
           return make_expected_success(*it);
       }
     }
@@ -861,7 +861,7 @@ namespace zyppng
 
     return  joinPipeline( _zyppContext,
       // make sure geoIP data is up 2 date, but ignore errors
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.effectiveBaseUrls() )
       | [this, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>()); }
       | and_then( [policy, myProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {
         refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
@@ -911,7 +911,7 @@ namespace zyppng
 
         return
           // make sure geoIP data is up 2 date, but ignore errors
-          RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.baseUrls() )
+          RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.effectiveBaseUrls() )
           | [sharedThis, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( sharedThis->_zyppContext, info, sharedThis); }
           | inspect( incProgress( subProgress ) )
           | and_then( [policy, subProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {

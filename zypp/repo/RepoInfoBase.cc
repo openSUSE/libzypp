@@ -15,7 +15,6 @@
 #include <zypp/repo/RepoVariables.h>
 
 #include <zypp/repo/RepoInfoBase.h>
-#include <zypp/TriBool.h>
 #include <zypp/Pathname.h>
 
 using std::endl;
@@ -34,18 +33,14 @@ namespace zypp
   struct RepoInfoBase::Impl
   {
     Impl()
-      : _enabled( indeterminate )
-      , _autorefresh( indeterminate )
     {}
 
     Impl( const std::string & alias_r )
-      : _enabled( indeterminate )
-      , _autorefresh( indeterminate )
     { setAlias( alias_r ); }
 
   public:
-    TriBool	_enabled;
-    TriBool	_autorefresh;
+    bool	_enabled     = true;
+    bool	_autorefresh = false;
     std::string	_alias;
     std::string	_escaped_alias;
     RepoVariablesReplacedString _name;
@@ -100,13 +95,11 @@ namespace zypp
   void RepoInfoBase::setFilepath( const Pathname &filepath )
   { _pimpl->_filepath = filepath; }
 
-  // true by default (if not set by setEnabled())
   bool RepoInfoBase::enabled() const
-  { return indeterminate(_pimpl->_enabled) ? true : (bool) _pimpl->_enabled; }
+  { return _pimpl->_enabled; }
 
-  // false by default (if not set by setAutorefresh())
   bool RepoInfoBase::autorefresh() const
-  { return indeterminate(_pimpl->_autorefresh) ? false : (bool) _pimpl->_autorefresh; }
+  { return _pimpl->_autorefresh; }
 
   std::string RepoInfoBase::alias() const
   { return _pimpl->_alias; }

@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(read_repo_file)
 
     BOOST_CHECK_EQUAL( 5, repo.baseUrlsSize() );
     BOOST_CHECK_EQUAL( 5, repo.gpgKeyUrlsSize() );
-    BOOST_CHECK_EQUAL( Url("http://serv.er/loc1"), repo.url() );
+    BOOST_CHECK_EQUAL( Url("http://serv.er/loc1"), *repo.baseUrlsBegin() );
     BOOST_CHECK_EQUAL( Url("http://serv.er/loc1"), repo.gpgKeyUrl() );
     BOOST_CHECK_EQUAL( Url("http://serv.er/loc1"), repo.mirrorListUrl() );
   }

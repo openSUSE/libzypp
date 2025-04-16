@@ -169,8 +169,8 @@ namespace zypp
             yOut << YAML::Value << YAML::BeginMap;
             yOut << YAML::Key << "alias" << YAML::Value << myRepo.alias();
             yOut << YAML::Key << "url" << YAML::BeginSeq;
-            for ( auto itUrl = myRepoInfo.baseUrlsBegin(); itUrl != myRepoInfo.baseUrlsEnd(); ++itUrl ) {
-              yOut << YAML::Value << itUrl->asString();
+            for ( const auto &url : myRepoInfo.effectiveBaseUrls() ) {
+              yOut << YAML::Value << url.asString();
             }
             yOut << YAML::EndSeq;
             yOut << YAML::Key << "path" << YAML::Value << myRepoInfo.path().asString();

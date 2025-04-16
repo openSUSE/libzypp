@@ -266,7 +266,7 @@ namespace zypp
                                locWithPath.filename().c_str(),
                                repo_r.alias().c_str() ) );
 
-      if ( repo_r.baseUrlsEmpty() )
+      if ( repo_r.effectiveBaseUrlsEmpty() )
       {
         repo_excpt.remember(RepoException(_("No url in repository.")));
         ZYPP_THROW(repo_excpt);
@@ -300,7 +300,7 @@ namespace zypp
       }
 
       // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-      media::ScopedDisableMediaChangeReport guard( repo_r.baseUrlsSize() > 1 );
+      media::ScopedDisableMediaChangeReport guard( repo_r.effectiveBaseUrls().size() > 1 );
 
       const auto &groupedBaseUrls = repo_r.groupedBaseUrls ();
       for ( auto it = groupedBaseUrls.begin(); it != groupedBaseUrls.end();

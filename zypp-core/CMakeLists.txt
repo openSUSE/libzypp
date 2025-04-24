@@ -180,8 +180,17 @@ SET( zypp_parser_SRCS
   parser/iniparser.cc
   parser/inidict.cc
   parser/json.cc
+  parser/json/JsonValue.cc
   parser/parseexception.cc
   parser/sysconfig.cc
+)
+
+SET ( zypp_parser_private_HEADERS
+  parser/json/JsonBool.h
+  parser/json/JsonNull.h
+  parser/json/JsonNumber.h
+  parser/json/JsonString.h
+  parser/json/JsonValue.h
 )
 
 SET( zypp_parser_HEADERS
@@ -382,6 +391,7 @@ SET ( zypp_HEADERS
   ${zypp_ui_HEADERS}
   ${zypp_url_HEADERS}
   ${zypp_parser_HEADERS}
+  ${zypp_parser_private_HEADERS}
   ${zypp_parser_xml_HEADERS}
   ${zyppng_base_HEADERS}
   ${zyppng_base_private_HEADERS}

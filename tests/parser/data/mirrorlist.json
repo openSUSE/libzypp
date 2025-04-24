@@ -1,0 +1,98 @@
+[
+    {
+        "mtime": 1745433180,
+        "prio": 0,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.uni-erlangen.de/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 1,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.rz.uni-wuerzburg.de/linux/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 2,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.uni-bayreuth.de/linux/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 3,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://mirror1.hs-esslingen.de/pub/Mirrors/ftp.opensuse.org/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 4,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://mirror.de.leaseweb.net/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 5,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://opensuse.0x0.st/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 6,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.tu-chemnitz.de/pub/linux/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 7,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.tu-ilmenau.de/mirror/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 8,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://mirror.dogado.de/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 9,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://opensuse.schlundtech.de/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 10,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.gwdg.de/pub/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 11,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://mirror.linux-schulserver.de/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 12,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://ftp.halifax.rwth-aachen.de/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 13,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://mirror.tele-media.net/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 14,
+        "time": "2025-04-23 18:33:00",
+        "url": "http://mirror.euserv.net/linux/opensuse/tumbleweed/repo/non-oss/"
+    },
+    {
+        "mtime": 1745433180,
+        "prio": 15,
+        "time": "2025-04-23 18:33:00",
+        "url": "https://opensusemirror.lihaso.com/tumbleweed/repo/non-oss/"
+    }
+]

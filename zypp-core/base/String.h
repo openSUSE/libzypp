@@ -18,6 +18,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <optional>
 #include <boost/format.hpp>
 #include <boost/utility/string_ref.hpp>
 
@@ -332,6 +333,76 @@ namespace zypp
     inline std::string hexstring( long long n,          int w = 0 ) { return form( "%#0*llx", w, n ); }
     inline std::string hexstring( unsigned long long n, int w = 0 ) { return form( "%#0*llx", w, n ); }
     //@}
+
+#ifdef __cpp_lib_string_view
+
+    inline constexpr char hexCharToByte( char c ){
+      return (((c)>='0' && (c)<='9') ? ((c)-'0')
+                                     : ((c)>='a' && (c)<='f') ? ((c)-('a'-10))
+                                     : ((c)>='A' && (c)<='F') ? ((c)-('A'-10))
+                                     : -1);
+    }
+
+    template <typename BArr = std::string>
+    BArr hexstringToByteArray ( std::string_view str ) {
+      BArr bytes;
+      for ( std::string::size_type i = 0; i < str.length(); i+=2 )
+      {
+        int v = hexCharToByte(str[i]);
+        if (v < 0)
+          return {};
+        bytes.push_back(v);
+        v = hexCharToByte(str[i+1]);
+        if (v < 0)
+          return {};
+        bytes.back() = (bytes.back() << 4) | v;
+      }
+      return bytes;
+    }
+
+
+    /**
+     * Converts a value in hex notation ( e.g 0048 ) into its integer value,
+     * or a empty optional if the hexStr contains invalid characters or is too long for the target
+     * type
+     */
+    template<typename T=uint32_t>
+    constexpr std::enable_if_t< std::is_integral_v<T>, std::optional<T> > hexCharToValue( std::string_view hexChar ) {
+
+      // the max length of the hexChar array for the target type
+      constexpr auto l = sizeof(T) * 2;
+      if ( hexChar.length() == 0 || hexChar.length() % 2 || hexChar.length() > l )
+        return {};
+
+      int cp = 0;
+      int shift = 0;
+      for ( const auto c : hexChar ) {
+        const char b = hexCharToByte(c);
+        if ( b < 0 )
+          return {};
+        cp = (cp << shift) | b;
+        shift = 4;
+      }
+
+      return cp;
+    }
+
+    /*!
+     * Converts a UTF-8 codepoint in hex notation into it's std::string representation
+     */
+    std::string hexCodepointToUtf8String( std::string_view hexChar );
+
+    /*!
+     * Converts a unicode codepoint into it's std::string representation
+     */
+    std::string codepointToUtf8String( uint32_t unichar );
+
+    /*!
+     * Validates a Utf8 encoded string, returns \a false if there are invalid chars in the string
+     */
+    bool validateUtf8( std::string_view str );
+
+#endif
 
     ///////////////////////////////////////////////////////////////////
     /** \name String representation of number as octal value with leading '0'.

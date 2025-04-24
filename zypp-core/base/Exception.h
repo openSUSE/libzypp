@@ -41,6 +41,12 @@ namespace zypp
       : _line( 0 )
       {}
 
+      ~CodeLocation() = default;
+      CodeLocation(const CodeLocation &) = default;
+      CodeLocation(CodeLocation &&) = default;
+      CodeLocation &operator=(const CodeLocation &) = default;
+      CodeLocation &operator=(CodeLocation &&) = default;
+
       /** Ctor */
       CodeLocation( std::string  file_r,
                     std::string  func_r,
@@ -188,6 +194,10 @@ namespace zypp
     void relocate( const CodeLocation & where_r ) const
     { _where = where_r; }
 
+    /** Exchange location on rethrow. */
+    void relocate( CodeLocation &&where_r ) const
+    { _where = std::move(where_r); }
+
     /** Return the message string provided to the ctor.
      * \note This is not necessarily the complete error message.
      * The whole error message is provided by \ref asString or
@@ -323,6 +333,9 @@ namespace zypp
   /** \relates Exception Stream output */
   std::ostream & operator<<( std::ostream & str, const Exception & obj ) ZYPP_API;
 
+  /** Log a std::excepion_ptr */
+  std::ostream & operator<<( std::ostream & str, const std::exception_ptr &excptPtr ) ZYPP_API;
+
   ///////////////////////////////////////////////////////////////////
   namespace exception_detail
   {
@@ -346,6 +359,16 @@ namespace zypp
       throw( excpt_r );
     }
 
+    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
+    void do_ZYPP_THROW( const TExcpt & excpt_r, CodeLocation && where_r ) __attribute__((noreturn));
+    template<class TExcpt, EnableIfIsException<TExcpt>>
+    void do_ZYPP_THROW( const TExcpt & excpt_r, CodeLocation && where_r )
+    {
+      Exception::log( excpt_r, where_r, "THROW:   " );
+      excpt_r.relocate(std::move(where_r) );
+      throw( excpt_r );
+    }
+
     /** Helper for \ref ZYPP_THROW( not Exception ). */
     template<class TExcpt, EnableIfNotException<TExcpt> = 0>
     void do_ZYPP_THROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
@@ -355,7 +378,6 @@ namespace zypp
       Exception::log( typeid(excpt_r).name(), where_r, "THROW:   " );
       throw( excpt_r );
     }
-
 
     /** Helper for \ref ZYPP_THROW( Exception ). */
     template<class TExcpt, EnableIfIsException<TExcpt> = 0>
@@ -383,6 +405,16 @@ namespace zypp
       throw;
     }
 
+    template<class TExcpt, EnableIfIsException<TExcpt> = 0>
+    void do_ZYPP_RETHROW( const TExcpt & excpt_r, CodeLocation && where_r ) __attribute__((noreturn));
+    template<class TExcpt, EnableIfIsException<TExcpt>>
+    void do_ZYPP_RETHROW( const TExcpt & excpt_r, CodeLocation && where_r )
+    {
+      Exception::log( excpt_r, where_r, "RETHROW: " );
+      excpt_r.relocate( std::move(where_r) );
+      throw;
+    }
+
     /** Helper for \ref ZYPP_THROW( not Exception ). */
     template<class TExcpt, EnableIfNotException<TExcpt> = 0>
     void do_ZYPP_RETHROW( const TExcpt & excpt_r, const CodeLocation & where_r ) __attribute__((noreturn));
@@ -397,11 +429,11 @@ namespace zypp
 
     /** Helper for \ref ZYPP_EXCPT_PTR( Exception ). */
     template<class TExcpt>
-    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, const CodeLocation & where_r )
+    std::exception_ptr do_ZYPP_EXCPT_PTR( TExcpt && excpt_r, CodeLocation && where_r )
     {
       if constexpr( std::is_base_of_v<Exception, std::decay_t<TExcpt>> ) {
-        excpt_r.relocate( where_r );
         Exception::log( excpt_r, where_r, "THROW (EXCPTR):   " );
+        excpt_r.relocate( std::move(where_r) );
       } else {
         Exception::log( typeid(excpt_r).name(), where_r, "THROW (EXCPTR):   " );
       }
@@ -409,7 +441,7 @@ namespace zypp
     }
 
     /** Helper for \ref ZYPP_FWD_CURRENT_EXCPT(). */
-    std::exception_ptr do_ZYPP_FWD_EXCPT_PTR( const std::exception_ptr & excpt_r, const CodeLocation & where_r );
+    std::exception_ptr do_ZYPP_FWD_EXCPT_PTR( const std::exception_ptr & excpt_r, CodeLocation &&where_r );
 
 
   } // namespace exception_detail

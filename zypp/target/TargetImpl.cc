@@ -150,23 +150,9 @@ namespace zypp
   {
     // Lazy via template specialisation / should switch to overloading
 
-    template<>
-    inline std::string toJSON( const ZYppCommitResult::TransactionStepList & steps_r )
-    {
-      using sat::Transaction;
-      json::Array ret;
-
-      for ( const Transaction::Step & step : steps_r )
-        // ignore implicit deletes due to obsoletes and non-package actions
-        if ( step.stepType() != Transaction::TRANSACTION_IGNORE )
-          ret.add( step );
-
-      return ret.asJSON();
-    }
-
     /** See \ref commitbegin on page \ref plugin-commit for the specs. */
     template<>
-    inline std::string toJSON( const sat::Transaction::Step & step_r )
+    inline json::Value toJSON ( const sat::Transaction::Step & step_r )
     {
       static const std::string strType( "type" );
       static const std::string strStage( "stage" );
@@ -233,8 +219,23 @@ namespace zypp
         ret.add( strSolvable, s );
       }
 
-      return ret.asJSON();
+      return ret;
     }
+
+    template<>
+    inline json::Value toJSON( const ZYppCommitResult::TransactionStepList & steps_r )
+    {
+      using sat::Transaction;
+      json::Array ret;
+
+      for ( const Transaction::Step & step : steps_r )
+        // ignore implicit deletes due to obsoletes and non-package actions
+        if ( step.stepType() != Transaction::TRANSACTION_IGNORE )
+          ret.add( toJSON(step) );
+
+      return ret;
+    }
+
   } // namespace json
   ///////////////////////////////////////////////////////////////////
 
@@ -387,10 +388,10 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     namespace
     {
-      inline PluginFrame transactionPluginFrame( const std::string & command_r, ZYppCommitResult::TransactionStepList & steps_r )
+      inline PluginFrame transactionPluginFrame( const std::string & command_r, const ZYppCommitResult::TransactionStepList & steps_r )
       {
         return PluginFrame( command_r, json::Object {
-          { "TransactionStepList", steps_r }
+          { "TransactionStepList", json::toJSON(steps_r) }
         }.asJSON() );
       }
     } // namespace

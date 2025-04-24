@@ -2020,7 +2020,7 @@ int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(c
   // It's a pity, but we need all those verbose debug lines just
   // to figure out which script is currently executed. Otherwise we
   // can't tell which output belongs to which script.
-  static const str::regex rx( "^D: (%.*): scriptlet start$" );
+  static const str::regex rx( "^D: (%.*): (scriptlet start|running .* scriptlet)" );
   str::smatch what;
   std::string line;
   bool silent = true; // discard everything before 1st scriptlet

@@ -57,13 +57,13 @@ namespace zypp
       }
     }
 
-  std::exception_ptr do_ZYPP_FWD_EXCPT_PTR( const std::exception_ptr & excpt_r, const CodeLocation & where_r )
+    std::exception_ptr do_ZYPP_FWD_EXCPT_PTR(const std::exception_ptr & excpt_r, CodeLocation &&where_r )
   {
     try {
       std::rethrow_exception( excpt_r );
     } catch ( zypp::Exception &e ) {
-      e.relocate( where_r );
       Exception::log( e, where_r, "RETHROW (FWD) EXCPTR:   " );
+      e.relocate( std::move(where_r) );
       return std::current_exception();
     } catch ( const std::exception & e ) {
       Exception::log( typeid(e).name(), where_r, "RETHROW (FWD) EXCPTR:   " );
@@ -203,6 +203,19 @@ namespace zypp
   std::ostream & operator<<( std::ostream & str, const Exception & obj )
   { return obj.dumpError( str ); }
 
+  std::ostream & operator<<( std::ostream & str, const std::exception_ptr &excptPtr )
+  {
+    try {
+      std::rethrow_exception (excptPtr) ;
+    } catch ( const zypp::Exception &e ) {
+      str << e; // forward to Exception stream operator
+    } catch ( const std::exception &e ) {
+      str << "std::exception: (" << e.what() << ")";
+    } catch ( ... ) {
+      str << "Unknown exception";
+    }
+    return str;
+  }
 
   std::string Exception::strErrno( int errno_r )
   { return str::strerror( errno_r ); }

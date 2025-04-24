@@ -20,12 +20,14 @@
 #include <zypp/base/LogTools.h>
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
+#include <zypp-core/base/Exception.h>
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-core/zyppng/base/eventloop.h>
+#include <zypp-core/zyppng/pipelines/expected.h>
 
 #include <zypp/media/detail/MediaNetworkRequestExecutor.h>
 #include <zypp/media/MediaNetworkCommonHandler.h> // for the authentication workflow
@@ -130,49 +132,53 @@ namespace zypp
         InputStream tmpfstream (tmpfile);
 
         try {
-          parser::stream_parser parser;
-          std::string linebuf;
-          while ( std::getline(tmpfstream.stream(), linebuf) ) {
-            parser.write ( linebuf );
-          }
-          parser.finish();
-          if ( !parser.done() ) {
-            MIL << "Received incomplete JSON data from server, ignoring, no mirrors available." << std::endl;
-            return {};
-          }
+          using namespace zyppng::operators;
+          using zyppng::operators::operator|;
 
-          auto mirrs = parser.release ();
-          if ( !mirrs.is_array () ) {
-            MIL << "Unexpected JSON format, top level element must be an array." << std::endl;
-            return {};
-          }
-
-          std::vector<Url> urls;
-          const auto &topArray = mirrs.as_array ();
-          for ( const auto &val : topArray ) {
-            if ( !val.is_object () ) {
-              MIL << "Unexpected JSON element, array must contain only objects. Ignoring current element" << std::endl;
-              continue;
+          json::Parser parser;
+          auto res = parser.parse ( tmpfstream )
+          | and_then([&]( json::Value data ) {
+            if ( data.type() != json::Value::ArrayType ) {
+              MIL << "Unexpected JSON format, top level element must be an array." << std::endl;
+              return zyppng::expected<std::vector<Url>>::error( ZYPP_EXCPT_PTR( zypp::Exception("Unexpected JSON format, top level element must be an array.") ));
             }
 
-            const auto &obj = val.as_object();
-            for ( const auto &key : obj ) {
-              if ( key.key() == "url" ) {
-                const auto &elemValue = key.value();
-                if ( !elemValue.is_string () ) {
-                  MIL << "Unexpected JSON element, element \"url\" must contain a string. Ignoring current element" << std::endl;
-                  break;
-                }
-                try {
-                  urls.push_back ( Url( elemValue.as_string().c_str() ) );
-                } catch ( const url::UrlException &e ) {
-                  ZYPP_CAUGHT(e);
-                  MIL << "Invalid URL in mirrors file: "<< elemValue.as_string().c_str() << ", ignoring" << std::endl;
+            std::vector<Url> urls;
+            const auto &topArray = data.asArray ();
+            for ( const auto &val : topArray ) {
+              if ( val.type () != json::Value::ObjectType ) {
+                MIL << "Unexpected JSON element, array must contain only objects. Ignoring current element" << std::endl;
+                continue;
+              }
+
+              const auto &obj = val.asObject();
+              for ( const auto &key : obj ) {
+                if ( key.first == "url" ) {
+                  const auto &elemValue = key.second;
+                  if ( elemValue.type() != json::Value::StringType ) {
+                    MIL << "Unexpected JSON element, element \"url\" must contain a string. Ignoring current element" << std::endl;
+                    break;
+                  }
+                  try {
+                    MIL << "Trying to parse URL: " << std::string(elemValue.asString()) << std::endl;
+                    urls.push_back ( Url( elemValue.asString() ) );
+                  } catch ( const url::UrlException &e ) {
+                    ZYPP_CAUGHT(e);
+                    MIL << "Invalid URL in mirrors file: "<< elemValue.asString() << ", ignoring" << std::endl;
+                  }
                 }
               }
             }
+            return zyppng::make_expected_success(urls);
+          });
+
+          if ( !res ) {
+            using zypp::operator<<;
+            MIL << "Error while parsing mirrorlist: (" << res.error() << "), no mirrors available" << std::endl;
+            return {};
           }
-          return urls;
+
+          return *res;
 
         } catch (...) {
           MIL << "Caught exception while parsing json, no mirrors available" << std::endl;

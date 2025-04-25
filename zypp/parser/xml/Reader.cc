@@ -93,7 +93,7 @@ namespace zypp
     , _node( _reader )
     {
       MIL << "Start Parsing " << _stream << endl;
-      if ( ! _reader || ! stream_r.stream().good() )
+      if ( ! _reader || stream_r.stream().bad() )
         ZYPP_THROW( Exception( "Bad input stream" ) );
       // set error handler
       // TODO: Fix using a global lastStructuredError string is not reentrant.

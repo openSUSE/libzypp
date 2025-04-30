@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <boost/mpl/int.hpp>
+#include <boost/mpl/assert.hpp>
 
 #include <zypp/base/Easy.h>
 #include <zypp/base/LogTools.h>

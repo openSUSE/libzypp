@@ -196,10 +196,18 @@ namespace zypp
           if ( tmpurl[0] == '#' )
             continue;
           try {
+            Url mirrUrl( tmpurl );
+            if ( !mirrUrl.schemeIsDownloading( ) ) {
+              MIL << "Ignoring non downloading URL " << tmpurl << std::endl;
+            }
             my_urls.push_back(Url(tmpurl));
           }
           catch (...)
-          {;}	// ignore malformed urls
+          {
+            // fail on invalid URLs
+            ERR << "Invalid URL in mirrorlist file, ignoring." << std::endl;
+            return {};
+          }
         }
         return my_urls;
       }

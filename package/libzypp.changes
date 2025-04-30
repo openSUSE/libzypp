@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Apr 30 12:55:42 CEST 2025 - ma@suse.de
+
+- fixed build with boost 1.88.
+- XmlReader: Fix detection of bad input streams (fixes #635)
+  libxml2 2.14 potentially reads the complete stream, so it may
+  have the 'eof' bit set. Which is not 'good' but also not 'bad'.
+- rpm: Fix detection of %triggerscript starts (bsc#1222044)
+- RepoindexFileReader: add more <repo> related attributes a
+  service may set.
+  Add optional attributes gpgcheck, repo_gpgcheck, pkg_gpgcheck,
+  keeppackages, gpgkey, mirrorlist, and metalink with the same
+  semantic as in a .repo file.
+- version 17.36.7 (35)
+
+-------------------------------------------------------------------
 Thu Apr  3 16:05:35 CEST 2025 - ma@suse.de
 
 - Drop workaround for broken rpm-4.18 in Code16 (bsc#1237172)

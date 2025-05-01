@@ -4,7 +4,7 @@ FILE( GLOB ALLCC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc" )
 STRING( REPLACE ".cc" ";" APLLPROG ${ALLCC} )
 
 # make sure not to statically linked installed tools
-SET( LINKALLSYM CalculateReusableBlocks DownloadFiles )
+SET( LINKALLSYM CalculateReusableBlocks DownloadFiles zypp-runpurge)
 
 FOREACH( loop_var ${APLLPROG} )
   ADD_EXECUTABLE( ${loop_var}

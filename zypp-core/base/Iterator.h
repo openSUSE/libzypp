@@ -15,7 +15,6 @@
 #include <iterator>
 #include <utility>
 
-#include <boost/functional.hpp>
 #include <boost/iterator/filter_iterator.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/iterator/function_output_iterator.hpp>

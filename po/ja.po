@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2025-03-01 04:56+0000\n"
+"PO-Revision-Date: 2025-05-04 00:44+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.3\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4532,7 +4532,7 @@ msgstr "PTF をそのまま維持し、この処理をキャンセルするの�
 #: zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
-msgstr "%1% を削除できるようにするには、ロックを解除してください"
+msgstr "%1% を削除できるようにするため、ロックを解除します"
 
 #: zypp/solver/detail/SATResolver.cc:1405
 #: zypp/solver/detail/SATResolver.cc:1443
@@ -4549,7 +4549,7 @@ msgstr "%1% を維持します"
 #: zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
-msgstr "%1% をインストールできるようにするには、ロックを解除してください"
+msgstr "%1% をインストールできるようにするため、ロックを解除します"
 
 #: zypp/solver/detail/SATResolver.cc:1478
 #: zypp/solver/detail/SATResolver.cc:1499
@@ -4559,7 +4559,7 @@ msgstr "この要求はシステムを壊してしまいます！"
 #: zypp/solver/detail/SATResolver.cc:1479
 #: zypp/solver/detail/SATResolver.cc:1500
 msgid "ignore the warning of a broken system"
-msgstr "システムが破壊される警告を無視する"
+msgstr "システムが破壊される警告を無視します"
 
 #: zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
@@ -4606,13 +4606,13 @@ msgstr "撤回済みの %1% をインストールする"
 #: zypp/solver/detail/SATResolver.cc:1576
 #, boost-format
 msgid "allow installing the PTF %1%"
-msgstr "PTF %1% のインストールを許可する"
+msgstr "PTF %1% のインストールを許可します"
 
 #. translator: %1% is a package name
 #: zypp/solver/detail/SATResolver.cc:1579
 #, boost-format
 msgid "install %1% although it is blacklisted"
-msgstr "ブラックリスト設定されている %1% をインストールする"
+msgstr "ブラックリスト設定されている %1% をインストールします"
 
 #: zypp/solver/detail/SATResolver.cc:1599
 #, boost-format

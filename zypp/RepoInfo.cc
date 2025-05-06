@@ -12,7 +12,6 @@
 #include <zypp/ng/workflows/contextfacade.h>
 #include <iostream>
 #include <vector>
-#include <fstream>
 
 #include <zypp/base/Gettext.h>
 #include <zypp/base/LogTools.h>
@@ -168,13 +167,11 @@ namespace zypp
       _effectiveBaseUrls.clear();
       _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
 
-      auto mlType = _mirrorListForceMetalink ? repo::RepoMirrorList::MetaLink : repo::RepoMirrorList::Default;
       Url mlurl( _mirrorListUrl.transformed() );	// Variables replaced!
       if ( mlurl.asString().empty()
            && _baseUrls.raw().size() == 1
            && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
 
-        mlType = repo::RepoMirrorList::MirrorListJson;
         mlurl = *_baseUrls.transformedBegin ();
         mlurl.appendPathName("/");
         mlurl.setQueryParam("mirrorlist", std::string() );
@@ -184,14 +181,25 @@ namespace zypp
 
       if ( !mlurl.asString().empty() )
       {
-        DBG << "MetadataPath: " << metadataPath() << endl;
-        repo::RepoMirrorList rmurls( mlurl, metadataPath(), mlType );
+        try {
+          DBG << "MetadataPath: " << metadataPath() << endl;
+          repo::RepoMirrorList rmurls( mlurl, metadataPath() );
 
-        // propagate internally used URL params like 'proxy' to the mirrors
-        const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
-          return internal::propagateQueryParams ( in , urlTemplate );
-        };
-        _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
+          // propagate internally used URL params like 'proxy' to the mirrors
+          const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
+            return internal::propagateQueryParams ( in , urlTemplate );
+          };
+          _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
+        } catch ( const zypp::Exception & e ) {
+          // failed to fetch the mirrorlist/metalink, if we still have a baseUrl we can go on, otherwise this is a error
+          if ( _baseUrls.empty () )
+            throw;
+          else {
+            callback::UserData data("reporefresh/mirrorlist");
+            data.set("error", e );
+            JobReport::warning( _("Failed to fetch mirrorlist/metalink."), data );
+          }
+        }
       }
 
       _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), _baseUrls.transformedBegin (), _baseUrls.transformedEnd () );

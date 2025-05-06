@@ -22,14 +22,7 @@ namespace zypp
     {
       public:
 
-      enum Format {
-        Default,
-        MirrorListTxt,
-        MirrorListJson,
-        MetaLink
-      };
-
-        RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, Format = Default );
+        RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r );
 
         RepoMirrorList( const Url & url_r )
         : RepoMirrorList( url_r, Pathname() )

@@ -111,13 +111,62 @@ namespace zypp
 
         const Pathname & localfile() const
         { return _localfile; }
-
       private:
         shared_ptr<MediaSetAccess> _access;
         Pathname _localfile;
         std::optional<filesystem::TmpFile> _tmpfile;
       };
-      ///////////////////////////////////////////////////////////////////
+
+      enum class RepoMirrorListFormat {
+        Error,
+        Empty,
+        MirrorListTxt,
+        MirrorListJson,
+        MetaLink
+      };
+
+      static RepoMirrorListFormat detectRepoMirrorListFormat( const Pathname &localfile ) {
+        // a file starting with < is most likely a metalink file,
+        // a file starting with [ is most likely a json file,
+        // else we go for txt
+        MIL << "Detecting RepoMirrorlist Format based on file content" << std::endl;
+
+        if ( localfile.empty () )
+          return RepoMirrorListFormat::Empty;
+
+        InputStream tmpfstream (localfile);
+        auto &str = tmpfstream.stream();
+        auto c = str.get ();
+
+        // skip preceding whitespaces
+        while ( !str.eof () && !str.bad() && ( c == ' ' || c == '\t' || c == '\n' || c == '\r') )
+          c = str.get ();
+
+        if ( str.eof() ) {
+          ERR << "Failed to read RepoMirrorList file, stream hit EOF early." << std::endl;
+          return RepoMirrorListFormat::Empty;
+        }
+
+        if ( str.bad() ) {
+          ERR << "Failed to read RepoMirrorList file, stream became bad." << std::endl;
+          return RepoMirrorListFormat::Error;
+        }
+
+        switch ( c ) {
+          case '<': {
+            MIL << "Detected Metalink, file starts with <" << std::endl;
+            return RepoMirrorListFormat::MetaLink;
+          }
+          case '[': {
+            MIL << "Detected JSON, file starts with [" << std::endl;
+            return RepoMirrorListFormat::MirrorListJson;
+          }
+          default: {
+            MIL << "Detected TXT, file starts with " << c << std::endl;
+            return RepoMirrorListFormat::MirrorListTxt;
+          }
+        }
+      }
 
       inline std::vector<Url> RepoMirrorListParseXML( const Pathname &tmpfile )
       {
@@ -213,28 +262,39 @@ namespace zypp
       }
 
       /** Parse a local mirrorlist \a listfile_r and return usable URLs */
-      inline std::vector<Url> RepoMirrorListParse( const Url & url_r, const Pathname & listfile_r, RepoMirrorList::Format format )
+      inline std::vector<Url> RepoMirrorListParse( const Url & url_r, const Pathname & listfile_r )
       {
         USR << url_r << " " << listfile_r << endl;
 
         std::vector<Url> mirrorurls;
-        if ( format == RepoMirrorList::MetaLink || url_r.asString().find( "/metalink" ) != std::string::npos )
-          mirrorurls = RepoMirrorListParseXML( listfile_r );
-        else if ( format == RepoMirrorList::MirrorListJson || url_r.getQueryStringMap().count("mirrorlist") != 0 )
-          mirrorurls = RepoMirrorListParseJSON( listfile_r );
-        else
-          mirrorurls = RepoMirrorListParseTXT( listfile_r );
-
+        switch( detectRepoMirrorListFormat (listfile_r) ) {
+          case RepoMirrorListFormat::Error:
+            // should not happen, except when the instr goes bad
+            ZYPP_THROW( zypp::parser::ParseException( str::Format("Unable to detect metalink file format for: %1%") % listfile_r ));
+          case RepoMirrorListFormat::Empty:
+            mirrorurls = {};
+            break;
+          case RepoMirrorListFormat::MetaLink:
+            mirrorurls = RepoMirrorListParseXML( listfile_r );
+            break;
+          case RepoMirrorListFormat::MirrorListJson:
+            mirrorurls = RepoMirrorListParseJSON( listfile_r );
+            break;
+          case RepoMirrorListFormat::MirrorListTxt:
+            mirrorurls = RepoMirrorListParseTXT( listfile_r );
+            break;
+        }
 
         std::vector<Url> ret;
         for ( auto & murl : mirrorurls )
         {
           if ( murl.getScheme() != "rsync" )
           {
-            size_t delpos = murl.getPathName().find("repodata/repomd.xml");
+            std::string pName = murl.getPathName();
+            size_t delpos = pName.find("repodata/repomd.xml");
             if( delpos != std::string::npos )
             {
-              murl.setPathName( murl.getPathName().erase(delpos)  );
+              murl.setPathName( pName.erase(delpos)  );
             }
             ret.push_back( murl );
           }
@@ -245,59 +305,63 @@ namespace zypp
     } // namespace
     ///////////////////////////////////////////////////////////////////
 
-    RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r, Format format )
+    RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r )
     {
 
       PathInfo metaPathInfo( metadatapath_r);
       if ( url_r.getScheme() == "file" )
       {
         // never cache for local mirrorlist
-        _urls = RepoMirrorListParse( url_r, url_r.getPathName(), format );
+        _urls = RepoMirrorListParse( url_r, url_r.getPathName() );
       }
       else if ( !metaPathInfo.isDir() )
       {
         // no cachedir or no access
         RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of any downloaded files
-        _urls = RepoMirrorListParse( url_r, provider.localfile(), format );
+        _urls = RepoMirrorListParse( url_r, provider.localfile() );
       }
       else
       {
         // have cachedir
-        Pathname cachefile( metadatapath_r );
-        if ( format == MetaLink || url_r.asString().find( "/metalink" ) != std::string::npos )
-          cachefile /= "mirrorlist.xml";
-        else if ( format == MirrorListJson || url_r.getQueryStringMap().count("mirrorlist") != 0 )
-          cachefile /= "mirrorlist.json";
-        else
-          cachefile /= "mirrorlist.txt";
-
+        Pathname cachefile = metadatapath_r / "mirrorlist";
         zypp::filesystem::PathInfo cacheinfo( cachefile );
-        if ( !cacheinfo.isFile()
-             // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
-             // it makes no sense to continously download the mirrors file if we can't store it
-             || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () )
-        )
-        {
-          DBG << "Getting MirrorList from URL: " << url_r << endl;
-          RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
+        bool needRefresh = ( !cacheinfo.isFile()
+                        // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
+                        // it makes no sense to continously download the mirrors file if we can't store it
+                        || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () ) );
 
-          if ( metaPathInfo.userMayRWX () ) {
-            // Create directory, if not existing
-            DBG << "Copy MirrorList file to " << cachefile << endl;
-            zypp::filesystem::assert_dir( metadatapath_r );
-            zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+        // up to date: try to parse and use the URLs if sucessful
+        // otherwise fetch the URL again
+        if ( !needRefresh ) {
+          try {
+            _urls = RepoMirrorListParse( url_r, cachefile );
+            if( _urls.empty() ) {
+              DBG << "Removing Cachefile as it contains no URLs" << endl;
+              zypp::filesystem::unlink( cachefile );
+            }
+            return;
+
+          } catch ( const zypp::Exception & e ) {
+            ZYPP_CAUGHT(e);
+            MIL << "Invalid mirrorlist cachefile, deleting it and trying to fetch a new one" << std::endl;
           }
-          _urls = RepoMirrorListParse( url_r, provider.localfile(), format );
-
-        } else {
-          _urls = RepoMirrorListParse( url_r, cachefile, format );
         }
 
+        if( cacheinfo.isFile() ) {
+          // remove the old one, it's either broken, empty or outdated
+          filesystem::unlink(cachefile);
+        }
 
-        if( _urls.empty() )
-        {
-          DBG << "Removing Cachefile as it contains no URLs" << endl;
-          zypp::filesystem::unlink( cachefile );
+        DBG << "Getting MirrorList from URL: " << url_r << endl;
+        RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
+        _urls = RepoMirrorListParse( url_r, provider.localfile() );
+
+        if ( metaPathInfo.userMayRWX()
+             && !_urls.empty() ) {
+          // Create directory, if not existing
+          DBG << "Copy MirrorList file to " << cachefile << endl;
+          zypp::filesystem::assert_dir( metadatapath_r );
+          zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
         }
       }
     }

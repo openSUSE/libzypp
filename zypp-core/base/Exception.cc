@@ -57,7 +57,7 @@ namespace zypp
       }
     }
 
-    std::exception_ptr do_ZYPP_FWD_EXCPT_PTR(const std::exception_ptr & excpt_r, CodeLocation &&where_r )
+  std::exception_ptr do_ZYPP_FWD_EXCPT_PTR(const std::exception_ptr & excpt_r, CodeLocation &&where_r )
   {
     try {
       std::rethrow_exception( excpt_r );
@@ -71,6 +71,19 @@ namespace zypp
     } catch (...) {
       Exception::log( "Unknown Exception", where_r, "RETHROW (FWD) EXCPTR:   " );
       return std::current_exception();
+    }
+  }
+
+  void do_ZYPP_CAUGHT(const std::exception_ptr &excpt_r, CodeLocation &&where_r)
+  {
+    try {
+      std::rethrow_exception( excpt_r );
+    } catch ( zypp::Exception &e ) {
+      Exception::log( e, where_r, "CAUGHT:  " );
+    } catch ( const std::exception & e ) {
+      Exception::log( typeid(e).name(), where_r, "CAUGHT:  " );
+    } catch (...) {
+      Exception::log( "Unknown Exception", where_r, "CAUGHT:  "  );
     }
   }
 

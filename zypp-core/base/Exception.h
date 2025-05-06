@@ -393,6 +393,9 @@ namespace zypp
       Exception::log( typeid(excpt_r).name(), where_r, "CAUGHT:  " );
     }
 
+    /** Helper for std::exception_ptr */
+    void do_ZYPP_CAUGHT ( const std::exception_ptr & excpt_r, CodeLocation &&where_r );
+
 
     /** Helper for \ref ZYPP_THROW( Exception ). */
     template<class TExcpt, EnableIfIsException<TExcpt> = 0>

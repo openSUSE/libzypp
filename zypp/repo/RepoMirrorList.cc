@@ -170,10 +170,17 @@ namespace zypp
 
       inline std::vector<Url> RepoMirrorListParseXML( const Pathname &tmpfile )
       {
-        InputStream tmpfstream (tmpfile);
-        media::MetaLinkParser metalink;
-        metalink.parse(tmpfstream);
-        return metalink.getUrls();
+        try {
+          InputStream tmpfstream (tmpfile);
+          media::MetaLinkParser metalink;
+          metalink.parse(tmpfstream);
+          return metalink.getUrls();
+        } catch (...) {
+          ZYPP_CAUGHT( std::current_exception() );
+          zypp::parser::ParseException ex("Invalid repo metalink format.");
+          ex.remember ( std::current_exception () );
+          ZYPP_THROW(ex);
+        }
       }
 
       inline std::vector<Url> RepoMirrorListParseJSON( const Pathname &tmpfile )
@@ -224,13 +231,18 @@ namespace zypp
           if ( !res ) {
             using zypp::operator<<;
             MIL << "Error while parsing mirrorlist: (" << res.error() << "), no mirrors available" << std::endl;
-            return {};
+            ZYPP_RETHROW( res.error () );
           }
 
           return *res;
 
         } catch (...) {
-          MIL << "Caught exception while parsing json, no mirrors available" << std::endl;
+          ZYPP_CAUGHT( std::current_exception() );
+          MIL << "Caught exception while parsing json" << std::endl;
+
+          zypp::parser::ParseException ex("Invalid repo mirror list format, valid JSON was expected.");
+          ex.remember ( std::current_exception () );
+          ZYPP_THROW(ex);
         }
         return {};
       }
@@ -253,9 +265,14 @@ namespace zypp
           }
           catch (...)
           {
+            ZYPP_CAUGHT( std::current_exception() );
+
             // fail on invalid URLs
-            ERR << "Invalid URL in mirrorlist file, ignoring." << std::endl;
-            return {};
+            ERR << "Invalid URL in mirrorlist file." << std::endl;
+
+            zypp::parser::ParseException ex("Invalid repo mirror list format, all Urls must be valid in a mirrorlist txt file.");
+            ex.remember ( std::current_exception () );
+            ZYPP_THROW(ex);
           }
         }
         return my_urls;

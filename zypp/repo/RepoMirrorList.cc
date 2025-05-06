@@ -218,13 +218,50 @@ namespace zypp
         USR << url_r << " " << listfile_r << endl;
 
         std::vector<Url> mirrorurls;
-        if ( format == RepoMirrorList::MetaLink || url_r.asString().find( "/metalink" ) != std::string::npos )
+        if ( format == RepoMirrorList::MetaLink )
           mirrorurls = RepoMirrorListParseXML( listfile_r );
-        else if ( format == RepoMirrorList::MirrorListJson || url_r.getQueryStringMap().count("mirrorlist") != 0 )
+        else if ( format == RepoMirrorList::MirrorListJson )
           mirrorurls = RepoMirrorListParseJSON( listfile_r );
-        else
+        else if ( format == RepoMirrorList::MirrorListTxt ) {
           mirrorurls = RepoMirrorListParseTXT( listfile_r );
+        } else {
+          // No idea we need to guess:
+          // a file starting with < is most likely a metalink file,
+          // a file starting with [ is most likely a json file,
+          // else we go for txt
+          MIL << "Guessing RepoMirrorlist Format based on file content" << std::endl;
 
+          InputStream tmpfstream (listfile_r);
+          auto &str = tmpfstream.stream();
+          auto c = str.get ();
+
+          // skip preceding whitespaces
+          while ( !str.eof () && !str.bad() && ( c == ' ' || c == '\t' || c == '\n' || c == '\r') )
+            c = str.get ();
+
+          if ( str.eof() || str.bad() ) {
+            ERR << "Failed to read RepoMirrorList file, stream hit EOF early or became bad (EOF: " << str.eof() << ", BAD: " << str.bad() << ")." << std::endl;
+            return mirrorurls;
+          }
+
+          switch ( c ) {
+            case '<': {
+              MIL << "Guessed Metalink, file starts with <" << std::endl;
+              mirrorurls = RepoMirrorListParseXML( listfile_r );
+              break;
+            }
+            case '[': {
+              MIL << "Guessed JSON, file starts with [" << std::endl;
+              mirrorurls = RepoMirrorListParseJSON( listfile_r );
+              break;
+            }
+            default: {
+              MIL << "Guessed TXT, file starts with " << c << std::endl;
+              mirrorurls = RepoMirrorListParseTXT( listfile_r );
+              break;
+            }
+          }
+        }
 
         std::vector<Url> ret;
         for ( auto & murl : mirrorurls )

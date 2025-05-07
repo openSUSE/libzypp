@@ -14,17 +14,17 @@ msgstr ""
 "Project-Id-Version: zypp.ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2022-03-16 00:12+0000\n"
-"Last-Translator: Sergey Mashkov <cy6ergn0m@gmail.com>\n"
+"PO-Revision-Date: 2025-05-07 20:59+0000\n"
+"Last-Translator: Aleksey Fedorov <Aleksejfedorov963@gmail.com>\n"
 "Language-Team: Russian <https://l10n.opensuse.org/projects/libzypp/master/ru/"
 ">\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9.1\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3678,7 +3678,7 @@ msgstr "Необходимо дополнительное клиентское �
 
 #: zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Больше не поддерживается и заменен другим пакетом"
 
 #: zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -3734,6 +3734,7 @@ msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
+"Пакет больше не поддерживается и заменен новым пакетом с другим названием."
 
 #: zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
@@ -3778,12 +3779,12 @@ msgstr "Необходима аутентификация для \"%s\""
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/media/MediaCurl.cc:649
 msgid "Will try again..."
-msgstr ""
+msgstr "Попробуем еще раз..."
 
 #: zypp/media/MediaCurl.cc:652
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "Прекращение после %1% попыток."
 
 #: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
@@ -3833,11 +3834,11 @@ msgstr "Не удалось создать %s"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:491
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Не удалось получить новые метаданные хранилища."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:578
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "Не удалось кэшировать репозиторий (не удалось запустить repo2solv)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:596
 #: zypp/ng/repo/workflows/repomanagerwf.cc:625
@@ -3858,7 +3859,7 @@ msgstr "Не удалось создать кэш в %s — нет прав на
 #: zypp/ng/repo/workflows/repomanagerwf.cc:808
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Не удалось кэшировать репозиторий %1%"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:825
 msgid "Unhandled repository type"
@@ -3909,28 +3910,28 @@ msgstr "Невозможно прочитать файл репозитория 
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Очистка метаданных"
 
 #: zypp/ng/repomanager.cc:401
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Очистка пакетов"
 
 #: zypp/ng/repomanager.cc:453
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Очистка кэш-каталогов"
 
 #: zypp/ng/repomanager.cc:473
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Очистка каталога: %1%"
 
 #: zypp/ng/repomanager.cc:503
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Очистка кэша"
 
 #: zypp/ng/repomanager.cc:524
 msgid "Loading from cache"
-msgstr ""
+msgstr "Загрузка из кэша"
 
 #: zypp/ng/repomanager.cc:615
 #, c-format, boost-format
@@ -3949,11 +3950,11 @@ msgstr "Не удается удалить \"%s\""
 
 #: zypp/ng/repomanager.cc:705
 msgid "Modifying repository"
-msgstr ""
+msgstr "Изменение репозитория"
 
 #: zypp/ng/repomanager.cc:892
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Обновление репозитория: "
 
 #: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
 msgid "Can't figure out where the service is stored."
@@ -3980,58 +3981,58 @@ msgstr "Псевдоним сервис не может начинаться с 
 #: zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Нет дайджеста для файла %s."
 
 #: zypp/ng/reporthelper.cc:39
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Неизвестный дайджест %s для файла %s."
 
 #: zypp/ng/reporthelper.cc:52
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Не удалось выполнить проверку дайджеста для файла '%s'"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/reporthelper.cc:69
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Файл '%s' не имеет подписи, продолжить?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/ng/reporthelper.cc:73
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Файл '%s' из хранилища '%s' не имеет подписи, продолжить?"
 
 #: zypp/ng/reporthelper.cc:90
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
-msgstr ""
+msgstr "Что вы хотите: отклонить ключ, доверять временно или доверять всегда?"
 
 #: zypp/ng/reporthelper.cc:116
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Имя ключа: %1%"
 
 #: zypp/ng/reporthelper.cc:128
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Получен %1% новый ключ подписи пакета из репозитория \"%2%\":"
+msgstr[1] "Получено %1% новых ключа подписи пакета из репозитория \"%2%\":"
+msgstr[2] "Получено %1% новых ключей подписи пакета из репозитория \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/ng/reporthelper.cc:144
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Сбой проверки подписи для файла '%1%'."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/ng/reporthelper.cc:147
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr ""
+msgstr "Сбой проверки подписи для файла '%1%' из репозитория '%2%'."
 
 #. @TODO use a centralized Continue string!
 #: zypp/ng/reporthelper.cc:150 zypp-tui/output/Out.cc:32
@@ -4042,7 +4043,7 @@ msgstr "Продолжить?"
 #: zypp/ng/reporthelper.cc:168
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "Файл '%s' подписан неизвестным ключом '%s'. Продолжить?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/ng/reporthelper.cc:172
@@ -4050,6 +4051,7 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"Файл '%s' из репозитория '%s' подписан неизвестным ключом '%s'. Продолжить?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/repoinfowf.cc:78
@@ -4112,7 +4114,7 @@ msgstr "сбой в applydeltarpm."
 
 #: zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "Нет разрешения на запись кэша репозитория."
 
 #: zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4485,6 +4487,8 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
+"Удаление установленного %1% в этом контексте приведет к удалению (не замене!)"
+" включенных PTF-пакетов."
 
 #: zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
@@ -4492,10 +4496,12 @@ msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
+"PTF следует удалить, вызвав команду '%1%'. Это приведет к обновлению "
+"включенных PTF-пакетов, а не к их удалению."
 
 #: zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
-msgstr ""
+msgstr "Как правило, вы захотите сохранить PTF или отменить действие."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/solver/detail/SATResolver.cc:1340
@@ -4634,19 +4640,19 @@ msgstr "удаление %1%"
 #. Translator: progress bar label
 #: zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
-msgstr ""
+msgstr "Выполнение скриптов после транзакций"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
-msgstr ""
+msgstr "Выполнение скрипта %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
-msgstr ""
+msgstr "Выходные данные скрипта %1%:"
 
 #: zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
@@ -4689,6 +4695,8 @@ msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
+"Получен сигнал : \"%1% (%2%)\", для обеспечения согласованности системы "
+"отменить выполняющуюся транзакцию rpm невозможно."
 
 #: zypp/target/TargetImpl.cc:2736
 msgid "Executing the transaction failed because of the following problems:"
@@ -4696,29 +4704,29 @@ msgstr "Транзакция не удалась из-за следующих п
 
 #: zypp/target/commitpackagepreloader.cc:100
 msgid "No mirror found"
-msgstr ""
+msgstr "Зеркала не найдены"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "Could not create target File"
-msgstr ""
+msgstr "Не удалось создать целевой файл"
 
 #: zypp/target/commitpackagepreloader.cc:134
 #: zypp/target/commitpackagepreloader.cc:364
 msgid "Already in Cache"
-msgstr ""
+msgstr "Уже присутствует в кэше"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:279
 msgid "Failed to rename temporary file."
-msgstr ""
+msgstr "Не удалось переименовать временный файл."
 
 #: zypp/target/commitpackagepreloader.cc:283
 msgid "Finished"
-msgstr ""
+msgstr "Завершено"
 
 #: zypp/target/commitpackagepreloader.cc:607
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Отменено пользователем."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5240,7 +5248,7 @@ msgstr ""
 
 #: zypp-media/mediaexception.cc:220
 msgid "No free ressources available to attach medium."
-msgstr ""
+msgstr "Нет свободных ресурсов для присоединения носителя."
 
 #: zypp-curl/auth/curlauthdata.cc:97
 #, c-format, boost-format

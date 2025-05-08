@@ -19,6 +19,7 @@
 
 #include <map>
 #include <deque>
+#include <chrono>
 
 namespace zyppng {
 ZYPP_FWD_DECL_TYPE_WITH_REFS(NetworkRequestDispatcher);
@@ -29,6 +30,7 @@ namespace zypp {
 
 class CommitPackagePreloader
 {
+  using clock = std::chrono::steady_clock;
 public:
   CommitPackagePreloader();
 
@@ -60,6 +62,7 @@ private:
 
   callback::SendReport<media::CommitPreloadReport> _report;
   zyppng::Ref<internal::ProgressTracker> _pTracker;
+  std::optional<clock::time_point> _lastProgressUpdate;
 
   zyppng::NetworkRequestDispatcherRef _dispatcher;
 };

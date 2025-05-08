@@ -750,6 +750,38 @@ namespace zyppng {
       }
 
     } else {
+      // on errors we could recover from if we have mirrors we try to redirect
+      switch( msg.code() ) {
+        case PeerCertificateInvalid:
+        case NotFound:
+        case ConnectionFailed:
+        //case Timeout:
+        case InvalidChecksum: {
+          auto log = provider().log();
+          MIL << "Request failed trying to recover." << std::endl;
+
+          // prefilter usable URLs, so the scheduler does not have to
+          std::vector<zypp::Url> usableUrls;
+          std::for_each( _mirrorList.begin (), _mirrorList.end(), [&]( const zypp::Url &url ){
+            if ( !canRedirectTo ( finishedReq, url ) )
+              return;
+            usableUrls.push_back(url);
+          });
+
+          if ( usableUrls.size() ) {
+            MIL << "Trying to recover by redirecting to a mirror" << std::endl;
+            finishedReq->setUrls(usableUrls);
+
+            if ( enqueueRequest( finishedReq ) )
+              return;
+          }
+          MIL << "No mirror found or no mirror usable, giving up" << std::endl;
+          break;
+        }
+        default:
+          //all other codes handled by default code
+          break;
+      }
       ProvideItem::finishReq ( queue, finishedReq, msg );
     }
   }
@@ -786,7 +818,7 @@ namespace zyppng {
       auto &attachedMedia = provider().attachedMediaInfos();
       if ( std::find( attachedMedia.begin(), attachedMedia.end(), _handleRef.mediaInfo() ) == attachedMedia.end() )
         return expected<zypp::media::AuthData>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Attachment handle vanished during request.") ) );
-      urlToUse = _handleRef.mediaInfo()->_attachedUrl;
+      urlToUse = _handleRef.mediaInfo()->attachedUrl();
     }
     return ProvideItem::authenticationRequired( queue, req, urlToUse, lastTimestamp, extraFields );
   }
@@ -900,6 +932,7 @@ namespace zyppng {
     // first check if there is a already attached medium we can use as well
     auto &attachedMedia = prov.attachedMediaInfos ();
 
+    // @TODO should we extend the mirrors here if some are not in the mirror list?
     for ( auto &medium : attachedMedia ) {
       if ( medium->isSameMedium ( _mirrorList, _initialSpec ) ) {
         finishWithSuccess ( medium );
@@ -917,13 +950,8 @@ namespace zyppng {
         continue;
 
       // does this Item attach the same medium?
-      const auto sameMedium = attachIt->_initialSpec.isSameMedium( _initialSpec);
-      if ( zypp::indeterminate(sameMedium) ) {
-        // check the primary URLs ( should we do a full list compare? )
-        if ( attachIt->_mirrorList.front() != _mirrorList.front() )
-          continue;
-      }
-      else if ( !(bool)sameMedium )
+      const bool sameMedium = AttachedMediaInfo::isSameMedium( attachIt->_mirrorList, attachIt->_initialSpec, _mirrorList, _initialSpec );
+      if ( !sameMedium )
         continue;
 
       MIL << "Found item providing the same medium, attaching to finished signal and waiting for it to be finished" << std::endl;
@@ -941,7 +969,7 @@ namespace zyppng {
         // if the media file is empty in the spec we can not do anything
         // simply pretend attach worked
         if( _initialSpec.mediaFile().empty() ) {
-          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
+          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _mirrorList, _initialSpec ) ) );
           return;
         }
 
@@ -1153,7 +1181,8 @@ namespace zyppng {
 
         // all good, register the medium and tell all child items
         _runningReq.reset();
-        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, baseUrl, _initialSpec) ) );
+
+        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, baseUrl, _mirrorList, _initialSpec) ) );
 
       } else if ( msg.code() == ProvideMessage::Code::NotFound ) {
 
@@ -1163,12 +1192,8 @@ namespace zyppng {
           // relaxed , tolerate a vanished media file
           _runningReq.reset();
 
-          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _initialSpec ) ) );
-        } else {
-          return ProvideItem::finishReq ( queue, finishedReq, msg );
+          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _mirrorList, _initialSpec ) ) );
         }
-      } else {
-        return ProvideItem::finishReq ( queue, finishedReq, msg );
       }
     } else {
       // real device attach
@@ -1186,6 +1211,7 @@ namespace zyppng {
           , queue.weak_this<ProvideQueue>()
           , _workerType
           , *finishedReq->activeUrl()
+          , std::vector<zypp::Url>{} // no mirrors
           , _initialSpec
           , mntPoint ) ) );
       }

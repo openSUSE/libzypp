@@ -504,8 +504,8 @@ namespace zyppng::RepoManagerWorkflow {
       auto helper = std::make_shared<ExHelper>( ExHelper{ refCtx->repoInfo() } );
 
       // the actual logic pipeline, attaches the medium and tries to refresh from it
-      auto refreshPipeline = [ refCtx, progressObserver ]( zypp::Url url ){
-        return refCtx->zyppContext()->provider()->prepareMedia( url, zyppng::ProvideMediaSpec() )
+      auto refreshPipeline = [ refCtx, progressObserver ]( std::vector<zypp::Url> urls ){
+        return refCtx->zyppContext()->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() )
             | and_then( [ refCtx , progressObserver]( auto mediaHandle ) mutable { return refreshMetadata ( std::move(refCtx), std::move(mediaHandle), progressObserver ); } );
       };
 
@@ -528,8 +528,9 @@ namespace zyppng::RepoManagerWorkflow {
         return true;
       };
 
-      // now go over the urls until we find one that works
-      return refCtx->repoInfo().baseUrls()
+
+      // now go over the url groups until we find one that works
+      return refCtx->repoInfo().groupedBaseUrls()
         | firstOf( std::move(refreshPipeline), expected<RefreshContextRef>::error( std::make_exception_ptr(NotFoundException()) ), std::move(predicate) )
         | [helper]( expected<RefreshContextRef> result ) {
           if ( !result ) {

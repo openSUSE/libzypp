@@ -96,17 +96,13 @@ namespace zypp {
 
       // select a mirror we want to use
       if ( !prepareMirror( ) ) {
-        callback::UserData userData( "CommitPreloadReport/fileDone" );
-        userData.set( "description", _("No mirror found") );
-        _parent._report->fileDone( _targetPath, media::CommitPreloadReport::ERROR, userData );
+        finishCurrentJob ( _targetPath, {}, media::CommitPreloadReport::ERROR, asString( _("no mirror found") ), true );
         return nextJob();
       }
 
       if ( filesystem::assert_dir( _targetPath.dirname()) != 0 ) {
         ERR << "Failed to create target dir for file: " << _targetPath << std::endl;
-        callback::UserData userData( "CommitPreloadReport/fileDone" );
-        userData.set( "description", _("Could not create target File") );
-        _parent._report->fileDone( _targetPath, media::CommitPreloadReport::ERROR, userData );
+        finishCurrentJob ( _targetPath, {}, media::CommitPreloadReport::ERROR, asString( _("could not create target file") ), true );
         return nextJob();
       }
 
@@ -127,13 +123,8 @@ namespace zypp {
               filesystem::unlink( _targetPath );
 
           } else if ( is_checksum( _targetPath, loc.checksum() ) ) {
-
             // if we have the file already, no need to download again
-            callback::UserData userData( "CommitPreloadReport/fileDone" );
-            userData.set( "Url", url );
-            userData.set( "description", _("Already in Cache") );
-            _parent._report->fileDone( _targetPath, media::CommitPreloadReport::NO_ERROR, userData );
-
+            finishCurrentJob ( _targetPath, url, media::CommitPreloadReport::NO_ERROR, asString( _("already in cache") ), false );
             return nextJob();
 
           } else {
@@ -276,12 +267,9 @@ namespace zypp {
       if ( !req.hasError() ) {
         if ( filesystem::rename( _tmpFile, _targetPath ) != 0 ) {
           // error
-          failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("Failed to rename temporary file.") );
+          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("failed to rename temporary file."), true );
         } else {
-          callback::UserData userData( "CommitPreloadReport/fileDone" );
-          userData.set( "Url", req.url() );
-          userData.set( "description", _("Finished") );
-          _parent._report->fileDone( _targetPath, media::CommitPreloadReport::NO_ERROR, userData );
+          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NO_ERROR, asString( _("done") ), false );
         }
       } else {
         // handle errors and auth
@@ -296,39 +284,20 @@ namespace zypp {
           case zyppng::NetworkRequestError::ServerReturnedError:
           case zyppng::NetworkRequestError::MissingData:
           case zyppng::NetworkRequestError::RangeFail:
-          case zyppng::NetworkRequestError::Cancelled:
           case zyppng::NetworkRequestError::ExceededMaxLen:
           case zyppng::NetworkRequestError::TemporaryProblem:
           case zyppng::NetworkRequestError::Timeout:
           case zyppng::NetworkRequestError::Forbidden:
           case zyppng::NetworkRequestError::Http2Error:
-          case zyppng::NetworkRequestError::Http2StreamError: {
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, req.extendedErrorString() );
-            break;
-          }
-          case zyppng::NetworkRequestError::Unauthorized:
-          case zyppng::NetworkRequestError::AuthFailed: {
-
-            //in case we got a auth hint from the server the error object will contain it
-            std::string authHint = error.extraInfoValue("authHint", std::string());
-
-            media::CredentialManager cm(media::CredManagerOptions(ZConfig::instance().repoManagerRoot()));
-            bool newCreds = media::MediaCurl2::authenticate( _myMirror->baseUrl, cm, req.transferSettings(), authHint, _firstAuth );
-            if ( newCreds) {
-              _firstAuth = false;
-              _parent._dispatcher->enqueue( _req );
-              return;
-            }
-
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString() );
-            break;
-          }
+          case zyppng::NetworkRequestError::Http2StreamError:
           case zyppng::NetworkRequestError::NotFound: {
-
             MIL << "Download from mirror failed for file " << req.url () << " trying to taint mirror and move on" << std::endl;
 
             if ( taintCurrentMirror() ) {
               _notFoundRetry++;
+
+              const auto str = zypp::str::Format(_("Error: \"%1%\", trying next mirror.")) % req.extendedErrorString();
+              finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, str, false );
 
               media::TransferSettings settings;
               zypp::Url url;
@@ -343,7 +312,28 @@ namespace zypp {
               return;
             }
 
-            failCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString() );
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString(), true );
+            break;
+          }
+          case zyppng::NetworkRequestError::Unauthorized:
+          case zyppng::NetworkRequestError::AuthFailed: {
+
+            //in case we got a auth hint from the server the error object will contain it
+            std::string authHint = error.extraInfoValue("authHint", std::string());
+
+            media::CredentialManager cm(media::CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+            bool newCreds = media::MediaNetworkCommonHandler::authenticate( _myMirror->baseUrl, cm, req.transferSettings(), authHint, _firstAuth );
+            if ( newCreds) {
+              _firstAuth = false;
+              _parent._dispatcher->enqueue( _req );
+              return;
+            }
+
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ACCESS_DENIED, req.extendedErrorString(), true );
+            break;
+
+          } case zyppng::NetworkRequestError::Cancelled: {
+            finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, req.extendedErrorString(), true );
             break;
           }
           case zyppng::NetworkRequestError::NoError:
@@ -355,15 +345,17 @@ namespace zypp {
       nextJob();
     }
 
-    void failCurrentJob( const zypp::Pathname &localPath, const std::optional<zypp::Url> &url, media::CommitPreloadReport::Error e, const std::optional<std::string> &errorMessage ) {
+    void finishCurrentJob( const zypp::Pathname &localPath, const std::optional<zypp::Url> &url, media::CommitPreloadReport::Error e, const std::optional<std::string> &errorMessage, bool fatal ) {
 
       callback::UserData userData( "CommitPreloadReport/fileDone" );
       if ( url )
         userData.set( "Url", url );
       if ( errorMessage )
-        userData.set( "description", _("Already in Cache") );
+        userData.set( "description", *errorMessage );
 
-      _parent._missedDownloads = true;
+      if ( e != media::CommitPreloadReport::NO_ERROR &&  fatal )
+        _parent._missedDownloads = true;
+
       _parent._report->fileDone( localPath, e, userData );
     }
 
@@ -371,22 +363,15 @@ namespace zypp {
 
       // rewrite Url
       zypp::Url url = _myMirror->baseUrl;
+
       media::TransferSettings settings;
-
-      // TODO share logic with MediaCurl2
-      ::internal::fillSettingsFromUrl( url, settings );
-
-      // if the proxy was not set (or explicitly unset) by url, then look...
-      if ( settings.proxy().empty() )
-        ::internal::fillSettingsSystemProxy( url, settings );
-
-      // remove extra options from the URL
-      url = ::internal::clearQueryString( url );
+      ::internal::prepareSettingsAndUrl ( url, settings );
 
       const auto &loc = _job.lookupLocation();
 
       // rewrite URL for media handle
-      url = MediaSetAccess::rewriteUrl( url ,loc.medianr() );
+      if ( loc.medianr() > 1 )
+        url = MediaSetAccess::rewriteUrl( url ,loc.medianr() );
 
       // append path to file
       url.appendPathName( loc.filename() );
@@ -454,6 +439,7 @@ namespace zypp {
     _requiredBytes   = 0;
     _downloadedBytes = 0;
     _missedDownloads = false;
+    _lastProgressUpdate.reset();
 
     zypp_defer {
       _dispatcher.reset();
@@ -498,14 +484,22 @@ namespace zypp {
 
         // filter base URLs that do not download
         std::vector<RepoUrl> repoUrls;
-        const auto bu = pi.repoInfo().baseUrls();
+        const auto bu = pi.repoInfo().effectiveBaseUrls();
         std::for_each( bu.begin(), bu.end(), [&]( const zypp::Url &u ) {
           media::UrlResolverPlugin::HeaderList custom_headers;
           Url url = media::UrlResolverPlugin::resolveUrl(u, custom_headers);
-          MIL << "Trying scheme '" << url.getScheme() << "'" << std::endl;
 
           if ( media::MediaHandlerFactory::handlerType(url) != media::MediaHandlerFactory::MediaCURLType )
             return;
+
+          // use geo IP if available
+          {
+            const auto rewriteUrl = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
+            if ( rewriteUrl.isValid () )
+              url = rewriteUrl;
+          }
+
+          MIL << "Adding Url: " << url << " to the mirror set" << std::endl;
 
           repoUrls.push_back( RepoUrl {
                                 .baseUrl = std::move(url),
@@ -572,7 +566,13 @@ namespace zypp {
       ev->run();
     }
 
-    MIL << "Preloading done, returning" << std::endl;
+    MIL << "Preloading done, mirror stats: " << std::endl;
+    for ( const auto &elem : _dlRepoInfo ) {
+      std::for_each ( elem.second._baseUrls.begin (), elem.second._baseUrls.end(), []( const RepoUrl &repoUrl ){
+        MIL << "url: " << repoUrl.baseUrl << " misses: " << repoUrl.miss << std::endl;
+      });
+    }
+    MIL << "Preloading done, mirror stats end" << std::endl;
   }
 
   void CommitPackagePreloader::cleanupCaches()
@@ -593,18 +593,32 @@ namespace zypp {
 
   void CommitPackagePreloader::reportBytesDownloaded(ByteCount newBytes)
   {
+    // throttle progress updates to one time per second
+    const auto now = clock::now();
+    bool canUpdate = false;
+    if ( _lastProgressUpdate ) {
+      const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - *_lastProgressUpdate);
+      canUpdate = (duration >= std::chrono::milliseconds(500));
+    } else {
+      canUpdate = true;
+    }
+
     _downloadedBytes += newBytes;
     _pTracker->updateStats( _requiredBytes, _downloadedBytes );
 
-    callback::UserData userData( "CommitPreloadReport/progress" );
-    userData.set( "dbps_avg"    ,   static_cast<double>( _pTracker->_drateTotal ) );
-    userData.set( "dbps_current",   static_cast<double>( _pTracker->_drateLast ) );
-    userData.set( "bytesReceived",  static_cast<double>( _pTracker->_dnlNow ) );
-    userData.set( "bytesRequired",  static_cast<double>( _pTracker->_dnlTotal ) );
-    if ( !_report->progress( _pTracker->_dnlPercent, userData ) ) {
-      _missedDownloads = true;
-      _requiredDls.clear();
-      _dispatcher->cancelAll( _("Cancelled by user."));
+    // update progress one time per second
+    if( canUpdate ) {
+      _lastProgressUpdate = now;
+      callback::UserData userData( "CommitPreloadReport/progress" );
+      userData.set( "dbps_avg"    ,   static_cast<double>( _pTracker->_drateTotal ) );
+      userData.set( "dbps_current",   static_cast<double>( _pTracker->_drateLast ) );
+      userData.set( "bytesReceived",  static_cast<double>( _pTracker->_dnlNow ) );
+      userData.set( "bytesRequired",  static_cast<double>( _pTracker->_dnlTotal ) );
+      if ( !_report->progress( _pTracker->_dnlPercent, userData ) ) {
+        _missedDownloads = true;
+        _requiredDls.clear();
+        _dispatcher->cancelAll( _("Cancelled by user."));
+      }
     }
   }
 

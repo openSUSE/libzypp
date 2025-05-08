@@ -242,11 +242,13 @@ INSTALL(  FILES
 
 SET( zypp_media_detail_HEADERS
   media/detail/DownloadProgressTracker.h
+  media/detail/MediaNetworkRequestExecutor.h
   media/detail/OptionalDownloadProgressReport.h
 )
 
 SET( zypp_media_SRCS
   media/detail/DownloadProgressTracker.cc
+  media/detail/MediaNetworkRequestExecutor.cc
   media/detail/OptionalDownloadProgressReport.cc
   media/MediaHandler.cc
   media/MediaHandlerFactory.cc
@@ -258,12 +260,12 @@ SET( zypp_media_SRCS
   media/MediaNetworkCommonHandler.cc
   media/MediaCurl.cc
   media/MediaCurl2.cc
-  media/MediaMultiCurl.cc
   media/MediaISO.cc
   media/MediaPlugin.cc
   media/MediaSource.cc
   media/MediaManager.cc
   media/MediaPriority.cc
+  media/MediaUrl.cc
   media/UrlResolverPlugin.cc
 )
 
@@ -272,7 +274,6 @@ SET( zypp_media_HEADERS
   media/MediaCIFS.h
   media/MediaCurl.h
   media/MediaCurl2.h
-  media/MediaMultiCurl.h
   media/MediaNetworkCommonHandler.h
   media/MediaDIR.h
   media/MediaDISK.h
@@ -285,6 +286,7 @@ SET( zypp_media_HEADERS
   media/MediaNFS.h
   media/MediaSource.h
   media/MediaPriority.h
+  media/MediaUrl.h
   media/UrlResolverPlugin.h
 )
 

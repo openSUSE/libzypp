@@ -171,9 +171,8 @@ namespace zypp
       inline std::vector<Url> RepoMirrorListParseXML( const Pathname &tmpfile )
       {
         try {
-          InputStream tmpfstream (tmpfile);
           media::MetaLinkParser metalink;
-          metalink.parse(tmpfstream);
+          metalink.parse(tmpfile);
           return metalink.getUrls();
         } catch (...) {
           ZYPP_CAUGHT( std::current_exception() );
@@ -194,12 +193,17 @@ namespace zypp
           json::Parser parser;
           auto res = parser.parse ( tmpfstream )
           | and_then([&]( json::Value data ) {
+
+            std::vector<Url> urls;
+            if ( data.isNull () ) {
+              MIL << "Empty mirrorlist received, no mirrors available." << std::endl;
+              return zyppng::make_expected_success(urls);
+            }
+
             if ( data.type() != json::Value::ArrayType ) {
               MIL << "Unexpected JSON format, top level element must be an array." << std::endl;
               return zyppng::expected<std::vector<Url>>::error( ZYPP_EXCPT_PTR( zypp::Exception("Unexpected JSON format, top level element must be an array.") ));
             }
-
-            std::vector<Url> urls;
             const auto &topArray = data.asArray ();
             for ( const auto &val : topArray ) {
               if ( val.type () != json::Value::ObjectType ) {

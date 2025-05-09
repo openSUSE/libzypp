@@ -7,8 +7,10 @@ SET( CMAKE_MODULE_PATH
     ${LIBZYPP_SOURCE_DIR}/cmake/modules
     ${CMAKE_MODULE_PATH}
 )
+
 INCLUDE(ZyppCommon)
 INCLUDE(CMakePushCheckState)
+include(CheckSymbolExists)
 
 # use Boost's config file
 if(POLICY CMP0167)
@@ -198,6 +200,20 @@ IF ( NOT LIBXML2_FOUND)
   MESSAGE( FATAL_ERROR " libxml not found" )
 ELSE ( NOT LIBXML2_FOUND)
   target_include_directories( zypp_general_compiler_flags INTERFACE ${LIBXML2_INCLUDE_DIR})
+
+  cmake_push_check_state(RESET)
+  set(CMAKE_REQUIRED_INCLUDES ${LIBXML2_INCLUDE_DIR} ${CMAKE_REQUIRED_INCLUDES})
+  set(CMAKE_REQUIRED_LIBRARIES ${LIBXML2_LIBRARIES} )
+  set(CMAKE_REQUIRED_QUIET FALSE )
+  check_symbol_exists( xmlCtxtSetErrorHandler "libxml/SAX2.h" XMLCTXTSETERRORHANDLER_FOUND )
+  IF(${XMLCTXTSETERRORHANDLER_FOUND})
+    message("MEEP MOOP FOUND BIIITCHEEEES")
+    target_compile_definitions( zypp_general_compiler_flags INTERFACE HAVE_LIBXML2_XMLCTXTSETERRORHANDLER )
+  ELSE()
+    message(" WADDAFACGGGG ")
+  ENDIF()
+  cmake_pop_check_state()
+
 ENDIF( NOT LIBXML2_FOUND)
 
 FIND_PACKAGE(ZLIB REQUIRED)
@@ -237,7 +253,6 @@ else()
 
   # detecting libsolv features, so we know which libraries to link this is still required even if we were asked to build
   # without zstd support
-  include(CheckSymbolExists)
   cmake_push_check_state(RESET)
   set(CMAKE_REQUIRED_INCLUDES ${LibSolv_INCLUDE_DIRS} ${CMAKE_REQUIRED_INCLUDES})
   CHECK_SYMBOL_EXISTS( LIBSOLVEXT_FEATURE_ZLIB_COMPRESSION   "solv/solvversion.h" SOLV_NEED_ZLIB   )

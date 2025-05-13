@@ -687,10 +687,10 @@ namespace zypp
                 {
                   history_log_path = Pathname(value);
                 }
-                else if ( entry == "techpreview.ZYPP_SINGLE_RPMTRANS" )
+                else if ( entry == "ZYPP_SINGLE_RPMTRANS" || entry == "techpreview.ZYPP_SINGLE_RPMTRANS" )
                 {
-                  DBG << "techpreview.ZYPP_SINGLE_RPMTRANS=" << value << endl;
-                  ::setenv( "ZYPP_SINGLE_RPMTRANS", value.c_str(), 1 );
+                  DBG << "ZYPP_SINGLE_RPMTRANS=" << value << endl;
+                  ::setenv( "ZYPP_SINGLE_RPMTRANS", value.c_str(), 0 );
                 }
                 else if ( entry == "techpreview.ZYPP_MEDIANETWORK" )
                 {

@@ -38,8 +38,7 @@
 
 \subsection zypp-envars-mediabackend Selecting the mediabackend to use.
 
-\li \c ZYPP_MULTICURL=0 Turn off multicurl (metalink and zsync) and fall back to plain libcurl.
-\li \c ZYPP_CURL2=1 Turn on a lightweight experimental curl backend supporting zchunk downloads and a simple download strategy, overrules ZYPP_MULTICURL if both are set.
+\li \c ZYPP_CURL2=<0|1> Switch between Curl and Curl2 media backends, Curl2 is the default.
 \li \c ZYPP_PCK_PRELOAD=1 Turn on parallel HTTP downloads when commiting a transaction.
 
 \subsection zypp-envars-plugin Variables related to plugins

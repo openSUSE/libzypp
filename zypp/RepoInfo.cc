@@ -195,9 +195,9 @@ namespace zypp
           if ( _baseUrls.empty () )
             throw;
           else {
-            callback::UserData data("reporefresh/mirrorlist");
+            callback::UserData data( JobReport::repoRefreshMirrorlist );
             data.set("error", e );
-            JobReport::warning( _("Failed to fetch mirrorlist/metalink."), data );
+            JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
           }
         }
       }

@@ -9,6 +9,7 @@
 /** \file zypp/base/String.cc
  *
 */
+#include <zypp-core/AutoDispose.h>
 #include <cstdio>
 #include <cstdarg>
 
@@ -19,6 +20,7 @@
 #include <zypp-core/base/LogTools.h>
 
 #include <zypp-core/TriBool.h>
+#include <glib.h>
 
 using std::string;
 
@@ -515,7 +517,30 @@ namespace zypp
       return datas.str();
     }
 
-    /////////////////////////////////////////////////////////////////
+    bool validateUtf8( std::string_view str )
+    {
+      return g_utf8_validate ( str.data(), str.length (), nullptr );
+    }
+
+    std::string codepointToUtf8String( uint32_t unichar )
+    {
+      char outbuf[6] = {'\0'};
+      auto bytes = g_unichar_to_utf8( unichar, outbuf );
+      if ( bytes == 0 )
+        return {};
+
+      return std::string( outbuf, bytes );
+    }
+
+    std::string hexCodepointToUtf8String(std::string_view hexChar)
+    {
+        auto codepoint = hexCharToValue<uint32_t>(hexChar);
+        if ( !codepoint )
+            return {};
+
+        return codepointToUtf8String ( *codepoint );
+    }
+
   } // namespace str
   ///////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////

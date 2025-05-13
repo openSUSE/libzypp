@@ -11,6 +11,7 @@
  */
 
 #include "metalinkparser.h"
+#include <zypp-core/parser/parseexception.h>
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/ByteArray.h>
 #include <zypp-core/AutoDispose.h>
@@ -19,7 +20,7 @@
 #include <vector>
 #include <algorithm>
 
-#include <libxml2/libxml/SAX2.h>
+#include <libxml/SAX2.h>
 
 using namespace zypp::base;
 
@@ -122,6 +123,7 @@ namespace zypp::media {
 static void XMLCALL startElement(void *userData, const xmlChar *name, const xmlChar **atts);
 static void XMLCALL endElement(void *userData, const xmlChar *name);
 static void XMLCALL characterData(void *userData, const xmlChar *s, int len);
+static void XMLCALL parseError(void *userData, const xmlError *error);
 
 struct ml_parsedata : private zypp::base::NonCopyable {
   ml_parsedata()
@@ -146,6 +148,17 @@ struct ml_parsedata : private zypp::base::NonCopyable {
 
     //internally creates a copy of xmlSaxHandler, so having it as local variable is save
     parser = AutoDispose<xmlParserCtxtPtr>( xmlCreatePushParserCtxt(&sax, this, NULL, 0, NULL), xmlFreeParserCtxt );
+#ifdef HAVE_LIBXML2_XMLCTXTSETERRORHANDLER
+    xmlCtxtSetErrorHandler ( parser, parseError, this );
+#else
+    xmlSetStructuredErrorFunc ( this, (xmlStructuredErrorFunc)parseError );
+#endif
+  }
+
+  ~ml_parsedata() {
+#ifndef HAVE_LIBXML2_XMLCTXTSETERRORHANDLER
+    xmlSetStructuredErrorFunc ( nullptr, nullptr );
+#endif
   }
 
   void doTransition ( const transition &t ) {
@@ -193,6 +206,9 @@ struct ml_parsedata : private zypp::base::NonCopyable {
 
   UByteArray chksum;
   int chksuml;
+
+  std::optional<filesystem::Pathname> _filename; // if the filename is known, we can find it here
+  std::exception_ptr _lastError; // if a error was encountered during XML parsing we remember it here
 };
 
 /**
@@ -414,6 +430,20 @@ characterData(void *userData, const xmlChar *s, int len)
   pd->content.append( s, s+len );
 }
 
+static void XMLCALL parseError(void *userData, const xmlError *error)
+{
+  struct ml_parsedata *pd = reinterpret_cast<struct ml_parsedata *>(userData);
+  if (!pd)
+    return;
+
+  ERR << "Parse error in " << (pd->_filename ? pd->_filename->asString() : std::string("unknown filename")) << " : " << error->message << std::endl;
+
+  auto ex = parser::ParseException( str::Str() << "Parse error in " << (pd->_filename ? pd->_filename->asString() : std::string("unknown filename")) << " : " << error->message ) ;
+  if ( pd->_lastError )
+    ex.remember (pd->_lastError);
+  pd->_lastError = std::make_exception_ptr (ex);
+}
+
 
 MetaLinkParser::MetaLinkParser()
   : pd( new ml_parsedata )
@@ -427,6 +457,10 @@ MetaLinkParser::~MetaLinkParser()
 void
 MetaLinkParser::parse(const Pathname &filename)
 {
+  pd->_filename  = filename;
+  zypp_defer {
+    pd->_filename.reset();
+  };
   parse(InputStream(filename));
 }
 
@@ -435,7 +469,14 @@ MetaLinkParser::parse(const InputStream &is)
 {
   char buf[4096];
   if (!is.stream())
-    ZYPP_THROW(Exception("MetaLinkParser: no such file"));
+    ZYPP_THROW(parser::ParseException("MetaLinkParser: no such file"));
+
+  pd->_lastError = {};
+  zypp_defer {
+    // clear the error when we leave this function
+    pd->_lastError = {};
+  };
+
   while (is.stream().good())
     {
       is.stream().read(buf, sizeof(buf));
@@ -456,7 +497,10 @@ MetaLinkParser::parseBytes(const char *buf, size_t len)
     return;
 
   if (xmlParseChunk(pd->parser, buf, len, 0)) {
-    ZYPP_THROW(Exception("Parse Error"));
+    if ( pd->_lastError )
+      ZYPP_RETHROW(pd->_lastError);
+    else
+      ZYPP_THROW(parser::ParseException("Parse Error"));
   }
 }
 
@@ -464,7 +508,10 @@ void
 MetaLinkParser::parseEnd()
 {
   if (xmlParseChunk(pd->parser, NULL, 0, 1)) {
-    ZYPP_THROW(Exception("Parse Error"));
+    if ( pd->_lastError )
+      ZYPP_RETHROW(pd->_lastError);
+    else
+      ZYPP_THROW(parser::ParseException("Parse Error"));
   }
   if (pd->urls.size() ) {
     stable_sort(pd->urls.begin(), pd->urls.end(), []( const auto &a, const auto &b ){

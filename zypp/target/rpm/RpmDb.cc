@@ -90,9 +90,6 @@ namespace target
 {
 namespace rpm
 {
-  const callback::UserData::ContentType InstallResolvableReport::contentRpmout( "rpmout","installpkg" );
-  const callback::UserData::ContentType RemoveResolvableReport::contentRpmout( "rpmout","removepkg" );
-
 namespace
 {
 const char* quoteInFilename_m = "\'\"";

@@ -145,12 +145,21 @@ namespace zypp
       if ( !_baseUrls.empty() ) {
         return RepoVariablesReplacedUrl( _baseUrls.raw ().front(), _baseUrls.transformator() );
       }
-      return _mirrorListUrl;
+      if ( !effectiveBaseUrls().empty() ) {
+        return RepoVariablesReplacedUrl( effectiveBaseUrls ().front (), _baseUrls.transformator() );
+      }
+      return RepoVariablesReplacedUrl();
     }
 
     const RepoVariablesReplacedUrlList & baseUrls() const
     {
       return _baseUrls;
+    }
+
+    Url location() const {
+      if ( !_baseUrls.empty() )
+        return *_baseUrls.transformedBegin ();
+      return _mirrorListUrl.transformed();
     }
 
     void resetEffectiveUrls() const {
@@ -754,6 +763,9 @@ namespace zypp
 
   Url RepoInfo::rawUrl() const
   { return _pimpl->baseUrl().raw(); }
+
+  Url RepoInfo::location() const
+  { return _pimpl->location (); }
 
   std::vector<std::vector<Url>> RepoInfo::groupedBaseUrls() const
   { return _pimpl->groupedBaseUrls(); }

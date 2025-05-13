@@ -131,13 +131,22 @@ namespace zypp
       urls_const_iterator baseUrlsEnd() const;
 
       /**
-       * Pars pro toto: The first repository url
+       * Pars pro toto: The first repository url, this is either baseUrls().front()
+       * or if no baseUrl is defined the first available mirror.
        */
       Url url() const;
       /**
-       * Pars pro toto: The first repository raw url (no variables replaced)
+       * Pars pro toto: The first repository raw url (no variables replaced) this is either rawBaseUrls().front()
+       * or if no baseUrl is defined the first available mirror.
        */
       Url rawUrl() const;
+
+      /**
+       * Returns the location URL for the repository, this is either the first configured baseUrl
+       * or a configured mirror or metalink URL.
+       * Use this if you need to display a repo URL to the user.
+       */
+      Url location() const;
 
       /**
        * The complete set of repository urls as configured

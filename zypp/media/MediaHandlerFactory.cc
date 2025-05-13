@@ -150,11 +150,14 @@ namespace zypp::media {
             return v && v == val;
           };
 
-          which = curl;
+          which = curl2;
 
           if ( getenvIs( "ZYPP_CURL2", "1" ) ) {
             WAR << "Curl2 manually selected." << std::endl;
             which = curl2;
+          } else if ( getenvIs( "ZYPP_CURL2", "0" ) ) {
+            WAR << "Curl1 manually selected." << std::endl;
+            which = curl;
           }
 
         }
@@ -162,11 +165,11 @@ namespace zypp::media {
         std::unique_ptr<MediaNetworkCommonHandler> handler;
         switch ( which ) {
           default:
-          case curl:
-            handler = std::make_unique<MediaCurl>( *primary, resolved, preferred_attach_point );
-            break;
           case curl2:
             handler = std::make_unique<MediaCurl2>( *primary, resolved, preferred_attach_point );
+            break;
+          case curl:
+            handler = std::make_unique<MediaCurl>( *primary, resolved, preferred_attach_point );
             break;
         }
         _handler = std::move(handler);

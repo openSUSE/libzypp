@@ -36,7 +36,7 @@ namespace zypp
   inline bool singleTransInEnv()
   {
     const char *val = ::getenv("ZYPP_SINGLE_RPMTRANS");
-    return ( val && std::string_view( val ) == "1" );
+    return ( val && str::strToFalse( val ) );
   }
 
   inline bool singleTransEnabled()

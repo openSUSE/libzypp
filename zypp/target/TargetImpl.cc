@@ -1965,14 +1965,6 @@ namespace zypp
       { (*this)->report( userData_r ); }
     };
 
-    const callback::UserData::ContentType rpm::SingleTransReport::contentLogline { "zypp-rpm", "logline" };
-
-    const callback::UserData::ContentType rpm::InstallResolvableReportSA::contentRpmout( "zypp-rpm","installpkgsa" );
-    const callback::UserData::ContentType rpm::RemoveResolvableReportSA::contentRpmout( "zypp-rpm","removepkgsa" );
-    const callback::UserData::ContentType rpm::CommitScriptReportSA::contentRpmout( "zypp-rpm","scriptsa" );
-    const callback::UserData::ContentType rpm::TransactionReportSA::contentRpmout( "zypp-rpm","transactionsa" );
-    const callback::UserData::ContentType rpm::CleanupPackageReportSA::contentRpmout( "zypp-rpm","cleanupkgsa" );
-
     void TargetImpl::commitInSingleTransaction(const ZYppCommitPolicy &policy_r, CommitPackageCache &packageCache_r, ZYppCommitResult &result_r)
     {
       SendSingleTransReport report; // active throughout the whole rpm transaction

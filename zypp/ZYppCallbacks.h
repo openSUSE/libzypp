@@ -1078,6 +1078,8 @@ namespace zypp
     /** typsafe map of userdata */
     typedef callback::UserData UserData;
 
+    static const ContentType repoRefreshMirrorlist;
+
   public:
     /** Send a ready to show message text. */
     virtual bool message( MsgType type_r, const std::string & msg_r, const UserData & userData_r ) const

@@ -85,6 +85,7 @@ SET( zypp_SRCS
   VendorAttr.cc
   VendorSupportOptions.cc
   ZYpp.cc
+  ZYppCallbacks.cc
   ZYppCommitPolicy.cc
   ZYppCommitResult.cc
   ZYppFactory.cc

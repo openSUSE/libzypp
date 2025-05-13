@@ -328,62 +328,75 @@ namespace zypp
 
     RepoMirrorList::RepoMirrorList( const Url & url_r, const Pathname & metadatapath_r )
     {
-
       PathInfo metaPathInfo( metadatapath_r);
-      if ( url_r.getScheme() == "file" )
-      {
-        // never cache for local mirrorlist
-        _urls = RepoMirrorListParse( url_r, url_r.getPathName() );
-      }
-      else if ( !metaPathInfo.isDir() )
-      {
-        // no cachedir or no access
-        RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of any downloaded files
-        _urls = RepoMirrorListParse( url_r, provider.localfile() );
-      }
-      else
-      {
-        // have cachedir
-        Pathname cachefile = metadatapath_r / "mirrorlist";
-        zypp::filesystem::PathInfo cacheinfo( cachefile );
-        bool needRefresh = ( !cacheinfo.isFile()
-                        // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
-                        // it makes no sense to continously download the mirrors file if we can't store it
-                        || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () ) );
+      std::exception_ptr errors; // we collect errors here
+      try {
+        if ( url_r.getScheme() == "file" )
+        {
+          // never cache for local mirrorlist
+          _urls = RepoMirrorListParse( url_r, url_r.getPathName() );
+        }
+        else if ( !metaPathInfo.isDir() )
+        {
+          // no cachedir or no access
+          RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of any downloaded files
+          _urls = RepoMirrorListParse( url_r, provider.localfile() );
+        }
+        else
+        {
+          // have cachedir
+          Pathname cachefile = metadatapath_r / "mirrorlist";
+          zypp::filesystem::PathInfo cacheinfo( cachefile );
+          bool needRefresh = ( !cacheinfo.isFile()
+                          // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
+                          // it makes no sense to continously download the mirrors file if we can't store it
+                          || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () ) );
 
-        // up to date: try to parse and use the URLs if sucessful
-        // otherwise fetch the URL again
-        if ( !needRefresh ) {
-          try {
-            _urls = RepoMirrorListParse( url_r, cachefile );
-            if( _urls.empty() ) {
-              DBG << "Removing Cachefile as it contains no URLs" << endl;
-              zypp::filesystem::unlink( cachefile );
+          // up to date: try to parse and use the URLs if sucessful
+          // otherwise fetch the URL again
+          if ( !needRefresh ) {
+            try {
+              _urls = RepoMirrorListParse( url_r, cachefile );
+              if( _urls.empty() ) {
+                DBG << "Removing Cachefile as it contains no URLs" << endl;
+                zypp::filesystem::unlink( cachefile );
+              }
+              return;
+
+            } catch ( const zypp::Exception & e ) {
+              ZYPP_CAUGHT(e);
+              auto ex = e;
+              if ( errors )
+                ex.remember(errors);
+              errors = std::make_exception_ptr(ex);
+              MIL << "Invalid mirrorlist cachefile, deleting it and trying to fetch a new one" << std::endl;
             }
-            return;
+          }
 
-          } catch ( const zypp::Exception & e ) {
-            ZYPP_CAUGHT(e);
-            MIL << "Invalid mirrorlist cachefile, deleting it and trying to fetch a new one" << std::endl;
+          if( cacheinfo.isFile() ) {
+            // remove the old one, it's either broken, empty or outdated
+            filesystem::unlink(cachefile);
+          }
+
+          DBG << "Getting MirrorList from URL: " << url_r << endl;
+          RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
+          _urls = RepoMirrorListParse( url_r, provider.localfile() );
+
+          if ( metaPathInfo.userMayRWX()
+               && !_urls.empty() ) {
+            // Create directory, if not existing
+            DBG << "Copy MirrorList file to " << cachefile << endl;
+            zypp::filesystem::assert_dir( metadatapath_r );
+            zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
           }
         }
-
-        if( cacheinfo.isFile() ) {
-          // remove the old one, it's either broken, empty or outdated
-          filesystem::unlink(cachefile);
-        }
-
-        DBG << "Getting MirrorList from URL: " << url_r << endl;
-        RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
-        _urls = RepoMirrorListParse( url_r, provider.localfile() );
-
-        if ( metaPathInfo.userMayRWX()
-             && !_urls.empty() ) {
-          // Create directory, if not existing
-          DBG << "Copy MirrorList file to " << cachefile << endl;
-          zypp::filesystem::assert_dir( metadatapath_r );
-          zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
-        }
+      } catch ( const zypp::Exception &e ) {
+        // Make a more user readable exception
+        ZYPP_CAUGHT(e);
+        parser::ParseException ex( str::Format("Failed to parse/receive mirror information for URL: %1%") % url_r );
+        ex.remember(e);
+        if ( errors ) ex.remember(errors);
+        ZYPP_THROW(ex);
       }
     }
 

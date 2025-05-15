@@ -37,16 +37,15 @@ OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
 # This option will reroute all tool binaries to the libzypp build dir instead of taking those installed in the default directories.
 OPTION (ENABLE_DEVEL_BUILD "Developer build, use zypp tools directly from build dir rather than the default locations" OFF)
 OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
-# Distros using just zypper may want to enable this as default earlier
-OPTION (ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER "[preview] Force zypper into using a single rpm transaction to install" OFF)
-
 OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
 #--------------------------------------------------------------------------------
-# Builtin defaults amended for legacy codestreams
+# Builtin defaults for APIConfig.h (amended for legacy codestreams)
 OPTION( LIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT "Builtin default for zypp.conf:download.use_deltarpm" OFF )
+OPTION( LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT "Use the CLASSIC_RPMTRANS install backend rather than SINGLE_RPMTRANS" OFF )
+
 #--------------------------------------------------------------------------------
 SET (have_system x)
 SET (LIBZYPP_CODESTREAM default)
@@ -387,11 +386,11 @@ INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/systemCheck DESTINATION ${SYSCONFDIR}/zypp 
 # logrotate config file
 INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp-history.lr DESTINATION ${SYSCONFDIR}/logrotate.d )
 
-IF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
-  MESSAGE( STATUS "[preview] Force zypper into using a single rpm transaction to install" )
-  target_compile_definitions( zypp_general_compiler_flags INTERFACE SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
-ENDIF ( ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER )
-
+IF ( LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT )
+  MESSAGE( STATUS "Default install backend: CLASSIC_RPMTRANS" )
+ELSE()
+  MESSAGE( STATUS "Default install backend: SINGLE_RPMTRANS" )
+ENDIF()
 
 #usage requirements for all libs
 add_library( zypp_lib_compiler_flags INTERFACE)

@@ -16,6 +16,7 @@
 #include <zypp-core/base/StringV.h>
 
 #include <zypp/ZConfig.h>
+#include <zypp-core/APIConfig.h>
 #include <zypp/ZYppCommitPolicy.h>
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/TriBool.h>
@@ -41,11 +42,11 @@ namespace zypp
 
   inline bool singleTransEnabled()
   {
-#ifdef SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
-    return ImZYPPER();
-#else // SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
+#if ( LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT )
     return ImZYPPER() && singleTransInEnv();
-#endif // SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER
+#else
+    return ImZYPPER();
+#endif
   }
 
 

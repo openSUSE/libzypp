@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 16:30+0100\n"
-"PO-Revision-Date: 2025-03-01 10:56+0000\n"
+"PO-Revision-Date: 2025-05-17 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -5300,7 +5300,7 @@ msgstr[1] "(caduca d'aquí a %d dies)"
 #: zypp-common/private/keyring_p.cc:285
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
-msgstr "S'ha provat d'importar la clau no existent %s a l'anell de claus %s"
+msgstr "S'ha provat d'importar la clau no existent %s al clauer %s"
 
 #: zypp-common/private/keyring_p.cc:291
 msgid "Failed to import key."

@@ -1,7 +1,8 @@
 #include "MediaHandlerFactory.h"
 
-
+#include <zypp-core/APIConfig.h>
 #include <zypp/base/Logger.h>
+#include <zypp/base/Env.h>
 
 #include <zypp-media/MediaException>
 #include <zypp/media/MediaHandler.h>
@@ -130,9 +131,9 @@ namespace zypp::media {
         break;
       }
       case MediaCURLType: {
-        enum WhichHandler { choose, curl, curl2, multicurl };
+        enum WhichHandler { choose, curl, curl2 };
         WhichHandler which = choose;
-        // Leagcy: choose handler in UUrl query
+        // Leagcy: choose handler in Url query
         if ( const std::string & queryparam = primary->url().getQueryParam("mediahandler"); ! queryparam.empty() ) {
           if ( queryparam == "curl" )
             which = curl;
@@ -145,21 +146,16 @@ namespace zypp::media {
         }
         // Otherwise choose handler through ENV
         if ( which == choose ) {
-          auto getenvIs = []( std::string_view var, std::string_view val )->bool {
-            const char * v = ::getenv( var.data() );
-            return v && v == val;
-          };
-
-          which = curl2;
-
-          if ( getenvIs( "ZYPP_CURL2", "1" ) ) {
-            WAR << "Curl2 manually selected." << std::endl;
-            which = curl2;
-          } else if ( getenvIs( "ZYPP_CURL2", "0" ) ) {
-            WAR << "Curl1 manually selected." << std::endl;
+          TriBool envstate = env::getenvBool( "ZYPP_CURL2" );
+          if ( indeterminate(envstate) ) {
+#if APIConfig(LIBZYPP_CONFIG_USE_LEGACY_CURL_BACKEND_BY_DEFAULT)
             which = curl;
+#else
+            which = curl2;
+#endif
+          } else {
+            which = bool(envstate) ? curl2 : curl;
           }
-
         }
         // Finally use the default
         std::unique_ptr<MediaNetworkCommonHandler> handler;

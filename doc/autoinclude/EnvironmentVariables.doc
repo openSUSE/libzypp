@@ -39,7 +39,7 @@
 \subsection zypp-envars-mediabackend Selecting the mediabackend to use.
 
 \li \c ZYPP_CURL2=<0|1> Switch between Curl and Curl2 media backends, Curl2 is the default.
-\li \c ZYPP_PCK_PRELOAD=1 Turn on parallel HTTP downloads when commiting a transaction.
+\li \c ZYPP_PCK_PRELOAD=<0|1> Explicitly turn parallel HTTP package downloads for commit on or off.
 
 \subsection zypp-envars-plugin Variables related to plugins
 

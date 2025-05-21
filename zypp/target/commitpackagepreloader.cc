@@ -15,6 +15,7 @@
 #include <zypp/Package.h>
 #include <zypp/SrcPackage.h>
 #include <zypp/ZConfig.h>
+#include <zypp/base/Env.h>
 
 namespace zypp {
 
@@ -22,13 +23,15 @@ namespace zypp {
 
     inline bool preloadEnabled()
     {
-      const char *val = ::getenv("ZYPP_PCK_PRELOAD");
-
-      // opt out for now
-      if ( !val )
-        return false;
-
-      return ( std::string_view( val ) == "1" );
+      TriBool envstate = env::getenvBool( "ZYPP_PCK_PRELOAD" );
+      if ( indeterminate(envstate) ) {
+#if APIConfig(LIBZYPP_CONFIG_USE_SERIAL_PACKAGE_DOWNLOAD_BY_DEFAULT)
+            return false;
+#else
+            return true;
+#endif
+      }
+      return bool(envstate);
     }
 
     zypp::Pathname pckCachedLocation ( const PoolItem &pck ) {

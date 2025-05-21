@@ -42,7 +42,7 @@ namespace zypp
 
   inline bool singleTransEnabled()
   {
-#if ( LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT )
+#if APIConfig(LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT)
     return ImZYPPER() && singleTransInEnv();
 #else
     return ImZYPPER();

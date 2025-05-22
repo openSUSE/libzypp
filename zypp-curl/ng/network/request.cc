@@ -83,6 +83,7 @@ namespace zyppng {
     if ( _easyHandle ) {
       //clean up for now, later we might reuse handles
       curl_easy_cleanup( _easyHandle );
+      MIL << _easyHandle << " curl_easy_cleanup" << std::endl;
       //reset in request but make sure the request was not enqueued again and got a new handle
       _easyHandle = nullptr;
     }
@@ -92,10 +93,11 @@ namespace zyppng {
   {
     reset();
 
-    if ( _easyHandle )
+    if ( _easyHandle ) {
       //will reset to defaults but keep live connections, session ID and DNS caches
       curl_easy_reset( _easyHandle );
-    else
+      MIL << _easyHandle << " curl_easy_reset" << std::endl;
+    } else
       _easyHandle = curl_easy_init();
     return setupHandle ( errBuf );
   }
@@ -104,6 +106,7 @@ namespace zyppng {
   {
     ::internal::setupZYPP_MEDIA_CURL_DEBUG( _easyHandle );
     curl_easy_setopt( _easyHandle, CURLOPT_ERRORBUFFER, this->_errorBuf.data() );
+    MIL << _easyHandle << " " << "URL: " << _url << std::endl;
 
     const std::string urlScheme = _url.getScheme();
     if ( urlScheme == "http" ||  urlScheme == "https" )
@@ -272,7 +275,7 @@ namespace zyppng {
         }
         else
         {
-          DBG << _easyHandle << " "  << _easyHandle << " "  << "Proxy: using provided proxy-user '" << _settings.proxyUsername() << "'" << std::endl;
+          DBG << _easyHandle << " " << "Proxy: using provided proxy-user '" << _settings.proxyUsername() << "'" << std::endl;
         }
 
         if ( ! proxyuserpwd.empty() )
@@ -436,6 +439,7 @@ namespace zyppng {
         //
         // Note: Even creating a new handle will NOT fix the issue
         curl_easy_reset( _easyHandle );
+        MIL << _easyHandle << " curl_easy_reset after hadRangeFail" << std::endl;
       }
       if ( !setupHandle(errBuf))
         return false;

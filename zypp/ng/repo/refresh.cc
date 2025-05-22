@@ -65,6 +65,14 @@ namespace zyppng::repo {
   template<typename ZyppContextRefType>
   void RefreshContext<ZyppContextRefType>::saveToRawCache()
   {
+    // RepoMirrorList may have updated the mirrorlist file in the old
+    // metadata dir. We transfer it to the new dir.
+    for ( const auto & f : {"mirrorlist"} ) {
+      zypp::Pathname oldf = _rawCachePath / f;
+      zypp::Pathname newf = _tmpDir.path() / f;
+      if ( zypp::PathInfo(oldf).isExist() && not zypp::PathInfo(newf).isExist() )
+        zypp::filesystem::hardlinkCopy( oldf, newf );
+    }
     zypp::filesystem::exchange( _tmpDir.path(), _rawCachePath );
   }
 

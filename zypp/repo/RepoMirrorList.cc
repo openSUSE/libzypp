@@ -382,12 +382,16 @@ namespace zypp
           RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
           _urls = RepoMirrorListParse( url_r, provider.localfile() );
 
-          if ( metaPathInfo.userMayRWX()
-               && !_urls.empty() ) {
+          if ( metaPathInfo.userMayRWX() && !_urls.empty() ) {
             // Create directory, if not existing
             DBG << "Copy MirrorList file to " << cachefile << endl;
             zypp::filesystem::assert_dir( metadatapath_r );
             zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+            // NOTE: Now we copied the mirrorlist into the metadata directory, but
+            // in case of refresh going on, new metadata are prepared in a sibling
+            // temp dir. Upon success RefreshContext<>::saveToRawCache() exchanges
+            // temp and metadata dirs. There we move an existing mirrorlist file into
+            // the new metadata dir.
           }
         }
       } catch ( const zypp::Exception &e ) {

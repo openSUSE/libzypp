@@ -14,6 +14,8 @@
 #include <cstdlib>
 #include <string>
 #include <memory>
+#include <zypp-core/TriBool.h>
+#include <zypp-core/base/String.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -21,6 +23,20 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace env
   {
+    /**
+     * If the environment variable \a var_r is set to a legal \c true or \c false string return \c bool, else \c indeterminate.
+     *
+     * True is:  "1", "yes", "true",  "always", "on", "+", a number !=0
+     * False is: "0", "no",  "false", "never",  "off" "-"
+     */
+    inline TriBool getenvBool( const C_Str & var_r )
+    {
+      const char * v = ::getenv( var_r.c_str() );
+      if ( v )
+        return str::strToTriBool( v );
+      return indeterminate;
+    }
+
     ///////////////////////////////////////////////////////////////////
     /// \class ScopedSet
     /// \brief Temporarily set/unset an environment variable

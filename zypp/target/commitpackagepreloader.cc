@@ -272,6 +272,7 @@ namespace zypp {
           // error
           finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("failed to rename temporary file."), true );
         } else {
+          _tmpFile.resetDispose(); // rename consumed the file, no need to unlink.
           finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NO_ERROR, asString( _("done") ), false );
         }
       } else {

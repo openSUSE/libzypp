@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Thu May 22 16:10:03 CEST 2025 - ma@suse.de
+
+- Code16: Enable curl2 backend and parallel package download by
+  default. In Code15 it's optional.
+  Environment variables ZYPP_CURL2=<0|1> and ZYPP_PCK_PRELOAD=<0|1>
+  can be used to turn the features on or off.
+- Make gpgKeyUrl the default source for gpg keys.
+  When refreshing zypp now primarily uses gpgKeyUrl information
+  from the repo files and only falls back to a automatically
+  generated key Url if a gpgKeyUrl was not specified.
+- Introduce mirrors into the Media backends (bsc#1240132)
+- Drop MediaMultiCurl backend.
+- Throttle progress updates when preloading packages (bsc#1239543)
+- Check if request is in valid state in CURL callbacks (fixes
+  openSUSE/zypper#605)
+- spec/CMake: add conditional build
+  '--with[out] classic_rpmtrans_as_default'.
+  classic_rpmtrans is the current builtin default for SUSE,
+  otherwise it's single_rpmtrans.
+  The `enable_preview_single_rpmtrans_as_default_for_zypper` switch
+  was removed from the spec file.  Accordingly the CMake option
+  ENABLE_PREVIEW_SINGLE_RPMTRANS_AS_DEFAULT_FOR_ZYPPER was removed.
+- version 17.37.0 (35)
+
+-------------------------------------------------------------------
 Wed Apr 30 12:55:42 CEST 2025 - ma@suse.de
 
 - fixed build with boost 1.88.

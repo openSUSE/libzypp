@@ -305,12 +305,12 @@ namespace zyppng {
         setCurlOption(CURLOPT_MAX_RECV_SPEED_LARGE, locSet.maxDownloadSpeed());
 #endif
 
-      zypp::filesystem::assert_file_mode( _currentCookieFile, 0600 );
-      if ( locSet.cookieFileEnabled() )
+      if ( locSet.cookieFileEnabled() ) {
+        DBG << _easyHandle << " " << "Cookie file enabled: " << _currentCookieFile << std::endl;
+        zypp::filesystem::assert_file_mode( _currentCookieFile, 0600 );
         setCurlOption( CURLOPT_COOKIEFILE, _currentCookieFile.c_str() );
-      else
-        MIL << _easyHandle << " " << "No cookies requested" << std::endl;
-      setCurlOption(CURLOPT_COOKIEJAR, _currentCookieFile.c_str() );
+        setCurlOption(CURLOPT_COOKIEJAR, _currentCookieFile.c_str() );
+      }
 
 #if CURLVERSION_AT_LEAST(7,18,0)
       // bnc #306272

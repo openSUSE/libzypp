@@ -238,14 +238,16 @@ namespace zypp
        * \param url The base url for the list
        */
       void setMirrorListUrl( const Url &url );
-      /** Like \ref setMirrorListUrl but take an \a url_set */
-      void setMirrorListUrls( url_set urls );
 
       /** Like \ref setMirrorListUrl but expect metalink format. */
       void setMetalinkUrl( const Url &url );
-      /** Like \ref setMirrorListUrls but expect metalink format. */
-      void setMetalinkUrls( url_set urls );
 
+#if LEGACY(1735)
+      /** \deprecated Only one Url. */
+      void setMetalinkUrls( url_set urls ) ZYPP_DEPRECATED;
+      /** \deprecated Only one Url. */
+      void setMirrorListUrls( url_set urls ) ZYPP_DEPRECATED;
+#endif
       /**
        * Type of repository,
        *

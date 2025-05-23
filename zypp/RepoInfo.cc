@@ -622,14 +622,15 @@ namespace zypp
   void RepoInfo::setMirrorListUrl( const Url & url_r )	// Raw
   { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = false; }
 
-  void RepoInfo::setMirrorListUrls( url_set urls )	// Raw
-  { setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
-
   void  RepoInfo::setMetalinkUrl( const Url & url_r )	// Raw
   { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = true; }
 
+#if LEGACY(1735)
+  void RepoInfo::setMirrorListUrls( url_set urls )	// Raw
+  { setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
   void RepoInfo::setMetalinkUrls( url_set urls )	// Raw
   { setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
+#endif
 
   void RepoInfo::setGpgKeyUrls( url_set urls )
   { _pimpl->gpgKeyUrls().raw().swap( urls ); }

@@ -207,12 +207,11 @@ namespace zypp
         if ( ! dict.gpgkeys( *its ).empty() )
           info.setGpgKeyUrls( std::move(dict.gpgkeys( *its )) );
 
-        if ( ! dict.mirrorlist( *its ).empty() )
-          info.setMirrorListUrls( std::move(dict.mirrorlist( *its )) );
+        if ( ! dict.mirrorlist( *its ).empty() )  // parser tolerates multiple definitions, but 1st one wins
+          info.setMirrorListUrl( dict.mirrorlist( *its ).front() );
 
-        if ( ! dict.metalink( *its ).empty() )
-          info.setMetalinkUrls( std::move(dict.metalink( *its )) );
-
+        if ( ! dict.metalink( *its ).empty() )    // parser tolerates multiple definitions, but 1st one wins
+          info.setMetalinkUrl( dict.metalink( *its ).front() );
 
         info.setFilepath(is.path());
         MIL << info << endl;

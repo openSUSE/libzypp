@@ -84,7 +84,6 @@ namespace zypp
       , _validRepoSignature( indeterminate )
       , _type(repo::RepoType::NONE_e)
       ,	keeppackages(indeterminate)
-      , _mirrorListForceMetalink(false)
     {}
 
     Impl(const Impl &) = default;
@@ -159,7 +158,7 @@ namespace zypp
     Url location() const {
       if ( !_baseUrls.empty() )
         return *_baseUrls.transformedBegin ();
-      return _mirrorListUrl.transformed();
+      return mirrorListUrl().transformed();
     }
 
     void resetEffectiveUrls() const {
@@ -176,7 +175,7 @@ namespace zypp
       _effectiveBaseUrls.clear();
       _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
 
-      Url mlurl( _mirrorListUrl.transformed() );	// Variables replaced!
+      Url mlurl( mirrorListUrl().transformed() );	// Variables replaced!
       if ( mlurl.asString().empty()
            && _baseUrls.raw().size() == 1
            && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
@@ -195,7 +194,7 @@ namespace zypp
           repo::RepoMirrorList rmurls( mlurl, metadataPath() );
 
           // propagate internally used URL params like 'proxy' to the mirrors
-          const auto &tf = [urlTemplate =_mirrorListUrl.transformed()]( const zypp::Url &in ){
+          const auto &tf = [urlTemplate =mirrorListUrl().transformed()]( const zypp::Url &in ){
             return internal::propagateQueryParams ( in , urlTemplate );
           };
           _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
@@ -256,8 +255,8 @@ namespace zypp
 
     std::string repoStatusString() const
     {
-      if ( _mirrorListUrl.transformed().isValid() )
-        return _mirrorListUrl.transformed().asString();
+      if ( mirrorListUrl().transformed().isValid() )
+        return mirrorListUrl().transformed().asString();
       if ( !baseUrls().empty() )
         return (*baseUrls().transformedBegin()).asString();
       return std::string();
@@ -418,10 +417,30 @@ namespace zypp
   private:
     TriBool _validRepoSignature; ///< have  signed and valid repo metadata
     repo::RepoType _type;
+
+  private:
+    RepoVariablesReplacedUrl _cfgMirrorlistUrl;
+    RepoVariablesReplacedUrl _cfgMetalinkUrl;
+  public:
+    /** THE mirrorListUrl to work with (either_cfgMirrorlistUrl or _cfgMetalinkUrl) */
+    const RepoVariablesReplacedUrl & mirrorListUrl() const
+    { return _cfgMirrorlistUrl.transformed().isValid() ? _cfgMirrorlistUrl : _cfgMetalinkUrl; }
+
+    void setMirrorListUrl( const Url & url_r )	// Raw
+    { _cfgMirrorlistUrl.raw() = url_r; }
+
+    void setMetalinkUrl( const Url & url_r )	// Raw
+    { _cfgMetalinkUrl.raw() = url_r; }
+
+    /** Config file writing needs to tell them appart. */
+    const RepoVariablesReplacedUrl & cfgMirrorlistUrl() const
+    { return _cfgMirrorlistUrl; }
+    /** Config file writing needs to tell them appart. */
+    const RepoVariablesReplacedUrl & cfgMetalinkUrl() const
+    { return _cfgMetalinkUrl; }
+
   public:
     TriBool keeppackages;
-    RepoVariablesReplacedUrl _mirrorListUrl;
-    bool                     _mirrorListForceMetalink;
     Pathname path;
     std::string service;
     std::string targetDistro;
@@ -620,16 +639,16 @@ namespace zypp
   }
 
   void RepoInfo::setMirrorListUrl( const Url & url_r )	// Raw
-  { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = false; }
+  { _pimpl->setMirrorListUrl( url_r ); }
 
   void  RepoInfo::setMetalinkUrl( const Url & url_r )	// Raw
-  { _pimpl->_mirrorListUrl.raw() = url_r; _pimpl->_mirrorListForceMetalink = true; }
+  { _pimpl->setMetalinkUrl( url_r ); }
 
 #if LEGACY(1735)
   void RepoInfo::setMirrorListUrls( url_set urls )	// Raw
-  { setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
+  { _pimpl->setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
   void RepoInfo::setMetalinkUrls( url_set urls )	// Raw
-  { setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
+  { _pimpl->setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
 #endif
 
   void RepoInfo::setGpgKeyUrls( url_set urls )
@@ -724,10 +743,10 @@ namespace zypp
   { return _pimpl->type(); }
 
   Url RepoInfo::mirrorListUrl() const			// Variables replaced!
-  { return _pimpl->_mirrorListUrl.transformed(); }
+  { return _pimpl->mirrorListUrl().transformed(); }
 
   Url RepoInfo::rawMirrorListUrl() const		// Raw
-  { return _pimpl->_mirrorListUrl.raw(); }
+  { return _pimpl->mirrorListUrl().raw(); }
 
   bool RepoInfo::gpgKeyUrlsEmpty() const
   { return _pimpl->gpgKeyUrls().empty(); }
@@ -944,7 +963,8 @@ namespace zypp
         str << tag_r << value_r << std::endl;
     });
 
-    strif( (_pimpl->_mirrorListForceMetalink ? "- metalink    : " : "- mirrorlist  : "), rawMirrorListUrl().asString() );
+    strif( "- mirrorlist  : ", _pimpl->cfgMirrorlistUrl().raw().asString() );
+    strif( "- metalink    : ", _pimpl->cfgMetalinkUrl().raw().asString() );
     strif( "- path        : ", path().asString() );
     str << "- type        : " << type() << std::endl;
     str << "- priority    : " << priority() << std::endl;
@@ -993,8 +1013,11 @@ namespace zypp
     if ( ! _pimpl->path.empty() )
       str << "path="<< path() << endl;
 
-    if ( ! (rawMirrorListUrl().asString().empty()) )
-      str << (_pimpl->_mirrorListForceMetalink ? "metalink=" : "mirrorlist=") << hotfix1050625::asString( rawMirrorListUrl() ) << endl;
+    if ( ! _pimpl->cfgMirrorlistUrl().raw().asString().empty() )
+      str << "mirrorlist=" << hotfix1050625::asString( _pimpl->cfgMirrorlistUrl().raw() ) << endl;
+
+    if ( ! _pimpl->cfgMetalinkUrl().raw().asString().empty() )
+      str << "metalink=" << hotfix1050625::asString( _pimpl->cfgMetalinkUrl().raw() ) << endl;
 
     if ( type() != repo::RepoType::NONE )
       str << "type=" << type().asString() << endl;
@@ -1053,10 +1076,11 @@ namespace zypp
     if ( ! indeterminate(_pimpl->rawPkgGpgCheck()) )
       str << " raw_pkg_gpgcheck=\"" << (_pimpl->rawPkgGpgCheck() ? "1" : "0") << "\"";
     if (!(tmpstr = gpgKeyUrl().asString()).empty())
-    if (!(tmpstr = gpgKeyUrl().asString()).empty())
       str << " gpgkey=\"" << escape(tmpstr) << "\"";
-    if (!(tmpstr = mirrorListUrl().asString()).empty())
-      str << (_pimpl->_mirrorListForceMetalink ? " metalink=\"" : " mirrorlist=\"") << escape(tmpstr) << "\"";
+    if ( ! (tmpstr = _pimpl->cfgMirrorlistUrl().transformed().asString()).empty() )
+      str << " mirrorlist=\"" << escape(tmpstr) << "\"";
+    if ( ! (tmpstr = _pimpl->cfgMetalinkUrl().transformed().asString()).empty() )
+      str << " metalink=\"" << escape(tmpstr) << "\"";
     str << ">" << endl;
 
     if ( _pimpl->baseurl2dump() )

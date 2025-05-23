@@ -10,6 +10,7 @@
 #include <zypp-media/ng/providespec.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/workflows/contextfacade.h>
+#include <zypp/repo/RepoMirrorList.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/Gettext.h>
 
@@ -67,11 +68,12 @@ namespace zyppng::repo {
   {
     // RepoMirrorList may have updated the mirrorlist file in the old
     // metadata dir. We transfer it to the new dir.
-    for ( const auto & f : {"mirrorlist"} ) {
-      zypp::Pathname oldf = _rawCachePath / f;
-      zypp::Pathname newf = _tmpDir.path() / f;
-      if ( zypp::PathInfo(oldf).isExist() && not zypp::PathInfo(newf).isExist() )
-        zypp::filesystem::hardlinkCopy( oldf, newf );
+    zypp::Pathname oldCache = _rawCachePath / zypp::repo::RepoMirrorList::cacheFileName();
+    zypp::Pathname newCache = _tmpDir.path() / zypp::repo::RepoMirrorList::cacheFileName();
+    if ( zypp::PathInfo(oldCache).isExist() && not zypp::PathInfo(newCache).isExist() ) {
+      for ( const auto & f : { zypp::repo::RepoMirrorList::cacheFileName(), zypp::repo::RepoMirrorList::cookieFileName() } ) {
+        zypp::filesystem::hardlinkCopy( (_rawCachePath / f), (_tmpDir.path() / f) );
+      }
     }
     zypp::filesystem::exchange( _tmpDir.path(), _rawCachePath );
   }

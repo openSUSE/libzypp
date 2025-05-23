@@ -11,6 +11,7 @@
 */
 #include "zypp-media/auth/credentialmanager.h"
 #include <iostream>
+#include <fstream>
 #include <utility>
 #include <vector>
 #include <time.h>
@@ -285,7 +286,7 @@ namespace zypp
       /** Parse a local mirrorlist \a listfile_r and return usable URLs */
       inline std::vector<Url> RepoMirrorListParse( const Url & url_r, const Pathname & listfile_r )
       {
-        USR << url_r << " " << listfile_r << endl;
+        MIL << "Parsing mirrorlist file: " << listfile_r << " originally received from " << url_r << endl;
 
         std::vector<Url> mirrorurls;
         switch( detectRepoMirrorListFormat (listfile_r) ) {
@@ -345,16 +346,20 @@ namespace zypp
         else
         {
           // have cachedir
-          Pathname cachefile = metadatapath_r / "mirrorlist";
+          const Pathname cachefile  = metadatapath_r / cacheFileName();
+          const Pathname cookiefile = metadatapath_r / cookieFileName();
           zypp::filesystem::PathInfo cacheinfo( cachefile );
+
           bool needRefresh = ( !cacheinfo.isFile()
                           // force a update on a old cache ONLY if the user can write the cache, otherwise we use an already existing cachefile
                           // it makes no sense to continously download the mirrors file if we can't store it
-                          || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () ) );
+                          || ( cacheinfo.mtime() < time(NULL) - (long) ZConfig::instance().repo_refresh_delay() * 60 && metaPathInfo.userMayRWX () ) )
+                          || ( makeCookie( url_r ) != readCookieFile( cookiefile ) );
 
           // up to date: try to parse and use the URLs if sucessful
           // otherwise fetch the URL again
           if ( !needRefresh ) {
+            MIL << "Mirror cachefile cookie valid and cache is not too old, skipping download (" << cachefile << ")" << std::endl;
             try {
               _urls = RepoMirrorListParse( url_r, cachefile );
               if( _urls.empty() ) {
@@ -373,12 +378,16 @@ namespace zypp
             }
           }
 
+          // remove the old cache and its cookie, it's either broken, empty or outdated
           if( cacheinfo.isFile() ) {
-            // remove the old one, it's either broken, empty or outdated
             filesystem::unlink(cachefile);
           }
 
-          DBG << "Getting MirrorList from URL: " << url_r << endl;
+          if ( zypp::filesystem::PathInfo(cookiefile).isFile() ) {
+            filesystem::unlink(cookiefile);
+          }
+
+          MIL << "Getting MirrorList from URL: " << url_r << endl;
           RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
           _urls = RepoMirrorListParse( url_r, provider.localfile() );
 
@@ -387,6 +396,7 @@ namespace zypp
             DBG << "Copy MirrorList file to " << cachefile << endl;
             zypp::filesystem::assert_dir( metadatapath_r );
             zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+            saveToCookieFile ( cookiefile, url_r );
             // NOTE: Now we copied the mirrorlist into the metadata directory, but
             // in case of refresh going on, new metadata are prepared in a sibling
             // temp dir. Upon success RefreshContext<>::saveToRawCache() exchanges
@@ -411,6 +421,37 @@ namespace zypp
         "cdn.opensuse.org"
       };
       return ( std::find( hosts.begin(), hosts.end(), str::toLower( url.getHost() )) != hosts.end() );
+    }
+
+    std::string RepoMirrorList::readCookieFile(const Pathname &path_r)
+    {
+      std::ifstream file( path_r.c_str() );
+      if ( not file ) {
+        WAR << "No cookie file " << path_r << endl;
+        return {};
+      }
+
+      return str::getline( file );
+    }
+
+    /**
+     * Generates the cookie value, currently this is only derived from the Url.
+     */
+    std::string RepoMirrorList::makeCookie( const Url &url_r )
+    {
+      return CheckSum::sha256FromString( url_r.asCompleteString() ).checksum();
+    }
+
+    void RepoMirrorList::saveToCookieFile(const Pathname &path_r, const Url &url_r )
+    {
+      std::ofstream file(path_r.c_str());
+      if (!file) {
+        ERR << str::Str() << "Can't open " << path_r.asString() << std::endl;
+        return;
+      }
+      MIL << "Saving mirrorlist cookie file " << path_r << std::endl;
+      file << makeCookie(url_r);
+      file.close();
     }
 
     /////////////////////////////////////////////////////////////////

@@ -669,6 +669,30 @@ namespace zyppng::RepoServicesWorkflow {
       #undef Z_CHKGPG
               }
 
+              // changed gpgkey settings?
+              if ( oldRepo->rawGpgKeyUrls() != it->rawGpgKeyUrls() )
+              {
+                DBG << "Service repo " << it->alias() << " gets new GPGKEY url " << it->rawGpgKeyUrls() << std::endl;
+                oldRepo->setGpgKeyUrls( it->rawGpgKeyUrls() );
+                oldRepoModified = true;
+              }
+
+              // changed mirrorlist settings?
+              if ( oldRepo->rawCfgMirrorlistUrl() != it->rawCfgMirrorlistUrl() )
+              {
+                DBG << "Service repo " << it->alias() << " gets new MIRRORLIST url " << it->rawCfgMirrorlistUrl() << std::endl;
+                oldRepo->setMirrorlistUrl( it->rawCfgMirrorlistUrl() );
+                oldRepoModified = true;
+              }
+
+              // changed metalink settings?
+              if ( oldRepo->rawCfgMetalinkUrl() != it->rawCfgMetalinkUrl() )
+              {
+                DBG << "Service repo " << it->alias() << " gets new METALINK url " << it->rawCfgMetalinkUrl() << std::endl;
+                oldRepo->setMetalinkUrl( it->rawCfgMetalinkUrl() );
+                oldRepoModified = true;
+              }
+
               // save if modified:
               if ( oldRepoModified )
               {

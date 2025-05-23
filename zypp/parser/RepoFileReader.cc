@@ -208,7 +208,7 @@ namespace zypp
           info.setGpgKeyUrls( std::move(dict.gpgkeys( *its )) );
 
         if ( ! dict.mirrorlist( *its ).empty() )  // parser tolerates multiple definitions, but 1st one wins
-          info.setMirrorListUrl( dict.mirrorlist( *its ).front() );
+          info.setMirrorlistUrl( dict.mirrorlist( *its ).front() );
 
         if ( ! dict.metalink( *its ).empty() )    // parser tolerates multiple definitions, but 1st one wins
           info.setMetalinkUrl( dict.metalink( *its ).front() );

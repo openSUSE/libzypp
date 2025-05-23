@@ -226,28 +226,38 @@ namespace zypp
       void setPath( const Pathname &path );
 
       /**
-       * Url of a file which contains a list of repository urls
+       * Url of a file which contains a list of repository urls.
+       * This is either the configured mirrorlist or metalink Url.
        */
       Url mirrorListUrl() const;
       /**
-       * The raw mirrorListUrl (no variables replaced).
+       * The raw \ref mirrorListUrl (no variables replaced).
+       * This is either the configured mirrorlist or metalink Url.
        */
       Url rawMirrorListUrl() const;
-      /**
-       * Set mirror list url. \see mirrorListUrl
-       * \param url The base url for the list
-       */
-      void setMirrorListUrl( const Url &url );
 
-      /** Like \ref setMirrorListUrl but expect metalink format. */
+      /** Set the raw mirrorlist url. */
+      void setMirrorlistUrl( const Url &url );
+      /** Set the raw metalink url. */
       void setMetalinkUrl( const Url &url );
 
+      /** The configured raw mirrorlist url. */
+      Url rawCfgMirrorlistUrl() const;
+      /** The configured raw metalink url. */
+      Url rawCfgMetalinkUrl() const;
+
 #if LEGACY(1735)
+      /** \deprecated Use \ref setMirrorlistUrl (lowercase 'l').
+       * mirrorListUrl (uppercase 'L') is a computed value,
+       * either the configured mirrorlist or metalink Url.
+       */
+      void setMirrorListUrl( const Url &url ) ZYPP_DEPRECATED;
       /** \deprecated Only one Url. */
       void setMetalinkUrls( url_set urls ) ZYPP_DEPRECATED;
       /** \deprecated Only one Url. */
       void setMirrorListUrls( url_set urls ) ZYPP_DEPRECATED;
 #endif
+
       /**
        * Type of repository,
        *

@@ -426,7 +426,7 @@ namespace zypp
     const RepoVariablesReplacedUrl & mirrorListUrl() const
     { return _cfgMirrorlistUrl.transformed().isValid() ? _cfgMirrorlistUrl : _cfgMetalinkUrl; }
 
-    void setMirrorListUrl( const Url & url_r )	// Raw
+    void setMirrorlistUrl( const Url & url_r )	// Raw
     { _cfgMirrorlistUrl.raw() = url_r; }
 
     void setMetalinkUrl( const Url & url_r )	// Raw
@@ -638,15 +638,23 @@ namespace zypp
     return changed;
   }
 
-  void RepoInfo::setMirrorListUrl( const Url & url_r )	// Raw
-  { _pimpl->setMirrorListUrl( url_r ); }
+  void RepoInfo::setMirrorlistUrl( const Url & url_r )	// Raw
+  { _pimpl->setMirrorlistUrl( url_r ); }
 
   void  RepoInfo::setMetalinkUrl( const Url & url_r )	// Raw
   { _pimpl->setMetalinkUrl( url_r ); }
 
+  Url RepoInfo::rawCfgMirrorlistUrl() const
+  { return _pimpl->cfgMirrorlistUrl().raw(); }
+
+  Url RepoInfo::rawCfgMetalinkUrl() const
+  { return _pimpl->cfgMetalinkUrl().raw(); }
+
 #if LEGACY(1735)
+  void RepoInfo::setMirrorListUrl( const Url & url_r )	// Raw
+  { setMirrorlistUrl( url_r ); }
   void RepoInfo::setMirrorListUrls( url_set urls )	// Raw
-  { _pimpl->setMirrorListUrl( urls.empty() ? Url() : urls.front() ); }
+  { _pimpl->setMirrorlistUrl( urls.empty() ? Url() : urls.front() ); }
   void RepoInfo::setMetalinkUrls( url_set urls )	// Raw
   { _pimpl->setMetalinkUrl( urls.empty() ? Url() : urls.front() ); }
 #endif

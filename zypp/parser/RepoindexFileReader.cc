@@ -267,7 +267,7 @@ namespace zypp
 
         // optional mirrorlist
         if ( getAttrValue( "mirrorlist", reader_r, attrValue ) )
-          info.setMirrorListUrl( Url(attrValue) );
+          info.setMirrorlistUrl( Url(attrValue) );
 
         // optional metalink
         if ( getAttrValue( "metalink", reader_r, attrValue ) )

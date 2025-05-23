@@ -36,6 +36,21 @@ namespace zypp
 
         static bool urlSupportsMirrorLink( const zypp::Url &url );
 
+        constexpr static const char *cookieFileName()
+        {
+          return "mirrorlist.cookie";
+        }
+
+        constexpr static const char* cacheFileName()
+        {
+          return "mirrorlist";
+        }
+
+    private:
+        static void saveToCookieFile(const Pathname &path_r, const zypp::Url &url_r );
+        static std::string readCookieFile( const Pathname &path_r );
+        static std::string makeCookie( const zypp::Url &url_r );
+
       private:
         std::vector<Url> _urls;
     };

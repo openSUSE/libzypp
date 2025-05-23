@@ -133,7 +133,7 @@ namespace zypp {
       OptionalDownloadProgressReport reportfilter( srcFile.optional() );
       callback::SendReport<DownloadProgressReport> report;
 
-      for ( int mirr = 0; mirr < _urls.size(); mirr++ ) {
+      for ( unsigned mirr = 0; mirr < _urls.size(); ++mirr ) {
 
         MIL << "Trying to fetch file " << srcFile << " with mirror " << _urls[mirr].url() << std::endl;
         Url fileurl(getFileUrl(mirr, filename));
@@ -275,7 +275,7 @@ namespace zypp {
       DBG << filename.asString() << endl;
 
       std::exception_ptr lastErr;
-      for ( int mirr = 0; mirr < _urls.size(); mirr++ ) {
+      for ( unsigned mirr = 0; mirr < _urls.size(); ++mirr ) {
         if( !_urls[mirr].url().isValid() )
           ZYPP_THROW(MediaBadUrlException(_urls[mirr].url()));
 

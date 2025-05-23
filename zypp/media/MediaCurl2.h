@@ -92,7 +92,7 @@ class MediaCurl2 : public MediaNetworkCommonHandler
 
   private:
     struct RequestData {
-      int _mirrorIdx;
+      int _mirrorIdx = -1;
       zyppng::NetworkRequestRef  _req;
     };
     void executeRequest(RequestData &reqData, callback::SendReport<DownloadProgressReport> *report = nullptr );

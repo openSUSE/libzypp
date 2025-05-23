@@ -15,11 +15,12 @@
 #include <unordered_map>
 
 namespace zypp::media {
-
+// The header is exposed and in old SPs yast builds with c++11.
+#ifdef __cpp_lib_any
   /*!
    * A \ref zypp::Url but extended with settings for the media backend
    */
-  class ZYPP_API MediaUrl {
+  class MediaUrl {
   public:
 
     using SettingsMap = std::unordered_map<std::string, std::any>;
@@ -78,6 +79,9 @@ namespace zypp::media {
 
   bool operator!=( const MediaUrl &lhs, const MediaUrl &rhs );
 
+#else // __cpp_lib_any
+  class MediaUrl;
+#endif // __cpp_lib_any
 }
 
 

@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri May 23 19:55:53 CEST 2025 - ma@suse.de
+
+- Use a cookie file to validate mirrorlist cache.
+  This patch extends the mirrorlist code to use a cookie file to
+  validate the contents of the cache against the source URL, making
+  sure that we do not accidentially use a old cache when the
+  mirrorlist url was changed. For example when migrating a system
+  from one release to the next where the same repo alias might just
+  have a different URL.
+- Let Service define and update gpgkey, mirrorlist and metalink.
+- Preserve a mirrorlist file in the raw cache during refresh.
+- version 17.37.1 (35)
+
+-------------------------------------------------------------------
 Thu May 22 16:10:03 CEST 2025 - ma@suse.de
 
 - Code16: Enable curl2 backend and parallel package download by

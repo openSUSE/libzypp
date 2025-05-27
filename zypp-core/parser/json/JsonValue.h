@@ -211,8 +211,8 @@ namespace zypp::json {
     Value( std::uint32_t val_r ) : _value(UInt(val_r) ) {}
     Value( std::uint64_t val_r ) : _value(UInt(val_r) ) {}
 
-    Value( std::float_t  val_r ) : _value(Number(val_r) ) {}
-    Value( std::double_t val_r ) : _value(Number(val_r) ) {}
+    Value( float  val_r ) : _value(Number(val_r) ) {}
+    Value( double val_r ) : _value(Number(val_r) ) {}
 
     // strings
     Value( const char val_r )    : _value(String(std::string( 1, val_r )) ) {}

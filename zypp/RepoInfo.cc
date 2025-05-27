@@ -1005,6 +1005,12 @@ namespace zypp
 
   std::ostream & RepoInfo::dumpAsIniOn( std::ostream & str ) const
   {
+    // libzypp/#638: Add a note to service maintained repo entries
+    if( ! service().empty() ) {
+      str << "# Repository '"<<alias()<<"' is maintained by the '"<<service()<<"' service." << endl;
+      str << "# Manual changes may be overwritten by a service refresh." << endl;
+      str << "# See also 'man zypper', section 'Services'." << endl;
+    }
     RepoInfoBase::dumpAsIniOn(str);
 
     if ( _pimpl->baseurl2dump() )

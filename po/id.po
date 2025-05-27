@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 16:30+0100\n"
+"POT-Creation-Date: 2025-05-27 19:37+0200\n"
 "PO-Revision-Date: 2024-11-13 15:48+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/libzypp/master/"
@@ -4086,6 +4086,10 @@ msgstr "Zuni"
 msgid "Following actions will be done:"
 msgstr "Tindakan berikut akan dilakukan:"
 
+#: zypp/RepoInfo.cc:208
+msgid "Failed to fetch mirrorlist/metalink data."
+msgstr ""
+
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "tidak dikenal"
@@ -4175,7 +4179,7 @@ msgstr ""
 msgid "Unknown support option. Description not available"
 msgstr "Opsi dukungan tidak diketahui. Deskripsi tidak ditemukan"
 
-#: zypp/ZYppFactory.cc:379
+#: zypp/ZYppFactory.cc:380
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
@@ -4205,23 +4209,22 @@ msgid "Invalid regular expression '%s'"
 msgstr "Ekspresi reguler '%s' tidak valid"
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1374
-#: zypp/media/MediaCurl2.cc:712
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaNetworkCommonHandler.cc:346
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Autentikasi dibutuhkan untuk '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:649
+#: zypp/media/MediaCurl.cc:788
 msgid "Will try again..."
 msgstr "Akan mencoba lagi..."
 
-#: zypp/media/MediaCurl.cc:652
+#: zypp/media/MediaCurl.cc:791
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Menyerah setelah %1% mencoba."
 
-#: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4229,7 +4232,7 @@ msgstr ""
 "Kunjungi Pusat Pelanggan SUSE untuk memeriksa apakah pendaftaran Anda valid "
 "dan belum kedaluwarsa."
 
-#: zypp/media/MediaCurl.cc:769 zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4237,7 +4240,7 @@ msgstr ""
 "Kunjungi Pusat Pelanggan Novell untuk memeriksa apakah pendaftaran Anda "
 "valid dan tidak kedaluwarsa."
 
-#: zypp/media/MediaHandler.cc:339
+#: zypp/media/MediaHandler.cc:341
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
@@ -4249,9 +4252,17 @@ msgstr ""
 msgid "Please install package 'lsof' first."
 msgstr "Mohon pasang paket 'lsof' terlebih dahulu."
 
-#: zypp/ng/repo/refresh.cc:45
+#: zypp/ng/repo/refresh.cc:46
 msgid "Can't create metadata cache directory."
 msgstr "Tidak dapat membuat metadata direktori singgahan."
+
+#. when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+#. fetching the gpg key from any mirror
+#: zypp/ng/repo/workflows/repodownloaderwf.cc:97
+msgid ""
+"Downloading signature key via mirrors, consider explicitely setting "
+"gpgKeyUrl via the repository configuration instead."
+msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4261,8 +4272,8 @@ msgid "Error trying to read from '%s'"
 msgstr "Galat saat membaca dari '%s'"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:439
-#: zypp/ng/repo/workflows/repomanagerwf.cc:665
-#: zypp/ng/repo/workflows/repomanagerwf.cc:747
+#: zypp/ng/repo/workflows/repomanagerwf.cc:666
+#: zypp/ng/repo/workflows/repomanagerwf.cc:748
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Tidak dapat membuat %s"
@@ -4271,50 +4282,50 @@ msgstr "Tidak dapat membuat %s"
 msgid "Failed to retrieve new repository metadata."
 msgstr "Gagal mengambil metadata repositori baru."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:578
+#: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr "Gagal menyimpan cache repo (tidak dapat memulai repo2solv)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:596
-#: zypp/ng/repo/workflows/repomanagerwf.cc:625
+#: zypp/ng/repo/workflows/repomanagerwf.cc:597
+#: zypp/ng/repo/workflows/repomanagerwf.cc:626
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Gagal untuk membuat repo singgahan (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:653
+#: zypp/ng/repo/workflows/repomanagerwf.cc:654
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Membangun repositori singgahan '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:753
+#: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Tidak dapat membuat singgahan di %s - tidak ada izin untuk menulis."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:808
+#: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "Gagal menyimpan cache repo %1%"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:825
+#: zypp/ng/repo/workflows/repomanagerwf.cc:826
 msgid "Unhandled repository type"
 msgstr "Jenis repositori yang tidak tertangani"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:901
+#: zypp/ng/repo/workflows/repomanagerwf.cc:902
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Menambah repositori '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:996
+#: zypp/ng/repo/workflows/repomanagerwf.cc:997
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Nama berkas repo tidak valid di '%s'"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1013 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
-#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#: zypp/ng/repomanager.cc:1098 zypp/ng/repomanager.cc:1224
 #, c-format, boost-format
 msgid "Can't open file '%s' for writing."
 msgstr "Tidak dapat membuka berkas '%s' untuk menulis."
@@ -4333,7 +4344,7 @@ msgstr "Tidak dapat membaca direktori repo '%1%': Izin ditolak"
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
-#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#: zypp/ng/repomanager.cc:1330 zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
 msgstr "Gagal membaca direktori '%s'"
@@ -4378,7 +4389,7 @@ msgid "Can't figure out where the repo is stored."
 msgstr "Tidak dapat mengetahui di mana repo disimpan."
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1086
 #, c-format, boost-format
 msgid "Can't delete '%s'"
 msgstr "Tidak dapat menghapus '%s'"
@@ -4391,14 +4402,14 @@ msgstr "Memodifikasi repositori"
 msgid "Refreshing Repository: "
 msgstr "Menyegarkan Repositori: "
 
-#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+#: zypp/ng/repomanager.cc:1074 zypp/ng/repomanager.cc:1146
 msgid "Can't figure out where the service is stored."
 msgstr "Tidak dapat mengetahui di mana layanan disimpan."
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
 #. %2% = repository name
-#: zypp/ng/repomanager.cc:1433
+#: zypp/ng/repomanager.cc:1434
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr ""
@@ -4493,43 +4504,45 @@ msgstr ""
 "dikenal. Lanjutkan?"
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:78
+#: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
-msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "Repositori %1% tidak mendefinisikan 'gpgkey=' URL tambahan."
+msgid "Repository %1% does not define 'gpgkey=' URLs."
+msgstr ""
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:87
+#. translator: %1% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
-msgid "Looking for gpg key ID %1% in repository %2%."
-msgstr "Mencari kunci gpg ID %1% dalam repositori %2%."
+msgid "Looking for gpg keys in repository %1%."
+msgstr ""
 
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:134
-#, boost-format
-msgid "Looking for gpg key ID %1% in cache %2%."
-msgstr "Mencari kunci gpg ID %1% dalam singgahan %2%."
-
-#: zypp/parser/RepoindexFileReader.cc:198
+#: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr "Kebutuhan atribut '%s' hilang."
 
-#: zypp/parser/RepoindexFileReader.cc:210
+#. TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
+#. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
+#. the service Url. We need to check what kind of feature hides behind this code.
+#. So for now we keep requiring an url attribut.
+#: zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "Satu atau kedua dari '%s' or '%s' atribut dibutuhkan."
+
+#: zypp/parser/RepoindexFileReader.cc:311
+#, c-format, boost-format
+msgid ""
+"Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
+msgstr ""
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
 msgstr "Verifikasi tanda tangan gagal"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:474
+#: zypp/repo/PackageProvider.cc:473
 #, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4539,17 +4552,17 @@ msgstr ""
 "mengulang pemulihan?"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:498
+#: zypp/repo/PackageProvider.cc:497
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr ""
 "Gagal untuk menyediakan paket %s. Apakah anda hendak memulai ulang pemulihan?"
 
-#: zypp/repo/PackageProvider.cc:621
+#: zypp/repo/PackageProvider.cc:620
 msgid "applydeltarpm check failed."
 msgstr "pengecekan applydeltarpm gagal."
 
-#: zypp/repo/PackageProvider.cc:632
+#: zypp/repo/PackageProvider.cc:631
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm gagal."
 
@@ -4561,12 +4574,12 @@ msgstr "Tidak ada izin untuk menulis cache repositori."
 msgid "Service plugin does not support changing an attribute."
 msgstr "Layanan pengaya tidak mendukung perubahan atribut."
 
-#: zypp/repo/RepoProvideFile.cc:260
+#: zypp/repo/RepoProvideFile.cc:265
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "Tidak dapat meyediakan berkas '%s' dari repositori '%s'"
 
-#: zypp/repo/RepoProvideFile.cc:266
+#: zypp/repo/RepoProvideFile.cc:271
 msgid "No url in repository."
 msgstr "Tidak ada url pada repositori."
 
@@ -4723,7 +4736,7 @@ msgstr ""
 "  dari pemasangan\n"
 "     %4%"
 
-#: zypp/sat/detail/PoolImpl.cc:201
+#: zypp/sat/detail/PoolImpl.cc:202
 msgid "Can not create sat-pool."
 msgstr "Tidak dapat membuat sat-pool."
 
@@ -5109,38 +5122,38 @@ msgstr "%1% keluaran skrip:"
 msgid "Installation has been aborted as directed."
 msgstr "Pemasangan dibatalkan sesuai perintah."
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:464
 msgid " executed"
 msgstr " tereksekusi"
 
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:486
 msgid " execution failed"
 msgstr " eksekusi gagal"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:603
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s sudah dieksekusi sebagai %s)"
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:613
 msgid " execution skipped while aborting"
 msgstr " eksekusi dilewati saat membatalkan"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:668 zypp/target/TargetImpl.cc:688
+#: zypp/target/TargetImpl.cc:716 zypp/target/TargetImpl.cc:753
+#: zypp/target/TargetImpl.cc:761
 msgid "Error sending update message notification."
 msgstr "Galat mengirim pesan notifikasi pemutakhiran."
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:812
 msgid "New update message"
 msgstr "Pesan baru"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2128
+#: zypp/target/TargetImpl.cc:2121
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -5149,72 +5162,82 @@ msgstr ""
 "Sinyal yang diterima :\"%1% (%2%)\", untuk memastikan konsistensi sistem, "
 "tidak mungkin membatalkan transaksi rpm yang sedang berjalan."
 
-#: zypp/target/TargetImpl.cc:2736
+#: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "Mengeksekusi transaksi gagal karena masalah berikut:"
 
-#: zypp/target/commitpackagepreloader.cc:100
-msgid "No mirror found"
+#: zypp/target/commitpackagepreloader.cc:102
+msgid "no mirror found"
 msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:108
-msgid "Could not create target File"
+msgid "could not create target file"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:134
-#: zypp/target/commitpackagepreloader.cc:364
-msgid "Already in Cache"
+#. if we have the file already, no need to download again
+#: zypp/target/commitpackagepreloader.cc:130
+msgid "already in cache"
 msgstr ""
 
 #. error
-#: zypp/target/commitpackagepreloader.cc:279
-msgid "Failed to rename temporary file."
+#: zypp/target/commitpackagepreloader.cc:273
+msgid "failed to rename temporary file."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:283
-msgid "Finished"
+# ID
+#. rename consumed the file, no need to unlink.
+#. translator: Shown as result tag in a progress bar: ............[done]
+#. Translator: download progress bar result: ".............[done]"
+#: zypp/target/commitpackagepreloader.cc:276 zypp-tui/output/Out.cc:141
+#: zypp-tui/output/OutNormal.cc:341 zypp-tui/output/OutNormal.cc:344
+msgid "done"
+msgstr "selesai"
+
+#: zypp/target/commitpackagepreloader.cc:303
+#, boost-format
+msgid "Error: \"%1%\", trying next mirror."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:607
+#: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:434 zypp/target/rpm/RpmDb.cc:1809
-#: zypp/target/rpm/RpmDb.cc:1982
+#: zypp/target/rpm/RpmDb.cc:431 zypp/target/rpm/RpmDb.cc:1806
+#: zypp/target/rpm/RpmDb.cc:1979
 msgid "RPM failed: "
 msgstr "RPM gagal: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:759
+#: zypp/target/rpm/RpmDb.cc:756
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "Gagal mengimpor kunci publik %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:826
+#: zypp/target/rpm/RpmDb.cc:823
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "Gagal menghapus kunci publik %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1246
+#: zypp/target/rpm/RpmDb.cc:1243
 msgid "Package header is not signed!"
 msgstr "Header paket tidak ditandatangani!"
 
-#: zypp/target/rpm/RpmDb.cc:1248
+#: zypp/target/rpm/RpmDb.cc:1245
 msgid "Package payload is not signed!"
 msgstr "Payload paket tidak ditandatangani!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1587
+#: zypp/target/rpm/RpmDb.cc:1584
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "Mengubah berkas konfigurasi untuk %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1790
+#: zypp/target/rpm/RpmDb.cc:1787
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -5222,7 +5245,7 @@ msgstr ""
 "perbedaannya"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1789
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -5232,7 +5255,7 @@ msgstr ""
 "Ini adalah perbedaan 25 baris pertama:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1795
+#: zypp/target/rpm/RpmDb.cc:1792
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr ""
@@ -5240,7 +5263,7 @@ msgstr ""
 "perbedaannya"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -5253,47 +5276,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1825 zypp/target/rpm/RpmDb.cc:1998
+#: zypp/target/rpm/RpmDb.cc:1822 zypp/target/rpm/RpmDb.cc:1995
 msgid "Additional rpm output"
 msgstr "Keluaran rpm tambahan"
 
-#: zypp/target/rpm/RpmDb.cc:2196
+#: zypp/target/rpm/RpmDb.cc:2193
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "membuat cadangan %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2217
+#: zypp/target/rpm/RpmDb.cc:2214
 msgid "Signature is OK"
 msgstr "Tanda tangan OK"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2219
+#: zypp/target/rpm/RpmDb.cc:2216
 msgid "Unknown type of signature"
 msgstr "Tanda tangan tidak dikenal"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2221
+#: zypp/target/rpm/RpmDb.cc:2218
 msgid "Signature does not verify"
 msgstr "Tanda tangan tidak terverifikasi"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2223
+#: zypp/target/rpm/RpmDb.cc:2220
 msgid "Signature is OK, but key is not trusted"
 msgstr "Tanda tangan OK, tetapi kunci tidak terpercaya"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2225
+#: zypp/target/rpm/RpmDb.cc:2222
 msgid "Signatures public key is not available"
 msgstr "Tanda tangan kunci publik tidak tersedia"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2227
+#: zypp/target/rpm/RpmDb.cc:2224
 msgid "File does not exist or signature can't be checked"
 msgstr "Berkas tidak ada atau tanda tangan tidak dapat diperiksa"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2229
+#: zypp/target/rpm/RpmDb.cc:2226
 msgid "File is unsigned"
 msgstr "Berkas tidak ditandatangani"
 
@@ -5392,7 +5415,7 @@ msgstr "Referensi objek URL kosong tidak valid"
 msgid "Unable to parse Url components"
 msgstr "Tidak dapat mengurai komponen Url"
 
-#: zypp-core/base/Exception.cc:186
+#: zypp-core/base/Exception.cc:199
 msgid "History:"
 msgstr "Riwayat:"
 
@@ -5568,72 +5591,77 @@ msgstr "Nama berkas yang buruk: %s"
 msgid "Medium not opened when trying to perform action '%s'."
 msgstr "Medium tidak dibuka ketika mencoba untuk melakukan tindakan '%s'."
 
-#: zypp-media/mediaexception.cc:58
+#: zypp-media/mediaexception.cc:59
+#, c-format, boost-format
+msgid "File '%s' not found"
+msgstr ""
+
+#: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "Berkas '%s' tidak ditemukan pada medium '%s'"
 
-#: zypp-media/mediaexception.cc:63
+#: zypp-media/mediaexception.cc:66
 #, c-format, boost-format
 msgid "Cannot write file '%s'."
 msgstr "Tidak dapat menulis berkas '%s'."
 
-#: zypp-media/mediaexception.cc:68
+#: zypp-media/mediaexception.cc:71
 msgid "Medium not attached"
 msgstr "Medium tidak dilampirkan"
 
-#: zypp-media/mediaexception.cc:73
+#: zypp-media/mediaexception.cc:76
 msgid "Bad media attach point"
 msgstr "Media poin lampiran buruk"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:79
+#: zypp-media/mediaexception.cc:82
 #, c-format, boost-format
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "Unduh (curl) inisialisasi gagal untuk '%s'"
 
-#: zypp-media/mediaexception.cc:84
+#: zypp-media/mediaexception.cc:87
 #, c-format, boost-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "Pengecualian sistem '%s' pada medium '%s'."
 
-#: zypp-media/mediaexception.cc:89
+#: zypp-media/mediaexception.cc:92
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "Lokasi '%s' pada medium '%s' bukan sebuah berkas."
 
-#: zypp-media/mediaexception.cc:94
+#: zypp-media/mediaexception.cc:97
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "Lokasi '%s' pada medium '%s' bukan sebuah direktori."
 
-#: zypp-media/mediaexception.cc:101
+#: zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
 msgstr "URI yang salah bentuk"
 
-#: zypp-media/mediaexception.cc:111
+#: zypp-media/mediaexception.cc:114
 msgid "Empty host name in URI"
 msgstr "Nama host kosong pada URI"
 
-#: zypp-media/mediaexception.cc:116
+#: zypp-media/mediaexception.cc:119
 msgid "Empty filesystem in URI"
 msgstr "Sistem berkas kosong pada URI"
 
-#: zypp-media/mediaexception.cc:121
+#: zypp-media/mediaexception.cc:124
 msgid "Empty destination in URI"
 msgstr "Tujuan kosong pada URI"
 
-#: zypp-media/mediaexception.cc:126
+#: zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "Skema URI tidak didukung pada '%s'."
 
-#: zypp-media/mediaexception.cc:131
+#: zypp-media/mediaexception.cc:134
 msgid "Operation not supported by medium"
 msgstr "Operasi tidak didukung oleh medium"
 
-#: zypp-media/mediaexception.cc:138
+#: zypp-media/mediaexception.cc:141
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5645,58 +5673,58 @@ msgstr ""
 "Pesan galat: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:146
+#: zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "Galat terjadi ketika mengatur unduhan (curl) pada opsi untuk '%s':"
 
-#: zypp-media/mediaexception.cc:153
+#: zypp-media/mediaexception.cc:156
 #, c-format, boost-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "Sumber media '%s' tidak berisi media yang diinginkan"
 
-#: zypp-media/mediaexception.cc:158
+#: zypp-media/mediaexception.cc:161
 #, c-format, boost-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "Medium '%s' sedang digunakan oleh instance lain"
 
-#: zypp-media/mediaexception.cc:164
+#: zypp-media/mediaexception.cc:167
 msgid "Cannot eject any media"
 msgstr "Tidak dapat mengeluarkan media apapun"
 
-#: zypp-media/mediaexception.cc:166
+#: zypp-media/mediaexception.cc:169
 #, c-format, boost-format
 msgid "Cannot eject media '%s'"
 msgstr "Tidak dapat mengeluarkan media '%s'"
 
-#: zypp-media/mediaexception.cc:181
+#: zypp-media/mediaexception.cc:184
 #, c-format, boost-format
 msgid "Permission to access '%s' denied."
 msgstr "Izin untuk mengakses '%s' ditolak."
 
-#: zypp-media/mediaexception.cc:189
+#: zypp-media/mediaexception.cc:192
 #: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "Batas waktu terlampaui saat mengakses '%s'."
 
-#: zypp-media/mediaexception.cc:197
+#: zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "Data yang diunduh melebihi ukuran yang diharapkan '%s' dari '%s'."
 
-#: zypp-media/mediaexception.cc:205
+#: zypp-media/mediaexception.cc:208
 #: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "Lokasi '%s' tidak dapat diakses sementara waktu."
 
-#: zypp-media/mediaexception.cc:213
+#: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " Masalah SSL Sertifikat, pastikan CA cert sudah benar untuk '%s'."
 
-#: zypp-media/mediaexception.cc:220
+#: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
 msgstr "Tidak ada sumber daya bebas yang tersedia untuk melampirkan media."
 
@@ -5745,14 +5773,6 @@ msgstr "Peringatan:"
 #: zypp-tui/output/Out.cc:30
 msgid "Error:"
 msgstr "Galat:"
-
-# ID
-#. translator: Shown as result tag in a progress bar: ............[done]
-#. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
-#: zypp-tui/output/OutNormal.cc:344
-msgid "done"
-msgstr "selesai"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp-tui/output/Out.cc:143
@@ -5805,6 +5825,18 @@ msgstr "ya"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "tidak"
+
+#, boost-format
+#~ msgid "Repository %1% does not define additional 'gpgkey=' URLs."
+#~ msgstr "Repositori %1% tidak mendefinisikan 'gpgkey=' URL tambahan."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in repository %2%."
+#~ msgstr "Mencari kunci gpg ID %1% dalam repositori %2%."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in cache %2%."
+#~ msgstr "Mencari kunci gpg ID %1% dalam singgahan %2%."
 
 #~ msgid "Valid metadata not found at specified URL"
 #~ msgid_plural "Valid metadata not found at specified URLs"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp.ko\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 16:30+0100\n"
+"POT-Creation-Date: 2025-05-27 19:37+0200\n"
 "PO-Revision-Date: 2024-09-07 03:47+0000\n"
 "Last-Translator: Joungmin Lee <leejm516@gmail.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/libzypp/master/ko/"
@@ -3838,6 +3838,10 @@ msgstr "주니어"
 msgid "Following actions will be done:"
 msgstr "다음 작업이 수행됨:"
 
+#: zypp/RepoInfo.cc:208
+msgid "Failed to fetch mirrorlist/metalink data."
+msgstr ""
+
 #  translators: fallback name for a module at command line
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3925,7 +3929,7 @@ msgstr ""
 msgid "Unknown support option. Description not available"
 msgstr "알 수 없는 지원 옵션입니다. 설명을 사용할 수 없습니다."
 
-#: zypp/ZYppFactory.cc:379
+#: zypp/ZYppFactory.cc:380
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
@@ -3955,23 +3959,22 @@ msgid "Invalid regular expression '%s'"
 msgstr "잘못된 정규식 '%s'"
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1374
-#: zypp/media/MediaCurl2.cc:712
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaNetworkCommonHandler.cc:346
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "'%s'에 대한 인증 필요"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:649
+#: zypp/media/MediaCurl.cc:788
 msgid "Will try again..."
 msgstr "다시 시도하고 있습니다..."
 
-#: zypp/media/MediaCurl.cc:652
+#: zypp/media/MediaCurl.cc:791
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "%1%회 시도 후에 중지합니다."
 
-#: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3979,14 +3982,14 @@ msgstr ""
 "SUSE 고객 센터를 방문하여 등록이 올바른지, 등록이 만료되지 않았는지 확인합니"
 "다."
 
-#: zypp/media/MediaCurl.cc:769 zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr ""
 "등록이 유효하고 만료되지 않았는지 확인하려면 Novell 고객 센터에 문의하십시오."
 
-#: zypp/media/MediaHandler.cc:339
+#: zypp/media/MediaHandler.cc:341
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
@@ -3996,9 +3999,17 @@ msgstr "연결점 생성: 연결점을 생성할 쓰기 가능한 디렉토리�
 msgid "Please install package 'lsof' first."
 msgstr "'lsof' 패키지를 먼저 설치하십시오."
 
-#: zypp/ng/repo/refresh.cc:45
+#: zypp/ng/repo/refresh.cc:46
 msgid "Can't create metadata cache directory."
 msgstr "메타 데이터 캐시 디렉토리를 생성할 수 없습니다."
+
+#. when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+#. fetching the gpg key from any mirror
+#: zypp/ng/repo/workflows/repodownloaderwf.cc:97
+msgid ""
+"Downloading signature key via mirrors, consider explicitely setting "
+"gpgKeyUrl via the repository configuration instead."
+msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4008,8 +4019,8 @@ msgid "Error trying to read from '%s'"
 msgstr "'%s'에서 읽기를 시도하는 중에 오류가 발생했습니다."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:439
-#: zypp/ng/repo/workflows/repomanagerwf.cc:665
-#: zypp/ng/repo/workflows/repomanagerwf.cc:747
+#: zypp/ng/repo/workflows/repomanagerwf.cc:666
+#: zypp/ng/repo/workflows/repomanagerwf.cc:748
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "%s을(를) 생성할 수 없음"
@@ -4018,50 +4029,50 @@ msgstr "%s을(를) 생성할 수 없음"
 msgid "Failed to retrieve new repository metadata."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:578
+#: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr "리포지터리 캐싱에 실패했습니다(repo2solv 실행이 불가능합니다)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:596
-#: zypp/ng/repo/workflows/repomanagerwf.cc:625
+#: zypp/ng/repo/workflows/repomanagerwf.cc:597
+#: zypp/ng/repo/workflows/repomanagerwf.cc:626
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "리포지토리(%d)를 캐시하지 못했습니다."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:653
+#: zypp/ng/repo/workflows/repomanagerwf.cc:654
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "리포지토리 '%s' 캐시 빌드 중"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:753
+#: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "%s에서 캐시를 생성할 수 없음 - 쓰기 권한이 없습니다."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:808
+#: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "%1% 리포지터리 캐싱에 실패했습니다"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:825
+#: zypp/ng/repo/workflows/repomanagerwf.cc:826
 msgid "Unhandled repository type"
 msgstr "리포지토리 유형이 처리되지 않았습니다."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:901
+#: zypp/ng/repo/workflows/repomanagerwf.cc:902
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "'%s' 리포지토리 추가 중"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:996
+#: zypp/ng/repo/workflows/repomanagerwf.cc:997
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "'%s'에서 리포지토리 파일 이름이 잘못되었습니다."
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1013 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
-#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#: zypp/ng/repomanager.cc:1098 zypp/ng/repomanager.cc:1224
 #, c-format, boost-format
 msgid "Can't open file '%s' for writing."
 msgstr "쓰기 위한 파일 '%s'을(를) 열 수 없습니다."
@@ -4080,7 +4091,7 @@ msgstr "리포지토리 디렉토리 '%1%'을(를) 읽을 수 없음: 사용 권
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
-#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#: zypp/ng/repomanager.cc:1330 zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
 msgstr "디렉토리 '%s'을(를) 읽지 못했습니다."
@@ -4126,7 +4137,7 @@ msgstr "리포지토리가 저장된 위치를 알 수 없습니다."
 
 #  Frame title for installation target hard disk / partition(s)
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1086
 #, c-format, boost-format
 msgid "Can't delete '%s'"
 msgstr "'%s'을(를) 삭제할 수 없습니다."
@@ -4139,14 +4150,14 @@ msgstr ""
 msgid "Refreshing Repository: "
 msgstr ""
 
-#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+#: zypp/ng/repomanager.cc:1074 zypp/ng/repomanager.cc:1146
 msgid "Can't figure out where the service is stored."
 msgstr "서비스가 저장된 위치를 알 수 없습니다."
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
 #. %2% = repository name
-#: zypp/ng/repomanager.cc:1433
+#: zypp/ng/repomanager.cc:1434
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr "알 수 없는 서비스 '%1%': 독립 서비스 리포지토리 '%2%' 제거 중"
@@ -4232,43 +4243,45 @@ msgid ""
 msgstr ""
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:78
+#: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
-msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "%1% 리포지토리에서 추가 'gpgkey=' URL을 정의하지 않습니다."
+msgid "Repository %1% does not define 'gpgkey=' URLs."
+msgstr ""
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:87
+#. translator: %1% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
-msgid "Looking for gpg key ID %1% in repository %2%."
-msgstr "%2% 리포지토리에서 gpg 키 ID %1%을(를) 검색합니다."
+msgid "Looking for gpg keys in repository %1%."
+msgstr ""
 
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:134
-#, boost-format
-msgid "Looking for gpg key ID %1% in cache %2%."
-msgstr "%2% 캐시에서 gpg 키 ID %1%을(를) 검색합니다."
-
-#: zypp/parser/RepoindexFileReader.cc:198
+#: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr "필수 특성 '%s'이(가) 누락되었습니다."
 
-#: zypp/parser/RepoindexFileReader.cc:210
+#. TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
+#. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
+#. the service Url. We need to check what kind of feature hides behind this code.
+#. So for now we keep requiring an url attribut.
+#: zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "'%s' 또는 '%s' 속성 중 하나 또는 둘 다가 필요합니다."
+
+#: zypp/parser/RepoindexFileReader.cc:311
+#, c-format, boost-format
+msgid ""
+"Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
+msgstr ""
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
 msgstr "서명 확인 실패"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:474
+#: zypp/repo/PackageProvider.cc:473
 #, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4276,16 +4289,16 @@ msgid ""
 msgstr "패키지 %s이(가) 전송 중에 손상된 것 같습니다. 다시 검색하시겠습니까?"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:498
+#: zypp/repo/PackageProvider.cc:497
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr "패키지 %s을(를) 제공하지 못했습니다. 다시 검색하시겠습니까?"
 
-#: zypp/repo/PackageProvider.cc:621
+#: zypp/repo/PackageProvider.cc:620
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm 검사 실패."
 
-#: zypp/repo/PackageProvider.cc:632
+#: zypp/repo/PackageProvider.cc:631
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm 실패."
 
@@ -4297,12 +4310,12 @@ msgstr ""
 msgid "Service plugin does not support changing an attribute."
 msgstr "서비스 플러그인이 특성 변경을 지원하지 않습니다."
 
-#: zypp/repo/RepoProvideFile.cc:260
+#: zypp/repo/RepoProvideFile.cc:265
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "파일 '%s'을(를) 리포지토리 '%s'에서 제공할 수 없습니다."
 
-#: zypp/repo/RepoProvideFile.cc:266
+#: zypp/repo/RepoProvideFile.cc:271
 msgid "No url in repository."
 msgstr "리포지토리에 URL이 없습니다."
 
@@ -4458,7 +4471,7 @@ msgstr ""
 "  %3%\n"
 "     파일과 충돌합니다."
 
-#: zypp/sat/detail/PoolImpl.cc:201
+#: zypp/sat/detail/PoolImpl.cc:202
 msgid "Can not create sat-pool."
 msgstr "sat-pool을 생성할 수 없습니다."
 
@@ -4819,117 +4832,126 @@ msgstr ""
 msgid "Installation has been aborted as directed."
 msgstr "설치가 지시된 대로 중단되었습니다."
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:464
 msgid " executed"
 msgstr " 실행됨"
 
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:486
 msgid " execution failed"
 msgstr " 실행 실패됨"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:603
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s이(가) 이미 %s(으)로 실행되었습니다."
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:613
 msgid " execution skipped while aborting"
 msgstr " 중단하는 중 실행 건너뜀"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:668 zypp/target/TargetImpl.cc:688
+#: zypp/target/TargetImpl.cc:716 zypp/target/TargetImpl.cc:753
+#: zypp/target/TargetImpl.cc:761
 msgid "Error sending update message notification."
 msgstr "업데이트 메시지 알림을 보내는 중에 오류가 발생했습니다."
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:812
 msgid "New update message"
 msgstr "새 업데이트 메시지"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2128
+#: zypp/target/TargetImpl.cc:2121
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2736
+#: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:100
-msgid "No mirror found"
+#: zypp/target/commitpackagepreloader.cc:102
+msgid "no mirror found"
 msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:108
-msgid "Could not create target File"
+msgid "could not create target file"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:134
-#: zypp/target/commitpackagepreloader.cc:364
-msgid "Already in Cache"
+#. if we have the file already, no need to download again
+#: zypp/target/commitpackagepreloader.cc:130
+msgid "already in cache"
 msgstr ""
 
 #. error
-#: zypp/target/commitpackagepreloader.cc:279
-msgid "Failed to rename temporary file."
+#: zypp/target/commitpackagepreloader.cc:273
+msgid "failed to rename temporary file."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:283
-msgid "Finished"
+#. rename consumed the file, no need to unlink.
+#. translator: Shown as result tag in a progress bar: ............[done]
+#. Translator: download progress bar result: ".............[done]"
+#: zypp/target/commitpackagepreloader.cc:276 zypp-tui/output/Out.cc:141
+#: zypp-tui/output/OutNormal.cc:341 zypp-tui/output/OutNormal.cc:344
+msgid "done"
+msgstr "완료"
+
+#: zypp/target/commitpackagepreloader.cc:303
+#, boost-format
+msgid "Error: \"%1%\", trying next mirror."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:607
+#: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:434 zypp/target/rpm/RpmDb.cc:1809
-#: zypp/target/rpm/RpmDb.cc:1982
+#: zypp/target/rpm/RpmDb.cc:431 zypp/target/rpm/RpmDb.cc:1806
+#: zypp/target/rpm/RpmDb.cc:1979
 msgid "RPM failed: "
 msgstr "RPM 실패: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:759
+#: zypp/target/rpm/RpmDb.cc:756
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "%1% 파일에서 공용 키를 임포트하지 못했습니다."
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:826
+#: zypp/target/rpm/RpmDb.cc:823
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "%1% 공용 키를 제거하지 못했습니다."
 
-#: zypp/target/rpm/RpmDb.cc:1246
+#: zypp/target/rpm/RpmDb.cc:1243
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1248
+#: zypp/target/rpm/RpmDb.cc:1245
 msgid "Package payload is not signed!"
 msgstr ""
 
 #  progress stage
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1587
+#: zypp/target/rpm/RpmDb.cc:1584
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "%s에 대한 구성 파일을 변경함:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1790
+#: zypp/target/rpm/RpmDb.cc:1787
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "RPM은 %s을(를) %s(으)로 저장했지만, 차이점을 구분할 수 없습니다."
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1789
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4939,13 +4961,13 @@ msgstr ""
 "다음은 차이에 대한 처음 25개 행입니다.\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1795
+#: zypp/target/rpm/RpmDb.cc:1792
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "RPM은 %s을(를) %s(으)로 생성했지만, 차이점을 구분할 수 없습니다."
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4959,47 +4981,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1825 zypp/target/rpm/RpmDb.cc:1998
+#: zypp/target/rpm/RpmDb.cc:1822 zypp/target/rpm/RpmDb.cc:1995
 msgid "Additional rpm output"
 msgstr "추가 RPM 출력"
 
-#: zypp/target/rpm/RpmDb.cc:2196
+#: zypp/target/rpm/RpmDb.cc:2193
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "백업 %s을(를) 만들었음"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2217
+#: zypp/target/rpm/RpmDb.cc:2214
 msgid "Signature is OK"
 msgstr "서명 정상"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2219
+#: zypp/target/rpm/RpmDb.cc:2216
 msgid "Unknown type of signature"
 msgstr "알 수 없는 서명 유형"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2221
+#: zypp/target/rpm/RpmDb.cc:2218
 msgid "Signature does not verify"
 msgstr "서명을 확인할 수 없음"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2223
+#: zypp/target/rpm/RpmDb.cc:2220
 msgid "Signature is OK, but key is not trusted"
 msgstr "서명이 정상이지만 키를 신뢰할 수 없음"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2225
+#: zypp/target/rpm/RpmDb.cc:2222
 msgid "Signatures public key is not available"
 msgstr "서명 공용 키 사용 불가"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2227
+#: zypp/target/rpm/RpmDb.cc:2224
 msgid "File does not exist or signature can't be checked"
 msgstr "파일이 존재하지 않거나 서명을 확인할 수 없음"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2229
+#: zypp/target/rpm/RpmDb.cc:2226
 msgid "File is unsigned"
 msgstr "파일이 서명되지 않음"
 
@@ -5098,7 +5120,7 @@ msgstr "빈 URL 객체 참조는 잘못되었습니다."
 msgid "Unable to parse Url components"
 msgstr "URL 구성요소를 구문 분석할 수 없습니다."
 
-#: zypp-core/base/Exception.cc:186
+#: zypp-core/base/Exception.cc:199
 msgid "History:"
 msgstr "이력:"
 
@@ -5274,73 +5296,78 @@ msgstr "잘못된 파일 이름: %s"
 msgid "Medium not opened when trying to perform action '%s'."
 msgstr "'%s' 작업을 수행할 때 미디어를 열 수 없습니다."
 
-#: zypp-media/mediaexception.cc:58
+#: zypp-media/mediaexception.cc:59
+#, c-format, boost-format
+msgid "File '%s' not found"
+msgstr ""
+
+#: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "'%s' 파일을 '%s' 미디어에서 찾을 수 없습니다."
 
 #  Frame title for installation target hard disk / partition(s)
-#: zypp-media/mediaexception.cc:63
+#: zypp-media/mediaexception.cc:66
 #, c-format, boost-format
 msgid "Cannot write file '%s'."
 msgstr "'%s' 파일을 쓸 수 없습니다."
 
-#: zypp-media/mediaexception.cc:68
+#: zypp-media/mediaexception.cc:71
 msgid "Medium not attached"
 msgstr "미디어가 연결되지 않음"
 
-#: zypp-media/mediaexception.cc:73
+#: zypp-media/mediaexception.cc:76
 msgid "Bad media attach point"
 msgstr "잘못된 미디어 연결점"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:79
+#: zypp-media/mediaexception.cc:82
 #, c-format, boost-format
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "'%s'에 대한 다운로드(CURL) 초기화 실패"
 
-#: zypp-media/mediaexception.cc:84
+#: zypp-media/mediaexception.cc:87
 #, c-format, boost-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "시스템 예외 '%s'이(가) 미디어 '%s'에서 발생했습니다."
 
-#: zypp-media/mediaexception.cc:89
+#: zypp-media/mediaexception.cc:92
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "'%s' 경로('%s' 미디어에 있음)가 파일이 아닙니다."
 
-#: zypp-media/mediaexception.cc:94
+#: zypp-media/mediaexception.cc:97
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "'%s' 경로('%s' 미디어에 있음)가 디렉토리가 아닙니다."
 
-#: zypp-media/mediaexception.cc:101
+#: zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
 msgstr "잘못된 URI"
 
-#: zypp-media/mediaexception.cc:111
+#: zypp-media/mediaexception.cc:114
 msgid "Empty host name in URI"
 msgstr "URI의 호스트 이름이 비어 있습니다."
 
-#: zypp-media/mediaexception.cc:116
+#: zypp-media/mediaexception.cc:119
 msgid "Empty filesystem in URI"
 msgstr "URI의 파일 시스템이 비어 있습니다."
 
-#: zypp-media/mediaexception.cc:121
+#: zypp-media/mediaexception.cc:124
 msgid "Empty destination in URI"
 msgstr "URI의 대상이 비어 있습니다."
 
-#: zypp-media/mediaexception.cc:126
+#: zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "'%s'에서 지원되지 않는 URI 구성표입니다."
 
-#: zypp-media/mediaexception.cc:131
+#: zypp-media/mediaexception.cc:134
 msgid "Operation not supported by medium"
 msgstr "미디어에서 지원되지 않는 작업입니다."
 
-#: zypp-media/mediaexception.cc:138
+#: zypp-media/mediaexception.cc:141
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5352,59 +5379,59 @@ msgstr ""
 "오류 메시지: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:146
+#: zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "'%s'에 대한 다운로드(curl) 옵션을 설정하는 동안 오류가 발생했습니다."
 
-#: zypp-media/mediaexception.cc:153
+#: zypp-media/mediaexception.cc:156
 #, c-format, boost-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "미디어 소스 '%s'에 원하는 매체가 없습니다."
 
-#: zypp-media/mediaexception.cc:158
+#: zypp-media/mediaexception.cc:161
 #, c-format, boost-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "미디어 '%s'이(가) 다른 인스턴스에서 사용 중입니다."
 
-#: zypp-media/mediaexception.cc:164
+#: zypp-media/mediaexception.cc:167
 msgid "Cannot eject any media"
 msgstr "미디어를 꺼낼 수 없습니다."
 
 #  Frame title for installation target hard disk / partition(s)
-#: zypp-media/mediaexception.cc:166
+#: zypp-media/mediaexception.cc:169
 #, c-format, boost-format
 msgid "Cannot eject media '%s'"
 msgstr "미디어 '%s'을(를) 꺼낼 수 없습니다."
 
-#: zypp-media/mediaexception.cc:181
+#: zypp-media/mediaexception.cc:184
 #, c-format, boost-format
 msgid "Permission to access '%s' denied."
 msgstr "'%s' 액세스 권한이 거부되었습니다."
 
-#: zypp-media/mediaexception.cc:189
+#: zypp-media/mediaexception.cc:192
 #: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "'%s'에 액세스할 때 제한 시간이 초과되었습니다."
 
-#: zypp-media/mediaexception.cc:197
+#: zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "다운로드한 데이터가 예상 파일 크기 '%s'/'%s'을(를) 초과했습니다."
 
-#: zypp-media/mediaexception.cc:205
+#: zypp-media/mediaexception.cc:208
 #: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "위치 '%s'에 일시적으로 액세스할 수 없습니다."
 
-#: zypp-media/mediaexception.cc:213
+#: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " SSL 인증서 문제, '%s'의 CA 인증서에 문제가 없는지 확인하십시오."
 
-#: zypp-media/mediaexception.cc:220
+#: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
 msgstr ""
 
@@ -5449,13 +5476,6 @@ msgstr "경고:"
 #: zypp-tui/output/Out.cc:30
 msgid "Error:"
 msgstr "오류:"
-
-#. translator: Shown as result tag in a progress bar: ............[done]
-#. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
-#: zypp-tui/output/OutNormal.cc:344
-msgid "done"
-msgstr "완료"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp-tui/output/Out.cc:143
@@ -5508,6 +5528,18 @@ msgstr "예"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "아니요"
+
+#, boost-format
+#~ msgid "Repository %1% does not define additional 'gpgkey=' URLs."
+#~ msgstr "%1% 리포지토리에서 추가 'gpgkey=' URL을 정의하지 않습니다."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in repository %2%."
+#~ msgstr "%2% 리포지토리에서 gpg 키 ID %1%을(를) 검색합니다."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in cache %2%."
+#~ msgstr "%2% 캐시에서 gpg 키 ID %1%을(를) 검색합니다."
 
 #~ msgid "Valid metadata not found at specified URL"
 #~ msgid_plural "Valid metadata not found at specified URLs"

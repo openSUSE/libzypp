@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 16:30+0100\n"
+"POT-Creation-Date: 2025-05-27 19:37+0200\n"
 "PO-Revision-Date: 2020-05-02 19:50+0000\n"
 "Last-Translator: mohammad alhargan <malham1@gmail.com>\n"
 "Language-Team: Arabic <https://l10n.opensuse.org/projects/libzypp/master/ar/"
@@ -3658,6 +3658,10 @@ msgstr "الزونية"
 msgid "Following actions will be done:"
 msgstr "سيتم تنفيذ الإجراءات التالية:"
 
+#: zypp/RepoInfo.cc:208
+msgid "Failed to fetch mirrorlist/metalink data."
+msgstr ""
+
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "غير معروف"
@@ -3741,7 +3745,7 @@ msgstr ""
 msgid "Unknown support option. Description not available"
 msgstr "خيار دعم غير معروف. الوصف غير متاح"
 
-#: zypp/ZYppFactory.cc:379
+#: zypp/ZYppFactory.cc:380
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
@@ -3771,23 +3775,22 @@ msgid "Invalid regular expression '%s'"
 msgstr "التعبير العادي '%s' غير صالح"
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1374
-#: zypp/media/MediaCurl2.cc:712
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaNetworkCommonHandler.cc:346
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "التصديق '%s' مطلوب"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:649
+#: zypp/media/MediaCurl.cc:788
 msgid "Will try again..."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:652
+#: zypp/media/MediaCurl.cc:791
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr ""
 
-#: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3795,7 +3798,7 @@ msgstr ""
 "تفضل بزيارة مركز عملاء SUSE للتحقق ما إذا كان التسجيل صالحًا وغير منته "
 "الصلاحية بعد."
 
-#: zypp/media/MediaCurl.cc:769 zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -3803,7 +3806,7 @@ msgstr ""
 "تفضل بزيارة Novell Customer Center (مركز خدمة عملاء Novell) للتحقق من صلاحية "
 "التسجيل وعدم انتهائها."
 
-#: zypp/media/MediaHandler.cc:339
+#: zypp/media/MediaHandler.cc:341
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
@@ -3814,9 +3817,17 @@ msgstr ""
 msgid "Please install package 'lsof' first."
 msgstr "الرجاء تثبيت حزمة 'lsof' أولًا."
 
-#: zypp/ng/repo/refresh.cc:45
+#: zypp/ng/repo/refresh.cc:46
 msgid "Can't create metadata cache directory."
 msgstr "لا يمكن إنشاء دليل لذاكرة التخزين المؤقت لبيانات التعريف."
+
+#. when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+#. fetching the gpg key from any mirror
+#: zypp/ng/repo/workflows/repodownloaderwf.cc:97
+msgid ""
+"Downloading signature key via mirrors, consider explicitely setting "
+"gpgKeyUrl via the repository configuration instead."
+msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -3826,8 +3837,8 @@ msgid "Error trying to read from '%s'"
 msgstr "حدث خطأ أثناء محاولة القراءة من '%s'"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:439
-#: zypp/ng/repo/workflows/repomanagerwf.cc:665
-#: zypp/ng/repo/workflows/repomanagerwf.cc:747
+#: zypp/ng/repo/workflows/repomanagerwf.cc:666
+#: zypp/ng/repo/workflows/repomanagerwf.cc:748
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "لا يمكن إنشاء %s"
@@ -3836,50 +3847,50 @@ msgstr "لا يمكن إنشاء %s"
 msgid "Failed to retrieve new repository metadata."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:578
+#: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:596
-#: zypp/ng/repo/workflows/repomanagerwf.cc:625
+#: zypp/ng/repo/workflows/repomanagerwf.cc:597
+#: zypp/ng/repo/workflows/repomanagerwf.cc:626
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "فشل التخزين المؤقت للمخزن (%d)."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:653
+#: zypp/ng/repo/workflows/repomanagerwf.cc:654
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "يتم الآن بناء الذاكرة المؤقتة لمخزن '%s'"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:753
+#: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "لا يمكن إنشاء ذاكرة التخزين المؤقت في %s - لا توجد أذونات للكتابة."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:808
+#: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:825
+#: zypp/ng/repo/workflows/repomanagerwf.cc:826
 msgid "Unhandled repository type"
 msgstr "نوع مخزن غير معالج"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:901
+#: zypp/ng/repo/workflows/repomanagerwf.cc:902
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "إضافة المخزن '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:996
+#: zypp/ng/repo/workflows/repomanagerwf.cc:997
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "اسم ملف المخزن غير صالح في '%s'"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1013 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
-#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#: zypp/ng/repomanager.cc:1098 zypp/ng/repomanager.cc:1224
 #, c-format, boost-format
 msgid "Can't open file '%s' for writing."
 msgstr "تعذر فتح الملف '%s' للكتابة."
@@ -3898,7 +3909,7 @@ msgstr "تعذرت قراءة دليل المخازن '%1%': تم رفض الإ�
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
-#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#: zypp/ng/repomanager.cc:1330 zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
 msgstr "فشلت قراءة الدليل '%s'"
@@ -3943,7 +3954,7 @@ msgid "Can't figure out where the repo is stored."
 msgstr "لا يمكن معرفة مكان تخزين المخزن."
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1086
 #, c-format, boost-format
 msgid "Can't delete '%s'"
 msgstr "لا يمكن حذف '%s'"
@@ -3956,14 +3967,14 @@ msgstr ""
 msgid "Refreshing Repository: "
 msgstr ""
 
-#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+#: zypp/ng/repomanager.cc:1074 zypp/ng/repomanager.cc:1146
 msgid "Can't figure out where the service is stored."
 msgstr "لا يمكن معرفة مكان تخزين الخدمة."
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
 #. %2% = repository name
-#: zypp/ng/repomanager.cc:1433
+#: zypp/ng/repomanager.cc:1434
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr "خدمة غير معروفة '%1%': تتم الآن إزالة مخزن الخدمة الوحيد '%2%'"
@@ -4055,43 +4066,45 @@ msgid ""
 msgstr ""
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:78
+#: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
-msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "المستودع %1% لم يقم بتعريف مفتاح إضافي 'مفتاح gpg=' عناوين المواقع."
+msgid "Repository %1% does not define 'gpgkey=' URLs."
+msgstr ""
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:87
+#. translator: %1% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
-msgid "Looking for gpg key ID %1% in repository %2%."
-msgstr "يتم البحث عن معرف لمفتاح gpg رقم %1% في المستودع %2%."
+msgid "Looking for gpg keys in repository %1%."
+msgstr ""
 
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:134
-#, boost-format
-msgid "Looking for gpg key ID %1% in cache %2%."
-msgstr "البحث عن مفتاح gpg للتشفير %1% في الذاكرة المؤقتة %2%."
-
-#: zypp/parser/RepoindexFileReader.cc:198
+#: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr "السمة المطلوبة '%s' مفقودة."
 
-#: zypp/parser/RepoindexFileReader.cc:210
+#. TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
+#. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
+#. the service Url. We need to check what kind of feature hides behind this code.
+#. So for now we keep requiring an url attribut.
+#: zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "إحدى السمتين '%s' أو '%s' أو كلتيهما مطلوبة."
+
+#: zypp/parser/RepoindexFileReader.cc:311
+#, c-format, boost-format
+msgid ""
+"Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
+msgstr ""
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
 msgstr "فشل التحقق من التوقيع"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:474
+#: zypp/repo/PackageProvider.cc:473
 #, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4100,16 +4113,16 @@ msgstr ""
 "يبدو أنه قد تم إتلاف الحزمة %s أثناء النقل. هل تريد إعادة محاولة الاسترداد؟"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:498
+#: zypp/repo/PackageProvider.cc:497
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr "فشل تقديم الحزمة %s. هل تريد إعادة محاولة الاسترداد؟"
 
-#: zypp/repo/PackageProvider.cc:621
+#: zypp/repo/PackageProvider.cc:620
 msgid "applydeltarpm check failed."
 msgstr "فشل التحقق من applydeltarpm."
 
-#: zypp/repo/PackageProvider.cc:632
+#: zypp/repo/PackageProvider.cc:631
 msgid "applydeltarpm failed."
 msgstr "فشل applydeltarpm."
 
@@ -4121,12 +4134,12 @@ msgstr ""
 msgid "Service plugin does not support changing an attribute."
 msgstr "لا تدعم الأداة الإضافية للخدمة تغيير إحدى السمات."
 
-#: zypp/repo/RepoProvideFile.cc:260
+#: zypp/repo/RepoProvideFile.cc:265
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "لا يمكن توفير الملف '%s' من المخزن '%s'"
 
-#: zypp/repo/RepoProvideFile.cc:266
+#: zypp/repo/RepoProvideFile.cc:271
 msgid "No url in repository."
 msgstr "لا يوجد عنوان url في المخزن."
 
@@ -4282,7 +4295,7 @@ msgstr ""
 "  من تثبيت\n"
 "     %4%"
 
-#: zypp/sat/detail/PoolImpl.cc:201
+#: zypp/sat/detail/PoolImpl.cc:202
 msgid "Can not create sat-pool."
 msgstr "تعذر إنشاء sat-pool."
 
@@ -4642,116 +4655,125 @@ msgstr ""
 msgid "Installation has been aborted as directed."
 msgstr "تم إيقاف التثبيت وفقًا للتعليمات."
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:464
 msgid " executed"
 msgstr " مُنفَّذ"
 
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:486
 msgid " execution failed"
 msgstr " فشل التنفيذ"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:603
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "تم تنفيذ %s بالفعل كـ %s)"
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:613
 msgid " execution skipped while aborting"
 msgstr " تم تخطي التنفيذ أثناء الإيقاف"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:668 zypp/target/TargetImpl.cc:688
+#: zypp/target/TargetImpl.cc:716 zypp/target/TargetImpl.cc:753
+#: zypp/target/TargetImpl.cc:761
 msgid "Error sending update message notification."
 msgstr "حدث خطأ أثناء إرسال رسالة إعلام بالتحديث."
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:812
 msgid "New update message"
 msgstr "رسالة تحديث جديد"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2128
+#: zypp/target/TargetImpl.cc:2121
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2736
+#: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:100
-msgid "No mirror found"
+#: zypp/target/commitpackagepreloader.cc:102
+msgid "no mirror found"
 msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:108
-msgid "Could not create target File"
+msgid "could not create target file"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:134
-#: zypp/target/commitpackagepreloader.cc:364
-msgid "Already in Cache"
+#. if we have the file already, no need to download again
+#: zypp/target/commitpackagepreloader.cc:130
+msgid "already in cache"
 msgstr ""
 
 #. error
-#: zypp/target/commitpackagepreloader.cc:279
-msgid "Failed to rename temporary file."
+#: zypp/target/commitpackagepreloader.cc:273
+msgid "failed to rename temporary file."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:283
-msgid "Finished"
+#. rename consumed the file, no need to unlink.
+#. translator: Shown as result tag in a progress bar: ............[done]
+#. Translator: download progress bar result: ".............[done]"
+#: zypp/target/commitpackagepreloader.cc:276 zypp-tui/output/Out.cc:141
+#: zypp-tui/output/OutNormal.cc:341 zypp-tui/output/OutNormal.cc:344
+msgid "done"
+msgstr "تم"
+
+#: zypp/target/commitpackagepreloader.cc:303
+#, boost-format
+msgid "Error: \"%1%\", trying next mirror."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:607
+#: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:434 zypp/target/rpm/RpmDb.cc:1809
-#: zypp/target/rpm/RpmDb.cc:1982
+#: zypp/target/rpm/RpmDb.cc:431 zypp/target/rpm/RpmDb.cc:1806
+#: zypp/target/rpm/RpmDb.cc:1979
 msgid "RPM failed: "
 msgstr "فشل RPM: "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:759
+#: zypp/target/rpm/RpmDb.cc:756
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "فشل استيراد المفتاح العمومي %1%"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:826
+#: zypp/target/rpm/RpmDb.cc:823
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "أخفقت إزالة المفتاح العام %1%"
 
-#: zypp/target/rpm/RpmDb.cc:1246
+#: zypp/target/rpm/RpmDb.cc:1243
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1248
+#: zypp/target/rpm/RpmDb.cc:1245
 msgid "Package payload is not signed!"
 msgstr ""
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1587
+#: zypp/target/rpm/RpmDb.cc:1584
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "ملفات التكوين التي تم تغييرها لـ %s:"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1790
+#: zypp/target/rpm/RpmDb.cc:1787
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "قامت rpm بحفظ %s باعتبارها %s، ولكن تعذر تحديد الفرق"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1789
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4761,13 +4783,13 @@ msgstr ""
 "فيما يلي أول 25 سطرًا من سطور الفرق:\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1795
+#: zypp/target/rpm/RpmDb.cc:1792
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "قامت rpm بإنشاء %s باعتبارها %s، ولكن تعذر تحديد الفرق"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4780,47 +4802,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1825 zypp/target/rpm/RpmDb.cc:1998
+#: zypp/target/rpm/RpmDb.cc:1822 zypp/target/rpm/RpmDb.cc:1995
 msgid "Additional rpm output"
 msgstr "مخرجات rpm إضافية"
 
-#: zypp/target/rpm/RpmDb.cc:2196
+#: zypp/target/rpm/RpmDb.cc:2193
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "تم إنشاء النسخة الاحتياطية %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2217
+#: zypp/target/rpm/RpmDb.cc:2214
 msgid "Signature is OK"
 msgstr "تمت المصادقة على التوقيع"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2219
+#: zypp/target/rpm/RpmDb.cc:2216
 msgid "Unknown type of signature"
 msgstr "نوع التوقيع غير معروف"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2221
+#: zypp/target/rpm/RpmDb.cc:2218
 msgid "Signature does not verify"
 msgstr "تعذر التحقق من التوقيع"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2223
+#: zypp/target/rpm/RpmDb.cc:2220
 msgid "Signature is OK, but key is not trusted"
 msgstr "تمت المصادقة على التوقيع، لكن المفتاح غير موثوق به"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2225
+#: zypp/target/rpm/RpmDb.cc:2222
 msgid "Signatures public key is not available"
 msgstr "تواقيع المفتاح العمومي غير متوفرة"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2227
+#: zypp/target/rpm/RpmDb.cc:2224
 msgid "File does not exist or signature can't be checked"
 msgstr "الملف غير موجود أو لا يمكن التحقق من توقيعه"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2229
+#: zypp/target/rpm/RpmDb.cc:2226
 msgid "File is unsigned"
 msgstr "الملف غير موقع"
 
@@ -4925,7 +4947,7 @@ msgstr "مرجع كائن Url فارغ غير صالح"
 msgid "Unable to parse Url components"
 msgstr "تعذر تحليل مكونات Url"
 
-#: zypp-core/base/Exception.cc:186
+#: zypp-core/base/Exception.cc:199
 msgid "History:"
 msgstr "المحفوظات:"
 
@@ -5103,72 +5125,77 @@ msgstr "اسم ملف غير صالح: %s"
 msgid "Medium not opened when trying to perform action '%s'."
 msgstr "لم يتم فتح الوسيط أثناء محاولة تنفيذ الإجراء '%s'."
 
-#: zypp-media/mediaexception.cc:58
+#: zypp-media/mediaexception.cc:59
+#, c-format, boost-format
+msgid "File '%s' not found"
+msgstr ""
+
+#: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "لم يتم العثور على الملف '%s' في الوسيط '%s'"
 
-#: zypp-media/mediaexception.cc:63
+#: zypp-media/mediaexception.cc:66
 #, c-format, boost-format
 msgid "Cannot write file '%s'."
 msgstr "لا يمكن كتابة الملف '%s'."
 
-#: zypp-media/mediaexception.cc:68
+#: zypp-media/mediaexception.cc:71
 msgid "Medium not attached"
 msgstr "لم يتم إرفاق الوسيط"
 
-#: zypp-media/mediaexception.cc:73
+#: zypp-media/mediaexception.cc:76
 msgid "Bad media attach point"
 msgstr "نقطة إرفاق وسائط غير صالحة"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:79
+#: zypp-media/mediaexception.cc:82
 #, c-format, boost-format
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "فشلت تهيئة تحميل (curl) لـ '%s'"
 
-#: zypp-media/mediaexception.cc:84
+#: zypp-media/mediaexception.cc:87
 #, c-format, boost-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "استثناء النظام '%s' في الوسيط '%s'."
 
-#: zypp-media/mediaexception.cc:89
+#: zypp-media/mediaexception.cc:92
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "المسار '%s' في الوسيط '%s' ليس ملفًا."
 
-#: zypp-media/mediaexception.cc:94
+#: zypp-media/mediaexception.cc:97
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "المسار '%s' في الوسيط '%s' ليس دليلاً."
 
-#: zypp-media/mediaexception.cc:101
+#: zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
 msgstr "URI غير صالح"
 
-#: zypp-media/mediaexception.cc:111
+#: zypp-media/mediaexception.cc:114
 msgid "Empty host name in URI"
 msgstr "اسم مضيف فارغ في URI"
 
-#: zypp-media/mediaexception.cc:116
+#: zypp-media/mediaexception.cc:119
 msgid "Empty filesystem in URI"
 msgstr "نظام ملفات فارغ في URI"
 
-#: zypp-media/mediaexception.cc:121
+#: zypp-media/mediaexception.cc:124
 msgid "Empty destination in URI"
 msgstr "وجهة فارغة في URI"
 
-#: zypp-media/mediaexception.cc:126
+#: zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "مخطط URI غير مدعوم في '%s'."
 
-#: zypp-media/mediaexception.cc:131
+#: zypp-media/mediaexception.cc:134
 msgid "Operation not supported by medium"
 msgstr "لا يدعم الوسيط العملية"
 
-#: zypp-media/mediaexception.cc:138
+#: zypp-media/mediaexception.cc:141
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5180,58 +5207,58 @@ msgstr ""
 "رسالة الخطأ: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:146
+#: zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "حدث خطأ أثناء تعيين خيارات إنزال (curl) لـ '%s':"
 
-#: zypp-media/mediaexception.cc:153
+#: zypp-media/mediaexception.cc:156
 #, c-format, boost-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "لا يحتوي مصدر الوسائط '%s' على الوسيط المطلوب"
 
-#: zypp-media/mediaexception.cc:158
+#: zypp-media/mediaexception.cc:161
 #, c-format, boost-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "الوسيط '%s' مستخدَم بواسطة مثيل آخر"
 
-#: zypp-media/mediaexception.cc:164
+#: zypp-media/mediaexception.cc:167
 msgid "Cannot eject any media"
 msgstr "لا يمكن إخراج أي وسائط"
 
-#: zypp-media/mediaexception.cc:166
+#: zypp-media/mediaexception.cc:169
 #, c-format, boost-format
 msgid "Cannot eject media '%s'"
 msgstr "لا يمكن إخراج الوسائط '%s'"
 
-#: zypp-media/mediaexception.cc:181
+#: zypp-media/mediaexception.cc:184
 #, c-format, boost-format
 msgid "Permission to access '%s' denied."
 msgstr "تم رفض إذن الوصول إلى '%s'."
 
-#: zypp-media/mediaexception.cc:189
+#: zypp-media/mediaexception.cc:192
 #: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "تم تجاوز المهلة عند الوصول إلى '%s'."
 
-#: zypp-media/mediaexception.cc:197
+#: zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "تجاوزت البيانات المحملة حجم الملف ,الحجم المتوقع للملف '%s' من '%s'."
 
-#: zypp-media/mediaexception.cc:205
+#: zypp-media/mediaexception.cc:208
 #: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "يتعذر الوصول إلى الموقع '%s' مؤقتًا."
 
-#: zypp-media/mediaexception.cc:213
+#: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " مشكلة في شهادة SSL، تحقق من أن شهادة CA صالحة لـ '%s'."
 
-#: zypp-media/mediaexception.cc:220
+#: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
 msgstr ""
 
@@ -5276,13 +5303,6 @@ msgstr "تحذير:"
 #: zypp-tui/output/Out.cc:30
 msgid "Error:"
 msgstr "خطأ:"
-
-#. translator: Shown as result tag in a progress bar: ............[done]
-#. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
-#: zypp-tui/output/OutNormal.cc:344
-msgid "done"
-msgstr "تم"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp-tui/output/Out.cc:143
@@ -5335,6 +5355,18 @@ msgstr "نعم"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "لا"
+
+#, boost-format
+#~ msgid "Repository %1% does not define additional 'gpgkey=' URLs."
+#~ msgstr "المستودع %1% لم يقم بتعريف مفتاح إضافي 'مفتاح gpg=' عناوين المواقع."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in repository %2%."
+#~ msgstr "يتم البحث عن معرف لمفتاح gpg رقم %1% في المستودع %2%."
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in cache %2%."
+#~ msgstr "البحث عن مفتاح gpg للتشفير %1% في الذاكرة المؤقتة %2%."
 
 #~ msgid "Valid metadata not found at specified URL"
 #~ msgid_plural "Valid metadata not found at specified URLs"

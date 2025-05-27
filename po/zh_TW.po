@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 16:30+0100\n"
+"POT-Creation-Date: 2025-05-27 19:37+0200\n"
 "PO-Revision-Date: 2025-04-08 10:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (Taiwan) <https://l10n.opensuse.org/projects/libzypp/"
@@ -3648,6 +3648,10 @@ msgstr "祖尼語"
 msgid "Following actions will be done:"
 msgstr "將執行以下操作："
 
+#: zypp/RepoInfo.cc:208
+msgid "Failed to fetch mirrorlist/metalink data."
+msgstr ""
+
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "不明的"
@@ -3730,7 +3734,7 @@ msgstr "該套件已停產，一個使用其他名稱的新套件已將其取代
 msgid "Unknown support option. Description not available"
 msgstr "未知的支援選項。 描述不適用"
 
-#: zypp/ZYppFactory.cc:379
+#: zypp/ZYppFactory.cc:380
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
@@ -3760,35 +3764,34 @@ msgid "Invalid regular expression '%s'"
 msgstr "無效的正規表示法 '%s'"
 
 #. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaCurl.cc:1374
-#: zypp/media/MediaCurl2.cc:712
+#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaNetworkCommonHandler.cc:346
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "%s 需要驗證"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:649
+#: zypp/media/MediaCurl.cc:788
 msgid "Will try again..."
 msgstr "將重試..."
 
-#: zypp/media/MediaCurl.cc:652
+#: zypp/media/MediaCurl.cc:791
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "已嘗試 %1% 次，即將放棄。"
 
-#: zypp/media/MediaCurl.cc:767 zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr "造訪 SUSE Customer Center 以檢查您的註冊是否有效以及是否過期。"
 
-#: zypp/media/MediaCurl.cc:769 zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
 msgstr "請造訪 Novell Customer Center，檢查您的註冊是否有效且是否未過期。"
 
-#: zypp/media/MediaHandler.cc:339
+#: zypp/media/MediaHandler.cc:341
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
@@ -3798,9 +3801,17 @@ msgstr "建立裝載點：無法找到可寫入的目錄以建立裝載點"
 msgid "Please install package 'lsof' first."
 msgstr "請先安裝套件 'lsof'。"
 
-#: zypp/ng/repo/refresh.cc:45
+#: zypp/ng/repo/refresh.cc:46
 msgid "Can't create metadata cache directory."
 msgstr "無法建立中繼資料快取目錄。"
+
+#. when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+#. fetching the gpg key from any mirror
+#: zypp/ng/repo/workflows/repodownloaderwf.cc:97
+msgid ""
+"Downloading signature key via mirrors, consider explicitely setting "
+"gpgKeyUrl via the repository configuration instead."
+msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -3810,8 +3821,8 @@ msgid "Error trying to read from '%s'"
 msgstr "嘗試自 '%s' 讀取時發生錯誤"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:439
-#: zypp/ng/repo/workflows/repomanagerwf.cc:665
-#: zypp/ng/repo/workflows/repomanagerwf.cc:747
+#: zypp/ng/repo/workflows/repomanagerwf.cc:666
+#: zypp/ng/repo/workflows/repomanagerwf.cc:748
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "無法建立 %s"
@@ -3820,50 +3831,50 @@ msgstr "無法建立 %s"
 msgid "Failed to retrieve new repository metadata."
 msgstr "擷取新儲存庫中繼資料失敗。"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:578
+#: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr "快取儲存庫失敗 (無法啟動 repo2solv)。"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:596
-#: zypp/ng/repo/workflows/repomanagerwf.cc:625
+#: zypp/ng/repo/workflows/repomanagerwf.cc:597
+#: zypp/ng/repo/workflows/repomanagerwf.cc:626
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "快取套件庫失敗 (%d)。"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:653
+#: zypp/ng/repo/workflows/repomanagerwf.cc:654
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "正在建立套件庫 '%s' 的快取"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:753
+#: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "無法在 %s 建立快取 - 無寫入權限。"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:808
+#: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "快取儲存庫 %1% 失敗"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:825
+#: zypp/ng/repo/workflows/repomanagerwf.cc:826
 msgid "Unhandled repository type"
 msgstr "無法處理的套件庫類型"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:901
+#: zypp/ng/repo/workflows/repomanagerwf.cc:902
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "正在新增套件庫 '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:996
+#: zypp/ng/repo/workflows/repomanagerwf.cc:997
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "'%s' 處的套件庫檔案名稱無效"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:1012 zypp/ng/repomanager.cc:589
+#: zypp/ng/repo/workflows/repomanagerwf.cc:1013 zypp/ng/repomanager.cc:589
 #: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
-#: zypp/ng/repomanager.cc:1097 zypp/ng/repomanager.cc:1223
+#: zypp/ng/repomanager.cc:1098 zypp/ng/repomanager.cc:1224
 #, c-format, boost-format
 msgid "Can't open file '%s' for writing."
 msgstr "無法開啟檔案 '%s' 來寫入。"
@@ -3882,7 +3893,7 @@ msgstr "無法讀取套件庫目錄 '%1%'︰權限遭拒"
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
-#: zypp/ng/repomanager.cc:1329 zypp/repo/PluginServices.cc:49
+#: zypp/ng/repomanager.cc:1330 zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
 msgstr "無法讀取目錄 '%s'"
@@ -3927,7 +3938,7 @@ msgid "Can't figure out where the repo is stored."
 msgstr "無法找到套件庫儲存的位置。"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1085
+#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1086
 #, c-format, boost-format
 msgid "Can't delete '%s'"
 msgstr "無法刪除 '%s'"
@@ -3940,14 +3951,14 @@ msgstr "正在修改儲存庫"
 msgid "Refreshing Repository: "
 msgstr "正在重新整理儲存庫： "
 
-#: zypp/ng/repomanager.cc:1073 zypp/ng/repomanager.cc:1145
+#: zypp/ng/repomanager.cc:1074 zypp/ng/repomanager.cc:1146
 msgid "Can't figure out where the service is stored."
 msgstr "無法找到服務儲存的位置。"
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
 #. %2% = repository name
-#: zypp/ng/repomanager.cc:1433
+#: zypp/ng/repomanager.cc:1434
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr "未知的服務 '%1%'：正在移除落單的服務儲存庫 '%2%'"
@@ -4033,43 +4044,45 @@ msgid ""
 msgstr "檔案 '%s' (來自儲存庫 '%s') 經未知金鑰 '%s' 簽署。要繼續嗎？"
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:78
+#: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
-msgid "Repository %1% does not define additional 'gpgkey=' URLs."
-msgstr "套件庫 %1% 未定義額外的 'gpgkey=' URL。"
+msgid "Repository %1% does not define 'gpgkey=' URLs."
+msgstr ""
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:87
+#. translator: %1% is a repositories name
+#: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
-msgid "Looking for gpg key ID %1% in repository %2%."
-msgstr "尋找套件庫 %2% 中的 gpg 金鑰 ID %1%。"
+msgid "Looking for gpg keys in repository %1%."
+msgstr ""
 
-#. translator: %1% is a gpg key ID like 3DBDC284
-#. %2% is a cache directories path
-#: zypp/ng/workflows/repoinfowf.cc:134
-#, boost-format
-msgid "Looking for gpg key ID %1% in cache %2%."
-msgstr "尋找快取 %2% 中的 gpg 金鑰 ID %1%。"
-
-#: zypp/parser/RepoindexFileReader.cc:198
+#: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr "需要的屬性 '%s' 遺失。"
 
-#: zypp/parser/RepoindexFileReader.cc:210
+#. TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
+#. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
+#. the service Url. We need to check what kind of feature hides behind this code.
+#. So for now we keep requiring an url attribut.
+#: zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr "需要 '%s' 及 '%s' 屬性或兩者之一。"
+
+#: zypp/parser/RepoindexFileReader.cc:311
+#, c-format, boost-format
+msgid ""
+"Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
+msgstr ""
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
 msgstr "簽章驗證失敗"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:474
+#: zypp/repo/PackageProvider.cc:473
 #, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4077,16 +4090,16 @@ msgid ""
 msgstr "套件 %s 可能在傳輸期間已毀損。是否要重試取回操作？"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:498
+#: zypp/repo/PackageProvider.cc:497
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr "無法提供套件 %s。是否要重試取回操作？"
 
-#: zypp/repo/PackageProvider.cc:621
+#: zypp/repo/PackageProvider.cc:620
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm 檢查失敗。"
 
-#: zypp/repo/PackageProvider.cc:632
+#: zypp/repo/PackageProvider.cc:631
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm 失敗。"
 
@@ -4098,12 +4111,12 @@ msgstr "無權寫入儲存庫快取。"
 msgid "Service plugin does not support changing an attribute."
 msgstr "服務外掛不支援屬性的修改。"
 
-#: zypp/repo/RepoProvideFile.cc:260
+#: zypp/repo/RepoProvideFile.cc:265
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "檔案 '%s' 無法由套件庫 '%s' 提供"
 
-#: zypp/repo/RepoProvideFile.cc:266
+#: zypp/repo/RepoProvideFile.cc:271
 msgid "No url in repository."
 msgstr "套件庫中沒有 url。"
 
@@ -4259,7 +4272,7 @@ msgstr ""
 "  (來自以下的安裝\n"
 "     %4%)"
 
-#: zypp/sat/detail/PoolImpl.cc:201
+#: zypp/sat/detail/PoolImpl.cc:202
 msgid "Can not create sat-pool."
 msgstr "無法建立 sat-pool。"
 
@@ -4624,116 +4637,125 @@ msgstr "%1% 程序檔輸出："
 msgid "Installation has been aborted as directed."
 msgstr "安裝已如指示中止。"
 
-#: zypp/target/TargetImpl.cc:463
+#: zypp/target/TargetImpl.cc:464
 msgid " executed"
 msgstr " 已執行"
 
-#: zypp/target/TargetImpl.cc:485
+#: zypp/target/TargetImpl.cc:486
 msgid " execution failed"
 msgstr " 執行失敗"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:602
+#: zypp/target/TargetImpl.cc:603
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr "%s 已作為 %s 執行)"
 
-#: zypp/target/TargetImpl.cc:612
+#: zypp/target/TargetImpl.cc:613
 msgid " execution skipped while aborting"
 msgstr " 中止時跳過執行"
 
-#: zypp/target/TargetImpl.cc:667 zypp/target/TargetImpl.cc:687
-#: zypp/target/TargetImpl.cc:715 zypp/target/TargetImpl.cc:752
-#: zypp/target/TargetImpl.cc:760
+#: zypp/target/TargetImpl.cc:668 zypp/target/TargetImpl.cc:688
+#: zypp/target/TargetImpl.cc:716 zypp/target/TargetImpl.cc:753
+#: zypp/target/TargetImpl.cc:761
 msgid "Error sending update message notification."
 msgstr "發送更新訊息提醒失敗。"
 
-#: zypp/target/TargetImpl.cc:811
+#: zypp/target/TargetImpl.cc:812
 msgid "New update message"
 msgstr "新的更新提醒"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2128
+#: zypp/target/TargetImpl.cc:2121
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr "接收到訊號：\"%1% (%2%)\"，為確保系統一致性，無法取消執行中 RPM 交易。"
 
-#: zypp/target/TargetImpl.cc:2736
+#: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "由於出現以下問題，執行交易失敗："
 
-#: zypp/target/commitpackagepreloader.cc:100
-msgid "No mirror found"
-msgstr "未找到鏡像"
+#: zypp/target/commitpackagepreloader.cc:102
+msgid "no mirror found"
+msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:108
-msgid "Could not create target File"
-msgstr "無法建立目標檔案"
+msgid "could not create target file"
+msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:134
-#: zypp/target/commitpackagepreloader.cc:364
-msgid "Already in Cache"
-msgstr "已在快取中"
+#. if we have the file already, no need to download again
+#: zypp/target/commitpackagepreloader.cc:130
+msgid "already in cache"
+msgstr ""
 
 #. error
-#: zypp/target/commitpackagepreloader.cc:279
-msgid "Failed to rename temporary file."
-msgstr "重新命名暫存檔案失敗。"
+#: zypp/target/commitpackagepreloader.cc:273
+msgid "failed to rename temporary file."
+msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:283
-msgid "Finished"
-msgstr "已完成"
+#. rename consumed the file, no need to unlink.
+#. translator: Shown as result tag in a progress bar: ............[done]
+#. Translator: download progress bar result: ".............[done]"
+#: zypp/target/commitpackagepreloader.cc:276 zypp-tui/output/Out.cc:141
+#: zypp-tui/output/OutNormal.cc:341 zypp-tui/output/OutNormal.cc:344
+msgid "done"
+msgstr "完成"
 
-#: zypp/target/commitpackagepreloader.cc:607
+#: zypp/target/commitpackagepreloader.cc:303
+#, boost-format
+msgid "Error: \"%1%\", trying next mirror."
+msgstr ""
+
+#: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
 msgstr "使用者已取消。"
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:434 zypp/target/rpm/RpmDb.cc:1809
-#: zypp/target/rpm/RpmDb.cc:1982
+#: zypp/target/rpm/RpmDb.cc:431 zypp/target/rpm/RpmDb.cc:1806
+#: zypp/target/rpm/RpmDb.cc:1979
 msgid "RPM failed: "
 msgstr "RPM 失敗： "
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:759
+#: zypp/target/rpm/RpmDb.cc:756
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr "從檔案 %1% 輸入公用金鑰失敗"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:826
+#: zypp/target/rpm/RpmDb.cc:823
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr "移除公用金鑰 %1% 失敗"
 
-#: zypp/target/rpm/RpmDb.cc:1246
+#: zypp/target/rpm/RpmDb.cc:1243
 msgid "Package header is not signed!"
 msgstr "未簽署套件標頭！"
 
-#: zypp/target/rpm/RpmDb.cc:1248
+#: zypp/target/rpm/RpmDb.cc:1245
 msgid "Package payload is not signed!"
 msgstr "未簽署套件封包內容！"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1587
+#: zypp/target/rpm/RpmDb.cc:1584
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "%s 的已變更組態檔："
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1790
+#: zypp/target/rpm/RpmDb.cc:1787
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm 已將 %s 儲存為 %s，但看不出差異"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp/target/rpm/RpmDb.cc:1789
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4743,13 +4765,13 @@ msgstr ""
 "這是前 25 行差異：\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1795
+#: zypp/target/rpm/RpmDb.cc:1792
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm 已將 %s 建立為 %s，但看不出差異"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1797
+#: zypp/target/rpm/RpmDb.cc:1794
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4762,47 +4784,47 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1825 zypp/target/rpm/RpmDb.cc:1998
+#: zypp/target/rpm/RpmDb.cc:1822 zypp/target/rpm/RpmDb.cc:1995
 msgid "Additional rpm output"
 msgstr "其他 rpm 輸出"
 
-#: zypp/target/rpm/RpmDb.cc:2196
+#: zypp/target/rpm/RpmDb.cc:2193
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "已建立備份 %s"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2217
+#: zypp/target/rpm/RpmDb.cc:2214
 msgid "Signature is OK"
 msgstr "簽章驗證正確"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2219
+#: zypp/target/rpm/RpmDb.cc:2216
 msgid "Unknown type of signature"
 msgstr "未知的簽章類型"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2221
+#: zypp/target/rpm/RpmDb.cc:2218
 msgid "Signature does not verify"
 msgstr "簽章無法驗證"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2223
+#: zypp/target/rpm/RpmDb.cc:2220
 msgid "Signature is OK, but key is not trusted"
 msgstr "簽章驗證正確，然而金鑰是不被信任的"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2225
+#: zypp/target/rpm/RpmDb.cc:2222
 msgid "Signatures public key is not available"
 msgstr "簽章用的公開金鑰不存在"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2227
+#: zypp/target/rpm/RpmDb.cc:2224
 msgid "File does not exist or signature can't be checked"
 msgstr "檔案不存在或是簽章無法驗證"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2229
+#: zypp/target/rpm/RpmDb.cc:2226
 msgid "File is unsigned"
 msgstr "檔案未簽章"
 
@@ -4901,7 +4923,7 @@ msgstr "無效的空白 Url 物件參照"
 msgid "Unable to parse Url components"
 msgstr "無法剖析 Url 元件"
 
-#: zypp-core/base/Exception.cc:186
+#: zypp-core/base/Exception.cc:199
 msgid "History:"
 msgstr "歷史記錄："
 
@@ -5077,72 +5099,77 @@ msgstr "無效的檔案名稱︰%s"
 msgid "Medium not opened when trying to perform action '%s'."
 msgstr "嘗試執行動作 '%s' 時未開啟媒體。"
 
-#: zypp-media/mediaexception.cc:58
+#: zypp-media/mediaexception.cc:59
+#, c-format, boost-format
+msgid "File '%s' not found"
+msgstr ""
+
+#: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
 msgstr "檔案 '%s' 無法在媒體 '%s' 中找到"
 
-#: zypp-media/mediaexception.cc:63
+#: zypp-media/mediaexception.cc:66
 #, c-format, boost-format
 msgid "Cannot write file '%s'."
 msgstr "無法寫入檔案 '%s'。"
 
-#: zypp-media/mediaexception.cc:68
+#: zypp-media/mediaexception.cc:71
 msgid "Medium not attached"
 msgstr "媒體未加入"
 
-#: zypp-media/mediaexception.cc:73
+#: zypp-media/mediaexception.cc:76
 msgid "Bad media attach point"
 msgstr "無效的媒體附載點"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:79
+#: zypp-media/mediaexception.cc:82
 #, c-format, boost-format
 msgid "Download (curl) initialization failed for '%s'"
 msgstr "'%s' 下載 (curl) 初始化失敗"
 
-#: zypp-media/mediaexception.cc:84
+#: zypp-media/mediaexception.cc:87
 #, c-format, boost-format
 msgid "System exception '%s' on medium '%s'."
 msgstr "發生系統例外 '%s' (在媒體 '%s' 上)。"
 
-#: zypp-media/mediaexception.cc:89
+#: zypp-media/mediaexception.cc:92
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a file."
 msgstr "路徑「%s」(媒體「%s」上) 不是檔案。"
 
-#: zypp-media/mediaexception.cc:94
+#: zypp-media/mediaexception.cc:97
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a directory."
 msgstr "路徑 '%s' (媒體 '%s' 上) 不是目錄。"
 
-#: zypp-media/mediaexception.cc:101
+#: zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
 msgstr "格式錯誤的位址"
 
-#: zypp-media/mediaexception.cc:111
+#: zypp-media/mediaexception.cc:114
 msgid "Empty host name in URI"
 msgstr "位址中的主機名稱為空"
 
-#: zypp-media/mediaexception.cc:116
+#: zypp-media/mediaexception.cc:119
 msgid "Empty filesystem in URI"
 msgstr "位址中的檔案系統為空"
 
-#: zypp-media/mediaexception.cc:121
+#: zypp-media/mediaexception.cc:124
 msgid "Empty destination in URI"
 msgstr "位址中的目標為空"
 
-#: zypp-media/mediaexception.cc:126
+#: zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
 msgstr "'%s' 中存在不受支援的位址規劃。"
 
-#: zypp-media/mediaexception.cc:131
+#: zypp-media/mediaexception.cc:134
 msgid "Operation not supported by medium"
 msgstr "媒體不支援此操作"
 
-#: zypp-media/mediaexception.cc:138
+#: zypp-media/mediaexception.cc:141
 #, c-format, boost-format
 msgid ""
 "Download (curl) error for '%s':\n"
@@ -5154,58 +5181,58 @@ msgstr ""
 "錯誤訊息：%s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:146
+#: zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr "為 '%s' 設定下載 (curl) 選項時發生錯誤："
 
-#: zypp-media/mediaexception.cc:153
+#: zypp-media/mediaexception.cc:156
 #, c-format, boost-format
 msgid "Media source '%s' does not contain the desired medium"
 msgstr "媒體來源 '%s' 不包含所需的媒體"
 
-#: zypp-media/mediaexception.cc:158
+#: zypp-media/mediaexception.cc:161
 #, c-format, boost-format
 msgid "Medium '%s' is in use by another instance"
 msgstr "媒體 '%s' 正被其他例項使用"
 
-#: zypp-media/mediaexception.cc:164
+#: zypp-media/mediaexception.cc:167
 msgid "Cannot eject any media"
 msgstr "無法退出任何媒體"
 
-#: zypp-media/mediaexception.cc:166
+#: zypp-media/mediaexception.cc:169
 #, c-format, boost-format
 msgid "Cannot eject media '%s'"
 msgstr "無法退出媒體 '%s'"
 
-#: zypp-media/mediaexception.cc:181
+#: zypp-media/mediaexception.cc:184
 #, c-format, boost-format
 msgid "Permission to access '%s' denied."
 msgstr "存取 '%s' 的權限被拒絕。"
 
-#: zypp-media/mediaexception.cc:189
+#: zypp-media/mediaexception.cc:192
 #: zypp-curl/ng/network/networkrequesterror.cc:119
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
 msgstr "存取 '%s' 時超出限定時間。"
 
-#: zypp-media/mediaexception.cc:197
+#: zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
 msgstr "下載到的資料超出了預期檔案大小 %s/%s。"
 
-#: zypp-media/mediaexception.cc:205
+#: zypp-media/mediaexception.cc:208
 #: zypp-curl/ng/network/networkrequesterror.cc:115
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
 msgstr "位置 '%s' 暫時無法存取。"
 
-#: zypp-media/mediaexception.cc:213
+#: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr " SSL 憑證問題，驗證 '%s' 的 CA 憑證是否正確。"
 
-#: zypp-media/mediaexception.cc:220
+#: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
 msgstr "沒有可供連接媒體的免費資源。"
 
@@ -5254,13 +5281,6 @@ msgstr "警告："
 #: zypp-tui/output/Out.cc:30
 msgid "Error:"
 msgstr "錯誤："
-
-#. translator: Shown as result tag in a progress bar: ............[done]
-#. Translator: download progress bar result: ".............[done]"
-#: zypp-tui/output/Out.cc:141 zypp-tui/output/OutNormal.cc:341
-#: zypp-tui/output/OutNormal.cc:344
-msgid "done"
-msgstr "完成"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp-tui/output/Out.cc:143
@@ -5312,6 +5332,33 @@ msgstr "是"
 #: zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "否"
+
+#, boost-format
+#~ msgid "Repository %1% does not define additional 'gpgkey=' URLs."
+#~ msgstr "套件庫 %1% 未定義額外的 'gpgkey=' URL。"
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in repository %2%."
+#~ msgstr "尋找套件庫 %2% 中的 gpg 金鑰 ID %1%。"
+
+#, boost-format
+#~ msgid "Looking for gpg key ID %1% in cache %2%."
+#~ msgstr "尋找快取 %2% 中的 gpg 金鑰 ID %1%。"
+
+#~ msgid "No mirror found"
+#~ msgstr "未找到鏡像"
+
+#~ msgid "Could not create target File"
+#~ msgstr "無法建立目標檔案"
+
+#~ msgid "Already in Cache"
+#~ msgstr "已在快取中"
+
+#~ msgid "Failed to rename temporary file."
+#~ msgstr "重新命名暫存檔案失敗。"
+
+#~ msgid "Finished"
+#~ msgstr "已完成"
 
 #~ msgid "Valid metadata not found at specified URL"
 #~ msgid_plural "Valid metadata not found at specified URLs"

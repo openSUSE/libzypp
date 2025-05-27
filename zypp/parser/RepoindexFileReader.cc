@@ -47,13 +47,17 @@ namespace zypp
       class VarReplacer : private base::NonCopyable
       {
       public:
-        /** */
-        void setVar( const std::string & key_r, const std::string & val_r )
-        {
-          //MIL << "*** Inject " << key_r << " = " << val_r;
-          _vars[key_r] = replace( val_r );
-          //MIL << " (" << _vars[key_r] << ")" << endl;
-        }
+        /** Global variables set for all repos. */
+        void setGlobalVar( const std::string & key_r, const std::string & val_r )
+        { _global[key_r] = replace( val_r ); }
+
+        /** Local variables set for one repo. */
+        void setSectionVar( const std::string & key_r, const std::string & val_r )
+        { _section[key_r] = replace( val_r ); }
+
+        /** Start a new repo section. */
+        void clearSectionVars()
+        { _section.clear(); }
 
         std::string replace( const std::string & val_r ) const
         {
@@ -72,12 +76,12 @@ namespace zypp
               WAR << "Incomplete variable in '" << val_r << "'" << endl;
               break;
             }
-            const auto & iter = _vars.find( val_r.substr( nbeg, nend-nbeg ) );
-            if ( iter != _vars.end() )
+            const std::string * varptr = getVar( val_r.substr( nbeg, nend-nbeg ) );
+            if ( varptr )
             {
               if ( cbeg < vbeg )
                 ret << val_r.substr( cbeg, vbeg-cbeg );
-              ret << iter->second;
+              ret << *varptr;
               cbeg = nend+1;
             }
             else
@@ -89,8 +93,27 @@ namespace zypp
 
           return ret;
         }
+
       private:
-        std::unordered_map<std::string,std::string> _vars;
+        const std::string * getVar( const std::string & key_r ) const
+        {
+          const std::string * ret = getVar( key_r, _section );
+          if ( not ret )
+            ret = getVar( key_r, _global );
+          return ret;
+        }
+
+        const std::string * getVar( const std::string & key_r, const std::unordered_map<std::string,std::string> & map_r ) const
+        {
+          const auto & iter = map_r.find( key_r );
+          if ( iter != map_r.end() )
+            return &(iter->second);
+          return nullptr;
+        }
+
+      private:
+        std::unordered_map<std::string,std::string> _global;
+        std::unordered_map<std::string,std::string> _section;
       };
     } // namespace
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +192,7 @@ namespace zypp
         {
           const std::string & name( reader_r->localName().asString() );
           const std::string & value( reader_r->value().asString() );
-          _replacer.setVar( name, value );
+          _replacer.setGlobalVar( name, value );
           // xpath: /repoindex@ttl
           if ( name == "ttl" )
             _ttl = str::strtonum<Date::Duration>(value);
@@ -191,13 +214,14 @@ namespace zypp
         info.setEnabled(false);
 
         std::string attrValue;
+        _replacer.clearSectionVars();
 
         // required alias
         // mandatory, so we can allow it in var replacement without reset
         if ( getAttrValue( "alias", reader_r, attrValue ) )
         {
           info.setAlias( attrValue );
-          _replacer.setVar( "alias", attrValue );
+          _replacer.setSectionVar( "alias", attrValue );
         }
         else
           throw ParseException(str::form(_("Required attribute '%s' is missing."), "alias"));
@@ -212,6 +236,10 @@ namespace zypp
           if ( urlstr.empty() )
           {
             if ( pathstr.empty() )
+              // TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
+              // But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
+              // the service Url. We need to check what kind of feature hides behind this code.
+              // So for now we keep requiring an url attribut.
               throw ParseException(str::form(_("One or both of '%s' or '%s' attributes is required."), "url", "path"));
             else
               info.setPath( Pathname("/repo") / pathstr );
@@ -226,6 +254,7 @@ namespace zypp
               url.setPathName( Pathname(url.getPathName()) / "repo" / pathstr );
               info.setBaseUrl( url );
             }
+            _replacer.setSectionVar( "url", urlstr );
           }
         }
 
@@ -274,6 +303,14 @@ namespace zypp
           info.setMetalinkUrl( Url(attrValue) );
 
         DBG << info << endl;
+        // require at least one Url
+        // NOTE: Some legacy feature in serviceswf.cc allows a path without baseurl and
+        // combines this with the service url. That's why we require empty url and path
+        // in order to fail.
+        if ( info.baseUrlsEmpty() && info.path().empty() && not info.mirrorListUrl().isValid() ) {
+          throw ParseException(str::form(_("Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."),
+                                           "url", "mirrorlist", "metalink", info.alias().c_str()));
+        }
 
         // ignore the rest
         // Specially: bsc#1177427 et.al.: type in a .repo file is legacy - ignore it

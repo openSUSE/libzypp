@@ -125,6 +125,10 @@ Or what if the build service could offer a service based on keywords or other da
 
 Some people prefer to keep and maintain the distros core repos within one local service rather than managing the repos individually. Since version 14.21.0 libzypp supports a simple form of variable replacement within a repoindex.xml file, which makes this even easier.
 
+Since version 17.37.1 the 'mirrorlist', 'metalink' and 'gpgkey' attributes are supported in a repo section.
+
+Since version 17.37.2 '%{url}' is available within a <tt>repo</tt> tag after the url was defined there.
+
 To use a local RIS service create a directory /somewhere on your disk (or accessible via http, nfs, etc.) and create the file
 ./repo/repoindex.xml inside. A repoindex.xml for openSUSE Leap 15.1 might look like this:
 
@@ -136,7 +140,9 @@ To use a local RIS service create a directory /somewhere on your disk (or access
             debugenable="false"
            sourceenable="false">
 
-  <repo url="%{disturl}/distribution/%{distsub}%{distver}/repo/oss"
+  <repo           url="%{disturl}/distribution/%{distsub}%{distver}/repo/oss"
+	   mirrorlist="%{url}/?mirrorlist"
+	       gpgkey="%{url}/repodata/repomd.xml.key"
                 alias="repo-oss"
                  name="%{alias} (%{distver})"
               enabled="true"

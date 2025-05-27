@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2024-11-12 02:48+0000\n"
+"PO-Revision-Date: 2025-05-27 22:59+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
 "sl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4101,7 +4101,7 @@ msgstr "Izvedena bodo naslednja dejanja:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Pridobivanje podatkov mirrorlist/metalink je spodletelo."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4274,6 +4274,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Prejemanje podpisnega ključa prek zrcalnih strežnikov. Namesto tega "
+"razmislite o izrecni nastavitvi »gpgKeyUrl« v nastavitvah vira."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4513,7 +4515,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Vir %1% ne določa lokacij URL »gpgkey=«."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4521,7 +4523,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Iskanje ključev GPG v viru %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4542,6 +4544,7 @@ msgstr "Zahtevana je vsaj ena od lastnosti »%s« ali »%s«."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Niti lastnost »%s« niti »%s« niti »%s« ni določena za vir storitve »%s«."
 
 # %s is either BOOTP or DHCP
 #: zypp/repo/PackageProvider.cc:343
@@ -5162,21 +5165,21 @@ msgstr "Izvajanje transakcije ni uspelo zaradi naslednjih težav:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "najden ni bil noben zrcalni strežnik"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "ciljne datoteke ni bilo moč ustvariti"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "že v predpomnilniku"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "preimenovanje začasne datoteke je spodletelo."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -5189,11 +5192,11 @@ msgstr "zaključeno"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Napaka: »%1%«, poskušanje z naslednjim zrcalnim strežnikom."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Preklical uporabnik."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5584,7 +5587,7 @@ msgstr "Nosilec med poskusom izvajanja dejanja »%s« ni bil odprt."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Datoteke »%s« ni bilo moč najti"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

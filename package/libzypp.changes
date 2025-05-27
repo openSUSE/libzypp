@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 27 19:37:53 CEST 2025 - ma@suse.de
+
+- Add a note to service maintained .repo file entries (fixes #638)
+- Support using %{url} variable in a RIS service's repo section.
+- version 17.37.2 (35)
+
+-------------------------------------------------------------------
 Fri May 23 19:55:53 CEST 2025 - ma@suse.de
 
 - Use a cookie file to validate mirrorlist cache.

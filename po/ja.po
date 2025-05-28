@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-04 00:44+0000\n"
+"PO-Revision-Date: 2025-05-28 03:59+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3650,7 +3650,7 @@ msgstr "以下の処理を実行する:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "mirrorlist/metalink データへのアクセスに失敗しました。"
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3819,6 +3819,9 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"ミラーサイトから署名鍵をダウンロードしようとしています。可能であれば、"
+"リポジトリの設定内で gpgKeyUrl "
+"を指定して、ダウンロード元を明示的に設定することをお勧めします。"
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4064,7 +4067,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "リポジトリ %1% には 'gpgkey=' URL の指定がありません。"
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4072,7 +4075,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "リポジトリ %1% 内で gpg 鍵を検索しています。"
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4092,7 +4095,8 @@ msgstr "'%s' または '%s' (もしくはその両方)の属性が必要です�
 #, c-format, boost-format
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
-msgstr ""
+msgstr "サービスリポジトリ内で '%s', '%s', '%s' の指定がいずれもされていません ("
+"サービスリポジトリ '%s') 。"
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4733,21 +4737,21 @@ msgstr "下記の問題が発生したことによって処理が失敗しまし
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "ミラーサイトが見つかりませんでした"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "目的のファイルを作成できませんでした"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "既にキャッシュ内にあります"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "一時ファイルの名称変更に失敗しました。"
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4760,7 +4764,7 @@ msgstr "完了"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "エラー: \"%1%\" です。次のミラーサイトを試しています。"
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5156,7 +5160,7 @@ msgstr "アクション '%s' を実行しようとした際にメディアが開
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "ファイル '%s' が見つかりませんでした"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

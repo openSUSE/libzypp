@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-28 11:59+0000\n"
+"PO-Revision-Date: 2025-05-28 14:59+0000\n"
 "Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/es/"
 ">\n"
@@ -4121,6 +4121,8 @@ msgstr "Se requieren uno o ambos de los atributos %s o %s."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Ni el atributo '%s' ni '%s' ni '%s' están definidos para el repositorio de "
+"servicio '%s'."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4770,16 +4772,16 @@ msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "no se encontró ningún mirror"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "no se pudo crear un archivo de destino"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "ya está en la caché"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273

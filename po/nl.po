@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: zypp.nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-28 08:59+0000\n"
+"PO-Revision-Date: 2025-05-28 11:59+0000\n"
 "Last-Translator: Freek de Kruijf <freek@opensuse.org>\n"
 "Language-Team: Dutch <https://l10n.opensuse.org/projects/libzypp/master/nl/>"
 "\n"
@@ -4773,7 +4773,7 @@ msgstr "al in de cache"
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "hernoemen van tijdelijk bestand is mislukt."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4786,7 +4786,7 @@ msgstr "gereed"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Fout: \"%1%\", volgende mirror wordt geprobeerd."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5188,7 +5188,7 @@ msgstr "Medium kan niet worden geopend wanneer '%s' wordt uitgevoerd."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Bestand '%s' is niet gevonden"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

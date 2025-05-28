@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-17 09:59+0000\n"
+"PO-Revision-Date: 2025-05-28 08:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
 ">\n"
@@ -4048,7 +4048,7 @@ msgstr "Es faran les accions següents:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Ha fallat obtenir les dades de la llista de rèpliques / metaenllaços."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4222,6 +4222,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Si es baixa la clau de signatura mitjançant rèpliques, considereu configurar "
+"explícitament gpgKeyUrl mitjançant la configuració del repositori."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4467,7 +4469,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "El repositori %1% no defineix els URL gpgkey=."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4475,7 +4477,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Cercant claus gpg al repositori %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4496,6 +4498,7 @@ msgstr "Són necessaris l'atribut \"%s\" o \"%s\", o bé tots dos."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Ni l'atribut %s ni %s ni %s estan definits per al repositori de servei %s."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -5127,21 +5130,21 @@ msgstr "No s'ha pogut executar la transacció a causa dels problemes següents:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "no s'ha trobat cap rèplica"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "no s'ha pogut crear el fitxer de destinació"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "ja és a la memòria cau"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "ha fallat canviar el nom del fitxer temporal."
 
 # ID
 #. rename consumed the file, no need to unlink.
@@ -5155,7 +5158,7 @@ msgstr "fet"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Error: \"%1%\", es prova la rèplica següent."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5555,7 +5558,7 @@ msgstr "Mitjà no obert quan s'intentava fer l'acció \"%s\"."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "No s'ha trobat el fitxer %s."
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

@@ -6,16 +6,16 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-03-01 15:56+0000\n"
+"PO-Revision-Date: 2025-05-28 14:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/libzypp/master/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/libzypp/master/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3645,7 +3645,7 @@ msgstr "Budú vykonané nasledovné akcie:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Nepodarilo sa získať údaje zoznamu zrkadiel/metalinkov."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3817,6 +3817,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Pri sťahovaní podpisového kľúča cez zrkadlá zvážte, či namiesto toho "
+"explicitne nenastavíte gpgKeyUrl cez konfiguráciu repozitára."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4059,7 +4061,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Repozitár %1% nedefinuje adresy URL 'gpgkey='."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4067,7 +4069,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Hľadanie gpg kľúčov v repozitári %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4088,6 +4090,7 @@ msgstr "Jeden alebo oba z atribútov '%s' alebo '%s' sú vyžadované."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Atribút '%s', '%s' ani '%s' nie je definovaný pre repozitár služby '%s'."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4723,21 +4726,21 @@ msgstr "Vykonanie transakcie zlyhalo z dôvodu nasledujúcich problémov:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "nenašlo sa žiadne zrkadlo"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "nepodarilo sa vytvoriť cieľový súbor"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "už vo vyrovnávacej pamäti"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "zlyhalo premenovanie dočasného súboru."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4750,7 +4753,7 @@ msgstr "hotovo"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Chyba: \"%1%\", skúša sa ďalšie zrkadlo."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5147,7 +5150,7 @@ msgstr "Médium sa neotvorilo pri pokuse vykonať '%s'."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Súbor '%s' nebol nájdený"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

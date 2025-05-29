@@ -34,7 +34,6 @@ namespace zyppng::worker
 
     private:
       DeviceDriverRef _driver;
-      bool _devicesDetected = false; //< We delay device detection to the first attach request, to avoid doing it without needing it
   };
 }
 

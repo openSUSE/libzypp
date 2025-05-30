@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-07 20:59+0000\n"
+"PO-Revision-Date: 2025-05-30 11:59+0000\n"
 "Last-Translator: Aleksey Fedorov <Aleksejfedorov963@gmail.com>\n"
 "Language-Team: Russian <https://l10n.opensuse.org/projects/libzypp/master/ru/"
 ">\n"
@@ -3654,7 +3654,7 @@ msgstr "Будут выполнены следующие действия:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Не удалось получить данные списка зеркал/metalink."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3828,6 +3828,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"При загрузке ключа подписи через зеркала следует явно задать gpgKeyUrl в "
+"конфигурации репозитория."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4068,7 +4070,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Репозиторий %1% не определяет URL „gpgkey=“."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4076,7 +4078,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Поиск gpg-ключей в репозитории %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4097,6 +4099,8 @@ msgstr "Требуются один или оба атрибута \"%s\" или
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Ни атрибут „%s“, ни „%s“, ни „%s“ не определен для сервисного репозитория "
+"„%s“."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4717,21 +4721,21 @@ msgstr "Транзакция не удалась из-за следующих п
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "зеркала не найдены"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "не удалось создать целевой файл"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "уже присутствует в кэше"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "не удалось переименовать временный файл."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4744,7 +4748,7 @@ msgstr "готово"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Ошибка: «%1%», пробуем следующее зеркало."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5141,7 +5145,7 @@ msgstr "При попытке произведения действия \"%s\" �
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Файл „%s“ не найден"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

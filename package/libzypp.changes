@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jun  2 17:50:53 CEST 2025 - ma@suse.de
+
+- Do not warn about no mirrors if mirrorlist was switched on
+  automatically. (bsc#1243901)
+- Relax permission of cached packages to 0644 & ~umask
+  (bsc#1243887)
+- version 17.37.3 (35)
+
+-------------------------------------------------------------------
 Tue May 27 19:37:53 CEST 2025 - ma@suse.de
 
 - Add a note to service maintained .repo file entries (fixes #638)

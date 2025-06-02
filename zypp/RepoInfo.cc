@@ -175,6 +175,8 @@ namespace zypp
       _effectiveBaseUrls.clear();
       _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
 
+      bool isAutoMirrorList = false; // bsc#1243901 Allows mirrorlist parsing to fail if automatically switched on
+
       Url mlurl( mirrorListUrl().transformed() );	// Variables replaced!
       if ( mlurl.asString().empty()
            && _baseUrls.raw().size() == 1
@@ -185,6 +187,7 @@ namespace zypp
         mlurl.setQueryParam("mirrorlist", std::string() );
 
         MIL << "Detected opensuse.org baseUrl with no mirrors, requesting them from : " << mlurl.asString() << std::endl;
+        isAutoMirrorList = true;
       }
 
       if ( !mlurl.asString().empty() )
@@ -203,9 +206,12 @@ namespace zypp
           if ( _baseUrls.empty () )
             throw;
           else {
-            callback::UserData data( JobReport::repoRefreshMirrorlist );
-            data.set("error", e );
-            JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
+            MIL << "Mirrorlist failed, repo either returns invalid data or has no mirrors at all, falling back to only baseUrl!" << std::endl;
+            if ( !isAutoMirrorList ) {
+              callback::UserData data( JobReport::repoRefreshMirrorlist );
+              data.set("error", e );
+              JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
+            }
           }
         }
       }

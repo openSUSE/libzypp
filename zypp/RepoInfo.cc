@@ -175,6 +175,9 @@ namespace zypp
       _effectiveBaseUrls.clear();
       _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
 
+      // prefer baseUrl over mirrors, this should prevent us from downloading old metadata from mirrors
+      _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), _baseUrls.transformedBegin (), _baseUrls.transformedEnd () );
+
       bool isAutoMirrorList = false; // bsc#1243901 Allows mirrorlist parsing to fail if automatically switched on
 
       Url mlurl( mirrorListUrl().transformed() );	// Variables replaced!
@@ -203,9 +206,11 @@ namespace zypp
           _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
         } catch ( const zypp::Exception & e ) {
           // failed to fetch the mirrorlist/metalink, if we still have a baseUrl we can go on, otherwise this is a error
-          if ( _baseUrls.empty () )
+          if ( _baseUrls.empty () ) {
+            _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
+            _effectiveBaseUrls.clear();
             throw;
-          else {
+          } else {
             MIL << "Mirrorlist failed, repo either returns invalid data or has no mirrors at all, falling back to only baseUrl!" << std::endl;
             if ( !isAutoMirrorList ) {
               callback::UserData data( JobReport::repoRefreshMirrorlist );
@@ -215,8 +220,6 @@ namespace zypp
           }
         }
       }
-
-      _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), _baseUrls.transformedBegin (), _baseUrls.transformedEnd () );
       return _effectiveBaseUrls;
     }
 

@@ -268,12 +268,13 @@ namespace zypp {
     void onRequestFinished( zyppng::NetworkRequest &req, const zyppng::NetworkRequestError &err ) {
       MIL << "Request for " << req.url() << " finished. (" << err.toString() << ")" << std::endl;
       if ( !req.hasError() ) {
-        if ( filesystem::rename( _tmpFile, _targetPath ) != 0 ) {
-          // error
-          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("failed to rename temporary file."), true );
-        } else {
+        // apply umask and move the _tmpFile into _targetPath
+        if ( filesystem::chmodApplyUmask( _tmpFile, 0644 ) == 0 && filesystem::rename( _tmpFile, _targetPath ) == 0 ) {
           _tmpFile.resetDispose(); // rename consumed the file, no need to unlink.
           finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NO_ERROR, asString( _("done") ), false );
+        } else {
+          // error
+          finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, _("failed to rename temporary file."), true );
         }
       } else {
         // handle errors and auth

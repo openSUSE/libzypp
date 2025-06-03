@@ -186,7 +186,9 @@ namespace zypp
            && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
 
         mlurl = *_baseUrls.transformedBegin ();
-        mlurl.appendPathName("/");
+        if (!mlurl.getPathName().empty() && mlurl.getPathName() != "/" && !zypp::str::endsWith(mlurl.getPathName(), "/") ) {
+          mlurl.setPathName(mlurl.getPathName() + "/");
+        }
         mlurl.setQueryParam("mirrorlist", std::string() );
 
         MIL << "Detected opensuse.org baseUrl with no mirrors, requesting them from : " << mlurl.asString() << std::endl;

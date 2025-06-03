@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun  4 07:43:41 UTC 2025 - Dirk Müller <dmueller@suse.com>
+
+- fix baseurl mirrorlist generation
+
+-------------------------------------------------------------------
 Mon Jun  2 17:50:53 CEST 2025 - ma@suse.de
 
 - Do not warn about no mirrors if mirrorlist was switched on

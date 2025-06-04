@@ -63,9 +63,9 @@ namespace zypp
     {
       if ( pi->mediaNr() == 0 ) // no media access at all
         return false;
-      if ( pi->repoInfo().effectiveBaseUrlsEmpty() )
-        return false; // no Url - should actually not happen
-      std::string scheme( pi->repoInfo().effectiveBaseUrls().front().getScheme() );
+      if ( pi->repoInfo().baseUrlsEmpty() )
+        return false; // no baseUrl, only mirrorlist is possible but we do not support interactive media there
+      std::string scheme( pi->repoInfo().baseUrls().front().getScheme() );
       return ( scheme == "dvd" || scheme == "cd" );
     }
 

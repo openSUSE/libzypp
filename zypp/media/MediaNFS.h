@@ -50,8 +50,8 @@ namespace zypp {
 
       public:
 
-        MediaNFS( const MediaUrl &url_r,
-                  const Pathname &attach_point_hint_r );
+        MediaNFS(const MirroredOrigin &origin_r,
+                 const Pathname &attach_point_hint_r );
 
         ~MediaNFS() override { try { release(); } catch(...) {} }
 

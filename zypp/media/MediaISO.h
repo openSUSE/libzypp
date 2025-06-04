@@ -52,7 +52,7 @@ namespace zypp
 
       public:
 
-        MediaISO(const MediaUrl &url_r,
+        MediaISO(const MirroredOrigin &origin_r,
                  const Pathname &attach_point_hint_r);
 
 

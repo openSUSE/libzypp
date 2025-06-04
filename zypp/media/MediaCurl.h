@@ -69,8 +69,7 @@ class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHel
 
   public:
 
-    MediaCurl( const MediaUrl &url_r,
-               const std::vector<MediaUrl> &mirrors_r,
+    MediaCurl( const MirroredOrigin &origin_r,
                const Pathname &attach_point_hint_r );
 
     ~MediaCurl() override;

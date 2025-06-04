@@ -244,14 +244,18 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
     std::for_each( urls.begin (), urls.end(), [&]( zypp::Url &url ) { url.setQueryParam("ssl_capath", web.caPath().asString() ); } );
   }
 
-  BOOST_CHECK_NO_THROW( id = mm.open( std::vector<zypp::media::MediaUrl>(urls.begin (), urls.end ()) ));
+  zypp::MirroredOrigin origin( urls.at(0) );
+  for( auto i = 1; i < urls.size(); i++  )
+    BOOST_REQUIRE( origin.addMirror ( urls.at(i) ) );
+
+  BOOST_CHECK_NO_THROW( id = mm.open( origin ) );
   BOOST_CHECK_NO_THROW( mm.attach(id) );
 
   zypp::OnMediaLocation loc("/test.txt");
-  {
-    BOOST_REQUIRE_EQUAL( mm.doesFileExist ( id, loc.filename () ), true );
-    // no auth given
-    BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
-  }
+
+  BOOST_REQUIRE_EQUAL( mm.doesFileExist ( id, loc.filename () ), true );
+  // no auth given
+  BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
+
 }
 

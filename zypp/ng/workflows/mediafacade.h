@@ -10,11 +10,11 @@
 #define ZYPP_NG_MEDIASETFACADE_INCLUDED
 
 #include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/LazyMediaHandle>
 #include <zypp/MediaSetAccess.h>
 #include <zypp/media/MediaManager.h>
-
 
 #include <vector>
 
@@ -82,14 +82,14 @@ namespace zyppng {
     ZYPP_DECL_PRIVATE_CONSTR ( MediaSyncFacade );
     ~MediaSyncFacade() override;
 
-    expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    expected<LazyMediaHandle> prepareMedia ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
     expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
 
     expected<MediaHandle> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
-    expected<MediaHandle> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    expected<MediaHandle> attachMedia( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
     expected<MediaHandle> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    expected<Res> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
+    expected<Res> provide(  const zypp::MirroredOrigin &origin, const ProvideFileSpec &request );
     expected<Res> provide(  const zypp::Url &url, const ProvideFileSpec &request );
     expected<Res> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
     expected<Res> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
@@ -117,7 +117,7 @@ namespace zyppng {
     void releaseMedium ( const AttachedSyncMediaInfo *ptr );
 
   private:
-    std::vector<zypp::Url> sanitizeUrls(const std::vector<zypp::Url> &urls) const;
+    zypp::MirroredOrigin sanitizeUrls(const zypp::MirroredOrigin &origin) const;
     std::vector<AttachedSyncMediaInfo_Ptr> _attachedMedia;
   };
 

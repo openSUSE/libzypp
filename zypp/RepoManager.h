@@ -201,15 +201,14 @@ namespace zypp
                                    RawMetadataRefreshPolicy policy = RefreshIfNeeded);
 
     /**
-     * Overload for checkIfToRefreshMetadata using a list of Urls to check if to refresh
-     * metadata. The Urls in the list are treated as mirrors and need to resolve to the
-     * same media handler.
+     * Overload for checkIfToRefreshMetadata using a \ref zypp::MirroredOrigin to check if to refresh
+     * metadata.
      *
-     * \sa RepoInfo::groupedBaseUrls
+     * \sa RepoInfo::repoOrigins
      *
      */
     RefreshCheckStatus checkIfToRefreshMetadata( const RepoInfo &info,
-                                   const std::vector<Url> &url,
+                                   const zypp::MirroredOrigin &origin,
                                    RawMetadataRefreshPolicy policy = RefreshIfNeeded);
 
     /**

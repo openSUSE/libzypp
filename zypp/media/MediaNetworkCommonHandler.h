@@ -33,8 +33,7 @@ namespace zypp
     class MediaNetworkCommonHandler : public MediaHandler
     {
     public:
-      MediaNetworkCommonHandler( const MediaUrl &url_r,
-                                 const std::vector<MediaUrl> &mirrors_r,
+      MediaNetworkCommonHandler( const MirroredOrigin &origin_r,
                                  const Pathname & attach_point_r,
                                  const Pathname & urlpath_below_attachpoint_r,
                                  const bool       does_download_r );

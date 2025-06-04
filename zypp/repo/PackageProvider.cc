@@ -417,11 +417,11 @@ namespace zypp
         }
       }
 
-      if ( info.effectiveBaseUrlsEmpty() )
+      if ( info.repoOriginsEmpty() )
         ZYPP_THROW(Exception("No url in repository."));
 
       MIL << "provide Package " << _package << endl;
-      Url url = info.effectiveBaseUrls().front();
+      Url url = info.location();
       try {
       do {
         _retry = false;

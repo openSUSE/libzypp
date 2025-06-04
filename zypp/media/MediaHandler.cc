@@ -52,8 +52,7 @@ namespace zypp {
 //
 //	DESCRIPTION :
 //
-  MediaHandler::MediaHandler (MediaUrl primaryUrl_r,
-                              std::vector<MediaUrl> urls_r,
+  MediaHandler::MediaHandler (MirroredOrigin origin_r,
                               const Pathname & attach_point_r,
                               Pathname  urlpath_below_attachpoint_r,
                               const bool       does_download_r )
@@ -63,8 +62,7 @@ namespace zypp {
     , _relativeRoot(std::move( urlpath_below_attachpoint_r))
     , _does_download( does_download_r )
     , _attach_mtime(0)
-    , _urls(std::move( urls_r ))
-    , _url(std::move(primaryUrl_r))
+    , _origin(std::move( origin_r ))
     , _parentId(0)
 {
   Pathname real_attach_point( getRealPath(attach_point_r.asString()));
@@ -83,8 +81,8 @@ namespace zypp {
     // schemes other than "file" and "dir", if it is absolute.
     //
     if ( !adir.isDir()
-         || (_url.url().getScheme() != "file"
-             && _url.url().getScheme() != "dir"
+         || ( _origin.scheme() != "file"
+             && _origin.scheme() != "dir"
              && !real_attach_point.absolute()) )
     {
       ERR << "Provided attach point is not a absolute directory: "

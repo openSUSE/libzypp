@@ -44,8 +44,8 @@ namespace zypp {
 
       public:
 
-        MediaDISK( const MediaUrl &      url_r,
-                   const Pathname & attach_point_hint_r );
+        MediaDISK(const MirroredOrigin &origin_r,
+                  const Pathname & attach_point_hint_r );
 
         ~MediaDISK() override { try { release(); } catch(...) {} }
 

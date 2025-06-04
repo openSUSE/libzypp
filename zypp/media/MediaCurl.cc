@@ -195,7 +195,7 @@ Pathname MediaCurl::_cookieFile = "/var/lib/YaST2/cookies";
 #define SET_OPTION(opt,val) do { \
     ret = curl_easy_setopt ( curl, opt, val ); \
     if ( ret != 0) { \
-      ZYPP_THROW(MediaCurlSetOptException(_urls.at(rData.mirror).url(), _curlError)); \
+      ZYPP_THROW(MediaCurlSetOptException(_origin.at(rData.mirror).url(), _curlError)); \
     } \
   } while ( false )
 
@@ -203,9 +203,9 @@ Pathname MediaCurl::_cookieFile = "/var/lib/YaST2/cookies";
 #define SET_OPTION_LONG(opt,val) SET_OPTION(opt,(long)val)
 #define SET_OPTION_VOID(opt,val) SET_OPTION(opt,(void*)val)
 
-MediaCurl::MediaCurl(const MediaUrl &url_r, const std::vector<MediaUrl> &mirrors_r,
+MediaCurl::MediaCurl(const MirroredOrigin &origin_r,
                      const Pathname & attach_point_hint_r )
-    : MediaNetworkCommonHandler( url_r, mirrors_r, attach_point_hint_r,
+  : MediaNetworkCommonHandler( origin_r, attach_point_hint_r,
                                  "/", // urlpath at attachpoint
                                  true ), // does_download
       _customHeaders(0L)
@@ -214,7 +214,7 @@ MediaCurl::MediaCurl(const MediaUrl &url_r, const std::vector<MediaUrl> &mirrors
 
   _curlError[0] = '\0';
 
-  MIL << "MediaCurl::MediaCurl(" << url_r .url() << ", " << attach_point_hint_r << ")" << endl;
+  MIL << "MediaCurl::MediaCurl(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;
 
   globalInitCurlOnce();
 
@@ -228,7 +228,7 @@ MediaCurl::MediaCurl(const MediaUrl &url_r, const std::vector<MediaUrl> &mirrors
          atemp == NULL || (atest=::mkdtemp(atemp)) == NULL)
     {
       WAR << "attach point " << ainfo.path()
-          << " is not useable for " << url_r.url().getScheme() << endl;
+          << " is not useable for " << origin_r.authority().url().getScheme() << endl;
       setAttachPoint("", true);
     }
     else if( atest != NULL)
@@ -297,7 +297,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
   curl_easy_setopt(curl, CURLOPT_HEADERDATA, &_lastRedirect);
   CURLcode ret = curl_easy_setopt( curl, CURLOPT_ERRORBUFFER, _curlError );
   if ( ret != 0 ) {
-    ZYPP_THROW(MediaCurlSetOptException( _urls.at(rData.mirror).url(), "Error setting error buffer"));
+    ZYPP_THROW(MediaCurlSetOptException( _origin.at(rData.mirror).url(), "Error setting error buffer"));
   }
 
   SET_OPTION(CURLOPT_FAILONERROR, 1L);
@@ -328,10 +328,10 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
   // 3 redirects seem to be too few in some cases (bnc #465532)
   SET_OPTION(CURLOPT_MAXREDIRS, 6L);
 
-  if ( _urls.at(rData.mirror).url().getScheme() == "https" )
+  if ( _origin.at(rData.mirror).url().getScheme() == "https" )
   {
     if ( :: internal::setCurlRedirProtocols ( curl ) != CURLE_OK ) {
-      ZYPP_THROW(MediaCurlSetOptException(_urls.at(rData.mirror).url(), _curlError));
+      ZYPP_THROW(MediaCurlSetOptException(_origin.at(rData.mirror).url(), _curlError));
     }
 
     if( settings.verifyPeerEnabled() ||
@@ -354,7 +354,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
     ret = curl_easy_setopt( curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_ALLOW_BEAST );
     if ( ret != 0 ) {
       disconnectFrom();
-      ZYPP_THROW(MediaCurlSetOptException(_urls.at(rData.mirror).url(), _curlError));
+      ZYPP_THROW(MediaCurlSetOptException(_origin.at(rData.mirror).url(), _curlError));
     }
 #endif
     SET_OPTION(CURLOPT_SSL_VERIFYPEER, settings.verifyPeerEnabled() ? 1L : 0L);
@@ -377,7 +377,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
        && !settings.password().size() ) {
 
     CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
-    const auto cred = cm.getCred( _urls.at(rData.mirror).url() );
+    const auto cred = cm.getCred( _origin.at(rData.mirror).url() );
     if ( cred && cred->valid() ) {
       if ( !settings.username().size() )
         settings.setUsername(cred->username());
@@ -478,7 +478,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
   if ( ::geteuid() == 0 || PathInfo(_currentCookieFile).owner() == ::geteuid() )
     filesystem::assert_file_mode( _currentCookieFile, 0600 );
 
-  const auto &cookieFileParam = _urls.at(rData.mirror).url().getQueryParam( "cookies" );
+  const auto &cookieFileParam = _origin.at(rData.mirror).url().getQueryParam( "cookies" );
   if ( !cookieFileParam.empty() && str::strToBool( cookieFileParam, true ) )
     SET_OPTION(CURLOPT_COOKIEFILE, _currentCookieFile.c_str() );
   else
@@ -500,7 +500,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
   for ( const auto &header : settings.headers() ) {
     _customHeaders = curl_slist_append(_customHeaders, header.c_str());
     if ( !_customHeaders )
-      ZYPP_THROW(MediaCurlInitException(_urls.at(rData.mirror).url()));
+      ZYPP_THROW(MediaCurlInitException(_origin.at(rData.mirror).url()));
   }
   SET_OPTION(CURLOPT_HTTPHEADER, _customHeaders);
 }
@@ -532,7 +532,7 @@ void MediaCurl::getFileCopy( const OnMediaLocation & srcFile , const Pathname & 
   // we need a non const pointer to work around the current API
   auto that = const_cast<MediaCurl *>(this);
   std::exception_ptr lastErr;
-  for ( int i = 0; i < (int)_urls.size (); i++ ) {
+  for ( int i = 0; i < (int)_origin.endpointCount(); i++ ) {
     try {
       return that->getFileCopyFromMirror ( i, srcFile, target );
 
@@ -566,7 +566,7 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
   rData.mirror = mirror;
   rData.curl = curl.value ();
 
-  const auto &myUrl = _urls[mirror];
+  const auto &myUrl = _origin[mirror];
 
   if( !myUrl.url().isValid() )
     ZYPP_THROW(MediaBadUrlException(myUrl.url()));
@@ -813,7 +813,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
   auto that = const_cast<MediaCurl *>(this);
 
   std::exception_ptr lastErr;
-  for ( int i = 0; i < (int)_urls.size (); i++ ) {
+  for ( int i = 0; i < (int)_origin.endpointCount(); i++ ) {
     try {
       return that->doGetDoesFileExist( i, filename );
 
@@ -844,7 +844,7 @@ void MediaCurl::evaluateCurlCode(RequestData &rData,
 {
   if ( code != 0 )
   {
-    const auto &baseMirr = _urls[rData.mirror];
+    const auto &baseMirr = _origin[rData.mirror];
     Url url;
     if (filename.empty())
       url = baseMirr.url();
@@ -989,7 +989,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
   rData.mirror = mirror;
   rData.curl = curl.value ();
 
-  const auto &myUrl = _urls[mirror];
+  const auto &myUrl = _origin[mirror];
 
   if( !myUrl.url().isValid() )
     ZYPP_THROW(MediaBadUrlException(myUrl.url()));
@@ -1158,7 +1158,7 @@ void MediaCurl::resetExpectedFileSize(void *clientp, const ByteCount &expectedFi
 CURLcode MediaCurl::executeCurl( RequestData &rData )
 {
   CURL *curl = rData.curl;
-  const auto &baseUrl = _urls.at(rData.mirror);
+  const auto &baseUrl = _origin.at(rData.mirror);
 
   if (!_multi)
     ZYPP_THROW(MediaCurlInitException(baseUrl.url()));

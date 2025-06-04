@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun  4 17:44:37 CEST 2025 - ma@suse.de
+
+- RepoInfo: use pathNameSetTrailingSlash (fixes #643)
+- Fix wrong userdata parameter type when running zypp with debug
+  verbosity (bsc#1239012)
+- version 17.37.4 (35)
+
+-------------------------------------------------------------------
 Mon Jun  2 17:50:53 CEST 2025 - ma@suse.de
 
 - Do not warn about no mirrors if mirrorlist was switched on

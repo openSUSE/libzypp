@@ -354,7 +354,7 @@ namespace zypp {
 
       callback::UserData userData( "CommitPreloadReport/fileDone" );
       if ( url )
-        userData.set( "Url", url );
+        userData.set( "Url", *url );
       if ( errorMessage )
         userData.set( "description", *errorMessage );
 

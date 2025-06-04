@@ -11,6 +11,7 @@
 
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ManagedFile.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/zyppng/base/zyppglobal.h>
 #include <zypp-core/zyppng/base/Base>
 #include <zypp-core/zyppng/async/AsyncOp>
@@ -62,7 +63,7 @@ namespace zyppng {
       bool isValid () const;
       std::string handle() const;
       const zypp::Url &baseUrl() const;
-      const std::vector<zypp::Url> &mirrors() const;
+      const zypp::MirroredOrigin &origin() const;
       const std::optional<zypp::Pathname> &localPath() const;
       zyppng::AttachedMediaInfo_constPtr mediaInfo() const;
     private:
@@ -130,14 +131,14 @@ namespace zyppng {
      * Prepares a lazy handle, that is attached only if a actual provide() is called onto it.
      * Use this to delay a media attach until its used the first time
      */
-    expected<LazyMediaHandle> prepareMedia ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    expected<LazyMediaHandle> prepareMedia ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
     expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
 
     AsyncOpRef<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
-    AsyncOpRef<expected<MediaHandle>> attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request );
+    AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
     AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    AsyncOpRef<expected<ProvideRes>> provide(  const std::vector<zypp::Url> &urls, const ProvideFileSpec &request );
+    AsyncOpRef<expected<ProvideRes>> provide(  const zypp::MirroredOrigin &origin, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
     AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );

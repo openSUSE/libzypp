@@ -24,12 +24,12 @@ namespace zyppng {
 
   static constexpr std::string_view DEFAULT_MEDIA_VERIFIER("SuseMediaV1");
 
-  expected<ProvideRequestRef> ProvideRequest::create(ProvideItem &owner, const std::vector<zypp::Url> &urls, const std::string &id, ProvideMediaSpec &spec )
+  expected<ProvideRequestRef> ProvideRequest::create(ProvideItem &owner, const zypp::MirroredOrigin &origin, const std::string &id, ProvideMediaSpec &spec )
   {
-    if ( urls.empty() )
-      return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("List of URLs can not be empty") ) );
+    if ( !origin.isValid () )
+      return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("Origin config must be valid") ) );
 
-    auto m = ProvideMessage::createAttach( ProvideQueue::InvalidId, urls.front(), id, spec.label() );
+    auto m = ProvideMessage::createAttach( ProvideQueue::InvalidId, origin.authority().url(), id, spec.label() );
     if ( !spec.mediaFile().empty() ) {
       m.setValue( AttachMsgFields::VerifyType, std::string(DEFAULT_MEDIA_VERIFIER.data()) );
       m.setValue( AttachMsgFields::VerifyData, spec.mediaFile().asString() );
@@ -42,15 +42,15 @@ namespace zyppng {
         m.addValue( i->first, val );
     }
 
-    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, urls, std::move(m))) );
+    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, origin, std::move(m))) );
   }
 
-  expected<ProvideRequestRef> ProvideRequest::create( ProvideItem &owner, const std::vector<zypp::Url> &urls, ProvideFileSpec &spec )
+  expected<ProvideRequestRef> ProvideRequest::create(ProvideItem &owner, const zypp::MirroredOrigin &origin, ProvideFileSpec &spec )
   {
-    if ( urls.empty() )
-      return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("List of URLs can not be empty") ) );
+    if ( !origin.isValid () )
+      return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("Origin config must be valid") ) );
 
-    auto m = ProvideMessage::createProvide ( ProvideQueue::InvalidId, urls.front() );
+    auto m = ProvideMessage::createProvide ( ProvideQueue::InvalidId, origin.authority().url() );
     const auto &destFile = spec.destFilenameHint();
     const auto &deltaFile = spec.deltafile();
     const int64_t fSize = spec.downloadSize();;
@@ -69,7 +69,7 @@ namespace zyppng {
         m.addValue( i->first, val );
     }
 
-    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, urls, std::move(m)) ) );
+    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, origin, std::move(m)) ) );
   }
 
   expected<ProvideRequestRef> ProvideRequest::createDetach( const zypp::Url &url )
@@ -235,17 +235,20 @@ namespace zyppng {
 
       MIL << "Request finished with mirrorlist from server." << std::endl;
 
-      //@TODO do we need to merge this with the mirrorlist we got from the user?
-      //      or does a mirrorlist from d.o.o invalidate that?
+      //@TODO get rid of metalink inside the provider and handle it just in legacy  mode:
+      // code requests the metalist in RepoInfo and the provider already gets a clean MirroredOrigin config
 
-      std::vector<zypp::Url> urls;
+      zypp::MirroredOrigin newOrigin;
       const auto &mirrors = msg.values( MetalinkRedirectMsgFields::NewUrl );
       for( auto i = mirrors.cbegin(); i != mirrors.cend(); i++ ) {
         try {
           zypp::Url newUrl( i->asString() );
           if ( !canRedirectTo( finishedReq, newUrl ) )
             continue;
-          urls.push_back ( newUrl );
+          if ( !newOrigin.isValid () )
+            newOrigin.setAuthority (newUrl);
+          else
+            newOrigin.addMirror(newUrl);
         }  catch ( ... ) {
           if ( i->isString() )
             WAR << "Received invalid URL from worker: " << i->asString() << " ignoring!" << std::endl;
@@ -254,13 +257,13 @@ namespace zyppng {
         }
       }
 
-      if ( urls.size () == 0 ) {
+      if ( newOrigin.endpointCount() == 0 ) {
         cancelWithError( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No mirrors left to redirect to.")) );
         return;
       }
 
-      MIL << "Found usable nr of mirrors: " << urls.size () << std::endl;
-      finishedReq->setUrls( urls );
+      MIL << "Found usable nr of mirrors: " << newOrigin.endpointCount() << std::endl;
+      finishedReq->setOrigin( std::move(newOrigin) );
 
       // disable metalink
       finishedReq->provideMessage().setValue( ProvideMsgFields::MetalinkEnabled, false );
@@ -556,15 +559,15 @@ namespace zyppng {
     }
   }
 
-  ProvideFileItem::ProvideFileItem(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent)
+  ProvideFileItem::ProvideFileItem(zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent)
     : ProvideItem( parent )
-    , _mirrorList  ( urls )
+    , _origin ( std::move(origin) )
     , _initialSpec ( request )
   { }
 
-  ProvideFileItemRef ProvideFileItem::create(const std::vector<zypp::Url> &urls, const ProvideFileSpec &request, ProvidePrivate &parent )
+  ProvideFileItemRef ProvideFileItem::create( zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent )
   {
-    return ProvideFileItemRef( new ProvideFileItem( urls, request, parent ) );
+    return ProvideFileItemRef( new ProvideFileItem( std::move(origin), request, parent ) );
   }
 
   void ProvideFileItem::initialize()
@@ -574,7 +577,7 @@ namespace zyppng {
       return;
     }
 
-    auto req =  ProvideRequest::create( *this, _mirrorList, _initialSpec );
+    auto req =  ProvideRequest::create( *this, _origin, _initialSpec );
     if ( !req ){
       cancelWithError( req.error() );
       return ;
@@ -760,21 +763,20 @@ namespace zyppng {
           auto log = provider().log();
           MIL << "Request failed trying to recover." << std::endl;
 
-          // prefilter usable URLs, so the scheduler does not have to
-          std::vector<zypp::Url> usableUrls;
-          std::for_each( _mirrorList.begin (), _mirrorList.end(), [&]( const zypp::Url &url ){
-            if ( !canRedirectTo ( finishedReq, url ) )
-              return;
-            usableUrls.push_back(url);
-          });
+          bool canRedirect = false;
+          for ( const auto &ep : _origin ) {
+            if ( canRedirectTo ( finishedReq, ep.url() ) ) {
+              canRedirect = true;
+              break;
+            }
+          }
 
-          if ( usableUrls.size() ) {
+          if ( canRedirect ) {
             MIL << "Trying to recover by redirecting to a mirror" << std::endl;
-            finishedReq->setUrls(usableUrls);
-
             if ( enqueueRequest( finishedReq ) )
               return;
           }
+
           MIL << "No mirror found or no mirror usable, giving up" << std::endl;
           break;
         }
@@ -853,9 +855,9 @@ namespace zyppng {
     return (_initialSpec.checkExistsOnly() ? zypp::ByteCount(0) : _expectedBytes);
   }
 
-  AttachMediaItem::AttachMediaItem( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent )
+  AttachMediaItem::AttachMediaItem(const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
     : ProvideItem  ( parent )
-    , _mirrorList  ( urls )
+    , _origin  ( origin )
     , _initialSpec ( request )
   { }
 
@@ -883,44 +885,25 @@ namespace zyppng {
     }
     updateState(Processing);
 
-    if ( _mirrorList.empty() ) {
-      cancelWithError( ZYPP_EXCPT_PTR( zypp::media::MediaException("No usable mirrors in mirrorlist.")) );
+    if ( !_origin.isValid() ) {
+      cancelWithError( ZYPP_EXCPT_PTR( zypp::media::MediaException("No usable origin config.")) );
       return;
     }
 
     // shortcut to the provider instance
     auto &prov= provider();
 
-    // sanitize the mirrors to contain only URLs that have same worker types
-    std::vector<zypp::Url> usableMirrs;
-    std::optional<ProvideQueue::Config> scheme;
+    // authority mandates the scheme
+    expected<ProvideQueue::Config> scheme = prov.schemeConfig( prov.effectiveScheme( _origin.authority().scheme() ) );
 
-    for ( auto mirrIt = _mirrorList.begin() ; mirrIt != _mirrorList.end(); mirrIt++ ) {
-      const auto &s = prov.schemeConfig( prov.effectiveScheme( mirrIt->getScheme() ) );
-      if ( !s ) {
-        WAR << "URL: " << *mirrIt << " is not supported, ignoring!" << std::endl;
-        continue;
-      }
-      if ( !scheme ) {
-        scheme = *s;
-        usableMirrs.push_back ( *mirrIt );
-      } else {
-        if ( scheme->worker_type () == s->worker_type () ) {
-          usableMirrs.push_back( *mirrIt );
-        } else {
-          WAR << "URL: " << *mirrIt << " has different worker type than the primary URL: "<< usableMirrs.front() <<", ignoring!" << std::endl;
-        }
-      }
-    }
-
-    // save the sanitized mirrors
-    _mirrorList = usableMirrs;
-
-    if ( !scheme || _mirrorList.empty() ) {
+    if ( !scheme || !_origin.isValid() ) {
       auto prom = promise();
       if ( prom ) {
         try {
-          prom->setReady( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
+          if ( !scheme )
+            prom->setReady( expected<Provide::MediaHandle>::error( scheme.error() ) );
+          else
+            prom->setReady( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
         } catch( const zypp::Exception &e ) {
           ZYPP_CAUGHT(e);
         }
@@ -934,7 +917,7 @@ namespace zyppng {
 
     // @TODO should we extend the mirrors here if some are not in the mirror list?
     for ( auto &medium : attachedMedia ) {
-      if ( medium->isSameMedium ( _mirrorList, _initialSpec ) ) {
+      if ( medium->isSameMedium ( _origin, _initialSpec ) ) {
         finishWithSuccess ( medium );
         return;
       }
@@ -950,7 +933,7 @@ namespace zyppng {
         continue;
 
       // does this Item attach the same medium?
-      const bool sameMedium = AttachedMediaInfo::isSameMedium( attachIt->_mirrorList, attachIt->_initialSpec, _mirrorList, _initialSpec );
+      const bool sameMedium = AttachedMediaInfo::isSameMedium( attachIt->_origin, attachIt->_initialSpec, _origin, _initialSpec );
       if ( !sameMedium )
         continue;
 
@@ -969,7 +952,7 @@ namespace zyppng {
         // if the media file is empty in the spec we can not do anything
         // simply pretend attach worked
         if( _initialSpec.mediaFile().empty() ) {
-          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _mirrorList, _initialSpec ) ) );
+          finishWithSuccess( prov.addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _origin, _initialSpec ) ) );
           return;
         }
 
@@ -987,12 +970,9 @@ namespace zyppng {
 
         _verifier = smvDataLocal;
 
-        std::vector<zypp::Url> urls;
-        urls.reserve( _mirrorList.size () );
-
-        for ( zypp::Url url : _mirrorList ) {
-          url.appendPathName ( ( zypp::str::Format("/media.%d/media") % _initialSpec.medianr() ).asString() );
-          urls.push_back(url);
+        zypp::MirroredOrigin fileOrigin = _origin;
+        for ( auto &ep : fileOrigin ) {
+          ep.url().appendPathName ( ( zypp::str::Format("/media.%d/media") % _initialSpec.medianr() ).asString() );
         }
 
         // for downloading schemes we ask for the /media.x/media file and check the data manually
@@ -1002,7 +982,7 @@ namespace zyppng {
         // disable metalink
         spec.customHeaders().set( std::string(NETWORK_METALINK_ENABLED), false );
 
-        auto req = ProvideRequest::create( *this, urls, spec );
+        auto req = ProvideRequest::create( *this, fileOrigin, spec );
         if ( !req ) {
           cancelWithError( req.error() );
           return;
@@ -1018,7 +998,7 @@ namespace zyppng {
       case ProvideQueue::Config::SimpleMount: {
 
         const auto &newId = provider().nextMediaId();
-        auto req = ProvideRequest::create( *this, _mirrorList, newId, _initialSpec );
+        auto req = ProvideRequest::create( *this, _origin, newId, _initialSpec );
         if ( !req ) {
           cancelWithError( req.error() );
           return;
@@ -1130,9 +1110,9 @@ namespace zyppng {
     }
   }
 
-  AttachMediaItemRef AttachMediaItem::create( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent )
+  AttachMediaItemRef AttachMediaItem::create( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
   {
-    return AttachMediaItemRef( new AttachMediaItem(urls, request, parent) );
+    return AttachMediaItemRef( new AttachMediaItem(origin, request, parent) );
   }
 
   SignalProxy<void (const zyppng::expected<AttachedMediaInfo *> &)> AttachMediaItem::sigReady()
@@ -1182,7 +1162,7 @@ namespace zyppng {
         // all good, register the medium and tell all child items
         _runningReq.reset();
 
-        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, baseUrl, _mirrorList, _initialSpec) ) );
+        return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _origin, _initialSpec) ) );
 
       } else if ( msg.code() == ProvideMessage::Code::NotFound ) {
 
@@ -1192,7 +1172,7 @@ namespace zyppng {
           // relaxed , tolerate a vanished media file
           _runningReq.reset();
 
-          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _mirrorList.front(), _mirrorList, _initialSpec ) ) );
+          return finishWithSuccess( provider().addMedium( zypp::make_intrusive<AttachedMediaInfo>( provider().nextMediaId(), _workerType, _origin, _initialSpec ) ) );
         }
       }
     } else {
@@ -1210,8 +1190,7 @@ namespace zyppng {
           finishedReq->provideMessage().value( AttachMsgFields::AttachId ).asString()
           , queue.weak_this<ProvideQueue>()
           , _workerType
-          , *finishedReq->activeUrl()
-          , std::vector<zypp::Url>{} // no mirrors
+          , zypp::MirroredOrigin(*finishedReq->activeUrl()) // no mirrors
           , _initialSpec
           , mntPoint ) ) );
       }

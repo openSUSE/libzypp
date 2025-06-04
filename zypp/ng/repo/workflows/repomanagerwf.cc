@@ -11,6 +11,7 @@
 #include "zypp/parser/xml/Reader.h"
 
 #include <zypp-core/ManagedFile.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/zyppng/io/Process>
 #include <zypp-core/zyppng/pipelines/MTry>
 #include <zypp-core/zyppng/pipelines/Algorithm>
@@ -185,6 +186,7 @@ namespace zyppng::RepoManagerWorkflow {
         return probeRepoType( ctx, std::forward<decltype(mediaHandle)>(mediaHandle), path );
     });
   }
+
   }
 
   AsyncOpRef<expected<zypp::repo::RepoType> > probeRepoType(ContextRef ctx, AsyncLazyMediaHandle medium, zypp::Pathname path, std::optional<zypp::Pathname> targetPath)
@@ -504,8 +506,8 @@ namespace zyppng::RepoManagerWorkflow {
       auto helper = std::make_shared<ExHelper>( ExHelper{ refCtx->repoInfo() } );
 
       // the actual logic pipeline, attaches the medium and tries to refresh from it
-      auto refreshPipeline = [ refCtx, progressObserver ]( std::vector<zypp::Url> urls ){
-        return refCtx->zyppContext()->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() )
+      auto refreshPipeline = [ refCtx, progressObserver ]( zypp::MirroredOrigin origin ){
+        return refCtx->zyppContext()->provider()->prepareMedia( origin, zyppng::ProvideMediaSpec() )
             | and_then( [ refCtx , progressObserver]( auto mediaHandle ) mutable { return refreshMetadata ( std::move(refCtx), std::move(mediaHandle), progressObserver ); } );
       };
 
@@ -530,7 +532,7 @@ namespace zyppng::RepoManagerWorkflow {
 
 
       // now go over the url groups until we find one that works
-      return refCtx->repoInfo().groupedBaseUrls()
+      return refCtx->repoInfo().repoOrigins()
         | firstOf( std::move(refreshPipeline), expected<RefreshContextRef>::error( std::make_exception_ptr(NotFoundException()) ), std::move(predicate) )
         | [helper]( expected<RefreshContextRef> result ) {
           if ( !result ) {
@@ -1073,9 +1075,9 @@ namespace zyppng::RepoManagerWorkflow {
         using ProvideRes         = typename ProvideType::Res;
 
 
-        RefreshGeoIpLogic( ZyppContextRefType &&zyppCtx, RepoInfo::url_set &&urls )
+        RefreshGeoIpLogic( ZyppContextRefType &&zyppCtx, zypp::MirroredOriginSet &&origins )
           : _zyppCtx( std::move(zyppCtx) )
-          , _urls( std::move(urls) )
+          , _origins( std::move(origins) )
         { }
 
         MaybeAsyncRef<expected<void>> execute() {
@@ -1088,11 +1090,16 @@ namespace zyppng::RepoManagerWorkflow {
           }
 
           std::vector<std::string> hosts;
-          for ( const auto &baseUrl : _urls ) {
-            const auto &host = baseUrl.getHost();
-            if ( zypp::any_of( _zyppCtx->config().geoipHostnames(), [&host]( const auto &elem ){ return ( zypp::str::compareCI( host, elem ) == 0 ); } ) ) {
-              hosts.push_back( host );
-              break;
+          for ( const zypp::MirroredOrigin &origin : _origins ){
+            if ( !origin.schemeIsDownloading () )
+              continue;
+
+            for ( const auto &originEndpoint : origin ) {
+              const auto &host = originEndpoint.url().getHost();
+              if ( zypp::any_of( _zyppCtx->config().geoipHostnames(), [&host]( const auto &elem ){ return ( zypp::str::compareCI( host, elem ) == 0 ); } ) ) {
+                hosts.push_back( host );
+                break;
+              }
             }
           }
 
@@ -1199,7 +1206,7 @@ namespace zyppng::RepoManagerWorkflow {
 
           return std::move(hosts)
           | firstOf( std::move(firstOfCb), false, zyppng::detail::ContinueUntilValidPredicate() )
-          | []( bool foundGeoIP ){
+          | []( bool foundGeoIP ) {
 
             if ( foundGeoIP ) {
               MIL << "Successfully queried GeoIP data." << std::endl;
@@ -1214,7 +1221,7 @@ namespace zyppng::RepoManagerWorkflow {
 
     private:
         ZyppContextRefType _zyppCtx;
-        RepoInfo::url_set  _urls;
+        zypp::MirroredOriginSet _origins;
         zypp::Pathname     _geoIPCache;
 
     };
@@ -1222,14 +1229,24 @@ namespace zyppng::RepoManagerWorkflow {
 
   AsyncOpRef<expected<void> > refreshGeoIPData( ContextRef ctx, RepoInfo::url_set urls )
   {
-    return SimpleExecutor<RefreshGeoIpLogic, AsyncOp<expected<void>>>::run( std::move(ctx), std::move(urls) );
+    return SimpleExecutor<RefreshGeoIpLogic, AsyncOp<expected<void>>>::run( std::move(ctx), zypp::MirroredOriginSet(urls) );
   }
 
   expected<void> refreshGeoIPData( SyncContextRef ctx, RepoInfo::url_set urls )
   {
-    return SimpleExecutor<RefreshGeoIpLogic, SyncOp<expected<void>>>::run( std::move(ctx), std::move(urls) );
+    return SimpleExecutor<RefreshGeoIpLogic, SyncOp<expected<void>>>::run( std::move(ctx), zypp::MirroredOriginSet(urls) );
   }
 
+
+  AsyncOpRef<expected<void> > refreshGeoIPData(ContextRef ctx, zypp::MirroredOriginSet origins)
+  {
+    return SimpleExecutor<RefreshGeoIpLogic, AsyncOp<expected<void>>>::run( std::move(ctx), std::move(origins) );
+  }
+
+  expected<void> refreshGeoIPData(SyncContextRef ctx, zypp::MirroredOriginSet origins)
+  {
+    return SimpleExecutor<RefreshGeoIpLogic, SyncOp<expected<void>>>::run( std::move(ctx), std::move(origins) );
+  }
 
 
 }

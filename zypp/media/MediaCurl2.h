@@ -77,9 +77,8 @@ class MediaCurl2 : public MediaNetworkCommonHandler
     void getFileCopy( const OnMediaLocation& srcFile, const Pathname & targetFilename ) const override;
   public:
 
-    MediaCurl2( const MediaUrl &url_r,
-                const std::vector<MediaUrl> &mirrors_r,
-                const Pathname & attach_point_hint_r );
+    MediaCurl2(const MirroredOrigin origin_r,
+               const Pathname & attach_point_hint_r );
 
     ~MediaCurl2() override { try { release(); } catch(...) {} }
 

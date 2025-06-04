@@ -41,8 +41,8 @@ namespace zypp {
 
       public:
 
-        MediaDIR( const MediaUrl &      url_r,
-                  const Pathname & attach_point_hint_r );
+        MediaDIR(const MirroredOrigin &origin,
+                 const Pathname & attach_point_hint_r );
 
         ~MediaDIR() override { try { release(); } catch(...) {} }
     };

@@ -65,6 +65,9 @@ namespace zyppng {
     AsyncOpRef<expected<void>> refreshGeoIPData( ContextRef ctx, RepoInfo::url_set urls );
     expected<void> refreshGeoIPData( SyncContextRef ctx, RepoInfo::url_set urls );
 
+    AsyncOpRef<expected<void>> refreshGeoIPData( ContextRef ctx, zypp::MirroredOriginSet origins );
+    expected<void> refreshGeoIPData( SyncContextRef ctx, zypp::MirroredOriginSet origins );
+
   }
 }
 

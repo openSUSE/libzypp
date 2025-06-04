@@ -232,7 +232,7 @@ namespace zyppng {
             continue;
           }
 
-          MIL_PRV << "Trying to schedule request: " << item->urls().front() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
 
           // how many workers for this type do already exist
           int existingTypeWorkers = 0;
@@ -248,17 +248,17 @@ namespace zyppng {
 
           // all mirrors without a existing worker
           std::vector<zypp::Url> mirrsWithoutWorker;
-          for ( const auto &url : item->urls() ) {
+          for ( const auto &endpoint : item->origin() ) {
 
-            if ( effectiveScheme( url.getScheme() ) != scheme ) {
-              MIL << "Mirror URL " << url << " is incompatible with current scheme: " << scheme << ", ignoring." << std::endl;
+            if ( effectiveScheme( endpoint.scheme() ) != scheme ) {
+              MIL << "Mirror URL " << endpoint << " is incompatible with current scheme: " << scheme << ", ignoring." << std::endl;
               continue;
             }
 
-            if( item->owner()->canRedirectTo( item, url ) )
-              mirrsWithoutWorker.push_back( url );
+            if( item->owner()->canRedirectTo( item, endpoint.url() ) )
+              mirrsWithoutWorker.push_back( endpoint.url() );
             else {
-              MIL_PRV << "URL was rejected" << url << std::endl;
+              MIL_PRV << "URL was rejected" << endpoint << std::endl;
             }
           }
 
@@ -454,7 +454,7 @@ namespace zyppng {
             continue;
           }
 
-          MIL_PRV << "Trying to schedule request: " << item->urls().front() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
 
           // how many workers for this type do already exist
           int existingTypeWorkers = 0;
@@ -470,12 +470,12 @@ namespace zyppng {
           zypp::Url url;
 
           //CPU bound queues do not spawn per mirrors, we use the first compatible URL
-          for ( const auto &tmpurl : item->urls() ) {
-            if ( effectiveScheme( tmpurl.getScheme() ) != scheme ) {
+          for ( const auto &tmpurl : item->origin() ) {
+            if ( effectiveScheme( tmpurl.scheme() ) != scheme ) {
               MIL << "Mirror URL " << tmpurl << " is incompatible with current scheme: " << scheme << ", ignoring." << std::endl;
               continue;
             }
-            url = tmpurl;
+            url = tmpurl.url();
             break;
           }
 
@@ -640,17 +640,17 @@ namespace zyppng {
 
           // make a real reference so it does not dissapear when we remove it from the queue
           ProvideRequestRef item = *i;
-          MIL_PRV << "Trying to schedule request: " << item->urls().front() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
 
           zypp::Url url;
 
           //mounting queues do not spawn per mirrors, we use the first compatible URL
-          for ( const auto &tmpurl : item->urls() ) {
-            if ( effectiveScheme( tmpurl.getScheme() ) != scheme ) {
+          for ( const auto &tmpurl : item->origin() ) {
+            if ( effectiveScheme( tmpurl.scheme() ) != scheme ) {
               MIL << "Mirror URL " << tmpurl << " is incompatible with current scheme: " << scheme << ", ignoring." << std::endl;
               continue;
             }
-            url = tmpurl;
+            url = tmpurl.url();
             break;
           }
 
@@ -706,34 +706,29 @@ namespace zyppng {
     return _credManagerOptions;
   }
 
-  std::vector<zypp::Url> ProvidePrivate::sanitizeUrls(const std::vector<zypp::Url> &urls)
+  zypp::MirroredOrigin ProvidePrivate::sanitizeUrls( const zypp::MirroredOrigin &origin )
   {
-    std::vector<zypp::Url> usableMirrs;
-    std::optional<ProvideQueue::Config> scheme;
-
-    for ( auto mirrIt = urls.begin() ; mirrIt != urls.end(); mirrIt++ ) {
-      const auto &s = schemeConfig( effectiveScheme( mirrIt->getScheme() ) );
-      if ( !s ) {
-        WAR << "URL: " << *mirrIt << " is not supported, ignoring!" << std::endl;
-        continue;
-      }
-      if ( !scheme ) {
-        scheme = *s;
-        usableMirrs.push_back ( *mirrIt );
-      } else {
-        if ( scheme->worker_type () == s->worker_type () ) {
-          usableMirrs.push_back( *mirrIt );
-        } else {
-          WAR << "URL: " << *mirrIt << " has different worker type than the primary URL: "<< usableMirrs.front() <<", ignoring!" << std::endl;
-        }
-      }
-    }
-
-    if ( !scheme || usableMirrs.empty() ) {
+    const auto &scheme = schemeConfig( effectiveScheme( origin.authority().scheme() ) );
+    if ( !scheme ) {
+      WAR << "Authority URL: " << origin.authority().url() << " is not supported!" << std::endl;
       return {};
     }
 
-    return usableMirrs;
+    zypp::MirroredOrigin sanitized( origin.authority() );
+    for ( const auto &mirror : origin.mirrors() ) {
+      const auto &s = schemeConfig( effectiveScheme( mirror.scheme() ) );
+      if ( !s ) {
+        WAR << "URL: " << mirror << " is not supported, ignoring!" << std::endl;
+        continue;
+      }
+      if ( scheme->worker_type () == s->worker_type () ) {
+        sanitized.addMirror(mirror);
+      } else {
+        WAR << "URL: " << mirror << " has different worker type than the authority URL: "<< origin.authority() <<", ignoring!" << std::endl;
+      }
+    }
+
+    return sanitized;
   }
 
   std::vector<AttachedMediaInfo_Ptr> &ProvidePrivate::attachedMediaInfos()
@@ -974,17 +969,17 @@ namespace zyppng {
   const zypp::Url &ProvideMediaHandle::baseUrl() const
   {
     static zypp::Url invalidHandle;
-    if ( !_mediaRef || !_mediaRef->_mirrors.size() )
-      return invalidHandle;
-    return _mediaRef->_mirrors.at(0);
-  }
-
-  const std::vector<zypp::Url> &ProvideMediaHandle::mirrors() const
-  {
-    static std::vector<zypp::Url> invalidHandle;
     if ( !_mediaRef )
       return invalidHandle;
-    return _mediaRef->_mirrors;
+    return _mediaRef->_originConfig.authority().url();
+  }
+
+  const zypp::MirroredOrigin &ProvideMediaHandle::origin() const
+  {
+    static zypp::MirroredOrigin invalidHandle;
+    if ( !_mediaRef )
+      return invalidHandle;
+    return _mediaRef->_originConfig;
   }
 
   const std::optional<zypp::Pathname> &ProvideMediaHandle::localPath() const
@@ -1012,12 +1007,12 @@ namespace zyppng {
     return ProvideRef( new Provide(workDir) );
   }
 
-  expected<Provide::LazyMediaHandle> Provide::prepareMedia(const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request)
+  expected<Provide::LazyMediaHandle> Provide::prepareMedia(const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request)
   {
     Z_D();
-    // sanitize the mirrors to contain only URLs that have same worker types
-    std::vector<zypp::Url> usableMirrs = d->sanitizeUrls( urls );
-    if ( usableMirrs.empty() ) {
+    // sanitize the mirrors to contain only URLs that have same worker types as the authority
+    zypp::MirroredOrigin usableMirrs = d->sanitizeUrls( origin );
+    if ( !usableMirrs.isValid() ) {
       return expected<Provide::LazyMediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
     }
     return expected<Provide::LazyMediaHandle>::success( shared_this<Provide>(), std::move(usableMirrs), request );
@@ -1025,7 +1020,7 @@ namespace zyppng {
 
   expected<Provide::LazyMediaHandle> Provide::prepareMedia(const zypp::Url &url, const ProvideMediaSpec &request)
   {
-    return prepareMedia( std::vector<zypp::Url>{url}, request );
+    return prepareMedia( zypp::MirroredOrigin{url}, request );
   }
 
   AsyncOpRef<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
@@ -1036,7 +1031,7 @@ namespace zyppng {
 
     MIL << "Attaching lazy medium with label: [" << lazyHandle.spec().label() << "]" << std::endl;
 
-    return attachMedia( lazyHandle.urls(), lazyHandle.spec () )
+    return attachMedia( lazyHandle.origin(), lazyHandle.spec () )
         | and_then([lazyHandle]( MediaHandle handle ) {
           lazyHandle._sharedData->_mediaHandle = handle;
           return expected<MediaHandle>::success( std::move(handle) );
@@ -1045,43 +1040,50 @@ namespace zyppng {
 
   AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
   {
-    return attachMedia (  std::vector<zypp::Url>{url}, request );
+    return attachMedia (  zypp::MirroredOrigin{url}, request );
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request )
+  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request )
   {
     Z_D();
 
     // sanitize the mirrors to contain only URLs that have same worker types
-    std::vector<zypp::Url> usableMirrs = d->sanitizeUrls( urls );
-    if ( usableMirrs.empty() ) {
+    zypp::MirroredOrigin sanitizedOrigin = d->sanitizeUrls( origin );
+    if ( !sanitizedOrigin.isValid() ) {
       return makeReadyResult( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
     }
 
     // first check if there is a already attached medium we can use as well
     auto &attachedMedia = d->attachedMediaInfos ();
     for ( auto &medium : attachedMedia ) {
-      if ( medium->isSameMedium ( usableMirrs, request ) ) {
+      if ( medium->isSameMedium ( sanitizedOrigin, request ) ) {
         return makeReadyResult( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *this, medium ) ));
       }
     }
 
-    auto op = AttachMediaItem::create( usableMirrs, request, *d_func() );
+    auto op = AttachMediaItem::create( sanitizedOrigin, request, *d_func() );
     d->queueItem (op);
     return op->promise();
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const std::vector<zypp::Url> &urls, const ProvideFileSpec &request )
+  AsyncOpRef< expected<ProvideRes> > Provide::provide(const zypp::MirroredOrigin &origin, const ProvideFileSpec &request )
   {
     Z_D();
-    auto op = ProvideFileItem::create( urls, request, *d );
+
+    // sanitize the mirrors to contain only URLs that have same worker types
+    zypp::MirroredOrigin sanitizedOrigin = d->sanitizeUrls( origin );
+    if ( !sanitizedOrigin.isValid() ) {
+      return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
+    }
+
+    auto op = ProvideFileItem::create( sanitizedOrigin, request, *d );
     d->queueItem (op);
     return op->promise();
   }
 
   AsyncOpRef< expected<ProvideRes> > Provide::provide( const zypp::Url &url, const ProvideFileSpec &request )
   {
-    return provide( std::vector<zypp::Url>{ url }, request );
+    return provide( zypp::MirroredOrigin{ url }, request );
   }
 
   AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
@@ -1092,7 +1094,7 @@ namespace zyppng {
       return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Invalid attach handle")) ) );
     }
 
-    std::vector<zypp::Url> urls;
+    zypp::MirroredOrigin fileOrigin;
 
     // real mount devices use a ID to reference a attached medium, for those we do not need to send the baseUrl as well since its already
     // part of the mount point, so if we mount host:/path/to/repo to the ID 1234 and look for the file /path/to/repo/file1 the request URL will look like:  nfs-media://1234/file1
@@ -1103,19 +1105,15 @@ namespace zyppng {
       url.setAuthority( (*i)->_name );
       url.setPathName("/");
       url.appendPathName( fileName );
-      urls.push_back(url);
+      fileOrigin.setAuthority(url);
     } else {
-
       // for other items we need to make the baseUrl part of the request URL
-      const auto &addUrl = [&]( const zypp::Url u ){
-        zypp::Url url = u;
-        url.appendPathName( fileName );
-        urls.push_back( url );
-      };
-      std::for_each ( (*i)->_mirrors.begin(), (*i)->_mirrors.end(), addUrl );
+      fileOrigin = (*i)->_originConfig;
+      for( auto &ep : fileOrigin )
+        ep.url().appendPathName( fileName );
     }
 
-    auto op = ProvideFileItem::create( urls, request, *d );
+    auto op = ProvideFileItem::create( fileOrigin, request, *d );
     op->setMediaRef( MediaHandle( *this, (*i) ));
     d->queueItem (op);
 

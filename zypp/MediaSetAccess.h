@@ -24,7 +24,7 @@
 #include <zypp/CheckSum.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ManagedFile.h>
-#include <zypp/media/MediaUrl.h>
+#include <zypp-core/MirroredOrigin.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -101,9 +101,9 @@ namespace zypp
        * \param prefered_attach_point Prefered attach (mount) point. Use, if
        *        you want to mount the media to a specific directory.
        */
-      MediaSetAccess( std::vector<media::MediaUrl> urls, Pathname  prefered_attach_point = "" );
+      MediaSetAccess( MirroredOrigin origin, Pathname  prefered_attach_point = "" );
       /** \overload Also taking a \ref label. */
-      MediaSetAccess( std::string label_r, std::vector<media::MediaUrl> urls, Pathname  prefered_attach_point = "" );
+      MediaSetAccess( std::string label_r, MirroredOrigin origin, Pathname  prefered_attach_point = "" );
 
 
       MediaSetAccess(const MediaSetAccess &) = delete;

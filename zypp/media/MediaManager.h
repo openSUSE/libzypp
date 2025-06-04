@@ -17,7 +17,7 @@
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
-#include <zypp/media/MediaUrl.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/media/MediaSource.h>
 #include <zypp-media/MediaException>
@@ -504,7 +504,7 @@ namespace zypp::media
      * Not all MediaHandler have to support mirrors, in those cases only the
      * primary Url is used.
      *
-     * \param  urls The \ref MediaAccessUrl and its mirrors.
+     * \param  origin_r the mediums OriginEndpoints
      * \param  preferred_attach_point The preferred, already
      *         existing directory, where the media should be
      *         attached.
@@ -513,7 +513,7 @@ namespace zypp::media
      * \throws MediaException
      */
     MediaAccessId
-    open(const std::vector<MediaUrl> &urls, const Pathname & preferred_attach_point = "");
+    open(const MirroredOrigin &origin_r, const Pathname & preferred_attach_point = "");
 
 
     /**

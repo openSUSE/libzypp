@@ -6,6 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
+#include <iostream>
 #include "KeyManager.h"
 #include "KeyRingException.h"
 
@@ -92,6 +93,48 @@ namespace zypp
       // In V.1.11: str << "  "  << obj.skipped_v3_keys	<< " skipped v3 keys." << endl;
       return str << "}";
     }
+
+    std::ostream & operator<<( std::ostream & str, const gpgme_sigsum_t & obj )
+    {
+      str << ((int)obj&(int)0xffff) << ":";
+#define OSC(V) if ( V & (unsigned)obj ) str << " " << #V;
+      OSC(GPGME_SIGSUM_VALID       );
+      OSC(GPGME_SIGSUM_GREEN       );
+      OSC(GPGME_SIGSUM_RED         );
+      OSC(GPGME_SIGSUM_KEY_REVOKED );
+      OSC(GPGME_SIGSUM_KEY_EXPIRED );
+      OSC(GPGME_SIGSUM_SIG_EXPIRED );
+      OSC(GPGME_SIGSUM_KEY_MISSING );
+      OSC(GPGME_SIGSUM_CRL_MISSING );
+      OSC(GPGME_SIGSUM_CRL_TOO_OLD );
+      OSC(GPGME_SIGSUM_BAD_POLICY  );
+      OSC(GPGME_SIGSUM_SYS_ERROR   );
+      OSC(GPGME_SIGSUM_TOFU_CONFLICT);
+#undef OSC
+      return str;
+    }
+
+    std::ostream & operator<<( std::ostream & str, const gpgme_signature_t & obj )
+    {
+      str << "gpgme_signature_t " << (void *)obj << " {" << endl;
+      str << "  next:            " << (void *)obj->next << endl;
+      str << "  summary:         " << obj->summary << endl;
+      str << "  fpr:             " << obj->fpr << endl;
+      str << "  status:          " << obj->status << " " << GpgmeErr(obj->status) << endl;
+      str << "  timestamp:       " << obj->timestamp << endl;
+      str << "  exp_timestamp:   " << obj->exp_timestamp << endl;
+      str << "  wrong_key_usage: " << obj->wrong_key_usage << endl;
+      str << "  pka_trust:       " << obj->pka_trust << endl;
+      str << "  chain_model:     " << obj->chain_model << endl;
+      str << "  is_de_vs:        " << obj->is_de_vs << endl;
+      str << "  validity:        " << obj->validity << endl;
+      str << "  validity_reason: " << obj->validity_reason << " " << GpgmeErr(obj->validity_reason) << endl;
+      str << "  pubkey_algo:     " << obj->pubkey_algo << endl;
+      str << "  hash_algo:       " << obj->hash_algo << endl;
+      str << "  pka_address:     " << (obj->pka_address ? obj->pka_address : "") << endl;
+      return str;
+    }
+
   } // namespace
   ///////////////////////////////////////////////////////////////////
 
@@ -225,7 +268,7 @@ std::list<std::string> KeyManagerCtx::Impl::readSignaturesFprsOptVerify(GpgmeDat
   bool foundGoodSignature = false;
   std::list<std::string> signatures;
   for ( gpgme_signature_t sig = res->signatures; sig; sig = sig->next ) {
-
+    //DBG << "- " << sig << std::endl;
     if ( sig->fpr )
     {
       // bsc#1100427: With libgpgme11-1.11.0 and if a recent gpg version was used
@@ -311,7 +354,13 @@ KeyManagerCtx KeyManagerCtx::createForOpenPGP( const Pathname & keyring_r )
     if ( err != GPG_ERR_NO_ERROR )
       ZYPP_THROW( GpgmeException( "gpgme_ctx_set_engine_info", err ) );
   }
-
+#if 0
+  DBG << "createForOpenPGP {" << endl;
+  for ( const auto & key : ret.listKeys() ) {
+    DBG << "  " << key << endl;
+  }
+  DBG << "}" << endl;
+#endif
   return ret;
 }
 

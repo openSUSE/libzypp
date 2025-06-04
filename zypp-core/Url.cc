@@ -826,6 +826,22 @@ namespace zypp
     }
   }
 
+  void Url::pathNameSetTrailingSlash( bool apply_r )
+  {
+    std::string upath { getPathName( url::E_DECODED ) };
+    if ( upath.empty() || upath == "/" || upath == "//" )
+      return;
+    if ( str::endsWith( upath, "/" ) == apply_r )
+      return;
+
+    if ( apply_r ) {
+      setPathName( upath+"/", url::E_DECODED );
+    } else {
+      do { upath.pop_back(); } while ( str::endsWith( upath, "/" ) );
+      setPathName( upath, url::E_DECODED );
+    }
+  }
+
   // -----------------------------------------------------------------
   void
   Url::setPathParams(const std::string &params)

@@ -389,4 +389,25 @@ BOOST_AUTO_TEST_CASE(bsc1238315)
   BOOST_CHECK_EQUAL( appendPathName( u, "../ba a" ),                   "ftp://host/%2Fba%20a" );
 }
 
+BOOST_AUTO_TEST_CASE(pathNameSetTrailingSlash)
+{
+  auto apply = []( const std::string & url_r, bool apply_r ) -> std::string {
+    Url u { url_r };
+    u.pathNameSetTrailingSlash( apply_r );
+    return u.getPathName();
+  };
+  BOOST_CHECK_EQUAL( apply( "http://HOST", true ),  "" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST", false ), "" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST/", true ),  "/" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST/", false ), "/" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//", true ),  "//" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//", false ), "//" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo", true ),  "//foo/" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo", false ), "//foo" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo/", true ),  "//foo/" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo/", false ), "//foo" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo//", true ),  "//foo//" );
+  BOOST_CHECK_EQUAL( apply( "http://HOST//foo//", false ), "//foo" );
+}
+
 // vim: set ts=2 sts=2 sw=2 ai et:

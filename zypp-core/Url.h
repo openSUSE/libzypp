@@ -714,6 +714,11 @@ namespace zypp
      */
     void appendPathName( const Pathname & path_r, EEncoding eflag_r = zypp::url::E_DECODED );
 
+    /** \brief Apply or remove a trailing '/' from \ref pathName.
+     * If the current \ref pathName is empty or \c / it remains unchanged.
+     */
+    void pathNameSetTrailingSlash( bool apply_r = true );
+
     /**
      * \brief Set the path parameters.
      * \param params The new encoded path parameter string.

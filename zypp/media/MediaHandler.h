@@ -22,12 +22,11 @@
 #include <zypp/PathInfo.h>
 #include <zypp/base/PtrTypes.h>
 
-#include <zypp/media/MediaUrl.h>
-
 #include <zypp/media/MediaSource.h>
 #include <zypp-media/MediaException>
 #include <zypp-core/Globals.h>
 #include <zypp-core/OnMediaLocation>
+#include <zypp-core/MirroredOrigin.h>
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::media"
@@ -108,14 +107,9 @@ class MediaHandler {
     protected:
 
         /**
-         * All mirrors including the primary
-         **/
-        const std::vector<MediaUrl> _urls;
-
-        /**
-         * Primary Url
+         * Contains the authority URL and mirrors.
          */
-        const MediaUrl _url;
+        const MirroredOrigin _origin;
 
         /**
          * Access Id of media handler we depend on.
@@ -471,8 +465,7 @@ class MediaHandler {
          * On any error, the attach_point is set to an empty Pathname,
          * which should lead to E_bad_attachpoint.
          **/
-        MediaHandler ( MediaUrl primaryUrl_r,
-                       std::vector<MediaUrl>  urls_r,
+        MediaHandler ( MirroredOrigin origin_r,
                        const Pathname & attach_point_r,
                        Pathname  urlpath_below_attachpoint_r,
                        const bool       does_download_r );
@@ -501,12 +494,17 @@ class MediaHandler {
         /**
          * Protocol hint for MediaAccess.
          **/
-        std::string protocol() const { return _url.url().getScheme(); }
+        std::string protocol() const { return _origin.scheme(); }
 
         /**
          * Primary Url used.
          **/
-        Url url() const { return _url.url(); }
+        Url url() const { return _origin.authority().url(); }
+
+        /**
+         * Primary OriginEndpoint used.
+         **/
+        OriginEndpoint originEndpoint() const { return _origin.authority(); }
 
         /**
          * Use concrete handler to attach the media.

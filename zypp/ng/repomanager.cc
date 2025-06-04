@@ -226,7 +226,7 @@ namespace zyppng
 
   expected<void> assert_urls(const RepoInfo &info)
   {
-    if ( info.effectiveBaseUrlsEmpty() )
+    if ( info.repoOriginsEmpty() )
       return expected<void>::error( ZYPP_EXCPT_PTR ( zypp::repo::RepoNoUrlException( info ) ) );
     return expected<void>::success();
   }
@@ -595,8 +595,8 @@ namespace zyppng
       tosave.setPackagesPath( packagescache_path_for_repoinfo( _options, tosave ).unwrap() );
       reposManip().insert(tosave);
 
-      // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.effectiveBaseUrls() );
+      // check for credentials in base Urls
+      zypp::UrlCredentialExtractor( _options.rootDir ).collect( tosave.baseUrls() );
 
       zypp::HistoryLog(_options.rootDir).addRepository(tosave);
 
@@ -772,7 +772,7 @@ namespace zyppng
       ProgressObserver::increase( myProgress );
 
       // check for credentials in Urls
-      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.effectiveBaseUrls() );
+      zypp::UrlCredentialExtractor( _options.rootDir ).collect( newinfo.baseUrls() );
       zypp::HistoryLog(_options.rootDir).modifyRepository(toedit, newinfo);
       MIL << "repo " << alias << " modified" << std::endl;
 
@@ -809,9 +809,9 @@ namespace zyppng
 
     for_( it, repoBegin(), repoEnd() )
     {
-      for( const auto &repourl : it->effectiveBaseUrls() )
+      for( const auto &origin : it->repoOrigins() )
       {
-        if ( repourl.asString(urlview) == url.asString(urlview) )
+        if ( std::any_of( origin.begin(), origin.end(), [&url, &urlview]( const zypp::OriginEndpoint &ep ){ return (ep.url().asString(urlview) == url.asString(urlview)); }) )
           return make_expected_success(*it);
       }
     }
@@ -825,15 +825,16 @@ namespace zyppng
   }
 
   template<typename ZyppContextRefType>
-  expected<typename RepoManager<ZyppContextRefType>::RefreshCheckStatus> RepoManager<ZyppContextRefType>::checkIfToRefreshMetadata(const RepoInfo &info, const std::vector<zypp::Url> &urls, RawMetadataRefreshPolicy policy)
+  expected<typename RepoManager<ZyppContextRefType>::RefreshCheckStatus> RepoManager<ZyppContextRefType>::checkIfToRefreshMetadata(const RepoInfo &info, const zypp::MirroredOrigin &origin, RawMetadataRefreshPolicy policy)
   {
     using namespace zyppng::operators;
     return joinPipeline( _zyppContext,
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, RepoInfo::url_set( urls.begin (), urls.end() ) )
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.repoOrigins() )
       | [this, info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>() ); }
-      | and_then( [this, urls, policy]( zyppng::repo::RefreshContextRef<ZyppContextRefType> &&refCtx ) {
+      | and_then( [this, origin, policy]( zyppng::repo::RefreshContextRef<ZyppContextRefType> &&refCtx ) {
         refCtx->setPolicy ( static_cast<zyppng::repo::RawMetadataRefreshPolicy>( policy ) );
-        return _zyppContext->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() )
+
+        return _zyppContext->provider()->prepareMedia( origin, zyppng::ProvideMediaSpec() )
             | and_then( [ r = std::move(refCtx) ]( auto mediaHandle ) mutable { return zyppng::RepoManagerWorkflow::checkIfToRefreshMetadata ( std::move(r), std::move(mediaHandle), nullptr ); } );
       })
         );
@@ -859,9 +860,14 @@ namespace zyppng
       }
     };
 
+    // the list of URLs we want to have geo ip redirects for
+    auto urls = info.baseUrls ();
+    if ( info.mirrorListUrl ().isValid () )
+      urls.push_back ( info.mirrorListUrl () );
+
     return  joinPipeline( _zyppContext,
       // make sure geoIP data is up 2 date, but ignore errors
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.effectiveBaseUrls() )
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, urls )
       | [this, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( _zyppContext, info, shared_this<RepoManager<ZyppContextRefType>>()); }
       | and_then( [policy, myProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {
         refCtx->setPolicy( static_cast<repo::RawMetadataRefreshPolicy>( policy ) );
@@ -911,7 +917,7 @@ namespace zyppng
 
         return
           // make sure geoIP data is up 2 date, but ignore errors
-          RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.effectiveBaseUrls() )
+          RepoManagerWorkflow::refreshGeoIPData( _zyppContext, info.repoOrigins() )
           | [sharedThis, info = info](auto) { return zyppng::repo::RefreshContext<ZyppContextRefType>::create( sharedThis->_zyppContext, info, sharedThis); }
           | inspect( incProgress( subProgress ) )
           | and_then( [policy, subProgress, cb = updateProbedType]( repo::RefreshContextRef<ZyppContextRefType> refCtx ) {
@@ -956,15 +962,18 @@ namespace zyppng
    * a cache path must not be rewritten (bnc#946129)
    */
   template<typename ZyppContextRefType>
-  expected<zypp::repo::RepoType> RepoManager<ZyppContextRefType>::probe(const std::vector<zypp::Url> &urls, const zypp::Pathname &path) const
+  expected<zypp::repo::RepoType> RepoManager<ZyppContextRefType>::probe(const zypp::MirroredOrigin &origin, const zypp::Pathname &path) const
   {
     using namespace zyppng::operators;
 
+    RepoInfo::url_set allUrls;
+    std::transform( origin.begin (), origin.end(), std::back_inserter(allUrls), []( const zypp::OriginEndpoint &ep ){ return ep.url(); } );
+
     return joinPipeline( _zyppContext,
-      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, RepoInfo::url_set( urls.begin (), urls.end() ) )
-      | [this, urls=urls](auto) { return _zyppContext->provider()->prepareMedia( urls, zyppng::ProvideMediaSpec() ); }
+      RepoManagerWorkflow::refreshGeoIPData( _zyppContext, allUrls )
+      | [this, origin=origin](auto) { return _zyppContext->provider()->prepareMedia( origin, zyppng::ProvideMediaSpec() ); }
       | and_then( [this, path = path]( auto mediaHandle ) {
-        return RepoManagerWorkflow::probeRepoType( _zyppContext, std::forward<decltype(mediaHandle)>(mediaHandle), path );
+        return RepoManagerWorkflow::probeRepoType( _zyppContext, std::move(mediaHandle), path );
     }));
   }
 

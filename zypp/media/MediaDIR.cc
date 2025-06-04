@@ -39,16 +39,16 @@ namespace zypp {
     //                as files are not copied.
     //                Thus attach_point_hint_r is ignored.
     //
-    MediaDIR::MediaDIR(const MediaUrl &url,
+    MediaDIR::MediaDIR(const MirroredOrigin &origin,
                        const Pathname & /*attach_point_hint_r*/ )
-        : MediaHandler( url, {}, url.url().getPathName(),
+        : MediaHandler( origin, origin.authority().url().getPathName(),
                     "/",    // urlpath below attachpoint
                     false ) // does_download
     {
-        MIL << "MediaDIR::MediaDIR(" << _url.url() << ")" << endl;
-        if( !_url.url().getHost().empty())
+        MIL << "MediaDIR::MediaDIR(" << url() << ")" << endl;
+        if( !origin.authority().url().getHost().empty())
         {
-          ZYPP_THROW(MediaBadUrlException(_url.url(),
+          ZYPP_THROW(MediaBadUrlException(origin.authority().url(),
             "Hostname not allowed in the Url"
           ));
         }

@@ -50,30 +50,30 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaDISK::MediaDISK(const MediaUrl &url_r,
+    MediaDISK::MediaDISK(const MirroredOrigin &origin_r,
                          const Pathname & attach_point_hint_r )
-      : MediaHandler( url_r, {}, attach_point_hint_r,
-                    url_r.url().getPathName(), // urlpath below attachpoint
+      : MediaHandler( origin_r, attach_point_hint_r,
+                    _origin.authority().url().getPathName(), // urlpath below attachpoint
                     false ) // does_download
     {
-      MIL << "MediaDISK::MediaDISK(" << _url.url() << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaDISK::MediaDISK(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;
 
-      _device = Pathname(_url.url().getQueryParam("device")).asString();
+      _device = Pathname(origin_r.authority().url().getQueryParam("device")).asString();
       if( _device.empty())
       {
         ERR << "Media url does not contain a device specification" << std::endl;
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(origin_r.authority().url()));
       }
 #if DELAYED_VERIFY
       DBG << "Verify of " << _device << " delayed" << std::endl;
 #else
       if( !verifyIfDiskVolume( _device))
       {
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_origin.authority().url()));
       }
 #endif
 
-      _filesystem = _url.url().getQueryParam("filesystem");
+      _filesystem = origin_r.authority().url().getQueryParam("filesystem");
       if(_filesystem.empty())
         _filesystem="auto";
 
@@ -200,7 +200,7 @@ namespace zypp {
       DBG << "Verifying " << _device << " ..." << std::endl;
       if( !verifyIfDiskVolume( _device))
       {
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_url.url()));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_origin.authority().url()));
       }
 #endif
 
@@ -271,7 +271,7 @@ namespace zypp {
       std::string mountpoint( attachPoint().asString() );
 
       Mount mount;
-      std::string options = _url.url().getQueryParam("mountoptions");
+      std::string options = _origin.authority().url().getQueryParam("mountoptions");
       if(options.empty())
       {
         options = "ro";

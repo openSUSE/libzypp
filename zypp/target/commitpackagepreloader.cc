@@ -489,28 +489,30 @@ namespace zypp {
 
         // filter base URLs that do not download
         std::vector<RepoUrl> repoUrls;
-        const auto bu = pi.repoInfo().effectiveBaseUrls();
-        std::for_each( bu.begin(), bu.end(), [&]( const zypp::Url &u ) {
-          media::UrlResolverPlugin::HeaderList custom_headers;
-          Url url = media::UrlResolverPlugin::resolveUrl(u, custom_headers);
+        const auto origins = pi.repoInfo().repoOrigins();
+        for ( const auto &origin: origins ) {
+          std::for_each( origin.begin(), origin.end(), [&]( const zypp::OriginEndpoint &u ) {
+            media::UrlResolverPlugin::HeaderList custom_headers;
+            Url url = media::UrlResolverPlugin::resolveUrl(u.url(), custom_headers);
 
-          if ( media::MediaHandlerFactory::handlerType(url) != media::MediaHandlerFactory::MediaCURLType )
-            return;
+            if ( media::MediaHandlerFactory::handlerType(url) != media::MediaHandlerFactory::MediaCURLType )
+              return;
 
-          // use geo IP if available
-          {
-            const auto rewriteUrl = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
-            if ( rewriteUrl.isValid () )
-              url = rewriteUrl;
-          }
+            // use geo IP if available
+            {
+              const auto rewriteUrl = media::MediaNetworkCommonHandler::findGeoIPRedirect( url );
+              if ( rewriteUrl.isValid () )
+                url = rewriteUrl;
+            }
 
-          MIL << "Adding Url: " << url << " to the mirror set" << std::endl;
+            MIL << "Adding Url: " << url << " to the mirror set" << std::endl;
 
-          repoUrls.push_back( RepoUrl {
-                                .baseUrl = std::move(url),
-                                .headers = std::move(custom_headers)
-                              } );
-        });
+            repoUrls.push_back( RepoUrl {
+                                  .baseUrl = std::move(url),
+                                  .headers = std::move(custom_headers)
+                                } );
+          });
+        }
 
         // skip this solvable if it has no downloading base URLs
         if( repoUrls.empty() ) {

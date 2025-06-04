@@ -29,7 +29,7 @@ namespace zypp
     class MediaPlugin : public MediaHandler
     {
       public:
-        MediaPlugin( const MediaUrl &url_r, const Pathname & attach_point_hint_r );
+      MediaPlugin(const MirroredOrigin &origin_r, const Pathname & attach_point_hint_r );
 
         ~MediaPlugin() override { try { release(); } catch(...) {} }
 

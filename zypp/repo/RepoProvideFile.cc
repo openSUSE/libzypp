@@ -156,13 +156,13 @@ namespace zypp
        *
        * \todo This mixture of media and repos specific data is fragile.
       */
-      shared_ptr<MediaSetAccess> mediaAccessForUrl( const std::vector<Url> &urls, RepoInfo repo )
+      shared_ptr<MediaSetAccess> mediaAccessForUrl( const MirroredOrigin &origin, RepoInfo repo )
       {
-        if ( !urls.size () )
+        if ( !origin.isValid() )
           return nullptr;
 
         std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
-        it = _medias.find( urls.front() ); // primary Url is the key
+        it = _medias.find( origin.authority().url() ); // primary Url is the key
         shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
@@ -170,9 +170,8 @@ namespace zypp
         }
         else
         {
-          auto mediaUrls = zyppng::transform( urls, []( const zypp::Url &url ) { return media::MediaUrl(url); }  );
-          media.reset( new MediaSetAccess( std::move(mediaUrls) ) );
-          _medias[urls.front()] = media;
+          media.reset( new MediaSetAccess( origin ) );
+          _medias[origin.authority().url()] = media;
         }
         setVerifierForRepo( repo, media );
         return media;
@@ -266,8 +265,9 @@ namespace zypp
                                locWithPath.filename().c_str(),
                                repo_r.alias().c_str() ) );
 
-      if ( repo_r.effectiveBaseUrlsEmpty() )
-      {
+      const auto &repoOrigins = repo_r.repoOrigins();
+
+      if ( repoOrigins.empty() ) {
         repo_excpt.remember(RepoException(_("No url in repository.")));
         ZYPP_THROW(repo_excpt);
       }
@@ -299,18 +299,14 @@ namespace zypp
         MIL << "Added cache path " << destinationDir << endl;
       }
 
-      // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-      media::ScopedDisableMediaChangeReport guard( repo_r.effectiveBaseUrls().size() > 1 );
-
-      const auto &groupedBaseUrls = repo_r.groupedBaseUrls ();
-      for ( auto it = groupedBaseUrls.begin(); it != groupedBaseUrls.end();
+      // Suppress (interactive) media::MediaChangeReport if we in have multiple origins (>1)
+      media::ScopedDisableMediaChangeReport guard( repoOrigins.size() > 1 );
+      for ( auto it = repoOrigins.begin(); it != repoOrigins.end();
             /* incremented in the loop */ )
       {
-        // primary Url and maybe mirrors if the url is downloading
-        std::vector<Url> urls( *it );
         ++it;
 
-        if ( urls.empty () ) {
+        if ( !it->isValid() ) {
           MIL << "Skipping empty Url group" << std::endl;
           continue;
         }
@@ -318,12 +314,12 @@ namespace zypp
         try
         {
           MIL << "Providing file of repo '" << repo_r.alias() << "' from: ";
-          std::for_each( urls.begin (), urls.end(), [&]( const zypp::Url &u ){
+          std::for_each( it->begin (), it->end(), [&]( const OriginEndpoint &u ){
             MIL << u << ", ";
           });
           MIL << std::endl;
 
-          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( urls, repo_r );
+          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( *it, repo_r );
           if ( !access )
             continue;
 

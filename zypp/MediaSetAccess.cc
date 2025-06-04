@@ -35,19 +35,19 @@ IMPL_PTR_TYPE(MediaSetAccess);
 class MediaSetAccess::Impl {
 public:
 
-  Impl( std::vector<media::MediaUrl> &&urls, Pathname &&prefered_attach_point )
-    : _urls(std::move(urls))
+  Impl( MirroredOrigin &&origin, Pathname &&prefered_attach_point )
+    : _origin(std::move(origin))
     , _prefAttachPoint(std::move(prefered_attach_point))
   { }
 
-  Impl( std::string &&label_r, std::vector<media::MediaUrl> &&urls, Pathname &&prefered_attach_point)
-    : _urls(std::move(urls))
+  Impl( std::string &&label_r, MirroredOrigin &&origin, Pathname &&prefered_attach_point)
+    : _origin(std::move(origin))
     , _prefAttachPoint(std::move(prefered_attach_point))
     , _label(std::move( label_r ))
   { }
 
-  /** Media or media set URL */
-  std::vector<media::MediaUrl> _urls;
+  /** Media Origin configuration */
+  MirroredOrigin _origin;
 
   /**
    * Prefered mount point.
@@ -71,19 +71,19 @@ public:
 ///////////////////////////////////////////////////////////////////
 
   MediaSetAccess::MediaSetAccess(Url url, Pathname  prefered_attach_point)
-    : MediaSetAccess( { media::MediaUrl( std::move(url)) }, std::move(prefered_attach_point) )
+    : MediaSetAccess( { MirroredOrigin( std::move(url)) }, std::move(prefered_attach_point) )
   {}
 
   MediaSetAccess::MediaSetAccess(std::string label_r, Url url, Pathname prefered_attach_point)
-    : MediaSetAccess( std::move(label_r), { media::MediaUrl( std::move(url)) }, std::move(prefered_attach_point) )
+    : MediaSetAccess( std::move(label_r), { MirroredOrigin( std::move(url)) }, std::move(prefered_attach_point) )
   {}
 
-  MediaSetAccess::MediaSetAccess(std::vector<media::MediaUrl> urls, Pathname prefered_attach_point)
-    : _pimpl( std::make_unique<Impl>( std::move(urls), std::move(prefered_attach_point) ) )
+  MediaSetAccess::MediaSetAccess(MirroredOrigin origin, Pathname prefered_attach_point)
+    : _pimpl( std::make_unique<Impl>( std::move(origin), std::move(prefered_attach_point) ) )
   { }
 
-  MediaSetAccess::MediaSetAccess(std::string label_r, std::vector<media::MediaUrl> urls, Pathname prefered_attach_point)
-    : _pimpl( std::make_unique<Impl>( std::move(label_r), std::move(urls), std::move(prefered_attach_point) ) )
+  MediaSetAccess::MediaSetAccess(std::string label_r, MirroredOrigin origin, Pathname prefered_attach_point)
+    : _pimpl( std::make_unique<Impl>( std::move(label_r), std::move(origin), std::move(prefered_attach_point) ) )
   { }
 
   MediaSetAccess::~MediaSetAccess()
@@ -242,7 +242,7 @@ public:
     Pathname path(url.getPathName());
 
     url.setPathName ("/");
-    MediaSetAccess access( std::vector<zypp::media::MediaUrl>{url} );
+    MediaSetAccess access( zypp::MirroredOrigin{url} );
 
     ManagedFile tmpFile = filesystem::TmpFile::asManagedFile();
 
@@ -366,7 +366,7 @@ public:
             // release all media before requesting another (#336881)
             media_mgr.releaseAll();
 
-            zypp::Url u = _pimpl->_urls.at(0).url();
+            zypp::Url u = _pimpl->_origin.authority().url();
             user = report->requestMedia (
               u,
               media_nr,
@@ -379,10 +379,10 @@ public:
 
             // if the user changes the primary URL, we can no longer use the mirrors,
             // so we drop them and the settings for the primary too!
-            if ( u != _pimpl->_urls.at(0).url() ) {
+            if ( u != _pimpl->_origin.authority().url() ) {
               MIL << "User changed the URL, dropping all mirrors" << std::endl;
-              _pimpl->_urls.clear ();
-              _pimpl->_urls.push_back( u );
+              _pimpl->_origin.clearMirrors();
+              _pimpl->_origin.setAuthority(u);
             }
           }
 
@@ -464,14 +464,14 @@ public:
       return _pimpl->_medias[medianr];
     }
 
-    std::vector<media::MediaUrl> urls = _pimpl->_urls;
+    MirroredOrigin rewrittenOrigin = _pimpl->_origin;
     if ( medianr > 1 ) {
-      for ( auto &url : urls ) {
+      for ( auto &url : rewrittenOrigin ) {
         url.setUrl ( rewriteUrl (url.url(), medianr) );
       }
     }
     media::MediaManager media_mgr;
-    media::MediaAccessId id = media_mgr.open( urls, _pimpl->_prefAttachPoint );
+    media::MediaAccessId id = media_mgr.open( rewrittenOrigin, _pimpl->_prefAttachPoint );
     _pimpl->_medias[medianr] = id;
 
     try
@@ -550,7 +550,7 @@ public:
 
   std::ostream & MediaSetAccess::dumpOn( std::ostream & str ) const
   {
-    str << "MediaSetAccess (URL='" << _pimpl->_urls.at(0) << "', attach_point_hint='" << _pimpl->_prefAttachPoint << "')";
+    str << "MediaSetAccess (URL='" << _pimpl->_origin.authority().url() << "', attach_point_hint='" << _pimpl->_prefAttachPoint << "')";
     return str;
   }
 

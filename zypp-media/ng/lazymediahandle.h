@@ -9,6 +9,7 @@
 #ifndef ZYPP_MEDIA_NG_LAZYMEDIAHANDLE_H
 #define ZYPP_MEDIA_NG_LAZYMEDIAHANDLE_H
 
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-media/ng/ProvideSpec>
 #include <optional>
 
@@ -23,11 +24,11 @@ namespace zyppng
 
     friend ProvideType;
 
-    LazyMediaHandle( Ref<ProvideType> provider, std::vector<zypp::Url> urls, ProvideMediaSpec spec )
+    LazyMediaHandle( Ref<ProvideType> provider, zypp::MirroredOrigin origin, ProvideMediaSpec spec )
       : _sharedData(
           std::make_shared<Data>(
             std::move(provider)
-            ,std::move(urls)
+            ,std::move(origin)
             ,std::move(spec)
             ))
     { }
@@ -47,17 +48,14 @@ namespace zyppng
      */
     const zypp::Url &baseUrl() const {
       if ( !_sharedData->_mediaHandle ) {
-        static zypp::Url invalidHandle;
-        if ( _sharedData->_urls.empty() )
-          return invalidHandle;
-        return _sharedData->_urls.front();
+        return _sharedData->_origin.authority().url();
       } else {
         return _sharedData->_mediaHandle->baseUrl();
       }
     }
 
-    const std::vector<zypp::Url> &urls() const {
-      return _sharedData->_urls;
+    const zypp::MirroredOrigin &origin() const {
+      return _sharedData->_origin;
     }
 
     std::optional<MediaHandle> handle () const {
@@ -83,9 +81,9 @@ namespace zyppng
   private:
 
     struct Data {
-      Data(Ref<ProvideType> &&provider, std::vector<zypp::Url> &&urls,
+      Data(Ref<ProvideType> &&provider, zypp::MirroredOrigin &&origin,
            ProvideMediaSpec &&spec)
-        : _provider(std::move(provider)), _urls(std::move(urls)),
+        : _provider(std::move(provider)), _origin(std::move(origin)),
           _spec(std::move(spec)) {}
 
       Data(const Data &) = delete;
@@ -94,7 +92,7 @@ namespace zyppng
       Data &operator=(Data &&) = delete;
 
       WeakRef<ProvideType>       _provider;
-      std::vector<zypp::Url>     _urls;
+      zypp::MirroredOrigin       _origin;
       ProvideMediaSpec           _spec;
       std::optional<MediaHandle> _mediaHandle;
     };

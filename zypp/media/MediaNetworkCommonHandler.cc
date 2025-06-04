@@ -33,16 +33,17 @@ using std::endl;
 
 namespace zypp::media
 {
-  MediaNetworkCommonHandler::MediaNetworkCommonHandler(const MediaUrl &url_r, const std::vector<MediaUrl> &mirrors_r, const Pathname &attach_point_r, const Pathname &urlpath_below_attachpoint_r, const bool does_download_r)
-    : MediaHandler( url_r, mirrors_r, attach_point_r, urlpath_below_attachpoint_r, does_download_r )
-    , _redirTargets( zyppng::transform ( _urls, []( const MediaUrl &url_r ) { return findGeoIPRedirect(url_r.url()); } ) )
+  MediaNetworkCommonHandler::MediaNetworkCommonHandler( const MirroredOrigin &origin_r, const Pathname &attach_point_r, const Pathname &urlpath_below_attachpoint_r, const bool does_download_r)
+    : MediaHandler( origin_r, attach_point_r, urlpath_below_attachpoint_r, does_download_r )
   {
+    _redirTargets.clear ();
+    std::transform ( _origin.begin(), _origin.end(), std::back_inserter(_redirTargets), []( const OriginEndpoint &url_r ) { return findGeoIPRedirect(url_r.url()); } );
   }
 
   void MediaNetworkCommonHandler::attachTo (bool next)
   {
     if ( next )
-      ZYPP_THROW(MediaNotSupportedException(_url.url()));
+      ZYPP_THROW(MediaNotSupportedException(url()));
 
     if( !isUseableAttachPoint( attachPoint() ) ) {
       setAttachPoint( createAttachPoint(), true );
@@ -54,7 +55,7 @@ namespace zypp::media
     setupTransferSettings();
 
     // FIXME: need a derived class to propelly compare url's
-    MediaSourceRef media( new MediaSource(_url.url().getScheme(), _url.url().asString()));
+    MediaSourceRef media( new MediaSource( url().getScheme(), url().asString()) );
     setMediaSource(media);
   }
 
@@ -207,7 +208,7 @@ namespace zypp::media
       return {};
 
     const bool canRedir = _redirTargets[mirrorIdx].isValid() && !invalidRewrites.matches(filename_r.asString());
-    const auto &baseUrl = ( canRedir ) ? _redirTargets[mirrorIdx] : _urls[mirrorIdx].url();
+    const auto &baseUrl = ( canRedir ) ? _redirTargets[mirrorIdx] : _origin[mirrorIdx].url();
 
     if ( canRedir )
       MIL << "Redirecting " << filename_r << " request to geoip location." << std::endl;
@@ -237,11 +238,13 @@ namespace zypp::media
     try
     {
       CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
-      _mirrorSettings = zyppng::transform( _urls, [&]( const MediaUrl &u ) {
+
+      _mirrorSettings.clear();
+      std::transform( _origin.begin (), _origin.end(), std::back_inserter(_mirrorSettings), [&]( const OriginEndpoint &u ) {
         TransferSettings set;
 
-        if ( !u.url().isValid() )
-          ZYPP_THROW(MediaBadUrlException(_url.url()));
+        if ( !u.isValid() )
+          ZYPP_THROW(MediaBadUrlException(u.url()));
 
         checkProtocol(u.url());
 

@@ -35,8 +35,8 @@ namespace zyppng {
     void ref_to( unsigned refCnt ) const override;
 
   public:
-    AttachedMediaInfo( const std::string &id, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, const std::vector<zypp::Url> &mirrors, ProvideMediaSpec &spec );
-    AttachedMediaInfo( const std::string &id, ProvideQueueWeakRef backingQueue, ProvideQueue::Config::WorkerType workerType, const zypp::Url &baseUrl, const std::vector<zypp::Url> &mirrors, const ProvideMediaSpec &mediaSpec, const std::optional<zypp::Pathname> &mnt = {} );
+    AttachedMediaInfo( const std::string &id, ProvideQueue::Config::WorkerType workerType, const zypp::MirroredOrigin &originConfig, ProvideMediaSpec &spec );
+    AttachedMediaInfo( const std::string &id, ProvideQueueWeakRef backingQueue, ProvideQueue::Config::WorkerType workerType, const zypp::MirroredOrigin &originConfig, const ProvideMediaSpec &mediaSpec, const std::optional<zypp::Pathname> &mnt = {} );
 
     void setName( std::string &&name );
     const std::string &name() const;
@@ -46,14 +46,14 @@ namespace zyppng {
     /*!
      * Returns true if \a other requests the same medium as this instance
      */
-    bool isSameMedium ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &spec );
+    bool isSameMedium (const zypp::MirroredOrigin &origin, const ProvideMediaSpec &spec );
 
-    static bool isSameMedium ( const std::vector<zypp::Url> &mirrorsA, const ProvideMediaSpec &specA, const std::vector<zypp::Url> &mirrorsB, const ProvideMediaSpec &specB );
+    static bool isSameMedium ( const zypp::MirroredOrigin &originA, const ProvideMediaSpec &specA, const zypp::MirroredOrigin &originB, const ProvideMediaSpec &specB );
 
     std::string _name;
     ProvideQueueWeakRef _backingQueue; //< if initialized contains a weak reference to the queue that owns this medium
     ProvideQueue::Config::WorkerType _workerType;
-    std::vector<zypp::Url> _mirrors; // if the worker supports mirrors ( downloading ) they will be here
+    zypp::MirroredOrigin _originConfig; //< baseUrl and mirrors with config
     ProvideMediaSpec _spec;
     std::optional<zypp::Pathname> _localMountPoint; // if initialized tells where the workers mounted to medium
     mutable std::optional<std::chrono::steady_clock::time_point> _idleSince; ///< Set if the medium is idle

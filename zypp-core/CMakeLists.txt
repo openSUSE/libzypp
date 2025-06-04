@@ -19,6 +19,7 @@ SET( zypp_toplevel_headers
   KVMap
   kvmap.h
   ManagedFile.h
+  MirroredOrigin.h
   onmedialocation.h
   OnMediaLocation
   Pathname.h
@@ -33,6 +34,7 @@ SET( zypp_toplevel_SRCS
   Date.cc
   Digest.cc
   ExternalProgram.cc
+  MirroredOrigin.cc
   onmedialocation.cc
   Pathname.cc
   ShutdownLock.cc

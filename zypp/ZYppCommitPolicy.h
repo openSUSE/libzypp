@@ -96,7 +96,8 @@ namespace zypp
       ZYppCommitPolicy & syncPoolAfterCommit( bool yesNo_r );
       bool syncPoolAfterCommit() const;
 
-      bool singleTransModeEnabled () const;
+      /** Whether the single_rpmtrans backend is enabled (or the classic_rpmtrans) */
+      bool singleTransModeEnabled() const;
 
     public:
       /** Implementation  */

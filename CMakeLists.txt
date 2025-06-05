@@ -58,6 +58,7 @@ SET (have_system x)
 
 IF (DEBIAN)
   MESSAGE (STATUS "Building for Debian")
+  ADD_DEFINITIONS (-DDEBIAN)
   SET (ENABLE_BUILD_DOCS ON)
   SET (ENABLE_BUILD_TRANS ON)
   SET (ENABLE_BUILD_TESTS ON)
@@ -66,6 +67,7 @@ ENDIF (DEBIAN)
 
 IF (SUSE)
   MESSAGE (STATUS "Building for SUSE (${LIBZYPP_CODESTREAM})")
+  ADD_DEFINITIONS (-DSUSE)
   SET(LibSolv_USE_STATIC_LIBS ON)
   SET (ENABLE_BUILD_DOCS ON)
   SET (ENABLE_BUILD_TRANS ON)
@@ -80,6 +82,13 @@ IF (${have_system} STRGREATER xx)
   MESSAGE (FATAL_ERROR "Can only build for one system type.")
 ENDIF (${have_system} STRGREATER xx)
 
+IF ( NOSCHNICKSCHNACK )
+  MESSAGE (STATUS "Building with NOSCHNICKSCHNACK")
+  # In case you want make to build just the sources
+  SET (ENABLE_BUILD_DOCS OFF)
+  SET (ENABLE_BUILD_TRANS OFF)
+  SET (ENABLE_BUILD_TESTS OFF)
+ENDIF()
 #--------------------------------------------------------------------------------
 # general flags used for all targets
 add_library( zypp_general_compiler_flags INTERFACE )

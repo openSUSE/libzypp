@@ -70,7 +70,7 @@ namespace zypp
     { return str << "<" << gpgme_strsource(obj) << "> " << gpgme_strerror(obj); }
 
     /** \relates gpgme_import_result_t Stream output. */
-    std::ostream & operator<<( std::ostream & str, const _gpgme_op_import_result & obj )
+    [[maybe_unused]] std::ostream & operator<<( std::ostream & str, const _gpgme_op_import_result & obj )
     {
       str << "gpgme_op_import_result {" << endl;
       str << "  "  << obj.considered		<< " The total number of considered keys." << endl;
@@ -94,7 +94,7 @@ namespace zypp
       return str << "}";
     }
 
-    std::ostream & operator<<( std::ostream & str, const gpgme_sigsum_t & obj )
+    [[maybe_unused]] std::ostream & operator<<( std::ostream & str, const gpgme_sigsum_t & obj )
     {
       str << ((int)obj&(int)0xffff) << ":";
 #define OSC(V) if ( V & (unsigned)obj ) str << " " << #V;
@@ -114,7 +114,7 @@ namespace zypp
       return str;
     }
 
-    std::ostream & operator<<( std::ostream & str, const gpgme_signature_t & obj )
+    [[maybe_unused]] std::ostream & operator<<( std::ostream & str, const gpgme_signature_t & obj )
     {
       str << "gpgme_signature_t " << (void *)obj << " {" << endl;
       str << "  next:            " << (void *)obj->next << endl;

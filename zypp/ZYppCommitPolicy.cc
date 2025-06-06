@@ -28,27 +28,43 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////
+#ifdef SUSE
+
+#if APIConfig(LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT)
+  // In old codebases it can be explicitly enabled for zypper only via ZYPP_SINGLE_RPMTRANS.
   inline bool ImZYPPER()
   {
     static bool ret = filesystem::readlink( "/proc/self/exe" ).basename() == "zypper";
     return ret;
   }
-
   inline bool singleTransInEnv()
   {
     const char *val = ::getenv("ZYPP_SINGLE_RPMTRANS");
     return ( val && str::strToFalse( val ) );
   }
-
   inline bool singleTransEnabled()
-  {
-#if APIConfig(LIBZYPP_CONFIG_USE_CLASSIC_RPMTRANS_BY_DEFAULT)
-    return ImZYPPER() && singleTransInEnv();
+  { return ImZYPPER() && singleTransInEnv(); }
 #else
-    return ImZYPPER();
-#endif
+  // SUSE using singletrans as default may allow to explicitly disable it via ZYPP_SINGLE_RPMTRANS.
+  // NOTE: singleTransInEnv() here is no real enablement because it defaults to false
+  //       if ZYPP_SINGLE_RPMTRANS is undefined. By now it just allows using singletrans
+  //       with all applications, not just zypper. In case it actually becomes the
+  //       default on SUSE, we may just want a method to explicitly disable it.
+  inline bool singleTransInEnv()
+  {
+    const char *val = ::getenv("ZYPP_SINGLE_RPMTRANS");
+    return ( val && str::strToFalse( val ) );
   }
+  inline bool singleTransEnabled()
+  { return singleTransInEnv(); }
+#endif
 
+#else  // not SUSE
+  inline bool singleTransEnabled()
+  { return true; }
+#endif
+///////////////////////////////////////////////////////////////////
 
   inline bool isPreUsrmerge( const Pathname & root_r )
   {

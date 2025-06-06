@@ -17,7 +17,9 @@
 
 # Switched to single_rpmtrans as default install backed.
 # SUSE distros stay with classic_rpmtrans as default.
-%if 0%{?suse_version}
+# Code16: Want's to switch to single_rpmtrans as default
+#         (level of enablement is handled in the code)
+%if 0%{?suse_version} && 0%{?suse_version} < 1600
 %bcond_without classic_rpmtrans_as_default
 %else
 %bcond_with classic_rpmtrans_as_default

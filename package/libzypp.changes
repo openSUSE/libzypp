@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun  6 19:02:26 CEST 2025 - ma@suse.de
+
+- Fix credential handling in HEAD requests (bsc#1244105)
+- version 17.37.5 (35)
+
+-------------------------------------------------------------------
 Wed Jun  4 17:44:37 CEST 2025 - ma@suse.de
 
 - RepoInfo: use pathNameSetTrailingSlash (fixes #643)

@@ -327,6 +327,7 @@ void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
   SET_OPTION(CURLOPT_FOLLOWLOCATION, 1L);
   // 3 redirects seem to be too few in some cases (bnc #465532)
   SET_OPTION(CURLOPT_MAXREDIRS, 6L);
+  SET_OPTION(CURLOPT_ACCEPT_ENCODING, "");
 
   if ( _urls.at(rData.mirror).url().getScheme() == "https" )
   {

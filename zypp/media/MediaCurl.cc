@@ -1018,7 +1018,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
 
   CURLcode ok;
   bool canRetry  = true;
-  bool firstAuth = false;
+  bool firstAuth = true;
   auto &settings = _mirrorSettings[mirror];
 
   while ( canRetry ) {
@@ -1069,7 +1069,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
       return false;
     }
     catch ( const MediaUnauthorizedException &e ) {
-      if ( authenticate( myUrl.url(), settings, getAuthHint ( curl ), firstAuth ) ) {
+      if ( authenticate( myUrl.url(), settings, e.hint(), firstAuth ) ) {
         firstAuth = false;
         canRetry = true;
         continue;

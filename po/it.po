@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-04-08 13:56+0000\n"
+"PO-Revision-Date: 2025-06-09 19:59+0000\n"
 "Last-Translator: Davide Aiello <davide.aiello@novilingulists.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/it/"
 ">\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.11.4\n"
 "X-Poedit-Bookmarks: 370,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: zypp/CountryCode.cc:50
@@ -3053,7 +3053,7 @@ msgstr "Retoromanzo"
 #. language code: rom
 #: zypp/LanguageCode.cc:895
 msgid "Romany"
-msgstr "Romeno"
+msgstr "Romani"
 
 #. language code: rum ron ro
 #: zypp/LanguageCode.cc:897 zypp/LanguageCode.cc:899
@@ -3656,7 +3656,7 @@ msgstr "Verranno eseguite le azioni indicate:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Recupero dei dati dell'elenco di mirror/metalink non riuscito."
 
 # TLABEL modules/inst_user.ycp:71
 #: zypp/VendorSupportOptions.cc:14
@@ -3832,6 +3832,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Download della chiave di firma tramite mirroring in corso, considerare di "
+"impostare esplicitamente gpgKeyUrl tramite la configurazione del repository."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4078,7 +4080,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Il repository %1% non definisce gli URL 'gpgkey='."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4086,7 +4088,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Ricerca delle chiavi gpg nel repository %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4107,6 +4109,8 @@ msgstr "Uno o entrambi gli attributi '%s' o '%s' sono richiesti."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Nessun attributo '%s', '%s' o '%s' definito per il repository di servizio "
+"'%s'."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4734,21 +4738,21 @@ msgstr ""
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "nessun mirror trovato"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "impossibile creare il file di destinazione"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "già presente nella cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "ridenominazione del file temporaneo non riuscita."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4761,7 +4765,7 @@ msgstr "fine"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Errore: \"%1%\", tentativo con il prossimo mirror in corso."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5163,7 +5167,7 @@ msgstr "Supporto non aperto durante il tentativo di esecuzione di '%s'."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "File '%s' non trovato"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

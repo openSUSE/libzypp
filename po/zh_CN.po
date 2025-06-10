@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-04-08 10:56+0000\n"
+"PO-Revision-Date: 2025-06-10 11:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/libzypp/"
 "master/zh_CN/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3651,7 +3651,7 @@ msgstr "将执行以下动作："
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "无法提取镜像列表/元链接数据。"
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3812,7 +3812,7 @@ msgstr "无法创建元数据缓存文件夹。"
 msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
-msgstr ""
+msgstr "正在通过镜像下载签名密钥，请考虑改为通过储存库配置明确设置 gpgKeyUrl。"
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4049,7 +4049,7 @@ msgstr "文件 '%s'（来自储存库 '%s'）是使用未知密钥 '%s' 签名�
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "储存库 %1% 未定义 'gpgkey=' URL。"
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4057,7 +4057,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "正在储存库 %1% 中查找 GPG 密钥。"
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4077,7 +4077,7 @@ msgstr "需要 '%s' 或 '%s' 属性中的一项或两项。"
 #, c-format, boost-format
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
-msgstr ""
+msgstr "'%s'、'%s' 和 '%s' 属性均未定义（针对服务储存库 '%s'）。"
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -4685,21 +4685,21 @@ msgstr "由于以下问题执行操作失败："
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "未找到镜像"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "无法创建目标文件"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "已在缓存中"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "重命名临时文件失败。"
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4712,7 +4712,7 @@ msgstr "完毕"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "发生错误：\"%1%\"，正在尝试下一个镜像。"
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5106,7 +5106,7 @@ msgstr "当试图执行动作 '%s' 时，介质没有打开。"
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "找不到文件 '%s'"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

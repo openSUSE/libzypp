@@ -242,6 +242,103 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace target
   {
+    /////////////////////////////////////////////////////////////////
+    namespace
+    {
+      struct InstallResolvableSAReportReceiver : public callback::ReceiveReport<rpm::InstallResolvableReportSA>
+      {
+        using ReportType = callback::SendReport<rpm::InstallResolvableReport>;
+
+        InstallResolvableSAReportReceiver()
+        : _report { std::make_unique<ReportType>() }
+        {}
+
+        void start( Resolvable::constPtr resolvable, const UserData & = UserData() /*userdata*/ ) override
+        { (*_report)->start( resolvable ); }
+
+        void progress( int value, Resolvable::constPtr resolvable, const UserData & = UserData() /*userdata*/ ) override
+        { (*_report)->progress( value, resolvable ); }
+
+        void finish( Resolvable::constPtr resolvable, Error error, const UserData & = UserData() /*userdata*/ ) override
+        { (*_report)->finish( resolvable, static_cast<rpm::InstallResolvableReport::Error>(error), "", rpm::InstallResolvableReport::RpmLevel::RPM/*unused legacy*/ ); }
+
+      private:
+        std::unique_ptr<ReportType> _report;
+      };
+
+      struct RemoveResolvableSAReportReceiver : public callback::ReceiveReport<rpm::RemoveResolvableReportSA>
+      {
+        using ReportType = callback::SendReport<rpm::RemoveResolvableReport>;
+
+        RemoveResolvableSAReportReceiver()
+        : _report { std::make_unique<ReportType>() }
+        {}
+
+        virtual void start( Resolvable::constPtr resolvable, const UserData & = UserData() /*userdata*/ )
+        { (*_report)->start( resolvable ); }
+
+        virtual void progress( int value, Resolvable::constPtr resolvable, const UserData & = UserData() /*userdata*/ )
+        { (*_report)->progress( value, resolvable ); }
+
+        virtual void finish( Resolvable::constPtr resolvable, Error error, const UserData & = UserData() /*userdata*/ )
+        { (*_report)->finish( resolvable, static_cast<rpm::RemoveResolvableReport::Error>(error), "" ); }
+
+      private:
+        std::unique_ptr<ReportType> _report;
+      };
+
+      /// \brief A minimalistic wrapper mapping singletrans reports to the classic Install/RemoveResolvableReports.
+      ///
+      /// The only intent is to provide a minimal visual feedback during
+      /// a singletrans install if the listening application is not yet
+      /// connected to any SingleTransReport.
+      struct SingleTransReportLegacyWrapper
+      {
+        NON_COPYABLE(SingleTransReportLegacyWrapper);
+        NON_MOVABLE(SingleTransReportLegacyWrapper);
+
+        SingleTransReportLegacyWrapper()
+        {
+          if ( not singleTransReportsConnected() and legacyReportsConnected() )
+          {
+            WAR << "Activating SingleTransReportLegacyWrapper! The application does not listen to the singletrans reports :(" << endl;
+            _installResolvableSAReportReceiver = InstallResolvableSAReportReceiver();
+            _removeResolvableSAReportReceiver = RemoveResolvableSAReportReceiver();
+            _installResolvableSAReportReceiver->connect();
+            _removeResolvableSAReportReceiver->connect();
+
+          }
+        }
+
+        ~SingleTransReportLegacyWrapper()
+        {
+        }
+
+        bool singleTransReportsConnected() const
+        {
+          return callback::SendReport<rpm::SingleTransReport>::connected()
+          || callback::SendReport<rpm::InstallResolvableReportSA>::connected()
+          || callback::SendReport<rpm::RemoveResolvableReportSA>::connected()
+          || callback::SendReport<rpm::CommitScriptReportSA>::connected()
+          || callback::SendReport<rpm::TransactionReportSA>::connected()
+          || callback::SendReport<rpm::CleanupPackageReportSA>::connected()
+          ;
+        }
+
+        bool legacyReportsConnected() const
+        {
+          return callback::SendReport<rpm::InstallResolvableReport>::connected()
+          || callback::SendReport<rpm::RemoveResolvableReport>::connected()
+          ;
+        }
+
+      private:
+        std::optional<InstallResolvableSAReportReceiver> _installResolvableSAReportReceiver;
+        std::optional<RemoveResolvableSAReportReceiver> _removeResolvableSAReportReceiver;
+      };
+    } //namespace
+    /////////////////////////////////////////////////////////////////
+
     ///////////////////////////////////////////////////////////////////
     namespace
     {
@@ -1967,6 +2064,7 @@ namespace zypp
 
     void TargetImpl::commitInSingleTransaction(const ZYppCommitPolicy &policy_r, CommitPackageCache &packageCache_r, ZYppCommitResult &result_r)
     {
+      SingleTransReportLegacyWrapper _legacyWrapper;  // just in case nobody listens on the SendSingleTransReports
       SendSingleTransReport report; // active throughout the whole rpm transaction
 
       // steps: this is our todo-list

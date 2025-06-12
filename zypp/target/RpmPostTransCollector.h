@@ -15,6 +15,7 @@
 
 #include <zypp/base/PtrTypes.h>
 #include <zypp/Pathname.h>
+#include <zypp/IdString.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -58,7 +59,7 @@ namespace zypp
         void collectPosttransInfo( const std::vector<std::string> & runposttrans_r );
 
         /** Execute the remembered scripts and/or or dump_posttrans lines. */
-        void executeScripts( rpm::RpmDb & rpm_r );
+        void executeScripts( rpm::RpmDb & rpm_r, const IdStringSet & obsoletedPackages_r );
 
         /** Discard all remembered scripts and/or or dump_posttrans lines. */
         void discardScripts();

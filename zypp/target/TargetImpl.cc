@@ -1745,6 +1745,10 @@ namespace zypp
       AssertDevMounted assertDevMounted( _root ); // also /dev
 
       RpmPostTransCollector postTransCollector( _root );
+      // bsc#1243279: %posttrans needs to know whether the package was installed or updated.
+      // we collect the names of obsoleted packages. If %posttrans of an obsoleted package
+      // was collected, it was an upadte.
+      IdStringSet obsoletedPackages;
       std::vector<sat::Solvable> successfullyInstalledPackages;
       TargetImpl::PoolItemList remaining;
 
@@ -1756,7 +1760,8 @@ namespace zypp
           if ( citem->isKind<Package>() )
           {
             // for packages this means being obsoleted (by rpm)
-            // thius no additional action is needed.
+            // thus no additional action is needed.
+            obsoletedPackages.insert( citem->ident() );
             step->stepStage( sat::Transaction::STEP_DONE );
             continue;
           }
@@ -1983,7 +1988,7 @@ namespace zypp
       // Process any remembered %posttrans and/or %transfiletrigger(postun|in)
       // scripts. If aborting, at least log if scripts were omitted.
       if ( not abort )
-        postTransCollector.executeScripts( rpm() );
+        postTransCollector.executeScripts( rpm(), obsoletedPackages );
       else
         postTransCollector.discardScripts();
 

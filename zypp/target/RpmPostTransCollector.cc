@@ -152,7 +152,7 @@ namespace zypp
          * --runposttrans, we need to extract missing %posttrans scripts from the dumpfile
          * and execute them before the collected scripts.
          */
-        void executeScripts( rpm::RpmDb & rpm_r )
+        void executeScripts( rpm::RpmDb & rpm_r, const IdStringSet & obsoletedPackages_r )
         {
           if ( _dumpfile && not _dumpfile->_runposttrans ) {
             // Here a downgraded rpm lost the ability to --runposttrans. Extract at least any
@@ -241,7 +241,6 @@ namespace zypp
             str::Format fmtScriptFailedMsg { "warning: %%posttrans(%1%) scriptlet failed, exit status %2%\n" };
             str::Format fmtPosttrans { "%%posttrans(%1%)" };
 
-            rpm::RpmDb::db_const_iterator it { rpm_r.dbConstIterator() }; // Open DB only once
             while ( ! _scripts->empty() )
             {
               const auto &scriptPair = _scripts->front();
@@ -249,10 +248,7 @@ namespace zypp
               const std::string & pkgident( script.substr( 0, script.size()-6 ) ); // strip tmp file suffix[6]
               startNewScript( fmtPosttrans % pkgident );
 
-              int npkgs = 0;
-              for ( it.findByName( scriptPair.second ); *it; ++it )
-                ++npkgs;
-
+              int npkgs = obsoletedPackages_r.count( IdString(scriptPair.second) ) ? 2 : 1; // bsc#1243279, was update if obsoleted
               MIL << "EXECUTE posttrans: " << script << " with argument: " << npkgs << endl;
               ExternalProgram::Arguments cmd {
                 "/bin/sh",
@@ -427,8 +423,8 @@ namespace zypp
     void RpmPostTransCollector::collectPosttransInfo( const std::vector<std::string> & runposttrans_r )
     { _pimpl->collectPosttransInfo( runposttrans_r ); }
 
-    void RpmPostTransCollector::executeScripts( rpm::RpmDb & rpm_r )
-    { _pimpl->executeScripts( rpm_r ); }
+    void RpmPostTransCollector::executeScripts( rpm::RpmDb & rpm_r, const IdStringSet & obsoletedPackages_r )
+    { _pimpl->executeScripts( rpm_r, obsoletedPackages_r ); }
 
     void RpmPostTransCollector::discardScripts()
     { return _pimpl->discardScripts(); }

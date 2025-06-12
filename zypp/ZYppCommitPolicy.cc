@@ -85,6 +85,13 @@ namespace zypp
 
   inline bool pendingUsrmerge()
   {
+#if 1
+    // introduced solely for the use in QA test for Code16
+    const char *val = ::getenv("ZYPP_NO_USRMERGE_PROTECT");
+    if ( val && str::strToTrue( val ) )
+      retrun false;
+#endif
+
     // NOTE: Bug 1189788 - UsrMerge: filesystem package breaks system when
     // upgraded in a single rpm transaction. Target::Commit must amend this
     // request depending on whether a UsrMerge may be performed by the

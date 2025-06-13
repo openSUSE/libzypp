@@ -281,6 +281,39 @@ struct DoTransact
 };
 
 //----------------------------------------------------------------------------
+/// \brief Write automatic testcases if ZYPP_FULLLOG=1 is set
+///
+/// As a matter of fact the testcase writer needs a \ref Resolver but can not
+/// write the testcase unless the underlying \ref SATResolver is initialized.
+/// So we write out the testcase after solving and before Resolver ist left.
+/// \ingroup g_RAII
+struct ScopedAutoTestCaseWriter
+{
+  ScopedAutoTestCaseWriter( Resolver & resolver_r )
+  {
+    const char *val = ::getenv("ZYPP_FULLLOG");
+    if ( val && str::strToTrue( val ) )
+      _resolver = &resolver_r;
+  }
+
+  ~ScopedAutoTestCaseWriter()
+  {
+    if ( _resolver ) try {
+        Testcase testcase( "/var/log/YaST2/autoTestcase" );
+        testcase.createTestcase( *_resolver, dumpPool, false );
+        if ( dumpPool )
+          dumpPool = false;
+    } catch( ... ) {};
+  }
+
+private:
+  Resolver * _resolver = nullptr;
+  static bool dumpPool; // dump pool on the 1st invocation, later update control file only
+};
+
+bool ScopedAutoTestCaseWriter::dumpPool = true;
+
+//----------------------------------------------------------------------------
 // undo
 void Resolver::undo()
 {
@@ -302,17 +335,7 @@ void Resolver::undo()
 void Resolver::solverInit()
 {
     // Solving with libsolv
-    static bool poolDumped = false;
     MIL << "-------------- Calling SAT Solver -------------------" << endl;
-    if ( getenv("ZYPP_FULLLOG") and get() ) { // libzypp/issues/317: get() to make sure a satsolver instance is actually present
-        Testcase testcase("/var/log/YaST2/autoTestcase");
-        if (!poolDumped) {
-            testcase.createTestcase (*this, true, false); // dump pool
-            poolDumped = true;
-        } else {
-            testcase.createTestcase (*this, false, false); // write control file only
-        }
-    }
 
     // update solver mode flags
     _satResolver->setDistupgrade		(_upgradeMode);
@@ -356,12 +379,14 @@ bool Resolver::doUpgrade()
 
 bool Resolver::resolvePool()
 {
+  ScopedAutoTestCaseWriter _raiiGuard( *this );  // Write a testcase if needed.
   solverInit();
   return _satResolver->resolvePool(_extra_requires, _extra_conflicts, _addWeak, _upgradeRepos );
 }
 
 void Resolver::doUpdate()
 {
+  ScopedAutoTestCaseWriter _raiiGuard( *this );  // Write a testcase if needed.
   _updateMode = true;
   solverInit();
   return _satResolver->doUpdate();
@@ -369,6 +394,7 @@ void Resolver::doUpdate()
 
 bool Resolver::resolveQueue( solver::detail::SolverQueueItemList & queue )
 {
+    ScopedAutoTestCaseWriter _raiiGuard( *this );  // Write a testcase if needed.
     solverInit();
 
     // add/remove additional SolverQueueItems

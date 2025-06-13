@@ -85,7 +85,7 @@ namespace zyppng::RepoManagerWorkflow {
       | and_then([this, providerRef]( MediaHandle medium )
       {
         // first try rpmmd
-        return providerRef->provide( medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+        return providerRef->provide( medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ).setMirrorsAllowed(false) )
           | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
           | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
           // try susetags if rpmmd fails and remember the error
@@ -103,7 +103,7 @@ namespace zyppng::RepoManagerWorkflow {
               // any other error, we give up
               return makeReadyResult( expected<zypp::repo::RepoType>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
             }
-            return providerRef->provide( medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ) )
+            return providerRef->provide( medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ).setMirrorsAllowed(false) )
                 | and_then( maybeCopyResultToDest("content") )
                 | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
           })

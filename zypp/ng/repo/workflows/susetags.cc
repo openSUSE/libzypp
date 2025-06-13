@@ -54,7 +54,7 @@ namespace zyppng::SuseTagsWorkflows {
       {}
 
       MaybeAsyncRef<expected<zypp::RepoStatus>> execute() {
-        return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "content" , ProvideFileSpec() )
+        return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "content" , ProvideFileSpec().setMirrorsAllowed(false) )
           | [this]( expected<ProvideRes> contentFile ) {
 
               // mandatory master index is missing -> stay empty
@@ -64,7 +64,7 @@ namespace zyppng::SuseTagsWorkflows {
               zypp::RepoStatus status ( contentFile->file() );
 
               if ( !status.empty() /* && _ctx->repoInfo().requireStatusWithMediaFile() */ ) {
-                return _ctx->zyppContext()->provider()->provide( _handle, "/media.1/media"  , ProvideFileSpec())
+                return _ctx->zyppContext()->provider()->provide( _handle, "/media.1/media"  , ProvideFileSpec().setMirrorsAllowed(false) )
                   | [status = std::move(status)]( expected<ProvideRes> mediaFile ) mutable {
                       if ( mediaFile ) {
                         return make_expected_success(status && zypp::RepoStatus( mediaFile->file()) );

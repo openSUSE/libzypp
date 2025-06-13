@@ -109,7 +109,7 @@ class MediaHandler {
         /**
          * Contains the authority URL and mirrors.
          */
-        const MirroredOrigin _origin;
+        MirroredOrigin _origin;
 
         /**
          * Access Id of media handler we depend on.

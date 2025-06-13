@@ -237,14 +237,17 @@ namespace zypp::media
     // fill some settings from url query parameters
     try
     {
-      CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+      clearTransferSettings();
 
-      _mirrorSettings.clear();
-      std::transform( _origin.begin (), _origin.end(), std::back_inserter(_mirrorSettings), [&]( const OriginEndpoint &u ) {
-        TransferSettings set;
+      CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
+      for( OriginEndpoint &u : _origin ) {
+
+        u.setConfig( MIRR_SETTINGS_KEY.data() , std::make_any<TransferSettings>()); // init or reset to default
 
         if ( !u.isValid() )
           ZYPP_THROW(MediaBadUrlException(u.url()));
+
+        TransferSettings &set = u.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
 
         checkProtocol(u.url());
 
@@ -297,14 +300,19 @@ namespace zypp::media
             set.setPassword(cred->password());
           }
         }
-
-        return set;
-      });
+      }
     }
     catch ( const MediaException &e )
     {
       disconnectFrom();
       ZYPP_RETHROW(e);
+    }
+  }
+
+  void MediaNetworkCommonHandler::clearTransferSettings()
+  {
+    for( OriginEndpoint &u : _origin ) {
+      u.eraseConfigValue ( MIRR_SETTINGS_KEY.data() );
     }
   }
 
@@ -314,6 +322,20 @@ namespace zypp::media
     //! \todo need a way to pass different CredManagerOptions here
     CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
     return authenticate( url, cm, settings, availAuthTypes, firstTry );
+  }
+
+  std::vector<unsigned int> MediaNetworkCommonHandler::mirrorOrder(const OnMediaLocation &loc) const
+  {
+    std::vector<unsigned> mirrOrder;
+    if ( !loc.mirrorsAllowed () ) {
+      MIL << "Fetching file " << loc << " from authority only: " << _origin << std::endl;
+      mirrOrder.push_back (0); // only authority
+    } else {
+      mirrOrder.reserve( _origin.endpointCount() );
+      for( unsigned i = 1; i < _origin.endpointCount () ; i++ ) { mirrOrder.push_back(i) ;}
+      mirrOrder.push_back(0); // authority last
+    }
+    return mirrOrder;
   }
 
   bool MediaNetworkCommonHandler::authenticate( const Url &url, CredentialManager &cm, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry )

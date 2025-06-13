@@ -112,7 +112,7 @@ namespace zypp {
     void MediaCurl2::disconnectFrom()
     {
       // clear effective settings
-      _mirrorSettings.clear();
+      clearTransferSettings();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,18 +133,19 @@ namespace zypp {
       OptionalDownloadProgressReport reportfilter( srcFile.optional() );
       callback::SendReport<DownloadProgressReport> report;
 
-      for ( unsigned mirr = 0; mirr < _origin.endpointCount(); ++mirr ) {
-
-        MIL << "Trying to fetch file " << srcFile << " with mirror " << _origin[mirr].url() << std::endl;
+      const auto &mirrOrder = mirrorOrder (srcFile);
+      for ( unsigned mirr : mirrOrder ) {
+        MIL << "Trying to fetch file " << srcFile << " via URL: " << _origin[mirr].url() << std::endl;
         Url fileurl(getFileUrl(mirr, filename));
 
         try
         {
-          if(!_origin[mirr].url().isValid())
-            ZYPP_THROW(MediaBadUrlException(_origin[mirr].url()));
+          const auto &myOrigin = _origin[mirr];
+          if(!myOrigin.url().isValid())
+            ZYPP_THROW(MediaBadUrlException(myOrigin.url()));
 
-          if(_origin[mirr].url().getHost().empty())
-            ZYPP_THROW(MediaBadUrlEmptyHostException(_origin[mirr].url()));
+          if(myOrigin.url().getHost().empty())
+            ZYPP_THROW(MediaBadUrlEmptyHostException(myOrigin.url()));
 
 
           Pathname dest = target.absolutename();
@@ -197,7 +198,7 @@ namespace zypp {
           RequestData r;
           r._mirrorIdx = mirr;
           r._req = std::make_shared<zyppng::NetworkRequest>( curlUrl, destNew, zyppng::NetworkRequest::WriteShared /*do not truncate*/ );
-          r._req->transferSettings() = _mirrorSettings[mirr];
+          r._req->transferSettings() = myOrigin.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
           r._req->setExpectedFileSize ( srcFile.downloadSize () );
 
           bool done = false;
@@ -255,7 +256,7 @@ namespace zypp {
         catch (MediaException & excpt_r)
         {
           // check if we can retry on the next mirror
-          if( !canTryNextMirror ( excpt_r ) || ( mirr+1 >= _origin.endpointCount() ) ) {
+          if( !canTryNextMirror ( excpt_r ) || ( mirr == mirrOrder.back() ) ) {
             // rewrite the exception to contain the correct pathname and url
             // the executeRequest implementation just emits the full Url in the exception
             if ( typeid(excpt_r) == typeid( MediaFileNotFoundException ) ) {
@@ -276,12 +277,15 @@ namespace zypp {
 
       std::exception_ptr lastErr;
       MIL << "Trying origin: " << _origin << std::endl;
-      for ( unsigned mirr = 0; mirr < _origin.endpointCount(); ++mirr ) {
-        if( !_origin[mirr].url().isValid() )
-          ZYPP_THROW(MediaBadUrlException(_origin[mirr].url()));
+      for ( unsigned mirr : mirrorOrder( OnMediaLocation( filename ).setMirrorsAllowed(false) )) {
+
+        const auto &myEndpoint = _origin[mirr];
+
+        if( !myEndpoint.url().isValid() )
+          ZYPP_THROW(MediaBadUrlException(myEndpoint.url()));
 
         if( _origin[mirr].url().getHost().empty() )
-          ZYPP_THROW(MediaBadUrlEmptyHostException(_origin[mirr].url()));
+          ZYPP_THROW(MediaBadUrlEmptyHostException(myEndpoint.url()));
 
         Url url(getFileUrl(mirr, filename));
 
@@ -297,7 +301,7 @@ namespace zypp {
         r._mirrorIdx = mirr;
         r._req = std::make_shared<zyppng::NetworkRequest>( curlUrl, "/dev/null" );
         r._req->setOptions ( zyppng::NetworkRequest::HeadRequest ); // just check for existance
-        r._req->transferSettings() = _mirrorSettings[mirr];
+        r._req->transferSettings() = myEndpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
 
         // as we are not having user interaction, the user can't cancel
         // the file existence checking, a callback or timeout return code
@@ -305,6 +309,9 @@ namespace zypp {
         try {
           const_cast<MediaCurl2*>(this)->executeRequest ( r );
 
+        } catch ( const MediaFileNotFoundException &e ) {
+          // if the file did not exist then we can return false
+          return false;
         } catch ( const MediaException &e ) {
           // check if we can retry on the next mirror
           lastErr = ZYPP_FWD_CURRENT_EXCPT();
@@ -402,8 +409,10 @@ namespace zypp {
     void MediaCurl2::executeRequest(  MediaCurl2::RequestData &reqData , callback::SendReport<DownloadProgressReport> *report )
     {
       const auto &authCb = [&]( const zypp::Url &, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry, bool &canContinue ) {
-        if ( authenticate( _origin[reqData._mirrorIdx].url(), _mirrorSettings[reqData._mirrorIdx], availAuthTypes, firstTry ) ) {
-          settings = _mirrorSettings[reqData._mirrorIdx];
+        auto &originEndpoint = _origin[reqData._mirrorIdx];
+        auto &epSettings     = originEndpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
+        if ( authenticate( _origin[reqData._mirrorIdx].url(), epSettings, availAuthTypes, firstTry ) ) {
+          settings = epSettings;
           canContinue = true;
           return;
         }

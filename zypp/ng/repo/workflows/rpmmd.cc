@@ -45,7 +45,7 @@ namespace zyppng::RpmmdWorkflows {
       {}
 
       MaybeAsyncRef<expected<zypp::RepoStatus>> execute() {
-        return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "/repodata/repomd.xml" , ProvideFileSpec() )
+        return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "/repodata/repomd.xml" , ProvideFileSpec().setMirrorsAllowed(false) )
           | [this]( expected<ProvideRes> repomdFile ) {
 
               if ( !repomdFile )
@@ -54,7 +54,7 @@ namespace zyppng::RpmmdWorkflows {
               zypp::RepoStatus status ( repomdFile->file() );
 
               if ( !status.empty() && _ctx->repoInfo ().requireStatusWithMediaFile()) {
-                return _ctx->zyppContext()->provider()->provide( _handle, "/media.1/media"  , ProvideFileSpec())
+                return _ctx->zyppContext()->provider()->provide( _handle, "/media.1/media"  , ProvideFileSpec().setMirrorsAllowed(false) )
                   | [status = std::move(status)]( expected<ProvideRes> mediaFile ) mutable {
                       if ( mediaFile ) {
                         return make_expected_success( status && zypp::RepoStatus( mediaFile->file()) );

@@ -168,6 +168,12 @@ namespace zyppng
     /** Set the \ref deltafile. */
     ProvideFileSpec &setDeltafile( const zypp::Pathname &path );
 
+    /** The requested file is allowed to be fetched via mirrors ( defaults to true ) */
+    bool mirrorsAllowed() const;
+
+    /** Enables or disables the use of mirrors when fetching this file */
+    ProvideFileSpec &setMirrorsAllowed( bool set = true );
+
     /*!
      * Returns a map of custom key->value pairs that can control special aspects
      * of how the provide operation is processed.

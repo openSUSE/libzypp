@@ -65,15 +65,15 @@ namespace zypp {
 
   namespace media {
 
-    MediaCurl2::MediaCurl2(const MediaUrl &url_r, const std::vector<MediaUrl> &mirrors_r,
+    MediaCurl2::MediaCurl2(const MirroredOrigin origin_r,
                            const Pathname & attach_point_hint_r )
-      : MediaNetworkCommonHandler( url_r, mirrors_r, attach_point_hint_r,
+      : MediaNetworkCommonHandler( origin_r, attach_point_hint_r,
                                    "/", // urlpath at attachpoint
                                    true ) // does_download
       , _executor( std::make_shared<internal::MediaNetworkRequestExecutor>() )
     {
 
-      MIL << "MediaCurl2::MediaCurl2(" << url_r.url() << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaCurl2::MediaCurl2(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;
 
       if( !attachPoint().empty())
       {
@@ -85,7 +85,7 @@ namespace zypp {
             atemp == NULL || (atest=::mkdtemp(atemp)) == NULL)
         {
           WAR << "attach point " << ainfo.path()
-              << " is not useable for " << url_r.url().getScheme() << endl;
+              << " is not useable for " << origin_r.authority().url().getScheme() << endl;
           setAttachPoint("", true);
         }
         else if( atest != NULL)
@@ -105,14 +105,14 @@ namespace zypp {
         std::string msg("Unsupported protocol '");
         msg += url.getScheme();
         msg += "'";
-        ZYPP_THROW(MediaBadUrlException(_url.url(), msg));
+        ZYPP_THROW(MediaBadUrlException(url, msg));
       }
     }
 
     void MediaCurl2::disconnectFrom()
     {
       // clear effective settings
-      _mirrorSettings.clear();
+      clearTransferSettings();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,18 +133,19 @@ namespace zypp {
       OptionalDownloadProgressReport reportfilter( srcFile.optional() );
       callback::SendReport<DownloadProgressReport> report;
 
-      for ( unsigned mirr = 0; mirr < _urls.size(); ++mirr ) {
-
-        MIL << "Trying to fetch file " << srcFile << " with mirror " << _urls[mirr].url() << std::endl;
+      const auto &mirrOrder = mirrorOrder (srcFile);
+      for ( unsigned mirr : mirrOrder ) {
+        MIL << "Trying to fetch file " << srcFile << " via URL: " << _origin[mirr].url() << std::endl;
         Url fileurl(getFileUrl(mirr, filename));
 
         try
         {
-          if(!_urls[mirr].url().isValid())
-            ZYPP_THROW(MediaBadUrlException(_urls[mirr].url()));
+          const auto &myOrigin = _origin[mirr];
+          if(!myOrigin.url().isValid())
+            ZYPP_THROW(MediaBadUrlException(myOrigin.url()));
 
-          if(_urls[mirr].url().getHost().empty())
-            ZYPP_THROW(MediaBadUrlEmptyHostException(_urls[mirr].url()));
+          if(myOrigin.url().getHost().empty())
+            ZYPP_THROW(MediaBadUrlEmptyHostException(myOrigin.url()));
 
 
           Pathname dest = target.absolutename();
@@ -197,7 +198,7 @@ namespace zypp {
           RequestData r;
           r._mirrorIdx = mirr;
           r._req = std::make_shared<zyppng::NetworkRequest>( curlUrl, destNew, zyppng::NetworkRequest::WriteShared /*do not truncate*/ );
-          r._req->transferSettings() = _mirrorSettings[mirr];
+          r._req->transferSettings() = myOrigin.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
           r._req->setExpectedFileSize ( srcFile.downloadSize () );
 
           bool done = false;
@@ -255,7 +256,7 @@ namespace zypp {
         catch (MediaException & excpt_r)
         {
           // check if we can retry on the next mirror
-          if( !canTryNextMirror ( excpt_r ) || ( mirr+1 >= _urls.size() ) ) {
+          if( !canTryNextMirror ( excpt_r ) || ( mirr == mirrOrder.back() ) ) {
             // rewrite the exception to contain the correct pathname and url
             // the executeRequest implementation just emits the full Url in the exception
             if ( typeid(excpt_r) == typeid( MediaFileNotFoundException ) ) {
@@ -275,12 +276,16 @@ namespace zypp {
       DBG << filename.asString() << endl;
 
       std::exception_ptr lastErr;
-      for ( unsigned mirr = 0; mirr < _urls.size(); ++mirr ) {
-        if( !_urls[mirr].url().isValid() )
-          ZYPP_THROW(MediaBadUrlException(_urls[mirr].url()));
+      MIL << "Trying origin: " << _origin << std::endl;
+      for ( unsigned mirr = 0; mirr < _origin.endpointCount(); ++mirr ) {
 
-        if( _urls[mirr].url().getHost().empty() )
-          ZYPP_THROW(MediaBadUrlEmptyHostException(_urls[mirr].url()));
+        const auto &myEndpoint = _origin[mirr];
+
+        if( !myEndpoint.url().isValid() )
+          ZYPP_THROW(MediaBadUrlException(myEndpoint.url()));
+
+        if( _origin[mirr].url().getHost().empty() )
+          ZYPP_THROW(MediaBadUrlEmptyHostException(myEndpoint.url()));
 
         Url url(getFileUrl(mirr, filename));
 
@@ -296,7 +301,7 @@ namespace zypp {
         r._mirrorIdx = mirr;
         r._req = std::make_shared<zyppng::NetworkRequest>( curlUrl, "/dev/null" );
         r._req->setOptions ( zyppng::NetworkRequest::HeadRequest ); // just check for existance
-        r._req->transferSettings() = _mirrorSettings[mirr];
+        r._req->transferSettings() = myEndpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
 
         // as we are not having user interaction, the user can't cancel
         // the file existence checking, a callback or timeout return code
@@ -306,10 +311,10 @@ namespace zypp {
 
         } catch ( const MediaException &e ) {
           // check if we can retry on the next mirror
-          if( !canTryNextMirror ( e ) ) {
-            ZYPP_RETHROW(e);
-          }
           lastErr = ZYPP_FWD_CURRENT_EXCPT();
+          if( !canTryNextMirror ( e ) ) {
+            break;
+          }
           continue;
         }
         // exists
@@ -401,8 +406,10 @@ namespace zypp {
     void MediaCurl2::executeRequest(  MediaCurl2::RequestData &reqData , callback::SendReport<DownloadProgressReport> *report )
     {
       const auto &authCb = [&]( const zypp::Url &, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry, bool &canContinue ) {
-        if ( authenticate( _urls[reqData._mirrorIdx].url(), _mirrorSettings[reqData._mirrorIdx], availAuthTypes, firstTry ) ) {
-          settings = _mirrorSettings[reqData._mirrorIdx];
+        auto &originEndpoint = _origin[reqData._mirrorIdx];
+        auto &epSettings     = originEndpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
+        if ( authenticate( _origin[reqData._mirrorIdx].url(), epSettings, availAuthTypes, firstTry ) ) {
+          settings = epSettings;
           canContinue = true;
           return;
         }

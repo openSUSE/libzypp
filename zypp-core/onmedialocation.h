@@ -119,6 +119,12 @@ namespace zypp
     /** Set the \ref deltafile. */
     OnMediaLocation & setDeltafile( Pathname path );
 
+    /** The requested file is allowed to be fetched via mirrors ( defaults to true ) */
+    bool mirrorsAllowed() const;
+
+    /** Enables or disables the use of mirrors when fetching this file */
+    OnMediaLocation &setMirrorsAllowed( bool set = true );
+
 
   public:
     class Impl;                 ///< Implementation class.

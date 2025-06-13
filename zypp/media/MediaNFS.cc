@@ -39,13 +39,13 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaNFS::MediaNFS(const MediaUrl &url_r,
+    MediaNFS::MediaNFS(const MirroredOrigin &origin_r,
                        const Pathname & attach_point_hint_r )
-      : MediaHandler( url_r, {}, attach_point_hint_r,
+      : MediaHandler( origin_r, attach_point_hint_r,
                       "/", // urlpath at attachpoint
                       false ) // does_download
     {
-        MIL << "MediaNFS::MediaNFS(" << url_r.url() << ", " << attach_point_hint_r << ")" << endl;
+        MIL << "MediaNFS::MediaNFS(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -58,14 +58,14 @@ namespace zypp {
     //
     void MediaNFS::attachTo(bool next)
     {
-      if(_url.url().getHost().empty())
-        ZYPP_THROW(MediaBadUrlEmptyHostException(_url.url()));
+      if(_origin.authority().url().getHost().empty())
+        ZYPP_THROW(MediaBadUrlEmptyHostException(_origin.authority().url()));
       if(next)
-        ZYPP_THROW(MediaNotSupportedException(_url.url()));
+        ZYPP_THROW(MediaNotSupportedException(_origin.authority().url()));
 
-      std::string path = _url.url().getHost();
+      std::string path = _origin.authority().url().getHost();
       path += ':';
-      path += Pathname(_url.url().getPathName()).asString();
+      path += Pathname(_origin.authority().url().getPathName()).asString();
 
       MediaSourceRef media( new MediaSource("nfs", path));
       AttachedMedia  ret( findAttachedMedia( media));
@@ -92,13 +92,13 @@ namespace zypp {
       }
       std::string mountpoint( attachPoint().asString() );
 
-      std::string filesystem( _url.url().getScheme() );
-      if ( filesystem != "nfs4" && _url.url().getQueryParam("type") == "nfs4" )
+      std::string filesystem( _origin.authority().url().getScheme() );
+      if ( filesystem != "nfs4" && _origin.authority().url().getQueryParam("type") == "nfs4" )
       {
         filesystem = "nfs4";
       }
 
-      std::string options = _url.url().getQueryParam("mountoptions");
+      std::string options = _origin.authority().url().getQueryParam("mountoptions");
       if(options.empty())
       {
         options="ro";

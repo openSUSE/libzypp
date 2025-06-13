@@ -100,7 +100,7 @@ namespace zyppng {
          | transform( [this]( const zypp::Url &url ) {
 
             _reports.info( "  gpgkey=" + url.asString() );
-            return _reports.zyppContext()->provider ()->provide( url, zyppng::ProvideFileSpec() )
+            return _reports.zyppContext()->provider ()->provide( url, zyppng::ProvideFileSpec().setMirrorsAllowed(false) )
               | and_then( [this, url]( ProvideRes f ) -> expected<void> {
                   try {
                     zypp::PublicKey key(f.file());

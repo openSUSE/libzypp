@@ -51,6 +51,8 @@ namespace zypp
 
     Pathname  _deltafile;
 
+    bool _mirrorsAllowed = true;
+
   public:
     /** Offer default Impl. */
     static shared_ptr<Impl> nullimpl()
@@ -153,6 +155,12 @@ namespace zypp
 
   OnMediaLocation &OnMediaLocation::setDeltafile( Pathname path )
   { _pimpl->_deltafile = std::move(path); return *this; }
+
+  bool OnMediaLocation::mirrorsAllowed() const
+  { return _pimpl->_mirrorsAllowed; }
+
+  OnMediaLocation &OnMediaLocation::setMirrorsAllowed(bool set)
+  { _pimpl->_mirrorsAllowed = set; return *this; }
 
   std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj )
   { return str << *obj._pimpl; }

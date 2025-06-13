@@ -33,8 +33,10 @@ namespace zypp
     class MediaNetworkCommonHandler : public MediaHandler
     {
     public:
-      MediaNetworkCommonHandler( const MediaUrl &url_r,
-                                 const std::vector<MediaUrl> &mirrors_r,
+
+      static constexpr std::string_view MIRR_SETTINGS_KEY = "_zypp_transfersettings";
+
+      MediaNetworkCommonHandler( const MirroredOrigin &origin_r,
                                  const Pathname & attach_point_r,
                                  const Pathname & urlpath_below_attachpoint_r,
                                  const bool       does_download_r );
@@ -74,6 +76,7 @@ namespace zypp
        * \throws MediaCurlSetOptException if there is a problem
        **/
       void setupTransferSettings();
+      void clearTransferSettings();
 
       bool authenticate( const Url &url, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry );
 
@@ -82,6 +85,8 @@ namespace zypp
        * \throws MediaBadUrlException if there is a problem
        **/
       virtual void checkProtocol(const Url &url) const = 0;
+
+      std::vector<unsigned> mirrorOrder( const OnMediaLocation &loc ) const;
 
     public:
 
@@ -109,7 +114,6 @@ namespace zypp
 
     protected:
       std::vector<Url> _redirTargets;
-      std::vector<TransferSettings> _mirrorSettings;
     };
 
   } // namespace media

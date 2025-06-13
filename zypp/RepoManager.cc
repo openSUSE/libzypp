@@ -125,8 +125,8 @@ namespace zypp
   RepoStatus RepoManager::metadataStatus( const RepoInfo & info ) const
   { return _pimpl->ngMgr().metadataStatus( info ).unwrap(); }
 
-  RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata(const RepoInfo &info, const std::vector<Url> &urls, RawMetadataRefreshPolicy policy)
-  { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, urls, policy ).unwrap(); }
+  RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata(const RepoInfo &info, const zypp::MirroredOrigin &origin, RawMetadataRefreshPolicy policy)
+  { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, origin, policy ).unwrap(); }
 
   RepoManager::RefreshCheckStatus RepoManager::checkIfToRefreshMetadata( const RepoInfo &info, const Url &url, RawMetadataRefreshPolicy policy )
   { return _pimpl->ngMgr().checkIfToRefreshMetadata( info, url, policy ).unwrap(); }
@@ -139,8 +139,8 @@ namespace zypp
 
   void RepoManager::refreshMetadata( const RepoInfo &info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
   {
-    // Suppress (interactive) media::MediaChangeReport if we in have multiple basurls (>1)
-    zypp::media::ScopedDisableMediaChangeReport guard( info.effectiveBaseUrls().size() > 1 );
+    // Suppress (interactive) media::MediaChangeReport if we in have multiple origins (>1)
+    zypp::media::ScopedDisableMediaChangeReport guard( info.repoOrigins ().size() > 1 );
     return _pimpl->ngMgr().refreshMetadata( info, policy, nullptr ).unwrap();
   }
 

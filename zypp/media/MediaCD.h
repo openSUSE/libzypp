@@ -63,7 +63,7 @@ namespace zypp {
 
       public:
 
-        MediaCD(MediaUrl  url_r,
+        MediaCD(MirroredOrigin  origin_r,
                 const Pathname & attach_point_hint_r );
 
         ~MediaCD() override { try { release(); } catch(...) {} }

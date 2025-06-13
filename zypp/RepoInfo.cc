@@ -144,8 +144,8 @@ namespace zypp
       if ( !_baseUrls.empty() ) {
         return RepoVariablesReplacedUrl( _baseUrls.raw ().front(), _baseUrls.transformator() );
       }
-      if ( !effectiveBaseUrls().empty() ) {
-        return RepoVariablesReplacedUrl( effectiveBaseUrls ().front (), _baseUrls.transformator() );
+      if ( !mirrorUrls().empty() ){
+        return RepoVariablesReplacedUrl( _mirrorUrls.front (), _baseUrls.transformator() );
       }
       return RepoVariablesReplacedUrl();
     }
@@ -161,22 +161,24 @@ namespace zypp
       return mirrorListUrl().transformed();
     }
 
-    void resetEffectiveUrls() const {
-      _effectiveBaseUrls.clear ();
-      _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
+    void resetMirrorUrls() const {
+      _mirrorUrls.clear ();
+      _lastMirrorUrlsUpdate = std::chrono::steady_clock::time_point::min();
     }
 
-    url_set &effectiveBaseUrls() const
+    /**
+     * Fetch the repo mirrors from the server
+     *
+     * \todo this should be a pipeline
+     */
+    url_set &mirrorUrls() const
     {
-      if ( !_effectiveBaseUrls.empty()
-           && ( std::chrono::steady_clock::now() - _lastEffectiveUrlsUpdate < std::chrono::hours(1) ) )
-        return _effectiveBaseUrls;
+      if ( !_mirrorUrls.empty()
+           && ( std::chrono::steady_clock::now() - _lastMirrorUrlsUpdate < std::chrono::hours(1) ) )
+        return _mirrorUrls;
 
-      _effectiveBaseUrls.clear();
-      _lastEffectiveUrlsUpdate = std::chrono::steady_clock::now();
-
-      // prefer baseUrl over mirrors, this should prevent us from downloading old metadata from mirrors
-      _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), _baseUrls.transformedBegin (), _baseUrls.transformedEnd () );
+      _mirrorUrls.clear();
+      _lastMirrorUrlsUpdate = std::chrono::steady_clock::now();
 
       bool isAutoMirrorList = false; // bsc#1243901 Allows mirrorlist parsing to fail if automatically switched on
 
@@ -193,8 +195,7 @@ namespace zypp
         isAutoMirrorList = true;
       }
 
-      if ( !mlurl.asString().empty() )
-      {
+      if ( !mlurl.asString().empty() ) {
         try {
           DBG << "MetadataPath: " << metadataPath() << endl;
           repo::RepoMirrorList rmurls( mlurl, metadataPath() );
@@ -203,50 +204,29 @@ namespace zypp
           const auto &tf = [urlTemplate =mirrorListUrl().transformed()]( const zypp::Url &in ){
             return internal::propagateQueryParams ( in , urlTemplate );
           };
-          _effectiveBaseUrls.insert( _effectiveBaseUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
+          _mirrorUrls.insert( _mirrorUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
         } catch ( const zypp::Exception & e ) {
           // failed to fetch the mirrorlist/metalink, if we still have a baseUrl we can go on, otherwise this is a error
-          if ( _baseUrls.empty () ) {
-            _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
-            _effectiveBaseUrls.clear();
-            throw;
-          } else {
-            MIL << "Mirrorlist failed, repo either returns invalid data or has no mirrors at all, falling back to only baseUrl!" << std::endl;
-            if ( !isAutoMirrorList ) {
-              callback::UserData data( JobReport::repoRefreshMirrorlist );
-              data.set("error", e );
-              JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
-            }
+          MIL << "Mirrorlist failed, repo either returns invalid data or has no mirrors at all!" << std::endl;
+          if ( !isAutoMirrorList ) {
+            callback::UserData data( JobReport::repoRefreshMirrorlist );
+            data.set("error", e );
+            JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
           }
         }
       }
-      return _effectiveBaseUrls;
+      return _mirrorUrls;
     }
 
-    std::vector<std::vector<Url>> groupedBaseUrls() const
+    MirroredOriginSet repoOrigins() const
     {
-      // here we group the URLs to figure out mirrors
-      std::vector<std::vector<Url>> urlGroups;
-      int dlUrlIndex = -1; //we remember the index of the first downloading URL
+      MirroredOriginSet origins;
+      origins.addEndpoints( _baseUrls.transformedBegin(), _baseUrls.transformedEnd() );
 
-      const auto &baseUrls = effectiveBaseUrls();
-      std::for_each ( baseUrls.begin(), baseUrls.end(), [&]( const zypp::Url &url ){
-        if ( !url.schemeIsDownloading () ) {
-          urlGroups.push_back ( { url } );
-          return;
-        }
+      const auto &mirrs = mirrorUrls ();
+      origins.addEndpoints( mirrs.begin(), mirrs.end() );
 
-        if ( dlUrlIndex >= 0) {
-          urlGroups[dlUrlIndex].push_back ( url );
-          return;
-        }
-
-        // start a new group
-        urlGroups.push_back ( {url} );
-        dlUrlIndex = urlGroups.size() - 1;
-      });
-
-      return urlGroups;
+      return origins;
     }
 
     RepoVariablesReplacedUrlList & baseUrls()
@@ -488,9 +468,12 @@ namespace zypp
     Pathname _metadataPath;
     Pathname _packagesPath;
 
-    mutable RepoVariablesReplacedUrlList _baseUrls;
-    mutable url_set _effectiveBaseUrls;
-    mutable std::chrono::steady_clock::time_point _lastEffectiveUrlsUpdate = std::chrono::steady_clock::time_point::min();
+    mutable RepoVariablesReplacedUrlList _baseUrls; //< baseUrls as configured
+
+    mutable url_set _mirrorUrls; //< possible mirrors as fetched via mirrorlist or metalink
+    mutable std::chrono::steady_clock::time_point _lastMirrorUrlsUpdate = std::chrono::steady_clock::time_point::min();
+    mutable std::vector<MirroredOrigin> _repoOrigins;
+
     mutable std::pair<FalseBool, std::set<std::string> > _keywords;
 
     RepoVariablesReplacedUrlList _gpgKeyUrls;
@@ -687,30 +670,30 @@ namespace zypp
         return;
 
     _pimpl->baseUrls().raw().push_back( url_r );
-    _pimpl->resetEffectiveUrls ();
+    _pimpl->resetMirrorUrls ();
   }
 
   void RepoInfo::setBaseUrl( Url url_r )
   {
     _pimpl->baseUrls().raw().clear();
-    _pimpl->resetEffectiveUrls ();
+    _pimpl->resetMirrorUrls ();
     _pimpl->baseUrls().raw().push_back( std::move(url_r) );
   }
 
   void RepoInfo::setBaseUrls( url_set urls )
   {
-    _pimpl->resetEffectiveUrls ();
+    _pimpl->resetMirrorUrls ();
     _pimpl->baseUrls().raw().swap( urls );
   }
 
-  bool RepoInfo::effectiveBaseUrlsEmpty() const
+  MirroredOriginSet RepoInfo::repoOrigins() const
   {
-    return _pimpl->effectiveBaseUrls().empty();
+    return _pimpl->repoOrigins();
   }
 
-  RepoInfo::url_set RepoInfo::effectiveBaseUrls() const
+  bool RepoInfo::repoOriginsEmpty() const
   {
-    return _pimpl->effectiveBaseUrls();
+    return ( _pimpl->baseUrls().empty () && _pimpl->mirrorUrls().empty() );
   }
 
   void RepoInfo::setPath( const Pathname &path )
@@ -803,9 +786,6 @@ namespace zypp
 
   Url RepoInfo::location() const
   { return _pimpl->location (); }
-
-  std::vector<std::vector<Url>> RepoInfo::groupedBaseUrls() const
-  { return _pimpl->groupedBaseUrls(); }
 
   RepoInfo::urls_const_iterator RepoInfo::baseUrlsBegin() const
   { return _pimpl->baseUrls().transformedBegin(); }
@@ -1144,8 +1124,8 @@ namespace zypp
   {
     // We skip the check for downloading media unless a local copy of the
     // media file exists and states that there is more than one medium.
-    const auto &effUrls = _pimpl->effectiveBaseUrls ();
-    bool canSkipMediaCheck = std::all_of( effUrls.begin(), effUrls.end(), []( const zypp::Url &url ) { return url.schemeIsDownloading(); });
+    const auto &origins = _pimpl->repoOrigins ();
+    bool canSkipMediaCheck = std::all_of( origins.begin(), origins.end(), []( const MirroredOrigin &origin ) { return origin.authority().url().schemeIsDownloading(); });
     if ( canSkipMediaCheck ) {
       const auto &mDataPath = metadataPath();
       if ( not mDataPath.empty() ) {

@@ -14,6 +14,7 @@
 #define ZYPP_ZYPP_DETAIL_URLCREDENTIALEXTRACTOR_P_H
 
 #include <zypp-core/Url.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp/media/CredentialManager.h>
 
 namespace zypp
@@ -64,6 +65,13 @@ namespace zypp
       }
       return ret;
     }
+
+    /** Remember credentials stored in OriginEndpoint authority leaving the password in \a url_r. */
+    bool collect( const OriginEndpoint & url_r )
+    {
+      return collect(url_r.url());
+    }
+
     /** \overload operating on Url container */
     template<class TContainer>
     bool collect( const TContainer & urls_r )

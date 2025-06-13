@@ -38,8 +38,8 @@ namespace zyppng {
 
     friend class ProvideItem;
 
-    static expected<ProvideRequestRef> create( ProvideItem &owner, const std::vector<zypp::Url> &urls, const std::string &id, ProvideMediaSpec &spec );
-    static expected<ProvideRequestRef> create ( ProvideItem &owner, const std::vector<zypp::Url> &urls, ProvideFileSpec &spec );
+    static expected<ProvideRequestRef> create( ProvideItem &owner, const zypp::MirroredOrigin &origin, const std::string &id, ProvideMediaSpec &spec );
+    static expected<ProvideRequestRef> create ( ProvideItem &owner, const zypp::MirroredOrigin &origin, ProvideFileSpec &spec );
     static expected<ProvideRequestRef> createDetach( const zypp::Url &url );
 
     ProvideItem * owner() { return _owner; }
@@ -58,20 +58,21 @@ namespace zyppng {
     const std::optional<zypp::Url> activeUrl() const;
     void setActiveUrl ( const zypp::Url &urlToUse );
 
-    void setUrls( const std::vector<zypp::Url> & urls ) {
-      _mirrors = urls;
+    void setOrigin( zypp::MirroredOrigin origin ) {
+      _origin = std::move(origin);
     }
 
-    const std::vector<zypp::Url> &urls() const {
-      return _mirrors;
+    const zypp::MirroredOrigin &origin() const {
+      return _origin;
     }
 
     zypp::Url url() const {
-      return _mirrors.front();
+      return _origin.authority().url();
     }
 
     void setUrl( const zypp::Url & url ) {
-      _mirrors = {url};
+      _origin.setAuthority (url);
+      _origin.clearMirrors ();
     }
 
     void clearForRestart () {
@@ -81,10 +82,10 @@ namespace zyppng {
     }
 
   private:
-    ProvideRequest( ProvideItem *owner, const std::vector<zypp::Url> &urls, ProvideMessage &&msg ) : _owner(owner), _message(std::move(msg) ), _mirrors(urls) {}
+    ProvideRequest( ProvideItem *owner, zypp::MirroredOrigin origin, ProvideMessage &&msg ) : _owner(owner), _message(std::move(msg) ), _origin ( std::move(origin) ) {}
     ProvideItem *_owner = nullptr; // destructor of ProvideItem will dequeue the item, so no need to do refcount here
     ProvideMessage _message;
-    std::vector<zypp::Url>   _mirrors;
+    zypp::MirroredOrigin     _origin;
     std::vector<zypp::Url>   _pastRedirects;
     std::optional<zypp::Url> _activeUrl;
     ProvideQueueWeakRef _myQueue;
@@ -134,7 +135,7 @@ namespace zyppng {
   {
   public:
 
-    static ProvideFileItemRef create ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent );
+    static ProvideFileItemRef create ( zypp::MirroredOrigin origin,const ProvideFileSpec &request, ProvidePrivate &parent );
 
     // ProvideItem interface
     void initialize () override;
@@ -147,7 +148,7 @@ namespace zyppng {
     zypp::ByteCount bytesExpected () const override;
 
   protected:
-    ProvideFileItem ( const std::vector<zypp::Url> &urls,const ProvideFileSpec &request, ProvidePrivate &parent );
+    ProvideFileItem ( zypp::MirroredOrigin origin,const ProvideFileSpec &request, ProvidePrivate &parent );
 
     void informalMessage ( ProvideQueue &, ProvideRequestRef req, const ProvideMessage &msg  ) override;
 
@@ -159,7 +160,7 @@ namespace zyppng {
   private:
     Provide::MediaHandle _handleRef;    //< If we are using a attached media, this will keep the reference around
     bool _promiseCreated = false;
-    std::vector<zypp::Url> _mirrorList; //< All available URLs, first one is the primary
+    zypp::MirroredOrigin _origin;       //< All available URLs
     ProvideFileSpec     _initialSpec;   //< The initial spec as defined by the user code
     zypp::Pathname      _targetFile;    //< The target file as reported by the worker
     zypp::Pathname      _stagingFile;   //< The staging file as reported by the worker
@@ -175,13 +176,13 @@ namespace zyppng {
   {
   public:
     ~AttachMediaItem();
-    static AttachMediaItemRef create ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    static AttachMediaItemRef create ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
     SignalProxy< void( const zyppng::expected<AttachedMediaInfo *> & ) > sigReady ();
 
     ProvidePromiseRef<Provide::MediaHandle> promise();
 
   protected:
-    AttachMediaItem ( const std::vector<zypp::Url> &urls, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    AttachMediaItem ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
 
     // ProvideItem interface
     void initialize () override;
@@ -198,7 +199,7 @@ namespace zyppng {
     Signal< void( const zyppng::expected<AttachedMediaInfo *> & )> _sigReady;
     bool _promiseCreated = false;
     connection _masterItemConn;
-    std::vector<zypp::Url> _mirrorList;   //< All available URLs, first one is the primary
+    zypp::MirroredOrigin _origin;   //< All available URLs
     ProvideMediaSpec    _initialSpec;    //< The initial spec as defined by the user code
     ProvideQueue::Config::WorkerType _workerType = ProvideQueue::Config::Invalid;
     ProvidePromiseWeakRef<Provide::MediaHandle> _promise;

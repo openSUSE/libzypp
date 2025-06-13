@@ -15,15 +15,15 @@
 #include <list>
 #include <set>
 
-#include <zypp/base/Iterator.h>
+#include <zypp-core/base/Iterator.h>
 #include <zypp-core/Globals.h>
+#include <zypp-core/MirroredOrigin.h>
+#include <zypp-core/TriBool.h>
+#include <zypp-core/Url.h>
 
-#include <zypp/Url.h>
 #include <zypp/Locale.h>
-#include <zypp/TriBool.h>
 #include <zypp/repo/RepoType.h>
 #include <zypp/repo/RepoVariables.h>
-
 #include <zypp/repo/RepoInfoBase.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -175,28 +175,21 @@ namespace zypp
       void setBaseUrls( url_set urls );
 
       /**
-       * whether effective repository urls are available
-       */
-      bool effectiveBaseUrlsEmpty() const;
-
-      /**
-       * The complete set of effective repository urls
+       * The repodata origins
        *
        * These are either the configured baseurls including the downloaded
        * mirror list (\see \ref mirrorListUrl) or meta link urls.
        *
        * Also if there is just one baseUrl pointing to a well known opensuse server
        * it might contain additional mirrors requested from the server on demand
+       *
        */
-      url_set effectiveBaseUrls() const;
+      MirroredOriginSet repoOrigins() const;
 
       /**
-       * Returns the currently known effective baseUrls in groups, where each group contains a
-       * primary base url and additional urls that should be used as mirrors.
+       * whether repo origins are available
        */
-      std::vector<std::vector<Url>> groupedBaseUrls() const;
-
-
+      bool repoOriginsEmpty() const;
 
       /**
        * \short Repository path

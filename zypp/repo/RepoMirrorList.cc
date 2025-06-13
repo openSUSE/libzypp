@@ -105,7 +105,7 @@ namespace zypp
           // this will handle traditional media including URL resolver plugins
           Url abs_url( url_r );
           abs_url.setPathName( "/" );
-          _access.reset( new MediaSetAccess( std::vector<zypp::media::MediaUrl>{abs_url} ) );
+          _access.reset( new MediaSetAccess( zypp::MirroredOrigin{abs_url} ) );
           _localfile = _access->provideFile( url_r.getPathName() );
 
         }

@@ -69,8 +69,7 @@ class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHel
 
   public:
 
-    MediaCurl( const MediaUrl &url_r,
-               const std::vector<MediaUrl> &mirrors_r,
+    MediaCurl( const MirroredOrigin &origin_r,
                const Pathname &attach_point_hint_r );
 
     ~MediaCurl() override;
@@ -90,7 +89,7 @@ class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHel
      * initializes the curl easy handle with the data from the url
      * \throws MediaCurlSetOptException if there is a problem
      **/
-    void setupEasy( RequestData &rData, TransferSettings &settings );
+    void setupEasy(RequestData &rData, TransferSettings &settings );
 
     /**
      * Evaluates a curl return code and throws the right MediaException

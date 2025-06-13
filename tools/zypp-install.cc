@@ -69,11 +69,11 @@ try {
       bool refreshNeeded = false;
       if ( nrepo.autorefresh() )	// test whether to autorefresh repo metadata
       {
-        for ( const std::vector<Url> & urls : nrepo.groupedBaseUrls() )
+        for ( const zypp::MirroredOrigin &origin : nrepo.repoOrigins() )
         {
           try
           {
-            if ( repoManager.checkIfToRefreshMetadata( nrepo, urls ) == RepoManager::REFRESH_NEEDED )
+            if ( repoManager.checkIfToRefreshMetadata( nrepo, origin ) == RepoManager::REFRESH_NEEDED )
             {
               cout << "Need to autorefresh repo " << nrepo.alias() << endl;
               refreshNeeded = true;

@@ -98,13 +98,13 @@ namespace zypp {
     //
     //	DESCRIPTION :
     //
-    MediaCIFS::MediaCIFS(const MediaUrl &url_r,
+    MediaCIFS::MediaCIFS(const MirroredOrigin &origin_r,
                          const Pathname & attach_point_hint_r )
-        : MediaHandler( url_r, {},attach_point_hint_r,
-                    stripShare( url_r.url().getPathName() ), // urlpath WITHOUT share name at attachpoint
+        : MediaHandler( origin_r,attach_point_hint_r,
+                    stripShare( origin_r.authority().url().getPathName() ), // urlpath WITHOUT share name at attachpoint
                     false )       // does_download
     {
-        MIL << "MediaCIFS::MediaCIFS(" << _url.url() << ", " << attach_point_hint_r << ")" << endl;
+        MIL << "MediaCIFS::MediaCIFS(" << _origin.authority().url() << ", " << attach_point_hint_r << ")" << endl;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,13 +128,13 @@ namespace zypp {
      */
     void MediaCIFS::attachTo(bool next)
     {
-      if(_url.url().getHost().empty())
-        ZYPP_THROW(MediaBadUrlEmptyHostException(_url.url()));
+      if(_origin.authority().url().getHost().empty())
+        ZYPP_THROW(MediaBadUrlEmptyHostException(_origin.authority().url()));
       if(next)
-        ZYPP_THROW(MediaNotSupportedException(_url.url()));
+        ZYPP_THROW(MediaNotSupportedException(_origin.authority().url()));
 
       std::string path = "//";
-      path += _url.url().getHost() + "/" + getShare( _url.url().getPathName() );
+      path += _origin.authority().url().getHost() + "/" + getShare( _origin.authority().url().getPathName() );
 
       MediaSourceRef media( new MediaSource( "cifs", path));
       AttachedMedia  ret( findAttachedMedia( media));
@@ -164,22 +164,22 @@ namespace zypp {
       Mount mount;
       CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
 
-      Mount::Options options( _url.url().getQueryParam("mountoptions") );
-      std::string username = _url.url().getUsername();
-      std::string password = _url.url().getPassword();
+      Mount::Options options( _origin.authority().url().getQueryParam("mountoptions") );
+      std::string username = _origin.authority().url().getUsername();
+      std::string password = _origin.authority().url().getPassword();
 
       if ( ! options.has( "rw" ) ) {
         options["ro"];
       }
 
       // look for a workgroup
-      std::string workgroup = _url.url().getQueryParam("workgroup");
+      std::string workgroup = _origin.authority().url().getQueryParam("workgroup");
       if ( workgroup.empty() )
-        workgroup = _url.url().getQueryParam("domain");
+        workgroup = _origin.authority().url().getQueryParam("domain");
       if ( !workgroup.empty() )
         options["domain"] = workgroup;
 
-      // extract 'username', do not overwrite any _url.username
+      // extract 'username', do not overwrite any _origin.authority().username
 
       Mount::Options::iterator toEnv;
       toEnv = options.find("username");
@@ -196,7 +196,7 @@ namespace zypp {
         options.erase( toEnv );
       }
 
-      // extract 'password', do not overwrite any _url.password
+      // extract 'password', do not overwrite any _origin.authority().password
 
       toEnv = options.find("password");
       if ( toEnv != options.end() ) {
@@ -214,7 +214,7 @@ namespace zypp {
 
       if ( username.empty() || password.empty() )
       {
-        AuthData_Ptr c = cm.getCred(_url.url());
+        AuthData_Ptr c = cm.getCred(_origin.authority().url());
         if (c)
         {
           username = c->username();
@@ -406,15 +406,15 @@ namespace zypp {
       CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
 
       // get stored credentials
-      AuthData_Ptr cmcred = cm.getCred(_url.url());
+      AuthData_Ptr cmcred = cm.getCred(_origin.authority().url());
 
       AuthData_Ptr smbcred;
       smbcred.reset(new AuthData());
       callback::SendReport<AuthenticationReport> auth_report;
 
       // preset the username if present in current url
-      if (!_url.url().getUsername().empty() && firstTry)
-        smbcred->setUsername(_url.url().getUsername());
+      if (!_origin.authority().url().getUsername().empty() && firstTry)
+        smbcred->setUsername(_origin.authority().url().getUsername());
       // if CM has found some credentials, preset the username from there
       else if (cmcred)
         smbcred->setUsername(cmcred->username());
@@ -424,10 +424,10 @@ namespace zypp {
 
       std::string prompt_msg = str::form(
         //!\todo add comma to the message for the next release
-        _("Authentication required for '%s'"), _url.url().asString().c_str());
+        _("Authentication required for '%s'"), _origin.authority().url().asString().c_str());
 
       // ask user
-      if (auth_report->prompt(_url.url(), prompt_msg, *smbcred))
+      if (auth_report->prompt(_origin.authority().url(), prompt_msg, *smbcred))
       {
         DBG << "callback answer: retry" << endl
             << "AuthData: " << *smbcred << endl;
@@ -435,8 +435,8 @@ namespace zypp {
         if (smbcred->valid())
         {
           cmcred = smbcred;
-            // if (credentials->username() != _url.getUsername())
-            //   _url.setUsername(credentials->username());
+            // if (credentials->username() != _origin.authority().getUsername())
+            //   _origin.authority().setUsername(credentials->username());
             /**
              *  \todo find a way to save the url with changed username
              *  back to repoinfo or dont store urls with username
@@ -456,7 +456,7 @@ namespace zypp {
         authdata.setPassword(cmcred->password());
 
         // save the credentials
-        cmcred->setUrl(_url.url());
+        cmcred->setUrl(_origin.authority().url());
         cm.addCred(*cmcred);
         cm.save();
 

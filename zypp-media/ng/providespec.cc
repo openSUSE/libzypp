@@ -79,6 +79,7 @@ namespace zyppng
 
     zypp::Pathname  _deltafile;
 
+    bool _mirrorsAllowed = true;
 
   public:
     /** Offer default Impl. */
@@ -248,6 +249,12 @@ namespace zyppng
   ProvideFileSpec &ProvideFileSpec::setDeltafile( const zypp::Pathname &path )
   { _pimpl->_deltafile = (path); return *this; }
 
+  bool ProvideFileSpec::mirrorsAllowed() const
+  { return _pimpl->_mirrorsAllowed; }
+
+  ProvideFileSpec &ProvideFileSpec::setMirrorsAllowed(bool set)
+  { _pimpl->_mirrorsAllowed = std::move(set); return *this; }
+
   HeaderValueMap &ProvideFileSpec::customHeaders()
   { return _pimpl->_customHeaders; }
 
@@ -276,7 +283,8 @@ namespace zyppng
         .setOpenChecksum( openChecksum() )
         .setHeaderSize( headerSize() )
         .setHeaderChecksum( headerChecksum() )
-        .setDeltafile( deltafile() );
+        .setDeltafile( deltafile() )
+        .setMirrorsAllowed( mirrorsAllowed () );
   }
 
   std::ostream & operator<<( std::ostream & str, const ProvideFileSpec & obj )

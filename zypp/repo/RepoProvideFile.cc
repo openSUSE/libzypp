@@ -301,12 +301,10 @@ namespace zypp
 
       // Suppress (interactive) media::MediaChangeReport if we in have multiple origins (>1)
       media::ScopedDisableMediaChangeReport guard( repoOrigins.size() > 1 );
-      for ( auto it = repoOrigins.begin(); it != repoOrigins.end();
-            /* incremented in the loop */ )
+      for ( const auto &origin : repoOrigins )
       {
-        ++it;
 
-        if ( !it->isValid() ) {
+        if ( !origin.isValid() ) {
           MIL << "Skipping empty Url group" << std::endl;
           continue;
         }
@@ -314,12 +312,12 @@ namespace zypp
         try
         {
           MIL << "Providing file of repo '" << repo_r.alias() << "' from: ";
-          std::for_each( it->begin (), it->end(), [&]( const OriginEndpoint &u ){
+          std::for_each( origin.begin (), origin.end(), [&]( const OriginEndpoint &u ){
             MIL << u << ", ";
           });
           MIL << std::endl;
 
-          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( *it, repo_r );
+          shared_ptr<MediaSetAccess> access = _impl->mediaAccessForUrl( origin, repo_r );
           if ( !access )
             continue;
 

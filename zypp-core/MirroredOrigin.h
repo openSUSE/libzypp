@@ -66,7 +66,11 @@ namespace zypp {
 #ifdef __cpp_lib_any
      void setConfig( const std::string &key, std::any value );
      const std::any &getConfig( const std::string &key ) const;
+     std::any &getConfig( const std::string &key );
+     void eraseConfigValue( const std::string &key );
+
      const SettingsMap &config() const;
+     SettingsMap &config();
 
      template <typename T>
      std::enable_if_t<!std::is_same_v<T, std::any>> setConfig ( const std::string &key, T &&value ) {
@@ -77,10 +81,22 @@ namespace zypp {
      std::enable_if_t<!std::is_same_v<T, std::any>, const T&> getConfig( const std::string &key ) const {
        const std::any &c = getConfig(key);
        // use the pointer overloads to get to a const reference of the containing type
-       // we need to throw std::out_of_range manually here
+       // we need to throw std::bad_any_cast manually here
        const T* ref = std::any_cast<const T>(&c);
        if ( !ref )
-         throw std::out_of_range("Key was not found in settings map.");
+         throw std::bad_any_cast();
+
+       return *ref;
+     }
+
+     template <typename T>
+     std::enable_if_t<!std::is_same_v<T, std::any>, T&> getConfig( const std::string &key ) {
+       std::any &c = getConfig(key);
+       // use the pointer overloads to get to a const reference of the containing type
+       // we need to throw std::bad_any_cast manually here
+       T* ref = std::any_cast<T>(&c);
+       if ( !ref )
+         throw std::bad_any_cast();
 
        return *ref;
      }

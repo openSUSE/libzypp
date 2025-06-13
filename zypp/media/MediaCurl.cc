@@ -285,7 +285,7 @@ void MediaCurl::checkProtocol(const Url &url) const
   }
 }
 
-void MediaCurl::setupEasy( RequestData &rData, TransferSettings &settings )
+void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
 {
   CURL *curl = rData.curl;
 
@@ -515,7 +515,7 @@ void MediaCurl::disconnectFrom()
   }
 
   // clear effective settings
-  _mirrorSettings.clear();
+  clearTransferSettings();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -532,9 +532,10 @@ void MediaCurl::getFileCopy( const OnMediaLocation & srcFile , const Pathname & 
   // we need a non const pointer to work around the current API
   auto that = const_cast<MediaCurl *>(this);
   std::exception_ptr lastErr;
-  for ( int i = 0; i < (int)_origin.endpointCount(); i++ ) {
+  const auto &mirrOrder = mirrorOrder (srcFile);
+  for ( unsigned mirr : mirrOrder ) {
     try {
-      return that->getFileCopyFromMirror ( i, srcFile, target );
+      return that->getFileCopyFromMirror ( mirr, srcFile, target );
 
     } catch (MediaException & excpt_r) {
       if ( !canTryNextMirror ( excpt_r ) )
@@ -559,14 +560,14 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
   OptionalDownloadProgressReport reportfilter( srcFile.optional() );
   callback::SendReport<DownloadProgressReport> report;
 
-  auto &settings = _mirrorSettings.at(mirror);
+  auto &myUrl = _origin[mirror];
+  auto &settings = myUrl.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
+
   AutoDispose<CURL*> curl( curl_easy_init(), []( CURL *hdl ) { if ( hdl ) { curl_easy_cleanup(hdl); } }  );
 
   RequestData rData;
   rData.mirror = mirror;
   rData.curl = curl.value ();
-
-  const auto &myUrl = _origin[mirror];
 
   if( !myUrl.url().isValid() )
     ZYPP_THROW(MediaBadUrlException(myUrl.url()));
@@ -813,7 +814,7 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
   auto that = const_cast<MediaCurl *>(this);
 
   std::exception_ptr lastErr;
-  for ( int i = 0; i < (int)_origin.endpointCount(); i++ ) {
+  for ( int i : mirrorOrder( OnMediaLocation(filename).setMirrorsAllowed(false) )) {
     try {
       return that->doGetDoesFileExist( i, filename );
 
@@ -989,7 +990,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
   rData.mirror = mirror;
   rData.curl = curl.value ();
 
-  const auto &myUrl = _origin[mirror];
+  auto &myUrl = _origin[mirror];
 
   if( !myUrl.url().isValid() )
     ZYPP_THROW(MediaBadUrlException(myUrl.url()));
@@ -1019,7 +1020,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
   CURLcode ok;
   bool canRetry  = true;
   bool firstAuth = true;
-  auto &settings = _mirrorSettings[mirror];
+  auto &settings = myUrl.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
 
   while ( canRetry ) {
     canRetry = false;

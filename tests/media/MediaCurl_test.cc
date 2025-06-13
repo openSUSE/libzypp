@@ -252,10 +252,11 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
   BOOST_CHECK_NO_THROW( mm.attach(id) );
 
   zypp::OnMediaLocation loc("/test.txt");
-
-  BOOST_REQUIRE_EQUAL( mm.doesFileExist ( id, loc.filename () ), true );
   // no auth given
   BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
+
+  // error because we only allow authority
+  BOOST_REQUIRE_THROW( mm.provideFile( id, loc.setMirrorsAllowed (false)), zypp::Exception );
 
 }
 

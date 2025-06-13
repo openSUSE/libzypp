@@ -69,14 +69,14 @@ namespace zyppng {
         _destdir = _dlContext->destDir();
 
         auto providerRef = _dlContext->zyppContext()->provider();
-          return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+          return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed( false ) )
           | and_then( [this]( ProvideRes && masterres ) {
             // update the gpg keys provided by the repo
             return RepoInfoWorkflow::fetchGpgKeys( _dlContext->zyppContext(), _dlContext->repoInfo() )
             | and_then( [this](){
 
               // fetch signature and maybe key file
-              return provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+              return provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed( false ) )
 
               | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _sigpath ) )
 
@@ -91,14 +91,15 @@ namespace zyppng {
                   auto expKeyId = mtry( &KeyRing::readSignatureKeyId, _dlContext->zyppContext()->keyRing(), sigpathLocal );
                   if ( expKeyId && !_dlContext->zyppContext()->keyRing()->isKeyKnown(*expKeyId) ) {
 
-                    if ( _dlContext->repoInfo().mirrorListUrl().isValid() ) {
-                      // when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+                    bool needsMirrorToFetchKey =  _dlContext->repoInfo().baseUrlsEmpty() && _dlContext->repoInfo().mirrorListUrl().isValid() ;
+                    if ( needsMirrorToFetchKey ) {
+                      // when dealing with mirrors we notify the user to use gpgKeyUrl instead of
                       // fetching the gpg key from any mirror
                       JobReportHelper( _dlContext->zyppContext() ).warning(_("Downloading signature key via mirrors, consider explicitely setting gpgKeyUrl via the repository configuration instead."));
                     }
 
                     // we did not get the key via gpgUrl downloads, lets fallback
-                    return provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ) )
+                    return provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed(needsMirrorToFetchKey) )
                     | and_then( ProvideType::copyResultToDest ( provider(), _destdir / _keypath ) )
                     | and_then( [this]( zypp::ManagedFile keyFile ) {
                       _dlContext->files().push_back( std::move(keyFile));
@@ -280,7 +281,7 @@ namespace zyppng {
                  }
                | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
-                   return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true) )
+                   return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true).setMirrorsAllowed(false) )
                       | and_then( ProvideType::copyResultToDest( providerRef, _destdir / file ) )
                       | and_then( [this, providerRef, file, keyid , cacheFile = std::move(cacheFile)]( zypp::ManagedFile &&res ) {
 

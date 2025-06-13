@@ -27,7 +27,8 @@ namespace zypp {
     }
 
     zypp::Url _url;
-    OriginEndpoint::SettingsMap _settings;
+    std::unordered_map<std::string, std::any> _settings;
+    //OriginEndpoint::SettingsMap _settings;
   };
 
   OriginEndpoint::OriginEndpoint()
@@ -87,10 +88,30 @@ namespace zypp {
     return _pimpl->_settings.at(key);
   }
 
+  std::any &OriginEndpoint::getConfig(const std::string &key)
+  {
+    return _pimpl->_settings.at(key);
+  }
+
+  void OriginEndpoint::eraseConfigValue( const std::string &key )
+  {
+    auto it = _pimpl->_settings.find (key);
+    if ( it == _pimpl->_settings.end() )
+      return;
+    _pimpl->_settings.erase(it);
+  }
+
   const OriginEndpoint::SettingsMap &OriginEndpoint::config() const
   {
     return _pimpl->_settings;
   }
+
+
+  OriginEndpoint::SettingsMap &OriginEndpoint::config()
+  {
+    return _pimpl->_settings;
+  }
+
 
   std::ostream & operator<<( std::ostream & str, const OriginEndpoint & url )
   {

@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.sv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-03-02 13:56+0000\n"
+"PO-Revision-Date: 2025-06-13 05:59+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/libzypp/master/sv/"
 ">\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3822,7 +3822,7 @@ msgstr "Följande åtgärder kommer att vidtas:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Misslyckades med att hämta spegellista/metalänkdata."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -3992,6 +3992,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Vid nedladdning av signaturnyckel via speglar, överväg att explicit ställa "
+"in gpgKeyUrl via förrådskonfigurationen istället."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4233,7 +4235,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Förråd %1% definierar inte 'gpgnyckel=' URL:er."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4241,7 +4243,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Letar efter gpg-nycklar i förråd %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4262,6 +4264,8 @@ msgstr "Ett av eller båda attributen '%s' och '%s' krävs."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Varken attributet '%s', '%s' eller '%s' är definierat för service förråd "
+"'%s'."
 
 # %s is either BOOTP or DHCP
 #: zypp/repo/PackageProvider.cc:343
@@ -4899,21 +4903,21 @@ msgstr "Det gick inte att utföra transaktionen på grund av följande problem:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "ingen spegel hittades"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "kunde inte skapa målfil"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "redan i cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "misslyckades med att byta namn på temporär fil."
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
@@ -4926,7 +4930,7 @@ msgstr "klar"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Fel: \"%1%\", provar nästa spegel."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
@@ -5321,7 +5325,7 @@ msgstr "Mediet öppnades inte när åtgärden '%s' skulle utföras."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Fil '%s' hittades inte"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

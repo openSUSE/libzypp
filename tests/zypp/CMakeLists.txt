@@ -20,6 +20,7 @@ ADD_TESTS(
   KeyRing
   Locale
   Locks
+  MirroredOrigin
   PathInfo
   Pathname
   PluginFrame

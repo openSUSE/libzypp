@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Jun 18 12:31:49 CEST 2025 - ma@suse.de
+
+- Enhancements regarding mirror handling during repo refresh.
+  Added  means to disable the use of mirrors when downloading
+  security relevant files. Requires updaing zypper to 1.14.91.
+- Fix autotestcase writer if ZYPP_FULLLOG=1 (bsc#1244042)
+  If ZYPP_FULLLOG=1 a solver testcase to
+  "/var/log/YaST2/autoTestcase" should be written for each solver
+  run. There was no testcase written for the very first solver run.
+  This is now fixed.
+- Pass $1==2 to %posttrans script if it's an update (bsc#1243279)
+- version 17.37.6 (35)
+
+-------------------------------------------------------------------
 Fri Jun  6 19:02:26 CEST 2025 - ma@suse.de
 
 - Fix credential handling in HEAD requests (bsc#1244105)

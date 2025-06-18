@@ -192,6 +192,23 @@ namespace zypp {
       if ( !proxies.value() )
               return "";
 
+#if 0
+      // bsc#1244710: libproxy appears to return /etc/sysconfig/proxy
+      // values after $*_proxy environment variables. We'd like the
+      // /etc/sysconfig/proxy changes to take effect immediately.
+      // So we pick the last.
+
+      // TODO: According to CURLOPT_PROXY(3) https:// proxy is supported since
+      // 7.52.0 for OpenSSL and GnuTLS Since 7.87.0. So we should also return
+      // https proxies libproxy returns. Check with ProxyInfoSysconfig.
+
+      std::optional<std::string> result;
+      for ( int i = 0; proxies[i]; ++i ) {
+        if ( !strncmp(proxies[i], "http://", 7) ) {
+          result = str::asString( proxies[i] );
+        }
+      }
+#else
       /* cURL can only handle HTTP proxies, not SOCKS. And can only handle
          one. So look through the list and find an appropriate one. */
       std::optional<std::string> result;
@@ -200,7 +217,7 @@ namespace zypp {
           result = str::asString( proxies[i] );
         }
       }
-
+#endif
       return result.value_or( "" );
     }
 

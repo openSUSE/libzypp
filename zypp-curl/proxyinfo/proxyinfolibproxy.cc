@@ -192,11 +192,14 @@ namespace zypp {
       if ( !proxies.value() )
               return "";
 
-      /* cURL can only handle HTTP proxies, not SOCKS. And can only handle
-         one. So look through the list and find an appropriate one. */
+      // bsc#1244710: libproxy appears to return /etc/sysconfig/proxy
+      // values after $*_proxy environment variables. We'd like the
+      // /etc/sysconfig/proxy changes to take effect immediately.
+      // So we pick the last one matching our schema.
+      const std::string myschema { url_r.getScheme()+":" };
       std::optional<std::string> result;
-      for (int i = 0; proxies[i]; i++) {
-        if ( !result && !strncmp(proxies[i], "http://", 7) ) {
+      for ( int i = 0; proxies[i]; ++i ) {
+        if ( str::hasPrefix( proxies[i], myschema ) ) {
           result = str::asString( proxies[i] );
         }
       }

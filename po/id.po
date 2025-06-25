@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2024-11-13 15:48+0000\n"
+"PO-Revision-Date: 2025-06-25 16:59+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/libzypp/master/"
 "id/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.3\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4088,7 +4088,7 @@ msgstr "Tindakan berikut akan dilakukan:"
 
 #: zypp/RepoInfo.cc:208
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Gagal mengambil data mirrorlist/metalink."
 
 #: zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4263,6 +4263,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"Unduh kunci tanda tangan melalui cermin, pertimbangkan untuk secara "
+"eksplisit mengatur gpgKeyUrl melalui konfigurasi repositori."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/ng/repo/workflows/repomanagerwf.cc:81
@@ -4507,7 +4509,7 @@ msgstr ""
 #: zypp/ng/workflows/keyringwf.cc:66
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Repositori %1% tidak mendefinisikan URL ‘gpgkey=’."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4515,7 +4517,7 @@ msgstr ""
 #: zypp/ng/workflows/repoinfowf.cc:97
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Mencari kunci GPG di repositori %1%."
 
 #: zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4536,6 +4538,8 @@ msgstr "Satu atau kedua dari '%s' or '%s' atribut dibutuhkan."
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Baik atribut ‘%s’, ‘%s’ maupun ‘%s’ tidak didefinisikan untuk repositori "
+"layanan ‘%s’."
 
 #: zypp/repo/PackageProvider.cc:343
 msgid "Signature verification failed"
@@ -5168,21 +5172,21 @@ msgstr "Mengeksekusi transaksi gagal karena masalah berikut:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
-msgstr ""
+msgstr "tidak ditemukan cermin"
 
 #: zypp/target/commitpackagepreloader.cc:108
 msgid "could not create target file"
-msgstr ""
+msgstr "tidak dapat membuat berkas target"
 
 #. if we have the file already, no need to download again
 #: zypp/target/commitpackagepreloader.cc:130
 msgid "already in cache"
-msgstr ""
+msgstr "sudah ada di cache"
 
 #. error
 #: zypp/target/commitpackagepreloader.cc:273
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "gagal mengganti nama berkas sementara."
 
 # ID
 #. rename consumed the file, no need to unlink.
@@ -5196,11 +5200,11 @@ msgstr "selesai"
 #: zypp/target/commitpackagepreloader.cc:303
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Kesalahan: “%1%”, mencoba cermin berikutnya."
 
 #: zypp/target/commitpackagepreloader.cc:624
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Dibatalkan oleh pengguna."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5594,7 +5598,7 @@ msgstr "Medium tidak dibuka ketika mencoba untuk melakukan tindakan '%s'."
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Berkas ‘%s’ tidak ditemukan"
 
 #: zypp-media/mediaexception.cc:61
 #: zypp-curl/ng/network/networkrequesterror.cc:135

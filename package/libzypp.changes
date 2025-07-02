@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Jul  2 17:35:10 CEST 2025 - ma@suse.de
+
+- Fix SEGV in MediaDISK handler (bsc#1245452)
+- Explicitly selecting DownloadAsNeeded also selects the
+  classic_rpmtrans backend.
+  DownloadAsNeeded can not be combined with the rpm singletrans
+  installer backend because a rpm transaction requires all package
+  headers to be available the the beginning of the transaction. So
+  explicitly selecting this mode also turns on the classic_rpmtrans
+  backend.
+- Fix evaluation of libproxy results (bsc#1244710)
+- version 17.37.7 (35)
+
+-------------------------------------------------------------------
 Wed Jun 18 12:31:49 CEST 2025 - ma@suse.de
 
 - Enhancements regarding mirror handling during repo refresh.

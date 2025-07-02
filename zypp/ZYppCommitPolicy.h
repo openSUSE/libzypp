@@ -63,6 +63,11 @@ namespace zypp
 
       /** Commit download policy to use. (default: \ref DownloadDefault)
        *  \note \ref DownloadOnly also implies a \ref dryRun.
+       *  \note \ref DownloadAsNeeded can not be combined with the
+       *  rpm singletrans installer backend because a rpm transaction
+       *  requires all package headers to be available the the beginning
+       *  of the transaction. So explicitly selecting this mode also turns
+       *  on the classic_rpmtrans backend.
        */
       ZYppCommitPolicy & downloadMode( DownloadMode val_r );
 

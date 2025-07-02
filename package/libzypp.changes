@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Jul  2 18:19:07 CEST 2025 - ma@suse.de
+
+- Do not trigger download data exceeded errors on HTTP non data
+  responses (bsc#1245220)
+  In some cases a HTTP 401 or 407 did trigger a "filesize exceeded"
+  error, because the response payload size was compared against the
+  expected filesize. This patch adds some checks if the response
+  code is in the success range and only then takes expected
+  filesize into account. Otherwise the response content-length is
+  used or a fallback of 2Mb if no content-length is known.
+- version 17.37.8 (35)
+
+-------------------------------------------------------------------
 Wed Jul  2 17:35:10 CEST 2025 - ma@suse.de
 
 - Fix SEGV in MediaDISK handler (bsc#1245452)

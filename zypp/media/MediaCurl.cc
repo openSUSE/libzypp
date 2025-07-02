@@ -73,6 +73,9 @@ namespace internal {
     void expectedFileSize( ByteCount newval_r )
     { _expectedFileSize = newval_r; }
 
+    zypp::Url url() const
+    { return _url; }
+
   private:
     CURL *      _curl;
     zypp::Url	_url;
@@ -1107,8 +1110,30 @@ int MediaCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_off_t d
   {
     // work around curl bug that gives us old data
     long httpReturnCode = 0;
-    if ( curl_easy_getinfo( pdata->curl(), CURLINFO_RESPONSE_CODE, &httpReturnCode ) != CURLE_OK || httpReturnCode == 0 )
+    if ( curl_easy_getinfo( pdata->curl(), CURLINFO_RESPONSE_CODE, &httpReturnCode ) != CURLE_OK || httpReturnCode == 0 ) {
       return aliveCallback( clientp, dltotal, dlnow, ultotal, ulnow );
+    }
+
+    // bsc#1245220 If we get some answer outside the HTTP 200 range, we might need to adapt the
+    // expected filesize. Otherwise the payload of the answer will trigger "filesize exceeded" errors
+    // in some cases.
+    const auto &scheme = pdata->url().getScheme();
+    if ( ( scheme == "http" || scheme == "https" ) && ( httpReturnCode < 200 || httpReturnCode > 299 ) ) {
+      curl_off_t cl = 0;
+      curl_easy_getinfo(pdata->curl(), CURLINFO_CONTENT_LENGTH_DOWNLOAD_T, &cl);
+      if ( cl > 0 ) {
+        const auto &expSize = pdata->expectedFileSize();
+        if ( expSize && pdata->expectedFileSize() < cl  ) {
+          MIL << "Content length for HTTP message: " << httpReturnCode << " is bigger than our expected filesize, adjusting" << std::endl;
+          resetExpectedFileSize ( pdata, cl );
+        } else {
+          MIL << "Content length for HTTP message: " << httpReturnCode << " is smaller or equal to our expected filesize, ignoring" << std::endl;
+        }
+      } else {
+        MIL << "Content length for HTTP message: " << httpReturnCode << " is not known, setting it to max 2MB!" << std::endl;
+        resetExpectedFileSize ( pdata, ByteCount(2, ByteCount::MB) );
+      }
+    }
 
     pdata->updateStats( dltotal, dlnow );
     return pdata->reportProgress();

@@ -53,7 +53,7 @@ namespace zypp {
     MediaDISK::MediaDISK(const MirroredOrigin &origin_r,
                          const Pathname & attach_point_hint_r )
       : MediaHandler( origin_r, attach_point_hint_r,
-                    _origin.authority().url().getPathName(), // urlpath below attachpoint
+                    origin_r.authority().url().getPathName(), // urlpath below attachpoint
                     false ) // does_download
     {
       MIL << "MediaDISK::MediaDISK(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;

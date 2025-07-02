@@ -123,7 +123,9 @@ namespace zypp
       DownloadMode		_downloadMode;
       target::rpm::RpmInstFlags	_rpmInstFlags;
       bool			_syncPoolAfterCommit;
-      mutable bool              _singleTransMode; // mutable: [bsc#1189788] pending usrmerge must disable singletrans
+      bool                      _singleTransMode;
+
+      mutable bool _notifyBSC1189788 = true; // mutable: send notification just once
 
     private:
       friend Impl * rwcowClone<Impl>( const Impl * rhs );
@@ -159,13 +161,7 @@ namespace zypp
   { _pimpl->_downloadMode = val_r; return *this; }
 
   DownloadMode ZYppCommitPolicy::downloadMode() const
-  {
-    if ( singleTransModeEnabled() && _pimpl->_downloadMode == DownloadAsNeeded ) {
-      DBG << _pimpl->_downloadMode << " is not compatible with singleTransMode, falling back to " << DownloadInAdvance << std::endl;
-      return DownloadInAdvance;
-    }
-    return _pimpl->_downloadMode;
-  }
+  { return _pimpl->_downloadMode; }
 
   ZYppCommitPolicy &  ZYppCommitPolicy::rpmInstFlags( target::rpm::RpmInstFlags newFlags_r )
   { _pimpl->_rpmInstFlags = newFlags_r; return *this; }
@@ -205,15 +201,28 @@ namespace zypp
 
   bool ZYppCommitPolicy::singleTransModeEnabled() const
   {
-    if ( _pimpl->_singleTransMode and pendingUsrmerge() ) {
-      WAR << "Ignore $ZYPP_SINGLE_RPMTRANS=1: Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction" << std::endl;
-      JobReport::info(
-        "[bsc#1189788] The filesystem package seems to be unable to perform the pending\n"
-        "              UsrMerge reliably in a single transaction. The single_rpmtrans\n"
-        "              backend will therefore be IGNORED and the transaction is performed\n"
-        "              by the classic_rpmtrans backend."
-        , JobReport::UserData( "cmdout", "[bsc#1189788]" ) );
-      _pimpl->_singleTransMode = false;
+    if ( _pimpl->_singleTransMode ) {
+      // Explicitly selecting DownloadAsNeeded also selects the classic_rpmtrans backend.
+      // NOTE: This behavior was negotiated with YAST/Agama and is required for
+      // certain install scenarios. Don't change it without checking with the teams.
+      if ( _pimpl->_downloadMode == DownloadAsNeeded ) {
+        MIL << "DownloadAsNeeded enforces the classic_rpmtrans backend!" << std::endl;
+        return false;
+      }
+
+      if ( pendingUsrmerge() ) {
+        WAR << "Ignore $ZYPP_SINGLE_RPMTRANS=1: Bug 1189788 - UsrMerge: filesystem package breaks system when upgraded in a single rpm transaction" << std::endl;
+        if ( _pimpl->_notifyBSC1189788 ) {
+          _pimpl->_notifyBSC1189788 = false;
+          JobReport::info(
+            "[bsc#1189788] The filesystem package seems to be unable to perform the pending\n"
+            "              UsrMerge reliably in a single transaction. The single_rpmtrans\n"
+            "              backend will therefore be IGNORED and the transaction is performed\n"
+            "              by the classic_rpmtrans backend."
+            , JobReport::UserData( "cmdout", "[bsc#1189788]" ) );
+        }
+        return false;
+      }
     }
     return _pimpl->_singleTransMode;
   }

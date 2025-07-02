@@ -13,6 +13,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <iostream>
 #include <optional>
+#include <cstdlib>
 
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
@@ -28,6 +29,14 @@ using std::endl;
 using namespace zypp::base;
 
 namespace zypp {
+  namespace env {
+    inline bool inYAST()
+    {
+      static const bool _inYAST { ::getenv("YAST_IS_RUNNING") };
+      return _inYAST;
+    }
+  }
+
   namespace media {
 
     namespace {
@@ -193,7 +202,8 @@ namespace zypp {
               return "";
 
       // bsc#1244710: libproxy appears to return /etc/sysconfig/proxy
-      // values after $*_proxy environment variables. We'd like the
+      // values after $*_proxy environment variables.
+      // In YAST, e.g after changing the proxy settings, we'd like
       // /etc/sysconfig/proxy changes to take effect immediately.
       // So we pick the last one matching our schema.
       const std::string myschema { url_r.getScheme()+":" };
@@ -201,6 +211,8 @@ namespace zypp {
       for ( int i = 0; proxies[i]; ++i ) {
         if ( str::hasPrefix( proxies[i], myschema ) ) {
           result = str::asString( proxies[i] );
+          if ( not env::inYAST() )
+            break;
         }
       }
 

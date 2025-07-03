@@ -299,8 +299,8 @@ namespace zypp
         MIL << "Added cache path " << destinationDir << endl;
       }
 
-      // Suppress (interactive) media::MediaChangeReport if we in have multiple origins (>1)
-      media::ScopedDisableMediaChangeReport guard( repoOrigins.size() > 1 );
+      // Suppress (interactive) media::MediaChangeReport if we have fallback URLs
+      media::ScopedDisableMediaChangeReport guard( repoOrigins.hasFallbackUrls() );
       for ( const auto &origin : repoOrigins )
       {
 

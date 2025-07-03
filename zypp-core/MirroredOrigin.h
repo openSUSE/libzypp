@@ -425,9 +425,18 @@ namespace zypp {
 
     void clear();
 
+    /** Whether this set contains more than one Url in total (authorities or mirrors).
+     * Some parts of the code like to raise an interactive MediaChangeReport
+     * only if the Repository itself does not provide any fallbacks.
+     */
+    bool hasFallbackUrls() const;
+
   private:
     struct Private;
     RWCOW_pointer<Private> _pimpl;
   };
+
+  ZYPP_API std::ostream & operator<<( std::ostream & str, const MirroredOriginSet & origin );
+
 }
 #endif

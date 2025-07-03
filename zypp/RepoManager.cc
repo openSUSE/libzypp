@@ -139,8 +139,8 @@ namespace zypp
 
   void RepoManager::refreshMetadata( const RepoInfo &info, RawMetadataRefreshPolicy policy, const ProgressData::ReceiverFnc & progressrcv )
   {
-    // Suppress (interactive) media::MediaChangeReport if we in have multiple origins (>1)
-    zypp::media::ScopedDisableMediaChangeReport guard( info.repoOrigins ().size() > 1 );
+    // Suppress (interactive) media::MediaChangeReport if we have fallback URLs
+    zypp::media::ScopedDisableMediaChangeReport guard( info.repoOrigins().hasFallbackUrls() );
     return _pimpl->ngMgr().refreshMetadata( info, policy, nullptr ).unwrap();
   }
 

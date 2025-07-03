@@ -8,7 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "MirroredOrigin.h"
 
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::MirroredOrigin"
 
@@ -313,17 +313,9 @@ namespace zypp {
 
   std::ostream & operator<<( std::ostream & str, const MirroredOrigin & origin )
   {
-    str << "MirroredOrigin { authority: \"" << origin.authority() << "\", mirrors: [";
-    bool first = true;
-    for( const auto &mirr : origin.mirrors () ) {
-      if ( !first )
-        str << ",";
-      else
-        first = false;
-      str << "\"" << mirr << "\"";
-    }
-    str << "] }";
-    return str;
+    return dumpRange( str << "MirroredOrigin { authority: \"" << origin.authority() << "\", ",
+                      origin.mirrors().begin(), origin.mirrors().end(), "mirrors: [", "\"", "\",\"", "\"", "]" )
+    << " }";
   }
 
   MirroredOriginSet::iterator MirroredOriginSet::findByUrl( const Url &url )
@@ -407,6 +399,16 @@ namespace zypp {
   MirroredOriginSet::size_type MirroredOriginSet::size() const
   {
     return _pimpl->_mirrors.size ();
+  }
+
+  bool MirroredOriginSet::hasFallbackUrls() const
+  {
+    return ( size() == 1 && at( 0 ).endpointCount() > 1 ) || size() > 1;
+  }
+
+  std::ostream & operator<<( std::ostream & str, const MirroredOriginSet & origin )
+  {
+    return dumpRange( str, origin.begin(), origin.end(), "MirroredOriginSet {", " ", ", ", " ", "}" );
   }
 
 }

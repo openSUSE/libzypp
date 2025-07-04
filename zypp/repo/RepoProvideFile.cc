@@ -325,6 +325,11 @@ namespace zypp
           fetcher.start( destinationDir, *access );
 
           // reached if no exception has been thrown, so this is the correct file
+          // LEGACY NOTE:
+          // DeltaRpms e.g are in fact optional resources (tagged in OnMediaLocation).
+          // They should actually return a ManagedFile(). But I don't know if there is
+          // already code which requests optional files but relies on provideFile returning
+          // a ManagedFile holding the path even if it does not exist. So I keep it this way.
           ManagedFile ret( destinationDir + locWithPath.filename() );
           if ( !repo_r.keepPackages() )
           {

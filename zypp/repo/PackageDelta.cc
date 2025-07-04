@@ -40,6 +40,7 @@ namespace zypp
         return;
       }
       _repo = deltaInfo_r.inRepo();
+      _location.setOptional( true );  // bsc#1245672: delta rpms are optional resources.
 
       IdString locdir;
       IdString locname;

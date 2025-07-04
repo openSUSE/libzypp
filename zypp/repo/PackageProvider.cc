@@ -606,6 +606,14 @@ namespace zypp
           ProvideFilePolicy policy;
           policy.progressCB( bind( &RpmPackageProvider::progressDeltaDownload, this, _1 ) );
           delta = _access.provideFile( delta_r.repository().info(), delta_r.location(), policy );
+          // bsc#1245672: delta rpms are optional resources.
+          // ProvideFile however always returns a managed file if no Exception occurred.
+          // So the caller has to check whether the optional file actually exists.
+          if ( not PathInfo(delta).isExist() ) {
+            delta.resetDispose();
+            report()->problemDeltaApply( _("download deltarpm: not found") );
+            return ManagedFile();
+          }
         }
       catch ( const Exception & excpt )
         {

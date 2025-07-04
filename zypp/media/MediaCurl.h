@@ -81,7 +81,8 @@ class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHel
     static int aliveCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
     /** Callback reporting download progress. */
     static int progressCallback( void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
-    static CURL *progressCallback_getcurl( void *clientp );
+    /** Callback writing the data into our file */
+    static size_t writeCallback( char *ptr, size_t size, size_t nmemb, void *userdata );
 
     void checkProtocol(const Url &url) const override;
 

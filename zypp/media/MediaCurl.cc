@@ -50,7 +50,7 @@ namespace internal {
   using namespace zypp;
   struct ProgressData
   {
-    ProgressData( CURL *curl, time_t timeout = 0, zypp::Url  url = zypp::Url(),
+    ProgressData( AutoFILE file, CURL *curl, time_t timeout = 0, zypp::Url  url = zypp::Url(),
                   zypp::ByteCount expectedFileSize_r = 0,
                   zypp::callback::SendReport<zypp::media::DownloadProgressReport> *_report = nullptr );
 
@@ -76,8 +76,18 @@ namespace internal {
     zypp::Url url() const
     { return _url; }
 
+    FILE* file()
+    { return _file.value(); }
+
+    size_t writeBytes( char *ptr, ByteCount bytes );
+
+    ByteCount bytesWritten() const {
+      return _bytesWritten;
+    }
+
   private:
     CURL *      _curl;
+    AutoFILE    _file;
     zypp::Url	_url;
     time_t	_timeout;
     bool	_timeoutReached;
@@ -94,6 +104,8 @@ namespace internal {
     curl_off_t _dnlLast	 = 0.0;	///< Bytes downloaded at period start
     curl_off_t _dnlNow	 = 0.0;	///< Bytes downloaded now
 
+    ByteCount _bytesWritten = 0; ///< Bytes actually written into the file
+
     int    _dnlPercent= 0;	///< Percent completed or 0 if _dnlTotal is unknown
 
     double _drateTotal= 0.0;	///< Download rate so far
@@ -102,8 +114,9 @@ namespace internal {
 
 
 
-  ProgressData::ProgressData(CURL *curl, time_t timeout, Url url, ByteCount expectedFileSize_r, zypp::callback::SendReport< zypp::media::DownloadProgressReport> *_report)
+  ProgressData::ProgressData(AutoFILE file, CURL *curl, time_t timeout, Url url, ByteCount expectedFileSize_r, zypp::callback::SendReport< zypp::media::DownloadProgressReport> *_report)
     : _curl( curl )
+    , _file( std::move(file) )
     , _url(std::move( url ))
     , _timeout( timeout )
     , _timeoutReached( false )
@@ -134,9 +147,6 @@ namespace internal {
     if ( _timeout )
       _timeoutReached = ( (now - _timeRcv) > _timeout );
 
-    // check if the downloaded data is already bigger than what we expected
-    _fileSizeExceeded = _expectedFileSize > 0 && _expectedFileSize < static_cast<ByteCount::SizeType>(_dnlNow);
-
     // percentage:
     if ( _dnlTotal )
       _dnlPercent = int( _dnlNow * 100 / _dnlTotal );
@@ -164,6 +174,18 @@ namespace internal {
     if ( report && !(*report)->progress( _dnlPercent, _url, _drateTotal, _drateLast ) )
       return 1;	// user requested abort
     return 0;
+  }
+
+  size_t ProgressData::writeBytes(char *ptr, ByteCount bytes)
+  {
+    // check if the downloaded data is already bigger than what we expected
+    _fileSizeExceeded = _expectedFileSize > 0 && _expectedFileSize < ( _bytesWritten + bytes );
+    if ( _fileSizeExceeded )
+      return 0;
+
+    auto written = fwrite( ptr, 1, bytes, _file );
+    _bytesWritten += written;
+    return written;
   }
 
   /// Attempt to work around certain issues by autoretry in MediaCurl::getFileCopy
@@ -669,13 +691,19 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
         ZYPP_THROW(MediaCurlSetOptException(fileurl, _curlError));
       }
 
-      ret = curl_easy_setopt( curl, CURLOPT_WRITEDATA, file.value() );
+      // Set callback and perform.
+      internal::ProgressData progressData( file, curl, settings.timeout(), fileurl, srcFile.downloadSize(), &report );
+
+      ret = curl_easy_setopt( curl, CURLOPT_WRITEDATA,  &progressData  );
       if ( ret != 0 ) {
         ZYPP_THROW(MediaCurlSetOptException(fileurl, _curlError));
       }
 
-      // Set callback and perform.
-      internal::ProgressData progressData( curl, settings.timeout(), fileurl, srcFile.downloadSize(), &report );
+      ret = curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &MediaCurl::writeCallback );
+      if ( ret != 0 ) {
+        ZYPP_THROW(MediaCurlSetOptException(fileurl, _curlError));
+      }
+
       report->start(fileurl, dest);
 
       if ( curl_easy_setopt( curl, CURLOPT_PROGRESSDATA, &progressData ) != 0 ) {
@@ -683,6 +711,10 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
       }
 
       ret = executeCurl( rData );
+
+      // flush buffers
+      fflush ( file );
+
   #if CURLVERSION_AT_LEAST(7,19,4)
       // bnc#692260: If the client sends a request with an If-Modified-Since header
       // with a future date for the server, the server may respond 200 sending a
@@ -1113,38 +1145,19 @@ int MediaCurl::progressCallback( void *clientp, curl_off_t dltotal, curl_off_t d
     if ( curl_easy_getinfo( pdata->curl(), CURLINFO_RESPONSE_CODE, &httpReturnCode ) != CURLE_OK || httpReturnCode == 0 ) {
       return aliveCallback( clientp, dltotal, dlnow, ultotal, ulnow );
     }
-
-    // bsc#1245220 If we get some answer outside the HTTP 200 range, we might need to adapt the
-    // expected filesize. Otherwise the payload of the answer will trigger "filesize exceeded" errors
-    // in some cases.
-    const auto &scheme = pdata->url().getScheme();
-    if ( ( scheme == "http" || scheme == "https" ) && ( httpReturnCode < 200 || httpReturnCode > 299 ) ) {
-      curl_off_t cl = 0;
-      curl_easy_getinfo(pdata->curl(), CURLINFO_CONTENT_LENGTH_DOWNLOAD_T, &cl);
-      if ( cl > 0 ) {
-        const auto &expSize = pdata->expectedFileSize();
-        if ( expSize && pdata->expectedFileSize() < cl  ) {
-          MIL << "Content length for HTTP message: " << httpReturnCode << " is bigger than our expected filesize, adjusting" << std::endl;
-          resetExpectedFileSize ( pdata, cl );
-        } else {
-          MIL << "Content length for HTTP message: " << httpReturnCode << " is smaller or equal to our expected filesize, ignoring" << std::endl;
-        }
-      } else {
-        MIL << "Content length for HTTP message: " << httpReturnCode << " is not known, setting it to max 2MB!" << std::endl;
-        resetExpectedFileSize ( pdata, ByteCount(2, ByteCount::MB) );
-      }
-    }
-
     pdata->updateStats( dltotal, dlnow );
     return pdata->reportProgress();
   }
   return 0;
 }
 
-CURL *MediaCurl::progressCallback_getcurl( void *clientp )
+size_t MediaCurl::writeCallback( char *ptr, size_t size, size_t nmemb, void *userdata )
 {
-  internal::ProgressData *pdata = reinterpret_cast<internal::ProgressData *>(clientp);
-  return pdata ? pdata->curl() : 0;
+  internal::ProgressData *pdata = reinterpret_cast<internal::ProgressData *>( userdata );
+  if( pdata ) {
+    return pdata->writeBytes ( ptr, size * nmemb );
+  }
+  return 0;
 }
 
 ///////////////////////////////////////////////////////////////////

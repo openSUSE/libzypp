@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Jul  4 16:22:16 CEST 2025 - ma@suse.de
+
+- Ignore DeltaRpm download errors (bsc#1245672)
+  DeltaRpms are in fact optional resources. In case of a failure
+  the full rpm is downloaded.
+- Improve fix for incorrect filesize handling (bsc#1245220)
+- version 17.37.9 (35)
+
+-------------------------------------------------------------------
 Wed Jul  2 18:19:07 CEST 2025 - ma@suse.de
 
 - Do not trigger download data exceeded errors on HTTP non data

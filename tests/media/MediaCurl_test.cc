@@ -1,5 +1,8 @@
 #include "WebServer.h"
+#include "ProxyServer.h"
+
 #include <zypp-core/fs/TmpPath.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp/ZConfig.h>
 
@@ -53,6 +56,10 @@ BOOST_DATA_TEST_CASE( base_provide_zck, bdata::make( withSSL ) * bdata::make( ba
 
   BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
   BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
 
   zypp::OnMediaLocation loc("/handler/primary");
   loc.setDeltafile( testRoot/"primary-deltatemplate.xml.zck" );
@@ -70,6 +77,40 @@ BOOST_DATA_TEST_CASE( base_provide_zck, bdata::make( withSSL ) * bdata::make( ba
 #endif
     BOOST_REQUIRE_EQUAL( primaryRequests, 1 );
 }
+
+// case request with filesize not matching
+BOOST_DATA_TEST_CASE( base_provide_wrong_filesize, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
+{
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  WebServer web( testRoot.c_str(), 10001, withSSL );
+  BOOST_REQUIRE( web.start() );
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+
+  if( withSSL ) {
+    mediaUrl.setQueryParam("ssl_capath", web.caPath().asString() );
+  }
+
+  BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  zypp::OnMediaLocation loc("/primary.xml.zck");
+
+  loc.setDownloadSize( makeBytes(274637) ); // wrong fs here , off by one
+  BOOST_REQUIRE_THROW( mm.provideFile( id, loc ), zypp::media::MediaFileSizeExceededException );
+
+  loc.setDownloadSize( makeBytes(274638) ); // correct fs
+  BOOST_CHECK_NO_THROW( mm.provideFile( id, loc ) );
+}
+
 
 //case: file with authentication
 BOOST_DATA_TEST_CASE( base_provide_auth, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
@@ -99,6 +140,10 @@ BOOST_DATA_TEST_CASE( base_provide_auth, bdata::make( withSSL ) * bdata::make( b
 
   BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
   BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
 
   zypp::OnMediaLocation loc("/handler/primary");
   loc.setDeltafile( testRoot/"primary-deltatemplate.xml.zck" );
@@ -188,6 +233,108 @@ BOOST_DATA_TEST_CASE( base_provide_auth, bdata::make( withSSL ) * bdata::make( b
 
 }
 
+
+//case: file with authentication from credfile
+BOOST_DATA_TEST_CASE( base_provide_auth_credfile, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
+{
+  //don't write or read creds from real settings dir
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname credfile = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader/credfile";
+  WebServer web( testRoot.c_str(), 10001, withSSL );
+  BOOST_REQUIRE( web.start() );
+
+  web.addRequestHandler("media", WebServer::makeBasicAuthHandler("Basic dGVzdDp0ZXN0", []( WebServer::Request &req ){
+    req.rout << "Status: 307 Temporary Redirect\r\n"
+    "Location: /media.1/media\r\n\r\n";
+  }));
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+  mediaUrl.setQueryParam( "credentials",  credfile.asString() );
+
+  if( withSSL ) {
+    mediaUrl.setQueryParam("ssl_capath", web.caPath().asString() );
+  }
+
+  BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  zypp::OnMediaLocation loc("/handler/media");
+  loc.setDownloadSize( makeBytes(83) );
+  BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
+}
+
+
+//case: file with authentication
+BOOST_DATA_TEST_CASE( base_provide_auth_small_file, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
+{
+  //don't write or read creds from real settings dir
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  WebServer web( testRoot.c_str(), 10001, withSSL );
+  BOOST_REQUIRE( web.start() );
+
+  web.addRequestHandler("media", WebServer::makeBasicAuthHandler("Basic dGVzdDp0ZXN0", []( WebServer::Request &req ){
+    req.rout << "Status: 307 Temporary Redirect\r\n"
+    "Location: /media.1/media\r\n\r\n";
+  }));
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+
+  if( withSSL ) {
+    mediaUrl.setQueryParam("ssl_capath", web.caPath().asString() );
+  }
+
+  BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  zypp::OnMediaLocation loc("/handler/media");
+  loc.setDownloadSize( makeBytes(83) );
+
+  {
+    struct AuthenticationReportReceiver : public zypp::callback::ReceiveReport<zypp::media::AuthenticationReport>
+    {
+      bool gotAuth = false;
+      AuthenticationReportReceiver( ){ connect(); }
+
+      bool prompt(const zypp::Url &,
+                  const std::string &,
+                  zypp::media::AuthData &auth_data) override {
+        auth_data.setUsername("test");
+        auth_data.setPassword("test");
+        gotAuth = true;
+        return true;
+      }
+    };
+
+    AuthenticationReportReceiver authHandler;
+    BOOST_REQUIRE_NO_THROW( mm.provideFile( id, loc ) );
+    BOOST_REQUIRE_EQUAL( authHandler.gotAuth, true );
+  }
+
+}
+
+
 // case: requesting a non existant file
 BOOST_DATA_TEST_CASE( base_provide_not_found, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
 {
@@ -211,6 +358,10 @@ BOOST_DATA_TEST_CASE( base_provide_not_found, bdata::make( withSSL ) * bdata::ma
 
   BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
   BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
 
   zypp::OnMediaLocation loc("/file-not-there.txt");
   {
@@ -219,7 +370,7 @@ BOOST_DATA_TEST_CASE( base_provide_not_found, bdata::make( withSSL ) * bdata::ma
   }
 }
 
-// case: fetching via
+// case: fetching via mirrors
 BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
 {
   //don't write or read creds from real settings dir
@@ -250,6 +401,10 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
 
   BOOST_CHECK_NO_THROW( id = mm.open( origin ) );
   BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
 
   zypp::OnMediaLocation loc("/test.txt");
   // no auth given
@@ -258,5 +413,42 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
   // error because we only allow authority
   BOOST_REQUIRE_THROW( mm.provideFile( id, loc.setMirrorsAllowed (false)), zypp::Exception );
 
+}
+
+// bsc #1245220: Downloaded data exceeded the expected filesize ‘95 B’
+// happened when the proxy server 407 payload is bigger than the expected filesize
+BOOST_DATA_TEST_CASE( provide_via_proxy_bsc1245220, bdata::make( backend ), backend )
+{
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+
+  WebServer web( testRoot.c_str(), 10001 );
+
+  ProxyServer proxy( 10002 );
+  proxy.setAuthEnabled ( true );
+
+  BOOST_REQUIRE( web.start() );
+  BOOST_REQUIRE( proxy.start() );
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+
+  mediaUrl.setQueryParam( "proxy", proxy.url().asCompleteString() );
+  mediaUrl.setQueryParam( "proxyuser", "user1");
+  mediaUrl.setQueryParam( "proxypass", "pass1");
+
+  BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  zypp::OnMediaLocation loc("/media.1/media");
+  loc.setDownloadSize( makeBytes(83) );
+
+  BOOST_REQUIRE_NO_THROW(mm.provideFile( id, loc ));
 }
 

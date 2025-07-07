@@ -438,6 +438,8 @@ namespace zypp {
     _dispatcher->setAgentString ( str::asString( media::MediaCurl2::agentString () ) );
     _dispatcher->setHostSpecificHeader ("download.opensuse.org", "X-ZYpp-DistributionFlavor", str::asString(media::MediaCurl2::distributionFlavorHeader()) );
     _dispatcher->setHostSpecificHeader ("download.opensuse.org", "X-ZYpp-AnonymousId", str::asString(media::MediaCurl2::anonymousIdHeader()) );
+    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", "X-ZYpp-DistributionFlavor", str::asString(media::MediaCurl2::distributionFlavorHeader()) );
+    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", "X-ZYpp-AnonymousId", str::asString(media::MediaCurl2::anonymousIdHeader()) );
     _dispatcher->run();
 
     _pTracker = std::make_shared<internal::ProgressTracker>();

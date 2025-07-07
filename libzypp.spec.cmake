@@ -162,6 +162,7 @@ BuildRequires:  readline-devel >= 5.1
 %if %{with mediabackend_tests}
 BuildRequires:  nginx
 BuildRequires:	vsftpd
+BuildRequires:	squid
 %endif
 
 Requires:       rpm

@@ -1,28 +1,17 @@
 #ifndef TESTTOOLS_H
 #define TESTTOOLS_H
 
-#include <iostream>
-#include <fstream>
-
-#include "zypp/Pathname.h"
-#include "zypp/PathInfo.h"
+#include <string>
+#include <zypp-core/Pathname.h>
 
 namespace TestTools {
-  //read all contents of a file into a string)
-  std::string readFile ( const zypp::Pathname &file )
-  {
-    if ( ! zypp::PathInfo( file ).isFile() ) {
-      return std::string();
-    }
-    std::ifstream istr( file.asString().c_str() );
-    if ( ! istr ) {
-      return std::string();
-    }
+  // read all contents of a file into a string)
+  std::string readFile ( const zypp::Pathname &file );
 
-    std::string str((std::istreambuf_iterator<char>(istr)),
-      std::istreambuf_iterator<char>());
-    return str;
-  }
+  // write all data as content into a new file
+  bool writeFile ( const zypp::Pathname &file, const std::string &data );
+
+  bool checkLocalPort( int portno_r );
 }
 
 

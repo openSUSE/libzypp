@@ -21,6 +21,7 @@
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
 #include "WebServer.h"
+#include "TestTools.h"
 
 #include <thread>
 #include <atomic>
@@ -62,32 +63,6 @@ namespace  {
     }
 
   };
-
-  bool checkLocalPort( int portno_r )
-  {
-    bool ret = false;
-
-    AutoDispose<int> sockfd { socket( AF_INET, SOCK_STREAM, 0 ) };
-    if ( sockfd < 0 ) {
-        std::cerr << "ERROR opening socket" << endl;
-        return ret;
-    }
-    sockfd.setDispose( ::close );
-
-    struct hostent * server = gethostbyname( "127.0.0.1" );
-    if ( server == nullptr ) {
-        std::cerr << "ERROR, no such host 127.0.0.1" << endl;
-        return ret;
-    }
-
-    struct sockaddr_in serv_addr;
-    bzero( &serv_addr, sizeof(serv_addr) );
-    serv_addr.sin_family = AF_INET;
-    bcopy( server->h_addr, &serv_addr.sin_addr.s_addr, server->h_length );
-    serv_addr.sin_port = htons(portno_r);
-
-    return( connect( sockfd, (const sockaddr*)&serv_addr, sizeof(serv_addr) ) == 0 );
-  }
 }
 
 
@@ -192,18 +167,6 @@ public:
         };
 #else
 
-      const auto writeConfFile = []( const Pathname &fileName, const std::string &data ){
-        std::ofstream file;
-        file.open( fileName.c_str() );
-        if ( file.fail() ) {
-          std::cerr << "Failed to create file " << fileName << std::endl;
-          return false;
-        }
-        file << data;
-        file.close();
-        return true;
-      };
-
       const auto confPath = _workingDir.path();
       const auto confFile = confPath/"nginx.conf";
       bool canContinue = true;
@@ -211,14 +174,15 @@ public:
       {
         std::lock_guard<std::mutex> lock ( _mut );
         bool canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"nginxconf"/"nginx.conf",  confFile ) == 0 );
-        if ( canContinue ) canContinue = writeConfFile( confPath / "srvroot.conf", str::Format("root    %1%;") % _docroot );
-        if ( canContinue ) canContinue = writeConfFile( confPath / "fcgisock.conf", str::Format("fastcgi_pass unix:%1%;") % socketPath().c_str() );
-        if ( canContinue ) canContinue = writeConfFile( confPath / "user.conf", getuid() != 0 ? "" : "user root;" );
+        if ( canContinue ) canContinue = TestTools::writeFile( confPath / "srvroot.conf", str::Format("root    %1%;") % _docroot );
+        if ( canContinue ) canContinue = TestTools::writeFile( confPath / "fcgisock.conf", str::Format("fastcgi_pass unix:%1%;") % socketPath().c_str() );
+        if ( canContinue ) canContinue = TestTools::writeFile( confPath / "user.conf", getuid() != 0 ? "" : "user root;" );
         if ( canContinue ) {
-          if ( _ssl )
-            canContinue = writeConfFile( confPath / "port.conf", str::Format("listen    %1% ssl;") % _port );
-          else
-            canContinue = writeConfFile( confPath / "port.conf", str::Format("listen    %1%;") % _port );
+          if ( _ssl ) {
+            canContinue = TestTools::writeFile( confPath / "port.conf", str::Format("listen    %1% ssl;\nlisten [::]:%1% ssl;") % _port );
+          } else {
+            canContinue = TestTools::writeFile( confPath / "port.conf", str::Format("listen    %1%;\nlisten [::]:%1%;") % _port );
+          }
         }
         if ( canContinue ) {
           if ( _ssl )
@@ -262,13 +226,13 @@ public:
         };
 
         // Wait max 10 sec for the socket becoming available
-        bool isup { checkLocalPort( port() ) };
+        bool isup { TestTools::checkLocalPort( port() ) };
         if ( !isup )
         {
           unsigned i = 0;
           do {
             std::this_thread::sleep_for( std::chrono::milliseconds(1000) );
-            isup = checkLocalPort( port() );
+            isup = TestTools::checkLocalPort( port() );
           } while ( !isup && ++i < 10 );
 
           if ( !isup && prog.running() ) {
@@ -604,11 +568,18 @@ WebServer::RequestHandler WebServer::makeBasicAuthHandler(const std::string &bas
       authorized = ( it->second == basicCred );
 
     if ( !authorized ) {
+      const int times = 30;
+      const std::string errmsg = "Sorry you are not authorized!\n";
       req.rout << "Status: 401 Unauthorized\r\n"
-                  "Content-Type: text/html; charset=utf-8\r\n"
-                  "WWW-Authenticate: Basic realm=\"User Visible Realm\", charset=\"UTF-8\" \r\n"
-                  "\r\n"
-                  "Sorry you are not authorized.";
+               << "Content-Type: text/html; charset=utf-8\r\n"
+               << "Content-Length: " << (errmsg.size() * times) << "\r\n"
+               << "WWW-Authenticate: Basic realm=\"User Visible Realm\", charset=\"UTF-8\" \r\n"
+               << "\r\n";
+
+      for ( int i = 0; i < times; i++ ) {
+               req.rout << errmsg;
+      }
+
       return;
     }
 

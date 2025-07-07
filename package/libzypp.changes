@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Mon Jul  7 16:33:09 CEST 2025 - ma@suse.de
+
+- BuildRequires: %{libsolv_devel_package} >= 0.7.34 (bsc#1243486)
+  Newer rpm versions no longer allow a ':' in rpm package names or
+  obsoletes. So injecting an
+    Obsoletes: product:oldproductname < oldproductversion
+  into the -release package to indicate a product rename is no longer
+  possible.
+  Since libsolv-0.7.34 you can and should use:
+    Provides: product-obsoletes(oldproductname) < oldproductversion
+  in the -release package. libsolv will then inject the appropriate
+  Obsoletes into the Product.
+- version 17.37.10 (35)
+
+-------------------------------------------------------------------
 Fri Jul  4 16:22:16 CEST 2025 - ma@suse.de
 
 - Ignore DeltaRpm download errors (bsc#1245672)

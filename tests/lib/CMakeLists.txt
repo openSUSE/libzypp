@@ -1,7 +1,7 @@
 find_program( NGINX nginx )
 find_program( VSFTPD vsftpd )
 find_program( SQUIDPROXY squid )
-find_program( SQUIDPROXY_AUTH basic_ncsa_auth HINTS ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_SBINDIR} ${CMAKE_INSTALL_LIBEXECDIR} PATH_SUFFIXES squid)
+find_program( SQUIDPROXY_AUTH basic_ncsa_auth HINTS ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_SBINDIR} ${CMAKE_INSTALL_LIBEXECDIR} "/usr/lib" PATH_SUFFIXES squid)
 find_library( LIBFCGI NAMES fcgi )
 find_library( LIBFCGI++ NAMES fcgi++ )
 

@@ -39,7 +39,7 @@ namespace zyppng {
     const auto &url = spec.url();
     const auto &targetPath = spec.targetPath();
 #if ENABLE_ZCHUNK_COMPRESSION
-    _haveZckData = (ZckHelper::isZchunkFile( spec.deltaFile() )  && spec.headerSize() > 0);
+    _haveZckData = (ZckLoader::isZchunkFile( spec.deltaFile() )  && spec.headerSize() > 0);
     MIL << " Upgrading request for URL: "<< url << " to multipart download , which zckunk=" << _haveZckData << std::endl;
 #else
     MIL << " Upgrading request for URL: "<< url << " to multipart download , which zckunk=false" << std::endl;

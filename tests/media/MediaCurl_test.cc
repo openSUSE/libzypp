@@ -78,6 +78,55 @@ BOOST_DATA_TEST_CASE( base_provide_zck, bdata::make( withSSL ) * bdata::make( ba
     BOOST_REQUIRE_EQUAL( primaryRequests, 1 );
 }
 
+BOOST_DATA_TEST_CASE( base_provide_zck_no_hdrsize, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
+{
+
+  int primaryRequests = 0;
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  WebServer web( testRoot.c_str(), 10001, withSSL );
+  BOOST_REQUIRE( web.start() );
+
+  web.addRequestHandler("primary", [ & ]( WebServer::Request &req ){
+    primaryRequests++;
+    req.rout << "Location: /primary.xml.zck\r\n\r\n";
+    return;
+  });
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+
+  if( withSSL ) {
+    mediaUrl.setQueryParam("ssl_capath", web.caPath().asString() );
+  }
+
+  BOOST_CHECK_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_CHECK_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  zypp::OnMediaLocation loc("/handler/primary");
+  loc.setDeltafile( testRoot/"primary-deltatemplate.xml.zck" );
+  loc.setDownloadSize( makeBytes(274638) );
+  loc.setHeaderChecksum( zypp::CheckSum( zypp::Digest::sha256(), "90a1a1b99ba3b6c8ae9f14b0c8b8c43141c69ec3388bfa3b9915fbeea03926b7") );
+
+  BOOST_CHECK_NO_THROW( mm.provideFile( id, loc ) );
+
+  // if zck is enabled, we have 2 requests, otherwise its just a normal provide
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+  if ( backend == "curl2" )
+    BOOST_REQUIRE_EQUAL( primaryRequests, 3 ); // lead + header + chunks
+  else
+#endif
+    BOOST_REQUIRE_EQUAL( primaryRequests, 1 );
+}
+
+
 // case request with filesize not matching
 BOOST_DATA_TEST_CASE( base_provide_wrong_filesize, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
 {

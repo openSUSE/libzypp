@@ -342,65 +342,60 @@ namespace zypp {
 
       // HERE add zchunk logic if required
       if ( !srcFile.deltafile().empty()
-           && zyppng::ZckHelper::isZchunkFile (srcFile.deltafile ())
-           && srcFile.headerSize () > 0 ) {
+           && zyppng::ZckLoader::isZchunkFile (srcFile.deltafile ()) ) {
 
-        // first fetch the zck header
-        std::optional<zypp::Digest> digest;
-        UByteArray sum;
+        zyppng::Ref<zyppng::ZckLoader> zckHelper = std::make_shared<zyppng::ZckLoader>();
 
-        const auto &headerSum = srcFile.headerChecksum();
-        if ( !headerSum.empty () ) {
-          digest = zypp::Digest();
-          if ( !digest->create( headerSum.type() ) ) {
-            ERR << "Unknown header checksum type " << headerSum.type() << std::endl;
-            return false;
-          }
-          sum = zypp::Digest::hexStringToUByteArray( headerSum.checksum() );
-        }
+        const auto &fetchChunks = [&]( const std::vector<zyppng::ZckLoader::Block> &blocks ){
 
-        reqData._req->addRequestRange( 0, srcFile.headerSize(), std::move(digest), sum );
-        executeRequest ( reqData, nullptr );
+          reqData._req->resetRequestRanges();
 
-        reqData._req->resetRequestRanges();
+          for ( const auto &block : blocks ) {
+            if ( block._checksum.size() && block._chksumtype.size() ) {
+              std::optional<zypp::Digest> dig = zypp::Digest();
+              if ( !dig->create( block._chksumtype ) ) {
+                WAR_MEDIA << "Trying to create Digest with chksum type " << block._chksumtype << " failed " << std::endl;
+                zckHelper->setFailed( str::Str() << "Trying to create Digest with chksum type " << block._chksumtype << " failed " );
+                return;
+              }
 
-        auto res = zyppng::ZckHelper::prepareZck( srcFile.deltafile(), target, srcFile.downloadSize() );
+              if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
+                DBG_MEDIA << "Starting block " << block._start << " with checksum " << zypp::Digest::digestVectorToString( block._checksum ) << "." << std::endl;
+              reqData._req->addRequestRange( block._start, block._len, std::move(dig), block._checksum, {}, block._relevantDigestLen, block._chksumPad );
+            } else {
+              if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
+                DBG_MEDIA << "Starting block " << block._start << " without checksum!" << std::endl;
+              reqData._req->addRequestRange( block._start, block._len );
+            }
+          };
+
+          executeRequest ( reqData, &report );
+          zckHelper->cont().unwrap();
+        };
+
+
+        zyppng::ZckLoader::PrepareResult res;
+        const auto &fin = [&]( zyppng::ZckLoader::PrepareResult result ){
+          res = std::move(result);
+        };
+
+        const auto &hdrSize = srcFile.headerSize();
+        const auto &dSize = srcFile.downloadSize();
+        zckHelper->connectFunc( &zyppng::ZckLoader::sigBlocksRequired, fetchChunks );
+        zckHelper->connectFunc( &zyppng::ZckLoader::sigFinished, fin );
+        zckHelper->buildZchunkFile( target, srcFile.deltafile(), dSize ? dSize : std::optional<zypp::ByteCount>{}, hdrSize ? hdrSize : std::optional<zypp::ByteCount>{} ).unwrap();
+
         switch(res._code) {
-          case zyppng::ZckHelper::PrepareResult::Error: {
+          case zyppng::ZckLoader::PrepareResult::Error: {
             ERR << "Failed to setup zchunk because of: " << res._message << std::endl;
             return false;
           }
-          case zyppng::ZckHelper::PrepareResult::NothingToDo:
-            return true; // already done
-          case zyppng::ZckHelper::PrepareResult::ExceedsMaxLen:
+          case zyppng::ZckLoader::PrepareResult::ExceedsMaxLen:
             ZYPP_THROW( MediaFileSizeExceededException( reqData._req->url(), srcFile.downloadSize(), res._message ));
-          case zyppng::ZckHelper::PrepareResult::Success:
-            break;
+          case zyppng::ZckLoader::PrepareResult::Success:
+          case zyppng::ZckLoader::PrepareResult::NothingToDo:
+            return true; //done
         }
-
-        for ( const auto &block : res._blocks ) {
-          if ( block._checksum.size() && block._chksumtype.size() ) {
-            std::optional<zypp::Digest> dig = zypp::Digest();
-            if ( !dig->create( block._chksumtype ) ) {
-              WAR_MEDIA << "Trying to create Digest with chksum type " << block._chksumtype << " failed " << std::endl;
-              return false;
-            }
-
-            if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
-              DBG_MEDIA << "Starting block " << block._start << " with checksum " << zypp::Digest::digestVectorToString( block._checksum ) << "." << std::endl;
-            reqData._req->addRequestRange( block._start, block._len, std::move(dig), block._checksum, {}, block._relevantDigestLen, block._chksumPad );
-          }
-        };
-
-        executeRequest ( reqData, &report );
-
-        //we might have the file ready
-        std::string err;
-        if ( !zyppng::ZckHelper::validateZckFile( target, err) ) {
-          ERR << "ZCK failed with error: " << err << std::endl;
-          return false;
-        }
-        return true;
       }
 #endif
       return false;

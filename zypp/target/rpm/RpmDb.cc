@@ -107,7 +107,7 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
 }
 
 
-  /** Workaround bnc#827609 - rpm needs a readable pwd so we
+  /** Workaround bsc#827609 - rpm needs a readable pwd so we
    * chdir to /. Turn realtive pathnames into absolute ones
    * by prepending cwd so rpm still finds them
    */
@@ -124,6 +124,35 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
     }
 #endif
     return path_r;	// no problem with absolute pathnames
+  }
+
+  /**
+   * Workaround bsc#1216091: In rpm-4.18 `rpm --root /mnt --runposttrans`
+   * does not execute the scripts chrooted. We cant use it.
+   */
+  inline bool workaroundDUMPPOSTTRANS_BUG_1216091( bool checkit_r=false )
+  {
+    auto checkit = []()->bool {
+      bool broken = false;
+      librpmDb::db_const_iterator it( "/" );
+      if ( it.findPackage( "rpm" )
+#if 1
+        && it->tag_edition() == Edition("4.18.0")
+#else
+        && it->tag_edition() < Edition("4.18~")
+        && it->tag_edition() >= Edition("4.18")
+#endif
+        && not it->tag_provides().count( Capability("rpm_fixed_runposttrans") ) ) {
+        WAR << "Workaround broken rpm --runposttrans" << endl;
+        broken = true;
+      }
+      return broken;
+    };
+
+    static bool broken = false;
+    if ( checkit_r )
+      broken = checkit();
+    return broken;
   }
 }
 
@@ -256,6 +285,7 @@ RpmDb::db_const_iterator RpmDb::dbConstIterator() const
 //
 void RpmDb::initDatabase( Pathname root_r, bool doRebuild_r )
 {
+  workaroundDUMPPOSTTRANS_BUG_1216091( /*checkit_r*/true );
   ///////////////////////////////////////////////////////////////////
   // Check arguments
   ///////////////////////////////////////////////////////////////////
@@ -446,7 +476,7 @@ namespace
   void computeKeyRingSync( std::set<Edition> & rpmKeys_r, std::list<PublicKeyData> & zyppKeys_r )
   {
     ///////////////////////////////////////////////////////////////////
-    // Remember latest release and where it ocurred
+    // Remember latest release and where it occurred
     struct Key
     {
       Key()
@@ -1681,11 +1711,7 @@ void RpmDb::doInstallPackage( const Pathname & filename, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
-#if defined(WORKAROUNDDUMPPOSTTRANS_BUG_1216091)
-  if ( postTransCollector_r && _root == "/" ) {
-#else
-  if ( postTransCollector_r ) {
-#endif
+  if ( postTransCollector_r && ( _root == "/" || not workaroundDUMPPOSTTRANS_BUG_1216091() ) ) {
     opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
     opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
   }
@@ -1896,11 +1922,7 @@ void RpmDb::doRemovePackage( const std::string & name_r, RpmInstFlags flags, Rpm
 
   // run rpm
   RpmArgVec opts;
-#if defined(WORKAROUNDDUMPPOSTTRANS_BUG_1216091)
-  if ( postTransCollector_r && _root == "/" ) {
-#else
-  if ( postTransCollector_r ) {
-#endif
+  if ( postTransCollector_r && ( _root == "/" || not workaroundDUMPPOSTTRANS_BUG_1216091() ) ) {
     opts.push_back("--define");           // bsc#1041742: Attempt to delay %transfiletrigger(postun|in) execution iff rpm supports it.
     opts.push_back("_dump_posttrans 1");  // Old rpm ignores the --define, new rpm injects 'dump_posttrans:' lines to collect and execute later.
   }

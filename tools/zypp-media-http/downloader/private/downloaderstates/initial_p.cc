@@ -33,7 +33,7 @@ namespace zyppng {
     }
 
 #if ENABLE_ZCHUNK_COMPRESSION
-    bool deltaZck = ZckHelper::isZchunkFile( spec.deltaFile() );
+    bool deltaZck = ZckLoader::isZchunkFile( spec.deltaFile() );
 #endif
     if ( spec.metalinkEnabled() ) {
 #if ENABLE_ZCHUNK_COMPRESSION

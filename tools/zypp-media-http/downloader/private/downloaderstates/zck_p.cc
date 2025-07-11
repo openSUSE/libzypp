@@ -71,7 +71,7 @@ namespace zyppng {
 
   void DLZckHeadState::gotFinished()
   {
-    if ( ZckHelper::isZchunkFile( stateMachine()._spec.targetPath() ) )
+    if ( ZckLoader::isZchunkFile( stateMachine()._spec.targetPath() ) )
       return BasicDownloaderStateBase::gotFinished();
     failed ( "Downloaded header is not a zchunk header");
   }
@@ -101,21 +101,21 @@ namespace zyppng {
     // @TODO get this from zchunk file?
     _fileSize = spec.expectedFileSize();
 
-    auto prepareRes = ZckHelper::prepareZck ( spec.deltaFile (), spec.targetPath (), _fileSize );
+    auto prepareRes = ZckLoader::prepareZck ( spec.deltaFile (), spec.targetPath (), _fileSize );
     switch( prepareRes._code ) {
-      case ZckHelper::PrepareResult::Error: {
+      case ZckLoader::PrepareResult::Error: {
         return setFailed ( std::move(prepareRes._message) );
       }
-      case ZckHelper::PrepareResult::ExceedsMaxLen: {
+      case ZckLoader::PrepareResult::ExceedsMaxLen: {
         return setFailed( NetworkRequestErrorPrivate::customError(
                             NetworkRequestError::ExceededMaxLen,
                             std::move(prepareRes._message) )
                           );
       }
-      case ZckHelper::PrepareResult::NothingToDo: {
+      case ZckLoader::PrepareResult::NothingToDo: {
         return setFinished();
       }
-      case ZckHelper::PrepareResult::Success:
+      case ZckLoader::PrepareResult::Success:
         // handle down below
         break;
     }
@@ -137,7 +137,7 @@ namespace zyppng {
       _preferredChunkSize = sm._spec.preferredChunkSize();
     }
 
-    std::for_each( prepareRes._blocks.begin (), prepareRes._blocks.end(), [&]( const ZckHelper::Block &block ) {
+    std::for_each( prepareRes._blocks.begin (), prepareRes._blocks.end(), [&]( const ZckLoader::Block &block ) {
       _ranges.push_back ( Block{ block } );
     });
 
@@ -160,7 +160,7 @@ namespace zyppng {
     const auto &spec = stateMachine()._spec;
 
     std::string err;
-    if ( !ZckHelper::validateZckFile ( spec.targetPath(), err ) ) {
+    if ( !ZckLoader::validateZckFile ( spec.targetPath(), err ) ) {
       return setFailed ( std::move(err) );
     }
 

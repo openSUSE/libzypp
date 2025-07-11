@@ -101,7 +101,7 @@ namespace zyppng {
   bool DownloadPrivateBase::hasZckInfo() const
   {
     if ( zypp::indeterminate(_specHasZckInfo) )
-      _specHasZckInfo = ( _spec.headerSize() > 0 && ZckHelper::isZchunkFile( _spec.deltaFile() ) );
+      _specHasZckInfo = ( _spec.headerSize() > 0 && ZckLoader::isZchunkFile( _spec.deltaFile() ) );
     return bool(_specHasZckInfo);
   }
 #endif

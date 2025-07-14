@@ -127,7 +127,7 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
   }
 
   /**
-   * Workaround bsc#1216091: In rpm-4.18 `rpm --root /mnt --runposttrans`
+   * Workaround bsc#1216091: In rpm-4.18.0 `rpm --root /mnt --runposttrans`
    * does not execute the scripts chrooted. We cant use it.
    */
   inline bool workaroundDUMPPOSTTRANS_BUG_1216091( bool checkit_r=false )
@@ -136,12 +136,7 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
       bool broken = false;
       librpmDb::db_const_iterator it( "/" );
       if ( it.findPackage( "rpm" )
-#if 1
         && it->tag_edition() == Edition("4.18.0")
-#else
-        && it->tag_edition() < Edition("4.18~")
-        && it->tag_edition() >= Edition("4.18")
-#endif
         && not it->tag_provides().count( Capability("rpm_fixed_runposttrans") ) ) {
         WAR << "Workaround broken rpm --runposttrans" << endl;
         broken = true;

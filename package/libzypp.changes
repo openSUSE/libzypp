@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jul 14 12:06:07 CEST 2025 - ma@suse.de
+
+- Add runtime check for a broken rpm-4.18.0 --runpostrans
+  (bsc#1246149)
+- Add regression test for bsc#1245220 and some other filesize
+  related tests.
+- version 17.37.11 (35)
+
+-------------------------------------------------------------------
 Mon Jul  7 16:33:09 CEST 2025 - ma@suse.de
 
 - BuildRequires: %{libsolv_devel_package} >= 0.7.34 (bsc#1243486)

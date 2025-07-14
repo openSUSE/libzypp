@@ -445,9 +445,7 @@ MACRO(ADD_TESTS)
     ADD_EXECUTABLE( ${loop_var}_test ${loop_var}_test.cc )
 
     SET(TEST_REQ_LIBS ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} )
-    IF(NOT DISABLE_MEDIABACKEND_TESTS)
-      LIST( APPEND TEST_REQ_LIBS zypp_test_utils )
-    ENDIF()
+    LIST( APPEND TEST_REQ_LIBS zypp_test_utils )
 
     TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp_exe_compiler_flags  )
     TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC ${TEST_REQ_LIBS}  )

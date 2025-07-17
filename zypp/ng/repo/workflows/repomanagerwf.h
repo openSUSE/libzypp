@@ -56,8 +56,8 @@ namespace zyppng {
     AsyncOpRef<expected<repo::AsyncRefreshContextRef> > buildCache( repo::AsyncRefreshContextRef refCtx, zypp::RepoManagerFlags::CacheBuildPolicy policy, ProgressObserverRef progressObserver = nullptr );
     expected<repo::SyncRefreshContextRef> buildCache( repo::SyncRefreshContextRef refCtx, zypp::RepoManagerFlags::CacheBuildPolicy policy, ProgressObserverRef progressObserver = nullptr );
 
-    AsyncOpRef<expected<RepoInfo>> addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress = nullptr );
-    expected<RepoInfo> addRepository( SyncRepoManagerRef mgr, const RepoInfo &info, ProgressObserverRef myProgress = nullptr );
+    AsyncOpRef<expected<RepoInfo>> addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress = nullptr, const zypp::TriBool & forcedProbe = zypp::indeterminate );
+    expected<RepoInfo> addRepository( SyncRepoManagerRef mgr, const RepoInfo &info, ProgressObserverRef myProgress = nullptr, const zypp::TriBool & forcedProbe = zypp::indeterminate );
 
     AsyncOpRef<expected<void>> addRepositories( AsyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress = nullptr );
     expected<void> addRepositories( SyncRepoManagerRef mgr, zypp::Url url, ProgressObserverRef myProgress = nullptr );

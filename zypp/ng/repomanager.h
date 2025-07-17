@@ -13,6 +13,7 @@
 #define ZYPP_NG_REPOMANAGER_INCLUDED
 
 #include <utility>
+#include <optional>
 
 #include <zypp/RepoManagerFlags.h>
 #include <zypp/RepoManagerOptions.h>
@@ -39,7 +40,6 @@ namespace zyppng {
   using ServiceInfo         = zypp::ServiceInfo;
   using RepoManagerOptions  = zypp::RepoManagerOptions;
   using PluginRepoverification = zypp_private::repo::PluginRepoverification;
-
   ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( SyncContext );
   ZYPP_FWD_DECL_TYPE_WITH_REFS( ProgressObserver );
@@ -410,7 +410,7 @@ namespace zyppng {
     /*!
      * Adds the repository in \a info and returns the updated \ref RepoInfo object.
      */
-    expected<RepoInfo> addRepository( const RepoInfo & info, ProgressObserverRef myProgress = nullptr );
+    expected<RepoInfo> addRepository( const RepoInfo & info, const ProgressObserverRef myProgress = nullptr, const zypp::TriBool & forcedProbe = zypp::indeterminate );
 
     expected<void> addRepositories( const zypp::Url & url, ProgressObserverRef myProgress = nullptr );
 

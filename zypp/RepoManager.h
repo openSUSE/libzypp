@@ -31,6 +31,7 @@
 #include <zypp/RepoManagerOptions.h>
 #include <utility>
 #include <zypp-core/ui/ProgressData>
+#include <zypp-core/TriBool.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -380,7 +381,9 @@ namespace zypp
     */
    void addRepository( const RepoInfo &info,
                        const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
-
+   /** \overload Explicitly request probing or no probing. */
+   void addRepository( const RepoInfo &info, const TriBool & forcedProbe,
+                       const ProgressData::ReceiverFnc & progressrcv = ProgressData::ReceiverFnc() );
    /**
     * \short Adds repositores from a repo file to the list of known repositories.
     * \param url Url of the repo file. The URL is subject to repo variable expansion.

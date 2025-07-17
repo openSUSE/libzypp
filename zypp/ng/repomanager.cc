@@ -991,9 +991,9 @@ namespace zyppng
   }
 
   template<typename ZyppContextRefType>
-  expected<RepoInfo> RepoManager<ZyppContextRefType>::addRepository(const RepoInfo &info, ProgressObserverRef myProgress)
+  expected<RepoInfo> RepoManager<ZyppContextRefType>::addRepository(const RepoInfo &info, ProgressObserverRef myProgress, const zypp::TriBool & forcedProbe )
   {
-    return joinPipeline( _zyppContext, RepoManagerWorkflow::addRepository( shared_this<RepoManager<ZyppContextRefType>>(), info, std::move(myProgress) ) );
+    return joinPipeline( _zyppContext, RepoManagerWorkflow::addRepository( shared_this<RepoManager<ZyppContextRefType>>(), info, std::move(myProgress), forcedProbe ) );
   }
 
   template<typename ZyppContextRefType>

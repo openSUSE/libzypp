@@ -888,8 +888,9 @@ namespace zyppng::RepoManagerWorkflow {
 
       ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
-      AddRepoLogic( RepoManagerPtrType &&repoMgrRef, RepoInfo &&info, ProgressObserverRef &&myProgress )
+      AddRepoLogic( RepoManagerPtrType &&repoMgrRef, RepoInfo &&info, ProgressObserverRef &&myProgress, const zypp::TriBool & forcedProbe )
         : _repoMgrRef( std::move(repoMgrRef) )
+        , _doProbeUrl( zypp::indeterminate(forcedProbe) ? _repoMgrRef->options().probe : bool(forcedProbe) )
         , _info( std::move(info) )
         , _myProgress ( std::move(myProgress) )
       {}
@@ -908,7 +909,7 @@ namespace zyppng::RepoManagerWorkflow {
             return makeReadyResult( expected<RepoInfo>::error( ZYPP_EXCPT_PTR(zypp::repo::RepoAlreadyExistsException(_info)) ) );
 
           // check the first url for now
-          if ( _repoMgrRef->options().probe )
+          if ( _doProbeUrl )
           {
             DBG << "unknown repository type, probing" << std::endl;
             return assert_urls(_info)
@@ -941,19 +942,20 @@ namespace zyppng::RepoManagerWorkflow {
       }
 
       RepoManagerPtrType _repoMgrRef;
+      bool _doProbeUrl;  ///< RepoManagerOptions::probe opt. overwritten in by ctor arg \a forcedProbe
       RepoInfo _info;
       ProgressObserverRef _myProgress;
     };
   };
 
-  AsyncOpRef<expected<RepoInfo> > addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress )
+  AsyncOpRef<expected<RepoInfo> > addRepository( AsyncRepoManagerRef mgr, RepoInfo info, ProgressObserverRef myProgress, const zypp::TriBool & forcedProbe )
   {
-    return SimpleExecutor<AddRepoLogic, AsyncOp<expected<RepoInfo>>>::run( std::move(mgr), std::move(info), std::move(myProgress) );
+    return SimpleExecutor<AddRepoLogic, AsyncOp<expected<RepoInfo>>>::run( std::move(mgr), std::move(info), std::move(myProgress), forcedProbe );
   }
 
-  expected<RepoInfo> addRepository( SyncRepoManagerRef mgr, const RepoInfo &info, ProgressObserverRef myProgress )
+  expected<RepoInfo> addRepository( SyncRepoManagerRef mgr, const RepoInfo &info, ProgressObserverRef myProgress, const zypp::TriBool & forcedProbe )
   {
-    return SimpleExecutor<AddRepoLogic, SyncOp<expected<RepoInfo>>>::run( std::move(mgr), RepoInfo(info), std::move(myProgress) );
+    return SimpleExecutor<AddRepoLogic, SyncOp<expected<RepoInfo>>>::run( std::move(mgr), RepoInfo(info), std::move(myProgress), forcedProbe );
   }
 
   namespace {

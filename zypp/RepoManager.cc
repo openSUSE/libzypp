@@ -178,11 +178,11 @@ namespace zypp
   repo::RepoType RepoManager::probe( const Url & url ) const
   { return _pimpl->ngMgr().probe( {url} ).unwrap(); }
 
-  void RepoManager::addRepository( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
+  void RepoManager::addRepository( const RepoInfo &info, const TriBool & forcedProbe, const ProgressData::ReceiverFnc & progressrcv )
   {
     callback::SendReport<ProgressReport> report;
     auto adapt = zyppng::ProgressObserverAdaptor( progressrcv, report );
-    RepoInfo updatedRepo = _pimpl->ngMgr().addRepository( info, adapt.observer() ).unwrap();
+    RepoInfo updatedRepo = _pimpl->ngMgr().addRepository( info, adapt.observer(), forcedProbe ).unwrap();
 
     // We should fix the API as we must inject those paths
     // into the repoinfo in order to keep it usable.
@@ -191,6 +191,9 @@ namespace zypp
     oinfo.setMetadataPath( zyppng::rawcache_path_for_repoinfo( _pimpl->ngMgr().options(), updatedRepo ).unwrap() );
     oinfo.setPackagesPath( zyppng::packagescache_path_for_repoinfo( _pimpl->ngMgr().options(), updatedRepo ).unwrap() );
   }
+
+  void RepoManager::addRepository( const RepoInfo &info, const ProgressData::ReceiverFnc & progressrcv )
+  { addRepository( info, indeterminate, progressrcv ); }
 
   void RepoManager::addRepositories( const Url &url, const ProgressData::ReceiverFnc & progressrcv )
   { return _pimpl->ngMgr().addRepositories( url, nullptr ).unwrap(); }

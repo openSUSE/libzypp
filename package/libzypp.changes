@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul 17 23:37:54 CEST 2025 - ma@suse.de
+
+- Allow explicit request to probe an added repo's URL
+  (bsc#1246466)
+- Fix tests with -DISABLE_MEDIABACKEND_TESTS=1 (fixes #661)
+- version 17.37.12 (35)
+
+-------------------------------------------------------------------
 Mon Jul 14 12:06:07 CEST 2025 - ma@suse.de
 
 - Add runtime check for a broken rpm-4.18.0 --runpostrans

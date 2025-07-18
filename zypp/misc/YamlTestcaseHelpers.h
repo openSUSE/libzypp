@@ -29,7 +29,7 @@ namespace yamltest::detail {
     for ( YAML::const_iterator it = setup.begin(); it != setup.end(); it++ ) {
 
       const std::string &key = it->first.as<std::string>();
-      const auto &data = it->second;
+      const auto &data = (*it).second;
 
       MIL << "Found key " << key << std::endl;
 

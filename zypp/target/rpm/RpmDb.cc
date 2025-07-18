@@ -2035,6 +2035,7 @@ int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(c
   // to figure out which script is currently executed. Otherwise we
   // can't tell which output belongs to which script.
   static const str::regex rx( "^D: (%.*): (scriptlet start|running .* scriptlet)" );
+  static const str::regex rx2( "^Running (%[^)]*[)])$" );
   str::smatch what;
   std::string line;
   bool silent = true; // discard everything before 1st scriptlet
@@ -2046,10 +2047,19 @@ int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(c
     if ( str::startsWith( line, "D:" ) ) {  // rpm debug output
       if ( str::regex_match( line, what, rx ) ) {
         // forward ripoff header
+        DBG << "Verbose RIPOFF:"+what[1] << endl;
         output_r( "RIPOFF:"+what[1] );
         if ( silent )
           silent = false;
       }
+      continue;
+    }
+    if ( str::regex_match( line, what, rx2 ) ) {  // preliminary for 1218459, but rpm needs fixing
+      // forward ripoff header
+      DBG << "NonVerbose RIPOFF:"+what[1] << endl;
+      // output_r( "RIPOFF:"+what[1] );
+      // if ( silent )
+      //   silent = false;
       continue;
     }
     if ( silent ) {

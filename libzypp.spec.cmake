@@ -105,7 +105,7 @@ Recommends:     logrotate
 # lsof is used for 'zypper ps':
 Recommends:     lsof
 %endif
-BuildRequires:  cmake >= 3.10
+BuildRequires:  cmake >= 3.17
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libudev)
 %if 0%{?suse_version} >= 1330

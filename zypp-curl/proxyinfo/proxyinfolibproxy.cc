@@ -19,6 +19,7 @@
 #include <zypp-core/base/String.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-core/Pathname.h>
+#include <zypp/base/Env.h>
 
 #include <zypp-curl/proxyinfo/ProxyInfoLibproxy>
 
@@ -34,6 +35,12 @@ namespace zypp {
     {
       static const bool _inYAST { ::getenv("YAST_IS_RUNNING") };
       return _inYAST;
+    }
+
+    inline bool PX_DEBUG()
+    {
+      static const bool _pxdebug { env::getenvBool("PX_DEBUG") };
+      return _pxdebug;
     }
   }
 
@@ -214,6 +221,14 @@ namespace zypp {
           if ( not env::inYAST() )
             break;
         }
+      }
+
+      if ( env::PX_DEBUG() ) {
+        L_DBG("PX_DEBUG") << "Url " << url_r << endl;
+        for ( int i = 0; proxies[i]; ++i ) {
+          L_DBG("PX_DEBUG") << "got " << proxies[i] << endl;
+        }
+        L_DBG("PX_DEBUG") << "--> " << result.value_or( "" ) << endl;
       }
 
       return result.value_or( "" );

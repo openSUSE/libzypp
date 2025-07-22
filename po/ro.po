@@ -25,17 +25,17 @@ msgstr ""
 "Project-Id-Version: OpenSUSE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2012-11-19 14:59+0200\n"
-"Last-Translator: Lucian Oprea <oprea.luci@gmail.com>\n"
-"Language-Team: Romanian <LL@li.org>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"Language-Team: Romanian <https://l10n.opensuse.org/projects/libzypp/master/"
+"ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Narro 2.0 on http://tradu.softwareliber.ro\n"
-"Plural-Forms:  nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Narro 2.0 on http://tradu.softwareliber.ro\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -5175,8 +5175,7 @@ msgstr ""
 #: zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
-"A apărut o eroare la setarea opțiunilor de download (curl) pentru '%s':"
+msgstr "A apărut o eroare la setarea opțiunilor de download (curl) pentru '%s':"
 
 #: zypp-media/mediaexception.cc:156
 #, c-format, boost-format

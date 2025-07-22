@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: zypp.ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-30 11:59+0000\n"
-"Last-Translator: Aleksey Fedorov <Aleksejfedorov963@gmail.com>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Russian <https://l10n.opensuse.org/projects/libzypp/master/ru/"
 ">\n"
 "Language: ru\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4504,8 +4504,8 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
-"Удаление установленного %1% в этом контексте приведет к удалению (не "
-"замене!) включенных PTF-пакетов."
+"Удаление установленного %1% в этом контексте приведет к удалению (не замене!)"
+" включенных PTF-пакетов."
 
 #: zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
@@ -5033,8 +5033,7 @@ msgstr "Схема URL-адреса требует указания пути"
 
 #: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
-msgstr ""
-"При наличии компонентов авторизации относительные пути указывать нельзя"
+msgstr "При наличии компонентов авторизации относительные пути указывать нельзя"
 
 #: zypp-core/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"

@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-02-13 11:50+0000\n"
-"Last-Translator: Manuel Vazquez <xixirei@yahoo.es>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Galician <https://l10n.opensuse.org/projects/libzypp/master/"
 "gl/>\n"
 "Language: gl\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -5352,13 +5352,11 @@ msgstr ""
 
 #: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
-msgstr ""
-"Parámetro de carácter de separación para a división de mapas incorrecto"
+msgstr "Parámetro de carácter de separación para a división de mapas incorrecto"
 
 #: zypp-core/url/UrlUtils.cc:282
 msgid "Invalid parameter array join separator character"
-msgstr ""
-"Parámetro de carácter de separación para a unión de matrices incorrecto"
+msgstr "Parámetro de carácter de separación para a unión de matrices incorrecto"
 
 #: zypp-core/zyppng/io/abstractspawnengine.cc:183
 #, c-format, boost-format

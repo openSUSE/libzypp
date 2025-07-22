@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: zypp.hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2019-03-23 20:19+0000\n"
-"Last-Translator: Robert Taisz <robert.taisz@emerald.hu>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Hungarian <https://l10n.opensuse.org/projects/libzypp/master/"
 "hu/>\n"
 "Language: hu\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.3\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -5244,8 +5244,7 @@ msgstr "Érvénytelen %s-komponens"
 
 #: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1308
 msgid "Query string parsing not supported for this URL"
-msgstr ""
-"A lekérdezési karakterlánc feldolgozása ehhez az URL-hez nem támogatott"
+msgstr "A lekérdezési karakterlánc feldolgozása ehhez az URL-hez nem támogatott"
 
 #: zypp-core/url/UrlBase.cc:902
 msgid "Url scheme is a required component"

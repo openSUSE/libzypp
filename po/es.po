@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-28 14:59+0000\n"
-"Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
+"PO-Revision-Date: 2025-07-22 15:00+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/es/"
 ">\n"
 "Language: es\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3866,8 +3866,8 @@ msgstr "No se pudieron recuperar los nuevos metadatos del repositorio."
 #: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
-"No se pudo almacenar en caché el repositorio ( no se pudo iniciar "
-"repo2solv )."
+"No se pudo almacenar en caché el repositorio ( no se pudo iniciar repo2solv "
+")."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:597
 #: zypp/ng/repo/workflows/repomanagerwf.cc:626
@@ -4085,8 +4085,8 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
-"El archivo %s del repositorio %s está firmado con una clave desconocida %s. "
-"¿Desea continuar?"
+"El archivo %s del repositorio %s está firmado con una clave desconocida %s. ¿"
+"Desea continuar?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/keyringwf.cc:66
@@ -4415,8 +4415,7 @@ msgstr "nada proporciona %1%, que el elemento %2% instalado necesita"
 #: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
-"nada proporciona %1%, que el elemento %2% que se va a instalar necesita"
+msgstr "nada proporciona %1%, que el elemento %2% que se va a instalar necesita"
 
 #: zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
@@ -4767,8 +4766,7 @@ msgstr ""
 
 #: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
-msgstr ""
-"Falló la ejecución de la transacción debido a los siguientes problemas:"
+msgstr "Falló la ejecución de la transacción debido a los siguientes problemas:"
 
 #: zypp/target/commitpackagepreloader.cc:102
 msgid "no mirror found"
@@ -4848,8 +4846,7 @@ msgstr "Se han modificado los archivos de configuración para %s:"
 #: zypp/target/rpm/RpmDb.cc:1787
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
-msgstr ""
-"rpm ha guardado %s como %s, pero no es posible determinar la diferencia"
+msgstr "rpm ha guardado %s como %s, pero no es posible determinar la diferencia"
 
 #. %s = filenames
 #: zypp/target/rpm/RpmDb.cc:1789

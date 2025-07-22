@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: NetworkManager-vpnc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2024-06-20 12:46+0000\n"
-"Last-Translator: Rajasekaran Karunanithi <rajasekaran86@gmail.com>\n"
-"Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/"
-">\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"Language-Team: Tamil <https://l10n.opensuse.org/projects/libzypp/master/ta/>"
+"\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -1756,7 +1756,8 @@ msgstr "க்ரியோலஸ் மற்றும் பிட்ஜி�
 #. language code: cpp
 #: zypp/LanguageCode.cc:357
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr "க்ரியோலஸ் மற்றும் பிட்ஜின்ஸ், போர்த்துக்கீசிய மொழி சார்ந்தது (மற்றவை)"
+msgstr ""
+"க்ரியோலஸ் மற்றும் பிட்ஜின்ஸ், போர்த்துக்கீசிய மொழி சார்ந்தது (மற்றவை)"
 
 #. language code: cre cr
 #: zypp/LanguageCode.cc:359

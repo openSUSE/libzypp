@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jul 22 18:18:07 CEST 2025 - ma@suse.de
+
+- Workaround 'rpm -vv' leaving scriptlets /var/tmp (bsc#1218459)
+- Verbose log libproxy results if PX_DEBUG=1 is set.
+- BuildRequires:  cmake >= 3.17.
+- version 17.37.13 (35)
+
+-------------------------------------------------------------------
 Thu Jul 17 23:37:54 CEST 2025 - ma@suse.de
 
 - Allow explicit request to probe an added repo's URL

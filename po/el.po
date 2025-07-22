@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: Greek (libzypp)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2018-04-29 12:02+0000\n"
-"Last-Translator: Konstantina Tsolakoglou <konstantina@accountant.com>\n"
-"Language-Team: Greek <https://l10n.opensuse.org/projects/libzypp/master/el/"
-">\n"
+"PO-Revision-Date: 2025-07-22 15:00+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"Language-Team: Greek <https://l10n.opensuse.org/projects/libzypp/master/el/>"
+"\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.18\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -5108,8 +5108,7 @@ msgstr "Εσφαλμένο όνομα αρχείου: %s"
 #: zypp-media/mediaexception.cc:53
 #, c-format, boost-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
-"Το μέσο δεν ανοίχτηκε κατά την προσπάθεια εκτέλεσης της ενέργειας '%s'."
+msgstr "Το μέσο δεν ανοίχτηκε κατά την προσπάθεια εκτέλεσης της ενέργειας '%s'."
 
 #: zypp-media/mediaexception.cc:59
 #, c-format, boost-format

@@ -20,16 +20,16 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2024-07-20 10:47+0000\n"
-"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/libzypp/master/cs/"
-">\n"
+"PO-Revision-Date: 2025-07-22 15:00+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/libzypp/master/cs/>"
+"\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4062,8 +4062,7 @@ msgstr ""
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
-"Nepodařilo se přenést úložiště do mezipaměti (nelze spustit repo2solv)."
+msgstr "Nepodařilo se přenést úložiště do mezipaměti (nelze spustit repo2solv)."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:597
 #: zypp/ng/repo/workflows/repomanagerwf.cc:626
@@ -4604,8 +4603,7 @@ msgstr "nelze nainstalovat %1% i %2%"
 #: zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
-"nainstalovaný %1% je v konfliktu s '%2%' poskytnutým nainstalovaným %3%"
+msgstr "nainstalovaný %1% je v konfliktu s '%2%' poskytnutým nainstalovaným %3%"
 
 #: zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
@@ -4637,8 +4635,7 @@ msgstr "nainstalované %1% zastarává '%2%' poskytované nainstalovaným %3%"
 #: zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
-msgstr ""
-"nainstalované %1% zastarává '%2%' poskytované %3%, jež se má instalovat"
+msgstr "nainstalované %1% zastarává '%2%' poskytované %3%, jež se má instalovat"
 
 #: zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
@@ -4674,8 +4671,7 @@ msgstr "nainstalované %1% vyžaduje '%2%', ale tento požadavek nelze splnit"
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
-msgstr ""
-"má se instalovat %1% vyžadující '%2%', ale tento požadavek nelze splnit"
+msgstr "má se instalovat %1% vyžadující '%2%', ale tento požadavek nelze splnit"
 
 #: zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "

@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-28 03:59+0000\n"
-"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
 "Language: ja\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -3700,8 +3700,8 @@ msgid ""
 "correct product defect errors."
 msgstr ""
 "問題の決定、それは互換性に関する情報やインストール支援、使用方法の対応や進行"
-"中の保守、基本的なトラブルシューティングなどの技術サポートを指します。Level 1"
-"サポートは、製品の欠陥によるエラーを修正しようとするものではありません。"
+"中の保守、基本的なトラブルシューティングなどの技術サポートを指します。Level "
+"1サポートは、製品の欠陥によるエラーを修正しようとするものではありません。"
 
 #: zypp/VendorSupportOptions.cc:50
 msgid ""
@@ -3709,17 +3709,17 @@ msgid ""
 "customer problems, isolate problem area and provide resolution for problems "
 "not resolved by Level 1 Support."
 msgstr ""
-"問題の切り分け、それは顧客内での問題を共有し領域を切り分け、Level 1サポートで"
-"は解決されていない問題について解決方法を提供する技術サポートを指します。"
+"問題の切り分け、それは顧客内での問題を共有し領域を切り分け、Level "
+"1サポートでは解決されていない問題について解決方法を提供する技術サポートを指し"
+"ます。"
 
 #: zypp/VendorSupportOptions.cc:53
 msgid ""
 "Problem resolution, which means technical support designed to resolve "
 "complex problems by engaging engineering in resolution of product defects "
 "which have been identified by Level 2 Support."
-msgstr ""
-"問題の解決、それは複雑な問題に対して技術者を従事させ、Level 2サポートで認識さ"
-"れていない製品の欠陥を解決する技術サポートを指します。"
+msgstr "問題の解決、それは複雑な問題に対して技術者を従事させ、Level "
+"2サポートで認識されていない製品の欠陥を解決する技術サポートを指します。"
 
 #: zypp/VendorSupportOptions.cc:56
 msgid "An additional customer contract is necessary for getting support."
@@ -3784,25 +3784,23 @@ msgstr "%1% 回再試行したので中止しています。"
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
-msgstr ""
-"SUSE カスタマーセンターを開いて、お使いの登録が有効であること、および期限切れ"
-"になっていないことをご確認ください。"
+msgstr "SUSE "
+"カスタマーセンターを開いて、お使いの登録が有効であること、および期限切れにな"
+"っていないことをご確認ください。"
 
 #: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
-msgstr ""
-"Novellカスタマーセンターへアクセスし、登録が有効であるか、有効期限切れになっ"
+msgstr "Novellカスタマーセンターへアクセスし、登録が有効であるか、有効期限切れになっ"
 "ていないかを確認してください。"
 
 #: zypp/media/MediaHandler.cc:341
 msgid ""
 "Create attach point: Can't find a writable directory to create an attach "
 "point"
-msgstr ""
-"接続点の作成: 接続点を作成するための書き込み可能なディレクトリが見つかりませ"
-"ん"
+msgstr "接続点の作成: "
+"接続点を作成するための書き込み可能なディレクトリが見つかりません"
 
 #: zypp/misc/CheckAccessDeleted.cc:458
 msgid "Please install package 'lsof' first."
@@ -3843,9 +3841,8 @@ msgstr "新しいリポジトリのメタデータ取得に失敗しました。
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:579
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
-"リポジトリのキャッシュ作成に失敗しました ( repo2solv を開始できませんでし"
-"た ) 。"
+msgstr "リポジトリのキャッシュ作成に失敗しました ( repo2solv を開始できませんでした )"
+" 。"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:597
 #: zypp/ng/repo/workflows/repomanagerwf.cc:626
@@ -3901,8 +3898,7 @@ msgstr "'%s' からの読み取り時に不明なエラーが発生しました"
 #: zypp/ng/repomanager.cc:196
 #, boost-format
 msgid "Cannot read repo directory '%1%': Permission denied"
-msgstr ""
-"リポジトリのディレクトリ '%1%' を読み込むことができません: 許可がありません"
+msgstr "リポジトリのディレクトリ '%1%' を読み込むことができません: 許可がありません"
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
@@ -3914,8 +3910,7 @@ msgstr "ディレクトリ '%s' の読み込みに失敗しました"
 #: zypp/ng/repomanager.cc:214
 #, boost-format
 msgid "Cannot read repo file '%1%': Permission denied"
-msgstr ""
-"リポジトリのファイル '%1%' を読み込むことができません: 許可がありません"
+msgstr "リポジトリのファイル '%1%' を読み込むことができません: 許可がありません"
 
 #: zypp/ng/repomanager.cc:383
 msgid "Cleaning metadata"
@@ -3975,8 +3970,7 @@ msgstr "サービスの保管場所がわかりません。"
 #: zypp/ng/repomanager.cc:1434
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
-msgstr ""
-"不明なサービス '%1%' です: 孤立したサービスリポジトリ '%2%' を削除しています"
+msgstr "不明なサービス '%1%' です: 孤立したサービスリポジトリ '%2%' を削除しています"
 
 #: zypp/ng/repomanager.h:66
 msgid "Repository alias cannot start with dot."
@@ -4026,8 +4020,7 @@ msgstr "キーの名前: %1%"
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-"リポジトリ \"%2%\" から %1% の新しいパッケージ署名キーを受け取りました:"
+msgstr[0] "リポジトリ \"%2%\" から %1% の新しいパッケージ署名キーを受け取りました:"
 
 #. translator: %1% is a file name
 #: zypp/ng/reporthelper.cc:144
@@ -4059,9 +4052,8 @@ msgstr "ファイル '%s' は不明なキー '%s' で署名されています。
 #, c-format, boost-format
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
-"リポジトリ '%s' のファイル '%s' は不明なキー '%s' で署名されています。続行し"
-"ますか?"
+msgstr "リポジトリ '%s' のファイル '%s' は不明なキー '%s' "
+"で署名されています。続行しますか?"
 
 #. translator: %1% is a repositories name
 #: zypp/ng/workflows/keyringwf.cc:66
@@ -4145,9 +4137,8 @@ msgstr "リポジトリにURLが設定されていません。"
 #: zypp/repo/SUSEMediaVerifier.cc:104 zypp-media/ng/mediaverifier.cc:109
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
-msgstr ""
-"必要なメディア %1%/%2% は '%3%' と記されているメディアで、下記のような内容が"
-"含まれています:"
+msgstr "必要なメディア %1%/%2% は '%3%' "
+"と記されているメディアで、下記のような内容が含まれています:"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
@@ -4314,9 +4305,8 @@ msgstr "いくつかの依存関係をおおよそ無視する"
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
 "replaced"
-msgstr ""
-"インストール済みの %1% は distupgrade リポジトリに属しておらず、置き換えなけ"
-"ればならないものです"
+msgstr "インストール済みの %1% は distupgrade "
+"リポジトリに属しておらず、置き換えなければならないものです"
 
 #. just in case
 #: zypp/solver/detail/SATResolver.cc:1162
@@ -4379,16 +4369,14 @@ msgstr "%1% はインストールできません"
 #: zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
-msgstr ""
-"インストール済みの %2% によって必要とされている '%1%' を提供するものがありま"
-"せん"
+msgstr "インストール済みの %2% によって必要とされている '%1%' "
+"を提供するものがありません"
 
 #: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
-"これからインストールする %2% によって必要とされている '%1%' を提供するものが"
-"ありません"
+msgstr "これからインストールする %2% によって必要とされている '%1%' "
+"を提供するものがありません"
 
 #: zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
@@ -4398,24 +4386,21 @@ msgstr "%1% と %2% を同時にインストールすることはできません
 #: zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
-"インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' と"
-"矛盾します"
+msgstr "インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' "
+"と矛盾します"
 
 #: zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
-msgstr ""
-"インストール済みの %1% は、これからインストールする %3% によって提供される "
+msgstr "インストール済みの %1% は、これからインストールする %3% によって提供される "
 "'%2%' と矛盾します"
 
 #: zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
-"これからインストールする %1% は、インストール済みの %3% によって提供される "
+msgstr "これからインストールする %1% は、インストール済みの %3% によって提供される "
 "'%2%' と矛盾します"
 
 #: zypp/solver/detail/SATResolver.cc:1217
@@ -4423,38 +4408,33 @@ msgstr ""
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
 "%3%"
-msgstr ""
-"これからインストールする %1% は、これからインストールする %3% によって提供さ"
-"れる '%2%' と矛盾します"
+msgstr "これからインストールする %1% は、これからインストールする %3% "
+"によって提供される '%2%' と矛盾します"
 
 #: zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
-msgstr ""
-"インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' を"
-"廃止します"
+msgstr "インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' "
+"を廃止します"
 
 #: zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
-msgstr ""
-"インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' を"
-"廃止します"
+msgstr "インストール済みの %1% は、インストール済みの %3% によって提供される '%2%' "
+"を廃止します"
 
 #: zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
-msgstr ""
-"これからインストールする %1% は、インストール済みの %3% によって提供される "
+msgstr "これからインストールする %1% は、インストール済みの %3% によって提供される "
 "'%2%' を廃止します"
 
 #: zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
-msgstr ""
-"これからインストールする %1% は、これからインストールする %2% によって提供さ"
-"れる '%2%' を廃止します"
+msgstr "これからインストールする %1% は、これからインストールする %2% "
+"によって提供される '%2%' を廃止します"
 
 #: zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
@@ -4470,18 +4450,16 @@ msgstr "これからインストールする %1% は、それ自身が提供す�
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
-msgstr ""
-"インストール済みの %1% は '%2%' を必要としていますが、この要件を満たすものが"
-"ありません"
+msgstr "インストール済みの %1% は '%2%' "
+"を必要としていますが、この要件を満たすものがありません"
 
 #: zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
-msgstr ""
-"これからインストールする %1% は '%2%' を必要としていますが、この要件を満たす"
-"ものがありません"
+msgstr "これからインストールする %1% は '%2%' "
+"を必要としていますが、この要件を満たすものがありません"
 
 #: zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
@@ -4509,9 +4487,9 @@ msgstr "%1% は未だ %2% に完全統合されていません。"
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
-msgstr ""
-"PTF をそのまま維持し、メンテナンスパッチをインストールしないように選択するの"
-"が一般的です。"
+msgstr "PTF "
+"をそのまま維持し、メンテナンスパッチをインストールしないように選択するのが一"
+"般的です。"
 
 #. translator: %1% is the name of a PTF.
 #: zypp/solver/detail/SATResolver.cc:1333
@@ -4520,17 +4498,18 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
-"この状況下において、インストールされている %1% を削除すると、その中に含まれて"
-"いる PTF パッケージも削除 (置換ではありません！) することになります。"
+"この状況下において、インストールされている %1% を削除すると、"
+"その中に含まれている PTF パッケージも削除 (置換ではありません！) "
+"することになります。"
 
 #: zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
-msgstr ""
-"PTF を削除したい場合は、 '%1%' を実行してください。このコマンドを実行すること"
-"により、 PTF パッケージを削除せずに更新できます。"
+msgstr "PTF を削除したい場合は、 '%1%' "
+"を実行してください。このコマンドを実行することにより、 PTF "
+"パッケージを削除せずに更新できます。"
 
 #: zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
@@ -4728,8 +4707,9 @@ msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
-"シグナル \"%1% (%2%)\" を受信しましたが、システムの一貫性が確保できなくなるた"
-"め、現在実行中の RPM トランザクションはキャンセルできません。"
+"シグナル \"%1% (%2%)\" "
+"を受信しましたが、システムの一貫性が確保できなくなるため、現在実行中の RPM "
+"トランザクションはキャンセルできません。"
 
 #: zypp/target/TargetImpl.cc:2729
 msgid "Executing the transaction failed because of the following problems:"
@@ -4946,8 +4926,7 @@ msgstr "署名ファイル %s が見つかりません"
 #: zypp-core/CheckSum.cc:136
 #, c-format, boost-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
-"%2$u バイトのチェックサム '%3$s' は '%1$s' と思われますが、疑わしいタイプです"
+msgstr "%2$u バイトのチェックサム '%3$s' は '%1$s' と思われますが、疑わしいタイプです"
 
 #: zypp-core/ExternalProgram.cc:245
 #, c-format, boost-format
@@ -5102,8 +5081,7 @@ msgstr "ディレクトリを '%s' (%s)に変更できません。"
 #: zypp-core/zyppng/io/forkspawnengine.cc:377
 #, c-format, boost-format
 msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
-msgstr ""
-"chroot '%s' (%s)の実行中にディレクトリを '%s' に変更することはできません。"
+msgstr "chroot '%s' (%s)の実行中にディレクトリを '%s' に変更することはできません。"
 
 #. don't want to get here
 #: zypp-core/zyppng/io/forkspawnengine.cc:406
@@ -5277,9 +5255,8 @@ msgstr "'%s' にアクセスする際にタイムアウトになりました。"
 #: zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
-msgstr ""
-"ダウンロードしたデータが期待するファイルサイズを超えています (期待するサイズ"
-"=%s, 実際のサイズ=%s) 。"
+msgstr "ダウンロードしたデータが期待するファイルサイズを超えています ("
+"期待するサイズ=%s, 実際のサイズ=%s) 。"
 
 #: zypp-media/mediaexception.cc:208
 #: zypp-curl/ng/network/networkrequesterror.cc:115
@@ -5290,9 +5267,8 @@ msgstr "場所「%s」は一時的にアクセスできなくなっています�
 #: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr ""
-" SSL 証明書に問題があります。 '%s' について証明機関に問題がないかどうか確認し"
-"てください。"
+msgstr " SSL 証明書に問題があります。 '%s' "
+"について証明機関に問題がないかどうか確認してください。"
 
 #: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."

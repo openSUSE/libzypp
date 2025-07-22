@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: zypp.de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-06-18 11:59+0000\n"
-"Last-Translator: Gemineo <vistatec@gemineo.de>\n"
+"PO-Revision-Date: 2025-07-22 15:00+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/libzypp/master/de/>"
 "\n"
 "Language: de\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4154,8 +4154,7 @@ msgstr "Das Dienst-Plugin unterstützt keine Änderung von Attributen."
 #: zypp/repo/RepoProvideFile.cc:265
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr ""
-"Datei '%s' aus Repository '%s' kann nicht zur Verfügung gestellt werden"
+msgstr "Datei '%s' aus Repository '%s' kann nicht zur Verfügung gestellt werden"
 
 #: zypp/repo/RepoProvideFile.cc:271
 msgid "No url in repository."

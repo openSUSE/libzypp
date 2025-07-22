@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2025-05-28 08:59+0000\n"
-"Last-Translator: David Medina <medipas@gmail.com>\n"
+"PO-Revision-Date: 2025-07-22 15:00+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/libzypp/master/ca/"
 ">\n"
 "Language: ca\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4263,8 +4263,7 @@ msgstr "Construint la memòria cau del repositori %s"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
-msgstr ""
-"No es pot crear la memòria cau a %s - no se'n té permisos d'escriptura."
+msgstr "No es pot crear la memòria cau a %s - no se'n té permisos d'escriptura."
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
@@ -4426,10 +4425,8 @@ msgstr "Nom de la clau: %1%"
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-"S'ha rebut %1% clau de signatura de paquets nova del repositori %2%:"
-msgstr[1] ""
-"S'han rebut %1% claus de signatura de paquets noves del repositori %2%:"
+msgstr[0] "S'ha rebut %1% clau de signatura de paquets nova del repositori %2%:"
+msgstr[1] "S'han rebut %1% claus de signatura de paquets noves del repositori %2%:"
 
 #. translator: %1% is a file name
 #: zypp/ng/reporthelper.cc:144
@@ -4839,8 +4836,7 @@ msgstr "el %1% instal·lat fa obsolet %2%, proporcionat per %3% per instal·lar"
 #: zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
-msgstr ""
-"el %1% per instal·lar fa obsolet %2%, proporcionat per l'instal·lat %3%"
+msgstr "el %1% per instal·lar fa obsolet %2%, proporcionat per l'instal·lat %3%"
 
 #: zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
@@ -4902,8 +4898,8 @@ msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
 msgstr ""
-"Normalment voleu mantenir el PTF (format de text net) i opteu per no "
-"instal·lar els pedaços de manteniment."
+"Normalment voleu mantenir el PTF (format de text net) i opteu per no instal·"
+"lar els pedaços de manteniment."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/solver/detail/SATResolver.cc:1333
@@ -5458,8 +5454,7 @@ msgstr "El caràcter separador de divisió de matriu de paràmetres no és vàli
 
 #: zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
-msgstr ""
-"El caràcter separador de divisió d'assignació de paràmetres no és vàlid"
+msgstr "El caràcter separador de divisió d'assignació de paràmetres no és vàlid"
 
 #: zypp-core/url/UrlUtils.cc:282
 msgid "Invalid parameter array join separator character"

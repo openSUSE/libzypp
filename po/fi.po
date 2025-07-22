@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: zypp.fi\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2024-12-01 09:48+0000\n"
-"Last-Translator: Tommi Nieminen <software@legisign.org>\n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/libzypp/master/fi/"
 ">\n"
 "Language: fi\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: zypp/CountryCode.cc:50
 msgid "Unknown country: "
@@ -4356,8 +4356,7 @@ msgstr "Asennuslähteen verkko-osoite puuttuu."
 #: zypp/repo/SUSEMediaVerifier.cc:104 zypp-media/ng/mediaverifier.cc:109
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
-msgstr ""
-"Odotettiin tiedoston ”%3%” mukaista tietovälinettä %1%/%2% sisältönään:"
+msgstr "Odotettiin tiedoston ”%3%” mukaista tietovälinettä %1%/%2% sisältönään:"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
@@ -4592,8 +4591,7 @@ msgstr "asennetun paketin %2% vaatimaa pakettia \"%1%” ei tarjoa mikään läh
 #: zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
-"asennettavan paketin %2% vaatimaa pakettia ”%1%” ei tarjoa mikään lähde"
+msgstr "asennettavan paketin %2% vaatimaa pakettia ”%1%” ei tarjoa mikään lähde"
 
 #: zypp/solver/detail/SATResolver.cc:1204
 #, boost-format

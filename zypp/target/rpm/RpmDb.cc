@@ -2025,6 +2025,15 @@ int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(c
   MIL << "RpmDb::runposttrans(" << filename_r << ")" << endl;
 
   RpmArgVec opts;
+#if 1
+  // Bug 1218459 rpm scriptlets left over after snapshot updates
+  // Until 'rpm --runposttrans' is fixed to properly indicate script
+  // execution without -vv we redirect rpm's tmpdir. This will wipe
+  // the rpm-tmp.* files 'rpm -vv' otherwise leaves in /var/tmp.
+  std::string _tmppath { "_tmppath " + filename_r.dirname().asString() };
+  opts.push_back("--define");
+  opts.push_back(_tmppath.c_str());
+#endif
   opts.push_back("-vv");  // want vverbose output to see scriptlet execution in the log
   opts.push_back("--runposttrans");
   opts.push_back(filename_r.c_str());

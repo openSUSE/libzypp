@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: zypp.km\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-27 19:37+0200\n"
-"PO-Revision-Date: 2010-06-03 08:04+0700\n"
-"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
-"Language-Team: Khmer <support@khmeros.info>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-07-22 15:01+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"Language-Team: Khmer (Central) <https://l10n.opensuse.org/projects/libzypp/"
+"master/km/>\n"
+"Language: km\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 "X-Language: km-KH\n"
 
 #: zypp/CountryCode.cc:50
@@ -3699,9 +3700,9 @@ msgid ""
 "maintenance and basic troubleshooting. Level 1 Support is not intended to "
 "correct product defect errors."
 msgstr ""
-"ការ​កំណត់​បញ្ហា ដែល​មាន​ន័យ​ថា​ការគាំទ្រ​ផ្នែក​បច្ចេកទេស​បាន​រចនា​ដើម្បី​ផ្ដល់​ព័ត៌មាន​​ដែល​ឆប​គ្នា ជំនួយ​ការ​"
-"ដំឡើង ការ​ប្រើការ​គាំទ្រ និង​ការ​ថែទាំ​ដែល​កំពុង​បន្ត និង​កា​រដោះស្រាយ​បញ្ហា​មូលដ្ឋាន ។ កា​រគាំទ្រ​កម្រិត​មួយ​"
-"មិនមានបំណង​កែ​កំហុស​ផលិតផល​ឥតខ្ចោះ​ទេ ។"
+"ការ​កំណត់​បញ្ហា ដែល​មាន​ន័យ​ថា​ការគាំទ្រ​ផ្នែក​បច្ចេកទេស​បាន​រចនា​ដើម្បី​ផ្ដល់​ព័ត៌មាន​​ដែល​ឆប​គ្នា ជំនួយ​ការ​ដំឡើ"
+"ង ការ​ប្រើការ​គាំទ្រ និង​ការ​ថែទាំ​ដែល​កំពុង​បន្ត និង​កា​រដោះស្រាយ​បញ្ហា​មូលដ្ឋាន ។ "
+"កា​រគាំទ្រ​កម្រិត​មួយ​មិនមានបំណង​កែ​កំហុស​ផលិតផល​ឥតខ្ចោះ​ទេ ។"
 
 #: zypp/VendorSupportOptions.cc:50
 msgid ""
@@ -3851,7 +3852,8 @@ msgstr "កំពុង​ស្ថាបនា​ឃ្លាំង '%s'"
 #: zypp/ng/repo/workflows/repomanagerwf.cc:754
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
-msgstr "មិន​អាច​បង្កើត​ឃ្លាំង​សម្ងាត់​នៅ​ត្រង់​ %s - គ្មាន​សិទ្ធិ​ក្នុង​ការ​សរសេរ ។"
+msgstr ""
+"មិន​អាច​បង្កើត​ឃ្លាំង​សម្ងាត់​នៅ​ត្រង់​ %s - គ្មាន​សិទ្ធិ​ក្នុង​ការ​សរសេរ ។"
 
 #: zypp/ng/repo/workflows/repomanagerwf.cc:809
 #, boost-format
@@ -4090,13 +4092,15 @@ msgstr " បាន​បរាជ័យ​ក្នុងកា​រប្រ�
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
 "retrieval?"
-msgstr "កញ្ចប់ %s ហាក់​បីជា​​ខូច​ក្នុងការ​ផ្ទេរ ។ តើ​អ្នកចង់​ព្យាយាម​ម្ដង​ទៀត​ទេ ?"
+msgstr ""
+"កញ្ចប់ %s ហាក់​បីជា​​ខូច​ក្នុងការ​ផ្ទេរ ។ តើ​អ្នកចង់​ព្យាយាម​ម្ដង​ទៀត​ទេ ?"
 
 #. TranslatorExplanation %s = name of the package being processed.
 #: zypp/repo/PackageProvider.cc:497
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
-msgstr "បាន​បរាជ័យ​ក្នុងកា​រផ្ដល់​កញ្ចប់ %s ។ តើអ្នក​ចង់​ព្យាយាម​យក​ម្ដង​ទៀត​ទេ ?"
+msgstr ""
+"បាន​បរាជ័យ​ក្នុងកា​រផ្ដល់​កញ្ចប់ %s ។ តើអ្នក​ចង់​ព្យាយាម​យក​ម្ដង​ទៀត​ទេ ?"
 
 #: zypp/repo/PackageProvider.cc:620
 msgid "applydeltarpm check failed."
@@ -5190,7 +5194,8 @@ msgstr "ទីតាំង '%s' មិន​ដំណើរការ​ជា​
 #: zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr " បញ្ហា​វិញ្ញាបនបត្រ SSL ផ្ទៀងផ្ទាត់​ថា​វិញ្ញាបនបត្រ CA គឺ​ត្រឹមត្រូវ​សម្រាប់ '%s'."
+msgstr ""
+" បញ្ហា​វិញ្ញាបនបត្រ SSL ផ្ទៀងផ្ទាត់​ថា​វិញ្ញាបនបត្រ CA គឺ​ត្រឹមត្រូវ​សម្រាប់ '%s'."
 
 #: zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."

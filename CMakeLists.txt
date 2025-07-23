@@ -37,6 +37,8 @@ OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
+OPTION (DISABLE_LIBZYPP_BUILD  "Disable the build of the classic libzypp library" OFF)
+OPTION (ENABLE_LIBZYPPNG_BUILD "Enable the build of the next gen libzypp library" OFF)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -76,11 +78,22 @@ ENDIF()
 #--------------------------------------------------------------------------------
 
 
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+SET( CMAKE_MODULE_PATH
+    ${zypp-libs_SOURCE_DIR}/cmake/modules
+    ${CMAKE_MODULE_PATH}
+)
+
+INCLUDE(ZyppCommon)
+
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/zypp)
   add_subdirectory(zypp)
+  MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
+  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
+  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 endif()
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/zyppng)

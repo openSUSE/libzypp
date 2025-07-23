@@ -170,3 +170,10 @@ IF( NOT DISABLE_LIBPROXY )
   # required for dlload and dlclose
   target_link_libraries( zypp-curl  INTERFACE ${CMAKE_DL_LIBS} )
 ENDIF()
+
+get_filename_component(PARENT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+get_filename_component(PARENT_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR} DIRECTORY)
+target_include_directories( ${ZYPP_LOGIC_TARGET_PREFIX}-curl  INTERFACE
+  $<BUILD_INTERFACE:${PARENT_SRC_DIR}>
+  $<BUILD_INTERFACE:${PARENT_BIN_DIR}>
+)

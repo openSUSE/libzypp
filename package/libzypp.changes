@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Jul 23 17:11:47 CEST 2025 - ma@suse.de
+
+- During installation indicate the backend being used (bsc#1246038)
+  If some package actually needs to know, it should test for
+  ZYPP_CLASSIC_RPMTRANS being set in the environment.
+  Otherwise the transaction is driven by librpm.
+- version 17.37.14 (35)
+
+-------------------------------------------------------------------
 Tue Jul 22 18:18:07 CEST 2025 - ma@suse.de
 
 - Workaround 'rpm -vv' leaving scriptlets /var/tmp (bsc#1218459)

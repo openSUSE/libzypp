@@ -30,7 +30,9 @@ SET( zypp_curl_SRCS
   transfersettings.cc
 )
 
-INSTALL(  FILES ${zypp_curl_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_curl_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl" )
+endif()
 
 SET( zypp_curl_auth_HEADERS
   auth/CurlAuthData
@@ -44,7 +46,9 @@ SET( zypp_curl_auth_SRCS
   auth/curlauthdata.cc
 )
 
-INSTALL(  FILES ${zypp_curl_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl/auth" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_curl_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl/auth" )
+endif()
 
 IF( NOT DISABLE_LIBPROXY )
   SET(zypp_curl_proxyinfo_libproxy_SRCS proxyinfo/proxyinfolibproxy.cc)
@@ -64,7 +68,9 @@ SET( zypp_curl_proxyinfo_HEADERS
   proxyinfo/proxyinfos.h
 )
 
-INSTALL(  FILES ${zypp_curl_proxyinfo_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/zypp-curl/proxyinfo )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_curl_proxyinfo_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/zypp-curl/proxyinfo )
+endif()
 
 SET( zypp_curl_ng_network_SRCS
   ng/network/curlmultiparthandler.cc
@@ -104,9 +110,6 @@ SET( zypp_curl_ng_network_private_HEADERS
   ng/network/private/request_p.h
 )
 
-# ng files are not installed yet
-# INSTALL(  FILES ${zypp_curl_ng_network_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/zypp-curl/ng/network )
-
 SET( zypp_curl_parser_HEADERS
   parser/MediaBlockList
   parser/mediablocklist.h
@@ -127,7 +130,9 @@ SET( zypp_curl_parser_SRCS
   parser/zsyncparser.cc
 )
 
-INSTALL(  FILES ${zypp_curl_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl/parser" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_curl_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-curl/parser" )
+endif()
 
 
 SET( zypp_curl_lib_SRCS
@@ -159,16 +164,16 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
   endif(ZYPP_CXX_CPPCHECK)
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
+ADD_LIBRARY( ${ZYPP_LOGIC_TARGET_PREFIX}-curl STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEADERS}
   ng/network/curlmultiparthandler.h ng/network/curlmultiparthandler.cc )
 
-target_link_libraries( zypp-curl PRIVATE zypp_lib_compiler_flags )
-target_link_libraries( zypp-curl INTERFACE ${CURL_LIBRARIES} )
-target_link_libraries( zypp-curl INTERFACE ${LIBXML2_LIBRARIES} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-curl PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-curl INTERFACE ${CURL_LIBRARIES} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-curl INTERFACE ${LIBXML2_LIBRARIES} )
 
 IF( NOT DISABLE_LIBPROXY )
   # required for dlload and dlclose
-  target_link_libraries( zypp-curl  INTERFACE ${CMAKE_DL_LIBS} )
+  target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-curl  INTERFACE ${CMAKE_DL_LIBS} )
 ENDIF()
 
 get_filename_component(PARENT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)

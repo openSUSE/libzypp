@@ -37,6 +37,9 @@ OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
+OPTION (DISABLE_LIBZYPP_BUILD "Disable the build of the classic libzypp library" OFF)
+OPTION (ENABLE_LIBZYPPNG_BUILD "Enable the build of the next gen libzypp library" OFF)
+
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -86,11 +89,11 @@ SET( CMAKE_MODULE_PATH
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 
-if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/zypp)
+if (NOT DISABLE_LIBZYPP_BUILD)
   add_subdirectory(zypp)
 endif()
 
-if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/zyppng)
+if (ENABLE_LIBZYPPNG_BUILD)
   OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
   OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
   add_subdirectory(zyppng)

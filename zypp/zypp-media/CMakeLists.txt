@@ -138,5 +138,13 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-media STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
-target_link_libraries( zypp-media PRIVATE zypp_lib_compiler_flags )
+ADD_LIBRARY( ${ZYPP_LOGIC_TARGET_PREFIX}-media STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-media PRIVATE zypp_lib_compiler_flags )
+
+
+get_filename_component(PARENT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+get_filename_component(PARENT_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR} DIRECTORY)
+target_include_directories( ${ZYPP_LOGIC_TARGET_PREFIX}-media  INTERFACE
+  $<BUILD_INTERFACE:${PARENT_SRC_DIR}>
+  $<BUILD_INTERFACE:${PARENT_BIN_DIR}>
+)

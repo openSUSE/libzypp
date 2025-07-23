@@ -27,6 +27,7 @@
 #include <zypp/base/Functional.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/base/Json.h>
+#include <zypp/base/Env.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppFactory.h>
@@ -1729,6 +1730,11 @@ namespace zypp
                              CommitPackageCache & packageCache_r,
                              ZYppCommitResult & result_r )
     {
+      env::ScopedSet envguard[] __attribute__ ((__unused__)) {
+        { "ZYPP_SINGLE_RPMTRANS", nullptr },
+        { "ZYPP_CLASSIC_RPMTRANS", "1" },
+      };
+
       // steps: this is our todo-list
       ZYppCommitResult::TransactionStepList & steps( result_r.rTransactionStepList() );
       MIL << "TargetImpl::commit(<list>" << policy_r << ")" << steps.size() << endl;
@@ -2069,6 +2075,11 @@ namespace zypp
 
     void TargetImpl::commitInSingleTransaction(const ZYppCommitPolicy &policy_r, CommitPackageCache &packageCache_r, ZYppCommitResult &result_r)
     {
+      env::ScopedSet envguard[] __attribute__ ((__unused__)) {
+        { "ZYPP_SINGLE_RPMTRANS", "1" },
+        { "ZYPP_CLASSIC_RPMTRANS", nullptr },
+      };
+
       SingleTransReportLegacyWrapper _legacyWrapper;  // just in case nobody listens on the SendSingleTransReports
       SendSingleTransReport report; // active throughout the whole rpm transaction
 

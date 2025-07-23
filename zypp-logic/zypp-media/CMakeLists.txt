@@ -30,7 +30,9 @@ SET( zypp_media_SRCS
   mount.cc
 )
 
-INSTALL(  FILES ${zypp_media_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-media" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_media_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-media" )
+endif()
 
 SET( zypp_media_auth_HEADERS
   auth/AuthData
@@ -50,7 +52,9 @@ SET( zypp_media_auth_SRCS
   auth/credentialmanager.cc
 )
 
-INSTALL(  FILES ${zypp_media_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-media/auth" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_media_auth_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-media/auth" )
+endif()
 
 SET( zypp_media_ng_HEADERS
   ng/headervaluemap.h
@@ -103,9 +107,6 @@ SET( zypp_media_ng_SRCS
   ng/worker/mountingworker.cc
 )
 
-INSTALL(  FILES ${zypp_media_ng_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-media/ng" )
-
-
 SET( zypp_media_lib_SRCS
     ${zypp_media_SRCS}
     ${zypp_media_auth_SRCS}
@@ -140,7 +141,6 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 ADD_LIBRARY( ${ZYPP_LOGIC_TARGET_PREFIX}-media STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
 target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-media PRIVATE zypp_lib_compiler_flags )
-
 
 get_filename_component(PARENT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 get_filename_component(PARENT_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR} DIRECTORY)

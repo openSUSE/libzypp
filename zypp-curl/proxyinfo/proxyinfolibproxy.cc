@@ -118,34 +118,11 @@ namespace zypp {
       }
     }
 
-    struct TmpUnsetEnv
+    struct TmpUnsetEnv : private env::ScopedSet
     {
-      TmpUnsetEnv(const char *var_r) : _set(false), _var(var_r) {
-        const char * val = getenv( _var.c_str() );
-        if ( val )
-        {
-          _set = true;
-          _val = val;
-          ::unsetenv( _var.c_str() );
-        }
-      }
-
-      TmpUnsetEnv(const TmpUnsetEnv &) = delete;
-      TmpUnsetEnv(TmpUnsetEnv &&) = delete;
-      TmpUnsetEnv &operator=(const TmpUnsetEnv &) = delete;
-      TmpUnsetEnv &operator=(TmpUnsetEnv &&) = delete;
-
-      ~TmpUnsetEnv()
-      {
-        if ( _set )
-        {
-          setenv( _var.c_str(), _val.c_str(), 1 );
-        }
-      }
-
-      bool _set;
-      std::string _var;
-      std::string _val;
+      TmpUnsetEnv( const char * var_r )
+      : env::ScopedSet( var_r, nullptr )
+      {}
     };
 
     static pxProxyFactoryType * getProxyFactory()

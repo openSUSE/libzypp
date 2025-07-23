@@ -50,7 +50,6 @@ MATH( EXPR LIBZYPP_AGE     "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
 # But cmake is not libtool, it wants the verbatim suffix to libzypp.so
 MATH( EXPR LIBZYPP_SO_FIRST  "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
 SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
-CONFIGURE_FILE ( zypp-core/APIConfig.h.in zypp-core/APIConfig.h @ONLY )
 
 SET (CMAKE_CXX_STANDARD ${ZYPPCOMMON_CXX_STANDARD})
 SET (CMAKE_CXX_EXTENSIONS OFF)
@@ -388,10 +387,12 @@ ENDMACRO( SET_LOGGROUP )
 ####################################################################
 # SUBDIRECTORIES                                                   #
 ####################################################################
-include(${zypp-libs_SOURCE_DIR}/zypp-logic/ZyppLogic.cmake)
-ADD_SUBDIRECTORY( zypp-core )
-ADD_SUBDIRECTORY( zypp-media )
-ADD_SUBDIRECTORY( zypp-curl )
+
+SET( ZYPP_LOGIC_TARGET_PREFIX "zypp" )
+SET( ZYPP_LOGIC_INSTALL_CXX true )
+include_directories( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
+ADD_SUBDIRECTORY( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
+
 ADD_SUBDIRECTORY( zypp-tui )
 ADD_SUBDIRECTORY( zypp-common )
 ADD_SUBDIRECTORY( zypp )

@@ -6,6 +6,8 @@ INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} )
 
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
+CONFIGURE_FILE ( APIConfig.h.in APIConfig.h @ONLY )
+
 SET( zypp_toplevel_headers
   ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h
   AutoDispose.h
@@ -40,7 +42,10 @@ SET( zypp_toplevel_SRCS
   ShutdownLock.cc
   Url.cc
 )
-INSTALL(  FILES ${zypp_toplevel_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core" )
+
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_toplevel_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core" )
+endif()
 
 SET( zypp_base_HEADERS
   base/DefaultIntegral
@@ -122,7 +127,9 @@ IF (ENABLE_ZCHUNK_COMPRESSION)
 
 ENDIF(ENABLE_ZCHUNK_COMPRESSION)
 
-INSTALL(  FILES ${zypp_base_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/base" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_base_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/base" )
+endif()
 
 
 SET( zypp_fs_SRCS
@@ -137,7 +144,9 @@ SET( zypp_fs_HEADERS
   fs/watchfile.h
 )
 
-INSTALL(  FILES ${zypp_fs_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/fs" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_fs_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/fs" )
+endif()
 
 
 SET( zypp_rpc_SRCS
@@ -150,7 +159,9 @@ SET( zypp_rpc_HEADERS
   rpc/PluginFrameException.h
 )
 
-INSTALL(  FILES ${zypp_rpc_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/rpc" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_rpc_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/rpc" )
+endif()
 
 
 SET( zypp_ui_SRCS
@@ -162,7 +173,9 @@ SET( zypp_ui_HEADERS
   ui/progressdata.h
 )
 
-INSTALL(  FILES ${zypp_ui_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/ui" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_ui_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/ui" )
+endif()
 
 
 SET( zypp_url_SRCS
@@ -176,7 +189,9 @@ SET( zypp_url_HEADERS
   url/UrlUtils.h
 )
 
-INSTALL(  FILES ${zypp_url_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/url" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_url_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/url" )
+endif()
 
 SET( zypp_parser_SRCS
   parser/iniparser.cc
@@ -207,7 +222,9 @@ SET( zypp_parser_HEADERS
   parser/sysconfig.h
 )
 
-INSTALL(  FILES ${zypp_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser" )
+endif()
 
 SET( zypp_parser_xml_SRCS
   parser/xml/XmlEscape.cc
@@ -217,7 +234,9 @@ SET( zypp_parser_xml_HEADERS
   parser/xml/XmlEscape.h
 )
 
-INSTALL(  FILES ${zypp_parser_xml_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser/xml" )
+if( ZYPP_LOGIC_INSTALL_CXX )
+  INSTALL(  FILES ${zypp_parser_xml_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser/xml" )
+endif()
 
 SET( zyppng_async_HEADERS
   zyppng/async/AsyncOp
@@ -443,23 +462,23 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
-ADD_LIBRARY( zypp-core STATIC ${zypp_SRCS} ${zypp_HEADERS} )
+ADD_LIBRARY( ${ZYPP_LOGIC_TARGET_PREFIX}-core STATIC ${zypp_SRCS} ${zypp_HEADERS} )
 
-target_link_libraries( zypp-core PRIVATE zypp_lib_compiler_flags )
-target_link_libraries( zypp-core INTERFACE ${LIBGLIB_LIBRARIES} )
-target_link_libraries( zypp-core INTERFACE ${OPENSSL_LIBRARIES} )
-target_link_libraries( zypp-core INTERFACE ${CRYPTO_LIBRARIES} )
-target_link_libraries( zypp-core INTERFACE pthread )
-target_link_libraries( zypp-core INTERFACE ${SIGCPP_LIBRARIES} )
-TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${UTIL_LIBRARY} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${LIBGLIB_LIBRARIES} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${OPENSSL_LIBRARIES} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${CRYPTO_LIBRARIES} )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE pthread )
+target_link_libraries( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${SIGCPP_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${ZLIB_LIBRARY} )
+TARGET_LINK_LIBRARIES( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${UTIL_LIBRARY} )
 
 IF (ENABLE_ZSTD_COMPRESSION)
-  TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZSTD_LIBRARY})
+  TARGET_LINK_LIBRARIES( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${ZSTD_LIBRARY})
 ENDIF (ENABLE_ZSTD_COMPRESSION)
 
 IF (ENABLE_ZCHUNK_COMPRESSION)
-  TARGET_LINK_LIBRARIES( zypp-core INTERFACE ${ZCHUNK_LDFLAGS})
+  TARGET_LINK_LIBRARIES( ${ZYPP_LOGIC_TARGET_PREFIX}-core INTERFACE ${ZCHUNK_LDFLAGS})
 ENDIF(ENABLE_ZCHUNK_COMPRESSION)
 
 get_filename_component(PARENT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)

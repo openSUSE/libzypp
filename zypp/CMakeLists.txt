@@ -2,13 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-SET( CMAKE_MODULE_PATH
-    ${LIBZYPP_SOURCE_DIR}/cmake/modules
-    ${CMAKE_MODULE_PATH}
-)
 
-INCLUDE(ZyppCommon)
 INCLUDE(CMakePushCheckState)
 include(CheckSymbolExists)
 
@@ -322,10 +316,6 @@ MESSAGE(STATUS "version: ${VERSION}")
 MESSAGE(STATUS "Writing pkg-config file...")
 CONFIGURE_FILE(${LIBZYPP_SOURCE_DIR}/libzypp.pc.cmake ${LIBZYPP_BINARY_DIR}/libzypp.pc @ONLY)
 INSTALL( FILES ${LIBZYPP_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
-
-MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 
 ####################################################################
 # config templates

@@ -76,6 +76,13 @@ ENDIF()
 #--------------------------------------------------------------------------------
 
 
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+SET( CMAKE_MODULE_PATH
+    ${zypp-libs_SOURCE_DIR}/cmake/modules
+    ${CMAKE_MODULE_PATH}
+)
+
+
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 

@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-SET( CMAKE_MODULE_PATH
-    ${LIBZYPP_SOURCE_DIR}/cmake/modules
-    ${CMAKE_MODULE_PATH}
-)
 
 INCLUDE(ZyppCommon)
 INCLUDE(CMakePushCheckState)

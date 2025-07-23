@@ -66,6 +66,10 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${CMAKE_C
 # RPM SPEC                                                         #
 ####################################################################
 
+function( SPECFILE_EXT )
+
+endfunction()
+
 MACRO(SPECFILE)
   MESSAGE(STATUS "Writing spec file...")
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/${PACKAGE}.spec.cmake ${PROJECT_BINARY_DIR}/package/${PACKAGE}.spec @ONLY)
@@ -74,12 +78,6 @@ MACRO(SPECFILE)
     CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake ${PROJECT_BINARY_DIR}/package/${PACKAGE}-rpmlintrc @ONLY)
   ENDIF (EXISTS ${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
 ENDMACRO(SPECFILE)
-
-MACRO(PKGCONFGFILE)
-  MESSAGE(STATUS "Writing pkg-config file...")
-  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/libzypp.pc.cmake ${PROJECT_BINARY_DIR}/libzypp.pc @ONLY)
-  INSTALL( FILES ${PROJECT_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
-ENDMACRO(PKGCONFGFILE)
 
 ####################################################################
 # INSTALL                                                          #
@@ -143,3 +141,8 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
     ${AUTOBUILD_COMMAND}
   )
 ENDMACRO(GENERATE_PACKAGING)
+
+
+function( GENERATE_PACKAGING_EXT )
+
+endfunction()

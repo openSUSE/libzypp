@@ -85,6 +85,7 @@ SET( CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 
+INCLUDE(ZyppCommon)
 
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )

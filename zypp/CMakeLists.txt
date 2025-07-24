@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.10)
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 
-INCLUDE(ZyppCommon)
 INCLUDE(CMakePushCheckState)
 include(CheckSymbolExists)
 

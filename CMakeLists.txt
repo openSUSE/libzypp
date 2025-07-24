@@ -37,7 +37,7 @@ OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
-OPTION (DISABLE_LIBZYPP_BUILD "Disable the build of the classic libzypp library" OFF)
+OPTION (DISABLE_LIBZYPP_BUILD  "Disable the build of the classic libzypp library" OFF)
 OPTION (ENABLE_LIBZYPPNG_BUILD "Enable the build of the next gen libzypp library" OFF)
 
 #--------------------------------------------------------------------------------
@@ -91,6 +91,9 @@ SET( CMAKE_MODULE_PATH
 
 if (NOT DISABLE_LIBZYPP_BUILD)
   add_subdirectory(zypp)
+  MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
+  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
+  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 endif()
 
 if (ENABLE_LIBZYPPNG_BUILD)

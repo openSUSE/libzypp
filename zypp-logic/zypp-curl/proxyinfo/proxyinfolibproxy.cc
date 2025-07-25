@@ -33,7 +33,7 @@ namespace zypp {
   namespace env {
     inline bool inYAST()
     {
-      static const bool _inYAST { ::getenv("YAST_IS_RUNNING") };
+      static const bool _inYAST { static_cast<bool>(::getenv("YAST_IS_RUNNING")) };
       return _inYAST;
     }
 

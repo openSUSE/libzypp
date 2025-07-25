@@ -1,10 +1,10 @@
 #ifndef ZYPP_NG_MEDIA_CURL_CURL_H_INCLUDED
 #define ZYPP_NG_MEDIA_CURL_CURL_H_INCLUDED
 
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/base/signals.h>
-#include <zypp-core/zyppng/core/Url>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/base/signals.h>
+#include <zypp-core/ng/core/Url>
 #include <vector>
 #include <unordered_map>
 

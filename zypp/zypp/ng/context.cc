@@ -8,8 +8,8 @@
 \---------------------------------------------------------------------*/
 #include "private/context_p.h"
 #include <zypp/ZYppFactory.h>
-#include <zypp-core/zyppng/base/private/threaddata_p.h>
-#include <zypp-core/zyppng/base/EventLoop>
+#include <zypp-core/ng/base/private/threaddata_p.h>
+#include <zypp-core/ng/base/EventLoop>
 #include <zypp-media/ng/Provide>
 
 namespace zyppng {

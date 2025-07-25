@@ -14,7 +14,7 @@
 
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/Pathname.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
+#include <zypp-core/ng/base/zyppglobal.h>
 #include <memory>
 #include <string>
 

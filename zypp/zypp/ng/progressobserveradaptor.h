@@ -10,7 +10,7 @@
 #define ZYPP_NG_PROGRESSOBSERVERADAPTOR_INCLUDED
 
 #include <zypp/ZYppCallbacks.h>
-#include <zypp-core/zyppng/ui/ProgressObserver>
+#include <zypp-core/ng/ui/ProgressObserver>
 
 namespace zyppng {
   struct ProgressObserverAdaptor

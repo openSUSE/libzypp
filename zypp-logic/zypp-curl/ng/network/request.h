@@ -4,11 +4,11 @@
 #include <zypp-curl/ng/network/networkrequesterror.h>
 #include <zypp-curl/ng/network/TransferSettings>
 #include <zypp-curl/ng/network/curlmultiparthandler.h>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/core/Url>
-#include <zypp-core/zyppng/core/ByteArray>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/base/signals.h>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/core/Url>
+#include <zypp-core/ng/core/ByteArray>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/base/signals.h>
 #include <zypp-core/base/Flags.h>
 #include <zypp-core/ByteCount.h>
 #include <optional>

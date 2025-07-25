@@ -10,8 +10,8 @@
 #define ZYPP_NG_TOOLS_NETWORKPROVIDER_H_INCLUDED
 
 #include <zypp-media/ng/worker/ProvideWorker>
-#include <zypp-core/zyppng/base/Signals>
-#include <zypp-core/zyppng/base/AutoDisconnect>
+#include <zypp-core/ng/base/Signals>
+#include <zypp-core/ng/base/AutoDisconnect>
 #include <zypp-curl/ng/network/AuthData>
 #include <chrono>
 

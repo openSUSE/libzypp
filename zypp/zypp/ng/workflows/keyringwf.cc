@@ -18,7 +18,7 @@
 
 #include <zypp-core/base/Gettext.h>
 #include <utility>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/reporthelper.h>

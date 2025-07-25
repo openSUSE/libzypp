@@ -5,14 +5,14 @@
 #include <zypp-media/auth/AuthData>
 #include <zypp-media/auth/CredentialManager>
 #include <zypp-core/OnMediaLocation>
-#include <zypp-core/zyppng/base/EventLoop>
+#include <zypp-core/ng/base/EventLoop>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
-#include <zypp-core/zyppng/pipelines/Wait>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/pipelines/Wait>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 #include <yaml-cpp/yaml.h>
 #include <shared/tvm/tvmsettings.h>

@@ -2,7 +2,7 @@
 #include "TestTools.h"
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
-#include <zypp-core/zyppng/base/Timer>
+#include <zypp-core/ng/base/Timer>
 
 #include <chrono>
 #include <thread>

@@ -15,10 +15,10 @@
 #define ZYPP_NG_MEDIA_CURL_PRIVATE_REQUEST_P_H_INCLUDED
 
 #include <zypp-core/CheckSum.h>
-#include <zypp-core/zyppng/base/private/base_p.h>
+#include <zypp-core/ng/base/private/base_p.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-media/MediaException>
-#include <zypp-core/zyppng/base/Timer>
+#include <zypp-core/ng/base/Timer>
 #include <zypp-core/base/Regex.h>
 #include <curl/curl.h>
 #include <array>

@@ -27,8 +27,8 @@
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/private/curlhelper_p.h>
-#include <zypp-core/zyppng/base/eventloop.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/base/eventloop.h>
+#include <zypp-core/ng/pipelines/expected.h>
 
 #include <zypp/media/detail/MediaNetworkRequestExecutor.h>
 #include <zypp/media/MediaNetworkCommonHandler.h> // for the authentication workflow

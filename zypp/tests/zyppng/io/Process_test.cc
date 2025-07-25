@@ -2,11 +2,11 @@
 #include "TestTools.h"
 #include <zypp/ExternalProgram.h>
 #include <zypp/TmpPath.h>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/io/Process>
-#include <zypp-core/zyppng/io/IODevice>
-#include <zypp-core/zyppng/io/AsyncDataSource>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/io/Process>
+#include <zypp-core/ng/io/IODevice>
+#include <zypp-core/ng/io/AsyncDataSource>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 #include <chrono>
 #include <thread>

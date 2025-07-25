@@ -14,10 +14,10 @@
 #ifndef ZYPP_CURL_NG_NETWORK_PRIVATE_DOWNLOADERSTATES_BASE_P_H_INCLUDED
 #define ZYPP_CURL_NG_NETWORK_PRIVATE_DOWNLOADERSTATES_BASE_P_H_INCLUDED
 
-#include <zypp-core/zyppng/base/private/base_p.h>
-#include <zypp-core/zyppng/base/signals.h>
+#include <zypp-core/ng/base/private/base_p.h>
+#include <zypp-core/ng/base/signals.h>
 #include <zypp-core/TriBool.h>
-#include <zypp-core/zyppng/core/ByteArray>
+#include <zypp-core/ng/core/ByteArray>
 #include <zypp-curl/ng/network/rangedesc.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/ng/network/TransferSettings>

@@ -9,7 +9,7 @@
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/private/curlhelper_p.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-curl/auth/CurlAuthData>
 #include <curl/curl.h>
 

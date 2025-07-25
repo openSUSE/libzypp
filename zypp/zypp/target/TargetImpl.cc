@@ -27,7 +27,7 @@
 #include <zypp/base/Functional.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/base/Json.h>
-#include <zypp/base/Env.h>
+#include <zypp-core/base/Env.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppFactory.h>

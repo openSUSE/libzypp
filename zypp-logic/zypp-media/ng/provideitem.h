@@ -9,8 +9,8 @@
 #ifndef ZYPP_MEDIA_PROVIDEITEM_H_INCLUDED
 #define ZYPP_MEDIA_PROVIDEITEM_H_INCLUDED
 
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/base/Base>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/base/Base>
 #include <zypp-media/ng/ProvideFwd>
 #include <zypp-core/ByteCount.h>
 

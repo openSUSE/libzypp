@@ -25,15 +25,15 @@
 #include <zypp-core/AutoDispose.h>
 
 #include <utility>
-#include <zypp-core/zyppng/io/Socket>
-#include <zypp-core/zyppng/io/SockAddr>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/EventDispatcher>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
-#include <zypp-core/zyppng/thread/Wakeup>
-#include <zypp-core/zyppng/base/private/threaddata_p.h>
-#include <zypp-core/zyppng/base/SocketNotifier>
+#include <zypp-core/ng/io/Socket>
+#include <zypp-core/ng/io/SockAddr>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/EventDispatcher>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/thread/Wakeup>
+#include <zypp-core/ng/base/private/threaddata_p.h>
+#include <zypp-core/ng/base/SocketNotifier>
 
 #include <thread>
 #include <variant>

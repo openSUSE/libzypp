@@ -22,8 +22,8 @@
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideItem>
 #include <zypp-media/ng/ProvideSpec>
-#include <zypp-core/zyppng/base/private/base_p.h>
-#include <zypp-core/zyppng/base/Timer>
+#include <zypp-core/ng/base/private/base_p.h>
+#include <zypp-core/ng/base/Timer>
 #include <zypp-core/ManagedFile.h>
 
 namespace zyppng {

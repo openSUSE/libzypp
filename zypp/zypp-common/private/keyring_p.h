@@ -15,7 +15,7 @@
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-common/KeyManager.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/expected.h>
 #include <optional>
 
 namespace zypp {

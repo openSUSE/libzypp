@@ -2,7 +2,7 @@
 #include "private/providedbg_p.h"
 #include "private/providequeue_p.h"
 #include "private/provideitem_p.h"
-#include <zypp-core/zyppng/io/IODevice>
+#include <zypp-core/ng/io/IODevice>
 #include <zypp-core/Url.h>
 #include <zypp-core/base/DtorReset>
 #include <zypp-core/fs/PathInfo.h>

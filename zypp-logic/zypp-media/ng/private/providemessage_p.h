@@ -14,7 +14,7 @@
 #define ZYPP_MEDIA_PRIVATE_PROVIDE_MESSAGE_P_H_INCLUDED
 
 #include <zypp-core/rpc/PluginFrame.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/expected.h>
 
 /*!
   \internal
@@ -289,8 +289,8 @@
 */
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp-core/zyppng/pipelines/Expected>
-#include <zypp-core/zyppng/rpc/stompframestream.h>
+#include <zypp-core/ng/pipelines/Expected>
+#include <zypp-core/ng/rpc/stompframestream.h>
 #include <zypp-media/ng/ProvideSpec> // for FieldType
 #include <zypp-media/ng/HeaderValueMap>
 

@@ -12,9 +12,9 @@
 
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/MirroredOrigin.h>
-#include <zypp-core/zyppng/io/Process>
-#include <zypp-core/zyppng/pipelines/MTry>
-#include <zypp-core/zyppng/pipelines/Algorithm>
+#include <zypp-core/ng/io/Process>
+#include <zypp-core/ng/pipelines/MTry>
+#include <zypp-core/ng/pipelines/Algorithm>
 #include <zypp-media/MediaException>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>

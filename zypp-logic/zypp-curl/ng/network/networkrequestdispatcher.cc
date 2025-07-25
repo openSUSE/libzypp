@@ -11,9 +11,9 @@
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/private/request_p.h>
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/base/SocketNotifier>
-#include <zypp-core/zyppng/base/EventDispatcher>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/base/SocketNotifier>
+#include <zypp-core/ng/base/EventDispatcher>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <assert.h>
 

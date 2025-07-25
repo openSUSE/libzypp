@@ -16,7 +16,7 @@
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <utility>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-media/FileCheckException>
 #include <zypp-media/ng/Provide>
 #include <zypp/Digest.h>

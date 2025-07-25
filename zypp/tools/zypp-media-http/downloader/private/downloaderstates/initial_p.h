@@ -15,7 +15,7 @@
 #define ZYPP_CURL_NG_NETWORK_PRIVATE_DOWNLOADERSTATES_INITIAL_P_H_INCLUDED
 
 #include "base_p.h"
-#include <zypp-core/zyppng/base/statemachine.h>
+#include <zypp-core/ng/base/statemachine.h>
 
 namespace zyppng {
 

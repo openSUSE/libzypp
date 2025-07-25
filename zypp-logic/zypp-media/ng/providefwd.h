@@ -15,7 +15,7 @@
 #define ZYPP_MEDIA_PROVIDE_FWD_H_INCLUDED
 
 #include <memory>
-#include <zypp-core/zyppng/base/zyppglobal.h>
+#include <zypp-core/ng/base/zyppglobal.h>
 
 namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS (Provide);

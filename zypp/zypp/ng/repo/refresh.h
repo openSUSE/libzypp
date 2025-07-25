@@ -9,9 +9,9 @@
 #ifndef ZYPP_NG_REPO_REFRESH_INCLUDED
 #define ZYPP_NG_REPO_REFRESH_INCLUDED
 
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp-core/zyppng/pipelines/Expected>
-#include <zypp-core/zyppng/base/Signals>
+#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/Expected>
+#include <zypp-core/ng/base/Signals>
 #include <zypp-core/fs/TmpPath.h>
 
 #include <zypp/RepoInfo.h>

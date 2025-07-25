@@ -242,168 +242,168 @@ if( ZYPP_LOGIC_INSTALL_CXX )
 endif()
 
 SET( zyppng_async_HEADERS
-  zyppng/async/AsyncOp
-  zyppng/async/asyncop.h
+  ng/async/AsyncOp
+  ng/async/asyncop.h
 )
 
 SET( zyppng_base_SRCS
-  zyppng/base/abstracteventsource.cc
-  zyppng/base/base.cc
-  zyppng/base/eventdispatcher_glib.cc
-  zyppng/base/eventloop_glib.cc
-  zyppng/base/linuxhelpers.cc
-  zyppng/base/timer.cc
-  zyppng/base/threaddata.cc
-  zyppng/base/socketnotifier.cc
-  zyppng/base/unixsignalsource.cpp
+  ng/base/abstracteventsource.cc
+  ng/base/base.cc
+  ng/base/eventdispatcher_glib.cc
+  ng/base/eventloop_glib.cc
+  ng/base/linuxhelpers.cc
+  ng/base/timer.cc
+  ng/base/threaddata.cc
+  ng/base/socketnotifier.cc
+  ng/base/unixsignalsource.cpp
 )
 
 SET( zyppng_base_HEADERS
-  zyppng/base/AbstractEventSource
-  zyppng/base/abstracteventsource.h
-  zyppng/base/AutoDisconnect
-  zyppng/base/autodisconnect.h
-  zyppng/base/Base
-  zyppng/base/base.h
-  zyppng/base/EventDispatcher
-  zyppng/base/eventdispatcher.h
-  zyppng/base/EventLoop
-  zyppng/base/eventloop.h
-  zyppng/base/signals.h
-  zyppng/base/SocketNotifier
-  zyppng/base/socketnotifier.h
-  zyppng/base/statemachine.h
-  zyppng/base/Timer
-  zyppng/base/timer.h
-  zyppng/base/unixsignalsource.h
-  zyppng/base/zyppglobal.h
+  ng/base/AbstractEventSource
+  ng/base/abstracteventsource.h
+  ng/base/AutoDisconnect
+  ng/base/autodisconnect.h
+  ng/base/Base
+  ng/base/base.h
+  ng/base/EventDispatcher
+  ng/base/eventdispatcher.h
+  ng/base/EventLoop
+  ng/base/eventloop.h
+  ng/base/signals.h
+  ng/base/SocketNotifier
+  ng/base/socketnotifier.h
+  ng/base/statemachine.h
+  ng/base/Timer
+  ng/base/timer.h
+  ng/base/unixsignalsource.h
+  ng/base/zyppglobal.h
 )
 
 SET( zyppng_base_private_HEADERS
-  zyppng/base/private/abstracteventsource_p.h
-  zyppng/base/private/base_p.h
-  zyppng/base/private/eventdispatcher_glib_p.h
-  zyppng/base/private/eventloop_glib_p.h
-  zyppng/base/private/linuxhelpers_p.h
-  zyppng/base/private/threaddata_p.h
+  ng/base/private/abstracteventsource_p.h
+  ng/base/private/base_p.h
+  ng/base/private/eventdispatcher_glib_p.h
+  ng/base/private/eventloop_glib_p.h
+  ng/base/private/linuxhelpers_p.h
+  ng/base/private/threaddata_p.h
 )
 
 SET( zyppng_core_HEADERS
-  zyppng/core/bytearray.h
-  zyppng/core/ByteArray
-  zyppng/core/url.h
-  zyppng/core/Url
-  zyppng/core/idstring.h
-  zyppng/core/IdString
-  zyppng/core/string.h
-  zyppng/core/String
+  ng/core/bytearray.h
+  ng/core/ByteArray
+  ng/core/url.h
+  ng/core/Url
+  ng/core/idstring.h
+  ng/core/IdString
+  ng/core/string.h
+  ng/core/String
 )
 
 SET( zyppng_io_private_HEADERS
-  zyppng/io/private/asyncdatasource_p.h
-  zyppng/io/private/iobuffer_p.h
-  zyppng/io/private/iodevice_p.h
-  zyppng/io/private/socket_p.h
-  zyppng/io/private/sockaddr_p.h
-  zyppng/io/private/abstractspawnengine_p.h
-  zyppng/io/private/forkspawnengine_p.h
+  ng/io/private/asyncdatasource_p.h
+  ng/io/private/iobuffer_p.h
+  ng/io/private/iodevice_p.h
+  ng/io/private/socket_p.h
+  ng/io/private/sockaddr_p.h
+  ng/io/private/abstractspawnengine_p.h
+  ng/io/private/forkspawnengine_p.h
 )
 
 SET( zyppng_io_SRCS
-  zyppng/io/asyncdatasource.cpp
-  zyppng/io/iobuffer.cc
-  zyppng/io/iodevice.cc
-  zyppng/io/process.cpp
-  zyppng/io/socket.cc
-  zyppng/io/sockaddr.cpp
-  zyppng/io/abstractspawnengine.cc
-  zyppng/io/forkspawnengine.cc
+  ng/io/asyncdatasource.cpp
+  ng/io/iobuffer.cc
+  ng/io/iodevice.cc
+  ng/io/process.cpp
+  ng/io/socket.cc
+  ng/io/sockaddr.cpp
+  ng/io/abstractspawnengine.cc
+  ng/io/forkspawnengine.cc
 )
 
 SET( zyppng_io_HEADERS
-  zyppng/io/AsyncDataSource
-  zyppng/io/asyncdatasource.h
-  zyppng/io/IODevice
-  zyppng/io/iodevice.h
-  zyppng/io/Process
-  zyppng/io/process.h
-  zyppng/io/Socket
-  zyppng/io/socket.h
-  zyppng/io/sockaddr.h
-  zyppng/io/SockAddr
+  ng/io/AsyncDataSource
+  ng/io/asyncdatasource.h
+  ng/io/IODevice
+  ng/io/iodevice.h
+  ng/io/Process
+  ng/io/process.h
+  ng/io/Socket
+  ng/io/socket.h
+  ng/io/sockaddr.h
+  ng/io/SockAddr
 )
 
 SET( zyppng_meta_HEADERS
-  zyppng/meta/Functional
-  zyppng/meta/functional.h
-  zyppng/meta/FunctionTraits
-  zyppng/meta/function_traits.h
-  zyppng/meta/TypeTraits
-  zyppng/meta/type_traits.h
+  ng/meta/Functional
+  ng/meta/functional.h
+  ng/meta/FunctionTraits
+  ng/meta/function_traits.h
+  ng/meta/TypeTraits
+  ng/meta/type_traits.h
 )
 
 SET( zyppng_pipelines_HEADERS
-  zyppng/pipelines/Algorithm
-  zyppng/pipelines/algorithm.h
-  zyppng/pipelines/AsyncResult
-  zyppng/pipelines/asyncresult.h
-  zyppng/pipelines/Await
-  zyppng/pipelines/await.h
-  zyppng/pipelines/Expected
-  zyppng/pipelines/expected.h
-  zyppng/pipelines/Lift
-  zyppng/pipelines/lift.h
-  zyppng/pipelines/MTry
-  zyppng/pipelines/mtry.h
-  zyppng/pipelines/Redo
-  zyppng/pipelines/redo.h
-  zyppng/pipelines/Transform
-  zyppng/pipelines/transform.h
-  zyppng/pipelines/Wait
-  zyppng/pipelines/wait.h
+  ng/pipelines/Algorithm
+  ng/pipelines/algorithm.h
+  ng/pipelines/AsyncResult
+  ng/pipelines/asyncresult.h
+  ng/pipelines/Await
+  ng/pipelines/await.h
+  ng/pipelines/Expected
+  ng/pipelines/expected.h
+  ng/pipelines/Lift
+  ng/pipelines/lift.h
+  ng/pipelines/MTry
+  ng/pipelines/mtry.h
+  ng/pipelines/Redo
+  ng/pipelines/redo.h
+  ng/pipelines/Transform
+  ng/pipelines/transform.h
+  ng/pipelines/Wait
+  ng/pipelines/wait.h
 )
 
 SET( zyppng_rpc_HEADERS
-  zyppng/rpc/stompframestream.h
+  ng/rpc/stompframestream.h
 )
 
 SET( zyppng_rpc_SRCS
-  zyppng/rpc/stompframestream.cc
+  ng/rpc/stompframestream.cc
 )
 
 SET( zyppng_thread_SRCS
-  zyppng/thread/asyncqueue.cc
-  zyppng/thread/wakeup.cpp
+  ng/thread/asyncqueue.cc
+  ng/thread/wakeup.cpp
 )
 
 SET( zyppng_thread_HEADERS
-  zyppng/thread/AsyncQueue
-  zyppng/thread/asyncqueue.h
-  zyppng/thread/private/asyncqueue_p.h
-  zyppng/thread/Wakeup
-  zyppng/thread/wakeup.h
+  ng/thread/AsyncQueue
+  ng/thread/asyncqueue.h
+  ng/thread/private/asyncqueue_p.h
+  ng/thread/Wakeup
+  ng/thread/wakeup.h
 )
 
 SET( zyppng_thread_private_HEADERS
 )
 
 SET( zyppng_ui_SRCS
-  zyppng/ui/progressobserver.cc
-  zyppng/ui/userinterface.cc
-  zyppng/ui/userrequest.cc
+  ng/ui/progressobserver.cc
+  ng/ui/userinterface.cc
+  ng/ui/userrequest.cc
 )
 
 SET( zyppng_ui_HEADERS
-  zyppng/ui/progressobserver.h
-  zyppng/ui/ProgressObserver
-  zyppng/ui/userinterface.h
-  zyppng/ui/UserInterface
-  zyppng/ui/userrequest.h
-  zyppng/ui/UserRequest
+  ng/ui/progressobserver.h
+  ng/ui/ProgressObserver
+  ng/ui/userinterface.h
+  ng/ui/UserInterface
+  ng/ui/userrequest.h
+  ng/ui/UserRequest
 )
 
 SET( zyppng_ui_private_HEADERS
-  zyppng/ui/private/userinterface_p.h
+  ng/ui/private/userinterface_p.h
 )
 
 SET ( zypp_HEADERS

@@ -20,9 +20,9 @@
 #include <zypp/ZYppCallbacks.h>
 
 #include <utility>
-#include <zypp-core/zyppng/pipelines/Transform>
-#include <zypp-core/zyppng/pipelines/Expected>
-#include <zypp-core/zyppng/pipelines/MTry>
+#include <zypp-core/ng/pipelines/Transform>
+#include <zypp-core/ng/pipelines/Expected>
+#include <zypp-core/ng/pipelines/MTry>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/MediaSetAccess.h>

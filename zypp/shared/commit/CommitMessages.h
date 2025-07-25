@@ -11,7 +11,7 @@
 #define ZYPP_SHARED_COMMIT_COMMITMESSAGE_H_INCLUDED
 
 #include <zypp-core/rpc/PluginFrame.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/expected.h>
 
 #include <cstdint>
 #include <string>

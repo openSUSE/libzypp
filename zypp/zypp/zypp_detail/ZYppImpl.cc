@@ -29,7 +29,7 @@
 using std::endl;
 
 #include <glib.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/base/userrequestexception.h>
 
 namespace {

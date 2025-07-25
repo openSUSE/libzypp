@@ -10,8 +10,8 @@
  */
 
 #include <zypp-core/base/CleanerThread_p.h>
-#include <zypp-core/zyppng/base/private/threaddata_p.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/threaddata_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <algorithm>
 #include <thread>
 #include <mutex>

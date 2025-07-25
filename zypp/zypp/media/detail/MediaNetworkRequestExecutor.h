@@ -10,8 +10,8 @@
 #define ZYPP_MEDIA_DETAIL_MEDIANETWORKREQUEST_EXECUTOR_INCLUDED
 
 #include <zypp/ZYppCallbacks.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/base/signals.h>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/base/signals.h>
 
 namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS(EventDispatcher);

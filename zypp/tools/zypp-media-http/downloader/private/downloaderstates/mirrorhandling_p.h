@@ -14,7 +14,7 @@
 #ifndef ZYPP_CURL_NG_NETWORK_PRIVATE_DOWNLOADERSTATES_MIRRORHANDLING_P_H_INCLUDED
 #define ZYPP_CURL_NG_NETWORK_PRIVATE_DOWNLOADERSTATES_MIRRORHANDLING_P_H_INCLUDED
 
-#include <zypp-core/zyppng/base/statemachine.h>
+#include <zypp-core/ng/base/statemachine.h>
 #include "base_p.h"
 
 namespace zyppng {

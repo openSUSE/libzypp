@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/EventDispatcher>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/io/AsyncDataSource>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/EventDispatcher>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/io/AsyncDataSource>
 #include <glib-unix.h>
 
-#include <zypp-core/zyppng/rpc/stompframestream.h>
+#include <zypp-core/ng/rpc/stompframestream.h>
 #include <zypp-core/rpc/PluginFrame.h>
 
 

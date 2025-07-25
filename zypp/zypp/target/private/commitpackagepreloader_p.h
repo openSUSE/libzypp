@@ -11,7 +11,7 @@
 #define ZYPP_TARGET_PRIVATE_COMMITPACKAGEPRELOADER_H
 
 #include <zypp-core/Pathname.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
+#include <zypp-core/ng/base/zyppglobal.h>
 #include <zypp/sat/Transaction.h>
 #include <zypp/media/UrlResolverPlugin.h>
 #include <zypp/media/detail/DownloadProgressTracker.h>

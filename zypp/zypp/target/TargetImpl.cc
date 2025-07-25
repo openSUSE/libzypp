@@ -61,14 +61,14 @@
 
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/StringV.h>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/UnixSignalSource>
-#include <zypp-core/zyppng/io/AsyncDataSource>
-#include <zypp-core/zyppng/io/Process>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/UnixSignalSource>
+#include <zypp-core/ng/io/AsyncDataSource>
+#include <zypp-core/ng/io/Process>
 #include <zypp-core/base/IOTools.h>
-#include <zypp-core/zyppng/rpc/stompframestream.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
-#include <zypp-core/zyppng/base/EventDispatcher>
+#include <zypp-core/ng/rpc/stompframestream.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/EventDispatcher>
 
 #include <shared/commit/CommitMessages.h>
 

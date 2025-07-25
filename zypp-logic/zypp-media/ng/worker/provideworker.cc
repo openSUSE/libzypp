@@ -12,13 +12,13 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/Date.h>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/AsyncResult>
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/fs/TmpPath.h>
-#include <zypp-core/zyppng/base/private/threaddata_p.h>
-#include <zypp-core/zyppng/base/AutoDisconnect>
-#include <zypp-core/zyppng/base/EventDispatcher>
+#include <zypp-core/ng/base/private/threaddata_p.h>
+#include <zypp-core/ng/base/AutoDisconnect>
+#include <zypp-core/ng/base/EventDispatcher>
 #include <zypp-media/MediaConfig>
 #include <ostream>
 

@@ -17,8 +17,8 @@
 #include <zypp/KeyRing.h>
 #include <zypp/Digest.h>
 #include <zypp-core/base/Gettext.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/ui/userrequest.h>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/ui/userrequest.h>
 #include <zypp/ng/context.h>
 #include <zypp/ng/workflows/contextfacade.h>
 

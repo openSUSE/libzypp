@@ -12,7 +12,7 @@
 
 #include <zypp-media/ng/worker/ProvideWorker>
 #include <zypp-media/ng/worker/DeviceDriver>
-#include <zypp-core/zyppng/base/Signals>
+#include <zypp-core/ng/base/Signals>
 #include <any>
 #include <unordered_map>
 

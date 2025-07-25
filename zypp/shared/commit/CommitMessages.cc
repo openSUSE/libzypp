@@ -9,8 +9,8 @@
 #include "CommitMessages.h"
 
 #include <zypp-core/TriBool.h>
-#include <zypp-core/zyppng/core/String>
-#include <zypp-core/zyppng/rpc/stompframestream.h>
+#include <zypp-core/ng/core/String>
+#include <zypp-core/ng/rpc/stompframestream.h>
 #include <string>
 #include <string_view>
 

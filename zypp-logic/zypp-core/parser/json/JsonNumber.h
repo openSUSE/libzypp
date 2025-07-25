@@ -9,8 +9,8 @@
 #ifndef ZYPP_CORE_PARSER_JSON_JSON_NUMBER_DEFINED
 #define ZYPP_CORE_PARSER_JSON_JSON_NUMBER_DEFINED
 
-#include <zypp-core/zyppng/pipelines/mtry.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/mtry.h>
+#include <zypp-core/ng/pipelines/expected.h>
 #include <string>
 #include <cstdint>
 

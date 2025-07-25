@@ -17,7 +17,7 @@
 #include "providefwd_p.h"
 #include "providemessage_p.h"
 #include <zypp-media/ng/Provide>
-#include <zypp-core/zyppng/io/Process>
+#include <zypp-core/ng/io/Process>
 #include <zypp-core/ByteCount.h>
 
 #include <deque>

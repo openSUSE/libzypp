@@ -28,9 +28,9 @@
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ui/progressdata.h>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/pipelines/expected.h>
 
 namespace zyppng {
 

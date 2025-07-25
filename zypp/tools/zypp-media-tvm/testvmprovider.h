@@ -10,7 +10,7 @@
 #define ZYPP_NG_TOOLS_DISCPROVIDER_H_INCLUDED
 
 #include <zypp-media/ng/worker/DeviceDriver>
-#include <zypp-core/zyppng/base/Signals>
+#include <zypp-core/ng/base/Signals>
 #include <any>
 #include <unordered_map>
 

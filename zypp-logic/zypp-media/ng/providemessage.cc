@@ -8,7 +8,7 @@
 \---------------------------------------------------------------------*/
 
 #include "private/providemessage_p.h"
-#include "zypp-core/zyppng/rpc/stompframestream.h"
+#include <zypp-core/ng/rpc/stompframestream.h>
 
 #include <zypp-core/Url.h>
 #include <string_view>

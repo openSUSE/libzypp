@@ -9,8 +9,8 @@
 #ifndef ZYPP_NG_CONTEXT_INCLUDED
 #define ZYPP_NG_CONTEXT_INCLUDED
 
-#include <zypp-core/zyppng/async/AsyncOp>
-#include <zypp-core/zyppng/ui/UserInterface>
+#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/ui/UserInterface>
 #include <zypp/RepoManager.h>
 #include <zypp/ResPool.h>
 

@@ -18,7 +18,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/base/IOTools.h>
 #include <zypp-core/base/LogTools.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 namespace zypp::io {
 

@@ -9,9 +9,9 @@
 #ifndef ZYPP_NG_REPOINFOWORKFLOW_INCLUDED
 #define ZYPP_NG_REPOINFOWORKFLOW_INCLUDED
 
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/expected.h>
 #include <zypp-core/Pathname.h>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/AsyncResult>
 #include <zypp/RepoInfo.h>
 
 namespace zyppng {

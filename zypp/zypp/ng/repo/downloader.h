@@ -9,9 +9,9 @@
 #ifndef ZYPP_NG_REPO_DOWNLOADER_INCLUDED
 #define ZYPP_NG_REPO_DOWNLOADER_INCLUDED
 
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp-core/ByteCount.h>

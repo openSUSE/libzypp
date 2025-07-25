@@ -15,9 +15,9 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/base/Regex.h>
 #include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/zyppng/pipelines/MTry>
-#include <zypp-core/zyppng/pipelines/Transform>
-#include <zypp-core/zyppng/ui/ProgressObserver>
+#include <zypp-core/ng/pipelines/MTry>
+#include <zypp-core/ng/pipelines/Transform>
+#include <zypp-core/ng/ui/ProgressObserver>
 #include <zypp-media/ng/providespec.h>
 #include <zypp/HistoryLog.h>
 #include <zypp/ZConfig.h>

@@ -13,7 +13,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/base/StringV.h>
 #include <zypp-media/ng/MediaVerifier>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 #include <yaml-cpp/yaml.h>
 #include <shared/tvm/tvmsettings.h>

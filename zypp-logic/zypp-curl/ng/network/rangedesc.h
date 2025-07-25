@@ -14,7 +14,7 @@
 #ifndef ZYPP_CURL_NG_NETWORK_RANGEDESC_INCLUDED
 #define ZYPP_CURL_NG_NETWORK_RANGEDESC_INCLUDED
 
-#include <zypp-core/zyppng/core/bytearray.h>
+#include <zypp-core/ng/core/bytearray.h>
 #include <optional>
 #include <string>
 #include <sys/types.h>

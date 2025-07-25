@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/EventDispatcher>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/io/AsyncDataSource>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/EventDispatcher>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/io/AsyncDataSource>
 #include <thread>
 #include <string_view>
 #include <iostream>

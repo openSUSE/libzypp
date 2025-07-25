@@ -20,7 +20,7 @@
 
 #include <zypp/media/MediaCurl2.h>
 
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/base/userrequestexception.h>
 #include <zypp-curl/ProxyInfo>
 #include <zypp-curl/CurlConfig>

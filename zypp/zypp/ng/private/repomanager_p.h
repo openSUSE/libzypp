@@ -11,7 +11,7 @@
 
 #include <zypp/ng/repomanager.h>
 #include <zypp/zypp_detail/repomanagerbase_p.h>
-#include <zypp-core/zyppng/base/private/base_p.h>
+#include <zypp-core/ng/base/private/base_p.h>
 
 namespace zyppng {
 

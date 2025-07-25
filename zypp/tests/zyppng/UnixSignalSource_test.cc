@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/EventDispatcher>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/base/UnixSignalSource>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/EventDispatcher>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/base/UnixSignalSource>
 
 #include <signal.h>
 

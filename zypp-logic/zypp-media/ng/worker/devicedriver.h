@@ -14,10 +14,10 @@
 #include <zypp-media/ng/worker/ProvideWorker>
 #include <zypp-media/ng/HeaderValueMap>
 #include <zypp-media/Mount>
-#include <zypp-core/zyppng/base/Signals>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/base/Signals>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/pipelines/Expected>
 #include <any>
 #include <unordered_map>
 

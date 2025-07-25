@@ -2,7 +2,7 @@
 
 #include <csignal>
 #include <zypp-media/ng/worker/MountingWorker>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 
 int main( int , char *[] )

@@ -13,7 +13,7 @@
 #include <utility>
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/rpc/PluginFrame.h>
-#include <zypp-core/zyppng/core/String>
+#include <zypp-core/ng/core/String>
 
 using std::endl;
 

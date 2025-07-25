@@ -10,9 +10,9 @@
 #include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/private/mediadebug_p.h>
-#include <zypp-core/zyppng/base/EventDispatcher>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
-#include <zypp-core/zyppng/core/String>
+#include <zypp-core/ng/base/EventDispatcher>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/core/String>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-curl/CurlConfig>

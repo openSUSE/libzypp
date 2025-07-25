@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <zypp-core/Digest.h>
-#include <zypp-core/zyppng/pipelines/Lift>
+#include <zypp-core/ng/pipelines/Lift>
 #include <zypp/ng/progressobserveradaptor.h>
 #include <zypp/ng/workflows/contextfacade.h>
 #include <zypp/ng/repo/refresh.h>

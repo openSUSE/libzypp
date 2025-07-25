@@ -9,8 +9,8 @@
 #ifndef ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 #define ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 
-#include <zypp-core/zyppng/async/AsyncOp>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/pipelines/Expected>
 #include <functional>
 
 #include <zypp/ng/workflows/contextfacade.h>

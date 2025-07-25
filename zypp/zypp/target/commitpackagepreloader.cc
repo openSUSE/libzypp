@@ -15,7 +15,7 @@
 #include <zypp/Package.h>
 #include <zypp/SrcPackage.h>
 #include <zypp/ZConfig.h>
-#include <zypp/base/Env.h>
+#include <zypp-core/base/Env.h>
 
 namespace zypp {
 

@@ -13,7 +13,7 @@
 #define ZYPP_BASE_EASY_H
 
 #include <cstdio>
-#include <zypp/base/TypeTraits.h>
+#include <zypp-core/base/TypeTraits.h>
 
 /** Convenient for-loops using iterator.
  * \code

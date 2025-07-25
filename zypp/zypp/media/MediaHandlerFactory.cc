@@ -4,7 +4,7 @@
 #include <zypp-core/zyppng/pipelines/expected.h>
 #include <zypp-core/zyppng/pipelines/transform.h>
 #include <zypp/base/Logger.h>
-#include <zypp/base/Env.h>
+#include <zypp-core/base/Env.h>
 
 #include <zypp-media/MediaException>
 #include <zypp/media/MediaHandler.h>

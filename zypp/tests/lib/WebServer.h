@@ -2,9 +2,9 @@
 #ifndef ZYPP_TEST_WEBSERVER_H
 #define ZYPP_TEST_WEBSERVER_H
 
-#include <zypp/Url.h>
-#include <zypp/Pathname.h>
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/Url.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/base/PtrTypes.h>
 #include <zypp-curl/TransferSettings>
 
 #include <functional>

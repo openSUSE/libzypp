@@ -20,7 +20,7 @@
 #include <string>
 #include <iosfwd>
 
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <utility>
 #include <zypp-core/KVMap>
 

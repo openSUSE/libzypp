@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/ContentType.h
+/** \file	zypp-core/ContentType.h
  */
 #ifndef ZYPP_CONTENTTYPE_H
 #define ZYPP_CONTENTTYPE_H

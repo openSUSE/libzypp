@@ -8,7 +8,7 @@
 #include <memory>
 #include <optional>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 namespace zyppng {
 

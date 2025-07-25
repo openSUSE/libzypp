@@ -14,8 +14,8 @@
 
 #include <iosfwd>
 
-#include <zypp/Pathname.h>
-#include <zypp/AutoDispose.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/AutoDispose.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

@@ -19,7 +19,7 @@
 #include <zypp-core/base/String.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-core/Pathname.h>
-#include <zypp/base/Env.h>
+#include <zypp-core/base/Env.h>
 
 #include <zypp-curl/proxyinfo/ProxyInfoLibproxy>
 

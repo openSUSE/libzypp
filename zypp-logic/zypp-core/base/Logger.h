@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 #ifndef ZYPP_NDEBUG

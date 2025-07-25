@@ -21,11 +21,11 @@
 #include <string>
 
 #include <zypp-media/Mount>
-#include <zypp/base/ExternalDataSource.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/ExternalDataSource.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-media/MediaException>
 
-#include <zypp/PathInfo.h>
+#include <zypp-core/fs/PathInfo.h>
 
 using std::endl;
 

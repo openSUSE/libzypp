@@ -17,8 +17,8 @@
 #include <zypp-curl/private/curlhelper_p.h>
 #include <assert.h>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/String.h>
 #include <zypp-core/base/DtorReset>
 
 using namespace boost;

@@ -3,19 +3,11 @@ FILE( GLOB_RECURSE POT_FILE_DEPENDS RELATIVE ${LIBZYPP_SOURCE_DIR} "*.h" "*.cc" 
 SET( POT_FILE_DEPENDS_ZYPP ${POT_FILE_DEPENDS} PARENT_SCOPE )
 
 ADD_DEFINITIONS( -DZYPP_DLL )
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sywu/include )
-INCLUDE_DIRECTORIES( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} SYSTEM )
-
 
 FIND_PACKAGE(Rpm REQUIRED)
 IF ( NOT RPM_FOUND)
   MESSAGE( FATAL_ERROR " rpm-devel not found" )
 ENDIF ( NOT RPM_FOUND)
-
-
-
-# add_definitions( -DENABLE_SYWU )
-# add_subdirectory(sywu)
 
 IF (ENABLE_ZCHUNK_COMPRESSION)
   INCLUDE_DIRECTORIES( ${ZCHUNK_INCLUDEDIR} )
@@ -110,7 +102,7 @@ SET( zypp_HEADERS
   CapMatch.h
   Changelog.h
   CheckSum.h
-  ContentType.h
+  #ContentType.h
   CountryCode.h
   CpeId.h
   Dep.h
@@ -216,7 +208,7 @@ SET( zypp_base_HEADERS
   base/Collector.h
   base/DrunkenBishop.h
   base/SerialNumber.h
-  base/Env.h
+  #base/Env.h
   base/Random.h
   base/Algorithm.h
   base/Counter.h
@@ -231,7 +223,7 @@ SET( zypp_base_HEADERS
   base/SetTracker.h
   base/Signal.h
   base/StrMatcher.h
-  base/TypeTraits.h
+  #base/TypeTraits.h
   base/ValueTransform.h
 )
 
@@ -1054,8 +1046,21 @@ add_zypp_lib( zypp SHARED )
 set_target_properties ( zypp PROPERTIES LINK_FLAGS "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libzypp.map" )
 INSTALL(TARGETS zypp LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
 
+foreach(INC_DIR ${LIBZYPP_INCLUDE_DIRS})
+  target_include_directories( zypp  INTERFACE
+    $<BUILD_INTERFACE:${INC_DIR}>
+  )
+endforeach()
+
 # library with more symbols for tests etc
 add_zypp_lib( zypp-allsym STATIC )
+
+foreach(INC_DIR ${LIBZYPP_INCLUDE_DIRS})
+  target_include_directories( zypp-allsym  INTERFACE
+    $<BUILD_INTERFACE:${INC_DIR}>
+  )
+endforeach()
+
 
 #this part does nothing yet, only when switching away from using a map file to
 #a approach where symbols are exported explicitly it would make a difference

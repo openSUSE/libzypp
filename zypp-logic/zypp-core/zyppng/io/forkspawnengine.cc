@@ -1,9 +1,9 @@
 #include "private/forkspawnengine_p.h"
 
 #include <sstream>
-#include <zypp/base/LogControl.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/IOTools.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/IOTools.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/zyppng/core/String>
 #include <zypp-core/zyppng/base/EventDispatcher>

@@ -17,8 +17,8 @@
 #include <boost/any.hpp>
 #include <ostream>
 
-#include <zypp/base/PtrTypes.h>
-#include <zypp/ContentType.h>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/ContentType.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

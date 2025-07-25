@@ -16,7 +16,7 @@
 #include <string>
 #include <map>
 
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/base/PtrTypes.h>
 
 #include <zypp-core/ByteArray.h>
 #include <zypp-core/rpc/PluginFrameException.h>

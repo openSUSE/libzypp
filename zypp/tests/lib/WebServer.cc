@@ -12,12 +12,12 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/String.h>
-#include <zypp/base/Exception.h>
-#include <zypp/ExternalProgram.h>
-#include <zypp/TmpPath.h>
-#include <zypp/PathInfo.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/ExternalProgram.h>
+#include <zypp-core/fs/TmpPath.h>
+#include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
 
 #include "WebServer.h"

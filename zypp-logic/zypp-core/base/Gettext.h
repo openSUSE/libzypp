@@ -14,7 +14,7 @@
 #ifndef ZYPP_BASE_GETTEXT_H
 #define ZYPP_BASE_GETTEXT_H
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 #ifdef ZYPP_DLL //defined if zypp is compiled as DLL
 

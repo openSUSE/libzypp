@@ -13,7 +13,7 @@
 #include "private/providedbg_p.h"
 
 #include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/zyppng/rpc/stompframestream.h>
+#include <zypp-core/ng/rpc/stompframestream.h>
 #include <zypp-core/base/StringV.h>
 #include <zypp-media/ng/provide-configvars.h>
 #include <zypp-media/MediaException>

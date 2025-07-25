@@ -14,10 +14,10 @@
 #ifndef ZYPP_CURL_NG_NETWORK_PRIVATE_MIRRORCONTROL_P_H
 #define ZYPP_CURL_NG_NETWORK_PRIVATE_MIRRORCONTROL_P_H
 
-#include <zypp-core/zyppng/core/Url>
-#include <zypp-core/zyppng/base/Signals>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/base/Timer>
+#include <zypp-core/ng/core/Url>
+#include <zypp-core/ng/base/Signals>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/base/Timer>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-curl/parser/MetaLinkParser>

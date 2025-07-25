@@ -11,7 +11,7 @@
 */
 
 #include "MediaNetworkCommonHandler.h"
-#include <zypp-core/zyppng/pipelines/transform.h>
+#include <zypp-core/ng/pipelines/transform.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp-core/fs/PathInfo.h>

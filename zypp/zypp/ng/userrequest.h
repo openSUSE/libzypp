@@ -11,7 +11,7 @@
 
 #include <zypp-common/PublicKey.h>
 #include <zypp/KeyContext.h>
-#include <zypp-core/zyppng/ui/UserRequest>
+#include <zypp-core/ng/ui/UserRequest>
 
 namespace zyppng {
 

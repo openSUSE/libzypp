@@ -2,8 +2,8 @@
 #include "DownloadProgressTracker.h"
 
 #include <zypp-core/AutoDispose.h>
-#include <zypp-core/zyppng/base/eventloop.h>
-#include <zypp-core/zyppng/base/private/threaddata_p.h>
+#include <zypp-core/ng/base/eventloop.h>
+#include <zypp-core/ng/base/private/threaddata_p.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/request.h>
 #include <zypp-media/mediaexception.h>

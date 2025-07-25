@@ -9,10 +9,10 @@
 
 #include "downloader.h"
 #include <zypp/ng/workflows/contextfacade.h>
-#include <zypp-core/zyppng/pipelines/MTry>
-#include <zypp-core/zyppng/base/Signals>
-#include <zypp-core/zyppng/pipelines/Wait>
-#include <zypp-core/zyppng/pipelines/Transform>
+#include <zypp-core/ng/pipelines/MTry>
+#include <zypp-core/ng/base/Signals>
+#include <zypp-core/ng/pipelines/Wait>
+#include <zypp-core/ng/pipelines/Transform>
 #include <zypp-core/fs/PathInfo.h>
 
 #include <zypp/KeyRing.h>

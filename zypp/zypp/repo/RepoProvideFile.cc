@@ -9,7 +9,7 @@
 /** \file	zypp/source/RepoProvideFile.cc
  *
 */
-#include "zypp-core/zyppng/pipelines/transform.h"
+#include <zypp-core/ng/pipelines/transform.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>

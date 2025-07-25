@@ -12,10 +12,10 @@
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ManagedFile.h>
 #include <zypp-core/MirroredOrigin.h>
-#include <zypp-core/zyppng/base/zyppglobal.h>
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/async/AsyncOp>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/base/zyppglobal.h>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/pipelines/expected.h>
 #include <zypp-core/ByteCount.h>
 #include <zypp-media/ng/LazyMediaHandle>
 #include <zypp-media/ng/ProvideFwd>

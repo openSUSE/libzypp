@@ -12,9 +12,9 @@
 #include <zypp-core/ExternalProgram.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/LogTools.h>
-#include <zypp-core/zyppng/pipelines/MTry>
-#include <zypp-core/zyppng/pipelines/Await>
-#include <zypp-core/zyppng/io/Process>
+#include <zypp-core/ng/pipelines/MTry>
+#include <zypp-core/ng/pipelines/Await>
+#include <zypp-core/ng/io/Process>
 #include <zypp-media/ng/providespec.h>
 #include <zypp/parser/RepoindexFileReader.h>
 #include <zypp/parser/RepoFileReader.h>

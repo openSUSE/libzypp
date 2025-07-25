@@ -1,10 +1,10 @@
 #ifndef ZYPPNG_CURLMULTIPARTHANDLER_H
 #define ZYPPNG_CURLMULTIPARTHANDLER_H
 
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/core/ByteArray>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/core/ByteArray>
 #include <zypp-core/Digest.h>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-curl/ng/network/NetworkRequestError>
 #include <zypp-curl/ng/network/rangedesc.h>
 

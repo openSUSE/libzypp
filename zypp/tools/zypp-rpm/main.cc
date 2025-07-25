@@ -1,9 +1,9 @@
 #include <optional>
 #include <vector>
 
-#include <zypp-core/zyppng/core/ByteArray>
-#include <zypp-core/zyppng/rpc/stompframestream.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/core/ByteArray>
+#include <zypp-core/ng/rpc/stompframestream.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/fs/PathInfo.h>

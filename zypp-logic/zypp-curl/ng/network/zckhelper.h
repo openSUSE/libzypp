@@ -18,7 +18,7 @@
 #include <zypp-curl/ng/network/rangedesc.h>
 
 #include <zypp-core/AutoDispose.h>
-#include <zypp-core/zyppng/base/Base>
+#include <zypp-core/ng/base/Base>
 
 extern "C" {
   typedef struct zckCtx zckCtx;

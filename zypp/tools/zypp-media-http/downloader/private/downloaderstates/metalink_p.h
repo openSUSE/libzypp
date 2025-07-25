@@ -16,7 +16,7 @@
 
 #include "base_p.h"
 #include "rangedownloader_p.h"
-#include <zypp-core/zyppng/base/statemachine.h>
+#include <zypp-core/ng/base/statemachine.h>
 
 #include <zypp-curl/parser/MediaBlockList>
 

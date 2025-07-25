@@ -10,11 +10,11 @@
 #ifndef ZYPP_MEDIA_PROVIDE_WORKER_H_INCLUDED
 #define ZYPP_MEDIA_PROVIDE_WORKER_H_INCLUDED
 
-#include <zypp-core/zyppng/base/Base>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/Timer>
-#include <zypp-core/zyppng/io/AsyncDataSource>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/base/Base>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/Timer>
+#include <zypp-core/ng/io/AsyncDataSource>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-media/ng/provide-configvars.h>
 #include <zypp-media/ng/private/providemessage_p.h>
 #include <zypp-media/ng/HeaderValueMap>

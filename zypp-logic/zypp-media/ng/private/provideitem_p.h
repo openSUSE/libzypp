@@ -22,7 +22,7 @@
 #include <zypp-media/ng/ProvideItem>
 #include <zypp-media/ng/ProvideRes>
 #include <zypp-media/ng/ProvideSpec>
-#include <zypp-core/zyppng/base/private/base_p.h>
+#include <zypp-core/ng/base/private/base_p.h>
 #include <set>
 #include <variant>
 

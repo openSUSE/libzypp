@@ -102,7 +102,7 @@ SET( zypp_HEADERS
   CapMatch.h
   Changelog.h
   CheckSum.h
-  #ContentType.h
+  ContentType.h
   CountryCode.h
   CpeId.h
   Dep.h
@@ -208,7 +208,7 @@ SET( zypp_base_HEADERS
   base/Collector.h
   base/DrunkenBishop.h
   base/SerialNumber.h
-  #base/Env.h
+  base/Env.h
   base/Random.h
   base/Algorithm.h
   base/Counter.h
@@ -223,7 +223,7 @@ SET( zypp_base_HEADERS
   base/SetTracker.h
   base/Signal.h
   base/StrMatcher.h
-  #base/TypeTraits.h
+  base/TypeTraits.h
   base/ValueTransform.h
 )
 

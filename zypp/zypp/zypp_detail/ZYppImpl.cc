@@ -14,7 +14,7 @@
 #include <zypp/TmpPath.h>
 #include <zypp/base/Logger.h>
 #include <zypp/base/String.h>
-#include <zypp/base/Env.h>
+#include <zypp-core/base/Env.h>
 
 #include <zypp/zypp_detail/ZYppImpl.h>
 #include <zypp/target/TargetImpl.h>

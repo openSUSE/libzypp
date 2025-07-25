@@ -16,7 +16,7 @@
 #include <iosfwd>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>

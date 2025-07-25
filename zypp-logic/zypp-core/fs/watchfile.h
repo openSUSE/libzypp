@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include <zypp/PathInfo.h>
+#include <zypp-core/fs/PathInfo.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

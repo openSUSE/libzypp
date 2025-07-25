@@ -16,11 +16,11 @@
 #include <string>
 #include <chrono>
 
-#include <zypp/base/PtrTypes.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/base/Function.h>
 #include <zypp-core/base/ProvideNumericId>
 
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

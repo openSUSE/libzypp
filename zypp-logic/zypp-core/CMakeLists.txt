@@ -14,6 +14,7 @@ SET( zypp_toplevel_headers
   ByteArray.h
   ByteCount.h
   CheckSum.h
+  ContentType.h
   Date.h
   Digest.h
   ExternalProgram.h
@@ -54,6 +55,7 @@ SET( zypp_base_HEADERS
   base/dtorreset.h
   base/Easy.h
   base/EnumClass.h
+  base/Env.h
   base/Errno.h
   base/Exception.h
   base/ExternalDataSource.h
@@ -87,6 +89,7 @@ SET( zypp_base_HEADERS
   base/simplestreambuf.h
   base/String.h
   base/StringV.h
+  base/TypeTraits.h
   base/Unit.h
   base/UserRequestException
   base/userrequestexception.h

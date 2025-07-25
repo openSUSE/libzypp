@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/Unit.h>
 
 ///////////////////////////////////////////////////////////////////

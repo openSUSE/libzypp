@@ -11,7 +11,7 @@
 #ifndef ZYPP_CURL_CURLCONFIG_H_INCLUDED
 #define ZYPP_CURL_CURLCONFIG_H_INCLUDED
 
-//#include <zypp/base/NonCopyable.h>
+//#include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/String.h>
 
 namespace zypp

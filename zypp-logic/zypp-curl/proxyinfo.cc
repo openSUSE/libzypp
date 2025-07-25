@@ -14,7 +14,7 @@
 #include <iostream>
 #include <utility>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 #include "proxyinfo/proxyinfoimpl.h"
 #include "proxyinfo/proxyinfos.h"

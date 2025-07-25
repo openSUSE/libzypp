@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/base/TypeTraits.h
+/** \file	zypp-core/base/TypeTraits.h
  */
 #ifndef ZYPP_TYPETRAITS_H
 #define ZYPP_TYPETRAITS_H

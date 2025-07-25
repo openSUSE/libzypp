@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/base/Env.h
+/** \file	zypp-core/base/Env.h
  */
 #ifndef ZYPP_BASE_ENV_H
 #define ZYPP_BASE_ENV_H

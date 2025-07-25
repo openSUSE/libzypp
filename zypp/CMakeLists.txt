@@ -388,9 +388,14 @@ ENDMACRO( SET_LOGGROUP )
 # SUBDIRECTORIES                                                   #
 ####################################################################
 
+SET( ZYPP_LOGIC_SRC_DIR ${zypp-libs_SOURCE_DIR}/zypp-logic )
+SET( ZYPP_LOGIC_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
+
+SET( LIBZYPP_INCLUDE_DIRS ${ZYPP_LOGIC_SRC_DIR} ${ZYPP_LOGIC_BIN_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
+include_directories( ${LIBZYPP_INCLUDE_DIRS} )
+
 SET( ZYPP_LOGIC_TARGET_PREFIX "zypp" )
 SET( ZYPP_LOGIC_INSTALL_CXX true )
-include_directories( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
 ADD_SUBDIRECTORY( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
 
 ADD_SUBDIRECTORY( zypp-tui )

@@ -10,7 +10,7 @@
 #define ZYPP_MEDIA_NG_MEDIAVERIFIER_H_INCLUDED
 
 #include <string>
-#include <zypp-core/zyppng/core/ByteArray>
+#include <zypp-core/ng/core/ByteArray>
 #include <zypp-media/ng/ProvideFwd>
 
 namespace zypp {

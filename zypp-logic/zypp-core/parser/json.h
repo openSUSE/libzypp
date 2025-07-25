@@ -16,7 +16,7 @@
 #include <zypp-core/parser/parseexception.h>
 #include <zypp-core/base/inputstream.h>
 #include <zypp-core/base/NonCopyable.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/expected.h>
 #include "json/JsonValue.h"
 
 namespace zypp::json {

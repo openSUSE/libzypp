@@ -1,7 +1,7 @@
 #include "diskprovider.h"
 
 #include <csignal>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-media/ng/worker/MountingWorker>
 
 int main( int , char *[] )

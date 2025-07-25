@@ -8,11 +8,11 @@
 \---------------------------------------------------------------------*/
 
 #include <csignal>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-media/ng/worker/ProvideWorker>
 #include <zypp-media/ng/private/providemessage_p.h>
-#include <zypp-core/zyppng/base/Signals>
+#include <zypp-core/ng/base/Signals>
 
 class CopyProvider : public zyppng::worker::ProvideWorker
 {

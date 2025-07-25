@@ -8,7 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "repodownloaderwf.h"
 #include "zypp/ng/reporthelper.h"
-#include <zypp-core/zyppng/pipelines/mtry.h>
+#include <zypp-core/ng/pipelines/mtry.h>
 #include <zypp/parser/yum/RepomdFileReader.h>
 #include <zypp/repo/RepoMirrorList.h>
 

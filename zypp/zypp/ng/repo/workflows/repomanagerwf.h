@@ -10,8 +10,8 @@
 #define ZYPP_NG_REPOMANAGER_WORKFLOW_INCLUDED
 
 
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-media/ng/LazyMediaHandle>
 
 #include <zypp/ng/repomanager.h>

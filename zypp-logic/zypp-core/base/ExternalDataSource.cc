@@ -25,7 +25,7 @@
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/ExternalDataSource.h>
 #include <zypp-core/AutoDispose.h>
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
 using std::endl;
 

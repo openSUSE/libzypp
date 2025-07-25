@@ -1,8 +1,8 @@
 #include "MediaHandlerFactory.h"
 
 #include <zypp-core/APIConfig.h>
-#include <zypp-core/zyppng/pipelines/expected.h>
-#include <zypp-core/zyppng/pipelines/transform.h>
+#include <zypp-core/ng/pipelines/expected.h>
+#include <zypp-core/ng/pipelines/transform.h>
 #include <zypp/base/Logger.h>
 #include <zypp-core/base/Env.h>
 

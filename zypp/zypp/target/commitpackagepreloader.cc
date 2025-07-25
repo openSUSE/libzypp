@@ -6,7 +6,7 @@
 #include <zypp/media/MediaHandlerFactory.h> // to detect the URL type
 #include <zypp-media/mediaconfig.h>
 #include <zypp/media/UrlResolverPlugin.h>
-#include <zypp-core/zyppng/base/eventloop.h>
+#include <zypp-core/ng/base/eventloop.h>
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-curl/transfersettings.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>

@@ -31,8 +31,8 @@
 #include <zypp-core/ExternalProgram.h>
 #include <zypp-core/base/CleanerThread_p.h>
 
-#include <zypp-core/zyppng/base/private/linuxhelpers_p.h>
-#include <zypp-core/zyppng/io/private/forkspawnengine_p.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
+#include <zypp-core/ng/io/private/forkspawnengine_p.h>
 
 using std::endl;
 

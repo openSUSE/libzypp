@@ -10,8 +10,8 @@
 #define ZYPP_NG_PRIVATE_CONTEXT_P_H
 
 #include <zypp-core/fs/TmpPath.h>
-#include <zypp-core/zyppng/base/private/base_p.h>
-#include <zypp-core/zyppng/ui/private/userinterface_p.h>
+#include <zypp-core/ng/base/private/base_p.h>
+#include <zypp-core/ng/ui/private/userinterface_p.h>
 #include <zypp/ng/context.h>
 #include <zypp/ZYpp.h>
 

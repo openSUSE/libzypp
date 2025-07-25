@@ -17,7 +17,7 @@
 
 
 #include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/zyppng/pipelines/Algorithm>
+#include <zypp-core/ng/pipelines/Algorithm>
 
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideSpec>

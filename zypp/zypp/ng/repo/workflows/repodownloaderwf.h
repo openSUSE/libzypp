@@ -12,9 +12,9 @@
 
 #include <zypp/RepoInfo.h>
 #include <zypp/ng/repo/Downloader>
-#include <zypp-core/zyppng/ui/ProgressObserver>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp-core/zyppng/pipelines/Expected>
+#include <zypp-core/ng/ui/ProgressObserver>
+#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/Expected>
 #include <zypp-media/MediaException>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp-media/ng/LazyMediaHandle>

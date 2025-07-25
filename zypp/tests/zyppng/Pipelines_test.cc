@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
-#include <zypp-core/zyppng/pipelines/AsyncResult>
-#include <zypp-core/zyppng/pipelines/Transform>
-#include <zypp-core/zyppng/base/EventLoop>
-#include <zypp-core/zyppng/base/Timer>
+#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/pipelines/Transform>
+#include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/Timer>
 
 using namespace zyppng;
 

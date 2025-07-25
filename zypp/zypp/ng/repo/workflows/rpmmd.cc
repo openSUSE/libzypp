@@ -7,7 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "rpmmd.h"
-#include <zypp-core/zyppng/ui/ProgressObserver>
+#include <zypp-core/ng/ui/ProgressObserver>
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
 

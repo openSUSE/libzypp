@@ -362,12 +362,7 @@ namespace zypp
             MIL << "Mirror cachefile cookie valid and cache is not too old, skipping download (" << cachefile << ")" << std::endl;
             try {
               _urls = RepoMirrorListParse( url_r, cachefile );
-              if( _urls.empty() ) {
-                DBG << "Removing Cachefile as it contains no URLs" << endl;
-                zypp::filesystem::unlink( cachefile );
-              }
               return;
-
             } catch ( const zypp::Exception & e ) {
               ZYPP_CAUGHT(e);
               auto ex = e;
@@ -391,11 +386,16 @@ namespace zypp
           RepoMirrorListTempProvider provider( url_r );	// RAII: lifetime of downloaded file
           _urls = RepoMirrorListParse( url_r, provider.localfile() );
 
-          if ( metaPathInfo.userMayRWX() && !_urls.empty() ) {
+          // removed the && !_urls.empty() condition , we need to remember "no URLs" as well
+          // otherwise RepoInfo keeps spamming the server with requests
+          if ( metaPathInfo.userMayRWX() ) {
             // Create directory, if not existing
             DBG << "Copy MirrorList file to " << cachefile << endl;
             zypp::filesystem::assert_dir( metadatapath_r );
-            zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile );
+            if( zypp::filesystem::hardlinkCopy( provider.localfile(), cachefile ) != 0 ) {
+              // remember empty file
+              zypp::filesystem::assert_file( cachefile );
+            }
             saveToCookieFile ( cookiefile, url_r );
             // NOTE: Now we copied the mirrorlist into the metadata directory, but
             // in case of refresh going on, new metadata are prepared in a sibling

@@ -95,7 +95,13 @@ namespace zypp {
       _parent._requiredDls.pop_front();
 
       auto loc = _job.lookupLocation();
-      _targetPath = _job.repoInfo().predownloadPath() / _job.lookupLocation().filename();
+      const auto repoInfo = _job.repoInfo();
+
+      _targetPath = repoInfo.predownloadPath();
+      if ( !repoInfo.path().emptyOrRoot () ) {
+        _targetPath /= repoInfo.path();
+      }
+      _targetPath /= loc.filename();
 
       // select a mirror we want to use
       if ( !prepareMirror( ) ) {
@@ -506,6 +512,9 @@ namespace zypp {
               if ( rewriteUrl.isValid () )
                 url = rewriteUrl;
             }
+
+            if ( !pi.repoInfo().path().emptyOrRoot() )
+              url.appendPathName( pi.repoInfo().path() );
 
             MIL << "Adding Url: " << url << " to the mirror set" << std::endl;
 

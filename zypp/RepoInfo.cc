@@ -173,8 +173,10 @@ namespace zypp
      */
     url_set &mirrorUrls() const
     {
-      if ( !_mirrorUrls.empty()
-           && ( std::chrono::steady_clock::now() - _lastMirrorUrlsUpdate < std::chrono::hours(1) ) )
+      // do not change order of calculation, using std::chrono::steady_clock::now() - _lastMirrorUrlsUpdate
+      // will overflow the internal counter if _lastMirrorUrlsUpdate is still time_point::min and result
+      // in a negative value.
+      if (  ( std::chrono::steady_clock::now() - std::chrono::hours(1) ) < _lastMirrorUrlsUpdate  )
         return _mirrorUrls;
 
       _mirrorUrls.clear();
@@ -188,6 +190,8 @@ namespace zypp
            && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
 
         mlurl = *_baseUrls.transformedBegin ();
+        if ( !path.emptyOrRoot () )
+          mlurl.setPathName(path);
         mlurl.pathNameSetTrailingSlash();
         mlurl.setQueryParam("mirrorlist", std::string() );
 
@@ -212,6 +216,9 @@ namespace zypp
             callback::UserData data( JobReport::repoRefreshMirrorlist );
             data.set("error", e );
             JobReport::warning( _("Failed to fetch mirrorlist/metalink data."), data );
+
+            // in case of error, we want to try again asap
+            _lastMirrorUrlsUpdate = std::chrono::steady_clock::time_point::min();
           }
         }
       }

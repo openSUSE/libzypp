@@ -149,7 +149,7 @@ namespace zypp
           bind(&Impl::processCredentials, this, _1));
     }
     else
-      DBG << "global cred file does not exist";
+      DBG << "global cred file does not exist (" << _options.globalCredFilePath << ")" << endl;
 
     _credsGlobal = _credsTmp; _credsTmp.clear();
     DBG << "Got " << _credsGlobal.size() << " global records." << endl;
@@ -171,7 +171,7 @@ namespace zypp
           bind(&Impl::processCredentials, this, _1));
     }
     else
-      DBG << "user cred file does not exist" << endl;
+      DBG << "user cred file does not exist (" << _options.userCredFilePath << ")" << endl;
 
     _credsUser = _credsTmp; _credsTmp.clear();
     DBG << "Got " << _credsUser.size() << " user records." << endl;

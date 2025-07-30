@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(repoinfo_test)
   BOOST_CHECK_EQUAL(ri.location(), weburl);
   BOOST_CHECK_EQUAL(ri.url().asString(), "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/");
 
-  BOOST_CHECK( !ri.repoOriginsEmpty() );
+  BOOST_REQUIRE( !ri.repoOriginsEmpty() );
   BOOST_CHECK_EQUAL( ri.repoOrigins().begin()->authority().url().asString(), "http://ftp-stud.hs-esslingen.de/pub/fedora/linux/updates/13/x86_64/" );
 
   std::ostringstream ostr;

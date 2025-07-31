@@ -136,7 +136,7 @@ namespace zypp
   void CredentialManager::Impl::init_globalCredentials()
   {
     if (_options.globalCredFilePath.empty())
-      DBG << "global cred file not known";
+      DBG << "global cred file not known" << endl;
     else if (PathInfo(_options.globalCredFilePath).isExist())
     {
     /*  list<Pathname> entries;
@@ -159,7 +159,7 @@ namespace zypp
   void CredentialManager::Impl::init_userCredentials()
   {
     if (_options.userCredFilePath.empty())
-      DBG << "user cred file not known";
+      DBG << "user cred file not known" << endl;
     else if (PathInfo(_options.userCredFilePath).isExist())
     {
     /*  list<Pathname> entries;
@@ -228,7 +228,7 @@ namespace zypp
       result = findIn(_credsUser, url, vopt);
 
     if (result)
-      DBG << "Found credentials for '" << url << "':" << endl << *result;
+      DBG << "Found credentials for '" << url << "':" << endl << *result << endl;
     else
       DBG << "No credentials for '" << url << "'" << endl;
 

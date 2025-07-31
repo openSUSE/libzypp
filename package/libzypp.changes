@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jul 31 17:01:53 CEST 2025 - ma@suse.de
+
+- Append RepoInfo::path() to the mirror URLs in Preloader
+  (bsc#1247054)
+- version 17.37.15 (35)
+
+-------------------------------------------------------------------
 Wed Jul 23 17:11:47 CEST 2025 - ma@suse.de
 
 - During installation indicate the backend being used (bsc#1246038)

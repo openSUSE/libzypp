@@ -138,6 +138,10 @@ namespace zypp
       Container & raw()
       { return _raw; }
 
+      /** Clear the container */
+      void clear()
+      { _raw.clear(); }
+
     public:
       using TransformedConstIterator = transform_iterator<Transformator, typename Container::const_iterator>;
 

@@ -11,19 +11,26 @@ SET( XGETTEXT_OPTIONS ${XGETTEXT_OPTIONS} --keyword=_ --keyword=_:1,2 --keyword=
 SET( XGETTEXT_OPTIONS ${XGETTEXT_OPTIONS} --copyright-holder=\"SuSE Linux GmbH, Nuernberg\" )
 SET( XGETTEXT_OPTIONS ${XGETTEXT_OPTIONS} --package-name=${POT_NAME} --default-domain=${POT_NAME} )
 
+FILE( GLOB_RECURSE POT_FILE_DEPENDS RELATIVE ${zypp-libs_SOURCE_DIR}
+  "${zypp-libs_SOURCE_DIR}/zypp/zypp/*.h" "${zypp-libs_SOURCE_DIR}/zypp/zypp/*.cc"
+  "${zypp-libs_SOURCE_DIR}/zypp/zypp-common/*.h" "${zypp-libs_SOURCE_DIR}/zypp/zypp-common/*.cc"
+  "${zypp-libs_SOURCE_DIR}/zypp/zypp-tui/*.h" "${zypp-libs_SOURCE_DIR}/zypp/zypp-tui/*.cc"
+  "${zypp-libs_SOURCE_DIR}/zypp/shared/*.h" "${zypp-libs_SOURCE_DIR}/zypp/shared/*.cc"
+  "${zypp-libs_SOURCE_DIR}/zypp-logic/*.h" "${zypp-libs_SOURCE_DIR}/zypp-logic/*.cc"
+  "${zypp-libs_SOURCE_DIR}/zyppng/*.h" "${zypp-libs_SOURCE_DIR}/zyppng/*.cc"
+)
+
 SET( _abs_POT_FILE_DEPENDS )
-SET( POT_FILE_DEPENDS ${POT_FILE_DEPENDS_ZYPP} ${POT_FILE_DEPENDS_ZYPP_COMMON} ${POT_FILE_DEPENDS_ZYPP_CORE} ${POT_FILE_DEPENDS_ZYPP_MEDIA} ${POT_FILE_DEPENDS_ZYPP_CURL} ${POT_FILE_DEPENDS_ZYPP_TUI} )
 FOREACH( _currentDepends ${POT_FILE_DEPENDS} )
-  SET( _abs_POT_FILE_DEPENDS ${_abs_POT_FILE_DEPENDS} ${LIBZYPP_SOURCE_DIR}/${_currentDepends} )
+  SET( _abs_POT_FILE_DEPENDS ${_abs_POT_FILE_DEPENDS} ${zypp-libs_SOURCE_DIR}/${_currentDepends} )
 ENDFOREACH()
 
 ADD_CUSTOM_COMMAND( OUTPUT ${POT_FILE}
   COMMAND ${XGETTEXT_CMD} ${XGETTEXT_OPTIONS} --output=${POT_FILE} ${POT_FILE_DEPENDS}
-  WORKING_DIRECTORY ${LIBZYPP_SOURCE_DIR}
+  WORKING_DIRECTORY ${zypp-libs_SOURCE_DIR}
   DEPENDS ${_abs_POT_FILE_DEPENDS}
   COMMENT "Extract translatable messages to ${POT_FILE}"
 )
-
 
 # Creating the .gmo files out of the .po files
 FILE( GLOB PO_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.po" )

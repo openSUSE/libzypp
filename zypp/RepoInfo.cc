@@ -142,10 +142,10 @@ namespace zypp
 
     RepoVariablesReplacedUrl baseUrl() const {
       if ( !_baseUrls.empty() ) {
-        return RepoVariablesReplacedUrl( _baseUrls.raw ().front(), _baseUrls.transformator() );
+        return RepoVariablesReplacedUrl( _baseUrls.raw().front(), _baseUrls.transformator() );
       }
       if ( !mirrorUrls().empty() ){
-        return RepoVariablesReplacedUrl( _mirrorUrls.front (), _baseUrls.transformator() );
+        return RepoVariablesReplacedUrl( _mirrorUrls.raw().front(), _mirrorUrls.transformator() );
       }
       return RepoVariablesReplacedUrl();
     }
@@ -171,7 +171,7 @@ namespace zypp
      *
      * \todo this should be a pipeline
      */
-    url_set &mirrorUrls() const
+    RepoVariablesReplacedUrlList & mirrorUrls() const
     {
       // do not change order of calculation, using std::chrono::steady_clock::now() - _lastMirrorUrlsUpdate
       // will overflow the internal counter if _lastMirrorUrlsUpdate is still time_point::min and result
@@ -208,7 +208,8 @@ namespace zypp
           const auto &tf = [urlTemplate =mirrorListUrl().transformed()]( const zypp::Url &in ){
             return internal::propagateQueryParams ( in , urlTemplate );
           };
-          _mirrorUrls.insert( _mirrorUrls.end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
+
+          _mirrorUrls.raw().insert( _mirrorUrls.raw().end(), make_transform_iterator( rmurls.getUrls().begin(), tf ), make_transform_iterator( rmurls.getUrls().end(), tf ) );
         } catch ( const zypp::Exception & e ) {
           // failed to fetch the mirrorlist/metalink, if we still have a baseUrl we can go on, otherwise this is a error
           MIL << "Mirrorlist failed, repo either returns invalid data or has no mirrors at all!" << std::endl;
@@ -231,7 +232,7 @@ namespace zypp
       origins.addEndpoints( _baseUrls.transformedBegin(), _baseUrls.transformedEnd() );
 
       const auto &mirrs = mirrorUrls ();
-      origins.addEndpoints( mirrs.begin(), mirrs.end() );
+      origins.addEndpoints( mirrs.transformedBegin(), mirrs.transformedEnd() );
 
       return origins;
     }
@@ -477,7 +478,7 @@ namespace zypp
 
     mutable RepoVariablesReplacedUrlList _baseUrls; //< baseUrls as configured
 
-    mutable url_set _mirrorUrls; //< possible mirrors as fetched via mirrorlist or metalink
+    mutable RepoVariablesReplacedUrlList _mirrorUrls; //< possible mirrors as fetched via mirrorlist or metalink
     mutable std::chrono::steady_clock::time_point _lastMirrorUrlsUpdate = std::chrono::steady_clock::time_point::min();
     mutable std::vector<MirroredOrigin> _repoOrigins;
 

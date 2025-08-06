@@ -10,15 +10,16 @@ ELSE ( NOT DOT )
    SET( HAVE_DOT YES )
 ENDIF ( NOT DOT )
 
-SET( ZYPP_PROJECT_ROOT   ${LIBZYPP_SOURCE_DIR} )
+SET( ZYPP_PROJECT_ROOT   ${zypp-libs_SOURCE_DIR} )
 
 STRING( JOIN " " ZYPP_SOURCE_DIRS
-    ${LIBZYPP_SOURCE_DIR}/zypp
-    ${LIBZYPP_SOURCE_DIR}/zypp-core
-    ${LIBZYPP_SOURCE_DIR}/zypp-curl
-    ${LIBZYPP_SOURCE_DIR}/zypp-media
-    ${LIBZYPP_SOURCE_DIR}/zypp-proto
-    ${LIBZYPP_SOURCE_DIR}/zypp-tui
+    ${zypp-libs_SOURCE_DIR}/zypp/zypp
+    ${zypp-libs_SOURCE_DIR}/zypp/zypp-common
+    ${zypp-libs_SOURCE_DIR}/zypp/zypp-tui
+    ${zypp-libs_SOURCE_DIR}/zypp/shared
+    ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-core
+    ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-curl
+    ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-media
 )
 SET( ZYPP_DOCINCLUDE_DIR ${LIBZYPP_SOURCE_DIR}/doc/autoinclude )
 

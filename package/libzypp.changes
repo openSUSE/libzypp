@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Aug  7 16:17:21 CEST 2025 - ma@suse.de
+
+- Fix evaluation of libproxy results (bsc#1247690)
+- Replace URL variables inside mirrorlist/metalink files
+  (fixes #667)
+- version 17.37.16 (35)
+
+-------------------------------------------------------------------
 Thu Jul 31 17:01:53 CEST 2025 - ma@suse.de
 
 - Append RepoInfo::path() to the mirror URLs in Preloader

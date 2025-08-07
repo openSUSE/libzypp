@@ -189,11 +189,11 @@ namespace zypp {
       // values after $*_proxy environment variables.
       // In YAST, e.g after changing the proxy settings, we'd like
       // /etc/sysconfig/proxy changes to take effect immediately.
-      // So we pick the last one matching our schema.
-      const std::string myschema { url_r.getScheme()+":" };
+      // So we pick the last proxy accessible via http/https.
+      // (sorts out direct:// or other directives returned by libproxy)
       std::optional<std::string> result;
       for ( int i = 0; proxies[i]; ++i ) {
-        if ( str::hasPrefix( proxies[i], myschema ) ) {
+        if ( str::hasPrefix( proxies[i], "http" ) ) { // Filter for http/https
           result = str::asString( proxies[i] );
           if ( not env::inYAST() )
             break;

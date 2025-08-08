@@ -29,11 +29,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: bash -c 'zypper in -y "FastCGI-devel"  "cmake >= 3.17"  "dejagnu"  "doxygen"  "gcc-c++ >= 7"  "gettext-devel"  "ghostscript"  "glib2-devel"  "graphviz"  "libboost_headers-devel"  "libboost_program_options-devel"  "libboost_test-devel"  "libboost_thread-devel"  "libbz2-devel"  "libcurl-devel >= 7.19.4"  "libgpgme-devel"  "libproxy-devel"  "libsigc++2-devel"  "libsolv-devel-static >= 0.7.34"  "libsolv-tools-base >= 0.7.29"  "libxml2-devel"  "libzck-devel"  "libzstd-devel"  "nginx"  "pkg-config"  "pkgconfig(libudev)"  "pkgconfig(openssl)"  "readline-devel >= 5.1"  "rpm"  "rpm-devel > 4.4"  "rubygem(asciidoctor)"  "squid"  "texlive-dvips"  "texlive-latex"  "texlive-newunicodechar"  "texlive-xcolor"  "vsftpd"  "xz-devel"  "yaml-cpp-devel" "graphviz-gd"'
+        run: bash -c 'zypper in -y "FastCGI-devel"  "cmake >= 3.17"  "dejagnu"  "doxygen"  "gcc-c++ >= 7"  "gettext-devel"  "ghostscript"  "glib2-devel"  "graphviz"  "libboost_headers-devel"  "libboost_program_options-devel"  "libboost_test-devel"  "libboost_thread-devel"  "libbz2-devel"  "libcurl-devel >= 7.19.4"  "libgpgme-devel"  "libproxy-devel"  "libsigc++2-devel"  "libsolv-devel-static >= 0.7.34"  "libsolv-tools-base >= 0.7.29"  "libxml2-devel"  "libzck-devel"  "libzstd-devel"  "nginx"  "pkg-config"  "pkgconfig(libudev)"  "pkgconfig(openssl)"  "readline-devel >= 5.1"  "rpm"  "rpm-devel > 4.4"  "rubygem(asciidoctor)"  "squid"  "texlive-dvips"  "texlive-latex"  "texlive-newunicodechar"  "texlive-xcolor"  "vsftpd"  "xz-devel"  "yaml-cpp-devel" "graphviz-gd" "tree" '
 
       # Build the docs
       - name: Run the build
         run: |
+            tree
             mkdir build
             cd build
             cmake ../libzypp

@@ -1,0 +1,46 @@
+name: Build and deploy documentation
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # push:
+  #  branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # run on tumbleweed
+    container:
+      image: registry.opensuse.org/opensuse/tumbleweed:latest
+      volumes:
+        - my_docker_volume:/volume_mount
+
+    # Steps required to build the docs
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: bash -c 'zypper in -y "FastCGI-devel"  "cmake >= 3.17"  "dejagnu"  "doxygen"  "gcc-c++ >= 7"  "gettext-devel"  "ghostscript"  "glib2-devel"  "graphviz"  "libboost_headers-devel"  "libboost_program_options-devel"  "libboost_test-devel"  "libboost_thread-devel"  "libbz2-devel"  "libcurl-devel >= 7.19.4"  "libgpgme-devel"  "libproxy-devel"  "libsigc++2-devel"  "libsolv-devel-static >= 0.7.34"  "libsolv-tools-base >= 0.7.29"  "libxml2-devel"  "libzck-devel"  "libzstd-devel"  "nginx"  "pkg-config"  "pkgconfig(libudev)"  "pkgconfig(openssl)"  "readline-devel >= 5.1"  "rpm"  "rpm-devel > 4.4"  "rubygem(asciidoctor)"  "squid"  "texlive-dvips"  "texlive-latex"  "texlive-newunicodechar"  "texlive-xcolor"  "vsftpd"  "xz-devel"  "yaml-cpp-devel" "graphviz-gd"'
+
+      # Build the docs
+      - name: Run the build
+        run: |
+            mkdir build
+            cd build
+            cmake ../libzypp
+            make doc
+
+      # Upload the documentation
+      #- name: Run a multi-line script
+      #  run: |
+      #    echo Add other actions to build,
+      #    echo test, and deploy your project.

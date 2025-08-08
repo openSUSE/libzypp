@@ -1,0 +1,187 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+/** \file	zypp/base/IOTools.cc
+ *
+*/
+
+#include <errno.h>
+#include <fcntl.h>
+#include <iostream>
+#include <glib.h>
+
+#include <zypp-core/AutoDispose.h>
+#include <zypp-core/base/IOTools.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/ng/base/private/linuxhelpers_p.h>
+
+namespace zypp::io {
+
+  BlockingMode setFILEBlocking (FILE * file, bool mode )
+  {
+    if ( !file ) return BlockingMode::FailedToSetMode;
+    return setFDBlocking( ::fileno( file ), mode );
+  }
+
+  BlockingMode setFDBlocking(int fd, bool mode)
+  {
+    if ( fd == -1 )
+    { ERR << strerror( errno ) << std::endl; return BlockingMode::FailedToSetMode; }
+
+    int flags = zyppng::eintrSafeCall( ::fcntl, fd, F_GETFL );
+
+    if ( flags == -1 )
+    { ERR << strerror( errno ) << std::endl; return BlockingMode::FailedToSetMode; }
+
+    BlockingMode oldMode = ( flags & O_NONBLOCK ) == O_NONBLOCK ? BlockingMode::WasNonBlocking : BlockingMode::WasBlocking;
+    if ( !mode )
+      flags = flags | O_NONBLOCK;
+    else if ( flags & O_NONBLOCK )
+      flags = flags ^ O_NONBLOCK;
+
+    flags = zyppng::eintrSafeCall( ::fcntl, fd,F_SETFL,flags );
+
+    if ( flags == -1 )
+    { ERR << strerror(errno) << std::endl; return BlockingMode::FailedToSetMode; }
+
+    return oldMode;
+  }
+
+  bool writeAll(int fd, void *buf, size_t size)
+  {
+    char *tmpBuf = static_cast<char*>(buf);
+
+    size_t written = 0;
+    while ( written < size ) {
+      const auto res = zyppng::eintrSafeCall( ::write, fd, tmpBuf+written, size-written );
+      if ( res < 0 ) // error
+        return false;
+      written += res;
+    }
+    return true;
+  }
+
+  ReadAllResult readAll (int fd, void *buf, size_t size )
+  {
+    char *tmpBuf = static_cast<char*>(buf);
+    size_t read = 0;
+    while ( read != size ) {
+      const auto r = zyppng::eintrSafeCall( ::read, fd, tmpBuf+read, size - read );
+      if ( r == 0 )
+        return ReadAllResult::Eof;
+      if ( r < 0 )
+        return ReadAllResult::Error;
+
+      read += r;
+    }
+    return ReadAllResult::Ok;
+  }
+
+  std::pair<ReceiveUpToResult, std::string> receiveUpto(FILE *file, char c, timeout_type timeout, bool failOnUnblockError )
+  {
+    FILE * inputfile = file;
+    if ( !file )
+      return std::make_pair( ReceiveUpToResult::Error, std::string() );
+
+    int    inputfileFd = ::fileno( inputfile );
+
+    size_t linebuffer_size = 0;
+    zypp::AutoFREE<char> linebuf;
+
+    const auto prevMode = setFILEBlocking( file, false );
+    if ( prevMode == BlockingMode::FailedToSetMode && failOnUnblockError )
+      return std::make_pair( ReceiveUpToResult::Error, std::string() );
+
+    // reset the blocking mode when we are done
+    zypp::OnScopeExit resetMode([ prevMode, fd = file ]( ){
+      if ( prevMode == BlockingMode::WasBlocking )
+        setFILEBlocking( fd, true );
+    });
+
+    bool haveTimeout = (timeout != no_timeout);
+    int remainingTimeout = static_cast<int>( timeout );
+    zypp::AutoDispose<GTimer *> timer( nullptr );
+    if ( haveTimeout )
+      timer = zypp::AutoDispose<GTimer *>( g_timer_new(), &g_free );
+
+    std::string line;
+    do
+    {
+      /* Watch inputFile to see when it has input. */
+
+      GPollFD fd;
+      fd.fd = inputfileFd;
+      fd.events =  G_IO_IN | G_IO_HUP | G_IO_ERR;
+      fd.revents = 0;
+
+      if ( timer )
+        g_timer_start( timer );
+
+      clearerr( inputfile );
+
+      int retval = zyppng::eintrSafeCall( g_poll, &fd, 1, remainingTimeout );
+      if ( retval == -1 )
+      {
+        ERR << "select error: " << zyppng::strerr_cxx() << std::endl;
+        return std::make_pair( ReceiveUpToResult::Error, std::string() );
+      }
+      else if ( retval )
+      {
+        // Data is available now.
+        ssize_t nread = zyppng::eintrSafeCallEx( ::getdelim, [&](){ clearerr( inputfile ); }, &linebuf.value(), &linebuffer_size, c, inputfile );
+        if ( nread == -1 ) {
+          if ( ::feof( inputfile ) ) {
+            return std::make_pair( ReceiveUpToResult::EndOfFile, std::move(line) );
+          }
+          if ( errno != EAGAIN && ( ::ferror( inputfile ) || errno != 0 ) ) {
+            if ( errno ) ERR << "getdelim error: " << zyppng::strerr_cxx() << std::endl;
+            else ERR << "Unknown getdelim error." << std::endl;
+            return std::make_pair( ReceiveUpToResult::Error, std::string() );
+          }
+        }
+        else
+        {
+          if ( nread > 0 )
+            line += std::string( linebuf, nread );
+
+          if ( ! ::ferror( inputfile ) || ::feof( inputfile ) ) {
+            return std::make_pair( ReceiveUpToResult::Success, std::move(line) ); // complete line
+          }
+        }
+      }
+
+      // we timed out, or were interrupted for some reason
+      // check if we can wait more
+      if ( timer ) {
+        remainingTimeout -= g_timer_elapsed( timer, nullptr ) * 1000;
+        if ( remainingTimeout <= 0 )
+          return std::make_pair( ReceiveUpToResult::Timeout, std::move(line) );
+      }
+    } while ( true );
+  }
+
+  TimeoutException::~TimeoutException() noexcept
+  { }
+
+  std::vector<char> peek_data_fd( FILE *fd, off_t offset, size_t count )
+  {
+    if ( !fd )
+      return {};
+
+    fflush( fd );
+
+    std::vector<char> data( count + 1 , '\0' );
+
+    ssize_t l = zyppng::eintrSafeCall( pread, fileno( fd ), data.data(), count, offset );
+    if (l == -1)
+      return {};
+
+    return data;
+  }
+
+}

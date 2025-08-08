@@ -60,11 +60,15 @@ ENDIF( NOT DEFINED DOC_INSTALL_DIR )
 
 SET( ZYPPCOMMON_CXX_STANDARD 17 )
 #SET (CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} SYSTEM )
+#INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} SYSTEM )
 
 ####################################################################
 # RPM SPEC                                                         #
 ####################################################################
+
+function( SPECFILE_EXT )
+
+endfunction()
 
 MACRO(SPECFILE)
   MESSAGE(STATUS "Writing spec file...")
@@ -74,12 +78,6 @@ MACRO(SPECFILE)
     CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake ${PROJECT_BINARY_DIR}/package/${PACKAGE}-rpmlintrc @ONLY)
   ENDIF (EXISTS ${PROJECT_SOURCE_DIR}/package/${PACKAGE}-rpmlint.cmake)
 ENDMACRO(SPECFILE)
-
-MACRO(PKGCONFGFILE)
-  MESSAGE(STATUS "Writing pkg-config file...")
-  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/libzypp.pc.cmake ${PROJECT_BINARY_DIR}/libzypp.pc @ONLY)
-  INSTALL( FILES ${PROJECT_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig )
-ENDMACRO(PKGCONFGFILE)
 
 ####################################################################
 # INSTALL                                                          #
@@ -139,7 +137,12 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
   )
 
   ADD_CUSTOM_TARGET( ${target_prefix}srcpackage
-    COMMAND ${CMAKE_MAKE_PROGRAM} svncheck
+    COMMAND ${CMAKE_MAKE_PROGRAM} ${target_prefix}svncheck
     ${AUTOBUILD_COMMAND}
   )
 ENDMACRO(GENERATE_PACKAGING)
+
+
+function( GENERATE_PACKAGING_EXT )
+
+endfunction()

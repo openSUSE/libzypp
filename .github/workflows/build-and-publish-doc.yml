@@ -4,7 +4,7 @@ name: Build and deploy documentation
 
 on:
   #Enable this trigger to test changes to this workflow via build requests
-  #pull_request:
+  pull_request:
 
   # Runs the trigger when a git TAG is created:
   create:

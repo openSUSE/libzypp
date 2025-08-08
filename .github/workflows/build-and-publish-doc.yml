@@ -37,7 +37,7 @@ jobs:
             tree
             mkdir build
             cd build
-            cmake ../libzypp
+            cmake ..
             make doc
 
       # Upload the documentation

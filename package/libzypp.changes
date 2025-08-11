@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Aug 11 10:56:17 CEST 2025 - ma@suse.de
+
+- Make ld.so ignore the subarch packages during install
+  (bsc#1246912)
+- version 17.37.17 (35)
+
+-------------------------------------------------------------------
 Thu Aug  7 16:17:21 CEST 2025 - ma@suse.de
 
 - Fix evaluation of libproxy results (bsc#1247690)

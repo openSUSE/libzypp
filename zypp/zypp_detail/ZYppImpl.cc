@@ -224,6 +224,16 @@ namespace zypp
       env::ScopedSet eb;
       if ( _target->chrooted() )
         eb = env::ScopedSet( "SYSTEMD_OFFLINE", "1" );	// bsc#1118758 - indicate no systemd if chrooted install
+      env::ScopedSet ec;
+      {
+        std::string val;
+        if ( const char * env = getenv("GLIBC_TUNABLES"); env ) { // colon-separated list of k=v pairs
+          val = env;
+          val += ":";
+        }
+        val += "glibc.cpu.hwcap_mask=0";   // bsc#1246912 - make ld.so ignore the subarch packages
+        ec = env::ScopedSet( "GLIBC_TUNABLES", val.c_str() );
+      }
 
       ZYppCommitResult res = _target->_pimpl->commit( pool(), policy_r );
 

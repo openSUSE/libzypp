@@ -21,10 +21,6 @@ namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS (Provide);
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ProvideMediaSpec);
   ZYPP_FWD_DECL_TYPE_WITH_REFS (ProvideFileSpec);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProvideItem);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProvideRequest);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (MediaDataVerifier);
-  ZYPP_FWD_DECL_TYPE_WITH_REFS (ProvideStatus);
   class HeaderValueMap;
   class ProvideMediaHandle;
 }

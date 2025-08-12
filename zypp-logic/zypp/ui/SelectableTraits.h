@@ -1,0 +1,140 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+/** \file	zypp/ui/SelectableTraits.h
+ *
+*/
+#ifndef ZYPP_UI_SELECTABLETRAITS_H
+#define ZYPP_UI_SELECTABLETRAITS_H
+
+#include <set>
+#include <vector>
+
+#include <zypp-core/base/Iterator.h>
+#include <zypp/PoolItem.h>
+#include <zypp/pool/ByIdent.h>
+
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{ /////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+  namespace ui
+  { /////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
+    //
+    //	CLASS NAME : SelectableTraits
+    //
+    /** */
+    struct SelectableTraits
+    {
+      /** Oder on AvailableItemSet.
+       * \li not blacklisted
+       * \li repository priority
+       * \li best Arch (arch/noarch changes are ok)
+       * \li best Edition
+       * \li newer buildtime
+       * \li ResObject::constPtr as fallback.
+      */
+      struct AVOrder
+      {
+        // NOTE: operator() provides LESS semantics to order the set.
+        // So LESS means 'prior in set'. We want 'better' archs and
+        // 'better' editions at the beginning of the set. So we return
+        // TRUE if (lhs > rhs)!
+        //
+        bool operator()( const PoolItem & lhs, const PoolItem & rhs ) const
+        {
+          if ( lhs.isBlacklisted() != rhs.isBlacklisted() )
+            return rhs.isBlacklisted();
+
+          int lprio = lhs->satSolvable().repository().satInternalPriority();
+          int rprio = rhs->satSolvable().repository().satInternalPriority();
+          if ( lprio != rprio )
+            return( lprio > rprio );
+
+          // arch/noarch changes are ok.
+          if ( lhs->arch() != Arch_noarch && rhs->arch() != Arch_noarch )
+          {
+            int res = lhs->arch().compare( rhs->arch() );
+            if ( res )
+              return res > 0;
+          }
+
+          int res = lhs->edition().compare( rhs->edition() );
+          if ( res )
+            return res > 0;
+
+          lprio = lhs->buildtime();
+          rprio = rhs->buildtime();
+          if ( lprio != rprio )
+            return( lprio > rprio );
+
+          lprio = lhs->satSolvable().repository().satInternalSubPriority();
+          rprio = rhs->satSolvable().repository().satInternalSubPriority();
+          if ( lprio != rprio )
+            return( lprio > rprio );
+
+          // no more criteria, still equal: sort by id
+          return lhs.satSolvable().id() < rhs.satSolvable().id();
+        }
+      };
+
+      /** Oder on InstalledItemSet.
+       * \li best Arch
+       * \li best Edition
+       * \li newer install time
+       * \li ResObject::constPtr as fallback.
+      */
+      struct IOrder
+      {
+        // NOTE: operator() provides LESS semantics to order the set.
+        // So LESS means 'prior in set'. We want 'newer' install time
+        // at the beginning of the set.
+        //
+        bool operator()( const PoolItem & lhs, const PoolItem & rhs ) const
+        {
+          int res = lhs->arch().compare( rhs->arch() );
+          if ( res )
+            return res > 0;
+          res = lhs->edition().compare( rhs->edition() );
+          if ( res )
+            return res > 0;
+          Date ldate = lhs->installtime();
+          Date rdate = rhs->installtime();
+          if ( ldate != rdate )
+            return( ldate > rdate );
+
+          // no more criteria, still equal: sort by id
+          return lhs.satSolvable().id() < rhs.satSolvable().id();
+        }
+      };
+
+      using AvailableItemSet = std::set<PoolItem, AVOrder>;
+      using available_iterator = AvailableItemSet::iterator;
+      using available_const_iterator = AvailableItemSet::const_iterator;
+      using available_size_type = AvailableItemSet::size_type;
+
+      using InstalledItemSet = std::set<PoolItem, IOrder>;
+      using installed_iterator = AvailableItemSet::iterator;
+      using installed_const_iterator = AvailableItemSet::const_iterator;
+      using installed_size_type = AvailableItemSet::size_type;
+
+      using PickList = std::vector<PoolItem>;
+      using picklist_iterator = PickList::const_iterator;
+      using picklist_size_type = PickList::size_type;
+    };
+    ///////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////
+  } // namespace ui
+  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+#endif // ZYPP_UI_SELECTABLETRAITS_H

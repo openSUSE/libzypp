@@ -15,9 +15,9 @@
 #include <iosfwd>
 #include <utility>
 
-#include <zypp/Pathname.h>
-#include <zypp/base/String.h>
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/PtrTypes.h>
 
 
 namespace zypp {

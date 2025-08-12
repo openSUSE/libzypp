@@ -9,7 +9,8 @@
 
 #include <zypp/ng/repo/downloader.h>
 #include <zypp/ng/repo/workflows/rpmmd.h>
-#include <zypp/ng/workflows/contextfacade.h>
+#include <zypp/ng/context.h>
+#include <zypp/ng/media/provide.h>
 #include <zypp-media/ng/providespec.h>
 
 #include "tests/zypp/KeyRingTestReceiver.h"
@@ -37,13 +38,13 @@ BOOST_AUTO_TEST_CASE(yum_download)
   filesystem::TmpDir tmp;
   Pathname localdir(tmp.path());
 
-  auto ctx = zyppng::SyncContext::create ();
+  auto ctx = zyppng::Context::create ();
   auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
-  | and_then( [&]( zyppng::SyncMediaHandle h ){
-    auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
+  | and_then( [&]( zyppng::ProvideMediaHandle h ){
+    auto dlctx = std::make_shared<zyppng::repo::DownloadContext>( ctx, repoinfo, localdir );
     return zyppng::RpmmdWorkflows::download(dlctx, h);
   })
-  | and_then( [&](zyppng::repo::SyncDownloadContextRef ctx ) {
+  | and_then( [&](zyppng::repo::DownloadContextRef ctx ) {
 
 #if defined(LIBSOLVEXT_FEATURE_ZCHUNK_COMPRESSION)
     const bool zchunk = true;

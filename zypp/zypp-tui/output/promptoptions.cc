@@ -11,7 +11,7 @@
 
 #include <zypp-core/base/Gettext.h>
 #include <zypp/base/Logger.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 
 namespace ztui {
 

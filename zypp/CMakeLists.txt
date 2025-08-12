@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
 PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 
@@ -375,35 +373,22 @@ MACRO(ADD_TESTS)
   ENDFOREACH( loop_var )
 ENDMACRO(ADD_TESTS)
 
-# Macro to set the log group for a list of files
-MACRO( SET_LOGGROUP _group _files  )
-  SET_SOURCE_FILES_PROPERTIES( ${_files} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
-  FOREACH (_currentFile ${ARGN})
-#MESSAGE( STATUS "setting loggroup to \"${_group}\" for ${_currentFile}" )
-    SET_SOURCE_FILES_PROPERTIES( ${_currentFile} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
-  ENDFOREACH (_currentFile ${ARGN})
-ENDMACRO( SET_LOGGROUP )
-
 ####################################################################
 # SUBDIRECTORIES                                                   #
 ####################################################################
-
-SET( ZYPP_LOGIC_SRC_DIR ${zypp-libs_SOURCE_DIR}/zypp-logic )
-SET( ZYPP_LOGIC_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
-
-SET( LIBZYPP_INCLUDE_DIRS ${ZYPP_LOGIC_SRC_DIR} ${ZYPP_LOGIC_BIN_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
-include_directories( ${LIBZYPP_INCLUDE_DIRS} )
-
 SET( ZYPP_LOGIC_TARGET_PREFIX "zypp" )
 SET( ZYPP_LOGIC_INSTALL_CXX true )
-ADD_SUBDIRECTORY( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
 
-ADD_SUBDIRECTORY( zypp-tui )
-ADD_SUBDIRECTORY( zypp-common )
-ADD_SUBDIRECTORY( zypp )
-ADD_SUBDIRECTORY( tools )
-ADD_SUBDIRECTORY( shared )
-ADD_SUBDIRECTORY( doc )
+add_subdirectory( zypp-core )
+add_subdirectory( zypp-tui )
+add_subdirectory( zypp-compat )
+add_subdirectory( zypp-common )
+add_subdirectory( zypp-media )
+add_subdirectory( zypp-curl )
+add_subdirectory( zypp )
+add_subdirectory( tools )
+add_subdirectory( shared )
+add_subdirectory( doc )
 
 IF ( ENABLE_BUILD_TESTS )
   ADD_SUBDIRECTORY( tests )

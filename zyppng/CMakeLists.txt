@@ -21,8 +21,21 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
   endif(ZYPP_CXX_CPPCHECK)
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
+add_subdirectory( lib )
+add_subdirectory( api )
+add_subdirectory( tools )
+add_subdirectory( tests )
 
-SET( ZYPP_LOGIC_TARGET_PREFIX "zyppng" )
-SET( ZYPP_LOGIC_INSTALL_CXX   false    )
-include_directories(${zypp-libs_SOURCE_DIR}/zypp-logic)
-ADD_SUBDIRECTORY( ${zypp-libs_SOURCE_DIR}/zypp-logic ${CMAKE_CURRENT_BINARY_DIR}/zypp-logic )
+# this part does nothing yet, only when switching away from using a map file to
+# a approach where symbols are exported explicitly it would make a difference
+# ZYPPNG symbols need to be added to the map file to be exported
+# IF( EXPORT_NG_API )
+# ADD_DEFINITIONS(-DEXPORT_EXPERIMENTAL_API)
+# INCLUDE(GenerateExportHeader)
+# message("Exporting experimental libzypp-ng API")
+# GENERATE_EXPORT_HEADER(
+#   zypp
+#   BASE_NAME zypp-ng
+#   PREFIX_NAME LIB
+# )
+# ENDIF ( EXPORT_NG_API )

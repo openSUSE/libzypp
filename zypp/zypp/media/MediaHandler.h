@@ -20,7 +20,7 @@
 
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/base/PtrTypes.h>
 
 #include <zypp/media/MediaSource.h>
 #include <zypp-media/MediaException>

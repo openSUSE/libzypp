@@ -18,6 +18,7 @@
 #include <zypp-core/CheckSum.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/OnMediaLocation>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp-media/ng/ProvideFwd>
 #include <zypp-media/ng/HeaderValueMap>
 #include <boost/iterator/iterator_adaptor.hpp>
@@ -80,6 +81,8 @@ namespace zyppng
     ProvideMediaSpec &addCustomHeaderValue (  const std::string &key, const HeaderValueMap::Value &val );
 
     zypp::TriBool isSameMedium ( const ProvideMediaSpec &other ) const;
+
+    static bool isSameMedium ( const zypp::MirroredOrigin &originA, const ProvideMediaSpec &specA, const zypp::MirroredOrigin &originB, const ProvideMediaSpec &specB );
 
   public:
     class Impl;                 ///< Implementation class.

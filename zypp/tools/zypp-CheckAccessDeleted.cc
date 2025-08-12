@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
-#include <zypp/base/Easy.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/Easy.h>
+#include <zypp-core/base/String.h>
 #include <zypp/base/Exception.h>
 #include <zypp/Pathname.h>
 #include <zypp/misc/CheckAccessDeleted.h>

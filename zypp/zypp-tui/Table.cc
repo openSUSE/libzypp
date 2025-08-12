@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include <zypp/base/LogTools.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 #include <zypp/base/DtorReset.h>
 #include <zypp-core/base/Gettext.h>
 

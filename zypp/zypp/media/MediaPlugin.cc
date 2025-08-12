@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include <zypp/base/LogTools.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 
 #include <zypp/ExternalProgram.h>
 

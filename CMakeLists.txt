@@ -86,6 +86,16 @@ SET( CMAKE_MODULE_PATH
 
 INCLUDE(ZyppCommon)
 
+
+# Macro to set the log group for a list of files
+MACRO( SET_LOGGROUP _group _files  )
+  SET_SOURCE_FILES_PROPERTIES( ${_files} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
+  FOREACH (_currentFile ${ARGN})
+#MESSAGE( STATUS "setting loggroup to \"${_group}\" for ${_currentFile}" )
+    SET_SOURCE_FILES_PROPERTIES( ${_currentFile} COMPILE_FLAGS -DZYPP_BASE_LOGGER_LOGGROUP=\\"${_group}\\" )
+  ENDFOREACH (_currentFile ${ARGN})
+ENDMACRO( SET_LOGGROUP )
+
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 
@@ -99,7 +109,7 @@ endif()
 if (ENABLE_LIBZYPPNG_BUILD)
   OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
   OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
-  add_subdirectory(zyppng)
+  #add_subdirectory(zyppng)
 endif()
 
 IF ( ENABLE_BUILD_TRANS )

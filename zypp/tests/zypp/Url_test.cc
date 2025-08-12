@@ -6,7 +6,7 @@
 */
 
 #include <zypp/base/Exception.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 
 #include <zypp/RepoInfo.h>
 

@@ -13,9 +13,9 @@
 #define ZYPP_MEDIA_MEDIAMANAGER_H
 
 #include <zypp-core/Globals.h>
-#include <zypp/base/NonCopyable.h>
-#include <zypp/base/PtrTypes.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/NonCopyable.h>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/OnMediaLocation>

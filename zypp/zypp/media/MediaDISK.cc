@@ -11,7 +11,7 @@
 */
 
 #include <zypp/base/Logger.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 #include <zypp-media/Mount>
 #include <zypp/media/MediaDISK.h>
 #include <zypp/media/MediaManager.h>

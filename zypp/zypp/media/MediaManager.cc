@@ -21,7 +21,7 @@
 #include <zypp/media/MediaHandler.h>
 #include <zypp-media/Mount>
 
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 #include <zypp/base/Logger.h>
 #include <zypp/Pathname.h>
 #include <zypp/PathInfo.h>

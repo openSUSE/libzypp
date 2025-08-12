@@ -289,11 +289,23 @@ namespace zyppng {
     };
   }
 
+#ifdef ZYPP_ENABLE_ASYNC
+  template <class Type>
+  using MaybeAwaitable = AsyncOpRef<Type>;
+
+  constexpr bool ZYPP_IS_ASYNC = true;
+#else
+  template <class Type>
+  using MaybeAwaitable = Type;
+
+  constexpr bool ZYPP_IS_ASYNC = false;
+#endif
+
   /*!
    * Is \a isAsync is true returns a \ref AsyncOpRef that is always ready, containing the \a result as
    * its final value, otherwise the value passed to the function is just forwarded.
    */
-  template <typename T, bool isAsync = true>
+  template <typename T, bool isAsync = ZYPP_IS_ASYNC>
   std::conditional_t<isAsync, AsyncOpRef<T>, T> makeReadyResult ( T && result ) {
     if constexpr ( isAsync ) {
       return std::make_shared<detail::ReadyResult<T>>( std::forward<T>(result) );
@@ -301,6 +313,8 @@ namespace zyppng {
       return result;
     }
   }
+
+
 
 }
 

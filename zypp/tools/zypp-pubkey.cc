@@ -8,7 +8,7 @@ using std::flush;
 namespace opt = boost::program_options;
 
 #include <zypp/target/rpm/RpmDb.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 
 static std::string appname( "unknown" );
 

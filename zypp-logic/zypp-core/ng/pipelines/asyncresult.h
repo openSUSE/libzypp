@@ -312,7 +312,7 @@ namespace zyppng {
       using Ret       = typename detail::AsyncToSyncResult<PrevOpRes, CbType>::value_type;
 
       if ( in->isReady() )
-        return makeReadyResult( std::invoke( std::forward<Callback>(c), std::move(in->get()) ) );
+        return makeReadyResult<Ret, true>( std::invoke( std::forward<Callback>(c), std::move(in->get()) ) );
       return AsyncOpRef<Ret>( new detail::AsyncToSyncResult<PrevOpRes, CbType>( std::move(in), std::forward<Callback>(c) ) );
     }
 

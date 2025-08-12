@@ -7,7 +7,7 @@
 #include <zypp-curl/ng/network/NetworkRequestDispatcher>
 #include <zypp-curl/ng/network/NetworkRequestError>
 #include <zypp/TmpPath.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 #include <zypp/Digest.h>
 #include <zypp/PathInfo.h>
 

@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/base/PtrTypes.h>
 #include <string>
 #include <iostream>
 

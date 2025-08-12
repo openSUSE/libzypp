@@ -158,6 +158,26 @@ namespace zyppng
     return zypp::indeterminate;
   }
 
+  bool ProvideMediaSpec::isSameMedium( const zypp::MirroredOrigin &originA, const ProvideMediaSpec &specA, const zypp::MirroredOrigin &originB, const ProvideMediaSpec &specB )
+  {
+    const auto check = specA.isSameMedium(specB);
+    if ( !zypp::indeterminate (check) )
+      return (bool)check;
+
+    // if the endpoints intersect we assume same medium
+    const auto &intersects = [](  const zypp::MirroredOrigin &l1, const zypp::MirroredOrigin &l2 ){
+      bool intersect = false;
+      for ( const auto &u: l1 ) {
+        intersect = ( std::find( l2.begin (), l2.end(), u ) != l2.end() );
+        if ( intersect )
+          break;
+      }
+      return intersect;
+    };
+
+    return intersects( originA, originB );
+  }
+
   /** \relates ProvideSpec::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ProvideFileSpec::Impl & obj )
   {

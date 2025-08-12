@@ -23,20 +23,8 @@ ENDFOREACH( loop_var )
 
 INSTALL(TARGETS zypp-NameReqPrv		DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 
-
 SET( ZYPP_TOOLS_DIR ${CMAKE_CURRENT_SOURCE_DIR} )
-
 ADD_SUBDIRECTORY( zypp-rpm )
-ADD_SUBDIRECTORY( zypp-media-http )
-ADD_SUBDIRECTORY( zypp-media-disc )
-ADD_SUBDIRECTORY( zypp-media-nfs )
-ADD_SUBDIRECTORY( zypp-media-smb )
-ADD_SUBDIRECTORY( zypp-media-dir )
-ADD_SUBDIRECTORY( zypp-media-disk )
-ADD_SUBDIRECTORY( zypp-media-iso )
-ADD_SUBDIRECTORY( zypp-media-copy )
-ADD_SUBDIRECTORY( zypp-media-tvm )
-ADD_SUBDIRECTORY( zypp-media-chksum )
 
 ## ############################################################
 OPTION( ENABLE_DEVTOOL_REPOMIRROR "Devtool: build repomirror?" OFF )

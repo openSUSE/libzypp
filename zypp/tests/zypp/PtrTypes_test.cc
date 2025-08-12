@@ -3,7 +3,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp/base/Logger.h>
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/base/PtrTypes.h>
 #include <zypp/base/ReferenceCounted.h>
 #include <zypp-core/base/ProvideNumericId>
 

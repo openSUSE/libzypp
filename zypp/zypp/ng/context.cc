@@ -6,38 +6,37 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "private/context_p.h"
+#include "context.h"
 #include <zypp/ZYppFactory.h>
-#include <zypp-core/ng/base/private/threaddata_p.h>
-#include <zypp-core/ng/base/EventLoop>
-#include <zypp-media/ng/Provide>
 
-namespace zyppng {
-
-  ZYPP_IMPL_PRIVATE( Context )
-
-  ZYPP_IMPL_PRIVATE_CONSTR( Context )
-    : UserInterface( *new ContextPrivate( *this ) )
+namespace zyppng
+{
+  ZYPP_IMPL_PRIVATE_CONSTR(Context) : _media( Provide::create() )
   {
-    Z_D();
-    d->_zyppPtr = zypp::getZYpp();
-    d->_eventDispatcher = ThreadData::current().ensureDispatcher();
 
-    d->_provider = Provide::create( d->_providerDir );
+  }
 
-    // @TODO should start be implicit as soon as something is enqueued?
-    d->_provider->start();
+
+  /*!
+   * Returns the default sync zypp context.
+   * This is only a workaround to support the Legacy APIs.
+   * For new style APIs the Context should always explicitely be passed down. So use it
+   * only in top level external classes where we can not touch the API.
+   */
+  ContextRef Context::defaultContext()
+  {
+    static ContextRef def = Context::create();
+    return def;
   }
 
   ProvideRef Context::provider() const
   {
-    Z_D();
-    return d->_provider;
+    return _media;
   }
 
   KeyRingRef Context::keyRing() const
   {
-    return d_func()->_zyppPtr->keyRing();
+    return zypp::getZYpp()->keyRing();
   }
 
   zypp::ZConfig &Context::config()
@@ -58,15 +57,5 @@ namespace zyppng {
   zypp::sat::Pool Context::satPool()
   {
     return zypp::sat::Pool::instance();
-  }
-
-  void Context::executeImpl(const AsyncOpBaseRef& op)
-  {
-    auto loop = EventLoop::create();
-    op->sigReady().connect([&](){
-      loop->quit();
-    });
-    loop->run();
-    return;
   }
 }

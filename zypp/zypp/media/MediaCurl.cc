@@ -16,7 +16,7 @@
 
 #include <zypp/base/Logger.h>
 #include <zypp/ExternalProgram.h>
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 #include <zypp/base/Gettext.h>
 #include <utility>
 #include <zypp-core/parser/Sysconfig>

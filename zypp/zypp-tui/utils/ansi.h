@@ -22,7 +22,7 @@
 #include <map>
 #include <string>
 
-#include <zypp/base/String.h>
+#include <zypp-core/base/String.h>
 
 
 namespace ztui {

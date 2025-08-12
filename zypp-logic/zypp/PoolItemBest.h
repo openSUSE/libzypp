@@ -1,0 +1,163 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+/** \file	zypp/PoolItemBest.h
+ *
+*/
+#ifndef ZYPP_POOLITEMBEST_H
+#define ZYPP_POOLITEMBEST_H
+
+#include <iosfwd>
+
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp/base/Function.h>
+#include <zypp-core/base/Iterator.h>
+#include <zypp-core/base/Hash.h>
+
+#include <zypp/PoolItem.h>
+
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{ /////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //	CLASS NAME : PoolItemBest
+  //
+  /** Find the best candidates e.g. in a \ref PoolQuery result.
+   *
+   * The class basically maintains a \c map<IdString,PoolItem> and remembers
+   * for each \c ident (\ref sat::Solvable::ident) the best \ref PoolItem that
+   * was added.
+   *
+   * The default \ref Predicate to determine the best choice is the same that
+   * sorts the \ref ui::Selectable list of available objects, thus follows the
+   * same rules the \ref resolver will apply.
+   *
+   * Ctor argument \ref preferNotLocked causes locked packages to be considered
+   * less than not locked packages.
+   *
+   * \code
+   *   PoolQuery q;
+   *   q.addAttribute(sat::SolvAttr::name, "lib*");
+   *   q.setMatchGlob();
+   *
+   *  // get the best matches and tag them for installation:
+   *  PoolItemBest bestMatches( q.begin(), q.end() );
+   *  if ( ! bestMatches.empty() )
+   *  {
+   *    for_( it, bestMatches.begin(), bestMatches.end() )
+   *    {
+   *      ui::asSelectable()( *it )->setOnSystem( *it, ResStatus::USER );
+   *    }
+   *  }
+   * \endcode
+   *
+   * \todo Support arbitrary Predicates.
+   */
+  class ZYPP_API PoolItemBest
+  {
+      using Container = std::unordered_map<IdString, PoolItem>;
+    public:
+      /** Predicate returning \c True if \a lhs is a better choice. */
+      using Predicate = boost::function<bool (const PoolItem &, const PoolItem &)>;
+
+      using size_type = Container::size_type;
+      using value_type = Container::value_type;
+      using iterator = MapKVIteratorTraits<Container>::Value_const_iterator;
+      using ident_iterator = MapKVIteratorTraits<Container>::Key_const_iterator;
+
+    public:
+      /** Indicator argument for ctor: consider locked packages less than not locked packages. */
+      static constexpr bool preferNotLocked = true;
+
+    public:
+      /** Default ctor. */
+      PoolItemBest( bool preferNotLocked_r = false )
+      { _ctor_init( preferNotLocked_r ); }
+
+      /** Ctor feeding a \ref sat::Solvable. */
+      PoolItemBest( sat::Solvable slv_r, bool preferNotLocked_r = false )
+      { _ctor_init( preferNotLocked_r ); add( slv_r ); }
+
+      /** Ctor feeding a \ref PoolItem. */
+      PoolItemBest( const PoolItem & pi_r, bool preferNotLocked_r = false )
+      { _ctor_init( preferNotLocked_r ); add( pi_r ); }
+
+      /** Ctor feeding a range of  \ref sat::Solvable or \ref PoolItem. */
+      template<class TIterator>
+      PoolItemBest( TIterator begin_r, TIterator end_r, bool preferNotLocked_r = false )
+      { _ctor_init( preferNotLocked_r ); add( begin_r, end_r ); }
+
+    public:
+      /** Feed one \ref sat::Solvable. */
+      void add( sat::Solvable slv_r )
+      { add( PoolItem( slv_r ) ); }
+
+      /** Feed one \ref PoolItem. */
+      void add( const PoolItem & pi_r );
+
+      /** Feed a range of  \ref sat::Solvable or \ref PoolItem. */
+      template<class TIterator>
+      void add( TIterator begin_r, TIterator end_r )
+      {
+        for_( it, begin_r, end_r )
+          add( *it );
+      }
+
+    public:
+      /** \name Iterate the collected PoolItems. */
+      //@{
+      /** Whether PoolItems were collected. */
+      bool empty() const	{ return container().empty(); }
+      /** Number of PoolItems collected. */
+      size_type size() const	{ return container().size(); }
+      /** Pointer to the first PoolItem. */
+      iterator begin() const	{ return make_map_value_begin( container() ); }
+      /** Pointer behind the last PoolItem. */
+      iterator end() const	{ return make_map_value_end( container() ); }
+
+      /** Return the collected \ref PoolItem with \ref sat::Solvable::ident \a ident_r. */
+      PoolItem find( IdString ident_r ) const;
+      /** \overload Use Solvables ident string. */
+      PoolItem find( sat::Solvable slv_r ) const	{ return find( slv_r.ident() ); }
+      /** \overload Use PoolItems ident string. */
+      PoolItem find( const PoolItem & pi_r ) const	{ return find( pi_r.satSolvable().ident() ); }
+      //@}
+
+      /** \name Iterate the collected PoolItems ident strings. */
+      //@{
+      /** Pointer to the first item. */
+      ident_iterator identBegin() const	{ return make_map_key_begin( container() ); }
+      /** Pointer behind the last item. */
+      ident_iterator identEnd() const	{ return make_map_key_end( container() ); }
+      //@}
+
+    private:
+      void _ctor_init( bool preferNotLocked_r );
+      void _ctor_init(/*preferNotLocked = false*/);	///< bin.compat legacy
+      const Container & container() const;
+    private:
+      /** Implementation  */
+      struct Impl;
+      /** Pointer to implementation */
+      RWCOW_pointer<Impl> & pimpl()             { return *(reinterpret_cast<RWCOW_pointer<Impl>*>( _dont_use_this_use_pimpl.get() )); }
+      /** Pointer to implementation */
+      const RWCOW_pointer<Impl> & pimpl() const { return *(reinterpret_cast<RWCOW_pointer<Impl>*>( _dont_use_this_use_pimpl.get() )); }
+      /** Avoid need to include Impl definition when inlined ctors (due to tepmlate) are provided. */
+      shared_ptr<void> _dont_use_this_use_pimpl;
+  };
+  ///////////////////////////////////////////////////////////////////
+
+  /** \relates PoolItemBest Stream output */
+  std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj );
+
+  /////////////////////////////////////////////////////////////////
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+#endif // ZYPP_POOLITEMBEST_H

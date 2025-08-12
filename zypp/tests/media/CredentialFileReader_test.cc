@@ -4,7 +4,7 @@
 
 #include <zypp/Url.h>
 #include <zypp/PathInfo.h>
-#include <zypp/base/Easy.h>
+#include <zypp-core/base/Easy.h>
 #include <zypp-media/auth/AuthData>
 
 #include <zypp-media/auth/CredentialFileReader>

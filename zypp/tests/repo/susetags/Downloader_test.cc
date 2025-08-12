@@ -9,7 +9,7 @@
 
 #include <zypp/ng/repo/downloader.h>
 #include <zypp/ng/repo/workflows/susetags.h>
-#include <zypp/ng/workflows/contextfacade.h>
+#include <zypp/ng/context.h>
 #include <zypp-media/ng/providespec.h>
 
 #include <zypp-common/KeyManager.h>
@@ -43,15 +43,15 @@ BOOST_AUTO_TEST_CASE(susetags_download)
   Pathname localdir(tmp.path());
 
 
-  auto ctx = zyppng::SyncContext::create ();
+  auto ctx = zyppng::Context::create ();
   ctx->keyRing ()->allowPreload( false );
 
   auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
-  | and_then( [&]( zyppng::SyncMediaHandle h ){
-    auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
+  | and_then( [&]( zyppng::ProvideMediaHandle h ){
+    auto dlctx = std::make_shared<zyppng::repo::DownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);
   })
-  | and_then( [&](zyppng::repo::SyncDownloadContextRef ctx ) {
+  | and_then( [&](zyppng::repo::DownloadContextRef ctx ) {
 
     MIL << "All files downloaded" << endl;
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(susetags_gz_download)
 
   Pathname localdir(tmp.path());
 
-  auto ctx = zyppng::SyncContext::create ();
+  auto ctx = zyppng::Context::create ();
   ctx->keyRing ()->allowPreload( false );
 
   {
@@ -124,11 +124,11 @@ BOOST_AUTO_TEST_CASE(susetags_gz_download)
   }
 
   auto res = ctx->provider()->attachMedia( p.asDirUrl() , zyppng::ProvideMediaSpec() )
-  | and_then( [&]( zyppng::SyncMediaHandle h ){
-    auto dlctx = std::make_shared<zyppng::repo::SyncDownloadContext>( ctx, repoinfo, localdir );
+  | and_then( [&]( zyppng::ProvideMediaHandle h ){
+    auto dlctx = std::make_shared<zyppng::repo::DownloadContext>( ctx, repoinfo, localdir );
     return zyppng::SuseTagsWorkflows::download(dlctx, h);
   })
-  | and_then( [&](zyppng::repo::SyncDownloadContextRef ctx ) {
+  | and_then( [&](zyppng::repo::DownloadContextRef ctx ) {
 
     const char* files[] =
     {

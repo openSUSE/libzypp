@@ -17,7 +17,7 @@
 #include <string>
 
 #include <zypp-core/Globals.h>
-#include <zypp/base/PtrTypes.h>
+#include <zypp-core/base/PtrTypes.h>
 #include <zypp/Url.h>
 #include <zypp/PathInfo.h>
 ///////////////////////////////////////////////////////////////////

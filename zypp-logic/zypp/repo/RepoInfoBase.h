@@ -16,7 +16,7 @@
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/Globals.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

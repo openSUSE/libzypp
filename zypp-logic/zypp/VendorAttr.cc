@@ -14,9 +14,9 @@
 #include <map>
 #include <vector>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
-#include <zypp/base/StringV.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
+#include <zypp-core/base/StringV.h>
 
 #include <zypp/PathInfo.h>
 #include <zypp/VendorAttr.h>

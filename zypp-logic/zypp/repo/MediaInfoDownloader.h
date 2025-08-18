@@ -10,8 +10,8 @@
 #ifndef ZYPP_REPO_MEDIAINFO_DOWNLOADER
 #define ZYPP_REPO_MEDIAINFO_DOWNLOADER
 
-#include <zypp/Url.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Url.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Fetcher.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/MediaSetAccess.h>

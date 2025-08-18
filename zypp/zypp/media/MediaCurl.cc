@@ -14,13 +14,13 @@
 #include <chrono>
 #include <list>
 
-#include <zypp/base/Logger.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <utility>
 #include <zypp-core/parser/Sysconfig>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 
 #include <zypp/media/MediaCurl.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>

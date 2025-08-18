@@ -10,7 +10,7 @@
  *
 */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/media/UrlResolverPlugin.h>
 #include <zypp-media/MediaException>
 #include <zypp/PluginScript.h>

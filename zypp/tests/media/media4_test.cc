@@ -1,10 +1,10 @@
 #include <zypp/media/MediaManager.h>
-#include <zypp/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 
 #include <string>
 #include <list>

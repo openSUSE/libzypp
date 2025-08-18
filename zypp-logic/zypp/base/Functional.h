@@ -13,7 +13,7 @@
 #define ZYPP_BASE_FUNCTIONAL_H
 
 #include <functional>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

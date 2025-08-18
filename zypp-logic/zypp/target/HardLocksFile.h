@@ -17,7 +17,7 @@
 
 #include <zypp-core/base/PtrTypes.h>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/pool/PoolTraits.h>
 #include <zypp/PoolQuery.h>
 

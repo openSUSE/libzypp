@@ -272,7 +272,7 @@ namespace zypp
      * \see zypp::RWCOW_pointer for 'copy on write' functionality.
      *
      * \code
-     * #include "zypp/base/PtrTypes.h"
+     * #include <zypp-core/base/PtrTypes.h>
      *
      * class Foo
      * {

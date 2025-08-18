@@ -13,8 +13,8 @@
 #include <list>
 #include <inttypes.h>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/Hash.h>
 #include <zypp/Arch.h>

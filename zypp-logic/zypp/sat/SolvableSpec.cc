@@ -10,8 +10,8 @@
  */
 #include <iostream>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
 
 #include <zypp/sat/SolvableSpec.h>
 #include <zypp/sat/SolvableSet.h>

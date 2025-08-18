@@ -6,9 +6,9 @@
 // Boost.Test
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/LogControl.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/VendorAttr.h>
 
 using boost::unit_test::test_case;

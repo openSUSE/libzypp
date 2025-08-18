@@ -16,8 +16,8 @@
 
 #include <string>
 
-#include <zypp/base/Exception.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

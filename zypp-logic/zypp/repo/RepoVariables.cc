@@ -9,9 +9,9 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
@@ -19,7 +19,7 @@
 #include <zypp/Arch.h>
 #include <zypp/repo/RepoVariables.h>
 #include <zypp-core/base/NonCopyable.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #define ZYPP_DBG_VAREXPAND 0
 #if ( ZYPP_DBG_VAREXPAND )

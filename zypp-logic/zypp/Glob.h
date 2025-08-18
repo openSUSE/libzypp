@@ -20,12 +20,12 @@ extern "C"
 #include <iosfwd>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 #include <zypp-core/base/Iterator.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/DefaultIntegral>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

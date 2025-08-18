@@ -13,7 +13,7 @@ extern "C"
 #include <solv/queue.h>
 }
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/sat/Queue.h>
 #include <zypp/sat/Solvable.h>

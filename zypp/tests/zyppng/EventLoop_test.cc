@@ -2,7 +2,7 @@
 #include <zypp-core/ng/base/EventLoop>
 #include <zypp-core/ng/base/EventDispatcher>
 #include <zypp-core/ng/base/Timer>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 
 #include <iostream>
 

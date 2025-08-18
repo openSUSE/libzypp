@@ -23,7 +23,7 @@
 
 #define ZYPP_USE_RESOLVER_INTERNALS
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/Algorithm.h>
 
 #include <zypp/solver/detail/Resolver.h>

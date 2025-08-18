@@ -14,7 +14,7 @@
 #include <iosfwd>
 #include <cstdint>
 
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 #include <zypp/IdString.h>
 
 ///////////////////////////////////////////////////////////////////

@@ -14,7 +14,7 @@
 #include <list>
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 #include <zypp/repo/PackageDelta.h>
 #include <zypp/Repository.h>
 #include <zypp/Package.h>

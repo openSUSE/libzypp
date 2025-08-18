@@ -12,12 +12,12 @@
 #include <fstream>
 #include <optional>
 #include <utility>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/NonCopyable.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/Regex.h>
-#include <zypp/base/IOStream.h>
-#include <zypp/base/InputStream.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/Regex.h>
+#include <zypp-core/base/IOStream.h>
+#include <zypp-core/base/InputStream>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/target/RpmPostTransCollector.h>
 
@@ -25,7 +25,7 @@
 #include <zypp/PathInfo.h>
 #include <zypp/HistoryLog.h>
 #include <zypp/ZYppCallbacks.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/rpm/librpmDb.h>
 #include <zypp/ZConfig.h>

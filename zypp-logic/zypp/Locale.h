@@ -16,7 +16,7 @@
 #include <string>
 
 #include <zypp-core/base/Hash.h>
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 #include <zypp/IdStringType.h>
 #include <zypp/LanguageCode.h>

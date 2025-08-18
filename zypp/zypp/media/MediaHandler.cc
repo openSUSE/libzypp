@@ -16,9 +16,9 @@
 
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
-#include <zypp/Date.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/Date.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/String.h>
 #include <zypp/media/MediaHandler.h>
 #include <zypp/media/MediaManager.h>

@@ -13,7 +13,7 @@
 
 #include <iosfwd>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/sat/detail/PoolMember.h>
 

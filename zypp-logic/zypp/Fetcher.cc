@@ -15,8 +15,8 @@
 #include <map>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/LogControl.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/String.h>

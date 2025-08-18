@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp-core/base/GzStream>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-core/base/InputStream>
 
 BOOST_AUTO_TEST_CASE(gz_simple_read_write)

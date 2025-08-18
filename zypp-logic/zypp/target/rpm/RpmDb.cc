@@ -31,14 +31,14 @@ extern "C"
 #include <algorithm>
 
 #include <zypp-core/base/StringV.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp/base/LocaleGuard.h>
 #include <zypp-core/base/DtorReset>
 
-#include <zypp/Date.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Date.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp-core/ui/ProgressData>
@@ -55,7 +55,7 @@ extern "C"
 #include <zypp-common/KeyManager.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
-#include <zypp/base/IOTools.h>
+#include <zypp-core/base/IOTools.h>
 
 using std::endl;
 using namespace zypp::filesystem;

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <zypp-core/base/Easy.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Exception.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/misc/CheckAccessDeleted.h>
 
 /** Collect max string size. */

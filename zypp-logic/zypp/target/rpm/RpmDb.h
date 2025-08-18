@@ -21,8 +21,8 @@
 #include <string>
 #include <functional>
 
-#include <zypp/Pathname.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/ExternalProgram.h>
 
 #include <zypp/Package.h>
 #include <zypp/KeyRing.h>

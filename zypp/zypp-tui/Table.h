@@ -25,7 +25,7 @@
 #include <boost/any.hpp>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/sat/Solvable.h>
 #include <zypp/ui/Selectable.h>
 

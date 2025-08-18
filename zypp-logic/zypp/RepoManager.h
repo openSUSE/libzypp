@@ -17,9 +17,9 @@
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/Iterator.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/ZConfig.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/repo/RepoException.h>

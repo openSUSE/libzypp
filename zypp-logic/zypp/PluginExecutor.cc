@@ -9,7 +9,7 @@
 /** \file	zypp/PluginExecutor.cc
  */
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/NonCopyable.h>
 
 #include <zypp/ZConfig.h>

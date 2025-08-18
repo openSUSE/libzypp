@@ -22,8 +22,8 @@
 #include <zypp-media/Mount>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 
 //////////////////////////////////////////////////////////////////////

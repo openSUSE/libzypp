@@ -12,9 +12,9 @@
 #include <iostream>
 #include <sstream>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp-core/parser/ParseException>
 

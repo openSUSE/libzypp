@@ -15,7 +15,7 @@
 #include <string>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/EnumClass.h>
+#include <zypp-core/base/EnumClass.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

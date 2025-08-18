@@ -15,11 +15,11 @@
 #include <iosfwd>
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 #include <utility>
 #include <zypp-core/base/InputStream>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/IdString.h>
 #include <zypp/Edition.h>
 #include <zypp/Arch.h>

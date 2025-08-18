@@ -14,7 +14,7 @@
 #include <iostream>
 
 #include <zypp/target/TargetException.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 
 
 ///////////////////////////////////////////////////////////////////

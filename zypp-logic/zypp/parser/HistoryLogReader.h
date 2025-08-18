@@ -14,9 +14,9 @@
 #define ZYPP_PARSER_HISTORYLOGREADER_H_
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 #include <zypp-core/ui/ProgressData>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 #include <zypp/HistoryLogData.h>
 

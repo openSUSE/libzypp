@@ -10,7 +10,7 @@
  *
 */
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/PoolItem.h>
 #include <zypp-core/base/PtrTypes.h>
 

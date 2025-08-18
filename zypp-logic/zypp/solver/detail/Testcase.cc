@@ -18,8 +18,8 @@
 #define ZYPP_USE_RESOLVER_INTERNALS
 
 #include <zypp/solver/detail/Testcase.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogControl.h>
 #include <utility>
 #include <zypp-core/base/GzStream>
 #include <zypp-core/base/String.h>
@@ -27,7 +27,7 @@
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp/base/ReferenceCounted.h>
 
-#include <zypp/AutoDispose.h>
+#include <zypp-core/AutoDispose.h>
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
 #include <zypp/ResPool.h>

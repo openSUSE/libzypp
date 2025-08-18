@@ -11,7 +11,7 @@
 */
 #include <iostream>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/PathInfo.h>
 
 #include <zypp/misc/DefaultLoadSystem.h>

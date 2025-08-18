@@ -15,7 +15,7 @@
 #include <zypp/repo/RepoVariables.h>
 
 #include <zypp/repo/RepoInfoBase.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 using std::endl;
 

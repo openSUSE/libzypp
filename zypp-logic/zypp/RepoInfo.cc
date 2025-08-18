@@ -12,24 +12,24 @@
 #include <iostream>
 #include <vector>
 
-#include <zypp/base/Gettext.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/DefaultIntegral>
-#include <zypp/parser/xml/XmlEscape.h>
+#include <zypp-core/parser/xml/XmlEscape.h>
 
 #include <zypp/ManagedFile.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/MediaSetAccess.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/Glob.h>
-#include <zypp/TriBool.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/TriBool.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/ZConfig.h>
 #include <zypp/repo/RepoMirrorList.h>
 #include <zypp/repo/SUSEMediaVerifier.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/InputStream>
 #include <zypp/parser/xml/Reader.h>
 

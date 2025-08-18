@@ -22,9 +22,9 @@
 
 #include <zypp/Arch.h>
 #include <zypp/Locale.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/IdString.h>
-#include <zypp/TriBool.h>
+#include <zypp-core/TriBool.h>
 #include <zypp/ResolverFocus.h>
 #include <zypp/DownloadMode.h>
 #include <zypp/target/rpm/RpmFlags.h>

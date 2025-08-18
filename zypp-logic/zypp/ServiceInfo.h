@@ -15,12 +15,12 @@
 #include <set>
 #include <string>
 
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 
-#include <zypp/base/Iterable.h>
+#include <zypp-core/base/Iterable.h>
 #include <zypp/repo/ServiceType.h>
 #include <zypp/RepoInfo.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

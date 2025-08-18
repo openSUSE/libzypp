@@ -12,10 +12,10 @@
 
 #include <iostream>
 
-#include <zypp/base/Logger.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/parser/Sysconfig>
 
 #include <zypp/media/MediaCurl2.h>

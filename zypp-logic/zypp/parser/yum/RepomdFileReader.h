@@ -16,7 +16,7 @@
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/NonCopyable.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 
 #include <zypp-core/OnMediaLocation>
 

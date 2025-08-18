@@ -14,7 +14,7 @@
 #include <fstream>
 #include <optional>
 #include <set>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
 #include <zypp/RepoStatus.h>
 #include <zypp/RepoInfo.h>

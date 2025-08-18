@@ -11,7 +11,7 @@
 */
 #include <iostream>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Hash.h>
 #include <zypp/sat/WhatObsoletes.h>
 #include <zypp/sat/detail/PoolImpl.h>

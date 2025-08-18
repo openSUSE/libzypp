@@ -13,8 +13,8 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp/TmpPath.h>
 #include <zypp-core/KVMap>
 #include <zypp-media/Mount>

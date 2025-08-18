@@ -16,7 +16,7 @@
 #include <string>
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

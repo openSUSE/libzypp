@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 #include <zypp/ProvideFilePolicy.h>
 

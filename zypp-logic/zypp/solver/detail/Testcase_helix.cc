@@ -17,15 +17,15 @@
 #define ZYPP_USE_RESOLVER_INTERNALS
 
 #include <zypp/solver/detail/Testcase.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/LogControl.h>
-#include <zypp/base/GzStream.h>
-#include <zypp/base/String.h>
-#include <zypp/base/PtrTypes.h>
-#include <zypp/base/NonCopyable.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/GzStream>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/base/NonCopyable.h>
 #include <zypp/base/ReferenceCounted.h>
 
-#include <zypp/parser/xml/XmlEscape.h>
+#include <zypp-core/parser/xml/XmlEscape.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/ZYpp.h>
 #include <zypp/zypp_detail/ZYppReadOnlyHack.h>
 #include <zypp/ZYppFactory.h>

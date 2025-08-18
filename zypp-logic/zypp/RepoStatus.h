@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/CheckSum.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

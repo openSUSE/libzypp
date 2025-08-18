@@ -13,7 +13,7 @@
 #include <iosfwd>
 #include <utility>
 
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 #include <zypp/base/Functional.h>
 #include <zypp/FileChecker.h>
 

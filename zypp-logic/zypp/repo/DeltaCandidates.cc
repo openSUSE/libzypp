@@ -13,7 +13,7 @@ extern "C"
 
 #include <iostream>
 #include <utility>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/Repository.h>
 #include <zypp/repo/DeltaCandidates.h>
 #include <zypp/sat/Pool.h>

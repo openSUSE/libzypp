@@ -4,8 +4,8 @@
 #include <list>
 #include <string>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/KeyRing.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/TmpPath.h>

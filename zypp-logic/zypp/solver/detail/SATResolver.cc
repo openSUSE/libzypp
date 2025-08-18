@@ -31,13 +31,13 @@ extern "C"
 
 #define ZYPP_USE_RESOLVER_INTERNALS
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp/base/Algorithm.h>
 
 #include <zypp/ZConfig.h>
 #include <zypp/Product.h>
-#include <zypp/AutoDispose.h>
+#include <zypp-core/AutoDispose.h>
 #include <zypp/sat/WhatProvides.h>
 #include <zypp/sat/WhatObsoletes.h>
 #include <zypp/sat/detail/PoolImpl.h>

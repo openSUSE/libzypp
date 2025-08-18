@@ -22,9 +22,9 @@ extern "C"
 #include <unordered_set>
 #include <string>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-core/base/UserRequestException>
 
 #include <zypp/sat/Queue.h>

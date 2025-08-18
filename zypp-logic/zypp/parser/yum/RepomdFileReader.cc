@@ -13,12 +13,12 @@
 #include <utility>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Regex.h>
 
-#include <zypp/Pathname.h>
-#include <zypp/Date.h>
-#include <zypp/Url.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/Date.h>
+#include <zypp-core/Url.h>
 #include <zypp/CheckSum.h>
 #include <zypp/parser/xml/Reader.h>
 

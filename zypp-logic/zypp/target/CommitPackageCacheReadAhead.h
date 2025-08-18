@@ -14,8 +14,8 @@
 
 #include <map>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp/Repository.h>
 #include <zypp/TmpPath.h>

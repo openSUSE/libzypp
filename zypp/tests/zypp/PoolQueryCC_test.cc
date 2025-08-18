@@ -1,6 +1,6 @@
 #include "TestSetup.h"
 #include <zypp-core/base/String.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/PoolQuery.h>
 #include <zypp/PoolQueryUtil.tcc>

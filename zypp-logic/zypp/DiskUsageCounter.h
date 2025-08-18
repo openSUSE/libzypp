@@ -19,7 +19,7 @@
 
 #include <zypp/ResPool.h>
 #include <zypp/Bitmap.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

@@ -15,8 +15,8 @@
 #include <iosfwd>
 #include <utility>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 
 #include <zypp/target/CommitPackageCache.h>
 

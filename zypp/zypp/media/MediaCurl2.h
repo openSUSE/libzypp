@@ -13,7 +13,7 @@
 #define ZYPP_MEDIA_MEDIACURL2_H
 
 #include <zypp-core/ng/base/zyppglobal.h>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 #include <zypp/ZYppCallbacks.h>
 #include <zypp/media/MediaNetworkCommonHandler.h>
 

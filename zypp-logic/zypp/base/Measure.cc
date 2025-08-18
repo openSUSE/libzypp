@@ -17,7 +17,7 @@ extern "C"
 #include <iostream>
 #include <utility>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/base/Measure.h>
 #include <zypp-core/base/String.h>
 

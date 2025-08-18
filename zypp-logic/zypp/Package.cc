@@ -12,9 +12,9 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/StringV.h>
+#include <zypp-core/base/StringV.h>
 #include <zypp/Package.h>
 #include <zypp/sat/LookupAttr.h>
 #include <zypp/ZYppFactory.h>

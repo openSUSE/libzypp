@@ -16,7 +16,7 @@
 #include <utility>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/SerialNumber.h>
 #include <zypp-core/Globals.h>
 

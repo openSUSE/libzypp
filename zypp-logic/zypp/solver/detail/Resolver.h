@@ -30,7 +30,7 @@
 #include <list>
 #include <map>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/solver/Types.h>
 #include <zypp/base/SerialNumber.h>
 

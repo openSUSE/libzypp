@@ -15,10 +15,10 @@
 #include <iosfwd>
 #include <list>
 
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/Pathname.h>
-#include <zypp/Url.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/Url.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/Digest.h>
 #include <zypp/MediaSetAccess.h>

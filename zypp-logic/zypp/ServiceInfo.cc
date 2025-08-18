@@ -14,7 +14,7 @@
 
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/DefaultIntegral>
-#include <zypp/parser/xml/XmlEscape.h>
+#include <zypp-core/parser/xml/XmlEscape.h>
 
 #include <zypp/RepoInfo.h>
 #include <zypp/ServiceInfo.h>

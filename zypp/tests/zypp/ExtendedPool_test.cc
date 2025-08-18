@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "TestSetup.h"
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/ResObjects.h>
 #include <zypp/ResPool.h>

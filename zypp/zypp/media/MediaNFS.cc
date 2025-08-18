@@ -13,7 +13,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
 #include <zypp/media/MediaNFS.h>
 #include <zypp-media/Mount>

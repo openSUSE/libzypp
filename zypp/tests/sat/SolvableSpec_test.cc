@@ -3,7 +3,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp/sat/SolvableSpec.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include "TestSetup.h"
 
 #define BOOST_CHECK_MODULE SolvableSpec

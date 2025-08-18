@@ -13,7 +13,7 @@
 #include "HelixHelpers.h"
 #include "YamlTestcaseHelpers.h"
 #include <zypp/PathInfo.h>
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/LogControl.h>
 
 namespace zypp::misc::testcase {
 

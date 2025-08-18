@@ -1,6 +1,6 @@
 #include <iostream>
-#include <zypp/base/IOStream.h>
-#include <zypp/url/UrlUtils.h>
+#include <zypp-core/base/IOStream.h>
+#include <zypp-core/url/UrlUtils.h>
 
 static std::string doEncode( const std::string & str_r )
 { return zypp::url::encode( str_r ); }

@@ -14,9 +14,9 @@
 
 #include <iostream>
 
-#include <zypp/base/LogControl.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/parser/xml/Reader.h>

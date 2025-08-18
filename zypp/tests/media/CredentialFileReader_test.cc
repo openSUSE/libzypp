@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include <set>
 
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 #include <zypp-core/base/Easy.h>
 #include <zypp-media/auth/AuthData>

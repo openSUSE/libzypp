@@ -6,7 +6,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp/ZYppFactory.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
 #include <zypp/ZConfig.h>

@@ -10,9 +10,9 @@
  *
 */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/UserRequestException>
 

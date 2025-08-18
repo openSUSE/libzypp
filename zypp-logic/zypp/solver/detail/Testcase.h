@@ -18,7 +18,7 @@
 
 #include <string>
 #include <map>
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 /////////////////////////////////////////////////////////////////////////
 namespace zypp

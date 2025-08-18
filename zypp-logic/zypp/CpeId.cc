@@ -12,7 +12,7 @@
 #include <array>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/NonCopyable.h>
 
 #include <zypp/CpeId.h>

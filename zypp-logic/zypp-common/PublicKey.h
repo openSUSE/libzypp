@@ -19,12 +19,12 @@
 
 #include <zypp-common/base/DrunkenBishop.h>
 
-#include <zypp/base/Iterable.h>
+#include <zypp-core/base/Iterable.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Exception.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Edition.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 struct _gpgme_key;
 struct _gpgme_subkey;

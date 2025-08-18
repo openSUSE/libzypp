@@ -20,14 +20,14 @@
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZYpp.h>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Regex.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp/PathInfo.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp/ZYppCallbacks.h>       // JobReport::instance
 #include <zypp-common/KeyManager.h>

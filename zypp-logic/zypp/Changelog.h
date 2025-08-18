@@ -16,8 +16,8 @@
 #include <list>
 #include <utility>
 
-#include <zypp/Globals.h>
-#include <zypp/Date.h>
+#include <zypp-core/Globals.h>
+#include <zypp-core/Date.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

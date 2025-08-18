@@ -13,7 +13,7 @@
 
 #include "DrunkenBishop.h"
 
-//#include <zypp/base/LogTools.h>
+//#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Flags.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/NonCopyable.h>

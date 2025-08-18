@@ -11,7 +11,7 @@
  */
 #include <iostream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-media/Mount>
 
 #include <zypp/media/MediaISO.h>

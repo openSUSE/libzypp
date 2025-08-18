@@ -13,7 +13,7 @@
 #define ZYPP_UI_SELECTABLEIMPL_H
 
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp-core/base/PtrTypes.h>
 

@@ -10,8 +10,8 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Regex.h>
 #include <utility>
 #include <zypp-core/base/UserRequestException>
 #include <zypp-media/MediaException>

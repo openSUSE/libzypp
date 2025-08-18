@@ -11,7 +11,7 @@
 */
 #include <iostream>
 #include <utility>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/FileChecker.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/Digest.h>

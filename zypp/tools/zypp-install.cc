@@ -16,7 +16,7 @@
 #define TEST_DEBUGLOG 0
 
 #if ( TEST_DEBUGLOG )
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/LogControl.h>
 #endif
 #include <zypp/ZYppFactory.h>
 #include <zypp/RepoManager.h>

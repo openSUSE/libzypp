@@ -16,7 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include <zypp/ZConfig.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/media/MediaManager.h>
 #include <utility>
 #include <zypp-core/base/UserRequestException>

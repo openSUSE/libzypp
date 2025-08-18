@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp-core/base/ZckStream>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-core/base/InputStream>
 #include <zypp/PathInfo.h>
 

@@ -10,7 +10,7 @@
  *
 */
 #include <iostream>
-//#include <zypp/base/LogTools.h>
+//#include <zypp-core/base/LogTools.h>
 
 #include <zypp/PluginScriptException.h>
 #include <zypp/PluginScript.h>

@@ -6,8 +6,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
 #include <zypp/Package.h>

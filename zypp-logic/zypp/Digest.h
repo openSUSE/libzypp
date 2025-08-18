@@ -18,7 +18,7 @@
 #include <zypp-core/Digest.h>
 
 #include <zypp/Callback.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 namespace zypp {
 

@@ -21,7 +21,7 @@
 #include <zypp/PoolItem.h>
 #include <zypp/ZYppCommit.h>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Target.h>
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/TargetException.h>

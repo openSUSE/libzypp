@@ -19,11 +19,11 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-core/base/Iterator.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp/base/Functional.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/base/Json.h>
@@ -35,10 +35,10 @@
 
 #include <zypp/PoolItem.h>
 #include <zypp/ResObjects.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/TmpPath.h>
 #include <zypp/RepoStatus.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/Repository.h>
 #include <zypp-core/ShutdownLock_p.h>
 

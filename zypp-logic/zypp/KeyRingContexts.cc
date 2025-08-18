@@ -11,7 +11,7 @@
 #include <optional>
 
 #include <zypp/KeyRingContexts.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp::keyring

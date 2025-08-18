@@ -14,7 +14,7 @@ extern "C"
 #include <solv/solver.h>
 }
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/SerialNumber.h>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/NonCopyable.h>

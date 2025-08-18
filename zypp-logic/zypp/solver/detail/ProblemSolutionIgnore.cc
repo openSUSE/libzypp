@@ -24,7 +24,7 @@
 #define ZYPP_USE_RESOLVER_INTERNALS
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp/solver/detail/ProblemSolutionIgnore.h>
 #include <zypp/solver/detail/SolutionAction.h>
 

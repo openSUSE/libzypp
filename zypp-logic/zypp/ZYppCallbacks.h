@@ -17,10 +17,10 @@
 #include <zypp-core/UserData.h>
 #include <zypp/Resolvable.h>
 #include <zypp/RepoInfo.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Package.h>
 #include <zypp/Patch.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp-core/ui/ProgressData>
 #include <zypp-media/auth/AuthData>
 #include <zypp-curl/auth/CurlAuthData>  // bsc#1194597: CurlAuthData must be exposed for zypper

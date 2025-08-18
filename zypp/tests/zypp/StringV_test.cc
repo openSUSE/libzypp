@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <optional>
-#include <zypp/base/StringV.h>
+#include <zypp-core/base/StringV.h>
 
 using std::cout;
 using std::endl;

@@ -12,8 +12,8 @@
 #ifndef ZYPP_REPOMANAGER_OPTIONS_H
 #define ZYPP_REPOMANAGER_OPTIONS_H
 
-#include <zypp/Pathname.h>
-#include <zypp/Globals.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/Globals.h>
 #include <ostream>
 
 namespace zypp

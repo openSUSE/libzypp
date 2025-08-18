@@ -46,6 +46,7 @@ macro( zypp_logic_setup_includes )
 
   target_include_directories( ${arg_TARGETNAME} PRIVATE
     ${PARENT_SOURCE_DIR}
+    ${PARENT_BIN_DIR}
     ${PARENT_LIST_DIR}
   )
 endmacro()

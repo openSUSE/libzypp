@@ -1,5 +1,5 @@
 #include "TestSetup.h"
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Glob.h>
 
 #define BOOST_TEST_MODULE Glob

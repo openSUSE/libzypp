@@ -17,8 +17,8 @@ extern "C"
 #include <iostream>
 #include <sstream>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/base/StrMatcher.h>

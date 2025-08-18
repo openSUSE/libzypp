@@ -12,7 +12,7 @@
 #include <iostream>
 #include <map>
 
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 
 #include <zypp/Rel.h>
 

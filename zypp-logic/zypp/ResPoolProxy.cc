@@ -11,7 +11,7 @@
 */
 #include <iostream>
 #include <utility>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp-core/base/Iterator.h>
 #include <zypp/base/Algorithm.h>

@@ -22,7 +22,7 @@
 
 #include <zypp/Arch.h>
 #include <zypp/CheckSum.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/Locale.h>
 
 ///////////////////////////////////////////////////////////////////

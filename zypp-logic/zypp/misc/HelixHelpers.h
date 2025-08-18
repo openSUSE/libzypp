@@ -12,8 +12,8 @@
 #ifndef ZYPP_MISC_HELIXHELPERS_H
 #define ZYPP_MISC_HELIXHELPERS_H
 
-#include <zypp/AutoDispose.h>
-#include <zypp/base/LogControl.h>
+#include <zypp-core/AutoDispose.h>
+#include <zypp-core/base/LogControl.h>
 #include <zypp/misc/LoadTestcase.h>
 #include <zypp/misc/TestcaseSetupImpl.h>
 

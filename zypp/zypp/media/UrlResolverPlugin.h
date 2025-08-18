@@ -18,7 +18,7 @@
 
 #include <zypp-core/Globals.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 ///////////////////////////////////////////////////////////////////
 namespace zypp

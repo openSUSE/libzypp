@@ -10,7 +10,7 @@
 #include "promptoptions.h"
 
 #include <zypp-core/base/Gettext.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
 
 namespace ztui {

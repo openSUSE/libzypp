@@ -22,14 +22,14 @@ extern "C"
 #include <cstdlib> // getenv
 #include <iostream>
 
-#include <zypp/base/Logger.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp-media/Mount>
 #include <zypp-media/CDTools>
 #include <zypp/media/MediaCD.h>
 #include <zypp/media/MediaManager.h>
-#include <zypp/Url.h>
-#include <zypp/AutoDispose.h>
+#include <zypp-core/Url.h>
+#include <zypp-core/AutoDispose.h>
 
 using std::endl;
 

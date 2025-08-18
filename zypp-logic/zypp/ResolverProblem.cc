@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/ResolverProblem.h>
 #include <zypp/ProblemSolution.h>

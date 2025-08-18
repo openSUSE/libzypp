@@ -12,7 +12,7 @@
 #ifndef ZYPP_MISC_YAMLTESTCASEHELPERS_H
 #define ZYPP_MISC_YAMLTESTCASEHELPERS_H
 
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/LogControl.h>
 #include "LoadTestcase.h"
 #include "TestcaseSetupImpl.h"
 

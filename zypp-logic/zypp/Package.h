@@ -12,7 +12,7 @@
 #ifndef ZYPP_PACKAGE_H
 #define ZYPP_PACKAGE_H
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/ResObject.h>
 #include <zypp/PackageKeyword.h>
 #include <zypp/Changelog.h>

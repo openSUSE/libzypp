@@ -14,8 +14,8 @@
 
 #include <utility>
 #include <zypp-core/base/InputStream>
-#include <zypp/base/IOStream.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/IOStream.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/parser/ParseException>
 
 #include <zypp/parser/HistoryLogReader.h>

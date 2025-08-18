@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/Arch.h>
 
 // Boost.Test

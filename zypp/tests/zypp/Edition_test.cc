@@ -3,7 +3,7 @@
 // tests for Edition
 //
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/Edition.h>
 
 #include <boost/test/unit_test.hpp>

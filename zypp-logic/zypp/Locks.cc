@@ -11,10 +11,10 @@
 #include <fstream>
 #include <algorithm>
 
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/Iterator.h>
 #include <zypp/PoolItem.h>
 #include <zypp/PoolQueryUtil.tcc>

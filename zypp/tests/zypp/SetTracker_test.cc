@@ -1,6 +1,6 @@
 #include <set>
 #include <boost/test/unit_test.hpp>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/SetTracker.h>
 
 typedef std::set<int> SetType;

@@ -14,12 +14,12 @@
 
 #include "PluginRepoverification.h"
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/PathInfo.h>
 #include <zypp/ZYppCallbacks.h>
-#include <zypp/ExternalProgram.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/WatchFile.h>
+#include <zypp-core/ExternalProgram.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/fs/WatchFile>
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////

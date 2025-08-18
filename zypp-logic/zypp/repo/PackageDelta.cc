@@ -15,7 +15,7 @@ extern "C"
 #include <solv/knownid.h>
 }
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/repo/PackageDelta.h>
 #include <zypp/sat/Pool.h>

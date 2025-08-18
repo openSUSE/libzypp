@@ -9,8 +9,8 @@
 
 #include <fstream>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Function.h>
 
 #include "MediaInfoDownloader.h"
 #include <zypp-core/base/UserRequestException>

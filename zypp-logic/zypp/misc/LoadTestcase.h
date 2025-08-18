@@ -12,9 +12,9 @@
 #ifndef ZYPP_MISC_LOADTESTCASE_H
 #define ZYPP_MISC_LOADTESTCASE_H
 
-#include <zypp/Pathname.h>
-#include <zypp/Url.h>
-#include <zypp/Globals.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/Url.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp/misc/TestcaseSetup.h>

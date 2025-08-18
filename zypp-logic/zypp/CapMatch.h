@@ -13,7 +13,7 @@
 #define ZYPP_CAPMATCH_H
 
 #include <iosfwd>
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

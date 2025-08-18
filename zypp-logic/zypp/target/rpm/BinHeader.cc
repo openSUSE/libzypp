@@ -21,10 +21,10 @@ typedef rpmuint32_t rpm_count_t;
 
 #include <iostream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/String.h>
-#include <zypp/AutoDispose.h>
+#include <zypp-core/AutoDispose.h>
 
 #include <zypp/target/rpm/BinHeader.h>
 

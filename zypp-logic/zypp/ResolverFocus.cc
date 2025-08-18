@@ -9,9 +9,9 @@
 /** \file	zypp/ResolverFocus.cc
  */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/ResolverFocus.h>
 
 using std::endl;

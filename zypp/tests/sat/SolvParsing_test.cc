@@ -2,7 +2,7 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/TmpPath.h>
 #include <zypp/RepoManager.h>
 #include <zypp-core/base/Easy.h>

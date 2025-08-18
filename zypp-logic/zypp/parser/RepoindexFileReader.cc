@@ -13,13 +13,13 @@
 #include <unordered_map>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Gettext.h>
 #include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/DefaultIntegral>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 #include <zypp/parser/xml/Reader.h>
 #include <zypp-core/parser/ParseException>

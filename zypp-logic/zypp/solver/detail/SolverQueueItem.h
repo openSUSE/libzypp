@@ -28,7 +28,7 @@
 #include <list>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/base/ReferenceCounted.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/PtrTypes.h>

@@ -6,7 +6,7 @@
 
 #include <zypp/MediaSetAccess.h>
 #include <zypp/media/MediaHandler.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 
 #include "WebServer.h"

@@ -27,7 +27,7 @@
 #include <zypp/solver/detail/SolutionAction.h>
 #include <zypp/solver/detail/SolverQueueItem.h>
 #include <zypp/Capabilities.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 using std::endl;
 

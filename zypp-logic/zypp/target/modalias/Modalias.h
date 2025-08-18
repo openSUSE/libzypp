@@ -16,7 +16,7 @@
 #include <vector>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/IdString.h>
 

@@ -17,13 +17,13 @@ extern "C"
 #include <fstream>
 #include <signal.h>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/LogControl.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp/base/Functional.h>
 #include <zypp/base/Backtrace.h>
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/LogControl.h>
 #include <zypp/PathInfo.h>
 #include <zypp/ZConfig.h>
 

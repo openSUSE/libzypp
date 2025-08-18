@@ -3,8 +3,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/Pathname.h>
 
 using boost::unit_test::test_suite;
 using boost::unit_test::test_case;

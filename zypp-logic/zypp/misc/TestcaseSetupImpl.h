@@ -12,7 +12,7 @@
 
 #include <zypp/misc/TestcaseSetup.h>
 #include <zypp/ZConfig.h>
-#include <zypp/base/LogControl.h>
+#include <zypp-core/base/LogControl.h>
 #include <zypp/Repository.h>
 #include <zypp/RepoManager.h>
 #include <zypp/sat/Pool.h>

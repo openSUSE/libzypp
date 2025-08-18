@@ -3,9 +3,9 @@
 #define TEST_MYMEDIAVERIFIER
 
 #include <zypp/media/MediaManager.h>
-#include <zypp/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/base/String.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/Pathname.h>
 
 using namespace zypp;
 using namespace zypp::media;

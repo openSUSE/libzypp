@@ -15,13 +15,13 @@
 #include <boost/mpl/assert.hpp>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/base/Measure.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-core/parser/Sysconfig>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/IOStream.h>
 
 #include <zypp/ZConfig.h>
 

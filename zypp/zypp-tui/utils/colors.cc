@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-tui/Application>
 #include "colors.h"
 

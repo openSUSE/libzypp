@@ -14,7 +14,7 @@
 #include <iosfwd>
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/IdString.h>
 
 ///////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@ using boost::unit_test::test_case;
 #include <vector>
 #include <string>
 #include "TestSetup.h"
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 using std::cin;
 using std::cout;
 using std::cerr;

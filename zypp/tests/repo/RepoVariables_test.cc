@@ -4,8 +4,8 @@
 #include <map>
 
 #include <zypp/ZConfig.h>
-#include <zypp/Pathname.h>
-#include <zypp/Url.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/Url.h>
 #include <zypp/base/ValueTransform.h>
 #include <zypp/repo/RepoVariables.h>
 

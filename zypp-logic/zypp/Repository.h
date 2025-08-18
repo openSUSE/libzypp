@@ -14,12 +14,12 @@
 
 #include <iosfwd>
 #include <zypp-core/base/Iterator.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/sat/detail/PoolMember.h>
 #include <zypp/sat/LookupAttr.h>     // LookupAttrTools.h included at EOF
 #include <zypp/sat/Solvable.h>
 #include <zypp/RepoInfo.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 #include <zypp/CpeId.h>
 
 ///////////////////////////////////////////////////////////////////

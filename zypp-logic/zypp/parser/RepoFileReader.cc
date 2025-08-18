@@ -10,9 +10,9 @@
  *
 */
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/StringV.h>
+#include <zypp-core/base/StringV.h>
 #include <utility>
 #include <zypp-core/base/InputStream>
 #include <zypp-core/base/UserRequestException>

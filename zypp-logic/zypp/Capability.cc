@@ -10,12 +10,12 @@
  *
 */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Regex.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/Exception.h>
 
 #include <zypp/Arch.h>
 #include <zypp/Rel.h>

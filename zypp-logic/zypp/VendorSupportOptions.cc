@@ -1,6 +1,6 @@
 
 #include <zypp/VendorSupportOptions.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 
 namespace zypp
 {

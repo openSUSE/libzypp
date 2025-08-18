@@ -13,7 +13,7 @@
 #define ZYPP_KEYMANAGER_H
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp-core/ByteArray.h>
 

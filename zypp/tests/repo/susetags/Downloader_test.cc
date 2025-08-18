@@ -2,8 +2,8 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/Logger.h>
-#include <zypp/Url.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
 

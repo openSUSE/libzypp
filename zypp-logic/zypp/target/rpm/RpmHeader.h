@@ -20,7 +20,7 @@
 
 #include <zypp/Package.h>
 #include <zypp/Changelog.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 
 namespace zypp

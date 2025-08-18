@@ -11,8 +11,8 @@
 */
 
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Regex.h>
 #include <zypp-core/base/Iterator.h>
 #include <zypp/PurgeKernels.h>
 #include <zypp/PoolQuery.h>

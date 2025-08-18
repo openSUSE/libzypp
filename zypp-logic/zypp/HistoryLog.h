@@ -14,7 +14,7 @@
 
 #include <iosfwd>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/ResStatus.h>
 
 namespace zypp

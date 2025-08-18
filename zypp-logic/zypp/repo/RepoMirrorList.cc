@@ -18,7 +18,7 @@
 #include <zypp/repo/RepoMirrorList.h>
 #include <zypp-curl/parser/MetaLinkParser>
 #include <zypp/MediaSetAccess.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
 #include <zypp-core/base/Exception.h>

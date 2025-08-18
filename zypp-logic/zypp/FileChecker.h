@@ -16,8 +16,8 @@
 #include <list>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-media/FileCheckException>
-#include <zypp/base/Exception.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/base/Function.h>
 #include <zypp/PathInfo.h>
 #include <zypp/CheckSum.h>
 #include <zypp/KeyRingContexts.h>

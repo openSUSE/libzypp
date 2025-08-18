@@ -13,7 +13,7 @@
 #define ZYPP_VendorSupportOptions_H
 
 #include <string>
-#include <zypp/base/Flags.h>
+#include <zypp-core/base/Flags.h>
 
 namespace zypp
 {

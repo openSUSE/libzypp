@@ -12,7 +12,7 @@
 #include <zypp/zypp_detail/keyring_p.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/ZConfig.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-common/PublicKey.h>
 
 #include <zypp-core/base/Gettext.h>

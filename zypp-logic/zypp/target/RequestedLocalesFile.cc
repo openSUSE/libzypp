@@ -12,13 +12,13 @@
 #include <iostream>
 #include <fstream>
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/PathInfo.h>
 #include <zypp/TmpPath.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 #include <zypp/target/RequestedLocalesFile.h>
 

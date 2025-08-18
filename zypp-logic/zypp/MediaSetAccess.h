@@ -20,7 +20,7 @@
 #include <zypp-core/base/Flags.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/media/MediaManager.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/CheckSum.h>
 #include <zypp-core/OnMediaLocation>
 #include <zypp/ManagedFile.h>

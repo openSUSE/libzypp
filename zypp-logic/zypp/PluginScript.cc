@@ -17,15 +17,15 @@
 
 #include <glib.h>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <utility>
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp-core/base/String.h>
 #include <zypp/base/Signal.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/IOStream.h>
 
 #include <zypp/PluginScript.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/PathInfo.h>
 
 using std::endl;

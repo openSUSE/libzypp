@@ -12,7 +12,7 @@
 #include <iostream>
 #include <zypp/repo/RepoException.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 
 using std::endl;
 

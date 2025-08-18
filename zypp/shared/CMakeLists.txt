@@ -1,7 +1,7 @@
 # This subproject contains small shared object libraries
 # usually used in libzypp and workers, or for tests.
 
-INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} ${zypp-libs_SOURCE_DIR}/zypp-logic )
+INCLUDE_DIRECTORIES ( ${LIBZYPP_SOURCE_DIR} ${LIBZYPP_BINARY_DIR} ${zypp-libs_SOURCE_DIR}/zypp-logic )
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 # rpm protocol definition, could be moved to a zypp-rpm lib some day

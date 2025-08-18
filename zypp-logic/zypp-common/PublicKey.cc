@@ -18,15 +18,15 @@
 #include "PublicKey.h"
 #include "KeyManager.h"
 
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/base/Regex.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp/PathInfo.h>
-#include <zypp/base/Exception.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/Date.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/Date.h>
 
 #include <gpgme.h>
 

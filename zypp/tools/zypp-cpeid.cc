@@ -1,6 +1,6 @@
 #include <iostream>
 #include <zypp/CpeId.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 using std::cout;
 using std::endl;

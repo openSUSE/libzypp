@@ -18,7 +18,7 @@
 #include <zypp-core/base/PtrTypes.h>
 
 #include <zypp/IdString.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

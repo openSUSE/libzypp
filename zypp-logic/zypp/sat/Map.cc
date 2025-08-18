@@ -14,7 +14,7 @@ extern "C"
 }
 #include <iostream>
 #include <exception>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/sat/Map.h>

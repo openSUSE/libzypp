@@ -2,7 +2,7 @@
 #define ZYPP_LOCKS_H
 
 #include <zypp/ResPool.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PoolQuery.h>
 #include <zypp/ZConfig.h>
 

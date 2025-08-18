@@ -11,14 +11,14 @@
 */
 #include <iostream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 #include <zypp/repo/Applydeltarpm.h>
-#include <zypp/ExternalProgram.h>
-#include <zypp/AutoDispose.h>
+#include <zypp-core/ExternalProgram.h>
+#include <zypp-core/AutoDispose.h>
 #include <zypp/PathInfo.h>
-#include <zypp/TriBool.h>
+#include <zypp-core/TriBool.h>
 
 using std::endl;
 

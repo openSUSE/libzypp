@@ -19,7 +19,7 @@
 #include <zypp/ng/media/Provide>
 #include <zypp-media/ng/ProvideSpec>
 
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/HistoryLog.h>
 #include <zypp/base/Algorithm.h>
 #include <zypp/ng/Context>

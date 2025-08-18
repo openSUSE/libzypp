@@ -14,10 +14,10 @@
 #include <iosfwd>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Flags.h>
-#include <zypp/base/EnumClass.h>
+#include <zypp-core/base/Flags.h>
+#include <zypp-core/base/EnumClass.h>
 #include <zypp/base/SetRelationMixin.h>
 
 ///////////////////////////////////////////////////////////////////

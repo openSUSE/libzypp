@@ -10,7 +10,7 @@
  *
 */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 #include <zypp/SysContent.h>
 #include <zypp/parser/xml/Reader.h>

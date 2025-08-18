@@ -13,13 +13,13 @@
 #include <iostream>
 #include <utility>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Gettext.h>
-#include <zypp/base/Exception.h>
-#include <zypp/base/Xml.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/base/Xml.h>
 
-#include <zypp/AutoDispose.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/AutoDispose.h>
+#include <zypp-core/Pathname.h>
 
 #include <zypp/sat/detail/PoolImpl.h>
 #include <zypp/Repository.h>

@@ -13,8 +13,8 @@
 #include <sstream>
 #include <utility>
 
-#include <zypp/base/Gettext.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/Gettext.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/Algorithm.h>
 #include <zypp-core/base/String.h>
 #include <zypp/repo/RepoException.h>

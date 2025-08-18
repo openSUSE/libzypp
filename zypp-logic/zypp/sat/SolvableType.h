@@ -16,10 +16,10 @@
 #include <zypp/sat/Solvable.h>
 #include <zypp/Repository.h>
 #include <zypp-core/OnMediaLocation>
-#include <zypp/ByteCount.h>
+#include <zypp-core/ByteCount.h>
 #include <zypp/CheckSum.h>
 #include <zypp/CpeId.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

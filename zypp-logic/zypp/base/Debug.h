@@ -18,9 +18,9 @@
 #include <iosfwd>
 //#include <sstream>
 //#include <string>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp-core/base/ProvideNumericId>
 
 ///////////////////////////////////////////////////////////////////

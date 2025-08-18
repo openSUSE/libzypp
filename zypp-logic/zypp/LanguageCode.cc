@@ -11,9 +11,9 @@
 */
 #include <iostream>
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/Hash.h>
 
 #include <zypp/LanguageCode.h>

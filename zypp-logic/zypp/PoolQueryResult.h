@@ -15,7 +15,7 @@
 #include <iosfwd>
 
 #include <zypp-core/base/Hash.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/sat/SolvIterMixin.h>
 
 #include <zypp/PoolItem.h>

@@ -10,8 +10,8 @@
  *
 */
 #include <iostream>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/base/Functional.h>
 
 #include <zypp/PathInfo.h>

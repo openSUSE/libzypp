@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include <zypp/base/LogControl.h>
-#include <zypp/base/LogTools.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/ExternalProgram.h>
 
 #include <zypp/MediaSetAccess.h>
 #include <zypp/KeyRing.h>

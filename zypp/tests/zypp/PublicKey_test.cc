@@ -4,11 +4,11 @@
 #include <list>
 #include <string>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/TmpPath.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 #include <boost/test/unit_test.hpp>
 

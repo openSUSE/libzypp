@@ -13,7 +13,7 @@
 
 #include <iosfwd>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/FileChecker.h>
 #include <zypp-core/base/PtrTypes.h>

@@ -9,7 +9,7 @@
 #include <vector>
 
 //#include <regex> seems to be bad with gcc < 4.9
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 
 ///////////////////////////////////////////////////////////////////
 /// Simple arg parser for tools

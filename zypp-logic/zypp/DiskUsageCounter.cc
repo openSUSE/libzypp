@@ -18,12 +18,12 @@ extern "C"
 #include <fstream>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/DtorReset>
 #include <zypp-core/base/String.h>
 
 #include <zypp/DiskUsageCounter.h>
-#include <zypp/ExternalProgram.h>
+#include <zypp-core/ExternalProgram.h>
 #include <zypp/sat/Pool.h>
 #include <zypp/sat/detail/PoolImpl.h>
 

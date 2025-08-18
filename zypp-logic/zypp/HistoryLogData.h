@@ -16,11 +16,11 @@
 #include <iosfwd>
 
 #include <zypp-core/Globals.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 #include <zypp/Edition.h>
 #include <zypp/Arch.h>
 #include <zypp/CheckSum.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/Patch.h>
 
 #define HISTORY_LOG_DATE_FORMAT "%Y-%m-%d %H:%M:%S"

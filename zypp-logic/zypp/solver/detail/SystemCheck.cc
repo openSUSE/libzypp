@@ -15,13 +15,13 @@
 
 #define ZYPP_USE_RESOLVER_INTERNALS
 
-#include <zypp/base/LogTools.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/ZYppFactory.h>
 #include <zypp/ZConfig.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp/solver/detail/SystemCheck.h>
 

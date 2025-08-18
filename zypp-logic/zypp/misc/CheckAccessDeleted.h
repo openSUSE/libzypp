@@ -15,8 +15,8 @@
 #include <iosfwd>
 #include <vector>
 #include <string>
-#include <zypp/Globals.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Globals.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-core/base/PtrTypes.h>
 
 ///////////////////////////////////////////////////////////////////

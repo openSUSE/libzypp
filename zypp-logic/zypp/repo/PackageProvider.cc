@@ -13,8 +13,8 @@
 #include <fstream>
 #include <sstream>
 #include <zypp/repo/PackageDelta.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Gettext.h>
 #include <utility>
 #include <zypp-core/base/UserRequestException>
 #include <zypp-core/base/NonCopyable.h>

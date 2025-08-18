@@ -20,7 +20,7 @@
 
 #include <zypp/PoolItem.h>
 #include <zypp/Edition.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 #ifdef YUILogComponent
 // Work around https://github.com/libyui/libyui/issues/78

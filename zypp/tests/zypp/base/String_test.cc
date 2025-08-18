@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Regex.h>
-#include <zypp/base/StringV.h>
+#include <zypp-core/base/Regex.h>
+#include <zypp-core/base/StringV.h>
 
 using boost::unit_test::test_suite;
 using boost::unit_test::test_case;

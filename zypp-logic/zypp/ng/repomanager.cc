@@ -22,7 +22,7 @@
 #include <zypp/HistoryLog.h>
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppCallbacks.h>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/parser/RepoFileReader.h>
 #include <zypp/parser/ServiceFileReader.h>
 #include <zypp/sat/Pool.h>

@@ -9,7 +9,7 @@
 #include <zypp/ng/Context>
 #include <zypp/ng/repo/downloader.h>
 #include <zypp/RepoInfo.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/ng/userrequest.h>
 #include <zypp-media/ng/Provide>
 

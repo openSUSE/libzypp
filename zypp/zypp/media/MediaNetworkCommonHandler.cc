@@ -16,8 +16,8 @@
 #include <zypp/ZConfig.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/Regex.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp/Target.h>
 #include <zypp/media/UrlResolverPlugin.h>
 #include <zypp-media/auth/CredentialManager>

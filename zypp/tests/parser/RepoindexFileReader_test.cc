@@ -1,6 +1,6 @@
 #include <sstream>
 #include <string>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/parser/RepoindexFileReader.h>
 #include <zypp-core/base/NonCopyable.h>
 

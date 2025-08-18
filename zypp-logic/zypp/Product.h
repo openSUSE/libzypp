@@ -15,7 +15,7 @@
 #include <list>
 #include <string>
 
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/ResObject.h>
 
 ///////////////////////////////////////////////////////////////////

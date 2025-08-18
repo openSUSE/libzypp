@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <zypp/TmpPath.h>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Env.h>
 

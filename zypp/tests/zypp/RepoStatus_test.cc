@@ -1,6 +1,6 @@
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/TmpPath.h>
 #include <zypp/RepoStatus.h>
 #include <zypp/PathInfo.h>

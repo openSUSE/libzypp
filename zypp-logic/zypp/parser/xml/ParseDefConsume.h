@@ -13,7 +13,7 @@
 #define ZYPP_PARSER_XML_PARSEDEFCONSUME_H
 
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 #include <zypp-core/base/Hash.h>
 #include <zypp-core/base/String.h>
 #include <utility>

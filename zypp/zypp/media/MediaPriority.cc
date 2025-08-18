@@ -10,9 +10,9 @@
  *
 */
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/ZConfig.h>
 
 #include <zypp/media/MediaPriority.h>

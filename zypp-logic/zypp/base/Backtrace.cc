@@ -12,7 +12,7 @@
 #include <cxxabi.h>
 
 #include <iostream>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
 #include <zypp/base/Backtrace.h>
 

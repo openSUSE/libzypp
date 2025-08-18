@@ -11,11 +11,11 @@
 */
 #include <iostream>
 #include <utility>
-#include <zypp/base/LogTools.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp/base/StrMatcher.h>
 
 #include <zypp/Product.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 
 #include <zypp/sat/LookupAttr.h>
 #include <zypp/sat/WhatProvides.h>

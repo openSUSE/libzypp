@@ -18,7 +18,7 @@
 #include <string>
 #include <list>
 
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/PathInfo.h>
 #include <zypp-core/base/PtrTypes.h>
 

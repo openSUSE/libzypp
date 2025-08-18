@@ -24,7 +24,7 @@ extern "C"
 
 #define ZYPP_USE_RESOLVER_INTERNALS
 
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 #include <zypp/solver/detail/SolverQueueItemInstallOneOf.h>
 #include <zypp/sat/Pool.h>
 

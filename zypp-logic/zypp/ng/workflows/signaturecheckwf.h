@@ -13,7 +13,7 @@
 #include <zypp-core/ng/pipelines/Expected>
 
 #include <zypp-common/PublicKey.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/KeyRingContexts.h>
 
 namespace zyppng {

@@ -12,8 +12,8 @@
 #include <map>
 #include <iostream>
 
-#include <zypp/base/Exception.h>
-#include <zypp/base/Gettext.h>
+#include <zypp-core/base/Exception.h>
+#include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/String.h>
 
 #include <zypp/Dep.h>

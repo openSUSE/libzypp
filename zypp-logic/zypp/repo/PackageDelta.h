@@ -18,7 +18,7 @@
 #include <zypp-core/OnMediaLocation>
 #include <zypp/Edition.h>
 #include <zypp/Arch.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 #include <zypp/sat/detail/PoolMember.h>
 #include <zypp/Repository.h>

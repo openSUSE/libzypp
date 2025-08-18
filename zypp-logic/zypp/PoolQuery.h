@@ -16,9 +16,9 @@
 #include <set>
 #include <map>
 
-#include <zypp/base/Regex.h>
+#include <zypp-core/base/Regex.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Function.h>
+#include <zypp-core/base/Function.h>
 
 #include <zypp/sat/SolvIterMixin.h>
 #include <zypp/sat/LookupAttr.h>

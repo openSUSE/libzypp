@@ -13,7 +13,7 @@
  *
  */
 #include <iostream>
-#include <zypp/base/Logger.h>
+#include <zypp-core/base/Logger.h>
 
 #include <zypp/ui/UserWantedPackages.h>
 

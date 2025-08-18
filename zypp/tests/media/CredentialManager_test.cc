@@ -1,7 +1,7 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/TmpPath.h>
 #include <zypp-media/auth/CredentialFileReader>
 #include <zypp-media/auth/CredentialManager>

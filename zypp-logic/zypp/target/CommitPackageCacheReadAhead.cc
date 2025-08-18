@@ -11,8 +11,8 @@
 */
 #include <iostream>
 
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 #include <zypp/PathInfo.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/Package.h>

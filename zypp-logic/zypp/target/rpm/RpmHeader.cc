@@ -13,7 +13,7 @@
 
 #include <cstring>
 
-#include <zypp/AutoDispose.h>
+#include <zypp-core/AutoDispose.h>
 
 ////////////////////////////////////////////////////////////////////
 // unameToUid and gnameToGid are shamelessly stolen from rpm-4.4.
@@ -151,8 +151,8 @@ int gnameToGid(const char * thisGname, gid_t * gid)
 #include <vector>
 
 #include <zypp-core/base/Easy.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/Exception.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/Exception.h>
 
 #include <zypp/target/rpm/librpmDb.h>
 #include <zypp/target/rpm/RpmHeader.h>

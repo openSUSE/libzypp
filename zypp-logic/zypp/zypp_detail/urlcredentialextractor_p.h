@@ -15,7 +15,7 @@
 
 #include <zypp-core/Url.h>
 #include <zypp-core/MirroredOrigin.h>
-#include <zypp/media/CredentialManager.h>
+#include <zypp-media/auth/CredentialManager>
 
 namespace zypp
 {

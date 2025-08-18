@@ -6,7 +6,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <zypp/parser/yum/RepomdFileReader.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 
 using std::cout;

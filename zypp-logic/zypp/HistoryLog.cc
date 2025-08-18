@@ -15,11 +15,11 @@
 
 #include <zypp/ZConfig.h>
 #include <zypp-core/base/String.h>
-#include <zypp/base/Logger.h>
-#include <zypp/base/IOStream.h>
+#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/IOStream.h>
 
 #include <zypp/PathInfo.h>
-#include <zypp/Date.h>
+#include <zypp-core/Date.h>
 
 #include <zypp/PoolItem.h>
 #include <zypp/Package.h>

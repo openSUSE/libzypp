@@ -14,11 +14,11 @@
 #define ZYPP_MISC_TESTCASESETUP_H
 
 #include <zypp/Arch.h>
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 #include <zypp/Locale.h>
-#include <zypp/Pathname.h>
+#include <zypp-core/Pathname.h>
 #include <zypp/ResolverFocus.h>
-#include <zypp/Url.h>
+#include <zypp-core/Url.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp/base/SetTracker.h>
 #include <zypp/sat/Queue.h>

@@ -15,7 +15,7 @@
 #include <inttypes.h>
 #include <iosfwd>
 #include <zypp/Bit.h>
-#include <zypp/Globals.h>
+#include <zypp-core/Globals.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

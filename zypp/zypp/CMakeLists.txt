@@ -140,7 +140,7 @@ target_include_directories(  zypp-allsym  INTERFACE
 )
 
 # install XML schemas
-FILE( GLOB YUM_SCHEMA_FILES ${LIBZYPP_SOURCE_DIR}/zypp/parser/yum/schema/*.rng )
+FILE( GLOB YUM_SCHEMA_FILES ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp/parser/yum/schema/*.rng )
 INSTALL(FILES ${YUM_SCHEMA_FILES} DESTINATION "${CMAKE_INSTALL_PREFIX}/share/zypp/schema/yum" )
 
 ADD_CUSTOM_TARGET ( buildmon

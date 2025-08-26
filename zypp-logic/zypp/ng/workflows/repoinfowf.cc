@@ -24,7 +24,6 @@
 #include <zypp-core/ng/pipelines/MTry>
 #include <zypp/ng/media/provide.h>
 #include <zypp-media/ng/ProvideSpec>
-#include <zypp/MediaSetAccess.h>
 #include <zypp/ng/Context>
 #include <zypp/ng/UserRequest>
 #include <zypp/ng/workflows/logichelpers.h>

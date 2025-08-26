@@ -3,7 +3,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../logic-helper.cmake)
 function(zypp_add_media_target)
 
   set(options INSTALL_HEADERS )
-  set(oneValueArgs TARGETNAME)
+  set(oneValueArgs TARGETNAME FLAGS )
   set(multiValueArgs HEADERS SOURCES )
 
   cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}" "${multiValueArgs}")
@@ -103,7 +103,7 @@ function(zypp_add_media_target)
   endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
   ADD_LIBRARY( ${arg_TARGETNAME} STATIC ${zypp_media_lib_SRCS} ${zypp_media_lib_HEADERS} )
-  target_link_libraries( ${arg_TARGETNAME} PRIVATE zypp_lib_compiler_flags )
+  target_link_libraries( ${arg_TARGETNAME} PRIVATE  ${arg_FLAGS} )
 
   zypp_logic_setup_includes()
 

@@ -68,7 +68,7 @@ SET( zypp_SOURCES
   ng/media/provide.cc
 )
 
-zypp_add_zypp_target( TARGETNAME zypp-objlib HEADERS ${zypp_HEADER} SOURCES ${zypp_SOURCES} )
+zypp_add_zypp_target( TARGETNAME zypp-objlib HEADERS ${zypp_HEADER} SOURCES ${zypp_SOURCES} FLAGS zypp_lib_compiler_flags INSTALL_HEADERS )
 
 # due to limitations in cmake object libraries feature( object files are not derived transiently, they are only added to the target if they are added DIRECTLY)
 # we have this function that adds all zypp objects to a specified target.

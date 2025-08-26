@@ -28,6 +28,7 @@ MESSAGE(STATUS "Config files will be installed in ${SYSCONFDIR}" )
 
 # install directory for private executables that are not for the user
 SET ( ZYPP_LIBEXEC_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBEXECDIR}/zypp" )
+SET ( ZYPPNG_LIBEXEC_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBEXECDIR}/zyppng" )
 
 # usr INSTALL_PREFIX
 IF( DEFINED CMAKE_INSTALL_PREFIX )

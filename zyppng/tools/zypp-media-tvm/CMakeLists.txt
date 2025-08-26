@@ -20,7 +20,7 @@ if ( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
-target_link_libraries( ${PROJECT_NAME} zypp_exe_compiler_flags )
+target_link_libraries( ${PROJECT_NAME} zyppng_exe_compiler_flags )
 target_link_libraries( ${PROJECT_NAME} zyppng-media )
 target_link_libraries( ${PROJECT_NAME} zyppng-core )
 target_link_libraries( ${PROJECT_NAME} tvm-protocol-obj )

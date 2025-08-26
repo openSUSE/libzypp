@@ -4,7 +4,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../logic-helper.cmake)
 function( zypp_add_core_target )
 
   set(options INSTALL_HEADERS )
-  set(oneValueArgs TARGETNAME)
+  set(oneValueArgs TARGETNAME FLAGS )
   set(multiValueArgs HEADERS SOURCES )
 
   cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}" "${multiValueArgs}")
@@ -478,7 +478,7 @@ message("Comp defs for ${arg_TARGETNAME}: ${COMP_DEFS}")
 
 ADD_LIBRARY( ${arg_TARGETNAME} STATIC ${zypp_core_SOURCES} ${zypp_core_HEADERS} )
 
-target_link_libraries( ${arg_TARGETNAME} PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( ${arg_TARGETNAME} PRIVATE ${arg_FLAGS} )
 target_link_libraries( ${arg_TARGETNAME} INTERFACE ${LIBGLIB_LIBRARIES} )
 target_link_libraries( ${arg_TARGETNAME} INTERFACE ${OPENSSL_LIBRARIES} )
 target_link_libraries( ${arg_TARGETNAME} INTERFACE ${CRYPTO_LIBRARIES} )

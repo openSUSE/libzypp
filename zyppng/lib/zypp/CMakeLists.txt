@@ -11,4 +11,4 @@ SET( zyppng_SOURCES
   ng/context.cc
 )
 
-zypp_add_zypp_target( TARGETNAME zyppng-objlib HEADERS ${zyppng_HEADER} SOURCES ${zyppng_SOURCES} )
+zypp_add_zypp_target( TARGETNAME zyppng-objlib HEADERS ${zyppng_HEADER} SOURCES ${zyppng_SOURCES} FLAGS zyppng_lib_compiler_flags )

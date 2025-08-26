@@ -40,5 +40,5 @@ SET( zypp_media_ng_SRCS
 )
 
 include(${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-media/zypp-media.cmake)
-zypp_add_media_target( TARGETNAME "zyppng-media" HEADERS ${zypp_media_ng_HEADERS} ${zypp_media_ng_private_HEADERS} SOURCES ${zypp_media_ng_SRCS} )
+zypp_add_media_target( TARGETNAME "zyppng-media" HEADERS ${zypp_media_ng_HEADERS} ${zypp_media_ng_private_HEADERS} SOURCES ${zypp_media_ng_SRCS} FLAGS zyppng_lib_compiler_flags )
 

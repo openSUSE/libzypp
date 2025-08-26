@@ -7,10 +7,11 @@ function(zypp_add_zypp_target)
     MESSAGE( FATAL_ERROR " rpm-devel not found" )
   ENDIF ( NOT RPM_FOUND)
 
-  set(oneValueArgs TARGETNAME)
+  set(options INSTALL_HEADERS )
+  set(oneValueArgs TARGETNAME FLAGS )
   set(multiValueArgs HEADERS SOURCES )
 
-  cmake_parse_arguments(PARSE_ARGV 0 arg "" "${oneValueArgs}" "${multiValueArgs}")
+  cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}" "${multiValueArgs}")
 
   zypp_add_sources( zypp_SRCS
     Application.cc
@@ -182,7 +183,9 @@ function(zypp_add_zypp_target)
     ZYpp.h
   )
 
-  INSTALL(  FILES ${zypp_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp" )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES ${zypp_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp" )
+  endif()
 
   zypp_add_sources( zypp_base_SRCS
     base/Backtrace.cc
@@ -214,11 +217,12 @@ function(zypp_add_zypp_target)
     base/StrMatcher.h
     base/ValueTransform.h
   )
-
-  INSTALL(  FILES
-    ${zypp_base_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/base
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_base_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/base
+    )
+  endif()
 
   zypp_add_sources( zypp_ng_SRCS
     ng/progressobserveradaptor.cc
@@ -291,10 +295,12 @@ function(zypp_add_zypp_target)
     parser/ProductFileReader.h
   )
 
-  INSTALL(  FILES
-    ${zypp_parser_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_parser_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser
+    )
+  endif()
 
   zypp_add_sources( zypp_parser_susetags_SRCS
     parser/susetags/RepoIndex.cc
@@ -306,10 +312,12 @@ function(zypp_add_zypp_target)
     parser/susetags/ContentFileReader.h
   )
 
-  INSTALL(  FILES
-    ${zypp_parser_susetags_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/susetags
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_parser_susetags_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/susetags
+    )
+  endif()
 
   zypp_add_sources( zypp_parser_xml_SRCS
     parser/xml/Node.cc
@@ -333,10 +341,12 @@ function(zypp_add_zypp_target)
     parser/xml/libxmlfwd.h
   )
 
-  INSTALL(  FILES
-    ${zypp_parser_xml_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/xml
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_parser_xml_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/xml
+    )
+  endif()
 
   zypp_add_sources( zypp_parser_yum_SRCS
     parser/yum/RepomdFileReader.cc
@@ -346,10 +356,12 @@ function(zypp_add_zypp_target)
     parser/yum/RepomdFileReader.h
   )
 
-  INSTALL(  FILES
-    ${zypp_parser_yum_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/yum
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_parser_yum_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/parser/yum
+    )
+  endif()
 
   zypp_add_sources( zypp_pool_SRCS
     pool/PoolImpl.cc
@@ -363,10 +375,12 @@ function(zypp_add_zypp_target)
     pool/ByIdent.h
   )
 
-  INSTALL(  FILES
-    ${zypp_pool_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/pool
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_pool_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/pool
+    )
+  endif()
 
   # zypp_add_sources( zypp_solver_detail_SRCS )
 
@@ -374,10 +388,12 @@ function(zypp_add_zypp_target)
     solver/Types.h
   )
 
-  INSTALL(  FILES
-    ${zypp_solver_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/solver
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_solver_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/solver
+    )
+  endif()
 
   zypp_add_sources( zypp_solver_detail_SRCS
     solver/detail/ProblemSolutionIgnore.cc
@@ -413,10 +429,12 @@ function(zypp_add_zypp_target)
     solver/detail/SystemCheck.h
   )
 
-  INSTALL(  FILES
-    ${zypp_solver_detail_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/solver/detail
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_solver_detail_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/solver/detail
+    )
+  endif()
 
   zypp_add_sources( zypp_sat_SRCS
     sat/Pool.cc
@@ -454,10 +472,12 @@ function(zypp_add_zypp_target)
     sat/SolvAttr.h
   )
 
-  INSTALL(  FILES
-    ${zypp_sat_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_sat_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat
+    )
+  endif()
 
   zypp_add_sources( zypp_sat_detail_SRCS
     sat/detail/PoolImpl.cc
@@ -468,10 +488,12 @@ function(zypp_add_zypp_target)
     sat/detail/PoolImpl.h
   )
 
-  INSTALL(  FILES
-    ${zypp_sat_detail_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat/detail
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_sat_detail_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat/detail
+    )
+  endif()
 
 
   zypp_add_sources( zypp_target_SRCS
@@ -508,10 +530,12 @@ function(zypp_add_zypp_target)
     target/private/commitpackagepreloader_p.h
   )
 
-  INSTALL(  FILES
-    ${zypp_target_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_target_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target
+    )
+  endif()
 
   zypp_add_sources( zypp_target_modalias_SRCS
     target/modalias/Modalias.cc
@@ -521,10 +545,12 @@ function(zypp_add_zypp_target)
     target/modalias/Modalias.h
   )
 
-  INSTALL(  FILES
-    ${zypp_target_modalias_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target/modalias
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_target_modalias_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target/modalias
+    )
+  endif()
 
   zypp_add_sources( zypp_target_rpm_SRCS
     target/rpm/BinHeader.cc
@@ -546,10 +572,12 @@ function(zypp_add_zypp_target)
     target/rpm/librpmDb.h
   )
 
-  INSTALL(  FILES
-    ${zypp_target_rpm_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target/rpm
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_target_rpm_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/target/rpm
+    )
+  endif()
 
   zypp_add_sources( zypp_ui_SRCS
     ui/Selectable.cc
@@ -567,15 +595,17 @@ function(zypp_add_zypp_target)
     ui/UserWantedPackages.h
   )
 
-  INSTALL(  FILES
-    ${zypp_ui_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/ui
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_ui_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/ui
+    )
 
-  INSTALL(  FILES
-    ${zypp_url_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/url
-  )
+    INSTALL(  FILES
+      ${zypp_url_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/url
+    )
+  endif()
 
   zypp_add_sources( zypp_zypp_detail_SRCS
     zypp_detail/ZYppImpl.cc
@@ -588,10 +618,12 @@ function(zypp_add_zypp_target)
     zypp_detail/ZYppReadOnlyHack.h
   )
 
-  INSTALL(  FILES
-    ${zypp_zypp_detail_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/zypp_detail
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL(  FILES
+      ${zypp_zypp_detail_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/zypp_detail
+    )
+  endif()
 
   zypp_add_sources( zypp_repo_SRCS
     repo/RepoException.cc
@@ -631,10 +663,12 @@ function(zypp_add_zypp_target)
     repo/PluginServices.h
   )
 
-  INSTALL( FILES
-    ${zypp_repo_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/repo
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL( FILES
+      ${zypp_repo_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/repo
+    )
+  endif()
 
   zypp_add_sources( zypp_repo_yum_SRCS
     repo/yum/RepomdFileCollector.cc
@@ -668,10 +702,12 @@ function(zypp_add_zypp_target)
     misc/LoadTestcase.cc
   )
 
-  INSTALL( FILES
-    ${zypp_misc_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/misc
-  )
+  if( arg_INSTALL_HEADERS )
+    INSTALL( FILES
+      ${zypp_misc_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/misc
+    )
+  endif()
 
   ####################################################################
 
@@ -772,7 +808,7 @@ function(zypp_add_zypp_target)
 
   zypp_logic_setup_includes()
 
-  target_link_libraries( ${arg_TARGETNAME} zypp_lib_compiler_flags )
+  target_link_libraries( ${arg_TARGETNAME} ${arg_FLAGS} )
 
   target_include_directories( ${arg_TARGETNAME} PUBLIC ${RPM_INCLUDE_DIR})
 

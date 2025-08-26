@@ -44,7 +44,6 @@ namespace zyppng::repo {
     ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( ZYPP_IS_ASYNC );
     public:
       using ProvideType    = typename Context::ProvideType;
-      using MediaHandle    = typename ProvideType::MediaHandle;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;
 
       static expected<repo::RefreshContextRef> create( ContextRef zyppContext, zypp::RepoInfo info, RepoManagerRef repoManager );

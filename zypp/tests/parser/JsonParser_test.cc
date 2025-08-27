@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp-core/parser/json.h>
 #include <zypp-core/base/Exception.h>
 

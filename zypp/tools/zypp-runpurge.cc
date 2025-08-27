@@ -2,7 +2,7 @@
 #include "argparse.h"
 
 #define INCLUDE_TESTSETUP_WITHOUT_BOOST
-#include "../tests/lib/TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #undef  INCLUDE_TESTSETUP_WITHOUT_BOOST
 
 static std::string appname { "NO_NAME" };

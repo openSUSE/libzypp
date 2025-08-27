@@ -94,21 +94,6 @@ IF ( LIBZYPP_CONFIG_USE_SERIAL_PACKAGE_DOWNLOAD_BY_DEFAULT )
   MESSAGE( STATUS "Legacy enabled: LIBZYPP_CONFIG_USE_SERIAL_PACKAGE_DOWNLOAD_BY_DEFAULT" )
 ENDIF()
 
-MACRO(ADD_TESTS)
-  FOREACH( loop_var ${ARGV} )
-    SET_SOURCE_FILES_PROPERTIES( ${loop_var}_test.cc COMPILE_FLAGS "-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN -DBOOST_AUTO_TEST_MAIN=\"\" " )
-    ADD_EXECUTABLE( ${loop_var}_test ${loop_var}_test.cc )
-
-    SET(TEST_REQ_LIBS ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} )
-    LIST( APPEND TEST_REQ_LIBS zypp_test_utils )
-
-    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp_exe_compiler_flags  )
-    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC ${TEST_REQ_LIBS}  )
-    TARGET_LINK_LIBRARIES( ${loop_var}_test PUBLIC zypp-allsym  )
-    ADD_TEST( ${loop_var}_test ${CMAKE_CURRENT_BINARY_DIR}/${loop_var}_test --catch_system_errors=no)
-  ENDFOREACH( loop_var )
-ENDMACRO(ADD_TESTS)
-
 ####################################################################
 # SUBDIRECTORIES                                                   #
 ####################################################################
@@ -131,5 +116,3 @@ IF ( ENABLE_BUILD_TESTS )
 ELSE ( ENABLE_BUILD_TESTS )
   ADD_SUBDIRECTORY( tests EXCLUDE_FROM_ALL )
 ENDIF ( ENABLE_BUILD_TESTS )
-INCLUDE(CTest)
-ENABLE_TESTING()

@@ -9,8 +9,8 @@
 #include <zypp-core/Url.h>
 #include <zypp/PathInfo.h>
 
-#include "WebServer.h"
-#include "FtpServer.h"
+#include <tests/lib/WebServer.h>
+#include <tests/lib/FtpServer.h>
 
 using std::cout;
 using std::endl;

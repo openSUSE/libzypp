@@ -1,9 +1,9 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 #include <zypp/MediaSetAccess.h>
 #include <zypp/Fetcher.h>
 
-#include "WebServer.h"
+#include <tests/lib/WebServer.h>
 
 #define BOOST_TEST_MODULE fetcher_test
 

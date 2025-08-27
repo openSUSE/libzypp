@@ -20,8 +20,8 @@
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
-#include "WebServer.h"
-#include "TestTools.h"
+#include <tests/lib/WebServer.h>
+#include <tests/lib/TestTools.h>
 
 #include <thread>
 #include <atomic>
@@ -37,8 +37,8 @@
 #include <iostream>
 #include <fstream>
 
-#ifndef TESTS_SRC_DIR
-#error "TESTS_SRC_DIR not defined"
+#ifndef TESTS_SHARED_DIR
+#error "TESTS_SHARED_DIR not defined"
 #endif
 #ifndef WEBSRV_BINARY
 #error "WEBSRV_BINARY not defined"
@@ -140,8 +140,8 @@ public:
 
 #ifdef HTTP_USE_LIGHTTPD
       bool canContinue = true;
-      Pathname confDir = Pathname(TESTS_SRC_DIR) / "data" / "lighttpdconf";
-      Pathname sslDir  = Pathname(TESTS_SRC_DIR) / "data" / "webconf" / "ssl";
+      Pathname confDir = Pathname(TESTS_SHARED_DIR) / "data" / "lighttpdconf";
+      Pathname sslDir  = Pathname(TESTS_SHARED_DIR) / "data" / "webconf" / "ssl";
       env["ZYPP_TEST_SRVCONF"] = confDir.asString();
 
       std::string confFile    = ( confDir / "lighttpd.conf" ).asString();
@@ -173,7 +173,7 @@ public:
 
       {
         std::lock_guard<std::mutex> lock ( _mut );
-        bool canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"nginxconf"/"nginx.conf",  confFile ) == 0 );
+        bool canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"nginxconf"/"nginx.conf",  confFile ) == 0 );
         if ( canContinue ) canContinue = TestTools::writeFile( confPath / "srvroot.conf", str::Format("root    %1%;") % _docroot );
         if ( canContinue ) canContinue = TestTools::writeFile( confPath / "fcgisock.conf", str::Format("fastcgi_pass unix:%1%;") % socketPath().c_str() );
         if ( canContinue ) canContinue = TestTools::writeFile( confPath / "user.conf", getuid() != 0 ? "" : "user root;" );
@@ -186,13 +186,13 @@ public:
         }
         if ( canContinue ) {
           if ( _ssl )
-            canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"nginxconf"/"ssl.conf",  confPath/"ssl.conf" ) == 0 );
+            canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"nginxconf"/"ssl.conf",  confPath/"ssl.conf" ) == 0 );
           else
-            canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"nginxconf"/"nossl.conf",  confPath/"ssl.conf" ) == 0);
+            canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"nginxconf"/"nossl.conf",  confPath/"ssl.conf" ) == 0);
         }
-        if ( canContinue ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"nginxconf"/"mime.types",  confPath/"mime.types") == 0;
-        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"webconf"/"ssl"/"server.pem",  confPath/"cert.pem") == 0;
-        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"webconf"/"ssl"/"server.key",  confPath/"cert.key") == 0;
+        if ( canContinue ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"nginxconf"/"mime.types",  confPath/"mime.types") == 0;
+        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.pem",  confPath/"cert.pem") == 0;
+        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.key",  confPath/"cert.key") == 0;
 
         if ( canContinue )
           sockFD.value() = FCGX_OpenSocket( socketPath().c_str(), 128 );
@@ -499,7 +499,7 @@ media::TransferSettings WebServer::transferSettings() const
 
 filesystem::Pathname WebServer::caPath() const
 {
-  return ( zypp::Pathname(TESTS_SRC_DIR)/"data/webconf/ssl/certstore" );
+  return ( zypp::Pathname(TESTS_SHARED_DIR)/"data/webconf/ssl/certstore" );
 }
 
 void WebServer::stop()

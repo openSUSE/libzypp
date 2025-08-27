@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/Repository.h>
 #include <zypp/sat/Pool.h>
 

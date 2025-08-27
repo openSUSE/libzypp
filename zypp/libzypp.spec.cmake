@@ -389,7 +389,7 @@ mv %{buildroot}/%{_sysconfdir}/logrotate.d/zypp-history.lr %{buildroot}%{_distco
 %endif
 
 %check
-pushd build/zypp/tests
+pushd build
 LD_LIBRARY_PATH="$(pwd)/../zypp:$LD_LIBRARY_PATH" ctest --output-on-failure .
 popd
 

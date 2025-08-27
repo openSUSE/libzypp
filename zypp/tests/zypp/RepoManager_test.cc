@@ -14,7 +14,7 @@
 
 #include <zypp/RepoManager.h>
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 #include <boost/test/unit_test.hpp>
 

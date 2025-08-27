@@ -2,7 +2,7 @@
 #include <vector>
 #include <boost/test/unit_test.hpp>
 
-#include "WebServer.h"
+#include <tests/lib/WebServer.h>
 
 #include <zypp/repo/RepoMirrorList.h>
 

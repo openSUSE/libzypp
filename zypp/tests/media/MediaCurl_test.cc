@@ -1,5 +1,5 @@
-#include "WebServer.h"
-#include "ProxyServer.h"
+#include <tests/lib/WebServer.h>
+#include <tests/lib/ProxyServer.h>
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/base/Exception.h>
@@ -34,7 +34,7 @@ BOOST_DATA_TEST_CASE( base_provide_zck, bdata::make( withSSL ) * bdata::make( ba
 
   int primaryRequests = 0;
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -83,7 +83,7 @@ BOOST_DATA_TEST_CASE( base_provide_zck_no_hdrsize, bdata::make( withSSL ) * bdat
 
   int primaryRequests = 0;
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -130,7 +130,7 @@ BOOST_DATA_TEST_CASE( base_provide_zck_no_hdrsize, bdata::make( withSSL ) * bdat
 // case request with filesize not matching
 BOOST_DATA_TEST_CASE( base_provide_wrong_filesize, bdata::make( withSSL ) * bdata::make( backend ), withSSL, backend )
 {
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -168,7 +168,7 @@ BOOST_DATA_TEST_CASE( base_provide_auth, bdata::make( withSSL ) * bdata::make( b
   zypp::filesystem::TmpDir repoManagerRoot;
   zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -290,8 +290,8 @@ BOOST_DATA_TEST_CASE( base_provide_auth_credfile, bdata::make( withSSL ) * bdata
   zypp::filesystem::TmpDir repoManagerRoot;
   zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
-  zypp::Pathname credfile = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader/credfile";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
+  zypp::Pathname credfile = testRoot / "credfile";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -331,7 +331,7 @@ BOOST_DATA_TEST_CASE( base_provide_auth_small_file, bdata::make( withSSL ) * bda
   zypp::filesystem::TmpDir repoManagerRoot;
   zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -391,7 +391,7 @@ BOOST_DATA_TEST_CASE( base_provide_not_found, bdata::make( withSSL ) * bdata::ma
   zypp::filesystem::TmpDir repoManagerRoot;
   zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -426,7 +426,7 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
   zypp::filesystem::TmpDir repoManagerRoot;
   zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
   WebServer web( testRoot.c_str(), 10001, withSSL );
   BOOST_REQUIRE( web.start() );
 
@@ -468,7 +468,7 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
 // happened when the proxy server 407 payload is bigger than the expected filesize
 BOOST_DATA_TEST_CASE( provide_via_proxy_bsc1245220, bdata::make( backend ), backend )
 {
-  zypp::Pathname testRoot = zypp::Pathname(TESTS_SRC_DIR)/"zyppng/data/downloader";
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
 
   WebServer web( testRoot.c_str(), 10001 );
 

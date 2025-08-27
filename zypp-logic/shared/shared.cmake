@@ -17,7 +17,7 @@ function( zypp_add_shared_targets )
   # rpm protocol definition, could be moved to a zypp-rpm lib some day
   # if more than one class is required to be shared between libzypp and zypp-rpm
 
-  block()
+  if(TRUE)
     #initialize arg_TARGETNAME because the zypp_logic_setup_includes macro needs it
     set( arg_TARGETNAME "commit-proto-obj" )
     if ( arg_TARGETPREFIX )
@@ -29,7 +29,7 @@ function( zypp_add_shared_targets )
     ADD_LIBRARY( ${arg_TARGETNAME} OBJECT ${COMMIT_SRCS} )
     target_link_libraries( ${arg_TARGETNAME} PRIVATE ${arg_FLAGS} )
     zypp_logic_setup_includes()
-  endblock()
+  endif()
 
 
 endfunction()

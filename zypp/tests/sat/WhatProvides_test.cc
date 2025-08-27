@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 BOOST_AUTO_TEST_CASE(WhatProvides)
 {

@@ -6,7 +6,7 @@
 #include <zypp-core/base/Easy.h>
 #include <zypp/Pattern.h>
 #include <zypp/sat/Solvable.h>
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 
 #define BOOST_TEST_MODULE Solvable

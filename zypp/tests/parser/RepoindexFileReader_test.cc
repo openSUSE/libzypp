@@ -4,7 +4,7 @@
 #include <zypp/parser/RepoindexFileReader.h>
 #include <zypp-core/base/NonCopyable.h>
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 using std::stringstream;
 using std::string;

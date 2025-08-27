@@ -11,8 +11,8 @@
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
 
-#include "ProxyServer.h"
-#include "TestTools.h"
+#include <tests/lib/FtpServer.h>
+#include <tests/lib/TestTools.h>
 
 #include <thread>
 #include <atomic>
@@ -20,16 +20,12 @@
 #include <condition_variable>
 #include <iostream>
 
-#ifndef TESTS_SRC_DIR
-#error "TESTS_SRC_DIR not defined"
+#ifndef TESTS_SHARED_DIR
+#error "TESTS_SHARED_DIR not defined"
 #endif
 
-#ifndef PROXYSRV_BINARY
-#error "PROXYSRV_BINARY not defined"
-#endif
-
-#ifndef PROXYAUTH_BINARY
-#error "PROXYAUTH_BINARY not defined"
+#ifndef FTPSRV_BINARY
+#error "FTPSRV_BINARY not defined"
 #endif
 
 using std::endl;
@@ -53,11 +49,11 @@ namespace  {
   };
 }
 
-class ProxyServer::Impl
+class FtpServer::Impl
 {
 public:
-    Impl( unsigned int port )
-      : _port(port)
+    Impl(const Pathname &root, unsigned int port, bool ssl)
+      : _docroot(root), _port(port), _stop(false), _stopped(true), _ssl( ssl )
     {
       // wake up pipe to interrupt poll()
       pipe ( _wakeupPipe );
@@ -86,47 +82,54 @@ public:
     void worker_thread()
     {
 
+      /*
+       * -o vsftpd_log_file=/var/log/vsftpd.log
+       *
+       * ssl_enable=NO
+       * rsa_cert_file=
+       * dsa_cert_file=
+       * listen_port
+       *
+       * -o anon_root=/tmp/ftptest
+       * -o local_root=/tmp/ftptest
+       *
+       */
+
       ExternalProgram::Environment env;
 
       const auto confPath = _workingDir.path();
-      const auto confFile = confPath/"proxy.conf";
-      const auto varConfFile = confPath/"testproxy.conf";
+      const auto confFile = confPath/"vsftpd.conf";
       bool canContinue = true;
 
       {
         std::lock_guard<std::mutex> lock ( _mut );
-        std::string confTemplate =
-          "http_port %1%\n"
-          "\n"
-          "# Leave coredumps in the first cache dir\n"
-          "coredump_dir %2%\n"
-          "\n"
-          "pid_filename %2%/squid.pid\n"
-          "access_log %2%/access.log\n"
-          "cache_store_log %2%/cache-store.log\n"
-          "cache_log %2%/cache.log\n"
-        ;
-
-        if ( _auth ) {
-          confTemplate +=
-              "auth_param basic program %3% %4%/htaccess\n"
-              "acl foo proxy_auth REQUIRED\n"
-              "http_access deny !foo\n"
-          ;
-        }
-
-        canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SRC_DIR)/"data"/"proxyconf"/"squid.conf",  confFile ) == 0 );
-        if ( canContinue ) canContinue = TestTools::writeFile( varConfFile, str::Format(confTemplate) % _port % confPath % Pathname(PROXYAUTH_BINARY) % (Pathname(TESTS_SRC_DIR)/"data"/"proxyconf") );
+        canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"vsftpconf"/"vsftpd.conf",  confFile ) == 0 );
+        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.pem",  confPath/"cert.pem") == 0;
+        if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.key",  confPath/"cert.key") == 0;
       }
 
-      const std::string wDir( str::Format("#%1%") % confPath );
+      const std::string logfile    = (zypp::str::Format("-vsftpd_log_file=%1%")   % (confPath/"logfile")).asString();
+      const std::string anonRoot   = (zypp::str::Format("-oanon_root=%1%")   % _docroot).asString();
+      const std::string localRoot  = (zypp::str::Format("-olocal_root=%1%")  % _docroot).asString();
+      const std::string listenPort = (zypp::str::Format("-olisten_port=%1%") % _port).asString();
+
+      const std::string pemFile    = (zypp::str::Format("-orsa_cert_file=%1%") %  (confPath/"cert.pem") ).asString ();
+      const std::string keyFile    = (zypp::str::Format("-orsa_private_key_file=%1%") %  (confPath/"cert.key") ).asString ();
 
       std::vector<const char *> argv = {
-        wDir.c_str(),
-        PROXYSRV_BINARY,
-        "--foreground",
-        "-f", confFile.c_str()
+        FTPSRV_BINARY,
+        confFile.c_str(),
+        anonRoot.c_str(),
+        localRoot.c_str(),
+        listenPort.c_str(),
       };
+
+      if ( _ssl ) {
+        argv.push_back ( "-ossl_enable=YES" );
+        argv.push_back ( "-oallow_anon_ssl=YES" );
+        argv.push_back ( pemFile.c_str() );
+        argv.push_back ( keyFile.c_str() );
+      }
 
       argv.push_back(nullptr);
 
@@ -140,8 +143,6 @@ public:
         ExternalTrackedProgram prog( argv.data(), env, ExternalProgram::Stderr_To_Stdout, false, -1, true);
         prog.setBlocking( false );
 
-        // read initial lines, since the progress is non blocking a empty line means there
-        // is nothing to read
         while(1) {
           std::string line = prog.receiveLine();
           if ( line.empty() )
@@ -217,7 +218,7 @@ public:
             };
 
             if ( !prog.running() ) {
-              std::cerr << "Proxy server exited too early" << endl;
+              std::cerr << "Ftpserver exited too early" << endl;
               _stop = true;
               _stopped = true;
             }
@@ -256,6 +257,10 @@ public:
 
     void start()
     {
+      if ( !filesystem::PathInfo( _docroot ).isExist() ) {
+        std::cerr << "Invalid docroot" << std::endl;
+        throw zypp::Exception("Invalid docroot");
+      }
 
       if ( !_stopped ) {
         stop();
@@ -269,7 +274,7 @@ public:
 
       if ( _stopped ) {
         _thrd->join();
-        throw zypp::Exception("Failed to start the proxyserver");
+        throw zypp::Exception("Failed to start the ftpserver");
       }
     }
 
@@ -283,58 +288,61 @@ public:
     unsigned int _port;
     int _wakeupPipe[2];
 
-    std::atomic_bool _stop = false;
-    bool _stopped = true;
-    bool _auth = false;
+    std::atomic_bool _stop;
+    bool _stopped;
+    bool _ssl;
 };
 
 
-ProxyServer::ProxyServer( unsigned int port )
-    : _pimpl(new Impl( port ))
+FtpServer::FtpServer(const Pathname &root, unsigned int port, bool useSSL)
+    : _pimpl(new Impl(root, port, useSSL))
 {
 }
 
-bool ProxyServer::start()
+bool FtpServer::start()
 {
     _pimpl->start();
     return !isStopped();
 }
 
 
-std::string ProxyServer::log() const
+std::string FtpServer::log() const
 {
   return _pimpl->log();
 }
 
-bool ProxyServer::isStopped() const
+bool FtpServer::isStopped() const
 {
   return _pimpl->_stopped;
 }
 
-void ProxyServer::setAuthEnabled(bool set)
-{
-  _pimpl->_auth = true;
-}
-
-int ProxyServer::port() const
+int FtpServer::port() const
 {
     return _pimpl->port();
 }
 
-Url ProxyServer::url() const
+
+Url FtpServer::url() const
 {
     Url url;
     url.setHost("localhost");
     url.setPort(str::numstring(port()));
-    url.setScheme("http");
+    url.setScheme("ftp");
     return url;
 }
 
-void ProxyServer::stop()
+media::TransferSettings FtpServer::transferSettings() const
+{
+  media::TransferSettings set;
+  set.setCertificateAuthoritiesPath(zypp::Pathname(TESTS_SHARED_DIR)/"data/webconf/ssl/certstore");
+  return set;
+}
+
+void FtpServer::stop()
 {
     _pimpl->stop();
 }
 
-ProxyServer::~ProxyServer()
+FtpServer::~FtpServer()
 {
 }

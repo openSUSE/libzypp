@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 #include <zypp/target/rpm/RpmDb.h>
 using target::rpm::RpmDb;

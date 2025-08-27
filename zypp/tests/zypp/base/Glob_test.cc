@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp-core/Pathname.h>
 #include <zypp/Glob.h>
 

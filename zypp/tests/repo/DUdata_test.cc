@@ -14,7 +14,7 @@
 #include <zypp/PoolQuery.h>
 
 #include "KeyRingTestReceiver.h"
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 using boost::unit_test::test_case;
 

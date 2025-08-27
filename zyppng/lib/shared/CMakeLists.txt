@@ -1,7 +1,7 @@
 include(${zypp-libs_SOURCE_DIR}/zypp-logic/shared/shared.cmake)
 zypp_add_shared_targets( TARGETPREFIX "zyppng" FLAGS zyppng_lib_compiler_flags )
 
-block()
+if(TRUE)
   set( arg_TARGETNAME "tvm-protocol-obj" )
 
   ADD_LIBRARY( ${arg_TARGETNAME} OBJECT tvm/tvmsettings.h tvm/tvmsettings.cc )
@@ -20,4 +20,4 @@ block()
     ${PARENT_BIN_DIR}
     ${zypp-libs_SOURCE_DIR}/zypp-logic
   )
-endblock()
+endif()

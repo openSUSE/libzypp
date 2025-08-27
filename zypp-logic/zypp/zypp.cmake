@@ -637,7 +637,6 @@ function(zypp_add_zypp_target)
     repo/Applydeltarpm.cc
     repo/PackageDelta.cc
     repo/SUSEMediaVerifier.cc
-    repo/MediaInfoDownloader.cc
     repo/RepoVariables.cc
     repo/RepoInfoBase.cc
     repo/PluginRepoverification.cc
@@ -656,7 +655,6 @@ function(zypp_add_zypp_target)
     repo/Applydeltarpm.h
     repo/PackageDelta.h
     repo/SUSEMediaVerifier.h
-    repo/MediaInfoDownloader.h
     repo/RepoVariables.h
     repo/RepoInfoBase.h
     repo/PluginRepoverification.h

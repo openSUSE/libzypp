@@ -231,7 +231,7 @@ namespace zypp
           val = env;
           val += ":";
         }
-        val += "glibc.cpu.hwcap_mask=0";   // bsc#1246912 - make ld.so ignore the subarch packages
+        val += "glibc.cpu.hwcaps=-SSE4_1,-arch_3_00,-z13";   // bsc#1246912 - make ld.so ignore the subarch packages
         ec = env::ScopedSet( "GLIBC_TUNABLES", val.c_str() );
       }
 

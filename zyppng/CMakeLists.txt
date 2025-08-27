@@ -54,6 +54,8 @@ message ( "Using zyppng-rpm from path: ${ZYPPNG_RPM_BINARY}" )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPPNG_RPM_BINARY}"  )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPPNG_WORKER_PATH}")
 
+set( ZYPPNG_WORKER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/tools/workers )
+
 #signal the code to enable zyppng features
 add_definitions( -DZYPP_ENABLE_ASYNC )
 

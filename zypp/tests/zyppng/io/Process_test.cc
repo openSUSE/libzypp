@@ -1,5 +1,5 @@
-#include "TestSetup.h"
-#include "TestTools.h"
+#include <tests/lib/TestSetup.h>
+#include <tests/lib/TestTools.h>
 #include <zypp-core/ExternalProgram.h>
 #include <zypp/TmpPath.h>
 #include <zypp-core/ng/base/EventLoop>

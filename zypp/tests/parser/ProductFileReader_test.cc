@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/parser/ProductFileReader.h>
 
 //TestSetup test( TestSetup::initLater );

@@ -15,9 +15,9 @@
 #include <thread>
 #include <chrono>
 
-#include "WebServer.h"
-#include "FtpServer.h"
-#include "TestTools.h"
+#include <tests/lib/WebServer.h>
+#include <tests/lib/FtpServer.h>
+#include <tests/lib/TestTools.h>
 
 
 #define BOOST_TEST_REQ_ERR(REQ, EXPECERR) \
@@ -70,7 +70,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_basic, bdata::make( withSSL ), withSSL)
 
   auto ev = zyppng::EventLoop::create();
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
   web.addRequestHandler("getData", WebServer::makeResponse("200 OK", dummyContent ) );
   BOOST_REQUIRE( web.start() );
 
@@ -125,7 +125,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_http_errors, bdata::make( withSSL ), withSSL)
   };
 
   auto ev = zyppng::EventLoop::create();
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
 
   web.addRequestHandler("get404", WebServer::makeResponse( err404 ) );
   web.addRequestHandler("get401", WebServer::makeResponse( err401 ) );
@@ -362,7 +362,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_delay_download, bdata::make( withSSL ), withSS
 
   disp->run();
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
 
   web.addRequestHandler("stalled", []( WebServer::Request &r ){
     std::this_thread::sleep_for( std::chrono::milliseconds ( 2000 ) );
@@ -449,7 +449,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_rangereq_norangeanswer, bdata::make( withSSL )
 
   disp->run();
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
 
   web.addRequestHandler("norange", []( WebServer::Request &r ){
     r.rout << "Status: 206\r\n"
@@ -518,7 +518,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_no_order, bdata::make( withSSL ),
   const std::string_view str2 = "World";
   const std::string_view str3 = "in Multibyte";
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
   web.addRequestHandler("mbyte", makeMultiPartHandler( {
     { 10, str2.data() },
     {  0, str1.data() },
@@ -567,7 +567,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_weird_data, bdata::make( withSSL 
   const std::string_view str2 = "World--THIS_STRING_SEPARATES A";
   const std::string_view str3 = "Other String";
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
   web.addRequestHandler("mbyte", makeMultiPartHandler( {
                                     { 0,   str1.data() },
                                     { 25,  str2.data() },
@@ -612,7 +612,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_dl_overlap, bdata::make( withSSL ), 
   const std::string_view str1 = std::string_view( data, 50 );
   const std::string_view str2 = std::string_view( data+40 );
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
   web.addRequestHandler("mbyte", makeMultiPartHandler( {
                                     { 0,   std::string( str1.data(), str1.length() ) },
                                     { 40,  str2.data() }
@@ -655,7 +655,7 @@ BOOST_DATA_TEST_CASE(nwdispatcher_multipart_data_missing, bdata::make( withSSL )
   const std::string_view str2 = "World";
   const std::string_view str3 = "in Multibyte";
 
-  WebServer web((zypp::Pathname(TESTS_SRC_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
+  WebServer web((zypp::Pathname(TESTS_SHARED_DIR)/"data"/"dummywebroot").c_str(), 10001, withSSL );
   web.addRequestHandler("mbyte", makeMultiPartHandler( {
                                     { 10, str2.data() },
                                     {  0, str1.data() },

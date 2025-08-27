@@ -59,14 +59,14 @@ if( NOT DISABLE_MEDIABACKEND_TESTS )
 
 endif()
 
-ADD_LIBRARY(zypp_test_utils STATIC
+ADD_LIBRARY(${TESTLIBNAME} STATIC
  TestSetup.h
  TestTools.h
  TestTools.cc
  ${MEDIA_SOURCES}
 )
 
-target_link_libraries( zypp_test_utils PRIVATE zypp_lib_compiler_flags )
+target_link_libraries( ${TESTLIBNAME} PRIVATE ${ZYPP_COMP_FLAGS} )
 
 if( NOT DISABLE_MEDIABACKEND_TESTS )
 
@@ -74,9 +74,9 @@ if( NOT DISABLE_MEDIABACKEND_TESTS )
   # distribution
   CHECK_INCLUDE_FILE( fastcgi/fcgiapp.h FASTCGI_HEADER_DIR )
   IF ( FASTCGI_HEADER_DIR )
-    target_compile_definitions( zypp_test_utils PRIVATE FCGI_IN_SUBDIR=1)
+    target_compile_definitions( ${TESTLIBNAME} PRIVATE FCGI_IN_SUBDIR=1)
   ENDIF ( FASTCGI_HEADER_DIR )
 
-  TARGET_LINK_LIBRARIES( zypp_test_utils PUBLIC ${LIBFCGI} ${LIBFCGI++} pthread )
+  TARGET_LINK_LIBRARIES( ${TESTLIBNAME} PUBLIC ${LIBFCGI} ${LIBFCGI++} pthread )
 endif()
 

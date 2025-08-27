@@ -16,7 +16,7 @@
  * \author Duncan Mac-Vicar P. <dmacvicar@suse.de>
  *
  * \code
- * #include "WebServer.h"
+ * #include <tests/lib/WebServer.h>
  *
  * BOOST_AUTO_TEST_CASE(Foo)
  * {

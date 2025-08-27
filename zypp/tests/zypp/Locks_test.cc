@@ -8,7 +8,7 @@
 #include <zypp/PoolQueryUtil.tcc>
 #include <zypp/TmpPath.h>
 #include <zypp/Locks.h>
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 #define BOOST_TEST_MODULE Locks
 

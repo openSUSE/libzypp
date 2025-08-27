@@ -15,7 +15,7 @@
  * use together with WebServer to do something useful
  *
  * \code
- * #include "ProxyServer.h"
+ * #include <tests/lib/ProxyServer.h>
  *
  * BOOST_AUTO_TEST_CASE(Foo)
  * {

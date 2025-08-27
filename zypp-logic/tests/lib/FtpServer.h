@@ -15,7 +15,7 @@
  * testcases
  *
  * \code
- * #include "FtpServer.h"
+ * #include <tests/lib/FtpServer.h>
  *
  * BOOST_AUTO_TEST_CASE(Foo)
  * {

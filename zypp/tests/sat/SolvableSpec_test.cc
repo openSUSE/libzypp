@@ -4,7 +4,7 @@
 
 #include <zypp/sat/SolvableSpec.h>
 #include <zypp-core/base/Logger.h>
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 #define BOOST_CHECK_MODULE SolvableSpec
 

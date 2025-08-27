@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp-core/base/LogTools.h>
 
 #include <zypp/ResObjects.h>

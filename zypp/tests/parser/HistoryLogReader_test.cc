@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/parser/HistoryLogReader.h>
 #include <zypp-core/parser/ParseException>
 

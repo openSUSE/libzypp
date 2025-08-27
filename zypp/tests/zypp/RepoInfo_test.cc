@@ -15,7 +15,7 @@
 
 #include "KeyRingTestReceiver.h"
 
-#include "WebServer.h"
+#include <tests/lib/WebServer.h>
 
 using boost::unit_test::test_suite;
 using boost::unit_test::test_case;

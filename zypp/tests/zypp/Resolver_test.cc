@@ -2,7 +2,7 @@
 #define BOOST_CHECK_MODULE Resolver
 using namespace boost::unit_test;
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/ResPool.h>
 #include <zypp/ResPoolProxy.h>
 #include <zypp/pool/PoolStats.h>

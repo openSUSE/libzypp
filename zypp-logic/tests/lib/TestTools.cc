@@ -1,4 +1,4 @@
-#include "TestTools.h"
+#include <tests/lib/TestTools.h>
 
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/fs/PathInfo.h>

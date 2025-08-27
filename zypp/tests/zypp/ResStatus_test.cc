@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/ResStatus.h>
 
 #define BOOST_TEST_MODULE ResStatus

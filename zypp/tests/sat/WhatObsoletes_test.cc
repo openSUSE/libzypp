@@ -1,4 +1,4 @@
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/sat/WhatObsoletes.h>
 
 namespace zypp

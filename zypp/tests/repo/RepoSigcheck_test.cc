@@ -4,7 +4,7 @@
 
 #include <zypp/ZYppFactory.h>
 #include <zypp/RepoManager.h>
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 
 using namespace boost::unit_test;
 using namespace zypp;

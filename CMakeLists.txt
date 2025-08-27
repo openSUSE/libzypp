@@ -40,8 +40,8 @@ OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
-OPTION (DISABLE_LIBZYPP_BUILD "Disable the build of the classic libzypp library" OFF)
-OPTION (ENABLE_LIBZYPPNG_BUILD "Enable the build of the next gen libzypp library" OFF)
+OPTION (BUILD_LIBZYPP "Build of the classic libzypp library" ON)
+OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" ON)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -364,18 +364,20 @@ MATH( EXPR LIBZYPP_AGE     "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
 MATH( EXPR LIBZYPP_SO_FIRST  "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
 SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
 
+INCLUDE(CTest)
+ENABLE_TESTING()
 
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 
-if (NOT DISABLE_LIBZYPP_BUILD)
+if (BUILD_LIBZYPP)
   add_subdirectory(zypp)
   MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
   INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
   INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 endif()
 
-if (ENABLE_LIBZYPPNG_BUILD)
+if (BUILD_LIBZYPPNG)
   OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
   OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
   add_subdirectory(zyppng)
@@ -386,3 +388,5 @@ IF ( ENABLE_BUILD_TRANS )
 ELSE ( ENABLE_BUILD_TRANS )
   ADD_SUBDIRECTORY( po EXCLUDE_FROM_ALL )
 ENDIF ( ENABLE_BUILD_TRANS )
+
+

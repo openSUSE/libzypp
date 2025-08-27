@@ -8,7 +8,7 @@
 // Boost.Test
 #include <boost/test/unit_test.hpp>
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/Arch.h>
 #include <zypp/Capability.h>
 #include <zypp/Capabilities.h>

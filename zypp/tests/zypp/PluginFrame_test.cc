@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "TestSetup.h"
+#include <tests/lib/TestSetup.h>
 #include <zypp/PluginExecutor.h>
 
 BOOST_AUTO_TEST_CASE(InitialSettings)

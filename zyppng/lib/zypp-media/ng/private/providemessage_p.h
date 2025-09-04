@@ -175,16 +175,6 @@
       required string new_url -> the full URL we want to redirect to
 
 
-  - Code: 301 - Metalink Redirect
-    Desc: A worker can generate a list of mirrors, this is similar to a Redirect response but supports
-          giving the Controller a list of possible URLs to try.
-          This is similar to sending a 200 - Provide Finished message since it will take the request out of the workers queue.
-          The mirror list is ordered by priority, meaning the first mirror has the highest.
-    Fields:
-      repeated string new_url -> full URL we want to redirect to
-
-
-
   4xx and 5xx messages, all of those messages have the same Response type structure:
 
   Code: 4xx / 5xx - Client error
@@ -227,7 +217,6 @@
       string delta_file   -> local path to a file that is supposed to be used for delta downloads
       int64  expected_filesize    -> The expected download filesize, workers should fail if a server does not reports the exact same filesize
       bool   check_existance_only -> this will NOT download the file but only query the server if its existant
-      bool   metalink_enabled     -> enables/disables metalink handling
 
   - Code: 601 - Cancel
     Desc: Sent by the controller if a request should be cancelled. The worker should stop the given request and return a
@@ -321,7 +310,6 @@ namespace zyppng {
 
     FirstRedirCode    = 300,
     Redirect          = 300,
-    Metalink          = 301,
     LastRedirCode     = 399,
 
     FirstClientErrCode      = 400,
@@ -453,11 +441,6 @@ namespace zyppng {
     constexpr std::string_view NewUrl ("new_url");
   }
 
-  namespace MetalinkRedirectMsgFields
-  {
-    constexpr std::string_view NewUrl ("new_url");
-  }
-
   namespace ErrMsgFields
   {
     constexpr std::string_view Reason ("reason");
@@ -472,7 +455,7 @@ namespace zyppng {
     constexpr std::string_view DeltaFile ("delta_file");
     constexpr std::string_view ExpectedFilesize ("expected_filesize");
     constexpr std::string_view CheckExistOnly ("check_existance_only");
-    constexpr std::string_view MetalinkEnabled ("metalink_enabled");
+    constexpr std::string_view FileHeaderSize ("file_header_size");
   }
 
   namespace AttachMsgFields
@@ -541,7 +524,6 @@ namespace zyppng {
     static ProvideMessage createAuthInfo ( const uint32_t reqId, const std::string &user, const std::string &pw, int64_t timestamp, const std::map<std::string, std::string> &extraValues = {} );
     static ProvideMessage createMediaChanged ( const uint32_t reqId );
     static ProvideMessage createRedirect ( const uint32_t reqId, const zypp::Url &newUrl );
-    static ProvideMessage createMetalinkRedir ( const uint32_t reqId, const std::vector<zypp::Url> &newUrls );
     static ProvideMessage createErrorResponse (const uint32_t reqId, const Code code, const std::string &reason, bool transient = false  );
 
     static ProvideMessage createProvide         ( const uint32_t reqId

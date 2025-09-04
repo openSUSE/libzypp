@@ -53,7 +53,8 @@ namespace zyppng {
     auto m = ProvideMessage::createProvide ( ProvideQueue::InvalidId, origin.authority().url() );
     const auto &destFile = spec.destFilenameHint();
     const auto &deltaFile = spec.deltafile();
-    const int64_t fSize = spec.downloadSize();;
+    const int64_t fSize = spec.downloadSize();
+    const int64_t hdrSize = spec.headerSize();
 
     if ( !destFile.empty() )
       m.setValue( ProvideMsgFields::Filename, destFile.asString() );
@@ -61,6 +62,9 @@ namespace zyppng {
       m.setValue( ProvideMsgFields::DeltaFile, deltaFile.asString() );
     if ( fSize )
       m.setValue( ProvideMsgFields::ExpectedFilesize, fSize );
+    if ( hdrSize )
+      m.setValue( ProvideMsgFields::FileHeaderSize, hdrSize );
+
     m.setValue( ProvideMsgFields::CheckExistOnly, spec.checkExistsOnly() );
 
     const auto &cHeaders = spec.customHeaders();
@@ -226,55 +230,6 @@ namespace zyppng {
         cancelWithError( std::current_exception() );
         return;
       }
-      return;
-
-    } else if ( code == ProvideMessage::Code::Metalink ) {
-
-      // remove the old request
-      _runningReq.reset();
-
-      MIL << "Request finished with mirrorlist from server." << std::endl;
-
-      //@TODO get rid of metalink inside the provider and handle it just in legacy  mode:
-      // code requests the metalist in RepoInfo and the provider already gets a clean MirroredOrigin config
-
-      zypp::MirroredOrigin newOrigin;
-      const auto &mirrors = msg.values( MetalinkRedirectMsgFields::NewUrl );
-      for( auto i = mirrors.cbegin(); i != mirrors.cend(); i++ ) {
-        try {
-          zypp::Url newUrl( i->asString() );
-          if ( !canRedirectTo( finishedReq, newUrl ) )
-            continue;
-          if ( !newOrigin.isValid () )
-            newOrigin.setAuthority (newUrl);
-          else
-            newOrigin.addMirror(newUrl);
-        }  catch ( ... ) {
-          if ( i->isString() )
-            WAR << "Received invalid URL from worker: " << i->asString() << " ignoring!" << std::endl;
-          else
-            WAR << "Received invalid value for newUrl from worker ignoring!" << std::endl;
-        }
-      }
-
-      if ( newOrigin.endpointCount() == 0 ) {
-        cancelWithError( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No mirrors left to redirect to.")) );
-        return;
-      }
-
-      MIL << "Found usable nr of mirrors: " << newOrigin.endpointCount() << std::endl;
-      finishedReq->setOrigin( std::move(newOrigin) );
-
-      // disable metalink
-      finishedReq->provideMessage().setValue( ProvideMsgFields::MetalinkEnabled, false );
-
-      if ( log ) log->requestDone( *this, msg.requestId() );
-
-      if ( !enqueueRequest( finishedReq ) ) {
-        cancelWithError( ZYPP_EXCPT_PTR(zypp::media::MediaException("Failed to queue request")) );
-      }
-
-      MIL << "End of mirrorlist handling"<< std::endl;
       return;
 
     } else if ( code >= ProvideMessage::Code::FirstClientErrCode && code <= ProvideMessage::Code::LastSrvErrCode ) {
@@ -978,9 +933,6 @@ namespace zyppng {
         // for downloading schemes we ask for the /media.x/media file and check the data manually
         ProvideFileSpec spec;
         spec.customHeaders() = _initialSpec.customHeaders();
-
-        // disable metalink
-        spec.customHeaders().set( std::string(NETWORK_METALINK_ENABLED), false );
 
         auto req = ProvideRequest::create( *this, fileOrigin, spec );
         if ( !req ) {

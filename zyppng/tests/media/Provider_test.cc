@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
   if ( !op->isReady() )
     ev->run();
 
-  //BOOST_REQUIRE( gotSigAuthRequired );
+  BOOST_REQUIRE( gotSigAuthRequired );
   BOOST_REQUIRE( !err );
   BOOST_REQUIRE( resOpt.has_value() );
   zypp::PathInfo pi( resOpt->file() );
@@ -364,14 +364,14 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
-#if 0
+
 BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
 {
   using namespace zyppng::operators;
 
   //don't write or read creds from real settings dir
-  zypp::filesystem::TmpDir repoManagerRoot;
-  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+  //zypp::filesystem::TmpDir repoManagerRoot;
+  //zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
   auto ev = zyppng::EventLoop::create ();
 
@@ -433,8 +433,8 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
   using namespace zyppng::operators;
 
   //don't write or read creds from real settings dir
-  zypp::filesystem::TmpDir repoManagerRoot;
-  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+  //zypp::filesystem::TmpDir repoManagerRoot;
+  //zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
 
   auto ev = zyppng::EventLoop::create ();
 
@@ -506,7 +506,7 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
-#endif
+
 BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
 {
   using namespace zyppng::operators;

@@ -26,6 +26,8 @@ extern "C" {
 
 namespace zyppng {
 
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(ZckLoader);
+
   class ZckError : public zypp::Exception
   {
   public:

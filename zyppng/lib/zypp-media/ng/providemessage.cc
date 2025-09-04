@@ -297,15 +297,6 @@ namespace zyppng {
         FAIL_IF_NOT_SEEN_REQ_FIELD( Redirect, new_url );
         return expected<ProvideMessage>::success( std::move(pMessage) );
       }
-      case ProvideMessage::Code::Metalink: {
-        DEF_REQ_FIELD(new_url);
-        BEGIN_PARSE_HEADERS
-          PARSE_REQ_FIELD ( Metalink, new_url, std::string )
-          OR_HANDLE_UNKNOWN_FIELD( name, val )
-        END_PARSE_HEADERS
-        FAIL_IF_NOT_SEEN_REQ_FIELD( Metalink, new_url );
-        return expected<ProvideMessage>::success( std::move(pMessage) );
-      }
       case ProvideMessage::Code::BadRequest:
       case ProvideMessage::Code::Unauthorized:
       case ProvideMessage::Code::Forbidden:
@@ -332,7 +323,7 @@ namespace zyppng {
           OR_PARSE_OPT_FIELD ( Provide, delta_file, std::string )
           OR_PARSE_OPT_FIELD ( Provide, expected_filesize, int64_t )
           OR_PARSE_OPT_FIELD ( Provide, check_existance_only, bool )
-          OR_PARSE_OPT_FIELD ( Provide, metalink_enabled, bool )
+          OR_PARSE_OPT_FIELD ( Provide, file_header_size, int64_t )
           OR_HANDLE_UNKNOWN_FIELD( name, val )
         END_PARSE_HEADERS
         FAIL_IF_NOT_SEEN_REQ_FIELD( Provide, url );
@@ -530,17 +521,6 @@ namespace zyppng {
     msg.setCode ( ProvideMessage::Code::Redirect );
     msg.setRequestId ( reqId );
     msg.setValue ( RedirectMsgFields::NewUrl, newUrl.asCompleteString() );
-
-    return msg;
-  }
-
-  ProvideMessage ProvideMessage::createMetalinkRedir( const uint32_t reqId, const std::vector<zypp::Url> &newUrls )
-  {
-    ProvideMessage msg;
-    msg.setCode ( ProvideMessage::Code::Metalink );
-    msg.setRequestId ( reqId );
-    for( const auto &val : newUrls )
-      msg.addValue( MetalinkRedirectMsgFields::NewUrl, val.asCompleteString() );
 
     return msg;
   }

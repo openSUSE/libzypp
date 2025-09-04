@@ -127,7 +127,7 @@ namespace zyppng
 
     /*!
      * Request was finished by the queue
-     * Base implementation handles redirect, metalink and error messages. If a different message is
+     * Base implementation handles redirect and error messages. If a different message is
      * received, \ref cancelWithError is called.
      *
      * A subclass has to overload this function to handle success messages

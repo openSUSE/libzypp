@@ -9,15 +9,19 @@
 #ifndef ZYPP_NG_TOOLS_NETWORKPROVIDER_H_INCLUDED
 #define ZYPP_NG_TOOLS_NETWORKPROVIDER_H_INCLUDED
 
+#include "zypp-curl/transfersettings.h"
 #include <zypp-media/ng/worker/ProvideWorker>
 #include <zypp-core/ng/base/Signals>
 #include <zypp-core/ng/base/AutoDisconnect>
 #include <zypp-curl/ng/network/AuthData>
+#include <zypp-curl/ng/network/zckhelper.h>
+#include <zypp-media/auth/CredentialManager>
+
 #include <chrono>
 
 namespace zyppng {
-  class Downloader;
-  class Download;
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(NetworkRequestDispatcher);
+  ZYPP_FWD_DECL_TYPE_WITH_REFS(NetworkRequest);
 }
 
 class NetworkProvider;
@@ -25,27 +29,51 @@ class NetworkProvider;
 struct NetworkProvideItem : public zyppng::worker::ProvideWorkerItem
 {
 public:
-  NetworkProvideItem( NetworkProvider &parent, zyppng::ProvideMessage &&spec );
-  ~NetworkProvideItem();
 
-  void startDownload( std::shared_ptr<zyppng::Download> &&dl );
+  NetworkProvideItem( NetworkProvider &parent, zyppng::ProvideMessage &&spec );
+  ~NetworkProvideItem() override;
+
+  void startDownload( zypp::Url url );
   void cancelDownload ();
 
-  std::shared_ptr<zyppng::Download> _dl;
+  const std::optional<zyppng::NetworkRequestError> &error() const;
+
+  zyppng::NetworkRequestRef _dl;
+
+  zypp::Url      _url;
   zypp::Pathname _targetFileName;
   zypp::Pathname _stagingFileName;
+  bool _checkExistsOnly = false;
+  std::optional<zypp::ByteCount> _expFilesize;
+  std::optional<zypp::ByteCount> _headerSize;
+  std::optional<zypp::Pathname> _deltaFile;
 
   std::chrono::steady_clock::time_point _scheduleAfter = std::chrono::steady_clock::time_point::min();
 
 private:
+  void normalDownload ();
   void clearConnections ();
-  void onStarted      ( zyppng::Download & );
-  void onFinished     ( zyppng::Download & );
-  void onAuthRequired ( zyppng::Download &,  zyppng::NetworkAuthData &auth, const std::string &availAuth );
+  void setFinished ();
+  void onStarted      ( zyppng::NetworkRequest & );
+  void onFinished     (zyppng::NetworkRequest & result , const zyppng::NetworkRequestError &);
+  void onAuthRequired ( zyppng::NetworkRequest &,  zyppng::NetworkAuthData &auth, const std::string &availAuth );
+
+  zyppng::NetworkRequestError safeFillSettingsFromURL(zypp::Url &url, zypp::media::TransferSettings &set);
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+  zyppng::ZckLoaderRef _zchunkLoader;
+  void onZckBlocksRequired ( const std::vector<zyppng::ZckLoader::Block> &requiredBlocks );
+  void onZckFinished ( zyppng::ZckLoader::PrepareResult result );
+#endif
 
 private:
   std::vector<zyppng::connection> _connections;
   NetworkProvider &_parent;
+
+  std::optional<zyppng::NetworkRequestError> _lastError;
+
+  bool   _emittedStart  = false; // < flag to make sure we emit started() only once
+  time_t _authTimestamp = 0; //< timestamp of the AuthData we tried already
 };
 
 using NetworkProvideItemRef = std::shared_ptr<NetworkProvideItem>;
@@ -69,8 +97,9 @@ protected:
   void itemAuthRequired (NetworkProvideItemRef item, zyppng::NetworkAuthData &auth, const std::string &);
 
 private:
-  std::shared_ptr<zyppng::Downloader> _dlManager;
+  zyppng::NetworkRequestDispatcherRef  _dlManager;
   zypp::Pathname _attachPoint;
+  zypp::media::CredentialManager::CredentialSet _credCache; //< the credential cache for this download
 };
 
 

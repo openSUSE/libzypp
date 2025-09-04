@@ -21,7 +21,6 @@ namespace zyppng {
 
 
   // request related settings:
-  constexpr std::string_view NETWORK_METALINK_ENABLED("zypp-nw-metalink-enabled");  //< Enable or disable metalink for a specific request
   constexpr std::string_view HANDLER_SPECIFIC_DEVICES("zypp-req-specific-devices"); //< Limit the request to a set of devices. Devices are comma seperated.
 }
 

@@ -118,7 +118,14 @@ namespace zypp {
 
       media::TransferSettings settings;
       zypp::Url url;
-      makeJobUrl ( url, settings );
+
+      try {
+        makeJobUrl ( url, settings );
+      } catch ( const zypp::Exception &e ) {
+        ERR << "Failed to create job URL for file: " << _targetPath << " ("<<e<<")" << std::endl;
+        finishCurrentJob ( _targetPath, {}, media::CommitPreloadReport::ERROR, zypp::str::Format(_("Error: Failed to initialize transfer settings (%1%).")) % e.asUserString(), true );
+        return nextJob();
+      }
 
       // check if the file is there already
       {
@@ -302,27 +309,37 @@ namespace zypp {
           case zyppng::NetworkRequestError::Http2Error:
           case zyppng::NetworkRequestError::Http2StreamError:
           case zyppng::NetworkRequestError::NotFound: {
-            MIL << "Download from mirror failed for file " << req.url () << " trying to taint mirror and move on" << std::endl;
+            ERR << "Download from mirror failed for file " << req.url () << " trying to taint mirror and move on" << std::endl;
 
-            if ( taintCurrentMirror() ) {
+            std::string lastError = req.extendedErrorString();
+            while ( taintCurrentMirror() ) {
               _notFoundRetry++;
 
-              const auto str = zypp::str::Format(_("Error: \"%1%\", trying next mirror.")) % req.extendedErrorString();
+              const auto str = zypp::str::Format(_("Error: \"%1%\", trying next mirror.")) % lastError;
               finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::ERROR, str, false );
 
-              media::TransferSettings settings;
-              zypp::Url url;
-              makeJobUrl ( url, settings );
+              try {
+                media::TransferSettings settings;
+                zypp::Url url;
+                makeJobUrl ( url, settings );
 
-              MIL << "Found new mirror: " << url << " recovering, retry count: " << _notFoundRetry << std::endl;
+                MIL << "Found new mirror: " << url << " recovering, retry count: " << _notFoundRetry << std::endl;
 
-              _req->setUrl( url );
-              _req->transferSettings () = settings;
+                _req->setUrl( url );
+                _req->transferSettings () = settings;
 
-              _parent._dispatcher->enqueue( _req );
-              return;
+                _parent._dispatcher->enqueue( _req );
+                return;
+
+              } catch ( const zypp::Exception &e ) {
+                ERR << "Failed to setup mirror: ( " << e << " ), trying next!" << std::endl;
+                lastError = e.asUserString();
+                continue;
+              }
+              break;
             }
 
+            ERR << "No mirror found, giving up on file: " << req.url() << std::endl;
             finishCurrentJob ( _targetPath, req.url(), media::CommitPreloadReport::NOT_FOUND, req.extendedErrorString(), true );
             break;
           }

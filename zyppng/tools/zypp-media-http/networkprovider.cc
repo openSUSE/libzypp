@@ -9,13 +9,12 @@
 #include "networkprovider.h"
 
 #include <zypp-curl/ng/network/NetworkRequestDispatcher>
-#include <zypp-curl/parser/MetaLinkParser>
+#include <zypp-curl/ng/network/request.h>
+#include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/CheckSum.h>
 #include <zypp-media/ng/private/providedbg_p.h>
-
-#include <downloader/downloader.h>
-#include <downloader/downloadspec.h>
+#include <zypp-curl/ng/network/private/networkrequesterror_p.h>
 
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
@@ -25,43 +24,136 @@
 NetworkProvideItem::NetworkProvideItem(NetworkProvider &parent, zyppng::ProvideMessage &&spec)
   : zyppng::worker::ProvideWorkerItem( std::move(spec) )
   , _parent(parent)
-{}
+{
+  const auto &expFilesize     = _spec.value( zyppng::ProvideMsgFields::ExpectedFilesize );
+  const auto &headerSize      = _spec.value( zyppng::ProvideMsgFields::FileHeaderSize );
+  const auto &checkExistsOnly = _spec.value( zyppng::ProvideMsgFields::CheckExistOnly );
+  const auto &deltaFile       = _spec.value( zyppng::ProvideMsgFields::DeltaFile );
+
+
+  _deltaFile   = deltaFile.isString()  ? zypp::Pathname(deltaFile.asString()) : std::optional<zypp::Pathname>();
+  _expFilesize = expFilesize.isInt64() ? std::make_optional<zypp::ByteCount>( expFilesize.asInt64() ) : std::optional<zypp::ByteCount>();
+  _headerSize  = headerSize.isInt64 () ? std::make_optional<zypp::ByteCount>( headerSize.asInt64() ) : std::optional<zypp::ByteCount>();
+  _checkExistsOnly = ( checkExistsOnly.valid() && checkExistsOnly.isBool() && checkExistsOnly.asBool() );
+}
 
 NetworkProvideItem::~NetworkProvideItem()
 {
   clearConnections();
   if ( _dl ) {
-    _dl->cancel();
+    _parent._dlManager->cancel ( *_dl );
   }
 }
 
-void NetworkProvideItem::startDownload( std::shared_ptr<zyppng::Download> &&dl )
+void NetworkProvideItem::startDownload( zypp::Url url )
 {
   if ( _state == ProvideWorkerItem::Running || _dl )
     throw std::runtime_error("Can not start a already running Download");
 
-  MIL_PRV << "Starting download of : " << dl->spec().url() << "with target path: " << dl->spec().targetPath() << std::endl;
+#if 0
+  zyppng::DownloadSpec spec(
+    url
+    , stagingPath
+    , expFilesize.valid() ? zypp::ByteCount( expFilesize.asInt64() ) : zypp::ByteCount()
+  );
+  spec
+    .setCheckExistsOnly( checkExistsOnly.valid() ? checkExistsOnly.asBool() : false )
+    .setDeltaFile ( deltaFile.valid() ? deltaFile.asString() : zypp::Pathname() );
+#endif
 
-  _connections.clear ();
+  MIL_PRV << "Starting download of : " << url << "with target path: " << _stagingFileName << std::endl;
+
+  clearConnections();
+
   // we set the state to running immediately but only send the message to controller once the item actually started
   _state = ProvideWorkerItem::Running;
-  _dl = std::move(dl);
-  _connections.emplace_back( connect( *_dl, &zyppng::Download::sigStarted, *this, &NetworkProvideItem::onStarted ) );
-  _connections.emplace_back( connect( *_dl, &zyppng::Download::sigFinished, *this, &NetworkProvideItem::onFinished ) );
-  _connections.emplace_back( connect( *_dl, &zyppng::Download::sigAuthRequired, *this, &NetworkProvideItem::onAuthRequired ) );
 
-  _dl->setStopOnMetalink( true );
-  _dl->start();
+  zyppng::TransferSettings settings;
+  const auto &err = safeFillSettingsFromURL ( url, settings );
+  if ( err.isError () ) {
+    _lastError = err;
+    setFinished();
+    return;
+  }
+
+  _dl = std::make_shared<zyppng::NetworkRequest>( url, _stagingFileName, zyppng::NetworkRequest::WriteShared );
+  _dl->transferSettings() = settings;
+
+  if ( _expFilesize )
+    _dl->setExpectedFileSize( *_expFilesize );
+
+  _connections.emplace_back( connect( *_dl, &zyppng::NetworkRequest::sigStarted, *this, &NetworkProvideItem::onStarted ) );
+  _connections.emplace_back( connect( *_dl, &zyppng::NetworkRequest::sigFinished, *this, &NetworkProvideItem::onFinished ) );
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+  if ( !_checkExistsOnly
+       && _deltaFile
+       && zyppng::ZckLoader::isZchunkFile ( _deltaFile.value() )) {
+
+    _zchunkLoader = std::make_shared<zyppng::ZckLoader>();
+    _zchunkLoader->connect( &zyppng::ZckLoader::sigBlocksRequired, *this, &NetworkProvideItem::onZckBlocksRequired );
+    _zchunkLoader->connect( &zyppng::ZckLoader::sigFinished, *this, &NetworkProvideItem::onZckFinished );
+    try {
+      _zchunkLoader->buildZchunkFile (
+            _stagingFileName,
+            _deltaFile.value(),
+            _expFilesize,
+            _headerSize
+      ).unwrap();
+
+      // zck download started
+      return;
+
+    } catch( const zypp::Exception &e ) {
+      ERR << "Failed to setup zck download: " << e << std::endl;
+    }
+  }
+#endif
+
+  if ( _checkExistsOnly )
+    _dl->setOptions ( zyppng::NetworkRequest::HeadRequest );
+
+  normalDownload();
+}
+
+zyppng::NetworkRequestError NetworkProvideItem::safeFillSettingsFromURL( zypp::Url &url, zypp::media::TransferSettings &set)
+{
+  auto buildExtraInfo = [this, &url](){
+    std::map<std::string, boost::any> extraInfo;
+    extraInfo.insert( {"requestUrl", url } );
+    extraInfo.insert( {"filepath", _targetFileName } );
+    return extraInfo;
+  };
+
+  zyppng::NetworkRequestError res;
+  try {
+    ::internal::prepareSettingsAndUrl( url, set );
+  } catch ( const zypp::media::MediaBadUrlException & e ) {
+    res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::MalformedURL, e.asString(), buildExtraInfo() );
+  } catch ( const zypp::media::MediaUnauthorizedException & e ) {
+    res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::AuthFailed, e.asString(), buildExtraInfo() );
+  } catch ( const zypp::Exception & e ) {
+    res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::InternalError, e.asString(), buildExtraInfo() );
+  }
+  return res;
 }
 
 void NetworkProvideItem::cancelDownload()
 {
   _state = zyppng::worker::ProvideWorkerItem::Finished;
   if ( _dl ) {
-    _dl->cancel();
+    _parent._dlManager->cancel ( *_dl );
     clearConnections();
     _dl.reset();
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+    _zchunkLoader.reset();
+#endif
   }
+}
+
+const std::optional<zyppng::NetworkRequestError> &NetworkProvideItem::error() const
+{
+  return _lastError;
 }
 
 void NetworkProvideItem::clearConnections()
@@ -71,25 +163,227 @@ void NetworkProvideItem::clearConnections()
   _connections.clear();
 }
 
-void NetworkProvideItem::onStarted( zyppng::Download & )
+void NetworkProvideItem::setFinished()
 {
+  _state = zyppng::worker::ProvideWorkerItem::Finished;
+  _parent.itemFinished (shared_this<NetworkProvideItem>() );
+}
+
+void NetworkProvideItem::onStarted( zyppng::NetworkRequest & )
+{
+  if ( _emittedStart )
+    return;
+
+  _emittedStart = true;
   _parent.itemStarted( shared_this<NetworkProvideItem>() );
 }
 
-void NetworkProvideItem::onFinished( zyppng::Download & )
+void NetworkProvideItem::onFinished( zyppng::NetworkRequest &result, const zyppng::NetworkRequestError & )
 {
-  _parent.itemFinished( shared_this<NetworkProvideItem>() );
+  if ( result.hasError () ) {
+
+    const auto &err = result.error();
+    _lastError = err;
+
+    switch ( err.type () ) {
+      case zyppng::NetworkRequestError::NoError:
+        // err what
+        break;
+      case zyppng::NetworkRequestError::Unauthorized:
+      case zyppng::NetworkRequestError::AuthFailed: {
+
+        bool retry = false;
+        MIL << "Authentication failed for " << _dl->url() << " trying to recover." << std::endl;
+
+        auto &ts = _dl->transferSettings();
+        const auto &applyCredToSettings = [&ts]( const zyppng::AuthData_Ptr& auth, const std::string &authHint ) {
+          ts.setUsername( auth->username() );
+          ts.setPassword( auth->password() );
+          auto nwCred = dynamic_cast<zyppng::NetworkAuthData *>( auth.get() );
+          if ( nwCred ) {
+            // set available authentication types from the error
+            if ( nwCred->authType() == CURLAUTH_NONE )
+              nwCred->setAuthType( authHint );
+
+            // set auth type (seems this must be set _after_ setting the userpwd)
+            if ( nwCred->authType()  != CURLAUTH_NONE ) {
+              // FIXME: only overwrite if not empty?
+              ts.setAuthType(nwCred->authTypeAsString());
+            }
+          }
+        };
+
+        // try to find one in the cache
+        zypp::url::ViewOption vopt;
+        vopt = vopt
+               - zypp::url::ViewOption::WITH_USERNAME
+               - zypp::url::ViewOption::WITH_PASSWORD
+               - zypp::url::ViewOption::WITH_QUERY_STR;
+
+        auto cachedCred = zypp::media::CredentialManager::findIn( _parent._credCache, _dl->url(), vopt );
+
+        // only consider a cache entry if its newer than what we tried last time
+        if ( cachedCred && cachedCred->lastDatabaseUpdate() > _authTimestamp ) {
+          MIL << "Found a credential match in the cache!" << std::endl;
+          applyCredToSettings( cachedCred, "" );
+          _authTimestamp = cachedCred->lastDatabaseUpdate();
+          retry = true;
+        } else {
+
+          zyppng::NetworkAuthData_Ptr credFromUser = zyppng::NetworkAuthData_Ptr( new zyppng::NetworkAuthData() );
+          credFromUser->setUrl( _dl->url() );
+          credFromUser->setLastDatabaseUpdate ( _authTimestamp );
+
+          //in case we got a auth hint from the server the error object will contain it
+          std::string authHint = err.extraInfoValue("authHint", std::string());
+
+          _parent.itemAuthRequired ( shared_this<NetworkProvideItem>(), *credFromUser, authHint );
+          if ( credFromUser->valid() ) {
+            // remember for next time , we don't want to ask the user again for the same URL set
+            _parent._credCache.insert( credFromUser );
+            applyCredToSettings( credFromUser, authHint );
+            _authTimestamp = credFromUser->lastDatabaseUpdate();
+            retry = true;
+          }
+        }
+
+        if ( retry ) {
+          //make sure this request will run asap
+          _dl->setPriority( zyppng::NetworkRequest::High );
+          _parent._dlManager->enqueue (_dl);
+          return;
+        }
+
+        // fall through to request failed
+      }
+
+      case zyppng::NetworkRequestError::InternalError:
+      case zyppng::NetworkRequestError::Cancelled:
+      case zyppng::NetworkRequestError::PeerCertificateInvalid:
+      case zyppng::NetworkRequestError::ConnectionFailed:
+      case zyppng::NetworkRequestError::ExceededMaxLen:
+      case zyppng::NetworkRequestError::InvalidChecksum:
+      case zyppng::NetworkRequestError::UnsupportedProtocol:
+      case zyppng::NetworkRequestError::MalformedURL:
+      case zyppng::NetworkRequestError::TemporaryProblem:
+      case zyppng::NetworkRequestError::Timeout:
+      case zyppng::NetworkRequestError::Forbidden:
+      case zyppng::NetworkRequestError::NotFound:
+      case zyppng::NetworkRequestError::ServerReturnedError:
+      case zyppng::NetworkRequestError::MissingData:
+      case zyppng::NetworkRequestError::RangeFail:
+      case zyppng::NetworkRequestError::Http2Error:
+      case zyppng::NetworkRequestError::Http2StreamError: {
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+        if ( _zchunkLoader && err.type() == zyppng::NetworkRequestError::RangeFail ) {
+          MIL << "Downloading in ranges failed for " << _dl->url() << " trying to recover via normal download." << std::endl;
+          normalDownload ();
+          return;
+        }
+#endif
+
+        MIL << _dl->nativeHandle() << " " << "Downloading on " << _dl->url() << " failed with error "<< err.toString() << " " << err.nativeErrorString() << std::endl;
+        if ( _dl->lastRedirectInfo ().size () )
+          MIL << _dl->nativeHandle() << " Last redirection target was: " << _dl->lastRedirectInfo () << std::endl;
+
+        setFinished();
+        return;
+      }
+    }
+  }
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+  if ( _zchunkLoader ) {
+    // if the zckLoader is active, we just tell it to continue if the request has no error
+    try {
+      _zchunkLoader->cont().unwrap();
+      return;
+    } catch ( ... ) {
+      MIL << "Continuing zchunk failed for " << _dl->url() << " trying to recover via normal download." << std::endl;
+      normalDownload();
+    }
+    return;
+  }
+#endif
+
+  // done, no error
+  _lastError.reset();
+  setFinished ();
 }
 
-void NetworkProvideItem::onAuthRequired( zyppng::Download &, zyppng::NetworkAuthData &auth, const std::string &availAuth )
+void NetworkProvideItem::onAuthRequired( zyppng::NetworkRequest &, zyppng::NetworkAuthData &auth, const std::string &availAuth )
 {
   _parent.itemAuthRequired( shared_this<NetworkProvideItem>(), auth, availAuth );
 }
 
+void NetworkProvideItem::normalDownload()
+{
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+  // zchunk loader must be inactive
+  _zchunkLoader.reset();
+#endif
+
+  // make sure no old ranges are lingering around
+  _dl->resetRequestRanges();
+
+  // ready, go
+  _parent._dlManager->enqueue(_dl);
+}
+
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+void NetworkProvideItem::onZckBlocksRequired(const std::vector<zyppng::ZckLoader::Block> &requiredBlocks)
+{
+  _dl->resetRequestRanges();
+
+  for ( const auto &block : requiredBlocks ) {
+    if ( block._checksum.size() && block._chksumtype.size() ) {
+      std::optional<zypp::Digest> dig = zypp::Digest();
+      if ( !dig->create( block._chksumtype ) ) {
+        WAR << "Trying to create Digest with chksum type " << block._chksumtype << " failed " << std::endl;
+        _zchunkLoader->setFailed( zypp::str::Str() << "Trying to create Digest with chksum type " << block._chksumtype << " failed " );
+        return;
+      }
+
+      if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
+        DBG << "Starting block " << block._start << " with checksum " << zypp::Digest::digestVectorToString( block._checksum ) << "." << std::endl;
+      _dl->addRequestRange( block._start, block._len, std::move(dig), block._checksum, {}, block._relevantDigestLen, block._chksumPad );
+    } else {
+      if ( zypp::env::ZYPP_MEDIA_CURL_DEBUG() > 3 )
+        DBG << "Starting block " << block._start << " without checksum!" << std::endl;
+      _dl->addRequestRange( block._start, block._len );
+    }
+  };
+
+  _parent._dlManager->enqueue(_dl);
+}
+
+void NetworkProvideItem::onZckFinished(zyppng::ZckLoader::PrepareResult result)
+{
+  switch(result._code) {
+    case zyppng::ZckLoader::PrepareResult::Error: {
+      ERR << "Failed to setup zchunk because of: " << result._message << std::endl;
+      normalDownload();
+      return;
+    } case zyppng::ZckLoader::PrepareResult::ExceedsMaxLen: {
+      _lastError = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::ExceededMaxLen );
+      setFinished ();
+      return;
+
+    } case zyppng::ZckLoader::PrepareResult::Success:
+      case zyppng::ZckLoader::PrepareResult::NothingToDo: {
+      // done, no error
+      _lastError.reset();
+      setFinished();
+      return;
+    }
+  }
+}
+#endif
 
 NetworkProvider::NetworkProvider( std::string_view workerName )
   : zyppng::worker::ProvideWorker( workerName )
-  , _dlManager( std::make_shared<zyppng::Downloader>() )
+  , _dlManager( std::make_shared<zyppng::NetworkRequestDispatcher>() )
 {
   // we only want to hear about new provides
   setProvNotificationMode( ProvideWorker::ONLY_NEW_PROVIDES );
@@ -101,17 +395,17 @@ zyppng::expected<zyppng::worker::WorkerCaps> NetworkProvider::initialize( const 
   if ( const auto &i = conf.find( std::string(zyppng::AGENT_STRING_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Setting agent string to: " << val << std::endl;
-    _dlManager->requestDispatcher()->setAgentString( val );
+    _dlManager->setAgentString( val );
   }
   if ( const auto &i = conf.find( std::string(zyppng::DISTRO_FLAV_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Setting distro flavor header to: " << val << std::endl;
-    _dlManager->requestDispatcher()->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-DistributionFlavor", val );
+    _dlManager->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-DistributionFlavor", val );
   }
   if ( const auto &i = conf.find( std::string(zyppng::ANON_ID_CONF) ); i != iEnd ) {
     const auto &val = i->second;
     MIL << "Got anonymous ID setting from controller" << std::endl;
-    _dlManager->requestDispatcher()->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-AnonymousId", val );
+    _dlManager->setHostSpecificHeader("download.opensuse.org", "X-ZYpp-AnonymousId", val );
   }
   if ( const auto &i = conf.find( std::string(zyppng::ATTACH_POINT) ); i != iEnd ) {
     const auto &val = i->second;
@@ -129,6 +423,8 @@ zyppng::expected<zyppng::worker::WorkerCaps> NetworkProvider::initialize( const 
       | zyppng::worker::WorkerCaps::ZyppLogFormat
       )
     );
+
+  _dlManager->run();
 
   return zyppng::expected<zyppng::worker::WorkerCaps>::success(caps);
 }
@@ -283,34 +579,10 @@ void NetworkProvider::provide()
       continue;
     }
 
-    bool doMetalink = true;
-    const auto &metalinkVal = req->_spec.value( zyppng::NETWORK_METALINK_ENABLED );
-    if ( metalinkVal.valid() && metalinkVal.isBool () ) {
-      doMetalink = metalinkVal.asBool();
-      MIL << "Explicity setting metalink " << ( doMetalink ? "enabled" : "disabled" ) << std::endl;
-    }
-
-    ERR << "Forcing Metalink to be disabled until zsync/metalink is correctly implemented again" << std::endl;
-    doMetalink = false;
-
     req->_targetFileName  = localPath;
     req->_stagingFileName = stagingPath;
 
-    const auto &expFilesize = req->_spec.value( zyppng::ProvideMsgFields::ExpectedFilesize );
-    const auto &checkExistsOnly = req->_spec.value( zyppng::ProvideMsgFields::CheckExistOnly );
-    const auto &deltaFile = req->_spec.value( zyppng::ProvideMsgFields::DeltaFile );
-
-    zyppng::DownloadSpec spec(
-      url
-      , stagingPath
-      , expFilesize.valid() ? zypp::ByteCount( expFilesize.asInt64() ) : zypp::ByteCount()
-    );
-    spec
-      .setCheckExistsOnly( checkExistsOnly.valid() ? checkExistsOnly.asBool() : false )
-      .setDeltaFile ( deltaFile.valid() ? deltaFile.asString() : zypp::Pathname() )
-      .setMetalinkEnabled ( doMetalink );
-
-    req->startDownload( _dlManager->downloadFile ( spec ) );
+    req->startDownload( url );
   }
 }
 
@@ -342,7 +614,7 @@ zyppng::worker::ProvideWorkerItemRef NetworkProvider::makeItem(zyppng::ProvideMe
 
 void NetworkProvider::itemStarted( NetworkProvideItemRef item )
 {
-  provideStart( item->_spec.requestId(), item->_dl->spec().url().asCompleteString(), item->_targetFileName.asString(), item->_stagingFileName.asString() );
+  provideStart( item->_spec.requestId(), item->_dl->url().asCompleteString(), item->_targetFileName.asString(), item->_stagingFileName.asString() );
 }
 
 void NetworkProvider::itemFinished( NetworkProvideItemRef item )
@@ -355,76 +627,39 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
   }
 
   item->_state = NetworkProvideItem::Finished;
-  if ( !item->_dl->hasError() ) {
 
-    if ( item->_dl->stoppedOnMetalink () ) {
-      // need to read the metalink info and send back a redirect
-      try {
-        zypp::media::MetaLinkParser pars;
-        pars.parse( item->_stagingFileName  );
+  const auto &maybeError = item->error();
+  if ( !maybeError ) {
 
-        std::vector<zypp::Url> urls;
+    if ( item->_checkExistsOnly ) {
+      // check exist only, we just return success with the target file name
+      provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
+    }
 
-        for ( const auto &mirr : pars.getMirrors () ) {
-          try {
-            zypp::Url url( mirr.url.asCompleteString () );
-            urls.push_back(url);
-
-            if ( urls.size() == 10 )
-              break;
-
-          }  catch ( const zypp::Exception &e ) {
-            ZYPP_CAUGHT (e);
-          }
-        }
-
-        // @TODO , restart the download without metalink?
-        if ( urls.size() == 0 )
-          throw zypp::Exception("No usable mirrors in Mirrorlink file");
-
-        if ( !messageStream()->sendMessage( zyppng::ProvideMessage::createMetalinkRedir( item->_spec.requestId(), urls ) ) ) {
-          ERR << "Failed to send ProvideSuccess message" << std::endl;
-        }
-
-      }  catch ( const zypp::Exception &exp ) {
-        zypp::filesystem::hardlinkCopy ( item->_stagingFileName, "/tmp/broken" );
-        ZYPP_CAUGHT(exp);
-        provideFailed( item->_spec.requestId(), zyppng::ProvideMessage::Code::InternalError, exp.asUserString (), false );
-      }
+    const auto errCode = zypp::filesystem::rename( item->_stagingFileName, item->_targetFileName );
+    if( errCode ) {
 
       zypp::filesystem::unlink( item->_stagingFileName );
 
+      std::string err = zypp::str::Str() << "Renaming " << item->_stagingFileName << " to " << item->_targetFileName << " failed!";
+      DBG << err << std::endl;
+
+      provideFailed( item->_spec.requestId()
+        , zyppng::ProvideMessage::Code::InternalError
+        , err
+        , false
+        , {} );
+
     } else {
-
-      if ( item->_dl->spec().checkExistsOnly() ) {
-        // check exist only, we just return success with the target file name
-        provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
-      }
-
-      const auto errCode = zypp::filesystem::rename( item->_stagingFileName, item->_targetFileName );
-      if( errCode ) {
-
-        zypp::filesystem::unlink( item->_stagingFileName );
-
-        std::string err = zypp::str::Str() << "Renaming " << item->_stagingFileName << " to " << item->_targetFileName << " failed!";
-        DBG << err << std::endl;
-
-        provideFailed( item->_spec.requestId()
-          , zyppng::ProvideMessage::Code::InternalError
-          , err
-          , false
-          , {} );
-
-      } else {
-        provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
-      }
+      provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
     }
+
   } else {
     zyppng::HeaderValueMap extra;
     bool isTransient = false;
     auto errCode = zyppng::ProvideMessage::Code::InternalError;
 
-    const auto &error = item->_dl->lastRequestError();
+    const auto &error = maybeError.value();
     switch( error.type() ) {
       case zyppng::NetworkRequestError::NoError: { throw std::runtime_error("DownloadError info broken"); break;}
       case zyppng::NetworkRequestError::InternalError: { errCode = zyppng::ProvideMessage::Code::InternalError; break;}
@@ -461,7 +696,7 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
       case zyppng::NetworkRequestError::MissingData: { errCode = zyppng::ProvideMessage::Code::BadRequest; break; }
     }
 
-    provideFailed( item->_spec.requestId(), errCode, item->_dl->errorString(), isTransient, extra );
+    provideFailed( item->_spec.requestId(), errCode, error.toString(), isTransient, extra );
   }
   queue.erase(i);
 
@@ -477,7 +712,7 @@ void NetworkProvider::itemAuthRequired( NetworkProvideItemRef item, zyppng::Netw
     return;
   }
 
-  auth.setUrl ( item->_dl->spec().url() );
+  auth.setUrl ( item->_dl->url() );
   auth.setUsername ( res->username );
   auth.setPassword ( res->password );
   auth.setLastDatabaseUpdate ( res->last_auth_timestamp );

@@ -251,45 +251,45 @@ std::string NetworkRequestErrorPrivate::typeToString( NetworkRequestError::Type 
 {
   switch ( t ) {
     case NetworkRequestError::NoError:
-      return "No error";
+      return _("No error");
     case NetworkRequestError::InternalError:
-      return "Internal Error";
+      return _("Internal Error");
     case NetworkRequestError::Cancelled:
-      return "The request was cancelled";
+      return _("The request was cancelled");
     case NetworkRequestError::ExceededMaxLen:
-      return "The request exceeded the maximum download size";
+      return _("The request exceeded the maximum download size");
     case NetworkRequestError::InvalidChecksum:
-      return "The downloaded data did not result in a valid checksum";
+      return _("The downloaded data did not result in a valid checksum");
     case NetworkRequestError::PeerCertificateInvalid:
-      return "The peer certificate could not be verified";
+      return _("The peer certificate could not be verified");
     case NetworkRequestError::ConnectionFailed:
-      return "Connection failed";
+      return _("Connection failed");
     case NetworkRequestError::UnsupportedProtocol:
-      return "Unsupported protocol";
+      return _("Unsupported protocol");
     case NetworkRequestError::MalformedURL:
-      return "Bad URL";
+      return _("Bad URL");
     case NetworkRequestError::TemporaryProblem:
-      return "Requested location is temporarily unaccessible.";
+      return _("Requested location is temporarily unaccessible.");
     case NetworkRequestError::Timeout:
-      return "Timeout reached";
+      return _("Timeout reached");
     case NetworkRequestError::Forbidden:
-      return "Access to requested URL is forbidden.";
+      return _("Access to requested URL is forbidden.");
     case NetworkRequestError::NotFound:
-      return "File not found";
+      return _("File not found");
     case NetworkRequestError::Unauthorized:
-      return "Authentication required but not provided.";
+      return _("Authentication required but not provided.");
     case NetworkRequestError::AuthFailed:
-      return "Login failed.";
+      return _("Login failed.");
     case NetworkRequestError::ServerReturnedError:
-      return "Server returned an error for the given request.";
+      return _("Server returned an error for the given request.");
     case NetworkRequestError::MissingData:
-      return "Server did not send all requested ranges.";
+      return _("Server did not send all requested ranges.");
     case NetworkRequestError::RangeFail:
-      return "Invalid data from server, multipart was requested but there was no range status code.";
+      return _("Invalid data from server, multipart was requested but there was no range status code.");
     case NetworkRequestError::Http2Error:
-      return "Server returned a HTTP/2 error.";
+      return _("Server returned a HTTP/2 error.");
     case NetworkRequestError::Http2StreamError:
-      return "Server returned a HTTP/2 stream error.";
+      return _("Server returned a HTTP/2 stream error.");
   }
   return std::string();
 }

@@ -123,7 +123,7 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
   endif()
 
   ADD_CUSTOM_TARGET( ${target_prefix}svncheck
-    COMMAND cd ${PROJECT_SOURCE_DIR} && LC_ALL=C git status | grep -q "nothing to commit .working directory clean."
+    COMMAND cd ${PROJECT_SOURCE_DIR} && git status --porcelain | awk '{print}END{if(NR)exit(1)}'
   )
 
   SET( AUTOBUILD_COMMAND

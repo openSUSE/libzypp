@@ -35,7 +35,7 @@ namespace zyppng::CheckSumWorkflow {
   struct CheckSumWorkflowLogic : public LogicBase<Executor, OpType>
   {
     ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
-;
+
     using ProvideType     = typename Context::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;

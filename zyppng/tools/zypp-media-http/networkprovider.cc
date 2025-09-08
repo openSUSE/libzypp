@@ -50,17 +50,6 @@ void NetworkProvideItem::startDownload( zypp::Url url )
   if ( _state == ProvideWorkerItem::Running || _dl )
     throw std::runtime_error("Can not start a already running Download");
 
-#if 0
-  zyppng::DownloadSpec spec(
-    url
-    , stagingPath
-    , expFilesize.valid() ? zypp::ByteCount( expFilesize.asInt64() ) : zypp::ByteCount()
-  );
-  spec
-    .setCheckExistsOnly( checkExistsOnly.valid() ? checkExistsOnly.asBool() : false )
-    .setDeltaFile ( deltaFile.valid() ? deltaFile.asString() : zypp::Pathname() );
-#endif
-
   MIL_PRV << "Starting download of : " << url << "with target path: " << _stagingFileName << std::endl;
 
   clearConnections();
@@ -129,10 +118,13 @@ zyppng::NetworkRequestError NetworkProvideItem::safeFillSettingsFromURL( zypp::U
   try {
     ::internal::prepareSettingsAndUrl( url, set );
   } catch ( const zypp::media::MediaBadUrlException & e ) {
+    ZYPP_CAUGHT(e);
     res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::MalformedURL, e.asString(), buildExtraInfo() );
   } catch ( const zypp::media::MediaUnauthorizedException & e ) {
+    ZYPP_CAUGHT(e);
     res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::AuthFailed, e.asString(), buildExtraInfo() );
   } catch ( const zypp::Exception & e ) {
+    ZYPP_CAUGHT(e);
     res = zyppng::NetworkRequestErrorPrivate::customError( zyppng::NetworkRequestError::InternalError, e.asString(), buildExtraInfo() );
   }
   return res;
@@ -564,9 +556,9 @@ void NetworkProvider::provide()
       continue;
     }
 
-    errCode = zypp::filesystem::assert_dir( stagingPath.dirname() );
+    errCode = zypp::filesystem::assert_file( stagingPath );
     if( errCode ) {
-      std::string err = zypp::str::Str() << "assert_dir " << stagingPath.dirname() << " failed";
+      std::string err = zypp::str::Str() << "assert_file " << stagingPath << " failed";
       DBG << err << std::endl;
 
       req->_state = zyppng::worker::ProvideWorkerItem::Finished;
@@ -581,6 +573,9 @@ void NetworkProvider::provide()
 
     req->_targetFileName  = localPath;
     req->_stagingFileName = stagingPath;
+
+    // managed file to auto cleanup on errors
+    req->_stagingFile     =  zypp::ManagedFile( stagingPath, zypp::filesystem::unlink );
 
     req->startDownload( url );
   }
@@ -651,6 +646,7 @@ void NetworkProvider::itemFinished( NetworkProvideItemRef item )
         , {} );
 
     } else {
+      item->_stagingFile.resetDispose();
       provideSuccess( item->_spec.requestId(), false, item->_targetFileName );
     }
 

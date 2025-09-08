@@ -13,6 +13,7 @@
 #include <zypp/TmpPath.h>
 #include <zypp-core/ng/pipelines/Wait>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
+#include <zypp-core/Digest.h>
 
 #include <yaml-cpp/yaml.h>
 #include <shared/tvm/tvmsettings.h>
@@ -34,6 +35,16 @@
   try { BOOST_REQUIRE_THROW(  statement, exception  ); } catch( ... ) { BOOST_FAIL( #statement" throws unexpected exception"); }
 
 namespace bdata = boost::unit_test::data;
+
+
+// Globals can be broken in tests, better manually create the byte objects
+const auto makeBytes( zypp::ByteCount::SizeType size ) {
+  return zypp::ByteCount( size, zypp::ByteCount::Unit( 1LL, "B", 0 ) );
+};
+
+const auto makeKBytes( zypp::ByteCount::SizeType size ) {
+  return zypp::ByteCount( size, zypp::ByteCount::Unit( 1024LL, "KiB", 1 ) );
+};
 
 
 BOOST_AUTO_TEST_CASE( http_prov_time_overflow )
@@ -267,6 +278,79 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
   BOOST_REQUIRE( err );
   ZYPP_REQUIRE_THROW( std::rethrow_exception( err ), zypp::media::MediaNotAFileException );
 }
+
+
+BOOST_AUTO_TEST_CASE( base_provide_zck )
+{
+
+  using namespace zyppng::operators;
+
+  auto ev = zyppng::EventLoop::create ();
+
+  const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
+  const auto &webRoot   = zypp::Pathname ( TESTS_SHARED_DIR )/"data/http";
+
+  zypp::filesystem::TmpDir provideRoot;
+
+  auto prov = zyppng::Provide::create ( provideRoot );
+  prov->setWorkerPath ( workerPath );
+  prov->start();
+
+  int primaryRequests = 0;
+  WebServer web( webRoot.c_str(), 10001, false );
+  BOOST_REQUIRE( web.start() );
+
+  web.addRequestHandler("primary", [ & ]( WebServer::Request &req ){
+    primaryRequests++;
+    req.rout << "Location: /primary.xml.zck\r\n\r\n";
+    return;
+  });
+
+  zypp::Url mediaUrl = web.url();
+
+  zyppng::Provide::MediaHandle media;
+  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" ) )
+            | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
+              media = std::move(res);
+              return prov->provide( media, "/handler/primary",
+                                    zyppng::ProvideFileSpec()
+                                    .setDeltafile ( webRoot/"primary-deltatemplate.xml.zck" )
+                                    .setDownloadSize( makeBytes(274638) )
+                                    .setHeaderSize( makeBytes(11717) )
+                                    .setHeaderChecksum( zypp::CheckSum( zypp::Digest::sha256(), "90a1a1b99ba3b6c8ae9f14b0c8b8c43141c69ec3388bfa3b9915fbeea03926b7") ) );
+            });
+
+
+  std::optional<zyppng::ProvideRes> resOpt;
+  std::exception_ptr err;
+  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
+    ev->quit();
+    if ( !res )
+      err = res.error();
+    else
+      resOpt = *res;
+  });
+
+  BOOST_REQUIRE( !op->isReady() );
+
+  if ( !op->isReady() )
+    ev->run();
+
+  BOOST_REQUIRE( !err );
+  BOOST_REQUIRE( resOpt.has_value() );
+  zypp::PathInfo pi( resOpt->file() );
+  BOOST_REQUIRE( pi.isExist() );
+  BOOST_REQUIRE( pi.isFile() );
+
+  // if zck is enabled, we have 2 requests, otherwise its just a normal provide
+#ifdef ENABLE_ZCHUNK_COMPRESSION
+    BOOST_REQUIRE_EQUAL( primaryRequests, 2 ); // header + chunks
+#else
+    BOOST_REQUIRE_EQUAL( primaryRequests, 1 );
+#endif
+}
+
+
 
 //creates a request handler that requires a authentication to work
 WebServer::RequestHandler createAuthHandler ( const zypp::Pathname &webroot = "/" )

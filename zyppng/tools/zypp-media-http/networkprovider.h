@@ -9,13 +9,14 @@
 #ifndef ZYPP_NG_TOOLS_NETWORKPROVIDER_H_INCLUDED
 #define ZYPP_NG_TOOLS_NETWORKPROVIDER_H_INCLUDED
 
-#include "zypp-curl/transfersettings.h"
-#include <zypp-media/ng/worker/ProvideWorker>
-#include <zypp-core/ng/base/Signals>
+#include <zypp-core/ManagedFile.h>
 #include <zypp-core/ng/base/AutoDisconnect>
+#include <zypp-core/ng/base/Signals>
 #include <zypp-curl/ng/network/AuthData>
 #include <zypp-curl/ng/network/zckhelper.h>
+#include <zypp-curl/transfersettings.h>
 #include <zypp-media/auth/CredentialManager>
+#include <zypp-media/ng/worker/ProvideWorker>
 
 #include <chrono>
 
@@ -43,6 +44,7 @@ public:
   zypp::Url      _url;
   zypp::Pathname _targetFileName;
   zypp::Pathname _stagingFileName;
+  zypp::ManagedFile _stagingFile;
   bool _checkExistsOnly = false;
   std::optional<zypp::ByteCount> _expFilesize;
   std::optional<zypp::ByteCount> _headerSize;

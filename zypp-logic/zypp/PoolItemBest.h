@@ -65,7 +65,7 @@ namespace zypp
       using Container = std::unordered_map<IdString, PoolItem>;
     public:
       /** Predicate returning \c True if \a lhs is a better choice. */
-      using Predicate = boost::function<bool (const PoolItem &, const PoolItem &)>;
+      using Predicate = std::function<bool (const PoolItem &, const PoolItem &)>;
 
       using size_type = Container::size_type;
       using value_type = Container::value_type;

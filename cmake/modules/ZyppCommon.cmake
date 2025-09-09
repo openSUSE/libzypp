@@ -123,15 +123,15 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
   endif()
 
   ADD_CUSTOM_TARGET( ${target_prefix}svncheck
-    COMMAND cd ${PROJECT_SOURCE_DIR} && git status --porcelain | awk '{print}END{if(NR)exit(1)}'
+    COMMAND "cd ${PROJECT_SOURCE_DIR} && git status --porcelain | awk '{print}END{if(NR)exit(1)}'"
   )
 
   SET( AUTOBUILD_COMMAND
-    COMMAND ${CMAKE_COMMAND} -E remove ${PROJECT_BINARY_DIR}/package/*.tar.bz2
-    COMMAND ${CMAKE_MAKE_PROGRAM} package_source
-    COMMAND ${CMAKE_COMMAND} -E copy ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2 ${PROJECT_BINARY_DIR}/package
-    COMMAND ${CMAKE_COMMAND} -E remove ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
-    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/package/${PACKAGE}.changes" "${PROJECT_BINARY_DIR}/package/${PACKAGE}.changes"
+    COMMAND "${CMAKE_COMMAND} -E remove ${PROJECT_BINARY_DIR}/package/*.tar.bz2"
+    COMMAND "${CMAKE_MAKE_PROGRAM} package_source"
+    COMMAND "${CMAKE_COMMAND} -E copy ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2 ${PROJECT_BINARY_DIR}/package"
+    COMMAND "${CMAKE_COMMAND} -E remove ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2"
+    COMMAND "${CMAKE_COMMAND} -E copy \"${PROJECT_SOURCE_DIR}/package/${PACKAGE}.changes\" \"${PROJECT_BINARY_DIR}/package/${PACKAGE}.changes\""
   )
 
   ADD_CUSTOM_TARGET( ${target_prefix}srcpackage_local
@@ -139,7 +139,7 @@ MACRO(GENERATE_PACKAGING PACKAGE VERSION)
   )
 
   ADD_CUSTOM_TARGET( ${target_prefix}srcpackage
-    COMMAND ${CMAKE_MAKE_PROGRAM} ${target_prefix}svncheck
+    COMMAND "${CMAKE_MAKE_PROGRAM} ${target_prefix}svncheck"
     ${AUTOBUILD_COMMAND}
   )
 ENDMACRO(GENERATE_PACKAGING)

@@ -18,7 +18,7 @@ libzypp provides all the functionality for a package manager:
 
 \section impl Implementation
 
-libzypp is implemented as a C++ library with experimental bindings available for python and ruby.
+libzypp is implemented as a C++ library.
 
 \section otherfunc Other functionality offered by libzypp
 
@@ -36,7 +36,8 @@ Additionally, some functionality libzypp uses is based on 3rd party libraries:
 
 \section join Join the community
 
-Visit our web site at : http://en.opensuse.org/Libzypp or #zypp on irc.freenode.net
+https://github.com/openSUSE/libzypp
+https://github.com/openSUSE/zypper
 
 \section license License
 

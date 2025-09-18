@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Check hardware-2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-27 19:37+0200\n"
+"POT-Creation-Date: 2025-09-17 09:27+0200\n"
 "PO-Revision-Date: 2025-07-22 15:01+0000\n"
 "Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Marathi <https://l10n.opensuse.org/projects/libzypp/master/mr/"
@@ -14,3683 +14,4131 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Weblate 5.12.2\n"
 
-#: zypp/CountryCode.cc:50
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-logic/zypp-common/PublicKey.cc:65
+#, fuzzy
+msgid "does not expire"
+msgstr "'%1' अस्तित्वात नाही."
+
+#. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
+#: zypp-logic/zypp-common/PublicKey.cc:70
+#, boost-format
+msgid "expired: %1%"
+msgstr ""
+
+#. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
+#: zypp-logic/zypp-common/PublicKey.cc:75
+#, boost-format
+msgid "expires: %1%"
+msgstr ""
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-logic/zypp-common/PublicKey.cc:84
+#, fuzzy
+msgid "(does not expire)"
+msgstr "'%1' अस्तित्वात नाही."
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-logic/zypp-common/PublicKey.cc:93
+msgid "(EXPIRED)"
+msgstr ""
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-logic/zypp-common/PublicKey.cc:97
+msgid "(expires within 24h)"
+msgstr ""
+
+#. translators: an annotation to a gpg keys expiry date
+#: zypp-logic/zypp-common/PublicKey.cc:101
+#, c-format, boost-format
+msgid "(expires in %d day)"
+msgid_plural "(expires in %d days)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TranslatorExplanation first %s is key name, second is keyring name
+#: zypp-logic/zypp-common/private/keyring_p.cc:285
+#, c-format, boost-format
+msgid "Tried to import not existent key %s into keyring %s"
+msgstr ""
+
+#: zypp-logic/zypp-common/private/keyring_p.cc:291
+#, fuzzy
+msgid "Failed to import key."
+msgstr "VM सुरू करण्यात अयशस्वी."
+
+#: zypp-logic/zypp-common/private/keyring_p.cc:298
+#, fuzzy
+msgid "Failed to delete key."
+msgstr "VM सुरू करण्यात अयशस्वी."
+
+#: zypp-logic/zypp-common/private/keyring_p.cc:304
+#, fuzzy, c-format, boost-format
+msgid "Signature file %s not found"
+msgstr "नोंद आढळली नाही"
+
+#. dubious: Throw on malformed known types, otherwise log a warning.
+#: zypp-logic/zypp-core/CheckSum.cc:136
+#, c-format, boost-format
+msgid "Dubious type '%s' for %u byte checksum '%s'"
+msgstr ""
+
+#: zypp-logic/zypp-core/ExternalProgram.cc:245
+#, fuzzy, c-format, boost-format
+msgid "Can't open pty (%s)."
+msgstr "फाईल उघडता येत नाही %1."
+
+#: zypp-logic/zypp-core/ExternalProgram.cc:264
+#: zypp-logic/zypp-core/ExternalProgram.cc:281
+#, fuzzy, c-format, boost-format
+msgid "Can't open pipe (%s)."
+msgstr "फाईल उघडता येत नाही %1."
+
+#: zypp-logic/zypp-core/Url.cc:118
+msgid "Invalid LDAP URL query string"
+msgstr "अवैध LDAP URL क्वेरी स्ट्रिंग"
+
+#: zypp-logic/zypp-core/Url.cc:159
+#, c-format, boost-format
+msgid "Invalid LDAP URL query parameter '%s'"
+msgstr "अवैध LDAP URL क्वेरी पॅरामीटर %s"
+
+#: zypp-logic/zypp-core/Url.cc:319
+msgid "Unable to clone Url object"
+msgstr "Url ऑब्जेक्ट क्लोन करण्यात असमर्थ"
+
+#: zypp-logic/zypp-core/Url.cc:332
+msgid "Invalid empty Url object reference"
+msgstr "अवैध रिक्त Url ऑब्जेक्ट संदर्भ"
+
+#: zypp-logic/zypp-core/Url.cc:345 zypp-logic/zypp-core/Url.cc:359
+msgid "Unable to parse Url components"
+msgstr "Url भागांचा संबंध जोडण्यात असमर्थ"
+
+#: zypp-logic/zypp-core/base/Exception.cc:199
+msgid "History:"
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:183
+#, c-format, boost-format
+msgid "Command exited with status %d."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:204
+#, c-format, boost-format
+msgid "Command was killed by signal %d (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:209
+#, fuzzy
+msgid "Command exited with unknown error."
+msgstr " कनेक्ट करतांना आदेश वापरला "
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:243
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:486
+msgid "Invalid spawn arguments given."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:299
+msgid "Unable to create control pipe."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:366
+#, c-format, boost-format
+msgid "Can't chroot to '%s' (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:376
+#, fuzzy, c-format, boost-format
+msgid "Can't chdir to '%s' (%s)."
+msgstr "%s आढळत नाही."
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:377
+#, c-format, boost-format
+msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
+msgstr ""
+
+#. don't want to get here
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:406
+#, c-format, boost-format
+msgid "Can't exec '%s' (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:413
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:567
+#, fuzzy, c-format, boost-format
+msgid "Can't fork (%s)."
+msgstr "%s आढळत नाही."
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:432
+#, c-format, boost-format
+msgid "Can't exec '%s', chdir failed (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:435
+#, c-format, boost-format
+msgid "Can't exec '%s', chroot failed (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:438
+#, c-format, boost-format
+msgid "Can't exec '%s', exec failed (%s)."
+msgstr ""
+
+#: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:442
+#, c-format, boost-format
+msgid "Can't exec '%s', unexpected error."
+msgstr ""
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:221
+#, c-format, boost-format
+msgid "Url scheme does not allow a %s"
+msgstr "Url स्कीम %sला अनुमती देत नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:240
+#, c-format, boost-format
+msgid "Invalid %s component '%s'"
+msgstr "अवैध %s कॉम्पोनन्ट %s"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:247
+#, c-format, boost-format
+msgid "Invalid %s component"
+msgstr "अवैध %s कॉम्पोनन्ट"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:864
+#: zypp-logic/zypp-core/url/UrlBase.cc:1308
+msgid "Query string parsing not supported for this URL"
+msgstr "या URL साठी क्वेरी स्ट्रिंग पार्सिंगचे समर्थन नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:902
+msgid "Url scheme is a required component"
+msgstr "URL स्कीम हा एक आवश्यक भाग आहे"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:908
+#, c-format, boost-format
+msgid "Invalid Url scheme '%s'"
+msgstr "अवैध Url स्कीम %s"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1025
+msgid "Url scheme does not allow a username"
+msgstr "Url स्कीम उपभोक्त्याच्या नावाला अनुमती देत नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1059
+msgid "Url scheme does not allow a password"
+msgstr "Url स्कीम पासवर्डला अनुमती देत नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1088
+msgid "Url scheme requires a host component"
+msgstr "Url स्कीमला मुख्य भागाची गरज असते"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1098
+msgid "Url scheme does not allow a host component"
+msgstr "Url स्कीम मुख्य भागाला अनुमती देत नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1125
+#, c-format, boost-format
+msgid "Invalid host component '%s'"
+msgstr "अवैध मुख्य भाग %s"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1146
+msgid "Url scheme does not allow a port"
+msgstr "Url स्कीम पोर्टला अनुमती देत नाही"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1157
+#, c-format, boost-format
+msgid "Invalid port component '%s'"
+msgstr "अवैध पोर्ट भाग %s"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1174
+msgid "Url scheme requires path name"
+msgstr "Url स्कीमला पाथच्या नावाची गरज असते"
+
+#: zypp-logic/zypp-core/url/UrlBase.cc:1195
+#: zypp-logic/zypp-core/url/UrlBase.cc:1209
+msgid "Relative path not allowed if authority exists"
+msgstr "अथॉरिटी उपस्थित असेल तर सापेक्ष पाथला अनुमती नाही"
+
+#: zypp-logic/zypp-core/url/UrlUtils.cc:111
+msgid "Encoded string contains a NUL byte"
+msgstr "एनकोडेड स्ट्रिंगमधे NUL बाईटचा समावेश आहे"
+
+#: zypp-logic/zypp-core/url/UrlUtils.cc:172
+msgid "Invalid parameter array split separator character"
+msgstr "अवैध पॅरामीटर अरे स्प्लिट सेपरेटर कॅरॅक्टर"
+
+#: zypp-logic/zypp-core/url/UrlUtils.cc:211
+msgid "Invalid parameter map split separator character"
+msgstr "अवैध पॅरामीटर मॅप स्प्लिट सेपरेटर कॅरॅक्टर"
+
+#: zypp-logic/zypp-core/url/UrlUtils.cc:282
+msgid "Invalid parameter array join separator character"
+msgstr "अवैध पॅरामीटर अरे जॉईन सेपरेटर कॅरॅक्टर "
+
+#: zypp-logic/zypp-curl/auth/curlauthdata.cc:97
+#, c-format, boost-format
+msgid "Unsupported HTTP authentication method '%s'"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:115
+#: zypp-logic/zypp-media/mediaexception.cc:208
+#, c-format, boost-format
+msgid "Location '%s' is temporarily unaccessible."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:119
+#: zypp-logic/zypp-media/mediaexception.cc:192
+#, c-format, boost-format
+msgid "Timeout exceeded when accessing '%s'."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:124
+#: zypp/zypp/media/MediaCurl.cc:943
+msgid ""
+"Visit the SUSE Customer Center to check whether your registration is valid "
+"and has not expired."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:126
+#: zypp/zypp/media/MediaCurl.cc:945
+msgid ""
+"Visit the Novell Customer Center to check whether your registration is valid "
+"and has not expired."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:135
+#: zypp-logic/zypp-media/mediaexception.cc:61
+#, fuzzy, c-format, boost-format
+msgid "File '%s' not found on medium '%s'"
+msgstr "भांडारात फाईल %1 आढळली नाही"
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:140
+#, c-format, boost-format
+msgid ""
+"Download (curl) error for '%s':\n"
+"Error code: %s\n"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:146
+#, c-format, boost-format
+msgid ""
+"Download (curl) error for '%s':\n"
+"Unable to retrieve HTTP response\n"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:33
+#, fuzzy, c-format, boost-format
+msgid "Failed to mount %s on %s"
+msgstr " %s - %s उघडणे अशक्य\n"
+
+#: zypp-logic/zypp-media/mediaexception.cc:43
+#, fuzzy, c-format, boost-format
+msgid "Failed to unmount %s"
+msgstr "मॉड्युल लोड करण्यात अपयश \"%s\"."
+
+#: zypp-logic/zypp-media/mediaexception.cc:48
+#, c-format, boost-format
+msgid "Bad file name: %s"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:53
+#, c-format, boost-format
+msgid "Medium not opened when trying to perform action '%s'."
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:59
+#, c-format, boost-format
+msgid "File '%s' not found"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:66
+#, fuzzy, c-format, boost-format
+msgid "Cannot write file '%s'."
+msgstr "फाईल %1 लिहिता येत नाही."
+
+#: zypp-logic/zypp-media/mediaexception.cc:71
+msgid "Medium not attached"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:76
+msgid "Bad media attach point"
+msgstr ""
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: zypp-logic/zypp-media/mediaexception.cc:82
+#, c-format, boost-format
+msgid "Download (curl) initialization failed for '%s'"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:87
+#, c-format, boost-format
+msgid "System exception '%s' on medium '%s'."
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:92
+#, c-format, boost-format
+msgid "Path '%s' on medium '%s' is not a file."
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:97
+#, fuzzy, c-format, boost-format
+msgid "Path '%s' on medium '%s' is not a directory."
+msgstr "%1 ही डिरेक्टरी नाही."
+
+#: zypp-logic/zypp-media/mediaexception.cc:104
+msgid "Malformed URI"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:114
+#, fuzzy
+msgid "Empty host name in URI"
+msgstr "रिक्त CA नांव."
+
+#: zypp-logic/zypp-media/mediaexception.cc:119
+msgid "Empty filesystem in URI"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:124
+msgid "Empty destination in URI"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:129
+#, fuzzy, c-format, boost-format
+msgid "Unsupported URI scheme in '%s'."
+msgstr "अवैध URL योजना '%1'."
+
+#: zypp-logic/zypp-media/mediaexception.cc:134
+msgid "Operation not supported by medium"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:141
+#, c-format, boost-format
+msgid ""
+"Download (curl) error for '%s':\n"
+"Error code: %s\n"
+"Error message: %s\n"
+msgstr ""
+
+#. TranslatorExplanation: curl is the name of a library, don't translate
+#: zypp-logic/zypp-media/mediaexception.cc:149
+#, c-format, boost-format
+msgid "Error occurred while setting download (curl) options for '%s':"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:156
+#, c-format, boost-format
+msgid "Media source '%s' does not contain the desired medium"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:161
+#, c-format, boost-format
+msgid "Medium '%s' is in use by another instance"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:167
+msgid "Cannot eject any media"
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:169
+#, fuzzy, c-format, boost-format
+msgid "Cannot eject media '%s'"
+msgstr " डेस्कटॉप आयटेम'%s' उघडू शकत नाही"
+
+#: zypp-logic/zypp-media/mediaexception.cc:184
+#, fuzzy, c-format, boost-format
+msgid "Permission to access '%s' denied."
+msgstr "परवानगी नाकारली"
+
+#: zypp-logic/zypp-media/mediaexception.cc:200
+#, c-format, boost-format
+msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:216
+#, c-format, boost-format
+msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
+msgstr ""
+
+#: zypp-logic/zypp-media/mediaexception.cc:223
+msgid "No free ressources available to attach medium."
+msgstr ""
+
+#: zypp-logic/zypp/CountryCode.cc:50
 msgid "Unknown country: "
 msgstr "अज्ञात देश:"
 
 #. Defined CountryCode constants
 #. Defined LanguageCode constants
-#: zypp/CountryCode.cc:149 zypp/LanguageCode.cc:148
+#: zypp-logic/zypp/CountryCode.cc:149 zypp-logic/zypp/LanguageCode.cc:148
 msgid "No Code"
 msgstr "कोड नाही"
 
-#: zypp/CountryCode.cc:158
+#: zypp-logic/zypp/CountryCode.cc:158
 msgid "Andorra"
 msgstr "अंडोरा"
 
 #. :AND:020:
-#: zypp/CountryCode.cc:159
+#: zypp-logic/zypp/CountryCode.cc:159
 msgid "United Arab Emirates"
 msgstr "संयुक्त अरब अमिराती"
 
 #. :ARE:784:
-#: zypp/CountryCode.cc:160
+#: zypp-logic/zypp/CountryCode.cc:160
 msgid "Afghanistan"
 msgstr "अफगाणिस्तान"
 
 #. :AFG:004:
-#: zypp/CountryCode.cc:161
+#: zypp-logic/zypp/CountryCode.cc:161
 msgid "Antigua and Barbuda"
 msgstr "ऑन्टिग्वा व बर्बुडा"
 
 #. :ATG:028:
-#: zypp/CountryCode.cc:162
+#: zypp-logic/zypp/CountryCode.cc:162
 msgid "Anguilla"
 msgstr "अंग्विला"
 
 #. :AIA:660:
-#: zypp/CountryCode.cc:163
+#: zypp-logic/zypp/CountryCode.cc:163
 msgid "Albania"
 msgstr "अल्बेनिया"
 
 #. :ALB:008:
-#: zypp/CountryCode.cc:164
+#: zypp-logic/zypp/CountryCode.cc:164
 msgid "Armenia"
 msgstr "आर्मेनिया"
 
 #. :ARM:051:
-#: zypp/CountryCode.cc:165
+#: zypp-logic/zypp/CountryCode.cc:165
 msgid "Netherlands Antilles"
 msgstr "नेदरलॅन्ड्स अन्टिलेस"
 
 #. :ANT:530:
-#: zypp/CountryCode.cc:166
+#: zypp-logic/zypp/CountryCode.cc:166
 msgid "Angola"
 msgstr "अंगोला"
 
 #. :AGO:024:
-#: zypp/CountryCode.cc:167
+#: zypp-logic/zypp/CountryCode.cc:167
 msgid "Antarctica"
 msgstr "अंटार्क्टिका"
 
 #. :ATA:010:
-#: zypp/CountryCode.cc:168
+#: zypp-logic/zypp/CountryCode.cc:168
 msgid "Argentina"
 msgstr "अर्जेंटिना"
 
 #. :ARG:032:
-#: zypp/CountryCode.cc:169
+#: zypp-logic/zypp/CountryCode.cc:169
 msgid "American Samoa"
 msgstr "अमेरिकन सॅमोआ"
 
 #. :ASM:016:
-#: zypp/CountryCode.cc:170
+#: zypp-logic/zypp/CountryCode.cc:170
 msgid "Austria"
 msgstr "ऑस्ट्रिया"
 
 #. :AUT:040:
-#: zypp/CountryCode.cc:171
+#: zypp-logic/zypp/CountryCode.cc:171
 msgid "Australia"
 msgstr "आस्ट्रेलिया"
 
 #. :AUS:036:
-#: zypp/CountryCode.cc:172
+#: zypp-logic/zypp/CountryCode.cc:172
 msgid "Aruba"
 msgstr "अरूबा"
 
 #. :ABW:533:
-#: zypp/CountryCode.cc:173
+#: zypp-logic/zypp/CountryCode.cc:173
 msgid "Aland Islands"
 msgstr "अलॅन्ड बेटे"
 
 #. :ALA:248:
-#: zypp/CountryCode.cc:174
+#: zypp-logic/zypp/CountryCode.cc:174
 msgid "Azerbaijan"
 msgstr "अझरबैजान"
 
 #. :AZE:031:
-#: zypp/CountryCode.cc:175
+#: zypp-logic/zypp/CountryCode.cc:175
 msgid "Bosnia and Herzegovina"
 msgstr "बोस्निया व हर्जेगोव्हिना"
 
 #. :BIH:070:
-#: zypp/CountryCode.cc:176
+#: zypp-logic/zypp/CountryCode.cc:176
 msgid "Barbados"
 msgstr "बारबॅडॉस"
 
 #. :BRB:052:
-#: zypp/CountryCode.cc:177
+#: zypp-logic/zypp/CountryCode.cc:177
 msgid "Bangladesh"
 msgstr "बांग्लादेश"
 
 #. :BGD:050:
-#: zypp/CountryCode.cc:178
+#: zypp-logic/zypp/CountryCode.cc:178
 msgid "Belgium"
 msgstr "बेल्जियम"
 
 #. :BEL:056:
-#: zypp/CountryCode.cc:179
+#: zypp-logic/zypp/CountryCode.cc:179
 msgid "Burkina Faso"
 msgstr "बर्किना फासो"
 
 #. :BFA:854:
-#: zypp/CountryCode.cc:180
+#: zypp-logic/zypp/CountryCode.cc:180
 msgid "Bulgaria"
 msgstr "बल्गेरिया"
 
 #. :BGR:100:
-#: zypp/CountryCode.cc:181
+#: zypp-logic/zypp/CountryCode.cc:181
 msgid "Bahrain"
 msgstr "बहारिन"
 
 #. :BHR:048:
-#: zypp/CountryCode.cc:182
+#: zypp-logic/zypp/CountryCode.cc:182
 msgid "Burundi"
 msgstr "बुरूंडी"
 
 #. :BDI:108:
-#: zypp/CountryCode.cc:183
+#: zypp-logic/zypp/CountryCode.cc:183
 msgid "Benin"
 msgstr "बेनिन"
 
 #. :BEN:204:
-#: zypp/CountryCode.cc:184
+#: zypp-logic/zypp/CountryCode.cc:184
 msgid "Bermuda"
 msgstr "बरमुडा"
 
 #. :BMU:060:
-#: zypp/CountryCode.cc:185
+#: zypp-logic/zypp/CountryCode.cc:185
 msgid "Brunei Darussalam"
 msgstr "ब्रुनेई दारूसलाम"
 
 #. :BRN:096:
-#: zypp/CountryCode.cc:186
+#: zypp-logic/zypp/CountryCode.cc:186
 msgid "Bolivia"
 msgstr "बोलिव्हिया"
 
 #. :BOL:068:
-#: zypp/CountryCode.cc:187
+#: zypp-logic/zypp/CountryCode.cc:187
 msgid "Brazil"
 msgstr "ब्राझील"
 
 #. :BRA:076:
-#: zypp/CountryCode.cc:188
+#: zypp-logic/zypp/CountryCode.cc:188
 msgid "Bahamas"
 msgstr "बहामास"
 
 #. :BHS:044:
-#: zypp/CountryCode.cc:189
+#: zypp-logic/zypp/CountryCode.cc:189
 msgid "Bhutan"
 msgstr "भूतान"
 
 #. :BTN:064:
-#: zypp/CountryCode.cc:190
+#: zypp-logic/zypp/CountryCode.cc:190
 msgid "Bouvet Island"
 msgstr "बोव्हेच बेट"
 
 #. :BVT:074:
-#: zypp/CountryCode.cc:191
+#: zypp-logic/zypp/CountryCode.cc:191
 msgid "Botswana"
 msgstr "बोटस्वाना"
 
 #. :BWA:072:
-#: zypp/CountryCode.cc:192
+#: zypp-logic/zypp/CountryCode.cc:192
 msgid "Belarus"
 msgstr "बेलारूस"
 
 #. :BLR:112:
-#: zypp/CountryCode.cc:193
+#: zypp-logic/zypp/CountryCode.cc:193
 msgid "Belize"
 msgstr "बेलिझे"
 
 #. :BLZ:084:
-#: zypp/CountryCode.cc:194
+#: zypp-logic/zypp/CountryCode.cc:194
 msgid "Canada"
 msgstr "कॅनडा"
 
 #. :CAN:124:
-#: zypp/CountryCode.cc:195
+#: zypp-logic/zypp/CountryCode.cc:195
 msgid "Cocos (Keeling) Islands"
 msgstr "कॉकस (कीलींग) बेटे"
 
 #. :CCK:166:
 #. :CAF:140:
-#: zypp/CountryCode.cc:196 zypp/CountryCode.cc:198
+#: zypp-logic/zypp/CountryCode.cc:196 zypp-logic/zypp/CountryCode.cc:198
 msgid "Congo"
 msgstr "काँगो"
 
 #. :COD:180:
-#: zypp/CountryCode.cc:197
+#: zypp-logic/zypp/CountryCode.cc:197
 msgid "Central African Republic"
 msgstr "मध्य आफ्रिकी प्रजासत्ताक"
 
 #. :COG:178:
-#: zypp/CountryCode.cc:199
+#: zypp-logic/zypp/CountryCode.cc:199
 msgid "Switzerland"
 msgstr "स्वित्झर्लंड"
 
 #. :CHE:756:
-#: zypp/CountryCode.cc:200
+#: zypp-logic/zypp/CountryCode.cc:200
 msgid "Cote D'Ivoire"
 msgstr "कोट डी आयव्हरी"
 
 #. :CIV:384:
-#: zypp/CountryCode.cc:201
+#: zypp-logic/zypp/CountryCode.cc:201
 msgid "Cook Islands"
 msgstr "कूक बेटे"
 
 #. :COK:184:
-#: zypp/CountryCode.cc:202
+#: zypp-logic/zypp/CountryCode.cc:202
 msgid "Chile"
 msgstr "चिली"
 
 #. :CHL:152:
-#: zypp/CountryCode.cc:203
+#: zypp-logic/zypp/CountryCode.cc:203
 msgid "Cameroon"
 msgstr "कॅमेरून"
 
 #. :CMR:120:
-#: zypp/CountryCode.cc:204
+#: zypp-logic/zypp/CountryCode.cc:204
 msgid "China"
 msgstr "चीन"
 
 #. :CHN:156:
-#: zypp/CountryCode.cc:205
+#: zypp-logic/zypp/CountryCode.cc:205
 msgid "Colombia"
 msgstr "कोलंबिया"
 
 #. :COL:170:
-#: zypp/CountryCode.cc:206
+#: zypp-logic/zypp/CountryCode.cc:206
 msgid "Costa Rica"
 msgstr "कोस्टा रिका"
 
 #. :CRI:188:
-#: zypp/CountryCode.cc:207
+#: zypp-logic/zypp/CountryCode.cc:207
 msgid "Cuba"
 msgstr "क्युबा"
 
 #. :CUB:192:
-#: zypp/CountryCode.cc:208
+#: zypp-logic/zypp/CountryCode.cc:208
 msgid "Cape Verde"
 msgstr "केप व्हेर्डे"
 
 #. :CPV:132:
-#: zypp/CountryCode.cc:209
+#: zypp-logic/zypp/CountryCode.cc:209
 msgid "Christmas Island"
 msgstr "ख्रिसमस बेट"
 
 #. :CXR:162:
-#: zypp/CountryCode.cc:210
+#: zypp-logic/zypp/CountryCode.cc:210
 msgid "Cyprus"
 msgstr "सायप्रस"
 
 #. :CYP:196:
-#: zypp/CountryCode.cc:211
+#: zypp-logic/zypp/CountryCode.cc:211
 msgid "Czech Republic"
 msgstr "चेक प्रजासत्ताक"
 
 #. :CZE:203:
-#: zypp/CountryCode.cc:212
+#: zypp-logic/zypp/CountryCode.cc:212
 msgid "Germany"
 msgstr "जर्मनी"
 
 #. :DEU:276:
-#: zypp/CountryCode.cc:213
+#: zypp-logic/zypp/CountryCode.cc:213
 msgid "Djibouti"
 msgstr "दिजबौती"
 
 #. :DJI:262:
-#: zypp/CountryCode.cc:214
+#: zypp-logic/zypp/CountryCode.cc:214
 msgid "Denmark"
 msgstr "डेनमार्क"
 
 #. :DNK:208:
-#: zypp/CountryCode.cc:215
+#: zypp-logic/zypp/CountryCode.cc:215
 msgid "Dominica"
 msgstr "डॉमिनिका"
 
 #. :DMA:212:
-#: zypp/CountryCode.cc:216
+#: zypp-logic/zypp/CountryCode.cc:216
 msgid "Dominican Republic"
 msgstr "डॉमिनिकन प्रजासत्ताक"
 
 #. :DOM:214:
-#: zypp/CountryCode.cc:217
+#: zypp-logic/zypp/CountryCode.cc:217
 msgid "Algeria"
 msgstr "अल्जेरिया"
 
 #. :DZA:012:
-#: zypp/CountryCode.cc:218
+#: zypp-logic/zypp/CountryCode.cc:218
 msgid "Ecuador"
 msgstr "इक्वेडोर"
 
 #. :ECU:218:
-#: zypp/CountryCode.cc:219
+#: zypp-logic/zypp/CountryCode.cc:219
 msgid "Estonia"
 msgstr "एस्टोनिया"
 
 #. :EST:233:
-#: zypp/CountryCode.cc:220
+#: zypp-logic/zypp/CountryCode.cc:220
 msgid "Egypt"
 msgstr "ईजिप्त"
 
 #. :EGY:818:
-#: zypp/CountryCode.cc:221
+#: zypp-logic/zypp/CountryCode.cc:221
 msgid "Western Sahara"
 msgstr "पश्चिम सहारा"
 
 #. :ESH:732:
-#: zypp/CountryCode.cc:222
+#: zypp-logic/zypp/CountryCode.cc:222
 msgid "Eritrea"
 msgstr "एरिट्रिआ"
 
 #. :ERI:232:
-#: zypp/CountryCode.cc:223
+#: zypp-logic/zypp/CountryCode.cc:223
 msgid "Spain"
 msgstr "स्पेन"
 
 #. :ESP:724:
-#: zypp/CountryCode.cc:224
+#: zypp-logic/zypp/CountryCode.cc:224
 msgid "Ethiopia"
 msgstr "इथिओपिया"
 
 #. :ETH:231:
-#: zypp/CountryCode.cc:225
+#: zypp-logic/zypp/CountryCode.cc:225
 msgid "Finland"
 msgstr "फिनलँड"
 
 #. :FIN:246:
-#: zypp/CountryCode.cc:226
+#: zypp-logic/zypp/CountryCode.cc:226
 msgid "Fiji"
 msgstr "फिजी"
 
 #. :FJI:242:
-#: zypp/CountryCode.cc:227
+#: zypp-logic/zypp/CountryCode.cc:227
 msgid "Falkland Islands (Malvinas)"
 msgstr "फाल्कलॅन्ड बेटे (माल्व्हिनास)"
 
 #. :FLK:238:
-#: zypp/CountryCode.cc:228
+#: zypp-logic/zypp/CountryCode.cc:228
 msgid "Federated States of Micronesia"
 msgstr "मिक्रोनेशिया फेडरेटेड स्टेट्स"
 
 #. :FSM:583:
-#: zypp/CountryCode.cc:229
+#: zypp-logic/zypp/CountryCode.cc:229
 msgid "Faroe Islands"
 msgstr "फरोई बेटे"
 
 #. :FRO:234:
-#: zypp/CountryCode.cc:230
+#: zypp-logic/zypp/CountryCode.cc:230
 msgid "France"
 msgstr "फ्रान्स"
 
 #. :FRA:250:
-#: zypp/CountryCode.cc:231
+#: zypp-logic/zypp/CountryCode.cc:231
 msgid "Metropolitan France"
 msgstr "मेट्रॉपॉलिटन फ्रान्स"
 
 #. :FXX:249:
-#: zypp/CountryCode.cc:232
+#: zypp-logic/zypp/CountryCode.cc:232
 msgid "Gabon"
 msgstr "गॅबॉन"
 
 #. :GAB:266:
-#: zypp/CountryCode.cc:233
+#: zypp-logic/zypp/CountryCode.cc:233
 msgid "United Kingdom"
 msgstr ".युनायटेड किंगडम"
 
 #. :GBR:826:
-#: zypp/CountryCode.cc:234
+#: zypp-logic/zypp/CountryCode.cc:234
 msgid "Grenada"
 msgstr "ग्रेनाडा"
 
 #. :GRD:308:
-#: zypp/CountryCode.cc:235
+#: zypp-logic/zypp/CountryCode.cc:235
 msgid "Georgia"
 msgstr "जॉर्जिया"
 
 #. :GEO:268:
-#: zypp/CountryCode.cc:236
+#: zypp-logic/zypp/CountryCode.cc:236
 msgid "French Guiana"
 msgstr "फ्रेच गुआना"
 
 #. :GUF:254:
-#: zypp/CountryCode.cc:237
+#: zypp-logic/zypp/CountryCode.cc:237
 #, fuzzy
 msgid "Guernsey"
 msgstr "जर्मनी"
 
-#: zypp/CountryCode.cc:238
+#: zypp-logic/zypp/CountryCode.cc:238
 msgid "Ghana"
 msgstr "घाना"
 
 #. :GHA:288:
-#: zypp/CountryCode.cc:239
+#: zypp-logic/zypp/CountryCode.cc:239
 msgid "Gibraltar"
 msgstr "जिब्राल्टर"
 
 #. :GIB:292:
-#: zypp/CountryCode.cc:240
+#: zypp-logic/zypp/CountryCode.cc:240
 msgid "Greenland"
 msgstr "ग्रीनलॅन्ड"
 
 #. :GRL:304:
-#: zypp/CountryCode.cc:241
+#: zypp-logic/zypp/CountryCode.cc:241
 msgid "Gambia"
 msgstr "गॅम्बिया"
 
 #. :GMB:270:
-#: zypp/CountryCode.cc:242
+#: zypp-logic/zypp/CountryCode.cc:242
 msgid "Guinea"
 msgstr "ग्विनिआ"
 
 #. :GIN:324:
-#: zypp/CountryCode.cc:243
+#: zypp-logic/zypp/CountryCode.cc:243
 msgid "Guadeloupe"
 msgstr "ग्वाडेलोप"
 
 #. :GLP:312:
-#: zypp/CountryCode.cc:244
+#: zypp-logic/zypp/CountryCode.cc:244
 msgid "Equatorial Guinea"
 msgstr "इक्वेटोरियल गुनिआ"
 
 #. :GNQ:226:
-#: zypp/CountryCode.cc:245
+#: zypp-logic/zypp/CountryCode.cc:245
 msgid "Greece"
 msgstr "ग्रीस"
 
 #. :GRC:300:
-#: zypp/CountryCode.cc:246
+#: zypp-logic/zypp/CountryCode.cc:246
 msgid "South Georgia and the South Sandwich Islands"
 msgstr "दक्षिण जॉर्जिया व दक्षिण सॅन्डविच बेटे"
 
 #. :SGS:239:
-#: zypp/CountryCode.cc:247
+#: zypp-logic/zypp/CountryCode.cc:247
 msgid "Guatemala"
 msgstr "ग्वाटेमाला"
 
 #. :GTM:320:
-#: zypp/CountryCode.cc:248
+#: zypp-logic/zypp/CountryCode.cc:248
 msgid "Guam"
 msgstr "ग्वॅम"
 
 #. :GUM:316:
-#: zypp/CountryCode.cc:249
+#: zypp-logic/zypp/CountryCode.cc:249
 msgid "Guinea-Bissau"
 msgstr "ग्विनिआ-बिसाऊ"
 
 #. :GNB:624:
-#: zypp/CountryCode.cc:250
+#: zypp-logic/zypp/CountryCode.cc:250
 msgid "Guyana"
 msgstr "गयाना"
 
 #. :GUY:328:
-#: zypp/CountryCode.cc:251
+#: zypp-logic/zypp/CountryCode.cc:251
 msgid "Hong Kong"
 msgstr "हाँगकाँग"
 
 #. :HKG:344:
-#: zypp/CountryCode.cc:252
+#: zypp-logic/zypp/CountryCode.cc:252
 msgid "Heard Island and McDonald Islands"
 msgstr "हर्ड बेटे व मॅकडॉनल्ड बेटे"
 
 #. :HMD:334:
-#: zypp/CountryCode.cc:253
+#: zypp-logic/zypp/CountryCode.cc:253
 msgid "Honduras"
 msgstr "होंडुरास"
 
 #. :HND:340:
-#: zypp/CountryCode.cc:254
+#: zypp-logic/zypp/CountryCode.cc:254
 msgid "Croatia"
 msgstr "क्रोएशिया"
 
 #. :HRV:191:
-#: zypp/CountryCode.cc:255
+#: zypp-logic/zypp/CountryCode.cc:255
 msgid "Haiti"
 msgstr "हैती"
 
 #. :HTI:332:
-#: zypp/CountryCode.cc:256
+#: zypp-logic/zypp/CountryCode.cc:256
 msgid "Hungary"
 msgstr "हंगेरी"
 
 #. :HUN:348:
-#: zypp/CountryCode.cc:257
+#: zypp-logic/zypp/CountryCode.cc:257
 msgid "Indonesia"
 msgstr "इंडोनेशिया"
 
 #. :IDN:360:
-#: zypp/CountryCode.cc:258
+#: zypp-logic/zypp/CountryCode.cc:258
 msgid "Ireland"
 msgstr "आयर्लंड"
 
 #. :IRL:372:
-#: zypp/CountryCode.cc:259
+#: zypp-logic/zypp/CountryCode.cc:259
 msgid "Israel"
 msgstr "इस्रेल"
 
 #. :ISR:376:
-#: zypp/CountryCode.cc:260
+#: zypp-logic/zypp/CountryCode.cc:260
 msgid "Isle of Man"
 msgstr ""
 
-#: zypp/CountryCode.cc:261
+#: zypp-logic/zypp/CountryCode.cc:261
 msgid "India"
 msgstr "भारत"
 
 #. :IND:356:
-#: zypp/CountryCode.cc:262
+#: zypp-logic/zypp/CountryCode.cc:262
 msgid "British Indian Ocean Territory"
 msgstr "ब्रिटिश हिंदी महासागर प्रदेश"
 
 #. :IOT:086:
-#: zypp/CountryCode.cc:263
+#: zypp-logic/zypp/CountryCode.cc:263
 msgid "Iraq"
 msgstr "इराक"
 
 #. :IRQ:368:
-#: zypp/CountryCode.cc:264
+#: zypp-logic/zypp/CountryCode.cc:264
 msgid "Iran"
 msgstr "इराण"
 
 #. :IRN:364:
-#: zypp/CountryCode.cc:265
+#: zypp-logic/zypp/CountryCode.cc:265
 msgid "Iceland"
 msgstr "आइसलॅन्ड"
 
 #. :ISL:352:
-#: zypp/CountryCode.cc:266
+#: zypp-logic/zypp/CountryCode.cc:266
 msgid "Italy"
 msgstr "ईटाली"
 
 #. :ITA:380:
-#: zypp/CountryCode.cc:267
+#: zypp-logic/zypp/CountryCode.cc:267
 msgid "Jersey"
 msgstr ""
 
-#: zypp/CountryCode.cc:268
+#: zypp-logic/zypp/CountryCode.cc:268
 msgid "Jamaica"
 msgstr "जमैका"
 
 #. :JAM:388:
-#: zypp/CountryCode.cc:269
+#: zypp-logic/zypp/CountryCode.cc:269
 msgid "Jordan"
 msgstr "जॉर्डन"
 
 #. :JOR:400:
-#: zypp/CountryCode.cc:270
+#: zypp-logic/zypp/CountryCode.cc:270
 msgid "Japan"
 msgstr "जपान"
 
 #. :JPN:392:
-#: zypp/CountryCode.cc:271
+#: zypp-logic/zypp/CountryCode.cc:271
 msgid "Kenya"
 msgstr "केनिया"
 
 #. :KEN:404:
-#: zypp/CountryCode.cc:272
+#: zypp-logic/zypp/CountryCode.cc:272
 msgid "Kyrgyzstan"
 msgstr "किरगिझस्तान"
 
 #. :KGZ:417:
-#: zypp/CountryCode.cc:273
+#: zypp-logic/zypp/CountryCode.cc:273
 msgid "Cambodia"
 msgstr "कंबोडिया"
 
 #. :KHM:116:
-#: zypp/CountryCode.cc:274
+#: zypp-logic/zypp/CountryCode.cc:274
 msgid "Kiribati"
 msgstr "किरीबती"
 
 #. :KIR:296:
-#: zypp/CountryCode.cc:275
+#: zypp-logic/zypp/CountryCode.cc:275
 msgid "Comoros"
 msgstr "कॉमोरोस"
 
 #. :COM:174:
-#: zypp/CountryCode.cc:276
+#: zypp-logic/zypp/CountryCode.cc:276
 msgid "Saint Kitts and Nevis"
 msgstr "सेंट किट्स व नेव्हिस"
 
 #. :KNA:659:
-#: zypp/CountryCode.cc:277
+#: zypp-logic/zypp/CountryCode.cc:277
 msgid "North Korea"
 msgstr "उत्तर कोरिया"
 
 #. :PRK:408:
-#: zypp/CountryCode.cc:278
+#: zypp-logic/zypp/CountryCode.cc:278
 msgid "South Korea"
 msgstr "दक्षिण कोरिया"
 
 #. :KOR:410:
-#: zypp/CountryCode.cc:279
+#: zypp-logic/zypp/CountryCode.cc:279
 msgid "Kuwait"
 msgstr "कुवैत"
 
 #. :KWT:414:
-#: zypp/CountryCode.cc:280
+#: zypp-logic/zypp/CountryCode.cc:280
 msgid "Cayman Islands"
 msgstr "केमन बेटे"
 
 #. :CYM:136:
-#: zypp/CountryCode.cc:281
+#: zypp-logic/zypp/CountryCode.cc:281
 msgid "Kazakhstan"
 msgstr "कझाकस्तान"
 
 #. :KAZ:398:
-#: zypp/CountryCode.cc:282
+#: zypp-logic/zypp/CountryCode.cc:282
 msgid "Lao People's Democratic Republic"
 msgstr "लाओ पीपल्स डेमोक्रॅटिक रिपल्बिक"
 
 #. :LAO:418:
-#: zypp/CountryCode.cc:283
+#: zypp-logic/zypp/CountryCode.cc:283
 msgid "Lebanon"
 msgstr "लेबनॉन"
 
 #. :LBN:422:
-#: zypp/CountryCode.cc:284
+#: zypp-logic/zypp/CountryCode.cc:284
 msgid "Saint Lucia"
 msgstr "सेंट ल्युसिया"
 
 #. :LCA:662:
-#: zypp/CountryCode.cc:285
+#: zypp-logic/zypp/CountryCode.cc:285
 msgid "Liechtenstein"
 msgstr "लाएचटेन्स्टिन"
 
 #. :LIE:438:
-#: zypp/CountryCode.cc:286
+#: zypp-logic/zypp/CountryCode.cc:286
 msgid "Sri Lanka"
 msgstr "श्रीलंका"
 
 #. :LKA:144:
-#: zypp/CountryCode.cc:287
+#: zypp-logic/zypp/CountryCode.cc:287
 msgid "Liberia"
 msgstr "लायबेरिया"
 
 #. :LBR:430:
-#: zypp/CountryCode.cc:288
+#: zypp-logic/zypp/CountryCode.cc:288
 msgid "Lesotho"
 msgstr "लेसोथो"
 
 #. :LSO:426:
-#: zypp/CountryCode.cc:289
+#: zypp-logic/zypp/CountryCode.cc:289
 msgid "Lithuania"
 msgstr "लिथुएनिया"
 
 #. :LTU:440:
-#: zypp/CountryCode.cc:290
+#: zypp-logic/zypp/CountryCode.cc:290
 msgid "Luxembourg"
 msgstr "लक्झेमबर्ग"
 
 #. :LUX:442:
-#: zypp/CountryCode.cc:291
+#: zypp-logic/zypp/CountryCode.cc:291
 msgid "Latvia"
 msgstr "लॅटव्हिया"
 
 #. :LVA:428:
-#: zypp/CountryCode.cc:292
+#: zypp-logic/zypp/CountryCode.cc:292
 msgid "Libya"
 msgstr "लिबिया"
 
 #. :LBY:434:
-#: zypp/CountryCode.cc:293
+#: zypp-logic/zypp/CountryCode.cc:293
 msgid "Morocco"
 msgstr "मोरोक्को"
 
 #. :MAR:504:
-#: zypp/CountryCode.cc:294
+#: zypp-logic/zypp/CountryCode.cc:294
 msgid "Monaco"
 msgstr "मोनॅको"
 
 #. :MCO:492:
-#: zypp/CountryCode.cc:295
+#: zypp-logic/zypp/CountryCode.cc:295
 msgid "Moldova"
 msgstr "मॉल्दोव्हा"
 
 #. :MDA:498:
-#: zypp/CountryCode.cc:296
+#: zypp-logic/zypp/CountryCode.cc:296
 #, fuzzy
 msgid "Montenegro"
 msgstr "मोंगो"
 
-#: zypp/CountryCode.cc:297
+#: zypp-logic/zypp/CountryCode.cc:297
 #, fuzzy
 msgid "Saint Martin"
 msgstr "सॅन मारिनो"
 
-#: zypp/CountryCode.cc:298
+#: zypp-logic/zypp/CountryCode.cc:298
 msgid "Madagascar"
 msgstr "मादागास्कर"
 
 #. :MDG:450:
-#: zypp/CountryCode.cc:299
+#: zypp-logic/zypp/CountryCode.cc:299
 msgid "Marshall Islands"
 msgstr "मार्शल बेटे"
 
 #. :MHL:584:
-#: zypp/CountryCode.cc:300
+#: zypp-logic/zypp/CountryCode.cc:300
 msgid "Macedonia"
 msgstr "मासेडोनिया"
 
 #. :MKD:807:
-#: zypp/CountryCode.cc:301
+#: zypp-logic/zypp/CountryCode.cc:301
 msgid "Mali"
 msgstr "माली"
 
 #. :MLI:466:
-#: zypp/CountryCode.cc:302
+#: zypp-logic/zypp/CountryCode.cc:302
 msgid "Myanmar"
 msgstr "म्यानमार"
 
 #. :MMR:104:
-#: zypp/CountryCode.cc:303
+#: zypp-logic/zypp/CountryCode.cc:303
 msgid "Mongolia"
 msgstr "मंगोलिया"
 
 #. :MNG:496:
-#: zypp/CountryCode.cc:304
+#: zypp-logic/zypp/CountryCode.cc:304
 msgid "Macao"
 msgstr "मकाओ"
 
 #. :MAC:446:
-#: zypp/CountryCode.cc:305
+#: zypp-logic/zypp/CountryCode.cc:305
 msgid "Northern Mariana Islands"
 msgstr "उत्तरी मेरियाना बेटे"
 
 #. :MNP:580:
-#: zypp/CountryCode.cc:306
+#: zypp-logic/zypp/CountryCode.cc:306
 msgid "Martinique"
 msgstr "मार्टिनिक"
 
 #. :MTQ:474:
-#: zypp/CountryCode.cc:307
+#: zypp-logic/zypp/CountryCode.cc:307
 msgid "Mauritania"
 msgstr "मॉरिटॅनिया"
 
 #. :MRT:478:
-#: zypp/CountryCode.cc:308
+#: zypp-logic/zypp/CountryCode.cc:308
 msgid "Montserrat"
 msgstr "माँतेसेरत"
 
 #. :MSR:500:
-#: zypp/CountryCode.cc:309
+#: zypp-logic/zypp/CountryCode.cc:309
 msgid "Malta"
 msgstr "माल्टा"
 
 #. :MLT:470:
-#: zypp/CountryCode.cc:310
+#: zypp-logic/zypp/CountryCode.cc:310
 msgid "Mauritius"
 msgstr "मॉरिशस"
 
 #. :MUS:480:
-#: zypp/CountryCode.cc:311
+#: zypp-logic/zypp/CountryCode.cc:311
 msgid "Maldives"
 msgstr "मालदीव्हज"
 
 #. :MDV:462:
-#: zypp/CountryCode.cc:312
+#: zypp-logic/zypp/CountryCode.cc:312
 msgid "Malawi"
 msgstr "मालावी"
 
 #. :MWI:454:
-#: zypp/CountryCode.cc:313
+#: zypp-logic/zypp/CountryCode.cc:313
 msgid "Mexico"
 msgstr "मेक्सिको"
 
 #. :MEX:484:
-#: zypp/CountryCode.cc:314
+#: zypp-logic/zypp/CountryCode.cc:314
 msgid "Malaysia"
 msgstr "मलेशिया"
 
 #. :MYS:458:
-#: zypp/CountryCode.cc:315
+#: zypp-logic/zypp/CountryCode.cc:315
 msgid "Mozambique"
 msgstr "मोझाम्बिक"
 
 #. :MOZ:508:
-#: zypp/CountryCode.cc:316
+#: zypp-logic/zypp/CountryCode.cc:316
 msgid "Namibia"
 msgstr "नामिबिया"
 
 #. :NAM:516:
-#: zypp/CountryCode.cc:317
+#: zypp-logic/zypp/CountryCode.cc:317
 msgid "New Caledonia"
 msgstr "न्यू कॅलेडोनिया"
 
 #. :NCL:540:
-#: zypp/CountryCode.cc:318
+#: zypp-logic/zypp/CountryCode.cc:318
 msgid "Niger"
 msgstr "नायजेर"
 
 #. :NER:562:
-#: zypp/CountryCode.cc:319
+#: zypp-logic/zypp/CountryCode.cc:319
 msgid "Norfolk Island"
 msgstr "नॉरफॉक बेटे"
 
 #. :NFK:574:
-#: zypp/CountryCode.cc:320
+#: zypp-logic/zypp/CountryCode.cc:320
 msgid "Nigeria"
 msgstr "नायजेरिया"
 
 #. :NGA:566:
-#: zypp/CountryCode.cc:321
+#: zypp-logic/zypp/CountryCode.cc:321
 msgid "Nicaragua"
 msgstr "निकारागुआ"
 
 #. :NIC:558:
-#: zypp/CountryCode.cc:322
+#: zypp-logic/zypp/CountryCode.cc:322
 msgid "Netherlands"
 msgstr "नेदरलॅन्डस"
 
 #. :NLD:528:
-#: zypp/CountryCode.cc:323
+#: zypp-logic/zypp/CountryCode.cc:323
 msgid "Norway"
 msgstr "नॉर्वे"
 
 #. :NOR:578:
-#: zypp/CountryCode.cc:324
+#: zypp-logic/zypp/CountryCode.cc:324
 msgid "Nepal"
 msgstr "नेपाळ"
 
 #. :NPL:524:
 #. language code: nau na
-#: zypp/CountryCode.cc:325 zypp/LanguageCode.cc:781
+#: zypp-logic/zypp/CountryCode.cc:325 zypp-logic/zypp/LanguageCode.cc:781
 msgid "Nauru"
 msgstr "नौरू"
 
 #. :NRU:520:
-#: zypp/CountryCode.cc:326
+#: zypp-logic/zypp/CountryCode.cc:326
 msgid "Niue"
 msgstr "न्यूए"
 
 #. :NIU:570:
-#: zypp/CountryCode.cc:327
+#: zypp-logic/zypp/CountryCode.cc:327
 msgid "New Zealand"
 msgstr "न्यूझीलंड"
 
 #. :NZL:554:
-#: zypp/CountryCode.cc:328
+#: zypp-logic/zypp/CountryCode.cc:328
 msgid "Oman"
 msgstr "ओमान"
 
 #. :OMN:512:
-#: zypp/CountryCode.cc:329
+#: zypp-logic/zypp/CountryCode.cc:329
 msgid "Panama"
 msgstr "पनामा"
 
 #. :PAN:591:
-#: zypp/CountryCode.cc:330
+#: zypp-logic/zypp/CountryCode.cc:330
 msgid "Peru"
 msgstr "पेरू"
 
 #. :PER:604:
-#: zypp/CountryCode.cc:331
+#: zypp-logic/zypp/CountryCode.cc:331
 msgid "French Polynesia"
 msgstr "फ्रेंच पॉलिनेसिया"
 
 #. :PYF:258:
-#: zypp/CountryCode.cc:332
+#: zypp-logic/zypp/CountryCode.cc:332
 msgid "Papua New Guinea"
 msgstr "पापुआ न्यू जिनिव्हा"
 
 #. :PNG:598:
-#: zypp/CountryCode.cc:333
+#: zypp-logic/zypp/CountryCode.cc:333
 msgid "Philippines"
 msgstr "फिलीपीन्स"
 
 #. :PHL:608:
-#: zypp/CountryCode.cc:334
+#: zypp-logic/zypp/CountryCode.cc:334
 msgid "Pakistan"
 msgstr "पाकिस्तान"
 
 #. :PAK:586:
-#: zypp/CountryCode.cc:335
+#: zypp-logic/zypp/CountryCode.cc:335
 msgid "Poland"
 msgstr "पोलंड"
 
 #. :POL:616:
-#: zypp/CountryCode.cc:336
+#: zypp-logic/zypp/CountryCode.cc:336
 msgid "Saint Pierre and Miquelon"
 msgstr "सेंट पिअर व मिक्वेलॉन"
 
 #. :SPM:666:
-#: zypp/CountryCode.cc:337
+#: zypp-logic/zypp/CountryCode.cc:337
 msgid "Pitcairn"
 msgstr "पिटकैर्न"
 
 #. :PCN:612:
-#: zypp/CountryCode.cc:338
+#: zypp-logic/zypp/CountryCode.cc:338
 msgid "Puerto Rico"
 msgstr "प्युर्टो रिको"
 
 #. :PRI:630:
-#: zypp/CountryCode.cc:339
+#: zypp-logic/zypp/CountryCode.cc:339
 msgid "Palestinian Territory"
 msgstr "पॅलेस्टिनी भूप्रदेश"
 
 #. :PSE:275:
-#: zypp/CountryCode.cc:340
+#: zypp-logic/zypp/CountryCode.cc:340
 msgid "Portugal"
 msgstr "पोर्तुगाल"
 
 #. :PRT:620:
-#: zypp/CountryCode.cc:341
+#: zypp-logic/zypp/CountryCode.cc:341
 msgid "Palau"
 msgstr "पलाऊ"
 
 #. :PLW:585:
-#: zypp/CountryCode.cc:342
+#: zypp-logic/zypp/CountryCode.cc:342
 msgid "Paraguay"
 msgstr "पॅरॅग्वे"
 
 #. :PRY:600:
-#: zypp/CountryCode.cc:343
+#: zypp-logic/zypp/CountryCode.cc:343
 msgid "Qatar"
 msgstr "कतार"
 
 #. :QAT:634:
-#: zypp/CountryCode.cc:344
+#: zypp-logic/zypp/CountryCode.cc:344
 msgid "Reunion"
 msgstr "रीयुनियन"
 
 #. :REU:638:
-#: zypp/CountryCode.cc:345
+#: zypp-logic/zypp/CountryCode.cc:345
 msgid "Romania"
 msgstr "रूमेनिया"
 
 #. :ROU:642:
-#: zypp/CountryCode.cc:346
+#: zypp-logic/zypp/CountryCode.cc:346
 #, fuzzy
 msgid "Serbia"
 msgstr "सर्बियन"
 
-#: zypp/CountryCode.cc:347
+#: zypp-logic/zypp/CountryCode.cc:347
 msgid "Russian Federation"
 msgstr "रशियन फेडरेशन"
 
 #. :RUS:643:
-#: zypp/CountryCode.cc:348
+#: zypp-logic/zypp/CountryCode.cc:348
 msgid "Rwanda"
 msgstr "रवांडा"
 
 #. :RWA:646:
-#: zypp/CountryCode.cc:349
+#: zypp-logic/zypp/CountryCode.cc:349
 msgid "Saudi Arabia"
 msgstr "सौदी अरबस्तान"
 
 #. :SAU:682:
-#: zypp/CountryCode.cc:350
+#: zypp-logic/zypp/CountryCode.cc:350
 msgid "Solomon Islands"
 msgstr "सॉलोमन बेटे"
 
 #. :SLB:090:
-#: zypp/CountryCode.cc:351
+#: zypp-logic/zypp/CountryCode.cc:351
 msgid "Seychelles"
 msgstr "सेशेल्स"
 
 #. :SYC:690:
-#: zypp/CountryCode.cc:352
+#: zypp-logic/zypp/CountryCode.cc:352
 msgid "Sudan"
 msgstr "सुदान"
 
 #. :SDN:736:
-#: zypp/CountryCode.cc:353
+#: zypp-logic/zypp/CountryCode.cc:353
 msgid "Sweden"
 msgstr "स्वीडन"
 
 #. :SWE:752:
-#: zypp/CountryCode.cc:354
+#: zypp-logic/zypp/CountryCode.cc:354
 msgid "Singapore"
 msgstr "सिंगापुर"
 
 #. :SGP:702:
-#: zypp/CountryCode.cc:355
+#: zypp-logic/zypp/CountryCode.cc:355
 msgid "Saint Helena"
 msgstr "सेंट हेलेना"
 
 #. :SHN:654:
-#: zypp/CountryCode.cc:356
+#: zypp-logic/zypp/CountryCode.cc:356
 msgid "Slovenia"
 msgstr "स्लोव्हेनिया"
 
 #. :SVN:705:
-#: zypp/CountryCode.cc:357
+#: zypp-logic/zypp/CountryCode.cc:357
 msgid "Svalbard and Jan Mayen"
 msgstr "स्वॅलबार्ड व जन मायेन"
 
 #. :SJM:744:
-#: zypp/CountryCode.cc:358
+#: zypp-logic/zypp/CountryCode.cc:358
 msgid "Slovakia"
 msgstr "स्लोव्हाकिया"
 
 #. :SVK:703:
-#: zypp/CountryCode.cc:359
+#: zypp-logic/zypp/CountryCode.cc:359
 msgid "Sierra Leone"
 msgstr "सिएरा लिओन"
 
 #. :SLE:694:
-#: zypp/CountryCode.cc:360
+#: zypp-logic/zypp/CountryCode.cc:360
 msgid "San Marino"
 msgstr "सॅन मारिनो"
 
 #. :SMR:674:
-#: zypp/CountryCode.cc:361
+#: zypp-logic/zypp/CountryCode.cc:361
 msgid "Senegal"
 msgstr "सेनेगल"
 
 #. :SEN:686:
-#: zypp/CountryCode.cc:362
+#: zypp-logic/zypp/CountryCode.cc:362
 msgid "Somalia"
 msgstr "सोमालिया"
 
 #. :SOM:706:
-#: zypp/CountryCode.cc:363
+#: zypp-logic/zypp/CountryCode.cc:363
 msgid "Suriname"
 msgstr "सुरीनाम"
 
 #. :SUR:740:
-#: zypp/CountryCode.cc:364
+#: zypp-logic/zypp/CountryCode.cc:364
 msgid "Sao Tome and Principe"
 msgstr "साओ टोम व प्रिन्सिप"
 
 #. :STP:678:
-#: zypp/CountryCode.cc:365
+#: zypp-logic/zypp/CountryCode.cc:365
 msgid "El Salvador"
 msgstr "एल सॅल्व्हेडोर"
 
 #. :SLV:222:
-#: zypp/CountryCode.cc:366
+#: zypp-logic/zypp/CountryCode.cc:366
 msgid "Syria"
 msgstr "सायरिया"
 
 #. :SYR:760:
-#: zypp/CountryCode.cc:367
+#: zypp-logic/zypp/CountryCode.cc:367
 msgid "Swaziland"
 msgstr "स्वाझिलॅन्ड"
 
 #. :SWZ:748:
-#: zypp/CountryCode.cc:368
+#: zypp-logic/zypp/CountryCode.cc:368
 msgid "Turks and Caicos Islands"
 msgstr "टर्क्स व कैकॉस बेटे"
 
 #. :TCA:796:
-#: zypp/CountryCode.cc:369
+#: zypp-logic/zypp/CountryCode.cc:369
 msgid "Chad"
 msgstr "चॅड"
 
 #. :TCD:148:
-#: zypp/CountryCode.cc:370
+#: zypp-logic/zypp/CountryCode.cc:370
 msgid "French Southern Territories"
 msgstr "फ्रेंच दक्षिणी भूप्रदेश"
 
 #. :ATF:260:
-#: zypp/CountryCode.cc:371
+#: zypp-logic/zypp/CountryCode.cc:371
 msgid "Togo"
 msgstr "टोगो"
 
 #. :TGO:768:
-#: zypp/CountryCode.cc:372
+#: zypp-logic/zypp/CountryCode.cc:372
 msgid "Thailand"
 msgstr "थायलंड"
 
 #. :THA:764:
-#: zypp/CountryCode.cc:373
+#: zypp-logic/zypp/CountryCode.cc:373
 msgid "Tajikistan"
 msgstr "ताजिकीस्तान"
 
 #. :TJK:762:
 #. language code: tkl
-#: zypp/CountryCode.cc:374 zypp/LanguageCode.cc:1045
+#: zypp-logic/zypp/CountryCode.cc:374 zypp-logic/zypp/LanguageCode.cc:1045
 msgid "Tokelau"
 msgstr "टोकेलाऊ"
 
 #. :TKL:772:
-#: zypp/CountryCode.cc:375
+#: zypp-logic/zypp/CountryCode.cc:375
 msgid "Turkmenistan"
 msgstr "तुर्कमेनिस्तान"
 
 #. :TKM:795:
-#: zypp/CountryCode.cc:376
+#: zypp-logic/zypp/CountryCode.cc:376
 msgid "Tunisia"
 msgstr "ट्युनिशिया"
 
 #. :TUN:788:
-#: zypp/CountryCode.cc:377
+#: zypp-logic/zypp/CountryCode.cc:377
 msgid "Tonga"
 msgstr "टोंगा"
 
 #. :TON:776:
-#: zypp/CountryCode.cc:378
+#: zypp-logic/zypp/CountryCode.cc:378
 msgid "East Timor"
 msgstr "पूर्व तिमोर"
 
 #. :TLS:626:
-#: zypp/CountryCode.cc:379
+#: zypp-logic/zypp/CountryCode.cc:379
 msgid "Turkey"
 msgstr "तुर्कस्तान"
 
 #. :TUR:792:
-#: zypp/CountryCode.cc:380
+#: zypp-logic/zypp/CountryCode.cc:380
 msgid "Trinidad and Tobago"
 msgstr "त्रिनिदाद व टोबॅगो"
 
 #. :TTO:780:
 #. language code: tvl
-#: zypp/CountryCode.cc:381 zypp/LanguageCode.cc:1075
+#: zypp-logic/zypp/CountryCode.cc:381 zypp-logic/zypp/LanguageCode.cc:1075
 msgid "Tuvalu"
 msgstr "तुवालू"
 
 #. :TUV:798:
-#: zypp/CountryCode.cc:382
+#: zypp-logic/zypp/CountryCode.cc:382
 msgid "Taiwan"
 msgstr "तैवान"
 
 #. :TWN:158:
-#: zypp/CountryCode.cc:383
+#: zypp-logic/zypp/CountryCode.cc:383
 msgid "Tanzania"
 msgstr "टांझानिया"
 
 #. :TZA:834:
-#: zypp/CountryCode.cc:384
+#: zypp-logic/zypp/CountryCode.cc:384
 msgid "Ukraine"
 msgstr "युक्रेन"
 
 #. :UKR:804:
-#: zypp/CountryCode.cc:385
+#: zypp-logic/zypp/CountryCode.cc:385
 msgid "Uganda"
 msgstr "युगांडा"
 
 #. :UGA:800:
-#: zypp/CountryCode.cc:386
+#: zypp-logic/zypp/CountryCode.cc:386
 msgid "United States Minor Outlying Islands"
 msgstr "अमेरिकेतील छोटी बेटे"
 
 #. :UMI:581:
-#: zypp/CountryCode.cc:387
+#: zypp-logic/zypp/CountryCode.cc:387
 msgid "United States"
 msgstr "अमेरिका"
 
 #. :USA:840:
-#: zypp/CountryCode.cc:388
+#: zypp-logic/zypp/CountryCode.cc:388
 msgid "Uruguay"
 msgstr "ऊरुग्वे"
 
 #. :URY:858:
-#: zypp/CountryCode.cc:389
+#: zypp-logic/zypp/CountryCode.cc:389
 msgid "Uzbekistan"
 msgstr "उझबेकिस्तान"
 
 #. :UZB:860:
-#: zypp/CountryCode.cc:390
+#: zypp-logic/zypp/CountryCode.cc:390
 msgid "Holy See (Vatican City State)"
 msgstr "होली सी (व्हॅटिकन सिटी देश)"
 
 #. :VAT:336:
-#: zypp/CountryCode.cc:391
+#: zypp-logic/zypp/CountryCode.cc:391
 msgid "Saint Vincent and the Grenadines"
 msgstr "सेंट विन्सेन्ट व ग्रेनाडिन्स"
 
 #. :VCT:670:
-#: zypp/CountryCode.cc:392
+#: zypp-logic/zypp/CountryCode.cc:392
 msgid "Venezuela"
 msgstr "व्हेनेझुएला"
 
 #. :VEN:862:
-#: zypp/CountryCode.cc:393
+#: zypp-logic/zypp/CountryCode.cc:393
 msgid "British Virgin Islands"
 msgstr "ब्रिटिश व्हर्जिन बेटे"
 
 #. :VGB:092:
-#: zypp/CountryCode.cc:394
+#: zypp-logic/zypp/CountryCode.cc:394
 msgid "Virgin Islands, U.S."
 msgstr "व्हर्जिन आयलंड्स, अमेरिका"
 
 #. :VIR:850:
-#: zypp/CountryCode.cc:395
+#: zypp-logic/zypp/CountryCode.cc:395
 msgid "Vietnam"
 msgstr "व्हिएटनाम"
 
 #. :VNM:704:
-#: zypp/CountryCode.cc:396
+#: zypp-logic/zypp/CountryCode.cc:396
 msgid "Vanuatu"
 msgstr "वानुआतू"
 
 #. :VUT:548:
-#: zypp/CountryCode.cc:397
+#: zypp-logic/zypp/CountryCode.cc:397
 msgid "Wallis and Futuna"
 msgstr "वॉलिस व फुतुना"
 
 #. :WLF:876:
-#: zypp/CountryCode.cc:398
+#: zypp-logic/zypp/CountryCode.cc:398
 msgid "Samoa"
 msgstr "सॅमोआ"
 
 #. :WSM:882:
-#: zypp/CountryCode.cc:399
+#: zypp-logic/zypp/CountryCode.cc:399
 msgid "Yemen"
 msgstr "येमेन"
 
 #. :YEM:887:
-#: zypp/CountryCode.cc:400
+#: zypp-logic/zypp/CountryCode.cc:400
 msgid "Mayotte"
 msgstr "मायोटे"
 
 #. :MYT:175:
-#: zypp/CountryCode.cc:401
+#: zypp-logic/zypp/CountryCode.cc:401
 msgid "South Africa"
 msgstr "दक्षिण आफ्रिका"
 
 #. :ZAF:710:
-#: zypp/CountryCode.cc:402
+#: zypp-logic/zypp/CountryCode.cc:402
 msgid "Zambia"
 msgstr "झांबिया"
 
 #. :ZMB:894:
-#: zypp/CountryCode.cc:403
+#: zypp-logic/zypp/CountryCode.cc:403
 msgid "Zimbabwe"
 msgstr "झिंबाब्बे"
 
-#: zypp/Dep.cc:96
+#: zypp-logic/zypp/Dep.cc:96
 msgid "Provides"
 msgstr ""
 
-#: zypp/Dep.cc:97
+#: zypp-logic/zypp/Dep.cc:97
 msgid "Prerequires"
 msgstr ""
 
-#: zypp/Dep.cc:98
+#: zypp-logic/zypp/Dep.cc:98
 msgid "Requires"
 msgstr ""
 
-#: zypp/Dep.cc:99
+#: zypp-logic/zypp/Dep.cc:99
 msgid "Conflicts"
 msgstr ""
 
-#: zypp/Dep.cc:100
+#: zypp-logic/zypp/Dep.cc:100
 #, fuzzy
 msgid "Obsoletes"
 msgstr "%s :%s ला बाजूला टाकते"
 
-#: zypp/Dep.cc:101
+#: zypp-logic/zypp/Dep.cc:101
 msgid "Recommends"
 msgstr ""
 
-#: zypp/Dep.cc:102
+#: zypp-logic/zypp/Dep.cc:102
 msgid "Suggests"
 msgstr ""
 
-#: zypp/Dep.cc:103
+#: zypp-logic/zypp/Dep.cc:103
 msgid "Enhances"
 msgstr ""
 
-#: zypp/Dep.cc:104
+#: zypp-logic/zypp/Dep.cc:104
 msgid "Supplements"
 msgstr ""
 
-#: zypp/LanguageCode.cc:49
+#: zypp-logic/zypp/LanguageCode.cc:49
 msgid "Unknown language: "
 msgstr "अज्ञात भाषा"
 
 #. language code: aar aa
-#: zypp/LanguageCode.cc:161
+#: zypp-logic/zypp/LanguageCode.cc:161
 msgid "Afar"
 msgstr "अफार"
 
 #. language code: abk ab
-#: zypp/LanguageCode.cc:163
+#: zypp-logic/zypp/LanguageCode.cc:163
 msgid "Abkhazian"
 msgstr "अबखॅजियॅन"
 
 #. language code: ace
-#: zypp/LanguageCode.cc:165
+#: zypp-logic/zypp/LanguageCode.cc:165
 msgid "Achinese"
 msgstr "अचाईनीज"
 
 #. language code: ach
-#: zypp/LanguageCode.cc:167
+#: zypp-logic/zypp/LanguageCode.cc:167
 msgid "Acoli"
 msgstr "अकोली"
 
 #. language code: ada
-#: zypp/LanguageCode.cc:169
+#: zypp-logic/zypp/LanguageCode.cc:169
 msgid "Adangme"
 msgstr "अडँग्मे"
 
 #. language code: ady
-#: zypp/LanguageCode.cc:171
+#: zypp-logic/zypp/LanguageCode.cc:171
 msgid "Adyghe"
 msgstr "अडायघे"
 
 #. language code: afa
-#: zypp/LanguageCode.cc:173
+#: zypp-logic/zypp/LanguageCode.cc:173
 msgid "Afro-Asiatic (Other)"
 msgstr "आफ्रो-एशियाटिक (अन्य)"
 
 #. language code: afh
-#: zypp/LanguageCode.cc:175
+#: zypp-logic/zypp/LanguageCode.cc:175
 msgid "Afrihili"
 msgstr "आफ्रिहिली"
 
 #. language code: afr af
-#: zypp/LanguageCode.cc:177
+#: zypp-logic/zypp/LanguageCode.cc:177
 msgid "Afrikaans"
 msgstr "आफ्रिकान्स"
 
 #. language code: ain
-#: zypp/LanguageCode.cc:179
+#: zypp-logic/zypp/LanguageCode.cc:179
 msgid "Ainu"
 msgstr "ऐनू"
 
 #. language code: aka ak
-#: zypp/LanguageCode.cc:181
+#: zypp-logic/zypp/LanguageCode.cc:181
 msgid "Akan"
 msgstr "अकान"
 
 #. language code: akk
-#: zypp/LanguageCode.cc:183
+#: zypp-logic/zypp/LanguageCode.cc:183
 msgid "Akkadian"
 msgstr "अक्कादियॅन"
 
 #. language code: alb sqi sq
-#: zypp/LanguageCode.cc:185 zypp/LanguageCode.cc:187
+#: zypp-logic/zypp/LanguageCode.cc:185 zypp-logic/zypp/LanguageCode.cc:187
 msgid "Albanian"
 msgstr "अल्बेनियन"
 
 #. language code: ale
-#: zypp/LanguageCode.cc:189
+#: zypp-logic/zypp/LanguageCode.cc:189
 msgid "Aleut"
 msgstr "अलौत"
 
 #. language code: alg
-#: zypp/LanguageCode.cc:191
+#: zypp-logic/zypp/LanguageCode.cc:191
 msgid "Algonquian Languages"
 msgstr "अल्गोन्क्वियन भाषा"
 
 #. language code: alt
-#: zypp/LanguageCode.cc:193
+#: zypp-logic/zypp/LanguageCode.cc:193
 msgid "Southern Altai"
 msgstr "दक्षिण अल्तई"
 
 #. language code: amh am
-#: zypp/LanguageCode.cc:195
+#: zypp-logic/zypp/LanguageCode.cc:195
 msgid "Amharic"
 msgstr "अम्हॅरिक"
 
 #. language code: ang
-#: zypp/LanguageCode.cc:197
+#: zypp-logic/zypp/LanguageCode.cc:197
 msgid "English, Old (ca.450-1100)"
 msgstr "इंग्रजी जुनी (ca.450-1100)"
 
 #. language code: apa
-#: zypp/LanguageCode.cc:199
+#: zypp-logic/zypp/LanguageCode.cc:199
 msgid "Apache Languages"
 msgstr "अपाची भाषा"
 
 #. language code: ara ar
-#: zypp/LanguageCode.cc:201
+#: zypp-logic/zypp/LanguageCode.cc:201
 msgid "Arabic"
 msgstr "अरेबिक"
 
 #. language code: arc
-#: zypp/LanguageCode.cc:203
+#: zypp-logic/zypp/LanguageCode.cc:203
 msgid "Aramaic"
 msgstr "अरॅमॅइक"
 
 #. language code: arg an
-#: zypp/LanguageCode.cc:205
+#: zypp-logic/zypp/LanguageCode.cc:205
 msgid "Aragonese"
 msgstr "अरॅगोनीज"
 
 #. language code: arm hye hy
-#: zypp/LanguageCode.cc:207 zypp/LanguageCode.cc:209
+#: zypp-logic/zypp/LanguageCode.cc:207 zypp-logic/zypp/LanguageCode.cc:209
 msgid "Armenian"
 msgstr "अर्मेनियन"
 
 #. language code: arn
-#: zypp/LanguageCode.cc:211
+#: zypp-logic/zypp/LanguageCode.cc:211
 msgid "Araucanian"
 msgstr "अरौकॅनियन"
 
 #. language code: arp
-#: zypp/LanguageCode.cc:213
+#: zypp-logic/zypp/LanguageCode.cc:213
 msgid "Arapaho"
 msgstr "अरापाहो"
 
 #. language code: art
-#: zypp/LanguageCode.cc:215
+#: zypp-logic/zypp/LanguageCode.cc:215
 msgid "Artificial (Other)"
 msgstr "आर्टिफिशियल (अन्य)"
 
 #. language code: arw
-#: zypp/LanguageCode.cc:217
+#: zypp-logic/zypp/LanguageCode.cc:217
 msgid "Arawak"
 msgstr "अरावाक"
 
 #. language code: asm as
-#: zypp/LanguageCode.cc:219
+#: zypp-logic/zypp/LanguageCode.cc:219
 msgid "Assamese"
 msgstr "असमी"
 
 #. language code: ast
-#: zypp/LanguageCode.cc:221
+#: zypp-logic/zypp/LanguageCode.cc:221
 msgid "Asturian"
 msgstr "अस्टुरियन"
 
 #. language code: ath
-#: zypp/LanguageCode.cc:223
+#: zypp-logic/zypp/LanguageCode.cc:223
 msgid "Athapascan Languages"
 msgstr "अथापास्कन भाषा"
 
 #. language code: aus
-#: zypp/LanguageCode.cc:225
+#: zypp-logic/zypp/LanguageCode.cc:225
 msgid "Australian Languages"
 msgstr "ऑस्ट्रेलियन भाषा"
 
 #. language code: ava av
-#: zypp/LanguageCode.cc:227
+#: zypp-logic/zypp/LanguageCode.cc:227
 msgid "Avaric"
 msgstr "अवॅरिक"
 
 #. language code: ave ae
-#: zypp/LanguageCode.cc:229
+#: zypp-logic/zypp/LanguageCode.cc:229
 msgid "Avestan"
 msgstr "अव्हेस्टन"
 
 #. language code: awa
-#: zypp/LanguageCode.cc:231
+#: zypp-logic/zypp/LanguageCode.cc:231
 msgid "Awadhi"
 msgstr "अवधी"
 
 #. language code: aym ay
-#: zypp/LanguageCode.cc:233
+#: zypp-logic/zypp/LanguageCode.cc:233
 msgid "Aymara"
 msgstr "ऐमारा"
 
 #. language code: aze az
-#: zypp/LanguageCode.cc:235
+#: zypp-logic/zypp/LanguageCode.cc:235
 msgid "Azerbaijani"
 msgstr "अझरबैजानी"
 
 #. language code: bad
-#: zypp/LanguageCode.cc:237
+#: zypp-logic/zypp/LanguageCode.cc:237
 msgid "Banda"
 msgstr "बांदा"
 
 #. language code: bai
-#: zypp/LanguageCode.cc:239
+#: zypp-logic/zypp/LanguageCode.cc:239
 msgid "Bamileke Languages"
 msgstr "बामिलिक भाषा"
 
 #. language code: bak ba
-#: zypp/LanguageCode.cc:241
+#: zypp-logic/zypp/LanguageCode.cc:241
 msgid "Bashkir"
 msgstr "बशकीर"
 
 #. language code: bal
-#: zypp/LanguageCode.cc:243
+#: zypp-logic/zypp/LanguageCode.cc:243
 msgid "Baluchi"
 msgstr "बलुची"
 
 #. language code: bam bm
-#: zypp/LanguageCode.cc:245
+#: zypp-logic/zypp/LanguageCode.cc:245
 msgid "Bambara"
 msgstr "बाम्बारा"
 
 #. language code: ban
-#: zypp/LanguageCode.cc:247
+#: zypp-logic/zypp/LanguageCode.cc:247
 msgid "Balinese"
 msgstr "बालीनीज"
 
 #. language code: baq eus eu
-#: zypp/LanguageCode.cc:249 zypp/LanguageCode.cc:251
+#: zypp-logic/zypp/LanguageCode.cc:249 zypp-logic/zypp/LanguageCode.cc:251
 msgid "Basque"
 msgstr "बास्क"
 
 #. language code: bas
-#: zypp/LanguageCode.cc:253
+#: zypp-logic/zypp/LanguageCode.cc:253
 msgid "Basa"
 msgstr "बासा"
 
 #. language code: bat
-#: zypp/LanguageCode.cc:255
+#: zypp-logic/zypp/LanguageCode.cc:255
 msgid "Baltic (Other)"
 msgstr "बाल्टिक (अन्य)"
 
 #. language code: bej
-#: zypp/LanguageCode.cc:257
+#: zypp-logic/zypp/LanguageCode.cc:257
 msgid "Beja"
 msgstr "बेजा"
 
 #. language code: bel be
-#: zypp/LanguageCode.cc:259
+#: zypp-logic/zypp/LanguageCode.cc:259
 msgid "Belarusian"
 msgstr "बेलारूसियन"
 
 #. language code: bem
-#: zypp/LanguageCode.cc:261
+#: zypp-logic/zypp/LanguageCode.cc:261
 msgid "Bemba"
 msgstr "बम्बा"
 
 #. language code: ben bn
-#: zypp/LanguageCode.cc:263
+#: zypp-logic/zypp/LanguageCode.cc:263
 msgid "Bengali"
 msgstr "बंगाली"
 
 #. language code: ber
-#: zypp/LanguageCode.cc:265
+#: zypp-logic/zypp/LanguageCode.cc:265
 msgid "Berber (Other)"
 msgstr "बर्बर (अन्य)"
 
 #. language code: bho
-#: zypp/LanguageCode.cc:267
+#: zypp-logic/zypp/LanguageCode.cc:267
 msgid "Bhojpuri"
 msgstr "भोजपुरी"
 
 #. language code: bih bh
-#: zypp/LanguageCode.cc:269
+#: zypp-logic/zypp/LanguageCode.cc:269
 msgid "Bihari"
 msgstr "बिहारी"
 
 #. language code: bik
-#: zypp/LanguageCode.cc:271
+#: zypp-logic/zypp/LanguageCode.cc:271
 msgid "Bikol"
 msgstr "बिकोल"
 
 #. language code: bin
-#: zypp/LanguageCode.cc:273
+#: zypp-logic/zypp/LanguageCode.cc:273
 msgid "Bini"
 msgstr "बिनी"
 
 #. language code: bis bi
-#: zypp/LanguageCode.cc:275
+#: zypp-logic/zypp/LanguageCode.cc:275
 msgid "Bislama"
 msgstr "बिस्लामा"
 
 #. language code: bla
-#: zypp/LanguageCode.cc:277
+#: zypp-logic/zypp/LanguageCode.cc:277
 msgid "Siksika"
 msgstr "सिकसिका"
 
 #. language code: bnt
-#: zypp/LanguageCode.cc:279
+#: zypp-logic/zypp/LanguageCode.cc:279
 msgid "Bantu (Other)"
 msgstr "बांतू (अन्य)"
 
 #. language code: bos bs
-#: zypp/LanguageCode.cc:281
+#: zypp-logic/zypp/LanguageCode.cc:281
 msgid "Bosnian"
 msgstr "बोस्नीयन"
 
 #. language code: bra
-#: zypp/LanguageCode.cc:283
+#: zypp-logic/zypp/LanguageCode.cc:283
 msgid "Braj"
 msgstr "ब्रज"
 
 #. language code: bre br
-#: zypp/LanguageCode.cc:285
+#: zypp-logic/zypp/LanguageCode.cc:285
 msgid "Breton"
 msgstr "ब्रेटॉन"
 
 #. language code: btk
-#: zypp/LanguageCode.cc:287
+#: zypp-logic/zypp/LanguageCode.cc:287
 msgid "Batak (Indonesia)"
 msgstr "बाटक (इंडोनेशिया)"
 
 #. language code: bua
-#: zypp/LanguageCode.cc:289
+#: zypp-logic/zypp/LanguageCode.cc:289
 msgid "Buriat"
 msgstr "बरियत"
 
 #. language code: bug
-#: zypp/LanguageCode.cc:291
+#: zypp-logic/zypp/LanguageCode.cc:291
 msgid "Buginese"
 msgstr "बगिनीज"
 
 #. language code: bul bg
-#: zypp/LanguageCode.cc:293
+#: zypp-logic/zypp/LanguageCode.cc:293
 msgid "Bulgarian"
 msgstr "बल्गेरियन"
 
 #. language code: bur mya my
-#: zypp/LanguageCode.cc:295 zypp/LanguageCode.cc:297
+#: zypp-logic/zypp/LanguageCode.cc:295 zypp-logic/zypp/LanguageCode.cc:297
 msgid "Burmese"
 msgstr "बर्मीज"
 
 #. language code: byn
-#: zypp/LanguageCode.cc:299
+#: zypp-logic/zypp/LanguageCode.cc:299
 msgid "Blin"
 msgstr "ब्लिन"
 
 #. language code: cad
-#: zypp/LanguageCode.cc:301
+#: zypp-logic/zypp/LanguageCode.cc:301
 msgid "Caddo"
 msgstr "कॅडो"
 
 #. language code: cai
-#: zypp/LanguageCode.cc:303
+#: zypp-logic/zypp/LanguageCode.cc:303
 msgid "Central American Indian (Other)"
 msgstr "मध्य अमेरिकन इंडियन (अन्य)"
 
 #. language code: car
-#: zypp/LanguageCode.cc:305
+#: zypp-logic/zypp/LanguageCode.cc:305
 msgid "Carib"
 msgstr "कॅरीब"
 
 #. language code: cat ca
-#: zypp/LanguageCode.cc:307
+#: zypp-logic/zypp/LanguageCode.cc:307
 msgid "Catalan"
 msgstr "कॅटलॅन"
 
 #. language code: cau
-#: zypp/LanguageCode.cc:309
+#: zypp-logic/zypp/LanguageCode.cc:309
 msgid "Caucasian (Other)"
 msgstr "कॉकेशियन (अन्य)"
 
 #. language code: ceb
-#: zypp/LanguageCode.cc:311
+#: zypp-logic/zypp/LanguageCode.cc:311
 msgid "Cebuano"
 msgstr "सेबुआनो"
 
 #. language code: cel
-#: zypp/LanguageCode.cc:313
+#: zypp-logic/zypp/LanguageCode.cc:313
 msgid "Celtic (Other)"
 msgstr "सेल्टिक (अन्य)"
 
 #. language code: cha ch
-#: zypp/LanguageCode.cc:315
+#: zypp-logic/zypp/LanguageCode.cc:315
 msgid "Chamorro"
 msgstr "चॅमोरो"
 
 #. language code: chb
-#: zypp/LanguageCode.cc:317
+#: zypp-logic/zypp/LanguageCode.cc:317
 msgid "Chibcha"
 msgstr "चीबचा"
 
 #. language code: che ce
-#: zypp/LanguageCode.cc:319
+#: zypp-logic/zypp/LanguageCode.cc:319
 msgid "Chechen"
 msgstr "चेचेन"
 
 #. language code: chg
-#: zypp/LanguageCode.cc:321
+#: zypp-logic/zypp/LanguageCode.cc:321
 msgid "Chagatai"
 msgstr "चगतई"
 
 #. language code: chi zho zh
-#: zypp/LanguageCode.cc:323 zypp/LanguageCode.cc:325
+#: zypp-logic/zypp/LanguageCode.cc:323 zypp-logic/zypp/LanguageCode.cc:325
 msgid "Chinese"
 msgstr "चीनी"
 
 #. language code: chk
-#: zypp/LanguageCode.cc:327
+#: zypp-logic/zypp/LanguageCode.cc:327
 msgid "Chuukese"
 msgstr "चुकीज"
 
 #. language code: chm
-#: zypp/LanguageCode.cc:329
+#: zypp-logic/zypp/LanguageCode.cc:329
 msgid "Mari"
 msgstr "मारी"
 
 #. language code: chn
-#: zypp/LanguageCode.cc:331
+#: zypp-logic/zypp/LanguageCode.cc:331
 msgid "Chinook Jargon"
 msgstr "चीनूक जारगॉन"
 
 #. language code: cho
-#: zypp/LanguageCode.cc:333
+#: zypp-logic/zypp/LanguageCode.cc:333
 msgid "Choctaw"
 msgstr "चोकटा"
 
 #. language code: chp
-#: zypp/LanguageCode.cc:335
+#: zypp-logic/zypp/LanguageCode.cc:335
 msgid "Chipewyan"
 msgstr "चिपेव्यान"
 
 #. language code: chr
-#: zypp/LanguageCode.cc:337
+#: zypp-logic/zypp/LanguageCode.cc:337
 msgid "Cherokee"
 msgstr "चेरोकी"
 
 #. language code: chu cu
-#: zypp/LanguageCode.cc:339
+#: zypp-logic/zypp/LanguageCode.cc:339
 msgid "Church Slavic"
 msgstr "चर्च स्लाविक"
 
 #. language code: chv cv
-#: zypp/LanguageCode.cc:341
+#: zypp-logic/zypp/LanguageCode.cc:341
 msgid "Chuvash"
 msgstr "चुवाश"
 
 #. language code: chy
-#: zypp/LanguageCode.cc:343
+#: zypp-logic/zypp/LanguageCode.cc:343
 msgid "Cheyenne"
 msgstr "चेयेनी"
 
 #. language code: cmc
-#: zypp/LanguageCode.cc:345
+#: zypp-logic/zypp/LanguageCode.cc:345
 msgid "Chamic Languages"
 msgstr "चॅमिक भाषा"
 
 #. language code: cop
-#: zypp/LanguageCode.cc:347
+#: zypp-logic/zypp/LanguageCode.cc:347
 msgid "Coptic"
 msgstr "कॉप्टिक"
 
 #. language code: cor kw
-#: zypp/LanguageCode.cc:349
+#: zypp-logic/zypp/LanguageCode.cc:349
 msgid "Cornish"
 msgstr "कोर्निश"
 
 #. language code: cos co
-#: zypp/LanguageCode.cc:351
+#: zypp-logic/zypp/LanguageCode.cc:351
 msgid "Corsican"
 msgstr "कोर्सिकन"
 
 #. language code: cpe
-#: zypp/LanguageCode.cc:353
+#: zypp-logic/zypp/LanguageCode.cc:353
 msgid "Creoles and Pidgins, English-Based (Other)"
 msgstr "क्रेओलेस व पिडगिन्स, इंग्रजी वर आधारित (अन्य)"
 
 #. language code: cpf
-#: zypp/LanguageCode.cc:355
+#: zypp-logic/zypp/LanguageCode.cc:355
 msgid "Creoles and Pidgins, French-Based (Other)"
 msgstr "क्रेओलेस व पिडगिन्स, फ्रेंचवर आधारित (अन्य)"
 
 #. language code: cpp
-#: zypp/LanguageCode.cc:357
+#: zypp-logic/zypp/LanguageCode.cc:357
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
 msgstr "क्रेओलेस व पिडगिन्स, पोर्तुगीजवर आधारित (अन्य)"
 
 #. language code: cre cr
-#: zypp/LanguageCode.cc:359
+#: zypp-logic/zypp/LanguageCode.cc:359
 msgid "Cree"
 msgstr "क्री"
 
 #. language code: crh
-#: zypp/LanguageCode.cc:361
+#: zypp-logic/zypp/LanguageCode.cc:361
 msgid "Crimean Tatar"
 msgstr "क्रिमियन टाटार"
 
 #. language code: crp
-#: zypp/LanguageCode.cc:363
+#: zypp-logic/zypp/LanguageCode.cc:363
 msgid "Creoles and Pidgins (Other)"
 msgstr "क्रेओलेस व पिडगिन्स (अन्य)"
 
 #. language code: csb
-#: zypp/LanguageCode.cc:365
+#: zypp-logic/zypp/LanguageCode.cc:365
 msgid "Kashubian"
 msgstr "काशुबियन"
 
 #. language code: cus
-#: zypp/LanguageCode.cc:367
+#: zypp-logic/zypp/LanguageCode.cc:367
 msgid "Cushitic (Other)"
 msgstr "कुशिटीक (अन्य)"
 
 #. language code: cze ces cs
-#: zypp/LanguageCode.cc:369 zypp/LanguageCode.cc:371
+#: zypp-logic/zypp/LanguageCode.cc:369 zypp-logic/zypp/LanguageCode.cc:371
 msgid "Czech"
 msgstr "चेक"
 
 #. language code: dak
-#: zypp/LanguageCode.cc:373
+#: zypp-logic/zypp/LanguageCode.cc:373
 msgid "Dakota"
 msgstr "डाकोटा"
 
 #. language code: dan da
-#: zypp/LanguageCode.cc:375
+#: zypp-logic/zypp/LanguageCode.cc:375
 msgid "Danish"
 msgstr "डॅनिश"
 
 #. language code: dar
-#: zypp/LanguageCode.cc:377
+#: zypp-logic/zypp/LanguageCode.cc:377
 msgid "Dargwa"
 msgstr "डार्गवा"
 
 #. language code: day
-#: zypp/LanguageCode.cc:379
+#: zypp-logic/zypp/LanguageCode.cc:379
 msgid "Dayak"
 msgstr "डायाक"
 
 #. language code: del
-#: zypp/LanguageCode.cc:381
+#: zypp-logic/zypp/LanguageCode.cc:381
 msgid "Delaware"
 msgstr "डेलावेअर"
 
 #. language code: den
-#: zypp/LanguageCode.cc:383
+#: zypp-logic/zypp/LanguageCode.cc:383
 msgid "Slave (Athapascan)"
 msgstr "स्लाव (अथॅपास्कन)"
 
 #. language code: dgr
-#: zypp/LanguageCode.cc:385
+#: zypp-logic/zypp/LanguageCode.cc:385
 msgid "Dogrib"
 msgstr "डोग्रीब"
 
 #. language code: din
-#: zypp/LanguageCode.cc:387
+#: zypp-logic/zypp/LanguageCode.cc:387
 msgid "Dinka"
 msgstr "डिनका"
 
 #. language code: div dv
-#: zypp/LanguageCode.cc:389
+#: zypp-logic/zypp/LanguageCode.cc:389
 msgid "Divehi"
 msgstr "दिवेही"
 
 #. language code: doi
-#: zypp/LanguageCode.cc:391
+#: zypp-logic/zypp/LanguageCode.cc:391
 msgid "Dogri"
 msgstr "डोगरी"
 
 #. language code: dra
-#: zypp/LanguageCode.cc:393
+#: zypp-logic/zypp/LanguageCode.cc:393
 msgid "Dravidian (Other)"
 msgstr "द्रविडियन (अन्य)"
 
 #. language code: dsb
-#: zypp/LanguageCode.cc:395
+#: zypp-logic/zypp/LanguageCode.cc:395
 msgid "Lower Sorbian"
 msgstr "लोअर सर्बियन"
 
 #. language code: dua
-#: zypp/LanguageCode.cc:397
+#: zypp-logic/zypp/LanguageCode.cc:397
 msgid "Duala"
 msgstr "दुआला"
 
 #. language code: dum
-#: zypp/LanguageCode.cc:399
+#: zypp-logic/zypp/LanguageCode.cc:399
 msgid "Dutch, Middle (ca.1050-1350)"
 msgstr "डच, मध्य (ca.1050-1350)"
 
 #. language code: dut nld nl
-#: zypp/LanguageCode.cc:401 zypp/LanguageCode.cc:403
+#: zypp-logic/zypp/LanguageCode.cc:401 zypp-logic/zypp/LanguageCode.cc:403
 msgid "Dutch"
 msgstr "डच"
 
 #. language code: dyu
-#: zypp/LanguageCode.cc:405
+#: zypp-logic/zypp/LanguageCode.cc:405
 msgid "Dyula"
 msgstr "ड्यूला"
 
 #. language code: dzo dz
-#: zypp/LanguageCode.cc:407
+#: zypp-logic/zypp/LanguageCode.cc:407
 msgid "Dzongkha"
 msgstr "झोंगखा"
 
 #. language code: efi
-#: zypp/LanguageCode.cc:409
+#: zypp-logic/zypp/LanguageCode.cc:409
 msgid "Efik"
 msgstr "एफिक"
 
 #. language code: egy
-#: zypp/LanguageCode.cc:411
+#: zypp-logic/zypp/LanguageCode.cc:411
 msgid "Egyptian (Ancient)"
 msgstr "इजिप्शियन (प्राचीन)"
 
 #. language code: eka
-#: zypp/LanguageCode.cc:413
+#: zypp-logic/zypp/LanguageCode.cc:413
 msgid "Ekajuk"
 msgstr "एकाजुक"
 
 #. language code: elx
-#: zypp/LanguageCode.cc:415
+#: zypp-logic/zypp/LanguageCode.cc:415
 msgid "Elamite"
 msgstr "इलॅमाइट"
 
 #. language code: eng en
-#: zypp/LanguageCode.cc:417
+#: zypp-logic/zypp/LanguageCode.cc:417
 msgid "English"
 msgstr "इंग्रजी"
 
 #. language code: enm
-#: zypp/LanguageCode.cc:419
+#: zypp-logic/zypp/LanguageCode.cc:419
 msgid "English, Middle (1100-1500)"
 msgstr "इंग्रजी, मध्य (1100-1500)"
 
 #. language code: epo eo
-#: zypp/LanguageCode.cc:421
+#: zypp-logic/zypp/LanguageCode.cc:421
 msgid "Esperanto"
 msgstr "एस्पेरॅन्टो"
 
 #. language code: est et
-#: zypp/LanguageCode.cc:423
+#: zypp-logic/zypp/LanguageCode.cc:423
 msgid "Estonian"
 msgstr "एस्टोनियन"
 
 #. language code: ewe ee
-#: zypp/LanguageCode.cc:425
+#: zypp-logic/zypp/LanguageCode.cc:425
 msgid "Ewe"
 msgstr "इवे"
 
 #. language code: ewo
-#: zypp/LanguageCode.cc:427
+#: zypp-logic/zypp/LanguageCode.cc:427
 msgid "Ewondo"
 msgstr "इवोंडो"
 
 #. language code: fan
-#: zypp/LanguageCode.cc:429
+#: zypp-logic/zypp/LanguageCode.cc:429
 msgid "Fang"
 msgstr "फँग"
 
 #. language code: fao fo
-#: zypp/LanguageCode.cc:431
+#: zypp-logic/zypp/LanguageCode.cc:431
 msgid "Faroese"
 msgstr "फरोसी"
 
 #. language code: fat
-#: zypp/LanguageCode.cc:433
+#: zypp-logic/zypp/LanguageCode.cc:433
 msgid "Fanti"
 msgstr "फान्ती"
 
 #. language code: fij fj
-#: zypp/LanguageCode.cc:435
+#: zypp-logic/zypp/LanguageCode.cc:435
 msgid "Fijian"
 msgstr "फिजियन"
 
 #. language code: fil
-#: zypp/LanguageCode.cc:437
+#: zypp-logic/zypp/LanguageCode.cc:437
 msgid "Filipino"
 msgstr "फिलिपिनो"
 
 #. language code: fin fi
-#: zypp/LanguageCode.cc:439
+#: zypp-logic/zypp/LanguageCode.cc:439
 msgid "Finnish"
 msgstr "फिनिश"
 
 #. language code: fiu
-#: zypp/LanguageCode.cc:441
+#: zypp-logic/zypp/LanguageCode.cc:441
 msgid "Finno-Ugrian (Other)"
 msgstr "फिनो-उग्रीयन (अन्य)"
 
 #. language code: fon
-#: zypp/LanguageCode.cc:443
+#: zypp-logic/zypp/LanguageCode.cc:443
 msgid "Fon"
 msgstr "फॉन"
 
 #. language code: fre fra fr
-#: zypp/LanguageCode.cc:445 zypp/LanguageCode.cc:447
+#: zypp-logic/zypp/LanguageCode.cc:445 zypp-logic/zypp/LanguageCode.cc:447
 msgid "French"
 msgstr "फ्रेंच"
 
 #. language code: frm
-#: zypp/LanguageCode.cc:449
+#: zypp-logic/zypp/LanguageCode.cc:449
 msgid "French, Middle (ca.1400-1600)"
 msgstr "फ्रेंच, मध्य (ca.1400-1600)"
 
 #. language code: fro
-#: zypp/LanguageCode.cc:451
+#: zypp-logic/zypp/LanguageCode.cc:451
 msgid "French, Old (842-ca.1400)"
 msgstr "फ्रेंच, जुनी(842-ca.1400)"
 
 #. language code: fry fy
-#: zypp/LanguageCode.cc:453
+#: zypp-logic/zypp/LanguageCode.cc:453
 msgid "Frisian"
 msgstr "फ्रिसीयन"
 
 #. language code: ful ff
-#: zypp/LanguageCode.cc:455
+#: zypp-logic/zypp/LanguageCode.cc:455
 msgid "Fulah"
 msgstr "फुलाह"
 
 #. language code: fur
-#: zypp/LanguageCode.cc:457
+#: zypp-logic/zypp/LanguageCode.cc:457
 msgid "Friulian"
 msgstr "फ्रुलियन"
 
 #. language code: gaa
-#: zypp/LanguageCode.cc:459
+#: zypp-logic/zypp/LanguageCode.cc:459
 msgid "Ga"
 msgstr "गा"
 
 #. language code: gay
-#: zypp/LanguageCode.cc:461
+#: zypp-logic/zypp/LanguageCode.cc:461
 msgid "Gayo"
 msgstr "गायो"
 
 #. language code: gba
-#: zypp/LanguageCode.cc:463
+#: zypp-logic/zypp/LanguageCode.cc:463
 msgid "Gbaya"
 msgstr "ग्बाया"
 
 #. language code: gem
-#: zypp/LanguageCode.cc:465
+#: zypp-logic/zypp/LanguageCode.cc:465
 msgid "Germanic (Other)"
 msgstr "जर्मनिक (अन्य)"
 
 #. language code: geo kat ka
-#: zypp/LanguageCode.cc:467 zypp/LanguageCode.cc:469
+#: zypp-logic/zypp/LanguageCode.cc:467 zypp-logic/zypp/LanguageCode.cc:469
 msgid "Georgian"
 msgstr "ज़ॉर्जियन"
 
 #. language code: ger deu de
-#: zypp/LanguageCode.cc:471 zypp/LanguageCode.cc:473
+#: zypp-logic/zypp/LanguageCode.cc:471 zypp-logic/zypp/LanguageCode.cc:473
 msgid "German"
 msgstr "जर्मन"
 
 #. language code: gez
-#: zypp/LanguageCode.cc:475
+#: zypp-logic/zypp/LanguageCode.cc:475
 msgid "Geez"
 msgstr "गीझ"
 
 #. language code: gil
-#: zypp/LanguageCode.cc:477
+#: zypp-logic/zypp/LanguageCode.cc:477
 msgid "Gilbertese"
 msgstr "गिल्बर्टीज"
 
 #. language code: gla gd
-#: zypp/LanguageCode.cc:479
+#: zypp-logic/zypp/LanguageCode.cc:479
 msgid "Gaelic"
 msgstr "गेलिक"
 
 #. language code: gle ga
-#: zypp/LanguageCode.cc:481
+#: zypp-logic/zypp/LanguageCode.cc:481
 msgid "Irish"
 msgstr "आयरिश"
 
 #. language code: glg gl
-#: zypp/LanguageCode.cc:483
+#: zypp-logic/zypp/LanguageCode.cc:483
 msgid "Galician"
 msgstr "गॅलीसियन"
 
 #. language code: glv gv
-#: zypp/LanguageCode.cc:485
+#: zypp-logic/zypp/LanguageCode.cc:485
 msgid "Manx"
 msgstr "मँक्स"
 
 #. language code: gmh
-#: zypp/LanguageCode.cc:487
+#: zypp-logic/zypp/LanguageCode.cc:487
 msgid "German, Middle High (ca.1050-1500)"
 msgstr "जर्मन , मध्यम जास्त (ca.1050-1500)"
 
 #. language code: goh
-#: zypp/LanguageCode.cc:489
+#: zypp-logic/zypp/LanguageCode.cc:489
 msgid "German, Old High (ca.750-1050)"
 msgstr "जर्मन, जुनी जास्त (ca.750-1050)"
 
 #. language code: gon
-#: zypp/LanguageCode.cc:491
+#: zypp-logic/zypp/LanguageCode.cc:491
 msgid "Gondi"
 msgstr "गोंडी"
 
 #. language code: gor
-#: zypp/LanguageCode.cc:493
+#: zypp-logic/zypp/LanguageCode.cc:493
 msgid "Gorontalo"
 msgstr "गोरोंटॅलो"
 
 #. language code: got
-#: zypp/LanguageCode.cc:495
+#: zypp-logic/zypp/LanguageCode.cc:495
 msgid "Gothic"
 msgstr "गोथिक"
 
 #. language code: grb
-#: zypp/LanguageCode.cc:497
+#: zypp-logic/zypp/LanguageCode.cc:497
 msgid "Grebo"
 msgstr "ग्रेबो"
 
 #. language code: grc
-#: zypp/LanguageCode.cc:499
+#: zypp-logic/zypp/LanguageCode.cc:499
 msgid "Greek, Ancient (to 1453)"
 msgstr "ग्रीक, प्राचीन (1453 पर्यंत)"
 
 #. language code: gre ell el
-#: zypp/LanguageCode.cc:501 zypp/LanguageCode.cc:503
+#: zypp-logic/zypp/LanguageCode.cc:501 zypp-logic/zypp/LanguageCode.cc:503
 msgid "Greek, Modern (1453-)"
 msgstr "ग्रीक, आधुनिक (1453-)"
 
 #. language code: grn gn
-#: zypp/LanguageCode.cc:505
+#: zypp-logic/zypp/LanguageCode.cc:505
 msgid "Guarani"
 msgstr "गुरानी"
 
 #. language code: guj gu
-#: zypp/LanguageCode.cc:507
+#: zypp-logic/zypp/LanguageCode.cc:507
 msgid "Gujarati"
 msgstr "गुजराती"
 
 #. language code: gwi
-#: zypp/LanguageCode.cc:509
+#: zypp-logic/zypp/LanguageCode.cc:509
 msgid "Gwich'in"
 msgstr "ग्विच’इन"
 
 #. language code: hai
-#: zypp/LanguageCode.cc:511
+#: zypp-logic/zypp/LanguageCode.cc:511
 msgid "Haida"
 msgstr "हैदा"
 
 #. language code: hat ht
-#: zypp/LanguageCode.cc:513
+#: zypp-logic/zypp/LanguageCode.cc:513
 msgid "Haitian"
 msgstr "हैतियन"
 
 #. language code: hau ha
-#: zypp/LanguageCode.cc:515
+#: zypp-logic/zypp/LanguageCode.cc:515
 msgid "Hausa"
 msgstr "हौसा"
 
 #. language code: haw
-#: zypp/LanguageCode.cc:517
+#: zypp-logic/zypp/LanguageCode.cc:517
 msgid "Hawaiian"
 msgstr "हवाईयन"
 
 #. language code: heb he
-#: zypp/LanguageCode.cc:519
+#: zypp-logic/zypp/LanguageCode.cc:519
 msgid "Hebrew"
 msgstr "हिब्रु"
 
 #. language code: her hz
-#: zypp/LanguageCode.cc:521
+#: zypp-logic/zypp/LanguageCode.cc:521
 msgid "Herero"
 msgstr "हरेरो"
 
 #. language code: hil
-#: zypp/LanguageCode.cc:523
+#: zypp-logic/zypp/LanguageCode.cc:523
 msgid "Hiligaynon"
 msgstr "हिलीगेनॉन"
 
 #. language code: him
-#: zypp/LanguageCode.cc:525
+#: zypp-logic/zypp/LanguageCode.cc:525
 msgid "Himachali"
 msgstr "हिमाचली"
 
 #. language code: hin hi
-#: zypp/LanguageCode.cc:527
+#: zypp-logic/zypp/LanguageCode.cc:527
 msgid "Hindi"
 msgstr "हिन्दी"
 
 #. language code: hit
-#: zypp/LanguageCode.cc:529
+#: zypp-logic/zypp/LanguageCode.cc:529
 msgid "Hittite"
 msgstr "हित्तिते"
 
 #. language code: hmn
-#: zypp/LanguageCode.cc:531
+#: zypp-logic/zypp/LanguageCode.cc:531
 msgid "Hmong"
 msgstr "ह्माँग"
 
 #. language code: hmo ho
-#: zypp/LanguageCode.cc:533
+#: zypp-logic/zypp/LanguageCode.cc:533
 msgid "Hiri Motu"
 msgstr "हिरी मोतू"
 
 #. language code: hsb
-#: zypp/LanguageCode.cc:535
+#: zypp-logic/zypp/LanguageCode.cc:535
 msgid "Upper Sorbian"
 msgstr "अप्पर सॉर्बियन"
 
 #. language code: hun hu
-#: zypp/LanguageCode.cc:537
+#: zypp-logic/zypp/LanguageCode.cc:537
 msgid "Hungarian"
 msgstr "हंगेरियन"
 
 #. language code: hup
-#: zypp/LanguageCode.cc:539
+#: zypp-logic/zypp/LanguageCode.cc:539
 msgid "Hupa"
 msgstr "हुपा"
 
 #. language code: iba
-#: zypp/LanguageCode.cc:541
+#: zypp-logic/zypp/LanguageCode.cc:541
 msgid "Iban"
 msgstr "ईबान"
 
 #. language code: ibo ig
-#: zypp/LanguageCode.cc:543
+#: zypp-logic/zypp/LanguageCode.cc:543
 msgid "Igbo"
 msgstr "इग्बो"
 
 #. language code: ice isl is
-#: zypp/LanguageCode.cc:545 zypp/LanguageCode.cc:547
+#: zypp-logic/zypp/LanguageCode.cc:545 zypp-logic/zypp/LanguageCode.cc:547
 msgid "Icelandic"
 msgstr "आईस्लॅन्डिक"
 
 #. language code: ido io
-#: zypp/LanguageCode.cc:549
+#: zypp-logic/zypp/LanguageCode.cc:549
 msgid "Ido"
 msgstr "इडो"
 
 #. language code: iii ii
-#: zypp/LanguageCode.cc:551
+#: zypp-logic/zypp/LanguageCode.cc:551
 msgid "Sichuan Yi"
 msgstr "सिचुआन यी"
 
 #. language code: ijo
-#: zypp/LanguageCode.cc:553
+#: zypp-logic/zypp/LanguageCode.cc:553
 msgid "Ijo"
 msgstr "ईजो"
 
 #. language code: iku iu
-#: zypp/LanguageCode.cc:555
+#: zypp-logic/zypp/LanguageCode.cc:555
 msgid "Inuktitut"
 msgstr "इनुक्तितूत"
 
 #. language code: ile ie
-#: zypp/LanguageCode.cc:557
+#: zypp-logic/zypp/LanguageCode.cc:557
 msgid "Interlingue"
 msgstr "इन्टरलिंग"
 
 #. language code: ilo
-#: zypp/LanguageCode.cc:559
+#: zypp-logic/zypp/LanguageCode.cc:559
 msgid "Iloko"
 msgstr "इलोको"
 
 #. language code: ina ia
-#: zypp/LanguageCode.cc:561
+#: zypp-logic/zypp/LanguageCode.cc:561
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "इन्टरलिंगुआ (आंतरराष्ट्रीय ऑक्सिलरी भाषा संघटना"
 
 #. language code: inc
-#: zypp/LanguageCode.cc:563
+#: zypp-logic/zypp/LanguageCode.cc:563
 msgid "Indic (Other)"
 msgstr "इंडिक (अन्य)"
 
 #. language code: ind id
-#: zypp/LanguageCode.cc:565
+#: zypp-logic/zypp/LanguageCode.cc:565
 msgid "Indonesian"
 msgstr "इंडोनेशियन"
 
 #. language code: ine
-#: zypp/LanguageCode.cc:567
+#: zypp-logic/zypp/LanguageCode.cc:567
 msgid "Indo-European (Other)"
 msgstr "इंडो-युरोपियन (अन्य)"
 
 #. language code: inh
-#: zypp/LanguageCode.cc:569
+#: zypp-logic/zypp/LanguageCode.cc:569
 msgid "Ingush"
 msgstr "इंगुश"
 
 #. language code: ipk ik
-#: zypp/LanguageCode.cc:571
+#: zypp-logic/zypp/LanguageCode.cc:571
 msgid "Inupiaq"
 msgstr "इनुपिआक"
 
 #. language code: ira
-#: zypp/LanguageCode.cc:573
+#: zypp-logic/zypp/LanguageCode.cc:573
 msgid "Iranian (Other)"
 msgstr "इराणीयन (अन्य)"
 
 #. language code: iro
-#: zypp/LanguageCode.cc:575
+#: zypp-logic/zypp/LanguageCode.cc:575
 msgid "Iroquoian Languages"
 msgstr "इरोकोईयन भाषा"
 
 #. language code: ita it
-#: zypp/LanguageCode.cc:577
+#: zypp-logic/zypp/LanguageCode.cc:577
 msgid "Italian"
 msgstr "ईटालियन"
 
 #. language code: jav jv
-#: zypp/LanguageCode.cc:579
+#: zypp-logic/zypp/LanguageCode.cc:579
 msgid "Javanese"
 msgstr "जावानीज"
 
 #. language code: jbo
-#: zypp/LanguageCode.cc:581
+#: zypp-logic/zypp/LanguageCode.cc:581
 msgid "Lojban"
 msgstr "लॉज्बन"
 
 #. language code: jpn ja
-#: zypp/LanguageCode.cc:583
+#: zypp-logic/zypp/LanguageCode.cc:583
 msgid "Japanese"
 msgstr "जपानी"
 
 #. language code: jpr
-#: zypp/LanguageCode.cc:585
+#: zypp-logic/zypp/LanguageCode.cc:585
 msgid "Judeo-Persian"
 msgstr "ज्युडेओ-पर्शियन"
 
 #. language code: jrb
-#: zypp/LanguageCode.cc:587
+#: zypp-logic/zypp/LanguageCode.cc:587
 msgid "Judeo-Arabic"
 msgstr "ज्युडेओ-अरेबिक"
 
 #. language code: kaa
-#: zypp/LanguageCode.cc:589
+#: zypp-logic/zypp/LanguageCode.cc:589
 msgid "Kara-Kalpak"
 msgstr "कारा-कल्पक"
 
 #. language code: kab
-#: zypp/LanguageCode.cc:591
+#: zypp-logic/zypp/LanguageCode.cc:591
 msgid "Kabyle"
 msgstr "काबाईल"
 
 #. language code: kac
-#: zypp/LanguageCode.cc:593
+#: zypp-logic/zypp/LanguageCode.cc:593
 msgid "Kachin"
 msgstr "काचीन"
 
 #. language code: kal kl
-#: zypp/LanguageCode.cc:595
+#: zypp-logic/zypp/LanguageCode.cc:595
 msgid "Kalaallisut"
 msgstr "कलालिसट"
 
 #. language code: kam
-#: zypp/LanguageCode.cc:597
+#: zypp-logic/zypp/LanguageCode.cc:597
 msgid "Kamba"
 msgstr "कांबा"
 
 #. language code: kan kn
-#: zypp/LanguageCode.cc:599
+#: zypp-logic/zypp/LanguageCode.cc:599
 msgid "Kannada"
 msgstr "कानाडी"
 
 #. language code: kar
-#: zypp/LanguageCode.cc:601
+#: zypp-logic/zypp/LanguageCode.cc:601
 msgid "Karen"
 msgstr "कारेन"
 
 #. language code: kas ks
-#: zypp/LanguageCode.cc:603
+#: zypp-logic/zypp/LanguageCode.cc:603
 msgid "Kashmiri"
 msgstr "काश्मिरी"
 
 #. language code: kau kr
-#: zypp/LanguageCode.cc:605
+#: zypp-logic/zypp/LanguageCode.cc:605
 msgid "Kanuri"
 msgstr "कानुरी"
 
 #. language code: kaw
-#: zypp/LanguageCode.cc:607
+#: zypp-logic/zypp/LanguageCode.cc:607
 msgid "Kawi"
 msgstr "कावी"
 
 #. language code: kaz kk
-#: zypp/LanguageCode.cc:609
+#: zypp-logic/zypp/LanguageCode.cc:609
 msgid "Kazakh"
 msgstr "कझाक"
 
 #. language code: kbd
-#: zypp/LanguageCode.cc:611
+#: zypp-logic/zypp/LanguageCode.cc:611
 msgid "Kabardian"
 msgstr "कबर्डियन"
 
 #. language code: kha
-#: zypp/LanguageCode.cc:613
+#: zypp-logic/zypp/LanguageCode.cc:613
 msgid "Khasi"
 msgstr "खासी"
 
 #. language code: khi
-#: zypp/LanguageCode.cc:615
+#: zypp-logic/zypp/LanguageCode.cc:615
 msgid "Khoisan (Other)"
 msgstr "खोईसन (अन्य)"
 
 #. language code: khm km
-#: zypp/LanguageCode.cc:617
+#: zypp-logic/zypp/LanguageCode.cc:617
 msgid "Khmer"
 msgstr "खमेर"
 
 #. language code: kho
-#: zypp/LanguageCode.cc:619
+#: zypp-logic/zypp/LanguageCode.cc:619
 msgid "Khotanese"
 msgstr "खोटानीज"
 
 #. language code: kik ki
-#: zypp/LanguageCode.cc:621
+#: zypp-logic/zypp/LanguageCode.cc:621
 msgid "Kikuyu"
 msgstr "किकूयू"
 
 #. language code: kin rw
-#: zypp/LanguageCode.cc:623
+#: zypp-logic/zypp/LanguageCode.cc:623
 msgid "Kinyarwanda"
 msgstr "किन्यारवंडा"
 
 #. language code: kir ky
-#: zypp/LanguageCode.cc:625
+#: zypp-logic/zypp/LanguageCode.cc:625
 msgid "Kirghiz"
 msgstr "किरगीझ"
 
 #. language code: kmb
-#: zypp/LanguageCode.cc:627
+#: zypp-logic/zypp/LanguageCode.cc:627
 msgid "Kimbundu"
 msgstr "किम्बुन्डू"
 
 #. language code: kok
-#: zypp/LanguageCode.cc:629
+#: zypp-logic/zypp/LanguageCode.cc:629
 msgid "Konkani"
 msgstr "कोकणी"
 
 #. language code: kom kv
-#: zypp/LanguageCode.cc:631
+#: zypp-logic/zypp/LanguageCode.cc:631
 msgid "Komi"
 msgstr "कोमी"
 
 #. language code: kon kg
-#: zypp/LanguageCode.cc:633
+#: zypp-logic/zypp/LanguageCode.cc:633
 msgid "Kongo"
 msgstr "काँगो"
 
 #. language code: kor ko
-#: zypp/LanguageCode.cc:635
+#: zypp-logic/zypp/LanguageCode.cc:635
 msgid "Korean"
 msgstr "कोरियन"
 
 #. language code: kos
-#: zypp/LanguageCode.cc:637
+#: zypp-logic/zypp/LanguageCode.cc:637
 msgid "Kosraean"
 msgstr "कोस्रीयन"
 
 #. language code: kpe
-#: zypp/LanguageCode.cc:639
+#: zypp-logic/zypp/LanguageCode.cc:639
 msgid "Kpelle"
 msgstr "क्पेल्ले"
 
 #. language code: krc
-#: zypp/LanguageCode.cc:641
+#: zypp-logic/zypp/LanguageCode.cc:641
 msgid "Karachay-Balkar"
 msgstr "कराचाय-बल्कर"
 
 #. language code: kro
-#: zypp/LanguageCode.cc:643
+#: zypp-logic/zypp/LanguageCode.cc:643
 msgid "Kru"
 msgstr "क्रू"
 
 #. language code: kru
-#: zypp/LanguageCode.cc:645
+#: zypp-logic/zypp/LanguageCode.cc:645
 msgid "Kurukh"
 msgstr "कुरुख"
 
 #. language code: kua kj
-#: zypp/LanguageCode.cc:647
+#: zypp-logic/zypp/LanguageCode.cc:647
 msgid "Kuanyama"
 msgstr "क्वॅन्यॅमा"
 
 #. language code: kum
-#: zypp/LanguageCode.cc:649
+#: zypp-logic/zypp/LanguageCode.cc:649
 msgid "Kumyk"
 msgstr "कुम्यक"
 
 #. language code: kur ku
-#: zypp/LanguageCode.cc:651
+#: zypp-logic/zypp/LanguageCode.cc:651
 msgid "Kurdish"
 msgstr "कुर्दिश"
 
 #. language code: kut
-#: zypp/LanguageCode.cc:653
+#: zypp-logic/zypp/LanguageCode.cc:653
 msgid "Kutenai"
 msgstr "कुतेनाय"
 
 #. language code: lad
-#: zypp/LanguageCode.cc:655
+#: zypp-logic/zypp/LanguageCode.cc:655
 msgid "Ladino"
 msgstr "लॅडिनो"
 
 #. language code: lah
-#: zypp/LanguageCode.cc:657
+#: zypp-logic/zypp/LanguageCode.cc:657
 msgid "Lahnda"
 msgstr "लाहंदा"
 
 #. language code: lam
-#: zypp/LanguageCode.cc:659
+#: zypp-logic/zypp/LanguageCode.cc:659
 msgid "Lamba"
 msgstr "लांबा"
 
 #. language code: lao lo
-#: zypp/LanguageCode.cc:661
+#: zypp-logic/zypp/LanguageCode.cc:661
 msgid "Lao"
 msgstr "लाओ"
 
 #. language code: lat la
-#: zypp/LanguageCode.cc:663
+#: zypp-logic/zypp/LanguageCode.cc:663
 msgid "Latin"
 msgstr "लॅटिन"
 
 #. language code: lav lv
-#: zypp/LanguageCode.cc:665
+#: zypp-logic/zypp/LanguageCode.cc:665
 msgid "Latvian"
 msgstr "लॅटव्हियन"
 
 #. language code: lez
-#: zypp/LanguageCode.cc:667
+#: zypp-logic/zypp/LanguageCode.cc:667
 msgid "Lezghian"
 msgstr "लेझगियान"
 
 #. language code: lim li
-#: zypp/LanguageCode.cc:669
+#: zypp-logic/zypp/LanguageCode.cc:669
 msgid "Limburgan"
 msgstr "लिंबुर्गन"
 
 #. language code: lin ln
-#: zypp/LanguageCode.cc:671
+#: zypp-logic/zypp/LanguageCode.cc:671
 msgid "Lingala"
 msgstr "लिंगाला"
 
 #. language code: lit lt
-#: zypp/LanguageCode.cc:673
+#: zypp-logic/zypp/LanguageCode.cc:673
 msgid "Lithuanian"
 msgstr "लिथुएनियन"
 
 #. language code: lol
-#: zypp/LanguageCode.cc:675
+#: zypp-logic/zypp/LanguageCode.cc:675
 msgid "Mongo"
 msgstr "मोंगो"
 
 #. language code: loz
-#: zypp/LanguageCode.cc:677
+#: zypp-logic/zypp/LanguageCode.cc:677
 msgid "Lozi"
 msgstr "लोझी"
 
 #. language code: ltz lb
-#: zypp/LanguageCode.cc:679
+#: zypp-logic/zypp/LanguageCode.cc:679
 msgid "Luxembourgish"
 msgstr "लक्झेम्बर्गिश"
 
 #. language code: lua
-#: zypp/LanguageCode.cc:681
+#: zypp-logic/zypp/LanguageCode.cc:681
 msgid "Luba-Lulua"
 msgstr "लुबा-लुलुआ"
 
 #. language code: lub lu
-#: zypp/LanguageCode.cc:683
+#: zypp-logic/zypp/LanguageCode.cc:683
 msgid "Luba-Katanga"
 msgstr "लुबा-कटंगा"
 
 #. language code: lug lg
-#: zypp/LanguageCode.cc:685
+#: zypp-logic/zypp/LanguageCode.cc:685
 msgid "Ganda"
 msgstr "गांडा"
 
 #. language code: lui
-#: zypp/LanguageCode.cc:687
+#: zypp-logic/zypp/LanguageCode.cc:687
 msgid "Luiseno"
 msgstr "लुईझेनो"
 
 #. language code: lun
-#: zypp/LanguageCode.cc:689
+#: zypp-logic/zypp/LanguageCode.cc:689
 msgid "Lunda"
 msgstr "लुंडा"
 
 #. language code: luo
-#: zypp/LanguageCode.cc:691
+#: zypp-logic/zypp/LanguageCode.cc:691
 msgid "Luo (Kenya and Tanzania)"
 msgstr "लुओ (केनिया व तांझानिया)"
 
 #. language code: lus
-#: zypp/LanguageCode.cc:693
+#: zypp-logic/zypp/LanguageCode.cc:693
 msgid "Lushai"
 msgstr "लुशाई"
 
 #. language code: mac mkd mk
-#: zypp/LanguageCode.cc:695 zypp/LanguageCode.cc:697
+#: zypp-logic/zypp/LanguageCode.cc:695 zypp-logic/zypp/LanguageCode.cc:697
 msgid "Macedonian"
 msgstr "मेसेडोनियन"
 
 #. language code: mad
-#: zypp/LanguageCode.cc:699
+#: zypp-logic/zypp/LanguageCode.cc:699
 msgid "Madurese"
 msgstr "मदुरीज"
 
 #. language code: mag
-#: zypp/LanguageCode.cc:701
+#: zypp-logic/zypp/LanguageCode.cc:701
 msgid "Magahi"
 msgstr "मगही"
 
 #. language code: mah mh
-#: zypp/LanguageCode.cc:703
+#: zypp-logic/zypp/LanguageCode.cc:703
 msgid "Marshallese"
 msgstr "मार्शलीज"
 
 #. language code: mai
-#: zypp/LanguageCode.cc:705
+#: zypp-logic/zypp/LanguageCode.cc:705
 msgid "Maithili"
 msgstr "मैथिली"
 
 #. language code: mak
-#: zypp/LanguageCode.cc:707
+#: zypp-logic/zypp/LanguageCode.cc:707
 msgid "Makasar"
 msgstr "मकासार"
 
 #. language code: mal ml
-#: zypp/LanguageCode.cc:709
+#: zypp-logic/zypp/LanguageCode.cc:709
 msgid "Malayalam"
 msgstr "मल्याळम"
 
 #. language code: man
-#: zypp/LanguageCode.cc:711
+#: zypp-logic/zypp/LanguageCode.cc:711
 msgid "Mandingo"
 msgstr "मन्डिंगो"
 
 #. language code: mao mri mi
-#: zypp/LanguageCode.cc:713 zypp/LanguageCode.cc:715
+#: zypp-logic/zypp/LanguageCode.cc:713 zypp-logic/zypp/LanguageCode.cc:715
 msgid "Maori"
 msgstr "माओरी"
 
 #. language code: map
-#: zypp/LanguageCode.cc:717
+#: zypp-logic/zypp/LanguageCode.cc:717
 msgid "Austronesian (Other)"
 msgstr "ऑस्ट्रोनेशियन (अन्य)"
 
 #. language code: mar mr
-#: zypp/LanguageCode.cc:719
+#: zypp-logic/zypp/LanguageCode.cc:719
 msgid "Marathi"
 msgstr "मराठी"
 
 #. language code: mas
-#: zypp/LanguageCode.cc:721
+#: zypp-logic/zypp/LanguageCode.cc:721
 msgid "Masai"
 msgstr "मसई"
 
 #. language code: may msa ms
-#: zypp/LanguageCode.cc:723 zypp/LanguageCode.cc:725
+#: zypp-logic/zypp/LanguageCode.cc:723 zypp-logic/zypp/LanguageCode.cc:725
 msgid "Malay"
 msgstr "मलय"
 
 #. language code: mdf
-#: zypp/LanguageCode.cc:727
+#: zypp-logic/zypp/LanguageCode.cc:727
 msgid "Moksha"
 msgstr "मोक्षा"
 
 #. language code: mdr
-#: zypp/LanguageCode.cc:729
+#: zypp-logic/zypp/LanguageCode.cc:729
 msgid "Mandar"
 msgstr "मंदार"
 
 #. language code: men
-#: zypp/LanguageCode.cc:731
+#: zypp-logic/zypp/LanguageCode.cc:731
 msgid "Mende"
 msgstr "मेंडे"
 
 #. language code: mga
-#: zypp/LanguageCode.cc:733
+#: zypp-logic/zypp/LanguageCode.cc:733
 msgid "Irish, Middle (900-1200)"
 msgstr "आयरिश, मध्य (900-1200)"
 
 #. language code: mic
-#: zypp/LanguageCode.cc:735
+#: zypp-logic/zypp/LanguageCode.cc:735
 msgid "Mi'kmaq"
 msgstr "मि’क्माक"
 
 #. language code: min
-#: zypp/LanguageCode.cc:737
+#: zypp-logic/zypp/LanguageCode.cc:737
 msgid "Minangkabau"
 msgstr "मिनँगकाबाऊ"
 
 #. language code: mis
-#: zypp/LanguageCode.cc:739
+#: zypp-logic/zypp/LanguageCode.cc:739
 msgid "Miscellaneous Languages"
 msgstr "किरकोळ अन्य भाषा"
 
 #. language code: mkh
-#: zypp/LanguageCode.cc:741
+#: zypp-logic/zypp/LanguageCode.cc:741
 msgid "Mon-Khmer (Other)"
 msgstr "मॉन-खमेर (अन्य)"
 
 #. language code: mlg mg
-#: zypp/LanguageCode.cc:743
+#: zypp-logic/zypp/LanguageCode.cc:743
 msgid "Malagasy"
 msgstr "मलागासी"
 
 #. language code: mlt mt
-#: zypp/LanguageCode.cc:745
+#: zypp-logic/zypp/LanguageCode.cc:745
 msgid "Maltese"
 msgstr "माल्टीज"
 
 #. language code: mnc
-#: zypp/LanguageCode.cc:747
+#: zypp-logic/zypp/LanguageCode.cc:747
 msgid "Manchu"
 msgstr "मांचू"
 
 #. language code: mni
-#: zypp/LanguageCode.cc:749
+#: zypp-logic/zypp/LanguageCode.cc:749
 msgid "Manipuri"
 msgstr "मणिपुरी"
 
 #. language code: mno
-#: zypp/LanguageCode.cc:751
+#: zypp-logic/zypp/LanguageCode.cc:751
 msgid "Manobo Languages"
 msgstr "मोनोबो भाषा"
 
 #. language code: moh
-#: zypp/LanguageCode.cc:753
+#: zypp-logic/zypp/LanguageCode.cc:753
 msgid "Mohawk"
 msgstr "मोहॉक"
 
 #. language code: mol mo
-#: zypp/LanguageCode.cc:755
+#: zypp-logic/zypp/LanguageCode.cc:755
 msgid "Moldavian"
 msgstr "मॉल्देव्हियन"
 
 #. language code: mon mn
-#: zypp/LanguageCode.cc:757
+#: zypp-logic/zypp/LanguageCode.cc:757
 msgid "Mongolian"
 msgstr "मंगोलियन"
 
 #. language code: mos
-#: zypp/LanguageCode.cc:759
+#: zypp-logic/zypp/LanguageCode.cc:759
 msgid "Mossi"
 msgstr "मोस्सी"
 
 #. language code: mul
-#: zypp/LanguageCode.cc:761
+#: zypp-logic/zypp/LanguageCode.cc:761
 msgid "Multiple Languages"
 msgstr "अनेक भाषा"
 
 #. language code: mun
-#: zypp/LanguageCode.cc:763
+#: zypp-logic/zypp/LanguageCode.cc:763
 msgid "Munda languages"
 msgstr "मुंडा भाषा"
 
 #. language code: mus
-#: zypp/LanguageCode.cc:765
+#: zypp-logic/zypp/LanguageCode.cc:765
 msgid "Creek"
 msgstr "क्रीक"
 
 #. language code: mwl
-#: zypp/LanguageCode.cc:767
+#: zypp-logic/zypp/LanguageCode.cc:767
 msgid "Mirandese"
 msgstr "मिरॅन्डिस"
 
 #. language code: mwr
-#: zypp/LanguageCode.cc:769
+#: zypp-logic/zypp/LanguageCode.cc:769
 msgid "Marwari"
 msgstr "मारवाडी"
 
 #. language code: myn
-#: zypp/LanguageCode.cc:771
+#: zypp-logic/zypp/LanguageCode.cc:771
 msgid "Mayan Languages"
 msgstr "मायन भाषा"
 
 #. language code: myv
-#: zypp/LanguageCode.cc:773
+#: zypp-logic/zypp/LanguageCode.cc:773
 msgid "Erzya"
 msgstr "एरझ्या"
 
 #. language code: nah
-#: zypp/LanguageCode.cc:775
+#: zypp-logic/zypp/LanguageCode.cc:775
 msgid "Nahuatl"
 msgstr "नाहुआटल"
 
 #. language code: nai
-#: zypp/LanguageCode.cc:777
+#: zypp-logic/zypp/LanguageCode.cc:777
 msgid "North American Indian"
 msgstr "उत्तर अमेरिकी भारतीय"
 
 #. language code: nap
-#: zypp/LanguageCode.cc:779
+#: zypp-logic/zypp/LanguageCode.cc:779
 msgid "Neapolitan"
 msgstr "नेपोलिटन"
 
 #. language code: nav nv
-#: zypp/LanguageCode.cc:783
+#: zypp-logic/zypp/LanguageCode.cc:783
 msgid "Navajo"
 msgstr "नाव्हाजो"
 
 #. language code: nbl nr
-#: zypp/LanguageCode.cc:785
+#: zypp-logic/zypp/LanguageCode.cc:785
 msgid "Ndebele, South"
 msgstr "न्डेबेले, दक्षिण"
 
 #. language code: nde nd
-#: zypp/LanguageCode.cc:787
+#: zypp-logic/zypp/LanguageCode.cc:787
 msgid "Ndebele, North"
 msgstr "न्डेबेले उत्तर"
 
 #. language code: ndo ng
-#: zypp/LanguageCode.cc:789
+#: zypp-logic/zypp/LanguageCode.cc:789
 msgid "Ndonga"
 msgstr "न्डोंगा"
 
 #. language code: nds
-#: zypp/LanguageCode.cc:791
+#: zypp-logic/zypp/LanguageCode.cc:791
 msgid "Low German"
 msgstr "लो जर्मन"
 
 #. language code: nep ne
-#: zypp/LanguageCode.cc:793
+#: zypp-logic/zypp/LanguageCode.cc:793
 msgid "Nepali"
 msgstr "नेपाळी"
 
 #. language code: new
-#: zypp/LanguageCode.cc:795
+#: zypp-logic/zypp/LanguageCode.cc:795
 msgid "Nepal Bhasa"
 msgstr "नेपाल भासा"
 
 #. language code: nia
-#: zypp/LanguageCode.cc:797
+#: zypp-logic/zypp/LanguageCode.cc:797
 msgid "Nias"
 msgstr "निअस"
 
 #. language code: nic
-#: zypp/LanguageCode.cc:799
+#: zypp-logic/zypp/LanguageCode.cc:799
 msgid "Niger-Kordofanian (Other)"
 msgstr "नायजेर-कोर्डोफॅनियन (अन्य)"
 
 #. language code: niu
-#: zypp/LanguageCode.cc:801
+#: zypp-logic/zypp/LanguageCode.cc:801
 msgid "Niuean"
 msgstr "नियुईन"
 
 #. language code: nno nn
-#: zypp/LanguageCode.cc:803
+#: zypp-logic/zypp/LanguageCode.cc:803
 msgid "Norwegian Nynorsk"
 msgstr "नॉर्वेजियन न्योर्स्क"
 
 #. language code: nob nb
-#: zypp/LanguageCode.cc:805
+#: zypp-logic/zypp/LanguageCode.cc:805
 msgid "Norwegian Bokmal"
 msgstr "नॉर्वेजियन बोकमल"
 
 #. language code: nog
-#: zypp/LanguageCode.cc:807
+#: zypp-logic/zypp/LanguageCode.cc:807
 msgid "Nogai"
 msgstr "नोगई"
 
 #. language code: non
-#: zypp/LanguageCode.cc:809
+#: zypp-logic/zypp/LanguageCode.cc:809
 msgid "Norse, Old"
 msgstr "नॉर्से, जुनी"
 
 #. language code: nor no
-#: zypp/LanguageCode.cc:811
+#: zypp-logic/zypp/LanguageCode.cc:811
 msgid "Norwegian"
 msgstr "नॉर्वेजियन"
 
 #. language code: nso
-#: zypp/LanguageCode.cc:813
+#: zypp-logic/zypp/LanguageCode.cc:813
 msgid "Northern Sotho"
 msgstr "उत्तरी सोथो"
 
 #. language code: nub
-#: zypp/LanguageCode.cc:815
+#: zypp-logic/zypp/LanguageCode.cc:815
 msgid "Nubian Languages"
 msgstr "नुबियन भाषा"
 
 #. language code: nwc
-#: zypp/LanguageCode.cc:817
+#: zypp-logic/zypp/LanguageCode.cc:817
 msgid "Classical Newari"
 msgstr "क्लासिकल नेवाडी"
 
 #. language code: nya ny
-#: zypp/LanguageCode.cc:819
+#: zypp-logic/zypp/LanguageCode.cc:819
 msgid "Chichewa"
 msgstr "चिचेवा"
 
 #. language code: nym
-#: zypp/LanguageCode.cc:821
+#: zypp-logic/zypp/LanguageCode.cc:821
 msgid "Nyamwezi"
 msgstr "न्याम्वेझी"
 
 #. language code: nyn
-#: zypp/LanguageCode.cc:823
+#: zypp-logic/zypp/LanguageCode.cc:823
 msgid "Nyankole"
 msgstr "न्यान्कोल"
 
 #. language code: nyo
-#: zypp/LanguageCode.cc:825
+#: zypp-logic/zypp/LanguageCode.cc:825
 msgid "Nyoro"
 msgstr "न्योरो"
 
 #. language code: nzi
-#: zypp/LanguageCode.cc:827
+#: zypp-logic/zypp/LanguageCode.cc:827
 msgid "Nzima"
 msgstr "न्झिमा"
 
 #. language code: oci oc
-#: zypp/LanguageCode.cc:829
+#: zypp-logic/zypp/LanguageCode.cc:829
 msgid "Occitan (post 1500)"
 msgstr "ऑसिटन (1500 नंतर)"
 
 #. language code: oji oj
-#: zypp/LanguageCode.cc:831
+#: zypp-logic/zypp/LanguageCode.cc:831
 msgid "Ojibwa"
 msgstr "ऑजिब्वा"
 
 #. language code: ori or
-#: zypp/LanguageCode.cc:833
+#: zypp-logic/zypp/LanguageCode.cc:833
 msgid "Oriya"
 msgstr "उडिया"
 
 #. language code: orm om
-#: zypp/LanguageCode.cc:835
+#: zypp-logic/zypp/LanguageCode.cc:835
 msgid "Oromo"
 msgstr "ओरोमो"
 
 #. language code: osa
-#: zypp/LanguageCode.cc:837
+#: zypp-logic/zypp/LanguageCode.cc:837
 msgid "Osage"
 msgstr "ओसाज"
 
 #. language code: oss os
-#: zypp/LanguageCode.cc:839
+#: zypp-logic/zypp/LanguageCode.cc:839
 msgid "Ossetian"
 msgstr "ऑसेटियन"
 
 #. language code: ota
-#: zypp/LanguageCode.cc:841
+#: zypp-logic/zypp/LanguageCode.cc:841
 msgid "Turkish, Ottoman (1500-1928)"
 msgstr "टर्किश, ओटोमन (1500-1928)"
 
 #. language code: oto
-#: zypp/LanguageCode.cc:843
+#: zypp-logic/zypp/LanguageCode.cc:843
 msgid "Otomian Languages"
 msgstr "ऑक्टोमियन भाषा"
 
 #. language code: paa
-#: zypp/LanguageCode.cc:845
+#: zypp-logic/zypp/LanguageCode.cc:845
 msgid "Papuan (Other)"
 msgstr "पापुआन (अन्य)"
 
 #. language code: pag
-#: zypp/LanguageCode.cc:847
+#: zypp-logic/zypp/LanguageCode.cc:847
 msgid "Pangasinan"
 msgstr "पांगेसिनन"
 
 #. language code: pal
-#: zypp/LanguageCode.cc:849
+#: zypp-logic/zypp/LanguageCode.cc:849
 msgid "Pahlavi"
 msgstr "पल्हवी"
 
 #. language code: pam
-#: zypp/LanguageCode.cc:851
+#: zypp-logic/zypp/LanguageCode.cc:851
 msgid "Pampanga"
 msgstr "पम्पॅन्गा"
 
 #. language code: pan pa
-#: zypp/LanguageCode.cc:853
+#: zypp-logic/zypp/LanguageCode.cc:853
 msgid "Panjabi"
 msgstr "पंजाबी"
 
 #. language code: pap
-#: zypp/LanguageCode.cc:855
+#: zypp-logic/zypp/LanguageCode.cc:855
 msgid "Papiamento"
 msgstr "पापिअमेन्टो"
 
 #. language code: pau
-#: zypp/LanguageCode.cc:857
+#: zypp-logic/zypp/LanguageCode.cc:857
 msgid "Palauan"
 msgstr "पलौअन"
 
 #. language code: peo
-#: zypp/LanguageCode.cc:859
+#: zypp-logic/zypp/LanguageCode.cc:859
 msgid "Persian, Old (ca.600-400 B.C.)"
 msgstr "पर्शियन, जुनी (ca.600-400 B.C.)"
 
 #. language code: per fas fa
-#: zypp/LanguageCode.cc:861 zypp/LanguageCode.cc:863
+#: zypp-logic/zypp/LanguageCode.cc:861 zypp-logic/zypp/LanguageCode.cc:863
 msgid "Persian"
 msgstr "पर्शियन"
 
 #. language code: phi
-#: zypp/LanguageCode.cc:865
+#: zypp-logic/zypp/LanguageCode.cc:865
 msgid "Philippine (Other)"
 msgstr "फिलीपिनी (अन्य)"
 
 #. language code: phn
-#: zypp/LanguageCode.cc:867
+#: zypp-logic/zypp/LanguageCode.cc:867
 msgid "Phoenician"
 msgstr "फोएनिशियन"
 
 #. language code: pli pi
-#: zypp/LanguageCode.cc:869
+#: zypp-logic/zypp/LanguageCode.cc:869
 msgid "Pali"
 msgstr "पाली"
 
 #. language code: pol pl
-#: zypp/LanguageCode.cc:871
+#: zypp-logic/zypp/LanguageCode.cc:871
 msgid "Polish"
 msgstr "पोलिश"
 
 #. language code: pon
-#: zypp/LanguageCode.cc:873
+#: zypp-logic/zypp/LanguageCode.cc:873
 msgid "Pohnpeian"
 msgstr "पोहमपेइयन"
 
 #. language code: por pt
-#: zypp/LanguageCode.cc:875
+#: zypp-logic/zypp/LanguageCode.cc:875
 msgid "Portuguese"
 msgstr "पोर्तुगीज"
 
 #. language code: pra
-#: zypp/LanguageCode.cc:877
+#: zypp-logic/zypp/LanguageCode.cc:877
 msgid "Prakrit Languages"
 msgstr "प्राकृत भाषा"
 
 #. language code: pro
-#: zypp/LanguageCode.cc:879
+#: zypp-logic/zypp/LanguageCode.cc:879
 msgid "Provencal, Old (to 1500)"
 msgstr "प्रॉव्हेन्कल, जुनी (1500 "
 
 #. language code: pus ps
-#: zypp/LanguageCode.cc:881
+#: zypp-logic/zypp/LanguageCode.cc:881
 msgid "Pushto"
 msgstr "पुश्तो"
 
 #. language code: que qu
-#: zypp/LanguageCode.cc:883
+#: zypp-logic/zypp/LanguageCode.cc:883
 msgid "Quechua"
 msgstr "क्वेचुआ"
 
 #. language code: raj
-#: zypp/LanguageCode.cc:885
+#: zypp-logic/zypp/LanguageCode.cc:885
 msgid "Rajasthani"
 msgstr "राजस्थानी"
 
 #. language code: rap
-#: zypp/LanguageCode.cc:887
+#: zypp-logic/zypp/LanguageCode.cc:887
 msgid "Rapanui"
 msgstr "रापानुई"
 
 #. language code: rar
-#: zypp/LanguageCode.cc:889
+#: zypp-logic/zypp/LanguageCode.cc:889
 msgid "Rarotongan"
 msgstr "रारोटोंगन"
 
 #. language code: roa
-#: zypp/LanguageCode.cc:891
+#: zypp-logic/zypp/LanguageCode.cc:891
 msgid "Romance (Other)"
 msgstr "रोमन्स (अन्य)"
 
 #. language code: roh rm
-#: zypp/LanguageCode.cc:893
+#: zypp-logic/zypp/LanguageCode.cc:893
 msgid "Raeto-Romance"
 msgstr "राएटो-रोमन्स"
 
 #. language code: rom
-#: zypp/LanguageCode.cc:895
+#: zypp-logic/zypp/LanguageCode.cc:895
 msgid "Romany"
 msgstr "रूमेनी"
 
 #. language code: rum ron ro
-#: zypp/LanguageCode.cc:897 zypp/LanguageCode.cc:899
+#: zypp-logic/zypp/LanguageCode.cc:897 zypp-logic/zypp/LanguageCode.cc:899
 msgid "Romanian"
 msgstr "रुमेनियन"
 
 #. language code: run rn
-#: zypp/LanguageCode.cc:901
+#: zypp-logic/zypp/LanguageCode.cc:901
 msgid "Rundi"
 msgstr "रूंदी"
 
 #. language code: rus ru
-#: zypp/LanguageCode.cc:903
+#: zypp-logic/zypp/LanguageCode.cc:903
 msgid "Russian"
 msgstr "रशियन"
 
 #. language code: sad
-#: zypp/LanguageCode.cc:905
+#: zypp-logic/zypp/LanguageCode.cc:905
 msgid "Sandawe"
 msgstr "सॅन्डावे"
 
 #. language code: sag sg
-#: zypp/LanguageCode.cc:907
+#: zypp-logic/zypp/LanguageCode.cc:907
 msgid "Sango"
 msgstr "सांगो"
 
 #. language code: sah
-#: zypp/LanguageCode.cc:909
+#: zypp-logic/zypp/LanguageCode.cc:909
 msgid "Yakut"
 msgstr "याकुत"
 
 #. language code: sai
-#: zypp/LanguageCode.cc:911
+#: zypp-logic/zypp/LanguageCode.cc:911
 msgid "South American Indian (Other)"
 msgstr "दक्षिण अमेरिकन भारतीय (अन्य)"
 
 #. language code: sal
-#: zypp/LanguageCode.cc:913
+#: zypp-logic/zypp/LanguageCode.cc:913
 msgid "Salishan Languages"
 msgstr "सॉलिशन भाषा"
 
 #. language code: sam
-#: zypp/LanguageCode.cc:915
+#: zypp-logic/zypp/LanguageCode.cc:915
 msgid "Samaritan Aramaic"
 msgstr "समरितान भाषा"
 
 #. language code: san sa
-#: zypp/LanguageCode.cc:917
+#: zypp-logic/zypp/LanguageCode.cc:917
 msgid "Sanskrit"
 msgstr "संस्कृत"
 
 #. language code: sas
-#: zypp/LanguageCode.cc:919
+#: zypp-logic/zypp/LanguageCode.cc:919
 msgid "Sasak"
 msgstr "सासक"
 
 #. language code: sat
-#: zypp/LanguageCode.cc:921
+#: zypp-logic/zypp/LanguageCode.cc:921
 msgid "Santali"
 msgstr "संताली"
 
 #. language code: scc srp sr
-#: zypp/LanguageCode.cc:923 zypp/LanguageCode.cc:925
+#: zypp-logic/zypp/LanguageCode.cc:923 zypp-logic/zypp/LanguageCode.cc:925
 msgid "Serbian"
 msgstr "सर्बियन"
 
 #. language code: scn
-#: zypp/LanguageCode.cc:927
+#: zypp-logic/zypp/LanguageCode.cc:927
 msgid "Sicilian"
 msgstr "सिसीलियन"
 
 #. language code: sco
-#: zypp/LanguageCode.cc:929
+#: zypp-logic/zypp/LanguageCode.cc:929
 msgid "Scots"
 msgstr "स्कॉट्स"
 
 #. language code: scr hrv hr
-#: zypp/LanguageCode.cc:931 zypp/LanguageCode.cc:933
+#: zypp-logic/zypp/LanguageCode.cc:931 zypp-logic/zypp/LanguageCode.cc:933
 msgid "Croatian"
 msgstr "क्रोएशियन"
 
 #. language code: sel
-#: zypp/LanguageCode.cc:935
+#: zypp-logic/zypp/LanguageCode.cc:935
 msgid "Selkup"
 msgstr "सेल्कप"
 
 #. language code: sem
-#: zypp/LanguageCode.cc:937
+#: zypp-logic/zypp/LanguageCode.cc:937
 msgid "Semitic (Other)"
 msgstr "सेमिटिक (अन्य)"
 
 #. language code: sga
-#: zypp/LanguageCode.cc:939
+#: zypp-logic/zypp/LanguageCode.cc:939
 msgid "Irish, Old (to 900)"
 msgstr "आयरिश, जुनी (900 पर्यंत)"
 
 #. language code: sgn
-#: zypp/LanguageCode.cc:941
+#: zypp-logic/zypp/LanguageCode.cc:941
 msgid "Sign Languages"
 msgstr "खुणांची भाषा"
 
 #. language code: shn
-#: zypp/LanguageCode.cc:943
+#: zypp-logic/zypp/LanguageCode.cc:943
 msgid "Shan"
 msgstr "शान"
 
 #. language code: sid
-#: zypp/LanguageCode.cc:945
+#: zypp-logic/zypp/LanguageCode.cc:945
 msgid "Sidamo"
 msgstr "सिडॅमो"
 
 #. language code: sin si
-#: zypp/LanguageCode.cc:947
+#: zypp-logic/zypp/LanguageCode.cc:947
 msgid "Sinhala"
 msgstr "सिंहला"
 
 #. language code: sio
-#: zypp/LanguageCode.cc:949
+#: zypp-logic/zypp/LanguageCode.cc:949
 msgid "Siouan Languages"
 msgstr "सिओयुअन भाषा"
 
 #. language code: sit
-#: zypp/LanguageCode.cc:951
+#: zypp-logic/zypp/LanguageCode.cc:951
 msgid "Sino-Tibetan (Other)"
 msgstr "सिनो-तिबेटन (अन्य)"
 
 #. language code: sla
-#: zypp/LanguageCode.cc:953
+#: zypp-logic/zypp/LanguageCode.cc:953
 msgid "Slavic (Other)"
 msgstr "स्लेव्हिक (अन्य)"
 
 #. language code: slo slk sk
-#: zypp/LanguageCode.cc:955 zypp/LanguageCode.cc:957
+#: zypp-logic/zypp/LanguageCode.cc:955 zypp-logic/zypp/LanguageCode.cc:957
 msgid "Slovak"
 msgstr "स्लोव्हाक"
 
 #. language code: slv sl
-#: zypp/LanguageCode.cc:959
+#: zypp-logic/zypp/LanguageCode.cc:959
 msgid "Slovenian"
 msgstr "स्लोव्हेनियन"
 
 #. language code: sma
-#: zypp/LanguageCode.cc:961
+#: zypp-logic/zypp/LanguageCode.cc:961
 msgid "Southern Sami"
 msgstr "दक्षिण सॅमी"
 
 #. language code: sme se
-#: zypp/LanguageCode.cc:963
+#: zypp-logic/zypp/LanguageCode.cc:963
 msgid "Northern Sami"
 msgstr "उत्तरी सॅमी"
 
 #. language code: smi
-#: zypp/LanguageCode.cc:965
+#: zypp-logic/zypp/LanguageCode.cc:965
 msgid "Sami Languages (Other)"
 msgstr "सॅमी भाषा (अन्य)"
 
 #. language code: smj
-#: zypp/LanguageCode.cc:967
+#: zypp-logic/zypp/LanguageCode.cc:967
 msgid "Lule Sami"
 msgstr "लुले सॅमी"
 
 #. language code: smn
-#: zypp/LanguageCode.cc:969
+#: zypp-logic/zypp/LanguageCode.cc:969
 msgid "Inari Sami"
 msgstr "इनारी सॅमी"
 
 #. language code: smo sm
-#: zypp/LanguageCode.cc:971
+#: zypp-logic/zypp/LanguageCode.cc:971
 msgid "Samoan"
 msgstr "सॅमोअन"
 
 #. language code: sms
-#: zypp/LanguageCode.cc:973
+#: zypp-logic/zypp/LanguageCode.cc:973
 msgid "Skolt Sami"
 msgstr "स्कॉल्ट सॅमी"
 
 #. language code: sna sn
-#: zypp/LanguageCode.cc:975
+#: zypp-logic/zypp/LanguageCode.cc:975
 msgid "Shona"
 msgstr "शोना"
 
 #. language code: snd sd
-#: zypp/LanguageCode.cc:977
+#: zypp-logic/zypp/LanguageCode.cc:977
 msgid "Sindhi"
 msgstr "सिंधी"
 
 #. language code: snk
-#: zypp/LanguageCode.cc:979
+#: zypp-logic/zypp/LanguageCode.cc:979
 msgid "Soninke"
 msgstr "सोनिंके"
 
 #. language code: sog
-#: zypp/LanguageCode.cc:981
+#: zypp-logic/zypp/LanguageCode.cc:981
 msgid "Sogdian"
 msgstr "सॉग्डियन"
 
 #. language code: som so
-#: zypp/LanguageCode.cc:983
+#: zypp-logic/zypp/LanguageCode.cc:983
 msgid "Somali"
 msgstr "सोमाली"
 
 #. language code: son
-#: zypp/LanguageCode.cc:985
+#: zypp-logic/zypp/LanguageCode.cc:985
 msgid "Songhai"
 msgstr "साँघई"
 
 #. language code: sot st
-#: zypp/LanguageCode.cc:987
+#: zypp-logic/zypp/LanguageCode.cc:987
 msgid "Sotho, Southern"
 msgstr "सोथो, दक्षिणी"
 
 #. language code: spa es
-#: zypp/LanguageCode.cc:989
+#: zypp-logic/zypp/LanguageCode.cc:989
 msgid "Spanish"
 msgstr "स्पॅनिश"
 
 #. language code: srd sc
-#: zypp/LanguageCode.cc:991
+#: zypp-logic/zypp/LanguageCode.cc:991
 msgid "Sardinian"
 msgstr "सार्डिनियन"
 
 #. language code: srr
-#: zypp/LanguageCode.cc:993
+#: zypp-logic/zypp/LanguageCode.cc:993
 msgid "Serer"
 msgstr "सेरेर"
 
 #. language code: ssa
-#: zypp/LanguageCode.cc:995
+#: zypp-logic/zypp/LanguageCode.cc:995
 msgid "Nilo-Saharan (Other)"
 msgstr "निलो-सहारन (अन्य)"
 
 #. language code: ssw ss
-#: zypp/LanguageCode.cc:997
+#: zypp-logic/zypp/LanguageCode.cc:997
 msgid "Swati"
 msgstr "स्वाती"
 
 #. language code: suk
-#: zypp/LanguageCode.cc:999
+#: zypp-logic/zypp/LanguageCode.cc:999
 msgid "Sukuma"
 msgstr "सुकुमा"
 
 #. language code: sun su
-#: zypp/LanguageCode.cc:1001
+#: zypp-logic/zypp/LanguageCode.cc:1001
 msgid "Sundanese"
 msgstr "सुदानीज"
 
 #. language code: sus
-#: zypp/LanguageCode.cc:1003
+#: zypp-logic/zypp/LanguageCode.cc:1003
 msgid "Susu"
 msgstr "सुसु"
 
 #. language code: sux
-#: zypp/LanguageCode.cc:1005
+#: zypp-logic/zypp/LanguageCode.cc:1005
 msgid "Sumerian"
 msgstr "सुमेरियन"
 
 #. language code: swa sw
-#: zypp/LanguageCode.cc:1007
+#: zypp-logic/zypp/LanguageCode.cc:1007
 msgid "Swahili"
 msgstr "स्वाहिली"
 
 #. language code: swe sv
-#: zypp/LanguageCode.cc:1009
+#: zypp-logic/zypp/LanguageCode.cc:1009
 msgid "Swedish"
 msgstr "स्वीडिश"
 
 #. language code: syr
-#: zypp/LanguageCode.cc:1011
+#: zypp-logic/zypp/LanguageCode.cc:1011
 msgid "Syriac"
 msgstr "सायरिअक"
 
 #. language code: tah ty
-#: zypp/LanguageCode.cc:1013
+#: zypp-logic/zypp/LanguageCode.cc:1013
 msgid "Tahitian"
 msgstr "ताहिशियन"
 
 #. language code: tai
-#: zypp/LanguageCode.cc:1015
+#: zypp-logic/zypp/LanguageCode.cc:1015
 msgid "Tai (Other)"
 msgstr "ताई (अन्य)"
 
 #. language code: tam ta
-#: zypp/LanguageCode.cc:1017
+#: zypp-logic/zypp/LanguageCode.cc:1017
 msgid "Tamil"
 msgstr "तामिल"
 
 #. language code: tat tt
-#: zypp/LanguageCode.cc:1019
+#: zypp-logic/zypp/LanguageCode.cc:1019
 msgid "Tatar"
 msgstr "तातार"
 
 #. language code: tel te
-#: zypp/LanguageCode.cc:1021
+#: zypp-logic/zypp/LanguageCode.cc:1021
 msgid "Telugu"
 msgstr "तेलगू"
 
 #. language code: tem
-#: zypp/LanguageCode.cc:1023
+#: zypp-logic/zypp/LanguageCode.cc:1023
 msgid "Timne"
 msgstr "टिम्ने"
 
 #. language code: ter
-#: zypp/LanguageCode.cc:1025
+#: zypp-logic/zypp/LanguageCode.cc:1025
 msgid "Tereno"
 msgstr "तेरेनो"
 
 #. language code: tet
-#: zypp/LanguageCode.cc:1027
+#: zypp-logic/zypp/LanguageCode.cc:1027
 msgid "Tetum"
 msgstr "टेटम"
 
 #. language code: tgk tg
-#: zypp/LanguageCode.cc:1029
+#: zypp-logic/zypp/LanguageCode.cc:1029
 msgid "Tajik"
 msgstr "ताजिक"
 
 #. language code: tgl tl
-#: zypp/LanguageCode.cc:1031
+#: zypp-logic/zypp/LanguageCode.cc:1031
 msgid "Tagalog"
 msgstr "तागालॉग"
 
 #. language code: tha th
-#: zypp/LanguageCode.cc:1033
+#: zypp-logic/zypp/LanguageCode.cc:1033
 msgid "Thai"
 msgstr "थाई"
 
 #. language code: tib bod bo
-#: zypp/LanguageCode.cc:1035 zypp/LanguageCode.cc:1037
+#: zypp-logic/zypp/LanguageCode.cc:1035 zypp-logic/zypp/LanguageCode.cc:1037
 msgid "Tibetan"
 msgstr "तिबेटियन"
 
 #. language code: tig
-#: zypp/LanguageCode.cc:1039
+#: zypp-logic/zypp/LanguageCode.cc:1039
 msgid "Tigre"
 msgstr "तिग्री"
 
 #. language code: tir ti
-#: zypp/LanguageCode.cc:1041
+#: zypp-logic/zypp/LanguageCode.cc:1041
 msgid "Tigrinya"
 msgstr "तिग्रीन्या"
 
 #. language code: tiv
-#: zypp/LanguageCode.cc:1043
+#: zypp-logic/zypp/LanguageCode.cc:1043
 msgid "Tiv"
 msgstr "तिव्ह"
 
 #. language code: tlh
-#: zypp/LanguageCode.cc:1047
+#: zypp-logic/zypp/LanguageCode.cc:1047
 msgid "Klingon"
 msgstr "क्लिंगॉन"
 
 #. language code: tli
-#: zypp/LanguageCode.cc:1049
+#: zypp-logic/zypp/LanguageCode.cc:1049
 msgid "Tlingit"
 msgstr "त्लिंगिट"
 
 #. language code: tmh
-#: zypp/LanguageCode.cc:1051
+#: zypp-logic/zypp/LanguageCode.cc:1051
 msgid "Tamashek"
 msgstr "तामाशेक"
 
 #. language code: tog
-#: zypp/LanguageCode.cc:1053
+#: zypp-logic/zypp/LanguageCode.cc:1053
 msgid "Tonga (Nyasa)"
 msgstr "टोंगा (न्यासा)"
 
 #. language code: ton to
-#: zypp/LanguageCode.cc:1055
+#: zypp-logic/zypp/LanguageCode.cc:1055
 msgid "Tonga (Tonga Islands)"
 msgstr "टोंगा (टोंगा बेटे)"
 
 #. language code: tpi
-#: zypp/LanguageCode.cc:1057
+#: zypp-logic/zypp/LanguageCode.cc:1057
 msgid "Tok Pisin"
 msgstr "टॉक पिसीन"
 
 #. language code: tsi
-#: zypp/LanguageCode.cc:1059
+#: zypp-logic/zypp/LanguageCode.cc:1059
 msgid "Tsimshian"
 msgstr "त्सिम्सीयॅन"
 
 #. language code: tsn tn
-#: zypp/LanguageCode.cc:1061
+#: zypp-logic/zypp/LanguageCode.cc:1061
 msgid "Tswana"
 msgstr "त्स्वाना"
 
 #. language code: tso ts
-#: zypp/LanguageCode.cc:1063
+#: zypp-logic/zypp/LanguageCode.cc:1063
 msgid "Tsonga"
 msgstr "त्सोंगा"
 
 #. language code: tuk tk
-#: zypp/LanguageCode.cc:1065
+#: zypp-logic/zypp/LanguageCode.cc:1065
 msgid "Turkmen"
 msgstr "तुर्कमन"
 
 #. language code: tum
-#: zypp/LanguageCode.cc:1067
+#: zypp-logic/zypp/LanguageCode.cc:1067
 msgid "Tumbuka"
 msgstr "टुंबुका"
 
 #. language code: tup
-#: zypp/LanguageCode.cc:1069
+#: zypp-logic/zypp/LanguageCode.cc:1069
 msgid "Tupi Languages"
 msgstr "तुपी भाषा"
 
 #. language code: tur tr
-#: zypp/LanguageCode.cc:1071
+#: zypp-logic/zypp/LanguageCode.cc:1071
 msgid "Turkish"
 msgstr "टर्किश"
 
 #. language code: tut
-#: zypp/LanguageCode.cc:1073
+#: zypp-logic/zypp/LanguageCode.cc:1073
 msgid "Altaic (Other)"
 msgstr "अल्ताईक (अन्य)"
 
 #. language code: twi tw
-#: zypp/LanguageCode.cc:1077
+#: zypp-logic/zypp/LanguageCode.cc:1077
 msgid "Twi"
 msgstr "त्वि"
 
 #. language code: tyv
-#: zypp/LanguageCode.cc:1079
+#: zypp-logic/zypp/LanguageCode.cc:1079
 msgid "Tuvinian"
 msgstr "तुव्हिनियन"
 
 #. language code: udm
-#: zypp/LanguageCode.cc:1081
+#: zypp-logic/zypp/LanguageCode.cc:1081
 msgid "Udmurt"
 msgstr "उडमर्ट"
 
 #. language code: uga
-#: zypp/LanguageCode.cc:1083
+#: zypp-logic/zypp/LanguageCode.cc:1083
 msgid "Ugaritic"
 msgstr "युगारिटिक"
 
 #. language code: uig ug
-#: zypp/LanguageCode.cc:1085
+#: zypp-logic/zypp/LanguageCode.cc:1085
 msgid "Uighur"
 msgstr "युईघर"
 
 #. language code: ukr uk
-#: zypp/LanguageCode.cc:1087
+#: zypp-logic/zypp/LanguageCode.cc:1087
 msgid "Ukrainian"
 msgstr "युक्रेनियन"
 
 #. language code: umb
-#: zypp/LanguageCode.cc:1089
+#: zypp-logic/zypp/LanguageCode.cc:1089
 msgid "Umbundu"
 msgstr "युबुंडु"
 
 #. language code: und
-#: zypp/LanguageCode.cc:1091
+#: zypp-logic/zypp/LanguageCode.cc:1091
 msgid "Undetermined"
 msgstr "निश्चित केलेली नाही"
 
 #. language code: urd ur
-#: zypp/LanguageCode.cc:1093
+#: zypp-logic/zypp/LanguageCode.cc:1093
 msgid "Urdu"
 msgstr "उर्दू"
 
 #. language code: uzb uz
-#: zypp/LanguageCode.cc:1095
+#: zypp-logic/zypp/LanguageCode.cc:1095
 msgid "Uzbek"
 msgstr "उझबेक"
 
 #. language code: vai
-#: zypp/LanguageCode.cc:1097
+#: zypp-logic/zypp/LanguageCode.cc:1097
 msgid "Vai"
 msgstr "वाई"
 
 #. language code: ven ve
-#: zypp/LanguageCode.cc:1099
+#: zypp-logic/zypp/LanguageCode.cc:1099
 msgid "Venda"
 msgstr "वेंदा"
 
 #. language code: vie vi
-#: zypp/LanguageCode.cc:1101
+#: zypp-logic/zypp/LanguageCode.cc:1101
 msgid "Vietnamese"
 msgstr "व्हिएतनामीज"
 
 #. language code: vol vo
-#: zypp/LanguageCode.cc:1103
+#: zypp-logic/zypp/LanguageCode.cc:1103
 msgid "Volapuk"
 msgstr "व्होलॅपुक"
 
 #. language code: vot
-#: zypp/LanguageCode.cc:1105
+#: zypp-logic/zypp/LanguageCode.cc:1105
 msgid "Votic"
 msgstr "व्होटिक"
 
 #. language code: wak
-#: zypp/LanguageCode.cc:1107
+#: zypp-logic/zypp/LanguageCode.cc:1107
 msgid "Wakashan Languages"
 msgstr "वाकाशन भाषा"
 
 #. language code: wal
-#: zypp/LanguageCode.cc:1109
+#: zypp-logic/zypp/LanguageCode.cc:1109
 msgid "Walamo"
 msgstr "वालॅमो"
 
 #. language code: war
-#: zypp/LanguageCode.cc:1111
+#: zypp-logic/zypp/LanguageCode.cc:1111
 msgid "Waray"
 msgstr "वॅरे"
 
 #. language code: was
-#: zypp/LanguageCode.cc:1113
+#: zypp-logic/zypp/LanguageCode.cc:1113
 msgid "Washo"
 msgstr "वाशो"
 
 #. language code: wel cym cy
-#: zypp/LanguageCode.cc:1115 zypp/LanguageCode.cc:1117
+#: zypp-logic/zypp/LanguageCode.cc:1115 zypp-logic/zypp/LanguageCode.cc:1117
 msgid "Welsh"
 msgstr "वेल्श"
 
 #. language code: wen
-#: zypp/LanguageCode.cc:1119
+#: zypp-logic/zypp/LanguageCode.cc:1119
 msgid "Sorbian Languages"
 msgstr "सर्बियन भाषा"
 
 #. language code: wln wa
-#: zypp/LanguageCode.cc:1121
+#: zypp-logic/zypp/LanguageCode.cc:1121
 msgid "Walloon"
 msgstr "वॅलून"
 
 #. language code: wol wo
-#: zypp/LanguageCode.cc:1123
+#: zypp-logic/zypp/LanguageCode.cc:1123
 msgid "Wolof"
 msgstr "वोलोफ"
 
 #. language code: xal
-#: zypp/LanguageCode.cc:1125
+#: zypp-logic/zypp/LanguageCode.cc:1125
 msgid "Kalmyk"
 msgstr "कल्माइक"
 
 #. language code: xho xh
-#: zypp/LanguageCode.cc:1127
+#: zypp-logic/zypp/LanguageCode.cc:1127
 msgid "Xhosa"
 msgstr "क्झोसा"
 
 #. language code: yao
-#: zypp/LanguageCode.cc:1129
+#: zypp-logic/zypp/LanguageCode.cc:1129
 msgid "Yao"
 msgstr "याओ"
 
 #. language code: yap
-#: zypp/LanguageCode.cc:1131
+#: zypp-logic/zypp/LanguageCode.cc:1131
 msgid "Yapese"
 msgstr "यापीज"
 
 #. language code: yid yi
-#: zypp/LanguageCode.cc:1133
+#: zypp-logic/zypp/LanguageCode.cc:1133
 msgid "Yiddish"
 msgstr "यिदिश"
 
 #. language code: yor yo
-#: zypp/LanguageCode.cc:1135
+#: zypp-logic/zypp/LanguageCode.cc:1135
 msgid "Yoruba"
 msgstr "योरूबा"
 
 #. language code: ypk
-#: zypp/LanguageCode.cc:1137
+#: zypp-logic/zypp/LanguageCode.cc:1137
 msgid "Yupik Languages"
 msgstr "युपिक भाषा"
 
 #. language code: zap
-#: zypp/LanguageCode.cc:1139
+#: zypp-logic/zypp/LanguageCode.cc:1139
 msgid "Zapotec"
 msgstr "झापोटेक"
 
 #. language code: zen
-#: zypp/LanguageCode.cc:1141
+#: zypp-logic/zypp/LanguageCode.cc:1141
 msgid "Zenaga"
 msgstr "झेनागा"
 
 #. language code: zha za
-#: zypp/LanguageCode.cc:1143
+#: zypp-logic/zypp/LanguageCode.cc:1143
 msgid "Zhuang"
 msgstr "झुएंग"
 
 #. language code: znd
-#: zypp/LanguageCode.cc:1145
+#: zypp-logic/zypp/LanguageCode.cc:1145
 msgid "Zande"
 msgstr "झांदे"
 
 #. language code: zul zu
-#: zypp/LanguageCode.cc:1147
+#: zypp-logic/zypp/LanguageCode.cc:1147
 msgid "Zulu"
 msgstr "झुलू"
 
 #. language code: zun
-#: zypp/LanguageCode.cc:1149
+#: zypp-logic/zypp/LanguageCode.cc:1149
 msgid "Zuni"
 msgstr "झुनी"
 
-#: zypp/ProblemSolution.cc:134
+#: zypp-logic/zypp/ProblemSolution.cc:134
 msgid "Following actions will be done:"
 msgstr ""
 
-#: zypp/RepoInfo.cc:208
+#: zypp-logic/zypp/RepoInfo.cc:218
 msgid "Failed to fetch mirrorlist/metalink data."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:14
+#: zypp-logic/zypp/VendorSupportOptions.cc:14
 msgid "unknown"
 msgstr "अनोळखी"
 
-#: zypp/VendorSupportOptions.cc:17
+#: zypp-logic/zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:20
+#: zypp-logic/zypp/VendorSupportOptions.cc:20
 msgid "Level 1"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:23
+#: zypp-logic/zypp/VendorSupportOptions.cc:23
 msgid "Level 2"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:26
+#: zypp-logic/zypp/VendorSupportOptions.cc:26
 msgid "Level 3"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:29
+#: zypp-logic/zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:31
+#: zypp-logic/zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:33
+#: zypp-logic/zypp/VendorSupportOptions.cc:33
 msgid "invalid"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:41
+#: zypp-logic/zypp/VendorSupportOptions.cc:41
 msgid "The level of support is unspecified"
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:44
+#: zypp-logic/zypp/VendorSupportOptions.cc:44
 #, fuzzy
 msgid "The vendor does not provide support."
 msgstr "डिस्क अस्तित्वात नाही"
 
-#: zypp/VendorSupportOptions.cc:47
+#: zypp-logic/zypp/VendorSupportOptions.cc:47
 msgid ""
 "Problem determination, which means technical support designed to provide "
 "compatibility information, installation assistance, usage support, on-going "
@@ -3698,309 +4146,278 @@ msgid ""
 "correct product defect errors."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:50
+#: zypp-logic/zypp/VendorSupportOptions.cc:50
 msgid ""
 "Problem isolation, which means technical support designed to duplicate "
 "customer problems, isolate problem area and provide resolution for problems "
 "not resolved by Level 1 Support."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:53
+#: zypp-logic/zypp/VendorSupportOptions.cc:53
 msgid ""
 "Problem resolution, which means technical support designed to resolve "
 "complex problems by engaging engineering in resolution of product defects "
 "which have been identified by Level 2 Support."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:56
+#: zypp-logic/zypp/VendorSupportOptions.cc:56
 msgid "An additional customer contract is necessary for getting support."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:58
+#: zypp-logic/zypp/VendorSupportOptions.cc:58
 msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
 msgstr ""
 
-#: zypp/VendorSupportOptions.cc:60
+#: zypp-logic/zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
 msgstr ""
 
-#: zypp/ZYppFactory.cc:380
+#: zypp-logic/zypp/ZYppFactory.cc:380
 #, c-format, boost-format
 msgid ""
 "System management is locked by the application with pid %d (%s).\n"
 "Close this application before trying again."
 msgstr ""
 
-#: zypp/base/StrMatcher.cc:152
+#: zypp-logic/zypp/base/StrMatcher.cc:152
 #, fuzzy, c-format, boost-format
 msgid "Unknown match mode '%s'"
 msgstr "अज्ञात आज्ञा"
 
-#: zypp/base/StrMatcher.cc:153
+#: zypp-logic/zypp/base/StrMatcher.cc:153
 #, c-format, boost-format
 msgid "Unknown match mode '%s' for pattern '%s'"
 msgstr ""
 
-#: zypp/base/StrMatcher.cc:157
+#: zypp-logic/zypp/base/StrMatcher.cc:157
 #, c-format, boost-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
 
-#: zypp/base/StrMatcher.cc:158
+#: zypp-logic/zypp/base/StrMatcher.cc:158
 #, fuzzy, c-format, boost-format
 msgid "Invalid regular expression '%s'"
 msgstr "अवैध Url स्कीम %s"
 
-#. !\todo add comma to the message for the next release
-#: zypp/media/MediaCIFS.cc:427 zypp/media/MediaNetworkCommonHandler.cc:346
-#, c-format, boost-format
-msgid "Authentication required for '%s'"
-msgstr ""
-
-#. just report (NO_ERROR); no interactive request to the user
-#: zypp/media/MediaCurl.cc:788
-msgid "Will try again..."
-msgstr ""
-
-#: zypp/media/MediaCurl.cc:791
-#, boost-format
-msgid "Giving up after %1% attempts."
-msgstr ""
-
-#: zypp/media/MediaCurl.cc:907 zypp-curl/ng/network/networkrequesterror.cc:124
-msgid ""
-"Visit the SUSE Customer Center to check whether your registration is valid "
-"and has not expired."
-msgstr ""
-
-#: zypp/media/MediaCurl.cc:909 zypp-curl/ng/network/networkrequesterror.cc:126
-msgid ""
-"Visit the Novell Customer Center to check whether your registration is valid "
-"and has not expired."
-msgstr ""
-
-#: zypp/media/MediaHandler.cc:341
-msgid ""
-"Create attach point: Can't find a writable directory to create an attach "
-"point"
-msgstr ""
-
-#: zypp/misc/CheckAccessDeleted.cc:458
+#: zypp-logic/zypp/misc/CheckAccessDeleted.cc:458
 msgid "Please install package 'lsof' first."
 msgstr ""
 
-#: zypp/ng/repo/refresh.cc:46
+#: zypp-logic/zypp/ng/repo/refresh.cc:45
 #, fuzzy
 msgid "Can't create metadata cache directory."
 msgstr "डिरेक्टर %1: %2 निर्माण करता आली नाही."
 
-#. when dealing with mirror lists we notify the user to use gpgKeyUrl instead of
+#. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
-#: zypp/ng/repo/workflows/repodownloaderwf.cc:97
+#: zypp-logic/zypp/ng/repo/workflows/repodownloaderwf.cc:95
 msgid ""
 "Downloading signature key via mirrors, consider explicitely setting "
 "gpgKeyUrl via the repository configuration instead."
 msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:81
-#: zypp/ng/repo/workflows/serviceswf.cc:283
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:80
+#: zypp-logic/zypp/ng/repo/workflows/serviceswf.cc:278
 #, c-format, boost-format
 msgid "Error trying to read from '%s'"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:439
-#: zypp/ng/repo/workflows/repomanagerwf.cc:666
-#: zypp/ng/repo/workflows/repomanagerwf.cc:748
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:416
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:630
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:712
 #, fuzzy, c-format, boost-format
 msgid "Can't create %s"
 msgstr " डेस्कटॉप आयटेम'%s' उघडू शकत नाही"
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:491
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:465
 msgid "Failed to retrieve new repository metadata."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:579
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:547
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:597
-#: zypp/ng/repo/workflows/repomanagerwf.cc:626
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:565
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:593
 #, fuzzy, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Failed to parse: %s."
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:654
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:618
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:754
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:718
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:809
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:773
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:826
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:790
 msgid "Unhandled repository type"
 msgstr ""
 
-#: zypp/ng/repo/workflows/repomanagerwf.cc:902
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:863
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/repomanagerwf.cc:997
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:955
 #, fuzzy, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "पाठवल्याच्या फाईलचे अवैध नांव"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repo/workflows/repomanagerwf.cc:1013 zypp/ng/repomanager.cc:589
-#: zypp/ng/repomanager.cc:667 zypp/ng/repomanager.cc:739
-#: zypp/ng/repomanager.cc:1098 zypp/ng/repomanager.cc:1224
+#: zypp-logic/zypp/ng/repo/workflows/repomanagerwf.cc:971
+#: zypp-logic/zypp/ng/repomanager.cc:586 zypp-logic/zypp/ng/repomanager.cc:664
+#: zypp-logic/zypp/ng/repomanager.cc:736 zypp-logic/zypp/ng/repomanager.cc:1104
+#: zypp-logic/zypp/ng/repomanager.cc:1230
 #, fuzzy, c-format, boost-format
 msgid "Can't open file '%s' for writing."
 msgstr "फाईलरायटिंगसाठी उघडू शकत नाही."
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/ng/repo/workflows/serviceswf.cc:290
-#: zypp/ng/repo/workflows/serviceswf.cc:296
+#: zypp-logic/zypp/ng/repo/workflows/serviceswf.cc:285
+#: zypp-logic/zypp/ng/repo/workflows/serviceswf.cc:291
 #, fuzzy, c-format, boost-format
 msgid "Unknown error reading from '%s'"
 msgstr "फ्लॉपी डिस्कवरुन एरर वाचत आहे."
 
-#: zypp/ng/repomanager.cc:196
+#: zypp-logic/zypp/ng/repomanager.cc:195
 #, boost-format
 msgid "Cannot read repo directory '%1%': Permission denied"
 msgstr ""
 
 #. TranslatorExplanation '%s' is a pathname
-#: zypp/ng/repomanager.cc:204 zypp/ng/repomanager.cc:468
-#: zypp/ng/repomanager.cc:1330 zypp/repo/PluginServices.cc:49
+#: zypp-logic/zypp/ng/repomanager.cc:203 zypp-logic/zypp/ng/repomanager.cc:465
+#: zypp-logic/zypp/ng/repomanager.cc:1334
+#: zypp-logic/zypp/repo/PluginServices.cc:49
 #, fuzzy, c-format, boost-format
 msgid "Failed to read directory '%s'"
 msgstr "Failed to parse: %s."
 
-#: zypp/ng/repomanager.cc:214
+#: zypp-logic/zypp/ng/repomanager.cc:213
 #, boost-format
 msgid "Cannot read repo file '%1%': Permission denied"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:383
+#: zypp-logic/zypp/ng/repomanager.cc:380
 msgid "Cleaning metadata"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:401
+#: zypp-logic/zypp/ng/repomanager.cc:398
 msgid "Cleaning packages"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:453
+#: zypp-logic/zypp/ng/repomanager.cc:450
 msgid "Cleaning up cache dirs"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:473
+#: zypp-logic/zypp/ng/repomanager.cc:470
 #, boost-format
 msgid "Cleaning up directory: %1%"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:503
+#: zypp-logic/zypp/ng/repomanager.cc:500
 msgid "Cleaning cache"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:524
+#: zypp-logic/zypp/ng/repomanager.cc:521
 msgid "Loading from cache"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:615
+#: zypp-logic/zypp/ng/repomanager.cc:612
 #, fuzzy, c-format, boost-format
 msgid "Removing repository '%s'"
 msgstr "रिसोर्सेस जतन करत आहे"
 
-#: zypp/ng/repomanager.cc:635 zypp/ng/repomanager.cc:719
+#: zypp-logic/zypp/ng/repomanager.cc:632 zypp-logic/zypp/ng/repomanager.cc:716
 msgid "Can't figure out where the repo is stored."
 msgstr ""
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/ng/repomanager.cc:649 zypp/ng/repomanager.cc:1086
+#: zypp-logic/zypp/ng/repomanager.cc:646 zypp-logic/zypp/ng/repomanager.cc:1092
 #, fuzzy, c-format, boost-format
 msgid "Can't delete '%s'"
 msgstr " डेस्कटॉप आयटेम'%s' उघडू शकत नाही"
 
-#: zypp/ng/repomanager.cc:705
+#: zypp-logic/zypp/ng/repomanager.cc:702
 msgid "Modifying repository"
 msgstr ""
 
-#: zypp/ng/repomanager.cc:892
+#: zypp-logic/zypp/ng/repomanager.cc:895
 msgid "Refreshing Repository: "
 msgstr ""
 
-#: zypp/ng/repomanager.cc:1074 zypp/ng/repomanager.cc:1146
+#: zypp-logic/zypp/ng/repomanager.cc:1080
+#: zypp-logic/zypp/ng/repomanager.cc:1152
 msgid "Can't figure out where the service is stored."
 msgstr ""
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
 #. %2% = repository name
-#: zypp/ng/repomanager.cc:1434
+#: zypp-logic/zypp/ng/repomanager.cc:1438
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
 msgstr ""
 
-#: zypp/ng/repomanager.h:66
+#: zypp-logic/zypp/ng/repomanager.h:60
 #, fuzzy
 msgid "Repository alias cannot start with dot."
 msgstr " VM चे नाव आकड्याने सुरू होता कामा नये. "
 
-#: zypp/ng/repomanager.h:78
+#: zypp-logic/zypp/ng/repomanager.h:72
 #, fuzzy
 msgid "Service alias cannot start with dot."
 msgstr " VM चे नाव आकड्याने सुरू होता कामा नये. "
 
-#: zypp/ng/reporthelper.cc:26
+#: zypp-logic/zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
 msgstr ""
 
-#: zypp/ng/reporthelper.cc:39
+#: zypp-logic/zypp/ng/reporthelper.cc:38
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
 msgstr ""
 
-#: zypp/ng/reporthelper.cc:52
+#: zypp-logic/zypp/ng/reporthelper.cc:51
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
 msgstr ""
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/reporthelper.cc:69
+#: zypp-logic/zypp/ng/reporthelper.cc:68
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
 msgstr ""
 
 #. TranslatorExplanation: speaking of a file
-#: zypp/ng/reporthelper.cc:73
+#: zypp-logic/zypp/ng/reporthelper.cc:72
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
 msgstr ""
 
-#: zypp/ng/reporthelper.cc:90
+#: zypp-logic/zypp/ng/reporthelper.cc:89
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
 
-#: zypp/ng/reporthelper.cc:116
+#: zypp-logic/zypp/ng/reporthelper.cc:115
 #, boost-format
 msgid "Key Name: %1%"
 msgstr ""
 
-#: zypp/ng/reporthelper.cc:128
+#: zypp-logic/zypp/ng/reporthelper.cc:127
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
@@ -4008,37 +4425,37 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translator: %1% is a file name
-#: zypp/ng/reporthelper.cc:144
+#: zypp-logic/zypp/ng/reporthelper.cc:143
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
 msgstr ""
 
 #. translator: %1% is a file name, %2% a repositories na  me
-#: zypp/ng/reporthelper.cc:147
+#: zypp-logic/zypp/ng/reporthelper.cc:146
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
 msgstr ""
 
 #. @TODO use a centralized Continue string!
-#: zypp/ng/reporthelper.cc:150 zypp-tui/output/Out.cc:32
+#: zypp-logic/zypp/ng/reporthelper.cc:149 zypp/zypp-tui/output/Out.cc:32
 msgid "Continue?"
 msgstr "चालू ठेवायचे?"
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/reporthelper.cc:168
+#: zypp-logic/zypp/ng/reporthelper.cc:167
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
 
 #. translators: the last %s is gpg key ID
-#: zypp/ng/reporthelper.cc:172
+#: zypp-logic/zypp/ng/reporthelper.cc:171
 #, c-format, boost-format
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
 
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/keyringwf.cc:66
+#: zypp-logic/zypp/ng/workflows/keyringwf.cc:63
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
 msgstr ""
@@ -4046,12 +4463,12 @@ msgstr ""
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
 #. translator: %1% is a repositories name
-#: zypp/ng/workflows/repoinfowf.cc:97
+#: zypp-logic/zypp/ng/workflows/repoinfowf.cc:95
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
 msgstr ""
 
-#: zypp/parser/RepoindexFileReader.cc:227
+#: zypp-logic/zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
 msgstr ""
@@ -4060,24 +4477,24 @@ msgstr ""
 #. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
 #. the service Url. We need to check what kind of feature hides behind this code.
 #. So for now we keep requiring an url attribut.
-#: zypp/parser/RepoindexFileReader.cc:243
+#: zypp-logic/zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
 msgstr ""
 
-#: zypp/parser/RepoindexFileReader.cc:311
+#: zypp-logic/zypp/parser/RepoindexFileReader.cc:311
 #, c-format, boost-format
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
 
-#: zypp/repo/PackageProvider.cc:343
+#: zypp-logic/zypp/repo/PackageProvider.cc:344
 #, fuzzy
 msgid "Signature verification failed"
 msgstr "DBI Execution failed: %s"
 
 #. TranslatorExplanation %s = package being checked for integrity
-#: zypp/repo/PackageProvider.cc:473
+#: zypp-logic/zypp/repo/PackageProvider.cc:474
 #, fuzzy, c-format, boost-format
 msgid ""
 "Package %s seems to be corrupted during transfer. Do you want to retry "
@@ -4086,48 +4503,53 @@ msgstr ""
 "पॅकेज %s एकत्रित तपासणीत अयशस्वी. आपल्याला ते पुन्हा डाऊनलोड करण्याचा प्रयत्न करायचाआहे?"
 
 #. TranslatorExplanation %s = name of the package being processed.
-#: zypp/repo/PackageProvider.cc:497
+#: zypp-logic/zypp/repo/PackageProvider.cc:498
 #, fuzzy, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
 msgstr ""
 "पॅकेज %s एकत्रित तपासणीत अयशस्वी. आपल्याला ते पुन्हा डाऊनलोड करण्याचा प्रयत्न करायचाआहे?"
 
-#: zypp/repo/PackageProvider.cc:620
+#: zypp-logic/zypp/repo/PackageProvider.cc:615
+msgid "download deltarpm: not found"
+msgstr ""
+
+#: zypp-logic/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."
 msgstr "applydeltarpm चेक अयशस्वी"
 
-#: zypp/repo/PackageProvider.cc:631
+#: zypp-logic/zypp/repo/PackageProvider.cc:640
 msgid "applydeltarpm failed."
 msgstr "applydeltarpm अयशस्वी"
 
-#: zypp/repo/RepoException.cc:73
+#: zypp-logic/zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
 msgstr ""
 
-#: zypp/repo/RepoException.cc:130
+#: zypp-logic/zypp/repo/RepoException.cc:130
 #, fuzzy
 msgid "Service plugin does not support changing an attribute."
 msgstr "बदल वैशिष्ट्ये दाखवाला रिसोर्स प्रकार VAR1 समर्थन देत नाही feature"
 
-#: zypp/repo/RepoProvideFile.cc:265
+#: zypp-logic/zypp/repo/RepoProvideFile.cc:264
 #, fuzzy, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
 msgstr "%s वरून %s पुरवू शकत नाही"
 
-#: zypp/repo/RepoProvideFile.cc:271
+#: zypp-logic/zypp/repo/RepoProvideFile.cc:271
 #, fuzzy
 msgid "No url in repository."
 msgstr "भांडारात फाईल %1 आढळली नाही"
 
 #. Translator: %1% the expected medium number; %2% the total number of media in the set; %3% the ident file on the medium.
-#: zypp/repo/SUSEMediaVerifier.cc:104 zypp-media/ng/mediaverifier.cc:109
+#: zypp-logic/zypp/repo/SUSEMediaVerifier.cc:104
+#: zyppng/lib/zypp-media/ng/mediaverifier.cc:109
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
 msgstr ""
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
-#: zypp/sat/FileConflicts.cc:34
+#: zypp-logic/zypp/sat/FileConflicts.cc:34
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4138,7 +4560,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
-#: zypp/sat/FileConflicts.cc:40
+#: zypp-logic/zypp/sat/FileConflicts.cc:40
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4149,7 +4571,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
-#: zypp/sat/FileConflicts.cc:47
+#: zypp-logic/zypp/sat/FileConflicts.cc:47
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4160,7 +4582,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
-#: zypp/sat/FileConflicts.cc:53
+#: zypp-logic/zypp/sat/FileConflicts.cc:53
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4172,7 +4594,7 @@ msgstr ""
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename1) %2%(package1) %%3%(filename2) 4%(package2)
-#: zypp/sat/FileConflicts.cc:68
+#: zypp-logic/zypp/sat/FileConflicts.cc:68
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4185,7 +4607,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
-#: zypp/sat/FileConflicts.cc:76
+#: zypp-logic/zypp/sat/FileConflicts.cc:76
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4198,7 +4620,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
-#: zypp/sat/FileConflicts.cc:85
+#: zypp-logic/zypp/sat/FileConflicts.cc:85
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4211,7 +4633,7 @@ msgid ""
 msgstr ""
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
-#: zypp/sat/FileConflicts.cc:93
+#: zypp-logic/zypp/sat/FileConflicts.cc:93
 #, boost-format
 msgid ""
 "File %1%\n"
@@ -4223,23 +4645,23 @@ msgid ""
 "     %4%"
 msgstr ""
 
-#: zypp/sat/detail/PoolImpl.cc:202
+#: zypp-logic/zypp/sat/detail/PoolImpl.cc:202
 #, fuzzy
 msgid "Can not create sat-pool."
 msgstr "फाईल निर्माण करु शकत नाही"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
-#: zypp/solver/detail/ProblemSolutionIgnore.cc:42
+#: zypp-logic/zypp/solver/detail/ProblemSolutionIgnore.cc:42
 #, fuzzy, c-format, boost-format
 msgid "break %s by ignoring some of its dependencies"
 msgstr "या गरजेकडे येथेच दुर्लक्ष करा"
 
-#: zypp/solver/detail/ProblemSolutionIgnore.cc:48
+#: zypp-logic/zypp/solver/detail/ProblemSolutionIgnore.cc:48
 #, fuzzy
 msgid "generally ignore of some dependencies"
 msgstr "या गरजेकडे येथेच दुर्लक्ष करा"
 
-#: zypp/solver/detail/SATResolver.cc:1160
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1160
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -4247,354 +4669,354 @@ msgid ""
 msgstr ""
 
 #. just in case
-#: zypp/solver/detail/SATResolver.cc:1162
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1166
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1168
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1171
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1171
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1174
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1174
 #, fuzzy
 msgid "conflicting requests"
 msgstr "यांच्याशी कनेक्शनची रिक्वेस्ट :"
 
-#: zypp/solver/detail/SATResolver.cc:1177
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1177
 #, fuzzy
 msgid "some dependency problem"
 msgstr "अवलंबून असण्याच्या (डिपेन्डन्सी) समस्येमुळे %s स्थापित करु शकत नाही"
 
-#: zypp/solver/detail/SATResolver.cc:1180
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1181
-#: zypp/solver/detail/SATResolver.cc:1185
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1181
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1184
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1188
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1188
 msgid "unsupported request"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1191
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1194
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1199
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1201
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1204
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1209
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1211
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1215
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1217
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
 "%3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1224
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1226
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1230
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1232
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1237
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1239
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1271
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1273
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1275
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1275
 #, fuzzy
 msgid "deleted providers: "
 msgstr "कोणतीही गोष्ट %s पुरवत नाही"
 
-#: zypp/solver/detail/SATResolver.cc:1285
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1285
 #, fuzzy
 msgid ""
 "\n"
 "not installable providers: "
 msgstr "%s चे स्थापित करता येण्याजोगे प्रदाता नाहीत"
 
-#: zypp/solver/detail/SATResolver.cc:1287
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1287
 #, fuzzy
 msgid "not installable providers: "
 msgstr "%s चे स्थापित करता येण्याजोगे प्रदाता नाहीत"
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/solver/detail/SATResolver.cc:1324
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1325
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1325
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
 msgstr ""
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1333
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1333
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1334
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1335
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr ""
 
 #. translator: %1% is the name of a PTF.
-#: zypp/solver/detail/SATResolver.cc:1340
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1341
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1398
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1405
-#: zypp/solver/detail/SATResolver.cc:1443
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1405
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1422
-#: zypp/solver/detail/SATResolver.cc:1464
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1422
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1427
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1478
-#: zypp/solver/detail/SATResolver.cc:1499
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1478
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1499
 #, fuzzy
 msgid "This request will break your system!"
 msgstr "विनंती आधीपासूनच आहे."
 
-#: zypp/solver/detail/SATResolver.cc:1479
-#: zypp/solver/detail/SATResolver.cc:1500
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1479
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1500
 msgid "ignore the warning of a broken system"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1484
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1506
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1519
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1540
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1545
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1554
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1559
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1573
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1573
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1576
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1576
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr ""
 
 #. translator: %1% is a package name
-#: zypp/solver/detail/SATResolver.cc:1579
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1579
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1599
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1606
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr ""
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/solver/detail/SATResolver.cc:1617
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1617
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
 "  %2%  -->  %3%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1622
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
 "  replacing %3% from vendor %4%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1631
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr ""
 
-#: zypp/solver/detail/SATResolver.cc:1642
+#: zypp-logic/zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr ""
 
 #. Translator: progress bar label
-#: zypp/target/RpmPostTransCollector.cc:201
+#: zypp-logic/zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
 msgstr ""
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:203
+#: zypp-logic/zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
 msgstr ""
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
-#: zypp/target/RpmPostTransCollector.cc:205
+#: zypp-logic/zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
 msgstr ""
 
-#: zypp/target/TargetException.cc:27
+#: zypp-logic/zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
 msgstr "निर्देशानुसार स्थापना मधेच सोडली"
 
-#: zypp/target/TargetImpl.cc:464
+#: zypp-logic/zypp/target/TargetImpl.cc:562
 #, fuzzy
 msgid " executed"
 msgstr "अमलात आणा"
 
-#: zypp/target/TargetImpl.cc:486
+#: zypp-logic/zypp/target/TargetImpl.cc:584
 #, fuzzy
 msgid " execution failed"
 msgstr "DBI Execution failed: %s"
@@ -4602,116 +5024,120 @@ msgstr "DBI Execution failed: %s"
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
 #. message for a log file. Preferably start translation with "%s"
-#: zypp/target/TargetImpl.cc:603
+#: zypp-logic/zypp/target/TargetImpl.cc:701
 #, c-format, boost-format
 msgid "%s already executed as %s)"
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:613
+#: zypp-logic/zypp/target/TargetImpl.cc:711
 msgid " execution skipped while aborting"
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:668 zypp/target/TargetImpl.cc:688
-#: zypp/target/TargetImpl.cc:716 zypp/target/TargetImpl.cc:753
-#: zypp/target/TargetImpl.cc:761
+#: zypp-logic/zypp/target/TargetImpl.cc:766
+#: zypp-logic/zypp/target/TargetImpl.cc:786
+#: zypp-logic/zypp/target/TargetImpl.cc:814
+#: zypp-logic/zypp/target/TargetImpl.cc:851
+#: zypp-logic/zypp/target/TargetImpl.cc:859
 #, fuzzy
 msgid "Error sending update message notification."
 msgstr "की च्या सांकेतिकीकरणादरम्यान चूक आली"
 
-#: zypp/target/TargetImpl.cc:812
+#: zypp-logic/zypp/target/TargetImpl.cc:910
 msgid "New update message"
 msgstr ""
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/target/TargetImpl.cc:2121
+#: zypp-logic/zypp/target/TargetImpl.cc:2235
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
 
-#: zypp/target/TargetImpl.cc:2729
+#: zypp-logic/zypp/target/TargetImpl.cc:2843
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:102
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:108
 msgid "no mirror found"
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:108
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:114
 msgid "could not create target file"
 msgstr ""
 
 #. if we have the file already, no need to download again
-#: zypp/target/commitpackagepreloader.cc:130
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:136
 msgid "already in cache"
-msgstr ""
-
-#. error
-#: zypp/target/commitpackagepreloader.cc:273
-msgid "failed to rename temporary file."
 msgstr ""
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
-#: zypp/target/commitpackagepreloader.cc:276 zypp-tui/output/Out.cc:141
-#: zypp-tui/output/OutNormal.cc:341 zypp-tui/output/OutNormal.cc:344
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:280
+#: zypp/zypp-tui/output/Out.cc:141 zypp/zypp-tui/output/OutNormal.cc:341
+#: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "done"
 msgstr "केले"
 
-#: zypp/target/commitpackagepreloader.cc:303
+#. error
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:283
+msgid "failed to rename temporary file."
+msgstr ""
+
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:310
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
 msgstr ""
 
-#: zypp/target/commitpackagepreloader.cc:624
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:638
 msgid "Cancelled by user."
 msgstr ""
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
-#: zypp/target/rpm/RpmDb.cc:431 zypp/target/rpm/RpmDb.cc:1806
-#: zypp/target/rpm/RpmDb.cc:1979
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:456
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1827
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1996
 #, fuzzy
 msgid "RPM failed: "
 msgstr "अयशस्वी"
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:756
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:781
 #, boost-format
 msgid "Failed to import public key %1%"
 msgstr ""
 
 #. Translator: %1% is a gpg public key
-#: zypp/target/rpm/RpmDb.cc:823
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:848
 #, boost-format
 msgid "Failed to remove public key %1%"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1243
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1268
 msgid "Package header is not signed!"
 msgstr ""
 
-#: zypp/target/rpm/RpmDb.cc:1245
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1270
 msgid "Package payload is not signed!"
 msgstr ""
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
-#: zypp/target/rpm/RpmDb.cc:1584
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1609
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
 msgstr "%s साठी बदललेल्या आकृतीबंध फाईल्स"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1787
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1808
 #, fuzzy, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
 msgstr "rpm ने %s हे %s म्हणन जतन केले, परंतु फरक सांगणे अशक्य"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1789
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1810
 #, c-format, boost-format
 msgid ""
 "rpm saved %s as %s.\n"
@@ -4719,13 +5145,13 @@ msgid ""
 msgstr "rpm ने %s हे %s म्हणून जतन केले/nफरकाच्या या पहिल्या 25 ओळी\n"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1792
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1813
 #, fuzzy, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
 msgstr "rpm ने %s  हे %s म्हणून जतन केले फरकाच्या या पहिल्या"
 
 #. %s = filenames
-#: zypp/target/rpm/RpmDb.cc:1794
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1815
 #, c-format, boost-format
 msgid ""
 "rpm created %s as %s.\n"
@@ -4736,563 +5162,156 @@ msgstr "rpm ने %s हे %s म्हणून जतन केले/nफ�
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as RemoveResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
-#: zypp/target/rpm/RpmDb.cc:1822 zypp/target/rpm/RpmDb.cc:1995
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:1843
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2012
 #, fuzzy
 msgid "Additional rpm output"
 msgstr "अतिरिक्त rpm आऊटपुट"
 
-#: zypp/target/rpm/RpmDb.cc:2193
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2229
 #, c-format, boost-format
 msgid "created backup %s"
 msgstr "बॅकअप %s  निर्माण केले"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2214
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2250
 #, fuzzy
 msgid "Signature is OK"
 msgstr "नोंद आढळली नाही"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2216
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2252
 msgid "Unknown type of signature"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2218
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2254
 #, fuzzy
 msgid "Signature does not verify"
 msgstr "नोंद आढळली नाही"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2220
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2256
 #, fuzzy
 msgid "Signature is OK, but key is not trusted"
 msgstr "नोंद आढळली नाही"
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2222
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2258
 msgid "Signatures public key is not available"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2224
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2260
 msgid "File does not exist or signature can't be checked"
 msgstr ""
 
 #. translators: possible rpm package signature check result [brief]
-#: zypp/target/rpm/RpmDb.cc:2226
+#: zypp-logic/zypp/target/rpm/RpmDb.cc:2262
 msgid "File is unsigned"
 msgstr ""
 
-#. translators: an annotation to a gpg keys expiry date
-#: zypp-common/PublicKey.cc:65
-#, fuzzy
-msgid "does not expire"
-msgstr "'%1' अस्तित्वात नाही."
-
-#. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
-#: zypp-common/PublicKey.cc:70
-#, boost-format
-msgid "expired: %1%"
-msgstr ""
-
-#. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
-#: zypp-common/PublicKey.cc:75
-#, boost-format
-msgid "expires: %1%"
-msgstr ""
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp-common/PublicKey.cc:84
-#, fuzzy
-msgid "(does not expire)"
-msgstr "'%1' अस्तित्वात नाही."
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp-common/PublicKey.cc:93
-msgid "(EXPIRED)"
-msgstr ""
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp-common/PublicKey.cc:97
-msgid "(expires within 24h)"
-msgstr ""
-
-#. translators: an annotation to a gpg keys expiry date
-#: zypp-common/PublicKey.cc:101
-#, c-format, boost-format
-msgid "(expires in %d day)"
-msgid_plural "(expires in %d days)"
-msgstr[0] ""
-msgstr[1] ""
-
-#. TranslatorExplanation first %s is key name, second is keyring name
-#: zypp-common/private/keyring_p.cc:285
-#, c-format, boost-format
-msgid "Tried to import not existent key %s into keyring %s"
-msgstr ""
-
-#: zypp-common/private/keyring_p.cc:291
-#, fuzzy
-msgid "Failed to import key."
-msgstr "VM सुरू करण्यात अयशस्वी."
-
-#: zypp-common/private/keyring_p.cc:298
-#, fuzzy
-msgid "Failed to delete key."
-msgstr "VM सुरू करण्यात अयशस्वी."
-
-#: zypp-common/private/keyring_p.cc:304
-#, fuzzy, c-format, boost-format
-msgid "Signature file %s not found"
-msgstr "नोंद आढळली नाही"
-
-#. dubious: Throw on malformed known types, otherwise log a warning.
-#: zypp-core/CheckSum.cc:136
-#, c-format, boost-format
-msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
-
-#: zypp-core/ExternalProgram.cc:245
-#, fuzzy, c-format, boost-format
-msgid "Can't open pty (%s)."
-msgstr "फाईल उघडता येत नाही %1."
-
-#: zypp-core/ExternalProgram.cc:264 zypp-core/ExternalProgram.cc:281
-#, fuzzy, c-format, boost-format
-msgid "Can't open pipe (%s)."
-msgstr "फाईल उघडता येत नाही %1."
-
-#: zypp-core/Url.cc:118
-msgid "Invalid LDAP URL query string"
-msgstr "अवैध LDAP URL क्वेरी स्ट्रिंग"
-
-#: zypp-core/Url.cc:159
-#, c-format, boost-format
-msgid "Invalid LDAP URL query parameter '%s'"
-msgstr "अवैध LDAP URL क्वेरी पॅरामीटर %s"
-
-#: zypp-core/Url.cc:319
-msgid "Unable to clone Url object"
-msgstr "Url ऑब्जेक्ट क्लोन करण्यात असमर्थ"
-
-#: zypp-core/Url.cc:332
-msgid "Invalid empty Url object reference"
-msgstr "अवैध रिक्त Url ऑब्जेक्ट संदर्भ"
-
-#: zypp-core/Url.cc:345 zypp-core/Url.cc:359
-msgid "Unable to parse Url components"
-msgstr "Url भागांचा संबंध जोडण्यात असमर्थ"
-
-#: zypp-core/base/Exception.cc:199
-msgid "History:"
-msgstr ""
-
-#: zypp-core/url/UrlBase.cc:221
-#, c-format, boost-format
-msgid "Url scheme does not allow a %s"
-msgstr "Url स्कीम %sला अनुमती देत नाही"
-
-#: zypp-core/url/UrlBase.cc:240
-#, c-format, boost-format
-msgid "Invalid %s component '%s'"
-msgstr "अवैध %s कॉम्पोनन्ट %s"
-
-#: zypp-core/url/UrlBase.cc:247
-#, c-format, boost-format
-msgid "Invalid %s component"
-msgstr "अवैध %s कॉम्पोनन्ट"
-
-#: zypp-core/url/UrlBase.cc:864 zypp-core/url/UrlBase.cc:1308
-msgid "Query string parsing not supported for this URL"
-msgstr "या URL साठी क्वेरी स्ट्रिंग पार्सिंगचे समर्थन नाही"
-
-#: zypp-core/url/UrlBase.cc:902
-msgid "Url scheme is a required component"
-msgstr "URL स्कीम हा एक आवश्यक भाग आहे"
-
-#: zypp-core/url/UrlBase.cc:908
-#, c-format, boost-format
-msgid "Invalid Url scheme '%s'"
-msgstr "अवैध Url स्कीम %s"
-
-#: zypp-core/url/UrlBase.cc:1025
-msgid "Url scheme does not allow a username"
-msgstr "Url स्कीम उपभोक्त्याच्या नावाला अनुमती देत नाही"
-
-#: zypp-core/url/UrlBase.cc:1059
-msgid "Url scheme does not allow a password"
-msgstr "Url स्कीम पासवर्डला अनुमती देत नाही"
-
-#: zypp-core/url/UrlBase.cc:1088
-msgid "Url scheme requires a host component"
-msgstr "Url स्कीमला मुख्य भागाची गरज असते"
-
-#: zypp-core/url/UrlBase.cc:1098
-msgid "Url scheme does not allow a host component"
-msgstr "Url स्कीम मुख्य भागाला अनुमती देत नाही"
-
-#: zypp-core/url/UrlBase.cc:1125
-#, c-format, boost-format
-msgid "Invalid host component '%s'"
-msgstr "अवैध मुख्य भाग %s"
-
-#: zypp-core/url/UrlBase.cc:1146
-msgid "Url scheme does not allow a port"
-msgstr "Url स्कीम पोर्टला अनुमती देत नाही"
-
-#: zypp-core/url/UrlBase.cc:1157
-#, c-format, boost-format
-msgid "Invalid port component '%s'"
-msgstr "अवैध पोर्ट भाग %s"
-
-#: zypp-core/url/UrlBase.cc:1174
-msgid "Url scheme requires path name"
-msgstr "Url स्कीमला पाथच्या नावाची गरज असते"
-
-#: zypp-core/url/UrlBase.cc:1195 zypp-core/url/UrlBase.cc:1209
-msgid "Relative path not allowed if authority exists"
-msgstr "अथॉरिटी उपस्थित असेल तर सापेक्ष पाथला अनुमती नाही"
-
-#: zypp-core/url/UrlUtils.cc:111
-msgid "Encoded string contains a NUL byte"
-msgstr "एनकोडेड स्ट्रिंगमधे NUL बाईटचा समावेश आहे"
-
-#: zypp-core/url/UrlUtils.cc:172
-msgid "Invalid parameter array split separator character"
-msgstr "अवैध पॅरामीटर अरे स्प्लिट सेपरेटर कॅरॅक्टर"
-
-#: zypp-core/url/UrlUtils.cc:211
-msgid "Invalid parameter map split separator character"
-msgstr "अवैध पॅरामीटर मॅप स्प्लिट सेपरेटर कॅरॅक्टर"
-
-#: zypp-core/url/UrlUtils.cc:282
-msgid "Invalid parameter array join separator character"
-msgstr "अवैध पॅरामीटर अरे जॉईन सेपरेटर कॅरॅक्टर "
-
-#: zypp-core/zyppng/io/abstractspawnengine.cc:183
-#, c-format, boost-format
-msgid "Command exited with status %d."
-msgstr ""
-
-#: zypp-core/zyppng/io/abstractspawnengine.cc:204
-#, c-format, boost-format
-msgid "Command was killed by signal %d (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/abstractspawnengine.cc:209
-#, fuzzy
-msgid "Command exited with unknown error."
-msgstr " कनेक्ट करतांना आदेश वापरला "
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:243
-#: zypp-core/zyppng/io/forkspawnengine.cc:486
-msgid "Invalid spawn arguments given."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:299
-msgid "Unable to create control pipe."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:366
-#, c-format, boost-format
-msgid "Can't chroot to '%s' (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:376
-#, fuzzy, c-format, boost-format
-msgid "Can't chdir to '%s' (%s)."
-msgstr "%s आढळत नाही."
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:377
-#, c-format, boost-format
-msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
-msgstr ""
-
-#. don't want to get here
-#: zypp-core/zyppng/io/forkspawnengine.cc:406
-#, c-format, boost-format
-msgid "Can't exec '%s' (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:413
-#: zypp-core/zyppng/io/forkspawnengine.cc:567
-#, fuzzy, c-format, boost-format
-msgid "Can't fork (%s)."
-msgstr "%s आढळत नाही."
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:432
-#, c-format, boost-format
-msgid "Can't exec '%s', chdir failed (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:435
-#, c-format, boost-format
-msgid "Can't exec '%s', chroot failed (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:438
-#, c-format, boost-format
-msgid "Can't exec '%s', exec failed (%s)."
-msgstr ""
-
-#: zypp-core/zyppng/io/forkspawnengine.cc:442
-#, c-format, boost-format
-msgid "Can't exec '%s', unexpected error."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:33
-#, fuzzy, c-format, boost-format
-msgid "Failed to mount %s on %s"
-msgstr " %s - %s उघडणे अशक्य\n"
-
-#: zypp-media/mediaexception.cc:43
-#, fuzzy, c-format, boost-format
-msgid "Failed to unmount %s"
-msgstr "मॉड्युल लोड करण्यात अपयश \"%s\"."
-
-#: zypp-media/mediaexception.cc:48
-#, c-format, boost-format
-msgid "Bad file name: %s"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:53
-#, c-format, boost-format
-msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:59
-#, c-format, boost-format
-msgid "File '%s' not found"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:61
-#: zypp-curl/ng/network/networkrequesterror.cc:135
-#, fuzzy, c-format, boost-format
-msgid "File '%s' not found on medium '%s'"
-msgstr "भांडारात फाईल %1 आढळली नाही"
-
-#: zypp-media/mediaexception.cc:66
-#, fuzzy, c-format, boost-format
-msgid "Cannot write file '%s'."
-msgstr "फाईल %1 लिहिता येत नाही."
-
-#: zypp-media/mediaexception.cc:71
-msgid "Medium not attached"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:76
-msgid "Bad media attach point"
-msgstr ""
-
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:82
-#, c-format, boost-format
-msgid "Download (curl) initialization failed for '%s'"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:87
-#, c-format, boost-format
-msgid "System exception '%s' on medium '%s'."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:92
-#, c-format, boost-format
-msgid "Path '%s' on medium '%s' is not a file."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:97
-#, fuzzy, c-format, boost-format
-msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "%1 ही डिरेक्टरी नाही."
-
-#: zypp-media/mediaexception.cc:104
-msgid "Malformed URI"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:114
-#, fuzzy
-msgid "Empty host name in URI"
-msgstr "रिक्त CA नांव."
-
-#: zypp-media/mediaexception.cc:119
-msgid "Empty filesystem in URI"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:124
-msgid "Empty destination in URI"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:129
-#, fuzzy, c-format, boost-format
-msgid "Unsupported URI scheme in '%s'."
-msgstr "अवैध URL योजना '%1'."
-
-#: zypp-media/mediaexception.cc:134
-msgid "Operation not supported by medium"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:141
-#, c-format, boost-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-"Error message: %s\n"
-msgstr ""
-
-#. TranslatorExplanation: curl is the name of a library, don't translate
-#: zypp-media/mediaexception.cc:149
-#, c-format, boost-format
-msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:156
-#, c-format, boost-format
-msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:161
-#, c-format, boost-format
-msgid "Medium '%s' is in use by another instance"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:167
-msgid "Cannot eject any media"
-msgstr ""
-
-#: zypp-media/mediaexception.cc:169
-#, fuzzy, c-format, boost-format
-msgid "Cannot eject media '%s'"
-msgstr " डेस्कटॉप आयटेम'%s' उघडू शकत नाही"
-
-#: zypp-media/mediaexception.cc:184
-#, fuzzy, c-format, boost-format
-msgid "Permission to access '%s' denied."
-msgstr "परवानगी नाकारली"
-
-#: zypp-media/mediaexception.cc:192
-#: zypp-curl/ng/network/networkrequesterror.cc:119
-#, c-format, boost-format
-msgid "Timeout exceeded when accessing '%s'."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:200
-#, c-format, boost-format
-msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:208
-#: zypp-curl/ng/network/networkrequesterror.cc:115
-#, c-format, boost-format
-msgid "Location '%s' is temporarily unaccessible."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:216
-#, c-format, boost-format
-msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr ""
-
-#: zypp-media/mediaexception.cc:223
-msgid "No free ressources available to attach medium."
-msgstr ""
-
-#: zypp-curl/auth/curlauthdata.cc:97
-#, c-format, boost-format
-msgid "Unsupported HTTP authentication method '%s'"
-msgstr ""
-
-#: zypp-curl/ng/network/networkrequesterror.cc:140
-#, c-format, boost-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Error code: %s\n"
-msgstr ""
-
-#: zypp-curl/ng/network/networkrequesterror.cc:146
-#, c-format, boost-format
-msgid ""
-"Download (curl) error for '%s':\n"
-"Unable to retrieve HTTP response\n"
-msgstr ""
-
-#: zypp-tui/Table.cc:32
+#: zypp/zypp-tui/Table.cc:32
 msgid "Yes"
 msgstr "होय"
 
-#: zypp-tui/Table.cc:32
+#: zypp/zypp-tui/Table.cc:32
 msgid "No"
 msgstr "नाही"
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.cc:26
+#: zypp/zypp-tui/output/Out.cc:26
 msgid "Note:"
 msgstr ""
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.cc:28
+#: zypp/zypp-tui/output/Out.cc:28
 #, fuzzy
 msgid "Warning:"
 msgstr "सावधान"
 
 #. translator: usually followed by a ' ' and some explanatory text
-#: zypp-tui/output/Out.cc:30
+#: zypp/zypp-tui/output/Out.cc:30
 #, fuzzy
 msgid "Error:"
 msgstr "त्रुटी"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
-#: zypp-tui/output/Out.cc:143
+#: zypp/zypp-tui/output/Out.cc:143
 msgid "attention"
 msgstr ""
 
 #. translator: Shown as result tag in a progress bar: ...........[error]
 #. Translator: download progress bar result: "............[error]"
-#: zypp-tui/output/Out.cc:145 zypp-tui/output/OutNormal.cc:338
-#: zypp-tui/output/OutNormal.cc:344
+#: zypp/zypp-tui/output/Out.cc:145 zypp/zypp-tui/output/OutNormal.cc:338
+#: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "error"
 msgstr "चूक"
 
-#: zypp-tui/output/OutNormal.cc:90
+#: zypp/zypp-tui/output/OutNormal.cc:90
 #, fuzzy
 msgid "Warning: "
 msgstr "सावधान"
 
-#: zypp-tui/output/OutNormal.cc:254 zypp-tui/output/OutNormal.cc:288
-#: zypp-tui/output/OutNormal.cc:326
+#: zypp/zypp-tui/output/OutNormal.cc:254 zypp/zypp-tui/output/OutNormal.cc:288
+#: zypp/zypp-tui/output/OutNormal.cc:326
 msgid "Retrieving:"
 msgstr ""
 
-#: zypp-tui/output/OutNormal.cc:261
+#: zypp/zypp-tui/output/OutNormal.cc:261
 #, fuzzy
 msgid "starting"
 msgstr "सुरु करत आहे..."
 
 #. Translator: download progress bar result: "........[not found]"
-#: zypp-tui/output/OutNormal.cc:335 zypp-tui/output/OutNormal.cc:344
+#: zypp/zypp-tui/output/OutNormal.cc:335 zypp/zypp-tui/output/OutNormal.cc:344
 #, fuzzy
 msgid "not found"
 msgstr "सापडले नाही"
 
-#: zypp-tui/output/OutNormal.cc:421
+#: zypp/zypp-tui/output/OutNormal.cc:421
 msgid "No help available for this prompt."
 msgstr ""
 
-#: zypp-tui/output/OutNormal.cc:438
+#: zypp/zypp-tui/output/OutNormal.cc:438
 msgid "no help available for this option"
 msgstr ""
 
 #. translators: Press '?' to see all options embedded in this prompt: "Continue? [y/n/? shows all options] (y):"
-#: zypp-tui/output/promptoptions.cc:85
+#: zypp/zypp-tui/output/promptoptions.cc:85
 msgid "shows all options"
 msgstr ""
 
-#: zypp-tui/output/promptoptions.cc:194
+#: zypp/zypp-tui/output/promptoptions.cc:194
 msgid "yes"
 msgstr "योय"
 
-#: zypp-tui/output/promptoptions.cc:194
+#: zypp/zypp-tui/output/promptoptions.cc:194
 msgid "no"
 msgstr "नाहीं"
+
+#. !\todo add comma to the message for the next release
+#: zypp/zypp/media/MediaCIFS.cc:427
+#: zypp/zypp/media/MediaNetworkCommonHandler.cc:371
+#, c-format, boost-format
+msgid "Authentication required for '%s'"
+msgstr ""
+
+#. just report (NO_ERROR); no interactive request to the user
+#: zypp/zypp/media/MediaCurl.cc:824
+msgid "Will try again..."
+msgstr ""
+
+#: zypp/zypp/media/MediaCurl.cc:827
+#, boost-format
+msgid "Giving up after %1% attempts."
+msgstr ""
+
+#: zypp/zypp/media/MediaHandler.cc:339
+msgid ""
+"Create attach point: Can't find a writable directory to create an attach "
+"point"
+msgstr ""
 
 #, fuzzy
 #~ msgid "%s has inferior architecture"

@@ -427,8 +427,8 @@ msgstr ""
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
 msgstr ""
-"Åk n' a nén stî come dji definixheu les tchuzes d' aberwetaedje (curl) po « "
-"%s » :"
+"Åk n' a nén stî come dji definixheu les tchuzes d' aberwetaedje (curl) po "
+"« %s » :"
 
 #: zypp-logic/zypp-media/mediaexception.cc:156
 #, c-format, boost-format
@@ -463,8 +463,8 @@ msgstr ""
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
 msgstr ""
-" : rujhe di l' acertineure SSL, waitîz k' l' acert. di l' OA est boune po « "
-"%s »."
+" : rujhe di l' acertineure SSL, waitîz k' l' acert. di l' OA est boune po "
+"« %s »."
 
 #: zypp-logic/zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."

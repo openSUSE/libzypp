@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: zypp.nl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-17 09:27+0200\n"
-"PO-Revision-Date: 2025-07-22 15:01+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
-"Language-Team: Dutch <https://l10n.opensuse.org/projects/libzypp/master/nl/"
-">\n"
+"PO-Revision-Date: 2025-09-19 10:59+0000\n"
+"Last-Translator: Freek de Kruijf <freek@opensuse.org>\n"
+"Language-Team: Dutch <https://l10n.opensuse.org/projects/libzypp/master/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -4559,7 +4559,7 @@ msgstr "Het pakket, ‘%s’, is niet aangetroffen. Wilt u het opnieuw ophalen?"
 
 #: zypp-logic/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "download deltarpm: niet gevonden"
 
 #: zypp-logic/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."

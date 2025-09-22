@@ -9,7 +9,6 @@ on:
   # Runs the trigger when a git TAG is created:
   push:
     tags:
-      - *
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

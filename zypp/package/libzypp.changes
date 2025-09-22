@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Sep 23 00:17:58 CEST 2025 - ma@suse.de
+
+- runposttrans: strip root prefix from tmppath (bsc#1250343)
+- fixup! Make ld.so ignore the subarch packages during install
+  (bsc#1246912)
+- version 17.37.18 (35)
+
+-------------------------------------------------------------------
 Mon Aug 11 10:56:17 CEST 2025 - ma@suse.de
 
 - Make ld.so ignore the subarch packages during install

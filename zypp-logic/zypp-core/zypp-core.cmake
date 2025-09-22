@@ -50,6 +50,7 @@ zypp_add_sources( zypp_toplevel_SRCS
 
 if( ${arg_INSTALL_HEADERS} )
   INSTALL(  FILES ${zypp_toplevel_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core" )
+  INSTALL(  FILES ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core" )
 endif()
 
 zypp_add_sources( zypp_base_HEADERS

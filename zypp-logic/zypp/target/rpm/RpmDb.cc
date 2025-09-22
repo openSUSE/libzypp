@@ -2030,7 +2030,7 @@ int RpmDb::runposttrans( const Pathname & filename_r, const std::function<void(c
   // Until 'rpm --runposttrans' is fixed to properly indicate script
   // execution without -vv we redirect rpm's tmpdir. This will wipe
   // the rpm-tmp.* files 'rpm -vv' otherwise leaves in /var/tmp.
-  std::string _tmppath { "_tmppath " + filename_r.dirname().asString() };
+  std::string _tmppath { "_tmppath " + Pathname::stripprefix( _root, filename_r.dirname() ).asString() };
   opts.push_back("--define");
   opts.push_back(_tmppath.c_str());
 #endif

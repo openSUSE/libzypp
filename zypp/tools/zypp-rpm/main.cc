@@ -379,7 +379,7 @@ int main( int, char ** )
     fflush( lockinfo->lockFile );
   }
 
-  zypp::ShutdownLock lck("zypp-rpm", "Zypp commit running.");
+  zypp::ShutdownLockCommit lck("zypp-rpm");
 
   // we have all data ready now lets start installing
   // first we initialize the rpmdb

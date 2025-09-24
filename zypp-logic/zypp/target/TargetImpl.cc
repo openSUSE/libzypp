@@ -1412,7 +1412,7 @@ namespace zypp
       ZYppCommitPolicy policy_r( policy_rX );
       bool explicitDryRun = policy_r.dryRun();	// explicit dry run will trigger a fileconflict check, implicit (download-only) not.
 
-      ShutdownLock lck("zypp", "Zypp commit running.");
+      ShutdownLockCommit lck("zypp");
 
       // Fake outstanding YCP fix: Honour restriction to media 1
       // at installation, but install all remaining packages if post-boot.

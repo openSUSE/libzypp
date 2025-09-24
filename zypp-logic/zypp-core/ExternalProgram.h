@@ -309,7 +309,7 @@ namespace zypp {
   /** ExternalProgram extended to change the progress group ID after forking.
    * \see \ref ExternalProgram
    */
-  class ZYPP_LOCAL ExternalProgramWithSeperatePgid : public ExternalProgram
+  class ExternalProgramWithSeperatePgid : public ExternalProgram
   {
     public:
       ExternalProgramWithSeperatePgid (const char *const *argv,

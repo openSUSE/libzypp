@@ -49,6 +49,7 @@ public:
   using Ptr = std::shared_ptr<EventDispatcher>;
   using WeakPtr = std::shared_ptr<EventDispatcher>;
   using IdleFunction = std::function<bool ()>;
+  using TimeoutFunction = std::function<bool ()>;
 
 
   ~EventDispatcher() override;
@@ -62,6 +63,9 @@ public:
   /*!
    * \brief Convenience function to schedule a callback to be called later.
    * \param callback a std::function that is called after all other events have been processed
+   *
+   * \note these can be starved if there are constantly events in the event loop. ONLY use this
+   *       if it is fine that they might not be called until all other things have been processed.
    */
   template< typename T = IdleFunction >
   static void invokeOnIdle ( T &&callback )
@@ -70,6 +74,19 @@ public:
     if ( ev )
       ev->invokeOnIdleImpl( std::forward<T>(callback) );
   }
+
+  /*!
+   * \brief Convenience function to schedule a callback to be called later.
+   * \param callback a std::function that is called after all other events have been processed
+   */
+  template< typename T = TimeoutFunction >
+  static void invokeAfter ( T &&callback, uint32_t timeout )
+  {
+    auto ev = instance();
+    if ( ev )
+      ev->invokeAfterImpl( std::forward<T>(callback), timeout );
+  }
+
 
   /*!
    * Schedules a \sa std::shared_ptr to be unreferenced in the next idle phase of the
@@ -166,6 +183,12 @@ protected:
    * \see invokeOnIdle
    */
   void invokeOnIdleImpl ( IdleFunction &&callback );
+
+
+  /*!
+   * \see invokeAfter
+   */
+  void invokeAfterImpl (TimeoutFunction &&callback, uint32_t timeout );
 
   /*!
    * Updates or registeres a event source in the event loop

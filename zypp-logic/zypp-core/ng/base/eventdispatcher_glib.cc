@@ -363,6 +363,24 @@ void EventDispatcherPrivate::waitPidCallback( GPid pid, gint status, gpointer us
   }
 }
 
+bool EventDispatcherPrivate::timeoutCallback( gpointer user_data )
+{
+  if ( !user_data  )
+    return false;
+
+  GlibTimeoutData *data = reinterpret_cast<GlibTimeoutData *>(user_data);
+  return data->_callback();
+}
+
+void EventDispatcherPrivate::timeoutDestroyCallback(gpointer user_data)
+{
+  if ( !user_data  )
+    return;
+
+  GlibTimeoutData *data = reinterpret_cast<GlibTimeoutData *>(user_data);
+  delete data;
+}
+
 ZYPP_IMPL_PRIVATE(EventDispatcher)
 
 EventDispatcher::EventDispatcher(void *ctx)
@@ -573,6 +591,17 @@ void EventDispatcher::invokeOnIdleImpl(EventDispatcher::IdleFunction &&callback)
   auto d = instance()->d_func();
   d->_idleFuncs.push( std::move(callback) );
   d->enableIdleSource();
+}
+
+void EventDispatcher::invokeAfterImpl( TimeoutFunction &&callback, uint32_t timeout )
+{
+  GlibTimeoutData *userData = new GlibTimeoutData();
+  userData->_callback = std::move(callback);
+
+  GSource *source = g_timeout_source_new ( timeout );
+  g_source_set_callback (source, G_SOURCE_FUNC(&EventDispatcherPrivate::timeoutCallback), userData, &EventDispatcherPrivate::timeoutDestroyCallback );
+  g_source_attach (source, d_func()->_ctx );
+  g_source_unref (source);
 }
 
 void EventDispatcher::unrefLaterImpl( std::shared_ptr<void> &&ptr )

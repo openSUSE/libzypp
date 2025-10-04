@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-17 09:27+0200\n"
-"PO-Revision-Date: 2025-07-22 15:01+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
+"Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/libzypp/master/"
 "id/>\n"
 "Language: id\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -4979,7 +4979,7 @@ msgstr ""
 
 #: zypp-logic/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "unduh deltarpm: tidak ditemukan"
 
 #: zypp-logic/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."

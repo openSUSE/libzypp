@@ -81,8 +81,10 @@ namespace zypp {
 
       public:
         /**
-         * @return The default directory where temporary
-         * files should be are created (/var/tmp).
+         * @return The default directory where temporary files
+         * should be are created: ($ZYPPTMPDIR|/var/tmp)/zypp.tmp/".
+         * \Note bsc#1249435: We use 'zypp.tmp' as a fix directory
+         * component to ease setting up SELinux policies.
          **/
         static const Pathname & defaultLocation();
 
@@ -104,10 +106,10 @@ namespace zypp {
      * @short Provide a new empty temporary file and delete it when no
      * longer needed.
      *
-     * The temporary file is per default created in '/var/tmp' and named
-     * 'TmpFile.XXXXXX', with XXXXXX replaced by a string which makes the
-     * name unique. Different location and file prefix may be passed to
-     * the ctor. TmpFile is created with mode 0600.
+     * The temporary file is per default created in \ref TmpPath::defaultLocation
+     * and named 'TmpFile.XXXXXX', with XXXXXX replaced by a string which
+     * makes the name unique. Different location and file prefix may be
+     * passed to the ctor. TmpFile is created with mode 0600.
      *
      * TmpFile provides the Pathname of the temporary file, or an empty
      * path in case of any error.
@@ -159,10 +161,10 @@ namespace zypp {
      * @short Provide a new empty temporary directory and recursively
      * delete it when no longer needed.
      *
-     * The temporary directory is per default created in '/var/tmp' and
-     * named 'TmpDir.XXXXXX', with XXXXXX replaced by a string which makes
-     * the  name unique. Different location and file prefix may be passed
-     * to the ctor. TmpDir is created with mode 0700.
+     * The temporary directory is per default created in \ref TmpPath::defaultLocation
+     * and named 'TmpDir.XXXXXX', with XXXXXX replaced by a string which
+     * makes the  name unique. Different location and file prefix may be
+     * passed to the ctor. TmpDir is created with mode 0700.
      *
      * TmpDir provides the Pathname of the temporary directory , or an empty
      * path in case of any error.

@@ -128,7 +128,9 @@ namespace zypp {
 
     const Pathname & TmpPath::defaultLocation()
     {
-      static Pathname p( getenv("ZYPPTMPDIR") ? getenv("ZYPPTMPDIR") : "/var/tmp" );
+      // bsc#1249435: We use 'zypp.tmp' as a fix directory
+      // component to ease setting up SELinux policies.
+      static Pathname p { Pathname( getenv("ZYPPTMPDIR") ? getenv("ZYPPTMPDIR") : "/var/tmp" ) / "zypp.tmp" };
       return p;
     }
 

@@ -31,6 +31,7 @@ namespace zypp {
     ///////////////////////////////////////////////////////////////////
     //
     //	CLASS NAME : TmpPath::Impl
+    //
     /**
      * Clean or delete a directory on destruction.
      **/
@@ -84,8 +85,7 @@ namespace zypp {
             DBG << "TmpPath cleaned up " << p << endl;
         }
 
-        const Pathname &
-        path() const
+        const Pathname & path() const
         { return _path; }
 
         bool autoCleanup() const
@@ -101,66 +101,32 @@ namespace zypp {
     ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
-    //
     //	CLASS NAME : TmpPath
-    //
     ///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpPath::TmpPath
-    //	METHOD TYPE : Constructor
-    //
     TmpPath::TmpPath()
     {}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpPath::TmpPath
-    //	METHOD TYPE : Constructor
-    //
     TmpPath::TmpPath( Pathname tmpPath_r )
     :_impl( tmpPath_r.empty() ? nullptr : new Impl( std::move(tmpPath_r) ) )
     {}
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpPath::~TmpPath
-    //	METHOD TYPE : Destructor
-    //
     TmpPath::~TmpPath()
     {
       // virtual not inlined dtor.
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //      METHOD NAME : TmpPath::operator const void *
-    //      METHOD TYPE :
-    //
     TmpPath::operator bool() const
     {
       return _impl.get();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpPath::path
-    //	METHOD TYPE : Pathname
-    //
-    Pathname
-    TmpPath::path() const
+    Pathname TmpPath::path() const
     {
       return _impl.get() ? _impl->path() : Pathname();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpPath::defaultLocation
-    //	METHOD TYPE : const Pathname &
-    //
-    const Pathname &
-    TmpPath::defaultLocation()
+    const Pathname & TmpPath::defaultLocation()
     {
       static Pathname p( getenv("ZYPPTMPDIR") ? getenv("ZYPPTMPDIR") : "/var/tmp" );
       return p;
@@ -173,17 +139,9 @@ namespace zypp {
     { if ( _impl.get() ) _impl->autoCleanup( yesno_r ); }
 
     ///////////////////////////////////////////////////////////////////
-    //
     //	CLASS NAME : TmpFile
-    //
     ///////////////////////////////////////////////////////////////////
 
-
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpFile::TmpFile
-    //	METHOD TYPE : Constructor
-    //
     TmpFile::TmpFile( const Pathname & inParentDir_r,
                       const std::string & prefix_r )
     {
@@ -214,11 +172,6 @@ namespace zypp {
         ERR << "Cant create '" << buf << "' " << ::strerror( errno ) << endl;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpFile::makeSibling
-    //	METHOD TYPE : TmpFile
-    //
     TmpFile TmpFile::makeSibling( const Pathname & sibling_r )
     { return makeSibling( sibling_r, -1U ); }
 
@@ -250,29 +203,16 @@ namespace zypp {
       return mFile;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpFile::defaultPrefix
-    //	METHOD TYPE : const std::string &
-    //
-    const std::string &
-    TmpFile::defaultPrefix()
+    const std::string & TmpFile::defaultPrefix()
     {
       static std::string p( "TmpFile." );
       return p;
     }
 
     ///////////////////////////////////////////////////////////////////
-    //
     //	CLASS NAME : TmpDir
-    //
     ///////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpDir::TmpDir
-    //	METHOD TYPE : Constructor
-    //
     TmpDir::TmpDir( const Pathname & inParentDir_r,
                     const std::string & prefix_r )
     {
@@ -300,11 +240,6 @@ namespace zypp {
         ERR << "Cant create '" << tmpPath << "' " << ::strerror( errno ) << endl;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpDir::makeSibling
-    //	METHOD TYPE : TmpDir
-    //
     TmpDir TmpDir::makeSibling( const Pathname & sibling_r )
     { return makeSibling( sibling_r, -1U ); }
 
@@ -323,13 +258,7 @@ namespace zypp {
       return ret;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //
-    //	METHOD NAME : TmpDir::defaultPrefix
-    //	METHOD TYPE : const std::string &
-    //
-    const std::string &
-    TmpDir::defaultPrefix()
+    const std::string & TmpDir::defaultPrefix()
     {
       static std::string p( "TmpDir." );
       return p;

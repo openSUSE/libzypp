@@ -130,7 +130,12 @@ namespace zypp {
     {
       // bsc#1249435: We use 'zypp.tmp' as a fix directory
       // component to ease setting up SELinux policies.
-      static Pathname p { Pathname( getenv("ZYPPTMPDIR") ? getenv("ZYPPTMPDIR") : "/var/tmp" ) / "zypp.tmp" };
+      static Pathname p = []() {
+        Pathname ret = Pathname( getenv("ZYPPTMPDIR") ? getenv("ZYPPTMPDIR") : "/var/tmp" );
+        if ( geteuid() == 0 )
+          ret /= "zypp.tmp";
+        return ret;
+      }();
       return p;
     }
 

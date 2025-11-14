@@ -37,9 +37,24 @@ namespace zypp
     {
       /** Unify by \c ident \c (kind:name).
        * Return true on the 1st appearance of a new \c ident. This is
-       * used in \ref SolvIterMixin when mapping a  Solvable iterator
-       * to a Selectable iterator.
+       * used in \ref SolvIterMixin when mapping a Solvable iterator
+       * to a Selectable iterator. For each \c ident we need one
+       * \ref Solvable representing it. Which one does not matter.
       */
+      struct ZYPP_API UnifyByIdent2
+      {
+        bool operator()( const Solvable & solv_r ) const;
+
+        using Umap = std::unordered_map<sat::detail::IdType,sat::detail::SolvableIdType>;
+        UnifyByIdent2()
+          : _umap( new Umap )
+        {}
+        shared_ptr<Umap> _umap;
+      };
+
+#if LEGACY(1735)
+      // Keep legacy version to stay binary compatible.
+      // Recompiled code will use UnifyByIdent2.
       struct ZYPP_API UnifyByIdent
       {
         bool operator()( const Solvable & solv_r ) const;
@@ -50,8 +65,7 @@ namespace zypp
         {}
         shared_ptr<Uset> _uset;
       };
-
-
+#endif
     } // namespace solvitermixin_detail
 
 
@@ -168,7 +182,7 @@ namespace zypp
         //@}
 
       private:
-        using UnifiedSolvable_iterator = filter_iterator<solvitermixin_detail::UnifyByIdent, Solvable_iterator>;
+        using UnifiedSolvable_iterator = filter_iterator<solvitermixin_detail::UnifyByIdent2, Solvable_iterator>;
       public:
         /** \name Iterate ui::Selectable::Ptr */
         //@{
@@ -185,9 +199,9 @@ namespace zypp
         /** \name Iterate unified Solbvables to be transformed into Selectable. */
         //@{
         UnifiedSolvable_iterator unifiedSolvableBegin() const
-        { return make_filter_iterator( solvitermixin_detail::UnifyByIdent(), solvableBegin(), solvableEnd() ); }
+        { return make_filter_iterator( solvitermixin_detail::UnifyByIdent2(), solvableBegin(), solvableEnd() ); }
         UnifiedSolvable_iterator unifiedSolvableEnd() const
-        { return make_filter_iterator( solvitermixin_detail::UnifyByIdent(), solvableEnd(), solvableEnd() ); }
+        { return make_filter_iterator( solvitermixin_detail::UnifyByIdent2(), solvableEnd(), solvableEnd() ); }
         Iterable<UnifiedSolvable_iterator> unifiedSolvable() const
         { return makeIterable( unifiedSolvableBegin(), unifiedSolvableEnd() ); }
         //@}

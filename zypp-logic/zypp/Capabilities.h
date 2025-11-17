@@ -81,6 +81,9 @@ namespace zypp
     /** Return whether \a lhs matches at least one capability in set. */
     bool matches( const Capability & lhs ) const;
 
+    /** Return the first matching Capability in set or Capability::Null. */
+    Capability findFirstMatch( const Capability & lhs ) const;
+
     private:
       const sat::detail::IdType * _begin;
   };
@@ -187,6 +190,15 @@ namespace zypp
         return true;
     return false;
   }
+
+  inline Capability Capabilities::findFirstMatch( const Capability & lhs ) const
+  {
+    for ( const Capability & rhs : *this )
+      if ( lhs.matches( rhs ) == CapMatch::yes )
+        return rhs;
+    return Capability::Null;
+  }
+
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

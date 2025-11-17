@@ -445,7 +445,7 @@ BOOST_DATA_TEST_CASE( base_provide_via_mirrors, bdata::make( withSSL ) * bdata::
   }
 
   zypp::MirroredOrigin origin( urls.at(0) );
-  for( auto i = 1; i < urls.size(); i++  )
+  for( unsigned i = 1; i < urls.size(); i++  )
     BOOST_REQUIRE( origin.addMirror ( urls.at(i) ) );
 
   BOOST_CHECK_NO_THROW( id = mm.open( origin ) );

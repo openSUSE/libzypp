@@ -98,6 +98,9 @@ namespace zypp
 
     const Solvable Solvable::noSolvable;
 
+    const IdString Solvable::patternToken	{ "pattern()" };
+    const IdString Solvable::productToken	{ "product()" };
+
     const IdString Solvable::retractedToken	{ "retracted-patch-package()" };
     const IdString Solvable::ptfMasterToken	{ "ptf()" };
     const IdString Solvable::ptfPackageToken	{ "ptf-package()" };

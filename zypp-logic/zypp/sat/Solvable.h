@@ -55,6 +55,9 @@ namespace zypp
     public:
       using IdType = sat::detail::SolvableIdType;
 
+      static const IdString patternToken;	///< Indicator provides `pattern()`
+      static const IdString productToken;	///< Indicator provides `product()`
+
       static const IdString retractedToken;	///< Indicator provides `retracted-patch-package()`
       static const IdString ptfMasterToken;	///< Indicator provides `ptf()`
       static const IdString ptfPackageToken;	///< Indicator provides `ptf-package()`
@@ -152,6 +155,22 @@ namespace zypp
 
       /** Whether this solvable triggers the reboot-needed hint if installed/updated. */
       bool isNeedreboot() const;
+
+      /** Return the provided \ref patternToken or \ref Capability::Null */
+      Capability patternProvides() const
+      { return dep_provides().findFirstMatch( Capability(patternToken.id()) ); }
+
+      /** Whether this solvable provides the \ref patternToken */
+      bool isPatternPackage() const
+      { return bool(patternProvides()); }
+
+      /** Return the provided \ref productToken or \ref Capability::Null */
+      Capability productProvides() const
+      { return dep_provides().findFirstMatch( Capability(productToken.id()) ); }
+
+      /** Whether this solvable provides the \ref productToken */
+      bool isProductPackage() const
+      { return bool(productProvides()); }
 
       /** \name Blacklisted packages.
        *

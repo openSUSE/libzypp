@@ -82,6 +82,11 @@ namespace zypp
       bool		multiversionInstall() const		{ return satSolvable().multiversionInstall(); }
       bool              isNeedreboot() const			{ return satSolvable().isNeedreboot(); }
 
+      Capability	patternProvides() const			{ return satSolvable().patternProvides(); }
+      bool		isPatternPackage() const		{ return satSolvable().isPatternPackage(); }
+      Capability	productProvides() const			{ return satSolvable().productProvides(); }
+      bool		isProductPackage() const		{ return satSolvable().isProductPackage(); }
+
       bool		isBlacklisted() const			{ return satSolvable().isBlacklisted(); }
       bool		isRetracted() const			{ return satSolvable().isRetracted(); }
       bool		isPtf() const				{ return satSolvable().isPtf(); }

@@ -818,12 +818,12 @@ function(zypp_add_zypp_target)
   target_include_directories( ${arg_TARGETNAME} PUBLIC ${RPM_INCLUDE_DIR}/rpm)
 
   # rpm verify function and callback states were introduced in rpm-4.15
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0")
+  if( ( RPM_LIB_VER VERSION_GREATER_EQUAL "4.15.0"  AND  RPM_LIB_VER VERSION_LESS "5.0.0" ) OR RPM_LIB_VER VERSION_GREATER_EQUAL "6.0.0" )
     target_compile_definitions( ${arg_TARGETNAME} PUBLIC HAVE_RPM_VERIFY_TRANSACTION_STEP )
   endif()
 
-  if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" )
-        MESSAGE( STATUS "rpm found: enable rpm-4 compat interface." )
+  if( RPM_LIB_VER VERSION_GREATER_EQUAL "5.0.0" AND RPM_LIB_VER VERSION_LESS "6.0.0" )
+        MESSAGE( STATUS "rpm5 found: enable rpm-4 compat interface." )
         target_compile_definitions( ${arg_TARGETNAME} PUBLIC _RPM_5)
   endif ()
 

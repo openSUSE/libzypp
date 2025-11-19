@@ -72,7 +72,7 @@ namespace zypp
       /** Return libsolv identifier for name.
        * Libsolv combines the objects kind and name in a single
        * identifier \c "pattern:kde_multimedia", \b except for packages
-       * and source packes. They are not prefixed by any kind string.
+       * and source packages. They are not prefixed by any kind string.
       */
       static std::string satIdent( const ResKind & refers_r, const std::string & name_r );
       /** \overload */

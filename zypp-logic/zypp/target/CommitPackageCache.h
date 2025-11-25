@@ -66,11 +66,6 @@ namespace zypp
       /** Ctor */
       CommitPackageCache(PackageProvider packageProvider_r = RepoProvidePackage() );
 
-      /** \deprecated Legacy Ctor; Pathname rootDir_r is not used.
-       * The repositories RepoInfo::packagesPath defines the cache location.
-       */
-      CommitPackageCache( const Pathname & /*rootDir_r*/, const PackageProvider & packageProvider_r = RepoProvidePackage() ) ZYPP_DEPRECATED;
-
       /** Dtor */
       ~CommitPackageCache();
 

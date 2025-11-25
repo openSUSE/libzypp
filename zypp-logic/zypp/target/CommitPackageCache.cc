@@ -132,12 +132,7 @@ namespace zypp
       assert( _pimpl );
     }
 
-    CommitPackageCache::CommitPackageCache( const Pathname &        /*rootDir_r*/,
-                                            const PackageProvider & packageProvider_r )
-    : CommitPackageCache( packageProvider_r )
-    {}
-
-   CommitPackageCache::~CommitPackageCache()
+    CommitPackageCache::~CommitPackageCache()
     {}
 
     void CommitPackageCache::setCommitList( std::vector<sat::Solvable> commitList_r )

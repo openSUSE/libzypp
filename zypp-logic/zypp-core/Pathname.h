@@ -13,6 +13,7 @@
 #ifndef ZYPP_PATHNAME_H
 #define ZYPP_PATHNAME_H
 
+#include <cstring>
 #include <iosfwd>
 #include <string>
 
@@ -119,8 +120,14 @@ namespace zypp
       /** Test for a relative path. */
       bool relative() const { return !( absolute() || empty() ); }
 
+      /** Test for a relative path referring to ../ */
+      bool relativeDotDot() const { return strncmp( _name.c_str() , "./..", 4 ) == 0 && ( _name.size() == 4 || _name.c_str()[4] == '/' ); }
+
       /** Test for "" or "/". */
       bool emptyOrRoot() const { return( _name.empty() || _name == "/" ); }
+
+      /** Test for a not empty absolute Path (!= "/") */
+      bool absoluteNotRoot() const { return( absolute() && _name != "/" ); }
 
       /** Return all but the last component od this path. */
       Pathname dirname() const { return dirname( *this ); }

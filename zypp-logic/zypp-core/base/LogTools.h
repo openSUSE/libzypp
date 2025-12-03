@@ -36,6 +36,281 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+  /** Provide print[f] and sprint[f] functions based on JoinFormat.
+   *
+   * The default format writes all arguments ' '-separated to a stream or
+   * std::string.
+   */
+  //@{
+  namespace str {
+
+    namespace detail {
+
+      /** Helper to store a reference or move rvalues inside. */
+      template <typename T> class RefStore;
+
+      /** Move rvalues inside. */
+      template <typename T>
+      struct RefStore
+      {
+        constexpr RefStore( T && val_r )
+        : _val { std::move(val_r) }
+        {}
+
+        RefStore( const RefStore & ) = delete;
+
+        constexpr RefStore( RefStore && rhs )
+        : _val { std::move(rhs._val) }
+        {}
+
+        T &       get()       { return _val; }
+        const T & get() const { return _val; }
+
+      private:
+        T _val;
+      };
+
+      /** Store reference */
+      template <typename T>
+      struct RefStore<T&>
+      {
+        constexpr RefStore( T & t )
+        : _val { t }
+        {}
+
+        RefStore( const RefStore & ) = delete;
+
+        constexpr RefStore( RefStore && rhs )
+        : _val { rhs._val }
+        {}
+
+        T &       get()       { return _val; }
+        const T & get() const { return _val; }
+
+      private:
+        T & _val;
+      };
+
+      /** \relates RefStore<T> Create a RefStore for the argument. */
+      template <typename T>
+      constexpr auto makeRefStore( T && t )
+      { return RefStore<T>( std::forward<T>(t) ); }
+
+      /** \relates RefStore<T> Stream output */
+      template <typename T>
+      std::ostream & operator<<( std::ostream & str, const RefStore<T> & obj )
+      { return str << obj.get(); }
+
+
+      /** Store nothing print nothing. */
+      struct NoPrint {};
+
+      inline std::ostream & operator<<( std::ostream & str, const NoPrint & obj )
+      { return str; }
+
+      template <>
+      struct RefStore<NoPrint>
+      { constexpr RefStore() {} constexpr RefStore( NoPrint && ) {} };
+
+      template <>
+      inline std::ostream & operator<<( std::ostream & str, const RefStore<NoPrint> & obj )
+      { return str; }
+
+      template <>
+      struct RefStore<NoPrint&>
+      { constexpr RefStore() {} constexpr RefStore( const NoPrint & ) {} };
+
+      template <>
+      inline std::ostream & operator<<( std::ostream & str, const RefStore<NoPrint&> & obj )
+      { return str; }
+
+
+      /** A basic format description to print a collection.
+       *
+       * The JoinFormat stores references or rvalues of printable objects
+       * which define the format elements when printing a collection:
+       * \code
+       *  ELEMENT = PEL el SEL
+       *  FORMAT  = INTRO [ PFX ELEMENT [ SEP ELEMENT ]* SFX ] EXTRO
+       * \endcode
+       *
+       * \ref \see makeJoinFormat
+       */
+      template <typename Intro, typename Pfx, typename Sep, typename Sfx, typename Extro, typename Pel, typename Sel>
+      struct JoinFormat
+      {
+        constexpr JoinFormat( Intro && intro, Pfx && pfx, Sep && sep, Sfx && sfx, Extro && extro, Pel && pel, Sel && sel )
+        : _intro { std::forward<Intro>(intro) }
+        , _pfx   { std::forward<Pfx>(pfx) }
+        , _sep   { std::forward<Sep>(sep) }
+        , _sfx   { std::forward<Sfx>(sfx) }
+        , _extro { std::forward<Extro>(extro) }
+        , _pel   { std::forward<Pel>(pel) }
+        , _sel   { std::forward<Sel>(sel) }
+        {}
+
+        RefStore<Intro> _intro;
+        RefStore<Pfx>   _pfx;
+        RefStore<Sep>   _sep;
+        RefStore<Sfx>   _sfx;
+        RefStore<Extro> _extro;
+        RefStore<Pel>   _pel;
+        RefStore<Sel>   _sel;
+      };
+
+    } //namespace detail
+
+    // Drag it into str:: namespace
+    using NoPrint = detail::NoPrint;
+    inline constexpr NoPrint noPrint;
+
+    /** \relates JoinFormat<> Create a basic format description to print a collection.
+     *
+     * The JoinFormat stores references or rvalues of printable objects which
+     * serve the following purpose when printing a collection:
+     * \code
+     *  ELEMENT = PEL el SEL
+     *  FORMAT  = INTRO [ PFX ELEMENT [ SEP ELEMENT ]* SFX ] EXTRO
+     * \endcode
+     *  INTRO   : printed unconditionally at the beginning
+     *  PFX     : printed before the 1st ELEMENT if the collection is not empty
+     *  SEP     : printed between two ELEMENTs
+     *  SFX     : printed after the last ELEMENT if the collection is not empty
+     *  EXTRO   : printed unconditionally at the end
+     *  PEL,SEL : Optionally every element may be enclosed by PEL and SEL (default \ref NoPrint)
+     * \code
+     * // space separated
+     * makeJoinFormat( "", "", " ", "", "");
+     * // space separated line (trailing NL)
+     * makeJoinFormat( "", "", " ", "", "\n");
+     * // tuple (singleline)
+     * makeJoinFormat( "(", "", ", ", "", ")");
+     * // set (multiline, indent 2)
+     * makeJoinFormat( "{", "\n  ", ",\n  ", "\n", "}" );
+     *
+     * makeJoinFormat( "", "", "", "", "");
+     *
+     * \endcode
+     */
+    template <typename Intro, typename Pfx, typename Sep, typename Sfx, typename Extro, typename Pel=NoPrint, typename Sel=NoPrint>
+    constexpr auto makeJoinFormat( Intro && intro, Pfx && pfx, Sep && sep, Sfx && sfx, Extro && extro, Pel && pel = Pel(), Sel && sel = Sel() )
+    { return detail::JoinFormat<Intro,Pfx,Sep,Sfx,Extro,Pel,Sel>( std::forward<Intro>(intro), std::forward<Pfx>(pfx), std::forward<Sep>(sep), std::forward<Sfx>(sfx), std::forward<Extro>(extro), std::forward<Pel>(pel), std::forward<Sel>(sel) ); }
+
+
+    // A few default formats:
+    /** Concatenated. */
+    inline constexpr auto FormatConcat = makeJoinFormat( noPrint, noPrint, noPrint, noPrint, noPrint );
+    /** ' '-separated. */
+    inline constexpr auto FormatWords  = makeJoinFormat( noPrint, noPrint,     " ", noPrint, noPrint );
+    /** ' '-separated and NL-terminated! */
+    inline constexpr auto FormatLine   = makeJoinFormat( noPrint, noPrint,     " ", noPrint,    "\n" );
+    /** One item per line NL-terminated! */
+    inline constexpr auto FormatList   = makeJoinFormat( noPrint, noPrint,    "\n",    "\n", noPrint );
+    /** Tuple: (el, .., el). */
+    inline constexpr auto FormatTuple  = makeJoinFormat(     "(", noPrint,    ", ", noPrint,     ")" );
+
+    /** dumpRange default format: {}-enclosed and indented one item per line. */
+    inline constexpr auto FormatDumpRangeDefault
+                                       = makeJoinFormat(     "{",  "\n  ",  "\n  ",    "\n",     "}" );
+
+    namespace detail {
+
+      template <typename Ostream, typename Format>
+      void _joinSF( Ostream & str, const Format & fmt )
+      { ; }
+
+      template <typename Ostream, typename Format, typename First>
+      void _joinSF( Ostream & str, const Format & fmt, First && first )
+      { str << fmt._pel << std::forward<First>(first) << fmt._sel; }
+
+      template <typename Ostream, typename Format, typename First, typename... Args>
+      void _joinSF( Ostream & str, const Format & fmt, First && first, Args &&... args )
+      { _joinSF( str << fmt._pel << std::forward<First>(first) << fmt._sel << fmt._sep, fmt, std::forward<Args>(args)... ); }
+
+      /** Print args on ostreamlike \a str using JoinFormat \a fmt.
+       * \see \ref makeJoinFormat
+       */
+      template <typename Ostream, typename Format, typename... Args>
+      Ostream & joinSF( Ostream & str, Format && fmt, Args &&... args )
+      {
+        str << fmt._intro;
+        if ( sizeof...(Args) ) {
+          str << fmt._pfx;
+          detail::_joinSF( str, fmt, std::forward<Args>(args)... );
+          str << fmt._sfx;
+        }
+        str << fmt._extro;
+        return str;
+      }
+
+    } //namespace detail
+
+    /** Print Format on stream */
+    template <typename Ostream, typename Format, typename... Args>
+    Ostream & printf( Ostream & str, Format && fmt, Args&&... args )
+    { return detail::joinSF( str, std::forward<Format>(fmt), std::forward<Args>(args)... ); }
+
+    /** Print Format fs string */
+    template <typename Format, typename... Args>
+    std::string sprintf( Format && fmt, Args&&... args )
+    { str::Str str; return detail::joinSF( str, std::forward<Format>(fmt), std::forward<Args>(args)... ); }
+
+
+    /** Print words on stream */
+    template <typename Ostream, typename... Args>
+    Ostream & print( Ostream & str, Args&&... args )
+    { return detail::joinSF( str, FormatWords, std::forward<Args>(args)... ); }
+
+    /** Print words as string */
+    template <typename... Args>
+    std::string sprint( Args&&... args )
+    { str::Str str; return detail::joinSF( str, FormatWords, std::forward<Args>(args)... ); }
+
+
+    namespace detail {
+      /** Log helper wrapping the Ostream and Format.
+       * Aiming for pXXX( args... ) writing to log stream XXX.
+       * Getting the logstream remembers file, function and line,
+       * so we need #defines to get the stream at the code location
+       * writing the log line.
+       */
+      template <typename Ostream, typename Format>
+      struct PrintFmt {
+        PrintFmt( Ostream & str, const Format & fmt )
+        : _str { str }
+        , _fmt { fmt }
+        {}
+
+        template <typename... Args>
+        Ostream & operator()( Args&&... args )
+        { return str::printf( _str, _fmt, std::forward<Args>(args)... ); }
+
+      private:
+        Ostream & _str;
+        const Format & _fmt;
+      };
+    } //namespace detail
+
+    #define pXXX zypp::str::detail::PrintFmt(XXX,zypp::str::FormatLine)
+    #define pDBG zypp::str::detail::PrintFmt(DBG,zypp::str::FormatLine)
+    #define pMIL zypp::str::detail::PrintFmt(MIL,zypp::str::FormatLine)
+    #define pWAR zypp::str::detail::PrintFmt(WAR,zypp::str::FormatLine)
+    #define pERR zypp::str::detail::PrintFmt(ERR,zypp::str::FormatLine)
+    #define pSEC zypp::str::detail::PrintFmt(SEC,zypp::str::FormatLine)
+    #define pINT zypp::str::detail::PrintFmt(INT,zypp::str::FormatLine)
+    #define pUSR zypp::str::detail::PrintFmt(USR,zypp::str::FormatLine)
+
+    #define wXXX zypp::str::detail::PrintFmt(XXX,zypp::str::FormatWords)
+    #define wDBG zypp::str::detail::PrintFmt(DBG,zypp::str::FormatWords)
+    #define wMIL zypp::str::detail::PrintFmt(MIL,zypp::str::FormatWords)
+    #define wWAR zypp::str::detail::PrintFmt(WAR,zypp::str::FormatWords)
+    #define wERR zypp::str::detail::PrintFmt(ERR,zypp::str::FormatWords)
+    #define wSEC zypp::str::detail::PrintFmt(SEC,zypp::str::FormatWords)
+    #define wINT zypp::str::detail::PrintFmt(INT,zypp::str::FormatWords)
+    #define wUSR zypp::str::detail::PrintFmt(USR,zypp::str::FormatWords)
+  } // namespace str
+  //@}
+
   using std::endl;
 
   /// \brief Helper to produce not-NL-terminated multi line output.
@@ -417,15 +692,15 @@ namespace zypp {
 namespace std {
   template<class TKey, class Tp>
     std::ostream & operator<<( std::ostream & str, const std::map<TKey, Tp> & obj )
-    { return str << dumpMap( obj ); }
+    { return str << zypp::dumpMap( obj ); }
 
   template<class TKey, class Tp>
     std::ostream & operator<<( std::ostream & str, const std::unordered_map<TKey, Tp> & obj )
-    { return str << dumpMap( obj ); }
+    { return str << zypp::dumpMap( obj ); }
 
   template<class TKey, class Tp>
     std::ostream & operator<<( std::ostream & str, const std::multimap<TKey, Tp> & obj )
-    { return str << dumpMap( obj ); }
+    { return str << zypp::dumpMap( obj ); }
 
   /** Print stream status bits.
    * Prints the values of a streams \c good, \c eof, \c failed and \c bad bit.

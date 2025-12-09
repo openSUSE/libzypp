@@ -190,25 +190,31 @@ namespace zypp
   auto rangeLine( const TContainer & cont ) -> decltype( rangeLine( cont.begin(), cont.end() ) )
   { return rangeLine( cont.begin(), cont.end() ); }
 
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+namespace std {
   template<class Tp>
     std::ostream & operator<<( std::ostream & str, const std::vector<Tp> & obj )
-    { return dumpRange( str, obj.begin(), obj.end() ); }
+    { return zypp::dumpRange( str, obj.begin(), obj.end() ); }
 
   template<class Tp, class TCmp, class TAlloc>
     std::ostream & operator<<( std::ostream & str, const std::set<Tp,TCmp,TAlloc> & obj )
-    { return dumpRange( str, obj.begin(), obj.end() ); }
+    { return zypp::dumpRange( str, obj.begin(), obj.end() ); }
 
   template<class Tp>
     std::ostream & operator<<( std::ostream & str, const std::unordered_set<Tp> & obj )
-    { return dumpRange( str, obj.begin(), obj.end() ); }
+    { return zypp::dumpRange( str, obj.begin(), obj.end() ); }
 
   template<class Tp>
     std::ostream & operator<<( std::ostream & str, const std::multiset<Tp> & obj )
-    { return dumpRange( str, obj.begin(), obj.end() ); }
+    { return zypp::dumpRange( str, obj.begin(), obj.end() ); }
 
   template<class Tp>
     std::ostream & operator<<( std::ostream & str, const std::list<Tp> & obj )
-    { return dumpRange( str, obj.begin(), obj.end() ); }
+    { return zypp::dumpRange( str, obj.begin(), obj.end() ); }
+} // namespace std
+///////////////////////////////////////////////////////////////////
+namespace zypp {
 
   template<class Tp>
     std::ostream & operator<<( std::ostream & str, const Iterable<Tp> & obj )
@@ -406,6 +412,9 @@ namespace zypp
   using _logtoolsdetail::dumpKeys;   // dumpRange keys
   using _logtoolsdetail::dumpValues; // dumpRange values
 
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+namespace std {
   template<class TKey, class Tp>
     std::ostream & operator<<( std::ostream & str, const std::map<TKey, Tp> & obj )
     { return str << dumpMap( obj ); }
@@ -437,6 +446,9 @@ namespace zypp
     ret += "]";
     return str << ret;
   }
+} // namespace std
+///////////////////////////////////////////////////////////////////
+namespace zypp {
 
   ///////////////////////////////////////////////////////////////////
   // iomanipulator: str << dump(val) << ...
@@ -497,6 +509,9 @@ namespace zypp
   inline std::ostream & hexdumpOn( std::ostream & outs, const char *ptr, size_t size )
   { return hexdumpOn( outs, reinterpret_cast<const unsigned char*>(ptr), size ); }
 
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+namespace std {
   /*!
    * Write type info to stream
    * @TODO de-inline me
@@ -528,9 +543,6 @@ namespace zypp
     return str;
   }
 #endif
-
-
-  /////////////////////////////////////////////////////////////////
-} // namespace zypp
+} // namespace std
 ///////////////////////////////////////////////////////////////////
 #endif // ZYPP_BASE_LOGTOOLS_H

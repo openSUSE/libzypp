@@ -26,7 +26,7 @@ OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
 OPTION (ENABLE_BUILD_TESTS "Build and run test suite by default?" OFF)
 OPTION (ENABLE_ZSTD_COMPRESSION "Build with zstd compression support?" OFF)
-OPTION (ENABLE_VISIBILITY_HIDDEN "Build with hidden visibility by default?" OFF)
+OPTION (ENABLE_VISIBILITY_HIDDEN "Build with hidden visibility by default?" ON)
 OPTION (ENABLE_ZCHUNK_COMPRESSION "Build with zchunk compression support?" OFF)
 # Helps with bug https://bugzilla.gnome.org/show_bug.cgi?id=784550 , Segfault during signal emission when slots are cleared
 OPTION (ENABLE_SIGC_BLOCK_WORKAROUND "Enable a workaround for older sigcpp libraries?" OFF )

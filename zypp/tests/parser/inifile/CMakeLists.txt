@@ -1,2 +1,2 @@
 
-ADD_TESTS(inidict iniparser)
+ADD_TESTS(inidict iniparser EconfDict)

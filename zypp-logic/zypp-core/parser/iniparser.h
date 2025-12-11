@@ -38,7 +38,7 @@ namespace parser
 /// Lines without \c = or with a key containing any of "<tt>,|\\/</tt>"
 /// or section lines without closing \c ] are considered garbage.
 ///
-class IniParser : private base::NonCopyable
+class ZYPP_API IniParser : private base::NonCopyable
 {
 public:
   /** Default ctor */

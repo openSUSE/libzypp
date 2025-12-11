@@ -1,0 +1,37 @@
+#! /bin/bash
+
+ROOT="test"
+
+PRJ="foo"
+NAM="bar"
+EXT=".conf"
+STEM="/$PRJ/$NAM$EXT"
+
+rm -r "./$ROOT"
+for CONFD in "/etc" "/run" "/usr/etc"; do
+    CFG="$CONFD$STEM"
+    Becho "$CFG"
+    mkdir -p "./$ROOT$CFG.d"
+
+    N="$CFG"; cat <<EOF >"./$ROOT$N"
+a = a $N
+b = b $N
+c = c $N
+d = d $N
+EOF
+    N="$CFG.d/a$EXT"; cat <<EOF >"./$ROOT$N"
+a = a $N
+b = b $N
+c = c $N
+EOF
+    N="$CFG.d/b$EXT"; cat <<EOF >"./$ROOT$N"
+b = b $N
+c = c $N
+EOF
+    N="$CFG.d/c$EXT"; cat <<EOF >"./$ROOT$N"
+c = c $N
+EOF
+    N="$CFG.d/noext"; cat <<EOF >"./$ROOT$N"
+noext = OOps
+EOF
+done

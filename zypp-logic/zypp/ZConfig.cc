@@ -32,7 +32,7 @@ extern "C"
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/PathInfo.h>
-#include <zypp-core/parser/IniDict>
+#include <zypp-core/parser/EconfDict>
 
 #include <zypp/sat/Pool.h>
 #include <zypp/sat/detail/PoolImpl.h>
@@ -505,6 +505,7 @@ namespace zypp
         MIL << "libzypp: " LIBZYPP_VERSION_STRING << " (" << LIBZYPP_CODESTREAM << ")" << endl;
         if ( PathInfo(_parsedZyppConf).isExist() )
         {
+          parser::EconfDict a("","");
           parser::IniDict dict( _parsedZyppConf );
           for ( IniDict::section_const_iterator sit = dict.sectionsBegin();
                 sit != dict.sectionsEnd();

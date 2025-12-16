@@ -155,27 +155,31 @@ namespace zypp
       return true;
     }
 
-    /******************************************************************
-    **
-    **	FUNCTION NAME : operator<<
-    **	FUNCTION TYPE : std::ostream &
-    */
-    std::ostream & operator<<( std::ostream & str, const IniDict & obj )
+    std::ostream & IniDict::dumpAsIniOn( std::ostream & str ) const
     {
-      for ( IniDict::section_const_iterator si = obj.sectionsBegin();
-            si != obj.sectionsEnd();
-            ++si )
-      {
-        str << "[" << *si << "]" << endl;
-        for ( IniDict::entry_const_iterator ei = obj.entriesBegin(*si);
-              ei != obj.entriesEnd(*si);
-              ++ei )
-        {
-          str << ei->first << " = " << ei->second << endl;
+      // NOTE: The output format is used e.g in EconfDict_test.
+      // If you change it you need to adapt the testcases.
+      for ( const auto & section : sections() ) {
+        str << "[" << section << "]" << endl;
+        for ( const auto & [k,v] : entries( section ) ) {
+          str << k << " = " << v << endl;
         }
-        str << endl;
       }
       return str;
+    }
+
+    std::ostream & operator<<( std::ostream & str, const IniDict & obj )
+    {
+      str << "<";
+      const auto & sections { obj.sections() };
+      if ( sections.empty() ) {
+        str << "empty ini-file";
+      } else {
+        for ( const auto & section : sections ) {
+          str << "[" << section << "](" << obj.entries( section ).size() << ")";
+        }
+      }
+      return str << ">";
     }
 
     /////////////////////////////////////////////////////////////////

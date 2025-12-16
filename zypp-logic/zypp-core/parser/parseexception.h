@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-/** \file	zypp/parser/tagfile/ParseException.h
+/** \file	zypp/parser/parseexception.h
  *
 */
 #ifndef ZYPP_CORE_PARSER_PARSEEXCEPTION_H
@@ -43,6 +43,18 @@ namespace zypp
       std::ostream & dumpOn( std::ostream & str ) const override;
     };
     ///////////////////////////////////////////////////////////////////
+
+    /** Thrown by \ref EconfDict */
+    class EconfException : public Exception
+    {
+    public:
+      EconfException()
+      : Exception( "Econf Exception" )
+      {}
+      EconfException( std::string msg_r )
+      : Exception( std::move(msg_r) )
+      {}
+    };
 
     /////////////////////////////////////////////////////////////////
   } // namespace parser

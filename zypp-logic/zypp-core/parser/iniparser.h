@@ -43,6 +43,16 @@ class IniParser : private base::NonCopyable
 public:
   /** Default ctor */
   IniParser();
+
+  /** Being NonCopyable is a legacy but allow at least moving.
+   * It's a design flaw that data storing classes like IniDict
+   * inherit from IniParser rather than just using it to fill
+   * their data store.
+   * But we can allow moving the parsed data around.
+   */
+  IniParser( IniParser && );
+  IniParser & operator=( IniParser && );
+
   /** Dtor */
   virtual ~IniParser();
   /** Parse the stream.

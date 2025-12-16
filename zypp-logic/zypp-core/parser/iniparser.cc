@@ -49,6 +49,12 @@ IniParser::IniParser()
   : _line_nr(0)
 {}
 
+IniParser::IniParser( IniParser && rhs )
+  : _inputname       { std::move(rhs._inputname) }
+  , _current_section { std::move(rhs._current_section) }
+  , _line_nr         { std::move(rhs._line_nr) }
+{}
+
 ///////////////////////////////////////////////////////////////////
 //
 //	METHOD NAME : IniParser::~IniParser

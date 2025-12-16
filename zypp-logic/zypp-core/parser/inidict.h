@@ -92,9 +92,18 @@ namespace zypp
                const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
 
       /**
-       * Creates a mepty dictionary
+       * Creates an empty dictionary
        */
       IniDict();
+
+      /**
+       * Move CTor.
+       * Inheriting IniParser is a legacy design flaw making
+       * IniDict NonCopyable. But we can allow moving the
+       * parsed data around.
+       */
+      IniDict( IniDict && ) = default;
+      IniDict & operator=( IniDict && ) = default;
 
       /** Dtor */
       ~IniDict() override;
@@ -149,6 +158,10 @@ namespace zypp
                             const std::string &key,
                             const std::string &value ) override;
 
+    public:
+      /** Dump the collected iniMap as ini-file. */
+      std::ostream & dumpAsIniOn( std::ostream & str ) const;
+
     private:
       SectionSet _dict;
       /**
@@ -161,7 +174,11 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \relates IniDict Stream output */
-    std::ostream & operator<<( std::ostream & str, const IniDict & obj ) ZYPP_API;
+    std::ostream & operator<<( std::ostream & str, const IniDict & obj );
+
+    /** \relates IniDict Dump as single ini-file. */
+    inline std::ostream & dumpOn( std::ostream & str, const IniDict & obj )
+    { return obj.dumpAsIniOn( str ); }
 
     /////////////////////////////////////////////////////////////////
   } // namespace parser

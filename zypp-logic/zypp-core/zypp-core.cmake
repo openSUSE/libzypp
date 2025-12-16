@@ -204,6 +204,7 @@ endif()
 zypp_add_sources( zypp_parser_SRCS
   parser/iniparser.cc
   parser/inidict.cc
+  parser/econfdict.cc
   parser/json.cc
   parser/json/JsonValue.cc
   parser/parseexception.cc
@@ -223,6 +224,8 @@ zypp_add_sources( zypp_parser_HEADERS
   parser/iniparser.h
   parser/IniDict
   parser/inidict.h
+  parser/EconfDict
+  parser/econfdict.h
   parser/json.h
   parser/ParseException
   parser/parseexception.h

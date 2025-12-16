@@ -40,31 +40,44 @@ namespace zypp
 
   class RepoManager;
 
-  ///////////////////////////////////////////////////////////////////
-  //
-  //	CLASS NAME : ZConfig
-  //
-  /** Interim helper class to collect global options and settings.
-   * Use it to avoid hardcoded values and calls to getZYpp() just
-   * to retrieve some value like architecture, languages or temppath.
-   *
-   * It reads /etc/zypp/zypp.conf, the filename can be overridden by
-   * setting the ZYPP_CONF environment variable to a different file.
-   * Config values for \ref MediaConfig are forwarded to the MediaConfig
-   * singleton.
-   *
-   * Note, if you add settings to this file, please follow the following
-   * convention:
-   *
-   * namespace.settingname
-   *
-   * should become
-   *
-   * namespace_settingName()
-   *
-   * \ingroup ZyppConfig
-   * \ingroup Singleton
-  */
+  /// \class ZConfig
+  ///
+  /// Interim helper class to collect global options and settings.
+  /// Use it to avoid hardcoded values and calls to getZYpp() just
+  /// to retrieve some value like architecture, languages or temppath.
+  ///
+  /// Configuration data are obtained from the following sources
+  /// in the following order:
+  ///   1. An applications explicit settings
+  ///   2. system-wide configuration files (/etc/zypp/zypp.conf[.d/*.conf])
+  ///   3. ephermal configuration files    (/run/zypp/zypp.conf[.d/*.conf])
+  ///   4. vendor configuration files      (/usr/etc/zypp/zypp.conf[.d/*.conf])
+  ///
+  /// The rules are defined by the UAPI.6 Configuration Files
+  /// Specification (version 1)[1], but may be changed to follow
+  /// newer versions in the future.
+  ///
+  /// \see [1] https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md
+  /// and the ZYPP.CONF(5) manpage for more details.
+  ///
+  /// Setting the \c ZYPP_CONF environment variable will disable the above
+  /// and solely parse the denoted file so it exists.
+  ///
+  /// Config values for \ref MediaConfig are forwarded to the MediaConfig
+  /// singleton.
+  ///
+  /// Note, if you add settings to this file, please follow the following
+  /// convention:
+  ///
+  /// namespace.settingname
+  ///
+  /// should become
+  ///
+  /// namespace_settingName()
+  ///
+  /// \ingroup ZyppConfig
+  /// \ingroup Singleton
+  ///
   class ZYPP_API ZConfig : private base::NonCopyable
   {
     public:

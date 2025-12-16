@@ -32,7 +32,7 @@ extern "C"
 #include <zypp/ZConfig.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/PathInfo.h>
-#include <zypp-core/parser/IniDict>
+#include <zypp-core/parser/EconfDict>
 
 #include <zypp/sat/Pool.h>
 #include <zypp/sat/detail/PoolImpl.h>
@@ -49,6 +49,19 @@ using namespace zypp::parser;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+
+  namespace env {
+    inline std::optional<Pathname> ZYPP_CONF()
+    {
+      const char *env_confpath = getenv( "ZYPP_CONF" );
+      if ( env_confpath )
+        return env_confpath;
+      return std::nullopt;
+    }
+  } // namespace env
+
+
+
   /** \addtogroup ZyppConfig Zypp Configuration Options
    *
    * The global \c zypp.conf configuration file is per default located in \c /etc/zypp/.
@@ -312,11 +325,47 @@ namespace zypp
       return ret;
     }
 
-    inline Pathname _autodetectZyppConfPath()
-    {
-      const char *env_confpath = getenv( "ZYPP_CONF" );
-      return env_confpath ? env_confpath : "/etc/zypp/zypp.conf";
-    }
+    /**
+     * Provide the parsed zypp.conf IniMap according to
+     * root_r and $ZYPP_CONF setting. $ZYPP_CONF should
+     * lead to INIDICT parsing of the single file. The
+     * default to ECONF parsing of "zypp/zypp.conf".
+     *
+     * ZConfig does not need to know where the values come
+     * from; just which are explicitly set. Later the inherited
+     * IniDict should be replaced by a pure IniMap store.
+     */
+    struct ZyppConfIniMap : public IniDict {
+      ZyppConfIniMap( Pathname root_r = "/" )
+      : IniDict { iniMapReadFrom(root_r) }
+      {
+        pMIL( str::sconcat("zypp.conf(", root_r, "):"), *this );
+        pDBG( dump(*this) );
+      }
+
+    private:
+      /** */
+      IniDict iniMapReadFrom( const Pathname & root_r )
+      {
+        pMIL( "Reading zypp.conf for root", root_r );
+        std::optional<Pathname> ZYPP_CONF { env::ZYPP_CONF() };
+        if ( ZYPP_CONF ) {
+          // Read the plain file requested by $ZYPP_CONF
+          pMIL( "$ZYPP_CONF is set to", str::sconcat("'",*ZYPP_CONF,"'") );
+          PathInfo conf { root_r / *ZYPP_CONF };
+          if ( conf.isFile() ) {
+            pMIL( "$ZYPP_CONF requests reading file", conf );
+            return parser::IniDict( conf.path() );
+          } else {
+            pMIL( "$ZYPP_CONF denotes no file below root. Using builtin defaults." );
+            return parser::IniDict();
+          }
+        } else {
+          // Econf mode reading the systems settings
+          return parser::EconfDict( "/zypp/zypp.conf", root_r );
+        }
+      }
+    };
 
    /////////////////////////////////////////////////////////////////
   } // namespace zypp
@@ -416,8 +465,11 @@ namespace zypp
       , solverUpgradeRemoveDroppedPackages  ( true )
       {}
 
-      bool consume( const std::string & entry, const std::string & value )
+      bool consume( const std::string & section, const std::string & entry, const std::string & value )
       {
+        if ( section != "main" )
+          return false;
+
         if ( entry == "solver.focus" )
         {
           fromString( value, solver_focus );
@@ -478,8 +530,7 @@ namespace zypp
 
     public:
       Impl()
-        : _parsedZyppConf         	( _autodetectZyppConfPath() )
-        , cfg_arch                	( defaultSystemArchitecture() )
+        : cfg_arch                	( defaultSystemArchitecture() )
         , cfg_textLocale          	( defaultTextLocale() )
         , cfg_cache_path		{ "/var/cache/zypp" }
         , cfg_metadata_path		{ "" }	// empty - follows cfg_cache_path
@@ -503,208 +554,196 @@ namespace zypp
         , geoipHosts { "download.opensuse.org" }
       {
         MIL << "libzypp: " LIBZYPP_VERSION_STRING << " (" << LIBZYPP_CODESTREAM << ")" << endl;
-        if ( PathInfo(_parsedZyppConf).isExist() )
-        {
-          parser::IniDict dict( _parsedZyppConf );
-          for ( IniDict::section_const_iterator sit = dict.sectionsBegin();
-                sit != dict.sectionsEnd();
-                ++sit )
-          {
-            const std::string& section(*sit);
-            //MIL << section << endl;
-            for ( IniDict::entry_const_iterator it = dict.entriesBegin(*sit);
-                  it != dict.entriesEnd(*sit);
-                  ++it )
+
+        ZyppConfIniMap iniMap;  // Scan the default zypp.conf settings
+        for ( const auto & section : iniMap.sections() ) {
+          for ( const auto & [entry,value] : iniMap.entries( section ) ) {
+
+            if ( _initialTargetDefaults.consume( section, entry, value ) )
+              continue;
+
+            if ( _mediaConf.setConfigValue( section, entry, value ) )
+              continue;
+
+            if ( section == "main" )
             {
-              std::string entry(it->first);
-              std::string value(it->second);
-
-              if ( _mediaConf.setConfigValue( section, entry, value ) )
-                continue;
-
-              //DBG << (*it).first << "=" << (*it).second << endl;
-              if ( section == "main" )
+              if ( entry == "lock_timeout" )
               {
-                if ( _initialTargetDefaults.consume( entry, value ) )
-                  continue;
-
-                if ( entry == "lock_timeout" ) {
-                  str::strtonum( value, cfg_lockTimeout );
-                }
-                else if ( entry == "arch" )
-                {
-                  Arch carch( value );
-                  if ( carch != cfg_arch )
-                  {
-                    WAR << "Overriding system architecture (" << cfg_arch << "): " << carch << endl;
-                    cfg_arch = carch;
-                  }
-                }
-                else if ( entry == "cachedir" )
-                {
-                  cfg_cache_path.restoreToDefault( value );
-                }
-                else if ( entry == "metadatadir" )
-                {
-                  cfg_metadata_path.restoreToDefault( value );
-                }
-                else if ( entry == "solvfilesdir" )
-                {
-                  cfg_solvfiles_path.restoreToDefault( value );
-                }
-                else if ( entry == "packagesdir" )
-                {
-                  cfg_packages_path.restoreToDefault( value );
-                }
-                else if ( entry == "configdir" )
-                {
-                  cfg_config_path = Pathname(value);
-                }
-                else if ( entry == "reposdir" )
-                {
-                  cfg_known_repos_path = Pathname(value);
-                }
-                else if ( entry == "servicesdir" )
-                {
-                  cfg_known_services_path = Pathname(value);
-                }
-                else if ( entry == "varsdir" )
-                {
-                  cfg_vars_path = Pathname(value);
-                }
-                else if ( entry == "repo.add.probe" )
-                {
-                  repo_add_probe = str::strToBool( value, repo_add_probe );
-                }
-                else if ( entry == "repo.refresh.delay" )
-                {
-                  str::strtonum(value, repo_refresh_delay);
-                }
-                else if ( entry == "repo.refresh.locales" )
-                {
-                  std::vector<std::string> tmp;
-                  str::split( value, back_inserter( tmp ), ", \t" );
-
-                  boost::function<Locale(const std::string &)> transform(
-                    [](const std::string & str_r)->Locale{ return Locale(str_r); }
-                  );
-                  repoRefreshLocales.insert( make_transform_iterator( tmp.begin(), transform ),
-                                             make_transform_iterator( tmp.end(), transform ) );
-                }
-                else if ( entry == "download.use_deltarpm" )
-                {
-                  download_use_deltarpm = str::strToBool( value, download_use_deltarpm );
-                }
-                else if ( entry == "download.use_deltarpm.always" )
-                {
-                  download_use_deltarpm_always = str::strToBool( value, download_use_deltarpm_always );
-                }
-                else if ( entry == "download.media_preference" )
-                {
-                  download_media_prefer_download.restoreToDefault( str::compareCI( value, "volatile" ) != 0 );
-                }
-                else if ( entry == "download.media_mountdir" )
-                {
-                  download_mediaMountdir.restoreToDefault( Pathname(value) );
-                }
-                else if ( entry == "download.use_geoip_mirror") {
-                  geoipEnabled = str::strToBool( value, geoipEnabled );
-                }
-                else if ( entry == "commit.downloadMode" )
-                {
-                  commit_downloadMode.set( deserializeDownloadMode( value ) );
-                }
-                else if ( entry == "gpgcheck" )
-                {
-                  gpgCheck.restoreToDefault( str::strToBool( value, gpgCheck ) );
-                }
-                else if ( entry == "repo_gpgcheck" )
-                {
-                  repoGpgCheck.restoreToDefault( str::strToTriBool( value ) );
-                }
-                else if ( entry == "pkg_gpgcheck" )
-                {
-                  pkgGpgCheck.restoreToDefault( str::strToTriBool( value ) );
-                }
-                else if ( entry == "vendordir" )
-                {
-                  cfg_vendor_path = Pathname(value);
-                }
-                else if ( entry == "multiversiondir" )
-                {
-                  cfg_multiversion_path = Pathname(value);
-                }
-                else if ( entry == "multiversion.kernels" )
-                {
-                  cfg_kernel_keep_spec = value;
-                }
-                else if ( entry == "solver.checkSystemFile" )
-                {
-                  solver_checkSystemFile = Pathname(value);
-                }
-                else if ( entry == "solver.checkSystemFileDir" )
-                {
-                  solver_checkSystemFileDir = Pathname(value);
-                }
-                else if ( entry == "multiversion" )
-                {
-                  MultiversionSpec & defSpec( _multiversionMap.getDefaultSpec() );
-                  str::splitEscaped( value, std::inserter( defSpec, defSpec.end() ), ", \t" );
-                }
-                else if ( entry == "locksfile.path" )
-                {
-                  locks_file = Pathname(value);
-                }
-                else if ( entry == "locksfile.apply" )
-                {
-                  apply_locks_file = str::strToBool( value, apply_locks_file );
-                }
-                else if ( entry == "update.datadir" )
-                {
-                  // ignore, this is a constant anyway and should not be user configurabe
-                  // update_data_path = Pathname(value);
-                }
-                else if ( entry == "update.scriptsdir" )
-                {
-                  // ignore, this is a constant anyway and should not be user configurabe
-                  // update_scripts_path = Pathname(value);
-                }
-                else if ( entry == "update.messagessdir" )
-                {
-                  // ignore, this is a constant anyway and should not be user configurabe
-                  // update_messages_path = Pathname(value);
-                }
-                else if ( entry == "update.messages.notify" )
-                {
-                  updateMessagesNotify.set( value );
-                }
-                else if ( entry == "rpm.install.excludedocs" )
-                {
-                  rpmInstallFlags.setFlag( target::rpm::RPMINST_EXCLUDEDOCS,
-                                           str::strToBool( value, false ) );
-                }
-                else if ( entry == "history.logfile" )
-                {
-                  history_log_path = Pathname(value);
-                }
-                else if ( entry == "ZYPP_SINGLE_RPMTRANS" || entry == "techpreview.ZYPP_SINGLE_RPMTRANS" )
-                {
-                  DBG << "ZYPP_SINGLE_RPMTRANS=" << value << endl;
-                  ::setenv( "ZYPP_SINGLE_RPMTRANS", value.c_str(), 0 );
-                }
-                else if ( entry == "techpreview.ZYPP_MEDIANETWORK" )
-                {
-                  DBG << "techpreview.ZYPP_MEDIANETWORK=" << value << endl;
-                  ::setenv( "ZYPP_MEDIANETWORK", value.c_str(), 1 );
+                str::strtonum( value, cfg_lockTimeout );
+              }
+              else if ( entry == "arch" )
+              {
+                Arch carch( value );
+                if ( carch != cfg_arch ) {
+                  WAR << "Overriding system architecture (" << cfg_arch << "): " << carch << endl;
+                  cfg_arch = carch;
                 }
               }
+              else if ( entry == "cachedir" )
+              {
+                cfg_cache_path.restoreToDefault( value );
+              }
+              else if ( entry == "metadatadir" )
+              {
+                cfg_metadata_path.restoreToDefault( value );
+              }
+              else if ( entry == "solvfilesdir" )
+              {
+                cfg_solvfiles_path.restoreToDefault( value );
+              }
+              else if ( entry == "packagesdir" )
+              {
+                cfg_packages_path.restoreToDefault( value );
+              }
+              else if ( entry == "configdir" )
+              {
+                cfg_config_path = Pathname(value);
+              }
+              else if ( entry == "reposdir" )
+              {
+                cfg_known_repos_path = Pathname(value);
+              }
+              else if ( entry == "servicesdir" )
+              {
+                cfg_known_services_path = Pathname(value);
+              }
+              else if ( entry == "varsdir" )
+              {
+                cfg_vars_path = Pathname(value);
+              }
+              else if ( entry == "repo.add.probe" )
+              {
+                repo_add_probe = str::strToBool( value, repo_add_probe );
+              }
+              else if ( entry == "repo.refresh.delay" )
+              {
+                str::strtonum(value, repo_refresh_delay);
+              }
+              else if ( entry == "repo.refresh.locales" )
+              {
+                std::vector<std::string> tmp;
+                str::split( value, back_inserter( tmp ), ", \t" );
+
+                boost::function<Locale(const std::string &)> transform(
+                  [](const std::string & str_r)->Locale{ return Locale(str_r); }
+                );
+                repoRefreshLocales.insert( make_transform_iterator( tmp.begin(), transform ),
+                                           make_transform_iterator( tmp.end(), transform ) );
+              }
+              else if ( entry == "download.use_deltarpm" )
+              {
+                download_use_deltarpm = str::strToBool( value, download_use_deltarpm );
+              }
+              else if ( entry == "download.use_deltarpm.always" )
+              {
+                download_use_deltarpm_always = str::strToBool( value, download_use_deltarpm_always );
+              }
+              else if ( entry == "download.media_preference" )
+              {
+                download_media_prefer_download.restoreToDefault( str::compareCI( value, "volatile" ) != 0 );
+              }
+              else if ( entry == "download.media_mountdir" )
+              {
+                download_mediaMountdir.restoreToDefault( Pathname(value) );
+              }
+              else if ( entry == "download.use_geoip_mirror") {
+                geoipEnabled = str::strToBool( value, geoipEnabled );
+              }
+              else if ( entry == "commit.downloadMode" )
+              {
+                commit_downloadMode.set( deserializeDownloadMode( value ) );
+              }
+              else if ( entry == "gpgcheck" )
+              {
+                gpgCheck.restoreToDefault( str::strToBool( value, gpgCheck ) );
+              }
+              else if ( entry == "repo_gpgcheck" )
+              {
+                repoGpgCheck.restoreToDefault( str::strToTriBool( value ) );
+              }
+              else if ( entry == "pkg_gpgcheck" )
+              {
+                pkgGpgCheck.restoreToDefault( str::strToTriBool( value ) );
+              }
+              else if ( entry == "vendordir" )
+              {
+                cfg_vendor_path = Pathname(value);
+              }
+              else if ( entry == "multiversiondir" )
+              {
+                cfg_multiversion_path = Pathname(value);
+              }
+              else if ( entry == "multiversion.kernels" )
+              {
+                cfg_kernel_keep_spec = value;
+              }
+              else if ( entry == "solver.checkSystemFile" )
+              {
+                solver_checkSystemFile = Pathname(value);
+              }
+              else if ( entry == "solver.checkSystemFileDir" )
+              {
+                solver_checkSystemFileDir = Pathname(value);
+              }
+              else if ( entry == "multiversion" )
+              {
+                MultiversionSpec & defSpec( _multiversionMap.getDefaultSpec() );
+                str::splitEscaped( value, std::inserter( defSpec, defSpec.end() ), ", \t" );
+              }
+              else if ( entry == "locksfile.path" )
+              {
+                locks_file = Pathname(value);
+              }
+              else if ( entry == "locksfile.apply" )
+              {
+                apply_locks_file = str::strToBool( value, apply_locks_file );
+              }
+              else if ( entry == "update.datadir" )
+              {
+                // ignore, this is a constant anyway and should not be user configurabe
+                // update_data_path = Pathname(value);
+              }
+              else if ( entry == "update.scriptsdir" )
+              {
+                // ignore, this is a constant anyway and should not be user configurabe
+                // update_scripts_path = Pathname(value);
+              }
+              else if ( entry == "update.messagessdir" )
+              {
+                // ignore, this is a constant anyway and should not be user configurabe
+                // update_messages_path = Pathname(value);
+              }
+              else if ( entry == "update.messages.notify" )
+              {
+                updateMessagesNotify.set( value );
+              }
+              else if ( entry == "rpm.install.excludedocs" )
+              {
+                rpmInstallFlags.setFlag( target::rpm::RPMINST_EXCLUDEDOCS,
+                                         str::strToBool( value, false ) );
+              }
+              else if ( entry == "history.logfile" )
+              {
+                history_log_path = Pathname(value);
+              }
+              else if ( entry == "ZYPP_SINGLE_RPMTRANS" || entry == "techpreview.ZYPP_SINGLE_RPMTRANS" )
+              {
+                DBG << "ZYPP_SINGLE_RPMTRANS=" << value << endl;
+                ::setenv( "ZYPP_SINGLE_RPMTRANS", value.c_str(), 0 );
+              }
+              else if ( entry == "techpreview.ZYPP_MEDIANETWORK" )
+              {
+                DBG << "techpreview.ZYPP_MEDIANETWORK=" << value << endl;
+                ::setenv( "ZYPP_MEDIANETWORK", value.c_str(), 1 );
+              }
+              else {  // unknown entry
+                pWAR( "zypp.conf: Unknown entry in [main]:", entry, "=", value );
+              }
+            }
+            else { // unknown section {
+              pWAR( "zypp.conf: Unknown section:", str::sconcat("[",section,"]"), entry, "=", value );
             }
           }
-        }
-        else
-        {
-          MIL << _parsedZyppConf << " not found, using defaults instead." << endl;
-          _parsedZyppConf = _parsedZyppConf.extend( " (NOT FOUND)" );
         }
 
         // legacy:
@@ -751,23 +790,16 @@ namespace zypp
         }
         else {
           _currentTargetDefaults = TargetDefaults();
-
-          Pathname newConf { newRoot/_autodetectZyppConfPath() };
-          if ( PathInfo(newConf).isExist() ) {
-            parser::IniDict dict( newConf );
-            for ( const auto & [entry,value] : dict.entries( "main" ) ) {
-              (*_currentTargetDefaults).consume( entry, value );
+          ZyppConfIniMap iniMap { newRoot };  // Scan the zypp.conf settings for newRoot
+          for ( const auto & section : iniMap.sections() ) {
+            for ( const auto & [entry,value] : iniMap.entries( section ) ) {
+              (*_currentTargetDefaults).consume( section, entry, value );
             }
-          }
-          else {
-            MIL << _parsedZyppConf << " not found, using defaults." << endl;
           }
         }
       }
 
     public:
-    /** Remember any parsed zypp.conf. */
-    Pathname _parsedZyppConf;
     Pathname _announced_root_path;
 
     long cfg_lockTimeout = 0; // signed!
@@ -868,7 +900,7 @@ namespace zypp
           // in zypp.conf (the kernel) may differ from the builtin default (empty).
           // But we want a missing config to behave similar to the default one, otherwise
           // a bare metal install easily runs into trouble.
-          if ( root_r == "/" || scanConfAt( root_r, ret, zConfImpl_r ) == 0 )
+          if ( root_r == "/" || not scanConfAt( root_r, ret, zConfImpl_r ) )
             ret = _specMap[Pathname()];
           scanDirAt( root_r, ret, zConfImpl_r );	// add multiversion.d at root_r
           using zypp::operator<<;
@@ -881,20 +913,19 @@ namespace zypp
       {	return _specMap[Pathname()]; }
 
     private:
-      int scanConfAt( const Pathname& root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
+      bool scanConfAt( const Pathname& root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
       {
-        static const str::regex rx( "^multiversion *= *(.*)" );
-        str::smatch what;
-        return iostr::simpleParseFile( InputStream( Pathname::assertprefix( root_r, _autodetectZyppConfPath() ) ),
-                                [&]( int num_r, std::string line_r )->bool
-                                {
-                                  if ( line_r[0] == 'm' && str::regex_match( line_r, what, rx ) )
-                                  {
-                                    str::splitEscaped( what[1], std::inserter( spec_r, spec_r.end() ), ", \t" );
-                                    return false;	// stop after match
-                                  }
-                                  return true;
-                                } );
+        ZyppConfIniMap iniMap { root_r };  // Scan the zypp.conf settings for root
+        // TODO: iniDict lacks direct value access :(
+        for ( const auto & section : iniMap.sections() ) {
+          for ( const auto & [entry,value] : iniMap.entries( section ) ) {
+            if ( entry == "multiversion" ) {
+              str::splitEscaped( value, std::inserter( spec_r, spec_r.end() ), ", \t" );
+              return true;
+            }
+          }
+        }
+        return false;
       }
 
       void scanDirAt( const Pathname& root_r, MultiversionSpec & spec_r, const Impl & zConfImpl_r )
@@ -1373,7 +1404,6 @@ namespace zypp
       str << " (built against " << LIBSOLV_VERSION_STRING << ")";
     str << endl;
 
-    str << "zypp.conf: '" << _pimpl->_parsedZyppConf << "'" << endl;
     str << "TextLocale: '" << textLocale() << "' (" << defaultTextLocale() << ")" << endl;
     str << "SystemArchitecture: '" << systemArchitecture() << "' (" << defaultSystemArchitecture() << ")" << endl;
     return str;

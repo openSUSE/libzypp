@@ -414,6 +414,24 @@ zypp_add_sources( zyppng_ui_private_HEADERS
 
 SET( zypp_core_SOURCES
   ${arg_SOURCES}
+  ${zypp_toplevel_SRCS}
+  ${zypp_base_SRCS}
+  ${zypp_fs_SRCS}
+  ${zypp_rpc_SRCS}
+  ${zypp_ui_SRCS}
+  ${zypp_url_SRCS}
+  ${zypp_parser_SRCS}
+  ${zypp_parser_xml_SRCS}
+  ${zyppng_base_SRCS}
+  ${zyppng_io_SRCS}
+  ${zyppng_rpc_SRCS}
+  ${zyppng_thread_SRCS}
+  ${zyppng_ui_SRCS}
+)
+
+SET( zypp_core_HEADERS
+  ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h
+  ${arg_HEADERS}
   ${zypp_toplevel_headers}
   ${zyppng_async_HEADERS}
   ${zypp_base_HEADERS}
@@ -436,24 +454,6 @@ SET( zypp_core_SOURCES
   ${zyppng_thread_private_HEADERS}
   ${zyppng_ui_HEADERS}
   ${zyppng_ui_private_HEADERS}
-)
-
-SET( zypp_core_HEADERS
-  ${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h
-  ${arg_HEADERS}
-  ${zypp_toplevel_SRCS}
-  ${zypp_base_SRCS}
-  ${zypp_fs_SRCS}
-  ${zypp_rpc_SRCS}
-  ${zypp_ui_SRCS}
-  ${zypp_url_SRCS}
-  ${zypp_parser_SRCS}
-  ${zypp_parser_xml_SRCS}
-  ${zyppng_base_SRCS}
-  ${zyppng_io_SRCS}
-  ${zyppng_rpc_SRCS}
-  ${zyppng_thread_SRCS}
-  ${zyppng_ui_SRCS}
 )
 
 # Default loggroup for all files

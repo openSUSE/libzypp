@@ -12,7 +12,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/Date.h>
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/fs/TmpPath.h>

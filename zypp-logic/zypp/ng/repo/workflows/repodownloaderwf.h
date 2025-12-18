@@ -13,7 +13,7 @@
 #include <zypp/RepoInfo.h>
 #include <zypp/ng/repo/Downloader>
 #include <zypp-core/ng/ui/ProgressObserver>
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 #include <zypp-media/MediaException>
 #include <zypp-media/ng/ProvideSpec>
@@ -44,7 +44,7 @@ namespace zyppng {
 
       auto provider = mediaHandle.parent();
       if ( !provider )
-        return makeReadyResult<expected<zypp::ManagedFile>>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid handle"))) );
+        return makeReadyTask<expected<zypp::ManagedFile>>( expected<zypp::ManagedFile>::error(ZYPP_EXCPT_PTR(zypp::media::MediaException("Invalid handle"))) );
 
       return provider->provide( std::forward<MediaHandle>(mediaHandle), "/media.1/media", ProvideFileSpec().setOptional(true).setDownloadSize( zypp::ByteCount(20, zypp::ByteCount::MB ) ).setMirrorsAllowed(false) )
              | and_then( ProvideType::copyResultToDest( provider, destdir / "/media.1/media" ) );

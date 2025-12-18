@@ -8,7 +8,6 @@
 \---------------------------------------------------------------------*/
 
 #include "downloadwf.h"
-#include <zypp/ng/workflows/logichelpers.h>
 
 #include <utility>
 #include <zypp/ng/context.h>
@@ -64,14 +63,8 @@ namespace zyppng {
         : zypp::Exception( zypp::str::Str() << filename << " not found in target cache" ) { }
     };
 
-    template <class T>
-    struct showme;
-
-    template <class Executor, class OpType>
-    struct ProvideFromCacheOrMediumLogic : public LogicBase<Executor, OpType> {
+    struct ProvideFromCacheOrMediumLogic {
     protected:
-
-      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
       using ContextType    = Context;
       using ProvideType    = typename ContextType::ProvideType;
@@ -85,45 +78,44 @@ namespace zyppng {
         , _file(std::move( file ))
         , _filespec( std::move(filespec) ) {}
 
-      MaybeAsyncRef<expected<zypp::ManagedFile>> execute() {
+      MaybeAwaitable<expected<zypp::ManagedFile>> execute() {
 
         return findFileInCache( )
-        | [this]( expected<zypp::ManagedFile> cached ) -> MaybeAsyncRef<expected<zypp::ManagedFile>> {
-          if ( !cached ) {
-             MIL << "Didn't find " << _file << " in the caches, providing from medium" << std::endl;
+          | [this]( expected<zypp::ManagedFile> cached ) -> MaybeAwaitable<expected<zypp::ManagedFile>> {
+            if ( !cached ) {
+               MIL << "Didn't find " << _file << " in the caches, providing from medium" << std::endl;
 
-             // we didn't find it in the caches or the lookup failed, lets provide and check it
-             std::shared_ptr<ProvideType> provider = _ctx->zyppContext()->provider();
-             return provider->provide( _medium, _file, _filespec )
-             | and_then( [this]( ProvideRes res ) {
-                return verifyFile( res.file() )
-                | and_then( [res = res]() {
-                  return expected<ProvideRes>::success( std::move(res) );
-                });
-               })
-             | and_then( ProvideType::copyResultToDest( _ctx->zyppContext()->provider(), _ctx->destDir() / _file ) )
-             | and_then( []( zypp::ManagedFile &&file ){
-                file.resetDispose ();
-                return make_expected_success (std::move(file));
-              }) ;
+               // we didn't find it in the caches or the lookup failed, lets provide and check it
+               std::shared_ptr<ProvideType> provider = _ctx->zyppContext()->provider();
+               return provider->provide( _medium, _file, _filespec )
+               | and_then( [this]( ProvideRes res ) {
+                  return verifyFile( res.file() )
+                  | and_then( [res = res]() {
+                    return expected<ProvideRes>::success( std::move(res) );
+                  });
+                 })
+               | and_then( ProvideType::copyResultToDest( _ctx->zyppContext()->provider(), _ctx->destDir() / _file ) )
+               | and_then( []( zypp::ManagedFile &&file ){
+                  file.resetDispose ();
+                  return make_expected_success (std::move(file));
+                }) ;
 
-          } else {
+            } else {
 
-            return verifyFile ( cached.get() )
-            | and_then([ this, cachedFile = cached.get() ]() mutable {
-                if ( cachedFile == _ctx->destDir() / _file ) {
-                  cachedFile.resetDispose(); // make sure dispose is reset
-                  return makeReadyResult( expected<zypp::ManagedFile>::success(std::move(cachedFile) ));
-                }
+              return verifyFile ( cached.get() )
+              | and_then([ this, cachedFile = cached.get() ]() mutable {
+                  if ( cachedFile == _ctx->destDir() / _file ) {
+                    cachedFile.resetDispose(); // make sure dispose is reset
+                    return makeReadyTask( expected<zypp::ManagedFile>::success(std::move(cachedFile) ));
+                  }
 
-                const auto &targetPath = _ctx->destDir() / _file;
-                zypp::filesystem::assert_dir( targetPath.dirname () );
+                  const auto &targetPath = _ctx->destDir() / _file;
+                  zypp::filesystem::assert_dir( targetPath.dirname () );
 
-                return _ctx->zyppContext()->provider()->copyFile( cachedFile, _ctx->destDir() / _file )
-                | and_then( [cachedFile]( zypp::ManagedFile &&f) { f.resetDispose(); return make_expected_success (std::move(f)); });
-            });
-          }
-        };
+                  return _ctx->zyppContext()->provider()->copyFile( cachedFile, _ctx->destDir() / _file )
+                  | and_then( [cachedFile]( zypp::ManagedFile &&f) { f.resetDispose(); return make_expected_success (std::move(f)); });
+              });
+            }};
       }
 
     protected:
@@ -131,11 +123,11 @@ namespace zyppng {
        * Looks for a specific file in a cache dir, if it exists there and the checksum matches the one in the \sa ProvideFileSpec
        * it is used and returned.
        */
-      MaybeAsyncRef<expected<zypp::ManagedFile>> findFileInCache( ) {
+      MaybeAwaitable<expected<zypp::ManagedFile>> findFileInCache( ) {
 
         // No checksum - no match
         if ( _filespec.checksum().empty() )
-          return makeReadyResult( expected<zypp::ManagedFile>::error(std::make_exception_ptr( CacheMissException(_file) )) );
+          return makeReadyTask( expected<zypp::ManagedFile>::error(std::make_exception_ptr( CacheMissException(_file) )) );
 
         const auto &confDirs  = _ctx->cacheDirs();
         const auto targetFile = _ctx->destDir() / _file ;
@@ -143,11 +135,11 @@ namespace zyppng {
         caches.push_back( _ctx->destDir() );
         caches.insert( caches.end(), confDirs.begin(), confDirs.end() );
 
-        auto makeSearchPipeline = [this, targetFile]( zypp::Pathname cachePath ){
+        auto makeSearchPipeline = [this, targetFile]( zypp::Pathname cachePath ) -> expected<zypp::ManagedFile> {
           zypp::Pathname cacheFilePath( cachePath / _file );
           zypp::PathInfo cacheFileInfo( cacheFilePath );
           if ( !cacheFileInfo.isExist () ) {
-            return makeReadyResult(expected<zypp::ManagedFile>::error( std::make_exception_ptr (CacheMissException(_file)) ));
+            return makeReadyTask(expected<zypp::ManagedFile>::error( std::make_exception_ptr (CacheMissException(_file)) ));
           } else {
             auto provider = _ctx->zyppContext()->provider();
 
@@ -176,14 +168,14 @@ namespace zyppng {
         return std::move(caches) | firstOf( std::move(makeSearchPipeline), std::move(defVal), detail::ContinueUntilValidPredicate() );
       }
 
-      MaybeAsyncRef<expected<void>> verifyFile ( const zypp::Pathname &dlFilePath ) {
+      MaybeAwaitable<expected<void>> verifyFile ( const zypp::Pathname &dlFilePath ) {
 
         return zypp::Pathname( dlFilePath )
         | [this]( zypp::Pathname &&dlFilePath ) {
           if ( !_filespec.checksum().empty () ) {
             return CheckSumWorkflow::verifyChecksum( _ctx->zyppContext(), _filespec.checksum (), std::move(dlFilePath) );
           }
-          return makeReadyResult(expected<void>::success());
+          return makeReadyTask(expected<void>::success());
         };
         // add other verifier here via and_then(), like a signature based one
       }
@@ -199,11 +191,8 @@ namespace zyppng {
 
     MaybeAwaitable<expected<zypp::ManagedFile> > provideToCacheDir( CacheProviderContextRef cacheContext, ProvideMediaHandle medium, zypp::Pathname file, ProvideFileSpec filespec )
     {
-      if constexpr( ZYPP_IS_ASYNC ) {
-        return SimpleExecutor<ProvideFromCacheOrMediumLogic, AsyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(medium), std::move(file), std::move(filespec) );
-      } else {
-        return SimpleExecutor<ProvideFromCacheOrMediumLogic, SyncOp<expected<zypp::ManagedFile>>>::run( std::move(cacheContext), std::move(medium), std::move(file), std::move(filespec) );
-      }
+      ProvideFromCacheOrMediumLogic impl(std::move(cacheContext), std::move(medium), std::move(file), std::move(filespec));
+      zypp_co_return zypp_co_await( impl.execute() );
     }
 
   }

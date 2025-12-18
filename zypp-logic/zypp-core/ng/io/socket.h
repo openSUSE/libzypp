@@ -226,5 +226,8 @@ namespace zyppng {
     int64_t readData( uint channel, char *buffer, int64_t bufsize ) override;
     void  readChannelChanged ( uint channel ) override;
   };
+
+  ZYPP_FWD_DECL_REFS( Socket );
+
 }
 #endif

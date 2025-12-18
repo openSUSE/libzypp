@@ -59,14 +59,4 @@ namespace zyppng {
   {
     return zypp::sat::Pool::instance();
   }
-
-  void Context::executeImpl(const AsyncOpBaseRef& op)
-  {
-    auto loop = EventLoop::create();
-    op->sigReady().connect([&](){
-      loop->quit();
-    });
-    loop->run();
-    return;
-  }
 }

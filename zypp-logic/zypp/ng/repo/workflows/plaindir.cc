@@ -12,7 +12,7 @@
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
 
-#include <zypp/ng/workflows/logichelpers.h>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 
@@ -25,13 +25,13 @@ namespace zyppng::PlaindirWorkflows {
     auto statusLogic( repo::DownloadContextRef &&ctx, ProvideMediaHandle mediaHandle ) {
       // this can only happen if this function is called with a non mounting medium, but those do not support plaindir anyway
       if ( !mediaHandle.localPath().has_value() ) {
-        return makeReadyResult<expected<zypp::RepoStatus>>( expected<zypp::RepoStatus>::error( ZYPP_EXCPT_PTR( zypp::Exception("Medium does not support plaindir") )) );
+        return makeReadyTask<expected<zypp::RepoStatus>>( expected<zypp::RepoStatus>::error( ZYPP_EXCPT_PTR( zypp::Exception("Medium does not support plaindir") )) );
       }
 
       // dir status
       const auto &repoInfo = std::forward<repo::DownloadContextRef>(ctx)->repoInfo();
       auto rStatus = zypp::RepoStatus( repoInfo ) && zypp::RepoStatus( mediaHandle.localPath().value() / repoInfo.path() );
-      return makeReadyResult<expected<zypp::RepoStatus>> ( expected<zypp::RepoStatus>::success(std::move(rStatus)) );
+      return makeReadyTask<expected<zypp::RepoStatus>> ( expected<zypp::RepoStatus>::success(std::move(rStatus)) );
     }
   }
 
@@ -47,7 +47,7 @@ namespace zyppng::PlaindirWorkflows {
       try {
         // this can only happen if this function is called with a non mounting medium, but those do not support plaindir anyway
         if ( !mediaHandle.localPath().has_value() ) {
-          return makeReadyResult<Ret>( Ret::error( ZYPP_EXCPT_PTR( zypp::Exception("Medium does not support plaindir") )) );
+          return makeReadyTask<Ret>( Ret::error( ZYPP_EXCPT_PTR( zypp::Exception("Medium does not support plaindir") )) );
         }
 
         if ( progressObserver ) progressObserver->inc();
@@ -64,11 +64,11 @@ namespace zyppng::PlaindirWorkflows {
 
       } catch ( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
-        return makeReadyResult<Ret>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+        return makeReadyTask<Ret>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
       } catch ( ... ) {
-        return makeReadyResult<Ret>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+        return makeReadyTask<Ret>( Ret::error( ZYPP_FWD_CURRENT_EXCPT() ) );
       }
-      return makeReadyResult<Ret>( Ret::success( std::forward<repo::DownloadContextRef>(ctx) ) );
+      return makeReadyTask<Ret>( Ret::success( std::forward<repo::DownloadContextRef>(ctx) ) );
     }
   }
 

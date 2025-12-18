@@ -11,7 +11,7 @@
 
 #include <zypp/RepoInfo.h>
 #include <zypp/ng/repo/Downloader>
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 
 #include <zypp/ManagedFile.h>

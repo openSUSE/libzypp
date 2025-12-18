@@ -21,7 +21,7 @@
 
 #include <zypp/repo/RepoException.h>
 #include <zypp/repo/PluginRepoverification.h>
-#include <zypp/ng/workflows/logichelpers.h>
+
 #include <zypp/ng/context.h>
 
 #include <zypp-core/base/Gettext.h>
@@ -237,11 +237,9 @@ namespace zyppng {
    * a sync or async way. In sync mode libzypp's legacy reports are executed. Otherwise progress report
    * is only provided via the \ref ProgressObserver classes.
    */
-  class RepoManager : public Base, private MaybeAsyncMixin
+  class RepoManager : public Base
   {
     ZYPP_ADD_PRIVATE_CONSTR_HELPER ();
-    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN(Context::isAsync);
-
   public:
 
     using ContextRefType      = ContextRef;

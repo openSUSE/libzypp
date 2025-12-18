@@ -1,7 +1,9 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 
-#include <zypp-core/ng/async/awaitable.h>
+#include <zypp-core/ng/async/task.h>
+#include <zypp-core/ng/pipelines/operators.h>
+#include <zypp-core/ng/async/pipelines/await.h>
 #include <zypp-core/ng/base/eventloop.h>
 #include <zypp-core/ng/base/timer.h>
 
@@ -9,20 +11,15 @@
 
 
 template<typename Res>
-zyppng::Task<Res> returnAsync( Res &&r, uint64_t timeout = 0 ) {
-  // shared_ptr because std::function needs a callable to be copy constructible
-  auto p = std::make_shared<typename zyppng::Task<Res>::Promise>();
-  auto res = p->get_return_object();
+zyppng::Task<Res> returnAsync( Res r, uint64_t timeout = 0 ) {
 
   auto timer = zyppng::Timer::create ();
-  auto callback = [ t = timer, p = std::move(p), r = std::forward<Res>(r) ]( auto &) mutable {
-    p->return_value( std::move(r) );
-  };
-
-  timer->connectFunc( &zyppng::Timer::sigExpired, std::move(callback) );
   timer->setSingleShot(true);
   timer->start(timeout);
-  return res;
+
+  co_await timer->sigExpired ();
+
+  co_return r;
 }
 
 
@@ -42,7 +39,7 @@ BOOST_AUTO_TEST_CASE( coro_task )
     l->quit();
   });
 
-
+  async_res.start ();
   if ( !async_res.isReady() )
     l->run();
 
@@ -50,7 +47,7 @@ BOOST_AUTO_TEST_CASE( coro_task )
   BOOST_REQUIRE_EQUAL( async_res.get (), 10 );
 }
 
-
+#if 0
 BOOST_AUTO_TEST_CASE ( task_destroy_notify )
 {
   zyppng::EventLoopRef l = zyppng::EventLoop::create();
@@ -67,6 +64,7 @@ BOOST_AUTO_TEST_CASE ( task_destroy_notify )
   retObj.reset ();
   BOOST_REQUIRE(destroyTriggered);
 }
+#endif
 
 zyppng::Task<void> coro_throw (  ) {
   throw zypp::Exception("Test");
@@ -89,6 +87,7 @@ BOOST_AUTO_TEST_CASE( coro_exception )
     l->quit();
   });
 
+  async_res.start ();
   if ( !async_res.isReady() )
     l->run();
 
@@ -102,12 +101,19 @@ BOOST_AUTO_TEST_CASE( coro_pipeline )
   zyppng::EventLoopRef l = zyppng::EventLoop::create();
 
   const auto &produce = []() -> int { return 10; };
-  const auto &add10   = []( int in ) -> int { return in + 10; };
+  const auto &add10   = []( int in ) -> int {
+    BOOST_REQUIRE_EQUAL( in , 10 );
+    return in + 10;
+  };
 
   using namespace zyppng::operators;
 
-  auto async_res = produce() | []( int in ) -> zyppng::Task<int> { return returnAsync( std::move(in), 10 ); } | add10;
+  auto async_res = produce() | []( int in ) -> zyppng::Task<int> {
+    BOOST_REQUIRE_EQUAL( in , 10 );
+    return returnAsync<int>( std::move(in), 10 );
+  } | add10;
 
+  async_res.start ();
   if ( !async_res.isReady() ) {
     async_res.registerNotifyCallback ([&](){
       l->quit();

@@ -8,7 +8,6 @@
 \---------------------------------------------------------------------*/
 
 #include "keyringwf.h"
-#include "logichelpers.h"
 #include <zypp/zypp_detail/keyring_p.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/ZConfig.h>
@@ -25,34 +24,31 @@
 
 namespace zyppng::KeyRingWorkflow {
 
-  template <class Executor, class OpType>
-  struct ImportKeyFromRepoLogic : public LogicBase<Executor, OpType> {
+  struct ImportKeyFromRepoLogic {
 
     using ProvideType     = typename Context::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
     using ProvideRes      = typename ProvideType::Res;
-
-    ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
   public:
     ImportKeyFromRepoLogic( ContextRef context, std::string &&keyId, zypp::RepoInfo &&info )
       : _context( std::move(context) ), _keyId(std::move(keyId)), _repo( std::move(info) )
     { }
 
-    MaybeAsyncRef<bool> execute () {
+    MaybeAwaitable<bool> execute () {
 
       using namespace zyppng::operators;
       using zyppng::operators::operator|;
       using zyppng::expected;
 
       if ( _keyId.empty() || !_context )
-        return makeReadyResult(false);
+        return makeReadyTask(false);
 
       if ( _context->keyRing()->isKeyKnown(_keyId) ){
         if ( _context->keyRing()->isKeyTrusted(_keyId) )
-          return makeReadyResult(true);
+          return makeReadyTask(true);
 
-        return makeReadyResult(importFromKnownKeyring ());
+        return makeReadyTask(importFromKnownKeyring ());
       }
 
       const zypp::ZConfig &conf = _context->config();
@@ -118,10 +114,8 @@ namespace zyppng::KeyRingWorkflow {
 
   MaybeAwaitable<bool> provideAndImportKeyFromRepository( ContextRef ctx, std::string id_r, zypp::RepoInfo info_r)
   {
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor<ImportKeyFromRepoLogic, AsyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
-    else
-      return SimpleExecutor<ImportKeyFromRepoLogic, SyncOp<bool>>::run( ctx, std::move(id_r), std::move(info_r) );
+    ImportKeyFromRepoLogic impl( ctx, std::move(id_r), std::move(info_r) );
+    zypp_co_return zypp_co_await( impl.execute () );
   }
 
   namespace {
@@ -130,11 +124,8 @@ namespace zyppng::KeyRingWorkflow {
      * \class VerifyFileSignatureLogic
      * Implementation of the logic part for the verifyFileSignature workflow
      */
-    template <class Executor, class OpType>
-    struct VerifyFileSignatureLogic : public LogicBase<Executor, OpType>
+    struct VerifyFileSignatureLogic
     {
-      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
-
       using ZyppContextRefType = ContextRef;
       using KeyTrust = zypp::KeyRingReport::KeyTrust;
 
@@ -151,12 +142,12 @@ namespace zyppng::KeyRingWorkflow {
         bool trusted = false;
       };
 
-      MaybeAsyncRef<FoundKeyData> findKey ( const std::string &id ) {
+      MaybeAwaitable<FoundKeyData> findKey ( const std::string &id ) {
 
         using zyppng::operators::operator|;
 
         if ( id.empty() )
-          return makeReadyResult(FoundKeyData{zypp::PublicKeyData(), zypp::Pathname()});
+          return makeReadyTask(FoundKeyData{zypp::PublicKeyData(), zypp::Pathname()});
 
         // does key exists in trusted keyring
         zypp::PublicKeyData trustedKeyData( _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ) );
@@ -186,7 +177,7 @@ namespace zyppng::KeyRingWorkflow {
             }
           }
 
-          return makeReadyResult( FoundKeyData{ trustedKeyData,  _keyRing->pimpl().trustedKeyRing(), true } );
+          return makeReadyTask( FoundKeyData{ trustedKeyData,  _keyRing->pimpl().trustedKeyRing(), true } );
         }
         else
         {
@@ -214,12 +205,12 @@ namespace zyppng::KeyRingWorkflow {
               else
                 whichKeyring = _keyRing->pimpl().generalKeyRing();
 
-              return makeReadyResult(FoundKeyData { std::move(generalKeyData), std::move(whichKeyring), true });
+              return makeReadyTask(FoundKeyData { std::move(generalKeyData), std::move(whichKeyring), true });
             }
             else
             {
               MIL << "User does not want to trust key [" << id << "] " << key.name() << std::endl;
-              return makeReadyResult(FoundKeyData { std::move(generalKeyData),  _keyRing->pimpl().generalKeyRing(), false });
+              return makeReadyTask(FoundKeyData { std::move(generalKeyData),  _keyRing->pimpl().generalKeyRing(), false });
             }
           }
           else if ( ! _verifyContext.keyContext().empty() )
@@ -234,7 +225,7 @@ namespace zyppng::KeyRingWorkflow {
                 };
           }
         }
-        return makeReadyResult(FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() });
+        return makeReadyTask(FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() });
       }
 
       // returns std::pair<bool, zypp::keyring::VerifyFileContext>
@@ -252,7 +243,7 @@ namespace zyppng::KeyRingWorkflow {
         {
           bool res = _keyringReport.askUserToAcceptUnsignedFile( filedesc, _verifyContext.keyContext() );
           MIL << "askUserToAcceptUnsignedFile: " << res << std::endl;
-          return makeReadyResult( makeReturn(res) );
+          return makeReadyTask( makeReturn(res) );
         }
 
         // get the id of the signature (it might be a subkey id!)
@@ -261,7 +252,7 @@ namespace zyppng::KeyRingWorkflow {
         } catch ( const zypp::Exception &e ) {
           MIL << "Failed to read the signature from " << signature << std::endl;
           ZYPP_CAUGHT(e);
-          return makeReadyResult( makeReturn(false) );
+          return makeReadyTask( makeReturn(false) );
         }
 
         const std::string & id = _verifyContext.signatureId();
@@ -355,18 +346,14 @@ namespace zyppng::KeyRingWorkflow {
   MaybeAwaitable<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature( ContextRef zyppContext, zypp::keyring::VerifyFileContext &&context_r )
   {
     auto kr = zyppContext->keyRing();
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
-    else
-      return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    VerifyFileSignatureLogic impl( std::move(zyppContext), std::move(kr), std::move(context_r) );
+    zypp_co_return zypp_co_await( impl.execute () );
   }
 
   MaybeAwaitable<std::pair<bool,zypp::keyring::VerifyFileContext>> verifyFileSignature(ContextRef zyppContext, zypp::KeyRing_Ptr keyRing, zypp::keyring::VerifyFileContext &&context_r )
   {
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor<VerifyFileSignatureLogic, AsyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
-    else
-      return SimpleExecutor<VerifyFileSignatureLogic, SyncOp<std::pair<bool,zypp::keyring::VerifyFileContext> >>::run( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    VerifyFileSignatureLogic impl( std::move(zyppContext), std::move(keyRing), std::move(context_r) );
+    zypp_co_return zypp_co_await( impl.execute () );
   }
 
 }

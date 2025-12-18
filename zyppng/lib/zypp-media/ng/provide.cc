@@ -3,6 +3,7 @@
 #include "private/providequeue_p.h"
 #include "private/provideitem_p.h"
 #include <zypp-core/ng/io/IODevice>
+#include <zypp-core/ng/async/iotask.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/base/DtorReset>
 #include <zypp-core/fs/PathInfo.h>
@@ -1023,11 +1024,11 @@ namespace zyppng {
     return prepareMedia( zypp::MirroredOrigin{url}, request );
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
+  Task<expected<Provide::MediaHandle> > Provide::attachMediaIfNeeded( LazyMediaHandle lazyHandle)
   {
     using namespace zyppng::operators;
     if ( lazyHandle.attached() )
-      return makeReadyResult( expected<MediaHandle>::success( *lazyHandle.handle() ) );
+      return makeReadyTask( expected<MediaHandle>::success( *lazyHandle.handle() ) );
 
     MIL << "Attaching lazy medium with label: [" << lazyHandle.spec().label() << "]" << std::endl;
 
@@ -1038,60 +1039,78 @@ namespace zyppng {
         });
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
+  Task<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
   {
     return attachMedia (  zypp::MirroredOrigin{url}, request );
   }
 
-  AsyncOpRef<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request )
+  Task<expected<Provide::MediaHandle>> Provide::attachMedia( zypp::MirroredOrigin origin, ProvideMediaSpec request )
   {
     Z_D();
 
     // sanitize the mirrors to contain only URLs that have same worker types
     zypp::MirroredOrigin sanitizedOrigin = d->sanitizeUrls( origin );
     if ( !sanitizedOrigin.isValid() ) {
-      return makeReadyResult( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
+      co_return expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") ));
     }
 
     // first check if there is a already attached medium we can use as well
     auto &attachedMedia = d->attachedMediaInfos ();
     for ( auto &medium : attachedMedia ) {
       if ( medium->isSameMedium ( sanitizedOrigin, request ) ) {
-        return makeReadyResult( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *this, medium ) ));
+        co_return expected<Provide::MediaHandle>::success( Provide::MediaHandle( *this, medium ) );
       }
     }
 
-    auto op = AttachMediaItem::create( sanitizedOrigin, request, *d_func() );
+
+    IOTaskAwaiter<expected<Provide::MediaHandle>> awaitable;
+    auto op = AttachMediaItem::create( awaitable, sanitizedOrigin, request, *d_func() );
+
+    awaitable.registerDestroyCallback([ myProvide = std::weak_ptr(op)]( bool ready ){
+      auto prov = myProvide.lock();
+      if ( prov )
+        prov->released();
+    });
+
     d->queueItem (op);
-    return op->promise();
+    auto res = co_await awaitable;
+    co_return res;
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide(const zypp::MirroredOrigin &origin, const ProvideFileSpec &request )
+  Task< expected<ProvideRes> > Provide::provide( zypp::MirroredOrigin origin, zyppng::ProvideFileSpec request )
   {
     Z_D();
 
     // sanitize the mirrors to contain only URLs that have same worker types
     zypp::MirroredOrigin sanitizedOrigin = d->sanitizeUrls( origin );
     if ( !sanitizedOrigin.isValid() ) {
-      return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
+      co_return  expected<ProvideRes>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) ;
     }
 
-    auto op = ProvideFileItem::create( sanitizedOrigin, request, *d );
+    IOTaskAwaiter< expected<ProvideRes> > p;
+    auto op = ProvideFileItem::create( p, sanitizedOrigin, request, *d );
+    p.registerDestroyCallback([ myProvide = std::weak_ptr(op)]( bool wasReady ){
+      if ( wasReady )
+        return;
+      auto prov = myProvide.lock();
+      if ( prov )
+        prov->released();
+    });
     d->queueItem (op);
-    return op->promise();
+    co_return co_await p;
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const zypp::Url &url, const ProvideFileSpec &request )
+  Task< expected<ProvideRes> > Provide::provide( const zypp::Url &url, const ProvideFileSpec &request )
   {
     return provide( zypp::MirroredOrigin{ url }, request );
   }
 
-  AsyncOpRef< expected<ProvideRes> > Provide::provide( const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  Task< expected<ProvideRes> > Provide::provide(zyppng::Provide::MediaHandle attachHandle, zypp::Pathname fileName, zyppng::ProvideFileSpec request )
   {
     Z_D();
     const auto i = std::find( d->_attachedMediaInfos.begin(), d->_attachedMediaInfos.end(), attachHandle.mediaInfo() );
     if ( i == d->_attachedMediaInfos.end() ) {
-      return makeReadyResult( expected<ProvideRes>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Invalid attach handle")) ) );
+      co_return expected<ProvideRes>::error( ZYPP_EXCPT_PTR( zypp::media::MediaException("Invalid attach handle")) );
     }
 
     zypp::MirroredOrigin fileOrigin;
@@ -1113,26 +1132,45 @@ namespace zyppng {
         ep.url().appendPathName( fileName );
     }
 
-    auto op = ProvideFileItem::create( fileOrigin, request, *d );
+    IOTaskAwaiter< expected<ProvideRes> > p;
+    auto op = ProvideFileItem::create( p, fileOrigin, request, *d );
     op->setMediaRef( MediaHandle( *this, (*i) ));
+
+    p.registerDestroyCallback([ myProvide = std::weak_ptr(op)]( bool wasReady ){
+      if ( wasReady )
+        return;
+
+      auto prov = myProvide.lock();
+      if ( prov )
+        prov->released();
+    });
+
     d->queueItem (op);
 
-    return op->promise();
+    co_return co_await p;
   }
 
-  AsyncOpRef<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  Task<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
   {
     using namespace zyppng::operators;
-    return attachMediaIfNeeded ( attachHandle )
-    | and_then([weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ){
+
+    auto cb = [weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ) -> Task<expected<ProvideRes>> {
       auto me = weakMe.lock();
       if ( !me )
-        return makeReadyResult(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
+        return makeReadyTask(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
+      return me->provide( handle, fName, req);
+    };
+
+    return attachMediaIfNeeded ( attachHandle )
+    | and_then([weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ) -> Task<expected<ProvideRes>> {
+      auto me = weakMe.lock();
+      if ( !me )
+        return makeReadyTask(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
       return me->provide( handle, fName, req);
     });
   }
 
-  zyppng::AsyncOpRef<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::Task<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
   {
     using namespace zyppng::operators;
 
@@ -1152,7 +1190,7 @@ namespace zyppng {
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile>> Provide::copyFile ( const zypp::Pathname &source, const zypp::Pathname &target )
+  Task<expected<zypp::ManagedFile>> Provide::copyFile ( const zypp::Pathname &source, const zypp::Pathname &target )
   {
     using namespace zyppng::operators;
 
@@ -1165,7 +1203,7 @@ namespace zyppng {
     return fut;
   }
 
-  AsyncOpRef<expected<zypp::ManagedFile> > Provide::copyFile( ProvideRes &&source, const zypp::filesystem::Pathname &target )
+  Task<expected<zypp::ManagedFile> > Provide::copyFile( ProvideRes &&source, const zypp::filesystem::Pathname &target )
   {
     using namespace zyppng::operators;
 

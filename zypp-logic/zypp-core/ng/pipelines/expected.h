@@ -16,12 +16,41 @@
 #ifndef ZYPP_ZYPPNG_MONADIC_EXPECTED_H
 #define ZYPP_ZYPPNG_MONADIC_EXPECTED_H
 
+#include <stdexcept>
+#include <zypp-core/ng/base/zyppglobal.h>
 #include <zypp-core/ng/meta/Functional>
-#include <zypp-core/ng/pipelines/AsyncResult>
-#include <zypp-core/ng/pipelines/Wait>
-#include <zypp-core/ng/pipelines/Transform>
+#include <zypp-core/ng/meta/type_traits.h>
+#include <zypp-core/ng/pipelines/operators.h>
+#include <exception>
 
 namespace zyppng {
+
+  template<typename T>
+  class unexpected {
+    public:
+      template <typename E = T>
+      explicit unexpected(E &&err) : _err(std::forward<E>(err)) {}
+      ~unexpected() = default;
+
+      unexpected(const unexpected &) = default;
+      unexpected(unexpected &&) = default;
+      unexpected &operator=(const unexpected &) = default;
+      unexpected &operator=(unexpected &&) = default;
+
+      const T &error() const {
+        return _err;
+      }
+
+      T &error() {
+        return _err;
+      }
+
+    private:
+      T _err;
+  };
+
+  template<class E>
+  unexpected(E) -> unexpected<E>;
 
   template<typename T, typename E = std::exception_ptr>
   class ZYPP_NODISCARD expected {
@@ -51,6 +80,26 @@ namespace zyppng {
           }
       }
 
+      expected( const T& v ) : m_isValid(true)
+      {
+        new (&m_value) T( v );
+      }
+
+      expected( T&& v ) : m_isValid(true)
+      {
+        new (&m_value) T( std::move(v) );
+      }
+
+      expected( const unexpected<E> &err ) noexcept
+        : m_isValid(false)  {
+        new(&m_error) E(err.error());
+      }
+
+      expected( unexpected<E> &&err ) noexcept
+        : m_isValid(false)  {
+        new(&m_error) E(std::move(err.error()));
+      }
+
       expected(const expected &other)
           : m_isValid(other.m_isValid)
       {
@@ -71,10 +120,24 @@ namespace zyppng {
           }
       }
 
+      template < class G  = E >
+      expected &operator= (unexpected<G> other)
+      {
+          swap(expected::error(std::move(other.error())));
+          return *this;
+      }
+
       expected &operator= (expected other)
       {
           swap(other);
           return *this;
+      }
+
+      template< class U = std::remove_cv_t<T> >
+      expected& operator=( U&& v )
+      {
+        swap( expected::success (std::forward<U>(v) ) );
+        return *this;
       }
 
       void swap(expected &other) noexcept
@@ -257,9 +320,16 @@ namespace zyppng {
 
       bool m_isValid;
 
-      expected() {} //used internally
-
   public:
+
+      expected() : m_value(nullptr),  m_isValid(true) {}
+
+      template< class G >
+      expected( unexpected<G> err ) noexcept
+        : m_isValid(false)  {
+        new(&m_error) E(std::move(err.error()));
+      }
+
       ~expected()
       {
           if (m_isValid) {
@@ -295,6 +365,14 @@ namespace zyppng {
           return *this;
       }
 
+      template < class G  = E >
+      expected &operator= (unexpected<G> other)
+      {
+          swap(expected(std::move(other)));
+          return *this;
+      }
+
+
       void swap(expected &other) noexcept
       {
           using std::swap;
@@ -329,12 +407,7 @@ namespace zyppng {
 
       static expected success()
       {
-        // silence clang-tidy about uninitialized class members, we manually intialize them.
-        // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.UninitializedObject)
-        expected result;
-        result.m_isValid = true;
-        result.m_value = nullptr;
-        return result;
+        return expected();
       }
 
       template <typename... ConsParams>
@@ -412,6 +485,30 @@ namespace zyppng {
     bool waitForCanContinueExpected( const expected<T> &value ) {
       return value.is_valid();
     }
+
+    template<typename ResultType>
+    struct expected_result_helper {
+        template <typename E>
+        static ResultType error ( E &&err ) {
+          return ResultType::error( std::forward<E>(err) );
+        }
+
+        template <typename Res>
+        static ResultType forward ( Res &&exp ) {
+          return std::forward<Res>(exp);
+        }
+    };
+
+    template <typename ResultType, typename E>
+    ResultType expected_make_error( E && error) {
+      return expected_result_helper<ResultType>::error( std::forward<E>(error) );
+    }
+
+    template <typename ResultType>
+    ResultType expected_forward( ResultType &&res ) {
+      return expected_result_helper<ResultType>::forward( std::forward<ResultType>(res) );
+    }
+
   }
 
 
@@ -428,10 +525,7 @@ namespace zyppng {
         else
           return std::invoke( std::forward<Function>(f), exp.get() );
       } else {
-        if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
-          return ResultType::error(exp.error());
-        else
-          return makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error(exp.error()) );
+        return detail::expected_make_error<ResultType>(exp.error());
       }
   }
 
@@ -448,10 +542,7 @@ namespace zyppng {
       else
         return std::invoke( std::forward<Function>(f), std::move(exp.get()) );
     } else {
-      if constexpr ( !detail::is_async_op< ResultType >::value )
-        return ResultType::error( std::move(exp.error()) );
-      else
-        return makeReadyResult( remove_smart_ptr_t<ResultType>::value_type::error(exp.error()) );
+      return detail::expected_make_error<ResultType>(exp.error());
     }
   }
 
@@ -465,10 +556,7 @@ namespace zyppng {
     if (!exp) {
       return std::invoke( std::forward<Function>(f), exp.error() );
     } else {
-      if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
-        return exp;
-      else
-        return makeReadyResult( std::move(exp) );
+      return detail::expected_forward(exp);
     }
   }
 
@@ -482,10 +570,7 @@ namespace zyppng {
     if (!exp) {
       return std::invoke( std::forward<Function>(f), std::move(exp.error()) );
     } else {
-      if constexpr ( !detail::is_async_op< remove_smart_ptr_t<ResultType> >::value )
-        return exp;
-      else
-        return makeReadyResult( std::move(exp) );
+      return detail::expected_forward( std::move(exp) );
     }
   }
 
@@ -663,31 +748,18 @@ namespace zyppng {
     typename Ret = std::result_of_t<Transformation(Msg)>,
     typename ...CArgs
     >
-  auto transform_collect( Container<Msg, CArgs...>&& in, Transformation &&f )
+  std::enable_if_t< is_instance_of_v<expected,Ret>, expected<Container<typename Ret::value_type>> > transform_collect( Container<Msg, CArgs...>&& in, Transformation &&f )
   {
-    using namespace zyppng::operators;
-    if constexpr ( detail::is_async_op_v<Ret> ) {
-      using AsyncRet = typename remove_smart_ptr_t<Ret>::value_type;
-      static_assert( is_instance_of<expected, AsyncRet>::value, "Transformation function must return a expected type" );
-
-      return transform( std::move(in), f )
-             // cancel WaitFor if one of the async ops returns a error
-             | detail::WaitForHelperExt<AsyncRet>( detail::waitForCanContinueExpected<typename AsyncRet::value_type> )
-             | collect();
-
-    } else {
-      static_assert( is_instance_of<expected, Ret>::value, "Transformation function must return a expected type" );
-      Container<typename Ret::value_type> results;
-      for ( auto &v : in ) {
-        auto res = f(std::move(v));
-        if ( res ) {
-          results.push_back( std::move(res.get()) );
-        } else {
-          return expected<Container<typename Ret::value_type>>::error( res.error() );
-        }
+    Container<typename Ret::value_type> results;
+    for ( auto &v : in ) {
+      auto res = f(std::move(v));
+      if ( res ) {
+        results.push_back( std::move(res.get()) );
+      } else {
+        return expected<Container<typename Ret::value_type>>::error( res.error() );
       }
-      return expected<Container<typename Ret::value_type>>::success( std::move(results) );
     }
+    return expected<Container<typename Ret::value_type>>::success( std::move(results) );
   }
 
   namespace detail {
@@ -707,10 +779,11 @@ namespace zyppng {
       return detail::transform_collect_helper{ std::forward<Transformation>(f)};
     }
   }
-
-
-
 }
+
+#ifdef ZYPP_ENABLE_ASYNC
+#include <zypp-core/ng/async/pipelines/expected.hpp>
+#endif
 
 #endif
 

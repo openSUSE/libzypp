@@ -9,7 +9,7 @@
 #ifndef ZYPP_NG_LOGICHELPERS_INCLUDED
 #define ZYPP_NG_LOGICHELPERS_INCLUDED
 
-#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/async/awaitable.h>
 #include <zypp/ng/context.h>
 
 namespace zyppng

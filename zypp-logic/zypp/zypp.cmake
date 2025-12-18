@@ -264,7 +264,6 @@ function(zypp_add_zypp_target)
     ng/workflows/checksumwf.h
     ng/workflows/downloadwf.h
     ng/workflows/keyringwf.h
-    ng/workflows/logichelpers.h
     ng/workflows/repoinfowf.h
     ng/workflows/signaturecheckwf.h
   )
@@ -799,10 +798,6 @@ function(zypp_add_zypp_target)
   endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 
   ADD_LIBRARY( ${arg_TARGETNAME} OBJECT ${zypp_lib_SRCS} ${zypp_lib_HEADERS}  )
-
-  get_filename_component(PARENT_LIST_DIR ${CMAKE_CURRENT_FUNCTION_LIST_DIR}   DIRECTORY)
-  get_filename_component(PARENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}   DIRECTORY)
-  get_filename_component(PARENT_BIN_DIR  ${CMAKE_CURRENT_BINARY_DIR} DIRECTORY)
 
   zypp_logic_setup_includes()
 

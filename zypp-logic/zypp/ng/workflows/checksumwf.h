@@ -9,7 +9,7 @@
 #ifndef ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 #define ZYPP_NG_CHECKSUMWORKFLOW_INCLUDED
 
-#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 #include <functional>
 

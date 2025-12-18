@@ -17,6 +17,7 @@
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/ng/pipelines/MTry>
 #include <zypp-core/ng/pipelines/Transform>
+#include <zypp-core/ng/pipelines/wait.h>
 #include <zypp-core/ng/ui/ProgressObserver>
 #include <zypp-media/ng/providespec.h>
 #include <zypp/HistoryLog.h>

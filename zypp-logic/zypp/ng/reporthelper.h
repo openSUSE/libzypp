@@ -12,6 +12,7 @@
 #ifndef ZYPP_NG_REPORTHELPER_INCLUDED
 #define ZYPP_NG_REPORTHELPER_INCLUDED
 
+#include <zypp-core/ng/async/task.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/KeyContext.h>
 #include <zypp/KeyRing.h>

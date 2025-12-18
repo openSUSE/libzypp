@@ -69,12 +69,12 @@ namespace zypp
     }
 
     template <typename Predicate>
-    bool allActionsMatch( Predicate && predicate ) const
+    bool allActionsMatch( Predicate &&predicate ) const
     {
       if ( _actions.empty() )
         return false;
       for ( const auto & aptr : _actions )
-        if ( not std::invoke( std::forward<Predicate>(predicate), aptr ) )
+        if ( not std::invoke( predicate, aptr ) )
           return false;
       return true;
     }

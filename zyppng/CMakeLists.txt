@@ -26,6 +26,10 @@ endif( ZYPP_CXX_CLANG_TIDY OR ZYPP_CXX_CPPCHECK )
 add_library           ( zyppng_general_compiler_flags INTERFACE )
 target_link_libraries ( zyppng_general_compiler_flags INTERFACE zypp_initial_compiler_flags )
 
+#target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
+#target_link_options( zyppng_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
+target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fconcepts-diagnostics-depth=4>" )
+
 target_compile_options( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 target_link_options   ( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 

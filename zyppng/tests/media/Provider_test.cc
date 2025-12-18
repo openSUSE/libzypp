@@ -11,7 +11,7 @@
 #include <zypp-core/base/UserRequestException>
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
-#include <zypp-core/ng/pipelines/Wait>
+#include <zypp-core/ng/pipelines/wait.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/Digest.h>
 
@@ -30,9 +30,6 @@
 #ifndef TESTS_BUILD_DIR
 #error "TESTS_BUILD_DIR not defined"
 #endif
-
-#define ZYPP_REQUIRE_THROW( statement, exception ) \
-  try { BOOST_REQUIRE_THROW(  statement, exception  ); } catch( ... ) { BOOST_FAIL( #statement" throws unexpected exception"); }
 
 namespace bdata = boost::unit_test::data;
 
@@ -57,11 +54,9 @@ BOOST_AUTO_TEST_CASE( http_prov_time_overflow )
 }
 
 
-BOOST_AUTO_TEST_CASE( http_prov )
+ZYPP_CORO_TEST_CASE( http_prov )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -77,39 +72,22 @@ BOOST_AUTO_TEST_CASE( http_prov )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/media.1/media" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
-  std::exception_ptr err;
-  std::optional<zyppng::ProvideRes> resOpt;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-    else
-      resOpt = *res;
-  });
+  auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
-
-  BOOST_REQUIRE( !err );
-  BOOST_REQUIRE( resOpt.has_value() );
-  zypp::PathInfo pi( resOpt->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi( res->file() );
   BOOST_REQUIRE( pi.isExist() );
   BOOST_REQUIRE( pi.isFile() );
 
-  std::ifstream in( resOpt->file().asString(), std::ios::binary );
+  std::ifstream in( res->file().asString(), std::ios::binary );
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("63b4a45ec881d90b83c2e6af7bcbfa78") );
 }
 
-BOOST_AUTO_TEST_CASE( http_attach )
+ZYPP_CORO_TEST_CASE( http_attach )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -122,27 +100,17 @@ BOOST_AUTO_TEST_CASE( http_attach )
   WebServer web( webRoot.c_str(), 10001, false );
   BOOST_REQUIRE( web.start() );
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto res = co_await prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) );
 
-  op->onReady([&]( zyppng::expected<zyppng::Provide::MediaHandle> &&res ){
-    ev->quit();
-    BOOST_REQUIRE( res.is_valid() );
-    BOOST_REQUIRE( !res->handle().empty() );
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+  BOOST_REQUIRE( res.is_valid() );
+  BOOST_REQUIRE( !res->handle().empty() );
 }
 
-BOOST_AUTO_TEST_CASE( http_attach_prov )
+ZYPP_CORO_TEST_CASE( http_attach_prov )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -158,40 +126,26 @@ BOOST_AUTO_TEST_CASE( http_attach_prov )
 
   zyppng::Provide::MediaHandle media;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto res = co_await( prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/test.txt", zyppng::ProvideFileSpec() );
-            });
+            }));
 
-  std::optional<zyppng::ProvideRes> fileRes;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    if ( res )
-      fileRes = std::move(*res);
-    ev->quit();
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
-
-  BOOST_REQUIRE( fileRes.has_value() );
-  zypp::PathInfo pi ( fileRes->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi ( res->file() );
   BOOST_REQUIRE( pi.isExist() && pi.isFile() );
 
-  std::ifstream in( fileRes->file().asString(), std::ios::binary );
+  std::ifstream in( res->file().asString(), std::ios::binary );
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
 
-BOOST_AUTO_TEST_CASE( http_attach_prov_404 )
+ZYPP_CORO_TEST_CASE( http_attach_prov_404 )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -207,39 +161,26 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_404 )
 
   zyppng::Provide::MediaHandle media;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto res = co_await( prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/doesnotexist", zyppng::ProvideFileSpec() );
-            });
+            }));
 
-  std::optional<zyppng::ProvideRes> fileRes;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-
-    BOOST_REQUIRE(!res);
-    if ( !res ) {
-      ZYPP_REQUIRE_THROW( std::rethrow_exception( res.error() ), zypp::media::MediaFileNotFoundException );
-    }
-
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+  BOOST_REQUIRE(!res);
+  if ( !res ) {
+    ZYPP_REQUIRE_THROW( std::rethrow_exception( res.error() ), zypp::media::MediaFileNotFoundException );
+  }
 }
 
 
 // special case where we can detect that something is a directory because we already provided a file from the
 // directory that's required as a file.
-BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
+ZYPP_CORO_TEST_CASE( http_attach_prov_notafile )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -256,36 +197,23 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_notafile )
   zyppng::Provide::MediaHandle media;
   std::exception_ptr err;
 
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto res = co_await( prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/media.1", zyppng::ProvideFileSpec() );
-            });
+            }));
 
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
-
-  BOOST_REQUIRE( err );
-  ZYPP_REQUIRE_THROW( std::rethrow_exception( err ), zypp::media::MediaNotAFileException );
+  BOOST_REQUIRE( !res );
+  ZYPP_REQUIRE_THROW( std::rethrow_exception( res.error() ), zypp::media::MediaNotAFileException );
 }
 
 
-BOOST_AUTO_TEST_CASE( base_provide_zck )
+ZYPP_CORO_TEST_CASE( base_provide_zck )
 {
 
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot   = zypp::Pathname ( TESTS_SHARED_DIR )/"data/http";
@@ -309,7 +237,7 @@ BOOST_AUTO_TEST_CASE( base_provide_zck )
   zypp::Url mediaUrl = web.url();
 
   zyppng::Provide::MediaHandle media;
-  auto op = prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" ) )
+  auto res = co_await( prov->attachMedia( web.url(), zyppng::ProvideMediaSpec( "OnlineMedia" ) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/handler/primary",
@@ -318,27 +246,10 @@ BOOST_AUTO_TEST_CASE( base_provide_zck )
                                     .setDownloadSize( makeBytes(274638) )
                                     .setHeaderSize( makeBytes(11717) )
                                     .setHeaderChecksum( zypp::CheckSum( zypp::Digest::sha256(), "90a1a1b99ba3b6c8ae9f14b0c8b8c43141c69ec3388bfa3b9915fbeea03926b7") ) );
-            });
+            }));
 
-
-  std::optional<zyppng::ProvideRes> resOpt;
-  std::exception_ptr err;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-    else
-      resOpt = *res;
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
-
-  BOOST_REQUIRE( !err );
-  BOOST_REQUIRE( resOpt.has_value() );
-  zypp::PathInfo pi( resOpt->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi( res->file() );
   BOOST_REQUIRE( pi.isExist() );
   BOOST_REQUIRE( pi.isFile() );
 
@@ -380,11 +291,9 @@ WebServer::RequestHandler createAuthHandler ( const zypp::Pathname &webroot = "/
   };
 };
 
-BOOST_AUTO_TEST_CASE( http_prov_auth )
+ZYPP_CORO_TEST_CASE( http_prov_auth )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -420,44 +329,27 @@ BOOST_AUTO_TEST_CASE( http_prov_auth )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
-  std::exception_ptr err;
-  std::optional<zyppng::ProvideRes> resOpt;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-    else
-      resOpt = *res;
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+  auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
   BOOST_REQUIRE( gotSigAuthRequired );
-  BOOST_REQUIRE( !err );
-  BOOST_REQUIRE( resOpt.has_value() );
-  zypp::PathInfo pi( resOpt->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi( res->file() );
   BOOST_REQUIRE( pi.isExist() );
   BOOST_REQUIRE( pi.isFile() );
 
-  std::ifstream in( resOpt->file().asString(), std::ios::binary );
+  std::ifstream in( res->file().asString(), std::ios::binary );
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
 
-BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
+ZYPP_CORO_TEST_CASE( http_prov_auth_nouserresponse )
 {
   using namespace zyppng::operators;
 
   //don't write or read creds from real settings dir
   //zypp::filesystem::TmpDir repoManagerRoot;
   //zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -489,38 +381,20 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_nouserresponse )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
-
-  std::exception_ptr err;
-  std::optional<zyppng::ProvideRes> resOpt;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-    else
-      resOpt = *res;
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+  auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
   BOOST_REQUIRE( gotSigAuthRequired );
-  BOOST_REQUIRE( err );
-  BOOST_REQUIRE( !resOpt.has_value() );
-  ZYPP_REQUIRE_THROW( std::rethrow_exception( err ), zypp::media::MediaUnauthorizedException );
+  BOOST_REQUIRE( !res.is_valid() );
+  ZYPP_REQUIRE_THROW( std::rethrow_exception( res.error() ), zypp::media::MediaUnauthorizedException );
 }
 
-BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
+ZYPP_CORO_TEST_CASE( http_prov_auth_wrongpw )
 {
   using namespace zyppng::operators;
 
   //don't write or read creds from real settings dir
   //zypp::filesystem::TmpDir repoManagerRoot;
   //zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -562,40 +436,23 @@ BOOST_AUTO_TEST_CASE( http_prov_auth_wrongpw )
 
   auto fileUrl = web.url();
   fileUrl.setPathName( "/handler/test.txt" );
-  auto op = prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
-  std::exception_ptr err;
-  std::optional<zyppng::ProvideRes> resOpt;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    ev->quit();
-    if ( !res )
-      err = res.error();
-    else
-      resOpt = *res;
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+  auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
 
   BOOST_REQUIRE_EQUAL( cntAuthRequired, 2 );
-  BOOST_REQUIRE( !err );
-  BOOST_REQUIRE( resOpt.has_value() );
-  zypp::PathInfo pi( resOpt->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi( res->file() );
   BOOST_REQUIRE( pi.isExist() );
   BOOST_REQUIRE( pi.isFile() );
 
-  std::ifstream in( resOpt->file().asString(), std::ios::binary );
+  std::ifstream in( res->file().asString(), std::ios::binary );
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
 
-BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
+ZYPP_CORO_TEST_CASE( http_attach_prov_auth )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
@@ -634,32 +491,20 @@ BOOST_AUTO_TEST_CASE( http_attach_prov_auth )
   auto baseUrl = web.url();
   baseUrl.setPathName("/handler");
 
-  auto op = prov->attachMedia( baseUrl, zyppng::ProvideMediaSpec( "OnlineMedia" )
+  auto res = co_await( prov->attachMedia( baseUrl, zyppng::ProvideMediaSpec( "OnlineMedia" )
                                                .setMediaFile( webRoot / "media.1" / "media" )
                                                .setMedianr(1) )
             | and_then ( [&]( zyppng::Provide::MediaHandle &&res ){
               media = std::move(res);
               return prov->provide( media, "/test.txt", zyppng::ProvideFileSpec() );
-            });
-
-  std::optional<zyppng::ProvideRes> fileRes;
-  op->onReady([&]( zyppng::expected<zyppng::ProvideRes> &&res ){
-    if ( res )
-      fileRes = std::move(*res);
-    ev->quit();
-  });
-
-  BOOST_REQUIRE( !op->isReady() );
-
-  if ( !op->isReady() )
-    ev->run();
+            }) );
 
   BOOST_REQUIRE_EQUAL( cntAuthRequired, 1 ); // after the first auth request all others should work
-  BOOST_REQUIRE( fileRes.has_value() );
-  zypp::PathInfo pi ( fileRes->file() );
+  BOOST_REQUIRE( res.is_valid() );
+  zypp::PathInfo pi ( res->file() );
   BOOST_REQUIRE( pi.isExist() && pi.isFile() );
 
-  std::ifstream in( fileRes->file().asString(), std::ios::binary );
+  std::ifstream in( res->file().asString(), std::ios::binary );
   auto sum = zypp::CheckSum::md5( in );
   BOOST_REQUIRE_EQUAL( sum, std::string("7e562d52c100b68e9d6a561fa8519575") );
 }
@@ -688,22 +533,22 @@ static void writeTVMConfig ( const zypp::Pathname &file, const zypp::test::TVMSe
   }
 }
 
-static auto makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Pathname &devRoot, int mediaNr, const std::string &fName )
+static zyppng::Task<zyppng::expected<void>> makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Pathname &devRoot, int mediaNr, const std::string &fName )
 {
   using namespace zyppng::operators;
 
   return prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(mediaNr)) / (std::string("media.") + zypp::str::numstring(mediaNr))  / "media" )
                                                 .setMedianr(mediaNr))
-        | [&prov, mediaNr, fName]( zyppng::expected<zyppng::Provide::MediaHandle> &&res ){
+        | [&prov, mediaNr, fName]( zyppng::expected<zyppng::Provide::MediaHandle> res ){
             if ( res ) {
               std::cout << "Attached " << mediaNr << " as: " << res->handle() << std::endl;
-              return prov->provide ( *res, fName , zyppng::ProvideFileSpec() ) | [ attachId = *res, &prov ]( auto &&res ) {
+              return prov->provide ( *res, fName , zyppng::ProvideFileSpec() ) | [ attachId = *res ]( zyppng::expected<zyppng::ProvideRes> res ) {
                 if ( !res ) {
                   try {
                     std::rethrow_exception(res.error());
                   }  catch ( const zypp::Exception &e ) {
-                    std::cout << "Provide failed with " << e <<std::endl;
+                    std::cout << "Provide failed with " << e.asUserString () << std::endl;
                   }
 
                 } else
@@ -714,17 +559,20 @@ static auto makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Path
               };
             } else {
               std::cout << "Failed to attach media" << std::endl;
-              return zyppng::makeReadyResult( zyppng::expected<zyppng::ProvideRes>::error(res.error()) );
+              return zyppng::makeReadyTask( zyppng::expected<zyppng::ProvideRes>::error( res.error()) );
             }
-          } | [](  zyppng::expected<zyppng::ProvideRes> &&res ) {
+          } | [](  zyppng::expected<zyppng::ProvideRes> res ) {
           if ( !res ) {
             try {
               std::rethrow_exception(res.error());
             }  catch ( const zypp::Exception &e ) {
               std::cout << "Provide failed with " << e <<std::endl;
               return zyppng::expected<void>::error(res.error());
+            } catch ( const std::exception &e ) {
+              std::cout << "Provide failed with exception " << e.what() << std::endl;
+              return zyppng::expected<void>::error(res.error());
             } catch ( ... ) {
-              std::cout << "Provide failed with exception " << std::endl;
+              std::cout << "Provide failed with unknown exception " << std::endl;
               return zyppng::expected<void>::error(res.error());
             }
           } else {
@@ -733,11 +581,9 @@ static auto makeDVDProv ( zyppng::ProvideRef &prov, const zypp::filesystem::Path
       };
   }
 
-BOOST_AUTO_TEST_CASE( tvm_basic )
+ZYPP_CORO_TEST_CASE( tvm_basic )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
@@ -770,32 +616,21 @@ BOOST_AUTO_TEST_CASE( tvm_basic )
 
   prov->start();
 
-  std::vector< zyppng::AsyncOpRef<zyppng::expected<void>>> ops;
+  std::vector< zyppng::Task<zyppng::expected<void>>> ops;
 
   ops.push_back( makeDVDProv( prov, devRoot, 1, "/file1") );
   ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
   ops.push_back( makeDVDProv( prov, devRoot, 3, "/file3") );
 
-  auto r = std::move(ops) | zyppng::waitFor();
-  r->sigReady().connect([&](){
-    ev->quit();
-  });
-
-  BOOST_REQUIRE( !r->isReady() );
-
-  if ( !r->isReady() )
-    ev->run();
-
-  for ( const auto &res : r->get() ) {
+  auto r = co_await( std::move(ops) | join() );
+  for ( const auto &res : r ) {
     BOOST_REQUIRE(res);
   }
 }
 
-BOOST_AUTO_TEST_CASE( tvm_medchange )
+ZYPP_CORO_TEST_CASE( tvm_medchange )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
@@ -842,27 +677,19 @@ BOOST_AUTO_TEST_CASE( tvm_medchange )
     return zyppng::Provide::RETRY;
   });
 
-  std::vector< zyppng::AsyncOpRef<zyppng::expected<void>>> ops;
+  std::vector< zyppng::Task<zyppng::expected<void>>> ops;
 
   ops.push_back( makeDVDProv( prov, devRoot, 1, "/file1") );
   ops.push_back( makeDVDProv( prov, devRoot, 2, "/file2") );
 
-  auto r = std::move(ops) | zyppng::waitFor();
-  r->sigReady().connect([&](){
-    ev->quit();
-  });
-
-  BOOST_REQUIRE( !r->isReady() );
-
-  if ( !r->isReady() )
-    ev->run();
+  auto r = co_await(std::move(ops) | zyppng::operators::join());
 
   BOOST_REQUIRE( gotMediaChange );
   BOOST_REQUIRE_EQUAL( labelAsked, std::string("CD Test Set") );
   BOOST_REQUIRE_EQUAL( mediaNrAsked, 2 );
   BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot2" ) != freeDevices.end() );
   BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot3" ) != freeDevices.end() );
-  for ( const auto &res : r->get() ) {
+  for ( const auto &res : r ) {
     BOOST_REQUIRE(res);
   }
 }
@@ -871,90 +698,81 @@ zyppng::Provide::Action cancelOps[] = { zyppng::Provide::ABORT, zyppng::Provide:
 
 BOOST_DATA_TEST_CASE( tvm_medchange_abort, bdata::make( cancelOps ), cancelOp )
 {
-  using namespace zyppng::operators;
+  const auto &coro_body = [&] () -> zyppng::Task<void> {
+    using namespace zyppng::operators;
 
-  auto ev = zyppng::EventLoop::create ();
+    const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
+    const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
 
-  const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
-  const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
+    zypp::filesystem::TmpDir provideRoot;
 
-  zypp::filesystem::TmpDir provideRoot;
+    auto prov = zyppng::Provide::create ( provideRoot );
+    prov->setWorkerPath ( workerPath );
 
-  auto prov = zyppng::Provide::create ( provideRoot );
-  prov->setWorkerPath ( workerPath );
+    zypp::test::TVMSettings devSet;
+    devSet.devices.push_back(
+      zypp::test::TVMSettings::Device{
+        .name = "/fakedev/tvm/slot1",
+        .insertedPath = (devRoot/"cd1").asString()
+      }
+    );
+    devSet.devices.push_back(
+      zypp::test::TVMSettings::Device{
+        .name = "/fakedev/tvm/slot2",
+        .insertedPath = ""
+      }
+    );
+    devSet.devices.push_back(
+      zypp::test::TVMSettings::Device{
+        .name = "/fakedev/tvm/slot3",
+        .insertedPath = ""
+      }
+    );
+    writeTVMConfig( provideRoot, devSet );
 
-  zypp::test::TVMSettings devSet;
-  devSet.devices.push_back(
-    zypp::test::TVMSettings::Device{
-      .name = "/fakedev/tvm/slot1",
-      .insertedPath = (devRoot/"cd1").asString()
+    prov->start();
+
+    bool gotMediaChange = false;
+    std::vector<std::string> freeDevices;
+    int32_t mediaNrAsked = -1;
+    std::string labelAsked;
+    prov->sigMediaChangeRequested().connect([&]( const std::string &ref, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &devices, const std::optional<std::string> &desc ){
+      gotMediaChange = true;
+      freeDevices = devices;
+      labelAsked = label;
+      mediaNrAsked = mediaNr;
+      return cancelOp;
+    });
+
+    auto op1 = makeDVDProv( prov, devRoot, 1, "/file1");
+    auto op2 = makeDVDProv( prov, devRoot, 2, "/file2");
+    BOOST_REQUIRE( !op1.isReady() );
+    BOOST_REQUIRE( !op2.isReady() );
+
+    auto r1 = co_await std::move(op1);
+    auto r2 = co_await std::move(op2);
+
+    BOOST_REQUIRE( r1.is_valid() );
+    BOOST_REQUIRE( !r2.is_valid() );
+
+    BOOST_REQUIRE( gotMediaChange );
+    BOOST_REQUIRE_EQUAL( labelAsked, std::string("CD Test Set") );
+    BOOST_REQUIRE_EQUAL( mediaNrAsked, 2 );
+    BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot2" ) != freeDevices.end() );
+    BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot3" ) != freeDevices.end() );
+    if ( cancelOp == zyppng::Provide::ABORT ) {
+      ZYPP_REQUIRE_THROW( std::rethrow_exception( r2.error() ), zypp::AbortRequestException );
+    } else {
+      ZYPP_REQUIRE_THROW( std::rethrow_exception( r2.error() ), zypp::SkipRequestException );
     }
-  );
-  devSet.devices.push_back(
-    zypp::test::TVMSettings::Device{
-      .name = "/fakedev/tvm/slot2",
-      .insertedPath = ""
-    }
-  );
-  devSet.devices.push_back(
-    zypp::test::TVMSettings::Device{
-      .name = "/fakedev/tvm/slot3",
-      .insertedPath = ""
-    }
-  );
-  writeTVMConfig( provideRoot, devSet );
-
-  prov->start();
-
-  bool gotMediaChange = false;
-  std::vector<std::string> freeDevices;
-  int32_t mediaNrAsked = -1;
-  std::string labelAsked;
-  prov->sigMediaChangeRequested().connect([&]( const std::string &ref, const std::string &label, const int32_t mediaNr, const std::vector<std::string> &devices, const std::optional<std::string> &desc ){
-    gotMediaChange = true;
-    freeDevices = devices;
-    labelAsked = label;
-    mediaNrAsked = mediaNr;
-    return cancelOp;
-  });
-
-  auto op1 = makeDVDProv( prov, devRoot, 1, "/file1");
-  auto op2 = makeDVDProv( prov, devRoot, 2, "/file2");
-
-  const auto &readyCB = [&](){
-    if ( op1->isReady() && op2->isReady() )
-      ev->quit();
   };
 
-  op1->sigReady().connect( readyCB );
-  op2->sigReady().connect( readyCB );
-
-  BOOST_REQUIRE( !op1->isReady() );
-  BOOST_REQUIRE( !op2->isReady() );
-
-
-  if ( !op1->isReady() && !op2->isReady() )
-    ev->run();
-
-  BOOST_REQUIRE( gotMediaChange );
-  BOOST_REQUIRE_EQUAL( labelAsked, std::string("CD Test Set") );
-  BOOST_REQUIRE_EQUAL( mediaNrAsked, 2 );
-  BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot2" ) != freeDevices.end() );
-  BOOST_REQUIRE( std::find( freeDevices.begin(), freeDevices.end(), "/fakedev/tvm/slot3" ) != freeDevices.end() );
-  BOOST_REQUIRE( op1->get().is_valid() );
-  BOOST_REQUIRE( !op2->get().is_valid() );
-  if ( cancelOp == zyppng::Provide::ABORT ) {
-    ZYPP_REQUIRE_THROW( std::rethrow_exception( op2->get().error() ), zypp::AbortRequestException );
-  } else {
-    ZYPP_REQUIRE_THROW( std::rethrow_exception( op2->get().error() ), zypp::SkipRequestException );
-  }
+  ZYPP_CORO_BOILERPLATE
 }
 
-BOOST_AUTO_TEST_CASE( tvm_jammed )
+ZYPP_CORO_TEST_CASE( tvm_jammed )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
@@ -988,37 +806,23 @@ BOOST_AUTO_TEST_CASE( tvm_jammed )
                                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
                                                 .setMedianr(2));
 
+  BOOST_REQUIRE( !op1.isReady() );
+  BOOST_REQUIRE( !op2.isReady() );
 
-
-  const auto &readyCB = [&](){
-    if ( op1->isReady() && op2->isReady() )
-      ev->quit();
-  };
-
-  op1->sigReady().connect( readyCB );
-  op2->sigReady().connect( readyCB );
-
-
-  BOOST_REQUIRE( !op1->isReady() );
-  BOOST_REQUIRE( !op2->isReady() );
-
-
-  if ( !op1->isReady() && !op2->isReady() )
-    ev->run();
+  auto r1 = co_await std::move(op1);
+  auto r2 = co_await std::move(op2);
 
   //we have only one drive which is in use, so we can  not be asked for media change
   BOOST_REQUIRE( !gotMediaChange );
-  BOOST_REQUIRE( op1->get().is_valid() );
-  BOOST_REQUIRE( !op2->get().is_valid() );
-  ZYPP_REQUIRE_THROW( std::rethrow_exception( op2->get().error() ), zypp::media::MediaJammedException );
+  BOOST_REQUIRE( r1.is_valid() );
+  BOOST_REQUIRE( !r2.is_valid() );
+  ZYPP_REQUIRE_THROW( std::rethrow_exception( r2.error() ), zypp::media::MediaJammedException );
 }
 
 // test if we can release a medium and immediately use the resulting free space for new requests
-BOOST_AUTO_TEST_CASE( tvm_jammed_release )
+ZYPP_CORO_TEST_CASE( tvm_jammed_release )
 {
   using namespace zyppng::operators;
-
-  auto ev = zyppng::EventLoop::create ();
 
   const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
   const auto &devRoot    = zypp::Pathname ( TESTS_SRC_DIR ) / "data" / "provider" / "tvm";
@@ -1053,65 +857,40 @@ BOOST_AUTO_TEST_CASE( tvm_jammed_release )
 
   prov->start();
 
-  auto op1 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
-                                                .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(1)) / (std::string("media.") + zypp::str::numstring(1))  / "media" )
-                                                .setMedianr(1));
+  zyppng::ProvideMediaHandle h1;
 
-  zyppng::AsyncOpRef<zyppng::expected<zyppng::Provide::MediaHandle>> op2;
-  zyppng::AsyncOpRef<zyppng::expected<zyppng::Provide::MediaHandle>> op3;
+  {
+    auto r1 = co_await prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+                                                  .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(1)) / (std::string("media.") + zypp::str::numstring(1))  / "media" )
+                                                  .setMedianr(1));
 
-  bool attach1Success = false;
-  bool attach3Success = false;
-  std::exception_ptr op2Error;
-  op1->sigReady().connect( [&]() {
-    if ( !op1->get() ) {
-      attach1Success = false;
-      ev->quit();
-      return;
-    }
+    BOOST_REQUIRE( r1.is_valid() ); // expected must be valid
+    BOOST_REQUIRE( r1->isValid() ); // handle must be valid
+    h1 = r1.get();
+  }
 
-    attach1Success = true;
-    op2 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
-                                                .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
-                                                .setMedianr(2));
+  {
+    auto r2 = co_await prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+                                         .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
+                                         .setMedianr(2));
 
-    op2->sigReady().connect([&](){
-      if ( !op2->get().is_valid() ) {
-        op2Error = op2->get().error();
+    BOOST_REQUIRE( !r2.is_valid() );
+    ZYPP_REQUIRE_THROW( std::rethrow_exception( r2.error() ), zypp::media::MediaJammedException );
 
-        op1.reset(); // kill the first media handle
-        mediaChangeAllowed = true;
+    h1 = zyppng::ProvideMediaHandle(); // kill the first media handle
+    mediaChangeAllowed = true;
+  }
 
-        op3 = prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
-                                                .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
-                                                .setMedianr(2));
-        op3->sigReady().connect( [&]() {
-          ev->quit();
-          if ( !op3->get() )
-            attach3Success = false;
-          else
-            attach3Success = true;
-        });
-        return;
-      }
-      ev->quit();
-    });
-  });
+  {
+    auto r3 = co_await prov->attachMedia( zypp::Url("tvm:/"), zyppng::ProvideMediaSpec("CD Test Set")
+                                 .setMediaFile( devRoot / (std::string("cd") + zypp::str::numstring(2)) / (std::string("media.") + zypp::str::numstring(2))  / "media" )
+                                 .setMedianr(2));
 
-  BOOST_REQUIRE( !op1->isReady() );
-  BOOST_REQUIRE( !op2 || !op2->isReady() );
-  BOOST_REQUIRE( !op3 || !op3->isReady() );
+    BOOST_REQUIRE( r3.is_valid() ); // expected must be valid
+    BOOST_REQUIRE( r3->isValid() ); // handle must be valid
+  }
 
-  if ( !op1->isReady() )
-    ev->run();
-
-  //we have only one drive which is in use, so we can  not be asked for media change
   BOOST_REQUIRE( !gotInvalidMediaChange );
-  BOOST_REQUIRE( attach1Success );
-  BOOST_REQUIRE( op2Error != nullptr );
-  ZYPP_REQUIRE_THROW( std::rethrow_exception( op2Error ), zypp::media::MediaJammedException );
-  BOOST_REQUIRE( attach3Success );
-  BOOST_REQUIRE( !op2->get().is_valid() );
 }
 
 
@@ -1222,7 +1001,7 @@ BOOST_AUTO_TEST_CASE( dltest_basic )
         }
 
         std::cout << "Failed to attach media" << std::endl;
-        return zyppng::makeReadyResult( std::vector<zyppng::expected<zyppng::ProvideRes>> { zyppng::expected<zyppng::ProvideRes>::error(res.error()) } );
+        return zyppng::makeReadyTask( std::vector<zyppng::expected<zyppng::ProvideRes>> { zyppng::expected<zyppng::ProvideRes>::error(res.error()) } );
       } | []( std::vector<zyppng::expected<zyppng::ProvideRes>> &&results ){
          for ( const auto &r : results ) {
            if ( !r )
@@ -1257,7 +1036,7 @@ BOOST_AUTO_TEST_CASE( dltest_basic )
             };
           } else {
             std::cout << "Failed to attach media" << std::endl;
-            return zyppng::makeReadyResult( zyppng::expected<zyppng::ProvideRes>::error(res.error()) );
+            return zyppng::makeReadyTask( zyppng::expected<zyppng::ProvideRes>::error(res.error()) );
           }
         } | [](  zyppng::expected<zyppng::ProvideRes> &&res ) {
         if ( !res ) {

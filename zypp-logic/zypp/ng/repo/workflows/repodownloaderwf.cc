@@ -24,7 +24,8 @@
 #include <zypp/ng/repo/workflows/rpmmd.h>
 #include <zypp/ng/repo/workflows/susetags.h>
 #include <zypp/ng/reporthelper.h>
-#include <zypp/ng/workflows/logichelpers.h>
+
+#include <zypp-core/ng/pipelines/transform.h>
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp/ng/workflows/signaturecheckwf.h>
 
@@ -41,12 +42,9 @@ namespace zyppng {
 
     using namespace zyppng::operators;
 
-    template < class Executor, class OpType >
-    struct DownloadMasterIndexLogic : public LogicBase<Executor, OpType>
+    struct DownloadMasterIndexLogic
     {
     public:
-      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
-
       using MediaHandle     = typename Provide::MediaHandle;
       using ProvideRes      = typename Provide::Res;
 
@@ -57,7 +55,7 @@ namespace zyppng {
       { }
 
     public:
-      MaybeAsyncRef<expected<repo::DownloadContextRef>> execute( ) {
+      MaybeAwaitable<expected<repo::DownloadContextRef>> execute( ) {
 
         zypp::RepoInfo ri = _dlContext->repoInfo();
         // always download them, even if repoGpgCheck is disabled
@@ -80,7 +78,7 @@ namespace zyppng {
               | [this]( expected<zypp::ManagedFile> sigFile ) {
                   zypp::Pathname sigpathLocal { _destdir/_sigpath };
                   if ( !sigFile.is_valid () || !zypp::PathInfo(sigpathLocal).isExist() ) {
-                    return makeReadyResult(expected<void>::success()); // no sigfile, valid result
+                    return makeReadyTask(expected<void>::success()); // no sigfile, valid result
                   }
                   _dlContext->files().push_back( std::move(*sigFile) );
 
@@ -105,7 +103,7 @@ namespace zyppng {
                   }
 
                   // we should not reach this line, but if we do we continue and fail later if its required
-                  return makeReadyResult(expected<void>::success());
+                  return makeReadyTask(expected<void>::success());
                 };
               })
             | [masterres=std::move(masterres)]( expected<void> ) {
@@ -140,11 +138,11 @@ namespace zyppng {
 
 
     private:
-      auto provider () {
+      ProvideRef provider () {
         return _dlContext->zyppContext()->provider();
       }
 
-      MaybeAsyncRef<expected<ProvideRes>> signatureCheck ( ProvideRes &&res ) {
+      MaybeAwaitable<expected<ProvideRes>> signatureCheck ( ProvideRes &&res ) {
 
         if ( _dlContext->repoInfo().repoGpgCheck() ) {
 
@@ -166,7 +164,7 @@ namespace zyppng {
               try {
                 _dlContext->zyppContext()->keyRing()->importKey( zypp::PublicKey(keypathLocal), false );
               } catch (...) {
-                return makeReadyResult( expected<ProvideRes>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+                return makeReadyTask( expected<ProvideRes>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
               }
             }
 
@@ -195,7 +193,7 @@ namespace zyppng {
         } else {
           WAR << "Signature checking disabled in config of repository " << _dlContext->repoInfo().alias() << std::endl;
         }
-        return makeReadyResult(expected<ProvideRes>::success(res));
+        return makeReadyTask(expected<ProvideRes>::success(res));
       }
 
       // execute the repo verification if there is one
@@ -237,33 +235,33 @@ namespace zyppng {
        * Returns a sync or async expected<ProvideRes> result depending on the
        * implementation class.
        */
-      MaybeAsyncRef<expected<ProvideRes>> getExtraKeysInRepomd ( ProvideRes &&res  ) {
+      MaybeAwaitable<expected<ProvideRes>> getExtraKeysInRepomd ( ProvideRes &&res  ) {
 
         if ( _masterIndex.basename() != "repomd.xml" ) {
-          return makeReadyResult( expected<ProvideRes>::success( std::move(res) ) );
+          return makeReadyTask( expected<ProvideRes>::success( std::move(res) ) );
         }
 
         std::vector<std::pair<std::string,std::string>> keyhints { zypp::parser::yum::RepomdFileReader(res.file()).keyhints() };
         if ( keyhints.empty() )
-          return makeReadyResult( expected<ProvideRes>::success( std::move(res) ) );
+          return makeReadyTask( expected<ProvideRes>::success( std::move(res) ) );
         DBG << "Check keyhints: " << keyhints.size() << std::endl;
 
         auto keyRing { _dlContext->zyppContext()->keyRing() };
         return zypp::parser::yum::RepomdFileReader(res.file()).keyhints()
-          | transform([this, keyRing]( std::pair<std::string, std::string> val ) {
+          | transform( [this, keyRing]( std::pair<std::string, std::string> val ) {
 
               const auto& [ file, keyid ] = val;
               auto keyData = keyRing->trustedPublicKeyData( keyid );
               if ( keyData ) {
                 DBG << "Keyhint is already trusted: " << keyid << " (" << file << ")" << std::endl;
-                return makeReadyResult ( expected<zypp::PublicKeyData>::success(keyData) );	// already a trusted key
+                return makeReadyTask ( expected<zypp::PublicKeyData>::success(keyData) );	// already a trusted key
               }
 
               DBG << "Keyhint search key " << keyid << " (" << file << ")" << std::endl;
 
               keyData = keyRing->publicKeyData( keyid );
               if ( keyData )
-                return makeReadyResult( expected<zypp::PublicKeyData>::success(keyData) );
+                return makeReadyTask( expected<zypp::PublicKeyData>::success(keyData) );
 
               // TODO: Enhance the key caching in general...
               const zypp::ZConfig & conf = _dlContext->zyppContext()->config();
@@ -276,7 +274,7 @@ namespace zyppng {
                    else
                      return expected<zypp::PublicKey>::error( std::make_exception_ptr (zypp::Exception("File does not provide key")));
                  }
-               | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto ) mutable -> MaybeAsyncRef<expected<zypp::PublicKey>> {
+               | or_else ([ this, file = file, keyid = keyid, cacheFile ] ( auto ) mutable -> MaybeAwaitable<expected<zypp::PublicKey>> {
                    auto providerRef = _dlContext->zyppContext()->provider();
                    return providerRef->provide( _media, file, ProvideFileSpec().setOptional(true).setMirrorsAllowed(false) )
                       | and_then( Provide::copyResultToDest( providerRef, _destdir / file ) )
@@ -289,7 +287,7 @@ namespace zyppng {
                           if ( not key.fileProvidesKey( keyid ) ) {
                             const std::string str = (zypp::str::Str() << "Keyhint " << file << " does not contain a key with id " << keyid << ". Skipping it.");
                             WAR << str << std::endl;
-                            return makeReadyResult(expected<zypp::PublicKey>::error( std::make_exception_ptr( zypp::Exception(str)) ));
+                            return makeReadyTask(expected<zypp::PublicKey>::error( std::make_exception_ptr( zypp::Exception(str)) ));
                           }
 
                           // Try to cache it...
@@ -341,10 +339,8 @@ namespace zyppng {
 
     MaybeAwaitable<expected<repo::DownloadContextRef> > RepoDownloaderWorkflow::downloadMasterIndex(repo::DownloadContextRef dl, ProvideMediaHandle mediaHandle, zypp::Pathname masterIndex_r)
     {
-      if constexpr ( ZYPP_IS_ASYNC )
-        return SimpleExecutor<DownloadMasterIndexLogic, AsyncOp<expected<repo::DownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
-      else
-        return SimpleExecutor<DownloadMasterIndexLogic, SyncOp<expected<repo::DownloadContextRef>>>::run( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
+      DownloadMasterIndexLogic impl( std::move(dl), std::move(mediaHandle), std::move(masterIndex_r) );
+      zypp_co_return zypp_co_await( impl.execute() );
     }
 
     MaybeAwaitable<expected<repo::DownloadContextRef>> RepoDownloaderWorkflow::downloadMasterIndex ( repo::DownloadContextRef dl, LazyMediaHandle<Provide> mediaHandle, zypp::filesystem::Pathname masterIndex_r )
@@ -374,7 +370,7 @@ namespace zyppng {
             break;
         }
 
-        return makeReadyResult<expected<zypp::RepoStatus>>( expected<zypp::RepoStatus>::error( ZYPP_EXCPT_PTR (zypp::repo::RepoUnknownTypeException(dlCtx->repoInfo()))) );
+        return makeReadyTask<expected<zypp::RepoStatus>>( expected<zypp::RepoStatus>::error( ZYPP_EXCPT_PTR (zypp::repo::RepoUnknownTypeException(dlCtx->repoInfo()))) );
       }
     }
 
@@ -403,7 +399,7 @@ namespace zyppng {
             break;
         }
 
-        return makeReadyResult<expected<repo::DownloadContextRef> >( expected<repo::DownloadContextRef>::error( ZYPP_EXCPT_PTR (zypp::repo::RepoUnknownTypeException(dlCtx->repoInfo()))) );
+        return makeReadyTask<expected<repo::DownloadContextRef> >( expected<repo::DownloadContextRef>::error( ZYPP_EXCPT_PTR (zypp::repo::RepoUnknownTypeException(dlCtx->repoInfo()))) );
       }
     }
 

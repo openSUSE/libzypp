@@ -9,7 +9,7 @@
 
 #include "signaturecheckwf.h"
 #include "keyringwf.h"
-#include "logichelpers.h"
+#include <zypp-core/base/Logger.h>
 
 #include <zypp/ZYppFactory.h>
 #include <zypp-core/fs/PathInfo.h>
@@ -21,20 +21,17 @@ namespace zyppng {
 
     using namespace zyppng::operators;
 
-    template <class Executor, class OpType>
-    struct VerifySignatureLogic : public LogicBase<Executor,OpType> {
-
-      ZYPP_ENABLE_LOGIC_BASE(Executor,OpType);
+    struct VerifySignatureLogic {
 
       VerifySignatureLogic( ContextRef &&zyppCtx, zypp::keyring::VerifyFileContext &&ctx )
         : _zyppCtx( std::move(zyppCtx) )
         , _verifyCtx( std::move(ctx) ) { }
 
-      MaybeAsyncRef<expected<zypp::keyring::VerifyFileContext>> execute () {
+      MaybeAwaitable<expected<zypp::keyring::VerifyFileContext>> execute () {
 
         const zypp::Pathname & sig { _verifyCtx.signature() };
         if ( not ( sig.empty() || zypp::PathInfo(sig).isExist() ) ) {
-          return makeReadyResult( expected<zypp::keyring::VerifyFileContext>::error(ZYPP_EXCPT_PTR( zypp::SignatureCheckException("Signature " + sig.asString() + " not found.") )));
+          return makeReadyTask( expected<zypp::keyring::VerifyFileContext>::error(ZYPP_EXCPT_PTR( zypp::SignatureCheckException("Signature " + sig.asString() + " not found.") )));
         }
 
         MIL << "Checking " << _verifyCtx.file ()<< " file validity using digital signature.." << std::endl;
@@ -56,10 +53,8 @@ namespace zyppng {
   namespace SignatureFileCheckWorkflow {
     MaybeAwaitable<expected<zypp::keyring::VerifyFileContext> > verifySignature(ContextRef ctx, zypp::keyring::VerifyFileContext context )
     {
-      if constexpr ( ZYPP_IS_ASYNC )
-        return SimpleExecutor<VerifySignatureLogic, AsyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
-      else
-        return SimpleExecutor<VerifySignatureLogic, SyncOp<expected<zypp::keyring::VerifyFileContext>>>::run( std::move(ctx), std::move(context) );
+      VerifySignatureLogic impl( std::move(ctx), std::move(context) );
+      zypp_co_return zypp_co_await( impl.execute () );
     }
   }
 }

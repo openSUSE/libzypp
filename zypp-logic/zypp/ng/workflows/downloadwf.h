@@ -9,7 +9,8 @@
 #ifndef ZYPP_NG_WORKFLOWS_DOWNLOAD_INCLUDED
 #define ZYPP_NG_WORKFLOWS_DOWNLOAD_INCLUDED
 
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
+#include <zypp-core/ng/base/base.h>
 #include <zypp-core/ng/pipelines/Expected>
 #include <zypp-core/ManagedFile.h>
 

@@ -9,8 +9,9 @@
 #ifndef ZYPP_NG_CONTEXT_INCLUDED
 #define ZYPP_NG_CONTEXT_INCLUDED
 
-#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/async/awaitable.h>
 #include <zypp-core/ng/ui/UserInterface>
+#include <zypp-core/ng/base/eventloop.h>
 #include <zypp/ResPool.h>
 
 namespace zypp {
@@ -47,10 +48,16 @@ namespace zyppng {
     ZYPP_DECL_PRIVATE_CONSTR(Context);
 
     template <typename AsyncRes>
-    void execute ( AsyncOpRef<AsyncRes> op ) {
+    void execute ( Task<AsyncRes> op ) {
       if ( op->isReady () )
         return;
-      return executeImpl( op );
+
+      auto loop = EventLoop::create();
+      op.registerNotifyCallback([&](){
+        loop->quit();
+      });
+      loop->run();
+      return;
     }
 
     ProvideRef provider() const;
@@ -73,18 +80,12 @@ namespace zyppng {
      */
     zypp::sat::Pool satPool();
 
-  private:
-    void executeImpl ( const AsyncOpBaseRef& op );
   };
 
   template<typename T>
-  auto joinPipeline( ContextRef ctx, AsyncOpRef<T> res ) {
-    if constexpr ( detail::is_async_op_v<decltype(res)> ) {
-      ctx->execute(res);
-      return res->get();
-    } else {
-      return res;
-    }
+  auto joinPipeline( ContextRef ctx, Task<T> res ) {
+    ctx->execute( std::move(res) );
+    return res->get();
   }
 
 }

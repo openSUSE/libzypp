@@ -122,6 +122,19 @@ namespace zypp
         virtual ~LineFormater() {}
       };
 
+      /** Our default format but without date, host and PID info.
+       * Suitable e.g. as data for the systemd journal.
+       */
+      struct ZYPP_API JournalLineFormater: public LineFormater
+      {
+        std::string format( const std::string & /*group_r*/,
+                            logger::LogLevel    /*level_r*/,
+                            const char *        /*file_r*/,
+                            const char *        /*func_r*/,
+                            int                 /*line_r*/,
+                            const std::string & /*message_r*/ ) override;
+      };
+
     public:
       /** Assign a LineFormater.
        * If you want to format loglines by yourself. NULL installs the

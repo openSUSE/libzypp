@@ -851,6 +851,27 @@ namespace zypp
       return ret;
     }
 
+    std::string LogControl::JournalLineFormater::format( const std::string & group_r,
+                                                         logger::LogLevel    level_r,
+                                                         const char *        file_r,
+                                                         const char *        func_r,
+                                                         int                 line_r,
+                                                         const std::string & message_r )
+    {
+      std::string ret;
+      if ( not LogControlImpl::instanceLogToPPID() && LogControlImpl::instanceHideThreadName() )
+        ret = str::form( "<%d> [%s] %s(%s):%d %s",
+                         level_r, group_r.c_str(),
+                         file_r, func_r, line_r,
+                         message_r.c_str() );
+      else
+        ret = str::form( "<%d> [%s] %s(%s):%d {T:%s} %s",
+                         level_r, group_r.c_str(),
+                         file_r, func_r, line_r,
+                         zyppng::ThreadData::current().name().c_str(),
+                         message_r.c_str() );
+      return ret;
+    }
     ///////////////////////////////////////////////////////////////////
     //
     //	CLASS NAME : LogControl

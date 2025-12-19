@@ -266,6 +266,15 @@ namespace zypp
     std::string sprint( Args&&... args )
     { str::Str str; return detail::joinSF( str, FormatWords, std::forward<Args>(args)... ); }
 
+    /** Concat words on stream */
+    template <typename Ostream, typename... Args>
+    Ostream & concat( Ostream & str, Args&&... args )
+    { return detail::joinSF( str, FormatConcat, std::forward<Args>(args)... ); }
+
+    /** Concat words as string */
+    template <typename... Args>
+    std::string sconcat( Args&&... args )
+    { str::Str str; return detail::joinSF( str, FormatConcat, std::forward<Args>(args)... ); }
 
     namespace detail {
       /** Log helper wrapping the Ostream and Format.

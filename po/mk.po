@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-17 09:27+0200\n"
-"PO-Revision-Date: 2025-07-22 15:01+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"PO-Revision-Date: 2026-01-07 09:04+0000\n"
+"Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/libzypp/master/"
 "mk/>\n"
 "Language: mk\n"
@@ -16,39 +16,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
 msgid "does not expire"
-msgstr ""
+msgstr "не истекува"
 
 #. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:70
 #, boost-format
 msgid "expired: %1%"
-msgstr ""
+msgstr "истечен: %1%"
 
 #. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:75
 #, boost-format
 msgid "expires: %1%"
-msgstr ""
+msgstr "истекува: %1%"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:84
 msgid "(does not expire)"
-msgstr ""
+msgstr "(не истекува)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:93
 msgid "(EXPIRED)"
-msgstr ""
+msgstr "(ИСТЕЧЕНО)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:97
 msgid "(expires within 24h)"
-msgstr ""
+msgstr "(истекува во рок од 24 часа)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:101

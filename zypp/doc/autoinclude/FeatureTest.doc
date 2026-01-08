@@ -80,6 +80,17 @@ Packages requiring a feature may use the corresponding \c Requires: in their .sp
     <DT>version 1.1</DT>
     <DD>Support repo variables in an URIs \c host and \c port component.</DD>
   </DL></DD>
+
+  <DT>econf</DT>
+  <DD><DL>
+    <DT>\ref ZConfig</DT>
+    <DT>version 0</DT>
+    <DD>\c zypp/zypp.conf divided into system (<tt>/etc/zypp/zypp.conf[.d/*.conf]</tt>)
+    and vendor (<tt>/usr/etc/zypp/zypp.conf[.d/*.conf]</tt>) configuration files. Merged
+    according to <a href="https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md">
+    UAPI.6 Configuration Files Specification</a>.</DD>
+  </DL></DD>
+
 </DL>
 
 */

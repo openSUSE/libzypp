@@ -1,0 +1,21 @@
+The traditional /etc/zypp/zypp.conf configuration data will no longer be read
+solely from this single file, but merged according to the rules defined by the
+UAPI.6 Configuration Files Specification from:
+
+   system configuration: /etc/zypp/zypp.conf[.d/*.conf]
+   vendor configuration: /usr/etc/zypp/zypp.conf[.d/*.conf]
+
+The vendor configuration is maintained and unconditionally updated by packages.
+To amend settings use the system configuration files which are now solely under
+the local administrators control.
+
+After this update an unmodified /etc/zypp/zypp.conf will have been be removed
+and the system will continue to use the distributed vendor defaults.
+
+A modified /etc/zypp/zypp.conf will stay in place, so the modified settings
+still apply. You may nevertheless want to consider to store your changed settings
+in a drop-in file in /etc/zypp/zypp.conf.d/*.conf and afterwards remove your
+/etc/zypp/zypp.conf.
+
+See the FILES section in ZYPP.CONF(5) to learn more about two methods of
+overriding the vendor provided configuration.

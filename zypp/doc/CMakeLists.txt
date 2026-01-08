@@ -60,6 +60,7 @@ SET (libzypp_MAN1
      zypp-NameReqPrv.1)
 
 SET (libzypp_MAN5
+     zypp.conf.5
      locks.5)
 
 ADD_A2X_MANPAGES(

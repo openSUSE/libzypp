@@ -45,6 +45,13 @@ OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" ON)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
+# We're going successively to move our default configuration into /usr/etc/.
+# The final configuration data will then be merged according to the rules
+# defined by the UAPI.6 Configuration Files Specification from:
+#   system-wide configuration (/etc    /zypp/zypp.conf[.d/*.conf])
+#   vendor configuration      (/usr/etc/zypp/zypp.conf[.d/*.conf])
+SET ( ZYPPCONFDIR "${CMAKE_INSTALL_PREFIX}/etc" )
+
 IF (DEBIAN)
   MESSAGE (STATUS "Building for Debian")
   ADD_DEFINITIONS (-DDEBIAN)
@@ -86,7 +93,6 @@ SET( CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 INCLUDE(ZyppCommon)
-
 
 # Macro to set the log group for a list of files
 MACRO( SET_LOGGROUP _group _files  )

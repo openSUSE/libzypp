@@ -1,0 +1,391 @@
+ZYPP.CONF(5)
+============
+:man manual: LIBZYPP File Formats Manual
+:man source: SUSE Linux
+:nop:
+:indent: {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}
+:asterisk: *
+
+NAME
+----
+zypp.conf - General configuration for libzypp based package management tools
+
+SYNOPSIS
+--------
+System configuration files _/etc/zypp/zypp.conf /etc/zypp/zypp.conf.d/{asterisk}.conf_. +
+Vendor configuration files _/usr/etc/zypp/zypp.conf /usr/etc/zypp/zypp.conf.d/{asterisk}.conf_.
+
+DESCRIPTION
+-----------
+These files contain the basic configuration data for libzypp, the package management library used by processes like e.g. *zypper*(8), *YAST*(8) or PackageKit's zypp backend. Many configuration values can be amended by processes according to command line options or other needs. Otherwise values defined here are used as default. When these file does not specify a particular parameter libzypp's builtin defaults are used.
+
+The file format supports multiple sections, each of which can contain multiple key-value assignments. A section is introduced by a line containing the section name enclosed in square brackets, like +
+{indent} *[main]* +
+A key-value assignment is a single line that has the name of the key, an equals sign, and a setting for the value, like +
+{indent} *key = vlaue* +
+Leading and trailing whitespace is ignored, as whitespace surrounding the equals sign.
+
+Lookup of section and key names is case-sensitive. Key-value assignments outside any section are bound to an unnamed section and may not be recognized.
+
+Any line starting with *#* is ignored, as is any blank line.
+
+Where a Boolean value is expected, any of *1*, *0*, *yes*, *no*, *on*, *off*, *true* or *false* can be used. Comparisons here are case-insensitive.
+
+See the *FILES* section to learn how the different configuration files are merged. We'd recommend maintaining the system configuration by using drop-in files in _/etc/zypp/zypp.conf.d/_ rather than overriding the vendor configuration with an own _/etc/zypp/zypp.conf_. But both is possible. Just make sure your _/etc/zypp/zypp.conf_ contains appropriate settings for the keys defined in _/usr/etc/zypp/zypp.conf_. At the time of this writing these are just *multiversion* and *multiversion.kernels*.
+
+SECTIONS
+--------
+The following sections are known, and can contain the given key assignments. Libzypp's builtin default value for a key is given in parenthesis, like +
+{indent} *key* (_value_) +
+For some keys there is no fix builtin default value, but the best value is chosen according to the concrete task to be performed. While it is possible to prescribe a fix value, it's often the best decision _not to define this key at all_. This is indicated by showing _<UNSET>_ as default value like +
+{indent} *key* (_<UNSET>_) +
+Many of the defaults set here can be overridden via *zypper* command line options. This is especially true for the resolver related defaults. See the *zypper*(8) man page for more details.
+
+*[main]*
+~~~~~~~~
+// --------------------------------------------------------------------------------
+*lock_timeout* (_0 sec_)::
+    If zypp is locked by another process this is the number of seconds to wait for the lock to become available. If the lock can not be acquired within the specified time an exception is raised. A negative value will wait forever.
++
+The environment variable *ZYPP_LOCK_TIMEOUT* can be used to override this setting. *ZYPP_LOCK_TIMEOUT=-1* is sometimes set by unattended running scripts to delay a *zypper* command rather than failing if the lock is not available.
+
+// --------------------------------------------------------------------------------
+*cachedir* (_/var/cache/zypp_)::
+    Path where the caches are kept.
+
+// --------------------------------------------------------------------------------
+*metadatadir* (*{cachedir}*/_raw_)::
+    Path where the downloaded repo metadata are kept.
+
+// --------------------------------------------------------------------------------
+*solvfilesdir* (*{cachedir}*/_solv_)::
+    Path where the repo .solv file caches are kept.
+
+// --------------------------------------------------------------------------------
+*packagesdir* (*{cachedir}*/_packages_)::
+    Path where the downloaded packages are kept.
+
+// --------------------------------------------------------------------------------
+*configdir* (_/etc/zypp_)::
+    Path where the remaining configuration files are kept.
+
+// --------------------------------------------------------------------------------
+*reposdir* (*{configdir}*/_repos.d_)::
+    Path where the known repositories .repo files are kept.
+
+// --------------------------------------------------------------------------------
+*servicesdir* (*{configdir}*/_services.d_)::
+    Path where the known services .service files are kept.
+
+// --------------------------------------------------------------------------------
+*varsdir* (*{configdir}*/_vars.d_)::
+    Path where custom repo variable definitions are kept.
++
+A custom repo variable is defined by creating a file inside the *varsdir* directory. The variable name equals the file name. The file's first line (up to, but not including, the newline character) defines the variables value. See section *Variable substitution* in the *zypper*(8) man page for more details.
+
+// --------------------------------------------------------------------------------
+*vendordir* (*{configdir}*/_vendors.d_)::
+    Path where vendor equivalence description files are kept.
++
+Each file in this directory defines a comma-separated list of equivalent vendor string prefixes (case-insensitive comparison):
++
+    -------------------- file begin ----------------
+    [main]
+    vendors = MyVendor,AlternateName
+    -------------------- file end ------------------
++
+By this vendor strings starting with "MyVendor" or "AlternateName" are considered to be equivalent. Packages from equivalent vendors may replace each other without being considered as a 'vendor change'.
++
+_Note:_ Within the "opensuse*" namespace exact matches (case-insensitive) are required. "vendors = suse,opensuse" will allow switching between "suse*" and "opensuse", but not e.g. "opensuse build service".
+
+// --------------------------------------------------------------------------------
+*repo.add.probe* (_false_)::
+    Whether repository URLs should be probed when added (e.g. via *zypper addrepo*).  If _false_, the repository URL is checked upon the first refresh.
+
+// --------------------------------------------------------------------------------
+*repo.refresh.delay* (_10 min_)::
+    The amount of time in minutes that must pass before another repo auto-refresh is attempted.
++
+A value of *0* means the repository will always be checked. To get the opposite effect, disable _autorefresh_ for the repository. This option has no effect for explicitly user-requested refresh requests.
+
+// --------------------------------------------------------------------------------
+*repo.refresh.locales* (_en_)::
+    A list of locales for which translated package descriptions should be downloaded in case they are available and the repo supports this. Not all repo formats support downloading specific translations only.
++
+The concrete list is in fact controlled via *zypper*'s *locales*, *addlocale* and *removelocale* commands. The locales defined here are just sticky.
+
+// --------------------------------------------------------------------------------
+*download.max_concurrent_connections* (_5_)::
+    Maximum number of concurrent connections to use per transfer.
+
+// --------------------------------------------------------------------------------
+*download.min_download_speed* (_0 B/sec_)::
+    Sets the minimum download speed (in Byte per second) until the connection is dropped. *0* means no limit.
++
+This can be useful to prevent security attacks on hosts by providing updates at very low speeds.
+
+// --------------------------------------------------------------------------------
+*download.max_download_speed* (_0 B/sec_)::
+    Sets the maximum download speed (in Byte per second). *0* means no limit.
+
+// --------------------------------------------------------------------------------
+*download.max_silent_tries* (_1_)::
+    [_Beware!_] The number of media backend internal attempts to download a file from a server before reporting an error back to the application if failing. Setting this to *0* will silently retry forever! It's mainly used in some CI and Test environments but actually makes little sense in real life.
+
+// --------------------------------------------------------------------------------
+*download.connect_timeout* (_60 sec_)::
+    Maximum time in seconds that you allow the connection phase to the server to take. This timeout only limits the connection phase, it has no impact once libcurl has connected.
+
+// --------------------------------------------------------------------------------
+*download.transfer_timeout* (_180 sec_)::
+   Maximum time in seconds that you allow a transfer operation to take. This is useful for preventing your batch jobs from hanging for hours due to slow networks or links going down. Limiting operations to less than a few minutes risk aborting perfectly normal operations.
+
+// --------------------------------------------------------------------------------
+*download.use_deltarpm* (_false_) (_true_ on SUSE-15.6 and older)::
+    [_Legacy!_] Whether to consider using a .delta.rpm when downloading a package. If your network connection is not too slow, you may benefit from explicitly _disabling_ .delta.rpm usage on SUSE-15.6 and older. Newer distributions do no longer offer .delta.rpms at all, so the default was changed to prevent overhead.
+
+// --------------------------------------------------------------------------------
+*download.use_deltarpm.always* (__false__)::
+    [_Legacy!_] Whether to consider using a .delta.rpm even if the full .rpm is locally available. This option has no effect unless *download.use_deltarpm* is set true. Used for testing only.
+
+// --------------------------------------------------------------------------------
+*download.media_preference* (_download_)::
+    Hint which media to prefer when installing packages (_download_ vs. _volatile_ aka. CD/DVD).
++
+Note that this just a hint. First of all the solver will choose the 'best' package according to its repos priority, version and architecture. But if there is a choice, we will prefer packages from the desired media.
++
+Packages available locally are always preferred. The question is whether you prefer packages being downloaded via FTP/HTTP/HTTPS (_download_), rather than being prompted to insert a CD/DVD (_volatile_), in case they are available on both media.
+
+// --------------------------------------------------------------------------------
+*download.media_mountdir* (_/var/adm/mount_)::
+    Path where media are preferably mounted or downloaded.
++
+The media backend will try to organize media mount points and download areas below this directory, unless a different location is requested by the application. If the directory is not accessible and read/writable for a specific user, the fallback is to use _/var/tmp_.
+
+// --------------------------------------------------------------------------------
+*download.use_geoip_mirror* (_true_)::
+    Whether to use the geoip feature of *download.opensuse.org*.
++
+The media backend may rewrite download requests to the geographically closest available mirror. Which exact mirror is used will be determined by requesting a "geoip" file from download.opensuse.org via a HTTP GET request to https://download.opensuse.org/geoip , the server will use the clients IP to determine the closest mirror if available.
++
+Some specific files are however excluded from this redirection due to security reasons, especially the repo metadata index and it's key and checksum files: *repomd.xml{,.key,.asc}*.
+
+// --------------------------------------------------------------------------------
+*gpgcheck* (_on_)::
+*repo_gpgcheck* (_<UNSET>, depending on_ *{gpgcheck}*) +
+*pkg_gpgcheck*  (_<UNSET>, depending on_ *{gpgcheck}*) +
++
+Default signature checking of repo metadata and downloaded rpm packages.
++
+[quote]
+_Note:_ Explicitly setting *gpgcheck*, *repo_gpgcheck* and/or *pkg_gpgcheck* in a repositories .repo file will overwrite these defaults for this specific repo. The *zypper addrepo* and *modifyrepo* commands provide several gpgcheck related options to tune the behavior. See the *zypper*(8) man page for details.
++
+If *gpgcheck* is _on_ (the recommended default) we will check the signature of repo metadata. Using unsigned repos needs to be confirmed.
++
+Packages from signed repos are accepted if their checksum matches the checksum stated in the repo metadata.
++
+Packages from unsigned repos need a valid gpg signature. Using unsigned packages needs to be confirmed.
++
+The above default behavior can be tuned by explicitly setting *repo_gpgcheck* and/or *pkg_gpgcheck*. But in general it's recommended to relax the settings on a per repo basis, rather than relaxing the global defaults.:
++
+[quote]
+*repo_gpgcheck* = _on_ is the same as the default behavior.
++
+[quote]
+*repo_gpgcheck* = _off_ will silently accept unsigned repos. It will *NOT* turn off signature checking on the whole. Nevertheless, it's not a secure setting.
++
+[quote]
+*pkg_gpgcheck* = _on_ will enforce the package signature checking and the need to confirm unsigned packages for all repos (signed and unsigned).
++
+[quote]
+*pkg_gpgcheck* = _off_ will silently accept unsigned packages. It will *NOT* turn off signature checking on the whole. Nevertheless, it's not a secure setting.
++
+If *gpgCheck* is _off_ (not recommended), no checks are performed. You can still enable them individually by setting *repo_gpgcheck* and/or *pkg_gpgcheck* to 'on'.
++
+[quote]
+*DISABLING GPG CHECKS IS NOT RECOMMENDED.* Signing data enables the recipient to verify that no modifications occurred after the data were signed. Accepting data with no, wrong or unknown signature can lead to a corrupted system and in extreme cases even to a system compromise.
+
+// --------------------------------------------------------------------------------
+*commit.downloadMode* (_<UNSET>_)::
+    The default commit package download policy to use. If the value is not set, empty or unknown, we pick some sane default depending on the task to perform. There should be little need to set a fix default here.
++
+_DownloadInAdvance_: First download all packages to the local cache. Then start to install. This is the safe and preferred default when installing packages to the local system.
++
+_DownloadInHeaps_: Similar to *DownloadInAdvance*, but try to split the transaction into heaps, where at the end of each heap a consistent system state is reached.
++
+_DownloadAsNeeded_: Alternating download and install. Packages are cached just to avid CD/DVD hopping. This mode saves disk space but is error prone if packages can not be retrieved in the middle of the transaction. It is an option for chroot installs, but not for the local system.
+
+// --------------------------------------------------------------------------------
+*solver.focus* (_<UNSET>_)::
+    The solver's general attitude when resolving jobs. If the value is not set, empty or unknown, we use the resolvers default.
++
+_Job_: Focus on installing the best version of the requested packages. Add missing dependencies as needed. This is the solver's default.
++
+_Installed_: Focus on applying as little changes to the installed packages as needed. Choosing an older version of a package is valid if it's dependencies require less changes to the system.
++
+_Update_: Focus on updating requested packages and their dependencies as much as possible.
+
+// --------------------------------------------------------------------------------
+*solver.onlyRequires* (_false_)::
+    Whether only required packages should be selected by the resolver. Otherwise also recommended packages are considered.
+
+// --------------------------------------------------------------------------------
+*solver.allowVendorChange* (__false__)::
+    [_Expert Only!_] Per default the solver will not replace packages of different vendors, unless you explicitly ask to do so. Setting this option to _true_ will disable this vendor check. Packages will then be considered based on repository priority and version only. This may easily break dependent packages because different vendors may use different default settings or version schemata.
+
+// --------------------------------------------------------------------------------
+*solver.dupAllowDowngrade* (_true_) +
+*solver.dupAllowNameChange* (_true_) +
+*solver.dupAllowArchChange* (_true_) +
+*solver.dupAllowVendorChange* (_false_)
+
+{nop}::
+     [_Expert Only!_] The resolvers _distribution upgrade_(_dup_) job uses differernt defaults regarding package version downgrades, renames, architecture changes and vendor protection than ordinary install and update jobs. It's not recommended to amend these defaults without need. In case of doubt *zypper*(8) provides command line options to do this for a specific job only.
+
+// --------------------------------------------------------------------------------
+*solver.cleandepsOnRemove* (_false_)::
+    [_Expert Only!_] Cleanup when deleting packages. Whether the solver should per default try to remove packages exclusively required by the ones it's asked to delete.
++
+This option should be used on a case by case basis, enabled via command line options or switches the applications offer. Changing the global default on a system where unattended actions are performed, may easily damage your system.
+
+// --------------------------------------------------------------------------------
+*solver.checkSystemFile* (_/etc/zypp/systemCheck_)::
+    This file contains requirements and conflicts which fulfill the needs of a running system. For example the system would be broken if no *glibc* or *kernel* is installed. The resolver is always aware of these constraints and watches they are not violated.
++
+Each line in the file represents one dependency: _requires:kernel_ or _requires:glibc_.
+
+// --------------------------------------------------------------------------------
+*solver.checkSystemFileDir* (*{configdir}*/_systemCheck.d_)::
+    Path where checkSystem file drop-ins can be placed. Files are read in lexicographic order of their filenames. See *solver.checkSystemFile*.
+
+// --------------------------------------------------------------------------------
+*solver.upgradeTestcasesToKeep* (_2_)::
+When committing a dist upgrade (e.g. *zypper dup*) a solver testcase is written to _/var/log/updateTestcase-<date>_. This testcase is often requesetd in bugreports regarding migrations or distribution upgrades. This option defines the number of testcases to keep on the system. Old cases will be deleted, as new ones are created. Use *0* to write no testcase at all, or *-1* to keep all testcases.
+
+// --------------------------------------------------------------------------------
+*solver.upgradeRemoveDroppedPackages* (_true_)::
+    Whether a dist upgrade should remove a products dropped packages.
++
+A new product may suggest a list of old and no longer supported packages (dropped packages). Performing a dist upgrade the solver may try to delete them, even if they do not cause any dependency problems.
++
+See also *zypper dup --remove-orphaned*, which provides a similar kind of cleanup. It cleans no longer required packages which are also no longer provided by any enabled repository (aka. orphaned packages).
+
+// --------------------------------------------------------------------------------
+*multiversion* (_<EMPTY>_) [_provides:multiversion(kernel)_ via vendor configuration]::
+    Comma separated list of packages which are built to be, and should be, installed in different versions at the same time.
++
+Packages are selected either by name, or by provides. In the later case the string must start with "provides:" immediately followed by the capability.
++
+[_Beware!_] While it is save to remove the definition here, the kernel will be treated like any other package then, be very careful when adding definitions. If you add packages which are not built to support being installed in multiple versions, the packages will easily damage each other.
+
+// --------------------------------------------------------------------------------
+*multiversiondir* (*{configdir}*/_multiversion.d_)::
+    Path where multiverion file drop-ins can be placed. Files are read in lexicographic order of their filenames. See *multiversion*.
+
+// --------------------------------------------------------------------------------
+*multiversion.kernels* (_<EMPTY>_) [_latest,latest-1,running_ via vendor configuration]::
+    Comma separated list of kernel packages to keep in the system if *zypper purge-kernels* is called and *multiversion* is set for the kernel packages. Kernel packages can be specified as: +
+    _2.6.32.12-0.7_ - An exact kernel version to keep +
+    _latest_        - Keep kernel with the highest version number +
+    _latest_-*N*      - Keep kernel with the *N*{nop}th highest version number +
+    _running_       - Keep the running kernel +
+    _oldest_        - Keep kernel with the lowest version number +
+    _oldest_+*N*      - Keep kernel with the *N*{nop}th lowest version number
++
+If no value is specified, no kernel will be purged.
+
+// --------------------------------------------------------------------------------
+*locksfile.path* (*{configdir}*/_locks_)::
+    The file holding the applied package locks. See the *zypper*(8) *locks*, *addlock* and *removelock* commands for more details.
+
+// --------------------------------------------------------------------------------
+*locksfile.apply* (_true_)::
+    Whether to apply locks stored in the *locksfile* file at start.
+
+// --------------------------------------------------------------------------------
+*update.messages.notify* (_<EMPTY>_)::
+    Upon their installation packages may leave an update message file in _/var/adm/update-messages_. At the end of each commit, zypp may collect those messages and send a notification to the user.
++
+zypp will prepare the update messages according to the selected content format and pipe the content to the specified command.
++
+Format:
++
+[quote]
+_single_ - For each update message invoke the command and send the message. +
+_none_   - For each update message invoke the command but don't use a pipe to send any data. You probably want to pass the message file on the commandline using _%P_ (see *Substitutions* below). +
+_digest_ - Single invocation of the command, sending the path names of all update message. One per line. +
+_bulk_   - Single invocation of the command, sending the concatenated content of all update messages, separated by _Ctrl-L_.
++
+Substitutions:
++
+[quote]
+_%p_     - Package identification (*N*{nop}ame-*V*{nop}ersion-*R*{nop}elease.*A*{nop}rch_) +
+_%P_     - Full path to the update message file
++
+Valid values:
++
+The value is specified as _format | command_. An empty value will turn off any notification.
++
+Examples:
++
+[quote]
+_single | mail -s "Update message from %p" root_ +
+_none   | my-send-script -f %P_
+
+// --------------------------------------------------------------------------------
+*rpm.install.excludedocs* (_false_)::
+    Don't install any files which are marked as documentation. See the *rpm*(8) *--excludedocs* option for details.
++
+This is often used when building container images to save disk space.
+
+// --------------------------------------------------------------------------------
+*history.logfile* (_/var/log/zypp/history_)::
+    Location of the history log file. The history log contains an abstract of the install actions performed by libzypp and also collects any screen output of packages during their installation, in case yue want to review it.
+
+// --------------------------------------------------------------------------------
+*credentials.global.dir* (*{configdir}*/_credentials.d_)::
+    Global credentials directory path.
++
+If an URL contains a _?credentials=<filename>_ parameter, the credentials will be stored and looked for in a file named _<filename>_ in this directory.
+
+// --------------------------------------------------------------------------------
+*credentials.global.file* (*{configdir}*/_credentials.cat_)::
+    Global credentials catalog file path.
++
+This file may contain a catalog of user credentials which are not stored via the _?credentials=<filename>_ URL parameter (see *credentials.global.dir*).
++
+The file is read if it exists, but new credentials are usually stored in the users home directory (_~/.zypp/credentials.cat_).
+
+// --------------------------------------------------------------------------------
+*arch* (_<UNSET>_)::
+    [__Expert Only!_] Only set it if you actually know what you're doing! Overrides the _autodetected_ system architecture. Sometimes used for testing, but there's actually no use case unless the autodetection would fail.
+
+FILES
+-----
+_/usr/etc/zypp/zypp.conf +
+/usr/etc/zypp/zypp.conf.d/{asterisk}.conf +
+/etc/zypp/zypp.conf +
+/etc/zypp/zypp.conf.d/{asterisk}.conf_
+
+The various configuration files considered for being parsed. System configuration files located below _/etc/zypp/_ (even if empty or a symlink to _/dev/null_) *will override* vendor configuration files with the same name located below _/usr/etc/zypp/_.
+
+The resulting files will be parsed in order _zypp.conf_ then _zypp.conf.d/{asterisk}.conf_ (in lexicographic order of their filenames). Later settings override earlier settings.
+
+So there are basically two methods of overriding the vendor provided configuration located below _/usr/etc/zypp/_:
+
+* Maintain your own copy in _/etc/zypp/zypp.conf_. The vendor supplied _/usr/etc/zypp/zypp.conf_ is ignored then. Drop-in files will nevertheless be processed thereafter. The disadvantage is, that changes in the vendor configuration file are ignored and you have to manually merge them.
+
+* Do not use an _/etc/zypp/zypp.conf_ but use drop-in files _/etc/zypp/zypp.conf.d/{asterisk}.conf_. This way the vendor provided configuration is used as the base configuration. The drop-in files should then contain only the changes of the specific settings you are interested in. This is perhaps the preferred way for most use cases.
+
+See also the https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md[UAPI.6 Configuration Files Specification]
+
+ENVIRONMENT
+-----------
+_ZYPP_CONF_::
+    If the environment variable is set the default way of parsing system and vendor configuration files is disabled. If the variable denotes a file below the systems root, solely this file is parsed as configuration file. Otherwise the builtin defaults apply.
+
+SEE ALSO
+--------
+*zypper*(8)
+
+

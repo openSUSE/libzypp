@@ -69,8 +69,9 @@ INSTALL( FILES ${LIBZYPP_BINARY_DIR}/libzypp.pc DESTINATION ${LIB_INSTALL_DIR}/p
 # (don't forget to mention them in the .spec file)
 ####################################################################
 
-MESSAGE(STATUS "zypp.conf will be installed in ${SYSCONFDIR}/zypp")
-INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp.conf DESTINATION ${SYSCONFDIR}/zypp )
+MESSAGE(STATUS "zypp.conf will be installed in ${ZYPPCONFDIR}/zypp")
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp.conf DESTINATION ${ZYPPCONFDIR}/zypp )
+INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/zypp.conf.README DESTINATION ${SYSCONFDIR}/zypp )
 
 MESSAGE(STATUS "needreboot will be installed in ${SYSCONFDIR}/zypp/")
 INSTALL( FILES ${LIBZYPP_SOURCE_DIR}/needreboot DESTINATION ${SYSCONFDIR}/zypp )

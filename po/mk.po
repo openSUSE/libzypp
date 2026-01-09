@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-17 09:27+0200\n"
-"PO-Revision-Date: 2026-01-07 09:04+0000\n"
+"PO-Revision-Date: 2026-01-09 06:04+0000\n"
 "Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/libzypp/master/"
 "mk/>\n"
@@ -55,14 +55,14 @@ msgstr "(истекува во рок од 24 часа)"
 #, c-format, boost-format
 msgid "(expires in %d day)"
 msgid_plural "(expires in %d days)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(истекува за %d ден)"
+msgstr[1] "(истекува за %d дена)"
 
 #. TranslatorExplanation first %s is key name, second is keyring name
 #: zypp-logic/zypp-common/private/keyring_p.cc:285
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
-msgstr ""
+msgstr "Обид за увоз на непостоечки клуч %s во приврзокот за клучеви %s"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:291
 msgid "Failed to import key."
@@ -75,13 +75,13 @@ msgstr "Не успеа да се избрише клучот."
 #: zypp-logic/zypp-common/private/keyring_p.cc:304
 #, c-format, boost-format
 msgid "Signature file %s not found"
-msgstr ""
+msgstr "Фајл со потпис %s не е пронајден"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-logic/zypp-core/CheckSum.cc:136
 #, c-format, boost-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
+msgstr "Сомнителен тип „%s“ за %u бајт контролна сума „%s“"
 
 #: zypp-logic/zypp-core/ExternalProgram.cc:245
 #, fuzzy, c-format, boost-format
@@ -96,12 +96,12 @@ msgstr "Couldn't open file: %s."
 
 #: zypp-logic/zypp-core/Url.cc:118
 msgid "Invalid LDAP URL query string"
-msgstr ""
+msgstr "Неважечки низ за барање на LDAP URL"
 
 #: zypp-logic/zypp-core/Url.cc:159
 #, c-format, boost-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr ""
+msgstr "Неважечки LDAP URL параметар за барање „%s“"
 
 #: zypp-logic/zypp-core/Url.cc:319
 msgid "Unable to clone Url object"

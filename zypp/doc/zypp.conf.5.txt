@@ -367,7 +367,7 @@ _/usr/etc/zypp/zypp.conf +
 /etc/zypp/zypp.conf +
 /etc/zypp/zypp.conf.d/{asterisk}.conf_
 
-The various configuration files considered for being parsed. System configuration files located below _/etc/zypp/_ (even if empty or a symlink to _/dev/null_) *will override* vendor configuration files with the same name located below _/usr/etc/zypp/_.
+The various configuration files considered for being parsed. System configuration files located below _/etc/zypp/_ (even if empty or a symlink to _/dev/null_) *will override* vendor configuration files with the *same name* located below _/usr/etc/zypp/_.
 
 The resulting files will be parsed in order _zypp.conf_ then _zypp.conf.d/{asterisk}.conf_ (in lexicographic order of their filenames). Later settings override earlier settings.
 

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Sun Jan 11 16:19:19 CET 2026 - ma@suse.de
+
+- zypp.conf: follow the UAPI configuration file specification
+  (PED-14658)
+  In short terms it means we will no longer ship an
+  /etc/zypp/zypp.conf, but store our own defaults in
+  /usr/etc/zypp/zypp.conf. The systems administrator may choose to
+  keep a full copy in /etc/zypp/zypp.conf ignoring our config file
+  settings completely, or - the preferred way - to overwrite
+  specific settings via /etc/zypp/zypp.conf.d/*.conf overlay files.
+  See the ZYPP.CONF(5) man page for details.
+- cmake: correctly detect rpm6 (fixes #689)
+- Use 'zypp.tmp' as temp directory component to ease setting up
+  SELinux policies (bsc#1249435)
+- zyppng: Update Provider to current MediaCurl2 download
+  approach, drop Metalink ( fixes #682 )
+- version 17.38.0 (35)
+
+-------------------------------------------------------------------
 Tue Sep 23 00:17:58 CEST 2025 - ma@suse.de
 
 - runposttrans: strip root prefix from tmppath (bsc#1250343)

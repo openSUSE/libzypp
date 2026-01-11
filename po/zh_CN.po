@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-17 09:27+0200\n"
+"POT-Creation-Date: 2026-01-11 16:21+0100\n"
 "PO-Revision-Date: 2025-07-22 15:02+0000\n"
 "Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/libzypp/"
@@ -331,6 +331,88 @@ msgid ""
 msgstr ""
 "下载 (curl) \"%s\" 时发生错误：\n"
 "无法检索 HTTP 响应\n"
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
+msgid "No error"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
+msgid "Internal Error"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
+msgid "The request was cancelled"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
+msgid "The request exceeded the maximum download size"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
+msgid "The downloaded data did not result in a valid checksum"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
+msgid "The peer certificate could not be verified"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
+msgid "Connection failed"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
+msgid "Unsupported protocol"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
+msgid "Bad URL"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
+msgid "Requested location is temporarily unaccessible."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
+msgid "Timeout reached"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
+msgid "Access to requested URL is forbidden."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
+msgid "File not found"
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
+msgid "Authentication required but not provided."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
+msgid "Login failed."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
+msgid "Server returned an error for the given request."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
+msgid "Server did not send all requested ranges."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
+msgid ""
+"Invalid data from server, multipart was requested but there was no range "
+"status code."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
+msgid "Server returned a HTTP/2 error."
+msgstr ""
+
+#: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
+msgid "Server returned a HTTP/2 stream error."
+msgstr ""
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -5115,31 +5197,36 @@ msgstr "未找到镜像"
 msgid "could not create target file"
 msgstr "无法创建目标文件"
 
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:126
+#, boost-format
+msgid "Error: Failed to initialize transfer settings (%1%)."
+msgstr ""
+
 #. if we have the file already, no need to download again
-#: zypp-logic/zypp/target/commitpackagepreloader.cc:136
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:143
 msgid "already in cache"
 msgstr "已在缓存中"
 
 #. rename consumed the file, no need to unlink.
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
-#: zypp-logic/zypp/target/commitpackagepreloader.cc:280
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:287
 #: zypp/zypp-tui/output/Out.cc:141 zypp/zypp-tui/output/OutNormal.cc:341
 #: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "done"
 msgstr "完毕"
 
 #. error
-#: zypp-logic/zypp/target/commitpackagepreloader.cc:283
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:290
 msgid "failed to rename temporary file."
 msgstr "重命名临时文件失败。"
 
-#: zypp-logic/zypp/target/commitpackagepreloader.cc:310
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:318
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
 msgstr "发生错误：\"%1%\"，正在尝试下一个镜像。"
 
-#: zypp-logic/zypp/target/commitpackagepreloader.cc:638
+#: zypp-logic/zypp/target/commitpackagepreloader.cc:655
 msgid "Cancelled by user."
 msgstr "用户已取消。"
 

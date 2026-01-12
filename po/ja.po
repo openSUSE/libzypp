@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-11 16:21+0100\n"
-"PO-Revision-Date: 2025-09-19 04:59+0000\n"
+"PO-Revision-Date: 2026-01-13 01:04+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -339,85 +339,87 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "エラーはありません"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "内部エラー"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "リクエストをキャンセルしました"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"
-msgstr ""
+msgstr "リクエストが最大ダウンロードサイズを超過しています"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
 msgid "The downloaded data did not result in a valid checksum"
-msgstr ""
+msgstr "ダウンロードしたデータが正しいチェックサムになっていません"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
-msgstr ""
+msgstr "相手側の証明書を検証できませんでした"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "接続が失敗しました"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "非対応のプロトコルです"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
-msgstr ""
+msgstr "正しい URL ではありません"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
 msgid "Requested location is temporarily unaccessible."
-msgstr ""
+msgstr "指定の場所は一時的にアクセスできなくなっています。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "時間切れになりました"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
-msgstr ""
+msgstr "指定した URL へのアクセスは禁止されています。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "ファイルが見つかりません"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
-msgstr ""
+msgstr "認証を求められましたが、認証設定がされていません。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "ログインに失敗しました。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
-msgstr ""
+msgstr "指定のリクエストに対してサーバがエラーを返しました。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
 msgid "Server did not send all requested ranges."
-msgstr ""
+msgstr "サーバが指定した範囲を返しませんでした。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
 msgid ""
 "Invalid data from server, multipart was requested but there was no range "
 "status code."
 msgstr ""
+"サーバからのデータが正しくありません。マルチパートを要求したものの、範囲状態"
+"を示すコードがありません。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "サーバが HTTP/2 エラーを返しました。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "サーバが HTTP/2 ストリームエラーを返しました。"
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -5257,7 +5259,7 @@ msgstr "目的のファイルを作成できませんでした"
 #: zypp-logic/zypp/target/commitpackagepreloader.cc:126
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
-msgstr ""
+msgstr "エラー: 転送設定の準備に失敗しました (%1%) 。"
 
 #. if we have the file already, no need to download again
 #: zypp-logic/zypp/target/commitpackagepreloader.cc:143

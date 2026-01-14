@@ -93,7 +93,7 @@ namespace zypp
 
       /** \relates RefStore<T> Create a RefStore for the argument. */
       template <typename T>
-      constexpr auto makeRefStore( T && t )
+      constexpr auto makeRefStore( T && t ) ->/* c++-11 can not deduce return value! */ RefStore<T>
       { return RefStore<T>( std::forward<T>(t) ); }
 
       /** \relates RefStore<T> Stream output */
@@ -193,7 +193,7 @@ namespace zypp
      * \endcode
      */
     template <typename Intro, typename Pfx, typename Sep, typename Sfx, typename Extro, typename Pel=NoPrint, typename Sel=NoPrint>
-    constexpr auto makeJoinFormat( Intro && intro, Pfx && pfx, Sep && sep, Sfx && sfx, Extro && extro, Pel && pel = Pel(), Sel && sel = Sel() )
+    constexpr auto makeJoinFormat( Intro && intro, Pfx && pfx, Sep && sep, Sfx && sfx, Extro && extro, Pel && pel = Pel(), Sel && sel = Sel() ) ->/* c++-11 can not deduce return value! */ detail::JoinFormat<Intro,Pfx,Sep,Sfx,Extro,Pel,Sel>
     { return detail::JoinFormat<Intro,Pfx,Sep,Sfx,Extro,Pel,Sel>( std::forward<Intro>(intro), std::forward<Pfx>(pfx), std::forward<Sep>(sep), std::forward<Sfx>(sfx), std::forward<Extro>(extro), std::forward<Pel>(pel), std::forward<Sel>(sel) ); }
 
 

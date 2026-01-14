@@ -103,7 +103,8 @@ public:
 
       {
         std::lock_guard<std::mutex> lock ( _mut );
-        canContinue = ( zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"vsftpconf"/"vsftpd.conf",  confFile ) == 0 );
+        // Some environments are not happy with a symlinked vsftpd.conf (500 OOPS: config file not owned ...)
+        canContinue = ( zypp::filesystem::hardlinkCopy( Pathname(TESTS_SHARED_DIR)/"data"/"vsftpconf"/"vsftpd.conf",  confFile ) == 0 );
         if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.pem",  confPath/"cert.pem") == 0;
         if ( canContinue && _ssl ) canContinue = zypp::filesystem::symlink( Pathname(TESTS_SHARED_DIR)/"data"/"webconf"/"ssl"/"server.key",  confPath/"cert.key") == 0;
       }

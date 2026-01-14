@@ -208,6 +208,7 @@ BuildRequires:	fcgi-devel
 
 %define min_curl_version 7.19.4
 BuildRequires:  libcurl-devel >= %{min_curl_version}
+BuildRequires:  ( libcurl4 without libcurl-mini4 )
 %if 0%{?suse_version}
 # Code11+
 Requires:       libcurl4   >= %{min_curl_version}

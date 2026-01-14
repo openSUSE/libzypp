@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jan 14 20:19:36 CET 2026 - ma@suse.de
+
+- Avoid libcurl-mini4 when building as it does not support ftp
+  protocol.
+- Translation: updated .pot file.
+- version 17.38.1 (35)
+
+-------------------------------------------------------------------
 Sun Jan 11 16:19:19 CET 2026 - ma@suse.de
 
 - zypp.conf: follow the UAPI configuration file specification

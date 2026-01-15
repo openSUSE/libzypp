@@ -262,6 +262,10 @@ BuildRequires:  bzip2-devel
 BuildRequires:  xz-devel
 %endif
 
+%if 0%{?suse_version} >= 1600
+BuildRequires: gobject-introspection-devel
+%endif
+
 %description
 libzypp is the package management library that powers applications
 like YaST, zypper and the openSUSE/SLE implementation of PackageKit.

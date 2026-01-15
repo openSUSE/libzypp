@@ -21,6 +21,7 @@ namespace zyppng
 
     Base::WeakPtr parent;
     std::unordered_set< Base::Ptr > children;
+    std::unordered_map<uint32_t, zypp::AutoDispose<void *> > _data;
     Base *z_ptr = nullptr;
     std::thread::id threadId = std::this_thread::get_id();
   };

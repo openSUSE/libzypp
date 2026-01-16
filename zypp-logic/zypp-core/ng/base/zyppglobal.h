@@ -4,13 +4,6 @@
 #include <memory>
 #include <zypp-core/base/Easy.h>
 
-#ifndef EXPORT_EXPERIMENTAL_API
-#define LIBZYPP_NG_EXPORT
-#define LIBZYPP_NG_NO_EXPORT
-#else
-#include <zypp-ng_export.h>
-#endif
-
 /*
  * Convenience helpers to automatically generate boilerplate code
  * for pimpl classes.

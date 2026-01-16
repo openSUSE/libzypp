@@ -48,9 +48,6 @@ namespace zyppng {
     ProvideRef _media;
   };
 
-  template<typename OpType>
-  using MaybeAsyncContextRef = std::conditional_t<detail::is_async_op_v<OpType>, ContextRef, ContextRef>;
-
   template<typename T>
   auto joinPipeline( ContextRef ctx, T &&val ) {
     return std::forward<T>(val);

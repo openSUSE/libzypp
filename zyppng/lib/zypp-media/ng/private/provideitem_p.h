@@ -18,6 +18,7 @@
 #include "providequeue_p.h"
 #include "attachedmediainfo_p.h"
 #include "providemessage_p.h"
+#include <zypp-core/ng/async/iotask.h>
 #include <zypp-media/ng/Provide>
 #include <zypp-media/ng/ProvideItem>
 #include <zypp-media/ng/ProvideRes>
@@ -105,41 +106,16 @@ namespace zyppng {
   };
 
   /*!
-   * The object returned to the user code to track the internal Item.
-   * Releasing the last reference to it will cancel the operation but the corresponding ProvideItem
-   * will remain in the Queue until the cancel operation was finished.
-   */
-  template< typename T >
-  class ProvidePromise : public AsyncOp<expected<T>>
-  {
-  public:
-    ProvidePromise( ProvideItemRef provideItem )
-      : _myProvide( provideItem )
-    {}
-
-    ~ProvidePromise()
-    {
-      auto prov = _myProvide.lock();
-      if ( prov )
-        prov->released();
-    }
-
-  private:
-    ProvideItemWeakRef _myProvide; //weak reference to the internal item so we can cancel the op on desctruction
-  };
-
-  /*!
    * Item downloading and providing a file
    */
   class ProvideFileItem : public ProvideItem
   {
   public:
 
-    static ProvideFileItemRef create ( zypp::MirroredOrigin origin,const ProvideFileSpec &request, ProvidePrivate &parent );
+    static ProvideFileItemRef create (IOTaskAwaiter<expected<ProvideRes>> &promise, zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent );
 
     // ProvideItem interface
     void initialize () override;
-    ProvidePromiseRef<ProvideRes> promise();
 
     void setMediaRef ( Provide::MediaHandle &&hdl );
     Provide::MediaHandle & mediaRef ();
@@ -148,7 +124,7 @@ namespace zyppng {
     zypp::ByteCount bytesExpected () const override;
 
   protected:
-    ProvideFileItem ( zypp::MirroredOrigin origin,const ProvideFileSpec &request, ProvidePrivate &parent );
+    ProvideFileItem (IOTaskAwaiter<expected<ProvideRes> > &promise, zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent );
 
     void informalMessage ( ProvideQueue &, ProvideRequestRef req, const ProvideMessage &msg  ) override;
 
@@ -159,13 +135,12 @@ namespace zyppng {
 
   private:
     Provide::MediaHandle _handleRef;    //< If we are using a attached media, this will keep the reference around
-    bool _promiseCreated = false;
     zypp::MirroredOrigin _origin;       //< All available URLs
     ProvideFileSpec     _initialSpec;   //< The initial spec as defined by the user code
     zypp::Pathname      _targetFile;    //< The target file as reported by the worker
     zypp::Pathname      _stagingFile;   //< The staging file as reported by the worker
     zypp::ByteCount     _expectedBytes; //< The nr of bytes we want to provide
-    ProvidePromiseWeakRef<ProvideRes> _promise;
+    IOTaskAwaiter<expected<ProvideRes>> *_promise = nullptr;
   };
 
 
@@ -175,14 +150,11 @@ namespace zyppng {
   class AttachMediaItem : public ProvideItem
   {
   public:
-    ~AttachMediaItem();
-    static AttachMediaItemRef create ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    ~AttachMediaItem() override;
+    static AttachMediaItemRef create ( IOTaskAwaiter<expected<Provide::MediaHandle>> &promise, const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
     SignalProxy< void( const zyppng::expected<AttachedMediaInfo *> & ) > sigReady ();
-
-    ProvidePromiseRef<Provide::MediaHandle> promise();
-
   protected:
-    AttachMediaItem ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
+    AttachMediaItem ( IOTaskAwaiter<expected<Provide::MediaHandle>> &promise, const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent );
 
     // ProvideItem interface
     void initialize () override;
@@ -197,12 +169,11 @@ namespace zyppng {
 
   private:
     Signal< void( const zyppng::expected<AttachedMediaInfo *> & )> _sigReady;
-    bool _promiseCreated = false;
     connection _masterItemConn;
     zypp::MirroredOrigin _origin;   //< All available URLs
     ProvideMediaSpec    _initialSpec;    //< The initial spec as defined by the user code
     ProvideQueue::Config::WorkerType _workerType = ProvideQueue::Config::Invalid;
-    ProvidePromiseWeakRef<Provide::MediaHandle> _promise;
+    IOTaskAwaiter<expected<Provide::MediaHandle>> * _promise = nullptr;
     MediaDataVerifierRef _verifier;
   };
 }

@@ -570,12 +570,12 @@ namespace zypp
         static_assert( !std::is_invocable_v< function<bool(const Pathname &, const DirEntry& )>, const Pathname &, const char *> , "Invoke detection broken" );
 
         if constexpr ( std::is_invocable_v<F, const Pathname &, const char *const> ) {
-          if ( ! std::forward<F>(fnc_r)( dir_r, entry->d_name ) ) {
+          if ( ! fnc_r( dir_r, entry->d_name ) ) {
             ret = -1;
             break;
           }
         } else if constexpr ( std::is_invocable_v<F, const Pathname &, const DirEntry&> ) {
-          if ( ! std::forward<F>(fnc_r)( dir_r, DirEntry( entry ) ) ) {
+          if ( ! fnc_r( dir_r, DirEntry( entry ) ) ) {
             ret = -1;
             break;
           }

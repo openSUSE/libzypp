@@ -14,7 +14,7 @@
 #include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/ng/base/zyppglobal.h>
 #include <zypp-core/ng/base/Base>
-#include <zypp-core/ng/async/AsyncOp>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/expected.h>
 #include <zypp-core/ByteCount.h>
 #include <zypp-media/ng/LazyMediaHandle>
@@ -134,26 +134,26 @@ namespace zyppng {
     expected<LazyMediaHandle> prepareMedia ( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
     expected<LazyMediaHandle> prepareMedia ( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    AsyncOpRef<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
-    AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request );
-    AsyncOpRef<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
+    Task<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
+    Task<expected<MediaHandle>> attachMedia( zypp::MirroredOrigin origin, ProvideMediaSpec request );
+    Task<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
 
-    AsyncOpRef<expected<ProvideRes>> provide(  const zypp::MirroredOrigin &origin, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const MediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
-    AsyncOpRef<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    Task<expected<ProvideRes>> provide(  zypp::MirroredOrigin origin, ProvideFileSpec request );
+    Task<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
+    Task<expected<ProvideRes>> provide(  MediaHandle attachHandle, zypp::Pathname fileName, ProvideFileSpec request );
+    Task<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
 
 
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    AsyncOpRef<expected<zypp::CheckSum>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
+    Task<expected<zypp::CheckSum>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
-    AsyncOpRef<expected<zypp::ManagedFile>> copyFile ( ProvideRes &&source, const zypp::Pathname &target );
+    Task<expected<zypp::ManagedFile>> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
+    Task<expected<zypp::ManagedFile>> copyFile ( ProvideRes &&source, const zypp::Pathname &target );
 
     void start();
     void setWorkerPath( const zypp::Pathname &path );

@@ -9,7 +9,8 @@
 #ifndef ZYPP_NG_KEYRINGWORKFLOW_INCLUDED
 #define ZYPP_NG_KEYRINGWORKFLOW_INCLUDED
 
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/base/PtrTypes.h>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 
 namespace zypp {

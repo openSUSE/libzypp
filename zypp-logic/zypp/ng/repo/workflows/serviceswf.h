@@ -11,7 +11,7 @@
 
 #include <zypp-core/ng/base/zyppglobal.h>
 
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 
 #include <zypp/RepoManagerFlags.h>

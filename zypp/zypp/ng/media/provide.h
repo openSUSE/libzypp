@@ -9,6 +9,7 @@
 #ifndef ZYPP_NG_MEDIASETFACADE_INCLUDED
 #define ZYPP_NG_MEDIASETFACADE_INCLUDED
 
+#include <zypp-core/ng/base/base.h>
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/MirroredOrigin.h>
 #include <zypp-core/ManagedFile.h>

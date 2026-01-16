@@ -514,15 +514,16 @@ namespace zyppng {
     }
   }
 
-  ProvideFileItem::ProvideFileItem(zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent)
+  ProvideFileItem::ProvideFileItem(IOTaskAwaiter<expected<ProvideRes>> &promise, zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent)
     : ProvideItem( parent )
     , _origin ( std::move(origin) )
     , _initialSpec ( request )
+    , _promise( &promise )
   { }
 
-  ProvideFileItemRef ProvideFileItem::create( zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent )
+  ProvideFileItemRef ProvideFileItem::create(IOTaskAwaiter<expected<ProvideRes> > &promise, zypp::MirroredOrigin origin, const ProvideFileSpec &request, ProvidePrivate &parent )
   {
-    return ProvideFileItemRef( new ProvideFileItem( std::move(origin), request, parent ) );
+    return ProvideFileItemRef( new ProvideFileItem( promise, std::move(origin), request, parent ) );
   }
 
   void ProvideFileItem::initialize()
@@ -545,17 +546,6 @@ namespace zyppng {
       cancelWithError( ZYPP_EXCPT_PTR(zypp::media::MediaException("Failed to queue request")) );
       return ;
     }
-  }
-
-  ProvidePromiseRef<ProvideRes> ProvideFileItem::promise()
-  {
-    if ( !_promiseCreated ) {
-      _promiseCreated = true;
-      auto promiseRef = std::make_shared<ProvidePromise<ProvideRes>>( shared_this<ProvideItem>() );
-      _promise = promiseRef;
-      return promiseRef;
-    }
-    return _promise.lock();
   }
 
   void ProvideFileItem::setMediaRef ( Provide::MediaHandle &&hdl )
@@ -682,10 +672,9 @@ namespace zyppng {
 
       // if there is a exception escaping the pipeline we need to rethrow it after cleaning up
       std::exception_ptr excpt;
-      auto p = promise();
-      if ( p ) {
+      if ( _promise ) {
         try {
-          p->setReady( expected<ProvideRes>::success( ProvideRes( resObj )) );
+          _promise->return_value( expected<ProvideRes>::success( ProvideRes( resObj )) );
         } catch( const zypp::Exception &e ) {
           ERR << "Caught unhandled pipline exception:" << e << std::endl;
           ZYPP_CAUGHT(e);
@@ -755,10 +744,9 @@ namespace zyppng {
 
     // if we reach this place for some reason finishReq was not called, lets clean up manually
     _runningReq.reset();
-    auto p = promise();
-    if ( p ) {
+    if ( _promise ) {
       try {
-        p->setReady( expected<ProvideRes>::error( error ) );
+        _promise->return_value( expected<ProvideRes>::error( error ) );
       } catch( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
       }
@@ -810,26 +798,16 @@ namespace zyppng {
     return (_initialSpec.checkExistsOnly() ? zypp::ByteCount(0) : _expectedBytes);
   }
 
-  AttachMediaItem::AttachMediaItem(const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
+  AttachMediaItem::AttachMediaItem(IOTaskAwaiter<expected<Provide::MediaHandle> > &promise, const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
     : ProvideItem  ( parent )
     , _origin  ( origin )
     , _initialSpec ( request )
+    , _promise( &promise )
   { }
 
   AttachMediaItem::~AttachMediaItem()
   {
     MIL << "Killing the AttachMediaItem" << std::endl;
-  }
-
-  ProvidePromiseRef<Provide::MediaHandle> AttachMediaItem::promise()
-  {
-    if ( !_promiseCreated ) {
-      _promiseCreated = true;
-      auto promiseRef = std::make_shared<ProvidePromise<Provide::MediaHandle>>( shared_this<ProvideItem>() );
-      _promise = promiseRef;
-      return promiseRef;
-    }
-    return _promise.lock();
   }
 
   void AttachMediaItem::initialize()
@@ -852,13 +830,12 @@ namespace zyppng {
     expected<ProvideQueue::Config> scheme = prov.schemeConfig( prov.effectiveScheme( _origin.authority().scheme() ) );
 
     if ( !scheme || !_origin.isValid() ) {
-      auto prom = promise();
-      if ( prom ) {
+      if ( _promise ) {
         try {
           if ( !scheme )
-            prom->setReady( expected<Provide::MediaHandle>::error( scheme.error() ) );
+            _promise->return_value( expected<Provide::MediaHandle>::error( scheme.error() ) );
           else
-            prom->setReady( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
+            _promise->return_value( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("No valid mirrors available") )) );
         } catch( const zypp::Exception &e ) {
           ZYPP_CAUGHT(e);
         }
@@ -963,10 +940,9 @@ namespace zyppng {
         break;
       }
       default: {
-        auto prom = promise();
-        if ( prom ) {
+        if ( _promise ) {
           try {
-            prom->setReady( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("URL scheme does not support attaching.") )) );
+            _promise->return_value( expected<Provide::MediaHandle>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("URL scheme does not support attaching.") )) );
           } catch( const zypp::Exception &e ) {
             ZYPP_CAUGHT(e);
           }
@@ -979,14 +955,11 @@ namespace zyppng {
 
   void AttachMediaItem::finishWithSuccess( AttachedMediaInfo_Ptr medium )
   {
-
     updateState(Finalizing);
-
-    auto prom = promise();
     try {
-      if ( prom ) {
+      if ( _promise ) {
         try {
-          prom->setReady( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium ) ) );
+          _promise->return_value( expected<Provide::MediaHandle>::success( Provide::MediaHandle( *static_cast<Provide*>( provider().z_func() ), medium ) ) );
         } catch( const zypp::Exception &e ) {
           ZYPP_CAUGHT(e);
         }
@@ -999,8 +972,6 @@ namespace zyppng {
 
     // tell others as well
     _sigReady.emit( zyppng::expected<AttachedMediaInfo *>::success(medium.get()) );
-
-    prom->isReady ();
 
     MIL << "Before setFinished" << std::endl;
     updateState( Finished );
@@ -1027,10 +998,9 @@ namespace zyppng {
     _runningReq.reset();
     _masterItemConn.disconnect();
 
-    auto p = promise();
-    if ( p ) {
+    if ( _promise ) {
       try {
-        p->setReady( expected<zyppng::Provide::MediaHandle>::error( error ) );
+        _promise->return_value( expected<zyppng::Provide::MediaHandle>::error( error ) );
       } catch( const zypp::Exception &e ) {
         ZYPP_CAUGHT(e);
       }
@@ -1062,9 +1032,9 @@ namespace zyppng {
     }
   }
 
-  AttachMediaItemRef AttachMediaItem::create( const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
+  AttachMediaItemRef AttachMediaItem::create( IOTaskAwaiter<expected<Provide::MediaHandle>> &promise, const zypp::MirroredOrigin &origin, const ProvideMediaSpec &request, ProvidePrivate &parent )
   {
-    return AttachMediaItemRef( new AttachMediaItem(origin, request, parent) );
+    return AttachMediaItemRef( new AttachMediaItem(promise, origin, request, parent) );
   }
 
   SignalProxy<void (const zyppng::expected<AttachedMediaInfo *> &)> AttachMediaItem::sigReady()

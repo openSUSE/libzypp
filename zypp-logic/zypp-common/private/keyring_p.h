@@ -12,6 +12,7 @@
 #ifndef ZYPP_PRIVATE_KEYRINGIMPL_H
 #define ZYPP_PRIVATE_KEYRINGIMPL_H
 
+#include <zypp-core/ng/base/signals.h>
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-common/KeyManager.h>

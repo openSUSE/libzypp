@@ -79,6 +79,20 @@ namespace zyppng {
       return parseDataIntoField ( msg.getHeader(name), target );
     }
 
+    /**
+     * @brief Constructs a zypp::PluginFrame based on the static type information of T.
+     *
+     * This helper function creates a new PluginFrame, initializing its command/header
+     * using the string data provided by the template argument's `typeName` member.
+     *
+     * @tparam T A type representing a command or protocol message.
+     * T must satisfy the following requirements:
+     * - Must have a static public member named `typeName`.
+     * - `typeName` must provide `.data()` (returning char*) and `.length()` (returning size_t).
+     * - Typically, `typeName` is a `std::string_view` or `constexpr` string wrapper.
+     *
+     * @return zypp::PluginFrame A generic frame initialized with T's command string.
+     */
     template <typename T>
     inline zypp::PluginFrame prepareFrame() {
       return zypp::PluginFrame ( std::string( T::typeName.data(), T::typeName.length() ) );

@@ -11,6 +11,8 @@
 
 namespace zypp::json {
 
+  Array::Array() {}
+
   Array::Array( std::initializer_list<Value> contents_r )
     : Array( contents_r.begin(), contents_r.end() )
   {}
@@ -32,6 +34,18 @@ namespace zypp::json {
     for( auto val = ++_values.begin(); val != _values.end(); val++ )
       str << ", " << val->asJSON();
     return str << ']';
+  }
+
+  const Value &Array::operator[](size_type n) const
+  {
+    return _values[n];
+  }
+
+  Array::size_type Array::size() const { return _values.size(); }
+
+  Value &Array::operator[](size_type n)
+  {
+    return _values[n];
   }
 
   bool Array::operator==(const Array &other) const
@@ -97,6 +111,4 @@ namespace zypp::json {
   {
     return std::visit( []( auto &&val ) { return val.asJSON(); }, _value );
   }
-
-
-}
+} // namespace zypp::json

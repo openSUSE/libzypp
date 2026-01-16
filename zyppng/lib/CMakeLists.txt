@@ -18,14 +18,14 @@ add_subdirectory( zypp-curl )
 
 set ( target "zyppng-allsym" )
 set ( _link_mode INTERFACE )
-ADD_LIBRARY( ${target} ${shared_or_static} )
+ADD_LIBRARY( ${target} STATIC zypp/dummy.cc )
 
 SET_TARGET_PROPERTIES ( ${target} PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES ( ${target} PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 
 target_link_libraries( ${target} PRIVATE zyppng_lib_compiler_flags )
 #target_link_libraries( ${target} PRIVATE zyppng-objlib )
-target_link_libraries( ${target} PRIVATE commit-proto-obj )
+target_link_libraries( ${target} PRIVATE zyppng-commit-proto-obj )
 
 # CAUTION, link those libs always first and always in that order,
 # otherwise you get symbol lookup errors when linking against libzypp

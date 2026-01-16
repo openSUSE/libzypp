@@ -23,4 +23,5 @@ MACRO(ADD_TESTS)
   ENDFOREACH( loop_var )
 ENDMACRO(ADD_TESTS)
 
+add_subdirectory(async)
 add_subdirectory(media)

@@ -26,7 +26,7 @@
 #include <zypp-media/ng/ProvideSpec>
 #include <zypp/ng/Context>
 #include <zypp/ng/UserRequest>
-#include <zypp/ng/workflows/logichelpers.h>
+
 
 namespace zyppng {
 
@@ -34,8 +34,7 @@ namespace zyppng {
 
     using namespace zyppng::operators;
 
-    template<class Executor, class OpType>
-    struct FetchGpgKeysLogic : public LogicBase<Executor, OpType> {
+    struct FetchGpgKeysLogic {
 
       using ZyppContextRefType =ContextRef;
       using ZyppContextType = Context;
@@ -48,9 +47,7 @@ namespace zyppng {
         , _info( std::move(info) )
       { }
 
-      ZYPP_ENABLE_LOGIC_BASE( Executor, OpType );
-
-      MaybeAsyncRef<expected<void>> execute () {
+      MaybeAwaitable<expected<void>> execute () {
         using namespace zyppng::operators;
         using zyppng::operators::operator|;
         using zyppng::expected;
@@ -83,7 +80,7 @@ namespace zyppng {
           }
 
           if ( gpgKeyUrls.empty () )
-            return makeReadyResult( expected<void>::success() );
+            return makeReadyTask( expected<void>::success() );
         }
 
         _keysDownloaded.clear();
@@ -133,10 +130,8 @@ namespace zyppng {
 
   MaybeAwaitable<expected<void>> RepoInfoWorkflow::fetchGpgKeys(ContextRef ctx, zypp::RepoInfo info )
   {
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor<FetchGpgKeysLogic, AsyncOp<expected<void>>>::run( std::move(ctx), std::move(info) );
-    else
-      return SimpleExecutor<FetchGpgKeysLogic, SyncOp<expected<void>>>::run( std::move(ctx), std::move(info) );
+    FetchGpgKeysLogic impl( std::move(ctx), std::move(info) );
+    zypp_co_return zypp_co_await( impl.execute () );
   }
 
 }

@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 
+#include <zypp-glib/application.h>
 /*#include <zypp-glib/error.h>
 #include <zypp-glib/context.h>
 #include <zypp-glib/repomanager.h>

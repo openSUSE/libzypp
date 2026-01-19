@@ -23,7 +23,7 @@ SET( POT_FILE_DEPENDS_ZYPP_GLIB ${POT_FILE_DEPENDS} PARENT_SCOPE )
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
 SET( zypp_glib_HEADERS
-  #application.h
+  zypp-glib/application.h
   #context.h
   #error.h
   #expected.h
@@ -73,7 +73,7 @@ SET( zypp_glib_private_HEADERS
 )
 
 SET( zypp_glib_SRCS
-  #application.cc
+  zypp-glib/application.cc
   #context.cc
   #error.cc
   #expected.cc
@@ -148,7 +148,7 @@ INCLUDE(GenerateExportHeader)
 message("Exporting experimental libzypp-ng API")
 GENERATE_EXPORT_HEADER(
   zypp-glib
-  BASE_NAME zypp-glib/zypp-glib
+  EXPORT_FILE_NAME zypp-glib/zypp-glib_export.h
   PREFIX_NAME LIB
 )
 

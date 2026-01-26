@@ -136,7 +136,7 @@ inline std::string rpmQuoteFilename( const Pathname & path_r )
       bool broken = false;
       librpmDb::db_const_iterator it( "/" );
       if ( it.findPackage( "rpm" )
-        && it->tag_edition() == Edition("4.18.0")
+        && Edition::match( it->tag_edition(), "4.18.0" ) == 0
         && not it->tag_provides().count( Capability("rpm_fixed_runposttrans") ) ) {
         WAR << "Workaround broken rpm --runposttrans" << endl;
         broken = true;

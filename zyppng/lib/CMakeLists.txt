@@ -13,7 +13,7 @@ add_subdirectory( zypp-core )
 add_subdirectory( zypp-common )
 add_subdirectory( zypp-media )
 add_subdirectory( zypp-curl )
-#add_subdirectory( zypp )
+add_subdirectory( zypp )
 
 
 set ( target "zyppng-allsym" )
@@ -24,7 +24,7 @@ SET_TARGET_PROPERTIES ( ${target} PROPERTIES VERSION "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES ( ${target} PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 
 target_link_libraries( ${target} PRIVATE zyppng_lib_compiler_flags )
-#target_link_libraries( ${target} PRIVATE zyppng-objlib )
+target_link_libraries( ${target} PRIVATE zyppng-objlib )
 target_link_libraries( ${target} PRIVATE zyppng-commit-proto-obj )
 
 # CAUTION, link those libs always first and always in that order,

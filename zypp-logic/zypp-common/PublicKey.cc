@@ -22,8 +22,8 @@
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Regex.h>
 #include <zypp-core/ExternalProgram.h>
-#include <zypp/TmpPath.h>
-#include <zypp/PathInfo.h>
+#include <zypp-core/fs/TmpPath.h>
+#include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/Exception.h>
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/Date.h>

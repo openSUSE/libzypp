@@ -29,7 +29,11 @@ extern "C"
 #include <zypp/sat/detail/PoolMember.h>
 #include <zypp/sat/SolvableSpec.h>
 #include <zypp/sat/Queue.h>
+
+#ifndef ZYPPNG
 #include <zypp/RepoInfo.h>
+#endif
+
 #include <zypp/Locale.h>
 #include <zypp/Capability.h>
 #include <zypp/IdString.h>
@@ -213,6 +217,7 @@ namespace zypp
             return noSolvableId;
           }
 
+#ifndef ZYPPNG
         public:
           /** */
           const RepoInfo & repoInfo( RepoIdType id_r )
@@ -222,6 +227,7 @@ namespace zypp
           /** */
           void eraseRepoInfo( RepoIdType id_r )
           { _repoinfos.erase( id_r ); }
+#endif
 
         public:
           /** Returns the id stored at \c offset_r in the internal
@@ -360,8 +366,11 @@ namespace zypp
           SerialNumber _serialIDs;
           /** Watch serial number. */
           SerialNumberWatcher _watcher;
+
+#ifndef ZYPPNG
           /** Additional \ref RepoInfo. */
           std::map<RepoIdType,RepoInfo> _repoinfos;
+#endif
 
           /**  */
           base::SetTracker<LocaleSet> _requestedLocalesTracker;

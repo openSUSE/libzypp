@@ -13,7 +13,6 @@
 #include <boost/mpl/int.hpp>
 
 #include <zypp/IdString.h>
-
 #include <zypp/sat/detail/PoolImpl.h>
 #include <zypp/sat/Pool.h>
 

@@ -296,6 +296,7 @@ namespace zypp
         destinationDir = getZYpp()->tmpPath() / destinationDir;
         assert_dir( destinationDir );
         fetcher.addCachePath( destinationDir );
+        fetcher.addCachePath( destinationDir / ".preload" );
         MIL << "Added cache path " << destinationDir << endl;
       }
 

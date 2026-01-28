@@ -457,11 +457,26 @@ namespace zypp
       return _metadataPath;
     }
 
-    Pathname packagesPath() const
+    Pathname systemPackagesPath() const
     {
       if ( _packagesPath.empty() && usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%PKG%";
       return _packagesPath;
+    }
+
+    Pathname userConfigPackagesPath() const
+    {
+      return env::XDG_CACHE_HOME() / "zypp/packages";
+    }
+
+    Pathname packagesPath() const
+    {
+      PathInfo pathInfo (_packagesPath);
+      if ( geteuid() != 0 && ! pathInfo.userMayW() ) {
+          return userConfigPackagesPath();
+      } else {
+          return systemPackagesPath();
+      }
     }
 
     Pathname predownloadPath() const

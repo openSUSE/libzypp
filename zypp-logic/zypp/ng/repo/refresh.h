@@ -9,7 +9,7 @@
 #ifndef ZYPP_NG_REPO_REFRESH_INCLUDED
 #define ZYPP_NG_REPO_REFRESH_INCLUDED
 
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 #include <zypp-core/ng/base/Signals>
 #include <zypp-core/fs/TmpPath.h>
@@ -19,7 +19,7 @@
 #include <zypp/RepoManagerFlags.h>
 #include <zypp/ng/repomanager.h>
 #include <zypp/repo/PluginRepoverification.h>
-#include <zypp/ng/workflows/logichelpers.h>
+
 
 namespace zyppng {
   ZYPP_FWD_DECL_TYPE_WITH_REFS( Context );
@@ -39,9 +39,8 @@ namespace zyppng::repo {
    * on a local cache and a remote repository, as defined by the \ref zypp::RepoInfo
    *
    */
-  class RefreshContext : public Base, public MaybeAsyncMixin {
+  class RefreshContext : public Base {
     ZYPP_ADD_PRIVATE_CONSTR_HELPER();
-    ZYPP_ENABLE_MAYBE_ASYNC_MIXIN( ZYPP_IS_ASYNC );
     public:
       using ProvideType    = typename Context::ProvideType;
       using PluginRepoverification = zypp_private::repo::PluginRepoverification;

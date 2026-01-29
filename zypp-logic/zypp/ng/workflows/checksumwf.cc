@@ -8,7 +8,6 @@
 \---------------------------------------------------------------------*/
 
 #include "checksumwf.h"
-#include "logichelpers.h"
 
 
 #include <map>
@@ -31,10 +30,8 @@ namespace zyppng::CheckSumWorkflow {
 
   using namespace zyppng::operators;
 
-  template <class Executor, class OpType >
-  struct CheckSumWorkflowLogic : public LogicBase<Executor, OpType>
+  struct CheckSumWorkflowLogic
   {
-    ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
 
     using ProvideType     = typename Context::ProvideType;
     using MediaHandle     = typename ProvideType::MediaHandle;
@@ -55,9 +52,9 @@ namespace zyppng::CheckSumWorkflow {
         MIL << "File " <<  _file << " has no checksum available." << std::endl;
         if ( _report.askUserToAcceptNoDigest( _file ) ) {
           MIL << "User accepted " <<  _file << " with no checksum." << std::endl;
-          return makeReadyResult( expected<void>::success() );
+          return makeReadyTask( expected<void>::success() );
         } else {
-          return makeReadyResult( expected<void>::error( ZYPP_EXCPT_PTR(zypp::FileCheckException( _file.basename() + " has no checksum" ) ) ) );
+          return makeReadyTask( expected<void>::error( ZYPP_EXCPT_PTR(zypp::FileCheckException( _file.basename() + " has no checksum" ) ) ) );
         }
 
       } else {
@@ -113,11 +110,8 @@ namespace zyppng::CheckSumWorkflow {
 
   MaybeAwaitable<expected<void>> verifyChecksum( ContextRef zyppCtx, zypp::CheckSum checksum, zypp::filesystem::Pathname file )
   {
-    if constexpr ( ZYPP_IS_ASYNC ) {
-      return SimpleExecutor<CheckSumWorkflowLogic, AsyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
-    } else {
-      return SimpleExecutor<CheckSumWorkflowLogic, SyncOp<expected<void>>>::run( std::move(zyppCtx), std::move(checksum), std::move(file) );
-    }
+    CheckSumWorkflowLogic impl( std::move(zyppCtx), std::move(checksum), std::move(file) );
+    zypp_co_return zypp_co_await( impl.execute() );
   }
 
   std::function<MaybeAwaitable<expected<ProvideRes> > (ProvideRes &&)> checksumFileChecker( ContextRef zyppCtx, zypp::CheckSum checksum )

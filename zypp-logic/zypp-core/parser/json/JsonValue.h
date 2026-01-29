@@ -37,7 +37,7 @@ namespace zypp::json {
     using const_iterator = std::vector<Value>::const_iterator;
     using size_type = std::vector<Value>::size_type;
 
-    Array() {}
+    Array();
 
     /** Construct from container iterator */
     template <class Iterator>
@@ -78,10 +78,10 @@ namespace zypp::json {
     const_iterator begin() const { return _values.begin (); }
     const_iterator end() const { return _values.end (); }
 
-    const Value &operator[]( size_type n ) const { return _values[n]; }
-    Value &operator[]( size_type n ){ return _values[n]; }
+    const Value &operator[]( size_type n ) const;
+    Value &operator[](size_type n);
 
-    size_type size() const { return _values.size(); }
+    size_type size() const;
 
     bool operator==( const Array &other ) const;
 

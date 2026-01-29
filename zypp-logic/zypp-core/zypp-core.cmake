@@ -250,8 +250,6 @@ if( ${arg_INSTALL_HEADERS} )
 endif()
 
 zypp_add_sources( zyppng_async_HEADERS
-  ng/async/AsyncOp
-  ng/async/asyncop.h
 )
 
 zypp_add_sources( zyppng_base_SRCS
@@ -353,10 +351,6 @@ zypp_add_sources( zyppng_meta_HEADERS
 zypp_add_sources( zyppng_pipelines_HEADERS
   ng/pipelines/Algorithm
   ng/pipelines/algorithm.h
-  ng/pipelines/AsyncResult
-  ng/pipelines/asyncresult.h
-  ng/pipelines/Await
-  ng/pipelines/await.h
   ng/pipelines/Expected
   ng/pipelines/expected.h
   ng/pipelines/Lift
@@ -367,7 +361,6 @@ zypp_add_sources( zyppng_pipelines_HEADERS
   ng/pipelines/redo.h
   ng/pipelines/Transform
   ng/pipelines/transform.h
-  ng/pipelines/Wait
   ng/pipelines/wait.h
 )
 

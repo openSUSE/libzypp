@@ -18,7 +18,7 @@
 #include <zypp/parser/susetags/ContentFileReader.h>
 #include <zypp/parser/susetags/RepoIndex.h>
 
-#include <zypp/ng/workflows/logichelpers.h>
+
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
 #include <zypp/ng/workflows/checksumwf.h>
 
@@ -36,12 +36,8 @@ namespace zyppng::SuseTagsWorkflows {
      *
      * \TODO this is basically the same as the RPMMD workflow with changed filenames, can we unite them?
      */
-    template<class Executor, class OpType>
-    struct StatusLogic : public LogicBase<Executor, OpType>{
-      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
-
+    struct StatusLogic {
     public:
-
       using ProvideType     = typename Context::ProvideType;
       using MediaHandle     = typename ProvideType::MediaHandle;
       using ProvideRes      = typename ProvideType::Res;
@@ -51,13 +47,13 @@ namespace zyppng::SuseTagsWorkflows {
         , _handle(std::move(media))
       {}
 
-      MaybeAsyncRef<expected<zypp::RepoStatus>> execute() {
+      MaybeAwaitable<expected<zypp::RepoStatus>> execute() {
         return _ctx->zyppContext()->provider()->provide( _handle, _ctx->repoInfo().path() / "content" , ProvideFileSpec().setMirrorsAllowed(false) )
           | [this]( expected<ProvideRes> contentFile ) {
 
               // mandatory master index is missing -> stay empty
               if ( !contentFile )
-                return makeReadyResult( make_expected_success (zypp::RepoStatus() ));
+                return makeReadyTask( make_expected_success (zypp::RepoStatus() ));
 
               zypp::RepoStatus status ( contentFile->file() );
 
@@ -70,7 +66,7 @@ namespace zyppng::SuseTagsWorkflows {
                       return make_expected_success( std::move(status) );
                     };
               }
-              return makeReadyResult( make_expected_success(std::move(status)) );
+              return makeReadyTask( make_expected_success(std::move(status)) );
             };
       }
 
@@ -81,10 +77,8 @@ namespace zyppng::SuseTagsWorkflows {
 
   MaybeAwaitable<expected<zypp::RepoStatus> > repoStatus(repo::DownloadContextRef dl, ProvideMediaHandle mediaHandle)
   {
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor< StatusLogic, MaybeAwaitable<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
-    else
-      return SimpleExecutor< StatusLogic, SyncOp<expected<zypp::RepoStatus>> >::run( std::move(dl), std::move(mediaHandle) );
+    StatusLogic impl( std::move(dl), std::move(mediaHandle) );
+    zypp_co_return zypp_co_await( impl.execute() );
   }
 
   namespace {
@@ -100,11 +94,7 @@ namespace zyppng::SuseTagsWorkflows {
       return zypp::Pathname();
     }
 
-
-    template<class Executor, class OpType>
-    struct DlLogic : public LogicBase<Executor, OpType> {
-
-      ZYPP_ENABLE_LOGIC_BASE(Executor, OpType);
+    struct DlLogic  {
     public:
 
       using ProvideType     = typename Context::ProvideType;
@@ -275,9 +265,9 @@ namespace zyppng::SuseTagsWorkflows {
 
                     } catch ( const zypp::Exception &e ) {
                       ZYPP_CAUGHT( e );
-                      return makeReadyResult(expected<repo::DownloadContextRef>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+                      return makeReadyTask(expected<repo::DownloadContextRef>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
                     } catch ( ... ) {
-                      return makeReadyResult(expected<repo::DownloadContextRef>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+                      return makeReadyTask(expected<repo::DownloadContextRef>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
                     }
 
                     // add the required files to the base steps
@@ -321,10 +311,8 @@ namespace zyppng::SuseTagsWorkflows {
 
   MaybeAwaitable<expected<repo::DownloadContextRef> > download(repo::DownloadContextRef dl, ProvideMediaHandle mediaHandle, ProgressObserverRef progressObserver)
   {
-    if constexpr ( ZYPP_IS_ASYNC )
-      return SimpleExecutor< DlLogic, AsyncOp<expected<repo::DownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
-    else
-      return SimpleExecutor< DlLogic, SyncOp<expected<repo::DownloadContextRef>> >::run( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
+    DlLogic impl( std::move(dl), std::move(mediaHandle), std::move(progressObserver) );
+    zypp_co_return zypp_co_await( impl.execute() );
   }
 
 }

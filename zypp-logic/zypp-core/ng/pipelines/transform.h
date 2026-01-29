@@ -17,63 +17,94 @@
 
 #include <zypp-core/ng/meta/TypeTraits>
 #include <zypp-core/ng/meta/Functional>
-#include <zypp-core/ng/pipelines/AsyncResult>
-#include <zypp-core/ng/pipelines/wait.h>
 #include <algorithm>
+#include <zypp-core/ng/pipelines/operators.h>
 
 namespace zyppng {
 
-template < template< class, class... > class Container,
-  typename Msg,
-  typename Transformation,
-  typename Ret = std::result_of_t<Transformation(Msg)>,
-  typename ...CArgs >
-Container<Ret> transform( Container<Msg, CArgs...>&& val, Transformation &&transformation )
-{
-  Container<Ret> res;
-  std::transform( std::make_move_iterator(val.begin()), std::make_move_iterator(val.end()), std::back_inserter(res), std::forward<Transformation>(transformation) );
-  return res;
-}
+  namespace detail {
 
-template < template< class, class... > class Container,
-  typename Msg,
-  typename Transformation,
-  typename Ret = std::result_of_t<Transformation(Msg)>,
-  typename ...CArgs >
-Container<Ret> transform( const Container<Msg, CArgs...>& val, Transformation &&transformation )
-{
-  Container<Ret> res;
-  std::transform( val.begin(), val.end(), std::back_inserter(res), std::forward<Transformation>(transformation) );
-  return res;
-}
+    template <typename ElementType, typename Fn, typename = void>
+    struct TransformImpl;
 
-namespace detail {
-    template <typename Transformation >
-    struct transform_helper {
-        Transformation function;
+    template <typename ElementType, typename Fn, typename>
+    struct TransformImpl {
 
-        template< class Container >
-        auto operator()( Container&& arg ) {
-          if constexpr ( detail::is_sync_monad_cb_with_async_res_v<Transformation, typename Container::value_type> ) {
-            using namespace zyppng::operators;
-            return zyppng::transform( std::forward<Container>(arg), function ) | zyppng::waitFor();
-          } else {
-            return zyppng::transform( std::forward<Container>(arg), function );
-          }
+        using Ret = std::invoke_result_t<Fn, ElementType>;
+
+        template < template< class, class... > class Container,
+          typename Transformation = Fn,
+          typename ...CArgs >
+        static inline Container<Ret> execute( Container<ElementType, CArgs...>&& val, Transformation &&transformation )
+        {
+          Container<Ret> res;
+          std::transform( std::make_move_iterator(val.begin()), std::make_move_iterator(val.end()), std::back_inserter(res), std::forward<Transformation>(transformation) );
+          return res;
+        }
+
+        template < template< class, class... > class Container,
+          typename Transformation = Fn,
+          typename ...CArgs >
+        static inline Container<Ret> execute(const Container<ElementType, CArgs...>& val, Transformation &&transformation )
+        {
+          Container<Ret> res;
+          std::transform( val.begin(), val.end(), std::back_inserter(res), std::forward<Transformation>(transformation) );
+          return res;
         }
     };
+
+
+  }
+
+template < template< class, class... > class Container,
+  typename Msg,
+  typename Transformation,
+  typename Ret = std::result_of_t<Transformation(Msg)>,
+  typename ...CArgs >
+auto transform( Container<Msg, CArgs...>&& val, Transformation &&transformation )
+{
+  return detail::TransformImpl<Msg,Transformation>::execute( std::move(val), std::forward<Transformation>(transformation));
+}
+
+template < template< class, class... > class Container,
+  typename Msg,
+  typename Transformation,
+  typename Ret = std::result_of_t<Transformation(Msg)>,
+  typename ...CArgs >
+auto transform( const Container<Msg, CArgs...>& val, Transformation &&transformation )
+{
+  return detail::TransformImpl<Msg,Transformation>::execute( val, std::forward<Transformation>(transformation));
 }
 
 namespace operators {
 
-    template <typename Transformation>
-    auto transform(Transformation&& transformation)
-    {
-        return detail::transform_helper<Transformation>{
-            std::forward<Transformation>(transformation)};
-    }
+  namespace detail {
+      template <typename Transformation, typename sfinae = void >
+      struct transform_helper {
+          Transformation function;
+
+          template< class Container >
+          auto operator()( Container&& arg ) {
+              return zyppng::transform( std::forward<Container>(arg), function );
+          }
+      };
+  }
+
+
+  template <typename Transformation>
+  auto transform(Transformation&& transformation)
+  {
+      return detail::transform_helper<Transformation>{
+          std::forward<Transformation>(transformation)};
+  }
 }
 
 }
+
+
+#ifdef ZYPP_ENABLE_ASYNC
+#include <zypp-core/ng/async/pipelines/transform.h>
+#endif
+
 
 #endif

@@ -11,7 +11,7 @@
 
 #include <zypp-core/ng/pipelines/expected.h>
 #include <zypp-core/Pathname.h>
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp/RepoInfo.h>
 
 namespace zyppng {

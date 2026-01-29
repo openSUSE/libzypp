@@ -10,7 +10,6 @@
 #define ZYPP_NG_REPO_DOWNLOADER_INCLUDED
 
 #include <zypp-core/ng/base/Base>
-#include <zypp-core/ng/pipelines/AsyncResult>
 #include <zypp-core/ng/pipelines/Expected>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/OnMediaLocation>

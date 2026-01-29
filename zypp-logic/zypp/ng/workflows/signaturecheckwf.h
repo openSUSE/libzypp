@@ -9,7 +9,7 @@
 #ifndef ZYPP_NG_SIGNATURECHECK_WORKFLOW_INCLUDED
 #define ZYPP_NG_SIGNATURECHECK_WORKFLOW_INCLUDED
 
-#include <zypp-core/ng/pipelines/AsyncResult>
+#include <zypp-core/ng/async/task.h>
 #include <zypp-core/ng/pipelines/Expected>
 
 #include <zypp-common/PublicKey.h>

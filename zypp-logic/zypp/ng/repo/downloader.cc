@@ -10,7 +10,6 @@
 #include "downloader.h"
 #include <zypp-core/ng/pipelines/MTry>
 #include <zypp-core/ng/base/Signals>
-#include <zypp-core/ng/pipelines/Wait>
 #include <zypp-core/ng/pipelines/Transform>
 #include <zypp-core/fs/PathInfo.h>
 

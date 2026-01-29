@@ -72,6 +72,10 @@ struct GlibWaitPIDData
   EventDispatcher::WaitPidCallback callback;
 };
 
+struct GlibTimeoutData {
+    std::function<bool()> _callback;
+};
+
 class EventDispatcherPrivate : public BasePrivate
 {
   ZYPP_DECLARE_PUBLIC(EventDispatcher)
@@ -84,6 +88,9 @@ public:
 
   static std::shared_ptr<EventDispatcher> create ( );
   static void waitPidCallback ( GPid pid, gint status, gpointer user_data );
+
+  static bool timeoutCallback ( gpointer user_data );
+  static void timeoutDestroyCallback( gpointer user_data );
 
   std::thread::id _myThreadId;
   GMainContext *_ctx = nullptr;

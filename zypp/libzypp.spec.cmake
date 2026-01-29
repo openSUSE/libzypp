@@ -80,6 +80,12 @@
 # where we install and lookup our own config files. While '_distconfdir'
 # tells where we install other packages config snippets (e.g. logrotate).
 %define zyppconfdir %{_prefix}/etc
+%if 0%{?suse_version} && 0%{?suse_version} < 1610
+# legacy disto tools may not be prepared for having no /etc/zypp.conf
+%bcond_without keep_legacy_zyppconf
+%else
+%bcond_with keep_legacy_zyppconf
+%endif
 
 Name:           libzypp
 Version:        @VERSION@
@@ -353,6 +359,7 @@ cmake .. $CMAKE_FLAGS \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_SKIP_RPATH=1 \
       -DCMAKE_INSTALL_LIBEXECDIR=%{_libexecdir} \
+      %{?with_keep_legacy_zyppconf:-DKEEP_LEGACY_ZYPPCONF=1} \
       %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \
       %{?with_zstd:-DENABLE_ZSTD_COMPRESSION=1} \
@@ -463,7 +470,11 @@ done
 %dir %{zyppconfdir}/zypp
 #
 %{zyppconfdir}/zypp/zypp.conf
+%if %{with keep_legacy_zyppconf}
+%config(noreplace) %{_sysconfdir}/zypp/zypp.conf
+%else
 %{_sysconfdir}/zypp/zypp.conf.README
+%endif
 %dir %{zyppconfdir}/zypp/zypp.conf.d
 %dir %{_sysconfdir}/zypp/zypp.conf.d
 #

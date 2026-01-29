@@ -42,6 +42,7 @@ OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime ch
 
 OPTION (BUILD_LIBZYPP "Build of the classic libzypp library" ON)
 OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" ON)
+OPTION (KEEP_LEGACY_ZYPPCONF "Install the vendor zypp.conf in /etc too (ONLY LEGACY SYSTEMS WANT THIS)" OFF)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 

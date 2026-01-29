@@ -5,6 +5,7 @@ ZYPP.CONF(5)
 :nop:
 :indent: {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}
 :asterisk: *
+:vendorconfdir: usr/etc
 
 NAME
 ----
@@ -13,25 +14,27 @@ zypp.conf - General configuration for libzypp based package management tools
 SYNOPSIS
 --------
 System configuration files _/etc/zypp/zypp.conf /etc/zypp/zypp.conf.d/{asterisk}.conf_. +
-Vendor configuration files _/usr/etc/zypp/zypp.conf /usr/etc/zypp/zypp.conf.d/{asterisk}.conf_.
+Vendor configuration files _/{vendorconfdir}/zypp/zypp.conf /{vendorconfdir}/zypp/zypp.conf.d/{asterisk}.conf_.
 
 DESCRIPTION
 -----------
 These files contain the basic configuration data for libzypp, the package management library used by processes like e.g. *zypper*(8), *YAST*(8) or PackageKit's zypp backend. Many configuration values can be amended by processes according to command line options or other needs. Otherwise values defined here are used as default. When these file does not specify a particular parameter libzypp's builtin defaults are used.
 
 The file format supports multiple sections, each of which can contain multiple key-value assignments. A section is introduced by a line containing the section name enclosed in square brackets, like +
-{indent} *[main]* +
+{indent} *[name]* +
 A key-value assignment is a single line that has the name of the key, an equals sign, and a setting for the value, like +
 {indent} *key = vlaue* +
 Leading and trailing whitespace is ignored, as whitespace surrounding the equals sign.
 
-Lookup of section and key names is case-sensitive. Key-value assignments outside any section are bound to an unnamed section and may not be recognized.
+_Note:_ Key-value _assignments outside any section_ are bound to an unnamed section and _may not be recognized_.
+
+Lookup of section and key names is case-sensitive.
 
 Any line starting with *#* is ignored, as is any blank line.
 
 Where a Boolean value is expected, any of *1*, *0*, *yes*, *no*, *on*, *off*, *true* or *false* can be used. Comparisons here are case-insensitive.
 
-See the *FILES* section to learn how the different configuration files are merged. We'd recommend maintaining the system configuration by using drop-in files in _/etc/zypp/zypp.conf.d/_ rather than overriding the vendor configuration with an own _/etc/zypp/zypp.conf_. But both is possible. Just make sure your _/etc/zypp/zypp.conf_ contains appropriate settings for the keys defined in _/usr/etc/zypp/zypp.conf_. At the time of this writing these are just *multiversion* and *multiversion.kernels*.
+See the *FILES* section to learn how the different configuration files are merged. We'd recommend maintaining the system configuration by using drop-in files in _/etc/zypp/zypp.conf.d/_ rather than overriding the vendor configuration with an own _/etc/zypp/zypp.conf_. But both is possible. Just make sure your _/etc/zypp/zypp.conf_ contains appropriate settings for the keys defined in _/{vendorconfdir}/zypp/zypp.conf_. At the time of this writing these are just *multiversion* and *multiversion.kernels*.
 
 SECTIONS
 --------
@@ -362,22 +365,27 @@ The file is read if it exists, but new credentials are usually stored in the use
 
 FILES
 -----
-_/usr/etc/zypp/zypp.conf +
-/usr/etc/zypp/zypp.conf.d/{asterisk}.conf +
+_/{vendorconfdir}/zypp/zypp.conf +
+/{vendorconfdir}/zypp/zypp.conf.d/{asterisk}.conf +
 /etc/zypp/zypp.conf +
 /etc/zypp/zypp.conf.d/{asterisk}.conf_
 
-The various configuration files considered for being parsed. System configuration files located below _/etc/zypp/_ (even if empty or a symlink to _/dev/null_) *will override* vendor configuration files with the *same name* located below _/usr/etc/zypp/_.
+The various configuration files considered for being parsed. System configuration files located below _/etc/zypp/_ (even if empty or a symlink to _/dev/null_) *will override* vendor configuration files with the *same name* located below _/{vendorconfdir}/zypp/_.
 
 The resulting files will be parsed in order _zypp.conf_ then _zypp.conf.d/{asterisk}.conf_ (in lexicographic order of their filenames). Later settings override earlier settings.
 
-So there are basically two methods of overriding the vendor provided configuration located below _/usr/etc/zypp/_:
+So there are basically two methods of overriding the vendor provided configuration located below _/{vendorconfdir}/zypp/_:
 
-* Maintain your own copy in _/etc/zypp/zypp.conf_. The vendor supplied _/usr/etc/zypp/zypp.conf_ is ignored then. Drop-in files will nevertheless be processed thereafter. The disadvantage is, that changes in the vendor configuration file are ignored and you have to manually merge them.
+* Do not use an _/etc/zypp/zypp.conf_ but use drop-in files _/etc/zypp/zypp.conf.d/{asterisk}.conf_. This way the vendor provided configuration is used as the base configuration. The drop-in files should then contain only the changes of the specific settings you are interested in. This is perhaps _the preferred way_ for most use cases.
 
-* Do not use an _/etc/zypp/zypp.conf_ but use drop-in files _/etc/zypp/zypp.conf.d/{asterisk}.conf_. This way the vendor provided configuration is used as the base configuration. The drop-in files should then contain only the changes of the specific settings you are interested in. This is perhaps the preferred way for most use cases.
+* Maintain your own copy in _/etc/zypp/zypp.conf_. The vendor supplied _/{vendorconfdir}/zypp/zypp.conf_ is ignored then. Drop-in files will nevertheless be processed thereafter. The _disadvantage_ is, that any changes in the vendor configuration file are ignored and you have to manually merge them.
 
 See also the https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md[UAPI.6 Configuration Files Specification]
+
+_LEGACY NOTE:_ +
+While newer distributions will no longer ship an _/etc/zypp/zypp.conf_ at all, we may continue shipping a full _/etc/zypp/zypp.conf_ on older distributions. But also in this case you benefit from maintaining your changes in drop-in files rather than amending the shipped _/etc/zypp/zypp.conf_. If the shipped _/etc/zypp/zypp.conf_ remains unmodified, libzypp will update the config file while your changes are safely stored in the drop-in file. If the config file is modified however, libzypp will not update it but stores the new version as _zypp.conf.rpmnew_ and you need to manually merge them.
+
+All libzypp versions supporting the use of drop-in files _provide: libzypp(econf)_ and also this man page.
 
 ENVIRONMENT
 -----------

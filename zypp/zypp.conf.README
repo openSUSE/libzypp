@@ -5,10 +5,6 @@ UAPI.6 Configuration Files Specification from:
    system configuration: /etc/zypp/zypp.conf[.d/*.conf]
    vendor configuration: /usr/etc/zypp/zypp.conf[.d/*.conf]
 
-The vendor configuration is maintained and unconditionally updated by packages.
-To amend settings use the system configuration files which are now solely under
-the local administrators control.
-
 After this update an unmodified /etc/zypp/zypp.conf will have been be removed
 and the system will continue to use the distributed vendor defaults.
 
@@ -17,5 +13,5 @@ still apply. You may nevertheless want to consider to store your changed setting
 in a drop-in file in /etc/zypp/zypp.conf.d/*.conf and afterwards remove your
 /etc/zypp/zypp.conf.
 
-See the FILES section in ZYPP.CONF(5) to learn more about two methods of
+See the FILES section in ZYPP.CONF(5) to learn more about the two methods of
 overriding the vendor provided configuration.

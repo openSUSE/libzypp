@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jan 29 18:08:59 CET 2026 - ma@suse.de
+
+- Prepare a legacy /etc/zypp/zypp.conf to be installed on old distros.
+  See the ZYPP.CONF(5) man page for details.
+- Fix runtime check for broken rpm --runposttrans (bsc#1257068)
+- version 17.38.2 (35)
+
+-------------------------------------------------------------------
 Wed Jan 14 20:19:36 CET 2026 - ma@suse.de
 
 - Avoid libcurl-mini4 when building as it does not support ftp

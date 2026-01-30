@@ -27,6 +27,25 @@ namespace zypp
   namespace repo
   {
 
+    namespace env {
+      /** XDG_CACHE_HOME: base directory relative to which user specific non-essential data files should be stored.
+       * http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+       */
+      inline filesystem::Pathname XDG_CACHE_HOME()
+      {
+        filesystem::Pathname ret;
+        const char * envp = getenv( "XDG_CACHE_HOME" );
+        if ( envp && *envp )
+          ret = envp;
+        else
+        {
+          ret = getenv( "HOME" );
+          ret /= ".cache";
+        }
+        return ret;
+      }
+    } //namespace env
+
     ///////////////////////////////////////////////////////////////////
     /// \class PackageProviderPolicy
     /// \brief Policies and options for \ref PackageProvider

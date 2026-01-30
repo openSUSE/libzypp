@@ -43,6 +43,8 @@
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp-curl/private/curlhelper_p.h>
 
+#include <zypp/repo/PackageProvider.h>
+
 using std::endl;
 using zypp::xml::escape;
 
@@ -457,11 +459,32 @@ namespace zypp
       return _metadataPath;
     }
 
-    Pathname packagesPath() const
+    Pathname systemPackagesPath() const
     {
       if ( _packagesPath.empty() && usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%PKG%";
       return _packagesPath;
+    }
+
+    Pathname userConfigPackagesPath() const
+    {
+      return zypp::repo::env::XDG_CACHE_HOME() / "zypp/packages";
+    }
+
+    /**
+     * @brief packagesPath Checks if the effective user is allowed to write into the system package cache.
+     * If it's allowed, then return that.
+     * If it's not allowed return the users's package cache (XDG_CACHE_HOME).
+     * @return The path of the packages cache
+     */
+    Pathname packagesPath() const
+    {
+      PathInfo pathInfo (systemPackagesPath());
+      if ( geteuid() != 0 && ! pathInfo.userMayW() ) {
+          return userConfigPackagesPath();
+      } else {
+          return systemPackagesPath();
+      }
     }
 
     Pathname predownloadPath() const

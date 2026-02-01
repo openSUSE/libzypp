@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-11 16:21+0100\n"
-"PO-Revision-Date: 2026-02-01 06:50+0000\n"
+"PO-Revision-Date: 2026-02-01 09:04+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://l10n.opensuse.org/projects/libzypp/master/"
 "ka/>\n"
@@ -327,11 +327,11 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "შეცდომების გარეშე"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "შიდა შეცდომა"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
@@ -351,11 +351,11 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "დაკავშირების შეცდომა"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "მხარდაუჭერელი პროტოკოლი"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
@@ -367,7 +367,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "მოლოდინის ვადა გავიდა"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
@@ -375,7 +375,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "ფაილი ვერ მოიძებნა"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
@@ -1797,15 +1797,15 @@ msgstr "მოძველებული"
 
 #: zypp-logic/zypp/Dep.cc:101
 msgid "Recommends"
-msgstr ""
+msgstr "რეკომენდაციას უწევს"
 
 #: zypp-logic/zypp/Dep.cc:102
 msgid "Suggests"
-msgstr ""
+msgstr "გირჩევთ"
 
 #: zypp-logic/zypp/Dep.cc:103
 msgid "Enhances"
-msgstr ""
+msgstr "გააფართოებს"
 
 #: zypp-logic/zypp/Dep.cc:104
 msgid "Supplements"
@@ -2018,7 +2018,7 @@ msgstr ""
 #. language code: bam bm
 #: zypp-logic/zypp/LanguageCode.cc:245
 msgid "Bambara"
-msgstr ""
+msgstr "ბამბარა"
 
 #. language code: ban
 #: zypp-logic/zypp/LanguageCode.cc:247
@@ -2068,7 +2068,7 @@ msgstr ""
 #. language code: bho
 #: zypp-logic/zypp/LanguageCode.cc:267
 msgid "Bhojpuri"
-msgstr ""
+msgstr "ბოჯპური"
 
 #. language code: bih bh
 #: zypp-logic/zypp/LanguageCode.cc:269
@@ -2173,7 +2173,7 @@ msgstr ""
 #. language code: ceb
 #: zypp-logic/zypp/LanguageCode.cc:311
 msgid "Cebuano"
-msgstr ""
+msgstr "სებუანო"
 
 #. language code: cel
 #: zypp-logic/zypp/LanguageCode.cc:313
@@ -2363,7 +2363,7 @@ msgstr "დივეხი"
 #. language code: doi
 #: zypp-logic/zypp/LanguageCode.cc:391
 msgid "Dogri"
-msgstr ""
+msgstr "დოგრი"
 
 #. language code: dra
 #: zypp-logic/zypp/LanguageCode.cc:393
@@ -2453,7 +2453,7 @@ msgstr ""
 #. language code: fan
 #: zypp-logic/zypp/LanguageCode.cc:429
 msgid "Fang"
-msgstr ""
+msgstr "ფანგი"
 
 #. language code: fao fo
 #: zypp-logic/zypp/LanguageCode.cc:431
@@ -2488,7 +2488,7 @@ msgstr ""
 #. language code: fon
 #: zypp-logic/zypp/LanguageCode.cc:443
 msgid "Fon"
-msgstr ""
+msgstr "ფონი"
 
 #. language code: fre fra fr
 #: zypp-logic/zypp/LanguageCode.cc:445 zypp-logic/zypp/LanguageCode.cc:447
@@ -2643,7 +2643,7 @@ msgstr ""
 #. language code: hat ht
 #: zypp-logic/zypp/LanguageCode.cc:513
 msgid "Haitian"
-msgstr ""
+msgstr "ჰაიტიური"
 
 #. language code: hau ha
 #: zypp-logic/zypp/LanguageCode.cc:515
@@ -2668,7 +2668,7 @@ msgstr "ჰერერო"
 #. language code: hil
 #: zypp-logic/zypp/LanguageCode.cc:523
 msgid "Hiligaynon"
-msgstr ""
+msgstr "ჰინგაინონი"
 
 #. language code: him
 #: zypp-logic/zypp/LanguageCode.cc:525
@@ -2753,7 +2753,7 @@ msgstr "ოქსიდენტური"
 #. language code: ilo
 #: zypp-logic/zypp/LanguageCode.cc:559
 msgid "Iloko"
-msgstr ""
+msgstr "ილოკური"
 
 #. language code: ina ia
 #: zypp-logic/zypp/LanguageCode.cc:561
@@ -2808,7 +2808,7 @@ msgstr "იავური"
 #. language code: jbo
 #: zypp-logic/zypp/LanguageCode.cc:581
 msgid "Lojban"
-msgstr ""
+msgstr "ლოჟბანი"
 
 #. language code: jpn ja
 #: zypp-logic/zypp/LanguageCode.cc:583
@@ -2873,7 +2873,7 @@ msgstr ""
 #. language code: kaw
 #: zypp-logic/zypp/LanguageCode.cc:607
 msgid "Kawi"
-msgstr ""
+msgstr "კავი"
 
 #. language code: kaz kk
 #: zypp-logic/zypp/LanguageCode.cc:609
@@ -2883,7 +2883,7 @@ msgstr "ყაზახური"
 #. language code: kbd
 #: zypp-logic/zypp/LanguageCode.cc:611
 msgid "Kabardian"
-msgstr ""
+msgstr "ყაბარდოული"
 
 #. language code: kha
 #: zypp-logic/zypp/LanguageCode.cc:613
@@ -2928,7 +2928,7 @@ msgstr ""
 #. language code: kok
 #: zypp-logic/zypp/LanguageCode.cc:629
 msgid "Konkani"
-msgstr ""
+msgstr "კონკანი"
 
 #. language code: kom kv
 #: zypp-logic/zypp/LanguageCode.cc:631
@@ -2978,7 +2978,7 @@ msgstr ""
 #. language code: kum
 #: zypp-logic/zypp/LanguageCode.cc:649
 msgid "Kumyk"
-msgstr ""
+msgstr "ყუმუხური"
 
 #. language code: kur ku
 #: zypp-logic/zypp/LanguageCode.cc:651
@@ -2988,7 +2988,7 @@ msgstr "ქურთული"
 #. language code: kut
 #: zypp-logic/zypp/LanguageCode.cc:653
 msgid "Kutenai"
-msgstr ""
+msgstr "კუტენაი"
 
 #. language code: lad
 #: zypp-logic/zypp/LanguageCode.cc:655
@@ -3068,7 +3068,7 @@ msgstr ""
 #. language code: lug lg
 #: zypp-logic/zypp/LanguageCode.cc:685
 msgid "Ganda"
-msgstr ""
+msgstr "განდა"
 
 #. language code: lui
 #: zypp-logic/zypp/LanguageCode.cc:687
@@ -3118,7 +3118,7 @@ msgstr "მაითხილი"
 #. language code: mak
 #: zypp-logic/zypp/LanguageCode.cc:707
 msgid "Makasar"
-msgstr ""
+msgstr "მაკასარი"
 
 #. language code: mal ml
 #: zypp-logic/zypp/LanguageCode.cc:709
@@ -3158,7 +3158,7 @@ msgstr "მალაიური"
 #. language code: mdf
 #: zypp-logic/zypp/LanguageCode.cc:727
 msgid "Moksha"
-msgstr ""
+msgstr "მოკშა"
 
 #. language code: mdr
 #: zypp-logic/zypp/LanguageCode.cc:729
@@ -3183,7 +3183,7 @@ msgstr ""
 #. language code: min
 #: zypp-logic/zypp/LanguageCode.cc:737
 msgid "Minangkabau"
-msgstr ""
+msgstr "მინანგკაბაური"
 
 #. language code: mis
 #: zypp-logic/zypp/LanguageCode.cc:739
@@ -3208,12 +3208,12 @@ msgstr "მალტური"
 #. language code: mnc
 #: zypp-logic/zypp/LanguageCode.cc:747
 msgid "Manchu"
-msgstr ""
+msgstr "მანჯურიული"
 
 #. language code: mni
 #: zypp-logic/zypp/LanguageCode.cc:749
 msgid "Manipuri"
-msgstr ""
+msgstr "მანიპური"
 
 #. language code: mno
 #: zypp-logic/zypp/LanguageCode.cc:751
@@ -3243,7 +3243,7 @@ msgstr ""
 #. language code: mul
 #: zypp-logic/zypp/LanguageCode.cc:761
 msgid "Multiple Languages"
-msgstr ""
+msgstr "მრავალენიანი"
 
 #. language code: mun
 #: zypp-logic/zypp/LanguageCode.cc:763
@@ -3273,7 +3273,7 @@ msgstr ""
 #. language code: myv
 #: zypp-logic/zypp/LanguageCode.cc:773
 msgid "Erzya"
-msgstr ""
+msgstr "ერზია"
 
 #. language code: nah
 #: zypp-logic/zypp/LanguageCode.cc:775
@@ -3353,7 +3353,7 @@ msgstr ""
 #. language code: nog
 #: zypp-logic/zypp/LanguageCode.cc:807
 msgid "Nogai"
-msgstr ""
+msgstr "ნოღაური"
 
 #. language code: non
 #: zypp-logic/zypp/LanguageCode.cc:809
@@ -3428,7 +3428,7 @@ msgstr "ორომო"
 #. language code: osa
 #: zypp-logic/zypp/LanguageCode.cc:837
 msgid "Osage"
-msgstr ""
+msgstr "ოსეიჯი"
 
 #. language code: oss os
 #: zypp-logic/zypp/LanguageCode.cc:839
@@ -3468,12 +3468,12 @@ msgstr "პამპანგა"
 #. language code: pan pa
 #: zypp-logic/zypp/LanguageCode.cc:853
 msgid "Panjabi"
-msgstr ""
+msgstr "პანჯაბი"
 
 #. language code: pap
 #: zypp-logic/zypp/LanguageCode.cc:855
 msgid "Papiamento"
-msgstr ""
+msgstr "პაპიამენტო"
 
 #. language code: pau
 #: zypp-logic/zypp/LanguageCode.cc:857
@@ -3643,7 +3643,7 @@ msgstr "სიცილიური"
 #. language code: sco
 #: zypp-logic/zypp/LanguageCode.cc:929
 msgid "Scots"
-msgstr ""
+msgstr "შოტლანდიური"
 
 #. language code: scr hrv hr
 #: zypp-logic/zypp/LanguageCode.cc:931 zypp-logic/zypp/LanguageCode.cc:933
@@ -3763,7 +3763,7 @@ msgstr ""
 #. language code: sog
 #: zypp-logic/zypp/LanguageCode.cc:981
 msgid "Sogdian"
-msgstr ""
+msgstr "სოღდური"
 
 #. language code: som so
 #: zypp-logic/zypp/LanguageCode.cc:983
@@ -3918,7 +3918,7 @@ msgstr ""
 #. language code: tlh
 #: zypp-logic/zypp/LanguageCode.cc:1047
 msgid "Klingon"
-msgstr ""
+msgstr "კლინგონური"
 
 #. language code: tli
 #: zypp-logic/zypp/LanguageCode.cc:1049
@@ -3943,7 +3943,7 @@ msgstr ""
 #. language code: tpi
 #: zypp-logic/zypp/LanguageCode.cc:1057
 msgid "Tok Pisin"
-msgstr ""
+msgstr "ტოკ პისინი"
 
 #. language code: tsi
 #: zypp-logic/zypp/LanguageCode.cc:1059
@@ -4023,7 +4023,7 @@ msgstr ""
 #. language code: und
 #: zypp-logic/zypp/LanguageCode.cc:1091
 msgid "Undetermined"
-msgstr ""
+msgstr "დაუდგენელია"
 
 #. language code: urd ur
 #: zypp-logic/zypp/LanguageCode.cc:1093
@@ -4053,7 +4053,7 @@ msgstr "ვიეტნამური"
 #. language code: vol vo
 #: zypp-logic/zypp/LanguageCode.cc:1103
 msgid "Volapuk"
-msgstr ""
+msgstr "ვოლაპუკი"
 
 #. language code: vot
 #: zypp-logic/zypp/LanguageCode.cc:1105
@@ -4073,7 +4073,7 @@ msgstr ""
 #. language code: war
 #: zypp-logic/zypp/LanguageCode.cc:1111
 msgid "Waray"
-msgstr ""
+msgstr "ვარაული"
 
 #. language code: was
 #: zypp-logic/zypp/LanguageCode.cc:1113
@@ -4175,7 +4175,7 @@ msgstr ""
 
 #: zypp-logic/zypp/VendorSupportOptions.cc:14
 msgid "unknown"
-msgstr ""
+msgstr "უცნობი"
 
 #: zypp-logic/zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
@@ -4426,7 +4426,7 @@ msgstr ""
 
 #: zypp-logic/zypp/ng/repomanager.cc:702
 msgid "Modifying repository"
-msgstr ""
+msgstr "რეპოზიტორიების ჩასწორება"
 
 #: zypp-logic/zypp/ng/repomanager.cc:895
 msgid "Refreshing Repository: "
@@ -5138,7 +5138,7 @@ msgstr ""
 #: zypp/zypp-tui/output/Out.cc:141 zypp/zypp-tui/output/OutNormal.cc:341
 #: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "done"
-msgstr ""
+msgstr "მზადაა"
 
 #. error
 #: zypp-logic/zypp/target/commitpackagepreloader.cc:290
@@ -5152,7 +5152,7 @@ msgstr ""
 
 #: zypp-logic/zypp/target/commitpackagepreloader.cc:655
 msgid "Cancelled by user."
-msgstr ""
+msgstr "შეწყვეტილია მომხმარებლის მიერ."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5277,7 +5277,7 @@ msgstr "არა"
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp/zypp-tui/output/Out.cc:26
 msgid "Note:"
-msgstr ""
+msgstr "შენიშვნა:"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp/zypp-tui/output/Out.cc:28
@@ -5299,11 +5299,11 @@ msgstr ""
 #: zypp/zypp-tui/output/Out.cc:145 zypp/zypp-tui/output/OutNormal.cc:338
 #: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "error"
-msgstr ""
+msgstr "შეცდომა"
 
 #: zypp/zypp-tui/output/OutNormal.cc:90
 msgid "Warning: "
-msgstr ""
+msgstr "გაფრთხილება: "
 
 #: zypp/zypp-tui/output/OutNormal.cc:254 zypp/zypp-tui/output/OutNormal.cc:288
 #: zypp/zypp-tui/output/OutNormal.cc:326

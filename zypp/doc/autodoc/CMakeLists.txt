@@ -17,6 +17,8 @@ STRING( JOIN " " ZYPP_SOURCE_DIRS
     ${zypp-libs_SOURCE_DIR}/zypp/zypp-common
     ${zypp-libs_SOURCE_DIR}/zypp/zypp-tui
     ${zypp-libs_SOURCE_DIR}/zypp/shared
+    ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp
+    ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-common
     ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-core
     ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-curl
     ${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-media

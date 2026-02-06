@@ -43,6 +43,8 @@
 #include <zypp/ng/workflows/repoinfowf.h>
 #include <zypp-curl/private/curlhelper_p.h>
 
+#include <zypp/repo/PackageProvider.h>
+
 using std::endl;
 using zypp::xml::escape;
 
@@ -457,11 +459,28 @@ namespace zypp
       return _metadataPath;
     }
 
-    Pathname packagesPath() const
+    Pathname systemPackagesPath() const
     {
       if ( _packagesPath.empty() && usesAutoMetadataPaths() )
         return _metadataPath.dirname() / "%PKG%";
       return _packagesPath;
+    }
+
+    Pathname userConfigPackagesPath() const
+    {
+      return zypp::repo::env::XDG_CACHE_HOME() / "zypp/packages";
+    }
+
+    Pathname packagesPath() const
+    {
+      PathInfo pathInfo (systemPackagesPath());
+      if ( geteuid() != 0 && ! pathInfo.userMayW() ) {
+          auto destinationDir = userConfigPackagesPath();
+          WAR << "Destination dir '" << destinationDir << "' is not user writable, using tmp space." << endl;
+          return destinationDir;
+      } else {
+          return systemPackagesPath();
+      }
     }
 
     Pathname predownloadPath() const
@@ -739,6 +758,12 @@ namespace zypp
 
   Pathname RepoInfo::metadataPath() const
   { return _pimpl->metadataPath(); }
+
+  Pathname RepoInfo::userConfigPackagesPath() const
+  { return _pimpl->userConfigPackagesPath(); }
+
+  Pathname RepoInfo::systemPackagesPath() const
+  { return _pimpl->systemPackagesPath(); }
 
   Pathname RepoInfo::packagesPath() const
   { return _pimpl->packagesPath(); }

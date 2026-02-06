@@ -308,9 +308,28 @@ namespace zypp
       bool usesAutoMetadataPaths() const;
 
       /**
-       * \short Path where this repo packages are cached
+       * @brief Returns a path to the system-defined package cache.
+       * @return the path of the system packages cache
+       */
+      Pathname systemPackagesPath() const;
+
+      /**
+       * @brief Returns a path to the user-controller read/write package cache.
+       * Returns a path under the user's home directory.
+       * If XDG_CACHE_HOME is defined uses XDG_CACHE_HOME/zypp/packages directory.
+       * Uses $HOME/.cache otherwise.
+       * @return the path of the user read/write package cache
+       */
+      Pathname userConfigPackagesPath() const;
+
+      /**
+       * @brief packagesPath Checks if the effective user is allowed to write into the system package cache.
+       * If it's allowed, then return that.
+       * If it's not allowed return the users's package cache (XDG_CACHE_HOME).
+       * @return The path of the packages cache
        */
       Pathname packagesPath() const;
+
       /**
        * \short set the path where the local packages are stored
        *

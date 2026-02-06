@@ -126,6 +126,20 @@ namespace zypp
       return access.provideFile(std::move(repo_r), loc_r, policy_r );
     }
 
+    std::vector<Pathname> repositoryPaths( RepoInfo repo_r )
+    {
+      std::vector<Pathname> paths;
+
+      // Add user cache path if non-root
+      if ( geteuid() != 0 )
+        paths.push_back(repo_r.userConfigPackagesPath());
+
+      // Always add the system cache
+      paths.push_back(repo_r.systemPackagesPath());
+
+      return paths;
+    }
+
     ///////////////////////////////////////////////////////////////////
     class RepoMediaAccess::Impl
     {
@@ -273,10 +287,22 @@ namespace zypp
       }
 
       Fetcher fetcher;
-      fetcher.addCachePath( repo_r.packagesPath() );
-      MIL << "Added cache path " << repo_r.packagesPath() << endl;
-      fetcher.addCachePath( repo_r.predownloadPath(), Fetcher::CleanFiles );
-      MIL << "Added cache path " << repo_r.predownloadPath() << endl;
+
+      bool first = true;
+      for (const auto& path : repositoryPaths(repo_r)) {
+        // The first element will be the writeable cache.     
+        // Add it to the cache.
+        fetcher.addCachePath( path );
+        MIL << "Added cache path " << path << endl;
+        if (first) {
+          // Add the preloaded version of the previous cache and mark it as "clean it later".
+          Pathname preloadPath = path / ".preload";
+          fetcher.addCachePath( preloadPath, Fetcher::CleanFiles );
+          MIL << "Added cache path " << preloadPath << endl;
+
+          first = false;
+        }
+      }
 
       // Test whether download destination is writable, if not
       // switch into the tmpspace (e.g. bnc#755239, download and
@@ -289,14 +315,6 @@ namespace zypp
         // try to create it...
         assert_dir( destinationDir );
         pi();
-      }
-      if ( geteuid() != 0 && ! pi.userMayW() )
-      {
-        WAR << "Destination dir '" << destinationDir << "' is not user writable, using tmp space." << endl;
-        destinationDir = getZYpp()->tmpPath() / destinationDir;
-        assert_dir( destinationDir );
-        fetcher.addCachePath( destinationDir );
-        MIL << "Added cache path " << destinationDir << endl;
       }
 
       // Suppress (interactive) media::MediaChangeReport if we have fallback URLs

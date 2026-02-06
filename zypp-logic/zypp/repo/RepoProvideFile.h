@@ -49,6 +49,17 @@ namespace zypp
                              const ProvideFilePolicy & policy_r = ProvideFilePolicy() );
 
     /**
+     * returns a set of paths.
+     *
+     * Depending on the privilege level of the effective user, the path requested will be
+     * - the user r/w cache location if it's a regular unprivileged user
+     * - the system r/o cache location otherwise
+     * @param repo_r
+     * @return a list of paths
+     */
+    std::vector<Pathname> repositoryPaths( RepoInfo repo_r );
+
+    /**
      * \short Provides files from different repos
      *
      * Class that allows to get files from repositories

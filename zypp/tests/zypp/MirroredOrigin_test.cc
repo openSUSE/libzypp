@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
     MirroredOrigin origin( OriginEndpoint(), {http_mirror1} );
 
     BOOST_CHECK(!origin.isValid());
-    BOOST_CHECK_EQUAL(origin.endpointCount(), 2);
+    BOOST_CHECK_EQUAL(origin.endpointCount(), 1);
     BOOST_CHECK_EQUAL(origin.authority(), OriginEndpoint());
 
     BOOST_CHECK_EQUAL(origin.mirrors().size(), 1);

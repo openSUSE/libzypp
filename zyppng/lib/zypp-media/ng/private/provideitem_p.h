@@ -67,7 +67,7 @@ namespace zyppng {
     }
 
     zypp::Url url() const {
-      return _origin.authority().url();
+      return _origin.authorities()[0].url();
     }
 
     void setUrl( const zypp::Url & url ) {

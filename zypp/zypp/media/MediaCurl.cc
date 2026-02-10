@@ -239,7 +239,7 @@ MediaCurl::MediaCurl(const MirroredOrigin &origin_r,
 
   _curlError[0] = '\0';
 
-  MIL << "MediaCurl::MediaCurl(" << origin_r.authority().url() << ", " << attach_point_hint_r << ")" << endl;
+  MIL << "MediaCurl::MediaCurl(" << origin_r.authorities()[0].url() << ", " << attach_point_hint_r << ")" << endl;
 
   globalInitCurlOnce();
 
@@ -253,7 +253,7 @@ MediaCurl::MediaCurl(const MirroredOrigin &origin_r,
          atemp == NULL || (atest=::mkdtemp(atemp)) == NULL)
     {
       WAR << "attach point " << ainfo.path()
-          << " is not useable for " << origin_r.authority().url().getScheme() << endl;
+          << " is not useable for " << origin_r.authorities()[0].url().getScheme() << endl;
       setAttachPoint("", true);
     }
     else if( atest != NULL)

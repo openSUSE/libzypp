@@ -89,7 +89,7 @@ namespace zypp::media {
     };
 
     using zyppng::operators::operator |;
-    (resolveEndpoint( origin.authority() ) // first resolve the authority, that one needs to work always
+    (resolveEndpoint( origin.authorities()[0] ) // first resolve the authority, that one needs to work always
     | and_then([&]( OriginEndpoint ep ) {
       hdlType = handlerType ( ep.url() );
       resolvedOrigin = MirroredOrigin( std::move(ep) );
@@ -154,7 +154,7 @@ namespace zypp::media {
         enum WhichHandler { choose, curl, curl2 };
         WhichHandler which = choose;
         // Leagcy: choose handler in Url query
-        if ( const std::string & queryparam = resolvedOrigin->authority().url().getQueryParam("mediahandler"); ! queryparam.empty() ) {
+        if ( const std::string & queryparam = resolvedOrigin->authorities()[0].url().getQueryParam("mediahandler"); ! queryparam.empty() ) {
           if ( queryparam == "curl" )
             which = curl;
           else if ( queryparam == "curl2" )
@@ -195,19 +195,19 @@ namespace zypp::media {
         // bsc#1228208: MediaPluginType must be resolved to a valid schema by the
         // above UrlResolverPlugin::resolveUrl call. MediaPlugin exists as a stub,
         // but is not a usable handler type.
-        ZYPP_THROW(MediaUnsupportedUrlSchemeException(resolvedOrigin->authority().url()));
+        ZYPP_THROW(MediaUnsupportedUrlSchemeException(resolvedOrigin->authorities()[0].url()));
         break;
       }
     }
 
     if ( !_handler ) {
-      ZYPP_THROW(MediaUnsupportedUrlSchemeException(resolvedOrigin->authority().url()));
+      ZYPP_THROW(MediaUnsupportedUrlSchemeException(resolvedOrigin->authorities()[0].url()));
     }
 
     // check created handler
     if ( !_handler ){
       ERR << "Failed to create media handler" << std::endl;
-      ZYPP_THROW(MediaSystemException(resolvedOrigin->authority().url(), "Failed to create media handler"));
+      ZYPP_THROW(MediaSystemException(resolvedOrigin->authorities()[0].url(), "Failed to create media handler"));
     }
 
     MIL << "Opened: " << *_handler << std::endl;

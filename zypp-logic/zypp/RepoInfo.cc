@@ -230,7 +230,9 @@ namespace zypp
     MirroredOriginSet repoOrigins() const
     {
       MirroredOriginSet origins;
-      origins.addEndpoints( _baseUrls.transformedBegin(), _baseUrls.transformedEnd() );
+      std::for_each( _baseUrls.transformedBegin(), _baseUrls.transformedEnd(), [&]( OriginEndpoint ep ) {
+        origins.addAuthorityEndpoint( std::move(ep) );
+      });
 
       const auto &mirrs = mirrorUrls ();
       origins.addEndpoints( mirrs.transformedBegin(), mirrs.transformedEnd() );
@@ -1157,7 +1159,7 @@ namespace zypp
     // We skip the check for downloading media unless a local copy of the
     // media file exists and states that there is more than one medium.
     const auto &origins = _pimpl->repoOrigins ();
-    bool canSkipMediaCheck = std::all_of( origins.begin(), origins.end(), []( const MirroredOrigin &origin ) { return origin.authority().url().schemeIsDownloading(); });
+    bool canSkipMediaCheck = std::all_of( origins.begin(), origins.end(), []( const MirroredOrigin &origin ) { return origin.authorities()[0].url().schemeIsDownloading(); });
     if ( canSkipMediaCheck ) {
       const auto &mDataPath = metadataPath();
       if ( not mDataPath.empty() ) {

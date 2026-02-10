@@ -41,14 +41,14 @@ namespace zypp {
     //
     MediaDIR::MediaDIR(const MirroredOrigin &origin,
                        const Pathname & /*attach_point_hint_r*/ )
-        : MediaHandler( origin, origin.authority().url().getPathName(),
+        : MediaHandler( origin, origin.authorities()[0].url().getPathName(),
                     "/",    // urlpath below attachpoint
                     false ) // does_download
     {
         MIL << "MediaDIR::MediaDIR(" << url() << ")" << endl;
-        if( !origin.authority().url().getHost().empty())
+        if( !origin.authorities()[0].url().getHost().empty())
         {
-          ZYPP_THROW(MediaBadUrlException(origin.authority().url(),
+          ZYPP_THROW(MediaBadUrlException(origin.authorities()[0].url(),
             "Hostname not allowed in the Url"
           ));
         }

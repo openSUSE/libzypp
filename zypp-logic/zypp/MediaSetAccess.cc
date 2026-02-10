@@ -366,7 +366,7 @@ public:
             // release all media before requesting another (#336881)
             media_mgr.releaseAll();
 
-            zypp::Url u = _pimpl->_origin.authority().url();
+            zypp::Url u = _pimpl->_origin.authorities()[0].url();
             user = report->requestMedia (
               u,
               media_nr,
@@ -379,7 +379,7 @@ public:
 
             // if the user changes the primary URL, we can no longer use the mirrors,
             // so we drop them and the settings for the primary too!
-            if ( u != _pimpl->_origin.authority().url() ) {
+            if ( u != _pimpl->_origin.authorities()[0].url() ) {
               MIL << "User changed the URL, dropping all mirrors" << std::endl;
               _pimpl->_origin.clearMirrors();
               _pimpl->_origin.setAuthority(u);
@@ -550,7 +550,7 @@ public:
 
   std::ostream & MediaSetAccess::dumpOn( std::ostream & str ) const
   {
-    str << "MediaSetAccess (URL='" << _pimpl->_origin.authority().url() << "', attach_point_hint='" << _pimpl->_prefAttachPoint << "')";
+    str << "MediaSetAccess (URL='" << _pimpl->_origin.authorities()[0].url() << "', attach_point_hint='" << _pimpl->_prefAttachPoint << "')";
     return str;
   }
 

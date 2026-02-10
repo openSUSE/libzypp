@@ -48,7 +48,7 @@ namespace zyppng
      */
     const zypp::Url &baseUrl() const {
       if ( !_sharedData->_mediaHandle ) {
-        return _sharedData->_origin.authority().url();
+        return _sharedData->_origin.authorities()[0].url();
       } else {
         return _sharedData->_mediaHandle->baseUrl();
       }

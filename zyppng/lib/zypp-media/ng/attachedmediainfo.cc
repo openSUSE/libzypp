@@ -45,7 +45,7 @@ namespace zyppng {
     if ( !_originConfig.isValid() )
       return {};
 
-    return _originConfig.authority().url();
+    return _originConfig.authorities()[0].url();
   }
 
   void AttachedMediaInfo::unref_to(unsigned int refCnt) const {

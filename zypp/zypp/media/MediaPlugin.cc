@@ -31,7 +31,7 @@ namespace zypp
     MediaPlugin::MediaPlugin(const MirroredOrigin &origin_r, const Pathname & attach_point_hint_r )
       : MediaHandler( origin_r, attach_point_hint_r, /*path below attachpoint*/"/", /*does_download*/false )
     {
-      MIL << "MediaPlugin::MediaPlugin(" << _origin.authority().url() << ", " << attach_point_hint_r << ")" << endl;
+      MIL << "MediaPlugin::MediaPlugin(" << _origin.authorities()[0].url() << ", " << attach_point_hint_r << ")" << endl;
     }
     void MediaPlugin::attachTo( bool next_r )
     {}

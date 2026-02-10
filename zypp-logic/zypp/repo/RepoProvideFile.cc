@@ -176,7 +176,7 @@ namespace zypp
           return nullptr;
 
         std::map<Url, shared_ptr<MediaSetAccess> >::const_iterator it;
-        it = _medias.find( origin.authority().url() ); // primary Url is the key
+        it = _medias.find( origin.authorities()[0].url() ); // primary Url is the key
         shared_ptr<MediaSetAccess> media;
         if ( it != _medias.end() )
         {
@@ -185,7 +185,7 @@ namespace zypp
         else
         {
           media.reset( new MediaSetAccess( origin ) );
-          _medias[origin.authority().url()] = media;
+          _medias[origin.authorities()[0].url()] = media;
         }
         setVerifierForRepo( repo, media );
         return media;

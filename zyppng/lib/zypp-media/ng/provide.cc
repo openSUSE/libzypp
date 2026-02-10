@@ -232,7 +232,7 @@ namespace zyppng {
             continue;
           }
 
-          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authorities()[0] << std::endl;
 
           // how many workers for this type do already exist
           int existingTypeWorkers = 0;
@@ -454,7 +454,7 @@ namespace zyppng {
             continue;
           }
 
-          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authorities()[0] << std::endl;
 
           // how many workers for this type do already exist
           int existingTypeWorkers = 0;
@@ -640,7 +640,7 @@ namespace zyppng {
 
           // make a real reference so it does not dissapear when we remove it from the queue
           ProvideRequestRef item = *i;
-          MIL_PRV << "Trying to schedule request: " << item->origin().authority() << std::endl;
+          MIL_PRV << "Trying to schedule request: " << item->origin().authorities()[0] << std::endl;
 
           zypp::Url url;
 
@@ -708,13 +708,13 @@ namespace zyppng {
 
   zypp::MirroredOrigin ProvidePrivate::sanitizeUrls( const zypp::MirroredOrigin &origin )
   {
-    const auto &scheme = schemeConfig( effectiveScheme( origin.authority().scheme() ) );
+    const auto &scheme = schemeConfig( effectiveScheme( origin.authorities()[0].scheme() ) );
     if ( !scheme ) {
-      WAR << "Authority URL: " << origin.authority().url() << " is not supported!" << std::endl;
+      WAR << "Authority URL: " << origin.authorities()[0].url() << " is not supported!" << std::endl;
       return {};
     }
 
-    zypp::MirroredOrigin sanitized( origin.authority() );
+    zypp::MirroredOrigin sanitized( origin.authorities()[0] );
     for ( const auto &mirror : origin.mirrors() ) {
       const auto &s = schemeConfig( effectiveScheme( mirror.scheme() ) );
       if ( !s ) {
@@ -724,7 +724,7 @@ namespace zyppng {
       if ( scheme->worker_type () == s->worker_type () ) {
         sanitized.addMirror(mirror);
       } else {
-        WAR << "URL: " << mirror << " has different worker type than the authority URL: "<< origin.authority() <<", ignoring!" << std::endl;
+        WAR << "URL: " << mirror << " has different worker type than the authority URL: "<< origin.authorities()[0] <<", ignoring!" << std::endl;
       }
     }
 
@@ -971,7 +971,7 @@ namespace zyppng {
     static zypp::Url invalidHandle;
     if ( !_mediaRef )
       return invalidHandle;
-    return _mediaRef->_originConfig.authority().url();
+    return _mediaRef->_originConfig.authorities()[0].url();
   }
 
   const zypp::MirroredOrigin &ProvideMediaHandle::origin() const

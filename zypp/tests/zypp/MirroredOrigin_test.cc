@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(construction_and_management)
 
     BOOST_CHECK(origin.isValid());
     BOOST_CHECK_EQUAL(origin.endpointCount(), 2);
-    BOOST_CHECK_EQUAL(origin.authority(), http_auth);
+    BOOST_CHECK_EQUAL(origin.authorities()[0], http_auth);
     BOOST_CHECK_EQUAL(origin.mirrors().size(), 1);
     BOOST_CHECK_EQUAL(origin.mirrors()[0], http_mirror1);
 
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
 
     BOOST_CHECK(!origin.isValid());
     BOOST_CHECK_EQUAL(origin.endpointCount(), 2);
-    BOOST_CHECK_EQUAL(origin.authority(), OriginEndpoint());
+    BOOST_CHECK_EQUAL(origin.authorities()[0], OriginEndpoint());
 
     BOOST_CHECK_EQUAL(origin.mirrors().size(), 1);
     BOOST_CHECK_EQUAL(origin.mirrors()[0], http_mirror1);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
     origin.setAuthority( http_auth );
     BOOST_CHECK(origin.isValid());
     BOOST_CHECK(origin.schemeIsDownloading());
-    BOOST_CHECK(origin.authority().schemeIsDownloading());
+    BOOST_CHECK(origin.authorities()[0].schemeIsDownloading());
     BOOST_CHECK_EQUAL( origin.mirrors ().size(), 2 );
 
     // should retain original order
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(grouping_logic)
     // 1. Add a downloading scheme
     sources.addEndpoint(http_auth);
     BOOST_CHECK_EQUAL(sources.size(), 1);
-    BOOST_CHECK_EQUAL(sources.at(0).authority(), http_auth);
+    BOOST_CHECK_EQUAL(sources.at(0).authorities()[0], http_auth);
 
     // 2. Add a mirror for the same downloading scheme
     sources.addEndpoint(http_mirror1);
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(grouping_logic)
     // It should NOT be grouped, as per documentation.
     sources.addEndpoint(file_mirror);
     BOOST_CHECK_EQUAL(sources.size(), 3); // Should create another new MirroredOrigin
-    BOOST_CHECK_EQUAL(sources.at(2).authority(), file_mirror);
+    BOOST_CHECK_EQUAL(sources.at(2).authorities()[0], file_mirror);
 }
 
 BOOST_AUTO_TEST_CASE(order_stability)
@@ -221,12 +221,12 @@ BOOST_AUTO_TEST_CASE(find_by_url)
     // Find by authority URL
     auto it_auth = sources.findByUrl(http_auth.url());
     BOOST_CHECK(it_auth != sources.end());
-    BOOST_CHECK_EQUAL(it_auth->authority(), http_auth);
+    BOOST_CHECK_EQUAL(it_auth->authorities()[0], http_auth);
 
     // Find by mirror URL
     auto it_mirror = sources.findByUrl(http_mirror1.url());
     BOOST_CHECK(it_mirror != sources.end());
-    BOOST_CHECK_EQUAL(it_mirror->authority(), http_auth); // Should point to the same origin
+    BOOST_CHECK_EQUAL(it_mirror->authorities()[0], http_auth); // Should point to the same origin
 
     // Find non-existent URL
     auto it_none = sources.findByUrl(Url("http://nonexistent.com"));
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(iterator_functionality)
     auto it = sources.begin();
     BOOST_CHECK(it != sources.end());
     BOOST_CHECK_EQUAL(it->scheme(), "http");
-    BOOST_CHECK_EQUAL((*it).authority(), http_auth);
+    BOOST_CHECK_EQUAL((*it).authorities()[0], http_auth);
 
     ++it;
     BOOST_CHECK(it != sources.end());

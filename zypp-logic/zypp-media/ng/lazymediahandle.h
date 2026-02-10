@@ -46,7 +46,7 @@ namespace zyppng
      * Returns the first mirror used for this lazy handle,
      * otherwise returns a empty url.
      */
-    const zypp::Url &baseUrl() const {
+    const zypp::Url baseUrl() const {
       if ( !_sharedData->_mediaHandle ) {
         return _sharedData->_origin.authority().url();
       } else {

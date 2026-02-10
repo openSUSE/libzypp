@@ -39,10 +39,11 @@ namespace zypp::media
     _redirTargets.clear ();
     std::transform ( _origin.begin(), _origin.end(), std::back_inserter(_redirTargets), []( const OriginEndpoint &url_r ) { return findGeoIPRedirect(url_r.url()); } );
 
-    // initialize default mirror order: mirrors [1..N] then authority [0]
+    // initialize default mirror order: mirrors first, then authorities
     _mirrOrder.reserve( _origin.endpointCount() );
-    for( unsigned i = 1; i < _origin.endpointCount () ; i++ ) { _mirrOrder.push_back(i); }
-    _mirrOrder.push_back(0);
+    uint authCount = _origin.authorityCount();
+    for( unsigned i = authCount; i < _origin.endpointCount () ; i++ ) { _mirrOrder.push_back(i); }
+    for( unsigned i = 0; i < authCount ; i++ ) { _mirrOrder.push_back(i); }
   }
 
   void MediaNetworkCommonHandler::attachTo (bool next)
@@ -327,10 +328,20 @@ namespace zypp::media
 
   std::vector<unsigned int> MediaNetworkCommonHandler::mirrorOrder(const OnMediaLocation &loc) const
   {
+    uint authCount = _origin.authorityCount();
+
     if ( !loc.mirrorsAllowed () ) {
-      MIL << "Fetching file " << loc << " from authority only: " << _origin << std::endl;
-      return { 0 }; // only authority
+      MIL << "Fetching file " << loc << " from authorities only ( " << authCount << " ): " << _origin << std::endl;
+      std::vector<unsigned> authOrder;
+      authOrder.reserve( authCount );
+      // Filter _mirrOrder to include only authority indices
+      for ( unsigned idx : _mirrOrder ) {
+        if ( idx < authCount )
+          authOrder.push_back( idx );
+      }
+      return authOrder;
     }
+
     return _mirrOrder;
   }
 

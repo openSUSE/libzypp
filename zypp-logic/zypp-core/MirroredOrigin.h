@@ -220,14 +220,19 @@ namespace zypp {
     MirroredOrigin( OriginEndpoint authority, std::vector<OriginEndpoint> mirrors = {} );
 
     /*!
-     * Changes the authority to \a newAuthority
+     * Changes the authorities to \a newAuthority
      */
     void setAuthority ( OriginEndpoint newAuthority );
 
     /*!
-     * \return the authority Url
+     * \return the authority Urls
      */
-    const OriginEndpoint &authority() const;
+    const std::vector<OriginEndpoint> &authorities() const;
+
+    /*!
+     * \return the first authority Url if present, empty Url otherwise
+     */
+    OriginEndpoint authority() const;
 
     /*!
      * \return the mirrors for this origin, may be empty
@@ -239,6 +244,7 @@ namespace zypp {
      */
     bool isValid() const;
 
+    bool addAuthority( OriginEndpoint newAuthority );
     bool addMirror( OriginEndpoint newMirror );
     void setMirrors( std::vector<OriginEndpoint> mirrors );
     void clearMirrors();
@@ -279,6 +285,11 @@ namespace zypp {
      * \return the total number of endpoints, including authority
      */
     uint endpointCount() const;
+
+    /*!
+     * \return the total number of authorities
+     */
+    uint authorityCount() const;
 
     /*!
      * Index based access to endpoints, index 0 is always the authority
@@ -387,6 +398,15 @@ namespace zypp {
     void addEndpoints( InputIterator first, InputIterator last ) {
       std::for_each(first,last,[this]( OriginEndpoint ep ) { addEndpoint(std::move(ep));} );
     }
+
+    /**
+     * \brief Adds a single endpoint as an authority, routing it to the correct MirroredOrigin.
+     * Extracts the scheme from the endpoint's URL. If a MirroredOrigin for that
+     * scheme exists, the endpoint is added as an authority. Otherwise, a new
+     * MirroredOrigin is created with this endpoint as its first authority.
+     * \param endpoint The OriginEndpoint to add.
+     */
+    void addAuthorityEndpoint( OriginEndpoint endpoint );
 
     /**
      * \brief Adds a single endpoint, routing it to the correct MirroredOrigin.

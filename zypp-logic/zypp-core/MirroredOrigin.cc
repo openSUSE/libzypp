@@ -136,7 +136,7 @@ namespace zypp {
   struct MirroredOrigin::Private {
     Private( OriginEndpoint &&authority = {}, std::vector<OriginEndpoint> &&mirrors = {} )
       : _authority( std::move(authority) )
-      , _mirrors( std::move(mirrors) )
+      , _origins( std::move(mirrors) )
     {}
     ~Private() = default;
 
@@ -145,7 +145,7 @@ namespace zypp {
     }
 
     OriginEndpoint _authority;
-    std::vector<OriginEndpoint> _mirrors;
+    std::vector<OriginEndpoint> _origins;
   };
 
   MirroredOrigin::MirroredOrigin()
@@ -165,16 +165,16 @@ namespace zypp {
 
     _pimpl->_authority = std::move(newAuthority);
 
-    if ( !_pimpl->_authority.isValid() || !_pimpl->_mirrors.size () )
+    if ( !_pimpl->_authority.isValid() || !_pimpl->_origins.size () )
       return;
 
     // house keeeping, we want only compatible mirrors
-    for ( auto i = _pimpl->_mirrors.begin (); i != _pimpl->_mirrors.end(); ) {
+    for ( auto i = _pimpl->_origins.begin (); i != _pimpl->_origins.end(); ) {
       if (    ( newAuthIsDl && !i->schemeIsDownloading() ) // drop mirror if its not downloading but authority is
            && ( i->scheme () != newScheme )                // otherwise drop if scheme is not identical
       ) {
         MIL << "Dropping mirror " << *i << " scheme is not compatible to new authority URL ( " << i->scheme() << " vs " << newScheme << ")" << std::endl;
-        i = _pimpl->_mirrors.erase(i);
+        i = _pimpl->_origins.erase(i);
       } else {
         i++;
       }
@@ -188,7 +188,7 @@ namespace zypp {
 
   const std::vector<OriginEndpoint> &MirroredOrigin::mirrors() const
   {
-    return _pimpl->_mirrors;
+    return _pimpl->_origins;
   }
 
   bool MirroredOrigin::isValid() const
@@ -206,7 +206,7 @@ namespace zypp {
       MIL << "Ignoring mirror " << newMirror << " scheme is not compatible to new authority URL ( " << newMirror.scheme() << " vs " << _pimpl->_authority.scheme() << ")" << std::endl;
       return false;
     }
-    _pimpl->_mirrors.push_back( std::move(newMirror) );
+    _pimpl->_origins.push_back( std::move(newMirror) );
     return true;
   }
 
@@ -219,7 +219,7 @@ namespace zypp {
 
   void MirroredOrigin::clearMirrors()
   {
-    _pimpl->_mirrors.clear();
+    _pimpl->_origins.clear();
   }
 
   std::string MirroredOrigin::scheme() const
@@ -235,7 +235,7 @@ namespace zypp {
   uint MirroredOrigin::endpointCount() const
   {
     // authority is always accessible, even if its a invalid URL
-    return _pimpl->_mirrors.size() + 1;
+    return _pimpl->_origins.size() + 1;
   }
 
   const OriginEndpoint &MirroredOrigin::at(uint index) const
@@ -247,7 +247,7 @@ namespace zypp {
       return _pimpl->_authority;
     }
 
-    return _pimpl->_mirrors.at( index - 1 );
+    return _pimpl->_origins.at( index - 1 );
   }
 
   OriginEndpoint &MirroredOrigin::at(uint index)
@@ -259,7 +259,7 @@ namespace zypp {
       return _pimpl->_authority;
     }
 
-    return _pimpl->_mirrors.at( index - 1 );
+    return _pimpl->_origins.at( index - 1 );
   }
 
   struct MirroredOriginSet::Private
@@ -272,7 +272,7 @@ namespace zypp {
     }
 
     std::optional<std::size_t>  _dlIndex; //< set if there is a downloading MirroredOrigin
-    std::vector<MirroredOrigin> _mirrors;
+    std::vector<MirroredOrigin> _origins;
   };
 
 
@@ -303,12 +303,12 @@ namespace zypp {
 
   const MirroredOrigin &MirroredOriginSet::at(size_type idx) const
   {
-    return _pimpl->_mirrors.at(idx);
+    return _pimpl->_origins.at(idx);
   }
 
   MirroredOrigin &MirroredOriginSet::at(size_type idx)
   {
-    return _pimpl->_mirrors.at(idx);
+    return _pimpl->_origins.at(idx);
   }
 
   std::ostream & operator<<( std::ostream & str, const MirroredOrigin & origin )
@@ -341,18 +341,18 @@ namespace zypp {
   void MirroredOriginSet::addEndpoint( OriginEndpoint endpoint )
   {
     if ( !endpoint.url().schemeIsDownloading () ) {
-      _pimpl->_mirrors.push_back ( MirroredOrigin(std::move(endpoint), {} ) );
+      _pimpl->_origins.push_back ( MirroredOrigin(std::move(endpoint), {} ) );
       return;
     }
 
     if ( _pimpl->_dlIndex ) {
-      _pimpl->_mirrors.at(*_pimpl->_dlIndex).addMirror( std::move(endpoint) );
+      _pimpl->_origins.at(*_pimpl->_dlIndex).addMirror( std::move(endpoint) );
       return;
     }
 
     // start a new origin
-    _pimpl->_mirrors.push_back ( MirroredOrigin(std::move(endpoint), {} ) );
-    _pimpl->_dlIndex = _pimpl->_mirrors.size() - 1;
+    _pimpl->_origins.push_back ( MirroredOrigin(std::move(endpoint), {} ) );
+    _pimpl->_dlIndex = _pimpl->_origins.size() - 1;
   }
 
 
@@ -364,41 +364,41 @@ namespace zypp {
 
   bool MirroredOriginSet::empty() const
   {
-    return _pimpl->_mirrors.empty ();
+    return _pimpl->_origins.empty ();
   }
 
   void MirroredOriginSet::clear()
   {
-    _pimpl->_mirrors.clear();
+    _pimpl->_origins.clear();
     _pimpl->_dlIndex.reset();
   }
 
   MirroredOriginSet::iterator MirroredOriginSet::begin()
   {
-    return _pimpl->_mirrors.begin ();
+    return _pimpl->_origins.begin ();
   }
 
 
   MirroredOriginSet::iterator MirroredOriginSet::end()
   {
-    return _pimpl->_mirrors.end ();
+    return _pimpl->_origins.end ();
   }
 
 
   MirroredOriginSet::const_iterator MirroredOriginSet::begin() const
   {
-    return _pimpl->_mirrors.begin ();
+    return _pimpl->_origins.begin ();
   }
 
 
   MirroredOriginSet::const_iterator MirroredOriginSet::end() const
   {
-    return _pimpl->_mirrors.end ();
+    return _pimpl->_origins.end ();
   }
 
   MirroredOriginSet::size_type MirroredOriginSet::size() const
   {
-    return _pimpl->_mirrors.size ();
+    return _pimpl->_origins.size ();
   }
 
   bool MirroredOriginSet::hasFallbackUrls() const

@@ -9,6 +9,8 @@
 #include "MirroredOrigin.h"
 
 #include <zypp-core/base/LogTools.h>
+#include <algorithm>
+
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::MirroredOrigin"
 
@@ -219,6 +221,12 @@ namespace zypp {
         return false;
       }
     }
+
+    if (std::find(_pimpl->_authorities.begin(), _pimpl->_authorities.end(), newAuthority) != _pimpl->_authorities.end()) {
+      MIL << "Ignoring authority " << newAuthority << " already present in authorities" << std::endl;
+      return true;
+    }
+
     _pimpl->_authorities.push_back( std::move(newAuthority) );
     return true;
   }
@@ -236,6 +244,17 @@ namespace zypp {
         return false;
       }
     }
+
+    if (std::find(_pimpl->_authorities.begin(), _pimpl->_authorities.end(), newMirror) != _pimpl->_authorities.end()) {
+      MIL << "Ignoring mirror " << newMirror << " already present in authorities" << std::endl;
+      return true;
+    }
+
+    if (std::find(_pimpl->_mirrors.begin(), _pimpl->_mirrors.end(), newMirror) != _pimpl->_mirrors.end()) {
+      MIL << "Ignoring mirror " << newMirror << " already present in mirrors" << std::endl;
+      return true;
+    }
+
     _pimpl->_mirrors.push_back( std::move(newMirror) );
     return true;
   }

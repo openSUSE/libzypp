@@ -102,6 +102,17 @@ BOOST_AUTO_TEST_CASE(construction_and_management)
     BOOST_CHECK_EQUAL(origin.endpointCount(), 1);
 }
 
+BOOST_AUTO_TEST_CASE(allow_duplicate_url_as_mirror)
+{
+    BOOST_TEST_MESSAGE("Testing MirroredOrigin: Dropping duplicate URL as mirror...");
+    MirroredOrigin origin(http_auth);
+
+    // Add the same URL as mirror, it should be dropped
+    BOOST_CHECK_EQUAL(origin.addMirror(http_auth), true);
+    BOOST_CHECK_EQUAL(origin.endpointCount(), 1); 
+    BOOST_CHECK_EQUAL(origin.mirrors().size(), 0);
+}
+
 BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
 {
     BOOST_TEST_MESSAGE("Testing MirroredOrigin: Mirror cleanup on authority change...");

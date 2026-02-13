@@ -327,13 +327,18 @@ namespace zypp::media
   std::vector<unsigned int> MediaNetworkCommonHandler::mirrorOrder(const OnMediaLocation &loc) const
   {
     std::vector<unsigned> mirrOrder;
+    uint authCount = _origin.authorityCount();
+
     if ( !loc.mirrorsAllowed () ) {
-      MIL << "Fetching file " << loc << " from authority only: " << _origin << std::endl;
-      mirrOrder.push_back (0); // only authority
+      MIL << "Fetching file " << loc << " from authorities only ( " << authCount << " ): " << _origin << std::endl;
+      mirrOrder.reserve( authCount );
+      for( unsigned i = 0; i < authCount ; i++ ) { mirrOrder.push_back(i); }
     } else {
       mirrOrder.reserve( _origin.endpointCount() );
-      for( unsigned i = 1; i < _origin.endpointCount () ; i++ ) { mirrOrder.push_back(i) ;}
-      mirrOrder.push_back(0); // authority last
+      // mirrors first
+      for( unsigned i = authCount; i < _origin.endpointCount () ; i++ ) { mirrOrder.push_back(i) ;}
+      // authorities last
+      for( unsigned i = 0; i < authCount ; i++ ) { mirrOrder.push_back(i); }
     }
     return mirrOrder;
   }

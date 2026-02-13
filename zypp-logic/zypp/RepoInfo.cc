@@ -230,7 +230,9 @@ namespace zypp
     MirroredOriginSet repoOrigins() const
     {
       MirroredOriginSet origins;
-      origins.addEndpoints( _baseUrls.transformedBegin(), _baseUrls.transformedEnd() );
+      std::for_each( _baseUrls.transformedBegin(), _baseUrls.transformedEnd(), [&]( OriginEndpoint ep ) {
+        origins.addAuthorityEndpoint( std::move(ep) );
+      });
 
       const auto &mirrs = mirrorUrls ();
       origins.addEndpoints( mirrs.transformedBegin(), mirrs.transformedEnd() );

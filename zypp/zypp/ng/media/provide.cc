@@ -74,7 +74,7 @@ namespace zyppng {
 
   zypp::Url AttachedMediaInfo::url() const
   {
-    return _origin.authority().url();
+    return _origin.authorities()[0].url();
   }
 
   const zypp::MirroredOrigin &AttachedMediaInfo::origin() const
@@ -128,7 +128,7 @@ namespace zyppng {
   {
     static zypp::Url invalidHandle;
     if ( !_data ) return invalidHandle;
-    return _data->origin().authority().url();
+    return _data->origin().authorities()[0].url();
   }
 
   const std::optional<zypp::Pathname> &ProvideMediaHandle::localPath() const
@@ -157,13 +157,13 @@ namespace zyppng {
 
   zypp::MirroredOrigin Provide::sanitizeUrls( const zypp::MirroredOrigin &origin ) const
   {
-    const auto &handlerType = zypp::media::MediaHandlerFactory::handlerType ( origin.authority().url() );
+    const auto &handlerType = zypp::media::MediaHandlerFactory::handlerType ( origin.authorities()[0].url() );
     if ( !handlerType ) {
-      ERR << "Authority URL: " << origin.authority() << " is not supported!" << std::endl;
+      ERR << "Authority URL: " << origin.authorities()[0] << " is not supported!" << std::endl;
       return {};
     }
 
-    zypp::MirroredOrigin sanitized( origin.authority() );
+    zypp::MirroredOrigin sanitized( origin.authorities()[0] );
     for ( const auto &mirror : origin.mirrors() ) {
       const auto &s = zypp::media::MediaHandlerFactory::handlerType ( mirror.url() );
       if ( !s ) {
@@ -173,7 +173,7 @@ namespace zyppng {
       if ( handlerType == *s) {
         sanitized.addMirror(mirror);
       } else {
-        WAR << "URL: " << mirror << " has different handler type than the authority URL: "<< origin.authority() <<", ignoring!" << std::endl;
+        WAR << "URL: " << mirror << " has different handler type than the authority URL: "<< origin.authorities()[0] <<", ignoring!" << std::endl;
       }
     }
 
@@ -207,7 +207,7 @@ namespace zyppng {
       return expected<Provide::MediaHandle>::success( *i );
     }
 
-    bool isVolatile = sanitizedOrigin.authority().url().schemeIsVolatile();
+    bool isVolatile = sanitizedOrigin.authorities()[0].url().schemeIsVolatile();
 
     std::optional<zypp::media::MediaAccessId> attachId;
     zypp::callback::SendReport<zypp::media::MediaChangeReport> report;
@@ -296,7 +296,7 @@ namespace zyppng {
             }
           }
 
-          zypp::Url effectiveUrl = sanitizedOrigin.authority().url();
+          zypp::Url effectiveUrl = sanitizedOrigin.authorities()[0].url();
 
           user = report->requestMedia (
             effectiveUrl,
@@ -351,7 +351,7 @@ namespace zyppng {
               }
 
               // explicitely setting a URL from the callback wipes all mirrors
-              if ( sanitizedOrigin.authority().url() != effectiveUrl ) {
+              if ( sanitizedOrigin.authorities()[0].url() != effectiveUrl ) {
                 sanitizedOrigin.clearMirrors ();
                 sanitizedOrigin.setAuthority ( effectiveUrl );
               }
@@ -446,7 +446,7 @@ namespace zyppng {
       return *lastErr;
 
     // we should not get here, but if we do simply use the first entry to make a not found error
-    zypp::Url url( origin.authority().url() );
+    zypp::Url url( origin.authorities()[0].url() );
     zypp::Pathname fileName(url.getPathName());
     url.setPathName ("/");
     return expected<ProvideRes>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaFileNotFoundException( url, fileName )));

@@ -150,9 +150,7 @@ namespace zypp {
     {
       if ( _authorities.empty() )
         return false;
-      return std::all_of( _authorities.begin(), _authorities.end(), []( const OriginEndpoint & ep ) {
-        return ep.isValid();
-      });
+      return true;
     }
 
     std::vector<OriginEndpoint> _authorities;

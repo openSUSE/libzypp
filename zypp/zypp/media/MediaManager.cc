@@ -66,8 +66,8 @@ namespace zypp
           auto handler = MediaHandlerFactory::createHandler( origin_r, preferred_attach_point );
           if ( !handler ) {
             ERR << "Failed to create media handler" << std::endl;
-            if ( origin_r.authorities()[0].isValid() )
-              ZYPP_THROW( MediaSystemException( origin_r.authorities()[0].url(), "Failed to create media handler"));
+            if ( origin_r.authority().isValid() )
+              ZYPP_THROW( MediaSystemException( origin_r.authority().url(), "Failed to create media handler"));
             ZYPP_THROW( MediaException("Failed to create media handler") );
           }
           return ManagedMedia( std::move(handler), v );
@@ -332,7 +332,7 @@ namespace zypp
       //m_impl->mediaMap[nextId] = std::move(tmp);
 
       DBG << "Opened new media access using id " << nextId
-          << " to " << origin_r.authorities()[0].url().asString() << std::endl;
+          << " to " << origin_r.authority().url().asString() << std::endl;
       return nextId;
     }
 

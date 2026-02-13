@@ -201,6 +201,14 @@ namespace zypp {
     return _pimpl->_authorities;
   }
 
+  OriginEndpoint MirroredOrigin::authority() const
+  {
+    if (_pimpl->_authorities.empty()) {
+      return OriginEndpoint();
+    }
+    return _pimpl->_authorities[0];
+  }
+
   const std::vector<OriginEndpoint> &MirroredOrigin::mirrors() const
   {
     return _pimpl->_mirrors;

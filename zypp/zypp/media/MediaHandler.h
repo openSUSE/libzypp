@@ -499,12 +499,12 @@ class MediaHandler {
         /**
          * Primary Url used.
          **/
-        Url url() const { return _origin.authorities()[0].url(); }
+        Url url() const { return _origin.authority().url(); }
 
         /**
          * Primary OriginEndpoint used.
          **/
-        OriginEndpoint originEndpoint() const { return _origin.authorities()[0]; }
+        OriginEndpoint originEndpoint() const { return _origin.authority(); }
 
         /**
          * Use concrete handler to attach the media.

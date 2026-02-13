@@ -128,13 +128,13 @@ namespace zypp
 
 
     MediaCD::MediaCD(MirroredOrigin origin_r, const Pathname & attach_point_hint_r )
-      : MediaHandler( origin_r, attach_point_hint_r, origin_r.authorities()[0].url().getPathName(), false )
+      : MediaHandler( origin_r, attach_point_hint_r, origin_r.authority().url().getPathName(), false )
     , _lastdev( -1 )
     , _lastdev_tried( -1 )
   {
       MIL << "MediaCD::MediaCD(" << url() << ", " << attach_point_hint_r << ")" << endl;
 
-    const auto &authorityUrl = _origin.authorities()[0].url();
+    const auto &authorityUrl = _origin.authority().url();
     if ( _origin.scheme() != "dvd" && _origin.scheme() != "cd" )
     {
       ERR << "Unsupported schema in the Url: " << authorityUrl.asString() << endl;
@@ -274,7 +274,7 @@ namespace zypp
     if ( next && _lastdev == -1 )
       ZYPP_THROW(MediaNotSupportedException(url()));
 
-    const auto &authorityUrl = _origin.authorities()[0].url();
+    const auto &authorityUrl = _origin.authority().url();
 
     // This also fills the _devices list on demand
     DeviceList detected( detectDevices( authorityUrl.getScheme() == "dvd" ? true : false ) );

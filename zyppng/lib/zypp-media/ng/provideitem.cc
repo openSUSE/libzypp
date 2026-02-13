@@ -29,7 +29,7 @@ namespace zyppng {
     if ( !origin.isValid () )
       return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("Origin config must be valid") ) );
 
-    auto m = ProvideMessage::createAttach( ProvideQueue::InvalidId, origin.authorities()[0].url(), id, spec.label() );
+    auto m = ProvideMessage::createAttach( ProvideQueue::InvalidId, origin.authority().url(), id, spec.label() );
     if ( !spec.mediaFile().empty() ) {
       m.setValue( AttachMsgFields::VerifyType, std::string(DEFAULT_MEDIA_VERIFIER.data()) );
       m.setValue( AttachMsgFields::VerifyData, spec.mediaFile().asString() );
@@ -50,7 +50,7 @@ namespace zyppng {
     if ( !origin.isValid () )
       return expected<ProvideRequestRef>::error( ZYPP_EXCPT_PTR ( zypp::media::MediaException("Origin config must be valid") ) );
 
-    auto m = ProvideMessage::createProvide ( ProvideQueue::InvalidId, origin.authorities()[0].url() );
+    auto m = ProvideMessage::createProvide ( ProvideQueue::InvalidId, origin.authority().url() );
     const auto &destFile = spec.destFilenameHint();
     const auto &deltaFile = spec.deltafile();
     const int64_t fSize = spec.downloadSize();
@@ -849,7 +849,7 @@ namespace zyppng {
     auto &prov= provider();
 
     // authority mandates the scheme
-    expected<ProvideQueue::Config> scheme = prov.schemeConfig( prov.effectiveScheme( _origin.authorities()[0].scheme() ) );
+    expected<ProvideQueue::Config> scheme = prov.schemeConfig( prov.effectiveScheme( _origin.authority().scheme() ) );
 
     if ( !scheme || !_origin.isValid() ) {
       auto prom = promise();

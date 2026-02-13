@@ -44,26 +44,26 @@ namespace zypp
     MediaISO::MediaISO(const MirroredOrigin &origin_r,
                        const Pathname &attach_point_hint_r)
       : MediaHandler(origin_r, attach_point_hint_r,
-                     origin_r.authorities()[0].url().getPathName(), // urlpath below attachpoint
+                     origin_r.authority().url().getPathName(), // urlpath below attachpoint
                      false)               // does_download
     {
-      MIL << "MediaISO::MediaISO(" << _origin.authorities()[0].url() << ", "
+      MIL << "MediaISO::MediaISO(" << _origin.authority().url() << ", "
           << attach_point_hint_r << ")" << std::endl;
 
-      _isofile    = _origin.authorities()[0].url().getQueryParam("iso");
+      _isofile    = _origin.authority().url().getQueryParam("iso");
       if( _isofile.empty())
       {
         ERR << "Media url does not contain iso filename" << std::endl;
-        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_origin.authorities()[0].url()));
+        ZYPP_THROW(MediaBadUrlEmptyDestinationException(_origin.authority().url()));
       }
 
-      _filesystem = _origin.authorities()[0].url().getQueryParam("filesystem");
+      _filesystem = _origin.authority().url().getQueryParam("filesystem");
       if( _filesystem.empty())
         _filesystem = "auto";
 
       Url src;
       {
-        const std::string & arg { _origin.authorities()[0].url().getQueryParam("url") };
+        const std::string & arg { _origin.authority().url().getQueryParam("url") };
         if ( arg.empty() ) {
           src = "dir:/";
           src.setPathName( _isofile.dirname() );
@@ -76,7 +76,7 @@ namespace zypp
         {
           ZYPP_CAUGHT(e);
           ERR << "Unable to parse iso filename source media url" << std::endl;
-          MediaBadUrlException ne(_origin.authorities()[0].url());
+          MediaBadUrlException ne(_origin.authority().url());
           ne.remember(e);
           ZYPP_THROW(ne);
         }
@@ -108,7 +108,7 @@ namespace zypp
 
       MediaManager manager;
 
-      _parentId = manager.open({MirroredOrigin(src)}, _origin.authorities()[0].url().getQueryParam("mnt"));
+      _parentId = manager.open({MirroredOrigin(src)}, _origin.authority().url().getQueryParam("mnt"));
     }
 
     // ---------------------------------------------------------------
@@ -142,7 +142,7 @@ namespace zypp
     void MediaISO::attachTo(bool next)
     {
       if(next)
-        ZYPP_THROW(MediaNotSupportedException(_origin.authorities()[0].url()));
+        ZYPP_THROW(MediaNotSupportedException(_origin.authority().url()));
 
       MediaManager manager;
       manager.attach(_parentId);
@@ -165,7 +165,7 @@ namespace zypp
 
         MediaMountException e3(
           "Unable to find iso filename on source media",
-          _origin.authorities()[0].url().asString(), attachPoint().asString()
+          _origin.authority().url().asString(), attachPoint().asString()
         );
         e3.remember(e1);
         ZYPP_THROW(e3);
@@ -176,7 +176,7 @@ namespace zypp
       Pathname isofile = expandlink(manager.localPath(_parentId, _isofile));
       if( isofile.empty() || !PathInfo(isofile).isFile())
       {
-        ZYPP_THROW(MediaNotSupportedException(_origin.authorities()[0].url()));
+        ZYPP_THROW(MediaNotSupportedException(_origin.authority().url()));
       }
 
       MediaSourceRef media( new MediaSource("iso", isofile.asString() ) );

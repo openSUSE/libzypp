@@ -230,6 +230,11 @@ namespace zypp {
     const std::vector<OriginEndpoint> &authorities() const;
 
     /*!
+     * \return the first authority Url if present, empty Url otherwise
+     */
+    OriginEndpoint authority() const;
+
+    /*!
      * \return the mirrors for this origin, may be empty
      */
     const std::vector<OriginEndpoint> &mirrors() const;

@@ -1159,7 +1159,7 @@ namespace zypp
     // We skip the check for downloading media unless a local copy of the
     // media file exists and states that there is more than one medium.
     const auto &origins = _pimpl->repoOrigins ();
-    bool canSkipMediaCheck = std::all_of( origins.begin(), origins.end(), []( const MirroredOrigin &origin ) { return origin.authorities()[0].url().schemeIsDownloading(); });
+    bool canSkipMediaCheck = std::all_of( origins.begin(), origins.end(), []( const MirroredOrigin &origin ) { return origin.authority().url().schemeIsDownloading(); });
     if ( canSkipMediaCheck ) {
       const auto &mDataPath = metadataPath();
       if ( not mDataPath.empty() ) {

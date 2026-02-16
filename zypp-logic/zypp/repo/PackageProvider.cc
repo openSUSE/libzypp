@@ -49,7 +49,7 @@ namespace zypp
       /** XDG_CACHE_HOME: base directory relative to which user specific non-essential data files should be stored.
        * http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
        */
-      inline filesystem::Pathname XDG_CACHE_HOME()
+      filesystem::Pathname XDG_CACHE_HOME()
       {
         filesystem::Pathname ret;
         const char * envp = getenv( "XDG_CACHE_HOME" );

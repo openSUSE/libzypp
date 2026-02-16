@@ -252,9 +252,8 @@ namespace zypp {
 
   bool MirroredOrigin::addMirror(OriginEndpoint newMirror)
   {
-    if ( !newMirror.isValid() )
-    {
-      WAR << "Ignoring invalid mirror: " << newMirror << std::endl;
+    if ( !newMirror.isValid() ) {
+      MIL << "Ignoring mirror " << newMirror << " is not valid" << std::endl;
       return false;
     }
 

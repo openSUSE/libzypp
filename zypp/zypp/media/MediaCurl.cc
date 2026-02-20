@@ -585,8 +585,8 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
   OptionalDownloadProgressReport reportfilter( srcFile.optional() );
   callback::SendReport<DownloadProgressReport> report;
 
-  auto &myUrl = _origin[mirror];
-  auto &settings = myUrl.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
+  auto &endpoint = _origin[mirror];
+  auto &settings = endpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
 
   AutoDispose<CURL*> curl( curl_easy_init(), []( CURL *hdl ) { if ( hdl ) { curl_easy_cleanup(hdl); } }  );
 
@@ -594,11 +594,11 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
   rData.mirror = mirror;
   rData.curl = curl.value ();
 
-  if( !myUrl.url().isValid() )
-    ZYPP_THROW(MediaBadUrlException(myUrl.url()));
+  if( !endpoint.url().isValid() )
+    ZYPP_THROW(MediaBadUrlException(endpoint.url()));
 
-  if( myUrl.url().getHost().empty() )
-    ZYPP_THROW(MediaBadUrlEmptyHostException(myUrl.url()));
+  if( endpoint.url().getHost().empty() )
+    ZYPP_THROW(MediaBadUrlEmptyHostException(endpoint.url()));
 
   Url fileurl( getFileUrl(mirror, filename) );
 
@@ -765,7 +765,7 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
       {
         DBG << "HTTP response: " + str::numstring(httpReturnCode);
         if ( httpReturnCode == 304
-             || ( httpReturnCode == 213 && (myUrl.url().getScheme() == "ftp" || myUrl.url().getScheme() == "tftp") ) ) // not modified
+             || ( httpReturnCode == 213 && (endpoint.url().getScheme() == "ftp" || endpoint.url().getScheme() == "tftp") ) ) // not modified
         {
           DBG << " Not modified.";
           modified = false;
@@ -803,10 +803,9 @@ void MediaCurl::getFileCopyFromMirror(const int mirror, const OnMediaLocation &s
       DBG << "done: " << PathInfo(dest) << endl;
       break;  // success!
     }
-    // retry with proper authentication data
     catch (MediaUnauthorizedException & ex_r)
     {
-      if ( authenticate( myUrl.url(), settings, ex_r.hint(), firstAuth) ) {
+      if ( authenticate( endpoint.url(), settings, ex_r.hint(), firstAuth) ) {
         firstAuth = false;  // must not return stored credentials again
         continue; // retry
       }
@@ -1025,13 +1024,13 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
   rData.mirror = mirror;
   rData.curl = curl.value ();
 
-  auto &myUrl = _origin[mirror];
+  auto &endpoint = _origin[mirror];
 
-  if( !myUrl.url().isValid() )
-    ZYPP_THROW(MediaBadUrlException(myUrl.url()));
+  if( !endpoint.url().isValid() )
+    ZYPP_THROW(MediaBadUrlException(endpoint.url()));
 
-  if( myUrl.url().getHost().empty() )
-    ZYPP_THROW(MediaBadUrlEmptyHostException(myUrl.url()));
+  if( endpoint.url().getHost().empty() )
+    ZYPP_THROW(MediaBadUrlEmptyHostException(endpoint.url()));
 
   Url url(getFileUrl(mirror, filename));
 
@@ -1055,7 +1054,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
   CURLcode ok;
   bool canRetry  = true;
   bool firstAuth = true;
-  auto &settings = myUrl.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
+  auto &settings = endpoint.getConfig<TransferSettings>( MIRR_SETTINGS_KEY.data() );
 
   while ( canRetry ) {
     canRetry = false;
@@ -1084,7 +1083,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
     // works for ftp as well, because retrieving only headers
     // ftp will return always OK code ?
     // See http://curl.haxx.se/docs/knownbugs.html #58
-    const bool doHeadRequest = (myUrl.url().getScheme() == "http" || myUrl.url().getScheme() == "https") && settings.headRequestsAllowed();
+    const bool doHeadRequest = (endpoint.url().getScheme() == "http" || endpoint.url().getScheme() == "https") && settings.headRequestsAllowed();
     if ( doHeadRequest ) {
       curl_easy_setopt( curl, CURLOPT_NOBODY, 1L );
     } else {
@@ -1105,7 +1104,7 @@ bool MediaCurl::doGetDoesFileExist( const int mirror, const Pathname & filename 
       return false;
     }
     catch ( const MediaUnauthorizedException &e ) {
-      if ( authenticate( myUrl.url(), settings, e.hint(), firstAuth ) ) {
+      if ( authenticate( endpoint.url(), settings, e.hint(), firstAuth ) ) {
         firstAuth = false;
         canRetry = true;
         continue;

@@ -46,13 +46,6 @@ OPTION (KEEP_LEGACY_ZYPPCONF "Install the vendor zypp.conf in /etc too (ONLY LEG
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
-# We're going successively to move our default configuration into /usr/etc/.
-# The final configuration data will then be merged according to the rules
-# defined by the UAPI.6 Configuration Files Specification from:
-#   system-wide configuration (/etc    /zypp/zypp.conf[.d/*.conf])
-#   vendor configuration      (/usr/etc/zypp/zypp.conf[.d/*.conf])
-SET ( ZYPPCONFDIR "${CMAKE_INSTALL_PREFIX}/etc" )
-
 IF (DEBIAN)
   MESSAGE (STATUS "Building for Debian")
   ADD_DEFINITIONS (-DDEBIAN)
@@ -85,6 +78,15 @@ IF ( NOSCHNICKSCHNACK )
   SET (ENABLE_BUILD_DOCS OFF)
   SET (ENABLE_BUILD_TRANS OFF)
   SET (ENABLE_BUILD_TESTS OFF)
+ENDIF()
+#--------------------------------------------------------------------------------
+# We're going to move our default configuration successively into /usr/etc/.
+# The final configuration data will then be merged according to the rules
+# defined by the UAPI.6 Configuration Files Specification from:
+#   system-wide configuration (/etc    /zypp/zypp.conf[.d/*.conf])
+#   vendor configuration      (/usr/etc/zypp/zypp.conf[.d/*.conf])
+IF( NOT DEFINED ZYPPCONFDIR )
+  SET ( ZYPPCONFDIR "/usr/etc" )
 ENDIF()
 #--------------------------------------------------------------------------------
 

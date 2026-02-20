@@ -21,6 +21,7 @@
 #define LIBZYPP_VERSION        @LIBZYPP_NUMVERSION@
 
 #define LIBZYPP_CODESTREAM     "@LIBZYPP_CODESTREAM@"
+#define LIBZYPP_ZYPPCONFDIR    "@ZYPPCONFDIR@"
 
 // Legacy default behavior which might be enabled for legacy codestreams
 #cmakedefine01 LIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT

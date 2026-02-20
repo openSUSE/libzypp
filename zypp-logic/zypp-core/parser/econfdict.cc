@@ -13,6 +13,7 @@
 #include <tuple>  // std::ignore
 #include <optional>
 
+#include <zypp-core/APIConfig.h>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/base/LogTools.h>
@@ -35,14 +36,15 @@ namespace zypp::parser {
     struct ConfigurationContext
     {
       using Exception = EconfException;
+      static Pathname _defaultDistconfDir; ///< APIConfig(LIBZYPP_ZYPPCONFDIR) but amendable for Testing
 
       ConfigurationContext()
-      : ConfigurationContext( "/etc", "/usr/etc" )
+      : ConfigurationContext( "/etc", _defaultDistconfDir )
       {}
 
       ConfigurationContext( std::optional<Pathname> etcDir_r, std::optional<Pathname> usrDir_r )
-      : _etcDir( std::move(etcDir_r ) )
-      , _usrDir( std::move(usrDir_r ) )
+      : _etcDir( std::move(etcDir_r) )
+      , _usrDir( std::move(usrDir_r) )
       {}
 
       const std::optional<Pathname> & etcDir() const { return _etcDir; }
@@ -141,10 +143,13 @@ namespace zypp::parser {
         }
       }
 
+
     private:
       std::optional<Pathname> _etcDir;  ///< system configuration: /etc
-      std::optional<Pathname> _usrDir;  ///< vendor configuration: distconfdir (/usr/etc)
+      std::optional<Pathname> _usrDir;  ///< vendor configuration: distconfdir (APIConfig(LIBZYPP_ZYPPCONFDIR))
     };
+
+    Pathname ConfigurationContext::_defaultDistconfDir { APIConfig(LIBZYPP_ZYPPCONFDIR) };
 
   } // namespace econf
 
@@ -159,5 +164,11 @@ namespace zypp::parser {
     }
     pDBG( stem_r, "below", root_r, ":", *this );
   }
+
+  Pathname EconfDict::defaultDistconfDir()
+  { return econf::ConfigurationContext::_defaultDistconfDir; }
+
+  void EconfDict::defaultDistconfDir( Pathname path_r )
+  { econf::ConfigurationContext::_defaultDistconfDir = std::move(path_r); }
 } // namespace zypp::parser
 

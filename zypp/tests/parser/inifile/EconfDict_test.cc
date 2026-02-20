@@ -12,6 +12,12 @@ using namespace boost::unit_test;
 
 #define DATADIR ( Pathname(TESTS_SRC_DIR) / "/parser/inifile/data/EconfDict" )
 
+BOOST_AUTO_TEST_CASE(initialize)
+{
+  // No matter how ZYPPCONFDIR is configured, the testcases use "/usr/etc"
+  EconfDict::defaultDistconfDir( "/usr/etc" );
+}
+
 BOOST_AUTO_TEST_CASE(stem_test)
 {
   // config_r must denote a config file stem below some root dir:

@@ -36,6 +36,9 @@ namespace zypp::parser {
   {
     EconfDict();
     EconfDict( const std::string & stem_r, const Pathname & root_r = Pathname("/") );
+
+    static Pathname defaultDistconfDir();               ///< Where the vendor configuration files live (APIConfig(LIBZYPP_ZYPPCONFDIR))
+    static void defaultDistconfDir( Pathname path_r );  ///< Testing: Set an alternate default path for the vendor configuration files
   };
 } // namespace zypp::parser
 #endif // ZYPP_PARSER_ECONFDICT_H

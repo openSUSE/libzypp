@@ -79,9 +79,19 @@
 # Note: Kind of related to '_distconfdir', but 'zyppconfdir' refers to
 # where we install and lookup our own config files. While '_distconfdir'
 # tells where we install other packages config snippets (e.g. logrotate).
-%define zyppconfdir %{_prefix}/etc
+%if %{defined _distconfdir}
+ %define zyppconfdir %{_distconfdir}
+%else
+ %if 0%{?fedora}
+  # https://github.com/openSUSE/libzypp/issues/693
+  %define zyppconfdir %{_prefix}/share
+ %else
+  %define zyppconfdir %{_prefix}/etc
+ %endif
+%endif
+
 %if 0%{?suse_version} && 0%{?suse_version} < 1610
-# legacy disto tools may not be prepared for having no /etc/zypp.conf
+# legacy distro tools may not be prepared for having no /etc/zypp.conf
 %bcond_without keep_legacy_zyppconf
 %else
 %bcond_with keep_legacy_zyppconf
@@ -359,6 +369,7 @@ cmake .. $CMAKE_FLAGS \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_SKIP_RPATH=1 \
       -DCMAKE_INSTALL_LIBEXECDIR=%{_libexecdir} \
+      -DZYPPCONFDIR=%{zyppconfdir} \
       %{?with_keep_legacy_zyppconf:-DKEEP_LEGACY_ZYPPCONF=1} \
       %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \
@@ -417,27 +428,26 @@ pushd build
 LD_LIBRARY_PATH="$(pwd)/../zypp:$LD_LIBRARY_PATH" ctest --output-on-failure .
 popd
 
+# Some tool macros for the scripts:
+# Prepare for migration to /usr/etc; save any old .rpmsave in pre and restore new one's in posttrans:
+%define rpmsaveSave()    test -f %{1}.rpmsave && mv -v %{1}.rpmsave %{1}.rpmsave.old ||:
+%define rpmsaveRestore() test -f %{1}.rpmsave && mv -v %{1}.rpmsave %{1} ||:
+
 %pre
-# Prepare for migration to /usr/etc; save any old .rpmsave
 %if %{defined _distconfdir}
-myNOTFORZYPP='logrotate.d/zypp-history.lr'
-%else
-myNOTFORZYPP=''
+%rpmsaveSave %{_sysconfdir}/logrotate.d/zypp-history.lr
 %endif
-for i in zypp/zypp.conf $myNOTFORZYPP; do
-   test -f %{_sysconfdir}/${i}.rpmsave && mv -v %{_sysconfdir}/${i}.rpmsave %{_sysconfdir}/${i}.rpmsave.old ||:
-done
+%if %{without keep_legacy_zyppconf}
+%rpmsaveSave %{_sysconfdir}/zypp/zypp.conf
+%endif
 
 %posttrans
-# Migration to /usr/etc, restore just created .rpmsave
 %if %{defined _distconfdir}
-myNOTFORZYPP='logrotate.d/zypp-history.lr'
-%else
-myNOTFORZYPP=''
+%rpmsaveRestore %{_sysconfdir}/logrotate.d/zypp-history.lr
 %endif
-for i in zypp/zypp.conf $myNOTFORZYPP; do
-   test -f %{_sysconfdir}/${i}.rpmsave && mv -v %{_sysconfdir}/${i}.rpmsave %{_sysconfdir}/${i} ||:
-done
+%if %{without keep_legacy_zyppconf}
+%rpmsaveRestore %{_sysconfdir}/zypp/zypp.conf
+%endif
 
 %post -p /sbin/ldconfig
 

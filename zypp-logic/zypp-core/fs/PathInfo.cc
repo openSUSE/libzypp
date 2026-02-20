@@ -302,6 +302,20 @@ namespace zypp
       }
     } // namespace
 
+
+    bool userMayWriteOrCreateDir( const Pathname & path_r )
+    {
+      if ( path_r.empty() )
+        return false;
+      PathInfo pi { path_r };
+      if ( pi.isDir() && pi.userMayW() )
+        return true;  // MayWrite
+      do {
+        pi.stat( pi.path().dirname() );
+      } while ( not pi.isExist() && pi.path().asString().size() > 1 );  // stop at "/" or "."
+      return ( pi.isDir() && pi.userMayW() );
+    }
+
     ///////////////////////////////////////////////////////////////////
     //
     //	METHOD NAME : PathInfo::mkdir

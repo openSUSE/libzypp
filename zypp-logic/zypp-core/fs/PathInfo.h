@@ -402,6 +402,14 @@ namespace zypp
     /** \name Directory related functions. */
     //@{
     /**
+     * Returns whether \a path_r denotes an existing directory with
+     * write permission for the current user or an existing parent
+     * directory has write permission for the current user so the
+     * directory can be created by him.
+     */
+    bool userMayWriteOrCreateDir( const Pathname & path_r );
+
+    /**
      * Like '::mkdir'. Attempt to create a new directory named path. mode
      * specifies the permissions to use. It is modified by the process's
      * umask in the usual way.

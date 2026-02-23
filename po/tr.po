@@ -11,34 +11,33 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-11 16:21+0100\n"
-"PO-Revision-Date: 2025-07-22 15:01+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
-"Language-Team: Turkish <https://l10n.opensuse.org/projects/libzypp/master/tr/"
-">\n"
+"PO-Revision-Date: 2026-02-23 16:04+0000\n"
+"Last-Translator: Akın Birdal <reend21@protonmail.com>\n"
+"Language-Team: Turkish <https://l10n.opensuse.org/projects/libzypp/master/"
+"tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
-#, fuzzy
 msgid "does not expire"
-msgstr "(süresi dolmadı)"
+msgstr "süresiz"
 
 #. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:70
 #, boost-format
 msgid "expired: %1%"
-msgstr ""
+msgstr "süresi doldu: %1%"
 
 #. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:75
 #, boost-format
 msgid "expires: %1%"
-msgstr ""
+msgstr "süresi dolacak: %1%"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:84
@@ -60,18 +59,18 @@ msgstr "(24 saat içinde süresi dolacak)"
 #, c-format, boost-format
 msgid "(expires in %d day)"
 msgid_plural "(expires in %d days)"
-msgstr[0] ""
+msgstr[0] "%d gün sonra süresi dolacak"
+msgstr[1] "%d gün sonra süresi dolacak"
 
 #. TranslatorExplanation first %s is key name, second is keyring name
 #: zypp-logic/zypp-common/private/keyring_p.cc:285
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
-msgstr ""
+msgstr "%s'e %s keyringi ile var olmayan bir anahtar eklenmeye çalışıldı"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:291
-#, fuzzy
 msgid "Failed to import key."
-msgstr "%1% dosyasından genel anahtar alınamadı"
+msgstr "Anahtar aktarması başarısız oldu."
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:298
 msgid "Failed to delete key."
@@ -137,14 +136,13 @@ msgid "Command was killed by signal %d (%s)."
 msgstr "Komut %d sinyali tarafından durduruldu (%s)."
 
 #: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:209
-#, fuzzy
 msgid "Command exited with unknown error."
-msgstr "Bağlanıken çalıştırılacak komut"
+msgstr "Komut bilinmeyen bir hata ile sonlandı."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:243
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:486
 msgid "Invalid spawn arguments given."
-msgstr ""
+msgstr "Geçersiz oluşum argümanları verildi."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:299
 msgid "Unable to create control pipe."

@@ -10,6 +10,7 @@
  *
  */
 #include <iostream>
+#include <optional>
 
 #include <zypp/ZConfig.h>
 #include <zypp/repo/RepoVariables.h>
@@ -42,7 +43,7 @@ namespace zypp
     bool	_enabled     = true;
     bool	_autorefresh = false;
     std::string	_alias;
-    std::string	_escaped_alias;
+    std::optional<std::string> _escaped_alias;
     RepoVariablesReplacedString _name;
     Pathname	_filepath;
 
@@ -50,9 +51,14 @@ namespace zypp
 
     void setAlias( const std::string & alias_r )
     {
-      _alias = _escaped_alias = alias_r;
+      _alias = alias_r;
+      if ( _alias.find( "/" ) != std::string::npos ) {
       // replace slashes with underscores
-      str::replaceAll( _escaped_alias, "/", "_" );
+        _escaped_alias = _alias;
+        str::replaceAll( *_escaped_alias, "/", "_" );
+      } else {
+        _escaped_alias.reset();
+      }
     }
 
   private:
@@ -105,7 +111,7 @@ namespace zypp
   { return _pimpl->_alias; }
 
   std::string RepoInfoBase::escaped_alias() const
-  { return _pimpl->_escaped_alias; }
+  { return _pimpl->_escaped_alias ? *_pimpl->_escaped_alias : _pimpl->_alias; }
 
   std::string RepoInfoBase::name() const
   {

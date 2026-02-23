@@ -153,8 +153,13 @@ namespace zypp {
   {}
 
   MirroredOrigin::MirroredOrigin(OriginEndpoint authority, std::vector<OriginEndpoint> mirrors )
-    : _pimpl( new Private( std::move(authority) ) )
+    : _pimpl( new Private() )
   {
+    if ( authority.isValid() )
+      _pimpl->_authority = std::move(authority);
+    else
+      WAR << "Ignoring invalid authority in constructor: " << authority << std::endl;
+
     for( auto &m : mirrors ) { addMirror ( std::move(m) ); }
   }
 

@@ -126,16 +126,17 @@ namespace zypp
       return access.provideFile(std::move(repo_r), loc_r, policy_r );
     }
 
-    std::vector<Pathname> repositoryPaths( RepoInfo repo_r )
+    std::vector<Pathname> repositoryCachePaths( RepoInfo repo_r )
     {
       std::vector<Pathname> paths;
 
-      // Add user cache path if non-root
-      if ( geteuid() != 0 )
-        paths.push_back(repo_r.userConfigPackagesPath());
+      // Add the writable location first
+      paths.push_back( repo_r.packagesPath() );
 
-      // Always add the system cache
-      paths.push_back(repo_r.systemPackagesPath());
+      // Add the configured path if it differs (i.e. is read-only)
+      const Pathname & cfg { repo_r.systemPackagesPath() };
+      if ( cfg != paths[0] )
+        paths.push_back( cfg );
 
       return paths;
     }
@@ -289,7 +290,7 @@ namespace zypp
       Fetcher fetcher;
 
       bool first = true;
-      for (const auto& path : repositoryPaths(repo_r)) {
+      for ( const auto& path : repositoryCachePaths(repo_r) ) {
         // The first element will be the writeable cache.     
         // Add it to the cache.
         fetcher.addCachePath( path );

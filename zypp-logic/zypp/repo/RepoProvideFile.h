@@ -57,7 +57,7 @@ namespace zypp
      * @param repo_r
      * @return a list of paths
      */
-    std::vector<Pathname> repositoryPaths( RepoInfo repo_r );
+    std::vector<Pathname> repositoryCachePaths( RepoInfo repo_r );
 
     /**
      * \short Provides files from different repos

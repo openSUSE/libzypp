@@ -468,7 +468,15 @@ namespace zypp
     { _metadataPath = std::move( new_r ); }
 
     void packagesPath( Pathname new_r )
-    { _packagesPath = std::move( new_r ); }
+    {
+      _packagesPath = std::move( new_r );
+      if ( not _packagesPath.empty() && zypp::IamNotRoot() && not userMayWriteOrCreateDir( _packagesPath ) ) {
+        _alternatePackagesPath = zypp::repo::env::XDG_CACHE_HOME() / "zypp/packages" / _packagesPath.basename();
+        WAR << "systemPackagesPath " << _packagesPath << " is not user writable, may use " << *_alternatePackagesPath << endl;
+      } else {
+        _alternatePackagesPath.reset();
+      }
+    }
 
     bool usesAutoMetadataPaths() const
     { return str::hasSuffix( _metadataPath.asString(), "/%AUTO%" ); }
@@ -487,21 +495,9 @@ namespace zypp
       return _packagesPath;
     }
 
-    Pathname userConfigPackagesPath() const
-    {
-      return zypp::repo::env::XDG_CACHE_HOME() / "zypp/packages";
-    }
-
     Pathname packagesPath() const
     {
-      PathInfo pathInfo (systemPackagesPath());
-      if ( geteuid() != 0 && ! pathInfo.userMayW() ) {
-          auto destinationDir = userConfigPackagesPath();
-          WAR << "Destination dir '" << destinationDir << "' is not user writable, using tmp space." << endl;
-          return destinationDir;
-      } else {
-          return systemPackagesPath();
-      }
+      return _alternatePackagesPath ? *_alternatePackagesPath : systemPackagesPath();
     }
 
     Pathname predownloadPath() const
@@ -514,10 +510,11 @@ namespace zypp
   private:
     Pathname _metadataPath;
     Pathname _packagesPath;
+    std::optional<Pathname> _alternatePackagesPath; ///< in case _packagesPath is not writable
 
-    mutable RepoVariablesReplacedUrlList _baseUrls; //< baseUrls as configured
+    mutable RepoVariablesReplacedUrlList _baseUrls; ///< baseUrls as configured
 
-    mutable RepoVariablesReplacedUrlList _mirrorUrls; //< possible mirrors as fetched via mirrorlist or metalink
+    mutable RepoVariablesReplacedUrlList _mirrorUrls; ///< possible mirrors as fetched via mirrorlist or metalink
     mutable std::chrono::steady_clock::time_point _lastMirrorUrlsUpdate = std::chrono::steady_clock::time_point::min();
     mutable std::vector<MirroredOrigin> _repoOrigins;
 
@@ -779,9 +776,6 @@ namespace zypp
 
   Pathname RepoInfo::metadataPath() const
   { return _pimpl->metadataPath(); }
-
-  Pathname RepoInfo::userConfigPackagesPath() const
-  { return _pimpl->userConfigPackagesPath(); }
 
   Pathname RepoInfo::systemPackagesPath() const
   { return _pimpl->systemPackagesPath(); }

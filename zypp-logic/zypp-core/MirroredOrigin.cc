@@ -160,6 +160,12 @@ namespace zypp {
 
   void MirroredOrigin::setAuthority(OriginEndpoint newAuthority)
   {
+    if ( !newAuthority.isValid() )
+    {
+      WAR << "Ignoring invalid authority: " << newAuthority << std::endl;
+      return;
+    }
+
     const auto &newScheme = newAuthority.scheme();
     bool newAuthIsDl = newAuthority.url().schemeIsDownloading();
 
@@ -198,6 +204,12 @@ namespace zypp {
 
   bool MirroredOrigin::addMirror(OriginEndpoint newMirror)
   {
+    if ( !newMirror.isValid() )
+    {
+      WAR << "Ignoring invalid mirror: " << newMirror << std::endl;
+      return false;
+    }
+
     if ( _pimpl->_authority.isValid()
          && ( _pimpl->_authority.schemeIsDownloading() && !newMirror.schemeIsDownloading () )
          && ( _pimpl->_authority.scheme () != newMirror.scheme () )

@@ -134,10 +134,7 @@ namespace zypp {
   }
 
   struct MirroredOrigin::Private {
-    Private( OriginEndpoint &&authority = {}, std::vector<OriginEndpoint> &&mirrors = {} )
-      : _authority( std::move(authority) )
-      , _origins( std::move(mirrors) )
-    {}
+    Private() = default;
     ~Private() = default;
 
     Private *clone () const {

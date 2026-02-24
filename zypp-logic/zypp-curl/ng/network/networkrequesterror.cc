@@ -100,7 +100,7 @@ NetworkRequestError NetworkRequestErrorPrivate::fromCurlError(NetworkRequest &re
 
               //if there is already a user:password entry in the settings the auth simply failed
               //@TODO write a testcase for this
-              if ( !req.transferSettings().userPassword().empty() ) {
+              if ( req.transferSettings().hasCredentials() ) {
                 c = NetworkRequestError::AuthFailed;
               } else {
                 c = NetworkRequestError::Unauthorized;

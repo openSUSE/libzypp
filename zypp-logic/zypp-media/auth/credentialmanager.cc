@@ -18,7 +18,7 @@
 #include <utility>
 #include <zypp-media/MediaConfig>
 #include <zypp-core/base/Function.h>
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Easy.h>
 #include <zypp-core/fs/PathInfo.h>
 
@@ -311,11 +311,13 @@ namespace zypp
   void  CredentialManager::Impl::saveGlobalCredentials()
   {
     save_creds_in_file(_credsGlobal, _options.globalCredFilePath, 0640);
+    pDBG( "Saved", _credsGlobal.size(), "global records." );
   }
 
   void  CredentialManager::Impl::saveUserCredentials()
   {
     save_creds_in_file(_credsUser, _options.userCredFilePath, 0600);
+    pDBG( "Saved", _credsUser.size(), "user records." );
   }
 
 

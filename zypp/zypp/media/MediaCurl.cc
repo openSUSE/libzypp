@@ -417,9 +417,11 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
    If not provided, anonymous FTP identification
    *---------------------------------------------------------------*/
 
-  if ( settings.userPassword().size() )
+  if ( settings.hasCredentials() )
   {
-    SET_OPTION(CURLOPT_USERPWD, settings.userPassword().c_str());
+    settings.logCredentials( DBG << "Credentials: " ) << endl;
+    SET_OPTION(CURLOPT_USERNAME, settings.username().c_str());
+    SET_OPTION(CURLOPT_PASSWORD, settings.password().c_str());
     std::string use_auth = settings.authType();
     if (use_auth.empty())
       use_auth = "digest,basic";	// our default
@@ -479,8 +481,7 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
 #endif
   else
   {
-    DBG << "Proxy: not explicitly set" << endl;
-    DBG << "Proxy: libcurl may look into the environment" << endl;
+    DBG << "Proxy: not explicitly set, libcurl may look into the environment" << endl;
   }
 
   /** Speed limits */

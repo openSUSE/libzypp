@@ -231,9 +231,11 @@ namespace zyppng {
         Url::username/password -> CURLOPT_USERPWD
         If not provided, anonymous FTP identification
       *---------------------------------------------------------------*/
-      if ( locSet.userPassword().size() )
+      if ( locSet.hasCredentials() )
       {
-        setCurlOption(CURLOPT_USERPWD, locSet.userPassword().c_str());
+        locSet.logCredentials( DBG << "Credentials: " ) << std::endl;
+        setCurlOption(CURLOPT_USERNAME, locSet.username().c_str());
+        setCurlOption(CURLOPT_PASSWORD, locSet.password().c_str());
         std::string use_auth = _settings.authType();
         if (use_auth.empty())
           use_auth = "digest,basic";	// our default

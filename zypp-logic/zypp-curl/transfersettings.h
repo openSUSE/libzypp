@@ -33,6 +33,10 @@ namespace zypp
     class TransferSettings
     {
     public:
+      /** Log credentials to stream hiding the password ("","[user]","[user:########]"). */
+      static std::ostream & logUserPass( std::ostream & str, const std::string & user_r, const std::string & pass_r );
+
+    public:
       /** Constructs a transfer program cmd line access. */
       TransferSettings();
 
@@ -56,6 +60,13 @@ namespace zypp
       const std::string &userAgentString() const;
 
 
+      /** has a username, maybe even the password */
+      bool hasCredentials() const;
+
+      /** log credentials to stream hiding the password. */
+      std::ostream & logCredentials( std::ostream & str ) const
+      { return logUserPass( str, username(), password() ); }
+
       /** sets the auth username */
       void setUsername( const std::string &val_r );
       void setUsername( std::string && val_r );
@@ -69,9 +80,6 @@ namespace zypp
 
       /** auth password */
       const std::string &password() const;
-
-      /** returns the user and password as a user:pass string */
-      std::string userPassword() const;
 
       /** sets anonymous authentication (ie: for ftp) */
       void setAnonymousAuth();
@@ -91,6 +99,13 @@ namespace zypp
       /** proxy host */
       const std::string &proxy() const;
 
+
+      /** has a proxy username, maybe even the password */
+      bool hasProxyCredentials() const;
+
+      /** log credentials to stream hiding the password. */
+      std::ostream & logProxyCredentials( std::ostream & str ) const
+      { return logUserPass( str, proxyUsername(), proxyPassword() ); }
 
       /** sets the proxy user */
       void setProxyUsername( const std::string &val_r );
@@ -212,6 +227,9 @@ namespace zypp
       class Impl;
       RWCOW_pointer<Impl> _impl;
     };
+
+    /** \relates TransferSettings */
+    std::ostream & dumpOn( std::ostream & str, const TransferSettings & obj );
 
   } // namespace media
 } // namespece zypp

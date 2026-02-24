@@ -14,8 +14,9 @@
 #include <iostream>
 #include <sstream>
 
+#include <zypp-core/CheckSum.h>
 #include <zypp-core/base/String.h>
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/fs/WatchFile>
 #include <zypp-core/base/ReferenceCounted.h>
 #include <zypp-core/base/NonCopyable.h>
@@ -111,6 +112,19 @@ namespace zypp
       bool _head_requests_allowed;
     };
 
+    std::ostream & TransferSettings::logUserPass( std::ostream & str, const std::string & user_r, const std::string & pass_r )
+    {
+      if ( not user_r.empty() ) {
+        str << "[" << user_r;
+        if ( not pass_r.empty() ) {
+          str << ":" << "########"; //zypp::CheckSum::md5FromString(pass_r);
+        }
+        str << "]";
+      }
+      return str;
+    }
+
+
     TransferSettings::TransferSettings()
     : _impl(new TransferSettings::Impl())
     {}
@@ -140,6 +154,9 @@ namespace zypp
     { return _impl->_useragent; }
 
 
+    bool TransferSettings::hasCredentials() const
+    { return not _impl->_username.empty(); }
+
     void TransferSettings::setUsername( const std::string &val_r )
     { _impl->_username = val_r; }
 
@@ -158,19 +175,10 @@ namespace zypp
     const std::string &TransferSettings::password() const
     { return _impl->_password; }
 
-    std::string TransferSettings::userPassword() const
-    {
-      std::string userpwd = username();
-      if ( password().size() ) {
-        userpwd += ":" + password();
-      }
-      return userpwd;
-    }
-
     void TransferSettings::setAnonymousAuth()
     {
       setUsername("anonymous");
-      setPassword("yast@" LIBZYPP_VERSION_STRING);
+      setPassword("zypp@" LIBZYPP_VERSION_STRING);
     }
 
 
@@ -324,6 +332,12 @@ namespace zypp
 
     bool TransferSettings::headRequestsAllowed() const
     { return _impl->_head_requests_allowed; }
+
+
+    std::ostream & dumpOn( std::ostream & str, const TransferSettings & obj )
+    {
+      return obj.logCredentials( str );
+    }
 
   } // namespace media
 } // namespace zypp

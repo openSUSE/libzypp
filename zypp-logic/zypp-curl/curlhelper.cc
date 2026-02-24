@@ -210,8 +210,10 @@ void fillSettingsFromUrl( const Url &url, media::TransferSettings &s )
     {
       s.setUsername( std::move(param) );
       param = url.getPassword();
-      if ( ! param.empty() )
+      if ( ! param.empty() ) {
+        pDBG( "setPassword from", url );
         s.setPassword( std::move(param) );
+      }
     }
     else
     {

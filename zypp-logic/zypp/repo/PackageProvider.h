@@ -27,7 +27,6 @@ namespace zypp
   namespace repo
   {
     namespace env {
-      filesystem::Pathname XDG_CACHE_HOME();
     }
 
     ///////////////////////////////////////////////////////////////////

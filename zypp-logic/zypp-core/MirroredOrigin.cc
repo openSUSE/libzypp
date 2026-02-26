@@ -204,10 +204,11 @@ namespace zypp {
     return _pimpl->_authorities;
   }
 
-  OriginEndpoint MirroredOrigin::authority() const
+  const OriginEndpoint &MirroredOrigin::authority() const
   {
     if (_pimpl->_authorities.empty()) {
-      return OriginEndpoint();
+      static auto origin = OriginEndpoint();
+      return origin;
     }
     return _pimpl->_authorities[0];
   }

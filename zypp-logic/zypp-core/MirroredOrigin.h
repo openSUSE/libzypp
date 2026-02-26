@@ -232,7 +232,7 @@ namespace zypp {
     /*!
      * \return the first authority Url if present, empty Url otherwise
      */
-    OriginEndpoint authority() const;
+    const OriginEndpoint &authority() const;
 
     /*!
      * \return the mirrors for this origin, may be empty

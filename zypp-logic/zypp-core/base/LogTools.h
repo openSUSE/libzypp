@@ -796,6 +796,23 @@ namespace zypp {
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 namespace std {
+  /** \relates std::shared_ptr Stream output. */
+  template<class D>
+  inline std::ostream & operator<<( std::ostream & str, const std::shared_ptr<D> & obj )
+  {
+    if ( obj )
+      return str << *obj;
+    return str << std::string("NULL");
+  }
+  /** \overload specialize for void */
+  template<>
+  inline std::ostream & operator<<( std::ostream & str, const std::shared_ptr<void> & obj )
+  {
+    if ( obj )
+      return str << zypp::str::form( "%p", static_cast<void*>(obj.get()) );
+    return str << std::string("NULL");
+  }
+
   /*!
    * Write type info to stream
    * @TODO de-inline me

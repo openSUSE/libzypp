@@ -65,6 +65,7 @@ zypp_add_sources( zypp_base_HEADERS
   base/Exception.h
   base/ExternalDataSource.h
   base/Function.h
+  base/Functional.h
   base/Flags.h
   base/filestreambuf.h
   base/FileStreamBuf

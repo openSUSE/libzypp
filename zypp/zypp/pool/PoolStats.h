@@ -15,7 +15,7 @@
 #include <iosfwd>
 
 #include <zypp-core/base/Iterator.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp/base/Counter.h>
 #include <zypp/ResObject.h>
 

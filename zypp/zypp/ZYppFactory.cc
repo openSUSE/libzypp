@@ -21,7 +21,7 @@ extern "C"
 #include <zypp-core/base/LogControl.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/IOStream.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp/base/Backtrace.h>
 #include <zypp-core/base/LogControl.h>
 #include <zypp/PathInfo.h>

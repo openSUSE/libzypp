@@ -15,7 +15,7 @@
 #include <string>
 #include <utility>
 
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp/ui/Selectable.h>
 
 ///////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/Exception.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 
 #include <zypp/PathInfo.h>
 

@@ -194,7 +194,6 @@ SET( zypp_base_HEADERS
   base/Algorithm.h
   base/Counter.h
   base/Debug.h
-  base/Functional.h
   base/Json.h
   base/LocaleGuard.h
   base/Measure.h

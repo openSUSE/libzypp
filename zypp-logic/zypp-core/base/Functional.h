@@ -9,8 +9,8 @@
 /** \file	zypp/base/Functional.h
  *
 */
-#ifndef ZYPP_BASE_FUNCTIONAL_H
-#define ZYPP_BASE_FUNCTIONAL_H
+#ifndef ZYPP_CORE_BASE_FUNCTIONAL_H
+#define ZYPP_CORE_BASE_FUNCTIONAL_H
 
 #include <functional>
 #include <zypp-core/base/Function.h>
@@ -279,4 +279,4 @@ namespace zypp
   /////////////////////////////////////////////////////////////////
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
-#endif // ZYPP_BASE_FUNCTIONAL_H
+#endif // ZYPP_CORE_BASE_FUNCTIONAL_H

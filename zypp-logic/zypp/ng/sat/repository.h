@@ -37,7 +37,7 @@ namespace zyppng
     //	CLASS NAME : Repository
     //
     /** */
-    class ZYPP_API Repository : public PoolMember
+    class Repository : public PoolMember
     {
     public:
         using SolvableIterator = boost::filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>;

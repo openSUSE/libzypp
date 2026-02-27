@@ -14,6 +14,7 @@
 #include <zypp/ng/idstring.h>
 
 #include <zypp/ng/log/sat/repository.h>
+#include <zypp/ng/log/sat/solvable.h>
 
 extern "C"
 {

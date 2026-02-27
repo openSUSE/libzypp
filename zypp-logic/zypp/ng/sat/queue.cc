@@ -21,15 +21,19 @@ extern "C"
 
 using std::endl;
 
+
+// defined in zypp::sat::Queue , CQueue type is the same for zypp and zyppng
+#if 0
 namespace zypp {
   template<>
-  sat::detail::CQueue * rwcowClone<sat::detail::CQueue>( const sat::detail::CQueue * rhs )
+  zyppng::sat::detail::CQueue * rwcowClone<zyppng::sat::detail::CQueue>( const zyppng::sat::detail::CQueue * rhs )
   {
-    sat::detail::CQueue * ret = new sat::detail::CQueue;
-    ::queue_init_clone( ret, const_cast<sat::detail::CQueue *>(rhs) );
+    sat::detail::CQueue * ret = new zyppng::sat::detail::CQueue;
+    ::queue_init_clone( ret, const_cast<zyppng::sat::detail::CQueue *>(rhs) );
     return ret;
   }
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////
 namespace zyppng

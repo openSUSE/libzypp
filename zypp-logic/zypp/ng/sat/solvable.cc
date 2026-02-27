@@ -23,7 +23,6 @@
 
 
 #include <zypp-core/base/Functional.h>
-#include <zypp/base/Collector.h>
 
 #include <zypp/ng/sat/poolbase.h>
 #include <zypp/ng/sat/queue.h>
@@ -456,7 +455,7 @@ namespace zyppng
        * dependency. Return #invocations of fnc_r, negative if fnc_r returned
        * false to indicate abort.
        */
-      int invokeOnEachSupportedLocale( Capability cap_r, const function<bool (const Locale &)>& fnc_r )
+      int invokeOnEachSupportedLocale( Capability cap_r, const std::function<bool (const Locale &)>& fnc_r )
       {
         CapDetail detail( cap_r );
         if ( detail.kind() == CapDetail::EXPRESSION )
@@ -495,7 +494,7 @@ namespace zyppng
        * dependency. Return #invocations of fnc_r, negative if fnc_r returned
        * false to indicate abort.
        */
-      inline int invokeOnEachSupportedLocale( Capabilities cap_r, const zypp::function<bool (Locale)>& fnc_r )
+      inline int invokeOnEachSupportedLocale( Capabilities cap_r, const std::function<bool (const Locale &)>& fnc_r )
       {
         int cnt = 0;
         for_( cit, cap_r.begin(), cap_r.end() )
@@ -544,13 +543,13 @@ namespace zyppng
       return invokeOnEachSupportedLocale( dep_supplements(), NoMatchIn(locales_r) ) < 0;
     }
 
-    bool Solvable::supportsRequestedLocales() const
-    { return supportsLocale( myPool().getRequestedLocales() ); }
-
     LocaleSet Solvable::getSupportedLocales() const
     {
       LocaleSet ret;
-      invokeOnEachSupportedLocale( dep_supplements(), zypp::functor::collector( std::inserter( ret, ret.begin() ) ) );
+      invokeOnEachSupportedLocale( dep_supplements(), [&](const Locale & l){
+        ret.insert ( l );
+        return true;
+      } );
       return ret;
     }
 

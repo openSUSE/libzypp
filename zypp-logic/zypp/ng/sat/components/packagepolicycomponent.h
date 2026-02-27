@@ -19,9 +19,6 @@
 #include <set>
 
 namespace zyppng::sat {
-
-  struct SolvableSpec{};
-
   /**
    * \brief Component managing various package-level policies and blacklists.
    *

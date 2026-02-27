@@ -13,6 +13,8 @@
 #include <zypp/ng/sat/queue.h>
 #include <zypp/ng/sat/solvable.h>
 
+#include <zypp/ng/log/sat/solvable.h>
+
 using std::endl;
 
 namespace zyppng {

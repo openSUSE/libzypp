@@ -108,7 +108,7 @@ namespace zyppng::sat
      *  }
      * \endcode
      */
-    class ZYPP_API LookupAttr
+    class LookupAttr
     {
       public:
         using Exception = MatchException;

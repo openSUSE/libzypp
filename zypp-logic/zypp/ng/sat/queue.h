@@ -117,7 +117,7 @@ namespace zyppng
     };
 
     /** \relates Queue */
-    bool operator==( const Queue & lhs, const Queue & rhs ) ZYPP_API;
+    bool operator==( const Queue & lhs, const Queue & rhs );
 
     /** \relates Queue */
     inline bool operator!=( const Queue & lhs, const Queue & rhs )
@@ -129,7 +129,7 @@ namespace zyppng
 
 namespace zypp {
   /** \relates Queue Clone function for RWCOW_pointer */
-  template<> sat::detail::CQueue * rwcowClone<sat::detail::CQueue>( const sat::detail::CQueue * rhs );
+  template<> zyppng::sat::detail::CQueue * rwcowClone<zyppng::sat::detail::CQueue>( const zyppng::sat::detail::CQueue * rhs );
 }
 
 

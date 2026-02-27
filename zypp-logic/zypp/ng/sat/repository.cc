@@ -16,16 +16,13 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/Exception.h>
-//#include <zypp-core/base/Xml.h>
 
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
 
 #include <zypp/ng/sat/poolbase.h>
 #include <zypp/ng/sat/repository.h>
-//#include <zypp/ResPool.h>
-//#include <zypp/Product.h>
-//#include <zypp/sat/Pool.h>
+#include <zypp/ng/sat/lookupattr.h>
 
 using std::endl;
 
@@ -82,39 +79,35 @@ namespace zyppng
     Repository::ContentRevision Repository::contentRevision() const
     {
       NO_REPOSITORY_RETURN( ContentRevision() );
-      //sat::LookupRepoAttr q( sat::SolvAttr::repositoryRevision, *this );
-      //return q.empty() ? std::string() : q.begin().asString();
-      return std::string();
+      sat::LookupRepoAttr q( sat::SolvAttr::repositoryRevision, *this );
+      return q.empty() ? std::string() : q.begin().asString();
     }
 
     Repository::ContentIdentifier Repository::contentIdentifier() const
     {
       NO_REPOSITORY_RETURN( ContentIdentifier() );
-      //sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
-      //return q.empty() ? std::string() : q.begin().asString();
-      return std::string();
+      sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
+      return q.empty() ? std::string() : q.begin().asString();
     }
 
     bool Repository::hasContentIdentifier( const ContentIdentifier & id_r ) const
     {
       NO_REPOSITORY_RETURN( false );
-      /*
+
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
       for_( it, q.begin(), q.end() )
         if ( it.asString() == id_r )
           return true;
-      */
+
       return false;
     }
 
     zypp::Date Repository::generatedTimestamp() const
     {
       NO_REPOSITORY_RETURN( zypp::Date() );
-      /*
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryTimestamp, *this );
       return( q.empty() ? 0 : q.begin().asUnsigned() );
-      */
-      return 0;
+
     }
 
     zypp::Date Repository::suggestedExpirationTimestamp() const
@@ -124,14 +117,12 @@ namespace zyppng
       if ( ! generated )
         return 0; // do not calculate over a missing generated timestamp
 
-      /*
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryExpire, *this );
       if ( q.empty() )
         return 0;
 
-      return generated + Date(q.begin().asUnsigned());
-      */
-      return 0;
+      return generated + zypp::Date(q.begin().asUnsigned());
+
     }
 
     /*

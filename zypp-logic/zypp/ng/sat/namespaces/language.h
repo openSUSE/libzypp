@@ -14,13 +14,10 @@
 #ifndef ZYPP_NG_SAT_NAMESPACES_LANGUAGE_H_INCLUDED
 #define ZYPP_NG_SAT_NAMESPACES_LANGUAGE_H_INCLUDED
 
-#include <string>
-
-#include <zypp/base/SetTracker.h>
+#include <zypp/ng/base/settracker.h>
 #include <zypp/ng/sat/namespaces/namespaceprovider.h>
 #include <zypp/ng/locale.h>
 #include <zypp/ng/idstring.h>
-
 
 namespace zyppng::sat::namespaces {
 
@@ -71,7 +68,7 @@ namespace zyppng::sat::namespaces {
         return it != avl.end();
       }
 
-      using TrackedLocaleIds = zypp::base::SetTracker<IdStringSet> ;
+      using TrackedLocaleIds = base::SetTracker<IdStringSet> ;
 
       /** Expanded _requestedLocalesTracker for solver.*/
       const TrackedLocaleIds & trackedLocaleIds() const;
@@ -83,7 +80,7 @@ namespace zyppng::sat::namespaces {
         notifyDirty( PoolInvalidation::Dependency, std::move(reasons) ); // invaldate dependency/namespace related indices
       }
 
-      zypp::base::SetTracker<LocaleSet> _requestedLocalesTracker;
+      base::SetTracker<LocaleSet> _requestedLocalesTracker;
       mutable std::unique_ptr<TrackedLocaleIds> _trackedLocaleIdsPtr; // mutable because of lazy init
       mutable std::unique_ptr<LocaleSet>        _availableLocalesPtr; // mutable because of lazy init
 

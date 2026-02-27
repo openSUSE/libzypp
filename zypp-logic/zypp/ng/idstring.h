@@ -16,6 +16,7 @@
 namespace zyppng
 {
     using ::zypp::IdString;
+    using IdStringSet = std::unordered_set<IdString>;
     using ::zypp::operator<<;
     using ::zypp::dumpOn;
     using ::zypp::operator==;

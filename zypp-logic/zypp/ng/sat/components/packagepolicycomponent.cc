@@ -36,12 +36,14 @@ namespace zyppng::sat {
     return _ptfPackageSpec.count( solv_r ) > 0;
   }
 
+#if 0
   void PackagePolicyComponent::setNeedrebootSpec( SolvableSpec spec )
   {
     // Need to handle SolvableSpec -> std::set<Solvable> conversion or
     // implement SolvableSpec in zyppng.
     // For now, let's just store the placeholder logic.
   }
+#endif
 
   void PackagePolicyComponent::onInvalidate( PoolBase & pool, PoolInvalidation invalidation )
   {

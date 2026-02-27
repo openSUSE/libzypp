@@ -21,6 +21,8 @@
 #include <zypp/Rel.h>
 #include <zypp/Edition.h>
 #include <zypp/Capability.h>
+#include <zypp/ResPool.h>
+#include <zypp/sat/Solvable.h>
 
 #include <zypp/ng/sat/stringpool.h>
 
@@ -507,7 +509,6 @@ namespace zypp
     return str::regex_match( name_r, what, filenameRegex );
   }
 
-#ifndef ZYPPNG
   Capability Capability::guessPackageSpec( const std::string & str_r, bool & rewrote_r )
   {
     Capability cap( str_r );
@@ -566,7 +567,7 @@ namespace zypp
     bool dummy = false;
     return guessPackageSpec( str_r, dummy );
   }
-#endif
+
   /******************************************************************
   **
   **	FUNCTION NAME : operator<<

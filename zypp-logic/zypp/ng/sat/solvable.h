@@ -210,10 +210,6 @@ namespace zyppng
       bool supportsLocale( const Locale & locale_r ) const;
       /** Whether this \c Solvable supports at least one of the specified locales. */
       bool supportsLocale( const LocaleSet & locales_r ) const;
-      /** Whether this \c Solvable supports at least one requested locale.
-       * \see \ref Pool::setRequestedLocales
-       */
-      bool supportsRequestedLocales() const;
       /** Return the supported locales. */
       LocaleSet getSupportedLocales() const;
       /** \overload Legacy return via arg \
@@ -363,15 +359,6 @@ namespace zyppng
       IdType _id;
     };
     ///////////////////////////////////////////////////////////////////
-
-    /** \relates Solvable Stream output */
-    std::ostream & operator<<( std::ostream & str, const Solvable & obj ) ZYPP_API;
-
-    /** \relates Solvable More verbose stream output including dependencies */
-    std::ostream & dumpOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
-
-    /** \relates Solvable XML output */
-    std::ostream & dumpAsXmlOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
     /** \relates Solvable */
     inline bool operator==( const Solvable & lhs, const Solvable & rhs )

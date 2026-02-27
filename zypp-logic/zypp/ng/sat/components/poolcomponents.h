@@ -176,7 +176,7 @@ namespace zyppng::sat {
       struct CompContainer : public TypeErasure {
 
           CompContainer( std::unique_ptr<T> component ) : _ptr ( std::move(component) ) {}
-          ~CompContainer() override;
+          ~CompContainer() override = default;
           CompContainer(const CompContainer &) = delete;
           CompContainer(CompContainer &&) = delete;
           CompContainer &operator=(const CompContainer &) = delete;

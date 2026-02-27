@@ -24,7 +24,7 @@
 #include <zypp-core/base/Iterator.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/IOStream.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/base/Json.h>
 #include <zypp-core/base/Env.h>

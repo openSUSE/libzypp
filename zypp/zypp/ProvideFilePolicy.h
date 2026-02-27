@@ -14,7 +14,7 @@
 #include <utility>
 
 #include <zypp-core/base/Function.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp/FileChecker.h>
 
 ///////////////////////////////////////////////////////////////////

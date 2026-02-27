@@ -30,7 +30,7 @@
 #include <zypp/base/ReferenceCounted.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/PtrTypes.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 
 #include <zypp/solver/detail/Types.h>	// SolutionAction type
 

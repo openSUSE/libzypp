@@ -15,7 +15,7 @@
 #include <iosfwd>
 #include <utility>
 
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp-core/base/Function.h>
 // #include <zypp/ResFilters.h>  included at the end!
 #include <zypp/sat/Pool.h>

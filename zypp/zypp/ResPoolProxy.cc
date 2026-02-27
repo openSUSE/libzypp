@@ -15,7 +15,7 @@
 
 #include <zypp-core/base/Iterator.h>
 #include <zypp/base/Algorithm.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 
 #include <zypp/ResPoolProxy.h>
 #include <zypp/pool/PoolImpl.h>

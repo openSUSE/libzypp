@@ -16,7 +16,7 @@
 
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/Function.h>
-#include <zypp/base/Functional.h>
+#include <zypp-core/base/Functional.h>
 #include <zypp/RepoInfo.h>
 #include <zypp/ManagedFile.h>
 #include <utility>

@@ -227,6 +227,8 @@ namespace zypp
       static bool isInterestingFileSpec( const std::string & name_r ) { return isInterestingFileSpec( name_r.c_str() ); }
       static bool isInterestingFileSpec( const char * name_r );
 
+#ifndef ZYPPNG
+
       /** \ref Capability parser also guessing \c "libzypp-1.2.3-4.5.x86_64" formats.
        *
        * The argument might be in the form \c "libzypp-devel-1.2.3.x86_64".
@@ -257,6 +259,7 @@ namespace zypp
        * rewiting a \c '-' to \c '='. (\c false).
        */
       static Capability guessPackageSpec( const std::string & str_r, bool & rewrote_r );
+#endif
 
     public:
       /** Expert backdoor. */

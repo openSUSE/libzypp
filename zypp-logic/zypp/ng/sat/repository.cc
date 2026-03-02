@@ -185,11 +185,12 @@ namespace zyppng
     {
       NO_REPOSITORY_RETURN( noRepository );
       auto &pool = myPool();
-      for( auto it = pool.reposBegin(); it != pool.reposEnd(); ++it )
+      auto iterable = pool.repos();
+      for( auto it = iterable.begin(); it != iterable.end(); ++it )
       {
         if ( *it == *this )
         {
-          if ( ++it != pool.reposEnd() )
+          if ( ++it != iterable.end() )
             return *it;
           break;
         }

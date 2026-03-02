@@ -163,10 +163,10 @@ namespace zyppng::sat {
 
   Repository Pool::reposFind( const std::string & alias_r ) const
   {
-    for( auto it = reposBegin(); it != reposEnd(); it++ )
+    for( const auto &repo : repos() )
     {
-      if ( alias_r == it->alias() )
-        return *it;
+      if ( alias_r == repo.alias() )
+        return repo;
     }
     return Repository();
   }
@@ -185,19 +185,19 @@ namespace zyppng::sat {
   detail::size_type Pool::reposSize() const
   { return _pool->urepos; }
 
-  Pool::RepositoryIterator Pool::reposBegin() const
+  Pool::RepositoryIterable Pool::repos() const
   {
+    detail::RepositoryIterator start, end  = detail::RepositoryIterator( _pool->repos + _pool->nrepos );
     if ( _pool->urepos )
     { // repos[0] == NULL
       for( auto it = _pool->repos+1; it != _pool->repos+_pool->nrepos; it++ )
-        if ( *it )
-          return Pool::RepositoryIterator( it );
+        if ( *it ) {
+          start = detail::RepositoryIterator( it );
+          break;
+        }
     }
-    return reposEnd();
+    return RepositoryIterable( start, end );
   }
-
-  Pool::RepositoryIterator Pool::reposEnd() const
-  { return RepositoryIterator( _pool->repos + _pool->nrepos ); }
 
   Repository Pool::findSystemRepo() const
   { return Repository( _pool->installed ); }
@@ -214,9 +214,9 @@ namespace zyppng::sat {
     // return myPool()->nsolvables;
     // nsolvables is the array size including
     // invalid Solvables.
-    for( auto it = reposBegin(); it != reposEnd(); it++)
+    for( const auto &repo : repos() )
     {
-      if ( ! it->solvablesEmpty() )
+      if ( ! repo.solvablesEmpty() )
         return false;
     }
     return true;
@@ -228,18 +228,20 @@ namespace zyppng::sat {
     // nsolvables is the array size including
     // invalid Solvables.
     detail::size_type ret = 0;
-    for( auto it = reposBegin(); it != reposEnd(); it++)
+    for( const auto &repo : repos() )
     {
-      ret += it->solvablesSize();
+      ret += repo.solvablesSize();
     }
     return ret;
   }
 
-  Pool::SolvableIterator Pool::solvablesBegin() const
-  { return SolvableIterator( getFirstId() ); }
-
-  Pool::SolvableIterator Pool::solvablesEnd() const
-  { return SolvableIterator(); }
+  Pool::SolvableIterable Pool::solvables() const
+  {
+    return Pool::SolvableIterable(
+          detail::SolvableIterator( getFirstId() ),
+          detail::SolvableIterator()
+    );
+  }
 
   Queue Pool::whatMatchesDep( const SolvAttr &attr, const Capability &cap ) const
   {

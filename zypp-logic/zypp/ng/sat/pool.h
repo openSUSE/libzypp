@@ -16,6 +16,7 @@
 
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/Pathname.h>
+#include <zypp-core/base/Iterable.h>
 
 #include <zypp/ng/arch.h>
 #include <zypp/ng/sat/poolconstants.h>
@@ -36,8 +37,8 @@ namespace zyppng::sat {
   class Pool
   {
     public:
-      using RepositoryIterator = detail::RepositoryIterator;
-      using SolvableIterator = detail::SolvableIterator;
+      using RepositoryIterable = zypp::Iterable<detail::RepositoryIterator>;
+      using SolvableIterable   = zypp::Iterable<detail::SolvableIterator>;
 
     public:
 
@@ -105,7 +106,7 @@ namespace zyppng::sat {
        * after having added and removed repos lots of times.
        */
       void reposEraseAll()
-      { while ( ! reposEmpty() ) reposErase( reposBegin()->alias() ); }
+      { while ( ! reposEmpty() ) reposErase( repos().begin()->alias() ); }
 
       /** Whether \ref Pool contains repos. */
       bool reposEmpty() const;
@@ -113,11 +114,8 @@ namespace zyppng::sat {
       /** Number of repos in \ref Pool. */
       detail::size_type reposSize() const;
 
-      /** Iterator to the first \ref Repository. */
-      RepositoryIterator reposBegin() const;
-
-      /** Iterator behind the last \ref Repository. */
-      RepositoryIterator reposEnd() const;
+      /** Iteratable to the repositories */
+      RepositoryIterable repos() const;
 
       /** Return the system repository if it is on the pool. */
       Repository findSystemRepo() const;
@@ -142,10 +140,7 @@ namespace zyppng::sat {
       detail::size_type solvablesSize() const;
 
       /** Iterator to the first \ref Solvable. */
-      SolvableIterator solvablesBegin() const;
-
-      /** Iterator behind the last \ref Solvable. */
-      SolvableIterator solvablesEnd() const;
+      SolvableIterable solvables() const;
       //@}
 
     public:

@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <utility>
 #include <algorithm>
+#include <ostream>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

@@ -18,7 +18,7 @@
 #include <zypp-core/ng/base/Signals>
 #include <zypp-core/ng/base/Base>
 
-// CONTINUE WITH THREAD DATA AND PUT THE DISPATCHER INSTANCE THERE!
+typedef struct _GMainContext GMainContext;
 
 namespace zyppng {
 
@@ -39,7 +39,7 @@ namespace zyppng {
    * utilizing more of the CPU compared to starting all the tasks serially.
    *
    */
-  class LIBZYPP_NG_EXPORT EventLoop : public Base
+  class EventLoop : public Base
   {
     ZYPP_DECLARE_PRIVATE(EventLoop)
 
@@ -47,7 +47,8 @@ namespace zyppng {
     using Ptr = EventLoopRef;
     using WeakPtr = EventLoopWeakRef;
 
-    static Ptr create ();
+    static Ptr create ( GMainContext *ctx = nullptr );
+    static Ptr create ( EventDispatcherRef dispatcher  );
     ~EventLoop() override;
 
     /*!
@@ -67,7 +68,8 @@ namespace zyppng {
     std::shared_ptr<EventDispatcher> eventDispatcher () const;
 
   private:
-    EventLoop();
+    EventLoop( GMainContext *ctx = nullptr );
+    EventLoop( EventDispatcherRef dispatcher );
 
   };
 

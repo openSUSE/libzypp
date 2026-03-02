@@ -9,14 +9,15 @@
 /** \file	zypp/CountryCode.cc
  *
 */
+
+#include "CountryCode.h"
+
 #include <iostream>
 
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/Hash.h>
-
-#include <zypp/CountryCode.h>
 
 using std::endl;
 

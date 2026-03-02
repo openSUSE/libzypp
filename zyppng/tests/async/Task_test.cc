@@ -24,8 +24,8 @@ zyppng::Task<Res> returnAsync( Res r, uint64_t timeout = 0 ) {
 
 
 template<typename T>
-zyppng::Task<T> coro_func ( T &&val ) {
-  auto r = co_await returnAsync( std::forward<T>(val), 0 );
+zyppng::Task<T> coro_func ( T val ) {
+  auto r = co_await returnAsync( std::move(val), 0 );
   co_return r;
 }
 

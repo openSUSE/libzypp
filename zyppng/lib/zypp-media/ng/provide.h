@@ -136,23 +136,23 @@ namespace zyppng {
 
     Task<expected<MediaHandle>> attachMediaIfNeeded( LazyMediaHandle lazyHandle );
     Task<expected<MediaHandle>> attachMedia( zypp::MirroredOrigin origin, ProvideMediaSpec request );
-    Task<expected<MediaHandle>> attachMedia( const zypp::Url &url, const ProvideMediaSpec &request );
+    Task<expected<MediaHandle>> attachMedia( const zypp::Url &url, ProvideMediaSpec request );
 
     Task<expected<ProvideRes>> provide(  zypp::MirroredOrigin origin, ProvideFileSpec request );
-    Task<expected<ProvideRes>> provide(  const zypp::Url &url, const ProvideFileSpec &request );
+    Task<expected<ProvideRes>> provide(  const zypp::Url &url, ProvideFileSpec request );
     Task<expected<ProvideRes>> provide(  MediaHandle attachHandle, zypp::Pathname fileName, ProvideFileSpec request );
-    Task<expected<ProvideRes>> provide(  const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request );
+    Task<expected<ProvideRes>> provide(  LazyMediaHandle attachHandle, zypp::Pathname fileName, ProvideFileSpec request );
 
 
     /*!
      * Schedules a job to calculate the checksum for the given file
      */
-    Task<expected<zypp::CheckSum>> checksumForFile ( const zypp::Pathname &p, const std::string &algorithm );
+    Task<expected<zypp::CheckSum>> checksumForFile ( zypp::Pathname p, std::string algorithm );
 
     /*!
      * Schedules a copy job to copy a file from \a source to \a target
      */
-    Task<expected<zypp::ManagedFile>> copyFile ( const zypp::Pathname &source, const zypp::Pathname &target );
+    Task<expected<zypp::ManagedFile>> copyFile ( zypp::Pathname source, zypp::Pathname target );
     Task<expected<zypp::ManagedFile>> copyFile ( ProvideRes &&source, const zypp::Pathname &target );
 
     void start();

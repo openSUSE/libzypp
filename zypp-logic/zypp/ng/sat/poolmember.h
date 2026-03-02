@@ -9,16 +9,15 @@
 #ifndef POOLMEMBER_H_ZYPPNG_WRAPPER_H
 #define POOLMEMBER_H_ZYPPNG_WRAPPER_H
 
-#include <zypp/ng/sat/poolbase.h>
+namespace zyppng::sat {
 
-namespace zyppng::sat
-{
-  class PoolMember {
-    public:
-      static PoolBase &myPool() {
-        static PoolBase _global;
-        return _global;
-      }
+  class Pool;
+
+  class PoolMember
+  {
+  public:
+    static Pool &myPool();
   };
+
 } // namespace zyppng
 #endif // POOLMEMBER_H_ZYPPNG_WRAPPER_H

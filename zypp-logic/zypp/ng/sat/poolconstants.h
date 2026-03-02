@@ -55,6 +55,8 @@ namespace zyppng::sat {
     using zypp::sat::detail::systemSolvableId;
     using zypp::sat::detail::noRepoId;
     using zypp::sat::detail::isDepMarkerId;
+
+    using size_type = SolvableIdType;
   }
 
   /**

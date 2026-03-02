@@ -8,7 +8,7 @@
 ----------------------------------------------------------------------*/
 #include "namespaceprovider.h"
 
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp-core/base/LogTools.h>
 
 namespace zyppng::sat {
@@ -18,7 +18,7 @@ namespace zyppng::sat {
     return false;
   }
 
-  void NamespaceProvider::attach(PoolBase &pool)
+  void NamespaceProvider::attach(Pool &pool)
   {
     _pool = &pool;
   }

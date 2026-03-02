@@ -11,7 +11,7 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp/ng/sat/capability.h>
 
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/solvable.h>
 
 #undef  ZYPP_BASE_LOGGER_LOGGROUP

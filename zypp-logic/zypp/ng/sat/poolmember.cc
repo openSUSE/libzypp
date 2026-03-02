@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------
+/*---------------------------------------------------------------------\
 |                          ____ _   __ __ ___                          |
 |                         |__  / \ / / . \ . \                         |
 |                           / / \ V /|  _/  _/                         |
@@ -6,15 +6,15 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 ----------------------------------------------------------------------*/
-#include "autoinstalledcomponent.h"
+#include "poolmember.h"
+
 #include <zypp/ng/sat/pool.h>
 
 namespace zyppng::sat {
 
-  void AutoInstalledComponent::onRepoRemoved( Pool & pool, detail::RepoIdType id )
-  {
-    if ( pool.isSystemRepo( id ) )
-      _autoinstalled.clear();
+  Pool &PoolMember::myPool() {
+    static Pool _global;
+    return _global;
   }
 
-} // namespace zyppng::sat
+}

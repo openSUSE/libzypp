@@ -113,7 +113,7 @@ namespace zyppng
         operator const detail::CQueue *() const		///< libsolv backdoor
         { return _pimpl.get(); }
       private:
-        zypp::RWCOW_pointer<detail::CQueue> _pimpl;		///< Pointer to implementation
+        zypp::RWCOW_pointer<zypp::sat::detail::CQueue> _pimpl;		///< Pointer to implementation
     };
 
     /** \relates Queue */
@@ -129,7 +129,7 @@ namespace zyppng
 
 namespace zypp {
   /** \relates Queue Clone function for RWCOW_pointer */
-  template<> zyppng::sat::detail::CQueue * rwcowClone<zyppng::sat::detail::CQueue>( const zyppng::sat::detail::CQueue * rhs );
+  template<> sat::detail::CQueue * rwcowClone<sat::detail::CQueue>( const sat::detail::CQueue * rhs );
 }
 
 

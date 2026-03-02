@@ -24,7 +24,7 @@
 
 #include <zypp-core/base/Functional.h>
 
-#include <zypp/ng/sat/poolbase.h>
+#include "pool.h"
 #include <zypp/ng/sat/queue.h>
 
 using std::endl;

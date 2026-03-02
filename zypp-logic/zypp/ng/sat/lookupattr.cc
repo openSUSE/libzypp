@@ -16,7 +16,7 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
 
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp/ng/idstringtype.h>
 #include <zypp/ng/sat/lookupattr.h>
 #include <zypp/base/StrMatcher.h>
@@ -166,28 +166,28 @@ namespace zyppng::sat
       : _pimpl( new Impl )
     {}
 
-    LookupAttr::LookupAttr( PoolBase & pool, SolvAttr attr_r, Location loc_r )
+    LookupAttr::LookupAttr( Pool & pool, SolvAttr attr_r, Location loc_r )
       : _pimpl( new Impl( pool.getPool(), std::move(attr_r), std::move(loc_r) ) )
     {}
 
-    LookupAttr::LookupAttr( PoolBase & pool, SolvAttr attr_r, SolvAttr parent_r, Location loc_r )
+    LookupAttr::LookupAttr( Pool & pool, SolvAttr attr_r, SolvAttr parent_r, Location loc_r )
       : _pimpl( new Impl( pool.getPool(), std::move(attr_r), std::move(loc_r) ) )
     { _pimpl->setParent( std::move(parent_r) ); }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( repo_r.myPool().getPool(), std::move(attr_r), repo_r, std::move(loc_r) ) )
+      : _pimpl( new Impl( repo_r.myPool().getPool(), std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
     {}
 
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( repo_r.myPool().getPool(), std::move(attr_r), repo_r, std::move(loc_r) ) )
+      : _pimpl( new Impl( repo_r.myPool().getPool(), std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
     { _pimpl->setParent( std::move(parent_r) ); }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Solvable solv_r )
-      : _pimpl( new Impl( solv_r.myPool().getPool(), std::move(attr_r), solv_r ) )
+      : _pimpl( new Impl( solv_r.myPool().getPool(), std::move(attr_r), std::move(solv_r) ) )
     {}
 
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Solvable solv_r )
-      : _pimpl( new Impl( solv_r.myPool().getPool(), std::move(attr_r), solv_r) )
+      : _pimpl( new Impl( solv_r.myPool().getPool(), std::move(attr_r), std::move(solv_r) ) )
     { _pimpl->setParent( std::move(parent_r) ); }
 
 
@@ -722,4 +722,3 @@ namespace zyppng::sat
     { return asCheckSum(); }
 
 } // namespace zyppng::sat
-

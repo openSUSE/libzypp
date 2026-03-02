@@ -7,8 +7,8 @@
 |                                                                      |
 ----------------------------------------------------------------------*/
 #include "namespacecomponent.h"
-#include "../namespaces/namespaceprovider.h"
-#include "../poolbase.h"
+#include <zypp/ng/sat/namespaces/namespaceprovider.h>
+#include <zypp/ng/sat/pool.h>
 
 #include <zypp/ng/idstring.h>
 #include <algorithm>
@@ -28,7 +28,7 @@ namespace zyppng::sat {
     return false;
   }
 
-  void NamespaceComponent::attach(PoolBase &pool)
+  void NamespaceComponent::attach(Pool &pool)
   {
     pool->nscallback = &NamespaceComponent::libsolv_callback;
     pool->nscallbackdata = this;
@@ -37,7 +37,7 @@ namespace zyppng::sat {
     }
   }
 
-  void NamespaceComponent::prepare(PoolBase &pool)
+  void NamespaceComponent::prepare(Pool &pool)
   {
     for ( auto &provider : _providers ) {
       if ( !provider.second->prepare (pool) )

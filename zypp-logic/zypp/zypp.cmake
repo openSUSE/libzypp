@@ -144,7 +144,8 @@ function(zypp_add_zypp_target)
   )
 
   zypp_add_sources( zyppng_sat_SRCS
-    ng/sat/poolbase.cc
+    ng/sat/pool.cc
+    ng/sat/poolmember.cc
     ng/sat/solvable.cc
     ng/sat/stringpool.cc
     ng/sat/queue.cc
@@ -156,7 +157,7 @@ function(zypp_add_zypp_target)
   )
 
   zypp_add_sources( zyppng_sat_HEADERS
-    ng/sat/poolbase.h
+    ng/sat/pool.h
     ng/sat/poolconstants.h
     ng/sat/poolmember.h
     ng/sat/solvattr.h

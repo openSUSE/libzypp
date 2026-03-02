@@ -34,7 +34,7 @@ namespace zypp
 
 namespace zyppng::sat
 {
-    class PoolBase;
+    class Pool;
 
     using zypp::MatchException;
     using zypp::StrMatcher;
@@ -108,7 +108,7 @@ namespace zyppng::sat
      *  }
      * \endcode
      */
-    class LookupAttr
+    class ZYPP_API LookupAttr
     {
       public:
         using Exception = MatchException;
@@ -132,9 +132,9 @@ namespace zyppng::sat
         LookupAttr &operator=(LookupAttr &&) noexcept = default;
 
         /** Lookup \ref SolvAttr in \ref Pool (all repositories). */
-        explicit LookupAttr( PoolBase & pool, SolvAttr attr_r, Location = SOLV_ATTR );
+        explicit LookupAttr( Pool & pool, SolvAttr attr_r, Location = SOLV_ATTR );
         /** \overload SolvAttr within sub-structure \a parent_r. */
-        LookupAttr( PoolBase & pool, SolvAttr attr_r, SolvAttr parent_r, Location = SOLV_ATTR );
+        LookupAttr( Pool & pool, SolvAttr attr_r, SolvAttr parent_r, Location = SOLV_ATTR );
 
         /** Lookup \ref SolvAttr in one\ref Repository. */
         LookupAttr( SolvAttr attr_r, Repository repo_r, Location = SOLV_ATTR );
@@ -259,8 +259,8 @@ namespace zyppng::sat
         /** \copydoc LookupAttr::LookupAttr() */
         LookupRepoAttr()
         {}
-        /** \copydoc LookupAttr::LookupAttr(PoolBase,SolvAttr) */
-        explicit LookupRepoAttr( PoolBase & pool, SolvAttr attr_r )
+        /** \copydoc LookupAttr::LookupAttr(Pool,SolvAttr) */
+        explicit LookupRepoAttr( Pool & pool, SolvAttr attr_r )
         : LookupAttr( pool, std::move(attr_r), REPO_ATTR )
         {}
         /** \copydoc LookupAttr::LookupAttr(SolvAttr,Repository) */
@@ -583,12 +583,5 @@ namespace zyppng::sat
     //@}
 
 } // namespace zyppng::sat
-
-/** \relates LookupAttr::iterator Stream output of the underlying iterator for debug. */
-std::ostream & operator<<( std::ostream & str, const zyppng::sat::detail::CDataiterator * obj );
-
-/** \relates LookupAttr::iterator Stream output of the underlying iterator for debug. */
-inline std::ostream & operator<<( std::ostream & str, const zyppng::sat::detail::CDataiterator & obj )
-{ return str << &obj; }
 
 #endif // ZYPPNG_SAT_LOOKUPATTR_H

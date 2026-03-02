@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <zypp-core/base/Iterator.h>
 #include <zypp-core/Pathname.h>
+#include <zypp/ng/sat/poolconstants.h>
 #include <zypp/ng/sat/poolmember.h>
 //#include <zypp/sat/LookupAttr.h>     // LookupAttrTools.h included at EOF
 #include <zypp/ng/sat/solvable.h>
@@ -59,7 +60,7 @@ namespace zyppng
         Repository &operator=(const Repository &) = default;
         Repository &operator=(Repository &&) noexcept = default;
 
-        /** \ref PoolBase ctor. */
+        /** \ref Pool ctor. */
         explicit Repository( IdType id_r )
         : _id( id_r ) {}
 

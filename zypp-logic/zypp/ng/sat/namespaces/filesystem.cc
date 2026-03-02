@@ -13,7 +13,7 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/fs/watchfile.h>
 
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 
 namespace zyppng::sat::namespaces {
 
@@ -30,7 +30,7 @@ namespace zyppng::sat::namespaces {
     return _requiredFilesystems->count( zypp::IdString(value).asString() ) > 0;
   }
 
-  bool FilesystemNamespaceProvider::prepare(PoolBase &pool)
+  bool FilesystemNamespaceProvider::prepare(Pool &pool)
   {
     // additional /etc/sysconfig/storage check:
     static zypp::WatchFile sysconfigFile( sysconfigStoragePath(), zypp::WatchFile::NO_INIT );

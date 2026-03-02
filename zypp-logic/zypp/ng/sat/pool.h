@@ -11,8 +11,8 @@
 * You have been warned!
 *
 */
-#ifndef ZYPPNG_SAT_POOLBASE_H_INCLUDED
-#define ZYPPNG_SAT_POOLBASE_H_INCLUDED
+#ifndef ZYPPNG_SAT_POOL_H_INCLUDED
+#define ZYPPNG_SAT_POOL_H_INCLUDED
 
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/Pathname.h>
@@ -21,25 +21,36 @@
 #include <zypp/ng/sat/poolconstants.h>
 #include <zypp/ng/sat/components/poolcomponents.h>
 #include <zypp/ng/base/serialnumber.h>
+#include <zypp/ng/sat/repository.h>
+#include <zypp/ng/sat/solvable.h>
+#include <zypp/ng/sat/queue.h>
 
 namespace zyppng::sat {
 
   class NamespaceRegistry;
 
-  class PoolBase
+  /**
+   * \class Pool
+   * \brief Orchestrator for a libsolv pool instance.
+   */
+  class Pool
   {
+    public:
+      using RepositoryIterator = detail::RepositoryIterator;
+      using SolvableIterator = detail::SolvableIterator;
+
     public:
 
       /** Default ctor */
-      PoolBase();
+      Pool();
 
-      PoolBase(const PoolBase &) = delete;
-      PoolBase(PoolBase &&) = delete;
-      PoolBase &operator=(const PoolBase &) = delete;
-      PoolBase &operator=(PoolBase &&) = delete;
+      Pool(const Pool &) = delete;
+      Pool(Pool &&) = delete;
+      Pool &operator=(const Pool &) = delete;
+      Pool &operator=(Pool &&) = delete;
 
       /** Dtor */
-      ~PoolBase();
+      ~Pool();
 
       /** Pointer style access forwarded to sat-pool. */
       detail::CPool * operator->()
@@ -54,7 +65,6 @@ namespace zyppng::sat {
       { return _serialIDs; }
 
       /** Update housekeeping data (e.g. whatprovides).
-       * \todo actually requires a watcher.
        */
       void prepare();
 
@@ -63,16 +73,90 @@ namespace zyppng::sat {
        */
       void setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons );
 
+      /**
+       * \brief Reset the pool by removing all repositories and solvables.
+       * \details This is primarily useful for test isolation since StringPool is currently a singleton.
+       */
+      void clear();
+
     public:
+      /** \name Repository management */
+      //@{
       /** Reserved system repository alias \c @System. */
       static const std::string & systemRepoAlias();
+
+      /** Find a \ref Repository named \c alias_r.
+       * Returns \ref Repository::noRepository if there is no such \ref Repository.
+       */
+      Repository reposFind( const std::string & alias_r ) const;
+
+      /** Return a \ref Repository named \c alias_r.
+       * It a such a \ref Repository does not already exist
+       * a new empty \ref Repository is created.
+       */
+      Repository reposInsert( const std::string & alias_r );
+
+      /** Remove a \ref Repository named \c alias_r. */
+      void reposErase( const std::string & alias_r )
+      { reposFind( alias_r ).eraseFromPool(); }
+
+      /** Remove all repos from the pool.
+       * This also shrinks a pool which may have become large
+       * after having added and removed repos lots of times.
+       */
+      void reposEraseAll()
+      { while ( ! reposEmpty() ) reposErase( reposBegin()->alias() ); }
+
+      /** Whether \ref Pool contains repos. */
+      bool reposEmpty() const;
+
+      /** Number of repos in \ref Pool. */
+      detail::size_type reposSize() const;
+
+      /** Iterator to the first \ref Repository. */
+      RepositoryIterator reposBegin() const;
+
+      /** Iterator behind the last \ref Repository. */
+      RepositoryIterator reposEnd() const;
+
+      /** Return the system repository if it is on the pool. */
+      Repository findSystemRepo() const;
+
+      /** Return the system repository, create it if missing. */
+      Repository systemRepo();
 
       bool isSystemRepo( detail::CRepo * repo_r ) const
       { return repo_r && _pool->installed == repo_r; }
 
-      detail::CRepo * systemRepo() const
+      detail::CRepo * _systemRepoPtr() const
       { return _pool->installed; }
+      //@}
 
+    public:
+      /** \name Solvable management */
+      //@{
+      /** Whether \ref Pool contains solvables. */
+      bool solvablesEmpty() const;
+
+      /** Number of solvables in \ref Pool. */
+      detail::size_type solvablesSize() const;
+
+      /** Iterator to the first \ref Solvable. */
+      SolvableIterator solvablesBegin() const;
+
+      /** Iterator behind the last \ref Solvable. */
+      SolvableIterator solvablesEnd() const;
+      //@}
+
+    public:
+      /** \name Dependency matching */
+      //@{
+      Queue whatMatchesDep( const SolvAttr &attr, const Capability &cap ) const;
+      Queue whatMatchesSolvable ( const SolvAttr &attr, const Solvable &solv ) const;
+      Queue whatContainsDep ( const SolvAttr &attr, const Capability &cap ) const;
+      //@}
+
+    public:
       /** Get rootdir (for file conflicts check) */
       zypp::Pathname rootDir() const
       {

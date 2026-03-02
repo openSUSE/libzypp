@@ -6,13 +6,8 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "poolbase.h"
+#include "pool.h"
 #include "stringpool.h"
-#include "components/namespacecomponent.h"
-#include "components/architecturecomponent.h"
-#include "components/autoinstalledcomponent.h"
-#include "components/packagepolicycomponent.h"
-
 
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/assert.hpp>
@@ -97,21 +92,17 @@ namespace zyppng::sat {
     }
   }
 
-  PoolBase::PoolBase()
+  Pool::Pool()
     : _pool( StringPool::instance().getPool() )
   {
-    _componentsSet.assertComponent<NamespaceComponent>();
-    _componentsSet.assertComponent<ArchitectureComponent>();
-    _componentsSet.assertComponent<AutoInstalledComponent>();
-    _componentsSet.assertComponent<PackagePolicyComponent>();
   }
 
-  PoolBase::~PoolBase()
+  Pool::~Pool()
   {
 
   }
 
-  void PoolBase::prepare()
+  void Pool::prepare()
   {
     // The Stability Loop: loop as long as the serial number is changing.
     // This catches invalidations triggered by components during their preparation
@@ -134,7 +125,14 @@ namespace zyppng::sat {
     }
   }
 
-  void PoolBase::setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons )
+  void Pool::clear()
+  {
+    ::pool_freeallrepos( _pool, /*resusePoolIDs*/true );
+    _serialIDs.setDirty();
+    setDirty( PoolInvalidation::Data, { __FUNCTION__ } );
+  }
+
+  void Pool::setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons )
   {
       if ( reasons.size() ) {
         bool first = true;
@@ -157,13 +155,114 @@ namespace zyppng::sat {
       ::pool_freewhatprovides( _pool );
   }
 
-  const std::string &PoolBase::systemRepoAlias()
+  const std::string &Pool::systemRepoAlias()
   {
     static const std::string _val( "@System" );
     return _val;
   }
 
-  detail::CRepo *PoolBase::_createRepo(const std::string &name_r)
+  Repository Pool::reposFind( const std::string & alias_r ) const
+  {
+    for( auto it = reposBegin(); it != reposEnd(); it++ )
+    {
+      if ( alias_r == it->alias() )
+        return *it;
+    }
+    return Repository();
+  }
+
+  Repository Pool::reposInsert( const std::string & alias_r )
+  {
+    Repository res( reposFind( alias_r ) );
+    if ( ! res )
+      res = Repository( _createRepo( alias_r ) );
+    return res;
+  }
+
+  bool Pool::reposEmpty() const
+  { return _pool->urepos == 0; }
+
+  detail::size_type Pool::reposSize() const
+  { return _pool->urepos; }
+
+  Pool::RepositoryIterator Pool::reposBegin() const
+  {
+    if ( _pool->urepos )
+    { // repos[0] == NULL
+      for( auto it = _pool->repos+1; it != _pool->repos+_pool->nrepos; it++ )
+        if ( *it )
+          return Pool::RepositoryIterator( it );
+    }
+    return reposEnd();
+  }
+
+  Pool::RepositoryIterator Pool::reposEnd() const
+  { return RepositoryIterator( _pool->repos + _pool->nrepos ); }
+
+  Repository Pool::findSystemRepo() const
+  { return Repository( _pool->installed ); }
+
+  Repository Pool::systemRepo()
+  {
+    if ( ! _pool->installed )
+      _createRepo( systemRepoAlias() );
+    return Repository( _pool->installed );
+  }
+
+  bool Pool::solvablesEmpty() const
+  {
+    // return myPool()->nsolvables;
+    // nsolvables is the array size including
+    // invalid Solvables.
+    for( auto it = reposBegin(); it != reposEnd(); it++)
+    {
+      if ( ! it->solvablesEmpty() )
+        return false;
+    }
+    return true;
+  }
+
+  detail::size_type Pool::solvablesSize() const
+  {
+    // Do not return myPool()->nsolvables;
+    // nsolvables is the array size including
+    // invalid Solvables.
+    detail::size_type ret = 0;
+    for( auto it = reposBegin(); it != reposEnd(); it++)
+    {
+      ret += it->solvablesSize();
+    }
+    return ret;
+  }
+
+  Pool::SolvableIterator Pool::solvablesBegin() const
+  { return SolvableIterator( getFirstId() ); }
+
+  Pool::SolvableIterator Pool::solvablesEnd() const
+  { return SolvableIterator(); }
+
+  Queue Pool::whatMatchesDep( const SolvAttr &attr, const Capability &cap ) const
+  {
+    sat::Queue q;
+    pool_whatmatchesdep( _pool, attr.id(), cap.id(), q, 0);
+    return q;
+  }
+
+  Queue Pool::whatMatchesSolvable ( const SolvAttr &attr, const Solvable &solv ) const
+  {
+    sat::Queue q;
+    pool_whatmatchessolvable( _pool, attr.id(), static_cast<Id>( solv.id() ), q, 0 );
+    return q;
+  }
+
+  Queue Pool::whatContainsDep ( const SolvAttr &attr, const Capability &cap ) const
+  {
+    sat::Queue q;
+    pool_whatcontainsdep( _pool, attr.id(), cap.id(), q, 0 );
+    return q;
+  }
+
+  detail::CRepo *Pool::_createRepo(const std::string &name_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, name_r } );
     detail::CRepo * ret = ::repo_create( _pool, name_r.c_str() );
@@ -172,7 +271,7 @@ namespace zyppng::sat {
     return ret;
   }
 
-  void PoolBase::_deleteRepo(detail::CRepo *repo_r)
+  void Pool::_deleteRepo(detail::CRepo *repo_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, repo_r->name } );
 
@@ -186,7 +285,7 @@ namespace zyppng::sat {
     }
   }
 
-  int PoolBase::_addSolv(detail::CRepo *repo_r, FILE *file_r)
+  int Pool::_addSolv(detail::CRepo *repo_r, FILE *file_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, repo_r->name } );
     int ret = ::repo_add_solv( repo_r, file_r, 0 );
@@ -195,7 +294,7 @@ namespace zyppng::sat {
     return ret;
   }
 
-  int PoolBase::_addHelix(detail::CRepo *repo_r, FILE *file_r)
+  int Pool::_addHelix(detail::CRepo *repo_r, FILE *file_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, repo_r->name } );
     int ret = ::repo_add_helix( repo_r, file_r, 0 );
@@ -204,7 +303,7 @@ namespace zyppng::sat {
     return ret;
   }
 
-  int PoolBase::_addTesttags(detail::CRepo *repo_r, FILE *file_r)
+  int Pool::_addTesttags(detail::CRepo *repo_r, FILE *file_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, repo_r->name } );
     int ret = ::testcase_add_testtags( repo_r, file_r, 0 );
@@ -213,13 +312,13 @@ namespace zyppng::sat {
     return ret;
   }
 
-  detail::SolvableIdType PoolBase::_addSolvables(detail::CRepo *repo_r, unsigned int count_r)
+  detail::SolvableIdType Pool::_addSolvables(detail::CRepo *repo_r, unsigned int count_r)
   {
     setDirty( PoolInvalidation::Data, { __FUNCTION__, repo_r->name } );
     return ::repo_add_solvable_block( repo_r, count_r );
   }
 
-  void PoolBase::_postRepoAdd( detail::CRepo * repo_r )
+  void Pool::_postRepoAdd( detail::CRepo * repo_r )
   {
     _componentsSet.notifyRepoAdded( *this, repo_r );
   }

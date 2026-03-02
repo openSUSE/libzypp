@@ -42,7 +42,7 @@ namespace zyppng::sat {
       bool isOnSystemByAuto( IdString ident_r ) const { return _autoinstalled.contains( ident_r.id() ); }
       //@}
 
-      void onRepoRemoved( PoolBase & pool, detail::RepoIdType id ) override;
+      void onRepoRemoved( Pool & pool, detail::RepoIdType id ) override;
 
     private:
       StringQueue _autoinstalled;

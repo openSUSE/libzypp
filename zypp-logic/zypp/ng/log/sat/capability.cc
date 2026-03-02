@@ -55,7 +55,7 @@ namespace zyppng {
         case sat::CapDetail::EXPRESSION:
         {
           std::string outs;
-          auto pool = obj.myPool().getPool();
+          auto pool = sat::StringPool::instance().getPool();
           auto op = obj.capRel();
           if ( obj.capRel() == sat::CapDetail::CAP_NAMESPACE ) {
             sat::detail::cap2str( outs, pool, obj.lhs().id(), op );

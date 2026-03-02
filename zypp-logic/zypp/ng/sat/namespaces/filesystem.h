@@ -32,7 +32,7 @@ namespace zyppng::sat::namespaces {
       const std::set<std::string> &requiredFilesystems() const;
 
       // NamespaceProvider interface
-      bool prepare(PoolBase &pool) override;
+      bool prepare(Pool &pool) override;
       bool isSatisfied( detail::IdType value) const override;
 
     private:

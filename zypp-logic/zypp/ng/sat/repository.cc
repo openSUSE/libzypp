@@ -20,7 +20,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
 
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/repository.h>
 #include <zypp/ng/sat/lookupattr.h>
 
@@ -35,7 +35,7 @@ namespace zyppng
     const Repository Repository::noRepository;
 
     const std::string & Repository::systemRepoAlias()
-    { return PoolBase::systemRepoAlias(); }
+    { return Pool::systemRepoAlias(); }
 
     /////////////////////////////////////////////////////////////////
 
@@ -125,22 +125,6 @@ namespace zyppng
 
     }
 
-    /*
-    Repository::Keywords Repository::keywords() const
-    {
-      NO_REPOSITORY_RETURN( Keywords() );
-      return Keywords( sat::SolvAttr::repositoryKeywords, *this, sat::LookupAttr::REPO_ATTR );
-    }
-
-    bool Repository::hasKeyword( const std::string & val_r ) const
-    {
-      for ( const auto & val : keywords() )
-        if ( val == val_r )
-          return true;
-      return false;
-    }
-    */
-
     bool Repository::maybeOutdated() const
     {
       NO_REPOSITORY_RETURN( false );
@@ -156,67 +140,6 @@ namespace zyppng
 
       return suggestedExpirationTimestamp() < zypp::Date::now();
     }
-
-    /*
-    bool Repository::providesUpdatesFor( const CpeId & cpeid_r ) const
-    {
-      NO_REPOSITORY_RETURN( false );
-      if ( ! cpeid_r )
-        return false;	// filter queries/products without CpeId, as an empty CpeId matches ANYthing.
-
-      // check in repository metadata
-      for_( it, updatesProductBegin(), updatesProductEnd() )
-      {
-        if ( compare( cpeid_r, it.cpeId(), SetRelation::subset ) )
-          return true;
-      }
-
-      // check whether known products refer to this as update repo
-      sat::LookupRepoAttr myIds( sat::SolvAttr::repositoryRepoid, *this );	// usually just one, but...
-      if ( ! myIds.empty() )
-      {
-        const ResPool & pool( ResPool::instance() );
-        for_( it, pool.byKindBegin<Product>(), pool.byKindEnd<Product>() )
-        {
-          Product::constPtr prod( (*it)->asKind<Product>() );
-          if ( compare( cpeid_r, prod->cpeId(), SetRelation::superset ) )
-          {
-            for_( myId, myIds.begin(), myIds.end() )
-            {
-              if ( prod->hasUpdateContentIdentifier( myId.asString() ) )
-                return true;
-            }
-          }
-        }
-      }
-      return false;
-    }
-
-    bool Repository::isUpdateRepo() const
-    {
-      NO_REPOSITORY_RETURN( false );
-
-      // check in repository metadata
-      if ( updatesProductBegin() != updatesProductEnd() )
-        return true;
-
-      // check whether known products refer to this as update repo
-      sat::LookupRepoAttr myIds( sat::SolvAttr::repositoryRepoid, *this );	// usually just one, but...
-      if ( ! myIds.empty() )
-      {
-        const ResPool & pool( ResPool::instance() );
-        for_( it, pool.byKindBegin<Product>(), pool.byKindEnd<Product>() )
-        {
-          for_( myId, myIds.begin(), myIds.end() )
-          {
-            if ( (*it)->asKind<Product>()->hasUpdateContentIdentifier( myId.asString() ) )
-              return true;
-          }
-        }
-      }
-      return false;
-    }
-    */
 
     bool Repository::solvablesEmpty() const
     {
@@ -250,56 +173,6 @@ namespace zyppng
                                   sat::detail::SolvableIterator(_repo->end) );
     }
 
-    /*
-    Repository::ProductInfoIterator Repository::compatibleWithProductBegin() const
-    {
-      NO_REPOSITORY_RETURN( ProductInfoIterator() );
-      return ProductInfoIterator( sat::SolvAttr::repositoryDistros, *this );
-    }
-
-    Repository::ProductInfoIterator Repository::compatibleWithProductEnd() const
-    {
-      return ProductInfoIterator();
-    }
-
-    Repository::ProductInfoIterator Repository::updatesProductBegin() const
-    {
-      NO_REPOSITORY_RETURN( ProductInfoIterator() );
-      return ProductInfoIterator( sat::SolvAttr::repositoryUpdates, *this );
-    }
-
-    Repository::ProductInfoIterator Repository::updatesProductEnd() const
-    {
-      return ProductInfoIterator();
-    }
-    */
-
-    /*
-    RepoInfo Repository::info() const
-    {
-      NO_REPOSITORY_RETURN( RepoInfo() );
-      return myPool().repoInfo( _repo );
-    }
-
-    void Repository::setInfo( const RepoInfo & info_r )
-    {
-        NO_REPOSITORY_THROW( Exception( "Can't set RepoInfo for norepo." ) );
-        if ( info_r.alias() != alias() )
-        {
-            ZYPP_THROW( Exception( str::form( "RepoInfo alias (%s) does not match repository alias (%s)",
-                                              info_r.alias().c_str(), alias().c_str() ) ) );
-        }
-        myPool().setRepoInfo( _repo, info_r );
-        MIL << *this << endl;
-    }
-
-    void Repository::clearInfo()
-    {
-        NO_REPOSITORY_RETURN();
-        myPool().setRepoInfo( _repo, RepoInfo() );
-    }
-    */
-
     void Repository::eraseFromPool()
     {
         NO_REPOSITORY_RETURN();
@@ -311,17 +184,16 @@ namespace zyppng
     Repository Repository::nextInPool() const
     {
       NO_REPOSITORY_RETURN( noRepository );
-      /*
-      for_( it, sat::Pool::instance().reposBegin(), sat::Pool::instance().reposEnd() )
+      auto &pool = myPool();
+      for( auto it = pool.reposBegin(); it != pool.reposEnd(); ++it )
       {
         if ( *it == *this )
         {
-          if ( ++it != _for_end )
+          if ( ++it != pool.reposEnd() )
             return *it;
           break;
         }
       }
-      */
       return noRepository;
     }
 
@@ -394,6 +266,20 @@ namespace zyppng
     {
         NO_REPOSITORY_THROW( zypp::Exception( "Can't add solvables to norepo.") );
         return myPool()._addSolvables( _repo, count_r );
+    }
+
+    namespace detail
+    {
+      void RepositoryIterator::increment()
+      {
+        if ( base() )
+        {
+          sat::detail::CPool * satpool = (*base())->pool;
+          do {
+            ++base_reference();
+          } while ( base() < satpool->repos+satpool->nrepos && !*base() );
+        }
+      }
     }
 
   } // namespace sat

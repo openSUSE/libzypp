@@ -45,8 +45,8 @@ namespace zyppng::sat {
       ComponentStage stage() const override { return ComponentStage::Environment; }
       int priority() const override { return 0; }
 
-      void prepare( PoolBase & pool ) override;
-      void onRepoAdded( PoolBase & pool, detail::RepoIdType id ) override;
+      void prepare( Pool & pool ) override;
+      void onRepoAdded( Pool & pool, detail::RepoIdType id ) override;
 
     private:
       ArchitectureProvider _provider;

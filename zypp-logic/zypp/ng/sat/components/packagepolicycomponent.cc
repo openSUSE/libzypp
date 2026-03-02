@@ -7,7 +7,7 @@
 |                                                                      |
 ----------------------------------------------------------------------*/
 #include "packagepolicycomponent.h"
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp/ng/sat/capability.h>
 
@@ -45,7 +45,7 @@ namespace zyppng::sat {
   }
 #endif
 
-  void PackagePolicyComponent::onInvalidate( PoolBase & pool, PoolInvalidation invalidation )
+  void PackagePolicyComponent::onInvalidate( Pool & pool, PoolInvalidation invalidation )
   {
     if ( invalidation == PoolInvalidation::Data )
     {
@@ -56,7 +56,7 @@ namespace zyppng::sat {
     }
   }
 
-  void PackagePolicyComponent::ensureInitialized( PoolBase & pool ) const
+  void PackagePolicyComponent::ensureInitialized( Pool & pool ) const
   {
     if ( _initialized )
       return;

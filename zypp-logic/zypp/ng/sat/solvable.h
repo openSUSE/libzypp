@@ -19,6 +19,7 @@
 #include <zypp-core/Date.h>
 #include <zypp-core/CheckSum.h>
 
+#include <zypp/ng/sat/poolconstants.h>
 #include <zypp/ng/sat/poolmember.h>
 #include <zypp/ng/sat/solvattr.h>
 #include <zypp/ng/restraits.h>

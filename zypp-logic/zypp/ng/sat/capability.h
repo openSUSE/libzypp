@@ -15,8 +15,10 @@
 #include <iosfwd>
 
 #include <zypp-core/Globals.h>
+#include <zypp/ng/sat/poolconstants.h>
 #include <zypp/ng/sat/poolmember.h>
 
+#include <zypp/ng/arch.h>
 #include <zypp/ng/idstring.h>
 #include <zypp/ng/edition.h>
 #include <zypp/ng/rel.h>
@@ -55,7 +57,7 @@ namespace zyppng::sat
    * [1] https://rpm-software-management.github.io/rpm/manual/boolean_dependencies.html
    * \see \ref CapDetail
    */
-  class Capability: public PoolMember
+  class Capability
   {
     public:
       enum CtorFlag { PARSED, UNPARSED };
@@ -296,7 +298,7 @@ namespace zyppng::sat
    * \endcode
    *
    */
-  class CapDetail: public PoolMember
+  class CapDetail
   {
     public:
       enum Kind

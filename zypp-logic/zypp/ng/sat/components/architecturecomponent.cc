@@ -7,7 +7,7 @@
 |                                                                      |
 ----------------------------------------------------------------------*/
 #include "architecturecomponent.h"
-#include <zypp/ng/sat/poolbase.h>
+#include <zypp/ng/sat/pool.h>
 #include <set>
 
 extern "C"
@@ -18,14 +18,14 @@ extern "C"
 
 namespace zyppng::sat {
 
-  void ArchitectureComponent::prepare( PoolBase & pool )
+  void ArchitectureComponent::prepare( Pool & pool )
   {
     if ( _watcher.remember( pool.serial() ) )  {
       ::pool_setarch( pool.getPool(), arch().asString().c_str() );
     }
   }
 
-  void ArchitectureComponent::onRepoAdded( PoolBase & pool, detail::RepoIdType id )
+  void ArchitectureComponent::onRepoAdded( Pool & pool, detail::RepoIdType id )
   {
     detail::CRepo * repo_r = id;
     if ( ! pool.isSystemRepo( repo_r ) )

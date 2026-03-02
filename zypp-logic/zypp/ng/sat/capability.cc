@@ -336,7 +336,7 @@ namespace zyppng::sat
 
   const char * Capability::c_str() const
   {
-    return detail::cap2str( myPool ().getPool (), id(), 0 );
+    return detail::cap2str( StringPool::instance().getPool(), id(), 0 );
   }
 
   CapMatch Capability::_doMatch( sat::detail::IdType lhs,  sat::detail::IdType rhs )

@@ -53,10 +53,10 @@ namespace zyppng::sat {
       bool isNeedreboot( const Solvable & solv_r ) const { return _needrebootSpec.count(solv_r) > 0; }
       //@}
 
-      void onInvalidate( PoolBase & pool, PoolInvalidation invalidation ) override;
+      void onInvalidate( Pool & pool, PoolInvalidation invalidation ) override;
 
     private:
-      void ensureInitialized( PoolBase & pool ) const;
+      void ensureInitialized( Pool & pool ) const;
 
     private:
       mutable std::set<Solvable> _retractedSpec;

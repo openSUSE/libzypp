@@ -20,7 +20,7 @@
 
 namespace zyppng::sat {
 
-  class PoolBase;
+  class Pool;
 
   /**
    * \brief Abstract base class for logic providing data to a libsolv namespace.
@@ -54,12 +54,12 @@ namespace zyppng::sat {
        *
        * In case of a pool invalidation, return \a false so that the prepare loop can start over.
        */
-      virtual bool prepare( PoolBase & /*pool*/ ) { return true; }
+      virtual bool prepare( Pool & /*pool*/ ) { return true; }
 
       /*!
        * Attaching to a pool, default just stores a backlink pointer to the pool.
        */
-      virtual void attach(PoolBase &pool);
+      virtual void attach(Pool &pool);
 
     protected:
       /**
@@ -71,7 +71,7 @@ namespace zyppng::sat {
       void notifyDirty( PoolInvalidation invalidationLevel , std::initializer_list<std::string_view> reasons );
 
     protected:
-      PoolBase *_pool = nullptr;
+      Pool *_pool = nullptr;
 
   };
 

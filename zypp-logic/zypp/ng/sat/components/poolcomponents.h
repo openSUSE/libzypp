@@ -24,7 +24,7 @@
 
 namespace zyppng::sat {
 
-  class PoolBase;
+  class Pool;
   class IPoolComponent;
 
   /**
@@ -63,12 +63,12 @@ namespace zyppng::sat {
 
       IPoolComponent() = default;
       virtual ~IPoolComponent() = default;
-      virtual void attach  ( PoolBase & ) { /* does nothing by default */ }
-      virtual void prepare ( PoolBase & ) { /* does nothing by default */ }
-      virtual void onInvalidate ( PoolBase &, PoolInvalidation ) { }
+      virtual void attach  ( Pool & ) { /* does nothing by default */ }
+      virtual void prepare ( Pool & ) { /* does nothing by default */ }
+      virtual void onInvalidate ( Pool &, PoolInvalidation ) { }
 
-      virtual void onRepoAdded( PoolBase &, detail::RepoIdType /*id*/) {}
-      virtual void onRepoRemoved( PoolBase &, detail::RepoIdType /*id*/) {}
+      virtual void onRepoAdded( Pool &, detail::RepoIdType /*id*/) {}
+      virtual void onRepoRemoved( Pool &, detail::RepoIdType /*id*/) {}
 
       virtual ComponentStage stage() const { return ComponentStage::Policy; }
 
@@ -125,7 +125,7 @@ namespace zyppng::sat {
         return nullptr;
       }
 
-      void notifyPrepare ( PoolBase & pool ) {
+      void notifyPrepare ( Pool & pool ) {
         sortBuckets ();
         for( auto &bucket : _lifecycleComponents ) {
           for ( auto &comp : bucket ) {
@@ -134,7 +134,7 @@ namespace zyppng::sat {
         }
       }
 
-      void notifyInvalidate ( PoolBase &pool, PoolInvalidation invalidation )  {
+      void notifyInvalidate ( Pool &pool, PoolInvalidation invalidation )  {
         sortBuckets ();
         for( auto &bucket : _lifecycleComponents ) {
           for ( auto &comp : bucket ) {
@@ -143,7 +143,7 @@ namespace zyppng::sat {
         }
       }
 
-      void notifyRepoAdded( PoolBase &pool, detail::RepoIdType id ) {
+      void notifyRepoAdded( Pool &pool, detail::RepoIdType id ) {
         sortBuckets ();
         for( auto &bucket : _lifecycleComponents ) {
           for ( auto &comp : bucket ) {
@@ -152,7 +152,7 @@ namespace zyppng::sat {
         }
       }
 
-      void notifyRepoRemoved( PoolBase &pool, detail::RepoIdType id ) {
+      void notifyRepoRemoved( Pool &pool, detail::RepoIdType id ) {
         sortBuckets ();
         for( auto &bucket : _lifecycleComponents ) {
           for ( auto &comp : bucket ) {

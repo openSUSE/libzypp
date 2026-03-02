@@ -165,7 +165,7 @@ namespace zyppng::operators {
             typename SignalGetter >
   auto await ( SignalGetter &&sigGet )
   {
-    auto handler = [ sigGet = std::forward<SignalGetter>(sigGet) ]( std::shared_ptr<T> &&req  ) -> Task<std::shared_ptr<T>> {
+    auto handler = [ sigGet = std::forward<SignalGetter>(sigGet) ]( std::shared_ptr<T> req  ) -> Task<std::shared_ptr<T>> {
       co_await std::invoke( sigGet, req );
       co_return req;
     };

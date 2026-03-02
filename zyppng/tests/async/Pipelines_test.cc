@@ -93,8 +93,8 @@ private:
 };
 
 template<typename T, auto outFunc>
-Task<typename DelayedOp<T, outFunc>::Res> delayOp( T &&val ) {
-  auto r = co_await ( DelayedOp<T, outFunc>( std::forward<T>(val)) );
+Task<typename DelayedOp<T, outFunc>::Res> delayOp( T val ) {
+  auto r = co_await ( DelayedOp<T, outFunc>( std::move(val)) );
   co_return r;
 }
 
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE( asyncToMixedPipelineWithIndirectAsyncCBInStdFunction )
 
   const auto &makePipeline = [&](){
 
-    const std::function< Task<Int>( Int && ) > &addFiveAsync = []( auto &&in ) -> Task<Int> { in.value += 5; co_return co_await delayValue(std::move(in)); };
+    const std::function< Task<Int>( Int ) > &addFiveAsync = []( auto in ) -> Task<Int> { in.value += 5; co_return co_await delayValue(std::move(in)); };
 
     return delayValue( std::string("5") )
            | &toSignedInt
@@ -281,7 +281,7 @@ ZYPP_CORO_TEST_CASE( asyncTransform )
 
   std::vector<Int> input{ 0, 10, 20 };
 
-  auto res = co_await( std::vector<Int>(input) | transform( []( Int &&in ){ in.value += 5; return delayValue(std::move(in)); } ) );
+  auto res = co_await( std::vector<Int>(input) | transform( []( Int in ){ in.value += 5; return delayValue(std::move(in)); } ) );
   static_assert( std::is_same_v<std::vector<Int>, decltype(res)> );
 
   BOOST_CHECK_EQUAL ( res.size(), 3 );
@@ -321,7 +321,7 @@ int f1Global ( int &&test ){
 };
 
 template<typename T>
-Task<T> f2Global ( T &&test ) {
+Task<T> f2Global ( T test ) {
   co_return test;
 };
 
@@ -343,7 +343,7 @@ struct FakeLambda2
 
 struct FakeLambdaAsync
 {
-  Task<int> operator()( int &&arg ) {
+  Task<int> operator()( int arg ) {
     co_return arg;
   }
 };
@@ -351,7 +351,7 @@ struct FakeLambdaAsync
 struct FakeLambdaAsync2
 {
   template <typename T>
-  auto operator()( T &&arg ) {
+  auto operator()( T arg ) {
     return f2Global(std::move(arg));
   }
 };
@@ -365,7 +365,7 @@ void compiletimeTest ()
   };
 
   const auto &makeASyncCallback = []() {
-    return [](int &&test) -> Task<int> {
+    return [](int test) -> Task<int> {
       co_return test;
     };
   };
@@ -373,14 +373,14 @@ void compiletimeTest ()
   const auto &f1 = []( int &&test ){
     return test;
   };
-  const auto &f2 = []( int &&test ) -> Task<int> {
+  const auto &f2 = []( int test ) -> Task<int> {
     co_return test;
   };
 
   const auto &f1Auto = []( auto &&test ){
     return test;
   };
-  const auto &f2Auto = []( auto &&test ) -> Task<std::decay_t<decltype(test)>> {
+  const auto &f2Auto = []( auto test ) -> Task<std::decay_t<decltype(test)>> {
     co_return test;
   };
 

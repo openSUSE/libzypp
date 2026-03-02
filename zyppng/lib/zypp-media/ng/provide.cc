@@ -1039,9 +1039,9 @@ namespace zyppng {
         });
   }
 
-  Task<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, const ProvideMediaSpec &request )
+  Task<expected<Provide::MediaHandle>> Provide::attachMedia( const zypp::Url &url, ProvideMediaSpec request )
   {
-    return attachMedia (  zypp::MirroredOrigin{url}, request );
+    return attachMedia (  zypp::MirroredOrigin{url}, std::move(request) );
   }
 
   Task<expected<Provide::MediaHandle>> Provide::attachMedia( zypp::MirroredOrigin origin, ProvideMediaSpec request )
@@ -1100,9 +1100,9 @@ namespace zyppng {
     co_return co_await p;
   }
 
-  Task< expected<ProvideRes> > Provide::provide( const zypp::Url &url, const ProvideFileSpec &request )
+  Task< expected<ProvideRes> > Provide::provide( const zypp::Url &url, ProvideFileSpec request )
   {
-    return provide( zypp::MirroredOrigin{ url }, request );
+    return provide( zypp::MirroredOrigin{ url }, std::move(request) );
   }
 
   Task< expected<ProvideRes> > Provide::provide(zyppng::Provide::MediaHandle attachHandle, zypp::Pathname fileName, zyppng::ProvideFileSpec request )
@@ -1150,34 +1150,27 @@ namespace zyppng {
     co_return co_await p;
   }
 
-  Task<expected<ProvideRes> > Provide::provide( const LazyMediaHandle &attachHandle, const zypp::Pathname &fileName, const ProvideFileSpec &request )
+  Task<expected<ProvideRes> > Provide::provide( LazyMediaHandle attachHandle, zypp::Pathname fileName, ProvideFileSpec request )
   {
     using namespace zyppng::operators;
 
-    auto cb = [weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ) -> Task<expected<ProvideRes>> {
+    return attachMediaIfNeeded ( std::move(attachHandle) )
+    | and_then([weakMe = weak_this<Provide>(), fName = std::move(fileName), req = std::move(request) ]( MediaHandle handle ) mutable -> Task<expected<ProvideRes>> {
       auto me = weakMe.lock();
       if ( !me )
         return makeReadyTask(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
-      return me->provide( handle, fName, req);
-    };
-
-    return attachMediaIfNeeded ( attachHandle )
-    | and_then([weakMe = weak_this<Provide>(), fName = fileName, req = request ]( MediaHandle handle ) -> Task<expected<ProvideRes>> {
-      auto me = weakMe.lock();
-      if ( !me )
-        return makeReadyTask(expected<ProvideRes>::error(ZYPP_EXCPT_PTR(zypp::Exception("Provide was released during a operation"))));
-      return me->provide( handle, fName, req);
+      return me->provide( std::move(handle), std::move(fName), std::move(req));
     });
   }
 
-  zyppng::Task<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( const zypp::Pathname &p, const std::string &algorithm  )
+  zyppng::Task<zyppng::expected<zypp::CheckSum> > Provide::checksumForFile( zypp::Pathname p, std::string algorithm  )
   {
     using namespace zyppng::operators;
 
     zypp::Url url("chksum:///");
     url.setPathName( p );
     auto fut = provide( url, zyppng::ProvideFileSpec().setCustomHeaderValue( "chksumType", algorithm ) )
-      | and_then( [algorithm]( zyppng::ProvideRes &&chksumRes ) {
+      | and_then( [algorithm = std::move(algorithm)]( zyppng::ProvideRes &&chksumRes ) {
         if ( chksumRes.headers().contains(algorithm) ) {
           try {
             return expected<zypp::CheckSum>::success( zypp::CheckSum( algorithm, chksumRes.headers().value(algorithm).asString() ) );
@@ -1190,7 +1183,7 @@ namespace zyppng {
     return fut;
   }
 
-  Task<expected<zypp::ManagedFile>> Provide::copyFile ( const zypp::Pathname &source, const zypp::Pathname &target )
+  Task<expected<zypp::ManagedFile>> Provide::copyFile ( zypp::Pathname source, zypp::Pathname target )
   {
     using namespace zyppng::operators;
 

@@ -218,7 +218,7 @@ void fillSettingsFromUrl( const Url &url, media::TransferSettings &s )
     else
     {
       // if there is no username, set anonymous auth
-      if ( ( url.getScheme() == "ftp" || url.getScheme() == "tftp" ) && s.username().empty() )
+      if ( url.schemeIsFtpLike() )
         s.setAnonymousAuth();
     }
   }

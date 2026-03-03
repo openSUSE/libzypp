@@ -285,8 +285,12 @@ namespace zypp
 
     /** http https ftp sftp tftp */
     static bool schemeIsDownloading( const std::string & scheme_r );
+    static bool schemeIsHttpLike( const std::string & scheme_r );
+    static bool schemeIsFtpLike( const std::string & scheme_r );
     /** \overload nonstatic version */
     bool schemeIsDownloading() const { return schemeIsDownloading( getScheme() ); }
+    bool schemeIsHttpLike() const { return schemeIsHttpLike( getScheme() ); }
+    bool schemeIsFtpLike() const { return schemeIsFtpLike( getScheme() ); }
 
     /** plugin */
     static bool schemeIsPlugin( const std::string & scheme_r );

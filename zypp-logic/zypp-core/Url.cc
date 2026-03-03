@@ -492,7 +492,16 @@ namespace zypp
 
   bool Url::schemeIsDownloading( const std::string & scheme_r )
   {
-    static const char * val[] = { "http", "https", "ftp", "sftp", "tftp" };
+    return schemeIsHttpLike( scheme_r ) | schemeIsFtpLike( scheme_r );
+  }
+  bool Url::schemeIsHttpLike( const std::string & scheme_r )
+  {
+    static const char * val[] = { "https", "http", };
+    return isInList( arrayBegin(val), arrayEnd(val), scheme_r );
+  }
+  bool Url::schemeIsFtpLike( const std::string & scheme_r )
+  {
+    static const char * val[] = { "ftp", "sftp", "tftp" };
     return isInList( arrayBegin(val), arrayEnd(val), scheme_r );
   }
 

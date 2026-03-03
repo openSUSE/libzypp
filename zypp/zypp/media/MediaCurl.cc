@@ -391,21 +391,16 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
   SET_OPTION(CURLOPT_USERAGENT, settings.userAgentString().c_str() );
 
   /* Fixes bsc#1174011 "auth=basic ignored in some cases"
-       * We should proactively add the password to the request if basic auth is configured
-       * and a password is available in the credentials but not in the URL.
-       *
-       * We will be a bit paranoid here and require that the URL has a user embedded, otherwise we go the default route
-       * and ask the server first about the auth method
-       */
-  if ( settings.authType() == "basic"
-       && settings.username().size()
-       && !settings.password().size() ) {
-
+   * We should proactively add the password to the request if basic auth is configured
+   * and a password is available in the credentials but not in the URL.
+   *
+   * We will be a bit paranoid here and require that the URL has a user embedded, otherwise we go the default route
+   * and ask the server first about the auth method
+   */
+  if ( settings.authType() == "basic" && not settings.username().empty() && settings.password().empty() ) {
     CredentialManager cm(CredManagerOptions(ZConfig::instance().repoManagerRoot()));
     const auto cred = cm.getCred( _origin.at(rData.mirror).url() );
     if ( cred && cred->valid() ) {
-      if ( !settings.username().size() )
-        settings.setUsername(cred->username());
       settings.setPassword(cred->password());
     }
   }

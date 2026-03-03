@@ -290,13 +290,9 @@ namespace zypp::media
          * We will be a bit paranoid here and require that the URL has a user embedded, otherwise we go the default route
          * and ask the server first about the auth method
          */
-        if ( set.authType() == "basic"
-             && set.username().size()
-             && !set.password().size() ) {
+        if ( set.authType() == "basic" && not set.username().empty() && set.password().empty() ) {
           const auto cred = cm.getCred( u.url() );
           if ( cred && cred->valid() ) {
-            if ( !set.username().size() )
-              set.setUsername(cred->username());
             set.setPassword(cred->password());
           }
         }

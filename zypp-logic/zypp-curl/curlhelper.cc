@@ -315,20 +315,26 @@ void fillSettingsFromUrl( const Url &url, media::TransferSettings &s )
     }
   }
   {
-    // HTTP authentication type
-    std::string param { url.getQueryParam("auth") };
-    if ( ! param.empty() && (url.getScheme() == "http" || url.getScheme() == "https") )
-    {
-      try
+    // HTTP/FTP authentication type
+    if ( url.schemeIsHttpLike() ) {
+      std::string param { url.getQueryParam("auth") };
+      if ( ! param.empty() )
       {
-        media::CurlAuthData::auth_type_str2long (param );	// check if we know it
+        try
+        {
+          media::CurlAuthData::auth_type_str2long (param );	// check if we know it
+        }
+        catch ( const media::MediaException & ex_r )
+        {
+          DBG << "Rethrowing as MediaUnauthorizedException.";
+          ZYPP_THROW(media::MediaUnauthorizedException(url, ex_r.msg(), "", ""));
+        }
+        s.setAuthType( std::move(param) );
       }
-      catch ( const media::MediaException & ex_r )
-      {
-        DBG << "Rethrowing as MediaUnauthorizedException.";
-        ZYPP_THROW(media::MediaUnauthorizedException(url, ex_r.msg(), "", ""));
-      }
-      s.setAuthType( std::move(param) );
+    } else if ( url.schemeIsFtpLike() ) {
+      // Well, there's is not much else, but setting it explicitly in advance
+      // will also preload the credentials before the 1st request.
+      s.setAuthType( "basic" );
     }
   }
   {

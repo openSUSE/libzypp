@@ -316,6 +316,33 @@ namespace zypp
   inline bool operator<( const Capability & lhs, const Capability & rhs )
   { return lhs.id() < rhs.id(); }
 
+  /** \relates Capability IOManip to dump a complex Capability as tree.
+   * \code
+   * Capability cap { Capability::CAP_AND, Capability( ResolverNamespace::modalias, "fake:baa" ), Capability("kernelX") };
+   * cout << dumpCap(cap) << endl;
+   * >     "namespace:modalias"
+   * >  +<NAMESPACE
+   * >  |  "fake:baa"
+   * > <and
+   * >   "kernelX"
+   * \endcode
+   */
+  struct ZYPP_API dumpCap
+  {
+    dumpCap( Capability cap_r )
+    : _cap { cap_r }
+    {}
+  private:
+    friend std::ostream & operator<<( std::ostream & str, const dumpCap & obj );
+    std::ostream & dumpOn( std::ostream & str ) const;
+  private:
+    std::ostream & _dumpRec( std::ostream & str, Capability cap_r, std::string lvl_r="" ) const;
+    Capability _cap;
+  };
+  /** \relates dumpCap Stream output  */
+  inline std::ostream & operator<<( std::ostream & str, const dumpCap & obj )
+  { return obj.dumpOn( str ); }
+
   ///////////////////////////////////////////////////////////////////
   //
   //	CLASS NAME : CapDetail

@@ -49,7 +49,7 @@ namespace zypp
      *
      * \todo properly handle service refreshs
      */
-    void defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() );
+    void defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() ) ZYPP_API;
 
     /** \overload */
     inline void defaultLoadSystem( LoadSystemFlags flags_r )

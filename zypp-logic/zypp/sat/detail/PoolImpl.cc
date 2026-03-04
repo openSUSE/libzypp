@@ -82,15 +82,15 @@ namespace zypp
       BOOST_MPL_ASSERT_RELATION( solvablePrereqMarker, ==, SOLVABLE_PREREQMARKER );
       BOOST_MPL_ASSERT_RELATION( solvableFileMarker,   ==, SOLVABLE_FILEMARKER );
 
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_AND,       ==, REL_AND );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_OR,        ==, REL_OR );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_COND,      ==, REL_COND );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_UNLESS,    ==, REL_UNLESS );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_ELSE,      ==, REL_ELSE );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_WITH,      ==, REL_WITH );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_WITHOUT,   ==, REL_WITHOUT );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_NAMESPACE, ==, REL_NAMESPACE );
-      BOOST_MPL_ASSERT_RELATION( CapDetail::CAP_ARCH,      ==, REL_ARCH );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_AND,       ==, REL_AND );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_OR,        ==, REL_OR );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_COND,      ==, REL_COND );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_UNLESS,    ==, REL_UNLESS );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_ELSE,      ==, REL_ELSE );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_WITH,      ==, REL_WITH );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_WITHOUT,   ==, REL_WITHOUT );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_NAMESPACE, ==, REL_NAMESPACE );
+      BOOST_MPL_ASSERT_RELATION( Capability::CAP_ARCH,      ==, REL_ARCH );
 
       BOOST_MPL_ASSERT_RELATION( namespaceModalias,	==, NAMESPACE_MODALIAS );
       BOOST_MPL_ASSERT_RELATION( namespaceLanguage,	==, NAMESPACE_LANGUAGE );

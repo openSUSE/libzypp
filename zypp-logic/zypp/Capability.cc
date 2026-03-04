@@ -331,7 +331,15 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
 
   Capability::Capability( ResolverNamespace namespace_r, IdString value_r )
-  : _id( ::pool_rel2id( myPool().getPool(), asIdString(namespace_r).id(), (value_r.empty() ? STRID_NULL : value_r.id() ), REL_NAMESPACE, /*create*/true ) )
+  : _id( ::pool_rel2id( myPool().getPool(), asIdString(namespace_r).id(), (value_r.empty() ? STRID_NULL : value_r.id() ), CAP_NAMESPACE, /*create*/true ) )
+  {}
+
+  ///////////////////////////////////////////////////////////////////
+  // Ctor creating an expression
+  ///////////////////////////////////////////////////////////////////
+
+  Capability::Capability( Capability::CapRel rel_r, const Capability & lhs_r, const Capability & rhs_r )
+  : _id( ::pool_rel2id( myPool().getPool(), lhs_r.id(), rhs_r.id(), rel_r, /*create*/true ) )
   {}
 
   ///////////////////////////////////////////////////////////////////
@@ -582,6 +590,23 @@ namespace zypp
     return str << ( obj ? ::pool_dep2str( sat::Pool::instance().get(), obj.id() ) : "" );
   }
 
+  std::ostream & operator<<( std::ostream & str, Capability::CapRel obj )
+  {
+    switch ( obj )
+    {
+      case Capability::CAP_AND:       return str << "and"; break;        // &
+      case Capability::CAP_OR:        return str << "or"; break;         // |
+      case Capability::CAP_COND:      return str << "if"; break;
+      case Capability::CAP_UNLESS:    return str << "unless"; break;
+      case Capability::CAP_ELSE:      return str << "else"; break;
+      case Capability::CAP_WITH:      return str << "with"; break;       // +
+      case Capability::CAP_WITHOUT:   return str << "without"; break;    // -
+      case Capability::CAP_NAMESPACE: return str << "NAMESPACE"; break;
+      case Capability::CAP_ARCH:      return str << "ARCH"; break;
+   }
+   return str << "UnknownCapRel("+str::numstring(obj)+")";
+  }
+
   ///////////////////////////////////////////////////////////////////
   //
   //	CLASS NAME : CapDetail
@@ -707,20 +732,9 @@ namespace zypp
 
   std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj )
   {
-    switch ( obj )
-    {
-      case CapDetail::REL_NONE:      return str << "NoCapRel"; break;
-      case CapDetail::CAP_AND:       return str << "and"; break;        // &
-      case CapDetail::CAP_OR:        return str << "or"; break;         // |
-      case CapDetail::CAP_COND:      return str << "if"; break;
-      case CapDetail::CAP_UNLESS:    return str << "unless"; break;
-      case CapDetail::CAP_ELSE:      return str << "else"; break;
-      case CapDetail::CAP_WITH:      return str << "with"; break;       // +
-      case CapDetail::CAP_WITHOUT:   return str << "without"; break;    // -
-      case CapDetail::CAP_NAMESPACE: return str << "NAMESPACE"; break;
-      case CapDetail::CAP_ARCH:      return str << "ARCH"; break;
-   }
-   return str << "UnknownCapRel("+str::numstring(obj)+")";
+    if ( obj == CapDetail::REL_NONE )
+      return str << "NoCapRel";
+    return str << static_cast<Capability::CapRel>(obj);
   }
 
   /////////////////////////////////////////////////////////////////

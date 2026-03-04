@@ -79,7 +79,7 @@ namespace zypp
 
   /** \relates SetRelation \relates SetCompare Matching \ref SetCompare and \ref SetRelation */
   inline bool operator==( const SetRelation::Enum & lhs, const SetCompare::Enum & rhs )
-  { return( lhs&rhs || !(lhs|rhs) ); }
+  { return( static_cast<int>(lhs)&static_cast<int>(rhs) || !(static_cast<int>(lhs)|static_cast<int>(rhs)) ); }
   /** \overload */
   inline bool operator==( const SetRelation::Enum & lhs, const SetCompare & rhs )
   { return( lhs == rhs.asEnum() ); }

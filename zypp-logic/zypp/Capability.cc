@@ -10,7 +10,7 @@
  *
 */
 #include <iostream>
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Regex.h>
@@ -605,6 +605,30 @@ namespace zypp
       case Capability::CAP_ARCH:      return str << "ARCH"; break;
    }
    return str << "UnknownCapRel("+str::numstring(obj)+")";
+  }
+
+  std::ostream & dumpCap::dumpOn( std::ostream & str ) const
+  { return _dumpRec( str, _cap ); }
+  std::ostream & dumpCap::_dumpRec( std::ostream & str, Capability cap_r, std::string lvl_r ) const
+  {
+    std::optional<decltype(lvl_r.rbegin())> lastch; // lvl_r last char if not empty
+    if ( not lvl_r.empty() )
+      lastch = lvl_r.rbegin();
+    auto d = cap_r.detail();
+    if ( d.isExpression() ) {
+      static const char* ts = " +|+ ";
+      const char* t = lastch && **lastch == 'l' ? ts : ts+2;
+      if ( lastch ) **lastch = t[0];
+      _dumpRec( str, d.lhs(), lvl_r+" l" ) << endl;
+      if ( lastch ) **lastch = t[1];
+      str << lvl_r << "<" << d.capRel() << endl;
+      if ( lastch ) **lastch = t[2];
+      _dumpRec( str, d.rhs(), lvl_r+" r" );
+    } else {
+      if ( lastch ) **lastch = ' ';
+      str <<  lvl_r << '"' << d << '"';
+    }
+    return str;
   }
 
   ///////////////////////////////////////////////////////////////////

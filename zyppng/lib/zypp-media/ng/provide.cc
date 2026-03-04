@@ -893,7 +893,7 @@ namespace zyppng {
       auto &cacheItem = i->second;
       if ( cacheItem._file.unique() ) {
         if ( cacheItem._deathTimer ) {
-          if ( now - *cacheItem._deathTimer < std::chrono::seconds(20) ) {
+          if ( now - *cacheItem._deathTimer >= std::chrono::seconds(20) ) {
             MIL << "Releasing file " << *i->second._file << " from cache, death timeout." << std::endl;
             i = _fileCache.erase(i);
             continue;
@@ -902,6 +902,9 @@ namespace zyppng {
           // start the death timeout
           cacheItem._deathTimer = std::chrono::steady_clock::now();
         }
+      } else {
+        // make sure no death timer is running for a file with a refcount > 1
+        cacheItem._deathTimer.reset();
       }
 
       ++i;
@@ -1190,7 +1193,7 @@ namespace zyppng {
     zypp::Url url("copy:///");
     url.setPathName( source );
     auto fut = provide( url, ProvideFileSpec().setDestFilenameHint( target  ))
-      | and_then( [&]( ProvideRes &&copyRes ) {
+      | and_then( []( ProvideRes &&copyRes ) {
           return expected<zypp::ManagedFile>::success( copyRes.asManagedFile() );
       } );
     return fut;
@@ -1202,7 +1205,7 @@ namespace zyppng {
 
     auto fName = source.file();
     return copyFile( fName, target )
-           | [ resSave = std::move(source) ] ( auto &&result ) {
+           | [ resSave = std::move(source) ] ( auto result ) {
                // callback lambda to keep the ProvideRes reference around until the op is finished,
                // if the op fails the callback will be cleaned up and so the reference
                return result;

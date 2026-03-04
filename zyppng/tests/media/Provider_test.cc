@@ -6,12 +6,14 @@
 #include <zypp-media/auth/CredentialManager>
 #include <zypp-core/OnMediaLocation>
 #include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/ng/base/Timer>
 #include <zypp-core/Pathname.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/base/UserRequestException>
 #include <zypp/ZConfig.h>
 #include <zypp/TmpPath.h>
 #include <zypp-core/ng/pipelines/wait.h>
+#include <zypp-core/ng/async/pipelines/await.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/Digest.h>
 
@@ -891,6 +893,70 @@ ZYPP_CORO_TEST_CASE( tvm_jammed_release )
   }
 
   BOOST_REQUIRE( !gotInvalidMediaChange );
+}
+
+ZYPP_CORO_TEST_CASE( http_prov_cache_eviction )
+{
+  using namespace zyppng::operators;
+
+  const auto &workerPath = zypp::Pathname ( ZYPPNG_WORKERS_DIR );
+  const auto &webRoot    = zypp::Pathname ( TESTS_SHARED_DIR ) / "data" / "http";
+
+  zypp::filesystem::TmpDir provideRoot;
+
+  auto prov = zyppng::Provide::create ( provideRoot );
+  prov->setWorkerPath ( workerPath );
+  prov->start();
+
+  int requestCount = 0;
+  WebServer web( webRoot.c_str(), 10002, false );
+  web.addRequestHandler("cache_test", [&]( WebServer::Request &req ) {
+    requestCount++;
+    req.rout << "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nTEST";
+  });
+  BOOST_REQUIRE( web.start() );
+
+  auto fileUrl = web.url();
+  fileUrl.setPathName( "/handler/cache_test" );
+
+  // 1. First provide
+  {
+      auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+      BOOST_REQUIRE( res.is_valid() );
+      BOOST_REQUIRE_EQUAL( requestCount, 1 );
+      // res goes out of scope, ManagedFile refcount becomes 1 (only in cache)
+  }
+
+  // 2. Wait for 7 seconds, pulse timer should have run (every 5s).
+  // Cache should still be valid.
+  {
+      auto timer = zyppng::Timer::create();
+      timer->setSingleShot(true);
+      timer->start(7000);
+      co_await timer->sigExpired();
+  }
+
+  // 3. Second provide - should be a CACHE HIT
+  {
+      auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+      BOOST_REQUIRE( res.is_valid() );
+      BOOST_REQUIRE_EQUAL( requestCount, 1 ); // Still 1!
+  }
+
+  // 4. Wait for > 20 seconds (e.g. 25 seconds)
+  {
+      auto timer = zyppng::Timer::create();
+      timer->setSingleShot(true);
+      timer->start(25000);
+      co_await timer->sigExpired();
+  }
+
+  // 5. Third provide - should be a CACHE MISS
+  {
+      auto res = co_await prov->provide( fileUrl, zyppng::ProvideFileSpec() );
+      BOOST_REQUIRE( res.is_valid() );
+      BOOST_REQUIRE_EQUAL( requestCount, 2 ); // Now 2!
+  }
 }
 
 

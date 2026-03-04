@@ -142,6 +142,31 @@ namespace zypp
       Capability( ResolverNamespace namespace_r, const char * value_r )		: Capability( namespace_r, IdString(value_r) ) {}
       Capability( ResolverNamespace namespace_r, const std::string & value_r )	: Capability( namespace_r, IdString(value_r) ) {}
       //@}
+
+      /** \name Ctor for creating expressions */
+      //@{
+      /** Enum values correspond with libsolv defines.
+       * \note MPL check in PoolImpl.cc
+       */
+      enum CapRel
+      {
+        CAP_AND       = 16, ///< \c and
+        CAP_OR        = 17, ///< \c or
+
+        CAP_COND      = 22, ///< \c if
+        CAP_UNLESS    = 29, ///< \c unless
+        CAP_ELSE      = 26, ///< \c else
+
+        CAP_WITH      = 18, ///< \c with
+        CAP_WITHOUT   = 28, ///< \c without
+
+        CAP_NAMESPACE = 19, ///<
+        CAP_ARCH      = 20, ///< Used internally
+      };
+
+      Capability( CapRel rel_r, const Capability & lhs_r, const Capability & rhs_r );
+      //@}
+
     public:
       /** No or Null \ref Capability ( Id \c 0 ). */
       static const Capability Null;
@@ -276,6 +301,9 @@ namespace zypp
   /** \relates Capability Detailed stream output */
   std::ostream & dumpOn( std::ostream & str, const Capability & obj ) ZYPP_API;
 
+  /** \relates Capability::CapRel Stream output */
+  std::ostream & operator<<( std::ostream & str, Capability::CapRel obj ) ZYPP_API;
+
   /** \relates Capability */
   inline bool operator==( const Capability & lhs, const Capability & rhs )
   { return lhs.id() == rhs.id(); }
@@ -322,19 +350,19 @@ namespace zypp
       */
       enum CapRel
       {
-        REL_NONE      = 0,  ///< Not an expression
-        CAP_AND       = 16, ///< \c and
-        CAP_OR        = 17, ///< \c or
+        REL_NONE      = 0,                         ///< Not an expression
+        CAP_AND       = Capability::CAP_AND,       ///< \c and
+        CAP_OR        = Capability::CAP_OR,        ///< \c or
 
-        CAP_COND      = 22, ///< \c if
-        CAP_UNLESS    = 29, ///< \c unless
-        CAP_ELSE      = 26, ///< \c else
+        CAP_COND      = Capability::CAP_COND,      ///< \c if
+        CAP_UNLESS    = Capability::CAP_UNLESS,    ///< \c unless
+        CAP_ELSE      = Capability::CAP_ELSE,      ///< \c else
 
-        CAP_WITH      = 18, ///< \c with
-        CAP_WITHOUT   = 28, ///< \c without
+        CAP_WITH      = Capability::CAP_WITH,      ///< \c with
+        CAP_WITHOUT   = Capability::CAP_WITHOUT,   ///< \c without
 
-        CAP_NAMESPACE = 19, ///<
-        CAP_ARCH      = 20, ///< Used internally
+        CAP_NAMESPACE = Capability::CAP_NAMESPACE, ///<
+        CAP_ARCH      = Capability::CAP_ARCH,      ///< Used internally
       };
 
     public:

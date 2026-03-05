@@ -38,6 +38,11 @@ namespace zypp::media
   {
     _redirTargets.clear ();
     std::transform ( _origin.begin(), _origin.end(), std::back_inserter(_redirTargets), []( const OriginEndpoint &url_r ) { return findGeoIPRedirect(url_r.url()); } );
+
+    // initialize default mirror order: mirrors [1..N] then authority [0]
+    _mirrOrder.reserve( _origin.endpointCount() );
+    for( unsigned i = 1; i < _origin.endpointCount () ; i++ ) { _mirrOrder.push_back(i); }
+    _mirrOrder.push_back(0);
   }
 
   void MediaNetworkCommonHandler::attachTo (bool next)
@@ -322,16 +327,21 @@ namespace zypp::media
 
   std::vector<unsigned int> MediaNetworkCommonHandler::mirrorOrder(const OnMediaLocation &loc) const
   {
-    std::vector<unsigned> mirrOrder;
     if ( !loc.mirrorsAllowed () ) {
       MIL << "Fetching file " << loc << " from authority only: " << _origin << std::endl;
-      mirrOrder.push_back (0); // only authority
-    } else {
-      mirrOrder.reserve( _origin.endpointCount() );
-      for( unsigned i = 1; i < _origin.endpointCount () ; i++ ) { mirrOrder.push_back(i) ;}
-      mirrOrder.push_back(0); // authority last
+      return { 0 }; // only authority
     }
-    return mirrOrder;
+    return _mirrOrder;
+  }
+
+  void MediaNetworkCommonHandler::deprioritizeMirror( unsigned mirr ) const
+  {
+    auto it = std::find( _mirrOrder.begin(), _mirrOrder.end(), mirr );
+    if ( it != _mirrOrder.end() && _mirrOrder.size() > 1 )
+    {
+        // move found index to the end
+        std::rotate( it, it + 1, _mirrOrder.end() );
+    }
   }
 
   bool MediaNetworkCommonHandler::authenticate( const Url &url, CredentialManager &cm, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry )

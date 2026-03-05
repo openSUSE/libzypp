@@ -561,6 +561,9 @@ void MediaCurl::getFileCopy( const OnMediaLocation & srcFile , const Pathname & 
     } catch (MediaException & excpt_r) {
       if ( !canTryNextMirror ( excpt_r ) )
         ZYPP_RETHROW(excpt_r);
+
+      that->deprioritizeMirror( mirr );
+
       lastErr = ZYPP_FWD_CURRENT_EXCPT();
     }
   }
@@ -851,6 +854,9 @@ bool MediaCurl::getDoesFileExist( const Pathname & filename ) const
     } catch (MediaException & excpt_r) {
       if ( !canTryNextMirror ( excpt_r ) )
         ZYPP_RETHROW(excpt_r);
+
+      that->deprioritizeMirror( i );
+
       lastErr = ZYPP_FWD_CURRENT_EXCPT();
     }
   }

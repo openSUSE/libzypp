@@ -265,6 +265,9 @@ namespace zypp {
             }
             ZYPP_RETHROW(excpt_r);
           }
+
+          this->deprioritizeMirror( mirr );
+
           ZYPP_CAUGHT(excpt_r);
           continue;
         }
@@ -318,6 +321,9 @@ namespace zypp {
           if( !canTryNextMirror ( e ) ) {
             break;
           }
+
+          this->deprioritizeMirror( mirr );
+
           continue;
         }
         // exists

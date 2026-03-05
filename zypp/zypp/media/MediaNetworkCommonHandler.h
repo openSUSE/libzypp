@@ -88,6 +88,11 @@ namespace zypp
 
       std::vector<unsigned> mirrorOrder( const OnMediaLocation &loc ) const;
 
+      /**
+       * @brief Move mirror index @a mirr to the end of the attempt list.
+       */
+      void deprioritizeMirror( unsigned mirr ) const;
+
     public:
 
       // standard auth procedure, shared with CommitPackagePreloader
@@ -114,6 +119,7 @@ namespace zypp
 
     protected:
       std::vector<Url> _redirTargets;
+      mutable std::vector<unsigned> _mirrOrder;
     };
 
   } // namespace media

@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Mar  6 13:37:33 CET 2026 - ma@suse.de
+
+- specfile: on fedora use %{_prefix}/share as zyppconfdir if
+  %{_distconfdir} is undefined (fixes #693)
+  This will set '-DZYPPCONFDIR=%{zyppconfdir}' for cmake.
+- Fall back to a writable location when precaching packages
+  without root (bsc#1247948)
+- version 17.38.3 (35)
+
+-------------------------------------------------------------------
 Thu Jan 29 18:08:59 CET 2026 - ma@suse.de
 
 - Prepare a legacy /etc/zypp/zypp.conf to be installed on old distros.

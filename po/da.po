@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-11 16:21+0100\n"
-"PO-Revision-Date: 2025-07-22 15:00+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
-"Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/"
-">\n"
+"PO-Revision-Date: 2026-03-06 16:04+0000\n"
+"Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
+"Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
+"\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -136,11 +136,11 @@ msgstr "Kommando afsluttet med ukendt fejl."
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:243
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:486
 msgid "Invalid spawn arguments given."
-msgstr ""
+msgstr "Ugyldige argumenter til spawn."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:299
 msgid "Unable to create control pipe."
-msgstr ""
+msgstr "Kan ikke oprette control-pipe."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:366
 #, c-format, boost-format
@@ -172,22 +172,22 @@ msgstr "Kan ikke forgrene (%s)."
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:432
 #, c-format, boost-format
 msgid "Can't exec '%s', chdir failed (%s)."
-msgstr ""
+msgstr "Kan ikke køre '%s', chdir fejlede (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:435
 #, c-format, boost-format
 msgid "Can't exec '%s', chroot failed (%s)."
-msgstr ""
+msgstr "Kan ikke køre '%s', chroot fejlede (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:438
 #, c-format, boost-format
 msgid "Can't exec '%s', exec failed (%s)."
-msgstr ""
+msgstr "Kan ikke køre '%s', exec fejlede (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:442
 #, c-format, boost-format
 msgid "Can't exec '%s', unexpected error."
-msgstr ""
+msgstr "Kan ikke køre '%s', uventet fejl."
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:221
 #, c-format, boost-format
@@ -320,6 +320,8 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
+"Fejl ved hentning (curl) for '%s':\n"
+"Fejlkode: %s\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
@@ -327,18 +329,20 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Unable to retrieve HTTP response\n"
 msgstr ""
+"Fejl ved hentning (curl) for '%s':\n"
+"Kunne ikke få HTTP-svar\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "Ingen fejl"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "Intern fejl"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "Anmodningen blev annulleret"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"

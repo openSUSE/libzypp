@@ -171,6 +171,25 @@ function(zypp_add_zypp_target)
     ng/sat/namespaces/modalias.h
   )
 
+  zypp_add_sources( zyppng_log_SRCS
+    ng/log/sat/capabilities.cc
+    ng/log/sat/capability.cc
+    ng/log/sat/solvable.cc
+    ng/log/sat/queue.cc
+    ng/log/sat/repository.cc
+    ng/log/sat/lookupattr.cc
+  )
+
+  zypp_add_sources( zyppng_log_HEADERS
+    ng/log/sat/capabilities.h
+    ng/log/sat/capability.h
+    ng/log/format.h
+    ng/log/sat/solvable.h
+    ng/log/sat/queue.h
+    ng/log/sat/repository.h
+    ng/log/sat/lookupattr.h
+  )
+
   zypp_add_sources( zyppng_SRCS
   )
 
@@ -212,6 +231,7 @@ function(zypp_add_zypp_target)
     ${zyppng_sat_SRCS}
     ${zyppng_sat_components_SRCS}
     ${zyppng_sat_namespaces_SRCS}
+    ${zyppng_log_SRCS}
 
     ${zypp_EARLY_SRCS}
     ${zypp_base_SRCS}
@@ -228,6 +248,7 @@ function(zypp_add_zypp_target)
     ${zyppng_sat_HEADERS}
     ${zyppng_sat_components_HEADERS}
     ${zyppng_sat_namespaces_HEADERS}
+    ${zyppng_log_HEADERS}
   )
 
   # Default loggroup for all files

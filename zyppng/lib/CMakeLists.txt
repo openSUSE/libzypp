@@ -10,7 +10,7 @@ SET( ZYPP_LOGIC_INSTALL_CXX   false    )
 
 add_subdirectory( shared )
 add_subdirectory( zypp-core )
-add_subdirectory( zypp-common )
+#add_subdirectory( zypp-common )
 add_subdirectory( zypp-media )
 add_subdirectory( zypp-curl )
 add_subdirectory( zypp )
@@ -29,7 +29,7 @@ target_link_libraries( ${target} PRIVATE zyppng-commit-proto-obj )
 
 # CAUTION, link those libs always first and always in that order,
 # otherwise you get symbol lookup errors when linking against libzypp
-target_link_libraries( ${target} ${_link_mode} zyppng-common )
+# target_link_libraries( ${target} ${_link_mode} zyppng-common )
 target_link_libraries( ${target} ${_link_mode} zyppng-curl )
 target_link_libraries( ${target} ${_link_mode} zyppng-media )
 

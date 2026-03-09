@@ -12,8 +12,8 @@
 #ifndef ZYPP_CORE_BASE_FUNCTIONAL_H
 #define ZYPP_CORE_BASE_FUNCTIONAL_H
 
-#include <functional>
-#include <zypp-core/base/Function.h>
+//#include <functional>
+//#include <zypp-core/base/Function.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp

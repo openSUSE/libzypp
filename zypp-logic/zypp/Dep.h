@@ -12,6 +12,7 @@
 #ifndef ZYPP_DEP_H
 #define ZYPP_DEP_H
 
+#include <zypp-core/Globals.h>
 #include <iosfwd>
 #include <string>
 

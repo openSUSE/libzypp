@@ -99,6 +99,7 @@ namespace zypp
      */
     Locale fallback() const;
 
+#ifndef ZYPPNG
     /** Return the best match for \ref Locale \a requested_r within the available \a avLocales_r.
      *
      * If \a requested_r is not specified \ref ZConfig::textLocale is assumed.
@@ -107,6 +108,7 @@ namespace zypp
      * in \a avLocales_r, \ref Locale::noCode is returned.
      */
     static Locale bestMatch( const LocaleSet & avLocales_r, Locale requested_r = Locale() );
+#endif
 
   private:
     friend class IdStringType<Locale>;

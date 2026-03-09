@@ -14,7 +14,6 @@
 
 #include <iosfwd>
 #include <string>
-#include <functional>
 
 #include <zypp/IdStringType.h>
 #include <zypp/RelCompare.h>

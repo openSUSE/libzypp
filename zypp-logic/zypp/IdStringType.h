@@ -83,7 +83,10 @@ namespace zypp
    * \ingroup g_CRTP
    */
   template <class Derived>
-  class IdStringType : protected sat::detail::PoolMember
+  class IdStringType
+  #if ( LEGACY(1735) ) && !ZYPPNG
+      : protected sat::detail::PoolMember
+  #endif
   {
     public:
     using IdType = IdString::IdType;

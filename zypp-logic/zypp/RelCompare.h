@@ -12,8 +12,6 @@
 #ifndef ZYPP_RELCOMPARE_H
 #define ZYPP_RELCOMPARE_H
 
-#include <functional>
-
 #include <zypp/Rel.h>
 
 ///////////////////////////////////////////////////////////////////

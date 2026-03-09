@@ -13,13 +13,131 @@ function(zypp_add_zypp_target)
 
   cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}" "${multiValueArgs}")
 
+  zypp_add_sources( zypp_SRCS
+    CapMatch.cc
+    CpeId.cc
+    Dep.cc
+    Edition.cc
+    IdString.cc
+    Range.cc
+    Rel.cc
+    ResKind.cc
+  )
+
+  zypp_add_sources( zypp_EARLY_SRCS
+    Arch.cc
+    CountryCode.cc
+    LanguageCode.cc
+    Locale.cc
+  )
+
+  zypp_add_sources( zypp_HEADERS
+    Arch.h
+    Bit.h
+    CapMatch.h
+    CountryCode.h
+    CpeId.h
+    Dep.h
+    Edition.h
+    IdString.h
+    IdStringType.h
+    LanguageCode.h
+    Locale.h
+    Range.h
+    RelCompare.h
+    Rel.h
+    ResKind.h
+    ResTraits.h
+    ResolverNamespace.h
+  )
+
+  if( ${arg_INSTALL_HEADERS} )
+    INSTALL(  FILES
+      ${zypp_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp
+    )
+  endif()
+
+  zypp_add_sources( zypp_base_SRCS
+    base/SerialNumber.cc
+    base/SetRelationMixin.cc
+    base/StrMatcher.cc
+  )
+
+  zypp_add_sources( zypp_base_HEADERS
+    base/SerialNumber.h
+    base/SetRelationMixin.h
+    base/SetTracker.h
+    base/StrMatcher.h
+  )
+
+  if( ${arg_INSTALL_HEADERS} )
+    INSTALL(  FILES
+      ${zypp_base_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/base
+    )
+  endif()
+
+  zypp_add_sources( zypp_sat_SRCS
+    sat/SolvAttr.cc
+  )
+
+  zypp_add_sources( zypp_sat_HEADERS
+    sat/SolvAttr.h
+  )
+
+  if( ${arg_INSTALL_HEADERS} )
+    INSTALL(  FILES
+      ${zypp_sat_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat
+    )
+  endif()
+
+
+  zypp_add_sources( zypp_sat_detail_SRCS
+    #sat/detail/PoolImpl.cc
+  )
+
+  zypp_add_sources( zypp_sat_detail_HEADERS
+    #sat/detail/PoolImpl.h
+    sat/detail/PoolDefines.h
+    sat/detail/PoolMember.h
+  )
+
+  if( ${arg_INSTALL_HEADERS} )
+    INSTALL(  FILES
+      ${zypp_sat_detail_HEADERS}
+      DESTINATION ${INCLUDE_INSTALL_DIR}/zypp/sat/detail
+    )
+  endif()
+
+  zypp_add_sources( zyppng_sat_SRCS
+    ng/sat/stringpool.cc
+  )
+
+  zypp_add_sources( zyppng_sat_HEADERS
+    ng/sat/poolconstants.h
+    ng/sat/stringpool.h
+  )
 
   SET( zypp_lib_SRCS
     ${arg_SOURCES}
+    ${zypp_SRCS}
+    ${zypp_sat_SRCS}
+    ${zypp_sat_detail_SRCS}
+    ${zyppng_sat_SRCS}
+
+    ${zypp_EARLY_SRCS}
+    ${zypp_base_SRCS}
   )
 
   SET( zypp_lib_HEADERS
     ${arg_HEADERS}
+    ${zypp_HEADERS}
+    ${zypp_base_HEADERS}
+    ${zypp_sat_HEADERS}
+    ${zypp_sat_detail_HEADERS}
+    ${zyppng_sat_HEADERS}
   )
 
   # Default loggroup for all files

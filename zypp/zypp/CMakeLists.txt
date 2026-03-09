@@ -8,14 +8,10 @@ SET( zypp_SRCS
   Application.cc
   Capabilities.cc
   Capability.cc
-  CapMatch.cc
   Changelog.cc
-  CpeId.cc
-  Dep.cc
   Digest.cc
   DiskUsageCounter.cc
   DownloadMode.cc
-  Edition.cc
   PluginScript.cc
   PluginScriptException.cc
   PluginExecutor.cc
@@ -24,7 +20,6 @@ SET( zypp_SRCS
   Glob.cc
   HistoryLog.cc
   HistoryLogData.cc
-  IdString.cc
   InstanceId.cc
   KeyRing.cc
   KeyRingContexts.cc
@@ -42,14 +37,11 @@ SET( zypp_SRCS
   Product.cc
   ProvideFilePolicy.cc
   PurgeKernels.cc
-  Range.cc
-  Rel.cc
   RepoInfo.cc
   RepoManager.cc
   RepoManagerOptions.cc
   Repository.cc
   RepoStatus.cc
-  ResKind.cc
   ResObject.cc
   Resolvable.cc
   Resolver.cc
@@ -74,30 +66,19 @@ SET( zypp_SRCS
 )
 SET( zypp_EARLY_SRCS
   ZConfig.cc
-  Arch.cc
-  Locale.cc
-  CountryCode.cc
-  LanguageCode.cc
 )
 
 SET( zypp_HEADERS
   Application.h
-  Arch.h
-  Bit.h
   Bitmap.h
   Callback.h
   Capabilities.h
   Capability.h
-  CapMatch.h
   Changelog.h
   CheckSum.h
-  CountryCode.h
-  CpeId.h
-  Dep.h
   Digest.h
   DiskUsageCounter.h
   DownloadMode.h
-  Edition.h
   PluginScript.h
   PluginScriptException.h
   PluginExecutor.h
@@ -106,14 +87,10 @@ SET( zypp_HEADERS
   Glob.h
   HistoryLog.h
   HistoryLogData.h
-  IdString.h
-  IdStringType.h
   InstanceId.h
   KeyContext.h
   KeyRing.h
   KeyRingContexts.h
-  LanguageCode.h
-  Locale.h
   Locks.h
   ManagedFile.h
   MediaProducts.h
@@ -134,9 +111,6 @@ SET( zypp_HEADERS
   Product.h
   ProvideFilePolicy.h
   PurgeKernels.h
-  Range.h
-  RelCompare.h
-  Rel.h
   RepoInfo.h
   RepoManager.h
   RepoManagerFlags.h
@@ -145,18 +119,15 @@ SET( zypp_HEADERS
   RepoStatus.h
   Filter.h
   ResFilters.h
-  ResKind.h
   ResObject.h
   ResObjects.h
   Resolvable.h
   Resolver.h
   ResolverFocus.h
-  ResolverNamespace.h
   ResolverProblem.h
   ResPool.h
   ResPoolProxy.h
   ResStatus.h
-  ResTraits.h
   ServiceInfo.h
   Signature.h
   SrcPackage.h
@@ -178,18 +149,13 @@ INSTALL(  FILES ${zypp_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp" )
 
 SET( zypp_base_SRCS
   base/Backtrace.cc
-       base/SerialNumber.cc
   base/Random.cc
   base/Measure.cc
-       base/SetRelationMixin.cc
-  base/StrMatcher.h
-  base/StrMatcher.cc
 )
 
 SET( zypp_base_HEADERS
   base/Backtrace.h
   base/Collector.h
-       base/SerialNumber.h
   base/Random.h
   base/Algorithm.h
   base/Counter.h
@@ -199,10 +165,7 @@ SET( zypp_base_HEADERS
   base/Measure.h
   base/NamedValue.h
   base/ReferenceCounted.h
-  base/SetRelationMixin.h
-       base/SetTracker.h
   base/Signal.h
-  base/StrMatcher.h
   base/ValueTransform.h
 )
 
@@ -371,7 +334,6 @@ SET( zypp_sat_SRCS
   sat/WhatObsoletes.cc
   sat/LocaleSupport.cc
   sat/LookupAttr.cc
-  sat/SolvAttr.cc
   sat/Queue.cc
 )
 
@@ -390,7 +352,6 @@ SET( zypp_sat_HEADERS
   sat/LocaleSupport.h
   sat/LookupAttr.h
   sat/LookupAttrTools.h
-  sat/SolvAttr.h
   sat/Queue.h
 )
 
@@ -405,7 +366,6 @@ SET( zypp_sat_detail_SRCS
 
 SET( zypp_sat_detail_HEADERS
   sat/detail/PoolImpl.h
-  sat/detail/PoolMember.h
 )
 
 INSTALL(  FILES

@@ -40,7 +40,10 @@ namespace zypp
    * While comparison differs between \ref IdString::Null and \ref IdString::Empty
    * ( \c NULL and \c "" ), both are represented by an empty string \c "".
    */
-  class ZYPP_API IdString : protected sat::detail::PoolMember
+  class ZYPP_API IdString
+#if ( LEGACY(1735) ) && !ZYPPNG
+    : protected sat::detail::PoolMember
+#endif
   {
     public:
       using IdType = sat::detail::IdType;

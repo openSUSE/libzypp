@@ -25,6 +25,7 @@
 
 #include <zypp/ZConfig.h>
 
+#include <zypp/ng/sat/stringpool.h>
 #include <zypp/sat/detail/PoolImpl.h>
 #include <zypp/sat/SolvableSet.h>
 #include <zypp/sat/Pool.h>
@@ -194,13 +195,8 @@ namespace zypp
       //	METHOD TYPE : Ctor
       //
       PoolImpl::PoolImpl()
-      : _pool( ::pool_create() )
+        : _pool( zyppng::sat::StringPool::instance().getPool() )
       {
-        MIL << "Creating sat-pool." << endl;
-        if ( ! _pool )
-        {
-          ZYPP_THROW( Exception( _("Can not create sat-pool.") ) );
-        }
         // by now we support only a RPM backend
         ::pool_setdisttype(_pool, DISTTYPE_RPM );
 
@@ -240,7 +236,6 @@ namespace zypp
       //
       PoolImpl::~PoolImpl()
       {
-        ::pool_free( _pool );
       }
 
      ///////////////////////////////////////////////////////////////////

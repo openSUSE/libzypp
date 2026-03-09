@@ -252,6 +252,7 @@ namespace zypp
       static bool isInterestingFileSpec( const std::string & name_r ) { return isInterestingFileSpec( name_r.c_str() ); }
       static bool isInterestingFileSpec( const char * name_r );
 
+
       /** \ref Capability parser also guessing \c "libzypp-1.2.3-4.5.x86_64" formats.
        *
        * The argument might be in the form \c "libzypp-devel-1.2.3.x86_64".

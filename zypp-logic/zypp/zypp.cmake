@@ -112,12 +112,49 @@ function(zypp_add_zypp_target)
   endif()
 
   zypp_add_sources( zyppng_sat_SRCS
+    ng/sat/pool.cc
+    ng/sat/poolmember.cc
+    ng/sat/solvable.cc
     ng/sat/stringpool.cc
+    ng/sat/queue.cc
+    ng/sat/repository.cc
+    ng/sat/capability.cc
+    ng/sat/capabilities.cc
+    ng/sat/cap2str.cc
+    ng/sat/lookupattr.cc
+    ng/sat/solvableident.cc
   )
 
   zypp_add_sources( zyppng_sat_HEADERS
+    ng/sat/pool.h
     ng/sat/poolconstants.h
+    ng/sat/poolmember.h
+    ng/sat/solvattr.h
+    ng/sat/solvable.h
     ng/sat/stringpool.h
+    ng/sat/queue.h
+    ng/sat/repository.h
+    ng/sat/capability.h
+    ng/sat/capabilities.h
+    ng/sat/cap2str.h
+    ng/sat/lookupattr.h
+    ng/sat/solvableident.h
+  )
+
+  zypp_add_sources( zyppng_sat_components_SRCS
+    ng/sat/components/architecturecomponent.cc
+    ng/sat/components/autoinstalledcomponent.cc
+    ng/sat/components/packagepolicycomponent.cc
+    ng/sat/components/namespacecomponent.cc
+    ng/sat/components/poolcomponents.cc
+  )
+
+  zypp_add_sources( zyppng_sat_components_HEADERS
+    ng/sat/components/architecturecomponent.h
+    ng/sat/components/autoinstalledcomponent.h
+    ng/sat/components/packagepolicycomponent.h
+    ng/sat/components/namespacecomponent.h
+    ng/sat/components/poolcomponents.h
   )
 
   zypp_add_sources( zyppng_SRCS
@@ -159,6 +196,7 @@ function(zypp_add_zypp_target)
     ${zypp_sat_detail_SRCS}
     ${zyppng_SRCS}
     ${zyppng_sat_SRCS}
+    ${zyppng_sat_components_SRCS}
 
     ${zypp_EARLY_SRCS}
     ${zypp_base_SRCS}
@@ -173,6 +211,7 @@ function(zypp_add_zypp_target)
     ${zyppng_HEADERS}
     ${zyppng_base_HEADERS}
     ${zyppng_sat_HEADERS}
+    ${zyppng_sat_components_HEADERS}
   )
 
   # Default loggroup for all files

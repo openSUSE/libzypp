@@ -9,8 +9,8 @@
 #include <zypp-core/Pathname.h>
 #include <zypp-core/Url.h>
 #include <zypp-core/base/UserRequestException>
-#include <zypp/ZConfig.h>
-#include <zypp/TmpPath.h>
+//#include <zypp/ZConfig.h>
+#include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/ng/pipelines/wait.h>
 #include <zypp-core/ng/base/private/linuxhelpers_p.h>
 #include <zypp-core/Digest.h>

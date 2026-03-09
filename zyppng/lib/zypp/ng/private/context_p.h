@@ -13,7 +13,7 @@
 #include <zypp-core/ng/base/private/base_p.h>
 #include <zypp-core/ng/ui/private/userinterface_p.h>
 #include <zypp/ng/context.h>
-#include <zypp/ZYpp.h>
+//#include <zypp/ZYpp.h>
 
 namespace zyppng
 {
@@ -26,7 +26,7 @@ namespace zyppng
     EventDispatcherRef _eventDispatcher;
     zypp::filesystem::TmpDir _providerDir;
     ProvideRef _provider;
-    zypp::ZYpp::Ptr _zyppPtr;
+    //zypp::ZYpp::Ptr _zyppPtr;
   };
 
 }

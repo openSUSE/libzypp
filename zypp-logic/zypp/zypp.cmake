@@ -157,6 +157,20 @@ function(zypp_add_zypp_target)
     ng/sat/components/poolcomponents.h
   )
 
+  zypp_add_sources( zyppng_sat_namespaces_SRCS
+    ng/sat/namespaces/namespaceprovider.cc
+    ng/sat/namespaces/filesystem.cc
+    ng/sat/namespaces/language.cc
+    ng/sat/namespaces/modalias.cc
+  )
+
+  zypp_add_sources( zyppng_sat_namespaces_HEADERS
+    ng/sat/namespaces/namespaceprovider.h
+    ng/sat/namespaces/filesystem.h
+    ng/sat/namespaces/language.h
+    ng/sat/namespaces/modalias.h
+  )
+
   zypp_add_sources( zyppng_SRCS
   )
 
@@ -197,6 +211,7 @@ function(zypp_add_zypp_target)
     ${zyppng_SRCS}
     ${zyppng_sat_SRCS}
     ${zyppng_sat_components_SRCS}
+    ${zyppng_sat_namespaces_SRCS}
 
     ${zypp_EARLY_SRCS}
     ${zypp_base_SRCS}
@@ -212,6 +227,7 @@ function(zypp_add_zypp_target)
     ${zyppng_base_HEADERS}
     ${zyppng_sat_HEADERS}
     ${zyppng_sat_components_HEADERS}
+    ${zyppng_sat_namespaces_HEADERS}
   )
 
   # Default loggroup for all files

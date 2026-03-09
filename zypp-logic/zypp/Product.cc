@@ -40,6 +40,20 @@ namespace zypp
         ret_r.push_back( it.asString() );
       }
     }
+
+    // The name of the reference package if provided as 'autoproduct() = someproducts-release'
+    inline IdString autoCapReference( const Capabilities & provides_r )
+    {
+      static const Capability autoproduct( "autoproduct()" );
+      for ( const auto & cap : provides_r ) {
+        if ( cap.matches( autoproduct ) == CapMatch::yes ) {
+          const CapDetail & detail { cap.detail() };
+          if ( detail.isVersioned() )
+            return detail.ed().idStr();
+        }
+      }
+      return IdString::Null;
+    }
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -66,27 +80,31 @@ namespace zypp
     // Look for a  provider of 'product(name) = version' of same
     // architecture and within the same repo.
     //
-    // Code12: Update repos may have multiple release package versions
+    // bsc#1259311: Use a provided autoproduct() as hint to the package name.
+    //
+    // Note: Update repos may have multiple release package versions
     // providing the same product. Prefer the one matching the buildtime,
     // as the product buildtime is derived from the -release package.
     Capability identCap( str::form( "product(%s) = %s", name().c_str(), edition().c_str() ) );
+    IdString autoReference { autoCapReference( dep_provides() ) };
 
     sat::Solvable found;
     bool foundBuildTime = false;
-    sat::WhatProvides providers( identCap );
-    for_( it, providers.begin(), providers.end() )
+    for ( const sat::Solvable & slv : sat::WhatProvides( identCap ) )
     {
-      if ( it->repository() == repository() && it->arch() == arch() )
+      if ( autoReference && autoReference != slv.ident() )
+        continue;
+      if ( slv.repository() == repository() && slv.arch() == arch() )
       {
-        bool fitsBuildtime = ( it->buildtime() == buildtime() );
+        bool fitsBuildtime = ( slv.buildtime() == buildtime() );
         if ( found )
         {
-          bool lowerEdition = ( it->edition() <= found.edition() );
+          bool lowerEdition = ( slv.edition() <= found.edition() );
           if ( (  foundBuildTime && ( !fitsBuildtime || lowerEdition ) )
             || ( !foundBuildTime && ( !fitsBuildtime && lowerEdition ) ) )
             continue;
         }
-        found = *it;
+        found = slv;
         if ( fitsBuildtime )
           foundBuildTime = true;
       }
@@ -95,7 +113,7 @@ namespace zypp
     if ( ! found && isSystem() )
     {
       // bnc#784900: for installed products check whether the file is owned by
-      // some package. If so, ust this as buddy.
+      // some package. If so, use this as buddy.
       sat::LookupAttr q( sat::SolvAttr::filelist, repository() );
       std::string refFile( referenceFilename() );	// the basename only!
       if ( ! refFile.empty() )

@@ -120,11 +120,44 @@ function(zypp_add_zypp_target)
     ng/sat/stringpool.h
   )
 
+  zypp_add_sources( zyppng_SRCS
+  )
+
+  zypp_add_sources( zyppng_HEADERS
+    ng/arch.h
+    ng/bit.h
+    ng/capmatch.h
+    ng/cpeid.h
+    ng/countrycode.h
+    ng/dep.h
+    ng/edition.h
+    ng/idstring.h
+    ng/idstringtype.h
+    ng/languagecode.h
+    ng/locale.h
+    ng/range.h
+    ng/relcompare.h
+    ng/rel.h
+    ng/reskind.h
+    ng/restraits.h
+    ng/resolvernamespace.h
+  )
+
+  zypp_add_sources( zyppng_base_SRCS
+  )
+
+  zypp_add_sources( zyppng_base_HEADERS
+    ng/base/serialnumber.h
+    ng/base/settracker.h
+    ng/base/strmatcher.h
+  )
+
   SET( zypp_lib_SRCS
     ${arg_SOURCES}
     ${zypp_SRCS}
     ${zypp_sat_SRCS}
     ${zypp_sat_detail_SRCS}
+    ${zyppng_SRCS}
     ${zyppng_sat_SRCS}
 
     ${zypp_EARLY_SRCS}
@@ -137,6 +170,8 @@ function(zypp_add_zypp_target)
     ${zypp_base_HEADERS}
     ${zypp_sat_HEADERS}
     ${zypp_sat_detail_HEADERS}
+    ${zyppng_HEADERS}
+    ${zyppng_base_HEADERS}
     ${zyppng_sat_HEADERS}
   )
 

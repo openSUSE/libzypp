@@ -35,6 +35,55 @@
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
+  namespace {
+    // Translate leading "./(../)+" to "./(%2E%2E/)+" for Fetcher::mapToCachePath
+    inline void fixup( Pathname & path_r )
+    {
+      const std::string & s { path_r.asString() };
+
+      // 1. Quick exit if string is too short or doesn't start with ./
+      if ( s.size() < 4 || s.compare(0, 2, "./" ) != 0 )
+        return;
+
+      size_t count = 0;
+      size_t pos   = 2;
+
+      // 2. Count consecutive "../" sequences
+      while ( pos + 3 <= s.size() && s.compare(pos, 3, "../") == 0 ) {
+        ++count;
+        pos += 3;
+      }
+
+      if (count == 0)
+        return;
+
+      {
+        std::string s { path_r.asString() };
+
+        // 3. Resize string once to avoid multiple reallocations
+        size_t original_size = s.size();
+        size_t added_space = count * 4; // ".."(2) becomes "%2E%2E"(6)
+        s.resize(original_size + added_space);
+
+        // 4. Move the 'tail' of the string to the new end
+        size_t tail_start = 2 + (count * 3);
+        size_t tail_length = original_size - tail_start;
+        if (tail_length > 0) {
+          std::copy_backward(s.begin() + tail_start, s.begin() + original_size, s.end());
+        }
+
+        // 5. Fill the gap with %2E%2E/
+        size_t write_pos = 2;
+        for (size_t i = 0; i < count; ++i) {
+          s.replace(write_pos, 7, "%2E%2E/");
+          write_pos += 7;
+        }
+
+        path_r = s;
+      }
+    }
+  } // namespace
+
   /**
    * class that represents indexes which add metadata
    * to fetcher jobs and therefore need to be retrieved
@@ -201,11 +250,12 @@ namespace zypp
       void getDirectoryContent( MediaSetAccess &media, const OnMediaLocation &resource, filesystem::DirContent &content );
 
       /**
-       * Tries to locate the file represented by job by looking at
-       * the cache (matching checksum is mandatory). Returns the
-       * location of the cached file or an empty \ref Pathname.
+       * Tries to locate the file represented by the job by looking at
+       * it's final destination first and at then the caches (matching
+       * checksum is mandatory). Returns the location of the file found
+       * or an empty \ref Pathname.
        */
-      ManagedFile locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r );
+      ManagedFile locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r, const Pathname & inCachePath_r );
       /**
        * Validates the provided file against its checkers.
        * \throws Exception
@@ -354,29 +404,29 @@ namespace zypp
     }
     else
     {
-        ERR << "Not adding cache '" << cache_dir << "'. Path does not exists." << endl;
+        WAR << "Not adding cache '" << cache_dir << "'. Path does not exists." << endl;
     }
 
   }
 
-  ManagedFile Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r )
+  ManagedFile Fetcher::Impl::locateInCache( const OnMediaLocation & resource_r, const Pathname & destDir_r, const Pathname & inCachePath_r )
   {
     // No checksum - no match
     if ( resource_r.checksum().empty() )
       return {};
 
-    // first check in the destination directory
-    ManagedFile cacheLocation(destDir_r / resource_r.filename());
+    // first check in the final destination
+    ManagedFile cacheLocation { destDir_r / inCachePath_r };
     if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) ) {
+      pMIL( "file", inCachePath_r, "found at", destDir_r );
       return cacheLocation;
     }
 
-    MIL << "start fetcher with " << _caches.size() << " cache directories." << endl;
     for( const CacheInfo & cacheInfo : _caches ) {
-      cacheLocation = ManagedFile(cacheInfo._pathName / resource_r.filename());
+      cacheLocation = ManagedFile( cacheInfo._pathName / inCachePath_r );
       if ( PathInfo(cacheLocation).isExist() && is_checksum( cacheLocation, resource_r.checksum() ) )
       {
-        MIL << "file " << resource_r.filename() << " found in cache " << cacheInfo._pathName << endl;
+        pMIL( "file", inCachePath_r, "found in cache", cacheInfo._pathName );
         if ( cacheInfo._options & Fetcher::CleanFiles )
           cacheLocation.setDispose( filesystem::unlink );
         return cacheLocation;
@@ -532,43 +582,44 @@ namespace zypp
 
   void Fetcher::Impl::provideToDest( MediaSetAccess & media_r, const Pathname & destDir_r , const FetcherJob_Ptr & jobp_r )
   {
-    const OnMediaLocation & resource( jobp_r->location );
+    const OnMediaLocation & resource  { jobp_r->location };
+    Pathname inCachePath              { mapToCachePath( resource ) }; // Map remote filename to a local path below destDir_r.
+    Pathname finalDestination         { destDir_r / inCachePath };    // The full destination path.
 
     try
     {
       scoped_ptr<MediaSetAccess::ReleaseFileGuard> releaseFileGuard; // will take care provided files get released
+      Pathname candidate;
 
-      // get cached file (by checksum) or provide from media
-      ManagedFile managedTmpFile = locateInCache( resource, destDir_r );
-
-      Pathname tmpFile = managedTmpFile;
-      if ( tmpFile.empty() )
-      {
-        MIL << "Not found in cache, retrieving..." << endl;
-        tmpFile = media_r.provideFile( resource, resource.optional() ? MediaSetAccess::PROVIDE_NON_INTERACTIVE : MediaSetAccess::PROVIDE_DEFAULT );
+      // Try to get cached file (by checksum) or provide it from media.
+      ManagedFile cachedFile = locateInCache( resource, destDir_r, inCachePath );
+      if ( (*cachedFile).empty() ) {
+        pMIL( "file", inCachePath, "not found in cache, retrieving..." );
+        candidate = media_r.provideFile( resource, resource.optional() ? MediaSetAccess::PROVIDE_NON_INTERACTIVE : MediaSetAccess::PROVIDE_DEFAULT );
         releaseFileGuard.reset( new MediaSetAccess::ReleaseFileGuard( media_r, resource ) ); // release it when we leave the block
+      } else {
+        candidate = cachedFile;
       }
 
-      // The final destination: locateInCache also checks destFullPath!
-      // If we find a cache match (by checksum) at destFullPath, take
-      // care it gets deleted, in case the validation fails.
-      ManagedFile destFullPath( destDir_r / resource.filename() );
-      if ( tmpFile == destFullPath )
-        destFullPath.setDispose( filesystem::unlink );
+      if ( candidate == finalDestination ) {
+        // If we have a match at destFullPath, take care
+        // it gets deleted, in case the validation fails.
+        cachedFile.setDispose( filesystem::unlink );
+      }
 
-      // validate the file (throws if not valid)
-      validate( tmpFile, jobp_r->checkers );
+      // Validate the file (throws if not valid)
+      validate( candidate, jobp_r->checkers );
 
       // move it to the final destination
-      if ( tmpFile == destFullPath )
-        destFullPath.resetDispose();	// keep it!
+      if ( candidate == finalDestination )
+        cachedFile.resetDispose();	// keep it!
       else
       {
-        if ( assert_dir( destFullPath->dirname() ) != 0 )
-          ZYPP_THROW( Exception( "Can't create " + destFullPath->dirname().asString() ) );
+        if ( assert_dir( finalDestination.dirname() ) != 0 )
+          ZYPP_THROW( Exception( str::sprint( "Can't create", finalDestination.dirname() ) ) );
 
-        if ( filesystem::hardlinkCopy( tmpFile, destFullPath ) != 0 )
-          ZYPP_THROW( Exception( "Can't hardlink/copy " + tmpFile.asString() + " to " + destDir_r.asString() ) );
+        if ( filesystem::hardlinkCopy( candidate, finalDestination ) != 0 )
+          ZYPP_THROW( Exception( str::sprint( "Can't hardlink/copy", candidate, "to", finalDestination ) ) );
       }
     }
     catch ( Exception & excpt )
@@ -576,12 +627,12 @@ namespace zypp
       if ( resource.optional() )
       {
         ZYPP_CAUGHT( excpt );
-        WAR << "optional resource " << resource << " could not be transferred." << endl;
+        WAR << "Optional resource " << resource << " could not be transferred." << endl;
         return;
       }
       else
       {
-        excpt.remember( "Can't provide " + resource.filename().asString() );
+        excpt.remember( str::sprint("Can't provide", resource.filename() ) );
         ZYPP_RETHROW( excpt );
       }
     }
@@ -934,6 +985,12 @@ namespace zypp
                        const ProgressData::ReceiverFnc & progress_receiver )
   {
     _pimpl->start(dest_dir, media, progress_receiver);
+  }
+
+  Pathname Fetcher::mapToCachePath( Pathname remotePath_r )
+  {
+    fixup( remotePath_r );
+    return remotePath_r;
   }
 
   std::ostream & operator<<( std::ostream & str, const Fetcher & obj )

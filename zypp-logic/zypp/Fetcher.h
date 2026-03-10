@@ -101,6 +101,14 @@ namespace zypp
   * present, we fall back looking for a SHA1SUMS file. The checksum
   * type (md5,sha1,sha256) is auto detected by looking at the cheksums
   * length. No need to somehow encode it in the filename.
+  *
+  * \note bsc#1253740: Replicating the file tree below the destination
+  * directory fails if filenames stored in an OnMediaLocation are relative
+  * and referring to "../". They will point to a location outside the cache.
+  * To fix the Fetcher writing to a location outside the destination directory
+  * all remote paths will be mapped to filenames below the destination directory.
+  * \ref mapToCachePath will return the location below the destination directory,
+  * where a remote resource will be located.
   */
   class ZYPP_API Fetcher
   {
@@ -351,6 +359,20 @@ namespace zypp
     void start( const Pathname &dest_dir,
                 MediaSetAccess &media,
                 const ProgressData::ReceiverFnc & progress = ProgressData::ReceiverFnc() );
+
+  public:
+    /** Map a resource filename to a local path below a destDir.
+     * bsc#1253740: To fix the Fetcher writing to a location outside
+     * the destination directory if remote paths have leading "../"s,
+     * this function maps a resource filename to it's location below
+     * the destination directory.
+     * \note It's an implementation detail, that in many cases the
+     * "../"s are encoded as "%2E%2E/"s. This may change in future
+     * version if necessary.
+     */
+    static Pathname mapToCachePath( Pathname remotePath_r );
+    static Pathname mapToCachePath( const OnMediaLocation & resource_r )
+    { return mapToCachePath( resource_r.filename() ); }
 
   private:
     /** Pointer to implementation */

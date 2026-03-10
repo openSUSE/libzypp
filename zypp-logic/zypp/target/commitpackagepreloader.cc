@@ -11,6 +11,7 @@
 #include <zypp-curl/transfersettings.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
 #include <zypp-curl/ng/network/request.h>
+#include <zypp/repo/RepoProvideFile.h>
 #include <zypp/MediaSetAccess.h>
 #include <zypp/Package.h>
 #include <zypp/SrcPackage.h>
@@ -97,11 +98,7 @@ namespace zypp {
       auto loc = _job.lookupLocation();
       const auto repoInfo = _job.repoInfo();
 
-      _targetPath = repoInfo.predownloadPath();
-      if ( !repoInfo.path().emptyOrRoot () ) {
-        _targetPath /= repoInfo.path();
-      }
-      _targetPath /= loc.filename();
+      _targetPath = repoInfo.predownloadPath() / repo::RepoMediaAccess::mapToCachePath( repoInfo, loc );
 
       // select a mirror we want to use
       if ( !prepareMirror( ) ) {

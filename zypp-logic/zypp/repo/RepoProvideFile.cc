@@ -270,7 +270,7 @@ namespace zypp
       const OnMediaLocation locWithPath( OnMediaLocation(loc_rx).prependPath( repo_r.path() ) );
 
       MIL << locWithPath << endl;
-      // Arrange DownloadFileReportHack to recieve the source::DownloadFileReport
+      // Arrange DownloadFileReportHack to receive the source::DownloadFileReport
       // and redirect download progress triggers to call the ProvideFilePolicy
       // callback.
       DownloadFileReportHack dumb( std::bind( std::mem_fn(&ProvideFilePolicy::progress), std::ref(policy_r), _1 ) );
@@ -349,7 +349,8 @@ namespace zypp
           // They should actually return a ManagedFile(). But I don't know if there is
           // already code which requests optional files but relies on provideFile returning
           // a ManagedFile holding the path even if it does not exist. So I keep it this way.
-          ManagedFile ret( destinationDir + locWithPath.filename() );
+
+          ManagedFile ret { destinationDir / Fetcher::mapToCachePath( locWithPath ) };
           if ( !repo_r.keepPackages() )
           {
             ret.setDispose( filesystem::unlink );
@@ -379,6 +380,12 @@ namespace zypp
 
       ZYPP_THROW(repo_excpt);
       return ManagedFile(); // not reached
+    }
+
+    Pathname RepoMediaAccess::mapToCachePath( const RepoInfo & repo_r, const OnMediaLocation & resource_r )
+    {
+      // While our implementation is based on the Fetcher:
+      return Fetcher::mapToCachePath( repo_r.path() / resource_r.filename() );
     }
 
     /////////////////////////////////////////////////////////////////

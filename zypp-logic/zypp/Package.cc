@@ -21,6 +21,7 @@
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/rpm/RpmHeader.h>
 #include <zypp/ui/Selectable.h>
+#include <zypp/repo/RepoProvideFile.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zyppintern
@@ -98,7 +99,7 @@ namespace zyppintern
   // here and from SrcPackage.cc
   Pathname cachedLocation( const OnMediaLocation & loc_r, const RepoInfo & repo_r )
   {
-    PathInfo pi( repo_r.packagesPath() / repo_r.path() / loc_r.filename() );
+    PathInfo pi( repo_r.packagesPath() / repo::RepoMediaAccess::mapToCachePath( repo_r, loc_r ) );
 
     if ( ! pi.isExist() )
       return Pathname();	// no file in cache
@@ -110,7 +111,7 @@ namespace zyppintern
         return Pathname();	// same name but no checksum to verify
 
       // for local repos compare with the checksum in repo
-      if ( CheckSum( CheckSum::md5Type(), std::ifstream( (url.getPathName() / repo_r.path() / loc_r.filename()).c_str() ) )
+      if ( CheckSum( CheckSum::md5Type(), std::ifstream( (url.getPathName() / repo::RepoMediaAccess::mapToCachePath( repo_r, loc_r )).c_str() ) )
         != CheckSum( CheckSum::md5Type(), std::ifstream( pi.c_str() ) ) )
         return Pathname();	// same name but wrong checksum
     }

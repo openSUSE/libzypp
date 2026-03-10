@@ -100,6 +100,28 @@ namespace zypp
       /** Get the current default \ref ProvideFilePolicy. */
       const ProvideFilePolicy & defaultPolicy() const;
 
+    public:
+      /** Map a resource filename to a local path below a repositories cache.
+       *
+       * bsc#1253740: Resource filenames pointing to "../" may refer to locations
+       * outside the repositories root. That's actually not desired and does not
+       * work for mounted media, as they refer to locations outside the mount point.
+       * Unfortunately it works for http/ftp and is actually used by TumbleWeed.
+       *
+       * The remote path relative to the repositories root is usually composed as
+       * "repo.path / resource.filename".  Replicating the remote file tree below
+       * the repositories cache directory fails if this remote path is relative
+       * and refers to "../". It will point to a location outside the cache.
+       * To fix this all remote paths will be mapped to filenames below the cache
+       * root.
+       *
+       * So the location of a package on disk should be computed as:
+       * \code
+       * repo.packagesPath() / RepoMediaAccess::mapToCachePath( repo, resource )
+       * \endcode
+       */
+      static Pathname mapToCachePath( const RepoInfo & repo_r, const OnMediaLocation & resource_r );
+
    private:
       class Impl;
        RW_pointer<Impl> _impl;

@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 10 11:05:16 CET 2026 - ma@suse.de
+
+- Fix Product::referencePackage lookup (bsc#1259311)
+  Use a provided autoproduct() as hint to the package name of the
+  release package. It might be that not just multiple versions of
+  the same release package provide the same product version, but
+  also different release packages.
+- version 17.38.4 (35)
+
+-------------------------------------------------------------------
 Fri Mar  6 13:37:33 CET 2026 - ma@suse.de
 
 - specfile: on fedora use %{_prefix}/share as zyppconfdir if

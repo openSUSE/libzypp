@@ -91,7 +91,7 @@ Using zypper, you can refresh services by executing
 zypper refs
 \endverbatim
 
-The repositories that are listed in the service will be added, using the reposotiy alias specified in the service index prefixed by the service alias: e.g. "myservice:myrepository". Repositories that vanished from the service will be automatically removed.
+The repositories that are listed in the service will be added, using the repository alias specified in the service index prefixed by the service alias: e.g. "myservice:myrepository". Repositories that vanished from the service will be automatically removed.
 
 \section service-examples Example usecases
 

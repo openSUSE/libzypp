@@ -159,19 +159,24 @@ namespace zyppng {
     while ( _waitQueue.size() ) {
       auto &item = _waitQueue.front();
       auto &reqRef = item._request;
-      if ( reqRef && reqRef->owner() && !item.isDetachRequest() )
-        reqRef->owner()->finishReq( this, reqRef, reason );
+      auto owner = reqRef ? reqRef->owner() : nullptr;
+      if ( owner && !item.isDetachRequest() )
+        owner->finishReq( this, reqRef, reason );
       _waitQueue.pop_front();
     }
 
     for ( auto i = _activeItems.begin(); i != _activeItems.end();  ) {
       auto &reqRef = i->_request;
-      if ( reqRef && reqRef->owner() && !i->isDetachRequest() ) {
+      auto owner = reqRef ? reqRef->owner() : nullptr;
+      if ( owner && !i->isDetachRequest() ) {
         i = cancelActiveItem(i, reason );
       } else {
         i++;
       }
     }
+
+    _activeItems.clear();
+    _waitQueue.clear();
 
     if ( _workerProc && _workerProc->isRunning() ) {
       _workerProc->flush();
@@ -206,7 +211,7 @@ namespace zyppng {
     reqRef->setCurrentQueue(nullptr);
     if ( reqRef->owner() )
       reqRef->owner()->finishReq( this, reqRef, error );
-    reqRef.reset();
+    reqRef->resetOwner();
     return (++i);
   }
 
@@ -449,8 +454,9 @@ namespace zyppng {
         if ( code >= ProvideMessage::Code::FirstInformalCode && code <= ProvideMessage::Code::LastInformalCode ) {
 
           // send the message to the item but don't dequeue
-          if ( reqRef && reqRef->owner() )
-            reqRef->owner()->informalMessage ( *this, reqRef, *provMsg );
+          auto owner = reqRef ? reqRef->owner() : nullptr;
+          if ( owner )
+            owner->informalMessage ( *this, reqRef, *provMsg );
           continue;
 
         } else if ( code >= ProvideMessage::Code::FirstSuccessCode && code <= ProvideMessage::Code::LastSuccessCode ) {
@@ -485,8 +491,9 @@ namespace zyppng {
                 dataRef = _parent.addToFileCache ( locFName );
                 if ( !dataRef ) {
                   MIL << "CACHE MISS, file " << locFName << " was already removed, queueing again" << std::endl;
-                  if ( reqRef->owner() )
-                    reqRef->owner()->cacheMiss( reqRef );
+                  auto owner = reqRef->owner();
+                  if ( owner )
+                    owner->cacheMiss( reqRef );
                   reqRef->provideMessage().setRequestId( InvalidId );
                   req._state = Item::Pending;
                   _waitQueue.push_front( req );
@@ -502,8 +509,9 @@ namespace zyppng {
                   req._state = Item::Finished;
                   reqRef->setCurrentQueue(nullptr);
                   auto resp = ProvideMessage::createErrorResponse ( provMsg->requestId(), ProvideMessage::Code::InternalError, "File vanished between downloading and adding it to cache." );
-                  if ( reqRef->owner() )
-                    reqRef->owner()->finishReq( *this, reqRef, resp );
+                  auto owner = reqRef->owner();
+                  if ( owner )
+                    owner->finishReq( *this, reqRef, resp );
                   dequeueActive( reqIter );
                   continue;
                 }
@@ -513,8 +521,9 @@ namespace zyppng {
 
           // send the message to the item and dequeue
           reqRef->setCurrentQueue(nullptr);
-          if ( reqRef->owner() )
-            reqRef->owner()->finishReq( *this, reqRef, *provMsg );
+          auto owner = reqRef->owner();
+          if ( owner )
+            owner->finishReq( *this, reqRef, *provMsg );
           req._state = Item::Finished;
           dequeueActive( reqIter );
           continue;
@@ -530,8 +539,9 @@ namespace zyppng {
           // send the message to the item and dequeue
           reqRef->setCurrentQueue(nullptr);
 
-          if ( reqRef->owner() )
-            reqRef->owner()->finishReq( *this, reqRef, *provMsg );
+          auto owner = reqRef->owner();
+          if ( owner )
+            owner->finishReq( *this, reqRef, *provMsg );
 
           req._state = Item::Finished;
           dequeueActive( reqIter );
@@ -548,8 +558,9 @@ namespace zyppng {
 
           // send the message to the item and dequeue
           reqRef->setCurrentQueue(nullptr);
-          if ( reqRef->owner() )
-            reqRef->owner()->finishReq( *this, reqRef, *provMsg );
+          auto owner = reqRef->owner();
+          if ( owner )
+            owner->finishReq( *this, reqRef, *provMsg );
           req._state = Item::Finished;
           dequeueActive( reqIter );
           continue;
@@ -577,7 +588,8 @@ namespace zyppng {
             }
 
             // we need a owner item to fetch the auth data for us
-            if ( !reqRef->owner() ) {
+            auto owner = reqRef->owner();
+            if ( !owner ) {
               if ( !sendErrorToWorker( reqRef->provideMessage().requestId(), ProvideMessage::Code::NoAuthData, "Request has no owner" ) )
                 return;
               continue;
@@ -607,7 +619,7 @@ namespace zyppng {
                 extraVals[hdr.first] = hdr.second.asString();
               }
 
-              const auto &authOpt = reqRef->owner()->authenticationRequired( *this, reqRef, u, provMsg->value( AuthDataRequestMsgFields::LastAuthTimestamp ).asInt64(), extraVals );
+              const auto &authOpt = owner->authenticationRequired( *this, reqRef, u, provMsg->value( AuthDataRequestMsgFields::LastAuthTimestamp ).asInt64(), extraVals );
               if ( !authOpt ) {
                 if ( !sendErrorToWorker( reqRef->provideMessage().requestId(), ProvideMessage::Code::NoAuthData, "No auth given by user." ) )
                   return;

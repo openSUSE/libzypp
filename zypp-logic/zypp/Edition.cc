@@ -16,11 +16,13 @@ extern "C"
 #include <zypp-core/base/String.h>
 
 #include <zypp/Edition.h>
-#include <zypp/sat/detail/PoolImpl.h>
+#include <zypp/ng/sat/stringpool.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+
+  using zyppng::sat::StringPool;
 
   ///////////////////////////////////////////////////////////////////
   namespace
@@ -120,14 +122,14 @@ namespace zypp
   int Edition::_doCompare( const char * lhs,  const char * rhs )
   {
     if ( lhs == rhs ) return 0;
-    if ( lhs && rhs ) return ::pool_evrcmp_str( myPool().getPool(), lhs, rhs, EVRCMP_COMPARE );
+    if ( lhs && rhs ) return ::pool_evrcmp_str( StringPool::instance().getPool(), lhs, rhs, EVRCMP_COMPARE );
     return( lhs ? 1 : -1 );
   }
 
   int Edition::_doMatch( const char * lhs,  const char * rhs )
   {
     if ( lhs == rhs ) return 0;
-    if ( lhs && rhs ) return ::pool_evrcmp_str( myPool().getPool(), lhs, rhs, EVRCMP_MATCH );
+    if ( lhs && rhs ) return ::pool_evrcmp_str( StringPool::instance().getPool(), lhs, rhs, EVRCMP_MATCH );
     return( lhs ? 1 : -1 );
   }
 

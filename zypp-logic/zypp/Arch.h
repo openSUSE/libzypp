@@ -45,6 +45,11 @@ namespace zypp
     explicit Arch( const std::string & str_r );
     explicit Arch( const char * cstr_r );
 
+    /**
+     * Determine system architecture evaluating \c uname and \c /proc/cpuinfo.
+     */
+    static Arch detectSystemArchitecture();
+
   public:
     /** \name IdStringType like interface.
      * We can't use the complete \ref IdStringType mixin until

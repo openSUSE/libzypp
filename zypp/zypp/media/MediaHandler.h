@@ -497,6 +497,11 @@ class MediaHandler {
         std::string protocol() const { return _origin.scheme(); }
 
         /**
+         * Access the internal MirroredOrigin (authority and mirrors).
+         **/
+        const MirroredOrigin &origin() const { return _origin; }
+
+        /**
          * Primary Url used.
          **/
         Url url() const { return _origin.authority().url(); }

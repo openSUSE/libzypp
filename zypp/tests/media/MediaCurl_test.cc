@@ -8,6 +8,7 @@
 
 #include <zypp/media/MediaManager.h>
 #include <zypp-core/Url.h>
+#include <zypp-core/MirroredOrigin.h>
 #include <zypp/Digest.h>
 
 #include <iostream>
@@ -500,4 +501,82 @@ BOOST_DATA_TEST_CASE( provide_via_proxy_bsc1245220, bdata::make( backend ), back
 
   BOOST_REQUIRE_NO_THROW(mm.provideFile( id, loc ));
 }
+
+// case: verify that failed mirrors are deprioritized for subsequent requests
+BOOST_DATA_TEST_CASE( test_mirror_fallback_persistence, bdata::make( backend ), backend )
+{
+  // Setup ZConfig to avoid touching real system files
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  // 1. Setup two servers on different ports
+  WebServer serverFail( "/tmp", 10001 );
+  WebServer serverSuccess( "/tmp", 10002 );
+  BOOST_REQUIRE( serverFail.start() );
+  BOOST_REQUIRE( serverSuccess.start() );
+
+  int failServerRequests = 0;
+  int successServerRequests = 0;
+
+  serverFail.setDefaultHandler( [&]( WebServer::Request &req ) {
+    failServerRequests++;
+    if ( req.params["REQUEST_URI"].find("file1") != std::string::npos )
+        req.rout << "Status: 404 Not Found\r\n\r\n";
+    else
+        req.rout << "Status: 200 OK\r\n\r\nSuccess from FailServer";
+  });
+
+  serverSuccess.setDefaultHandler( [&]( WebServer::Request &req ) {
+    successServerRequests++;
+    req.rout << "Status: 200 OK\r\n\r\nSuccess from SuccessServer";
+  });
+
+  // 2. Setup MirroredOrigin
+  // Authority: Use a non-existent port to force connection failure and fallback
+  zypp::Url authUrl("http://localhost:9999/authority");
+  authUrl.setQueryParam("mediahandler", backend);
+  
+  zypp::MirroredOrigin origin( authUrl );
+  
+  zypp::Url url1 = serverFail.url();
+  url1.setQueryParam("mediahandler", backend);
+  origin.addMirror( url1 );
+
+  zypp::Url url2 = serverSuccess.url();
+  url2.setQueryParam("mediahandler", backend);
+  origin.addMirror( url2 );
+
+  zypp::media::MediaManager mm;
+  zypp::media::MediaAccessId id;
+  id = mm.open( origin );
+  mm.attach(id);
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  // 3. First download: file1
+  // Expected behavior: 
+  // - mirrorOrder() returns [1, 2, 0]
+  // - Tries Mirror 1 (FailServer) -> returns 404
+  // - Falls back to Mirror 2 (SuccessServer) -> returns 200
+  zypp::OnMediaLocation loc1("/handler/file1");
+  BOOST_CHECK_NO_THROW( mm.provideFile( id, loc1 ) );
+  
+  BOOST_CHECK_EQUAL( failServerRequests, 1 );
+  BOOST_CHECK_EQUAL( successServerRequests, 1 );
+
+  // 4. Second download: file2
+  // DESIRED BEHAVIOR:
+  // After the first failure, Mirror 1 should have been moved to the end of the list.
+  // Thus, it should try Mirror 2 (serverSuccess) FIRST for file2.
+  zypp::OnMediaLocation loc2("/handler/file2");
+  BOOST_CHECK_NO_THROW( mm.provideFile( id, loc2 ) );
+
+  // VERIFICATION: confirm that failed mirror was NOT tried again
+  // (We expect failServerRequests to remain 1)
+  BOOST_CHECK_MESSAGE( failServerRequests == 1, 
+    "Failed mirror was NOT reordered! (failServerRequests=" << failServerRequests << ")" );
+}
+
 

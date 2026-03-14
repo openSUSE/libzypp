@@ -15,16 +15,16 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-11 16:21+0100\n"
-"PO-Revision-Date: 2025-07-22 15:01+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/it/"
-">\n"
+"PO-Revision-Date: 2026-03-14 12:04+0000\n"
+"Last-Translator: Paolo Za <zapaolo@email.it>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 "X-Poedit-Bookmarks: 370,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #. translators: an annotation to a gpg keys expiry date
@@ -346,23 +346,23 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "Nessun errore"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "Errore interno"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "La richiesta è stata annullata"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"
-msgstr ""
+msgstr "La richiesta ha superato la dimensione massima per lo scaricamento"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
 msgid "The downloaded data did not result in a valid checksum"
-msgstr ""
+msgstr "I dati scaricati non hanno prodotto un codice di controllo valido"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
@@ -370,35 +370,35 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "Connessione non riuscita"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "Protocollo non supportato"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
-msgstr ""
+msgstr "URL errato"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
 msgid "Requested location is temporarily unaccessible."
-msgstr ""
+msgstr "La posizione richiesta è temporaneamente inaccessibile."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "Tempo massimo raggiunto"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
-msgstr ""
+msgstr "L'accesso all'URL richiesto è vietato."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "File non trovato"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
-msgstr ""
+msgstr "Autenticazione richiesta ma non fornita."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
@@ -406,11 +406,11 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
-msgstr ""
+msgstr "Il server ha restituito un errore per la richiesta specificata."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
 msgid "Server did not send all requested ranges."
-msgstr ""
+msgstr "Il server non ha inviato tutti gli intervalli richiesti."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
 msgid ""
@@ -420,7 +420,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "Il server ha restituito un errore HTTP/2."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
@@ -5259,6 +5259,7 @@ msgstr "impossibile creare il file di destinazione"
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
 msgstr ""
+"Errore: impossibile inizializzare le impostazioni di trasferimento (%1%)."
 
 #. if we have the file already, no need to download again
 #: zypp-logic/zypp/target/commitpackagepreloader.cc:143

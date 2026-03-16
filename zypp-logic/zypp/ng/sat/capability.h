@@ -56,6 +56,19 @@ namespace zyppng::sat
    *
    * [1] https://rpm-software-management.github.io/rpm/manual/boolean_dependencies.html
    * \see \ref CapDetail
+   *
+   * \note <b>Pool binding:</b> \ref Capability stores a single \c IdType integer —
+   * an index into the libsolv \e stringpool, not into any specific solver pool's
+   * solvable array. It is therefore intentionally \b not a \ref PoolMember and
+   * calls \ref StringPool::instance() directly in its constructors.
+   *
+   * Contrast with \ref Solvable (stores a \c SolvableIdType — index into a specific
+   * pool's solvable array) and \ref Repository (stores a \c CRepo* — pool-specific
+   * pointer), which are solver-pool-bound.
+   *
+   * \todo When multiple solver \ref Pool instances sharing the same \ref StringPool
+   * are supported, this distinction will matter: a \ref Capability will remain valid
+   * across all of them, while a \ref Solvable or \ref Repository will not.
    */
   class Capability
   {

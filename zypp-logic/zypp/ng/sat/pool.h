@@ -28,8 +28,6 @@
 
 namespace zyppng::sat {
 
-  class NamespaceRegistry;
-
   /**
    * \class Pool
    * \brief Orchestrator for a libsolv pool instance.

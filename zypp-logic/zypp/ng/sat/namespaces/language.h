@@ -79,7 +79,7 @@ namespace zyppng::sat::namespaces {
 
       void localeSetDirty( std::initializer_list<std::string_view> reasons ) {
         _trackedLocaleIdsPtr.reset();	// requested locales changed
-        notifyDirty( PoolInvalidation::Dependency, std::move(reasons) ); // invaldate dependency/namespace related indices
+        notifyDirty( PoolInvalidation::Dependency, std::move(reasons) ); // invalidate dependency/namespace related indices
       }
 
       base::SetTracker<LocaleSet> _requestedLocalesTracker;

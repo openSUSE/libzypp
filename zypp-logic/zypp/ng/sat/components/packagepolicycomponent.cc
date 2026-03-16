@@ -1,84 +1,82 @@
-/*---------------------------------------------------------------------
+/*---------------------------------------------------------------------\
 |                          ____ _   __ __ ___                          |
 |                         |__  / \ / / . \ . \                         |
 |                           / / \ V /|  _/  _/                         |
 |                          / /__ | | | | | |                           |
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
-----------------------------------------------------------------------*/
+\---------------------------------------------------------------------*/
 #include "packagepolicycomponent.h"
 #include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp/ng/sat/capability.h>
 
-extern "C"
-{
-#include <solv/pool.h>
-}
-
 namespace zyppng::sat {
 
-  bool PackagePolicyComponent::isRetracted( const Solvable & solv_r ) const
+  // -----------------------------------------------------------------------
+  // Construction: wire up the hardwired provides tokens
+  // -----------------------------------------------------------------------
+
+  PackagePolicyComponent::PackagePolicyComponent()
   {
-    // Lazy initialization would require a pool reference, but we can assume
-    // it's initialized during prepare or on first access if we pass the pool.
-    // For now, let's assume it's synced via prepare/onInvalidate.
-    return _retractedSpec.count( solv_r ) > 0;
+    // Retracted: provides retracted-patch-package()
+    _retractedSpec.addProvides( Capability( Solvable::retractedToken.c_str(),
+                                            Capability::PARSED ) );
+
+    // PTF master: provides ptf()
+    _ptfMasterSpec.addProvides( Capability( Solvable::ptfMasterToken.c_str(),
+                                            Capability::PARSED ) );
+
+    // PTF package: provides ptf-package()
+    _ptfPackageSpec.addProvides( Capability( Solvable::ptfPackageToken.c_str(),
+                                             Capability::PARSED ) );
   }
 
-  bool PackagePolicyComponent::isPtfMaster( const Solvable & solv_r ) const
+  // -----------------------------------------------------------------------
+  // IPoolComponent overrides
+  // -----------------------------------------------------------------------
+
+  void PackagePolicyComponent::prepare( Pool & pool )
   {
-    return _ptfMasterSpec.count( solv_r ) > 0;
+    _retractedEval .emplace( pool, _retractedSpec  );
+    _ptfMasterEval .emplace( pool, _ptfMasterSpec  );
+    _ptfPackageEval.emplace( pool, _ptfPackageSpec );
+    _needrebootEval.emplace( pool, _needrebootSpec );
   }
 
-  bool PackagePolicyComponent::isPtfPackage( const Solvable & solv_r ) const
+  void PackagePolicyComponent::onInvalidate( Pool & /*pool*/, PoolInvalidation invalidation )
   {
-    return _ptfPackageSpec.count( solv_r ) > 0;
-  }
-
-#if 0
-  void PackagePolicyComponent::setNeedrebootSpec( SolvableSpec spec )
-  {
-    // Need to handle SolvableSpec -> std::set<Solvable> conversion or
-    // implement SolvableSpec in zyppng.
-    // For now, let's just store the placeholder logic.
-  }
-#endif
-
-  void PackagePolicyComponent::onInvalidate( Pool & pool, PoolInvalidation invalidation )
-  {
-    if ( invalidation == PoolInvalidation::Data )
-    {
-      _initialized = false;
-      _retractedSpec.clear();
-      _ptfMasterSpec.clear();
-      _ptfPackageSpec.clear();
+    if ( invalidation == PoolInvalidation::Data ) {
+      _retractedEval .reset();
+      _ptfMasterEval .reset();
+      _ptfPackageEval.reset();
+      _needrebootEval.reset();
+      // Note: the specs themselves (definitions) are kept; only the
+      // evaluated forms are dropped.  prepare() will rebuild them.
     }
   }
 
-  void PackagePolicyComponent::ensureInitialized( Pool & pool ) const
+  // -----------------------------------------------------------------------
+  // Public query API
+  // -----------------------------------------------------------------------
+
+  bool PackagePolicyComponent::isRetracted( const Solvable & solv_r ) const
+  { return _retractedEval && _retractedEval->contains( solv_r ); }
+
+  bool PackagePolicyComponent::isPtfMaster( const Solvable & solv_r ) const
+  { return _ptfMasterEval && _ptfMasterEval->contains( solv_r ); }
+
+  bool PackagePolicyComponent::isPtfPackage( const Solvable & solv_r ) const
+  { return _ptfPackageEval && _ptfPackageEval->contains( solv_r ); }
+
+  void PackagePolicyComponent::setNeedrebootSpec( SolvableSpec spec )
   {
-    if ( _initialized )
-      return;
-
-    // Implementation of whatprovides-based spec initialization
-    // using libsolv primitives directly since zyppng::sat::WhatProvides
-    // might not be available yet.
-
-    auto collect = [&]( IdString token, std::set<Solvable> & dest ) {
-        detail::IdType cap = token.id();
-        unsigned offset = ::pool_whatprovides( pool.get(), cap );
-        detail::IdType * p = pool.get()->whatprovidesdata + offset;
-        for ( ; *p; ++p ) {
-            dest.insert( Solvable(*p) );
-        }
-    };
-
-    collect( Solvable::retractedToken, _retractedSpec );
-    collect( Solvable::ptfMasterToken, _ptfMasterSpec );
-    collect( Solvable::ptfPackageToken, _ptfPackageSpec );
-
-    _initialized = true;
+    _needrebootSpec = std::move( spec );
+    // The evaluated form is stale now; it will be rebuilt on next prepare().
+    _needrebootEval.reset();
   }
+
+  bool PackagePolicyComponent::isNeedreboot( const Solvable & solv_r ) const
+  { return _needrebootEval && _needrebootEval->contains( solv_r ); }
 
 } // namespace zyppng::sat

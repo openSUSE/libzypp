@@ -1,71 +1,102 @@
-/*---------------------------------------------------------------------
+/*---------------------------------------------------------------------\
 |                          ____ _   __ __ ___                          |
 |                         |__  / \ / / . \ . \                         |
 |                           / / \ V /|  _/  _/                         |
 |                          / /__ | | | | | |                           |
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
-----------------------------------------------------------------------/
-*
-* This file contains private API, this might break at any time between releases.
-* You have been warned!
-*
-*/
+\---------------------------------------------------------------------*/
+/**
+ * This file contains private API, this might break at any time between releases.
+ * You have been warned!
+ */
 #ifndef ZYPP_NG_SAT_COMPONENTS_PACKAGEPOLICYCOMPONENT_H_INCLUDED
 #define ZYPP_NG_SAT_COMPONENTS_PACKAGEPOLICYCOMPONENT_H_INCLUDED
 
 #include "poolcomponents.h"
+#include <zypp/ng/sat/solvablespec.h>
 #include <zypp/ng/sat/solvable.h>
-#include <set>
+#include <optional>
 
 namespace zyppng::sat {
+
   /**
-   * \brief Component managing various package-level policies and blacklists.
+   * \class PackagePolicyComponent
+   * \brief Component managing package-level policies: retracted packages,
+   *        PTF tracking, and the "reboot needed" hint.
    *
-   * This includes:
-   * - Retracted packages (hidden from the user)
-   * - PTF (Program Temporary Fix) master and package tracking
-   * - Solvables triggering a "reboot needed" hint
+   * \par Design
+   * Each policy is represented by two pieces of state:
+   *  - A \ref SolvableSpec (pure data: idents + provides tokens). This is
+   *    the \e definition of the set and is what callers configure via
+   *    \c setNeedrebootSpec().  The retracted/PTF specs are hardwired.
+   *  - An \c std::optional<EvaluatedSolvableSpec> that is constructed in
+   *    \c prepare(Pool&) and reset to \c nullopt by \c onInvalidate().
+   *    Once evaluated, \ref contains() is O(1) with no pool access.
    *
-   * \note I decided to use one component for multiple specs here,
-   *       but if we realize one of them becomes more complex, we can still factor it out
+   * \par Lifecycle
+   * - \c prepare(Pool&) is called by the Pool during its own prepare() cycle.
+   *   This is where the specs are expanded and the evaluated forms constructed.
+   * - \c onInvalidate() resets the evaluated forms so they are rebuilt on the
+   *   next \c prepare() call.
+   *
+   * \note The hardwired retracted/PTF provides tokens are the same strings
+   *       used in the legacy \c zypp::sat::Pool:
+   *       \c "retracted-patch-package()", \c "ptf()", \c "ptf-package()".
    */
-  class PackagePolicyComponent : public IPoolComponent {
-    public:
-      PackagePolicyComponent() = default;
+  class PackagePolicyComponent : public IPoolComponent
+  {
+  public:
+    PackagePolicyComponent();
+    ~PackagePolicyComponent() override = default;
 
-      ComponentStage stage() const override { return ComponentStage::Policy; }
+    ComponentStage stage() const override { return ComponentStage::Policy; }
 
-      /** \name Blacklisted Solvables. */
-      //@{
-      bool isRetracted( const Solvable & solv_r ) const;
-      //@}
+    /** Called by Pool::prepare() — evaluates all specs against the current pool. */
+    void prepare( Pool & pool ) override;
 
-      /** \name PTF Support */
-      //@{
-      bool isPtfMaster( const Solvable & solv_r ) const;
-      bool isPtfPackage( const Solvable & solv_r ) const;
-      //@}
+    /** Called when pool content changes — resets all evaluated forms. */
+    void onInvalidate( Pool & pool, PoolInvalidation invalidation ) override;
 
-      /** \name Reboot Needed Hint */
-      //@{
-      void setNeedrebootSpec( std::set<Solvable> spec ) { _needrebootSpec = std::move(spec); }
-      bool isNeedreboot( const Solvable & solv_r ) const { return _needrebootSpec.count(solv_r) > 0; }
-      //@}
+    /** \name Retracted packages */
+    //@{
+    bool isRetracted( const Solvable & solv_r ) const;
+    //@}
 
-      void onInvalidate( Pool & pool, PoolInvalidation invalidation ) override;
+    /** \name PTF (Program Temporary Fix) */
+    //@{
+    bool isPtfMaster ( const Solvable & solv_r ) const;
+    bool isPtfPackage( const Solvable & solv_r ) const;
+    //@}
 
-    private:
-      void ensureInitialized( Pool & pool ) const;
+    /** \name Reboot-needed hint */
+    //@{
+    /**
+     * \brief Replace the reboot-needed spec.
+     *
+     * The spec is evaluated on the next \c prepare() call.
+     * Pass an empty \ref SolvableSpec to disable the hint entirely.
+     */
+    void setNeedrebootSpec( SolvableSpec spec );
 
-    private:
-      mutable std::set<Solvable> _retractedSpec;
-      mutable std::set<Solvable> _ptfMasterSpec;
-      mutable std::set<Solvable> _ptfPackageSpec;
-      std::set<Solvable> _needrebootSpec;
-      mutable bool _initialized = false;
+    bool isNeedreboot( const Solvable & solv_r ) const;
+    //@}
+
+  private:
+    // --- spec (definition) layer ---
+    SolvableSpec _retractedSpec;   ///< hardwired: provides retracted-patch-package()
+    SolvableSpec _ptfMasterSpec;   ///< hardwired: provides ptf()
+    SolvableSpec _ptfPackageSpec;  ///< hardwired: provides ptf-package()
+    SolvableSpec _needrebootSpec;  ///< user-supplied
+
+    // --- evaluated (cache) layer ---
+    // Populated by prepare(); reset to nullopt by onInvalidate().
+    std::optional<EvaluatedSolvableSpec> _retractedEval;
+    std::optional<EvaluatedSolvableSpec> _ptfMasterEval;
+    std::optional<EvaluatedSolvableSpec> _ptfPackageEval;
+    std::optional<EvaluatedSolvableSpec> _needrebootEval;
   };
 
 } // namespace zyppng::sat
 
-#endif
+#endif // ZYPP_NG_SAT_COMPONENTS_PACKAGEPOLICYCOMPONENT_H_INCLUDED

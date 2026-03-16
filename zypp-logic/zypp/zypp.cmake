@@ -122,6 +122,7 @@ function(zypp_add_zypp_target)
     ng/sat/cap2str.cc
     ng/sat/lookupattr.cc
     ng/sat/solvableident.cc
+    ng/sat/solvablespec.cc
   )
 
   zypp_add_sources( zyppng_sat_HEADERS
@@ -138,6 +139,7 @@ function(zypp_add_zypp_target)
     ng/sat/cap2str.h
     ng/sat/lookupattr.h
     ng/sat/solvableident.h
+    ng/sat/solvablespec.h
   )
 
   zypp_add_sources( zyppng_sat_components_SRCS
@@ -177,6 +179,7 @@ function(zypp_add_zypp_target)
     ng/log/sat/queue.cc
     ng/log/sat/repository.cc
     ng/log/sat/lookupattr.cc
+    ng/log/sat/solvablespec.cc
   )
 
   zypp_add_sources( zyppng_log_HEADERS
@@ -187,6 +190,7 @@ function(zypp_add_zypp_target)
     ng/log/sat/queue.h
     ng/log/sat/repository.h
     ng/log/sat/lookupattr.h
+    ng/log/sat/solvablespec.h
   )
 
   zypp_add_sources( zyppng_SRCS

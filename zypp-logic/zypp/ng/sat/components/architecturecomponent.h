@@ -42,7 +42,7 @@ namespace zyppng::sat {
       zypp::Arch arch() const
       { return _provider ? _provider() : zypp::Arch::detectSystemArchitecture(); }
 
-      ComponentStage stage() const override { return ComponentStage::Environment; }
+      InitStage stage() const override { return InitStage::Environment; }
       int priority() const override { return 0; }
 
       void prepare( Pool & pool ) override;

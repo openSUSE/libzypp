@@ -31,16 +31,13 @@ namespace zyppng::sat::namespaces {
     return req.count( zypp::IdString(value).asString() ) > 0;
   }
 
-  bool FilesystemNamespaceProvider::prepare(Pool &pool)
+  void FilesystemNamespaceProvider::checkDirty( Pool & pool )
   {
-    // additional /etc/sysconfig/storage check:
     static zypp::WatchFile sysconfigFile( sysconfigStoragePath(), zypp::WatchFile::NO_INIT );
     if ( _requiredFilesystems && sysconfigFile.hasChanged() ) {
       _requiredFilesystems.reset(); // recreated on demand
-      pool.setDirty ( PoolInvalidation::Data, { "/etc/sysconfig/storage change" } );
-      return false;
+      pool.setDirty( PoolInvalidation::Data, { "/etc/sysconfig/storage change" } );
     }
-    return true;
   }
 
   const std::set<std::string> & FilesystemNamespaceProvider::requiredFilesystems() const

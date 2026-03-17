@@ -25,6 +25,7 @@
 #include <zypp/ng/sat/repository.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp/ng/sat/queue.h>
+#include <zypp/ng/sat/preparedpool.h>
 
 namespace zyppng::sat {
 
@@ -67,8 +68,9 @@ namespace zyppng::sat {
       { return _serialIDs; }
 
       /** Update housekeeping data (e.g. whatprovides).
+       *  Returns a PreparedPool — a move-only view that guarantees the index is valid.
        */
-      void prepare();
+      PreparedPool prepare();
 
 
       detail::size_type capacity() const;
@@ -149,15 +151,7 @@ namespace zyppng::sat {
       //@}
 
     public:
-      /** \name Dependency matching */
-      //@{
-      Queue whatMatchesDep( const SolvAttr &attr, const Capability &cap ) const;
-      Queue whatMatchesSolvable ( const SolvAttr &attr, const Solvable &solv ) const;
-      Queue whatContainsDep ( const SolvAttr &attr, const Capability &cap ) const;
-      //@}
-
-    public:
-      /** Get rootdir (for file conflicts check) */
+      /** \name Component management */
       zypp::Pathname rootDir() const
       {
         const char * rd = ::pool_get_rootdir( _pool );
@@ -263,19 +257,7 @@ namespace zyppng::sat {
         return detail::noSolvableId;
       }
 
-      /** Returns the id stored at \c offset_r in the internal
-       * whatprovidesdata array.
-      */
-      const detail::IdType whatProvidesData( unsigned offset_r )
-      { return _pool->whatprovidesdata[offset_r]; }
-
-      /** Returns offset into the internal whatprovidesdata array.
-       * Use \ref whatProvidesData to get the stored Id.
-      */
-      unsigned whatProvidesCapabilityId( detail::IdType cap_r )
-      { prepare(); return ::pool_whatprovides( _pool, cap_r ); }
-
-      /** \name Component management */
+      /** Get rootdir (for file conflicts check) */
       //@{
       PoolComponentSet & components() { return _componentsSet; }
       const PoolComponentSet & components() const { return _componentsSet; }
@@ -298,6 +280,10 @@ namespace zyppng::sat {
       SerialNumberWatcher _watcher;
       /** Component set managing modular pool logic. */
       PoolComponentSet _componentsSet;
+#ifndef NDEBUG
+      /** True while prepare() is running — setDirty() is illegal in this window. */
+      bool _preparing = false;
+#endif
   };
 }
 

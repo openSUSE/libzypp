@@ -56,11 +56,12 @@ namespace zyppng::sat {
 
       // --- IPoolComponent implementation ---
 
-      ComponentStage stage() const override { return ComponentStage::Environment; }
+      InitStage stage() const override { return InitStage::Environment; }
       int priority() const override { return -10; } // Run early in Environment stage
 
-      void attach( Pool & pool ) override;
-      void prepare( Pool & pool ) override;
+      void attach   ( Pool & pool ) override;
+      void checkDirty( Pool & pool ) override;
+      void prepare  ( Pool & pool ) override;
 
     private:
 

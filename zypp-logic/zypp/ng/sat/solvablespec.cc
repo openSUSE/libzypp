@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include <zypp/ng/sat/solvablespec.h>
 #include <zypp/ng/sat/pool.h>
+#include <zypp/ng/sat/preparedpool.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/inputstream.h>
@@ -80,12 +81,13 @@ namespace zyppng::sat {
   // EvaluatedSolvableSpec
   // -------------------------------------------------------------------------
 
-  EvaluatedSolvableSpec::EvaluatedSolvableSpec( Pool & pool_r, const SolvableSpec & spec_r )
+  EvaluatedSolvableSpec::EvaluatedSolvableSpec( PreparedPool & pp_r, const SolvableSpec & spec_r )
   {
     if ( spec_r.empty() )
       return;
 
-    detail::CPool * cpool = pool_r.get();
+    detail::CPool * cpool = pp_r.get();
+    Pool & pool_r = pp_r.pool();
 
     // Ident-based: walk all solvables and check ident membership.
     if ( !spec_r.idents().empty() ) {
@@ -100,13 +102,13 @@ namespace zyppng::sat {
       }
     }
 
-    // Provides-based: use libsolv's whatprovides index.
+    // Provides-based: use libsolv's whatprovides index (guaranteed valid via PreparedPool).
     for ( const Capability & cap : spec_r.provides() ) {
-      unsigned offset = ::pool_whatprovides( cpool, cap.id() );
-      const detail::IdType * p = cpool->whatprovidesdata + offset;
-      for ( ; *p; ++p ) {
-        if ( !Solvable( static_cast<detail::SolvableIdType>(*p) ).isKind( ResKind::srcpackage ) )
-          _ids.insert( static_cast<detail::SolvableIdType>( *p ) );
+      unsigned offset = pp_r.whatProvidesCapabilityId( cap.id() );
+      detail::IdType id = pp_r.whatProvidesData( offset );
+      for ( ; id; id = pp_r.whatProvidesData( ++offset ) ) {
+        if ( !Solvable( static_cast<detail::SolvableIdType>(id) ).isKind( ResKind::srcpackage ) )
+          _ids.insert( static_cast<detail::SolvableIdType>( id ) );
       }
     }
   }

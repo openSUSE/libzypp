@@ -30,8 +30,6 @@ namespace zyppng::sat {
     public:
       AutoInstalledComponent() = default;
 
-      ComponentStage stage() const override { return ComponentStage::Policy; }
-
       /** Get ident list of all autoinstalled solvables. */
       const StringQueue & autoInstalled() const { return _autoinstalled; }
 

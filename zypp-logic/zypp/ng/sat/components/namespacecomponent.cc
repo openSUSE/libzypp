@@ -37,13 +37,16 @@ namespace zyppng::sat {
     }
   }
 
-  void NamespaceComponent::prepare(Pool &pool)
+  void NamespaceComponent::checkDirty( Pool & pool )
   {
-    for ( auto &provider : _providers ) {
-      if ( !provider.second->prepare (pool) )
-        // a invalidation was triggered, pool will restart the prepare phase
-        break;
-    }
+    for ( auto & provider : _providers )
+      provider.second->checkDirty( pool );
+  }
+
+  void NamespaceComponent::prepare( Pool & pool )
+  {
+    for ( auto & provider : _providers )
+      provider.second->prepare( pool );
   }
 
   detail::IdType NamespaceComponent::libsolv_callback(detail::CPool *, void *data, detail::IdType lhs, detail::IdType rhs)

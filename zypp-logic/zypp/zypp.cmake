@@ -111,9 +111,10 @@ function(zypp_add_zypp_target)
   endif()
 
   zypp_add_sources( zyppng_sat_SRCS
-    ng/sat/pool.cc
-    ng/sat/poolmember.cc
-    ng/sat/solvable.cc
+   ng/sat/pool.cc
+   ng/sat/poolmember.cc
+   ng/sat/preparedpool.cc
+   ng/sat/solvable.cc
     ng/sat/stringpool.cc
     ng/sat/queue.cc
     ng/sat/repository.cc
@@ -129,6 +130,7 @@ function(zypp_add_zypp_target)
     ng/sat/pool.h
     ng/sat/poolconstants.h
     ng/sat/poolmember.h
+    ng/sat/preparedpool.h
     ng/sat/solvattr.h
     ng/sat/solvable.h
     ng/sat/stringpool.h

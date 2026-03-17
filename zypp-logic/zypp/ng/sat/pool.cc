@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "pool.h"
 #include "stringpool.h"
+#include "preparedpool.h"
 
 
 #include <zypp-core/base/LogTools.h>
@@ -103,27 +104,38 @@ namespace zyppng::sat {
   detail::size_type Pool::capacity() const
   { return _pool->nsolvables; }
 
-  void Pool::prepare()
+  PreparedPool Pool::prepare()
   {
-    // The Stability Loop: loop as long as the serial number is changing.
-    // This catches invalidations triggered by components during their preparation
-    // and ensures all components see a consistent state.
-    int safety_break = 10;
-    while ( _watcher.remember( _serial ) && safety_break-- > 0 )
-    {
-      _componentsSet.notifyPrepare( *this );
+    // Pass 1: let components probe external state.
+    // setDirty() is legal here — onInvalidate() fires synchronously,
+    // so all components see a consistent state before prepare starts.
+    _componentsSet.notifyCheckDirty( *this );
 
-      // Legacy/Fallback logic for things not yet componentized:
-      if ( ! _pool->whatprovides ) {
-        MIL << "pool_createwhatprovides..." << std::endl;
-        ::pool_addfileprovides( _pool );
-        ::pool_createwhatprovides( _pool );
-      }
+#ifndef NDEBUG
+    _preparing = true;
+#endif
+
+    // Pass 2: pre-index component work (arch, namespace callback, etc.)
+    _componentsSet.notifyPrepare( *this );
+
+    // Build the whatprovides index if not already valid.
+    if ( ! _pool->whatprovides ) {
+      MIL << "pool_createwhatprovides..." << std::endl;
+      ::pool_addfileprovides( _pool );
+      ::pool_createwhatprovides( _pool );
     }
 
-    if ( safety_break <= 0 ) {
-      L_ERR("zyppng::satpool") << "Pool failed to stabilize after 10 prepare iterations!";
-    }
+    // Construct the PreparedPool view (private ctor, friend access).
+    PreparedPool pp( *this );
+
+    // Pass 3: post-index component work (policy caches, metadata stores, etc.)
+    _componentsSet.notifyPrepareWithIndex( pp );
+
+#ifndef NDEBUG
+    _preparing = false;
+#endif
+
+    return pp;
   }
 
   void Pool::clear()
@@ -135,6 +147,9 @@ namespace zyppng::sat {
 
   void Pool::setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons )
   {
+#ifndef NDEBUG
+      assert( !_preparing && "setDirty() called during prepare() — only legal in checkDirty()" );
+#endif
       if ( reasons.size() ) {
         bool first = true;
         for ( std::string_view r : reasons ) {
@@ -242,27 +257,6 @@ namespace zyppng::sat {
           detail::SolvableIterator( getFirstId() ),
           detail::SolvableIterator()
     );
-  }
-
-  Queue Pool::whatMatchesDep( const SolvAttr &attr, const Capability &cap ) const
-  {
-    sat::Queue q;
-    pool_whatmatchesdep( _pool, attr.id(), cap.id(), q, 0);
-    return q;
-  }
-
-  Queue Pool::whatMatchesSolvable ( const SolvAttr &attr, const Solvable &solv ) const
-  {
-    sat::Queue q;
-    pool_whatmatchessolvable( _pool, attr.id(), static_cast<Id>( solv.id() ), q, 0 );
-    return q;
-  }
-
-  Queue Pool::whatContainsDep ( const SolvAttr &attr, const Capability &cap ) const
-  {
-    sat::Queue q;
-    pool_whatcontainsdep( _pool, attr.id(), cap.id(), q, 0 );
-    return q;
   }
 
   detail::CRepo *Pool::_createRepo(const std::string &name_r)

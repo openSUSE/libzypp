@@ -44,16 +44,16 @@ namespace zyppng::sat {
    *       used in the legacy \c zypp::sat::Pool:
    *       \c "retracted-patch-package()", \c "ptf()", \c "ptf-package()".
    */
-  class PackagePolicyComponent : public IPoolComponent
+  class PackagePolicyComponent : public IPreparedPoolComponent
   {
   public:
     PackagePolicyComponent();
     ~PackagePolicyComponent() override = default;
 
-    ComponentStage stage() const override { return ComponentStage::Policy; }
+    PreparedStage stage() const override { return PreparedStage::Policy; }
 
-    /** Called by Pool::prepare() — evaluates all specs against the current pool. */
-    void prepare( Pool & pool ) override;
+    /** Called by Pool::prepare() — evaluates all specs against the prepared pool. */
+    void prepare( PreparedPool & pp ) override;
 
     /** Called when pool content changes — resets all evaluated forms. */
     void onInvalidate( Pool & pool, PoolInvalidation invalidation ) override;

@@ -24,6 +24,7 @@
 namespace zyppng::sat {
 
   class Pool;
+  class PreparedPool;
   class Solvable;
 
   /**
@@ -175,8 +176,8 @@ namespace zyppng::sat {
   public:
     using SolvIdSet = std::unordered_set<detail::SolvableIdType>;
 
-    /** Construct by evaluating \a spec_r against \a pool_r. */
-    EvaluatedSolvableSpec( Pool & pool_r, const SolvableSpec & spec_r );
+    /** Construct by evaluating \a spec_r against \a pp_r. */
+    EvaluatedSolvableSpec( PreparedPool & pp_r, const SolvableSpec & spec_r );
 
     EvaluatedSolvableSpec( const EvaluatedSolvableSpec & ) = default;
     EvaluatedSolvableSpec( EvaluatedSolvableSpec && )      = default;

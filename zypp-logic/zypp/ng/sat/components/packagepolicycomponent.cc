@@ -7,7 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "packagepolicycomponent.h"
-#include <zypp/ng/sat/pool.h>
+#include <zypp/ng/sat/preparedpool.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp/ng/sat/capability.h>
 
@@ -33,15 +33,15 @@ namespace zyppng::sat {
   }
 
   // -----------------------------------------------------------------------
-  // IPoolComponent overrides
+  // IPreparedPoolComponent overrides
   // -----------------------------------------------------------------------
 
-  void PackagePolicyComponent::prepare( Pool & pool )
+  void PackagePolicyComponent::prepare( PreparedPool & pp )
   {
-    _retractedEval .emplace( pool, _retractedSpec  );
-    _ptfMasterEval .emplace( pool, _ptfMasterSpec  );
-    _ptfPackageEval.emplace( pool, _ptfPackageSpec );
-    _needrebootEval.emplace( pool, _needrebootSpec );
+    _retractedEval .emplace( pp, _retractedSpec  );
+    _ptfMasterEval .emplace( pp, _ptfMasterSpec  );
+    _ptfPackageEval.emplace( pp, _ptfPackageSpec );
+    _needrebootEval.emplace( pp, _needrebootSpec );
   }
 
   void PackagePolicyComponent::onInvalidate( Pool & /*pool*/, PoolInvalidation invalidation )

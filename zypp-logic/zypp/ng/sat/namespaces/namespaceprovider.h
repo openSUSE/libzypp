@@ -46,15 +46,24 @@ namespace zyppng::sat {
       virtual bool isSatisfied( detail::IdType value ) const;
 
       /**
+       * @brief checkDirty
+       *
+       * Called before the pool prepare sequence starts. This is the correct
+       * place to probe external state and call pool.setDirty() if needed.
+       * The default implementation does nothing.
+       */
+      virtual void checkDirty( Pool & /*pool*/ ) {}
+
+      /**
        * @brief prepare
        *
-       * Called to notify providers when the pool is being prepared,
-       * this is the right place to check if the pool or the dependencies should be marked dirty,
-       * the default implementation just returns true.
-       *
-       * In case of a pool invalidation, return \a false so that the prepare loop can start over.
+       * Called during the pre-index phase of pool preparation, after
+       * checkDirty() and before pool_createwhatprovides(). Use this to
+       * set up any state the libsolv namespace callback needs to answer
+       * queries correctly during index construction.
+       * The default implementation does nothing.
        */
-      virtual bool prepare( Pool & /*pool*/ ) { return true; }
+      virtual void prepare( Pool & /*pool*/ ) {}
 
       /*!
        * Attaching to a pool, default just stores a backlink pointer to the pool.

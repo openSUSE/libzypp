@@ -153,6 +153,7 @@ BuildRequires:  ghostscript
 BuildRequires:  gcc-c++ >= 7
 BuildRequires:  gettext-devel
 BuildRequires:  graphviz
+BuildRequires:  graphviz-gd
 BuildRequires:  libxml2-devel
 BuildRequires:  yaml-cpp-devel
 

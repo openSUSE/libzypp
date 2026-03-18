@@ -67,6 +67,7 @@ namespace zyppng::sat {
       virtual void onInvalidate ( Pool &, PoolInvalidation ) {}
       virtual void onRepoAdded  ( Pool &, RepoIdType )       {}
       virtual void onRepoRemoved( Pool &, RepoIdType )       {}
+      virtual void onReset      ( Pool & )                   {}
 
       virtual ~IBasicPoolComponent() = default;
       IBasicPoolComponent() = default;
@@ -221,6 +222,11 @@ namespace zyppng::sat {
       void notifyRepoRemoved( Pool & pool, detail::RepoIdType id ) {
         for ( auto *comp : _basicComponents )
           comp->onRepoRemoved( pool, id );
+      }
+
+      void notifyReset( Pool & pool ) {
+        for ( auto *comp : _basicComponents )
+          comp->onReset( pool );
       }
 
     private:

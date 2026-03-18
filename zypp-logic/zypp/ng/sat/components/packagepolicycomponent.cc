@@ -56,6 +56,14 @@ namespace zyppng::sat {
     }
   }
 
+  void PackagePolicyComponent::onReset( Pool & )
+  {
+    _retractedEval .reset();
+    _ptfMasterEval .reset();
+    _ptfPackageEval.reset();
+    _needrebootEval.reset();
+  }
+
   // -----------------------------------------------------------------------
   // Public query API
   // -----------------------------------------------------------------------

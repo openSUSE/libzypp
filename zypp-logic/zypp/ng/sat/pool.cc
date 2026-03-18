@@ -10,19 +10,15 @@
 #include "stringpool.h"
 #include "preparedpool.h"
 
-
 #include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/dtorreset.h>
+#include <zypp-core/ng/base/precondition.h>
 #include <zypp/ng/sat/capability.h>
-
 
 extern "C"
 {
-// Workaround libsolv project not providing a common include
-// directory. (the -devel package does, but the git repo doesn't).
-// #include <solv/repo_helix.h>
-// #include <solv/testcase.h>
-int repo_add_helix( ::Repo *repo, FILE *fp, int flags );
-int testcase_add_testtags(Repo *repo, FILE *fp, int flags);
+#include <solv/repo_helix.h>
+#include <solv/testcase.h>
 }
 
 
@@ -69,7 +65,6 @@ namespace zyppng::sat {
 
     static void logSat( CPool *, void *data, int type, const char *logString )
     {
-      //                            "1234567890123456789012345678901234567890
       if ( 0 == strncmp( logString, "job: drop orphaned", 18 ) )
         return;
       if ( 0 == strncmp( logString, "job: user installed", 19 ) )
@@ -94,11 +89,15 @@ namespace zyppng::sat {
   Pool::Pool()
     : _pool( StringPool::instance().getPool() )
   {
+      ZYPP_PRECONDITION( _pool->appdata == nullptr, "Only one zyppng::sat::Pool instance per CPool is permitted" );
+      _pool->appdata = this;
+      // TODO add logging functions
   }
 
   Pool::~Pool()
   {
-
+      clear();
+      _pool->appdata = nullptr;
   }
 
   detail::size_type Pool::capacity() const
@@ -112,43 +111,48 @@ namespace zyppng::sat {
     _componentsSet.notifyCheckDirty( *this );
 
 #ifndef NDEBUG
+    zypp::DtorReset preparingReset( _preparing, false );
     _preparing = true;
 #endif
 
-    // Pass 2: pre-index component work (arch, namespace callback, etc.)
-    _componentsSet.notifyPrepare( *this );
+    // Pass 2: pre-index component work — only if data changed.
+    const bool serialDirty = _watcher.remember( _serial );
+    if ( serialDirty )
+      _componentsSet.notifyPrepare( *this );
 
-    // Build the whatprovides index if not already valid.
-    if ( ! _pool->whatprovides ) {
+    // Pass 3: rebuild index if cleared (independent of serial — can be
+    // invalidated by onInvalidate(Dependency) without a data change).
+    const bool indexRebuilt = ( _pool->whatprovides == nullptr );
+    if ( indexRebuilt ) {
       MIL << "pool_createwhatprovides..." << std::endl;
       ::pool_addfileprovides( _pool );
       ::pool_createwhatprovides( _pool );
     }
 
-    // Construct the PreparedPool view (private ctor, friend access).
+    // Early exit — nothing changed and index is valid.
+    if ( !serialDirty && !indexRebuilt )
+      return PreparedPool( *this );
+
+    // Pass 4: post-index component work — serial changed or index was rebuilt.
     PreparedPool pp( *this );
-
-    // Pass 3: post-index component work (policy caches, metadata stores, etc.)
     _componentsSet.notifyPrepareWithIndex( pp );
-
-#ifndef NDEBUG
-    _preparing = false;
-#endif
 
     return pp;
   }
 
   void Pool::clear()
   {
+    _componentsSet.notifyReset( *this );
+    ::pool_freewhatprovides( _pool );
     ::pool_freeallrepos( _pool, /*resusePoolIDs*/true );
     _serialIDs.setDirty();
-    setDirty( PoolInvalidation::Data, { __FUNCTION__ } );
+    _serial.setDirty();
   }
 
   void Pool::setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons )
   {
 #ifndef NDEBUG
-      assert( !_preparing && "setDirty() called during prepare() — only legal in checkDirty()" );
+      ZYPP_PRECONDITION( !_preparing, "setDirty() called during prepare() — only legal in checkDirty()" );
 #endif
       if ( reasons.size() ) {
         bool first = true;
@@ -227,7 +231,7 @@ namespace zyppng::sat {
 
   bool Pool::solvablesEmpty() const
   {
-    // return myPool()->nsolvables;
+    // Do not return get()->nsolvables;
     // nsolvables is the array size including
     // invalid Solvables.
     for( const auto &repo : repos() )
@@ -240,7 +244,7 @@ namespace zyppng::sat {
 
   detail::size_type Pool::solvablesSize() const
   {
-    // Do not return myPool()->nsolvables;
+    // Do not return get()->nsolvables;
     // nsolvables is the array size including
     // invalid Solvables.
     detail::size_type ret = 0;
@@ -265,6 +269,8 @@ namespace zyppng::sat {
     detail::CRepo * ret = ::repo_create( _pool, name_r.c_str() );
     if ( ret && name_r == systemRepoAlias() )
       ::pool_set_installed( _pool, ret );
+    if ( ret )
+      _postRepoAdd( ret );
     return ret;
   }
 

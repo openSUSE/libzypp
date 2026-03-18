@@ -63,6 +63,8 @@ namespace zyppng::sat::namespaces {
       /** All Locales occurring in any repo. */
       const LocaleSet & getAvailableLocales() const;
 
+      void onReset( Pool & pool ) override;
+
       bool isAvailableLocale( const Locale & locale_r ) const
       {
         const LocaleSet & avl( getAvailableLocales() );

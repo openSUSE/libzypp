@@ -276,6 +276,7 @@ zypp_add_sources( zyppng_base_HEADERS
   ng/base/eventdispatcher.h
   ng/base/EventLoop
   ng/base/eventloop.h
+  ng/base/precondition.h
   ng/base/signals.h
   ng/base/SocketNotifier
   ng/base/socketnotifier.h

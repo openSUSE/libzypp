@@ -47,6 +47,7 @@ namespace zyppng::sat {
 
       void prepare( Pool & pool ) override;
       void onRepoAdded( Pool & pool, detail::RepoIdType id ) override;
+      void onReset( Pool & pool ) override;
 
     private:
       ArchitectureProvider _provider;

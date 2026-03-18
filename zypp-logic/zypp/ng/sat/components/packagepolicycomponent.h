@@ -58,6 +58,9 @@ namespace zyppng::sat {
     /** Called when pool content changes — resets all evaluated forms. */
     void onInvalidate( Pool & pool, PoolInvalidation invalidation ) override;
 
+    /** Called on full pool reset — resets all evaluated forms. */
+    void onReset( Pool & pool ) override;
+
     /** \name Retracted packages */
     //@{
     bool isRetracted( const Solvable & solv_r ) const;

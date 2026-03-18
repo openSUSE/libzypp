@@ -40,6 +40,13 @@ namespace zyppng
   ///////////////////////////////////////////////////////////////////
   namespace sat
   {
+    class Solvable;
+
+    namespace detail {
+      template<> Pool &       poolFromType( Solvable & );
+      template<> const Pool & poolFromType( const Solvable & );
+    }
+
     ///////////////////////////////////////////////////////////////////
     /// \class Solvable
     /// \brief  A \ref Solvable object within the sat \ref Pool.
@@ -54,7 +61,7 @@ namespace zyppng
     /// packages as an own kind of solvable and map their arch to
     /// \ref Arch_noarch.
     ///////////////////////////////////////////////////////////////////
-    class Solvable : public PoolMember
+    class Solvable : public PoolMember<Solvable>
     {
     public:
       using IdType = detail::SolvableIdType;

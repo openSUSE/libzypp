@@ -25,6 +25,11 @@ namespace zyppng::sat {
     }
   }
 
+  void ArchitectureComponent::onReset( Pool & )
+  {
+    _watcher = SerialNumberWatcher{};
+  }
+
   void ArchitectureComponent::onRepoAdded( Pool & pool, detail::RepoIdType id )
   {
     detail::CRepo * repo_r = id;

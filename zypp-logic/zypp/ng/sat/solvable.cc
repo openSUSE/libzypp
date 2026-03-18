@@ -26,6 +26,8 @@
 #include <zypp-core/base/Functional.h>
 
 #include "pool.h"
+#include <zypp-core/ng/base/precondition.h>
+#include <zypp/ng/sat/stringpool.h>
 #include <zypp/ng/sat/queue.h>
 
 using std::endl;
@@ -36,6 +38,26 @@ namespace zyppng
   ///////////////////////////////////////////////////////////////////
   namespace sat
   {
+    namespace detail {
+      template<> Pool & poolFromType( Solvable & s )
+      {
+        const auto id = s.id();
+        ZYPP_PRECONDITION( id != detail::noSolvableId );
+        CPool * cp = StringPool::instance().getPool();
+        ZYPP_PRECONDITION( cp->solvables[id].repo, "Solvable has no repo — already freed?" );
+        ZYPP_PRECONDITION( cp->appdata );
+        return *static_cast<Pool *>( cp->appdata );
+      }
+      template<> const Pool & poolFromType( const Solvable & s )
+      {
+        const auto id = s.id();
+        ZYPP_PRECONDITION( id != detail::noSolvableId );
+        CPool * cp = StringPool::instance().getPool();
+        ZYPP_PRECONDITION( cp->solvables[id].repo, "Solvable has no repo — already freed?" );
+        ZYPP_PRECONDITION( cp->appdata );
+        return *static_cast<const Pool *>( cp->appdata );
+      }
+    }
     /////////////////////////////////////////////////////////////////
     //	class Solvable
     /////////////////////////////////////////////////////////////////
@@ -52,21 +74,28 @@ namespace zyppng
     /////////////////////////////////////////////////////////////////
 
     detail::CSolvable * Solvable::get() const
-    { return myPool().getSolvable( _id ); }
+    {
+      if ( _id == detail::noSolvableId )
+        return nullptr;
+      return pool().getSolvable( _id );
+    }
 
 #define NO_SOLVABLE_RETURN( VAL ) \
     detail::CSolvable * _solvable( get() ); \
     if ( ! _solvable ) return VAL
 
     Solvable Solvable::nextInPool() const
-    { return Solvable( myPool().getNextId( _id ) ); }
+    {
+      NO_SOLVABLE_RETURN( noSolvable );
+      return Solvable( pool().getNextId( _id ) );
+    }
 
     Solvable Solvable::nextInRepo() const
     {
       NO_SOLVABLE_RETURN( noSolvable );
       for ( detail::SolvableIdType next = _id+1; next < unsigned(_solvable->repo->end); ++next )
       {
-        detail::CSolvable * nextS( myPool().getSolvable( next ) );
+        detail::CSolvable * nextS( pool().getSolvable( next ) );
         if ( nextS && nextS->repo == _solvable->repo )
         {
           return Solvable( next );
@@ -249,7 +278,7 @@ namespace zyppng
     bool Solvable::isSystem() const
     {
       NO_SOLVABLE_RETURN( _id == detail::systemSolvableId );
-      return myPool().isSystemRepo( _solvable->repo );
+      return pool().isSystemRepo( _solvable->repo );
     }
 
     zypp::Date Solvable::buildtime() const

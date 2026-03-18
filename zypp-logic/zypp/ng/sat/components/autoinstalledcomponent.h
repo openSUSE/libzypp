@@ -41,6 +41,7 @@ namespace zyppng::sat {
       //@}
 
       void onRepoRemoved( Pool & pool, detail::RepoIdType id ) override;
+      void onReset( Pool & pool ) override;
 
     private:
       StringQueue _autoinstalled;

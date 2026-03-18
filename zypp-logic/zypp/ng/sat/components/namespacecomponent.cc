@@ -49,6 +49,12 @@ namespace zyppng::sat {
       provider.second->prepare( pool );
   }
 
+  void NamespaceComponent::onReset( Pool & pool )
+  {
+    for ( auto & p : _providers )
+      p.second->onReset( pool );
+  }
+
   detail::IdType NamespaceComponent::libsolv_callback(detail::CPool *, void *data, detail::IdType lhs, detail::IdType rhs)
   {
     auto self = static_cast<NamespaceComponent*>(data);

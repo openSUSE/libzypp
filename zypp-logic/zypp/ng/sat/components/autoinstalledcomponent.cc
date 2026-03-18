@@ -17,4 +17,9 @@ namespace zyppng::sat {
       _autoinstalled.clear();
   }
 
+  void AutoInstalledComponent::onReset( Pool & )
+  {
+    _autoinstalled.clear();
+  }
+
 } // namespace zyppng::sat

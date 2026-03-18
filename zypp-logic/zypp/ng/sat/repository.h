@@ -34,12 +34,19 @@ namespace zyppng
       struct ByRepository;
     }
 
+    class Repository;
+
+    namespace detail {
+      template<> Pool &       poolFromType( Repository & );
+      template<> const Pool & poolFromType( const Repository & );
+    }
+
     ///////////////////////////////////////////////////////////////////
     //
     //	CLASS NAME : Repository
     //
     /** */
-    class Repository : public PoolMember
+    class Repository : public PoolMember<Repository>
     {
     public:
         using SolvableIterator = boost::filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>;

@@ -100,7 +100,7 @@ namespace zyppng::sat
           _solv = Solvable( loc_r == REPO_ATTR ? SOLVID_META : noSolvableId );
           // Extract pool from repo
           if ( _repo )
-            _pool = _repo.myPool().get();
+            _pool = _repo.pool().get();
         }
 
         Solvable solvable() const
@@ -112,7 +112,7 @@ namespace zyppng::sat
           _solv = solv_r;
           // Extract pool from solvable
           if ( _solv )
-            _pool = _solv.myPool().get();
+            _pool = _solv.pool().get();
         }
 
         SolvAttr parent() const
@@ -175,20 +175,30 @@ namespace zyppng::sat
     { _pimpl->setParent( std::move(parent_r) ); }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( repo_r.myPool().get(), std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
-    {}
+    {
+      detail::CPool * cp = repo_r.pool().get();
+      _pimpl.reset( new Impl( cp, std::move(attr_r), std::move(repo_r), std::move(loc_r) ) );
+    }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Repository repo_r, Location loc_r )
-      : _pimpl( new Impl( repo_r.myPool().get(), std::move(attr_r), std::move(repo_r), std::move(loc_r) ) )
-    { _pimpl->setParent( std::move(parent_r) ); }
+    {
+      detail::CPool * cp = repo_r.pool().get();
+      _pimpl.reset( new Impl( cp, std::move(attr_r), std::move(repo_r), std::move(loc_r) ) );
+      _pimpl->setParent( std::move(parent_r) );
+    }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, Solvable solv_r )
-      : _pimpl( new Impl( solv_r.myPool().get(), std::move(attr_r), std::move(solv_r) ) )
-    {}
+    {
+      detail::CPool * cp = solv_r.pool().get();
+      _pimpl.reset( new Impl( cp, std::move(attr_r), std::move(solv_r) ) );
+    }
 
     LookupAttr::LookupAttr( SolvAttr attr_r, SolvAttr parent_r, Solvable solv_r )
-      : _pimpl( new Impl( solv_r.myPool().get(), std::move(attr_r), std::move(solv_r) ) )
-    { _pimpl->setParent( std::move(parent_r) ); }
+    {
+      detail::CPool * cp = solv_r.pool().get();
+      _pimpl.reset( new Impl( cp, std::move(attr_r), std::move(solv_r) ) );
+      _pimpl->setParent( std::move(parent_r) );
+    }
 
 
     SolvAttr LookupAttr::attr() const

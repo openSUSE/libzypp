@@ -65,6 +65,8 @@ namespace zyppng::sat {
        */
       virtual void prepare( Pool & /*pool*/ ) {}
 
+      virtual void onReset( Pool & /*pool*/ ) {}
+
       /*!
        * Attaching to a pool, default just stores a backlink pointer to the pool.
        */

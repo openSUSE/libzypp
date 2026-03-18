@@ -49,7 +49,7 @@ namespace zyppng::sat {
    * \ref PackagePolicyComponent owns the cache and rebuilds it in \c prepare().
    *
    * \note This type does \b not inherit \ref PoolMember. It must never call
-   *       \c myPool() or touch any global pool state.
+   *       \c pool() or touch any global pool state.
    */
   class SolvableSpec
   {

@@ -20,6 +20,7 @@
 #include <zypp-core/AutoDispose.h>
 #include <zypp-core/Pathname.h>
 
+#include <zypp-core/ng/base/precondition.h>
 #include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/repository.h>
 #include <zypp/ng/sat/lookupattr.h>
@@ -31,6 +32,20 @@ namespace zyppng
 { /////////////////////////////////////////////////////////////////
   namespace sat
   {
+    namespace detail {
+      template<> Pool & poolFromType( Repository & r )
+      {
+        detail::CRepo * repo = r.get();
+        ZYPP_PRECONDITION( repo && repo->pool && repo->pool->appdata );
+        return *static_cast<Pool *>( repo->pool->appdata );
+      }
+      template<> const Pool & poolFromType( const Repository & r )
+      {
+        const detail::CRepo * repo = r.get();
+        ZYPP_PRECONDITION( repo && repo->pool && repo->pool->appdata );
+        return *static_cast<const Pool *>( repo->pool->appdata );
+      }
+    }
 
     const Repository Repository::noRepository;
 
@@ -53,7 +68,7 @@ namespace zyppng
     bool Repository::isSystemRepo() const
     {
         NO_REPOSITORY_RETURN( false );
-        return myPool().isSystemRepo( _repo );
+        return pool().isSystemRepo( _repo );
     }
 
     std::string Repository::alias() const
@@ -177,15 +192,14 @@ namespace zyppng
     {
         NO_REPOSITORY_RETURN();
         //MIL << *this << " removed from pool" << endl;
-        myPool()._deleteRepo( _repo );
+        pool()._deleteRepo( _repo );
         _id = detail::noRepoId;
     }
 
     Repository Repository::nextInPool() const
     {
       NO_REPOSITORY_RETURN( noRepository );
-      auto &pool = myPool();
-      auto iterable = pool.repos();
+      auto iterable = pool().repos();
       for( auto it = iterable.begin(); it != iterable.end(); ++it )
       {
         if ( *it == *this )
@@ -209,7 +223,7 @@ namespace zyppng
         ZYPP_THROW( zypp::Exception( "Can't open solv-file: "+file_r.asString() ) );
       }
 
-      if ( myPool()._addSolv( _repo, file ) != 0 )
+      if ( pool()._addSolv( _repo, file ) != 0 )
       {
         ZYPP_THROW( zypp::Exception( "Error reading solv-file: "+file_r.asString() ) );
       }
@@ -231,7 +245,7 @@ namespace zyppng
         ZYPP_THROW( zypp::Exception( "Can't open helix-file: "+file_r.asString() ) );
       }
 
-      if ( myPool()._addHelix( _repo, file ) != 0 )
+      if ( pool()._addHelix( _repo, file ) != 0 )
       {
         ZYPP_THROW( zypp::Exception( "Error reading helix-file: "+file_r.asString() ) );
       }
@@ -255,7 +269,7 @@ namespace zyppng
         ZYPP_THROW( zypp::Exception( "Can't open testtags-file: "+file_r.asString() ) );
       }
 
-      if ( myPool()._addTesttags( _repo, file ) != 0 )
+      if ( pool()._addTesttags( _repo, file ) != 0 )
       {
         ZYPP_THROW( zypp::Exception( "Error reading testtags-file: "+file_r.asString() ) );
       }
@@ -266,7 +280,7 @@ namespace zyppng
     sat::Solvable::IdType Repository::addSolvables( unsigned count_r )
     {
         NO_REPOSITORY_THROW( zypp::Exception( "Can't add solvables to norepo.") );
-        return myPool()._addSolvables( _repo, count_r );
+        return pool()._addSolvables( _repo, count_r );
     }
 
     namespace detail

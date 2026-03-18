@@ -62,6 +62,7 @@ namespace zyppng::sat {
       void attach   ( Pool & pool ) override;
       void checkDirty( Pool & pool ) override;
       void prepare  ( Pool & pool ) override;
+      void onReset  ( Pool & pool ) override;
 
     private:
 

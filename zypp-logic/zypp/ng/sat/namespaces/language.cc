@@ -134,6 +134,11 @@ namespace zyppng::sat::namespaces {
     }
   }
 
+  void LanguageNamespaceProvider::onReset( Pool & )
+  {
+    _availableLocalesPtr.reset();
+  }
+
   const LocaleSet & LanguageNamespaceProvider::getAvailableLocales() const
   {
     if ( !_availableLocalesPtr )  {

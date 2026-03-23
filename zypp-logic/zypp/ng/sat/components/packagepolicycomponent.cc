@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include "packagepolicycomponent.h"
 #include <zypp/ng/sat/preparedpool.h>
+#include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/solvable.h>
 #include <zypp/ng/sat/capability.h>
 
@@ -35,6 +36,12 @@ namespace zyppng::sat {
   // -----------------------------------------------------------------------
   // IPreparedPoolComponent overrides
   // -----------------------------------------------------------------------
+
+  void PackagePolicyComponent::attach( Pool &p )
+  {
+    assert( _pool == nullptr && "PackagePolicyComponent can only be attached once");
+    _pool = &p;
+  }
 
   void PackagePolicyComponent::prepare( PreparedPool & pp )
   {
@@ -82,6 +89,9 @@ namespace zyppng::sat {
     _needrebootSpec = std::move( spec );
     // The evaluated form is stale now; it will be rebuilt on next prepare().
     _needrebootEval.reset();
+
+    if ( _pool )
+      _pool->setDirty( PoolInvalidation::Dependency, { __PRETTY_FUNCTION__, "setting new reboot spec"} );
   }
 
   bool PackagePolicyComponent::isNeedreboot( const Solvable & solv_r ) const

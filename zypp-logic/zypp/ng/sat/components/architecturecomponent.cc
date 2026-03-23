@@ -18,6 +18,19 @@ extern "C"
 
 namespace zyppng::sat {
 
+  void ArchitectureComponent::setProvider( ArchitectureProvider provider )
+  {
+    _provider = std::move(provider);
+    if ( _pool )
+      _pool->setDirty ( PoolInvalidation::Data, {"ArchitectureComponent: resetting the architecture provider"} );
+  }
+
+
+  void ArchitectureComponent::attach( Pool &pool )
+  {
+    _pool = &pool;
+  }
+
   void ArchitectureComponent::prepare( Pool & pool )
   {
     if ( _watcher.remember( pool.serial() ) )  {

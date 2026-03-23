@@ -146,8 +146,7 @@ namespace zyppng::sat::namespaces {
       _availableLocalesPtr.reset( new LocaleSet );
       LocaleSet & localeSet( *_availableLocalesPtr );
 
-      const auto solvables = zypp::makeIterable( detail::SolvableIterator( _pool->getFirstId() ), detail::SolvableIterator() );
-      for ( const Solvable & pi : solvables )
+      for ( const Solvable & pi :  _pool->solvables() )
       {
         for ( const Capability & cap : pi.dep_supplements() )
         {

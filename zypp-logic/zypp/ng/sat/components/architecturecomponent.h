@@ -35,8 +35,7 @@ namespace zyppng::sat {
       ArchitectureComponent() = default;
 
       /** \brief Set a custom architecture provider. */
-      void setProvider( ArchitectureProvider provider )
-      { _provider = std::move(provider); }
+      void setProvider( ArchitectureProvider provider );
 
       /** \brief Get the current architecture. */
       zypp::Arch arch() const
@@ -45,14 +44,17 @@ namespace zyppng::sat {
       InitStage stage() const override { return InitStage::Environment; }
       int priority() const override { return 0; }
 
+      void attach(Pool &pool) override;
       void prepare( Pool & pool ) override;
       void onRepoAdded( Pool & pool, detail::RepoIdType id ) override;
       void onReset( Pool & pool ) override;
 
     private:
+      Pool *_pool = nullptr;
       ArchitectureProvider _provider;
       SerialNumberWatcher _watcher;
   };
+
 
 } // namespace zyppng::sat
 

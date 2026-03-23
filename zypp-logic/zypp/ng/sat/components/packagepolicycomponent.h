@@ -52,6 +52,9 @@ namespace zyppng::sat {
 
     PreparedStage stage() const override { return PreparedStage::Policy; }
 
+    /** called when the component is attached to a pool */
+    void attach(Pool &p) override;
+
     /** Called by Pool::prepare() — evaluates all specs against the prepared pool. */
     void prepare( PreparedPool & pp ) override;
 
@@ -86,6 +89,7 @@ namespace zyppng::sat {
     //@}
 
   private:
+    Pool *_pool = nullptr;
     // --- spec (definition) layer ---
     SolvableSpec _retractedSpec;   ///< hardwired: provides retracted-patch-package()
     SolvableSpec _ptfMasterSpec;   ///< hardwired: provides ptf()
@@ -99,6 +103,7 @@ namespace zyppng::sat {
     std::optional<EvaluatedSolvableSpec> _ptfPackageEval;
     std::optional<EvaluatedSolvableSpec> _needrebootEval;
   };
+
 
 } // namespace zyppng::sat
 

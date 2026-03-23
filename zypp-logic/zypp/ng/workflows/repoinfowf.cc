@@ -103,7 +103,7 @@ namespace zyppng {
                       return expected<void>::error(std::make_exception_ptr( zypp::Exception("Invalid public key.") ));
 
                     // import all keys into our keyring
-                    _reports.zyppContext()->keyRing()->multiKeyImport(f.file(), false);
+                    _reports.zyppContext()->keyRing()->importKey(key, false);
 
                   } catch ( const std::exception & e ) {
                     //ignore and continue to next url

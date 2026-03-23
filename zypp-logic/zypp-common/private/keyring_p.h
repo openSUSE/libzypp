@@ -93,7 +93,6 @@ namespace zypp {
       KeyRingImpl( const Pathname & baseTmpDir );
 
       void importKey( const PublicKey & key, bool trusted = false );
-      void multiKeyImport( const Pathname & keyfile_r, bool trusted_r = false );
       void deleteKey( const std::string & id, bool trusted );
 
       std::string readSignatureKeyId( const Pathname & signature );
@@ -139,7 +138,6 @@ namespace zypp {
       { return cachedPublicKeyData.manip( keyring ); }
 
       bool verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring );
-      void importKey( const Pathname & keyfile, const Pathname & keyring );
 
       PublicKey exportKey( const std::string & id, const Pathname & keyring );
       PublicKey exportKey( const PublicKeyData & keyData, const Pathname & keyring );
@@ -172,6 +170,11 @@ namespace zypp {
       zyppng::SignalProxy<void ( const PublicKey &/*key*/ )> sigTrustedKeyRemoved() {
         return _sigTrustedKeyRemoved;
       }
+
+    private:
+      friend class KeyRing;
+      void multiKeyImport( const Pathname & keyfile_r, bool trusted_r = false );
+      void importKey( const Pathname & keyfile, const Pathname & keyring );
 
     private:
       // Used for trusted and untrusted keyrings

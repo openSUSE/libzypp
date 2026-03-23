@@ -137,7 +137,7 @@ namespace zypp
     {
       const detail::CQueue * l = lhs;
       const detail::CQueue * r = rhs;
-      return( l == r || ( l->count == r->count && ::memcmp( l->elements, r->elements, l->count ) == 0 ) );
+      return( l == r || ( l->count == r->count && ::memcmp( l->elements, r->elements, l->count * sizeof( *l->elements ) ) == 0 ) );
     }
 
   } // namespace sat

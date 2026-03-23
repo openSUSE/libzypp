@@ -236,7 +236,9 @@ namespace zyppng
       NO_REPOSITORY_THROW( zypp::Exception( "Can't add solvables to norepo." ) );
 
       std::string command( file_r.extension() == ".gz" ? "zcat " : "cat " );
+      command += "'";
       command += file_r.asString();
+      command += "'";
 
       zypp::AutoDispose<FILE*> file( ::popen( command.c_str(), "re" ), ::pclose );
       if ( file == NULL )

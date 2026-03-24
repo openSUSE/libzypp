@@ -225,7 +225,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolQueryResult Stream output */
+  /** relates: PoolQueryResult Stream output */
   std::ostream & operator<<( std::ostream & str, const PoolQueryResult & obj );
 
   /////////////////////////////////////////////////////////////////

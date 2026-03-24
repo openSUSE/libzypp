@@ -158,7 +158,7 @@ namespace zypp::json {
 
   };
 
-  /** \relates String Stream output */
+  /** relates: String Stream output */
   inline std::ostream & operator<<( std::ostream & str, const String & obj )
   {
     return obj.dumpOn( str );

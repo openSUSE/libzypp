@@ -112,21 +112,21 @@ namespace zypp
       RWCOW_pointer<detail::CMap> _pimpl;	///< Pointer to implementation
     };
 
-    /** \relates Map Stream output */
+    /** relates: Map Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Map & obj )
     { return str << obj.asString(); }
 
-    /** \relates Map */
+    /** relates: Map */
     bool operator==( const Map & lhs, const Map & rhs ) ZYPP_API;
 
-    /** \relates Map */
+    /** relates: Map */
     inline bool operator!=( const Map & lhs, const Map & rhs )
     { return !( lhs == rhs ); }
 
   } // namespace sat
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Map Clone function for RWCOW_pointer */
+  /** relates: Map Clone function for RWCOW_pointer */
   template<> sat::detail::CMap * rwcowClone<sat::detail::CMap>( const sat::detail::CMap * rhs );
 
   using Bitmap = sat::Map;

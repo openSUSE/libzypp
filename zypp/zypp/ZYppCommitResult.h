@@ -191,7 +191,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ZYppCommitResult Stream output. */
+  /** relates: ZYppCommitResult Stream output. */
   std::ostream & operator<<( std::ostream & str, const ZYppCommitResult & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

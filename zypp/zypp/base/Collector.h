@@ -50,7 +50,7 @@ namespace functor
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Collector Convenience constructor. */
+  /** relates: Collector Convenience constructor. */
   template<class TOutputIterator>
   inline Collector<TOutputIterator> collector( TOutputIterator iter_r )
   { return Collector<TOutputIterator>( iter_r ); }

@@ -247,11 +247,11 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Target Stream output. */
+  /** relates: Target Stream output. */
   inline std::ostream & operator<<( std::ostream & str, const Target & obj )
   { return obj.dumpOn( str ); }
 
-  /** \relates Target::DistributionLabel Stream output.
+  /** relates: Target::DistributionLabel Stream output.
    * Write out the content as key/value pairs:
    * \code
    * summary=Beautiful Name

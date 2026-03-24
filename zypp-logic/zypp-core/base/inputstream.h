@@ -135,7 +135,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates InputStream Stream output */
+  /** relates: InputStream Stream output */
   std::ostream & operator<<( std::ostream & str, const InputStream & obj );
 
   /////////////////////////////////////////////////////////////////

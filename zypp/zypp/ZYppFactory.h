@@ -67,10 +67,10 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ZYppFactory Stream output */
+  /** relates: ZYppFactory Stream output */
   std::ostream & operator<<( std::ostream & str, const ZYppFactory & obj );
 
-  /** \relates ZYppFactory Convenience to get the Pointer
+  /** relates: ZYppFactory Convenience to get the Pointer
    * to the ZYpp instance.
    * \see ZYppFactory::getZYpp
   */

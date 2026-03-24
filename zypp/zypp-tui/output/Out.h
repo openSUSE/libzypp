@@ -124,19 +124,19 @@ namespace out
 
   // Either specialize per Type or define a custom Formater:
 
-  /** \relates XmlFormater XML representation of types [no default] */
+  /** relates: XmlFormater XML representation of types [no default] */
   template <class Tp>
   std::string asXmlListElement( const Tp & val_r );
   inline std::string asXmlListElement( const std::string & val_r ){ return val_r; }
   inline std::string asXmlListElement( const char * val_r )	{ return val_r; }
 
-  /** \relates ListFormater NORMAL representation of types in lists [no default] */
+  /** relates: ListFormater NORMAL representation of types in lists [no default] */
   template <class Tp>
   std::string asListElement( const Tp & val_r );
   inline std::string asListElement( const std::string & val_r )	{ return val_r; }
   inline std::string asListElement( const char * val_r )	{ return val_r; }
 
-  /** \relates TableFormater NORMAL representation of types as TableHeader [no default] */
+  /** relates: TableFormater NORMAL representation of types as TableHeader [no default] */
   template <class Tp = void>
   TableHeader asTableHeader();
 
@@ -144,7 +144,7 @@ namespace out
   inline TableHeader asTableHeader<void>()
   { return TableHeader(); }
 
-  /** \relates TableFormater NORMAL representation of types as TableRow [no default] */
+  /** relates: TableFormater NORMAL representation of types as TableRow [no default] */
   template <class Tp>
   TableRow asTableRow( const Tp & val_r );
 

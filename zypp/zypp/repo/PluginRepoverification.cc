@@ -248,11 +248,11 @@ namespace zypp_private
       bool _isNeeded = false;
     };
 
-    /** \relates PluginRepoverification::Impl Stream output */
+    /** relates: PluginRepoverification::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const PluginRepoverification::Impl & obj )
     { return str << "PluginRepoverification(" << obj.plugindir() << ", " << obj.isNeeded() << ")"; }
 
-    /** \relates PluginRepoverification::Impl Verbose stream output */
+    /** relates: PluginRepoverification::Impl Verbose stream output */
     inline std::ostream & dumpOn( std::ostream & str, const PluginRepoverification::Impl & obj )
     { return str << obj; }
 

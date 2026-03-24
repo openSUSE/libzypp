@@ -121,7 +121,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Flags Stringify
+    /** relates: Flags Stringify
      * Build a string of OR'ed names of each flag value set in \a flag_r.
      * Remaining bits in \a flag_r are added as hexstring.
      * \code
@@ -170,10 +170,10 @@ namespace zypp
     inline std::ostream & operator<<( std::ostream & str, const typename Flags<TEnum>::Enum & obj )
     { return str << Flags<TEnum>(obj); }
 
-    /** \relates Flags */
+    /** relates: Flags */
 #define ZYPP_DECLARE_FLAGS(Name,Enum) typedef zypp::base::Flags<Enum> Name
 
-    /** \relates Flags */
+    /** relates: Flags */
 #define ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Name) \
 inline constexpr bool operator==( Name::Enum lhs, Name rhs )		{ return( rhs == lhs ); }	\
 inline constexpr bool operator!=(Name:: Enum lhs, Name rhs )		{ return( rhs != lhs ); }	\
@@ -185,7 +185,7 @@ inline constexpr Name operator^( Name::Enum lhs, Name::Enum rhs )	{ return Name(
 inline constexpr Name operator^( Name::Enum lhs, Name rhs )		{ return rhs ^ lhs; }		\
 inline constexpr Name operator~( Name::Enum lhs )			{ return ~Name( lhs ); }
 
-    /** \relates Flags */
+    /** relates: Flags */
 #define ZYPP_DECLARE_FLAGS_AND_OPERATORS(Name,Enum) \
     ZYPP_DECLARE_FLAGS(Name,Enum); \
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Name)

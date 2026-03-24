@@ -228,7 +228,7 @@ namespace zypp
       RWCOW_pointer<Impl> _impl;
     };
 
-    /** \relates TransferSettings */
+    /** relates: TransferSettings */
     std::ostream & dumpOn( std::ostream & str, const TransferSettings & obj );
 
   } // namespace media

@@ -245,7 +245,7 @@ namespace zypp
       ListType    _list;
   };
 
-  /** \relates Product::UrlList Stream output. */
+  /** relates: Product::UrlList Stream output. */
   std::ostream & operator<<( std::ostream & str, const Product::UrlList & obj );
 
   /////////////////////////////////////////////////////////////////

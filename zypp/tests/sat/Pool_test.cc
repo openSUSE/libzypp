@@ -12,7 +12,7 @@ struct TestInit {
 BOOST_GLOBAL_FIXTURE( TestInit );
 
 namespace zypp { namespace detail {
-  /** \relates RepositoryIterator Stream output */
+  /** relates: RepositoryIterator Stream output */
   inline std::ostream & operator<<( std::ostream & str, const RepositoryIterator & obj )
   {
     str << "RI["<< *obj <<"]";

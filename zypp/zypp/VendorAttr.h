@@ -161,7 +161,7 @@ class ZYPP_API VendorAttr
     void _addVendorList( VendorList && list_r );
 };
 
-/** \relates VendorAttr Stream output */
+/** relates: VendorAttr Stream output */
 std::ostream & operator<<( std::ostream & str, const VendorAttr & obj ) ZYPP_API;
 
 ///////////////////////////////////////////////////////////////////

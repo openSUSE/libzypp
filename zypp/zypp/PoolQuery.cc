@@ -366,7 +366,7 @@ namespace zypp
       }
     };
 
-    /** \relates AttrMatchData */
+    /** relates: AttrMatchData */
     inline std::ostream & operator<<( std::ostream & str, const AttrMatchData & obj )
     {
       str << obj.attr << ": " << obj.strMatcher;
@@ -377,7 +377,7 @@ namespace zypp
       return str;
     }
 
-    /** \relates AttrMatchData */
+    /** relates: AttrMatchData */
     inline bool operator==( const AttrMatchData & lhs, const AttrMatchData & rhs )
     {
       return ( lhs.attr == rhs.attr
@@ -385,11 +385,11 @@ namespace zypp
                && lhs.predicateStr == rhs.predicateStr );
     }
 
-    /** \relates AttrMatchData */
+    /** relates: AttrMatchData */
     inline bool operator!=( const AttrMatchData & lhs, const AttrMatchData & rhs )
     { return !( lhs == rhs ); }
 
-    /** \relates AttrMatchData Arbitrary order for std::container. */
+    /** relates: AttrMatchData Arbitrary order for std::container. */
     inline bool operator<( const AttrMatchData & lhs, const AttrMatchData & rhs )
     {
       if ( lhs.attr != rhs.attr )

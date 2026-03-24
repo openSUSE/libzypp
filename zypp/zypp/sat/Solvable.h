@@ -468,42 +468,42 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Solvable Stream output */
+    /** relates: Solvable Stream output */
     std::ostream & operator<<( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
-    /** \relates Solvable More verbose stream output including dependencies */
+    /** relates: Solvable More verbose stream output including dependencies */
     std::ostream & dumpOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
-    /** \relates Solvable XML output */
+    /** relates: Solvable XML output */
     std::ostream & dumpAsXmlOn( std::ostream & str, const Solvable & obj ) ZYPP_API;
 
-    /** \relates Solvable */
+    /** relates: Solvable */
     inline bool operator==( const Solvable & lhs, const Solvable & rhs )
     { return lhs.get() == rhs.get(); }
 
-    /** \relates Solvable */
+    /** relates: Solvable */
     inline bool operator!=( const Solvable & lhs, const Solvable & rhs )
     { return lhs.get() != rhs.get(); }
 
-    /** \relates Solvable */
+    /** relates: Solvable */
     inline bool operator<( const Solvable & lhs, const Solvable & rhs )
     { return lhs.get() < rhs.get(); }
 
-    /** \relates Solvable Test whether a \ref Solvable is of a certain Kind. */
+    /** relates: Solvable Test whether a \ref Solvable is of a certain Kind. */
     template<class TRes>
     inline bool isKind( const Solvable & solvable_r )
     { return solvable_r.isKind( ResTraits<TRes>::kind ); }
 
-    /** \relates Solvable Test for same content. */
+    /** relates: Solvable Test for same content. */
     inline bool identical( const Solvable & lhs, const Solvable & rhs )
     { return lhs.identical( rhs ); }
 
-    /** \relates Solvable Test for same name version release and arch. */
+    /** relates: Solvable Test for same name version release and arch. */
     inline bool sameNVRA( const Solvable & lhs, const Solvable & rhs )
     { return lhs.sameNVRA( rhs ); }
 
 
-    /** \relates Solvable Compare according to \a kind and \a name. */
+    /** relates: Solvable Compare according to \a kind and \a name. */
     inline int compareByN( const Solvable & lhs, const Solvable & rhs )
     {
       int res = 0;
@@ -515,7 +515,7 @@ namespace zypp
       return res;
     }
 
-    /** \relates Solvable Compare according to \a kind, \a name and \a edition. */
+    /** relates: Solvable Compare according to \a kind, \a name and \a edition. */
     inline int compareByNVR( const Solvable & lhs, const Solvable & rhs )
     {
       int res = compareByN( lhs, rhs );
@@ -524,7 +524,7 @@ namespace zypp
       return res;
     }
 
-    /** \relates Solvable Compare according to \a kind, \a name, \a edition and \a arch. */
+    /** relates: Solvable Compare according to \a kind, \a name, \a edition and \a arch. */
     inline int compareByNVRA( const Solvable & lhs, const Solvable & rhs )
     {
       int res = compareByNVR( lhs, rhs );
@@ -591,8 +591,8 @@ namespace zypp
   namespace sat
   {
     /** To Solvable transform functor.
-     * \relates Solvable
-     * \relates sat::SolvIterMixin
+     * relates: Solvable
+     * relates: sat::SolvIterMixin
      */
     struct ZYPP_API asSolvable
     {

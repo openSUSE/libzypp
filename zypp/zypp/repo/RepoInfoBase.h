@@ -169,23 +169,23 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates RepoInfoBase */
+    /** relates: RepoInfoBase */
     inline bool operator==( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
     { return lhs.alias() == rhs.alias(); }
 
-    /** \relates RepoInfoBase */
+    /** relates: RepoInfoBase */
     inline bool operator!=( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
     { return lhs.alias() != rhs.alias(); }
 
     inline bool operator<( const RepoInfoBase & lhs, const RepoInfoBase & rhs )
     { return lhs.alias() < rhs.alias(); }
 
-    /** \relates RepoInfoBase Stream output */
+    /** relates: RepoInfoBase Stream output */
     std::ostream & operator<<( std::ostream & str, const RepoInfoBase & obj );
 
-    /** \relates RepoInfoBase */
+    /** relates: RepoInfoBase */
     using RepoInfoBase_Ptr = shared_ptr<RepoInfoBase>;
-    /** \relates RepoInfoBase */
+    /** relates: RepoInfoBase */
     using RepoInfoBase_constPtr = shared_ptr<const RepoInfoBase>;
 
 

@@ -122,7 +122,7 @@ namespace zypp::glib
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates OpaqueTypePtr Stream output.
+    /** relates: OpaqueTypePtr Stream output.
      *
      * Print the \c D object the OpaqueTypePtr refers, or \c "NULL"
      * if the pointer is \c NULL.
@@ -135,29 +135,29 @@ namespace zypp::glib
         return str << std::string("NULL");
       }
 
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator==( const OpaqueTypePtr<D, DPtr> & lhs, const OpaqueTypePtr<D, DPtr> & rhs )
       { return( lhs.get() == rhs.get() ); }
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator==( const OpaqueTypePtr<D, DPtr> & lhs, std::nullptr_t )
       { return( lhs.get() == nullptr ); }
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator==( std::nullptr_t, const OpaqueTypePtr<D, DPtr> & rhs )
       { return( nullptr == rhs.get() ); }
 
 
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator!=( const OpaqueTypePtr<D, DPtr> & lhs, const OpaqueTypePtr<D, DPtr> & rhs )
       { return ! ( lhs == rhs ); }
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator!=( const OpaqueTypePtr<D, DPtr> & lhs, std::nullptr_t )
       { return( lhs.get() != nullptr ); }
-    /** \relates OpaqueTypePtr */
+    /** relates: OpaqueTypePtr */
     template<class D, class DPtr>
       inline bool operator!=( std::nullptr_t, const OpaqueTypePtr<D, DPtr> & rhs )
       { return( nullptr != rhs.get() ); }

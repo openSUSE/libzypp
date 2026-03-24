@@ -129,11 +129,11 @@ namespace zypp
   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( CpeId, const char * );
   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( CpeId, const std::string & );
 
-  /** \relates CpeId Stream output */
+  /** relates: CpeId Stream output */
   inline std::ostream & operator<<( std::ostream & str, const CpeId & obj )
   { return str << obj.asString(); }
 
-  /** \relates CpeId::Attribute Stream output */
+  /** relates: CpeId::Attribute Stream output */
   inline std::ostream & operator<<( std::ostream & str, const CpeId::Attribute & obj )
   { return str << CpeId::Attribute::asString( obj.asEnum() ); }
 
@@ -296,7 +296,7 @@ namespace zypp
   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( CpeId::Value, const char * );
   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( CpeId::Value, const std::string & );
 
-  /** \relates CpeId::Value Stream output */
+  /** relates: CpeId::Value Stream output */
   std::ostream & operator<<( std::ostream & str, const CpeId::Value & obj );
 
 } // namespace zypp

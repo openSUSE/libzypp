@@ -69,23 +69,23 @@ namespace zypp
       using Queue::operator const detail::CQueue *;	///< libsolv backdoor
     };
 
-    /** \relates FileConflicts Stream output */
+    /** relates: FileConflicts Stream output */
     std::ostream & operator<<( std::ostream & str, const FileConflicts & obj ) ZYPP_API;
 
-    /** \relates FileConflicts::Conflict Stream output */
+    /** relates: FileConflicts::Conflict Stream output */
     std::ostream & operator<<( std::ostream & str, const FileConflicts::Conflict & obj ) ZYPP_API;
 
-    /** \relates FileConflicts XML output */
+    /** relates: FileConflicts XML output */
     std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts & obj ) ZYPP_API;
 
-    /** \relates FileConflicts::Conflict XML output */
+    /** relates: FileConflicts::Conflict XML output */
     std::ostream & dumpAsXmlOn( std::ostream & str, const FileConflicts::Conflict & obj ) ZYPP_API;
 
-    /** \relates FileConflicts */
+    /** relates: FileConflicts */
     inline bool operator==( const FileConflicts & lhs, const FileConflicts & rhs )
     { return static_cast<const Queue &>(lhs) == static_cast<const Queue &>(rhs); }
 
-    /** \relates FileConflicts */
+    /** relates: FileConflicts */
     inline bool operator!=( const FileConflicts & lhs, const FileConflicts & rhs )
     { return !( lhs == rhs ); }
 

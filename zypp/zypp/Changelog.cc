@@ -19,7 +19,7 @@ using std::endl;
 namespace zypp
 { /////////////////////////////////////////////////////////////////
 
-  /** \relates ChangelogEntry */
+  /** relates: ChangelogEntry */
   std::ostream & operator<<( std::ostream & out, const ChangelogEntry & obj )
   {
     out << obj.date() << " " << obj.author() << endl << obj.text() << endl;

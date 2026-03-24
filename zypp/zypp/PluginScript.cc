@@ -186,7 +186,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PluginScrip::Impl Stream output */
+  /** relates: PluginScrip::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PluginScript::Impl & obj )
   {
     return str << "PluginScript[" << obj.getPid() << "] " << obj.script();

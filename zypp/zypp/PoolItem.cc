@@ -150,7 +150,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolItem::Impl Stream output */
+  /** relates: PoolItem::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PoolItem::Impl & obj )
   {
     str << obj.status();

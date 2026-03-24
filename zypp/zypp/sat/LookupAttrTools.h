@@ -211,7 +211,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates LookupAttr::iterator Stream output. */
+    /** relates: zypp::sat::LookupAttr::iterator Stream output. */
     template<class TResult, class TAttr>
     inline std::ostream & operator<<( std::ostream & str, const ArrayAttr<TResult,TAttr> & obj )
     { return dumpOn( str, obj._q ); }

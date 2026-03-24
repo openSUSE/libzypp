@@ -70,10 +70,10 @@ namespace zypp
         RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
     };
 
-    /** \relates RpmPostTransCollector Stream output */
+    /** relates: RpmPostTransCollector Stream output */
     std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector & obj );
 
-    /** \relates RpmPostTransCollector Verbose stream output */
+    /** relates: RpmPostTransCollector Verbose stream output */
     std::ostream & dumOn( std::ostream & str, const RpmPostTransCollector & obj );
 
   } // namespace target

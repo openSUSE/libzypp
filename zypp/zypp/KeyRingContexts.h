@@ -93,7 +93,7 @@ namespace zypp::keyring
     RWCOW_pointer<Impl> _pimpl;	///< Pointer to implementation
   };
 
-  /** \relates VerifyFileContext Stream output */
+  /** relates: VerifyFileContext Stream output */
   std::ostream & operator<<( std::ostream & str, const VerifyFileContext & obj );
 
 } // namespace zypp::keyring

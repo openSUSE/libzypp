@@ -573,15 +573,15 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Selectable Stream output */
+    /** relates: Selectable Stream output */
     std::ostream & operator<<( std::ostream & str, const Selectable & obj ) ZYPP_API;
 
-    /** \relates Selectable More verbose stream output */
+    /** relates: Selectable More verbose stream output */
     std::ostream & dumpOn( std::ostream & str, const Selectable & obj ) ZYPP_API;
 
     /** Solvable to Selectable transform functor.
-     * \relates Selectable
-     * \relates sat::SolvIterMixin
+     * relates: Selectable
+     * relates: sat::SolvIterMixin
      */
     struct ZYPP_API asSelectable
     {

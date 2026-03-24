@@ -188,7 +188,7 @@ namespace zypp
       RW_pointer<Impl> _pimpl;
   };
 
-  /** \relates PluginScript Stream output */
+  /** relates: PluginScript Stream output */
   std::ostream & operator<<( std::ostream & str, const PluginScript & obj );
 
   /////////////////////////////////////////////////////////////////

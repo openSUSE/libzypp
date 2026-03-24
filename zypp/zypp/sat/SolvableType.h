@@ -174,17 +174,17 @@ namespace zypp
       ~SolvableType() {}
     };
 
-    /** \relates SolvableType Stream output */
+    /** relates: SolvableType Stream output */
     template <class Derived>
     inline std::ostream & operator<<( std::ostream & str, const SolvableType<Derived> & obj )
     { return str << obj.satSolvable(); }
 
-    /** \relates SolvableType More verbose stream output including dependencies */
+    /** relates: SolvableType More verbose stream output including dependencies */
     template <class Derived>
     inline std::ostream & dumpOn( std::ostream & str, const SolvableType<Derived> & obj )
     { return dumpOn( str, obj.satSolvable() ); }
 
-    /** \relates SolvableType Equal*/
+    /** relates: SolvableType Equal*/
     template <class LDerived, class RDerived>
     inline bool operator==( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return lhs.satSolvable() == rhs.satSolvable(); }
@@ -197,7 +197,7 @@ namespace zypp
     inline bool operator==( const Solvable & lhs, const SolvableType<Derived> & rhs )
     { return lhs == rhs.satSolvable(); }
 
-    /** \relates SolvableType NotEqual */
+    /** relates: SolvableType NotEqual */
     template <class LDerived, class RDerived>
     inline bool operator!=( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return lhs.satSolvable() != rhs.satSolvable(); }
@@ -210,7 +210,7 @@ namespace zypp
     inline bool operator!=( const Solvable & lhs, const SolvableType<Derived> & rhs )
     { return lhs != rhs.satSolvable(); }
 
-    /** \relates SolvableType Less*/
+    /** relates: SolvableType Less*/
     template <class LDerived, class RDerived>
     inline bool operator<( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return lhs.satSolvable() < rhs.satSolvable(); }
@@ -223,12 +223,12 @@ namespace zypp
     inline bool operator<( const Solvable & lhs, const SolvableType<Derived> & rhs )
     { return lhs < rhs.satSolvable(); }
 
-    /** \relates SolvableType Test whether the \ref Solvable is of a certain \ref ResKind. */
+    /** relates: SolvableType Test whether the \ref Solvable is of a certain \ref ResKind. */
     template<class TRes, class Derived>
     inline bool isKind( const SolvableType<Derived> & solvable_r )
     { return isKind<TRes>( solvable_r.satSolvable() ); }
 
-    /** \relates SolvableType Test for same content. */
+    /** relates: SolvableType Test for same content. */
     template <class LDerived, class RDerived>
     inline bool identical( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return identical( lhs.satSolvable(), rhs.satSolvable() ); }
@@ -241,7 +241,7 @@ namespace zypp
     inline bool identical( const Solvable & lhs, const SolvableType<Derived> & rhs )
     { return identical( lhs, rhs.satSolvable() ); }
 
-    /** \relates SolvableType Test for same name version release and arch. */
+    /** relates: SolvableType Test for same name version release and arch. */
     template <class LDerived, class RDerived>
     inline bool sameNVRA( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return sameNVRA( lhs.satSolvable(), rhs.satSolvable() ); }
@@ -255,7 +255,7 @@ namespace zypp
     { return sameNVRA( lhs, rhs.satSolvable() ); }
 
 
-    /** \relates SolvableType Compare according to \a kind and \a name. */
+    /** relates: SolvableType Compare according to \a kind and \a name. */
     template <class LDerived, class RDerived>
     inline int compareByN( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return compareByN( lhs.satSolvable(), rhs.satSolvable() ); }
@@ -269,7 +269,7 @@ namespace zypp
     { return compareByN( lhs, rhs.satSolvable() ); }
 
 
-    /** \relates SolvableType Compare according to \a kind, \a name and \a edition. */
+    /** relates: SolvableType Compare according to \a kind, \a name and \a edition. */
     template <class LDerived, class RDerived>
     inline int compareByNVR( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return compareByNVR( lhs.satSolvable(), rhs.satSolvable() ); }
@@ -282,7 +282,7 @@ namespace zypp
     inline bool compareByNVR( const Solvable & lhs, const SolvableType<Derived> & rhs )
     { return compareByNVR( lhs, rhs.satSolvable() ); }
 
-    /** \relates SolvableType Compare according to \a kind, \a name, \a edition and \a arch. */
+    /** relates: SolvableType Compare according to \a kind, \a name, \a edition and \a arch. */
     template <class LDerived, class RDerived>
     inline int compareByNVRA( const SolvableType<LDerived> & lhs, const SolvableType<RDerived> & rhs )
     { return compareByNVRA( lhs.satSolvable(), rhs.satSolvable() ); }

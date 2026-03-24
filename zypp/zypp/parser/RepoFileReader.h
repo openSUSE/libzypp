@@ -106,7 +106,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates RepoFileReader Stream output */
+    /** relates: RepoFileReader Stream output */
     std::ostream & operator<<( std::ostream & str, const RepoFileReader & obj );
 
     /////////////////////////////////////////////////////////////////

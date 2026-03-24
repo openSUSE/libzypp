@@ -230,7 +230,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates LogControl Stream output */
+    /** relates: LogControl Stream output */
     std::ostream & operator<<( std::ostream & str, const LogControl & obj ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////

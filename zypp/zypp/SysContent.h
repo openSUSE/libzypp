@@ -157,7 +157,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Writer Stream output */
+    /** relates: Writer Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Writer & obj )
     { return obj.writeXml( str ); }
 
@@ -230,7 +230,7 @@ namespace zypp
       RWCOW_pointer<Impl> _pimpl;
     };
 
-    /** \relates Reader Stream output */
+    /** relates: Reader Stream output */
     std::ostream & operator<<( std::ostream & str, const Reader & obj );
 
     ///////////////////////////////////////////////////////////////////

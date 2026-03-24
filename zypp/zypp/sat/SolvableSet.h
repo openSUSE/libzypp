@@ -108,7 +108,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates SolvableSet Stream output */
+    /** relates: SolvableSet Stream output */
     std::ostream & operator<<( std::ostream & str, const SolvableSet & obj ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////

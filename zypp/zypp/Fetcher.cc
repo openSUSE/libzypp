@@ -891,7 +891,7 @@ namespace zypp
     } // for each job
   }
 
-  /** \relates Fetcher::Impl Stream output */
+  /** relates: Fetcher::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Fetcher::Impl & obj )
   {
       for ( std::list<FetcherJob_Ptr>::const_iterator it_res = obj._resources.begin(); it_res != obj._resources.end(); ++it_res )

@@ -388,7 +388,7 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(MediaSetAccess::ProvideFileOptions);
 
-    /** \relates MediaSetAccess Stream output */
+    /** relates: MediaSetAccess Stream output */
     inline std::ostream & operator<<( std::ostream & str, const MediaSetAccess & obj )
     { return obj.dumpOn( str ); }
 

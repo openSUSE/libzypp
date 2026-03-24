@@ -211,7 +211,7 @@ namespace zypp
     vendorMatchIdReset();
   }
 
-  /** \relates VendorAttr::Impl Stream output */
+  /** relates: VendorAttr::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const VendorAttr::Impl & obj )
   {
     str << "Equivalent vendors:";

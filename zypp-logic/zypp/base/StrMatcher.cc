@@ -252,7 +252,7 @@ namespace zypp
     { return new Impl( _search, _flags ); }
   };
 
-  /** \relates StrMatcher::Impl Stream output */
+  /** relates: StrMatcher::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const StrMatcher::Impl & obj )
   {
     return str << "\"" << obj.searchstring() << "\"{" << obj.flags() << "}";

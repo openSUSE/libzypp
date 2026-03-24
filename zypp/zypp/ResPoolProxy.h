@@ -253,10 +253,10 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ResPoolProxy Stream output */
+  /** relates: ResPoolProxy Stream output */
   std::ostream & operator<<( std::ostream & str, const ResPoolProxy & obj );
 
-  /** \relates ResPoolProxy Verbose stream output */
+  /** relates: ResPoolProxy Verbose stream output */
   std::ostream & dumpOn( std::ostream & str, const ResPoolProxy & obj );
 
   ///////////////////////////////////////////////////////////////////

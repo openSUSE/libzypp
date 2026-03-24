@@ -55,14 +55,14 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates PoolStats Stream output */
+    /** relates: PoolStats Stream output */
     std::ostream & operator<<( std::ostream & str, const PoolStats & obj ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////
   } // namespace pool
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates pool::PoolStats Convenience to count and print out the
+  /** relates: pool::PoolStats Convenience to count and print out the
    *  number of ResObjects per Kind in a container.
    * Fits container of ResObject::Ptr or PoolItem.
   */

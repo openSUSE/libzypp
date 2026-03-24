@@ -296,28 +296,28 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Capability Stream output */
+  /** relates: Capability Stream output */
   std::ostream & operator<<( std::ostream & str, const Capability & obj ) ZYPP_API;
 
-  /** \relates Capability Detailed stream output */
+  /** relates: Capability Detailed stream output */
   std::ostream & dumpOn( std::ostream & str, const Capability & obj ) ZYPP_API;
 
-  /** \relates Capability::CapRel Stream output */
+  /** relates: Capability::CapRel Stream output */
   std::ostream & operator<<( std::ostream & str, Capability::CapRel obj ) ZYPP_API;
 
-  /** \relates Capability */
+  /** relates: Capability */
   inline bool operator==( const Capability & lhs, const Capability & rhs )
   { return lhs.id() == rhs.id(); }
 
-  /** \relates Capability */
+  /** relates: Capability */
   inline bool operator!=( const Capability & lhs, const Capability & rhs )
   { return lhs.id() != rhs.id(); }
 
-  /** \relates Capability Arbitrary order. */
+  /** relates: Capability Arbitrary order. */
   inline bool operator<( const Capability & lhs, const Capability & rhs )
   { return lhs.id() < rhs.id(); }
 
-  /** \relates Capability IOManip to dump a complex Capability as tree.
+  /** relates: Capability IOManip to dump a complex Capability as tree.
    * \code
    * Capability cap { Capability::CAP_AND, Capability( ResolverNamespace::modalias, "fake:baa" ), Capability("kernelX") };
    * cout << dumpCap(cap) << endl;
@@ -340,7 +340,7 @@ namespace zypp
     std::ostream & _dumpRec( std::ostream & str, Capability cap_r, std::string lvl_r="" ) const;
     Capability _cap;
   };
-  /** \relates dumpCap Stream output  */
+  /** relates: dumpCap Stream output  */
   inline std::ostream & operator<<( std::ostream & str, const dumpCap & obj )
   { return obj.dumpOn( str ); }
 
@@ -439,13 +439,13 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates CapDetail Stream output */
+  /** relates: CapDetail Stream output */
   std::ostream & operator<<( std::ostream & str, const CapDetail & obj ) ZYPP_API;
 
-  /** \relates CapDetail Stream output */
+  /** relates: CapDetail Stream output */
   std::ostream & operator<<( std::ostream & str, CapDetail::Kind obj ) ZYPP_API;
 
-  /** \relates CapDetail Stream output */
+  /** relates: CapDetail Stream output */
   std::ostream & operator<<( std::ostream & str, CapDetail::CapRel obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////

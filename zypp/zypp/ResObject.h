@@ -130,7 +130,7 @@ namespace zypp
   /** Convert ResObject::Ptr into Ptr of a certain Kind.
    * \return \c NULL iff \a p is \c NULL or points to a Resolvable
    * not of the specified Kind.
-   * \relates ResObject
+   * relates: ResObject
    * \code
    * asKind<Package>(resPtr);
    * \endcode

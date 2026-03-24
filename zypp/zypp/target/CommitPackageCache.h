@@ -102,7 +102,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates CommitPackageCache Stream output */
+    /** relates: CommitPackageCache Stream output */
     std::ostream & operator<<( std::ostream & str, const CommitPackageCache & obj );
 
     /////////////////////////////////////////////////////////////////

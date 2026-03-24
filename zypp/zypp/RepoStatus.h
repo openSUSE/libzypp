@@ -108,16 +108,16 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoStatus Stream output */
+  /** relates: RepoStatus Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoStatus & obj ) ZYPP_API;
 
-  /** \relates RepoStatus Combine two RepoStatus (combined checksum and newest timestamp) */
+  /** relates: RepoStatus Combine two RepoStatus (combined checksum and newest timestamp) */
   RepoStatus operator&&( const RepoStatus & lhs, const RepoStatus & rhs ) ZYPP_API;
 
-  /** \relates RepoStatus Whether 2 RepoStatus refer to the same content checksum */
+  /** relates: RepoStatus Whether 2 RepoStatus refer to the same content checksum */
   bool operator==( const RepoStatus & lhs, const RepoStatus & rhs ) ZYPP_API;
 
-  /** \relates RepoStatus Whether 2 RepoStatus refer to different content checksums */
+  /** relates: RepoStatus Whether 2 RepoStatus refer to different content checksums */
   inline bool operator!=( const RepoStatus & lhs, const RepoStatus & rhs )
   { return ! ( lhs == rhs ); }
 

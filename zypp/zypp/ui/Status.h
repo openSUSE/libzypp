@@ -51,12 +51,12 @@ namespace zypp
 
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Status Enum value as string. */
+    /** relates: Status Enum value as string. */
     std::string asString( const Status & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Status Stream output */
+    /** relates: Status Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Status & obj )
     { return str << asString( obj ); }
 

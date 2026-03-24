@@ -161,7 +161,7 @@ namespace zypp
    * like \c Arch::i386.
   */
   //@{
-  /** \relates Arch
+  /** relates: Arch
    * This is an empty \ref Arch represented by an empty string.
    * Sometimes used to indicate an any or an unknown Arch. Don't
    * confuse this with \ref Arch_noarch, which is in fact an
@@ -169,175 +169,175 @@ namespace zypp
   */
   extern const Arch Arch_empty ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_noarch ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_pentium4 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_pentium3 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_x86_64_v4 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_x86_64_v3 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_x86_64_v2 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_x86_64 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_athlon ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_i686 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_i586 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_i486 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_i386 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_s390x ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_s390 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_ppc64le ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_ppc64p7 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_ppc64 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_ppc ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_ia64 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alphaev67 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alphaev6 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alphapca56 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alphaev56 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alphaev5 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_alpha ZYPP_API;
 
-   /** \relates Arch */
+   /** relates: Arch */
   extern const Arch Arch_sparc64v ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sparc64 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sparcv9v ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sparcv9 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sparcv8 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sparc ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_aarch64 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv7tnh ZYPP_API;	/* exists? */
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv7thl ZYPP_API;	/* exists? */
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv7hnl ZYPP_API,	/* legacy: */Arch_armv7nhl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv7hl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv6hl ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv8hl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv8l ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv7l ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv6l ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv5tejl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv5tel ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv5tl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv5l ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv4tl ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv4l ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_armv3l ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_riscv64 ZYPP_API;
 
-   /** \relates Arch */
+   /** relates: Arch */
   extern const Arch Arch_sh3 ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sh4 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_sh4a ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_m68k ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_mips ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_mipsel ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_mips64 ZYPP_API;
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_mips64el ZYPP_API;
 
-  /** \relates Arch */
+  /** relates: Arch */
   extern const Arch Arch_loong64 ZYPP_API;
   //@}
 
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Arch stream output. */
+  /** relates: Arch stream output. */
   inline std::ostream & operator<<( std::ostream & str, const Arch & obj )
   { return str << obj.asString(); }
 
-  /** \relates Arch XML output. */
+  /** relates: Arch XML output. */
   inline std::ostream & dumpAsXmlOn( std::ostream & str, const Arch & obj )
   { return str << "<arch>" << obj <<  "</arch>"; }
 
   /** \name Equality based on string value. */
   //@{
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator==( const Arch & lhs, const Arch & rhs )
   { return lhs.asString() == rhs.asString(); }
 
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator==( const Arch & lhs, const std::string & rhs )
   { return lhs.asString() == rhs; }
 
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator==( const std::string & lhs, const Arch & rhs )
   { return lhs == rhs.asString(); }
 
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator!=( const Arch & lhs, const Arch & rhs )
   { return !( lhs == rhs ); }
 
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator!=( const Arch & lhs, const std::string & rhs )
   { return !( lhs == rhs ); }
 
-  /** \relates Arch */
+  /** relates: Arch */
   inline bool operator!=( const std::string & lhs, const Arch & rhs )
   { return !( lhs == rhs ); }
   //@}
@@ -367,7 +367,7 @@ namespace zypp
 ///////////////////////////////////////////////////////////////////
 namespace std
 { /////////////////////////////////////////////////////////////////
-  /** \relates zypp::Arch Default order for std::container based Arch::compare.*/
+  /** relates: zypp::Arch Default order for std::container based Arch::compare.*/
   template<>
 #ifdef __clang__
 constexpr

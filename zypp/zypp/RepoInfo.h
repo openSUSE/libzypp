@@ -628,17 +628,17 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoInfo */
+  /** relates: RepoInfo */
   using RepoInfo_Ptr = shared_ptr<RepoInfo>;
-  /** \relates RepoInfo */
+  /** relates: RepoInfo */
   using RepoInfo_constPtr = shared_ptr<const RepoInfo>;
-  /** \relates RepoInfo */
+  /** relates: RepoInfo */
   using RepoInfoList = std::list<RepoInfo>;
 
-  /** \relates RepoInfo Stream output */
+  /** relates: RepoInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo & obj ) ZYPP_API;
 
-  /** \relates RepoInfo::GpgCheck Stream output */
+  /** relates: RepoInfo::GpgCheck Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoInfo::GpgCheck & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

@@ -85,7 +85,7 @@ namespace zypp
         Repository      _repo;
     };
 
-    /** \relates DeltaRpm Stream output. */
+    /** relates: DeltaRpm Stream output. */
     std::ostream & operator<<( std::ostream & str, const DeltaRpm & obj );
 
     ///////////////////////////////////////////////////////////////////

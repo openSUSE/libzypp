@@ -107,10 +107,10 @@ namespace zypp
     RWCOW_pointer<Impl> _pimpl;
   };
 
-  /** \relates ProblemSolution Stream output */
+  /** relates: ProblemSolution Stream output */
   std::ostream& operator<<(std::ostream&, const ProblemSolution & obj ) ZYPP_API;
 
-  /** \relates ProblemSolution Stream output */
+  /** relates: ProblemSolution Stream output */
   std::ostream& operator<<(std::ostream&, const ProblemSolutionList & obj ) ZYPP_API;
 
 } // namespace zypp

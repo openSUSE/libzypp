@@ -121,10 +121,10 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates CheckAccessDeleted Stream output */
+  /** relates: CheckAccessDeleted Stream output */
   std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted & obj );
 
-  /** \relates CheckAccessDeleted::ProcInfo Stream output */
+  /** relates: CheckAccessDeleted::ProcInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const CheckAccessDeleted::ProcInfo & obj );
 
   /////////////////////////////////////////////////////////////////

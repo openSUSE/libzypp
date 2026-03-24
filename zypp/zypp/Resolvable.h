@@ -79,18 +79,18 @@ namespace zypp
  };
  ///////////////////////////////////////////////////////////////////
 
- /** \relates Resolvable Stream output */
+ /** relates: Resolvable Stream output */
  inline std::ostream & operator<<( std::ostream & str, const Resolvable & obj )
  { return obj.dumpOn( str ); }
 
- /** \relates Resolvable More verbose stream output including dependencies */
+ /** relates: Resolvable More verbose stream output including dependencies */
  inline std::ostream & dumpOn( std::ostream & str, const Resolvable & obj )
  { return dumpOn( str, obj.satSolvable() ); }
 
  /** Test whether a Resolvable::Ptr is of a certain Kind.
   * \return \c Ture iff \a p is not \c NULL and points to a Resolvable
   * of the specified Kind.
-  * \relates Resolvable
+  * relates: Resolvable
   * \code
   * isKind<Package>(resPtr);
   * \endcode
@@ -113,7 +113,7 @@ namespace zypp
  /** Convert Resolvable::Ptr into Ptr of a certain Kind.
   * \return \c NULL iff \a p is \c NULL or points to a Resolvable
   * not of the specified Kind.
-  * \relates Resolvable
+  * relates: Resolvable
   * \code
   * asKind<Package>(resPtr);
   * \endcode
@@ -128,7 +128,7 @@ namespace zypp
 
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Resolvable Compare Resolvable::constPtr according to \a kind and \a name.
+  /** relates: Resolvable Compare Resolvable::constPtr according to \a kind and \a name.
    * \deprecated Get rid of refcout/smart_prt bloat, use
    */
   inline int compareByN( const Resolvable::constPtr & lhs, const Resolvable::constPtr & rhs )
@@ -144,7 +144,7 @@ namespace zypp
     return ret;
   }
 
-  /** \relates Resolvable Compare according to \a kind, \a name and \a edition. */
+  /** relates: Resolvable Compare according to \a kind, \a name and \a edition. */
   inline int compareByNVR( const Resolvable::constPtr & lhs, const Resolvable::constPtr & rhs )
   {
     int ret = 0;
@@ -158,7 +158,7 @@ namespace zypp
     return ret;
   }
 
-  /** \relates Resolvable Compare Resolvable::constPtr according to \a kind, \a name, \a edition and \a arch. */
+  /** relates: Resolvable Compare Resolvable::constPtr according to \a kind, \a name, \a edition and \a arch. */
   inline int compareByNVRA( const Resolvable::constPtr & lhs, const Resolvable::constPtr & rhs )
   {
     int ret = 0;

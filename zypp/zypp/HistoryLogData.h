@@ -77,15 +77,15 @@ namespace zypp
     ID _id;
   };
 
-  /** \relates HistoryActionID */
+  /** relates: HistoryActionID */
   inline bool operator==( const HistoryActionID & lhs, const HistoryActionID & rhs )
   { return lhs.toEnum() == rhs.toEnum(); }
 
-  /** \relates HistoryActionID */
+  /** relates: HistoryActionID */
   inline bool operator!=( const HistoryActionID & lhs, const HistoryActionID & rhs )
   { return lhs.toEnum() != rhs.toEnum(); }
 
-  /** \relates HistoryActionID */
+  /** relates: HistoryActionID */
   std::ostream & operator << (std::ostream & str, const HistoryActionID & id);
   ///////////////////////////////////////////////////////////////////
 
@@ -187,7 +187,7 @@ namespace zypp
     HistoryLogData & operator=( const HistoryLogData & ); ///< no base class assign
   };
 
-  /** \relates HistoryLogData Stream output */
+  /** relates: HistoryLogData Stream output */
   std::ostream & operator<<( std::ostream & str, const HistoryLogData & obj );
   ///////////////////////////////////////////////////////////////////
 

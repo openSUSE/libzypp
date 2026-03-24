@@ -115,23 +115,23 @@ namespace zypp
         RWCOW_pointer<detail::CQueue> _pimpl;		///< Pointer to implementation
     };
 
-    /** \relates Queue Stream output */
+    /** relates: Queue Stream output */
     std::ostream & operator<<( std::ostream & str, const Queue & obj ) ZYPP_API;
 
-    /** \relates Queue Stream output assuming a Solvable queue. */
+    /** relates: Queue Stream output assuming a Solvable queue. */
     std::ostream & dumpOn( std::ostream & str, const Queue & obj ) ZYPP_API;
 
-    /** \relates Queue */
+    /** relates: Queue */
     bool operator==( const Queue & lhs, const Queue & rhs ) ZYPP_API;
 
-    /** \relates Queue */
+    /** relates: Queue */
     inline bool operator!=( const Queue & lhs, const Queue & rhs )
     { return !( lhs == rhs ); }
 
   } // namespace sat
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Queue Clone function for RWCOW_pointer */
+  /** relates: Queue Clone function for RWCOW_pointer */
   template<> sat::detail::CQueue * rwcowClone<sat::detail::CQueue>( const sat::detail::CQueue * rhs );
 
 } // namespace zypp

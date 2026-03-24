@@ -325,7 +325,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Arch::CompatEntry Stream output */
+  /** relates: Arch::CompatEntry Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Arch::CompatEntry & obj )
   {
     Arch::CompatEntry::CompatBits bit( obj._idBit );
@@ -339,10 +339,10 @@ namespace zypp
                << obj._compatBits << ' ' << obj._compatBits.value();
   }
 
-  /** \relates Arch::CompatEntry */
+  /** relates: Arch::CompatEntry */
   inline bool operator==( const Arch::CompatEntry & lhs, const Arch::CompatEntry & rhs )
   { return lhs._idStr == rhs._idStr; }
-  /** \relates Arch::CompatEntry */
+  /** relates: Arch::CompatEntry */
   inline bool operator!=( const Arch::CompatEntry & lhs, const Arch::CompatEntry & rhs )
   { return ! ( lhs == rhs ); }
 

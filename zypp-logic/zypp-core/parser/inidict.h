@@ -173,10 +173,10 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates IniDict Stream output */
+    /** relates: IniDict Stream output */
     std::ostream & operator<<( std::ostream & str, const IniDict & obj );
 
-    /** \relates IniDict Dump as single ini-file. */
+    /** relates: IniDict Dump as single ini-file. */
     inline std::ostream & dumpOn( std::ostream & str, const IniDict & obj )
     { return obj.dumpAsIniOn( str ); }
 

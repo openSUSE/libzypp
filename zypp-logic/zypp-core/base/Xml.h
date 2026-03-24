@@ -32,7 +32,7 @@ namespace zypp
     using xml::escape;
     using xml::unescape;
 
-    /** \relates NodeAttr NODE ATTRIBUTE representation of types [asString] */
+    /** relates: NodeAttr NODE ATTRIBUTE representation of types [asString] */
     template <class Tp>
     std::string asXmlNodeAttr( const Tp & val_r )
     { return asString( val_r ); }
@@ -190,7 +190,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Node Write a leaf node without PCDATA
+    /** relates: Node Write a leaf node without PCDATA
      * \code
      * <node attr="val"/>
      * \endcode

@@ -28,21 +28,21 @@ namespace zypp
     ,Update	///< Focus on updating requested packages and their dependencies as much as possible
   };
 
-  /** \relates ResolverFocus Conversion to string (enumerator name) */
+  /** relates: ResolverFocus Conversion to string (enumerator name) */
   std::string asString( const ResolverFocus & val_r ) ZYPP_API;
 
-  /** \relates ResolverFocus Conversion from string (enumerator name, case insensitive, empty string is Default)
+  /** relates: ResolverFocus Conversion from string (enumerator name, case insensitive, empty string is Default)
    * \returns \c false if \a val_r is not recognized
    */
   bool fromString( const std::string & val_r, ResolverFocus & ret_r ) ZYPP_API;
 
-  /** \relates ResolverFocus Conversion from string (convenience)
+  /** relates: ResolverFocus Conversion from string (convenience)
    * \returns \ref ResolverFocus::Default if \a val_r is not recognized
    */
   inline ResolverFocus resolverFocusFromString( const std::string & val_r )
   { ResolverFocus ret_r { ResolverFocus::Default }; fromString( val_r, ret_r ); return ret_r; }
 
-  /** \relates ResolverFocus Stream output */
+  /** relates: ResolverFocus Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ResolverFocus & obj )
   { return str << asString( obj ); }
 

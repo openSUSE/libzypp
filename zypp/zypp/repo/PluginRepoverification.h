@@ -108,16 +108,16 @@ namespace zypp_private
       RW_pointer<Impl> _pimpl;    ///< Pointer to implementation (ref).
     };
 
-    /** \relates PluginRepoverification Stream output */
+    /** relates: PluginRepoverification Stream output */
     std::ostream & operator<<( std::ostream & str, const PluginRepoverification & obj );
 
-    /** \relates PluginRepoverification Verbose stream output */
+    /** relates: PluginRepoverification Verbose stream output */
     std::ostream & dumOn( std::ostream & str, const PluginRepoverification & obj );
 
-    /** \relates PluginRepoverification */
+    /** relates: PluginRepoverification */
     bool operator==( const PluginRepoverification & lhs, const PluginRepoverification & rhs );
 
-    /** \relates PluginRepoverification */
+    /** relates: PluginRepoverification */
     inline bool operator!=( const PluginRepoverification & lhs, const PluginRepoverification & rhs )
     { return !( lhs == rhs ); }
 

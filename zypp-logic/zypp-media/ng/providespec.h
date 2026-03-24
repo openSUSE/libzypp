@@ -204,10 +204,10 @@ namespace zyppng
     zypp::RWCOW_pointer<Impl> _pimpl; ///< Pointer to implementation.
   };
 
-  /** \relates ProvideSpec Stream output */
+  /** relates: ProvideSpec Stream output */
   std::ostream & operator<<( std::ostream &str, const ProvideFileSpec &obj );
 
-  /** \relates ProvideSpec Verbose stream output */
+  /** relates: ProvideSpec Verbose stream output */
   std::ostream & dumpOn( std::ostream &str, const ProvideFileSpec &obj );
 
 } // namespace zypp

@@ -69,7 +69,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoManager::Impl Stream output */
+  /** relates: RepoManager::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const RepoManager::Impl & obj )
   { return str << "RepoManager::Impl"; }
 

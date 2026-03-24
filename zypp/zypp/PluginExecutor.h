@@ -81,14 +81,14 @@ namespace zypp
       RW_pointer<Impl> _pimpl;	///< Pointer to implementation.
   };
 
-  /** \relates PluginExecutor Stream output */
+  /** relates: PluginExecutor Stream output */
   std::ostream & operator<<( std::ostream & str, const PluginExecutor & obj );
 
-  /** \relates PluginExecutor Comparison based on reference. */
+  /** relates: PluginExecutor Comparison based on reference. */
   inline bool operator==( const PluginExecutor & lhs, const PluginExecutor & rhs )
   { return ( lhs._pimpl == rhs._pimpl ); }
 
-  /** \relates PluginExecutor Comparison based on reference. */
+  /** relates: PluginExecutor Comparison based on reference. */
   inline bool operator!=( const PluginExecutor & lhs, const PluginExecutor & rhs )
   { return( ! operator==( lhs, rhs ) ); }
 

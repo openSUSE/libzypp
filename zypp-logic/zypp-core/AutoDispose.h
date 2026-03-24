@@ -295,7 +295,7 @@ namespace zypp
 
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates AutoDispose Stream output of the \c Tp object. */
+  /** relates: AutoDispose Stream output of the \c Tp object. */
   template<class Tp>
     inline std::ostream & operator<<( std::ostream & str, const AutoDispose<Tp> & obj )
     { return str << obj.value(); }

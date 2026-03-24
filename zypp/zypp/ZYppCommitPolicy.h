@@ -113,7 +113,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ZYppCommitPolicy Stream output. */
+  /** relates: ZYppCommitPolicy Stream output. */
   std::ostream & operator<<( std::ostream & str, const ZYppCommitPolicy & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

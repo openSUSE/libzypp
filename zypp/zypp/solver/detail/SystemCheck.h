@@ -71,7 +71,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates SystemCheck Stream output */
+    /** relates: SystemCheck Stream output */
     std::ostream & operator<<( std::ostream & str, const SystemCheck & obj );
 
   /////////////////////////////////////////////////////////////////

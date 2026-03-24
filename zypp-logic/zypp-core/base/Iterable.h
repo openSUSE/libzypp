@@ -83,12 +83,12 @@ namespace zypp
     iterator_type _end;
   };
 
-  /** \relates Iterable convenient construction. */
+  /** relates: Iterable convenient construction. */
   template <class TIterator>
   Iterable<TIterator> makeIterable( TIterator && begin_r, TIterator && end_r )
   { return Iterable<TIterator>( std::forward<TIterator>(begin_r), std::forward<TIterator>(end_r) ); }
 
-  /** \relates Iterable convenient construction. */
+  /** relates: Iterable convenient construction. */
   template <class TIterator>
   Iterable<TIterator> makeIterable( std::pair<TIterator,TIterator> &&range_r )
   { return Iterable<TIterator>( std::move(range_r) ); }

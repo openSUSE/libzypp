@@ -78,7 +78,7 @@ namespace zypp
       RW_pointer<Impl> _pimpl; ///< Pointer to implementation.
     };
 
-    /** \relates SUSEMediaVerifier Stream output  */
+    /** relates: SUSEMediaVerifier Stream output  */
     //std::ostream & operator<<( std::ostream & str, const SUSEMediaVerifier & obj );
 
   } // namespace repo

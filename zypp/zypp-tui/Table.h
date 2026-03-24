@@ -248,7 +248,7 @@ private:
   boost::any _userData;	///< user defined sort index, e.g. if string values don't work due to coloring
 };
 
-/** \relates TableRow Add colummn. */
+/** relates: TableRow Add colummn. */
 template<class Tp_>
 TableRow & operator<<( TableRow & tr, Tp_ && val )
 { return tr.add( zypp::asString( std::forward<Tp_>(val) ) ); }
@@ -309,7 +309,7 @@ private:
   std::map<unsigned,CStyle> _cstyle;  ///< Column style and sort hints are remembered here
 };
 
-/** \relates TableHeader  Add column. */
+/** relates: TableHeader  Add column. */
 template<class Tp_>
 TableHeader & operator<<( TableHeader & th, Tp_ && val )
 { static_cast<TableRow&>(th) << std::forward<Tp_>(val); return th; }
@@ -499,10 +499,10 @@ namespace table
     std::string _header;
     CStyle      _style;
   };
-  /** \relates table::Column set \ref TableHeader style. */
+  /** relates: table::Column set \ref TableHeader style. */
   inline TableHeader & operator<<( TableHeader & th, Column && obj )
   { th.style( th.cols(), obj._style ); return th << std::move(obj._header); }
-  /** \relates table::Column set \ref TableHeader style.*/
+  /** relates: table::Column set \ref TableHeader style.*/
   inline TableHeader && operator<<( TableHeader && th, Column && obj )
   { return std::move( th << std::move(obj) ); }
 }

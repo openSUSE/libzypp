@@ -95,7 +95,7 @@ namespace zypp {
       bool         iown;    //!< True, if mounted by media manager.
     };
 
-    /** \relates MediaSource Stream output */
+    /** relates: MediaSource Stream output */
     inline std::ostream & operator<<( std::ostream & str, const MediaSource & obj )
     { return str << obj.asString(); }
 
@@ -118,7 +118,7 @@ namespace zypp {
       bool     temp;    //!< If it was created temporary.
     };
 
-    /** \relates AttachPoint Stream output */
+    /** relates: AttachPoint Stream output */
     std::ostream & operator<<( std::ostream & str, const AttachPoint & obj );
 
     ///////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ namespace zypp {
       AttachPointRef attachPoint;
     };
 
-    /** \relates AttachedMedia Stream output */
+    /** relates: AttachedMedia Stream output */
     std::ostream & operator<<( std::ostream & str, const AttachedMedia & obj );
 
   } // namespace media

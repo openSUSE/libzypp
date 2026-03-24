@@ -347,13 +347,13 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ProgressData Stream output */
+  /** relates: ProgressData Stream output */
   std::ostream & operator<<( std::ostream & str, const ProgressData & obj );
 
   ///////////////////////////////////////////////////////////////////
 
   class InputStream;
-  /** \relates ProgressData Setup from \ref InputStream. */
+  /** relates: ProgressData Setup from \ref InputStream. */
   ProgressData makeProgressData( const InputStream & input_r );
 
   ///////////////////////////////////////////////////////////////////

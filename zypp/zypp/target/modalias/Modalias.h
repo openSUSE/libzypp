@@ -90,7 +90,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Modalias Stream output */
+    /** relates: Modalias Stream output */
     std::ostream & operator<<( std::ostream & str, const Modalias & obj ) ZYPP_API_DEPTESTOMATIC;
 
     /////////////////////////////////////////////////////////////////

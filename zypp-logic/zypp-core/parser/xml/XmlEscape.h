@@ -37,7 +37,7 @@ namespace zypp
         const std::string & _in;
       };
 
-      /** \relates EscapedString Stream output */
+      /** relates: EscapedString Stream output */
       inline std::ostream & operator<<( std::ostream & str, const EscapedString & obj )
       { return obj.dumpOn( str ); }
 

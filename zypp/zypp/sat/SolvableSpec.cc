@@ -126,7 +126,7 @@ namespace zypp
       { return new Impl( *this ); }
     };
 
-    /** \relates SolvableSpec::Impl Stream output */
+    /** relates: SolvableSpec::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const SolvableSpec::Impl & obj )
     {
       str << "SolvableSpec {" << endl

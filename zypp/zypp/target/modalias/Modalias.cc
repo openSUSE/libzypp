@@ -198,7 +198,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Modalias::Impl Stream output
+    /** relates: Modalias::Impl Stream output
      * And maybe std::ostream & operator<< Modalias::Impl below too.
      * return libhal version or something like that.
      */

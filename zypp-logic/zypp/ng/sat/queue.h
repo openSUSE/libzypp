@@ -116,10 +116,10 @@ namespace zyppng
         zypp::RWCOW_pointer<zypp::sat::detail::CQueue> _pimpl;		///< Pointer to implementation
     };
 
-    /** \relates Queue */
+    /** relates: Queue */
     bool operator==( const Queue & lhs, const Queue & rhs );
 
-    /** \relates Queue */
+    /** relates: Queue */
     inline bool operator!=( const Queue & lhs, const Queue & rhs )
     { return !( lhs == rhs ); }
 
@@ -128,7 +128,7 @@ namespace zyppng
 } // namespace zyppng
 
 namespace zypp {
-  /** \relates Queue Clone function for RWCOW_pointer */
+  /** relates: Queue Clone function for RWCOW_pointer */
   template<> sat::detail::CQueue * rwcowClone<sat::detail::CQueue>( const sat::detail::CQueue * rhs );
 }
 

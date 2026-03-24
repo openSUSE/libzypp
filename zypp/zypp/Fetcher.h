@@ -381,7 +381,7 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS(Fetcher::Options);
 
-  /** \relates Fetcher Stream output */
+  /** relates: Fetcher Stream output */
   std::ostream & operator<<( std::ostream & str, const Fetcher & obj );
 
   /////////////////////////////////////////////////////////////////

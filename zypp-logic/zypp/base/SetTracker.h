@@ -186,7 +186,7 @@ namespace zypp
       set_type _removed;
     };
 
-    /** \relates SetTracker Stream output */
+    /** relates: SetTracker Stream output */
     template <class TSet>
     std::ostream & operator<<( std::ostream & str, const SetTracker<TSet> & obj )
     { return str << "set(" << obj.current().size() << "|+" << obj.added().size() << "|-" << obj.removed().size() << ')'; }

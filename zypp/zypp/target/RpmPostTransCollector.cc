@@ -393,11 +393,11 @@ namespace zypp
         std::pair<Pathname,rpm::RpmHeader::constPtr> _headercache;
     };
 
-    /** \relates RpmPostTransCollector::Impl Stream output */
+    /** relates: RpmPostTransCollector::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const RpmPostTransCollector::Impl & obj )
     { return str << "RpmPostTransCollector::Impl"; }
 
-    /** \relates RpmPostTransCollector::Impl Verbose stream output */
+    /** relates: RpmPostTransCollector::Impl Verbose stream output */
     inline std::ostream & dumpOn( std::ostream & str, const RpmPostTransCollector::Impl & obj )
     { return str << obj; }
 

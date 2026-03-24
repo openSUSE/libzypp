@@ -141,13 +141,13 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates IdString Stream output */
+  /** relates: IdString Stream output */
   std::ostream & operator<<( std::ostream & str, const IdString & obj ) ZYPP_API;
 
-  /** \relates IdString Stream output */
+  /** relates: IdString Stream output */
   std::ostream & dumpOn( std::ostream & str, const IdString & obj ) ZYPP_API;
 
-  /** \relates IdString Equal */
+  /** relates: IdString Equal */
   inline bool operator==( const IdString & lhs, const IdString & rhs )
   { return lhs.compareEQ( rhs ); }
   /** \overload */
@@ -163,7 +163,7 @@ namespace zypp
   inline bool operator==( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) == 0; }
 
-  /** \relates IdString NotEqual */
+  /** relates: IdString NotEqual */
   inline bool operator!=( const IdString & lhs, const IdString & rhs )
   { return ! lhs.compareEQ( rhs ); }
   /** \overload */
@@ -179,7 +179,7 @@ namespace zypp
   inline bool operator!=( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) != 0; }
 
-  /** \relates IdString Less */
+  /** relates: IdString Less */
   inline bool operator<( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) < 0; }
   /** \overload */
@@ -195,7 +195,7 @@ namespace zypp
   inline bool operator<( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) >= 0; }
 
-  /** \relates IdString LessEqual*/
+  /** relates: IdString LessEqual*/
   inline bool operator<=( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) <= 0; }
   /** \overload */
@@ -211,7 +211,7 @@ namespace zypp
   inline bool operator<=( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) > 0; }
 
-  /** \relates IdString Greater */
+  /** relates: IdString Greater */
   inline bool operator>( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) > 0; }
   /** \overload */
@@ -227,7 +227,7 @@ namespace zypp
   inline bool operator>( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) <= 0; }
 
-  /** \relates IdString GreaterEqual */
+  /** relates: IdString GreaterEqual */
   inline bool operator>=( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) >= 0; }
   /** \overload */

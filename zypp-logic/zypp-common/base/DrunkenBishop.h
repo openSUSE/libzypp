@@ -119,7 +119,7 @@ namespace zypp
 
     ZYPP_DECLARE_OPERATORS_FOR_FLAGS(DrunkenBishop::Options);
 
-    /** \relates DrunkenBishop Stream output */
+    /** relates: DrunkenBishop Stream output */
     inline std::ostream & operator<<( std::ostream & str, const DrunkenBishop & obj )
     { return obj.dumpOn( str ); }
 

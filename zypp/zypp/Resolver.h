@@ -492,7 +492,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Resolver Stream output */
+  /** relates: Resolver Stream output */
   std::ostream & operator<<( std::ostream & str, const Resolver & obj );
 
   /////////////////////////////////////////////////////////////////

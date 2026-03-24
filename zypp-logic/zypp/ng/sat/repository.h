@@ -345,15 +345,15 @@ namespace zyppng
 
     //std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj );
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator==( const Repository & lhs, const Repository & rhs )
     { return lhs.get() == rhs.get(); }
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator!=( const Repository & lhs, const Repository & rhs )
     { return !( lhs == rhs ); }
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator<( const Repository & lhs, const Repository & rhs )
     { return lhs.get() < rhs.get(); }
 

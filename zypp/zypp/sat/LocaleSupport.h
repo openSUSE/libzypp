@@ -102,21 +102,21 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates LocaleSupport Stream output */
+    /** relates: LocaleSupport Stream output */
     std::ostream & operator<<( std::ostream & str, const LocaleSupport & obj );
 
-    /** \relates LocaleSupport More verbose stream output including dependencies */
+    /** relates: LocaleSupport More verbose stream output including dependencies */
     std::ostream & dumpOn( std::ostream & str, const LocaleSupport & obj );
 
-    /** \relates LocaleSupport */
+    /** relates: LocaleSupport */
     inline bool operator==( const LocaleSupport & lhs, const LocaleSupport & rhs )
     { return lhs.locale() == rhs.locale(); }
 
-    /** \relates LocaleSupport */
+    /** relates: LocaleSupport */
     inline bool operator!=( const LocaleSupport & lhs, const LocaleSupport & rhs )
     { return lhs.locale() != rhs.locale(); }
 
-    /** \relates LocaleSupport */
+    /** relates: LocaleSupport */
     inline bool operator<( const LocaleSupport & lhs, const LocaleSupport & rhs )
     { return lhs.locale() < rhs.locale(); }
 

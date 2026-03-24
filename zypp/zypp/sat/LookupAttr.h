@@ -235,10 +235,10 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates LookupAttr Stream output. */
+    /** relates: LookupAttr Stream output. */
     std::ostream & operator<<( std::ostream & str, const LookupAttr & obj ) ZYPP_API;
 
-    /** \relates LookupAttr Verbose stream output including the query result. */
+    /** relates: LookupAttr Verbose stream output including the query result. */
     std::ostream & dumpOn( std::ostream & str, const LookupAttr & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
@@ -342,7 +342,7 @@ namespace zypp
           detail::CDataiterator * _dip;
           std::string _mstring;
       };
-      /** \relates DIWrap Stream output. */
+      /** relates: DIWrap Stream output. */
       std::ostream & operator<<( std::ostream & str, const DIWrap & obj );
     }
 
@@ -579,7 +579,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates LookupAttr::iterator Stream output. */
+    /** relates: zypp::sat::LookupAttr::iterator Stream output. */
     std::ostream & operator<<( std::ostream & str, const LookupAttr::iterator & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
@@ -606,10 +606,10 @@ namespace zypp
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 
-/** \relates LookupAttr::iterator Stream output of the underlying iterator for debug. */
+/** relates: zypp::sat::LookupAttr::iterator Stream output of the underlying iterator for debug. */
 std::ostream & operator<<( std::ostream & str, const zypp::sat::detail::CDataiterator * obj );
 
-/** \relates LookupAttr::iterator Stream output of the underlying iterator for debug. */
+/** relates: zypp::sat::LookupAttr::iterator Stream output of the underlying iterator for debug. */
 inline std::ostream & operator<<( std::ostream & str, const zypp::sat::detail::CDataiterator & obj )
 { return str << &obj; }
 

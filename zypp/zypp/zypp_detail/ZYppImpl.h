@@ -139,7 +139,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates ZYppImpl Stream output */
+    /** relates: ZYppImpl Stream output */
     std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj );
 
     /**

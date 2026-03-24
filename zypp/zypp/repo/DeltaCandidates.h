@@ -64,19 +64,19 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates DeltaCandidates Stream output */
+    /** relates: DeltaCandidates Stream output */
     std::ostream & operator<<( std::ostream & str, const DeltaCandidates & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates DeltaCandidates Convenient construction.
+    /** relates: DeltaCandidates Convenient construction.
      * \todo templated ctor
     */
     template<class RepoIter>
     inline DeltaCandidates makeDeltaCandidates( RepoIter begin_r, RepoIter end_r )
     { return DeltaCandidates( std::list<Repository>( begin_r, end_r ) ); }
 
-    /** \relates DeltaCandidates Convenient construction.
+    /** relates: DeltaCandidates Convenient construction.
      * \todo templated ctor
      */
     template<class RepoContainer>

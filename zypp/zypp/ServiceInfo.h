@@ -215,14 +215,14 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ServiceInfo */
+  /** relates: ServiceInfo */
   using ServiceInfo_Ptr = shared_ptr<ServiceInfo>;
-  /** \relates ServiceInfo */
+  /** relates: ServiceInfo */
   using ServiceInfo_constPtr = shared_ptr<const ServiceInfo>;
-  /** \relates ServiceInfo */
+  /** relates: ServiceInfo */
   using ServiceInfoList = std::list<ServiceInfo>;
 
-  /** \relates ServiceInfo Stream output */
+  /** relates: ServiceInfo Stream output */
   std::ostream & operator<<( std::ostream & str, const ServiceInfo & obj ) ZYPP_API;
 
 

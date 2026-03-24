@@ -158,7 +158,7 @@ namespace zypp
       };
 
       /** \name Assigner specialisation for numeric and boolean values.
-       *  \relates Assigner
+       *  relates: Assigner
        */
       //@{
       template <>
@@ -181,7 +181,7 @@ namespace zypp
           inline void Assigner<bool>::assign( const char * text_r )               { str::strToBoolNodefault( text_r, *_value ); }
       //@}
 
-      /** \name \relates Assigner Convenience constructor */
+      /** \name relates: Assigner Convenience constructor */
       //@{
       template <class Tp>
           inline AssignerRef assigner( Tp & value_r )
@@ -266,7 +266,7 @@ namespace zypp
       };
 
       /** Helper class to build a \ref Consumer.
-       * \relates Consumer
+       * relates: Consumer
        *
        * The class constructs the consumer, allows to extend it via
        * \ref operator(), and provides a conversion to
@@ -327,8 +327,8 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
 
     /** \name \ref ParseDef consumer assigning \ref Node text and attribues values to variables.
-     * \relates parse_def_assign::Consumer
-     * \relates parse_def_assign::Builder
+     * relates: parse_def_assign::Consumer
+     * relates: parse_def_assign::Builder
      *
      * This function allows convenient contruction of a \ref parse_def_assign::Consumer
      * to be passed as \ref Node conssumer to \ref ParseDef. Simply list each attribute's

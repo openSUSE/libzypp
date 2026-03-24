@@ -351,7 +351,7 @@ namespace mbs
       : DtorReset( mww_r._indent )
       { mww_r._indent = mww_r.saneIncrementIndent( increment_r ); }
     };
-    /** \relates ScopedIndentIncrement Temporarily increase indent. */
+    /** relates: ScopedIndentIncrement Temporarily increase indent. */
     ScopedIndentIncrement scopedIndentIncrement( size_t increment_r )
     { return ScopedIndentIncrement( *this, increment_r ); }
 

@@ -89,7 +89,7 @@ namespace zypp::json {
     std::vector<Value> _values;
   };
 
-  /** \relates Array Stream output */
+  /** relates: Array Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Array & obj )
   {
     return obj.dumpOn( str );
@@ -162,7 +162,7 @@ namespace zypp::json {
     std::multimap<String, Value> _values;
   };
 
-  /** \relates Object Stream output */
+  /** relates: Object Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Object & obj )
   {
     return obj.dumpOn( str );
@@ -314,7 +314,7 @@ namespace zypp::json {
     std::for_each( begin, end, [this]( const auto &v) { this->add(v); } );
   }
 
-  /** \relates Value Stream output */
+  /** relates: Value Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Value & obj )
   { return obj.dumpOn( str ); }
 

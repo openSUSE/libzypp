@@ -70,7 +70,7 @@ namespace zypp
       };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates FileType Stram output. */
+    /** relates: FileType Stram output. */
     extern std::ostream & operator<<( std::ostream & str, FileType obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates StatMode Stream output. */
+    /** relates: StatMode Stream output. */
     extern std::ostream & operator<<( std::ostream & str, const StatMode & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////
@@ -393,7 +393,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates PathInfo Stream output. */
+    /** relates: PathInfo Stream output. */
     extern std::ostream & operator<<( std::ostream & str, const PathInfo & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////

@@ -53,7 +53,7 @@ namespace zypp
         RPMINST_ALLOWUNTRUSTED  = 0x2000,
       };
 
-      /** \relates RpmInstFlag Type-safe way of storing OR-combinations. */
+      /** relates: RpmInstFlag Type-safe way of storing OR-combinations. */
       ZYPP_DECLARE_FLAGS_AND_OPERATORS( RpmInstFlags, RpmInstFlag );
 
       /////////////////////////////////////////////////////////////////

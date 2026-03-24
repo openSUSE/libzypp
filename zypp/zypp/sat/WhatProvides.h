@@ -129,7 +129,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates WhatProvides Stream output */
+    /** relates: WhatProvides Stream output */
     std::ostream & operator<<( std::ostream & str, const WhatProvides & obj );
 
     ///////////////////////////////////////////////////////////////////

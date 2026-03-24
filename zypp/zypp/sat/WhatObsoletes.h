@@ -99,7 +99,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates WhatObsoletes Stream output */
+    /** relates: WhatObsoletes Stream output */
     std::ostream & operator<<( std::ostream & str, const WhatObsoletes & obj );
 
     /////////////////////////////////////////////////////////////////

@@ -33,7 +33,7 @@ namespace zyppng {
 
   namespace sat {
     /**
-     * \relates Queue Stream output assuming a Solvable queue.
+     * relates: Queue Stream output assuming a Solvable queue.
      */
     std::ostream & dumpOn( std::ostream & str, const Queue & obj );
   }

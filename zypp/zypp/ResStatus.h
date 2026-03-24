@@ -706,20 +706,20 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ResStatus Stream output */
+  /** relates: ResStatus Stream output */
   std::ostream & operator<<( std::ostream & str, const ResStatus & obj ) ZYPP_API;
 
-  /** \relates ResStatus Stream output */
+  /** relates: ResStatus Stream output */
   std::ostream & operator<<( std::ostream & str, ResStatus::TransactValue obj ) ZYPP_API;
 
-  /** \relates ResStatus Stream output */
+  /** relates: ResStatus Stream output */
   std::ostream & operator<<( std::ostream & str, ResStatus::TransactByValue obj ) ZYPP_API;
 
-  /** \relates ResStatus */
+  /** relates: ResStatus */
   inline bool operator==( const ResStatus & lhs, const ResStatus & rhs )
   { return lhs._bitfield == rhs._bitfield; }
 
-  /** \relates ResStatus */
+  /** relates: ResStatus */
   inline bool operator!=( const ResStatus & lhs, const ResStatus & rhs )
   { return ! (lhs == rhs); }
 

@@ -98,10 +98,10 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates  ProductFileData Stream output */
+    /** relates:  ProductFileData Stream output */
     std::ostream & operator<<( std::ostream & str, const ProductFileData & obj ) ZYPP_API;
 
-    /** \relates  ProductFileData::Upgrade Stream output */
+    /** relates:  ProductFileData::Upgrade Stream output */
     std::ostream & operator<<( std::ostream & str, const ProductFileData::Upgrade & obj ) ZYPP_API;
 
     ///////////////////////////////////////////////////////////////////

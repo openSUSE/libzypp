@@ -123,16 +123,16 @@ namespace zypp
   } // namespace repo
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced strings */
+  /** relates: RepoVariablesStringReplacer Helper managing repo variables replaced strings */
   using RepoVariablesReplacedString = base::ValueTransform<std::string, repo::RepoVariablesStringReplacer>;
 
-  /** \relates RepoVariablesStringReplacer Helper managing repo variables replaced string lists */
+  /** relates: RepoVariablesStringReplacer Helper managing repo variables replaced string lists */
   using RepoVariablesReplacedStringList = base::ContainerTransform<std::list<std::string>, repo::RepoVariablesStringReplacer>;
 
-  /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced urls */
+  /** relates: RepoVariablesUrlReplacer Helper managing repo variables replaced urls */
   using RepoVariablesReplacedUrl = base::ValueTransform<Url, repo::RepoVariablesUrlReplacer>;
 
-  /** \relates RepoVariablesUrlReplacer Helper managing repo variables replaced url lists */
+  /** relates: RepoVariablesUrlReplacer Helper managing repo variables replaced url lists */
   using RepoVariablesReplacedUrlList = base::ContainerTransform<std::list<Url>, repo::RepoVariablesUrlReplacer>;
 
 } // namespace zypp

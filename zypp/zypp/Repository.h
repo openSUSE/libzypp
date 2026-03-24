@@ -335,21 +335,21 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Repository Stream output */
+    /** relates: Repository Stream output */
     std::ostream & operator<<( std::ostream & str, const Repository & obj ) ZYPP_API;
 
-    /** \relates Repository XML output */
+    /** relates: Repository XML output */
     std::ostream & dumpAsXmlOn( std::ostream & str, const Repository & obj ) ZYPP_API;
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator==( const Repository & lhs, const Repository & rhs )
     { return lhs.get() == rhs.get(); }
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator!=( const Repository & lhs, const Repository & rhs )
     { return lhs.get() != rhs.get(); }
 
-    /** \relates Repository */
+    /** relates: Repository */
     inline bool operator<( const Repository & lhs, const Repository & rhs )
     { return lhs.get() < rhs.get(); }
 

@@ -37,7 +37,7 @@ namespace zypp
       LS_NOREPOS	= (1 << 2),	//!< // Don't loag existing repos (just Target).
     };
 
-    /** \relates LoadSystemFlag Type-safe way of storing OR-combinations. */
+    /** relates: LoadSystemFlag Type-safe way of storing OR-combinations. */
     ZYPP_DECLARE_FLAGS_AND_OPERATORS( LoadSystemFlags, LoadSystemFlag );
 
     /**

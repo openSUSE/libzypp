@@ -664,7 +664,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates RepoManager Stream output */
+  /** relates: RepoManager Stream output */
   std::ostream & operator<<( std::ostream & str, const RepoManager & obj ) ZYPP_API;
 
   /** Iterate the known repositories. */

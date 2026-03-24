@@ -93,7 +93,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates CapMatch Stream output */
+  /** relates: CapMatch Stream output */
   std::ostream & operator<<( std::ostream & str, const CapMatch & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

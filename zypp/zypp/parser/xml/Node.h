@@ -163,7 +163,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Node Stream output. */
+    /** relates: Node Stream output. */
     std::ostream & operator<<( std::ostream & str, const Node & obj );
 
     /////////////////////////////////////////////////////////////////

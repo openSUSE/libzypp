@@ -102,7 +102,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates RequestedLocalesFile Stream output */
+    /** relates: RequestedLocalesFile Stream output */
     std::ostream & operator<<( std::ostream & str, const RequestedLocalesFile & obj );
 
     /////////////////////////////////////////////////////////////////

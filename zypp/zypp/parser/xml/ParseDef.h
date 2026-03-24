@@ -230,10 +230,10 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates ParseDef ParseDef::Mode stream output. */
+    /** relates: ParseDef ParseDef::Mode stream output. */
     std::ostream & operator<<( std::ostream & str, ParseDef::Mode obj );
 
-    /** \relates ParseDef Stream output. */
+    /** relates: ParseDef Stream output. */
     std::ostream & operator<<( std::ostream & str, const ParseDef & obj );
 
     /////////////////////////////////////////////////////////////////

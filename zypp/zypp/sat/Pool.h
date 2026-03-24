@@ -287,14 +287,14 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Pool Stream output */
+    /** relates: Pool Stream output */
     std::ostream & operator<<( std::ostream & str, const Pool & obj ) ZYPP_API;
 
-    /** \relates Pool */
+    /** relates: Pool */
     inline bool operator==( const Pool & lhs, const Pool & rhs )
     { return lhs.get() == rhs.get(); }
 
-    /** \relates Pool */
+    /** relates: Pool */
     inline bool operator!=( const Pool & lhs, const Pool & rhs )
     { return lhs.get() != rhs.get(); }
 

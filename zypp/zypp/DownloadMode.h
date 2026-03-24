@@ -36,14 +36,14 @@ namespace zypp
                         //!< traditional behaviour.
   };
 
-  /** \relates DownloadMode Parse from string.
+  /** relates: DownloadMode Parse from string.
    * On success the \ref DownloadMode is returned via \a result_r,
    * and the function returns \c true. Otherwise it returns \c false
    * and \a result_r remains unchanged.
    */
   bool deserialize( const std::string & str_r, DownloadMode & result_r );
 
-  /** \relates DownloadMode Parse from string.
+  /** relates: DownloadMode Parse from string.
    * Similar as \ref deserialize, but silently return \ref DownloadDefault
    * in case of a parse error.
    */
@@ -54,7 +54,7 @@ namespace zypp
     return ret;
   }
 
-  /** \relates DownloadMode Stream output. */
+  /** relates: DownloadMode Stream output. */
   std::ostream & operator<<( std::ostream & str, DownloadMode obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

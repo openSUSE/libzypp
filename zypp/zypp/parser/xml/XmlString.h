@@ -106,7 +106,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates XmlString Stream output. */
+    /** relates: XmlString Stream output. */
     std::ostream & operator<<( std::ostream & str, const XmlString & obj ) ZYPP_API;
 
     /////////////////////////////////////////////////////////////////

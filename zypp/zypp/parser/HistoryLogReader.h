@@ -157,7 +157,7 @@ namespace zypp
     RW_pointer<Impl,rw_pointer::Scoped<Impl> > _pimpl;
   };
 
-  /** \relates HistoryLogReader::Options */
+  /** relates: HistoryLogReader::Options */
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS( HistoryLogReader::Options );
 
   ///////////////////////////////////////////////////////////////////

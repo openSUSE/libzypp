@@ -123,7 +123,7 @@ namespace zypp
       friend std::ostream & operator<<( std::ostream & str, const SolvableSpec & obj );
     };
 
-    /** \relates SolvableSpec Stream output */
+    /** relates: SolvableSpec Stream output */
     std::ostream & operator<<( std::ostream & str, const SolvableSpec & obj );
 
   } // namespace sat

@@ -213,31 +213,31 @@ namespace zypp
     int _val;
   };
 
-  /** \relates Match */
+  /** relates: Match */
   inline bool operator==( const Match & lhs, const Match & rhs )
   { return lhs.get() == rhs.get(); }
-  /** \relates Match */
+  /** relates: Match */
   inline bool operator!=( const Match & lhs, const Match & rhs )
   { return lhs.get() != rhs.get(); }
 
-  /** \relates Match */
+  /** relates: Match */
   inline Match operator|( const Match & lhs, const Match & rhs )
   { return Match(lhs) |= rhs; }
-  /** \relates Match \overload to disambiguate 'int|int'. */
+  /** relates: Match \overload to disambiguate 'int|int'. */
   inline Match operator|( Match::Mode lhs, Match::Mode rhs )
   { return Match(lhs) |= rhs; }
 
-  /** \relates Match */
+  /** relates: Match */
   inline Match operator-( const Match & lhs, const Match & rhs )
   { return Match(lhs) -= rhs; }
-  /** \relates Match \overload to disambiguate 'int-int'. */
+  /** relates: Match \overload to disambiguate 'int-int'. */
   inline Match operator-( Match::Mode lhs, Match::Mode rhs )
   { return Match(lhs) -= rhs; }
 
-  /** \relates Match::Mode Stream output */
+  /** relates: Match::Mode Stream output */
   std::ostream & operator<<( std::ostream & str, Match::Mode obj ) ZYPP_API;
 
-  /** \relates Match Stream output */
+  /** relates: Match Stream output */
   std::ostream & operator<<( std::ostream & str, const Match & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
@@ -392,17 +392,17 @@ namespace zypp
     RWCOW_pointer<Impl> _pimpl;
   };
 
-  /** \relates StrMatcher Stream output */
+  /** relates: StrMatcher Stream output */
   std::ostream & operator<<( std::ostream & str, const StrMatcher & obj );
 
-  /** \relates StrMatcher */
+  /** relates: StrMatcher */
   bool operator==( const StrMatcher & lhs, const StrMatcher & rhs );
 
-  /** \relates StrMatcher */
+  /** relates: StrMatcher */
   inline bool operator!=( const StrMatcher & lhs, const StrMatcher & rhs )
   { return !( lhs == rhs ); }
 
-  /** \relates StrMatcher Arbitrary order for std::container. */
+  /** relates: StrMatcher Arbitrary order for std::container. */
   bool operator<( const StrMatcher & lhs, const StrMatcher & rhs );
 
 } // namespace zypp

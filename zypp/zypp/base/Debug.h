@@ -70,7 +70,7 @@ namespace zypp
       std::string _ident;
     };
 
-    /** \relates TraceCADBase Stream output of TraceCADBase::What. */
+    /** relates: TraceCADBase Stream output of TraceCADBase::What. */
     inline std::ostream & operator<<( std::ostream & str, TraceCADBase::What obj )
     {
       switch( obj )
@@ -142,7 +142,7 @@ namespace zypp
         { traceCAD( PING, *this, *this ); }
       };
 
-    /** \relates TraceCAD Stream output. */
+    /** relates: TraceCAD Stream output. */
     template<class Tp>
       inline std::ostream & operator<<( std::ostream & str, const TraceCAD<Tp> & obj )
       { return str << "(ID " << obj.numericId() << ", TOTAL " << obj._totalTraceCAD()

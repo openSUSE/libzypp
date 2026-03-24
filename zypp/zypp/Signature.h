@@ -27,7 +27,7 @@ namespace zypp
     private:
   };
 
-  /** \relates Signature Stream output */
+  /** relates: Signature Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Signature & obj )
   { return obj.dumpOn( str ); }
 

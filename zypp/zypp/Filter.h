@@ -127,7 +127,7 @@ namespace zypp
         ResKind _kind;
     };
 
-    /** \relates ByKind templated convenience ctor. */
+    /** relates: ByKind templated convenience ctor. */
     template<class TRes>
     inline ByKind byKind()
     { return ByKind( ResTraits<TRes>::kind ); }

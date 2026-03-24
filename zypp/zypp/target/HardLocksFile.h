@@ -115,7 +115,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates HardLocksFile Stream output */
+    /** relates: HardLocksFile Stream output */
     std::ostream & operator<<( std::ostream & str, const HardLocksFile & obj );
 
     /////////////////////////////////////////////////////////////////

@@ -50,7 +50,7 @@ enum class ColorContext
   OSDEBUG
 };
 
-/** \relates ColorContext map to \ref ansi::Color */
+/** relates: ColorContext map to \ref ansi::Color */
 ansi::Color customColorCtor( ColorContext ctxt_r );
 
 namespace ansi

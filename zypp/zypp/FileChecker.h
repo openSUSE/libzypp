@@ -146,7 +146,7 @@ namespace zypp
      std::list<FileChecker> _checkers;
    };
 
-  /** \relates FileChecker Stream output */
+  /** relates: FileChecker Stream output */
   std::ostream & operator<<( std::ostream & str, const FileChecker & obj );
 
   /////////////////////////////////////////////////////////////////

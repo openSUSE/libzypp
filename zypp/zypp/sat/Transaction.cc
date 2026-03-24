@@ -301,7 +301,7 @@ namespace zypp
         }
     };
 
-    /** \relates Transaction::Impl Stream output */
+    /** relates: Transaction::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Transaction::Impl & obj )
     {
       return str << "Transaction: " << obj.size() << " (" << (obj.valid()?"valid":"INVALID") << ")";

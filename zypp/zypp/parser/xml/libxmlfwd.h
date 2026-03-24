@@ -25,11 +25,11 @@ namespace zypp
   { /////////////////////////////////////////////////////////////////
 
     using ReadState = xmlTextReaderMode;
-    /** \relates ReadState Stream output. */
+    /** relates: ReadState Stream output. */
     std::ostream & operator<<( std::ostream & str, const ReadState & obj );
 
     using NodeType = xmlReaderTypes;
-    /** \relates NodeType Stream output. */
+    /** relates: NodeType Stream output. */
     std::ostream & operator<<( std::ostream & str, const NodeType & obj );
 
     /////////////////////////////////////////////////////////////////

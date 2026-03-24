@@ -471,7 +471,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ResPool Stream output */
+  /** relates: ResPool Stream output */
   std::ostream & operator<<( std::ostream & str, const ResPool & obj ) ZYPP_API;
 
   /////////////////////////////////////////////////////////////////

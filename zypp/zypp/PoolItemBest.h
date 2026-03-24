@@ -154,7 +154,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolItemBest Stream output */
+  /** relates: PoolItemBest Stream output */
   std::ostream & operator<<( std::ostream & str, const PoolItemBest & obj );
 
   /////////////////////////////////////////////////////////////////

@@ -188,31 +188,31 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Pathname */
+    /** relates: Pathname */
     inline bool operator==( const Pathname & l, const Pathname & r )
     { return l.asString() == r.asString(); }
 
-    /** \relates Pathname */
+    /** relates: Pathname */
     inline bool operator!=( const Pathname & l, const Pathname & r )
     { return l.asString() != r.asString(); }
 
-    /** \relates Pathname Concatenate two Pathname. */
+    /** relates: Pathname Concatenate two Pathname. */
     inline Pathname operator/( const Pathname & l, const Pathname & r )
     { return Pathname::cat( l, r ); }
 
-    /** \relates Pathname Concatenate two Pathname.
+    /** relates: Pathname Concatenate two Pathname.
      * \deprecated: use /
     */
     inline Pathname operator+( const Pathname & l, const Pathname & r )
     { return Pathname::cat( l, r ); }
 
-    /** \relates Pathname */
+    /** relates: Pathname */
     inline bool operator<( const Pathname & l, const Pathname & r )
     { return l.asString() < r.asString(); }
 
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Pathname Stream output */
+    /** relates: Pathname Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Pathname & obj )
     { return str << obj.asString(); }
 

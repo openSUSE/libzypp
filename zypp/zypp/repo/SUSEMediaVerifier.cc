@@ -56,7 +56,7 @@ namespace zypp
       media::MediaNr _totalMedia = 0;
     };
 
-    /** \relates SMVData Stream output  */
+    /** relates: SMVData Stream output  */
     inline std::ostream & operator<<( std::ostream & str, const SMVData & obj )
     { return str << "[" << obj._mediaVendor << "|" << obj._mediaIdent << "/" << obj._totalMedia << "]"; }
 
@@ -113,7 +113,7 @@ namespace zypp
       media::MediaNr _mediaNr = 1;
     };
 
-    /** \relates SUSEMediaVerifier::Impl Stream output  */
+    /** relates: SUSEMediaVerifier::Impl Stream output  */
     inline std::ostream & operator<<( std::ostream & str, const SUSEMediaVerifier::Impl & obj )
     { return str << obj.smvData() << "(" << obj.mediaNr() << ")"; }
 

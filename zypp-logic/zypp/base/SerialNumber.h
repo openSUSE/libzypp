@@ -78,7 +78,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates SerialNumber Stream output */
+  /** relates: SerialNumber Stream output */
   std::ostream & operator<<( std::ostream & str, const SerialNumber & obj );
 
   ///////////////////////////////////////////////////////////////////
@@ -175,7 +175,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates SerialNumberWatcher Stream output */
+  /** relates: SerialNumberWatcher Stream output */
   std::ostream & operator<<( std::ostream & str, const SerialNumberWatcher & obj );
 
   /////////////////////////////////////////////////////////////////

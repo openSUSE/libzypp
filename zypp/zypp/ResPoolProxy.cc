@@ -210,7 +210,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ResPoolProxy::Impl Stream output */
+  /** relates: ResPoolProxy::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ResPoolProxy::Impl & obj )
   {
     return str << "ResPoolProxy (" << obj._pool.serial() << ") [" << obj._pool.size()
@@ -226,7 +226,7 @@ namespace zypp
     };
   }
 
-  /** \relates ResPoolProxy::Impl Verbose stream output */
+  /** relates: ResPoolProxy::Impl Verbose stream output */
   inline std::ostream & dumpOn( std::ostream & str, const ResPoolProxy::Impl & obj )
   {
     detail::DumpFilter f;

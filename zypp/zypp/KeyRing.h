@@ -115,7 +115,7 @@ namespace zypp
      *
      */
     bool askUserToAcceptPackageKey( const PublicKey &key_r, const KeyContext &keycontext_r = KeyContext() );
-    /** \relates askUserToAcceptPackageKey generic reports UserData::type */
+    /** relates: askUserToAcceptPackageKey generic reports UserData::type */
     constexpr static const char * ACCEPT_PACKAGE_KEY_REQUEST = "KeyRingReport/AcceptPackageKey";
 
     /**
@@ -128,7 +128,7 @@ namespace zypp
      *
      */
      void reportNonImportedKeys( const std::set<Edition> &keys_r );
-     /** \relates reportNonImportedKeys generic reports UserData::type */
+     /** relates: reportNonImportedKeys generic reports UserData::type */
      constexpr static const char *KEYS_NOT_IMPORTED_REPORT = "KeyRingReport/KeysNotImported";
 
 
@@ -147,7 +147,7 @@ namespace zypp
      void reportAutoImportKey( const std::list<PublicKeyData> & keyDataList_r,
                                const PublicKeyData & keySigning_r,
                                const KeyContext &keyContext_r );
-     /** \relates reportAutoImportKey generic reports UserData::type */
+     /** relates: reportAutoImportKey generic reports UserData::type */
      constexpr static const char *REPORT_AUTO_IMPORT_KEY = "KeyRingReport/reportAutoImportKey";
   };
 
@@ -309,14 +309,14 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates KeyRing Stream output */
+  /** relates: KeyRing Stream output */
   inline std::ostream & operator<<( std::ostream & str, const KeyRing & /*obj*/ )
   {
     //return str << obj.asString();
     return str;
   }
 
-  /** \relates KeyRing::DefaultAccept  */
+  /** relates: KeyRing::DefaultAccept  */
   ZYPP_DECLARE_OPERATORS_FOR_FLAGS( KeyRing::DefaultAccept );
 
   ///////////////////////////////////////////////////////////////////

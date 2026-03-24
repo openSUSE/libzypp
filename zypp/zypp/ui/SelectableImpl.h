@@ -539,7 +539,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Selectable::Impl Stream output */
+    /** relates: Selectable::Impl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Selectable::Impl & obj )
     {
       return str << '[' << obj.kind() << ']' << obj.name() << ": " << obj.status()
@@ -548,7 +548,7 @@ namespace zypp
                  << obj.candidateObj();
     }
 
-    /** \relates Selectable::Impl Stream output */
+    /** relates: Selectable::Impl Stream output */
     inline std::ostream & dumpOn( std::ostream & str, const Selectable::Impl & obj )
     {
       str << '[' << obj.kind() << ']' << obj.name() << ": " << obj.status()

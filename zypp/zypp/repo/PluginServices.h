@@ -53,7 +53,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates ServiceFileReader Stream output */
+    /** relates: ServiceFileReader Stream output */
     std::ostream & operator<<( std::ostream & str, const PluginServices & obj );
 
     /////////////////////////////////////////////////////////////////

@@ -104,7 +104,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates SolvIdentFile Stream output */
+    /** relates: SolvIdentFile Stream output */
     std::ostream & operator<<( std::ostream & str, const SolvIdentFile & obj );
 
     /////////////////////////////////////////////////////////////////

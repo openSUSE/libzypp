@@ -490,10 +490,10 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolQuery Stream output. */
+  /** relates: PoolQuery Stream output. */
   std::ostream & operator<<( std::ostream & str, const PoolQuery & obj ) ZYPP_API;
 
-  /** \relates PoolQuery Detailed stream output. */
+  /** relates: PoolQuery Detailed stream output. */
   std::ostream & dumpOn( std::ostream & str, const PoolQuery & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////
@@ -607,11 +607,11 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PoolQueryIterator Stream output. */
+  /** relates: PoolQueryIterator Stream output. */
   inline std::ostream & operator<<( std::ostream & str, const PoolQueryIterator & obj )
   { return str << obj.base(); }
 
-  /** \relates PoolQueryIterator Detailed stream output. */
+  /** relates: PoolQueryIterator Detailed stream output. */
   std::ostream & dumpOn( std::ostream & str, const PoolQueryIterator & obj ) ZYPP_API;
 
   ///////////////////////////////////////////////////////////////////

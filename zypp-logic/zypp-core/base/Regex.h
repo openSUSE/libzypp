@@ -60,20 +60,20 @@ namespace zypp
     /// \brief Regular expression matching
     ///
     /// \ingroup ZYPP_STR_REGEX
-    /// \relates regex
+    /// relates: regex
     /// Return whether a \ref regex matches a specific string. An optionally
     /// passed \ref smatch object will contain the match reults.
     //////////////////////////////////////////////////////////////////
     bool regex_match( const char * s, smatch & matches, const regex & regex ) ZYPP_API;
 
-    /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
+    /** \copydoc regex_match relates: regex \ingroup ZYPP_STR_REGEX */
     inline bool regex_match(const std::string & s, smatch & matches, const regex & regex)
     { return regex_match( s.c_str(), matches, regex ); }
 
-    /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
+    /** \copydoc regex_match relates: regex \ingroup ZYPP_STR_REGEX */
     bool regex_match( const char * s, const regex & regex ) ZYPP_API;
 
-    /** \copydoc regex_match \relates regex \ingroup ZYPP_STR_REGEX */
+    /** \copydoc regex_match relates: regex \ingroup ZYPP_STR_REGEX */
     inline bool regex_match( const std::string & s, const regex & regex )
     { return regex_match( s.c_str(), regex ); }
 
@@ -149,7 +149,7 @@ namespace zypp
       bool m_valid = false;
     };
 
-    /** \relates regex Stream output */
+    /** relates: regex Stream output */
     inline std::ostream & operator<<( std::ostream & str, const regex & obj )
     { return str << obj.asString(); }
 

@@ -522,10 +522,10 @@ protected:
   void doRebuildDatabase(callback::SendReport<RebuildDBReport> & report);
 };
 
-/** \relates RpmDb::CheckPackageResult Stream output */
+/** relates: RpmDb::CheckPackageResult Stream output */
 std::ostream & operator<<( std::ostream & str, RpmDb::CheckPackageResult obj ) ZYPP_API;
 
-/** \relates RpmDb::checkPackageDetail Stream output */
+/** relates: RpmDb::checkPackageDetail Stream output */
 std::ostream & operator<<( std::ostream & str, const RpmDb::CheckPackageDetail & obj ) ZYPP_API;
 
 } // namespace rpm

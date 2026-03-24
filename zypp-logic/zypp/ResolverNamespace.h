@@ -28,16 +28,16 @@ namespace zypp
     filesystem	= 1<<2,	///< filesystems
   };
 
-  /** \relates ResolverNamespace Flags */
+  /** relates: ResolverNamespace Flags */
   ZYPP_DECLARE_FLAGS_AND_OPERATORS(ResolverNamespaces,ResolverNamespace);
 
-  /** \relates ResolverNamespace All bits set. */
+  /** relates: ResolverNamespace All bits set. */
   static constexpr const ResolverNamespaces NoResolverNamespaces = ResolverNamespace();
 
-  /** \relates ResolverNamespace All bits set. */
+  /** relates: ResolverNamespace All bits set. */
   static constexpr const ResolverNamespaces AllResolverNamespaces = ResolverNamespace(0xff);
 
-  /** \relates ResolverNamespace The underlying libsolv ID */
+  /** relates: ResolverNamespace The underlying libsolv ID */
   inline constexpr IdString asIdString( ResolverNamespace obj )
   {
     return IdString( obj == ResolverNamespace::language ? sat::detail::namespaceLanguage
@@ -46,15 +46,15 @@ namespace zypp
                    : sat::detail::noId );
   }
 
-  /** \relates ResolverNamespace String representation */
+  /** relates: ResolverNamespace String representation */
   inline std::string asString( ResolverNamespace obj )
   { return asIdString( obj ).asString(); }
 
-  /** \relates ResolverNamespace Stream output */
+  /** relates: ResolverNamespace Stream output */
   inline std::ostream & operator<<( std::ostream & str, ResolverNamespace obj )
   { return str << asIdString( obj ); }
 
-  /** \relates ResolverNamespaces Stream output */
+  /** relates: ResolverNamespaces Stream output */
   inline std::ostream & operator<<( std::ostream & str, ResolverNamespaces obj )
   {
     return str << stringify( obj, {

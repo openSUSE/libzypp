@@ -235,7 +235,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates TargetImpl Stream output */
+    /** relates: TargetImpl Stream output */
     inline std::ostream & operator<<( std::ostream & str, const TargetImpl & obj )
     {
       return obj.dumpOn( str );

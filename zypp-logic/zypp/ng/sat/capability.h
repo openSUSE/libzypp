@@ -294,15 +294,15 @@ namespace zyppng::sat
       sat::detail::IdType _id;
   };
 
-  /** \relates Capability */
+  /** relates: Capability */
   inline bool operator==( const Capability & lhs, const Capability & rhs )
   { return lhs.id() == rhs.id(); }
 
-  /** \relates Capability */
+  /** relates: Capability */
   inline bool operator!=( const Capability & lhs, const Capability & rhs )
   { return lhs.id() != rhs.id(); }
 
-  /** \relates Capability Arbitrary order. */
+  /** relates: Capability Arbitrary order. */
   inline bool operator<( const Capability & lhs, const Capability & rhs )
   { return lhs.id() < rhs.id(); }
 

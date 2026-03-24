@@ -251,10 +251,10 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates Glob Stream output */
+    /** relates: Glob Stream output */
     std::ostream & operator<<( std::ostream & str, const Glob & obj );
 
-    /** \relates Glob::const_iterator Stream output */
+    /** relates: Glob::const_iterator Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Glob::const_iterator & obj )
     { return str << *obj; }
 

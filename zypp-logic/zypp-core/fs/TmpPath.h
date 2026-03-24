@@ -95,7 +95,7 @@ namespace zypp {
     };
 
     /**
-     * \relates TmpPath Stream output as pathname.
+     * relates: TmpPath Stream output as pathname.
      **/
     inline std::ostream & operator<<( std::ostream & str, const TmpPath & obj )
     { return str << static_cast<Pathname>(obj); }

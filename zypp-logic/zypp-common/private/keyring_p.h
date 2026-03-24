@@ -93,6 +93,7 @@ namespace zypp {
       KeyRingImpl( const Pathname & baseTmpDir );
 
       void importKey( const PublicKey & key, bool trusted = false );
+      void importKeys( const std::list<PublicKey> & keys, bool trusted = false );
       void deleteKey( const std::string & id, bool trusted );
 
       std::string readSignatureKeyId( const Pathname & signature );

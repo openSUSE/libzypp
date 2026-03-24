@@ -134,6 +134,12 @@ namespace zypp
       }
     }
   }
+  void KeyRingImpl::importKeys( const std::list<PublicKey> & keys, bool trusted )
+  {
+     for ( const PublicKey & key : keys )
+       importKey( key, trusted );
+  }
+
 
   void KeyRingImpl::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
   {
@@ -180,10 +186,7 @@ namespace zypp
   void KeyRingImpl::preloadCachedKeys()
   {
     MIL << "preloadCachedKeys into general keyring..." << endl;
-    CachedPublicKeyData::Manip manip { keyRingManip( generalKeyRing() ) }; // Provides the context if we want to manip a cached keyring.
-
-    // For now just load the 'gpg-pubkey-*.{asc,key}' files into the general keyring,
-    // if their id (derived from the filename) is not in the trusted ring.
+    // For now just load the 'gpg-pubkey-*.{asc,key}' files into the general keyring.
     // TODO: Head for a persistent general keyring.
     std::set<Pathname> cachedirs;
     ZConfig & conf { ZConfig::instance() };
@@ -198,37 +201,25 @@ namespace zypp
       cachedirs.insert( r / "/usr/lib/rpm/gnupg/keys" );
     }
 
-    std::map<std::string,Pathname> keyCandidates;	// Collect one file path per keyid
-    const str::regex rx { "^gpg-pubkey-([[:xdigit:]]{8,})(-[[:xdigit:]]{8,})?\\.(asc|key)$" };
+    // We load all the matching files. Although the key-id embedded in the filename
+    // suggests there's just one key inside, this must not be true. There may be
+    // more keys hidden in the file (see PublicKey::hiddenKeys). And more important,
+    // there my be trusted keys with with an extended lifetime. They need to be updated
+    // on the fly in the trusteddb.
+    std::list<PublicKey> newkeys;
     for ( const auto & cache : cachedirs ) {
       dirForEach( cache,
-                  [&rx,&keyCandidates]( const Pathname & dir_r, const char *const file_r )->bool {
+                  [&newkeys]( const Pathname & dir_r, const char *const file_r )->bool {
+                    static const str::regex rx { "^gpg-pubkey-([[:xdigit:]]{8,})(-[[:xdigit:]]{8,})?\\.(asc|key)$" };
                     str::smatch what;
                     if ( str::regex_match( file_r, what, rx ) ) {
-                      Pathname & remember { keyCandidates[what[1]] };
-                      if ( remember.empty() ) {
-                        remember = dir_r / file_r;
-                      }
+                      newkeys.push_back( PublicKey( dir_r / file_r ) );
                     }
                     return true;
                   }
                 );
     }
-
-    for ( const auto & p : keyCandidates ) {
-      // Avoid checking the general keyring while it is flagged dirty.
-      // Checking the trusted ring is ok, and most keys will be there anyway.
-      const std::string & id { p.first };
-      const Pathname & path { p.second };
-      if ( isKeyTrusted(id) )
-        continue;
-      if ( manip.keyManagerCtx().importKey( path ) ) {
-        DBG << "preload key file " << path << endl;
-      }
-      else {
-        WAR << "Skipping: Can't preload key file " << path << endl;
-      }
-    }
+    importKeys( newkeys );
   }
 
   PublicKey KeyRingImpl::exportKey( const PublicKeyData & keyData, const Pathname & keyring )

@@ -119,6 +119,7 @@ namespace zyppng::KeyRingWorkflow {
   }
 
   namespace {
+    using Ring = zypp::KeyRingImpl::Ring;
 
     /*!
      * \class VerifyFileSignatureLogic
@@ -137,9 +138,9 @@ namespace zyppng::KeyRingWorkflow {
       { }
 
       struct FoundKeyData {
-        zypp::PublicKeyData _foundKey;
-        zypp::Pathname _whichKeyRing;
-        bool trusted = false;
+        zypp::PublicKeyData _foundKey;      ///< The key we found or false.
+        Ring _whichKeyRing = Ring::Trusted; ///< The keyring in which we found the key. Valid only if the key is valid.
+        bool trusted = false;               ///< Whether the key may validate data. Keys in Ring::General may if the user temp. trusted.
       };
 
       MaybeAwaitable<FoundKeyData> findKey ( const std::string &id ) {
@@ -147,17 +148,17 @@ namespace zyppng::KeyRingWorkflow {
         using zyppng::operators::operator|;
 
         if ( id.empty() )
-          return makeReadyTask(FoundKeyData{zypp::PublicKeyData(), zypp::Pathname()});
+          return makeReadyTask(FoundKeyData());
 
         // does key exists in trusted keyring
-        zypp::PublicKeyData trustedKeyData( _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ) );
+        zypp::PublicKeyData trustedKeyData { _keyRing->pimpl().publicKeyData( id, Ring::Trusted ) };
         if ( trustedKeyData )
         {
           MIL << "Key is trusted: " << trustedKeyData << std::endl;
 
           // lets look if there is an updated key in the
           // general keyring
-          zypp::PublicKeyData generalKeyData( _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().generalKeyRing() ) );
+          zypp::PublicKeyData generalKeyData { _keyRing->pimpl().publicKeyData( id, Ring::General ) };
           if ( generalKeyData )
           {
             // bnc #393160: Comment #30: Compare at least the fingerprint
@@ -172,19 +173,19 @@ namespace zyppng::KeyRingWorkflow {
                  && trustedKeyData.created() < generalKeyData.created() )
             {
               MIL << "Key was updated. Saving new version into trusted keyring: " << generalKeyData << std::endl;
-              _keyRing->importKey( _keyRing->pimpl().exportKey( generalKeyData, _keyRing->pimpl().generalKeyRing() ), true );
-              trustedKeyData = _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ); // re-read: invalidated by import?
+              _keyRing->importKey( _keyRing->pimpl().exportKey( generalKeyData, Ring::General ), true );
+              trustedKeyData = _keyRing->pimpl().publicKeyData( id, Ring::Trusted ); // re-read: invalidated by import?
             }
           }
 
-          return makeReadyTask( FoundKeyData{ trustedKeyData,  _keyRing->pimpl().trustedKeyRing(), true } );
+          return makeReadyTask( FoundKeyData{ trustedKeyData, Ring::Trusted, true } );
         }
         else
         {
-          zypp::PublicKeyData generalKeyData( _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().generalKeyRing() ) );
+          zypp::PublicKeyData generalKeyData { _keyRing->pimpl().publicKeyData( id, Ring::General ) };
           if ( generalKeyData )
           {
-            zypp::PublicKey key( _keyRing->pimpl().exportKey( generalKeyData, _keyRing->pimpl().generalKeyRing() ) );
+            zypp::PublicKey key( _keyRing->pimpl().exportKey( generalKeyData, Ring::General ) );
             MIL << "Key [" << id << "] " << key.name() << " is not trusted" << std::endl;
 
             // ok the key is not trusted, ask the user to trust it or not
@@ -192,7 +193,7 @@ namespace zyppng::KeyRingWorkflow {
             if ( reply == zypp::KeyRingReport::KEY_TRUST_TEMPORARILY ||
                  reply == zypp::KeyRingReport::KEY_TRUST_AND_IMPORT )
             {
-              zypp::Pathname whichKeyring;
+              Ring whichKeyring;
 
               MIL << "User wants to trust key [" << id << "] " << key.name() << std::endl;
 
@@ -200,17 +201,17 @@ namespace zyppng::KeyRingWorkflow {
               {
                 MIL << "User wants to import key [" << id << "] " << key.name() << std::endl;
                 _keyRing->importKey( key, true );
-                whichKeyring = _keyRing->pimpl().trustedKeyRing();
+                whichKeyring = Ring::Trusted;
               }
               else
-                whichKeyring = _keyRing->pimpl().generalKeyRing();
+                whichKeyring = Ring::General;
 
               return makeReadyTask(FoundKeyData { std::move(generalKeyData), std::move(whichKeyring), true });
             }
             else
             {
               MIL << "User does not want to trust key [" << id << "] " << key.name() << std::endl;
-              return makeReadyTask(FoundKeyData { std::move(generalKeyData),  _keyRing->pimpl().generalKeyRing(), false });
+              return makeReadyTask(FoundKeyData { std::move(generalKeyData),  Ring::General, false });
             }
           }
           else if ( ! _verifyContext.keyContext().empty() )
@@ -219,13 +220,13 @@ namespace zyppng::KeyRingWorkflow {
             return provideAndImportKeyFromRepository ( _zyppContext, id, _verifyContext.keyContext().repoInfo() )
               | [this, id]( bool success ) {
                   if ( !success ) {
-                    return FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() };
+                    return FoundKeyData();
                   }
-                  return FoundKeyData{ _keyRing->pimpl().publicKeyExists( id, _keyRing->pimpl().trustedKeyRing() ),   _keyRing->pimpl().trustedKeyRing(), true };
+                  return FoundKeyData{ _keyRing->pimpl().publicKeyData( id, Ring::Trusted ), Ring::Trusted, true };
                 };
           }
         }
-        return makeReadyTask(FoundKeyData{ zypp::PublicKeyData(), zypp::Pathname() });
+        return makeReadyTask(FoundKeyData());
       }
 
       // returns std::pair<bool, zypp::keyring::VerifyFileContext>
@@ -264,11 +265,11 @@ namespace zyppng::KeyRingWorkflow {
             WAR << "buddy " << sid << ": key id is too short to safely identify a gpg key. Skipping it." << std::endl;
             continue;
           }
-          if ( _keyRing->pimpl().trustedPublicKeyExists( sid ) ) {
+          if ( _keyRing->pimpl().publicKeyData( sid, Ring::Trusted ) ) {
             MIL << "buddy " << sid << ": already in trusted key ring. Not needed." << std::endl;
             continue;
           }
-          auto pk = _keyRing->pimpl().publicKeyExists( sid );
+          auto pk = _keyRing->pimpl().publicKeyData( sid, Ring::General );
           if ( not pk ) {
             WAR << "buddy " << sid << ": not available in the public key ring. Skipping it." << std::endl;
             continue;
@@ -296,7 +297,7 @@ namespace zyppng::KeyRingWorkflow {
               return makeReturn(false);
 
             // it exists, is trusted, does it validate?
-            _verifyContext.signatureIdTrusted( res._whichKeyRing == _keyRing->pimpl().trustedKeyRing() );
+            _verifyContext.signatureIdTrusted( res._whichKeyRing == Ring::Trusted );
             _keyringReport.infoVerify( filedesc, res._foundKey, keyContext );
             if ( _keyRing->pimpl().verifyFile( file, signature, res._whichKeyRing ) )
             {
@@ -306,7 +307,7 @@ namespace zyppng::KeyRingWorkflow {
                 MIL << "Validated with trusted key: importing buddy list..." << std::endl;
                 _keyringReport.reportAutoImportKey( buddies, res._foundKey, keyContext );
                 for ( const auto & kd : buddies ) {
-                  _keyRing->importKey( _keyRing->pimpl().exportKey( kd, _keyRing->pimpl().generalKeyRing() ), true );
+                  _keyRing->importKey( _keyRing->pimpl().exportKey( kd, Ring::General ), true );
                 }
               }
               return makeReturn(_verifyContext.fileValidated());	// signature is actually successfully validated!

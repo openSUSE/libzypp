@@ -114,12 +114,12 @@ namespace zypp
   {
   }
 
-  void KeyRingImpl::importKey( const PublicKey & key, bool trusted )
-  {
-    importKey( key.path(), trusted ? trustedKeyRing() : generalKeyRing() );
-    MIL << "Imported key " << key << " to " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
 
-    if ( trusted )
+  void KeyRingImpl::importKey( const PublicKey & key, const Ring ring )
+  {
+    MIL << "Imported key " << key << " to " << ring << endl;
+
+    if ( ring == Ring::Trusted )
     {
       if ( key.hiddenKeys().empty() )
       {
@@ -128,46 +128,87 @@ namespace zypp
       else
       {
         // multiple keys: Export individual keys ascii armored to import in rpmdb
-        _sigTrustedKeyAdded.emit( exportKey( key, trustedKeyRing() ) );
+        _sigTrustedKeyAdded.emit( exportKey( key, Ring::Trusted ) );
         for ( const PublicKeyData & hkey : key.hiddenKeys() )
-          _sigTrustedKeyAdded.emit( exportKey( hkey, trustedKeyRing() ) );
+          _sigTrustedKeyAdded.emit( exportKey( hkey, Ring::Trusted ) );
       }
     }
   }
-  void KeyRingImpl::importKeys( const std::list<PublicKey> & keys, bool trusted )
+
+  // TODO: (ma) check for a workflow where one context imports multiple keys.
+  void KeyRingImpl::importKeys( const std::list<PublicKey> & keys, const Ring ring )
   {
      for ( const PublicKey & key : keys )
-       importKey( key, trusted );
+       importKey( key, ring );
+  }
+
+  void KeyRingImpl::multiKeyImport( const Pathname & keyfile_r, const Ring ring )
+  {
+    importKey( keyfile_r, keyRingPath( ring ) );
   }
 
 
-  void KeyRingImpl::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
+  void KeyRingImpl::deleteKey( const std::string & id, const Ring ring )
   {
-    importKey( keyfile_r, trusted_r ? trustedKeyRing() : generalKeyRing() );
-  }
-
-  void KeyRingImpl::deleteKey( const std::string & id, bool trusted )
-  {
-    PublicKeyData keyDataToDel( publicKeyExists( id, trusted ? trustedKeyRing() : generalKeyRing() ) );
+    PublicKeyData keyDataToDel( publicKeyData( id, ring ) );
     if ( ! keyDataToDel )
     {
-      WAR << "Key to delete [" << id << "] is not in " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
+      WAR << "Key to delete [" << id << "] is not in " << ring << endl;
       return;
     }
 
-    deleteKey( id, trusted ? trustedKeyRing() : generalKeyRing() );
-    MIL << "Deleted key [" << id << "] from " << (trusted ? "trustedKeyRing" : "generalKeyRing" ) << endl;
+    deleteKey( id, keyRingPath( ring ) );
+    MIL << "Deleted key [" << id << "] from " << ring << endl;
 
-    if ( trusted ) {
+    if ( ring == Ring::Trusted ) {
       _sigTrustedKeyAdded.emit ( PublicKey( keyDataToDel ) );
     }
   }
 
-  PublicKeyData KeyRingImpl::publicKeyExists( const std::string & id, const Pathname & keyring )
+  void KeyRingImpl::importKey( const Pathname & keyfile, const Pathname & keyring )
   {
-    if ( _allowPreload && keyring == generalKeyRing() ) {
-      _allowPreload = false;
-      preloadCachedKeys();
+    if ( ! PathInfo( keyfile ).isExist() )
+      // TranslatorExplanation first %s is key name, second is keyring name
+      ZYPP_THROW(KeyRingException( str::Format(_("Tried to import not existent key %s into keyring %s"))
+                                   % keyfile.asString()
+                                   % keyring.asString() ));
+
+    CachedPublicKeyData::Manip manip { keyRingManip( keyring ) }; // Provides the context if we want to manip a cached keyring.
+    if ( ! manip.keyManagerCtx().importKey( keyfile ) )
+      ZYPP_THROW(KeyRingException(_("Failed to import key.")));
+  }
+
+  PublicKey KeyRingImpl::exportKey( const PublicKeyData & keyData, const Pathname & keyring ) const
+  {
+    return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
+  }
+
+  // TODO: (ma) not obvious why "exportKey id" checks validity, but "exportKey keyData" does not
+  PublicKey KeyRingImpl::exportKey( const std::string & id, const Pathname & keyring ) const
+  {
+    PublicKeyData keyData( publicKeyData( id, keyring ) );
+    if ( keyData )
+      return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
+
+    // Here: key not found
+    WAR << "No key [" << id << "] to export from " << keyring << endl;
+    return PublicKey();
+  }
+
+  void KeyRingImpl::deleteKey( const std::string & id, const Pathname & keyring )
+  {
+    CachedPublicKeyData::Manip manip { keyRingManip( keyring ) }; // Provides the context if we want to manip a cached keyring.
+    if ( ! manip.keyManagerCtx().deleteKey( id ) )
+      ZYPP_THROW(KeyRingException(_("Failed to delete key.")));
+  }
+
+
+  PublicKeyData KeyRingImpl::publicKeyData( const std::string & id, const Pathname & keyring ) const
+  {
+    if ( _allowPreload && keyring == keyRingPath( Ring::General ) ) {
+      KeyRingImpl * lazyinit = const_cast<KeyRingImpl*>(this);
+      lazyinit->_allowPreload = false;
+      lazyinit->preloadCachedKeys();
     }
 
     PublicKeyData ret;
@@ -183,9 +224,59 @@ namespace zypp
     return ret;
   }
 
+  std::list<PublicKey> KeyRingImpl::publicKeys( const Pathname & keyring ) const
+  {
+    const std::list<PublicKeyData> & keys( publicKeyData( keyring ) );
+    std::list<PublicKey> ret;
+
+    for ( const PublicKeyData& keyData : keys )
+    {
+      PublicKey key( exportKey( keyData, keyring ) );
+      ret.push_back( key );
+      MIL << "Found key " << key << endl;
+    }
+    return ret;
+  }
+
+
+  void KeyRingImpl::dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream ) const
+  {
+    KeyManagerCtx::createForOpenPGP( keyring ).exportKey(id, stream);
+  }
+
+  filesystem::TmpFile KeyRingImpl::dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring ) const
+  {
+    filesystem::TmpFile tmpFile( _base_dir, "pubkey-"+id+"-" );
+    MIL << "Going to export key [" << id << "] from " << keyring << " to " << tmpFile.path() << endl;
+
+    std::ofstream os( tmpFile.path().c_str() );
+    dumpPublicKey( id, keyring, os );
+    os.close();
+    return tmpFile;
+  }
+
+  std::string KeyRingImpl::readSignatureKeyId( const Pathname & signature )
+  {
+    if ( ! PathInfo( signature ).isFile() )
+      ZYPP_THROW(KeyRingException( str::Format(_("Signature file %s not found")) % signature.asString() ));
+
+    MIL << "Determining key id of signature " << signature << endl;
+
+    std::list<std::string> fprs = KeyManagerCtx::createForOpenPGP().readSignatureFingerprints( signature );
+    if ( ! fprs.empty() ) {
+      std::string &id = fprs.back();
+      MIL << "Determined key id [" << id << "] for signature " << signature << endl;
+      return id;
+    }
+    return std::string();
+  }
+
+  bool KeyRingImpl::verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring )
+  { return KeyManagerCtx::createForOpenPGP( keyring ).verify( file, signature ); }
+
+
   void KeyRingImpl::preloadCachedKeys()
   {
-    MIL << "preloadCachedKeys into general keyring..." << endl;
     // For now just load the 'gpg-pubkey-*.{asc,key}' files into the general keyring.
     // TODO: Head for a persistent general keyring.
     std::set<Pathname> cachedirs;
@@ -219,95 +310,10 @@ namespace zypp
                   }
                 );
     }
-    importKeys( newkeys );
-  }
-
-  PublicKey KeyRingImpl::exportKey( const PublicKeyData & keyData, const Pathname & keyring )
-  {
-    return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
-  }
-
-  PublicKey KeyRingImpl::exportKey( const std::string & id, const Pathname & keyring )
-  {
-    PublicKeyData keyData( publicKeyExists( id, keyring ) );
-    if ( keyData )
-      return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
-
-    // Here: key not found
-    WAR << "No key [" << id << "] to export from " << keyring << endl;
-    return PublicKey();
-  }
-
-
-  void KeyRingImpl::dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream )
-  {
-    KeyManagerCtx::createForOpenPGP( keyring ).exportKey(id, stream);
-  }
-
-  filesystem::TmpFile KeyRingImpl::dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring )
-  {
-    filesystem::TmpFile tmpFile( _base_dir, "pubkey-"+id+"-" );
-    MIL << "Going to export key [" << id << "] from " << keyring << " to " << tmpFile.path() << endl;
-
-    std::ofstream os( tmpFile.path().c_str() );
-    dumpPublicKey( id, keyring, os );
-    os.close();
-    return tmpFile;
-  }
-
-  std::list<PublicKey> KeyRingImpl::publicKeys( const Pathname & keyring )
-  {
-    const std::list<PublicKeyData> & keys( publicKeyData( keyring ) );
-    std::list<PublicKey> ret;
-
-    for ( const PublicKeyData& keyData : keys )
-    {
-      PublicKey key( exportKey( keyData, keyring ) );
-      ret.push_back( key );
-      MIL << "Found key " << key << endl;
+    if ( not newkeys.empty() ) {
+      MIL << "preload cached keys..." << endl;
+      importKeys( newkeys, Ring::General );
     }
-    return ret;
-  }
-
-  void KeyRingImpl::importKey( const Pathname & keyfile, const Pathname & keyring )
-  {
-    if ( ! PathInfo( keyfile ).isExist() )
-      // TranslatorExplanation first %s is key name, second is keyring name
-      ZYPP_THROW(KeyRingException( str::Format(_("Tried to import not existent key %s into keyring %s"))
-                                   % keyfile.asString()
-                                   % keyring.asString() ));
-
-    CachedPublicKeyData::Manip manip { keyRingManip( keyring ) }; // Provides the context if we want to manip a cached keyring.
-    if ( ! manip.keyManagerCtx().importKey( keyfile ) )
-      ZYPP_THROW(KeyRingException(_("Failed to import key.")));
-  }
-
-  void KeyRingImpl::deleteKey( const std::string & id, const Pathname & keyring )
-  {
-    CachedPublicKeyData::Manip manip { keyRingManip( keyring ) }; // Provides the context if we want to manip a cached keyring.
-    if ( ! manip.keyManagerCtx().deleteKey( id ) )
-      ZYPP_THROW(KeyRingException(_("Failed to delete key.")));
-  }
-
-  std::string KeyRingImpl::readSignatureKeyId( const Pathname & signature )
-  {
-    if ( ! PathInfo( signature ).isFile() )
-      ZYPP_THROW(KeyRingException( str::Format(_("Signature file %s not found")) % signature.asString() ));
-
-    MIL << "Determining key id of signature " << signature << endl;
-
-    std::list<std::string> fprs = KeyManagerCtx::createForOpenPGP().readSignatureFingerprints( signature );
-    if ( ! fprs.empty() ) {
-      std::string &id = fprs.back();
-      MIL << "Determined key id [" << id << "] for signature " << signature << endl;
-      return id;
-    }
-    return std::string();
-  }
-
-  bool KeyRingImpl::verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring )
-  {
-    return KeyManagerCtx::createForOpenPGP( keyring ).verify( file, signature );
   }
 
 } // namespace zypp

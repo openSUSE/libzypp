@@ -169,6 +169,7 @@ namespace zypp
   //	CLASS NAME : KeyRing
   //
   ///////////////////////////////////////////////////////////////////
+  using Ring = KeyRingImpl::Ring;   // While "bool trusted" is in the public API
 
   KeyRing::KeyRing( const Pathname & baseTmpDir )
   : _pimpl( new Impl( baseTmpDir ) )
@@ -187,48 +188,48 @@ namespace zypp
 
 
   void KeyRing::importKey( const PublicKey & key, bool trusted )
-  { _pimpl->importKey( key, trusted ); }
+  { _pimpl->importKey( key, Ring(trusted) ); }
 
   void KeyRing::multiKeyImport( const Pathname & keyfile_r, bool trusted_r )
-  { _pimpl->multiKeyImport( keyfile_r, trusted_r ); }
+  { _pimpl->multiKeyImport( keyfile_r, Ring(trusted_r) ); }
 
   std::string KeyRing::readSignatureKeyId( const Pathname & signature )
   { return _pimpl->readSignatureKeyId( signature ); }
 
   void KeyRing::deleteKey( const std::string & id, bool trusted )
-  { _pimpl->deleteKey( id, trusted ); }
+  { _pimpl->deleteKey( id, Ring(trusted) ); }
 
   std::list<PublicKey> KeyRing::publicKeys()
-  { return _pimpl->publicKeys(); }
+  { return _pimpl->publicKeys( Ring::General ); }
 
   std:: list<PublicKey> KeyRing::trustedPublicKeys()
-  { return _pimpl->trustedPublicKeys(); }
+  { return _pimpl->publicKeys( Ring::Trusted ); }
 
   std::list<PublicKeyData> KeyRing::publicKeyData()
-  { return _pimpl->publicKeyData(); }
+  { return _pimpl->publicKeyData( Ring::General ); }
 
   std::list<PublicKeyData> KeyRing::trustedPublicKeyData()
-  { return _pimpl->trustedPublicKeyData(); }
+  { return _pimpl->publicKeyData( Ring::Trusted ); }
 
   PublicKeyData KeyRing::publicKeyData( const std::string &id_r )
-  { return _pimpl->publicKeyExists( id_r ); }
+  { return _pimpl->publicKeyData( id_r, Ring::General ); }
 
   PublicKeyData KeyRing::trustedPublicKeyData(const std::string &id_r)
-  { return _pimpl->trustedPublicKeyExists( id_r ); }
+  { return _pimpl->publicKeyData( id_r, Ring::Trusted ); }
 
   bool KeyRing::verifyFileSignature( const Pathname & file, const Pathname & signature )
-  { return _pimpl->verifyFileSignature( file, signature ); }
+  { return _pimpl->verifyFile( file, signature, Ring::General ); }
 
   bool KeyRing::verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
-  { return _pimpl->verifyFileTrustedSignature( file, signature ); }
+  { return _pimpl->verifyFile( file, signature, Ring::Trusted ); }
   void KeyRing::dumpPublicKey( const std::string & id, bool trusted, std::ostream & stream )
-  { _pimpl->dumpPublicKey( id, trusted, stream ); }
+  { _pimpl->dumpPublicKey( id, Ring(trusted), stream ); }
 
   PublicKey KeyRing::exportPublicKey( const PublicKeyData & keyData )
-  { return _pimpl->exportPublicKey( keyData ); }
+  { return _pimpl->exportKey( keyData, Ring::General ); }
 
   PublicKey KeyRing::exportTrustedPublicKey( const PublicKeyData & keyData )
-  { return _pimpl->exportTrustedPublicKey( keyData ); }
+  { return _pimpl->exportKey( keyData, Ring::Trusted ); }
 
   bool KeyRing::isKeyTrusted( const std::string & id )
   { return _pimpl->isKeyTrusted( id ); }

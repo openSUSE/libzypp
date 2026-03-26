@@ -435,6 +435,9 @@ namespace zypp
     /** File containing the ASCII armored key. */
     Pathname path() const;
 
+    bool hasHiddenKeys() const
+    { return not hiddenKeys().empty(); }
+
     /** Additional keys data in case the ASCII armored blob contains multiple keys. */
     const std::list<PublicKeyData> & hiddenKeys() const;
 

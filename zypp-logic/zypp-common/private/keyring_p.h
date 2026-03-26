@@ -90,92 +90,106 @@ namespace zypp {
   class KeyRingImpl
   {
     public:
+      enum class Ring : bool {
+        General = false,
+        Trusted = true,
+      };
+
+      zyppng::SignalProxy<void ( const PublicKey &/*key*/ )> sigTrustedKeyAdded()
+      { return _sigTrustedKeyAdded; }
+
+      zyppng::SignalProxy<void ( const PublicKey &/*key*/ )> sigTrustedKeyRemoved()
+      { return _sigTrustedKeyRemoved; }
+
+    public:
       KeyRingImpl( const Pathname & baseTmpDir );
 
-      void importKey( const PublicKey & key, bool trusted = false );
-      void importKeys( const std::list<PublicKey> & keys, bool trusted = false );
-      void deleteKey( const std::string & id, bool trusted );
+    public:
+      void allowPreload( bool yesno_r ) //< General keyring may be preloaded with keys cached on the system.
+      { _allowPreload = yesno_r; }
+
+      /** Import PublicKeys into a Ring.
+       * Beware that a \ref PublicKey constructed from a file may in fact hold
+       * multiple keys (\see \ref PublicKey::hiddenKeys)
+       */
+      void importKey ( const PublicKey & key, const Ring ring );
+      void importKeys( const std::list<PublicKey> & keys, const Ring ring );
+
+      PublicKey exportKey( const std::string & id, const Ring ring ) const
+      { return exportKey( id, keyRingPath( ring ) ); }
+      PublicKey exportKey( const PublicKeyData & keyData, const Ring ring ) const
+      { return exportKey( keyData, keyRingPath( ring ) ); }
+      PublicKey exportKey( const PublicKey & key, const Ring ring ) const
+      { return exportKey( key.keyData(), ring ); }
+
+      void deleteKey( const std::string & id, const Ring ring );
+
+      void dumpPublicKey( const std::string & id, const Ring ring, std::ostream & stream )
+      { dumpPublicKey( id, keyRingPath( ring ), stream ); }
+
+      bool verifyFile( const Pathname & file, const Pathname & signature, const Ring ring )
+      { return verifyFile( file, signature, keyRingPath( ring ) ); }
 
       std::string readSignatureKeyId( const Pathname & signature );
 
-      bool isKeyTrusted( const std::string & id )
-      { return bool(publicKeyExists( id, trustedKeyRing() )); }
-      bool isKeyKnown( const std::string & id )
-      { return publicKeyExists( id, trustedKeyRing() ) || publicKeyExists( id, generalKeyRing() ); }
+      /** Used by RpmDB to import the trusted keys.
+       * Use with care - it's a silent import of all keys. No extra logging.
+       * Wrap \a keyfile_r into a \ref PublicKey and call \ref importKey to
+       * get the same result plus the log lines.
+       */
+      void multiKeyImport( const Pathname & keyfile_r, const Ring ring );
 
-      std::list<PublicKey> trustedPublicKeys()
-      { return publicKeys( trustedKeyRing() ); }
-      std::list<PublicKey> publicKeys()
-      { return publicKeys( generalKeyRing() ); }
+    public:
+      bool isKeyTrusted( const std::string & id ) const
+      { return bool(publicKeyData( id, Ring::Trusted )); }
 
-      const std::list<PublicKeyData> & trustedPublicKeyData()
-      { return publicKeyData( trustedKeyRing() ); }
-      const std::list<PublicKeyData> & publicKeyData()
-      { return publicKeyData( generalKeyRing() ); }
+      bool isKeyKnown( const std::string & id ) const
+      { return publicKeyData( id, Ring::Trusted ) || publicKeyData( id, Ring::General ); }
 
-      void dumpPublicKey( const std::string & id, bool trusted, std::ostream & stream )
-      { dumpPublicKey( id, ( trusted ? trustedKeyRing() : generalKeyRing() ), stream ); }
+      PublicKeyData publicKeyData( const std::string & id, const Ring ring ) const
+      { return publicKeyData( id, keyRingPath( ring ) ); }
+      PublicKeyData publicKeyData( const PublicKeyData & keyData, const Ring ring ) const
+      { return publicKeyData( keyData.id(), ring ); }
+      PublicKeyData publicKeyData( const PublicKey & key, const Ring ring ) const
+      { return publicKeyData( key.keyData().id(), ring ); }
 
-      PublicKey exportPublicKey( const PublicKeyData & keyData )
-      { return exportKey( keyData, generalKeyRing() ); }
-      PublicKey exportTrustedPublicKey( const PublicKeyData & keyData )
-      { return exportKey( keyData, trustedKeyRing() ); }
+      const std::list<PublicKeyData> & publicKeyData( const Ring ring ) const
+      { return publicKeyData( keyRingPath( ring ) ); }
 
-      bool verifyFileSignature( const Pathname & file, const Pathname & signature )
-      { return verifyFile( file, signature, generalKeyRing() ); }
-      bool verifyFileTrustedSignature( const Pathname & file, const Pathname & signature )
-      { return verifyFile( file, signature, trustedKeyRing() ); }
+      std::list<PublicKey> publicKeys( const Ring ring ) const
+      { return publicKeys( keyRingPath( ring ) ); }
 
-      PublicKeyData publicKeyExists( const std::string & id )
-      { return publicKeyExists(id, generalKeyRing());}
-      PublicKeyData trustedPublicKeyExists( const std::string & id )
-      { return publicKeyExists(id, trustedKeyRing());}
 
-      void allowPreload( bool yesno_r )
-      { _allowPreload = yesno_r; }
+    private:
+      const Pathname keyRingPath( const Ring ring ) const
+      { return ring == Ring::General ? _general_tmp_dir.path() : _trusted_tmp_dir.path(); }
+
+      void importKey( const Pathname & keyfile, const Pathname & keyring );
+
+      PublicKey exportKey( const std::string & id, const Pathname & keyring ) const;
+      PublicKey exportKey( const PublicKeyData & keyData, const Pathname & keyring ) const;
+
+      void deleteKey( const std::string & id, const Pathname & keyring );
+
+      PublicKeyData publicKeyData( const std::string & id, const Pathname & keyring ) const;
+
+      const std::list<PublicKeyData> & publicKeyData( const Pathname & keyring ) const
+      { return cachedPublicKeyData( keyring ); }
+
+      std::list<PublicKey> publicKeys( const Pathname & keyring ) const;
+
+      void dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream ) const;
+      filesystem::TmpFile dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring ) const;
+
+      bool verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring );
+
+    private:
+      /** Load key files cached on the system into the generalKeyRing. */
+      void preloadCachedKeys();
 
       /** Impl helper providing on demand a KeyManagerCtx to manip a cached keyring. */
       CachedPublicKeyData::Manip keyRingManip( const Pathname & keyring )
       { return cachedPublicKeyData.manip( keyring ); }
-
-      bool verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring );
-
-      PublicKey exportKey( const std::string & id, const Pathname & keyring );
-      PublicKey exportKey( const PublicKeyData & keyData, const Pathname & keyring );
-      PublicKey exportKey( const PublicKey & key, const Pathname & keyring )
-      { return exportKey( key.keyData(), keyring ); }
-
-      void dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream );
-      filesystem::TmpFile dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring );
-
-      void deleteKey( const std::string & id, const Pathname & keyring );
-
-      std::list<PublicKey> publicKeys( const Pathname & keyring);
-      const std::list<PublicKeyData> & publicKeyData( const Pathname & keyring )
-      { return cachedPublicKeyData( keyring ); }
-
-      /** Get \ref PublicKeyData for ID (\c false if ID is not found). */
-      PublicKeyData publicKeyExists( const std::string & id, const Pathname & keyring );
-      /** Load key files cached on the system into the generalKeyRing. */
-      void preloadCachedKeys();
-
-      const Pathname generalKeyRing() const
-      { return _general_tmp_dir.path(); }
-      const Pathname trustedKeyRing() const
-      { return _trusted_tmp_dir.path(); }
-
-      zyppng::SignalProxy<void ( const PublicKey &/*key*/ )> sigTrustedKeyAdded(){
-        return _sigTrustedKeyAdded;
-      }
-
-      zyppng::SignalProxy<void ( const PublicKey &/*key*/ )> sigTrustedKeyRemoved() {
-        return _sigTrustedKeyRemoved;
-      }
-
-    private:
-      friend class KeyRing;
-      void multiKeyImport( const Pathname & keyfile_r, bool trusted_r = false );
-      void importKey( const Pathname & keyfile, const Pathname & keyring );
 
     private:
       // Used for trusted and untrusted keyrings
@@ -195,6 +209,8 @@ namespace zypp {
       zyppng::Signal<void ( const PublicKey &/*key*/ )> _sigTrustedKeyRemoved;
   };
 
+  inline std::ostream & operator<<( std::ostream & str, KeyRingImpl::Ring ring )
+  { return str << ( ring == KeyRingImpl::Ring::General ? "generalKeyRing" : "trustedKeyRing" ); }
 }
 
 

@@ -176,7 +176,6 @@ namespace zypp {
     }
 
     const auto &newScheme = newAuthority.scheme();
-    bool newAuthIsDl = newAuthority.url().schemeIsDownloading();
 
     _pimpl->_authorities.clear();
     _pimpl->_authorities.push_back( std::move(newAuthority) );
@@ -186,9 +185,9 @@ namespace zypp {
 
     // house keeeping, we want only compatible mirrors
     for ( auto i = _pimpl->_origins.begin (); i != _pimpl->_origins.end(); ) {
-      if (    ( newAuthIsDl && !i->schemeIsDownloading() ) // drop mirror if its not downloading but authority is
-           && ( i->scheme () != newScheme )                // otherwise drop if scheme is not identical
-      ) {
+      // drop mirror if it's scheme conflicts with the authorities scheme
+      // otherwise drop if scheme is not identical
+      if ( !areAuthoritiesCompatible(*i) && ( i->scheme () != newScheme ) ) {
         MIL << "Dropping mirror " << *i << " scheme is not compatible to new authority URL ( " << i->scheme() << " vs " << newScheme << ")" << std::endl;
         i = _pimpl->_origins.erase(i);
       } else {
@@ -200,6 +199,23 @@ namespace zypp {
   const std::vector<OriginEndpoint> &MirroredOrigin::authorities() const
   {
     return _pimpl->_authorities;
+  }
+
+  bool MirroredOrigin::isAuthorityCompatible(const OriginEndpoint& authority, const OriginEndpoint& mirror)
+  {
+    return (authority.schemeIsDownloading() && mirror.schemeIsDownloading())
+        || (!authority.schemeIsDownloading() && !mirror.schemeIsDownloading());
+  }
+
+  bool MirroredOrigin::areAuthoritiesCompatible(const OriginEndpoint& mirror)
+  {
+    for (auto authority: _pimpl->_authorities)
+    {
+      if (!isAuthorityCompatible(authority, mirror))
+        return false;
+    }
+
+    return true;
   }
 
   const OriginEndpoint &MirroredOrigin::authority() const
@@ -258,11 +274,9 @@ namespace zypp {
 
     if ( _pimpl->authoritiesAreValid() ) {
       const auto &authScheme = _pimpl->_authorities[0].scheme();
-      bool authIsDl = _pimpl->_authorities[0].schemeIsDownloading();
 
-      if ( ( authIsDl && !newMirror.schemeIsDownloading () )
-           && ( authScheme != newMirror.scheme () )
-      ) {
+      // As all the authorities are either downloading or non-downloading, if the first is compatible, the rest are as well
+      if ( !isAuthorityCompatible(authority(), newMirror) && ( authScheme != newMirror.scheme () ) ) {
         MIL << "Ignoring mirror " << newMirror << " scheme is not compatible to authority URL ( " << newMirror.scheme() << " vs " << authScheme << ")" << std::endl;
         return false;
       }

@@ -407,43 +407,56 @@ namespace zyppng
       /// If the Solvable passed to the ctor is not valid, advance
       /// to the next valid solvable (or Solvable::noSolvable if the
       /// end is reached,
-      class SolvableIterator : public boost::iterator_adaptor<
-          SolvableIterator                   // Derived
-          , CSolvable*                       // Base
-          , const Solvable                   // Value
-          , boost::forward_traversal_tag     // CategoryOrTraversal
-          , const Solvable                   // Reference
-          >
+      class SolvableIterator
       {
         public:
+          using iterator_category = std::forward_iterator_tag;
+          using value_type        = Solvable;         // non-cv-qualified per [iterator.traits]; constness lives on reference
+          using difference_type   = std::ptrdiff_t;
+          using pointer           = void;             // proxy-by-value: no stable address exists for a temporary
+          using reference         = const Solvable;   // operator* returns by value – read-only proxy
+
           SolvableIterator()
-          : SolvableIterator::iterator_adaptor_( nullptr )
+          : _base( nullptr )
           {}
 
           explicit SolvableIterator( const Solvable & val_r )
-          : SolvableIterator::iterator_adaptor_( nullptr )
+          : _base( nullptr )
           { initialAssignVal( val_r ); }
 
           explicit SolvableIterator( SolvableIdType id_r )
-          : SolvableIterator::iterator_adaptor_( nullptr )
+          : _base( nullptr )
           { initialAssignVal( Solvable(id_r) ); }
 
-        private:
-          friend class boost::iterator_core_access;
-
-          Solvable dereference() const
+          reference operator*() const
           { return _val; }
 
+          SolvableIterator & operator++()
+          { increment(); return *this; }
+
+          SolvableIterator operator++(int)
+          { SolvableIterator tmp = *this; increment(); return tmp; }
+
+          bool operator==( const SolvableIterator & rhs ) const
+          { return _base == rhs._base; }
+
+          bool operator!=( const SolvableIterator & rhs ) const
+          { return !(*this == rhs); }
+
+          CSolvable * const & base() const
+          { return _base; }
+
+        private:
           void increment()
           { assignVal( _val.nextInPool() ); }
 
-        private:
           void initialAssignVal( const Solvable & val_r )
           { assignVal( val_r ? val_r : val_r.nextInPool() ); }
 
           void assignVal( const Solvable & val_r )
-          { _val = val_r; base_reference() = _val.get(); }
+          { _val = val_r; _base = _val.get(); }
 
+          CSolvable * _base;
           Solvable _val;
       };
     } // namespace detail

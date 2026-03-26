@@ -668,21 +668,15 @@ namespace zyppng::sat
     }
 
     LookupAttr::iterator::iterator()
-    : iterator_adaptor_( 0 )
     {}
 
     LookupAttr::iterator::iterator( const iterator & rhs )
-    : iterator_adaptor_( 0 )
-    , _dip( rhs._dip )
-    {
-      base_reference() = _dip.get();
-    }
+    : _dip( rhs._dip )
+    {}
 
     LookupAttr::iterator::iterator( detail::DIWrap & dip_r )
-    : iterator_adaptor_( 0 )
     {
       _dip.swap( dip_r ); // take ownership!
-      base_reference() = _dip.get();
       increment();
     }
 
@@ -694,7 +688,6 @@ namespace zyppng::sat
       if ( &rhs != this )
       {
         _dip = rhs._dip;
-        base_reference() = _dip.get();
       }
       return *this;
     }
@@ -706,10 +699,29 @@ namespace zyppng::sat
       return( lhs.solvid == rhs.solvid && lhs.key->name == rhs.key->name );
     }
 
-    detail::IdType LookupAttr::iterator::dereference() const
+    detail::IdType LookupAttr::iterator::operator*() const
     {
       return _dip ? ::repodata_globalize_id( _dip->data, _dip->kv.id, 1 )
                   : detail::noId;
+    }
+
+    LookupAttr::iterator& LookupAttr::iterator::operator++()
+    {
+      increment();
+      return *this;
+    }
+
+    LookupAttr::iterator LookupAttr::iterator::operator++(int)
+    {
+      iterator tmp = *this;
+      increment();
+      return tmp;
+    }
+
+    bool LookupAttr::iterator::operator==( const iterator & rhs ) const
+    {
+      return ( bool(_dip) == bool(rhs._dip) )
+          && ( ! _dip || dip_equal( *_dip.get(), *rhs._dip.get() ) );
     }
 
     void LookupAttr::iterator::increment()
@@ -719,7 +731,6 @@ namespace zyppng::sat
         if ( ! ::dataiterator_step( _dip.get() ) )
         {
           _dip.reset();
-          base_reference() = 0;
         }
         else
         {

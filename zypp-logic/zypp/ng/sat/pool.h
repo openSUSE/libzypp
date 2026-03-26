@@ -112,7 +112,7 @@ namespace zyppng::sat {
        * after having added and removed repos lots of times.
        */
       void reposEraseAll()
-      { while ( ! reposEmpty() ) reposErase( repos().begin()->alias() ); }
+      { while ( ! reposEmpty() ) reposErase( (*repos().begin()).alias() ); }
 
       /** Whether \ref Pool contains repos. */
       bool reposEmpty() const;

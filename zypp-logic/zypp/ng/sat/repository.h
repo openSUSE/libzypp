@@ -23,6 +23,7 @@
 //#include <zypp/RepoInfo.h>
 #include <zypp-core/Date.h>
 #include <zypp/ng/cpeid.h>
+#include <zypp-core/ng/base/iterators.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zyppng
@@ -49,7 +50,7 @@ namespace zyppng
     class Repository : public PoolMember<Repository>
     {
     public:
-        using SolvableIterator = boost::filter_iterator<detail::ByRepository, sat::detail::SolvableIterator>;
+        using SolvableIterator = zyppng::FilterIterator<detail::ByRepository, sat::detail::SolvableIterator>;
         using SolvableIterable = zypp::Iterable<SolvableIterator>;
         using size_type = unsigned int;
         using IdType = detail::RepoIdType;
@@ -471,30 +472,45 @@ namespace zyppng
         * \class RepositoryIterator
         */
 
-      class RepositoryIterator : public boost::iterator_adaptor<
-            RepositoryIterator                            // Derived
-                           , sat::detail::CRepo **        // Base
-                           , Repository                   // Value
-                           , boost::forward_traversal_tag // CategoryOrTraversal
-                           , Repository                   // Reference
-                             >
+      class RepositoryIterator
       {
         public:
+          using iterator_category = std::forward_iterator_tag;
+          using value_type        = Repository;
+          using difference_type   = std::ptrdiff_t;
+          using pointer           = void;
+          using reference         = Repository;
+
           RepositoryIterator()
-          : RepositoryIterator::iterator_adaptor_( 0 )
+          : _base( nullptr )
           {}
 
           explicit RepositoryIterator( sat::detail::CRepo ** p )
-          : RepositoryIterator::iterator_adaptor_( p )
+          : _base( p )
           {}
 
+          reference operator*() const
+          { return Repository( *_base ); }
+
+          RepositoryIterator & operator++()
+          { increment(); return *this; }
+
+          RepositoryIterator operator++(int)
+          { RepositoryIterator tmp = *this; increment(); return tmp; }
+
+          bool operator==( const RepositoryIterator & rhs ) const
+          { return _base == rhs._base; }
+
+          bool operator!=( const RepositoryIterator & rhs ) const
+          { return !(*this == rhs); }
+
+          sat::detail::CRepo ** const & base() const
+          { return _base; }
+
         private:
-          friend class boost::iterator_core_access;
-
-          Repository dereference() const
-          { return Repository( *base() ); }
-
           void increment();
+
+          sat::detail::CRepo ** _base;
       };
 
       ///////////////////////////////////////////////////////////////////

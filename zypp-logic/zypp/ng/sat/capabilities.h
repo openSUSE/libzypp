@@ -13,6 +13,8 @@
 #define ZYPP_NG_SAT_CAPABILITIES_H
 
 #include <iosfwd>
+#include <iterator>
+#include <type_traits>
 
 #include <zypp-core/base/DefaultIntegral>
 #include <zypp/ng/sat/capability.h>
@@ -86,40 +88,46 @@ namespace zyppng::sat
   /**
    *  \class Capabilities::const_iterator
    *  \ref Capabilities iterator.
+   *
+   *  A forward iterator over a libsolv id array. Automatically skips
+   *  internal dep-marker ids, setting the \ref tagged flag when it does so
+   *  to indicate that subsequent capabilities carry a special property
+   *  (e.g. pre-requires within a solvable's requires list).
    */
-  class Capabilities::const_iterator : public boost::iterator_adaptor<
-        const_iterator                   // Derived
-      , const sat::detail::IdType *      // Base
-      , const Capability                 // Value
-      , boost::forward_traversal_tag     // CategoryOrTraversal
-      , const Capability                 // Reference
-      >
+  class Capabilities::const_iterator
   {
     public:
+      using iterator_category = std::forward_iterator_tag;
+      using value_type        = Capability;
+      using difference_type   = std::ptrdiff_t;
+      using pointer           = void;        // proxy iterator — no stable address
+      using reference         = const Capability;
+
       const_iterator()
-      : const_iterator::iterator_adaptor_( 0 )
+      : _idx( nullptr ), _tagged( false )
       {}
 
-      explicit const_iterator( const sat::detail::IdType * _idx )
-      : const_iterator::iterator_adaptor_( _idx )
+      explicit const_iterator( const sat::detail::IdType * idx )
+      : _idx( idx ), _tagged( false )
       {
-        if ( base_reference() && sat::detail::isDepMarkerId( *base_reference() ) )
+        // Skip an initial dep-marker if present, tagging subsequent entries.
+        if ( _idx && sat::detail::isDepMarkerId( *_idx ) )
         {
           _tagged = true;
-          ++base_reference();
+          ++_idx;
         }
       }
 
     public:
       /** Return \c true if the \ref Capability is \c tagged.
        * The meaning of \c tagged depends on the kind of dependency you
-       * are processing. It is a hint that the iteratir skipped some
-       * internal marker, indicating that subsequent cabailities have
-       * a special property. Within a \ref Solvables requirements e.g.
+       * are processing. It is a hint that the iterator skipped some
+       * internal marker, indicating that subsequent capabilities have
+       * a special property. Within a \ref Solvable's requirements e.g.
        * the pre-requirements are tagged.
        * \code
-       * Capabilities req( solvable.requires() );
-       * for_( it, req.begin(), req.end() )
+       * Capabilities req( solvable.dep_requires() );
+       * for ( auto it = req.begin(); it != req.end(); ++it )
        * {
        *   if ( it.tagged() )
        *     cout << *it << " (is prereq)" << endl;
@@ -130,30 +138,40 @@ namespace zyppng::sat
       */
       bool tagged() const { return _tagged; }
 
-    private:
-      friend class boost::iterator_core_access;
+      reference operator*() const
+      { return _idx ? Capability( *_idx ) : Capability::Null; }
 
-      reference dereference() const
-      { return ( base() ) ? Capability( *base() ) : Capability::Null; }
-
-      template <class OtherDerived, class OtherIterator, class V, class C, class R, class D>
-      bool equal( const boost::iterator_adaptor<OtherDerived, OtherIterator, V, C, R, D> & rhs ) const
-      { // NULL pointer is eqal pointer to Id 0
-        return ( base() == rhs.base() // includes both NULL...
-                 || ( !rhs.base() && !*base()     )
-                 || ( !base()     && !*rhs.base() ) );
-      }
-
-      void increment()
-      { // jump over libsolvs internal ids.
-        if ( sat::detail::isDepMarkerId( *(++base_reference()) ) )
+      const_iterator & operator++()
+      {
+        // Advance and jump over any libsolv internal dep-marker ids.
+        if ( sat::detail::isDepMarkerId( *(++_idx) ) )
         {
           _tagged = true;
-          ++base_reference();
+          ++_idx;
         }
+        return *this;
       }
 
+      const_iterator operator++(int)
+      {
+        const_iterator tmp( *this );
+        ++(*this);
+        return tmp;
+      }
+
+      bool operator==( const const_iterator & rhs ) const
+      {
+        // A NULL pointer is equal to a pointer pointing at Id 0 (end sentinel).
+        return ( _idx == rhs._idx )
+            || ( !rhs._idx && _idx    && !*_idx     )
+            || ( !_idx     && rhs._idx && !*rhs._idx );
+      }
+
+      bool operator!=( const const_iterator & rhs ) const
+      { return !( *this == rhs ); }
+
     private:
+      const sat::detail::IdType *       _idx;
       zypp::DefaultIntegral<bool,false> _tagged;
   };
   ///////////////////////////////////////////////////////////////////

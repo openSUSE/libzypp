@@ -343,17 +343,16 @@ namespace zyppng::sat
     /**
      * Result iterator.
      * Extended iterator methods valid only if not @end.
-     * \note Implementation: Keep iterator_adaptor base and _dip in sync!
      */
-    class LookupAttr::iterator : public boost::iterator_adaptor<
-        iterator                       // Derived
-        , detail::CDataiterator *            // Base
-        , detail::IdType               // Value
-        , boost::forward_traversal_tag // CategoryOrTraversal
-        , detail::IdType               // Reference
-    >
+    class LookupAttr::iterator
     {
       public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = detail::IdType;
+        using difference_type   = std::ptrdiff_t;
+        using pointer           = void;
+        using reference         = detail::IdType;
+
         /** \name Moving fast forward. */
         //@{
         /** On the next call to \ref operator++ advance to the next \ref SolvAttr. */
@@ -543,20 +542,16 @@ namespace zyppng::sat
          */
         iterator( detail::DIWrap & dip_r );
 
+        reference operator*() const;
+        iterator& operator++();
+        iterator operator++(int);
+
+        bool operator==( const iterator & rhs ) const;
+        bool operator!=( const iterator & rhs ) const
+        { return !(*this == rhs); }
+
       private:
-        friend class boost::iterator_core_access;
-
-        template <class OtherDerived, class OtherIterator, class V, class C, class R, class D>
-        bool equal( const boost::iterator_adaptor<OtherDerived, OtherIterator, V, C, R, D> & rhs ) const
-        {
-          return ( bool(base()) == bool(rhs.base()) )
-              && ( ! base() || dip_equal( *base(), *rhs.base() ) );
-        }
-
         bool dip_equal( const detail::CDataiterator & lhs, const detail::CDataiterator & rhs ) const;
-
-        detail::IdType dereference() const;
-
         void increment();
 
       public:

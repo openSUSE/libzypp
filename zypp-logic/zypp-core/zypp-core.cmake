@@ -266,6 +266,7 @@ zypp_add_sources( zyppng_base_SRCS
 )
 
 zypp_add_sources( zyppng_base_HEADERS
+  ng/base/iterators.h
   ng/base/AbstractEventSource
   ng/base/abstracteventsource.h
   ng/base/AutoDisconnect

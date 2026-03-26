@@ -12,7 +12,6 @@
 #include <variant>
 #include <string>
 #include <map>
-#include <boost/iterator/iterator_adaptor.hpp>
 #include <zypp-core/base/PtrTypes.h>
 
 namespace zyppng {
@@ -72,46 +71,62 @@ namespace zyppng {
     static Value InvalidValue;
 
     class const_iterator
-      : public boost::iterator_adaptor<
-          HeaderValueMap::const_iterator                             // Derived
-          , ValueMap::const_iterator // Base
-          , std::pair<std::string, Value> // Value
-          , boost::use_default  // CategoryOrTraversal
-          , const std::pair<const std::string&, const Value&> // Reference
-          >
     {
     public:
-      const_iterator()
-        : const_iterator::iterator_adaptor_() {}
+      using iterator_category = std::forward_iterator_tag;
+      using value_type        = std::pair<std::string, Value>;
+      using difference_type   = std::ptrdiff_t;
+      using pointer           = void;
+      using reference         = const std::pair<const std::string&, const Value&>;
+
+    private:
+      ValueMap::const_iterator _it;
+
+    public:
+      const_iterator() = default;
 
       explicit const_iterator( const ValueMap::const_iterator &val )
-      { this->base_reference() = val; }
+        : _it(val) {}
 
       const_iterator( const HeaderValueMap::const_iterator &other )
-        : const_iterator::iterator_adaptor_( other.base() ) {}
+        : _it(other.base()) {}
 
       const std::string &key () const {
-        return this->base_reference()->first;
+        return _it->first;
       }
 
       const Value &value() const {
-        auto &l = base_reference ()->second;
+        auto &l = _it->second;
         if ( l.empty() ) {
           return InvalidValue;
         }
         return l.back();
       }
 
-    private:
-      friend class boost::iterator_core_access;
-      void increment() {
-        this->base_reference() = ++this->base_reference();
+      reference operator*() const {
+        return reference( key(), value() );
       }
 
-      std::pair<const std::string&, const Value&> dereference() const
-      {
-        return  std::pair<const std::string&, const Value&>( key(), value() );
+      const_iterator& operator++() {
+        ++_it;
+        return *this;
       }
+
+      const_iterator operator++(int) {
+        const_iterator tmp = *this;
+        ++_it;
+        return tmp;
+      }
+
+      bool operator==(const const_iterator& other) const {
+        return _it == other._it;
+      }
+
+      bool operator!=(const const_iterator& other) const {
+        return !(*this == other);
+      }
+
+      const ValueMap::const_iterator& base() const { return _it; }
     };
 
     HeaderValueMap() = default;

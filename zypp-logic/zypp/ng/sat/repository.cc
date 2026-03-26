@@ -170,20 +170,20 @@ namespace zyppng
 
     Repository::SolvableIterator Repository::solvablesBegin() const
     {
-      NO_REPOSITORY_RETURN( zypp::make_filter_iterator( detail::ByRepository( *this ),
+      NO_REPOSITORY_RETURN( zyppng::make_filter_iterator( detail::ByRepository( *this ),
                             sat::detail::SolvableIterator(),
                             sat::detail::SolvableIterator() ) );
-      return zypp::make_filter_iterator( detail::ByRepository( *this ),
+      return zyppng::make_filter_iterator( detail::ByRepository( *this ),
                                    sat::detail::SolvableIterator(_repo->start),
                                    sat::detail::SolvableIterator(_repo->end) );
     }
 
     Repository::SolvableIterator Repository::solvablesEnd() const
     {
-      NO_REPOSITORY_RETURN( zypp::make_filter_iterator( detail::ByRepository( *this ),
+      NO_REPOSITORY_RETURN( zyppng::make_filter_iterator( detail::ByRepository( *this ),
                             sat::detail::SolvableIterator(),
                             sat::detail::SolvableIterator() ) );
-      return zypp::make_filter_iterator(detail::ByRepository( *this ),
+      return zyppng::make_filter_iterator(detail::ByRepository( *this ),
                                   sat::detail::SolvableIterator(_repo->end),
                                   sat::detail::SolvableIterator(_repo->end) );
     }
@@ -289,12 +289,12 @@ namespace zyppng
     {
       void RepositoryIterator::increment()
       {
-        if ( base() )
+        if ( _base )
         {
-          sat::detail::CPool * satpool = (*base())->pool;
+          sat::detail::CPool * satpool = (*_base)->pool;
           do {
-            ++base_reference();
-          } while ( base() < satpool->repos+satpool->nrepos && !*base() );
+            ++_base;
+          } while ( _base < satpool->repos+satpool->nrepos && !*_base );
         }
       }
     }

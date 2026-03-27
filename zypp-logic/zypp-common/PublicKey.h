@@ -277,6 +277,23 @@ namespace zypp
      */
     std::string asString() const;
 
+    /** Whether \a this could replace \a rhs in a keyring.
+     * Requires same fingerprint and newer creation date,
+     * or an empty rhs (missing in keyring).
+     */
+    bool isUpdateFor( const PublicKeyData & rhs ) const
+    {
+      // bnc #393160: Comment #30: Compare at least the fingerprint
+      // in case an attacker created a key the the same id.
+      //
+      // bsc#1008325: For keys using subkeys, we'd actually need to compare
+      // the subkey sets, to tell whether a key was updated. because created()
+      // remains unchanged if the primary key is not touched.
+      // For now we wait until a new subkey signs any metadata and treat it as
+      // a new key then (see VerifyFileSignatureLogic)
+      return not rhs || ( fingerprint() == rhs.fingerprint() && created() > rhs.created() );
+    }
+
   public:
     using SubkeyIterator = const PublicSubkeyData *;
     using KeySignatureIterator = const PublicKeySignatureData *;

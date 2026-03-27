@@ -205,12 +205,6 @@ namespace zypp
 
   PublicKeyData KeyRingImpl::publicKeyData( const std::string & id, const Pathname & keyring ) const
   {
-    if ( _allowPreload && keyring == keyRingPath( Ring::General ) ) {
-      KeyRingImpl * lazyinit = const_cast<KeyRingImpl*>(this);
-      lazyinit->_allowPreload = false;
-      lazyinit->preloadCachedKeys();
-    }
-
     PublicKeyData ret;
     for ( const PublicKeyData & key : publicKeyData( keyring ) )
     {

@@ -65,7 +65,7 @@ add_definitions( -DZYPP_ENABLE_ASYNC )
 add_definitions( -DZYPPNG=1 )
 
 add_subdirectory( lib )
-add_subdirectory( api )
+#add_subdirectory( api )
 add_subdirectory( tools )
 add_subdirectory( tests )
 

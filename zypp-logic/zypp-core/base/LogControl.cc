@@ -354,6 +354,12 @@ namespace zypp
       _strlog << iomanip;
       return *this;
     }
+
+    Osd & getOSD()
+    {
+      static Osd str { L_USR("OSD") };
+      return str;
+    }
 }
 #endif // ZYPP_NDEBUG
 

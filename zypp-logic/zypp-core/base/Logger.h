@@ -62,7 +62,10 @@ namespace zypp
       std::ostream & _strout;
       std::ostream & _strlog;
     };
-#define OSD ::zypp::debug::Osd(L_USR("OSD"))
+
+    Osd & getOSD();
+
+#define OSD ::zypp::debug::getOSD()
   }
 }
 #endif // ZYPP_NDEBUG

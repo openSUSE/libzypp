@@ -317,6 +317,11 @@ namespace zypp
     #define wSEC zypp::str::detail::PrintFmt(SEC,zypp::str::FormatWords)
     #define wINT zypp::str::detail::PrintFmt(INT,zypp::str::FormatWords)
     #define wUSR zypp::str::detail::PrintFmt(USR,zypp::str::FormatWords)
+
+#ifndef ZYPP_NDEBUG
+    #define pOSD zypp::str::detail::PrintFmt(OSD,zypp::str::FormatLine)
+#endif // ZYPP_NDEBUG
+
   } // namespace str
   //@}
 

@@ -159,7 +159,6 @@ namespace zypp {
   MirroredOrigin::MirroredOrigin(OriginEndpoint authority, std::vector<OriginEndpoint> mirrors )
     : _pimpl( new Private() )
   {
-    _pimpl->_authorities.clear();
     if ( authority.isValid() )
       _pimpl->_authorities.push_back( std::move(authority) );
     else

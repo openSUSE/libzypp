@@ -376,6 +376,9 @@ SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
 INCLUDE(CTest)
 ENABLE_TESTING()
 
+# add vendoring subdir
+add_subdirectory(external)
+
 # we add the top level projects conditionally. This way we can exclude them from
 # each others source tarball. ( not needed with _multibuild? )
 

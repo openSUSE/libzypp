@@ -286,6 +286,8 @@ zypp_add_sources( zyppng_base_HEADERS
   ng/base/timer.h
   ng/base/unixsignalsource.h
   ng/base/zyppglobal.h
+  ng/base/ranges.h
+  ng/base/span.h
 )
 
 zypp_add_sources( zyppng_base_private_HEADERS
@@ -478,14 +480,16 @@ message("Comp defs for ${arg_TARGETNAME}: ${COMP_DEFS}")
 
 ADD_LIBRARY( ${arg_TARGETNAME} STATIC ${zypp_core_SOURCES} ${zypp_core_HEADERS} )
 
-target_link_libraries( ${arg_TARGETNAME} PRIVATE ${arg_FLAGS} )
-target_link_libraries( ${arg_TARGETNAME} INTERFACE ${LIBGLIB_LIBRARIES} )
-target_link_libraries( ${arg_TARGETNAME} INTERFACE ${OPENSSL_LIBRARIES} )
-target_link_libraries( ${arg_TARGETNAME} INTERFACE ${CRYPTO_LIBRARIES} )
-target_link_libraries( ${arg_TARGETNAME} INTERFACE pthread )
-target_link_libraries( ${arg_TARGETNAME} INTERFACE ${SIGCPP_LIBRARIES} )
-TARGET_LINK_LIBRARIES( ${arg_TARGETNAME} INTERFACE ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES( ${arg_TARGETNAME} INTERFACE ${UTIL_LIBRARY} )
+target_link_libraries( ${arg_TARGETNAME} PRIVATE    ${arg_FLAGS}         )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${LIBGLIB_LIBRARIES} )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${OPENSSL_LIBRARIES} )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${CRYPTO_LIBRARIES}  )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  pthread              )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${SIGCPP_LIBRARIES}  )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${ZLIB_LIBRARY}      )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE  ${UTIL_LIBRARY}      )
+target_link_libraries( ${arg_TARGETNAME} PUBLIC zypp_ranges_polyfill )
+target_link_libraries( ${arg_TARGETNAME} PUBLIC zypp_span_polyfill   )
 
 IF (ENABLE_ZSTD_COMPRESSION)
   TARGET_LINK_LIBRARIES( ${arg_TARGETNAME} INTERFACE ${ZSTD_LIBRARY})

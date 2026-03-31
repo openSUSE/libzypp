@@ -27,6 +27,7 @@
 
 #include "pool.h"
 #include <zypp-core/ng/base/precondition.h>
+#include <zypp-core/ng/base/ranges.h>
 #include <zypp/ng/sat/stringpool.h>
 #include <zypp/ng/sat/queue.h>
 

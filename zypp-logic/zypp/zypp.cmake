@@ -285,7 +285,10 @@ function(zypp_add_zypp_target)
 
   zypp_logic_setup_includes()
 
-  target_link_libraries( ${arg_TARGETNAME} ${arg_FLAGS} )
+  target_link_libraries( ${arg_TARGETNAME} PRIVATE ${arg_FLAGS} )
+  target_link_libraries( ${arg_TARGETNAME} PRIVATE zypp_ranges_polyfill )
+  target_link_libraries( ${arg_TARGETNAME} PRIVATE zypp_span_polyfill   )
+
 
   target_include_directories( ${arg_TARGETNAME} PUBLIC ${RPM_INCLUDE_DIR})
 

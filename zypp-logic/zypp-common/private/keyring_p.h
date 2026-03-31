@@ -140,6 +140,24 @@ namespace zypp {
       void multiKeyImport( const Pathname & keyfile_r, const Ring ring );
 
     public:
+      enum class MustUpdate {
+        Present = 0,  ///< Key is in Ring
+        Missing = 1,  ///< Key is not in Ring
+        Update  = 2,  ///< old version of Key is in Ring
+      };
+      /** Helper computing PublicKeyData's status in a Ring. */
+      MustUpdate mustUpdateData( const PublicKeyData & keyData, const Ring ring ) const
+      {
+        PublicKeyData ringKeyData { publicKeyData( keyData, ring ) };
+        if ( not ringKeyData ) {
+          return MustUpdate::Missing;
+        }
+        if ( keyData.isUpdateFor( ringKeyData ) ) {
+          return MustUpdate::Update;
+        }
+        return MustUpdate::Present;
+      }
+
       bool isKeyTrusted( const std::string & id ) const
       { return bool(publicKeyData( id, Ring::Trusted )); }
 
@@ -218,6 +236,9 @@ namespace zypp {
 
   inline std::ostream & operator<<( std::ostream & str, KeyRingImpl::Ring ring )
   { return str << ( ring == KeyRingImpl::Ring::General ? "generalKeyRing" : "trustedKeyRing" ); }
+
+  inline std::ostream & operator<<( std::ostream & str, KeyRingImpl::MustUpdate flag )
+  { return str << ( flag == KeyRingImpl::MustUpdate::Present ? "=" : flag == KeyRingImpl::MustUpdate::Missing ? "+" : ">" ); }
 }
 
 

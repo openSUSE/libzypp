@@ -101,7 +101,7 @@ namespace zypp
   {
     if ( cache_r.hasChanged() ) {
       cache_r._data = KeyManagerCtx::createForOpenPGP( keyring_r ).listKeys();
-      MIL << "Found keys: " << cache_r._data  << std::endl;
+      pMIL( keyring_r, cache_r._data );
     }
     return cache_r._data;
   }
@@ -138,8 +138,9 @@ namespace zypp
   // TODO: (ma) check for a workflow where one context imports multiple keys.
   void KeyRingImpl::importKeys( const std::list<PublicKey> & keys, const Ring ring )
   {
-     for ( const PublicKey & key : keys )
-       importKey( key, ring );
+    pDBG( "Import", keys.size(), "keys to", ring );
+    for ( const PublicKey & key : keys )
+      importKey( key, ring );
   }
 
   void KeyRingImpl::multiKeyImport( const Pathname & keyfile_r, const Ring ring )
@@ -214,7 +215,7 @@ namespace zypp
         break;
       }
     }
-    DBG << (ret ? "Found" : "No") << " key [" << id << "] in keyring " << keyring << endl;
+    //DBG << (ret ? "Found" : "No") << " key [" << id << "] in keyring " << keyring << endl;
     return ret;
   }
 
@@ -305,7 +306,7 @@ namespace zypp
                 );
     }
     if ( not newkeys.empty() ) {
-      MIL << "preload cached keys..." << endl;
+      MIL << "Preload cached keys..." << endl;
       importKeys( newkeys, Ring::General );
     }
   }

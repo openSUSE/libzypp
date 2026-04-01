@@ -329,7 +329,7 @@ KeyManagerCtx KeyManagerCtx::createForOpenPGP()
 
 KeyManagerCtx KeyManagerCtx::createForOpenPGP( const Pathname & keyring_r )
 {
-  DBG << "createForOpenPGP(" << keyring_r << ")" << endl;
+  // DBG << "createForOpenPGP(" << keyring_r << ")" << endl;
 
   KeyManagerCtx ret;
   gpgme_ctx_t & ctx { ret._pimpl->_ctx };

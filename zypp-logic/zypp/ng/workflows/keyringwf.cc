@@ -155,29 +155,6 @@ namespace zyppng::KeyRingWorkflow {
         if ( trustedKeyData )
         {
           MIL << "Key is trusted: " << trustedKeyData << std::endl;
-
-          // lets look if there is an updated key in the
-          // general keyring
-          zypp::PublicKeyData generalKeyData { _keyRing->pimpl().publicKeyData( id, Ring::General ) };
-          if ( generalKeyData )
-          {
-            // bnc #393160: Comment #30: Compare at least the fingerprint
-            // in case an attacker created a key the the same id.
-            //
-            // FIXME: bsc#1008325: For keys using subkeys, we'd actually need
-            // to compare the subkey sets, to tell whether a key was updated.
-            // because created() remains unchanged if the primary key is not touched.
-            // For now we wait until a new subkey signs the data and treat it as a
-            //  new key (else part below).
-            if ( trustedKeyData.fingerprint() == generalKeyData.fingerprint()
-                 && trustedKeyData.created() < generalKeyData.created() )
-            {
-              MIL << "Key was updated. Saving new version into trusted keyring: " << generalKeyData << std::endl;
-              _keyRing->importKey( _keyRing->pimpl().exportKey( generalKeyData, Ring::General ), true );
-              trustedKeyData = _keyRing->pimpl().publicKeyData( id, Ring::Trusted ); // re-read: invalidated by import?
-            }
-          }
-
           return makeReadyTask( FoundKeyData{ trustedKeyData, Ring::Trusted, true } );
         }
         else

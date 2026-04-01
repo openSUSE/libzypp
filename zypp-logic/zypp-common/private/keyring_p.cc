@@ -117,20 +117,75 @@ namespace zypp
 
   void KeyRingImpl::importKey( const PublicKey & key, const Ring ring )
   {
-    MIL << "Imported key " << key << " to " << ring << endl;
-
+    if ( not key.isValid() ) {
+      pDBG( "Import empty key to", ring, "skipped" );
+      return;
+    }
+    // bsc#1259706: When importing keys to the general ring also update
+    // renewed trusted keys. Previously this was done only if the renewed
+    // trusted key was used to sign repo metadata.
     if ( ring == Ring::Trusted )
     {
-      if ( key.hiddenKeys().empty() )
-      {
-        _sigTrustedKeyAdded.emit( key );
+      auto myMustUpdateData = [this]( std::string_view prefix, const PublicKeyData & keyData ) -> bool {
+        MustUpdate fate = this->mustUpdateData( keyData, Ring::Trusted );
+        pMIL( prefix, fate, keyData, "to", Ring::Trusted );
+        if ( fate == MustUpdate::Present ) {
+          return false; // already in Ring::Trusted
+        }
+        return true;  // new or update in Ring::Trusted
+      };
+
+      bool mustUpdate = myMustUpdateData( "Import Tkey", key.keyData() );
+      for ( const PublicKeyData & hkeyData : key.hiddenKeys() ) {
+        mustUpdate |= myMustUpdateData( "           ", hkeyData );
       }
-      else
-      {
-        // multiple keys: Export individual keys ascii armored to import in rpmdb
-        _sigTrustedKeyAdded.emit( exportKey( key, Ring::Trusted ) );
-        for ( const PublicKeyData & hkey : key.hiddenKeys() )
-          _sigTrustedKeyAdded.emit( exportKey( hkey, Ring::Trusted ) );
+
+      if ( mustUpdate ) {
+        importKey( key.path(), keyRingPath( Ring::Trusted ) );   // this imports all in the file
+
+        if ( key.hiddenKeys().empty() ) {
+          _sigTrustedKeyAdded.emit( key );
+        } else {
+          // multiple keys: Export individual keys ascii armored to import in rpmdb
+          _sigTrustedKeyAdded.emit( exportKey( key, Ring::Trusted ) );
+          for ( const PublicKeyData & hkey : key.hiddenKeys() )
+            _sigTrustedKeyAdded.emit( exportKey( hkey, Ring::Trusted ) );
+        }
+      }
+    }
+    else  // ring == Ring::General
+    {
+      // If all included keydata (incl. hidden keys) are already in the ring
+      // we can skip an update. Otherwise import the key into the general ring.
+      // On the fly check for each key whether it updates a trusted key and remember
+      // the id for a later update. To have proper data in the log, we report
+      // the fate of all hidden keys.
+      std::vector<PublicKeyData> trustedToUpdate;
+      auto myMustUpdateData = [this,&trustedToUpdate]( std::string_view prefix, const PublicKeyData & keyData ) -> bool {
+        MustUpdate fate = this->mustUpdateData( keyData, Ring::General );
+        if ( fate == MustUpdate::Present ) {
+          pMIL( prefix, fate, keyData, "to", Ring::General );
+          return false; // already in Ring::General
+        } else if ( this->mustUpdateData( keyData, Ring::Trusted ) == MustUpdate::Update ) {
+          pMIL( prefix, "U", keyData, "to", Ring::General );  // and later to trusted
+          trustedToUpdate.push_back( keyData );
+        } else {
+          pMIL( prefix, fate, keyData, "to", Ring::General );
+        }
+        return true;  // new or update in Ring::General
+      };
+
+      bool mustUpdate = myMustUpdateData( "Import Gkey", key.keyData() );
+      for ( const PublicKeyData & hkeyData : key.hiddenKeys() ) {
+        mustUpdate |= myMustUpdateData( "           ", hkeyData );
+      }
+
+      if ( mustUpdate ) {
+        importKey( key.path(), keyRingPath( Ring::General ) );   // this imports all in the file
+        for ( const PublicKeyData & keyData : trustedToUpdate ) {
+          // export-import the individual keys! Never the complete file.
+          importKey( exportKey( keyData, Ring::General ), Ring::Trusted );
+        }
       }
     }
   }

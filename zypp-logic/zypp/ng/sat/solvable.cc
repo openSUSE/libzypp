@@ -384,15 +384,17 @@ namespace zyppng
     CapabilitySet Solvable::providesNamespace( const std::string & namespace_r ) const
     {
       NO_SOLVABLE_RETURN( CapabilitySet() );
-      CapabilitySet ret;
-      Capabilities caps( dep_provides() );
-      for_( it, caps.begin(), caps.end() )
-      {
-        CapDetail caprep( (*it).detail() );
-        if ( zypp::str::hasPrefix( caprep.name().c_str(), namespace_r ) && *(caprep.name().c_str()+namespace_r.size()) == '(' )
-          ret.insert( *it );
-      }
-      return ret;
+
+      const auto &providesPredicate = []( std::string_view namespace_r ) {
+        return [namespace_r]( const Capability &ca ){
+          CapDetail caprep( ca.detail() );
+          return ( zypp::str::hasPrefix( caprep.name().c_str(), namespace_r ) && *(caprep.name().c_str()+namespace_r.size()) == '(' );
+        };
+      };
+
+      return dep_provides()
+          | ranges::views::filter( providesPredicate(namespace_r) )
+          | ranges::to<CapabilitySet>();
     }
 
     CapabilitySet Solvable::valuesOfNamespace( const std::string & namespace_r ) const

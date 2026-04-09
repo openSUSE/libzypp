@@ -55,7 +55,7 @@ namespace zypp
       int _errno;
   };
 
-  /** \relates Errno Stream output */
+  /** relates: Errno Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Errno & obj )
   { return str << obj.asString(); }
 

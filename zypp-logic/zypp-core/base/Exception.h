@@ -68,7 +68,7 @@ namespace zypp
     //#define ZYPP_EX_CODELOCATION ::zypp::exception_detail::CodeLocation(__FILE__,__FUNCTION__,__LINE__)
 #define ZYPP_EX_CODELOCATION ::zypp::exception_detail::CodeLocation(( *__FILE__ == '/' ? strrchr( __FILE__, '/' ) + 1 : __FILE__ ),__FUNCTION__,__LINE__)
 
-    /** \relates CodeLocation Stream output */
+    /** relates: CodeLocation Stream output */
     std::ostream & operator<<( std::ostream & str, const CodeLocation & obj );
 
     /////////////////////////////////////////////////////////////////
@@ -330,7 +330,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Exception Stream output */
+  /** relates: Exception Stream output */
   std::ostream & operator<<( std::ostream & str, const Exception & obj ) ZYPP_API;
 
   /** Log a std::excepion_ptr */

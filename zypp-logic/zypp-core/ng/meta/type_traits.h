@@ -135,6 +135,10 @@ namespace zyppng {
   //helper template to print type parameters
   template <typename ...T>
   class myerror_t;
+
+  // a dependend constexpr that is always false, use for e.g. static_assert
+  template<class ...>
+  inline constexpr bool always_false_v = false;
 }
 
 #endif

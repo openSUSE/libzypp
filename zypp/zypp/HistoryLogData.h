@@ -1,0 +1,469 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+
+/** \file zypp/HistoryLogData.h
+ *
+ */
+#ifndef ZYPP_HISTORYLOGDATA_H_
+#define ZYPP_HISTORYLOGDATA_H_
+
+#include <iosfwd>
+
+#include <zypp-core/Globals.h>
+#include <zypp-core/Date.h>
+#include <zypp/Edition.h>
+#include <zypp/Arch.h>
+#include <zypp/CheckSum.h>
+#include <zypp-core/Url.h>
+#include <zypp/Patch.h>
+
+#define HISTORY_LOG_DATE_FORMAT "%Y-%m-%d %H:%M:%S"
+
+///////////////////////////////////////////////////////////////////
+namespace zypp
+{
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryActionID
+  /// \brief Enumeration of known history actions.
+  /// \ingroup g_EnumerationClass
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  struct HistoryActionID
+  {
+    static const HistoryActionID NONE ZYPP_API;
+
+    static const HistoryActionID INSTALL ZYPP_API;
+    static const HistoryActionID REMOVE ZYPP_API;
+    static const HistoryActionID REPO_ADD ZYPP_API;
+    static const HistoryActionID REPO_REMOVE ZYPP_API;
+    static const HistoryActionID REPO_CHANGE_ALIAS ZYPP_API;
+    static const HistoryActionID REPO_CHANGE_URL ZYPP_API;
+    static const HistoryActionID STAMP_COMMAND ZYPP_API;
+    static const HistoryActionID PATCH_STATE_CHANGE ZYPP_API;
+
+    enum ID
+    {
+      NONE_e,
+
+      INSTALL_e,
+      REMOVE_e,
+      REPO_ADD_e,
+      REPO_REMOVE_e,
+      REPO_CHANGE_ALIAS_e,
+      REPO_CHANGE_URL_e,
+      STAMP_COMMAND_e,
+      PATCH_STATE_CHANGE_e
+    };
+
+    HistoryActionID() : _id(NONE_e) {}
+
+    HistoryActionID(ID id) : _id(id) {}
+
+    explicit HistoryActionID(const std::string & strval_r);
+
+    ID toEnum() const { return _id; }
+
+    static HistoryActionID::ID parse(const std::string & strval_r);
+
+    const std::string & asString(bool pad = false) const;
+
+    private:
+    ID _id;
+  };
+
+  /** relates: HistoryActionID */
+  inline bool operator==( const HistoryActionID & lhs, const HistoryActionID & rhs )
+  { return lhs.toEnum() == rhs.toEnum(); }
+
+  /** relates: HistoryActionID */
+  inline bool operator!=( const HistoryActionID & lhs, const HistoryActionID & rhs )
+  { return lhs.toEnum() != rhs.toEnum(); }
+
+  /** relates: HistoryActionID */
+  std::ostream & operator << (std::ostream & str, const HistoryActionID & id);
+  ///////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogData
+  /// \brief A zypp history log line split into fields
+  /// \ingroup g_ZyppHistory
+  ///
+  /// Each valid history log line starts with a date and HistoryActionID
+  /// field. Subsequent fields depend on the kind of action. See derived
+  /// classes for convenient access to those flields.
+  ///
+  /// HistoryLogData itself provides mostly generic access to the fields
+  /// plain string values. Derived classes for well known entries tell
+  ///
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogData>;
+    using constPtr = shared_ptr<const HistoryLogData>;
+
+    using FieldVector = std::vector<std::string>;
+    using size_type = FieldVector::size_type;
+    using const_iterator = FieldVector::const_iterator;
+
+  public:
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has not at least \a expect_r entries
+     * \note 2 fields (date and action) are always required.
+     */
+    explicit HistoryLogData( FieldVector & fields_r, size_type expect_r = 2 );
+
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or not at least \a expect_r entries.
+     * \note 2 fields (date and action) are always required.
+     */
+    HistoryLogData( FieldVector & fields_r, HistoryActionID action_r, size_type expect_r = 2 );
+
+    /** Dtor */
+    virtual ~HistoryLogData();
+
+    /** Factory method creating HistoryLogData classes.
+     *
+     * Moves \a fields_r into a HistoryLogData or derived object, depending on the
+     * HistoryActionID. For known action ids a coresponing HistoryLogData class
+     * is created, to allow convenient access to the field values. For unknown
+     * action ids a plain HistoryLogData object is created. \ref HistoryActionID
+     * \ref NONE_e id used in this case.
+     *
+     * \throws ParseException if \a fields_r does not contain the required format.
+     */
+    static Ptr create( FieldVector & fields_r );
+
+  public:
+    /** Whether FieldVector is empty. */
+    bool empty() const;
+
+    /** Number of fields in vector. */
+    size_type size() const;
+
+    /** Iterator pointing to 1st element in vector (or end()). */
+    const_iterator begin() const;
+
+    /** Iterator pointing behind the last element in vector. */
+    const_iterator end() const;
+
+    /** Access (optional) field by number.
+     * \returns an empty string if \a idx_r is out of range.
+     * \see \ref at
+     */
+    const std::string & optionalAt( size_type idx_r ) const;
+    /** \overload */
+    const std::string & operator[]( size_type idx_r ) const
+    { return optionalAt( idx_r ); }
+
+    /** Access (required) field by number.
+     * \throws std::out_of_range if \a idx_r is out of range.
+     * \see \ref optionalAt
+     */
+    const std::string & at( size_type idx_r ) const;
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= 0,	///< date
+      ACTION_INDEX	= 1,	///< HistoryActionID
+    };
+
+  public:
+    Date	date()		const;	///< date
+    HistoryActionID action()	const;	///< HistoryActionID (or \c NONE_e if unknown)
+
+  public:
+    class Impl;                 ///< Implementation class
+  private:
+    RWCOW_pointer<Impl> _pimpl; ///< Pointer to implementation
+  protected:
+    HistoryLogData & operator=( const HistoryLogData & ); ///< no base class assign
+  };
+
+  /** relates: HistoryLogData Stream output */
+  std::ostream & operator<<( std::ostream & str, const HistoryLogData & obj );
+  ///////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataInstall
+  /// \brief  A zypp history log line for an installed packaged.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataInstall : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataInstall>;
+    using constPtr = shared_ptr<const HistoryLogDataInstall>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataInstall( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      NAME_INDEX,		///< package name
+      EDITION_INDEX,		///< package edition
+      ARCH_INDEX,		///< package architecture
+      REQBY_INDEX,		///< requested by (user@hostname, pid:appname, or empty (solver))
+      REPOALIAS_INDEX,		///< repository providing the package
+      CHEKSUM_INDEX,		///< package checksum
+      USERDATA_INDEX,		///< userdata/transactionID
+    };
+
+   public:
+    std::string	name()		const;	///< package name
+    Edition	edition()	const;	///< package edition
+    Arch	arch()		const;	///< package architecture
+    std::string	reqby()		const;	///< requested by (user@hostname, pid:appname, or empty (solver))
+    std::string	repoAlias()	const;	///< repository providing the package
+    CheckSum	checksum()	const;	///< package checksum
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  //PATCH SEVERITY CATEGORY OLDSTATE NEWSTATE
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogPatchStateChange
+  /// \brief  A zypp history log line for an installed packaged.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogPatchStateChange : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogPatchStateChange>;
+    using constPtr = shared_ptr<const HistoryLogPatchStateChange>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogPatchStateChange( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      NAME_INDEX,		///< patch name
+      EDITION_INDEX,		///< patch edition
+      ARCH_INDEX,		///< patch architecture
+      REPOALIAS_INDEX,		///< repository providing the patch
+      SEVERITY_INDEX,           ///< patch severity
+      CATEGORY_INDEX,           ///< patch category
+      OLDSTATE_INDEX,           ///< the state of the patch before the change
+      NEWSTATE_INDEX,           ///< the state of the patch after the change
+      USERDATA_INDEX,		///< userdata/transactionID
+    };
+
+  public:
+    std::string	name()		const;	///< package name
+    Edition	edition()	const;	///< package edition
+    Arch	arch()		const;	///< package architecture
+    std::string	repoAlias()	const;	///< repository providing the package
+    Patch::SeverityFlag severity() const;
+    Patch::Category category()  const;
+    std::string oldstate()      const;
+    std::string newstate()      const;
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataRemove
+  /// \brief A zypp history log line for a removed packge.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataRemove : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataRemove>;
+    using constPtr = shared_ptr<const HistoryLogDataRemove>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataRemove( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      NAME_INDEX,		///< package name
+      EDITION_INDEX,		///< package edition
+      ARCH_INDEX,		///< package architecture
+      REQBY_INDEX,		///< requested by (user@hostname, pid:appname, or empty (solver))
+      USERDATA_INDEX,		///< userdata/transactionID
+    };
+
+  public:
+    std::string	name()		const;	///< package name
+    Edition	edition()	const;	///< package edition
+    Arch	arch()		const;	///< package architecture
+    std::string	reqby()		const;	///< requested by (user@hostname, pid:appname, or empty (solver))
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataRepoAdd
+  /// \brief A zypp history log line for an added repository.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataRepoAdd : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataRepoAdd>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoAdd>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataRepoAdd( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      ALIAS_INDEX,		///< repository alias
+      URL_INDEX,		///< repository url
+      USERDATA_INDEX,		///< userdata/transactionID
+    };
+
+  public:
+    std::string	alias()		const;	///< repository alias
+    Url		url()		const;	///< repository url
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataRepoRemove
+  /// \brief A zypp history log line for a removed repository.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataRepoRemove : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataRepoRemove>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoRemove>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataRepoRemove( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      ALIAS_INDEX,		///< repository alias
+      USERDATA_INDEX,		///< userdata/transactionID
+    };
+
+  public:
+    std::string	alias()		const;	///< repository alias
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataRepoAliasChange
+  /// \brief A zypp history log line for a repo alias change.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataRepoAliasChange : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataRepoAliasChange>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoAliasChange>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataRepoAliasChange( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      OLDALIAS_INDEX,		///< repositories old alias
+      NEWALIAS_INDEX,		///< repositories new alias
+      USERDATA_INDEX,		///< userdata/transactionID
+   };
+
+  public:
+    std::string	oldAlias()	const;	///< repositories old alias
+    std::string	newAlias()	const;	///< repositories new alias
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataRepoUrlChange
+  /// \brief A zypp history log line for a repo url change.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataRepoUrlChange : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataRepoUrlChange>;
+    using constPtr = shared_ptr<const HistoryLogDataRepoUrlChange>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataRepoUrlChange( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      ALIAS_INDEX,		///< repository alias
+      NEWURL_INDEX,		///< repositories new url
+      USERDATA_INDEX,		///< userdata/transactionID
+   };
+
+  public:
+    std::string	alias()		const;	///< repository alias
+    Url		newUrl()	const;	///< repositories new url
+    std::string	userdata()	const;	///< userdata/transactionID
+  };
+
+  ///////////////////////////////////////////////////////////////////
+  /// \class HistoryLogDataStampCommand
+  /// \brief A zypp history log line identifying the program that
+  /// triggered the following commit.
+  /// \ingroup g_ZyppHistory
+  ///////////////////////////////////////////////////////////////////
+  class ZYPP_API HistoryLogDataStampCommand : public HistoryLogData
+  {
+  public:
+    using Ptr = shared_ptr<HistoryLogDataStampCommand>;
+    using constPtr = shared_ptr<const HistoryLogDataStampCommand>;
+    /** Ctor \b moving \a FieldVector (via swap).
+     * \throws ParseException if \a fields_r has the wrong \ref HistoryActionID or number of fields.
+     */
+    HistoryLogDataStampCommand( FieldVector & fields_r );
+
+  public:
+    enum Index			///< indices of known fields
+    {
+      DATE_INDEX	= HistoryLogData::DATE_INDEX,
+      ACTION_INDEX	= HistoryLogData::ACTION_INDEX,
+      USER_INDEX,		///< executed by user@hostname
+      COMMAND_INDEX,		///< the commandline executed
+      USERDATA_INDEX,		///< userdata/transactionID
+   };
+
+  public:
+    std::string	executedBy()		const;	///< executed by user@hostname
+    std::string command()		const;	///< the commandline executed
+    std::string	userdata()		const;	///< userdata/transactionID
+  };
+
+} // namespace zypp
+///////////////////////////////////////////////////////////////////
+#endif /* ZYPP_HISTORYLOGDATA_H_ */

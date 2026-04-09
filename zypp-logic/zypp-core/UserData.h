@@ -226,7 +226,7 @@ namespace zypp
       mutable shared_ptr<DataType> _dataP;
     };
 
-    /** \relates UserData Stream output */
+    /** relates: UserData Stream output */
     inline std::ostream & operator<<( std::ostream & str, const UserData & obj )
     { return str << "UserData(" << obj.type() << ":" << obj.size() << ")";}
 

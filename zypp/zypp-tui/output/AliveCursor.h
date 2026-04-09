@@ -70,7 +70,7 @@ class AliveCursor
   char _current;
 };
 
-/** \relates Date Stream output */
+/** relates: Date Stream output */
 inline std::ostream & operator<<( std::ostream & str, const AliveCursor & obj )
 { return str << obj.current(); }
 

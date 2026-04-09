@@ -91,12 +91,12 @@ namespace zypp
         T & _val;
       };
 
-      /** \relates RefStore<T> Create a RefStore for the argument. */
+      /** relates: RefStore<T> Create a RefStore for the argument. */
       template <typename T>
       constexpr auto makeRefStore( T && t ) ->/* c++-11 can not deduce return value! */ RefStore<T>
       { return RefStore<T>( std::forward<T>(t) ); }
 
-      /** \relates RefStore<T> Stream output */
+      /** relates: RefStore<T> Stream output */
       template <typename T>
       std::ostream & operator<<( std::ostream & str, const RefStore<T> & obj )
       { return str << obj.get(); }
@@ -164,7 +164,7 @@ namespace zypp
     using NoPrint = detail::NoPrint;
     inline constexpr NoPrint noPrint;
 
-    /** \relates JoinFormat<> Create a basic format description to print a collection.
+    /** relates: JoinFormat<> Create a basic format description to print a collection.
      *
      * The JoinFormat stores references or rvalues of printable objects which
      * serve the following purpose when printing a collection:
@@ -456,7 +456,7 @@ namespace zypp
       TIterator _end;
     };
 
-    /** \relates RangeLine<TIterator> */
+    /** relates: RangeLine<TIterator> */
     template<class TIterator>
     std::ostream & operator<<( std::ostream & str, const RangeLine<TIterator> & obj )
     { return dumpRangeLine( str, obj._begin, obj._end ); }
@@ -537,14 +537,14 @@ namespace zypp {
         const TPair *const _pair;
       };
 
-    /** \relates MapEntry Stream output. */
+    /** relates: MapEntry Stream output. */
     template<class TPair>
       std::ostream & operator<<( std::ostream & str, const MapEntry<TPair> & obj )
       {
         return str << '[' << obj.pair().first << "] = " << obj.pair().second;
       }
 
-    /** \relates MapEntry Convenience function to create MapEntry from std::pair. */
+    /** relates: MapEntry Convenience function to create MapEntry from std::pair. */
     template<class TPair>
       MapEntry<TPair> mapEntry( const TPair & pair_r )
       { return MapEntry<TPair>( pair_r ); }
@@ -591,12 +591,12 @@ namespace zypp {
         const TMap *const _map;
       };
 
-    /** \relates DumpMap Stream output. */
+    /** relates: DumpMap Stream output. */
     template<class TMap>
       std::ostream & operator<<( std::ostream & str, const DumpMap<TMap> & obj )
       { return dumpRange( str, obj.begin(), obj.end() ); }
 
-    /** \relates DumpMap Convenience function to create DumpMap from std::map. */
+    /** relates: DumpMap Convenience function to create DumpMap from std::map. */
     template<class TMap>
       DumpMap<TMap> dumpMap( const TMap & map_r )
       { return DumpMap<TMap>( map_r ); }
@@ -636,12 +636,12 @@ namespace zypp {
         const TMap *const _map;
       };
 
-    /** \relates DumpKeys Stream output. */
+    /** relates: DumpKeys Stream output. */
     template<class TMap>
       std::ostream & operator<<( std::ostream & str, const DumpKeys<TMap> & obj )
       { return dumpRange( str, obj.begin(), obj.end() ); }
 
-    /** \relates DumpKeys Convenience function to create DumpKeys from std::map. */
+    /** relates: DumpKeys Convenience function to create DumpKeys from std::map. */
     template<class TMap>
       DumpKeys<TMap> dumpKeys( const TMap & map_r )
       { return DumpKeys<TMap>( map_r ); }
@@ -681,12 +681,12 @@ namespace zypp {
         const TMap *const _map;
       };
 
-    /** \relates DumpValues Stream output. */
+    /** relates: DumpValues Stream output. */
     template<class TMap>
       std::ostream & operator<<( std::ostream & str, const DumpValues<TMap> & obj )
       { return dumpRange( str, obj.begin(), obj.end() ); }
 
-    /** \relates DumpValues Convenience function to create DumpValues from std::map. */
+    /** relates: DumpValues Convenience function to create DumpValues from std::map. */
     template<class TMap>
       DumpValues<TMap> dumpValues( const TMap & map_r )
       { return DumpValues<TMap>( map_r ); }
@@ -801,7 +801,7 @@ namespace zypp {
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////
 namespace std {
-  /** \relates std::shared_ptr Stream output. */
+  /** relates: std::shared_ptr Stream output. */
   template<class D>
   inline std::ostream & operator<<( std::ostream & str, const std::shared_ptr<D> & obj )
   {

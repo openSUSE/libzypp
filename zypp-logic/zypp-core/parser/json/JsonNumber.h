@@ -57,7 +57,7 @@ namespace zypp::json {
 
   };
 
-  /** \relates Number Stream output */
+  /** relates: Number Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Number & obj )
   {
     return obj.dumpOn( str );
@@ -102,7 +102,7 @@ namespace zypp::json {
     std::int64_t _value = 0;
   };
 
-  /** \relates Int Stream output */
+  /** relates: Int Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Int & obj )
   {
     return obj.dumpOn( str );
@@ -147,7 +147,7 @@ namespace zypp::json {
     std::uint64_t _value = 0;
   };
 
-  /** \relates UInt Stream output */
+  /** relates: UInt Stream output */
   inline std::ostream & operator<<( std::ostream & str, const UInt & obj )
   {
     return obj.dumpOn( str );

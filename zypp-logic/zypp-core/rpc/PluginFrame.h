@@ -273,21 +273,21 @@ namespace zypp
       RWCOW_pointer<Impl> _pimpl;
   };
 
-  /** \relates PluginFrame Stream output for logging */
+  /** relates: PluginFrame Stream output for logging */
   std::ostream & operator<<( std::ostream & str, const PluginFrame & obj );
 
-  /** \relates PluginFrame Stream output writing all data for logging (no throw) */
+  /** relates: PluginFrame Stream output writing all data for logging (no throw) */
   inline std::ostream & dumpOn( std::ostream & str, const PluginFrame & obj )
   { if ( str ) try { PluginFrame::writeTo( str, obj ); } catch(...){}; return str; }
 
-  /** \relates PluginFrame Construct from stream. */
+  /** relates: PluginFrame Construct from stream. */
   inline std::istream & operator>>( std::istream & str, PluginFrame & obj )
   { return PluginFrame::readFrom( str, obj ); }
 
-  /** \relates PluginFrame Comparison based on content. */
+  /** relates: PluginFrame Comparison based on content. */
   bool operator==( const PluginFrame & lhs, const PluginFrame & rhs );
 
-  /** \relates PluginFrame Comparison based on content. */
+  /** relates: PluginFrame Comparison based on content. */
   inline bool operator!=( const PluginFrame & lhs, const PluginFrame & rhs )
   { return( ! operator==( lhs, rhs ) ); }
 

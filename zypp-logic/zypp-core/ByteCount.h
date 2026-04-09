@@ -157,7 +157,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates ByteCount Stream output */
+  /** relates: ByteCount Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ByteCount & obj )
   { return str << obj.asString(); }
 

@@ -122,16 +122,16 @@ namespace zypp
     std::string _checksum;
   };
 
-  /** \relates CheckSum Stream output. */
+  /** relates: CheckSum Stream output. */
   std::ostream & operator<<( std::ostream & str, const CheckSum & obj );
 
-  /** \relates CheckSum XML output. */
+  /** relates: CheckSum XML output. */
   std::ostream & dumpAsXmlOn( std::ostream & str, const CheckSum & obj );
 
-  /** \relates CheckSum */
+  /** relates: CheckSum */
   bool operator==( const CheckSum & lhs, const CheckSum & rhs );
 
-  /** \relates CheckSum */
+  /** relates: CheckSum */
   bool operator!=( const CheckSum & lhs, const CheckSum & rhs );
 
 } // namespace zypp

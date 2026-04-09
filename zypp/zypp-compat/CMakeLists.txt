@@ -35,6 +35,7 @@ SET ( zypp_core_base_compat_HEADERS
   zypp/base/ExternalDataSource.h
   zypp/base/Flags.h
   zypp/base/Function.h
+  zypp/base/Functional.h
   zypp/base/fXstream.h
   zypp/base/Gettext.h
   zypp/base/GzStream.h

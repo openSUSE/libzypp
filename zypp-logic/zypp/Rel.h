@@ -157,17 +157,17 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Rel Stream output. */
+  /** relates: Rel Stream output. */
   inline std::ostream & operator<<( std::ostream & str, const Rel & obj )
   { return str << obj.asString(); }
 
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Rel */
+  /** relates: Rel */
   inline bool operator==( const Rel & lhs, const Rel & rhs )
   { return lhs.inSwitch() == rhs.inSwitch(); }
 
-  /** \relates Rel */
+  /** relates: Rel */
   inline bool operator!=( const Rel & lhs, const Rel & rhs )
   { return ! ( lhs == rhs ); }
 

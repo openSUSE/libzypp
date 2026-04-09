@@ -10,10 +10,13 @@
  *
 */
 #include <iostream>
-#include <map>
+#include <boost/utility/string_ref.hpp>
 
 #include <zypp/Locale.h>
+
+#ifndef ZYPPNG
 #include <zypp/ZConfig.h>
+#endif
 
 using std::endl;
 
@@ -208,8 +211,7 @@ namespace zypp
   Locale Locale::fallback() const
   { return CodeMaps::instance().fallback( _str ); }
 
-  ///////////////////////////////////////////////////////////////////
-
+#ifndef ZYPPNG
   Locale Locale::bestMatch( const LocaleSet & avLocales_r, Locale requested_r )
   {
     if ( ! avLocales_r.empty() )
@@ -224,6 +226,7 @@ namespace zypp
     }
     return Locale();
   }
+#endif
 
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

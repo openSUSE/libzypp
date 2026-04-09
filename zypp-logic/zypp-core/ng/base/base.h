@@ -14,6 +14,7 @@
 #ifndef ZYPP_NG_BASE_BASE_H_INCLUDED
 #define ZYPP_NG_BASE_BASE_H_INCLUDED
 
+#include <zypp-core/AutoDispose.h>
 #include <zypp-core/ng/base/zyppglobal.h>
 #include <zypp-core/ng/base/signals.h>
 #include <memory>
@@ -56,7 +57,7 @@ namespace zyppng {
    *
    * \sa zypp/zyppng/base/signals.h
    */
-  class LIBZYPP_NG_EXPORT Base : public sigc::trackable, public std::enable_shared_from_this<Base>
+  class  Base : public sigc::trackable, public std::enable_shared_from_this<Base>
   {
     NON_COPYABLE(Base);
     ZYPP_DECLARE_PRIVATE(Base)
@@ -168,6 +169,13 @@ namespace zyppng {
     std::enable_if_t< std::is_member_function_pointer_v< SenderFunc >,  connection > connectFunc ( SenderFunc &&sFun, ReceiverFunc &&rFunc, const Tracker&...trackers  ) {
       return connectFunc( static_cast<typename internal::MemberFunction<SenderFunc>::ClassType &>(*this), std::forward<SenderFunc>(sFun), std::forward<ReceiverFunc>(rFunc), trackers... );
     }
+
+    /*!
+     * \internal Used by the C layer to connect a existing wrapper to the C++ instance
+     */
+    void  setData   ( uint32_t quark, zypp::AutoDispose<void *> data );
+    void* data      ( uint32_t quark );
+    void  clearData ( uint32_t quark );
 
   protected:
     Base ( BasePrivate &dd );

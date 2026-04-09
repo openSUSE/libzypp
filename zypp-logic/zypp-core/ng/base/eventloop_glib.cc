@@ -8,31 +8,44 @@ namespace zyppng {
 
   ZYPP_IMPL_PRIVATE(EventLoop)
 
-  EventLoop::EventLoop()
+  EventLoop::EventLoop( EventDispatcherRef disp )
     : Base ( * new EventLoopPrivate(*this) )
   {
     Z_D();
-    d->_dispatcher = ThreadData::current().ensureDispatcher();
-    d->_loop = g_main_loop_new( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()), false );
+    d->_dispatcher = std::move(disp);
+    d->_loop       = g_main_loop_new( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()), false );
   }
+
+
+  EventLoop::EventLoop( GMainContext *ctx )
+    : EventLoop( ThreadData::current().ensureDispatcher( ctx ) )
+  {}
 
   EventLoop::~EventLoop()
   {
     g_main_loop_unref( d_func()->_loop );
   }
 
-  EventLoop::Ptr EventLoop::create()
+  EventLoop::Ptr EventLoop::create( GMainContext *ctx )
   {
-    return Ptr( new EventLoop() );
+    return Ptr( new EventLoop( ctx ) );
   }
+
+  EventLoop::Ptr EventLoop::create( EventDispatcherRef dispatcher  )
+  {
+    return Ptr( new EventLoop( std::move(dispatcher) ) );
+  }
+
 
   void EventLoop::run()
   {
     Z_D();
     g_main_context_push_thread_default( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()) );
+    zypp_defer {
+      d->_dispatcher->clearUnrefLaterList();
+      g_main_context_pop_thread_default( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()) );
+    };
     g_main_loop_run( d->_loop );
-    d->_dispatcher->clearUnrefLaterList();
-    g_main_context_pop_thread_default( reinterpret_cast<GMainContext*>(d->_dispatcher->nativeDispatcherHandle()) );
   }
 
   void EventLoop::quit()

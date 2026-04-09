@@ -108,31 +108,31 @@ namespace zypp
     std::string	_subtype;
   };
 
-  /** \relates ContentType Stream output */
+  /** relates: ContentType Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ContentType & obj )
   { return str << obj.asString(); }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator==( const ContentType & lhs, const ContentType & rhs )
   { return lhs.type() == rhs.type() && lhs.subtype() == rhs.subtype(); }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator!=( const ContentType & lhs, const ContentType & rhs )
   { return !( lhs == rhs ); }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator<( const ContentType & lhs, const ContentType & rhs )
   { int cmp = lhs.type().compare( rhs.type() ); return cmp < 0 || ( cmp == 0 && lhs.subtype() < rhs.subtype() ); }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator<=( const ContentType & lhs, const ContentType & rhs )
   { return lhs < rhs || lhs == rhs; }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator>( const ContentType & lhs, const ContentType & rhs )
   { return !( lhs <= rhs ); }
 
-  /** \relates ContentType */
+  /** relates: ContentType */
   inline bool operator>=( const ContentType & lhs, const ContentType & rhs )
   { return !( lhs < rhs ); }
 

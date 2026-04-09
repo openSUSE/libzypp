@@ -12,7 +12,7 @@
 #include <zypp-core/ng/async/awaitable.h>
 #include <zypp-core/ng/ui/UserInterface>
 #include <zypp-core/ng/base/eventloop.h>
-#include <zypp/ResPool.h>
+//#include <zypp/ResPool.h>
 
 namespace zypp {
   DEFINE_PTR_TYPE(KeyRing);
@@ -61,9 +61,14 @@ namespace zyppng {
     }
 
     ProvideRef provider() const;
-    KeyRingRef keyRing () const;
+
+#if 0
+
+
     zypp::ZConfig &config();
 
+
+    KeyRingRef keyRing () const;
     /**
      * Access to the resolvable pool.
      */
@@ -79,6 +84,7 @@ namespace zyppng {
      * Access to the sat pool.
      */
     zypp::sat::Pool satPool();
+#endif
 
   };
 

@@ -69,7 +69,7 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const GpgmeErr & obj )
     { return str << "<" << gpgme_strsource(obj) << "> " << gpgme_strerror(obj); }
 
-    /** \relates gpgme_import_result_t Stream output. */
+    /** relates: gpgme_import_result_t Stream output. */
     [[maybe_unused]] std::ostream & operator<<( std::ostream & str, const _gpgme_op_import_result & obj )
     {
       str << "gpgme_op_import_result {" << endl;

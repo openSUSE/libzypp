@@ -36,10 +36,10 @@ namespace zypp
     /** String representantion */
     static const std::string & asString( Enum val_r ) ZYPP_API;
   };
-  /** \relates ESetCompareDef typedef 'enum class SetCompare' */
+  /** relates: ESetCompareDef typedef 'enum class SetCompare' */
   using SetCompare = base::EnumClass<ESetCompareDef>;
 
-  /** \relates SetCompare Stream output */
+  /** relates: SetCompare Stream output */
   inline std::ostream & operator<<( std::ostream & str, const SetCompare::Enum & obj )
   { return str << SetCompare::asString( obj ); }
   /** \overload */
@@ -67,17 +67,17 @@ namespace zypp
     /** String representantion */
     static const std::string & asString( Enum val_r ) ZYPP_API;
   };
-  /** \relates ESetRelationDef typedef 'enum class SetRelation' */
+  /** relates: ESetRelationDef typedef 'enum class SetRelation' */
   using SetRelation = base::EnumClass<ESetRelationDef>;
 
-  /** \relates SetRelation Stream output */
+  /** relates: SetRelation Stream output */
   inline std::ostream & operator<<( std::ostream & str, const SetRelation::Enum & obj )
   { return str << SetRelation::asString( obj ); }
   /** \overload */
   inline std::ostream & operator<<( std::ostream & str, const SetRelation & obj )
   { return str << obj.asEnum(); }
 
-  /** \relates SetRelation \relates SetCompare Matching \ref SetCompare and \ref SetRelation */
+  /** relates: SetRelation relates: SetCompare Matching \ref SetCompare and \ref SetRelation */
   inline bool operator==( const SetRelation::Enum & lhs, const SetCompare::Enum & rhs )
   { return( static_cast<int>(lhs)&static_cast<int>(rhs) || !(static_cast<int>(lhs)|static_cast<int>(rhs)) ); }
   /** \overload */
@@ -102,7 +102,7 @@ namespace zypp
   inline bool operator==( const SetCompare & lhs, const SetRelation & rhs )
   { return( rhs == lhs ); }
 
-  /** \relates SetRelation \relates SetCompare Matching \ref SetCompare and \ref SetRelation */
+  /** relates: SetRelation relates: SetCompare Matching \ref SetCompare and \ref SetRelation */
   inline bool operator!=( const SetRelation::Enum & lhs, const SetCompare::Enum & rhs )
   { return !( lhs == rhs ); }
   /** \overload */
@@ -177,32 +177,32 @@ namespace zypp
       { return *static_cast<const Derived*>( this ); }
     };
 
-    /** \relates SetRelationMixin Compare sets */
+    /** relates: SetRelationMixin Compare sets */
     template <class Derived>
     inline SetCompare compare( const SetRelationMixin<Derived> & src, const SetRelationMixin<Derived> & trg )
     { return src.compare( trg ); }
 
-    /** \relates SetRelationMixin Compare sets and match against \ref SetCompare */
+    /** relates: SetRelationMixin Compare sets and match against \ref SetCompare */
     template <class Derived>
     inline bool compare( const SetRelationMixin<Derived> & src, const SetRelationMixin<Derived> & trg, SetCompare cmp )
     { return src.compare( trg, cmp ); }
 
-    /** \relates SetRelationMixin Compare sets and match against \ref SetRelation */
+    /** relates: SetRelationMixin Compare sets and match against \ref SetRelation */
     template <class Derived>
     inline bool compare( const SetRelationMixin<Derived> & src, const SetRelationMixin<Derived> & trg, SetRelation rel )
     { return src.compare( trg, rel ); }
 
-    /** \relates SetRelationMixin Equal */
+    /** relates: SetRelationMixin Equal */
     template <class Derived>
     inline bool operator==( const SetRelationMixin<Derived> & src, const SetRelationMixin<Derived> & trg )
     { return src.compare( trg, SetRelation::equal ); }
 
-    /** \relates SetRelationMixin Unequal */
+    /** relates: SetRelationMixin Unequal */
     template <class Derived>
     inline bool operator!=( const SetRelationMixin<Derived> & src, const SetRelationMixin<Derived> & trg )
     { return !( src == trg ); }
 
-    /** \relates SetRelationMixin Define compare between Derived and some other type (e.g. std::string)
+    /** relates: SetRelationMixin Define compare between Derived and some other type (e.g. std::string)
      * \code
      *   class Foo : public base::SetRelationMixin<Foo> {...};
      *   SETRELATIONMIXIN_DEFINE_COMPARE_BETWEEN( Foo, const char * );

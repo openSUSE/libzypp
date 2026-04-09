@@ -248,11 +248,11 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Date Stream output */
+  /** relates: Date Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Date & obj )
   { return str << obj.asString(); }
 
-  /** \relates Date XML output.
+  /** relates: Date XML output.
    * Print \c time_t and \c text attribute. Allow alternate node name [date].
    */
   std::ostream & dumpAsXmlOn( std::ostream & str, const Date & obj, const std::string & name_r = "date" ) ZYPP_API;

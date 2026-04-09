@@ -62,9 +62,10 @@ set( ZYPPNG_WORKER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/tools/workers )
 
 #signal the code to enable zyppng features
 add_definitions( -DZYPP_ENABLE_ASYNC )
+add_definitions( -DZYPPNG=1 )
 
 add_subdirectory( lib )
-add_subdirectory( api )
+#add_subdirectory( api )
 add_subdirectory( tools )
 add_subdirectory( tests )
 

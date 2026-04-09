@@ -11,11 +11,10 @@
 */
 #include <iostream>
 #include <boost/mpl/int.hpp>
+#include <boost/utility/string_ref.hpp>
 
 #include <zypp/IdString.h>
-
-#include <zypp/sat/detail/PoolImpl.h>
-#include <zypp/sat/Pool.h>
+#include <zypp/ng/sat/stringpool.h>
 
 using std::endl;
 
@@ -26,14 +25,16 @@ namespace zypp
   const IdString IdString::Null ( sat::detail::noId );
   const IdString IdString::Empty( sat::detail::emptyId );
 
+  using zyppng::sat::StringPool;
+
   /////////////////////////////////////////////////////////////////
 
   IdString::IdString( const char * str_r )
-  : _id( ::pool_str2id( myPool().getPool(), str_r, /*create*/true ) )
+    : _id( ::pool_str2id( StringPool::instance().getPool() , str_r, /*create*/true ) )
   {}
 
   IdString::IdString( const char * str_r, unsigned len_r )
-  : _id( ::pool_strn2id( myPool().getPool(), str_r, len_r, /*create*/true ) )
+  : _id( ::pool_strn2id( StringPool::instance().getPool(), str_r, len_r, /*create*/true ) )
   {}
 
   IdString::IdString( const std::string & str_r )
@@ -48,7 +49,7 @@ namespace zypp
   { return ::strlen( c_str() ); }
 
   const char * IdString::c_str() const
-  { return _id ? ::pool_id2str( myPool().getPool(), _id ) : ""; }
+  { return _id ? ::pool_id2str( StringPool::instance().getPool(), _id ) : ""; }
 
   int IdString::compare( const IdString & rhs ) const
   {

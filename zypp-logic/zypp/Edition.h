@@ -14,7 +14,6 @@
 
 #include <iosfwd>
 #include <string>
-#include <functional>
 
 #include <zypp/IdStringType.h>
 #include <zypp/RelCompare.h>
@@ -178,7 +177,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Edition XML output. */
+  /** relates: Edition XML output. */
   inline std::ostream & dumpAsXmlOn( std::ostream & str, const Edition & obj )
   { return str << "<edition"
                << " epoch=\"" << obj.epoch() << "\""

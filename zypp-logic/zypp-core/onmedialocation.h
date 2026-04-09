@@ -132,10 +132,10 @@ namespace zypp
     RWCOW_pointer<Impl> _pimpl; ///< Pointer to implementation.
   };
 
-  /** \relates OnMediaLocation Stream output */
+  /** relates: OnMediaLocation Stream output */
   std::ostream & operator<<( std::ostream & str, const OnMediaLocation & obj );
 
-  /** \relates OnMediaLocation Verbose stream output */
+  /** relates: OnMediaLocation Verbose stream output */
   std::ostream & dumOn( std::ostream & str, const OnMediaLocation & obj );
 
 } // namespace zypp

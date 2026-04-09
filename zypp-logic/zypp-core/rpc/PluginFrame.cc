@@ -262,7 +262,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PluginFrame::Impl Stream output */
+  /** relates: PluginFrame::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PluginFrame::Impl & obj )
   {
     return str << "PluginFrame[" << obj.command() << "](" << obj.headerList().size() << "){" << obj.body().size() << "}";

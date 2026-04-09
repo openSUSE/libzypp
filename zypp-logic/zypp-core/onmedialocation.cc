@@ -63,11 +63,11 @@ namespace zypp
     Impl * clone() const { return new Impl( *this ); }
   };
 
-  /** \relates OnMediaLocation::Impl Stream output */
+  /** relates: OnMediaLocation::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const OnMediaLocation::Impl & obj )
   { return str << "[" << obj._medianr << "]" << obj._filename << "{" << obj._downloadSize << "|" << obj._checksum << "|" << obj._deltafile <<  "}"; }
 
-  /** \relates OnMediaLocation::Impl Verbose stream output */
+  /** relates: OnMediaLocation::Impl Verbose stream output */
   inline std::ostream & dumpOn( std::ostream & str, const OnMediaLocation::Impl & obj )
   { return str << obj; }
 

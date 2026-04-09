@@ -15,11 +15,19 @@
 #include <iosfwd>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 
 #include <boost/utility/string_ref_fwd.hpp>
 
 #include <zypp-core/Globals.h>
+#include <zypp-core/base/Hash.h>
+
+#include <zypp/sat/detail/PoolDefines.h>
+
+
+#if ( LEGACY(1735) ) && !ZYPPNG
 #include <zypp/sat/detail/PoolMember.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -40,7 +48,10 @@ namespace zypp
    * While comparison differs between \ref IdString::Null and \ref IdString::Empty
    * ( \c NULL and \c "" ), both are represented by an empty string \c "".
    */
-  class ZYPP_API IdString : protected sat::detail::PoolMember
+  class ZYPP_API IdString
+#if ( LEGACY(1735) ) && !ZYPPNG
+    : protected sat::detail::PoolMember
+#endif
   {
     public:
       using IdType = sat::detail::IdType;
@@ -138,13 +149,13 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates IdString Stream output */
+  /** relates: IdString Stream output */
   std::ostream & operator<<( std::ostream & str, const IdString & obj ) ZYPP_API;
 
-  /** \relates IdString Stream output */
+  /** relates: IdString Stream output */
   std::ostream & dumpOn( std::ostream & str, const IdString & obj ) ZYPP_API;
 
-  /** \relates IdString Equal */
+  /** relates: IdString Equal */
   inline bool operator==( const IdString & lhs, const IdString & rhs )
   { return lhs.compareEQ( rhs ); }
   /** \overload */
@@ -160,7 +171,7 @@ namespace zypp
   inline bool operator==( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) == 0; }
 
-  /** \relates IdString NotEqual */
+  /** relates: IdString NotEqual */
   inline bool operator!=( const IdString & lhs, const IdString & rhs )
   { return ! lhs.compareEQ( rhs ); }
   /** \overload */
@@ -176,7 +187,7 @@ namespace zypp
   inline bool operator!=( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) != 0; }
 
-  /** \relates IdString Less */
+  /** relates: IdString Less */
   inline bool operator<( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) < 0; }
   /** \overload */
@@ -192,7 +203,7 @@ namespace zypp
   inline bool operator<( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) >= 0; }
 
-  /** \relates IdString LessEqual*/
+  /** relates: IdString LessEqual*/
   inline bool operator<=( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) <= 0; }
   /** \overload */
@@ -208,7 +219,7 @@ namespace zypp
   inline bool operator<=( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) > 0; }
 
-  /** \relates IdString Greater */
+  /** relates: IdString Greater */
   inline bool operator>( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) > 0; }
   /** \overload */
@@ -224,7 +235,7 @@ namespace zypp
   inline bool operator>( const std::string & lhs, const IdString & rhs )
   { return rhs.compare( lhs ) <= 0; }
 
-  /** \relates IdString GreaterEqual */
+  /** relates: IdString GreaterEqual */
   inline bool operator>=( const IdString & lhs, const IdString & rhs )
   { return lhs.compare( rhs ) >= 0; }
   /** \overload */

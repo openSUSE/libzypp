@@ -74,7 +74,7 @@ namespace zyppng {
    *
    * \sa zyppng::Downloader
    */
-  class LIBZYPP_NG_EXPORT NetworkRequestDispatcher : public Base
+  class  NetworkRequestDispatcher : public Base
   {
     ZYPP_DECLARE_PRIVATE(NetworkRequestDispatcher)
     public:

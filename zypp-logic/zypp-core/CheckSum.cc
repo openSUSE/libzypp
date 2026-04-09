@@ -203,11 +203,11 @@ namespace zypp
     return str;
   }
 
-   /** \relates CheckSum */
+   /** relates: CheckSum */
   bool operator==( const CheckSum & lhs, const CheckSum & rhs )
   { return lhs.checksum() == rhs.checksum() && lhs.type() == rhs.type(); }
 
-  /** \relates CheckSum */
+  /** relates: CheckSum */
   bool operator!=( const CheckSum & lhs, const CheckSum & rhs )
   { return ! ( lhs == rhs ); }
 

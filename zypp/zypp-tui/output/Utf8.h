@@ -169,7 +169,7 @@ namespace utf8
     std::string _str;
   };
 
-  /** \relates string concatenation */
+  /** relates: string concatenation */
   inline string operator+( const string & lhs, const string & rhs )
   { return string( lhs.str() + rhs.str() ); }
   /** \overload */
@@ -185,7 +185,7 @@ namespace utf8
   inline string operator+( const char * lhs, const string & rhs )
   { return string( lhs + rhs.str() ); }
 
-  /** \relates string Stream output */
+  /** relates: string Stream output */
   inline std::ostream & operator<<( std::ostream & str, const string & obj )
   { return str << obj.str(); }
 

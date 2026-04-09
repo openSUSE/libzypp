@@ -121,7 +121,7 @@ namespace zypp
       mutable size_type _sze;
   };
 
-  /** \relates C_Str Stream output */
+  /** relates: C_Str Stream output */
   inline std::ostream & operator<<( std::ostream & str, const C_Str & obj )
   { return str << obj.c_str(); }
 
@@ -231,7 +231,7 @@ namespace zypp
       std::ostringstream _str;
     };
 
-    /** \relates Str Stream output */
+    /** relates: Str Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Str & obj )
     { return str << obj.str(); }
 
@@ -270,7 +270,7 @@ namespace zypp
       boost::format _fmter;
     };
 
-    /** \relates Format Stream output */
+    /** relates: Format Stream output */
     inline std::ostream & operator<<( std::ostream & str, const Format & obj )
     { return str << obj.fmter(); }
 

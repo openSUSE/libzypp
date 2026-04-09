@@ -124,7 +124,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PublicSubkeyData Stream output */
+  /** relates: PublicSubkeyData Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PublicSubkeyData & obj )
   { return str << obj.asString(); }
 
@@ -184,7 +184,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PublicKeySignatureData Stream output */
+  /** relates: PublicKeySignatureData Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PublicKeySignatureData & obj )
   { return str << obj.asString(); }
 
@@ -346,17 +346,17 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PublicKeyData Stream output */
+  /** relates: PublicKeyData Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PublicKeyData & obj )
   { return str << obj.asString(); }
 
-  /** \relates PublicKeyData Detailed stream output */
+  /** relates: PublicKeyData Detailed stream output */
   std::ostream & dumpOn( std::ostream & str, const PublicKeyData & obj ) ZYPP_API;
 
-  /** \relates PublicKeyData Equal based on  fingerprint anf creation date. */
+  /** relates: PublicKeyData Equal based on  fingerprint anf creation date. */
   bool operator==( const PublicKeyData & lhs, const PublicKeyData & rhs ) ZYPP_API;
 
-  /** \relates PublicKeyData NotEqual. */
+  /** relates: PublicKeyData NotEqual. */
   inline bool operator!=( const PublicKeyData & lhs, const PublicKeyData & rhs )
   { return !( lhs == rhs ); }
 
@@ -484,11 +484,11 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates PublicKey Stream output */
+  /** relates: PublicKey Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PublicKey & obj )
   { return str << obj.asString(); }
 
-  /** \relates PublicKey Detailed stream output */
+  /** relates: PublicKey Detailed stream output */
   std::ostream & dumpOn( std::ostream & str, const PublicKey & obj ) ZYPP_API;
 
  /////////////////////////////////////////////////////////////////

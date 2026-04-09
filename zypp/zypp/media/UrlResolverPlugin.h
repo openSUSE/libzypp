@@ -61,7 +61,7 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates UrlResolverPlugin Stream output */
+    /** relates: UrlResolverPlugin Stream output */
     std::ostream & operator<<( std::ostream & str, const UrlResolverPlugin & obj );
 
     /////////////////////////////////////////////////////////////////

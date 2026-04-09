@@ -9,14 +9,28 @@
 /** \file zypp/Arch.cc
  *
 */
+
+
+extern "C"
+{
+#include <features.h>
+#include <sys/utsname.h>
+#if __GLIBC_PREREQ (2,16)
+#include <sys/auxv.h>	// getauxval for PPC64P7 detection
+#endif
+#include <unistd.h>
+}
+
 #include <iostream>
 #include <list>
-#include <inttypes.h>
+#include <fstream>
 
+#include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/Exception.h>
 #include <zypp-core/base/NonCopyable.h>
 #include <zypp-core/base/Hash.h>
+#include <zypp-core/fs/PathInfo.h>
 #include <zypp/Arch.h>
 #include <zypp/Bit.h>
 
@@ -25,6 +39,211 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+
+  namespace {
+    // From rpm's lib/rpmrc.c
+#   if defined(__linux__) && defined(__x86_64__)
+    inline void cpuid(uint32_t op, uint32_t op2, uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx)
+    {
+        asm volatile (
+            "cpuid\n"
+        : "=a" (*eax), "=b" (*ebx), "=c" (*ecx), "=d" (*edx)
+        : "a" (op), "c" (op2));
+    }
+
+    /* From gcc's gcc/config/i386/cpuid.h */
+    /* Features (%eax == 1) */
+    /* %ecx */
+    #define bit_SSE3        (1 << 0)
+    #define bit_SSSE3       (1 << 9)
+    #define bit_FMA         (1 << 12)
+    #define bit_CMPXCHG16B  (1 << 13)
+    #define bit_SSE4_1      (1 << 19)
+    #define bit_SSE4_2      (1 << 20)
+    #define bit_MOVBE       (1 << 22)
+    #define bit_POPCNT      (1 << 23)
+    #define bit_OSXSAVE     (1 << 27)
+    #define bit_AVX         (1 << 28)
+    #define bit_F16C        (1 << 29)
+
+    /* Extended Features (%eax == 0x80000001) */
+    /* %ecx */
+    #define bit_LAHF_LM     (1 << 0)
+    #define bit_LZCNT       (1 << 5)
+
+    /* Extended Features (%eax == 7) */
+    /* %ebx */
+    #define bit_BMI         (1 << 3)
+    #define bit_AVX2        (1 << 5)
+    #define bit_BMI2        (1 << 8)
+    #define bit_AVX512F     (1 << 16)
+    #define bit_AVX512DQ    (1 << 17)
+    #define bit_AVX512CD    (1 << 28)
+    #define bit_AVX512BW    (1 << 30)
+    #define bit_AVX512VL    (1u << 31)
+
+    int get_x86_64_level(void)
+    {
+        int level = 1;
+
+        unsigned int op_1_ecx = 0, op_80000001_ecx = 0, op_7_ebx = 0, unused = 0;
+        cpuid(1, 0, &unused, &unused, &op_1_ecx, &unused);
+        cpuid(0x80000001, 0, &unused, &unused, &op_80000001_ecx, &unused);
+        cpuid(7, 0, &unused, &op_7_ebx, &unused, &unused);
+
+        const unsigned int op_1_ecx_lv2 = bit_SSE3 | bit_SSSE3 | bit_CMPXCHG16B | bit_SSE4_1 | bit_SSE4_2 | bit_POPCNT;
+        if ((op_1_ecx & op_1_ecx_lv2) == op_1_ecx_lv2 && (op_80000001_ecx & bit_LAHF_LM))
+            level = 2;
+
+        const unsigned int op_1_ecx_lv3 = bit_FMA | bit_MOVBE | bit_OSXSAVE | bit_AVX | bit_F16C;
+        const unsigned int op_7_ebx_lv3 = bit_BMI | bit_AVX2 | bit_BMI2;
+        if (level == 2 && (op_1_ecx & op_1_ecx_lv3) == op_1_ecx_lv3 && (op_7_ebx & op_7_ebx_lv3) == op_7_ebx_lv3
+            && (op_80000001_ecx & bit_LZCNT))
+            level = 3;
+
+        const unsigned int op_7_ebx_lv4 = bit_AVX512F | bit_AVX512DQ | bit_AVX512CD | bit_AVX512BW | bit_AVX512VL;
+        if (level == 3 && (op_7_ebx & op_7_ebx_lv4) == op_7_ebx_lv4)
+            level = 4;
+
+        return level;
+    }
+#   endif
+
+    Arch _autoDetectSystemArchitecture() {
+      struct ::utsname buf;
+      if ( ::uname( &buf ) < 0 )
+      {
+        ERR << "Can't determine system architecture" << endl;
+        return Arch_noarch;
+      }
+
+      Arch architecture( buf.machine );
+      MIL << "Uname architecture is '" << buf.machine << "'" << endl;
+
+      if ( architecture == Arch_x86_64 )
+      {
+  #if     defined(__linux__) && defined(__x86_64__)
+        switch ( get_x86_64_level() )
+        {
+          case 2:
+            architecture = Arch_x86_64_v2;
+            WAR << "CPU has 'x86_64': architecture upgraded to '" << architecture << "'" << endl;
+            break;
+          case 3:
+            architecture = Arch_x86_64_v3;
+            WAR << "CPU has 'x86_64': architecture upgraded to '" << architecture << "'" << endl;
+            break;
+          case 4:
+            architecture = Arch_x86_64_v4;
+            WAR << "CPU has 'x86_64': architecture upgraded to '" << architecture << "'" << endl;
+            break;
+        }
+  #       endif
+      }
+      else if ( architecture == Arch_i686 )
+      {
+        // some CPUs report i686 but dont implement cx8 and cmov
+        // check for both flags in /proc/cpuinfo and downgrade
+        // to i586 if either is missing (cf bug #18885)
+        std::ifstream cpuinfo( "/proc/cpuinfo" );
+        if ( cpuinfo )
+        {
+          for( iostr::EachLine in( cpuinfo ); in; in.next() )
+          {
+            if ( str::hasPrefix( *in, "flags" ) )
+            {
+              if (    in->find( "cx8" ) == std::string::npos
+                   || in->find( "cmov" ) == std::string::npos )
+              {
+                architecture = Arch_i586;
+                WAR << "CPU lacks 'cx8' or 'cmov': architecture downgraded to '" << architecture << "'" << endl;
+              }
+              break;
+            }
+          }
+        }
+        else
+        {
+          ERR << "Cant open " << PathInfo("/proc/cpuinfo") << endl;
+        }
+      }
+      else if ( architecture == Arch_sparc || architecture == Arch_sparc64 )
+      {
+        // Check for sun4[vum] to get the real arch. (bug #566291)
+        std::ifstream cpuinfo( "/proc/cpuinfo" );
+        if ( cpuinfo )
+        {
+          for( iostr::EachLine in( cpuinfo ); in; in.next() )
+          {
+            if ( str::hasPrefix( *in, "type" ) )
+            {
+              if ( in->find( "sun4v" ) != std::string::npos )
+              {
+                architecture = ( architecture == Arch_sparc64 ? Arch_sparc64v : Arch_sparcv9v );
+                WAR << "CPU has 'sun4v': architecture upgraded to '" << architecture << "'" << endl;
+              }
+              else if ( in->find( "sun4u" ) != std::string::npos )
+              {
+                architecture = ( architecture == Arch_sparc64 ? Arch_sparc64 : Arch_sparcv9 );
+                WAR << "CPU has 'sun4u': architecture upgraded to '" << architecture << "'" << endl;
+              }
+              else if ( in->find( "sun4m" ) != std::string::npos )
+              {
+                architecture = Arch_sparcv8;
+                WAR << "CPU has 'sun4m': architecture upgraded to '" << architecture << "'" << endl;
+              }
+              break;
+            }
+          }
+        }
+        else
+        {
+          ERR << "Cant open " << PathInfo("/proc/cpuinfo") << endl;
+        }
+      }
+      else if ( architecture == Arch_armv8l || architecture == Arch_armv7l || architecture == Arch_armv6l )
+      {
+        std::ifstream platform( "/etc/rpm/platform" );
+        if (platform)
+        {
+          for( iostr::EachLine in( platform ); in; in.next() )
+          {
+            if ( str::hasPrefix( *in, "armv8hl-" ) )
+            {
+              architecture = Arch_armv8hl;
+              WAR << "/etc/rpm/platform contains armv8hl-: architecture upgraded to '" << architecture << "'" << endl;
+              break;
+            }
+            if ( str::hasPrefix( *in, "armv7hl-" ) )
+            {
+              architecture = Arch_armv7hl;
+              WAR << "/etc/rpm/platform contains armv7hl-: architecture upgraded to '" << architecture << "'" << endl;
+              break;
+            }
+            if ( str::hasPrefix( *in, "armv6hl-" ) )
+            {
+              architecture = Arch_armv6hl;
+              WAR << "/etc/rpm/platform contains armv6hl-: architecture upgraded to '" << architecture << "'" << endl;
+              break;
+            }
+          }
+        }
+      }
+  #if __GLIBC_PREREQ (2,16)
+      else if ( architecture == Arch_ppc64 )
+      {
+        const char * platform = (const char *)getauxval( AT_PLATFORM );
+        int powerlvl = 0;
+        if ( platform && sscanf( platform, "power%d", &powerlvl ) == 1 && powerlvl > 6 )
+          architecture = Arch_ppc64p7;
+      }
+  #endif
+      return architecture;
+    }
+
+  }
+
+
 
   ///////////////////////////////////////////////////////////////////
   //
@@ -106,7 +325,7 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Arch::CompatEntry Stream output */
+  /** relates: Arch::CompatEntry Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Arch::CompatEntry & obj )
   {
     Arch::CompatEntry::CompatBits bit( obj._idBit );
@@ -120,10 +339,10 @@ namespace zypp
                << obj._compatBits << ' ' << obj._compatBits.value();
   }
 
-  /** \relates Arch::CompatEntry */
+  /** relates: Arch::CompatEntry */
   inline bool operator==( const Arch::CompatEntry & lhs, const Arch::CompatEntry & rhs )
   { return lhs._idStr == rhs._idStr; }
-  /** \relates Arch::CompatEntry */
+  /** relates: Arch::CompatEntry */
   inline bool operator!=( const Arch::CompatEntry & lhs, const Arch::CompatEntry & rhs )
   { return ! ( lhs == rhs ); }
 
@@ -478,6 +697,12 @@ namespace zypp
   Arch::Arch( const char * cstr_r )
   : _entry( &ArchCompatSet::instance().assertDef( cstr_r ) )
   {}
+
+  Arch Arch::detectSystemArchitecture()
+  {
+    static Arch _val( _autoDetectSystemArchitecture() );
+    return _val;
+  }
 
   Arch::Arch( const CompatEntry & rhs )
   : _entry( &rhs )

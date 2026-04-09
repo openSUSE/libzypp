@@ -61,12 +61,12 @@ namespace zypp {
         int         pass; //!< pass number on parallel fsck
     };
 
-    /** \relates MountEntry
+    /** relates: MountEntry
      * A vector of mount entries.
      */
     using MountEntries = std::vector<MountEntry>;
 
-    /** \relates MountEntry Stream output */
+    /** relates: MountEntry Stream output */
     std::ostream & operator<<( std::ostream & str, const MountEntry & obj );
 
     /**

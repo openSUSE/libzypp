@@ -178,13 +178,13 @@ namespace zyppng
     return intersects( originA, originB );
   }
 
-  /** \relates ProvideSpec::Impl Stream output */
+  /** relates: ProvideSpec::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const ProvideFileSpec::Impl & obj )
   {
     return str << "{" << obj._destFilenameHint << "{" << obj._downloadSize << "|" << obj._checksum << "|" << obj._deltafile <<  "}" <<  "}";
   }
 
-  /** \relates ProvideSpec::Impl Verbose stream output */
+  /** relates: ProvideSpec::Impl Verbose stream output */
   inline std::ostream & dumpOn( std::ostream & str, const ProvideFileSpec::Impl & obj )
   { return str << obj; }
 

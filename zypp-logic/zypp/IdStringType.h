@@ -13,6 +13,11 @@
 #define ZYPP_IDSTRINGTYPE_H
 
 #include <zypp/IdString.h>
+#include <string.h> // for strcmp
+
+#if ( LEGACY(1735) ) && !ZYPPNG
+#include <zypp/sat/detail/PoolMember.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -83,7 +88,10 @@ namespace zypp
    * \ingroup g_CRTP
    */
   template <class Derived>
-  class IdStringType : protected sat::detail::PoolMember
+  class IdStringType
+  #if ( LEGACY(1735) ) && !ZYPPNG
+      : protected sat::detail::PoolMember
+  #endif
   {
     public:
     using IdType = IdString::IdType;
@@ -168,12 +176,12 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates IdStringType Stream output */
+  /** relates: IdStringType Stream output */
   template <class Derived>
   inline std::ostream & operator<<( std::ostream & str, const IdStringType<Derived> & obj )
   { return str << obj.c_str(); }
 
-  /** \relates IdStringType Equal */
+  /** relates: IdStringType Equal */
   template <class Derived>
   inline bool operator==( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) == 0; }
@@ -202,7 +210,7 @@ namespace zypp
   inline bool operator==( const std::string & lhs, const IdStringType<Derived> & rhs )
   { return rhs.compare( lhs ) == 0; }
 
-  /** \relates IdStringType NotEqual */
+  /** relates: IdStringType NotEqual */
   template <class Derived>
   inline bool operator!=( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) != 0; }
@@ -231,7 +239,7 @@ namespace zypp
   inline bool operator!=( const std::string & lhs, const IdStringType<Derived> & rhs )
   { return rhs.compare( lhs ) != 0; }
 
-  /** \relates IdStringType Less */
+  /** relates: IdStringType Less */
   template <class Derived>
   inline bool operator<( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) < 0; }
@@ -260,7 +268,7 @@ namespace zypp
   inline bool operator<( const std::string & lhs, const IdStringType<Derived> & rhs )
   { return rhs.compare( lhs ) >= 0; }
 
-  /** \relates IdStringType LessEqual */
+  /** relates: IdStringType LessEqual */
   template <class Derived>
   inline bool operator<=( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) <= 0; }
@@ -289,7 +297,7 @@ namespace zypp
   inline bool operator<=( const std::string & lhs, const IdStringType<Derived> & rhs )
   { return rhs.compare( lhs ) > 0; }
 
-  /** \relates IdStringType Greater */
+  /** relates: IdStringType Greater */
   template <class Derived>
   inline bool operator>( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) > 0; }
@@ -318,7 +326,7 @@ namespace zypp
   inline bool operator>( const std::string & lhs, const IdStringType<Derived> & rhs )
   { return rhs.compare( lhs ) <= 0; }
 
-  /** \relates IdStringType GreaterEqual */
+  /** relates: IdStringType GreaterEqual */
   template <class Derived>
   inline bool operator>=( const IdStringType<Derived> & lhs, const IdStringType<Derived> & rhs )
   { return lhs.compare( rhs ) >= 0; }

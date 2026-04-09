@@ -42,7 +42,7 @@ namespace zypp::json {
 
   };
 
-  /** \relates Null Stream output */
+  /** relates: Null Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Null & obj )
   {
     return obj.dumpOn( str );

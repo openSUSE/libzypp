@@ -12,6 +12,7 @@
 #ifndef ZYPP_DEP_H
 #define ZYPP_DEP_H
 
+#include <zypp-core/Globals.h>
 #include <iosfwd>
 #include <string>
 
@@ -99,21 +100,21 @@ namespace zypp
   };
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Dep Stream output */
+  /** relates: Dep Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Dep & obj )
   { return str << obj.asString(); }
 
   ///////////////////////////////////////////////////////////////////
 
-  /** \relates Dep */
+  /** relates: Dep */
   inline bool operator==( const Dep & lhs, const Dep & rhs )
   { return lhs._type == rhs._type; }
 
-  /** \relates Dep */
+  /** relates: Dep */
   inline bool operator!=( const Dep & lhs, const Dep & rhs )
   { return lhs._type != rhs._type; }
 
-  /** \relates Dep */
+  /** relates: Dep */
   inline bool operator<( const Dep & lhs, const Dep & rhs )
   { return lhs._type < rhs._type; }
 

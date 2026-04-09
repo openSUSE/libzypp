@@ -90,7 +90,7 @@ namespace zyppng {
     virtual std::string expectedAsUserString( uint mediaNr = 1 ) const = 0;
   };
 
-  /** \relates Stream output  */
+  /** relates: Stream output  */
   std::ostream & operator<<( std::ostream & str, const MediaDataVerifierRef & obj );
 
 

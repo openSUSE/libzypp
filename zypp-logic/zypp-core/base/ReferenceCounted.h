@@ -115,15 +115,15 @@ namespace zypp
     };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates ReferenceCounted intrusive_ptr hook to add_ref. */
+    /** relates: ReferenceCounted intrusive_ptr hook to add_ref. */
     inline void intrusive_ptr_add_ref( const ReferenceCounted * ptr_r )
     { ReferenceCounted::add_ref( ptr_r ); }
 
-    /** \relates ReferenceCounted intrusive_ptr hook to release. */
+    /** relates: ReferenceCounted intrusive_ptr hook to release. */
     inline void intrusive_ptr_release( const ReferenceCounted * ptr_r )
     { ReferenceCounted::release( ptr_r ); }
 
-    /** \relates ReferenceCounted Stream output. */
+    /** relates: ReferenceCounted Stream output. */
     inline std::ostream & operator<<( std::ostream & str, const ReferenceCounted & obj )
     { return obj.dumpOn( str ); }
 

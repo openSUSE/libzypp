@@ -75,7 +75,7 @@ namespace ansi
       mutable const char * _fbck;
     };
 
-    /** \relates EscapeSequence stream output */
+    /** relates: EscapeSequence stream output */
     inline std::ostream & operator<<( std::ostream & str, const EscapeSequence & obj )
     { return str << obj.str(); }
 
@@ -147,11 +147,11 @@ namespace ansi
   { enum { customColorCtor = false }; };
 
   // enabled via ctor Color::Constant -> Color
-  /** \relates ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
+  /** relates: ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
   template <typename CCC_>
   using EnableIfCustomColorCtor = std::enable_if_t< ansi::ColorTraits<std::decay_t<CCC_>>::customColorCtor >;
 
-  /** \relates ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
+  /** relates: ColorTraits<Tp_> SFINAE: hide template signatures unless enum is enabled in \ref ColorTraits */
   template <typename CCC_>
   using DisableIfCustomColorCtor = std::enable_if_t< !ansi::ColorTraits<std::decay_t<CCC_>>::customColorCtor >;
 
@@ -368,11 +368,11 @@ namespace ansi
     { return genSGR( *this ).c_str()+1; }
 
   public:
-  /** \relates Color */
+  /** relates: Color */
   friend inline bool operator==( Color lhs, Color rhs )
   { return( lhs.uid() == rhs.uid() ); }
 
-  /** \relates Color */
+  /** relates: Color */
   friend inline bool operator!=( Color lhs, Color rhs )
   { return ! ( lhs == rhs ); }
 
@@ -473,7 +473,7 @@ namespace ansi
   Color & Color::operator<=( Color::Constant rhs )	{ return this->operator<=( Color( rhs, Bg::Unchanged ) ); }
   Color Color::operator<( Color::Constant rhs ) const	{ return Color(*this) <= rhs; }
 
-  /** \relates Color Print the colors SGRsequence if \ref do_colors is \c true */
+  /** relates: Color Print the colors SGRsequence if \ref do_colors is \c true */
   inline std::ostream & operator<<( std::ostream & str, Color obj )
   { return str << obj.str(); }
 
@@ -639,7 +639,7 @@ namespace ansi
     Color _color;
   };
 
-  /** \relates ColorString Print colored on ostream */
+  /** relates: ColorString Print colored on ostream */
   inline std::ostream & operator<<( std::ostream & str, const ColorString & obj )
   { return str << obj.str(); }
 
@@ -776,7 +776,7 @@ namespace ansi
     { stream() << omanip; return *this; }
 
   public:
-    /** \relates ColorStream Print colored on ostream */
+    /** relates: ColorStream Print colored on ostream */
     friend inline std::ostream & operator<<( std::ostream & str, const ColorStream & obj )
 #if ( ZYPPER_TRACE_SGR )
     { if ( obj.hasContent() ) str << "[<<]" << obj.content() << Color::SGRReset() << "[>>]"; return str; }
@@ -831,7 +831,7 @@ namespace ansi
 using ansi::ColorString;
 using ansi::ColorStream;
 
-/** \relates ColorStream Create \ref ColorStream via \ref Color */
+/** relates: ColorStream Create \ref ColorStream via \ref Color */
 template<class Tp_>
 inline ansi::ColorStream operator<<( ansi::Color color_r, Tp_ && val_r )
 { return std::move( ansi::ColorStream( color_r ) << std::forward<Tp_>(val_r) ); }
@@ -839,7 +839,7 @@ inline ansi::ColorStream operator<<( ansi::Color color_r, Tp_ && val_r )
 inline ansi::ColorStream operator<<( ansi::Color color_r, std::ostream & (*omanip)( std::ostream & ) )
 { return std::move( ansi::ColorStream( color_r ) << omanip ); }
 
-/** \relates ColorStream Create \ref ColorStream via <tt>enum << expr</tt> */
+/** relates: ColorStream Create \ref ColorStream via <tt>enum << expr</tt> */
 template<class CCC_, class Tp_, typename = ansi::EnableIfCustomColorCtor<CCC_> >
 inline ansi::ColorStream operator<<( CCC_ && color_r, Tp_ && val_r )
 { return std::move( ansi::ColorStream( std::forward<CCC_>(color_r) ) << std::forward<Tp_>(val_r) ); }
@@ -853,7 +853,7 @@ inline ansi::ColorStream operator<<( CCC_ && color_r, std::ostream & (*omanip)( 
 
 namespace std
 {
-/** \relates ansi::Color Stream oputput for ColorTraits enabled types
+/** relates: ansi::Color Stream oputput for ColorTraits enabled types
    * Defined in namespace 'std' because namespace of 'CCC_' may vary
    */
 template<class CCC_, typename = ztui::ansi::EnableIfCustomColorCtor<CCC_>>

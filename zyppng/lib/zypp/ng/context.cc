@@ -7,7 +7,6 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include "private/context_p.h"
-#include <zypp/ZYppFactory.h>
 #include <zypp-core/ng/base/private/threaddata_p.h>
 #include <zypp-core/ng/base/EventLoop>
 #include <zypp-media/ng/Provide>
@@ -20,7 +19,6 @@ namespace zyppng {
     : UserInterface( *new ContextPrivate( *this ) )
   {
     Z_D();
-    d->_zyppPtr = zypp::getZYpp();
     d->_eventDispatcher = ThreadData::current().ensureDispatcher();
 
     d->_provider = Provide::create( d->_providerDir );
@@ -35,11 +33,12 @@ namespace zyppng {
     return d->_provider;
   }
 
+
+#if 0
   KeyRingRef Context::keyRing() const
   {
     return d_func()->_zyppPtr->keyRing();
   }
-
   zypp::ZConfig &Context::config()
   {
     return zypp::ZConfig::instance();
@@ -59,4 +58,5 @@ namespace zyppng {
   {
     return zypp::sat::Pool::instance();
   }
+#endif
 }

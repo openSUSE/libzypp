@@ -292,45 +292,45 @@ namespace zypp
       };
     ///////////////////////////////////////////////////////////////////
 
-    /** \relates BitField Stream output */
+    /** relates: BitField Stream output */
     template<class TInt>
       std::ostream & operator<<( std::ostream & str, const BitField<TInt> & obj )
       {
         return str << obj.asString();
       }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline bool operator==( const BitField<TInt> & lhs, const BitField<TInt> & rhs )
       { return lhs.value() == rhs.value(); }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline bool operator!=( const BitField<TInt> & lhs, const BitField<TInt> & rhs )
       { return ! (lhs == rhs); }
 
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline BitField<TInt> operator&( const BitField<TInt> & lhs, const BitField<TInt> & rhs )
       { return BitField<TInt>(lhs) &= rhs; }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline BitField<TInt> operator|( const BitField<TInt> & lhs, const BitField<TInt> & rhs )
       { return BitField<TInt>(lhs) |= rhs; }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline BitField<TInt> operator^( const BitField<TInt> & lhs, const BitField<TInt> & rhs )
       { return BitField<TInt>(lhs) ^= rhs; }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline BitField<TInt> operator<<( const BitField<TInt> & lhs, unsigned num )
       { return BitField<TInt>(lhs) <<= num; }
 
-    /** \relates BitField */
+    /** relates: BitField */
     template<class TInt>
       inline BitField<TInt> operator>>( const BitField<TInt> & lhs, unsigned num )
       { return BitField<TInt>(lhs) >>= num; }

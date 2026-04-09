@@ -760,7 +760,7 @@ namespace zypp
 
       ///////////////////////////////////////////////////////////////////
 
-      /** \relates LogControlImpl Stream output */
+      /** relates: LogControlImpl Stream output */
       inline std::ostream & operator<<( std::ostream & str, const LogControlImpl & )
       {
         return str << "LogControlImpl";

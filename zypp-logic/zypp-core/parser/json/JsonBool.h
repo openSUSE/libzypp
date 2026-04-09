@@ -52,7 +52,7 @@ namespace zypp::json {
 
   };
 
-  /** \relates Bool Stream output */
+  /** relates: Bool Stream output */
   inline std::ostream & operator<<( std::ostream & str, const Bool & obj )
   {
     return obj.dumpOn( str );

@@ -150,7 +150,12 @@ BuildRequires:  texlive-xcolor
 BuildRequires:  texlive-newunicodechar
 BuildRequires:  texlive-dvips
 BuildRequires:  ghostscript
-BuildRequires:  gcc-c++ >= 7
+
+# if you bump this gcc BuildRequires, make sure to also update setting
+# the CXX environment variable in the build section
+BuildRequires:  gcc10-c++ >= 10.2
+
+
 BuildRequires:  gettext-devel
 BuildRequires:  graphviz
 BuildRequires:  graphviz-gd
@@ -340,6 +345,7 @@ cd build
 
 export CFLAGS="%{optflags}"
 export CXXFLAGS="%{optflags}"
+export CXX="g++-10"
 
 CMAKE_FLAGS=
 %if 0%{?fedora} || 0%{?rhel} >= 6

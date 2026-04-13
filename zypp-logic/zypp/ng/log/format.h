@@ -106,6 +106,12 @@ namespace zyppng{
           }
       };
 
+      template <typename T>
+      concept SimpleViewProxy = requires ( std::ostream& os, const T& t ) {
+          { formatter<T>::stream(os, t) } -> std::convertible_to<std::ostream&>;
+      };
+
+#if 0
       /** \brief Detection trait for StaticFormatter implementation. */
         template <typename T, typename = void>
         struct has_view_proxy : std::false_type {};
@@ -113,6 +119,7 @@ namespace zyppng{
         template <typename T>
         struct has_view_proxy<T, std::void_t<decltype(formatter<T>::stream(std::declval<std::ostream&>(), std::declval<const T&>()))>>
             : std::true_type {};
+#endif
     }
 
     /** \brief Unified format call: Context-Aware. */
@@ -133,9 +140,8 @@ namespace zyppng{
    * don't need a context to be printed:
    * MIL << "Solvable architecture: " << solvable->arch() << std::endl;
    */
-  template <typename T>
-  auto operator<<(std::ostream& os, const T& obj)
-      -> std::enable_if_t<log::detail::has_view_proxy<T>::value, std::ostream&>
+  template <log::detail::SimpleViewProxy T>
+  std::ostream& operator<<(std::ostream& os, const T& obj)
   {
       return os << log::view<T>(obj);
   }

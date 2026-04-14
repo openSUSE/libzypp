@@ -12,6 +12,31 @@
 #ifndef ZYPP_BASE_STRING_H
 #define ZYPP_BASE_STRING_H
 
+
+#include <boost/version.hpp>
+
+// Only run this if we are on old Boost
+#if BOOST_VERSION < 107300
+#include <memory>
+
+namespace zypp::compat {
+    template <typename T>
+    struct BoostAlloc : std::allocator<T> {
+        using std::allocator<T>::allocator;
+        // Provide both signatures to satisfy everyone
+        T* allocate(std::size_t n) { return std::allocator<T>::allocate(n); }
+        T* allocate(std::size_t n, const void* /*hint*/) { return std::allocator<T>::allocate(n); }
+        template <typename U> struct rebind { typedef BoostAlloc<U> other; };
+    };
+}
+
+// THE TRICK:
+// We tell Boost to use OUR allocator as the default for its internal streams.
+// This is a documented (but obscure) Boost hook.
+#define BOOST_IO_DEFAULT_STR_ALLOCATOR zypp::compat::BoostAlloc
+#endif
+
+
 #include <cstring>
 
 #include <iosfwd>

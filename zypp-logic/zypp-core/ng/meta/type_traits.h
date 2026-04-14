@@ -72,7 +72,7 @@ template <class To, template<class...> class Op, class... Args>
 constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value_t::value;
 
 
-#if __cplusplus < 202002L
+#if !defined ( __cpp_lib_remove_cvref )
 
 template< class T >
 struct remove_cvref {

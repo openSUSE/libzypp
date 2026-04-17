@@ -17,6 +17,7 @@ extern "C"
 }
 #include <iostream>
 #include <zypp-core/base/LogTools.h>
+#include <zypp-core/ng/base/ranges.h>
 #include <zypp/ng/sat/solvable.h>
 
 using std::endl;
@@ -63,10 +64,8 @@ namespace zyppng
 
     Queue::const_iterator Queue::find( value_type val_r ) const
     {
-      for_( it, begin(), end() )
-        if ( *it == val_r )
-          return it;
-      return end();
+      auto it = ranges::find( *this, val_r );
+      return it != end() ? it : end();
     }
 
     Queue::value_type Queue::first() const

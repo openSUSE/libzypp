@@ -15,6 +15,7 @@
 #include <iosfwd>
 
 #include <zypp-core/ng/meta/type_traits.h>
+#include <zypp-core/ng/base/ranges.h>
 #include <zypp-core/ByteCount.h>
 #include <zypp-core/Date.h>
 #include <zypp-core/CheckSum.h>
@@ -116,10 +117,13 @@ namespace zyppng
       template<class TRes>
       bool isKind() const
       { return isKind( resKind<TRes>() ); }
-      /** \overload Extend the test to a range of \ref ResKind. */
+      /** \overload Extend the test to an iterator range of \ref ResKind. */
       template<class TIterator>
       bool isKind( TIterator begin, TIterator end ) const
-      { for_( it, begin, end ) if ( isKind( *it ) ) return true; return false; }
+      { return ranges::any_of( begin, end, [this]( const ResKind & k ){ return isKind(k); } ); }
+      /** \overload Extend the test to an initializer_list of \ref ResKind. */
+      bool isKind( std::initializer_list<ResKind> range ) const
+      { return isKind( range.begin(), range.end() ); }
 
       /** The name (without any ResKind prefix). */
       std::string name() const;

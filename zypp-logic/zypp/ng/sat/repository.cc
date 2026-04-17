@@ -21,6 +21,7 @@
 #include <zypp-core/Pathname.h>
 
 #include <zypp-core/ng/base/precondition.h>
+#include <zypp-core/ng/base/ranges.h>
 #include <zypp/ng/sat/pool.h>
 #include <zypp/ng/sat/repository.h>
 #include <zypp/ng/sat/lookupattr.h>
@@ -110,10 +111,12 @@ namespace zyppng
       NO_REPOSITORY_RETURN( false );
 
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
-      for_( it, q.begin(), q.end() )
+      // NOTE: LookupAttr iterator is non-standard — asString() is a method on
+      // the iterator itself, not on the dereferenced value. Cannot use
+      // ranges::any_of here until LookupAttr iterator is redesigned.
+      for ( auto it = q.begin(); it != q.end(); ++it )
         if ( it.asString() == id_r )
           return true;
-
       return false;
     }
 

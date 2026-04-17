@@ -400,19 +400,22 @@ namespace zyppng
     CapabilitySet Solvable::valuesOfNamespace( const std::string & namespace_r ) const
     {
       NO_SOLVABLE_RETURN( CapabilitySet() );
-      CapabilitySet ret;
-      Capabilities caps( dep_provides() );
-      for_( it, caps.begin(), caps.end() )
-      {
-        CapDetail caprep( (*it).detail() );
-        if ( zypp::str::hasPrefix( caprep.name().c_str(), namespace_r ) && *(caprep.name().c_str()+namespace_r.size()) == '(' )
-        {
-          std::string value( caprep.name().c_str()+namespace_r.size()+1 );
-          value[value.size()-1] = '\0'; // erase the trailing ')'
-          ret.insert( Capability( value, caprep.op(), caprep.ed() ) );
-        }
-      }
-      return ret;
+      const auto ns_size = namespace_r.size();
+      return dep_provides()
+          | ranges::views::transform( [] ( const Capability & ca ) {
+              return CapDetail( ca.detail() );
+            })
+          | ranges::views::filter( [&namespace_r, ns_size]( const CapDetail & cd ) {
+              const char * name = cd.name().c_str();
+              return zypp::str::hasPrefix( name, namespace_r ) && name[ns_size] == '(';
+            })
+          | ranges::views::transform( [ns_size]( const CapDetail & caprep ) {
+              std::string_view full( caprep.name().c_str() );
+              full.remove_prefix( ns_size + 1 ); // strip "namespace("
+              full.remove_suffix( 1 );           // strip trailing ")"
+              return Capability( std::string(full), caprep.op(), caprep.ed() );
+            })
+          | ranges::to<CapabilitySet>();
     }
 
     std::pair<bool, CapabilitySet> Solvable::matchesSolvable(const SolvAttr &attr, const Solvable &solv) const
@@ -422,7 +425,7 @@ namespace zyppng
 
       CapabilitySet caps;
       if ( capQueue.size() )
-        std::for_each( capQueue.begin(), capQueue.end(), [ &caps ]( auto cap ){ caps.insert( Capability(cap) );});
+        ranges::for_each( capQueue, [&caps]( auto cap ){ caps.insert( Capability(cap) ); });
 
       return std::make_pair( res == 1, std::move(caps) );
     }
@@ -476,9 +479,9 @@ namespace zyppng
       inline int invokeOnEachSupportedLocale( Capabilities cap_r, const std::function<bool (const Locale &)>& fnc_r )
       {
         int cnt = 0;
-        for_( cit, cap_r.begin(), cap_r.end() )
+        for ( const Capability & cap : cap_r )
         {
-          int res = invokeOnEachSupportedLocale( *cit, fnc_r );
+          int res = invokeOnEachSupportedLocale( cap, fnc_r );
           if ( res < 0 )
             return -cnt + res; // negative on abort.
           cnt += res;

@@ -43,7 +43,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install dependencies
         run: bash -c 'zypper in -y "FastCGI-devel"  "cmake >= 3.17"  "dejagnu"  "doxygen"  "gcc-c++ >= 7"  "gettext-devel"  "ghostscript"  "glib2-devel"  "graphviz"  "libboost_headers-devel"  "libboost_program_options-devel"  "libboost_test-devel"  "libboost_thread-devel"  "libbz2-devel"  "libcurl-devel >= 7.19.4"  "libgpgme-devel"  "libproxy-devel"  "libsigc++2-devel"  "libsolv-devel-static >= 0.7.34"  "libsolv-tools-base >= 0.7.29"  "libxml2-devel"  "libzck-devel"  "libzstd-devel"  "nginx"  "pkg-config"  "pkgconfig(libudev)"  "pkgconfig(openssl)"  "readline-devel >= 5.1"  "rpm"  "rpm-devel > 4.4"  "rubygem(asciidoctor)"  "squid"  "texlive-dvips"  "texlive-latex"  "texlive-newunicodechar"  "texlive-xcolor"  "vsftpd"  "xz-devel"  "yaml-cpp-devel" "graphviz-gd"'
@@ -57,7 +57,7 @@ jobs:
             make doc
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./build/zypp/doc/autodoc/html
 
@@ -71,4 +71,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

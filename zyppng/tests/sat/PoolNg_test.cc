@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(lookupAttr)
   bool found = false;
   for ( auto it = q1.begin(); it != q1.end(); ++it )
   {
-    if ( it.asString() == "test-package" )
+    if ( (*it).asString() == "test-package" )
       found = true;
   }
   BOOST_CHECK( found );
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(lookupAttr)
   // Test handle-based lookup (extracts pool from solvable)
   sat::LookupAttr q2( sat::SolvAttr::name, slv );
   BOOST_CHECK_EQUAL( q2.size(), 1 );
-  BOOST_CHECK_EQUAL( q2.begin().asString(), "test-package" );
+  BOOST_CHECK_EQUAL( (*q2.begin()).asString(), "test-package" );
 }
 
 // ---------------------------------------------------------------------------

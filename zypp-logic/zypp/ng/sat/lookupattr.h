@@ -18,6 +18,7 @@
 #include <zypp-core/base/PtrTypes.h>
 #include <zypp-core/base/defaultintegral.h>
 #include <zypp-core/Globals.h>
+#include <zypp-core/ng/base/ranges.h>
 
 #include <zypp/ng/sat/solvattr.h>
 #include <zypp/ng/sat/solvable.h>
@@ -35,6 +36,7 @@ namespace zypp
 namespace zyppng::sat
 {
     class Pool;
+    class LookupAttrValue; ///< Proxy type returned by LookupAttr::iterator::operator*(). Defined after LookupAttr::iterator.
 
     using zypp::MatchException;
     using zypp::StrMatcher;
@@ -79,36 +81,36 @@ namespace zyppng::sat
      *  // look for all attributes of one solvable
      *  void ditest( sat::Solvable slv_r )
      *  {
-     *    sat::LookupAttr q( sat::SolvAttr::allAttr, slv_r );
-     *    MIL << q << ": " << endl;
-     *    for_( it, q.begin(), q.end() )
-     *    {
-     *      MIL << "    " << it.inSolvAttr() << " = " << it.asString() << endl;
-     *    }
-     *  }
+      *    sat::LookupAttr q( sat::SolvAttr::allAttr, slv_r );
+      *    MIL << q << ": " << endl;
+      *    for ( const auto val : q )
+      *    {
+      *      MIL << "    " << val.inSolvAttr() << " = " << val.asString() << endl;
+      *    }
+      *  }
      * \endcode
      *
      * \code
      *  // look for an attribute in the pool.
-     *  sat::LookupAttr q( pool, sat::SolvAttr("susetags:datadir") );
-     *  MIL << q << ": " << endl;
-     *  for_( it, q.begin(), q.end() )
-     *  {
-     *    MIL << "    " << it << endl;
-     *  }
+      *  sat::LookupAttr q( pool, sat::SolvAttr("susetags:datadir") );
+      *  MIL << q << ": " << endl;
+      *  for ( const auto val : q )
+      *  {
+      *    MIL << "    " << val.asString() << endl;
+      *  }
      * \endcode
      *
      * \code
      *  // look for a repo attribute in the pool.
-     *  sat::LookupRepoAttr q( pool, sat::SolvAttr::repositoryAddedFileProvides );
-     *  MIL << q << ": " << endl;
-     *  for_( it, q.begin(), q.end() )
-     *  {
-     *    MIL << "    " << it << endl;
-     *  }
+      *  sat::LookupRepoAttr q( pool, sat::SolvAttr::repositoryAddedFileProvides );
+      *  MIL << q << ": " << endl;
+      *  for ( const auto val : q )
+      *  {
+      *    MIL << "    " << val.asString() << endl;
+      *  }
      * \endcode
      */
-    class ZYPP_API LookupAttr
+    class LookupAttr
     {
       public:
         using Exception = MatchException;
@@ -348,10 +350,10 @@ namespace zyppng::sat
     {
       public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = detail::IdType;
+        using value_type        = LookupAttrValue;
         using difference_type   = std::ptrdiff_t;
-        using pointer           = void;
-        using reference         = detail::IdType;
+        using pointer           = void;        ///< proxy type — no stable address
+        using reference         = LookupAttrValue;
 
         /** \name Moving fast forward. */
         //@{
@@ -383,148 +385,9 @@ namespace zyppng::sat
         void stayInThisRepo();
         //@}
 
-        /** \name Current position info. */
-        //@{
-        /** The current \ref Repository. */
-        Repository inRepo() const;
-
-        /** The current \ref Solvable. */
-        Solvable inSolvable() const;
-
-        /** The current \ref SolvAttr. */
-        SolvAttr inSolvAttr() const;
-
-        /** Whether this points to the end of a query (Iterator is invalid). */
+        /** Whether this points to the end of a query (iterator is invalid). */
         bool atEnd() const
         { return !_dip; }
-        //@}
-
-        /** \name Test attribute value type. */
-        //@{
-        /** The current \ref SolvAttr type. */
-        detail::IdType solvAttrType() const;
-
-        /** Whether this is a numeric attribute (incl. boolean). */
-        bool solvAttrNumeric() const;
-
-        /** Whether this is a string attribute. */
-        bool solvAttrString() const;
-
-        /** Whether this string attribute is available as \ref IdString. */
-        bool solvAttrIdString() const;
-
-        /** Whether this is a CheckSum attribute.*/
-        bool solvAttrCheckSum() const;
-
-        /** Whether this is the entry to a sub-structure (flexarray).
-         * This is the entry to a sequence of attributes. To
-         * acces them use \ref subBegin and  \ref subEnd.
-        */
-        bool solvAttrSubEntry() const;
-        //@}
-
-        /**
-         * \name Iterate sub-structures.
-         *
-         * These are usable iff \ref solvAttrSubEntry is \c true.
-         *
-         * \note Unfortunately the underlying libsolv dataiterator as returned
-         * by \ref subBegin and \ref subFind loses some context when being created.
-         * Thus, it's not possible to invoke \ref subBegin and \ref subFind on an
-         * iterator that was previously returned by one of those methods. The result
-         * will be an \c end iterator. For the same reason, it is not possible for an
-         * iterator to leave the sub-structure again.
-         *
-         * \code
-         * // Lookup all "update:reference" entries for a specific solvable
-         * sat::LookupAttr q( sat::SolvAttr::updateReference, p->satSolvable() );
-         * for_( res, q.begin(), q.end() )
-         * {
-         *   // List all sub values
-         *   for_( sub, res.subBegin(), res.subEnd() )
-         *   {
-         *     cout << sub.asString() << endl;
-         *   }
-         *
-         *   // Directly access c specific value:
-         *   sat::LookupAttr::iterator it( res.subFind( sat::SolvAttr::updateReferenceHref ) );
-         *   if ( it != res.subEnd() )
-         *     cout << it.asString() << endl;
-         * }
-         * \endcode
-         */
-        //@{
-        /** Whether the sub-structure is empty. */
-        bool subEmpty() const;
-
-        /** Ammount of attributes in the sub-structure.
-         * \note This is not a cheap call. It runs the query.
-        */
-        size_type subSize() const;
-
-        /** Iterator to the begin of a sub-structure.
-         * \see \ref solvAttrSubEntry
-        */
-        iterator subBegin() const;
-        /** Iterator behind the end of a sub-structure.
-         * \see \ref solvAttrSubEntry
-        */
-        iterator subEnd() const;
-         /** Iterator pointing to the first occurance of \ref SolvAttr \a attr_r in sub-structure.
-          * If \ref sat::SolvAttr::allAttr is passed, \ref subBegin is returned.
-          * \see \ref solvAttrSubEntry
-         */
-        iterator subFind( const SolvAttr& attr_r ) const;
-        /** \overload Extending the current attribute name with by \c ":attrname_r".
-         *
-         * This assumes a sub-structur \c "update:reference" has attributes
-         * like \c "update:reference:type", \c "update:reference:href".
-         *
-         * If an empty \c attrname_r is passed, \ref subBegin is returned.
-        */
-        iterator subFind( const zypp::C_Str & attrname_r ) const;
-        //@}
-
-        /** \name Retrieving attribute values. */
-        //@{
-        /** Conversion to numeric types. */
-        int asInt() const;
-        /** \overload */
-        unsigned asUnsigned() const;
-        /** \overload */
-        bool asBool() const;
-        /** \overload */
-        unsigned long long asUnsignedLL() const;
-
-        /** Conversion to string types. */
-        const char * c_str() const;
-        /** \overload
-         * If used with non-string types, this method tries to create
-         * some appropriate string representation.
-        */
-        std::string asString() const;
-
-        /** As \ref IdString.
-         * This is only done for poolized string types. Large strings like
-         * summary or descriptions are not available via \ref IdString, only
-         * via \ref c_str and \ref asString.
-         */
-        IdString idStr() const;
-        /** \overload Directly returning the \c Id */
-        detail::IdType id() const
-        { return idStr().id(); }
-
-        /** As \ref CheckSum. */
-        CheckSum asCheckSum() const;
-
-        /** Templated return type.
-         * Per default assumes an Id based type, so try to construct
-         * it from the Id.
-         *
-         * Should be specialized for supported types above.
-        */
-        template<class Tp> Tp asType() const { return Tp(id()); }
-        //@}
 
       public:
         iterator();
@@ -564,18 +427,180 @@ namespace zyppng::sat
 
     /** \name Helpers and forward declarations from LookupAttrTools.h */
     //@{
-    template<> inline int          LookupAttr::iterator::asType<int>()          const { return asInt(); }
-    template<> inline unsigned     LookupAttr::iterator::asType<unsigned>()     const { return asUnsigned(); }
-    template<> inline unsigned long long LookupAttr::iterator::asType<unsigned long long>()     const { return asUnsignedLL(); }
-    template<> inline bool         LookupAttr::iterator::asType<bool>()         const { return asBool(); }
-    template<> inline const char * LookupAttr::iterator::asType<const char *>() const { return c_str(); }
-    template<> inline std::string  LookupAttr::iterator::asType<std::string>()  const { return asString(); }
-    template<> inline IdString     LookupAttr::iterator::asType<IdString>()     const { return idStr(); }
-    template<>        CheckSum     LookupAttr::iterator::asType<CheckSum>()     const;
+    template<class TResult, class TAttr>
+    class ArrayAttr;
+    //@}
 
     template<class TResult, class TAttr>
     class ArrayAttr;
     //@}
+
+    // -----------------------------------------------------------------------
+
+    /**
+     * Value proxy returned by \ref LookupAttr::iterator::operator*().
+     *
+     * Carries a non-owning pointer to the iterator's current
+     * \c detail::CDataiterator position plus the owning \c detail::CPool*.
+     * Valid only as long as the originating iterator has not been incremented
+     * or destroyed — the same lifetime rules as \c std::string_view.
+     *
+     * All position info, type tests, value accessors and sub-structure
+     * iteration that formerly lived on \ref LookupAttr::iterator are exposed
+     * here, so that \c zyppng::ranges:: algorithms receive a meaningful value
+     * type instead of a raw \c detail::IdType integer.
+     */
+    class LookupAttrValue
+    {
+      public:
+        using size_type = LookupAttr::size_type;
+
+        /** \internal Constructed by LookupAttr::iterator::operator*(). */
+        LookupAttrValue( detail::CDataiterator * dip, detail::CPool * pool )
+        : _dip( dip ), _pool( pool )
+        {}
+
+      public:
+        /** \name Current position info. */
+        //@{
+        /** The current \ref Repository. */
+        Repository inRepo() const;
+
+        /** The current \ref Solvable. */
+        Solvable inSolvable() const;
+
+        /** The current \ref SolvAttr. */
+        SolvAttr inSolvAttr() const;
+        //@}
+
+        /** \name Test attribute value type. */
+        //@{
+        /** The current \ref SolvAttr type. */
+        detail::IdType solvAttrType() const;
+
+        /** Whether this is a numeric attribute (incl. boolean). */
+        bool solvAttrNumeric() const;
+
+        /** Whether this is a string attribute. */
+        bool solvAttrString() const;
+
+        /** Whether this string attribute is available as \ref IdString. */
+        bool solvAttrIdString() const;
+
+        /** Whether this is a CheckSum attribute. */
+        bool solvAttrCheckSum() const;
+
+        /** Whether this is the entry to a sub-structure (flexarray).
+         * This is the entry to a sequence of attributes. To
+         * access them use \ref subBegin and \ref subEnd.
+         */
+        bool solvAttrSubEntry() const;
+        //@}
+
+        /**
+         * \name Iterate sub-structures.
+         *
+         * These are usable iff \ref solvAttrSubEntry is \c true.
+         *
+         * \note Unfortunately the underlying libsolv dataiterator as returned
+         * by \ref subBegin and \ref subFind loses some context when being created.
+         * Thus, it's not possible to invoke \ref subBegin and \ref subFind on an
+         * iterator that was previously returned by one of those methods. The result
+         * will be an \c end iterator. For the same reason, it is not possible for an
+         * iterator to leave the sub-structure again.
+         */
+        //@{
+        /** Whether the sub-structure is empty. */
+        bool subEmpty() const;
+
+        /** Amount of attributes in the sub-structure.
+         * \note This is not a cheap call. It runs the query.
+         */
+        size_type subSize() const;
+
+        /** Iterator to the begin of a sub-structure.
+         * \see \ref solvAttrSubEntry
+         */
+        LookupAttr::iterator subBegin() const;
+
+        /** Iterator behind the end of a sub-structure.
+         * \see \ref solvAttrSubEntry
+         */
+        LookupAttr::iterator subEnd() const;
+
+        /** Iterator pointing to the first occurrence of \ref SolvAttr \a attr_r
+         *  in the sub-structure. If \ref sat::SolvAttr::allAttr is passed,
+         *  \ref subBegin is returned.
+         * \see \ref solvAttrSubEntry
+         */
+        LookupAttr::iterator subFind( const SolvAttr & attr_r ) const;
+
+        /** \overload Extending the current attribute name with ":attrname_r".
+         *
+         * This assumes a sub-structure \c "update:reference" has attributes
+         * like \c "update:reference:type", \c "update:reference:href".
+         *
+         * If an empty \c attrname_r is passed, \ref subBegin is returned.
+         */
+        LookupAttr::iterator subFind( const zypp::C_Str & attrname_r ) const;
+        //@}
+
+        /** \name Retrieving attribute values. */
+        //@{
+        /** Conversion to numeric types. */
+        int asInt() const;
+        /** \overload */
+        unsigned asUnsigned() const;
+        /** \overload */
+        bool asBool() const;
+        /** \overload */
+        unsigned long long asUnsignedLL() const;
+
+        /** Conversion to string types. */
+        const char * c_str() const;
+        /** \overload
+         * If used with non-string types, this method tries to create
+         * some appropriate string representation.
+         */
+        std::string asString() const;
+
+        /** As \ref IdString.
+         * This is only done for poolized string types. Large strings like
+         * summary or descriptions are not available via \ref IdString, only
+         * via \ref c_str and \ref asString.
+         */
+        IdString idStr() const;
+
+        /** \overload Directly returning the \c Id */
+        detail::IdType id() const
+        { return idStr().id(); }
+
+        /** As \ref CheckSum. */
+        CheckSum asCheckSum() const;
+
+        /** Templated return type.
+         * Per default assumes an Id based type, so try to construct
+         * it from the Id.
+         *
+         * Should be specialized for supported types above.
+         */
+        template<class Tp> Tp asType() const { return Tp( id() ); }
+        //@}
+
+      private:
+        detail::CDataiterator *       _dip;   ///< non-owning — current iterator position
+        detail::CPool *               _pool;  ///< non-owning — needed for sub-structure DIWrap construction
+    };
+
+    // asType<> specialisations for LookupAttrValue (mirrors those on iterator)
+    template<> inline int                LookupAttrValue::asType<int>()               const { return asInt(); }
+    template<> inline unsigned           LookupAttrValue::asType<unsigned>()          const { return asUnsigned(); }
+    template<> inline unsigned long long LookupAttrValue::asType<unsigned long long>()const { return asUnsignedLL(); }
+    template<> inline bool               LookupAttrValue::asType<bool>()              const { return asBool(); }
+    template<> inline const char *       LookupAttrValue::asType<const char *>()      const { return c_str(); }
+    template<> inline std::string        LookupAttrValue::asType<std::string>()       const { return asString(); }
+    template<> inline IdString           LookupAttrValue::asType<IdString>()          const { return idStr(); }
+    template<>        CheckSum           LookupAttrValue::asType<CheckSum>()          const;
 
 } // namespace zyppng::sat
 

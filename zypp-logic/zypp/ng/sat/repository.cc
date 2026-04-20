@@ -96,14 +96,14 @@ namespace zyppng
     {
       NO_REPOSITORY_RETURN( ContentRevision() );
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryRevision, *this );
-      return q.empty() ? std::string() : q.begin().asString();
+      return q.empty() ? std::string() : (*q.begin()).asString();
     }
 
     Repository::ContentIdentifier Repository::contentIdentifier() const
     {
       NO_REPOSITORY_RETURN( ContentIdentifier() );
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
-      return q.empty() ? std::string() : q.begin().asString();
+      return q.empty() ? std::string() : (*q.begin()).asString();
     }
 
     bool Repository::hasContentIdentifier( const ContentIdentifier & id_r ) const
@@ -111,20 +111,16 @@ namespace zyppng
       NO_REPOSITORY_RETURN( false );
 
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryRepoid, *this );
-      // NOTE: LookupAttr iterator is non-standard — asString() is a method on
-      // the iterator itself, not on the dereferenced value. Cannot use
-      // ranges::any_of here until LookupAttr iterator is redesigned.
-      for ( auto it = q.begin(); it != q.end(); ++it )
-        if ( it.asString() == id_r )
-          return true;
-      return false;
+      return ranges::any_of( q, [&id_r]( const sat::LookupAttrValue v ){
+        return v.asString() == id_r;
+      });
     }
 
     zypp::Date Repository::generatedTimestamp() const
     {
       NO_REPOSITORY_RETURN( zypp::Date() );
       sat::LookupRepoAttr q( sat::SolvAttr::repositoryTimestamp, *this );
-      return( q.empty() ? 0 : q.begin().asUnsigned() );
+      return( q.empty() ? 0 : (*q.begin()).asUnsigned() );
 
     }
 
@@ -139,7 +135,7 @@ namespace zyppng
       if ( q.empty() )
         return 0;
 
-      return generated + zypp::Date(q.begin().asUnsigned());
+      return generated + zypp::Date((*q.begin()).asUnsigned());
 
     }
 

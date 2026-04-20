@@ -318,13 +318,13 @@ namespace zyppng::sat
      *	CLASS NAME : LookupAttr::iterator
      */
 
-    Repository LookupAttr::iterator::inRepo() const
+    Repository LookupAttrValue::inRepo() const
     { return _dip ? Repository( _dip->repo ) : Repository::noRepository; }
 
-    Solvable LookupAttr::iterator::inSolvable() const
+    Solvable LookupAttrValue::inSolvable() const
     { return _dip ? Solvable( _dip->solvid ) : Solvable::noSolvable; }
 
-    SolvAttr LookupAttr::iterator::inSolvAttr() const
+    SolvAttr LookupAttrValue::inSolvAttr() const
     { return _dip ? SolvAttr( _dip->key->name ) : SolvAttr::noAttr; }
 
     void LookupAttr::iterator::nextSkipSolvAttr()
@@ -342,10 +342,10 @@ namespace zyppng::sat
     void LookupAttr::iterator::stayInThisRepo()
     { if ( _dip ) { _dip.get()->repoid = -1; } }
 
-    detail::IdType LookupAttr::iterator::solvAttrType() const
+    detail::IdType LookupAttrValue::solvAttrType() const
     { return _dip ? _dip->key->type : detail::noId; }
 
-    bool LookupAttr::iterator::solvAttrNumeric() const
+    bool LookupAttrValue::solvAttrNumeric() const
     {
       switch ( solvAttrType() )
       {
@@ -357,7 +357,7 @@ namespace zyppng::sat
       return false;
     }
 
-    bool LookupAttr::iterator::solvAttrString() const
+    bool LookupAttrValue::solvAttrString() const
     {
       switch ( solvAttrType() )
       {
@@ -372,7 +372,7 @@ namespace zyppng::sat
       return false;
     }
 
-    bool LookupAttr::iterator::solvAttrIdString() const
+    bool LookupAttrValue::solvAttrIdString() const
     {
       switch ( solvAttrType() )
       {
@@ -385,7 +385,7 @@ namespace zyppng::sat
       return false;
     }
 
-    bool LookupAttr::iterator::solvAttrCheckSum() const
+    bool LookupAttrValue::solvAttrCheckSum() const
     {
       switch ( solvAttrType() )
       {
@@ -411,15 +411,24 @@ namespace zyppng::sat
           return ST_FLEX;
         return dip.get()->kv.parent ? ST_SUB : ST_NONE;
       }
+      /** \overload for the raw pointer held by LookupAttrValue. */
+      SubType subType( const detail::CDataiterator * dip )
+      {
+        if ( ! dip )
+          return ST_NONE;
+        if ( dip->key->type == REPOKEY_TYPE_FLEXARRAY )
+          return ST_FLEX;
+        return dip->kv.parent ? ST_SUB : ST_NONE;
+      }
     }
 
-    bool LookupAttr::iterator::solvAttrSubEntry() const
+    bool LookupAttrValue::solvAttrSubEntry() const
     { return subType( _dip ) != ST_NONE; }
 
-    bool LookupAttr::iterator::subEmpty() const
-    { return( subBegin() == subEnd() ); }
+    bool LookupAttrValue::subEmpty() const
+    { return subBegin() == subEnd(); }
 
-    LookupAttr::size_type LookupAttr::iterator::subSize() const
+    LookupAttr::size_type LookupAttrValue::subSize() const
     {
       size_type c = 0;
       for ( auto it = subBegin(); it != subEnd(); ++it )
@@ -427,14 +436,14 @@ namespace zyppng::sat
       return c;
     }
 
-    LookupAttr::iterator LookupAttr::iterator::subBegin() const
+    LookupAttr::iterator LookupAttrValue::subBegin() const
     {
       SubType subtype( subType( _dip ) );
       if ( subtype == ST_NONE )
         return subEnd();
-      // setup the new sub iterator with the remembered position
-      detail::DIWrap dip( _dip.pool(), 0, 0, 0 );
-      ::dataiterator_clonepos( dip.get(), _dip.get() );
+      // Clone the current position into a new DIWrap using the pool stored on us.
+      detail::DIWrap dip( _pool, 0, 0, 0 );
+      ::dataiterator_clonepos( dip.get(), _dip );
       switch ( subtype )
       {
         case ST_NONE:	// not reached
@@ -446,26 +455,26 @@ namespace zyppng::sat
           ::dataiterator_seek( dip.get(), DI_SEEK_REWIND|DI_SEEK_STAY );
           break;
       }
-      return iterator( dip ); // iterator takes over ownership!
+      return LookupAttr::iterator( dip ); // iterator takes over ownership!
     }
 
-    LookupAttr::iterator LookupAttr::iterator::subEnd() const
+    LookupAttr::iterator LookupAttrValue::subEnd() const
     {
-      return iterator();
+      return LookupAttr::iterator();
     }
 
-    LookupAttr::iterator LookupAttr::iterator::subFind( const SolvAttr& attr_r ) const
+    LookupAttr::iterator LookupAttrValue::subFind( const SolvAttr & attr_r ) const
     {
-      iterator it = subBegin();
+      LookupAttr::iterator it = subBegin();
       if ( attr_r != SolvAttr::allAttr )
       {
-        while ( it != subEnd() && it.inSolvAttr() != attr_r )
+        while ( it != subEnd() && (*it).inSolvAttr() != attr_r )
           ++it;
       }
       return it;
     }
 
-    LookupAttr::iterator LookupAttr::iterator::subFind( const zypp::C_Str & attrname_r ) const
+    LookupAttr::iterator LookupAttrValue::subFind( const zypp::C_Str & attrname_r ) const
     {
       if ( attrname_r.empty() )
         return subBegin();
@@ -496,7 +505,7 @@ namespace zyppng::sat
       return subFind( SolvAttr( subattr ) );
     }
 
-    int LookupAttr::iterator::asInt() const
+    int LookupAttrValue::asInt() const
     {
       if ( _dip )
       {
@@ -511,10 +520,10 @@ namespace zyppng::sat
       return 0;
     }
 
-    unsigned LookupAttr::iterator::asUnsigned() const
+    unsigned LookupAttrValue::asUnsigned() const
     { return asInt(); }
 
-    unsigned long long LookupAttr::iterator::asUnsignedLL() const
+    unsigned long long LookupAttrValue::asUnsignedLL() const
     {
       if ( _dip )
       {
@@ -529,11 +538,11 @@ namespace zyppng::sat
       return 0;
     }
 
-    bool LookupAttr::iterator::asBool() const
+    bool LookupAttrValue::asBool() const
     { return asInt(); }
 
 
-    const char * LookupAttr::iterator::c_str() const
+    const char * LookupAttrValue::c_str() const
     {
       if ( _dip )
       {
@@ -563,7 +572,7 @@ namespace zyppng::sat
       return 0;
     }
 
-    std::string LookupAttr::iterator::asString() const
+    std::string LookupAttrValue::asString() const
     {
       if ( _dip )
       {
@@ -606,7 +615,7 @@ namespace zyppng::sat
               str << "{" << endl;
               for ( auto it = subBegin(); it != subEnd(); ++it )
               {
-                str << "  " << it.inSolvAttr() << " = " << it.asString() << endl;
+                str << "  " << (*it).inSolvAttr() << " = " << (*it).asString() << endl;
               }
               str << "}";
              return str.str();
@@ -617,7 +626,7 @@ namespace zyppng::sat
       return std::string();
     }
 
-    IdString LookupAttr::iterator::idStr() const
+    IdString LookupAttrValue::idStr() const
     {
       if ( _dip )
       {
@@ -633,7 +642,7 @@ namespace zyppng::sat
       return IdString();
     }
 
-    CheckSum LookupAttr::iterator::asCheckSum() const
+    CheckSum LookupAttrValue::asCheckSum() const
     {
       if ( _dip )
       {
@@ -699,10 +708,9 @@ namespace zyppng::sat
       return( lhs.solvid == rhs.solvid && lhs.key->name == rhs.key->name );
     }
 
-    detail::IdType LookupAttr::iterator::operator*() const
+    LookupAttrValue LookupAttr::iterator::operator*() const
     {
-      return _dip ? ::repodata_globalize_id( _dip->data, _dip->kv.id, 1 )
-                  : detail::noId;
+      return LookupAttrValue( _dip.get(), _dip.pool() );
     }
 
     LookupAttr::iterator& LookupAttr::iterator::operator++()
@@ -739,7 +747,7 @@ namespace zyppng::sat
       }
     }
 
-    template<> CheckSum LookupAttr::iterator::asType<CheckSum>() const
+    template<> CheckSum LookupAttrValue::asType<CheckSum>() const
     { return asCheckSum(); }
 
 } // namespace zyppng::sat

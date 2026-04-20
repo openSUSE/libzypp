@@ -57,13 +57,14 @@ namespace zyppng::log {
     if ( ! dip )
       return str << "EndOfQuery";
 
-    if ( obj.inSolvable() )
-      str << obj.inSolvable();
-    else if ( obj.inRepo() )
-      str << obj.inRepo();
+    const auto val = *obj;   // cheap two-pointer proxy — valid while iterator is not advanced
+    if ( val.inSolvable() )
+      str << val.inSolvable();
+    else if ( val.inRepo() )
+      str << val.inRepo();
 
-    str << '<' << obj.inSolvAttr() << (obj.solvAttrSubEntry() ? ">(*" : ">(")
-        <<  IdString(obj.solvAttrType()) << ") = " << obj.asString();
+    str << '<' << val.inSolvAttr() << (val.solvAttrSubEntry() ? ">(*" : ">(")
+        <<  IdString(val.solvAttrType()) << ") = " << val.asString();
     return str;
   }
 

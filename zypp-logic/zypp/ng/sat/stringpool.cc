@@ -33,6 +33,10 @@ namespace zyppng::sat {
     {
       ZYPP_THROW( zypp::Exception( _("Can not create sat-pool.") ) );
     }
+    // libzypp#726: If the disttype is unset, ::pool_evrcmp_str uses
+    // the default flavor set at compiletime. But even on DEBIAN we
+    // handle rpm packages, so their rules must be applied.
+    ::pool_setdisttype( _pool, DISTTYPE_RPM );
   }
 
 }

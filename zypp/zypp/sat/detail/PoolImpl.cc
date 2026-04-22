@@ -186,8 +186,9 @@ namespace zypp
       PoolImpl::PoolImpl()
         : _pool( zyppng::sat::StringPool::instance().getPool() )
       {
-        // by now we support only a RPM backend
-        ::pool_setdisttype(_pool, DISTTYPE_RPM );
+        // libzypp#726: ::pool_setdisttype(_pool, DISTTYPE_RPM )
+        // is already set by the StringPool::instance because the
+        // disttype affects the version string comparison.
 
         // initialialize logging
         if ( env::LIBSOLV_DEBUGMASK() )

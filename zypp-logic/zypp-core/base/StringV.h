@@ -286,6 +286,94 @@ namespace zypp
     inline std::string_view asStringView( const char * t )
     { return t == nullptr ? std::string_view() : t; }
 
+
+    /** Handling \-escaped strings.
+     *
+     * Splitting and trimming of \-escaped
+     */
+    //@{
+    /** Retrun a copy of \a word_r with all \a special_r chars (and '\') being \-escaped */
+    std::string doBSEscape( std::string_view word_r, std::string_view special_r );
+
+    /** Remove any remaining \-escapes from \a word_r. */
+    std::string unBSEscape( std::string_view word_r );
+
+    /** Remove any remaining \-escapes from the words in \a words_r. */
+    std::vector<std::string> unBSEscape( const std::vector<std::string_view> & words_r );
+    /** Trim \a chars_r at the beginning of \a str_r (Escaping doesn't affect the start). */
+
+    /** Split a \-escaped string at literal occurrences of \a sep_r.
+     *
+     * Returns a (not empty) vector of string_views in \a line_r. If N is the number of un-escaped occurrences of
+     * \a sep_r then the size of the returned vector is N+1. Joining the entries in the vector by \a sep_r restores
+     * the initial \a  line_r.
+     *
+     * If \a maxSplits_r is set stop after this number of splits and return the reminder of the string as last entry
+     * in the vector.
+     *
+     * splitEscaped( "; \\;a;; b;", ';' );
+     * // [ "", " \\;a", "", " b", "" ]
+     *
+     * splitEscaped( "; \\;a;; b;", ';', 2 );
+     * // [ "", " \\;a", "; b;" ]
+     *
+     * \note The returned string_views are sill \-escaped. Use \ref unBSEscape to turn them into
+     * literal strings.
+     */
+    std::vector<std::string_view> splitBSEscaped( std::string_view line_r, std::string_view chars_r = blank, unsigned maxSplits_r = 0 );
+    inline std::vector<std::string_view> splitBSEscaped( std::string_view line_r, unsigned maxSplits_r )
+    { return splitBSEscaped( line_r, blank, maxSplits_r ); }
+
+    /** Trim \a chars_r at the beginning of \a str_r, respecting backslash escapes. */
+    inline std::string_view ltrimBSEscaped( std::string_view str_r, std::string_view chars_r = blank )
+    {
+      // Leading characters are never escaped by definition, so we can reuse ltrim.
+      return ltrim( str_r, chars_r );
+    }
+
+    /** Trim \a chars_r at the end of \a str_r, respecting backslash escapes. */
+    inline std::string_view rtrimBSEscaped( std::string_view str_r, std::string_view chars_r = blank )
+    {
+      while ( !str_r.empty() ) {
+        char lastChar = str_r.back();
+
+        // If the last character isn't in our trim set, we are done.
+        if ( chars_r.find( lastChar ) == std::string_view::npos ) {
+          break;
+        }
+
+        // Check if this character is escaped by counting backslashes preceding it.
+        size_t pos = str_r.size() - 1;
+        size_t bsCount = 0;
+        while ( pos > 0 && str_r[pos - 1] == '\\' ) {
+          ++bsCount;
+          --pos;
+        }
+
+        // If bsCount is odd, the character is escaped (e.g., " \ ") and shouldn't be trimmed.
+        if ( bsCount % 2 != 0 ) {
+          break;
+        }
+
+        // Otherwise, it's a literal separator and can be removed.
+        str_r.remove_suffix( 1 );
+      }
+      return str_r;
+    }
+
+    /** Trim \a chars_r at both sides of \a str_r, respecting backslash escapes. */
+    inline std::string_view trimBSEscaped( std::string_view str_r, std::string_view chars_r = blank )
+    {
+      if ( str_r.empty() ) {
+        return str_r;
+      }
+      // Order matters: ltrim first so we don't have to worry about
+      // shifted indices when calculating backslashes for the right side.
+      str_r = ltrimBSEscaped( str_r, chars_r );
+      str_r = rtrimBSEscaped( str_r, chars_r );
+      return str_r;
+    }
+    //@}
   } // namespace strv
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

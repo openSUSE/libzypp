@@ -183,6 +183,94 @@ namespace zypp
       return fncCall;
     }
 
+
+    std::string doBSEscape( std::string_view word_r, std::string_view special_r )
+    {
+      // 1. Calculate the required capacity to avoid reallocations
+      size_t extra = 0;
+      for ( char c : word_r ) {
+        if ( c == '\\' || special_r.find(c) != std::string_view::npos ) {
+          extra++;
+        }
+      }
+
+      if (extra == 0) return std::string(word_r);
+
+      // 2. Construct the string with the exact size needed
+      std::string result;
+      result.reserve( word_r.size() + extra );
+
+      for ( char c : word_r ) {
+        if ( c == '\\' || special_r.find(c) != std::string_view::npos ) {
+          result.push_back( '\\' );
+        }
+        result.push_back( c );
+      }
+
+      return result;
+    }
+
+    std::string unBSEscape( std::string_view word_r )
+    {
+      std::string result;
+      result.reserve( word_r.size() ); // Optimization: avoid multiple reallocations
+
+      for ( size_t i = 0; i < word_r.size(); ++i ) {
+        if ( word_r[i] == '\\' ) {
+          // Move to the escaped character
+          if ( ++i < word_r.size() ) {
+            result.push_back( word_r[i] );
+          }
+        } else {
+          result.push_back( word_r[i] );
+        }
+      }
+      return result;
+    }
+
+    std::vector<std::string> unBSEscape( const std::vector<std::string_view> & words_r )
+    {
+      std::vector<std::string> result;
+      result.reserve( words_r.size() );
+
+      for ( const auto& word : words_r ) {
+        result.push_back( unBSEscape( word ) );
+      }
+      return result;
+    }
+
+    std::vector<std::string_view> splitBSEscaped( std::string_view line_r, std::string_view chars_r, unsigned maxSplits_r )
+    {
+      std::vector<std::string_view> fragments;
+      unsigned splitsDone = 0;
+      size_t start = 0;
+
+      for ( size_t i = 0; i < line_r.size(); ++i ) {
+        // Check for maxSplits limit
+        if ( maxSplits_r > 0 && splitsDone >= maxSplits_r ) {
+          break;
+        }
+
+        if ( line_r[i] == '\\' ) {
+          if ( ++i < line_r.size() ) {
+            ; // Skip the next character regardless of what it is
+          }
+          continue;
+        }
+
+        if ( chars_r.find( line_r[i] ) != std::string_view::npos ) {
+          // Found an unescaped separator
+          fragments.emplace_back( line_r.substr( start, i - start ) );
+          start = i + 1;
+          splitsDone++;
+        }
+      }
+
+      fragments.emplace_back( line_r.substr( start ) );
+
+      return fragments;
+    }
+
   } // namespace strv
 } // namespace zypp
 ///////////////////////////////////////////////////////////////////

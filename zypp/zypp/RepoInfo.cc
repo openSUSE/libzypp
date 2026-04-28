@@ -9,8 +9,10 @@
 /** \file	zypp/RepoInfo.cc
  *
 */
+#include <type_traits>
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/LogTools.h>
@@ -51,6 +53,8 @@ using zypp::xml::escape;
 ///////////////////////////////////////////////////////////////////
 namespace zypp
 { /////////////////////////////////////////////////////////////////
+
+  template <typename...> constexpr bool always_false = false; // static_assert helper
 
   namespace
   {
@@ -508,6 +512,58 @@ namespace zypp
     }
 
     DefaultIntegral<unsigned,defaultPriority> priority;
+
+  public:
+    std::map<std::string,std::string> _extraValues; ///< Basically raw .repo file key-value lines
+
+    /** Return \a bool whether a dumpable \a key_r is known; \a indeterminate if the key must not be dumped.
+     * Keys containing a '=' are considered to be internal only and
+     * must not be duped to an INI file or XML.
+     */
+    TriBool isBuiltinExtraValue( std::string_view key_r ) const
+    {
+      static const std::set<std::string_view> _builtins { {
+        "repo_sigcheck_plugin",
+      } };
+      if ( _builtins.count( key_r ) )
+        return true;
+      if ( key_r.find( '=' ) == std::string::npos )
+        return false;
+      return indeterminate;
+    }
+
+    bool hasExtraValue( const std::string & key_r ) const
+    { return _extraValues.count( key_r ); }
+
+    std::string extraValue( const std::string & key_r ) const
+    { return _extraValues.at( key_r ); }  // let it throw
+
+    bool setExtraValue( const std::string & key_r, std::string value_r )
+    {
+      _extraValues[key_r] = std::move(value_r);
+      _extraValues["om=g"] = "omg";
+      return bool(isBuiltinExtraValue( key_r ));
+    }
+
+    /** Filter discarding not dumpable extra values. */
+    template <typename Fnc>
+    void forDumpableExtraValues( Fnc && fnc_r ) const
+    {
+      for ( const auto & [k,v] : _extraValues ) {
+        TriBool dumpable = isBuiltinExtraValue( k );
+        if ( indeterminate(dumpable) )
+          continue;
+        if constexpr ( std::is_invocable_v<Fnc, std::string_view, std::string_view, bool> ) {
+          fnc_r( k, v, bool(dumpable) );
+        }
+        else if constexpr ( std::is_invocable_v<Fnc, std::string_view, std::string_view> ) {
+          fnc_r( k, v );
+        }
+        else {
+          static_assert( always_false<Fnc>, "Lambda must accept (k, v) or (k, v, b)" );
+        }
+      }
+    }
 
   private:
     Pathname _metadataPath;
@@ -1034,10 +1090,13 @@ namespace zypp
 
     strif( "- service     : ", service() );
     strif( "- targetdistro: ", targetDistribution() );
-    strif( "- filePath:     ", filepath().asString() );
+    strif( "- filePath    :  ", filepath().asString() );
     strif( "- metadataPath: ", metadataPath().asString() );
     strif( "- packagesPath: ", packagesPath().asString() );
 
+    _pimpl->forDumpableExtraValues( [&]( std::string_view k, std::string_view v, bool builtin_r ) {
+      str << ( builtin_r ? "- " : "# " ) << k << ": " << v << std::endl;
+    } );
     return str;
   }
 
@@ -1102,6 +1161,10 @@ namespace zypp
     if( ! service().empty() )
       str << "service=" << service() << endl;
 
+    _pimpl->forDumpableExtraValues( [&]( std::string_view k, std::string_view v ) {
+      str << k << "=" << v << endl;
+    } );
+
     return str;
   }
 
@@ -1140,6 +1203,10 @@ namespace zypp
       for_( it, baseUrlsBegin(), baseUrlsEnd() )	// !transform iterator replaces variables
         str << "<url>" << escape((*it).asString()) << "</url>" << endl;
     }
+
+    _pimpl->forDumpableExtraValues( [&]( std::string_view k, std::string_view v ) {
+      str << "<"<<k<<">" << escape(v) << "/<"<<k<<">" << endl;
+    } );
 
     str << "</repo>" << endl;
     return str;
@@ -1191,6 +1258,16 @@ namespace zypp
       DBG << "Can SKIP media.1/media check for status calc of repo " << alias() << endl;
     return not canSkipMediaCheck;
   }
+
+  bool RepoInfo::hasExtraValue( const std::string & key_r ) const
+  { return _pimpl->hasExtraValue( key_r ); }
+
+  std::string RepoInfo::extraValue( const std::string & key_r ) const
+  { return _pimpl->extraValue( key_r ); }
+
+  bool RepoInfo::setExtraValue( const std::string & key_r, std::string value_r )
+  { return _pimpl->setExtraValue( std::move(key_r), std::move(value_r) ); }
+
 
   /////////////////////////////////////////////////////////////////
 } // namespace zypp

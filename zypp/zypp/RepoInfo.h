@@ -585,6 +585,34 @@ namespace zypp
       bool requireStatusWithMediaFile () const;
 
     public:
+      /** \name Extra key value pairs found in a .repo file and not directly handled by the RepoFileReader.
+       *
+       * Those keys are dumped back if a .repo file is written, even if the RepoInfo
+       * itself does not know about the key.
+       *
+       * \Warning Be careful when manually adding extra keys here. For internal
+       * usage use keys starting with (or containing) a '='. They are are not
+       * dumped back when a .repo file is written.
+       */
+      //@{
+      /** Whether an extra value for \a key_r is set. */
+      bool hasExtraValue( const std::string & key_r ) const;
+
+      /** Return extra value for \a key_r or throws std::out_of_range. */
+      std::string extraValue( const std::string & key_r ) const;
+
+      /** Remember extra \a value_r for \a key_r.
+       * Returns whether \a key_r is a known built-in key, but all keys are remembered.
+       */
+      bool setExtraValue( const std::string & key_r, std::string value_r );
+
+      /** Return extra value for \a key_r or the value returned by \ref genDefault_r. */
+      template <typename Fnc>
+      std::string extraValue( const std::string & key_r, Fnc && genDefault_r ) const
+      { return hasExtraValue( key_r ) ? extraValue( key_r ) : genDefault_r();  }
+      //@}
+
+    public:
       /**
        * Write a human-readable representation of this RepoInfo object
        * into the \a str stream. Useful for logging.

@@ -191,7 +191,12 @@ namespace zypp
             }
           }
           else
-            ERR << "Unknown attribute in [" << *its << "]: " << it->first << "=" << it->second << " ignored" << endl;
+          {
+            // Extra tags are directly forwarded to the RepoInfo.
+            if ( not info.setExtraValue( it->first, it->second ) ) {
+              ERR << "Unknown attribute in [" << *its << "]: " << it->first << "=" << it->second << " ignored" << endl;
+            }
+          }
         }
 
         for ( auto & url : dict.baseurls( *its ) )

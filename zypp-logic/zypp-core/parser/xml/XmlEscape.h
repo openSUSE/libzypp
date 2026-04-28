@@ -51,6 +51,11 @@ namespace zypp
     ZYPP_API inline detail::EscapedString escape( const std::string & in_r )
     { return detail::EscapedString( in_r ); }
 
+#ifdef __cpp_lib_string_view
+    inline detail::EscapedString escape( std::string_view in_r )
+    { return escape( std::string(in_r) ); }
+#endif
+
     /** Unescape xml special charaters (<tt>&amp; -> &</tt>; from IoBind library) */
     std::string unescape( const std::string & in_r ) ZYPP_API;
 

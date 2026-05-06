@@ -22,6 +22,7 @@
 #include <zypp/ZYppCommit.h>
 
 #include <zypp-core/Pathname.h>
+#include <zypp-core/fs/WatchFile>
 #include <zypp/Target.h>
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/TargetException.h>
@@ -229,6 +230,7 @@ namespace zypp
       /** Hard-Locks database */
       HardLocksFile _hardLocksFile;
       /** Cache distributionVersion */
+      mutable WatchFile _baseproductWatcher;
       mutable std::string _distributionVersion;
       /** vendor equivalence settings. */
       VendorAttr _vendorAttr;

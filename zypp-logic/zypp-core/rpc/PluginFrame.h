@@ -210,10 +210,10 @@ namespace zypp
       /** Return header value for \c key_r or \c default_r if it does not exist.
        * \throw PluginFrameException If multiple header for key_r exist.
        */
-      const std::string & getHeader( const std::string & key_r, const std::string & default_r ) const;
+      std::string getHeader( const std::string & key_r, const std::string & default_r ) const;
 
       /** Not throwing version returing one of the matching header values or \c default_r string. */
-      const std::string & getHeaderNT( const std::string & key_r, const std::string & default_r = std::string() ) const;
+      std::string getHeaderNT( const std::string & key_r, const std::string & default_r = std::string() ) const;
 
       /** Set header for \c key_r removing all other occurrences of \c key_r.
        * \throw PluginFrameException If key contains illegal chars (\c NL or \c :)

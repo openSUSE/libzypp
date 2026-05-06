@@ -14,6 +14,7 @@
 #include <sstream>
 #include <string>
 #include <list>
+#include <map>
 #include <set>
 
 #include <sys/types.h>
@@ -964,6 +965,7 @@ namespace zypp
     , _autoInstalledFile( home() / "AutoInstalled" )
     , _hardLocksFile( Pathname::assertprefix( _root, ZConfig::instance().locksFile() ) )
     , _vendorAttr( Pathname::assertprefix( _root, ZConfig::instance().vendorPath() ) )
+    , _baseproductWatcher( Pathname::assertprefix( _root, "/etc/products.d/baseproduct" ), WatchFile::NO_INIT )
     {
       _rpm.initDatabase( root_r, doRebuild_r );
 
@@ -2985,6 +2987,22 @@ namespace zypp
         return ret;
       }
 
+      /** Cached version of baseproductdata using WatchFile to detect changes. */
+      const parser::ProductFileData & cachedBaseproductdata( const Pathname & root_r )
+      {
+        struct CachedEntry {
+          WatchFile watcher;
+          parser::ProductFileData data;
+        };
+        static std::map<Pathname, CachedEntry> cache;
+        auto & entry = cache[root_r];
+        if ( entry.watcher.path().empty() )
+          entry.watcher = WatchFile( Pathname::assertprefix( root_r, "/etc/products.d/baseproduct" ), WatchFile::NO_INIT );
+        if ( entry.watcher.hasChanged() )
+          entry.data = baseproductdata( root_r );
+        return entry.data;
+      }
+
       inline Pathname staticGuessRoot( const Pathname & root_r )
       {
         if ( root_r.empty() )
@@ -3080,11 +3098,10 @@ namespace zypp
 
     std::string TargetImpl::distributionVersion() const
     {
-      if ( _distributionVersion.empty() )
+      if ( _baseproductWatcher.hasChanged() )
       {
         _distributionVersion = TargetImpl::distributionVersion(root());
-        if ( !_distributionVersion.empty() )
-          MIL << "Remember distributionVersion = '" << _distributionVersion << "'" << endl;
+        MIL << "Remember distributionVersion = '" << _distributionVersion << "'" << endl;
       }
       return _distributionVersion;
     }
@@ -3092,7 +3109,7 @@ namespace zypp
     std::string TargetImpl::distributionVersion( const Pathname & root_r )
     {
       const Pathname & needroot = staticGuessRoot(root_r);
-      std::string distributionVersion = baseproductdata( needroot ).edition().version();
+      std::string distributionVersion = cachedBaseproductdata( needroot ).edition().version();
       if ( distributionVersion.empty() )
       {
         // ...But the baseproduct method is not expected to work on RedHat derivatives.

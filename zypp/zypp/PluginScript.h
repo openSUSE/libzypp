@@ -59,7 +59,7 @@ namespace zypp
    *
    * \see https://stomp.github.io
    */
-  class ZYPP_API PluginScript
+  class PluginScript
   {
     friend std::ostream & operator<<( std::ostream & str, const PluginScript & obj );
 

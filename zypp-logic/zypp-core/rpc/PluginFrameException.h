@@ -24,7 +24,7 @@ namespace zypp
   //	CLASS NAME : PluginFrameException
   //
   /** Base class for \ref PluginFrame \ref Exception. */
-  class ZYPP_API PluginFrameException : public Exception
+  class PluginFrameException : public Exception
   {
     public:
       PluginFrameException();

@@ -186,7 +186,7 @@ namespace zypp
         return ret;
       }
 
-      const std::string & getHeader( const std::string & key_r, const std::string & default_r ) const
+      std::string getHeader( const std::string & key_r, const std::string & default_r ) const
       {
         constKeyRange r( _header.equal_range( key_r ) );
         if ( r.first == r.second )
@@ -197,7 +197,7 @@ namespace zypp
         return ret;
       }
 
-      const std::string & getHeaderNT( const std::string & key_r, const std::string & default_r ) const
+      std::string getHeaderNT( const std::string & key_r, const std::string & default_r ) const
       {
         HeaderListIterator iter( _header.find( key_r ) );
         return iter != _header.end() ? iter->second : default_r;
@@ -469,10 +469,10 @@ namespace zypp
   const std::string & PluginFrame::getHeader( const std::string & key_r ) const
   { return _pimpl->getHeader( key_r ); }
 
-  const std::string & PluginFrame::getHeader( const std::string & key_r, const std::string & default_r ) const
+  std::string PluginFrame::getHeader( const std::string & key_r, const std::string & default_r ) const
   { return _pimpl->getHeader( key_r, default_r ); }
 
-  const std::string & PluginFrame::getHeaderNT( const std::string & key_r, const std::string & default_r ) const
+  std::string PluginFrame::getHeaderNT( const std::string & key_r, const std::string & default_r ) const
   { return _pimpl->getHeaderNT( key_r, default_r ); }
 
   void PluginFrame::setHeader( const std::string & key_r, const std::string & value_r )

@@ -159,6 +159,14 @@ namespace zypp
       /** \overload taking script path and script arguments. */
       void open( const Pathname & script_r, const Arguments & args_r );
 
+      /** Like \ref open() but runs the script chrooted into \a chroot_r.
+       * Uses the stored script path and arguments like \ref open().
+       * \throw PluginScriptException if already connected to a script
+       * \throw PluginScriptException if script does not exist or is not executable
+       * \throw PluginScriptException on error
+       */
+      void openChrooted( const Pathname & chroot_r );
+
       /** Close any open connection. */
       int close();
 

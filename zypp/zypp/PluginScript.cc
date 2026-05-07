@@ -169,7 +169,7 @@ namespace zypp
       { return _lastExecError; }
 
     public:
-      void open( const Pathname & script_r = Pathname(), const Arguments & args_r = Arguments() );
+      void open( const Pathname & script_r = Pathname(), const Arguments & args_r = Arguments(), const Pathname & root_r = Pathname() );
 
       int close();
 
@@ -208,7 +208,7 @@ namespace zypp
 
   ///////////////////////////////////////////////////////////////////
 
-  void PluginScript::Impl::open( const Pathname & script_r, const Arguments & args_r )
+  void PluginScript::Impl::open( const Pathname & script_r, const Arguments & args_r, const Pathname & root_r )
   {
     dumpRangeLine( DBG << "Open " << script_r, args_r.begin(), args_r.end() ) << endl;
 
@@ -227,7 +227,7 @@ namespace zypp
     args.reserve( args_r.size()+1 );
     args.push_back( script_r.asString() );
     args.insert( args.end(), args_r.begin(), args_r.end() );
-    _cmd.reset( new ExternalProgramWithStderr( args ) );
+    _cmd.reset( new ExternalProgramWithStderr( args, root_r ) );
 
     // Be protected against full pipe, etc.
     setNonBlocking( _cmd->outputFile() );
@@ -512,6 +512,9 @@ namespace zypp
 
   void PluginScript::open( const Pathname & script_r, const Arguments & args_r )
   { _pimpl->open( script_r, args_r ); }
+
+  void PluginScript::openChrooted( const Pathname & chroot_r )
+  { _pimpl->open( _pimpl->script(), _pimpl->args(), chroot_r ); }
 
   int PluginScript::close()
   { return _pimpl->close(); }

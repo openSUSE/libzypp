@@ -13,6 +13,7 @@
 #include <cstring>
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 namespace zypp {
   class ByteArray : public std::vector<char>
@@ -25,6 +26,11 @@ namespace zypp {
       if ( size() == 0 )
         return std::string();
       return std::string( data(), size() );
+    }
+    std::string asString ( size_t maxsize_r ) const {
+      if ( size() == 0 )
+        return std::string();
+      return std::string( data(), std::min( maxsize_r, size() ) );
     }
 
 #ifdef __cpp_lib_string_view

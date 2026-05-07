@@ -117,6 +117,9 @@ namespace zypp
       /** Return a connected scripts pid or \ref NotConnected. */
       pid_t getPid() const;
 
+      /** Return a connected scripts chroot or an empty \ref Pathname. */
+      Pathname getChroot() const;
+
       /** Remembers a scripts return value after \ref close until next \ref open. */
       int lastReturn() const;
 

@@ -85,6 +85,18 @@ namespace zypp
         while ( _prog.stderrGetline( line ) )
           L_WAR("PLUGIN") << "! " << line << endl;
       }
+
+      std::string take()
+      {
+        auto str = str::Str();
+        std::string line;
+        while ( _prog.stderrGetline( line ) ) {
+          L_WAR("PLUGIN") << "! " << line << endl;
+          str << line << endl;
+        }
+        return str;
+      }
+
       ExternalProgramWithStderr & _prog;
     };
 
@@ -343,7 +355,7 @@ namespace zypp
             {
               ERR << "write(): " << Errno() << endl;
               if ( errno == EPIPE )
-                ZYPP_THROW( PluginScriptDiedUnexpectedly( "Send: script died unexpectedly", str::Str() << Errno() ) );
+                ZYPP_THROW( PluginScriptDiedUnexpectedly( "Send: script died unexpectedly", _dump.take() ) );
               else
                 ZYPP_THROW( PluginScriptException( "Send: send error", str::Str() << Errno() ) );
             }
@@ -396,7 +408,7 @@ namespace zypp
         else if ( ::feof( filep ) )
         {
           WAR << "Unexpected EOF" << endl;
-          ZYPP_THROW( PluginScriptDiedUnexpectedly( "Receive: script died unexpectedly", str::Str() << Errno() ) );
+          ZYPP_THROW( PluginScriptDiedUnexpectedly( "Receive: script died unexpectedly", _dump.take() ) );
         }
         else if ( errno != EINTR )
         {

@@ -159,8 +159,19 @@ namespace zypp
       /** \overload taking script path and script arguments. */
       void open( const Pathname & script_r, const Arguments & args_r );
 
+      /** \overload taking script path and chroot path.
+       * An empty \a chroot_r is equivalent to calling \ref open(const Pathname &).
+       */
+      void open( const Pathname & script_r, const Pathname & chroot_r );
+
+      /** \overload taking script path, script arguments, and chroot path.
+       * An empty \a chroot_r is equivalent to calling \ref open(const Pathname &, const Arguments &).
+       */
+      void open( const Pathname & script_r, const Arguments & args_r, const Pathname & chroot_r );
+
       /** Like \ref open() but runs the script chrooted into \a chroot_r.
-       * Uses the stored script path and arguments like \ref open().
+       * Uses the script path and arguments stored via \ref setScript() and
+       * previous \ref open() calls (the same values that plain \ref open() uses).
        * \throw PluginScriptException if already connected to a script
        * \throw PluginScriptException if script does not exist or is not executable
        * \throw PluginScriptException on error

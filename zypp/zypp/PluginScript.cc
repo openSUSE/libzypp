@@ -513,6 +513,12 @@ namespace zypp
   void PluginScript::open( const Pathname & script_r, const Arguments & args_r )
   { _pimpl->open( script_r, args_r ); }
 
+  void PluginScript::open( const Pathname & script_r, const Pathname & chroot_r )
+  { _pimpl->open( script_r, Arguments(), chroot_r ); }
+
+  void PluginScript::open( const Pathname & script_r, const Arguments & args_r, const Pathname & chroot_r )
+  { _pimpl->open( script_r, args_r, chroot_r ); }
+
   void PluginScript::openChrooted( const Pathname & chroot_r )
   { _pimpl->open( _pimpl->script(), _pimpl->args(), chroot_r ); }
 

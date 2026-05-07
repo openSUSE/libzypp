@@ -171,6 +171,9 @@ namespace zypp
       pid_t getPid() const
       { return _cmd ? _cmd->getpid() : NotConnected; }
 
+      Pathname getChroot() const
+      { return _cmd ? _cmd->chroot() : Pathname(); }
+
       bool isOpen() const
       { return _cmd != nullptr; }
 
@@ -201,7 +204,7 @@ namespace zypp
   /** relates: PluginScrip::Impl Stream output */
   inline std::ostream & operator<<( std::ostream & str, const PluginScript::Impl & obj )
   {
-    return str << "PluginScript[" << obj.getPid() << "] " << obj.script();
+    return str << "PluginScript[" << obj.getPid() << "] " << Pathname::showRootIf( obj.getChroot(), obj.script() );
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -222,7 +225,7 @@ namespace zypp
 
   void PluginScript::Impl::open( const Pathname & script_r, const Arguments & args_r, const Pathname & root_r )
   {
-    dumpRangeLine( DBG << "Open " << script_r, args_r.begin(), args_r.end() ) << endl;
+    dumpRangeLine( DBG << "Open " << Pathname::showRootIf( root_r, script_r ), args_r.begin(), args_r.end() ) << endl;
 
     if ( _cmd )
       ZYPP_THROW( PluginScriptException( "Already connected", str::Str() << *this ) );
@@ -509,6 +512,9 @@ namespace zypp
 
   pid_t PluginScript::getPid() const
   { return _pimpl->getPid(); }
+
+  Pathname PluginScript::getChroot() const
+  { return _pimpl->getChroot(); }
 
   int PluginScript::lastReturn() const
   { return _pimpl->lastReturn(); }

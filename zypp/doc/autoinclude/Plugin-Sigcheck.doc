@@ -1,0 +1,94 @@
+/**
+
+\page plugin-sigcheck Extended metadata signature checking
+
+\author Michael Andres <ma@suse.de>
+
+<HR><!-- ====================================================================== -->
+\section plugin-sigcheck-intro Introduction
+
+A stateful plugin to perform an extended metadata verification. Unlike the \ref plugin-repoverification which unconditionally processes all repos, this type of plugin can be used to perform an extended metadata verification in different supported contexts. Being a stateful plugin, it is able to request additional files - like key and signature files - which libzypp will will try to retrieve.
+
+Being assigned to verify metadata, the presence of the plugin on the system is mandatory. If the assigned plugin is not installed or the verification of the metadata fails, they will not be used.
+
+Plugins of this type need to be executable and installed in the <tt>/usr/lib/zypp/plugins/sigcheck</tt> directory.
+
+libzypp versions supporting this type of plugin provide <tt>plugin:sigcheck</tt> (see \ref feature-test)
+
+
+\section plugin-sigcheck-repo Repo metadata verification
+
+To assign a plugin to verify a repositories master index file (<tt>repodata/repomd.xml</tt>), assign the plugin's name to the <tt>repo_sigcheck_plugin=</tt> tag in the repositories <tt>.repo</tt>-file.
+
+\code
+# Assign repo TWP7S to be verified by the pqcverification plugin
+# (/usr/lib/zypp/plugins/sigcheck/pqcverification)
+[TWP7S]
+enabled=1
+autorefresh=1
+repo_sigcheck_plugin=pqcverification
+baseurl=https://...
+\endcode
+
+You may define multiple plugins separated by ';'. The plugins are executed in the specified order. All plugins must succeed.
+
+A plugin's name may be followed by arguments which are passed through to the plugin upon it's execution. Arguments are separated by ' '.
+
+Literal '\', ';' or ' ' must be '\'-escaped.
+
+
+\section plugin-sigcheck-workflow The verification workflow
+
+<HR><!-- ====================================================================== -->
+\subsection pluginbegin PLUGINBEGIN
+After the plugin is launched it will receive a PLUGINBEGIN frame telling the version of the protocol.
+
+\verbatim
+PLUGINBEGIN
+version:0
+
+^@
+\endverbatim
+
+<HR><!-- ====================================================================== -->
+\subsection pluginsetup PLUGINSETUP
+The plugin answers with:
+
+\verbatim
+PLUGINSETUP
+sig_extension:.sig
+key_extension:.key
+
+^@
+\endverbatim
+
+The optional \a sig_extension and \a key_extension header define the extensions for the datafile's signature and key files. If extensions are defined, ZYPP will download these files together with the data file and pass them to the verification frame.
+
+If neither a signature nor a key file is needed, you can also answer sending an ACK frame.
+
+
+<HR><!-- ====================================================================== -->
+\subsection sigcheck SIGCHECK
+
+To verify a datafile ZYPP will send a SIGCHECK frame:
+
+\verbatim
+SIGCHECK
+data:/path/to/datafile
+sig:/path/to/signature
+key:/path/to/key
+
+^@
+\endverbatim
+
+The optional \a sig and \a key header tell the path to the downloaded files if they were requested by \a PLUGINSETUP.
+
+If the verification succeeded, the plugin must send an \a ACK frame. Other wise send an \a ERROR frame. Additional text sent in the \a ERROR frames body is forwarded to the user.
+
+<HR><!-- ====================================================================== -->
+\subsection _disconnect _DISCONNECT
+
+The plugin should run and serve \a SIGCHECK requests until it receives a \a _DISCONNECT frame. The plugin should send an ACK frame in return.
+
+\see \ref plugin-writing
+*/

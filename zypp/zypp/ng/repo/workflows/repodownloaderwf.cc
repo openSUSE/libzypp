@@ -16,6 +16,7 @@
 
 #include <zypp/KeyRing.h>
 #include <zypp/ZConfig.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/ng/Context>
 #include <zypp/ng/media/Provide>
@@ -32,6 +33,7 @@
 #include <zypp/parser/yum/RepomdFileReader.h>
 #include <zypp/repo/RepoException.h>
 #include <zypp/repo/RepoMirrorList.h>
+#include <zypp/repo/PluginSigcheck.h>
 
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
@@ -62,6 +64,16 @@ namespace zyppng {
         _sigpath = _masterIndex.extend( ".asc" );
         _keypath = _masterIndex.extend( ".key" );
         _destdir = _dlContext->destDir();
+
+        static const std::string rinfoSigcheckDef { "repo_sigcheck_plugin" };
+        if ( ri.hasExtraValue( rinfoSigcheckDef ) ) {
+          zypp::Pathname rmRoot    { _dlContext->zyppContext()->config().repoManagerRoot() };
+          zypp::Pathname plugindir { _dlContext->zyppContext()->config().pluginsPath() };
+          _sigcheckPlugins = zypp::SigcheckPlugins( ri.extraValue( rinfoSigcheckDef ), plugindir );
+          if ( _sigcheckPlugins ) {
+            _sigcheckPlugins.launch( rmRoot );
+          }
+        }
 
         auto providerRef = _dlContext->zyppContext()->provider();
           return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed( false ) )
@@ -97,6 +109,7 @@ namespace zyppng {
                     return provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed(needsMirrorToFetchKey) )
                     | and_then( Provide::copyResultToDest ( provider(), _destdir / _keypath ) )
                     | and_then( [this]( zypp::ManagedFile keyFile ) {
+
                       _dlContext->files().push_back( std::move(keyFile));
                       return expected<void>::success();
                     });
@@ -113,6 +126,9 @@ namespace zyppng {
           } )
           // execute plugin verification if there is one
           | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this, std::placeholders::_1 ) )
+
+          // signature check plugins
+          | and_then( std::bind( &DownloadMasterIndexLogic::executeSigcheckPlugins, this, std::placeholders::_1 ) )
 
           // signature checking
           | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this, std::placeholders::_1 ) )
@@ -131,7 +147,7 @@ namespace zyppng {
              auto &allFiles = _dlContext->files();
 
              // make sure the masterIndex is in front
-             allFiles.insert( allFiles.begin (), std::move(masterIndex) );
+             allFiles.insert( allFiles.begin(), std::move(masterIndex) );
              return make_expected_success( std::move(_dlContext) );
            });
       }
@@ -142,6 +158,57 @@ namespace zyppng {
         return _dlContext->zyppContext()->provider();
       }
 
+      MaybeAwaitable<expected<ProvideRes>> executeSigcheckPlugins( ProvideRes &&prevRes )
+      {
+        // If no plugins, wrap the result in a task that is already finished.
+        if ( !_sigcheckPlugins ) {
+          return makeReadyTask( make_expected_success( std::move(prevRes) ) );
+        }
+
+        // Capture prevRes in a shared state so it persists until all downloads finish
+        auto sharedRes = std::make_shared<ProvideRes>( std::move(prevRes) );
+        MaybeAwaitable<expected<void>> chain = makeReadyTask( expected<void>::success() );
+
+        for ( auto & plugin : _sigcheckPlugins.plugins() ) {
+          auto * pluginPtr = &plugin; // Get the stable address
+          for ( const auto & ext : { plugin.sigExtension(), plugin.keyExtension() } ) {
+            if ( ext.empty() )
+              continue;
+            zypp::Pathname extpath { _masterIndex.extend( ext ) };
+            zypp::Pathname extdest { _destdir / extpath };
+
+            // Chain the next download to the previous one
+            chain = std::move(chain) | and_then([this, extpath, extdest, pluginPtr](...) {
+              return provider()->provide( _media, extpath, ProvideFileSpec().setOptional( false ) )
+              | and_then( Provide::copyResultToDest( provider(), extdest ) )
+              | and_then( [this]( zypp::ManagedFile downloaded_r ) {
+                _dlContext->files().push_back( std::move(downloaded_r) );
+                return expected<void>::success();
+              });
+            });
+          }
+
+          // now verify
+          chain = std::move(chain) | and_then([this, pluginPtr, sharedRes](...) {
+            zypp::Pathname sig;
+            if ( not pluginPtr->sigExtension().empty() ) {
+              sig = _destdir / _masterIndex.extend( pluginPtr->sigExtension() );
+            }
+            zypp::Pathname key;
+            if ( not pluginPtr->keyExtension().empty() ) {
+              key = _destdir / _masterIndex.extend( pluginPtr->keyExtension() );
+            }
+            pluginPtr->sigcheck( sharedRes->file(), sig, key );
+            return expected<void>::success();
+          });
+        }
+        // Finally, transform the void chain back into the ProvideRes the workflow expects
+        return std::move(chain) | and_then([sharedRes](...) {
+          return make_expected_success( std::move(*sharedRes) );
+        });
+      }
+
+      // Traditional gpg sigcheck
       MaybeAwaitable<expected<ProvideRes>> signatureCheck ( ProvideRes &&res ) {
 
         if ( _dlContext->repoInfo().repoGpgCheck() ) {
@@ -333,6 +400,8 @@ namespace zyppng {
       zypp::TriBool  _repoSigValidated = zypp::indeterminate;
 
       std::vector<zypp::PublicKeyData> _buddyKeys;
+
+      zypp::SigcheckPlugins _sigcheckPlugins;
     };
 
     }

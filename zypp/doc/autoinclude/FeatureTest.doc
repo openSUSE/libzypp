@@ -42,7 +42,7 @@ Packages requiring a feature may use the corresponding \c Requires: in their .sp
   <DD><DL>
     <DT>\ref plugin-repoverification </DT>
     <DT>version 0</DT>
-    <DD>Repository metadata verification beyond GPG.</DD>
+    <DD>Repository metadata verification.</DD>
   </DL></DD>
 
   <DT>plugin:services</DT>
@@ -52,6 +52,13 @@ Packages requiring a feature may use the corresponding \c Requires: in their .sp
     <DD>Provide a client a list of repositories.</DD>
     <DT>version 1</DT>
     <DD>Support multiple repo baseurls in plugin services.</DD>
+  </DL></DD>
+
+  <DT>plugin:sigcheck</DT>
+  <DD><DL>
+    <DT>\ref Extended metadata signature checking beyond PGP. </DT>
+    <DT>version 0</DT>
+    <DD>Stateful plugins to request mandatory signature checking of repository metadata.</DD>
   </DL></DD>
 
   <DT>plugin:system</DT>

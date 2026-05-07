@@ -30,5 +30,7 @@ Arguments passed to the plugin are:
 
 All output written to stdout/stderr is forwarded to the application (zypper,YAST,PK...) and may become  visible to the user. All output written to stderr is also captured in the logfile, in case logging is enabled by the application.
 
+\see \ref plugin-sigcheck Stateful plugins to perform mandatory checks on specific repositories.
+
 \see \ref plugin-writing
 */

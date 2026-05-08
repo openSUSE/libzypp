@@ -94,6 +94,8 @@ namespace zyppng {
     int _exitStatus = 0;
     /** Remember execution errors like failed fork/exec. */
     std::string _execError;
+    /** Error detail to remember if checkStatus sets an _execError */
+    std::optional<std::string> _childExecDetail;
     /** Store the command we're executing. */
     std::string _executedCommand;
     /** The arguments we want to pass to the program. */

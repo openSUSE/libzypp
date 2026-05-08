@@ -182,6 +182,11 @@ namespace zypp {
       bool running();
 
       /**
+       * Return the configured chroot path or empty.
+       */
+      Pathname chroot() const;
+
+      /**
        * return pid
        * */
       pid_t getpid();

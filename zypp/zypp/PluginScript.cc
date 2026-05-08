@@ -244,6 +244,12 @@ namespace zypp
     args.insert( args.end(), args_r.begin(), args_r.end() );
     _cmd.reset( new ExternalProgramWithStderr( args, root_r ) );
 
+    if ( not _cmd->running() ) {
+      const std::string execError( _cmd->execError() );
+      _cmd.reset();
+      ZYPP_THROW( PluginScriptException( str::sprint("Failed to run script",script_r), execError ) );
+    }
+
     // Be protected against full pipe, etc.
     setNonBlocking( _cmd->outputFile() );
     setNonBlocking( _cmd->inputFile() );

@@ -111,17 +111,22 @@ namespace zyppng {
             };
 
           } )
-          // execute plugin verification if there is one
-          | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this, std::placeholders::_1 ) )
-
-          // signature checking
-          | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this, std::placeholders::_1 ) )
 
           // copy everything into a directory
           | and_then( Provide::copyResultToDest ( providerRef, _destdir / _masterIndex )  )
+          | and_then( [this]( zypp::ManagedFile &&masterIndex ) {
+            _masterIndexFile = std::move(masterIndex);
+            return expected<void>::success();
+          } )
+
+          // execute plugin verification if there is one
+          | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this ) )
+
+          // signature checking
+          | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this ) )
 
           // final tasks
-          | and_then([this]( zypp::ManagedFile &&masterIndex ) {
+          | and_then([this]() {
              // Accepted!
              _dlContext->repoInfo().setMetadataPath( _destdir );
              _dlContext->repoInfo().setValidRepoSignature( _repoSigValidated );
@@ -131,9 +136,9 @@ namespace zyppng {
              auto &allFiles = _dlContext->files();
 
              // make sure the masterIndex is in front
-             allFiles.insert( allFiles.begin (), std::move(masterIndex) );
+             allFiles.insert( allFiles.begin(), std::move(_masterIndexFile) );
              return make_expected_success( std::move(_dlContext) );
-           });
+            });
       }
 
 
@@ -142,18 +147,20 @@ namespace zyppng {
         return _dlContext->zyppContext()->provider();
       }
 
-      MaybeAwaitable<expected<ProvideRes>> signatureCheck ( ProvideRes &&res ) {
+      // Traditional gpg sigcheck
+      MaybeAwaitable<expected<void>> signatureCheck () {
 
         if ( _dlContext->repoInfo().repoGpgCheck() ) {
 
           // The local files are in destdir_r, if they were present on the server
+          zypp::Pathname masterIndexLocal { _destdir/_masterIndex };
           zypp::Pathname sigpathLocal { _destdir/_sigpath };
           zypp::Pathname keypathLocal { _destdir/_keypath };
           bool isSigned = zypp::PathInfo(sigpathLocal).isExist();
 
           if ( isSigned || _dlContext->repoInfo().repoGpgCheckIsMandatory() ) {
 
-            auto verifyCtx = zypp::keyring::VerifyFileContext( res.file() );
+            auto verifyCtx = zypp::keyring::VerifyFileContext( masterIndexLocal );
 
             // only add the signature if it exists
             if ( isSigned )
@@ -164,27 +171,27 @@ namespace zyppng {
               try {
                 _dlContext->zyppContext()->keyRing()->importKey( zypp::PublicKey(keypathLocal), false );
               } catch (...) {
-                return makeReadyTask( expected<ProvideRes>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
-              }
-            }
+                 return makeReadyTask( expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+               }
+             }
 
             // set the checker context even if the key is not known
             // (unsigned repo, key file missing; bnc #495977)
             verifyCtx.keyContext( _dlContext->repoInfo() );
 
-            return getExtraKeysInRepomd( std::move(res ) )
-             | and_then([this, vCtx = std::move(verifyCtx) ]( ProvideRes &&res ) mutable {
+            return getExtraKeysInRepomd()
+             | and_then([this, vCtx = std::move(verifyCtx) ]() mutable {
                  for ( const auto &keyData : _buddyKeys ) {
                    DBG << "Keyhint remember buddy " << keyData << std::endl;
                    vCtx.addBuddyKey( keyData.id() );
                  }
 
-                 return SignatureFileCheckWorkflow::verifySignature( _dlContext->zyppContext(), std::move(vCtx))
-                  | and_then([ this, res = std::move(res) ]( zypp::keyring::VerifyFileContext verRes ){
-                    // remember the validation status
-                    _repoSigValidated = verRes.fileValidated();
-                    return make_expected_success(std::move(res));
-                  });
+                  return SignatureFileCheckWorkflow::verifySignature( _dlContext->zyppContext(), std::move(vCtx))
+                  | and_then([ this ]( zypp::keyring::VerifyFileContext verRes ){
+                     // remember the validation status
+                     _repoSigValidated = verRes.fileValidated();
+                    return expected<void>::success();
+                   });
                });
 
           } else {
@@ -193,11 +200,12 @@ namespace zyppng {
         } else {
           WAR << "Signature checking disabled in config of repository " << _dlContext->repoInfo().alias() << std::endl;
         }
-        return makeReadyTask(expected<ProvideRes>::success(res));
+        return makeReadyTask(expected<void>::success());
       }
 
       // execute the repo verification if there is one
-      expected<ProvideRes> pluginVerification ( ProvideRes &&prevRes ) {
+      expected<void> pluginVerification () {
+        zypp::Pathname masterIndexLocal { _destdir/_masterIndex };
         // The local files are in destdir_r, if they were present on the server
         zypp::Pathname sigpathLocal { _destdir/_sigpath };
         zypp::Pathname keypathLocal { _destdir/_keypath };
@@ -223,31 +231,32 @@ namespace zyppng {
               }
             }
 
-            _dlContext->pluginRepoverification()->getChecker( sigpathLocal, keypathLocal, _dlContext->repoInfo() )( prevRes.file() );
+            _dlContext->pluginRepoverification()->getChecker( sigpathLocal, keypathLocal, _dlContext->repoInfo() )( masterIndexLocal );
           } catch ( ... ) {
-            return expected<ProvideRes>::error( std::current_exception () );
+            return expected<void>::error( std::current_exception () );
           }
         }
-        return make_expected_success(std::move(prevRes));
+        return expected<void>::success();
       }
 
       /*!
        * Returns a sync or async expected<ProvideRes> result depending on the
        * implementation class.
        */
-      MaybeAwaitable<expected<ProvideRes>> getExtraKeysInRepomd ( ProvideRes &&res  ) {
+      MaybeAwaitable<expected<void>> getExtraKeysInRepomd () {
+        const zypp::Pathname masterIndexLocal { _destdir / _masterIndex };
 
         if ( _masterIndex.basename() != "repomd.xml" ) {
-          return makeReadyTask( expected<ProvideRes>::success( std::move(res) ) );
+          return makeReadyTask( expected<void>::success() );
         }
 
-        std::vector<std::pair<std::string,std::string>> keyhints { zypp::parser::yum::RepomdFileReader(res.file()).keyhints() };
+        std::vector<std::pair<std::string,std::string>> keyhints { zypp::parser::yum::RepomdFileReader(masterIndexLocal).keyhints() };
         if ( keyhints.empty() )
-          return makeReadyTask( expected<ProvideRes>::success( std::move(res) ) );
+          return makeReadyTask( expected<void>::success() );
         DBG << "Check keyhints: " << keyhints.size() << std::endl;
 
         auto keyRing { _dlContext->zyppContext()->keyRing() };
-        return zypp::parser::yum::RepomdFileReader(res.file()).keyhints()
+        return zypp::parser::yum::RepomdFileReader(masterIndexLocal).keyhints()
           | transform( [this, keyRing]( std::pair<std::string, std::string> val ) {
 
               const auto& [ file, keyid ] = val;
@@ -307,20 +316,20 @@ namespace zyppng {
                    return expected<zypp::PublicKeyData>::success(keyRing->publicKeyData( keyid ));	// fetch back from keyring in case it was a hidden key
                  });
             })
-         | [this, res = res] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) mutable {
-             std::for_each( keyHints.begin(), keyHints.end(), [this]( expected<zypp::PublicKeyData> &keyData ){
-               if ( keyData && *keyData ) {
-                 if ( not zypp::PublicKey::isSafeKeyId( keyData->id() ) ) {
+         | [this] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) mutable {
+              std::for_each( keyHints.begin(), keyHints.end(), [this]( expected<zypp::PublicKeyData> &keyData ){
+                if ( keyData && *keyData ) {
+                  if ( not zypp::PublicKey::isSafeKeyId( keyData->id() ) ) {
                    WAR << "Keyhint " << keyData->id() << " for " << *keyData << " is not strong enough for auto import. Just caching it." << std::endl;
                    return;
                  }
                  _buddyKeys.push_back ( std::move(keyData.get()) );
                }
-             });
+              });
 
-             MIL << "Check keyhints done. Buddy keys: " << _buddyKeys.size() << std::endl;
-             return expected<ProvideRes>::success (std::move(res));
-           };
+              MIL << "Check keyhints done. Buddy keys: " << _buddyKeys.size() << std::endl;
+              return expected<void>::success();
+            };
       }
 
       repo::DownloadContextRef _dlContext;
@@ -330,6 +339,7 @@ namespace zyppng {
       zypp::Pathname _destdir;
       zypp::Pathname _sigpath;
       zypp::Pathname _keypath;
+      zypp::ManagedFile _masterIndexFile;
       zypp::TriBool  _repoSigValidated = zypp::indeterminate;
 
       std::vector<zypp::PublicKeyData> _buddyKeys;

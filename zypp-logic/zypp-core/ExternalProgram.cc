@@ -454,6 +454,13 @@ namespace zypp {
       return _backend->isRunning();
     }
 
+    Pathname ExternalProgram::chroot() const
+    {
+      if ( !_backend ) return Pathname();
+      return _backend->chroot();
+    }
+
+
     pid_t ExternalProgram::getpid()
     {
       if ( !running() )

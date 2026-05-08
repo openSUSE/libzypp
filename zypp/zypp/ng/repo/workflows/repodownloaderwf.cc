@@ -141,7 +141,7 @@ namespace zyppng {
           | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this ) )
 
           // final tasks
-          | and_then([this](...) {
+          | and_then([this]() {
              // Accepted!
              _dlContext->repoInfo().setMetadataPath( _destdir );
              _dlContext->repoInfo().setValidRepoSignature( _repoSigValidated );
@@ -150,7 +150,7 @@ namespace zyppng {
              _media = MediaHandle();
              auto &allFiles = _dlContext->files();
 
-              // make sure the masterIndex is in front
+             // make sure the masterIndex is in front
              allFiles.insert( allFiles.begin(), std::move(_masterIndexFile) );
              return make_expected_success( std::move(_dlContext) );
             });
@@ -180,7 +180,7 @@ namespace zyppng {
             zypp::Pathname extdest { _destdir / extpath };
 
             // Chain the next download to the previous one
-            chain = std::move(chain) | and_then([this, extpath, extdest, pluginPtr](...) {
+            chain = std::move(chain) | and_then([this, extpath, extdest, pluginPtr]() {
               return provider()->provide( _media, extpath, ProvideFileSpec().setOptional( false ) )
               | and_then( Provide::copyResultToDest( provider(), extdest ) )
               | and_then( [this]( zypp::ManagedFile downloaded_r ) {
@@ -191,7 +191,7 @@ namespace zyppng {
           }
 
           // now verify
-          chain = std::move(chain) | and_then([this, pluginPtr](...) {
+          chain = std::move(chain) | and_then([this, pluginPtr]() {
             const zypp::Pathname masterIndexLocal { _destdir / _masterIndex };
             zypp::Pathname sig;
             if ( not pluginPtr->sigExtension().empty() ) {
@@ -241,7 +241,7 @@ namespace zyppng {
             verifyCtx.keyContext( _dlContext->repoInfo() );
 
             return getExtraKeysInRepomd()
-             | and_then([this, vCtx = std::move(verifyCtx) ](...) mutable {
+             | and_then([this, vCtx = std::move(verifyCtx) ]() mutable {
                  for ( const auto &keyData : _buddyKeys ) {
                    DBG << "Keyhint remember buddy " << keyData << std::endl;
                    vCtx.addBuddyKey( keyData.id() );

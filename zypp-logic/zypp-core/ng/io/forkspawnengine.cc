@@ -443,6 +443,7 @@ bool zyppng::ForkSpawnEngine::start( const char * const *argv, int stdin_fd, int
           break;
       }
       ERR << "pid " << _pid << " launch failed: " << _execError << std::endl;
+      _childExecDetail = _execError; //
 
       // reap child and collect exit code
       isRunning( true );

@@ -1,5 +1,5 @@
 #include "private/abstractspawnengine_p.h"
-#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Gettext.h>
 #include <zypp-core/base/String.h>
 #include <sys/types.h>
@@ -181,6 +181,9 @@ namespace zyppng {
       {
           WAR << "Pid " << _pid << " exited with status " << status << std::endl;
           _execError = zypp::str::form( _("Command exited with status %d."), status );
+          if ( _childExecDetail ) {
+            _execError = zypp::str::sprint( _execError, "(", *_childExecDetail, ")" );
+          }
       }
       else
       {

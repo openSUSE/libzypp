@@ -269,20 +269,21 @@ namespace zypp
     {
       DBG << "Close:" << *this << endl;
       bool doKill = true;
-      try {
-        // do not kill script if _DISCONNECT is ACKed.
-        send( PluginFrame( "_DISCONNECT" ) );
-        PluginFrame ret( receive() );
-        if ( ret.isAckCommand() )
-        {
-          doKill = false;
-          str::strtonum( ret.getHeaderNT( "exit" ), _lastReturn.get() );
-          _lastExecError = ret.body().asString();
+      if ( _cmd->running() ) {
+        try {
+          // do not kill script if _DISCONNECT is ACKed.
+          send( PluginFrame( "_DISCONNECT" ) );
+          PluginFrame ret( receive() );
+          if ( ret.isAckCommand() )
+          {
+            doKill = false;
+            str::strtonum( ret.getHeaderNT( "exit" ), _lastReturn.get() );
+            _lastExecError = ret.body().asString();
+          }
         }
+        catch (...)
+        { /* NOP */ }
       }
-      catch (...)
-      { /* NOP */ }
-
       if ( doKill )
       {
         _cmd->kill();

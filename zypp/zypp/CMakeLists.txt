@@ -562,6 +562,7 @@ SET( zypp_repo_SRCS
   repo/RepoInfoBase.cc
   repo/PluginRepoverification.cc
   repo/PluginServices.cc
+  repo/PluginSigcheck.cc
 )
 
 SET( zypp_repo_HEADERS
@@ -580,6 +581,7 @@ SET( zypp_repo_HEADERS
   repo/RepoInfoBase.h
   repo/PluginRepoverification.h
   repo/PluginServices.h
+  repo/PluginSigcheck.h
 )
 
 INSTALL( FILES

@@ -92,6 +92,7 @@ Plugins are implemented in the following classes:
 - \ref zypp::PluginFrame (Message for the stateful protocol)
 - \ref zypp::PluginFrameException
 - \ref zypp::repo::PluginServices (Finds Service plugins)
+- \ref zypp::SigcheckPlugin (Extended signature checks)
 
 The plugins default location is obtained from \ref zypp::ZConfig::pluginsPath()
 
@@ -102,7 +103,9 @@ The plugins default location is obtained from \ref zypp::ZConfig::pluginsPath()
 
 \subpage plugin-system Receive notification if system content has changed
 
-\subpage plugin-repoverification Repository metadata verification beyond GPG
+\subpage plugin-sigcheck Extended metadata signature checking beyond PGP
+
+\subpage plugin-repoverification Repository metadata verification
 
 \ref plugin-services
 

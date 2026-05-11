@@ -16,6 +16,7 @@
 
 #include <zypp/KeyRing.h>
 #include <zypp/ZConfig.h>
+#include <zypp-core/base/LogTools.h>
 
 #include <zypp/ng/Context>
 #include <zypp/ng/media/Provide>
@@ -32,6 +33,7 @@
 #include <zypp/parser/yum/RepomdFileReader.h>
 #include <zypp/repo/RepoException.h>
 #include <zypp/repo/RepoMirrorList.h>
+#include <zypp/repo/PluginSigcheck.h>
 
 #undef  ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zypp::repomanager"
@@ -63,6 +65,20 @@ namespace zyppng {
         _keypath = _masterIndex.extend( ".key" );
         _destdir = _dlContext->destDir();
 
+        static const std::string rinfoSigcheckTag { "repo_sigcheck_plugin" };
+        if ( ri.hasExtraValue( rinfoSigcheckTag ) ) {
+          zypp::Pathname rmRoot    { _dlContext->zyppContext()->config().repoManagerRoot() };
+          zypp::Pathname plugindir { _dlContext->zyppContext()->config().pluginsPath() };
+          _sigcheckPlugins = zypp::SigcheckPlugins( ri.extraValue( rinfoSigcheckTag ), plugindir );
+          if ( _sigcheckPlugins ) {
+            try {
+              _sigcheckPlugins.launch( rmRoot );
+            } catch ( ... ) {
+              return expected<repo::DownloadContextRef>::error( std::current_exception() );
+            }
+          }
+        }
+
         auto providerRef = _dlContext->zyppContext()->provider();
           return provider()->provide( _media, _masterIndex, ProvideFileSpec().setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed( false ) )
           | and_then( [this]( ProvideRes && masterres ) {
@@ -90,13 +106,14 @@ namespace zyppng {
                     if ( needsMirrorToFetchKey ) {
                       // when dealing with mirrors we notify the user to use gpgKeyUrl instead of
                       // fetching the gpg key from any mirror
-                      JobReportHelper( _dlContext->zyppContext() ).warning(_("Downloading signature key via mirrors, consider explicitely setting gpgKeyUrl via the repository configuration instead."));
+                      JobReportHelper( _dlContext->zyppContext() ).warning(_("Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl via the repository configuration instead."));
                     }
 
                     // we did not get the key via gpgUrl downloads, lets fallback
                     return provider()->provide( _media, _keypath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed(needsMirrorToFetchKey) )
                     | and_then( Provide::copyResultToDest ( provider(), _destdir / _keypath ) )
                     | and_then( [this]( zypp::ManagedFile keyFile ) {
+
                       _dlContext->files().push_back( std::move(keyFile));
                       return expected<void>::success();
                     });
@@ -121,6 +138,9 @@ namespace zyppng {
 
           // execute plugin verification if there is one
           | and_then( std::bind( &DownloadMasterIndexLogic::pluginVerification, this ) )
+
+          // signature check plugins
+          | and_then( std::bind( &DownloadMasterIndexLogic::executeSigcheckPlugins, this ) )
 
           // signature checking
           | and_then( std::bind( &DownloadMasterIndexLogic::signatureCheck, this ) )
@@ -147,6 +167,56 @@ namespace zyppng {
         return _dlContext->zyppContext()->provider();
       }
 
+      MaybeAwaitable<expected<void>> executeSigcheckPlugins()
+      {
+        // If no plugins, wrap the result in a task that is already finished.
+        if ( !_sigcheckPlugins ) {
+          return makeReadyTask( expected<void>::success() );
+        }
+
+        MaybeAwaitable<expected<void>> chain = makeReadyTask( expected<void>::success() );
+
+        for ( auto & plugin : _sigcheckPlugins.plugins() ) {
+          auto * pluginPtr = &plugin; // Get the stable address
+          for ( const auto & ext : { plugin.sigExtension(), plugin.keyExtension() } ) {
+            if ( ext.empty() )
+              continue;
+            zypp::Pathname extpath { _masterIndex.extend( ext ) };
+            zypp::Pathname extdest { _destdir / extpath };
+
+            // Chain the next download to the previous one
+            chain = std::move(chain) | and_then([this, extpath, extdest, pluginPtr]() {
+              return provider()->provide( _media, extpath, ProvideFileSpec().setOptional( false ).setMirrorsAllowed( false ) )
+              | and_then( Provide::copyResultToDest( provider(), extdest ) )
+              | and_then( [this]( zypp::ManagedFile downloaded_r ) {
+                _dlContext->files().push_back( std::move(downloaded_r) );
+                return expected<void>::success();
+              });
+            });
+          }
+
+          // now verify
+          chain = std::move(chain) | and_then([this, pluginPtr]() {
+            const zypp::Pathname masterIndexLocal { _destdir / _masterIndex };
+            zypp::Pathname sig;
+            if ( not pluginPtr->sigExtension().empty() ) {
+              sig = _destdir / _masterIndex.extend( pluginPtr->sigExtension() );
+            }
+            zypp::Pathname key;
+            if ( not pluginPtr->keyExtension().empty() ) {
+              key = _destdir / _masterIndex.extend( pluginPtr->keyExtension() );
+            }
+            try {
+              pluginPtr->sigcheck( masterIndexLocal, sig, key );
+            } catch ( ... ) {
+              return expected<void>::error( std::current_exception() );
+            }
+            return expected<void>::success();
+          });
+        }
+        return chain;
+      }
+
       // Traditional gpg sigcheck
       MaybeAwaitable<expected<void>> signatureCheck () {
 
@@ -171,9 +241,9 @@ namespace zyppng {
               try {
                 _dlContext->zyppContext()->keyRing()->importKey( zypp::PublicKey(keypathLocal), false );
               } catch (...) {
-                 return makeReadyTask( expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
-               }
-             }
+                return makeReadyTask( expected<void>::error( ZYPP_FWD_CURRENT_EXCPT() ) );
+              }
+            }
 
             // set the checker context even if the key is not known
             // (unsigned repo, key file missing; bnc #495977)
@@ -343,6 +413,8 @@ namespace zyppng {
       zypp::TriBool  _repoSigValidated = zypp::indeterminate;
 
       std::vector<zypp::PublicKeyData> _buddyKeys;
+
+      zypp::SigcheckPlugins _sigcheckPlugins;
     };
 
     }

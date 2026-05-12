@@ -326,7 +326,7 @@ namespace zyppng {
         DBG << "Check keyhints: " << keyhints.size() << std::endl;
 
         auto keyRing { _dlContext->zyppContext()->keyRing() };
-        return zypp::parser::yum::RepomdFileReader(masterIndexLocal).keyhints()
+        return std::move( keyhints )
           | transform( [this, keyRing]( std::pair<std::string, std::string> val ) {
 
               const auto& [ file, keyid ] = val;

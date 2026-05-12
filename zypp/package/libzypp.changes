@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 12 16:25:44 CEST 2026 - ma@suse.de
+
+- Mandatory signature verification plugin support (PED#11922)
+- version 17.38.8 (35)
+
+-------------------------------------------------------------------
 Mon Apr 27 16:49:13 CEST 2026 - ma@suse.de
 
 - Fix purge-kernel -rc kernel handling (bsc#1239718)

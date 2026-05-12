@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: zypp.sv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-01-14 08:04+0000\n"
+"PO-Revision-Date: 2026-05-12 20:04+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
-"Language-Team: Swedish <https://l10n.opensuse.org/projects/libzypp/master/sv/"
-">\n"
+"Language-Team: Swedish <https://l10n.opensuse.org/projects/libzypp/master/"
+"sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -4608,6 +4608,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Laddar ner en signatur nyckel via speglar, överväg att explicit ställa in "
+"gpgKeyUrl via förrådskonfigurationen istället."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96

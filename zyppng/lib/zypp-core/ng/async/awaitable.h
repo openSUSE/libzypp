@@ -71,6 +71,15 @@ namespace zyppng {
       !std::is_copy_constructible_v<T> && // single ownership! we do not support copying awaitables
       is_co_awaitable<T>;
 
+  /*!
+   * \brief Decay-aware negation of \ref Awaitable.
+   *
+   * Provided as a named concept for use as a constrained-template-parameter,
+   * primarily by the sync pipeline `operator|` in `pipelines/operators.h`.
+   */
+  template <typename T>
+  concept NotAwaitable = !Awaitable<std::decay_t<T>>;
+
 
   namespace detail {
 

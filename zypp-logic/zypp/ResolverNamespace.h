@@ -14,6 +14,7 @@
 #include <iosfwd>
 #include <cstdint>
 
+#include <zypp-core/Globals.h>
 #include <zypp-core/base/Flags.h>
 #include <zypp/IdString.h>
 
@@ -32,10 +33,9 @@ namespace zypp
   ZYPP_DECLARE_FLAGS_AND_OPERATORS(ResolverNamespaces,ResolverNamespace);
 
   /** relates: ResolverNamespace All bits set. */
-  static constexpr const ResolverNamespaces NoResolverNamespaces = ResolverNamespace();
-
-  /** relates: ResolverNamespace All bits set. */
-  static constexpr const ResolverNamespaces AllResolverNamespaces = ResolverNamespace(0xff);
+  ZYPP_DEFINE_GLOBAL_CONSTEXPR( ResolverNamespaces, NoResolverNamespaces, ResolverNamespace() )
+  /** All namespaces. */
+  ZYPP_DEFINE_GLOBAL_CONSTEXPR( ResolverNamespaces, AllResolverNamespaces, ResolverNamespace(0xff) )
 
   /** relates: ResolverNamespace The underlying libsolv ID */
   inline constexpr IdString asIdString( ResolverNamespace obj )

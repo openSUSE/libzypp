@@ -22,7 +22,29 @@
  *  // in global namespace define:
  *  ZYPP_DEFINE_ID_HASHABLE( ::zypp::sat::Solvable )
  * \endcode
+ * In a C++20 named module interface unit the primary template std::hash is
+ * already declared in the global module fragment (via <unordered_set>).
+ * Re-declaring it inside the module purview attaches it to the named module
+ * and causes a conflicting-declaration error.  We therefore suppress the
+ * redundant primary-template forward decl when compiling under modules.
+ *
+ * GCC defines __cpp_modules when building a named module.
+ * Clang 19 does NOT define __cpp_modules even in module interface units
+ * (longstanding Clang policy); we therefore also suppress the forward decl
+ * unconditionally for Clang — safe because Hash.h itself #includes
+ * <unordered_set>, so std::hash is always already declared before the macro
+ * expands.
  */
+#if defined(__cpp_modules) || defined(__clang__)
+#define ZYPP_DEFINE_ID_HASHABLE(C)		\
+namespace std {					\
+  template<> struct hash<C>			\
+  {						\
+    size_t operator()( const C & __s ) const	\
+    { return __s.id(); }			\
+  };						\
+}
+#else
 #define ZYPP_DEFINE_ID_HASHABLE(C)		\
 namespace std {					\
   template<class Tp> struct hash;		\
@@ -32,6 +54,7 @@ namespace std {					\
     { return __s.id(); }			\
   };						\
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////
 namespace std

@@ -1,0 +1,34 @@
+/*---------------------------------------------------------------------
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+----------------------------------------------------------------------*/
+module;
+#include <iostream>
+
+module zyppng;
+
+import :log_format;
+import :log_sat_repository;  // formatter<Repository> specialization declaration
+import :sat_repository;
+
+namespace zyppng {
+
+  namespace log {
+    std::ostream &formatter<sat::Repository>::stream(std::ostream &str, const sat::Repository &obj)
+    {
+      if ( ! obj )
+        return str << "noRepository";
+
+      return str << "sat::repo(" << obj.alias() << ")"
+                 << "{"
+                 << "prio " << obj.satInternalPriority() << '.' << obj.satInternalSubPriority()
+                 << ", size " << obj.solvablesSize()
+                 << "}";
+    }
+  }
+
+} // namespace zyppng

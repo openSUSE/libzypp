@@ -11,10 +11,21 @@
 * You have been warned!
 *
 */
+// LEGACY-REQUIRED
+//
+// This header is consumed by Tier-3 (zypp/) and/or Tier-2 (zypp-logic/) code
+// and therefore must remain in zypp-logic/. Do not migrate or delete until
+// `grep -rn 'zypp/ng/sat/stringpool' zypp/ zypp-logic/` returns no hits.
 #ifndef ZYPPNG_SAT_STRINGPOOL_H_INCLUDED
 #define ZYPPNG_SAT_STRINGPOOL_H_INCLUDED
 
-#include <zypp/ng/sat/poolconstants.h>
+// poolconstants.h has been migrated to zyppng:sat_poolconstants module partition.
+// StringPool only needs the raw C types from libsolv + PoolDefines — include directly.
+extern "C" {
+#include <solv/pool.h>
+#include <solv/pool_parserpmrichdep.h>
+}
+#include <zypp/sat/detail/PoolDefines.h>
 
 namespace zyppng::sat {
 
@@ -50,18 +61,18 @@ namespace zyppng::sat {
        * \brief Pointer style access forwarded to the raw sat-pool.
        * \return A pointer to the underlying \ref CPool.
        */
-      detail::CPool * operator->()
+      zypp::sat::detail::CPool * operator->()
       { return _pool; }
 
       /**
        * \brief Explicit accessor for the raw sat-pool.
        * \return A pointer to the underlying \ref CPool.
        */
-      detail::CPool * getPool() const
+      zypp::sat::detail::CPool * getPool() const
       { return _pool; }
 
       /** libsolv capability parser */
-      detail::IdType parserpmrichdep( const char * capstr_r )
+      zypp::sat::detail::IdType parserpmrichdep( const char * capstr_r )
       { return ::pool_parserpmrichdep( _pool, capstr_r ); }
 
       /* Delete copy and move semantics to maintain singleton integrity */
@@ -76,7 +87,7 @@ namespace zyppng::sat {
     private:
       /** * \brief Internal pointer to the libsolv pool structure (\ref CPool).
        */
-      detail::CPool * _pool;
+      zypp::sat::detail::CPool * _pool;
   };
 
 }

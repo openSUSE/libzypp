@@ -6,7 +6,7 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-
+// LEGACY-REQUIRED — see stringpool.h
 #include "stringpool.h"
 
 #include <zypp-core/base/Exception.h>

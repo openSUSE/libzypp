@@ -233,6 +233,7 @@ namespace zypp
   class ZConfig::Impl
   {
     using MultiversionSpec = std::set<std::string>;
+    using EnvMap = std::map<std::string,std::string>;
 
     /// Settings that follow a changed Target
     struct TargetDefaults
@@ -525,6 +526,16 @@ namespace zypp
                 pWAR( "zypp.conf: Unknown entry in [main]:", entry, "=", value );
               }
             }
+            else if ( section == "env" )
+            {
+              if ( !_envMap )
+                _envMap = EnvMap();
+              auto [it, inserted] = _envMap->emplace( entry, value );
+              if ( !inserted ) {
+                WAR << "zypp.conf [env]: duplicate key '" << entry << "', shadowing previous value '" << it->second << "' with '" << value << "'" << endl;
+                it->second = value;
+              }
+            }
             else { // unknown section {
               pWAR( "zypp.conf: Unknown section:", str::sconcat("[",section,"]"), entry, "=", value );
             }
@@ -645,6 +656,8 @@ namespace zypp
     bool geoipEnabled;
 
     std::vector<std::string> geoipHosts;
+
+    std::optional<EnvMap> _envMap;
 
     /* Other config singleton instances */
     MediaConfig &_mediaConf = MediaConfig::instance();

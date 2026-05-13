@@ -138,7 +138,7 @@ SET_LOGGROUP( "zyppng" ${zypp_glib_lib_SRCS} )
 
 ADD_LIBRARY( zypp-glib SHARED  ${zypp_glib_lib_SRCS} ${zypp_glib_lib_HEADERS} )
 target_link_libraries( zypp-glib zyppng_lib_compiler_flags )
-TARGET_LINK_LIBRARIES( zypp-glib zyppng-allsym )
+TARGET_LINK_LIBRARIES( zypp-glib zyppng )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )
 target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
 

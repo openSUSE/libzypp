@@ -7,6 +7,7 @@ SET( zyppng_ng_async_HEADERS
   ng/async/iotask.h
   ng/async/task.h
   ng/async/pipelines/await.h
+  ng/async/pipelines/wait.hpp
   ng/pipelines/operators.h
 )
 

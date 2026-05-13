@@ -28,10 +28,34 @@ target_link_libraries ( zyppng_general_compiler_flags INTERFACE zypp_initial_com
 
 #target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
 #target_link_options( zyppng_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
-target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fconcepts-diagnostics-depth=4>" )
+# -fconcepts-diagnostics-depth is GCC-only; Clang rejects unknown -f flags as errors.
+# Clang's concept diagnostics are superior by default and need no tuning flag.
+target_compile_options( zyppng_general_compiler_flags INTERFACE
+  "$<$<AND:$<CONFIG:DEBUG>,$<CXX_COMPILER_ID:GNU>>:-fconcepts-diagnostics-depth=4>" )
 
 target_compile_options( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 target_link_options   ( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
+
+# When building with Clang, prefer the version-matched lld (e.g. lld-19 for
+# clang++-19) for faster incremental builds and native .pcm file support.
+# Falls back to unversioned lld, then silently skips if neither is found.
+if ( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
+  # Extract major version from e.g. "19.1.7" → "19"
+  string( REGEX MATCH "^[0-9]+" ZYPPNG_CLANG_MAJOR "${CMAKE_CXX_COMPILER_VERSION}" )
+
+  find_program( ZYPPNG_LLD_EXECUTABLE
+    NAMES "ld.lld-${ZYPPNG_CLANG_MAJOR}" "ld.lld"
+    DOC   "lld ELF linker for zyppng Clang builds"
+  )
+
+  if ( ZYPPNG_LLD_EXECUTABLE )
+    message( STATUS "zyppng: Clang ${ZYPPNG_CLANG_MAJOR} — using linker: ${ZYPPNG_LLD_EXECUTABLE}" )
+    target_link_options( zyppng_general_compiler_flags INTERFACE
+      "-fuse-ld=${ZYPPNG_LLD_EXECUTABLE}" )
+  else()
+    message( STATUS "zyppng: Clang detected but no lld found — using system linker" )
+  endif()
+endif()
 
 add_library( zyppng_lib_compiler_flags INTERFACE)
 target_link_libraries ( zyppng_lib_compiler_flags INTERFACE zypp_initial_lib_compiler_flags )

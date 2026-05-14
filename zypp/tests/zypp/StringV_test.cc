@@ -234,3 +234,49 @@ BOOST_AUTO_TEST_CASE(trimming)
   BOOST_CHECK_EQUAL(  trim(" \t1\t ", " "),  "\t1\t" );
   BOOST_CHECK_EQUAL(  trim(" \t1\t ", ""),  " \t1\t " );
 }
+
+BOOST_AUTO_TEST_CASE(prefix)
+{
+  // The empty prefix is always present.
+  BOOST_CHECK( hasPrefix( "", "" ) );
+  BOOST_CHECK( hasPrefix( "abc", "" ) );
+  BOOST_CHECK( hasPrefixCI( "", "" ) );
+  BOOST_CHECK( hasPrefixCI( "abc", "" ) );
+
+  // Plain prefix matching.
+  BOOST_CHECK( hasPrefix( "abc", "a" ) );
+  BOOST_CHECK( hasPrefix( "abc", "ab" ) );
+  BOOST_CHECK( hasPrefix( "abc", "abc" ) );
+  BOOST_CHECK( ! hasPrefix( "abc", "b" ) );
+  BOOST_CHECK( ! hasPrefix( "abc", "Ab" ) );
+
+  // Case insensitive matching.
+  BOOST_CHECK( hasPrefixCI( "abc", "A" ) );
+  BOOST_CHECK( hasPrefixCI( "abc", "AB" ) );
+  BOOST_CHECK( hasPrefixCI( "abc", "ABC" ) );
+  BOOST_CHECK( hasPrefixCI( "ABC", "abc" ) );
+  BOOST_CHECK( ! hasPrefixCI( "abc", "B" ) );
+
+  // The view is shorter than the prefix: must return false WITHOUT reading
+  // past the end of the view's underlying buffer (which would be UB).
+  BOOST_CHECK( ! hasPrefix( "ab", "abc" ) );
+  BOOST_CHECK( ! hasPrefix( "", "x" ) );
+  BOOST_CHECK( ! hasPrefixCI( "ab", "abc" ) );
+  BOOST_CHECK( ! hasPrefixCI( "", "x" ) );
+
+  // string_view of a partial range: hasPrefix must look only at the
+  // visible part of the view, not at the surrounding buffer. With the
+  // previous strncmp-only implementation this returned true because
+  // strncmp would read past the view's end into the buffer.
+  const char buf[] = "abcdef";
+  std::string_view sv( buf, 3 );  // "abc" backed by a longer buffer
+  BOOST_CHECK_EQUAL( sv.size(), 3u );
+  BOOST_CHECK( ! hasPrefix( sv, "abcd" ) );
+  BOOST_CHECK( ! hasPrefix( sv, "abcde" ) );
+  BOOST_CHECK( ! hasPrefixCI( sv, "ABCD" ) );
+  BOOST_CHECK( ! hasPrefixCI( sv, "ABCDE" ) );
+  // But the view's own prefixes are still detected.
+  BOOST_CHECK( hasPrefix( sv, "abc" ) );
+  BOOST_CHECK( hasPrefix( sv, "ab" ) );
+  BOOST_CHECK( hasPrefixCI( sv, "ABC" ) );
+}

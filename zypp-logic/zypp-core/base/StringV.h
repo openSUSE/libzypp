@@ -93,11 +93,11 @@ namespace zypp
 
     /** Return whether \a str_r has prefix \a prefix_r. */
     inline bool hasPrefix( std::string_view str_r, std::string_view prefix_r )
-    { return( ::strncmp( str_r.data(), prefix_r.data(), prefix_r.size() ) == 0 ); }
+    { return( str_r.size() >= prefix_r.size() && ::strncmp( str_r.data(), prefix_r.data(), prefix_r.size() ) == 0 ); }
 
     /** \overload Case insensitive */
     inline bool hasPrefixCI( std::string_view str_r, std::string_view prefix_r  )
-    { return( ::strncasecmp( str_r.data(), prefix_r.data(), prefix_r.size()  ) == 0 ); }
+    { return( str_r.size() >= prefix_r.size() && ::strncasecmp( str_r.data(), prefix_r.data(), prefix_r.size()  ) == 0 ); }
 
     ///////////////////////////////////////////////////////////////////
     namespace detail

@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2025-07-22 15:02+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"PO-Revision-Date: 2026-05-15 11:12+0000\n"
+"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/libzypp/"
 "master/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -334,85 +334,85 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "无错误"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "内部错误"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "请求已取消"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"
-msgstr ""
+msgstr "请求超出最大下载大小"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
 msgid "The downloaded data did not result in a valid checksum"
-msgstr ""
+msgstr "下载的数据未通过有效校验和验证"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
-msgstr ""
+msgstr "无法验证对等方证书"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "连接失败"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "不支持的协议"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
-msgstr ""
+msgstr "URL 格式错误"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
 msgid "Requested location is temporarily unaccessible."
-msgstr ""
+msgstr "请求的位置暂时无法访问。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "已超时"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
-msgstr ""
+msgstr "禁止访问请求的 URL。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "文件未找到"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
-msgstr ""
+msgstr "需要身份验证，但未提供。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "登录失败。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
-msgstr ""
+msgstr "服务器对指定请求返回错误。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
 msgid "Server did not send all requested ranges."
-msgstr ""
+msgstr "服务器仅发送了部分请求的范围数据。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
 msgid ""
 "Invalid data from server, multipart was requested but there was no range "
 "status code."
-msgstr ""
+msgstr "来自服务器的数据无效，请求的是多部分数据，但未返回范围状态代码。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "服务器返回 HTTP/2 错误。"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "服务器返回 HTTP/2 流错误。"
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -4425,7 +4425,7 @@ msgstr "无法创建元数据缓存文件夹。"
 msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
-msgstr ""
+msgstr "正在通过镜像下载签名密钥，建议改为通过储存库配置明确设置 gpgKeyUrl。"
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
@@ -4707,7 +4707,7 @@ msgstr "未能提供软件包 %s。您想要重试检索吗？"
 
 #: zypp/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "下载 deltarpm：未找到"
 
 #: zypp/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."
@@ -5303,7 +5303,7 @@ msgstr "无法创建目标文件"
 #: zypp/zypp/target/commitpackagepreloader.cc:123
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
-msgstr ""
+msgstr "错误：初始化传输设置失败 (%1%)。"
 
 #. if we have the file already, no need to download again
 #: zypp/zypp/target/commitpackagepreloader.cc:140

@@ -276,6 +276,16 @@ namespace zypp
     std::string sconcat( Args&&... args )
     { str::Str str; return detail::joinSF( str, FormatConcat, std::forward<Args>(args)... ); }
 
+    /** Print line on stream */
+    template <typename Ostream, typename... Args>
+    Ostream & println( Ostream & str, Args&&... args )
+    { return detail::joinSF( str, FormatLine, std::forward<Args>(args)... ); }
+
+    /** Print line as string */
+    template <typename... Args>
+    std::string sprintln( Args&&... args )
+    { str::Str str; return detail::joinSF( str, FormatLine, std::forward<Args>(args)... ); }
+
     namespace detail {
       /** Log helper wrapping the Ostream and Format.
        * Aiming for pXXX( args... ) writing to log stream XXX.

@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
 "PO-Revision-Date: 2026-05-16 13:12+0000\n"
-"Last-Translator: Javier Llorente <javier@opensuse.org>\n"
+"Last-Translator: Antonio Simón <antonio@trans-mission.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/"
 "es/>\n"
 "Language: es\n"
@@ -453,7 +453,7 @@ msgstr "No se ha abierto el medio al intentar realizar la acción %s."
 #: zypp-logic/zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr "No se ha encontrado el archivo '%s'"
+msgstr "No se ha encontrado el archivo %s"
 
 #: zypp-logic/zypp-media/mediaexception.cc:66
 #, c-format, boost-format
@@ -4463,6 +4463,9 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Se está descargando la clave de firma mediante réplicas. En su lugar, "
+"también puede configurar explícitamente gpgKeyUrl mediante los ajustes del "
+"repositorio."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96

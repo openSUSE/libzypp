@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
 "PO-Revision-Date: 2026-05-16 13:12+0000\n"
-"Last-Translator: Antonio Simón <antonio@trans-mission.com>\n"
+"Last-Translator: Javier Llorente <javier@opensuse.org>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/libzypp/master/"
 "es/>\n"
 "Language: es\n"
@@ -4318,7 +4318,7 @@ msgstr "Se realizarán las siguientes acciones:"
 
 #: zypp/zypp/RepoInfo.cc:245
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr "No se pudieron obtener los datos de mirrorlist/metalink."
+msgstr "No se han podido obtener los datos de mirrorlist/metalink."
 
 # clients/support_registration.ycp:225 include/support/registration.ycp:77
 # clients/support_askkey.ycp:246 include/support/supportio.ycp:79
@@ -4510,7 +4510,7 @@ msgstr "No es posible crear el caché en %s, no posee permisos de escritura."
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:775
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr "No se pudo almacenar en caché el repositorio %1%"
+msgstr "No se ha podido almacenar en la caché el repositorio %1%"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:792
 msgid "Unhandled repository type"
@@ -4570,7 +4570,7 @@ msgstr "Limpiando paquetes"
 
 #: zypp/zypp/ng/repomanager.cc:451
 msgid "Cleaning up cache dirs"
-msgstr "Limpiando las carpetas de caché"
+msgstr "Limpiando los directorios de la caché"
 
 #: zypp/zypp/ng/repomanager.cc:471
 #, boost-format
@@ -4583,7 +4583,7 @@ msgstr "Limpiando caché"
 
 #: zypp/zypp/ng/repomanager.cc:522
 msgid "Loading from cache"
-msgstr "Cargando desde el caché"
+msgstr "Cargando desde la caché"
 
 #: zypp/zypp/ng/repomanager.cc:613
 #, c-format, boost-format
@@ -4606,7 +4606,7 @@ msgstr "Modificando repositorio"
 
 #: zypp/zypp/ng/repomanager.cc:896
 msgid "Refreshing Repository: "
-msgstr "Actualizando Repositorio: "
+msgstr "Actualizando repositorio: "
 
 #: zypp/zypp/ng/repomanager.cc:1081 zypp/zypp/ng/repomanager.cc:1153
 msgid "Can't figure out where the service is stored."
@@ -4778,7 +4778,7 @@ msgstr "Error de applydeltarpm."
 
 #: zypp/zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr "No hay permiso para escribir en el caché de repositorio."
+msgstr "No tiene permiso para escribir en la caché de repositorio."
 
 #: zypp/zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -5391,11 +5391,11 @@ msgstr ""
 
 #: zypp/zypp/target/commitpackagepreloader.cc:105
 msgid "no mirror found"
-msgstr "no se encontró ningún mirror"
+msgstr "no se ha encontrado ningún servidor réplica"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:111
 msgid "could not create target file"
-msgstr "no se pudo crear un archivo de destino"
+msgstr "no se ha podido crear un archivo de destino"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:123
 #, boost-format
@@ -5410,12 +5410,12 @@ msgstr "ya está en la caché"
 #. error
 #: zypp/zypp/target/commitpackagepreloader.cc:287
 msgid "failed to rename temporary file."
-msgstr "no se pudo cambiar el nombre del arhivo temporal."
+msgstr "no se ha podido cambiar el nombre del archivo temporal."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:315
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr "Error: \"%1%\", probando el siguiente mirror."
+msgstr "Error: \"%1%\", probando el siguiente servidor réplica."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:652
 msgid "Cancelled by user."

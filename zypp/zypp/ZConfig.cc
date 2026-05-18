@@ -16,6 +16,7 @@
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/InputStream>
+#include <zypp-core/base/Errno.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Regex.h>
 
@@ -538,6 +539,18 @@ namespace zypp
             }
             else { // unknown section {
               pWAR( "zypp.conf: Unknown section:", str::sconcat("[",section,"]"), entry, "=", value );
+            }
+          }
+        }
+
+        if ( _envMap ) {
+          for ( const auto & [entry, value] : *_envMap ) {
+            if ( value.empty() ) {
+              if ( ::unsetenv( entry.c_str() ) != 0 )
+                WAR << "zypp.conf [env]: unsetenv('" << entry << "') failed: " << Errno() << endl;
+            }
+            else if ( ::setenv( entry.c_str(), value.c_str(), 1 ) != 0 ) {
+              WAR << "zypp.conf [env]: setenv('" << entry << "') failed: " << Errno() << endl;
             }
           }
         }

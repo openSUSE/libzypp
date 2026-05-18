@@ -20,17 +20,17 @@ msgstr ""
 "Project-Id-Version: zypp.fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-01-12 16:04+0000\n"
+"PO-Revision-Date: 2026-05-18 15:12+0000\n"
 "Last-Translator: Olivier Belleux "
 "<OlivierBelleux@users.noreply.l10n.opensuse.org>\n"
-"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/"
-">\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/>"
+"\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.5\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -4469,10 +4469,13 @@ msgstr "Impossible de créer le répertoire de cache des métadonnées."
 #. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
 #: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:109
+#, fuzzy
 msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Pour télécharger la clé de signature via des miroirs, pensez à définir "
+"explicitement la variable gpgKeyUrl dans la configuration du dépôt."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96

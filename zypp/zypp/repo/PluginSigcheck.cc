@@ -161,7 +161,8 @@ namespace zypp
           if ( arg.empty() )
             continue;
           if ( plugpath.empty() ) {
-            plugpath = plugindir_r / "sigcheck" / strv::unBSEscape( arg );
+            // Prevent configured arg from escaping the sigcheck directory (bsc#1265223)
+            plugpath = Pathname::assertprefix( plugindir_r / "sigcheck", strv::unBSEscape( arg ) );
           } else {
             plugargs.emplace_back( strv::unBSEscape( arg ) );
           }

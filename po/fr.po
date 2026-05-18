@@ -20,9 +20,8 @@ msgstr ""
 "Project-Id-Version: zypp.fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-05-18 15:12+0000\n"
-"Last-Translator: Olivier Belleux "
-"<OlivierBelleux@users.noreply.l10n.opensuse.org>\n"
+"PO-Revision-Date: 2026-05-18 18:12+0000\n"
+"Last-Translator: Sophie Leroy <sophie@stoquart.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/libzypp/master/fr/>"
 "\n"
 "Language: fr\n"
@@ -122,11 +121,11 @@ msgstr "Paramètre de requête d'URL LDAP '%s' non valide"
 
 #: zypp-logic/zypp-core/Url.cc:319
 msgid "Unable to clone Url object"
-msgstr "Impossible de cloner l'objet d'URL"
+msgstr "Impossible de cloner l'objet URL"
 
 #: zypp-logic/zypp-core/Url.cc:332
 msgid "Invalid empty Url object reference"
-msgstr "Référence d'objet d'URL vide non valide"
+msgstr "Référence d'objet URL vide non valide"
 
 #: zypp-logic/zypp-core/Url.cc:345 zypp-logic/zypp-core/Url.cc:359
 msgid "Unable to parse Url components"
@@ -357,7 +356,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "Aucune erreur"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
@@ -425,13 +424,12 @@ msgid "Server did not send all requested ranges."
 msgstr "Le serveur n'a pas envoyé toutes les valeurs demandées."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
-#, fuzzy
 msgid ""
 "Invalid data from server, multipart was requested but there was no range "
 "status code."
 msgstr ""
-"Données invalides provenant du serveur, une requête multipart a été envoyée "
-"mais aucun code d'état de plage n'a été renvoyé."
+"Données non valides en provenance du serveur. Une requête multipart a été "
+"envoyée mais aucun code d'état de plage n'a été renvoyé."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
@@ -4469,7 +4467,6 @@ msgstr "Impossible de créer le répertoire de cache des métadonnées."
 #. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
 #: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:109
-#, fuzzy
 msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."

@@ -365,7 +365,7 @@ The file is read if it exists, but new credentials are usually stored in the use
 
 *[env]*
 ~~~~~~~
-The section allows setting environment variables from configuration. Each key/value pair is applied to the process environment after parsing all config files and before handling legacy overrides like *ZYPP_TESTSUITE_FAKE_ARCH*.
+The section allows setting environment variables from configuration. Each key/value pair is applied to the process environment after parsing all config files.
 +
 _key = value_ sets (or overwrites) the variable named _key_. +
 _key =_ (empty value) removes the variable from the environment.
@@ -402,4 +402,3 @@ _ZYPP_CONF_::
 SEE ALSO
 --------
 *zypper*(8)
-

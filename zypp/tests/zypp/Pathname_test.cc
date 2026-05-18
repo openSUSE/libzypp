@@ -153,9 +153,9 @@ BOOST_AUTO_TEST_CASE(pathname_stripprefix)
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "",		"" ),		"" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "",		"/" ),		"/" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "",		"/foo" ),	"/foo" );
-  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",		"" ),		"" );
-  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",		"/" ),		"/" );
-  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",		"/foo" ),	"/foo" );
+  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",	"" ),		"" );
+  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",	"/" ),		"/" );
+  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/",	"/foo" ),	"/foo" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/f",	"" ),		"" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/f",	"/" ),		"/" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/f",	"/foo" ),	"/foo" );
@@ -163,4 +163,41 @@ BOOST_AUTO_TEST_CASE(pathname_stripprefix)
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/foo",	"/" ),		"/" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/foo",	"/foo" ),	"/" );
   BOOST_CHECK_EQUAL( Pathname::stripprefix( "/foo",	"/foo/baa" ),	"/baa" );
+  BOOST_CHECK_EQUAL( Pathname::stripprefix( "/foo",	"/foobaa" ),	"/foobaa" );
+}
+
+BOOST_AUTO_TEST_CASE(pathname_assertprefix)
+{
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "",	"/a" ),		"/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "",	"a" ),		"a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "",	"../a" ),	"../a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( ".",	"/a" ),		"./a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( ".",	"a" ),		"./a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( ".",	"../a" ),	"./a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "..",	"/a" ),		"../a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "..",	"a" ),		"../a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "..",	"../a" ),	"../a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "a",	"/a" ),		"a/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "a",	"a" ),		"a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "a",	"../a" ),	"a/a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "../a",	"/a" ),		"../a/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "../a",	"a" ),		"../a/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "../a",	"../a" ),	"../a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/",	"/a" ),		"/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/",	"a" ),		"/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/",	"../a" ),	"/a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"/a" ),		"/root/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"a" ),		"/root/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"../a" ),	"/root/a" );
+
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"/root/a" ),	"/root/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"root/a" ),	"/root/root/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"../root/a" ),	"/root/root/a" );
+  BOOST_CHECK_EQUAL( Pathname::assertprefix( "/root",	"/roota" ),	"/root/roota" );
 }

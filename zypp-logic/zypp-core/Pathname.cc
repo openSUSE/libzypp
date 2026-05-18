@@ -271,11 +271,23 @@ namespace zypp
     //
     Pathname Pathname::assertprefix( const Pathname & root_r, const Pathname & path_r )
     {
-      if ( root_r.empty()
-           || path_r == root_r
-           || str::hasPrefix( path_r.asString(), root_r.asString() ) )
+      if ( root_r.empty() || root_r == path_r )
         return path_r;
-      return root_r / path_r;
+
+      if ( str::hasPrefix( path_r.asString(), root_r.asString() ) && path_r.asString()[root_r.asString().size()] == '/' ) {
+        // NOTE: Pathological is root_r being "." (opt. followed by a sequence of "/.."):
+        // Pathname is normalized and does not contain any embedded "..". If root_r is ".(/..)*',
+        // then path_r could continue with a '..' and this way would escape root_r.
+        if ( root_r.absolute() || root_r.asString().find_first_not_of( "./" ) != std::string::npos )
+          return path_r;
+
+        const std::string & pathbegin = path_r.asString().substr( root_r.asString().size()+1, 3 );
+        if ( pathbegin[0] != '.' || pathbegin[1] != '.' || ( pathbegin[2] != '\0' && pathbegin[2] != '/' )  )
+          return path_r;
+      }
+
+      // Treat path_r as if it was in "/", then prefix root_r
+      return root_r / absolutename(path_r);
     }
 
     Pathname Pathname::stripprefix( const Pathname & root_r, const Pathname & path_r )

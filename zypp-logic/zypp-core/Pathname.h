@@ -157,7 +157,17 @@ namespace zypp
       /** Returns this path as the absolute canonical pathname */
       Pathname realpath() const;
 
-      /** Return \c path_r prefixed with \c root_r, unless it is already prefixed. */
+      /** Unless \a path_r does not already denote a path \b below \a root_r, combine them.
+       * It's asserted that a relative \a path_r referring to "../" does not escape \a root_r.
+       * \code
+       * assertprefix( "/root", "/a"         ) => "/root/a"
+       * assertprefix( "/root", "a"          ) => "/root/a"
+       * assertprefix( "/root", "../a"       ) => "/root/a"
+       * assertprefix( "/root", "/root/a"    ) => "/root/a"
+       * assertprefix( "/root", "root/a"     ) => "/root/root/a"
+       * assertprefix( "/root", "/root/../a" ) => "/root/a"
+       * \endcode
+       */
       static Pathname assertprefix( const Pathname & root_r, const Pathname & path_r );
 
       /** Return \c path_r with any \c root_r dir prefix striped. */

@@ -9,13 +9,15 @@
 /** \file	zypp/ZConfig.cc
  *
 */
-
+#include <cstdlib>
 #include <iostream>
 #include <optional>
+#include <map>
 #include <zypp-core/APIConfig.h>
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/IOStream.h>
 #include <zypp-core/base/InputStream>
+#include <zypp-core/base/Errno.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/Regex.h>
 
@@ -341,6 +343,9 @@ namespace zypp
         MIL << "libzypp: " LIBZYPP_VERSION_STRING << " (" << LIBZYPP_CODESTREAM << ")" << endl;
 
         ZyppConfIniMap iniMap;  // Scan the default zypp.conf settings
+
+        using EnvMap = std::map<std::string,std::string>;
+        std::optional<EnvMap> envMap;
         for ( const auto & section : iniMap.sections() ) {
           for ( const auto & [entry,value] : iniMap.entries( section ) ) {
 
@@ -525,8 +530,35 @@ namespace zypp
                 pWAR( "zypp.conf: Unknown entry in [main]:", entry, "=", value );
               }
             }
+            else if ( section == "env" )
+            {
+              if ( !envMap )
+                envMap = EnvMap();
+              auto [it, inserted] = envMap->emplace( entry, value );
+              if ( !inserted ) {
+                WAR << "zypp.conf [env]: duplicate key '" << entry << "', shadowing previous value '" << it->second << "' with '" << value << "'" << endl;
+                it->second = value;
+              }
+            }
             else { // unknown section {
               pWAR( "zypp.conf: Unknown section:", str::sconcat("[",section,"]"), entry, "=", value );
+            }
+          }
+        }
+
+        if ( envMap ) {
+          for ( const auto & [entry, value] : *envMap ) {
+            const char* exists = ::getenv( entry.c_str() );
+            if ( exists == nullptr ) {
+              if ( ::setenv( entry.c_str(), value.c_str(), 0 ) != 0 ) {
+                pWAR( "zypp.conf [env]: set", str::sconcat("'",entry,"=",value,"'"), ": failed", Errno() );
+              }
+              else {
+                pMIL( "zypp.conf [env]: set", str::sconcat("'",entry,"=",value,"'") );
+              }
+            }
+            else {
+              pWAR( "zypp.conf [env]: skip", str::sconcat("'",entry,"=",value,"'"), ": is already set to", str::sconcat("'",exists,"'") );
             }
           }
         }

@@ -363,6 +363,15 @@ The file is read if it exists, but new credentials are usually stored in the use
 *arch* (_<UNSET>_)::
     [__Expert Only!_] Only set it if you actually know what you're doing! Overrides the _autodetected_ system architecture. Sometimes used for testing, but there's actually no use case unless the autodetection would fail.
 
+*[env]*
+~~~~~~~
+The section allows _adding_ environment variables after the host system's configuration has been parsed. Each _key/value_ pair is applied to the process environment if it does not already exist. It will neither amend nor unset already existing environment variables.
+
+*key = value* attempts to set the environment variable named _key_ to _value_.
+
+This feature is designed to enable environment-specific settings or debugging options over an extended period. However, note that any environment variables required before configuration files are parsed cannot be set here, as they will have no effect. (e.g. ZYPP_LOGFILE)
+
+
 FILES
 -----
 _/{vendorconfdir}/zypp/zypp.conf +
@@ -395,5 +404,3 @@ _ZYPP_CONF_::
 SEE ALSO
 --------
 *zypper*(8)
-
-

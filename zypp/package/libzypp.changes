@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue May 19 09:21:50 CEST 2026 - ma@suse.de
+
+- Prevent configured scripts from escaping the sigcheck directory
+  (bsc#1265223, CVE-2026-44933)
+- StringV: guard hasPrefix/hasPrefixCI against reading past the
+  view end (fixes #735)
+- version 17.38.9 (35)
+
+-------------------------------------------------------------------
 Tue May 12 16:25:44 CEST 2026 - ma@suse.de
 
 - Mandatory signature verification plugin support (PED#11922)

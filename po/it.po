@@ -15,16 +15,16 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-03-14 12:04+0000\n"
-"Last-Translator: Paolo Za <zapaolo@email.it>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/it/"
-">\n"
+"PO-Revision-Date: 2026-05-19 11:12+0000\n"
+"Last-Translator: Davide Aiello <davide.aiello@novilingulists.com>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/libzypp/master/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.5\n"
 "X-Poedit-Bookmarks: 370,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #. translators: an annotation to a gpg keys expiry date
@@ -366,7 +366,7 @@ msgstr "I dati scaricati non hanno prodotto un codice di controllo valido"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
-msgstr ""
+msgstr "Non è stato possibile verificare il certificato peer"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
@@ -402,7 +402,7 @@ msgstr "Autenticazione richiesta ma non fornita."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "Accesso non riuscito."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
@@ -417,6 +417,8 @@ msgid ""
 "Invalid data from server, multipart was requested but there was no range "
 "status code."
 msgstr ""
+"Dati non validi dal server: è stato richiesto il multipart ma non è stato "
+"fornito alcun codice di stato dell'intervallo."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
@@ -424,7 +426,7 @@ msgstr "Il server ha restituito un errore HTTP/2."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "Il server ha restituito un errore di flusso HTTP/2."
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -4453,6 +4455,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Se stai scaricando la chiave della firma tramite mirror, valuta invece di "
+"impostare esplicitamente gpgKeyUrl tramite la configurazione del repository."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
@@ -4747,7 +4751,7 @@ msgstr "Impossibile fornire il pacchetto %s. Ritentare il recupero?"
 
 #: zypp/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "download deltarpm: non trovato"
 
 #: zypp/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."

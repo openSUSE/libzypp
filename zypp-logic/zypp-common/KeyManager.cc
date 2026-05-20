@@ -290,18 +290,22 @@ std::list<std::string> KeyManagerCtx::Impl::readSignaturesFprsOptVerify(GpgmeDat
       // our workflow when verifying files that have multiple signatures, including some that are
       // not in the trusted keyring. We should not fail if we have unknown or expired keys and at least a good one.
       // We will however keep the behaviour of failing if we find a bad signatures even if others are good.
-      if ( status != GPG_ERR_KEY_EXPIRED && status != GPG_ERR_NO_PUBKEY )
-      {
-        WAR << "Failed signature check: " << file_r << " " << GpgmeErr(sig->status) << endl;
-        if ( !foundBadSignature )
-          foundBadSignature = true;
-      }
-      else
-      {
-        WAR << "Legacy: Ignore expired or unknown key: " << file_r << " " << GpgmeErr(sig->status) << endl;
-        // for now treat expired keys as good signature
-        if ( status == GPG_ERR_KEY_EXPIRED )
+      switch ( status ) {
+        case GPG_ERR_KEY_EXPIRED:
+          // for now treat expired keys as good signature
           foundGoodSignature = true;
+          WAR << "Accept good signature from expired key: " << file_r << " " << GpgmeErr(sig->status) << endl;
+          break;
+
+        case GPG_ERR_NO_PUBKEY:
+          WAR << "Legacy: Ignore unknown key: " << file_r << " " << GpgmeErr(sig->status) << endl;
+          break;
+
+        default:
+          WAR << "Failed signature check: " << file_r << " " << GpgmeErr(sig->status) << endl;
+          if ( !foundBadSignature )
+            foundBadSignature = true;
+          break;
       }
     } else {
       foundGoodSignature = true;

@@ -12,6 +12,7 @@
 #ifndef ZYPP_PATHNAME_H
 #define ZYPP_PATHNAME_H
 
+#include <cstring>
 #include <iosfwd>
 #include <string>
 
@@ -115,6 +116,9 @@ namespace zypp
       bool absolute() const { return *_name.c_str() == '/'; }
       /** Test for a relative path. */
       bool relative() const { return !( absolute() || empty() ); }
+
+      /** Test for a relative path referring to ../ */
+      bool relativeDotDot() const { return strncmp( _name.c_str() , "./..", 4 ) == 0 && ( _name.size() == 4 || _name.c_str()[4] == '/' ); }
 
       /** Test for "" or "/". */
       bool emptyOrRoot() const { return( _name.empty() || _name == "/" ); }

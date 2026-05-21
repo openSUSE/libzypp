@@ -36,4 +36,10 @@
     <timestamp>1176225550</timestamp>
     <open-checksum type="sha">ce38366eaded03cb8b3fdc64bb31ea5304e9901c</open-checksum>
   </data>
+  <data type="hostile">
+    <location href="../hostile/to_be_discarded"/>
+    <checksum type="sha">689fecabbb0907f51f5bb7211048e091c6f2bc84</checksum>
+    <timestamp>1176225550</timestamp>
+    <open-checksum type="sha">ce38366eaded03cb8b3fdc64bb31ea5304e9901c</open-checksum>
+  </data>
 </repomd>

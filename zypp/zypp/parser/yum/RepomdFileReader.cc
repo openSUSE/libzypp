@@ -12,8 +12,9 @@
 #include <iostream>
 #include <utility>
 
+#include <zypp/ZYppCallbacks.h>
 #include <zypp-core/base/String.h>
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/Regex.h>
 
 #include <zypp-core/Pathname.h>
@@ -48,6 +49,7 @@ namespace zypp
     /** Ctro taking a ProcessResource callback */
     Impl(const Pathname &repomd_file, ProcessResource &&callback )
     : _callback( std::move(callback) )
+    , _repomdFile( repomd_file )
     {
       Reader reader( repomd_file );
       MIL << "Reading " << repomd_file << endl;
@@ -85,6 +87,9 @@ namespace zypp
     OnMediaLocation _location;
 
     std::set<std::string> _keywords;	///< repo keywords parsed on the fly
+
+    Pathname _repomdFile;               ///< remember parsed filename
+    bool _discardDataEntry = false;     ///< to ignore the current data entry
   };
   ///////////////////////////////////////////////////////////////////////
 
@@ -101,7 +106,7 @@ namespace zypp
 
   bool RepomdFileReader::Impl::consumeNode( Reader & reader_r )
   {
-    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT )
+    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT && not _discardDataEntry )
     {
       // xpath: /repomd
       if ( reader_r->name() == "repomd" )
@@ -119,7 +124,16 @@ namespace zypp
       // xpath: /repomd/location
       if ( reader_r->name() == "location" )
       {
-        _location.setLocation( reader_r->getAttribute("href").asString(), 1 );
+        Pathname location { reader_r->getAttribute("href").asString() };
+        if ( location.relativeDotDot() ) {
+          // Don't accept downloadable data outside repo root
+          JobReport::warning( str::sconcat( _repomdFile,": data type ",_typeStr,": hostile location ",location," => discard data entry" ) );
+          pWAR( "Hostile location:", _typeStr, location, "=>", "discard data entry" );
+          _discardDataEntry = true;
+          return true;
+        }
+        _location.setLocation( std::move(location), 1 );
+
         // ignoring attribute xml:base
         return true;
       }
@@ -174,8 +188,10 @@ namespace zypp
       // xpath: /repomd/data
       if ( reader_r->name() == "data" )
       {
-        if (_callback) {
-          _callback( std::move(_location), _typeStr );
+        if ( _callback ) {
+          if ( not _discardDataEntry )
+            _callback( std::move(_location), _typeStr );
+          _discardDataEntry = false;
           _location = OnMediaLocation();
           _typeStr.clear();
         }

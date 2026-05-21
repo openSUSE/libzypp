@@ -43,27 +43,9 @@ namespace zypp
   class RepomdFileReader::Impl : private base::NonCopyable
   {
   public:
-
-    /**
-     * Enumeration of repomd.xml tags.
-     * \see _tag
-     */
-    enum Tag
-    {
-      tag_NONE,
-      tag_Repomd,
-      tag_Data,
-      tag_Location,
-      tag_CheckSum,
-      tag_Timestamp,
-      tag_OpenCheckSum
-    };
-
-  public:
     /** Ctro taking a ProcessResource2 callback */
     Impl(const Pathname &repomd_file, const ProcessResource2 & callback )
     : _callback( callback )
-    , _tag( tag_NONE )
     , _type( ResourceType::NONE_e )
     {
       Reader reader( repomd_file );
@@ -84,9 +66,6 @@ namespace zypp
   private:
     /** Function for processing collected data. Passed-in through constructor. */
     ProcessResource2 _callback;
-
-    /** Used to remember currently processed tag */
-    Tag _tag;
 
     /** Type of metadata file (string) */
     std::string _typeStr;
@@ -117,14 +96,12 @@ namespace zypp
       // xpath: /repomd
       if ( reader_r->name() == "repomd" )
       {
-        _tag = tag_Repomd;
         return true;
       }
 
       // xpath: /repomd/data (+)
       if ( reader_r->name() == "data" )
       {
-        _tag = tag_Data;
 	_typeStr = reader_r->getAttribute("type").asString();
         _type = ResourceType(_typeStr);
         return true;
@@ -133,7 +110,6 @@ namespace zypp
       // xpath: /repomd/location
       if ( reader_r->name() == "location" )
       {
-        _tag = tag_Location;
         _location.setLocation( reader_r->getAttribute("href").asString(), 1 );
         // ignoring attribute xml:base
         return true;
@@ -142,7 +118,6 @@ namespace zypp
       // xpath: /repomd/checksum
       if ( reader_r->name() == "checksum" )
       {
-        _tag = tag_CheckSum;
         string checksum_type = reader_r->getAttribute("type").asString() ;
         string checksum_vaue = reader_r.nodeText().asString();
         _location.setChecksum( CheckSum( checksum_type, checksum_vaue ) );

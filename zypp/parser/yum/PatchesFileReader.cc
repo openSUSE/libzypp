@@ -32,19 +32,6 @@ namespace zypp
     namespace yum
     {
 
-
-  enum Tag
-  {
-    tag_NONE,
-    tag_Patches,
-    tag_Patch,
-    tag_Location,
-    tag_CheckSum,
-    tag_Timestamp,
-    tag_OpenCheckSum
-  };
-
-
   ///////////////////////////////////////////////////////////////////////
   //
   //  CLASS NAME : PatchesFileReader::Impl
@@ -64,19 +51,15 @@ namespace zypp
 
   private:
     OnMediaLocation _location;
-    Tag _tag;
     std::string _id;
     ProcessResource _callback;
-    CheckSum _checksum;
-    std::string _checksum_type;
-    Date _timestamp;
   };
   ///////////////////////////////////////////////////////////////////////
 
 
   PatchesFileReader::Impl::Impl(const Pathname & patches_file,
                                 const ProcessResource & callback)
-    : _tag(tag_NONE), _callback(callback)
+    : _callback(callback)
   {
     Reader reader( patches_file );
     MIL << "Reading " << patches_file << endl;
@@ -93,24 +76,20 @@ namespace zypp
     {
       if ( reader_r->name() == "patches" )
       {
-        _tag = tag_Patches;
         return true;
       }
       if ( reader_r->name() == "patch" )
       {
-        _tag = tag_Patch;
         _id = reader_r->getAttribute("id").asString();
         return true;
       }
       if ( reader_r->name() == "location" )
       {
-        _tag = tag_Location;
         _location.setLocation( reader_r->getAttribute("href").asString(), 1 );
         return true;
       }
       if ( reader_r->name() == "checksum" )
       {
-        _tag = tag_CheckSum;
         string checksum_type = reader_r->getAttribute("type").asString() ;
         string checksum_vaue = reader_r.nodeText().asString();
         _location.setChecksum( CheckSum( checksum_type, checksum_vaue ) );

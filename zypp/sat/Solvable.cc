@@ -11,6 +11,7 @@
 */
 #include <iostream>
 
+#include "zypp/ZYppCallbacks.h"
 #include "zypp/base/Logger.h"
 #include "zypp/base/Gettext.h"
 #include "zypp/base/Exception.h"
@@ -226,9 +227,21 @@ namespace zypp
       NO_SOLVABLE_RETURN( OnMediaLocation() );
       // medianumber and path
       unsigned medianr;
-      const char * file = ::solvable_lookup_location( _solvable, &medianr );
-      if ( ! file )
-        return OnMediaLocation();
+      Pathname location;
+      {
+        const char * file = ::solvable_lookup_location( _solvable, &medianr );
+        if ( ! file )
+          return OnMediaLocation();
+
+        location = file ;
+        if ( location.relativeDotDot() ) {
+          // Don't accept downloadable data outside repo root
+          location = location.absolutename();
+          JobReport::warning( str::Str() << ": package " << ": hostile location " << file << " => " << location );
+          WAR << "Hostile location: package " << file << " => " << location << endl;
+        }
+      }
+
       if ( ! medianr )
 	medianr = 1;
 
@@ -256,7 +269,7 @@ namespace zypp
         default:
           break;
       }
-      ret.setLocation    ( path/file, medianr );
+      ret.setLocation    ( path/location, medianr );
       ret.setDownloadSize( ByteCount( lookupNumAttribute( SolvAttr::downloadsize ) ) );
       ret.setChecksum    ( lookupCheckSumAttribute( SolvAttr::checksum ) );
       // Not needed/available for solvables?

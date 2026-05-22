@@ -11,6 +11,7 @@
  */
 #include <iostream>
 
+#include "zypp/ZYppCallbacks.h"
 #include "zypp/base/String.h"
 #include "zypp/base/Logger.h"
 
@@ -47,6 +48,7 @@ namespace zypp
     Impl(const Pathname &repomd_file, const ProcessResource2 & callback )
     : _callback( callback )
     , _type( ResourceType::NONE_e )
+    , _parsedFile( repomd_file )
     {
       Reader reader( repomd_file );
       MIL << "Reading " << repomd_file << endl;
@@ -75,6 +77,9 @@ namespace zypp
 
     /** Location of metadata file. */
     OnMediaLocation _location;
+
+    Pathname _parsedFile;               ///< remember parsed filename
+    bool _discardDataEntry = false;     ///< to ignore the current data entry
   };
   ///////////////////////////////////////////////////////////////////////
 
@@ -91,7 +96,7 @@ namespace zypp
 
   bool RepomdFileReader::Impl::consumeNode( Reader & reader_r )
   {
-    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT )
+    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT && not _discardDataEntry )
     {
       // xpath: /repomd
       if ( reader_r->name() == "repomd" )
@@ -110,7 +115,16 @@ namespace zypp
       // xpath: /repomd/location
       if ( reader_r->name() == "location" )
       {
-        _location.setLocation( reader_r->getAttribute("href").asString(), 1 );
+        Pathname location { reader_r->getAttribute("href").asString() };
+        if ( location.relativeDotDot() ) {
+          // Don't accept downloadable data outside repo root
+          JobReport::warning( str::Str() << _parsedFile << ": data type " << _typeStr << ": hostile location " << location << " => discard data entry" );
+          WAR << "Hostile location: " << _typeStr <<" "<< location << " => discard data entry" << endl;
+          _discardDataEntry = true;
+          return true;
+        }
+        _location.setLocation( std::move(location), 1 );
+
         // ignoring attribute xml:base
         return true;
       }
@@ -148,9 +162,14 @@ namespace zypp
       // xpath: /repomd/data
       if ( reader_r->name() == "data" )
       {
-        if (_callback)
-          _callback( _location, _type, _typeStr );
-
+        if (_callback) {
+          if ( not _discardDataEntry )
+            _callback( _location, _type, _typeStr );
+          _discardDataEntry = false;
+          _location = OnMediaLocation();
+          _typeStr.clear();
+          _type = ResourceType::NONE_e;
+        }
         return true;
       }
     }

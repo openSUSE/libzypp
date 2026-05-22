@@ -11,6 +11,7 @@
  */
 #include <iostream>
 
+#include "zypp/ZYppCallbacks.h"
 #include "zypp/base/String.h"
 #include "zypp/base/Logger.h"
 
@@ -53,6 +54,8 @@ namespace zypp
     OnMediaLocation _location;
     std::string _id;
     ProcessResource _callback;
+    Pathname _parsedFile;               ///< remember parsed filename
+    bool _discardDataEntry = false;     ///< to ignore the current data entry
   };
   ///////////////////////////////////////////////////////////////////////
 
@@ -60,6 +63,7 @@ namespace zypp
   PatchesFileReader::Impl::Impl(const Pathname & patches_file,
                                 const ProcessResource & callback)
     : _callback(callback)
+    , _parsedFile( patches_file )
   {
     Reader reader( patches_file );
     MIL << "Reading " << patches_file << endl;
@@ -72,7 +76,7 @@ namespace zypp
   {
     //MIL << reader_r->name() << endl;
     std::string data_type;
-    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT )
+    if ( reader_r->nodeType() == XML_READER_TYPE_ELEMENT && not _discardDataEntry )
     {
       if ( reader_r->name() == "patches" )
       {
@@ -85,7 +89,16 @@ namespace zypp
       }
       if ( reader_r->name() == "location" )
       {
-        _location.setLocation( reader_r->getAttribute("href").asString(), 1 );
+        Pathname location { reader_r->getAttribute("href").asString() };
+        if ( location.relativeDotDot() ) {
+          // Don't accept downloadable data outside repo root
+          JobReport::warning( str::Str() << _parsedFile << ": patch " << _id << ": hostile location " << location << " => discard data entry" );
+          WAR << "Hostile location: patch " << _id <<" "<< location << " => discard data entry" << endl;
+          _discardDataEntry = true;
+          return true;
+        }
+        _location.setLocation( std::move(location), 1 );
+
         return true;
       }
       if ( reader_r->name() == "checksum" )
@@ -105,7 +118,13 @@ namespace zypp
     {
       //MIL << "end element" << endl;
       if ( reader_r->name() == "patch" )
-        _callback( _location, _id );
+      {
+        if ( not _discardDataEntry )
+          _callback( _location, _id );
+        _discardDataEntry = false;
+        _location = OnMediaLocation();
+        _id.clear();
+      }
       return true;
     }
     return true;

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "zypp/ZYppCallbacks.h"
 #include "zypp/base/LogTools.h"
 #include "zypp/base/String.h"
 #include "zypp/base/IOStream.h"
@@ -34,6 +35,37 @@ namespace zypp
     ///////////////////////////////////////////////////////////////////
     namespace susetags
     { /////////////////////////////////////////////////////////////////
+
+      namespace {
+        // Take care the parsed pathnames do not
+        // refer to locations outside the repo!
+        Pathname sanitize( Pathname path_r )
+        {
+          Pathname ret = path_r.absolutename();   // strips leading ../s.
+          if ( path_r.relativeDotDot() ) {
+            // Don't accept downloadable data outside repo root
+            JobReport::warning( str::Str() << "Content file: hostile location " << path_r << " => " << ret );
+            WAR << "Hostile location: " << path_r <<  "=> " << ret << endl;
+          }
+          return ret;
+        }
+
+        std::string sanitizeEntry( Pathname path_r )
+        {
+          if ( path_r.empty() )
+            return {};
+          // HASH SHA1 d423ad41e93a51195a6264961e4a074c6d89359d  boot/../x86_64/bind    => x86_64/bind
+          // HASH SHA1 d423ad41e93a51195a6264961e4a074c6d89359d  boot/../../x86_64/bind => ../* discarded
+          // Turning it into a Pathname normalizes the representation.
+          if ( path_r.relativeDotDot() ) {
+            // Don't accept downloadable data outside repo root
+            JobReport::warning( str::Str() << "Content file: hostile location " << path_r << " => discard data entry" );
+            WAR << "Hostile location: " << path_r << " => discard data entry" << endl;
+            return {};
+          }
+          return path_r.asString().substr( path_r.absolute() ? 1 : 2 ); // skip leading "/" or  "./"
+        }
+      }
 
       ///////////////////////////////////////////////////////////////////
       //
@@ -72,7 +104,9 @@ namespace zypp
 	    std::vector<std::string> words;
 	    if ( str::split( value, std::back_inserter( words ) ) == 3 )
 	    {
-	      map_r[words[2]] = CheckSum( words[0], words[1] );
+              std::string pathstr = sanitizeEntry( words[2] );
+              if ( not pathstr.empty() )
+                map_r[std::move(pathstr)] = CheckSum( words[0], words[1] );
 	    }
 	    else
 	    {
@@ -218,11 +252,11 @@ namespace zypp
 	  //
 	  else if ( key == "DESCRDIR" )
 	  {
-	    _pimpl->repoindex().descrdir = value;
+	    _pimpl->repoindex().descrdir = sanitize( value );
 	  }
 	  else if ( key == "DATADIR" )
 	  {
-	    _pimpl->repoindex().datadir = value;
+	    _pimpl->repoindex().datadir = sanitize( value );
 	  }
 	  else if ( key == "KEY" )
 	  {

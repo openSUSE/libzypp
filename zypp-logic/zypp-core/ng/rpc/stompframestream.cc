@@ -119,7 +119,7 @@ namespace zyppng {
             const auto &contentLen = _pendingMessage->getHeaderNT( zypp::PluginFrame::contentLengthHeader(), std::string() );
             std::optional<uint64_t> cLen;
             if ( !contentLen.empty() ) {
-              cLen = zyppng::str::safe_strtonum<uint64_t>(contentLen);
+              cLen = zyppng::str::strict_strtonum<uint64_t>(contentLen);
               if ( !cLen ) {
                 ERR << "Received malformed message from peer: Invalid value for " << zypp::PluginFrame::contentLengthHeader() << ":" << contentLen << std::endl;
                 parseError();

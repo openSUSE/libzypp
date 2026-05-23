@@ -43,7 +43,8 @@ namespace zyppng {
     static expected<ProvideRequestRef> create ( ProvideItem &owner, const zypp::MirroredOrigin &origin, ProvideFileSpec &spec );
     static expected<ProvideRequestRef> createDetach( const zypp::Url &url );
 
-    ProvideItem * owner() { return _owner; }
+    ProvideItemRef owner() { return _owner.lock(); }
+    void resetOwner() { _owner.reset(); }
 
     uint code () const { return _message.code(); }
 
@@ -83,8 +84,8 @@ namespace zyppng {
     }
 
   private:
-    ProvideRequest( ProvideItem *owner, zypp::MirroredOrigin origin, ProvideMessage &&msg ) : _owner(owner), _message(std::move(msg) ), _origin ( std::move(origin) ) {}
-    ProvideItem *_owner = nullptr; // destructor of ProvideItem will dequeue the item, so no need to do refcount here
+    ProvideRequest( ProvideItemWeakRef owner, zypp::MirroredOrigin origin, ProvideMessage &&msg ) : _owner(owner), _message(std::move(msg) ), _origin ( std::move(origin) ) {}
+    ProvideItemWeakRef _owner;
     ProvideMessage _message;
     zypp::MirroredOrigin     _origin;
     std::vector<zypp::Url>   _pastRedirects;

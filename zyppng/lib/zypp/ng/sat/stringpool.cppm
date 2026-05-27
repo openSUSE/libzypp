@@ -17,5 +17,5 @@ module;
 export module zyppng:sat_stringpool;
 
 export namespace zyppng::sat {
-  using zyppng::sat::StringPool;
+  using ::zyppng::sat::StringPool;
 } // namespace zyppng::sat

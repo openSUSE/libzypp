@@ -97,8 +97,8 @@ SET( zypp_glib_SRCS
 glib_mkenums( zypp-glib/zyppenums zypp-glib/zyppenums.h.in zypp-glib/zyppenums.c.in ${zypp_glib_HEADERS} )
 #glib_mkenums( ui/zyppenums-ui ui/zyppenums-ui.h.in ui/zyppenums-ui.c.in ${zypp_glib_ui_HEADERS} )
 
-INSTALL(  FILES ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zypp-glib/zyppenums.h  DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib" )
-#INSTALL(  FILES ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib/ui" )
+INSTALL(  FILES ${zypp_glib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zypp-glib/zyppenums.h  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/zypp-glib" )
+#INSTALL(  FILES ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/zypp-glib/ui" )
 
 SET( zypp_glib_public_HEADERS ${zypp_glib_HEADERS} ${zypp_glib_ui_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/zypp-glib/zyppenums.h ) #${CMAKE_CURRENT_BINARY_DIR}/ui/zyppenums-ui.h )
 
@@ -115,7 +115,7 @@ SET( zypp_glib_utils_HEADERS
 SET( zypp_glib_utils_SRCS
 )
 
-INSTALL(  FILES ${zypp_glib_utils_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-glib/utils" )
+INSTALL(  FILES ${zypp_glib_utils_HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/zypp-glib/utils" )
 
 SET( zypp_glib_lib_SRCS
     ${zypp_glib_SRCS}
@@ -137,12 +137,16 @@ SET( zypp_glib_lib_HEADERS
 SET_LOGGROUP( "zyppng" ${zypp_glib_lib_SRCS} )
 
 ADD_LIBRARY( zypp-glib SHARED  ${zypp_glib_lib_SRCS} ${zypp_glib_lib_HEADERS} )
+set_target_properties( zypp-glib PROPERTIES
+  VERSION   "${LIBZYPPGLIB_VERSION_INFO}"
+  SOVERSION "${LIBZYPPGLIB_SOVERSION_INFO}"
+)
 target_link_libraries( zypp-glib zyppng_lib_compiler_flags )
 TARGET_LINK_LIBRARIES( zypp-glib zyppng )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )
 target_link_libraries( zypp-glib ${LIBGIO_LIBRARIES} )
 
-INSTALL(TARGETS zypp-glib LIBRARY DESTINATION ${LIB_INSTALL_DIR} )
+INSTALL(TARGETS zypp-glib LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 
 INCLUDE(GenerateExportHeader)
 message("Exporting experimental libzypp-ng API")

@@ -108,8 +108,10 @@ namespace zyppng::sat {
   PreparedPool Pool::prepare()
   {
     // Pass 1: let components probe external state.
-    // setDirty() is legal here — onInvalidate() fires synchronously,
-    // so all components see a consistent state before prepare starts.
+    // setDirty() is legal here — _preparing is not yet set, so the
+    // precondition in setDirty() does not fire. Once _preparing is set
+    // below (Pass 2 onward), setDirty() is illegal for the remainder
+    // of the prepare sequence.
     _componentsSet.notifyCheckDirty( *this );
 
 #ifndef NDEBUG
@@ -154,7 +156,7 @@ namespace zyppng::sat {
   void Pool::setDirty( PoolInvalidation invalidation, std::initializer_list<std::string_view> reasons )
   {
 #ifndef NDEBUG
-      ZYPP_PRECONDITION( !_preparing, "setDirty() called during prepare() — only legal in checkDirty()" );
+      ZYPP_PRECONDITION( !_preparing, "setDirty() called during prepare() — only legal before Pass 1 (checkDirty) returns" );
 #endif
       if ( reasons.size() ) {
         bool first = true;

@@ -4,6 +4,10 @@ ci_workflow:
         source_project: zypp:ci:libzypp
         source_package: libzypp
         target_project: home:zypp-team
+    - branch_package:
+        source_project: zypp:ci:libzypp-glib
+        source_package: libzypp-glib
+        target_project: home:zypp-team
   filters:
     event: pull_request
 

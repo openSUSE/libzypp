@@ -35,6 +35,9 @@ namespace zyppng::sat {
   detail::CPool * PreparedPool::get() const noexcept
   {
 #ifndef NDEBUG
+    // _serialWatcher.remember() returns true when the serial has changed
+    // since the last call — i.e. the pool was invalidated. We assert it
+    // has NOT changed: a PreparedPool must not be used after pool invalidation.
     assert( !_serialWatcher.remember( _pool.serial() )
             && "PreparedPool used after Pool was invalidated" );
 #endif
@@ -48,6 +51,14 @@ namespace zyppng::sat {
 
   detail::IdType PreparedPool::whatProvidesData( unsigned offset_r ) const
   {
+    // libsolv guarantees null-termination of whatprovidesdata[]; callers
+    // must stop iterating at the first 0 entry. The assert below catches
+    // out-of-bounds access in debug builds by checking that the offset
+    // does not exceed the next free slot (whatprovidesdataoff).
+#ifndef NDEBUG
+    assert( offset_r < static_cast<unsigned>( get()->whatprovidesdataoff )
+            && "whatProvidesData offset out of bounds" );
+#endif
     return get()->whatprovidesdata[offset_r];
   }
 

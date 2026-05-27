@@ -33,7 +33,12 @@
 #ifndef LIBZYPP_VERSION
 #error Missing APIConfig.h include (LIBZYPP_VERSION)
 #endif
-#define LEGACY(CL) ( CL < 100 && LIBZYPP_VERSION_MAJOR <= CL ) || ( CL < 10000 && LIBZYPP_SOVERSION <= CL ) || LIBZYPP_VERSION <= CL
+#if defined(ZYPPNG) && ZYPPNG
+// NG never compiles legacy-compat code, regardless of version numbers.
+#  define LEGACY(CL) 0
+#else
+#  define LEGACY(CL) ( CL < 100 && LIBZYPP_VERSION_MAJOR <= CL ) || ( CL < 10000 && LIBZYPP_SOVERSION <= CL ) || LIBZYPP_VERSION <= CL
+#endif
 
 /**
  * Generic helper definitions for shared library support.

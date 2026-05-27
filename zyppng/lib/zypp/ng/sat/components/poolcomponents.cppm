@@ -153,6 +153,14 @@ export namespace zyppng::sat {
       template <typename T>
       T &assertComponent( std::unique_ptr<T> &&compPtr = {} ) {
 
+        // Dual-phase components are forbidden by policy — a type must inherit
+        // from exactly one of IPoolComponent (pre-index) or IPreparedPoolComponent
+        // (post-index), never both. Split into two cooperating components instead.
+        static_assert(
+          !(std::is_base_of_v<IPoolComponent, T> && std::is_base_of_v<IPreparedPoolComponent, T>),
+          "T must inherit from IPoolComponent or IPreparedPoolComponent, not both. "
+          "Split dual-phase logic into two cooperating components." );
+
         std::type_index idx( typeid(T) );
         if ( _components.count( idx ) )
           return *static_cast<T*>( _components[idx]->get() );

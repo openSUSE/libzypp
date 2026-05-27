@@ -2,6 +2,29 @@ PROJECT(LIBZYPP)
 SET( PACKAGE "libzypp" )
 
 #--------------------------------------------------------------------------------
+# Legacy-only install option — NG uses the same zypp.conf but never installs
+# the /etc fallback copy
+OPTION (KEEP_LEGACY_ZYPPCONF "Install the vendor zypp.conf in /etc too (ONLY LEGACY SYSTEMS WANT THIS)" OFF)
+
+#--------------------------------------------------------------------------------
+# Legacy version math — NG version lives in zyppng/api/VERSION.cmake
+INCLUDE( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
+
+MATH( EXPR LIBZYPP_NUMVERSION "${LIBZYPP_MAJOR} * 10000 + ${LIBZYPP_MINOR} * 100 + ${LIBZYPP_PATCH}" )
+MATH( EXPR LIBZYPP_CURRENT    "${LIBZYPP_MAJOR} * 100 + ${LIBZYPP_MINOR}" )
+MATH( EXPR LIBZYPP_AGE        "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
+# Libtool wanted current:patch:age
+# CMake wants the verbatim suffix to libzypp.so
+MATH( EXPR LIBZYPP_SO_FIRST   "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
+SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
+
+#--------------------------------------------------------------------------------
+# Legacy cmake consumer config — zypper and YAST find libzypp via these
+MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
+INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
+INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
+
+#--------------------------------------------------------------------------------
 # Builtin defaults for APIConfig.h
 # Legacy default behavior which might be enabled for legacy codestreams.
 # Some features can nevertheless be enabled via zypp.conf or environment variables

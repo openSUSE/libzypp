@@ -22,9 +22,7 @@ target_link_libraries( ${PROJECT_NAME} zyppng_exe_compiler_flags )
 target_link_libraries( ${PROJECT_NAME} zyppng-media )
 target_link_libraries( ${PROJECT_NAME} zyppng-core )
 
-IF ( INSTALL_NG_BINARIES )
-  INSTALL( TARGETS ${PROJECT_NAME} DESTINATION "${ZYPPNG_LIBEXEC_INSTALL_DIR}/workers" )
-ENDIF()
+INSTALL( TARGETS ${PROJECT_NAME} DESTINATION "${CMAKE_INSTALL_LIBEXECDIR}/zyppng/workers" )
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES

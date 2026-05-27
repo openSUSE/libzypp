@@ -377,6 +377,7 @@ cmake .. $CMAKE_FLAGS \
       -DCMAKE_SKIP_RPATH=1 \
       -DCMAKE_INSTALL_LIBEXECDIR=%{_libexecdir} \
       -DZYPPCONFDIR=%{zyppconfdir} \
+      -DBUILD_LIBZYPPNG=OFF \
       %{?with_keep_legacy_zyppconf:-DKEEP_LEGACY_ZYPPCONF=1} \
       %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \

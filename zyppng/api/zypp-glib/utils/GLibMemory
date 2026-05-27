@@ -357,8 +357,17 @@ ZYPP_GLIB_DEFINE_GLIB_REF_TYPE(GUri, g_uri)
 
 /**
  * Manually add extra definitions for gchar* and gchar**
+ *
+ * NOTE: glib >= 2.84 redefines g_free as a function-like macro; passing the
+ * bare token to ZYPP_GLIB_DEFINE_GLIB_AMBIGUOUS_TYPE triggers premature
+ * macro expansion. Funnel through a stable wrapper so the preprocessor
+ * sees an ordinary identifier. constexpr keeps it inline-friendly across
+ * TUs without forcing an out-of-line definition.
  */
-ZYPP_GLIB_DEFINE_GLIB_AMBIGUOUS_TYPE(gchar, g_free)
+namespace zypp::glib {
+    static inline void zypp_glib_free ( gpointer mem ) noexcept { g_free(mem); }
+}
+ZYPP_GLIB_DEFINE_GLIB_AMBIGUOUS_TYPE(gchar, zypp::glib::zypp_glib_free)
 
 typedef gchar* gcharv;
 ZYPP_GLIB_DEFINE_GLIB_AMBIGUOUS_TYPE(gcharv, g_strfreev)

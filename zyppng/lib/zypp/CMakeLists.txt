@@ -19,12 +19,6 @@ include(${zypp-libs_SOURCE_DIR}/zypp-logic/zypp/zypp.cmake)
 # ---------------------------------------------------------------------------
 set( ZYPPNG_MODULE_INTERFACE_UNITS
 
-      # ── Primary interface ──────────────────────────────────────────────
-      # NOTE: the primary interface unit is added per-target below, NOT here.
-      # Production uses ng/zyppng.cppm (empty body); the test twin uses
-      # ng/zyppng_test.cppm which re-exports :test_access.  Listing the
-      # primary here would force a single shared file across both objlibs.
-
       # ── Bridge wrapper partitions (LEGACY-BRIDGE) ─────────────────────
       # Each wraps a zypp:: type into zyppng:: until the legacy dep is cut.
       ng/arch.cppm

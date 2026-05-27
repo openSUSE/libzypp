@@ -24,33 +24,6 @@ import :sat_solvablespec;  // SolvableSpec, EvaluatedSolvableSpec
 
 namespace zyppng::sat {
 
-  bool SolvableSpec::contains( Pool & pool_r, const Solvable & solv_r ) const
-  {
-    if ( !solv_r || solv_r.isKind( ResKind::srcpackage ) )
-      return false;
-
-    // Fast path: ident match
-    if ( !_idents.empty() && _idents.count( solv_r.ident() ) )
-      return true;
-
-    // Provides path: for each token, check the whatprovides list
-    if ( !_provides.empty() ) {
-      detail::CPool * cpool = pool_r.get();
-      for ( const Capability & cap : _provides ) {
-        // pool_whatprovides returns an offset into whatprovidesdata[].
-        // The list is terminated by a 0 entry.
-        unsigned offset = ::pool_whatprovides( cpool, cap.id() );
-        const detail::IdType * p = cpool->whatprovidesdata + offset;
-        for ( ; *p; ++p ) {
-          if ( static_cast<detail::SolvableIdType>(*p) == solv_r.id() )
-            return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
   void SolvableSpec::parse( std::string_view spec_r )
   {
     static constexpr std::string_view providesPrefix { "provides:" };

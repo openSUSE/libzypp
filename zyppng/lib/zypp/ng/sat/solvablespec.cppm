@@ -24,7 +24,6 @@ import :sat_poolconstants;
 
 export namespace zyppng::sat {
 
-  class Pool;
   class PreparedPool;
   class Solvable;
 
@@ -38,8 +37,8 @@ export namespace zyppng::sat {
    * \ref IdString idents and \ref Capability provides tokens, but it holds
    * \b no pool reference, no cache, and no lazy-evaluation state.
    *
-   * Evaluation (i.e., resolving which concrete \ref Solvable objects match)
-   * is done externally by callers who supply an explicit \c Pool& reference.
+   * To test whether a solvable matches, construct an \ref EvaluatedSolvableSpec
+   * from a \ref PreparedPool and use its O(1) \c contains() method.
    * This makes \c SolvableSpec safe to copy, store, and pass across
    * component boundaries without pool-lifetime concerns.
    *
@@ -108,13 +107,13 @@ export namespace zyppng::sat {
     //@}
 
     /** \name Text-format parser
-     *
-     * Each entry is either:
-     * - \c "provides:CAPABILITY"  — parsed into \ref addProvides()
-     * - anything else             — parsed into \ref addIdent()
-     *
-     * Empty strings and strings beginning with \c '#' are silently ignored.
-     */
+      *
+      * Each entry is either:
+      * - \c "provides:CAPABILITY"  — parsed into \ref addProvides()
+      * - anything else             — parsed into \ref addIdent()
+      *
+      * Empty strings and strings beginning with \c '#' are silently ignored.
+      */
     //@{
     /** Parse and add a single spec entry. */
     void parse( std::string_view spec_r );
@@ -131,18 +130,6 @@ export namespace zyppng::sat {
     /** Split \a multispec_r on \c ',', \c ' ', \c '\\t' and parse each token. */
     void splitParseFrom( std::string_view multispec_r );
     //@}
-
-    /**
-     * \brief Test whether a single \ref Solvable matches this spec.
-     *
-     * A solvable matches if its ident is in \ref idents(), \b or if it
-     * provides at least one of the capabilities in \ref provides().
-     *
-     * \param pool_r  The \ref Pool owning \a solv_r (used to expand
-     *                provides tokens via \c whatprovides).
-     * \param solv_r  The solvable to test.
-     */
-    bool contains( Pool & pool_r, const Solvable & solv_r ) const;
 
   private:
     IdStringSet    _idents;

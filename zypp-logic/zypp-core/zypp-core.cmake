@@ -11,8 +11,6 @@ function( zypp_add_core_target )
 
 ADD_DEFINITIONS( -DLOCALEDIR="${CMAKE_INSTALL_PREFIX}/share/locale" -DTEXTDOMAIN="zypp" -DZYPP_DLL )
 
-CONFIGURE_FILE ( ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/APIConfig.h.in APIConfig.h @ONLY )
-
 zypp_add_sources( zypp_toplevel_headers
   AutoDispose.h
   ByteArray.h

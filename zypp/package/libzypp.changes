@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed May 27 17:09:30 CEST 2026 - ma@suse.de
+
+- Repo metadata: discard entries referring to a location outside
+  the repo (bsc#1259802, CVE-2026-25707)
+  Mirroring those data locally would refer to a location outside
+  the repo's local cache directory. Those data entries are reported
+  and discarded.
+- zypp.conf: Allow [env] section to add environment variables.
+  This feature is designed to enable environment-specific settings
+  or debugging options over an extended period. See zypp.conf(5).
+- version 17.38.10 (35)
+
+-------------------------------------------------------------------
 Tue May 19 09:21:50 CEST 2026 - ma@suse.de
 
 - Prevent configured scripts from escaping the sigcheck directory

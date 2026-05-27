@@ -42,7 +42,6 @@ OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime ch
 
 OPTION (BUILD_LIBZYPP "Build of the classic libzypp library" ON)
 OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" ON)
-OPTION (KEEP_LEGACY_ZYPPCONF "Install the vendor zypp.conf in /etc too (ONLY LEGACY SYSTEMS WANT THIS)" OFF)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 
@@ -74,7 +73,7 @@ ENDIF (${have_system} STRGREATER xx)
 
 IF ( NOSCHNICKSCHNACK )
   MESSAGE (STATUS "Building with NOSCHNICKSCHNACK")
-  # In case you want make to build just the sources
+  # In case you want make to build just the sources — legacy shortcut, NG ignores this
   SET (ENABLE_BUILD_DOCS OFF)
   SET (ENABLE_BUILD_TRANS OFF)
   SET (ENABLE_BUILD_TESTS OFF)
@@ -134,11 +133,12 @@ target_link_options( zypp_initial_compiler_flags INTERFACE "-fvisibility-inlines
 if ( NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   target_compile_options( zypp_initial_compiler_flags INTERFACE "-Wl,-as-needed" )
   target_link_options( zypp_initial_compiler_flags    INTERFACE "-Wl,-as-needed" )
+endif()
 
-  if( ENABLE_UBSAN_CHECKS )
-    target_compile_options( zypp_initial_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
-    target_link_options( zypp_initial_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
-  endif()
+# Clang 19 supports -fsanitize=undefined identically to GCC — no compiler guard needed
+if( ENABLE_UBSAN_CHECKS )
+  target_compile_options( zypp_initial_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
+  target_link_options( zypp_initial_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=undefined>" )
 endif()
 
 INCLUDE(CheckFunctionExists)
@@ -363,16 +363,6 @@ add_library( zypp_initial_exe_compiler_flags INTERFACE)
 target_compile_options( zypp_initial_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
 target_link_options   ( zypp_initial_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
 
-INCLUDE( zypp/VERSION.cmake )
-
-MATH( EXPR LIBZYPP_NUMVERSION "${LIBZYPP_MAJOR} * 10000 + ${LIBZYPP_MINOR} * 100 + ${LIBZYPP_PATCH}" )
-MATH( EXPR LIBZYPP_CURRENT "${LIBZYPP_MAJOR} * 100 + ${LIBZYPP_MINOR}" )
-MATH( EXPR LIBZYPP_AGE     "${LIBZYPP_MINOR} - ${LIBZYPP_COMPATMINOR}" )
-# Libtool wanted current:patch:age
-# But cmake is not libtool, it wants the verbatim suffix to libzypp.so
-MATH( EXPR LIBZYPP_SO_FIRST  "${LIBZYPP_CURRENT}-${LIBZYPP_AGE}" )
-SET( VERSION "${LIBZYPP_MAJOR}.${LIBZYPP_MINOR}.${LIBZYPP_PATCH}" )
-
 INCLUDE(CTest)
 ENABLE_TESTING()
 
@@ -384,14 +374,9 @@ add_subdirectory(external)
 
 if (BUILD_LIBZYPP)
   add_subdirectory(zypp)
-  MESSAGE(STATUS "ZyppConfig.cmake will be installed in ${LIB_INSTALL_DIR}/cmake/Zypp")
-  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
-  INSTALL( FILES ${zypp-libs_SOURCE_DIR}/cmake/modules/ZyppCommon.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/Zypp )
 endif()
 
 if (BUILD_LIBZYPPNG)
-  OPTION (EXPORT_NG_API "Export experimental libzypp API" OFF)
-  OPTION (INSTALL_NG_BINARIES "Installs the NG binaries, disabled for now since we are not actively using them." OFF)
   add_subdirectory(zyppng)
 endif()
 

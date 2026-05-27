@@ -1,5 +1,7 @@
 include(${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-core/zypp-core.cmake)
 
+zypp_configure_apiconfig(LIBZYPPGLIB "ng" "${zypp-libs_SOURCE_DIR}/zypp-logic/zypp-core/APIConfig.h.in" "${CMAKE_CURRENT_BINARY_DIR}/APIConfig.h")
+
 SET( VERSION "${VERSION} (zyppng)" )
 
 SET( zyppng_ng_async_HEADERS

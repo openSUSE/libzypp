@@ -82,6 +82,9 @@ message ( "Using zyppng-rpm from path: ${ZYPPNG_RPM_BINARY}" )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPPNG_RPM_BINARY}"  )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPPNG_WORKER_PATH}")
 
+# SoT: zyppng/packaging/libzypp-glib-version.inc (also %include'd by the .spec).
+include( ${CMAKE_CURRENT_SOURCE_DIR}/api/VERSION.cmake )
+
 set( ZYPPNG_WORKER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/tools/workers )
 
 #signal the code to enable zyppng features
@@ -89,20 +92,6 @@ add_definitions( -DZYPP_ENABLE_ASYNC )
 add_definitions( -DZYPPNG=1 )
 
 add_subdirectory( lib )
-#add_subdirectory( api )
+add_subdirectory( api )
 add_subdirectory( tools )
 add_subdirectory( tests )
-
-# this part does nothing yet, only when switching away from using a map file to
-# a approach where symbols are exported explicitly it would make a difference
-# ZYPPNG symbols need to be added to the map file to be exported
-# IF( EXPORT_NG_API )
-# ADD_DEFINITIONS(-DEXPORT_EXPERIMENTAL_API)
-# INCLUDE(GenerateExportHeader)
-# message("Exporting experimental libzypp-ng API")
-# GENERATE_EXPORT_HEADER(
-#   zypp
-#   BASE_NAME zypp-ng
-#   PREFIX_NAME LIB
-# )
-# ENDIF ( EXPORT_NG_API )

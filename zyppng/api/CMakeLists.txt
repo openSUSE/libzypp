@@ -137,6 +137,10 @@ SET( zypp_glib_lib_HEADERS
 SET_LOGGROUP( "zyppng" ${zypp_glib_lib_SRCS} )
 
 ADD_LIBRARY( zypp-glib SHARED  ${zypp_glib_lib_SRCS} ${zypp_glib_lib_HEADERS} )
+set_target_properties( zypp-glib PROPERTIES
+  VERSION   "${LIBZYPPGLIB_VERSION_INFO}"
+  SOVERSION "${LIBZYPPGLIB_SOVERSION_INFO}"
+)
 target_link_libraries( zypp-glib zyppng_lib_compiler_flags )
 TARGET_LINK_LIBRARIES( zypp-glib zyppng )
 target_link_libraries( zypp-glib ${LIBGOBJECT_LIBRARIES} )

@@ -36,5 +36,5 @@ SET_TARGET_PROPERTIES( zyppng PROPERTIES VERSION   "${LIBZYPP_VERSION_INFO}" )
 SET_TARGET_PROPERTIES( zyppng PROPERTIES SOVERSION "${LIBZYPP_SOVERSION_INFO}" )
 
 target_link_libraries( zyppng PRIVATE zyppng_lib_compiler_flags )
-target_link_libraries( zyppng PRIVATE zyppng-objlib )
+target_link_libraries( zyppng PUBLIC zyppng-objlib )
 target_link_libraries( zyppng PRIVATE zyppng-commit-proto-obj )

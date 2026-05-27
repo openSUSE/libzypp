@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed May 27 18:51:01 CEST 2026 - ma@suse.de
+
+- Repo metadata: discard entries referring to a location outside
+  the repo (bsc#1259802, CVE-2026-25707)
+  Mirroring those data locally would refer to a location outside
+  the repo's local cache directory. Those data entries are reported
+  and discarded.
+- version 16.22.17 (0)
+
+-------------------------------------------------------------------
 Thu Mar 27 17:54:27 CET 2025 - ma@suse.de
 
 - Do not double encode URL strings passed on the commandline

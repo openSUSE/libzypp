@@ -33,7 +33,12 @@
 #ifndef LIBZYPP_VERSION
 #error Missing APIConfig.h include (LIBZYPP_VERSION)
 #endif
-#define LEGACY(CL) ( CL < 100 && LIBZYPP_VERSION_MAJOR <= CL ) || ( CL < 10000 && LIBZYPP_SOVERSION <= CL ) || LIBZYPP_VERSION <= CL
+#if defined(ZYPPNG) && ZYPPNG
+// NG never compiles legacy-compat code, regardless of version numbers.
+#  define LEGACY(CL) 0
+#else
+#  define LEGACY(CL) ( CL < 100 && LIBZYPP_VERSION_MAJOR <= CL ) || ( CL < 10000 && LIBZYPP_SOVERSION <= CL ) || LIBZYPP_VERSION <= CL
+#endif
 
 /**
  * Generic helper definitions for shared library support.
@@ -115,6 +120,38 @@
   #ifndef ZYPP_DEPRECATED
   #define ZYPP_DEPRECATED
   #endif
+#endif
+
+/**
+ * Defines a namespace-scope constant with the correct linkage for the build mode.
+ *
+ * In the zyppng module build (-DZYPPNG), constants at namespace scope must have
+ * external linkage to be safely referenced by constexpr inline methods that are
+ * exported from C++20 module interface units.  'inline constexpr' (C++17) provides
+ * this.
+ *
+ * In the legacy build (no -DZYPPNG), consumers may be compiled under C++11 where
+ * 'inline' on variables is not available.
+ *
+ * ZYPP_DEFINE_GLOBAL_CONSTANT  — replaces 'static const'      (non-constexpr value)
+ * ZYPP_DEFINE_GLOBAL_CONSTEXPR — replaces 'static constexpr'  (constexpr value)
+ *
+ * Usage (inside a namespace block in a header):
+ * \code
+ *   ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, noId, 0 )
+ *   ZYPP_DEFINE_GLOBAL_CONSTEXPR( ResolverNamespaces, NoResolverNamespaces, ResolverNamespace() )
+ * \endcode
+ */
+#ifdef ZYPPNG
+  #define ZYPP_DEFINE_GLOBAL_CONSTANT(type, name, ...) \
+    inline constexpr type name { __VA_ARGS__ };
+  #define ZYPP_DEFINE_GLOBAL_CONSTEXPR(type, name, ...) \
+    inline constexpr type name { __VA_ARGS__ };
+#else
+  #define ZYPP_DEFINE_GLOBAL_CONSTANT(type, name, ...) \
+    static const type name { __VA_ARGS__ };
+  #define ZYPP_DEFINE_GLOBAL_CONSTEXPR(type, name, ...) \
+    static constexpr type name { __VA_ARGS__ };
 #endif
 
 #endif

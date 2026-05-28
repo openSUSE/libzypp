@@ -1,0 +1,135 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+/** \file	zypp/sat/Queue.cc
+ */
+module;
+extern "C" {
+#include <solv/queue.h>
+}
+#include <iostream>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/ng/base/ranges.h>
+
+module zyppng;
+
+import :sat_queue;
+import :sat_solvable;
+
+using std::endl;
+
+
+// rwcowClone specialisation — declared in queue.cppm, defined here.
+namespace zypp {
+  template<>
+  zyppng::sat::detail::CQueue * rwcowClone<zyppng::sat::detail::CQueue>( const zyppng::sat::detail::CQueue * rhs )
+  {
+    zyppng::sat::detail::CQueue * ret = new zyppng::sat::detail::CQueue;
+    ::queue_init_clone( ret, const_cast<zyppng::sat::detail::CQueue *>(rhs) );
+    return ret;
+  }
+}
+
+///////////////////////////////////////////////////////////////////
+namespace zyppng
+{
+  ///////////////////////////////////////////////////////////////////
+  namespace sat
+  {
+
+    Queue::Queue()
+      : _pimpl( new detail::CQueue )
+    { ::queue_init( _pimpl.get() ); }
+
+    Queue::~Queue()
+    { ::queue_free( _pimpl.get() ); }
+
+    bool Queue::empty() const
+    { return( _pimpl->count == 0 ); }
+
+    Queue::size_type Queue::size() const
+    { return _pimpl->count; }
+
+    Queue::const_iterator Queue::begin() const
+    { return _pimpl->elements; }
+
+    Queue::const_iterator Queue::end() const
+    { return _pimpl->elements + _pimpl->count;}
+
+    Queue::const_iterator Queue::find( value_type val_r ) const
+    {
+      auto it = ranges::find( *this, val_r );
+      return it != end() ? it : end();
+    }
+
+    Queue::value_type Queue::first() const
+    {
+      if ( _pimpl->count )
+        return *_pimpl->elements;
+      return 0;
+    }
+
+    Queue::value_type Queue::last() const
+    {
+      if ( _pimpl->count )
+        return _pimpl->elements[_pimpl->count-1];
+      return 0;
+    }
+
+#define M_RANGE_CKECK(IDX,LOC) if ( IDX >= size_type(_pimpl->count) ) throw std::out_of_range( "zypp::sat::Queue::" LOC )
+
+    const Queue::value_type & Queue::at( size_type idx_r ) const
+    { M_RANGE_CKECK( idx_r, "at" ); return _pimpl->elements[idx_r]; }
+
+    Queue::value_type & Queue::at( size_type idx_r )
+    { M_RANGE_CKECK( idx_r, "at" ); return _pimpl->elements[idx_r]; }
+
+    const Queue::value_type & Queue::operator[]( size_type idx_r ) const
+    { return _pimpl->elements[idx_r]; }
+
+    Queue::value_type & Queue::operator[]( size_type idx_r )
+    { return _pimpl->elements[idx_r]; }
+
+    void Queue::clear()
+    { ::queue_empty( *this ); }
+
+    void Queue::remove( value_type val_r )
+    {
+      for ( const_iterator it( find( val_r ) ); it != end(); it = find( val_r ) )
+        ::queue_delete( _pimpl.get(), it - begin() );
+    }
+
+    void Queue::push( value_type val_r )
+    { ::queue_push( _pimpl.get(), val_r ); }
+
+    void Queue::pushUnique( value_type val_r )
+    { ::queue_pushunique( _pimpl.get(), val_r ); }
+
+    Queue::value_type Queue::pop()
+    { return ::queue_pop( _pimpl.get() ); }
+
+    void Queue::push_front( value_type val_r )
+    { ::queue_unshift( _pimpl.get(), val_r ); }
+
+    Queue::value_type Queue::pop_front()
+    { return ::queue_shift( _pimpl.get() ); }
+
+    Queue::operator detail::CQueue *()		// COW: nonconst version can't be inlined
+    { return _pimpl.get(); }			// without exposing detail::CQueue
+
+    bool operator==( const Queue & lhs, const Queue & rhs )
+    {
+      const detail::CQueue * l = lhs;
+      const detail::CQueue * r = rhs;
+      return( l == r || ( l->count == r->count && ::memcmp( l->elements, r->elements,  l->count * sizeof( *l->elements ) ) == 0 ) );
+    }
+
+  } // namespace sat
+  ///////////////////////////////////////////////////////////////////
+} // namespace zyppng
+///////////////////////////////////////////////////////////////////

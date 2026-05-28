@@ -27,9 +27,7 @@ target_link_libraries( ${PROJECT_NAME} zyppng-curl )
 target_link_libraries( ${PROJECT_NAME} zyppng-media )
 target_link_libraries( ${PROJECT_NAME} zyppng-core )
 
-IF ( INSTALL_NG_BINARIES )
-  INSTALL( TARGETS ${PROJECT_NAME} DESTINATION "${ZYPPNG_LIBEXEC_INSTALL_DIR}/workers" )
-ENDIF()
+INSTALL( TARGETS ${PROJECT_NAME} DESTINATION "${ZYPPNG_LIBEXEC_INSTALL_DIR}/workers" )
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES

@@ -1,4 +1,4 @@
 ADD_TESTS(
-	PoolNg
-	PoolComponentSet
+        PoolNg
+        PoolComponentSet
 )

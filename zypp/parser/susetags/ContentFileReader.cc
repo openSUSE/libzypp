@@ -52,8 +52,6 @@ namespace zypp
 
         std::string sanitizeEntry( Pathname path_r )
         {
-          if ( path_r.empty() )
-            return {};
           // HASH SHA1 d423ad41e93a51195a6264961e4a074c6d89359d  boot/../x86_64/bind    => x86_64/bind
           // HASH SHA1 d423ad41e93a51195a6264961e4a074c6d89359d  boot/../../x86_64/bind => ../* discarded
           // Turning it into a Pathname normalizes the representation.
@@ -63,7 +61,15 @@ namespace zypp
             WAR << "Hostile location: " << path_r << " => discard data entry" << endl;
             return {};
           }
-          return path_r.asString().substr( path_r.absolute() ? 1 : 2 ); // skip leading "/" or  "./"
+          // Skip leading "/" or  "./" trying to retain the original string format
+          std::string ret = path_r.asString();
+          if ( ret.size() <= 1 )
+            return ret;                   // is "", "." or "/"
+          if ( ret[0] == '/' )
+            ret = ret.substr( 1 );        // skip leading "/"
+          else
+            ret = ret.substr( 2 );        // skip leading "./"
+          return ret;
         }
       }
 

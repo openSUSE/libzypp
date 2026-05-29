@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 29 18:07:39 CEST 2026 - ma@suse.de
+
+- Fix potential crash on malformed or malicious repository
+  metadata (fixes #740)
+- version 17.38.11 (35)
+
+-------------------------------------------------------------------
 Wed May 27 17:09:30 CEST 2026 - ma@suse.de
 
 - Repo metadata: discard entries referring to a location outside

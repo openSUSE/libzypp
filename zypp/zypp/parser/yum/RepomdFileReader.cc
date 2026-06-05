@@ -233,7 +233,8 @@ namespace zypp
       if ( tag.compare( 0,10,"gpg-pubkey" ) != 0 )
         continue;
 
-      static const str::regex rx( "^(gpg-pubkey([^?]*))(\\?fpr=([[:xdigit:]]{8,}))?$" );
+      // bsc#1267426: Do not accept a '/' in keyfile. It must not be a path.
+      static const str::regex rx( "^(gpg-pubkey([^/?]*))(\\?fpr=([[:xdigit:]]{8,}))?$" );
       str::smatch what;
       if ( str::regex_match( tag.c_str(), what, rx ) ) {
         std::string keyfile { what[1] };

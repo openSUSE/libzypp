@@ -163,7 +163,7 @@ namespace zypp
             if ( location.relativeDotDot() ) {
               // Don't accept downloadable data outside repo root
               JobReport::warning( str::sconcat( *its,": hostile path=",location," => ", location.absolutename() ) );
-              pWAR( "Hostile path=", location, "=>", "discard data entry" );
+              pWAR( "Hostile path=", location, "=>", location.absolutename() );
               location = location.absolutename();
             }
             info.setPath( location );

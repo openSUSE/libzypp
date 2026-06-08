@@ -509,7 +509,7 @@ namespace zypp
   { _pimpl->baseUrls().raw().swap( urls ); }
 
   void RepoInfo::setPath( const Pathname &path )
-  { _pimpl->path = path; }
+  { _pimpl->path = path.absolutename(); /* must not refer to ../ */ }
 
   void RepoInfo::setType( const repo::RepoType &t )
   { _pimpl->type = t; }

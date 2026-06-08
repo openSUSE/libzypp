@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include "zypp/ZYppCallbacks.h"
 #include "zypp/base/LogTools.h"
 #include "zypp/base/String.h"
 #include "zypp/base/Regex.h"
@@ -134,8 +135,16 @@ namespace zypp
             info.setEnabled( str::strToTrue( it->second ) );
           else if ( it->first == "priority" )
             info.setPriority( str::strtonum<unsigned>( it->second ) );
-          else if ( it->first == "path" )
-            info.setPath( Pathname(it->second) );
+          else if ( it->first == "path" ) {
+            Pathname location { it->second };
+            if ( location.relativeDotDot() ) {
+              // Don't accept downloadable data outside repo root
+              JobReport::warning( str::Str() << *its << " hostile path=" << location << " => " << location.absolutename() );
+              WAR << "Hostile path=" << location <<  "=> " << location.absolutename() << endl;
+              location = location.absolutename();
+            }
+            info.setPath( location );
+          }
           else if ( it->first == "type" )
             info.setType(repo::RepoType(it->second));
           else if ( it->first == "autorefresh" )

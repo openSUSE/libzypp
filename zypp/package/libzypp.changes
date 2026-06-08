@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jun  8 14:54:34 CEST 2026 - ma@suse.de
+
+- A .repo files "path=" entry must not refer to a location
+  outside the repo (bsc#1267874, CVE-2026-44942)
+  A "path=" entry may solely denote a sub-directory of the baseurl
+  where the metadata are located. A relative path trying to access
+  data outside the baseurl is reported and sanitized.
+- version 17.38.13 (35)
+
+-------------------------------------------------------------------
 Fri Jun  5 14:13:21 CEST 2026 - ma@suse.de
 
 - Repo "keyhint" must denote a filename, no path (bsc#1267426,

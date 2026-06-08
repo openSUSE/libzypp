@@ -10,6 +10,7 @@
  *
 */
 #include <iostream>
+#include <zypp/ZYppCallbacks.h>
 #include <zypp-core/base/LogTools.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/base/StringV.h>
@@ -157,8 +158,16 @@ namespace zypp
             info.setEnabled( str::strToTrue( it->second ) );
           else if ( it->first == "priority" )
             info.setPriority( str::strtonum<unsigned>( it->second ) );
-          else if ( it->first == "path" )
-            info.setPath( Pathname(it->second) );
+          else if ( it->first == "path" ) {
+            Pathname location { it->second };
+            if ( location.relativeDotDot() ) {
+              // Don't accept downloadable data outside repo root
+              JobReport::warning( str::sconcat( *its,": hostile path=",location," => ", location.absolutename() ) );
+              pWAR( "Hostile path=", location, "=>", "discard data entry" );
+              location = location.absolutename();
+            }
+            info.setPath( location );
+          }
           else if ( it->first == "type" )
             ; // bsc#1177427 et.al.: type in a .repo file is legacy - ignore it and let RepoManager probe
           else if ( it->first == "autorefresh" )

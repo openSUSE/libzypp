@@ -135,7 +135,7 @@ namespace zypp
     repo::RepoType type() const
     {
       if ( _type == repo::RepoType::NONE && not metadataPath().empty() )
-        setProbedType( probeCache( metadataPath() / path ) );
+        setProbedType( probeCache( metadataPath() / _path ) );
       return _type;
     }
 
@@ -156,9 +156,9 @@ namespace zypp
         filesystem::Glob g;
         // TODO: REPOMD: this assumes we know the name of the tarball. In fact
         // we'd need to get the file from repomd.xml (<data type="license[-name_r]">)
-        g.add( metadataPath() / path / ("repodata/*"+licenseStem+".tar.gz") );
+        g.add( metadataPath() / _path / ("repodata/*"+licenseStem+".tar.gz") );
         if ( g.empty() )
-          g.add( metadataPath() / path / (licenseStem+".tar.gz") );
+          g.add( metadataPath() / _path / (licenseStem+".tar.gz") );
 
         if ( !g.empty() )
           ret = *g.begin();
@@ -216,8 +216,8 @@ namespace zypp
            && repo::RepoMirrorList::urlSupportsMirrorLink( *_baseUrls.transformedBegin() ) ) {
 
         mlurl = *_baseUrls.transformedBegin ();
-        if ( !path.emptyOrRoot () )
-          mlurl.setPathName(path);
+        if ( !_path.emptyOrRoot () )
+          mlurl.setPathName(_path);
         mlurl.pathNameSetTrailingSlash();
         mlurl.setQueryParam("mirrorlist", std::string() );
 
@@ -466,7 +466,7 @@ namespace zypp
 
   public:
     TriBool keeppackages;
-    Pathname path;
+    Pathname _path;
     std::string service;
     std::string targetDistro;
 
@@ -798,7 +798,7 @@ namespace zypp
   }
 
   void RepoInfo::setPath( const Pathname &path )
-  { _pimpl->path = path; }
+  { _pimpl->_path = path.absolutename(); /* must not refer to ../ */ }
 
   void RepoInfo::setType( const repo::RepoType &t )
   { _pimpl->setType( t ); }
@@ -877,7 +877,7 @@ namespace zypp
   { return _pimpl->baseUrls().raw(); }
 
   Pathname RepoInfo::path() const
-  { return _pimpl->path; }
+  { return _pimpl->_path; }
 
   std::string RepoInfo::service() const
   { return _pimpl->service; }
@@ -1120,7 +1120,7 @@ namespace zypp
       }
     }
 
-    if ( ! _pimpl->path.empty() )
+    if ( ! path().empty() )
       str << "path="<< path() << endl;
 
     if ( ! _pimpl->cfgMirrorlistUrl().raw().asString().empty() )

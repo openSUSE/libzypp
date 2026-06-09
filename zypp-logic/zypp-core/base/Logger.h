@@ -63,7 +63,7 @@ namespace zypp
       std::ostream & _strlog;
     };
 
-    Osd & getOSD();
+    Osd & getOSD() ZYPP_API;
 
 #define OSD ::zypp::debug::getOSD()
   }

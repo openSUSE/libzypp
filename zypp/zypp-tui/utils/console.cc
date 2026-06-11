@@ -23,13 +23,13 @@ namespace ztui {
 // ----------------------------------------------------------------------------
 
 // Read a string. "\004" (^D) on EOF.
-std::string readline_getline()
+std::string readline_getline( std::string prompt_r )
 {
   std::string ret;
 
   //::rl_catch_signals = 0;
   /* Get a line from the user. */
-  if ( char * line_read = ::readline( "zypper> " ) )
+  if ( char * line_read = ::readline( prompt_r.c_str() ) )
   {
     ret = line_read;
     /* If the line has any text in it, save it on the history. */

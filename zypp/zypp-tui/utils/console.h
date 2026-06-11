@@ -23,7 +23,7 @@
 namespace ztui {
 
 /** Use readline to get line of input. */
-std::string readline_getline();
+std::string readline_getline( std::string prompt_r = "> " );
 
 /**
  * Reads COLUMNS environment variable or gets the screen width from readline,

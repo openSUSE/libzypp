@@ -23,6 +23,7 @@ zypp_add_sources( zypp_curl_HEADERS
   proxyinfo.h
   TransferSettings
   transfersettings.h
+  HttpHeader
 )
 
 zypp_add_sources( zypp_curl_private_HEADERS
@@ -87,6 +88,8 @@ zypp_add_sources( zypp_curl_ng_network_HEADERS
   ng/network/curlmultiparthandler.h
   ng/network/AuthData
   ng/network/authdata.h
+  ng/network/HttpHeader
+  ng/network/httpheader.h
   ng/network/NetworkRequestDispatcher
   ng/network/networkrequestdispatcher.h
   ng/network/NetworkRequestError

@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 #include <zypp-curl/ng/network/networkrequesterror.h>
+#include <zypp-curl/ng/network/HttpHeader>
 
 namespace zyppng {
 
@@ -125,6 +126,8 @@ namespace zyppng {
        * \note is empty by default
        */
       void setHostSpecificHeader ( const std::string &host, const std::string &headerName, const std::string &value );
+      void setHostSpecificHeader ( const std::string &host_r, const HttpHeader & header_r )
+      { setHostSpecificHeader( host_r, header_r.key(), header_r.value() ); }
 
       /** Remove a host specific header. */
       void unsetHostSpecificHeader( const std::string &host, const std::string &headerName );

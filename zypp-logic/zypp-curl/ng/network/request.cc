@@ -153,9 +153,7 @@ namespace zyppng {
         const auto &cHeaders = _dispatcher->hostSpecificHeaders();
         if ( auto i = cHeaders.find(_url.getHost()); i != cHeaders.end() ) {
           for ( const auto &[key, value] : i->second ) {
-            locSet.addHeader( zypp::str::trim( zypp::str::form(
-              "%s: %s", key.c_str(), value.c_str() )
-            ));
+            locSet.addHeader( HttpHeader( key, value ).asString() );
           }
         }
       }

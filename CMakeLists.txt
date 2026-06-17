@@ -360,8 +360,8 @@ target_link_options   ( zypp_initial_lib_compiler_flags INTERFACE "-fPIC" "-rdyn
 
 #usage requirements for all executables
 add_library( zypp_initial_exe_compiler_flags INTERFACE)
-target_compile_options( zypp_initial_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
-target_link_options   ( zypp_initial_exe_compiler_flags INTERFACE "-fpie" "-pie" "-Wl,--no-undefined" )
+target_compile_options( zypp_initial_exe_compiler_flags INTERFACE "-fPIE" "-pie" "-Wl,--no-undefined" )
+target_link_options   ( zypp_initial_exe_compiler_flags INTERFACE "-fPIE" "-pie" "-Wl,--no-undefined" )
 
 INCLUDE( zypp/VERSION.cmake )
 

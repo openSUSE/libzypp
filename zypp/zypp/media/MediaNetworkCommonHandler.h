@@ -13,6 +13,7 @@
 
 #include <zypp/media/MediaHandler.h>
 #include <zypp-curl/TransferSettings>
+#include <zypp-curl/HttpHeader>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -20,7 +21,6 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace media
   {
-
     class CredentialManager;
 
     ///////////////////////////////////////////////////////////////////
@@ -98,9 +98,9 @@ namespace zypp
       // standard auth procedure, shared with CommitPackagePreloader
       static bool authenticate( const Url &url, CredentialManager &cm, TransferSettings &settings, const std::string & availAuthTypes, bool firstTry);
 
-      static const char *anonymousIdHeader();
+      static const HttpHeader & anonymousIdHeader();
 
-      static const char *distributionFlavorHeader();
+      static const HttpHeader & distributionFlavorHeader();
 
       static const char *agentString();
 

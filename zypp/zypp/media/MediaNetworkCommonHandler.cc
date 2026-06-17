@@ -23,6 +23,7 @@
 #include <zypp-media/auth/CredentialManager>
 #include <zypp-curl/auth/CurlAuthData>
 #include <zypp-curl/private/curlhelper_p.h>
+#include <zypp-curl/ng/network/HttpHeader>
 
 #include <zypp/ZYppCallbacks.h>
 
@@ -178,32 +179,16 @@ namespace zypp::media
     getDirectoryYast( retlist, dirname, dots );
   }
 
-  const char *MediaNetworkCommonHandler::anonymousIdHeader()
+  const HttpHeader & MediaNetworkCommonHandler::anonymousIdHeader()
   {
-    // we need to add the release and identifier to the
-    // agent string.
-    // The target could be not initialized, and then this information
-    // is guessed.
-    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
-    static const std::string _value( str::trim( str::form(
-                                                  "X-ZYpp-AnonymousId: %s",
-                                                  Target::anonymousUniqueId( Pathname()/*guess root*/ ).c_str()
-                                                  )));
-    return _value.c_str();
+    static const HttpHeader _value { "X-ZYpp-AnonymousId", Target::anonymousUniqueId( Pathname()/*guess root*/ ) };
+    return _value;
   }
 
-  const char *MediaNetworkCommonHandler::distributionFlavorHeader()
+  const HttpHeader & MediaNetworkCommonHandler::distributionFlavorHeader()
   {
-    // we need to add the release and identifier to the
-    // agent string.
-    // The target could be not initialized, and then this information
-    // is guessed.
-    // bsc#1212187: HTTP/2 RFC 9113 forbids fields ending with a space
-    static const std::string _value( str::trim( str::form(
-                                                  "X-ZYpp-DistributionFlavor: %s",
-                                                  Target::distributionFlavor( Pathname()/*guess root*/ ).c_str()
-                                                  )));
-    return _value.c_str();
+    static const HttpHeader _value { "X-ZYpp-DistributionFlavor", Target::distributionFlavor( Pathname()/*guess root*/ ) };
+    return _value;
   }
 
   Url MediaNetworkCommonHandler::getFileUrl( int mirrorIdx, const Pathname & filename_r ) const
@@ -274,8 +259,8 @@ namespace zypp::media
         // add custom headers for download.opensuse.org (bsc#955801)
         if ( u.url().getHost() == "download.opensuse.org" )
         {
-          set.addHeader(anonymousIdHeader());
-          set.addHeader(distributionFlavorHeader());
+          set.addHeader(anonymousIdHeader().asString());
+          set.addHeader(distributionFlavorHeader().asString());
         }
         set.addHeader("Pragma:");
 

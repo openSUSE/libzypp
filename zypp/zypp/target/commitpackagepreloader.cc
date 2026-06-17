@@ -456,10 +456,10 @@ namespace zypp {
     _dispatcher = std::make_shared<zyppng::NetworkRequestDispatcher>();
     _dispatcher->setMaximumConcurrentConnections( MediaConfig::instance().download_max_concurrent_connections() );
     _dispatcher->setAgentString ( str::asString( media::MediaCurl2::agentString () ) );
-    _dispatcher->setHostSpecificHeader ("download.opensuse.org", "X-ZYpp-DistributionFlavor", str::asString(media::MediaCurl2::distributionFlavorHeader()) );
-    _dispatcher->setHostSpecificHeader ("download.opensuse.org", "X-ZYpp-AnonymousId", str::asString(media::MediaCurl2::anonymousIdHeader()) );
-    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", "X-ZYpp-DistributionFlavor", str::asString(media::MediaCurl2::distributionFlavorHeader()) );
-    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", "X-ZYpp-AnonymousId", str::asString(media::MediaCurl2::anonymousIdHeader()) );
+    _dispatcher->setHostSpecificHeader ("download.opensuse.org", media::MediaCurl2::distributionFlavorHeader() );
+    _dispatcher->setHostSpecificHeader ("download.opensuse.org", media::MediaCurl2::anonymousIdHeader() );
+    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", media::MediaCurl2::distributionFlavorHeader() );
+    _dispatcher->setHostSpecificHeader ("cdn.opensuse.org", media::MediaCurl2::anonymousIdHeader() );
     _dispatcher->run();
 
     _pTracker = std::make_shared<internal::ProgressTracker>();

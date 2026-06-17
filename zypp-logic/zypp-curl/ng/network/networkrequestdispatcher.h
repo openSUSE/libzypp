@@ -120,18 +120,19 @@ namespace zyppng {
       /*!
        * Adds a header to each request to a specific host, this is used to send
        * anonymous statistics to download.opensuse.org.
-       * Setting a host/headerName combination to a empty string removes the header from being send again.
        *
        * \note This will add the header to ALL requests that match the given host, for more fine grained control use \ref TransferSettings
        * \note is empty by default
        */
       void setHostSpecificHeader ( const std::string &host, const std::string &headerName, const std::string &value );
 
+      /** Remove a host specific header. */
+      void unsetHostSpecificHeader( const std::string &host, const std::string &headerName );
 
       using SpecificHeaderMap = std::unordered_map< std::string, std::unordered_map<std::string, std::string >>;
 
       /*!
-       * Returns the currenty set host specific headers
+       * Returns the current set of host specific headers
        */
       const SpecificHeaderMap &hostSpecificHeaders() const;
 

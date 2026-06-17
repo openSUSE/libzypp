@@ -464,17 +464,19 @@ const std::string &NetworkRequestDispatcher::agentString() const
 void NetworkRequestDispatcher::setHostSpecificHeader( const std::string &host, const std::string &headerName, const std::string &value )
 {
   Z_D();
-  if ( value.empty() ) {
-    if ( auto i = d->_customHeaders.find( host ); i != d->_customHeaders.end() ) {
-      if ( auto v = i->second.find( headerName ); v != i->second.end() )  {
-        i->second.erase (v);
-      }
-      if ( i->second.empty() )
-        d->_customHeaders.erase(i);
-    }
-    return;
-  }
   d->_customHeaders[host][headerName] = value;
+}
+
+void NetworkRequestDispatcher::unsetHostSpecificHeader( const std::string &host, const std::string &headerName )
+{
+  Z_D();
+  if ( auto i = d->_customHeaders.find( host ); i != d->_customHeaders.end() ) {
+    if ( auto v = i->second.find( headerName ); v != i->second.end() )  {
+      i->second.erase (v);
+    }
+    if ( i->second.empty() )
+      d->_customHeaders.erase(i);
+  }
 }
 
 const NetworkRequestDispatcher::SpecificHeaderMap &NetworkRequestDispatcher::hostSpecificHeaders() const

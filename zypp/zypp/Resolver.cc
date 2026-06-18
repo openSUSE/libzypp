@@ -120,6 +120,10 @@ namespace zypp
   void Resolver::setDefaultCleandepsOnRemove()		{ _pimpl->setCleandepsOnRemove( indeterminate ); }
   bool Resolver::cleandepsOnRemove() const		{ return _pimpl->cleandepsOnRemove(); }
 
+  void Resolver::setNoUpdateProvide( bool yesno_r )	{ _pimpl->setNoUpdateProvide( yesno_r ); }
+  void Resolver::setDefaultNoUpdateProvide()		{ _pimpl->setNoUpdateProvide( indeterminate ); }
+  bool Resolver::noUpdateProvide() const		{ return _pimpl->noUpdateProvide(); }
+
 #define ZOLV_FLAG_BOOL( ZSETTER, ZGETTER )					\
   void Resolver::ZSETTER( bool yesno_r ){ _pimpl->ZSETTER( yesno_r ); }		\
   bool Resolver::ZGETTER() const	{ return _pimpl->ZGETTER(); }		\

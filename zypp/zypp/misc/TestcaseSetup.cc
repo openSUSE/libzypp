@@ -116,6 +116,9 @@ namespace zypp::misc::testcase
   bool TestcaseSetup::cleandepsOnRemove() const
   { return _pimpl->cleandepsOnRemove; }
 
+  bool TestcaseSetup::noUpdateProvide() const
+  { return _pimpl->noUpdateProvide; }
+
   bool TestcaseSetup::allowDowngrade() const
   { return _pimpl->allowDowngrade; }
 

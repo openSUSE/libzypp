@@ -93,6 +93,7 @@ class ZYPP_API_DEPTESTOMATIC Resolver : private base::NonCopyable
     bool _applyDefault_focus:1;
     bool _applyDefault_forceResolve:1;
     bool _applyDefault_cleandepsOnRemove:1;
+    bool _applyDefault_noUpdateProvide:1;
     bool _applyDefault_onlyRequires:1;
     bool _applyDefault_allowDowngrade:1;
     bool _applyDefault_allowNameChange:1;
@@ -213,6 +214,7 @@ class ZYPP_API_DEPTESTOMATIC Resolver : private base::NonCopyable
 
     ZOLV_FLAG_TRIBOOL( setForceResolve          ,forceResolve         )
     ZOLV_FLAG_TRIBOOL( setCleandepsOnRemove     ,cleandepsOnRemove    )
+    ZOLV_FLAG_TRIBOOL( setNoUpdateProvide       ,noUpdateProvide      )
     ZOLV_FLAG_TRIBOOL( setOnlyRequires          ,onlyRequires         )
     ZOLV_FLAG_TRIBOOL( setAllowDowngrade        ,allowDowngrade       )
     ZOLV_FLAG_TRIBOOL( setAllowNameChange       ,allowNameChange      )

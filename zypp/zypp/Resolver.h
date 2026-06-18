@@ -313,6 +313,17 @@ namespace zypp
     void setDefaultCleandepsOnRemove(); // set back to default (in zypp.conf)
     bool cleandepsOnRemove() const;
 
+    /** Do not prefer update candidates also providing the old package.
+     * In general, packages that obsolete another package are treated as
+     * update candidates for the obsoleted package. However, SUSE-specific
+     * update rules prefer candidates that also explicitly 'provide' the
+     * obsoleted package.
+     * Sometimes it is necessary or helpful to disable this rule.
+     */
+    void setNoUpdateProvide( bool yesno_r );
+    void setDefaultNoUpdateProvide(); // set back to default (in zypp.conf)
+    bool noUpdateProvide() const;
+
     /** \name  Solver flags for DUP mode.
      * DUP mode default settings differ from 'ordinary' ones. Default for
      * all DUP flags is \c true unless overwritten by zypp.conf.

@@ -248,6 +248,7 @@ namespace zypp
       , solver_dupAllowArchChange           ( true )
       , solver_dupAllowVendorChange         ( false )
       , solver_cleandepsOnRemove            ( false )
+      , solver_noUpdateProvide              ( false )
       , solver_upgradeTestcasesToKeep       ( 2 )
       , solverUpgradeRemoveDroppedPackages  ( true )
       {}
@@ -289,6 +290,10 @@ namespace zypp
         {
           solver_cleandepsOnRemove.set( str::strToBool( value, solver_cleandepsOnRemove ) );
         }
+        else if ( entry == "solver.noUpdateProvide" )
+        {
+          solver_noUpdateProvide.set( str::strToBool( value, solver_noUpdateProvide ) );
+        }
         else if ( entry == "solver.upgradeTestcasesToKeep" )
         {
           solver_upgradeTestcasesToKeep.set( str::strtonum<unsigned>( value ) );
@@ -311,6 +316,7 @@ namespace zypp
       Option<bool>        solver_dupAllowArchChange;
       Option<bool>        solver_dupAllowVendorChange;
       Option<bool>        solver_cleandepsOnRemove;
+      Option<bool>        solver_noUpdateProvide;
       Option<unsigned>    solver_upgradeTestcasesToKeep;
       DefaultOption<bool> solverUpgradeRemoveDroppedPackages;
     };
@@ -1101,6 +1107,7 @@ namespace zypp
   ResolverFocus ZConfig::solver_focus() const           { return _pimpl->targetDefaults().solver_focus; }
   bool ZConfig::solver_onlyRequires() const             { return _pimpl->targetDefaults().solver_onlyRequires; }
   bool ZConfig::solver_allowVendorChange() const        { return _pimpl->targetDefaults().solver_allowVendorChange; }
+  bool ZConfig::solver_noUpdateProvide() const          { return _pimpl->targetDefaults().solver_noUpdateProvide; }
   bool ZConfig::solver_dupAllowDowngrade() const        { return _pimpl->targetDefaults().solver_dupAllowDowngrade; }
   bool ZConfig::solver_dupAllowNameChange() const       { return _pimpl->targetDefaults().solver_dupAllowNameChange; }
   bool ZConfig::solver_dupAllowArchChange() const       { return _pimpl->targetDefaults().solver_dupAllowArchChange; }

@@ -67,6 +67,7 @@ namespace zypp::misc::testcase
     bool onlyRequires               = false;
     bool forceResolve               = false;
     bool cleandepsOnRemove          = false;
+    bool noUpdateProvide            = false;
 
     bool allowDowngrade     = false;
     bool allowNameChange    = false;

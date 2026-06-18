@@ -461,6 +461,16 @@ namespace zypp
        */
       bool solver_cleandepsOnRemove() const;
 
+      /** Do not prefer update candidates also providing the old package.
+       * In general, packages that obsolete another package are treated as
+       * update candidates for the obsoleted package. However, SUSE-specific
+       * update rules prefer candidates that also explicitly 'provide' the
+       * obsoleted package.
+       *
+       * Sometimes it is necessary or helpful to disable this rule.
+       */
+      bool solver_noUpdateProvide() const;
+
       /**
        * When committing a dist upgrade (e.g. <tt>zypper dup</tt>)
        * a solver testcase is written. It is needed in bugreports,

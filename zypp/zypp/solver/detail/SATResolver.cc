@@ -298,8 +298,8 @@ SATResolver::SATResolver (ResPool  pool, sat::detail::CPool *satPool)
     , _allowarchchange		( false )
     , _allowvendorchange	( ZConfig::instance().solver_allowVendorChange() )
     , _allowuninstall		( false )
-    , _updatesystem(false)
-    , _noupdateprovide		( false )
+    , _updatesystem             ( false )
+    , _noUpdateProvide		( ZConfig::instance().solver_noUpdateProvide() )
     , _dosplitprovides		( true )
     , _onlyRequires		(ZConfig::instance().solver_onlyRequires())
     , _ignorealreadyrecommended(true)
@@ -663,7 +663,7 @@ void SATResolver::solverInitSetModeJobsAndFlags()
     solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_ARCHCHANGE,		_allowarchchange);
     solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_VENDORCHANGE,		_allowvendorchange);
     solver_set_flag(_satSolver, SOLVER_FLAG_ALLOW_UNINSTALL,		_allowuninstall);
-    solver_set_flag(_satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE,		_noupdateprovide);
+    solver_set_flag(_satSolver, SOLVER_FLAG_NO_UPDATEPROVIDE,		_noUpdateProvide);
     solver_set_flag(_satSolver, SOLVER_FLAG_SPLITPROVIDES,		_dosplitprovides);
     solver_set_flag(_satSolver, SOLVER_FLAG_IGNORE_RECOMMENDED, 	false);		// resolve recommended namespaces
     solver_set_flag(_satSolver, SOLVER_FLAG_ONLY_NAMESPACE_RECOMMENDED,	_onlyRequires);	//

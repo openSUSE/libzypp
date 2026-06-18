@@ -283,6 +283,7 @@ namespace zypp
         addTag( "forceResolve",             resolver.forceResolve() );
 
         addTag( "cleandepsOnRemove",        resolver.cleandepsOnRemove() );
+        addTag( "noUpdateProvide",          resolver.noUpdateProvide() );
 
         addTag( "allowDowngrade",           resolver.allowDowngrade() );
         addTag( "allowNameChange",          resolver.allowNameChange() );

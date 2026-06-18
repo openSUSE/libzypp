@@ -83,6 +83,7 @@ namespace yamltest::detail {
         if_SolverFlag( forceResolve )
 
         if_SolverFlag( cleandepsOnRemove )
+        if_SolverFlag( noUpdateProvide )
 
         if_SolverFlag( allowDowngrade )
         if_SolverFlag( allowNameChange )

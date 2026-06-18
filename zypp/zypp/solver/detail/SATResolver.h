@@ -94,7 +94,7 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool _allowvendorchange:1;		// allow one to change vendor of installed solvables
     bool _allowuninstall:1;		// allow removal of installed solvables
     bool _updatesystem:1;		// update
-    bool _noupdateprovide:1;		// true: update packages needs not to provide old package
+    bool _noUpdateProvide:1;		// true: do not prefer update candidates also providing the old package
     bool _dosplitprovides:1;		// true: consider legacy split provides
     bool _onlyRequires:1;		// true: consider required packages only (but recommended namespaces)
     bool _ignorealreadyrecommended:1;	// true: ignore recommended packages that were already recommended by the installed packages
@@ -198,8 +198,8 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool updatesystem () const {return _updatesystem;}
     void setUpdatesystem ( const bool updatesystem) { _updatesystem = updatesystem;}
 
-    bool noupdateprovide () const {return _noupdateprovide;}
-    void setNoupdateprovide ( const bool noupdateprovide) { _noupdateprovide = noupdateprovide;}
+    bool noUpdateProvide () const {return _noUpdateProvide;}
+    void setNoUpdateProvide ( const bool noUpdateProvide) { _noUpdateProvide = noUpdateProvide;}
 
     bool dosplitprovides () const {return _dosplitprovides;}
     void setDosplitprovides ( const bool dosplitprovides) { _dosplitprovides = dosplitprovides;}

@@ -86,6 +86,7 @@ Resolver::Resolver (ResPool  pool)
     , _applyDefault_focus                ( true )
     , _applyDefault_forceResolve         ( true )
     , _applyDefault_cleandepsOnRemove    ( true )
+    , _applyDefault_noUpdateProvide      ( true )
     , _applyDefault_onlyRequires         ( true )
     , _applyDefault_allowDowngrade       ( true )
     , _applyDefault_allowNameChange      ( true )
@@ -121,6 +122,7 @@ void Resolver::setDefaultSolverFlags( bool all_r )
 
   ZOLV_FLAG_DEFAULT( setForceResolve         ,forceResolve         );
   ZOLV_FLAG_DEFAULT( setCleandepsOnRemove    ,cleandepsOnRemove    );
+  ZOLV_FLAG_DEFAULT( setNoUpdateProvide      ,noUpdateProvide      );
   ZOLV_FLAG_DEFAULT( setOnlyRequires         ,onlyRequires         );
   ZOLV_FLAG_DEFAULT( setAllowDowngrade       ,allowDowngrade       );
   ZOLV_FLAG_DEFAULT( setAllowNameChange      ,allowNameChange      );
@@ -151,7 +153,7 @@ bool Resolver::removeUnneeded() const                   { return _satResolver->_
     { _applyDefault_##ZGETTER = indeterminate(state_r);					\
       bool newval = _applyDefault_##ZGETTER ? ZVARDEFAULT : bool(state_r);		\
       if ( ZVARNAME != newval ) {							\
-        DBG << #ZGETTER << ": changed from " << (bool)ZVARNAME << " to " << newval << endl;\
+        DBG << #ZGETTER << ": changed from " << (bool)ZVARNAME << " to " << newval << " | " << (_applyDefault_##ZGETTER ? "changed default" : "explicitly set" ) << endl;\
         ZVARNAME = newval;								\
       }											\
     }											\
@@ -166,6 +168,7 @@ bool Resolver::removeUnneeded() const                   { return _satResolver->_
 // NOTE: ZVARDEFAULT must be in sync with SATResolver ctor
 ZOLV_FLAG_SATSOLV( setForceResolve         ,forceResolve         ,false                                             ,_allowuninstall        )
 ZOLV_FLAG_SATSOLV( setCleandepsOnRemove    ,cleandepsOnRemove    ,ZConfig::instance().solver_cleandepsOnRemove()    ,_cleandepsOnRemove     )
+ZOLV_FLAG_SATSOLV( setNoUpdateProvide      ,noUpdateProvide      ,ZConfig::instance().solver_noUpdateProvide()      ,_noUpdateProvide       )
 ZOLV_FLAG_SATSOLV( setOnlyRequires         ,onlyRequires         ,ZConfig::instance().solver_onlyRequires()         ,_onlyRequires          )
 ZOLV_FLAG_SATSOLV( setAllowDowngrade       ,allowDowngrade       ,false                                             ,_allowdowngrade        )
 ZOLV_FLAG_SATSOLV( setAllowNameChange      ,allowNameChange      ,true /*bsc#1071466*/                              ,_allownamechange       )

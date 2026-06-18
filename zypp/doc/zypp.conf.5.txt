@@ -252,6 +252,12 @@ _Update_: Focus on updating requested packages and their dependencies as much as
 This option should be used on a case by case basis, enabled via command line options or switches the applications offer. Changing the global default on a system where unattended actions are performed, may easily damage your system.
 
 // --------------------------------------------------------------------------------
+*solver.noUpdateProvide* (__false__)::
+    [_Expert Only!_] In general, packages that obsolete another package are treated as update candidates for the obsoleted package. However, SUSE-specific update rules prefer candidates that also explicitly 'provide' the obsoleted package.
++
+Sometimes it is necessary or helpful to disable this rule.
+
+// --------------------------------------------------------------------------------
 *solver.checkSystemFile* (_/etc/zypp/systemCheck_)::
     This file contains requirements and conflicts which fulfill the needs of a running system. For example the system would be broken if no *glibc* or *kernel* is installed. The resolver is always aware of these constraints and watches they are not violated.
 +

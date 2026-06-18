@@ -108,6 +108,7 @@ namespace zypp::misc::testcase
     bool onlyRequires() const;
     bool forceResolve() const;
     bool cleandepsOnRemove() const;
+    bool noUpdateProvide() const;
 
     bool allowDowngrade() const;
     bool allowNameChange() const;

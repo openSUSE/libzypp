@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Jun 19 17:50:45 CEST 2026 - ma@suse.de
+
+- zypp.conf: add solver.NoUpdateProvide (default: false) option.
+  In general, packages that obsolete another package are treated as
+  update candidates for the obsoleted package. However,
+  SUSE-specific update rules prefer candidates that also explicitly
+  'provide' the obsoleted package.
+  Sometimes it is necessary or helpful to disable this rule.
+  (may help in bsc#1261038)
+- Use HttpHeader class for defining host specific http headers
+  (bsc#1268321)
+- Compile and link with -fPIE to build on sparc64 (fixes #742)
+- version 17.38.14 (35)
+
+-------------------------------------------------------------------
 Mon Jun  8 14:54:34 CEST 2026 - ma@suse.de
 
 - A .repo files "path=" entry must not refer to a location

@@ -313,6 +313,21 @@ namespace zypp
     static constexpr std::string_view RE { "\033[31;1;40m" };
     static constexpr std::string_view MA { "\033[35;40m" };
 
+    unsigned BlockTrace::_depth = 0;
+
+    BlockTrace::BlockTrace( const char * file_r, const char * fnc_r, int line_r, std::string msg_r )
+    : BlockTraceBase( file_r, fnc_r, line_r, std::move(msg_r) )
+    {
+      unsigned depth = _depth++;
+      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "+++ (" << depth << ") " << _msg << endl;
+    }
+
+    BlockTrace::~BlockTrace()
+    {
+      unsigned depth = --_depth;
+      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "--- (" << depth << ") " << _msg << endl;
+    }
+
     unsigned TraceLeave::_depth = 0;
 
     std::string tracestr( char tag_r, unsigned depth_r, const std::string & msg_r, const char * file_r, const char * fnc_r, int line_r )
@@ -323,10 +338,7 @@ namespace zypp
     }
 
     TraceLeave::TraceLeave( const char * file_r, const char * fnc_r, int line_r, std::string msg_r )
-    : _file( file_r )
-    , _fnc( fnc_r )
-    , _line( line_r )
-    , _msg( std::move(msg_r) )
+    : BlockTraceBase( file_r, fnc_r, line_r, std::move(msg_r) )
     {
       unsigned depth = _depth++;
       const std::string & m { tracestr( '>',depth, _msg, _file,_fnc,_line ) };

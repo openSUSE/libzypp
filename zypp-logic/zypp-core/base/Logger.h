@@ -24,9 +24,39 @@ namespace zypp
   namespace debug
   { // impl in LogControl.cc
 
-    // Log code loacaton and block leave
+    struct BlockTraceBase
+    {
+      BlockTraceBase( const BlockTraceBase & ) =delete;
+      BlockTraceBase & operator=( const BlockTraceBase & ) =delete;
+      BlockTraceBase( const char * file_r, const char * fnc_r, int line_r, std::string msg_r=std::string() )
+      : _file { file_r }
+      , _fnc  { fnc_r  }
+      , _line { line_r }
+      , _msg  { std::move(msg_r) }
+      {}
+    protected:
+      static unsigned _depth;
+      const char *    _file;
+      const char *    _fnc;
+      int             _line;
+      std::string     _msg;
+    };
+
+    // Log code location and block leave as MIL
+    struct BlockTrace : private BlockTraceBase
+    {
+      BlockTrace( const BlockTrace & ) =delete;
+      BlockTrace & operator=( const BlockTrace & ) =delete;
+      BlockTrace( const char * file_r, const char * fnc_r, int line_r, std::string msg_r=std::string() );
+      ~BlockTrace();
+    private:
+      static unsigned _depth;
+    };
+#define BLOCKTRACE(M) ::zypp::debug::BlockTrace _BlockTrace( L_BASEFILE, __FUNCTION__, __LINE__, M )
+
+    // Log code location and block leave as \ref Osd
     // Indent if nested
-    struct ZYPP_API TraceLeave
+    struct ZYPP_API TraceLeave : private BlockTraceBase
     {
       TraceLeave( const TraceLeave & ) =delete;
       TraceLeave & operator=( const TraceLeave & ) =delete;
@@ -34,10 +64,6 @@ namespace zypp
       ~TraceLeave();
     private:
       static unsigned _depth;
-      const char *    _file;
-      const char *    _fnc;
-      int             _line;
-      std::string     _msg;
     };
 #define TRACE(M) ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__, M );
 #define XTRACE ::zypp::debug::TraceLeave _TraceLeave( __FILE__, __FUNCTION__, __LINE__ );

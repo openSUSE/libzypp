@@ -22,6 +22,7 @@
 #include <zypp-core/ExternalProgram.h>
 #include <zypp/HistoryLog.h>
 #include <zypp/base/Algorithm.h>
+#include <zypp/base/LogTools.h>
 #include <zypp/ng/Context>
 
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>
@@ -101,7 +102,10 @@ namespace zyppng::RepoManagerWorkflow {
         // first try rpmmd
         return providerRef->provide( medium, _path/"repodata/repomd.xml", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ).setMirrorsAllowed(false) )
           | and_then( maybeCopyResultToDest("repodata/repomd.xml") )
-          | and_then( [](){ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD); } )
+          | and_then( [this, medium](){
+            MIL << "Probed type RPMMD at " << medium.baseUrl() << " (" << _path << ")" << std::endl;
+            return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::RPMMD);
+          } )
           // try susetags if rpmmd fails and remember the error
           | or_else( [this, providerRef, medium]( std::exception_ptr err ) {
             try {
@@ -119,7 +123,10 @@ namespace zyppng::RepoManagerWorkflow {
             }
             return providerRef->provide( medium, _path/"content", ProvideFileSpec().setCheckExistsOnly( !_targetPath.has_value() ).setMirrorsAllowed(false) )
                 | and_then( maybeCopyResultToDest("content") )
-                | and_then( []()->expected<zypp::repo::RepoType>{ return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2); } );
+                | and_then( [this, medium]()->expected<zypp::repo::RepoType>{
+                  MIL << "Probed type RPMMD at " << medium.baseUrl() << " (" << _path << ")" << std::endl;
+                  return expected<zypp::repo::RepoType>::success(zypp::repo::RepoType::YAST2);
+                } );
           })
           // no rpmmd and no susetags!
           | or_else( [this, medium]( std::exception_ptr err ) {

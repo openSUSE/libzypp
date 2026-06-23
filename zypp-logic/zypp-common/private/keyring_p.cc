@@ -329,6 +329,7 @@ namespace zypp
 
   void KeyRingImpl::preloadCachedKeys()
   {
+    BLOCKTRACE("preloadCachedKeys");
     // For now just load the 'gpg-pubkey-*.{asc,key}' files into the general keyring.
     // TODO: Head for a persistent general keyring.
     std::set<Pathname> cachedirs;

@@ -48,6 +48,7 @@ namespace zyppng {
       { }
 
       MaybeAwaitable<expected<void>> execute () {
+        BLOCKTRACE("FetchGpgKeysLogic");
         using namespace zyppng::operators;
         using zyppng::operators::operator|;
         using zyppng::expected;

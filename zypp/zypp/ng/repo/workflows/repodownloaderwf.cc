@@ -58,7 +58,7 @@ namespace zyppng {
 
     public:
       MaybeAwaitable<expected<repo::DownloadContextRef>> execute( ) {
-
+        BLOCKTRACE("DownloadMasterIndexLogic");
         zypp::RepoInfo ri = _dlContext->repoInfo();
         // always download them, even if repoGpgCheck is disabled
         _sigpath = _masterIndex.extend( ".asc" );
@@ -85,7 +85,6 @@ namespace zyppng {
             // update the gpg keys provided by the repo
             return RepoInfoWorkflow::fetchGpgKeys( _dlContext->zyppContext(), _dlContext->repoInfo() )
             | and_then( [this](){
-
               // fetch signature and maybe key file
               return provider()->provide( _media, _sigpath, ProvideFileSpec().setOptional( true ).setDownloadSize( zypp::ByteCount( 20, zypp::ByteCount::MB ) ).setMirrorsAllowed( false ) )
 
@@ -173,6 +172,7 @@ namespace zyppng {
         if ( !_sigcheckPlugins ) {
           return makeReadyTask( expected<void>::success() );
         }
+        BLOCKTRACE("executeSigcheckPlugins");
 
         MaybeAwaitable<expected<void>> chain = makeReadyTask( expected<void>::success() );
 
@@ -219,6 +219,7 @@ namespace zyppng {
 
       // Traditional gpg sigcheck
       MaybeAwaitable<expected<void>> signatureCheck () {
+        BLOCKTRACE("signatureCheck");
 
         if ( _dlContext->repoInfo().repoGpgCheck() ) {
 
@@ -314,6 +315,7 @@ namespace zyppng {
        * implementation class.
        */
       MaybeAwaitable<expected<void>> getExtraKeysInRepomd () {
+        BLOCKTRACE("getExtraKeysInRepomd");
         const zypp::Pathname masterIndexLocal { _destdir / _masterIndex };
 
         if ( _masterIndex.basename() != "repomd.xml" ) {

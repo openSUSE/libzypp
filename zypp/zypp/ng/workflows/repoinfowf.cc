@@ -56,10 +56,8 @@ namespace zyppng {
         zypp::RepoInfo::url_set gpgKeyUrls = _info.gpgKeyUrls();
 
         if (  gpgKeyUrls.empty() ) {
-          if ( !_info.baseUrlsEmpty()
-               && zypp::repo::RepoMirrorList::urlSupportsMirrorLink(*_info.baseUrlsBegin()) ) {
-
-            MIL << "No gpgkey URL specified, but d.o.o server detected. Trying to generate the key file path." << std::endl;
+          if ( !_info.baseUrlsEmpty() ) {
+            MIL << "No gpgkey URL specified, Trying to generate the key file path." << std::endl;
 
             zypp::Url bUrl = *_info.baseUrlsBegin();
             zypp::repo::RepoType::Type rType = _info.type().toEnum ();

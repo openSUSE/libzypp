@@ -45,6 +45,7 @@ int usage( const std::string & msg_r = std::string(), int exit_r = 100 )
   cerr << "  -a       short for -n -p -r" << endl;
   cerr << "  -A       short for -n -P -R" << endl;
   cerr << "  -x       do exact matching (glob) rather than regex (substring)" << endl;
+  cerr << "  -B       show buildtime of installed packages" << endl;
   cerr << "  -D <pkg> dump dependencies of <pkg>" << endl;
   cerr << "" << endl;
   return exit_r;
@@ -83,6 +84,8 @@ struct PQSort
 
   ui::SelectableTraits::AVOrder avo;
 };
+
+bool oShowInstallTime = true;
 
 struct Table
 {
@@ -127,7 +130,7 @@ struct Table
     #define argREPO slv.repository().info().priority(), _maxREPO, slv.repository().name().c_str()
 
     #define fmtTIME "%s%10ld"
-    #define argTIME  ( slv.isSystem() && slv.installtime() ? "i" : "b" ), time_t( slv.isSystem() && slv.installtime() ? slv.installtime() : slv.buildtime() )
+    #define argTIME  ( oShowInstallTime && slv.isSystem() && slv.installtime() ? "i" : "b" ), time_t( oShowInstallTime && slv.isSystem() && slv.installtime() ? slv.installtime() : slv.buildtime() )
 
     #define fmtVEND "%s"
     #define argVEND slv.vendor().c_str()
@@ -392,6 +395,9 @@ int main( int argc, char * argv[] )
         {
           case 'a': names =		true, 	dep_requires = dep_provides =	true;	break;
           case 'A': names =		true, 	dep_requires = dep_provides =	false;	break;
+          case 'B':
+            oShowInstallTime = false;
+            break;
           case 'D':
             if ( argc > 1 )
             {

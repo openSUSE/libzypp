@@ -19,10 +19,10 @@
 #include <zypp/ng/media/Provide>
 #include <zypp-media/ng/ProvideSpec>
 
+#include <zypp-core/base/LogTools.h>
 #include <zypp-core/ExternalProgram.h>
 #include <zypp/HistoryLog.h>
 #include <zypp/base/Algorithm.h>
-#include <zypp/base/LogTools.h>
 #include <zypp/ng/Context>
 
 #include <zypp/ng/repo/workflows/repodownloaderwf.h>

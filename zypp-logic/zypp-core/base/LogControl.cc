@@ -293,9 +293,24 @@ namespace zypp
       bool inPushMessage = false;
   };
 
-#ifndef ZYPP_NDEBUG
   namespace debug
   {
+    unsigned BlockTrace::_depth = 0;
+
+    BlockTrace::BlockTrace( const char * file_r, const char * fnc_r, int line_r, std::string msg_r )
+    : BlockTraceBase( file_r, fnc_r, line_r, std::move(msg_r) )
+    {
+      unsigned depth = _depth++;
+      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "+++ (" << depth << ") " << _msg << endl;
+    }
+
+    BlockTrace::~BlockTrace()
+    {
+      unsigned depth = --_depth;
+      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "--- (" << depth << ") " << _msg << endl;
+    }
+
+#ifndef ZYPP_NDEBUG
     // Fg::Black:   30  Bg: 40 Attr::Normal:  22;27
     // Fg::Red:     31  ...    Attr::Bright:  1
     // Fg::Green:   32         Attr::Reverse: 7
@@ -312,21 +327,6 @@ namespace zypp
     static constexpr std::string_view GR { "\033[32;40m" };
     static constexpr std::string_view RE { "\033[31;1;40m" };
     static constexpr std::string_view MA { "\033[35;40m" };
-
-    unsigned BlockTrace::_depth = 0;
-
-    BlockTrace::BlockTrace( const char * file_r, const char * fnc_r, int line_r, std::string msg_r )
-    : BlockTraceBase( file_r, fnc_r, line_r, std::move(msg_r) )
-    {
-      unsigned depth = _depth++;
-      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "+++ (" << depth << ") " << _msg << endl;
-    }
-
-    BlockTrace::~BlockTrace()
-    {
-      unsigned depth = --_depth;
-      zypp::base::logger::getStream( "BLOCK", zypp::base::logger::E_MIL, _file, _fnc, _line ) << "--- (" << depth << ") " << _msg << endl;
-    }
 
     unsigned TraceLeave::_depth = 0;
 
@@ -372,8 +372,8 @@ namespace zypp
       static Osd str { L_USR("OSD") };
       return str;
     }
-}
 #endif // ZYPP_NDEBUG
+} // namespace debug
 
   ///////////////////////////////////////////////////////////////////
   namespace log

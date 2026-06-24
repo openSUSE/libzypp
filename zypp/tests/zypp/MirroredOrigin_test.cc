@@ -146,6 +146,13 @@ BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
     // should retain original order
     BOOST_CHECK_EQUAL( origin[1], OriginEndpoint{http_mirror1} );
     BOOST_CHECK_EQUAL( origin[2], OriginEndpoint{https_auth} );
+
+    // specifying the authority to be a non downloading scheme should remove all downloading ones as well
+    origin.setAuthority( file_auth );
+    BOOST_CHECK(origin.isValid());
+    BOOST_CHECK(!origin.schemeIsDownloading());
+    BOOST_CHECK(!origin.authority().schemeIsDownloading());
+    BOOST_CHECK_EQUAL( origin.mirrors ().size(), 0 );
 }
 
 

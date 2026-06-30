@@ -30,5 +30,6 @@ MACRO(ADD_TESTS)
 ENDMACRO(ADD_TESTS)
 
 add_subdirectory(async)
+add_subdirectory(config)
 add_subdirectory(media)
 add_subdirectory(sat)

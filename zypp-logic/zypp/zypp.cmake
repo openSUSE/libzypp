@@ -17,11 +17,13 @@ function(zypp_add_zypp_target)
     CapMatch.cc
     CpeId.cc
     Dep.cc
+    DownloadMode.cc
     Edition.cc
     IdString.cc
     Range.cc
     Rel.cc
     ResKind.cc
+    ResolverFocus.cc
   )
 
   zypp_add_sources( zypp_EARLY_SRCS
@@ -38,6 +40,7 @@ function(zypp_add_zypp_target)
     CountryCode.h
     CpeId.h
     Dep.h
+    DownloadMode.h
     Edition.h
     IdString.h
     IdStringType.h
@@ -48,6 +51,7 @@ function(zypp_add_zypp_target)
     Rel.h
     ResKind.h
     ResTraits.h
+    ResolverFocus.h
     ResolverNamespace.h
   )
 
@@ -122,6 +126,16 @@ function(zypp_add_zypp_target)
     ng/sat/stringpool.h
   )
 
+  # ── zyppng config sources ─────────────────────────────────────────────────
+  # Domain key tokens and parse helpers — consumable by both zypp/ and zyppng/.
+  zypp_add_sources( zyppng_config_SRCS
+    ng/config/zyppconfig.cc
+  )
+
+  zypp_add_sources( zyppng_config_HEADERS
+    ng/config/zyppconfig.h
+  )
+
   # ── All other zyppng source groups are now empty ──────────────────────────
   # Their files live in zyppng/lib/zypp/ng/ as C++20 module partitions and are
   # compiled via FILE_SET CXX_MODULES in zyppng/lib/zypp/CMakeLists.txt.
@@ -149,6 +163,7 @@ function(zypp_add_zypp_target)
     ${zyppng_sat_SRCS}
     ${zyppng_sat_components_SRCS}
     ${zyppng_sat_namespaces_SRCS}
+    ${zyppng_config_SRCS}
     ${zyppng_log_SRCS}
 
     ${zypp_EARLY_SRCS}
@@ -164,6 +179,7 @@ function(zypp_add_zypp_target)
     ${zyppng_HEADERS}
     ${zyppng_base_HEADERS}
     ${zyppng_sat_HEADERS}
+    ${zyppng_config_HEADERS}
     ${zyppng_sat_components_HEADERS}
     ${zyppng_sat_namespaces_HEADERS}
     ${zyppng_log_HEADERS}

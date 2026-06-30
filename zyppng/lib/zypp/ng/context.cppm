@@ -7,6 +7,7 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 module;
+#include <filesystem>
 #include <zypp-core/ng/async/awaitable.h>
 #include <zypp-core/ng/ui/UserInterface>
 #include <zypp-core/ng/base/eventloop.h>
@@ -15,15 +16,7 @@ module;
 
 export module zyppng:context;
 
-export namespace zypp {
-  DEFINE_PTR_TYPE(KeyRing);
-  class ZConfig;
-}
-
-namespace zyppng {
-  using KeyRing    = zypp::KeyRing;
-  using KeyRingRef = zypp::KeyRing_Ptr;
-}
+import :contextconfig;
 
 export namespace zyppng {
 
@@ -45,7 +38,7 @@ export namespace zyppng {
     using ProvideType = Provide;
     static constexpr auto isAsync = true;
 
-    ZYPP_DECL_PRIVATE_CONSTR(Context);
+    ZYPP_DECL_PRIVATE_CONSTR_ARGS(Context, std::filesystem::path root);
 
     template <typename AsyncRes>
     void execute ( Task<AsyncRes> op ) {
@@ -62,29 +55,9 @@ export namespace zyppng {
 
     ProvideRef provider() const;
 
-#if 0
-
-
-    zypp::ZConfig &config();
-
-
-    KeyRingRef keyRing () const;
-    /**
-     * Access to the resolvable pool.
-     */
-    zypp::ResPool pool();
-
-    /** Pool of ui::Selectable.
-     * Based on the ResPool, ui::Selectable groups ResObjetcs of
-     * same kind and name.
-    */
-    zypp::ResPoolProxy poolProxy();
-
-    /**
-     * Access to the sat pool.
-     */
-    zypp::sat::Pool satPool();
-#endif
+    /** Access the configuration for this context. */
+    ContextConfig & config();
+    const ContextConfig & config() const;
 
   };
 
@@ -95,5 +68,3 @@ export namespace zyppng {
   }
 
 }
-
-

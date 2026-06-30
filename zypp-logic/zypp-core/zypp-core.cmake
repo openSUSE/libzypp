@@ -272,6 +272,14 @@ zypp_add_sources( zyppng_base_SRCS
   ng/base/unixsignalsource.cpp
 )
 
+zypp_add_sources( zyppng_config_SRCS
+  ng/config/config.cc
+)
+
+zypp_add_sources( zyppng_config_HEADERS
+  ng/config/config.h
+)
+
 zypp_add_sources( zyppng_base_HEADERS
   ng/base/iterators.h
   ng/base/AbstractEventSource
@@ -431,6 +439,7 @@ SET( zypp_core_SOURCES
   ${zypp_parser_SRCS}
   ${zypp_parser_xml_SRCS}
   ${zyppng_base_SRCS}
+  ${zyppng_config_SRCS}
   ${zyppng_io_SRCS}
   ${zyppng_rpc_SRCS}
   ${zyppng_thread_SRCS}
@@ -452,6 +461,7 @@ SET( zypp_core_HEADERS
   ${zypp_parser_private_HEADERS}
   ${zypp_parser_xml_HEADERS}
   ${zyppng_base_HEADERS}
+  ${zyppng_config_HEADERS}
   ${zyppng_base_private_HEADERS}
   ${zyppng_core_HEADERS}
   ${zyppng_io_HEADERS}

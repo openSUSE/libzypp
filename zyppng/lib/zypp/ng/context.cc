@@ -9,33 +9,50 @@
 module;
 #include <zypp-core/ng/base/private/threaddata_p.h>
 #include <zypp-core/ng/base/EventLoop>
+#include <zypp-core/base/LogTools.h>
 #include <zypp-media/ng/Provide>
+#include <zypp/ng/config/zyppconfig.h>
 
 module zyppng;
 
 import :context;
 import :context_private;
+import :contextconfig;
 
 namespace zyppng {
 
+  namespace {
+    void logConfigParseErrors( const std::vector<zyppng::config::ParseError> & errors )
+    {
+      for ( const auto & e : errors ) {
+        try { std::rethrow_exception( e.error ); }
+        catch ( const std::exception & ex ) {
+          WAR << "zypp.conf: key '" << e.key << "' value '" << e.rawValue
+              << "': " << ex.what() << " (using compiled-in default)" << std::endl;
+        }
+      }
+    }
+  }
 
   ContextPrivate::~ContextPrivate()
-  {
-
-  }
+  {}
 
   ZYPP_IMPL_PRIVATE( Context )
 
-  ZYPP_IMPL_PRIVATE_CONSTR( Context )
-    : UserInterface( *new ContextPrivate( *this ) )
+  ZYPP_IMPL_PRIVATE_CONSTR_ARGS( Context, std::filesystem::path root )
+    : UserInterface( *new ContextPrivate( *this, root ) )
   {
     Z_D();
     d->_eventDispatcher = ThreadData::current().ensureDispatcher();
 
     d->_provider = Provide::create( d->_providerDir );
-
-    // @TODO should start be implicit as soon as something is enqueued?
     d->_provider->start();
+
+    // Register all domain keys then parse zypp.conf for this root.
+    // Parse errors are logged as warnings; the config remains fully usable
+    // (keys that fail fall through to their compiled-in defaults).
+    ::zyppng::config::registerZyppKeys( d->_config );
+    logConfigParseErrors( d->_config.parse() );
   }
 
   ProvideRef Context::provider() const
@@ -44,30 +61,16 @@ namespace zyppng {
     return d->_provider;
   }
 
-
-#if 0
-  KeyRingRef Context::keyRing() const
+  ContextConfig & Context::config()
   {
-    return d_func()->_zyppPtr->keyRing();
-  }
-  zypp::ZConfig &Context::config()
-  {
-    return zypp::ZConfig::instance();
+    Z_D();
+    return d->_config;
   }
 
-  zypp::ResPool Context::pool()
+  const ContextConfig & Context::config() const
   {
-    return zypp::ResPool::instance();
+    Z_D();
+    return d->_config;
   }
 
-  zypp::ResPoolProxy Context::poolProxy()
-  {
-    return zypp::ResPool::instance().proxy();
-  }
-
-  zypp::sat::Pool Context::satPool()
-  {
-    return zypp::sat::Pool::instance();
-  }
-#endif
 }

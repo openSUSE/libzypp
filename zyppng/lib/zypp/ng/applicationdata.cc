@@ -6,13 +6,15 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "applicationdata.h"
-
+module;
 #include <zypp-core/base/LogTools.h>
-
 
 #undef ZYPP_BASE_LOGGER_LOGGROUP
 #define ZYPP_BASE_LOGGER_LOGGROUP "zyppng::UserData"
+
+module zyppng;
+
+import :applicationdata;
 
 namespace zyppng {
   bool ApplicationData::hasData()

@@ -17,11 +17,13 @@ function(zypp_add_zypp_target)
     CapMatch.cc
     CpeId.cc
     Dep.cc
+    DownloadMode.cc
     Edition.cc
     IdString.cc
     Range.cc
     Rel.cc
     ResKind.cc
+    ResolverFocus.cc
   )
 
   zypp_add_sources( zypp_EARLY_SRCS
@@ -38,6 +40,7 @@ function(zypp_add_zypp_target)
     CountryCode.h
     CpeId.h
     Dep.h
+    DownloadMode.h
     Edition.h
     IdString.h
     IdStringType.h
@@ -48,6 +51,7 @@ function(zypp_add_zypp_target)
     Rel.h
     ResKind.h
     ResTraits.h
+    ResolverFocus.h
     ResolverNamespace.h
   )
 
@@ -110,121 +114,45 @@ function(zypp_add_zypp_target)
     )
   endif()
 
+  # ── zyppng sat sources ────────────────────────────────────────────────────
+  # All ng/sat/*.cc have been migrated to zyppng/ as C++20 module impl units.
+  # Only stringpool.cc remains here: it is LEGACY-REQUIRED (still consumed by
+  # zypp/ legacy code). Do not remove until that dependency is severed.
   zypp_add_sources( zyppng_sat_SRCS
-   ng/sat/pool.cc
-   ng/sat/preparedpool.cc
-   ng/sat/solvable.cc
     ng/sat/stringpool.cc
-    ng/sat/queue.cc
-    ng/sat/repository.cc
-    ng/sat/capability.cc
-    ng/sat/capabilities.cc
-    ng/sat/cap2str.cc
-    ng/sat/lookupattr.cc
-    ng/sat/solvableident.cc
-    ng/sat/solvablespec.cc
   )
 
   zypp_add_sources( zyppng_sat_HEADERS
-    ng/sat/pool.h
-    ng/sat/poolconstants.h
-    ng/sat/poolmember.h
-    ng/sat/preparedpool.h
-    ng/sat/solvattr.h
-    ng/sat/solvable.h
     ng/sat/stringpool.h
-    ng/sat/queue.h
-    ng/sat/repository.h
-    ng/sat/capability.h
-    ng/sat/capabilities.h
-    ng/sat/cap2str.h
-    ng/sat/lookupattr.h
-    ng/sat/solvableident.h
-    ng/sat/solvablespec.h
   )
 
-  zypp_add_sources( zyppng_sat_components_SRCS
-    ng/sat/components/architecturecomponent.cc
-    ng/sat/components/autoinstalledcomponent.cc
-    ng/sat/components/packagepolicycomponent.cc
-    ng/sat/components/namespacecomponent.cc
-    ng/sat/components/poolcomponents.cc
+  # ── zyppng config sources ─────────────────────────────────────────────────
+  # Domain key tokens and parse helpers — consumable by both zypp/ and zyppng/.
+  zypp_add_sources( zyppng_config_SRCS
+    ng/config/zyppconfig.cc
   )
 
-  zypp_add_sources( zyppng_sat_components_HEADERS
-    ng/sat/components/architecturecomponent.h
-    ng/sat/components/autoinstalledcomponent.h
-    ng/sat/components/packagepolicycomponent.h
-    ng/sat/components/namespacecomponent.h
-    ng/sat/components/poolcomponents.h
+  zypp_add_sources( zyppng_config_HEADERS
+    ng/config/zyppconfig.h
   )
 
-  zypp_add_sources( zyppng_sat_namespaces_SRCS
-    ng/sat/namespaces/namespaceprovider.cc
-    ng/sat/namespaces/filesystem.cc
-    ng/sat/namespaces/language.cc
-    ng/sat/namespaces/modalias.cc
-  )
+  # ── All other zyppng source groups are now empty ──────────────────────────
+  # Their files live in zyppng/lib/zypp/ng/ as C++20 module partitions and are
+  # compiled via FILE_SET CXX_MODULES in zyppng/lib/zypp/CMakeLists.txt.
+  # These variables are kept so the SET(zypp_lib_SRCS ...) aggregation below
+  # does not need to be restructured.
+  zypp_add_sources( zyppng_sat_components_SRCS )
+  zypp_add_sources( zyppng_sat_namespaces_SRCS )
+  zypp_add_sources( zyppng_log_SRCS            )
+  zypp_add_sources( zyppng_SRCS                )
+  zypp_add_sources( zyppng_base_SRCS           )
 
-  zypp_add_sources( zyppng_sat_namespaces_HEADERS
-    ng/sat/namespaces/namespaceprovider.h
-    ng/sat/namespaces/filesystem.h
-    ng/sat/namespaces/language.h
-    ng/sat/namespaces/modalias.h
-  )
-
-  zypp_add_sources( zyppng_log_SRCS
-    ng/log/sat/capabilities.cc
-    ng/log/sat/capability.cc
-    ng/log/sat/solvable.cc
-    ng/log/sat/queue.cc
-    ng/log/sat/repository.cc
-    ng/log/sat/lookupattr.cc
-    ng/log/sat/solvablespec.cc
-  )
-
-  zypp_add_sources( zyppng_log_HEADERS
-    ng/log/sat/capabilities.h
-    ng/log/sat/capability.h
-    ng/log/format.h
-    ng/log/sat/solvable.h
-    ng/log/sat/queue.h
-    ng/log/sat/repository.h
-    ng/log/sat/lookupattr.h
-    ng/log/sat/solvablespec.h
-  )
-
-  zypp_add_sources( zyppng_SRCS
-  )
-
-  zypp_add_sources( zyppng_HEADERS
-    ng/arch.h
-    ng/bit.h
-    ng/capmatch.h
-    ng/cpeid.h
-    ng/countrycode.h
-    ng/dep.h
-    ng/edition.h
-    ng/idstring.h
-    ng/idstringtype.h
-    ng/languagecode.h
-    ng/locale.h
-    ng/range.h
-    ng/relcompare.h
-    ng/rel.h
-    ng/reskind.h
-    ng/restraits.h
-    ng/resolvernamespace.h
-  )
-
-  zypp_add_sources( zyppng_base_SRCS
-  )
-
-  zypp_add_sources( zyppng_base_HEADERS
-    ng/base/serialnumber.h
-    ng/base/settracker.h
-    ng/base/strmatcher.h
-  )
+  # Headers are also gone from this layer (moved to .cppm files).
+  zypp_add_sources( zyppng_sat_components_HEADERS )
+  zypp_add_sources( zyppng_sat_namespaces_HEADERS )
+  zypp_add_sources( zyppng_log_HEADERS            )
+  zypp_add_sources( zyppng_HEADERS                )
+  zypp_add_sources( zyppng_base_HEADERS           )
 
   SET( zypp_lib_SRCS
     ${arg_SOURCES}
@@ -235,6 +163,7 @@ function(zypp_add_zypp_target)
     ${zyppng_sat_SRCS}
     ${zyppng_sat_components_SRCS}
     ${zyppng_sat_namespaces_SRCS}
+    ${zyppng_config_SRCS}
     ${zyppng_log_SRCS}
 
     ${zypp_EARLY_SRCS}
@@ -250,6 +179,7 @@ function(zypp_add_zypp_target)
     ${zyppng_HEADERS}
     ${zyppng_base_HEADERS}
     ${zyppng_sat_HEADERS}
+    ${zyppng_config_HEADERS}
     ${zyppng_sat_components_HEADERS}
     ${zyppng_sat_namespaces_HEADERS}
     ${zyppng_log_HEADERS}

@@ -1,0 +1,10 @@
+-------------------------------------------------------------------
+Fri May 22 00:00:00 UTC 2026 - bzeller@suse.com
+
+- Initial release of libzypp-glib 0.1.0
+  * GLib/GObject C API for zyppng, the next-generation package
+    management library
+  * Standalone: does not link legacy libzypp.so; bundles zyppng
+    as a static archive
+  * GObject Introspection support (Zypp-1.0.typelib)
+  * Requires Clang 19; targets Tumbleweed and Leap/SLES 16+

@@ -12,6 +12,8 @@
 #ifndef ZYPP_SAT_DETAIL_POOLDEFINES_H
 #define ZYPP_SAT_DETAIL_POOLDEFINES_H
 
+#include <zypp-core/Globals.h>
+
 extern "C"
 {
   // Those s_Type names are exposed as sat::detail::CType below!
@@ -40,18 +42,18 @@ namespace zypp::sat::detail {
 
   /** Generic Id type. */
   using IdType = int;
-  static const IdType noId( 0 );
-  static const IdType emptyId( 1 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, noId, 0 )
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, emptyId, 1 )
 
   /** Internal ids satlib includes in dependencies.
    * MPL check in PoolImpl.cc
   */
-  static const IdType solvablePrereqMarker( 15 );
-  static const IdType solvableFileMarker  ( 16 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, solvablePrereqMarker, 15 )
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, solvableFileMarker,   16 )
 
-  static const IdType namespaceModalias	( 18 );
-  static const IdType namespaceLanguage	( 20 );
-  static const IdType namespaceFilesystem	( 21 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, namespaceModalias,   18 )
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, namespaceLanguage,   20 )
+  ZYPP_DEFINE_GLOBAL_CONSTANT( IdType, namespaceFilesystem, 21 )
 
   /** Test for internal ids satlib includes in dependencies. */
   inline bool isDepMarkerId( IdType id_r )
@@ -63,14 +65,14 @@ namespace zypp::sat::detail {
   using SolvableIdType = unsigned int;
   using size_type = SolvableIdType;
   /** Id to denote \ref Solvable::noSolvable. */
-  static const SolvableIdType noSolvableId( 0 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( SolvableIdType, noSolvableId, 0 )
   /** Id to denote the usually hidden \ref Solvable::systemSolvable. */
-  static const SolvableIdType systemSolvableId( 1 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( SolvableIdType, systemSolvableId, 1 )
 
   /** Id type to connect \ref Repo and sat-repo. */
   using RepoIdType = CRepo *;
   /** Id to denote \ref Repo::noRepository. */
-  static const RepoIdType noRepoId( 0 );
+  ZYPP_DEFINE_GLOBAL_CONSTANT( RepoIdType, noRepoId, 0 )
 
 }
 

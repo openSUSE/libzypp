@@ -9,6 +9,65 @@
 
 using namespace zyppng;
 
+// LAYER-2 PROTECTION ----------------------------------------------------------
+// Compile-time regression guard for the Clang substitution-ordering pitfall
+// documented in zypp-core/ng/pipelines/operators.h.
+//
+// If the sync `operator|` ever regresses to spelling its return type
+// explicitly as `std::invoke_result_t<Callback, In>` (instead of `auto`), or
+// if its `NotAwaitable` constraint is weakened, the static_assert below
+// — placed inside a generic-lambda terminal of an async pipeline — will fire.
+// Without these guards, the same regression manifests as cryptic Boost macro
+// errors hundreds of frames deep, with no hint that the actual bug is in
+// operators.h.
+namespace pipeline_protection_guard {
+  using namespace zyppng::operators;
+
+  inline Task<int> makeAwaitableInt() { co_return 42; }
+
+  // Forces Clang/GCC to instantiate the lambda body during overload
+  // resolution; the static_assert validates that the correct `operator|`
+  // overload was picked and the lambda received the awaited result type
+  // (`int`), not the raw `Task<int>`.
+  inline auto exercise_async_to_sync() {
+    return makeAwaitableInt() | []( auto res ) {
+      static_assert( std::is_same_v<decltype(res), int>,
+        "REGRESSION: sync operator| was incorrectly selected for an "
+        "Awaitable LHS, or async operator| poisoned its callback. "
+        "See operators.h header comment." );
+      return res;
+    };
+  }
+
+  // Same guard for the async->async overload path.
+  inline auto exercise_async_to_async() {
+    return makeAwaitableInt()
+           | []( auto res ) -> Task<long> {
+               static_assert( std::is_same_v<decltype(res), int>,
+                 "REGRESSION: async->async operator| poisoned its callback. "
+                 "See operators.h header comment." );
+               co_return static_cast<long>( res );
+             };
+  }
+
+  // Sync-only chain — verifies the sync overload still works for plain
+  // non-Awaitable values and that NotAwaitable hasn't been over-tightened.
+  inline auto exercise_sync_to_sync() {
+    return std::string("ok") | []( auto res ) {
+      static_assert( std::is_same_v<decltype(res), std::string>,
+        "REGRESSION: sync operator| failed for non-Awaitable LHS." );
+      return res;
+    };
+  }
+
+  // Force ODR use so the templates are actually instantiated.
+  [[maybe_unused]] inline auto _force_a = &exercise_async_to_sync;
+  [[maybe_unused]] inline auto _force_b = &exercise_async_to_async;
+  [[maybe_unused]] inline auto _force_c = &exercise_sync_to_sync;
+
+} // namespace pipeline_protection_guard
+// END LAYER-2 PROTECTION ------------------------------------------------------
+
 
 
 template<typename T>

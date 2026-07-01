@@ -1,16 +1,8 @@
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/ng/sat/pool.h>
-#include <zypp/ng/sat/repository.h>
-#include <zypp/ng/sat/solvable.h>
-#include <zypp/ng/sat/stringpool.h>
-#include <zypp/ng/sat/lookupattr.h>
-#include <zypp/ng/sat/solvattr.h>
-#include <zypp/ng/sat/capability.h>
-#include <zypp/ng/sat/preparedpool.h>
-#include <zypp/ng/sat/components/poolcomponents.h>
-
 #include <solv/repo.h>
+
+import zyppng;
 
 using namespace zyppng;
 

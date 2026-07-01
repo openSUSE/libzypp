@@ -28,10 +28,34 @@ target_link_libraries ( zyppng_general_compiler_flags INTERFACE zypp_initial_com
 
 #target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
 #target_link_options( zyppng_general_compiler_flags    INTERFACE "$<$<CONFIG:DEBUG>:-fsanitize=address>" )
-target_compile_options( zyppng_general_compiler_flags INTERFACE "$<$<CONFIG:DEBUG>:-fconcepts-diagnostics-depth=4>" )
+# -fconcepts-diagnostics-depth is GCC-only; Clang rejects unknown -f flags as errors.
+# Clang's concept diagnostics are superior by default and need no tuning flag.
+target_compile_options( zyppng_general_compiler_flags INTERFACE
+  "$<$<AND:$<CONFIG:DEBUG>,$<CXX_COMPILER_ID:GNU>>:-fconcepts-diagnostics-depth=4>" )
 
 target_compile_options( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
 target_link_options   ( zyppng_general_compiler_flags INTERFACE "-fvisibility=hidden" )
+
+# When building with Clang, prefer the version-matched lld (e.g. lld-19 for
+# clang++-19) for faster incremental builds and native .pcm file support.
+# Falls back to unversioned lld, then silently skips if neither is found.
+if ( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
+  # Extract major version from e.g. "19.1.7" → "19"
+  string( REGEX MATCH "^[0-9]+" ZYPPNG_CLANG_MAJOR "${CMAKE_CXX_COMPILER_VERSION}" )
+
+  find_program( ZYPPNG_LLD_EXECUTABLE
+    NAMES "ld.lld-${ZYPPNG_CLANG_MAJOR}" "ld.lld"
+    DOC   "lld ELF linker for zyppng Clang builds"
+  )
+
+  if ( ZYPPNG_LLD_EXECUTABLE )
+    message( STATUS "zyppng: Clang ${ZYPPNG_CLANG_MAJOR} — using linker: ${ZYPPNG_LLD_EXECUTABLE}" )
+    target_link_options( zyppng_general_compiler_flags INTERFACE
+      "-fuse-ld=${ZYPPNG_LLD_EXECUTABLE}" )
+  else()
+    message( STATUS "zyppng: Clang detected but no lld found — using system linker" )
+  endif()
+endif()
 
 add_library( zyppng_lib_compiler_flags INTERFACE)
 target_link_libraries ( zyppng_lib_compiler_flags INTERFACE zypp_initial_lib_compiler_flags )
@@ -50,13 +74,16 @@ IF ( ENABLE_DEVEL_BUILD )
           target_compile_definitions( zyppng_general_compiler_flags INTERFACE ZYPP_RPMDB2SOLV_PATH="${zypp-stack_BINARY_DIR}/libsolv/tools/rpmdb2solv" )
         endif()
 ELSE()
-        SET( ZYPPNG_RPM_BINARY "${ZYPPNG_LIBEXEC_INSTALL_DIR}/zyppng-rpm")
-        SET( ZYPPNG_WORKER_PATH "${ZYPPNG_LIBEXEC_INSTALL_DIR}/workers" )
+        SET( ZYPPNG_RPM_BINARY "${CMAKE_INSTALL_FULL_LIBEXECDIR}/zyppng/zyppng-rpm")
+        SET( ZYPPNG_WORKER_PATH "${CMAKE_INSTALL_FULL_LIBEXECDIR}/zyppng/workers" )
 ENDIF( ENABLE_DEVEL_BUILD )
 
 message ( "Using zyppng-rpm from path: ${ZYPPNG_RPM_BINARY}" )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_RPM_BINARY="${ZYPPNG_RPM_BINARY}"  )
 target_compile_definitions(zyppng_general_compiler_flags INTERFACE ZYPP_WORKER_PATH="${ZYPPNG_WORKER_PATH}")
+
+# SoT: zyppng/packaging/libzypp-glib-version.inc (also %include'd by the .spec).
+include( ${CMAKE_CURRENT_SOURCE_DIR}/api/VERSION.cmake )
 
 set( ZYPPNG_WORKER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/tools/workers )
 
@@ -65,20 +92,6 @@ add_definitions( -DZYPP_ENABLE_ASYNC )
 add_definitions( -DZYPPNG=1 )
 
 add_subdirectory( lib )
-#add_subdirectory( api )
+add_subdirectory( api )
 add_subdirectory( tools )
 add_subdirectory( tests )
-
-# this part does nothing yet, only when switching away from using a map file to
-# a approach where symbols are exported explicitly it would make a difference
-# ZYPPNG symbols need to be added to the map file to be exported
-# IF( EXPORT_NG_API )
-# ADD_DEFINITIONS(-DEXPORT_EXPERIMENTAL_API)
-# INCLUDE(GenerateExportHeader)
-# message("Exporting experimental libzypp-ng API")
-# GENERATE_EXPORT_HEADER(
-#   zypp
-#   BASE_NAME zypp-ng
-#   PREFIX_NAME LIB
-# )
-# ENDIF ( EXPORT_NG_API )

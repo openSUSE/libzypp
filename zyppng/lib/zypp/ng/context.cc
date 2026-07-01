@@ -6,12 +6,23 @@
 |                         /_____||_| |_| |_|                           |
 |                                                                      |
 \---------------------------------------------------------------------*/
-#include "private/context_p.h"
+module;
 #include <zypp-core/ng/base/private/threaddata_p.h>
 #include <zypp-core/ng/base/EventLoop>
 #include <zypp-media/ng/Provide>
 
+module zyppng;
+
+import :context;
+import :context_private;
+
 namespace zyppng {
+
+
+  ContextPrivate::~ContextPrivate()
+  {
+
+  }
 
   ZYPP_IMPL_PRIVATE( Context )
 

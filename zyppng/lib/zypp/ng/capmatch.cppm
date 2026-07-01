@@ -1,0 +1,19 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+// LEGACY-BRIDGE: wraps zypp::CapMatch into zyppng namespace.
+// Replace with native C++20 implementation when zypp/ legacy is severed.
+module;
+#include <zypp/CapMatch.h>
+
+export module zyppng:capmatch;
+
+export namespace zyppng {
+  using ::zypp::CapMatch;
+  using ::zypp::operator<<;
+} // namespace zyppng

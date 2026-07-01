@@ -1,12 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
-#include <zypp/ng/sat/pool.h>
-#include <zypp/ng/sat/repository.h>
-#include <zypp/ng/sat/preparedpool.h>
-#include <zypp/ng/sat/components/poolcomponents.h>
-
 #include <vector>
 #include <string>
+
+import zyppng;
 
 using namespace zyppng;
 

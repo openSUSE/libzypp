@@ -148,3 +148,17 @@ ENDMACRO(GENERATE_PACKAGING)
 function( GENERATE_PACKAGING_EXT )
 
 endfunction()
+
+# Generates APIConfig.h from the shared template, mapping version components
+function(zypp_configure_apiconfig PREFIX CODESTREAM IN_FILE OUT_FILE)
+  if(DEFINED ${PREFIX}_VERSION)
+    set(VERSION "${${PREFIX}_VERSION}")
+  endif()
+  set(LIBZYPP_MAJOR      "${${PREFIX}_MAJOR}")
+  set(LIBZYPP_MINOR      "${${PREFIX}_MINOR}")
+  set(LIBZYPP_PATCH      "${${PREFIX}_PATCH}")
+  set(LIBZYPP_SO_FIRST   "${${PREFIX}_SO_FIRST}")
+  set(LIBZYPP_NUMVERSION "${${PREFIX}_NUMVERSION}")
+  set(LIBZYPP_CODESTREAM "${CODESTREAM}")
+  configure_file("${IN_FILE}" "${OUT_FILE}" @ONLY)
+endfunction()

@@ -68,13 +68,6 @@
 %bcond_with sigc_block_workaround
 %endif
 
-
-%if 0%{?suse_version} > 1500 || 0%{?sle_version} >= 150600
-%bcond_without visibility_hidden
-%else
-%bcond_with visibility_hidden
-%endif
-
 # We're going successively to move our default configuration into /usr/etc/.
 # The final configuration data will then be merged according to the rules
 # defined by the UAPI.6 Configuration Files Specification from:
@@ -383,7 +376,6 @@ cmake .. $CMAKE_FLAGS \
       -DZYPPCONFDIR=%{zyppconfdir} \
       %{?with_build_libzyppng:-DBUILD_LIBZYPPNG=1} \
       %{?with_keep_legacy_zyppconf:-DKEEP_LEGACY_ZYPPCONF=1} \
-      %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \
       %{?with_zstd:-DENABLE_ZSTD_COMPRESSION=1} \
       %{?with_sigc_block_workaround:-DENABLE_SIGC_BLOCK_WORKAROUND=1} \

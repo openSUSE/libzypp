@@ -22,6 +22,10 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
+#
+# Preferred: Set OPTIONs with OFF as default and turn them on in
+#            .spec or system specific section below.
+#
 OPTION (ENABLE_BUILD_DOCS "Build documentation by default?" OFF)
 OPTION (ENABLE_BUILD_TRANS "Build translation files by default?" OFF)
 OPTION (ENABLE_BUILD_TESTS "Build and run test suite by default?" OFF)
@@ -40,8 +44,8 @@ OPTION (ENABLE_CLANG_TIDY "Enables static checks with clang-tidy" OFF)
 OPTION (ENABLE_CPPCHECK "Enables static checks with cppcheck" OFF)
 OPTION (ENABLE_UBSAN_CHECKS "Enables the undefined behavior sanitizer runtime checks in debug builds." OFF)
 
-OPTION (BUILD_LIBZYPP "Build of the classic libzypp library" ON)
-OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" ON)
+OPTION (BUILD_LIBZYPP "Build of the classic libzypp library" ON)  # This is actually ON per default
+OPTION (BUILD_LIBZYPPNG "Build of the next gen libzypp library" OFF)
 #--------------------------------------------------------------------------------
 SET (have_system x)
 

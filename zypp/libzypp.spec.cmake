@@ -15,6 +15,10 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
+# by now build without libzyppng by default.
+%bcond_with build_libzyppng
+
 # Switched to single_rpmtrans as default install backed.
 # SUSE distros stay with classic_rpmtrans as default.
 # Code16: Want's to switch to single_rpmtrans as default
@@ -263,7 +267,7 @@ BuildRequires:  bzip2-devel
 BuildRequires:  xz-devel
 %endif
 
-%if 0%{?suse_version} >= 1600
+%if %{with build_libzyppng}
 BuildRequires: gobject-introspection-devel
 %endif
 
@@ -377,7 +381,7 @@ cmake .. $CMAKE_FLAGS \
       -DCMAKE_SKIP_RPATH=1 \
       -DCMAKE_INSTALL_LIBEXECDIR=%{_libexecdir} \
       -DZYPPCONFDIR=%{zyppconfdir} \
-      -DBUILD_LIBZYPPNG=OFF \
+      %{?with_build_libzyppng:-DBUILD_LIBZYPPNG=1} \
       %{?with_keep_legacy_zyppconf:-DKEEP_LEGACY_ZYPPCONF=1} \
       %{?with_visibility_hidden:-DENABLE_VISIBILITY_HIDDEN=1} \
       %{?with_zchunk:-DENABLE_ZCHUNK_COMPRESSION=1} \

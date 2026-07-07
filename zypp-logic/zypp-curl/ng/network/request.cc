@@ -120,6 +120,10 @@ namespace zyppng {
       setCurlOption( CURLOPT_NOPROGRESS, 0L);
       setCurlOption( CURLOPT_FAILONERROR, 1L);
       setCurlOption( CURLOPT_NOSIGNAL, 1L);
+      setCurlOption( CURLOPT_PIPEWAIT, 1L);
+#if CURLVERSION_AT_LEAST(7,66,0)
+      setCurlOption( CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3);
+#endif
 
       std::string urlBuffer( _url.asString() );
       setCurlOption( CURLOPT_URL, urlBuffer.c_str() );

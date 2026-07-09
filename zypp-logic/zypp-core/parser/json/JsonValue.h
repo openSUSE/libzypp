@@ -15,8 +15,10 @@
 #include <map>
 #include <set>
 #include <ostream>
+#include <list>
 
 #include <zypp-core/base/String.h>
+#include <zypp-core/Globals.h>
 
 #include "JsonBool.h"
 #include "JsonNull.h"
@@ -29,7 +31,7 @@ namespace zypp::json {
   class Array;
   class Object;
 
-  class Array {
+  class ZYPP_API Array {
 
   public:
 
@@ -90,13 +92,13 @@ namespace zypp::json {
   };
 
   /** relates: Array Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Array & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Array & obj )
   {
     return obj.dumpOn( str );
   }
 
 
-  class Object {
+  class ZYPP_API Object {
   public:
 
     using iterator = std::multimap<String, Value>::iterator;
@@ -163,14 +165,14 @@ namespace zypp::json {
   };
 
   /** relates: Object Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Object & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Object & obj )
   {
     return obj.dumpOn( str );
   }
 
 
 
-  class Value {
+  class ZYPP_API Value {
 
   public:
 
@@ -315,11 +317,11 @@ namespace zypp::json {
   }
 
   /** relates: Value Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Value & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Value & obj )
   { return obj.dumpOn( str ); }
 
   template <typename T>
-  Value toJSON( T &&v ) {
+  Value ZYPP_API toJSON( T &&v ) {
     return Value( std::forward<T>(v) );
   }
 }

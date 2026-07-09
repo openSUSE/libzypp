@@ -206,16 +206,13 @@ zypp_add_sources( zypp_parser_SRCS
   parser/econfdict.cc
   parser/json.cc
   parser/json/JsonValue.cc
+  parser/json/private/jsonparser_p.cc
   parser/parseexception.cc
   parser/sysconfig.cc
 )
 
 zypp_add_sources ( zypp_parser_private_HEADERS
-  parser/json/JsonBool.h
-  parser/json/JsonNull.h
-  parser/json/JsonNumber.h
-  parser/json/JsonString.h
-  parser/json/JsonValue.h
+  parser/json/private/jsonparser_p.h
 )
 
 zypp_add_sources( zypp_parser_HEADERS
@@ -226,6 +223,11 @@ zypp_add_sources( zypp_parser_HEADERS
   parser/EconfDict
   parser/econfdict.h
   parser/json.h
+  parser/json/JsonBool.h
+  parser/json/JsonNull.h
+  parser/json/JsonNumber.h
+  parser/json/JsonString.h
+  parser/json/JsonValue.h
   parser/ParseException
   parser/parseexception.h
   parser/Sysconfig

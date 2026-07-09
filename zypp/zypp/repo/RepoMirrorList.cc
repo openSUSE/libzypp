@@ -191,8 +191,7 @@ namespace zypp
           using namespace zyppng::operators;
           using zyppng::operators::operator|;
 
-          json::Parser parser;
-          auto res = parser.parse ( tmpfstream )
+          auto res = json::parseDocumentExpected( tmpfstream )
           | and_then([&]( json::Value data ) {
 
             std::vector<Url> urls;

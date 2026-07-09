@@ -1,5 +1,6 @@
 #include <tests/lib/TestSetup.h>
 #include <zypp-core/parser/json.h>
+#include <zypp-core/parser/json/private/jsonparser_p.h>
 #include <zypp-core/base/Exception.h>
 
 using namespace zypp;
@@ -10,7 +11,7 @@ BOOST_AUTO_TEST_CASE(parse_escaped_utf8)
     std::string data = "\"\\u0048\\u0065\\u006C\\u006C\\u006F\\u0020\\u0057\\u006F\\u0072\\u006C\\u0064\"";
 
     std::stringstream inStr( data, std::ios_base::in );
-    json::Parser p;
+    json::detail::Parser p;
     auto res = p.parse( zypp::InputStream(inStr) );
     BOOST_REQUIRE( res.is_valid() );
     BOOST_REQUIRE_EQUAL( res->asString(), std::string("\u0048\u0065\u006C\u006C\u006F\u0020\u0057\u006F\u0072\u006C\u0064") );
@@ -21,7 +22,7 @@ BOOST_AUTO_TEST_CASE(parse_escaped_utf8)
     std::string bData = "\u041f\u043e\u043b\u0442\u043e\u0440\u0430 \u0417\u0435\u043c\u043b\u0435\u043a\u043e\u043f\u0430";
 
     std::stringstream inStr( data, std::ios_base::in );
-    json::Parser p;
+    json::detail::Parser p;
     auto res = p.parse( zypp::InputStream(inStr) );
     BOOST_REQUIRE( res.is_valid() );
     BOOST_REQUIRE_EQUAL( res->asString(), bData );
@@ -34,7 +35,7 @@ BOOST_AUTO_TEST_CASE(parse_escaped_utf8)
     std::string bData = "\U0001D11E";
 
     std::stringstream inStr( data, std::ios_base::in );
-    json::Parser p;
+    json::detail::Parser p;
     auto res = p.parse( zypp::InputStream(inStr) );
     BOOST_REQUIRE( res.is_valid() );
     BOOST_REQUIRE_EQUAL( std::string(res->asString()), bData );
@@ -116,7 +117,7 @@ BOOST_AUTO_TEST_CASE(basic_parse)
 
   for ( unsigned int i = 0; i < jsonDocs.size(); i++ ) {
     std::stringstream inStr( jsonDocs[i], std::ios_base::in );
-    json::Parser p;
+    json::detail::Parser p;
     auto res = p.parse( zypp::InputStream(inStr) );
     if ( !res )
       std::cerr << " Error : " << res.error();
@@ -245,7 +246,7 @@ BOOST_AUTO_TEST_CASE(basic_object)
 
   {
     std::stringstream i( serialized, std::ios_base::in );
-    json::Parser p;
+    json::detail::Parser p;
     auto res = p.parse( zypp::InputStream(i) );
     BOOST_REQUIRE( res.is_valid());
     BOOST_REQUIRE_EQUAL( res->type(), json::Value::ObjectType );
@@ -261,7 +262,7 @@ BOOST_AUTO_TEST_CASE(basic_object)
 BOOST_AUTO_TEST_CASE(parse_mirrorlist)
 {
   InputStream inFile( TESTS_SRC_DIR "/parser/data/mirrorlist.json" );
-  json::Parser p;
+  json::detail::Parser p;
   auto parsed = p.parse (inFile);
   if ( !parsed )
     std::cout << parsed.error() << std::endl;
@@ -301,7 +302,7 @@ BOOST_AUTO_TEST_CASE(parse_escaped_url)
   const std::string in("[\"https:\\/\\/ftp.tu-chemnitz.de\\/pub\\/linux\\/opensuse\\/update\\/tumbleweed\\/\"]");
   std::stringstream inStr(in);
 
-  json::Parser p;
+  json::detail::Parser p;
   auto res = p.parse(inStr);
 
   BOOST_REQUIRE(res.is_valid ());

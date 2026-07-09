@@ -11,12 +11,15 @@
 
 #include <string_view>
 #include <string>
+#include <ostream>
+
+#include <zypp-core/Globals.h>
 
 namespace zypp::json {
 
   static constexpr std::string_view nullJSON ("null");
 
-  class Null {
+  class ZYPP_API Null {
 
   public:
     Null() = default;
@@ -43,7 +46,7 @@ namespace zypp::json {
   };
 
   /** relates: Null Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Null & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Null & obj )
   {
     return obj.dumpOn( str );
   }

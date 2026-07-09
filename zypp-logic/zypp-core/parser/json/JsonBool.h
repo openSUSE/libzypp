@@ -11,13 +11,16 @@
 
 #include <string_view>
 #include <string>
+#include <ostream>
+
+#include <zypp-core/Globals.h>
 
 namespace zypp::json {
 
   static constexpr std::string_view trueJSON("true");
   static constexpr std::string_view falseJSON("false");
 
-  class Bool {
+  class ZYPP_API Bool {
 
   public:
     Bool() = default; //default false
@@ -53,7 +56,7 @@ namespace zypp::json {
   };
 
   /** relates: Bool Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Bool & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Bool & obj )
   {
     return obj.dumpOn( str );
   }

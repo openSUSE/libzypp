@@ -9,14 +9,15 @@
 #ifndef ZYPP_CORE_PARSER_JSON_JSON_NUMBER_DEFINED
 #define ZYPP_CORE_PARSER_JSON_JSON_NUMBER_DEFINED
 
-#include <zypp-core/ng/pipelines/mtry.h>
-#include <zypp-core/ng/pipelines/expected.h>
 #include <string>
 #include <cstdint>
+#include <ostream>
+
+#include <zypp-core/Globals.h>
 
 namespace zypp::json {
 
-  class Number {
+  class ZYPP_API Number {
 
   public:
     Number() = default;
@@ -28,13 +29,6 @@ namespace zypp::json {
     Number( Number && ) = default;
     Number &operator=(const Number &) = default;
     Number &operator=(Number &&) = default;
-
-    static zyppng::expected<Number> fromString ( const std::string &str ) {
-      using namespace zyppng::operators;
-      using zyppng::operators::operator|;
-      return zyppng::mtry([&](){ return std::stod( str, nullptr ); })
-      | and_then([](double res) -> zyppng::expected<Number> { return zyppng::make_expected_success( Number(res)); } );
-    }
 
     operator double() const {
       return _value;
@@ -58,12 +52,12 @@ namespace zypp::json {
   };
 
   /** relates: Number Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const Number & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const Number & obj )
   {
     return obj.dumpOn( str );
   }
 
-  class Int {
+  class ZYPP_API Int {
 
   public:
     Int() = default;
@@ -81,13 +75,6 @@ namespace zypp::json {
 
     std::int64_t value() const {
       return _value;
-    }
-
-    static zyppng::expected<Int> fromString ( const std::string &str ) {
-      using namespace zyppng::operators;
-      using zyppng::operators::operator|;
-      return zyppng::mtry([&](){ return std::stoll( str, nullptr ); })
-      | and_then([](std::int64_t res) { return zyppng::make_expected_success( Int(res)); } );
     }
 
     /** JSON representation */
@@ -108,7 +95,7 @@ namespace zypp::json {
     return obj.dumpOn( str );
   }
 
-  class UInt {
+  class ZYPP_API UInt {
 
   public:
     UInt() = default;
@@ -119,13 +106,6 @@ namespace zypp::json {
     UInt( UInt && ) = default;
     UInt &operator=(const UInt &) = default;
     UInt &operator=(UInt &&) = default;
-
-    static zyppng::expected<UInt> fromString ( const std::string &str ){
-      using namespace zyppng::operators;
-      using zyppng::operators::operator|;
-      return zyppng::mtry([&](){ return std::stoull( str, nullptr ); })
-      | and_then([](unsigned long long res) { return zyppng::make_expected_success( UInt(res)); } );
-    }
 
     operator std::uint64_t() const {
       return _value;

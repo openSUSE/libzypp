@@ -10,6 +10,9 @@
 #define ZYPP_CORE_PARSER_JSON_JSON_STRING_DEFINED
 
 #include <string>
+#include <ostream>
+
+#include <zypp-core/Globals.h>
 
 namespace zypp::json {
 
@@ -110,7 +113,7 @@ namespace zypp::json {
     }
   } // namespace detail
 
-  class String {
+  class ZYPP_API String {
 
   public:
     String() = default; //default false
@@ -159,7 +162,7 @@ namespace zypp::json {
   };
 
   /** relates: String Stream output */
-  inline std::ostream & operator<<( std::ostream & str, const String & obj )
+  inline ZYPP_API std::ostream & operator<<( std::ostream & str, const String & obj )
   {
     return obj.dumpOn( str );
   }

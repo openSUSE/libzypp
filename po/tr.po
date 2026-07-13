@@ -11,16 +11,16 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-02-23 16:04+0000\n"
+"PO-Revision-Date: 2026-07-13 16:12+0000\n"
 "Last-Translator: Akın Birdal <reend21@protonmail.com>\n"
-"Language-Team: Turkish <https://l10n.opensuse.org/projects/libzypp/master/tr/"
-">\n"
+"Language-Team: Turkish <https://l10n.opensuse.org/projects/libzypp/master/"
+"tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -100,26 +100,24 @@ msgstr "Veri yolu açılamıyor (%s)."
 
 #: zypp-logic/zypp-core/Url.cc:118
 msgid "Invalid LDAP URL query string"
-msgstr ""
+msgstr "Geçersiz LDAP URL sorgu dizisi"
 
 #: zypp-logic/zypp-core/Url.cc:159
 #, c-format, boost-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr ""
+msgstr "Geçesiz LDAP YRL sorgu parametresi '%s'"
 
 #: zypp-logic/zypp-core/Url.cc:319
-#, fuzzy
 msgid "Unable to clone Url object"
-msgstr "çalışma alanı oluşturulamadı\n"
+msgstr "URL objesi klonlanamadı"
 
 #: zypp-logic/zypp-core/Url.cc:332
 msgid "Invalid empty Url object reference"
-msgstr ""
+msgstr "Geçersiz boş Url objesi tanımlaması"
 
 #: zypp-logic/zypp-core/Url.cc:345 zypp-logic/zypp-core/Url.cc:359
-#, fuzzy
 msgid "Unable to parse Url components"
-msgstr "çalışma alanı oluşturulamadı\n"
+msgstr "URL parçaları çözümlenemedi"
 
 #: zypp-logic/zypp-core/base/Exception.cc:199
 msgid "History:"
@@ -146,7 +144,7 @@ msgstr "Geçersiz oluşum argümanları verildi."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:299
 msgid "Unable to create control pipe."
-msgstr ""
+msgstr "Kontrol veri yolu oluşturulamadı."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:366
 #, c-format, boost-format
@@ -156,12 +154,12 @@ msgstr "'%s' e chroot yapılamıyor (%s)."
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:376
 #, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
-msgstr ""
+msgstr "'%s' (%s)'e chdir atılamıyor."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:377
 #, c-format, boost-format
 msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
-msgstr ""
+msgstr "'%s' (%s). İçerisinde '%s' chdir yapılamıyor."
 
 #. don't want to get here
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:406
@@ -178,27 +176,27 @@ msgstr "Ayrıştırılamadı (%s)."
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:432
 #, c-format, boost-format
 msgid "Can't exec '%s', chdir failed (%s)."
-msgstr ""
+msgstr "'%s' başlatılamadı; chdir başarısız (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:435
 #, c-format, boost-format
 msgid "Can't exec '%s', chroot failed (%s)."
-msgstr ""
+msgstr "'%s' başlatılamadı; chroot başarısız (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:438
 #, c-format, boost-format
 msgid "Can't exec '%s', exec failed (%s)."
-msgstr ""
+msgstr "'%s' başlatılamadı; yürütme başarısız (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:442
 #, c-format, boost-format
 msgid "Can't exec '%s', unexpected error."
-msgstr ""
+msgstr "'%s' başlatılamadı; bilinmeyen hata."
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:221
 #, c-format, boost-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "Url şeması %s'a izin vermiyor"
 
 # include/nfs/routines.ycp:188
 #: zypp-logic/zypp-core/url/UrlBase.cc:240
@@ -215,28 +213,28 @@ msgstr "Geçersiz %s bileşeni"
 #: zypp-logic/zypp-core/url/UrlBase.cc:864
 #: zypp-logic/zypp-core/url/UrlBase.cc:1308
 msgid "Query string parsing not supported for this URL"
-msgstr ""
+msgstr "Sorgu çözümlemesi bu URL için desteklenmiyor"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:902
 msgid "Url scheme is a required component"
-msgstr ""
+msgstr "Url şemasının bir parçaya ihtiyacı var"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:908
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Invalid Url scheme '%s'"
-msgstr "Geçersiz yetki '{0}'"
+msgstr "'%s' Geçersiz Url şeması"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "Url şeması bir kullanıcı adına izin vermiyor"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "Url şeması bir parolaya izin vermiyor"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
-msgstr ""
+msgstr "Url şemasının bir konuk parçasına ihtiyacı var"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
@@ -244,9 +242,9 @@ msgstr ""
 
 # include/nfs/routines.ycp:188
 #: zypp-logic/zypp-core/url/UrlBase.cc:1125
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Invalid host component '%s'"
-msgstr "Geçersiz özellik '{0}'"
+msgstr "Geçersiz konuk parçası '%s'"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
@@ -254,13 +252,13 @@ msgstr ""
 
 # include/nfs/routines.ycp:188
 #: zypp-logic/zypp-core/url/UrlBase.cc:1157
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Invalid port component '%s'"
-msgstr "Geçersiz özellik '{0}'"
+msgstr "Geçersiz bağlantı noktası (port) parçası '%s'"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
-msgstr ""
+msgstr "Url şemasının bir yol ismine ihtyiacı var"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1195
 #: zypp-logic/zypp-core/url/UrlBase.cc:1209
@@ -286,7 +284,7 @@ msgstr "Geçersiz dizi karakteri birleştirme parametresi"
 #: zypp-logic/zypp-curl/auth/curlauthdata.cc:97
 #, c-format, boost-format
 msgid "Unsupported HTTP authentication method '%s'"
-msgstr ""
+msgstr "Desteklenmeyen HTTP doğrulama methodu '%s'"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:115
 #: zypp-logic/zypp-media/mediaexception.cc:208
@@ -298,7 +296,7 @@ msgstr "'%s' konumuna şuan ulaşılamaz. "
 #: zypp-logic/zypp-media/mediaexception.cc:192
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
-msgstr ""
+msgstr "'%s''e erişirken zaman aşımına uğradı."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:124
 #: zypp/zypp/media/MediaCurl.cc:944
@@ -328,6 +326,8 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
+"'%s' için indirme (curl) hatası:\n"
+"Hata kodu: %s\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
@@ -335,10 +335,12 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Unable to retrieve HTTP response\n"
 msgstr ""
+"'%s için indirme (curl) hatası':\n"
+"HTTP cevabı alınamadı\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "Hata yok"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
@@ -346,31 +348,31 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "İstek iptal edildi"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"
-msgstr ""
+msgstr "İstek maksimum indirme boyutunu aştı"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
 msgid "The downloaded data did not result in a valid checksum"
-msgstr ""
+msgstr "İndirilen veri geçerli bir sağlama toplamı döndürmedi"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
-msgstr ""
+msgstr "Eş sertifikası doğrulanamadı"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "Bağlantı başarısız oldu"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "Desteklenmeyen protokol"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
-msgstr ""
+msgstr "Kötü URL"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
 msgid "Requested location is temporarily unaccessible."
@@ -378,7 +380,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "Zaman aşımına uğradı"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
@@ -386,7 +388,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "Dosya bulunamadı"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
@@ -394,7 +396,7 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "Giriş başarısız."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
@@ -412,21 +414,21 @@ msgstr ""
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "Sunucu HTTP/2 hatası döndürdü."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "Sunucu veri akışı HTTP/2 hatası döndürdü. (stream)"
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Failed to mount %s on %s"
-msgstr "%s açılamadı - %s\n"
+msgstr "%s'te %s bağlanamadı"
 
 #: zypp-logic/zypp-media/mediaexception.cc:43
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Failed to unmount %s"
-msgstr "Failed to parse: %s."
+msgstr "%s'in bağlantısını kaldırmak başarısız oldu."
 
 #: zypp-logic/zypp-media/mediaexception.cc:48
 #, c-format, boost-format
@@ -441,7 +443,7 @@ msgstr "'%s' işlemi gerçekleştirilmeye çalışılırken ortam açılamadı."
 #: zypp-logic/zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "'%s' Dosyası bulunamadı"
 
 # include/partitioning/auto_part_ui.ycp:200 include/partitioning/auto_part_ui.ycp:249
 #: zypp-logic/zypp-media/mediaexception.cc:66
@@ -474,9 +476,9 @@ msgid "Path '%s' on medium '%s' is not a file."
 msgstr "'%s' ortamındaki '%s' yolu bir dosya değil."
 
 #: zypp-logic/zypp-media/mediaexception.cc:97
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr "Hata: %s temel dizini bir dizin değil, atlanıyor.\n"
+msgstr ""
 
 #: zypp-logic/zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
@@ -497,12 +499,11 @@ msgstr "URI de içeriksiz hedef"
 #: zypp-logic/zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr ""
+msgstr "'%s''te desteklenmeyen URI şeması."
 
 #: zypp-logic/zypp-media/mediaexception.cc:134
-#, fuzzy
 msgid "Operation not supported by medium"
-msgstr "Profil sürümü Apparmor modülü tarafından desteklenmiyor\n"
+msgstr "İşlem ortam tarafından izin verilmiyor"
 
 #: zypp-logic/zypp-media/mediaexception.cc:141
 #, c-format, boost-format
@@ -542,9 +543,9 @@ msgid "Cannot eject media '%s'"
 msgstr "'%s' medyası çıkartılamadı"
 
 #: zypp-logic/zypp-media/mediaexception.cc:184
-#, fuzzy, c-format, boost-format
+#, boost-format, c-format
 msgid "Permission to access '%s' denied."
-msgstr "İzin verilmedi\n"
+msgstr "'%s''e erişim engellendi."
 
 #: zypp-logic/zypp-media/mediaexception.cc:200
 #, c-format, boost-format

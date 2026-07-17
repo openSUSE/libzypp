@@ -28,7 +28,7 @@ bool byTTL( const PublicKey & lhs, const PublicKey & rhs )
   return lhs.gpgPubkeyRelease() > rhs.gpgPubkeyRelease(); // intentionally reverse cdate
 }
 
-std::ostream & dumpPubkeyOn( std::ostream & str, const PublicKey & key_r )
+std::ostream & dumpPubkeyOn( std::ostream & str, const PublicKeyData & key_r, const std::list<PublicKey> & rpmpubkeys_r = std::list<PublicKey>() )
 {
   std::vector<std::string> art( key_r.asciiArt().asLines( " ", PublicKey::AsciiArt::USE_COLOR ) );
 
@@ -47,6 +47,46 @@ std::ostream & dumpPubkeyOn( std::ostream & str, const PublicKey & key_r )
   str << info[0] << endl;
   for ( const auto & line : art )
     str << line << endl;
+
+  if ( not rpmpubkeys_r.empty() ) {
+    std::string pubkeyV( key_r.gpgPubkeyVersion() );
+    std::string pubkeyR( key_r.gpgPubkeyRelease() );
+    unsigned count = 0;
+    for ( const PublicKey& rpmpub : rpmpubkeys_r )
+    {
+      if ( rpmpub.gpgPubkeyVersion() == pubkeyV )
+      {
+        ++count;
+        int cmp = rpmpub.gpgPubkeyRelease().compare( pubkeyR );
+        if ( cmp < 0 )
+          cout << "[RPMDB> OLDER ";
+        else if ( cmp > 0 )
+          cout << "[RPMDB> NEWER ";
+        else
+          cout << "[RPMDB> ===== ";
+        cout << "gpg-pubkey-" << rpmpub.gpgPubkeyVersion() << "-" << rpmpub.gpgPubkeyRelease() << " ttl " << rpmpub.daysToLive() << endl;
+      }
+    }
+    if ( ! count )
+    {
+      cout << "[RPMDB> *** Not in rpm database." << endl;
+    }
+  }
+  return str;
+}
+
+std::ostream & dumpPubkeyOn( std::ostream & str, const PublicKey & key_r, const std::list<PublicKey> & rpmpubkeys_r = std::list<PublicKey>() )
+{
+  unsigned nhkeys = key_r.hiddenKeys().size();
+  if ( nhkeys ) {
+    str << "*** Contains multiple keys: " << nhkeys+1 << endl;
+  }
+  dumpPubkeyOn( str, key_r.keyData(), rpmpubkeys_r );
+  if ( nhkeys ) {
+    unsigned cnt = 1;
+    for ( const auto & keyData : key_r.hiddenKeys() )
+      dumpPubkeyOn( str<<"["<<++cnt<<"]", keyData, rpmpubkeys_r );
+  }
   return str << endl;
 }
 
@@ -95,7 +135,6 @@ int main( int argc, char * argv[] )
   rpmpubkeys.sort( byTTL );
 
 
-
   if ( ! vm.count( "key-file" ) )
   {
     std::string last;
@@ -118,32 +157,7 @@ int main( int argc, char * argv[] )
   {
     cout << "=== " << PathInfo( keyfile ) << endl;
     PublicKey pubkey( keyfile );
-    dumpPubkeyOn( cout, pubkey );
-
-    std::string pubkeyV( pubkey.gpgPubkeyVersion() );
-    std::string pubkeyR( pubkey.gpgPubkeyRelease() );
-    unsigned count = 0;
-    for ( const PublicKey& rpmpub : rpmpubkeys )
-    {
-      if ( rpmpub.gpgPubkeyVersion() == pubkeyV )
-      {
-        int cmp = rpmpub.gpgPubkeyRelease().compare( pubkeyR );
-        if ( cmp < 0 )
-          cout << "<<< ";
-        else if ( cmp > 0 )
-          cout << ">>> ";
-        else
-        {
-          ++count;
-          cout << "*** ";
-        }
-        cout << "gpg-pubkey-" << rpmpub.gpgPubkeyVersion() << "-" << rpmpub.gpgPubkeyRelease() << " " << rpmpub.daysToLive() << endl;
-      }
-    }
-    if ( ! count )
-    {
-      cout << "*** Not in rpm database." << endl;
-    }
+    dumpPubkeyOn( cout, pubkey, rpmpubkeys );
     cout << endl;
   }
 

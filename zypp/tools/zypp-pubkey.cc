@@ -154,11 +154,14 @@ int main( int argc, char * argv[] )
   ///////////////////////////////////////////////////////////////////
 
   for ( const std::string& keyfile : vm["key-file"].as< std::vector<std::string> >() )
-  {
+  try {
     cout << "=== " << PathInfo( keyfile ) << endl;
     PublicKey pubkey( keyfile );
     dumpPubkeyOn( cout, pubkey, rpmpubkeys );
     cout << endl;
+  }
+  catch ( const BadKeyException & ex ) {
+    cout << ex.asUserHistory() << endl;
   }
 
   ///////////////////////////////////////////////////////////////////

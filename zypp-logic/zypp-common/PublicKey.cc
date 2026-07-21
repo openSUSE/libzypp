@@ -440,7 +440,10 @@ namespace zypp
   { return _pimpl->_id.empty() ? _pimpl->_id : str::toLower( _pimpl->_id.substr(8,8) ); }
 
   std::string PublicKeyData::gpgPubkeyRelease() const
-  { return _pimpl->_created ? str::hexstring( _pimpl->_created ).substr(2) : std::string(); }
+  { return date2release( _pimpl->_created ); }
+
+  std::string PublicKeyData::date2release( const Date & date_r )
+  { return date_r ? str::hexstring( date_r ).substr(2) : std::string(); }
 
   std::string PublicKeyData::rpmName() const
   { return str::Format( "gpg-pubkey-%1%-%2%" ) % gpgPubkeyVersion() % gpgPubkeyRelease();  }

@@ -262,6 +262,9 @@ namespace zypp
     /** Gpg-pubkey release as computed by rpm (hexencoded \ref created) */
     std::string gpgPubkeyRelease() const;
 
+    /** Hexencode a date the same way as \ref gpgPubkeyRelease does. */
+    static std::string date2release( const Date & date_r );
+
     /** Gpg-pubkey name as computed by rpm*/
     std::string rpmName () const;
 

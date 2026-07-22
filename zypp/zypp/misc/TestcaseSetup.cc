@@ -1,7 +1,191 @@
 #include "TestcaseSetupImpl.h"
 
+#include <zypp/ZYpp.h>
+#include <zypp/ZYppFactory.h>
+#include <zypp/Resolver.h>
+#include <zypp/ResPool.h>
+#include <zypp/VendorAttr.h>
+#include <zypp/target/modalias/Modalias.h>
+#include <zypp/base/Algorithm.h>
+
 namespace zypp::misc::testcase
 {
+
+  // ─── Helpers (migrated verbatim from deptestomatic, refactor in second pass) ─
+  namespace {
+
+    struct FindPackage
+    {
+      PoolItem poolItem;
+      Resolvable::Kind kind;
+      bool edition_set;
+      Edition edition;
+      bool arch_set;
+      Arch arch;
+
+      FindPackage( Resolvable::Kind k, const std::string & v,
+        const std::string & r, const std::string & a )
+        : kind( k )
+        , edition_set( !v.empty() )
+        , edition( v, r )
+        , arch_set( !a.empty() )
+        , arch( a )
+      {}
+
+      void _remember( PoolItem p ) { poolItem = p; }
+
+      bool operator()( PoolItem p )
+      {
+        if ( arch_set && arch != p->arch() )
+          return true;
+        if ( !p->arch().compatibleWith( ZConfig::instance().systemArchitecture() ) )
+          return true;
+        if ( edition_set && p->edition().match( edition ) != 0 )
+          return true;
+        if ( !poolItem
+             || poolItem->arch().compare( p->arch() ) < 0
+             || poolItem->edition().compare( p->edition() ) < 0 )
+          _remember( p );
+        return true;
+      }
+    };
+
+    static PoolItem get_poolItem( const std::string & source_alias,
+      const std::string & package_name,
+      const std::string & kind_name = "",
+      const std::string & ver = "",
+      const std::string & rel = "",
+      const std::string & arch = "" )
+    {
+      PoolItem poolItem;
+      ResPool pool = ResPool::instance();
+      Resolvable::Kind kind = ResKind::fromBuiltin( kind_name );
+      if ( kind == ResKind::nokind ) kind = ResKind::package;
+
+      try {
+        FindPackage info( kind, ver, rel, arch );
+
+        invokeOnEach( pool.byIdentBegin( kind, package_name ),
+          pool.byIdentEnd  ( kind, package_name ),
+          resfilter::ByRepository( source_alias ),
+          std::ref( info ) );
+
+        poolItem = info.poolItem;
+        if ( !poolItem ) {
+          // Try all channels — useful for language packages.
+          invokeOnEach( pool.byIdentBegin( kind, package_name ),
+            pool.byIdentEnd  ( kind, package_name ),
+            std::ref( info ) );
+          poolItem = info.poolItem;
+        }
+      }
+      catch ( const Exception & e ) {
+        ZYPP_CAUGHT( e );
+        WAR << "Can't find kind[" << kind_name << "]:'" << package_name
+            << "': source '" << source_alias << "' not defined" << std::endl;
+      }
+
+      if ( !poolItem )
+        WAR << "Can't find kind: " << kind << ":'" << package_name
+            << "' in source '" << source_alias << "': no such name/kind" << std::endl;
+
+      return poolItem;
+    }
+
+    void applyLockEntry(const TestcaseSetup::LockEntry &entry, ResPool &pool )
+    {
+      const bool isKeep = ( entry.first == "keep" );
+      const auto & props = entry.second;
+
+      auto getProp = [&]( const std::string & k ) -> std::string {
+        auto it = props.find(k);
+        return it != props.end() ? it->second : std::string();
+      };
+
+      if ( !isKeep ) {
+        std::string source_alias = getProp ("channel");
+        std::string package_name = getProp ("name");
+        if (package_name.empty())
+          package_name = getProp ("package");
+        std::string kind_name = getProp ("kind");
+        std::string version = getProp ("version");
+        if ( version.empty() )
+          version = getProp ("ver");
+        std::string release = getProp ("release");
+        if ( release.empty() )
+          release = getProp ("rel");
+        std::string architecture = getProp ("arch");
+
+        if ( version.empty() )
+        {
+          if ( kind_name.empty() )
+            kind_name = "package";
+          ui::Selectable::Ptr item = ui::Selectable::get( ResKind(kind_name), package_name );
+          if ( item )
+          {
+            // first set to protected, then to taboo so we run through both logic paths
+            // to make sure that if there is a installed object the candidates are also locked
+            item->setStatus( item->hasInstalledObj() ? ui::S_Protected : ui::S_Taboo );
+            item->setStatus( ui::S_Taboo );
+          }
+          else
+          {
+            WAR << "Unknown Selectable " << kind_name << ":" << package_name << std::endl;
+          }
+        }
+        else
+        {
+          PoolItem poolItem;
+          poolItem = get_poolItem (source_alias, package_name, kind_name, version, release, architecture );
+          if (poolItem) {
+            MIL << "Locking " << package_name << " from channel " << source_alias << poolItem << std::endl;
+            poolItem.status().setLock (true, ResStatus::USER);
+          } else {
+            WAR << "Unknown package " << source_alias << "::" << package_name << std::endl;
+          }
+        }
+
+      } else {
+
+        std::string kind_name = getProp ("kind");
+        std::string name = getProp ("name");
+        if (name.empty())
+          name = getProp ("package");
+
+        std::string source_alias = getProp ("channel");
+        if (source_alias.empty())
+          source_alias = "@System";
+
+        if (name.empty())
+        {
+          WAR << "transact need 'name' parameter" << std::endl;
+          return;
+        }
+
+        PoolItem poolItem;
+
+        poolItem = get_poolItem( source_alias, name, kind_name, getProp ("version"), getProp ("release") );
+
+        if (poolItem) {
+          // first: set anything
+          if (source_alias == "@System") {
+            poolItem.status().setToBeUninstalled( ResStatus::USER );
+          }
+          else {
+            poolItem.status().setToBeInstalled( ResStatus::USER );
+          }
+          // second: keep old state
+          poolItem.status().setTransact( false, ResStatus::USER );
+        }
+        else {
+          WAR << "Unknown item " << source_alias << "::" << name << std::endl;
+        }
+      }
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+
   RepoData::RepoData() : _pimpl( new RepoDataImpl )
   {}
 
@@ -97,6 +281,9 @@ namespace zypp::misc::testcase
 
   const std::vector<ForceInstall> &TestcaseSetup::forceInstallTasks() const
   { return _pimpl->forceInstallTasks; }
+
+  const std::vector<TestcaseSetup::LockEntry> &TestcaseSetup::locks() const
+  { return _pimpl->locks; }
 
   bool TestcaseSetup::set_licence() const
   { return _pimpl->set_licence; }
@@ -260,4 +447,67 @@ namespace zypp::misc::testcase
     return *_pimpl;
   }
 
+  bool TestcaseSetup::applySetup( zypp::RepoManager &manager, ApplySetupFlags flags_r ) const
+  {
+    // Repos/arch/hardware are always applied via the existing overload.
+    if ( !applySetup( manager ) )
+      return false;
+
+    if ( flags_r.testFlag( AS_LOCALES ) )
+    {
+      base::SetTracker<LocaleSet> lt = localesTracker();
+      lt.removed().insert( lt.current().begin(), lt.current().end() );
+      sat::Pool::instance().initRequestedLocales( lt.removed() );
+      lt.added().insert( lt.current().begin(), lt.current().end() );
+      sat::Pool::instance().setRequestedLocales( lt.added() );
+    }
+
+    if ( flags_r.testFlag( AS_AUTOINSTALLED ) )
+    {
+      sat::Pool::instance().setAutoInstalled( autoinstalled() );
+    }
+
+    if ( flags_r.testFlag( AS_VENDOR_LISTS ) )
+    {
+      for ( const auto & vlist : vendorLists() )
+        VendorAttr::noTargetInstance().addVendorList( vlist );
+    }
+
+    if ( flags_r.testFlag( AS_MODALIAS ) )
+    {
+      target::Modalias::instance().modaliasList( modaliasList() );
+    }
+
+    if ( flags_r.testFlag( AS_MULTIVERSION ) )
+    {
+      ZConfig::instance().multiversionSpec( multiversionSpec() );
+    }
+
+    if ( flags_r.testFlag( AS_LOCKS ) )
+    {
+      ResPool pool = ResPool::instance();
+      for ( const auto & entry : locks() )
+        applyLockEntry( entry, pool );
+    }
+
+    if ( flags_r.testFlag( AS_SOLVER_FLAGS ) )
+    {
+      Resolver_Ptr resolver = getZYpp()->resolver();
+      resolver->setFocus                   ( resolverFocus()             );
+      resolver->setIgnoreAlreadyRecommended( ignorealreadyrecommended()  );
+      resolver->setOnlyRequires            ( onlyRequires()              );
+      resolver->setForceResolve            ( forceResolve()              );
+      resolver->setCleandepsOnRemove       ( cleandepsOnRemove()         );
+      resolver->setAllowDowngrade          ( allowDowngrade()            );
+      resolver->setAllowNameChange         ( allowNameChange()           );
+      resolver->setAllowArchChange         ( allowArchChange()           );
+      resolver->setAllowVendorChange       ( allowVendorChange()         );
+      resolver->dupSetAllowDowngrade       ( dupAllowDowngrade()         );
+      resolver->dupSetAllowNameChange      ( dupAllowNameChange()        );
+      resolver->dupSetAllowArchChange      ( dupAllowArchChange()        );
+      resolver->dupSetAllowVendorChange    ( dupAllowVendorChange()      );
+    }
+
+    return true;
+  }
 }

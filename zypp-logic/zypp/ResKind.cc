@@ -65,6 +65,19 @@ namespace zypp
     return nokind;
   }
 
+  ResKind ResKind::fromBuiltin( const std::string &str )
+  {
+    if (!str.empty()) {
+      if (str == "package")     return ResKind::package;
+      if (str == "patch")       return ResKind::patch;
+      if (str == "pattern")     return ResKind::pattern;
+      if (str == "product")     return ResKind::product;
+      if (str == "srcpackage")  return ResKind::srcpackage;
+      if (str == "application") return ResKind::application;
+    }
+    return ResKind::nokind;
+  }
+
   std::string ResKind::satIdent( const ResKind & refers_r, const std::string & name_r )
   {
     if ( ! refers_r || refers_r == package || refers_r == srcpackage )

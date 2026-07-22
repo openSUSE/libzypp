@@ -60,6 +60,10 @@ namespace zypp::misc::testcase
     std::set<std::string> multiversionSpec;
     std::vector<ForceInstall> forceInstallTasks;
 
+    // lock/keep nodes extracted from trials — applied as part of pool setup.
+    // Stored as { nodeName, properties } so no dependency on TestcaseTrial::Node.
+    std::vector<TestcaseSetup::LockEntry> locks;
+
     bool set_licence = false;
     bool show_mediaid = false;
 

@@ -226,7 +226,9 @@ namespace yamltest::detail {
         if ( !success ) return false;
       }
       else if ( key == ("systemCheck") ) {
-        target.systemCheck = data.as<std::string>();
+        // Prefix with globalPath like the helix loader does, so relative
+        // paths in the YAML resolve correctly against the testcase directory.
+        target.systemCheck = target.globalPath / data.as<std::string>();
       }
       else if ( key == ("setlicencebit") ) {
         target.set_licence = data.as<bool>();

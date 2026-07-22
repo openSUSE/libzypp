@@ -21,6 +21,8 @@
 
 #include <optional>
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace zypp::misc::testcase {
 
@@ -56,7 +58,7 @@ namespace zypp::misc::testcase {
     RWCOW_pointer<Impl> _pimpl;
   };
 
-  class ZYPP_API LoadTestcase : private zypp::base::NonCopyable
+  class ZYPP_API_DEPTESTOMATIC LoadTestcase : private zypp::base::NonCopyable
   {
   public:
     struct Impl;

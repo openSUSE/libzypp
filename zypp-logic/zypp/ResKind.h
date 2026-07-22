@@ -58,6 +58,12 @@ namespace zypp
       static ResKind explicitBuiltin( const IdString & str_r )
       { return explicitBuiltin( str_r.c_str() ); }
 
+      /**
+       * Converts the string representation of a kind to its ResKind
+       * value or noKind if the passed string is not builtin kind
+       */
+      static ResKind fromBuiltin( const std::string &str );
+
     public:
       /** Default ctor: \ref nokind */
       ResKind() {}

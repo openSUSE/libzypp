@@ -12,11 +12,11 @@
 #include "LoadTestcase.h"
 #include "HelixHelpers.h"
 #include "YamlTestcaseHelpers.h"
+#include "TestcaseSetupImpl.h"
 #include <zypp/PathInfo.h>
 #include <zypp-core/base/LogControl.h>
 
 namespace zypp::misc::testcase {
-
   static const std::string helixControlFile = "solver-test.xml";
   static const std::string yamlControlFile  = "zypp-control.yaml";
 
@@ -211,11 +211,36 @@ namespace zypp::misc::testcase {
 
     switch (t) {
       case LoadTestcase::Helix:
-        return _pimpl->loadHelix( path / helixControlFile, err );
+        if ( !_pimpl->loadHelix( path / helixControlFile, err ) )
+          return false;
+        break;
       case LoadTestcase::Yaml:
-        return _pimpl->loadYaml( path / yamlControlFile, err );
+        if ( !_pimpl->loadYaml( path / yamlControlFile, err ) )
+          return false;
+        break;
       default:
         return false;
+    }
+
+
+    // ── Extract lock/keep nodes from all trials into the setup ─────────────────
+    // Done as a post-parse pass so neither parser needs to be modified.
+    // Locks are pool constraints that belong to the environment, not the job.
+    switch ( _pimpl->_trials.size() ) {
+      case 0:
+        return true;
+      case 1: {
+        for ( const auto & node : _pimpl->_trials[0].nodes() ) {
+          if ( node.name() == "lock" || node.name() == "keep" )
+            _pimpl->_setup.data().locks.push_back( { node.name(), node.properties() } );
+        }
+        return true;
+      }
+      default: {
+        WAR << "Currently only one trial section is supported" << std::endl;
+        if (err) *err = "Currently only one trial section is supported.";
+        return false;
+      }
     }
   }
 
@@ -239,4 +264,4 @@ namespace zypp::misc::testcase {
     return _pimpl->_trials;
   }
 
-}
+} // namespace zypp::misc::testcase

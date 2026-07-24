@@ -129,3 +129,19 @@ BOOST_AUTO_TEST_CASE(masked)
   );
   BOOST_CHECK_EQUAL( got, want );
 }
+
+BOOST_AUTO_TEST_CASE(sectioned)
+{
+  EconfDict a( "foo/bar.conf", DATADIR / "sectioned" );
+  std::string got = str::sprint( dump(a) );
+  std::string want = str::sprintf( str::FormatList, "[]"
+  , "all_outside = drop"
+  , "conf_outside = conf"
+  , "drop_outside = drop"
+  , "[main]"
+  , "all_inside = drop"
+  , "conf_inside = conf"
+  , "drop_inside = drop"
+  );
+  BOOST_CHECK_EQUAL( got, want );
+}

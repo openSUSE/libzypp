@@ -91,6 +91,7 @@ void IniParser::parse( const InputStream & input_r, const ProgressData::Receiver
 {
   MIL << "Start parsing " << input_r << endl;
   _inputname = input_r.name();
+  _current_section.clear(); // each file starts in the unnamed section
   beginParse();
 
   ProgressData ticks( makeProgressData( input_r ) );

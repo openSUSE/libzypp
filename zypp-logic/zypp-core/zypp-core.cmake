@@ -223,11 +223,6 @@ zypp_add_sources( zypp_parser_HEADERS
   parser/EconfDict
   parser/econfdict.h
   parser/json.h
-  parser/json/JsonBool.h
-  parser/json/JsonNull.h
-  parser/json/JsonNumber.h
-  parser/json/JsonString.h
-  parser/json/JsonValue.h
   parser/ParseException
   parser/parseexception.h
   parser/Sysconfig
@@ -236,6 +231,18 @@ zypp_add_sources( zypp_parser_HEADERS
 
 if( ${arg_INSTALL_HEADERS} )
   INSTALL(  FILES ${zypp_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser" )
+endif()
+
+zypp_add_sources( zypp_json_parser_HEADERS
+  parser/json/JsonBool.h
+  parser/json/JsonNull.h
+  parser/json/JsonNumber.h
+  parser/json/JsonString.h
+  parser/json/JsonValue.h
+)
+
+if( ${arg_INSTALL_HEADERS} )
+  INSTALL(  FILES ${zypp_json_parser_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/zypp-core/parser/json" )
 endif()
 
 zypp_add_sources( zypp_parser_xml_SRCS
@@ -441,6 +448,7 @@ SET( zypp_core_HEADERS
   ${zypp_ui_HEADERS}
   ${zypp_url_HEADERS}
   ${zypp_parser_HEADERS}
+  ${zypp_json_parser_HEADERS}
   ${zypp_parser_private_HEADERS}
   ${zypp_parser_xml_HEADERS}
   ${zyppng_base_HEADERS}

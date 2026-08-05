@@ -187,7 +187,7 @@ namespace zypp {
     for ( auto i = _pimpl->_origins.begin (); i != _pimpl->_origins.end(); ) {
       // drop mirror if it's scheme conflicts with the authorities scheme
       // otherwise drop if scheme is not identical
-      if ( i->scheme () != newScheme && !isAuthorityCompatible(authority(), *i) ) {
+      if ( !isAuthorityCompatible(authority(), *i) ) {
         MIL << "Dropping mirror " << *i << " scheme is not compatible to new authority URL ( " << i->scheme() << " vs " << newScheme << ")" << std::endl;
         i = _pimpl->_origins.erase(i);
       } else {
@@ -270,7 +270,7 @@ namespace zypp {
       const auto &authScheme = _pimpl->_authorities[0].scheme();
 
       // As all the authorities are either downloading or non-downloading, if the first is compatible, the rest are as well
-      if ( authScheme != newMirror.scheme () && !isAuthorityCompatible(authority(), newMirror) ) {
+      if ( !isAuthorityCompatible(authority(), newMirror) ) {
         MIL << "Ignoring mirror " << newMirror << " scheme is not compatible to authority URL ( " << newMirror.scheme() << " vs " << authScheme << ")" << std::endl;
         return false;
       }

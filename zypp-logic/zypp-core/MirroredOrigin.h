@@ -318,7 +318,9 @@ namespace zypp {
      */
     static bool isAuthorityCompatible(const OriginEndpoint& authority, const OriginEndpoint& mirror)
     {
-      return (authority.schemeIsDownloading() == mirror.schemeIsDownloading());
+      if (authority.scheme() == mirror.scheme())
+          return true;
+      return authority.schemeIsDownloading() && mirror.schemeIsDownloading();
     }
   };
 

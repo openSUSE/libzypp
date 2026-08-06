@@ -1463,19 +1463,8 @@ namespace zypp
       {
         result.rTransactionStepList().insert( steps.end(), result.transaction().begin(), result.transaction().end() );
       }
+
       MIL << "Todo: " << result << endl;
-
-      ///////////////////////////////////////////////////////////////////
-      // Prepare execution of commit plugins:
-      ///////////////////////////////////////////////////////////////////
-      PluginExecutor commitPlugins;
-
-      if ( ( root() == "/" || zypp::env::TRANSACTIONAL_UPDATE() ) && ! policy_r.dryRun() )
-      {
-        commitPlugins.load( ZConfig::instance().pluginsPath()/"commit" );
-      }
-      if ( commitPlugins )
-        commitPlugins.send( transactionPluginFrame( "COMMITBEGIN", steps ) );
 
       ///////////////////////////////////////////////////////////////////
       // Write out a testcase if we're in dist upgrade mode.
@@ -1490,34 +1479,6 @@ namespace zypp
         {
           DBG << "dryRun: Not writing upgrade testcase." << endl;
         }
-      }
-
-     ///////////////////////////////////////////////////////////////////
-      // Store non-package data:
-      ///////////////////////////////////////////////////////////////////
-      if ( ! policy_r.dryRun() )
-      {
-        filesystem::assert_dir( home() );
-        // requested locales
-        _requestedLocalesFile.setLocales( pool_r.getRequestedLocales() );
-        // autoinstalled
-        {
-          SolvIdentFile::Data newdata;
-          for ( sat::Queue::value_type id : result.rTransaction().autoInstalled() )
-            newdata.insert( IdString(id) );
-          _autoInstalledFile.setData( newdata );
-        }
-        // hard locks
-        if ( ZConfig::instance().apply_locks_file() )
-        {
-          HardLocksFile::Data newdata;
-          pool_r.getHardLockQueries( newdata );
-          _hardLocksFile.setData( newdata );
-        }
-      }
-      else
-      {
-        DBG << "dryRun: Not storing non-package data." << endl;
       }
 
       ///////////////////////////////////////////////////////////////////
@@ -1642,9 +1603,56 @@ namespace zypp
         }
         else
         {
+          // Commit starts
+          callback::SendReport<target::CommitActiveReport> commitActiveReport;
+          if ( ! commitActiveReport->start() )
+          {
+            WAR << "commit aborted: CommitActiveReport declined" << endl;
+            ZYPP_THROW( TargetAbortedException( ) );
+          }
+
+          ///////////////////////////////////////////////////////////////////
+          // Prepare execution of commit plugins:
+          ///////////////////////////////////////////////////////////////////
+          PluginExecutor commitPlugins;
+
+          if ( ( root() == "/" || zypp::env::TRANSACTIONAL_UPDATE() ) && ! policy_r.dryRun() )
+          {
+            commitPlugins.load( ZConfig::instance().pluginsPath()/"commit" );
+          }
+          if ( commitPlugins )
+            commitPlugins.send( transactionPluginFrame( "COMMITBEGIN", steps ) );
+
+          ///////////////////////////////////////////////////////////////////
+          // Store non-package data:
+          ///////////////////////////////////////////////////////////////////
           if ( ! policy_r.dryRun() )
           {
+            filesystem::assert_dir( home() );
+            // requested locales
+            _requestedLocalesFile.setLocales( pool_r.getRequestedLocales() );
+            // autoinstalled
+            {
+              SolvIdentFile::Data newdata;
+              for ( sat::Queue::value_type id : result.rTransaction().autoInstalled() )
+                newdata.insert( IdString(id) );
+              _autoInstalledFile.setData( newdata );
+            }
+            // hard locks
+            if ( ZConfig::instance().apply_locks_file() )
+            {
+              HardLocksFile::Data newdata;
+              pool_r.getHardLockQueries( newdata );
+              _hardLocksFile.setData( newdata );
+            }
+          }
+          else
+          {
+            DBG << "dryRun: Not storing non-package data." << endl;
+          }
 
+          if ( ! policy_r.dryRun() )
+          {
             if ( policy_r.singleTransModeEnabled() ) {
               commitInSingleTransaction( policy_r, packageCache, result );
             } else {
@@ -1669,6 +1677,22 @@ namespace zypp
               }
             }
           }
+
+          ///////////////////////////////////////////////////////////////////
+          // Send result to commit plugins:
+          ///////////////////////////////////////////////////////////////////
+          if ( commitPlugins )
+            commitPlugins.send( transactionPluginFrame( "COMMITEND", steps ) );
+
+          ///////////////////////////////////////////////////////////////////
+          // Try to rebuild solv file while rpm database is still in cache
+          ///////////////////////////////////////////////////////////////////
+          if ( ! policy_r.dryRun() )
+          {
+            buildCache();
+          }
+
+          commitActiveReport->end();
         }
       }
       else
@@ -1690,20 +1714,6 @@ namespace zypp
           filesystem::assert_dir( _root/"/var/lib" );
           filesystem::symlink( "../../usr/lib/sysimage/rpm", _root/"/var/lib/rpm" );
         }
-      }
-
-      ///////////////////////////////////////////////////////////////////
-      // Send result to commit plugins:
-      ///////////////////////////////////////////////////////////////////
-      if ( commitPlugins )
-        commitPlugins.send( transactionPluginFrame( "COMMITEND", steps ) );
-
-      ///////////////////////////////////////////////////////////////////
-      // Try to rebuild solv file while rpm database is still in cache
-      ///////////////////////////////////////////////////////////////////
-      if ( ! policy_r.dryRun() )
-      {
-        buildCache();
       }
 
       MIL << "TargetImpl::commit(<pool>, " << policy_r << ") returns: " << result << endl;

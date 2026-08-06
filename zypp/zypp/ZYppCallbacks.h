@@ -584,6 +584,39 @@ namespace zypp
 
 
     ///////////////////////////////////////////////////////////////////
+    /// \class CommitActiveReport
+    /// \brief Fired exactly once per \ref TargetImpl::commit call, marking
+    /// the point at which the actual RPM transaction becomes irreversible.
+    ///
+    /// This report exists to give callers (e.g. an MCP worker mediating
+    /// cancellation requests) a single, backend-agnostic synchronization
+    /// point: \ref start is called before any persistent
+    /// state (locks, requested locales, autoinstalled) is written or the
+    /// RPM transaction begins, regardless of Legacy vs SingleTrans backend.
+    ///
+    /// Returning \c false aborts the commit
+    /// \ref TargetImpl::commit throws \ref TargetAbortedException.
+    /// This lets a receiver (e.g. one mediating an external cancellation
+    /// request) decline safely rather than relying on an external process
+    /// signal racing against the point of no return.
+    ///////////////////////////////////////////////////////////////////
+    struct ZYPP_API CommitActiveReport : public callback::ReportBase
+    {
+      /** Called once, synchronously, before the irreversible transaction
+       * begins. Return \c false to abort the commit before anything has
+       * been touched. */
+      virtual bool start( const UserData & = UserData() /*userdata*/ ) { return true; }
+
+      /**
+       * Called when all target state has been written. Commit is done and safe.
+       */
+      virtual void end  ( const UserData & = UserData() /*userdata*/ ) { }
+
+      // added for future use to avoid breaking compatibility
+      virtual void step ( const UserData & = UserData() /*userdata*/ ) { }
+    };
+
+    ///////////////////////////////////////////////////////////////////
     namespace rpm
     {
 

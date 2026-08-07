@@ -332,6 +332,12 @@ namespace zyppng {
           | transform( [this, keyRing]( std::pair<std::string, std::string> val ) {
 
               const auto& [ file, keyid ] = val;
+              if ( not zypp::PublicKey::isSafeKeyId( keyid ) ) {
+                const std::string str { zypp::str::Str() << "Keyhint is too short to safely identify a gpg key. Skip auto import:" << keyid << " (" << file << ")" };
+                WAR << str << std::endl;
+                return makeReadyTask(expected<zypp::PublicKeyData>::error( std::make_exception_ptr( zypp::Exception(str)) ));
+              }
+
               auto keyData = keyRing->trustedPublicKeyData( keyid );
               if ( keyData ) {
                 DBG << "Keyhint is already trusted: " << keyid << " (" << file << ")" << std::endl;
@@ -391,12 +397,8 @@ namespace zyppng {
          | [this] ( std::vector<expected<zypp::PublicKeyData>> &&keyHints ) mutable {
               std::for_each( keyHints.begin(), keyHints.end(), [this]( expected<zypp::PublicKeyData> &keyData ){
                 if ( keyData && *keyData ) {
-                  if ( not zypp::PublicKey::isSafeKeyId( keyData->id() ) ) {
-                   WAR << "Keyhint " << keyData->id() << " for " << *keyData << " is not strong enough for auto import. Just caching it." << std::endl;
-                   return;
-                 }
-                 _buddyKeys.push_back ( std::move(keyData.get()) );
-               }
+                  _buddyKeys.push_back ( std::move(keyData.get()) );
+                }
               });
 
               MIL << "Check keyhints done. Buddy keys: " << _buddyKeys.size() << std::endl;

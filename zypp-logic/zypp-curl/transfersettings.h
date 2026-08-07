@@ -60,7 +60,7 @@ namespace zypp
       const std::string &userAgentString() const;
 
 
-      /** has a username, maybe even the password */
+      /** has a non-empty username and a non-empty password */
       bool hasCredentials() const;
 
       /** log credentials to stream hiding the password. */

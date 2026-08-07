@@ -155,7 +155,7 @@ namespace zypp
 
 
     bool TransferSettings::hasCredentials() const
-    { return not _impl->_username.empty(); }
+    { return not _impl->_username.empty() && not _impl->_password.empty(); }
 
     void TransferSettings::setUsername( const std::string &val_r )
     { _impl->_username = val_r; }

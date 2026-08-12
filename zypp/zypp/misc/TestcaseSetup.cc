@@ -389,7 +389,23 @@ namespace zypp::misc::testcase
         nrepo.setEnabled    ( true );
         nrepo.setAutorefresh( false );
         nrepo.setPriority   ( repoData.priority );
-        nrepo.addBaseUrl   ( Url(repoData.path) );
+
+        Url repoUrl( repoData.path );
+        if ( repoUrl.getScheme() == "testcase" )
+        {
+          // testcase:<relative-path> — a repo bundled alongside the testcase
+          // fixture itself (e.g. a local susetags/rpm-md directory), resolved
+          // against the testcase directory. Any other scheme (http://, dir:,
+          // ftp://, ...) is used verbatim, unchanged from prior behaviour.
+          repoUrl = ( setup._pimpl->globalPath / repoUrl.getPathName() ).asUrl();
+          // Bundled fixtures are never signed — same precedent as
+          // zypp-logic/tests/lib/TestSetup.h::loadRepo(), which disables
+          // gpgCheck for its own local test repos. Absolute URLs (any other
+          // scheme) are untouched: a testcase pointing at a real repo keeps
+          // whatever signature checking it would normally get.
+          nrepo.setGpgCheck( false );
+        }
+        nrepo.addBaseUrl( repoUrl );
 
         manager.refreshMetadata( nrepo );
         manager.buildCache( nrepo );

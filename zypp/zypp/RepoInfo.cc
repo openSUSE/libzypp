@@ -377,16 +377,6 @@ namespace zypp
       _validRepoSignature = value_r;
     }
 
-    /** We definitely have a symlink pointing to "indeterminate" (for repoGpgCheckIsMandatory)?
-     * I.e. user accepted the unsigned repo in Downloader. A test whether `internalValidRepoSignature`
-     * is indeterminate would include not yet checked repos, which is unwanted here.
-     */
-    bool internalUnsignedConfirmed() const
-    {
-      TriBool linkval( true );	// want to see it being switched to indeterminate
-      return triBoolFromPath( metadataPath() / ".repo_gpgcheck", linkval ) && indeterminate(linkval);
-    }
-
     bool triBoolFromPath( const Pathname & path_r, TriBool & ret_r ) const
     {
       static const Pathname truePath( "true" );
@@ -633,13 +623,8 @@ namespace zypp
   bool RepoInfo::repoGpgCheck() const
   { return gpgCheck() || bool(_pimpl->cfgRepoGpgCheck()); }
 
-  bool RepoInfo::repoGpgCheckIsMandatory() const
-  {
-    bool ret = ( gpgCheck() && indeterminate(_pimpl->cfgRepoGpgCheck()) ) || bool(_pimpl->cfgRepoGpgCheck());
-    if ( ret && _pimpl->internalUnsignedConfirmed() )	// relax if unsigned repo was confirmed in the past
-      ret = false;
-    return ret;
-  }
+  bool RepoInfo::repoGpgCheckIsMandatory() const  // may be omitted only if cfgRepoGpgCheck is explicitly false (unsigned-ok)
+  { return ( gpgCheck() && indeterminate(_pimpl->cfgRepoGpgCheck()) ) || bool(_pimpl->cfgRepoGpgCheck()); }
 
   void RepoInfo::setRepoGpgCheck( TriBool value_r )
   { _pimpl->rawRepoGpgCheck( value_r ); }

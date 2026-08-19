@@ -8,302 +8,305 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-08-19 21:51+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://l10n.opensuse.org/projects/libzypp/master/lo/>\n"
 "Language: lo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
 msgid "does not expire"
-msgstr ""
+msgstr "ບໍ່ມີວັນໝົດອາຍຸ"
 
 #. translators: an annotation to a gpg keys expiry date: "expired: 1999-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:70
 #, boost-format
 msgid "expired: %1%"
-msgstr ""
+msgstr "ໝົດອາຍຸແລ້ວ: %1%"
 
 #. translators: an annotation to a gpg keys expiry date: "expires: 2111-04-12"
 #: zypp-logic/zypp-common/PublicKey.cc:75
 #, boost-format
 msgid "expires: %1%"
-msgstr ""
+msgstr "ຈະໝົດອາຍຸໃນ: %1%"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:84
 msgid "(does not expire)"
-msgstr ""
+msgstr "(ບໍ່ມີວັນໝົດອາຍຸ)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:93
 msgid "(EXPIRED)"
-msgstr ""
+msgstr "(ໝົດອາຍຸແລ້ວ)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:97
 msgid "(expires within 24h)"
-msgstr ""
+msgstr "(ຈະໝົດອາຍຸພາຍໃນ 24 ຊົ່ວໂມງ)"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:101
 #, c-format, boost-format
 msgid "(expires in %d day)"
 msgid_plural "(expires in %d days)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(ຈະໝົດອາຍຸໃນອີກ %d ມື້)"
 
 #. TranslatorExplanation first %s is key name, second is keyring name
 #: zypp-logic/zypp-common/private/keyring_p.cc:230
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
-msgstr ""
+msgstr "ພະຍາຍາມນຳເຂົ້າກຸນແຈ %s ທີ່ບໍ່ມີຢູ່ຈິງເຂົ້າໃນພວງກຸນແຈ %s"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:236
 msgid "Failed to import key."
-msgstr ""
+msgstr "ການນຳເຂົ້າກຸນແຈລົ້ມເຫຼວ."
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:260
 msgid "Failed to delete key."
-msgstr ""
+msgstr "ການລຶບກຸນແຈລົ້ມເຫຼວ."
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:313
 #, c-format, boost-format
 msgid "Signature file %s not found"
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌ລາຍເຊັນ %s"
 
 #. dubious: Throw on malformed known types, otherwise log a warning.
 #: zypp-logic/zypp-core/CheckSum.cc:136
 #, c-format, boost-format
 msgid "Dubious type '%s' for %u byte checksum '%s'"
-msgstr ""
+msgstr "ປະເພດ '%s' ທີ່ໜ້າສົງໄສສຳລັບ %u ໄບຕ໌ checksum '%s'"
 
 #: zypp-logic/zypp-core/ExternalProgram.cc:245
 #, c-format, boost-format
 msgid "Can't open pty (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດເປີດ pty (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/ExternalProgram.cc:264
 #: zypp-logic/zypp-core/ExternalProgram.cc:281
 #, c-format, boost-format
 msgid "Can't open pipe (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດເປີດ pipe (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/Url.cc:118
 msgid "Invalid LDAP URL query string"
-msgstr ""
+msgstr "ຂໍ້ຄວາມການສອບຖາມ LDAP URL ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/Url.cc:159
 #, c-format, boost-format
 msgid "Invalid LDAP URL query parameter '%s'"
-msgstr ""
+msgstr "ພາຣາມີເຕີການສອບຖາມ LDAP URL '%s' ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/Url.cc:319
 msgid "Unable to clone Url object"
-msgstr ""
+msgstr "ບໍ່ສາມາດຄັດລອກວັດຖຸ Url ໄດ້"
 
 #: zypp-logic/zypp-core/Url.cc:332
 msgid "Invalid empty Url object reference"
-msgstr ""
+msgstr "ການອ້າງອີງວັດຖຸ Url ທີ່ວ່າງເປົ່າບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/Url.cc:345 zypp-logic/zypp-core/Url.cc:359
 msgid "Unable to parse Url components"
-msgstr ""
+msgstr "ບໍ່ສາມາດແຍກສ່ວນປະກອບຂອງ Url ໄດ້"
 
 #: zypp-logic/zypp-core/base/Exception.cc:199
 msgid "History:"
-msgstr ""
+msgstr "ປະຫວັດ:"
 
 #: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:183
 #, c-format, boost-format
 msgid "Command exited with status %d."
-msgstr ""
+msgstr "ຄຳສັ່ງອອກດ້ວຍສະຖານະ %d."
 
 #: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:207
 #, c-format, boost-format
 msgid "Command was killed by signal %d (%s)."
-msgstr ""
+msgstr "ຄຳສັ່ງຖືກຍົກເລີກໂດຍສັນຍານ %d (%s)."
 
 #: zypp-logic/zypp-core/ng/io/abstractspawnengine.cc:212
 msgid "Command exited with unknown error."
-msgstr ""
+msgstr "ຄຳສັ່ງອອກດ້ວຍຂໍ້ຜິດພາດທີ່ບໍ່ຮູ້ຈັກ."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:243
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:487
 msgid "Invalid spawn arguments given."
-msgstr ""
+msgstr "ການໃຫ້ອາກິວເມນ spawn ບໍ່ຖືກຕ້ອງ."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:299
 msgid "Unable to create control pipe."
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງ control pipe ໄດ້."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:366
 #, c-format, boost-format
 msgid "Can't chroot to '%s' (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ chroot ໄປຫາ '%s' (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:376
 #, c-format, boost-format
 msgid "Can't chdir to '%s' (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ chdir ໄປຫາ '%s' (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:377
 #, c-format, boost-format
 msgid "Can't chdir to '%s' inside chroot '%s' (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ chdir ໄປຫາ '%s' ພາຍໃນ chroot '%s' (%s) ໄດ້."
 
 #. don't want to get here
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:406
 #, c-format, boost-format
 msgid "Can't exec '%s' (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ exec '%s' (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:413
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:568
 #, c-format, boost-format
 msgid "Can't fork (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ fork (%s) ໄດ້."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:432
 #, c-format, boost-format
 msgid "Can't exec '%s', chdir failed (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ exec '%s', ການ chdir ລົ້ມເຫຼວ (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:435
 #, c-format, boost-format
 msgid "Can't exec '%s', chroot failed (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ exec '%s', ການ chroot ລົ້ມເຫຼວ (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:438
 #, c-format, boost-format
 msgid "Can't exec '%s', exec failed (%s)."
-msgstr ""
+msgstr "ບໍ່ສາມາດ exec '%s', ການ exec ລົ້ມເຫຼວ (%s)."
 
 #: zypp-logic/zypp-core/ng/io/forkspawnengine.cc:442
 #, c-format, boost-format
 msgid "Can't exec '%s', unexpected error."
-msgstr ""
+msgstr "ບໍ່ສາມາດ exec '%s', ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິດ."
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:221
 #, c-format, boost-format
 msgid "Url scheme does not allow a %s"
-msgstr ""
+msgstr "ຮູບແບບ Url ບໍ່ອະນຸຍາດໃຫ້ມີ %s"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:240
 #, c-format, boost-format
 msgid "Invalid %s component '%s'"
-msgstr ""
+msgstr "ສ່ວນປະກອບ %s '%s' ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:247
 #, c-format, boost-format
 msgid "Invalid %s component"
-msgstr ""
+msgstr "ສ່ວນປະກອບ %s ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:864
 #: zypp-logic/zypp-core/url/UrlBase.cc:1308
 msgid "Query string parsing not supported for this URL"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບການແຍກຂໍ້ຄວາມການສອບຖາມສຳລັບ URL ນີ້"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:902
 msgid "Url scheme is a required component"
-msgstr ""
+msgstr "ຮູບແບບ Url ແມ່ນສ່ວນປະກອບທີ່ຈຳເປັນ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:908
 #, c-format, boost-format
 msgid "Invalid Url scheme '%s'"
-msgstr ""
+msgstr "ຮູບແບບ Url '%s' ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1025
 msgid "Url scheme does not allow a username"
-msgstr ""
+msgstr "ຮູບແບບ Url ບໍ່ອະນຸຍາດໃຫ້ມີຊື່ຜູ້ໃຊ້"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1059
 msgid "Url scheme does not allow a password"
-msgstr ""
+msgstr "ຮູບແບບ Url ບໍ່ອະນຸຍາດໃຫ້ມີລະຫັດຜ່ານ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1088
 msgid "Url scheme requires a host component"
-msgstr ""
+msgstr "ຮູບແບບ Url ຕ້ອງການສ່ວນປະກອບໂຮສຕ໌"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1098
 msgid "Url scheme does not allow a host component"
-msgstr ""
+msgstr "ຮູບແບບ Url ບໍ່ອະນຸຍາດໃຫ້ມີສ່ວນປະກອບໂຮສຕ໌"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1125
 #, c-format, boost-format
 msgid "Invalid host component '%s'"
-msgstr ""
+msgstr "ສ່ວນປະກອບໂຮສຕ໌ '%s' ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1146
 msgid "Url scheme does not allow a port"
-msgstr ""
+msgstr "ຮູບແບບ Url ບໍ່ອະນຸຍາດໃຫ້ມີພອດ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1157
 #, c-format, boost-format
 msgid "Invalid port component '%s'"
-msgstr ""
+msgstr "ສ່ວນປະກອບພອດ '%s' ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1174
 msgid "Url scheme requires path name"
-msgstr ""
+msgstr "ຮູບແບບ Url ຕ້ອງການຊື່ເສັ້ນທາງ"
 
 #: zypp-logic/zypp-core/url/UrlBase.cc:1195
 #: zypp-logic/zypp-core/url/UrlBase.cc:1209
 msgid "Relative path not allowed if authority exists"
-msgstr ""
+msgstr "ບໍ່ອະນຸຍາດໃຫ້ໃຊ້ເສັ້ນທາງສຳພັດຫາກມີ authority ຢູ່ແລ້ວ"
 
 #: zypp-logic/zypp-core/url/UrlUtils.cc:111
 msgid "Encoded string contains a NUL byte"
-msgstr ""
+msgstr "ຂໍ້ຄວາມທີ່ເຂົ້າລະຫັດມີໄບຕ໌ NUL"
 
 #: zypp-logic/zypp-core/url/UrlUtils.cc:172
 msgid "Invalid parameter array split separator character"
-msgstr ""
+msgstr "ຕົວອັກສອນແຍກອາເຣພາຣາມີເຕີບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlUtils.cc:211
 msgid "Invalid parameter map split separator character"
-msgstr ""
+msgstr "ຕົວອັກສອນແຍກແຜນຜັງພາຣາມີເຕີບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-core/url/UrlUtils.cc:282
 msgid "Invalid parameter array join separator character"
-msgstr ""
+msgstr "ຕົວອັກສອນເຊື່ອມອາເຣພາຣາມີເຕີບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-curl/auth/curlauthdata.cc:97
 #, c-format, boost-format
 msgid "Unsupported HTTP authentication method '%s'"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບວິທີການຢືນຢັນຕົວຕົນ HTTP '%s'"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:115
 #: zypp-logic/zypp-media/mediaexception.cc:208
 #, c-format, boost-format
 msgid "Location '%s' is temporarily unaccessible."
-msgstr ""
+msgstr "ທີ່ຕັ້ງ '%s' ບໍ່ສາມາດເຂົ້າເຖິງໄດ້ຊົ່ວຄາວ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:119
 #: zypp-logic/zypp-media/mediaexception.cc:192
 #, c-format, boost-format
 msgid "Timeout exceeded when accessing '%s'."
-msgstr ""
+msgstr "ໝົດເວລາໃນການເຂົ້າເຖິງ '%s'."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:124
 #: zypp/zypp/media/MediaCurl.cc:944
 msgid "Visit the SUSE Customer Center to check whether your registration is valid and has not expired."
 msgstr ""
+"ເຂົ້າເບິ່ງ SUSE Customer Center ເພື່ອກວດສອບວ່າການລົງທະບຽນຂອງທ່ານຍັງໃຊ້ໄດ້ ແລະ ຍັງບໍ່ທັນໝົດອາຍຸ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:126
 #: zypp/zypp/media/MediaCurl.cc:946
 msgid "Visit the Novell Customer Center to check whether your registration is valid and has not expired."
 msgstr ""
+"ເຂົ້າເບິ່ງ Novell Customer Center ເພື່ອກວດສອບວ່າການລົງທະບຽນຂອງທ່ານຍັງໃຊ້ໄດ້ ແລະ ຍັງບໍ່ທັນໝົດອາ"
+"ຍຸ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:135
 #: zypp-logic/zypp-media/mediaexception.cc:61
 #, c-format, boost-format
 msgid "File '%s' not found on medium '%s'"
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌ '%s' ໃນສື່ '%s'"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:140
 #, c-format, boost-format
@@ -311,6 +314,8 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Error code: %s\n"
 msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການດາວໂຫລດ (curl) ສຳລັບ '%s':\n"
+"ລະຫັດຂໍ້ຜິດພາດ: %s\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:146
 #, c-format, boost-format
@@ -318,170 +323,173 @@ msgid ""
 "Download (curl) error for '%s':\n"
 "Unable to retrieve HTTP response\n"
 msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການດາວໂຫລດ (curl) ສຳລັບ '%s':\n"
+"ບໍ່ສາມາດດຶງຂໍ້ມູນການຕອບກັບ HTTP ໄດ້\n"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:254
 msgid "No error"
-msgstr ""
+msgstr "ບໍ່ມີຂໍ້ຜິດພາດ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:256
 msgid "Internal Error"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດພາຍໃນ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:258
 msgid "The request was cancelled"
-msgstr ""
+msgstr "ການຮ້ອງຂໍຖືກຍົກເລີກ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:260
 msgid "The request exceeded the maximum download size"
-msgstr ""
+msgstr "ການຮ້ອງຂໍເກີນຂະໜາດດາວໂຫລດສູງສຸດ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:262
 msgid "The downloaded data did not result in a valid checksum"
-msgstr ""
+msgstr "ຂໍ້ມູນທີ່ດາວໂຫລດມີ checksum ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:264
 msgid "The peer certificate could not be verified"
-msgstr ""
+msgstr "ບໍ່ສາມາດກວດສອບໃບຮັບຮອງ (certificate) ຂອງອີກຝ່າຍໄດ້"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:266
 msgid "Connection failed"
-msgstr ""
+msgstr "ການເຊື່ອມຕໍ່ລົ້ມເຫຼວ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:268
 msgid "Unsupported protocol"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບໂປຣໂຕຄອນນີ້"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:270
 msgid "Bad URL"
-msgstr ""
+msgstr "URL ບໍ່ຖືກຕ້ອງ"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:272
 msgid "Requested location is temporarily unaccessible."
-msgstr ""
+msgstr "ທີ່ຕັ້ງທີ່ຮ້ອງຂໍບໍ່ສາມາດເຂົ້າເຖິງໄດ້ຊົ່ວຄາວ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:274
 msgid "Timeout reached"
-msgstr ""
+msgstr "ໝົດເວລາເຊື່ອມຕໍ່"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:276
 msgid "Access to requested URL is forbidden."
-msgstr ""
+msgstr "ການເຂົ້າເຖິງ URL ທີ່ຮ້ອງຂໍຖືກປະຕິເສດ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
-msgstr ""
+msgstr "ຕ້ອງການການຢືນຢັນຕົວຕົນ ແຕ່ບໍ່ໄດ້ລະບຸໄວ້."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "ການເຂົ້າສູ່ລະບົບລົ້ມເຫຼວ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
-msgstr ""
+msgstr "ເຊີບເວີສົ່ງຂໍ້ຜິດພາດກັບມາສຳລັບການຮ້ອງຂໍນີ້."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
 msgid "Server did not send all requested ranges."
-msgstr ""
+msgstr "ເຊີບເວີບໍ່ໄດ້ສົ່ງຊ່ວງຂໍ້ມູນ (ranges) ທີ່ຮ້ອງຂໍມາທັງໝົດ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
 msgid "Invalid data from server, multipart was requested but there was no range status code."
 msgstr ""
+"ຂໍ້ມູນຈາກເຊີບເວີບໍ່ຖືກຕ້ອງ, ມີການຮ້ອງຂໍ multipart ແຕ່ບໍ່ມີລະຫັດສະຖານະ range."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "ເຊີບເວີສົ່ງຂໍ້ຜິດພາດ HTTP/2 ກັບມາ."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "ເຊີບເວີສົ່ງຂໍ້ຜິດພາດ HTTP/2 stream ກັບມາ."
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
 msgid "Failed to mount %s on %s"
-msgstr ""
+msgstr "ການ mount %s ໃສ່ %s ລົ້ມເຫຼວ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:43
 #, c-format, boost-format
 msgid "Failed to unmount %s"
-msgstr ""
+msgstr "ການ unmount %s ລົ້ມເຫຼວ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:48
 #, c-format, boost-format
 msgid "Bad file name: %s"
-msgstr ""
+msgstr "ຊື່ໄຟລ໌ບໍ່ຖືກຕ້ອງ: %s"
 
 #: zypp-logic/zypp-media/mediaexception.cc:53
 #, c-format, boost-format
 msgid "Medium not opened when trying to perform action '%s'."
-msgstr ""
+msgstr "ສື່ບໍ່ໄດ້ຖືກເປີດໃນຂະນະທີ່ພະຍາຍາມດຳເນີນການ '%s'."
 
 #: zypp-logic/zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌ '%s'"
 
 #: zypp-logic/zypp-media/mediaexception.cc:66
 #, c-format, boost-format
 msgid "Cannot write file '%s'."
-msgstr ""
+msgstr "ບໍ່ສາມາດຂຽນໄຟລ໌ '%s' ໄດ້."
 
 #: zypp-logic/zypp-media/mediaexception.cc:71
 msgid "Medium not attached"
-msgstr ""
+msgstr "ບໍ່ໄດ້ເຊື່ອມຕໍ່ສື່"
 
 #: zypp-logic/zypp-media/mediaexception.cc:76
 msgid "Bad media attach point"
-msgstr ""
+msgstr "ຈຸດເຊື່ອມຕໍ່ສື່ບໍ່ຖືກຕ້ອງ"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: zypp-logic/zypp-media/mediaexception.cc:82
 #, c-format, boost-format
 msgid "Download (curl) initialization failed for '%s'"
-msgstr ""
+msgstr "ການເລີ່ມຕົ້ນດາວໂຫລດ (curl) ລົ້ມເຫຼວສຳລັບ '%s'"
 
 #: zypp-logic/zypp-media/mediaexception.cc:87
 #, c-format, boost-format
 msgid "System exception '%s' on medium '%s'."
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດຂອງລະບົບ (exception) '%s' ໃນສື່ '%s'."
 
 #: zypp-logic/zypp-media/mediaexception.cc:92
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a file."
-msgstr ""
+msgstr "ເສັ້ນທາງ '%s' ໃນສື່ '%s' ບໍ່ແມ່ນໄຟລ໌."
 
 #: zypp-logic/zypp-media/mediaexception.cc:97
 #, c-format, boost-format
 msgid "Path '%s' on medium '%s' is not a directory."
-msgstr ""
+msgstr "ເສັ້ນທາງ '%s' ໃນສື່ '%s' ບໍ່ແມ່ນໂຟນເດີ."
 
 #: zypp-logic/zypp-media/mediaexception.cc:104
 msgid "Malformed URI"
-msgstr ""
+msgstr "URI ຜິດຮູບແບບ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:114
 msgid "Empty host name in URI"
-msgstr ""
+msgstr "ຊື່ໂຮສຕ໌ໃນ URI ວ່າງເປົ່າ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:119
 msgid "Empty filesystem in URI"
-msgstr ""
+msgstr "ລະບົບໄຟລ໌ໃນ URI ວ່າງເປົ່າ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:124
 msgid "Empty destination in URI"
-msgstr ""
+msgstr "ປາຍທາງໃນ URI ວ່າງເປົ່າ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:129
 #, c-format, boost-format
 msgid "Unsupported URI scheme in '%s'."
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບຮູບແບບ URI ໃນ '%s'."
 
 #: zypp-logic/zypp-media/mediaexception.cc:134
 msgid "Operation not supported by medium"
-msgstr ""
+msgstr "ສື່ບໍ່ຮອງຮັບການດຳເນີນການນີ້"
 
 #: zypp-logic/zypp-media/mediaexception.cc:141
 #, c-format, boost-format
@@ -490,3724 +498,3728 @@ msgid ""
 "Error code: %s\n"
 "Error message: %s\n"
 msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການດາວໂຫລດ (curl) ສຳລັບ '%s':\n"
+"ລະຫັດຂໍ້ຜິດພາດ: %s\n"
+"ຂໍ້ຄວາມຂໍ້ຜິດພາດ: %s\n"
 
 #. TranslatorExplanation: curl is the name of a library, don't translate
 #: zypp-logic/zypp-media/mediaexception.cc:149
 #, c-format, boost-format
 msgid "Error occurred while setting download (curl) options for '%s':"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ຕັ້ງຄ່າການດາວໂຫລດ (curl) ສຳລັບ '%s':"
 
 #: zypp-logic/zypp-media/mediaexception.cc:156
 #, c-format, boost-format
 msgid "Media source '%s' does not contain the desired medium"
-msgstr ""
+msgstr "ແຫຼ່ງສື່ '%s' ບໍ່ມີສື່ທີ່ຕ້ອງການ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:161
 #, c-format, boost-format
 msgid "Medium '%s' is in use by another instance"
-msgstr ""
+msgstr "ສື່ '%s' ກຳລັງຖືກໃຊ້ງານໂດຍໂປຣແກຣມອື່ນ"
 
 #: zypp-logic/zypp-media/mediaexception.cc:167
 msgid "Cannot eject any media"
-msgstr ""
+msgstr "ບໍ່ສາມາດຖອດ (eject) ສື່ອອກໄດ້"
 
 #: zypp-logic/zypp-media/mediaexception.cc:169
 #, c-format, boost-format
 msgid "Cannot eject media '%s'"
-msgstr ""
+msgstr "ບໍ່ສາມາດຖອດສື່ '%s' ອອກໄດ້"
 
 #: zypp-logic/zypp-media/mediaexception.cc:184
 #, c-format, boost-format
 msgid "Permission to access '%s' denied."
-msgstr ""
+msgstr "ການເຂົ້າເຖິງ '%s' ຖືກປະຕິເສດ."
 
 #: zypp-logic/zypp-media/mediaexception.cc:200
 #, c-format, boost-format
 msgid "Downloaded data exceeded the expected filesize '%s' of '%s'."
-msgstr ""
+msgstr "ຂໍ້ມູນທີ່ດາວໂຫລດເກີນຂະໜາດໄຟລ໌ທີ່ຄາດໄວ້ '%s' ຂອງ '%s'."
 
 #: zypp-logic/zypp-media/mediaexception.cc:216
 #, c-format, boost-format
 msgid " SSL certificate problem, verify that the CA cert is OK for '%s'."
-msgstr ""
+msgstr " ເກີດບັນຫາໃບຮັບຮອງ SSL, ກະລຸນາກວດສອບວ່າ CA cert ຂອງ '%s' ຖືກຕ້ອງ."
 
 #: zypp-logic/zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
-msgstr ""
+msgstr "ບໍ່ມີຊັບພະຍາກອນວ່າງເພື່ອເຊື່ອມຕໍ່ສື່."
 
 #: zypp-logic/zypp/CountryCode.cc:51
 msgid "Unknown country: "
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກປະເທດ: "
 
 #. Defined CountryCode constants
 #. Defined LanguageCode constants
 #: zypp-logic/zypp/CountryCode.cc:150 zypp-logic/zypp/LanguageCode.cc:149
 msgid "No Code"
-msgstr ""
+msgstr "ບໍ່ມີລະຫັດ"
 
 #: zypp-logic/zypp/CountryCode.cc:159
 msgid "Andorra"
-msgstr ""
+msgstr "ອັງໂດຣາ"
 
 #. :AND:020:
 #: zypp-logic/zypp/CountryCode.cc:160
 msgid "United Arab Emirates"
-msgstr ""
+msgstr "ສະຫະລັດ ອາຣັບ ເອມີເຣດ"
 
 #. :ARE:784:
 #: zypp-logic/zypp/CountryCode.cc:161
 msgid "Afghanistan"
-msgstr ""
+msgstr "ອັບການິສະຖານ"
 
 #. :AFG:004:
 #: zypp-logic/zypp/CountryCode.cc:162
 msgid "Antigua and Barbuda"
-msgstr ""
+msgstr "ແອນຕີກາ ແລະ ບາບູດາ"
 
 #. :ATG:028:
 #: zypp-logic/zypp/CountryCode.cc:163
 msgid "Anguilla"
-msgstr ""
+msgstr "ແອງກິວລາ"
 
 #. :AIA:660:
 #: zypp-logic/zypp/CountryCode.cc:164
 msgid "Albania"
-msgstr ""
+msgstr "ແອລເບເນຍ"
 
 #. :ALB:008:
 #: zypp-logic/zypp/CountryCode.cc:165
 msgid "Armenia"
-msgstr ""
+msgstr "ອາເມເນຍ"
 
 #. :ARM:051:
 #: zypp-logic/zypp/CountryCode.cc:166
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "ເນເທີແລນ ແອນທິວລີສ"
 
 #. :ANT:530:
 #: zypp-logic/zypp/CountryCode.cc:167
 msgid "Angola"
-msgstr ""
+msgstr "ອັງໂກລາ"
 
 #. :AGO:024:
 #: zypp-logic/zypp/CountryCode.cc:168
 msgid "Antarctica"
-msgstr ""
+msgstr "ແອນຕາກຕິກາ"
 
 #. :ATA:010:
 #: zypp-logic/zypp/CountryCode.cc:169
 msgid "Argentina"
-msgstr ""
+msgstr "ອາເຈນຕິນາ"
 
 #. :ARG:032:
 #: zypp-logic/zypp/CountryCode.cc:170
 msgid "American Samoa"
-msgstr ""
+msgstr "ອາເມຣິກັນ ຊາມົວ"
 
 #. :ASM:016:
 #: zypp-logic/zypp/CountryCode.cc:171
 msgid "Austria"
-msgstr ""
+msgstr "ໂອຕຣິດ"
 
 #. :AUT:040:
 #: zypp-logic/zypp/CountryCode.cc:172
 msgid "Australia"
-msgstr ""
+msgstr "ອົດສະຕຣາລີ"
 
 #. :AUS:036:
 #: zypp-logic/zypp/CountryCode.cc:173
 msgid "Aruba"
-msgstr ""
+msgstr "ອາຣູບາ"
 
 #. :ABW:533:
 #: zypp-logic/zypp/CountryCode.cc:174
 msgid "Aland Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະໂອລັນ"
 
 #. :ALA:248:
 #: zypp-logic/zypp/CountryCode.cc:175
 msgid "Azerbaijan"
-msgstr ""
+msgstr "ອາແຊກໄບຊານ"
 
 #. :AZE:031:
 #: zypp-logic/zypp/CountryCode.cc:176
 msgid "Bosnia and Herzegovina"
-msgstr ""
+msgstr "ບົດສະນີ ແລະ ເຮີເຊໂກວີນາ"
 
 #. :BIH:070:
 #: zypp-logic/zypp/CountryCode.cc:177
 msgid "Barbados"
-msgstr ""
+msgstr "ບາບາໂດສ"
 
 #. :BRB:052:
 #: zypp-logic/zypp/CountryCode.cc:178
 msgid "Bangladesh"
-msgstr ""
+msgstr "ບັງກະລາເທດ"
 
 #. :BGD:050:
 #: zypp-logic/zypp/CountryCode.cc:179
 msgid "Belgium"
-msgstr ""
+msgstr "ເບລຢຽມ"
 
 #. :BEL:056:
 #: zypp-logic/zypp/CountryCode.cc:180
 msgid "Burkina Faso"
-msgstr ""
+msgstr "ບູກີນາ ຟາໂຊ"
 
 #. :BFA:854:
 #: zypp-logic/zypp/CountryCode.cc:181
 msgid "Bulgaria"
-msgstr ""
+msgstr "ບູນກາຣີ"
 
 #. :BGR:100:
 #: zypp-logic/zypp/CountryCode.cc:182
 msgid "Bahrain"
-msgstr ""
+msgstr "ບາເຣນ"
 
 #. :BHR:048:
 #: zypp-logic/zypp/CountryCode.cc:183
 msgid "Burundi"
-msgstr ""
+msgstr "ບູຣຸນດີ"
 
 #. :BDI:108:
 #: zypp-logic/zypp/CountryCode.cc:184
 msgid "Benin"
-msgstr ""
+msgstr "ເບແນັງ"
 
 #. :BEN:204:
 #: zypp-logic/zypp/CountryCode.cc:185
 msgid "Bermuda"
-msgstr ""
+msgstr "ເບີມິວດາ"
 
 #. :BMU:060:
 #: zypp-logic/zypp/CountryCode.cc:186
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "ບຣູໄນ ດາຣູຊາລາມ"
 
 #. :BRN:096:
 #: zypp-logic/zypp/CountryCode.cc:187
 msgid "Bolivia"
-msgstr ""
+msgstr "ໂບລີວີ"
 
 #. :BOL:068:
 #: zypp-logic/zypp/CountryCode.cc:188
 msgid "Brazil"
-msgstr ""
+msgstr "ບຣາຊິນ"
 
 #. :BRA:076:
 #: zypp-logic/zypp/CountryCode.cc:189
 msgid "Bahamas"
-msgstr ""
+msgstr "ບາຮາມາສ"
 
 #. :BHS:044:
 #: zypp-logic/zypp/CountryCode.cc:190
 msgid "Bhutan"
-msgstr ""
+msgstr "ພູຖານ"
 
 #. :BTN:064:
 #: zypp-logic/zypp/CountryCode.cc:191
 msgid "Bouvet Island"
-msgstr ""
+msgstr "ເກາະບູເວ"
 
 #. :BVT:074:
 #: zypp-logic/zypp/CountryCode.cc:192
 msgid "Botswana"
-msgstr ""
+msgstr "ບົດສະວານາ"
 
 #. :BWA:072:
 #: zypp-logic/zypp/CountryCode.cc:193
 msgid "Belarus"
-msgstr ""
+msgstr "ເບລາຣຸດ"
 
 #. :BLR:112:
 #: zypp-logic/zypp/CountryCode.cc:194
 msgid "Belize"
-msgstr ""
+msgstr "ເບລີຊ"
 
 #. :BLZ:084:
 #: zypp-logic/zypp/CountryCode.cc:195
 msgid "Canada"
-msgstr ""
+msgstr "ແຄນນາດາ"
 
 #. :CAN:124:
 #: zypp-logic/zypp/CountryCode.cc:196
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະໂຄໂຄສ (ຄີລິງ)"
 
 #. :CCK:166:
 #. :CAF:140:
 #: zypp-logic/zypp/CountryCode.cc:197 zypp-logic/zypp/CountryCode.cc:199
 msgid "Congo"
-msgstr ""
+msgstr "ກົງໂກ"
 
 #. :COD:180:
 #: zypp-logic/zypp/CountryCode.cc:198
 msgid "Central African Republic"
-msgstr ""
+msgstr "ສາທາລະນະລັດ ອາຟຣິກາກາງ"
 
 #. :COG:178:
 #: zypp-logic/zypp/CountryCode.cc:200
 msgid "Switzerland"
-msgstr ""
+msgstr "ສະວິດເຊີແລນ"
 
 #. :CHE:756:
 #: zypp-logic/zypp/CountryCode.cc:201
 msgid "Cote D'Ivoire"
-msgstr ""
+msgstr "ໂກຕີ ດິວົວ"
 
 #. :CIV:384:
 #: zypp-logic/zypp/CountryCode.cc:202
 msgid "Cook Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະຄຸກ"
 
 #. :COK:184:
 #: zypp-logic/zypp/CountryCode.cc:203
 msgid "Chile"
-msgstr ""
+msgstr "ຊີເລ"
 
 #. :CHL:152:
 #: zypp-logic/zypp/CountryCode.cc:204
 msgid "Cameroon"
-msgstr ""
+msgstr "ຄາເມຣູນ"
 
 #. :CMR:120:
 #: zypp-logic/zypp/CountryCode.cc:205
 msgid "China"
-msgstr ""
+msgstr "ຈີນ"
 
 #. :CHN:156:
 #: zypp-logic/zypp/CountryCode.cc:206
 msgid "Colombia"
-msgstr ""
+msgstr "ໂຄລົມເບຍ"
 
 #. :COL:170:
 #: zypp-logic/zypp/CountryCode.cc:207
 msgid "Costa Rica"
-msgstr ""
+msgstr "ກົດສະຕາຣິກາ"
 
 #. :CRI:188:
 #: zypp-logic/zypp/CountryCode.cc:208
 msgid "Cuba"
-msgstr ""
+msgstr "ຄິວບາ"
 
 #. :CUB:192:
 #: zypp-logic/zypp/CountryCode.cc:209
 msgid "Cape Verde"
-msgstr ""
+msgstr "ກັບແວກ"
 
 #. :CPV:132:
 #: zypp-logic/zypp/CountryCode.cc:210
 msgid "Christmas Island"
-msgstr ""
+msgstr "ເກາະຄຣິດສະມາດ"
 
 #. :CXR:162:
 #: zypp-logic/zypp/CountryCode.cc:211
 msgid "Cyprus"
-msgstr ""
+msgstr "ໄຊປຣັສ"
 
 #. :CYP:196:
 #: zypp-logic/zypp/CountryCode.cc:212
 msgid "Czech Republic"
-msgstr ""
+msgstr "ສາທາລະນະລັດ ເຊັກ"
 
 #. :CZE:203:
 #: zypp-logic/zypp/CountryCode.cc:213
 msgid "Germany"
-msgstr ""
+msgstr "ເຢຍລະມັນ"
 
 #. :DEU:276:
 #: zypp-logic/zypp/CountryCode.cc:214
 msgid "Djibouti"
-msgstr ""
+msgstr "ຈີບູຕີ"
 
 #. :DJI:262:
 #: zypp-logic/zypp/CountryCode.cc:215
 msgid "Denmark"
-msgstr ""
+msgstr "ດານມາກ"
 
 #. :DNK:208:
 #: zypp-logic/zypp/CountryCode.cc:216
 msgid "Dominica"
-msgstr ""
+msgstr "ໂດມິນິກາ"
 
 #. :DMA:212:
 #: zypp-logic/zypp/CountryCode.cc:217
 msgid "Dominican Republic"
-msgstr ""
+msgstr "ສາທາລະນະລັດ ໂດມິນິກັນ"
 
 #. :DOM:214:
 #: zypp-logic/zypp/CountryCode.cc:218
 msgid "Algeria"
-msgstr ""
+msgstr "ອານເຊຣີ"
 
 #. :DZA:012:
 #: zypp-logic/zypp/CountryCode.cc:219
 msgid "Ecuador"
-msgstr ""
+msgstr "ເອກົວດໍ"
 
 #. :ECU:218:
 #: zypp-logic/zypp/CountryCode.cc:220
 msgid "Estonia"
-msgstr ""
+msgstr "ເອສໂຕເນຍ"
 
 #. :EST:233:
 #: zypp-logic/zypp/CountryCode.cc:221
 msgid "Egypt"
-msgstr ""
+msgstr "ເອຢິບ"
 
 #. :EGY:818:
 #: zypp-logic/zypp/CountryCode.cc:222
 msgid "Western Sahara"
-msgstr ""
+msgstr "ຊາຮາຣາຕາເວັນຕົກ"
 
 #. :ESH:732:
 #: zypp-logic/zypp/CountryCode.cc:223
 msgid "Eritrea"
-msgstr ""
+msgstr "ເອຣີເຕຣຍ"
 
 #. :ERI:232:
 #: zypp-logic/zypp/CountryCode.cc:224
 msgid "Spain"
-msgstr ""
+msgstr "ແອັດສະປາຍ"
 
 #. :ESP:724:
 #: zypp-logic/zypp/CountryCode.cc:225
 msgid "Ethiopia"
-msgstr ""
+msgstr "ເອທິໂອປີ"
 
 #. :ETH:231:
 #: zypp-logic/zypp/CountryCode.cc:226
 msgid "Finland"
-msgstr ""
+msgstr "ຟິນແລນ"
 
 #. :FIN:246:
 #: zypp-logic/zypp/CountryCode.cc:227
 msgid "Fiji"
-msgstr ""
+msgstr "ຟີຈີ"
 
 #. :FJI:242:
 #: zypp-logic/zypp/CountryCode.cc:228
 msgid "Falkland Islands (Malvinas)"
-msgstr ""
+msgstr "ໝູ່ເກາະຟອກແລນ (ມັລວີນັສ)"
 
 #. :FLK:238:
 #: zypp-logic/zypp/CountryCode.cc:229
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "ສະຫະພັນທະລັດ ໄມໂຄຣນີເຊຍ"
 
 #. :FSM:583:
 #: zypp-logic/zypp/CountryCode.cc:230
 msgid "Faroe Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະຟາໂຣ"
 
 #. :FRO:234:
 #: zypp-logic/zypp/CountryCode.cc:231
 msgid "France"
-msgstr ""
+msgstr "ຝຣັ່ງ"
 
 #. :FRA:250:
 #: zypp-logic/zypp/CountryCode.cc:232
 msgid "Metropolitan France"
-msgstr ""
+msgstr "ຝຣັ່ງແຜ່ນດິນໃຫຍ່"
 
 #. :FXX:249:
 #: zypp-logic/zypp/CountryCode.cc:233
 msgid "Gabon"
-msgstr ""
+msgstr "ກາບອງ"
 
 #. :GAB:266:
 #: zypp-logic/zypp/CountryCode.cc:234
 msgid "United Kingdom"
-msgstr ""
+msgstr "ສະຫະລາຊະອານາຈັກ"
 
 #. :GBR:826:
 #: zypp-logic/zypp/CountryCode.cc:235
 msgid "Grenada"
-msgstr ""
+msgstr "ເກຣີນາດາ"
 
 #. :GRD:308:
 #: zypp-logic/zypp/CountryCode.cc:236
 msgid "Georgia"
-msgstr ""
+msgstr "ຈໍເຈຍ"
 
 #. :GEO:268:
 #: zypp-logic/zypp/CountryCode.cc:237
 msgid "French Guiana"
-msgstr ""
+msgstr "ເຟຣນສ໌ ກີອານາ"
 
 #. :GUF:254:
 #: zypp-logic/zypp/CountryCode.cc:238
 msgid "Guernsey"
-msgstr ""
+msgstr "ເກີນຊີ"
 
 #: zypp-logic/zypp/CountryCode.cc:239
 msgid "Ghana"
-msgstr ""
+msgstr "ການາ"
 
 #. :GHA:288:
 #: zypp-logic/zypp/CountryCode.cc:240
 msgid "Gibraltar"
-msgstr ""
+msgstr "ຢິບຣອລຕາ"
 
 #. :GIB:292:
 #: zypp-logic/zypp/CountryCode.cc:241
 msgid "Greenland"
-msgstr ""
+msgstr "ກຣີນແລນ"
 
 #. :GRL:304:
 #: zypp-logic/zypp/CountryCode.cc:242
 msgid "Gambia"
-msgstr ""
+msgstr "ກຳບີ"
 
 #. :GMB:270:
 #: zypp-logic/zypp/CountryCode.cc:243
 msgid "Guinea"
-msgstr ""
+msgstr "ກີເນ"
 
 #. :GIN:324:
 #: zypp-logic/zypp/CountryCode.cc:244
 msgid "Guadeloupe"
-msgstr ""
+msgstr "ກົວດາລູບ"
 
 #. :GLP:312:
 #: zypp-logic/zypp/CountryCode.cc:245
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "ກີເນເອກົວດໍ"
 
 #. :GNQ:226:
 #: zypp-logic/zypp/CountryCode.cc:246
 msgid "Greece"
-msgstr ""
+msgstr "ເກຣັກ"
 
 #. :GRC:300:
 #: zypp-logic/zypp/CountryCode.cc:247
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "ຈໍເຈຍໃຕ້ ແລະ ໝູ່ເກາະແຊນວິດໃຕ້"
 
 #. :SGS:239:
 #: zypp-logic/zypp/CountryCode.cc:248
 msgid "Guatemala"
-msgstr ""
+msgstr "ກົວເຕມາລາ"
 
 #. :GTM:320:
 #: zypp-logic/zypp/CountryCode.cc:249
 msgid "Guam"
-msgstr ""
+msgstr "ກວາມ"
 
 #. :GUM:316:
 #: zypp-logic/zypp/CountryCode.cc:250
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "ກີເນ-ບິດເຊົາ"
 
 #. :GNB:624:
 #: zypp-logic/zypp/CountryCode.cc:251
 msgid "Guyana"
-msgstr ""
+msgstr "ກາຍອານາ"
 
 #. :GUY:328:
 #: zypp-logic/zypp/CountryCode.cc:252
 msgid "Hong Kong"
-msgstr ""
+msgstr "ຮົງກົງ"
 
 #. :HKG:344:
 #: zypp-logic/zypp/CountryCode.cc:253
 msgid "Heard Island and McDonald Islands"
-msgstr ""
+msgstr "ເກາະເຮີດ ແລະ ໝູ່ເກາະແມັກໂດນັນ"
 
 #. :HMD:334:
 #: zypp-logic/zypp/CountryCode.cc:254
 msgid "Honduras"
-msgstr ""
+msgstr "ຮົງດູຣັສ"
 
 #. :HND:340:
 #: zypp-logic/zypp/CountryCode.cc:255
 msgid "Croatia"
-msgstr ""
+msgstr "ໂຄຣເອເຊຍ"
 
 #. :HRV:191:
 #: zypp-logic/zypp/CountryCode.cc:256
 msgid "Haiti"
-msgstr ""
+msgstr "ໄຮຕີ"
 
 #. :HTI:332:
 #: zypp-logic/zypp/CountryCode.cc:257
 msgid "Hungary"
-msgstr ""
+msgstr "ຮົງກາຣີ"
 
 #. :HUN:348:
 #: zypp-logic/zypp/CountryCode.cc:258
 msgid "Indonesia"
-msgstr ""
+msgstr "ອິນໂດເນເຊຍ"
 
 #. :IDN:360:
 #: zypp-logic/zypp/CountryCode.cc:259
 msgid "Ireland"
-msgstr ""
+msgstr "ອຽກລັງ"
 
 #. :IRL:372:
 #: zypp-logic/zypp/CountryCode.cc:260
 msgid "Israel"
-msgstr ""
+msgstr "ອິດສະຣາແອນ"
 
 #. :ISR:376:
 #: zypp-logic/zypp/CountryCode.cc:261
 msgid "Isle of Man"
-msgstr ""
+msgstr "ເກາະແມນ"
 
 #: zypp-logic/zypp/CountryCode.cc:262
 msgid "India"
-msgstr ""
+msgstr "ອິນເດຍ"
 
 #. :IND:356:
 #: zypp-logic/zypp/CountryCode.cc:263
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "ບຣິຕິສ ອິນເດຍ ໂອຊຽນ ເທຣິທໍຣີ"
 
 #. :IOT:086:
 #: zypp-logic/zypp/CountryCode.cc:264
 msgid "Iraq"
-msgstr ""
+msgstr "ອີຣັກ"
 
 #. :IRQ:368:
 #: zypp-logic/zypp/CountryCode.cc:265
 msgid "Iran"
-msgstr ""
+msgstr "ອີຣ່ານ"
 
 #. :IRN:364:
 #: zypp-logic/zypp/CountryCode.cc:266
 msgid "Iceland"
-msgstr ""
+msgstr "ໄອສແລນ"
 
 #. :ISL:352:
 #: zypp-logic/zypp/CountryCode.cc:267
 msgid "Italy"
-msgstr ""
+msgstr "ອີຕາລີ"
 
 #. :ITA:380:
 #: zypp-logic/zypp/CountryCode.cc:268
 msgid "Jersey"
-msgstr ""
+msgstr "ເຈີຊີ"
 
 #: zypp-logic/zypp/CountryCode.cc:269
 msgid "Jamaica"
-msgstr ""
+msgstr "ຢາໄມກາ"
 
 #. :JAM:388:
 #: zypp-logic/zypp/CountryCode.cc:270
 msgid "Jordan"
-msgstr ""
+msgstr "ຈໍແດນ"
 
 #. :JOR:400:
 #: zypp-logic/zypp/CountryCode.cc:271
 msgid "Japan"
-msgstr ""
+msgstr "ຍີ່ປຸ່ນ"
 
 #. :JPN:392:
 #: zypp-logic/zypp/CountryCode.cc:272
 msgid "Kenya"
-msgstr ""
+msgstr "ເຄນຢາ"
 
 #. :KEN:404:
 #: zypp-logic/zypp/CountryCode.cc:273
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "ກຽກກິດສະຖານ"
 
 #. :KGZ:417:
 #: zypp-logic/zypp/CountryCode.cc:274
 msgid "Cambodia"
-msgstr ""
+msgstr "ກຳປູເຈຍ"
 
 #. :KHM:116:
 #: zypp-logic/zypp/CountryCode.cc:275
 msgid "Kiribati"
-msgstr ""
+msgstr "ຄີຣີບາຕີ"
 
 #. :KIR:296:
 #: zypp-logic/zypp/CountryCode.cc:276
 msgid "Comoros"
-msgstr ""
+msgstr "ໂກໂມໂຣສ"
 
 #. :COM:174:
 #: zypp-logic/zypp/CountryCode.cc:277
 msgid "Saint Kitts and Nevis"
-msgstr ""
+msgstr "ເຊນ ກິດ ແລະ ເນວິດ"
 
 #. :KNA:659:
 #: zypp-logic/zypp/CountryCode.cc:278
 msgid "North Korea"
-msgstr ""
+msgstr "ເກົາຫຼີເໜືອ"
 
 #. :PRK:408:
 #: zypp-logic/zypp/CountryCode.cc:279
 msgid "South Korea"
-msgstr ""
+msgstr "ເກົາຫຼີໃຕ້"
 
 #. :KOR:410:
 #: zypp-logic/zypp/CountryCode.cc:280
 msgid "Kuwait"
-msgstr ""
+msgstr "ກູເວດ"
 
 #. :KWT:414:
 #: zypp-logic/zypp/CountryCode.cc:281
 msgid "Cayman Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະເຄແມນ"
 
 #. :CYM:136:
 #: zypp-logic/zypp/CountryCode.cc:282
 msgid "Kazakhstan"
-msgstr ""
+msgstr "ກາຊັກສະຖານ"
 
 #. :KAZ:398:
 #: zypp-logic/zypp/CountryCode.cc:283
 msgid "Lao People's Democratic Republic"
-msgstr ""
+msgstr "ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ"
 
 #. :LAO:418:
 #: zypp-logic/zypp/CountryCode.cc:284
 msgid "Lebanon"
-msgstr ""
+msgstr "ເລບານອນ"
 
 #. :LBN:422:
 #: zypp-logic/zypp/CountryCode.cc:285
 msgid "Saint Lucia"
-msgstr ""
+msgstr "ເຊນ ລູເຊຍ"
 
 #. :LCA:662:
 #: zypp-logic/zypp/CountryCode.cc:286
 msgid "Liechtenstein"
-msgstr ""
+msgstr "ລິກເຕນສະເຕນ"
 
 #. :LIE:438:
 #: zypp-logic/zypp/CountryCode.cc:287
 msgid "Sri Lanka"
-msgstr ""
+msgstr "ສີລັງກາ"
 
 #. :LKA:144:
 #: zypp-logic/zypp/CountryCode.cc:288
 msgid "Liberia"
-msgstr ""
+msgstr "ລິເບີເຣຍ"
 
 #. :LBR:430:
 #: zypp-logic/zypp/CountryCode.cc:289
 msgid "Lesotho"
-msgstr ""
+msgstr "ເລໂຊໂທ"
 
 #. :LSO:426:
 #: zypp-logic/zypp/CountryCode.cc:290
 msgid "Lithuania"
-msgstr ""
+msgstr "ລິຕົວເນຍ"
 
 #. :LTU:440:
 #: zypp-logic/zypp/CountryCode.cc:291
 msgid "Luxembourg"
-msgstr ""
+msgstr "ລຸກຊຳບວກ"
 
 #. :LUX:442:
 #: zypp-logic/zypp/CountryCode.cc:292
 msgid "Latvia"
-msgstr ""
+msgstr "ລັດເວຍ"
 
 #. :LVA:428:
 #: zypp-logic/zypp/CountryCode.cc:293
 msgid "Libya"
-msgstr ""
+msgstr "ລິບີ"
 
 #. :LBY:434:
 #: zypp-logic/zypp/CountryCode.cc:294
 msgid "Morocco"
-msgstr ""
+msgstr "ມາຣັອກ"
 
 #. :MAR:504:
 #: zypp-logic/zypp/CountryCode.cc:295
 msgid "Monaco"
-msgstr ""
+msgstr "ໂມນາໂກ"
 
 #. :MCO:492:
 #: zypp-logic/zypp/CountryCode.cc:296
 msgid "Moldova"
-msgstr ""
+msgstr "ໂມນໂດວາ"
 
 #. :MDA:498:
 #: zypp-logic/zypp/CountryCode.cc:297
 msgid "Montenegro"
-msgstr ""
+msgstr "ມົງເຕເນໂກຣ"
 
 #: zypp-logic/zypp/CountryCode.cc:298
 msgid "Saint Martin"
-msgstr ""
+msgstr "ເຊນ ມາຕິນ"
 
 #: zypp-logic/zypp/CountryCode.cc:299
 msgid "Madagascar"
-msgstr ""
+msgstr "ມາດາກັດສະກາ"
 
 #. :MDG:450:
 #: zypp-logic/zypp/CountryCode.cc:300
 msgid "Marshall Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະມາຊານ"
 
 #. :MHL:584:
 #: zypp-logic/zypp/CountryCode.cc:301
 msgid "Macedonia"
-msgstr ""
+msgstr "ມາເຊໂດເນຍ"
 
 #. :MKD:807:
 #: zypp-logic/zypp/CountryCode.cc:302
 msgid "Mali"
-msgstr ""
+msgstr "ມາລີ"
 
 #. :MLI:466:
 #: zypp-logic/zypp/CountryCode.cc:303
 msgid "Myanmar"
-msgstr ""
+msgstr "ມຽນມາ"
 
 #. :MMR:104:
 #: zypp-logic/zypp/CountryCode.cc:304
 msgid "Mongolia"
-msgstr ""
+msgstr "ມົງໂກລີ"
 
 #. :MNG:496:
 #: zypp-logic/zypp/CountryCode.cc:305
 msgid "Macao"
-msgstr ""
+msgstr "ມາກາວ"
 
 #. :MAC:446:
 #: zypp-logic/zypp/CountryCode.cc:306
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະມາເຣຍນາເໜືອ"
 
 #. :MNP:580:
 #: zypp-logic/zypp/CountryCode.cc:307
 msgid "Martinique"
-msgstr ""
+msgstr "ມາຕິນິກ"
 
 #. :MTQ:474:
 #: zypp-logic/zypp/CountryCode.cc:308
 msgid "Mauritania"
-msgstr ""
+msgstr "ມໍຣິເຕເນຍ"
 
 #. :MRT:478:
 #: zypp-logic/zypp/CountryCode.cc:309
 msgid "Montserrat"
-msgstr ""
+msgstr "ມອນເຊີຣັດ"
 
 #. :MSR:500:
 #: zypp-logic/zypp/CountryCode.cc:310
 msgid "Malta"
-msgstr ""
+msgstr "ມັລຕາ"
 
 #. :MLT:470:
 #: zypp-logic/zypp/CountryCode.cc:311
 msgid "Mauritius"
-msgstr ""
+msgstr "ມໍຣິຊຽສ"
 
 #. :MUS:480:
 #: zypp-logic/zypp/CountryCode.cc:312
 msgid "Maldives"
-msgstr ""
+msgstr "ມັລດິຟ"
 
 #. :MDV:462:
 #: zypp-logic/zypp/CountryCode.cc:313
 msgid "Malawi"
-msgstr ""
+msgstr "ມາລາວີ"
 
 #. :MWI:454:
 #: zypp-logic/zypp/CountryCode.cc:314
 msgid "Mexico"
-msgstr ""
+msgstr "ເມັກຊິໂກ"
 
 #. :MEX:484:
 #: zypp-logic/zypp/CountryCode.cc:315
 msgid "Malaysia"
-msgstr ""
+msgstr "ມາເລເຊຍ"
 
 #. :MYS:458:
 #: zypp-logic/zypp/CountryCode.cc:316
 msgid "Mozambique"
-msgstr ""
+msgstr "ໂມຊຳບິກ"
 
 #. :MOZ:508:
 #: zypp-logic/zypp/CountryCode.cc:317
 msgid "Namibia"
-msgstr ""
+msgstr "ນາມີບີ"
 
 #. :NAM:516:
 #: zypp-logic/zypp/CountryCode.cc:318
 msgid "New Caledonia"
-msgstr ""
+msgstr "ນິວຄາເລໂດເນຍ"
 
 #. :NCL:540:
 #: zypp-logic/zypp/CountryCode.cc:319
 msgid "Niger"
-msgstr ""
+msgstr "ນີເຊ"
 
 #. :NER:562:
 #: zypp-logic/zypp/CountryCode.cc:320
 msgid "Norfolk Island"
-msgstr ""
+msgstr "ເກາະນໍຟອກ"
 
 #. :NFK:574:
 #: zypp-logic/zypp/CountryCode.cc:321
 msgid "Nigeria"
-msgstr ""
+msgstr "ໄນຈີເລຍ"
 
 #. :NGA:566:
 #: zypp-logic/zypp/CountryCode.cc:322
 msgid "Nicaragua"
-msgstr ""
+msgstr "ນິກາຣາກົວ"
 
 #. :NIC:558:
 #: zypp-logic/zypp/CountryCode.cc:323
 msgid "Netherlands"
-msgstr ""
+msgstr "ເນເທີແລນ"
 
 #. :NLD:528:
 #: zypp-logic/zypp/CountryCode.cc:324
 msgid "Norway"
-msgstr ""
+msgstr "ນໍເວ"
 
 #. :NOR:578:
 #: zypp-logic/zypp/CountryCode.cc:325
 msgid "Nepal"
-msgstr ""
+msgstr "ເນປານ"
 
 #. :NPL:524:
 #. language code: nau na
 #: zypp-logic/zypp/CountryCode.cc:326 zypp-logic/zypp/LanguageCode.cc:782
 msgid "Nauru"
-msgstr ""
+msgstr "ນາອູຣູ"
 
 #. :NRU:520:
 #: zypp-logic/zypp/CountryCode.cc:327
 msgid "Niue"
-msgstr ""
+msgstr "ນີອູເອ"
 
 #. :NIU:570:
 #: zypp-logic/zypp/CountryCode.cc:328
 msgid "New Zealand"
-msgstr ""
+msgstr "ນິວຊີແລນ"
 
 #. :NZL:554:
 #: zypp-logic/zypp/CountryCode.cc:329
 msgid "Oman"
-msgstr ""
+msgstr "ໂອມານ"
 
 #. :OMN:512:
 #: zypp-logic/zypp/CountryCode.cc:330
 msgid "Panama"
-msgstr ""
+msgstr "ປານາມາ"
 
 #. :PAN:591:
 #: zypp-logic/zypp/CountryCode.cc:331
 msgid "Peru"
-msgstr ""
+msgstr "ເປຣູ"
 
 #. :PER:604:
 #: zypp-logic/zypp/CountryCode.cc:332
 msgid "French Polynesia"
-msgstr ""
+msgstr "ເຟຣນສ໌ ໂພລີນີເຊຍ"
 
 #. :PYF:258:
 #: zypp-logic/zypp/CountryCode.cc:333
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "ປາປົວ ນິວກີເນ"
 
 #. :PNG:598:
 #: zypp-logic/zypp/CountryCode.cc:334
 msgid "Philippines"
-msgstr ""
+msgstr "ຟີລິບປິນ"
 
 #. :PHL:608:
 #: zypp-logic/zypp/CountryCode.cc:335
 msgid "Pakistan"
-msgstr ""
+msgstr "ປາກີສະຖານ"
 
 #. :PAK:586:
 #: zypp-logic/zypp/CountryCode.cc:336
 msgid "Poland"
-msgstr ""
+msgstr "ໂປໂລຍ"
 
 #. :POL:616:
 #: zypp-logic/zypp/CountryCode.cc:337
 msgid "Saint Pierre and Miquelon"
-msgstr ""
+msgstr "ເຊນ ປີແອ ແລະ ມິເກລອງ"
 
 #. :SPM:666:
 #: zypp-logic/zypp/CountryCode.cc:338
 msgid "Pitcairn"
-msgstr ""
+msgstr "ພິດແຄນ"
 
 #. :PCN:612:
 #: zypp-logic/zypp/CountryCode.cc:339
 msgid "Puerto Rico"
-msgstr ""
+msgstr "ເປີໂຕຣິໂກ"
 
 #. :PRI:630:
 #: zypp-logic/zypp/CountryCode.cc:340
 msgid "Palestinian Territory"
-msgstr ""
+msgstr "ດິນແດນ ປາເລດສະຕິນ"
 
 #. :PSE:275:
 #: zypp-logic/zypp/CountryCode.cc:341
 msgid "Portugal"
-msgstr ""
+msgstr "ປອກຕຸຍການ"
 
 #. :PRT:620:
 #: zypp-logic/zypp/CountryCode.cc:342
 msgid "Palau"
-msgstr ""
+msgstr "ປາລົົາ"
 
 #. :PLW:585:
 #: zypp-logic/zypp/CountryCode.cc:343
 msgid "Paraguay"
-msgstr ""
+msgstr "ປາຣາກວາຍ"
 
 #. :PRY:600:
 #: zypp-logic/zypp/CountryCode.cc:344
 msgid "Qatar"
-msgstr ""
+msgstr "ກາຕາ"
 
 #. :QAT:634:
 #: zypp-logic/zypp/CountryCode.cc:345
 msgid "Reunion"
-msgstr ""
+msgstr "ເຣອູນີຍົງ"
 
 #. :REU:638:
 #: zypp-logic/zypp/CountryCode.cc:346
 msgid "Romania"
-msgstr ""
+msgstr "ໂຣມາເນຍ"
 
 #. :ROU:642:
 #: zypp-logic/zypp/CountryCode.cc:347
 msgid "Serbia"
-msgstr ""
+msgstr "ແຊກບີ"
 
 #: zypp-logic/zypp/CountryCode.cc:348
 msgid "Russian Federation"
-msgstr ""
+msgstr "ສະຫະພັນ ລັດເຊຍ"
 
 #. :RUS:643:
 #: zypp-logic/zypp/CountryCode.cc:349
 msgid "Rwanda"
-msgstr ""
+msgstr "ຣູວັນດາ"
 
 #. :RWA:646:
 #: zypp-logic/zypp/CountryCode.cc:350
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "ຊາອຸດິດ ອາຣັບເບຍ"
 
 #. :SAU:682:
 #: zypp-logic/zypp/CountryCode.cc:351
 msgid "Solomon Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະໂຊໂລມອນ"
 
 #. :SLB:090:
 #: zypp-logic/zypp/CountryCode.cc:352
 msgid "Seychelles"
-msgstr ""
+msgstr "ເຊເຊລ"
 
 #. :SYC:690:
 #: zypp-logic/zypp/CountryCode.cc:353
 msgid "Sudan"
-msgstr ""
+msgstr "ຊູດານ"
 
 #. :SDN:736:
 #: zypp-logic/zypp/CountryCode.cc:354
 msgid "Sweden"
-msgstr ""
+msgstr "ສະວີເດັນ"
 
 #. :SWE:752:
 #: zypp-logic/zypp/CountryCode.cc:355
 msgid "Singapore"
-msgstr ""
+msgstr "ສິງກະໂປ"
 
 #. :SGP:702:
 #: zypp-logic/zypp/CountryCode.cc:356
 msgid "Saint Helena"
-msgstr ""
+msgstr "ເຊນ ເຮເລນາ"
 
 #. :SHN:654:
 #: zypp-logic/zypp/CountryCode.cc:357
 msgid "Slovenia"
-msgstr ""
+msgstr "ສະໂລເວນີ"
 
 #. :SVN:705:
 #: zypp-logic/zypp/CountryCode.cc:358
 msgid "Svalbard and Jan Mayen"
-msgstr ""
+msgstr "ສະວາບັດ ແລະ ຢານ ມາເຢນ"
 
 #. :SJM:744:
 #: zypp-logic/zypp/CountryCode.cc:359
 msgid "Slovakia"
-msgstr ""
+msgstr "ສະໂລວາກີ"
 
 #. :SVK:703:
 #: zypp-logic/zypp/CountryCode.cc:360
 msgid "Sierra Leone"
-msgstr ""
+msgstr "ເຊຍຣາ ເລໂອນ"
 
 #. :SLE:694:
 #: zypp-logic/zypp/CountryCode.cc:361
 msgid "San Marino"
-msgstr ""
+msgstr "ຊານ ມາຣີໂນ"
 
 #. :SMR:674:
 #: zypp-logic/zypp/CountryCode.cc:362
 msgid "Senegal"
-msgstr ""
+msgstr "ເຊເນການ"
 
 #. :SEN:686:
 #: zypp-logic/zypp/CountryCode.cc:363
 msgid "Somalia"
-msgstr ""
+msgstr "ໂຊມາລີ"
 
 #. :SOM:706:
 #: zypp-logic/zypp/CountryCode.cc:364
 msgid "Suriname"
-msgstr ""
+msgstr "ຊູຣີນາມ"
 
 #. :SUR:740:
 #: zypp-logic/zypp/CountryCode.cc:365
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "ເຊົາໂຕເມ ແລະ ພຣິນຊິປີ"
 
 #. :STP:678:
 #: zypp-logic/zypp/CountryCode.cc:366
 msgid "El Salvador"
-msgstr ""
+msgstr "ເອລ ຊັລວາດໍ"
 
 #. :SLV:222:
 #: zypp-logic/zypp/CountryCode.cc:367
 msgid "Syria"
-msgstr ""
+msgstr "ຊີຣີ"
 
 #. :SYR:760:
 #: zypp-logic/zypp/CountryCode.cc:368
 msgid "Swaziland"
-msgstr ""
+msgstr "ສະວາຊີແລນ"
 
 #. :SWZ:748:
 #: zypp-logic/zypp/CountryCode.cc:369
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະເຕີກ ແລະ ໄຄໂກສ"
 
 #. :TCA:796:
 #: zypp-logic/zypp/CountryCode.cc:370
 msgid "Chad"
-msgstr ""
+msgstr "ຊາດ"
 
 #. :TCD:148:
 #: zypp-logic/zypp/CountryCode.cc:371
 msgid "French Southern Territories"
-msgstr ""
+msgstr "ເຟຣນສ໌ ເຊີເທີນ ເທຣິທໍຣີສ"
 
 #. :ATF:260:
 #: zypp-logic/zypp/CountryCode.cc:372
 msgid "Togo"
-msgstr ""
+msgstr "ໂຕໂກ"
 
 #. :TGO:768:
 #: zypp-logic/zypp/CountryCode.cc:373
 msgid "Thailand"
-msgstr ""
+msgstr "ໄທ"
 
 #. :THA:764:
 #: zypp-logic/zypp/CountryCode.cc:374
 msgid "Tajikistan"
-msgstr ""
+msgstr "ຕາຈິກິສະຖານ"
 
 #. :TJK:762:
 #. language code: tkl
 #: zypp-logic/zypp/CountryCode.cc:375 zypp-logic/zypp/LanguageCode.cc:1046
 msgid "Tokelau"
-msgstr ""
+msgstr "ໂຕເກເລົາ"
 
 #. :TKL:772:
 #: zypp-logic/zypp/CountryCode.cc:376
 msgid "Turkmenistan"
-msgstr ""
+msgstr "ຕວກເມນິສະຖານ"
 
 #. :TKM:795:
 #: zypp-logic/zypp/CountryCode.cc:377
 msgid "Tunisia"
-msgstr ""
+msgstr "ຕູນີຊີ"
 
 #. :TUN:788:
 #: zypp-logic/zypp/CountryCode.cc:378
 msgid "Tonga"
-msgstr ""
+msgstr "ຕອງກາ"
 
 #. :TON:776:
 #: zypp-logic/zypp/CountryCode.cc:379
 msgid "East Timor"
-msgstr ""
+msgstr "ຕີມໍຕາເວັນອອກ"
 
 #. :TLS:626:
 #: zypp-logic/zypp/CountryCode.cc:380
 msgid "Turkey"
-msgstr ""
+msgstr "ຕວກກີ"
 
 #. :TUR:792:
 #: zypp-logic/zypp/CountryCode.cc:381
 msgid "Trinidad and Tobago"
-msgstr ""
+msgstr "ຕຣີນີແດດ ແລະ ໂຕບາໂກ"
 
 #. :TTO:780:
 #. language code: tvl
 #: zypp-logic/zypp/CountryCode.cc:382 zypp-logic/zypp/LanguageCode.cc:1076
 msgid "Tuvalu"
-msgstr ""
+msgstr "ຕູວາລູ"
 
 #. :TUV:798:
 #: zypp-logic/zypp/CountryCode.cc:383
 msgid "Taiwan"
-msgstr ""
+msgstr "ໄຕ້ຫວັນ"
 
 #. :TWN:158:
 #: zypp-logic/zypp/CountryCode.cc:384
 msgid "Tanzania"
-msgstr ""
+msgstr "ຕັງຊານີ"
 
 #. :TZA:834:
 #: zypp-logic/zypp/CountryCode.cc:385
 msgid "Ukraine"
-msgstr ""
+msgstr "ອູແກຣນ"
 
 #. :UKR:804:
 #: zypp-logic/zypp/CountryCode.cc:386
 msgid "Uganda"
-msgstr ""
+msgstr "ອູການດາ"
 
 #. :UGA:800:
 #: zypp-logic/zypp/CountryCode.cc:387
 msgid "United States Minor Outlying Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະນ້ອຍຮອບນອກຂອງສະຫະລັດ"
 
 #. :UMI:581:
 #: zypp-logic/zypp/CountryCode.cc:388
 msgid "United States"
-msgstr ""
+msgstr "ສະຫະລັດອາເມຣິກາ"
 
 #. :USA:840:
 #: zypp-logic/zypp/CountryCode.cc:389
 msgid "Uruguay"
-msgstr ""
+msgstr "ອູຣູກວາຍ"
 
 #. :URY:858:
 #: zypp-logic/zypp/CountryCode.cc:390
 msgid "Uzbekistan"
-msgstr ""
+msgstr "ອຸສເບກິສະຖານ"
 
 #. :UZB:860:
 #: zypp-logic/zypp/CountryCode.cc:391
 msgid "Holy See (Vatican City State)"
-msgstr ""
+msgstr "ນະຄອນລັດ ວາຕິກັນ"
 
 #. :VAT:336:
 #: zypp-logic/zypp/CountryCode.cc:392
 msgid "Saint Vincent and the Grenadines"
-msgstr ""
+msgstr "ເຊນ ວິນເຊນ ແລະ ເກຣີນາດີນ"
 
 #. :VCT:670:
 #: zypp-logic/zypp/CountryCode.cc:393
 msgid "Venezuela"
-msgstr ""
+msgstr "ເວເນຊູເອລາ"
 
 #. :VEN:862:
 #: zypp-logic/zypp/CountryCode.cc:394
 msgid "British Virgin Islands"
-msgstr ""
+msgstr "ໝູ່ເກາະເວີຈິນຂອງອັງກິດ"
 
 #. :VGB:092:
 #: zypp-logic/zypp/CountryCode.cc:395
 msgid "Virgin Islands, U.S."
-msgstr ""
+msgstr "ໝູ່ເກາະເວີຈິນຂອງສະຫະລັດ."
 
 #. :VIR:850:
 #: zypp-logic/zypp/CountryCode.cc:396
 msgid "Vietnam"
-msgstr ""
+msgstr "ຫວຽດນາມ"
 
 #. :VNM:704:
 #: zypp-logic/zypp/CountryCode.cc:397
 msgid "Vanuatu"
-msgstr ""
+msgstr "ວານູອາຕູ"
 
 #. :VUT:548:
 #: zypp-logic/zypp/CountryCode.cc:398
 msgid "Wallis and Futuna"
-msgstr ""
+msgstr "ວັນລິສ ແລະ ຟູຕູນາ"
 
 #. :WLF:876:
 #: zypp-logic/zypp/CountryCode.cc:399
 msgid "Samoa"
-msgstr ""
+msgstr "ຊາມົວ"
 
 #. :WSM:882:
 #: zypp-logic/zypp/CountryCode.cc:400
 msgid "Yemen"
-msgstr ""
+msgstr "ເຢເມນ"
 
 #. :YEM:887:
 #: zypp-logic/zypp/CountryCode.cc:401
 msgid "Mayotte"
-msgstr ""
+msgstr "ມາຢອດ"
 
 #. :MYT:175:
 #: zypp-logic/zypp/CountryCode.cc:402
 msgid "South Africa"
-msgstr ""
+msgstr "ອາຟຣິກາໃຕ້"
 
 #. :ZAF:710:
 #: zypp-logic/zypp/CountryCode.cc:403
 msgid "Zambia"
-msgstr ""
+msgstr "ຊຳບີ"
 
 #. :ZMB:894:
 #: zypp-logic/zypp/CountryCode.cc:404
 msgid "Zimbabwe"
-msgstr ""
+msgstr "ຊິມບັບເວ"
 
 #: zypp-logic/zypp/Dep.cc:96
 msgid "Provides"
-msgstr ""
+msgstr "ສະໜອງໃຫ້"
 
 #: zypp-logic/zypp/Dep.cc:97
 msgid "Prerequires"
-msgstr ""
+msgstr "ສິ່ງທີ່ຈຳເປັນກ່ອນ"
 
 #: zypp-logic/zypp/Dep.cc:98
 msgid "Requires"
-msgstr ""
+msgstr "ຕ້ອງການ"
 
 #: zypp-logic/zypp/Dep.cc:99
 msgid "Conflicts"
-msgstr ""
+msgstr "ຂັດແຍ້ງກັບ"
 
 #: zypp-logic/zypp/Dep.cc:100
 msgid "Obsoletes"
-msgstr ""
+msgstr "ແທນທີ່ອັນເກົ່າ"
 
 #: zypp-logic/zypp/Dep.cc:101
 msgid "Recommends"
-msgstr ""
+msgstr "ແນະນຳ"
 
 #: zypp-logic/zypp/Dep.cc:102
 msgid "Suggests"
-msgstr ""
+msgstr "ສະເໜີແນະ"
 
 #: zypp-logic/zypp/Dep.cc:103
 msgid "Enhances"
-msgstr ""
+msgstr "ປັບປຸງ"
 
 #: zypp-logic/zypp/Dep.cc:104
 msgid "Supplements"
-msgstr ""
+msgstr "ສ່ວນເສີມ"
 
 #: zypp-logic/zypp/LanguageCode.cc:50
 msgid "Unknown language: "
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກພາສາ: "
 
 #. language code: aar aa
 #: zypp-logic/zypp/LanguageCode.cc:162
 msgid "Afar"
-msgstr ""
+msgstr "ອາຟາ"
 
 #. language code: abk ab
 #: zypp-logic/zypp/LanguageCode.cc:164
 msgid "Abkhazian"
-msgstr ""
+msgstr "ອັບຄາເຊຍ"
 
 #. language code: ace
 #: zypp-logic/zypp/LanguageCode.cc:166
 msgid "Achinese"
-msgstr ""
+msgstr "ອາຈີນ"
 
 #. language code: ach
 #: zypp-logic/zypp/LanguageCode.cc:168
 msgid "Acoli"
-msgstr ""
+msgstr "ອາໂຄລີ"
 
 #. language code: ada
 #: zypp-logic/zypp/LanguageCode.cc:170
 msgid "Adangme"
-msgstr ""
+msgstr "ອາດັງມີ"
 
 #. language code: ady
 #: zypp-logic/zypp/LanguageCode.cc:172
 msgid "Adyghe"
-msgstr ""
+msgstr "ອາດີເກ"
 
 #. language code: afa
 #: zypp-logic/zypp/LanguageCode.cc:174
 msgid "Afro-Asiatic (Other)"
-msgstr ""
+msgstr "ອາຟຣິກາ-ອາຊີ (ອື່ນໆ)"
 
 #. language code: afh
 #: zypp-logic/zypp/LanguageCode.cc:176
 msgid "Afrihili"
-msgstr ""
+msgstr "ອາຟຣີຮີລີ"
 
 #. language code: afr af
 #: zypp-logic/zypp/LanguageCode.cc:178
 msgid "Afrikaans"
-msgstr ""
+msgstr "ອາຟຣີການ"
 
 #. language code: ain
 #: zypp-logic/zypp/LanguageCode.cc:180
 msgid "Ainu"
-msgstr ""
+msgstr "ໄອນູ"
 
 #. language code: aka ak
 #: zypp-logic/zypp/LanguageCode.cc:182
 msgid "Akan"
-msgstr ""
+msgstr "ອາການ"
 
 #. language code: akk
 #: zypp-logic/zypp/LanguageCode.cc:184
 msgid "Akkadian"
-msgstr ""
+msgstr "ອັກກາດຽນ"
 
 #. language code: alb sqi sq
 #: zypp-logic/zypp/LanguageCode.cc:186 zypp-logic/zypp/LanguageCode.cc:188
 msgid "Albanian"
-msgstr ""
+msgstr "ແອລເບເນຍ"
 
 #. language code: ale
 #: zypp-logic/zypp/LanguageCode.cc:190
 msgid "Aleut"
-msgstr ""
+msgstr "ອາລີອຸດ"
 
 #. language code: alg
 #: zypp-logic/zypp/LanguageCode.cc:192
 msgid "Algonquian Languages"
-msgstr ""
+msgstr "ພາສາອັນກອນຄວຽນ"
 
 #. language code: alt
 #: zypp-logic/zypp/LanguageCode.cc:194
 msgid "Southern Altai"
-msgstr ""
+msgstr "ອັນໄຕໃຕ້"
 
 #. language code: amh am
 #: zypp-logic/zypp/LanguageCode.cc:196
 msgid "Amharic"
-msgstr ""
+msgstr "ອຳຫາຣິກ"
 
 #. language code: ang
 #: zypp-logic/zypp/LanguageCode.cc:198
 msgid "English, Old (ca.450-1100)"
-msgstr ""
+msgstr "ອັງກິດບູຮານ (ປະມານປີ 450-1100)"
 
 #. language code: apa
 #: zypp-logic/zypp/LanguageCode.cc:200
 msgid "Apache Languages"
-msgstr ""
+msgstr "ພາສາອາປາເຊ"
 
 #. language code: ara ar
 #: zypp-logic/zypp/LanguageCode.cc:202
 msgid "Arabic"
-msgstr ""
+msgstr "ອາຣັບ"
 
 #. language code: arc
 #: zypp-logic/zypp/LanguageCode.cc:204
 msgid "Aramaic"
-msgstr ""
+msgstr "ອາຣາເມອິກ"
 
 #. language code: arg an
 #: zypp-logic/zypp/LanguageCode.cc:206
 msgid "Aragonese"
-msgstr ""
+msgstr "ອາຣາກອນ"
 
 #. language code: arm hye hy
 #: zypp-logic/zypp/LanguageCode.cc:208 zypp-logic/zypp/LanguageCode.cc:210
 msgid "Armenian"
-msgstr ""
+msgstr "ອາເມເນຍ"
 
 #. language code: arn
 #: zypp-logic/zypp/LanguageCode.cc:212
 msgid "Araucanian"
-msgstr ""
+msgstr "ອາຣົວຄານຽນ"
 
 #. language code: arp
 #: zypp-logic/zypp/LanguageCode.cc:214
 msgid "Arapaho"
-msgstr ""
+msgstr "ອາຣາປາໂຮ"
 
 #. language code: art
 #: zypp-logic/zypp/LanguageCode.cc:216
 msgid "Artificial (Other)"
-msgstr ""
+msgstr "ພາສາປະດິດ (ອື່ນໆ)"
 
 #. language code: arw
 #: zypp-logic/zypp/LanguageCode.cc:218
 msgid "Arawak"
-msgstr ""
+msgstr "ອາຣາວັກ"
 
 #. language code: asm as
 #: zypp-logic/zypp/LanguageCode.cc:220
 msgid "Assamese"
-msgstr ""
+msgstr "ອັດສຳ"
 
 #. language code: ast
 #: zypp-logic/zypp/LanguageCode.cc:222
 msgid "Asturian"
-msgstr ""
+msgstr "ອັດສະຕູເລຍ"
 
 #. language code: ath
 #: zypp-logic/zypp/LanguageCode.cc:224
 msgid "Athapascan Languages"
-msgstr ""
+msgstr "ພາສາອັດທາປັດສະການ"
 
 #. language code: aus
 #: zypp-logic/zypp/LanguageCode.cc:226
 msgid "Australian Languages"
-msgstr ""
+msgstr "ພາສາອົດສະຕຣາລີ"
 
 #. language code: ava av
 #: zypp-logic/zypp/LanguageCode.cc:228
 msgid "Avaric"
-msgstr ""
+msgstr "ອາວາຣິກ"
 
 #. language code: ave ae
 #: zypp-logic/zypp/LanguageCode.cc:230
 msgid "Avestan"
-msgstr ""
+msgstr "ອາເວດສະຖານ"
 
 #. language code: awa
 #: zypp-logic/zypp/LanguageCode.cc:232
 msgid "Awadhi"
-msgstr ""
+msgstr "ອາວາທີ"
 
 #. language code: aym ay
 #: zypp-logic/zypp/LanguageCode.cc:234
 msgid "Aymara"
-msgstr ""
+msgstr "ໄອມາຣາ"
 
 #. language code: aze az
 #: zypp-logic/zypp/LanguageCode.cc:236
 msgid "Azerbaijani"
-msgstr ""
+msgstr "ອາແຊກໄບຊານ"
 
 #. language code: bad
 #: zypp-logic/zypp/LanguageCode.cc:238
 msgid "Banda"
-msgstr ""
+msgstr "ບັນດາ"
 
 #. language code: bai
 #: zypp-logic/zypp/LanguageCode.cc:240
 msgid "Bamileke Languages"
-msgstr ""
+msgstr "ພາສາບາມີເລເກ"
 
 #. language code: bak ba
 #: zypp-logic/zypp/LanguageCode.cc:242
 msgid "Bashkir"
-msgstr ""
+msgstr "ບັດສະເກຍ"
 
 #. language code: bal
 #: zypp-logic/zypp/LanguageCode.cc:244
 msgid "Baluchi"
-msgstr ""
+msgstr "ບາລູຊີ"
 
 #. language code: bam bm
 #: zypp-logic/zypp/LanguageCode.cc:246
 msgid "Bambara"
-msgstr ""
+msgstr "ບຳບາຣາ"
 
 #. language code: ban
 #: zypp-logic/zypp/LanguageCode.cc:248
 msgid "Balinese"
-msgstr ""
+msgstr "ບາຫລີ"
 
 #. language code: baq eus eu
 #: zypp-logic/zypp/LanguageCode.cc:250 zypp-logic/zypp/LanguageCode.cc:252
 msgid "Basque"
-msgstr ""
+msgstr "ບາສກ໌"
 
 #. language code: bas
 #: zypp-logic/zypp/LanguageCode.cc:254
 msgid "Basa"
-msgstr ""
+msgstr "ບາຊາ"
 
 #. language code: bat
 #: zypp-logic/zypp/LanguageCode.cc:256
 msgid "Baltic (Other)"
-msgstr ""
+msgstr "ບານຕິກ (ອື່ນໆ)"
 
 #. language code: bej
 #: zypp-logic/zypp/LanguageCode.cc:258
 msgid "Beja"
-msgstr ""
+msgstr "ບີຈາ"
 
 #. language code: bel be
 #: zypp-logic/zypp/LanguageCode.cc:260
 msgid "Belarusian"
-msgstr ""
+msgstr "ເບລາຣຸດ"
 
 #. language code: bem
 #: zypp-logic/zypp/LanguageCode.cc:262
 msgid "Bemba"
-msgstr ""
+msgstr "ເບັມບາ"
 
 #. language code: ben bn
 #: zypp-logic/zypp/LanguageCode.cc:264
 msgid "Bengali"
-msgstr ""
+msgstr "ບັງກະລາ"
 
 #. language code: ber
 #: zypp-logic/zypp/LanguageCode.cc:266
 msgid "Berber (Other)"
-msgstr ""
+msgstr "ເບີເບີ (ອື່ນໆ)"
 
 #. language code: bho
 #: zypp-logic/zypp/LanguageCode.cc:268
 msgid "Bhojpuri"
-msgstr ""
+msgstr "ໂພດສະປຸຣີ"
 
 #. language code: bih bh
 #: zypp-logic/zypp/LanguageCode.cc:270
 msgid "Bihari"
-msgstr ""
+msgstr "ບີຫາຣີ"
 
 #. language code: bik
 #: zypp-logic/zypp/LanguageCode.cc:272
 msgid "Bikol"
-msgstr ""
+msgstr "ບີຄໍ"
 
 #. language code: bin
 #: zypp-logic/zypp/LanguageCode.cc:274
 msgid "Bini"
-msgstr ""
+msgstr "ບີນີ"
 
 #. language code: bis bi
 #: zypp-logic/zypp/LanguageCode.cc:276
 msgid "Bislama"
-msgstr ""
+msgstr "ບິດສະລາມາ"
 
 #. language code: bla
 #: zypp-logic/zypp/LanguageCode.cc:278
 msgid "Siksika"
-msgstr ""
+msgstr "ສິກສິກາ"
 
 #. language code: bnt
 #: zypp-logic/zypp/LanguageCode.cc:280
 msgid "Bantu (Other)"
-msgstr ""
+msgstr "ບັນຕູ (ອື່ນໆ)"
 
 #. language code: bos bs
 #: zypp-logic/zypp/LanguageCode.cc:282
 msgid "Bosnian"
-msgstr ""
+msgstr "ບົດສະນີ"
 
 #. language code: bra
 #: zypp-logic/zypp/LanguageCode.cc:284
 msgid "Braj"
-msgstr ""
+msgstr "ບຣັດສະ"
 
 #. language code: bre br
 #: zypp-logic/zypp/LanguageCode.cc:286
 msgid "Breton"
-msgstr ""
+msgstr "ເບຣີຕົງ"
 
 #. language code: btk
 #: zypp-logic/zypp/LanguageCode.cc:288
 msgid "Batak (Indonesia)"
-msgstr ""
+msgstr "ບາຕັກ (ອິນໂດເນເຊຍ)"
 
 #. language code: bua
 #: zypp-logic/zypp/LanguageCode.cc:290
 msgid "Buriat"
-msgstr ""
+msgstr "ບູຣີອັດ"
 
 #. language code: bug
 #: zypp-logic/zypp/LanguageCode.cc:292
 msgid "Buginese"
-msgstr ""
+msgstr "ບູກີ"
 
 #. language code: bul bg
 #: zypp-logic/zypp/LanguageCode.cc:294
 msgid "Bulgarian"
-msgstr ""
+msgstr "ບູນກາຣີ"
 
 #. language code: bur mya my
 #: zypp-logic/zypp/LanguageCode.cc:296 zypp-logic/zypp/LanguageCode.cc:298
 msgid "Burmese"
-msgstr ""
+msgstr "ມຽນມາ"
 
 #. language code: byn
 #: zypp-logic/zypp/LanguageCode.cc:300
 msgid "Blin"
-msgstr ""
+msgstr "ບລິນ"
 
 #. language code: cad
 #: zypp-logic/zypp/LanguageCode.cc:302
 msgid "Caddo"
-msgstr ""
+msgstr "ແຄດໂດ"
 
 #. language code: cai
 #: zypp-logic/zypp/LanguageCode.cc:304
 msgid "Central American Indian (Other)"
-msgstr ""
+msgstr "ອິນເດຍແດງອາເມຣິກາກາງ (ອື່ນໆ)"
 
 #. language code: car
 #: zypp-logic/zypp/LanguageCode.cc:306
 msgid "Carib"
-msgstr ""
+msgstr "ຄາຣິບ"
 
 #. language code: cat ca
 #: zypp-logic/zypp/LanguageCode.cc:308
 msgid "Catalan"
-msgstr ""
+msgstr "ກາຕາລັງ"
 
 #. language code: cau
 #: zypp-logic/zypp/LanguageCode.cc:310
 msgid "Caucasian (Other)"
-msgstr ""
+msgstr "ຄໍເຄຊຽນ (ອື່ນໆ)"
 
 #. language code: ceb
 #: zypp-logic/zypp/LanguageCode.cc:312
 msgid "Cebuano"
-msgstr ""
+msgstr "ເຊບູໂນ"
 
 #. language code: cel
 #: zypp-logic/zypp/LanguageCode.cc:314
 msgid "Celtic (Other)"
-msgstr ""
+msgstr "ເຊນຕິກ (ອື່ນໆ)"
 
 #. language code: cha ch
 #: zypp-logic/zypp/LanguageCode.cc:316
 msgid "Chamorro"
-msgstr ""
+msgstr "ຊາມໍໂຣ"
 
 #. language code: chb
 #: zypp-logic/zypp/LanguageCode.cc:318
 msgid "Chibcha"
-msgstr ""
+msgstr "ຊິບຊາ"
 
 #. language code: che ce
 #: zypp-logic/zypp/LanguageCode.cc:320
 msgid "Chechen"
-msgstr ""
+msgstr "ເຊເຊນ"
 
 #. language code: chg
 #: zypp-logic/zypp/LanguageCode.cc:322
 msgid "Chagatai"
-msgstr ""
+msgstr "ຊາກາໄຕ"
 
 #. language code: chi zho zh
 #: zypp-logic/zypp/LanguageCode.cc:324 zypp-logic/zypp/LanguageCode.cc:326
 msgid "Chinese"
-msgstr ""
+msgstr "ຈີນ"
 
 #. language code: chk
 #: zypp-logic/zypp/LanguageCode.cc:328
 msgid "Chuukese"
-msgstr ""
+msgstr "ຊູກີສ"
 
 #. language code: chm
 #: zypp-logic/zypp/LanguageCode.cc:330
 msgid "Mari"
-msgstr ""
+msgstr "ມາຣີ"
 
 #. language code: chn
 #: zypp-logic/zypp/LanguageCode.cc:332
 msgid "Chinook Jargon"
-msgstr ""
+msgstr "ຊີນຸກ ຈາກອນ"
 
 #. language code: cho
 #: zypp-logic/zypp/LanguageCode.cc:334
 msgid "Choctaw"
-msgstr ""
+msgstr "ຊັອກທໍ"
 
 #. language code: chp
 #: zypp-logic/zypp/LanguageCode.cc:336
 msgid "Chipewyan"
-msgstr ""
+msgstr "ຊິບພິວຢານ"
 
 #. language code: chr
 #: zypp-logic/zypp/LanguageCode.cc:338
 msgid "Cherokee"
-msgstr ""
+msgstr "ເຊໂຣກີ"
 
 #. language code: chu cu
 #: zypp-logic/zypp/LanguageCode.cc:340
 msgid "Church Slavic"
-msgstr ""
+msgstr "ເຊີດ ສະລາວິກ"
 
 #. language code: chv cv
 #: zypp-logic/zypp/LanguageCode.cc:342
 msgid "Chuvash"
-msgstr ""
+msgstr "ຊູວັດສະ"
 
 #. language code: chy
 #: zypp-logic/zypp/LanguageCode.cc:344
 msgid "Cheyenne"
-msgstr ""
+msgstr "ເຊເຢນ"
 
 #. language code: cmc
 #: zypp-logic/zypp/LanguageCode.cc:346
 msgid "Chamic Languages"
-msgstr ""
+msgstr "ພາສາຈາມ"
 
 #. language code: cop
 #: zypp-logic/zypp/LanguageCode.cc:348
 msgid "Coptic"
-msgstr ""
+msgstr "ຄອບຕິກ"
 
 #. language code: cor kw
 #: zypp-logic/zypp/LanguageCode.cc:350
 msgid "Cornish"
-msgstr ""
+msgstr "ຄໍນິຊ"
 
 #. language code: cos co
 #: zypp-logic/zypp/LanguageCode.cc:352
 msgid "Corsican"
-msgstr ""
+msgstr "ຄໍຊິກາ"
 
 #. language code: cpe
 #: zypp-logic/zypp/LanguageCode.cc:354
 msgid "Creoles and Pidgins, English-Based (Other)"
-msgstr ""
+msgstr "ພາສາຄຣີໂອ ແລະ ພິດຈິນ ທີ່ອີງໃສ່ພາສາອັງກິດ (ອື່ນໆ)"
 
 #. language code: cpf
 #: zypp-logic/zypp/LanguageCode.cc:356
 msgid "Creoles and Pidgins, French-Based (Other)"
-msgstr ""
+msgstr "ພາສາຄຣີໂອ ແລະ ພິດຈິນ ທີ່ອີງໃສ່ພາສາຝຣັ່ງ (ອື່ນໆ)"
 
 #. language code: cpp
 #: zypp-logic/zypp/LanguageCode.cc:358
 msgid "Creoles and Pidgins, Portuguese-Based (Other)"
-msgstr ""
+msgstr "ພາສາຄຣີໂອ ແລະ ພິດຈິນ ທີ່ອີງໃສ່ພາສາປອກຕຸຍການ (ອື່ນໆ)"
 
 #. language code: cre cr
 #: zypp-logic/zypp/LanguageCode.cc:360
 msgid "Cree"
-msgstr ""
+msgstr "ຄຣີ"
 
 #. language code: crh
 #: zypp-logic/zypp/LanguageCode.cc:362
 msgid "Crimean Tatar"
-msgstr ""
+msgstr "ໄຄຣເມຍ ຕາຕາ"
 
 #. language code: crp
 #: zypp-logic/zypp/LanguageCode.cc:364
 msgid "Creoles and Pidgins (Other)"
-msgstr ""
+msgstr "ພາສາຄຣີໂອ ແລະ ພິດຈິນ (ອື່ນໆ)"
 
 #. language code: csb
 #: zypp-logic/zypp/LanguageCode.cc:366
 msgid "Kashubian"
-msgstr ""
+msgstr "ຄາຊູເບຍ"
 
 #. language code: cus
 #: zypp-logic/zypp/LanguageCode.cc:368
 msgid "Cushitic (Other)"
-msgstr ""
+msgstr "ຄູຊິຕິກ (ອື່ນໆ)"
 
 #. language code: cze ces cs
 #: zypp-logic/zypp/LanguageCode.cc:370 zypp-logic/zypp/LanguageCode.cc:372
 msgid "Czech"
-msgstr ""
+msgstr "ເຊັກ"
 
 #. language code: dak
 #: zypp-logic/zypp/LanguageCode.cc:374
 msgid "Dakota"
-msgstr ""
+msgstr "ດາໂຄຕາ"
 
 #. language code: dan da
 #: zypp-logic/zypp/LanguageCode.cc:376
 msgid "Danish"
-msgstr ""
+msgstr "ດານມາກ"
 
 #. language code: dar
 #: zypp-logic/zypp/LanguageCode.cc:378
 msgid "Dargwa"
-msgstr ""
+msgstr "ດາກວາ"
 
 #. language code: day
 #: zypp-logic/zypp/LanguageCode.cc:380
 msgid "Dayak"
-msgstr ""
+msgstr "ດາຢັກ"
 
 #. language code: del
 #: zypp-logic/zypp/LanguageCode.cc:382
 msgid "Delaware"
-msgstr ""
+msgstr "ເດລາແວ"
 
 #. language code: den
 #: zypp-logic/zypp/LanguageCode.cc:384
 msgid "Slave (Athapascan)"
-msgstr ""
+msgstr "ສະເລຟ (ອັດທາປັດສະການ)"
 
 #. language code: dgr
 #: zypp-logic/zypp/LanguageCode.cc:386
 msgid "Dogrib"
-msgstr ""
+msgstr "ດອກຣິບ"
 
 #. language code: din
 #: zypp-logic/zypp/LanguageCode.cc:388
 msgid "Dinka"
-msgstr ""
+msgstr "ດິນກາ"
 
 #. language code: div dv
 #: zypp-logic/zypp/LanguageCode.cc:390
 msgid "Divehi"
-msgstr ""
+msgstr "ດິເວຮີ"
 
 #. language code: doi
 #: zypp-logic/zypp/LanguageCode.cc:392
 msgid "Dogri"
-msgstr ""
+msgstr "ດອກຣີ"
 
 #. language code: dra
 #: zypp-logic/zypp/LanguageCode.cc:394
 msgid "Dravidian (Other)"
-msgstr ""
+msgstr "ດຣາວິດຽນ (ອື່ນໆ)"
 
 #. language code: dsb
 #: zypp-logic/zypp/LanguageCode.cc:396
 msgid "Lower Sorbian"
-msgstr ""
+msgstr "ຊໍບຽນຕໍ່າ"
 
 #. language code: dua
 #: zypp-logic/zypp/LanguageCode.cc:398
 msgid "Duala"
-msgstr ""
+msgstr "ດູອາລາ"
 
 #. language code: dum
 #: zypp-logic/zypp/LanguageCode.cc:400
 msgid "Dutch, Middle (ca.1050-1350)"
-msgstr ""
+msgstr "ດັດສະໄໝກາງ (ປະມານປີ 1050-1350)"
 
 #. language code: dut nld nl
 #: zypp-logic/zypp/LanguageCode.cc:402 zypp-logic/zypp/LanguageCode.cc:404
 msgid "Dutch"
-msgstr ""
+msgstr "ດັດ"
 
 #. language code: dyu
 #: zypp-logic/zypp/LanguageCode.cc:406
 msgid "Dyula"
-msgstr ""
+msgstr "ດູລາ"
 
 #. language code: dzo dz
 #: zypp-logic/zypp/LanguageCode.cc:408
 msgid "Dzongkha"
-msgstr ""
+msgstr "ຊົງຄາ"
 
 #. language code: efi
 #: zypp-logic/zypp/LanguageCode.cc:410
 msgid "Efik"
-msgstr ""
+msgstr "ເອຟິກ"
 
 #. language code: egy
 #: zypp-logic/zypp/LanguageCode.cc:412
 msgid "Egyptian (Ancient)"
-msgstr ""
+msgstr "ເອຢິບບູຮານ"
 
 #. language code: eka
 #: zypp-logic/zypp/LanguageCode.cc:414
 msgid "Ekajuk"
-msgstr ""
+msgstr "ເອຄາຈຸກ"
 
 #. language code: elx
 #: zypp-logic/zypp/LanguageCode.cc:416
 msgid "Elamite"
-msgstr ""
+msgstr "ເອລາມາໄຕ"
 
 #. language code: eng en
 #: zypp-logic/zypp/LanguageCode.cc:418
 msgid "English"
-msgstr ""
+msgstr "ອັງກິດ"
 
 #. language code: enm
 #: zypp-logic/zypp/LanguageCode.cc:420
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "ອັງກິດໄໝກາງ (ປີ 1100-1500)"
 
 #. language code: epo eo
 #: zypp-logic/zypp/LanguageCode.cc:422
 msgid "Esperanto"
-msgstr ""
+msgstr "ເອສເປີຣັນໂຕ"
 
 #. language code: est et
 #: zypp-logic/zypp/LanguageCode.cc:424
 msgid "Estonian"
-msgstr ""
+msgstr "ເອສໂຕເນຍ"
 
 #. language code: ewe ee
 #: zypp-logic/zypp/LanguageCode.cc:426
 msgid "Ewe"
-msgstr ""
+msgstr "ເອເວ"
 
 #. language code: ewo
 #: zypp-logic/zypp/LanguageCode.cc:428
 msgid "Ewondo"
-msgstr ""
+msgstr "ເອວອນໂດ"
 
 #. language code: fan
 #: zypp-logic/zypp/LanguageCode.cc:430
 msgid "Fang"
-msgstr ""
+msgstr "ຟັງ"
 
 #. language code: fao fo
 #: zypp-logic/zypp/LanguageCode.cc:432
 msgid "Faroese"
-msgstr ""
+msgstr "ຟາໂຣ"
 
 #. language code: fat
 #: zypp-logic/zypp/LanguageCode.cc:434
 msgid "Fanti"
-msgstr ""
+msgstr "ຟານຕີ"
 
 #. language code: fij fj
 #: zypp-logic/zypp/LanguageCode.cc:436
 msgid "Fijian"
-msgstr ""
+msgstr "ຟີຈີ"
 
 #. language code: fil
 #: zypp-logic/zypp/LanguageCode.cc:438
 msgid "Filipino"
-msgstr ""
+msgstr "ຟີລິບປິນ"
 
 #. language code: fin fi
 #: zypp-logic/zypp/LanguageCode.cc:440
 msgid "Finnish"
-msgstr ""
+msgstr "ຟິນແລນ"
 
 #. language code: fiu
 #: zypp-logic/zypp/LanguageCode.cc:442
 msgid "Finno-Ugrian (Other)"
-msgstr ""
+msgstr "ຟິນໂນ-ອູກຣຽນ (ອື່ນໆ)"
 
 #. language code: fon
 #: zypp-logic/zypp/LanguageCode.cc:444
 msgid "Fon"
-msgstr ""
+msgstr "ຟອນ"
 
 #. language code: fre fra fr
 #: zypp-logic/zypp/LanguageCode.cc:446 zypp-logic/zypp/LanguageCode.cc:448
 msgid "French"
-msgstr ""
+msgstr "ຝຣັ່ງ"
 
 #. language code: frm
 #: zypp-logic/zypp/LanguageCode.cc:450
 msgid "French, Middle (ca.1400-1600)"
-msgstr ""
+msgstr "ພາສາຝຣັ່ງ, ຍຸກກາງ (ປະມານປີ 1400-1600)"
 
 #. language code: fro
 #: zypp-logic/zypp/LanguageCode.cc:452
 msgid "French, Old (842-ca.1400)"
-msgstr ""
+msgstr "ພາສາຝຣັ່ງ, ບູຮານ (ປີ 842-ປະມານປີ 1400)"
 
 #. language code: fry fy
 #: zypp-logic/zypp/LanguageCode.cc:454
 msgid "Frisian"
-msgstr ""
+msgstr "ພາສາຟຣີສຽນ"
 
 #. language code: ful ff
 #: zypp-logic/zypp/LanguageCode.cc:456
 msgid "Fulah"
-msgstr ""
+msgstr "ພາສາຟູລາ"
 
 #. language code: fur
 #: zypp-logic/zypp/LanguageCode.cc:458
 msgid "Friulian"
-msgstr ""
+msgstr "ພາສາຟຣີອູລຽນ"
 
 #. language code: gaa
 #: zypp-logic/zypp/LanguageCode.cc:460
 msgid "Ga"
-msgstr ""
+msgstr "ພາສາກາ"
 
 #. language code: gay
 #: zypp-logic/zypp/LanguageCode.cc:462
 msgid "Gayo"
-msgstr ""
+msgstr "ພາສາກາໂຢ"
 
 #. language code: gba
 #: zypp-logic/zypp/LanguageCode.cc:464
 msgid "Gbaya"
-msgstr ""
+msgstr "ພາສາກະບາຍາ"
 
 #. language code: gem
 #: zypp-logic/zypp/LanguageCode.cc:466
 msgid "Germanic (Other)"
-msgstr ""
+msgstr "ພາສາເຢຍລະມັນນິກ (ອື່ນໆ)"
 
 #. language code: geo kat ka
 #: zypp-logic/zypp/LanguageCode.cc:468 zypp-logic/zypp/LanguageCode.cc:470
 msgid "Georgian"
-msgstr ""
+msgstr "ພາສາຈໍເຈຍ"
 
 #. language code: ger deu de
 #: zypp-logic/zypp/LanguageCode.cc:472 zypp-logic/zypp/LanguageCode.cc:474
 msgid "German"
-msgstr ""
+msgstr "ພາສາເຢຍລະມັນ"
 
 #. language code: gez
 #: zypp-logic/zypp/LanguageCode.cc:476
 msgid "Geez"
-msgstr ""
+msgstr "ພາສາກີຊ໌"
 
 #. language code: gil
 #: zypp-logic/zypp/LanguageCode.cc:478
 msgid "Gilbertese"
-msgstr ""
+msgstr "ພາສາກິລເບີດເຕີສ໌"
 
 #. language code: gla gd
 #: zypp-logic/zypp/LanguageCode.cc:480
 msgid "Gaelic"
-msgstr ""
+msgstr "ພາສາກາເອລິກ"
 
 #. language code: gle ga
 #: zypp-logic/zypp/LanguageCode.cc:482
 msgid "Irish"
-msgstr ""
+msgstr "ພາສາໄອຣິສ"
 
 #. language code: glg gl
 #: zypp-logic/zypp/LanguageCode.cc:484
 msgid "Galician"
-msgstr ""
+msgstr "ພາສາກາລິຊຽນ"
 
 #. language code: glv gv
 #: zypp-logic/zypp/LanguageCode.cc:486
 msgid "Manx"
-msgstr ""
+msgstr "ພາສາແມນຊ໌"
 
 #. language code: gmh
 #: zypp-logic/zypp/LanguageCode.cc:488
 msgid "German, Middle High (ca.1050-1500)"
-msgstr ""
+msgstr "ພາສາເຢຍລະມັນ, ໄຮຍຸກກາງ (ປະມານປີ 1050-1500)"
 
 #. language code: goh
 #: zypp-logic/zypp/LanguageCode.cc:490
 msgid "German, Old High (ca.750-1050)"
-msgstr ""
+msgstr "ພາສາເຢຍລະມັນ, ໄຮບູຮານ (ປະມານປີ 750-1050)"
 
 #. language code: gon
 #: zypp-logic/zypp/LanguageCode.cc:492
 msgid "Gondi"
-msgstr ""
+msgstr "ພາສາກົນດີ"
 
 #. language code: gor
 #: zypp-logic/zypp/LanguageCode.cc:494
 msgid "Gorontalo"
-msgstr ""
+msgstr "ພາສາກໍຣົນຕາໂລ"
 
 #. language code: got
 #: zypp-logic/zypp/LanguageCode.cc:496
 msgid "Gothic"
-msgstr ""
+msgstr "ພາສາກັອດທິກ"
 
 #. language code: grb
 #: zypp-logic/zypp/LanguageCode.cc:498
 msgid "Grebo"
-msgstr ""
+msgstr "ພາສາກຣີໂບ"
 
 #. language code: grc
 #: zypp-logic/zypp/LanguageCode.cc:500
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "ພາສາກຣີກ, ບູຮານ (ຈົນເຖິງປີ 1453)"
 
 #. language code: gre ell el
 #: zypp-logic/zypp/LanguageCode.cc:502 zypp-logic/zypp/LanguageCode.cc:504
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "ພາສາກຣີກ, ສະໄໝໃໝ່ (ປີ 1453-)"
 
 #. language code: grn gn
 #: zypp-logic/zypp/LanguageCode.cc:506
 msgid "Guarani"
-msgstr ""
+msgstr "ພາສາກົວຣານີ"
 
 #. language code: guj gu
 #: zypp-logic/zypp/LanguageCode.cc:508
 msgid "Gujarati"
-msgstr ""
+msgstr "ພາສາກຸຊາຣາຕິ"
 
 #. language code: gwi
 #: zypp-logic/zypp/LanguageCode.cc:510
 msgid "Gwich'in"
-msgstr ""
+msgstr "ພາສາກວິດຊິນ"
 
 #. language code: hai
 #: zypp-logic/zypp/LanguageCode.cc:512
 msgid "Haida"
-msgstr ""
+msgstr "ພາສາໄຮດາ"
 
 #. language code: hat ht
 #: zypp-logic/zypp/LanguageCode.cc:514
 msgid "Haitian"
-msgstr ""
+msgstr "ພາສາໄຮຕິ"
 
 #. language code: hau ha
 #: zypp-logic/zypp/LanguageCode.cc:516
 msgid "Hausa"
-msgstr ""
+msgstr "ພາສາຮົວຊາ"
 
 #. language code: haw
 #: zypp-logic/zypp/LanguageCode.cc:518
 msgid "Hawaiian"
-msgstr ""
+msgstr "ພາສາຮາວາຍ"
 
 #. language code: heb he
 #: zypp-logic/zypp/LanguageCode.cc:520
 msgid "Hebrew"
-msgstr ""
+msgstr "ພາສາຮີບຣູ"
 
 #. language code: her hz
 #: zypp-logic/zypp/LanguageCode.cc:522
 msgid "Herero"
-msgstr ""
+msgstr "ພາສາເຮເຣໂຣ"
 
 #. language code: hil
 #: zypp-logic/zypp/LanguageCode.cc:524
 msgid "Hiligaynon"
-msgstr ""
+msgstr "ພາສາຮີລີໄກນອນ"
 
 #. language code: him
 #: zypp-logic/zypp/LanguageCode.cc:526
 msgid "Himachali"
-msgstr ""
+msgstr "ພາສາຫິມາຊາລີ"
 
 #. language code: hin hi
 #: zypp-logic/zypp/LanguageCode.cc:528
 msgid "Hindi"
-msgstr ""
+msgstr "ພາສາຮິນດູ"
 
 #. language code: hit
 #: zypp-logic/zypp/LanguageCode.cc:530
 msgid "Hittite"
-msgstr ""
+msgstr "ພາສາຮິດໄທຕ໌"
 
 #. language code: hmn
 #: zypp-logic/zypp/LanguageCode.cc:532
 msgid "Hmong"
-msgstr ""
+msgstr "ພາສາມົ້ງ"
 
 #. language code: hmo ho
 #: zypp-logic/zypp/LanguageCode.cc:534
 msgid "Hiri Motu"
-msgstr ""
+msgstr "ພາສາຮີຣີ ໂມຕູ"
 
 #. language code: hsb
 #: zypp-logic/zypp/LanguageCode.cc:536
 msgid "Upper Sorbian"
-msgstr ""
+msgstr "ພາສາເຊີບຽນຕອນເທີງ"
 
 #. language code: hun hu
 #: zypp-logic/zypp/LanguageCode.cc:538
 msgid "Hungarian"
-msgstr ""
+msgstr "ພາສາຮັງກາຣີ"
 
 #. language code: hup
 #: zypp-logic/zypp/LanguageCode.cc:540
 msgid "Hupa"
-msgstr ""
+msgstr "ພາສາຮູປາ"
 
 #. language code: iba
 #: zypp-logic/zypp/LanguageCode.cc:542
 msgid "Iban"
-msgstr ""
+msgstr "ພາສາໄອບັນ"
 
 #. language code: ibo ig
 #: zypp-logic/zypp/LanguageCode.cc:544
 msgid "Igbo"
-msgstr ""
+msgstr "ພາສາອິກໂບ"
 
 #. language code: ice isl is
 #: zypp-logic/zypp/LanguageCode.cc:546 zypp-logic/zypp/LanguageCode.cc:548
 msgid "Icelandic"
-msgstr ""
+msgstr "ພາສາໄອສ໌ແລນດິກ"
 
 #. language code: ido io
 #: zypp-logic/zypp/LanguageCode.cc:550
 msgid "Ido"
-msgstr ""
+msgstr "ພາສາໄອດູ"
 
 #. language code: iii ii
 #: zypp-logic/zypp/LanguageCode.cc:552
 msgid "Sichuan Yi"
-msgstr ""
+msgstr "ພາສາຍີເສສວນ"
 
 #. language code: ijo
 #: zypp-logic/zypp/LanguageCode.cc:554
 msgid "Ijo"
-msgstr ""
+msgstr "ພາສາອີໂຈ"
 
 #. language code: iku iu
 #: zypp-logic/zypp/LanguageCode.cc:556
 msgid "Inuktitut"
-msgstr ""
+msgstr "ພາສາອີນຸກຕິຕຸດ"
 
 #. language code: ile ie
 #: zypp-logic/zypp/LanguageCode.cc:558
 msgid "Interlingue"
-msgstr ""
+msgstr "ພາສາອິນເຕີລິງ"
 
 #. language code: ilo
 #: zypp-logic/zypp/LanguageCode.cc:560
 msgid "Iloko"
-msgstr ""
+msgstr "ພາສາອີໂລໂກ"
 
 #. language code: ina ia
 #: zypp-logic/zypp/LanguageCode.cc:562
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "ພາສາອິນເຕີລິງກົວ (ສະມາຄົມພາສາຊ່ວຍເຫຼືອສາກົນ)"
 
 #. language code: inc
 #: zypp-logic/zypp/LanguageCode.cc:564
 msgid "Indic (Other)"
-msgstr ""
+msgstr "ພາສາອິນດິກ (ອື່ນໆ)"
 
 #. language code: ind id
 #: zypp-logic/zypp/LanguageCode.cc:566
 msgid "Indonesian"
-msgstr ""
+msgstr "ພາສາອິນໂດເນເຊຍ"
 
 #. language code: ine
 #: zypp-logic/zypp/LanguageCode.cc:568
 msgid "Indo-European (Other)"
-msgstr ""
+msgstr "ພາສາອິນໂດ-ຢູໂຣບ (ອື່ນໆ)"
 
 #. language code: inh
 #: zypp-logic/zypp/LanguageCode.cc:570
 msgid "Ingush"
-msgstr ""
+msgstr "ພາສາອິນກູສ໌"
 
 #. language code: ipk ik
 #: zypp-logic/zypp/LanguageCode.cc:572
 msgid "Inupiaq"
-msgstr ""
+msgstr "ພາສາອີນູເພຍັກ"
 
 #. language code: ira
 #: zypp-logic/zypp/LanguageCode.cc:574
 msgid "Iranian (Other)"
-msgstr ""
+msgstr "ພາສາອີຣານ (ອື່ນໆ)"
 
 #. language code: iro
 #: zypp-logic/zypp/LanguageCode.cc:576
 msgid "Iroquoian Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາອີໂຣຄວຽນ"
 
 #. language code: ita it
 #: zypp-logic/zypp/LanguageCode.cc:578
 msgid "Italian"
-msgstr ""
+msgstr "ພາສາອີຕາລີ"
 
 #. language code: jav jv
 #: zypp-logic/zypp/LanguageCode.cc:580
 msgid "Javanese"
-msgstr ""
+msgstr "ພາສາຊາວາ"
 
 #. language code: jbo
 #: zypp-logic/zypp/LanguageCode.cc:582
 msgid "Lojban"
-msgstr ""
+msgstr "ພາສາລົດຊ໌ບັນ"
 
 #. language code: jpn ja
 #: zypp-logic/zypp/LanguageCode.cc:584
 msgid "Japanese"
-msgstr ""
+msgstr "ພາສາຍີ່ປຸ່ນ"
 
 #. language code: jpr
 #: zypp-logic/zypp/LanguageCode.cc:586
 msgid "Judeo-Persian"
-msgstr ""
+msgstr "ພາສາຢູດາ-ເປີເຊຍ"
 
 #. language code: jrb
 #: zypp-logic/zypp/LanguageCode.cc:588
 msgid "Judeo-Arabic"
-msgstr ""
+msgstr "ພາສາຢູດາ-ອາຣັບ"
 
 #. language code: kaa
 #: zypp-logic/zypp/LanguageCode.cc:590
 msgid "Kara-Kalpak"
-msgstr ""
+msgstr "ພາສາຄາຣາ-ຄັລພັກ"
 
 #. language code: kab
 #: zypp-logic/zypp/LanguageCode.cc:592
 msgid "Kabyle"
-msgstr ""
+msgstr "ພາສາຄາບາຍລ໌"
 
 #. language code: kac
 #: zypp-logic/zypp/LanguageCode.cc:594
 msgid "Kachin"
-msgstr ""
+msgstr "ພາສາຄະສິນ"
 
 #. language code: kal kl
 #: zypp-logic/zypp/LanguageCode.cc:596
 msgid "Kalaallisut"
-msgstr ""
+msgstr "ພາສາກາລາລີຊຸດ"
 
 #. language code: kam
 #: zypp-logic/zypp/LanguageCode.cc:598
 msgid "Kamba"
-msgstr ""
+msgstr "ພາສາຄຳບາ"
 
 #. language code: kan kn
 #: zypp-logic/zypp/LanguageCode.cc:600
 msgid "Kannada"
-msgstr ""
+msgstr "ພາສາຄັນນາດາ"
 
 #. language code: kar
 #: zypp-logic/zypp/LanguageCode.cc:602
 msgid "Karen"
-msgstr ""
+msgstr "ພາສາກະເຣ່ຽນ"
 
 #. language code: kas ks
 #: zypp-logic/zypp/LanguageCode.cc:604
 msgid "Kashmiri"
-msgstr ""
+msgstr "ພາສາກັດສະມີຣີ"
 
 #. language code: kau kr
 #: zypp-logic/zypp/LanguageCode.cc:606
 msgid "Kanuri"
-msgstr ""
+msgstr "ພາສາຄານູຣີ"
 
 #. language code: kaw
 #: zypp-logic/zypp/LanguageCode.cc:608
 msgid "Kawi"
-msgstr ""
+msgstr "ພາສາກາວີ"
 
 #. language code: kaz kk
 #: zypp-logic/zypp/LanguageCode.cc:610
 msgid "Kazakh"
-msgstr ""
+msgstr "ພາສາຄາຊັກ"
 
 #. language code: kbd
 #: zypp-logic/zypp/LanguageCode.cc:612
 msgid "Kabardian"
-msgstr ""
+msgstr "ພາສາຄາບາດຽນ"
 
 #. language code: kha
 #: zypp-logic/zypp/LanguageCode.cc:614
 msgid "Khasi"
-msgstr ""
+msgstr "ພາສາຄາຊີ"
 
 #. language code: khi
 #: zypp-logic/zypp/LanguageCode.cc:616
 msgid "Khoisan (Other)"
-msgstr ""
+msgstr "ພາສາຄອຍຊັນ (ອື່ນໆ)"
 
 #. language code: khm km
 #: zypp-logic/zypp/LanguageCode.cc:618
 msgid "Khmer"
-msgstr ""
+msgstr "ພາສາຂະແມ"
 
 #. language code: kho
 #: zypp-logic/zypp/LanguageCode.cc:620
 msgid "Khotanese"
-msgstr ""
+msgstr "ພາສາໂຄຕານີສ໌"
 
 #. language code: kik ki
 #: zypp-logic/zypp/LanguageCode.cc:622
 msgid "Kikuyu"
-msgstr ""
+msgstr "ພາສາຄີຄູຢຸ"
 
 #. language code: kin rw
 #: zypp-logic/zypp/LanguageCode.cc:624
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "ພາສາຄິນຢາວັນດາ"
 
 #. language code: kir ky
 #: zypp-logic/zypp/LanguageCode.cc:626
 msgid "Kirghiz"
-msgstr ""
+msgstr "ພາສາຄີກີສ໌"
 
 #. language code: kmb
 #: zypp-logic/zypp/LanguageCode.cc:628
 msgid "Kimbundu"
-msgstr ""
+msgstr "ພາສາຄິມບຸນດູ"
 
 #. language code: kok
 #: zypp-logic/zypp/LanguageCode.cc:630
 msgid "Konkani"
-msgstr ""
+msgstr "ພາສາຄອນຄານີ"
 
 #. language code: kom kv
 #: zypp-logic/zypp/LanguageCode.cc:632
 msgid "Komi"
-msgstr ""
+msgstr "ພາສາໂຄມີ"
 
 #. language code: kon kg
 #: zypp-logic/zypp/LanguageCode.cc:634
 msgid "Kongo"
-msgstr ""
+msgstr "ພາສາຄອງໂກ"
 
 #. language code: kor ko
 #: zypp-logic/zypp/LanguageCode.cc:636
 msgid "Korean"
-msgstr ""
+msgstr "ພາສາເກົາຫຼີ"
 
 #. language code: kos
 #: zypp-logic/zypp/LanguageCode.cc:638
 msgid "Kosraean"
-msgstr ""
+msgstr "ພາສາໂຄສຣາອຽນ"
 
 #. language code: kpe
 #: zypp-logic/zypp/LanguageCode.cc:640
 msgid "Kpelle"
-msgstr ""
+msgstr "ພາສາກະເປລເລ"
 
 #. language code: krc
 #: zypp-logic/zypp/LanguageCode.cc:642
 msgid "Karachay-Balkar"
-msgstr ""
+msgstr "ພາສາຄາຣາໄຊ-ບັລຄາ"
 
 #. language code: kro
 #: zypp-logic/zypp/LanguageCode.cc:644
 msgid "Kru"
-msgstr ""
+msgstr "ພາສາຄຣູ"
 
 #. language code: kru
 #: zypp-logic/zypp/LanguageCode.cc:646
 msgid "Kurukh"
-msgstr ""
+msgstr "ພາສາຄຸຣຸກ"
 
 #. language code: kua kj
 #: zypp-logic/zypp/LanguageCode.cc:648
 msgid "Kuanyama"
-msgstr ""
+msgstr "ພາສາຄວັນຢາມາ"
 
 #. language code: kum
 #: zypp-logic/zypp/LanguageCode.cc:650
 msgid "Kumyk"
-msgstr ""
+msgstr "ພາສາຄູມິກ"
 
 #. language code: kur ku
 #: zypp-logic/zypp/LanguageCode.cc:652
 msgid "Kurdish"
-msgstr ""
+msgstr "ພາສາເຄີດ"
 
 #. language code: kut
 #: zypp-logic/zypp/LanguageCode.cc:654
 msgid "Kutenai"
-msgstr ""
+msgstr "ພາສາຄູເທໄນ"
 
 #. language code: lad
 #: zypp-logic/zypp/LanguageCode.cc:656
 msgid "Ladino"
-msgstr ""
+msgstr "ພາສາລາດິໂນ"
 
 #. language code: lah
 #: zypp-logic/zypp/LanguageCode.cc:658
 msgid "Lahnda"
-msgstr ""
+msgstr "ພາສາລານດາ"
 
 #. language code: lam
 #: zypp-logic/zypp/LanguageCode.cc:660
 msgid "Lamba"
-msgstr ""
+msgstr "ພາສາລຳບາ"
 
 #. language code: lao lo
 #: zypp-logic/zypp/LanguageCode.cc:662
 msgid "Lao"
-msgstr ""
+msgstr "ພາສາລາວ"
 
 #. language code: lat la
 #: zypp-logic/zypp/LanguageCode.cc:664
 msgid "Latin"
-msgstr ""
+msgstr "ພາສາລາຕິນ"
 
 #. language code: lav lv
 #: zypp-logic/zypp/LanguageCode.cc:666
 msgid "Latvian"
-msgstr ""
+msgstr "ພາສາລັດເວຍ"
 
 #. language code: lez
 #: zypp-logic/zypp/LanguageCode.cc:668
 msgid "Lezghian"
-msgstr ""
+msgstr "ພາສາເລສເກຍ"
 
 #. language code: lim li
 #: zypp-logic/zypp/LanguageCode.cc:670
 msgid "Limburgan"
-msgstr ""
+msgstr "ພາສາລິມເບີແກນ"
 
 #. language code: lin ln
 #: zypp-logic/zypp/LanguageCode.cc:672
 msgid "Lingala"
-msgstr ""
+msgstr "ພາສາລິນກາລາ"
 
 #. language code: lit lt
 #: zypp-logic/zypp/LanguageCode.cc:674
 msgid "Lithuanian"
-msgstr ""
+msgstr "ພາສາລິທົວເນຍ"
 
 #. language code: lol
 #: zypp-logic/zypp/LanguageCode.cc:676
 msgid "Mongo"
-msgstr ""
+msgstr "ພາສາມົງໂກ"
 
 #. language code: loz
 #: zypp-logic/zypp/LanguageCode.cc:678
 msgid "Lozi"
-msgstr ""
+msgstr "ພາສາໂລຊີ"
 
 #. language code: ltz lb
 #: zypp-logic/zypp/LanguageCode.cc:680
 msgid "Luxembourgish"
-msgstr ""
+msgstr "ພາສາລຸກຊຳບວກ"
 
 #. language code: lua
 #: zypp-logic/zypp/LanguageCode.cc:682
 msgid "Luba-Lulua"
-msgstr ""
+msgstr "ພາສາລູບາ-ລູລູອາ"
 
 #. language code: lub lu
 #: zypp-logic/zypp/LanguageCode.cc:684
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "ພາສາລູບາ-ຄາຕັງກາ"
 
 #. language code: lug lg
 #: zypp-logic/zypp/LanguageCode.cc:686
 msgid "Ganda"
-msgstr ""
+msgstr "ພາສາກັນດາ"
 
 #. language code: lui
 #: zypp-logic/zypp/LanguageCode.cc:688
 msgid "Luiseno"
-msgstr ""
+msgstr "ພາສາລູຍເຊໂນ"
 
 #. language code: lun
 #: zypp-logic/zypp/LanguageCode.cc:690
 msgid "Lunda"
-msgstr ""
+msgstr "ພາສາລຸນດາ"
 
 #. language code: luo
 #: zypp-logic/zypp/LanguageCode.cc:692
 msgid "Luo (Kenya and Tanzania)"
-msgstr ""
+msgstr "ພາສາລູໂອ (ເຄນຢາ ແລະ ແທນຊາເນຍ)"
 
 #. language code: lus
 #: zypp-logic/zypp/LanguageCode.cc:694
 msgid "Lushai"
-msgstr ""
+msgstr "ພາສາລູໄຊ"
 
 #. language code: mac mkd mk
 #: zypp-logic/zypp/LanguageCode.cc:696 zypp-logic/zypp/LanguageCode.cc:698
 msgid "Macedonian"
-msgstr ""
+msgstr "ພາສາມາເຊໂດເນຍ"
 
 #. language code: mad
 #: zypp-logic/zypp/LanguageCode.cc:700
 msgid "Madurese"
-msgstr ""
+msgstr "ພາສາມາຕູຣາ"
 
 #. language code: mag
 #: zypp-logic/zypp/LanguageCode.cc:702
 msgid "Magahi"
-msgstr ""
+msgstr "ພາສາມາຄາຮີ"
 
 #. language code: mah mh
 #: zypp-logic/zypp/LanguageCode.cc:704
 msgid "Marshallese"
-msgstr ""
+msgstr "ພາສາມາແຊລລີສ໌"
 
 #. language code: mai
 #: zypp-logic/zypp/LanguageCode.cc:706
 msgid "Maithili"
-msgstr ""
+msgstr "ພາສາມາອິທີລີ"
 
 #. language code: mak
 #: zypp-logic/zypp/LanguageCode.cc:708
 msgid "Makasar"
-msgstr ""
+msgstr "ພາສາມາຄາຊາຣ໌"
 
 #. language code: mal ml
 #: zypp-logic/zypp/LanguageCode.cc:710
 msgid "Malayalam"
-msgstr ""
+msgstr "ພາສາມາລາຢາລຳ"
 
 #. language code: man
 #: zypp-logic/zypp/LanguageCode.cc:712
 msgid "Mandingo"
-msgstr ""
+msgstr "ພາສາມັນດິງໂກ"
 
 #. language code: mao mri mi
 #: zypp-logic/zypp/LanguageCode.cc:714 zypp-logic/zypp/LanguageCode.cc:716
 msgid "Maori"
-msgstr ""
+msgstr "ພາສາມາວຣີ"
 
 #. language code: map
 #: zypp-logic/zypp/LanguageCode.cc:718
 msgid "Austronesian (Other)"
-msgstr ""
+msgstr "ພາສາອອສໂຕຣນີຊຽນ (ອື່ນໆ)"
 
 #. language code: mar mr
 #: zypp-logic/zypp/LanguageCode.cc:720
 msgid "Marathi"
-msgstr ""
+msgstr "ພາສາມະລາທີ"
 
 #. language code: mas
 #: zypp-logic/zypp/LanguageCode.cc:722
 msgid "Masai"
-msgstr ""
+msgstr "ພາສາມາໄຊ"
 
 #. language code: may msa ms
 #: zypp-logic/zypp/LanguageCode.cc:724 zypp-logic/zypp/LanguageCode.cc:726
 msgid "Malay"
-msgstr ""
+msgstr "ພາສາມາເລ"
 
 #. language code: mdf
 #: zypp-logic/zypp/LanguageCode.cc:728
 msgid "Moksha"
-msgstr ""
+msgstr "ພາສາມົກຊາ"
 
 #. language code: mdr
 #: zypp-logic/zypp/LanguageCode.cc:730
 msgid "Mandar"
-msgstr ""
+msgstr "ພາສາມັນດາຣ໌"
 
 #. language code: men
 #: zypp-logic/zypp/LanguageCode.cc:732
 msgid "Mende"
-msgstr ""
+msgstr "ພາສາມັງເດ"
 
 #. language code: mga
 #: zypp-logic/zypp/LanguageCode.cc:734
 msgid "Irish, Middle (900-1200)"
-msgstr ""
+msgstr "ພາສາໄອຣິສ, ຍຸກກາງ (ປີ 900-1200)"
 
 #. language code: mic
 #: zypp-logic/zypp/LanguageCode.cc:736
 msgid "Mi'kmaq"
-msgstr ""
+msgstr "ພາສາມິກແມັກ"
 
 #. language code: min
 #: zypp-logic/zypp/LanguageCode.cc:738
 msgid "Minangkabau"
-msgstr ""
+msgstr "ພາສາມີນັງກາບາວ"
 
 #. language code: mis
 #: zypp-logic/zypp/LanguageCode.cc:740
 msgid "Miscellaneous Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາເບັດເຕັດອື່ນໆ"
 
 #. language code: mkh
 #: zypp-logic/zypp/LanguageCode.cc:742
 msgid "Mon-Khmer (Other)"
-msgstr ""
+msgstr "ພາສາມອນ-ຂະແມ (ອື່ນໆ)"
 
 #. language code: mlg mg
 #: zypp-logic/zypp/LanguageCode.cc:744
 msgid "Malagasy"
-msgstr ""
+msgstr "ພາສາມາລາກາຊີ"
 
 #. language code: mlt mt
 #: zypp-logic/zypp/LanguageCode.cc:746
 msgid "Maltese"
-msgstr ""
+msgstr "ພາສາມາລຕາ"
 
 #. language code: mnc
 #: zypp-logic/zypp/LanguageCode.cc:748
 msgid "Manchu"
-msgstr ""
+msgstr "ພາສາມັນຈູ"
 
 #. language code: mni
 #: zypp-logic/zypp/LanguageCode.cc:750
 msgid "Manipuri"
-msgstr ""
+msgstr "ພາສາມະນີປຸຣີ"
 
 #. language code: mno
 #: zypp-logic/zypp/LanguageCode.cc:752
 msgid "Manobo Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາມາໂນໂບ"
 
 #. language code: moh
 #: zypp-logic/zypp/LanguageCode.cc:754
 msgid "Mohawk"
-msgstr ""
+msgstr "ພາສາໂມຮອກ"
 
 #. language code: mol mo
 #: zypp-logic/zypp/LanguageCode.cc:756
 msgid "Moldavian"
-msgstr ""
+msgstr "ພາສາມົລດາເວຍ"
 
 #. language code: mon mn
 #: zypp-logic/zypp/LanguageCode.cc:758
 msgid "Mongolian"
-msgstr ""
+msgstr "ພາສາມົງໂກລີ"
 
 #. language code: mos
 #: zypp-logic/zypp/LanguageCode.cc:760
 msgid "Mossi"
-msgstr ""
+msgstr "ພາສາມອດຊີ"
 
 #. language code: mul
 #: zypp-logic/zypp/LanguageCode.cc:762
 msgid "Multiple Languages"
-msgstr ""
+msgstr "ຫຼາຍພາສາ"
 
 #. language code: mun
 #: zypp-logic/zypp/LanguageCode.cc:764
 msgid "Munda languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາມຸນດາ"
 
 #. language code: mus
 #: zypp-logic/zypp/LanguageCode.cc:766
 msgid "Creek"
-msgstr ""
+msgstr "ພາສາຄຣິກ"
 
 #. language code: mwl
 #: zypp-logic/zypp/LanguageCode.cc:768
 msgid "Mirandese"
-msgstr ""
+msgstr "ພາສາມີຣັນເດສ໌"
 
 #. language code: mwr
 #: zypp-logic/zypp/LanguageCode.cc:770
 msgid "Marwari"
-msgstr ""
+msgstr "ພາສາມາຣະວາຣີ"
 
 #. language code: myn
 #: zypp-logic/zypp/LanguageCode.cc:772
 msgid "Mayan Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາມາຍາ"
 
 #. language code: myv
 #: zypp-logic/zypp/LanguageCode.cc:774
 msgid "Erzya"
-msgstr ""
+msgstr "ພາສາເອີເຊຍ"
 
 #. language code: nah
 #: zypp-logic/zypp/LanguageCode.cc:776
 msgid "Nahuatl"
-msgstr ""
+msgstr "ພາສານາວາເຕິນ"
 
 #. language code: nai
 #: zypp-logic/zypp/LanguageCode.cc:778
 msgid "North American Indian"
-msgstr ""
+msgstr "ພາສາອິນເດຍແດງອາເມຣິກາເໜືອ"
 
 #. language code: nap
 #: zypp-logic/zypp/LanguageCode.cc:780
 msgid "Neapolitan"
-msgstr ""
+msgstr "ພາສານີອາໂປລິຕັນ"
 
 #. language code: nav nv
 #: zypp-logic/zypp/LanguageCode.cc:784
 msgid "Navajo"
-msgstr ""
+msgstr "ພາສານາວາໂຮ"
 
 #. language code: nbl nr
 #: zypp-logic/zypp/LanguageCode.cc:786
 msgid "Ndebele, South"
-msgstr ""
+msgstr "ພາສາເອັນເດເບເລ, ໃຕ້"
 
 #. language code: nde nd
 #: zypp-logic/zypp/LanguageCode.cc:788
 msgid "Ndebele, North"
-msgstr ""
+msgstr "ພາສາເອັນເດເບເລ, ເໜືອ"
 
 #. language code: ndo ng
 #: zypp-logic/zypp/LanguageCode.cc:790
 msgid "Ndonga"
-msgstr ""
+msgstr "ພາສາເອັນດອງກາ"
 
 #. language code: nds
 #: zypp-logic/zypp/LanguageCode.cc:792
 msgid "Low German"
-msgstr ""
+msgstr "ພາສາເຢຍລະມັນຕ່ຳ"
 
 #. language code: nep ne
 #: zypp-logic/zypp/LanguageCode.cc:794
 msgid "Nepali"
-msgstr ""
+msgstr "ພາສາເນປານ"
 
 #. language code: new
 #: zypp-logic/zypp/LanguageCode.cc:796
 msgid "Nepal Bhasa"
-msgstr ""
+msgstr "ພາສາເນປານ ພາສາ"
 
 #. language code: nia
 #: zypp-logic/zypp/LanguageCode.cc:798
 msgid "Nias"
-msgstr ""
+msgstr "ພາສານີອັສ"
 
 #. language code: nic
 #: zypp-logic/zypp/LanguageCode.cc:800
 msgid "Niger-Kordofanian (Other)"
-msgstr ""
+msgstr "ພາສາໄນເຈີ-ຄໍໂດຟານຽນ (ອື່ນໆ)"
 
 #. language code: niu
 #: zypp-logic/zypp/LanguageCode.cc:802
 msgid "Niuean"
-msgstr ""
+msgstr "ພາສານີອູເອ"
 
 #. language code: nno nn
 #: zypp-logic/zypp/LanguageCode.cc:804
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "ພາສານໍເວ ນີນອສ໌"
 
 #. language code: nob nb
 #: zypp-logic/zypp/LanguageCode.cc:806
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "ພາສານໍເວ ບຸກມອລ"
 
 #. language code: nog
 #: zypp-logic/zypp/LanguageCode.cc:808
 msgid "Nogai"
-msgstr ""
+msgstr "ພາສານໍໄກ"
 
 #. language code: non
 #: zypp-logic/zypp/LanguageCode.cc:810
 msgid "Norse, Old"
-msgstr ""
+msgstr "ພາສານໍສ໌, ບູຮານ"
 
 #. language code: nor no
 #: zypp-logic/zypp/LanguageCode.cc:812
 msgid "Norwegian"
-msgstr ""
+msgstr "ພາສານໍເວ"
 
 #. language code: nso
 #: zypp-logic/zypp/LanguageCode.cc:814
 msgid "Northern Sotho"
-msgstr ""
+msgstr "ພາສາໂຊໂທເໜືອ"
 
 #. language code: nub
 #: zypp-logic/zypp/LanguageCode.cc:816
 msgid "Nubian Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສານູບຽນ"
 
 #. language code: nwc
 #: zypp-logic/zypp/LanguageCode.cc:818
 msgid "Classical Newari"
-msgstr ""
+msgstr "ພາສານິວາຣີບູຮານ"
 
 #. language code: nya ny
 #: zypp-logic/zypp/LanguageCode.cc:820
 msgid "Chichewa"
-msgstr ""
+msgstr "ພາສາຊີເຊວາ"
 
 #. language code: nym
 #: zypp-logic/zypp/LanguageCode.cc:822
 msgid "Nyamwezi"
-msgstr ""
+msgstr "ພາສານຽມເວຊີ"
 
 #. language code: nyn
 #: zypp-logic/zypp/LanguageCode.cc:824
 msgid "Nyankole"
-msgstr ""
+msgstr "ພາສານຽນໂຄເລ"
 
 #. language code: nyo
 #: zypp-logic/zypp/LanguageCode.cc:826
 msgid "Nyoro"
-msgstr ""
+msgstr "ພາສານໂຢໂຣ"
 
 #. language code: nzi
 #: zypp-logic/zypp/LanguageCode.cc:828
 msgid "Nzima"
-msgstr ""
+msgstr "ພາສານຊິມາ"
 
 #. language code: oci oc
 #: zypp-logic/zypp/LanguageCode.cc:830
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "ພາສາອົກຊີຕັງ (ຫຼັງປີ 1500)"
 
 #. language code: oji oj
 #: zypp-logic/zypp/LanguageCode.cc:832
 msgid "Ojibwa"
-msgstr ""
+msgstr "ພາສາໂອຈິບວາ"
 
 #. language code: ori or
 #: zypp-logic/zypp/LanguageCode.cc:834
 msgid "Oriya"
-msgstr ""
+msgstr "ພາສາໂອຣິຢາ"
 
 #. language code: orm om
 #: zypp-logic/zypp/LanguageCode.cc:836
 msgid "Oromo"
-msgstr ""
+msgstr "ພາສາໂອໂຣໂມ"
 
 #. language code: osa
 #: zypp-logic/zypp/LanguageCode.cc:838
 msgid "Osage"
-msgstr ""
+msgstr "ພາສາໂອເຊຈ໌"
 
 #. language code: oss os
 #: zypp-logic/zypp/LanguageCode.cc:840
 msgid "Ossetian"
-msgstr ""
+msgstr "ພາສາອອສເຊຕຽນ"
 
 #. language code: ota
 #: zypp-logic/zypp/LanguageCode.cc:842
 msgid "Turkish, Ottoman (1500-1928)"
-msgstr ""
+msgstr "ພາສາຕວກກີ, ອອດໂຕມັນ (ປີ 1500-1928)"
 
 #. language code: oto
 #: zypp-logic/zypp/LanguageCode.cc:844
 msgid "Otomian Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາໂອໂຕມຽນ"
 
 #. language code: paa
 #: zypp-logic/zypp/LanguageCode.cc:846
 msgid "Papuan (Other)"
-msgstr ""
+msgstr "ພາສາປາປົວ (ອື່ນໆ)"
 
 #. language code: pag
 #: zypp-logic/zypp/LanguageCode.cc:848
 msgid "Pangasinan"
-msgstr ""
+msgstr "ພາສາປັງກາຊີນັນ"
 
 #. language code: pal
 #: zypp-logic/zypp/LanguageCode.cc:850
 msgid "Pahlavi"
-msgstr ""
+msgstr "ພາສາປາລາວີ"
 
 #. language code: pam
 #: zypp-logic/zypp/LanguageCode.cc:852
 msgid "Pampanga"
-msgstr ""
+msgstr "ພາສາປາມປັນກາ"
 
 #. language code: pan pa
 #: zypp-logic/zypp/LanguageCode.cc:854
 msgid "Panjabi"
-msgstr ""
+msgstr "ພາສາປັນຈາບີ"
 
 #. language code: pap
 #: zypp-logic/zypp/LanguageCode.cc:856
 msgid "Papiamento"
-msgstr ""
+msgstr "ພາສາປາປີອາເມນໂຕ"
 
 #. language code: pau
 #: zypp-logic/zypp/LanguageCode.cc:858
 msgid "Palauan"
-msgstr ""
+msgstr "ພາສາປາເລົາ"
 
 #. language code: peo
 #: zypp-logic/zypp/LanguageCode.cc:860
 msgid "Persian, Old (ca.600-400 B.C.)"
-msgstr ""
+msgstr "ພາສາເປີເຊຍ, ບູຮານ (ປະມານປີ 600-400 ກ່ອນ ຄ.ສ.)"
 
 #. language code: per fas fa
 #: zypp-logic/zypp/LanguageCode.cc:862 zypp-logic/zypp/LanguageCode.cc:864
 msgid "Persian"
-msgstr ""
+msgstr "ພາສາເປີເຊຍ"
 
 #. language code: phi
 #: zypp-logic/zypp/LanguageCode.cc:866
 msgid "Philippine (Other)"
-msgstr ""
+msgstr "ພາສາຟີລິບປິນ (ອື່ນໆ)"
 
 #. language code: phn
 #: zypp-logic/zypp/LanguageCode.cc:868
 msgid "Phoenician"
-msgstr ""
+msgstr "ພາສາຟີນີຊຽນ"
 
 #. language code: pli pi
 #: zypp-logic/zypp/LanguageCode.cc:870
 msgid "Pali"
-msgstr ""
+msgstr "ພາສາບາລີ"
 
 #. language code: pol pl
 #: zypp-logic/zypp/LanguageCode.cc:872
 msgid "Polish"
-msgstr ""
+msgstr "ພາສາໂປແລນ"
 
 #. language code: pon
 #: zypp-logic/zypp/LanguageCode.cc:874
 msgid "Pohnpeian"
-msgstr ""
+msgstr "ພາສາໂປນເປ"
 
 #. language code: por pt
 #: zypp-logic/zypp/LanguageCode.cc:876
 msgid "Portuguese"
-msgstr ""
+msgstr "ພາສາປອກຕຸຍການ"
 
 #. language code: pra
 #: zypp-logic/zypp/LanguageCode.cc:878
 msgid "Prakrit Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາປຣາກຣິດ"
 
 #. language code: pro
 #: zypp-logic/zypp/LanguageCode.cc:880
 msgid "Provencal, Old (to 1500)"
-msgstr ""
+msgstr "ພາສາໂປຣວັອງຊານ, ບູຮານ (ຈົນເຖິງປີ 1500)"
 
 #. language code: pus ps
 #: zypp-logic/zypp/LanguageCode.cc:882
 msgid "Pushto"
-msgstr ""
+msgstr "ພາສາປັດຕູ"
 
 #. language code: que qu
 #: zypp-logic/zypp/LanguageCode.cc:884
 msgid "Quechua"
-msgstr ""
+msgstr "ພາສາເຄຊົວ"
 
 #. language code: raj
 #: zypp-logic/zypp/LanguageCode.cc:886
 msgid "Rajasthani"
-msgstr ""
+msgstr "ພາສາຣາຊະສະຖານ"
 
 #. language code: rap
 #: zypp-logic/zypp/LanguageCode.cc:888
 msgid "Rapanui"
-msgstr ""
+msgstr "ພາສາຣາປານູຍ"
 
 #. language code: rar
 #: zypp-logic/zypp/LanguageCode.cc:890
 msgid "Rarotongan"
-msgstr ""
+msgstr "ພາສາຣາໂຣໂຕງກາ"
 
 #. language code: roa
 #: zypp-logic/zypp/LanguageCode.cc:892
 msgid "Romance (Other)"
-msgstr ""
+msgstr "ພາສາໂຣແມນຊ໌ (ອື່ນໆ)"
 
 #. language code: roh rm
 #: zypp-logic/zypp/LanguageCode.cc:894
 msgid "Raeto-Romance"
-msgstr ""
+msgstr "ພາສາເຣໂຕ-ໂຣແມນຊ໌"
 
 #. language code: rom
 #: zypp-logic/zypp/LanguageCode.cc:896
 msgid "Romany"
-msgstr ""
+msgstr "ພາສາໂຣມານີ"
 
 #. language code: rum ron ro
 #: zypp-logic/zypp/LanguageCode.cc:898 zypp-logic/zypp/LanguageCode.cc:900
 msgid "Romanian"
-msgstr ""
+msgstr "ພາສາໂຣມາເນຍ"
 
 #. language code: run rn
 #: zypp-logic/zypp/LanguageCode.cc:902
 msgid "Rundi"
-msgstr ""
+msgstr "ພາສາຣຸນດີ"
 
 #. language code: rus ru
 #: zypp-logic/zypp/LanguageCode.cc:904
 msgid "Russian"
-msgstr ""
+msgstr "ພາສາຣັດເຊຍ"
 
 #. language code: sad
 #: zypp-logic/zypp/LanguageCode.cc:906
 msgid "Sandawe"
-msgstr ""
+msgstr "ພາສາຊັນດາເວ"
 
 #. language code: sag sg
 #: zypp-logic/zypp/LanguageCode.cc:908
 msgid "Sango"
-msgstr ""
+msgstr "ພາສາຊັງໂກ"
 
 #. language code: sah
 #: zypp-logic/zypp/LanguageCode.cc:910
 msgid "Yakut"
-msgstr ""
+msgstr "ພາສາຢາຄຸດ"
 
 #. language code: sai
 #: zypp-logic/zypp/LanguageCode.cc:912
 msgid "South American Indian (Other)"
-msgstr ""
+msgstr "ພາສາອິນເດຍແດງອາເມຣິກາໃຕ້ (ອື່ນໆ)"
 
 #. language code: sal
 #: zypp-logic/zypp/LanguageCode.cc:914
 msgid "Salishan Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາຊາລີຊັນ"
 
 #. language code: sam
 #: zypp-logic/zypp/LanguageCode.cc:916
 msgid "Samaritan Aramaic"
-msgstr ""
+msgstr "ພາສາຊາມາຣິທັນ ອາຣາເມອິກ"
 
 #. language code: san sa
 #: zypp-logic/zypp/LanguageCode.cc:918
 msgid "Sanskrit"
-msgstr ""
+msgstr "ພາສາສັນສະກິດ"
 
 #. language code: sas
 #: zypp-logic/zypp/LanguageCode.cc:920
 msgid "Sasak"
-msgstr ""
+msgstr "ພາສາຊາຊັກ"
 
 #. language code: sat
 #: zypp-logic/zypp/LanguageCode.cc:922
 msgid "Santali"
-msgstr ""
+msgstr "ພາສາຊັນທາລີ"
 
 #. language code: scc srp sr
 #: zypp-logic/zypp/LanguageCode.cc:924 zypp-logic/zypp/LanguageCode.cc:926
 msgid "Serbian"
-msgstr ""
+msgstr "ພາສາເຊີບີ"
 
 #. language code: scn
 #: zypp-logic/zypp/LanguageCode.cc:928
 msgid "Sicilian"
-msgstr ""
+msgstr "ພາສາຊີຊີລີ"
 
 #. language code: sco
 #: zypp-logic/zypp/LanguageCode.cc:930
 msgid "Scots"
-msgstr ""
+msgstr "ພາສາສະກັອດ"
 
 #. language code: scr hrv hr
 #: zypp-logic/zypp/LanguageCode.cc:932 zypp-logic/zypp/LanguageCode.cc:934
 msgid "Croatian"
-msgstr ""
+msgstr "ພາສາໂຄຣເອເຊຍ"
 
 #. language code: sel
 #: zypp-logic/zypp/LanguageCode.cc:936
 msgid "Selkup"
-msgstr ""
+msgstr "ພາສາເຊນຄັບ"
 
 #. language code: sem
 #: zypp-logic/zypp/LanguageCode.cc:938
 msgid "Semitic (Other)"
-msgstr ""
+msgstr "ພາສາເຊມິຕິກ (ອື່ນໆ)"
 
 #. language code: sga
 #: zypp-logic/zypp/LanguageCode.cc:940
 msgid "Irish, Old (to 900)"
-msgstr ""
+msgstr "ພາສາໄອຣິສ, ບູຮານ (ຈົນເຖິງປີ 900)"
 
 #. language code: sgn
 #: zypp-logic/zypp/LanguageCode.cc:942
 msgid "Sign Languages"
-msgstr ""
+msgstr "ພາສາມື"
 
 #. language code: shn
 #: zypp-logic/zypp/LanguageCode.cc:944
 msgid "Shan"
-msgstr ""
+msgstr "ພາສາໄທໃຫຍ່"
 
 #. language code: sid
 #: zypp-logic/zypp/LanguageCode.cc:946
 msgid "Sidamo"
-msgstr ""
+msgstr "ພາສາສິດາໂມ"
 
 #. language code: sin si
 #: zypp-logic/zypp/LanguageCode.cc:948
 msgid "Sinhala"
-msgstr ""
+msgstr "ພາສາສິງຫົນ"
 
 #. language code: sio
 #: zypp-logic/zypp/LanguageCode.cc:950
 msgid "Siouan Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາຊີອວນ"
 
 #. language code: sit
 #: zypp-logic/zypp/LanguageCode.cc:952
 msgid "Sino-Tibetan (Other)"
-msgstr ""
+msgstr "ພາສາຈີນ-ທິເບດ (ອື່ນໆ)"
 
 #. language code: sla
 #: zypp-logic/zypp/LanguageCode.cc:954
 msgid "Slavic (Other)"
-msgstr ""
+msgstr "ພາສາສະລາວິກ (ອື່ນໆ)"
 
 #. language code: slo slk sk
 #: zypp-logic/zypp/LanguageCode.cc:956 zypp-logic/zypp/LanguageCode.cc:958
 msgid "Slovak"
-msgstr ""
+msgstr "ພາສາສະໂລວັກ"
 
 #. language code: slv sl
 #: zypp-logic/zypp/LanguageCode.cc:960
 msgid "Slovenian"
-msgstr ""
+msgstr "ພາສາສະໂລວີເນຍ"
 
 #. language code: sma
 #: zypp-logic/zypp/LanguageCode.cc:962
 msgid "Southern Sami"
-msgstr ""
+msgstr "ພາສາຊາມີໃຕ້"
 
 #. language code: sme se
 #: zypp-logic/zypp/LanguageCode.cc:964
 msgid "Northern Sami"
-msgstr ""
+msgstr "ພາສາຊາມີເໜືອ"
 
 #. language code: smi
 #: zypp-logic/zypp/LanguageCode.cc:966
 msgid "Sami Languages (Other)"
-msgstr ""
+msgstr "ກຸ່ມພາສາຊາມີ (ອື່ນໆ)"
 
 #. language code: smj
 #: zypp-logic/zypp/LanguageCode.cc:968
 msgid "Lule Sami"
-msgstr ""
+msgstr "ພາສາລູເລ ຊາມີ"
 
 #. language code: smn
 #: zypp-logic/zypp/LanguageCode.cc:970
 msgid "Inari Sami"
-msgstr ""
+msgstr "ພາສາອີນາຣີ ຊາມີ"
 
 #. language code: smo sm
 #: zypp-logic/zypp/LanguageCode.cc:972
 msgid "Samoan"
-msgstr ""
+msgstr "ພາສາຊາມົວ"
 
 #. language code: sms
 #: zypp-logic/zypp/LanguageCode.cc:974
 msgid "Skolt Sami"
-msgstr ""
+msgstr "ພາສາສະໂຄລ ຊາມີ"
 
 #. language code: sna sn
 #: zypp-logic/zypp/LanguageCode.cc:976
 msgid "Shona"
-msgstr ""
+msgstr "ພາສາໂຊນາ"
 
 #. language code: snd sd
 #: zypp-logic/zypp/LanguageCode.cc:978
 msgid "Sindhi"
-msgstr ""
+msgstr "ພາສາສິນທິ"
 
 #. language code: snk
 #: zypp-logic/zypp/LanguageCode.cc:980
 msgid "Soninke"
-msgstr ""
+msgstr "ພາສາໂຊນິນເກ"
 
 #. language code: sog
 #: zypp-logic/zypp/LanguageCode.cc:982
 msgid "Sogdian"
-msgstr ""
+msgstr "ພາສາຊອກດຽນ"
 
 #. language code: som so
 #: zypp-logic/zypp/LanguageCode.cc:984
 msgid "Somali"
-msgstr ""
+msgstr "ພາສາໂຊມາລີ"
 
 #. language code: son
 #: zypp-logic/zypp/LanguageCode.cc:986
 msgid "Songhai"
-msgstr ""
+msgstr "ພາສາຊອງໄຮ"
 
 #. language code: sot st
 #: zypp-logic/zypp/LanguageCode.cc:988
 msgid "Sotho, Southern"
-msgstr ""
+msgstr "ພາສາໂຊໂທໃຕ້"
 
 #. language code: spa es
 #: zypp-logic/zypp/LanguageCode.cc:990
 msgid "Spanish"
-msgstr ""
+msgstr "ພາສາສະເປນ"
 
 #. language code: srd sc
 #: zypp-logic/zypp/LanguageCode.cc:992
 msgid "Sardinian"
-msgstr ""
+msgstr "ພາສາຊາດິເນຍ"
 
 #. language code: srr
 #: zypp-logic/zypp/LanguageCode.cc:994
 msgid "Serer"
-msgstr ""
+msgstr "ພາສາເຊເຣີ"
 
 #. language code: ssa
 #: zypp-logic/zypp/LanguageCode.cc:996
 msgid "Nilo-Saharan (Other)"
-msgstr ""
+msgstr "ພາສາໄນໂລ-ຊາຮາຣັນ (ອື່ນໆ)"
 
 #. language code: ssw ss
 #: zypp-logic/zypp/LanguageCode.cc:998
 msgid "Swati"
-msgstr ""
+msgstr "ພາສາສະວາຕີ"
 
 #. language code: suk
 #: zypp-logic/zypp/LanguageCode.cc:1000
 msgid "Sukuma"
-msgstr ""
+msgstr "ພາສາສຸຄູມາ"
 
 #. language code: sun su
 #: zypp-logic/zypp/LanguageCode.cc:1002
 msgid "Sundanese"
-msgstr ""
+msgstr "ພາສາຊັນດາ"
 
 #. language code: sus
 #: zypp-logic/zypp/LanguageCode.cc:1004
 msgid "Susu"
-msgstr ""
+msgstr "ພາສາຊູຊູ"
 
 #. language code: sux
 #: zypp-logic/zypp/LanguageCode.cc:1006
 msgid "Sumerian"
-msgstr ""
+msgstr "ພາສາຊູເມຣຽນ"
 
 #. language code: swa sw
 #: zypp-logic/zypp/LanguageCode.cc:1008
 msgid "Swahili"
-msgstr ""
+msgstr "ພາສາສະວາຮີລີ"
 
 #. language code: swe sv
 #: zypp-logic/zypp/LanguageCode.cc:1010
 msgid "Swedish"
-msgstr ""
+msgstr "ພາສາສະວີເດັນ"
 
 #. language code: syr
 #: zypp-logic/zypp/LanguageCode.cc:1012
 msgid "Syriac"
-msgstr ""
+msgstr "ພາສາຊີເຣຍ"
 
 #. language code: tah ty
 #: zypp-logic/zypp/LanguageCode.cc:1014
 msgid "Tahitian"
-msgstr ""
+msgstr "ພາສາຕາຮີຕີ"
 
 #. language code: tai
 #: zypp-logic/zypp/LanguageCode.cc:1016
 msgid "Tai (Other)"
-msgstr ""
+msgstr "ພາສາໄຕ (ອື່ນໆ)"
 
 #. language code: tam ta
 #: zypp-logic/zypp/LanguageCode.cc:1018
 msgid "Tamil"
-msgstr ""
+msgstr "ພາສາທະມິນ"
 
 #. language code: tat tt
 #: zypp-logic/zypp/LanguageCode.cc:1020
 msgid "Tatar"
-msgstr ""
+msgstr "ພາສາຕາຕາຣ໌"
 
 #. language code: tel te
 #: zypp-logic/zypp/LanguageCode.cc:1022
 msgid "Telugu"
-msgstr ""
+msgstr "ພາສາເຕລູກູ"
 
 #. language code: tem
 #: zypp-logic/zypp/LanguageCode.cc:1024
 msgid "Timne"
-msgstr ""
+msgstr "ພາສາທີມເນ"
 
 #. language code: ter
 #: zypp-logic/zypp/LanguageCode.cc:1026
 msgid "Tereno"
-msgstr ""
+msgstr "ພາສາເຕເຣໂນ"
 
 #. language code: tet
 #: zypp-logic/zypp/LanguageCode.cc:1028
 msgid "Tetum"
-msgstr ""
+msgstr "ພາສາເຕຕຸມ"
 
 #. language code: tgk tg
 #: zypp-logic/zypp/LanguageCode.cc:1030
 msgid "Tajik"
-msgstr ""
+msgstr "ພາສາຕາຈິກ"
 
 #. language code: tgl tl
 #: zypp-logic/zypp/LanguageCode.cc:1032
 msgid "Tagalog"
-msgstr ""
+msgstr "ພາສາຕາກາລັອກ"
 
 #. language code: tha th
 #: zypp-logic/zypp/LanguageCode.cc:1034
 msgid "Thai"
-msgstr ""
+msgstr "ພາສາໄທ"
 
 #. language code: tib bod bo
 #: zypp-logic/zypp/LanguageCode.cc:1036 zypp-logic/zypp/LanguageCode.cc:1038
 msgid "Tibetan"
-msgstr ""
+msgstr "ພາສາທິເບດ"
 
 #. language code: tig
 #: zypp-logic/zypp/LanguageCode.cc:1040
 msgid "Tigre"
-msgstr ""
+msgstr "ພາສາຕີເກຣ"
 
 #. language code: tir ti
 #: zypp-logic/zypp/LanguageCode.cc:1042
 msgid "Tigrinya"
-msgstr ""
+msgstr "ພາສາຕີກຣີນຢາ"
 
 #. language code: tiv
 #: zypp-logic/zypp/LanguageCode.cc:1044
 msgid "Tiv"
-msgstr ""
+msgstr "ພາສາຕິບ"
 
 #. language code: tlh
 #: zypp-logic/zypp/LanguageCode.cc:1048
 msgid "Klingon"
-msgstr ""
+msgstr "ພາສາຄລີງອັນ"
 
 #. language code: tli
 #: zypp-logic/zypp/LanguageCode.cc:1050
 msgid "Tlingit"
-msgstr ""
+msgstr "ພາສາຕລິງກິດ"
 
 #. language code: tmh
 #: zypp-logic/zypp/LanguageCode.cc:1052
 msgid "Tamashek"
-msgstr ""
+msgstr "ພາສາທາມາເຊັກ"
 
 #. language code: tog
 #: zypp-logic/zypp/LanguageCode.cc:1054
 msgid "Tonga (Nyasa)"
-msgstr ""
+msgstr "ພາສາທອງກາ (ນີອາຊາ)"
 
 #. language code: ton to
 #: zypp-logic/zypp/LanguageCode.cc:1056
 msgid "Tonga (Tonga Islands)"
-msgstr ""
+msgstr "ພາສາທອງກາ (ເກາະທອງກາ)"
 
 #. language code: tpi
 #: zypp-logic/zypp/LanguageCode.cc:1058
 msgid "Tok Pisin"
-msgstr ""
+msgstr "ພາສາທົກ ພີຊິນ"
 
 #. language code: tsi
 #: zypp-logic/zypp/LanguageCode.cc:1060
 msgid "Tsimshian"
-msgstr ""
+msgstr "ພາສາຊີມຊຽນ"
 
 #. language code: tsn tn
 #: zypp-logic/zypp/LanguageCode.cc:1062
 msgid "Tswana"
-msgstr ""
+msgstr "ພາສາສະວານາ"
 
 #. language code: tso ts
 #: zypp-logic/zypp/LanguageCode.cc:1064
 msgid "Tsonga"
-msgstr ""
+msgstr "ພາສາຊອງກາ"
 
 #. language code: tuk tk
 #: zypp-logic/zypp/LanguageCode.cc:1066
 msgid "Turkmen"
-msgstr ""
+msgstr "ພາສາຕວກເມນ"
 
 #. language code: tum
 #: zypp-logic/zypp/LanguageCode.cc:1068
 msgid "Tumbuka"
-msgstr ""
+msgstr "ພາສາຕຸມບູກາ"
 
 #. language code: tup
 #: zypp-logic/zypp/LanguageCode.cc:1070
 msgid "Tupi Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາຕູປີ"
 
 #. language code: tur tr
 #: zypp-logic/zypp/LanguageCode.cc:1072
 msgid "Turkish"
-msgstr ""
+msgstr "ພາສາຕວກກີ"
 
 #. language code: tut
 #: zypp-logic/zypp/LanguageCode.cc:1074
 msgid "Altaic (Other)"
-msgstr ""
+msgstr "ພາສາອັນຕາອິກ (ອື່ນໆ)"
 
 #. language code: twi tw
 #: zypp-logic/zypp/LanguageCode.cc:1078
 msgid "Twi"
-msgstr ""
+msgstr "ພາສາທວີ"
 
 #. language code: tyv
 #: zypp-logic/zypp/LanguageCode.cc:1080
 msgid "Tuvinian"
-msgstr ""
+msgstr "ພາສາຕູວີນຽນ"
 
 #. language code: udm
 #: zypp-logic/zypp/LanguageCode.cc:1082
 msgid "Udmurt"
-msgstr ""
+msgstr "ພາສາອຸດມຸດ"
 
 #. language code: uga
 #: zypp-logic/zypp/LanguageCode.cc:1084
 msgid "Ugaritic"
-msgstr ""
+msgstr "ພາສາອູກາຣິຕິກ"
 
 #. language code: uig ug
 #: zypp-logic/zypp/LanguageCode.cc:1086
 msgid "Uighur"
-msgstr ""
+msgstr "ພາສາອຸຍກູຣ໌"
 
 #. language code: ukr uk
 #: zypp-logic/zypp/LanguageCode.cc:1088
 msgid "Ukrainian"
-msgstr ""
+msgstr "ພາສາຢູເຄຣນ"
 
 #. language code: umb
 #: zypp-logic/zypp/LanguageCode.cc:1090
 msgid "Umbundu"
-msgstr ""
+msgstr "ພາສາອຸມບຸນດູ"
 
 #. language code: und
 #: zypp-logic/zypp/LanguageCode.cc:1092
 msgid "Undetermined"
-msgstr ""
+msgstr "ບໍ່ລະບຸ"
 
 #. language code: urd ur
 #: zypp-logic/zypp/LanguageCode.cc:1094
 msgid "Urdu"
-msgstr ""
+msgstr "ພາສາອູຣະດູ"
 
 #. language code: uzb uz
 #: zypp-logic/zypp/LanguageCode.cc:1096
 msgid "Uzbek"
-msgstr ""
+msgstr "ພາສາອຸຊເບັກ"
 
 #. language code: vai
 #: zypp-logic/zypp/LanguageCode.cc:1098
 msgid "Vai"
-msgstr ""
+msgstr "ພາສາໄວ"
 
 #. language code: ven ve
 #: zypp-logic/zypp/LanguageCode.cc:1100
 msgid "Venda"
-msgstr ""
+msgstr "ພາສາເວນດາ"
 
 #. language code: vie vi
 #: zypp-logic/zypp/LanguageCode.cc:1102
 msgid "Vietnamese"
-msgstr ""
+msgstr "ພາສາຫວຽດນາມ"
 
 #. language code: vol vo
 #: zypp-logic/zypp/LanguageCode.cc:1104
 msgid "Volapuk"
-msgstr ""
+msgstr "ພາສາໂວລາປຸກ"
 
 #. language code: vot
 #: zypp-logic/zypp/LanguageCode.cc:1106
 msgid "Votic"
-msgstr ""
+msgstr "ພາສາໂວຕິກ"
 
 #. language code: wak
 #: zypp-logic/zypp/LanguageCode.cc:1108
 msgid "Wakashan Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາວາຄາຊັນ"
 
 #. language code: wal
 #: zypp-logic/zypp/LanguageCode.cc:1110
 msgid "Walamo"
-msgstr ""
+msgstr "ພາສາວາລາໂມ"
 
 #. language code: war
 #: zypp-logic/zypp/LanguageCode.cc:1112
 msgid "Waray"
-msgstr ""
+msgstr "ພາສາວາໄຣ"
 
 #. language code: was
 #: zypp-logic/zypp/LanguageCode.cc:1114
 msgid "Washo"
-msgstr ""
+msgstr "ພາສາວາໂຊ"
 
 #. language code: wel cym cy
 #: zypp-logic/zypp/LanguageCode.cc:1116 zypp-logic/zypp/LanguageCode.cc:1118
 msgid "Welsh"
-msgstr ""
+msgstr "ພາສາເວລຊ໌"
 
 #. language code: wen
 #: zypp-logic/zypp/LanguageCode.cc:1120
 msgid "Sorbian Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາເຊີບຽນ"
 
 #. language code: wln wa
 #: zypp-logic/zypp/LanguageCode.cc:1122
 msgid "Walloon"
-msgstr ""
+msgstr "ພາສາວໍລູນ"
 
 #. language code: wol wo
 #: zypp-logic/zypp/LanguageCode.cc:1124
 msgid "Wolof"
-msgstr ""
+msgstr "ພາສາໂວລອບ"
 
 #. language code: xal
 #: zypp-logic/zypp/LanguageCode.cc:1126
 msgid "Kalmyk"
-msgstr ""
+msgstr "ພາສາຄັລມິກ"
 
 #. language code: xho xh
 #: zypp-logic/zypp/LanguageCode.cc:1128
 msgid "Xhosa"
-msgstr ""
+msgstr "ພາສາໂຊຊາ"
 
 #. language code: yao
 #: zypp-logic/zypp/LanguageCode.cc:1130
 msgid "Yao"
-msgstr ""
+msgstr "ພາສາຢ້າວ"
 
 #. language code: yap
 #: zypp-logic/zypp/LanguageCode.cc:1132
 msgid "Yapese"
-msgstr ""
+msgstr "ພາສາຢັບ"
 
 #. language code: yid yi
 #: zypp-logic/zypp/LanguageCode.cc:1134
 msgid "Yiddish"
-msgstr ""
+msgstr "ພາສາຢິດດິຊ໌"
 
 #. language code: yor yo
 #: zypp-logic/zypp/LanguageCode.cc:1136
 msgid "Yoruba"
-msgstr ""
+msgstr "ພາສາໂຢຣູບາ"
 
 #. language code: ypk
 #: zypp-logic/zypp/LanguageCode.cc:1138
 msgid "Yupik Languages"
-msgstr ""
+msgstr "ກຸ່ມພາສາຢູປິກ"
 
 #. language code: zap
 #: zypp-logic/zypp/LanguageCode.cc:1140
 msgid "Zapotec"
-msgstr ""
+msgstr "ພາສາຊາໂປເຕັກ"
 
 #. language code: zen
 #: zypp-logic/zypp/LanguageCode.cc:1142
 msgid "Zenaga"
-msgstr ""
+msgstr "ພາສາເຊນາກາ"
 
 #. language code: zha za
 #: zypp-logic/zypp/LanguageCode.cc:1144
 msgid "Zhuang"
-msgstr ""
+msgstr "ພາສາຈ້ວງ"
 
 #. language code: znd
 #: zypp-logic/zypp/LanguageCode.cc:1146
 msgid "Zande"
-msgstr ""
+msgstr "ພາສາຊານເດ"
 
 #. language code: zul zu
 #: zypp-logic/zypp/LanguageCode.cc:1148
 msgid "Zulu"
-msgstr ""
+msgstr "ພາສາຊູລູ"
 
 #. language code: zun
 #: zypp-logic/zypp/LanguageCode.cc:1150
 msgid "Zuni"
-msgstr ""
+msgstr "ພາສາຊູນີ"
 
 #: zypp-logic/zypp/base/StrMatcher.cc:152
 #, c-format, boost-format
 msgid "Unknown match mode '%s'"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກໂໝດການຈັບຄູ່ '%s'"
 
 #: zypp-logic/zypp/base/StrMatcher.cc:153
 #, c-format, boost-format
 msgid "Unknown match mode '%s' for pattern '%s'"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກໂໝດການຈັບຄູ່ '%s' ສຳລັບຮູບແບບ '%s'"
 
 #: zypp-logic/zypp/base/StrMatcher.cc:157
 #, c-format, boost-format
 msgid "Invalid regular expression '%s': regcomp returned %d"
 msgstr ""
+"ນິພົດປົກກະຕິ (Regular expression) ບໍ່ຖືກຕ້ອງ '%s': regcomp ສົ່ງຄ່າຄືນ %d"
 
 #: zypp-logic/zypp/base/StrMatcher.cc:158
 #, c-format, boost-format
 msgid "Invalid regular expression '%s'"
-msgstr ""
+msgstr "ນິພົດປົກກະຕິບໍ່ຖືກຕ້ອງ '%s'"
 
 #: zypp-logic/zypp/ng/sat/stringpool.cc:34
 msgid "Can not create sat-pool."
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງ sat-pool ໄດ້."
 
 #: zypp/zypp-tui/Table.cc:32
 msgid "Yes"
-msgstr ""
+msgstr "ແມ່ນ"
 
 #: zypp/zypp-tui/Table.cc:32
 msgid "No"
-msgstr ""
+msgstr "ບໍ່"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp/zypp-tui/output/Out.cc:26
 msgid "Note:"
-msgstr ""
+msgstr "ໝາຍເຫດ:"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp/zypp-tui/output/Out.cc:28
 msgid "Warning:"
-msgstr ""
+msgstr "ຄຳເຕືອນ:"
 
 #. translator: usually followed by a ' ' and some explanatory text
 #: zypp/zypp-tui/output/Out.cc:30
 msgid "Error:"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ:"
 
 #. @TODO use a centralized Continue string!
 #: zypp/zypp-tui/output/Out.cc:32 zypp/zypp/ng/reporthelper.cc:149
 msgid "Continue?"
-msgstr ""
+msgstr "ສືບຕໍ່ບໍ່?"
 
 #. translator: Shown as result tag in a progress bar: ............[done]
 #. Translator: download progress bar result: ".............[done]"
@@ -4216,130 +4228,138 @@ msgstr ""
 #: zypp/zypp-tui/output/OutNormal.cc:344
 #: zypp/zypp/target/commitpackagepreloader.cc:284
 msgid "done"
-msgstr ""
+msgstr "ສຳເລັດ"
 
 #. translator: Shown as result tag in a progress bar: .......[attention]
 #: zypp/zypp-tui/output/Out.cc:143
 msgid "attention"
-msgstr ""
+msgstr "ສົນໃຈ"
 
 #. translator: Shown as result tag in a progress bar: ...........[error]
 #. Translator: download progress bar result: "............[error]"
 #: zypp/zypp-tui/output/Out.cc:145 zypp/zypp-tui/output/OutNormal.cc:338
 #: zypp/zypp-tui/output/OutNormal.cc:344
 msgid "error"
-msgstr ""
+msgstr "ຜິດພາດ"
 
 #: zypp/zypp-tui/output/OutNormal.cc:90
 msgid "Warning: "
-msgstr ""
+msgstr "ຄຳເຕືອນ: "
 
 #: zypp/zypp-tui/output/OutNormal.cc:254 zypp/zypp-tui/output/OutNormal.cc:288
 #: zypp/zypp-tui/output/OutNormal.cc:326
 msgid "Retrieving:"
-msgstr ""
+msgstr "ກຳລັງດຶງຂໍ້ມູນ:"
 
 #: zypp/zypp-tui/output/OutNormal.cc:261
 msgid "starting"
-msgstr ""
+msgstr "ກຳລັງເລີ່ມ"
 
 #. Translator: download progress bar result: "........[not found]"
 #: zypp/zypp-tui/output/OutNormal.cc:335 zypp/zypp-tui/output/OutNormal.cc:344
 msgid "not found"
-msgstr ""
+msgstr "ບໍ່ພົບ"
 
 #: zypp/zypp-tui/output/OutNormal.cc:421
 msgid "No help available for this prompt."
-msgstr ""
+msgstr "ບໍ່ມີຄຳອະທິບາຍສຳລັບຄຳຖາມນີ້."
 
 #: zypp/zypp-tui/output/OutNormal.cc:438
 msgid "no help available for this option"
-msgstr ""
+msgstr "ບໍ່ມີຄຳອະທິບາຍສຳລັບຕົວເລືອກນີ້"
 
 #. translators: Press '?' to see all options embedded in this prompt: "Continue? [y/n/? shows all options] (y):"
 #: zypp/zypp-tui/output/promptoptions.cc:85
 msgid "shows all options"
-msgstr ""
+msgstr "ສະແດງທຸກຕົວເລືອກ"
 
 #: zypp/zypp-tui/output/promptoptions.cc:194
 msgid "yes"
-msgstr ""
+msgstr "ແມ່ນ"
 
 #: zypp/zypp-tui/output/promptoptions.cc:194
 msgid "no"
-msgstr ""
+msgstr "ບໍ່"
 
 #: zypp/zypp/ProblemSolution.cc:134
 msgid "Following actions will be done:"
-msgstr ""
+msgstr "ການດຳເນີນການຕໍ່ໄປນີ້ຈະຖືກປະຕິບັດ:"
 
 #: zypp/zypp/RepoInfo.cc:245
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນ mirrorlist/metalink ໄດ້."
 
 #: zypp/zypp/VendorSupportOptions.cc:14
 msgid "unknown"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກ"
 
 #: zypp/zypp/VendorSupportOptions.cc:17
 msgid "unsupported"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບ"
 
 #: zypp/zypp/VendorSupportOptions.cc:20
 msgid "Level 1"
-msgstr ""
+msgstr "ລະດັບ 1"
 
 #: zypp/zypp/VendorSupportOptions.cc:23
 msgid "Level 2"
-msgstr ""
+msgstr "ລະດັບ 2"
 
 #: zypp/zypp/VendorSupportOptions.cc:26
 msgid "Level 3"
-msgstr ""
+msgstr "ລະດັບ 3"
 
 #: zypp/zypp/VendorSupportOptions.cc:29
 msgid "Additional Customer Contract Necessary"
-msgstr ""
+msgstr "ຈຳເປັນຕ້ອງມີສັນຍາລູກຄ້າເພີ່ມເຕີມ"
 
 #: zypp/zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "ຍົກເລີກການໃຊ້ແລ້ວ ແລະ ຖືກປ່ຽນແທນດ້ວຍແພັກເກັດອື່ນ"
 
 #: zypp/zypp/VendorSupportOptions.cc:33
 msgid "invalid"
-msgstr ""
+msgstr "ບໍ່ຖືກຕ້ອງ"
 
 #: zypp/zypp/VendorSupportOptions.cc:41
 msgid "The level of support is unspecified"
-msgstr ""
+msgstr "ບໍ່ໄດ້ລະບຸລະດັບການສະໜັບສະໜູນ"
 
 #: zypp/zypp/VendorSupportOptions.cc:44
 msgid "The vendor does not provide support."
-msgstr ""
+msgstr "ຜູ້ຜະລິດບໍ່ໄດ້ໃຫ້ການສະໜັບສະໜູນ."
 
 #: zypp/zypp/VendorSupportOptions.cc:47
 msgid "Problem determination, which means technical support designed to provide compatibility information, installation assistance, usage support, on-going maintenance and basic troubleshooting. Level 1 Support is not intended to correct product defect errors."
 msgstr ""
+"ການກຳນົດບັນຫາ, ເຊິ່ງໝາຍເຖິງການສະໜັບສະໜູນດ້ານເຕັກນິກທີ່ຖືກອອກແບບມາເພື່ອໃຫ້ຂໍ້ມູນຄວາມເຂົ້າກັນໄດ້, ການຊ່"
+"ວຍເຫຼືອໃນການຕິດຕັ້ງ, ການສະໜັບສະໜູນການໃຊ້ງານ, ການບຳລຸງຮັກສາຢ່າງຕໍ່ເນື່ອງ ແລະ ການແກ້ໄຂບັນຫາເບື້ອງຕົ້"
+"ນ. ການສະໜັບສະໜູນລະດັບ 1 ບໍ່ໄດ້ມີຈຸດປະສົງເພື່ອແກ້ໄຂຂໍ້ຜິດພາດຂອງຜະລິດຕະພັນ."
 
 #: zypp/zypp/VendorSupportOptions.cc:50
 msgid "Problem isolation, which means technical support designed to duplicate customer problems, isolate problem area and provide resolution for problems not resolved by Level 1 Support."
 msgstr ""
+"ການແຍກບັນຫາ, ເຊິ່ງໝາຍເຖິງການສະໜັບສະໜູນດ້ານເຕັກນິກທີ່ຖືກອອກແບບມາເພື່ອຈຳລອງບັນຫາຂອງລູກຄ້າ, ແຍກພື້ນ"
+"ທີ່ຂອງບັນຫາ ແລະ ສະໜອງວິທີການແກ້ໄຂບັນຫາທີ່ບໍ່ສາມາດແກ້ໄຂໄດ້ດ້ວຍການສະໜັບສະໜູນລະດັບ 1."
 
 #: zypp/zypp/VendorSupportOptions.cc:53
 msgid "Problem resolution, which means technical support designed to resolve complex problems by engaging engineering in resolution of product defects which have been identified by Level 2 Support."
 msgstr ""
+"ການແກ້ໄຂບັນຫາ, ເຊິ່ງໝາຍເຖິງການສະໜັບສະໜູນດ້ານເຕັກນິກທີ່ຖືກອອກແບບມາເພື່ອແກ້ໄຂບັນຫາທີ່ຊັບຊ້ອນ ໂດຍການໃ"
+"ຫ້ວິສະວະກອນເຂົ້າມາມີສ່ວນຮ່ວມໃນການແກ້ໄຂຂໍ້ບົກພ່ອງຂອງຜະລິດຕະພັນທີ່ຖືກກຳນົດໂດຍການສະໜັບສະໜູນລະດັບ 2."
 
 #: zypp/zypp/VendorSupportOptions.cc:56
 msgid "An additional customer contract is necessary for getting support."
-msgstr ""
+msgstr "ຈຳເປັນຕ້ອງມີສັນຍາລູກຄ້າເພີ່ມເຕີມເພື່ອຮັບການສະໜັບສະໜູນ."
 
 #: zypp/zypp/VendorSupportOptions.cc:58
 msgid "The package was discontinued and has been superseded by a new package with a different name."
 msgstr ""
+"ແພັກເກັດນີ້ຖືກຍົກເລີກການໃຊ້ແລ້ວ ແລະ ຖືກປ່ຽນແທນດ້ວຍແພັກເກັດໃໝ່ທີ່ມີຊື່ອື່ນ."
 
 #: zypp/zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກຕົວເລືອກການສະໜັບສະໜູນ. ບໍ່ມີຄຳອະທິບາຍ"
 
 #: zypp/zypp/ZYppFactory.cc:380
 #, c-format, boost-format
@@ -4347,99 +4367,103 @@ msgid ""
 "System management is locked by the application with pid %d (%s).\n"
 "Close this application before trying again."
 msgstr ""
+"ການຈັດການລະບົບຖືກລັອກໂດຍແອັບພລິເຄຊັນທີ່ມີ pid %d (%s).\n"
+"ກະລຸນາປິດແອັບພລິເຄຊັນນີ້ກ່ອນຈະລອງໃໝ່ອີກຄັ້ງ."
 
 #. !\todo add comma to the message for the next release
 #: zypp/zypp/media/MediaCIFS.cc:427
 #: zypp/zypp/media/MediaNetworkCommonHandler.cc:388
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
-msgstr ""
+msgstr "ຕ້ອງການການຢືນຢັນຕົວຕົນສຳລັບ '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/zypp/media/MediaCurl.cc:822
 msgid "Will try again..."
-msgstr ""
+msgstr "ຈະລອງໃໝ່ອີກຄັ້ງ..."
 
 #: zypp/zypp/media/MediaCurl.cc:825
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "ຍົກເລີກຫຼັງຈາກພະຍາຍາມແລ້ວ %1% ຄັ້ງ."
 
 #: zypp/zypp/media/MediaHandler.cc:339
 msgid "Create attach point: Can't find a writable directory to create an attach point"
-msgstr ""
+msgstr "ສ້າງຈຸດເຊື່ອມຕໍ່: ບໍ່ພົບໂຟນເດີທີ່ສາມາດຂຽນໄດ້ເພື່ອສ້າງຈຸດເຊື່ອມຕໍ່"
 
 #: zypp/zypp/misc/CheckAccessDeleted.cc:458
 msgid "Please install package 'lsof' first."
-msgstr ""
+msgstr "ກະລຸນາຕິດຕັ້ງແພັກເກັດ 'lsof' ກ່ອນ."
 
 #: zypp/zypp/ng/repo/refresh.cc:45
 msgid "Can't create metadata cache directory."
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງໂຟນເດີເກັບແຄຊ໌ຂໍ້ມູນເມຕາ (metadata) ໄດ້."
 
 #. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
 #: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:109
 msgid "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl via the repository configuration instead."
 msgstr ""
+"ກຳລັງດາວໂຫລດຄີລາຍເຊັນຜ່ານເຊີເວີສຳຮອງ (mirror), ກະລຸນາພິຈາລະນາການຕັ້ງຄ່າ gpgKeyUrl ໂດຍກົງຜ່"
+"ານການກຳນົດຄ່າຄັງເກັບຊອບແວແທນ."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
 #: zypp/zypp/ng/repo/workflows/serviceswf.cc:249
 #, c-format, boost-format
 msgid "Error trying to read from '%s'"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການອ່ານຈາກ '%s'"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:405
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:632
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:714
 #, c-format, boost-format
 msgid "Can't create %s"
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງ %s ໄດ້"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:452
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນເມຕາ (metadata) ໃໝ່ຂອງຄັງເກັບຊອບແວໄດ້."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:546
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "ບໍ່ສາມາດບັນທຶກແຄຊ໌ຂອງຄັງເກັບໄດ້ (ບໍ່ສາມາດເລີ່ມ repo2solv ໄດ້)."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:563
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:602
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
-msgstr ""
+msgstr "ບໍ່ສາມາດບັນທຶກແຄຊ໌ຂອງຄັງເກັບໄດ້ (%d)."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:620
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
-msgstr ""
+msgstr "ກຳລັງສ້າງແຄຊ໌ສຳລັບຄັງເກັບຊອບແວ '%s'"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:720
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງແຄຊ໌ທີ່ %s ໄດ້ - ບໍ່ມີສິດໃນການຂຽນ."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:775
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "ບໍ່ສາມາດບັນທຶກແຄຊ໌ຂອງຄັງເກັບ %1% ໄດ້"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:792
 msgid "Unhandled repository type"
-msgstr ""
+msgstr "ປະເພດຂອງຄັງເກັບຊອບແວທີ່ບໍ່ຮອງຮັບ"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:860
 #, c-format, boost-format
 msgid "Adding repository '%s'"
-msgstr ""
+msgstr "ກຳລັງເພີ່ມຄັງເກັບຊອບແວ '%s'"
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:947
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
-msgstr ""
+msgstr "ຊື່ໄຟລ໌ຄັງເກັບທີ່ '%s' ບໍ່ຖືກຕ້ອງ"
 
 #. TranslatorExplanation '%s' is a filename
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:963
@@ -4448,83 +4472,83 @@ msgstr ""
 #: zypp/zypp/ng/repomanager.cc:1231
 #, c-format, boost-format
 msgid "Can't open file '%s' for writing."
-msgstr ""
+msgstr "ບໍ່ສາມາດເປີດໄຟລ໌ '%s' ເພື່ອຂຽນໄດ້."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/serviceswf.cc:256
 #: zypp/zypp/ng/repo/workflows/serviceswf.cc:262
 #, c-format, boost-format
 msgid "Unknown error reading from '%s'"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຮູ້ຈັກໃນການອ່ານຈາກ '%s'"
 
 #: zypp/zypp/ng/repomanager.cc:196
 #, boost-format
 msgid "Cannot read repo directory '%1%': Permission denied"
-msgstr ""
+msgstr "ບໍ່ສາມາດອ່ານໂຟນເດີຄັງເກັບ '%1%' ໄດ້: ຖືກປະຕິເສດການເຂົ້າເຖິງ"
 
 #. TranslatorExplanation '%s' is a pathname
 #: zypp/zypp/ng/repomanager.cc:204 zypp/zypp/ng/repomanager.cc:466
 #: zypp/zypp/ng/repomanager.cc:1335 zypp/zypp/repo/PluginServices.cc:49
 #, c-format, boost-format
 msgid "Failed to read directory '%s'"
-msgstr ""
+msgstr "ບໍ່ສາມາດອ່ານໂຟນເດີ '%s' ໄດ້"
 
 #: zypp/zypp/ng/repomanager.cc:214
 #, boost-format
 msgid "Cannot read repo file '%1%': Permission denied"
-msgstr ""
+msgstr "ບໍ່ສາມາດອ່ານໄຟລ໌ຄັງເກັບ '%1%' ໄດ້: ຖືກປະຕິເສດການເຂົ້າເຖິງ"
 
 #: zypp/zypp/ng/repomanager.cc:381
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "ກຳລັງລຶບລ້າງຂໍ້ມູນເມຕາ (metadata)"
 
 #: zypp/zypp/ng/repomanager.cc:399
 msgid "Cleaning packages"
-msgstr ""
+msgstr "ກຳລັງລຶບລ້າງແພັກເກັດ"
 
 #: zypp/zypp/ng/repomanager.cc:451
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "ກຳລັງລຶບລ້າງໂຟນເດີແຄຊ໌"
 
 #: zypp/zypp/ng/repomanager.cc:471
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "ກຳລັງລຶບລ້າງໂຟນເດີ: %1%"
 
 #: zypp/zypp/ng/repomanager.cc:501
 msgid "Cleaning cache"
-msgstr ""
+msgstr "ກຳລັງລຶບລ້າງແຄຊ໌"
 
 #: zypp/zypp/ng/repomanager.cc:522
 msgid "Loading from cache"
-msgstr ""
+msgstr "ກຳລັງໂຫລດຈາກແຄຊ໌"
 
 #: zypp/zypp/ng/repomanager.cc:613
 #, c-format, boost-format
 msgid "Removing repository '%s'"
-msgstr ""
+msgstr "ກຳລັງລຶບຄັງເກັບຊອບແວ '%s'"
 
 #: zypp/zypp/ng/repomanager.cc:633 zypp/zypp/ng/repomanager.cc:717
 msgid "Can't figure out where the repo is stored."
-msgstr ""
+msgstr "ບໍ່ສາມາດກວດສອບໄດ້ວ່າຄັງເກັບຊອບແວຖືກເກັບໄວ້ບ່ອນໃດ."
 
 #. TranslatorExplanation '%s' is a filename
 #: zypp/zypp/ng/repomanager.cc:647 zypp/zypp/ng/repomanager.cc:1093
 #, c-format, boost-format
 msgid "Can't delete '%s'"
-msgstr ""
+msgstr "ບໍ່ສາມາດລຶບ '%s' ໄດ້"
 
 #: zypp/zypp/ng/repomanager.cc:703
 msgid "Modifying repository"
-msgstr ""
+msgstr "ກຳລັງປັບປ່ຽນຄັງເກັບຊອບແວ"
 
 #: zypp/zypp/ng/repomanager.cc:896
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "ກຳລັງຣີເຟຣຊຄັງເກັບຊອບແວ: "
 
 #: zypp/zypp/ng/repomanager.cc:1081 zypp/zypp/ng/repomanager.cc:1153
 msgid "Can't figure out where the service is stored."
-msgstr ""
+msgstr "ບໍ່ສາມາດກວດສອບໄດ້ວ່າການບໍລິການຖືກເກັບໄວ້ບ່ອນໃດ."
 
 #. translators: Cleanup a repository previously owned by a meanwhile unknown (deleted) service.
 #. %1% = service name
@@ -4532,88 +4556,88 @@ msgstr ""
 #: zypp/zypp/ng/repomanager.cc:1439
 #, boost-format
 msgid "Unknown service '%1%': Removing orphaned service repository '%2%'"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກການບໍລິການ '%1%': ກຳລັງລຶບຄັງເກັບການບໍລິການທີ່ຄ້າງຄາ '%2%'"
 
 #: zypp/zypp/ng/repomanager.h:60
 msgid "Repository alias cannot start with dot."
-msgstr ""
+msgstr "ຊື່ຫຼິ້ນຂອງຄັງເກັບຊອບແວບໍ່ສາມາດເລີ່ມຕົ້ນດ້ວຍຈຸດໄດ້."
 
 #: zypp/zypp/ng/repomanager.h:72
 msgid "Service alias cannot start with dot."
-msgstr ""
+msgstr "ຊື່ຫຼິ້ນຂອງການບໍລິການບໍ່ສາມາດເລີ່ມຕົ້ນດ້ວຍຈຸດໄດ້."
 
 #: zypp/zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "ບໍ່ມີຄ່າໄດເຈສ໌ (digest) ສຳລັບໄຟລ໌ %s."
 
 #: zypp/zypp/ng/reporthelper.cc:38
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກຄ່າໄດເຈສ໌ %s ສຳລັບໄຟລ໌ %s."
 
 #: zypp/zypp/ng/reporthelper.cc:51
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "ການກວດສອບຄ່າໄດເຈສ໌ຫຼົ້ມເຫຼວສຳລັບໄຟລ໌ '%s'"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/zypp/ng/reporthelper.cc:68
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "ໄຟລ໌ '%s' ບໍ່ມີລາຍເຊັນກຳກັບ, ຕ້ອງການສືບຕໍ່ບໍ່?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/zypp/ng/reporthelper.cc:72
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "ໄຟລ໌ '%s' ຈາກຄັງເກັບຊອບແວ '%s' ບໍ່ມີລາຍເຊັນກຳກັບ, ຕ້ອງການສືບຕໍ່ບໍ່?"
 
 #: zypp/zypp/ng/reporthelper.cc:89
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
-msgstr ""
+msgstr "ທ່ານຕ້ອງການປະຕິເສດຄີນີ້, ເຊື່ອຖືຊົ່ວຄາວ ຫຼື ເຊື່ອຖືຕະຫຼອດໄປ?"
 
 #: zypp/zypp/ng/reporthelper.cc:115
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "ຊື່ຄີ: %1%"
 
 #: zypp/zypp/ng/reporthelper.cc:127
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "ໄດ້ຮັບຄີລາຍເຊັນແພັກເກັດໃໝ່ %1% ຄີ ຈາກຄັງເກັບຊອບແວ \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/zypp/ng/reporthelper.cc:143
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "ການກວດສອບລາຍເຊັນຫຼົ້ມເຫຼວສຳລັບໄຟລ໌ '%1%'."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/zypp/ng/reporthelper.cc:146
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr ""
+msgstr "ການກວດສອບລາຍເຊັນຫຼົ້ມເຫຼວສຳລັບໄຟລ໌ '%1%' ຈາກຄັງເກັບຊອບແວ '%2%'."
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:167
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "ໄຟລ໌ '%s' ຖືກເຊັນດ້ວຍຄີທີ່ບໍ່ຮູ້ຈັກ '%s'. ຕ້ອງການສືບຕໍ່ບໍ່?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:171
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"ໄຟລ໌ '%s' ຈາກຄັງເກັບຊອບແວ '%s' ຖືກເຊັນດ້ວຍຄີທີ່ບໍ່ຮູ້ຈັກ '%s'. ຕ້ອງການສືບຕໍ່ບໍ່?"
 
 #. translator: %1% is a repositories name
 #: zypp/zypp/ng/workflows/keyringwf.cc:59
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "ຄັງເກັບຊອບແວ %1% ບໍ່ໄດ້ກຳນົດ URL ຂອງ 'gpgkey='."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4621,12 +4645,12 @@ msgstr ""
 #: zypp/zypp/ng/workflows/repoinfowf.cc:92
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "ກຳລັງຄົ້ນຫາ gpg ຄີ ໃນຄັງເກັບຊອບແວ %1%."
 
 #: zypp/zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
 msgid "Required attribute '%s' is missing."
-msgstr ""
+msgstr "ຄຸນສົມບັດທີ່ຈຳເປັນ '%s' ຂາດຫາຍໄປ."
 
 #. TODO: In fact we'd like to pass and check for url or mirrorlist at the end (check below).
 #. But there is legacy code in serviceswf.cc where an empty baseurl is replaced by
@@ -4635,64 +4659,66 @@ msgstr ""
 #: zypp/zypp/parser/RepoindexFileReader.cc:243
 #, c-format, boost-format
 msgid "One or both of '%s' or '%s' attributes is required."
-msgstr ""
+msgstr "ຕ້ອງການຄຸນສົມບັດ '%s' ຫຼື '%s' ຢ່າງໃດຢ່າງໜຶ່ງ ຫຼື ທັງສອງ."
 
 #: zypp/zypp/parser/RepoindexFileReader.cc:311
 #, c-format, boost-format
 msgid "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"ບໍ່ມີການກຳນົດຄຸນສົມບັດ '%s' ຫຼື '%s' ຫຼື '%s' ສຳລັບຄັງເກັບການບໍລິການ '%s'."
 
 #: zypp/zypp/repo/PackageProvider.cc:344
 msgid "Signature verification failed"
-msgstr ""
+msgstr "ການກວດສອບລາຍເຊັນຫຼົ້ມເຫຼວ"
 
 #. TranslatorExplanation %s = package being checked for integrity
 #: zypp/zypp/repo/PackageProvider.cc:474
 #, c-format, boost-format
 msgid "Package %s seems to be corrupted during transfer. Do you want to retry retrieval?"
 msgstr ""
+"ແພັກເກັດ %s ເບິ່ງຄືວ່າຈະເສຍຫາຍໃນລະຫວ່າງການໂອນຍ້າຍ. ທ່ານຕ້ອງການລອງດຶງຂໍ້ມູນໃໝ່ບໍ່?"
 
 #. TranslatorExplanation %s = name of the package being processed.
 #: zypp/zypp/repo/PackageProvider.cc:498
 #, c-format, boost-format
 msgid "Failed to provide Package %s. Do you want to retry retrieval?"
-msgstr ""
+msgstr "ບໍ່ສາມາດຈັດຫາແພັກເກັດ %s ໄດ້. ທ່ານຕ້ອງການລອງດຶງຂໍ້ມູນໃໝ່ບໍ່?"
 
 #: zypp/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "ດາວໂຫລດ deltarpm: ບໍ່ພົບ"
 
 #: zypp/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."
-msgstr ""
+msgstr "ການກວດສອບ applydeltarpm ຫຼົ້ມເຫຼວ."
 
 #: zypp/zypp/repo/PackageProvider.cc:640
 msgid "applydeltarpm failed."
-msgstr ""
+msgstr "applydeltarpm ຫຼົ້ມເຫຼວ."
 
 #: zypp/zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "ບໍ່ມີສິດໃນການຂຽນແຄຊ໌ຂອງຄັງເກັບຊອບແວ."
 
 #: zypp/zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
-msgstr ""
+msgstr "ປລັກອິນການບໍລິການບໍ່ຮອງຮັບການປ່ຽນແປງຄຸນສົມບັດ."
 
 #: zypp/zypp/repo/RepoProvideFile.cc:279
 #, c-format, boost-format
 msgid "Can't provide file '%s' from repository '%s'"
-msgstr ""
+msgstr "ບໍ່ສາມາດຈັດຫາໄຟລ໌ '%s' ຈາກຄັງເກັບຊອບແວ '%s' ໄດ້"
 
 #: zypp/zypp/repo/RepoProvideFile.cc:286
 msgid "No url in repository."
-msgstr ""
+msgstr "ບໍ່ມີ url ໃນຄັງເກັບຊອບແວ."
 
 #. Translator: %1% the expected medium number; %2% the total number of media in the set; %3% the ident file on the medium.
 #: zypp/zypp/repo/SUSEMediaVerifier.cc:104
 #: zyppng/lib/zypp-media/ng/mediaverifier.cc:109
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
-msgstr ""
+msgstr "ຄາດຫວັງສື່ %1%/%2% ທີ່ລະບຸໂດຍໄຟລ໌ '%3%' ທີ່ມີເນື້ອຫາ:"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
@@ -4705,6 +4731,11 @@ msgid ""
 "  conflicts with file from package\n"
 "     %3%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌ຈາກແພັກເກັດ\n"
+"     %3%"
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:40
@@ -4716,6 +4747,11 @@ msgid ""
 "  conflicts with file from install of\n"
 "     %3%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %3%"
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:47
@@ -4727,6 +4763,11 @@ msgid ""
 "  conflicts with file from package\n"
 "     %3%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌ຈາກແພັກເກັດ\n"
+"     %3%"
 
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:53
@@ -4738,6 +4779,11 @@ msgid ""
 "  conflicts with file from install of\n"
 "     %3%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %3%"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename1) %2%(package1) %%3%(filename2) 4%(package2)
@@ -4752,6 +4798,13 @@ msgid ""
 "  from package\n"
 "     %4%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌\n"
+"     %3%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %4%"
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:76
@@ -4765,6 +4818,13 @@ msgid ""
 "  from install of\n"
 "     %4%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌\n"
+"     %3%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %4%"
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:85
@@ -4778,6 +4838,13 @@ msgid ""
 "  from package\n"
 "     %4%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌\n"
+"     %3%\n"
+"  ຈາກແພັກເກັດ\n"
+"     %4%"
 
 #. TranslatorExplanation %1%(filename1) %2%(package1) %3%(filename2) %4%(package2)
 #: zypp/zypp/sat/FileConflicts.cc:93
@@ -4791,298 +4858,321 @@ msgid ""
 "  from install of\n"
 "     %4%"
 msgstr ""
+"ໄຟລ໌ %1%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %2%\n"
+"  ຂັດແຍ້ງກັບໄຟລ໌\n"
+"     %3%\n"
+"  ຈາກການຕິດຕັ້ງຂອງ\n"
+"     %4%"
 
 #. TranslatorExplanation %s = name of package, patch, selection ...
 #: zypp/zypp/solver/detail/ProblemSolutionIgnore.cc:42
 #, c-format, boost-format
 msgid "break %s by ignoring some of its dependencies"
 msgstr ""
+"ເຮັດໃຫ້ %s ໃຊ້ການບໍ່ໄດ້ໂດຍການລະເລີຍບາງສ່ວນທີ່ຈຳເປັນ (dependencies) ຂອງມັນ"
 
 #: zypp/zypp/solver/detail/ProblemSolutionIgnore.cc:48
 msgid "generally ignore of some dependencies"
-msgstr ""
+msgstr "ລະເລີຍບາງສ່ວນທີ່ຈຳເປັນໂດຍທົ່ວໄປ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1160
 #, boost-format
 msgid "the installed %1% does not belong to a distupgrade repository and must be replaced"
 msgstr ""
+"%1% ທີ່ຕິດຕັ້ງໄວ້ບໍ່ໄດ້ຢູ່ໃນຄັງເກັບຊອບແວສຳລັບການອັບເກຣດລະບົບ ແລະ ຕ້ອງໄດ້ຮັບການປ່ຽນແທນ"
 
 #. just in case
 #: zypp/zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງບໍ່ໄດ້ຢູ່ໃນຄັງເກັບຊອບແວສຳລັບການອັບເກຣດລະບົບ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "the installed %1% has inferior architecture"
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ມີສະຖາປັດຕະຍະກຳ (architecture) ທີ່ຕ່ຳກວ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງມີສະຖາປັດຕະຍະກຳທີ່ຕ່ຳກວ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1171
 #, boost-format
 msgid "problem with the installed %1%"
-msgstr ""
+msgstr "ເກີດບັນຫາກັບ %1% ທີ່ຕິດຕັ້ງໄວ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1174
 msgid "conflicting requests"
-msgstr ""
+msgstr "ຄຳຮ້ອງຂໍຂັດແຍ້ງກັນ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1177
 msgid "some dependency problem"
-msgstr ""
+msgstr "ເກີດບັນຫາກັບສ່ວນທີ່ຈຳເປັນ (dependency)"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "nothing provides the requested '%1%'"
-msgstr ""
+msgstr "ບໍ່ມີຫຍັງສາມາດຈັດຫາ '%1%' ຕາມທີ່ຮ້ອງຂໍໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1181
 #: zypp/zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
-msgstr ""
+msgstr "ທ່ານໄດ້ເປີດໃຊ້ຄັງເກັບຊອບແວທີ່ຈຳເປັນທັງໝົດແລ້ວບໍ່?"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
 msgid "the requested package %1% does not exist"
-msgstr ""
+msgstr "ບໍ່ມີແພັກເກັດ %1% ຕາມທີ່ຮ້ອງຂໍ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1188
 msgid "unsupported request"
-msgstr ""
+msgstr "ຄຳຮ້ອງຂໍບໍ່ຮອງຮັບ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
-msgstr ""
+msgstr "'%1%' ຖືກຈັດຫາໂດຍລະບົບ ແລະ ບໍ່ສາມາດລຶບອອກໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
-msgstr ""
+msgstr "%1% ບໍ່ສາມາດຕິດຕັ້ງໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
-msgstr ""
+msgstr "ບໍ່ມີຫຍັງສາມາດຈັດຫາ '%1%' ທີ່ຈຳເປັນສຳລັບ %2% ທີ່ຕິດຕັ້ງໄວ້ໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
+msgstr "ບໍ່ມີຫຍັງສາມາດຈັດຫາ '%1%' ທີ່ຈຳເປັນສຳລັບ %2% ທີ່ຈະຕິດຕັ້ງໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
-msgstr ""
+msgstr "ບໍ່ສາມາດຕິດຕັ້ງທັງ %1% ແລະ %2% ພ້ອມກັນໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ຂັດແຍ້ງກັບ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຕິດຕັ້ງໄວ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ຂັດແຍ້ງກັບ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຈະຕິດຕັ້ງ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງຂັດແຍ້ງກັບ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຕິດຕັ້ງໄວ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by the to be installed %3%"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງຂັດແຍ້ງກັບ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຈະຕິດຕັ້ງ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
+"%1% ທີ່ຕິດຕັ້ງໄວ້ເຮັດໃຫ້ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຕິດຕັ້ງໄວ້ກາຍເປັນຂອງເກົ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
+"%1% ທີ່ຕິດຕັ້ງໄວ້ເຮັດໃຫ້ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຈະຕິດຕັ້ງກາຍເປັນຂອງເກົ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
+"%1% ທີ່ຈະຕິດຕັ້ງເຮັດໃຫ້ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຕິດຕັ້ງໄວ້ກາຍເປັນຂອງເກົ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
+"%1% ທີ່ຈະຕິດຕັ້ງເຮັດໃຫ້ '%2%' ທີ່ຖືກຈັດຫາໂດຍ %3% ທີ່ຈະຕິດຕັ້ງກາຍເປັນຂອງເກົ່າ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ຂັດແຍ້ງກັບ '%2%' ທີ່ມັນຈັດຫາໃຫ້ເອງ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງຂັດແຍ້ງກັບ '%2%' ທີ່ມັນຈັດຫາໃຫ້ເອງ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid "the installed %1% requires '%2%', but this requirement cannot be provided"
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ຕ້ອງການ '%2%', ແຕ່ບໍ່ສາມາດຈັດຫາສິ່ງນີ້ໃຫ້ໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid "the to be installed %1% requires '%2%', but this requirement cannot be provided"
-msgstr ""
+msgstr "%1% ທີ່ຈະຕິດຕັ້ງຕ້ອງການ '%2%', ແຕ່ບໍ່ສາມາດຈັດຫາສິ່ງນີ້ໃຫ້ໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
-msgstr ""
+msgstr "ຜູ້ຈັດຫາທີ່ຖືກລຶບອອກ: "
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1285
 msgid ""
 "\n"
 "not installable providers: "
 msgstr ""
+"\n"
+"ຜູ້ຈັດຫາທີ່ບໍ່ສາມາດຕິດຕັ້ງໄດ້: "
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1287
 msgid "not installable providers: "
-msgstr ""
+msgstr "ຜູ້ຈັດຫາທີ່ບໍ່ສາມາດຕິດຕັ້ງໄດ້: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
 #: zypp/zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
-msgstr ""
+msgstr "%1% ຍັງບໍ່ໄດ້ຖືກລວມເຂົ້າໃນ %2% ຢ່າງສົມບູນ."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1325
 msgid "Typically you want to keep the PTF and choose to not install the maintenance patches."
 msgstr ""
+"ໂດຍປົກກະຕິແລ້ວ ທ່ານອາດຈະຕ້ອງການເກັບ PTF ໄວ້ ແລະ ເລືອກທີ່ຈະບໍ່ຕິດຕັ້ງແພັດ (patches) ສຳລັບການບຳລຸ"
+"ງຮັກສາ."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1333
 #, boost-format
 msgid "Removing the installed %1% in this context will remove (not replace!) the included PTF-packages too."
 msgstr ""
+"ການລຶບ %1% ທີ່ຕິດຕັ້ງໄວ້ອອກໃນກໍລະນີນີຈະເປັນການລຶບ (ບໍ່ແມ່ນການປ່ຽນແທນ!) ແພັກເກັດ PTF ທີ່ລວມຢູ່ນຳອອກໄ"
+"ປນຳ."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
 msgid "The PTF should be removed by calling '%1%'. This will update the included PTF-packages rather than removing them."
 msgstr ""
+"ຄວນລຶບ PTF ອອກໂດຍການໃຊ້ຄຳສັ່ງ '%1%'. ສິ່ງນີ້ຈະເປັນການອັບເດດແພັກເກັດ PTF ທີ່ລວມຢູ່ນຳ ແທນທີ່ຈະເປັນ"
+"ການລຶບພວກມັນອອກ."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr ""
+"ໂດຍປົກກະຕິແລ້ວ ທ່ານອາດຈະຕ້ອງການເກັບ PTF ໄວ້ ຫຼື ເລືອກທີ່ຈະຍົກເລີກການດຳເນີນການ."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
-msgstr ""
+msgstr "%1% ທີ່ຕິດຕັ້ງໄວ້ກຳລັງປິດກັ້ນການດຳເນີນການທີ່ຕ້ອງການ."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr ""
+"ໂດຍປົກກະຕິແລ້ວ ທ່ານອາດຈະຕ້ອງການເກັບ PTF ໄວ້ ແລະ ເລືອກທີ່ຈະຍົກເລີກການດຳເນີນການ."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
-msgstr ""
+msgstr "ລຶບການລັອກອອກເພື່ອອະນຸຍາດໃຫ້ລຶບ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1405
 #: zypp/zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
-msgstr ""
+msgstr "ບໍ່ຕ້ອງຕິດຕັ້ງ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1422
 #: zypp/zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
-msgstr ""
+msgstr "ເກັບ %1% ໄວ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
-msgstr ""
+msgstr "ລຶບການລັອກອອກເພື່ອອະນຸຍາດໃຫ້ຕິດຕັ້ງ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1478
 #: zypp/zypp/solver/detail/SATResolver.cc:1499
 msgid "This request will break your system!"
-msgstr ""
+msgstr "ຄຳຮ້ອງຂໍນີ້ຈະເຮັດໃຫ້ລະບົບຂອງທ່ານໃຊ້ການບໍ່ໄດ້!"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1479
 #: zypp/zypp/solver/detail/SATResolver.cc:1500
 msgid "ignore the warning of a broken system"
-msgstr ""
+msgstr "ລະເລີຍຄຳເຕືອນກ່ຽວກັບລະບົບທີ່ອາດຈະໃຊ້ການບໍ່ໄດ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
-msgstr ""
+msgstr "ບໍ່ຕ້ອງຖາມເພື່ອຕິດຕັ້ງສິ່ງທີ່ສາມາດແກ້ໄຂບັນຫາທີ່ຈັດຫາ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
-msgstr ""
+msgstr "ບໍ່ຕ້ອງຖາມເພື່ອລຶບທຸກສິ່ງທີ່ສາມາດແກ້ໄຂບັນຫາທີ່ຈັດຫາ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
-msgstr ""
+msgstr "ບໍ່ຕ້ອງຕິດຕັ້ງເວີຊັນຫຼ້າສຸດຂອງ %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
-msgstr ""
+msgstr "ເກັບ %1% ໄວ້ ເຖິງແມ່ນວ່າມັນຈະມີສະຖາປັດຕະຍະກຳທີ່ຕ່ຳກວ່າກໍຕາມ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
-msgstr ""
+msgstr "ຕິດຕັ້ງ %1% ເຖິງແມ່ນວ່າມັນຈະມີສະຖາປັດຕະຍະກຳທີ່ຕ່ຳກວ່າກໍຕາມ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
-msgstr ""
+msgstr "ເກັບ %1% ທີ່ລ້າສະໄໝໄວ້"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
-msgstr ""
+msgstr "ຕິດຕັ້ງ %1% ຈາກຄັງເກັບຊອບແວທີ່ຖືກແຍກອອກ"
 
 #. translator: %1% is a package name
 #: zypp/zypp/solver/detail/SATResolver.cc:1573
 #, boost-format
 msgid "install %1% although it has been retracted"
-msgstr ""
+msgstr "ຕິດຕັ້ງ %1% ເຖິງແມ່ນວ່າມັນຈະຖືກຖອນຄືນແລ້ວກໍຕາມ"
 
 #. translator: %1% is a package name
 #: zypp/zypp/solver/detail/SATResolver.cc:1576
 #, boost-format
 msgid "allow installing the PTF %1%"
-msgstr ""
+msgstr "ອະນຸຍາດໃຫ້ຕິດຕັ້ງ PTF %1%"
 
 #. translator: %1% is a package name
 #: zypp/zypp/solver/detail/SATResolver.cc:1579
 #, boost-format
 msgid "install %1% although it is blacklisted"
-msgstr ""
+msgstr "ຕິດຕັ້ງ %1% ເຖິງແມ່ນວ່າມັນຈະຢູ່ໃນລາຍຊື່ທີ່ຖືກບລັອກ (blacklisted) ກໍຕາມ"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
-msgstr ""
+msgstr "ການລົດເວີຊັນຂອງ %1% ລົງເປັນ %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
-msgstr ""
+msgstr "ການປ່ຽນແປງສະຖາປັດຕະຍະກຳຂອງ %1% ເປັນ %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
 #: zypp/zypp/solver/detail/SATResolver.cc:1617
@@ -5091,6 +5181,8 @@ msgid ""
 "install %1% (with vendor change)\n"
 "  %2%  -->  %3%"
 msgstr ""
+"ຕິດຕັ້ງ %1% (ໂດຍມີການປ່ຽນແປງຜູ້ຜະລິດ)\n"
+"  %2%  -->  %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
@@ -5098,45 +5190,47 @@ msgid ""
 "install %1% from vendor %2%\n"
 "  replacing %3% from vendor %4%"
 msgstr ""
+"ຕິດຕັ້ງ %1% ຈາກຜູ້ຜະລິດ %2%\n"
+"  ແທນທີ່ %3% ຈາກຜູ້ຜະລິດ %4%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
-msgstr ""
+msgstr "ການປ່ຽນແທນ %1% ດ້ວຍ %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
-msgstr ""
+msgstr "ການຖອນການຕິດຕັ້ງຂອງ %1%"
 
 #. Translator: progress bar label
 #: zypp/zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
-msgstr ""
+msgstr "ກຳລັງເຮັດວຽກສະຄຣິບຫຼັງການດຳເນີນການ (post-transaction)"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
-msgstr ""
+msgstr "ກຳລັງເຮັດວຽກສະຄຣິບ %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
-msgstr ""
+msgstr "ຜົນການເຮັດວຽກຂອງສະຄຣິບ %1%:"
 
 #: zypp/zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
-msgstr ""
+msgstr "ການຕິດຕັ້ງຖືກຍົກເລີກຕາມທີ່ໄດ້ກຳນົດໄວ້."
 
 #: zypp/zypp/target/TargetImpl.cc:564
 msgid " executed"
-msgstr ""
+msgstr " ປະຕິບັດແລ້ວ"
 
 #: zypp/zypp/target/TargetImpl.cc:586
 msgid " execution failed"
-msgstr ""
+msgstr " ການປະຕິບັດຫຼົ້ມເຫຼວ"
 
 #. translators: We may find the same script content in files with different names.
 #. Only the first occurence is executed, subsequent ones are skipped. It's a one-line
@@ -5144,103 +5238,105 @@ msgstr ""
 #: zypp/zypp/target/TargetImpl.cc:703
 #, c-format, boost-format
 msgid "%s already executed as %s)"
-msgstr ""
+msgstr "%s ຖືກປະຕິບັດໄປແລ້ວໃນຊື່ %s)"
 
 #: zypp/zypp/target/TargetImpl.cc:713
 msgid " execution skipped while aborting"
-msgstr ""
+msgstr " ຂ້າມການປະຕິບັດໃນລະຫວ່າງການຍົກເລີກ"
 
 #: zypp/zypp/target/TargetImpl.cc:768 zypp/zypp/target/TargetImpl.cc:788
 #: zypp/zypp/target/TargetImpl.cc:816 zypp/zypp/target/TargetImpl.cc:853
 #: zypp/zypp/target/TargetImpl.cc:861
 msgid "Error sending update message notification."
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສົ່ງການແຈ້ງເຕືອນຂໍ້ຄວາມອັບເດດ."
 
 #: zypp/zypp/target/TargetImpl.cc:912
 msgid "New update message"
-msgstr ""
+msgstr "ຂໍ້ຄວາມອັບເດດໃໝ່"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
 #: zypp/zypp/target/TargetImpl.cc:2238
 #, boost-format
 msgid "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it is not possible to cancel a running rpm transaction."
 msgstr ""
+"ໄດ້ຮັບສັນຍານ :\"%1% (%2%)\", ເພື່ອຮັກສາຄວາມຄົງທີ່ຂອງລະບົບ ມັນຈຶ່ງບໍ່ສາມາດຍົກເລີກການດຳເນີນການ "
+"rpm ທີ່ກຳລັງເຮັດວຽກຢູ່ໄດ້."
 
 #: zypp/zypp/target/TargetImpl.cc:2846
 msgid "Executing the transaction failed because of the following problems:"
-msgstr ""
+msgstr "ການປະຕິບັດການດຳເນີນການຫຼົ້ມເຫຼວເນື່ອງຈາກບັນຫາຕໍ່ໄປນີ້:"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:105
 msgid "no mirror found"
-msgstr ""
+msgstr "ບໍ່ພົບເຊີເວີສຳຮອງ (mirror)"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:111
 msgid "could not create target file"
-msgstr ""
+msgstr "ບໍ່ສາມາດສ້າງໄຟລ໌ປາຍທາງໄດ້"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:123
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ: ບໍ່ສາມາດເລີ່ມຕົ້ນການຕັ້ງຄ່າການໂອນຍ້າຍໄດ້ (%1%)."
 
 #. if we have the file already, no need to download again
 #: zypp/zypp/target/commitpackagepreloader.cc:140
 msgid "already in cache"
-msgstr ""
+msgstr "ມີຢູ່ໃນແຄຊ໌ແລ້ວ"
 
 #. error
 #: zypp/zypp/target/commitpackagepreloader.cc:287
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "ບໍ່ສາມາດປ່ຽນຊື່ໄຟລ໌ຊົ່ວຄາວໄດ້."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:315
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ: \"%1%\", ກຳລັງລອງໃຊ້ເຊີເວີສຳຮອງຖັດໄປ."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:652
 msgid "Cancelled by user."
-msgstr ""
+msgstr "ຖືກຍົກເລີກໂດຍຜູ້ໃຊ້."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
 #: zypp/zypp/target/rpm/RpmDb.cc:456 zypp/zypp/target/rpm/RpmDb.cc:1827
 #: zypp/zypp/target/rpm/RpmDb.cc:1996
 msgid "RPM failed: "
-msgstr ""
+msgstr "RPM ຫຼົ້ມເຫຼວ: "
 
 #. Translator: %1% is a gpg public key
 #: zypp/zypp/target/rpm/RpmDb.cc:781
 #, boost-format
 msgid "Failed to import public key %1%"
-msgstr ""
+msgstr "ບໍ່ສາມາດນຳເຂົ້າຄີສາທາລະນະ (public key) %1% ໄດ້"
 
 #. Translator: %1% is a gpg public key
 #: zypp/zypp/target/rpm/RpmDb.cc:848
 #, boost-format
 msgid "Failed to remove public key %1%"
-msgstr ""
+msgstr "ບໍ່ສາມາດລຶບຄີສາທາລະນະ %1% ອອກໄດ້"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1268
 msgid "Package header is not signed!"
-msgstr ""
+msgstr "ສ່ວນຫົວຂອງແພັກເກັດບໍ່ມີລາຍເຊັນກຳກັບ!"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1270
 msgid "Package payload is not signed!"
-msgstr ""
+msgstr "ຂໍ້ມູນພາຍໃນແພັກເກັດ (payload) ບໍ່ມີລາຍເຊັນກຳກັບ!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
 #: zypp/zypp/target/rpm/RpmDb.cc:1609
 #, c-format, boost-format
 msgid "Changed configuration files for %s:"
-msgstr ""
+msgstr "ໄຟລ໌ການກຳນົດຄ່າສຳລັບ %s ຖືກປ່ຽນແປງ:"
 
 #. %s = filenames
 #: zypp/zypp/target/rpm/RpmDb.cc:1808
 #, c-format, boost-format
 msgid "rpm saved %s as %s, but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm ໄດ້ບັນທຶກ %s ເປັນ %s, ແຕ່ບໍ່ສາມາດກວດສອບຄວາມແຕກຕ່າງໄດ້"
 
 #. %s = filenames
 #: zypp/zypp/target/rpm/RpmDb.cc:1810
@@ -5249,12 +5345,14 @@ msgid ""
 "rpm saved %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm ໄດ້ບັນທຶກ %s ເປັນ %s.\n"
+"ນີ້ແມ່ນຄວາມແຕກຕ່າງໃນ 25 ແຖວທຳອິດ:\n"
 
 #. %s = filenames
 #: zypp/zypp/target/rpm/RpmDb.cc:1813
 #, c-format, boost-format
 msgid "rpm created %s as %s, but it was impossible to determine the difference"
-msgstr ""
+msgstr "rpm ໄດ້ສ້າງ %s ເປັນ %s, ແຕ່ບໍ່ສາມາດກວດສອບຄວາມແຕກຕ່າງໄດ້"
 
 #. %s = filenames
 #: zypp/zypp/target/rpm/RpmDb.cc:1815
@@ -5263,6 +5361,8 @@ msgid ""
 "rpm created %s as %s.\n"
 "Here are the first 25 lines of difference:\n"
 msgstr ""
+"rpm ໄດ້ສ້າງ %s ເປັນ %s.\n"
+"ນີ້ແມ່ນຄວາມແຕກຕ່າງໃນ 25 ແຖວທຳອິດ:\n"
 
 #. report additional rpm output in finish (LEGACY! Lines are immediately reported as InstallResolvableReport::contentRpmout)
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
@@ -5270,44 +5370,44 @@ msgstr ""
 #. TranslatorExplanation Text is followed by a ':'  and the actual output.
 #: zypp/zypp/target/rpm/RpmDb.cc:1843 zypp/zypp/target/rpm/RpmDb.cc:2012
 msgid "Additional rpm output"
-msgstr ""
+msgstr "ຜົນການເຮັດວຽກເພີ່ມເຕີມຂອງ rpm"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:2229
 #, c-format, boost-format
 msgid "created backup %s"
-msgstr ""
+msgstr "ສ້າງໄຟລ໌ສຳຮອງ %s ແລ້ວ"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2250
 msgid "Signature is OK"
-msgstr ""
+msgstr "ລາຍເຊັນຖືກຕ້ອງ"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2252
 msgid "Unknown type of signature"
-msgstr ""
+msgstr "ບໍ່ຮູ້ຈັກປະເພດຂອງລາຍເຊັນ"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2254
 msgid "Signature does not verify"
-msgstr ""
+msgstr "ລາຍເຊັນບໍ່ສາມາດກວດສອບໄດ້"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2256
 msgid "Signature is OK, but key is not trusted"
-msgstr ""
+msgstr "ລາຍເຊັນຖືກຕ້ອງ, ແຕ່ຄີບໍ່ໄດ້ຮັບການເຊື່ອຖື"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2258
 msgid "Signatures public key is not available"
-msgstr ""
+msgstr "ຄີສາທາລະນະຂອງລາຍເຊັນບໍ່ພ້ອມໃຊ້ງານ"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2260
 msgid "File does not exist or signature can't be checked"
-msgstr ""
+msgstr "ໄຟລ໌ບໍ່ມີຢູ່ ຫຼື ບໍ່ສາມາດກວດສອບລາຍເຊັນໄດ້"
 
 #. translators: possible rpm package signature check result [brief]
 #: zypp/zypp/target/rpm/RpmDb.cc:2262
 msgid "File is unsigned"
-msgstr ""
+msgstr "ໄຟລ໌ບໍ່ມີລາຍເຊັນກຳກັບ"

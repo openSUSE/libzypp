@@ -7,11 +7,14 @@
 |                                                                      |
 \---------------------------------------------------------------------*/
 #include <iostream>
+#include <fstream>
+
 #include "KeyManager.h"
 #include "KeyRingException.h"
 
 #include <zypp-core/fs/PathInfo.h>
-#include <zypp-core/base/Logger.h>
+#include <zypp-core/base/LogTools.h>
+#include <zypp-core/base/LogControl.h>
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-core/base/String.h>
 #include <zypp-core/AutoDispose.h>
@@ -32,6 +35,9 @@ namespace zypp
   ///////////////////////////////////////////////////////////////////
   namespace
   {
+    // Name of the gpg.conf file inside a keyring.
+    static const std::string gpgconfName { "gpg.conf" };
+
     // @TODO [threading]
     // make sure to call the init code of gpgme only once
     // this might need to be moved to a different location when
@@ -418,6 +424,14 @@ KeyManagerCtx KeyManagerCtx::createForOpenPGP( const Pathname & keyring_r )
     ZYPP_THROW( GpgmeException( "gpgme_set_protocol", err ) );
 
   if ( !keyring_r.empty() ) {
+    // Prevent launching a gpg-agent; we don't need one.
+    {
+      PathInfo pi { keyring_r / gpgconfName };
+      if ( not pi.isExist() ) {
+        std::ofstream file { pi.path().c_str() };
+        file << "no-autostart" << std::endl;
+      }
+    }
     // get engine information to read current state
     gpgme_engine_info_t enginfo = gpgme_ctx_get_engine_info( ctx );
     if ( !enginfo )
@@ -486,8 +500,14 @@ std::list<PublicKeyData> KeyManagerCtx::readKeyFromFile( const Pathname & keyfil
   std::list<PublicKeyData> ret;
 
   if ( _pimpl->_volatile ) {
-    // in a volatile context we can simple clear the keyring...
-    filesystem::clean_dir( homedir() );
+    // in a volatile context we can simply clear the keyring...
+    base::LogControl::TmpLineWriter shutUp;     // be quiet
+    filesystem::dirForEach( homedir(), []( const Pathname & dir, const char *const name ) {
+      if ( name != gpgconfName ) {
+        filesystem::unlink( dir / name );
+      }
+      return true;
+    } );
     if ( importKey( keyfile_r ) )
       ret = listKeys();
   } else {

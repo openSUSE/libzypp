@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-05-28 17:12+0000\n"
+"PO-Revision-Date: 2026-08-25 16:05+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
 "Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
 "\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -4637,26 +4637,26 @@ msgstr "Nøgle-navn: %1%"
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Modtog %1% ny nøgle til pakkesignering fra repoet \"%2%\":"
+msgstr[1] "Modtog %1% nye nøgler til pakkesignering fra repoet \"%2%\":"
 
 #. translator: %1% is a file name
 #: zypp/zypp/ng/reporthelper.cc:143
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Bekræftelse af signaturen mislykkedes for filen '%1%'."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/zypp/ng/reporthelper.cc:146
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr ""
+msgstr "Bekræftelse af signaturen fejlede for filen '%1% fra repoet '%2%'."
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:167
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "Filen '%s' er signeret med en ukendt nøgle '%s'. Fortsæt?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:171
@@ -4664,12 +4664,13 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"Filen '%s' fra repoet '%s' er signeret med en ukendt nøgle '%s'. Fortsæt?"
 
 #. translator: %1% is a repositories name
 #: zypp/zypp/ng/workflows/keyringwf.cc:59
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Repo %1% definerer ikke 'gpgkey=' URL'er."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4677,7 +4678,7 @@ msgstr ""
 #: zypp/zypp/ng/workflows/repoinfowf.cc:92
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Leder efter gpg-nøgler i repo %1%."
 
 #: zypp/zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4697,7 +4698,7 @@ msgstr "En af eller begge '%s'- og '%s'-attributterne er påkrævet."
 #, c-format, boost-format
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
-msgstr ""
+msgstr "Hverken '%s', '%s' eller '%s' er defineret for service-repo '%s'."
 
 #: zypp/zypp/repo/PackageProvider.cc:344
 msgid "Signature verification failed"
@@ -4721,7 +4722,7 @@ msgstr "Kunne ikke levere pakken %s. Vil du prøve at hente den igen?"
 
 #: zypp/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "hente deltarpm: ikke fundet"
 
 #: zypp/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."
@@ -4733,7 +4734,7 @@ msgstr "applydeltarpm mislykkedes."
 
 #: zypp/zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "Ingen tilladelse til at skrive repo-cache."
 
 #: zypp/zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4753,7 +4754,7 @@ msgstr "Ingen URL i softwarekilden."
 #: zyppng/lib/zypp-media/ng/mediaverifier.cc:109
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
-msgstr ""
+msgstr "Forventet medium %1%/%2% identificeret af filen '%3%' med indhold:"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)

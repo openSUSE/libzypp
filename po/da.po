@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-25 16:05+0000\n"
+"PO-Revision-Date: 2026-08-27 13:13+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
 "Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
 "\n"
@@ -4918,27 +4918,28 @@ msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
 "replaced"
 msgstr ""
+"den installerede %1% tilhører ikke et distupgrade-repo og skal erstattes"
 
 #. just in case
 #: zypp/zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
-msgstr ""
+msgstr "pakken %1% som skal installeres tilhører ikke et distupgrade-repo"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1166
 #, boost-format
 msgid "the installed %1% has inferior architecture"
-msgstr ""
+msgstr "den installerede %1% har en dårligere arkitektur"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
-msgstr ""
+msgstr "den %1% som skal installeres har en dårligere arkitektur"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1171
 #, boost-format
 msgid "problem with the installed %1%"
-msgstr ""
+msgstr "problem med den installerede %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1174
 msgid "conflicting requests"

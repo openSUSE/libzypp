@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-27 13:13+0000\n"
+"PO-Revision-Date: 2026-08-27 17:13+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
 "Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
 "\n"
@@ -4952,17 +4952,17 @@ msgstr "et eller andet afhængighedsproblem"
 #: zypp/zypp/solver/detail/SATResolver.cc:1180
 #, boost-format
 msgid "nothing provides the requested '%1%'"
-msgstr ""
+msgstr "der er ikke noget, der tilbyder den ønskede '%1%'"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1181
 #: zypp/zypp/solver/detail/SATResolver.cc:1185
 msgid "Have you enabled all the required repositories?"
-msgstr ""
+msgstr "Har du aktiveret alle de nødvendige repo'er?"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1184
 #, boost-format
 msgid "the requested package %1% does not exist"
-msgstr ""
+msgstr "den ønskede pakke %1% findes ikke"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1188
 msgid "unsupported request"
@@ -4971,27 +4971,27 @@ msgstr "ikke understøttet anmodning"
 #: zypp/zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
-msgstr ""
+msgstr "'%1%' leveres af systemet og kan ikke slettes"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
-msgstr ""
+msgstr "%1% er ikke installerbar"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
-msgstr ""
+msgstr "der er ikke noget der tilbyder '%1%' som kræves af den installerede %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
+msgstr "der er ikke noget der tilbyder '%1%' som kræves for at installere %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
-msgstr ""
+msgstr "kan ikke installere både %1% og %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1209
 #, boost-format

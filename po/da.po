@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-27 17:13+0000\n"
+"PO-Revision-Date: 2026-08-28 15:13+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
 "Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
 "\n"
@@ -4997,18 +4997,24 @@ msgstr "kan ikke installere både %1% og %2%"
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
+"den installerede %1% er i konflikt med '%2%' som kommer fra den installerede "
+"%3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
 msgstr ""
+"den installerede %1% er i konflikt med '%2%' som kommer fra %3% som skal "
+"installeres"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1215
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
+"den %1% som skal installeres er i konflikt med '%2%' som kommer fra den "
+"installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
@@ -5121,24 +5127,24 @@ msgstr ""
 #: zypp/zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
-msgstr ""
+msgstr "fjern låsen for at tillade sletning af %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1405
 #: zypp/zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
-msgstr ""
+msgstr "installer ikke %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1422
 #: zypp/zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
-msgstr ""
+msgstr "behold %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
-msgstr ""
+msgstr "fjern låsen for at tillade installation af %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1478
 #: zypp/zypp/solver/detail/SATResolver.cc:1499
@@ -5153,17 +5159,17 @@ msgstr "ignorér advarslen om et ødelagt system"
 #: zypp/zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
-msgstr ""
+msgstr "spørg ikke om at installere en løsning som giver %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
-msgstr ""
+msgstr "spørg ikke om at slette alle løsninger som giver %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
-msgstr ""
+msgstr "installer ikke seneste version af %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
@@ -5303,35 +5309,35 @@ msgstr ""
 
 #: zypp/zypp/target/commitpackagepreloader.cc:105
 msgid "no mirror found"
-msgstr ""
+msgstr "ingen spejl fundet"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:111
 msgid "could not create target file"
-msgstr ""
+msgstr "kunne ikke oprette destinationsfilen"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:123
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
-msgstr ""
+msgstr "Fejl: Kunne ikke initialisere overførselsindstillingerne (%1%)."
 
 #. if we have the file already, no need to download again
 #: zypp/zypp/target/commitpackagepreloader.cc:140
 msgid "already in cache"
-msgstr ""
+msgstr "allerede i cache"
 
 #. error
 #: zypp/zypp/target/commitpackagepreloader.cc:287
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "kunne ikke omdøbe midlertidig fil."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:315
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Fejl: \"%1%\", prøver næste spejl."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:652
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Afbrudt af brugeren."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5354,11 +5360,11 @@ msgstr "Fjernelse af den offentlige nøgle %1% mislykkedes"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1268
 msgid "Package header is not signed!"
-msgstr ""
+msgstr "Pakkens header er ikke signeret!"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1270
 msgid "Package payload is not signed!"
-msgstr ""
+msgstr "Pakkens indhold er ikke signeret!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.
